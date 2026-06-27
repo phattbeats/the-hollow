@@ -19,22 +19,30 @@
 // mobSwing, spawnDelveModule), never reaching into not-yet-extracted internals
 // in a way the sim itself does not already expose.
 
-import { arenaOrigin, DUNGEONS, instanceOrigin, MOBS, DELVES, QUESTS, PROPS } from '../../src/sim/data';
+import {
+  arenaOrigin,
+  DELVES,
+  DUNGEONS,
+  instanceOrigin,
+  MOBS,
+  PROPS,
+  QUESTS,
+} from '../../src/sim/data';
 import { createMob } from '../../src/sim/entity';
-import { Sim } from '../../src/sim/sim';
 import { solveLockActions } from '../../src/sim/lockpick';
+import { Sim } from '../../src/sim/sim';
 import { addThreat } from '../../src/sim/threat';
 import {
+  type Aura,
   DT,
   dist2d,
+  type Entity,
   FISHING_CAST_ID,
   MAX_LEVEL,
   NYTHRAXIS_ADD_ID,
   NYTHRAXIS_BOSS_ID,
   PRESTIGE_XP_PER_RANK,
   xpForLevel,
-  type Aura,
-  type Entity,
 } from '../../src/sim/types';
 import { terrainHeight } from '../../src/sim/world';
 import type { Recorder, Scenario } from './record';
@@ -61,7 +69,14 @@ function teleport(sim: AnySim, e: AnyEntity, x: number, z: number): void {
 
 // Spawn a mob from a template key and register it (entities + spatial grid),
 // allocating a fresh id from nextId so it never collides with ctor spawns.
-function spawnMob(sim: AnySim, key: string, level: number, x: number, y: number, z: number): AnyEntity {
+function spawnMob(
+  sim: AnySim,
+  key: string,
+  level: number,
+  x: number,
+  y: number,
+  z: number,
+): AnyEntity {
   const mob = createMob(sim.nextId++, MOBS[key], level, { x, y, z }) as AnyEntity;
   sim.addEntity(mob);
   return mob;
@@ -140,7 +155,11 @@ function soloWarrior(): Scenario {
 function soloMage(): Scenario {
   return {
     name: 'solo_mage',
-    coverage: ['class:mage (caster)', 'casting lifecycle (C4a)', 'effect dispatch + spell damage (C4b/C1)'],
+    coverage: [
+      'class:mage (caster)',
+      'casting lifecycle (C4a)',
+      'effect dispatch + spell damage (C4b/C1)',
+    ],
     build: () => new Sim({ seed: 1002, playerClass: 'mage', autoEquip: true }),
     drive(rec: Recorder) {
       const sim = rec.sim as AnySim;
@@ -155,7 +174,8 @@ function soloMage(): Scenario {
       const spells = ['fireball', 'frostbolt'];
       for (let round = 0; round < 8; round++) {
         p.resource = p.maxResource; // mana
-        if (p.gcdRemaining <= 0 && !p.castingAbility) sim.castAbility(spells[round % spells.length]);
+        if (p.gcdRemaining <= 0 && !p.castingAbility)
+          sim.castAbility(spells[round % spells.length]);
         rec.tick(16);
         face(p, mob);
       }
@@ -168,7 +188,11 @@ function soloMage(): Scenario {
 function soloRogue(): Scenario {
   return {
     name: 'solo_rogue',
-    coverage: ['class:rogue', 'meleeSwing weaponStrike (sinister_strike via castAbility ~3736)', 'combo points'],
+    coverage: [
+      'class:rogue',
+      'meleeSwing weaponStrike (sinister_strike via castAbility ~3736)',
+      'combo points',
+    ],
     build: () => new Sim({ seed: 1003, playerClass: 'rogue', autoEquip: true }),
     drive(rec: Recorder) {
       const sim = rec.sim as AnySim;
@@ -708,7 +732,11 @@ function paladinConsecration(): Scenario {
 function arena1v1(): Scenario {
   return {
     name: 'arena_1v1',
-    coverage: ['arena 1v1 match + Elo result', 'multi-player PlayerMeta sampling', 'classes:warrior,mage'],
+    coverage: [
+      'arena 1v1 match + Elo result',
+      'multi-player PlayerMeta sampling',
+      'classes:warrior,mage',
+    ],
     sampleEvery: 25,
     build: () => new Sim({ seed: 1008, playerClass: 'warrior', noPlayer: true }),
     drive(rec: Recorder) {
@@ -751,10 +779,19 @@ function fiesta(): Scenario {
     build: () => new Sim({ seed: 1009, playerClass: 'warrior', noPlayer: true }),
     drive(rec: Recorder) {
       const sim = rec.sim as AnySim;
-      const classes: Array<'warrior' | 'mage' | 'rogue' | 'hunter'> = ['warrior', 'mage', 'rogue', 'hunter'];
+      const classes: Array<'warrior' | 'mage' | 'rogue' | 'hunter'> = [
+        'warrior',
+        'mage',
+        'rogue',
+        'hunter',
+      ];
       const pids = classes.map((c, i) => sim.addPlayer(c, `P${i}`));
-      pids.forEach((pid, i) => teleport(sim, sim.entities.get(pid)!, i * 4, -40));
-      pids.forEach((pid) => sim.arenaQueueJoin(pid, 'fiesta'));
+      pids.forEach((pid, i) => {
+        teleport(sim, sim.entities.get(pid)!, i * 4, -40);
+      });
+      pids.forEach((pid) => {
+        sim.arenaQueueJoin(pid, 'fiesta');
+      });
       rec.tick(1);
       for (let i = 0; i < 20 * 10; i++) {
         rec.tick(1);
@@ -804,10 +841,19 @@ function fiestaPowerups(): Scenario {
     build: () => new Sim({ seed: 2027, playerClass: 'warrior', noPlayer: true }),
     drive(rec: Recorder) {
       const sim = rec.sim as AnySim;
-      const classes: Array<'warrior' | 'mage' | 'rogue' | 'priest'> = ['warrior', 'mage', 'rogue', 'priest'];
+      const classes: Array<'warrior' | 'mage' | 'rogue' | 'priest'> = [
+        'warrior',
+        'mage',
+        'rogue',
+        'priest',
+      ];
       const pids = classes.map((c, i) => sim.addPlayer(c, `P${i}`));
-      pids.forEach((pid, i) => teleport(sim, sim.entities.get(pid)!, i * 4, -40));
-      pids.forEach((pid) => sim.arenaQueueJoin(pid, 'fiesta'));
+      pids.forEach((pid, i) => {
+        teleport(sim, sim.entities.get(pid)!, i * 4, -40);
+      });
+      pids.forEach((pid) => {
+        sim.arenaQueueJoin(pid, 'fiesta');
+      });
       rec.tick(1);
       for (let i = 0; i < 20 * 10; i++) {
         rec.tick(1);
@@ -906,12 +952,21 @@ function arena2v2Wipe(): Scenario {
     build: () => new Sim({ seed: 1016, playerClass: 'warrior', noPlayer: true }),
     drive(rec: Recorder) {
       const sim = rec.sim as AnySim;
-      const classes: Array<'warrior' | 'mage' | 'rogue' | 'priest'> = ['warrior', 'mage', 'rogue', 'priest'];
+      const classes: Array<'warrior' | 'mage' | 'rogue' | 'priest'> = [
+        'warrior',
+        'mage',
+        'rogue',
+        'priest',
+      ];
       const names = ['Aleph', 'Bet', 'Gimel', 'Dalet'];
       const pids = classes.map((c, i) => sim.addPlayer(c, names[i]));
-      pids.forEach((pid, i) => teleport(sim, sim.entities.get(pid)!, i * 3, -40));
+      pids.forEach((pid, i) => {
+        teleport(sim, sim.entities.get(pid)!, i * 3, -40);
+      });
       rec.track(...pids);
-      pids.forEach((pid) => sim.arenaQueueJoin(pid, '2v2'));
+      pids.forEach((pid) => {
+        sim.arenaQueueJoin(pid, '2v2');
+      });
       rec.tick(1); // matchmake seats the four solos into one 2v2 match
       for (let i = 0; i < 20 * 8; i++) {
         rec.tick(1);
@@ -923,11 +978,27 @@ function arena2v2Wipe(): Scenario {
         rec.snapshot('bout-active');
         const killer = sim.entities.get(match.teamA[0]) as AnyEntity;
         // First takedown: teamB[0] dies but the team is not wiped -> match active.
-        sim.dealDamage(killer, sim.entities.get(match.teamB[0]) as AnyEntity, 99999, false, 'physical', null, 'hit');
+        sim.dealDamage(
+          killer,
+          sim.entities.get(match.teamB[0]) as AnyEntity,
+          99999,
+          false,
+          'physical',
+          null,
+          'hit',
+        );
         rec.tick(1);
         rec.snapshot('first-down');
         // Second takedown: teamB is wiped -> endArenaMatch (ranked Elo on all four).
-        sim.dealDamage(killer, sim.entities.get(match.teamB[1]) as AnyEntity, 99999, false, 'physical', null, 'hit');
+        sim.dealDamage(
+          killer,
+          sim.entities.get(match.teamB[1]) as AnyEntity,
+          99999,
+          false,
+          'physical',
+          null,
+          'hit',
+        );
         rec.tick(1);
         rec.snapshot('team-wiped');
       }
@@ -969,12 +1040,14 @@ function delveLockpick(): Scenario {
       run.modules = ['reliquary_finale'];
       run.moduleIndex = 0;
       (sim as any).spawnDelveModule(run);
-      const boss = [...sim.entities.values()].find((e: AnyEntity) => e.templateId === 'deacon_varric') as
-        | AnyEntity
-        | undefined;
+      const boss = [...sim.entities.values()].find(
+        (e: AnyEntity) => e.templateId === 'deacon_varric',
+      ) as AnyEntity | undefined;
       // Let the auto-spawned delve companion swing the boss -> mobSwing companion
       // caller (~16762) before we kill it. The companion prefers the owner's target.
-      const comp = run.companion ? (sim.entities.get(run.companion.entityId) as AnyEntity | undefined) : undefined;
+      const comp = run.companion
+        ? (sim.entities.get(run.companion.entityId) as AnyEntity | undefined)
+        : undefined;
       if (boss && comp) {
         boss.hostile = true;
         comp.pos = { x: boss.pos.x + 1, y: boss.pos.y, z: boss.pos.z };
@@ -1050,7 +1123,8 @@ function delveLockpickFail(): Scenario {
       const boss = [...sim.entities.values()].find(
         (e: AnyEntity) => e.templateId === 'deacon_varric',
       ) as AnyEntity | undefined;
-      if (boss) (sim as any).dealDamage(p, boss, boss.maxHp + 1, false, 'physical', null, 'hit', true);
+      if (boss)
+        (sim as any).dealDamage(p, boss, boss.maxHp + 1, false, 'physical', null, 'hit', true);
       rec.tick(4); // reward chest spawns
       // Drop the finale swarm so the ONLY thing that can end the attempt during the
       // pause is the per-step clock under test (incidental combat is covered elsewhere).
@@ -1242,9 +1316,17 @@ function entityRoster(): Scenario {
       rec.notes.guardId = guard.id;
       // (2) delayed-event drain: one due+fires, one due+guard-false (dropped), one
       // future (stays pending). delayedEvents is the field this slice owns.
-      const delayed = (sim as any).delayedEvents as { at: number; event: any; guard?: () => boolean }[];
+      const delayed = (sim as any).delayedEvents as {
+        at: number;
+        event: any;
+        guard?: () => boolean;
+      }[];
       delayed.push({ at: sim.time + 0.05, event: { type: 'respawn', pid: p.id } });
-      delayed.push({ at: sim.time + 0.05, event: { type: 'respawn', pid: p.id }, guard: () => false });
+      delayed.push({
+        at: sim.time + 0.05,
+        event: { type: 'respawn', pid: p.id },
+        guard: () => false,
+      });
       delayed.push({ at: sim.time + 100, event: { type: 'respawn', pid: p.id } });
       rec.tick(5); // both mobs despawn (0.1s) and the due delayed events resolve
       rec.snapshot('post-churn');
@@ -1322,10 +1404,19 @@ function fiestaMidcastKill(): Scenario {
     build: () => new Sim({ seed: 1014, playerClass: 'warrior', noPlayer: true }),
     drive(rec: Recorder) {
       const sim = rec.sim as AnySim;
-      const classes: Array<'warrior' | 'mage' | 'rogue' | 'hunter'> = ['warrior', 'mage', 'rogue', 'hunter'];
+      const classes: Array<'warrior' | 'mage' | 'rogue' | 'hunter'> = [
+        'warrior',
+        'mage',
+        'rogue',
+        'hunter',
+      ];
       const pids = classes.map((c, i) => sim.addPlayer(c, `F${i}`));
-      pids.forEach((pid, i) => teleport(sim, sim.entities.get(pid)!, i * 4, -40));
-      pids.forEach((pid) => sim.arenaQueueJoin(pid, 'fiesta'));
+      pids.forEach((pid, i) => {
+        teleport(sim, sim.entities.get(pid)!, i * 4, -40);
+      });
+      pids.forEach((pid) => {
+        sim.arenaQueueJoin(pid, 'fiesta');
+      });
       rec.tick(1);
       for (let i = 0; i < 20 * 10; i++) {
         rec.tick(1);
@@ -1763,7 +1854,11 @@ function talentsProgression(): Scenario {
       const sim = rec.sim as AnySim;
       sim.setPlayerLevel(MAX_LEVEL); // enough talent points for a spec'd build
       // (1) Apply a valid Arms build: the flat talentMods bakes + known list changes.
-      sim.applyTalents({ spec: 'arms', ranks: { war_cruelty: 2, arms_imp_overpower: 2 }, choices: {} });
+      sim.applyTalents({
+        spec: 'arms',
+        ranks: { war_cruelty: 2, arms_imp_overpower: 2 },
+        choices: {},
+      });
       rec.snapshot('apply-arms');
       // (2) Respec: ranks wiped, spec retained, stats revert.
       sim.respec();
@@ -1846,7 +1941,9 @@ function multiClassHeal(): Scenario {
       const druid = sim.addPlayer('druid', 'Dr') as number;
       const shaman = sim.addPlayer('shaman', 'Sh') as number;
       const healerIds = [priest, paladin, druid, shaman];
-      healerIds.forEach((pid, i) => teleport(sim, sim.entities.get(pid) as AnyEntity, i * 3, -30));
+      healerIds.forEach((pid, i) => {
+        teleport(sim, sim.entities.get(pid) as AnyEntity, i * 3, -30);
+      });
       const ePriest = sim.entities.get(priest) as AnyEntity;
       const ePaladin = sim.entities.get(paladin) as AnyEntity;
       const eDruid = sim.entities.get(druid) as AnyEntity;
@@ -1894,12 +1991,7 @@ function multiClassHeal(): Scenario {
       // Force a crit by boosting int so spellCrit(source) >= 1: rng.chance STILL
       // draws (next() < p), it just always passes, so the *1.5 crit path lands in
       // the golden deterministically. Restored immediately after the heal.
-      const forcedHeal = (
-        e: AnyEntity,
-        source: number,
-        amount: number,
-        ability: string,
-      ): void => {
+      const forcedHeal = (e: AnyEntity, source: number, amount: number, ability: string): void => {
         const int0 = e.stats.int;
         e.stats.int = 5000;
         (sim as any).applyHeal(sim.entities.get(source) as AnyEntity, tank, amount, ability);
@@ -1916,16 +2008,42 @@ function multiClassHeal(): Scenario {
 
       // Heal 3: druid, hex on source (outgoing cut) + Mortal-Wound on target
       // (incoming cut), forced crit -> crit*hex*mortal combined.
-      eDruid.auras.push(aura({ id: 'hex_dr', name: 'Weakening Hex', kind: 'hex', value: 0.3, sourceId: m1.id }));
-      tank.auras.push(aura({ id: 'mw_tk', name: 'Mortal Wound', kind: 'mortal_wound', value: 0.5, sourceId: m1.id }));
+      eDruid.auras.push(
+        aura({ id: 'hex_dr', name: 'Weakening Hex', kind: 'hex', value: 0.3, sourceId: m1.id }),
+      );
+      tank.auras.push(
+        aura({
+          id: 'mw_tk',
+          name: 'Mortal Wound',
+          kind: 'mortal_wound',
+          value: 0.5,
+          sourceId: m1.id,
+        }),
+      );
       tank.hp = 2000;
       forcedHeal(eDruid, druid, 1000, 'Healing Touch');
       tank.auras = tank.auras.filter((a: Aura) => a.kind !== 'mortal_wound');
 
       // Heal 4: shaman, two heal-absorb shields -> the small one depletes and is
       // filtered out, the big one survives with reduced budget.
-      tank.auras.push(aura({ id: 'absorb_small', name: 'Necrotic', kind: 'heal_absorb', value: 200, sourceId: m1.id }));
-      tank.auras.push(aura({ id: 'absorb_big', name: 'Necrotic', kind: 'heal_absorb', value: 5000, sourceId: m1.id }));
+      tank.auras.push(
+        aura({
+          id: 'absorb_small',
+          name: 'Necrotic',
+          kind: 'heal_absorb',
+          value: 200,
+          sourceId: m1.id,
+        }),
+      );
+      tank.auras.push(
+        aura({
+          id: 'absorb_big',
+          name: 'Necrotic',
+          kind: 'heal_absorb',
+          value: 5000,
+          sourceId: m1.id,
+        }),
+      );
       tank.hp = 2000;
       (sim as any).applyHeal(eShaman, tank, 1000, 'Healing Wave');
 
@@ -1943,7 +2061,9 @@ function multiClassHeal(): Scenario {
 
       // dealDamage consumers: druid (still hexed) crit-hits a critvuln mob ->
       // hexOutputMult (outgoing-damage cut) + critVulnBonus (crit-only) both read.
-      m1.auras.push(aura({ id: 'cv_m1', name: 'Find Weakness', kind: 'critvuln', value: 0.5, sourceId: druid }));
+      m1.auras.push(
+        aura({ id: 'cv_m1', name: 'Find Weakness', kind: 'critvuln', value: 0.5, sourceId: druid }),
+      );
       sim.dealDamage(eDruid, m1, 100, true, 'physical', 'Smite', 'hit');
       rec.snapshot('crit-vuln-damage');
 
@@ -1953,7 +2073,15 @@ function multiClassHeal(): Scenario {
       // consumeHealAbsorb, only applyHeal does.)
       tank.hp = 2000;
       tank.auras.push(
-        aura({ id: 'hot_tk', name: 'Rejuvenation', kind: 'hot', value: 300, sourceId: druid, duration: 3, tickInterval: 0.1 }),
+        aura({
+          id: 'hot_tk',
+          name: 'Rejuvenation',
+          kind: 'hot',
+          value: 300,
+          sourceId: druid,
+          duration: 3,
+          tickInterval: 0.1,
+        }),
       );
       rec.tick(8); // ~4 HoT ticks; finish() pins the end state + folded HoT events
     },
@@ -2039,7 +2167,14 @@ function mobLocomotion(): Scenario {
 
       // Idle wander: a mob far out of aggro range whose wanderTimer is due picks a new
       // wander target (rng.range(0,2PI) heading + rng.range(2,9) radius -> groundPos).
-      const wanderer = spawnMob(sim, 'forest_wolf', 5, 300, terrainHeight(300, 300, sim.cfg.seed), 300);
+      const wanderer = spawnMob(
+        sim,
+        'forest_wolf',
+        5,
+        300,
+        terrainHeight(300, 300, sim.cfg.seed),
+        300,
+      );
       wanderer.aiState = 'idle';
       wanderer.wanderTarget = null;
       wanderer.wanderTimer = 0.001;
@@ -2051,7 +2186,14 @@ function mobLocomotion(): Scenario {
       // Evade arrival: a mob already at its spawn in the evade state arrives immediately
       // (moveToward returns true at dist 0) -> resetEvadingMob (rng.range(2,8) wanderTimer,
       // hp -> maxHp, threat cleared, telegraph timers re-armed).
-      const evader = spawnMob(sim, 'forest_wolf', 5, 320, terrainHeight(320, 320, sim.cfg.seed), 320);
+      const evader = spawnMob(
+        sim,
+        'forest_wolf',
+        5,
+        320,
+        terrainHeight(320, 320, sim.cfg.seed),
+        320,
+      );
       evader.aiState = 'evade';
       evader.hp = 1;
       evader.inCombat = true;
@@ -2065,7 +2207,14 @@ function mobLocomotion(): Scenario {
       // Cowardly flee: a low-HP humanoid in melee panics once (maybeFlee at/under
       // FLEE_HP_THRESHOLD -> aiState 'flee'), then the flee arm runs it away. The
       // 'attempts to flee!' emit + callForHelp stay on Sim; the flee arm draws no rng.
-      const coward = spawnMob(sim, 'mogger_lackey', 6, player.pos.x + 1, player.pos.y, player.pos.z + 1);
+      const coward = spawnMob(
+        sim,
+        'mogger_lackey',
+        6,
+        player.pos.x + 1,
+        player.pos.y,
+        player.pos.z + 1,
+      );
       coward.spawnPos = { ...coward.pos };
       coward.aiState = 'attack';
       coward.aggroTargetId = pid;
@@ -2252,7 +2401,8 @@ function delveCompanion(): Scenario {
       // (c) HEEL: drop the swarm + clear the target so combatTarget is null; the owner
       // a short walk away pulls a moveToward, and far away a warp + rebucket.
       for (const [id, ent] of [...sim.entities]) {
-        if ((ent as AnyEntity).kind === 'mob' && (ent as AnyEntity).hostile) sim.entities.delete(id);
+        if ((ent as AnyEntity).kind === 'mob' && (ent as AnyEntity).hostile)
+          sim.entities.delete(id);
       }
       p.targetId = null;
       p.autoAttack = false;
@@ -2436,7 +2586,9 @@ function nythraxisFullPull(): Scenario {
       // ways and nobody is one-shot).
       floorTeleport(tank, boss.pos.x, boss.pos.z - 6, boss.pos.y);
       const dps = dpsPids.map((pid) => sim.entities.get(pid) as AnyEntity);
-      dps.forEach((e, i) => floorTeleport(e, boss.spawnPos.x + (i - 1.5), boss.spawnPos.z - 20, boss.pos.y));
+      dps.forEach((e, i) => {
+        floorTeleport(e, boss.spawnPos.x + (i - 1.5), boss.spawnPos.z - 20, boss.pos.y);
+      });
       const room = [tank, ...dps];
       const topUp = () => {
         for (const e of room) {
@@ -2479,12 +2631,14 @@ function nythraxisFullPull(): Scenario {
         (e: AnyEntity) => e.templateId === 'brother_aldric_raid' && !e.dead,
       ) as AnyEntity | undefined;
       if (aldric) rec.track(aldric.id);
-      const wards = ([...sim.entities.values()].filter(
-        (e: AnyEntity) =>
-          e.kind === 'object' &&
-          e.objectItemId === 'bastion_ward_stone' &&
-          dist2d(e.pos, boss.spawnPos) < 100,
-      ) as AnyEntity[]).sort((a, b) => a.id - b.id);
+      const wards = (
+        [...sim.entities.values()].filter(
+          (e: AnyEntity) =>
+            e.kind === 'object' &&
+            e.objectItemId === 'bastion_ward_stone' &&
+            dist2d(e.pos, boss.spawnPos) < 100,
+        ) as AnyEntity[]
+      ).sort((a, b) => a.id - b.id);
       rec.track(...wards.map((w) => w.id));
       rec.notes.wardIds = wards.map((w) => w.id);
       rec.snapshot('transition');
@@ -2507,7 +2661,8 @@ function nythraxisFullPull(): Scenario {
 
       // The phase-1 adds are spent by now (a real raid kills them before the
       // wardstone phase); clear them so their on-hit stun cannot break a channel.
-      for (const add of adds) sim.dealDamage(tank, add, add.hp + 1, false, 'physical', null, 'hit', true);
+      for (const add of adds)
+        sim.dealDamage(tank, add, add.hp + 1, false, 'physical', null, 'hit', true);
       step(1);
 
       // ----- Deathless Rage + the three-wardstone interrupt -----
@@ -2584,10 +2739,23 @@ function c3AuraRunner(): Scenario {
       const victim = spawnMob(sim, 'forest_wolf', 5, 40, p.pos.y, 40);
       victim.hostile = true;
       victim.auras.push(
-        aura({ id: 'rider_buff', name: 'Rider', kind: 'buff_armor', value: 10, sourceId: ABSENT_SOURCE }),
+        aura({
+          id: 'rider_buff',
+          name: 'Rider',
+          kind: 'buff_armor',
+          value: 10,
+          sourceId: ABSENT_SOURCE,
+        }),
       );
       victim.auras.push(
-        aura({ id: 'lethal_dot', name: 'Rupture', kind: 'dot', value: 9999, sourceId: ABSENT_SOURCE, tickInterval: 0.05 }),
+        aura({
+          id: 'lethal_dot',
+          name: 'Rupture',
+          kind: 'dot',
+          value: 9999,
+          sourceId: ABSENT_SOURCE,
+          tickInterval: 0.05,
+        }),
       );
       rec.track(victim.id);
       rec.notes.victimId = victim.id;
@@ -2605,8 +2773,23 @@ function c3AuraRunner(): Scenario {
       p.hp = Math.max(1, p.maxHp - 600);
       p.resource = Math.max(0, p.maxResource - 300);
       p.eating = { itemId: 'parity_food', kind: 'food', hpPer2s: 90, manaPer2s: 0, remaining: 6 };
-      p.drinking = { itemId: 'parity_drink', kind: 'drink', hpPer2s: 0, manaPer2s: 50, remaining: 6 };
-      p.auras.push(aura({ id: 'short_buff', name: 'Blessing', kind: 'buff_ap', value: 20, sourceId: p.id, duration: 1.5 }));
+      p.drinking = {
+        itemId: 'parity_drink',
+        kind: 'drink',
+        hpPer2s: 0,
+        manaPer2s: 50,
+        remaining: 6,
+      };
+      p.auras.push(
+        aura({
+          id: 'short_buff',
+          name: 'Blessing',
+          kind: 'buff_ap',
+          value: 20,
+          sourceId: p.id,
+          duration: 1.5,
+        }),
+      );
       rec.tick(60); // >40: updateRegen fires (tick 40); buff_ap expires -> statsDirty recalc
       rec.snapshot('regen-expiry');
 
@@ -2705,7 +2888,14 @@ function c4aCastingLifecycle(): Scenario {
       sim.castAbility('lesser_heal', priest); // self (friendly fallback), timed START
       rec.tick(1); // progress one tick (no interrupt yet)
       ePriest.auras.push(
-        aura({ id: 'c4a_silence', name: 'Silenced', kind: 'silence', value: 0, sourceId: mob.id, duration: 4 }),
+        aura({
+          id: 'c4a_silence',
+          name: 'Silenced',
+          kind: 'silence',
+          value: 0,
+          sourceId: mob.id,
+          duration: 4,
+        }),
       );
       rec.tick(1); // updateCasting silence branch -> cancelCast (castStop success:false)
       rec.snapshot('priest-silence-cancel');
@@ -2766,9 +2956,30 @@ function mobLifecycle(): Scenario {
       // 1) Pack frenzy: kill one forest_wolf amid a same-template pack. Survivors
       // within packFrenzy.radius (12) gain the Pack Frenzy haste aura; a
       // different-template boar in range stays unaffected (frenzyPackmates draws no rng).
-      const wolfA = spawnMob(sim, 'forest_wolf', 5, player.pos.x + 3, player.pos.y, player.pos.z + 3);
-      const wolfB = spawnMob(sim, 'forest_wolf', 5, player.pos.x + 5, player.pos.y, player.pos.z + 3);
-      const wolfC = spawnMob(sim, 'forest_wolf', 5, player.pos.x + 7, player.pos.y, player.pos.z + 3);
+      const wolfA = spawnMob(
+        sim,
+        'forest_wolf',
+        5,
+        player.pos.x + 3,
+        player.pos.y,
+        player.pos.z + 3,
+      );
+      const wolfB = spawnMob(
+        sim,
+        'forest_wolf',
+        5,
+        player.pos.x + 5,
+        player.pos.y,
+        player.pos.z + 3,
+      );
+      const wolfC = spawnMob(
+        sim,
+        'forest_wolf',
+        5,
+        player.pos.x + 7,
+        player.pos.y,
+        player.pos.z + 3,
+      );
       const boar = spawnMob(sim, 'wild_boar', 5, player.pos.x + 4, player.pos.y, player.pos.z + 4);
       rec.track(wolfA.id, wolfB.id, wolfC.id, boar.id);
       lethal(sim, player, wolfA); // handleDeath -> frenzyPackmates(wolfA)
@@ -2815,7 +3026,14 @@ function mobLifecycle(): Scenario {
 
       // 5) Dungeon mob stays dead: spawnPos past DUNGEON_X_THRESHOLD (600) -> the
       // corpse-tick respawn gate is skipped, the mob never respawns into the wild.
-      const dungeonMob = spawnMob(sim, 'forest_wolf', 5, 700, terrainHeight(700, 300, sim.cfg.seed), 300);
+      const dungeonMob = spawnMob(
+        sim,
+        'forest_wolf',
+        5,
+        700,
+        terrainHeight(700, 300, sim.cfg.seed),
+        300,
+      );
       dungeonMob.spawnPos = { x: 700, y: dungeonMob.pos.y, z: 300 };
       rec.track(dungeonMob.id);
       lethal(sim, player, dungeonMob);
@@ -2969,7 +3187,8 @@ function c4bEffectDispatch(): Scenario {
         [14, eDruid],
         [42, eWarlock],
       ];
-      for (const pid of [warrior, mage, rogue, paladin, druid, warlock]) sim.setPlayerLevel(20, pid);
+      for (const pid of [warrior, mage, rogue, paladin, druid, warlock])
+        sim.setPlayerLevel(20, pid);
       for (const [x, e] of cells) {
         teleport(sim, e, x, -45);
         beef(e, 50000);
@@ -3235,26 +3454,20 @@ function marketRoundTrip(): Scenario {
 
       // 3) the buyer buys it: coin leaves the buyer, goods enter their bags, the
       // seller's proceeds (less the 5% cut) wait in their collection.
-      const sale = sim.marketListings.find(
-        (l) => !l.house && l.sellerName === 'Seller',
-      )!;
+      const sale = sim.marketListings.find((l) => !l.house && l.sellerName === 'Seller')!;
       sim.marketBuy(sale.id, buyer);
       rec.snapshot('bought');
 
       // 4) list a second stack then reclaim it -> the escrow returns to the bags.
       sim.marketList('wolf_fang', 1, 150, seller);
-      const reclaim = sim.marketListings.find(
-        (l) => !l.house && l.sellerName === 'Seller',
-      )!;
+      const reclaim = sim.marketListings.find((l) => !l.house && l.sellerName === 'Seller')!;
       sim.marketCancel(reclaim.id, seller);
       rec.snapshot('cancelled');
 
       // 5) list a third stack, force it past due, then run the once-a-second
       // sweep (updateMarket fires at tickCount % 20 === 0) -> returns to collection.
       sim.marketList('wolf_fang', 1, 200, seller);
-      const expiring = sim.marketListings.find(
-        (l) => !l.house && l.sellerName === 'Seller',
-      )!;
+      const expiring = sim.marketListings.find((l) => !l.house && l.sellerName === 'Seller')!;
       expiring.expiresAt = sim.time - 1;
       rec.tick(20);
       rec.snapshot('expired');

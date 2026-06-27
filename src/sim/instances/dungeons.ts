@@ -15,11 +15,17 @@
 // seam exposes instanceKeyFor/instanceOriginOf/enterDungeon/leaveDungeon for the
 // N1/quest/delve code that reaches them through `ctx`.
 
-import { DUNGEONS, DUNGEON_X_THRESHOLD, dungeonAt, instanceOrigin, MOBS } from '../data';
+import { DUNGEON_X_THRESHOLD, DUNGEONS, dungeonAt, instanceOrigin, MOBS } from '../data';
 import { createGroundObject, createMob } from '../entity';
 import type { InstanceSlot, PlayerMeta } from '../sim';
 import type { SimContext } from '../sim_context';
-import { dist2d, type Entity, INSTANCE_EMPTY_TIMEOUT, NYTHRAXIS_BOSS_ID, type Vec3 } from '../types';
+import {
+  dist2d,
+  type Entity,
+  INSTANCE_EMPTY_TIMEOUT,
+  NYTHRAXIS_BOSS_ID,
+  type Vec3,
+} from '../types';
 
 const DOOR_TRIGGER_RADIUS = 2.0; // walking this close to a dungeon door teleports you
 const RAID_ALLOWED_DUNGEON_IDS = new Set(['nythraxis_crypt', 'nythraxis_boss_arena']);

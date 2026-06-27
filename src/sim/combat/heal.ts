@@ -112,7 +112,12 @@ export function applyHeal(
 // Classic healing threat: 0.5 per point of EFFECTIVE healing (overheal is
 // free), split evenly among every mob already fighting the healed target.
 // Party membership does not change threat; it only affects social systems.
-export function healingThreat(ctx: SimContext, source: Entity, target: Entity, healed: number): void {
+export function healingThreat(
+  ctx: SimContext,
+  source: Entity,
+  target: Entity,
+  healed: number,
+): void {
   if (source.kind !== 'player' || healed <= 0) return;
   const total = healed * HEAL_THREAT_FACTOR * ctx.threatMod(source, 'physical');
   const aware: Entity[] = [];

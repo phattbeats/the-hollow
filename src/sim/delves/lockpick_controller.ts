@@ -72,8 +72,7 @@ function resolveLockChest(
   if (!r) return null;
   let run = ctx.delveRunForPlayer(r.meta.entityId);
   if (!run)
-    run =
-      ctx.delveRuns.find((d) => d.partyKey !== null && d.objectIds.includes(objectId)) ?? null;
+    run = ctx.delveRuns.find((d) => d.partyKey !== null && d.objectIds.includes(objectId)) ?? null;
   if (!run) {
     ctx.error(r.meta.entityId, 'You are not in a delve.');
     return null;

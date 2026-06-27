@@ -47,7 +47,9 @@ describe('mob_lifecycle module: frenzyPackmates', () => {
 
     frenzyPackmates(ctxOf(sim), dead);
 
-    expect(packA.auras.some((a: any) => a.id === 'pack_frenzy' && a.kind === 'buff_haste')).toBe(true);
+    expect(packA.auras.some((a: any) => a.id === 'pack_frenzy' && a.kind === 'buff_haste')).toBe(
+      true,
+    );
     expect(packB.auras.some((a: any) => a.id === 'pack_frenzy')).toBe(true);
     expect(boar.auras.some((a: any) => a.id === 'pack_frenzy')).toBe(false);
   });
@@ -77,9 +79,11 @@ describe('mob_lifecycle module: Death Throes', () => {
 
     expect(bog.detonateTimer).toBe(MOBS.bog_bloat.deathThroes!.delay);
     const evs = (sim as any).drainEvents() as any[];
-    expect(evs.some((e) => e.type === 'log' && typeof e.text === 'string' && e.text.includes('begins to swell'))).toBe(
-      true,
-    );
+    expect(
+      evs.some(
+        (e) => e.type === 'log' && typeof e.text === 'string' && e.text.includes('begins to swell'),
+      ),
+    ).toBe(true);
   });
 
   it('detonateCorpse bursts the in-radius player for min..max damage + emits the cloud log', () => {
@@ -92,9 +96,12 @@ describe('mob_lifecycle module: Death Throes', () => {
 
     expect(p.hp).toBeLessThan(hpBefore); // took the burst
     const evs = (sim as any).drainEvents() as any[];
-    expect(evs.some((e) => e.type === 'log' && typeof e.text === 'string' && e.text.includes('bursts in a cloud of'))).toBe(
-      true,
-    );
+    expect(
+      evs.some(
+        (e) =>
+          e.type === 'log' && typeof e.text === 'string' && e.text.includes('bursts in a cloud of'),
+      ),
+    ).toBe(true);
     expect(evs.some((e) => e.type === 'damage' && e.targetId === p.id)).toBe(true);
   });
 

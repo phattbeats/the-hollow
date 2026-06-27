@@ -145,7 +145,12 @@ export class PartyMachine {
     party.raidGroups.set(r.meta.entityId, raidGroup);
     this.partyByPid.set(r.meta.entityId, party.id);
     for (const mPid of party.members) {
-      this.ctx.emit({ type: 'log', text: `${r.meta.name} joins the party.`, color: '#aaf', pid: mPid });
+      this.ctx.emit({
+        type: 'log',
+        text: `${r.meta.name} joins the party.`,
+        color: '#aaf',
+        pid: mPid,
+      });
     }
   }
 

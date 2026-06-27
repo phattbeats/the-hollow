@@ -186,8 +186,7 @@ export function tameError(ctx: SimContext, p: Entity, target: Entity): string | 
   const template = MOBS[target.templateId];
   if (!template || (template.family !== 'beast' && template.family !== 'spider'))
     return 'Only beasts can be tamed.';
-  if (template.elite || template.boss || template.rare)
-    return 'That beast is too strong to tame.';
+  if (template.elite || template.boss || template.rare) return 'That beast is too strong to tame.';
   if (target.level > p.level) return 'That beast is too high level for you to tame.';
   if (target.spawnPos.x > DUNGEON_X_THRESHOLD) return 'You cannot tame dungeon creatures.';
   if (petOf(ctx, p.id, true)) return 'You already have a pet.';

@@ -354,13 +354,7 @@ export function runMobSwingAffixes(
   // other on-hit debuffs, so a friendly pet (mobSwing's other caller) never marks
   // the party.
   const cv = MOBS[mob.templateId]?.critVuln;
-  if (
-    cv &&
-    mob.hostile &&
-    target.kind === 'player' &&
-    !target.dead &&
-    ctx.rng.chance(cv.chance)
-  ) {
+  if (cv && mob.hostile && target.kind === 'player' && !target.dead && ctx.rng.chance(cv.chance)) {
     ctx.applyAura(target, {
       id: `critvuln_${mob.templateId}`,
       name: cv.name,

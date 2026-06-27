@@ -10,11 +10,11 @@
 // Sim keeps thin same-named delegates for the public methods so the IWorld + server
 // + leave-path + tick() call sites resolve unchanged; this module draws no rng.
 
+import type { TradeInfo } from '../../world_api';
 import { ITEMS } from '../data';
 import type { TradeSession } from '../sim';
 import type { SimContext } from '../sim_context';
 import { dist2d, type InvSlot } from '../types';
-import type { TradeInfo } from '../../world_api';
 
 // A trade is only offered/kept while both parties are within this many yards;
 // the drift sweep cancels an open session once they wander past TRADE_RANGE + 4.
@@ -82,7 +82,12 @@ export function tradeAccept(ctx: SimContext, pid?: number): void {
   }
 }
 
-export function tradeSetOffer(ctx: SimContext, items: InvSlot[], copper: number, pid?: number): void {
+export function tradeSetOffer(
+  ctx: SimContext,
+  items: InvSlot[],
+  copper: number,
+  pid?: number,
+): void {
   const r = ctx.resolve(pid);
   if (!r) return;
   const session = ctx.trades.get(r.meta.entityId);

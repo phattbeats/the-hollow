@@ -11,8 +11,8 @@ import { describe, expect, it } from 'vitest';
 import {
   computeTalentModifiers,
   emptyAllocation,
-  talentPointsAtLevel,
   type TalentAllocation,
+  talentPointsAtLevel,
 } from '../../src/sim/content/talents';
 import {
   applyTalentAllocation,
@@ -36,7 +36,8 @@ const alloc = (over: Partial<TalentAllocation> = {}): TalentAllocation => ({
 // A max-level warrior (autoEquip so stats.armor is nonzero and % talents are visible),
 // plus its real SimContext + the player's live meta/entity.
 function setup(seed = 5) {
-  const sim = new Sim({ seed, playerClass: 'warrior', autoEquip: true }) as Sim & Record<string, any>;
+  const sim = new Sim({ seed, playerClass: 'warrior', autoEquip: true }) as Sim &
+    Record<string, any>;
   sim.setPlayerLevel(MAX_LEVEL);
   const ctx = sim.ctx as SimContext;
   // Live meta/entity, poked directly (cast to any like the parity scenarios' AnyEntity).
@@ -54,7 +55,10 @@ describe('progression/talents: apply + respec', () => {
     const knownBase = knownIds(meta);
 
     expect(
-      applyTalentAllocation(ctx, alloc({ spec: 'arms', ranks: { war_toughness: 2, arms_imp_overpower: 2 } })),
+      applyTalentAllocation(
+        ctx,
+        alloc({ spec: 'arms', ranks: { war_toughness: 2, arms_imp_overpower: 2 } }),
+      ),
     ).toBe(true);
     expect(meta.talents.spec).toBe('arms');
     expect(meta.talentMods.spec).toBe('arms'); // the flat struct re-baked once
@@ -74,13 +78,20 @@ describe('progression/talents: loadouts', () => {
     const { ctx, meta } = setup();
     // Save build A into slot 0 via the positional-alloc overload (the HUD path).
     expect(
-      saveTalentLoadout(ctx, 'Arms', ['mortal_strike', 'overpower'], alloc({ spec: 'arms', ranks: { arms_imp_overpower: 2 } })),
+      saveTalentLoadout(
+        ctx,
+        'Arms',
+        ['mortal_strike', 'overpower'],
+        alloc({ spec: 'arms', ranks: { arms_imp_overpower: 2 } }),
+      ),
     ).toBe(0);
     expect(meta.activeLoadout).toBe(0);
     const knownArms = knownIds(meta);
 
     // Apply a different build: the known list changes.
-    expect(applyTalentAllocation(ctx, alloc({ spec: 'fury', ranks: { fury_cruelty: 2 } }))).toBe(true);
+    expect(applyTalentAllocation(ctx, alloc({ spec: 'fury', ranks: { fury_cruelty: 2 } }))).toBe(
+      true,
+    );
     expect(meta.talentMods.spec).toBe('fury');
     expect(knownIds(meta)).not.toEqual(knownArms);
 
@@ -104,7 +115,10 @@ describe('progression/talents: spec + point budget', () => {
   it('setSpec drops the prior spec tree points, keeps class points, and flips the known list', () => {
     const { ctx, meta } = setup();
     expect(
-      applyTalentAllocation(ctx, alloc({ spec: 'arms', ranks: { war_toughness: 2, arms_imp_overpower: 2 } })),
+      applyTalentAllocation(
+        ctx,
+        alloc({ spec: 'arms', ranks: { war_toughness: 2, arms_imp_overpower: 2 } }),
+      ),
     ).toBe(true);
     const knownArms = knownIds(meta);
 
@@ -133,7 +147,10 @@ describe('progression/talents: Fiesta coupling (playerMods, not raw talentMods)'
     const armorNoTalents = e.stats.armor;
 
     // An active Fiesta overlay: a tanky modifier struct distinct from the base talents.
-    meta.fiestaMods = computeTalentModifiers(meta.cls, alloc({ spec: 'prot', ranks: { prot_toughness: 3 } }));
+    meta.fiestaMods = computeTalentModifiers(
+      meta.cls,
+      alloc({ spec: 'prot', ranks: { prot_toughness: 3 } }),
+    );
     // Force a recompute (respec) WHILE the overlay is active. recomputeTalents feeds
     // recalcPlayerStats with playerMods(meta) = fiestaMods ?? talentMods, so the augment
     // overlay survives even though the base talents are now empty.

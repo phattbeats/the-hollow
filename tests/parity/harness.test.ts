@@ -130,19 +130,47 @@ describe('exclude lists are pinned and real (anti-loosening guard)', () => {
   // gate" rule). Update these snapshots only when intentionally re-categorizing.
   it('ENTITY_EXCLUDE membership is exactly the pinned set', () => {
     expect([...ENTITY_EXCLUDE].sort()).toEqual([
-      'color', 'guild', 'holderBalance', 'holderTier', 'mainhandItemId', 'name',
-      'netInterval', 'netUpdatedAt', 'overheadEmoteId', 'overheadEmoteSeq',
-      'overheadEmoteUntil', 'prevFacing', 'prevPos', 'scale', 'skin', 'skinCatalog',
-      'vx', 'vy', 'vz',
+      'color',
+      'guild',
+      'holderBalance',
+      'holderTier',
+      'mainhandItemId',
+      'name',
+      'netInterval',
+      'netUpdatedAt',
+      'overheadEmoteId',
+      'overheadEmoteSeq',
+      'overheadEmoteUntil',
+      'prevFacing',
+      'prevPos',
+      'scale',
+      'skin',
+      'skinCatalog',
+      'vx',
+      'vy',
+      'vz',
     ]);
   });
 
   it('META_EXCLUDE membership is exactly the pinned set', () => {
     expect([...META_EXCLUDE].sort()).toEqual([
-      'away', 'characterId', 'fiestaMods', 'fiestaSpecial', 'joinedAt', 'known',
-      'lastActiveTick', 'lastWhisperFrom', 'marketFilter', 'moveInput', 'name',
-      'pendingSkinCatalog', 'pendingSkinItemId', 'pendingSkinRank', 'skin',
-      'skinCatalog', 'talentMods',
+      'away',
+      'characterId',
+      'fiestaMods',
+      'fiestaSpecial',
+      'joinedAt',
+      'known',
+      'lastActiveTick',
+      'lastWhisperFrom',
+      'marketFilter',
+      'moveInput',
+      'name',
+      'pendingSkinCatalog',
+      'pendingSkinItemId',
+      'pendingSkinRank',
+      'skin',
+      'skinCatalog',
+      'talentMods',
     ]);
   });
 
@@ -177,7 +205,13 @@ describe('rng draw-order observer (src/sim/rng.ts)', () => {
     const rng = new Rng(999);
     const seen: number[] = [];
     rng.setObserver((v) => seen.push(v));
-    const drawn = [rng.next(), rng.range(0, 10), rng.int(1, 6), rng.chance(0.5) ? 1 : 0, rng.pick([1, 2, 3])];
+    const drawn = [
+      rng.next(),
+      rng.range(0, 10),
+      rng.int(1, 6),
+      rng.chance(0.5) ? 1 : 0,
+      rng.pick([1, 2, 3]),
+    ];
     expect(seen.length).toBe(5); // one observer call per draw (range/int/chance/pick each draw once)
     expect(seen[0]).toBe(drawn[0]);
     rng.setObserver(null);

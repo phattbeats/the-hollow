@@ -5,8 +5,8 @@
 // cancel path, and the updateTradesAndInvites invite-expiry + drift sweep.
 
 import { describe, expect, it } from 'vitest';
-import * as tradeMod from '../src/sim/social/trade';
 import type { SimContext } from '../src/sim/sim_context';
+import * as tradeMod from '../src/sim/social/trade';
 
 function makeTradeCtx() {
   const players = new Map<number, any>();
@@ -55,7 +55,18 @@ function makeTradeCtx() {
     players.set(pid, { entityId: pid, name, copper });
     entities.set(pid, { id: pid, pos: { x, y: 0, z: 0 }, dead: false });
   }
-  return { ctx, players, entities, trades, tradeInvites, partyInvites, events, addPlayer, bag, setTime: (t: number) => (time = t) };
+  return {
+    ctx,
+    players,
+    entities,
+    trades,
+    tradeInvites,
+    partyInvites,
+    events,
+    addPlayer,
+    bag,
+    setTime: (t: number) => (time = t),
+  };
 }
 
 describe('trade module (direct, no Sim)', () => {
@@ -101,7 +112,9 @@ describe('trade module (direct, no Sim)', () => {
     h.addPlayer(2, 'Borin', 1, 0);
     h.partyInvites.set(2, { fromPid: 9, expires: 999 });
     tradeMod.tradeRequest(h.ctx, 2, 1);
-    expect(h.events.some((e) => e.type === 'error' && /already has a pending invitation/.test(e.text))).toBe(true);
+    expect(
+      h.events.some((e) => e.type === 'error' && /already has a pending invitation/.test(e.text)),
+    ).toBe(true);
     expect(h.tradeInvites.has(2)).toBe(false);
   });
 
@@ -113,7 +126,9 @@ describe('trade module (direct, no Sim)', () => {
     tradeMod.tradeAccept(h.ctx, 2);
     tradeMod.tradeCancel(h.ctx, 1);
     expect(tradeMod.tradeFor(h.ctx, 1)).toBe(null);
-    expect(h.events.filter((e) => e.type === 'log' && e.text === 'Trade cancelled.').length).toBe(2);
+    expect(h.events.filter((e) => e.type === 'log' && e.text === 'Trade cancelled.').length).toBe(
+      2,
+    );
   });
 
   it('updateTradesAndInvites expires stale invites and cancels drifted trades', () => {

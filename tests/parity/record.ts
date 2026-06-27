@@ -20,12 +20,12 @@ import type { SimEvent } from '../../src/sim/types';
 import {
   digest,
   eventDigest,
-  fnv1aStepU32,
   FNV_OFFSET,
+  type Frame,
+  fnv1aStepU32,
   round6,
   sampleEntity,
   samplePlayerMeta,
-  type Frame,
   type Trace,
 } from './trace';
 

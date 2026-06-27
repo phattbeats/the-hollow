@@ -594,8 +594,7 @@ export function startArenaMatch(
   if (slot === null || entities.some((e) => !e) || metas.some((m) => !m)) {
     if (format === '1v1') {
       for (const pid of allPids) {
-        if (ctx.entities.get(pid) && !ctx.arenaMatches.has(pid))
-          ctx.arenaQueue1v1.unshift(pid);
+        if (ctx.entities.get(pid) && !ctx.arenaMatches.has(pid)) ctx.arenaQueue1v1.unshift(pid);
       }
     } else {
       const requeue = format === 'fiesta' ? ctx.arenaQueueFiesta : ctx.arenaQueue2v2;
@@ -799,7 +798,10 @@ export function endArenaMatch(
         oppName: enemyNames,
         ratingBefore,
         ratingAfter,
-        allies: arenaCombatants(ctx, pids.filter((p) => p !== pid)),
+        allies: arenaCombatants(
+          ctx,
+          pids.filter((p) => p !== pid),
+        ),
         enemies: arenaCombatants(ctx, enemies),
       });
     }

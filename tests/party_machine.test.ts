@@ -7,8 +7,8 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import type { PlayerMeta } from '../src/sim/sim';
 import type { SimContext } from '../src/sim/sim_context';
-import type { Entity, SimEvent } from '../src/sim/types';
 import { PartyMachine } from '../src/sim/social/party';
+import type { Entity, SimEvent } from '../src/sim/types';
 
 type Invite = { fromPid: number; expires: number };
 
@@ -58,7 +58,17 @@ function makeCtx() {
     return pid;
   };
 
-  return { ctx, players, tradeInvites, duelInvites, events, errors, droppedMarkers, clock, addPlayer };
+  return {
+    ctx,
+    players,
+    tradeInvites,
+    duelInvites,
+    events,
+    errors,
+    droppedMarkers,
+    clock,
+    addPlayer,
+  };
 }
 
 const logTexts = (events: SimEvent[]): string[] =>

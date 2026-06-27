@@ -4,9 +4,9 @@
 // the golden never silently stops exercising a system.
 
 import { describe, expect, it } from 'vitest';
+import type { Recorder } from './record';
 import { record } from './record';
 import { SCENARIOS } from './scenarios';
-import type { Recorder } from './record';
 
 type Ev = Record<string, any>;
 
@@ -31,7 +31,9 @@ describe('coverage: each scenario fires its subsystem', () => {
     expect(playerTookHit).toBe(true); // mobSwing hit the player
     expect(ev.some((e) => e.type === 'death')).toBe(true);
     // rollLoot ran on death and produced loot (forest_wolf drops copper, chance 1).
-    expect(entities(rec).some((e) => e.templateId === 'forest_wolf' && e.dead && e.lootable)).toBe(true);
+    expect(entities(rec).some((e) => e.templateId === 'forest_wolf' && e.dead && e.lootable)).toBe(
+      true,
+    );
   });
 
   it('solo_mage: casting lifecycle runs', () => {
@@ -44,7 +46,10 @@ describe('coverage: each scenario fires its subsystem', () => {
     const pid = (rec.sim as any).playerId;
     const ev = rec.allEvents as Ev[];
     const sinister = ev.some(
-      (e) => e.type === 'damage' && typeof e.ability === 'string' && e.ability.toLowerCase().includes('sinister'),
+      (e) =>
+        e.type === 'damage' &&
+        typeof e.ability === 'string' &&
+        e.ability.toLowerCase().includes('sinister'),
     );
     const playerDealt = ev.some((e) => e.type === 'damage' && e.sourceId === pid);
     expect(sinister || playerDealt).toBe(true);
@@ -82,11 +87,19 @@ describe('coverage: each scenario fires its subsystem', () => {
     const pet = entities(rec).find((e) => e.ownerId === pid && e.templateId === 'warlock_imp');
     expect(pet).toBeTruthy();
     // friendly arm (8093): pet shoots its target
-    expect(ev.some((e) => e.type === 'damage' && e.sourceId === pet.id && e.school === 'fire')).toBe(true);
+    expect(
+      ev.some((e) => e.type === 'damage' && e.sourceId === pet.id && e.school === 'fire'),
+    ).toBe(true);
     // hostile-mob arm (6776): wild imp's AI shoots the player
     const hostileImpId = rec.notes.hostileImpId;
     expect(
-      ev.some((e) => e.type === 'damage' && e.sourceId === hostileImpId && e.targetId === pid && e.school === 'fire'),
+      ev.some(
+        (e) =>
+          e.type === 'damage' &&
+          e.sourceId === hostileImpId &&
+          e.targetId === pid &&
+          e.school === 'fire',
+      ),
     ).toBe(true);
   });
 
@@ -95,9 +108,13 @@ describe('coverage: each scenario fires its subsystem', () => {
     const pid = (rec.sim as any).playerId;
     const pet = entities(rec).find((e) => e.ownerId === pid);
     expect(pet).toBeTruthy();
-    expect((rec.allEvents as Ev[]).some((e) => e.type === 'damage' && e.sourceId === pet.id)).toBe(true);
+    expect((rec.allEvents as Ev[]).some((e) => e.type === 'damage' && e.sourceId === pet.id)).toBe(
+      true,
+    );
     // petTaunt -> applyTaunt forced the hostile target onto the pet.
-    expect(entities(rec).some((e) => e.templateId === 'forest_wolf' && e.forcedTargetId === pet.id)).toBe(true);
+    expect(
+      entities(rec).some((e) => e.templateId === 'forest_wolf' && e.forcedTargetId === pet.id),
+    ).toBe(true);
   });
 
   it('pet_ai: imp fires petRangedAttack (fire bolt), melee pet pulls+swings, both heel', () => {
@@ -106,7 +123,9 @@ describe('coverage: each scenario fires its subsystem', () => {
     const impId = rec.notes.impId as number;
     const tankId = rec.notes.tankId as number;
     // petRangedAttack: the imp's only damage path is the fire bolt (no miss roll).
-    expect(ev.some((e) => e.type === 'damage' && e.sourceId === impId && e.school === 'fire')).toBe(true);
+    expect(ev.some((e) => e.type === 'damage' && e.sourceId === impId && e.school === 'fire')).toBe(
+      true,
+    );
     // melee arm: the voidwalker acquired a target via petPickTarget and swung it.
     expect(ev.some((e) => e.type === 'damage' && e.sourceId === tankId)).toBe(true);
     // heel transition: both pets dropped their target and follow the owner.
@@ -118,7 +137,9 @@ describe('coverage: each scenario fires its subsystem', () => {
   it('pet_commands: tame/feed/revive/abandon + warlock summon/swap/Demon Heal + despawn scrubs fire', () => {
     const rec = run('pet_commands');
     const ev = rec.allEvents as Ev[];
-    const logs = ev.filter((e) => e.type === 'log' && typeof e.text === 'string').map((e) => e.text as string);
+    const logs = ev
+      .filter((e) => e.type === 'log' && typeof e.text === 'string')
+      .map((e) => e.text as string);
     // completeTame produced an owned pet (and re-tame produced a second).
     expect(logs.some((t) => t.includes('is now your loyal companion'))).toBe(true);
     // feedPet applied the feed_pet HoT (the "You feed" line fires only on a successful feed).
@@ -142,7 +163,10 @@ describe('coverage: each scenario fires its subsystem', () => {
   it('paladin_consecration: ground AoE pulses fire from BOTH callers (immediate + deferred)', () => {
     const rec = run('paladin_consecration');
     const hits = (rec.allEvents as Ev[]).filter(
-      (e) => e.type === 'damage' && typeof e.ability === 'string' && e.ability.toLowerCase().includes('consecrat'),
+      (e) =>
+        e.type === 'damage' &&
+        typeof e.ability === 'string' &&
+        e.ability.toLowerCase().includes('consecrat'),
     );
     // 1 immediate on-cast pulse (~4097) + >=1 deferred interval pulse (~3052).
     expect(hits.length).toBeGreaterThanOrEqual(2);
@@ -299,7 +323,9 @@ describe('coverage: each scenario fires its subsystem', () => {
     expect(g, 'scenario greyjaw missing').toBeTruthy();
     expect(g.auras?.some((a: Ev) => a.id === 'blood_frenzy')).toBe(true);
     const ev = rec.allEvents as Ev[];
-    const sources = new Set(ev.filter((e) => e.type === 'damage' && e.targetId === gid).map((e) => e.sourceId));
+    const sources = new Set(
+      ev.filter((e) => e.type === 'damage' && e.targetId === gid).map((e) => e.sourceId),
+    );
     expect(sources.size).toBeGreaterThanOrEqual(2); // multiple class sources wounded the mob
   });
 
@@ -330,9 +356,15 @@ describe('coverage: each scenario fires its subsystem', () => {
     const rec = run('delve_progression');
     const ev = rec.allEvents as Ev[];
     // advanceDelveModule walked the run from the chamber onto the finale module.
-    expect(ev.some((e) => e.type === 'log' && typeof e.text === 'string' && e.text.includes('tombstone into'))).toBe(true);
+    expect(
+      ev.some(
+        (e) => e.type === 'log' && typeof e.text === 'string' && e.text.includes('tombstone into'),
+      ),
+    ).toBe(true);
     // delveBuyShopItem deducted Marks and granted the item via the vendor event.
-    expect(ev.some((e) => e.type === 'vendor' && e.action === 'buy' && e.itemId === 'reliquary_legs')).toBe(true);
+    expect(
+      ev.some((e) => e.type === 'vendor' && e.action === 'buy' && e.itemId === 'reliquary_legs'),
+    ).toBe(true);
   });
 
   it('delve_companion: rank-2 Tessa swings (16762), heals the owner, and the run holds her', () => {
@@ -346,18 +378,24 @@ describe('coverage: each scenario fires its subsystem', () => {
     expect(ev.some((e) => e.type === 'damage' && e.sourceId === compId)).toBe(true);
     // heal arm: a heal toward the owner + the companion's spellfx tick fired.
     expect(ev.some((e) => e.type === 'heal' && e.targetId === pid && e.amount > 0)).toBe(true);
-    expect(ev.some((e) => e.type === 'spellfx' && e.sourceId === compId && e.fx === 'tick')).toBe(true);
+    expect(ev.some((e) => e.type === 'spellfx' && e.sourceId === compId && e.fx === 'tick')).toBe(
+      true,
+    );
   });
 
   it('quest_kill_credit: kill credit accrues and the quest promotes to ready then turns in', () => {
     const rec = run('quest_kill_credit');
     const ev = rec.allEvents as Ev[];
     // onMobKilledForQuests bumped progress on each forest_wolf death.
-    expect(ev.filter((e) => e.type === 'questProgress' && e.questId === 'q_wolves').length).toBeGreaterThanOrEqual(8);
+    expect(
+      ev.filter((e) => e.type === 'questProgress' && e.questId === 'q_wolves').length,
+    ).toBeGreaterThanOrEqual(8);
     // checkQuestReady promoted active -> ready, and the quest was turned in.
     expect(ev.some((e) => e.type === 'questReady' && e.questId === 'q_wolves')).toBe(true);
     expect(ev.some((e) => e.type === 'questDone' && e.questId === 'q_wolves')).toBe(true);
-    expect((rec.sim as any).players.get((rec.sim as any).playerId)?.questsDone?.has('q_wolves')).toBe(true);
+    expect(
+      (rec.sim as any).players.get((rec.sim as any).playerId)?.questsDone?.has('q_wolves'),
+    ).toBe(true);
   });
 
   it('quest_collect_turnin: collect credit promotes, demotes on item loss, and turns in', () => {
@@ -407,7 +445,9 @@ describe('coverage: each scenario fires its subsystem', () => {
     expect(ev.some((e) => e.type === 'log' && e.text === 'Talents reset.')).toBe(true);
     // switchLoadout restored a saved build.
     expect(
-      ev.some((e) => e.type === 'log' && typeof e.text === 'string' && e.text.startsWith('Loadout ')),
+      ev.some(
+        (e) => e.type === 'log' && typeof e.text === 'string' && e.text.startsWith('Loadout '),
+      ),
     ).toBe(true);
     // setSpec('fury') applied last: the flat talentMods re-baked from the new tree.
     const meta = (rec.sim as any).players.get(pid);
@@ -423,7 +463,9 @@ describe('coverage: each scenario fires its subsystem', () => {
     expect(heals.some((e) => e.crit === true)).toBe(true); // forced-crit *1.5 path fired
     // HoT aura-tick heal path (the hot branch -> healingTakenMult + healingThreat).
     const hotAbility = rec.notes.hotAbility as string;
-    expect(ev.some((e) => e.type === 'heal2' && e.ability === hotAbility && e.amount > 0)).toBe(true);
+    expect(ev.some((e) => e.type === 'heal2' && e.ability === hotAbility && e.amount > 0)).toBe(
+      true,
+    );
     const ents = entities(rec);
     const tank = ents.find((e) => e.id === rec.notes.tankPid);
     // consumeHealAbsorb: the small shield depleted + was filtered out; the big survived.
@@ -451,7 +493,9 @@ describe('coverage: each scenario fires its subsystem', () => {
     expect(n.fearLanded).toBe(true);
     // War Stomp + terrify each emit an 'unleashes' combat-log line (>= 2 total).
     expect(
-      ev.filter((e) => e.type === 'log' && typeof e.text === 'string' && e.text.includes('unleashes')).length,
+      ev.filter(
+        (e) => e.type === 'log' && typeof e.text === 'string' && e.text.includes('unleashes'),
+      ).length,
     ).toBeGreaterThanOrEqual(2);
     // Idle wander picked a target (wanderTimer re-armed to the 30s patrol window).
     const wanderer = ents.find((e) => e.id === n.wandererId);
@@ -463,7 +507,10 @@ describe('coverage: each scenario fires its subsystem', () => {
     expect(n.cowardStateAfterPanic).toBe('flee');
     expect(n.cowardStateFleeing).toBe('flee');
     expect(
-      ev.some((e) => e.type === 'log' && typeof e.text === 'string' && e.text.includes('attempts to flee')),
+      ev.some(
+        (e) =>
+          e.type === 'log' && typeof e.text === 'string' && e.text.includes('attempts to flee'),
+      ),
     ).toBe(true);
   });
 
@@ -476,7 +523,9 @@ describe('coverage: each scenario fires its subsystem', () => {
     // claimInstance spawned mobs (rng.int per spawn).
     expect((rec.notes.instMobIds as number[]).length).toBeGreaterThan(0);
     // After the empty-reset, freeInstance nulled partyKey and despawned the mobs.
-    const inst = (sim.instances as any[]).find((i) => i.dungeonId === 'hollow_crypt' && i.slot === rec.notes.slotA);
+    const inst = (sim.instances as any[]).find(
+      (i) => i.dungeonId === 'hollow_crypt' && i.slot === rec.notes.slotA,
+    );
     expect(inst.partyKey).toBe(null);
     expect(inst.mobIds.length).toBe(0);
     expect((rec.notes.instMobIds as number[]).every((id) => !sim.entities.has(id))).toBe(true);
@@ -509,7 +558,12 @@ describe('coverage: each scenario fires its subsystem', () => {
     const aoeMobIds = rec.notes.aoeMobIds as number[];
     const consTargets = new Set(
       ev
-        .filter((e) => e.type === 'damage' && typeof e.ability === 'string' && e.ability.toLowerCase().includes('consecrat'))
+        .filter(
+          (e) =>
+            e.type === 'damage' &&
+            typeof e.ability === 'string' &&
+            e.ability.toLowerCase().includes('consecrat'),
+        )
         .map((e) => e.targetId),
     );
     expect(aoeMobIds.filter((id) => consTargets.has(id)).length).toBeGreaterThanOrEqual(2);
@@ -527,7 +581,9 @@ describe('coverage: each scenario fires its subsystem', () => {
     expect(ev.some((e) => e.type === 'castStop' && e.success === false)).toBe(true);
     // the warlock drain channel ticked and dealt shadow damage (applyChannelTick).
     const wl = rec.notes.warlockId as number;
-    expect(ev.some((e) => e.type === 'damage' && e.sourceId === wl && e.school === 'shadow')).toBe(true);
+    expect(ev.some((e) => e.type === 'damage' && e.sourceId === wl && e.school === 'shadow')).toBe(
+      true,
+    );
   });
 
   it('mob_lifecycle: frenzy + death-throes arm/detonate + wild respawn (despawn adds) + dungeon stays dead', () => {
@@ -538,19 +594,27 @@ describe('coverage: each scenario fires its subsystem', () => {
     expect(n.wolfBFrenzied).toBe(true);
     expect(n.wolfCFrenzied).toBe(true);
     expect(n.boarFrenzied).toBe(false);
-    expect(ev.some((e) => e.type === 'log' && typeof e.text === 'string' && e.text.includes('flies into a frenzy'))).toBe(
-      true,
-    );
+    expect(
+      ev.some(
+        (e) =>
+          e.type === 'log' && typeof e.text === 'string' && e.text.includes('flies into a frenzy'),
+      ),
+    ).toBe(true);
     // armDeathThroes armed the fuse (delay 1.5) + emitted the swell telegraph.
     expect(n.bogArmed).toBeCloseTo(1.5, 5);
-    expect(ev.some((e) => e.type === 'log' && typeof e.text === 'string' && e.text.includes('begins to swell'))).toBe(
-      true,
-    );
+    expect(
+      ev.some(
+        (e) => e.type === 'log' && typeof e.text === 'string' && e.text.includes('begins to swell'),
+      ),
+    ).toBe(true);
     // detonateCorpse fired once (timer -> Infinity), burst the in-radius player, logged the cloud.
     expect(n.bogDetonated).toBe(true);
-    expect(ev.some((e) => e.type === 'log' && typeof e.text === 'string' && e.text.includes('bursts in a cloud of'))).toBe(
-      true,
-    );
+    expect(
+      ev.some(
+        (e) =>
+          e.type === 'log' && typeof e.text === 'string' && e.text.includes('bursts in a cloud of'),
+      ),
+    ).toBe(true);
     // respawnMob: the wild mob came back to life at its spawn point, idle, and despawnSummonedAdds dropped the add.
     expect(n.wildRespawned).toBe(true);
     expect(n.wildState).toBe('idle');
@@ -586,22 +650,38 @@ describe('coverage: each scenario fires its subsystem', () => {
     const ev = rec.allEvents as Ev[];
     const ents = entities(rec);
     // warrior sunder_armor: the sunder aura landed (or a miss event fired) on its mob.
-    const warriorMob = ents.find((e) => e.templateId === 'forest_wolf' && e.auras?.some((a: Ev) => a.kind === 'sunder'));
-    const sunderMiss = ev.some((e) => e.type === 'damage' && e.kind === 'miss' && typeof e.ability === 'string' && e.ability.toLowerCase().includes('sunder'));
+    const warriorMob = ents.find(
+      (e) => e.templateId === 'forest_wolf' && e.auras?.some((a: Ev) => a.kind === 'sunder'),
+    );
+    const sunderMiss = ev.some(
+      (e) =>
+        e.type === 'damage' &&
+        e.kind === 'miss' &&
+        typeof e.ability === 'string' &&
+        e.ability.toLowerCase().includes('sunder'),
+    );
     expect(Boolean(warriorMob) || sunderMiss).toBe(true);
     // mage arcane_explosion: the per-target aoeDamage hit BOTH in-radius mobs.
     const aoeMobIds = rec.notes.aoeMobIds as number[];
     const arcaneTargets = new Set(
-      ev.filter((e) => e.type === 'damage' && e.school === 'arcane' && aoeMobIds.includes(e.targetId)).map((e) => e.targetId),
+      ev
+        .filter(
+          (e) => e.type === 'damage' && e.school === 'arcane' && aoeMobIds.includes(e.targetId),
+        )
+        .map((e) => e.targetId),
     );
     expect(arcaneTargets.size).toBe(2);
     // rogue eviscerate: finisher dealt physical damage AND the combo-spend reset fired.
     const rogue = rec.notes.rogueId as number;
-    expect(ev.some((e) => e.type === 'damage' && e.sourceId === rogue && e.school === 'physical')).toBe(true);
+    expect(
+      ev.some((e) => e.type === 'damage' && e.sourceId === rogue && e.school === 'physical'),
+    ).toBe(true);
     expect(ev.some((e) => e.type === 'comboPoint' && e.pid === rogue && e.points === 0)).toBe(true);
     // paladin judgement: a holy damage from the paladin (the Seal unleashed).
     const paladin = rec.notes.paladinId as number;
-    expect(ev.some((e) => e.type === 'damage' && e.sourceId === paladin && e.school === 'holy')).toBe(true);
+    expect(
+      ev.some((e) => e.type === 'damage' && e.sourceId === paladin && e.school === 'holy'),
+    ).toBe(true);
     // paladin consecration: a ground AoE was pushed (on-cast pulse path).
     expect((rec.sim as any).groundAoEs.length).toBeGreaterThanOrEqual(1);
     // warlock fear: the incapacitate aura landed on the warlock's mob (fear-angle draw).
@@ -623,10 +703,20 @@ describe('coverage: each scenario fires its subsystem', () => {
     expect(ev.some((e) => e.type === 'damage' && e.ability === 'Wand')).toBe(true); // mage wand path (no dead zone)
     // melee auto-attack produced physical white-hit outcomes (the single-roll table).
     expect(
-      ev.some((e) => e.type === 'damage' && e.school === 'physical' && (e.kind === 'hit' || e.kind === 'miss' || e.kind === 'dodge')),
+      ev.some(
+        (e) =>
+          e.type === 'damage' &&
+          e.school === 'physical' &&
+          (e.kind === 'hit' || e.kind === 'miss' || e.kind === 'dodge'),
+      ),
     ).toBe(true);
     // a queued on-next-swing ability was consumed in the swing path (its name rode through).
-    expect(ev.some((e) => e.type === 'damage' && (e.ability === 'Heroic Strike' || e.ability === 'Raptor Strike'))).toBe(true);
+    expect(
+      ev.some(
+        (e) =>
+          e.type === 'damage' && (e.ability === 'Heroic Strike' || e.ability === 'Raptor Strike'),
+      ),
+    ).toBe(true);
   });
 
   it('market_round_trip: list/buy/cancel/expire/collect all fire and coin + goods move', () => {
@@ -646,7 +736,9 @@ describe('coverage: each scenario fires its subsystem', () => {
     expect(loot(/^Reclaimed /)).toBe(true);
     // updateMarket once-a-second expiry sweep returned the third stack to collection.
     expect(
-      ev.some((e) => e.type === 'log' && typeof e.text === 'string' && /expired and waits/.test(e.text)),
+      ev.some(
+        (e) => e.type === 'log' && typeof e.text === 'string' && /expired and waits/.test(e.text),
+      ),
     ).toBe(true);
     // marketCollect moved the proceeds into the seller's purse.
     expect(loot(/^You collect /)).toBe(true);
@@ -665,7 +757,9 @@ describe('coverage: each scenario fires its subsystem', () => {
     expect(rec.notes.prestigeRejected).toBe(false);
     // the gold prestige log emit fired through ctx.emit.
     expect(
-      (rec.allEvents as Ev[]).some((e) => e.type === 'log' && typeof e.text === 'string' && e.text.includes('prestiged')),
+      (rec.allEvents as Ev[]).some(
+        (e) => e.type === 'log' && typeof e.text === 'string' && e.text.includes('prestiged'),
+      ),
     ).toBe(true);
     // the anti-abuse cap held: rank is exactly 1, never inflated by the second call.
     expect((rec.sim as any).prestigeRank).toBe(1);
@@ -703,11 +797,18 @@ describe('coverage: each scenario fires its subsystem', () => {
     const chats = ev.filter((e) => e.type === 'chat');
     // each channel delivered at least one chat event.
     for (const ch of ['say', 'yell', 'party', 'general', 'world', 'lfg', 'whisper', 'emote']) {
-      expect(chats.some((e) => e.channel === ch), `no ${ch} chat`).toBe(true);
+      expect(
+        chats.some((e) => e.channel === ch),
+        `no ${ch} chat`,
+      ).toBe(true);
     }
     // whisper round-trip: a -> b then the /r reply resolves back to a.
-    expect(chats.some((e) => e.channel === 'whisper' && e.from === 'Aleph' && e.pid === b)).toBe(true);
-    expect(chats.some((e) => e.channel === 'whisper' && e.from === 'Bet' && e.pid === a)).toBe(true);
+    expect(chats.some((e) => e.channel === 'whisper' && e.from === 'Aleph' && e.pid === b)).toBe(
+      true,
+    );
+    expect(chats.some((e) => e.channel === 'whisper' && e.from === 'Bet' && e.pid === a)).toBe(
+      true,
+    );
     // token-bucket throttle fired once c exhausted its burst.
     expect(
       ev.filter((e) => e.type === 'error' && e.text === 'You are sending messages too quickly.')

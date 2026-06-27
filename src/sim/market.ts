@@ -13,7 +13,7 @@ import { ITEMS } from './data';
 import { formatMoney } from './format_money';
 import type { PlayerMeta } from './sim';
 import type { SimContext } from './sim_context';
-import { dist2d, INTERACT_RANGE, type Entity, type InvSlot } from './types';
+import { dist2d, type Entity, INTERACT_RANGE, type InvSlot } from './types';
 
 const MARKET_RANGE = INTERACT_RANGE + 2; // you must stand at the Merchant to deal
 // the /listings readout (still on Sim) reports the seller's count against this cap,

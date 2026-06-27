@@ -31,8 +31,8 @@ import {
   type Aura,
   angleTo,
   DT,
-  dist2d,
   DUNGEON_LEASH_DISTANCE,
+  dist2d,
   type Entity,
   LEASH_DISTANCE,
   MELEE_RANGE,
@@ -188,10 +188,7 @@ export function updateMob(ctx: SimContext, mob: Entity): void {
       ctx.playerGrid.forEachInRadius(mob.pos.x, mob.pos.z, 25, (e, d2) => {
         if (e.dead) return;
         if (isTrivialTo(mob, e)) return;
-        let radius = Math.max(
-          4,
-          Math.min(20, template.aggroRadius + (mob.level - e.level) * 1.5),
-        );
+        let radius = Math.max(4, Math.min(20, template.aggroRadius + (mob.level - e.level) * 1.5));
         radius *= ctx.delveDetectMult(e);
         // stealthed rogues are harder to detect, relative to observer level
         if (e.auras.some((a) => a.kind === 'stealth'))
@@ -243,8 +240,7 @@ export function updateMob(ctx: SimContext, mob: Entity): void {
       }
       if (ctx.maybeFlee(mob, target)) break;
       const spell = MOBS[mob.templateId]?.petSpell;
-      const leash =
-        mob.spawnPos.x > DUNGEON_X_THRESHOLD ? DUNGEON_LEASH_DISTANCE : LEASH_DISTANCE;
+      const leash = mob.spawnPos.x > DUNGEON_X_THRESHOLD ? DUNGEON_LEASH_DISTANCE : LEASH_DISTANCE;
       const leashAnchor = mob.leashAnchor ?? mob.spawnPos;
       if (mob.fleeReturnTimer > 0) {
         mob.fleeReturnTimer = Math.max(0, mob.fleeReturnTimer - DT);
@@ -417,12 +413,7 @@ export function updateMob(ctx: SimContext, mob: Entity): void {
           for (const meta of ctx.players.values()) {
             const pe = ctx.entities.get(meta.entityId);
             if (!pe || pe.dead || dist2d(pe.pos, mob.pos) > terrify.radius) continue;
-            const remaining = ctx.diminishedCrowdControlDuration(
-              mob,
-              pe,
-              'fear',
-              terrify.duration,
-            );
+            const remaining = ctx.diminishedCrowdControlDuration(mob, pe, 'fear', terrify.duration);
             if (remaining === null) continue;
             ctx.applyAura(pe, {
               id: 'fear_incap',
@@ -450,8 +441,7 @@ export function updateMob(ctx: SimContext, mob: Entity): void {
       // A panic flee should not be the thing that breaks leash and full-heals
       // the mob. If it reaches the leash edge, it recovers and re-engages;
       // normal chase/attack leash checks still handle genuine dragged pulls.
-      const leash =
-        mob.spawnPos.x > DUNGEON_X_THRESHOLD ? DUNGEON_LEASH_DISTANCE : LEASH_DISTANCE;
+      const leash = mob.spawnPos.x > DUNGEON_X_THRESHOLD ? DUNGEON_LEASH_DISTANCE : LEASH_DISTANCE;
       const leashAnchor = mob.leashAnchor ?? mob.spawnPos;
       if (dist2d(mob.pos, leashAnchor) >= leash - fleeSpeed * DT) {
         recoverFromFlee(mob, target, leash, leashAnchor);
@@ -486,12 +476,7 @@ export function updateMob(ctx: SimContext, mob: Entity): void {
       // backstop: worst case it phases the rest of the way home.
       const phasing = mob.evadeStall >= EVADE_STALL_TIMEOUT;
       const distBefore = dist2d(mob.pos, mob.spawnPos);
-      const arrived = ctx.moveToward(
-        mob,
-        mob.spawnPos,
-        mob.moveSpeed * EVADE_SPEED_MULT,
-        phasing,
-      );
+      const arrived = ctx.moveToward(mob, mob.spawnPos, mob.moveSpeed * EVADE_SPEED_MULT, phasing);
       if (arrived) {
         resetEvadingMob(ctx, mob);
       } else if (phasing) {

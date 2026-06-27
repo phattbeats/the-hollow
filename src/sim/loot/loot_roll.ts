@@ -27,7 +27,6 @@ import { ITEMS, MOBS, QUESTS } from '../data';
 import { formatMoney } from '../format_money';
 import type { PlayerMeta } from '../sim';
 import type { SimContext } from '../sim_context';
-import { dist2d, PARTY_XP_RANGE } from '../types';
 import type {
   CurrencyLootStrategy,
   Entity,
@@ -39,6 +38,7 @@ import type {
   LootSlot,
   LootStrategies,
 } from '../types';
+import { dist2d, PARTY_XP_RANGE } from '../types';
 
 // How long (seconds) a need-greed roll stays open before it auto-resolves. Sole
 // users are startNeedGreedRoll + pruneCorpseLoot, so the constant lives with them.
@@ -108,9 +108,7 @@ function needsQuestDrop(ctx: SimContext, entry: LootEntry, meta: PlayerMeta): bo
   // objective for this item that is still short of its required count. If the
   // quest has no matching collect objective, the player never needs the item,
   // so it must not drop (fail closed rather than dropping unconditionally).
-  return (
-    objIdx >= 0 && ctx.countItem(entry.itemId, meta.entityId) < quest.objectives[objIdx].count
-  );
+  return objIdx >= 0 && ctx.countItem(entry.itemId, meta.entityId) < quest.objectives[objIdx].count;
 }
 
 export function rollLoot(

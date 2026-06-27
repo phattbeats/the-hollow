@@ -4,6 +4,7 @@
 // the party-shared instance, the claim -> free empty-reset, and the raid-lockout gate.
 
 import { describe, expect, it } from 'vitest';
+import { DUNGEONS, instanceOrigin } from '../src/sim/data';
 import {
   enterDungeon,
   instanceKeyFor,
@@ -12,7 +13,6 @@ import {
   updateDoorTriggers,
   updateInstances,
 } from '../src/sim/instances/dungeons';
-import { DUNGEONS, instanceOrigin } from '../src/sim/data';
 import { Sim } from '../src/sim/sim';
 import type { Entity } from '../src/sim/types';
 
@@ -36,7 +36,9 @@ function hollowDoor(sim: AnySim): AnyEntity {
 }
 
 function claimedHollow(sim: AnySim): any {
-  return (sim.instances as any[]).find((i) => i.dungeonId === 'hollow_crypt' && i.partyKey !== null);
+  return (sim.instances as any[]).find(
+    (i) => i.dungeonId === 'hollow_crypt' && i.partyKey !== null,
+  );
 }
 
 describe('dungeons: door-trigger entry/exit', () => {
@@ -159,7 +161,9 @@ describe('dungeons: raid lockout gate', () => {
 
     const events = sim.drainEvents() as any[];
     expect(
-      events.some((e) => e.type === 'error' && e.text === 'You are locked to Nythraxis Raid Arena.'),
+      events.some(
+        (e) => e.type === 'error' && e.text === 'You are locked to Nythraxis Raid Arena.',
+      ),
     ).toBe(true);
     expect(sim.instanceSlotAt(sim.entities.get(leader)!.pos)).toBeNull(); // not entered
   });
@@ -175,7 +179,9 @@ describe('dungeons: raid lockout gate', () => {
     expect(sim.players.get(leader)!.raidLockouts.has('nythraxis_boss_arena')).toBe(false);
     const events = sim.drainEvents() as any[];
     expect(
-      events.some((e) => e.type === 'error' && e.text === 'You are locked to Nythraxis Raid Arena.'),
+      events.some(
+        (e) => e.type === 'error' && e.text === 'You are locked to Nythraxis Raid Arena.',
+      ),
     ).toBe(false);
   });
 
@@ -188,7 +194,8 @@ describe('dungeons: raid lockout gate', () => {
     const events = sim.drainEvents() as any[];
     expect(
       events.some(
-        (e) => e.type === 'error' && e.text === 'You must convert your party to a raid group first.',
+        (e) =>
+          e.type === 'error' && e.text === 'You must convert your party to a raid group first.',
       ),
     ).toBe(true);
   });

@@ -141,14 +141,9 @@ export function petFollow(ctx: SimContext, pet: Entity, owner: Entity): void {
 
   const swim = ctx.mobCanSwim(MOBS[pet.templateId]);
   const recompute = (): void => {
-    pet.petPath = findPlayerPath(
-      ctx.cfg.seed,
-      pet.pos,
-      owner.pos,
-      PET_PATH_SPAN,
-      false,
-      swim,
-    ).map((w) => ({ x: w.x, y: 0, z: w.z }));
+    pet.petPath = findPlayerPath(ctx.cfg.seed, pet.pos, owner.pos, PET_PATH_SPAN, false, swim).map(
+      (w) => ({ x: w.x, y: 0, z: w.z }),
+    );
     pet.petPathCooldown = PET_PATH_RECALC;
   };
   // recompute when the throttle has elapsed and the cache is stale: empty, or
@@ -219,8 +214,7 @@ export function petPickTarget(ctx: SimContext, pet: Entity, owner: Entity): Enti
   // owner is actually playing. An idle owner's pet still defends (engagingUs /
   // ownerOffense below) but cannot farm the area alone (hunter/warlock).
   const ownerMeta = ctx.players.get(owner.id);
-  const ownerIdle =
-    !ownerMeta || ctx.tickCount - ownerMeta.lastActiveTick > PET_OWNER_IDLE_TICKS;
+  const ownerIdle = !ownerMeta || ctx.tickCount - ownerMeta.lastActiveTick > PET_OWNER_IDLE_TICKS;
   let best: Entity | null = null;
   let bestD = pet.petMode === 'aggressive' ? PET_AGGRESSIVE_RANGE : PET_ASSIST_RANGE;
   for (const m of ctx.entities.values()) {
@@ -228,12 +222,9 @@ export function petPickTarget(ctx: SimContext, pet: Entity, owner: Entity): Enti
     const engagingUs =
       m.kind === 'mob' && (m.aggroTargetId === owner.id || m.aggroTargetId === pet.id);
     const ownerOffense =
-      owner.targetId === m.id &&
-      (owner.autoAttack || (m.kind === 'mob' && m.threat.has(owner.id)));
+      owner.targetId === m.id && (owner.autoAttack || (m.kind === 'mob' && m.threat.has(owner.id)));
     const aggressive =
-      pet.petMode === 'aggressive' &&
-      !ownerIdle &&
-      dist2d(pet.pos, m.pos) <= PET_AGGRESSIVE_RANGE;
+      pet.petMode === 'aggressive' && !ownerIdle && dist2d(pet.pos, m.pos) <= PET_AGGRESSIVE_RANGE;
     if (!engagingUs && !ownerOffense && !aggressive) continue;
     const d = dist2d(pet.pos, m.pos);
     if (d < bestD) {

@@ -147,9 +147,7 @@ describe('quest_credit: checkQuestReady (both arms)', () => {
     checkQuestReady(ctx, qp, meta);
     expect(qp.state).toBe('ready');
     expect(event(ctx.events, 'questReady').length).toBe(1);
-    expect(
-      event(ctx.events, 'log').some((e) => e.text === `${quest.name} (Complete)`),
-    ).toBe(true);
+    expect(event(ctx.events, 'log').some((e) => e.text === `${quest.name} (Complete)`)).toBe(true);
   });
 
   it('demotes ready -> active (emitting nothing) when an objective regresses, and is a no-op otherwise', () => {

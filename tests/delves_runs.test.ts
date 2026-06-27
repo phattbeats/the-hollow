@@ -5,7 +5,7 @@
 // the full Sim; these prove the extracted functions are deterministic on their own).
 
 import { describe, expect, it } from 'vitest';
-import { DELVES, DELVE_MODULES } from '../src/sim/data';
+import { DELVE_MODULES, DELVES } from '../src/sim/data';
 import {
   DELVE_IMPLEMENTED_AFFIXES,
   delveMarkPayout,
@@ -111,13 +111,17 @@ describe('delveMarkPayout', () => {
     expect(delveMarkPayout(ctxA, run('normal'), meta(3))).toBe(
       delveMarkPayout(ctxB, run('normal'), meta(3)),
     );
-    expect([0, 1]).toContain(delveMarkPayout({ rng: new Rng(7) } as unknown as SimContext, run('normal'), meta(3)));
+    expect([0, 1]).toContain(
+      delveMarkPayout({ rng: new Rng(7) } as unknown as SimContext, run('normal'), meta(3)),
+    );
   });
 });
 
 describe('refreshDelveDaily', () => {
   const meta = (date: string): PlayerMeta =>
-    ({ delveDaily: { date, firstClearXp: new Set(['x']), markClears: 4 } }) as unknown as PlayerMeta;
+    ({
+      delveDaily: { date, firstClearXp: new Set(['x']), markClears: 4 },
+    }) as unknown as PlayerMeta;
 
   it('rolls over to a fresh window on a new UTC day', () => {
     const m = meta('2099-01-01');
@@ -144,7 +148,13 @@ describe('delveShopGateMet', () => {
 
   it('opens an available gate, gates clears:N on total clears, and heroicClear on a heroic run', () => {
     expect(delveShopGateMet(meta({}), 'collapsed_reliquary', 'available')).toBe(true);
-    expect(delveShopGateMet(meta({ 'collapsed_reliquary:normal': 2 }), 'collapsed_reliquary', 'clears:3')).toBe(false);
+    expect(
+      delveShopGateMet(
+        meta({ 'collapsed_reliquary:normal': 2 }),
+        'collapsed_reliquary',
+        'clears:3',
+      ),
+    ).toBe(false);
     expect(
       delveShopGateMet(
         meta({ 'collapsed_reliquary:normal': 2, 'collapsed_reliquary:heroic': 1 }),
@@ -152,7 +162,19 @@ describe('delveShopGateMet', () => {
         'clears:3',
       ),
     ).toBe(true);
-    expect(delveShopGateMet(meta({ 'collapsed_reliquary:normal': 5 }), 'collapsed_reliquary', 'heroicClear')).toBe(false);
-    expect(delveShopGateMet(meta({ 'collapsed_reliquary:heroic': 1 }), 'collapsed_reliquary', 'heroicClear')).toBe(true);
+    expect(
+      delveShopGateMet(
+        meta({ 'collapsed_reliquary:normal': 5 }),
+        'collapsed_reliquary',
+        'heroicClear',
+      ),
+    ).toBe(false);
+    expect(
+      delveShopGateMet(
+        meta({ 'collapsed_reliquary:heroic': 1 }),
+        'collapsed_reliquary',
+        'heroicClear',
+      ),
+    ).toBe(true);
   });
 });

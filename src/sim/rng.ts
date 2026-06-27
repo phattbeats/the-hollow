@@ -58,19 +58,25 @@ function smooth(t: number): number {
 
 // Value noise in [0,1]
 export function noise2(x: number, y: number, seed: number): number {
-  const xi = Math.floor(x), yi = Math.floor(y);
-  const xf = x - xi, yf = y - yi;
+  const xi = Math.floor(x),
+    yi = Math.floor(y);
+  const xf = x - xi,
+    yf = y - yi;
   const a = hash2(xi, yi, seed);
   const b = hash2(xi + 1, yi, seed);
   const c = hash2(xi, yi + 1, seed);
   const d = hash2(xi + 1, yi + 1, seed);
-  const u = smooth(xf), v = smooth(yf);
+  const u = smooth(xf),
+    v = smooth(yf);
   return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
 }
 
 // Fractal noise in [0,1]
 export function fbm2(x: number, y: number, seed: number, octaves = 4): number {
-  let sum = 0, amp = 0.5, freq = 1, total = 0;
+  let sum = 0,
+    amp = 0.5,
+    freq = 1,
+    total = 0;
   for (let i = 0; i < octaves; i++) {
     sum += noise2(x * freq, y * freq, seed + i * 1013) * amp;
     total += amp;

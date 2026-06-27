@@ -15,10 +15,10 @@ import {
 } from '../src/sim/combat/auras';
 import { MOBS } from '../src/sim/data';
 import { createMob } from '../src/sim/entity';
-import { Sim } from '../src/sim/sim';
 import type { PlayerMeta } from '../src/sim/sim';
-import { DT } from '../src/sim/types';
+import { Sim } from '../src/sim/sim';
 import type { Aura, Entity } from '../src/sim/types';
+import { DT } from '../src/sim/types';
 
 type AnyEntity = Entity & Record<string, any>;
 type AnySim = Sim & Record<string, any>;

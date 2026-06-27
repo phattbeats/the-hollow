@@ -28,6 +28,7 @@ import { DAMAGE_IDLE_DESPAWN_MOB_IDS, DAMAGE_IDLE_DESPAWN_SECONDS } from '../ent
 import type { PlayerMeta } from '../sim';
 import type { SimContext } from '../sim_context';
 import { addThreat, clearThreat } from '../threat';
+import type { Entity } from '../types';
 import {
   dist2d,
   FISHING_CAST_ID,
@@ -42,7 +43,6 @@ import {
   virtualLevel,
   xpForLevel,
 } from '../types';
-import type { Entity } from '../types';
 
 // How long a slain mob's corpse persists (seconds) before it is cleared. Sole user
 // is handleDeath, so the constant lives here with the death-domain code.
@@ -306,8 +306,7 @@ export function dealDamage(
     (source.kind === 'player' || source.ownerId !== null)
   ) {
     const threat =
-      (amount * (threatOpts?.mult ?? 1) + (threatOpts?.flat ?? 0)) *
-      ctx.threatMod(source, school);
+      (amount * (threatOpts?.mult ?? 1) + (threatOpts?.flat ?? 0)) * ctx.threatMod(source, school);
     addThreat(target, source.id, threat);
   }
 
@@ -524,12 +523,7 @@ export function handleDeath(ctx: SimContext, e: Entity, killer: Entity | null): 
       run.objective.complete = true;
       ctx.onDelveBossDefeated(run);
     }
-    if (
-      run?.affixes.includes('restless_graves') &&
-      template &&
-      !template.boss &&
-      !template.elite
-    ) {
+    if (run?.affixes.includes('restless_graves') && template && !template.boss && !template.elite) {
       run.restlessPending.push({
         at: ctx.time + 3,
         x: e.pos.x,
@@ -540,8 +534,7 @@ export function handleDeath(ctx: SimContext, e: Entity, killer: Entity | null): 
     if (e.templateId === NYTHRAXIS_BOSS_ID) ctx.grantNythraxisLockout(e);
     e.aiState = 'dead';
     e.corpseTimer = CORPSE_DURATION;
-    e.respawnTimer =
-      ctx.cfg.respawnSeconds * (template?.respawnMult ?? (template?.rare ? 4 : 1));
+    e.respawnTimer = ctx.cfg.respawnSeconds * (template?.respawnMult ?? (template?.rare ? 4 : 1));
     e.aggroTargetId = null;
     clearThreat(e);
     if (e.ownerId !== null) {

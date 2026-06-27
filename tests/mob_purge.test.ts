@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { Sim } from '../src/sim/sim';
 import { MOBS } from '../src/sim/data';
 import { createMob, recalcPlayerStats } from '../src/sim/entity';
 import { devourBeneficialAura } from '../src/sim/mob/mob_swing';
+import { Sim } from '../src/sim/sim';
 import type { Aura, PlayerClass } from '../src/sim/types';
 
 const SEED = 42;
@@ -22,9 +22,14 @@ const spawnGrubjaw = (sim: Sim) => {
 
 const pushBuff = (target: any, kind: Aura['kind'], value: number, id = `test_${kind}`) => {
   const aura: Aura = {
-    id, name: 'Test Buff', kind,
-    remaining: 300, duration: 300, value,
-    sourceId: target.id, school: 'arcane',
+    id,
+    name: 'Test Buff',
+    kind,
+    remaining: 300,
+    duration: 300,
+    value,
+    sourceId: target.id,
+    school: 'arcane',
   };
   target.auras.push(aura);
   return aura;
@@ -102,7 +107,10 @@ describe('mob purge affix (Devour Magic)', () => {
     const old = purge.chance;
     purge.chance = 1;
     try {
-      for (let i = 0; i < 40; i++) { player.hp = player.maxHp; (sim as any).mobSwing(mob, player); }
+      for (let i = 0; i < 40; i++) {
+        player.hp = player.maxHp;
+        (sim as any).mobSwing(mob, player);
+      }
     } finally {
       purge.chance = old;
     }
@@ -120,7 +128,10 @@ describe('mob purge affix (Devour Magic)', () => {
     const old = purge.chance;
     purge.chance = 1;
     try {
-      for (let i = 0; i < 80; i++) { player.hp = player.maxHp; (sim as any).mobSwing(mob, player); }
+      for (let i = 0; i < 80; i++) {
+        player.hp = player.maxHp;
+        (sim as any).mobSwing(mob, player);
+      }
     } finally {
       purge.chance = old;
     }

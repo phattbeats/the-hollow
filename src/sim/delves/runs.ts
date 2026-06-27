@@ -20,6 +20,7 @@
 // and the headless RL env (enforced by tests/architecture.test.ts).
 
 import type { DelveCompanionInfo } from '../../world_api';
+import type { DelveShopGate, DelveShopOffer } from '../data';
 import {
   COMPANION_UPGRADE_COSTS,
   DELVE_AFFIXES,
@@ -27,18 +28,17 @@ import {
   DELVE_MODULES,
   DELVE_SHOPS,
   DELVES,
-  ITEMS,
-  MOBS,
   delveAt,
   delveModuleZOffset as delveModuleZOffsetLayout,
   delveOrigin,
   delveShopGateUnlocked,
+  dungeonAt,
+  ITEMS,
   isArenaPos,
   isDelvePos,
-  dungeonAt,
+  MOBS,
   resolveDelveShopOffers,
 } from '../data';
-import type { DelveShopGate, DelveShopOffer } from '../data';
 import {
   DELVE_MODULE_LAYOUTS,
   type DelveModuleId,
@@ -53,11 +53,11 @@ import type { SimContext } from '../sim_context';
 import {
   DELVE_COMPANION_MAX_RANK,
   DELVE_PLATE_RADIUS,
-  DT,
   type DelveDef,
   type DelveModuleDef,
-  dist2d,
   type DelveRun,
+  DT,
+  dist2d,
   type Entity,
   INSTANCE_EMPTY_TIMEOUT,
   type Vec3,
@@ -752,8 +752,7 @@ export function createDelveObject(ctx: SimContext, run: DelveRun, kind: string, 
   obj.templateId = `delve_${kind}`;
   obj.maxHp = maxHp;
   obj.hp = maxHp;
-  obj.lootable =
-    kind === 'cracked_grave' || kind === 'destructible_wall' || kind === 'module_exit';
+  obj.lootable = kind === 'cracked_grave' || kind === 'destructible_wall' || kind === 'module_exit';
   const startOpen = kind !== 'locked_door' && kind !== 'locked_chest';
   run.objectState[obj.id] = {
     kind,
@@ -994,7 +993,12 @@ export function tickDelveRestlessGraves(ctx: SimContext, run: DelveRun): void {
   for (const spawn of ready) {
     const template = MOBS[spawn.mobId];
     if (!template) continue;
-    const mob = createMob(ctx.nextId++, template, template.minLevel, ctx.groundPos(spawn.x, spawn.z));
+    const mob = createMob(
+      ctx.nextId++,
+      template,
+      template.minLevel,
+      ctx.groundPos(spawn.x, spawn.z),
+    );
     mob.facing = Math.PI;
     ctx.addEntity(mob);
     run.mobIds.push(mob.id);
@@ -1272,7 +1276,11 @@ export function delveShopGateMet(meta: PlayerMeta, delveId: string, gate: DelveS
 // Brother Halven's stock for `delveId`, each entry resolved against this player's
 // clears (unlock state). The client renders the lock badge from this; the buy is
 // re-validated server-side in delveBuyShopItem regardless of what the UI shows.
-export function delveShopOffersFor(ctx: SimContext, delveId: string, pid: number): DelveShopOffer[] {
+export function delveShopOffersFor(
+  ctx: SimContext,
+  delveId: string,
+  pid: number,
+): DelveShopOffer[] {
   return resolveDelveShopOffers(delveId, ctx.players.get(pid)?.delveClears ?? {});
 }
 
