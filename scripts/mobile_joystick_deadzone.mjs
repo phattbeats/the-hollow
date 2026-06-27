@@ -1,5 +1,5 @@
 // Screenshot harness for the touch-only "Joystick Deadzone" accessibility
-// setting (Esc → Graphics, shown only on phone-touch devices). Boots the game
+// setting (Esc to Graphics, shown only on phone-touch devices). Boots the game
 // in a phone-sized viewport with touch emulation, forces the mobile-touch
 // layout (headless Chromium doesn't report pointer:coarse), then opens the
 // Graphics options to capture the new slider at a few values.
