@@ -116,3 +116,47 @@ describe('mobile target-size: in-game touch controls are >=40x40 in landscape', 
     expectAtLeastFloor(zoom, '.map-zoom-btn');
   });
 });
+
+// Desktop (fine-pointer, non-mobile) target-size: the dense list controls the P7b WCAG row
+// named (bag cells, social rows / tabs) but never measured. Here the mobile 40px floors do
+// NOT apply (no body.mobile-touch class), so each must still clear the 24px SC 2.5.8 absolute
+// floor. Real rendered geometry under the style barrel, with representative text content (an
+// empty flex row collapses to its padding and would not reflect the lived size).
+const DESKTOP_FLOOR = 24;
+
+describe('desktop target-size: dense list controls clear the >=24px SC 2.5.8 floor', () => {
+  beforeEach(async () => {
+    // A fine-pointer desktop viewport with NO mobile-touch class (this overrides the file
+    // -level mobile setup), so the mobile min-height: 40px rules do not apply here.
+    await page.viewport(1280, 800);
+    document.body.className = '';
+  });
+
+  function expectAtLeastDesktopFloor(node: HTMLElement, label: string): void {
+    const { h } = measure(node);
+    expect(h, `${label} height ${h} < ${DESKTOP_FLOOR}`).toBeGreaterThanOrEqual(
+      DESKTOP_FLOOR - EPSILON,
+    );
+  }
+
+  it('bag item rows (raised to the 24px floor this phase via min-height)', () => {
+    const item = el('button', { class: 'bag-item' });
+    item.textContent = 'Health Potion x5';
+    document.body.appendChild(item);
+    expectAtLeastDesktopFloor(item, '.bag-item');
+  });
+
+  it('social list rows', () => {
+    const row = el('div', { class: 'soc-row' });
+    row.textContent = 'Guildmate Name';
+    document.body.appendChild(row);
+    expectAtLeastDesktopFloor(row, '.soc-row');
+  });
+
+  it('social tabs', () => {
+    const tab = el('button', { class: 'soc-tab' });
+    tab.textContent = 'Friends';
+    document.body.appendChild(tab);
+    expectAtLeastDesktopFloor(tab, '.soc-tab');
+  });
+});

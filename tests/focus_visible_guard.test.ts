@@ -15,8 +15,10 @@
 // the chrome draws on :focus-visible. A focus indicator carried instead by a box-shadow /
 // border (a few pre-game shell controls do this) is out of scope here: the forced-colors net
 // forces a steady system outline on every :focus-visible regardless, so those stay steady for
-// high-contrast users. A live computed-style version over the box-shadow indicators would
-// belong to the opt-in browser suite (npm run test:browser) and is not yet wired.
+// high-contrast users. A live computed-style version over the box-shadow / border indicators
+// now lives in the opt-in browser suite (tests/browser/focus_indicator.browser.test.ts, run
+// via npm run test:browser): it keyboard-focuses each shell control and asserts a present,
+// steady focus indicator (box-shadow, outline, or border-color), complementing this scan.
 
 import { readdirSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
