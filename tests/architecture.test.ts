@@ -15,7 +15,7 @@ import { describe, expect, it } from 'vitest';
 // on: host-agnostic, DOM/Three-free, deterministic modules a Vitest imports
 // directly (the unit_portrait.ts template and the per-element view cores hud.ts
 // already imports). A registered pure core must not import three, a host layer it
-// has no business in, or a DOM-owning *_painter / painter_host sibling: the
+// has no business in, or a DOM-owning *_painter / *_window / painter_host sibling: the
 // core/painter split is the whole point, so a core reaching for a painter is the
 // same hazard one import hop removed. The painters / DOM consumers themselves are
 // deliberately NOT registered. Two allowlists, because the cores live in two
@@ -76,20 +76,21 @@ function forbiddenImport(spec: string): string | null {
 // Same idea for a src/ui pure core: it lives in ui and may lean on sibling pure
 // ui modules + host-agnostic sim types, so only three + render/game/net are
 // forbidden layers. It also must not import a DOM-owning painter or the painter
-// host: a core reaching for a *_painter / painter_host module couples to the DOM
-// one hop removed, defeating the split.
+// host: a core reaching for a *_painter, a *_window painter, or painter_host couples
+// to the DOM one hop removed, defeating the split. (The *_window arm closes the P8b
+// gap where the char_window/market_window painters slipped the *_painter-only regex.)
 function forbiddenUiCoreImport(spec: string): string | null {
   if (spec === 'three' || spec.startsWith('three/')) return 'three';
   const layer = spec.match(/(?:^|\/)(render|game|net)\//);
   if (layer) return layer[1];
-  if (/(?:^|\/)(?:[a-z0-9_]+_painter|painter_host)$/.test(spec)) return 'painter';
+  if (/(?:^|\/)(?:[a-z0-9_]+_(?:painter|window)|painter_host)$/.test(spec)) return 'painter';
   return null;
 }
 
 // Same idea for a render-resident pure logic core (cast_bar): it lives in render,
 // so a render sibling import is allowed, but it must stay Three-free (the painter
-// owns the Three drawing) and must not import game/net or a DOM-owning painter. It
-// must ALSO stay i18n-free (decision 6/8 / the file header): the core emits stable
+// owns the Three drawing) and must not import game/net or a DOM-owning *_painter /
+// *_window painter. It must ALSO stay i18n-free (decision 6/8 / the file header): the core emits stable
 // discriminators (the raw cast id, the eat/drink mode) that the painter localizes,
 // so importing the i18n runtime (t/tEntity/formatNumber from any *i18n module) is
 // forbidden. That makes a t() call in the core fail this guard, not just the header.
@@ -97,7 +98,7 @@ function forbiddenRenderCoreImport(spec: string): string | null {
   if (spec === 'three' || spec.startsWith('three/')) return 'three';
   const layer = spec.match(/(?:^|\/)(game|net)\//);
   if (layer) return layer[1];
-  if (/(?:^|\/)(?:[a-z0-9_]+_painter|painter_host)$/.test(spec)) return 'painter';
+  if (/(?:^|\/)(?:[a-z0-9_]+_(?:painter|window)|painter_host)$/.test(spec)) return 'painter';
   if (/(?:^|\/)[a-z_]*i18n$/.test(spec)) return 'i18n';
   return null;
 }
@@ -152,6 +153,7 @@ const UI_PURE_CORES = [
   'src/ui/minimap_markers.ts',
   'src/ui/fct_core.ts',
   'src/ui/focus_order.ts',
+  'src/ui/roving_index.ts',
   'src/ui/live_region_politeness.ts',
   'src/game/ui_effects_profile.ts',
   'src/game/ui_tier_knobs.ts',
@@ -282,9 +284,12 @@ describe('src/ui pure-core invariants', () => {
     expect(forbiddenUiCoreImport('../../render/renderer')).toBe('render');
     expect(forbiddenUiCoreImport('../game/audio')).toBe('game');
     expect(forbiddenUiCoreImport('../net/client_world')).toBe('net');
-    // A DOM-owning painter or the painter host (DOM coupling one hop removed).
+    // A DOM-owning *_painter, a *_window painter, or the painter host (DOM coupling one hop
+    // removed; the *_window arm closes the P8b gap where char_window/market_window slipped).
     expect(forbiddenUiCoreImport('./delve_map_painter')).toBe('painter');
     expect(forbiddenUiCoreImport('./painter_host')).toBe('painter');
+    expect(forbiddenUiCoreImport('./char_window')).toBe('painter');
+    expect(forbiddenUiCoreImport('./market_window')).toBe('painter');
     // Permitted: host-agnostic sim types/data and sibling pure ui cores.
     expect(forbiddenUiCoreImport('../sim/types')).toBeNull();
     expect(forbiddenUiCoreImport('../sim/data')).toBeNull();
@@ -390,6 +395,7 @@ describe('src/render pure-core invariants', () => {
     expect(forbiddenRenderCoreImport('../net/client_world')).toBe('net');
     expect(forbiddenRenderCoreImport('./delve_map_painter')).toBe('painter');
     expect(forbiddenRenderCoreImport('./painter_host')).toBe('painter');
+    expect(forbiddenRenderCoreImport('./nameplate_window')).toBe('painter');
     // The i18n-free contract: the i18n runtime (t/formatNumber) AND the tEntity /
     // sim-i18n helpers are off-limits to a render core (unlike a ui core, where
     // entity_i18n is permitted) - the core emits discriminators the painter localizes.

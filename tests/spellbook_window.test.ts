@@ -24,7 +24,9 @@ describe('spellbook_window: WCAG chrome (rows + toggles + focus-return)', () => 
   });
 
   it('renders the dialog role + the spell list role', () => {
-    expect(code).toContain("setAttribute('role', 'dialog')");
+    // P18a: the dialog identity is set via the shared markDialogRoot helper (its own writes
+    // are unit-tested in dialog_root.test.ts); the spell list/listitem roles stay inline.
+    expect(code).toContain("markDialogRoot(el, { label: t('abilityUi.spellbook.title') })");
     expect(code).toContain("list.setAttribute('role', 'list')");
     expect(code).toContain("setAttribute('role', 'listitem')");
   });

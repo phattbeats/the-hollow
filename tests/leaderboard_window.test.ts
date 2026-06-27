@@ -34,8 +34,10 @@ describe('leaderboard_window: WCAG chrome (live region + focusable controls + fo
   });
 
   it('renders the dialog role + labelledby for the window', () => {
-    expect(code).toContain("setAttribute('role', 'dialog')");
-    expect(code).toContain("setAttribute('aria-labelledby', 'leaderboard-title')");
+    // P18a: the dialog identity is set via the shared markDialogRoot helper (role=dialog +
+    // aria-labelledby + aria-modal + tabindex); the helper's own writes are unit-tested in
+    // dialog_root.test.ts.
+    expect(code).toContain("markDialogRoot(el, { labelledBy: 'leaderboard-title' })");
     expect(code).toContain('id="leaderboard-title"');
   });
 

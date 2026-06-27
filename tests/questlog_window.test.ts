@@ -18,8 +18,10 @@ describe('questlog_window: WCAG chrome (dialog + rows + focus-return)', () => {
   });
 
   it('renders the dialog role + labelledby for the window', () => {
-    expect(code).toContain("setAttribute('role', 'dialog')");
-    expect(code).toContain("setAttribute('aria-labelledby', 'quest-log-title')");
+    // P18a: the dialog identity is set via the shared markDialogRoot helper (role=dialog +
+    // aria-labelledby + aria-modal + tabindex); the helper's own writes are unit-tested in
+    // dialog_root.test.ts.
+    expect(code).toContain("markDialogRoot(el, { labelledBy: 'quest-log-title' })");
     expect(code).toContain('id="quest-log-title"');
   });
 

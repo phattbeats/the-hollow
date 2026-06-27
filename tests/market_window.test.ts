@@ -52,6 +52,16 @@ describe('market_window: WCAG 2.2 AA (decision 10)', () => {
     // buy/reclaim buttons get a programmatic name even though their face text is plain
     expect(painter).toContain("t(l.mine ? 'itemUi.market.reclaimAria' : 'itemUi.market.buyAria'");
   });
+
+  it('makes the filter listboxes keyboard-operable via the shared dropdownKeyNav core', () => {
+    // P18a: the role=listbox the menus advertise is now actually keyboard-operable. The
+    // options are programmatically focusable but out of the Tab order (the roving pattern),
+    // and the wiring reuses the existing pure core rather than a bespoke re-implementation,
+    // so this guard fails if the keyboard nav is dropped.
+    expect(painter).toContain('role="option" tabindex="-1"');
+    expect(painter).toContain("import { dropdownKeyNav } from './dropdown_nav'");
+    expect(painter).toContain('dropdownKeyNav(');
+  });
 });
 
 describe('market_window: behavior preserved through the core', () => {

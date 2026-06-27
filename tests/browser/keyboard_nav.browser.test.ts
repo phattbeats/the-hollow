@@ -14,11 +14,17 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { type TalentAllocation, type TalentNode, talentsFor } from '../../src/sim/content/talents';
 import { FocusManager, type FocusTrapHandle } from '../../src/ui/focus_manager';
+import { MarketWindow } from '../../src/ui/market_window';
 import { TalentsWindow } from '../../src/ui/talents_window';
 import { cleanup, host, stubDeps } from './_harness';
 
 function key(k: string): KeyboardEvent {
   return new KeyboardEvent('keydown', { key: k, bubbles: true, cancelable: true });
+}
+
+function req<T>(value: T | null | undefined, what: string): T {
+  if (value == null) throw new Error(`fixture: ${what} not found`);
+  return value;
 }
 
 afterEach(cleanup);
@@ -256,5 +262,97 @@ describe('keyboard-nav: the talents choice-node flyout (roving menu + focus-retu
     outside.focus(); // focus leaves the popup -> focusout -> dismiss + return-to-anchor
     expect(document.getElementById('tal-choice-pop')).toBeNull();
     expect(document.activeElement).toBe(anchor);
+  });
+});
+
+// The market browse-tab filter menus advertise role=listbox; P8b carried them byte-faithful
+// with NO keyboard nav (tracked for this cleanup), and P18a wires the EXISTING pure
+// dropdownKeyNav core onto them. This drives the real MarketWindow painter: open a filter
+// listbox by keyboard, rove with arrows, commit with Enter, and close (Escape / Tab) returning
+// focus to the trigger. The filter chrome renders on the browse tab regardless of marketInfo,
+// so a null-merchant fixture is enough to exercise the menus.
+describe('keyboard-nav: the market filter listbox (dropdownKeyNav wiring)', () => {
+  function openMarket(): HTMLElement {
+    const root = host('market-window');
+    root.style.display = 'none';
+    const win = new MarketWindow(
+      stubDeps({
+        root: () => root,
+        world: () =>
+          ({
+            marketInfo: null,
+            copper: 0,
+            marketSearch: () => undefined,
+            inventory: [],
+          }) as never,
+        closeOthers: () => undefined,
+        captureFocus: () => null,
+        hideTooltip: () => undefined,
+        syncBags: () => undefined,
+      }),
+    );
+    win.open();
+    return root;
+  }
+  const itemTypeMenu = (root: HTMLElement) =>
+    req(
+      root.querySelector<HTMLElement>('[data-market-filter-menu="itemType"]'),
+      'itemType filter menu',
+    );
+
+  it('opens by keyboard, roves with arrows, and commits the focused filter with Enter', () => {
+    const root = openMarket();
+    const select = itemTypeMenu(root);
+    const trigger = req(select.querySelector<HTMLElement>('.mkt-select-btn'), 'itemType trigger');
+    trigger.focus();
+    // ArrowDown on the collapsed trigger opens the listbox and focuses the first option.
+    trigger.dispatchEvent(key('ArrowDown'));
+    expect(select.classList.contains('open')).toBe(true);
+    const options = Array.from(select.querySelectorAll<HTMLElement>('.mkt-select-option'));
+    expect(options.every((o) => o.getAttribute('tabindex') === '-1')).toBe(true);
+    expect(document.activeElement).toBe(options[0]); // 'all'
+    // ArrowDown moves the roving focus to the next option WITHOUT committing or closing.
+    options[0].dispatchEvent(key('ArrowDown'));
+    expect(document.activeElement).toBe(options[1]); // 'weapon'
+    expect(select.classList.contains('open')).toBe(true);
+    const committed = options[1].getAttribute('data-market-filter-option');
+    expect(committed).toBe('weapon');
+    // Enter commits the focused filter; render() rebuilds and returns focus to the trigger.
+    options[1].dispatchEvent(key('Enter'));
+    // 'weapon' selected -> the subtype menu now appears, proving the filter actually changed.
+    expect(root.querySelector('[data-market-filter-menu="subtype"]')).toBeTruthy();
+    const reSelect = itemTypeMenu(root);
+    expect(
+      reSelect.querySelector('[aria-selected="true"]')?.getAttribute('data-market-filter-option'),
+    ).toBe(committed);
+    expect(document.activeElement).toBe(reSelect.querySelector('.mkt-select-btn'));
+  });
+
+  it('Escape closes the listbox and returns focus to the trigger', () => {
+    const root = openMarket();
+    const select = itemTypeMenu(root);
+    const trigger = req(select.querySelector<HTMLElement>('.mkt-select-btn'), 'itemType trigger');
+    trigger.focus();
+    trigger.dispatchEvent(key('ArrowDown'));
+    expect(select.classList.contains('open')).toBe(true);
+    req(select.querySelector<HTMLElement>('.mkt-select-option'), 'first option').dispatchEvent(
+      key('Escape'),
+    );
+    expect(select.classList.contains('open')).toBe(false);
+    expect(document.activeElement).toBe(trigger);
+  });
+
+  it('Tab closes the listbox and returns focus to the trigger without preventing native Tab', () => {
+    const root = openMarket();
+    const select = itemTypeMenu(root);
+    const trigger = req(select.querySelector<HTMLElement>('.mkt-select-btn'), 'itemType trigger');
+    trigger.focus();
+    trigger.dispatchEvent(key('ArrowDown'));
+    const ev = key('Tab');
+    req(select.querySelector<HTMLElement>('.mkt-select-option'), 'first option').dispatchEvent(ev);
+    expect(select.classList.contains('open')).toBe(false);
+    expect(document.activeElement).toBe(trigger);
+    // Tab is NOT preventDefaulted, so native Tab traversal continues from the trigger.
+    expect(ev.defaultPrevented).toBe(false);
   });
 });
