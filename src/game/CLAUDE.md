@@ -79,6 +79,7 @@ growing `input.ts`.
 
 ## Never
 - Never read `localStorage`/`window`/`AudioContext` from a constructor without a
-  try/catch fallback — these modules must import cleanly under Vitest (jsdom).
+  try/catch fallback: these modules must import cleanly under Vitest's plain-Node env
+  (no DOM globals; jsdom is not a dependency), which is exactly where the fallback fires.
 - Never hard-code mouse sensitivity; scale `BASE_LOOK_SENS` via `setCameraSpeed`
   so the settings slider stays authoritative.

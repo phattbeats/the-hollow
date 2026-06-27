@@ -79,5 +79,13 @@ resolved tables and `src/ui/i18n.status.json` first; a bare `npx vitest run` doe
 
 ## Running & adding
 - Single file (preferred while iterating): `npx vitest run tests/<file>.test.ts`.
-- DOM-less env: stub `localStorage` (`keybinds.test.ts`) or `WebSocket` (`snapshots.test.ts`) on `globalThis` when needed.
+- **DOM in tests:** the default Vitest env is plain Node, with no `document`/`window`, and **jsdom
+  is deliberately NOT a dependency** (keep the dep set tiny). When you only need one global, stub
+  it on `globalThis` (`localStorage` in `keybinds.test.ts`, `WebSocket` in `snapshots.test.ts`).
+  For a DOM-touching UI test (focus wiring, a write-elided painter, a keyed pool), build a small
+  **hand-rolled fake DOM** that models only the contract under test (the idiom in
+  `focus_manager.test.ts`, `painter_host.test.ts`, the per-painter tests, and `hud_perf_budget.test.ts`);
+  do NOT reach for jsdom. The real-browser path (WebKit/Safari CSS, axe, target-size) is the OPT-IN
+  Playwright suite `tests/browser/*.browser.test.ts` (`npm run test:browser`, `vitest.browser.config.ts`),
+  never a bare `vitest run`.
 - YOU MUST add/update a test here when you change sim or server behavior (see root CLAUDE.md).
