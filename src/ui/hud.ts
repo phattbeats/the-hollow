@@ -4238,6 +4238,12 @@ export class Hud {
         'color',
         target.hostile ? 'var(--color-hostile)' : 'var(--color-friendly)',
       );
+      // Redundant non-color cue for forced-colors (high-contrast) mode, where the OS
+      // strips the inline color so a hostile and a friendly name would read identically.
+      // The base.css forced-colors block underlines #tf-name.hostile; routed through the
+      // elided toggleClass writer so the per-frame hot path stays write-elided. Normal
+      // mode is unaffected (the rule lives only inside @media (forced-colors: active)).
+      this.toggleClass(this.targetNameEl, 'hostile', target.hostile);
       // P14a Slice C: tier the target-debuff refresh (tick) granularity like the buff
       // bar. A target SWAP (targetChanged) forces an immediate repaint so the strip never
       // shows the previous target's debuffs while throttled on low; otherwise the full

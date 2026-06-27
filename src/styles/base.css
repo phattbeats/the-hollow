@@ -654,6 +654,25 @@
       background: Canvas;
       color: CanvasText;
     }
+    /* The target name carries hostile-vs-friendly by inline color alone, which the forced
+       palette strips, so both reactions would read identically. Underline the hostile name
+       as a redundant non-color cue (keyed off the hud.ts toggleClass). Scoped to #tf-name so
+       the player (#uf-name) and party (#pf-name) names are untouched; the cue lives only in
+       this forced-colors block, so normal mode is unchanged. */
+    #tf-name.hostile {
+      text-decoration: underline;
+    }
+    /* Cast progress is shown by the .fill gradient, which forced-colors strips, so the filled
+       width that conveys cast / channel PROGRESS would vanish against the bar background. Pin
+       the fill to the Highlight system color so progress stays visible. The !important is
+       load-bearing for the same reason as the focus net above: #castbar / #tf-castbar live in
+       @layer components and the .fill gradient is a normal declaration there, so an !important
+       in this earlier @layer base is required to win the cascade. (No second forced accent
+       exists, so the cast-vs-channel hue distinction is intentionally not restored.) */
+    #castbar .fill,
+    #tf-castbar .fill {
+      background: Highlight !important;
+    }
   }
 
   /* ---------- print reset ---------- */
