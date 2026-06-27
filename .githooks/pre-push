@@ -20,19 +20,29 @@ fails=()
 
 echo "pre-push QA floor: typecheck, guard tests, lint, copy rules..."
 
-# 1) Type check.
-if ! npx --no-install tsc --noEmit; then
-  fails+=("tsc --noEmit failed (type errors)")
+# The checks below need an installed toolchain. If it is missing (a fresh clone), say so clearly
+# and skip them rather than reporting a misleading failure; the copy scan still runs (no tools).
+tools_ok=1
+if [ ! -x node_modules/.bin/tsc ] || [ ! -x node_modules/.bin/vitest ] || [ ! -x node_modules/.bin/biome ]; then
+  echo "  note: dependencies not installed (run 'npm install'); skipping typecheck, tests, and lint"
+  tools_ok=0
 fi
 
-# 2) Determinism / purity and i18n-matcher guards (fast, targeted).
-if ! npx --no-install vitest run tests/architecture.test.ts tests/localization_fixes.test.ts; then
-  fails+=("guard tests failed (tests/architecture.test.ts or tests/localization_fixes.test.ts)")
-fi
+if [ "$tools_ok" = 1 ]; then
+  # 1) Type check.
+  if ! npx --no-install tsc --noEmit; then
+    fails+=("tsc --noEmit failed (type errors)")
+  fi
 
-# 3) Lint, scoped to this branch's changed files (avoids the deferred repo-wide biome debt).
-if ! npm run --silent ci:changed; then
-  fails+=("biome ci --changed failed on the files this branch changed")
+  # 2) Determinism / purity and i18n-matcher guards (fast, targeted).
+  if ! npx --no-install vitest run tests/architecture.test.ts tests/localization_fixes.test.ts; then
+    fails+=("guard tests failed (tests/architecture.test.ts or tests/localization_fixes.test.ts)")
+  fi
+
+  # 3) Lint, scoped to this branch's changed files (avoids the deferred repo-wide biome debt).
+  if ! npm run --silent ci:changed; then
+    fails+=("biome ci --changed failed on the files this branch changed")
+  fi
 fi
 
 # 4) Copy rules over the push diff: no em dash, en dash, or emoji (locale overlays excluded).
@@ -47,10 +57,10 @@ if [ -n "$base" ] && command -v perl >/dev/null 2>&1; then
     ':(exclude)src/admin/i18n.resolved.generated' \
     ':(exclude)*.lock' ':(exclude)package-lock.json' 2>/dev/null \
     | perl -CSD -ne '
-        if (m{^\+\+\+\s+b/(.+)$}) { our $f = $1; next; }
+        if (m{^\+\+\+\s+b/(.+)$}) { our $f = $1; $f =~ s/\s+$//; next; }
         next unless /^\+/ && !/^\+\+\+/;
         my $c = substr($_, 1);
-        if ($c =~ /[\x{2013}\x{2014}\x{2015}\x{1F300}-\x{1FAFF}\x{1F1E6}-\x{1F1FF}\x{2600}-\x{27BF}\x{FE0F}]/) {
+        if ($c =~ /[\x{2013}\x{2014}\x{2015}\x{1F000}-\x{1FAFF}\x{1F1E6}-\x{1F1FF}\x{2600}-\x{27BF}\x{FE0F}]/) {
           our $f; my $s = $c; $s =~ s/^\s+//; chomp $s;
           print "  $f: $s\n";
         }')

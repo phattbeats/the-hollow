@@ -35,8 +35,9 @@ clobbers an existing hook setup).
 ### 3. Judgment review (when you finish a feature)
 
 Determinism, three-host parity, server authority, persistence safety, i18n correctness,
-render/UI seams, responsive/mobile, content fidelity, and performance need reasoning, not a
-regex, so they are an agent, not a hook. Run `/qa` (or invoke the `qa-checklist` agent) when you
+render/UI seams, responsive/mobile, competitive fairness across graphics tiers and devices
+(no preset or device gives an information or timing advantage), content fidelity, and
+performance need reasoning, not a regex, so they are an agent, not a hook. Run `/qa` (or invoke the `qa-checklist` agent) when you
 finish a unit of work. It scales its depth to the size of the change, checks every invariant in
 play, names the domain reviewers to dispatch, and ends with an adversarial "what is missing"
 pass.

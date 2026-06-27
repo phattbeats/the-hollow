@@ -23,10 +23,10 @@ set -uo pipefail
 
 input=$(cat)
 
-# Loop guard: if we already blocked once this turn, let Claude finish.
-case "$input" in
-  *'"stop_hook_active":true'*|*'"stop_hook_active": true'*) exit 0 ;;
-esac
+# Loop guard: if we already blocked once this turn, let Claude finish. Tolerant of spacing.
+if printf '%s' "$input" | grep -Eq '"stop_hook_active"[[:space:]]*:[[:space:]]*true'; then
+  exit 0
+fi
 
 dir="${CLAUDE_PROJECT_DIR:-$PWD}"
 cd "$dir" 2>/dev/null || exit 0
@@ -63,7 +63,7 @@ stream=$(
 out=$(printf '%s' "$stream" | perl -CSD -e '
   my @hits; my $file = "";
   while (my $line = <STDIN>) {
-    if ($line =~ m{^\+\+\+\s+b/(.+)$}) { $file = $1; next; }
+    if ($line =~ m{^\+\+\+\s+b/(.+)$}) { $file = $1; $file =~ s/\s+$//; next; }
     next unless $line =~ /^\+/;
     next if $line =~ /^\+\+\+/;
     my $c = substr($line, 1);
@@ -71,7 +71,7 @@ out=$(printf '%s' "$stream" | perl -CSD -e '
     my $cat = "";
     if ($c =~ /[\x{2013}\x{2014}\x{2015}]/) {
       $cat = "em or en dash";
-    } elsif ($c =~ /[\x{1F300}-\x{1FAFF}\x{1F1E6}-\x{1F1FF}\x{2600}-\x{27BF}\x{FE0F}]/) {
+    } elsif ($c =~ /[\x{1F000}-\x{1FAFF}\x{1F1E6}-\x{1F1FF}\x{2600}-\x{27BF}\x{FE0F}]/) {
       $cat = "emoji";
     } elsif (($file =~ /\.test\.(ts|tsx|js|mjs|cjs)$/ || $file =~ m{(^|/)tests/})
              && $c =~ /\b(?:it|test|describe|bench|suite)\.only\s*\(/) {
@@ -91,8 +91,7 @@ out=$(printf '%s' "$stream" | perl -CSD -e '
     . "disables a test suite; no leftover debugger statement):";
   $body .= "\n- $_" for @hits;
   $body =~ s/([\\"])/\\$1/g;
-  $body =~ s/\n/\\n/g;
-  $body =~ s/\t/ /g;
+  $body =~ s/([\x00-\x1f])/sprintf("\\u%04x", ord($1))/ge;
   print "{\"decision\":\"block\",\"reason\":\"$body\"}";
 ')
 

@@ -212,6 +212,37 @@ does not regress (it is easy to break silently):
   community-HUD safe areas). A CSS-text check is not a substitute; it cannot catch a `dvh`->`vh`
   swap, a dropped safe-area inset, or a lost `@media` breakpoint.
 
+### 6d. Fairness across graphics tiers and devices
+
+The game is competitive and server-authoritative, so a player's graphics preset, effects quality,
+frame rate, or device (desktop vs mobile-landscape) must change only COSMETIC fidelity and render
+cadence, never the information the player has or any gameplay outcome. When a change touches
+graphics tiering, the per-frame layer, culling / draw distance, nameplates, telegraphs, the
+effects resolver, or mobile controls, verify:
+- Gameplay-load-bearing signals render on EVERY tier including the lowest, and on mobile: AoE /
+  hazard / boss telegraphs and ground-AoE indicators, enemy and player cast bars, the debuff /
+  aura timers that inform play, click-to-move and target markers, and the presence and nameplate
+  of an interactable unit in range. A tier knob may lower the REFRESH CADENCE or prettiness of
+  these (for example the nameplate or aura throttle), but must never drop the signal, hide it, or
+  delay it enough to remove the player's reaction window.
+- No tier- or device-gated draw distance or entity culling that lets one player see a
+  gameplay-relevant entity, projectile, or telegraph that another, on a lower tier or on mobile,
+  cannot. Cosmetic-only culling (particles, decals, ambient detail) is fine.
+- The tier knobs stay PURE functions of the STATIC preset (`src/game/ui_tier_knobs.ts` /
+  `ui_effects_profile.ts`); they never read the live FPS governor (`RenderBudgetGovernor`) and
+  never write sim state, so two players on the same server see the same world regardless of their
+  settings or frame rate. (Import-absence is asserted; the `ui` gfx band stays `governable: false`.)
+- Input-to-action timing is tier- and device-independent: the sim is a fixed 20 Hz and
+  server-authoritative, so no preset, frame rate, or mobile/desktop control scheme yields a faster
+  cast, cooldown, or movement, a larger hitbox, or any aim assist a desktop player lacks.
+- Any gameplay-relevant value a buff/debuff carries reaches every client regardless of tier (the
+  resolved precedent: the aura stat-sap wire-parity fix sends an aura's value to all clients; do
+  not let a fidelity knob gate a value that informs play). Confirm any genuinely offline-only
+  display (for example absorb) is display-only, not an advantage.
+- Mark `[VERIFY]` the cross-tier check that needs a run: capture the same scene at the lowest and
+  highest preset and on a mobile-landscape profile, and confirm every load-bearing signal above is
+  present in all three.
+
 ### 7. Content fidelity
 
 Skip if no `src/sim/content/` files are in scope.
