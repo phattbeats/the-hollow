@@ -109,6 +109,13 @@ const LANGUAGE_ENDONYMS: Record<SupportedLanguage, string> = {
   ja_JP: '日本語',
   pt_BR: 'Português (Brasil)',
   ru_RU: 'Русский',
+  nl_NL: 'Nederlands',
+  pl_PL: 'Polski',
+  id_ID: 'Bahasa Indonesia',
+  tr_TR: 'Türkçe',
+  sv_SE: 'Svenska',
+  vi_VN: 'Tiếng Việt',
+  da_DK: 'Dansk',
 };
 
 // Localized labels for the keybind category headers + action rows.

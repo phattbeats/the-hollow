@@ -71,6 +71,7 @@ const SUMMARY_PATH = path.join(OUT_DIR, 'i18n.status.summary.json');
 const LOCALES = [
   'en', 'es', 'es_ES', 'fr_FR', 'fr_CA', 'en_CA', 'it_IT', 'de_DE',
   'zh_CN', 'zh_TW', 'ko_KR', 'ja_JP', 'pt_BR', 'ru_RU',
+  'nl_NL', 'pl_PL', 'id_ID', 'tr_TR', 'sv_SE', 'vi_VN', 'da_DK',
 ];
 const NON_EN = LOCALES.filter((l) => l !== 'en');
 

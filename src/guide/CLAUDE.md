@@ -42,7 +42,7 @@ here.
 ## i18n: English-only adds, like the rest of the client
 Every guide string is a `guide.*` `t()` key. The English source lives in
 `src/ui/i18n.catalog/guide.ts` (no per-locale blocks, so a new key compiles
-English-only). The 13 locale translations live in the `src/ui/i18n.locales/<lang>.ts`
+English-only). The 20 locale translations live in the `src/ui/i18n.locales/<lang>.ts`
 overlays and are filled by the maintainer at release (the maintainer-only helper
 `scripts/wiki/apply_guide_locales.mjs` batch-injects them); never hand-edit the
 overlays. Class/ability/spec NAMES stay English on purpose (proper nouns from the sim).

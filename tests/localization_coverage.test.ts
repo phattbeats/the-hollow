@@ -40,6 +40,13 @@ import {
   languageTag,
   pt_BR,
   ru_RU,
+  nl_NL,
+  pl_PL,
+  id_ID,
+  tr_TR,
+  sv_SE,
+  vi_VN,
+  da_DK,
   setLanguage,
   supportedLanguages,
   type TranslationKey,
@@ -67,6 +74,13 @@ const locales: Record<string, typeof en> = {
   ja_JP,
   pt_BR,
   ru_RU,
+  nl_NL,
+  pl_PL,
+  id_ID,
+  tr_TR,
+  sv_SE,
+  vi_VN,
+  da_DK,
 };
 
 // Two-tier gate (see .github/workflows/ci.yml). The release tier runs with
@@ -616,6 +630,13 @@ describe('i18n Localization Key Coverage', () => {
       'ja_JP',
       'pt_BR',
       'ru_RU',
+      'nl_NL',
+      'pl_PL',
+      'id_ID',
+      'tr_TR',
+      'sv_SE',
+      'vi_VN',
+      'da_DK',
     ]);
     expect(isSupportedLanguage('de_DE')).toBe(true);
     expect(isSupportedLanguage('de-DE')).toBe(false);

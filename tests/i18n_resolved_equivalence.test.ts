@@ -30,7 +30,7 @@ describe("i18n resolved-table byte equivalence", () => {
     const match = out.match(/locales=(\d+) bytes=(\d+) sha256=([0-9a-f]{64})/);
     expect(match, `unexpected hash script output: ${out}`).toBeTruthy();
     const [, locales, , sha256] = match!;
-    expect(Number(locales)).toBe(14);
+    expect(Number(locales)).toBe(21);
 
     const baseline = readFileSync(baselinePath, "utf8").trim();
     expect(sha256).toBe(baseline);

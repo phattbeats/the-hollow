@@ -265,7 +265,7 @@ The locale data is split across files. Touch the right one:
   `hud_chrome.ts`, `abilities.ts`, `quests.ts`, `items.ts`, `game.ts`, `merge.ts`) plus
   `index.ts`, the barrel that assembles + exports `en`. Add a new English string in the
   matching domain module (was the single `i18n.en.ts` before the i18n.catalog domain split).
-- `i18n.locales/<lang>.ts` are the 13 non-English **flat sparse overlays**
+- `i18n.locales/<lang>.ts` are the 20 non-English **flat sparse overlays**
   (`Partial<Record<TranslationKey,string>>`), the ONLY files a translator edits. An
   omitted key is filled from English by the build and marked `pending` in the registry.
 - `i18n.resolved.generated/` is the **generated dense table** the runtime imports — a
@@ -307,7 +307,7 @@ localized; prefer `t()` for new user-facing strings.
    through `t()`. **Never edit the 13
    `i18n.locales/<lang>.ts` overlays, and never put English/`// TODO`/a placeholder
    into one as a fake translation.** Leave the key omitted; the build English-fills it
-   and the registry marks it `pending`. (Translating 13 locales per PR would drain
+   and the registry marks it `pending`. (Translating 20 locales per PR would drain
    small-plan token budgets; the maintainer batch-fills them at release.)
 2. If the string originates in `src/sim/` or `server/` (which stay language-agnostic),
    register a matcher RULE in the table matching the emit's ORIGIN (`sim_i18n.ts` for a

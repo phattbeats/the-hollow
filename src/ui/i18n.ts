@@ -25,7 +25,7 @@ import type { Leaves, TranslationKey, InterpolationValue, InterpolationValues, D
 // tree-shakes the 13 non-en slices (and the barrel that assembles them) out of the app
 // chunk. THAT drop is the payload win of the lazy locale flip. `en` stays in the chunk via the eager
 // local import above (the universal English default), not via this line.
-export { en, es, es_ES, fr_FR, fr_CA, en_CA, it_IT, de_DE, zh_CN, zh_TW, ko_KR, ja_JP, pt_BR, ru_RU } from './i18n.resolved.generated';
+export { en, es, es_ES, fr_FR, fr_CA, en_CA, it_IT, de_DE, zh_CN, zh_TW, ko_KR, ja_JP, pt_BR, ru_RU, nl_NL, pl_PL, id_ID, tr_TR, sv_SE, vi_VN, da_DK } from './i18n.resolved.generated';
 // gameStrings is the post-cap/XP/leaderboard layer, which the table carries under the
 // `game` key. Source it from the eager generated dense `en` rather than re-exporting from
 // i18n.catalog, so importing './i18n' does not pull the full i18n.catalog base (en + shared content

@@ -38,10 +38,11 @@ import {
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
-// The authoritative ordered locale set both build scripts emit (LOCALES). en + 13.
+// The authoritative ordered locale set both build scripts emit (LOCALES). en + 20.
 const ALL_LOCALES = [
   "en", "es", "es_ES", "fr_FR", "fr_CA", "en_CA", "it_IT", "de_DE",
   "zh_CN", "zh_TW", "ko_KR", "ja_JP", "pt_BR", "ru_RU",
+  "nl_NL", "pl_PL", "id_ID", "tr_TR", "sv_SE", "vi_VN", "da_DK",
 ];
 // The lazy/pending set: every locale except `en` (and never the en_XA pseudo).
 const NON_EN_LOCALES = ALL_LOCALES.filter((l) => l !== "en");

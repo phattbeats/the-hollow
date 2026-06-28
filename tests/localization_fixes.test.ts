@@ -18,6 +18,13 @@ import {
   ko_KR,
   pt_BR,
   ru_RU,
+  nl_NL,
+  pl_PL,
+  id_ID,
+  tr_TR,
+  sv_SE,
+  vi_VN,
+  da_DK,
   setLanguage,
   supportedLanguages,
   zh_CN,
@@ -55,6 +62,13 @@ const locales: Record<string, any> = {
   ja_JP,
   pt_BR,
   ru_RU,
+  nl_NL,
+  pl_PL,
+  id_ID,
+  tr_TR,
+  sv_SE,
+  vi_VN,
+  da_DK,
 };
 const ph = (s: string) =>
   [...String(s).matchAll(/\{([A-Za-z0-9_]+)\}/g)]

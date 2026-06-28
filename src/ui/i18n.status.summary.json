@@ -21,14 +21,21 @@
     "ko_KR",
     "ja_JP",
     "pt_BR",
-    "ru_RU"
+    "ru_RU",
+    "nl_NL",
+    "pl_PL",
+    "id_ID",
+    "tr_TR",
+    "sv_SE",
+    "vi_VN",
+    "da_DK"
   ],
   "counts": {
     "keys": 4477,
-    "rows": 58201,
-    "translated": 58142,
+    "rows": 89540,
+    "translated": 89423,
     "pending": 0,
-    "blocked": 59,
+    "blocked": 117,
     "blockedSource": 92
   },
   "perLocale": {
@@ -96,6 +103,41 @@
       "translated": 4477,
       "pending": 0,
       "blocked": 0
+    },
+    "nl_NL": {
+      "translated": 4459,
+      "pending": 0,
+      "blocked": 18
+    },
+    "pl_PL": {
+      "translated": 4471,
+      "pending": 0,
+      "blocked": 6
+    },
+    "id_ID": {
+      "translated": 4470,
+      "pending": 0,
+      "blocked": 7
+    },
+    "tr_TR": {
+      "translated": 4476,
+      "pending": 0,
+      "blocked": 1
+    },
+    "sv_SE": {
+      "translated": 4466,
+      "pending": 0,
+      "blocked": 11
+    },
+    "vi_VN": {
+      "translated": 4476,
+      "pending": 0,
+      "blocked": 1
+    },
+    "da_DK": {
+      "translated": 4463,
+      "pending": 0,
+      "blocked": 14
     }
   }
 }
