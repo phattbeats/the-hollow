@@ -141,7 +141,10 @@ For every new or changed member of the `SimEvent` union (`src/sim/types.ts`):
   and the dense locales load lazily from the generated bundles, with overlays as partial maps.
   A missing non-English fill is English-filled at build and marked `pending`; the PR tier
   allows English-only and the release tier (`I18N_RELEASE_TIER=1`) hard-fails on a `pending`
-  row. For key/placeholder parity run
+  row. One always-on exception (M16): a new *wordy* English value (a run of 4+ consecutive
+  lowercase letters) also needs its five non-Latin fills (`zh_CN`/`zh_TW`/`ja_JP`/`ko_KR`/
+  `ru_RU`) in the same change, or `tests/i18n_completeness.test.ts` reds even at PR tier (the
+  maintainer normally adds them at merge). For key/placeholder parity run
   `npx vitest run tests/i18n_completeness.test.ts tests/i18n_emit_shape.test.ts`;
   `npx tsc --noEmit` still type-checks the emit/catalog shape against the English catalog.
 - Numbers, money, and dates must go through `formatNumber` / `formatMoney` / `formatDateTime`
