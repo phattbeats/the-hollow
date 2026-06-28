@@ -64,9 +64,9 @@ export {
 export const gameStrings = en.game;
 export type { DeepPartial, InterpolationValue, InterpolationValues, Leaves, TranslationKey };
 
-// The 14-locale set + its type derive from the generated SUPPORTED_LANGUAGES (the loaders
+// The 21-locale set + its type derive from the generated SUPPORTED_LANGUAGES (the loaders
 // surface), NOT `keyof typeof translations`: after the lazy flip the full `translations`
-// map is no longer eagerly imported. The two are pinned equal (same 14 codes, same order)
+// map is no longer eagerly imported. The two are pinned equal (same 21 codes, same order)
 // by tests/i18n_emit_shape.test.ts.
 export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
 export const supportedLanguages = [...SUPPORTED_LANGUAGES] as SupportedLanguage[];
