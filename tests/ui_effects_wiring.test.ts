@@ -17,7 +17,7 @@ const hudCss = read('src/styles/hud.css');
 const applier = read('src/ui/ui_effects_applier.ts');
 const main = read('src/main.ts');
 
-describe('tokens.css - :root seeds (full-Ultra defaults) + B1 glass low drop', () => {
+describe('tokens.css - :root seeds (full-Ultra defaults) + glass low drop', () => {
   it('seeds the three --fx-* tokens to their full-effect values so calc/var reads are inert by default', () => {
     expect(tokensCss).toContain('--fx-shadow: 1;');
     expect(tokensCss).toContain('--fx-ambient-anim: running;');
@@ -34,7 +34,7 @@ describe('tokens.css - :root seeds (full-Ultra defaults) + B1 glass low drop', (
   });
 });
 
-describe('hud.css - B4 glow scales with --fx-shadow (0 at low), structural shadows literal', () => {
+describe('hud.css - glow scales with --fx-shadow (0 at low), structural shadows literal', () => {
   it('multiplies the four decorative outer-glow blurs by --fx-shadow', () => {
     expect(hudCss).toContain('0 0 calc(8px * var(--fx-shadow, 1)) #e74c3c99'); // player portrait
     expect(hudCss).toContain('0 0 calc(8px * var(--fx-shadow, 1)) #4fc3ff66'); // rest indicator
@@ -47,7 +47,7 @@ describe('hud.css - B4 glow scales with --fx-shadow (0 at low), structural shado
   });
 });
 
-describe('hud.css - B2 ambient loops gate on --fx-ambient-anim + --motion-scale', () => {
+describe('hud.css - ambient loops gate on --fx-ambient-anim + --motion-scale', () => {
   it('gives every ambient loop a play-state token (paused at low/reduced)', () => {
     const playStates =
       hudCss.match(/animation-play-state: var\(--fx-ambient-anim, running\);/g) ?? [];
@@ -74,7 +74,7 @@ describe('hud.css - the death-warning vignette holds full tint on ALL THREE calm
   });
 });
 
-describe('hud.css - B6 FCT crit sheds the pop at low (keeps the number)', () => {
+describe('hud.css - FCT crit sheds the pop at low (keeps the number)', () => {
   it('swaps the crit keyframes for the plain rise at the low tier only', () => {
     expect(hudCss).toContain(':root[data-fx-level="low"] .fct.crit {');
     expect(hudCss).toContain('animation-name: fct-rise;');

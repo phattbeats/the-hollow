@@ -167,7 +167,7 @@
        blur (0 at low), --fx-ambient-anim is the ambient-loop animation-play-state,
        --motion-scale multiplies ambient durations (near-zero 0.001, never 0, under
        reduced-motion so animationend still fires). The data-fx-level ATTRIBUTE
-       additionally drops glass (B1) whole-rule at the low tier (below). */
+       additionally drops glass whole-rule at the low tier (below). */
     --fx-shadow: 1;
     --fx-ambient-anim: running;
     --motion-scale: 1;
@@ -182,7 +182,7 @@
     --cursor-shield: var(--cursor-point);
   }
 
-  /* B1 glass is dropped WHOLE-RULE at the low effect tier: a universal removal
+  /* Glass is dropped WHOLE-RULE at the low effect tier: a universal removal
      mirroring the engine-tier body.fx-reduced / body.fx-minimal cut (the
      backdrop-filter rules ship a -webkit- twin + a solid translucent fallback, so
      dropping the blur leaves a clean opaque panel). It is !important so it crosses

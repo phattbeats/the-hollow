@@ -477,14 +477,14 @@
   #player-frame.combat .combat-flash {
     display: flex;
     animation: pf-combat-pulse 1s ease-in-out infinite;
-    /* B2 ambient: paused + duration-calmed by the effect-tier tokens (no change at
+    /* Ambient: paused + duration-calmed by the effect-tier tokens (no change at
        full Ultra, where --fx-ambient-anim=running and --motion-scale=1). */
     animation-duration: calc(1s * var(--motion-scale, 1));
     animation-play-state: var(--fx-ambient-anim, running);
   }
   #player-frame.combat .portrait {
     border-color: #e74c3c;
-    /* B4 glow: the decorative outer glow scales with --fx-shadow (0 at low, 1 = full
+    /* Glow: the decorative outer glow scales with --fx-shadow (0 at low, 1 = full
        8px today); the structural inset shadow stays literal. */
     box-shadow:
       0 0 calc(8px * var(--fx-shadow, 1)) #e74c3c99,
@@ -538,13 +538,13 @@
       1px 1px 1px #000;
     background: radial-gradient(circle at 40% 35%, #14304a, #08141c);
     border: 2px solid #4fc3ff88;
-    /* B4 glow: decorative outer glow scales with --fx-shadow (0 at low). */
+    /* Glow: decorative outer glow scales with --fx-shadow (0 at low). */
     box-shadow: 0 0 calc(8px * var(--fx-shadow, 1)) #4fc3ff66;
   }
   .rest-indicator.on {
     display: flex;
     animation: rest-pulse 2s ease-in-out infinite;
-    /* B2 ambient: paused + duration-calmed by the effect-tier tokens. */
+    /* Ambient: paused + duration-calmed by the effect-tier tokens. */
     animation-duration: calc(2s * var(--motion-scale, 1));
     animation-play-state: var(--fx-ambient-anim, running);
   }
@@ -709,7 +709,7 @@
   }
   .combo-pip.on {
     background: radial-gradient(circle at 35% 30%, #ff7a5e, #c0392b);
-    /* B4 glow: decorative outer glow scales with --fx-shadow (0 at low). */
+    /* Glow: decorative outer glow scales with --fx-shadow (0 at low). */
     box-shadow: 0 0 calc(5px * var(--fx-shadow, 1)) #ff5533aa;
     border-color: #ffad99;
   }
@@ -1242,7 +1242,7 @@
     border-color: var(--gold);
     color: #fff;
     animation: tal-pulse 1.6s ease-in-out infinite;
-    /* B2 ambient: paused + duration-calmed by the effect-tier tokens. */
+    /* Ambient: paused + duration-calmed by the effect-tier tokens. */
     animation-duration: calc(1.6s * var(--motion-scale, 1));
     animation-play-state: var(--fx-ambient-anim, running);
   }
@@ -2220,7 +2220,7 @@
   .fct.crit {
     font-size: calc(26px * var(--fct-scale, 1));
   }
-  /* B6 FCT crit: at the low effect tier the floating combat text keeps the damage
+  /* FCT crit: at the low effect tier the floating combat text keeps the damage
      number, colour and bigger size but sheds the scale/pop (the heaviest FCT
      effect) by swapping the crit keyframes for the plain rise. The number is never
      refused. This is the CSS floor; the per-element JS gate (fctDropNonCrit in
@@ -2881,7 +2881,7 @@
       0 0 0 1px #ffd24a55,
       0 3px 12px #0008;
     animation: fpend-pulse 1.4s ease-in-out infinite;
-    /* B2 ambient: paused + duration-calmed by the effect-tier tokens. */
+    /* Ambient: paused + duration-calmed by the effect-tier tokens. */
     animation-duration: calc(1.4s * var(--motion-scale, 1));
     animation-play-state: var(--fx-ambient-anim, running);
   }
@@ -3120,7 +3120,7 @@
       opacity: var(--lhv-opacity);
     }
   }
-  /* B2 safety: the low-health vignette is a death warning, so whenever its breathe
+  /* Ambient safety: the low-health vignette is a death warning, so whenever its breathe
      is calmed it must HOLD THE FULL --lhv-opacity tint, never the dimmed 0%-keyframe
      value (a paused animation holds the current frame, and 0% is the 55% dim). It is
      therefore special-cased, NOT gated by --fx-ambient-anim: every motion-calming
@@ -3251,7 +3251,7 @@
   }
   .party-frame .pf-badge.combat {
     animation: pf-combat-pulse 1s ease-in-out infinite;
-    /* B2 ambient: paused + duration-calmed by the effect-tier tokens. */
+    /* Ambient: paused + duration-calmed by the effect-tier tokens. */
     animation-duration: calc(1s * var(--motion-scale, 1));
     animation-play-state: var(--fx-ambient-anim, running);
   }
@@ -3259,7 +3259,7 @@
     height: 9px;
     margin-top: 2px;
   }
-  /* B4 glow: decorative combat outer glow scales with --fx-shadow (0 at low). */
+  /* Glow: decorative combat outer glow scales with --fx-shadow (0 at low). */
   .party-frame.combat {
     box-shadow: 0 0 calc(7px * var(--fx-shadow, 1)) #e74c3c99;
   }
