@@ -859,8 +859,8 @@ async function startGame(
   // any unrelated setting is stored), probe the device (GPU name, memory, cores, touch) and
   // PERSIST a device-appropriate preset over the medium default, BEFORE the effects applier and
   // renderer read it, so the 3D tier, the data-fx-level cadence (nameplates), and the options UI
-  // all agree. A static one-shot probe (resolveDefaultGraphicsPreset), never the FPS governor
-  // (decision 6). A masked/inconclusive device resolves to medium and returns null, so it stays on
+  // all agree. A static one-shot probe (resolveDefaultGraphicsPreset), never the FPS governor.
+  // A masked/inconclusive device resolves to medium and returns null, so it stays on
   // the medium default and re-detects next boot; only a CONCLUSIVE result is persisted + marked.
   // An explicit player choice is never overridden: a recognized device is marked applied on its
   // first boot so it never re-detects, and an inconclusive device returns null so it never
@@ -4507,9 +4507,9 @@ const walletBalanceText = (n: number): string =>
   t('wallet.balanceAmount', { amount: formatWoc(n) });
 let walletPickerModal: HTMLDivElement | null = null;
 let walletPickerResolve: ((id: string | null) => void) | null = null;
-// One module-local FocusManager INSTANCE for the pre-game wallet-picker modal (P18d item 6):
+// One module-local FocusManager INSTANCE for the pre-game wallet-picker modal:
 // the shared focus-trap implementation, not a second hand-rolled one. It is an instance, NOT
-// a module singleton exported from focus_manager (decision 9 forbids the singleton), mirroring
+// a module singleton exported from focus_manager, mirroring
 // how Hud owns its own FocusManager; the pre-game shell cannot reach Hud's private instance, so
 // a dedicated instance is the correct unification. It owns trap + focus-first + return-to-opener
 // only; this modal keeps its OWN Escape + backdrop-click close (below) because the manager
@@ -4542,10 +4542,10 @@ function closeWalletPicker(id: string | null, returnFocus = true): void {
   if (resolve) resolve(id);
 }
 
-// The wallet picker uses the shared src/ui/focus_manager FocusManager (P18d item 6), so there
+// The wallet picker uses the shared src/ui/focus_manager FocusManager, so there
 // is ONE focus-trap implementation. It keeps its own Escape + backdrop-click close because the
 // manager owns no Escape and this is a pre-game shell modal, not a hud.closeAll window; the
-// FocusManager is a module-local INSTANCE (decision 9 forbids a module singleton).
+// FocusManager is a module-local INSTANCE, never a module singleton.
 function showWalletPicker(
   wallets: readonly WalletOption[],
   selectedId: string | null,

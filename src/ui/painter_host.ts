@@ -1,7 +1,7 @@
 // PainterHost: the thin shared host that HUD windows and painters compose into.
 //
-// Factored into TWO facets (frontend-modernization v0.16.0, locked decision 8),
-// because the already-tested bespoke windows do NOT share one dep shape:
+// Factored into TWO facets, because the already-tested bespoke windows do NOT
+// share one dep shape:
 //
 //   1) PainterHostPresentation -- the icon / money / tooltip surface. This is the
 //      shared BASE the cold windows COMPOSE into where they actually render item
@@ -12,19 +12,19 @@
 //      members on top.
 //
 //   2) PainterHostWriters -- the write-elision facet: the SEVEN cached DOM writers
-//      (setText/setDisplay/setTransform/setWidth + the P10a additions
-//      setStyleProp/toggleClass + the P12a addition setAttr), exposed to painters as
+//      (setText/setDisplay/setTransform/setWidth + the additions
+//      setStyleProp/toggleClass + the later addition setAttr), exposed to painters as
 //      closures over Hud's shared caches via makeWriterFacet. Hud also keeps private
 //      mirrors of the writers it still uses on its own per-frame path AND builds this
 //      equivalent facet to hand to painters; both share the SAME caches, so the
 //      skip-rate stays one number. (As per-frame work migrates onto painters the
-//      Hud-direct mirror shrinks: P11a moved the last direct width write onto the
-//      cast_bar painter, so setWidth now lives only on the facet -- the interface
+//      Hud-direct mirror shrinks: the cast_bar painter took the last direct width
+//      write, so setWidth now lives only on the facet -- the interface
 //      still exposes all seven.)
-//      The per-frame phases (P10-P13) consume this facet; P10a EXTENDED it
-//      with setStyleProp/toggleClass (locked decision 5a) that the four original
-//      single-slot writers cannot express: a custom-property write to a `--var` and
-//      a classList toggle. P12a added setAttr for the same reason: the action-bar
+//      The per-frame painters consume this facet; setStyleProp/toggleClass extended
+//      it to express what the four original
+//      single-slot writers cannot: a custom-property write to a `--var` and
+//      a classList toggle. setAttr was added for the same reason: the action-bar
 //      aria-label is a per-frame ATTRIBUTE write the other writers cannot express,
 //      and it was the Top-risk-4 raw `setAttribute` fired every frame per slot.
 //      These three need a MULTI-SLOT cache keyed per (element, prop) / (element,
@@ -63,7 +63,7 @@ export interface PainterHostPresentation {
  * write of an identical value to the same element. A painter routes its DOM
  * text/display/transform/width/custom-property/class/attribute writes through these
  * so a no-op frame costs no DOM mutation. The CANVAS schematic a 2D painter draws is
- * NOT routed through here: a 2D context cannot be elided (locked decision 12), so a
+ * NOT routed through here: a 2D context cannot be elided, so a
  * Canvas painter touches the context directly and uses these writers only for the
  * DOM bits it owns (e.g. a `#zone-label` text node).
  *
@@ -95,7 +95,7 @@ export interface PainterHostWriters {
   /**
    * Set an attribute on `el` via `el.setAttribute`, eliding a repeat of the same
    * value for the same (element, attr). Multi-slot: different attributes on one
-   * element never collide. Added in P12a for the action-bar aria-label, which was
+   * element never collide. Added for the action-bar aria-label, which was
    * written every frame per slot (Top risk 4); the rendered string still comes from
    * the core's `t()` call each frame, this only elides the DOM write.
    */

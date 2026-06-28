@@ -519,7 +519,7 @@ body.guide-has-sidebar .guide-layout {
 .guide-reveal summary:hover { color: var(--g-gold); }
 .guide-reveal-body { padding: 0 var(--g-md) var(--g-md); color: var(--g-text-dim); }
 
-/* --------------------------------------------------------- classes (Phase 03) */
+/* --------------------------------------------------------- classes */
 /* role + resource badges; never color-only, each carries a text label */
 .guide-badges { display: inline-flex; flex-wrap: wrap; gap: var(--g-xs2); align-items: center; }
 .guide-badge {
@@ -602,7 +602,7 @@ body.guide-has-sidebar .guide-layout {
 .guide-ability-icon { width: 48px; height: 48px; border-radius: var(--g-radius); border: 1px solid var(--g-border); }
 .guide-ability-name { font-size: var(--g-text-xs); color: var(--g-text-dim); overflow-wrap: anywhere; }
 
-/* ------------------------------------------------- bestiary / world / dungeons (Phase 04) */
+/* ------------------------------------------------- bestiary / world / dungeons */
 .guide-bestiary { max-width: var(--g-maxw-bestiary); }
 .guide-family { margin-block-start: var(--g-xl); }
 .guide-family-head { display: flex; align-items: center; gap: var(--g-md); }

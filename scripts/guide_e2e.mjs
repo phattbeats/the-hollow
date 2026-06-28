@@ -44,7 +44,7 @@ try {
   check('single h1 on the page', (await page.$$('.guide-main h1')).length === 1);
   await page.screenshot({ path: 'tmp/wiki-home.png', fullPage: true });
 
-  // Client-side navigation to a docs section (placeholder this phase).
+  // Client-side navigation to a docs section (placeholder).
   await page.click('.guide-nav-link[data-sub="how-to-play"]');
   await page.waitForFunction(() => location.pathname === '/wiki/how-to-play');
   await page.waitForSelector('.guide-main h1');
@@ -86,7 +86,7 @@ try {
   await page.waitForSelector('.guide-article');
   check('invalid class id renders not-found', !!(await page.$('.guide-notfound')));
 
-  // Phase 04 pages.
+  // Bestiary / world / quests / dungeons pages.
   await page.goto(`${BASE}/wiki/bestiary`, { waitUntil: 'networkidle0' });
   await page.waitForSelector('.guide-family');
   check('bestiary lists creature families', (await page.$$('.guide-family')).length >= 8);

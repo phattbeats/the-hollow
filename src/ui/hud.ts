@@ -338,11 +338,11 @@ const $ = <T extends HTMLElement = HTMLElement>(sel: string): T => document.quer
 // The player frame's stable portrait-identity key. The player portrait is drawn at
 // character setup (drawPlayerFramePortrait), not by the unit_frame painter, so the
 // painter's repaint gate never fires for it; the constant just pins the key so the
-// gate stays a no-op (target/party pass a per-unit key in P11).
+// gate stays a no-op (target/party pass a per-unit key).
 const PLAYER_PORTRAIT_KEY = 'player';
 // The target frame's boss glyph (a skull replaces the numeric level chip for a
 // boss-rank target) and the number of combo pips, named so the per-frame target
-// paint carries no bare literal at the call site (decision 12).
+// paint carries no bare literal at the call site.
 const BOSS_SKULL_GLYPH = '☠';
 const COMBO_PIP_COUNT = 5;
 // The descriptor for a hidden target frame (no target, or a targeted world object).
@@ -606,10 +606,10 @@ export class Hud {
     cdOverlay: HTMLDivElement;
     cdText: HTMLDivElement;
   }[] = [];
-  // The action bar's pure core + thin painter (P12a). Built in buildActionBar once
+  // The action bar's pure core + thin painter. Built in buildActionBar once
   // the slot buttons exist; tick(world) -> ActionBarState, painted via the shared
   // elided writer facet. The descriptor parameterizes the single existing bar so a
-  // second/third bar is another descriptor, not a code fork (decision 9).
+  // second/third bar is another descriptor, not a code fork.
   private actionBarView!: ActionBarView;
   private actionBarPainter!: ActionBarPainter;
   private hotbarActions: HotbarAction[] = []; // index = barSlot-1
@@ -640,7 +640,7 @@ export class Hud {
   private chatTimestamps = localStorage.getItem('chatTimestamps') === '1';
   private chatClock: ChatClock = clampChatClock(localStorage.getItem('chatClock'));
   private combatLogEl = $('#combatlog');
-  // Off-screen polite live region for the throttled combat summary (P15a). The 3D
+  // Off-screen polite live region for the throttled combat summary. The 3D
   // world / game canvas is OUT of accessibility scope (not screen-readable), so this
   // announces only the combat-log text, never the game world.
   private combatLiveEl = $('#combat-live');
@@ -648,7 +648,7 @@ export class Hud {
     this.combatLiveEl.textContent = summary;
   });
   // Off-screen polite live region for the current target's name, announced once per target
-  // CHANGE (P18d item 1), never per frame. A separate node from #combat-live so it never
+  // CHANGE, never per frame. A separate node from #combat-live so it never
   // re-announces what the combat summary speaks. The announce writes textContent DIRECTLY
   // (NOT the per-frame elided setText, like the combat + chat announcer sinks): two distinct
   // mobs of the same TEMPLATE share a display name, and the elided writer skips an identical
@@ -662,9 +662,9 @@ export class Hud {
   private lastAnnouncedTargetId: number | null = null;
   // Forces a byte-different write when consecutive targets share a display name (a pack of
   // identically-named mobs) so the polite region re-reads on every re-target, mirroring the
-  // combat-summary re-announce (P18d item 4). The shared DOM-free deterministic marker.
+  // combat-summary re-announce. The shared DOM-free deterministic marker.
   private readonly targetReannounce = new ReannounceMarker();
-  // Dedicated tab-independent off-screen polite live region for chat (P18d items 3 + 5):
+  // Dedicated tab-independent off-screen polite live region for chat:
   // #chatlog goes display:none on the combat tab (a display:none live region is silent), so
   // chat rides this always-present region instead, throttled by ChatAnnouncer so a chat
   // burst never floods the screen reader.
@@ -706,8 +706,8 @@ export class Hud {
   private targetHpTextEl = $('#tf-hp-text');
   private targetPortraitEl = $('#tf-portrait') as unknown as HTMLCanvasElement;
   // The target absorb-shield overlay node, resolved ONCE here instead of the old
-  // per-frame updateAbsorb document query by hardcoded selector (decision 9 /
-  // per-frame discipline). The unit_frame painter drives it through the elided
+  // per-frame updateAbsorb document query by hardcoded selector (per-frame
+  // discipline). The unit_frame painter drives it through the elided
   // writers, exactly as the player frame drives its own absorb node.
   private targetAbsorbEl = $('#tf-absorb');
   private targetDebuffsEl = $('#tf-debuffs');
@@ -731,12 +731,12 @@ export class Hud {
   private xpLabelEl = $('#xpbar .label');
   // XP + swing bar element refs cached once for their painters (the #xpbar /
   // .rested / #player-frame / #swingbar refs were re-queried via $()/querySelector
-  // every frame, the leak P10a fixes).
+  // every frame, the leak this fixes).
   private xpbarEl = $('#xpbar');
   private xpRestedEl = $('#xpbar .rested');
   private playerFrameEl = $('#player-frame');
   // The party-frames container, resolved once (was re-queried every frame); the
-  // keyed-pool party painter owns its children (P11c).
+  // keyed-pool party painter owns its children.
   private partyFramesEl = $('#party-frames');
   private swingbarEl = $('#swingbar');
   private swingFillEl = this.swingbarEl.querySelector('.fill') as HTMLElement;
@@ -746,12 +746,12 @@ export class Hud {
   // Cached once (was re-queried every frame): the near-death screen-edge overlay.
   private lowHealthVignetteEl = document.getElementById('low-health-vignette');
   private hotWriteCache = new Map<HTMLElement, string>();
-  // Multi-slot caches for the P10a writers (decision 5a): one element holds many
+  // Multi-slot caches for the per-frame writers: one element holds many
   // custom properties / toggled classes, so these key per (element, prop) and
   // (element, class) instead of the single slot per element hotWriteCache uses.
   private hotStylePropCache = new Map<HTMLElement, Map<string, string>>();
   private hotClassCache = new Map<HTMLElement, Map<string, string>>();
-  // Multi-slot cache for the P12a setAttr writer (decision 5a): the action-bar
+  // Multi-slot cache for the action-bar setAttr writer: the action-bar
   // aria-label is a per-frame attribute write, keyed per (element, attr name).
   private hotAttrCache = new Map<HTMLElement, Map<string, string>>();
   private hotDomWrites = 0;
@@ -902,12 +902,12 @@ export class Hud {
   private lastHudFastAt = 0;
   private lastHudMediumAt = 0;
   private lastHudSlowAt = 0;
-  // P14a per-element tier cadence stamps (graphics-tier knobs). Each gates a non-self /
+  // Per-element tier cadence stamps (graphics-tier knobs). Each gates a non-self /
   // canvas redraw to a slower interval on the LOW static preset; on every other tier the
   // interval is 0 (cadenceDue is always true), so these are no-ops and the path is the
   // unchanged per-frame path. The SELF/player frame has no stamp (it always paints), and
   // party frames are deliberately not stamped (party-member HP is a healer's actionable
-  // signal, so it stays on the mediumHud band for every tier: see ui_tier_knobs Slice D).
+  // signal, so it stays on the mediumHud band for every tier: see ui_tier_knobs).
   private lastMinimapDrawAt = 0;
   private lastBuffBarPaintAt = 0;
   private lastTargetDebuffsPaintAt = 0;
@@ -1261,12 +1261,12 @@ export class Hud {
 
   // Note: the per-frame transform + width writers live only on the painter facet now
   // (makeWriterFacet's setTransform/setWidth, painter_host.ts). The target hp bar was
-  // the last Hud-direct setTransform caller (P11b) and the cast bars were the last
-  // setWidth caller (P11a); with both on their painters, every transform/width write
+  // the last Hud-direct setTransform caller and the cast bars were the last
+  // setWidth caller; with both on their painters, every transform/width write
   // routes through the facet over the SAME hotWriteCache + `transform:`/`width:` keys,
   // so the Hud no longer mirrors a private setTransform or setWidth.
 
-  // P10a write-elision extension (decision 5a). setStyleProp drives a custom
+  // Write-elision extension. setStyleProp drives a custom
   // property (or any standard property) and toggleClass drives a class, each
   // keyed in a MULTI-SLOT cache: one element can hold many props / toggled
   // classes, so collapsing these into the single-slot hotWriteCache would
@@ -2313,9 +2313,9 @@ export class Hud {
     },
   );
   private readonly delvePainter = new DelveMapPainter(this.writerFacet, classCss);
-  // Per-frame XP + swing painters (P10a). Each caches its element refs once and
+  // Per-frame XP + swing painters. Each caches its element refs once and
   // routes every write through the same six-writer facet, so their --xp-fill /
-  // .rested / swing writes share the one skip-rate (decision 5a).
+  // .rested / swing writes share the one skip-rate.
   private readonly xpBarPainter = new XpBarPainter(
     this.writerFacet,
     this.xpbarEl,
@@ -2330,7 +2330,7 @@ export class Hud {
     this.swingFillEl,
     this.swingLabelEl,
   );
-  // The per-frame FCT painter (P13b): the pooled-div ring that replaced the per-event
+  // The per-frame FCT painter: the pooled-div ring that replaced the per-event
   // createElement + setTimeout fct() below. handleEvents + showSelfNote feed spawn(), which
   // projects the head anchor ONCE (screen-anchored, byte-faithful to the old fct() and to
   // WoW combat text: the number rises in screen space, it does not chase the camera) and
@@ -2338,20 +2338,20 @@ export class Hud {
   // expired floaters (no per-frame reposition). It owns FCT_POOL_CAP pre-allocated #ui
   // children, projecting through renderer.worldToScreen and dividing by getUiScale into
   // author space (the same zoom correction the old fct() applied). All writes route through
-  // the write-elision facet (decisions 3 / 5a); the per-kind colour is a CSS class token,
-  // never an inline hex (decision 12).
+  // the write-elision facet; the per-kind colour is a CSS class token,
+  // never an inline hex.
   private readonly fctPainter = new FctPainter(
     this.writerFacet,
     document.getElementById('ui') as HTMLElement,
     (x, y, z) => this.renderer.worldToScreen(x, y, z),
     getUiScale,
-    // P14a: tier the pool cap / TTL / drop-non-crit from the STATIC preset (data-fx-level),
+    // Tier the pool cap / TTL / drop-non-crit from the STATIC preset (data-fx-level),
     // never the governor. spawn() reads this per event.
     { getFxTier: () => this.fxTier() },
   );
-  // The player frame is the FIRST instance of the unit_frame family (P10b). It owns
+  // The player frame is the FIRST instance of the unit_frame family. It owns
   // its own element set; target/party become further instances of this exact
-  // painter in P11. The element set + options deliberately mirror the inline block
+  // painter. The element set + options deliberately mirror the inline block
   // exactly, so the player path stays byte-faithful: no `name` (the player name is
   // static, set once at login, not on the hot path); no `stateClasses` (the player
   // frame never carries dead/out-of-range, those are party-only); no `shownDisplay`
@@ -2365,7 +2365,7 @@ export class Hud {
     absorb: this.pfAbsorbEl,
     resource: { container: this.pfResourceEl, fill: this.pfResEl, text: this.pfResTextEl },
   });
-  // The two cast bars are ONE instance-parameterized painter (P11a), over the
+  // The two cast bars are ONE instance-parameterized painter, over the
   // castBarState core. The PLAYER instance localizes the cast id (castDisplayName),
   // layers the eat/drink overlay (consumeBarState, player-only), and clears the bar
   // on hide (its inline block did). The TARGET instance shows the raw cast id
@@ -2392,7 +2392,7 @@ export class Hud {
     },
     { resolveCastLabel: (s) => s.label },
   );
-  // The target frame is the SECOND instance of the unit_frame family (P11b): the same
+  // The target frame is the SECOND instance of the unit_frame family: the same
   // painter + core as the player, over the target's element set. It supplies the
   // per-unit `name`, the cached `#tf-absorb` overlay node (no per-frame query), the
   // `shownDisplay` show/hide path, and the portrait repaint gate (the painter owns
@@ -2417,7 +2417,7 @@ export class Hud {
       repaintPortrait: () => this.drawTargetPortrait(),
     },
   );
-  // The party frames are N further instances of the unit_frame family (P11c), one per
+  // The party frames are N further instances of the unit_frame family, one per
   // member, behind a keyed node pool that replaces the old per-rebuild innerHTML wipe
   // + click/contextmenu re-attach. The pool owns #party-frames; updatePartyFrames
   // feeds it the pure selectPartyFrameMembers result only when the cheap signature
@@ -2436,8 +2436,8 @@ export class Hud {
   // Overworld world-map painter (the delve branch stays with delvePainter). Owns
   // the cached whole-world decorations; redraws from the mediumHud band while open.
   private readonly mapPainter = new MapWindowPainter();
-  // The aura strips are the keyed-pool aura painter (P12b), two instances of the
-  // auras_view core + AurasPainter (decision 9): the player buff bar (#buff-bar, mode
+  // The aura strips are the keyed-pool aura painter, two instances of the
+  // auras_view core + AurasPainter: the player buff bar (#buff-bar, mode
   // 'all') and the target debuffs (#tf-debuffs, mode 'debuffs'). The shared deps fire
   // the i18n lookups every frame (so a language switch lands on the next tick) and the
   // painter's tooltip closure reads the pool's LIVE record (Top risk 3, never a captured
@@ -2462,7 +2462,7 @@ export class Hud {
     this.buffBarEl,
     this.aurasPainterDeps,
     document,
-    // P14a Slice C: cap the visible aura count on the LOW static preset (never the
+    // Cap the visible aura count on the LOW static preset (never the
     // governor).
     () => this.fxTier(),
   );
@@ -2677,7 +2677,7 @@ export class Hud {
     closeOthers: () => this.closeOtherWindows('#options-menu'),
     hideTooltip: () => this.hideTooltip(),
     ...this.windowFocus('#options-menu'),
-    // The gold log tint stays Hud-side so the painter carries no color literal (decision 12).
+    // The gold log tint stays Hud-side so the painter carries no color literal.
     log: (message) => this.log(message, '#ffd100'),
     resetChatWindow: () => this.resetChatWindow(),
     getChatTimestamps: () => this.chatTimestamps,
@@ -2692,7 +2692,7 @@ export class Hud {
     },
   });
   // Leaderboard window painter (leaderboard_view.ts async-free core + leaderboard_
-  // window.ts painter). It owns the page index + focus opener and the packet's one
+  // window.ts painter). It owns the page index + focus opener and the one
   // consumed-new signature: it awaits the paged leaderboard() and renders the page
   // (or the loading / empty / error state). All closures are lazy.
   private readonly leaderboardWindow = new LeaderboardWindow({
@@ -3006,7 +3006,7 @@ export class Hud {
   // (open the trap on capture, release-and-return on close, leaving an in-window
   // refocus alone) lives in ./window_focus, so hud.ts and the keyboard E2E share
   // ONE implementation; this thin wrapper binds it to the shared focus manager
-  // (P15a) and the window root. Escape is handled by the existing unified
+  // and the window root. Escape is handled by the existing unified
   // dispatcher (main.ts game input -> hud.closeAll()), not by the trap.
   private windowFocus(rootSel: string): {
     captureFocus: () => HTMLElement | null;
@@ -3591,7 +3591,7 @@ export class Hud {
     // Build the action-bar core + painter now that the slot buttons exist. The core
     // descriptor carries slot identity + the host-resolved binding/keybind accessors
     // (NO element refs); the paint descriptor carries the container + per-slot
-    // elements (decision 9 multiplicity is a constructor arg, not a hardcoded id).
+    // elements (multiplicity is a constructor arg, not a hardcoded id).
     this.actionBarView = createActionBarView(
       {
         slots: this.abilityButtons.map((_, i) => {
@@ -3750,7 +3750,7 @@ export class Hud {
     // each slot's keybind label through the elided setText every frame; a rebind or
     // language switch therefore lands on the next update() tick (update() runs every
     // frame in-game). Refreshing them here too would be a second writer bypassing that
-    // elision cache (decision 5a). This method owns only the side-menu buttons, which
+    // elision cache. This method owns only the side-menu buttons, which
     // have no per-frame painter.
     const sideButtons: [selector: string, action: string, labelKey: TranslationKey][] = [
       ['#mm-char', 'char', 'hud.keybinds.actions.char'],
@@ -4078,7 +4078,7 @@ export class Hud {
     const el = this.lowHealthVignetteEl;
     if (!el) return;
     const v = lowHealthVignette(hp, maxHp);
-    // Route through the P10a elided writers (the cached ref + setStyleProp /
+    // Route through the elided writers (the cached ref + setStyleProp /
     // toggleClass): a per-frame query + raw uncounted writes become a counted,
     // change-only write that the skip-rate sees while the player is at full health.
     this.toggleClass(el, 'active', v.active);
@@ -4087,8 +4087,8 @@ export class Hud {
     this.setStyleProp(el, '--lhv-pulse', `${v.pulseSeconds.toFixed(3)}s`);
   }
 
-  // The STATIC ui effects tier (P5's data-fx-level, written by the preset applier and
-  // NEVER the FPS governor: the two-controller hazard). The per-element P14a knobs read
+  // The STATIC ui effects tier (data-fx-level, written by the preset applier and
+  // NEVER the FPS governor: the two-controller hazard). The per-element tier knobs read
   // this, so flipping the graphics preset is the only thing that moves a knob. Read once
   // per update() frame; coerceFxTier defaults an unset/unknown stamp to 'ultra' (full
   // effects), so a missing stamp never silently sheds HUD cost.
@@ -4114,7 +4114,7 @@ export class Hud {
     // Drain a trailing combat-announcement burst to the polite live region (push()
     // already flushes; this catches the last buffered line once combat goes quiet).
     if (fastHud) this.combatAnnouncer.flush(now);
-    // Same for the tab-independent chat live region (P18d items 3 + 5): drain the trailing
+    // Same for the tab-independent chat live region: drain the trailing
     // chat burst on the fast tier once chat goes quiet.
     if (fastHud) this.chatAnnouncer.flush(now);
 
@@ -4133,7 +4133,7 @@ export class Hud {
     document.getElementById('mm-talents')?.classList.toggle('has-points', talGlow);
     document.getElementById('mobile-talents')?.classList.toggle('has-points', talGlow);
 
-    // player frame: the first instance of the unit_frame family (P10b). Build a
+    // player frame: the first instance of the unit_frame family. Build a
     // player-shaped descriptor and paint it. The absorb overlay + the resource-type
     // class fold into the painter's elided writers (no more raw updateAbsorb /
     // className swap on the player hot path). updateLowHealthVignette +
@@ -4158,9 +4158,9 @@ export class Hud {
     this.updateLowHealthVignette(p.hp, p.maxHp);
     this.updateLowResource(p);
 
-    // buff bar (player buffs + debuffs): the keyed-pool aura painter (P12b), driven by
-    // the auras_view core every frame (the elided writers make a no-op frame free). P14a
-    // Slice C tiers the refresh (tick) granularity: full tiers repaint every frame
+    // buff bar (player buffs + debuffs): the keyed-pool aura painter, driven by
+    // the auras_view core every frame (the elided writers make a no-op frame free). The
+    // graphics tier coarsens the refresh (tick) granularity: full tiers repaint every frame
     // (interval 0, cadenceDue always true); low coarsens to ~4Hz. The visible-count cap
     // is applied inside the painter.
     if (cadenceDue(this.lastBuffBarPaintAt, now, auraRefreshIntervalMs(fxTier))) {
@@ -4168,27 +4168,27 @@ export class Hud {
       this.buffBarPainter.paint(this.buffBarView.tick(p));
     }
 
-    // target frame: the SECOND instance of the unit_frame family (P11b). The shared
+    // target frame: the SECOND instance of the unit_frame family. The shared
     // frame (display/name/level/hp/absorb/portrait gate) goes through the family
     // painter; the target-only concerns (the elite class + tag, the hostile/friendly
     // name color, and the combo pips) route through the SAME elided writers here, and
-    // the target debuffs + cast bar CONSUME the existing auras paint + P11a's cast_bar
+    // the target debuffs + cast bar CONSUME the existing auras paint + the cast_bar
     // target instance. (Targeting a world object hides the frame, like no target.)
     const target = p.targetId !== null ? sim.entities.get(p.targetId) : null;
     if (target && target.kind !== 'object') {
       const isBoss = !!MOBS[target.templateId]?.boss;
       // The portrait gate fires inside paint(); hand it the subject to redraw.
       this.targetPortraitSubject = target;
-      // P14a Slice D: the target is a NON-SELF frame; on low throttle its HP/level/
+      // The target is a NON-SELF frame; on low throttle its HP/level/
       // portrait refresh (~10Hz), while the SELF/player frame stays full-rate. A target
       // SWAP bypasses the throttle so selecting a new target updates immediately. The full
       // tiers return interval 0 (cadenceDue always true), so this paints every frame as
       // before. The elite tag / name color / debuffs / cast bar / combo below stay
-      // full-rate (debuffs are separately tiered in Slice C; the cast bar is a raid
+      // full-rate (debuffs are separately tiered; the cast bar is a raid
       // mechanic indicator), so only the unit_frame body is throttled.
       const targetChanged = target.id !== this.lastTargetFrameId;
       // Announce the new target's name into the polite #target-live region once per target
-      // CHANGE (P18d item 1), tracked by lastAnnouncedTargetId independently of the paint
+      // CHANGE, tracked by lastAnnouncedTargetId independently of the paint
       // cadence so it fires on the real id change, not the throttled repaint. Write textContent
       // DIRECTLY through the re-announce marker (NOT the elided setText): a pack of same-template
       // mobs share a display name, so the elided writer would skip every same-named re-target and
@@ -4231,7 +4231,7 @@ export class Hud {
       }
       // Target-only sub-parts the family frame does not express, each routed through
       // the elided writers (the elite class + name color are the two writes the four
-      // original writers cannot express, hence the P10a toggleClass / setStyleProp).
+      // original writers cannot express, hence the toggleClass / setStyleProp).
       this.toggleClass(this.targetFrameEl, 'elite', !!MOBS[target.templateId]?.elite);
       this.setText(this.targetEliteTagEl, isBoss ? t('hud.core.boss') : t('hud.core.elite'));
       this.setStyleProp(
@@ -4245,7 +4245,7 @@ export class Hud {
       // elided toggleClass writer so the per-frame hot path stays write-elided. Normal
       // mode is unaffected (the rule lives only inside @media (forced-colors: active)).
       this.toggleClass(this.targetNameEl, 'hostile', target.hostile);
-      // P14a Slice C: tier the target-debuff refresh (tick) granularity like the buff
+      // Tier the target-debuff refresh (tick) granularity like the buff
       // bar. A target SWAP (targetChanged) forces an immediate repaint so the strip never
       // shows the previous target's debuffs while throttled on low; otherwise the full
       // tiers repaint every frame and low coarsens to ~4Hz.
@@ -4289,12 +4289,12 @@ export class Hud {
     } else {
       // No target (or a world object): hide the frame. The painter also resets its
       // portrait gate here, so re-acquiring a target repaints (the old -999 reset). Reset
-      // the P14a cadence id too, so re-acquiring a target bypasses the low-tier throttle
+      // the tier cadence id too, so re-acquiring a target bypasses the low-tier throttle
       // and paints immediately (targetChanged becomes true on the next frame with a target).
       this.lastTargetFrameId = null;
       // Clear the target-name live region on the transition to no-target, and reset BOTH the
       // tracker and the re-announce marker so re-acquiring the SAME target re-announces cleanly
-      // (P18d item 1). GATED on the tracker so it fires only on the clear EDGE, never per frame:
+      // GATED on the tracker so it fires only on the clear EDGE, never per frame:
       // with no target (e.g. the whole perf tour, which acquires none) the region is never
       // written, so the per-frame floor is unchanged. Direct textContent write (matching the
       // announce above), not the elided setText.
@@ -4325,7 +4325,7 @@ export class Hud {
     this.swingTimerPainter.paint(swing);
 
     // action bar: the slot row, driven by the pure action_bar_view core + the thin
-    // ActionBarPainter (P12a). Every per-slot icon / cooldown / dimming / count write
+    // ActionBarPainter. Every per-slot icon / cooldown / dimming / count write
     // routes through the elided writer facet; the aria-label keeps its per-frame t()
     // call IN the core while the painter elides the DOM setAttribute (Top risk 4).
     this.renderPetBar();
@@ -4337,7 +4337,7 @@ export class Hud {
     // xp bar: pre-cap shows the level bar; post-cap fills toward the next virtual
     // level (Max-Level XP Overflow), with distinct prestige/gold styling. The
     // painter caches the #xpbar / .rested / #player-frame refs once and routes the
-    // --xp-fill / .rested / class writes through the elided helpers (decision 5a).
+    // --xp-fill / .rested / class writes through the elided helpers.
     const showOverflow = (this.optionsHooks?.settings.get('showOverflowXp') ?? 1) >= 0.5;
     const bar = xpBarView({
       level: p.level,
@@ -4348,8 +4348,8 @@ export class Hud {
     });
     this.xpBarPainter.paint(bar);
 
-    // FCT painter (P13b): drive the pooled floating-combat-text ring on the every-frame
-    // tier (decision 8: folded into the existing `hud` perf bucket, not a second rAF).
+    // FCT painter: drive the pooled floating-combat-text ring on the every-frame
+    // tier (folded into the existing `hud` perf bucket, not a second rAF).
     // step() only TTL-recycles each live floater (the number is screen-anchored, positioned
     // once at spawn, so there is no per-frame reposition); an empty pool (no recent combat)
     // returns immediately, so this costs nothing at steady state.
@@ -4441,7 +4441,7 @@ export class Hud {
       music.setBossCombat(bossEngaged);
 
       // classic combat indicator: crossed swords + red ring on the player portrait.
-      // Routed through the cached ref + the elided toggleClass writer (P18e): a counted,
+      // Routed through the cached ref + the elided toggleClass writer: a counted,
       // change-only write replacing a per-frame raw re-querying classList.toggle.
       this.toggleClass(this.playerFrameEl, 'combat', inCombat);
       // classic "resting" zZz on the player portrait while seated / recovering.
@@ -4457,9 +4457,9 @@ export class Hud {
       this.updateQuestTracker();
       this.updateDelveTracker();
       // Party frames run on the ~4Hz mediumHud band (the enclosing block) for EVERY tier.
-      // P14a deliberately does NOT tier them down on low: party-member HP is a healer's
+      // The tier knobs deliberately do NOT tier them down on low: party-member HP is a healer's
       // only actionable signal (no self-dispel), so a graphics preset must not slow it
-      // (ui_tier_knobs Slice D). updatePartyFrames already short-circuits an unchanged
+      // (ui_tier_knobs). updatePartyFrames already short-circuits an unchanged
       // party via its signature, so an idle frame is near-free without a tier gate.
       this.updatePartyFrames();
       this.updateTradeWindow();
@@ -4482,15 +4482,15 @@ export class Hud {
     }
 
     // when a bout begins, get the queue panel out of the way for the fight. Route through
-    // arenaWindow.close() (not a raw hide) so it returns focus to the opener (WCAG 2.4.3,
-    // P18e): close() guards a not-displayed window and tolerates a stale opener.
+    // arenaWindow.close() (not a raw hide) so it returns focus to the opener (WCAG 2.4.3):
+    // close() guards a not-displayed window and tolerates a stale opener.
     const inArenaMatch = !!this.sim.arenaInfo?.match;
     if (inArenaMatch && !this.arenaMatchSeen && $('#arena-window').style.display === 'block') {
       this.arenaWindow.close();
     }
     this.arenaMatchSeen = inArenaMatch;
     if (fastHud) {
-      // P14a Slice B: the minimap canvas redraw is the heaviest fastHud item; tier its
+      // The minimap canvas redraw is the heaviest fastHud item; tier its
       // cadence (full tiers redraw every fastHud tick = ~10Hz; low throttles to ~3-4Hz).
       // The clock / coords / compass are cheap text and stay at the full fastHud rate.
       if (cadenceDue(this.lastMinimapDrawAt, now, minimapRedrawIntervalMs(fxTier))) {
@@ -5359,7 +5359,7 @@ export class Hud {
       return;
     }
     // The overworld minimap: a pure marker core (minimap_markers) + the thin canvas
-    // painter (P12b). It owns the cached terrain blit + the marker draws and writes
+    // painter. It owns the cached terrain blit + the marker draws and writes
     // '#zone-label' through the write-elision facet.
     this.minimapPainter.paintOverworld(
       ctx,
@@ -6510,7 +6510,7 @@ export class Hud {
       this.appendChatMessageBody(div, text, fromPid);
     }
     this.chatLogEl.appendChild(div);
-    // Announce the player-chat line through the tab-independent #chat-live region (P18d).
+    // Announce the player-chat line through the tab-independent #chat-live region.
     this.announceChatLine(div);
     while (this.chatLogEl.children.length > 200) {
       const first = this.chatLogEl.firstChild;
@@ -6906,7 +6906,7 @@ export class Hud {
   }
 
   // Announce a chat line that reached the visible #chatlog pane through the tab-independent
-  // #chat-live region (P18d items 3 + 5), mirroring what the old #chatlog aria-live spoke: a
+  // #chat-live region, mirroring what the old #chatlog aria-live spoke: a
   // channel-filtered line is .chat-hidden (display:none) and stays silent, exactly as a
   // display:none live-region child did. The relayed text is the rendered line text the
   // screen reader read off the div (sender + message, already localized); ChatAnnouncer
@@ -6954,13 +6954,13 @@ export class Hud {
     const shape = fctSpawnShape({ type: 'self-note' });
     if (shape)
       this.fctPainter.spawn({ ...shape, text, target: this.sim.player }, performance.now());
-    // Also route the self-note into the polite #combat-live region (P18d item 2): the
+    // Also route the self-note into the polite #combat-live region: the
     // self-note is the one FCT-only event with NO combat-log line, so without this it would
     // never be announced. The text is already t()-localized (e.g. "Can't move!") so nothing
     // new is built here, and the announcer coalesces + throttles so it never streams raw
     // per-damage text. (The xp / rested-xp floats are NOT routed here: those events already
     // emit a textual chat line via log(), so the #chat-live region announces them; adding the
-    // float too would double-announce, which decision 10 forbids.)
+    // float too would double-announce, which the announce contract forbids.)
     this.combatAnnouncer.push(text, performance.now());
   }
 
@@ -7854,7 +7854,7 @@ export class Hud {
       // Mirror BagsWindow.close()'s teardown backstop: a discard/sell prompt may hold
       // #bags inert (installPromptDialog) and this mobile path hides the grid without
       // running the prompt's dismiss(), so clear inert here too or the next open shows a
-      // dead grid (item 3 invariant: a hidden #bags is never inert).
+      // dead grid (invariant: a hidden #bags is never inert).
       const bags = $('#bags');
       bags.style.display = 'none';
       bags.inert = false;
@@ -9072,7 +9072,7 @@ export class Hud {
     el.style.display = 'block';
     // Kept inline rather than folded onto markDialogRoot: that helper would also set
     // tabindex=-1 on the root, which this focusManager-trapped prompt does not use
-    // (P18a is byte-preserving on the trap). The dialog is named via aria-labelledby.
+    // (byte-preserving on the trap). The dialog is named via aria-labelledby.
     el.setAttribute('role', 'dialog');
     el.setAttribute('aria-modal', 'true');
     el.setAttribute('aria-labelledby', 'confirm-dialog-title');
@@ -9313,7 +9313,7 @@ export class Hud {
     });
   }
 
-  // The leaderboard window is the packet's one async/paged window; it lives in
+  // The leaderboard window is the one async/paged window; it lives in
   // LeaderboardWindow (leaderboard_view.ts core + leaderboard_window.ts painter),
   // which consumes the paged leaderboard() and owns the page index + focus.
   toggleLeaderboard(): void {

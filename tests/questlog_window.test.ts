@@ -3,7 +3,7 @@
 // The painter's DOM methods need a document, so they are not exercised in this Node
 // suite; the pure decisions it renders are covered by tests/questlog_view.test.ts.
 // This guard pins the a11y-bearing markup (dialog role + labelledby, real close +
-// quest-row buttons with aria-pressed, focus-return) and the decision-12 contract
+// quest-row buttons with aria-pressed, focus-return) and the no-magic-values contract
 // (no literal colors in TS; the reward-color fallback is a named token).
 
 import { readFileSync } from 'node:fs';
@@ -18,7 +18,7 @@ describe('questlog_window: WCAG chrome (dialog + rows + focus-return)', () => {
   });
 
   it('renders the dialog role + labelledby for the window', () => {
-    // P18a: the dialog identity is set via the shared markDialogRoot helper (role=dialog +
+    // The dialog identity is set via the shared markDialogRoot helper (role=dialog +
     // aria-labelledby + aria-modal + tabindex); the helper's own writes are unit-tested in
     // dialog_root.test.ts.
     expect(code).toContain("markDialogRoot(el, { labelledBy: 'quest-log-title' })");
@@ -47,7 +47,7 @@ describe('questlog_window: WCAG chrome (dialog + rows + focus-return)', () => {
   });
 });
 
-describe('questlog_window: no magic values (decision 12, DOM painter)', () => {
+describe('questlog_window: no magic values (DOM painter)', () => {
   it('carries no literal hex or rgb color in TS (the reward fallback is a token)', () => {
     const hex = code.match(/#[0-9a-fA-F]{3,8}\b/g) ?? [];
     const rgb = code.match(/\brgba?\s*\(/g) ?? [];

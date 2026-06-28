@@ -14,7 +14,7 @@
 // DOM-free and i18n-free: entries carry raw quest / npc / item ids + raw numbers;
 // the painter localizes titles, objective labels, narrative, and reward names. The
 // questLog/questsDone shape is identical for the offline Sim and the online
-// ClientWorld mirror, so the two produce identical models (decision 15).
+// ClientWorld mirror, so the two produce identical models.
 
 import { QUESTS, questRewardItem } from '../sim/data';
 import type { PlayerClass, QuestProgress } from '../sim/types';
@@ -76,7 +76,7 @@ export interface QuestLogInput {
  * falls back to the first quest), maps the list rows, and derives the selected
  * quest's detail structure (objectives with progress, rewards, the class reward
  * item, the turn-in npc). Reads only IWorld-mirrored data, so the offline Sim and
- * the online ClientWorld mirror produce identical models (decision 15).
+ * the online ClientWorld mirror produce identical models.
  */
 export function buildQuestLogView(input: QuestLogInput): QuestLogView {
   const { quests, playerClass } = input;

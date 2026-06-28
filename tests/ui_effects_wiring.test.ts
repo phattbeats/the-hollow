@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 
-// Source-text guards for the P5 graphics-tier effect wiring. The pure resolver is
+// Source-text guards for the graphics-tier effect wiring. The pure resolver is
 // exhaustively unit-tested (ui_effects_profile.test.ts); these pin the load-bearing
 // HOST + CSS rules that have no other regression backstop: the applier seam, the
 // main.ts dispatch, and the four effect buckets the tokens drive. A live
@@ -17,7 +17,7 @@ const hudCss = read('src/styles/hud.css');
 const applier = read('src/ui/ui_effects_applier.ts');
 const main = read('src/main.ts');
 
-describe('P5 tokens.css - :root seeds (full-Ultra defaults) + B1 glass low drop', () => {
+describe('tokens.css - :root seeds (full-Ultra defaults) + B1 glass low drop', () => {
   it('seeds the three --fx-* tokens to their full-effect values so calc/var reads are inert by default', () => {
     expect(tokensCss).toContain('--fx-shadow: 1;');
     expect(tokensCss).toContain('--fx-ambient-anim: running;');
@@ -34,7 +34,7 @@ describe('P5 tokens.css - :root seeds (full-Ultra defaults) + B1 glass low drop'
   });
 });
 
-describe('P5 hud.css - B4 glow scales with --fx-shadow (0 at low), structural shadows literal', () => {
+describe('hud.css - B4 glow scales with --fx-shadow (0 at low), structural shadows literal', () => {
   it('multiplies the four decorative outer-glow blurs by --fx-shadow', () => {
     expect(hudCss).toContain('0 0 calc(8px * var(--fx-shadow, 1)) #e74c3c99'); // player portrait
     expect(hudCss).toContain('0 0 calc(8px * var(--fx-shadow, 1)) #4fc3ff66'); // rest indicator
@@ -47,7 +47,7 @@ describe('P5 hud.css - B4 glow scales with --fx-shadow (0 at low), structural sh
   });
 });
 
-describe('P5 hud.css - B2 ambient loops gate on --fx-ambient-anim + --motion-scale', () => {
+describe('hud.css - B2 ambient loops gate on --fx-ambient-anim + --motion-scale', () => {
   it('gives every ambient loop a play-state token (paused at low/reduced)', () => {
     const playStates =
       hudCss.match(/animation-play-state: var\(--fx-ambient-anim, running\);/g) ?? [];
@@ -61,9 +61,9 @@ describe('P5 hud.css - B2 ambient loops gate on --fx-ambient-anim + --motion-sca
   });
 });
 
-describe('P5 hud.css - the death-warning vignette holds full tint on ALL THREE calming axes', () => {
+describe('hud.css - the death-warning vignette holds full tint on ALL THREE calming axes', () => {
   it('drops the breathe + holds --lhv-opacity under OS reduced-motion, the setting, and the low tier', () => {
-    // The @media OS axis pre-existed; the setting + low-tier axes are the P5 additions.
+    // The @media OS axis pre-existed; the setting + low-tier axes are the additions.
     expect(hudCss).toContain('@media (prefers-reduced-motion: reduce) {');
     expect(hudCss).toContain('body.reduce-motion #low-health-vignette {');
     expect(hudCss).toContain(':root[data-fx-level="low"] #low-health-vignette {');
@@ -74,7 +74,7 @@ describe('P5 hud.css - the death-warning vignette holds full tint on ALL THREE c
   });
 });
 
-describe('P5 hud.css - B6 FCT crit sheds the pop at low (keeps the number)', () => {
+describe('hud.css - B6 FCT crit sheds the pop at low (keeps the number)', () => {
   it('swaps the crit keyframes for the plain rise at the low tier only', () => {
     expect(hudCss).toContain(':root[data-fx-level="low"] .fct.crit {');
     expect(hudCss).toContain('animation-name: fct-rise;');
@@ -83,7 +83,7 @@ describe('P5 hud.css - B6 FCT crit sheds the pop at low (keeps the number)', () 
   });
 });
 
-describe('P5 applier - the diff-guarded, debounced, matchMedia-driven DOM host', () => {
+describe('applier - the diff-guarded, debounced, matchMedia-driven DOM host', () => {
   it('owns the OS prefers-reduced-motion channel with a change listener', () => {
     expect(applier).toContain("window.matchMedia('(prefers-reduced-motion: reduce)')");
     expect(applier).toContain("addEventListener?.('change', this.applyNow)");
@@ -105,7 +105,7 @@ describe('P5 applier - the diff-guarded, debounced, matchMedia-driven DOM host',
   });
 });
 
-describe('P5 main.ts - boot + reduce-motion single source + the three setting dispatches', () => {
+describe('main.ts - boot + reduce-motion single source + the three setting dispatches', () => {
   it('constructs the applier and stamps the initial profile at boot', () => {
     expect(main).toContain('new UiEffectsApplier({');
     expect(main).toContain('uiEffectsApplier.applyNow();');

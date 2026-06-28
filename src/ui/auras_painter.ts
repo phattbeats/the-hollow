@@ -1,9 +1,9 @@
-// The keyed-pool aura-strip painter (frontend-modernization v0.16.0, P12b). It
+// The keyed-pool aura-strip painter (v0.16.0). It
 // replaces the old renderAuras `__sig` cache + innerHTML wipe + per-rebuild
 // attachTooltip (state.md Top risk 3) with a persistent per-aura node pool: one node
 // per aura key (the aura id), reused across frames, its tooltip attached ONCE and
 // reading a LIVE mutable record, data updated IN PLACE through the host's elided
-// writers (decision 5a). Same painter, two instances (decision 9): the player buff bar
+// writers. Same painter, two instances: the player buff bar
 // (#buff-bar, mode 'all') and the target debuffs (#tf-debuffs, mode 'debuffs').
 //
 // TOP RISK 3 (the load-bearing correctness rule): the pooled record is a MUTABLE
@@ -14,7 +14,7 @@
 // fields and the same closure renders B. tests/auras_painter.test.ts pins this with a
 // recycle A->B regression.
 //
-// WRITE ROUTING (decision 5a / decision 12): every per-frame DOM write goes through
+// WRITE ROUTING: every per-frame DOM write goes through
 // the writer facet (setStyleProp for the icon, toggleClass for the debuff class,
 // setText for the duration + stacks, setDisplay for the stacks badge visibility); no
 // raw style / textContent / className / setAttribute. The only DOM construction (the
@@ -22,7 +22,7 @@
 // is resolved only when an aura's icon key changes (the expensive part).
 //
 // ORDER: the active records are reconciled into the container with the minimum number
-// of node moves (the P11c reconcileOrder discipline), so a steady-state frame moves no
+// of node moves (the reconcileOrder discipline), so a steady-state frame moves no
 // nodes. The buff bar is `flex-wrap` row-reverse, so DOM order is the aura order.
 
 import type { UiEffectsTier } from '../game/ui_effects_profile';
@@ -31,7 +31,7 @@ import type { AurasState } from './auras_view';
 import type { PainterHostWriters } from './painter_host';
 
 // Class / property names the painter drives. Named, not inlined, so the painter
-// references no bare DOM string literal (decision 12).
+// references no bare DOM string literal.
 const BUFF_CLASS = 'buff';
 const DEBUFF_CLASS = 'debuff';
 const DUR_CLASS = 'dur';
@@ -87,7 +87,7 @@ interface PooledAura {
 
 export class AurasPainter {
   // Active records by aura key (the aura id). One persistent node per key, reused
-  // across frames; the keyed pool the phase requires.
+  // across frames; the keyed pool this painter requires.
   private readonly pool = new Map<string, PooledAura>();
   // Detached records kept for reuse (recycling a departed aura's node to a new aura).
   // The node's tooltip closure stays attached and reads the live record, so a recycled
@@ -106,7 +106,7 @@ export class AurasPainter {
     private readonly deps: AurasPainterDeps,
     // Injectable so a Node test can drive the pool without a global document.
     private readonly doc: Document = document,
-    // P14a Slice C: the STATIC ui effects tier accessor (data-fx-level, never the FPS
+    // The STATIC ui effects tier accessor (data-fx-level, never the FPS
     // governor). Read per paint to cap the visible aura count on low. Defaults to the
     // full tier so a painter built without it is untiered (uncapped, byte-faithful).
     private readonly getFxTier: () => UiEffectsTier = () => 'ultra',
@@ -117,11 +117,11 @@ export class AurasPainter {
   paint(state: AurasState): void {
     this.frame++;
     const { slots, count } = state;
-    // P14a Slice C: on low, cap the number of rendered auras; auras beyond the cap are
+    // On low, cap the number of rendered auras; auras beyond the cap are
     // simply not touched this frame, so the recycle sweep below detaches them. The full
     // tiers return an infinite cap, so every active aura renders (the unchanged path).
     //
-    // FAIRNESS (senior re-audit): the cap sheds BUFF overflow only, never a DEBUFF. The
+    // FAIRNESS: the cap sheds BUFF overflow only, never a DEBUFF. The
     // player buff bar is mode 'all' (buffs + debuffs interleaved in sim-application
     // order), and persistent raid buffs fill the front slots, so a flat first-N cap would
     // push a mid-combat boss/mob debuff (DoT / stun / curse) off-screen on low while every
@@ -228,8 +228,8 @@ export class AurasPainter {
 
   // Walk the desired child sequence (the active records in aura order) against the
   // container's current children, moving a node into place ONLY when it is not already
-  // there. The standard keyed-list reconcile (the P11c discipline the P12 auras + P13
-  // FCT pools share): O(N) compares and exactly as many insertBefore moves as nodes
+  // there. The standard keyed-list reconcile (the discipline the auras + FCT pools
+  // share): O(N) compares and exactly as many insertBefore moves as nodes
   // that actually changed position (zero when nothing moved). Departed records were
   // already detached in paint(), and new / recycled records are detached, so every move
   // here is a deliberate (re)insert; an unchanged order touches the DOM not at all.

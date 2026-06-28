@@ -1,10 +1,10 @@
-// Shared harness for the P15b opt-in browser-mode a11y suite. Runs IN the browser (Vitest 4
+// Shared harness for the opt-in browser-mode a11y suite. Runs IN the browser (Vitest 4
 // Browser Mode), so it imports the real style barrel once (Lightning-processed exactly as the
 // app build does it, so axe-core sees the real computed colors, tokens, and forced-colors
 // rules) and renders the real window PAINTERS into a host element, the same Humble-Object
-// consumers the app uses. Each window is fed a fixture IWorld + a stub deps bag; decision 15
-// is honored by driving the async windows under BOTH a Sim-shaped and a ClientWorld-mirror
-// shaped fixture. The 3D world / canvas pixels stay OUT of scope (decision 10): canvas host
+// consumers the app uses. Each window is fed a fixture IWorld + a stub deps bag; ClientWorld-vs-Sim
+// parity is honored by driving the async windows under BOTH a Sim-shaped and a ClientWorld-mirror
+// shaped fixture. The 3D world / canvas pixels stay OUT of scope: canvas host
 // windows get a label + honest summary, never faked per-marker aria.
 
 import axe from 'axe-core';
@@ -18,7 +18,7 @@ export type AxeViolation = {
 };
 
 // Run axe over `el` against the WCAG 2.0/2.1/2.2 A + AA rule tags and return only the serious
-// and critical violations (the phase gate). Lower-impact best-practice findings (e.g. the
+// and critical violations (the gate). Lower-impact best-practice findings (e.g. the
 // role=option-on-button precedent) are not gated here.
 export async function axeSeriousViolations(el: HTMLElement): Promise<AxeViolation[]> {
   const results = await axe.run(el, {
@@ -66,7 +66,7 @@ export function stubDeps<T extends object>(overrides: Partial<NoInfer<T>>): T {
   }) as unknown as T;
 }
 
-// Two fixture "world shapes" for decision-15 parity. Sim-shaped fixtures may carry extra
+// Two fixture "world shapes" for ClientWorld-vs-Sim parity. Sim-shaped fixtures may carry extra
 // fields the core ignores; the ClientWorld mirror carries only the wire-decoded fields. For
 // most windows the rendered DOM is identical under both, which is the point: an offline-only
 // shape assumption is what the dual run catches.

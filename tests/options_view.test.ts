@@ -270,7 +270,7 @@ describe('options_view: main menu routing', () => {
 
 // ---------------------------------------------------------------------------
 // Cluster 2: bug report. The ONE IWorld slice the window reads, so it is the
-// ClientWorld-vs-Sim parity surface (decision 15).
+// ClientWorld-vs-Sim parity surface.
 // ---------------------------------------------------------------------------
 describe('options_view: bug report info (cluster 2)', () => {
   it('derives realm/character/coords; unknown realm flagged when blank', () => {
@@ -291,7 +291,7 @@ describe('options_view: bug report info (cluster 2)', () => {
     expect(nullRealm.realmKnown).toBe(false);
   });
 
-  it('derives the documented info from BOTH a Sim shape and a ClientWorld-mirror shape (decision 15 parity)', () => {
+  it('derives the documented info from BOTH a Sim shape and a ClientWorld-mirror shape (parity)', () => {
     // Two GENUINELY different world shapes, not a self-clone: the offline Sim hands
     // the window a live player Entity (a prototyped instance carrying extra offline
     // fields the window must ignore) and an empty realm string (IWorld.realm is ''
@@ -330,7 +330,7 @@ describe('options_view: bug report info (cluster 2)', () => {
 });
 
 // ---------------------------------------------------------------------------
-// Determinism: same input -> same output (decision: deterministic pure core)
+// Determinism: same input -> same output (deterministic pure core)
 // ---------------------------------------------------------------------------
 describe('options_view: determinism', () => {
   it('produces identical control lists for identical inputs', () => {

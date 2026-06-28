@@ -5,7 +5,7 @@
 # src/styles/ - extracted HUD CSS (tokens + layers)
 
 All game CSS for the two game entries (`index.html` + `play.html`), extracted from the old
-inline `<style>` blocks (P1-P4b) into one directory under a single `@layer` order, imported
+inline `<style>` blocks into one directory under a single `@layer` order, imported
 once from `src/main.ts` via the `index.css` barrel (admin/guide keep their own entries). No
 CSS framework; hand-authored, Lightning-compiled.
 
@@ -21,7 +21,7 @@ that order. Modules, in cascade order:
 | `hud` | (reserved, empty) | declared in the order but unused; `hud.css` targets `@layer components`, not this slot |
 | `shell` | `shell.css` | desktop pre-game shell + char-select |
 | `hud-mobile` | `hud.mobile.css` | the in-game mobile-touch block, ordered AFTER `shell` so in-game mobile overrides of pre-game shell elements win |
-| `index-extra` / `play-extra` | `index.extra.css` / `play.extra.css` | per-entry only (a `<link>` in index.html / play.html, not the barrel): the `#rotate-device` orientation gate (decision 16a); the wiring is guarded by `tests/per_entry_css_wiring.test.ts` |
+| `index-extra` / `play-extra` | `index.extra.css` / `play.extra.css` | per-entry only (a `<link>` in index.html / play.html, not the barrel): the `#rotate-device` orientation gate; the wiring is guarded by `tests/per_entry_css_wiring.test.ts` |
 
 Flat layer names (`hud-mobile`, not `hud.mobile`): a DOT in a `@layer` name is a SUBLAYER,
 which silently reorders the cascade. The completeness of the section set is guarded by
@@ -71,26 +71,24 @@ the whole declaration silently drop in the browser).
   minification drop (the `-webkit-` twin must survive next to the standard property) is
   guarded by `tests/backdrop_filter_survival.test.ts` + `scripts/check_backdrop_survival.mjs`
   (run by `npm run build` over the emitted CSS).
-- **Cross-engine E2E (P17b: prototyped, NOT landed):** a working matrix that runs the opt-in
+- **Cross-engine E2E (prototyped, NOT landed):** a working matrix that runs the opt-in
   browser suite on Chromium/Firefox/WebKit + a first-class mobile-WebKit instance (140 tests
   green, browsers provisioned via `npx playwright install`, bare `vitest run` stays
-  browser-free) was built and verified in P17b but reverted alongside the declined bundle work
+  browser-free) was built and verified but reverted alongside the declined bundle work
   below. So `vitest.browser.config.ts` still lists chromium only; the matrix is an OPTIONAL
   standalone re-land (a `BROWSER_MATRIX` env gate + one ci.yml job) that would close FB's
   webkit-in-CI item independently. Documented here, not enforced today.
 
-## Bundle discipline (P17b: MEASURED then DECLINED)
+## Bundle discipline (MEASURED then DECLINED)
 A JS bundle-budget CI gate (sibling to `asset:budget`) + a selective lazy-load were prototyped
-and fully proven in P17b, then DECLINED on the evidence. The measurement: the play-entry eager
+and fully proven, then DECLINED on the evidence. The measurement: the play-entry eager
 JS is 3.173 MiB raw / ~952 KB gzip, ~1.5 MiB of which is non-deferrable i18n DATA; lazy-loading
 the two heaviest rarely-opened windows (options ~53 KB, market ~25 KB) behind an a11y loading
 state shrank it by only ~14 KiB gzipped (~1.5%), with ZERO runtime/FPS impact (load-timing
 only). The maintainer judged that not worth the complexity, so there is NO bundle-budget gate
 and NO lazy-loaded window: every cold window stays eagerly imported. Do not re-attempt without
-new evidence that the i18n-data-dominated bundle has materially changed (see the state.md
-decision-13 OUTCOME note).
+new evidence that the i18n-data-dominated bundle has materially changed.
 
 ## Pointers
 Root `CLAUDE.md` (repo-wide invariants incl gameplay-neutral graphics) ·
-`src/ui/CLAUDE.md` (the painters that drive these tokens + the a11y / per-frame / canvas-performance contracts) ·
-`docs/frontend-modernization/state.md` (the locked decisions + validation matrix).
+`src/ui/CLAUDE.md` (the painters that drive these tokens + the a11y / per-frame / canvas-performance contracts).

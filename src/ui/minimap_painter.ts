@@ -3,20 +3,20 @@
 // The imperative half of the pure-core + painter split: the pure marker model lives in
 // minimap_markers.ts (createMinimapMarkers, unit-tested there); this module turns that
 // discriminated Marker union into actual canvas draws. The IN-DELVE branch is owned by
-// delve_map_painter.ts (P6); Hud picks the branch with minimapMode and routes only the
+// delve_map_painter.ts; Hud picks the branch with minimapMode and routes only the
 // overworld branch here, so the two painters never duplicate each other's drawing.
 //
 // CADENCE (preserved from the inline site): Hud calls paintOverworld from update()'s
 // `fastHud` band (>= 100ms, ~10Hz), blitting the Hud-owned cached terrain background
 // each redraw. This painter does not change that call site or cadence; it only owns the
-// draw. (P14a will tier the 10Hz cadence; this phase keeps it.)
+// draw. (graphics tiering may lower the 10Hz cadence; kept here.)
 //
-// WRITE-ELISION BOUNDARY (decision 12): the minimap is Canvas-2D and a 2D context
+// WRITE-ELISION BOUNDARY: the minimap is Canvas-2D and a 2D context
 // cannot be elided, so the canvas draws are NOT routed through the write-elision facet.
 // The ONLY DOM write the painter makes is the '#zone-label' text, which IS routed
 // through the facet's setText.
 //
-// NO-MAGIC-VALUES (decision 12, canvas sub-rule): a 2D context cannot read CSS vars, so
+// NO-MAGIC-VALUES (canvas sub-rule): a 2D context cannot read CSS vars, so
 // the painter resolves the `--color-minimap-*` tokens via getComputedStyle and caches
 // them on the instance (never per-marker, and now never per-redraw: the tokens are static
 // `:root` design tokens, src/styles/tokens.css, with no runtime mutation, so one resolve
@@ -111,7 +111,7 @@ export class MinimapPainter {
     private readonly localizeZone: (zoneId: string) => string,
   ) {}
 
-  /** Resolve the minimap color tokens in one getComputedStyle pass (decision 12: a 2D
+  /** Resolve the minimap color tokens in one getComputedStyle pass (a 2D
    *  context can only read a CSS var this way; never per-marker), then cache them: the
    *  tokens are static, so subsequent redraws reuse the cached values. */
   private resolveColors(): MinimapColors {

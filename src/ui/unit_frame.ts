@@ -1,12 +1,11 @@
-// Pure derivation for the unit_frame FAMILY (frontend-modernization v0.16.0,
-// locked decision 9): ONE allocation-light core + ONE write-elided painter
+// Pure derivation for the unit_frame FAMILY: ONE allocation-light core + ONE write-elided painter
 // (unit_frame_painter.ts) that a player, target, or party instance all drive.
 // The core maps a UNIT DESCRIPTOR (the values a frame needs, computed at the call
 // site) to a UNIT VIEW (the values the painter writes). It has NO hardcoded
 // element id and NO single-instance assumption: it is a pure function of the
 // descriptor, so the same descriptor always yields the same view (DOM-free,
 // i18n-free, no Math.random / Date.now / performance.now). The player frame is the
-// FIRST instance through this seam; P11a/b/c add target and party as further
+// FIRST instance through this seam; target and party are added as further
 // instances of the EXACT seam with no core change, so the descriptor deliberately
 // carries the FULL field set target and party need even though the player leaves
 // some at their always-present values.
@@ -44,7 +43,7 @@ export type UnitResourceKind = ResourceType | 'none' | null;
  * single object per frame carrying preformatted fracs + text and an entity-shaped
  * absorb input, never a raw entity reference (other than the structural absorb
  * subset). Fields the player always has at fixed values (present, dead,
- * outOfRange) exist so target/party fill them in P11 with no core change.
+ * outOfRange) exist so target/party fill them with no core change.
  */
 export interface UnitFrameDescriptor {
   /** false => no unit is shown (target absent, party slot empty); the painter
@@ -68,7 +67,7 @@ export interface UnitFrameDescriptor {
   name: string;
   /** The portrait identity. The PAINTER owns the repaint gate (repaint only when
    *  this key changes); the core just exposes it so target's lastPortraitTarget
-   *  gating in P11 is the same code path. */
+   *  gating is the same code path. */
   portraitKey: string;
   /** The entity-shaped absorb input ({ hp, maxHp, auras }) the core resolves via
    *  absorbBarView, or null for no shield (e.g. a dead target). The player passes

@@ -1,12 +1,12 @@
-// P15b WCAG 2.2 AA gate: axe-core over the cold + async + per-frame-host windows that carry
+// WCAG 2.2 AA gate: axe-core over the cold + async + per-frame-host windows that carry
 // extracted painters (talents, social, options, arena, questlog, spellbook, leaderboard, char,
 // market, bags), in a seeded/populated state, with the async windows (leaderboard, market) run
-// under BOTH a Sim-shaped and a ClientWorld-mirror-shaped fixture (decision 15). Each window's
+// under BOTH a Sim-shaped and a ClientWorld-mirror-shaped fixture. Each window's
 // real painter renders into a host element with the real style barrel loaded, then axe asserts
 // zero SERIOUS or CRITICAL violations. This is the OPT-IN browser suite (npm run test:browser);
 // a bare `vitest run` never launches a browser.
 //
-// Canvas/3D surfaces stay OUT of scope (decision 10): the arena host carries a label + honest
+// Canvas/3D surfaces stay OUT of scope: the arena host carries a label + honest
 // summary and is axed as a host window; the map window is a canvas painter covered by its
 // static-HTML host aria (#map-canvas role=img, #map-summary) + tests/client_shell.test.ts, not
 // by this painter-mount harness; their pixels get no faked per-marker aria.
@@ -66,7 +66,7 @@ function entry(over: Partial<LeaderboardEntry> = {}): LeaderboardEntry {
 }
 
 // A resolved page. The sim shape carries extra fields the core must ignore (the online-only
-// -shape trap decision 15 exists to catch); the client mirror carries only the decoded fields.
+// -shape trap exists to catch); the client mirror carries only the decoded fields.
 function page(shape: WorldShape, leaders: LeaderboardEntry[]): LeaderboardPage {
   const junk = shape === 'sim' ? { _serverSeq: 7, _dirty: true } : {};
   return {
@@ -101,7 +101,7 @@ function leaderboardWindow(leaderboard: () => Promise<LeaderboardPage>): {
   return { root, win };
 }
 
-describe('axe: leaderboard window (decision 15: Sim + ClientWorld shapes)', () => {
+describe('axe: leaderboard window (Sim + ClientWorld shapes)', () => {
   for (const shape of ['sim', 'client'] as const) {
     it(`ranked page is clean under the ${shape} shape`, async () => {
       const leaders = [
@@ -273,12 +273,12 @@ describe('axe: options menu', () => {
     expect(root.getAttribute('aria-labelledby')).toBe('options-title');
     // The idref must resolve to a real element, else the dialog is nameless (the arena
     // test pins the same for its title; this strengthening would have caught the perf
-    // sub-view's dangling reference, the P15b re-audit fix below).
+    // sub-view's dangling reference, the fix below).
     expect(root.querySelector('#options-title')).toBeTruthy();
     await expectClean(root);
   });
 
-  it('Performance sub-view names the dialog with aria-label, no dangling idref (P15b re-audit)', async () => {
+  it('Performance sub-view names the dialog with aria-label, no dangling idref', async () => {
     const { root, win } = optionsWindow();
     win.toggle(); // main menu first
     // Navigate to the Performance sub-view the real way: click its menu entry. Its title
@@ -296,12 +296,12 @@ describe('axe: options menu', () => {
 });
 
 // ---------------------------------------------------------------------------
-// Social (#social-window) - the offline state AND the online friends tab, so the P15b
+// Social (#social-window) - the offline state AND the online friends tab, so the
 // ARIA-1.2 typeahead combobox (role=combobox + aria-controls/expanded) is axed in BOTH
-// its collapsed state and (P18b item 9) its EXPANDED listbox state: the driven case types
+// its collapsed state and its EXPANDED listbox state: the driven case types
 // into the combobox, waits out the debounced async search to populate the listbox, then
 // ArrowDown to move aria-activedescendant, and axes the live expanded combobox. The tab
-// strip is a real role=tablist (P18b item 1), also covered here.
+// strip is a real role=tablist, also covered here.
 // ---------------------------------------------------------------------------
 
 describe('axe: social window', () => {
@@ -473,7 +473,7 @@ describe('axe: social window', () => {
 
 // ---------------------------------------------------------------------------
 // Character window (#char-window) - the paperdoll sheet: dialog root named by the title,
-// plus the role=img 3D-preview HOST (the canvas pixels stay OUT of scope, decision 10).
+// plus the role=img 3D-preview HOST (the canvas pixels stay OUT of scope).
 // ---------------------------------------------------------------------------
 
 describe('axe: character window', () => {
@@ -509,7 +509,7 @@ describe('axe: character window', () => {
     expect(root.getAttribute('aria-labelledby')).toBe('char-title');
     expect(root.querySelector('#char-title')).toBeTruthy();
     expect(root.querySelector('#char-model-preview')?.getAttribute('role')).toBe('img');
-    // P18b item 4: the role=img preview HOST carries its OWN name, not a duplicate of the
+    // The role=img preview HOST carries its OWN name, not a duplicate of the
     // title's level/class subtitle.
     const previewName = root.querySelector('#char-model-preview')?.getAttribute('aria-label');
     const titleSubtitle = root.querySelector('#char-title .panel-subtitle')?.textContent ?? '';
@@ -521,13 +521,13 @@ describe('axe: character window', () => {
 
 // ---------------------------------------------------------------------------
 // Market (#market-window) - the async Browse window: dialog name + the persistent
-// role=status live region, under BOTH world shapes (decision 15, like leaderboard).
+// role=status live region, under BOTH world shapes (like leaderboard).
 // ---------------------------------------------------------------------------
 
 function marketInfo(shape: WorldShape): MarketInfo {
   // A populated listing so the Browse body renders real rows (the buy button + the row
   // controls), not the empty-state short-circuit: an empty window passes axe vacuously
-  // (the phase's own populated-fixture requirement), so axe must see the row controls.
+  // (the populated-fixture requirement), so axe must see the row controls.
   const listing: MarketListingView = {
     id: 1,
     sellerName: 'Bramblefoot',
@@ -548,11 +548,11 @@ function marketInfo(shape: WorldShape): MarketInfo {
     myListingCount: 0,
   };
   // The sim shape may carry extra server-only fields the view ignores; the client mirror
-  // carries only the decoded fields (the offline-only-shape trap decision 15 catches).
+  // carries only the decoded fields (the offline-only-shape trap catches).
   return shape === 'sim' ? ({ ...base, _serverSeq: 3 } as unknown as MarketInfo) : base;
 }
 
-describe('axe: market window (decision 15: Sim + ClientWorld shapes)', () => {
+describe('axe: market window (Sim + ClientWorld shapes)', () => {
   for (const shape of ['sim', 'client'] as const) {
     it(`browse state is clean and names the dialog under the ${shape} shape`, async () => {
       const root = host('market-window');
@@ -577,7 +577,7 @@ describe('axe: market window (decision 15: Sim + ClientWorld shapes)', () => {
 });
 
 // ---------------------------------------------------------------------------
-// Bags (#bags-window) - the ad-hoc discard prompt, which P15b gave role=dialog +
+// Bags (#bags-window) - the ad-hoc discard prompt, which got role=dialog +
 // aria-modal + a self-contained Tab trap (appended to #prompt-stack, outside the bags root).
 // ---------------------------------------------------------------------------
 
@@ -608,7 +608,7 @@ describe('axe: bags discard prompt', () => {
     await expectClean(stack);
   });
 
-  it('clears #bags inert after a prompt CONFIRM, not only cancel/Escape (item 3: inert must not leak)', async () => {
+  it('clears #bags inert after a prompt CONFIRM, not only cancel/Escape (inert must not leak)', async () => {
     const root = host('bags-window');
     root.style.display = 'flex';
     const stack = document.createElement('div');

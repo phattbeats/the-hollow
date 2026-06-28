@@ -5,15 +5,15 @@
    inlines these local @imports into one stylesheet at build, so there is no runtime
    import waterfall.
 
-   P1 filled the tokens and base layers; P2 added hud.css into the components layer
-   (the in-world HUD chrome). P3 adds layout.css (the shared .window shell, in @layer
-   layout) and components.css (the feature-window bodies, in @layer components). P4
-   fills the remaining layers against this fixed order, so no later CSS phase
-   re-litigates the cascade. After P4b the only intentionally-empty barrel layer is
+   The tokens and base layers hold the design tokens and base resets; hud.css sits in
+   the components layer (the in-world HUD chrome). layout.css holds the shared .window
+   shell (in @layer layout) and components.css holds the feature-window bodies (in
+   @layer components). The remaining layers fill against this fixed order, so no later
+   CSS change re-litigates the cascade. The only intentionally-empty barrel layer is
    the reserved `hud` slot (hud.css and components.css both target @layer components,
    see below); index-extra and play-extra are filled per entry by the .extra files,
-   not by this barrel. admin.html and guide.html keep their own inline CSS
-   (state.md decision 18) and do not load this barrel.
+   not by this barrel. admin.html and guide.html keep their own inline CSS and do not
+   load this barrel.
 
    Both hud.css and components.css put their rules in @layer components (the declared
    `hud` layer below stays empty, reserved). Because they share one layer, cross-layer
@@ -24,21 +24,17 @@
    In practice the two never share a selector, so this is precedence insurance, not an
    active tie-break.
 
-   P4b fills three more layers: hud-mobile (the in-game mobile-touch block, from
+   Three more layers: hud-mobile (the in-game mobile-touch block, from
    hud.mobile.css) ordered AFTER shell so the mobile overrides of pre-game shell
    elements (mode-select / play-console / btn-play / char-select) win as they did
    when the block was inline-unlayered; and the per-entry index-extra / play-extra
    (loaded only by index.html / play.html via a <link>, holding the #rotate-device
-   orientation gate, decision 16a), last so they outrank everything.
+   orientation gate), last so they outrank everything.
 
    LAYER NAMES ARE FLAT (hyphenated), NOT dotted: a DOT in a @layer name is a
    SUBLAYER separator, so "hud.mobile" would be the "mobile" sublayer of the early
    "hud" layer (and would lose to shell). hud-mobile / index-extra / play-extra are
-   top-level layers placed exactly where this declaration puts them.
-
-   See docs/frontend-modernization/phase-01-css-lightning-tokens-base.md,
-   phase-02-css-hud-chrome.md, phase-03-css-windows.md, phase-04a-css-shell.md and
-   phase-04b-css-mobile-extra.md. */
+   top-level layers placed exactly where this declaration puts them. */
 @layer tokens, base, layout, components, hud, shell, hud-mobile, index-extra, play-extra;
 
 @import "./tokens.css";

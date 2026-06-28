@@ -10,11 +10,11 @@ import { dirname, join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-// P3 moved the social window CSS (the `.soc-dot.<status>` rules) out of index.html's
+// The social window CSS (the `.soc-dot.<status>` rules) moved out of index.html's
 // inline <style> into src/styles/components.css, loaded by both game entries via the
 // barrel. The JS<->CSS contract guarded below now reads the module.
 const componentsCss = readFileSync(join(root, 'src/styles/components.css'), 'utf8');
-// P7b moved the social list rendering out of hud.ts into the social window painter,
+// The social list rendering moved out of hud.ts into the social window painter,
 // so the dot-class contract now lives there.
 const socialWindow = readFileSync(join(root, 'src/ui/social_window.ts'), 'utf8');
 

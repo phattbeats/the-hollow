@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 
 // Section-by-section completeness guard for the game-HUD CSS, the floor the CSS
-// phases (P1 to P4b) regress against. Those phases relocate CSS section by
+// extraction regresses against. That extraction relocates CSS section by
 // section out of the inline <style> blocks in index.html / play.html into
 // src/styles/*.css, then flip the build to Lightning CSS. A whitespace- or
 // byte-level check would either go red on every cosmetic reformat or, worse,
@@ -15,7 +15,7 @@ import { describe, expect, it } from 'vitest';
 //
 // THE CORPUS IS A UNION: both entries' inline <style> text UNION the contents of
 // src/styles/*.css. Today src/styles/ does not exist, so the union is just the
-// two inline blocks. That union is the whole point: when P1 to P4b move a section
+// two inline blocks. That union is the whole point: when the extraction moves a section
 // out of an inline block and into a src/styles module keyed on the SAME ten-dash
 // marker, the section leaves the inline block but reappears in the module, so the
 // union stays complete and this guard stays green. A section that vanishes from
@@ -29,7 +29,7 @@ import { describe, expect, it } from 'vitest';
 //      ten-dash floor below is load-bearing; the teeth tests prove a four-dash
 //      fence is NOT treated as a boundary.
 //   2. Re-deriving the expected set from the live inline blocks each run. That
-//      would silently forget a section the instant P1 to P4b moved it out. So the
+//      would silently forget a section the instant the extraction moved it out. So the
 //      expected manifest is PINNED (enumerated once from the shipped HTML), and
 //      the guard asserts the pinned set against the union corpus.
 
@@ -59,9 +59,9 @@ function inlineStyleCss(entryFile: string): string {
   return parts.join('\n');
 }
 
-// Every CSS module already migrated into src/styles/. None exist in P0 and the
+// Every CSS module already migrated into src/styles/. None exist yet and the
 // directory itself is absent, so glob it and tolerate a missing dir. This is the
-// extension seam: as P1 to P4b move sections out of the inline blocks, they land
+// extension seam: as the extraction moves sections out of the inline blocks, they land
 // here and the union below picks them up with no edit to this guard.
 function extractedStyleCss(): string {
   if (!existsSync(stylesDir)) return '';
@@ -81,14 +81,14 @@ const CORPUS = [
 const CORPUS_SECTIONS = new Set(sectionNames(CORPUS));
 
 // PINNED manifest: the ten-dash section banners, enumerated live from the shipped
-// HTML at authoring time (not invented). 47 were inline in index.html; P2 added the
-// 48th by upgrading the lowercase tooltip banner to a ten-dash marker as it moved to
-// src/styles/hud.css. P3 relocated the windows out of the inline <style> into
+// HTML at authoring time (not invented). 47 were inline in index.html; the 48th came
+// from upgrading the lowercase tooltip banner to a ten-dash marker as it moved to
+// src/styles/hud.css. The windows were relocated out of the inline <style> into
 // src/styles/layout.css (the .window shell) + components.css (the bodies), and split
 // the single coarse "windows" banner into per-window banners as it went, adding 11
 // (window shell, character window, spellbook, quest log, leaderboard, talents, modals
 // and dropdown, vendor, bags, social, map) so one window's body can no longer be
-// dropped without this guard going red. As P1 to P4b migrate sections out of the inline
+// dropped without this guard going red. As the extraction migrates sections out of the inline
 // <style> they reappear in src/styles modules, so the union corpus stays complete.
 // play.html is a near-clone that ships 57 of these (it omits the two in PLAY_OMITS;
 // tooltip is shared via hud.css and the windows via components.css / layout.css, all of
@@ -153,7 +153,7 @@ const INDEX_SECTIONS = [
   'mobile touch controls (runtime-gated with body.mobile-touch + game-active)',
   'Unified Character Select Layout',
   'Cosmetic skin-select event overlay',
-  // P15a accessibility infra: three global sections added to base.css (loaded by both
+  // accessibility infra: three global sections added to base.css (loaded by both
   // game entries, so each lands in the union corpus for both).
   'skip links',
   'forced-colors',
@@ -161,7 +161,7 @@ const INDEX_SECTIONS = [
 ];
 
 // The two index-only sections play.html does not ship, so its count is 57 (plus the
-// three P15a global sections both entries load via base.css = 60).
+// three global sections both entries load via base.css = 60).
 const PLAY_OMITS = ['new-adventurer tutorial', 'UI theme picker'];
 const PLAY_SECTIONS = INDEX_SECTIONS.filter((name) => !PLAY_OMITS.includes(name));
 
@@ -178,8 +178,8 @@ describe('css_corpus section manifest', () => {
   });
 
   it('captures the live corpus markers (the marker regex is non-vacuous, not a zero match)', () => {
-    // CORPUS is both entries' inline <style> UNION src/styles. Even after P1 to
-    // P4b relocate sections into src/styles, every section stays in this union, so
+    // CORPUS is both entries' inline <style> UNION src/styles. Even after the
+    // extraction relocates sections into src/styles, every section stays in this union, so
     // the captured set never drops below the manifest size. A vacuous pattern (the
     // four-dash trap) would make this zero; the teeth tests below prove the dash
     // floor is what prevents that.

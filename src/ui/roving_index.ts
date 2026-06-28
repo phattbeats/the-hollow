@@ -15,7 +15,7 @@
 // equal to (((i +/- 1) % n) + n) % n for every i in [0, n), so folding the three handlers
 // onto this one expression is byte-faithful, not merely close.
 //
-// It takes primitives, not an IWorld, so the ClientWorld-vs-Sim parity row (decision 15)
+// It takes primitives, not an IWorld, so the ClientWorld-vs-Sim parity row
 // is N/A for it, exactly like dropdown_nav.ts; same-input-same-output is the contract.
 
 export type RovingOrientation = 'horizontal' | 'both';

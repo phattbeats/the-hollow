@@ -1,7 +1,7 @@
 // The i18n Lazy Locales async loader seam (the async locale loader surface, made load-bearing by the lazy locale flip).
 //
 // ensureLocaleLoaded is the ONLY async surface in src/ui/i18n.ts; t() and setLanguage stay
-// SYNCHRONOUS forever (locked decision 1). After the lazy locale flip the non-en locales
+// SYNCHRONOUS forever. After the lazy locale flip the non-en locales
 // are no longer statically resident, so the await is now REAL: t() falls back to English for
 // a not-yet-loaded locale (synchronous, never throws), and renders the localized table
 // synchronously once ensureLocaleLoaded has made it resident. A failed chunk fetch rejects
@@ -100,7 +100,7 @@ describe("lazy-locale loader: t() stays synchronous around ensureLocaleLoaded", 
     // ensureLocaleLoaded only makes a locale's table resident; SELECTING it is setLanguage's
     // job. A real fresh load (ja_JP) while still on en must NOT change what t() renders -
     // this pins the separation that lets the bootstrap await the load behind the loading
-    // screen without prematurely switching the language (locked decision: t() stays driven
+    // screen without prematurely switching the language (t() stays driven
     // by setLanguage, never by a load).
     setLanguage("en");
     expect(isLocaleResident("ja_JP")).toBe(false);
@@ -117,7 +117,7 @@ describe("lazy-locale loader: t() stays synchronous around ensureLocaleLoaded", 
   });
 });
 
-describe("prefetchLocale (stored-locale modulepreload runtime prefetch, mechanism 1 of locked decision 8)", () => {
+describe("prefetchLocale (stored-locale modulepreload runtime prefetch)", () => {
   afterEach(() => setLanguage("en"));
 
   it("fires the loader exactly once for a non-en, non-resident locale", async () => {

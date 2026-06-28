@@ -1,14 +1,14 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { FOCUSABLE_SELECTOR, FocusManager } from '../src/ui/focus_manager';
 
-// The shared focus-manager TRAP wiring (P15a). The pure boundary math (nextFocusIndex)
+// The shared focus-manager TRAP wiring. The pure boundary math (nextFocusIndex)
 // is covered by focus_order.test.ts; this file exercises the wiring the manager layers on
 // top: the open/release stack, return-to-opener, focus-first (skip the close X), the
 // Tab/Shift+Tab cycle (which MUST include the close X so a keyboard user can reach it),
 // the "do not trap when focus is outside the window" guard that preserves the game's
 // Tab-targeting, the self-heal of a leaked trap, and the listener lifecycle. The repo
 // tests DOM-touching wiring with a hand-rolled fake DOM in the default node env (no
-// jsdom); the real-browser axe + keyboard E2E is P15b. The fake faithfully models only
+// jsdom); the real-browser axe + keyboard E2E is a separate browser suite. The fake faithfully models only
 // the DOM contracts the manager uses: querySelectorAll(FOCUSABLE_SELECTOR) in document
 // order, contains() ancestry, getClientRects() visibility, matches('[data-close]'), and
 // focus() setting document.activeElement.
@@ -162,7 +162,7 @@ describe('FocusManager.focusFirst', () => {
 });
 
 describe('FocusManager Tab trap cycle', () => {
-  it('INCLUDES the close (X) button in the cycle so it is keyboard-reachable (P15a regression fix)', () => {
+  it('INCLUDES the close (X) button in the cycle so it is keyboard-reachable (regression fix)', () => {
     const root = new FakeHTMLElement();
     const a = new FakeHTMLElement({ focusable: true });
     const b = new FakeHTMLElement({ focusable: true });

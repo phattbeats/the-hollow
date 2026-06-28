@@ -1,7 +1,7 @@
-// P12b keyed-pool aura painter: the no-raw-write + no-magic source guards (decisions
-// 5a / 12), and an end-to-end pool proof over a tiny fake DOM (no jsdom): the tooltip
+// Keyed-pool aura painter: the no-raw-write + no-magic source guards,
+// and an end-to-end pool proof over a tiny fake DOM (no jsdom): the tooltip
 // attaches ONCE per pooled node (no duplicate listeners across frames), a recycled node
-// reads the NEW aura's LIVE data (the mutable-record rule, Top risk 3), a steady-state
+// reads the NEW aura's LIVE data (the mutable-record rule), a steady-state
 // frame moves no node, and every write routes through the elided writers.
 
 import { readFileSync } from 'node:fs';
@@ -22,7 +22,7 @@ import type { PainterHostWriters } from '../src/ui/painter_host';
 // Source guards
 // ---------------------------------------------------------------------------
 
-describe('AurasPainter: no raw DOM writes, no magic values (decisions 5a / 12)', () => {
+describe('AurasPainter: no raw DOM writes, no magic values', () => {
   const src = readFileSync(new URL('../src/ui/auras_painter.ts', import.meta.url), 'utf8');
   const code = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:])\/\/.*$/gm, '$1');
 
@@ -334,7 +334,7 @@ describe('AurasPainter: keyed pool over the elided writers', () => {
 });
 
 // ---------------------------------------------------------------------------
-// P14a Slice C: the visible-count cap is a pure function of the STATIC ui effects tier
+// The visible-count cap is a pure function of the STATIC ui effects tier
 // (data-fx-level), NEVER the governor, injected via getFxTier. Ultra renders every active
 // aura (byte-equivalent to the untiered painter); low renders at most AURA_VISIBLE_CAP_LOW
 // and recycles the overflow out of the pool, identically under a Sim- and a ClientWorld-
@@ -342,7 +342,7 @@ describe('AurasPainter: keyed pool over the elided writers', () => {
 // in the tier-knobs cadence suite; the painter owns only the count cap.)
 // ---------------------------------------------------------------------------
 
-describe('AurasPainter: P14a static-preset visible-count cap (Slice C)', () => {
+describe('AurasPainter: static-preset visible-count cap', () => {
   let container: FakeEl;
   let tooltips: ReturnType<typeof recordingTooltips>;
   let calls: Call[];

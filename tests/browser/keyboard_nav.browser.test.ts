@@ -1,6 +1,6 @@
-// P15b keyboard-navigation E2E over the REAL P15a focus manager (src/ui/focus_manager.ts),
+// Keyboard-navigation E2E over the REAL focus manager (src/ui/focus_manager.ts),
 // run in a real browser so synthetic Tab keydowns drive the actual document-level trap. It
-// proves the three properties the phase requires of an open window:
+// proves the three properties required of an open window:
 //   - focus-first on open lands on the first interactive, SKIPPING the close (X) button;
 //   - Tab / Shift+Tab cycle WITHIN the window (including the close button) and never escape;
 //   - the close path (release(true), which the Esc -> closeAll -> windowFocus.restoreFocus
@@ -43,7 +43,7 @@ function buildWindow(): {
   const root = host('kbd-window');
   root.style.display = 'block';
   // DOM order: the close (X) button first, then two ordinary controls. The full Tab cycle
-  // INCLUDES [data-close]; focus-first SKIPS it (the P15a re-audit fix).
+  // INCLUDES [data-close]; focus-first SKIPS it.
   const close = document.createElement('button');
   close.setAttribute('data-close', '');
   close.setAttribute('aria-label', 'Close');
@@ -67,7 +67,7 @@ function pressTab(shift = false): KeyboardEvent {
   return ev;
 }
 
-describe('keyboard-nav: the P15a focus trap (trap + focus-first + return)', () => {
+describe('keyboard-nav: the focus trap (trap + focus-first + return)', () => {
   it('focusFirst lands on the first interactive, skipping the close (X) button', async () => {
     const { root, opener, btns } = buildWindow();
     opener.focus();
@@ -167,8 +167,8 @@ describe('keyboard-nav: a REAL window painter through the captureFocus bridge', 
 // that lives on document.body (OUTSIDE the dialog's focus trap), so it owns its own keyboard
 // model: roving tabindex + Arrow/Home/End move focus (no select-on-move), Enter/Space pick,
 // and any focus leaving it (Tab-out, click-away, Escape) dismisses it and returns focus to
-// the anchor so a keyboard user cannot escape the dialog through the flyout. P15b shipped this
-// behavior with no test; this drives it on a REAL warrior choice node.
+// the anchor so a keyboard user cannot escape the dialog through the flyout. This behavior
+// shipped with no test; this drives it on a REAL warrior choice node.
 describe('keyboard-nav: the talents choice-node flyout (roving menu + focus-return)', () => {
   function openPopup(): { anchor: HTMLElement; pop: HTMLElement } {
     const root = host('talents-window');
@@ -237,8 +237,8 @@ describe('keyboard-nav: the talents choice-node flyout (roving menu + focus-retu
   });
 });
 
-// The market browse-tab filter menus advertise role=listbox; P8b carried them byte-faithful
-// with NO keyboard nav (tracked for this cleanup), and P18a wires the EXISTING pure
+// The market browse-tab filter menus advertise role=listbox; they were carried byte-faithful
+// with NO keyboard nav, then wired with the EXISTING pure
 // dropdownKeyNav core onto them. This drives the real MarketWindow painter: open a filter
 // listbox by keyboard, rove with arrows, commit with Enter, and close (Escape / Tab) returning
 // focus to the trigger. The filter chrome renders on the browse tab regardless of marketInfo,

@@ -1,8 +1,8 @@
-// Allocation-budget probe for the per-frame pure cores (P12a action bar, P12b
-// auras pool, P13b FCT pool, P17 standing budget). It is the CANONICAL,
-// machine-independent allocation assertion for the frontend-modernization packet.
+// Allocation-budget probe for the per-frame pure cores (action bar, auras pool,
+// FCT pool, standing budget). It is the CANONICAL,
+// machine-independent allocation assertion for these per-frame cores.
 //
-// Why this exists (recon open-decision 4): a correct per-frame core returns a
+// Why this exists: a correct per-frame core returns a
 // REUSED, preallocated container (an array of slot-state objects, or a pool
 // object) and MUTATES it in place every frame, so it allocates ZERO new
 // per-frame arrays/objects. That property is directly observable in Node without
@@ -15,7 +15,7 @@
 // string built per frame and stored on a slot field): primitive fields are
 // EXPECTED to be mutated in place every frame, so they carry no identity and are
 // deliberately skipped. The full-HUD garbage signal (where no single core can be
-// isolated) is the perf_tour fallback: frameP95 + longTasks. See state.md.
+// isolated) is the perf_tour fallback: frameP95 + longTasks.
 //
 // Dependency-free on purpose (no vitest import): callable from any test, which
 // can either read the returned result or call the throwing variant.

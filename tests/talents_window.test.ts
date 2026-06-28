@@ -3,14 +3,14 @@ import { describe, expect, it } from 'vitest';
 
 // Source-level guards for the talents painter. The window paints DOM (not a Canvas),
 // so its colors flow through inline `var(--color-*)` references rather than a
-// getComputedStyle resolve; the decision-12 contract is the same: NO raw hex survives
+// getComputedStyle resolve; the contract is the same: NO raw hex survives
 // in the painter, the accents reference design tokens, and those tokens exist in the
 // sheet. The DOM painting itself is covered by the byte-faithful extraction (the pure
 // core is unit-tested in talents_view.test.ts; the painter markup mirrors the prior
 // inline hud.ts code).
 const painter = readFileSync(new URL('../src/ui/talents_window.ts', import.meta.url), 'utf8');
 
-describe('talents_window: no magic values (decision 12)', () => {
+describe('talents_window: no magic values', () => {
   it('carries no literal hex color in TS (colors flow through --color-* tokens)', () => {
     const hex = painter.match(/#[0-9a-fA-F]{3,8}\b/g) ?? [];
     expect(hex, `hex colors must move to tokens: ${hex.join(', ')}`).toEqual([]);

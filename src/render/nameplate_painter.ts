@@ -1,5 +1,5 @@
-// Thin Three/DOM painter for the overhead nameplates (frontend-modernization
-// v0.16.0, P14b). Owns the per-entity nameplate elements (name, hp bar, marker,
+// Thin Three/DOM painter for the overhead nameplates (v0.16.0). Owns the
+// per-entity nameplate elements (name, hp bar, marker,
 // raid mark, combo pips, holder-tier badge, overhead emote, cast bar): it
 // projects each rig's anchor with the camera and writes the show/hide, transform,
 // and localized content to the EntityView DOM nodes the renderer built.
@@ -10,10 +10,10 @@
 // localizes the names via i18n (the core stays i18n-free, like cast_bar).
 //
 // Not a 2D-canvas painter: nameplates are positioned DOM divs, so the canvas
-// getComputedStyle-once token rule (decision 12) is N/A here. The reaction/marker
+// getComputedStyle-once token rule is N/A here. The reaction/marker
 // colors below are pre-existing renderer literals moved verbatim from
-// updateNameplates (reworking them into CSS tokens is out of P14b scope); the
-// no-magic-values requirement this phase adds is the named per-tier interval (see
+// updateNameplates (reworking them into CSS tokens is out of scope); the
+// no-magic-values requirement here is the named per-tier interval (see
 // ui_tier_knobs.nameplateIntervalSec), which the renderer reads, not the painter.
 
 import * as THREE from 'three';

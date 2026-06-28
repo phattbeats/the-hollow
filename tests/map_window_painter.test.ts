@@ -1,4 +1,4 @@
-// No-magic-values + cadence guard for the overworld map painter (decision 12).
+// No-magic-values + cadence guard for the overworld map painter.
 //
 // The painter's paintOverworld needs a real 2D context + getComputedStyle, so its
 // draw is not exercised in this Node suite; the pure geometry it draws is covered
@@ -41,7 +41,7 @@ const MAP_COLOR_TOKENS = [
   '--color-map-campfire',
 ];
 
-describe('map_window_painter: no magic values (decision 12)', () => {
+describe('map_window_painter: no magic values', () => {
   it('carries no literal hex or rgb color in TS', () => {
     const hex = code.match(/#[0-9a-fA-F]{3,8}\b/g) ?? [];
     const rgb = code.match(/\brgba?\s*\(/g) ?? [];

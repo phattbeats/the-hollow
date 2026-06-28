@@ -1,6 +1,6 @@
 /* hud.mobile.css: the in-game mobile-touch layer (touch controls, mobile layout,
-   landscape/portrait rules), extracted verbatim from the index.html inline <style>
-   in P4b. Wrapped in @layer hud-mobile, which is ordered AFTER shell (see the
+   landscape/portrait rules), extracted verbatim from the index.html inline <style>.
+   Wrapped in @layer hud-mobile, which is ordered AFTER shell (see the
    barrel): the inline mobile block originally beat every shell rule (it was
    unlayered), and several of its rules (mobile #mode-select / .play-console /
    #btn-play, and the char-select panel layout) override pre-game shell elements, so
@@ -13,7 +13,7 @@
    shell.
 
    The #rotate-device orientation GATE is the one genuine per-entry difference
-   (decision 16a, landscape-only in-game): index suppresses the overlay in-game
+   (landscape-only in-game): index suppresses the overlay in-game
    (index.extra.css) while play shows it in portrait (play.extra.css). Its
    per-entry rules live in those .extra files (layers ordered after this one), NOT
    here, so neither leaks across entries. The shared #start-screen/#mobile-preflight
@@ -354,7 +354,7 @@
     touch-action: none;
   }
   body.mobile-touch #mobile-extra-controls .panel-title .x-btn {
-    /* P15b: meet the 40x40 mobile touch floor (was 32x28), matching the general
+    /* Meet the 40x40 mobile touch floor (was 32x28), matching the general
        body.mobile-touch .x-btn rule. */
     min-width: 40px;
     min-height: 40px;
@@ -730,8 +730,8 @@
   body.mobile-touch #party-frames.below-target {
     top: calc(max(8px, env(safe-area-inset-top)) + 130px);
   }
-  /* P15b: party rows are role="button" tap targets (tap to target a member), so they
-     must clear the 40x40 mobile touch floor (decision 10), not the compact desktop
+  /* party rows are role="button" tap targets (tap to target a member), so they
+     must clear the 40x40 mobile touch floor, not the compact desktop
      raid-frame height. Base and landscape both move 30/25px up to 40px; #party-leave too. */
   body.mobile-touch #party-frames .party-frame {
     width: 132px;
@@ -1321,7 +1321,7 @@
     right: 5px;
     top: 5px;
   }
-  /* P15b: the map +/- zoom buttons are touch controls on mobile; raise them to the
+  /* the map +/- zoom buttons are touch controls on mobile; raise them to the
      40x40 floor (desktop is 32x32). box-sizing keeps the 2px border inside the box. */
   body.mobile-touch .map-zoom-btn {
     min-width: 40px;
@@ -1713,7 +1713,7 @@
     body.mobile-touch #party-frames.below-target {
       top: calc(max(6px, env(safe-area-inset-top)) + 100px);
     }
-    /* P15b: keep the 40x40 touch floor in landscape too (was 25px). */
+    /* keep the 40x40 touch floor in landscape too (was 25px). */
     body.mobile-touch #party-frames .party-frame {
       width: 118px;
       min-height: 40px;
@@ -1792,8 +1792,8 @@
       font-size: 11px;
     }
   }
-  /* Re-homed from the char-select responsive block in shell.css (P4a rode-along,
-     P4b re-home): narrow-width repositioning of the in-game community HUD + quest
+  /* Re-homed from the char-select responsive block in shell.css: narrow-width
+     repositioning of the in-game community HUD + quest
      tracker. Layer hud.mobile sits after components, so these still beat the HUD
      base; nothing in shell competes once removed there. */
   @media (max-width: 860px) {

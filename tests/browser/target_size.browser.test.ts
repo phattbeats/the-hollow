@@ -1,6 +1,6 @@
-// P15b mobile target-size pass: under a real landscape phone viewport (decision 16a: the
+// Mobile target-size pass: under a real landscape phone viewport (the
 // in-game view is landscape-only on web mobile), every TOUCH control must render >=40x40px,
-// the PREFERRED mobile floor (decision 10), not merely the >=24px absolute desktop floor.
+// the PREFERRED mobile floor, not merely the >=24px absolute desktop floor.
 // This measures REAL rendered geometry (getBoundingClientRect under the real style barrel +
 // the body.mobile-touch.game-active state), never a CSS-text assertion, mirroring the V16
 // mobile_button_size / mobile_joystick_size harnesses but with an actual numeric floor the
@@ -16,7 +16,7 @@ const TOUCH_FLOOR = 40;
 const EPSILON = 0.5;
 
 beforeEach(async () => {
-  // A landscape phone (the in-game web-mobile profile, decision 16a). The orientation:
+  // A landscape phone (the in-game web-mobile profile). The orientation:
   // landscape media query drives the in-game landscape rules in hud.mobile.css.
   await page.viewport(844, 390);
   document.body.className = 'mobile-touch game-active';
@@ -100,8 +100,8 @@ describe('mobile target-size: in-game touch controls are >=40x40 in landscape', 
     expectAtLeastFloor(joystick, '.mobile-joystick');
   });
 
-  it('the map +/- zoom buttons (raised to the floor this phase)', () => {
-    // P15b raised these from the 32x32 desktop size to the 40x40 mobile touch floor via
+  it('the map +/- zoom buttons (raised to the floor)', () => {
+    // These were raised from the 32x32 desktop size to the 40x40 mobile touch floor via
     // body.mobile-touch .map-zoom-btn { min-width/height: 40px } (no ancestor needed, so
     // mount on body directly, NOT inside #map-window which is display:none until opened).
     // On a real phone the box itself (display:flex, 32px) comes from the @media (pointer:
@@ -117,7 +117,7 @@ describe('mobile target-size: in-game touch controls are >=40x40 in landscape', 
   });
 });
 
-// Desktop (fine-pointer, non-mobile) target-size: the dense list controls the P7b WCAG row
+// Desktop (fine-pointer, non-mobile) target-size: the dense list controls the WCAG row
 // named (bag cells, social rows / tabs) but never measured. Here the mobile 40px floors do
 // NOT apply (no body.mobile-touch class), so each must still clear the 24px SC 2.5.8 absolute
 // floor. Real rendered geometry under the style barrel, with representative text content (an
@@ -139,7 +139,7 @@ describe('desktop target-size: dense list controls clear the >=24px SC 2.5.8 flo
     );
   }
 
-  it('bag item rows (raised to the 24px floor this phase via min-height)', () => {
+  it('bag item rows (raised to the 24px floor via min-height)', () => {
     const item = el('button', { class: 'bag-item' });
     item.textContent = 'Health Potion x5';
     document.body.appendChild(item);

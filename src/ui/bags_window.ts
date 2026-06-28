@@ -13,7 +13,7 @@
 // painter owns no cross-window state of its own. The HUD keeps toggleBags() +
 // onInventoryChanged() as the coordinator and calls render() to repaint.
 //
-// No raw hex (decision 12): the item-quality color comes from the shared
+// No raw hex: the item-quality color comes from the shared
 // QUALITY_COLOR map, and the unranked fallback is the --color-quality-default token
 // (not a literal white hex).
 
@@ -50,7 +50,7 @@ import { svgIcon } from './ui_icons';
 const BAG_FILTER_KEY = 'woc_bag_filter';
 
 // Monotonic id source for the ad-hoc prompt dialogs' aria-labelledby target, so the
-// id never couples to class ordering (P15b re-audit: was prompt.classList[last]).
+// id never couples to class ordering (was prompt.classList[last]).
 let promptDialogSeq = 0;
 
 // The ad-hoc discard / sell quantity prompts mount into #prompt-stack (outside #bags).
@@ -62,7 +62,7 @@ function dismissBagPrompts(): void {
   for (const p of document.querySelectorAll(BAG_PROMPT_SELECTOR)) p.remove();
 }
 
-// The unranked quality fallback as a CSS custom property (decision 12). The shared
+// The unranked quality fallback as a CSS custom property. The shared
 // QUALITY_COLOR map carries the real per-quality hex; this token covers the rare
 // item with no quality field, so no raw hex lives in the painter.
 const QUALITY_DEFAULT_COLOR = 'var(--color-quality-default)';
@@ -405,7 +405,7 @@ export class BagsWindow {
     }
   }
 
-  // WCAG 2.2 AA (P15b): the ad-hoc bag prompts (discard / sell quantity) are modal
+  // WCAG 2.2 AA: the ad-hoc bag prompts (discard / sell quantity) are modal
   // dialogs but carried no role/name, no keyboard trap, and no focus return. This wires
   // role=dialog + aria-modal + aria-labelledby (the prompt text), a self-contained Tab
   // cycle among the prompt's controls (these prompts are appended to #prompt-stack,
@@ -461,7 +461,7 @@ export class BagsWindow {
         return;
       }
       if (ke.key !== 'Tab') return;
-      // Reuse the one canonical focusable set (P15b re-audit) so a prompt that ever
+      // Reuse the one canonical focusable set so a prompt that ever
       // gains an [href] / [tabindex] control stays inside the trap.
       const f = Array.from(prompt.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR));
       if (f.length === 0) return;
@@ -534,7 +534,7 @@ export class BagsWindow {
     }
     stack.appendChild(prompt);
     // Move focus into the modal: the quantity input when present, else the confirm
-    // button, so a keyboard user is never left outside the prompt (P15b).
+    // button, so a keyboard user is never left outside the prompt.
     window.setTimeout(() => {
       if (input) {
         input.focus();

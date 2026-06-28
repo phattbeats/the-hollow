@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { nextFocusIndex } from '../src/ui/focus_order';
 
-// The DOM-free boundary math behind the shared focus manager's Tab trap (P15a). The
+// The DOM-free boundary math behind the shared focus manager's Tab trap. The
 // manager re-queries the live focusable set on every Tab and calls this to pick the
 // next index; wraparound at both ends is what makes it a trap.
 describe('nextFocusIndex (focus trap boundary math)', () => {

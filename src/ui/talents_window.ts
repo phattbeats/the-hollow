@@ -15,7 +15,7 @@
 // IWorld on save / loadout-switch / delete (deps.saveLoadout / switchLoadout /
 // deleteLoadout), never inline. The painter never clones a second buffer of its own.
 //
-// No raw hex (decision 12): the SVG/inline colors reference --color-* custom
+// No raw hex: the SVG/inline colors reference --color-* custom
 // properties via TAL_COLOR; the tree geometry comes from the core's named layout
 // constants. No em dashes anywhere (the mastery / choice separator is ASCII " - ").
 
@@ -104,7 +104,7 @@ export interface TalentsWindowDeps extends PainterHostPresentation {
   showError(text: string): void;
 }
 
-// Talent palette: CSS custom properties (decision 12, no raw hex in the painter).
+// Talent palette: CSS custom properties (no raw hex in the painter).
 // classAccent/signature reuse existing tokens; the rest are --color-talent-* tokens
 // added in tokens.css with the exact pre-existing hex so render stays byte-identical.
 const TAL_COLOR = {
@@ -155,7 +155,7 @@ export class TalentsWindow {
     const el = this.deps.root();
     // Early-return when hidden AND no staged buffer (nothing to repaint).
     if (el.style.display !== 'block' && this.deps.getStage() === null) return;
-    // WCAG 2.2 AA (P15b): name the focus-trapped root so AT users entering the trap
+    // WCAG 2.2 AA: name the focus-trapped root so AT users entering the trap
     // land on a labeled dialog, not an anonymous group. innerHTML below replaces the
     // children, not these own-element attributes, so setting them once per render is
     // idempotent and covers both the coming-soon and the populated branch.
@@ -443,7 +443,7 @@ export class TalentsWindow {
     pop.setAttribute('role', 'menu');
     pop.setAttribute('aria-label', tTalent({ kind: 'talentNode', node, field: 'name' }));
     // Roving tabindex: only the selected option (else the first) is in the tab order;
-    // the Arrow/Home/End handler below moves focus among the rest (P15b re-audit, so the
+    // the Arrow/Home/End handler below moves focus among the rest (so the
     // role=menu announces a pattern the keyboard actually implements).
     const choices = node.choices ?? [];
     const selIdx = choices.findIndex((o) => stage.choices[node.id] === o.id);
@@ -531,7 +531,7 @@ export class TalentsWindow {
     // viewport, and the .window transform would otherwise become its containing
     // block), so it lives OUTSIDE the talents dialog's focus trap. Dismiss it the
     // moment focus leaves it (Tab-out, click-away), returning focus to the anchor, so
-    // a keyboard user can never escape the dialog through the flyout (P15b re-audit).
+    // a keyboard user can never escape the dialog through the flyout.
     pop.addEventListener('focusout', (e) => {
       if (!pop.contains((e as FocusEvent).relatedTarget as Node | null)) dismiss(true);
     });

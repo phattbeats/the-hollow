@@ -1,6 +1,6 @@
 // Pure focusable-order resolver for the shared focus manager (./focus_manager.ts).
 //
-// WIRING vs CORE split (P15a): the focus manager itself is wiring (it touches
+// WIRING vs CORE split: the focus manager itself is wiring (it touches
 // document.activeElement and listens on document), so it is NOT registered in
 // tests/architecture.test.ts UI_PURE_CORES. This module is the DOM-FREE piece it
 // leans on: the trap's boundary math, lifted out so a Vitest drives it directly. It

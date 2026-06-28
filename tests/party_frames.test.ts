@@ -70,7 +70,7 @@ describe('party frame member selection', () => {
   });
 });
 
-describe('party frame signature (the per-frame short-circuit, P11c)', () => {
+describe('party frame signature (the per-frame short-circuit)', () => {
   const info = (over: Partial<PartyInfo> = {}): PartyInfo => ({
     leader: 1,
     raid: false,
@@ -144,12 +144,12 @@ describe('party frame signature (the per-frame short-circuit, P11c)', () => {
   });
 });
 
-describe('ClientWorld-vs-Sim out-of-range parity (decision 15, P11c)', () => {
+describe('ClientWorld-vs-Sim out-of-range parity', () => {
   // The offline Sim sends full-precision member positions; the server (the online
   // ClientWorld mirror) sends round2(x) / round2(z) (server/game.ts partyWire). The
   // oor flag is derived from those, so model the mirror's rounding and assert the
   // shape agrees away from the exact 100yd boundary (the only knife-edge where 2cm of
-  // rounding could diverge, an accepted divergence like P11b's absorb).
+  // rounding could diverge, an accepted divergence like the absorb tolerance).
   const round2 = (n: number) => Math.round(n * 100) / 100;
   const playerPos = { x: 0, z: 0 };
 
@@ -179,8 +179,8 @@ describe('ClientWorld-vs-Sim out-of-range parity (decision 15, P11c)', () => {
   it('pins the accepted divergence at the exact 100yd boundary (sub-cm rounding flips oor)', () => {
     // dist 100.003: the full-precision Sim is out of range (100.003 > 100); the mirror
     // rounds the coordinate to 100.00, which is NOT > 100, so it reads in range. This
-    // ~2cm knife-edge disagreement at the threshold is the decision-15 accepted
-    // tolerance (like P11b's absorb). Pinning it gives the parity block teeth: a change
+    // ~2cm knife-edge disagreement at the threshold is the accepted
+    // tolerance (like the absorb case). Pinning it gives the parity block teeth: a change
     // to the comparison (> vs >=), the range constant, or the mirror's rounding model
     // would move this boundary and fail here, where the ~50yd cases cannot.
     const dist = 100.003;

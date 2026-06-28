@@ -5,7 +5,7 @@
 //  - the title summary counts,
 //  - the selected quest's detail structure: objectives with progress + done flag,
 //    rewards, the class reward item, the turn-in npc,
-//  - decision-15 parity: a Sim-shaped and a ClientWorld-mirror-shaped quest set
+//  - parity: a Sim-shaped and a ClientWorld-mirror-shaped quest set
 //    carrying the same logical data render an identical model, plus determinism.
 //
 // DOM-free / i18n-free, so this Node suite drives the core directly; the localized
@@ -21,7 +21,7 @@ const [QUEST_A, QUEST_B] = Object.values(QUESTS).filter((q) => q.objectives.leng
 const CLASS_ID = 'warrior' as PlayerClass;
 
 // A QuestProgress with all objectives complete (ready) or in progress (active).
-// shape: 'sim' carries an extra field the core must ignore (decision 15).
+// shape: 'sim' carries an extra field the core must ignore.
 function progress(
   shape: 'sim' | 'client',
   questId: string,
@@ -137,7 +137,7 @@ describe('buildQuestLogView: selected quest detail', () => {
   });
 });
 
-describe('buildQuestLogView: ClientWorld-vs-Sim parity (decision 15)', () => {
+describe('buildQuestLogView: ClientWorld-vs-Sim parity', () => {
   it('renders identically from a Sim-shaped and a ClientWorld-mirror-shaped quest set', () => {
     const make = (shape: 'sim' | 'client') =>
       buildQuestLogView(

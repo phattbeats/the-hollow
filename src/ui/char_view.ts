@@ -10,7 +10,7 @@
 //
 // DOM-free, Three-free, i18n-free, and free of any RNG or wall-clock call, so it
 // stays deterministic and tests/char_view.test.ts can drive it directly with both
-// a Sim-shaped and a ClientWorld-mirror-shaped equipment record (decision 15).
+// a Sim-shaped and a ClientWorld-mirror-shaped equipment record.
 // The skin-event preview randomness lives in the painter / the separate skin-event
 // overlay, never here.
 

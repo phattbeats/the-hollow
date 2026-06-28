@@ -237,8 +237,8 @@ export function buildOptionsMenu(opts: { bugReportAvailable: boolean }): Options
 // ---------------------------------------------------------------------------
 // Graphics panel (cluster 3) -- the static WebGL preset is read as a plain
 // setting value here. This panel must NEVER read the FPS governor or define the
-// effects-quality cutoff: that resolver is P5 and per-element tiering is P14a
-// (state.md decisions 6/8).
+// effects-quality cutoff: that resolver and per-element tiering live in their
+// own modules.
 // ---------------------------------------------------------------------------
 
 /** Body control rows for the Graphics sub-panel, in render order. The interleaved
@@ -373,7 +373,7 @@ export function buildInterfaceControls(s: OptionsSettingsSource): OptionsControl
 
 // ---------------------------------------------------------------------------
 // Bug report (cluster 2) -- the ONE slice of IWorld the options window reads, so
-// it is the ClientWorld-vs-Sim parity surface (decision 15). The painter formats
+// it is the ClientWorld-vs-Sim parity surface. The painter formats
 // the coords; this core returns the raw values so both world shapes round-trip
 // to the same info block.
 // ---------------------------------------------------------------------------

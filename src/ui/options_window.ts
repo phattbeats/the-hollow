@@ -7,18 +7,17 @@
 // social_window / talents_window template.
 //
 // The window renders NO item rows (it is all sliders/toggles/choices/dropdowns),
-// so it composes no PainterHostPresentation bag (decision 6, the social
+// so it composes no PainterHostPresentation bag (the social
 // precedent); it reads only the live world's bug-report slice and routes the
 // shared HUD chrome (focus return, dropdown builder, keybind store) through these
 // closures. The module never reaches into Hud directly.
 //
-// No raw hex / magic values (decision 12): every color lives in the extracted
-// stylesheet (the options window CSS moved to components.css in P3); the one log
+// No raw hex / magic values: every color lives in the extracted
+// stylesheet (the options window CSS moved to components.css); the one log
 // tint stays Hud-side (deps.log), and the two numeric thresholds here are named
 // constants. The graphics sub-panel reads the STATIC graphics preset as a plain
 // setting value only: it never reads the FPS governor and never defines the
-// effects-quality cutoff (that resolver is P5, per-element tiering is P14a;
-// decisions 6/8).
+// effects-quality cutoff (that resolver and per-element tiering live elsewhere).
 
 import { audio } from '../game/audio';
 import { GAMEPAD_BUTTON_LABELS, GAMEPAD_NONE } from '../game/gamepad_map';
@@ -85,7 +84,7 @@ import { svgIcon } from './ui_icons';
 // The current sub-panel (the main menu plus the eight sub-views).
 type OptionsView = 'main' | OptionsPanelId;
 
-// Maximum characters for the bug-report description (decision 12: a named
+// Maximum characters for the bug-report description (a named
 // threshold, not a bare literal). Matches the inline textarea maxLength.
 const BUG_DESC_MAX_LEN = 2000;
 // Full-scale percent for the slider gold-fill gradient (the --range-fill custom
@@ -193,7 +192,7 @@ export interface OptionsWindowDeps {
   // Focus management (WCAG 2.2 AA): capture the opener on open, restore it on close.
   captureFocus(): HTMLElement | null;
   restoreFocus(target: HTMLElement | null): void;
-  /** Combat-log a localized message (the gold tint stays Hud-side, decision 12). */
+  /** Combat-log a localized message (the gold tint stays Hud-side). */
   log(message: string): void;
   /** Reset the movable chat window to its default placement. */
   resetChatWindow(): void;
@@ -262,7 +261,7 @@ export class OptionsWindow {
 
   private render(): void {
     const el = this.deps.root();
-    // WCAG 2.2 AA (P15b): the Esc/options menu is a focus-trapped window, so name the
+    // WCAG 2.2 AA: the Esc/options menu is a focus-trapped window, so name the
     // root and give it a dialog role.
     // Name the dialog per sub-view. Every sub-view paints a <span id="options-title">
     // via panelTitle()/settingsViewShell() EXCEPT Performance, whose title comes from
@@ -270,7 +269,7 @@ export class OptionsWindow {
     // one view names itself with aria-label from the same key its title renders
     // (hudChrome.perf.title, no new key); markDialogRoot clears the opposite name so
     // aria-labelledby never dangles on a nameless dialog. Keeping the choice here avoids
-    // leaking the options-title DOM-id contract into the perf module (P15b re-audit fix).
+    // leaking the options-title DOM-id contract into the perf module.
     markDialogRoot(
       el,
       this.view === 'performance'
@@ -620,7 +619,7 @@ export class OptionsWindow {
 
   // -------------------------------------------------------------------------
   // Graphics (cluster 3): static WebGL preset as a plain setting value; no
-  // governor read, no effects-quality cutoff (decisions 6/8).
+  // governor read, no effects-quality cutoff.
   // -------------------------------------------------------------------------
 
   private renderGraphics(): void {

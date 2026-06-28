@@ -67,7 +67,7 @@ export const EFFECTS_QUALITY_LOW_CUTOFF = 0.5;
  * - For 'advanced', effectsQuality < EFFECTS_QUALITY_LOW_CUTOFF clamps to the low
  *   cost path (mirroring the renderer's own effectsQuality<cutoff downgrade);
  *   otherwise 'advanced' behaves as ultra. It is NOT collapsed to 'high': the expert
- *   path sheds HUD cost independently (locked decision 8).
+ *   path sheds HUD cost independently.
  * - Reduced-motion is the STRONGEST motion authority: it forces motion:'none' and
  *   pauses ambient loops, but it does NOT by itself drop glass (that is the tier's
  *   job, so an Ultra reduced-motion player keeps glass and only loses motion).

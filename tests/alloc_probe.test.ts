@@ -1,6 +1,6 @@
 // Self-test for the allocation-budget probe (tests/util/alloc_probe.ts), the
-// canonical per-frame allocation assertion the per-frame phases (P12a/P12b/P13b/
-// P17) reuse. Proves the probe has teeth: it PASSES an in-place-mutating core
+// canonical per-frame allocation assertion the per-frame painters reuse. Proves
+// the probe has teeth: it PASSES an in-place-mutating core
 // (the contract) and FAILS a reallocating one, both for the reallocated-container
 // case and the reallocated-slot case, while correctly IGNORING primitive fields
 // that legitimately mutate in place every frame.

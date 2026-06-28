@@ -9,7 +9,7 @@
 // Visibility is the '.open' CLASS on #social-window (not style.display), matching
 // the window-manager (closeManagedWindow / topmostOpenWindow read '.open').
 //
-// LISTENER CHURN (decision: social is NOT purely cold): the panel repaints on the
+// LISTENER CHURN (social is NOT purely cold): the panel repaints on the
 // slow-HUD divider (refreshIfChanged), so re-attaching a click handler to every
 // row each tick would churn handlers. Instead the row actions use ONE delegated
 // click listener on the persistent `.soc-body` container, wired once per full
@@ -17,7 +17,7 @@
 // is re-attached. The chrome (close/tabs/footer/typeahead) is wired on a full
 // render and survives a content refresh untouched.
 //
-// No raw hex / magic numbers (decision 12): the status dots are CSS-classed (no
+// No raw hex / magic numbers: the status dots are CSS-classed (no
 // color literal here) and the two typeahead timings are named constants.
 
 import { CLASSES } from '../sim/data';
@@ -39,7 +39,7 @@ import {
 } from './social_view';
 import { svgIcon } from './ui_icons';
 
-// Typeahead timings (decision 12: named, not bare literals): debounce a keystroke
+// Typeahead timings (named, not bare literals): debounce a keystroke
 // before searching, and clear the suggestion list shortly after blur so a pending
 // mousedown on a suggestion can still fire first.
 const SUGGEST_DEBOUNCE_MS = 160;
@@ -196,7 +196,7 @@ export class SocialWindow {
   private render(): void {
     const el = this.deps.root();
     if (!el.classList.contains('open')) return;
-    // WCAG 2.2 AA (P15b): name the focus-trapped root so AT users entering the trap
+    // WCAG 2.2 AA: name the focus-trapped root so AT users entering the trap
     // land on a labeled dialog (the sibling cold windows all set this).
     markDialogRoot(el, { label: t('hud.social.title') });
     const w = this.deps.world();
@@ -206,7 +206,7 @@ export class SocialWindow {
       online && w.realm ? ` <span class="soc-realm-tag">- ${esc(w.realm)}</span>` : '';
     el.innerHTML =
       `<div class="panel-title"><span>${esc(t('hud.social.title'))}${realmTag}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">${svgIcon('close')}</button></div>` +
-      // WAI-ARIA tabs (P18b): a real role=tablist / role=tab / role=tabpanel with a
+      // WAI-ARIA tabs: a real role=tablist / role=tab / role=tabpanel with a
       // roving tabindex (0 on the active tab, -1 on the rest) and aria-selected, mirroring
       // talents_window. The `on` class still styles the active tab (byte-faithful to
       // .soc-tab.on in components.css); aria-selected runs parallel to it. The old
@@ -470,7 +470,7 @@ export class SocialWindow {
   ): string {
     // The typeahead is an ARIA 1.2 combobox: the input owns the .soc-suggest listbox
     // via aria-controls, toggles aria-expanded as suggestions appear, and points
-    // aria-activedescendant at the highlighted option as the arrow keys move (P15b).
+    // aria-activedescendant at the highlighted option as the arrow keys move.
     const listId = `soc-suggest-${field}`;
     return (
       `<div class="soc-add">` +
@@ -653,7 +653,7 @@ export class SocialWindow {
           level: formatNumber(r.level, { maximumFractionDigits: 0 }),
           className: playerClassDisplayName(r.cls),
         });
-        // A non-focusable <div role=option>, not a <button> (P15b re-audit): in an
+        // A non-focusable <div role=option>, not a <button>: in an
         // aria-activedescendant combobox the DOM focus stays on the input while the
         // arrow keys move the active option, so the options must NOT be in the tab
         // order (a focusable button would also be pulled into the window's focus-trap

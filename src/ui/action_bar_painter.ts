@@ -1,12 +1,12 @@
 // Thin painter for the action bar (#actionbar). The pure slot-state rules live in
 // action_bar_view.ts; this turns that state into DOM, routing EVERY write through the
-// host's elided writers (decision 5a) so a no-op frame costs no DOM mutation.
+// host's elided writers so a no-op frame costs no DOM mutation.
 //
 // It is constructed as new ActionBarPainter(writers, descriptor, resolveBgImage),
 // where the descriptor carries the container + the per-slot element refs and the
-// keybind set (decision 9): multiplicity is a constructor arg, not a hardcoded id, so
+// keybind set: multiplicity is a constructor arg, not a hardcoded id, so
 // a second/third bar is another descriptor with no code change (adding bars is a
-// follow-on feature, not this phase).
+// follow-on feature).
 //
 // Three Top-risk-1/4 details:
 //   - The aria-label routes through the elided setAttr (the per-button cache keyed on
@@ -25,7 +25,7 @@ import type { ActionBarState } from './action_bar_view';
 import type { PainterHostWriters } from './painter_host';
 
 // Attribute / property / class names the painter drives. Named, not inlined, so the
-// painter references no bare DOM string literal (decision 12).
+// painter references no bare DOM string literal.
 const ARIA_LABEL_ATTR = 'aria-label';
 const BACKGROUND_IMAGE_PROP = 'background-image';
 const COOLDOWN_HEIGHT_PROP = 'height';
@@ -46,7 +46,7 @@ export interface ActionBarSlotElements {
 }
 
 /** The paint descriptor: the container plus the per-slot element refs. Instance
- *  multiplicity (decision 9) is this constructor arg, not a hardcoded id. */
+ *  multiplicity is this constructor arg, not a hardcoded id. */
 export interface ActionBarPaintDescriptor {
   container: HTMLElement;
   slots: readonly ActionBarSlotElements[];

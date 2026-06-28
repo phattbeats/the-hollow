@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { ChatAnnouncer } from '../src/ui/chat_announcer';
 import { CHAT_ANNOUNCE_INTERVAL_MS } from '../src/ui/live_region_politeness';
 
-// The dedicated chat live-region announcer (P18d items 3 + 5): one polite off-screen
+// The dedicated chat live-region announcer: one polite off-screen
 // summary into the tab-independent #chat-live region, throttled so a chat burst never
 // floods the screen reader. DOM-free (injected text sink + clock), so this drives it
 // directly with a recording sink and controlled time, no jsdom.

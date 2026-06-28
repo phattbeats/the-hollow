@@ -4,7 +4,7 @@
    which sheet the browser parses first.
 
    The ONLY per-entry rule today is the #rotate-device orientation gate
-   (decision 16a): index.html suppresses the rotate overlay while the game is
+   index.html suppresses the rotate overlay while the game is
    active (it never shows the rotate-to-landscape prompt), whereas play.html shows
    it in portrait. This is the index side of that split; play.extra.css holds
    play's. play.html does NOT load this file, so its !important suppress cannot

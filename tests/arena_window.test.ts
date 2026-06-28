@@ -3,7 +3,7 @@
 // The painter's DOM/network methods need a document + fetch, so they are not
 // exercised in this Node suite; the pure decisions it renders are covered by
 // tests/arena_window_view.test.ts. This guard pins the a11y-bearing markup
-// (focusable controls + aria labels + focus-return) and the decision-12 contract
+// (focusable controls + aria labels + focus-return) and the no-magic-values contract
 // for a DOM painter (no literal colors in TS; cadences are named constants).
 
 import { readFileSync } from 'node:fs';
@@ -42,7 +42,7 @@ describe('arena_window: WCAG chrome (focusable controls + focus-return)', () => 
   });
 });
 
-describe('arena_window: no magic values (decision 12, DOM painter)', () => {
+describe('arena_window: no magic values (DOM painter)', () => {
   it('carries no literal hex or rgb color in TS (colors live in the stylesheet)', () => {
     const hex = code.match(/#[0-9a-fA-F]{3,8}\b/g) ?? [];
     const rgb = code.match(/\brgba?\s*\(/g) ?? [];
@@ -70,7 +70,7 @@ describe('arena_window: mediumHud redraw call site', () => {
 
   it('routes the match-start auto-close through close() (focus-return), never a raw hide', () => {
     // When a bout starts hud.update() must close the queue panel via the painter so focus
-    // returns to the opener (WCAG 2.4.3, P18e), not a raw style.display = 'none' that would
+    // returns to the opener (WCAG 2.4.3), not a raw style.display = 'none' that would
     // drop focus to <body>. Pin the routing so a refactor cannot regress it silently.
     expect(hud).toContain(
       "if (inArenaMatch && !this.arenaMatchSeen && $('#arena-window').style.display === 'block') {",

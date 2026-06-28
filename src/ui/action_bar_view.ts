@@ -11,16 +11,16 @@
 // the painter never concats and the i18n key keeps firing every frame (CLAUDE.md i18n
 // + Top risk 4). The painter elides the actual DOM write.
 //
-// DECISION 9 (component contract): the core is INSTANCE-PARAMETERIZED by a bar
+// Component contract: the core is INSTANCE-PARAMETERIZED by a bar
 // DESCRIPTOR (the slot set, each slot's ability/item source + keybind label, NO DOM
 // and NO element refs). createActionBarView(descriptor, deps) preallocates the
 // per-slot state array ONCE and returns a tick(world) that mutates it IN PLACE and
 // returns the SAME references every call, so a correct frame allocates no new
-// array/object garbage (the reused-reference allocation proxy, P12a slice B). Two
+// array/object garbage (the reused-reference allocation proxy). Two
 // descriptors yield two independent views, so a second/third bar is another
 // descriptor, not a code fork (the second/third bar itself is a follow-on feature).
 //
-// DECISION 15 (parity): the world input is a structural subset of IWorld that BOTH
+// Parity: the world input is a structural subset of IWorld that BOTH
 // the offline Sim and the online ClientWorld mirror expose (player.cooldowns is a
 // Map, inventory is InvSlot[]); the core never reaches for a Sim-only field.
 
@@ -85,7 +85,7 @@ export interface ActionBarSlotDescriptor {
   keybindLabel(): string;
 }
 
-/** The bar descriptor: the slot set. The FAMILY parameter (decision 9). */
+/** The bar descriptor: the slot set. The FAMILY parameter. */
 export interface ActionBarDescriptor {
   slots: readonly ActionBarSlotDescriptor[];
 }
@@ -190,7 +190,7 @@ function inventoryCount(
 /**
  * Build an action-bar view bound to one descriptor. The per-slot state array is
  * preallocated once here; tick() mutates it in place and returns the SAME references
- * every call. Each createActionBarView yields an INDEPENDENT view (decision 9): a
+ * every call. Each createActionBarView yields an INDEPENDENT view: a
  * second descriptor never shares this instance's array.
  */
 export function createActionBarView(

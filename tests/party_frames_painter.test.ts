@@ -1,5 +1,5 @@
-// P11c keyed-pool party painter: the routing + no-magic-values source guards
-// (decisions 5a / 12), the live-slot handler contract (top-risk 3), and an
+// keyed-pool party painter: the routing + no-magic-values source guards
+// the live-slot handler contract (top-risk 3), and an
 // end-to-end pool proof (no duplicate listeners across rebuilds, a recycled row
 // reads the new member, every write routed through the elided writers). The pool is
 // driven over a tiny fake DOM in the default `node` env (no jsdom); iconDataUrl is
@@ -25,7 +25,7 @@ vi.mock('../src/ui/icons', async (importOriginal) => ({
 // Source guards
 // ---------------------------------------------------------------------------
 
-describe('PartyFramesPainter: no raw DOM writes, no magic values (decisions 5a / 12)', () => {
+describe('PartyFramesPainter: no raw DOM writes, no magic values', () => {
   const src = readFileSync(new URL('../src/ui/party_frames_painter.ts', import.meta.url), 'utf8');
   const code = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:])\/\/.*$/gm, '$1');
 
@@ -249,7 +249,7 @@ describe('createPartyRow: decorative badges + relocalize hook (a11y + live langu
 
   it('builds a keyboard-focusable button row (role=button + tabindex 0) so the global focus ring + keydown apply', () => {
     const row = build();
-    // The old party div was unfocusable; P11c makes each row a real SR button and a
+    // The old party div was unfocusable; createPartyRow makes each row a real SR button and a
     // tab stop. Dropping either silently kills keyboard focus AND the global
     // [tabindex="0"]:focus-visible ring with every other test still green.
     expect(row.el.getAttribute('role')).toBe('button');
@@ -263,7 +263,7 @@ describe('createPartyRow: decorative badges + relocalize hook (a11y + live langu
     expect(row.badges.oor.getAttribute('aria-hidden')).toBe('true');
   });
 
-  it('builds the leader star as an aria-hidden span and the raid group as a visually-hidden span (items 5/6)', () => {
+  it('builds the leader star as an aria-hidden span and the raid group as a visually-hidden span', () => {
     const row = build();
     // The star is decorative (aria-hidden) so it stays OUT of the row button name; the
     // group span is visually-hidden (in the a11y tree, clipped from sight) so the raid
@@ -428,7 +428,7 @@ describe('PartyFramesPainter: keyed pool over the elided writers', () => {
     const has = (m: Call['m'], pred: (c: Call) => boolean) =>
       calls.some((c) => c.m === m && pred(c));
 
-    // --cls custom property via setStyleProp (decision 5a), not a raw style write.
+    // --cls custom property via setStyleProp, not a raw style write.
     expect(has('setStyleProp', (c) => c.args[0] === '--cls')).toBe(true);
     // below-target on the container via toggleClass.
     expect(has('toggleClass', (c) => c.args[0] === 'below-target' && c.args[1] === true)).toBe(
@@ -441,14 +441,14 @@ describe('PartyFramesPainter: keyed pool over the elided writers', () => {
     // A combat member is NOT also dead (dead wins), so its combat is on but dead off.
     // The hp bar keeps the inline .toFixed(3) precision via formatScaleX.
     expect(has('setTransform', (c) => /^scaleX\(\d\.\d{3}\)$/.test(String(c.args[0])))).toBe(true);
-    // Item 5: the leader star is its OWN aria-hidden write (★), and the level element
+    // The leader star is its OWN aria-hidden write (★), and the level element
     // (.lead-num) holds the bare number (20), never the old concatenated '★20'. Both
     // route through the elided setText (no raw write on the hot path).
     expect(has('setText', (c) => c.args[0] === '★')).toBe(true);
     expect(has('setText', (c) => c.args[0] === '20')).toBe(true);
     expect(has('setText', (c) => c.args[0] === '★20')).toBe(false);
     expect(has('setText', (c) => c.args[0] === 'Alice')).toBe(true);
-    // Item 6: outside raid, no group label is emitted (the group span stays empty).
+    // Outside raid, no group label is emitted (the group span stays empty).
     expect(has('setText', (c) => c.args[0] === 'Group 1')).toBe(false);
     // The leave label is set (and re-localizable) through setText.
     expect(has('setText', (c) => c.args[0] === 'Leave Party')).toBe(true);
@@ -458,7 +458,7 @@ describe('PartyFramesPainter: keyed pool over the elided writers', () => {
     expect(has('setDisplay', (c) => c.args[0] === 'none')).toBe(true);
   });
 
-  it('emits a visually-hidden "Group n" raid label per member only in raid mode (item 6)', () => {
+  it('emits a visually-hidden "Group n" raid label per member only in raid mode', () => {
     // Non-raid: the group span is written empty, so no group label leaks into the row name.
     painter.sync([member({ pid: 2, group: 1 })], 2, false);
     expect(calls.some((c) => c.m === 'setText' && c.args[0] === 'Group 1')).toBe(false);

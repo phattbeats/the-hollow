@@ -21,7 +21,7 @@ import {
 // The social core derives the panel's structural signature (the full-rebuild vs
 // refresh-in-place gate) and the per-tab row view models from socialInfo +
 // partyInfo. These tests pin (1) the signature stability across no-op content
-// ticks, (2) the tab list + permission rules, and (3) the decision-15
+// ticks, (2) the tab list + permission rules, and (3) the
 // ClientWorld-vs-Sim parity: a Sim-shaped and a ClientWorld-mirror-shaped source
 // yield identical models.
 
@@ -204,7 +204,7 @@ describe('same input -> same output (pure projection)', () => {
   });
 });
 
-describe('ClientWorld-vs-Sim parity (decision 15)', () => {
+describe('ClientWorld-vs-Sim parity', () => {
   // The Sim exposes socialInfo/partyInfo directly; a ClientWorld mirrors them from a
   // server snapshot (a structural clone). Feed BOTH shapes the same logical data and
   // assert identical models, so the offline-only-shape trap (party presence fields)

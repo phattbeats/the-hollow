@@ -160,13 +160,13 @@ describe('overhead eat/drink overlay', () => {
   });
 });
 
-// Decision 15: the cast/eat-drink fields the core reads (castingAbility,
+// The cast/eat-drink fields the core reads (castingAbility,
 // castRemaining, castTotal, channeling, and the player eating/drinking timers)
 // must satisfy BOTH the offline Sim entity shape and the online ClientWorld mirror
 // shape, or an offline-only field shape ships broken online. Drive the cores with a
 // Sim-shaped stub and a ClientWorld-mirror-shaped stub carrying the same logical
 // state and assert the cast result + the eat/drink mode/fill match exactly.
-describe('ClientWorld-vs-Sim parity (decision 15)', () => {
+describe('ClientWorld-vs-Sim parity', () => {
   // The offline Sim entity: castBarState reads a handful of its fields directly.
   function simCaster(): Entity {
     return {

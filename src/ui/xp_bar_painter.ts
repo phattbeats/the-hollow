@@ -1,17 +1,16 @@
 // Thin painter for the XP bar. The pure visual derivation lives in xp_bar.ts
 // (xpBarView: the Max-Level XP Overflow rules + the already-localized hover
 // label); this turns that view into DOM, routing EVERY write through the host's
-// elided writers (decision 5a) and caching its element refs ONCE (the #xpbar /
+// elided writers and caching its element refs ONCE (the #xpbar /
 // .rested / #player-frame refs were re-queried via $() every frame, the leak this
-// phase fixes). The label is already localized upstream by xpBarView, so the
+// painter fixes). The label is already localized upstream by xpBarView, so the
 // painter never calls t().
 
 import type { PainterHostWriters } from './painter_host';
 import type { XpBarView } from './xp_bar';
 
 // The custom property the fill fraction is mirrored into (read by the bar's CSS,
-// and by the player frame's portrait ring). A driven value, never a color literal
-// (decision 12).
+// and by the player frame's portrait ring). A driven value, never a color literal.
 const XP_FILL_PROP = '--xp-fill';
 // The rested-overlay geometry: a standard property each, driven via setStyleProp so
 // the one .rested element can hold both in the multi-slot cache.

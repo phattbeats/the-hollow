@@ -17,7 +17,7 @@
 //   - Escape. The HUD already routes Escape through ONE dispatcher (src/main.ts game
 //     input -> hud.closeAll(), plus the gamepad path and the few capture-phase modal
 //     handlers that beat game input). Adding a second Escape listener here would
-//     duplicate it (the exact hazard P15a forbids), so Escape stays with the existing
+//     duplicate it, so Escape stays with the existing
 //     unified dispatcher. The trap still lets a keyboard user leave: Escape closes the
 //     window via that dispatcher, which returns focus through release().
 //
@@ -31,8 +31,8 @@ import { nextFocusIndex } from './focus_order';
 
 /**
  * The canonical focusable set for the Tab CYCLE: every keyboard-focusable element in a
- * trapped window, INCLUDING the window close (X) button. Before P15a there was no trap,
- * so native Tab order reached the X; the cycle must keep it reachable (closing a window
+ * trapped window, INCLUDING the window close (X) button. Before this trap existed, native
+ * Tab order reached the X; the cycle must keep it reachable (closing a window
  * from the keyboard must never depend on Escape alone). Lifted to ONE named constant (it
  * was previously spelled inline in Hud.focusFirstInteractive); never re-spelled.
  *

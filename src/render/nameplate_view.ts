@@ -1,5 +1,4 @@
-// Pure view model for the overhead nameplates (frontend-modernization v0.16.0,
-// P14b). DOM/Three/i18n-free so it can be unit-tested without a WebGL context or
+// Pure view model for the overhead nameplates. DOM/Three/i18n-free so it can be unit-tested without a WebGL context or
 // a localized catalog: it decides, per entity, whether the nameplate shows at
 // all, how high above the rig its anchor sits (the projection INPUT, not the
 // Three projection itself), whether this entity must refresh every pass (urgent),

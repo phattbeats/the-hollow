@@ -3,7 +3,7 @@
 // The painter's DOM methods need a document, so they are not exercised in this Node
 // suite; the pure decisions it renders are covered by tests/spellbook_view.test.ts.
 // This guard pins the a11y-bearing markup (real close button + listitem rows +
-// toggle aria-pressed + focus-return) and the decision-12 contract (no literal
+// toggle aria-pressed + focus-return) and the no-magic-values contract (no literal
 // colors in TS), plus the hud.update() refresh call site.
 
 import { readFileSync } from 'node:fs';
@@ -24,7 +24,7 @@ describe('spellbook_window: WCAG chrome (rows + toggles + focus-return)', () => 
   });
 
   it('renders the dialog role + the spell list role', () => {
-    // P18a: the dialog identity is set via the shared markDialogRoot helper (its own writes
+    // the dialog identity is set via the shared markDialogRoot helper (its own writes
     // are unit-tested in dialog_root.test.ts); the spell list/listitem roles stay inline.
     expect(code).toContain("markDialogRoot(el, { label: t('abilityUi.spellbook.title') })");
     expect(code).toContain("list.setAttribute('role', 'list')");
@@ -59,7 +59,7 @@ describe('spellbook_window: WCAG chrome (rows + toggles + focus-return)', () => 
   });
 });
 
-describe('spellbook_window: no magic values (decision 12, DOM painter)', () => {
+describe('spellbook_window: no magic values (DOM painter)', () => {
   it('carries no literal hex or rgb color in TS (colors live in the stylesheet)', () => {
     const hex = code.match(/#[0-9a-fA-F]{3,8}\b/g) ?? [];
     const rgb = code.match(/\brgba?\s*\(/g) ?? [];

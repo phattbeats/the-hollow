@@ -44,7 +44,7 @@ describe('char_view: paperdoll data model', () => {
   });
 });
 
-describe('char_view: determinism + ClientWorld-vs-Sim parity (decision 15)', () => {
+describe('char_view: determinism + ClientWorld-vs-Sim parity', () => {
   it('is a pure function: same equipment yields an equal paperdoll', () => {
     expect(buildPaperdollView(FULL, ITEMS)).toEqual(buildPaperdollView(FULL, ITEMS));
   });
@@ -63,7 +63,7 @@ describe('char_view: determinism + ClientWorld-vs-Sim parity (decision 15)', () 
 describe('char_view: scoped to deterministic paperdoll data (no Three, no RNG)', () => {
   // The 3D model preview and the skin-event randomness stay on the painter; this
   // core stays pure so the purity guard can register it. (The purity guard also
-  // scans for RNG; this is the explicit phase-required shape assertion.)
+  // scans for RNG; this is the explicit shape assertion.)
   const src = readFileSync(new URL('../src/ui/char_view.ts', import.meta.url), 'utf8');
 
   it('draws no randomness or wall-clock time', () => {

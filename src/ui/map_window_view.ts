@@ -7,12 +7,12 @@
 // npc glyph / player arrow / ally dot already projected to (mx, my). No DOM, no
 // Three, no 2D context, no i18n, no color: the painter owns the context and
 // resolves the --color-map-* tokens + the localized label text. The delve branch
-// of the map is owned by delve_map_painter.ts (P6); this core models only the
+// of the map is owned by delve_map_painter.ts; this core models only the
 // overworld branch, plus the mode discriminator the painter switches on.
 //
 // DOM-free / i18n-free / deterministic so tests/map_window_view.test.ts can drive
-// it directly with both a Sim-shaped and a ClientWorld-mirror-shaped IWorld stub
-// (decision 15). Markers carry the identity (zoneId / poiIndex / dungeonId / cls)
+// it directly with both a Sim-shaped and a ClientWorld-mirror-shaped IWorld stub.
+// Markers carry the identity (zoneId / poiIndex / dungeonId / cls)
 // the painter needs to resolve their localized text, never the resolved string.
 
 import {
@@ -189,7 +189,7 @@ export function mapWindowMode(world: IWorld): MapWindowMode {
  * Build the overworld map draw model. Reads only IWorld members (player /
  * entities / socialInfo / questState) plus the committed zone and shared world
  * content (ZONES bounds, dungeon portals, props, decorations), so the offline Sim
- * and the online ClientWorld mirror produce identical output (decision 15). Every
+ * and the online ClientWorld mirror produce identical output. Every
  * position is projected to canvas pixels here; the painter only resolves colors +
  * localized text and strokes.
  */

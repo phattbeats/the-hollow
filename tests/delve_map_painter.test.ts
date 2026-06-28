@@ -1,14 +1,14 @@
-// Tests for the delve_map painter (the P6 PainterHost seam pilot):
+// Tests for the delve_map painter (the PainterHost seam pilot):
 //  - the pure delveDrawModel: Sim-vs-ClientWorld parity + both-sites determinism,
-//  - the no-magic-values canvas guard over the painter source (decision 12),
+//  - the no-magic-values canvas guard over the painter source,
 //  - the WCAG-chrome boundary over the vendor window the host now composes.
 //
 // The write-elision facet (makeWriterFacet) is exercised in painter_host.test.ts
-// (P10a grew it to six writers); this file keeps only the delve-specific path.
+// (grew to six writers); this file keeps only the delve-specific path.
 // The painter's canvas/DOM methods (paintMinimapDelve / paintWorldMapDelve) need a
 // real 2D context + getComputedStyle, so they are NOT exercised here; this Node
 // suite drives the PURE path (delveDrawModel), which is exactly the contract the
-// per-frame phases P10-P13 lean on.
+// per-frame painters lean on.
 
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
@@ -27,7 +27,7 @@ const MODULE_NAME = 'The Sunken Ossuary';
 
 // One scenario, expressed as plain data, so we can build two structurally-identical
 // IWorld stubs (one "Sim-shaped", one "ClientWorld-mirror-shaped") and prove the
-// painter reads only IWorld-declared fields (decision 15).
+// painter reads only IWorld-declared fields.
 const SCENARIO = {
   player: { id: 1, localX: 0, localZ: 20, facing: 0.5 },
   // 2 live mobs (one aggroed on the player), 1 dead mob + 1 NPC that must be dropped.
@@ -140,7 +140,7 @@ describe('delveDrawModel (pure draw model)', () => {
     expect(a).toEqual(b);
   });
 
-  it('Sim-shaped and ClientWorld-mirror-shaped IWorld stubs render identically (decision 15)', () => {
+  it('Sim-shaped and ClientWorld-mirror-shaped IWorld stubs render identically', () => {
     // Two independently-built stubs with the same data: the painter must read only
     // IWorld-declared fields, so the minimap player schematic (party discs/arrows)
     // can never silently misrender online.
@@ -173,9 +173,9 @@ describe('delveDrawModel (pure draw model)', () => {
   });
 });
 
-// --- No-magic-values canvas guard (decision 12, MANDATORY for a Canvas painter) --
+// --- No-magic-values canvas guard (MANDATORY for a Canvas painter) --
 
-describe('delve_map_painter: no magic values (decision 12)', () => {
+describe('delve_map_painter: no magic values', () => {
   const src = readFileSync(new URL('../src/ui/delve_map_painter.ts', import.meta.url), 'utf8');
   // Drop comments so prose can't create a false positive (mirrors architecture.test).
   const code = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:])\/\/.*$/gm, '$1');

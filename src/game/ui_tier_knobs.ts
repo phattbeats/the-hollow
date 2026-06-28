@@ -1,8 +1,8 @@
-// Pure per-element graphics-tier knobs (frontend-modernization v0.16.0, P14a). Now
-// that every hot HUD element is a core+painter (P10-P13), each per-element cost knob
-// becomes a pure function of the STATIC ui effects tier (the data-fx-level the P5
+// Pure per-element graphics-tier knobs (v0.16.0). Now
+// that every hot HUD element is a core+painter, each per-element cost knob
+// becomes a pure function of the STATIC ui effects tier (the data-fx-level the
 // applier stamps from graphicsPresetLabel), NEVER the FPS governor. That is the
-// two-controller hazard (state.md locked decision 6 + 8, Top risk 5): the auto-governor
+// two-controller hazard: the auto-governor
 // cannot measure HUD/compositor cost, so the HUD effect tier is owned by the preset the
 // player chose. This module is the single home of that mapping, so a knob can only move
 // when the static preset moves.
@@ -24,8 +24,8 @@
 import type { UiEffectsTier } from './ui_effects_profile';
 
 // ---------------------------------------------------------------------------
-// FCT (Slice A): max-concurrent live floaters, per-text lifetime scale, drop-non-crit.
-// The FctPainter (P13b) pre-allocates a fixed pool (FCT_POOL_CAP) and evicts the oldest
+// FCT: max-concurrent live floaters, per-text lifetime scale, drop-non-crit.
+// The FctPainter pre-allocates a fixed pool (FCT_POOL_CAP) and evicts the oldest
 // at the live cap; on low the live cap is tighter, the TTL is shorter, and non-crit
 // floaters are not spawned at all. (Crit EMPHASIS on low, the scale/pop, is a separate
 // axis already handled in CSS via [data-fx-level="low"] .fct.crit, hud.css; this
@@ -64,7 +64,7 @@ export function fctDropNonCrit(tier: UiEffectsTier): boolean {
 }
 
 // ---------------------------------------------------------------------------
-// Minimap (Slice B): the canvas redraw cadence. The P12b marker core + painter are
+// Minimap: the canvas redraw cadence. The marker core + painter are
 // unchanged; only how often the Hud calls them is tiered.
 // ---------------------------------------------------------------------------
 
@@ -80,13 +80,13 @@ export function minimapRedrawIntervalMs(tier: UiEffectsTier): number {
 }
 
 // ---------------------------------------------------------------------------
-// Auras (Slice C): visible-count cap + refresh (tick) granularity. The P12b keyed-pool
+// Auras: visible-count cap + refresh (tick) granularity. The keyed-pool
 // painter renders at most the cap; extra auras are recycled out of the pool. The refresh
 // interval coarsens how often the strip repaints (the duration countdown granularity).
 // ---------------------------------------------------------------------------
 
 /** No visible-count cap at the full tiers (render every active aura). Named so the
- *  painter references a constant, not a bare Infinity (decision 12). */
+ *  painter references a constant, not a bare Infinity. */
 export const AURA_VISIBLE_CAP_FULL = Number.POSITIVE_INFINITY;
 /** Max simultaneously rendered auras on low (the rest are recycled out of the pool). */
 export const AURA_VISIBLE_CAP_LOW = 8;
@@ -105,7 +105,7 @@ export function auraRefreshIntervalMs(tier: UiEffectsTier): number {
 }
 
 // ---------------------------------------------------------------------------
-// Target NON-SELF cadence (Slice D): on low, the TARGET frame body (HP / level /
+// Target NON-SELF cadence: on low, the TARGET frame body (HP / level /
 // portrait) refreshes slower; the SELF/player frame always stays full-rate (a separate
 // painter instance with no gate). Target HP is a COARSE read (execute range, is-it-dead)
 // resolved well inside the ~200ms human reaction loop, and the interrupt-critical cast
@@ -116,8 +116,8 @@ export function auraRefreshIntervalMs(tier: UiEffectsTier): number {
 // signal (the game has no self-dispel, so the frame IS the read), and the population most
 // likely to run the low preset is large-raid players, exactly where a healer must not be
 // handicapped. Tiering it would make the game worse to play on low for the role that needs
-// it most, so P14a leaves party on the ~4Hz mediumHud band it already runs at on EVERY
-// tier. (Senior re-audit decision: tier COSMETIC richness, never ACTIONABLE info latency;
+// it most, so party is left on the ~4Hz mediumHud band it already runs at on EVERY
+// tier. (The rule: tier COSMETIC richness, never ACTIONABLE info latency;
 // the only graphics knobs touching party are the shared cosmetic ones, not a per-tier shed.)
 // ---------------------------------------------------------------------------
 
@@ -149,7 +149,7 @@ export function nonSelfRepaintDue(
 }
 
 // ---------------------------------------------------------------------------
-// Nameplate refresh cadence (Slice E, P14b): how often the renderer re-projects +
+// Nameplate refresh cadence: how often the renderer re-projects +
 // repaints the overhead nameplates. Unlike the shed-on-low knobs above, this is a
 // BASE cadence that throttles on EVERY tier (projecting and DOM-writing every rig
 // every frame is wasteful even at full effects), so it always returns a positive
@@ -161,27 +161,27 @@ export function nonSelfRepaintDue(
 // preset runs the faster/costlier 1/24s. The 1/15s is still the STALENESS floor (no
 // tier refreshes slower, so a nameplate never lags more than before); the mobile
 // weak-GPU cost ceiling is restored by the device-aware first-run default (gfx.ts
-// resolveDefaultGraphicsPreset, P18e): a recognized-weak or software GPU defaults to the LOW
+// resolveDefaultGraphicsPreset): a recognized-weak or software GPU defaults to the LOW
 // preset, so it lands on this 1/15s cadence (a mid/unknown device defaults to medium = the
 // 1/24s tier), and this knob stays a pure function of the resulting tier. Seconds, not ms: the
 // renderer accumulates dt (seconds) against this, so
-// it is NOT gated through cadenceDue(). Two-controller invariant (decision 6): the
+// it is NOT gated through cadenceDue(). Two-controller invariant: the
 // renderer derives the tier from the static data-fx-level (coerceFxTier), never the
 // FPS governor.
 // ---------------------------------------------------------------------------
 
-/** Nameplate refresh interval on the lowest tier (seconds): the pre-P14b mobile
+/** Nameplate refresh interval on the lowest tier (seconds): the pre-tiering mobile
  *  cadence (1/15s ~ 66.7ms). Kept as the STALENESS floor (no tier refreshes slower
  *  than this); it now binds the LOW tier, NOT every mobile device as the old device
  *  fork did (see the axis-change note above). */
 export const NAMEPLATE_INTERVAL_LOW_SEC = 1 / 15;
-/** Nameplate refresh interval at the full tiers (seconds): the pre-P14b desktop
+/** Nameplate refresh interval at the full tiers (seconds): the pre-tiering desktop
  *  cadence (1/24s ~ 41.7ms). */
 export const NAMEPLATE_INTERVAL_FULL_SEC = 1 / 24;
 
 /** Seconds between full nameplate refreshes for `tier`: the LOW tier holds 1/15s,
  *  every richer tier runs 1/24s. The axis is the tier, not the device; the device-aware
- *  first-run default (gfx.ts resolveDefaultGraphicsPreset, P18e) lands a recognized-weak or
+ *  first-run default (gfx.ts resolveDefaultGraphicsPreset) lands a recognized-weak or
  *  software device on the LOW tier, restoring the 1/15s ceiling for weak GPUs. Always positive
  *  (nameplates throttle on every tier), so the renderer compares it directly against its
  *  accumulated dt, not through cadenceDue(). */

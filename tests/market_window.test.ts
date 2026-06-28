@@ -2,14 +2,14 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 // The market window painter is a DOM module; driving the live DOM + events is the
-// opt-in browser suite scheduled for P15b. This is the no-DOM-suite equivalent: it
-// asserts the painter source carries the decision-10 a11y attributes, the
-// decision-12 token/named-constant discipline, and that filtering is delegated to
+// opt-in browser suite. This is the no-DOM-suite equivalent: it
+// asserts the painter source carries the a11y attributes, the
+// token/named-constant discipline, and that filtering is delegated to
 // the pure core (no duplicated market_filters logic).
 const painter = readFileSync(new URL('../src/ui/market_window.ts', import.meta.url), 'utf8');
 const core = readFileSync(new URL('../src/ui/market_view.ts', import.meta.url), 'utf8');
 
-describe('market_window: no magic values (decision 12)', () => {
+describe('market_window: no magic values', () => {
   it('carries no literal color in TS (colors live in the extracted stylesheet/tokens)', () => {
     const hex = painter.match(/#[0-9a-fA-F]{3,8}\b/g) ?? [];
     expect(hex, `hex colors must move to tokens/CSS: ${hex.join(', ')}`).toEqual([]);
@@ -33,7 +33,7 @@ describe('market_window: no magic values (decision 12)', () => {
   });
 });
 
-describe('market_window: WCAG 2.2 AA (decision 10)', () => {
+describe('market_window: WCAG 2.2 AA', () => {
   it('returns focus to the opener on close', () => {
     expect(painter).toContain('captureFocus');
     expect(painter).toContain('restoreFocus');
@@ -54,7 +54,7 @@ describe('market_window: WCAG 2.2 AA (decision 10)', () => {
   });
 
   it('makes the filter listboxes keyboard-operable via the shared dropdownKeyNav core', () => {
-    // P18a: the role=listbox the menus advertise is now actually keyboard-operable. The
+    // The role=listbox the menus advertise is now actually keyboard-operable. The
     // options are programmatically focusable but out of the Tab order (the roving pattern),
     // and the wiring reuses the existing pure core rather than a bespoke re-implementation,
     // so this guard fails if the keyboard nav is dropped.

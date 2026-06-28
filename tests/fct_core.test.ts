@@ -1,5 +1,5 @@
-// Determinism + faithfulness guard for the pure FCT spawn-descriptor core (P13a,
-// decisions 5 / 9 / 12 / 15). Proves describeFct() is a pure function (same event + same
+// Determinism + faithfulness guard for the pure FCT spawn-descriptor core.
+// Proves describeFct() is a pure function (same event + same
 // injected jitter -> identical descriptor, no Math.random / Date.now / performance.now /
 // DOM), that crit flips only the crit flag (not the color token), that each kind maps to
 // its documented color token, that the injected jitter spans the documented min/max, and
@@ -138,7 +138,7 @@ describe('describeFct: ttl is a pure function of kind (constant across kinds)', 
 
   it('pins FCT_RISE_PX against the live hud.css @keyframes rise distance', () => {
     // FCT_RISE_PX feeds no production code (the painter rises off the .fct / .fct.crit CSS class),
-    // so this scan is what actually ties the documentary constant to the CSS rise Slice F preserved:
+    // so this scan is what actually ties the documentary constant to the CSS rise preserved here:
     // @keyframes fct-rise rises FCT_RISE_PX (76px) and fct-crit rises 86px. A future CSS edit that
     // changes either fails here instead of silently drifting from the constant.
     const css = readFileSync(
@@ -165,7 +165,7 @@ describe('describeFct: head-offset anchor', () => {
   });
 });
 
-describe('describeFct: ClientWorld-vs-Sim parity (decision 15)', () => {
+describe('describeFct: ClientWorld-vs-Sim parity', () => {
   // The structural FctAnchorSource type (pos + scale only) is the real enforcing guard --
   // the core cannot read a Sim-only field without a cast. This test documents the intent
   // and pins that both world shapes, sharing the same pos + scale, produce one descriptor.
@@ -196,7 +196,7 @@ describe('describeFct: ClientWorld-vs-Sim parity (decision 15)', () => {
   });
 });
 
-describe('isDamageFctKind: the combat-damage taxonomy (P14a drop-non-crit target)', () => {
+describe('isDamageFctKind: the combat-damage taxonomy (drop-non-crit target)', () => {
   it('classifies exactly the three damage-number kinds as damage', () => {
     expect([...DAMAGE_FCT_KINDS].sort()).toEqual([
       'damage-done-ability',

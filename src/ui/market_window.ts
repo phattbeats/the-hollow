@@ -9,7 +9,7 @@
 // back through IWorld + injected callbacks. It holds no Sim reference and reaches
 // into Hud only through its deps.
 //
-// Colors live in the extracted stylesheet (decision 12): item-quality tint comes
+// Colors live in the extracted stylesheet: item-quality tint comes
 // from the shared QUALITY_COLOR map, the unranked fallback is a CSS token, so no
 // raw hex sits in this painter.
 
@@ -45,7 +45,7 @@ import {
 import type { PainterHostPresentation } from './painter_host';
 import { svgIcon } from './ui_icons';
 
-// The unranked quality fallback as a CSS custom property (decision 12). The
+// The unranked quality fallback as a CSS custom property. The
 // shared QUALITY_COLOR map carries the real per-quality hex; this token covers a
 // listing whose item has no quality field, so no raw hex lives in the painter.
 const QUALITY_DEFAULT_COLOR = 'var(--color-quality-default)';
@@ -164,7 +164,7 @@ export class MarketWindow {
   render(): void {
     const el = this.deps.root();
     this.deps.hideTooltip();
-    // WCAG 2.2 AA (P15b): name the focus-trapped root with a dialog role.
+    // WCAG 2.2 AA: name the focus-trapped root with a dialog role.
     markDialogRoot(el, { label: t('itemUi.market.title') });
     const info = this.deps.world().marketInfo;
     const tabLabel = (id: MarketTab): string => {
@@ -199,7 +199,7 @@ export class MarketWindow {
         audio.click();
         this.render();
         // Keyboard focus would otherwise fall to <body> when render() rebuilds the
-        // tab strip; land it on the newly selected tab instead (P15b, WCAG 2.4.3).
+        // tab strip; land it on the newly selected tab instead (WCAG 2.4.3).
         (this.deps.root().querySelector(`[data-tab="${next}"]`) as HTMLElement | null)?.focus();
       });
     });
@@ -251,7 +251,7 @@ export class MarketWindow {
         audio.click();
         this.render();
         // Return focus to the filter's trigger button after render() rebuilds the
-        // menus, so a keyboard user is not dropped to <body> (P15b, WCAG 2.4.3).
+        // menus, so a keyboard user is not dropped to <body> (WCAG 2.4.3).
         const newMenu = this.deps.root().querySelector(`[data-market-filter-menu="${key}"]`);
         (
           newMenu?.closest('.mkt-select')?.querySelector('.mkt-select-btn') as HTMLElement | null
@@ -371,7 +371,7 @@ export class MarketWindow {
       list.className = 'mkt-list';
       body.appendChild(list);
     }
-    // Decision 15 / lazy-load a11y (P15b): the Browse search round-trips through the
+    // lazy-load a11y: the Browse search round-trips through the
     // server (sync offline, async online) and streams results back into the list. A
     // persistent off-screen polite status node announces the new result count (or the
     // empty reason) so a screen-reader user hears that the async results arrived. It
@@ -470,7 +470,7 @@ export class MarketWindow {
           body.scrollTop = 0;
           // The pager is rebuilt by renderContent, so move focus to the matching new
           // page button (or any enabled pager button if it became disabled at an end),
-          // keeping the keyboard user off <body> (P15b, WCAG 2.4.3).
+          // keeping the keyboard user off <body> (WCAG 2.4.3).
           const refocus = body.querySelector<HTMLButtonElement>(`[data-market-page="${dir}"]`);
           if (refocus && !refocus.disabled) refocus.focus();
           else body.querySelector<HTMLButtonElement>('[data-market-page]:not([disabled])')?.focus();

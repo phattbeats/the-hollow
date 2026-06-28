@@ -26,7 +26,7 @@ import {
   targetFrameNonSelfIntervalMs,
 } from '../src/game/ui_tier_knobs';
 
-// P14a per-element graphics-tier knobs. The headline gate is the two-controller hazard:
+// Per-element graphics-tier knobs. The headline gate is the two-controller hazard:
 // every knob is a pure function of the STATIC tier and NEVER reads the FPS governor, so
 // only the static preset can move a knob. These tests pin that (import-absence +
 // behavioral), the no-op-on-full invariant (medium/high/ultra are byte-equivalent to
@@ -126,7 +126,7 @@ describe('ui_tier_knobs - LOW shed magnitudes are pinned to literals (perf-gate 
   });
 });
 
-describe('ui_tier_knobs - nameplate refresh cadence (P14b, static-preset tiered, seconds)', () => {
+describe('ui_tier_knobs - nameplate refresh cadence (static-preset tiered, seconds)', () => {
   // Replaces the renderer's old mobile-vs-desktop runtime fork (isMobileRuntime()
   // ? 1/15 : 1/24) with a static-tier read. Unlike the shed-on-low knobs, this is
   // a BASE cadence that throttles on EVERY tier, so it always returns a positive
@@ -153,7 +153,7 @@ describe('ui_tier_knobs - nameplate refresh cadence (P14b, static-preset tiered,
   // at 1/15s (a weak-GPU cost ceiling, the PR901 lesson); the preset axis now binds
   // 1/15s to the LOW tier alone, so a mobile device on a non-low preset runs the
   // faster/costlier 1/24s. That accepted axis change (restoring the mobile cost
-  // ceiling) is tracked for the P17a mobile-perf gate; this test does NOT assert a
+  // ceiling) is tracked for the mobile-perf gate; this test does NOT assert a
   // mobile device receives 1/15s.
   it('never refreshes slower than the 1/15s staleness floor: every tier interval is <= 1/15s', () => {
     const FLOOR_SEC = 1 / 15;
@@ -303,7 +303,7 @@ describe('ui_tier_knobs - behavioral: only the tier moves a knob', () => {
 describe('ui_tier_knobs - two-controller WIRING: Hud.fxTier reads the static stamp, not the governor', () => {
   // The pure source scan above proves the KNOB module never reads a governor. But the
   // actual two-controller seam is Hud.fxTier(): the knobs only stay governor-free if the
-  // Hud feeds them the STATIC data-fx-level stamp (written solely by the P5 preset applier)
+  // Hud feeds them the STATIC data-fx-level stamp (written solely by the preset applier)
   // and never an FPS-governor level. The painter/cadence unit tests inject the tier
   // directly, so they would all stay green if fxTier() were rewired to the governor. This
   // scans the actual fxTier() method body in hud.ts to pin that wiring.
@@ -332,7 +332,7 @@ describe('ui_tier_knobs - two-controller WIRING: Hud.fxTier reads the static sta
 });
 
 describe('ui_tier_knobs - party frames are deliberately NOT tiered (a healer signal stays full-rate)', () => {
-  // The senior re-audit removed the party-frame throttle: party-member HP is a healer's
+  // The senior review removed the party-frame throttle: party-member HP is a healer's
   // only actionable signal (no self-dispel), so it stays on the 4Hz mediumHud band for
   // EVERY tier. Pin that decision by source scan so re-adding a party tier knob (the exact
   // deleted names) is a conscious, test-touching change, not a silent re-handicap of low.

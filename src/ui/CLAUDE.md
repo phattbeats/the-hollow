@@ -51,7 +51,7 @@ held to these — verify in mobile portrait *and* landscape before calling UI wo
   content translations, camera auto-rotate); **no `transform: scale()` on hover/focus**
   of list/rail/chip items (motion-sickness trigger); text contrast ≥4.5:1 (≥3:1 large).
   Accessible names are still `t()` keys (see i18n below).
-- **HUD-chrome WCAG 2.2 AA contract (what P15a/P15b built and guard).** The chrome
+- **HUD-chrome WCAG 2.2 AA contract (what the chrome a11y work built and guards).** The chrome
   (windows, buttons, forms, menus, chat, tooltips) is in scope; the 3D world / game
   canvas is OUT of scope (not screen-readable, never faked with aria). On top of the
   per-control basics above:
@@ -83,13 +83,12 @@ held to these — verify in mobile portrait *and* landscape before calling UI wo
     entries). The axe-core + keyboard-reachability + rendered target-size checks are the
     OPT-IN browser suite `tests/browser/*.browser.test.ts` (`npm run test:browser`, via
     `vitest.browser.config.ts`, chromium-only locally). Wiring that suite (and axe) into a
-    standing CI job on WebKit/Firefox + mobile WebKit was prototyped + verified green in P17b
-    but reverted with the declined bundle work; it remains an OPTIONAL standalone re-land (see
-    the state.md decision-14 OUTCOME note).
+    standing CI job on WebKit/Firefox + mobile WebKit was prototyped + verified green
+    but reverted with the declined bundle work; it remains an OPTIONAL standalone re-land.
 
 ## Per-frame performance contract (write-elision + tiering)
 Per-frame HUD code (anything reached from `Hud.update()`) holds these, proven by the
-P10-P14 phases:
+per-frame painters:
 - **Write-elision.** Every per-frame DOM write goes through the host's elided writers
   (`setText`/`setDisplay`/`setTransform`/`setWidth` + the multi-slot
   `setStyleProp`/`toggleClass`/`setAttr`), bound over the private `hotWriteCache` field in
@@ -110,20 +109,20 @@ P10-P14 phases:
   `tests/util/alloc_probe.ts` (driven by `tests/alloc_probe.test.ts` plus the per-frame
   view tests, e.g. `tests/auras_view.test.ts`, `tests/action_bar_view.test.ts`).
 - **The perf gate.** `scripts/perf_tour.mjs` (an env-driven `npm run` script, run per
-  per-frame phase against the recorded P0 baseline) asserts `frameP95 <= baseline` and that
+  per-frame phase against the recorded baseline) asserts `frameP95 <= baseline` and that
   the AoE-burst FCT node count stays bounded; it also REPORTS `hudHotDomSkipRate`, which
-  each per-frame phase checked against the P0 baseline at its green gate (perf_tour does NOT
+  each per-frame phase checked against the baseline at its green gate (perf_tour does NOT
   auto-fail on skip-rate, so the always-on write-elision guarantee is the
   `tests/painter_host.test.ts` guard above). Each green-gate commit is TAGGED so a later
-  cumulative regression bisects to a phase. The STANDING vitest perf budget is
-  `tests/hud_perf_budget.test.ts` (P17a), split by host so each assertion runs where it is
+  cumulative regression bisects to a commit. The STANDING vitest perf budget is
+  `tests/hud_perf_budget.test.ts`, split by host so each assertion runs where it is
   measurable: ARM 1 (Node, every `npm test`) scans every hot painter for raw writes AND
   per-frame forced-reflow layout reads (offsetWidth/getBoundingClientRect/..., the layout-
   thrash killer); ARM 2 (Node fake-DOM, every `npm test`) drives the non-pooled per-frame
   painters through a steady loop over a real `makeWriterFacet` and asserts per-painter
   establishing-write + elision + a derived skip-rate sanity bound (its loop has a FIXED
   denominator so the ratio is stable here), for BOTH a Sim- and a ClientWorld-shaped input
-  (decision 15), plus the `alloc_probe` reference-stability proxy (container AND `.slots`);
+  plus the `alloc_probe` reference-stability proxy (container AND `.slots`);
   ARM 3 (gated behind `HUD_PERF_BUDGET_TOUR=1`, the perf row, skipped in bare `npm test`)
   reads a `perf_tour` artifact + the baseline and asserts `frameP95 <= reference` and, on
   EVERY viewport, the run-length-INDEPENDENT elision-bypass COUNT `hudHotDomWrites <= 152`
@@ -143,10 +142,10 @@ P10-P14 phases:
   `data-fx-level` stamp).
 
 ### Canvas and DOM hot-path techniques (the proven patterns)
-The contract above is the WHAT; these are the HOW the P10-P14 painters use to hit it. Reach
+The contract above is the WHAT; these are the HOW the per-frame painters use to hit it. Reach
 for the matching one when you build a hot HUD component (each names its exemplar):
 - **Resolve element refs ONCE** into a field at construction, never `$()`/`querySelector`
-  from a per-frame path (a re-query every frame was a real P10a leak; `hud.ts` caches
+  from a per-frame path (a re-query every frame was a real leak; `hud.ts` caches
   `xpbarEl` / `playerFrameEl` / `swingbarEl`).
 - **Pool + keyed-reconcile, never per-frame `innerHTML` / `createElement`.** For a per-event
   or per-entity collection (FCT, auras, party), keep a persistent node pool, reconcile a
@@ -256,7 +255,7 @@ migrated this way) and the `unit_frame` family for a per-frame component.** Orde
    classes) needs `Hud`'s private state. The per-render method (e.g. `renderVendor`) shrinks
    to: resolve the entity, build the view, call the module with `deps`. Keep the diff a
    move-plus-import, not a rewrite (root `extract-and-test` skill). Run the matching
-   validation-matrix rows (`docs/frontend-modernization/state.md`) before committing.
+   validation-matrix rows before committing.
 
 ## i18n - IMPORTANT (sparse-overlay model; contributors add ENGLISH ONLY)
 The locale data is split across files. Touch the right one:

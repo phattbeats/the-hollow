@@ -1,18 +1,18 @@
 // One pooled party-frame row: the ONE-TIME DOM builder + the live-slot event
-// handlers for the keyed-pool party painter (frontend-modernization v0.16.0, P11c).
+// handlers for the keyed-pool party painter.
 //
 // This is the BUILDER half (the per-frame update half is party_frames_painter.ts).
 // It runs only when a row is first created (or recycled to a fresh free slot), never
 // on the hot path, so it freely uses the DOM creation primitives (createElement,
 // className, innerHTML for the static badge icons, the role / tabindex attributes)
 // that the per-frame painter must NOT touch. Each row is a unit_frame family
-// INSTANCE (decision 9): createPartyRow builds the row's element set and wires its
+// INSTANCE: createPartyRow builds the row's element set and wires its
 // own UnitFramePainter, so the painter drives name / level / hp / resource / dead /
 // out-of-range through the SAME write-elided family path the player and target use,
 // while the party-only extras (the class-color custom property, the combat class, the
 // dead / combat / out-of-range badges, the crest) layer on top.
 //
-// The keyed-pool correctness rule (state.md top-risk 3): the click / contextmenu /
+// The keyed-pool correctness rule: the click / contextmenu /
 // keydown listeners are attached ONCE here and read a LIVE MUTABLE slot record, never
 // a member captured by value. When the painter recycles a row to a different pid it
 // overwrites slot.member in place, so the handlers always act on the row's current

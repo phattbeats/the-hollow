@@ -1,12 +1,11 @@
 /* layout.css: the shared window shell, relocated from index.html's inline <style>
-   under @layer layout (the cascade tier P1 declared in src/styles/index.css, between
+   under @layer layout (the cascade tier declared in src/styles/index.css, between
    base and components). Holds only the generic .window rule that centres every modal
    window on the page and sets its shared frame basics (padding, z-index, max-height,
    scroll). Per-window size and look live in components.css; in-world HUD chrome lives
    in hud.css. @layer layout sits below @layer components, so the per-window body rules
    and HUD chrome correctly override this generic base, matching the pre-extraction
-   source order (the .window base led the windows block). See
-   docs/frontend-modernization/phase-03-css-windows.md. */
+   source order (the .window base led the windows block). */
 
 @layer layout {
   /* ---------- window shell ---------- */

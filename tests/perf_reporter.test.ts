@@ -326,7 +326,7 @@ describe('perf reporter payload', () => {
 
     expect(body.releaseVersion).toBe('0.9.0');
     expect(body.buildId).toBe('testbuild');
-    // The default graphicsPreset is MEDIUM (P18e): a fresh Settings() with no stored preset
+    // The default graphicsPreset is MEDIUM: a fresh Settings() with no stored preset
     // reports medium; first-run device detection (main.ts) would persist a device tier, but
     // this unit constructs Settings directly with no persisted value.
     expect(body.graphicsPreset).toBe('medium');

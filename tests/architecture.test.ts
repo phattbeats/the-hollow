@@ -11,7 +11,7 @@ import { describe, expect, it } from 'vitest';
 // src/sim code can no longer run unchanged in Node, the browser, and the RL env,
 // or that same-seed-same-world determinism is broken. Keep this green.
 //
-// It also guards the curated PURE CORES the frontend-modernization packet leans
+// It also guards the curated PURE CORES the HUD leans
 // on: host-agnostic, DOM/Three-free, deterministic modules a Vitest imports
 // directly (the unit_portrait.ts template and the per-element view cores hud.ts
 // already imports). A registered pure core must not import three, a host layer it
@@ -77,7 +77,7 @@ function forbiddenImport(spec: string): string | null {
 // ui modules + host-agnostic sim types, so only three + render/game/net are
 // forbidden layers. It also must not import a DOM-owning painter or the painter
 // host: a core reaching for a *_painter, a *_window painter, or painter_host couples
-// to the DOM one hop removed, defeating the split. (The *_window arm closes the P8b
+// to the DOM one hop removed, defeating the split. (The *_window arm closes the
 // gap where the char_window/market_window painters slipped the *_painter-only regex.)
 function forbiddenUiCoreImport(spec: string): string | null {
   if (spec === 'three' || spec.startsWith('three/')) return 'three';
@@ -90,7 +90,7 @@ function forbiddenUiCoreImport(spec: string): string | null {
 // Same idea for a render-resident pure logic core (cast_bar): it lives in render,
 // so a render sibling import is allowed, but it must stay Three-free (the painter
 // owns the Three drawing) and must not import game/net or a DOM-owning *_painter /
-// *_window painter. It must ALSO stay i18n-free (decision 6/8 / the file header): the core emits stable
+// *_window painter. It must ALSO stay i18n-free (the file header): the core emits stable
 // discriminators (the raw cast id, the eat/drink mode) that the painter localizes,
 // so importing the i18n runtime (t/tEntity/formatNumber from any *i18n module) is
 // forbidden. That makes a t() call in the core fail this guard, not just the header.
@@ -112,8 +112,8 @@ const simFiles = walk(simRoot);
 
 // Curated src/ui pure cores: host-agnostic view models hud.ts imports, each
 // paired with a DOM painter that is deliberately NOT registered here. Seeded with
-// the cores that already exist on v0.16.0; extend as new pure cores land (the
-// later HUD-extraction phases). The forbiddenUiCoreImport guard forbids three +
+// the cores that already exist on v0.16.0; extend as new pure cores land (later
+// HUD extractions). The forbiddenUiCoreImport guard forbids three +
 // render/game/net + a DOM-owning painter, so it also fits a render-importable
 // game LEAF: src/game/ui_effects_profile.ts is a pure resolver that imports
 // nothing (gfx.ts imports its EFFECTS_QUALITY_LOW_CUTOFF, a render->game leaf
@@ -162,7 +162,7 @@ const UI_PURE_CORES = [
 
 // Pure logic cores that live in src/render (the painter half is Three-side):
 // cast_bar (the overhead cast/channel state) and nameplate_view (the per-entity
-// nameplate visibility / anchor / threat / combo model, P14b). Each emits state
+// nameplate visibility / anchor / threat / combo model). Each emits state
 // from sim types with no Three import and no i18n, so a NameplatePainter /
 // cast_bar painter draws it and a Vitest drives it directly.
 const RENDER_PURE_CORES = ['src/render/cast_bar.ts', 'src/render/nameplate_view.ts'].map((rel) =>
@@ -265,7 +265,7 @@ describe('src/ui pure-core invariants', () => {
     expect(missing, `curated src/ui pure core missing:\n${missing.join('\n')}`).toEqual([]);
   });
 
-  // COMPLETENESS (P17a): the reverse of the existence check above. The other scans
+  // COMPLETENESS: the reverse of the existence check above. The other scans
   // only prove the LISTED cores are clean; this proves the converse - every on-disk
   // src/ui *_view / *_core IS registered - so a future extraction that names a pure
   // core <thing>_view.ts but forgets to add it to UI_PURE_CORES fails here instead
@@ -307,7 +307,7 @@ describe('src/ui pure-core invariants', () => {
   // Teeth check: the scans above only prove the registered cores are CLEAN today.
   // This pins the matcher itself so a future weakening (a regex typo, a dropped
   // branch) cannot silently let a core import a forbidden layer and stay green.
-  // It makes the per-phase "the guard must still FAIL on an injected forbidden
+  // It makes the "the guard must still FAIL on an injected forbidden
   // import" acceptance step a durable regression test instead of a manual ritual.
   it('forbiddenUiCoreImport flags every forbidden layer and allows the permitted ones', () => {
     // three (the renderer dependency), in both the bare and submodule forms.
@@ -319,7 +319,7 @@ describe('src/ui pure-core invariants', () => {
     expect(forbiddenUiCoreImport('../game/audio')).toBe('game');
     expect(forbiddenUiCoreImport('../net/client_world')).toBe('net');
     // A DOM-owning *_painter, a *_window painter, or the painter host (DOM coupling one hop
-    // removed; the *_window arm closes the P8b gap where char_window/market_window slipped).
+    // removed; the *_window arm closes the gap where char_window/market_window slipped).
     expect(forbiddenUiCoreImport('./delve_map_painter')).toBe('painter');
     expect(forbiddenUiCoreImport('./painter_host')).toBe('painter');
     expect(forbiddenUiCoreImport('./char_window')).toBe('painter');
@@ -378,7 +378,7 @@ describe('src/render pure-core invariants', () => {
     expect(missing, `curated src/render pure core missing:\n${missing.join('\n')}`).toEqual([]);
   });
 
-  // COMPLETENESS (P17a): every on-disk src/render *_view / *_core must be registered
+  // COMPLETENESS: every on-disk src/render *_view / *_core must be registered
   // in RENDER_PURE_CORES (the render-resident logic cores: cast_bar is bare-named, so
   // nameplate_view.ts is the one the convention catches). A new render core that is
   // not registered fails here instead of escaping the Three-free / determinism scans.

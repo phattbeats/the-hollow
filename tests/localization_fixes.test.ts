@@ -618,7 +618,7 @@ describe("R2: bug-report errors map to the server's exact emitted bytes", () => 
       expect(serverSrc.includes(`'${e}'`), `server no longer emits "${e}"`).toBe(true);
     }
 
-    // localizeBugReportError moved to the options window painter in P8a.
+    // localizeBugReportError moved to the options window painter.
     const hudSrc = fs.readFileSync(path.resolve(process.cwd(), 'src/ui/options_window.ts'), 'utf8');
     const fnStart = hudSrc.indexOf('localizeBugReportError(err: unknown)');
     expect(fnStart, 'localizeBugReportError not found in options_window.ts').toBeGreaterThan(-1);

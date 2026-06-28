@@ -1,4 +1,4 @@
-// Browser-mode supplement for the delve_map painter (the P6 PainterHost seam pilot).
+// Browser-mode supplement for the delve_map painter (the PainterHost seam pilot).
 //
 // The Node suite (tests/delve_map_painter.test.ts) drives the PURE path (delveDrawModel)
 // and source-scans the no-magic-values guard, but it CANNOT exercise the painter's
@@ -21,7 +21,7 @@ import { cleanup, host } from './_harness';
 
 // The six `--color-delve-*` tokens the painter resolves via getComputedStyle. The NAMES
 // mirror DELVE_COLOR_TOKENS in src/ui/delve_map_painter.ts; the VALUE we set for each is the
-// token name itself (decision 12: the tokens ARE the values). This keeps the test free of an
+// token name itself (the tokens ARE the values). This keeps the test free of an
 // out-of-band hex (no magic-color literal duplicating tokens.css), while the painter still
 // reads a non-empty string for every token. The value is not a valid CSS color, so Canvas
 // leaves fillStyle at its opaque-black default; the schematic still paints visible pixels,

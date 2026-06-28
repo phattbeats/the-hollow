@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { type RovingOrientation, rovingTarget } from '../src/ui/roving_index';
 
 // rovingTarget is a PURE core: it reads NO IWorld, only primitives (key, current index,
-// count, orientation), so the decision-15 ClientWorld-vs-Sim parity row is N/A for it
+// count, orientation), so the ClientWorld-vs-Sim parity row is N/A for it
 // (exactly like dropdown_nav.ts). The contract that applies is same-input-same-output,
 // asserted below, plus an equivalence check against the three inline talents handlers it
 // folds, so the extraction is proven byte-faithful and not merely plausible.
@@ -53,7 +53,7 @@ describe('rovingTarget: same input -> same output', () => {
 });
 
 describe('rovingTarget: equivalence with the three folded talents handlers', () => {
-  // The exact inline arithmetic each handler computed before P18a folded them onto the
+  // The exact inline arithmetic each handler computed before they were folded onto the
   // core, reproduced here so the fold is proven byte-faithful across a small index grid.
 
   // talents_window tablist (horizontal): ArrowRight/ArrowLeft/Home/End only.
@@ -123,7 +123,7 @@ describe('rovingTarget: equivalence with the three folded talents handlers', () 
   });
 });
 
-describe('roving_index: no magic values (decision 12)', () => {
+describe('roving_index: no magic values', () => {
   it('carries no hex color or px literal (named keys/orientation only)', () => {
     const src = readFileSync(new URL('../src/ui/roving_index.ts', import.meta.url), 'utf8');
     expect(src.match(/#[0-9a-fA-F]{3,8}\b/g) ?? []).toEqual([]);

@@ -3,7 +3,7 @@
 // The painter's DOM/async methods need a document + a resolved Promise, so they are
 // not exercised in this Node suite; the pure decisions it renders are covered by
 // tests/leaderboard_view.test.ts. This guard pins the a11y-bearing markup (real
-// close button + the loading live region + focus-return) and the decision-12
+// close button + the loading live region + focus-return) and the
 // contract for a DOM painter (no literal colors in TS; the page size is a named
 // constant).
 
@@ -34,7 +34,7 @@ describe('leaderboard_window: WCAG chrome (live region + focusable controls + fo
   });
 
   it('renders the dialog role + labelledby for the window', () => {
-    // P18a: the dialog identity is set via the shared markDialogRoot helper (role=dialog +
+    // the dialog identity is set via the shared markDialogRoot helper (role=dialog +
     // aria-labelledby + aria-modal + tabindex); the helper's own writes are unit-tested in
     // dialog_root.test.ts.
     expect(code).toContain("markDialogRoot(el, { labelledBy: 'leaderboard-title' })");
@@ -94,7 +94,7 @@ describe('leaderboard_window: async + page wiring contracts (the painter half)',
   });
 });
 
-describe('leaderboard_window: no magic values (decision 12, DOM painter)', () => {
+describe('leaderboard_window: no magic values (DOM painter)', () => {
   it('carries no literal hex or rgb color in TS (colors live in the stylesheet)', () => {
     const hex = code.match(/#[0-9a-fA-F]{3,8}\b/g) ?? [];
     const rgb = code.match(/\brgba?\s*\(/g) ?? [];

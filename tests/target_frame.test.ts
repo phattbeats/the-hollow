@@ -1,5 +1,5 @@
-// ClientWorld-vs-Sim parity for the target frame (decision 15). The target frame is
-// an INSTANCE of the unit_frame family (P11b): it adds no new core, so this drives
+// ClientWorld-vs-Sim parity for the target frame. The target frame is
+// an INSTANCE of the unit_frame family: it adds no new core, so this drives
 // the PURE cores the target instance depends on (unitFrameView for the frame,
 // castBarState for the cast bar) plus the inline combo-pip selection with BOTH a
 // Sim-shaped and a faithfully ClientWorld-mirror-shaped target entity.
@@ -7,7 +7,7 @@
 // The mirror is NOT a byte copy of the Sim entity: the wire (server/game.ts WireAura)
 // omits the absorb VALUE, and src/net/online.ts reconstructs every aura with
 // `value: 0`. So the absorb SHIELD overlay is an OFFLINE-ONLY visual (online there is
-// no shield data, so the bar is just hp/maxHp). The fields the phase calls out as
+// no shield data, so the bar is just hp/maxHp). The fields that are
 // divergence-sensitive (the target cast remaining + the combo points) ARE wired and
 // must match. This test models the mirror's value-zeroing faithfully and asserts:
 //   - the wire-carried frame fields (hp/level/name/resource) render identically,
@@ -130,7 +130,7 @@ function litComboPips(comboTargetId: number | null, comboPoints: number, targetI
   return comboTargetId === targetId ? comboPoints : 0;
 }
 
-describe('target frame: Sim-vs-ClientWorld parity (decision 15)', () => {
+describe('target frame: Sim-vs-ClientWorld parity', () => {
   it('renders the wire-carried frame fields identically across hosts', () => {
     const fromSim = unitFrameView(targetDescriptor(simTarget()));
     const fromClient = unitFrameView(targetDescriptor(clientTarget()));
@@ -175,7 +175,7 @@ describe('target frame: Sim-vs-ClientWorld parity (decision 15)', () => {
     const fromClient = castBarState(clientTarget());
     expect(fromSim).toEqual(fromClient);
     expect(fromSim.visible).toBe(true);
-    expect(fromSim.label).toBe('deathless_rage'); // target shows the raw id (P11a)
+    expect(fromSim.label).toBe('deathless_rage'); // target shows the raw id
     // hardcast fill = 1 - remaining/total = 1 - 1.5/4 = 0.625; same on both hosts.
     expect(fromSim.fill).toBeCloseTo(0.625);
     expect(simTarget().castRemaining).toBe(clientTarget().castRemaining);

@@ -1,12 +1,12 @@
-// Thin painter for the unit_frame FAMILY (decision 9). The pure paint values live
+// Thin painter for the unit_frame FAMILY. The pure paint values live
 // in unit_frame.ts (unitFrameView); this turns a view into DOM, routing EVERY
-// write through the host's SIX elided writers (decision 5a) so a no-op frame costs
+// write through the host's SIX elided writers so a no-op frame costs
 // no DOM mutation, and caching its element refs ONCE (the player block re-queried
 // `#pf-absorb` via $() every frame inside updateAbsorb, a leak this folds away).
 //
 // It is INSTANCE-PARAMETERIZED, not bespoke: the same class drives the player,
 // target, and party frames from their own element sets. The player is the first
-// instance (P10b); P11a/b/c construct target and party instances of this exact
+// instance; target and party are instances of this exact
 // painter with no core change. Per-instance variation lives in the element set and
 // the options, never in branches on "which frame this is":
 //   - absorb / resource element groups are OPTIONAL: a party frame has no absorb
@@ -17,11 +17,11 @@
 //     `.unitframe` display is always `flex` via CSS and must not gain an inline
 //     style), so the player instance never writes the frame's display;
 //   - `repaintPortrait` repaints the portrait canvas when the identity key changes.
-//     The PAINTER owns that gate (so target's lastPortraitTarget gating in P11b is
+//     The PAINTER owns that gate (so target's lastPortraitTarget gating is
 //     this same code path); the player OMITS it (its portrait is drawn once at
 //     character setup, not per frame).
 //
-// No magic values (decision 12): the painter emits class DISCRIMINATORS and the
+// No magic values: the painter emits class DISCRIMINATORS and the
 // scaleX VALUE strings the view carries, never a literal hex / px / color in TS.
 // The base `bar` class and the `low` class (owned by the Hud's updateLowResource)
 // are never touched here, so folding the resource-type class into toggleClass does

@@ -8,7 +8,7 @@
 // works; emoji / non-ASCII pass through unchanged.
 //
 // The map is FIXED and 1:1, so the same `en` always yields the same en_XA - the
-// generated artifact stays reproducible like the rest of the i18n packet. This
+// generated artifact stays reproducible like the rest of the i18n output. This
 // module is imported by scripts/i18n_build.mjs and scripts/i18n_admin_build.mjs,
 // which emit a generated `en_XA` export that is NEVER a member of `translations`
 // (so it stays out of supportedLanguages, the language picker, hreflang, and the

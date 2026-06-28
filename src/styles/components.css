@@ -1,16 +1,16 @@
 /* components.css: the feature-window bodies, relocated from index.html's inline
-   <style> under @layer components (the cascade tier P1 declared in src/styles/index.css),
+   <style> under @layer components (the cascade tier declared in src/styles/index.css),
    in source order. Holds the delve board, the lockpicking minigame, the classic stat
    windows (character, spellbook, quest log, leaderboard, talents), shared window chrome
    (quest dialog, action button, loot, item quality, modals, dropdown), the interaction
    windows (vendor, bags, social, map), and the out-of-block feature windows (arena,
    market, options, theme picker, emote wheel) plus the Fiesta arena-bracket glue rules
-   that P2 left beside their .btn / .arena-bracket bases. The generic .window shell is in
+   left beside their .btn / .arena-bracket bases. The generic .window shell is in
    layout.css; in-world HUD chrome is in hud.css. components.css is imported after hud.css
    in the barrel, so within @layer components these window rules win equal-specificity
    ties over the HUD chrome, matching the pre-extraction precedence (the windows block was
    inline-unlayered and beat the layered HUD chrome). The two never share a selector in
-   practice. See docs/frontend-modernization/phase-03-css-windows.md. */
+   practice. */
 
 @layer components {
   /* ---------- delve board ---------- */
@@ -1124,7 +1124,7 @@
     width: 480px;
   }
   /* Title subtitle ("Lifetime XP, realm"): the muted-gold token + 11px the painter
-     used to set with an inline style (decision 12 keeps the literals out of TS). */
+     used to set with an inline style (keeps the literals out of TS). */
   .lb-subtitle {
     color: var(--color-text-muted);
     font-size: 11px;
@@ -1234,7 +1234,7 @@
     border-color: #cc9a3c;
     color: #ffe6a8;
   }
-  /* P15b: a steady, tokenized focus ring (was outline:0, which also defeated the
+  /* A steady, tokenized focus ring (was outline:0, which also defeated the
      forced-colors Highlight net). The hover border accent stays above. */
   .lb-page-btn:focus-visible {
     outline: 2px solid var(--color-border-focus);
@@ -1854,9 +1854,9 @@
     background: #ffffff10;
     border-color: #6f5a2a;
   }
-  /* The roving choice-menu option is the P15b keyboard centerpiece, so the focused
+  /* The roving choice-menu option is the keyboard centerpiece, so the focused
      option gets the same steady, tokenized outline ring the rest of the chrome draws
-     on :focus-visible (decision 10), not just the hover tint, so keyboard roving is
+     on :focus-visible, not just the hover tint, so keyboard roving is
      clearly visible. Inset offset keeps the ring inside the popup's scroll edge. */
   .tal-choice-opt:focus-visible {
     outline: 2px solid var(--color-border-focus);
@@ -2638,7 +2638,7 @@
      background (#2f2740), where the base .soc-meta color (#998d6a) sits at 4.29:1 (WCAG
      1.4.3). This slightly lighter muted gold reads ~4.9:1 there and higher on the dark
      resting row. Raw hex matches the surrounding .soc-* palette; tokenizing that palette
-     is P18c. */
+     is deferred. */
   .soc-sugg-item .soc-meta {
     color: #a59873;
   }
@@ -3158,7 +3158,7 @@
     background: #ffffff14;
     color: var(--color-accent);
   }
-  /* P15b: focus must not rely on background alone (was outline:0); add a steady,
+  /* Focus must not rely on background alone (was outline:0); add a steady,
      tokenized inset ring that also survives forced-colors. */
   .mkt-select-option:focus-visible {
     outline: 2px solid var(--color-border-focus);
@@ -3268,7 +3268,7 @@
     border-color: #cc9a3c;
     color: var(--color-accent);
   }
-  /* P15b: restore a steady, tokenized focus ring (was outline:0). */
+  /* Restore a steady, tokenized focus ring (was outline:0). */
   .mkt-page-btn:focus-visible {
     outline: 2px solid var(--color-border-focus);
     outline-offset: 2px;
@@ -3361,8 +3361,8 @@
     border-radius: 6px;
     margin-bottom: 8px;
   }
-  /* The icon + name cluster inside a collect row (P15b: was an inline flex literal in
-     market_window.ts; moved here so the painter carries no layout px, decision 12). */
+  /* The icon + name cluster inside a collect row (was an inline flex literal in
+     market_window.ts; moved here so the painter carries no layout px). */
   .mkt-collect-item {
     display: flex;
     gap: 8px;
@@ -4046,8 +4046,8 @@
     color: #fff;
   }
   /* ---------- paperdoll unequip + bags drop-target ---------- */
-  /* Character-window / bags chrome that rode inline past P3 (P4a surfaced it); P4b
-     homes it here beside the other window bodies under @layer components. */
+  /* Character-window / bags chrome that rode inline past the windows extraction;
+     homed here beside the other window bodies under @layer components. */
   /* Per-slot Unequip affordance in the character window (paperdoll): a corner ×
      glyph revealed on hover/focus (always shown on touch). Also right-click the
      slot, or drag the piece onto the bags window. */

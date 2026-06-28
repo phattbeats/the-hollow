@@ -1,6 +1,6 @@
-// P12b auras core (auras_view): the debuff allowlist classification, same-input ->
-// same-output determinism, the ClientWorld-vs-Sim parity assertion (decision 15: the
-// online wire omits stacks when 1), and the reused-buffer allocation budget (the P12a
+// auras core (auras_view): the debuff allowlist classification, same-input ->
+// same-output determinism, the ClientWorld-vs-Sim parity assertion (the
+// online wire omits stacks when 1), and the reused-buffer allocation budget (the
 // proxy). The DOM half (the keyed pool, the mutable-slot tooltip) is in
 // tests/auras_painter.test.ts.
 
@@ -167,7 +167,7 @@ describe('createAurasView: derivation per mode', () => {
   });
 });
 
-describe('decision 15: Sim-shaped and ClientWorld-mirror-shaped auras derive identically', () => {
+describe('Sim-shaped and ClientWorld-mirror-shaped auras derive identically', () => {
   it('a Sim aura {stacks:1} and a ClientWorld-mirror aura {stacks:undefined} yield the same slot', () => {
     // The wire omits stacks when 1 (server_i18n: WireAura.stacks sent only > 1), so the
     // online mirror presents stacks:undefined where the Sim presents stacks:1. Both must
@@ -233,7 +233,7 @@ describe('decision 15: Sim-shaped and ClientWorld-mirror-shaped auras derive ide
   });
 });
 
-describe('allocation budget (the P12a reused-reference proxy)', () => {
+describe('allocation budget (the reused-reference proxy)', () => {
   const drive = (mode: AuraMode) => {
     const view = createAurasView(mode, deps());
     // Vary the aura data each call (remaining ticks down, stacks change) so the probe

@@ -1,11 +1,11 @@
-// P12b overworld minimap core (minimap_markers): the delve-vs-overworld discriminator,
+// overworld minimap core (minimap_markers): the delve-vs-overworld discriminator,
 // the DISCRIMINATED Marker union per draw kind, the friend/guild/party/stranger
 // classification, same-input -> same-output determinism, the ClientWorld-vs-Sim parity
-// assertion (decision 15), and the reused-container allocation budget (the P12a proxy,
+// assertion, and the reused-container allocation budget (the proxy,
 // wrapper-level: the per-marker variant objects are rebuilt by design, so only the
 // container + reused array reference are the floor).
 //
-// The in-delve schematic branch is owned by delve_map.ts + delve_map_painter.ts (P6);
+// The in-delve schematic branch is owned by delve_map.ts + delve_map_painter.ts;
 // this core models only the overworld branch (minimapMode names the boundary). The
 // canvas no-magic-values guard is in tests/minimap_painter.test.ts.
 
@@ -227,7 +227,7 @@ describe('createMinimapMarkers: the discriminated union per draw kind', () => {
   });
 });
 
-describe('decision 15 + determinism', () => {
+describe('determinism', () => {
   it('Sim-shaped and ClientWorld-mirror-shaped stubs produce identical markers', () => {
     const sim = makeWorld('sim');
     const client = makeWorld('client');
@@ -240,7 +240,7 @@ describe('decision 15 + determinism', () => {
   });
 });
 
-describe('allocation budget (the P12a reused-reference proxy, wrapper floor)', () => {
+describe('allocation budget (the reused-reference proxy, wrapper floor)', () => {
   it('reuses the returned container AND its markers array across calls', () => {
     // The wrapper floor: the container object + its markers array stay identical. The
     // per-marker variant objects ARE rebuilt each call (a discriminated union cannot

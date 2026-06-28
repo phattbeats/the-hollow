@@ -1,8 +1,8 @@
 // Thin painter for the swing-timer (auto-attack) bar. The pure fill / ready /
 // label rules live in swing_timer.ts; this turns that state into DOM, routing
-// EVERY write through the host's elided writers (decision 5a) and caching the
+// EVERY write through the host's elided writers and caching the
 // #swingbar element plus its .fill / .label children ONCE (they were re-queried
-// via $()/querySelector every frame, the leak this phase fixes). It resolves the
+// via $()/querySelector every frame, the leak this painter fixes). It resolves the
 // i18n-free core's label discriminator through t() (like the cast-bar renderer),
 // so the core stays string-table-free.
 

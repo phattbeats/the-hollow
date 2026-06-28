@@ -1,5 +1,5 @@
 // Tests for the PainterHost write-elision facet (makeWriterFacet), the host
-// contract every per-frame painter leans on (decisions 5 / 5a). P10a grew it from
+// contract every per-frame painter leans on. It grew from
 // four single-slot writers to SIX, adding the multi-slot setStyleProp + toggleClass
 // that the four originals cannot express. These tests are the regression guard for
 // Top risk 1 (a non-byte-identical key or a single-slot collapse silently breaks
@@ -60,7 +60,7 @@ function fakeFacet() {
   return { cache, stylePropCache, classCache, attrCache, facet, counts };
 }
 
-// --- The four single-slot writers (unchanged from P6) --------------------------
+// --- The four single-slot writers (unchanged) ----------------------------------
 
 describe('makeWriterFacet: single-slot writers (setText/setDisplay/setTransform/setWidth)', () => {
   it('writes a value once, then elides repeats of the same value to the same element', () => {
@@ -99,7 +99,7 @@ describe('makeWriterFacet: single-slot writers (setText/setDisplay/setTransform/
   });
 });
 
-// --- setStyleProp: the multi-slot custom-property writer (decision 5a) ----------
+// --- setStyleProp: the multi-slot custom-property writer ------------------------
 
 describe('makeWriterFacet: setStyleProp (multi-slot, keyed per (element, prop))', () => {
   it('writes on first call, elides a repeat of the same (el, prop, val), writes a changed val', () => {
@@ -141,7 +141,7 @@ describe('makeWriterFacet: setStyleProp (multi-slot, keyed per (element, prop))'
   });
 });
 
-// --- toggleClass: the multi-slot class writer (decision 5a) ---------------------
+// --- toggleClass: the multi-slot class writer -----------------------------------
 
 describe('makeWriterFacet: toggleClass (multi-slot, keyed per (element, class))', () => {
   it('writes on first toggle, elides a repeat of the same on/off state, tracks the flip', () => {

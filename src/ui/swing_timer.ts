@@ -19,7 +19,7 @@ const SWING_EDGE_EPSILON = 1e-4;
 export type SwingLabelKind = 'ready' | 'seconds';
 
 /** The player fields the bar reads. A structural subset of Entity that both the
- *  offline Sim and the online ClientWorld mirror expose (decision 15). */
+ *  offline Sim and the online ClientWorld mirror expose. */
 export interface SwingPlayerInput {
   autoAttack: boolean;
   swingTimer: number; // seconds remaining; counts down to 0 (= ready)

@@ -12,7 +12,7 @@
 // Ability icons resolve via iconDataUrl (the procedural ability-icon source), not
 // the PainterHost item-icon helper: that helper paints ItemDef rows, and the
 // spellbook renders abilities. It is NOT a canvas window (colors live in the
-// extracted stylesheet, decision 12: no literal hex/px in TS). refreshHotbarControls
+// extracted stylesheet, no literal hex/px in TS). refreshHotbarControls
 // is the one not-cold touch: hud.update() calls it while the window is open so the
 // +/- toggles track action-bar changes without a full rebuild.
 
@@ -160,14 +160,14 @@ export class SpellbookWindow {
         // open, but the +/- text, the remove class, and the accessible name only
         // change when on-bar membership flips (a drag-drop / keybind use), which
         // aria-pressed already records. Recomputing the i18n name + rewriting the
-        // attribute every frame was avoidable churn (P15b re-audit, matches the
-        // P12a elided-writer doctrine). `disabled` stays per-frame: it also depends
+        // attribute every frame was avoidable churn (matches the elided-writer
+        // doctrine). `disabled` stays per-frame: it also depends
         // on hasFree, which can change without an on-bar flip.
         if ((btn.getAttribute('aria-pressed') === 'true') !== onBar) {
           btn.textContent = onBar ? '-' : '+';
           btn.classList.toggle('remove', onBar);
           btn.setAttribute('aria-pressed', onBar ? 'true' : 'false');
-          // Keep the accessible name in sync with the toggle state (P15b): appendRow
+          // Keep the accessible name in sync with the toggle state: appendRow
           // sets `${name} +/-`. Same symbol-concat format as appendRow.
           const def = ABILITIES[id];
           if (def) btn.setAttribute('aria-label', `${this.abilityName(def)} ${onBar ? '-' : '+'}`);

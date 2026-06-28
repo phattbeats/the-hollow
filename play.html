@@ -15,7 +15,7 @@
 <meta name="robots" content="index, follow, max-image-preview:large" />
 <link rel="manifest" href="/manifest.webmanifest" />
 
-<!-- i18n stored-locale modulepreload (Phase 4 / Lazy Locales). For a returning visitor
+<!-- i18n stored-locale modulepreload (Lazy Locales). For a returning visitor
      whose stored locale (localStorage key "locale") is non-English, inject a high-priority
      <link rel="modulepreload"> for THAT locale's content-hashed chunk before the main
      module parses, so the locale chunk is parser-discoverable and in flight early rather
@@ -134,18 +134,18 @@
 </script>
 <link rel="stylesheet" href="/src/styles/play.extra.css" />
 <style>
-  /* Game CSS now lives in src/styles/* (the P1 to P4b extraction). P4b emptied this
-     inline block: play.html previously carried a full, stale copy of the CSS that
+  /* Game CSS now lives in src/styles/* (the CSS extraction). This inline block was
+     emptied: play.html previously carried a full, stale copy of the CSS that
      (being unlayered) shadowed the shared @layer modules. With the block empty,
      play.html renders from the same canonical src/styles layers as index.html (its
      drift is reconciled). The one intentional per-entry difference, the
-     #rotate-device orientation gate (decision 16a), loads from play.extra.css
+     #rotate-device orientation gate, loads from play.extra.css
      linked above. This inline block is intentionally empty. */
 </style>
 </head>
 <body data-start-panel="mode-select">
-  <!-- Skip links: the first focusable elements, visually hidden until focused (P15a
-       a11y infra). Targets live inside #game-ui-template, cloned into the page in-game. -->
+  <!-- Skip links: the first focusable elements, visually hidden until focused (a11y
+       infra). Targets live inside #game-ui-template, cloned into the page in-game. -->
   <a class="hud-skip" href="#ui" data-i18n="hudChrome.skipLinks.mainHud">Skip to Main HUD</a>
   <a class="hud-skip" href="#chatlog" data-i18n="hudChrome.skipLinks.chat">Skip to Chat</a>
   <canvas id="game-canvas"></canvas>
@@ -153,7 +153,7 @@
 
   <template id="game-ui-template">
   <div id="ui" tabindex="-1">
-    <!-- Off-screen polite live regions (P15a + P18d). The 3D world / game canvas is OUT of
+    <!-- Off-screen polite live regions. The 3D world / game canvas is OUT of
          a11y scope; these speak HUD text only. #combat-live: the throttled combat summary
          (plus the FCT self-note, which has no combat-log line). #target-live: the new
          target's name, announced once per target change. #chat-live: chat, kept here
@@ -198,10 +198,10 @@
     <div id="minimap-wrap">
       <div id="zone-label" data-i18n="entities.zones.eastbrook_vale.name">Eastbrook Vale</div>
       <div id="minimap-disc">
-        <!-- Decorative canvas (decision 10): the minimap pixels are not screen-readable, so the
+        <!-- Decorative canvas: the minimap pixels are not screen-readable, so the
              canvas is aria-hidden, like #nameplates/#swingbar and the FCT nodes. Its textual
              surface is the adjacent #zone-label + #minimap-coords (role=status), with the fully
-             accessible #map-window as the alternative, per the P12b zone-label decision. -->
+             accessible #map-window as the alternative, per the zone-label decision. -->
         <canvas id="minimap" width="162" height="162" aria-hidden="true"></canvas>
         <button id="raid-lockout" type="button" hidden data-i18n-title="hudChrome.raidLockout.title" data-i18n-aria="hudChrome.raidLockout.title" title="Raid Lockouts" aria-label="Raid Lockouts"></button>
       </div>
@@ -289,7 +289,7 @@
            rendered by the HUD (hud.ts initChatTabs); this stays empty. -->
       <div id="chatlog-tabs" role="tablist"></div>
       <div id="chatlog-frame" class="panel">
-        <!-- P18d: aria-live="off" overrides role="log"'s IMPLICIT polite so this pane (which
+        <!-- aria-live="off" overrides role="log"'s IMPLICIT polite so this pane (which
              goes display:none on the combat tab) does not double-announce alongside the
              tab-independent #chat-live region. role="log" + tabindex="-1" stay: it is still
              the visible scrollback and the "skip to chat" landing target. -->

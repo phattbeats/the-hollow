@@ -1,9 +1,9 @@
-// The keyed-pool party-frames painter (frontend-modernization v0.16.0, P11c). It
+// The keyed-pool party-frames painter. It
 // replaces the old per-rebuild innerHTML wipe + click/contextmenu re-attach
 // (state.md top-risk 3) with a persistent node pool: one row per member key (pid),
 // reused across rebuilds, listeners attached ONCE per row (in party_frame_row.ts),
-// data updated IN PLACE through the host's six elided writers (decision 5a) and each
-// member's own unit_frame family INSTANCE (decision 9).
+// data updated IN PLACE through the host's six elided writers and each
+// member's own unit_frame family INSTANCE.
 //
 // This file owns only the HOT path (reconcile + per-frame writes); every write here
 // routes through the writer facet or the family painter, with NO raw style /
@@ -31,7 +31,7 @@ import type { PartyFrameMember } from './party_frames';
 import { unitFrameView } from './unit_frame';
 
 // The class-color custom property the frame's name reads (`color: var(--cls)`); a
-// token, not a literal color (decision 12).
+// token, not a literal color.
 const CLASS_COLOR_PROP = '--cls';
 // The combat highlight class. dead / out-of-range are owned by the family's state
 // classes; combat is the party-only extra (dead wins, so combat is off when dead).
@@ -57,7 +57,7 @@ export interface PartyFramesPainterDeps {
 
 export class PartyFramesPainter {
   // Active rows by member key (pid). One persistent node per key, reused across
-  // rebuilds; the keyed pool the phase requires.
+  // rebuilds; the keyed pool this painter requires.
   private readonly pool = new Map<number, PartyRow>();
   // Detached rows kept for reuse (recycling a departed row to a new pid). The row's
   // listeners stay attached and read the live slot, so a recycled row is safe.
@@ -136,7 +136,7 @@ export class PartyFramesPainter {
   // (zero when nothing moved). Departed rows were already detached in sync() and
   // new / recycled rows are detached, so every move here is a deliberate (re)insert
   // that restores member order; an unchanged order touches the DOM not at all. This
-  // is the pooled-node ordering discipline the P12 auras / P13 FCT pools reuse.
+  // is the pooled-node ordering discipline the auras and FCT pools reuse.
   private reconcileOrder(rows: PartyRow[], leave: HTMLButtonElement): void {
     let ref: ChildNode | null = this.container.firstChild;
     const place = (node: ChildNode): void => {
@@ -179,7 +179,7 @@ export class PartyFramesPainter {
 
   private paintRow(row: PartyRow, m: PartyFrameMember, leader: number, raid: boolean): void {
     // The class-color token + the combat class are the party-only writes the four
-    // original writers cannot express (decision 5a's setStyleProp / toggleClass).
+    // original writers cannot express (setStyleProp / toggleClass).
     this.writers.setStyleProp(row.el, CLASS_COLOR_PROP, this.deps.classCss(m.cls));
     const inCombat = !!m.inCombat && !m.dead;
     this.writers.toggleClass(row.el, COMBAT_CLASS, inCombat);

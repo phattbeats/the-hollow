@@ -11,11 +11,11 @@ import {
   newNameplatePlan,
 } from '../src/render/nameplate_view';
 
-// The nameplate_view core (P14b): the pure DOM/Three/i18n-free decision model the
+// The nameplate_view core: the pure DOM/Three/i18n-free decision model the
 // NameplatePainter consumes. These pin the exact visibility / anchor / urgent /
 // threat / combo behavior lifted out of renderer.updateNameplates, the
-// allocation-light out-param contract, the Sim-vs-ClientWorld parity guard
-// (decision 15), and the no-governor import-absence (the two-controller hazard:
+// allocation-light out-param contract, the Sim-vs-ClientWorld parity guard,
+// and the no-governor import-absence (the two-controller hazard:
 // the core must not read the FPS governor, which lives in src/render alongside it
 // and so is NOT caught by the architecture purity guard's render-sibling allowance).
 
@@ -190,7 +190,7 @@ describe('nameplate_view - allocation-light + determinism', () => {
   });
 });
 
-describe('nameplate_view - Sim-vs-ClientWorld parity (decision 15)', () => {
+describe('nameplate_view - Sim-vs-ClientWorld parity', () => {
   // The painter consumes IWorld, which both the offline Sim and the online
   // ClientWorld mirror satisfy, but only Sim is exercised by the perf harness. If
   // the core read a Sim-only field shape, it would render right offline and wrong
@@ -273,7 +273,7 @@ describe('nameplate_view - import absence (two-controller + purity, source scan)
 describe('nameplate interval WIRING - renderer reads the static stamp, never the governor', () => {
   // The two-controller seam for the nameplate cadence is in the renderer: it must
   // derive the interval from coerceFxTier(document.documentElement.dataset.fxLevel)
-  // (the static P5 stamp), never an FPS-governor level. The knob mapping itself is
+  // (the static preset stamp), never an FPS-governor level. The knob mapping itself is
   // pinned in ui_tier_knobs.test.ts; this pins the actual call site.
   const rendererSrc = readFileSync(
     fileURLToPath(new URL('../src/render/renderer.ts', import.meta.url)),

@@ -1,4 +1,4 @@
-// Routing + no-magic-values guard for the unit_frame painter (decisions 5a / 12).
+// Routing + no-magic-values guard for the unit_frame painter.
 // A recording facet captures every writer call so we can assert the painter drives
 // the SIX elided writers with byte-identical values (the Top-risk-1 guard against a
 // non-byte-identical cache key), including the FOLDED absorb transform + overshield
@@ -228,7 +228,7 @@ describe('UnitFramePainter: the instance-parameterized contract (target / party 
     expect(calls).toEqual([]);
   });
 
-  it('writes an empty level string when the level is hidden (levelText null, the P11 party path)', () => {
+  it('writes an empty level string when the level is hidden (levelText null, the party path)', () => {
     // levelText ?? '' is the painter's ONLY non-passthrough transform. The player
     // always passes a numeric string, but a party member may hide the level, so pin
     // the null -> '' coercion here (a regression to `?? '0'` or a dropped `??` would
@@ -238,7 +238,7 @@ describe('UnitFramePainter: the instance-parameterized contract (target / party 
   });
 });
 
-describe('UnitFramePainter: the portrait repaint gate (decision 9, lastPortraitTarget path)', () => {
+describe('UnitFramePainter: the portrait repaint gate (lastPortraitTarget path)', () => {
   it('repaints only when the identity key changes', () => {
     const repaintPortrait = vi.fn();
     const { writers } = recordingFacet();
@@ -299,14 +299,14 @@ describe('UnitFramePainter: the portrait repaint gate (decision 9, lastPortraitT
   });
 });
 
-describe('UnitFramePainter: no raw DOM writes, no magic values (decisions 5a / 12)', () => {
+describe('UnitFramePainter: no raw DOM writes, no magic values', () => {
   const src = readFileSync(new URL('../src/ui/unit_frame_painter.ts', import.meta.url), 'utf8');
   const code = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:])\/\/.*$/gm, '$1');
 
   it('makes no raw style / textContent / className / classList / setAttribute / setProperty write', () => {
     expect(code).not.toMatch(/\.style\b/);
     expect(code).not.toMatch(/\.textContent\b/);
-    // .className is the exact raw write this phase folded into toggleClass (the old
+    // .className is the exact raw write folded into toggleClass (the old
     // `pfResourceEl.className = 'bar rage|energy|mana'` swap); guard it explicitly.
     expect(code).not.toMatch(/\.className\b/);
     expect(code).not.toMatch(/\.classList\b/);
@@ -317,7 +317,7 @@ describe('UnitFramePainter: no raw DOM writes, no magic values (decisions 5a / 1
   it('carries no literal hex / rgb / px value (scaleX VALUE strings excepted)', () => {
     const hex = code.match(/#[0-9a-fA-F]{3,8}\b/g) ?? [];
     const rgb = code.match(/\brgba?\s*\(/g) ?? [];
-    // Decision 12 names hex / px / color: the painter drives tokens, never a px
+    // No magic values (hex / px / color): the painter drives tokens, never a px
     // literal. scaleX VALUE strings carry no px, so this stays green.
     const px = code.match(/\b\d+px\b/g) ?? [];
     expect(hex, `hex: ${hex.join(', ')}`).toEqual([]);

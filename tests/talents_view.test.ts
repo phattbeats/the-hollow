@@ -21,7 +21,7 @@ import {
 // The talents core takes the staged edit buffer + class + total points as inputs and
 // derives the whole render model. These tests pin (1) the geometry against the named
 // layout constants, (2) the node gating BYTE-FOR-BYTE against validateAllocation (the
-// load-bearing correctness point), and (3) the decision-15 ClientWorld-vs-Sim seed
+// load-bearing correctness point), and (3) the ClientWorld-vs-Sim seed
 // parity. The buffer is a LOCAL clone, so the parity surface is the seed read, not a
 // per-frame IWorld field.
 
@@ -189,7 +189,7 @@ describe('buildTalentsView is a pure projection', () => {
   });
 });
 
-describe('ClientWorld-vs-Sim seed parity (decision 15)', () => {
+describe('ClientWorld-vs-Sim seed parity', () => {
   // The core is fed a (stage, cls, total) bag, but the seed values come from a world
   // (IWorld.talents / IWorld.talentPoints().total). Drive it from BOTH a Sim-shaped
   // and a ClientWorld-mirror-shaped source for those seeds and assert identical render

@@ -2,14 +2,14 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 // The character window painter is a DOM module; driving the live DOM + events is
-// the opt-in browser suite scheduled for P15b. This is the no-DOM-suite
-// equivalent: it asserts the painter source carries the decision-10 a11y
-// attributes + focus-return, the decision-12 token discipline, and that the
+// the opt-in browser suite. This is the no-DOM-suite
+// equivalent: it asserts the painter source carries the a11y
+// attributes + focus-return, the token discipline, and that the
 // Three.js preview + skin-event randomness stay out of the painter (HUD-owned),
 // driving the paperdoll off the pure core.
 const painter = readFileSync(new URL('../src/ui/char_window.ts', import.meta.url), 'utf8');
 
-describe('char_window: no magic values (decision 12)', () => {
+describe('char_window: no magic values', () => {
   it('carries no literal color in TS (colors live in tokens/stylesheet)', () => {
     const hex = painter.match(/#[0-9a-fA-F]{3,8}\b/g) ?? [];
     expect(hex, `hex colors must move to tokens/CSS: ${hex.join(', ')}`).toEqual([]);
@@ -30,7 +30,7 @@ describe('char_window: no magic values (decision 12)', () => {
   });
 });
 
-describe('char_window: WCAG 2.2 AA (decision 10)', () => {
+describe('char_window: WCAG 2.2 AA', () => {
   it('returns focus to the opener on close', () => {
     expect(painter).toContain('captureFocus');
     expect(painter).toContain('restoreFocus');

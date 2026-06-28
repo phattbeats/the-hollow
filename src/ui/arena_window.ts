@@ -12,7 +12,7 @@
 //
 // It is NOT a canvas window (the colors live in the extracted stylesheet, so no
 // getComputedStyle token-resolution applies here); thresholds + cadences are named
-// constants (decision 12). The window redraws while open from hud.update()'s
+// constants. The window redraws while open from hud.update()'s
 // mediumHud band (the same call site + cadence as the inline renderArenaWindow),
 // skipping the DOM rebuild when the content signature is unchanged.
 
@@ -90,7 +90,7 @@ export class ArenaWindow {
     this.deps.closeOthers();
     this.openerFocus = this.deps.captureFocus();
     const root = this.deps.root();
-    // WCAG 2.2 AA (P15b): the focus-trapped root's dialog identity is a STATIC property
+    // WCAG 2.2 AA: the focus-trapped root's dialog identity is a STATIC property
     // of the (stable, never-replaced) root node, so set it ONCE here on open rather than
     // re-writing it inside render(), which the 250ms mediumHud band repeats while the
     // window is open. The innerHTML rebuilds in render() only replace the children.

@@ -1,6 +1,6 @@
-// Guards the one non-mechanical part of P4b: the per-entry CSS wiring and the
-// #rotate-device orientation gate (decision 16a, in-game landscape-only). After
-// P4b both inline <style> blocks are empty and the game CSS lives in the shared
+// Guards the one non-mechanical part of the CSS extraction: the per-entry CSS wiring
+// and the #rotate-device orientation gate (in-game landscape-only). After the
+// extraction both inline <style> blocks are empty and the game CSS lives in the shared
 // src/styles/* @layer modules (loaded by both entries via the src/main.ts barrel),
 // EXCEPT the #rotate-device gate which differs per entry: index suppresses the
 // rotate overlay in-game, play shows it in portrait. Each entry loads ONLY its own
@@ -30,7 +30,7 @@ function inlineStyleBody(html: string): string {
   return css.replace(/\/\*[\s\S]*?\*\//g, '');
 }
 
-describe('P4b per-entry CSS wiring + #rotate-device gate (decision 16a)', () => {
+describe('per-entry CSS wiring + #rotate-device gate', () => {
   it('both inline <style> blocks are empty (comment-only, zero CSS rules)', () => {
     // No selector block (`{`) survives once the explanatory comment is stripped.
     expect(inlineStyleBody(indexHtml)).not.toContain('{');
@@ -72,7 +72,7 @@ describe('P4b per-entry CSS wiring + #rotate-device gate (decision 16a)', () => 
     // so the per-entry slot resolves regardless of sheet parse order. All three MUST carry
     // the SAME flat declaration: a divergent order in a .extra file would place its layer in
     // a different cascade slot. A dotted name (e.g. "hud.mobile") would be a SUBLAYER of the
-    // early "hud" layer and lose to shell, the exact trap P4b fixed.
+    // early "hud" layer and lose to shell, the exact trap fixed here.
     const ORDER =
       '@layer tokens, base, layout, components, hud, shell, hud-mobile, index-extra, play-extra;';
     for (const [name, css] of [

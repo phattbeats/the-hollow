@@ -10,7 +10,7 @@
 // The arena is an online ranked feature: `arenaInfo === null` is the offline /
 // not-yet-synced state (the painter shows the unavailable note). Otherwise the
 // live panel is derived. The offline-vs-online shape difference is exactly the
-// silent-online-misrender trap decision 15 exists to catch, so both states are
+// silent-online-misrender trap the parity tests exist to catch, so both states are
 // fed both a Sim-shaped and a ClientWorld-mirror-shaped stub in the tests.
 //
 // DOM-free and i18n-free: rows carry the raw class id plus a `knownClass` flag the
@@ -123,7 +123,7 @@ export interface ArenaViewInput {
  * state. Otherwise the resolved bracket drives every section. Reads only IWorld-
  * mirrored data (the ArenaInfo snapshot, party, ids) plus the painter-owned
  * all-time cache, so the offline Sim and the online ClientWorld mirror produce
- * identical output (decision 15).
+ * identical output.
  */
 export function buildArenaView(input: ArenaViewInput): ArenaView {
   const { info: a, selectedBracket, playerId: myPid, playerName, party, allTime } = input;

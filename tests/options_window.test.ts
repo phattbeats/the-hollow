@@ -3,14 +3,14 @@ import { describe, expect, it } from 'vitest';
 
 // Source-level guards for the options painter. The pure control descriptors +
 // the per-kind dispatch coercion are unit-tested in options_view.test.ts; here we
-// pin the decision-12 no-magic-values contract, the tier boundary (decisions
-// 6/8), the changeLanguage hardening (PR #730), the WCAG 2.2 AA focus-return +
+// pin the no-magic-values contract, the tier boundary
+// the changeLanguage hardening (PR #730), the WCAG 2.2 AA focus-return +
 // roles/aria, the bug-report + keybind dispatch, and that the window stays cold
 // (never wired into the per-frame Hud.update path).
 const painter = readFileSync(new URL('../src/ui/options_window.ts', import.meta.url), 'utf8');
 const hudTs = readFileSync(new URL('../src/ui/hud.ts', import.meta.url), 'utf8');
 
-describe('options_window: no magic values (decision 12)', () => {
+describe('options_window: no magic values', () => {
   it('carries no literal color in TS (colors live in the extracted stylesheet)', () => {
     const hex = painter.match(/#[0-9a-fA-F]{3,8}\b/g) ?? [];
     expect(hex, `hex colors must move to tokens/CSS: ${hex.join(', ')}`).toEqual([]);
@@ -34,7 +34,7 @@ describe('options_window: no magic values (decision 12)', () => {
   });
 });
 
-describe('options_window: tier boundary (decisions 6/8)', () => {
+describe('options_window: tier boundary', () => {
   it('reads the graphics preset as a plain setting value, never the governor/cutoff', () => {
     expect(painter).not.toContain('ui_effects_profile');
     expect(painter).not.toContain('EFFECTS_QUALITY_LOW_CUTOFF');
@@ -44,7 +44,7 @@ describe('options_window: tier boundary (decisions 6/8)', () => {
   });
 });
 
-describe('options_window: WCAG 2.2 AA (decision 10)', () => {
+describe('options_window: WCAG 2.2 AA', () => {
   it('returns focus to the opener on every close path', () => {
     expect(painter).toContain('captureFocus');
     expect(painter).toContain('restoreFocus');
@@ -79,7 +79,7 @@ describe('options_window: WCAG 2.2 AA (decision 10)', () => {
 // here we pin that the painter routes each descriptor kind to its builder and fires
 // the SAME write the inline original did, so a dropped settings.set side effect or a
 // swapped coercion reds the build. Driving the live DOM + events is the opt-in
-// browser suite scheduled for P15b; this is the no-DOM-suite equivalent.
+// browser suite; this is the no-DOM-suite equivalent.
 describe('options_window: control-primitive dispatch wiring', () => {
   it('routes each descriptor kind to its matching builder', () => {
     expect(painter).toContain('this.settingSlider(parent, c, hooks)');

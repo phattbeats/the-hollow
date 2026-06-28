@@ -1,5 +1,5 @@
-// Routing + no-magic-values guard for the cast_bar painter (decisions 5a / 12) plus
-// the instance-parameterized contract (decision 9): one painter, a PLAYER instance
+// Routing + no-magic-values guard for the cast_bar painter plus
+// the instance-parameterized contract: one painter, a PLAYER instance
 // (localized label + eat/drink overlay + clear-on-hide) and a TARGET instance (raw
 // label, no eat/drink, display-only hide), each byte-faithful to its inline block.
 // A recording facet captures every writer call so we assert the painter drives the
@@ -199,7 +199,7 @@ describe('CastBarPainter: the target instance (raw label, no eat/drink, display-
   });
 });
 
-describe('CastBarPainter: no raw DOM writes, no magic values (decisions 5a / 12)', () => {
+describe('CastBarPainter: no raw DOM writes, no magic values', () => {
   const src = readFileSync(new URL('../src/ui/cast_bar_painter.ts', import.meta.url), 'utf8');
   const code = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:])\/\/.*$/gm, '$1');
 

@@ -21,11 +21,11 @@ import { describe, expect, it } from 'vitest';
 // regression in one must not silently diverge from the other.
 const HTML_ENTRIES = ['../index.html', '../play.html'];
 
-// The shared style modules each entry loads via the barrel. P1 to P3 moved the
+// The shared style modules each entry loads via the barrel. The CSS extraction moved the
 // base chrome (base.css), the .window shell (layout.css), the HUD chrome (hud.css)
 // and the feature-window bodies (components.css) out of the inline <style>, so the
 // `.window` base rule this guard checks now lives in layout.css for index.html (play
-// still carries an inline copy until P4b). The effective stylesheet for an entry is
+// still carries an inline copy for now). The effective stylesheet for an entry is
 // its inline <style> UNION these modules, so the guard reads both.
 const STYLE_MODULES = [
   '../src/styles/base.css',

@@ -1,12 +1,13 @@
 // Tests for the pure unit_frame FAMILY core (unit_frame.ts). The load-bearing
-// assertion is the TWO-DESCRIPTOR test (decision 9): the core is driven with a
+// assertion is the TWO-DESCRIPTOR test: the core is driven with a
 // PLAYER-shaped descriptor AND a TARGET / PARTY-shaped descriptor exercising the
 // FULL field set (resClass `none`, a hidden level, a dead/absent target, an
-// out-of-range party member, the absorb input), proving P11a/b/c reuse the seam
-// with NO core change. It also pins the resourceKind -> resClass discriminator
+// out-of-range party member, the absorb input), proving the player, target, and
+// party instances reuse the seam with NO core change. It also pins the
+// resourceKind -> resClass discriminator
 // (the old inline `rage : energy : mana` ternary + the `none` case), the
 // present/hidden gate, the absorbBarView resolution, same-input-same-output
-// determinism, the ClientWorld-vs-Sim parity assertion (decision 15), and that the
+// determinism, the ClientWorld-vs-Sim parity assertion, and that the
 // core carries NO hardcoded element id / single-instance assumption and is
 // DOM-free + i18n-free (the painter owns the DOM and t()).
 
@@ -107,7 +108,7 @@ describe('unitFrameView: absorb resolution via the shared absorbBarView core', (
   });
 });
 
-describe('unitFrameView: TWO-DESCRIPTOR contract (decision 9, the FULL P11 field set)', () => {
+describe('unitFrameView: TWO-DESCRIPTOR contract (the FULL field set)', () => {
   it('drives a PLAYER-shaped descriptor: live mana bar, numeric level, shield', () => {
     const v = unitFrameView(playerDescriptor());
     expect(v.present).toBe(true);
@@ -125,7 +126,7 @@ describe('unitFrameView: TWO-DESCRIPTOR contract (decision 9, the FULL P11 field
   it('drives a TARGET-shaped descriptor: no resource bar (resClass none), boss level glyph, dead, no shield', () => {
     // A dead boss target: present and shown, but with no resource bar, a skull glyph
     // for the level, "Dead" hp text, and a null absorb input. The player instance
-    // never sees these values; the target instance fills them in P11b with no core
+    // never sees these values; the target instance fills them in with no core
     // change.
     const v = unitFrameView({
       present: true,
@@ -176,7 +177,7 @@ describe('unitFrameView: TWO-DESCRIPTOR contract (decision 9, the FULL P11 field
   });
 });
 
-describe('unitFrameView: determinism + ClientWorld-vs-Sim parity (decision 15)', () => {
+describe('unitFrameView: determinism + ClientWorld-vs-Sim parity', () => {
   it('is deterministic: identical descriptors produce a deep-equal view', () => {
     const a = unitFrameView(playerDescriptor());
     const b = unitFrameView(playerDescriptor());

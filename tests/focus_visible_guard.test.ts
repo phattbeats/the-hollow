@@ -1,12 +1,12 @@
-// P15b accessibility guard: the focus ring must be STEADY and VISIBLE.
+// accessibility guard: the focus ring must be STEADY and VISIBLE.
 //
-// The carried "FB lesson" (decision 10): a visible :focus-visible ring must NEVER be
+// The carried "FB lesson": a visible :focus-visible ring must NEVER be
 // animated, blurred, transitioned, or filtered away. This Node guard scans the extracted
 // stylesheets (src/styles/*.css) and asserts, for every :focus-visible rule block, that the
 // block declares no transition / animation / filter / backdrop-filter / blur (which would
 // fade, slide, or smear the ring), and that no rule anywhere animates the `outline` property
-// from a base rule (which would animate the ring indirectly). It also pins decision 12 for
-// the focus ring: a :focus-visible `outline` must reference a token / system color, never a
+// from a base rule (which would animate the ring indirectly). It also pins, for
+// the focus ring, that a :focus-visible `outline` must reference a token / system color, never a
 // raw hex literal (the focus token is var(--color-border-focus); forced-colors uses the
 // Highlight system keyword).
 //
@@ -87,7 +87,7 @@ const RING_TRANSITION = /transition(?:-property)?\s*:[^;}]*\b(outline|all)\b/i;
 const RING_ANIMATION = /\banimation\s*:/i;
 const BLUR_FN = /\bblur\s*\(/i;
 
-describe('P15b: :focus-visible ring is steady and visible (the FB lesson)', () => {
+describe(':focus-visible ring is steady and visible (the FB lesson)', () => {
   const files = cssFiles();
 
   it('finds the focus-ring rules it is meant to guard (sanity: the scan is not vacuous)', () => {
@@ -121,7 +121,7 @@ describe('P15b: :focus-visible ring is steady and visible (the FB lesson)', () =
     expect(offenders, `outline is transitioned:\n${offenders.join('\n')}`).toEqual([]);
   });
 
-  it('draws every :focus-visible outline from a token / system color, never a raw hex (decision 12)', () => {
+  it('draws every :focus-visible outline from a token / system color, never a raw hex', () => {
     // The focus ring color must be var(--color-border-focus) (or the forced-colors Highlight
     // keyword), not a literal hex. Other declarations in the block (e.g. a background tint)
     // may still carry a hex; we only constrain the `outline` declaration.

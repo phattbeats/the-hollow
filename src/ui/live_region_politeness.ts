@@ -1,5 +1,5 @@
 // Pure live-region politeness picker for the chat + combat screen-reader regions
-// wired in src/ui/hud.ts (P15a). DOM-free + deterministic (same input -> same
+// wired in src/ui/hud.ts. DOM-free + deterministic (same input -> same
 // output), so it is a registered UI pure core (tests/architecture.test.ts). The
 // throttle STATE and the DOM text sink live in the wiring half (./combat_announcer.ts
 // + hud.ts); this module owns only the per-type politeness decision and the named
@@ -46,7 +46,7 @@ export function liveRegionPoliteness(kind: LiveRegionEventKind): LiveRegionPolit
  * prevents screen-reader flooding during a damage burst. Online (the ClientWorld
  * mirror) and offline (the Sim) feed the SAME localized lines through the one
  * hud.combatLog funnel, so this kind -> politeness mapping is identical on both hosts
- * (decision 15 parity).
+ * (parity).
  */
 export function combatLineKind(): LiveRegionEventKind {
   return 'combat';
@@ -57,7 +57,7 @@ export function combatLineKind(): LiveRegionEventKind {
  * never escalated to assertive: the throttle (not politeness) is what prevents a chat
  * burst from flooding the screen reader, mirroring combat. Online (the ClientWorld mirror)
  * and offline (the Sim) feed the SAME localized lines through the one HUD chat funnel, so
- * this kind -> politeness mapping is identical on both hosts (decision 15 parity).
+ * this kind -> politeness mapping is identical on both hosts (parity).
  */
 export function chatLineKind(): LiveRegionEventKind {
   return 'chat';
@@ -66,14 +66,14 @@ export function chatLineKind(): LiveRegionEventKind {
 /**
  * The polite combat summary updates at most once per this interval, so a burst of
  * routine damage collapses to a single announcement instead of flooding the screen
- * reader (decision 12: the cadence is a named constant, not a magic literal).
+ * reader (the cadence is a named constant, not a magic literal).
  */
 export const COMBAT_ANNOUNCE_INTERVAL_MS = 1500;
 
 /**
  * The polite chat summary updates at most once per this interval, so a burst of chat lines
  * collapses to a single announcement instead of flooding the screen reader. A SEPARATE
- * named constant from COMBAT_ANNOUNCE_INTERVAL_MS (decision 12: the cadence is a named
+ * named constant from COMBAT_ANNOUNCE_INTERVAL_MS (the cadence is a named
  * constant, not a magic literal) so chat and combat can be tuned independently without
  * re-introducing a magic literal at either announcer.
  */

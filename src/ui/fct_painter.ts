@@ -1,8 +1,8 @@
 // The pooled-div floating-combat-text (FCT) painter -- the per-frame HALF of the FCT
-// split (P13b), filling in the seam P13a stood up (the pure fct_core descriptor + a
+// split, filling in the seam already stood up (the pure fct_core descriptor + a
 // dormant driver). It replaces the per-event createElement + setTimeout fct() in hud.ts
 // with a FIXED-SIZE pre-allocated div ring: spawn() claims a free slot or evicts the
-// oldest when the pool is full, and step() runs every frame from hud.update() (decision 8)
+// oldest when the pool is full, and step() runs every frame from hud.update()
 // to recycle each slot once its TTL elapses. The old path created a DOM node per combat
 // event and leaned on setTimeout to remove it; under an AoE / boss burst that grew without
 // bound. This ring caps the live node count at FCT_POOL_CAP and never allocates a node
@@ -17,16 +17,16 @@
 // the old fct(). step() therefore only ages out expired slots; there is no per-frame
 // position write, so an unchanged frame costs nothing.
 //
-// WRITE ROUTING (decisions 3 / 5a): every DOM write goes through the PainterHost
+// WRITE ROUTING: every DOM write goes through the PainterHost
 // write-elision facet -- setText for the number, toggleClass for the colour token + crit
 // class, setStyleProp for left / top / animation. A node is shown purely by being attached
 // (appendChild) and hidden by being detached (remove() on TTL recycle), so the spawn path
 // makes no display write at all. A no-op frame costs no DOM mutation and the skip-rate holds.
 // The per-kind colour moved off el.style.color
-// onto a CSS class token keyed by the descriptor kind (decision 12); the painter never names
+// onto a CSS class token keyed by the descriptor kind; the painter never names
 // a hex (the colours live in hud.css's .fct-<token> rules). The crit rise stays on the
 // .fct.crit CSS class (the crit keyframe rises -86px, the base -76px), never a descriptor
-// distance, exactly as P13a's fct_core comment requires.
+// distance, exactly as the fct_core comment requires.
 //
 // POOL-LIFECYCLE RULES (the load-bearing correctness, state.md Top risk 2):
 //  - FIXED CAP: FCT_POOL_CAP nodes are pre-allocated in the constructor; spawn() never
@@ -42,7 +42,7 @@
 //    offsetWidth -> restore), routed through the elided setStyleProp. Normal play never
 //    evicts (the pool is far above a boss pull), so it pays no reflow; only a genuine
 //    over-cap AoE burst does (and there it costs one forced reflow per eviction, bounded by
-//    the burst size not the cap -- acceptable because real play never evicts, and P14a's
+//    the burst size not the cap -- acceptable because real play never evicts, and the
 //    drop-non-crit / concurrency tiering caps the eviction pressure under heavy load).
 //  - FRAME-ORDERING CONTRACT (the natural-restart precondition): every spawn site MUST run
 //    before step() within a frame. The live callers honour this -- hud.handleEvents() and
@@ -52,15 +52,15 @@
 //    a future change ran step() before a same-frame spawn, a freed-then-reused node would skip
 //    that natural restart and render invisible (the rise keyframes end at opacity 0, forwards).
 //  - NO STALE CLOSURE: the painter holds no per-slot listener (FCT is decorative,
-//    pointer-events:none), so the P11c / P12b capture-by-value hazard cannot occur; the only
+//    pointer-events:none), so the capture-by-value hazard cannot occur; the only
 //    mutable slot state is read synchronously inside spawn() / step().
 //
-// ACCESSIBILITY (decision 10): FCT divs are decorative transient text (not focusable,
+// ACCESSIBILITY: FCT divs are decorative transient text (not focusable,
 // pointer-events:none, world-anchored over the 3D scene), so this painter introduces no
-// focus trap and no announced text. P15b marks every pooled node aria-hidden at build (see
+// focus trap and no announced text. Every pooled node is marked aria-hidden at build (see
 // createNode below) so the raw per-hit numbers never reach the a11y tree. The coalesced,
-// polite combat summary belongs to the P15a #combat-live region, not these nodes. P18d
-// resolved the FCT-feed follow-up: the self-note kind (the one FCT-only event with NO
+// polite combat summary belongs to the #combat-live region, not these nodes. A
+// follow-up resolved the FCT feed: the self-note kind (the one FCT-only event with NO
 // combat-log line, e.g. "Can't move!") is now ALSO pushed into #combat-live from
 // hud.showSelfNote, so an event the combat log never logs is still announced; the raw damage
 // numbers are never streamed there (the throttled combat summary already covers them). The xp
@@ -99,8 +99,8 @@ export type FctProject = (
 export const FCT_POOL_CAP = 64;
 
 // Class / style-property names the painter drives. Named (not inlined) so the painter
-// references no bare DOM string magic and -- crucially -- no hex / px colour literal
-// (decision 12); the colours live in hud.css's .fct-<token> rules.
+// references no bare DOM string magic and -- crucially -- no hex / px colour literal:
+// the colours live in hud.css's .fct-<token> rules.
 const FCT_BASE_CLASS = 'fct';
 const FCT_CRIT_CLASS = 'crit';
 // The colour token becomes the class `fct-<token>` (e.g. 'fct-heal'); hud.css maps each to
@@ -140,7 +140,7 @@ export class FctPainter {
   private readonly random: () => number;
   // The pre-allocated pool size. On the full tiers this is also the live cap, so eviction
   // fires only at pool-full (the pre-tiering behavior); on low fctMaxConcurrent caps the
-  // live count tighter (P14a).
+  // live count tighter.
   private readonly cap: number;
   // The STATIC ui effects tier accessor (reads data-fx-level, written only by the
   // preset applier, NEVER the FPS governor: the two-controller hazard). Read per spawn
@@ -164,7 +164,7 @@ export class FctPainter {
       doc = document,
       random = Math.random,
       // Default to the full tier so a painter built without the accessor (e.g. a Node
-      // test) is untiered (byte-faithful to pre-P14a).
+      // test) is untiered (byte-faithful to the pre-tiering behavior).
       getFxTier = () => 'ultra' as UiEffectsTier,
     } = opts;
     this.cap = cap;
@@ -175,7 +175,7 @@ export class FctPainter {
     for (let i = 0; i < cap; i++) {
       const node = doc.createElement('div');
       node.className = FCT_BASE_CLASS;
-      // P15b honest boundary: FCT floaters are decorative, world-anchored transient
+      // Honest boundary: FCT floaters are decorative, world-anchored transient
       // text over the 3D scene (not screen-readable). Mark each pooled node aria-hidden
       // once at build so the raw per-hit numbers never leak into the a11y tree; the
       // coalesced summary belongs to the #combat-live region, not these nodes.
@@ -239,7 +239,7 @@ export class FctPainter {
 
   /**
    * Advance every live floater one frame: recycle the ones whose TTL elapsed. Runs from
-   * hud.update()'s every-frame tier (decision 8: no second rAF). The number is screen-frozen
+   * hud.update()'s every-frame tier (no second rAF). The number is screen-frozen
    * (spawn positioned it once), so there is NO per-frame position write -- step() only ages
    * out slots. An empty pool returns immediately, so the no-combat steady state holds the
    * perf gate by construction.

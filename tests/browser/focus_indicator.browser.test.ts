@@ -1,4 +1,4 @@
-// P18c live focus-indicator check: the companion to the OUTLINE-scoped Node guard
+// Live focus-indicator check: the companion to the OUTLINE-scoped Node guard
 // (tests/focus_visible_guard.test.ts). That source scan can only see :focus-visible rules
 // that DRAW an outline; a focus indicator carried by a box-shadow glow (several pre-game
 // shell controls use outline:none + box-shadow) is invisible to it. This opt-in browser test
@@ -11,7 +11,7 @@
 // and lands steady (it is never transitioned TO removal on focus), so each assertion polls
 // until the steady indicator is present.
 //
-// The eight controls the P15b focus_visible_guard header named do NOT all use a box-shadow:
+// The eight controls the focus_visible_guard header named do NOT all use a box-shadow:
 //   - six draw a box-shadow glow (asserted: box-shadow !== 'none');
 //   - .header-logo-btn draws an OUTLINE ring (already Node-guard-covered; asserted here too);
 //   - .wallet-mini carries a border-color shift only (outline:none, no box-shadow), which

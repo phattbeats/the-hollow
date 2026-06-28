@@ -276,7 +276,7 @@ describe('market_view: collect states', () => {
   });
 });
 
-describe('market_view: determinism + ClientWorld-vs-Sim parity (decision 15)', () => {
+describe('market_view: determinism + ClientWorld-vs-Sim parity', () => {
   it('is a pure function: same input yields an equal view-model', () => {
     const input = {
       info: info({

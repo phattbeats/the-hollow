@@ -1,9 +1,9 @@
-// Pure-core tests for the action-bar view (P12a). Cover: the four slot kinds
+// Pure-core tests for the action-bar view. Cover: the four slot kinds
 // classify correctly; the cooldown / usable / range / queued math; the aria-label is
 // resolved IN the core via the injected t() (Top risk 4); the returned array + slot
-// objects are REUSED across ticks (the canonical allocation proxy, slice B); a second
-// descriptor yields an INDEPENDENT view (decision 9); and the ClientWorld-vs-Sim
-// parity (decision 15) drives both world shapes to identical output.
+// objects are REUSED across ticks (the canonical allocation proxy); a second
+// descriptor yields an INDEPENDENT view; and the ClientWorld-vs-Sim
+// parity drives both world shapes to identical output.
 
 import { describe, expect, it, vi } from 'vitest';
 import { type AbilityDef, type ItemDef, MELEE_RANGE } from '../src/sim/types';
@@ -398,7 +398,7 @@ describe('actionBarView: allocation-light (the canonical reused-reference proxy)
   });
 });
 
-describe('actionBarView: decision 9 (instance-parameterized) + decision 15 (parity)', () => {
+describe('actionBarView: instance-parameterized + parity', () => {
   it('a second descriptor yields an INDEPENDENT view (no shared global state)', () => {
     const a = createActionBarView(descriptor(slot(0, { attack: true })), fakeDeps());
     const b = createActionBarView(

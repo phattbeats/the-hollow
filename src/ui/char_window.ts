@@ -13,7 +13,7 @@
 // preview remounts live with the preview). The pure core stays paperdoll-only; no
 // 3D types or RNG cross into it.
 //
-// Colors live in the extracted stylesheet (decision 12): item-quality tint comes
+// Colors live in the extracted stylesheet: item-quality tint comes
 // from the shared QUALITY_COLOR map and the empty-slot greys are CSS tokens, so no
 // raw hex sits in this painter.
 
@@ -32,7 +32,7 @@ import { hydratePortraits, portraitChipHtml } from './portrait_chip';
 import type { StatId } from './stat_tooltip';
 import { svgIcon } from './ui_icons';
 
-// Quality / empty-slot colors as CSS custom properties (decision 12): the shared
+// Quality / empty-slot colors as CSS custom properties: the shared
 // QUALITY_COLOR map carries the per-quality hex, and these tokens cover the
 // unranked item plus the empty-slot label and icon border, so no raw hex lives
 // in this painter.
@@ -133,7 +133,7 @@ export class CharWindow {
     const p = world.player;
     const className = classDisplayName(world.cfg.playerClass);
     const level = formatNumber(p.level, { maximumFractionDigits: 0 });
-    // WCAG 2.2 AA (P15b): name the focus-trapped root via the character title span.
+    // WCAG 2.2 AA: name the focus-trapped root via the character title span.
     markDialogRoot(el, { labelledBy: 'char-title' });
     let html = `<div class="panel-title char-title-portrait">${portraitChipHtml({ cls: world.cfg.playerClass, skin: p.skin ?? 0, name: p.name, variant: 'md' })}<span class="char-title-text" id="char-title">${esc(p.name)} <span class="panel-subtitle">${esc(t('itemUi.equipment.levelClass', { level, className }))}</span></span><button type="button" class="x-btn" data-close aria-label="${esc(t('hud.options.returnToGame'))}">${svgIcon('close')}</button></div>`;
     html += `<div class="paperdoll">

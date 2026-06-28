@@ -4,7 +4,7 @@
 //  - the off-page "your standing" sticky row,
 //  - the pager state (hidden on one page, prev/next disabled at the ends),
 //  - server page-clamp passthrough,
-//  - decision-15 parity: a Sim-shaped page (with extra ignored fields) and a
+//  - parity: a Sim-shaped page (with extra ignored fields) and a
 //    ClientWorld-mirror-shaped page carrying the same logical data render an
 //    identical model, across EVERY state including error, plus same-input
 //    determinism.
@@ -39,7 +39,7 @@ function entry(over: Partial<LeaderboardEntry> = {}): LeaderboardEntry {
 }
 
 // A resolved page. shape: 'sim' carries extra fields the core must ignore (the
-// online-only-shape trap decision 15 exists to catch).
+// online-only-shape trap this parity check exists to catch).
 function page(
   shape: 'sim' | 'client',
   leaders: LeaderboardEntry[],
@@ -222,7 +222,7 @@ describe('buildLeaderboardView: pager state + server clamp', () => {
   });
 });
 
-describe('buildLeaderboardView: ClientWorld-vs-Sim parity (decision 15)', () => {
+describe('buildLeaderboardView: ClientWorld-vs-Sim parity', () => {
   const leaders = [
     entry({ rank: 1, name: 'Me', cls: 'warrior' }),
     entry({ rank: 2, name: 'Rival', cls: 'mage', prestigeRank: 1 }),

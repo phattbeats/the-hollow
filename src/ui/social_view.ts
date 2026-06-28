@@ -10,7 +10,7 @@
 //
 // DOM/Three-free and i18n-free (registered in tests/architecture.test.ts
 // UI_PURE_CORES); world types are imported type-only from world_api so the same
-// model is derived from a Sim and a ClientWorld mirror (locked decision 15).
+// model is derived from a Sim and a ClientWorld mirror.
 
 import type {
   FriendInfo,

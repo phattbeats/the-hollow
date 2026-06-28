@@ -1,5 +1,5 @@
-// Routing + elision + no-magic-values guard for the action-bar painter (P12a,
-// decisions 5a / 12, Top risks 1 + 4). A recording facet proves the painter drives
+// Routing + elision + no-magic-values guard for the action-bar painter (Top risks
+// 1 + 4). A recording facet proves the painter drives
 // only the elided writers (no raw DOM). A REAL facet over recording elements proves
 // the aria-label DOM write is elided when unchanged while the core still calls t()
 // every tick, and that the (expensive) icon resolve only fires on a slot rebind.
@@ -261,7 +261,7 @@ describe('ActionBarPainter: aria-label + icon elision (Top risks 1 + 4)', () => 
   });
 });
 
-describe('ActionBarPainter: no raw DOM writes, no magic values (decisions 5a / 12)', () => {
+describe('ActionBarPainter: no raw DOM writes, no magic values', () => {
   const src = readFileSync(new URL('../src/ui/action_bar_painter.ts', import.meta.url), 'utf8');
   const code = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:])\/\/.*$/gm, '$1');
 

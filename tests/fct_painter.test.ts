@@ -1,4 +1,4 @@
-// P13b pooled FCT painter: the no-raw-write + no-magic source guards (decisions 5a / 12),
+// Pooled FCT painter: the no-raw-write + no-magic source guards,
 // and an end-to-end pool proof over a tiny fake DOM (no jsdom): a FIXED cap that the live
 // node count never exceeds, FIFO-by-spawn-order eviction (array position, no sequence
 // counter) that reuses the oldest slot, correct TTL recycle including interleaved with
@@ -25,7 +25,7 @@ import type { PainterHostWriters } from '../src/ui/painter_host';
 // Source guards
 // ---------------------------------------------------------------------------
 
-describe('FctPainter: no raw DOM writes, no magic values (decisions 5a / 12)', () => {
+describe('FctPainter: no raw DOM writes, no magic values', () => {
   const src = readFileSync(new URL('../src/ui/fct_painter.ts', import.meta.url), 'utf8');
   const code = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:])\/\/.*$/gm, '$1');
 
@@ -36,7 +36,7 @@ describe('FctPainter: no raw DOM writes, no magic values (decisions 5a / 12)', (
     expect(code).not.toMatch(/\.textContent\b/);
     expect(code).not.toMatch(/\.classList\b/);
     // setAttribute appears EXACTLY once: the one-time build-time aria-hidden on each
-    // pooled node (P15b honest boundary), set in the constructor like .className, NOT a
+    // pooled node (honest boundary), set in the constructor like .className, NOT a
     // per-frame write. Any per-frame raw setAttribute would push this above 1 and fail.
     expect(code.match(/\.setAttribute\b/g) ?? []).toHaveLength(1);
     expect(code).toMatch(/setAttribute\('aria-hidden', 'true'\)/);
@@ -402,11 +402,11 @@ describe('FctPainter: pooled ring over the elided writers', () => {
     expect(calls.some((c) => c.m === 'setDisplay')).toBe(false);
   });
 
-  // DECISION 15 (ClientWorld-vs-Sim parity): the painter reads ONLY pos.{x,y,z} + scale off
+  // ClientWorld-vs-Sim parity: the painter reads ONLY pos.{x,y,z} + scale off
   // the anchor entity, so an offline Sim entity and an online ClientWorld-mirror entity (the
   // SAME structural shape) position identically. A Sim-only field assumption would pass the
   // offline gate and misrender online; this drives both shapes through the getUiScale divide.
-  it('positions identically off a Sim-shaped and a ClientWorld-mirror-shaped anchor (decision 15)', () => {
+  it('positions identically off a Sim-shaped and a ClientWorld-mirror-shaped anchor', () => {
     const project: FctProject = (x, y) => ({ x: x * 100, y: y * 100, behind: false });
     const run = (target: FctEvent['target']) => {
       mount = fakeEl('div');
@@ -451,14 +451,14 @@ describe('FctPainter: the exported cap', () => {
 });
 
 // ---------------------------------------------------------------------------
-// P14a Slice A: the pool cap / TTL / drop-non-crit knobs are a pure function of the
+// The pool cap / TTL / drop-non-crit knobs are a pure function of the
 // STATIC ui effects tier (data-fx-level), NEVER the governor. These drive the painter
 // through the injected getFxTier accessor and assert: ultra is byte-equivalent to the
 // untiered painter (no drop, full cap, full TTL) and low sheds (drops non-crit, caps
 // tighter, shortens TTL), identically under a Sim- and a ClientWorld-shaped anchor.
 // ---------------------------------------------------------------------------
 
-describe('FctPainter: P14a static-preset tiering (Slice A)', () => {
+describe('FctPainter: static-preset tiering', () => {
   let mount: FakeEl;
   let calls: Call[];
 
@@ -553,7 +553,7 @@ describe('FctPainter: P14a static-preset tiering (Slice A)', () => {
     expect(ultra.liveCount()).toBe(0);
   });
 
-  it('decision 15: the tier gate behaves identically for a Sim- and a ClientWorld-shaped anchor', () => {
+  it('the tier gate behaves identically for a Sim- and a ClientWorld-shaped anchor', () => {
     // The crit gate reads the event, not the anchor; assert the tiered drop is anchor-shape
     // independent. Sim-shaped anchor carries sim-only junk the descriptor must ignore; the
     // ClientWorld mirror is lean. Both: a crit spawns, a non-crit is dropped, on low.
@@ -576,7 +576,7 @@ describe('FctPainter: P14a static-preset tiering (Slice A)', () => {
   });
 });
 
-// The per-kind colours moved out of TS (decision 12) into hud.css's .fct-<token> rules, so the
+// The per-kind colours moved out of TS into hud.css's .fct-<token> rules, so the
 // faithfulness guard for them must live where the colours now are: this asserts each token rule
 // still carries the EXACT hex the live fct() passed. A drift (a heal that is no longer #3ce63c,
 // say) fails here. It reads CSS, never TS, so it reintroduces no hex into the painter.

@@ -12,7 +12,7 @@ import {
 // The bags core decides the mode-dependent click + tooltip (the 6-way branch) and
 // the filtered grid model (empty / no-match / items), reusing bag_filter for the
 // actual filter/sort. These tests pin the priority order, the grid states, and the
-// decision-15 ClientWorld-vs-Sim parity (the same inventory drives identical models
+// ClientWorld-vs-Sim parity (the same inventory drives identical models
 // whether read off a Sim or a ClientWorld mirror).
 
 const NO_MODE: BagMode = { tradeOpen: false, marketSell: false, vendorOpen: false, petFeed: false };
@@ -100,7 +100,7 @@ describe('buildBagGrid', () => {
   });
 });
 
-describe('ClientWorld-vs-Sim parity (decision 15)', () => {
+describe('ClientWorld-vs-Sim parity', () => {
   // The Sim exposes its inventory array directly; a ClientWorld mirrors it from a
   // server snapshot (a JSON round-trip). Drive the grid model from both and assert
   // identical output, with a quality sort to exercise the ordering path.

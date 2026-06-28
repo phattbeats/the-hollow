@@ -2,8 +2,8 @@
 // gating (auto-attack + a live, non-object target), the parameter-in/next-state-out
 // edge tracking (interval recovered on the reset edge, carried while counting
 // down), the ready vs seconds label discriminator, frac clamping, same-input ->
-// same-output determinism, and the ClientWorld-vs-Sim parity assertion (decision
-// 15: the core reads only fields BOTH world shapes expose). The core is i18n-free
+// same-output determinism, and the ClientWorld-vs-Sim parity assertion (the core
+// reads only fields BOTH world shapes expose). The core is i18n-free
 // (a guard below pins that), so the painter owns the t() label resolution.
 
 import { readFileSync } from 'node:fs';
@@ -96,7 +96,7 @@ describe('swingTimerState: the ready vs seconds label discriminator', () => {
   });
 });
 
-describe('swingTimerState: determinism + ClientWorld-vs-Sim parity (decision 15)', () => {
+describe('swingTimerState: determinism + ClientWorld-vs-Sim parity', () => {
   it('is deterministic: identical inputs produce a deep-equal result', () => {
     const a = swingTimerState(player({ swingTimer: 1.3 }), LIVE_TARGET, 2, 1.5);
     const b = swingTimerState(player({ swingTimer: 1.3 }), LIVE_TARGET, 2, 1.5);

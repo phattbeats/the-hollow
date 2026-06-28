@@ -2,11 +2,11 @@
 //
 // The pure-core half of the pure-core + thin-painter split (root CLAUDE.md
 // Conventions; reference arena_window_view.ts / market_view.ts). The leaderboard
-// is the packet's ONE async/paged window: the painter (leaderboard_window.ts)
+// is the ONE async/paged window: the painter (leaderboard_window.ts)
 // consumes IWorld.leaderboard(page, size): Promise<LeaderboardPage> and owns the
 // Promise, the await, and the page controls. This core is ASYNC-FREE: it maps an
 // already-resolved page (or an explicit loading / error discriminator) to a render
-// model. The async/paged shape is exactly the online-only-shape trap decision 15
+// model. The async/paged shape is exactly the online-only-shape trap
 // catches (it passes every offline gate and silently misrenders online), so the
 // core is fed BOTH a Sim-shaped and a ClientWorld-mirror-shaped page in the tests,
 // across every state.
@@ -91,7 +91,7 @@ export type LeaderboardInput =
  * leaders is `empty`; otherwise it is `ranked`, with the off-page sticky standing
  * derived when the viewer is not on the visible page. Reads only IWorld-mirrored
  * data (the resolved LeaderboardPage + the viewer), so the offline Sim and the
- * online ClientWorld mirror produce identical output (decision 15).
+ * online ClientWorld mirror produce identical output.
  */
 export function buildLeaderboardView(input: LeaderboardInput): LeaderboardView {
   if (input.kind === 'loading') return { kind: 'loading' };

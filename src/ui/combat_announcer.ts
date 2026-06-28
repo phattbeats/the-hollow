@@ -10,7 +10,7 @@
 // line per interval (a burst collapses to the most recent), and never re-localizes:
 // the line it relays is already a t()-localized string built at the combatLog call
 // site, so no new player-visible text is introduced here. An identical consecutive
-// summary is re-read via the shared ./live_region_reannounce marker (P18d item 4).
+// summary is re-read via the shared ./live_region_reannounce marker.
 import {
   COMBAT_ANNOUNCE_INTERVAL_MS,
   combatAnnounceDue,
@@ -25,7 +25,7 @@ export class CombatAnnouncer {
   // Last announcement time; -Infinity so the first line announces immediately.
   private lastAnnounce = Number.NEGATIVE_INFINITY;
   // Forces a byte-different sink write on an identical consecutive summary so a screen reader
-  // that suppresses unchanged live text still re-reads it (P18d item 4). DOM-free + deterministic
+  // that suppresses unchanged live text still re-reads it. DOM-free + deterministic
   // (internal toggle, no clock / randomness); shared with the chat + target-name regions.
   private readonly reannounce = new ReannounceMarker();
 

@@ -58,8 +58,8 @@ describe('challengeResponse server dispatch', () => {
     server.handleMessage(session as never, JSON.stringify({ t: 'cmd', ...payload }));
   }
 
-  // The case has no observable side effect in this phase (the answer is just
-  // verified, not yet rewarded); these guard that it is wired and robust — i.e.
+  // The case has no observable side effect yet (the answer is just
+  // verified, not yet rewarded); these guard that it is wired and robust, i.e.
   // not falling through to the unknown-command path, and never throwing. The
   // verification logic itself is covered by the verifyChallenge unit test above.
   it('handles a correctly-signed answer without throwing', () => {

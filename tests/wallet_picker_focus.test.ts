@@ -2,8 +2,8 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 
-// P18d item 6: the pre-game $WOC wallet picker routes through the ONE shared FocusManager
-// (src/ui/focus_manager), not a second hand-rolled focus trap (the P15a single-FocusManager
+// The pre-game $WOC wallet picker routes through the ONE shared FocusManager
+// (src/ui/focus_manager), not a second hand-rolled focus trap (the single-FocusManager
 // invariant). src/main.ts is the whole client entry (it boots the app on import, far too
 // heavy for a Node test), so this pins the unification by source-grep: the old ad-hoc trap is
 // gone and the shared manager is used. The trap WIRING itself (the Tab/Shift+Tab cycle,
@@ -12,7 +12,7 @@ import { describe, expect, it } from 'vitest';
 // so the real-browser keyboard E2E over this modal is out of scope here.
 const mainSrc = readFileSync(fileURLToPath(new URL('../src/main.ts', import.meta.url)), 'utf8');
 
-describe('wallet picker uses the shared FocusManager (P18d item 6)', () => {
+describe('wallet picker uses the shared FocusManager', () => {
   it('imports the shared FocusManager from src/ui/focus_manager', () => {
     expect(mainSrc).toMatch(
       /import\s*\{[^}]*\bFocusManager\b[^}]*\}\s*from\s*'\.\/ui\/focus_manager'/,
@@ -20,7 +20,7 @@ describe('wallet picker uses the shared FocusManager (P18d item 6)', () => {
   });
 
   it('opens the trap over the panel via a module-local FocusManager instance and releases it', () => {
-    // A module-local INSTANCE (decision 9 forbids a module singleton exported from
+    // A module-local INSTANCE (no module singleton is exported from
     // focus_manager); the wallet picker opens the trap over its panel and releases it on close.
     expect(mainSrc).toContain('new FocusManager()');
     expect(mainSrc).toMatch(/walletPickerFocusHandle\s*=\s*walletFocusManager\.open\(/);

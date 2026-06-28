@@ -2,13 +2,13 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 // Source-level guards for the social painter. The pure row + signature decisions are
-// unit-tested in social_view.test.ts; here we pin the decision-12 no-magic-values
+// unit-tested in social_view.test.ts; here we pin the no-magic-values
 // contract (no raw hex, no bare cadence literal) and the load-bearing listener
 // delegation: social repaints on the slow-HUD divider, so a content refresh must NOT
 // re-attach per-row handlers (one delegated listener on the persistent body does it).
 const painter = readFileSync(new URL('../src/ui/social_window.ts', import.meta.url), 'utf8');
 
-describe('social_window: no magic values (decision 12)', () => {
+describe('social_window: no magic values', () => {
   it('carries no literal hex color in TS (status dots are CSS-classed)', () => {
     const hex = painter.match(/#[0-9a-fA-F]{3,8}\b/g) ?? [];
     expect(hex, `hex colors must move to tokens/CSS: ${hex.join(', ')}`).toEqual([]);
@@ -29,7 +29,7 @@ describe('social_window: no magic values (decision 12)', () => {
   });
 });
 
-describe('social_window: WAI-ARIA tabs (P18b item 1)', () => {
+describe('social_window: WAI-ARIA tabs', () => {
   it('renders the tab strip as a role=tablist with role=tab + aria-selected + roving tabindex', () => {
     expect(painter).toContain('role="tablist"');
     // Exactly four real tabs (friends / guild / ignore / raid), each a role=tab. The

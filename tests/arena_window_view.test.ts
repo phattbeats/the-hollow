@@ -1,5 +1,5 @@
 // Tests for the arena window pure core (arena_window_view.ts):
-//  - the offline-vs-live discriminator (the online-only-shape trap, decision 15),
+//  - the offline-vs-live discriminator (the online-only-shape trap),
 //  - bracket resolution + commit, canSwitchBracket, queueDisabled, party section,
 //  - ladder/all-time row derivation (rank, me-flag, knownClass),
 //  - the render-skip signature stability,
@@ -83,7 +83,7 @@ const party = (members: { pid: number; level?: number; cls?: string }[], leader 
     })),
   }) as unknown as PartyInfo;
 
-describe('buildArenaView: offline vs live (decision 15 online-only-shape trap)', () => {
+describe('buildArenaView: offline vs live (online-only-shape trap)', () => {
   it('returns the offline notice when no arena snapshot has synced', () => {
     expect(buildArenaView(input({ info: null })).kind).toBe('offline');
   });

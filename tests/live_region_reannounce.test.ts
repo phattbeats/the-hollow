@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { ReannounceMarker } from '../src/ui/live_region_reannounce';
 
-// The shared re-announce marker (P18d): forces a byte-different string on an identical
+// The shared re-announce marker: forces a byte-different string on an identical
 // consecutive live-region write so a screen reader that suppresses unchanged live text still
 // re-reads it. Used by the combat + chat announcers and the target-name region. DOM-free and
 // deterministic (internal toggle, no clock / randomness), so a Vitest drives it directly.

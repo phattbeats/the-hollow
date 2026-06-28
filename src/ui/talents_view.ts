@@ -34,7 +34,7 @@ import {
 } from '../sim/content/talents';
 import type { PlayerClass } from '../sim/types';
 
-// Tree layout constants (decision 12: named, not bare numbers in the painter). The
+// Tree layout constants (named, not bare numbers in the painter). The
 // painter consumes the derived geometry below, never these directly.
 export const TALENT_CELL_W = 86; // horizontal cell pitch (column stride)
 export const TALENT_CELL_H = 70; // vertical cell pitch (row stride)

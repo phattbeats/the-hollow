@@ -12,11 +12,11 @@
 // merchant state, and the empty cases are the search/browse/filter misses. There
 // is no separate error channel on `marketInfo`, so the union carries no error
 // variant (the only Promise-returning market-class surface is the leaderboard,
-// extracted in P9b). Filtering reuses the already-extracted market_filters helper
+// in its own module). Filtering reuses the already-extracted market_filters helper
 // rather than re-deriving it.
 //
 // DOM-free and i18n-free so tests/market_view.test.ts can drive it directly with
-// both a Sim-shaped and a ClientWorld-mirror-shaped snapshot (decision 15).
+// both a Sim-shaped and a ClientWorld-mirror-shaped snapshot.
 
 import { ITEMS } from '../sim/data';
 import type { ItemDef } from '../sim/types';

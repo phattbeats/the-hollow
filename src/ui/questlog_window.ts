@@ -14,8 +14,7 @@
 // This is the quest LOG window, not the always-on quest TRACKER (quest_tracker.ts,
 // a separate pure core). It is NOT a canvas window (colors live in the extracted
 // stylesheet; the per-quality reward color comes from the shared QUALITY_COLOR
-// map, the fallback is a CSS token, so there is no literal hex/px in TS, decision
-// 12).
+// map, the fallback is a CSS token, so there is no literal hex/px in TS).
 
 import { ITEMS, NPCS } from '../sim/data';
 import type { IWorld } from '../world_api';
@@ -29,7 +28,7 @@ import { buildQuestLogView, type QuestDetailModel } from './questlog_view';
 import { svgIcon } from './ui_icons';
 
 // The reward-name color comes from the shared QUALITY_COLOR map; this token covers
-// an unknown quality, so the painter carries no literal hex (decision 12).
+// an unknown quality, so the painter carries no literal hex.
 const QUALITY_DEFAULT_COLOR = 'var(--color-quality-default)';
 
 /**

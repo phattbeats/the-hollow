@@ -1,5 +1,5 @@
 /* hud.css: the in-world HUD chrome, relocated from index.html's inline <style>
-   under @layer components (the cascade tier P1 declared in src/styles/index.css), in
+   under @layer components (the cascade tier declared in src/styles/index.css), in
    source order. Holds nameplates, chat bubbles, the new-adventurer tutorial, unit
    frames, buff/cast/swing bars, the bottom action cluster, chat + report frames, the
    quest/delve trackers (run A), combat meters, minimap + compass, the community HUD
@@ -7,19 +7,17 @@
    browser-effects + performance-overlay rules, the 2v2 Fiesta HUD, and the center
    messages / low-health vignette / death overlay.
 
-   Notes for the later CSS phases (P3 onward):
+   Notes for the later CSS work:
    - The lowercase tooltip banner was upgraded to the canonical ten-dash marker so
-     css_corpus keys on it (the one comment edit phase-02 authorizes).
+     css_corpus keys on it.
    - The two real backdrop-filter rules (frosted panels, #perf-overlay) are emitted
      -webkit-first so Lightning keeps both twins in the built CSS (the FB minify
      gotcha); proven by scripts/check_backdrop_survival.mjs at build time.
    - The Fiesta .btn.fiesta-practice / .arena-bracket*.fiesta integration rules are NOT
      here: they style the .btn (windows) and .arena-bracket (arena) bases, which are
-     still unlayered in index.html until P3. Moving only the modifier into
+     still unlayered in index.html. Moving only the modifier into
      @layer components would let the unlayered base win and invert the cascade, so they
-     stay inline beside their bases and relocate in P3.
-
-   See docs/frontend-modernization/phase-02-css-hud-chrome.md. */
+     stay inline beside their bases and relocate later. */
 @layer components {
   /* ---------- nameplates ---------- */
   .nameplate {
@@ -2180,7 +2178,7 @@
     /* Centering uses the individual `translate` property (not the `transform` shorthand) so
        the rise below can animate `translate` on the compositor instead of the old layout
        `margin-top`, while the crit pop animates the independent `scale` property. The two
-       properties keep separate keyframe intervals (P18e), so the motion is byte-identical to
+       properties keep separate keyframe intervals, so the motion is byte-identical to
        the prior margin-top rise + transform scale pop. */
     translate: -50% -50%;
     font-family: var(--title-font);
@@ -2226,13 +2224,13 @@
      number, colour and bigger size but sheds the scale/pop (the heaviest FCT
      effect) by swapping the crit keyframes for the plain rise. The number is never
      refused. This is the CSS floor; the per-element JS gate (fctDropNonCrit in
-     src/game/ui_tier_knobs.ts, consumed by the FCT painter) is P14a/P14b. Inert above
+     src/game/ui_tier_knobs.ts, consumed by the FCT painter). Inert above
      the low tier. */
   :root[data-fx-level="low"] .fct.crit {
     animation-name: fct-rise;
   }
-  /* FCT colour tokens (P13b): the per-kind colour moved off the old inline
-     el.style.color onto a class the pooled fct_painter toggles (decision 12, no hex
+  /* FCT colour tokens: the per-kind colour moved off the old inline
+     el.style.color onto a class the pooled fct_painter toggles (no hex
      in TS). Each class carries the exact hex the live fct() passed, grouped by colour:
      miss/dodge keyed self (#bbb) vs other (#fff); damage done by ability (#ffe97a) vs
      auto-attack (#fff); damage taken (#ff5544); heal (#3ce63c); xp (#b974ff); rested
@@ -2423,7 +2421,7 @@
       inset 0 0 0 1px #00000040;
     -webkit-backdrop-filter: blur(3px);
     backdrop-filter: blur(3px);
-    /* P15b (FB lesson): never transition the outline. The drag/focus outline must snap
+    /* Never transition the outline. The drag/focus outline must snap
        steadily, not fade in; only the box-shadow eases between states. */
     transition: box-shadow 120ms ease;
     user-select: none;
@@ -2992,7 +2990,7 @@
   }
   /* The .btn.fiesta-practice and .arena-bracket*.fiesta integration rules that sat
      here in source order stay in index.html beside their .btn (windows) and
-     .arena-bracket (arena) bases until P3; see the header note above. */
+     .arena-bracket (arena) bases; see the header note above. */
   @media (prefers-reduced-motion: reduce) {
     .fiesta-word {
       animation: fiesta-word-fade 1.4s ease-out forwards;
@@ -3163,8 +3161,8 @@
     font-family: var(--title-font);
   }
   /* Chrome cluster (chat input, party frames, context menu, prompts, trade window,
-     elite target frame): P2-era in-world chrome that was never extracted with the
-     rest of the HUD (P4a surfaced it inline); P4b homes it here under @layer
+     elite target frame): in-world chrome that was never extracted with the
+     rest of the HUD; homed here under @layer
      components, completing the chrome extraction. The per-section ten-dash banners
      below are the tracked css_corpus sections. */
   /* ---------- chat ---------- */
@@ -3283,7 +3281,7 @@
      global [tabindex="0"]:focus-visible outline (shell.css) is drawn at full strength, not
      dimmed. The reset is made instant (transition: none) because .party-frame transitions
      opacity 0.2s and opacity applies to the outline too, so without this the ring would
-     fade in over 200ms; decision 10 requires a focus ring that is never animated. */
+     fade in over 200ms; the focus ring must never be animated. */
   .party-frame:focus-visible {
     opacity: 1;
     transition: none;

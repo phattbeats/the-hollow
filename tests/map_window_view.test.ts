@@ -47,7 +47,7 @@ const READY_QUEST = requireReadyQuest();
 // One scenario as plain data, so we can build two structurally-distinct IWorld
 // stubs (a "Sim-shaped" one carrying extra sim-only fields the core must ignore,
 // and a lean "ClientWorld-mirror-shaped" one) and assert identical output
-// (decision 15). Iteration order of consumed collections is kept identical.
+// Iteration order of consumed collections is kept identical.
 function makeOverworldWorld(shape: 'sim' | 'client'): IWorld {
   const simJunk = shape === 'sim' ? { hp: 100, maxHp: 100, castingAbility: null } : {};
   const player = {
@@ -133,7 +133,7 @@ describe('mapWindowMode (delve vs overworld discriminator)', () => {
 });
 
 describe('buildOverworldMapModel (pure draw model)', () => {
-  it('Sim-shaped and ClientWorld-mirror-shaped stubs render identically (decision 15)', () => {
+  it('Sim-shaped and ClientWorld-mirror-shaped stubs render identically', () => {
     const sim = makeOverworldWorld('sim');
     const client = makeOverworldWorld('client');
     expect(sim).not.toBe(client);

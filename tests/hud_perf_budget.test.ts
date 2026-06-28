@@ -1,10 +1,10 @@
-// THE STANDING per-frame perf-budget floor (frontend-modernization v0.16.0, P17a).
+// THE STANDING per-frame perf-budget floor (v0.16.0).
 //
-// Every per-frame phase P10a-P14b proved its write-elision + allocation budget ONCE
+// Every per-frame painter proved its write-elision + allocation budget ONCE
 // at its own perf gate; those gates were one-shot. This file makes them permanent, so
 // a future change that collapses the write-elision cache, reallocates a per-frame core,
 // or unbounds a pool fails here instead of silently regressing. It is grounded in the
-// COMMITTED P0 baseline (docs/frontend-modernization/perf-baseline-v016.md): the
+// COMMITTED baseline (hud_perf_budget.baseline.md): the
 // durable anchor hudHotDomSkipRate >= 0.962 is READ from that file (never defaulted to
 // 0), so a missing baseline fails the budget rather than passing a hollow gate.
 //
@@ -15,8 +15,8 @@
 //     PainterHost elided writers (setText/setDisplay/setTransform/setWidth +
 //     setStyleProp/toggleClass/setAttr); no raw .style/.textContent/.classList/
 //     .className/.setAttribute/.setProperty/.innerHTML beyond a DOCUMENTED build-time
-//     exception (decision 5a). This is the same per-painter check the per-frame phases
-//     used, consolidated; the canvas painters (decision-12 cadence + cached tokens) and the
+//     exception. This is the same per-painter check the per-frame painters
+//     used, consolidated; the canvas painters (cadence + cached tokens) and the
 //     render-cadence nameplate painter are NOT facet-routed and are excluded. A completeness
 //     check pairs the scanned list with the canvas-exclusion list so a NEW src/ui painter
 //     must be classified, never silently escaping the scan.
@@ -29,13 +29,13 @@
 //     makeWriterFacet and asserts (a) per painter: a cold-cache establishing frame writes
 //     real DOM (non-vacuous) and a repeated identical frame writes NOTHING (perfect elision,
 //     the Top-risk-1 collapse detector), and (b) aggregate: a derived skip-rate sanity bound.
-//     It runs for BOTH a Sim-shaped and a ClientWorld-mirror-shaped input (decision 15); in
+//     It runs for BOTH a Sim-shaped and a ClientWorld-mirror-shaped input; in
 //     the skip-rate loop the only MATERIAL divergence is unit_frame's offline-only absorb
 //     shield (the other four painters get byte-identical input in both shapes). The
-//     allocation proxy is the P12a reference-stability probe (tests/util/alloc_probe): the
+//     allocation proxy is the reference-stability probe (tests/util/alloc_probe): the
 //     action-bar and auras view cores must return a REUSED container AND a REUSED .slots
 //     array every tick; that arm feeds auras_view both the Sim aura value and the online-
-//     zeroed value (the other decision-15 axis).
+//     zeroed value (the other axis).
 //
 //   ARM 3 - PERF_TOUR-DELEGATED (env HUD_PERF_BUDGET_TOUR=1, runs in the perf row, NOT
 //     bare `npm test`): the wall-clock + elision + macro-pool budget. It reads a perf_tour
@@ -45,14 +45,14 @@
 //     re-run via HUD_PERF_BUDGET_TOUR_FRAME_BASELINE), (b) the elision-bypass write COUNT
 //     `hudHotDomWrites` <= the baseline anchor, EVERY viewport (the run-length-independent
 //     collapse signal; the skip RATIO is frame-count-dependent so it stays in the console for
-//     context, not a hard gate), and (c) the P13b FCT pool stays at/under FCT_POOL_CAP under
+//     context, not a hard gate), and (c) the FCT pool stays at/under FCT_POOL_CAP under
 //     the scripted AoE burst (fctBurstBoundedNodes). SKIPPED when the env flag is unset so
 //     bare `npm test` stays fast and portable.
 //
 // COVERAGE NOTE (not a silent cap): the ARM 2 skip-rate loop drives the five non-pooled
 // per-frame painters (xp_bar, swing_timer, cast_bar, unit_frame, action_bar), which
-// together exercise all seven elided writers. The keyed-pool painters (auras P12b, party
-// P11c, fct P13b) build + reconcile real DOM nodes; their steady-state *_painter.test.ts
+// together exercise all seven elided writers. The keyed-pool painters (auras, party,
+// fct) build + reconcile real DOM nodes; their steady-state *_painter.test.ts
 // tests prove no per-frame node CHURN plus targeted expensive-write gates (icon-url, crest
 // class), while facet-level DOM write-elision is guaranteed by makeWriterFacet and proven
 // with write/skip counters in tests/painter_host.test.ts; their bypass count rides ARM 3.
@@ -92,10 +92,10 @@ import { XpBarPainter } from '../src/ui/xp_bar_painter';
 import { assertAllocationStable } from './util/alloc_probe';
 
 // --------------------------------------------------------------------------
-// The committed P0 baseline (read, never defaulted).
+// The committed baseline (read, never defaulted).
 // --------------------------------------------------------------------------
 
-const BASELINE_FILE = '../docs/frontend-modernization/perf-baseline-v016.md';
+const BASELINE_FILE = './hud_perf_budget.baseline.md';
 const baselineMd = readFileSync(new URL(BASELINE_FILE, import.meta.url), 'utf8');
 
 // The skip-rate floor for ARM 2's DETERMINISTIC fake-DOM loop (a fixed write/skip count, so
@@ -112,7 +112,7 @@ function readBaselineSkipRateFloor(): number {
     .filter((n) => Number.isFinite(n));
   if (!values.length) {
     throw new Error(
-      'perf-baseline-v016.md: the hudHotDomSkipRate floor is missing. The committed P0 baseline is absent or the key was removed; the skip-rate budget cannot be grounded. Regenerate + commit the P0 perf baseline before relying on this gate.',
+      'hud_perf_budget.baseline.md: the hudHotDomSkipRate floor is missing. The committed baseline is absent or the key was removed; the skip-rate budget cannot be grounded. Regenerate + commit the perf baseline before relying on this gate.',
     );
   }
   return Math.max(...values);
@@ -121,7 +121,7 @@ function readBaselineSkipRateFloor(): number {
 // The DURABLE, RUN-LENGTH-INDEPENDENT anchor: the elision-bypass write COUNT
 // (`hudHotDomWrites`). Unlike the skip RATIO (skipped / total), this does not move with the
 // frame count, so it is the same on desktop, mobile, and every re-run (the baseline pins it
-// at 153 post-P18e, the post-extraction steady state, byte-identical across profiles). A collapse
+// at 153, the post-extraction steady state, byte-identical across profiles). A collapse
 // of write-elision makes it BALLOON toward the frame count; a healthy run holds it. This is the
 // signal ARM 3 gates on instead of the frame-count-dependent ratio. The baseline records it as
 // the canonical table row `| hudHotDomWrites | <count> | ...`; this parses THAT row specifically
@@ -135,7 +135,7 @@ function readBaselineBypassCount(): number {
   const match = line?.match(/\|\s*hudHotDomWrites\s*\|\s*(\d{2,})\s*\|/);
   if (!match) {
     throw new Error(
-      'perf-baseline-v016.md: the canonical hudHotDomWrites anchor row (`| hudHotDomWrites | <count> |`) is missing. The committed baseline is absent or the key was removed; the bypass-count budget cannot be grounded.',
+      'hud_perf_budget.baseline.md: the canonical hudHotDomWrites anchor row (`| hudHotDomWrites | <count> |`) is missing. The committed baseline is absent or the key was removed; the bypass-count budget cannot be grounded.',
     );
   }
   return Number(match[1]);
@@ -148,7 +148,7 @@ function readBaselineFrameP95(): number {
   const line = baselineMd.split('\n').find((l) => l.includes('frameP95') && /\d+\s*ms/.test(l));
   const match = line?.match(/(\d+)\s*ms/);
   if (!match) {
-    throw new Error('perf-baseline-v016.md: the frameP95 baseline (`NNN ms`) is missing.');
+    throw new Error('hud_perf_budget.baseline.md: the frameP95 baseline (`NNN ms`) is missing.');
   }
   return Number(match[1]);
 }
@@ -160,8 +160,8 @@ const BYPASS_ANCHOR = readBaselineBypassCount();
 // ARM 1 - static raw-write rejection over every hot-path painter.
 // --------------------------------------------------------------------------
 
-// The raw-DOM-write vocabulary the per-frame phases reject. Every per-frame write must
-// go through a facet writer, so any of these on a painter's hot path is a decision-5a
+// The raw-DOM-write vocabulary the per-frame painters reject. Every per-frame write must
+// go through a facet writer, so any of these on a painter's hot path is a facet-routing
 // break. Each painter pins its DOCUMENTED build-time exceptions by COUNT (the same
 // allowances the per-painter tests pin): a pooled node's class is set once in its
 // builder, not per frame.
@@ -183,7 +183,7 @@ const RAW_WRITE_TOKENS = [
 // path; the only allowed read is fct_painter's single documented offsetWidth (the CSS-
 // animation-restart reflow flush on a recycled pooled node, not a per-frame measure). The
 // canvas painters (excluded) DO read getComputedStyle once per redraw to resolve tokens, and
-// that decision-12 cadence is guarded by their own *_painter.test.ts, so they stay out here.
+// that cadence is guarded by their own *_painter.test.ts, so they stay out here.
 // Tokens are leading-dot member accesses so countToken's `\${token}\b` regex escapes cleanly
 // (a dotless token's leading `\r` would be read as a carriage return and match nothing).
 const FORCED_REFLOW_READ_TOKENS = [
@@ -224,7 +224,7 @@ const HOT_PAINTERS: ReadonlyArray<{
 ];
 
 // The OTHER src/ui/*_painter.ts modules, NOT facet-routed, so deliberately not in the
-// raw-write scan above: they draw to a 2D/Three canvas under the decision-12 cadence +
+// raw-write scan above: they draw to a 2D/Three canvas under the cadence +
 // cached-token regime (resolve --color-* tokens once per redraw, never per-marker), where
 // canvas drawing and one-time element sizing are not "raw per-frame DOM writes". The
 // completeness check below pairs with HOT_PAINTERS so a NEW src/ui/*_painter.ts must be
@@ -279,7 +279,7 @@ describe('hud_perf_budget ARM 1: hot painters make no raw DOM write (Node, npm t
     });
   }
 
-  // Completeness (mirrors the Slice C core sweep): every on-disk src/ui/*_painter.ts is
+  // Completeness (mirrors the core sweep): every on-disk src/ui/*_painter.ts is
   // either facet-routed (scanned above) or a documented canvas exclusion, so a NEW painter
   // cannot silently escape the raw-write scan by being forgotten from HOT_PAINTERS.
   it('classifies every src/ui/*_painter.ts as facet-routed or a documented canvas exclusion', () => {
@@ -346,7 +346,7 @@ interface PainterHarness {
 
 // Build each non-pooled per-frame painter once, with fresh fake elements, plus a drive()
 // closure that paints a STEADY view. `shape` selects the offline-only / online-zeroed
-// fields (decision 15): the values are byte-identical across drives within a shape, so a
+// fields: the values are byte-identical across drives within a shape, so a
 // correctly-eliding painter writes only on the first drive.
 function buildHarnesses(shape: WorldShape, facet: PainterHostWriters): PainterHarness[] {
   const harnesses: PainterHarness[] = [];
@@ -400,7 +400,7 @@ function buildHarnesses(shape: WorldShape, facet: PainterHostWriters): PainterHa
   }
 
   // unit_frame: setText + setTransform (hp, absorb, resource) + toggleClass (overshield,
-  // resource type). DECISION 15: the absorb shield is offline-only - present in the Sim
+  // resource type). The absorb shield is offline-only - present in the Sim
   // shape, zeroed in the ClientWorld mirror - so the painter sees both shapes.
   {
     const els: UnitFrameElements = {
@@ -506,11 +506,11 @@ function runSkipRateLoop(shape: WorldShape): number {
 
 describe('hud_perf_budget ARM 2: write-elision skip-rate budget (Node fake-DOM, npm test)', () => {
   for (const shape of ['sim', 'clientworld'] as const) {
-    it(`steady-state per-frame painting stays >= the P0 skip-rate floor (${shape} shape)`, () => {
+    it(`steady-state per-frame painting stays >= the skip-rate floor (${shape} shape)`, () => {
       const skipRate = runSkipRateLoop(shape);
       expect(
         skipRate,
-        `${shape}: aggregate hot-DOM skip-rate ${skipRate.toFixed(4)} dropped below the committed P0 floor ${SKIP_RATE_FLOOR}; the write-elision cache collapsed.`,
+        `${shape}: aggregate hot-DOM skip-rate ${skipRate.toFixed(4)} dropped below the committed floor ${SKIP_RATE_FLOOR}; the write-elision cache collapsed.`,
       ).toBeGreaterThanOrEqual(SKIP_RATE_FLOOR);
     });
   }
@@ -583,13 +583,13 @@ describe('hud_perf_budget ARM 2: per-frame allocation budget (Node, npm test)', 
     const world = idleWorld();
     expect(() => {
       // Both the wrapper AND the .slots array must be the SAME reference every tick (the
-      // P12a per-slot reference-stability property, not just "the wrapper is reused").
+      // per-slot reference-stability property, not just "the wrapper is reused").
       assertAllocationStable(() => view.tick(world), 64, 'action_bar_view container');
       assertAllocationStable(() => view.tick(world).slots, 64, 'action_bar_view slots');
     }).not.toThrow();
   });
 
-  // DECISION 15: drive auras_view with both the Sim aura (a positive value) and the
+  // Drive auras_view with both the Sim aura (a positive value) and the
   // ClientWorld mirror (value zeroed online); both must tick into a reused container.
   for (const shape of ['sim', 'clientworld'] as const) {
     it(`auras_view reuses its state container every tick (${shape} shape)`, () => {
@@ -659,19 +659,19 @@ tourDescribe(
     // COUNT (`hudHotDomWrites`): the writes that bypassed the cache. It is run-length-
     // INDEPENDENT - a longer tour adds only SKIPS, never new bypass writes once state is
     // steady - so it is the same on desktop, mobile, and every re-run (the baseline pins it
-    // at 153 post-P18e). The skip RATIO (skipped / total) is a DERIVED quantity whose denominator is
+    // at 153). The skip RATIO (skipped / total) is a DERIVED quantity whose denominator is
     // the total frame count, which jitters with software-WebGL fps + machine load: a clean
     // re-run measured desktop 0.959 vs the recorded 0.962 with hudHotDomWrites IDENTICALLY
     // 152 (elision intact, pure ratio noise), so the ratio is NOT a safe cross-run hard gate.
     // We gate the COUNT (closes the mobile gap the old desktop-only ratio gate left open);
     // the ratio stays in the perf_tour console for human context. ARM 2's ratio floor is
     // safe because its fake-DOM loop has a FIXED denominator.
-    it(`keeps the elision-bypass write count at or below the P0 anchor (${viewport})`, () => {
+    it(`keeps the elision-bypass write count at or below the anchor (${viewport})`, () => {
       const summary = loadArtifact().summary[viewport];
       expect(summary, `perf_tour artifact has no ${viewport} summary`).toBeDefined();
       expect(
         summary.hudHotDomWrites,
-        `${viewport} elision-bypass writes ${summary.hudHotDomWrites} exceed the P0 anchor ${BYPASS_ANCHOR}; the write-elision cache collapsed (a real, run-length-independent per-frame regression). If this is a DELIBERATE new per-frame element, update the anchor in perf-baseline-v016.md.`,
+        `${viewport} elision-bypass writes ${summary.hudHotDomWrites} exceed the anchor ${BYPASS_ANCHOR}; the write-elision cache collapsed (a real, run-length-independent per-frame regression). If this is a DELIBERATE new per-frame element, update the anchor in hud_perf_budget.baseline.md.`,
       ).toBeLessThanOrEqual(BYPASS_ANCHOR);
     });
 

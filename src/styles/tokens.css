@@ -11,9 +11,7 @@
    the viewport resizer writes --app-vw / --app-vh, both onto documentElement inline
    style, which always wins over this stylesheet rule. --range-fill is NOT a token
    here: it is the slider track's inline var(--range-fill, 0%) fallback in base.css,
-   written per element by the HUD, never on :root.
-
-   See docs/frontend-modernization/phase-01-css-lightning-tokens-base.md. */
+   written per element by the HUD, never on :root. */
 @layer tokens {
   :root {
     --gold: #ffd100;

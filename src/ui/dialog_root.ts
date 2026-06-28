@@ -1,8 +1,8 @@
 // Thin DOM helper for a cold-window dialog root. About a dozen window painters (and the
 // hud.ts quest dialog) set the same role=dialog + aria-modal + one accessible name +
 // tabindex micro-pattern by hand; this folds it into one call so the shape can never drift
-// between them. P15b shipped those sites inline as an audit-only pass and deliberately left
-// the rule-of-three duplication; P18a extracts it.
+// between them. Those sites shipped inline and deliberately left the rule-of-three
+// duplication; this helper extracts it.
 //
 // COLD-window helper by design: the writes are raw setAttribute, NOT routed through the
 // PainterHost write-elision facet. That facet is the per-frame hot-path boundary; these
@@ -11,7 +11,7 @@
 // touches the DOM, so it is NOT a registered pure core.
 //
 // Exactly ONE accessible name: aria-labelledby SHADOWS aria-label in the accessible-name
-// computation (P15b lesson), so a root must carry one, never both. labelledBy wins when
+// computation, so a root must carry one, never both. labelledBy wins when
 // given; the opposite attribute is always cleared so a root that switches its name across
 // renders (the options window names itself per sub-view) never leaves a stale one behind.
 

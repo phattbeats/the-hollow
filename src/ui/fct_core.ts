@@ -1,5 +1,5 @@
 // Pure spawn-descriptor model for floating combat text (FCT) -- the descriptor HALF
-// of the FCT per-frame split (P13a). Host-agnostic and DETERMINISTIC: describeFct() is
+// of the FCT per-frame split. Host-agnostic and DETERMINISTIC: describeFct() is
 // a pure function (NO Math.random, NO Date.now / performance.now, NO DOM), so the same
 // event + the same injected jitter yields the same descriptor byte-for-byte. It is
 // registered in UI_PURE_CORES (tests/architecture.test.ts) and the determinism guard
@@ -7,12 +7,12 @@
 //
 // Jitter is INJECTED (a 0..1 draw the caller supplies) rather than drawn here, exactly
 // so the core stays Math.random-free and passes the purity guard. The FCT PAINTER
-// (P13b) is the one allowed to draw the jitter with Math.random and to map the color
+// is the one allowed to draw the jitter with Math.random and to map the color
 // CLASS TOKEN to a CSS class; the core only emits the token discriminator.
 //
 // The descriptor captures everything the live per-event fct() in hud.ts does -- the
 // per-kind color as a CLASS TOKEN (not a hex), the crit flag, the head-offset world
-// anchor, the horizontal jitter range, the author-space rise, and the ttl -- so P13b's
+// anchor, the horizontal jitter range, the author-space rise, and the ttl -- so the
 // pooled-div painter is a faithful swap, not a behavior change. PROJECTION is the
 // painter's job, not the core's: the painter projects anchor via renderer.worldToScreen
 // and divides the screen position by getUiScale() into author space (the core stays
@@ -38,7 +38,7 @@ export type FctKind =
 
 /**
  * The combat-DAMAGE FCT kinds: the high-volume floaters (one per hit, the AoE / boss
- * burst spam) and the ONLY kinds that can crit. P14a's low-tier drop-non-crit gate
+ * burst spam) and the ONLY kinds that can crit. The low-tier drop-non-crit gate
  * applies ONLY to these, so a low-preset player still sees crit hits PLUS every low-volume
  * informational floater (xp, rested-xp, self-note) and avoidance word (miss, dodge); only
  * the non-crit damage-number spam (the actual cost driver) is shed.
@@ -56,7 +56,7 @@ export function isDamageFctKind(kind: FctKind): boolean {
 
 /**
  * Color CLASS TOKEN discriminator, keyed by kind (plus the isSelf flag for miss/dodge).
- * P13b's painter owns the token -> CSS color class table (the hex->token migration); the
+ * The painter owns the token -> CSS color class table (the hex->token migration); the
  * core never emits a hex. Crit does NOT change the token: the live fct() keys color by
  * its call-site argument and expresses crit only through the separate 'crit' class, so a
  * crit and a non-crit of the same kind+isSelf share one color token.
@@ -77,7 +77,7 @@ export type FctColorToken =
 /**
  * The minimal entity shape the anchor is read from. Structural on purpose so the core
  * reads identically off an offline Sim entity and an online ClientWorld-mirror entity
- * (decision 15 parity): both expose pos.{x,y,z} and a numeric scale, and nothing else
+ * (parity): both expose pos.{x,y,z} and a numeric scale, and nothing else
  * about the entity matters to the descriptor.
  */
 export interface FctAnchorSource {
@@ -127,8 +127,8 @@ export interface FctDescriptor {
   readonly ttlMs: number;
 }
 
-// --- Named constants (decision 12: no magic values in the descriptor math). Each
-// mirrors a live fct() / fct CSS value so P13b's painter reproduces it exactly. ---
+// --- Named constants (no magic values in the descriptor math). Each
+// mirrors a live fct() / fct CSS value so the painter reproduces it exactly. ---
 
 /** Total horizontal jitter spread, in screen px. Live fct(): Math.random() * 30 - 15. */
 export const FCT_JITTER_RANGE = 30;
@@ -141,7 +141,7 @@ export const FCT_ANCHOR_HEAD_OFFSET = 2.2;
  * off the .fct / .fct.crit CSS class, never a descriptor field, so a crit never under-rises); it
  * is the documentary constant that tests/fct_core.test.ts pins against the live @keyframes fct-rise
  * distance in hud.css (calc(-50% - 76px)), so a CSS rise edit fails the test instead of silently
- * drifting. P18e moved the rise off the old margin-top onto `translate` so it stays on the
+ * drifting. The rise was moved off the old margin-top onto `translate` so it stays on the
  * compositor; the crit variant rises further (@keyframes fct-crit -> -86px) and that larger rise
  * rides the .fct.crit class.
  */
@@ -162,7 +162,7 @@ function colorToken(kind: FctKind, isSelf: boolean): FctColorToken {
 
 /**
  * Build the pure FCT spawn descriptor. `jitter01` is the injected horizontal-jitter draw
- * in [0, 1] (the P13b painter passes Math.random()): jitter01 = 0 maps to the minimum
+ * in [0, 1] (the painter passes Math.random()): jitter01 = 0 maps to the minimum
  * offset (-FCT_JITTER_RANGE / 2), 1 to the maximum (+FCT_JITTER_RANGE / 2), and 0.5 to 0.
  * No Math.random / Date.now / performance.now / DOM here, so the same event + the same
  * jitter01 always produce an identical descriptor. The descriptor is clock-free on

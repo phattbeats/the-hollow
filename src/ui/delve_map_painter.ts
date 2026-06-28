@@ -8,13 +8,13 @@
 // structure but differed in size, pad, circular clip, marker sizes, line widths,
 // and where the area label goes.
 //
-// WRITE-ELISION BOUNDARY (locked decision 12): the schematic itself is Canvas-2D
+// WRITE-ELISION BOUNDARY: the schematic itself is Canvas-2D
 // and a 2D context cannot be elided, so the painter's canvas draws are NOT routed
 // through the write-elision facet. The ONLY DOM write the painter makes is the
 // minimap '#zone-label' text, which IS routed through the facet's setText. The
 // world map paints its title onto the canvas instead, so it makes no DOM write.
 //
-// NO-MAGIC-VALUES (locked decision 12): a 2D context cannot read CSS vars, so the
+// NO-MAGIC-VALUES: a 2D context cannot read CSS vars, so the
 // painter resolves the `--color-delve-*` tokens via getComputedStyle ONCE per
 // redraw (cached for the frame, never per-marker); every other literal (pad,
 // radius, marker size, line width, font) is a named constant.
@@ -121,7 +121,7 @@ export interface DelveDrawModel {
 /**
  * Build the pure draw model from IWorld for one delve surface. Reads only IWorld
  * members (delveRun / entities / player / partyInfo), so the offline Sim and the
- * online ClientWorld mirror produce identical output (locked decision 15). The
+ * online ClientWorld mirror produce identical output. The
  * already-localized `delveName` / `moduleName` are passed in (the core stays
  * string-table-free, like delveAreaLabel). Returns null when not in a delve.
  */
@@ -215,8 +215,8 @@ export class DelveMapPainter {
     };
   }
 
-  /** Read the six delve color tokens in one getComputedStyle pass (decision 12:
-   *  a 2D context can only read a CSS var this way; never per-marker). */
+  /** Read the six delve color tokens in one getComputedStyle pass (a 2D context
+   *  can only read a CSS var this way; never per-marker). */
   private resolveColors(): DelveColors {
     const cs = getComputedStyle(document.documentElement);
     const read = (token: string): string => cs.getPropertyValue(token).trim();

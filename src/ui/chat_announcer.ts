@@ -6,7 +6,7 @@
 // injected) so a Vitest drives it without jsdom; hud.ts wires the sink to the #chat-live
 // element's textContent and the clock to performance.now.
 //
-// WHY A DEDICATED REGION (P18d items 3 + 5): chat's live region used to ride #chatlog
+// WHY A DEDICATED REGION: chat's live region used to ride #chatlog
 // itself, but #chatlog goes display:none whenever the combat tab is active, and a
 // display:none live region is silent, so chat was not announced on the combat tab.
 // #chat-live is a separate top-of-HUD off-screen region that is ALWAYS in the layout, so

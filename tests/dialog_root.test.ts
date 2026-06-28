@@ -66,7 +66,7 @@ describe('markDialogRoot', () => {
   });
 });
 
-describe('dialog_root: no magic values (decision 12)', () => {
+describe('dialog_root: no magic values', () => {
   it('carries no hex color or px literal', () => {
     const src = readFileSync(new URL('../src/ui/dialog_root.ts', import.meta.url), 'utf8');
     expect(src.match(/#[0-9a-fA-F]{3,8}\b/g) ?? []).toEqual([]);

@@ -10,12 +10,12 @@
 //
 // This is NOT a general browserslist query engine: only explicit ">=" floors are
 // understood, which is all the project ships (a fixed big-3 plus mobile Safari
-// floor, state.md decision 14). Anything else throws, so a typo cannot silently
+// floor). Anything else throws, so a typo cannot silently
 // widen or drop the floor.
 import { readFileSync } from 'node:fs';
 
-// browserslist browser ids for the names this project's floor uses (big-3 + iOS,
-// state.md decision 14), plus the obvious input aliases for those same browsers. A name
+// browserslist browser ids for the names this project's floor uses (big-3 + iOS),
+// plus the obvious input aliases for those same browsers. A name
 // outside this set throws rather than silently passing through, so a typo or a browser
 // the floor does not target cannot quietly widen the engine baseline.
 const BROWSER_IDS = {

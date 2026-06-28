@@ -5,7 +5,7 @@
 //  - on-bar derivation from the action-bar ability ids,
 //  - the add-control disabled state (known, off the bar, no free slot),
 //  - the empty state (no class kit),
-//  - decision-15 parity: a Sim-shaped and a ClientWorld-mirror-shaped `known`
+//  - parity: a Sim-shaped and a ClientWorld-mirror-shaped `known`
 //    set carrying the same logical data render identical rows, plus determinism.
 //
 // DOM-free / i18n-free, so this Node suite drives the core directly; the localized
@@ -22,7 +22,7 @@ const CLASS_ID = Object.values(CLASSES).find((c) => c.abilities.length >= 2)!.id
 const KIT = CLASSES[CLASS_ID].abilities;
 
 // Minimal ResolvedAbility stub: the core reads only `def.id` and `rank`. shape:
-// 'sim' carries extra fields the core must ignore (decision 15).
+// 'sim' carries extra fields the core must ignore.
 function known(shape: 'sim' | 'client', abilityId: string, rank = 1): ResolvedAbility {
   const junk = shape === 'sim' ? { _resolvedSeq: 3, cost: 12, cooldown: 6 } : {};
   return { def: { id: abilityId }, rank, ...junk } as unknown as ResolvedAbility;
@@ -104,7 +104,7 @@ describe('buildSpellbookView: on-bar + toggle-disabled derivation', () => {
   });
 });
 
-describe('buildSpellbookView: ClientWorld-vs-Sim parity (decision 15)', () => {
+describe('buildSpellbookView: ClientWorld-vs-Sim parity', () => {
   // The core passes the resolved ability OBJECT through to the painter (it needs it
   // for the tooltip/summary), so the parity guarantee is over the DERIVED decision
   // state: a Sim-shaped known carrying extra fields the core ignores must yield the

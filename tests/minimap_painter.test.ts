@@ -1,5 +1,5 @@
-// No-magic-values + cadence guard for the overworld minimap painter (decision 12,
-// canvas sub-rule). The painter's paintOverworld needs a real 2D context +
+// No-magic-values + cadence guard for the overworld minimap painter (canvas
+// sub-rule). The painter's paintOverworld needs a real 2D context +
 // getComputedStyle, so its draw is not exercised in this Node suite; the pure marker
 // geometry it draws is covered by tests/minimap_markers.test.ts. This guard pins the
 // painter contract a 2D context cannot express: zero literal colors (the
@@ -31,7 +31,7 @@ const MINIMAP_COLOR_TOKENS = [
   '--color-minimap-outline',
 ];
 
-describe('minimap_painter: no magic values (decision 12, canvas sub-rule)', () => {
+describe('minimap_painter: no magic values (canvas sub-rule)', () => {
   it('carries no literal hex or rgb color in TS', () => {
     const hex = code.match(/#[0-9a-fA-F]{3,8}\b/g) ?? [];
     const rgb = code.match(/\brgba?\s*\(/g) ?? [];
@@ -55,7 +55,7 @@ describe('minimap_painter: no magic values (decision 12, canvas sub-rule)', () =
     // string lives only at the definition site). The per-marker loop lives in
     // drawMarkers; assert resolveColors() is called exactly once (in paintOverworld) and
     // is never referenced inside the drawMarkers body. A runtime getComputedStyle spy is
-    // deferred to the P15b browser suite.
+    // deferred to the browser suite.
     expect(code.match(/this\.resolveColors\(\)/g) ?? []).toHaveLength(1);
     const drawMarkersBody = code.slice(code.indexOf('private drawMarkers('));
     expect(drawMarkersBody.length).toBeGreaterThan(0);
@@ -81,7 +81,7 @@ describe('minimap_painter: cached background + ~10Hz cadence preserved', () => {
   });
 
   it("still redraws updateMinimap from hud.update()'s fastHud (~10Hz) band", () => {
-    // The minimap stays gated on the fast band, NOT every frame (P14a will tier it).
+    // The minimap stays gated on the fast band, NOT every frame (graphics tiering may later throttle it).
     expect(hud).toContain('const fastHud = now - this.lastHudFastAt >= 100;');
     expect(hud).toContain('this.updateMinimap();');
   });

@@ -2,14 +2,14 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 // Source-level guards for the bags painter. The pure click/tooltip/grid decisions are
-// unit-tested in bags_view.test.ts; here we pin the decision-12 no-magic-values
+// unit-tested in bags_view.test.ts; here we pin the no-magic-values
 // contract (no raw hex; the unranked-quality fallback is a token) plus the two
 // load-bearing behaviors: reusing bag_filter via buildBagGrid (not re-deriving the
 // filter) and preserving the .bag-grid scroll offset across a rebuild.
 const painter = readFileSync(new URL('../src/ui/bags_window.ts', import.meta.url), 'utf8');
 const tokens = readFileSync(new URL('../src/styles/tokens.css', import.meta.url), 'utf8');
 
-describe('bags_window: no magic values (decision 12)', () => {
+describe('bags_window: no magic values', () => {
   it('carries no literal hex color in TS (quality color comes from QUALITY_COLOR + a token)', () => {
     const hex = painter.match(/#[0-9a-fA-F]{3,8}\b/g) ?? [];
     expect(hex, `hex colors must move to tokens: ${hex.join(', ')}`).toEqual([]);

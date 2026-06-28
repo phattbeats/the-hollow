@@ -532,7 +532,7 @@ export function classifyGpuRenderer(name: string | undefined): GpuClass {
  * (the product call: a safe middle the runtime auto-governor can climb from). Pure function of
  * static device hints only (GPU name, deviceMemory, hardwareConcurrency, touch/coarse/narrow);
  * reads NO FPS governor and runs ONCE on first boot, so it never fights the runtime governor (the
- * two-controller rule, decision 6). main.ts persists the result over the medium default so the 3D
+ * two-controller rule). main.ts persists the result over the medium default so the 3D
  * tier, the data-fx-level applier, and the options UI all read one consistent value; an explicit
  * player preset is never passed here. Never returns ADVANCED (5): that expert custom profile is
  * opt-in, never an auto-default.
@@ -600,7 +600,7 @@ export function tierFromHints(hints: GfxRuntimeHints, softwareGl: boolean): GfxT
   // OR a device whose detection stays inconclusive so nothing is ever persisted) resolves
   // DEVICE-AWARE through resolveDefaultGraphicsPreset (medium fallback), so the 3D render tier lands
   // on the SAME tier the data-fx-level applier derives from the medium settings default, instead of
-  // silently diverging to ultra (the pre-P18e bug: an unrecognized first-run device rendered 3D at
+  // silently diverging to ultra (an unrecognized first-run device rendered 3D at
   // ultra while the HUD/nameplate tier stayed medium). Software GL with no explicit preset drops to
   // the low floor (resolveDefaultGraphicsPreset already lows recognized software/weak GPUs; this
   // backstops a generic "software" renderer string the name classifier does not name). An explicit

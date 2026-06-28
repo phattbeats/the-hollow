@@ -4,9 +4,7 @@
    contiguous block between the :root tokens and the first HUD section), rule set and
    intra-block order preserved. Includes the range-slider track rule whose gold fill
    rides the inline var(--range-fill, 0%) fallback, set per element by the HUD; it
-   stays here and is never promoted to a :root token.
-
-   See docs/frontend-modernization/phase-01-css-lightning-tokens-base.md. */
+   stays here and is never promoted to a :root token. */
 @layer base {
   * {
     box-sizing: border-box;
@@ -546,10 +544,10 @@
   }
 
   /* UI chrome icons: shared glyph-sizing primitives (siblings of the .x-btn /
-     .panel chrome above). Relocated from index.html's inline <style> in P2: the
-     phase note calls these "P1/base-tier glyph styling", and keeping them in
+     .panel chrome above). Relocated from index.html's inline <style>: these are
+     base-tier glyph styling, and keeping them in
      @layer base lets component overrides (e.g. #mm-music .ui-icon) win as intended.
-     P1 had left them inline-unlayered, which would have inverted those overrides. */
+     They had been left inline-unlayered, which would have inverted those overrides. */
   /* ---------- UI chrome icons (inline SVG from ui_icons.ts, tinted via currentColor) ---------- */
   .ui-icon {
     width: 1em;
@@ -582,7 +580,7 @@
   }
 
   /* ---------- skip links ---------- */
-  /* P15a a11y: the first focusable elements on both game entries, parked off-screen
+  /* a11y: the first focusable elements on both game entries, parked off-screen
      until they take keyboard focus, then slid into view (mirrors the src/guide
      .guide-skip precedent). Only the position transitions, and that transition is
      dropped under prefers-reduced-motion (below); the :focus-visible ring is steady (no
@@ -626,8 +624,8 @@
   }
 
   /* ---------- forced-colors ---------- */
-  /* P15a a11y: the one dark aesthetic stays; forced-colors is the ONLY contrast
-     adaptation (decision 11: no light theme, no prefers-color-scheme branch). Borders
+  /* a11y: the one dark aesthetic stays; forced-colors is the ONLY contrast
+     adaptation (no light theme, no prefers-color-scheme branch). Borders
      and the focus ring must survive when the OS forces its own palette, and no state
      may be carried by a background alone, so system-color keywords are pinned where
      the forced palette applies. */
@@ -637,7 +635,7 @@
        in the later @layer components, so a normal Highlight outline here would lose
        the cascade to any component outline. An !important in an earlier layer beats
        a normal declaration in a later layer, so every focusable keeps a system ring
-       in forced-colors regardless of its component styling (P15b). */
+       in forced-colors regardless of its component styling. */
     :focus-visible {
       outline: 2px solid Highlight !important;
       outline-offset: 2px;
@@ -679,7 +677,7 @@
   }
 
   /* ---------- print reset ---------- */
-  /* P15a a11y: a full-screen real-time WebGL game has no print layout (decision 14),
+  /* a11y: a full-screen real-time WebGL game has no print layout,
      so hide the canvas and the HUD chrome rather than reflow. Minimal by design. */
   @media print {
     #game-canvas,

@@ -1,15 +1,15 @@
 /* shell.css: the desktop pre-game shell, relocated from index.html's inline <style>
-   under @layer shell (the cascade tier P1 declared in src/styles/index.css, after
+   under @layer shell (the cascade tier declared in src/styles/index.css, after
    hud.mobile and before the per-entry .extra layers), in source order. shell.css is NEW
-   in V16 (decision 7): FB had no single shell.css, so this is a fresh file, not a port.
+   in V16: FB had no single shell.css, so this is a fresh file, not a port.
    Holds the start screen, loading screen, play console, skin picker rows, the premium
    accessible login form, the animated + looping cinematic backdrops, the collapsible
    controls drawer, the char-list + delete-confirm modal + class details panel, and the
    unified character-select layout + cosmetic skin-select overlay (each section's own
    responsive @media and interspersed body.mobile-touch shell rules ride along; the
-   in-game mobile-touch controls section, the still-inline P2/P3 chrome, and the per-entry
-   .extra split remain for P4b). Backdrop pairs are authored -webkit-first so Lightning
-   keeps both twins. See docs/frontend-modernization/phase-04a-css-shell.md. */
+   in-game mobile-touch controls section, the still-inline chrome, and the per-entry
+   .extra split are not yet relocated here). Backdrop pairs are authored -webkit-first so Lightning
+   keeps both twins. */
 
 @layer shell {
   /* ---------- start screen layout overhaul ---------- */
@@ -990,10 +990,9 @@
   #hero-view #realm-panel {
     margin-top: 10px;
   }
-  /* Relocated from the mobile-touch block in P4a so it shares @layer shell with the more
+  /* Relocated from the mobile-touch block so it shares @layer shell with the more
      specific #hero-view rule above (which wins margin-top). Left inline (unlayered) it would
-     beat that rule and revive its otherwise overridden margin-top:0, shifting the panel up.
-     P4b owns the rest of the mobile-touch block. */
+     beat that rule and revive its otherwise overridden margin-top:0, shifting the panel up. */
   body.mobile-touch[data-start-panel="realm-panel"] #realm-panel,
   body.mobile-touch[data-start-panel="login-panel"] #login-panel {
     margin-top: 0;

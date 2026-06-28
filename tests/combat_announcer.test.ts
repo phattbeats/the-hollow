@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { CombatAnnouncer } from '../src/ui/combat_announcer';
 import { COMBAT_ANNOUNCE_INTERVAL_MS } from '../src/ui/live_region_politeness';
 
-// The combat live-region announcer (P15a): one polite off-screen summary, throttled
+// The combat live-region announcer: one polite off-screen summary, throttled
 // so a damage burst never floods the screen reader. DOM-free (injected text sink +
 // clock), so this drives it directly with a recording sink and controlled time.
 function recorder() {
@@ -72,7 +72,7 @@ describe('CombatAnnouncer burst throttle', () => {
   });
 });
 
-describe('CombatAnnouncer identical-summary re-announce (P18d item 4)', () => {
+describe('CombatAnnouncer identical-summary re-announce', () => {
   it('forces a byte-different sink write when the same summary repeats, so AT re-reads it', () => {
     const { sink, calls } = recorder();
     const announcer = new CombatAnnouncer(sink);

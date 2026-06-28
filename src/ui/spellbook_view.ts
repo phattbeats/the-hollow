@@ -13,7 +13,7 @@
 // (read from IWorld.known) and raw numbers; the painter localizes the name /
 // summary / rank label and resolves the icon. The known-vs-bar shape is the same
 // for the offline Sim and the online ClientWorld mirror (both expose `known` +
-// the bar), so the two produce identical rows (decision 15).
+// the bar), so the two produce identical rows.
 
 import { ABILITIES } from '../sim/data';
 import type { ResolvedAbility } from '../sim/sim';
@@ -64,7 +64,7 @@ export interface SpellbookInput {
  * resolving each ability's learned state from `known`, its rank, whether it is on
  * the bar, and whether its add control is disabled. Reads only IWorld-mirrored
  * data, so the offline Sim and the online ClientWorld mirror produce identical
- * rows (decision 15).
+ * rows.
  */
 export function buildSpellbookView(input: SpellbookInput): SpellbookView {
   const barIds = new Set(input.barAbilityIds);

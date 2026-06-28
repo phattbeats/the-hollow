@@ -5,7 +5,7 @@
 // map_window_view.ts). It projects IWorld state to a DISCRIMINATED Marker union in
 // canvas-pixel space (one variant per draw kind), so the painter only resolves the
 // --color-minimap-* tokens + the per-class color and strokes. The IN-DELVE branch of
-// the minimap is owned by delve_map.ts + delve_map_painter.ts (P6); this core models
+// the minimap is owned by delve_map.ts + delve_map_painter.ts; this core models
 // only the OVERWORLD branch, plus the mode discriminator the painter switches on. The
 // delve schematic is the already-extracted sibling discriminated set (SchematicPrimitive
 // + SchematicArrow), so re-modeling it here would duplicate it; minimapMode names the
@@ -17,7 +17,7 @@
 // iterate DIFFERENT collections, so there is no "double-scan to collapse". Those old
 // recon claims are dropped.
 //
-// ALLOCATION (the P12a reused-reference proxy): build() returns the SAME { markers,
+// ALLOCATION (the reused-reference proxy): build() returns the SAME { markers,
 // zoneId } container every call and refills the reused markers array in place, so the
 // proxy's floor (container + array reference stability) holds. The per-call marker
 // variant objects ARE rebuilt: a true discriminated union (distinct shapes per kind)
@@ -26,8 +26,8 @@
 // The three membership Sets are per-call temporaries (faithful to the inline site).
 //
 // DOM-free / i18n-free / Three-free / deterministic so tests/minimap_markers.test.ts
-// can drive it with both a Sim-shaped and a ClientWorld-mirror-shaped IWorld stub
-// (decision 15). Markers carry the identity (the party class id) the painter resolves
+// can drive it with both a Sim-shaped and a ClientWorld-mirror-shaped IWorld stub.
+// Markers carry the identity (the party class id) the painter resolves
 // to a color, never the resolved color.
 
 import { isDelvePos, QUESTS, zoneAt } from '../sim/data';
@@ -105,7 +105,7 @@ export function minimapMode(world: IWorld): MinimapMode {
 /**
  * Build an overworld minimap marker model with a reused container. Reads only IWorld
  * members (player / entities / partyInfo / socialInfo / questState), so the offline Sim
- * and the online ClientWorld mirror produce identical output (decision 15). Every
+ * and the online ClientWorld mirror produce identical output. Every
  * position is projected to canvas pixels here; the painter only resolves colors +
  * strokes.
  */

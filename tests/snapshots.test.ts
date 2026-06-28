@@ -1504,7 +1504,7 @@ describe('lockpick view rebuilds from events on the online client', () => {
 // The client decode reads `a.value ?? 0`, so an old server that never sends it still decodes
 // to 0 (backward compatible). This drives a real Sim aura through the real serializer
 // (wireEntity) and the real client decode (ClientWorld.applySnapshot).
-describe('aura value over the wire (stat-sap debuff parity, decision 15)', () => {
+describe('aura value over the wire (stat-sap debuff parity)', () => {
   function roundTrip(aura: Aura): { wire: Record<string, unknown>; mirror: Aura } {
     const sim = new Sim({ seed: 1, playerClass: 'warrior', noPlayer: true });
     const pid = sim.addPlayer('warrior', 'Sapped');

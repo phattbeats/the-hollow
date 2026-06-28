@@ -7,7 +7,7 @@
 // a typed keyed per-aura node pool (Top risk 3: the pool's tooltip closure reads a
 // LIVE mutable slot, never a captured aura).
 //
-// DECISION 9 (component contract): the core is INSTANCE-PARAMETERIZED by the aura
+// Component contract: the core is INSTANCE-PARAMETERIZED by the aura
 // MODE ('all' for the buff bar, 'debuffs' for the target frame). createAurasView(mode,
 // deps) preallocates a per-aura slot pool ONCE and returns a tick(entity) that mutates
 // it IN PLACE and returns the SAME { slots, count } container every call, so a correct
@@ -21,7 +21,7 @@
 // produced by INJECTED deps each frame (so the i18n keys keep firing and the painter
 // never concats), while the icon identity and the duration text are pure.
 //
-// DECISION 15 (parity): the input is a structural subset of IWorld's Entity.auras that
+// Parity: the input is a structural subset of IWorld's Entity.auras that
 // BOTH the offline Sim and the online ClientWorld mirror expose. Aura.stacks is
 // OPTIONAL (the wire sends it only when > 1), so the core treats a missing stacks the
 // same as 1 (no stacks badge), and a Sim-shaped aura {stacks:1} and a ClientWorld
@@ -175,7 +175,7 @@ function makeSlotState(): AuraSlotState {
  * Build an aura view bound to one mode. The slot pool is preallocated lazily and grows
  * only to the high-water aura count (amortized zero allocation in steady state);
  * tick() mutates it in place and returns the SAME { slots, count } container every
- * call. Each createAurasView yields an INDEPENDENT view (decision 9): the buff bar and
+ * call. Each createAurasView yields an INDEPENDENT view: the buff bar and
  * the target debuffs never share a pool.
  */
 export function createAurasView(mode: AuraMode, deps: AurasDeps): AurasView {

@@ -1216,7 +1216,7 @@ describe('i18n Localization Key Coverage', () => {
   it('should route rendered world-content labels through localized entity helpers', () => {
     const hudSource = fs.readFileSync(path.resolve(process.cwd(), 'src/ui/hud.ts'), 'utf8');
     expect(hudSource).toContain('zoneDisplayName');
-    // The overworld #zone-label write moved into minimap_painter (P12b): hud wires
+    // The overworld #zone-label write moved into minimap_painter: hud wires
     // zoneDisplayName into the painter, and the painter writes the label through the
     // elided setText. The localization is preserved, just relocated.
     expect(hudSource).toContain('zoneDisplayName(zoneId)');
@@ -1234,11 +1234,11 @@ describe('i18n Localization Key Coverage', () => {
       'utf8',
     );
     // objectDisplayName still localizes the build-time object nameplate write in the
-    // renderer; the helper itself moved into entity_labels.ts (P14b).
+    // renderer; the helper itself moved into entity_labels.ts.
     expect(rendererSource).toContain('objectDisplayName');
     // The per-entity nameplate content (corpse/mob names) moved into the
-    // NameplatePainter (P14b); localization is preserved, just relocated (mirrors the
-    // P12b minimap_painter zone-label move above).
+    // NameplatePainter; localization is preserved, just relocated (mirrors the
+    // minimap_painter zone-label move above).
     const nameplatePainterSource = fs.readFileSync(
       path.resolve(process.cwd(), 'src/render/nameplate_painter.ts'),
       'utf8',

@@ -2,12 +2,12 @@
 // in src/render/cast_bar.ts (castBarState + consumeBarState, both i18n-free); this
 // turns those states into DOM, resolving the visible LABEL via i18n in the PAINTER
 // (the core emits a stable discriminator only) and routing EVERY write through the
-// host's elided writers (decision 5a) so a no-op frame costs no DOM mutation. The
-// `.channel` class goes through toggleClass (the P10a-added multi-slot writer): the
+// host's elided writers so a no-op frame costs no DOM mutation. The
+// `.channel` class goes through toggleClass (the multi-slot writer): the
 // four single-slot writers cannot express a classList toggle, and a raw classList
 // write would silently collapse the skip-rate (Top risk 1).
 //
-// It is INSTANCE-PARAMETERIZED, not bespoke (decision 9): the same class drives the
+// It is INSTANCE-PARAMETERIZED, not bespoke: the same class drives the
 // PLAYER bar (#castbar) and the TARGET bar (#tf-castbar) from their own element
 // sets. The two differ only in their options, never in a branch on "which bar":
 //   - `resolveCastLabel` localizes the cast id. The player resolves it through
@@ -20,7 +20,7 @@
 //     The player's inline block did this; the target's hidden path only set
 //     display:none, so the target leaves it off and stays byte-faithful.
 //
-// No magic values (decision 12): the cast-vs-channel-vs-eat/drink fill color is the
+// No magic values: the cast-vs-channel-vs-eat/drink fill color is the
 // `.channel` CSS class, never a hex in TS; the percent precision and the consume
 // label keys are named constants; CONSUME_DURATION lives in the core, not here.
 
@@ -126,9 +126,9 @@ export class CastBarPainter {
     this.writers.setWidth(this.el.fill, `${(fill * 100).toFixed(PERCENT_FRACTION_DIGITS)}%`);
     this.writers.setText(this.el.label, label);
     this.writers.setText(this.el.timer, this.timerText(remaining));
-    // Report the progress value (P15b): the bar is role="progressbar" with static
-    // aria-valuemin/max but never exposed a value. Numeric, so no i18n key and no D12
-    // literal; routes through the elided setAttr so an unchanged percent does not write.
+    // Report the progress value: the bar is role="progressbar" with static
+    // aria-valuemin/max but never exposed a value. Numeric, so no i18n key and no
+    // hardcoded literal; routes through the elided setAttr so an unchanged percent does not write.
     this.writers.setAttr(this.el.bar, 'aria-valuenow', String(Math.round(fill * 100)));
   }
 

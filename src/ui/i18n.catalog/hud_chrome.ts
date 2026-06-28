@@ -96,7 +96,7 @@ export const hudChromeStrings = {
     playerLabel: 'Your Hero',
     targetLabel: 'Your Mark',
     // targetAnnounce is the polite #target-live announcement spoken once when the player's
-    // target CHANGES (P18d item 1); {name} is the new target's display name. Kept NON-WORDY
+    // target CHANGES; {name} is the new target's display name. Kept NON-WORDY
     // (no run of four-plus lowercase after stripping {name}) so an English-filled non-Latin
     // locale does not trip the M16 untranslated-leak guard: "Target" would FAIL it ("arget"
     // is a five-letter run), so this reuses the frame's own term for the target ("Mark", from
@@ -126,7 +126,7 @@ export const hudChromeStrings = {
   },
   // Character sheet (#char-window) accessible names. modelPreview names the role=img 3D
   // turntable HOST distinctly from the title's level/class subtitle (the canvas pixels
-  // stay OUT of a11y scope, decision 10). Like partyGroup this label is WORDY by M16
+  // stay OUT of a11y scope). Like partyGroup this label is WORDY by M16
   // ("Character"/"Model"/"Preview" each carry a four-plus consecutive-lowercase run), so
   // the same five non-Latin overlays carry real fills and the Latin overlays stay
   // pending; Title Case does not make it non-wordy.

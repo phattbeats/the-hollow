@@ -4,7 +4,7 @@
 // in map_window_view.ts (buildOverworldMapModel, unit-tested there); this module
 // turns that flat draw model into actual canvas draws. It owns the 2D context, the
 // cached whole-world decorations, and the localized text + color resolution. The
-// delve branch of the map is owned by delve_map_painter.ts (P6); Hud picks the
+// delve branch of the map is owned by delve_map_painter.ts; Hud picks the
 // branch with mapWindowMode and only routes the overworld branch here, so the two
 // painters never duplicate each other's marker drawing.
 //
@@ -13,7 +13,7 @@
 // blitting the cached terrain background (Hud-owned, prewarmed) each redraw. This
 // painter does not change that call site or cadence; it only owns the draw.
 //
-// NO-MAGIC-VALUES (locked decision 12): a 2D context cannot read CSS vars, so the
+// NO-MAGIC-VALUES: a 2D context cannot read CSS vars, so the
 // painter resolves the `--color-map-*` tokens via getComputedStyle ONCE per redraw
 // (cached for the frame, never per-marker); every other literal (font, radius,
 // line width, label offset, triangle geometry) is a named constant.
@@ -107,7 +107,7 @@ export class MapWindowPainter {
   // (matches the inline site's lazy this.mapDecorations cache).
   private decorations: Decoration[] | null = null;
 
-  /** Read the map color tokens in one getComputedStyle pass (decision 12: a 2D
+  /** Read the map color tokens in one getComputedStyle pass (a 2D
    *  context can only read a CSS var this way; never per-marker). */
   private resolveColors(): MapColors {
     const cs = getComputedStyle(document.documentElement);

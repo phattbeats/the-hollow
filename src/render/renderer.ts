@@ -876,7 +876,7 @@ export class Renderer {
       0.1,
       950,
     );
-    // Nameplate Three/DOM ownership lives in the painter (P14b); it reads the
+    // Nameplate Three/DOM ownership lives in the painter; it reads the
     // viewport / mob-nameplate toggle lazily (the renderer reassigns viewport on
     // resize) and borrows the renderer's PvP reaction check.
     this.nameplatePainter = new NameplatePainter({
@@ -4069,12 +4069,12 @@ export class Renderer {
     markPhase('world');
 
     this.nameplateTimer += dt;
-    // Static-preset tiered cadence (P14b): the nameplate refresh interval follows
+    // Static-preset tiered cadence: the nameplate refresh interval follows
     // the player's chosen graphics tier (the data-fx-level the preset applier
-    // stamps), NEVER the FPS governor (the two-controller rule, decision 6). The
+    // stamps), NEVER the FPS governor (the two-controller rule). The
     // LOW tier runs 1/15s, richer tiers 1/24s. The axis is the PRESET, not the device:
     // the weak-GPU cost ceiling (the PR901 lesson) is restored through the device-aware
-    // first-run default (resolveDefaultGraphicsPreset in gfx.ts, P18e), which lands a
+    // first-run default (resolveDefaultGraphicsPreset in gfx.ts), which lands a
     // recognized-weak or software GPU on the LOW preset (its 1/15s ceiling) while a
     // mid/unknown device defaults to medium (1/24s). An explicit player preset wins.
     const nameplateInterval = nameplateIntervalSec(

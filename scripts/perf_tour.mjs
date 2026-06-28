@@ -16,8 +16,8 @@ const NAV_TIMEOUT_MS = Number(process.env.PERF_NAV_TIMEOUT_MS ?? 30000);
 const OUTPUT =
   process.env.PERF_OUT ??
   path.join('tmp', `perf-tour-${new Date().toISOString().replace(/[:.]/g, '-')}.json`);
-// PERF_PRESET seeds the STATIC graphics preset before boot so the P5 applier stamps
-// data-fx-level and the per-element P14a tier knobs engage (the per-tier perf gate). Unset
+// PERF_PRESET seeds the STATIC graphics preset before boot so the applier stamps
+// data-fx-level and the per-element tier knobs engage (the per-tier perf gate). Unset
 // = the app's own default (ultra). Maps the preset label to the woc_settings numeric value
 // (src/render/gfx.ts PRESET_LOW..PRESET_ULTRA).
 const PERF_PRESET = process.env.PERF_PRESET ?? null;
@@ -61,8 +61,8 @@ const VIEWPORTS = {
     hasTouch: false,
   },
   mobile: {
-    // LANDSCAPE on purpose (P17a): the in-game world is landscape-only on web mobile
-    // (decision 16a), so a portrait 390x844 surfaces the #rotate-device gate and the
+    // LANDSCAPE on purpose: the in-game world is landscape-only on web mobile,
+    // so a portrait 390x844 surfaces the #rotate-device gate and the
     // world never boots. A landscape 844x390 (an iPhone-class phone rotated) keeps the
     // rotate gate hidden while still matching PHONE_TOUCH_QUERY (max-width 940 /
     // max-height 760 under pointer:coarse), so the touch HUD is what gets measured.
@@ -215,7 +215,7 @@ async function teleportTown(page) {
   await sleep(SETTLE_MS);
 }
 
-// P13b FCT perf gate: prove the pooled FCT painter BOUNDS the live floater node count
+// FCT perf gate: prove the pooled FCT painter BOUNDS the live floater node count
 // under an AoE / boss burst. The old per-event createElement + setTimeout fct() grew the
 // #ui .fct node count without any ceiling; the fixed-size pooled-div ring caps it at
 // FCT_POOL_CAP and FIFO-evicts the oldest past that. Drive several waves of synthetic
@@ -238,7 +238,7 @@ async function fctBurstBoundedNodes(page) {
       const pid = g.sim?.playerId ?? g.sim?.player?.id;
       if (pid == null || !g.hud?.handleEvents) return -1;
       const evs = [];
-      // Crit damage-taken events: P14a's drop-non-crit (low tier) sheds only NON-crit
+      // Crit damage-taken events: the drop-non-crit (low tier) sheds only NON-crit
       // floaters, so a CRIT burst is kept on every tier and exercises the live pool cap
       // (FCT_POOL_CAP at the full tiers, the tighter cap at low) rather than being dropped
       // entirely. Self-sourced (sourceId === targetId === player) so both the src and tgt
@@ -512,7 +512,7 @@ async function runViewport(browser, viewport) {
       throw new Error(`Unknown PERF_PRESET=${PERF_PRESET}; use low, medium, high, or ultra.`);
     }
     // Seed the STATIC graphics preset into woc_settings before any app script runs, so the
-    // applier resolves it on boot and the P14a HUD tier knobs read the right data-fx-level.
+    // applier resolves it on boot and the HUD tier knobs read the right data-fx-level.
     await page.evaluateOnNewDocument((value) => {
       try {
         const key = 'woc_settings';
@@ -559,7 +559,7 @@ async function runViewport(browser, viewport) {
     if (lastFrame <= firstFrame)
       errors.push(`Frame counter did not advance for ${viewport.label}.`);
 
-    // P13b: run the bounded-node FCT burst AFTER the tour samples, so its hot DOM writes do
+    // run the bounded-node FCT burst AFTER the tour samples, so its hot DOM writes do
     // not skew the steady-state frameP95 / skip-rate the summary reads from the last sample.
     const fctBurst = await fctBurstBoundedNodes(page);
 

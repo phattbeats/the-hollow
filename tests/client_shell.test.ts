@@ -2,25 +2,25 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
-// Phase P1 of the frontend modernization moved the :root tokens and the reset/base
+// The CSS extraction moved the :root tokens and the reset/base
 // block (universal reset, scrollbars, forms, the global canvas/#ui/#nameplates base
 // rules) out of index.html's inline <style> into src/styles/base.css, loaded by the
-// game entries via the src/styles/index.css barrel. Phase P2 then moved the in-world
+// game entries via the src/styles/index.css barrel. It then moved the in-world
 // HUD chrome (nameplates, frames, bars, chat, trackers, meters, minimap, community
 // HUD, tooltip, FCT, the Interface/adaptive/perf rules, the Fiesta HUD, and the
 // center/vignette/death overlays) into src/styles/hud.css (@layer components), and
-// the UI-chrome-icon glyph sizing into base.css. Phase P3 moved the feature windows
+// the UI-chrome-icon glyph sizing into base.css. It then moved the feature windows
 // (delve, lockpick, the classic stat windows, vendor/bags/social/map, arena/market/
 // options/theme/emote) into src/styles/components.css and the shared .window shell into
 // src/styles/layout.css. Assertions on relocated rules read base.css / hud.css /
-// components.css / layout.css. Phase P4a then moved the desktop pre-game shell + char
+// components.css / layout.css. It then moved the desktop pre-game shell + char
 // select (start screen, loading, play console, skin picker rows, login form, the
 // animated + cinematic backdrops, controls drawer, char list + delete modal + class
 // details, and the unified character-select layout + skin-select overlay, each with its
 // interspersed body.mobile-touch shell rules) into src/styles/shell.css (@layer shell),
-// so assertions on those rules read shell.css. Phase P4b finished the extraction: the
+// so assertions on those rules read shell.css. A later step finished the extraction: the
 // in-game mobile-touch controls section moved into src/styles/hud.mobile.css (@layer
-// hud.mobile), the orphaned P2 chrome + paperdoll/bags into hud.css/components.css and
+// hud.mobile), the orphaned chrome + paperdoll/bags into hud.css/components.css and
 // the pre-start rule into base.css, and BOTH inline <style> blocks were emptied
 // (play.html reconciled to the shared modules). So mobile-touch assertions read
 // hudMobileCss; the per-entry #rotate-device orientation gate lives in
@@ -84,14 +84,14 @@ const hudTs = readFileSync(new URL('../src/ui/hud.ts', import.meta.url), 'utf8')
   '\n',
 );
 // The Esc options menu was extracted to options_view.ts (the declarative menu
-// model) + options_window.ts (the painter) in P8a; the menu guard reads the
+// model) + options_window.ts (the painter); the menu guard reads the
 // model rather than the old inline hud.ts main-menu builder.
 const optionsViewTs = readFileSync(
   new URL('../src/ui/options_view.ts', import.meta.url),
   'utf8',
 ).replace(/\r\n/g, '\n');
 // The XP bar was extracted to xp_bar.ts (the view core) + xp_bar_painter.ts (the
-// painter) in P10a; the mobile-XP-ring guard reads the painter (which drives
+// painter); the mobile-XP-ring guard reads the painter (which drives
 // --xp-fill on both #xpbar and #player-frame through the elided writers) rather
 // than the old inline hud.ts xp block.
 const xpBarPainterTs = readFileSync(
@@ -99,14 +99,14 @@ const xpBarPainterTs = readFileSync(
   'utf8',
 ).replace(/\r\n/g, '\n');
 // The World Market window was extracted to market_view.ts (the state model) +
-// market_window.ts (the painter) in P8b; the browse/filter/pagination guards read
+// market_window.ts (the painter); the browse/filter/pagination guards read
 // the painter rather than the old inline hud.ts renderMarket cluster.
 const marketWindowTs = readFileSync(
   new URL('../src/ui/market_window.ts', import.meta.url),
   'utf8',
 ).replace(/\r\n/g, '\n');
 // The spellbook window was extracted to spellbook_view.ts (the class-kit model) +
-// spellbook_window.ts (the painter) in P9b; the spellbook guards read the painter
+// spellbook_window.ts (the painter); the spellbook guards read the painter
 // rather than the old inline hud.ts renderSpellbook cluster.
 const spellbookWindowTs = readFileSync(
   new URL('../src/ui/spellbook_window.ts', import.meta.url),
@@ -116,10 +116,10 @@ const mobileControlsTs = readFileSync(
   new URL('../src/game/mobile_controls.ts', import.meta.url),
   'utf8',
 ).replace(/\r\n/g, '\n');
-// Per-frame keyed-pool painters (P11c / P12b / P13b). The per-member party rows,
+// Per-frame keyed-pool painters. The per-member party rows,
 // the aura slots, and the FCT nodes used to be inline createElement / innerHTML in
 // hud.ts; they dissolved into these pooled painters, so the shape guards below grep
-// the painter that owns the pool now, not a static id in hud.ts (P17a moved-id sweep).
+// the painter that owns the pool now, not a static id in hud.ts (moved-id sweep).
 const partyFrameRowTs = readFileSync(
   new URL('../src/ui/party_frame_row.ts', import.meta.url),
   'utf8',
@@ -187,7 +187,7 @@ describe('client HTML shell', () => {
     }
   });
 
-  it('places skip links as the first focusable elements in BOTH entries (P15a)', () => {
+  it('places skip links as the first focusable elements in BOTH entries', () => {
     for (const entry of [html, playHtml]) {
       const skipMain = entry.indexOf('class="hud-skip" href="#ui"');
       const skipChat = entry.indexOf('class="hud-skip" href="#chatlog"');
@@ -205,9 +205,9 @@ describe('client HTML shell', () => {
     }
   });
 
-  it('carries the combat / target / chat live regions in BOTH entries without double-announcing (P15a + P18d)', () => {
+  it('carries the combat / target / chat live regions in BOTH entries without double-announcing', () => {
     for (const entry of [html, playHtml]) {
-      // P18d: the chat pane keeps role="log" + tabindex="-1" (visible scrollback + the "skip
+      // The chat pane keeps role="log" + tabindex="-1" (visible scrollback + the "skip
       // to chat" landing target) but flips to aria-live="off": role="log" carries an IMPLICIT
       // polite, and #chatlog goes display:none on the combat tab, so it must NOT announce.
       // Chat is announced by the tab-independent #chat-live region instead.
@@ -222,13 +222,13 @@ describe('client HTML shell', () => {
       expect(entry).toContain(
         '<div id="combat-live" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true">',
       );
-      // P18d item 1: the polite target-name region, announced once per target CHANGE,
+      // The polite target-name region, announced once per target CHANGE,
       // mirroring the #combat-live template (a separate off-screen status node, NOT inside
       // #target-frame).
       expect(entry).toContain(
         '<div id="target-live" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true">',
       );
-      // P18d items 3 + 5: the tab-independent polite chat region (always in the layout, so it
+      // The tab-independent polite chat region (always in the layout, so it
       // announces regardless of which chat tab's pane is visible), mirroring #combat-live.
       expect(entry).toContain(
         '<div id="chat-live" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true">',
@@ -238,7 +238,7 @@ describe('client HTML shell', () => {
     expect(hudTs).toContain('this.combatAnnouncer.push(text, performance.now());');
   });
 
-  it('drops the user-scalable viewport scale-lock in BOTH entries (P15a, 16px anti-zoom floor stays)', () => {
+  it('drops the user-scalable viewport scale-lock in BOTH entries (16px anti-zoom floor stays)', () => {
     for (const entry of [html, playHtml]) {
       expect(entry).toContain(
         '<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />',
@@ -248,8 +248,8 @@ describe('client HTML shell', () => {
     }
   });
 
-  it('ships the forced-colors + print + skip-link a11y CSS, forced-colors as the only contrast adaptation (P15a)', () => {
-    // forced-colors is the only AUTOMATIC contrast adaptation (decision 11): no
+  it('ships the forced-colors + print + skip-link a11y CSS, forced-colors as the only contrast adaptation', () => {
+    // forced-colors is the only AUTOMATIC contrast adaptation: no
     // @media (prefers-color-scheme) switch in the corpus. (A user-selectable light
     // parchment / highContrast theme exists via theme.ts at runtime; this guards only
     // the absence of an automatic CSS theme switch.)
@@ -264,11 +264,11 @@ describe('client HTML shell', () => {
     expect(baseCss).toContain('.hud-skip:focus-visible {');
   });
 
-  it('draws the party focus ring at full strength WITHOUT animating it (P18b item 7 + decision 10)', () => {
+  it('draws the party focus ring at full strength WITHOUT animating it', () => {
     // A dimmed dead/oor row resets opacity to 1 on keyboard focus so the global outline
     // ring is full, not dimmed. Because .party-frame transitions opacity 0.2s and opacity
     // applies to the outline, the reset MUST also kill the transition (transition: none),
-    // or the ring would fade in over 200ms - which decision 10 forbids (a focus ring is
+    // or the ring would fade in over 200ms, which the rule forbids (a focus ring is
     // never animated). This pins both halves so a future edit cannot reintroduce the fade.
     const focusRule = hudCss.match(/\.party-frame:focus-visible\s*\{([^}]*)\}/)?.[1] ?? '';
     expect(focusRule).toMatch(/opacity:\s*1/);
@@ -276,7 +276,7 @@ describe('client HTML shell', () => {
   });
 
   it('labels the player frame as a role=group with a localized name in BOTH entries', () => {
-    // P10b made #player-frame a role="group" with a t()-localized accessible name via
+    // #player-frame is a role="group" with a t()-localized accessible name via
     // data-i18n-aria. index.html and play.html both boot src/main.ts and ship the same
     // in-game HUD, so the group label must be present in BOTH entries or a screen
     // reader on one of them announces a bare unlabelled div. Pinning the full opening
@@ -289,7 +289,7 @@ describe('client HTML shell', () => {
   });
 
   it('labels both cast bars as role=progressbar with a localized name in BOTH entries', () => {
-    // P11a drives #castbar (player) and #tf-castbar (target) through one cast_bar
+    // #castbar (player) and #tf-castbar (target) go through one cast_bar
     // painter and makes each a progressbar with aria-value bounds + a t()-localized
     // accessible name via data-i18n-aria (hydrated in main.ts). index.html and
     // play.html ship the same in-game HUD, so both bars must carry the role +
@@ -305,7 +305,7 @@ describe('client HTML shell', () => {
   });
 
   it('labels the target frame as a role=group with a localized name in BOTH entries', () => {
-    // P11b makes #target-frame a second unit_frame instance and gives it a
+    // #target-frame is a second unit_frame instance and gets a
     // role="group" with a t()-localized accessible name via data-i18n-aria (hydrated
     // in main.ts, the same path as the player frame). index.html and play.html ship
     // the same in-game HUD, so the group label must be present in BOTH or a screen
@@ -319,7 +319,7 @@ describe('client HTML shell', () => {
   });
 
   it('labels the party-frames region as a role=group with a localized name in BOTH entries', () => {
-    // P11c makes each party member a focusable role="button" named by its visible
+    // Each party member is a focusable role="button" named by its visible
     // member text, and labels the #party-frames container as a role="group" via
     // data-i18n-aria (hydrated in main.ts). index.html and play.html ship the same HUD,
     // so the region label must be present in BOTH or a screen reader on one entry
@@ -331,7 +331,7 @@ describe('client HTML shell', () => {
     }
   });
 
-  it('drives the party frames as a keyed node pool (P11c), not the inline innerHTML wipe', () => {
+  it('drives the party frames as a keyed node pool, not the inline innerHTML wipe', () => {
     // The #party-frames container is resolved ONCE and the keyed-pool painter owns its
     // children; the old per-rebuild innerHTML wipe + per-member createElement +
     // re-attached click/contextmenu listeners are gone.
@@ -367,7 +367,7 @@ describe('client HTML shell', () => {
     ).toBe(true);
   });
 
-  it('routes the cold-window closeManagedWindow cases through their painter close() for focus-return (P18b item 8)', () => {
+  it('routes the cold-window closeManagedWindow cases through their painter close() for focus-return', () => {
     // closeManagedWindow must hand each cold window to its own painter close() so focus
     // returns to the opener (WCAG 2.4.3), not an inline el.style.display='none' that drops
     // focus to <body>. Slice the switch body so a close() call elsewhere does not satisfy
@@ -387,7 +387,7 @@ describe('client HTML shell', () => {
     expect(cmBody).toContain('this.bagsWindow.close();');
   });
 
-  it('clears #bags inert on the mobile-touch closeVendor hide path (P18b item 3 backstop)', () => {
+  it('clears #bags inert on the mobile-touch closeVendor hide path (backstop)', () => {
     // closeVendor hides #bags directly on mobile-touch (it does NOT route through
     // BagsWindow.close()), so a discard/sell prompt that left #bags inert would strand a
     // dead grid on the next open. The mobile-bags hide branch must clear inert itself.
@@ -397,7 +397,7 @@ describe('client HTML shell', () => {
     expect(cvBody).toContain('.inert = false;');
   });
 
-  it('drives the target frame as a unit_frame instance with a cached absorb node (P11b)', () => {
+  it('drives the target frame as a unit_frame instance with a cached absorb node', () => {
     // The target absorb overlay is resolved ONCE (no per-frame updateAbsorb document
     // query), and the family painter drives the frame, so the old hardcoded
     // '#tf-absorb' selector + the per-frame updateAbsorb method are gone.
@@ -413,15 +413,15 @@ describe('client HTML shell', () => {
     expect(hudTs.match(/\$\('#tf-absorb'\)/g)).toHaveLength(1);
   });
 
-  it('routes the target elite class + name color + combo pips + hostile cue through the elided writers (P11b, P18c)', () => {
+  it('routes the target elite class + name color + combo pips + hostile cue through the elided writers', () => {
     // The two raw writes the four original writers cannot express (the elite class and
-    // the hostile/friendly name color) go through the P10a toggleClass / setStyleProp,
+    // the hostile/friendly name color) go through the toggleClass / setStyleProp,
     // and the combo pip `on` toggle through toggleClass. No raw classList/style write
     // on the target frame survives (those silently collapse the hot-DOM skip rate).
     expect(hudTs).toContain("this.toggleClass(this.targetFrameEl, 'elite'");
     expect(hudTs).toMatch(/this\.setStyleProp\(\s*this\.targetNameEl,\s*'color',/);
     expect(hudTs).toContain("this.toggleClass(pip as HTMLElement, 'on', i < points);");
-    // P18c: the forced-colors hostile cue is a non-color redundant marker on the target
+    // The forced-colors hostile cue is a non-color redundant marker on the target
     // name, routed through the same elided toggleClass writer (no raw class write on the
     // per-frame hot path) so it stays write-elided.
     expect(hudTs).toContain("this.toggleClass(this.targetNameEl, 'hostile', target.hostile);");
@@ -431,7 +431,7 @@ describe('client HTML shell', () => {
     expect(hudTs).not.toContain("pip.classList.toggle('on'");
   });
 
-  it('reconciles every #bags display show-site to flex and every read-guard to !== none (P18c)', () => {
+  it('reconciles every #bags display show-site to flex and every read-guard to !== none', () => {
     // #bags is a flex-column layout (components.css flex-direction: column). Every show-site
     // must set display = 'flex' (a 'block' drops the column), and every render read-guard must
     // test !== 'none' (an === 'block' guard never fired when bags was opened via the common
@@ -446,7 +446,7 @@ describe('client HTML shell', () => {
     expect(hudTs).toContain("bags.style.display !== 'flex'");
   });
 
-  it('lazy-builds the combo pips once, then only toggles them (P11b)', () => {
+  it('lazy-builds the combo pips once, then only toggles them', () => {
     // The 5-pip row is built ONCE (guarded by children.length !== COMBO_PIP_COUNT),
     // never rebuilt per frame; a per-frame innerHTML rebuild would tank the skip rate
     // while passing tsc + the painter tests.
@@ -816,18 +816,18 @@ describe('client HTML shell', () => {
   });
 
   it('keeps the dissolved per-frame node families in their keyed-pool painters', () => {
-    // P17a moved-id sweep: three families of nodes that used to be built inline in
+    // Moved-id sweep: three families of nodes that used to be built inline in
     // hud.ts (per-rebuild innerHTML / per-event createElement) no longer have a static
     // id to grep, so these assert the NEW pooled shape against the painter that owns it.
     // If a future change moves the pool back inline or drops the keyed builder, this
     // fails instead of silently losing the guard.
 
-    // Party rows (P11c): the per-member row + the #party-leave button are built once by
+    // Party rows: the per-member row + the #party-leave button are built once by
     // the pooled row builder, not re-created on every party rebuild in hud.ts.
     expect(partyFrameRowTs).toContain("row.className = 'party-frame panel';");
     expect(partyFrameRowTs).toContain("btn.id = 'party-leave';");
 
-    // Aura slots (P12b): one node per aura id, held in a keyed pool and built once in
+    // Aura slots: one node per aura id, held in a keyed pool and built once in
     // createNode() as .buff > .dur + .stacks. The hud.ts-wiring assertion (mirroring the
     // party-frame pattern) pins that hud.ts DELEGATES to the painter, so re-inlining the
     // pool into hud.ts fails here, not just deleting the builder from the painter file.
@@ -837,7 +837,7 @@ describe('client HTML shell', () => {
     expect(aurasPainterTs).toContain("const STACKS_CLASS = 'stacks';");
     expect(aurasPainterTs).toContain('this.createNode()');
 
-    // FCT nodes (P13b): a fixed-size pre-allocated div ring capped at FCT_POOL_CAP, each
+    // FCT nodes: a fixed-size pre-allocated div ring capped at FCT_POOL_CAP, each
     // node aria-hidden, never createElement'd per combat event. hud.ts delegates to the
     // painter (the wiring assertion), so a re-inline fails here too.
     expect(hudTs).toContain('new FctPainter(');
@@ -867,7 +867,7 @@ describe('client HTML shell', () => {
     expect(shellCss).toContain(
       'body.mobile-touch .footer-lang-row {\n    width: 100%;\n    flex-direction: column;\n    align-items: center;',
     );
-    // P4a authored this backdrop pair -webkit-first (Lightning drops the std otherwise).
+    // This backdrop pair is authored -webkit-first (Lightning drops the std otherwise).
     expect(shellCss).toContain(
       'body.native-app.mobile-touch .auth-panel-premium {\n    -webkit-backdrop-filter: none;\n    backdrop-filter: none;',
     );
@@ -900,7 +900,7 @@ describe('client HTML shell', () => {
     // own pan-y cannot re-enable it). pan-x pan-y still blocks pinch-zoom.
     expect(hudMobileCss).toContain('body.mobile-touch #ui {\n    touch-action: pan-x pan-y;\n  }');
     expect(hudMobileCss).not.toContain('body.mobile-touch #ui { touch-action: none; }');
-    // Scrollable lists get iOS momentum + scroll isolation (moved to components.css in P3).
+    // Scrollable lists get iOS momentum + scroll isolation (moved to components.css).
     expect(componentsCss).toContain(
       '#bags .bag-grid {\n    flex: 1 1 auto;\n    min-height: 0;\n    overflow-y: auto;\n    touch-action: pan-y;\n    -webkit-overflow-scrolling: touch;\n    overscroll-behavior: contain;\n  }',
     );
@@ -1205,7 +1205,7 @@ describe('client HTML shell', () => {
   });
 
   it('offers a reset-to-default action bar button in the spellbook, only for classes with form bars', () => {
-    // The reset button + its label live in the spellbook painter (P9b extraction);
+    // The reset button + its label live in the spellbook painter;
     // Hud still owns resetActiveFormBarToDefault + the form-bar predicate it wires.
     expect(spellbookWindowTs).toContain('data-reset-bar');
     expect(spellbookWindowTs).toContain("t('abilityUi.spellbook.resetBar')");

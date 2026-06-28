@@ -8,7 +8,7 @@ import {
   liveRegionPoliteness,
 } from '../src/ui/live_region_politeness';
 
-// The pure live-region politeness picker + throttle gate (P15a). Routine chat and
+// The pure live-region politeness picker + throttle gate. Routine chat and
 // combat announce politely; assertive is reserved for the genuinely urgent role=alert
 // nodes; the combat region is throttled, never assertive-spammed.
 describe('liveRegionPoliteness', () => {
@@ -39,7 +39,7 @@ describe('liveRegionPoliteness', () => {
   });
 });
 
-describe('combat-line politeness parity + safety (decision 15: Sim vs ClientWorld)', () => {
+describe('combat-line politeness parity + safety (Sim vs ClientWorld)', () => {
   // The HUD funnels BOTH hosts' combat lines through the one combatLog() path, and
   // combatLineKind() takes NO host argument: it is parameterless and always classifies a
   // combat line as 'combat'. So there is no input by which a Sim-emitted line and a
@@ -62,7 +62,7 @@ describe('combat-line politeness parity + safety (decision 15: Sim vs ClientWorl
   });
 });
 
-describe('chat-line politeness parity + safety (decision 15: Sim vs ClientWorld)', () => {
+describe('chat-line politeness parity + safety (Sim vs ClientWorld)', () => {
   // The HUD funnels BOTH hosts' chat lines through the one chat append path, and
   // chatLineKind() takes NO host argument: it is parameterless and always classifies a chat
   // line as 'chat'. So there is no input by which a Sim-emitted line and a ClientWorld-
@@ -84,7 +84,7 @@ describe('chat-line politeness parity + safety (decision 15: Sim vs ClientWorld)
   });
 });
 
-describe('CHAT_ANNOUNCE_INTERVAL_MS (decision 12: a named cadence, not a magic literal)', () => {
+describe('CHAT_ANNOUNCE_INTERVAL_MS (a named cadence, not a magic literal)', () => {
   it('is a positive number, a separate named constant mirroring the combat cadence', () => {
     expect(typeof CHAT_ANNOUNCE_INTERVAL_MS).toBe('number');
     expect(CHAT_ANNOUNCE_INTERVAL_MS).toBeGreaterThan(0);
@@ -119,7 +119,7 @@ describe('combatAnnounceDue (pure throttle gate)', () => {
     expect(combatAnnounceDue(1000, 0, 1000)).toBe(combatAnnounceDue(1000, 0, 1000));
   });
 
-  it('exposes a named cadence constant, not a magic literal (decision 12)', () => {
+  it('exposes a named cadence constant, not a magic literal', () => {
     expect(typeof COMBAT_ANNOUNCE_INTERVAL_MS).toBe('number');
     expect(COMBAT_ANNOUNCE_INTERVAL_MS).toBeGreaterThan(0);
   });

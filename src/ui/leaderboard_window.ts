@@ -3,8 +3,8 @@
 // The consumer half of the pure-core + thin-painter split: it paints
 // #leaderboard-window from the structured LeaderboardView (leaderboard_view.ts) and
 // owns the window's view-state (the current page index, the WCAG focus opener) plus
-// the ASYNC side this phase carries: it consumes IWorld.leaderboard(page, size):
-// Promise<LeaderboardPage> exactly as V16 already exposes it (the packet's one
+// the ASYNC side it carries: it consumes IWorld.leaderboard(page, size):
+// Promise<LeaderboardPage> exactly as V16 already exposes it (the one
 // consumed-new signature; consumed, never changed). The pure core decides WHICH
 // state a resolved page (or an explicit loading / error discriminator) is in and
 // WHAT each row shows; this module owns the Promise, the await, the page controls,
@@ -13,7 +13,7 @@
 //
 // It is NOT a canvas window (the colors live in the extracted stylesheet, so no
 // getComputedStyle token-resolution applies); the page size is the shared
-// LEADERBOARD_PAGE_SIZE named constant (decision 12, no magic values). The
+// LEADERBOARD_PAGE_SIZE named constant (no magic values). The
 // leaderboard is purely cold: it paints on open and on a page change, never from
 // hud.update()'s per-frame path.
 
@@ -159,7 +159,7 @@ export class LeaderboardWindow {
   }
 
   // The in-flight state carries aria-busy + role=status (the lazy-load a11y
-  // contract, decision 13) so a screen reader announces the pending board.
+  // contract) so a screen reader announces the pending board.
   private loadingBodyHtml(): string {
     return `<div class="lb-body"><div class="lb-loading" role="status" aria-busy="true">${esc(t('game.leaderboard.loading'))}</div></div>`;
   }
@@ -241,7 +241,7 @@ export class LeaderboardWindow {
 
   // After an async page-change swap that has no pager (the error / empty / single-page
   // states), keep keyboard focus inside the window by landing it on the close button
-  // rather than letting it fall to <body> (WCAG 2.4.3, P15b).
+  // rather than letting it fall to <body> (WCAG 2.4.3).
   private focusCloseAfterPage(focus: FocusTarget): void {
     if (focus !== 'prev' && focus !== 'next') return;
     (this.deps.root().querySelector('[data-close]') as HTMLElement | null)?.focus();
