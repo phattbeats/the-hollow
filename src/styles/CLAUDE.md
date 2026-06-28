@@ -71,23 +71,15 @@ the whole declaration silently drop in the browser).
   minification drop (the `-webkit-` twin must survive next to the standard property) is
   guarded by `tests/backdrop_filter_survival.test.ts` + `scripts/check_backdrop_survival.mjs`
   (run by `npm run build` over the emitted CSS).
-- **Cross-engine E2E (prototyped, NOT landed):** a working matrix that runs the opt-in
-  browser suite on Chromium/Firefox/WebKit + a first-class mobile-WebKit instance (140 tests
-  green, browsers provisioned via `npx playwright install`, bare `vitest run` stays
-  browser-free) was built and verified but reverted alongside the declined bundle work
-  below. So `vitest.browser.config.ts` still lists chromium only; the matrix is an OPTIONAL
-  standalone re-land (a `BROWSER_MATRIX` env gate + one ci.yml job) that would close FB's
-  webkit-in-CI item independently. Documented here, not enforced today.
+- **Cross-engine E2E (prototyped, NOT landed):** `vitest.browser.config.ts` is chromium-only
+  today; the Chromium/Firefox/WebKit + mobile-WebKit matrix is an OPTIONAL standalone re-land.
 
 ## Bundle discipline (MEASURED then DECLINED)
-A JS bundle-budget CI gate (sibling to `asset:budget`) + a selective lazy-load were prototyped
-and fully proven, then DECLINED on the evidence. The measurement: the play-entry eager
-JS is 3.173 MiB raw / ~952 KB gzip, ~1.5 MiB of which is non-deferrable i18n DATA; lazy-loading
-the two heaviest rarely-opened windows (options ~53 KB, market ~25 KB) behind an a11y loading
-state shrank it by only ~14 KiB gzipped (~1.5%), with ZERO runtime/FPS impact (load-timing
-only). The maintainer judged that not worth the complexity, so there is NO bundle-budget gate
-and NO lazy-loaded window: every cold window stays eagerly imported. Do not re-attempt without
-new evidence that the i18n-data-dominated bundle has materially changed.
+A JS bundle-budget CI gate + selective lazy-load were prototyped and proven, then DECLINED on
+the evidence (the eager JS is i18n-data-dominated; lazy-loading the two heaviest cold windows
+saved only ~1.5% gzip with zero FPS impact). There is NO bundle-budget gate and NO lazy-loaded
+window; every cold window stays eagerly imported. Do not re-attempt without new evidence that
+the i18n-data-dominated bundle has materially changed.
 
 ## Pointers
 Root `CLAUDE.md` (repo-wide invariants incl gameplay-neutral graphics) ·
