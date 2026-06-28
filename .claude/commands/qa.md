@@ -24,7 +24,11 @@ called done.
    `architecture-reviewer`, and on a release branch `release-malware-audit`). Spawn them fresh;
    never have the implementer review its own work.
 
-5. Adversarially confirm each consequential finding before acting on it (about half of raw
+5. Run the deterministic floor yourself so the verdict rests on green checks, not only agent
+   reasoning: `npm run ci:changed` (Biome on the changed files), `npx tsc --noEmit`, and
+   `npx vitest run tests/architecture.test.ts tests/localization_fixes.test.ts`. Report any red.
+
+6. Adversarially confirm each consequential finding before acting on it (about half of raw
    findings do not survive a second look). Then fix every BLOCKING and SHOULD-FIX finding, in
    focused commits. Report what you fixed and what remains as VERIFY (needs a run or E2E) or
    NICE-TO-HAVE.

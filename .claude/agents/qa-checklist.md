@@ -286,6 +286,11 @@ Skip if no `src/sim/content/` files are in scope.
   the CI workflow runs it: `npm run i18n:gen` then the i18n freshness check
   (`git diff --exit-code` over the generated i18n artifacts), `npm run security:gate`,
   `npm test`, `npx tsc --noEmit`, `npm run build:env`, `npm run build:server`, `npm run build`.
+- The CI `lint` job runs in PARALLEL to that gate: `biome ci --changed --since=<base>` on
+  CHANGED files only, failing on errors and format/import diffs but NOT on lint warnings. Clear
+  it locally with `npm run ci:changed`. Confirm the diff reformatted ONLY files it intentionally
+  changed: a stray whole-tree `biome --write` that drags an unrelated monolith into the diff is a
+  `[FAIL]` (the repo defers the global Biome chore; never reformat the legacy tree).
 - No em dashes, en dashes, or emojis in code, comments, docs, commit/PR text, or player copy. Do
   NOT strip a dash that is native to a locale overlay (for example ru); that is correct there.
 - On a `release/**` branch, the release-tier i18n gate shows pending=0 and the release malware
@@ -303,13 +308,17 @@ Skip if no `src/sim/content/` files are in scope.
 | any completed deliverable set | this gate is the default |
 
 Consuming an already-landed `IWorld` member does not change it; do not dispatch
-`cross-platform-sync` for that. If no row matches (docs/test-only), dispatch none.
+`cross-platform-sync` for that. If no row matches (docs/test-only), dispatch none. When more than
+one row matches, dispatch the named reviewers in PARALLEL (one message, several subagents), not
+one at a time.
 
 ## Adversarial close (always do this last)
 
 After the matrix, do one fresh "what is missing" pass over the change: an untested branch, an
 unhandled `SimEvent`, an online-only field assumed offline, a string that escaped `t()`, an
-invented constant, a dropped safe-area inset, a per-frame DOM write that skipped the host. Then
+invented constant, a dropped safe-area inset, a per-frame DOM write that skipped the host, a
+block of new logic bolted onto a monolith (`hud.ts`/`sim.ts`/`main.ts`/`renderer.ts`) that
+should have been an extracted, tested sibling module. Then
 re-verify each consequential finding before you report it: in practice about half of raw
 findings are non-issues on a second look, so confirm from the code before you flag.
 
