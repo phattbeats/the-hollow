@@ -3459,6 +3459,40 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.tagline': 'ブラウザで無料で遊べる、クラシックスタイルのMMO。',
   'guide.skipToContent': 'メインコンテンツへスキップ',
   'guide.loading': '読み込み中...',
+  'guide.controls.targetFriendly': '最も近い友好的な対象をターゲット',
+  'guide.delvesPage.affixesBody':
+    'より高難易度のランでは、潜行の流れを変える修飾効果が抽選されます。安らげぬ死者から淀んだ空気、崩れかけた天井まで、その内容はさまざまです。修飾効果は危険と報酬をともに高めます。納骨堂をテーマにしたデルヴでは、次のいずれかが抽選されることがあります:',
+  'guide.delvesPage.affixesHeading': 'ランの修飾効果',
+  'guide.delvesPage.affixesLabel': '発生しうる修飾効果',
+  'guide.delvesPage.companionBody':
+    'デルヴには仲間が一緒に降りてくれるので、ソロのランでも絶望することはありません。彼女はあなたのそばで戦い、ランの合間に育てていくほど着実に強くなり、やがて一度の潜行につき一度、瀕死の味方を引き戻せるようになります。彼女はそのデルヴの間ずっとあなたとともにあり、ランの合間はボードのそばで待っています。',
+  'guide.delvesPage.companionHeading': 'あなたの仲間',
+  'guide.delvesPage.companionLabel': '仲間',
+  'guide.delvesPage.fromLevel': 'レベル{n}から',
+  'guide.delvesPage.heading': 'デルヴ',
+  'guide.delvesPage.howBody':
+    '番人に話しかけてボードを開き、難易度を選んで潜行しましょう。各ランはいくつかの短い部屋がつながっており、最後の守護者で締めくくられます。これを倒せば報酬を受け取り、地上へ戻れます。仲間がいるなら連れていき、いないなら相棒の仲間を頼りましょう。',
+  'guide.delvesPage.howHeading': 'ランの流れ',
+  'guide.delvesPage.intro':
+    'デルヴは1人または2人で挑む、短く繰り返し遊べる潜行です。1人で降りるときはいつでも、忠実な仲間がそばに付き添います。ボードを見つけてランを選び、戦利品を手に地上へ登り戻りましょう。',
+  'guide.delvesPage.keeperLabel': '番人',
+  'guide.delvesPage.lockpickBody':
+    '一部の扉や隠し箱は封じられており、それを開けるのはステータス勝負ではなく、ちょっとした度胸試しです。慌てて失敗するよりも、落ち着いて丁寧に錠を解けば、より良い品が手に入ります。任意の要素ですが、慎重な探索者ほど多くの実りを得られます。',
+  'guide.delvesPage.lockpickHeading': '錠前と、その奥に隠されたもの',
+  'guide.delvesPage.marksBody':
+    'デルヴを攻略するとデルヴの刻印が手に入ります。これは所持金とは別に管理される通貨です。番人のもとで使えば、仲間を強化したり、ほかでは手に入らない装備を入手したりできます。',
+  'guide.delvesPage.marksHeading': 'デルヴの刻印',
+  'guide.delvesPage.partyLabel': '1人または2人用',
+  'guide.delvesPage.tiersBody':
+    'デルヴには複数の難易度が用意されています。高い難易度では敵が強くなり、ランの修飾効果が加わる代わりに、報酬も多くなります。また、入場するにはある程度レベルを上げておく必要があります。',
+  'guide.delvesPage.tiersHeading': '難易度',
+  'guide.delvesPage.tiersLabel': '難易度',
+  'guide.delvesPage.whatBody':
+    'デルヴは、あなたと最大1人の味方だけのために用意された、小さなインスタンスダンジョンです。誰にも邪魔されない専用のコピーです。フィールドにいるデルヴの番人が管理するボードから開始し、中へ降りて、いくつかの部屋を戦い抜き、最後に1体の守護者で締めくくります。ランは手早く、繰り返し遊べるように作られているので、オープンワールドでやることが尽きたときにも、デルヴは着実な成長の手段になります。',
+  'guide.delvesPage.whatHeading': 'デルヴとは',
+  'guide.delvesPage.whereBody':
+    '最初のデルヴ「崩れた聖遺物庫」は、イーストブルックの谷の出発地点にある聖遺物庫の丘で開放されます。ボードを管理しているのはハルヴェン修道士で、準備が整えばあなたを下へ送り出してくれます。',
+  'guide.delvesPage.whereHeading': 'どこにあるか',
   'guide.docTitle': '{page} - {brand}',
   'guide.nav.overview': '概要',
   'guide.nav.howToPlay': '遊び方',
@@ -3466,6 +3500,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.nav.bestiary': 'モンスター図鑑',
   'guide.nav.world': 'ワールド',
   'guide.nav.quests': 'クエスト',
+  'guide.nav.delves': 'デルヴ',
   'guide.nav.dungeons': 'ダンジョンとレイド',
   'guide.nav.reference': 'リファレンス',
   'guide.nav.controls': '操作方法',
@@ -3603,6 +3638,11 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.controls.groupMovement': '移動',
   'guide.controls.groupCombat': 'ターゲットと戦闘',
   'guide.controls.groupInterface': 'ウィンドウ',
+  'guide.controls.controllerBody':
+    'ゲームパッドにも対応しており、コントローラーのサポートは初期設定で有効になっています。左スティックで移動し、右スティックでカメラを操作します。フェイスボタンとショルダーボタンで、アビリティ、ジャンプ、対話を行います。いずれかのウィンドウを開くと、メニュー操作用のオンスクリーンポインターが表示されます。ボタンの割り当て変更や、スティックのデッドゾーン、カメラ速度、振動、視点反転の調整は、オプションのコントローラー設定から行えます。',
+  'guide.controls.controllerHeading': 'コントローラーでは',
+  'guide.controls.cycleFriendly': '友好的なターゲットを順に切り替え',
+  'guide.controls.gameMenu': 'ゲームメニューとオプションを開く',
   'guide.controls.groupCamera': 'カメラ',
   'guide.controls.talents': 'タレント',
   'guide.controls.arena': 'アリーナ',
@@ -3639,6 +3679,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.glossary.eliteDef':
     '通常より手強い敵で、たいていグループ向け。ダンジョンやレアの敵はエリートであることが多いです。',
   'guide.glossary.rareTerm': 'レア',
+  'guide.glossary.raidDef':
+    '最大10人で組む、より大きなグループ。最も手強いエンドゲームの戦いのために編成され、パーティが満員になると自動的にレイドへと切り替わります。',
+  'guide.glossary.raidTerm': 'レイド',
   'guide.glossary.rareDef': 'ゾーン内をさまよう希少なネームド敵で、より良い戦利品を落とします。',
   'guide.glossary.tankTerm': 'タンク',
   'guide.glossary.tankDef':
@@ -3735,6 +3778,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.family.undead.desc':
     '邪悪な手によって蘇った、安らげぬ死者たち。疲れることも、逃げることもありません。',
   'guide.family.elemental.name': 'エレメンタル',
+  'guide.family.dragonkin.desc':
+    '古き深淵に棲む、鱗に覆われた蛇のような存在。希少で誇り高く、見た目よりもはるかに強大です。',
+  'guide.family.dragonkin.name': 'ドラゴンキン',
   'guide.family.elemental.desc': '嵐や岩が命を得た存在。元素の力が強く渦巻く荒野に縛られています。',
   'guide.worldPage.heading': '世界',
   'guide.worldPage.intro':
@@ -3909,6 +3955,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.faqPage.q10': '最大レベルになったら何ができますか。',
   'guide.faqPage.q11': 'グループはどうやって見つけますか。',
   'guide.faqPage.q9': 'PvPはありますか。',
+  'guide.glossary.augmentDef':
+    '2対2のFiestaアリーナの試合中にドラフトする一時的な強化で、その試合の間だけあなたの構成を作り変えます。',
+  'guide.glossary.augmentTerm': 'オーグメント',
   'guide.glossary.buffDef':
     'ステータスをしばらく上げる祝福のように、自分や味方にかかる有益な効果です。',
   'guide.glossary.buffTerm': 'バフ',
@@ -3917,6 +3966,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.glossary.ccTerm': 'クラウドコントロール',
   'guide.glossary.debuffDef': '減速、出血、アーマー低下など、標的にかかる有害な効果です。',
   'guide.glossary.debuffTerm': 'デバフ',
+  'guide.glossary.delveDef':
+    '1人または2人で挑む、短く繰り返し遊べるインスタンス潜行。番人のボードから開始し、仲間がそばに付き添います。',
+  'guide.glossary.delveTerm': 'デルヴ',
   'guide.glossary.dotDef': '継続ダメージと継続回復。一度にではなく、一定の間隔で刻まれる効果です。',
   'guide.glossary.dotTerm': 'DoTとHoT',
   'guide.glossary.mobDef':
@@ -3949,6 +4001,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.search.placeholder': 'ガイドを検索',
   'guide.search.typeClass': 'クラス',
   'guide.search.typeCreature': 'クリーチャー',
+  'guide.search.typeDelve': 'デルヴ',
   'guide.search.typeDungeon': 'ダンジョン',
   'guide.search.typePage': 'ページ',
   'guide.search.typeTerm': '用語',
@@ -3975,6 +4028,8 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.talentsPage.resetNote':
     'タレントはいつでもリセットできるので、序盤の選択が落とし穴になることはありません。いろいろ試し、好みを見つけ、自由に考えを変えましょう。',
   'guide.talentsPage.resetTitle': '決定的なものは何もない',
+  'guide.talentsPage.shareNote':
+    '完成したビルドは短い共有コードにコピーして、フレンドに渡せます。受け取った相手は、自分のタレントパネルにそのまま貼り付けるだけで読み込めます。',
   'guide.talentsPage.specsBody':
     'どのクラスにもいくつかのスペシャライゼーションがあり、それぞれに固有のロールと特徴的な軸があります。ここではそのすべての概要を示します。全アビリティはクラスを開いて確認してください。',
   'guide.talentsPage.specsHeading': 'クラス別のスペシャライゼーション',
@@ -4077,6 +4132,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.economy.marketPricing':
     '値付けはあなた次第です。他より少し安く出品すると早く売れる傾向があり、高すぎる値はそのまま放置されがちです。出品する前にまず閲覧して、相場がどうなっているか確かめましょう。',
   'guide.economy.marketTitle': 'ワールドマーケット',
+  'guide.economy.marksBody':
+    '貯められるのは所持金だけではありません。デルヴではデルヴの刻印が手に入ります。これはデルヴの番人のもとでのみ使える別建ての通貨で、仲間の強化や、ほかでは手に入らない装備に充てられます。所持金と混ざることはありません。',
+  'guide.economy.marksTitle': 'もう一つの通貨: デルヴの刻印',
   'guide.economy.tradeBody':
     '近くに立っている相手とは、対面で直接取引できます。互いが共有の窓にアイテムとコインを入れ、双方が確認して初めて交換が成立するので、どちらも損をする心配はありません。友達にドロップ品を手渡したり、約束を取り決めたりする手軽な方法です。',
   'guide.economy.tradeTitle': '他のプレイヤーとの取引',
@@ -4092,6 +4150,8 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.gear.consumablesPotions':
     'ポーションは使った瞬間に、戦闘中でさえ体力やマナを回復してくれるので、プルがしくじったときの土壇場での救いになります。短いクールダウンを共有するため、ここぞという好機を一度見極めて使いましょう。',
   'guide.gear.consumablesTitle': '消耗品',
+  'guide.gear.cosmeticsApply':
+    'キャラクター画面の外見の項目から、いま使う見た目を設定できます。アンロック済みのものなら、いつでも自由に切り替えられます。',
   'guide.gear.cosmeticsBody':
     '見た目だけを変え、強さには一切影響しない報酬もあります。こうした装飾スキンは、ゲームに影響を与えることなく自分を際立たせてくれるので、好きなものを身につけましょう。',
   'guide.gear.cosmeticsCache':
@@ -4110,6 +4170,8 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.gear.fishingTitle': '釣り',
   'guide.gear.intro':
     'ギアとは、あなたのキャラクターが身につける装備や持ち歩くアイテムのことです。より良いギアこそが強くなる最も着実な道であり、そのほとんどは遊んでいるだけで手に入ります。',
+  'guide.gear.itemLevelBody':
+    '2つの装備を手早く比べたいときは、オプションで「アイテムレベルを表示」をオンにしましょう。すると各武器や防具にアイテムレベルが表示されます。これは入手元をもとに、その装備のおおよその強さを一つの数値で示したものです。スロットが違っていても、どちらの方が大きく性能を底上げするか、ひと目で見分けられます。',
   'guide.gear.qualityBody':
     'どのアイテムにも品質があり、その名前は品質に合わせて色付けされているので、ひと目で価値が読み取れます。最もありふれたものから最も値打ちのあるものまで、順に並べると次の通りです。',
   'guide.gear.qualityCommon': '一般',
@@ -4121,6 +4183,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.gear.qualityRare': 'レア',
   'guide.gear.qualityTitle': '品質をひと目で',
   'guide.gear.qualityUncommon': '上質',
+  'guide.gear.setsBody':
+    '最も希少な防具は、見た目も性能もひと揃いになるよう作られた、おそろいのシリーズで手に入ります。同じシリーズを一定数まとめて装備するとセットが発動し、各部位そのもののステータスに加えてボーナスが得られます。装備する部位が多いほど効果は強まります。これらはレベル上限近くの最も手強いグループコンテンツから入手でき、フルセットを目指すことは古典的なエンドゲームの目標になっています。',
+  'guide.gear.setsTitle': 'セットとセットボーナス',
   'guide.gear.slotChest': '胴',
   'guide.gear.slotFeet': '足',
   'guide.gear.slotGloves': '手',
@@ -4201,6 +4266,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.questsPage.sideCryptBody':
     '高地には、より静かな謎が走っています。どんな記録にも残らぬ冠が刻まれた古い墓です。死者を読み解き、彼らが守ってきたものを集め、閉ざされたままであるべき墓を解き放ちましょう。それは探偵の足取りであり、フルレイド向けの二つ目のエンドゲームの試練への道を開きます。',
   'guide.questsPage.sideCryptTitle': '忘れられた王',
+  'guide.questsPage.sideTempleBody':
+    '高地の山上湖に浮かぶ淡い光の門は、水没した教団がいまなお歌い続ける、沈んだ神殿へと通じています。その短いクエストの連なりは本筋の物語とは切り離されており、湖畔まで登り、岩に刻まれた警告を読み、それが何のためのものかを確かめに降りていく者だけのための、独立した謎となっています。',
+  'guide.questsPage.sideTempleTitle': '沈んだ神殿',
   'guide.questsPage.sideTitle': '本道から外れた糸',
   'guide.questsPage.sideWardenBody':
     '物語と並んで、渓谷と沼の番人たちが常設の賞金の階段を授けてくれます。あなた以前のすべての番人がその地位を得てきたように、敵を一体ずつ倒して登り詰めましょう。それは正攻法のレベリングであり、各ゾーンの最悪の厄介者たちを巡る旅です。',
@@ -4273,6 +4341,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     'ありふれたドロップ品はルートした人のものに、より良いドロップ品はロールにかけられて、全員に公平な機会が与えられます。',
   'guide.social.lootCommonTitle': 'アイテム。',
   'guide.social.lootHeading': 'パーティの戦利品',
+  'guide.social.lootMasterBody':
+    'リーダーが代わりに上位の戦利品を管理し、受け取るべきメンバーへ一つずつ配ることもできます。組織立ったグループがダンジョンを攻略するときのように、貴重な装備が思わぬロールで流れてしまうのを防げます。',
+  'guide.social.lootMasterTitle': 'マスタールーター。',
   'guide.social.lootRollBody':
     'アイテムがロールにかけられると、対象となる各メンバーは、欲しければニード、余りなら受け取る程度ならグリード、辞退するならパスを選びます。最も高い出目が勝ちます。',
   'guide.social.lootRollTitle': 'ニード、グリード、パス。',
@@ -4298,6 +4369,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.stats.dodgeBody':
     '回避は、向かってくる近接攻撃を丸ごとかわす確率です。わずかな基礎確率から始まり、敏捷性がそれを上げるので、すばしこいクラスほど多くの一撃をかわします。',
   'guide.stats.dodgeTitle': '回避',
+  'guide.stats.dpsBody':
+    'キャラクターシートには、1秒あたりのダメージの目安も表示されます。これは武器、その振りの速さ、そしてアタックパワーを合わせて、時間あたりにどれだけのダメージになるかをおおまかに示したものです。2つの武器をひと目で比べるのに手軽な指標です。',
+  'guide.stats.dpsTitle': '1秒あたりのダメージ',
   'guide.stats.growBody':
     'ステータスを上げるものは二つあります。レベルが上がるごとに、クラスに合った各能力値が一定量加わり、装備するギアがその上にさらに加えます。ギアを最新に保つことが、レベル上限まで着実に強くなる道です。',
   'guide.stats.growHeading': 'ステータスの伸び方',
@@ -4312,6 +4386,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.stats.sheetBody':
     'ゲーム内でキャラクターウィンドウを開けば、これらすべてを一か所で確認できます。片側に五つの能力値、もう片側にそれらが養うステータスが並びます。どの値にもカーソルを合わせると、ツールチップがそれがクラスにとって何をするかを分解して示すので、アップグレードが実際にどの数値を動かしたかをひと目で見られます。',
   'guide.stats.sheetHeading': 'キャラクターシートの読み方',
+  'guide.stats.spBody':
+    'スペルパワーは、術者にとってのアタックパワーにあたるステータスで、呪文で与えるダメージを高めます。知力によって伸び、術者向けの装備やバフでさらに上乗せされます。近接戦士がアタックパワーを気にかけるように、術者はスペルパワーに目を配ります。',
+  'guide.stats.spTitle': 'スペルパワー',
   'guide.stats.spiBody':
     '精神力は、戦闘外でキャスターのマナがどれだけ速く戻るかを左右します。知力と同じく、マナのクラスに役立ち、他のクラスにはほとんど意味がありません。',
   'guide.stats.spiTitle': '精神力',
@@ -4326,6 +4403,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.viewer.error':
     '3Dモデルを読み込めませんでした。上のアートでは、この{name}が今も表示されています。',
   'guide.viewer.loading': 'モデルを読み込み中...',
+  'guide.viewer.posterAlt': '{name}',
   'guide.viewer.view3d': '{name}を3Dで見る',
   'guide.viewer.view3dShort': '3Dで見る',
   'guide.worldPage.marshGreeter': '番人フェンウィック、フェンブリッジ',

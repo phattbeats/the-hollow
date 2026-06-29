@@ -3463,6 +3463,40 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.tagline': '브라우저에서 무료로 즐기는 클래식 스타일 MMO입니다.',
   'guide.skipToContent': '본문으로 건너뛰기',
   'guide.loading': '불러오는 중...',
+  'guide.controls.targetFriendly': '가장 가까운 아군 대상 지정',
+  'guide.delvesPage.affixesBody':
+    '더 어려운 탐굴에서는 진행 방식을 바꾸는 고난 요소가 하나 붙습니다. 잠들지 못한 죽은 자부터 탁한 공기, 무너져 가는 천장까지 그 종류는 다양합니다. 고난 요소는 위험과 보상을 함께 끌어올립니다. 묘실을 주제로 한 탐굴에서는 다음 중 무엇이든 나타날 수 있습니다:',
+  'guide.delvesPage.affixesHeading': '고난 요소',
+  'guide.delvesPage.affixesLabel': '나타날 수 있는 고난 요소',
+  'guide.delvesPage.companionBody':
+    '탐굴에는 동료가 함께 내려가므로 혼자 도전하더라도 결코 가망 없는 일은 아닙니다. 동료는 당신 곁에서 싸우고, 탐굴 사이에 동료에게 투자할수록 꾸준히 강해져, 결국 탐굴마다 한 번씩 위기에 빠진 아군을 되살릴 수 있게 됩니다. 동료는 이번 탐굴 동안 당신의 편이며, 탐굴 사이에는 게시판에서 기다립니다.',
+  'guide.delvesPage.companionHeading': '당신의 동료',
+  'guide.delvesPage.companionLabel': '동료',
+  'guide.delvesPage.fromLevel': '{n} 레벨부터',
+  'guide.delvesPage.heading': '탐굴',
+  'guide.delvesPage.howBody':
+    '관리인에게 말을 걸어 게시판을 열고, 난이도를 고른 뒤 내려갑니다. 탐굴 한 번은 짧은 방 몇 개로 이어지며 마지막의 수호자에서 끝납니다. 수호자를 처치하면 보상을 받고 지상으로 돌아옵니다. 함께할 친구가 있다면 데려가고, 없다면 동료에게 기대십시오.',
+  'guide.delvesPage.howHeading': '탐굴은 이렇게 진행됩니다',
+  'guide.delvesPage.intro':
+    '탐굴은 한두 명이 즐기는 짧고 반복 가능한 탐험으로, 혼자 내려갈 때면 언제나 충직한 동료가 곁을 지킵니다. 게시판을 찾아 탐굴을 고르고, 전리품을 챙겨 다시 올라오십시오.',
+  'guide.delvesPage.keeperLabel': '관리인',
+  'guide.delvesPage.lockpickBody':
+    '일부 문과 보관함은 잠겨 있으며, 그것을 여는 일은 능력치 검사라기보다 작은 담력 시험입니다. 잠금을 침착하고 깔끔하게 풀면 서두르다 망친 경우보다 더 좋은 보상을 얻습니다. 선택 사항이지만, 신중한 탐굴자가 더 많은 것을 챙깁니다.',
+  'guide.delvesPage.lockpickHeading': '잠금과 그 너머에 숨은 것',
+  'guide.delvesPage.marksBody':
+    '탐굴을 완료하면 탐굴 증표를 얻습니다. 탐굴 증표는 금화와는 별개로 관리되는 화폐입니다. 관리인에게 증표를 지불해 동료를 강화하고, 다른 어디에서도 구할 수 없는 장비를 손에 넣으십시오.',
+  'guide.delvesPage.marksHeading': '탐굴 증표',
+  'guide.delvesPage.partyLabel': '1인 또는 2인용',
+  'guide.delvesPage.tiersBody':
+    '탐굴은 둘 이상의 난이도를 제공합니다. 높은 난이도는 적을 더 강하게 만들고 고난 요소를 하나 더하며, 그만큼 더 많은 보상을 줍니다. 또한 입장하려면 일정 레벨 이상에 도달해 있어야 합니다.',
+  'guide.delvesPage.tiersHeading': '난이도',
+  'guide.delvesPage.tiersLabel': '난이도',
+  'guide.delvesPage.whatBody':
+    '탐굴은 당신과 최대 한 명의 아군만을 위해 만들어진 작은 인스턴스 던전으로, 누구에게도 방해받지 않는 개인 사본입니다. 세계 곳곳의 탐굴 관리인이 지키는 게시판에서 시작해 안으로 들어간 뒤, 몇 개의 방을 헤치며 싸우고 하나의 수호자에서 마무리합니다. 탐굴은 빠르고 반복하도록 만들어져 있어, 열린 세계에서 할 일이 떨어졌을 때 믿을 만한 성장 수단이 됩니다.',
+  'guide.delvesPage.whatHeading': '탐굴이란',
+  'guide.delvesPage.whereBody':
+    '첫 번째 탐굴인 무너진 성물실은 시작 지역인 이스트브룩 골짜기의 성물실 언덕에서 열립니다. 그곳의 게시판은 브라더 할벤이 지키며, 준비가 되면 그가 당신을 아래로 내려보냅니다.',
+  'guide.delvesPage.whereHeading': '어디서 찾을 수 있나',
   'guide.docTitle': '{page} - {brand}',
   'guide.nav.overview': '개요',
   'guide.nav.howToPlay': '플레이 방법',
@@ -3470,6 +3504,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.nav.bestiary': '몬스터 도감',
   'guide.nav.world': '세계',
   'guide.nav.quests': '퀘스트',
+  'guide.nav.delves': '탐굴',
   'guide.nav.dungeons': '던전과 공격대',
   'guide.nav.reference': '참고 자료',
   'guide.nav.controls': '조작법',
@@ -3604,6 +3639,11 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.controls.groupMovement': '이동',
   'guide.controls.groupCombat': '대상 지정과 전투',
   'guide.controls.groupInterface': '창',
+  'guide.controls.controllerBody':
+    '게임패드도 사용할 수 있으며, 컨트롤러 지원은 기본으로 켜져 있습니다. 왼쪽 스틱으로 이동하고, 오른쪽 스틱으로 카메라를 조준하며, 얼굴 버튼과 어깨 버튼으로 능력 사용, 점프, 상호작용을 처리합니다. 창을 열면 메뉴를 다룰 화면 포인터가 나타납니다. 옵션의 컨트롤러 설정에서 버튼을 재배치하고 스틱 데드존, 카메라 속도, 진동, 시점 반전을 조정할 수 있습니다.',
+  'guide.controls.controllerHeading': '컨트롤러에서',
+  'guide.controls.cycleFriendly': '아군 대상 순환',
+  'guide.controls.gameMenu': '게임 메뉴와 옵션 열기',
   'guide.controls.groupCamera': '카메라',
   'guide.controls.talents': '특성',
   'guide.controls.arena': '투기장',
@@ -3640,6 +3680,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.glossary.eliteDef':
     '보통보다 강한 적으로, 대개 파티를 염두에 둔 상대입니다. 던전과 희귀 적은 흔히 정예입니다.',
   'guide.glossary.rareTerm': '희귀',
+  'guide.glossary.raidDef':
+    '가장 어려운 최종 단계 전투를 위해 꾸리는 더 큰 집단으로, 이 게임에서는 최대 10명까지 들어갑니다. 파티가 가득 차면 공격대로 전환됩니다.',
+  'guide.glossary.raidTerm': '공격대',
   'guide.glossary.rareDef':
     '지역을 떠도는 보기 드문 이름 있는 적으로, 더 좋은 전리품을 떨어뜨립니다.',
   'guide.glossary.tankTerm': '탱커',
@@ -3740,6 +3783,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.family.undead.desc':
     '더 어두운 손에 의해 일으켜진 안식 없는 망자들. 지치지도, 달아나지도 않습니다.',
   'guide.family.elemental.name': '정령',
+  'guide.family.dragonkin.desc':
+    '비늘로 뒤덮인 뱀 같은 옛 심연의 존재들. 보기 드물고 오만하며, 겉보기보다 훨씬 강합니다.',
+  'guide.family.dragonkin.name': '용족',
   'guide.family.elemental.desc':
     '원소가 강하게 흐르는 야생의 장소에 매여 있는, 살아 있는 폭풍과 돌.',
   'guide.worldPage.heading': '세계',
@@ -3917,6 +3963,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.faqPage.q10': '최고 레벨에서는 무엇을 할 수 있나요?',
   'guide.faqPage.q11': '파티는 어떻게 구하나요?',
   'guide.faqPage.q9': 'PvP가 있나요?',
+  'guide.glossary.augmentDef':
+    '2대2 Fiesta 투기장 경기 중에 골라 얻는 일시적인 강화로, 그 경기 동안에만 당신의 기술 구성을 바꿔 줍니다.',
+  'guide.glossary.augmentTerm': '증강',
   'guide.glossary.buffDef':
     '자신이나 아군에게 걸리는 이로운 효과로, 한동안 능력치를 높여 주는 축복 같은 것입니다.',
   'guide.glossary.buffTerm': '버프',
@@ -3925,6 +3974,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.glossary.debuffDef':
     '대상에게 걸리는 해로운 효과로, 둔화나 출혈, 방어도 약화 같은 것입니다.',
   'guide.glossary.debuffTerm': '디버프',
+  'guide.glossary.delveDef':
+    '한두 명이 즐기는 짧고 반복 가능한 인스턴스 탐험으로, 관리인의 게시판에서 시작하며 동료가 곁을 지킵니다.',
+  'guide.glossary.delveTerm': '탐굴',
   'guide.glossary.dotDef':
     '지속 피해와 지속 치유를 뜻하며, 한 번에 들어가지 않고 일정한 간격으로 들어가는 효과입니다.',
   'guide.glossary.dotTerm': '지속 피해와 지속 치유',
@@ -3959,6 +4011,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.search.placeholder': '가이드 검색',
   'guide.search.typeClass': '직업',
   'guide.search.typeCreature': '생명체',
+  'guide.search.typeDelve': '탐굴',
   'guide.search.typeDungeon': '던전',
   'guide.search.typePage': '페이지',
   'guide.search.typeTerm': '용어',
@@ -3985,6 +4038,8 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.talentsPage.resetNote':
     '특성은 언제든 초기화할 수 있으므로, 초반의 선택이 발목을 잡는 일은 없습니다. 이것저것 시도해 보고, 마음에 드는 것을 찾고, 자유롭게 마음을 바꾸세요.',
   'guide.talentsPage.resetTitle': '영구적인 것은 없습니다',
+  'guide.talentsPage.shareNote':
+    '완성한 특성 구성은 짧은 공유 코드로 복사해 친구에게 건넬 수 있고, 친구는 그 코드를 자신의 특성 창에 그대로 붙여 넣어 불러올 수 있습니다.',
   'guide.talentsPage.specsBody':
     '모든 직업에는 몇 가지 전문화가 있으며, 각각 고유한 역할과 대표적인 특징을 지닙니다. 여기 그 전체 윤곽을 정리했습니다. 전체 기술 구성은 직업을 열어 확인하세요.',
   'guide.talentsPage.specsHeading': '직업별 전문화',
@@ -4087,6 +4142,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.economy.marketPricing':
     '가격은 당신의 몫입니다. 남들이 부르는 값보다 조금 낮게 올리면 더 빨리 팔리는 경향이 있고, 지나치게 높은 값은 손도 닿지 않은 채 남을 수 있습니다. 등록하기 전에 먼저 둘러보며 시세가 어떤지 살펴보세요.',
   'guide.economy.marketTitle': '세계 시장',
+  'guide.economy.marksBody':
+    '모아두는 것이 금화만 있는 것은 아닙니다. 탐굴은 탐굴 증표를 보상으로 주며, 이는 오직 탐굴 관리인에게서만 동료 강화와 다른 곳에서는 구할 수 없는 장비에 쓰는 별도의 화폐입니다. 탐굴 증표는 금화와 절대 섞이지 않습니다.',
+  'guide.economy.marksTitle': '두 번째 화폐: 탐굴 증표',
   'guide.economy.tradeBody':
     '가까이 선 사람과는 누구든 얼굴을 맞대고 거래할 수 있습니다. 둘이 함께 쓰는 창에 물건과 동전을 올리고, 양쪽이 모두 확인해야 비로소 교환이 이루어지므로 어느 쪽도 당할 일이 없습니다. 친구에게 전리품을 건네거나 약속을 매듭짓는 간단한 방법입니다.',
   'guide.economy.tradeTitle': '다른 플레이어와 거래하기',
@@ -4102,6 +4160,8 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.gear.consumablesPotions':
     '물약은 사용하는 순간 생명력이나 마나를 회복시켜 주며, 전투 중에도 쓸 수 있어 풀이 어그러졌을 때 결정적인 한 수가 됩니다. 짧은 공용 재사용 대기시간을 공유하므로, 한 번의 좋은 순간을 노려 쓰세요.',
   'guide.gear.consumablesTitle': '소모품',
+  'guide.gear.cosmeticsApply':
+    '캐릭터 화면의 외형 항목에서 현재 외형을 설정하고, 해금한 모든 외형을 자유롭게 바꿀 수 있습니다.',
   'guide.gear.cosmeticsBody':
     '어떤 보상은 캐릭터의 모습만 바꿀 뿐 강함에는 전혀 영향을 주지 않습니다. 이런 외형 장식은 게임에 영향을 주지 않으면서 자신을 돋보이게 해 주니, 마음에 드는 것을 골라 걸치세요.',
   'guide.gear.cosmeticsCache':
@@ -4120,6 +4180,8 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.gear.fishingTitle': '낚시',
   'guide.gear.intro':
     '장비는 캐릭터가 걸치는 장구이자 지니고 다니는 물건입니다. 더 좋은 장비는 강해지는 가장 꾸준한 길이며, 그 대부분은 그저 플레이하는 것만으로 손에 들어옵니다.',
+  'guide.gear.itemLevelBody':
+    '두 장비를 빠르게 비교하고 싶다면 옵션에서 아이템 레벨 표시를 켜십시오. 그러면 무기와 방어구마다 아이템 레벨이 표시되는데, 이는 장비의 출처를 바탕으로 대략적인 강함을 하나의 숫자로 나타낸 것입니다. 덕분에 서로 다른 부위라도 어느 쪽 장비가 더 값어치 있는지 한눈에 알 수 있습니다.',
   'guide.gear.qualityBody':
     '모든 물건에는 품질이 있고, 한눈에 그 값어치를 읽을 수 있도록 이름이 그에 맞게 색으로 칠해집니다. 가장 흔한 것부터 가장 값진 것까지:',
   'guide.gear.qualityCommon': '일반',
@@ -4131,6 +4193,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.gear.qualityRare': '희귀',
   'guide.gear.qualityTitle': '한눈에 보는 품질',
   'guide.gear.qualityUncommon': '고급',
+  'guide.gear.setsBody':
+    '가장 희귀한 방어구는 서로 어울리는 한 벌로 나오며, 여러 부위가 하나처럼 보이고 또 하나처럼 싸우도록 만들어져 있습니다. 같은 세트를 충분히 갖춰 입으면 세트 효과가 깨어나, 각 부위 고유의 능력치에 더해 추가 효과를 부여하고, 더 많은 부위를 입을수록 더 강해집니다. 이런 장비는 최고 레벨 부근의 가장 어려운 단체 콘텐츠에서 떨어지므로, 세트 한 벌을 완성하는 것은 전형적인 최종 단계 목표입니다.',
+  'guide.gear.setsTitle': '세트와 세트 효과',
   'guide.gear.slotChest': '가슴',
   'guide.gear.slotFeet': '발',
   'guide.gear.slotGloves': '손',
@@ -4211,6 +4276,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.questsPage.sideCryptBody':
     '봉우리 높은 곳에 한층 조용한 수수께끼가 흐릅니다. 어떤 기록에도 남지 않은 왕관이 새겨진 오래된 무덤들이지요. 죽은 자를 읽고, 그들이 지키던 것을 모아, 닫힌 채로 두려던 무덤을 다시 여세요. 끝까지 좇으면 정원을 갖춘 공격대를 위한 두 번째 최종 시련으로 이어지는 추리의 자취입니다.',
   'guide.questsPage.sideCryptTitle': '잊힌 왕',
+  'guide.questsPage.sideTempleBody':
+    '봉우리의 높은 산정호에 떠오른 창백한 빛의 관문은, 물에 잠긴 교단이 아직도 노래하는 가라앉은 사원으로 이어집니다. 이 짧은 퀘스트 사슬은 본편 이야기와 떨어져 있는, 그 자체로 완결된 수수께끼입니다. 물가까지 올라와 바위에 새겨진 경고를 읽고, 그것이 무엇을 위한 것이었는지 직접 내려가 확인하려는 이라면 누구나 도전할 수 있습니다.',
+  'guide.questsPage.sideTempleTitle': '물에 잠긴 사원',
   'guide.questsPage.sideTitle': '큰길에서 갈라진 갈래들',
   'guide.questsPage.sideWardenBody':
     '이야기와 나란히, 골짜기와 습지의 수호인들이 상시 현상금 사다리를 내겁니다. 당신보다 앞선 모든 수호인이 그러했듯, 적을 하나씩 처치하며 위로 올라가세요. 정직한 레벨업이자, 각 지역에서 가장 골치 아픈 말썽꾼들을 두루 도는 여정입니다.',
@@ -4283,6 +4351,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
     '평범한 전리품은 줍는 사람에게 가고, 더 좋은 전리품은 입찰에 부쳐 모두가 공정한 기회를 갖게 할 수 있습니다.',
   'guide.social.lootCommonTitle': '물품.',
   'guide.social.lootHeading': '파티 전리품',
+  'guide.social.lootMasterBody':
+    '파티장이 대신 더 좋은 전리품을 직접 관리하며, 하나하나 받아야 할 파티원에게 나눠 줄 수 있습니다. 이렇게 하면 귀한 장비가 엉뚱한 주사위 결과로 넘어가는 일을 막을 수 있으며, 잘 짜인 파티가 던전을 도는 방식과 같습니다.',
+  'guide.social.lootMasterTitle': '분배 담당자.',
   'guide.social.lootRollBody':
     '물품이 입찰에 부쳐지면, 자격 있는 구성원은 저마다 원하면 입찰을, 남는 것만 받겠다면 가치 입찰을, 빠지겠다면 포기를 고릅니다. 가장 높은 수를 낸 사람이 가져갑니다.',
   'guide.social.lootRollTitle': '입찰, 가치 입찰, 또는 포기.',
@@ -4308,6 +4379,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.stats.dodgeBody':
     '회피는 들어오는 근접 공격을 통째로 피해 낼 확률입니다. 작은 기본 확률로 시작하며 민첩성이 이를 올려 주므로, 날쌘 직업일수록 더 많은 공격을 흘려보냅니다.',
   'guide.stats.dodgeTitle': '회피',
+  'guide.stats.dpsBody':
+    '캐릭터 정보 창에는 초당 피해량 추정치도 표시됩니다. 이는 무기, 무기의 휘두르는 속도, 그리고 공격력이 시간에 따라 합쳐져 만들어 내는 대략적인 값입니다. 두 무기를 한눈에 비교하기에 빠른 방법입니다.',
+  'guide.stats.dpsTitle': '초당 피해량',
   'guide.stats.growBody':
     '능력치를 올리는 길은 두 가지입니다. 레벨이 오를 때마다 직업에 맞춰 각 능력치가 정해진 만큼 더해지고, 착용한 장비가 그 위에 더 보탭니다. 장비를 늘 최신으로 유지하는 것이 최고 레벨까지 가장 꾸준히 강해지는 길입니다.',
   'guide.stats.growHeading': '능력치가 자라는 법',
@@ -4322,6 +4396,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.stats.sheetBody':
     '게임에서 캐릭터 창을 열면 이 모든 것을 한자리에서 볼 수 있습니다. 한쪽에는 다섯 가지 능력치가, 다른 쪽에는 그것이 보태는 스탯이 놓입니다. 어떤 값에든 마우스를 올리면 툴팁이 당신 직업에게 그것이 무슨 일을 하는지 풀어 주므로, 업그레이드가 실제로 어떤 수치를 움직였는지 한눈에 알 수 있습니다.',
   'guide.stats.sheetHeading': '캐릭터 정보 창 읽기',
+  'guide.stats.spBody':
+    '주문력은 시전자에게 공격력에 해당하는 능력치로, 당신의 주문이 입히는 피해를 높여 줍니다. 지능이 주문력을 키우고, 시전자 장비와 강화 효과가 그 위에 더해지므로, 주문 시전자는 근접 전사가 공격력을 살피듯 주문력을 살핍니다.',
+  'guide.stats.spTitle': '주문력',
   'guide.stats.spiBody':
     '정신력은 전투 밖에서 시전자의 마나가 얼마나 빠르게 돌아오는지를 다스립니다. 지능과 마찬가지로 마나 직업에게 쓸모 있고 다른 직업에게는 별 의미가 없습니다.',
   'guide.stats.spiTitle': '정신력',
@@ -4337,6 +4414,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.viewer.error':
     '3D 모델을 불러올 수 없습니다. 위의 그림이 여전히 이 {name}을(를) 보여 줍니다.',
   'guide.viewer.loading': '모델 불러오는 중...',
+  'guide.viewer.posterAlt': '{name}',
   'guide.viewer.view3d': '{name} 3D로 보기',
   'guide.viewer.view3dShort': '3D로 보기',
   'guide.worldPage.marshGreeter': '감시관 펜윅, 펜브리지',

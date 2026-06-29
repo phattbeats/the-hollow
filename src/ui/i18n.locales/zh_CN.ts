@@ -3311,6 +3311,40 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'guide.tagline': '一款可在浏览器中免费畅玩的经典风格 MMO。',
   'guide.skipToContent': '跳至正文',
   'guide.loading': '加载中……',
+  'guide.controls.targetFriendly': '选中最近的友方',
+  'guide.delvesPage.affixesBody':
+    '难度更高的探秘会随机附带一种词缀,改变下潜的玩法走向,从不安的亡者,到污浊的浊气,再到摇摇欲坠的顶棚。它们会让危险与回报一同提升。一座以墓穴为主题的探秘,可能出现以下任意一种词缀:',
+  'guide.delvesPage.affixesHeading': '探秘词缀',
+  'guide.delvesPage.affixesLabel': '可能出现的词缀',
+  'guide.delvesPage.companionBody':
+    '每次探秘都会有一名同伴随你下潜,因此单人挑战绝不会毫无希望。她会在你身旁并肩作战,而随着你在两次探秘之间持续投入,她会稳步变强,直到最终能在每次下潜中把濒死的盟友从鬼门关拉回一次。这次探秘里她是你的同伴,两次探秘之间则在面板旁等候。',
+  'guide.delvesPage.companionHeading': '你的同伴',
+  'guide.delvesPage.companionLabel': '同伴',
+  'guide.delvesPage.fromLevel': '从 {n} 级起',
+  'guide.delvesPage.heading': '探秘',
+  'guide.delvesPage.howBody':
+    '与看守人交谈以打开面板,选择一档难度,然后下潜。每次探秘会把几间短小的厅室串接起来,并在守护者处收尾;击败它即可领取奖励,返回地面。有伙伴就带上一位,没有就依靠你的同伴。',
+  'guide.delvesPage.howHeading': '一次探秘如何进行',
+  'guide.delvesPage.intro':
+    '探秘是供一到两人进行的短小、可反复挑战的下潜,每当你独自下潜时,都会有一名忠诚的同伴陪在身旁。找到面板,选好一次探秘,再带着战利品爬回地面。',
+  'guide.delvesPage.keeperLabel': '看守人',
+  'guide.delvesPage.lockpickBody':
+    '有些门扉与宝箱处于封锁状态,开启它们更像是一场小小的胆识考验,而非属性比拼:干净而沉稳地解开锁,你得到的奖励会优于慌乱仓促的开法。这并非强制,但谨慎的探秘者收获更丰。',
+  'guide.delvesPage.lockpickHeading': '锁与它们守护的东西',
+  'guide.delvesPage.marksBody':
+    '完成探秘会获得探秘印记,这是一种与你的钱币分开存放的货币。在看守人处花费它们,即可强化你的同伴,并取得别处遍寻不见的装备。',
+  'guide.delvesPage.marksHeading': '探秘印记',
+  'guide.delvesPage.partyLabel': '供一到两人',
+  'guide.delvesPage.tiersBody':
+    '一座探秘提供不止一档难度。更高的那档会让敌人更强,并随机附带一种词缀,作为回报,产出也更丰厚。它还要求你先积累几个等级,才会放你进入。',
+  'guide.delvesPage.tiersHeading': '难度',
+  'guide.delvesPage.tiersLabel': '难度',
+  'guide.delvesPage.whatBody':
+    '探秘是一座专为你以及至多一名盟友打造的小型副本,一份不会被打扰的私人副本。你从世界中由探秘看守人看守的面板处开启它,潜入其中,一路打穿几间房间,最后在唯一的守护者处收尾。每次探秘都很短,本就是为反复挑战而设,因此每当开放世界没什么可做时,探秘都是一份稳定的进度来源。',
+  'guide.delvesPage.whatHeading': '探秘是什么',
+  'guide.delvesPage.whereBody':
+    '第一座探秘,坍塌的圣物库,位于东溪谷地起始山谷的圣物库山丘。哈尔文修士在那里看守面板,只要你准备好了,他便会送你下去。',
+  'guide.delvesPage.whereHeading': '在哪里找到探秘',
   'guide.docTitle': '{page} | {brand}',
   'guide.nav.overview': '概览',
   'guide.nav.howToPlay': '游戏入门',
@@ -3318,6 +3352,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'guide.nav.bestiary': '生物图鉴',
   'guide.nav.world': '世界',
   'guide.nav.quests': '任务',
+  'guide.nav.delves': '探秘',
   'guide.nav.dungeons': '地下城与团队副本',
   'guide.nav.reference': '参考',
   'guide.nav.controls': '操作键',
@@ -3439,6 +3474,11 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'guide.controls.groupMovement': '移动',
   'guide.controls.groupCombat': '目标选择与战斗',
   'guide.controls.groupInterface': '窗口',
+  'guide.controls.controllerBody':
+    '手柄同样可用,且默认开启手柄支持。左摇杆控制移动,右摇杆控制镜头,正面按键与肩部按键则负责你的技能、跳跃和互动。打开任意窗口,即可调出用于操作菜单的屏幕指针。你可以在选项的手柄设置中重新映射按键,并调整摇杆死区、镜头速度、震动以及反转视角。',
+  'guide.controls.controllerHeading': '使用手柄',
+  'guide.controls.cycleFriendly': '循环选择友方目标',
+  'guide.controls.gameMenu': '打开游戏菜单与选项',
   'guide.controls.groupCamera': '镜头',
   'guide.controls.talents': '天赋',
   'guide.controls.arena': '竞技场',
@@ -3472,6 +3512,9 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'guide.glossary.eliteDef':
     '比普通敌人更强大的敌人,通常需要组队应对。地下城和稀有敌人往往是精英。',
   'guide.glossary.rareTerm': '稀有',
+  'guide.glossary.raidDef':
+    '一支更大的队伍,本作中至多十名玩家,为最艰难的终局战斗而组建;小队一旦满员便会转为团队。',
+  'guide.glossary.raidTerm': '团队副本',
   'guide.glossary.rareDef': '在某区域游荡的不常见的有名敌人,会掉落更好的战利品。',
   'guide.glossary.tankTerm': '坦克',
   'guide.glossary.tankDef': '负责吸引敌人仇恨并承受伤害的队伍成员,好让其他人安全作战。',
@@ -3555,6 +3598,9 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'guide.family.undead.name': '亡灵',
   'guide.family.undead.desc': '不安息的死者，被更黑暗的力量所驱使。它们不知疲倦，也绝不退缩。',
   'guide.family.elemental.name': '元素生物',
+  'guide.family.dragonkin.desc':
+    '源自远古深渊、披着鳞甲、形似巨蛇的造物。它们罕见、骄傲,远比看上去更强大。',
+  'guide.family.dragonkin.name': '龙类',
   'guide.family.elemental.desc': '由风暴与岩石化成的活物，被束缚于元素之力旺盛的荒野之地。',
   'guide.worldPage.heading': '世界',
   'guide.worldPage.intro':
@@ -3706,12 +3752,18 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'guide.faqPage.q10': '满级之后有什么可做的？',
   'guide.faqPage.q11': '我该如何找队伍？',
   'guide.faqPage.q9': '有 PvP 吗？',
+  'guide.glossary.augmentDef':
+    '在二对二的嘉年华竞技场对局中临时选取的强化,仅在该场对局内重塑你的套路。',
+  'guide.glossary.augmentTerm': '增幅',
   'guide.glossary.buffDef': '施加在你或盟友身上的有益效果，比如在一段时间内提升某项属性的祝福。',
   'guide.glossary.buffTerm': '增益',
   'guide.glossary.ccDef': '使敌人昏迷、定身，或以其他方式暂时让它退出战斗的技能。',
   'guide.glossary.ccTerm': '控制',
   'guide.glossary.debuffDef': '施加在目标身上的有害效果，比如减速、流血或护甲削弱。',
   'guide.glossary.debuffTerm': '减益',
+  'guide.glossary.delveDef':
+    '供一到两名玩家进行的短小、可反复挑战的副本下潜,从看守人的面板处开启,并有一名同伴陪在身旁。',
+  'guide.glossary.delveTerm': '探秘',
   'guide.glossary.dotDef': '持续伤害与持续治疗：以稳定的节奏分次跳动，而非一次性结算的效果。',
   'guide.glossary.dotTerm': '持续伤害与持续治疗',
   'guide.glossary.mobDef': '世界中任何由电脑控制的生物，无论友好还是敌对。mobile 的缩写。',
@@ -3738,6 +3790,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'guide.search.placeholder': '搜索指南',
   'guide.search.typeClass': '职业',
   'guide.search.typeCreature': '生物',
+  'guide.search.typeDelve': '探秘',
   'guide.search.typeDungeon': '地下城',
   'guide.search.typePage': '页面',
   'guide.search.typeTerm': '术语',
@@ -3764,6 +3817,8 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'guide.talentsPage.resetNote':
     '你可以随时重置天赋，所以早期的选择绝不会成为陷阱。尽管尝试，看看你喜欢什么，随心改主意。',
   'guide.talentsPage.resetTitle': '一切都不是永久的',
+  'guide.talentsPage.shareNote':
+    '一套完成的构筑可以复制为一段简短、可分享的代码交给朋友,对方将其直接粘贴进自己的天赋面板即可载入。',
   'guide.talentsPage.specsBody':
     '每个职业都有几种专精，各有自己的定位和标志性的侧重。这里是它们全部的大致面貌。打开某个职业可查看其全部技能。',
   'guide.talentsPage.specsHeading': '各职业的专精',
@@ -3863,6 +3918,9 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'guide.economy.marketPricing':
     '定价由你说了算。比别人略低一点往往卖得更快，而要价过高则可能无人问津。挂单前不妨先浏览一番，看看当下的行情如何。',
   'guide.economy.marketTitle': '世界市场',
+  'guide.economy.marksBody':
+    '你存下的不只有钱币。探秘会产出探秘印记,这是一种独立的货币,只能在探秘看守人处花费,用于同伴升级和别处找不到的装备。它们绝不会与你的钱币混在一起。',
+  'guide.economy.marksTitle': '第二种货币:探秘印记',
   'guide.economy.tradeBody':
     '你可以与站在身旁的任何人面对面交易。双方将物品与钱币放入一个共享窗口，唯有两人都确认后才会完成交换，因此谁也不会吃亏。这是把掉落物递给朋友或敲定一笔买卖最简单的方式。',
   'guide.economy.tradeTitle': '与其他玩家交易',
@@ -3878,6 +3936,8 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'guide.gear.consumablesPotions':
     '药水在你使用的那一刻便能恢复生命或法力，即便在激战中也可以，这让它们成为开怪失误时的救命稻草。它们共享一段较短的冷却，所以要选好一个绝佳时机来用。',
   'guide.gear.consumablesTitle': '消耗品',
+  'guide.gear.cosmeticsApply':
+    '在角色界面的外观一栏设置你当前的造型,并在已解锁的所有外观之间自由切换。',
   'guide.gear.cosmeticsBody':
     '有些奖励只改变你角色的外观，绝不影响你的强弱。这些外观皮肤能让你与众不同，又不会左右游戏，所以喜欢哪款就穿哪款。',
   'guide.gear.cosmeticsCache':
@@ -3896,6 +3956,8 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'guide.gear.fishingTitle': '钓鱼',
   'guide.gear.intro':
     '装备是你角色身上穿戴的行头，以及你随身携带的物品。更好的装备是变强最稳妥的途径，而其中大部分只需游玩便能到手。',
+  'guide.gear.itemLevelBody':
+    '如果你想快速比较两件装备,可以在选项中开启“显示物品等级”。这样每件武器和护甲都会显示一个物品等级,一个根据来源大致衡量其强度的单一数值,让你一眼就能看出哪件升级更有分量,即便是不同部位之间也能比较。',
   'guide.gear.qualityBody':
     '每件物品都有其品质，名称也以相应的颜色标示，让你一眼便能看出它的价值。从最常见到最珍贵：',
   'guide.gear.qualityCommon': '普通',
@@ -3907,6 +3969,9 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'guide.gear.qualityRare': '精良',
   'guide.gear.qualityTitle': '品质一览',
   'guide.gear.qualityUncommon': '优良',
+  'guide.gear.setsBody':
+    '最稀有的护甲成套出现,数件装备在外观与战斗风格上浑然一体。同时穿戴足够多的同套部件,套装便会被激活,在每件单品自身属性之外额外授予加成,而你穿的部件越多,加成就越强。它们掉落自接近等级上限的最高难度组队内容,因此凑齐一整套是经典的终局目标。',
+  'guide.gear.setsTitle': '套装与套装效果',
   'guide.gear.slotChest': '胸部',
   'guide.gear.slotFeet': '脚部',
   'guide.gear.slotGloves': '手部',
@@ -3984,6 +4049,9 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'guide.questsPage.sideCryptBody':
     '在高耸的峰巅，潜藏着一桩更幽静的谜团：古老的坟墓刻着无人记得的王冠。读懂死者，收集他们守护之物，再开启一座本该长闭的陵墓。这是一条侦探般的线索，为整支团队开启第二场终局试炼之路。',
   'guide.questsPage.sideCryptTitle': '被遗忘的君王',
+  'guide.questsPage.sideTempleBody':
+    '高耸峰巅上一座高山湖泊之上,一道苍白光芒的传送门,通往一座沉没的神龛,那里仍有溺亡的邪教在歌唱。它那条短小的任务链独立于主线之外,是一桩自成一体的谜团,留给每一个攀上湖岸、读懂刻在岩石上的警告、并下潜去探明其缘由的人。',
+  'guide.questsPage.sideTempleTitle': '溺没的神庙',
   'guide.questsPage.sideTitle': '主路之外的支线',
   'guide.questsPage.sideWardenBody':
     '在剧情之外，谷地与湿地的守望者们还会发布一份常驻的赏金阶梯。一个敌人接一个敌人地往上爬，就像你之前的每一位守望者赢得自己的位置那样。这是踏实的升级，也是一趟遍历各区域最恶劣捣乱分子的巡礼。',
@@ -4050,6 +4118,9 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
     '普通掉落物可以归拾取者，而更好的掉落物则会拿出来掷骰，让每个人都有公平的机会。',
   'guide.social.lootCommonTitle': '物品。',
   'guide.social.lootHeading': '小队战利品',
+  'guide.social.lootMasterBody':
+    '队长也可以转而亲自掌管较好的掉落,把每一件分发给应得的成员。这能避免珍贵装备被一次随机的掷点拿走,正如一支有组织的队伍打地下城时所做的那样。',
+  'guide.social.lootMasterTitle': '队长分配。',
   'guide.social.lootRollBody':
     '当一件物品进入掷骰时，每位有资格的成员若想要它便选“需求”，若只是顺手收着便选“贪婪”，不想要则选“放弃”退出。点数最高者胜出。',
   'guide.social.lootRollTitle': '需求、贪婪或放弃。',
@@ -4075,6 +4146,9 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'guide.stats.dodgeBody':
     '躲闪是你完全闪避一次来袭近战攻击的几率。你从一个较低的基础几率起步，敏捷会提升它，所以身手敏捷的职业能躲过更多打击。',
   'guide.stats.dodgeTitle': '躲闪',
+  'guide.stats.dpsBody':
+    '你的面板还会显示一个每秒伤害的估算值:大致是你的武器、它的挥击速度以及你的攻击强度随时间累计的结果。这是一眼比较两把武器的快捷方式。',
+  'guide.stats.dpsTitle': '每秒伤害',
   'guide.stats.growBody':
     '有两样东西会提升你的属性。每次升级都会按你职业的需要为各项属性增加固定的数值，而你装备的行头则在此之上叠加更多。让装备保持更新，是你一路成长直至等级上限最稳妥的途径。',
   'guide.stats.growHeading': '你的属性如何成长',
@@ -4089,6 +4163,9 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'guide.stats.sheetBody':
     '在游戏中打开角色窗口，便能在一处看到这一切：一侧是你的五项属性，另一侧是它们所注入的各项数值。将鼠标悬停在任意数值上，提示框便会拆解它对你职业的作用，让你一眼看出一次升级究竟改动了哪些数字。',
   'guide.stats.sheetHeading': '读懂你的角色面板',
+  'guide.stats.spBody':
+    '法术强度是施法者与攻击强度相对应的属性:它会提升你法术造成的伤害。智力为其供能,施法者装备与增益还会在此之上额外叠加,因此施法者关注法术强度,正如近战斗士关注攻击强度。',
+  'guide.stats.spTitle': '法术强度',
   'guide.stats.spiBody':
     '精神主宰施法者在脱离战斗时法力回复的快慢。与智力一样，它服务于法力职业，对其他职业则意义不大。',
   'guide.stats.spiTitle': '精神',
@@ -4102,6 +4179,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'guide.viewer.dragHint': '拖动以转动模型。模型获得焦点时，可使用左右方向键。',
   'guide.viewer.error': '无法载入该 3D 模型。上方的美术图仍展示着这个 {name}。',
   'guide.viewer.loading': '正在载入模型……',
+  'guide.viewer.posterAlt': '{name}',
   'guide.viewer.view3d': '以 3D 查看 {name}',
   'guide.viewer.view3dShort': '以 3D 查看',
   'guide.worldPage.marshGreeter': '守望者芬威克，芬桥',

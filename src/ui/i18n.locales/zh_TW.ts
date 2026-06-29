@@ -3312,6 +3312,40 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.tagline': '一款可在瀏覽器中免費遊玩的經典風格MMO。',
   'guide.skipToContent': '跳至主要內容',
   'guide.loading': '載入中...',
+  'guide.controls.targetFriendly': '鎖定最近的友方',
+  'guide.delvesPage.affixesBody':
+    '較高難度的旅程會擲出一項詞綴，改變這趟探索的進行方式，從不安的亡者到污濁的空氣，再到搖搖欲墜的屋頂結構。它們同時提高了危險與獎勵。一座以墓穴為主題的秘探可能擲出以下任何一種：',
+  'guide.delvesPage.affixesHeading': '旅程詞綴',
+  'guide.delvesPage.affixesLabel': '可能出現的詞綴',
+  'guide.delvesPage.companionBody':
+    '秘探會派一名同伴與你一同下去，因此單人旅程絕不會毫無勝算。她會在你身旁作戰，而當你在旅程之間投注於她，她也會穩定地變強，直到每趟探索能將一名瀕死的隊友從鬼門關前拉回一次。她在這趟秘探中歸你所有，並在旅程間隙於看板旁等候。',
+  'guide.delvesPage.companionHeading': '你的同伴',
+  'guide.delvesPage.companionLabel': '同伴',
+  'guide.delvesPage.fromLevel': '從 {n} 級起',
+  'guide.delvesPage.heading': '秘探',
+  'guide.delvesPage.howBody':
+    '與看守人交談即可開啟看板，選擇一個難度，然後向下深入。每趟旅程會串接幾間短小的密室，並以它的守護者作結；通關後即可領取獎勵並返回地面。有朋友的話就帶上一位，沒有的話便倚靠你的同伴。',
+  'guide.delvesPage.howHeading': '旅程如何進行',
+  'guide.delvesPage.intro':
+    '秘探是供一到兩人進行、可重複挑戰的短程探索，每當你獨自下去時，都會有一名忠誠的同伴隨侍在側。找到看板，選擇一趟旅程，再帶著戰利品爬出來。',
+  'guide.delvesPage.keeperLabel': '看守人',
+  'guide.delvesPage.lockpickBody':
+    '有些門扉與藏匿處上了鎖，而開啟它們考驗的是膽識而非屬性數值：俐落而沉穩地解開鎖頭，你所得的獎賞會勝過倉促失手時的所得。這並非必要，但謹慎的探索者往往更富有。',
+  'guide.delvesPage.lockpickHeading': '鎖以及它們所藏之物',
+  'guide.delvesPage.marksBody':
+    '通關秘探可賺取秘探印記，這是一種與你的錢幣分開存放的貨幣。在看守人處花用它們，以強化你的同伴，並取得在其他任何地方都找不到的裝備。',
+  'guide.delvesPage.marksHeading': '秘探印記',
+  'guide.delvesPage.partyLabel': '供一到兩人',
+  'guide.delvesPage.tiersBody':
+    '一座秘探提供不只一種難度。較高的難度會讓敵人更強，並擲入一項旅程詞綴，相應地也給予更豐厚的報酬。它同時要求你先累積幾個等級，才會放你進入。',
+  'guide.delvesPage.tiersHeading': '難度',
+  'guide.delvesPage.tiersLabel': '難度',
+  'guide.delvesPage.whatBody':
+    '秘探是一座小型的副本地城，專為你與至多一名盟友打造，是一份不會受到打擾的獨立複本。你從世界中由秘探看守人看管的看板啟程，下到其中，一路打穿少數幾個房間，並在單一守護者面前作結。旅程短促且設計來反覆挑戰，因此每當開放世界無事可做時，秘探都是一份可靠的進度來源。',
+  'guide.delvesPage.whatHeading': '何謂秘探',
+  'guide.delvesPage.whereBody':
+    '第一座秘探「崩塌的聖物庫」位於東溪谷地起始山谷中的聖物庫山丘。哈爾文修士在那裡看管著看板，待你準備就緒，他便會送你下去。',
+  'guide.delvesPage.whereHeading': '何處能找到',
   'guide.docTitle': '{page} - {brand}',
   'guide.nav.overview': '總覽',
   'guide.nav.howToPlay': '如何遊玩',
@@ -3319,6 +3353,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.nav.bestiary': '生物圖鑑',
   'guide.nav.world': '世界',
   'guide.nav.quests': '任務',
+  'guide.nav.delves': '秘探',
   'guide.nav.dungeons': '地城與團隊副本',
   'guide.nav.reference': '參考資料',
   'guide.nav.controls': '操作按鍵',
@@ -3440,6 +3475,11 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.controls.groupMovement': '移動',
   'guide.controls.groupCombat': '鎖定目標與戰鬥',
   'guide.controls.groupInterface': '視窗',
+  'guide.controls.controllerBody':
+    '手把同樣可用，且預設即開啟手把支援。左搖桿負責移動，右搖桿控制鏡頭，正面按鍵與肩鍵則涵蓋你的技能、跳躍與互動。開啟任何視窗都會喚出畫面上的指標，供你操作選單。你可以在選項中的手把設定裡重新配置按鍵，並調整搖桿盲區、鏡頭速度、震動以及反轉視角。',
+  'guide.controls.controllerHeading': '使用手把時',
+  'guide.controls.cycleFriendly': '切換友方目標',
+  'guide.controls.gameMenu': '開啟遊戲選單與設定',
   'guide.controls.groupCamera': '鏡頭',
   'guide.controls.talents': '天賦',
   'guide.controls.arena': '競技場',
@@ -3472,6 +3512,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.glossary.eliteTerm': '精英',
   'guide.glossary.eliteDef': '比一般敵人更強悍的敵人，通常需要組隊應付。地城與稀有敵人往往是精英。',
   'guide.glossary.rareTerm': '稀有',
+  'guide.glossary.raidDef':
+    '一支較大的隊伍，在本作中最多十名玩家，為最艱難的終局戰鬥而組成；隊伍一旦滿員便會轉換成團隊。',
+  'guide.glossary.raidTerm': '團隊副本',
   'guide.glossary.rareDef': '一種不常見的具名敵人，會在區域中遊蕩並掉落較好的戰利品。',
   'guide.glossary.tankTerm': '坦克',
   'guide.glossary.tankDef': '負責吸住敵人仇恨並承受傷害的隊伍成員，好讓其他人能安全作戰。',
@@ -3556,6 +3599,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.family.undead.name': '不死生物',
   'guide.family.undead.desc': '被黑暗之手喚起、不得安息的亡者。牠們不知疲倦，也不會逃跑。',
   'guide.family.elemental.name': '元素生物',
+  'guide.family.dragonkin.desc':
+    '來自遠古深淵、覆鱗如蛇的生物。稀少、高傲，且遠比外表看來更為強大。',
+  'guide.family.dragonkin.name': '龍類',
   'guide.family.elemental.desc': '活生生的風暴與岩石，束縛於元素之力強盛的荒野之地。',
   'guide.worldPage.heading': '世界',
   'guide.worldPage.intro':
@@ -3707,12 +3753,18 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.faqPage.q10': '達到滿級後有什麼可做？',
   'guide.faqPage.q11': '我該如何找隊伍？',
   'guide.faqPage.q9': '有PvP嗎？',
+  'guide.glossary.augmentDef':
+    '在2v2的Fiesta競技場對戰中挑選的暫時性強化，只在該場對戰中重塑你的技能組。',
+  'guide.glossary.augmentTerm': '強化',
   'guide.glossary.buffDef': '施加在你或友方身上的有益效果，例如在一段時間內提升某項屬性的祝福。',
   'guide.glossary.buffTerm': '增益',
   'guide.glossary.ccDef': '能昏迷、定身或以其他方式讓敵人暫時退出戰鬥的技能。',
   'guide.glossary.ccTerm': '群體控制',
   'guide.glossary.debuffDef': '施加在目標身上的有害效果，例如減速、流血或護甲削弱。',
   'guide.glossary.debuffTerm': '減益',
+  'guide.glossary.delveDef':
+    '供一到兩名玩家進行、可重複挑戰的短程副本探索，自看守人的看板啟程，並有一名同伴隨侍在側。',
+  'guide.glossary.delveTerm': '秘探',
   'guide.glossary.dotDef': '持續傷害與持續治療：以穩定的脈動逐次生效，而非一次性發動的效果。',
   'guide.glossary.dotTerm': 'DoT與HoT',
   'guide.glossary.mobDef': '世界中任何由電腦控制的生物，無論友善或敵對。是mobile的簡稱。',
@@ -3740,6 +3792,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.search.placeholder': '搜尋指南',
   'guide.search.typeClass': '職業',
   'guide.search.typeCreature': '生物',
+  'guide.search.typeDelve': '秘探',
   'guide.search.typeDungeon': '地城',
   'guide.search.typePage': '頁面',
   'guide.search.typeTerm': '詞彙',
@@ -3766,6 +3819,8 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.talentsPage.resetNote':
     '你隨時都能重置天賦，所以早期的選擇絕不會是陷阱。儘管嘗試，看看自己喜歡什麼，並自由地改變主意。',
   'guide.talentsPage.resetTitle': '沒有什麼是永久的',
+  'guide.talentsPage.shareNote':
+    '一套完成的天賦配置可以複製成一段可分享的短代碼，交給朋友，對方只要把它直接貼進自己的天賦面板即可載入。',
   'guide.talentsPage.specsBody':
     '每個職業都有數種專精，各有自己的角色定位和標誌性的著重方向。以下是它們全部的輪廓。打開某個職業即可查看其完整技能。',
   'guide.talentsPage.specsHeading': '各職業的專精',
@@ -3864,6 +3919,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.economy.marketPricing':
     '定價由你決定。開價稍低於他人通常賣得更快，而開價過高則可能乏人問津。刊登之前先瀏覽一下，看看目前的行情如何。',
   'guide.economy.marketTitle': '世界市場',
+  'guide.economy.marksBody':
+    '錢幣並非你唯一能積攢的東西。秘探會給予秘探印記，這是一種獨立的貨幣，只能在秘探看守人處花用，用於同伴升級以及在別處找不到的裝備。它們絕不會與你的錢幣混在一起。',
+  'guide.economy.marksTitle': '第二種貨幣：秘探印記',
   'guide.economy.tradeBody':
     '你可以與站在你身旁的任何人面對面交易。雙方都把物品與錢幣放進一個共享的視窗，唯有兩人都確認後交換才會成立，因此誰都不會吃虧。這是把掉落物交給朋友或敲定一筆買賣最簡單的方法。',
   'guide.economy.tradeTitle': '與其他玩家交易',
@@ -3879,6 +3937,8 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.gear.consumablesPotions':
     '藥水在你使用的那一刻就能回復生命或法力，即使在戰鬥中也行，這讓它們在一次拉怪出錯時成了關鍵的救命之物。它們共用一段短暫的冷卻時間，所以請挑準一個好時機使用。',
   'guide.gear.consumablesTitle': '消耗品',
+  'guide.gear.cosmeticsApply':
+    '在你的角色畫面上的外觀欄位設定當前的造型，並在所有已解鎖的項目間自由切換。',
   'guide.gear.cosmeticsBody':
     '有些獎勵只會改變你角色的外觀，絕不影響你的強弱。這些外觀造型讓你能脫穎而出，又不會左右遊戲，所以喜歡哪一種就穿哪一種吧。',
   'guide.gear.cosmeticsCache':
@@ -3897,6 +3957,8 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.gear.fishingTitle': '釣魚',
   'guide.gear.intro':
     '裝備是你角色身上穿戴的物件與隨身攜帶的物品。更好的裝備是變強最穩當的途徑，而其中大部分只要遊玩就能取得。',
+  'guide.gear.itemLevelBody':
+    '若你想快速比較兩件裝備，可在選項中開啟「顯示物品等級」。屆時每件武器與護甲都會顯示一個物品等級，這是依其來源粗略衡量其強度的單一數值，讓你一眼就能看出哪件升級更有分量，即使是不同部位之間也行。',
   'guide.gear.qualityBody':
     '每件物品都有一個品質，其名稱也會以對應的顏色標示，讓你一眼就能看出它的價值。從最常見到最珍貴：',
   'guide.gear.qualityCommon': '普通',
@@ -3908,6 +3970,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.gear.qualityRare': '稀有',
   'guide.gear.qualityTitle': '品質一覽',
   'guide.gear.qualityUncommon': '優良',
+  'guide.gear.setsBody':
+    '最稀有的護甲以成套的系列出現，數件裝備經過設計，使其外觀與戰鬥表現渾然一體。同時穿上足夠多的同系列裝備，套裝便會啟動，在每件裝備本身的屬性之上額外賦予加成，而你穿得越多，效果就越強。這些裝備掉落自接近等級上限的最艱難團隊內容，因此追求一整套裝是經典的終局目標。',
+  'guide.gear.setsTitle': '套裝與套裝效果',
   'guide.gear.slotChest': '胸部',
   'guide.gear.slotFeet': '腳部',
   'guide.gear.slotGloves': '手部',
@@ -3984,6 +4049,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.questsPage.sideCryptBody':
     '在群峰高處流傳著一樁更為靜謐的謎團：古老的墳墓上刻著一頂無任何記載記得的王冠。讀懂亡者，蒐集他們所守護之物，解封一座本應永遠緊閉的陵墓。這是一條偵探般的線索，為一支完整的團隊開啟了通往第二場終局試煉的道路。',
   'guide.questsPage.sideCryptTitle': '被遺忘的國王',
+  'guide.questsPage.sideTempleBody':
+    '高峰之上一座高山湖泊中，一道蒼白光芒構成的門扉，通往一座沉沒的神殿，那裡有一群溺亡的邪教徒仍在歌唱。它那條短短的任務鏈獨立於主線故事之外，是一樁自成一體的謎團，獻給每一個攀上湖岸、讀懂刻在岩石上的警語，並下去一探那些警語究竟所為何來的人。',
+  'guide.questsPage.sideTempleTitle': '沉沒的神殿',
   'guide.questsPage.sideTitle': '主線之外的支線',
   'guide.questsPage.sideWardenBody':
     '在故事之外，谷地與沼澤的守衛還會發布一道長期的懸賞階梯。一個敵人接一個敵人地往上爬，就像在你之前的每一位守衛掙得席位的方式那樣。這是踏實的升級，也是一趟巡覽各區域最惡劣麻煩製造者的旅程。',
@@ -4051,6 +4119,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
     '普通的掉落物可以歸給拾取者，較好的掉落物則會擺出來擲骰，好讓每個人都有公平的機會。',
   'guide.social.lootCommonTitle': '物品。',
   'guide.social.lootHeading': '隊伍戰利品',
+  'guide.social.lootMasterBody':
+    '隊長也可以改為親自掌管較好的掉落物，將每一件分發給應當獲得它的成員。這能避免珍貴的裝備落入隨意的擲骰結果，正如一支有組織的隊伍闖蕩地城時所做的那樣。',
+  'guide.social.lootMasterTitle': '物品分配者。',
   'guide.social.lootRollBody':
     '當一件物品進行擲骰時，每位符合資格的成員若想要它便選擇需求，若只想當備品則選擇貪婪，或選擇放棄退出。骰點最高者勝出。',
   'guide.social.lootRollTitle': '需求、貪婪或放棄。',
@@ -4076,6 +4147,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.stats.dodgeBody':
     '閃躲是你完全避開一次來襲近戰攻擊的機率。你從一個微小的基礎機率起步，而敏捷會提升它，因此身手敏捷的職業能閃過更多攻擊。',
   'guide.stats.dodgeTitle': '閃躲',
+  'guide.stats.dpsBody':
+    '你的角色面板還會顯示一個每秒傷害的估計值：大致是你的武器、它的揮擊速度與你的攻擊強度隨時間累加後的結果。這是一眼比較兩把武器的快捷方式。',
+  'guide.stats.dpsTitle': '每秒傷害',
   'guide.stats.growBody':
     '有兩件事會提升你的屬性。每一級都會依你的職業添加固定的各項屬性，而你裝備的裝備則在其上再添。保持裝備更新是變強最穩當的途徑，一路直到等級上限。',
   'guide.stats.growHeading': '你的屬性如何成長',
@@ -4090,6 +4164,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.stats.sheetBody':
     '在遊戲中開啟角色視窗，便能在同一處看到這一切：你的五項屬性在一側，它們所灌注的各項數值在另一側。將滑鼠停在任一數值上，提示框便會拆解它為你的職業做了什麼，讓你一眼就能看出一件升級品實際上改動了哪些數字。',
   'guide.stats.sheetHeading': '看懂你的角色面板',
+  'guide.stats.spBody':
+    '法術強度是施法者對應於攻擊強度的屬性：它會提高你的法術所造成的傷害。智力會增進它，施法者的裝備與增益還會在其上額外疊加，因此施法者關注法術強度，就如同近戰鬥士關注攻擊強度一般。',
+  'guide.stats.spTitle': '法術強度',
   'guide.stats.spiBody':
     '精神主宰著施法者的法力在脫離戰鬥後回復得有多快。一如智力，它服務於那些以法力施法的職業，對其他職業而言意義不大。',
   'guide.stats.spiTitle': '精神',
@@ -4103,6 +4180,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.viewer.dragHint': '拖曳以轉動模型。當它取得焦點時，可使用左右方向鍵。',
   'guide.viewer.error': '無法載入此3D模型。上方的圖像仍會顯示這個{name}。',
   'guide.viewer.loading': '正在載入模型...',
+  'guide.viewer.posterAlt': '{name}',
   'guide.viewer.view3d': '以3D檢視{name}',
   'guide.viewer.view3dShort': '以3D檢視',
   'guide.worldPage.marshGreeter': '守衛芬威克，沼橋鎮',
