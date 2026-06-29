@@ -5,8 +5,9 @@
 // silently emptying the pet slot; the genuine HUD event path localizes it via
 // localizeSimText and prints it in the chat log.
 // Saves to docs/pr-assets/pet-restore/. Needs `npm run dev` on :5173.
-import puppeteer from 'puppeteer-core';
+
 import fs from 'node:fs';
+import puppeteer from 'puppeteer-core';
 import { BROWSER_PATH as EDGE } from './browser_path.mjs';
 
 const BASE = process.env.GAME_URL ?? 'http://localhost:5173';
@@ -51,10 +52,7 @@ async function capture(lang, tag) {
   );
   await sleep(200);
   await page.evaluate(() => document.getElementById('btn-start-offline').click());
-  await page.waitForFunction(
-    () => !!(window.__game && window.__game.sim && window.__game.sim.player),
-    { timeout: 60000, polling: 500 },
-  );
+  await page.waitForFunction(() => !!window.__game?.sim?.player, { timeout: 60000, polling: 500 });
   await sleep(800);
   await page.evaluate(triggerRestore);
   await sleep(800);
