@@ -109,6 +109,10 @@ const VIEW_PREWARM_MAX_MS = 12000;
 // stalls the parallel-compile queue; keep it modest, since a long hold here is
 // itself worse than the freeze it prevents.
 const PREWARM_COMPILE_MAX_MS = 10000;
+// Safety ceiling for the per-view async-compile gate: if KHR_parallel_shader_compile
+// somehow never reports a program ready, show the view anyway (degrading to the old
+// synchronous first-use compile) rather than stranding an entity invisible.
+const VIEW_COMPILE_GATE_MAX_MS = 1500;
 // Reserve at the tail of the view-build budget so the compile + final-frame
 // steps always start before the prewarm deadline (runEntry skips late entries).
 const PREWARM_BUILD_RESERVE_MS = 3000;
@@ -483,8 +487,11 @@ export interface EntityView {
   objectPoolKey: string | null;
   portal?: THREE.Mesh; // dungeon door swirl
   objectCasters: THREE.Object3D[]; // object-view shadow meshes, distance-gated
+  viewLights: THREE.PointLight[]; // point lights this view contributes to the budget
   shadowOn: boolean;
   isFar: boolean;
+  // hidden until its shader programs finish linking off-thread (async-compile gate)
+  compilePending: boolean;
   lastOverheadEmoteKey: string | null;
   // render-space position last frame, for true u/s locomotion speed
   lastX: number;
@@ -759,6 +766,12 @@ export class Renderer {
   private fogScratch = new THREE.Color();
   private flames: THREE.Mesh[];
   private fireLights: THREE.PointLight[];
+  // Point lights owned by entity views (e.g. the quest-object glow). These stream
+  // in/out with interest, so they are budgeted into the SAME constant count as the
+  // static fire lights - otherwise numPointLights toggles as a lit object enters or
+  // leaves view and every lit material recompiles (an open-world travel hitch).
+  private viewLights: THREE.PointLight[] = [];
+  private lightRankDirty = true; // viewLights set changed: rebuild the budget rank
   private effectivePointLights = 0;
   private propsView!: {
     update(
@@ -771,7 +784,12 @@ export class Renderer {
       fogFar: number,
     ): void;
   };
-  private lightRank: { light: THREE.PointLight; d2: number; worldPos: THREE.Vector3 }[] = [];
+  private lightRank: {
+    light: THREE.PointLight;
+    d2: number;
+    worldPos: THREE.Vector3;
+    base: number | null; // view-light base intensity (no external flicker restores it); null for fire lights
+  }[] = [];
   private doomedIds: number[] = [];
   private dungeons: DungeonInteriors | null = null;
   private envRTs = new Map<BiomeId, THREE.WebGLRenderTarget>();
@@ -781,6 +799,9 @@ export class Renderer {
   private frameIdx = 0;
   // Visible non-self character rigs last frame, feeding the crowd-adaptive LOD.
   private lastVisibleRigCount = 0;
+  // KHR_parallel_shader_compile present: lets us link new programs off-thread and
+  // gate a freshly-streamed view's draw on readiness instead of stalling the frame.
+  private asyncCompileSupported = false;
   vfx: Vfx;
   private weather: Weather;
   private weatherOn = true;
@@ -892,6 +913,16 @@ export class Renderer {
     this.webgl.shadowMap.type = THREE.PCFSoftShadowMap;
     this.webgl.toneMapping = THREE.ACESFilmicToneMapping; // OutputPass reads this on the composer path
     this.webgl.toneMappingExposure = this.baseExposure;
+    // Only worth gating view draws on compileAsync when programs can link OFF the
+    // main thread; without the extension compileAsync compiles synchronously, so
+    // gating would just delay the same stall. Detected once here.
+    try {
+      this.asyncCompileSupported =
+        typeof this.webgl.compileAsync === 'function' &&
+        this.webgl.getContext().getExtension('KHR_parallel_shader_compile') !== null;
+    } catch {
+      this.asyncCompileSupported = false;
+    }
     this.camera = new THREE.PerspectiveCamera(
       CAMERA_BASE_FOV,
       this.viewport.width / this.viewport.height,
@@ -1931,8 +1962,14 @@ export class Renderer {
   }
 
   private visualPoolKeyFor(e: Entity): string | null {
-    if (e.kind !== 'mob') return null;
-    return `mob:${e.templateId}:${e.color}:${e.scale}`;
+    if (e.kind === 'mob') return `mob:${e.templateId}:${e.color}:${e.scale}`;
+    // NPCs are skinned characters too: pool them like mobs so their Skeleton (and its
+    // bone-matrix DataTexture) survives interest churn instead of being disposed and
+    // re-uploaded every time one streams out and back into view - that dispose +
+    // re-upload cycle is the open-world "asset-upload" travel hitch (Skeleton.dispose
+    // via CharacterVisual.dispose in removeView, pinned by GPU-upload profiling).
+    if (e.kind === 'npc') return `npc:${e.templateId}:${e.skin}:${e.color}:${e.scale}`;
+    return null;
   }
 
   private takePooledVisual(key: string): CharacterVisual | null {
@@ -2947,8 +2984,14 @@ export class Renderer {
       visualPoolKey = this.visualPoolKeyFor(e);
       visual = visualPoolKey ? this.takePooledVisual(visualPoolKey) : null;
       if (!visual) {
+        // Pool MISS: build a fresh visual but KEEP its pool key so removeView returns
+        // it to the pool (which self-sizes to demand) instead of disposing it. Disposing
+        // a skinned visual frees its Skeleton's bone-matrix DataTexture; re-creating it
+        // when the entity streams back re-uploads that texture - the open-world
+        // "asset-upload" travel hitch. Before, only the few prewarm-seeded copies were
+        // ever recycled, so every mob past that count churned. Key is per-template, so
+        // the pool stays bounded by the peak simultaneous count.
         visual = createCharacterVisual(e);
-        visualPoolKey = null;
       }
       // entity scale is applied to the whole group below, so it can update live
       // (Fiesta size buffs) and also scale lazily-built form visuals for free.
@@ -3036,6 +3079,23 @@ export class Renderer {
     // object views gate their own casters; character shadows live in visual
     const objectCasters: THREE.Object3D[] = [];
     if (!visual) collectCasters(group, objectCasters);
+    // Register any point lights this view owns (e.g. the quest-object glow) into the
+    // constant point-light budget so numPointLights never changes as it streams in.
+    const viewLights: THREE.PointLight[] = [];
+    group.traverse((o) => {
+      if ((o as THREE.PointLight).isPointLight) viewLights.push(o as THREE.PointLight);
+    });
+    if (viewLights.length > 0) {
+      for (const light of viewLights) {
+        // Remember the design intensity ONCE: pooled object views are reused, and by
+        // the time one is re-taken the budget may have dimmed the light to 0, so
+        // reading it again would stick it dark. userData persists on the pooled light.
+        if (typeof light.userData.budgetBase !== 'number')
+          light.userData.budgetBase = light.intensity;
+        this.viewLights.push(light);
+      }
+      this.lightRankDirty = true;
+    }
     this.views.set(e.id, {
       group,
       visual,
@@ -3074,8 +3134,10 @@ export class Renderer {
       comboSig: '',
       tierValue: 0,
       objectCasters,
+      viewLights,
       shadowOn: true,
       isFar: false,
+      compilePending: false,
       lastOverheadEmoteKey: null,
       lastX: e.pos.x,
       lastZ: e.pos.z,
@@ -3087,6 +3149,38 @@ export class Renderer {
       wasAirborne: false,
       wasSwimming: false,
     });
+    const view = this.views.get(e.id);
+    // Never gate the player's OWN view: it must be on screen immediately, its
+    // class is already prewarmed, and the self render path does not re-evaluate
+    // the compilePending flag (only the non-self loop does), so gating it would
+    // strand the player invisible. Other entities un-hide via that loop.
+    if (view && e.id !== this.sim.player.id) this.gateViewOnCompile(view, group);
+  }
+
+  // Generic anti-freeze layer. A freshly-streamed view links its shader programs
+  // SYNCHRONOUSLY on first draw - a 50-1700ms frame stall (the open-world travel
+  // hitch). Instead link them OFF the main thread (KHR_parallel_shader_compile via
+  // compileAsync) against the live scene's exact lights + environment, and keep the
+  // view hidden until ready: it pops in a frame or two late rather than freezing.
+  // Unlike the boot prewarm this enumerates NOTHING, so new content and render-state
+  // variants the prewarm cannot anticipate (e.g. the env-map-lit material that links
+  // only when you walk into a biome) never hitch in-world. The prewarm stays a pure
+  // optimization: already-compiled spawn content resolves instantly, no pop-in.
+  private gateViewOnCompile(view: EntityView, group: THREE.Group): void {
+    if (!this.asyncCompileSupported) return;
+    view.compilePending = true;
+    group.visible = false;
+    let settled = false;
+    const clear = (): void => {
+      if (settled) return;
+      settled = true;
+      view.compilePending = false;
+    };
+    const guard = setTimeout(clear, VIEW_COMPILE_GATE_MAX_MS);
+    this.webgl
+      .compileAsync(group, this.camera, this.scene)
+      .then(clear, clear)
+      .finally(() => clearTimeout(guard));
   }
 
   /** The visual the player currently sees (form swaps hide the base rig). */
@@ -3393,6 +3487,13 @@ export class Renderer {
     const v = this.views.get(id);
     if (!v) return;
     this.scene.remove(v.group);
+    if (v.viewLights.length > 0) {
+      for (const light of v.viewLights) {
+        const i = this.viewLights.indexOf(light);
+        if (i >= 0) this.viewLights.splice(i, 1);
+      }
+      this.lightRankDirty = true;
+    }
     v.nameplate.remove();
     const idx = this.clickTargets.indexOf(v.clickTarget);
     if (idx >= 0) this.clickTargets.splice(idx, 1);
@@ -3601,7 +3702,9 @@ export class Renderer {
           v.group.visible = false;
           continue;
         }
-        v.group.visible = true; // the object branch below may re-hide loot
+        // hidden until its shaders finish linking off-thread (async-compile gate);
+        // the object branch below may still re-hide loot
+        v.group.visible = !v.compilePending;
         // mid-distance rigs keep rendering but leave the shadow pass
         const wantShadow = d2 < shadowRangeSq;
         const inProxyBand = d2 < ENTITY_PROXY_SHADOW_RANGE_SQ;
@@ -4242,19 +4345,51 @@ export class Renderer {
   // allocates nothing and skips the sort while the budget isn't contended.
   private budgetFireLights(px: number, pz: number): void {
     const ranked = this.lightRank;
-    while (ranked.length < this.fireLights.length) {
-      const light = this.fireLights[ranked.length];
-      ranked.push({ light, d2: 0, worldPos: light.getWorldPosition(new THREE.Vector3()) });
+    // Rank the union of static fire lights AND entity-view lights (e.g. quest-object
+    // glows). Both must share one budget: if a view light were counted separately,
+    // numPointLights would change as it streams in/out and recompile every lit
+    // material. Rebuild only when the set changes (dirty), or when fire lights grow
+    // (dungeon interiors push to fireLights) - both rare, so the hot path just
+    // refreshes distances. View positions are cached at rebuild; lights never move.
+    const want = this.fireLights.length + this.viewLights.length;
+    if (this.lightRankDirty || ranked.length !== want) {
+      ranked.length = 0;
+      for (const light of this.fireLights) {
+        ranked.push({
+          light,
+          d2: 0,
+          worldPos: light.getWorldPosition(new THREE.Vector3()),
+          base: null,
+        });
+      }
+      for (const light of this.viewLights) {
+        const stored = light.userData.budgetBase;
+        const base = typeof stored === 'number' ? stored : light.intensity;
+        ranked.push({ light, d2: 0, worldPos: light.getWorldPosition(new THREE.Vector3()), base });
+      }
+      this.lightRankDirty = false;
     }
     for (const entry of ranked) {
       const dx = entry.worldPos.x - px,
         dz = entry.worldPos.z - pz;
       entry.d2 = dx * dx + dz * dz;
     }
-    const lightBudget = this.effectivePointLights || GFX.maxPointLights;
-    if (ranked.length > lightBudget) ranked.sort((a, b) => a.d2 - b.d2);
+    // CONSTANT visible count (numPointLights never changes -> no light-count recompiles);
+    // the live governor only changes how many SHINE, not how many are counted.
+    const visibleCount = GFX.maxPointLights;
+    const liveBudget = this.effectivePointLights || GFX.maxPointLights;
+    if (ranked.length > visibleCount) ranked.sort((a, b) => a.d2 - b.d2);
     for (let i = 0; i < ranked.length; i++) {
-      ranked[i].light.visible = i < lightBudget && ranked[i].d2 < LIGHT_BUDGET_RANGE_SQ;
+      const entry = ranked[i];
+      const counted = i < visibleCount;
+      entry.light.visible = counted;
+      const shine = counted && i < liveBudget && entry.d2 < LIGHT_BUDGET_RANGE_SQ;
+      if (entry.base !== null) {
+        // view light: no flicker pass restores it, so drive its intensity directly
+        entry.light.intensity = shine ? entry.base : 0;
+      } else if (counted && !shine) {
+        entry.light.intensity = 0; // fire light: dark now; the flicker pass relights it when it shines
+      }
     }
   }
 
