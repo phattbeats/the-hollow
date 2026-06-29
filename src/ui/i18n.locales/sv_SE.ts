@@ -2302,6 +2302,11 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'guide.controls.abilities': 'Använd förmågor',
   'guide.controls.actionHeader': 'Handling',
   'guide.controls.arena': 'Arena',
+  'guide.controls.controllerBody':
+    'Handkontroller fungerar också, och stöd för handkontroll är på som standard. Vänsterspaken förflyttar dig, högerspaken styr kameran, och ansikts- och axelknapparna täcker dina förmågor, hopp och interaktion. Öppna valfritt fönster för att ta fram en pekare på skärmen för menyer. Du kan binda om knapparna och justera spakens dödzon, kamerahastighet, vibration och inverterat sikte i handkontrollsinställningarna under alternativ.',
+  'guide.controls.controllerHeading': 'På handkontroll',
+  'guide.controls.cycleFriendly': 'Växla mellan vänliga mål',
+  'guide.controls.gameMenu': 'Öppna spelmeny och alternativ',
   'guide.controls.groupCamera': 'Kamera',
   'guide.controls.groupCombat': 'Målval och strid',
   'guide.controls.groupInterface': 'Fönster',
@@ -2314,6 +2319,40 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
     'Pekkontroller visas automatiskt på telefoner och surfplattor: en rörelsespak till vänster, dra var som helst till höger för att titta, och knappar på skärmen för dina förmågor och menyer.',
   'guide.controls.mobileHeading': 'På mobil',
   'guide.controls.talents': 'Talanger',
+  'guide.controls.targetFriendly': 'Måla in närmaste vänliga',
+  'guide.delvesPage.affixesBody':
+    'Svårare omgångar slumpar fram en modifierare som ändrar hur nedstigningen spelas, från rastlösa döda, till dålig luft, till takverk som ger vika. De höjer faran och belöningen tillsammans. En delve med kryptatema kan slumpa fram någon av dessa:',
+  'guide.delvesPage.affixesHeading': 'Omgångsmodifierare',
+  'guide.delvesPage.affixesLabel': 'Möjliga modifierare',
+  'guide.delvesPage.companionBody':
+    'En delve skickar med en följeslagare ner med dig, så en ensam omgång är aldrig hopplös. Hon slåss vid din sida, och allteftersom du investerar i henne mellan omgångar blir hon stadigt starkare, tills hon kan dra en allierad tillbaka från avgrundens rand en gång per nedstigning. Hon är din under delven och väntar vid tavlan mellan omgångar.',
+  'guide.delvesPage.companionHeading': 'Din följeslagare',
+  'guide.delvesPage.companionLabel': 'Följeslagare',
+  'guide.delvesPage.fromLevel': 'Från nivå {n}',
+  'guide.delvesPage.heading': 'Delver',
+  'guide.delvesPage.howBody':
+    'Prata med vaktaren för att öppna tavlan, välj en svårighetsgrad och stig ner. Varje omgång knyter ihop ett par korta kammare och avslutas vid sin väktare; rensa den för att kräva din belöning och återvända till ytan. Ta med en vän om du har en, eller luta dig mot din följeslagare om du inte har det.',
+  'guide.delvesPage.howHeading': 'Så fungerar en omgång',
+  'guide.delvesPage.intro':
+    'Delver är korta, omspelbara nedstigningar för en eller två, med en trogen följeslagare vid din sida närhelst du går ner ensam. Hitta tavlan, välj en omgång och klättra ut igen med bytet.',
+  'guide.delvesPage.keeperLabel': 'Vaktare',
+  'guide.delvesPage.lockpickBody':
+    'Vissa dörrar och förråd är förseglade, och att öppna ett är ett litet prov på nerver snarare än en egenskapskontroll: lös låset rent och stadigt så förtjänar du ett bättre pris än ett hastat, fumlat. Det är valfritt, men den försiktiga delvaren är den rikare.',
+  'guide.delvesPage.lockpickHeading': 'Lås och vad de döljer',
+  'guide.delvesPage.marksBody':
+    'Att rensa delver ger Delve-märken, en valuta som hålls åtskild från ditt mynt. Spendera dem hos vaktaren för att stärka din följeslagare och plocka upp utrustning du inte hittar någon annanstans.',
+  'guide.delvesPage.marksHeading': 'Delve-märken',
+  'guide.delvesPage.partyLabel': 'För en eller två',
+  'guide.delvesPage.tiersBody':
+    'En delve erbjuder mer än en svårighetsgrad. Den högre gör fienderna starkare och slumpar in en omgångsmodifierare, och betalar mer i gengäld. Den kräver också att du har några nivåer i bagaget innan den släpper in dig.',
+  'guide.delvesPage.tiersHeading': 'Svårighetsgrad',
+  'guide.delvesPage.tiersLabel': 'Svårighetsgrader',
+  'guide.delvesPage.whatBody':
+    'En delve är en liten instansierad fängelsehåla gjord enbart för dig och upp till en allierad, en privat kopia där du inte kan bli störd. Du startar den från en tavla som sköts av en delvevaktare ute i världen, hoppar in, slåss dig ner genom en handfull rum och avslutar på en enda väktare. Omgångar går snabbt och är menade att upprepas, så en delve är en pålitlig bit framsteg närhelst den öppna världen sinar.',
+  'guide.delvesPage.whatHeading': 'Vad en delve är',
+  'guide.delvesPage.whereBody':
+    'Den första delven, Det rasade relikvariet, öppnar vid Relikkullen i startdalen Östbäcksdalen. Broder Halven sköter tavlan där, och han skickar ner dig så snart du är redo.',
+  'guide.delvesPage.whereHeading': 'Var du hittar en',
   'guide.docTitle': '{page} - {brand}',
   'guide.dungeonsPage.bastionBody':
     'En översvämmad fästning förlorad till träsket, hållen av dränkta försvarare och den stigande tidvattnet självt.',
@@ -2370,6 +2409,9 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'guide.economy.marketPricing':
     'Prissättningen är upp till dig. Att lägga sig lite under vad andra begär brukar sälja snabbare, medan ett brant pris kan bli liggande orört. Bläddra först för att se hur gångpriset ser ut innan du lägger upp.',
   'guide.economy.marketTitle': 'Världsmarknaden',
+  'guide.economy.marksBody':
+    'Mynt är inte det enda du lägger på hög. Delver betalar ut Delve-märken, en separat valuta du bara spenderar hos delvevaktaren, på följeslagaruppgraderingar och utrustning du inte hittar någon annanstans. De blandas aldrig med ditt mynt.',
+  'guide.economy.marksTitle': 'En andra valuta: Delve-märken',
   'guide.economy.tradeBody':
     'Du kan byta öga mot öga med vem som helst som står nära dig. Ni lägger båda föremål och mynt i ett delat fönster och bytet sker först när ni båda bekräftar det, så ingen sida kan bli lurad. Det är det enkla sättet att räcka en vän ett byte eller göra upp en affär.',
   'guide.economy.tradeTitle': 'Handla med andra spelare',
@@ -2379,6 +2421,9 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'guide.family.beast.desc':
     'Vilda djur i skog och mark, från vargar och vildsvin till det som jagar dem. Jägare kan tämja många av dem.',
   'guide.family.beast.name': 'Bestar',
+  'guide.family.dragonkin.desc':
+    'Fjälliga, ormlika ting från de gamla djupen. Sällsynta, stolta och långt starkare än de ser ut.',
+  'guide.family.dragonkin.name': 'Drakätt',
   'guide.family.elemental.desc':
     'Levande storm och sten, bundna till de vilda platser där elementen flödar starkt.',
   'guide.family.elemental.name': 'Elementarer',
@@ -2453,6 +2498,8 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'guide.gear.consumablesPotions':
     'Drycker återställer hälsa eller mana i samma stund som du använder dem, även mitt i strid, vilket gör dem till en livräddare när ett angrepp går snett. De delar en kort nedkylning, så planera in ett bra tillfälle att använda dem.',
   'guide.gear.consumablesTitle': 'Förbrukningsvaror',
+  'guide.gear.cosmeticsApply':
+    'Ställ in ditt aktiva utseende från utseenderaden på din karaktärsskärm, och växla fritt bland allt du har låst upp.',
   'guide.gear.cosmeticsBody':
     'Vissa belöningar ändrar bara hur din karaktär ser ut, aldrig hur stark du är. Dessa kosmetiska skinn låter dig sticka ut utan att påverka spelet, så bär vilket du vill.',
   'guide.gear.cosmeticsCache':
@@ -2471,6 +2518,8 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'guide.gear.fishingTitle': 'Fiske',
   'guide.gear.intro':
     'Utrustning är det din karaktär bär och föremålen du har med dig. Bättre utrustning är det stadigaste sättet att bli starkare, och du plockar upp det mesta bara genom att spela.',
+  'guide.gear.itemLevelBody':
+    'Om du vill ha ett snabbt sätt att jämföra två pjäser, slå på Visa föremålsnivå i alternativen. Varje vapen och rustningspjäs visar då en föremålsnivå, en enda siffra för ungefär hur kraftfull den är utifrån var den kom ifrån, så att du på ett ögonkast kan se vilken uppgradering som väger tyngst, även mellan olika platser.',
   'guide.gear.qualityBody':
     'Varje föremål har en kvalitet, och dess namn är färglagt för att matcha så att du kan avläsa dess värde med en blick. Från vanligast till mest eftertraktad:',
   'guide.gear.qualityCommon': 'Vanlig',
@@ -2482,6 +2531,9 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'guide.gear.qualityRare': 'Sällsynt',
   'guide.gear.qualityTitle': 'Kvalitet, med en blick',
   'guide.gear.qualityUncommon': 'Ovanlig',
+  'guide.gear.setsBody':
+    'Den sällsyntaste rustningen kommer i matchande familjer, flera pjäser skurna för att se ut och slåss som en. Bär nog av en familj samtidigt så vaknar settet, vilket ger bonusar utöver varje pjäs egna egenskaper, och ju fler pjäser du bär desto starkare blir det. Dessa faller från det tuffaste gruppinnehållet nära nivåtaket, så att jaga ett komplett set är ett klassiskt slutspelsmål.',
+  'guide.gear.setsTitle': 'Set och setbonusar',
   'guide.gear.slotChest': 'Bröst',
   'guide.gear.slotFeet': 'Fötter',
   'guide.gear.slotGloves': 'Händer',
@@ -2502,6 +2554,9 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'guide.glossary.aggroDef':
     'En fiendes uppmärksamhet. Spelaren som genererar mest hot håller aggro och blir attackerad.',
   'guide.glossary.aggroTerm': 'Aggro',
+  'guide.glossary.augmentDef':
+    'En tillfällig förstärkning du väljer ut under en två-mot-två-match i Fiesta-arenan som formar om din uppsättning, men bara för den matchen.',
+  'guide.glossary.augmentTerm': 'Förstärkning',
   'guide.glossary.buffDef':
     'En hjälpsam effekt på dig eller en allierad, som en välsignelse som höjer en egenskap ett tag.',
   'guide.glossary.buffTerm': 'Buff',
@@ -2511,6 +2566,9 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'guide.glossary.debuffDef':
     'En skadlig effekt på ett mål, som en inbromsning, en blödning eller försvagad rustning.',
   'guide.glossary.debuffTerm': 'Debuff',
+  'guide.glossary.delveDef':
+    'En kort, omspelbar instansierad nedstigning för en eller två spelare, körd från en vaktares tavla med en följeslagare vid din sida.',
+  'guide.glossary.delveTerm': 'Delve',
   'guide.glossary.dotDef':
     'Skada över tid och läkning över tid: effekter som tickar i jämna pulser i stället för allt på en gång.',
   'guide.glossary.dotTerm': 'DoT och HoT',
@@ -2538,6 +2596,9 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'guide.glossary.pullDef':
     'Att dra in en fiende eller grupp i en strid, vanligtvis avsiktligt och en omgång i taget.',
   'guide.glossary.pullTerm': 'Pull',
+  'guide.glossary.raidDef':
+    'En större grupp, upp till tio spelare här, bildad för den tuffaste slutspelsstriden; en grupp omvandlas till en så snart den är full.',
+  'guide.glossary.raidTerm': 'Raid',
   'guide.glossary.rareDef':
     'En ovanlig namngiven fiende som vandrar genom en zon och fäller bättre byte.',
   'guide.glossary.rareTerm': 'Sällsynt',
@@ -2688,6 +2749,7 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'guide.nav.closeMenu': 'Stäng menyn',
   'guide.nav.combat': 'Strid',
   'guide.nav.controls': 'Kontroller',
+  'guide.nav.delves': 'Delver',
   'guide.nav.dungeons': 'Fängelsehål och raider',
   'guide.nav.economy': 'Ekonomi och handel',
   'guide.nav.faq': 'FAQ',
@@ -2770,6 +2832,9 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'guide.questsPage.sideCryptBody':
     'Högt uppe på topparna löper ett tystare mysterium: gamla gravar märkta med en krona ingen uppteckning minns. Läs de döda, samla det de vaktade och bryt förseglingen på en grav som var menad att förbli stängd. Det är ett detektivspår som öppnar vägen till en andra slutspelsprövning för en full raid.',
   'guide.questsPage.sideCryptTitle': 'Den glömde kungen',
+  'guide.questsPage.sideTempleBody':
+    'En port av blekt ljus vid en hög tjärn uppe i topparna öppnar mot en sjunken helgedom där en drunknad kult ännu sjunger. Dess korta kedja står åtskild från huvudberättelsen, ett självständigt mysterium för var och en som klättrar upp till stranden, läser varningarna ristade i klipporna och går ner för att se vad de var till för.',
+  'guide.questsPage.sideTempleTitle': 'Det drunknade templet',
   'guide.questsPage.sideTitle': 'Trådar vid sidan av huvudvägen',
   'guide.questsPage.sideWardenBody':
     'Vid sidan av berättelsen delar väktarna i Dalen och kärret ut en stående dusörstege. Arbeta dig uppför den, fiende för fiende, så som varje väktare före dig förtjänade sin plats. Det är hederlig nivåökning och en rundtur bland varje zons värsta orosstiftare.',
@@ -2812,6 +2877,7 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'guide.search.placeholder': 'Sök i guiden',
   'guide.search.typeClass': 'Klass',
   'guide.search.typeCreature': 'Varelser',
+  'guide.search.typeDelve': 'Delve',
   'guide.search.typeDungeon': 'Fängelsehåla',
   'guide.search.typePage': 'Sida',
   'guide.search.typeTerm': 'Term',
@@ -2870,6 +2936,9 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
     'Vanliga fynd kan gå till plundraren, medan bättre fynd läggs upp för en rullning så att alla får en rättvis chans.',
   'guide.social.lootCommonTitle': 'Föremål.',
   'guide.social.lootHeading': 'Gruppbyte',
+  'guide.social.lootMasterBody':
+    'Ledaren kan i stället ta hand om de bättre fynden och dela ut vart och ett till den medlem som bör få det. Det hindrar eftertraktad utrustning från att gå till ett vilset kast, så som en organiserad grupp kör en fängelsehåla.',
+  'guide.social.lootMasterTitle': 'Bytesmästare.',
   'guide.social.lootRollBody':
     'När ett föremål går till en rullning väljer varje berättigad medlem Behov om de vill ha det, Girighet om de bara skulle ta det till övers, eller Avstå för att kliva av. Den högsta rullningen vinner.',
   'guide.social.lootRollTitle': 'Behov, Girighet eller Avstå.',
@@ -2895,6 +2964,9 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'guide.stats.dodgeBody':
     'Väjning är din chans att helt undvika en inkommande närstridsattack. Du börjar med en liten baschans, och Smidighet höjer den, så viga klasser slinker undan fler slag.',
   'guide.stats.dodgeTitle': 'Väjning',
+  'guide.stats.dpsBody':
+    'Ditt blad visar också en uppskattning av skada per sekund: ungefär vad ditt vapen, dess svinghastighet och din anfallskraft summerar till över tid. Det är ett snabbt sätt att jämföra två vapen på ett ögonkast.',
+  'guide.stats.dpsTitle': 'Skada per sekund',
   'guide.stats.growBody':
     'Två saker höjer dina egenskaper. Varje nivå lägger till en fast mängd av varje attribut för att passa din klass, och utrustningen du bär lägger till mer ovanpå. Att hålla din utrustning aktuell är det stadigaste sättet att växa sig starkare, hela vägen till maxnivån.',
   'guide.stats.growHeading': 'Hur dina egenskaper växer',
@@ -2909,6 +2981,9 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'guide.stats.sheetBody':
     'Öppna karaktärsfönstret i spelet för att se allt detta på ett ställe: dina fem egenskaper på ena sidan och de stats de göder på den andra. För muspekaren över valfritt värde så bryter en verktygstips ner vad det gör för din klass, så du kan se på ett ögonkast vilka siffror en uppgradering faktiskt flyttade.',
   'guide.stats.sheetHeading': 'Att läsa ditt karaktärsblad',
+  'guide.stats.spBody':
+    'Besvärjelsekraft är en besvärjares motsvarighet till anfallskraft: den höjer skadan dina besvärjelser gör. Intellekt matar den, och besvärjarutrustning och förstärkningar lägger till mer ovanpå, så en besvärjare bevakar besvärjelsekraft på samma sätt som en närstridskämpe bevakar anfallskraft.',
+  'guide.stats.spTitle': 'Besvärjelsekraft',
   'guide.stats.spiBody':
     'Ande styr hur snabbt en besvärjares mana återvänder medan denne är utanför strid. Liksom Intellekt tjänar den manaklasserna och betyder föga för de andra.',
   'guide.stats.spiTitle': 'Ande',
@@ -2938,6 +3013,8 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'guide.talentsPage.resetNote':
     'Du kan återställa dina talanger när som helst, så ett tidigt val är aldrig en fälla. Prova saker, se vad du gillar, och ändra dig fritt.',
   'guide.talentsPage.resetTitle': 'Inget är permanent',
+  'guide.talentsPage.shareNote':
+    'Ett färdigt bygge kan kopieras till en kort delbar kod och ges till en vän, som klistrar in den rakt i sin egen talangpanel för att ladda det.',
   'guide.talentsPage.specsBody':
     'Varje klass har en handfull specialiseringar, var och en med sin egen roll och ett kännetecknande fokus. Här är formen på dem alla. Öppna en klass för dess fullständiga uppsättning.',
   'guide.talentsPage.specsHeading': 'Specialiseringar per klass',
@@ -2951,6 +3028,7 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'guide.viewer.error':
     '3D-modellen kunde inte laddas. Konsten ovan visar fortfarande denna {name}.',
   'guide.viewer.loading': 'Laddar modell...',
+  'guide.viewer.posterAlt': '{name}',
   'guide.viewer.view3d': 'Visa {name} i 3D',
   'guide.viewer.view3dShort': 'Visa i 3D',
   'guide.wishPage.heading': 'Saker jag önskar att jag visste',

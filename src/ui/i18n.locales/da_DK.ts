@@ -2294,6 +2294,11 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'guide.controls.abilities': 'Brug evner',
   'guide.controls.actionHeader': 'Handling',
   'guide.controls.arena': 'Arena',
+  'guide.controls.controllerBody':
+    'Gamepads virker også, og controllerstyring er slået til som standard. Venstre pind bevæger dig, højre pind sigter kameraet, og knapperne foran og på skuldrene dækker dine evner, hop og interaktion. Åbn et hvilket som helst vindue for at få en markør frem på skærmen til menuer. Du kan ombinde knapperne og justere pindens dødzone, kamerahastighed, vibration og omvendt kig fra controllerafsnittet i spillets indstillinger.',
+  'guide.controls.controllerHeading': 'På en controller',
+  'guide.controls.cycleFriendly': 'Skift venligt mål',
+  'guide.controls.gameMenu': 'Åbn spilmenu og indstillinger',
   'guide.controls.groupCamera': 'Kamera',
   'guide.controls.groupCombat': 'Målretning og kamp',
   'guide.controls.groupInterface': 'Vinduer',
@@ -2306,6 +2311,40 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
     'Berøringsstyring vises automatisk på telefoner og tablets: en bevægelsesstik til venstre, træk hvor som helst til højre for at kigge, og knapper på skærmen til dine evner og menuer.',
   'guide.controls.mobileHeading': 'På mobil',
   'guide.controls.talents': 'Talenter',
+  'guide.controls.targetFriendly': 'Vælg nærmeste venlige',
+  'guide.delvesPage.affixesBody':
+    'Sværere løb ruller en modifikator, der ændrer, hvordan nedstigningen forløber, fra rastløse døde til dårlig luft til svigtende tagværk. De hæver faren og belønningen sammen. En delve med gravtema kan rulle en hvilken som helst af disse:',
+  'guide.delvesPage.affixesHeading': 'Løbsmodifikatorer',
+  'guide.delvesPage.affixesLabel': 'Mulige modifikatorer',
+  'guide.delvesPage.companionBody':
+    'En delve sender en ledsager med dig ned, så et sololøb aldrig er håbløst. Hun kæmper ved din side, og efterhånden som du investerer i hende mellem løbene, vokser hun støt sig stærkere, indtil hun kan trække en allieret tilbage fra afgrundens rand én gang per nedstigning. Hun er din under hele delven og venter ved tavlen mellem løbene.',
+  'guide.delvesPage.companionHeading': 'Din ledsager',
+  'guide.delvesPage.companionLabel': 'Ledsager',
+  'guide.delvesPage.fromLevel': 'Fra niveau {n}',
+  'guide.delvesPage.heading': 'Delve',
+  'guide.delvesPage.howBody':
+    'Tal med vogteren for at åbne tavlen, vælg en sværhedsgrad, og stig ned. Hvert løb knytter nogle få korte kamre sammen og ender ved sin vægter; ryd den for at kræve din belønning og vende tilbage til overfladen. Tag en ven med, hvis du har en, eller læn dig op ad din ledsager, hvis ikke.',
+  'guide.delvesPage.howHeading': 'Sådan forløber et løb',
+  'guide.delvesPage.intro':
+    'Delves er korte nedstigninger til en eller to, som kan gentages, med en trofast ledsager ved din side, når du går ned alene. Find tavlen, vælg et løb, og klatr op igen med byttet.',
+  'guide.delvesPage.keeperLabel': 'Vogter',
+  'guide.delvesPage.lockpickBody':
+    'Nogle døre og skjul er forseglede, og at åbne en er en lille prøve på dine nerver snarere end et tjek af dine statistikker: løs låsen rent og roligt, og du tjener en bedre præmie end et forhastet, klodset forsøg. Det er valgfrit, men den omhyggelige delver er den rigeste.',
+  'guide.delvesPage.lockpickHeading': 'Låse og hvad de skjuler',
+  'guide.delvesPage.marksBody':
+    'At rydde delves giver Delve-Mærker, en valuta der holdes adskilt fra dine mønter. Brug dem hos vogteren for at styrke din ledsager og samle udstyr op, som du ikke finder nogen andre steder.',
+  'guide.delvesPage.marksHeading': 'Delve-Mærker',
+  'guide.delvesPage.partyLabel': 'For en eller to',
+  'guide.delvesPage.tiersBody':
+    'En delve byder på mere end én sværhedsgrad. Den højere gør fjenderne stærkere og ruller en løbsmodifikator ind, og den giver mere til gengæld. Den kræver også, at du har et par niveauer på bagen, før den lukker dig ind.',
+  'guide.delvesPage.tiersHeading': 'Sværhedsgrad',
+  'guide.delvesPage.tiersLabel': 'Sværhedsgrader',
+  'guide.delvesPage.whatBody':
+    'En delve er et lille instanseret fangehul, der er lavet kun til dig og op til én allieret, en privat kopi, hvor du ikke kan blive forstyrret. Du starter den fra en tavle, der holdes af en delve-vogter ude i verden, hopper ind, kæmper dig ned gennem en håndfuld rum og slutter på en enkelt vægter. Løb er hurtige og ment til at blive gentaget, så en delve er et stabilt stykke fremgang, hver gang den åbne verden tørrer ud.',
+  'guide.delvesPage.whatHeading': 'Hvad en delve er',
+  'guide.delvesPage.whereBody':
+    'Den første delve, Det Sammenstyrtede Relikvarium, åbner ved Relikvariebakken i startdalen Østbæk Dal. Broder Halven holder tavlen der, og han sender dig ned, så snart du er klar.',
+  'guide.delvesPage.whereHeading': 'Hvor du finder en',
   'guide.docTitle': '{page} - {brand}',
   'guide.dungeonsPage.bastionBody':
     'En oversvømmet fæstning fortabt til sumpen, holdt af druknede forsvarere og den stigende tidevand selv.',
@@ -2362,6 +2401,9 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'guide.economy.marketPricing':
     'Prissætningen er op til dig. At slå en smule under, hvad andre forlanger, plejer at sælge hurtigere, mens en stejl pris kan blive liggende urørt. Gennemse først for at se, hvad den gængse pris ligger på, før du slår op.',
   'guide.economy.marketTitle': 'Verdensmarkedet',
+  'guide.economy.marksBody':
+    'Mønter er ikke det eneste, du lægger til side. Delves udbetaler Delve-Mærker, en særskilt valuta, du kun bruger hos delve-vogteren, på ledsageropgraderinger og udstyr, du ikke finder andre steder. De blandes aldrig med dine mønter.',
+  'guide.economy.marksTitle': 'En anden valuta: Delve-Mærker',
   'guide.economy.tradeBody':
     'Du kan handle ansigt til ansigt med enhver, der står nær dig. I lægger begge genstande og mønter i et delt vindue, og byttet sker først, når I begge bekræfter det, så ingen af parterne kan snydes. Det er den enkle måde at give en ven et drop eller afslutte en aftale.',
   'guide.economy.tradeTitle': 'Handel med andre spillere',
@@ -2371,6 +2413,9 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'guide.family.beast.desc':
     'Vilde dyr fra skov og mark, fra ulve og vildsvin til de ting, der jager dem. Jægere kan tæmme mange af dem.',
   'guide.family.beast.name': 'Bæster',
+  'guide.family.dragonkin.desc':
+    'Skældækkede, slangeagtige væsner fra de gamle dyb. Sjældne, stolte og langt stærkere, end de ser ud.',
+  'guide.family.dragonkin.name': 'Drageæt',
   'guide.family.elemental.desc':
     'Levende storm og sten, bundet til de vilde steder, hvor elementerne løber stærkt.',
   'guide.family.elemental.name': 'Elementarvæsner',
@@ -2445,6 +2490,8 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'guide.gear.consumablesPotions':
     'Trylledrikke genopretter helbred eller mana i det øjeblik, du bruger dem, selv midt i kampen, hvilket gør dem til en afgørende redning, når et angreb går galt. De deler en kort nedkøling, så planlæg ét godt øjeblik at bruge dem.',
   'guide.gear.consumablesTitle': 'Forbrugsvarer',
+  'guide.gear.cosmeticsApply':
+    'Vælg dit aktive udseende fra udseenderækken på din karakterskærm, og skift frit mellem alt, du har låst op.',
   'guide.gear.cosmeticsBody':
     'Nogle belønninger ændrer kun, hvordan din figur ser ud, aldrig hvor stærk du er. Disse kosmetiske skind lader dig skille dig ud uden at påvirke spillet, så bær lige hvad du kan lide.',
   'guide.gear.cosmeticsCache':
@@ -2463,6 +2510,8 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'guide.gear.fishingTitle': 'Fiskeri',
   'guide.gear.intro':
     'Udstyr er det udstyr, din figur bærer, og de genstande, du bærer på. Bedre udstyr er den mest stabile måde at blive stærkere på, og du samler det meste af det op bare ved at spille.',
+  'guide.gear.itemLevelBody':
+    'Hvis du vil have en hurtig måde at sammenligne to genstande på, så slå Vis genstandsniveau til i indstillingerne. Hvert våben og rustningsstykke viser så et genstandsniveau, et enkelt tal for nogenlunde hvor stærkt det er ud fra, hvor det kom fra, så du med et blik kan se, hvilken opgradering der vejer tungest, selv på tværs af forskellige pladser.',
   'guide.gear.qualityBody':
     'Hver genstand har en kvalitet, og dens navn er farvet til at matche, så du kan aflæse dens værd med et blik. Fra mest almindelig til mest eftertragtet:',
   'guide.gear.qualityCommon': 'Almindelig',
@@ -2474,6 +2523,9 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'guide.gear.qualityRare': 'Sjælden',
   'guide.gear.qualityTitle': 'Kvalitet, med et blik',
   'guide.gear.qualityUncommon': 'Ualmindelig',
+  'guide.gear.setsBody':
+    'Den mest sjældne rustning kommer i matchede familier, flere stykker skåret til at se ud og kæmpe som ét. Bær nok af en familie på én gang, og sættet vågner og giver bonusser oven i hvert stykkes egne statistikker, og jo flere stykker du bærer, jo stærkere bliver det. De falder fra det sejeste gruppeindhold nær niveauloftet, så at jagte et fuldt sæt er et klassisk slutspilsmål.',
+  'guide.gear.setsTitle': 'Sæt og sætbonusser',
   'guide.gear.slotChest': 'Bryst',
   'guide.gear.slotFeet': 'Fødder',
   'guide.gear.slotGloves': 'Hænder',
@@ -2494,6 +2546,9 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'guide.glossary.aggroDef':
     'En fjendes opmærksomhed. Den spiller, der skaber mest trussel, holder aggro og bliver angrebet.',
   'guide.glossary.aggroTerm': 'Aggro',
+  'guide.glossary.augmentDef':
+    'En midlertidig forstærkning, du vælger under en to mod to Fiesta-arenakamp, og som kun omformer dit udstyr for den ene kamp.',
+  'guide.glossary.augmentTerm': 'Forstærkning',
   'guide.glossary.buffDef':
     'En hjælpsom effekt på dig eller en allieret, som en velsignelse der hæver en egenskab et stykke tid.',
   'guide.glossary.buffTerm': 'Forstærkning',
@@ -2503,6 +2558,9 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'guide.glossary.debuffDef':
     'En skadelig effekt på et mål, som en opbremsning, en blødning eller svækket rustning.',
   'guide.glossary.debuffTerm': 'Svækkelse',
+  'guide.glossary.delveDef':
+    'En kort, gentagelig instanseret nedstigning for en eller to spillere, kørt fra en vogters tavle med en ledsager ved din side.',
+  'guide.glossary.delveTerm': 'Delve',
   'guide.glossary.dotDef':
     'Skade over tid og helbredelse over tid: effekter der tikker i jævne pulser i stedet for alt på én gang.',
   'guide.glossary.dotTerm': 'DoT og HoT',
@@ -2531,6 +2589,9 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'guide.glossary.pullDef':
     'At trække en fjende eller gruppe ind i en kamp, som regel bevidst og én flok ad gangen.',
   'guide.glossary.pullTerm': 'Pull',
+  'guide.glossary.raidDef':
+    'En større gruppe, op til ti spillere her, dannet til den sejeste slutspilskamp; en følgesvende-gruppe omdannes til et, når den er fuld.',
+  'guide.glossary.raidTerm': 'Raid',
   'guide.glossary.rareDef':
     'En sjælden navngiven fjende, der vandrer rundt i en zone og giver bedre bytte.',
   'guide.glossary.rareTerm': 'Sjælden',
@@ -2679,6 +2740,7 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'guide.nav.closeMenu': 'Luk menu',
   'guide.nav.combat': 'Kamp',
   'guide.nav.controls': 'Styring',
+  'guide.nav.delves': 'Delve',
   'guide.nav.dungeons': 'Fangehuller & Raids',
   'guide.nav.economy': 'Økonomi & Handel',
   'guide.nav.faq': 'FAQ',
@@ -2762,6 +2824,9 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'guide.questsPage.sideCryptBody':
     'Højt oppe på tinderne løber et stillere mysterium: gamle grave mærket med en krone intet skrift husker. Læs de døde, indsaml hvad de vogtede, og bryd seglet på en grav der var ment at forblive lukket. Det er en detektivs spor der åbner vejen til en anden endgame-prøve for et fuldt raid.',
   'guide.questsPage.sideCryptTitle': 'Den glemte konge',
+  'guide.questsPage.sideTempleBody':
+    'En port af blegt lys ved et højtliggende bjergvand i tinderne åbner sig mod en sunken helligdom, hvor en druknet kult stadig synger. Dens korte kæde står adskilt fra hovedhistorien, et selvstændigt mysterium for enhver, der klatrer op til bredden, læser advarslerne hugget ind i klipperne og stiger ned for at se, hvad de var til for.',
+  'guide.questsPage.sideTempleTitle': 'Det druknede tempel',
   'guide.questsPage.sideTitle': 'Tråde uden for hovedvejen',
   'guide.questsPage.sideWardenBody':
     'Side om side med historien uddeler vogterne i Dalen og mosen en stående dusørstige. Arbejd dig op ad den, fjende for fjende, sådan som hver vogter før dig optjente sin plads. Det er ærlig opleveling og en rundtur til hver zones værste ballademagere.',
@@ -2804,6 +2869,7 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'guide.search.placeholder': 'Søg i guiden',
   'guide.search.typeClass': 'Klasse',
   'guide.search.typeCreature': 'Væsner',
+  'guide.search.typeDelve': 'Delve',
   'guide.search.typeDungeon': 'Fangekælder',
   'guide.search.typePage': 'Side',
   'guide.search.typeTerm': 'Begreb',
@@ -2862,6 +2928,9 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
     'Almindelige fund kan gå til byttetageren, mens bedre fund sættes op til et kast, så alle får en fair chance.',
   'guide.social.lootCommonTitle': 'Genstande.',
   'guide.social.lootHeading': 'Gruppebytte',
+  'guide.social.lootMasterBody':
+    'Lederen kan i stedet tage ansvaret for de bedre fund og dele hvert enkelt ud til det medlem, der bør have det. Det forhindrer eftertragtet udstyr i at gå til et tilfældigt kast, sådan som en organiseret gruppe løber et fangehul.',
+  'guide.social.lootMasterTitle': 'Byttemester.',
   'guide.social.lootRollBody':
     'Når en genstand går til et kast, vælger hvert berettiget medlem Behov hvis de vil have den, Grådighed hvis de kun ville tage den til overs, eller Pas for at trække sig. Det højeste kast vinder.',
   'guide.social.lootRollTitle': 'Behov, Grådighed eller Pas.',
@@ -2887,6 +2956,9 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'guide.stats.dodgeBody':
     'Undvigelse er din chance for helt at undgå et indkommende nærkampsangreb. Du begynder med en lille basischance, og Smidighed hæver den, så adrætte klasser slipper for flere slag.',
   'guide.stats.dodgeTitle': 'Undvigelse',
+  'guide.stats.dpsBody':
+    'Dit ark viser også et skøn over skade per sekund: nogenlunde hvad dit våben, dets svinghastighed og din angrebsstyrke lægger op til over tid. Det er en hurtig måde at sammenligne to våben med et blik.',
+  'guide.stats.dpsTitle': 'Skade per sekund',
   'guide.stats.growBody':
     'To ting hæver dine statistikker. Hvert niveau tilføjer en fast mængde af hver attribut til at passe din klasse, og det udstyr du udruster tilføjer mere oven i. At holde dit udstyr opdateret er den stødigste vej til at vokse sig stærkere, hele vejen til niveauloftet.',
   'guide.stats.growHeading': 'Sådan vokser dine statistikker',
@@ -2901,6 +2973,9 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'guide.stats.sheetBody':
     'Åbn karaktervinduet i spillet for at se alt dette ét sted: dine fem attributter på den ene side og de statistikker de fodrer på den anden. Hold musen over en hvilken som helst værdi, og et værktøjstip opdeler hvad den gør for din klasse, så du med et blik kan se hvilke tal en opgradering faktisk flyttede.',
   'guide.stats.sheetHeading': 'At læse dit karakterark',
+  'guide.stats.spBody':
+    'Besværgelsesstyrke er en besværgers modstykke til angrebsstyrke: den hæver den skade, dine besværgelser volder. Intellekt fodrer den, og besværgerudstyr og forstærkninger lægger mere oven i, så en besværger holder øje med besværgelsesstyrke, sådan som en nærkampskæmper holder øje med angrebsstyrke.',
+  'guide.stats.spTitle': 'Besværgelsesstyrke',
   'guide.stats.spiBody':
     'Ånd styrer hvor hurtigt en besværgers mana vender tilbage uden for kamp. Ligesom Intellekt tjener den manaklasserne og betyder kun lidt for de andre.',
   'guide.stats.spiTitle': 'Ånd',
@@ -2930,6 +3005,8 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'guide.talentsPage.resetNote':
     'Du kan nulstille dine talenter når som helst, så et tidligt valg er aldrig en fælde. Prøv tingene, se hvad du kan lide, og skift mening frit.',
   'guide.talentsPage.resetTitle': 'Intet er permanent',
+  'guide.talentsPage.shareNote':
+    'En færdig build kan kopieres til en kort delbar kode og gives til en ven, der indsætter den direkte i sit eget talentpanel for at indlæse den.',
   'guide.talentsPage.specsBody':
     'Hver klasse har en håndfuld specialiseringer, hver med sin egen rolle og sit særkende. Her er formen på dem alle. Åbn en klasse for dens fulde udstyr.',
   'guide.talentsPage.specsHeading': 'Specialiseringer efter klasse',
@@ -2943,6 +3020,7 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'guide.viewer.error':
     '3D-modellen kunne ikke indlæses. Illustrationen ovenfor viser stadig denne {name}.',
   'guide.viewer.loading': 'Indlæser model...',
+  'guide.viewer.posterAlt': '{name}',
   'guide.viewer.view3d': 'Se {name} i 3D',
   'guide.viewer.view3dShort': 'Se i 3D',
   'guide.wishPage.heading': 'Ting jeg ville ønske jeg vidste',

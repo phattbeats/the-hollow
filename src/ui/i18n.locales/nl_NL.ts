@@ -2336,6 +2336,11 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'guide.controls.abilities': 'Vaardigheden gebruiken',
   'guide.controls.actionHeader': 'Actie',
   'guide.controls.arena': 'Arena',
+  'guide.controls.controllerBody':
+    "Gamepads werken ook, en controllerondersteuning staat standaard aan. De linkerstick beweegt, de rechterstick richt de camera, en de gezichts- en schouderknoppen dekken je vaardigheden, springen en interageren. Open een venster om een aanwijzer op het scherm op te roepen voor menu's. Je kunt de knoppen opnieuw toewijzen en de stickdeadzone, camerasnelheid, trilling en omgekeerd kijken aanpassen bij de controllerinstellingen in de opties.",
+  'guide.controls.controllerHeading': 'Op een controller',
+  'guide.controls.cycleFriendly': 'Door bondgenoten bladeren',
+  'guide.controls.gameMenu': 'Spelmenu en opties openen',
   'guide.controls.groupCamera': 'Camera',
   'guide.controls.groupCombat': 'Doelwit kiezen en gevecht',
   'guide.controls.groupInterface': 'Vensters',
@@ -2348,6 +2353,40 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
     "Aanraakbediening verschijnt automatisch op telefoons en tablets: een bewegingsstick aan de linkerkant, sleep ergens aan de rechterkant om rond te kijken, en knoppen op het scherm voor je vaardigheden en menu's.",
   'guide.controls.mobileHeading': 'Op mobiel',
   'guide.controls.talents': 'Talenten',
+  'guide.controls.targetFriendly': 'Dichtstbijzijnde bondgenoot aanwijzen',
+  'guide.delvesPage.affixesBody':
+    'Zwaardere tochten rollen een modifier die verandert hoe de afdaling speelt, van rusteloze doden tot bedorven lucht tot bezwijkend dakwerk. Ze verhogen het gevaar en de beloning samen. Een delve met een cryptethema kan elk van deze rollen:',
+  'guide.delvesPage.affixesHeading': 'Tochtmodifiers',
+  'guide.delvesPage.affixesLabel': 'Mogelijke modifiers',
+  'guide.delvesPage.companionBody':
+    'Een delve stuurt een metgezel met je mee naar beneden, zodat een solotocht nooit hopeloos is. Zij vecht aan je zij, en naarmate je tussen tochten in haar investeert wordt ze gestaag sterker, tot ze eenmaal per afdaling een bondgenoot van de rand kan terughalen. Ze is van jou voor de delve en wacht bij het bord tussen tochten.',
+  'guide.delvesPage.companionHeading': 'Je metgezel',
+  'guide.delvesPage.companionLabel': 'Metgezel',
+  'guide.delvesPage.fromLevel': 'Vanaf niveau {n}',
+  'guide.delvesPage.heading': 'Delves',
+  'guide.delvesPage.howBody':
+    'Spreek de bewaarder aan om het bord te openen, kies een moeilijkheidsgraad en daal af. Elke tocht rijgt een paar korte kamers aaneen en eindigt bij zijn wachter; reken die af om je beloning op te eisen en terug te keren naar de oppervlakte. Breng een vriend mee als je er een hebt, of leun op je metgezel als dat niet zo is.',
+  'guide.delvesPage.howHeading': 'Hoe een tocht werkt',
+  'guide.delvesPage.intro':
+    'Delves zijn korte, herspeelbare afdalingen voor één of twee, met een trouwe metgezel aan je zij wanneer je alleen naar beneden gaat. Vind het bord, kies een tocht en klim terug naar boven met de buit.',
+  'guide.delvesPage.keeperLabel': 'Bewaarder',
+  'guide.delvesPage.lockpickBody':
+    'Sommige deuren en kisten zijn verzegeld, en er een openen is een kleine zenuwproef in plaats van een statistiektoets: kraak het slot schoon en gestaag en je verdient een betere prijs dan bij een gehaaste, geklungelde poging. Het is optioneel, maar de zorgvuldige delver is de rijkere.',
+  'guide.delvesPage.lockpickHeading': 'Sloten en wat ze verbergen',
+  'guide.delvesPage.marksBody':
+    'Delves voltooien levert Delve-Tekens op, een valuta die los staat van je munten. Geef ze uit bij de bewaarder om je metgezel te versterken en uitrusting op te pikken die je nergens anders vindt.',
+  'guide.delvesPage.marksHeading': 'Delve-Tekens',
+  'guide.delvesPage.partyLabel': 'Voor één of twee',
+  'guide.delvesPage.tiersBody':
+    'Een delve biedt meer dan één moeilijkheidsgraad. De hogere maakt de vijanden sterker en rolt een tochtmodifier mee, en betaalt in ruil meer uit. Hij vraagt ook dat je een paar niveaus op zak hebt voordat hij je binnenlaat.',
+  'guide.delvesPage.tiersHeading': 'Moeilijkheidsgraad',
+  'guide.delvesPage.tiersLabel': 'Moeilijkheidsgraden',
+  'guide.delvesPage.whatBody':
+    'Een delve is een kleine geïnstantieerde dungeon, gemaakt speciaal voor jou en hooguit één bondgenoot, een privékopie waarin je niet gestoord kunt worden. Je start hem vanaf een bord dat door een delvebewaarder buiten in de wereld wordt bijgehouden, valt erin, vecht je naar beneden door een handvol kamers, en eindigt bij één enkele wachter. Tochten zijn snel en bedoeld om herhaald te worden, dus een delve is een betrouwbaar stukje voortgang wanneer de open wereld opdroogt.',
+  'guide.delvesPage.whatHeading': 'Wat een delve is',
+  'guide.delvesPage.whereBody':
+    'De eerste delve, het Ingestorte Reliekschrijn, gaat open bij Reliekschrijnheuvel in de beginvallei Oostbeekdal. Broeder Halven houdt daar het bord bij, en hij stuurt je naar beneden zodra je er klaar voor bent.',
+  'guide.delvesPage.whereHeading': 'Waar je er een vindt',
   'guide.docTitle': '{page} - {brand}',
   'guide.dungeonsPage.bastionBody':
     'Een ondergelopen vesting verloren aan het moeras, in handen van verdronken verdedigers en het rijzende tij zelf.',
@@ -2404,6 +2443,9 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'guide.economy.marketPricing':
     'De prijs bepaal je zelf. Net iets onder de vraagprijs van anderen aanbieden verkoopt meestal sneller, terwijl een steile prijs onaangeroerd kan blijven liggen. Blader eerst rond om te zien wat de gangbare prijs is voordat je iets plaatst.',
   'guide.economy.marketTitle': 'De Wereldmarkt',
+  'guide.economy.marksBody':
+    'Munten zijn niet het enige dat je opspaart. Delves keren Delve-Tekens uit, een aparte valuta die je alleen bij de delvebewaarder uitgeeft, aan metgezelupgrades en uitrusting die je nergens anders vindt. Ze vermengen zich nooit met je munten.',
+  'guide.economy.marksTitle': 'Een tweede valuta: Delve-Tekens',
   'guide.economy.tradeBody':
     'Je kunt van aangezicht tot aangezicht ruilen met iedereen die bij je in de buurt staat. Jullie zetten beiden voorwerpen en munten in een gedeeld venster en de ruil vindt pas plaats zodra jullie het allebei bevestigen, zodat geen van beide kanten verrast kan worden. Het is de eenvoudige manier om een vriend een buit te geven of een afspraak af te sluiten.',
   'guide.economy.tradeTitle': 'Ruilen met andere spelers',
@@ -2413,6 +2455,9 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'guide.family.beast.desc':
     'Wilde dieren van bos en veld, van wolven en everzwijnen tot de wezens die op hen jagen. Jagers kunnen er veel van temmen.',
   'guide.family.beast.name': 'Beesten',
+  'guide.family.dragonkin.desc':
+    'Geschubde, slangachtige wezens uit de oude diepten. Zeldzaam, trots en veel sterker dan ze eruitzien.',
+  'guide.family.dragonkin.name': 'Drakenvolk',
   'guide.family.elemental.desc':
     'Levende storm en steen, gebonden aan de wilde plekken waar de elementen sterk stromen.',
   'guide.family.elemental.name': 'Elementalen',
@@ -2487,6 +2532,8 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'guide.gear.consumablesPotions':
     'Toverdranken herstellen levenskracht of mana op het moment dat je ze gebruikt, zelfs midden in een gevecht, wat ze tot een reddende greep maakt als een aanval misgaat. Ze delen een korte afkoeltijd, dus plan één goed moment om ze te gebruiken.',
   'guide.gear.consumablesTitle': 'Verbruiksartikelen',
+  'guide.gear.cosmeticsApply':
+    'Stel je actieve uiterlijk in vanaf de uiterlijkrij op je personagescherm, en wissel vrij tussen alles wat je hebt ontgrendeld.',
   'guide.gear.cosmeticsBody':
     'Sommige beloningen veranderen alleen hoe je personage eruitziet, nooit hoe sterk je bent. Met deze cosmetische skins val je op zonder het spel te beïnvloeden, dus draag wat je maar wilt.',
   'guide.gear.cosmeticsCache':
@@ -2505,6 +2552,8 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'guide.gear.fishingTitle': 'Vissen',
   'guide.gear.intro':
     'Uitrusting is de wapenrusting die je personage draagt en de voorwerpen die je meedraagt. Betere uitrusting is de gestaagste manier om sterker te worden, en het meeste pik je vanzelf op door te spelen.',
+  'guide.gear.itemLevelBody':
+    'Wil je een snelle manier om twee stukken te vergelijken, zet dan Itemniveau Tonen aan in de opties. Elk wapen en pantserstuk toont dan een itemniveau, een enkel getal voor hoe krachtig het ongeveer is op basis van waar het vandaan komt, zodat je in één oogopslag ziet welke upgrade meer gewicht in de schaal legt, zelfs tussen verschillende slots.',
   'guide.gear.qualityBody':
     'Elk voorwerp heeft een kwaliteit, en zijn naam is gekleurd om die te tonen, zodat je zijn waarde in één oogopslag kunt aflezen. Van meest gewoon tot meest gewild:',
   'guide.gear.qualityCommon': 'Gewoon',
@@ -2516,6 +2565,9 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'guide.gear.qualityRare': 'Zeldzaam',
   'guide.gear.qualityTitle': 'Kwaliteit, in één oogopslag',
   'guide.gear.qualityUncommon': 'Ongewoon',
+  'guide.gear.setsBody':
+    'De zeldzaamste pantsers komen in bij elkaar passende families, meerdere stukken die zo gesneden zijn dat ze er als één uitzien en als één vechten. Draag er genoeg van een familie tegelijk en de set ontwaakt, en geeft bonussen bovenop de eigen statistieken van elk stuk, en hoe meer stukken je draagt, hoe sterker hij wordt. Deze vallen uit de zwaarste groepscontent vlak bij de levelcap, dus jagen op een volledige set is een klassiek eindspeldoel.',
+  'guide.gear.setsTitle': 'Sets en setbonussen',
   'guide.gear.slotChest': 'Borst',
   'guide.gear.slotFeet': 'Voeten',
   'guide.gear.slotGloves': 'Handen',
@@ -2536,6 +2588,9 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'guide.glossary.aggroDef':
     'De aandacht van een vijand. De speler die de meeste dreiging genereert houdt de aggro vast en wordt aangevallen.',
   'guide.glossary.aggroTerm': 'Aggro',
+  'guide.glossary.augmentDef':
+    'Een tijdelijke versterking die je tijdens een twee-tegen-twee Fiesta-arenamatch kiest en die je kit alleen voor die match hervormt.',
+  'guide.glossary.augmentTerm': 'Augment',
   'guide.glossary.buffDef':
     'Een gunstig effect op jou of een bondgenoot, zoals een zegen die een tijdlang een statistiek verhoogt.',
   'guide.glossary.buffTerm': 'Buff',
@@ -2545,6 +2600,9 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'guide.glossary.debuffDef':
     'Een schadelijk effect op een doelwit, zoals een vertraging, een bloeding of verzwakt pantser.',
   'guide.glossary.debuffTerm': 'Debuff',
+  'guide.glossary.delveDef':
+    'Een korte, herspeelbare geïnstantieerde afdaling voor één of twee spelers, gespeeld vanaf het bord van een bewaarder met een metgezel aan je zij.',
+  'guide.glossary.delveTerm': 'Delve',
   'guide.glossary.dotDef':
     'Schade over tijd en genezing over tijd: effecten die in gestage pulsen tikken in plaats van in één keer.',
   'guide.glossary.dotTerm': 'DoT en HoT',
@@ -2572,6 +2630,9 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'guide.glossary.pullDef':
     'Een vijand of groep in een gevecht trekken, meestal bewust en steeds een groepje tegelijk.',
   'guide.glossary.pullTerm': 'Pull',
+  'guide.glossary.raidDef':
+    'Een grotere groep, hier tot tien spelers, gevormd voor de zwaarste eindspelbeproeving; een groep verandert er in een zodra hij vol is.',
+  'guide.glossary.raidTerm': 'Raid',
   'guide.glossary.rareDef':
     'Een zeldzame benoemde vijand die door een gebied zwerft en betere buit laat vallen.',
   'guide.glossary.rareTerm': 'Zeldzame',
@@ -2725,6 +2786,7 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'guide.nav.closeMenu': 'Menu sluiten',
   'guide.nav.combat': 'Gevecht',
   'guide.nav.controls': 'Besturing',
+  'guide.nav.delves': 'Delves',
   'guide.nav.dungeons': 'Kerkers & Raids',
   'guide.nav.economy': 'Economie & Handel',
   'guide.nav.faq': 'FAQ',
@@ -2808,6 +2870,9 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'guide.questsPage.sideCryptBody':
     'Hoog in de toppen loopt een stiller mysterie: oude graven gemarkeerd met een kroon die geen enkel verslag zich herinnert. Lees de doden, verzamel wat zij bewaakten en ontzegel een tombe die gesloten had moeten blijven. Het is een detectivespoor dat de weg opent naar een tweede eindspelbeproeving voor een volledige raid.',
   'guide.questsPage.sideCryptTitle': 'De vergeten koning',
+  'guide.questsPage.sideTempleBody':
+    'Een poort van bleek licht op een hooggelegen bergmeer in de toppen opent naar een verzonken heiligdom waar een verdronken sekte nog steeds zingt. Haar korte keten staat los van het hoofdverhaal, een op zichzelf staand mysterie voor iedereen die naar de oever klimt, de waarschuwingen leest die in de rotsen zijn gekerfd, en naar beneden gaat om te zien waar ze voor dienden.',
+  'guide.questsPage.sideTempleTitle': 'De verdronken tempel',
   'guide.questsPage.sideTitle': 'Zijsporen van de hoofdweg',
   'guide.questsPage.sideWardenBody':
     'Naast het verhaal delen de bewakers van Oostbeekdal en het veen een vaste premieladder uit. Werk je omhoog, vijand voor vijand, zoals elke bewaker voor jou zijn plek verdiende. Het is eerlijk levelen en een rondleiding langs de ergste onruststokers van elk gebied.',
@@ -2850,6 +2915,7 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'guide.search.placeholder': 'Zoek in de gids',
   'guide.search.typeClass': 'Klasse',
   'guide.search.typeCreature': 'Wezens',
+  'guide.search.typeDelve': 'Delve',
   'guide.search.typeDungeon': 'Dungeon',
   'guide.search.typePage': 'Pagina',
   'guide.search.typeTerm': 'Term',
@@ -2908,6 +2974,9 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
     'Gewone drops kunnen naar de buitmaker gaan, terwijl betere drops voor een worp worden aangeboden zodat iedereen een eerlijke kans krijgt.',
   'guide.social.lootCommonTitle': 'Voorwerpen.',
   'guide.social.lootHeading': 'Groepsbuit',
+  'guide.social.lootMasterBody':
+    'In plaats daarvan kan de leider de leiding nemen over de betere drops en ze stuk voor stuk uitdelen aan het lid dat ze hoort te krijgen. Het voorkomt dat begeerde uitrusting naar een willekeurige worp gaat, zoals een georganiseerde groep een dungeon loopt.',
+  'guide.social.lootMasterTitle': 'Buitmeester.',
   'guide.social.lootRollBody':
     'Wanneer een voorwerp voor een worp gaat, kiest elk in aanmerking komend lid Nodig als ze het willen, Hebzucht als ze het alleen als reserve zouden nemen, of Passen om af te zien. De hoogste worp wint.',
   'guide.social.lootRollTitle': 'Nodig, Hebzucht of Passen.',
@@ -2933,6 +3002,9 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'guide.stats.dodgeBody':
     'Ontwijken is je kans om een inkomende melee-aanval volledig te vermijden. Je begint met een kleine basiskans, en Behendigheid verhoogt deze, dus wendbare klassen ontwijken meer klappen.',
   'guide.stats.dodgeTitle': 'Ontwijken',
+  'guide.stats.dpsBody':
+    'Je blad toont ook een schade-per-seconde-schatting: ruwweg wat je wapen, zijn slagsnelheid en je aanvalskracht samen na verloop van tijd opleveren. Het is een snelle manier om twee wapens in één oogopslag te vergelijken.',
+  'guide.stats.dpsTitle': 'Schade per seconde',
   'guide.stats.growBody':
     'Twee dingen verhogen je stats. Elk niveau voegt een vast bedrag van elk attribuut toe dat bij je klasse past, en de uitrusting die je draagt voegt er bovenop nog meer toe. Je uitrusting actueel houden is de gestaagste manier om sterker te worden, helemaal tot het niveaumaximum.',
   'guide.stats.growHeading': 'Hoe je stats groeien',
@@ -2947,6 +3019,9 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'guide.stats.sheetBody':
     'Open het personagevenster in het spel om dit allemaal op één plek te zien: je vijf attributen aan de ene kant en de stats die ze voeden aan de andere. Beweeg over een waarde en een tooltip legt uit wat het voor je klasse doet, zodat je in één oogopslag ziet welke getallen een upgrade daadwerkelijk heeft veranderd.',
   'guide.stats.sheetHeading': 'Je personageblad lezen',
+  'guide.stats.spBody':
+    'Spreukkracht is de tegenhanger van aanvalskracht voor een caster: het verhoogt de schade die je spreuken aanrichten. Intellect voedt het, en casteruitrusting en buffs voegen er meer bovenop toe, dus een spreukenwerker let op spreukkracht zoals een melee-vechter op aanvalskracht let.',
+  'guide.stats.spTitle': 'Spreukkracht',
   'guide.stats.spiBody':
     'Geest bepaalt hoe snel de mana van een caster terugkeert buiten gevecht. Net als Intellect dient het de manaklassen en betekent het weinig voor de andere.',
   'guide.stats.spiTitle': 'Geest',
@@ -2976,6 +3051,8 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'guide.talentsPage.resetNote':
     'Je kunt je talenten op elk moment resetten, dus een vroege keuze is nooit een valkuil. Probeer dingen uit, kijk wat je bevalt en verander vrijuit van gedachten.',
   'guide.talentsPage.resetTitle': 'Niets is permanent',
+  'guide.talentsPage.shareNote':
+    'Een afgeronde build kun je kopiëren naar een korte deelbare code en aan een vriend geven, die hem rechtstreeks in zijn eigen talentenpaneel plakt om hem te laden.',
   'guide.talentsPage.specsBody':
     'Elke klasse heeft een handvol specialisaties, elk met een eigen rol en een kenmerkende focus. Hier zie je de vorm van allemaal. Open een klasse voor de volledige uitrusting.',
   'guide.talentsPage.specsHeading': 'Specialisaties per klasse',
@@ -2989,6 +3066,7 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'guide.viewer.error':
     'Het 3D-model kon niet worden geladen. De afbeelding hierboven toont nog steeds deze {name}.',
   'guide.viewer.loading': 'Model laden...',
+  'guide.viewer.posterAlt': '{name}',
   'guide.viewer.view3d': 'Bekijk {name} in 3D',
   'guide.viewer.view3dShort': 'Bekijk in 3D',
   'guide.wishPage.heading': 'Dingen die ik wou dat ik wist',

@@ -3526,6 +3526,11 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'guide.controls.abilities': 'Fähigkeiten einsetzen',
   'guide.controls.actionHeader': 'Aktion',
   'guide.controls.arena': 'Arena',
+  'guide.controls.controllerBody':
+    'Gamepads funktionieren ebenfalls, und die Controller-Unterstützung ist standardmäßig aktiviert. Der linke Stick bewegt dich, der rechte Stick richtet die Kamera aus, und die Aktions- und Schultertasten decken deine Fähigkeiten, das Springen und das Interagieren ab. Öffne ein beliebiges Fenster, um einen Bildschirmzeiger für Menüs einzublenden. Du kannst die Tasten neu belegen und Stick-Totzone, Kamerageschwindigkeit, Vibration und die invertierte Blickrichtung in den Controller-Einstellungen in den Optionen anpassen.',
+  'guide.controls.controllerHeading': 'Mit einem Controller',
+  'guide.controls.cycleFriendly': 'Freundliches Ziel durchschalten',
+  'guide.controls.gameMenu': 'Spielmenü und Optionen öffnen',
   'guide.controls.groupCamera': 'Kamera',
   'guide.controls.groupCombat': 'Anvisieren und Kampf',
   'guide.controls.groupInterface': 'Fenster',
@@ -3538,6 +3543,40 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
     'Auf Smartphones und Tablets erscheinen die Touch-Steuerungen automatisch: ein Bewegungsstick links, ziehen an einer beliebigen Stelle rechts zum Umsehen und Bildschirmtasten für deine Fähigkeiten und Menüs.',
   'guide.controls.mobileHeading': 'Auf dem Mobilgerät',
   'guide.controls.talents': 'Talente',
+  'guide.controls.targetFriendly': 'Nächstes freundliches Ziel anvisieren',
+  'guide.delvesPage.affixesBody':
+    'Schwerere Läufe würfeln einen Modifikator aus, der den Abstieg verändert, von ruhelosen Toten über schlechte Luft bis zu brüchigem Dachwerk. Sie erhöhen Gefahr und Belohnung zugleich. Ein Tiefgang im Gruft-Stil kann jeden von diesen auswürfeln:',
+  'guide.delvesPage.affixesHeading': 'Laufmodifikatoren',
+  'guide.delvesPage.affixesLabel': 'Mögliche Modifikatoren',
+  'guide.delvesPage.companionBody':
+    'Ein Tiefgang schickt eine Gefährtin mit dir hinab, sodass ein Alleingang nie aussichtslos ist. Sie kämpft an deiner Seite, und je mehr du zwischen den Läufen in sie investierst, desto stärker wird sie, bis sie einen Verbündeten einmal pro Abstieg vom Rand des Todes zurückholen kann. Sie gehört dir für den Tiefgang und wartet zwischen den Läufen an der Tafel.',
+  'guide.delvesPage.companionHeading': 'Deine Gefährtin',
+  'guide.delvesPage.companionLabel': 'Gefährtin',
+  'guide.delvesPage.fromLevel': 'Ab Stufe {n}',
+  'guide.delvesPage.heading': 'Tiefgänge',
+  'guide.delvesPage.howBody':
+    'Sprich mit dem Hüter, um die Tafel zu öffnen, wähle eine Schwierigkeit und steig hinab. Jeder Lauf reiht ein paar kurze Kammern aneinander und endet bei seinem Wächter; räume ihn, um deine Belohnung zu beanspruchen und an die Oberfläche zurückzukehren. Bring einen Freund mit, wenn du einen hast, oder verlass dich auf deine Gefährtin, wenn nicht.',
+  'guide.delvesPage.howHeading': 'Wie ein Lauf abläuft',
+  'guide.delvesPage.intro':
+    'Tiefgänge sind kurze, wiederholbare Abstiege für einen oder zwei, mit einer treuen Gefährtin an deiner Seite, wann immer du allein hinabsteigst. Finde die Tafel, wähle einen Lauf und klettere mit der Beute wieder hinaus.',
+  'guide.delvesPage.keeperLabel': 'Hüter',
+  'guide.delvesPage.lockpickBody':
+    'Manche Türen und Verstecke sind versiegelt, und eines zu öffnen ist eher eine kleine Nervenprobe als eine Frage der Werte: knacke das Schloss sauber und ruhig, und du verdienst einen besseren Preis als bei einem hastigen, verpatzten Versuch. Es ist freiwillig, aber der sorgfältige Tiefgänger ist der reichere.',
+  'guide.delvesPage.lockpickHeading': 'Schlösser und was sie verbergen',
+  'guide.delvesPage.marksBody':
+    'Tiefgänge zu räumen bringt Tiefgang-Marken ein, eine Währung, die getrennt von deinem Geld gehalten wird. Gib sie beim Hüter aus, um deine Gefährtin zu stärken und Ausrüstung zu ergattern, die du nirgendwo sonst findest.',
+  'guide.delvesPage.marksHeading': 'Tiefgang-Marken',
+  'guide.delvesPage.partyLabel': 'Für einen oder zwei',
+  'guide.delvesPage.tiersBody':
+    'Ein Tiefgang bietet mehr als eine Schwierigkeit. Die höhere macht die Gegner stärker und mischt einen Laufmodifikator hinein und zahlt dafür mehr aus. Sie verlangt außerdem, dass du ein paar Stufen auf dem Buckel hast, bevor sie dich einlässt.',
+  'guide.delvesPage.tiersHeading': 'Schwierigkeit',
+  'guide.delvesPage.tiersLabel': 'Schwierigkeiten',
+  'guide.delvesPage.whatBody':
+    'Ein Tiefgang ist ein kleiner instanzierter Dungeon, der nur für dich und höchstens einen Verbündeten erstellt wird, eine private Kopie, in der dich niemand stören kann. Du startest ihn an einer Tafel, die ein Tiefgang-Hüter draußen in der Welt verwaltet, lässt dich hinab, kämpfst dich durch eine Handvoll Räume und schließt mit einem einzelnen Wächter ab. Läufe sind schnell und auf Wiederholung ausgelegt, daher ist ein Tiefgang ein verlässliches Stück Fortschritt, wann immer die offene Welt versiegt.',
+  'guide.delvesPage.whatHeading': 'Was ein Tiefgang ist',
+  'guide.delvesPage.whereBody':
+    'Der erste Tiefgang, das Eingestürzte Reliquiar, öffnet sich am Reliquiarhügel im Eastbrook-Tal, dem Starttal. Bruder Halven verwaltet dort die Tafel, und er schickt dich hinab, sobald du bereit bist.',
+  'guide.delvesPage.whereHeading': 'Wo du einen findest',
   'guide.docTitle': '{page} - {brand}',
   'guide.dungeonsPage.bastionBody':
     'Eine überflutete Festung, ans Moor verloren, gehalten von ertrunkenen Verteidigern und der steigenden Flut selbst.',
@@ -3567,6 +3606,9 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'guide.family.beast.desc':
     'Wilde Tiere aus Wald und Flur, von Wölfen und Ebern bis zu den Wesen, die ihnen nachstellen. Jäger können viele von ihnen zähmen.',
   'guide.family.beast.name': 'Wildtiere',
+  'guide.family.dragonkin.desc':
+    'Schuppige, schlangenhafte Wesen aus den alten Tiefen. Selten, stolz und weit stärker, als sie aussehen.',
+  'guide.family.dragonkin.name': 'Drachkin',
   'guide.family.elemental.desc':
     'Lebendiger Sturm und Stein, gebunden an die wilden Orte, wo die Elemente machtvoll wirken.',
   'guide.family.elemental.name': 'Elementare',
@@ -3645,6 +3687,9 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'guide.glossary.pullDef':
     'Einen Feind oder eine Gruppe in einen Kampf ziehen, meist gezielt und immer nur einen Schwung auf einmal.',
   'guide.glossary.pullTerm': 'Pull',
+  'guide.glossary.raidDef':
+    'Eine größere Gruppe, hier bis zu zehn Spieler, gebildet für die härteste Endgame-Begegnung; eine Gruppe wird in einen umgewandelt, sobald sie voll ist.',
+  'guide.glossary.raidTerm': 'Schlachtzug',
   'guide.glossary.rareDef':
     'Ein seltener benannter Gegner, der durch ein Gebiet streift und bessere Beute fallen lässt.',
   'guide.glossary.rareTerm': 'Selten',
@@ -3771,6 +3816,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'guide.nav.closeMenu': 'Menü schließen',
   'guide.nav.combat': 'Kampf',
   'guide.nav.controls': 'Steuerung',
+  'guide.nav.delves': 'Tiefgänge',
   'guide.nav.dungeons': 'Dungeons und Schlachtzüge',
   'guide.nav.faq': 'FAQ',
   'guide.nav.glossary': 'Glossar',
@@ -3978,6 +4024,9 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'guide.faqPage.q10': 'Was gibt es auf der Höchststufe zu tun?',
   'guide.faqPage.q11': 'Wie finde ich eine Gruppe?',
   'guide.faqPage.q9': 'Gibt es PvP?',
+  'guide.glossary.augmentDef':
+    'Eine zeitweilige Verstärkung, die du während eines 2-gegen-2-Fiesta-Arenakampfs wählst und die dein Repertoire nur für diesen Kampf umgestaltet.',
+  'guide.glossary.augmentTerm': 'Augmentierung',
   'guide.glossary.buffDef':
     'Ein hilfreicher Effekt auf dir oder einem Verbündeten, wie ein Segen, der für eine Weile einen Wert erhöht.',
   'guide.glossary.buffTerm': 'Stärkungszauber',
@@ -3987,6 +4036,9 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'guide.glossary.debuffDef':
     'Ein schädlicher Effekt auf einem Ziel, wie eine Verlangsamung, eine Blutung oder geschwächte Rüstung.',
   'guide.glossary.debuffTerm': 'Schwächungszauber',
+  'guide.glossary.delveDef':
+    'Ein kurzer, wiederholbarer instanzierter Abstieg für einen oder zwei Spieler, gestartet an der Tafel eines Hüters, mit einer Gefährtin an deiner Seite.',
+  'guide.glossary.delveTerm': 'Tiefgang',
   'guide.glossary.dotDef':
     'Schaden über Zeit und Heilung über Zeit: Effekte, die in stetigen Schüben ticken, statt alles auf einmal.',
   'guide.glossary.dotTerm': 'DoT und HoT',
@@ -4024,6 +4076,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'guide.search.placeholder': 'Den Wegweiser durchsuchen',
   'guide.search.typeClass': 'Klasse',
   'guide.search.typeCreature': 'Kreaturen',
+  'guide.search.typeDelve': 'Tiefgang',
   'guide.search.typeDungeon': 'Dungeon',
   'guide.search.typePage': 'Seite',
   'guide.search.typeTerm': 'Begriff',
@@ -4050,6 +4103,8 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'guide.talentsPage.resetNote':
     'Du kannst deine Talente jederzeit zurücksetzen, eine frühe Wahl ist also nie eine Falle. Probier Dinge aus, schau, was dir gefällt, und ändere deine Meinung frei.',
   'guide.talentsPage.resetTitle': 'Nichts ist endgültig',
+  'guide.talentsPage.shareNote':
+    'Ein fertiger Build lässt sich in einen kurzen, teilbaren Code kopieren und einem Freund geben, der ihn direkt in sein eigenes Talentfenster einfügt, um ihn zu laden.',
   'guide.talentsPage.specsBody':
     'Jede Klasse hat eine Handvoll Spezialisierungen, jede mit ihrer eigenen Rolle und einem charakteristischen Schwerpunkt. Hier ist der Aufbau aller. Öffne eine Klasse für ihr volles Repertoire.',
   'guide.talentsPage.specsHeading': 'Spezialisierungen nach Klasse',
@@ -4152,6 +4207,9 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'guide.economy.marketPricing':
     'Die Preisgestaltung liegt bei dir. Etwas unter dem zu bieten, was andere verlangen, verkauft sich tendenziell schneller, während ein gesalzener Preis vielleicht unangetastet liegen bleibt. Stöbere erst, um zu sehen, wie der gängige Kurs aussieht, bevor du etwas einstellst.',
   'guide.economy.marketTitle': 'Der Weltmarkt',
+  'guide.economy.marksBody':
+    'Geld ist nicht das Einzige, was du anhäufst. Tiefgänge zahlen Tiefgang-Marken aus, eine eigene Währung, die du nur beim Tiefgang-Hüter ausgibst, für Verbesserungen deiner Gefährtin und Ausrüstung, die du nirgendwo sonst findest. Sie vermischen sich nie mit deinem Geld.',
+  'guide.economy.marksTitle': 'Eine zweite Währung: Tiefgang-Marken',
   'guide.economy.tradeBody':
     'Du kannst von Angesicht zu Angesicht mit jedem handeln, der nahe bei dir steht. Ihr beide legt Gegenstände und Münzen in ein gemeinsames Fenster, und der Tausch findet erst statt, sobald ihr ihn beide bestätigt, sodass keine Seite übers Ohr gehauen werden kann. Es ist der einfache Weg, einem Freund eine Beute zu reichen oder ein Geschäft abzuschließen.',
   'guide.economy.tradeTitle': 'Handeln mit anderen Spielern',
@@ -4167,6 +4225,8 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'guide.gear.consumablesPotions':
     'Tränke stellen Gesundheit oder Mana in dem Moment her, in dem du sie benutzt, sogar mitten im Kampf, was sie zur rettenden Hilfe macht, wenn ein Pull schiefgeht. Sie teilen sich eine kurze Abklingzeit, plane also einen guten Moment für ihren Einsatz.',
   'guide.gear.consumablesTitle': 'Verbrauchsgüter',
+  'guide.gear.cosmeticsApply':
+    'Lege dein aktives Aussehen in der Aussehen-Zeile auf deinem Charakterbildschirm fest und wechsle frei zwischen allem, was du freigeschaltet hast.',
   'guide.gear.cosmeticsBody':
     'Manche Belohnungen ändern nur, wie dein Charakter aussieht, niemals wie stark du bist. Diese kosmetischen Skins lassen dich herausstechen, ohne das Spiel zu beeinflussen, trage also, welchen du magst.',
   'guide.gear.cosmeticsCache':
@@ -4185,6 +4245,8 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'guide.gear.fishingTitle': 'Angeln',
   'guide.gear.intro':
     'Ausrüstung ist das, was dein Charakter trägt, und die Gegenstände, die du bei dir führst. Bessere Ausrüstung ist der verlässlichste Weg, stärker zu werden, und das meiste davon sammelst du ganz nebenbei beim Spielen ein.',
+  'guide.gear.itemLevelBody':
+    'Wenn du zwei Teile schnell vergleichen willst, aktiviere in den Optionen Gegenstandsstufe anzeigen. Jede Waffe und jedes Rüstungsteil zeigt dann eine Gegenstandsstufe, eine einzelne Zahl dafür, wie mächtig es ungefähr ist, je nachdem, woher es stammt, sodass du auf einen Blick erkennst, welche Verbesserung mehr Gewicht hat, sogar über verschiedene Ausrüstungsplätze hinweg.',
   'guide.gear.qualityBody':
     'Jeder Gegenstand hat eine Qualität, und sein Name ist passend gefärbt, sodass du seinen Wert auf einen Blick ablesen kannst. Vom Gewöhnlichsten zum Begehrtesten:',
   'guide.gear.qualityCommon': 'Gewöhnlich',
@@ -4196,6 +4258,9 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'guide.gear.qualityRare': 'Selten',
   'guide.gear.qualityTitle': 'Qualität auf einen Blick',
   'guide.gear.qualityUncommon': 'Ungewöhnlich',
+  'guide.gear.setsBody':
+    'Die seltenste Rüstung kommt in zusammengehörigen Familien, mehreren Teilen, die darauf zugeschnitten sind, als Einheit auszusehen und zu kämpfen. Trage genug Teile einer Familie gleichzeitig, und das Set erwacht und gewährt Boni zusätzlich zu den eigenen Werten jedes Teils, und je mehr Teile du trägst, desto stärker wird es. Diese fallen im härtesten Gruppeninhalt nahe der Höchststufe, weshalb die Jagd nach einem vollständigen Set ein klassisches Endgame-Ziel ist.',
+  'guide.gear.setsTitle': 'Sets und Set-Boni',
   'guide.gear.slotChest': 'Brust',
   'guide.gear.slotFeet': 'Füße',
   'guide.gear.slotGloves': 'Hände',
@@ -4276,6 +4341,9 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'guide.questsPage.sideCryptBody':
     'Hoch oben auf den Gipfeln verläuft ein stilleres Geheimnis: alte Gräber, gezeichnet mit einer Krone, an die sich keine Aufzeichnung erinnert. Lies die Toten, sammle, was sie hüteten, und entsiegle eine Gruft, die verschlossen bleiben sollte. Es ist die Spur eines Spürsinns, die den Weg zu einer zweiten Endgame-Prüfung für einen vollen Schlachtzug öffnet.',
   'guide.questsPage.sideCryptTitle': 'Der vergessene König',
+  'guide.questsPage.sideTempleBody':
+    'Ein Tor aus blassem Licht über einem hohen Bergsee in den Gipfeln öffnet sich zu einem versunkenen Schrein, in dem ein ertränkter Kult noch immer singt. Seine kurze Kette steht abseits der Hauptgeschichte, ein in sich geschlossenes Rätsel für jeden, der zum Ufer hinaufsteigt, die in den Fels geritzten Warnungen liest und hinabsteigt, um zu sehen, wozu sie dienten.',
+  'guide.questsPage.sideTempleTitle': 'Der ertränkte Tempel',
   'guide.questsPage.sideTitle': 'Fäden abseits der Hauptstraße',
   'guide.questsPage.sideWardenBody':
     'Neben der Geschichte vergeben die Wächter des Tals und des Moores eine stehende Kopfgeldleiter. Arbeite dich an ihr empor, Feind für Feind, so wie es jeder Wächter vor dir getan hat, um sich seinen Platz zu verdienen. Es ist ehrlicher Aufstieg und eine Rundreise zu den schlimmsten Unruhestiftern jedes Gebiets.',
@@ -4349,6 +4417,9 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
     'Gewöhnliche Beute kann an den Plündernden gehen, während bessere Beute zum Würfeln freigegeben wird, sodass jeder eine faire Chance hat.',
   'guide.social.lootCommonTitle': 'Gegenstände.',
   'guide.social.lootHeading': 'Gruppenbeute',
+  'guide.social.lootMasterBody':
+    'Der Anführer kann stattdessen die besseren Beutestücke selbst verwalten und jedes dem Mitglied geben, das es bekommen soll. So verhindert er, dass wertvolle Ausrüstung an einen zufälligen Wurf geht, wie eine organisierte Gruppe einen Dungeon angeht.',
+  'guide.social.lootMasterTitle': 'Plündermeister.',
   'guide.social.lootRollBody':
     'Wenn ein Gegenstand zum Würfeln freigegeben wird, wählt jedes berechtigte Mitglied Bedarf, wenn es ihn haben will, Gier, wenn es ihn nur nebenbei nähme, oder Passen, um sich herauszuhalten. Der höchste Wurf gewinnt.',
   'guide.social.lootRollTitle': 'Bedarf, Gier oder Passen.',
@@ -4374,6 +4445,9 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'guide.stats.dodgeBody':
     'Ausweichen ist deine Chance, einem eingehenden Nahkampfangriff gänzlich zu entgehen. Du beginnst mit einer kleinen Grundchance, und Beweglichkeit hebt sie an, sodass flinke Klassen mehr Schläge entwischen.',
   'guide.stats.dodgeTitle': 'Ausweichen',
+  'guide.stats.dpsBody':
+    'Dein Charakterbogen zeigt außerdem eine Schätzung des Schadens pro Sekunde: ungefähr das, was deine Waffe, ihre Schlaggeschwindigkeit und deine Angriffskraft über die Zeit zusammen ergeben. Das ist ein schneller Weg, zwei Waffen auf einen Blick zu vergleichen.',
+  'guide.stats.dpsTitle': 'Schaden pro Sekunde',
   'guide.stats.growBody':
     'Zwei Dinge heben deine Werte. Jede Stufe fügt einen festen Betrag jedes Attributs hinzu, passend zu deiner Klasse, und die Ausrüstung, die du anlegst, ergänzt darüber hinaus. Deine Ausrüstung aktuell zu halten ist der verlässlichste Weg, stärker zu werden, bis hinauf zur Höchststufe.',
   'guide.stats.growHeading': 'Wie deine Werte wachsen',
@@ -4388,6 +4462,9 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'guide.stats.sheetBody':
     'Öffne im Spiel das Charakterfenster, um all das an einem Ort zu sehen: deine fünf Attribute auf der einen Seite und die Werte, die sie speisen, auf der anderen. Fahre über einen beliebigen Wert, und ein Tooltip schlüsselt auf, was er für deine Klasse bewirkt, sodass du auf einen Blick siehst, welche Zahlen eine Verbesserung tatsächlich bewegt hat.',
   'guide.stats.sheetHeading': 'Deinen Charakterbogen lesen',
+  'guide.stats.spBody':
+    'Zaubermacht ist das Gegenstück eines Zauberwirkers zur Angriffskraft: Sie erhöht den Schaden, den deine Zauber austeilen. Intelligenz speist sie, und Zauberausrüstung und Stärkungszauber legen noch mehr obendrauf, sodass ein Zauberwirker auf die Zaubermacht achtet, wie ein Nahkämpfer auf die Angriffskraft achtet.',
+  'guide.stats.spTitle': 'Zaubermacht',
   'guide.stats.spiBody':
     'Willenskraft bestimmt, wie schnell das Mana eines Zauberwirkers außerhalb des Kampfes zurückkehrt. Wie Intelligenz dient sie den Manaklassen und bedeutet den anderen wenig.',
   'guide.stats.spiTitle': 'Willenskraft',
@@ -4403,6 +4480,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'guide.viewer.error':
     'Das 3D-Modell konnte nicht geladen werden. Die Abbildung oben zeigt diesen {name} weiterhin.',
   'guide.viewer.loading': 'Modell wird geladen...',
+  'guide.viewer.posterAlt': '{name}',
   'guide.viewer.view3d': '{name} in 3D ansehen',
   'guide.viewer.view3dShort': 'In 3D ansehen',
   'guide.worldPage.marshGreeter': 'Wächter Fenwick, Fenbridge',
