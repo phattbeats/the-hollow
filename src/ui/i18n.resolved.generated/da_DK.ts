@@ -587,6 +587,26 @@ export const da_DK: EnTranslations = {
       "exportDone": "Dine data blev downloadet. Vi har sendt dig en bekræftelse på e-mail.",
       "exportFailed": "Kunne ikke eksportere dine data. Prøv igen om et øjeblik."
     },
+    "masterLoot": {
+      "title": "Master loot",
+      "enableLabel": "Master loot",
+      "enableAria": "Aktiver master loot",
+      "looterLabel": "Master looter",
+      "leaderOption": "Gruppeleder",
+      "thresholdLabel": "Tærskel",
+      "thresholdUncommon": "Uncommon og op",
+      "thresholdRare": "Rare og op",
+      "thresholdEpic": "Epic og op",
+      "assignPrompt": "Tildel {item}",
+      "assignAria": "Tildel {item} til {name}",
+      "rollButton": "Rul",
+      "selectAll": "Vaelg alle",
+      "methodMaster": "Lootmetode sat til master loot. Master looter: {name}.",
+      "methodGroup": "Lootmetode sat til gruppeloot.",
+      "assigned": "{looter} tildelte {item} til {target}.",
+      "unassigned": "{item} blev ikke tildelt og er frit for alle.",
+      "leaderOnly": "Kun gruppelederen kan aendre lootmetoden."
+    },
     "bags": {
       "filterGroupAria": "Filtrér tasker efter kategori",
       "filterAll": "Alle",

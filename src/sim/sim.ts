@@ -140,10 +140,12 @@ import type { Ante, PickAction } from './lockpick';
 // Sim keeps thin same-named delegates that call these.
 import {
   activeLootRolls as activeLootRollsImpl,
+  assignMasterLoot as assignMasterLootImpl,
   type PendingLootRoll,
   partyLootCandidatesForMob as partyLootCandidatesForMobImpl,
   resolveLootRoll as resolveLootRollImpl,
   rollLoot as rollLootImpl,
+  setPartyLootMaster as setPartyLootMasterImpl,
   submitLootRoll as submitLootRollImpl,
 } from './loot/loot_roll';
 import { Market, type MarketListing, type MarketSave } from './market';
@@ -274,6 +276,7 @@ import {
   type LootRollPrompt,
   type LootStrategies,
   MAX_LEVEL,
+  type MasterLootThreshold,
   MELEE_RANGE,
   type MobFamily,
   type MoveInput,
@@ -3399,6 +3402,19 @@ export class Sim {
     resolveLootRollImpl(this.ctx, roll);
   }
 
+  assignMasterLoot(rollId: number, targetPids: number[], pid?: number): void {
+    assignMasterLootImpl(this.ctx, rollId, targetPids, pid);
+  }
+
+  setPartyLootMaster(
+    enabled: boolean,
+    looter: number,
+    threshold: MasterLootThreshold,
+    pid?: number,
+  ): void {
+    setPartyLootMasterImpl(this.ctx, enabled, looter, threshold, pid);
+  }
+
   // -------------------------------------------------------------------------
   // Mob AI
   // -------------------------------------------------------------------------
@@ -5138,6 +5154,7 @@ export class Sim {
     return {
       leader: party.leader,
       raid: party.raid,
+      master: { ...party.lootStrategies.master },
       members: party.members.flatMap((mPid) => {
         const meta = this.players.get(mPid);
         const e = this.entities.get(mPid);

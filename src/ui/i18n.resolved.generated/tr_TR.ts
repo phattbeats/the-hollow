@@ -587,6 +587,26 @@ export const tr_TR: EnTranslations = {
       "exportDone": "Verileriniz indirildi. Size bir onay e-postası gönderdik.",
       "exportFailed": "Verileriniz dışa aktarılamadı. Birazdan tekrar deneyin."
     },
+    "masterLoot": {
+      "title": "Ganimet ustasi",
+      "enableLabel": "Ganimet ustasi",
+      "enableAria": "Ganimet ustasini etkinlestir",
+      "looterLabel": "Ganimet ustasi",
+      "leaderOption": "Grup lideri",
+      "thresholdLabel": "Esik",
+      "thresholdUncommon": "Sira disi ve ustu",
+      "thresholdRare": "Nadir ve ustu",
+      "thresholdEpic": "Epik ve ustu",
+      "assignPrompt": "{item} ata",
+      "assignAria": "{item} esyasini {name} oyuncusuna ata",
+      "rollButton": "Zar at",
+      "selectAll": "Tümünü sec",
+      "methodMaster": "Ganimet yontemi ganimet ustasi olarak ayarlandi. Ganimet ustasi: {name}.",
+      "methodGroup": "Ganimet yontemi grup ganimeti olarak ayarlandi.",
+      "assigned": "{looter}, {item} esyasini {target} oyuncusuna atadi.",
+      "unassigned": "{item} atanmadi ve herkes icin serbest.",
+      "leaderOnly": "Ganimet yontemini yalnizca grup lideri degistirebilir."
+    },
     "bags": {
       "filterGroupAria": "Çantaları kategoriye göre filtrele",
       "filterAll": "Tümü",

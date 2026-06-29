@@ -587,6 +587,26 @@ export const sv_SE: EnTranslations = {
       "exportDone": "Dina data laddades ner. Vi har mejlat dig en bekräftelse.",
       "exportFailed": "Kunde inte exportera dina data. Försök igen om en stund."
     },
+    "masterLoot": {
+      "title": "Master loot",
+      "enableLabel": "Master loot",
+      "enableAria": "Aktivera master loot",
+      "looterLabel": "Master looter",
+      "leaderOption": "Gruppledare",
+      "thresholdLabel": "Tröskel",
+      "thresholdUncommon": "Ovanlig och uppat",
+      "thresholdRare": "Sallsynt och uppat",
+      "thresholdEpic": "Episk och uppat",
+      "assignPrompt": "Tilldela {item}",
+      "assignAria": "Tilldela {item} till {name}",
+      "rollButton": "Slå",
+      "selectAll": "Markera alla",
+      "methodMaster": "Lootmetod satt till master loot. Master looter: {name}.",
+      "methodGroup": "Lootmetod satt till grupploot.",
+      "assigned": "{looter} tilldelade {item} till {target}.",
+      "unassigned": "{item} tilldelades inte och ar fritt for alla.",
+      "leaderOnly": "Endast gruppledaren kan andra lootmetoden."
+    },
     "bags": {
       "filterGroupAria": "Filtrera väskor efter kategori",
       "filterAll": "Alla",
