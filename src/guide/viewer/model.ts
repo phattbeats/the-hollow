@@ -176,8 +176,19 @@ export async function buildModel(spec: GuideModelSpec, tint: number | null): Pro
     // memoizes the GLTF), so we only dispose the material clones WE created for the tint.
     for (const mat of ownedMaterials) mat.dispose();
     ownedMaterials.length = 0;
+    // SkeletonUtils.clone gave this build its OWN skeletons; three allocates a per-skeleton
+    // bone DataTexture on first render that is NOT part of the shared GLTF cache, so dispose
+    // it here (idempotent when several meshes share one skeleton) to avoid leaking one GPU
+    // texture per build across the gallery's repeated model swaps and the still batch.
+    root.traverse((o) => {
+      const sm = o as THREE.SkinnedMesh;
+      if (sm.isSkinnedMesh) sm.skeleton?.dispose();
+    });
     root.clear();
   };
 
-  return { root, mixer, radius: sphere.radius, height, dispose };
+  // Clamp the framing radius off zero: a degenerate (empty) bound would collapse scene.ts's
+  // far plane to <= near (radius 0 -> dist 0) and draw nothing. Real rigs are radius ~1 to 3,
+  // so this floor only ever guards the pathological case.
+  return { root, mixer, radius: Math.max(sphere.radius, 0.05), height, dispose };
 }
