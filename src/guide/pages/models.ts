@@ -2,15 +2,20 @@
 // class, creature, and warlock demon. A single lazy viewer is reused as the reader picks,
 // so the page costs nothing until it mounts and only ever holds one WebGL context.
 
-import { t } from '../../ui/i18n';
 import { esc } from '../../ui/esc';
+import { t } from '../../ui/i18n';
 import { iconDataUrl } from '../../ui/icons';
-import { GUIDE_CLASSES, GUIDE_FAMILIES, GUIDE_WARLOCK_PETS, GUIDE_MODELS } from '../content.generated';
-import { className, classCrest } from '../class_view';
+import { classCrest, className } from '../class_view';
+import {
+  GUIDE_CLASSES,
+  GUIDE_FAMILIES,
+  GUIDE_MODELS,
+  GUIDE_WARLOCK_PETS,
+} from '../content.generated';
 import { hrefFor } from '../routes';
-import { related, lead } from './ui';
 import { createViewer, hasWebGL, type ModelViewer } from '../viewer';
 import type { GuidePage } from './types';
+import { lead, related } from './ui';
 
 interface ModelOption {
   modelKey: string;
@@ -18,8 +23,10 @@ interface ModelOption {
   tint?: string;
   /** Optional accent (class color) for the option rail. */
   color?: string;
-  /** Optional small 2D crest. */
+  /** Optional small 2D crest (fallback when no still). */
   poster?: string;
+  /** Pre-rendered still of this figure, preferred over the crest for the option icon. */
+  still?: string;
 }
 
 const familyCrest = (family: string): string => iconDataUrl('crest', `family_${family}`, 64);
@@ -28,12 +35,21 @@ const familyCrest = (family: string): string => iconDataUrl('crest', `family_${f
 // gallery shows each distinct model once, labeled by the first creature that uses it.
 function dedupeByModel(options: ModelOption[]): ModelOption[] {
   const seen = new Set<string>();
-  return options.filter((o) => (seen.has(o.modelKey) ? false : (seen.add(o.modelKey), true)));
+  return options.filter((o) => {
+    if (seen.has(o.modelKey)) return false;
+    seen.add(o.modelKey);
+    return true;
+  });
 }
 
 function classOptions(): ModelOption[] {
   return GUIDE_CLASSES.map((c) => ({
-    modelKey: c.model, name: className(c.id), tint: c.tint, color: c.color, poster: classCrest(c.id, 64),
+    modelKey: c.model,
+    name: className(c.id),
+    tint: c.tint,
+    color: c.color,
+    poster: classCrest(c.id, 64),
+    still: c.still,
   }));
 }
 
@@ -41,20 +57,36 @@ function creatureOptions(): ModelOption[] {
   const all: ModelOption[] = [];
   for (const f of GUIDE_FAMILIES) {
     for (const c of f.creatures) {
-      all.push({ modelKey: c.model, name: c.name, tint: c.tint, poster: familyCrest(f.family) });
+      all.push({
+        modelKey: c.model,
+        name: c.name,
+        tint: c.tint,
+        poster: familyCrest(f.family),
+        still: c.still,
+      });
     }
   }
   return dedupeByModel(all);
 }
 
 function petOptions(): ModelOption[] {
-  return dedupeByModel(GUIDE_WARLOCK_PETS.map((p) => ({ modelKey: p.model, name: p.name, tint: p.tint })));
+  return dedupeByModel(
+    GUIDE_WARLOCK_PETS.map((p) => ({
+      modelKey: p.model,
+      name: p.name,
+      tint: p.tint,
+      still: p.still,
+    })),
+  );
 }
 
 function optionHtml(o: ModelOption): string {
   const style = o.color ? ` style="--opt-color:${esc(o.color)}"` : '';
   const tint = o.tint ? ` data-tint="${esc(o.tint)}"` : '';
-  const img = o.poster ? `<img src="${esc(o.poster)}" alt="" width="28" height="28" loading="lazy" decoding="async" />` : '';
+  const icon = o.still ?? o.poster;
+  const img = icon
+    ? `<img src="${esc(icon)}" alt="" width="28" height="28" loading="lazy" decoding="async" />`
+    : '';
   // A toggle button (aria-pressed): one is active at a time and it loads that model.
   return `<button type="button" class="guide-gallery-opt" aria-pressed="false"
     data-model="${esc(o.modelKey)}"${tint} data-name="${esc(o.name)}"${style}>
@@ -62,7 +94,10 @@ function optionHtml(o: ModelOption): string {
   </button>`;
 }
 
-function groupHtml(labelKey: 'guide.models.groupClasses' | 'guide.models.groupCreatures' | 'guide.models.groupPets', options: ModelOption[]): string {
+function groupHtml(
+  labelKey: 'guide.models.groupClasses' | 'guide.models.groupCreatures' | 'guide.models.groupPets',
+  options: ModelOption[],
+): string {
   if (options.length === 0) return '';
   return `
     <div class="guide-gallery-group" role="group" aria-label="${esc(t(labelKey))}">
@@ -124,7 +159,9 @@ export const models: GuidePage = {
     const load = async (btn: HTMLElement): Promise<void> => {
       const spec = GUIDE_MODELS[btn.dataset.model ?? ''];
       if (!spec) return;
-      picker.querySelectorAll<HTMLElement>('[aria-pressed="true"]').forEach((b) => b.setAttribute('aria-pressed', 'false'));
+      picker.querySelectorAll<HTMLElement>('[aria-pressed="true"]').forEach((b) => {
+        b.setAttribute('aria-pressed', 'false');
+      });
       btn.setAttribute('aria-pressed', 'true');
       const name = btn.dataset.name ?? '';
       if (caption) caption.textContent = name;
@@ -133,12 +170,19 @@ export const models: GuidePage = {
       try {
         if (!viewer) {
           viewer = await createViewer(stage, label);
-          if (disposed) { viewer.destroy(); viewer = null; return; }
+          if (disposed) {
+            viewer.destroy();
+            viewer = null;
+            return;
+          }
         } else {
           viewer.setLabel(label);
         }
         await viewer.load(spec, tint);
-        if (disposed && viewer) { viewer.destroy(); viewer = null; }
+        if (disposed && viewer) {
+          viewer.destroy();
+          viewer = null;
+        }
       } catch (err) {
         // eslint-disable-next-line no-console
         console.error('Guide gallery failed to load model', err);
@@ -147,11 +191,18 @@ export const models: GuidePage = {
     };
 
     const select = async (btn: HTMLElement): Promise<void> => {
-      if (loading) { queued = btn; return; }
+      if (loading) {
+        queued = btn;
+        return;
+      }
       loading = true;
       await load(btn);
       loading = false;
-      if (queued && !disposed) { const next = queued; queued = null; void select(next); }
+      if (queued && !disposed) {
+        const next = queued;
+        queued = null;
+        void select(next);
+      }
     };
 
     const onClick = (e: Event): void => {

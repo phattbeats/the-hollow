@@ -50,7 +50,10 @@ in the SAME change that adds it:
 - **Content the generator already covers** (a class, ability, talent, zone, dungeon,
   mob, warlock pet, or model): run `npm run wiki:content` and commit the regenerated
   `content.generated.ts`. Add a new descriptive `guide.*` prose key for any copy the
-  generator does not derive.
+  generator does not derive. **A new (or retinted) model also needs its still rendered**:
+  run `npm run wiki:stills` and commit the new `public/guide-stills/*.webp` (it needs a
+  headless browser, so it is NOT in `build`/`pretest`; the `tests/guide.test.ts` asset guard
+  fails the build if a figure's baked still is missing on disk).
 - **A brand-new content TYPE or system** (a new feature like delves, or a new page):
   extend `scripts/wiki/build_content.mjs` to emit it, add a `pages/<x>.ts` page plus a
   `GUIDE_ROUTES` entry and its `guide.*` keys, then regenerate the sitemap

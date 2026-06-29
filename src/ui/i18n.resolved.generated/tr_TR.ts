@@ -1323,7 +1323,8 @@ export const tr_TR: EnTranslations = {
       "loading": "Model yükleniyor...",
       "error": "3B model yüklenemedi. Yukarıdaki görsel yine de bu {name} ögesini gösteriyor.",
       "dragHint": "Modeli döndürmek için sürükleyin. Odaklandığında sol ve sağ ok tuşlarını kullanın.",
-      "canvasLabel": "{name} ögesinin döndürülebilir 3B modeli"
+      "canvasLabel": "{name} ögesinin döndürülebilir 3B modeli",
+      "posterAlt": "{name}"
     },
     "models": {
       "title": "3B Model Görüntüleyici",

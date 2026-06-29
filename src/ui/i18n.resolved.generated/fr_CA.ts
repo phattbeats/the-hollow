@@ -1323,7 +1323,8 @@ export const fr_CA: EnTranslations = {
       "loading": "Chargement du modèle...",
       "error": "Le modèle 3D n'a pas pu être chargé. L'illustration ci-dessus montre quand même ce {name}.",
       "dragHint": "Faites glisser pour faire pivoter le modèle. Utilisez les touches fléchées gauche et droite quand il est sélectionné.",
-      "canvasLabel": "Modèle 3D pivotable de {name}"
+      "canvasLabel": "Modèle 3D pivotable de {name}",
+      "posterAlt": "{name}"
     },
     "models": {
       "title": "Visionneuse de modèles 3D",

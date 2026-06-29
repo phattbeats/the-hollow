@@ -3,8 +3,8 @@
 // the reader activates it (wired by mount.ts). No three.js import here, so this stays in
 // the main Guide bundle while the renderer/loader cost is deferred to the lazy chunk.
 
-import { t } from '../../ui/i18n';
 import { esc } from '../../ui/esc';
+import { t } from '../../ui/i18n';
 
 export interface ModelEmbedOptions {
   /** Visual key into GUIDE_MODELS (data-model); the wirer resolves the spec. */
@@ -16,6 +16,10 @@ export interface ModelEmbedOptions {
   /** 2D poster shown before load and as the no-WebGL fallback (a procedural crest/icon).
    *  Omit for figures with no 2D art (e.g. warlock demons); the stage shows the button. */
   poster?: string;
+  /** Pre-rendered transparent still of THIS exact figure (the default poster when present):
+   *  a real, crawlable image of the creature/class, so the reader sees the subject without
+   *  any WebGL. Falls back to `poster` (the 2D crest) when absent. */
+  still?: string;
   /** Framing: inline (default), feature (hero/gallery), or thumb (compact list cell). */
   variant?: 'inline' | 'feature' | 'thumb';
   /** Poster pixel box (square). Defaults to 96. */
@@ -32,8 +36,13 @@ export function modelViewerEmbed(opts: ModelEmbedOptions): string {
   const size = opts.posterSize ?? 96;
   const cls = `guide-viewer${VARIANT_CLASS[opts.variant ?? 'inline']}`;
   const viewLabel = t('guide.viewer.view3d', { name: opts.name });
-  const poster = opts.poster
-    ? `<img class="guide-viewer-poster" src="${esc(opts.poster)}" alt="" width="${size}" height="${size}" loading="lazy" decoding="async" />`
+  // Prefer the pre-rendered still (a real image of this figure) as the default poster; fall
+  // back to the 2D crest. With a still the alt names the subject (it is the content now);
+  // the crest stays alt="" decoration.
+  const posterSrc = opts.still ?? opts.poster;
+  const posterAlt = opts.still ? t('guide.viewer.posterAlt', { name: opts.name }) : '';
+  const poster = posterSrc
+    ? `<img class="guide-viewer-poster${opts.still ? ' guide-viewer-poster-still' : ''}" src="${esc(posterSrc)}" alt="${esc(posterAlt)}" width="${size}" height="${size}" loading="lazy" decoding="async" />`
     : '';
   return `
     <figure class="${cls}" data-model="${esc(opts.modelKey)}"${opts.tint ? ` data-tint="${esc(opts.tint)}"` : ''}

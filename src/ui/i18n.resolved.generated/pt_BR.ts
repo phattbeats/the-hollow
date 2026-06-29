@@ -1323,7 +1323,8 @@ export const pt_BR: EnTranslations = {
       "loading": "Carregando modelo...",
       "error": "O modelo 3D não pôde ser carregado. A arte acima ainda mostra este {name}.",
       "dragHint": "Arraste para girar o modelo. Use as setas para a esquerda e para a direita quando ele estiver em foco.",
-      "canvasLabel": "Modelo 3D giratório de {name}"
+      "canvasLabel": "Modelo 3D giratório de {name}",
+      "posterAlt": "{name}"
     },
     "models": {
       "title": "Visualizador de Modelos 3D",

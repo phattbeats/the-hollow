@@ -826,6 +826,7 @@ export const guideStrings = {
     error: 'The 3D model could not be loaded. The art above still shows this {name}.',
     dragHint: 'Drag to turn the model. Use the left and right arrow keys when it is focused.',
     canvasLabel: 'Rotatable 3D model of {name}',
+    posterAlt: '{name}',
   },
 
   // 3D model gallery page (/guide/models): browse every class, creature, and demon.

@@ -1323,7 +1323,8 @@ export const zh_TW: EnTranslations = {
       "loading": "正在載入模型...",
       "error": "無法載入此3D模型。上方的圖像仍會顯示這個{name}。",
       "dragHint": "拖曳以轉動模型。當它取得焦點時，可使用左右方向鍵。",
-      "canvasLabel": "可旋轉的 {name} 3D模型"
+      "canvasLabel": "可旋轉的 {name} 3D模型",
+      "posterAlt": "{name}"
     },
     "models": {
       "title": "3D模型檢視器",

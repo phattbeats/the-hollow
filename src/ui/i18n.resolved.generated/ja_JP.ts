@@ -1323,7 +1323,8 @@ export const ja_JP: EnTranslations = {
       "loading": "モデルを読み込み中...",
       "error": "3Dモデルを読み込めませんでした。上のアートでは、この{name}が今も表示されています。",
       "dragHint": "ドラッグしてモデルを回します。フォーカス中は左右の矢印キーを使えます。",
-      "canvasLabel": "{name}の回転可能な3Dモデル"
+      "canvasLabel": "{name}の回転可能な3Dモデル",
+      "posterAlt": "{name}"
     },
     "models": {
       "title": "3Dモデルビューア",

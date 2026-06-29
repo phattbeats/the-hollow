@@ -1323,7 +1323,8 @@ export const id_ID: EnTranslations = {
       "loading": "Memuat model...",
       "error": "Model 3D tidak dapat dimuat. Gambar di atas tetap menampilkan {name} ini.",
       "dragHint": "Seret untuk memutar model. Gunakan tombol panah kiri dan kanan saat model sedang difokuskan.",
-      "canvasLabel": "Model 3D {name} yang dapat diputar"
+      "canvasLabel": "Model 3D {name} yang dapat diputar",
+      "posterAlt": "{name}"
     },
     "models": {
       "title": "Penampil Model 3D",

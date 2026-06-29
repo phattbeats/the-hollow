@@ -9,24 +9,62 @@
 // Reproducibility is checked by tests/i18n_resolved_equivalence.test.ts.
 
 export const pending: Record<string, readonly string[]> = {
-  "es": [],
-  "es_ES": [],
-  "fr_FR": [],
-  "fr_CA": [],
+  "es": [
+    "guide.viewer.posterAlt"
+  ],
+  "es_ES": [
+    "guide.viewer.posterAlt"
+  ],
+  "fr_FR": [
+    "guide.viewer.posterAlt"
+  ],
+  "fr_CA": [
+    "guide.viewer.posterAlt"
+  ],
   "en_CA": [],
-  "it_IT": [],
-  "de_DE": [],
-  "zh_CN": [],
-  "zh_TW": [],
-  "ko_KR": [],
-  "ja_JP": [],
-  "pt_BR": [],
-  "ru_RU": [],
-  "nl_NL": [],
-  "pl_PL": [],
-  "id_ID": [],
-  "tr_TR": [],
-  "sv_SE": [],
-  "vi_VN": [],
-  "da_DK": []
+  "it_IT": [
+    "guide.viewer.posterAlt"
+  ],
+  "de_DE": [
+    "guide.viewer.posterAlt"
+  ],
+  "zh_CN": [
+    "guide.viewer.posterAlt"
+  ],
+  "zh_TW": [
+    "guide.viewer.posterAlt"
+  ],
+  "ko_KR": [
+    "guide.viewer.posterAlt"
+  ],
+  "ja_JP": [
+    "guide.viewer.posterAlt"
+  ],
+  "pt_BR": [
+    "guide.viewer.posterAlt"
+  ],
+  "ru_RU": [
+    "guide.viewer.posterAlt"
+  ],
+  "nl_NL": [
+    "guide.viewer.posterAlt"
+  ],
+  "pl_PL": [
+    "guide.viewer.posterAlt"
+  ],
+  "id_ID": [
+    "guide.viewer.posterAlt"
+  ],
+  "tr_TR": [
+    "guide.viewer.posterAlt"
+  ],
+  "sv_SE": [
+    "guide.viewer.posterAlt"
+  ],
+  "vi_VN": [
+    "guide.viewer.posterAlt"
+  ],
+  "da_DK": [
+    "guide.viewer.posterAlt"
+  ]
 };

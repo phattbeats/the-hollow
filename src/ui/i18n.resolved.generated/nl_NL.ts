@@ -1323,7 +1323,8 @@ export const nl_NL: EnTranslations = {
       "loading": "Model laden...",
       "error": "Het 3D-model kon niet worden geladen. De afbeelding hierboven toont nog steeds deze {name}.",
       "dragHint": "Sleep om het model te draaien. Gebruik de pijltjestoetsen links en rechts wanneer het de focus heeft.",
-      "canvasLabel": "Draaibaar 3D-model van {name}"
+      "canvasLabel": "Draaibaar 3D-model van {name}",
+      "posterAlt": "{name}"
     },
     "models": {
       "title": "3D-modelweergave",

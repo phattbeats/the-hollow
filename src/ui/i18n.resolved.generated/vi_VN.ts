@@ -1323,7 +1323,8 @@ export const vi_VN: EnTranslations = {
       "loading": "Đang tải mô hình...",
       "error": "Không thể tải mô hình 3D. Hình minh họa phía trên vẫn cho thấy {name} này.",
       "dragHint": "Kéo để xoay mô hình. Dùng phím mũi tên trái và phải khi nó được chọn.",
-      "canvasLabel": "Mô hình 3D xoay được của {name}"
+      "canvasLabel": "Mô hình 3D xoay được của {name}",
+      "posterAlt": "{name}"
     },
     "models": {
       "title": "Trình Xem Mô Hình 3D",

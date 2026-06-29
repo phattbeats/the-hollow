@@ -1323,7 +1323,8 @@ export const de_DE: EnTranslations = {
       "loading": "Modell wird geladen...",
       "error": "Das 3D-Modell konnte nicht geladen werden. Die Abbildung oben zeigt diesen {name} weiterhin.",
       "dragHint": "Ziehe, um das Modell zu drehen. Nutze die linke und rechte Pfeiltaste, wenn es fokussiert ist.",
-      "canvasLabel": "Drehbares 3D-Modell von {name}"
+      "canvasLabel": "Drehbares 3D-Modell von {name}",
+      "posterAlt": "{name}"
     },
     "models": {
       "title": "3D-Modellbetrachter",

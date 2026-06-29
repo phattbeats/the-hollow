@@ -1323,7 +1323,8 @@ export const pl_PL: EnTranslations = {
       "loading": "Wczytywanie modelu...",
       "error": "Nie udało się wczytać modelu 3D. Grafika powyżej i tak pokazuje tę postać: {name}.",
       "dragHint": "Przeciągnij, aby obrócić model. Gdy jest zaznaczony, użyj strzałek w lewo i w prawo.",
-      "canvasLabel": "Obrotowy model 3D: {name}"
+      "canvasLabel": "Obrotowy model 3D: {name}",
+      "posterAlt": "{name}"
     },
     "models": {
       "title": "Przeglądarka modeli 3D",

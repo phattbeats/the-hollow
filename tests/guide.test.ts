@@ -1,24 +1,44 @@
+import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { execFileSync } from 'node:child_process';
 import { describe, expect, it } from 'vitest';
-
 import {
-  matchRoute, toSub, topbarRoutes, groupedRoutes, hrefFor, GUIDE_ROUTES, GUIDE_BASE,
-} from '../src/guide/routes';
-import {
-  GUIDE_CLASSES, GUIDE_WARLOCK_PETS, GUIDE_FAMILIES, GUIDE_MODELS,
+  GUIDE_CLASSES,
+  GUIDE_FAMILIES,
+  GUIDE_MODELS,
+  GUIDE_WARLOCK_PETS,
 } from '../src/guide/content.generated';
-import { t, setLanguage } from '../src/ui/i18n';
+import {
+  GUIDE_BASE,
+  GUIDE_ROUTES,
+  groupedRoutes,
+  hrefFor,
+  matchRoute,
+  topbarRoutes,
+  toSub,
+} from '../src/guide/routes';
+import { setLanguage, t } from '../src/ui/i18n';
 
 const repoRoot = fileURLToPath(new URL('..', import.meta.url));
 const publicPath = (url: string): string => resolve(repoRoot, 'public', url.replace(/^\//, ''));
 
-const guideHtml = readFileSync(new URL('../guide.html', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
-const viteConfig = readFileSync(new URL('../vite.config.ts', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
-const serverMain = readFileSync(new URL('../server/main.ts', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
-const sitemapXml = readFileSync(new URL('../public/sitemap.xml', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
+const guideHtml = readFileSync(new URL('../guide.html', import.meta.url), 'utf8').replace(
+  /\r\n/g,
+  '\n',
+);
+const viteConfig = readFileSync(new URL('../vite.config.ts', import.meta.url), 'utf8').replace(
+  /\r\n/g,
+  '\n',
+);
+const serverMain = readFileSync(new URL('../server/main.ts', import.meta.url), 'utf8').replace(
+  /\r\n/g,
+  '\n',
+);
+const sitemapXml = readFileSync(new URL('../public/sitemap.xml', import.meta.url), 'utf8').replace(
+  /\r\n/g,
+  '\n',
+);
 
 describe('Guide routes', () => {
   it('treats the base and empty sub as the home route', () => {
@@ -80,7 +100,9 @@ describe('Guide entry wiring', () => {
 
   it('falls back deep /wiki paths to the guide shell in dev and prod', () => {
     expect(viteConfig).toContain('isGuideSpaPath');
-    expect(serverMain).toContain("const isGuide = urlPath === '/wiki' || urlPath.startsWith('/wiki/');");
+    expect(serverMain).toContain(
+      "const isGuide = urlPath === '/wiki' || urlPath.startsWith('/wiki/');",
+    );
     expect(serverMain).toContain("isGuide ? 'guide.html'");
   });
 
@@ -101,8 +123,12 @@ describe('guide.html shell', () => {
   });
 
   it('ships crawlable canonical + social metadata for /wiki', () => {
-    expect(guideHtml).toContain('<link rel="canonical" href="https://worldofclaudecraft.com/wiki" />');
-    expect(guideHtml).toContain('<meta property="og:url" content="https://worldofclaudecraft.com/wiki" />');
+    expect(guideHtml).toContain(
+      '<link rel="canonical" href="https://worldofclaudecraft.com/wiki" />',
+    );
+    expect(guideHtml).toContain(
+      '<meta property="og:url" content="https://worldofclaudecraft.com/wiki" />',
+    );
     expect(guideHtml).toContain('content="index, follow, max-image-preview:large"');
   });
 
@@ -140,11 +166,23 @@ describe('Guide generated class content', () => {
   it('resolves the new class-page and chooser keys (cast keys are not tsc-checked)', () => {
     setLanguage('en');
     for (const k of [
-      'guide.chooser.heading', 'guide.chooser.results', 'guide.tag.melee', 'guide.tag.goodFirst',
-      'guide.classPage.masteryLabel', 'guide.classPage.fullKitHeading', 'guide.classPage.petsHeading',
-      'guide.nav.talents', 'guide.nav.arena', 'guide.nav.wishIKnew', 'guide.related',
-      'guide.talentsPage.heading', 'guide.arenaPage.coliseumHeading', 'guide.dungeonsPage.levelBand',
-      'guide.worldPage.places', 'guide.glossary.threatTerm', 'guide.faqPage.q9',
+      'guide.chooser.heading',
+      'guide.chooser.results',
+      'guide.tag.melee',
+      'guide.tag.goodFirst',
+      'guide.classPage.masteryLabel',
+      'guide.classPage.fullKitHeading',
+      'guide.classPage.petsHeading',
+      'guide.nav.talents',
+      'guide.nav.arena',
+      'guide.nav.wishIKnew',
+      'guide.related',
+      'guide.talentsPage.heading',
+      'guide.arenaPage.coliseumHeading',
+      'guide.dungeonsPage.levelBand',
+      'guide.worldPage.places',
+      'guide.glossary.threatTerm',
+      'guide.faqPage.q9',
     ]) {
       expect(t(k as never).length).toBeGreaterThan(0);
     }
@@ -160,7 +198,9 @@ describe('Guide generated class content', () => {
   });
 
   it('matches the sim (regenerating leaves the committed file unchanged)', () => {
-    execFileSync('node', ['scripts/wiki/build_content.mjs'], { cwd: new URL('..', import.meta.url) });
+    execFileSync('node', ['scripts/wiki/build_content.mjs'], {
+      cwd: new URL('..', import.meta.url),
+    });
     // No diff means the committed content is derived from the current sim data.
     expect(() =>
       execFileSync('git', ['diff', '--exit-code', '--', 'src/guide/content.generated.ts'], {
@@ -193,8 +233,41 @@ describe('Guide model viewer asset integrity', () => {
     for (const [key, spec] of specs) {
       const urls = [spec.url, ...(spec.attach ?? []).map((a) => a.url)];
       for (const url of urls) {
-        expect(existsSync(publicPath(url)), `missing GLB for "${key}": public asset "${url}"`).toBe(true);
+        expect(existsSync(publicPath(url)), `missing GLB for "${key}": public asset "${url}"`).toBe(
+          true,
+        );
       }
+    }
+  });
+});
+
+// The bestiary, class, warlock, and gallery pages show a pre-rendered still
+// (public/guide-stills) as the default image of each figure. The generator bakes a `still`
+// URL for every figure with a model; these guards fail the build if a figure is missing its
+// baked URL or its committed WebP (regenerate with `npm run wiki:content` + `npm run wiki:stills`).
+describe('Guide model stills', () => {
+  it('bakes a still url for every figure that has a model', () => {
+    const missing: string[] = [];
+    for (const c of GUIDE_CLASSES) if (c.model && !c.still) missing.push(`class ${c.id}`);
+    for (const p of GUIDE_WARLOCK_PETS) if (p.model && !p.still) missing.push(`pet ${p.id}`);
+    for (const f of GUIDE_FAMILIES) {
+      for (const c of f.creatures)
+        if (c.model && !c.still) missing.push(`creature ${c.templateId}`);
+    }
+    expect(missing, `figures with a model but no baked still: ${missing.join(', ')}`).toEqual([]);
+  });
+
+  it('ships a committed WebP on disk for every baked still url', () => {
+    const stills = new Set<string>();
+    for (const c of GUIDE_CLASSES) if (c.still) stills.add(c.still);
+    for (const p of GUIDE_WARLOCK_PETS) if (p.still) stills.add(p.still);
+    for (const f of GUIDE_FAMILIES) for (const c of f.creatures) if (c.still) stills.add(c.still);
+    expect(stills.size).toBeGreaterThan(0);
+    for (const url of stills) {
+      expect(
+        existsSync(publicPath(url)),
+        `missing still on disk: "${url}" (run \`npm run wiki:stills\`)`,
+      ).toBe(true);
     }
   });
 });

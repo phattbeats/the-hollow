@@ -1323,7 +1323,8 @@ export const da_DK: EnTranslations = {
       "loading": "Indlæser model...",
       "error": "3D-modellen kunne ikke indlæses. Illustrationen ovenfor viser stadig denne {name}.",
       "dragHint": "Træk for at dreje modellen. Brug venstre og højre piletast, når den er i fokus.",
-      "canvasLabel": "Roterbar 3D-model af {name}"
+      "canvasLabel": "Roterbar 3D-model af {name}",
+      "posterAlt": "{name}"
     },
     "models": {
       "title": "3D-modelviser",

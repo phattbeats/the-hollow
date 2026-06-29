@@ -1323,7 +1323,8 @@ export const ko_KR: EnTranslations = {
       "loading": "모델 불러오는 중...",
       "error": "3D 모델을 불러올 수 없습니다. 위의 그림이 여전히 이 {name}을(를) 보여 줍니다.",
       "dragHint": "끌어서 모델을 돌리세요. 초점이 맞춰지면 왼쪽과 오른쪽 화살표 키를 쓰세요.",
-      "canvasLabel": "{name}의 회전 가능한 3D 모델"
+      "canvasLabel": "{name}의 회전 가능한 3D 모델",
+      "posterAlt": "{name}"
     },
     "models": {
       "title": "3D 모델 뷰어",

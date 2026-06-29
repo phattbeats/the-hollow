@@ -1323,7 +1323,8 @@ export const sv_SE: EnTranslations = {
       "loading": "Laddar modell...",
       "error": "3D-modellen kunde inte laddas. Konsten ovan visar fortfarande denna {name}.",
       "dragHint": "Dra för att vrida modellen. Använd vänster- och högerpiltangenterna när den är i fokus.",
-      "canvasLabel": "Roterbar 3D-modell av {name}"
+      "canvasLabel": "Roterbar 3D-modell av {name}",
+      "posterAlt": "{name}"
     },
     "models": {
       "title": "3D-modellvisare",

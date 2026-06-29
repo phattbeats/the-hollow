@@ -1323,7 +1323,8 @@ export const it_IT: EnTranslations = {
       "loading": "Caricamento del modello...",
       "error": "Impossibile caricare il modello 3D. L'illustrazione sopra mostra comunque questo {name}.",
       "dragHint": "Trascina per girare il modello. Usa i tasti freccia sinistra e destra quando è a fuoco.",
-      "canvasLabel": "Modello 3D ruotabile di {name}"
+      "canvasLabel": "Modello 3D ruotabile di {name}",
+      "posterAlt": "{name}"
     },
     "models": {
       "title": "Visualizzatore di modelli 3D",

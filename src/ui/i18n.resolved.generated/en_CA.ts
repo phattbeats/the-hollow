@@ -1323,7 +1323,8 @@ export const en_CA: EnTranslations = {
       "loading": "Loading model...",
       "error": "The 3D model could not be loaded. The art above still shows this {name}.",
       "dragHint": "Drag to turn the model. Use the left and right arrow keys when it is focused.",
-      "canvasLabel": "Rotatable 3D model of {name}"
+      "canvasLabel": "Rotatable 3D model of {name}",
+      "posterAlt": "{name}"
     },
     "models": {
       "title": "3D Model Viewer",
