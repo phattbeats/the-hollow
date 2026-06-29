@@ -10,17 +10,21 @@
   import Pager from '../components/Pager.svelte';
   import Panel from '../components/Panel.svelte';
 
+  type SharedIpSort = 'accounts' | 'last_seen';
+
   const navigation = getAdminNavigation();
   let data = $state<SharedIpsData | null>(null);
   let failed = $state(false);
   let page = $state(1);
   let onlineOnly = $state(false);
+  let sort = $state<SharedIpSort>('accounts');
+  let dir = $state<'asc' | 'desc'>('desc');
   let requestId = 0;
 
   async function refresh(): Promise<void> {
     const currentRequest = ++requestId;
     try {
-      const params = new URLSearchParams({ page: String(page) });
+      const params = new URLSearchParams({ page: String(page), sort, dir });
       if (onlineOnly) params.set('online', '1');
       const result = await apiGet<SharedIpsData>(`/admin/api/shared-ips?${params}`);
       if (currentRequest !== requestId) return;
@@ -45,6 +49,18 @@
     void refresh();
   }
 
+  function changeSort(column: SharedIpSort): void {
+    dir = sort === column && dir === 'desc' ? 'asc' : 'desc';
+    sort = column;
+    page = 1;
+    void refresh();
+  }
+
+  function sortArrow(column: SharedIpSort): string {
+    if (sort !== column) return '';
+    return dir === 'asc' ? ' ▲' : ' ▼';
+  }
+
   onMount(() => {
     void refresh();
     return () => {
@@ -57,7 +73,7 @@
   <Panel>
     <div class="shared-ips-intro">
       <p class="description">
-        {onlineOnly ? t('sharedIps.onlineDescription') : t('sharedIps.description')}
+        {onlineOnly ? t('sharedIps.onlineDescription') : t('sharedIps.allDescription')}
       </p>
       <label class="online-filter">
         <input type="checkbox" checked={onlineOnly} onchange={changeOnlineFilter} />
@@ -76,10 +92,14 @@
         {onlineOnly ? t('sharedIps.onlineEmpty') : t('sharedIps.empty')}
       </div>
     {:else}
-      <div class="shared-ip-heading" aria-hidden="true">
+      <div class="shared-ip-heading">
         <span>{t('blockedIps.colIp')}</span>
-        <span>{t('sharedIps.colAccounts')}</span>
-        <span>{t('ipAssociations.colLastSeen')}</span>
+        <button type="button" onclick={() => changeSort('accounts')}>
+          {t('sharedIps.colAccounts')}{sortArrow('accounts')}
+        </button>
+        <button type="button" onclick={() => changeSort('last_seen')}>
+          {t('ipAssociations.colLastSeen')}{sortArrow('last_seen')}
+        </button>
       </div>
       <ul class="shared-ip-list">
         {#each data.rows as row (row.ip)}
@@ -216,6 +236,28 @@
     font-size: var(--font-size-small);
     text-transform: uppercase;
     letter-spacing: 0.6px;
+  }
+
+  .shared-ip-heading button {
+    width: fit-content;
+    padding: 3px 0;
+    color: inherit;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    font: inherit;
+    letter-spacing: inherit;
+    text-align: left;
+    text-transform: inherit;
+  }
+
+  .shared-ip-heading button:hover {
+    color: var(--gold);
+  }
+
+  .shared-ip-heading button:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
   }
 
   .shared-ip-list {

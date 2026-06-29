@@ -413,6 +413,7 @@ export const da_DK: AdminTranslations = {
   "blockedIps.addFailed": "Kunne ikke blokere IP'en.",
   "blockedIps.removeFailed": "Kunne ikke fjerne blokeringen af IP'en.",
   "sharedIps.description": "IP-adresser observeret på tværs af mere end én konto, sorteret efter kontoantal.",
+  "sharedIps.allDescription": "IP addresses observed across more than one account.",
   "sharedIps.onlineDescription": "IP-adresser, der i øjeblikket bruges af mere end én onlinekonto.",
   "sharedIps.onlineOnly": "Kun online konti",
   "sharedIps.warning": "En delt IP er et efterforskningssignal, ikke et bevis på, at konti tilhører den samme person. NAT-, VPN-, kontor-, skole- og mobilnetværk kan være legitime årsager.",

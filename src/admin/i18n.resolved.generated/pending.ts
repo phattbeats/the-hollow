@@ -12,6 +12,7 @@
 export const pending: Record<string, readonly string[]> = {
   "es": [
     "nav.suspiciousPlayers",
+    "sharedIps.allDescription",
     "suspiciousPlayers.autoRefresh",
     "suspiciousPlayers.colEvidence",
     "suspiciousPlayers.colName",
@@ -25,6 +26,7 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "es_ES": [
     "nav.suspiciousPlayers",
+    "sharedIps.allDescription",
     "suspiciousPlayers.autoRefresh",
     "suspiciousPlayers.colEvidence",
     "suspiciousPlayers.colName",
@@ -38,6 +40,7 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "fr_FR": [
     "nav.suspiciousPlayers",
+    "sharedIps.allDescription",
     "suspiciousPlayers.autoRefresh",
     "suspiciousPlayers.colEvidence",
     "suspiciousPlayers.colName",
@@ -51,6 +54,7 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "fr_CA": [
     "nav.suspiciousPlayers",
+    "sharedIps.allDescription",
     "suspiciousPlayers.autoRefresh",
     "suspiciousPlayers.colEvidence",
     "suspiciousPlayers.colName",
@@ -65,6 +69,7 @@ export const pending: Record<string, readonly string[]> = {
   "en_CA": [],
   "it_IT": [
     "nav.suspiciousPlayers",
+    "sharedIps.allDescription",
     "suspiciousPlayers.autoRefresh",
     "suspiciousPlayers.colEvidence",
     "suspiciousPlayers.colName",
@@ -78,6 +83,7 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "de_DE": [
     "nav.suspiciousPlayers",
+    "sharedIps.allDescription",
     "suspiciousPlayers.autoRefresh",
     "suspiciousPlayers.colEvidence",
     "suspiciousPlayers.colName",
@@ -91,6 +97,7 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "zh_CN": [
     "nav.suspiciousPlayers",
+    "sharedIps.allDescription",
     "suspiciousPlayers.autoRefresh",
     "suspiciousPlayers.colEvidence",
     "suspiciousPlayers.colName",
@@ -104,6 +111,7 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "zh_TW": [
     "nav.suspiciousPlayers",
+    "sharedIps.allDescription",
     "suspiciousPlayers.autoRefresh",
     "suspiciousPlayers.colEvidence",
     "suspiciousPlayers.colName",
@@ -117,6 +125,7 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "ko_KR": [
     "nav.suspiciousPlayers",
+    "sharedIps.allDescription",
     "suspiciousPlayers.autoRefresh",
     "suspiciousPlayers.colEvidence",
     "suspiciousPlayers.colName",
@@ -130,6 +139,7 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "ja_JP": [
     "nav.suspiciousPlayers",
+    "sharedIps.allDescription",
     "suspiciousPlayers.autoRefresh",
     "suspiciousPlayers.colEvidence",
     "suspiciousPlayers.colName",
@@ -143,6 +153,7 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "pt_BR": [
     "nav.suspiciousPlayers",
+    "sharedIps.allDescription",
     "suspiciousPlayers.autoRefresh",
     "suspiciousPlayers.colEvidence",
     "suspiciousPlayers.colName",
@@ -156,6 +167,7 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "ru_RU": [
     "nav.suspiciousPlayers",
+    "sharedIps.allDescription",
     "suspiciousPlayers.autoRefresh",
     "suspiciousPlayers.colEvidence",
     "suspiciousPlayers.colName",
@@ -169,6 +181,7 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "nl_NL": [
     "nav.suspiciousPlayers",
+    "sharedIps.allDescription",
     "suspiciousPlayers.autoRefresh",
     "suspiciousPlayers.colEvidence",
     "suspiciousPlayers.colName",
@@ -182,6 +195,7 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "pl_PL": [
     "nav.suspiciousPlayers",
+    "sharedIps.allDescription",
     "suspiciousPlayers.autoRefresh",
     "suspiciousPlayers.colEvidence",
     "suspiciousPlayers.colName",
@@ -195,6 +209,7 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "id_ID": [
     "nav.suspiciousPlayers",
+    "sharedIps.allDescription",
     "suspiciousPlayers.autoRefresh",
     "suspiciousPlayers.colEvidence",
     "suspiciousPlayers.colName",
@@ -208,6 +223,7 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "tr_TR": [
     "nav.suspiciousPlayers",
+    "sharedIps.allDescription",
     "suspiciousPlayers.autoRefresh",
     "suspiciousPlayers.colEvidence",
     "suspiciousPlayers.colName",
@@ -221,6 +237,7 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "sv_SE": [
     "nav.suspiciousPlayers",
+    "sharedIps.allDescription",
     "suspiciousPlayers.autoRefresh",
     "suspiciousPlayers.colEvidence",
     "suspiciousPlayers.colName",
@@ -234,6 +251,7 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "vi_VN": [
     "nav.suspiciousPlayers",
+    "sharedIps.allDescription",
     "suspiciousPlayers.autoRefresh",
     "suspiciousPlayers.colEvidence",
     "suspiciousPlayers.colName",
@@ -247,6 +265,7 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "da_DK": [
     "nav.suspiciousPlayers",
+    "sharedIps.allDescription",
     "suspiciousPlayers.autoRefresh",
     "suspiciousPlayers.colEvidence",
     "suspiciousPlayers.colName",

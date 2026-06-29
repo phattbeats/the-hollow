@@ -413,6 +413,7 @@ export const sv_SE: AdminTranslations = {
   "blockedIps.addFailed": "Kunde inte blockera IP-adressen.",
   "blockedIps.removeFailed": "Kunde inte avblockera IP-adressen.",
   "sharedIps.description": "IP-adresser observerade på mer än ett konto, sorterade efter kontoantal.",
+  "sharedIps.allDescription": "IP addresses observed across more than one account.",
   "sharedIps.onlineDescription": "IP-adresser som för närvarande används av mer än ett onlinekonto.",
   "sharedIps.onlineOnly": "Endast onlinekonton",
   "sharedIps.warning": "En delad IP är en utredningssignal, inte ett bevis på att kontona tillhör samma person. NAT, VPN, kontor, skola och mobila nätverk kan vara legitima orsaker.",

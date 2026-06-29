@@ -413,6 +413,7 @@ export const ko_KR: AdminTranslations = {
   "blockedIps.addFailed": "IP를 차단하지 못했습니다.",
   "blockedIps.removeFailed": "IP 차단을 해제하지 못했습니다.",
   "sharedIps.description": "둘 이상의 계정에서 관찰된 IP 주소(계정 수에 따라 정렬됨)",
+  "sharedIps.allDescription": "IP addresses observed across more than one account.",
   "sharedIps.onlineDescription": "현재 둘 이상의 온라인 계정에서 사용되는 IP 주소입니다.",
   "sharedIps.onlineOnly": "온라인 계정만 해당",
   "sharedIps.warning": "공유 IP는 조사 신호일 뿐 해당 계정이 동일인의 계정이라는 증거는 아닙니다. NAT, VPN, 사무실, 학교 및 모바일 네트워크가 합법적인 원인일 수 있습니다.",

@@ -413,6 +413,7 @@ export const zh_TW: AdminTranslations = {
   "blockedIps.addFailed": "封鎖 IP 失敗。",
   "blockedIps.removeFailed": "解除封鎖 IP 失敗。",
   "sharedIps.description": "在多個帳戶中觀察到的 IP 位址，按帳戶數排序。",
+  "sharedIps.allDescription": "IP addresses observed across more than one account.",
   "sharedIps.onlineDescription": "目前由多個線上帳戶使用的 IP 位址。",
   "sharedIps.onlineOnly": "僅限線上帳戶",
   "sharedIps.warning": "共享IP只是一個調查訊號，並不能證明這些帳戶屬於同一個人。 NAT、VPN、辦公室、學校和行動網路都可以是合法原因。",

@@ -413,6 +413,7 @@ export const vi_VN: AdminTranslations = {
   "blockedIps.addFailed": "Không chặn được IP.",
   "blockedIps.removeFailed": "Không bỏ chặn được IP.",
   "sharedIps.description": "Địa chỉ IP được quan sát trên nhiều tài khoản, được sắp xếp theo số lượng tài khoản.",
+  "sharedIps.allDescription": "IP addresses observed across more than one account.",
   "sharedIps.onlineDescription": "Địa chỉ IP hiện được sử dụng bởi nhiều tài khoản trực tuyến.",
   "sharedIps.onlineOnly": "Chỉ tài khoản trực tuyến",
   "sharedIps.warning": "IP được chia sẻ là tín hiệu điều tra, không phải bằng chứng cho thấy các tài khoản thuộc về cùng một người. NAT, VPN, văn phòng, trường học và mạng di động có thể là những nguyên nhân chính đáng.",

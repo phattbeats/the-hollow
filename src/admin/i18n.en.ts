@@ -419,6 +419,7 @@ export const en = {
   'blockedIps.removeFailed': 'Failed to unblock the IP.',
   'sharedIps.description':
     'IP addresses observed across more than one account, ordered by account count.',
+  'sharedIps.allDescription': 'IP addresses observed across more than one account.',
   'sharedIps.onlineDescription': 'IP addresses currently used by more than one online account.',
   'sharedIps.onlineOnly': 'Online accounts only',
   'sharedIps.warning':

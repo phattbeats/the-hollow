@@ -414,13 +414,13 @@ describe('admin api auth', () => {
     await handleAdminApi(
       fakeReq({
         token: VALID_TOKEN,
-        url: '/admin/api/shared-ips?page=2&limit=50',
+        url: '/admin/api/shared-ips?page=2&limit=50&sort=last_seen&dir=asc',
       }),
       res,
       fakeGame,
     );
 
-    expect(listSharedIps).toHaveBeenCalledWith(2, 50);
+    expect(listSharedIps).toHaveBeenCalledWith(2, 50, 'last_seen', 'asc');
     expect(res.statusCode).toBe(200);
     expect(res.body.data.rows[0]).toEqual(
       expect.objectContaining({ ip: '203.0.113.7', blocked: true }),
@@ -447,7 +447,7 @@ describe('admin api auth', () => {
     await handleAdminApi(
       fakeReq({
         token: VALID_TOKEN,
-        url: '/admin/api/shared-ips?online=1&page=2&limit=1',
+        url: '/admin/api/shared-ips?online=1&page=1&limit=1&sort=last_seen&dir=asc',
       }),
       res,
       fakeGame,
@@ -465,7 +465,7 @@ describe('admin api auth', () => {
         },
       ],
       total: 2,
-      page: 2,
+      page: 1,
       limit: 1,
     });
   });

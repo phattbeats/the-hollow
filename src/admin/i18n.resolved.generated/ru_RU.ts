@@ -413,6 +413,7 @@ export const ru_RU: AdminTranslations = {
   "blockedIps.addFailed": "Не удалось заблокировать IP.",
   "blockedIps.removeFailed": "Не удалось разблокировать IP.",
   "sharedIps.description": "IP-адреса, наблюдаемые в нескольких учетных записях, упорядочены по количеству учетных записей.",
+  "sharedIps.allDescription": "IP addresses observed across more than one account.",
   "sharedIps.onlineDescription": "IP-адреса, которые в настоящее время используются более чем одной онлайн-учетной записью.",
   "sharedIps.onlineOnly": "Только онлайн-аккаунты",
   "sharedIps.warning": "Общий IP-адрес — это сигнал расследования, а не доказательство того, что учетные записи принадлежат одному и тому же лицу. NAT, VPN, офис, школа и мобильные сети могут быть законными причинами.",

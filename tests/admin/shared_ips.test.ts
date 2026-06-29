@@ -74,7 +74,28 @@ describe('Shared IPs', () => {
     expect(toggle).toBeChecked();
     await waitFor(() => {
       expect(mocks.apiGet.mock.calls.at(-1)?.[0]).toContain(
-        '/admin/api/shared-ips?page=1&online=1',
+        '/admin/api/shared-ips?page=1&sort=accounts&dir=desc&online=1',
+      );
+    });
+  });
+
+  it('requests last-seen sorting and resets to the first page', async () => {
+    render(SharedIps);
+    await screen.findByText('203.0.113.7');
+
+    const lastSeen = screen.getByRole('button', { name: t('ipAssociations.colLastSeen') });
+    await fireEvent.click(lastSeen);
+
+    await waitFor(() => {
+      expect(mocks.apiGet.mock.calls.at(-1)?.[0]).toContain(
+        '/admin/api/shared-ips?page=1&sort=last_seen&dir=desc',
+      );
+    });
+
+    await fireEvent.click(lastSeen);
+    await waitFor(() => {
+      expect(mocks.apiGet.mock.calls.at(-1)?.[0]).toContain(
+        '/admin/api/shared-ips?page=1&sort=last_seen&dir=asc',
       );
     });
   });

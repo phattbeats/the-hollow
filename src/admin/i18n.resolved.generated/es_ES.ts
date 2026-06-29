@@ -413,6 +413,7 @@ export const es_ES: AdminTranslations = {
   "blockedIps.addFailed": "no se pudo bloquear la IP.",
   "blockedIps.removeFailed": "no se pudo desbloquear la IP.",
   "sharedIps.description": "Direcciones IP observadas en más de una cuenta, ordenadas por recuento de cuentas.",
+  "sharedIps.allDescription": "IP addresses observed across more than one account.",
   "sharedIps.onlineDescription": "Direcciones IP utilizadas actualmente por más de una cuenta en línea.",
   "sharedIps.onlineOnly": "Solo cuentas en línea",
   "sharedIps.warning": "Una IP compartida es una señal de investigación, no una prueba de que las cuentas pertenecen a la misma persona. NAT, VPN, oficinas, escuelas y redes móviles pueden ser causas legítimas.",

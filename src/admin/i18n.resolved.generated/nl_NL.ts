@@ -413,6 +413,7 @@ export const nl_NL: AdminTranslations = {
   "blockedIps.addFailed": "Blokkeren van het IP mislukt.",
   "blockedIps.removeFailed": "Deblokkeren van het IP mislukt.",
   "sharedIps.description": "IP-adressen waargenomen voor meer dan één account, gerangschikt op accountaantal.",
+  "sharedIps.allDescription": "IP addresses observed across more than one account.",
   "sharedIps.onlineDescription": "IP-adressen die momenteel door meer dan één online account worden gebruikt.",
   "sharedIps.onlineOnly": "Alleen online-accounts",
   "sharedIps.warning": "Een gedeeld IP-adres is een onderzoekssignaal en geen bewijs dat de accounts van dezelfde persoon zijn. NAT-, VPN-, kantoor-, school- en mobiele netwerken kunnen legitieme oorzaken zijn.",

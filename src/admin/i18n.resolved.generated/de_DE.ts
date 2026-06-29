@@ -413,6 +413,7 @@ export const de_DE: AdminTranslations = {
   "blockedIps.addFailed": "IP konnte nicht gesperrt werden.",
   "blockedIps.removeFailed": "IP konnte nicht entsperrt werden.",
   "sharedIps.description": "IP-Adressen, die über mehr als ein Konto hinweg beobachtet wurden, sortiert nach Kontoanzahl.",
+  "sharedIps.allDescription": "IP addresses observed across more than one account.",
   "sharedIps.onlineDescription": "IP-Adressen, die derzeit von mehr als einem Online-Konto verwendet werden.",
   "sharedIps.onlineOnly": "Nur Online-Konten",
   "sharedIps.warning": "Eine gemeinsame IP-Adresse ist ein Ermittlungssignal und kein Beweis dafür, dass die Konten derselben Person gehören. NAT, VPN, Büro-, Schul- und Mobilfunknetze können legitime Ursachen sein.",

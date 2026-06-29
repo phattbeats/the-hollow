@@ -413,6 +413,7 @@ export const pl_PL: AdminTranslations = {
   "blockedIps.addFailed": "Nie udało się zablokować IP.",
   "blockedIps.removeFailed": "Nie udało się odblokować IP.",
   "sharedIps.description": "Adresy IP zaobserwowane na więcej niż jednym koncie, uporządkowane według liczby kont.",
+  "sharedIps.allDescription": "IP addresses observed across more than one account.",
   "sharedIps.onlineDescription": "Adresy IP aktualnie używane przez więcej niż jedno konto internetowe.",
   "sharedIps.onlineOnly": "Tylko konta internetowe",
   "sharedIps.warning": "Wspólny adres IP jest sygnałem dochodzeniowym, a nie dowodem na to, że konta należą do tej samej osoby. NAT, VPN, sieci biurowe, szkolne i komórkowe mogą być uzasadnionymi przyczynami.",
