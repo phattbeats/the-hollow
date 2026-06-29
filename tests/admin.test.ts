@@ -75,6 +75,7 @@ import {
   overviewCounts,
   type PerfRawRow,
 } from '../server/admin_db';
+import type { SuspiciousPlayer } from '../server/bot_detector/contract';
 import {
   addFilterWord,
   chatModerationForAccount,
@@ -157,6 +158,7 @@ const fakeGameState = {
     heapUsedBytes: 1,
   }),
   liveSessions: () => [],
+  suspiciousPlayers: vi.fn<() => SuspiciousPlayer[]>(() => []),
   liveAccountIds: () => new Set([9]),
   liveSharedIps: vi.fn<() => LiveSharedIp[]>(() => []),
   disconnectAccount: vi.fn(),
@@ -174,6 +176,7 @@ beforeEach(() => {
   vi.clearAllMocks();
   fakeGame.isIpBlocked.mockReturnValue(false);
   fakeGame.liveSharedIps.mockReturnValue([]);
+  fakeGame.suspiciousPlayers.mockReturnValue([]);
   // Default so the moderation-detail route (which now also loads chat state)
   // resolves; individual chat-filter tests override as needed.
   vi.mocked(chatModerationForAccount).mockResolvedValue({
@@ -273,6 +276,43 @@ describe('admin api auth', () => {
     expect(res.body.data.points[0]).toEqual(
       expect.objectContaining({ peakPlayers: 7, peakAccounts: 5, peakSiteUsers: 12 }),
     );
+  });
+
+  it('serves live suspicious players to an authenticated admin', async () => {
+    vi.mocked(accountForToken).mockResolvedValue(7);
+    vi.mocked(isAdminAccount).mockResolvedValue(true);
+    fakeGame.suspiciousPlayers.mockReturnValue([
+      {
+        ref: { accountId: 12, characterId: 34, name: 'Watcher', ip: '203.0.113.9' },
+        snapshot: null,
+        state: 'SUSPICIOUS',
+        score: 1.4,
+        evidence: [
+          {
+            kind: 'review_signal_a',
+            weight: 1.4,
+            detail: 'Public-safe synthetic evidence A.',
+            expiresAt: 123,
+          },
+        ],
+      },
+    ]);
+    const res = fakeRes();
+
+    await handleAdminApi(
+      fakeReq({ token: VALID_TOKEN, url: '/admin/api/suspicious-players' }),
+      res,
+      fakeGame,
+    );
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.data.players[0]).toEqual(
+      expect.objectContaining({
+        ref: expect.objectContaining({ accountId: 12, name: 'Watcher' }),
+        score: 1.4,
+      }),
+    );
+    expect(fakeGame.suspiciousPlayers).toHaveBeenCalledOnce();
   });
 
   it('rejects admin login for a non-admin account even with the right password', async () => {

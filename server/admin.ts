@@ -378,6 +378,9 @@ export async function handleAdminApi(
     if (path === '/admin/api/online') {
       return ok(res, { players: game.liveSessions() });
     }
+    if (path === '/admin/api/suspicious-players') {
+      return ok(res, { players: game.suspiciousPlayers() });
+    }
     if (path === '/admin/api/online-history') {
       return ok(res, await onlineHistory(url.searchParams.get('range') ?? '30d'));
     }
