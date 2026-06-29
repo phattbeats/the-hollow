@@ -21,6 +21,7 @@ const PRIMARY = [
 const SECONDARY = [
   ['guide.stats.armorTitle', 'guide.stats.armorBody'],
   ['guide.stats.apTitle', 'guide.stats.apBody'],
+  ['guide.stats.spTitle', 'guide.stats.spBody'],
   ['guide.stats.critTitle', 'guide.stats.critBody'],
   ['guide.stats.dodgeTitle', 'guide.stats.dodgeBody'],
   ['guide.stats.dpsTitle', 'guide.stats.dpsBody'],

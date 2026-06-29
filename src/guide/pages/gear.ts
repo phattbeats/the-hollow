@@ -60,7 +60,7 @@ export const gear: GuidePage = {
 
         ${section('guide.gear.qualityTitle', p('guide.gear.qualityBody') + qualityList() + p('guide.gear.qualityNote'))}
 
-        ${section('guide.gear.upgradeTitle', p('guide.gear.upgradeBody'))}
+        ${section('guide.gear.upgradeTitle', p('guide.gear.upgradeBody') + p('guide.gear.itemLevelBody'))}
 
         ${section('guide.gear.sourcesTitle', p('guide.gear.sourcesBody'))}
 

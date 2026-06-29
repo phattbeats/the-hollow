@@ -911,7 +911,9 @@ export const ru_RU: EnTranslations = {
       "cycleFriendly": "Cycle friendly target",
       "gameMenu": "Open game menu and options",
       "mobileHeading": "На мобильных устройствах",
-      "mobileBody": "На телефонах и планшетах сенсорное управление появляется автоматически: джойстик передвижения слева, перетаскивание в любой точке справа для обзора и экранные кнопки для способностей и меню."
+      "mobileBody": "На телефонах и планшетах сенсорное управление появляется автоматически: джойстик передвижения слева, перетаскивание в любой точке справа для обзора и экранные кнопки для способностей и меню.",
+      "controllerHeading": "On a controller",
+      "controllerBody": "Gamepads work too, and controller support is on by default. The left stick moves, the right stick aims the camera, and the face and shoulder buttons cover your abilities, jumping, and interacting. Open any window to bring up an on-screen pointer for menus. You can remap the buttons and adjust stick deadzone, camera speed, vibration, and inverted look from the controller settings in the options."
     },
     "combat": {
       "intro": "Бой подчиняется привычным правилам классических MMO. Чтобы хорошо играть, изучать их вовсе не обязательно, это лишь общее представление о том, как устроены сражения.",
@@ -1281,7 +1283,7 @@ export const ru_RU: EnTranslations = {
     },
     "delvesPage": {
       "heading": "Delves",
-      "intro": "Delves are short, replayable descents for one or two, with a companion always at your side. Find the board, choose a run, and climb back out with the spoils.",
+      "intro": "Delves are short, replayable descents for one or two, with a loyal companion at your side whenever you go down alone. Find the board, choose a run, and climb back out with the spoils.",
       "fromLevel": "From level {n}",
       "partyLabel": "For one or two",
       "keeperLabel": "Keeper",
@@ -1404,6 +1406,7 @@ export const ru_RU: EnTranslations = {
       "qualityNote": "Более высокое качество обычно означает характеристики получше, но качество, это подсказка, а не правило. Хорошо подобранная под ваш класс и уровень вещь может оказаться лучше более броской.",
       "upgradeTitle": "Держите снаряжение свежим",
       "upgradeBody": "Заменить старую вещь свежим улучшением даст вам больше, чем безупречная игра в снаряжении, из которого вы выросли. Когда выпадает что-то получше или это предлагает задание, берите. Не приберегайте хорошие вещи на потом.",
+      "itemLevelBody": "If you want a quick way to compare two pieces, turn on Show Item Level in the options. Each weapon and armor piece then shows an item level, a single figure for roughly how powerful it is based on where it came from, so you can tell at a glance which upgrade pulls more weight, even across different slots.",
       "sourcesTitle": "Откуда берётся снаряжение",
       "sourcesBody": "Большинство ваших ранних улучшений, это награды за задания, так что выгоднее выполнять задания, а не гриндить. Враги роняют снаряжение, когда вы их побеждаете, торговцы в городе продают добротную основу, а игровой рынок позволяет покупать у других искателей приключений.",
       "setsTitle": "Sets and set bonuses",
@@ -1506,6 +1509,8 @@ export const ru_RU: EnTranslations = {
       "armorBody": "Броня снижает физический урон, что вы получаете. Берётся она в основном из того, что на вас надето, а классы в тяжёлой броне несут её куда больше. Чем больше брони против врага близкого к вам уровня, тем мягче ложится каждый его удар.",
       "apTitle": "Сила атаки",
       "apBody": "Сила атаки измеряет, насколько мощно бьёт ваше оружие. Её питают ваши основные характеристики, а более сильное оружие и снаряжение поднимают её ещё выше, вот почему улучшение может обернуться настоящим скачком урона.",
+      "spTitle": "Spell power",
+      "spBody": "Spell power is a caster's counterpart to attack power: it raises the damage your spells deal. Intellect feeds it, and caster gear and buffs add more on top, so a spellcaster watches spell power the way a melee fighter watches attack power.",
       "critTitle": "Критический удар",
       "critBody": "Ваш шанс критического удара, это то, как часто атака проходит с дополнительным уроном. У каждого есть небольшой базовый шанс, а Ловкость (а ещё некоторые таланты и снаряжение) надстраивает его.",
       "dodgeTitle": "Уклонение",

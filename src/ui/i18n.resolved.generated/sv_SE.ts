@@ -911,7 +911,9 @@ export const sv_SE: EnTranslations = {
       "cycleFriendly": "Cycle friendly target",
       "gameMenu": "Open game menu and options",
       "mobileHeading": "På mobil",
-      "mobileBody": "Pekkontroller visas automatiskt på telefoner och surfplattor: en rörelsespak till vänster, dra var som helst till höger för att titta, och knappar på skärmen för dina förmågor och menyer."
+      "mobileBody": "Pekkontroller visas automatiskt på telefoner och surfplattor: en rörelsespak till vänster, dra var som helst till höger för att titta, och knappar på skärmen för dina förmågor och menyer.",
+      "controllerHeading": "On a controller",
+      "controllerBody": "Gamepads work too, and controller support is on by default. The left stick moves, the right stick aims the camera, and the face and shoulder buttons cover your abilities, jumping, and interacting. Open any window to bring up an on-screen pointer for menus. You can remap the buttons and adjust stick deadzone, camera speed, vibration, and inverted look from the controller settings in the options."
     },
     "combat": {
       "intro": "Strid följer välbekanta klassiska MMO-regler. Du behöver aldrig studera något av det för att spela bra, detta är bara formen för hur strider fungerar.",
@@ -1281,7 +1283,7 @@ export const sv_SE: EnTranslations = {
     },
     "delvesPage": {
       "heading": "Delves",
-      "intro": "Delves are short, replayable descents for one or two, with a companion always at your side. Find the board, choose a run, and climb back out with the spoils.",
+      "intro": "Delves are short, replayable descents for one or two, with a loyal companion at your side whenever you go down alone. Find the board, choose a run, and climb back out with the spoils.",
       "fromLevel": "From level {n}",
       "partyLabel": "For one or two",
       "keeperLabel": "Keeper",
@@ -1404,6 +1406,7 @@ export const sv_SE: EnTranslations = {
       "qualityNote": "Högre kvalitet betyder oftast bättre egenskaper, men kvalitet är en ledtråd, inte en regel. En välmatchad pjäs för din klass och nivå kan slå en flashigare.",
       "upgradeTitle": "Håll din utrustning aktuell",
       "upgradeBody": "Att byta ut en gammal pjäs mot en ny uppgradering gör mer för dig än att spela perfekt i utrustning du vuxit ur. När något bättre släpps eller ett uppdrag erbjuder det, ta det. Spara inte dina goda föremål till senare.",
+      "itemLevelBody": "If you want a quick way to compare two pieces, turn on Show Item Level in the options. Each weapon and armor piece then shows an item level, a single figure for roughly how powerful it is based on where it came from, so you can tell at a glance which upgrade pulls more weight, even across different slots.",
       "sourcesTitle": "Var utrustning kommer ifrån",
       "sourcesBody": "Det mesta av dina tidiga uppgraderingar är uppdragsbelöningar, så det lönar sig att slutföra uppdrag snarare än att grinda. Fiender släpper utrustning när du besegrar dem, handlare i staden säljer solida basvaror, och spelarmarknaden låter dig köpa från andra äventyrare.",
       "setsTitle": "Sets and set bonuses",
@@ -1506,6 +1509,8 @@ export const sv_SE: EnTranslations = {
       "armorBody": "Rustning minskar den fysiska skada du tar. Den kommer mestadels från vad du bär, och de tyngre rustningsklasserna bär långt mer av den. Mer rustning mot en fiende nära din nivå innebär att var och en av dess träffar landar mjukare.",
       "apTitle": "Anfallskraft",
       "apBody": "Anfallskraft mäter hur hårt ditt vapen slår. Dina primära attribut göder den, och starkare vapen och utrustning höjer den ytterligare, vilket är varför en uppgradering kan vara ett verkligt skutt i skada.",
+      "spTitle": "Spell power",
+      "spBody": "Spell power is a caster's counterpart to attack power: it raises the damage your spells deal. Intellect feeds it, and caster gear and buffs add more on top, so a spellcaster watches spell power the way a melee fighter watches attack power.",
       "critTitle": "Kritisk träff",
       "critBody": "Din kritiska träffchans är hur ofta en attack landar för extra skada. Alla börjar med en liten baschans, och Smidighet (plus en del talanger och utrustning) bygger på den.",
       "dodgeTitle": "Väjning",

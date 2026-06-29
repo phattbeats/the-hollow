@@ -911,7 +911,9 @@ export const zh_TW: EnTranslations = {
       "cycleFriendly": "Cycle friendly target",
       "gameMenu": "Open game menu and options",
       "mobileHeading": "行動裝置上",
-      "mobileBody": "在手機與平板上會自動顯示觸控操作：左側為移動搖桿，在右側任意處拖曳即可環顧，並有螢幕上的按鈕供你使用技能與選單。"
+      "mobileBody": "在手機與平板上會自動顯示觸控操作：左側為移動搖桿，在右側任意處拖曳即可環顧，並有螢幕上的按鈕供你使用技能與選單。",
+      "controllerHeading": "On a controller",
+      "controllerBody": "Gamepads work too, and controller support is on by default. The left stick moves, the right stick aims the camera, and the face and shoulder buttons cover your abilities, jumping, and interacting. Open any window to bring up an on-screen pointer for menus. You can remap the buttons and adjust stick deadzone, camera speed, vibration, and inverted look from the controller settings in the options."
     },
     "combat": {
       "intro": "戰鬥遵循熟悉的經典MMO規則。你完全不需要研究這些就能玩得很好，這只是讓你了解戰鬥運作的大致樣貌。",
@@ -1281,7 +1283,7 @@ export const zh_TW: EnTranslations = {
     },
     "delvesPage": {
       "heading": "Delves",
-      "intro": "Delves are short, replayable descents for one or two, with a companion always at your side. Find the board, choose a run, and climb back out with the spoils.",
+      "intro": "Delves are short, replayable descents for one or two, with a loyal companion at your side whenever you go down alone. Find the board, choose a run, and climb back out with the spoils.",
       "fromLevel": "From level {n}",
       "partyLabel": "For one or two",
       "keeperLabel": "Keeper",
@@ -1404,6 +1406,7 @@ export const zh_TW: EnTranslations = {
       "qualityNote": "品質愈高通常代表屬性愈好，但品質只是一種提示，並非定則。一件與你職業和等級相配的裝備，可能勝過一件更花俏的。",
       "upgradeTitle": "保持裝備更新",
       "upgradeBody": "用一件全新的升級品換下舊裝備，對你的助益遠勝於穿著早已過時的裝備打得再完美。當有更好的東西掉落，或任務提供升級時，就收下吧。別把你的好物品留到以後。",
+      "itemLevelBody": "If you want a quick way to compare two pieces, turn on Show Item Level in the options. Each weapon and armor piece then shows an item level, a single figure for roughly how powerful it is based on where it came from, so you can tell at a glance which upgrade pulls more weight, even across different slots.",
       "sourcesTitle": "裝備從何而來",
       "sourcesBody": "你早期的升級大多來自任務獎勵，因此完成任務比刷怪更划算。敵人被你擊敗時會掉落裝備，城鎮裡的商人販售扎實的基本款，玩家市場則讓你能向其他冒險者購買。",
       "setsTitle": "Sets and set bonuses",
@@ -1506,6 +1509,8 @@ export const zh_TW: EnTranslations = {
       "armorBody": "護甲能減少你受到的物理傷害。它大多來自你身上的穿戴，而重甲職業攜帶的護甲遠多得多。對上一個與你等級相近的敵人，護甲愈多便意味著它的每一擊落下時都更輕。",
       "apTitle": "攻擊強度",
       "apBody": "攻擊強度衡量你的武器揮擊得有多狠。你的主要屬性會灌注它，而更強的武器與裝備能進一步提升它，這正是為什麼一件升級品可能帶來傷害上實實在在的躍進。",
+      "spTitle": "Spell power",
+      "spBody": "Spell power is a caster's counterpart to attack power: it raises the damage your spells deal. Intellect feeds it, and caster gear and buffs add more on top, so a spellcaster watches spell power the way a melee fighter watches attack power.",
       "critTitle": "暴擊",
       "critBody": "你的暴擊機率是攻擊打出額外傷害的頻率。每個人都從一個微小的基礎機率起步，而敏捷（外加一些天賦與裝備）則在其上累加。",
       "dodgeTitle": "閃躲",

@@ -911,7 +911,9 @@ export const pt_BR: EnTranslations = {
       "cycleFriendly": "Cycle friendly target",
       "gameMenu": "Open game menu and options",
       "mobileHeading": "No celular",
-      "mobileBody": "Os controles de toque aparecem automaticamente em celulares e tablets: um analógico de movimento à esquerda, arraste em qualquer lugar à direita para olhar ao redor e botões na tela para suas habilidades e menus."
+      "mobileBody": "Os controles de toque aparecem automaticamente em celulares e tablets: um analógico de movimento à esquerda, arraste em qualquer lugar à direita para olhar ao redor e botões na tela para suas habilidades e menus.",
+      "controllerHeading": "On a controller",
+      "controllerBody": "Gamepads work too, and controller support is on by default. The left stick moves, the right stick aims the camera, and the face and shoulder buttons cover your abilities, jumping, and interacting. Open any window to bring up an on-screen pointer for menus. You can remap the buttons and adjust stick deadzone, camera speed, vibration, and inverted look from the controller settings in the options."
     },
     "combat": {
       "intro": "O combate segue as regras familiares dos MMOs clássicos. Você nunca precisa estudar nada disso para jogar bem, isto é apenas o formato de como as lutas funcionam.",
@@ -1281,7 +1283,7 @@ export const pt_BR: EnTranslations = {
     },
     "delvesPage": {
       "heading": "Delves",
-      "intro": "Delves are short, replayable descents for one or two, with a companion always at your side. Find the board, choose a run, and climb back out with the spoils.",
+      "intro": "Delves are short, replayable descents for one or two, with a loyal companion at your side whenever you go down alone. Find the board, choose a run, and climb back out with the spoils.",
       "fromLevel": "From level {n}",
       "partyLabel": "For one or two",
       "keeperLabel": "Keeper",
@@ -1404,6 +1406,7 @@ export const pt_BR: EnTranslations = {
       "qualityNote": "Qualidade mais alta normalmente significa atributos melhores, mas a qualidade é uma dica, não uma regra. Uma peça bem adequada à sua classe e nível pode superar uma mais vistosa.",
       "upgradeTitle": "Mantenha seu equipamento atualizado",
       "upgradeBody": "Trocar uma peça antiga por uma melhoria nova faz mais por você do que jogar de forma impecável com um equipamento que você já superou. Quando algo melhor cair ou uma missão oferecer, pegue. Não guarde seus bons itens para depois.",
+      "itemLevelBody": "If you want a quick way to compare two pieces, turn on Show Item Level in the options. Each weapon and armor piece then shows an item level, a single figure for roughly how powerful it is based on where it came from, so you can tell at a glance which upgrade pulls more weight, even across different slots.",
       "sourcesTitle": "De onde vem o equipamento",
       "sourcesBody": "A maioria das suas melhorias iniciais são recompensas de missões, então vale a pena terminar missões em vez de farmar. Inimigos largam equipamento quando você os derrota, vendedores na cidade vendem o básico de confiança, e o mercado de jogadores permite comprar de outros aventureiros.",
       "setsTitle": "Sets and set bonuses",
@@ -1506,6 +1509,8 @@ export const pt_BR: EnTranslations = {
       "armorBody": "A armadura reduz o dano físico que você sofre. Ela vem principalmente do que você veste, e as classes de armadura mais pesada carregam muito mais dela. Mais armadura contra um inimigo perto do seu nível faz cada golpe dele acertar mais leve.",
       "apTitle": "Poder de ataque",
       "apBody": "O poder de ataque mede o quão forte sua arma golpeia. Seus atributos principais o alimentam, e armas e equipamentos mais fortes o elevam ainda mais, por isso uma melhoria pode ser um salto real de dano.",
+      "spTitle": "Spell power",
+      "spBody": "Spell power is a caster's counterpart to attack power: it raises the damage your spells deal. Intellect feeds it, and caster gear and buffs add more on top, so a spellcaster watches spell power the way a melee fighter watches attack power.",
       "critTitle": "Acerto crítico",
       "critBody": "Sua chance de acerto crítico é a frequência com que um ataque acerta com dano extra. Todos começam com uma pequena chance básica, e a Agilidade (mais alguns talentos e equipamentos) a aumenta.",
       "dodgeTitle": "Esquiva",

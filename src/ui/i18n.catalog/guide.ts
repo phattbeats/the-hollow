@@ -251,6 +251,9 @@ export const guideStrings = {
     mobileHeading: 'On mobile',
     mobileBody:
       'Touch controls appear automatically on phones and tablets: a movement stick on the left, drag anywhere on the right to look, and on-screen buttons for your abilities and menus.',
+    controllerHeading: 'On a controller',
+    controllerBody:
+      'Gamepads work too, and controller support is on by default. The left stick moves, the right stick aims the camera, and the face and shoulder buttons cover your abilities, jumping, and interacting. Open any window to bring up an on-screen pointer for menus. You can remap the buttons and adjust stick deadzone, camera speed, vibration, and inverted look from the controller settings in the options.',
   },
 
   // Combat overview. Deliberately high level: concepts, not formulas or numbers, so
@@ -551,7 +554,7 @@ export const guideStrings = {
     },
     spider: {
       name: 'Spiders',
-      desc: 'Web-spinners and venomous lurkers that nest in dark, tangled places.',
+      desc: 'Web-spinners and venomous lurkers that nest in dark, tangled places. Hunters can tame them, the same as beasts.',
     },
     murloc: {
       name: 'Murlocs',
@@ -567,7 +570,7 @@ export const guideStrings = {
     },
     troll: {
       name: 'Trolls',
-      desc: 'Hulking, fast-healing brutes that lair in the marsh and the high country.',
+      desc: 'Hulking brutes that lair in the marshes of the fen.',
     },
     ogre: {
       name: 'Ogres',
@@ -639,13 +642,13 @@ export const guideStrings = {
       'People with a marker over their head have work for you. Talk to them to accept a quest. Your very first is Wolves at the Door, from Marshal Redbrook in Eastbrook.',
     objectivesTitle: 'Objectives',
     objectivesBody:
-      'Slay certain enemies, gather items, or interact with something in the world. The on-screen tracker counts your progress as you go.',
+      'Slay certain enemies, gather items, or interact with something in the world. The on-screen tracker counts your progress as you go. If you change your mind, you can drop a quest from your quest log and pick it up again from its giver later.',
     turninTitle: 'Turning in',
     turninBody:
-      'Return to the quest giver, the map shows you where, for experience, coin, and often a piece of gear chosen to suit your class.',
+      'Take a finished quest to its turn-in marker, the map shows you where, for experience, coin, and often a piece of gear chosen to suit your class. That is usually the one who gave it to you, though some quests send you on to someone else.',
     partyTitle: 'Questing in a group',
     partyBody:
-      'Party members nearby share kill and objective credit, so questing together is faster, never slower.',
+      'Party members nearby share kill and objective credit, so questing together is faster, never slower. You can also share a quest with your group: post it to chat as a clickable link with the /share command, and any nearby member who qualifies can pick up the same quest in one click.',
     storyTitle: 'A thread runs through it all',
     storyBody:
       'From your first errands in Eastbrook, something is wrong with the dead. A cult is at work, and the trail leads north through every zone. Follow it to learn who stands behind it.',
@@ -760,7 +763,7 @@ export const guideStrings = {
   delvesPage: {
     heading: 'Delves',
     intro:
-      'Delves are short, replayable descents for one or two, with a companion always at your side. Find the board, choose a run, and climb back out with the spoils.',
+      'Delves are short, replayable descents for one or two, with a loyal companion at your side whenever you go down alone. Find the board, choose a run, and climb back out with the spoils.',
     fromLevel: 'From level {n}',
     partyLabel: 'For one or two',
     keeperLabel: 'Keeper',
@@ -949,6 +952,8 @@ export const guideStrings = {
     upgradeTitle: 'Keep your gear current',
     upgradeBody:
       'Replacing an old piece with a fresh upgrade does more for you than playing perfectly in gear you have outgrown. When something better drops or a quest offers it, take it. Do not save your good items for later.',
+    itemLevelBody:
+      'If you want a quick way to compare two pieces, turn on Show Item Level in the options. Each weapon and armor piece then shows an item level, a single figure for roughly how powerful it is based on where it came from, so you can tell at a glance which upgrade pulls more weight, even across different slots.',
 
     // Where gear comes from.
     sourcesTitle: 'Where gear comes from',
@@ -1031,7 +1036,7 @@ export const guideStrings = {
     // The World Market (player auction house): browse, post, collect, pricing.
     marketTitle: 'The World Market',
     marketBody:
-      'The Merchant runs the World Market, a player-driven exchange where you can buy and sell with people you may never meet. Speak to the Merchant to open it.',
+      'The Merchant runs the World Market, a player-driven exchange where you can buy and sell with people you may never meet. Speak to the Merchant to open it. The Merchant also keeps a standing stock of their own goods listed there, so there is always something to buy even when no other players have posted.',
     marketBrowse:
       'Browsing: scroll the listings or search by name to find what is for sale. Each listing shows the goods, the seller, and the asking price for the whole stack.',
     marketPost:
@@ -1078,7 +1083,7 @@ export const guideStrings = {
     // Parties.
     partyHeading: 'Forming a party',
     partyBody:
-      'Invite another player by right-clicking their name and choosing to invite, or with a chat command. A party holds up to five players, and one of you is the leader.',
+      'Invite another player by right-clicking their name and choosing to invite. A party holds up to five players, and one of you is the leader.',
     partyCredit:
       'Group members near each other share kill and quest credit, so questing together is faster, never slower. A party is also how you step into a dungeon as a team.',
     raidBody:
@@ -1142,7 +1147,7 @@ export const guideStrings = {
       'Stamina is your staying power. More Stamina means a larger health pool, and it speeds the health you recover while resting out of combat. Every class wants some.',
     intTitle: 'Intellect',
     intBody:
-      "Intellect grows a spellcaster's mana pool and improves the chance their spells crit. It matters to the classes that cast from mana; for a Rage or Energy class it does little.",
+      "Intellect grows a spellcaster's mana pool, raises their spell power so their spells hit harder, and improves the chance their spells crit. It matters to the classes that cast from mana; for a Rage or Energy class it does little.",
     spiTitle: 'Spirit',
     spiBody:
       "Spirit governs how quickly a caster's mana returns while out of combat. Like Intellect, it serves the mana classes and means little to the others.",
@@ -1154,6 +1159,9 @@ export const guideStrings = {
     apTitle: 'Attack power',
     apBody:
       'Attack power measures how hard your weapon strikes. Your primary attributes feed it, and stronger weapons and gear raise it further, which is why an upgrade can be a real jump in damage.',
+    spTitle: 'Spell power',
+    spBody:
+      "Spell power is a caster's counterpart to attack power: it raises the damage your spells deal. Intellect feeds it, and caster gear and buffs add more on top, so a spellcaster watches spell power the way a melee fighter watches attack power.",
     critTitle: 'Critical strike',
     critBody:
       'Your critical strike chance is how often an attack lands for extra damage. Everyone starts with a small base chance, and Agility (plus some talents and gear) builds on it.',
@@ -1200,7 +1208,7 @@ export const guideStrings = {
     capJourneyBody:
       'Level {cap} is the cap, the end of leveling but not of growing. From there you run dungeons and the raid, chase better gear, and test yourself in the arena.',
     prestigeBody:
-      'Experience keeps counting even after the cap. It feeds a cosmetic virtual level, so your experience bar keeps climbing, and a long-term prestige rank you can earn for the recognition. It is purely optional and never grants power, just a mark of the road you have walked.',
+      'Experience keeps counting even after the cap. It feeds a cosmetic virtual level, so your experience bar keeps climbing, and a long-term prestige rank you can earn for the recognition. Passing big lifetime-experience milestones also unlocks cosmetic titles and nameplate borders that show on your character sheet. All of it is purely optional and never grants power, just a mark of the road you have walked.',
     // Gentle reassurance.
     noRush:
       'There is no rush. The world is there to enjoy at your own pace, so wander, take the quests that catch your eye, and let your hero grow along the way.',

@@ -911,7 +911,9 @@ export const vi_VN: EnTranslations = {
       "cycleFriendly": "Cycle friendly target",
       "gameMenu": "Open game menu and options",
       "mobileHeading": "Trên di động",
-      "mobileBody": "Điều khiển cảm ứng tự động xuất hiện trên điện thoại và máy tính bảng: cần di chuyển ở bên trái, kéo bất cứ đâu ở bên phải để nhìn quanh, và các nút trên màn hình cho kỹ năng và menu của bạn."
+      "mobileBody": "Điều khiển cảm ứng tự động xuất hiện trên điện thoại và máy tính bảng: cần di chuyển ở bên trái, kéo bất cứ đâu ở bên phải để nhìn quanh, và các nút trên màn hình cho kỹ năng và menu của bạn.",
+      "controllerHeading": "On a controller",
+      "controllerBody": "Gamepads work too, and controller support is on by default. The left stick moves, the right stick aims the camera, and the face and shoulder buttons cover your abilities, jumping, and interacting. Open any window to bring up an on-screen pointer for menus. You can remap the buttons and adjust stick deadzone, camera speed, vibration, and inverted look from the controller settings in the options."
     },
     "combat": {
       "intro": "Chiến đấu tuân theo những quy tắc MMO cổ điển quen thuộc. Bạn không bao giờ cần nghiên cứu bất kỳ điều gì để chơi tốt, đây chỉ là hình dáng cách các trận đấu vận hành.",
@@ -1281,7 +1283,7 @@ export const vi_VN: EnTranslations = {
     },
     "delvesPage": {
       "heading": "Delves",
-      "intro": "Delves are short, replayable descents for one or two, with a companion always at your side. Find the board, choose a run, and climb back out with the spoils.",
+      "intro": "Delves are short, replayable descents for one or two, with a loyal companion at your side whenever you go down alone. Find the board, choose a run, and climb back out with the spoils.",
       "fromLevel": "From level {n}",
       "partyLabel": "For one or two",
       "keeperLabel": "Keeper",
@@ -1404,6 +1406,7 @@ export const vi_VN: EnTranslations = {
       "qualityNote": "Chất lượng cao hơn thường có nghĩa là chỉ số tốt hơn, nhưng chất lượng là một gợi ý, không phải quy tắc. Một món hợp với lớp và cấp của bạn có thể thắng một món hào nhoáng hơn.",
       "upgradeTitle": "Giữ trang bị luôn cập nhật",
       "upgradeBody": "Thay một món cũ bằng một món nâng cấp mới giúp ích cho bạn nhiều hơn là chơi hoàn hảo trong bộ đồ bạn đã vượt qua. Khi thứ gì đó tốt hơn rơi ra hoặc một nhiệm vụ trao tặng nó, hãy nhận lấy. Đừng để dành những món tốt của bạn cho sau này.",
+      "itemLevelBody": "If you want a quick way to compare two pieces, turn on Show Item Level in the options. Each weapon and armor piece then shows an item level, a single figure for roughly how powerful it is based on where it came from, so you can tell at a glance which upgrade pulls more weight, even across different slots.",
       "sourcesTitle": "Trang bị đến từ đâu",
       "sourcesBody": "Phần lớn đồ nâng cấp thuở đầu là phần thưởng nhiệm vụ, nên hoàn thành nhiệm vụ đáng giá hơn là cày cuốc. Kẻ địch rơi trang bị khi bạn đánh bại chúng, người bán trong thị trấn bán những món cơ bản chắc chắn, và chợ người chơi cho phép bạn mua từ những nhà phiêu lưu khác.",
       "setsTitle": "Sets and set bonuses",
@@ -1506,6 +1509,8 @@ export const vi_VN: EnTranslations = {
       "armorBody": "Giáp giảm sát thương vật lý bạn phải chịu. Nó đến chủ yếu từ những gì bạn mặc, và các lớp giáp nặng mang nhiều giáp hơn hẳn. Nhiều giáp hơn trước một kẻ địch gần cấp của bạn nghĩa là mỗi đòn của nó giáng nhẹ hơn.",
       "apTitle": "Sức tấn công",
       "apBody": "Sức tấn công đo lường vũ khí của bạn đánh mạnh đến đâu. Các thuộc tính chính của bạn nuôi nó, và vũ khí cùng trang bị mạnh hơn nâng nó lên cao hơn nữa, đó là lý do một lần nâng cấp có thể là một bước nhảy thực sự về sát thương.",
+      "spTitle": "Spell power",
+      "spBody": "Spell power is a caster's counterpart to attack power: it raises the damage your spells deal. Intellect feeds it, and caster gear and buffs add more on top, so a spellcaster watches spell power the way a melee fighter watches attack power.",
       "critTitle": "Đòn chí mạng",
       "critBody": "Cơ hội chí mạng của bạn là mức độ thường xuyên một đòn tấn công giáng ra sát thương thêm. Mọi người đều khởi đầu với một cơ hội nền nhỏ, và Nhanh Nhẹn (cùng vài thiên phú và trang bị) bồi đắp thêm.",
       "dodgeTitle": "Né tránh",

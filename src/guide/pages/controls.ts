@@ -101,6 +101,10 @@ export const controls: GuidePage = {
           <h2>${esc(t('guide.controls.mobileHeading'))}</h2>
           <p>${esc(t('guide.controls.mobileBody'))}</p>
         </section>
+        <section class="guide-block">
+          <h2>${esc(t('guide.controls.controllerHeading'))}</h2>
+          <p>${esc(t('guide.controls.controllerBody'))}</p>
+        </section>
       </article>`;
   },
 };

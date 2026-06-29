@@ -911,7 +911,9 @@ export const nl_NL: EnTranslations = {
       "cycleFriendly": "Cycle friendly target",
       "gameMenu": "Open game menu and options",
       "mobileHeading": "Op mobiel",
-      "mobileBody": "Aanraakbediening verschijnt automatisch op telefoons en tablets: een bewegingsstick aan de linkerkant, sleep ergens aan de rechterkant om rond te kijken, en knoppen op het scherm voor je vaardigheden en menu's."
+      "mobileBody": "Aanraakbediening verschijnt automatisch op telefoons en tablets: een bewegingsstick aan de linkerkant, sleep ergens aan de rechterkant om rond te kijken, en knoppen op het scherm voor je vaardigheden en menu's.",
+      "controllerHeading": "On a controller",
+      "controllerBody": "Gamepads work too, and controller support is on by default. The left stick moves, the right stick aims the camera, and the face and shoulder buttons cover your abilities, jumping, and interacting. Open any window to bring up an on-screen pointer for menus. You can remap the buttons and adjust stick deadzone, camera speed, vibration, and inverted look from the controller settings in the options."
     },
     "combat": {
       "intro": "Gevechten volgen vertrouwde klassieke MMO-regels. Je hoeft er niets van te bestuderen om goed te spelen, dit is gewoon de vorm van hoe gevechten werken.",
@@ -1281,7 +1283,7 @@ export const nl_NL: EnTranslations = {
     },
     "delvesPage": {
       "heading": "Delves",
-      "intro": "Delves are short, replayable descents for one or two, with a companion always at your side. Find the board, choose a run, and climb back out with the spoils.",
+      "intro": "Delves are short, replayable descents for one or two, with a loyal companion at your side whenever you go down alone. Find the board, choose a run, and climb back out with the spoils.",
       "fromLevel": "From level {n}",
       "partyLabel": "For one or two",
       "keeperLabel": "Keeper",
@@ -1404,6 +1406,7 @@ export const nl_NL: EnTranslations = {
       "qualityNote": "Hogere kwaliteit betekent meestal betere statistieken, maar kwaliteit is een hint, geen regel. Een goed passend stuk voor jouw klasse en niveau kan een flitsender exemplaar verslaan.",
       "upgradeTitle": "Houd je uitrusting actueel",
       "upgradeBody": "Een oud stuk vervangen door een verse verbetering doet meer voor je dan perfect spelen in uitrusting die je ontgroeid bent. Wanneer er iets beters valt of een quest het aanbiedt, neem het. Bewaar je goede voorwerpen niet voor later.",
+      "itemLevelBody": "If you want a quick way to compare two pieces, turn on Show Item Level in the options. Each weapon and armor piece then shows an item level, a single figure for roughly how powerful it is based on where it came from, so you can tell at a glance which upgrade pulls more weight, even across different slots.",
       "sourcesTitle": "Waar uitrusting vandaan komt",
       "sourcesBody": "De meeste van je vroege verbeteringen zijn questbeloningen, dus het loont om quests af te ronden in plaats van te grinden. Vijanden laten uitrusting vallen wanneer je ze verslaat, verkopers in de stad verkopen degelijke basisspullen, en op de spelersmarkt kun je van andere avonturiers kopen.",
       "setsTitle": "Sets and set bonuses",
@@ -1506,6 +1509,8 @@ export const nl_NL: EnTranslations = {
       "armorBody": "Pantser vermindert de fysieke schade die je oploopt. Het komt vooral van wat je draagt, en de zwaardere pantserklassen dragen er veel meer van. Meer pantser tegen een vijand rond jouw niveau betekent dat elk van zijn treffers zachter aankomt.",
       "apTitle": "Aanvalskracht",
       "apBody": "Aanvalskracht meet hoe hard je wapen toeslaat. Je primaire attributen voeden het, en sterkere wapens en uitrusting verhogen het verder, en daarom kan een upgrade een echte sprong in schade betekenen.",
+      "spTitle": "Spell power",
+      "spBody": "Spell power is a caster's counterpart to attack power: it raises the damage your spells deal. Intellect feeds it, and caster gear and buffs add more on top, so a spellcaster watches spell power the way a melee fighter watches attack power.",
       "critTitle": "Kritieke treffer",
       "critBody": "Je kans op een kritieke treffer is hoe vaak een aanval extra schade aanricht. Iedereen begint met een kleine basiskans, en Behendigheid (plus enkele talenten en uitrusting) bouwt daarop voort.",
       "dodgeTitle": "Ontwijken",
