@@ -1,0 +1,135 @@
+// Browser-side entry for the Guide model-still renderer. Bundled by esbuild into a
+// self-contained IIFE and served into a localhost page by render_model_stills.mjs, which
+// also serves public/ so loadGltf can fetch the real GLBs same-origin. Exposes
+// window.renderStill(spec, tint) returning a transparent PNG data URL.
+//
+// It reuses the Guide viewer's OWN model assembly (buildModel) and replicates scene.ts's
+// camera framing and light rig, so a baked still matches the live "View in 3D" turntable.
+// Everything is pinned for determinism: a fixed canvas size, pixelRatio 1, a fixed idle
+// pose time, and a fixed three-quarter yaw, so reruns produce the same framing.
+import * as THREE from 'three';
+import { buildModel } from '../../src/guide/viewer/model';
+
+const SIZE = 512; // supersample; the driver downscales and encodes the shipped WebP
+const STILL_YAW = -0.6; // radians; a three-quarter portrait reads better than dead-on
+const POSE_TIME = 0.6; // seconds into the idle clip, so the rig leaves its bind pose
+
+const renderer = new THREE.WebGLRenderer({
+  canvas: document.createElement('canvas'),
+  alpha: true,
+  antialias: true,
+  preserveDrawingBuffer: true,
+});
+renderer.setPixelRatio(1);
+renderer.setSize(SIZE, SIZE, false);
+renderer.setClearAlpha(0); // transparent background, like the live viewer (scene.ts alpha:true)
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+// The exact light rig the live turntable uses (src/guide/viewer/scene.ts:51-57), so a
+// still is lit identically to the interactive model.
+function makeLights() {
+  const g = new THREE.Group();
+  g.add(new THREE.HemisphereLight(0xffffff, 0x3a3a44, 1.5));
+  const key = new THREE.DirectionalLight(0xfff4e0, 1.7);
+  key.position.set(3, 6, 4);
+  g.add(key);
+  const rim = new THREE.DirectionalLight(0xbfd4ff, 0.8);
+  rim.position.set(-4, 3, -4);
+  g.add(rim);
+  return g;
+}
+
+// The TRUE posed, skin-aware world bounds, measured exactly like the game's prepareVisual
+// (src/render/characters/assets.ts:743-753): apply each skinned vertex's bone transform,
+// then its world matrix. buildModel's bind-pose box is NOT enough: several creature rigs
+// have a scaled armature whose idle clip flings the skinned mesh thousands of units from
+// the bind box, so framing the bind box renders a blank. Falls back to plain geometry for
+// non-skinned rigs.
+function posedSkinnedBounds(root) {
+  const bounds = new THREE.Box3();
+  const v = new THREE.Vector3();
+  root.updateWorldMatrix(true, true);
+  let sawSkinned = false;
+  root.traverse((o) => {
+    if (!o.isSkinnedMesh || !o.visible) return;
+    sawSkinned = true;
+    const pos = o.geometry.getAttribute('position');
+    for (let i = 0; i < pos.count; i++) {
+      v.fromBufferAttribute(pos, i);
+      o.applyBoneTransform(i, v);
+      v.applyMatrix4(o.matrixWorld);
+      bounds.expandByPoint(v);
+    }
+  });
+  if (!sawSkinned || bounds.isEmpty()) {
+    root.traverse((o) => {
+      if (!o.isMesh || o.isSkinnedMesh || !o.visible) return;
+      const pos = o.geometry.getAttribute('position');
+      if (!pos) return;
+      for (let i = 0; i < pos.count; i++) {
+        v.fromBufferAttribute(pos, i);
+        v.applyMatrix4(o.matrixWorld);
+        bounds.expandByPoint(v);
+      }
+    });
+  }
+  return bounds;
+}
+
+// The scene.ts camera rule (fov 40, frame by bounding sphere), aimed at an explicit center.
+function frameCamera(camera, radius, center) {
+  const fov = (camera.fov * Math.PI) / 180;
+  const dist = (radius / Math.sin(fov / 2)) * 1.15;
+  camera.position.set(center.x, center.y, center.z + dist);
+  camera.lookAt(center);
+  camera.near = Math.max(0.01, dist / 50);
+  camera.far = dist * 12;
+  camera.updateProjectionMatrix();
+}
+
+window.renderStill = (spec, tint) =>
+  new Promise((resolve, reject) => {
+    buildModel(spec, tint ?? null).then((built) => {
+      try {
+        const scene = new THREE.Scene();
+        scene.add(makeLights());
+        // A pivot carries the three-quarter yaw; the model sits inside it. We frame the camera
+        // to the model's ACTUAL posed bounds (yaw included), so a rig the idle clip flings far
+        // from its bind box is still centered.
+        const pivot = new THREE.Group();
+        pivot.rotation.y = STILL_YAW;
+        pivot.add(built.root);
+        // Skinned rigs frustum-cull by a bind-pose sphere that can sit off the posed mesh;
+        // disabling the cull guarantees the model is drawn (the game does the same).
+        built.root.traverse((o) => {
+          if (o.isMesh) o.frustumCulled = false;
+        });
+        scene.add(pivot);
+
+        // Advance the idle clip a fixed amount so the pose is natural (not the bind pose) and
+        // deterministic across runs, THEN measure where the posed mesh actually is.
+        built.mixer?.update(POSE_TIME);
+        scene.updateMatrixWorld(true);
+        const bounds = posedSkinnedBounds(built.root);
+        const center = bounds.getCenter(new THREE.Vector3());
+        const radius = bounds.getBoundingSphere(new THREE.Sphere()).radius || built.radius || 1;
+
+        const camera = new THREE.PerspectiveCamera(40, 1, 0.01, 1000);
+        // Aim slightly above the center for a flattering downward tilt, like scene.ts.
+        center.y += radius * 0.08;
+        frameCamera(camera, radius, center);
+
+        renderer.render(scene, camera);
+        const url = renderer.domElement.toDataURL('image/png');
+
+        pivot.remove(built.root);
+        built.dispose();
+        scene.clear();
+        resolve(url);
+      } catch (e) {
+        reject(e);
+      }
+    }, reject);
+  });
+
+window.__ready = true;

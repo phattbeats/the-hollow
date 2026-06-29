@@ -10,9 +10,11 @@
 // numbers, mechanic names, loot, the raid boss name, or per-encounter scripts. The
 // rich localized prose (spec/mastery text) is resolved live at render time through
 // src/ui/talent_i18n.ts, not baked here.
-import * as esbuild from 'esbuild';
+
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
+import * as esbuild from 'esbuild';
+import { stillUrl } from './still_key.mjs';
 
 const root = process.cwd();
 const outFile = path.join(root, 'src', 'guide', 'content.generated.ts');
@@ -30,7 +32,12 @@ const entrySource = `
 `;
 
 const built = await esbuild.build({
-  stdin: { contents: entrySource, resolveDir: root, sourcefile: 'wiki-content-entry.ts', loader: 'ts' },
+  stdin: {
+    contents: entrySource,
+    resolveDir: root,
+    sourcefile: 'wiki-content-entry.ts',
+    loader: 'ts',
+  },
   bundle: true,
   platform: 'node',
   format: 'esm',
@@ -39,8 +46,19 @@ const built = await esbuild.build({
 });
 const dataUrl = `data:text/javascript;base64,${Buffer.from(built.outputFiles[0].text).toString('base64')}`;
 const {
-  CLASSES, ABILITIES, TALENTS, ALL_CLASSES, ZONES, DUNGEONS, MOBS, WARLOCK_PET_MOBS,
-  ZONE1_MOBS, ZONE2_MOBS, ZONE3_MOBS, VISUALS, visualKeyFor,
+  CLASSES,
+  ABILITIES,
+  TALENTS,
+  ALL_CLASSES,
+  ZONES,
+  DUNGEONS,
+  MOBS,
+  WARLOCK_PET_MOBS,
+  ZONE1_MOBS,
+  ZONE2_MOBS,
+  ZONE3_MOBS,
+  VISUALS,
+  visualKeyFor,
 } = await import(dataUrl);
 
 const ROLE_ORDER = ['tank', 'healer', 'dps'];
@@ -98,12 +116,19 @@ const classes = ALL_CLASSES.map((id) => {
   const specDefs = TALENTS[id]?.specs ?? [];
   // specs carry id + signature ability id so the page can resolve localized spec and
   // mastery prose live via talent_i18n; name/role stay for structure and tests.
-  const specs = specDefs.map((s) => ({ id: s.id, name: s.name, role: s.role, signature: s.signature }));
+  const specs = specDefs.map((s) => ({
+    id: s.id,
+    name: s.name,
+    role: s.role,
+    signature: s.signature,
+  }));
   const roles = ROLE_ORDER.filter((r) => specs.some((s) => s.role === r));
   const kit = def.abilities ?? [];
   // The class preview uses the same model + white tint the in-game character creator does.
   const vk = playerVisualKey(id);
   const tint = tintFor(vk, 0xffffff);
+  const tintHex = tint != null ? hex(tint) : null;
+  const model = modelKeyFor(vk);
   return {
     id,
     color: hex(def.color),
@@ -112,8 +137,9 @@ const classes = ALL_CLASSES.map((id) => {
     specs,
     signatureAbilities: kit.slice(0, SIGNATURE_COUNT).map(abilityRef),
     abilities: kit.map(abilityRef),
-    model: modelKeyFor(vk),
-    ...(tint != null ? { tint: hex(tint) } : {}),
+    model,
+    ...(tintHex != null ? { tint: tintHex } : {}),
+    ...(stillUrl(model, tintHex) ? { still: stillUrl(model, tintHex) } : {}),
   };
 });
 
@@ -165,12 +191,31 @@ const dungeons = Object.values(DUNGEONS)
 const warlockPets = Object.values(WARLOCK_PET_MOBS).map((p) => {
   const vk = mobVisualKey(p.id);
   const tint = tintFor(vk, p.color ?? 0xffffff);
-  return { id: p.id, name: p.name, model: modelKeyFor(vk), ...(tint != null ? { tint: hex(tint) } : {}) };
+  const tintHex = tint != null ? hex(tint) : null;
+  const model = modelKeyFor(vk);
+  return {
+    id: p.id,
+    name: p.name,
+    model,
+    ...(tintHex != null ? { tint: tintHex } : {}),
+    ...(stillUrl(model, tintHex) ? { still: stillUrl(model, tintHex) } : {}),
+  };
 });
 
 // Bestiary: OVERWORLD creatures only, grouped by family. Excludes elite/boss (dungeon
 // and raid encounters) and warlock pet summons, so nothing here spoils instanced content.
-const FAMILY_ORDER = ['beast', 'spider', 'murloc', 'kobold', 'humanoid', 'troll', 'ogre', 'undead', 'elemental', 'dragonkin'];
+const FAMILY_ORDER = [
+  'beast',
+  'spider',
+  'murloc',
+  'kobold',
+  'humanoid',
+  'troll',
+  'ogre',
+  'undead',
+  'elemental',
+  'dragonkin',
+];
 const famMap = {};
 for (const [id, m] of Object.entries({ ...ZONE1_MOBS, ...ZONE2_MOBS, ...ZONE3_MOBS })) {
   if (m.elite || m.boss) continue;
@@ -178,17 +223,23 @@ for (const [id, m] of Object.entries({ ...ZONE1_MOBS, ...ZONE2_MOBS, ...ZONE3_MO
   if (/vision/i.test(id) || /^Vision\b/.test(m.name)) continue; // cinematic apparitions, not creatures
   const vk = mobVisualKey(id);
   const tint = tintFor(vk, m.color ?? 0xffffff);
+  const tintHex = tint != null ? hex(tint) : null;
+  const model = modelKeyFor(vk);
   (famMap[m.family] ??= new Map()).set(m.name, {
-    name: m.name, min: m.minLevel, max: m.maxLevel, rare: !!m.rare,
-    templateId: id, model: modelKeyFor(vk), ...(tint != null ? { tint: hex(tint) } : {}),
+    name: m.name,
+    min: m.minLevel,
+    max: m.maxLevel,
+    rare: !!m.rare,
+    templateId: id,
+    model,
+    ...(tintHex != null ? { tint: tintHex } : {}),
+    ...(stillUrl(model, tintHex) ? { still: stillUrl(model, tintHex) } : {}),
   });
 }
-const families = FAMILY_ORDER
-  .filter((f) => famMap[f])
-  .map((f) => ({
-    family: f,
-    creatures: [...famMap[f].values()].sort((a, b) => a.min - b.min || a.name.localeCompare(b.name)),
-  }));
+const families = FAMILY_ORDER.filter((f) => famMap[f]).map((f) => ({
+  family: f,
+  creatures: [...famMap[f].values()].sort((a, b) => a.min - b.min || a.name.localeCompare(b.name)),
+}));
 
 const header = `// GENERATED by scripts/wiki/build_content.mjs from src/sim/content. Do not edit by hand.
 // Regenerate with \`npm run wiki:content\`; tests/guide.test.ts checks it stays fresh.
@@ -229,6 +280,8 @@ export interface GuideClassInfo {
   abilities: GuideAbilityRef[];
   model: string;
   tint?: string;
+  /** Pre-rendered transparent still (public/guide-stills/), the default poster. */
+  still?: string;
 }
 
 export interface GuideZoneInfo {
@@ -251,20 +304,25 @@ export interface GuideDungeon {
   name?: string;
 }
 
-export interface GuideWarlockPet { id: string; name: string; model: string; tint?: string; }
+export interface GuideWarlockPet { id: string; name: string; model: string; tint?: string; still?: string; }
 
-export interface GuideCreature { name: string; min: number; max: number; rare: boolean; templateId: string; model: string; tint?: string; }
+export interface GuideCreature { name: string; min: number; max: number; rare: boolean; templateId: string; model: string; tint?: string; still?: string; }
 export interface GuideFamily { family: string; creatures: GuideCreature[]; }
 `;
 
-writeFileSync(outFile, [
-  header,
-  `\nexport const GUIDE_CLASSES: GuideClassInfo[] = ${JSON.stringify(classes, null, 2)};\n`,
-  `\nexport const GUIDE_ZONES: GuideZoneInfo[] = ${JSON.stringify(zones, null, 2)};\n`,
-  `\nexport const GUIDE_DUNGEONS: GuideDungeon[] = ${JSON.stringify(dungeons, null, 2)};\n`,
-  `\nexport const GUIDE_WARLOCK_PETS: GuideWarlockPet[] = ${JSON.stringify(warlockPets, null, 2)};\n`,
-  `\nexport const GUIDE_FAMILIES: GuideFamily[] = ${JSON.stringify(families, null, 2)};\n`,
-  `\nexport const GUIDE_MODELS: Record<string, GuideModelSpec> = ${JSON.stringify(MODELS, null, 2)};\n`,
-].join(''));
+writeFileSync(
+  outFile,
+  [
+    header,
+    `\nexport const GUIDE_CLASSES: GuideClassInfo[] = ${JSON.stringify(classes, null, 2)};\n`,
+    `\nexport const GUIDE_ZONES: GuideZoneInfo[] = ${JSON.stringify(zones, null, 2)};\n`,
+    `\nexport const GUIDE_DUNGEONS: GuideDungeon[] = ${JSON.stringify(dungeons, null, 2)};\n`,
+    `\nexport const GUIDE_WARLOCK_PETS: GuideWarlockPet[] = ${JSON.stringify(warlockPets, null, 2)};\n`,
+    `\nexport const GUIDE_FAMILIES: GuideFamily[] = ${JSON.stringify(families, null, 2)};\n`,
+    `\nexport const GUIDE_MODELS: Record<string, GuideModelSpec> = ${JSON.stringify(MODELS, null, 2)};\n`,
+  ].join(''),
+);
 // eslint-disable-next-line no-console
-console.log(`generated src/guide/content.generated.ts (${classes.length} classes, ${zones.length} zones, ${dungeons.length} dungeons, ${warlockPets.length} warlock pets, ${families.length} families, ${Object.keys(MODELS).length} models)`);
+console.log(
+  `generated src/guide/content.generated.ts (${classes.length} classes, ${zones.length} zones, ${dungeons.length} dungeons, ${warlockPets.length} warlock pets, ${families.length} families, ${Object.keys(MODELS).length} models)`,
+);
