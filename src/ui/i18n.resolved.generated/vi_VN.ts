@@ -320,7 +320,10 @@ export const vi_VN: EnTranslations = {
       "showWalletOnCharacterScreen": "Hiện Ví Tiền Ở Màn Hình Nhân Vật",
       "showWalletOnPlayerCard": "Hiện Ví Tiền Trên Thẻ Người Chơi",
       "uiScale": "Tỷ Lệ Giao Diện",
-      "highContrastBackground": "Nền Tương Phản Cao"
+      "highContrastBackground": "Nền Tương Phản Cao",
+      "showItemLevel": "Hiển Thị Cấp Vật Phẩm",
+      "itemLevelLine": "Cấp Vật Phẩm {level}",
+      "itemScoreLine": "Điểm {score}"
     },
     "controller": {
       "title": "Tay Cầm",

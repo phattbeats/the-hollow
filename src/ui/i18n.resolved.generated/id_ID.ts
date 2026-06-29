@@ -320,7 +320,10 @@ export const id_ID: EnTranslations = {
       "showWalletOnCharacterScreen": "Tampilkan Dompet di Layar Karakter",
       "showWalletOnPlayerCard": "Tampilkan Dompet di Kartu Pemain",
       "uiScale": "Skala UI",
-      "highContrastBackground": "Latar Kontras Tinggi"
+      "highContrastBackground": "Latar Kontras Tinggi",
+      "showItemLevel": "Tampilkan Level Item",
+      "itemLevelLine": "Level Item {level}",
+      "itemScoreLine": "Skor {score}"
     },
     "controller": {
       "title": "Kontroler",

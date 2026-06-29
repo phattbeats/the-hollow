@@ -320,7 +320,10 @@ export const pl_PL: EnTranslations = {
       "showWalletOnCharacterScreen": "Pokaż sakiewkę na ekranie postaci",
       "showWalletOnPlayerCard": "Pokaż sakiewkę na karcie gracza",
       "uiScale": "Skala interfejsu",
-      "highContrastBackground": "Tło o wysokim kontraście"
+      "highContrastBackground": "Tło o wysokim kontraście",
+      "showItemLevel": "Pokaż poziom przedmiotu",
+      "itemLevelLine": "Poziom przedmiotu {level}",
+      "itemScoreLine": "Ocena {score}"
     },
     "controller": {
       "title": "Kontroler",

@@ -320,7 +320,10 @@ export const da_DK: EnTranslations = {
       "showWalletOnCharacterScreen": "Vis pengepung på karakterskærm",
       "showWalletOnPlayerCard": "Vis pengepung på spillerkort",
       "uiScale": "UI-skala",
-      "highContrastBackground": "Baggrund med høj kontrast"
+      "highContrastBackground": "Baggrund med høj kontrast",
+      "showItemLevel": "Vis genstandsniveau",
+      "itemLevelLine": "Genstandsniveau {level}",
+      "itemScoreLine": "Score {score}"
     },
     "controller": {
       "title": "Controller",

@@ -58,6 +58,7 @@ import {
   zoneAt,
 } from '../sim/data';
 import { armorTypeForItem, canEquipItem, weaponArchetypeForItem } from '../sim/equipment_rules';
+import { isItemLevelEligible, itemLevel, itemScore } from '../sim/item_level';
 import type { Ante, PickAction } from '../sim/lockpick';
 import { PICK_ACTIONS } from '../sim/lockpick';
 import type { ResolvedAbility } from '../sim/sim';
@@ -2960,6 +2961,21 @@ export class Hud {
         html += `<div class="tt-sub tt-row"><span>${esc(itemSlotName(item.slot))}</span><span class="tt-armor${badClass}">${esc(t(armorTypeKey))}</span></div>`;
       } else {
         html += `<div class="tt-sub">${esc(itemSlotName(item.slot))}</div>`;
+      }
+    }
+    // Optional item-level readout (off by default; src/sim/item_level.ts derives it
+    // from where the item drops). Read live, so toggling it takes effect on the next
+    // hover. Combat gear only: sourceless items (vendor/starter) have no level,
+    // and non-combat items never get an item-level line.
+    if (isItemLevelEligible(item) && this.optionsHooks?.settings.get('showItemLevel')) {
+      const level = itemLevel(item);
+      if (level !== undefined) {
+        html += `<div class="tt-stat" style="color:#ffd100">${esc(
+          t('hudChrome.options.itemLevelLine', { level: itemNumber(level) }),
+        )}</div>`;
+        html += `<div class="tt-sub">${esc(
+          t('hudChrome.options.itemScoreLine', { score: itemNumber(itemScore(item), 1) }),
+        )}</div>`;
       }
     }
     if (item.weapon) {

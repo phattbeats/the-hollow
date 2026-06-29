@@ -320,7 +320,10 @@ export const tr_TR: EnTranslations = {
       "showWalletOnCharacterScreen": "Cüzdanı Karakter Ekranında Göster",
       "showWalletOnPlayerCard": "Cüzdanı Oyuncu Kartında Göster",
       "uiScale": "Arayüz Ölçeği",
-      "highContrastBackground": "Yüksek Kontrastlı Arka Plan"
+      "highContrastBackground": "Yüksek Kontrastlı Arka Plan",
+      "showItemLevel": "Eşya Seviyesini Göster",
+      "itemLevelLine": "Eşya Seviyesi {level}",
+      "itemScoreLine": "Puan {score}"
     },
     "controller": {
       "title": "Oyun Kolu",
