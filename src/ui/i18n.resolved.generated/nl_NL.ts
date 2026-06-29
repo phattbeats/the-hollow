@@ -744,6 +744,7 @@ export const nl_NL: EnTranslations = {
       "world": "Wereld",
       "quests": "Quests",
       "dungeons": "Kerkers & Raids",
+      "delves": "Delves",
       "reference": "Naslag",
       "controls": "Besturing",
       "combat": "Gevecht",
@@ -798,6 +799,7 @@ export const nl_NL: EnTranslations = {
       "typeZone": "Gebied",
       "typeCreature": "Wezens",
       "typeDungeon": "Dungeon",
+      "typeDelve": "Delve",
       "typeTerm": "Term"
     },
     "home": {
@@ -905,6 +907,9 @@ export const nl_NL: EnTranslations = {
       "arena": "Arena",
       "leaderboard": "Ranglijst",
       "abilities": "Vaardigheden gebruiken",
+      "targetFriendly": "Target nearest friendly",
+      "cycleFriendly": "Cycle friendly target",
+      "gameMenu": "Open game menu and options",
       "mobileHeading": "Op mobiel",
       "mobileBody": "Aanraakbediening verschijnt automatisch op telefoons en tablets: een bewegingsstick aan de linkerkant, sleep ergens aan de rechterkant om rond te kijken, en knoppen op het scherm voor je vaardigheden en menu's."
     },
@@ -959,7 +964,13 @@ export const nl_NL: EnTranslations = {
       "pullTerm": "Pull",
       "pullDef": "Een vijand of groep in een gevecht trekken, meestal bewust en steeds een groepje tegelijk.",
       "instanceTerm": "Instantie",
-      "instanceDef": "Een eigen kopie van een kerker of raid, speciaal voor jouw groep gemaakt."
+      "instanceDef": "Een eigen kopie van een kerker of raid, speciaal voor jouw groep gemaakt.",
+      "raidTerm": "Raid",
+      "raidDef": "A larger group, up to ten players here, formed for the toughest endgame encounter; a party converts into one once it is full.",
+      "delveTerm": "Delve",
+      "delveDef": "A short, replayable instanced descent for one or two players, run from a keeper's board with a companion at your side.",
+      "augmentTerm": "Augment",
+      "augmentDef": "A temporary boost you draft during a two-on-two Fiesta arena match that reshapes your kit for that match only."
     },
     "faqPage": {
       "intro": "De vragen die nieuwe spelers het vaakst stellen.",
@@ -1164,6 +1175,10 @@ export const nl_NL: EnTranslations = {
       "elemental": {
         "name": "Elementalen",
         "desc": "Levende storm en steen, gebonden aan de wilde plekken waar de elementen sterk stromen."
+      },
+      "dragonkin": {
+        "name": "Dragonkin",
+        "desc": "Scaled, serpentine things of the old depths. Rare, proud, and far stronger than they look."
       }
     },
     "worldPage": {
@@ -1227,7 +1242,9 @@ export const nl_NL: EnTranslations = {
       "sideWardenTitle": "Je naam verdienen",
       "sideWardenBody": "Naast het verhaal delen de bewakers van Oostbeekdal en het veen een vaste premieladder uit. Werk je omhoog, vijand voor vijand, zoals elke bewaker voor jou zijn plek verdiende. Het is eerlijk levelen en een rondleiding langs de ergste onruststokers van elk gebied.",
       "sideCryptTitle": "De vergeten koning",
-      "sideCryptBody": "Hoog in de toppen loopt een stiller mysterie: oude graven gemarkeerd met een kroon die geen enkel verslag zich herinnert. Lees de doden, verzamel wat zij bewaakten en ontzegel een tombe die gesloten had moeten blijven. Het is een detectivespoor dat de weg opent naar een tweede eindspelbeproeving voor een volledige raid."
+      "sideCryptBody": "Hoog in de toppen loopt een stiller mysterie: oude graven gemarkeerd met een kroon die geen enkel verslag zich herinnert. Lees de doden, verzamel wat zij bewaakten en ontzegel een tombe die gesloten had moeten blijven. Het is een detectivespoor dat de weg opent naar een tweede eindspelbeproeving voor een volledige raid.",
+      "sideTempleTitle": "The drowned temple",
+      "sideTempleBody": "A gate of pale light on a high tarn in the peaks opens onto a sunken shrine where a drowned cult still sings. Its short chain stands apart from the main story, a self-contained mystery for anyone who climbs to the shore, reads the warnings carved on the rocks, and goes down to see what they were for."
     },
     "lore": {
       "figuresTitle": "Gezichten die je zult leren kennen",
@@ -1262,6 +1279,32 @@ export const nl_NL: EnTranslations = {
       "cryptLeadTitle": "Een deur die de doden gesloten moesten houden",
       "cryptLeadBody": "Hoog op de pieken, weg van het hoofdgevecht, ligt een kouder mysterie. Oude graven dragen een kroon die geen verslag zich herinnert, en de doden die hen bewaken dienden ooit een vergeten koning. Lees hun stenen, verzamel de sleutelstenen die zij bewaarden, en je kunt een tombe ontzegelen die drie trouwe zielen stierven om gesloten te houden, waarmee je een tweede beproeving voor tien spelers opent voor wie de aanwijzingen tot het einde volgt."
     },
+    "delvesPage": {
+      "heading": "Delves",
+      "intro": "Delves are short, replayable descents for one or two, with a companion always at your side. Find the board, choose a run, and climb back out with the spoils.",
+      "fromLevel": "From level {n}",
+      "partyLabel": "For one or two",
+      "keeperLabel": "Keeper",
+      "companionLabel": "Companion",
+      "tiersLabel": "Difficulties",
+      "affixesLabel": "Possible modifiers",
+      "whatHeading": "What a delve is",
+      "whatBody": "A delve is a small instanced dungeon made just for you and up to one ally, a private copy you cannot be disturbed in. You start it from a board kept by a delve keeper out in the world, drop in, fight down through a handful of rooms, and finish on a single guardian. Runs are quick and meant to be repeated, so a delve is a reliable bit of progress whenever the open world runs dry.",
+      "howHeading": "How a run works",
+      "howBody": "Talk to the keeper to open the board, pick a difficulty, and descend. Each run strings together a few short chambers and ends at its guardian; clear it to claim your reward and return to the surface. Bring a friend if you have one, or lean on your companion if you do not.",
+      "companionHeading": "Your companion",
+      "companionBody": "A delve sends a companion down with you, so a solo run is never hopeless. She fights at your side, and as you invest in her between runs she grows steadily stronger, until she can pull an ally back from the brink once a descent. She is yours for the delve and waits at the board between runs.",
+      "lockpickHeading": "Locks and what they hide",
+      "lockpickBody": "Some doors and caches are sealed, and opening one is a small test of nerve rather than a stat check: solve the lock cleanly and steadily and you earn a better prize than a rushed, fumbled one. It is optional, but the careful delver is the richer one.",
+      "tiersHeading": "Difficulty",
+      "tiersBody": "A delve offers more than one difficulty. The higher one makes the enemies stronger and rolls in a run modifier, and pays out more in return. It also asks that you have a few levels under your belt before it will let you in.",
+      "affixesHeading": "Run modifiers",
+      "affixesBody": "Harder runs roll a modifier that changes how the descent plays, from restless dead to foul air to failing roof-work. They raise the danger and the reward together. A crypt-themed delve can roll any of these:",
+      "marksHeading": "Delve Marks",
+      "marksBody": "Clearing delves earns Delve Marks, a currency kept apart from your coin. Spend them at the keeper to strengthen your companion and pick up gear you will not find anywhere else.",
+      "whereHeading": "Where to find one",
+      "whereBody": "The first delve, the Collapsed Reliquary, opens at Reliquary Hill in the starting valley of Eastbrook Vale. Brother Halven keeps the board there, and he will send you down once you are ready."
+    },
     "talentsPage": {
       "heading": "Talenten en specialisaties",
       "intro": "Met talenten maak je een klasse helemaal van jezelf. Ze zijn optioneel, vergevingsgezind en makkelijk te wijzigen, zodat je zonder angst kunt experimenteren.",
@@ -1269,6 +1312,7 @@ export const nl_NL: EnTranslations = {
       "whatBody": "Naarmate je in niveau stijgt, verdien je talentpunten om te besteden aan kleine, permanente verbeteringen van je vaardigheden en attributen. Ze bepalen hoe een klasse aanvoelt en buigen die naar meer schade, stevigere verdediging of sterkere genezing.",
       "howHeading": "Hoe ze werken",
       "howBody": "Talenten gaan open op niveau 10, en je blijft punten verdienen terwijl je richting het maximum klimt. Je besteedt ze in het talentpaneel van je klasse, en je kunt meer dan één indeling opslaan om tussen builds te wisselen.",
+      "shareNote": "A finished build can be copied to a short shareable code and handed to a friend, who pastes it straight into their own talent panel to load it.",
       "resetTitle": "Niets is permanent",
       "resetNote": "Je kunt je talenten op elk moment resetten, dus een vroege keuze is nooit een valkuil. Probeer dingen uit, kijk wat je bevalt en verander vrijuit van gedachten.",
       "specsHeading": "Specialisaties per klasse",
@@ -1362,6 +1406,8 @@ export const nl_NL: EnTranslations = {
       "upgradeBody": "Een oud stuk vervangen door een verse verbetering doet meer voor je dan perfect spelen in uitrusting die je ontgroeid bent. Wanneer er iets beters valt of een quest het aanbiedt, neem het. Bewaar je goede voorwerpen niet voor later.",
       "sourcesTitle": "Waar uitrusting vandaan komt",
       "sourcesBody": "De meeste van je vroege verbeteringen zijn questbeloningen, dus het loont om quests af te ronden in plaats van te grinden. Vijanden laten uitrusting vallen wanneer je ze verslaat, verkopers in de stad verkopen degelijke basisspullen, en op de spelersmarkt kun je van andere avonturiers kopen.",
+      "setsTitle": "Sets and set bonuses",
+      "setsBody": "The rarest armor comes in matched families, several pieces cut to look and fight as one. Wear enough of a family at once and the set wakes up, granting bonuses on top of each piece's own stats, and the more pieces you wear the stronger it gets. These drop from the toughest group content near the level cap, so chasing a full set is a classic endgame goal.",
       "consumablesTitle": "Verbruiksartikelen",
       "consumablesIntro": "Sommige voorwerpen worden eenmalig gebruikt voor een snel voordeel. Het is goedkope verzekering, dus houd er een paar bij de hand.",
       "consumablesPotions": "Toverdranken herstellen levenskracht of mana op het moment dat je ze gebruikt, zelfs midden in een gevecht, wat ze tot een reddende greep maakt als een aanval misgaat. Ze delen een korte afkoeltijd, dus plan één goed moment om ze te gebruiken.",
@@ -1375,7 +1421,8 @@ export const nl_NL: EnTranslations = {
       "cosmeticsBody": "Sommige beloningen veranderen alleen hoe je personage eruitziet, nooit hoe sterk je bent. Met deze cosmetische skins val je op zonder het spel te beïnvloeden, dus draag wat je maar wilt.",
       "cosmeticsRanks": "Cosmetica hebben hun eigen zeldzaamheidsniveaus, en de zeldzamere zijn een leuk doel om na te jagen. Een hoger niveau verdienen ontgrendelt ook de uiterlijken eronder.",
       "cosmeticsSkins": "Er zijn twee cosmetische lijnen om te verzamelen. Elke klasse heeft een handvol alternatieve uiterlijken, een frisse kijk op haar look die alleen jij mag dragen. Daarnaast zijn er chroma's: genoemde tweekleurige kleurschema's die een look volledig herschilderen, van sobere metalen tot felle keizerlijke kleuren.",
-      "cosmeticsCache": "Een paar daarvan komen uit een mysterieuze cosmetische kist, een verzegelde prijs die bij het openen een van drie kwaliteitsgraden oplevert en het bijbehorende uiterlijk verleent. Het is puur voor de show: niets erin maakt je sterker, alleen mooier om te zien."
+      "cosmeticsCache": "Een paar daarvan komen uit een mysterieuze cosmetische kist, een verzegelde prijs die bij het openen een van drie kwaliteitsgraden oplevert en het bijbehorende uiterlijk verleent. Het is puur voor de show: niets erin maakt je sterker, alleen mooier om te zien.",
+      "cosmeticsApply": "Set your active look from the appearance row on your character screen, and switch freely among everything you have unlocked."
     },
     "economy": {
       "intro": "Munten smeren de hele wereld: ze kopen uitrusting en voorraden, betalen je reparaties en questkosten, en wisselen van eigenaar tussen spelers. Je pikt dit alles vanzelf op door te spelen, dus zie deze pagina als een kaart van waar je geld vandaan komt en waar het heen gaat.",
@@ -1383,6 +1430,8 @@ export const nl_NL: EnTranslations = {
       "coinBody": "Geld bestaat uit drie munten. Honderd koper maken een zilver, en honderd zilver maken een goud, dus je beurs vult zich eerst met de kleinste munt. Je verdient het met questbeloningen, met het plunderen van gevallen vijanden, en met het verkopen van wat je niet langer nodig hebt.",
       "vendorsTitle": "Verkopers en wat ze voeren",
       "vendorsBody": "Steden en buitenposten zijn bezaaid met handelaren, elk met hun eigen vak. Proviandeurs hebben eten en drinken, wapensmeden en pantsersmeden voeren uitrusting, kruidenkenners handelen in reagentia, en een kwartiermeester houdt praktische reisuitrusting bij. Loop er een tegemoet om te zien wat ze verkopen.",
+      "marksTitle": "A second currency: Delve Marks",
+      "marksBody": "Coin is not the only thing you bank. Delves pay out Delve Marks, a separate currency you spend only at the delve keeper, on companion upgrades and gear you will not find elsewhere. They never mix with your coin.",
       "buyingTitle": "Kopen en verkopen",
       "buyingBody": "Ga bij een handelaar staan om hun venster te openen. Je kunt alles kopen wat ze op voorraad hebben als je het kunt betalen, en het meeste uit je tassen verkopen voor munten. Als je per ongeluk iets verkoopt, houdt een verkoper je recente verkopen vast zodat je ze kunt terugkopen.",
       "junkTitle": "Rommel opruimen",
@@ -1428,6 +1477,8 @@ export const nl_NL: EnTranslations = {
       "lootCommonBody": "Gewone drops kunnen naar de buitmaker gaan, terwijl betere drops voor een worp worden aangeboden zodat iedereen een eerlijke kans krijgt.",
       "lootRollTitle": "Nodig, Hebzucht of Passen.",
       "lootRollBody": "Wanneer een voorwerp voor een worp gaat, kiest elk in aanmerking komend lid Nodig als ze het willen, Hebzucht als ze het alleen als reserve zouden nemen, of Passen om af te zien. De hoogste worp wint.",
+      "lootMasterTitle": "Master looter.",
+      "lootMasterBody": "The leader can instead take charge of the better drops, handing each one out to the member who should get it. It keeps prized gear from going to a stray roll, the way an organized group runs a dungeon.",
       "friendsHeading": "Vrienden en negeren",
       "friendsBody": "Voeg spelers toe aan je vriendenlijst om te zien wanneer ze online zijn en waar ze zijn, zodat je kunt groeperen zodra ze inloggen.",
       "ignoreBody": "Als iemand je lastigvalt, voeg diegene toe aan je negeerlijst en je ziet hun chat niet meer.",
@@ -1459,6 +1510,8 @@ export const nl_NL: EnTranslations = {
       "critBody": "Je kans op een kritieke treffer is hoe vaak een aanval extra schade aanricht. Iedereen begint met een kleine basiskans, en Behendigheid (plus enkele talenten en uitrusting) bouwt daarop voort.",
       "dodgeTitle": "Ontwijken",
       "dodgeBody": "Ontwijken is je kans om een inkomende melee-aanval volledig te vermijden. Je begint met een kleine basiskans, en Behendigheid verhoogt deze, dus wendbare klassen ontwijken meer klappen.",
+      "dpsTitle": "Damage per second",
+      "dpsBody": "Your sheet also shows a damage-per-second estimate: roughly what your weapon, its swing speed, and your attack power add up to over time. It is a quick way to compare two weapons at a glance.",
       "sheetHeading": "Je personageblad lezen",
       "sheetBody": "Open het personagevenster in het spel om dit allemaal op één plek te zien: je vijf attributen aan de ene kant en de stats die ze voeden aan de andere. Beweeg over een waarde en een tooltip legt uit wat het voor je klasse doet, zodat je in één oogopslag ziet welke getallen een upgrade daadwerkelijk heeft veranderd.",
       "growHeading": "Hoe je stats groeien",

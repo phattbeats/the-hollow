@@ -744,6 +744,7 @@ export const zh_TW: EnTranslations = {
       "world": "世界",
       "quests": "任務",
       "dungeons": "地城與團隊副本",
+      "delves": "Delves",
       "reference": "參考資料",
       "controls": "操作按鍵",
       "combat": "戰鬥",
@@ -798,6 +799,7 @@ export const zh_TW: EnTranslations = {
       "typeZone": "地區",
       "typeCreature": "生物",
       "typeDungeon": "地城",
+      "typeDelve": "Delve",
       "typeTerm": "詞彙"
     },
     "home": {
@@ -905,6 +907,9 @@ export const zh_TW: EnTranslations = {
       "arena": "競技場",
       "leaderboard": "排行榜",
       "abilities": "使用技能",
+      "targetFriendly": "Target nearest friendly",
+      "cycleFriendly": "Cycle friendly target",
+      "gameMenu": "Open game menu and options",
       "mobileHeading": "行動裝置上",
       "mobileBody": "在手機與平板上會自動顯示觸控操作：左側為移動搖桿，在右側任意處拖曳即可環顧，並有螢幕上的按鈕供你使用技能與選單。"
     },
@@ -959,7 +964,13 @@ export const zh_TW: EnTranslations = {
       "pullTerm": "引怪",
       "pullDef": "將敵人或一群敵人引入戰鬥，通常是刻意地、一批一批地進行。",
       "instanceTerm": "副本",
-      "instanceDef": "專為你的隊伍建立的地城或團隊副本的獨立複本。"
+      "instanceDef": "專為你的隊伍建立的地城或團隊副本的獨立複本。",
+      "raidTerm": "Raid",
+      "raidDef": "A larger group, up to ten players here, formed for the toughest endgame encounter; a party converts into one once it is full.",
+      "delveTerm": "Delve",
+      "delveDef": "A short, replayable instanced descent for one or two players, run from a keeper's board with a companion at your side.",
+      "augmentTerm": "Augment",
+      "augmentDef": "A temporary boost you draft during a two-on-two Fiesta arena match that reshapes your kit for that match only."
     },
     "faqPage": {
       "intro": "新手最常問的問題。",
@@ -1164,6 +1175,10 @@ export const zh_TW: EnTranslations = {
       "elemental": {
         "name": "元素生物",
         "desc": "活生生的風暴與岩石，束縛於元素之力強盛的荒野之地。"
+      },
+      "dragonkin": {
+        "name": "Dragonkin",
+        "desc": "Scaled, serpentine things of the old depths. Rare, proud, and far stronger than they look."
       }
     },
     "worldPage": {
@@ -1227,7 +1242,9 @@ export const zh_TW: EnTranslations = {
       "sideWardenTitle": "掙得你的名聲",
       "sideWardenBody": "在故事之外，谷地與沼澤的守衛還會發布一道長期的懸賞階梯。一個敵人接一個敵人地往上爬，就像在你之前的每一位守衛掙得席位的方式那樣。這是踏實的升級，也是一趟巡覽各區域最惡劣麻煩製造者的旅程。",
       "sideCryptTitle": "被遺忘的國王",
-      "sideCryptBody": "在群峰高處流傳著一樁更為靜謐的謎團：古老的墳墓上刻著一頂無任何記載記得的王冠。讀懂亡者，蒐集他們所守護之物，解封一座本應永遠緊閉的陵墓。這是一條偵探般的線索，為一支完整的團隊開啟了通往第二場終局試煉的道路。"
+      "sideCryptBody": "在群峰高處流傳著一樁更為靜謐的謎團：古老的墳墓上刻著一頂無任何記載記得的王冠。讀懂亡者，蒐集他們所守護之物，解封一座本應永遠緊閉的陵墓。這是一條偵探般的線索，為一支完整的團隊開啟了通往第二場終局試煉的道路。",
+      "sideTempleTitle": "The drowned temple",
+      "sideTempleBody": "A gate of pale light on a high tarn in the peaks opens onto a sunken shrine where a drowned cult still sings. Its short chain stands apart from the main story, a self-contained mystery for anyone who climbs to the shore, reads the warnings carved on the rocks, and goes down to see what they were for."
     },
     "lore": {
       "figuresTitle": "你將會熟識的面孔",
@@ -1262,6 +1279,32 @@ export const zh_TW: EnTranslations = {
       "cryptLeadTitle": "一道亡者本應永遠緊閉的門",
       "cryptLeadBody": "在群峰高處，遠離主要戰場之外，藏著一樁更為冰冷的謎團。古老的墳墓刻著一頂無任何記載記得的王冠，而守護它們的亡者曾侍奉一位被遺忘的國王。讀懂他們的墓碑，蒐集他們守存的拱心石，你便能解封一座有三位忠魂以死封閉的陵墓，為循線追查到底的人開啟第二場十人試煉。"
     },
+    "delvesPage": {
+      "heading": "Delves",
+      "intro": "Delves are short, replayable descents for one or two, with a companion always at your side. Find the board, choose a run, and climb back out with the spoils.",
+      "fromLevel": "From level {n}",
+      "partyLabel": "For one or two",
+      "keeperLabel": "Keeper",
+      "companionLabel": "Companion",
+      "tiersLabel": "Difficulties",
+      "affixesLabel": "Possible modifiers",
+      "whatHeading": "What a delve is",
+      "whatBody": "A delve is a small instanced dungeon made just for you and up to one ally, a private copy you cannot be disturbed in. You start it from a board kept by a delve keeper out in the world, drop in, fight down through a handful of rooms, and finish on a single guardian. Runs are quick and meant to be repeated, so a delve is a reliable bit of progress whenever the open world runs dry.",
+      "howHeading": "How a run works",
+      "howBody": "Talk to the keeper to open the board, pick a difficulty, and descend. Each run strings together a few short chambers and ends at its guardian; clear it to claim your reward and return to the surface. Bring a friend if you have one, or lean on your companion if you do not.",
+      "companionHeading": "Your companion",
+      "companionBody": "A delve sends a companion down with you, so a solo run is never hopeless. She fights at your side, and as you invest in her between runs she grows steadily stronger, until she can pull an ally back from the brink once a descent. She is yours for the delve and waits at the board between runs.",
+      "lockpickHeading": "Locks and what they hide",
+      "lockpickBody": "Some doors and caches are sealed, and opening one is a small test of nerve rather than a stat check: solve the lock cleanly and steadily and you earn a better prize than a rushed, fumbled one. It is optional, but the careful delver is the richer one.",
+      "tiersHeading": "Difficulty",
+      "tiersBody": "A delve offers more than one difficulty. The higher one makes the enemies stronger and rolls in a run modifier, and pays out more in return. It also asks that you have a few levels under your belt before it will let you in.",
+      "affixesHeading": "Run modifiers",
+      "affixesBody": "Harder runs roll a modifier that changes how the descent plays, from restless dead to foul air to failing roof-work. They raise the danger and the reward together. A crypt-themed delve can roll any of these:",
+      "marksHeading": "Delve Marks",
+      "marksBody": "Clearing delves earns Delve Marks, a currency kept apart from your coin. Spend them at the keeper to strengthen your companion and pick up gear you will not find anywhere else.",
+      "whereHeading": "Where to find one",
+      "whereBody": "The first delve, the Collapsed Reliquary, opens at Reliquary Hill in the starting valley of Eastbrook Vale. Brother Halven keeps the board there, and he will send you down once you are ready."
+    },
     "talentsPage": {
       "heading": "天賦與專精",
       "intro": "天賦是你讓職業展現個人風格的方式。它們是選擇性的、寬容的，而且容易更動，所以你可以放心嘗試。",
@@ -1269,6 +1312,7 @@ export const zh_TW: EnTranslations = {
       "whatBody": "隨著升級，你會獲得天賦點數，可用於小幅且永久地強化你的技能與屬性。它們塑造職業的手感，使其偏向更高的傷害、更堅固的防禦或更強的治療。",
       "howHeading": "運作方式",
       "howBody": "天賦在10級開放，隨著你向等級上限攀升，會持續獲得點數。你在職業的天賦面板中分配點數，而且可以儲存多套配置以在不同構築間切換。",
+      "shareNote": "A finished build can be copied to a short shareable code and handed to a friend, who pastes it straight into their own talent panel to load it.",
       "resetTitle": "沒有什麼是永久的",
       "resetNote": "你隨時都能重置天賦，所以早期的選擇絕不會是陷阱。儘管嘗試，看看自己喜歡什麼，並自由地改變主意。",
       "specsHeading": "各職業的專精",
@@ -1362,6 +1406,8 @@ export const zh_TW: EnTranslations = {
       "upgradeBody": "用一件全新的升級品換下舊裝備，對你的助益遠勝於穿著早已過時的裝備打得再完美。當有更好的東西掉落，或任務提供升級時，就收下吧。別把你的好物品留到以後。",
       "sourcesTitle": "裝備從何而來",
       "sourcesBody": "你早期的升級大多來自任務獎勵，因此完成任務比刷怪更划算。敵人被你擊敗時會掉落裝備，城鎮裡的商人販售扎實的基本款，玩家市場則讓你能向其他冒險者購買。",
+      "setsTitle": "Sets and set bonuses",
+      "setsBody": "The rarest armor comes in matched families, several pieces cut to look and fight as one. Wear enough of a family at once and the set wakes up, granting bonuses on top of each piece's own stats, and the more pieces you wear the stronger it gets. These drop from the toughest group content near the level cap, so chasing a full set is a classic endgame goal.",
       "consumablesTitle": "消耗品",
       "consumablesIntro": "有些物品用一次就能帶來即時的好處。它們是便宜的保險，所以隨身備上幾個吧。",
       "consumablesPotions": "藥水在你使用的那一刻就能回復生命或法力，即使在戰鬥中也行，這讓它們在一次拉怪出錯時成了關鍵的救命之物。它們共用一段短暫的冷卻時間，所以請挑準一個好時機使用。",
@@ -1375,7 +1421,8 @@ export const zh_TW: EnTranslations = {
       "cosmeticsBody": "有些獎勵只會改變你角色的外觀，絕不影響你的強弱。這些外觀造型讓你能脫穎而出，又不會左右遊戲，所以喜歡哪一種就穿哪一種吧。",
       "cosmeticsRanks": "外觀本身也分稀有度層級，而愈稀有的便愈值得追求。掙得較高的層級，也會一併解鎖其下的各種外觀。",
       "cosmeticsSkins": "有兩條外觀路線可供收集。每種職業都有少數幾款替代外觀，那是專屬於它的全新風貌，唯你能穿戴。在它們之外還有染色：具名的雙色配色方案，能徹底為一款外觀重新上色，從沉穩的金屬色到鮮明的帝國色調皆有。",
-      "cosmeticsCache": "其中少數來自一個神秘的外觀寶箱，那是一份封存的獎賞，開啟時會隨機擲出三種品質等級之一，並授予相符的外觀。它純粹是為了好看：裡頭沒有任何東西能讓你變強，只會讓你更賞心悅目。"
+      "cosmeticsCache": "其中少數來自一個神秘的外觀寶箱，那是一份封存的獎賞，開啟時會隨機擲出三種品質等級之一，並授予相符的外觀。它純粹是為了好看：裡頭沒有任何東西能讓你變強，只會讓你更賞心悅目。",
+      "cosmeticsApply": "Set your active look from the appearance row on your character screen, and switch freely among everything you have unlocked."
     },
     "economy": {
       "intro": "錢幣是整個世界的潤滑劑：它能購買裝備與補給、支付你的修理與任務開銷，並在玩家之間流轉。這一切只要遊玩就能自然累積，所以不妨把這一頁當成一張地圖，看看你的錢從何處來、又往何處去。",
@@ -1383,6 +1430,8 @@ export const zh_TW: EnTranslations = {
       "coinBody": "錢幣分為三種。一百枚銅幣換一枚銀幣，一百枚銀幣換一枚金幣，因此你的錢袋會從最小的硬幣開始累積。你可透過任務獎勵、拾取被擊敗的敵人，以及變賣不再需要的物品來賺取金錢。",
       "vendorsTitle": "商人與他們的存貨",
       "vendorsBody": "城鎮與哨站裡到處是商人，各有各的生意。補給商備有食物與飲品，武器匠與盔甲匠出售裝備，草藥師經營施法材料，軍需官則準備實用的旅行用品。走到他們面前，便能看到他們在賣什麼。",
+      "marksTitle": "A second currency: Delve Marks",
+      "marksBody": "Coin is not the only thing you bank. Delves pay out Delve Marks, a separate currency you spend only at the delve keeper, on companion upgrades and gear you will not find elsewhere. They never mix with your coin.",
       "buyingTitle": "買與賣",
       "buyingBody": "站在商人附近即可開啟他的視窗。只要你負擔得起，便能買下他所販售的任何商品，也能將背包裡大部分的東西換成錢幣。若你不小心賣錯了東西，商人會為你保留近期的售出物，讓你能買回來。",
       "junkTitle": "清理雜物",
@@ -1428,6 +1477,8 @@ export const zh_TW: EnTranslations = {
       "lootCommonBody": "普通的掉落物可以歸給拾取者，較好的掉落物則會擺出來擲骰，好讓每個人都有公平的機會。",
       "lootRollTitle": "需求、貪婪或放棄。",
       "lootRollBody": "當一件物品進行擲骰時，每位符合資格的成員若想要它便選擇需求，若只想當備品則選擇貪婪，或選擇放棄退出。骰點最高者勝出。",
+      "lootMasterTitle": "Master looter.",
+      "lootMasterBody": "The leader can instead take charge of the better drops, handing each one out to the member who should get it. It keeps prized gear from going to a stray roll, the way an organized group runs a dungeon.",
       "friendsHeading": "好友與忽略",
       "friendsBody": "把玩家加入你的好友名單，便能看到他們何時上線、人在何處，好讓你在他們登入的那一刻就能組隊。",
       "ignoreBody": "若有人在騷擾你，把他加入你的忽略名單，你便不會再看到他的聊天。",
@@ -1459,6 +1510,8 @@ export const zh_TW: EnTranslations = {
       "critBody": "你的暴擊機率是攻擊打出額外傷害的頻率。每個人都從一個微小的基礎機率起步，而敏捷（外加一些天賦與裝備）則在其上累加。",
       "dodgeTitle": "閃躲",
       "dodgeBody": "閃躲是你完全避開一次來襲近戰攻擊的機率。你從一個微小的基礎機率起步，而敏捷會提升它，因此身手敏捷的職業能閃過更多攻擊。",
+      "dpsTitle": "Damage per second",
+      "dpsBody": "Your sheet also shows a damage-per-second estimate: roughly what your weapon, its swing speed, and your attack power add up to over time. It is a quick way to compare two weapons at a glance.",
       "sheetHeading": "看懂你的角色面板",
       "sheetBody": "在遊戲中開啟角色視窗，便能在同一處看到這一切：你的五項屬性在一側，它們所灌注的各項數值在另一側。將滑鼠停在任一數值上，提示框便會拆解它為你的職業做了什麼，讓你一眼就能看出一件升級品實際上改動了哪些數字。",
       "growHeading": "你的屬性如何成長",

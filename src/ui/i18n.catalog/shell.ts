@@ -184,7 +184,7 @@ export const shellStrings = {
         paladin:
           'Paladins are holy crusaders who support allies with blessings, heal wounds with Holy Light, and protect the weak in heavy armor.',
         hunter:
-          'Hunters master the wilderness, tracking enemies from afar with bows or guns and using traps to control the battlefield.',
+          'Hunters are ranged specialists who fight beside a tamed beast, peppering enemies with aimed and rapid shots, slowing them with stings and concussive fire, and shifting aspects to suit the moment.',
         rogue:
           'Rogues are stealthy assassins who spend Energy and Combo Points on backstabs and finishing moves from the shadows.',
         priest:
@@ -1211,7 +1211,7 @@ export const shellStrings = {
         paladin:
           'Paladins are holy crusaders who support allies with blessings, heal wounds with Holy Light, and protect the weak in heavy armour.',
         hunter:
-          'Hunters master the wilderness, tracking enemies from afar with bows or guns and using traps to control the battlefield.',
+          'Hunters are ranged specialists who fight beside a tamed beast, peppering enemies with aimed and rapid shots, slowing them with stings and concussive fire, and shifting aspects to suit the moment.',
         rogue:
           'Rogues are stealthy assassins who spend Energy and Combo Points on backstabs and finishing moves from the shadows.',
         priest:

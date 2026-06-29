@@ -127,6 +127,7 @@ export const models: GuidePage = {
               <p class="guide-gallery-fallback" data-fallback hidden>${esc(t('guide.models.noWebgl'))}</p>
             </div>
             <p class="guide-gallery-caption" data-caption aria-live="polite"></p>
+            <p class="guide-gallery-hint">${esc(t('guide.viewer.dragHint'))}</p>
           </div>
         </div>
         ${related([

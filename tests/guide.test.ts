@@ -9,6 +9,7 @@ import {
   GUIDE_MODELS,
   GUIDE_WARLOCK_PETS,
 } from '../src/guide/content.generated';
+import { pageFor } from '../src/guide/pages';
 import {
   GUIDE_BASE,
   GUIDE_ROUTES,
@@ -112,6 +113,29 @@ describe('Guide entry wiring', () => {
 
   it('lists the guide in the sitemap', () => {
     expect(sitemapXml).toContain('<loc>https://worldofclaudecraft.com/wiki</loc>');
+  });
+
+  // A route with no registered page silently renders the placeholder; a route or class
+  // page missing from the sitemap is invisible to crawlers. These gates fail the build
+  // instead, so adding a page (like Delves) means wiring all of route + module + sitemap.
+  it('registers a page module for every route', () => {
+    for (const r of GUIDE_ROUTES) {
+      expect(pageFor(r.id), `route "${r.id}" has no registered page module`).toBeTruthy();
+    }
+  });
+
+  it('lists every route and class-detail page in the sitemap', () => {
+    const origin = 'https://worldofclaudecraft.com';
+    for (const r of GUIDE_ROUTES) {
+      const loc = `${origin}${hrefFor(r.sub)}`;
+      expect(sitemapXml, `sitemap missing route "${r.id}" (${loc})`).toContain(`<loc>${loc}</loc>`);
+    }
+    for (const c of GUIDE_CLASSES) {
+      const loc = `${origin}${hrefFor(`classes/${c.id}`)}`;
+      expect(sitemapXml, `sitemap missing class page "${c.id}" (${loc})`).toContain(
+        `<loc>${loc}</loc>`,
+      );
+    }
   });
 });
 
