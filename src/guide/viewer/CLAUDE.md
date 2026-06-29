@@ -2,7 +2,7 @@
 
 A self-contained turntable that loads ONE game model (a GLB) on demand and lets the
 reader drag to rotate it. Embedded on the class, bestiary, and warlock pages, and the
-full `/guide/models` gallery.
+full `/wiki/models` gallery.
 
 ## Why standalone (not the renderer's preview)
 The renderer's `src/render/characters` pipeline (`CharacterVisual`, `CharacterPreview`)
@@ -35,8 +35,10 @@ from `embed.ts`/`mount.ts`/`index.ts` or a page. The only path to three is the d
 only*.
 
 ## Page contract
-- `render()`: emit `modelViewerEmbed({ modelKey, tint, name, poster })` (poster = the
-  page's existing 2D crest/icon, so there is always a graceful 2D fallback).
+- `render()`: emit `modelViewerEmbed({ modelKey, tint, name, poster, still })`. The pre-rendered
+  `still` (a transparent WebP of this exact figure, baked by `npm run wiki:stills`) is the default
+  poster when present; the page's 2D crest/icon `poster` is the fallback, so there is always a
+  graceful 2D image.
 - `mount()`: call `wireModelViewers(root)` and return its cleanup. For the gallery, call
   `createViewer(stage, label)` and drive `load(spec, tint)` from the picker.
 

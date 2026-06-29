@@ -26,7 +26,7 @@ sim/render *data*, never the live world or `IWorld`.
 
 ## Generated data: it never drifts from the game
 `content.generated.ts` is built by `scripts/wiki/build_content.mjs` from the sim source
-of truth (CLASSES, ABILITIES, TALENTS, ZONES, DUNGEONS, the overworld + warlock-pet
+of truth (CLASSES, ABILITIES, TALENTS, ZONES, DUNGEONS, DELVES, the overworld + warlock-pet
 bestiary, render VISUALS). Regenerate with `npm run wiki:content` (it also runs in
 `pretest` and `build`). `tests/guide.test.ts` re-runs the generator and
 `git diff --exit-code`s the output, so a stale committed file fails CI. Do not edit it
