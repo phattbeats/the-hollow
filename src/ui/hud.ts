@@ -5596,7 +5596,7 @@ export class Hud {
         const tgt = sim.entities.get(ev.targetId);
         if (!tgt) return;
         const tp = tgt.pos;
-        if (ev.kind === 'miss' || ev.kind === 'dodge') {
+        if (ev.kind === 'miss' || ev.kind === 'dodge' || ev.kind === 'resist') {
           this.combat('combat_dodge', tp.x, tp.y, tp.z, 0.5);
           return;
         }
@@ -5752,9 +5752,11 @@ export class Hud {
           const isPlayerSource = ev.sourceId === sim.playerId;
           const isPlayerTarget = ev.targetId === sim.playerId;
           if (isPlayerSource || isPlayerTarget) this.lastCombatEventAt = performance.now();
-          if (ev.kind === 'miss' || ev.kind === 'dodge') {
-            // self vs other (carried on the shape's isSelf) drives the miss/dodge colour
-            // token (#bbb vs #fff); the localized word stays at the call site.
+          if (ev.kind === 'miss' || ev.kind === 'dodge' || ev.kind === 'resist') {
+            // self vs other (carried on the shape's isSelf) drives the avoidance colour
+            // token (#bbb vs #fff); the localized word stays at the call site. A resisted
+            // spell is an avoidance word like miss/dodge (classic fidelity: spells resist,
+            // not miss).
             const shape = fctSpawnShape({
               type: 'damage',
               damageKind: ev.kind,
@@ -5770,7 +5772,9 @@ export class Hud {
                   text:
                     ev.kind === 'miss'
                       ? t('hud.combat.floatingMiss')
-                      : t('hud.combat.floatingDodge'),
+                      : ev.kind === 'dodge'
+                        ? t('hud.combat.floatingDodge')
+                        : t('hud.combat.floatingResist'),
                   target: tgt,
                 },
                 now,
@@ -5781,8 +5785,14 @@ export class Hud {
               this.renderer.addShake(0.15);
             }
             if (isPlayerSource) {
+              const logKey =
+                ev.kind === 'miss'
+                  ? 'hud.combat.miss'
+                  : ev.kind === 'dodge'
+                    ? 'hud.combat.dodged'
+                    : 'hud.combat.resisted';
               this.combatLog(
-                t(ev.kind === 'miss' ? 'hud.combat.miss' : 'hud.combat.dodged', {
+                t(logKey, {
                   ability: combatAbilityName(ev.ability),
                   target: entityDisplayName(tgt),
                 }),

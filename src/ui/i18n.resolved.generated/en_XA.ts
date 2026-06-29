@@ -2719,6 +2719,7 @@ export const en_XA: EnTranslations = {
     "combat": {
       "floatingMiss": "[Ɱíšš]",
       "floatingDodge": "[Ðóðĝé]",
+      "floatingResist": "[Ŕéšíšţ]",
       "cannotMove": "[Çáñ'ţ ɱóʋé!]",
       "attack": "[áţţáçķ]",
       "damageDone": "[Ýóúŕ {ability} ĥíţš {target} ƒóŕ {amount}.]",
@@ -2727,6 +2728,7 @@ export const en_XA: EnTranslations = {
       "damageTakenCrit": "[{source} çŕíţíçáļļý ĥíţš ýóú ƒóŕ {amount}.]",
       "miss": "[Ýóúŕ {ability} ɱíššéš {target}.]",
       "dodged": "[Ýóúŕ {ability} íš ðóðĝéð ƀý {target}.]",
+      "resisted": "[Ýóúŕ {ability} íš ŕéšíšţéð ƀý {target}.]",
       "healSelf": "[Ýóúŕ {ability} ĥéáļš ýóú ƒóŕ {amount}.]",
       "healSelfCrit": "[Ýóúŕ {ability} çŕíţíçáļļý ĥéáļš ýóú ƒóŕ {amount}.]",
       "healOther": "[Ýóúŕ {ability} ĥéáļš {target} ƒóŕ {amount}.]",

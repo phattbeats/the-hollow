@@ -2719,6 +2719,7 @@ export const id_ID: EnTranslations = {
     "combat": {
       "floatingMiss": "Meleset",
       "floatingDodge": "Elak",
+      "floatingResist": "Resist",
       "cannotMove": "Tidak bisa bergerak!",
       "attack": "serang",
       "damageDone": "{ability}-mu mengenai {target} sebesar {amount}.",
@@ -2727,6 +2728,7 @@ export const id_ID: EnTranslations = {
       "damageTakenCrit": "{source} mengenaimu secara kritis sebesar {amount}.",
       "miss": "{ability}-mu meleset dari {target}.",
       "dodged": "{ability}-mu dielakkan oleh {target}.",
+      "resisted": "Your {ability} is resisted by {target}.",
       "healSelf": "{ability}-mu menyembuhkanmu sebesar {amount}.",
       "healSelfCrit": "{ability}-mu menyembuhkanmu secara kritis sebesar {amount}.",
       "healOther": "{ability}-mu menyembuhkan {target} sebesar {amount}.",

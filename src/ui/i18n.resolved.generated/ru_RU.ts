@@ -2719,6 +2719,7 @@ export const ru_RU: EnTranslations = {
     "combat": {
       "floatingMiss": "Промах",
       "floatingDodge": "Уклон",
+      "floatingResist": "Сопротивление",
       "cannotMove": "Не двигается!",
       "attack": "атака",
       "damageDone": "Ваше {ability} поражает {target} на {amount}.",
@@ -2727,6 +2728,7 @@ export const ru_RU: EnTranslations = {
       "damageTakenCrit": "{source} критически поражает вас на {amount}.",
       "miss": "Ваше {ability} промахивается по {target}.",
       "dodged": "{target} уклоняется от вашего {ability}.",
+      "resisted": "{target} сопротивляется вашему {ability}.",
       "healSelf": "Ваше {ability} исцеляет вас на {amount}.",
       "healSelfCrit": "Ваше {ability} критически исцеляет вас на {amount}.",
       "healOther": "Ваше {ability} исцеляет {target} на {amount}.",
