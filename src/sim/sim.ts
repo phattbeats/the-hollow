@@ -1396,7 +1396,6 @@ export class Sim {
       ),
       pet: petCommands.isDemonPetState(petSnapshot) ? null : petSnapshot,
       cooldowns: serializeCooldowns(e.cooldowns, e.potionCooldownUntil, this.time),
-      pet: this.serializePet(pid),
       skin: meta.skin,
       skinCatalog: meta.skinCatalog,
       pendingSkinRank: meta.pendingSkinRank,
