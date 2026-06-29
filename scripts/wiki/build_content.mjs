@@ -225,7 +225,8 @@ for (const [id, m] of Object.entries({ ...ZONE1_MOBS, ...ZONE2_MOBS, ...ZONE3_MO
   const tint = tintFor(vk, m.color ?? 0xffffff);
   const tintHex = tint != null ? hex(tint) : null;
   const model = modelKeyFor(vk);
-  (famMap[m.family] ??= new Map()).set(m.name, {
+  famMap[m.family] ??= new Map();
+  famMap[m.family].set(m.name, {
     name: m.name,
     min: m.minLevel,
     max: m.maxLevel,
