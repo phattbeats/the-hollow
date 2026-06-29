@@ -3,14 +3,14 @@
 // also serves public/ so loadGltf can fetch the real GLBs same-origin. Exposes
 // window.renderStill(spec, tint) returning a transparent PNG data URL.
 //
-// It reuses the Guide viewer's OWN model assembly (buildModel) and the same light rig and
-// bounding-sphere framing RULE as scene.ts, so a baked still closely approximates the live
-// "View in 3D" turntable. It is not pixel-identical: the still frames the model's POSED
-// bounds head-on, while the turntable frames bind-pose height with a slight downward tilt.
+// It reuses the Guide viewer's OWN model assembly (buildModel), the same shared posed,
+// skin-aware bounds (skinAwareBounds), and the same head-on bounding-sphere framing RULE as
+// scene.ts, so a baked still closely approximates the live "View in 3D" turntable. It is not
+// pixel-identical: the still freezes one fixed three-quarter yaw, while the turntable spins.
 // Everything is pinned for determinism: a fixed canvas size, pixelRatio 1, a fixed idle
 // pose time, and a fixed three-quarter yaw, so reruns produce the same framing.
 import * as THREE from 'three';
-import { buildModel } from '../../src/guide/viewer/model';
+import { buildModel, skinAwareBounds } from '../../src/guide/viewer/model';
 
 const SIZE = 512; // supersample; the driver downscales and encodes the shipped WebP
 const STILL_YAW = -0.6; // radians; a three-quarter portrait reads better than dead-on
@@ -41,42 +41,13 @@ function makeLights() {
   return g;
 }
 
-// The TRUE posed, skin-aware world bounds, measured exactly like the game's prepareVisual
-// (src/render/characters/assets.ts:743-753): apply each skinned vertex's bone transform,
-// then its world matrix. buildModel's bind-pose box is NOT enough: several creature rigs
-// have a scaled armature whose idle clip flings the skinned mesh thousands of units from
-// the bind box, so framing the bind box renders a blank. Falls back to plain geometry for
-// non-skinned rigs.
-function posedSkinnedBounds(root) {
-  const bounds = new THREE.Box3();
-  const v = new THREE.Vector3();
-  root.updateWorldMatrix(true, true);
-  let sawSkinned = false;
-  root.traverse((o) => {
-    if (!o.isSkinnedMesh || !o.visible) return;
-    sawSkinned = true;
-    const pos = o.geometry.getAttribute('position');
-    for (let i = 0; i < pos.count; i++) {
-      v.fromBufferAttribute(pos, i);
-      o.applyBoneTransform(i, v);
-      v.applyMatrix4(o.matrixWorld);
-      bounds.expandByPoint(v);
-    }
-  });
-  if (!sawSkinned || bounds.isEmpty()) {
-    root.traverse((o) => {
-      if (!o.isMesh || o.isSkinnedMesh || !o.visible) return;
-      const pos = o.geometry.getAttribute('position');
-      if (!pos) return;
-      for (let i = 0; i < pos.count; i++) {
-        v.fromBufferAttribute(pos, i);
-        v.applyMatrix4(o.matrixWorld);
-        bounds.expandByPoint(v);
-      }
-    });
-  }
-  return bounds;
-}
+// The TRUE posed, skin-aware world bounds come from the SHARED skinAwareBounds (model.ts),
+// the same measurement the live turntable (scene.ts) uses, so a still and its interactive
+// model frame identically and cannot drift. It applies each skinned vertex's bone transform
+// then its world matrix (the game's prepareVisual approach), falling back to a plain world
+// walk for non-skinned props. buildModel's bind-pose box is NOT enough: several creature rigs
+// have a scaled armature whose idle clip flings the skinned mesh far from the bind box, so
+// framing the bind box renders a blank.
 
 // The scene.ts camera rule (fov 40, frame by bounding sphere), aimed at an explicit center.
 function frameCamera(camera, radius, center) {
@@ -112,7 +83,7 @@ window.renderStill = (spec, tint) =>
         // deterministic across runs, THEN measure where the posed mesh actually is.
         built.mixer?.update(POSE_TIME);
         scene.updateMatrixWorld(true);
-        const bounds = posedSkinnedBounds(built.root);
+        const bounds = skinAwareBounds(built.root);
         const center = bounds.getCenter(new THREE.Vector3());
         const radius = bounds.getBoundingSphere(new THREE.Sphere()).radius || built.radius || 1;
 
