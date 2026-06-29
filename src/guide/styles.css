@@ -2360,6 +2360,12 @@ a.guide-poi:hover {
 .guide-gallery-stage {
   aspect-ratio: 1 / 1;
 }
+/* The stage poster (a baked still) sits ABOVE the absolutely-positioned live canvas while a
+   model loads and as a WebGL fallback, so it covers the previous model during a switch; it is
+   hidden once the turntable is up. Grid items honor z-index without position. */
+.guide-gallery-stage .guide-viewer-poster {
+  z-index: 1;
+}
 .guide-gallery-fallback {
   margin: 0;
   padding: var(--g-lg);

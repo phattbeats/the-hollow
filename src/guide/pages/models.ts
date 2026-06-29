@@ -88,8 +88,11 @@ function optionHtml(o: ModelOption): string {
     ? `<img src="${esc(icon)}" alt="" width="28" height="28" loading="lazy" decoding="async" />`
     : '';
   // A toggle button (aria-pressed): one is active at a time and it loads that model.
+  // data-still carries the baked still so the stage can show it while the live model loads
+  // and as a fallback if WebGL fails (the turntable itself is the primary surface).
+  const still = o.still ? ` data-still="${esc(o.still)}"` : '';
   return `<button type="button" class="guide-gallery-opt" aria-pressed="false"
-    data-model="${esc(o.modelKey)}"${tint} data-name="${esc(o.name)}"${style}>
+    data-model="${esc(o.modelKey)}"${tint} data-name="${esc(o.name)}"${still}${style}>
     ${img}<span class="guide-gallery-opt-name">${esc(o.name)}</span>
   </button>`;
 }
@@ -124,6 +127,7 @@ export const models: GuidePage = {
           </div>
           <div class="guide-gallery-viewer">
             <div class="guide-viewer-stage guide-gallery-stage" data-stage>
+              <img class="guide-viewer-poster guide-viewer-poster-still" data-poster alt="" decoding="async" hidden />
               <p class="guide-gallery-fallback" data-fallback hidden>${esc(t('guide.models.noWebgl'))}</p>
             </div>
             <p class="guide-gallery-caption" data-caption aria-live="polite"></p>
@@ -142,11 +146,62 @@ export const models: GuidePage = {
     const picker = root.querySelector<HTMLElement>('.guide-gallery-picker');
     const caption = root.querySelector<HTMLElement>('[data-caption]');
     const fallback = root.querySelector<HTMLElement>('[data-fallback]');
+    const poster = root.querySelector<HTMLImageElement>('[data-poster]');
     if (!stage || !picker) return;
+
+    // Show the selected figure's baked still over the stage while the live model loads and as
+    // a graceful fallback if WebGL fails; hide it once the turntable is up. The turntable is
+    // the primary surface (it now frames every rig); this is a safety net, like the inline
+    // embeds (viewer/embed.ts). A still that 404s just hides itself.
+    let currentStill: string | undefined;
+    const showPoster = (still?: string): void => {
+      if (!poster) return;
+      if (still) {
+        poster.src = still;
+        poster.hidden = false;
+      } else {
+        poster.hidden = true;
+      }
+    };
+    const hidePoster = (): void => {
+      if (poster) poster.hidden = true;
+    };
+    const onPosterError = (): void => hidePoster();
+    poster?.addEventListener('error', onPosterError);
+    // A broken option thumbnail (missing still) hides itself rather than showing a torn icon.
+    // error does not bubble, so listen in the capture phase on the picker.
+    const onImgError = (e: Event): void => {
+      const img = e.target;
+      if (img instanceof HTMLImageElement && img.closest('.guide-gallery-opt')) {
+        img.style.visibility = 'hidden';
+      }
+    };
+    picker.addEventListener('error', onImgError, true);
 
     if (!hasWebGL()) {
       if (fallback) fallback.hidden = false;
-      return;
+      // No turntable: the picker still browses the baked 2D stills (the buttons stay live, not
+      // inert), swapping the selected figure's still into the stage poster.
+      const showStill = (btn: HTMLElement): void => {
+        picker.querySelectorAll<HTMLElement>('[aria-pressed="true"]').forEach((b) => {
+          b.setAttribute('aria-pressed', 'false');
+        });
+        btn.setAttribute('aria-pressed', 'true');
+        if (caption) caption.textContent = btn.dataset.name ?? '';
+        showPoster(btn.dataset.still);
+      };
+      const onPick = (e: Event): void => {
+        const btn = (e.target as HTMLElement).closest<HTMLElement>('.guide-gallery-opt');
+        if (btn) showStill(btn);
+      };
+      picker.addEventListener('click', onPick);
+      const first = picker.querySelector<HTMLElement>('.guide-gallery-opt');
+      if (first) showStill(first);
+      return () => {
+        picker.removeEventListener('click', onPick);
+        poster?.removeEventListener('error', onPosterError);
+        picker.removeEventListener('error', onImgError, true);
+      };
     }
 
     let viewer: ModelViewer | null = null;
@@ -166,6 +221,10 @@ export const models: GuidePage = {
       btn.setAttribute('aria-pressed', 'true');
       const name = btn.dataset.name ?? '';
       if (caption) caption.textContent = name;
+      // Show this figure's still while the live model builds; hide it on success, keep it on
+      // failure, and re-show it if the context is later lost.
+      currentStill = btn.dataset.still;
+      showPoster(currentStill);
       const tint = btn.dataset.tint ? parseInt(btn.dataset.tint.replace('#', ''), 16) : null;
       const label = t('guide.viewer.canvasLabel', { name });
       try {
@@ -176,6 +235,7 @@ export const models: GuidePage = {
             viewer = null;
             return;
           }
+          viewer.onContextLost(() => showPoster(currentStill));
         } else {
           viewer.setLabel(label);
         }
@@ -183,11 +243,16 @@ export const models: GuidePage = {
         if (disposed && viewer) {
           viewer.destroy();
           viewer = null;
+        } else if (!viewer.isContextLost()) {
+          // Keep the still up if the context died mid-load: load() resolves over a dead
+          // context but renders nothing, so hiding the poster would blank the stage.
+          hidePoster();
         }
       } catch (err) {
         // eslint-disable-next-line no-console
         console.error('Guide gallery failed to load model', err);
         btn.setAttribute('aria-pressed', 'false');
+        showPoster(currentStill);
       }
     };
 
@@ -218,6 +283,8 @@ export const models: GuidePage = {
     return () => {
       disposed = true;
       picker.removeEventListener('click', onClick);
+      picker.removeEventListener('error', onImgError, true);
+      poster?.removeEventListener('error', onPosterError);
       if (viewer) viewer.destroy();
     };
   },
