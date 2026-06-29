@@ -147,13 +147,6 @@ const LOW_TIER_PROP_KEYS: readonly PropKey[] = [
   'delveEntrance2', // delve entrance portal, a landmark, so keep it on low gfx too
 ];
 
-// Material prewarm is tier-scoped: only the props that actually render at the CURRENT
-// tier need their materials compiled, so on low we prewarm just the rendered subset.
-// This is the per-tier render set, NOT the preload set.
-const PREWARM_PROP_KEYS = new Set<PropKey>(
-  GFX.standardMaterials ? ALL_PROP_KEYS : LOW_TIER_PROP_KEYS,
-);
-
 /**
  * The props to PRELOAD, given the graphics tier guessed when this module was first
  * imported. This MUST be tier-INDEPENDENT.
@@ -390,7 +383,14 @@ export function buildPropMaterialPrewarmGroup(): THREE.Group {
   // instance variant the way the live placed props do; the plain InstancedMesh
   // and Mesh cover the untinted and non-instanced paths.
   const white = new THREE.Color(1, 1, 1);
-  for (const key of PREWARM_PROP_KEYS) {
+  // Prewarm only the props that actually render at the LIVE tier (this runs after
+  // initGfxTier via the Renderer, so GFX is authoritative here, unlike the import-time
+  // best-guess): low renders the LOW_TIER_PROP_KEYS subset, medium+ renders the full
+  // catalog. Keying off the live tier rather than an import-frozen guess means a low
+  // import guess on a medium+ renderer still prewarms every prop it will draw, so the
+  // props the low subset omits do not take a first-frame shader-compile hitch.
+  const prewarmKeys = GFX.standardMaterials ? ALL_PROP_KEYS : LOW_TIER_PROP_KEYS;
+  for (const key of prewarmKeys) {
     const asset = propAsset(key);
     for (const part of asset.parts) {
       const matKey = `${part.mat.uuid}:${part.geo.getAttribute('color') ? 'color' : 'plain'}`;
