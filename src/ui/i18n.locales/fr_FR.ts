@@ -3538,6 +3538,11 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'guide.controls.abilities': 'Utiliser les capacités',
   'guide.controls.actionHeader': 'Action',
   'guide.controls.arena': 'Arène',
+  'guide.controls.controllerBody':
+    "Les manettes fonctionnent aussi, et leur prise en charge est activée par défaut. Le stick gauche déplace, le stick droit oriente la caméra, et les boutons de façade et de tranche couvrent vos capacités, le saut et les interactions. Ouvrez n'importe quelle fenêtre pour faire apparaître un pointeur à l'écran et naviguer dans les menus. Vous pouvez réassigner les boutons et régler la zone morte des sticks, la vitesse de la caméra, les vibrations et la visée inversée depuis les réglages de manette dans les options.",
+  'guide.controls.controllerHeading': 'À la manette',
+  'guide.controls.cycleFriendly': "Cibler l'allié suivant",
+  'guide.controls.gameMenu': 'Ouvrir le menu et les options',
   'guide.controls.groupCamera': 'Caméra',
   'guide.controls.groupCombat': 'Ciblage et combat',
   'guide.controls.groupInterface': 'Fenêtres',
@@ -3550,6 +3555,40 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
     "Les commandes tactiles apparaissent automatiquement sur téléphones et tablettes : un joystick de déplacement à gauche, un glissement n'importe où à droite pour regarder, et des boutons à l'écran pour vos capacités et vos menus.",
   'guide.controls.mobileHeading': 'Sur mobile',
   'guide.controls.talents': 'Talents',
+  'guide.controls.targetFriendly': "Cibler l'allié le plus proche",
+  'guide.delvesPage.affixesBody':
+    "Les plongées plus ardues tirent un modificateur qui change la façon dont se déroule la descente, des morts agités à l'air vicié en passant par une charpente qui menace de céder. Ils augmentent ensemble le danger et la récompense. Une plongée sur le thème de la crypte peut en tirer l'un de ceux-ci :",
+  'guide.delvesPage.affixesHeading': 'Modificateurs de plongée',
+  'guide.delvesPage.affixesLabel': 'Modificateurs possibles',
+  'guide.delvesPage.companionBody':
+    "Une plongée envoie une compagne descendre avec vous, pour qu'une partie en solo ne soit jamais désespérée. Elle combat à vos côtés, et à mesure que vous investissez en elle entre les plongées, elle gagne régulièrement en force, jusqu'à pouvoir ramener un allié du bord du gouffre une fois par descente. Elle est à vous le temps de la plongée et vous attend au tableau entre les parties.",
+  'guide.delvesPage.companionHeading': 'Votre compagne',
+  'guide.delvesPage.companionLabel': 'Compagne',
+  'guide.delvesPage.fromLevel': 'À partir du niveau {n}',
+  'guide.delvesPage.heading': 'Plongées',
+  'guide.delvesPage.howBody':
+    'Parlez au gardien pour ouvrir le tableau, choisissez une difficulté et descendez. Chaque plongée enchaîne quelques courtes salles et se termine sur son gardien ; venez-en à bout pour réclamer votre récompense et remonter à la surface. Amenez un ami si vous en avez un, ou appuyez-vous sur votre compagne sinon.',
+  'guide.delvesPage.howHeading': 'Comment se déroule une plongée',
+  'guide.delvesPage.intro':
+    'Les plongées sont de courtes descentes rejouables pour un ou deux joueurs, avec une compagne fidèle à vos côtés chaque fois que vous descendez en solo. Trouvez le tableau, choisissez une plongée et remontez avec le butin.',
+  'guide.delvesPage.keeperLabel': 'Gardien',
+  'guide.delvesPage.lockpickBody':
+    "Certaines portes et certains coffres sont scellés, et en ouvrir un tient plus du petit test de sang-froid que de la caractéristique : forcez la serrure proprement et sans trembler, et vous gagnez un meilleur prix qu'une tentative précipitée et maladroite. C'est facultatif, mais le plongeur soigneux est le plus riche.",
+  'guide.delvesPage.lockpickHeading': "Les serrures et ce qu'elles cachent",
+  'guide.delvesPage.marksBody':
+    'Venir à bout des plongées rapporte des Marques de plongée, une monnaie tenue à part de votre or. Dépensez-les auprès du gardien pour renforcer votre compagne et obtenir un équipement introuvable ailleurs.',
+  'guide.delvesPage.marksHeading': 'Marques de plongée',
+  'guide.delvesPage.partyLabel': 'Pour un ou deux',
+  'guide.delvesPage.tiersBody':
+    "Une plongée propose plus d'une difficulté. La plus élevée rend les ennemis plus forts et tire un modificateur de plongée, et paie davantage en retour. Elle exige aussi que vous ayez quelques niveaux derrière vous avant de vous laisser entrer.",
+  'guide.delvesPage.tiersHeading': 'Difficulté',
+  'guide.delvesPage.tiersLabel': 'Difficultés',
+  'guide.delvesPage.whatBody':
+    "Une plongée est un petit donjon instancié conçu rien que pour vous et un allié au plus, une copie privée où nul ne peut vous déranger. Vous la lancez depuis un tableau tenu par un gardien de plongée dans le monde ouvert, vous y entrez, vous descendez en combattant à travers une poignée de salles et vous terminez sur un unique gardien. Les plongées sont rapides et faites pour être répétées, si bien qu'une plongée est une part de progression fiable chaque fois que le monde ouvert se tarit.",
+  'guide.delvesPage.whatHeading': "Ce qu'est une plongée",
+  'guide.delvesPage.whereBody':
+    "La première plongée, le Reliquaire effondré, s'ouvre à la colline du Reliquaire, dans la vallée de départ du Val d'Eastbrook. Frère Halven y tient le tableau, et il vous enverra en bas dès que vous serez prêt.",
+  'guide.delvesPage.whereHeading': 'Où en trouver une',
   'guide.docTitle': '{page} - {brand}',
   'guide.dungeonsPage.bastionBody':
     'Une forteresse inondée perdue dans le marais, tenue par des défenseurs noyés et par la marée montante elle-même.',
@@ -3579,6 +3618,9 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'guide.family.beast.desc':
     'Animaux sauvages des forêts et des champs, des loups et des sangliers aux créatures qui les chassent. Les Chasseurs peuvent en apprivoiser beaucoup.',
   'guide.family.beast.name': 'Bêtes',
+  'guide.family.dragonkin.desc':
+    "Des créatures écailleuses et serpentines des anciennes profondeurs. Rares, fières et bien plus fortes qu'elles n'en ont l'air.",
+  'guide.family.dragonkin.name': 'Draconiens',
   'guide.family.elemental.desc':
     'Tempête et pierre vivantes, liées aux lieux sauvages où les éléments coulent à flots.',
   'guide.family.elemental.name': 'Élémentaires',
@@ -3658,6 +3700,9 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'guide.glossary.pullDef':
     'Attirer un ennemi ou un groupe dans un combat, généralement de façon délibérée et un paquet à la fois.',
   'guide.glossary.pullTerm': 'Pull',
+  'guide.glossary.raidDef':
+    "Un groupe plus grand, jusqu'à dix joueurs ici, formé pour la rencontre de fin de jeu la plus exigeante ; un groupe s'y transforme une fois qu'il est complet.",
+  'guide.glossary.raidTerm': 'Raid',
   'guide.glossary.rareDef':
     'Un ennemi nommé peu commun qui erre dans une zone et lâche un meilleur butin.',
   'guide.glossary.rareTerm': 'Rare',
@@ -3784,6 +3829,7 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'guide.nav.closeMenu': 'Fermer le menu',
   'guide.nav.combat': 'Combat',
   'guide.nav.controls': 'Commandes',
+  'guide.nav.delves': 'Plongées',
   'guide.nav.dungeons': 'Donjons et raids',
   'guide.nav.faq': 'FAQ',
   'guide.nav.glossary': 'Glossaire',
@@ -3995,6 +4041,9 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'guide.faqPage.q10': 'Que faire une fois au niveau maximum?',
   'guide.faqPage.q11': 'Comment trouver un groupe?',
   'guide.faqPage.q9': 'Y a-t-il du JcJ?',
+  'guide.glossary.augmentDef':
+    "Une amélioration temporaire que vous choisissez durant un match d'arène Fiesta en deux contre deux et qui remodèle votre arsenal le temps de ce seul match.",
+  'guide.glossary.augmentTerm': 'Augmentation',
   'guide.glossary.buffDef':
     'Un effet bénéfique sur vous ou un allié, comme une bénédiction qui augmente une caractéristique pendant un moment.',
   'guide.glossary.buffTerm': 'Amélioration',
@@ -4004,6 +4053,9 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'guide.glossary.debuffDef':
     'Un effet néfaste sur une cible, comme un ralentissement, un saignement ou une armure affaiblie.',
   'guide.glossary.debuffTerm': 'Affaiblissement',
+  'guide.glossary.delveDef':
+    "Une courte descente instanciée et rejouable pour un ou deux joueurs, lancée depuis le tableau d'un gardien avec une compagne à vos côtés.",
+  'guide.glossary.delveTerm': 'Plongée',
   'guide.glossary.dotDef':
     "Dégâts dans la durée et soins dans la durée: des effets qui s'égrènent par pulsations régulières plutôt que d'un seul coup.",
   'guide.glossary.dotTerm': 'DoT et HoT',
@@ -4041,6 +4093,7 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'guide.search.placeholder': 'Rechercher dans le guide',
   'guide.search.typeClass': 'Classe',
   'guide.search.typeCreature': 'Créatures',
+  'guide.search.typeDelve': 'Plongée',
   'guide.search.typeDungeon': 'Donjon',
   'guide.search.typePage': 'Page',
   'guide.search.typeTerm': 'Terme',
@@ -4067,6 +4120,8 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'guide.talentsPage.resetNote':
     "Vous pouvez réinitialiser vos talents à tout moment: un choix précoce n'est donc jamais un piège. Essayez des choses, voyez ce qui vous plaît, et changez d'avis librement.",
   'guide.talentsPage.resetTitle': "Rien n'est définitif",
+  'guide.talentsPage.shareNote':
+    'Une configuration terminée peut être copiée en un court code partageable et transmise à un ami, qui le colle directement dans son propre panneau de talents pour la charger.',
   'guide.talentsPage.specsBody':
     'Chaque classe possède une poignée de spécialisations, chacune avec son propre rôle et une orientation emblématique. Voici à quoi elles ressemblent toutes. Ouvrez une classe pour voir sa panoplie complète.',
   'guide.talentsPage.specsHeading': 'Spécialisations par classe',
@@ -4169,6 +4224,9 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'guide.economy.marketPricing':
     "Le prix ne dépend que de vous. Annoncer un peu en dessous des autres tend à vendre plus vite, tandis qu'un prix trop élevé peut rester sans preneur. Parcourez d'abord le marché pour voir le cours du moment avant de publier.",
   'guide.economy.marketTitle': 'Le Marché mondial',
+  'guide.economy.marksBody':
+    "L'or n'est pas la seule chose que vous mettez de côté. Les plongées versent des Marques de plongée, une monnaie distincte que vous ne dépensez qu'auprès du gardien de plongée, pour les améliorations de votre compagne et un équipement introuvable ailleurs. Elles ne se mêlent jamais à votre or.",
+  'guide.economy.marksTitle': 'Une seconde monnaie : les Marques de plongée',
   'guide.economy.tradeBody':
     "Vous pouvez échanger en face à face avec n'importe qui se tenant près de vous. Chacun place objets et pièces dans une fenêtre partagée, et l'échange ne se fait qu'une fois que vous l'avez tous deux confirmé, de sorte que personne ne peut se faire avoir. C'est la manière simple de remettre un butin à un ami ou de conclure un marché.",
   'guide.economy.tradeTitle': 'Échanger avec les autres joueurs',
@@ -4184,6 +4242,8 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'guide.gear.consumablesPotions':
     "Les potions rendent des points de vie ou du mana à l'instant où vous les utilisez, même en plein combat, ce qui en fait un sauvetage décisif quand une approche tourne mal. Elles partagent une courte recharge, alors prévoyez le bon moment pour les boire.",
   'guide.gear.consumablesTitle': 'Consommables',
+  'guide.gear.cosmeticsApply':
+    "Définissez votre apparence active depuis la rangée d'allure de votre écran de personnage, et passez librement de l'une à l'autre parmi tout ce que vous avez débloqué.",
   'guide.gear.cosmeticsBody':
     "Certaines récompenses ne changent que l'apparence de votre personnage, jamais sa puissance. Ces apparences cosmétiques vous permettent de vous démarquer sans rien changer au jeu, alors portez celle qui vous plaît.",
   'guide.gear.cosmeticsCache':
@@ -4202,6 +4262,8 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'guide.gear.fishingTitle': 'Pêche',
   'guide.gear.intro':
     "L'équipement, ce sont les pièces que porte votre personnage et les objets que vous transportez. Un meilleur équipement est la voie la plus sûre vers la puissance, et vous en ramassez l'essentiel rien qu'en jouant.",
+  'guide.gear.itemLevelBody':
+    "Si vous voulez un moyen rapide de comparer deux pièces, activez Afficher le niveau d'objet dans les options. Chaque arme et chaque pièce d'armure affiche alors un niveau d'objet, un chiffre unique indiquant grossièrement sa puissance selon sa provenance, pour que vous voyiez d'un coup d'œil quelle amélioration pèse le plus, même d'un emplacement à l'autre.",
   'guide.gear.qualityBody':
     "Chaque objet a une qualité, et son nom est coloré en conséquence pour que vous lisiez sa valeur d'un coup d'œil. Du plus commun au plus convoité :",
   'guide.gear.qualityCommon': 'Commun',
@@ -4213,6 +4275,9 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'guide.gear.qualityRare': 'Rare',
   'guide.gear.qualityTitle': "La qualité, d'un coup d'œil",
   'guide.gear.qualityUncommon': 'Inhabituel',
+  'guide.gear.setsBody':
+    "L'armure la plus rare se présente en familles assorties, plusieurs pièces taillées pour s'accorder et combattre comme un tout. Portez-en assez d'une même famille à la fois et la tenue s'éveille, accordant des bonus qui s'ajoutent aux caractéristiques propres de chaque pièce, et plus vous en portez, plus elle se renforce. Elles tombent dans le contenu de groupe le plus exigeant près du niveau maximum, alors courir après une tenue complète est un objectif de fin de jeu classique.",
+  'guide.gear.setsTitle': 'Tenues et bonus de tenue',
   'guide.gear.slotChest': 'Torse',
   'guide.gear.slotFeet': 'Pieds',
   'guide.gear.slotGloves': 'Mains',
@@ -4293,6 +4358,9 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'guide.questsPage.sideCryptBody':
     "Tout en haut des sommets court un mystère plus discret : de vieilles tombes marquées d'une couronne qu'aucune chronique ne se rappelle. Lisez les morts, rassemblez ce qu'ils gardaient, et descellez un tombeau qui devait rester clos. C'est une piste de détective qui ouvre la voie à une seconde épreuve de fin de jeu pour un raid complet.",
   'guide.questsPage.sideCryptTitle': 'Le roi oublié',
+  'guide.questsPage.sideTempleBody':
+    "Une porte de lumière pâle, sur un lac d'altitude au cœur des sommets, s'ouvre sur un sanctuaire englouti où un culte noyé chante encore. Sa courte chaîne se tient à l'écart de l'histoire principale, un mystère autonome pour quiconque grimpe jusqu'à la rive, lit les avertissements gravés dans la roche et descend voir à quoi ils servaient.",
+  'guide.questsPage.sideTempleTitle': 'Le Temple noyé',
   'guide.questsPage.sideTitle': 'Des fils en marge de la route principale',
   'guide.questsPage.sideWardenBody':
     "En parallèle de l'histoire, les gardiens du Val et de la fagne distribuent une échelle de primes permanente. Gravissez-la, ennemi après ennemi, comme tous les gardiens avant vous ont gagné leur place. C'est une montée en niveaux honnête et une tournée des pires fauteurs de troubles de chaque zone.",
@@ -4366,6 +4434,9 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
     'Les butins ordinaires peuvent revenir à qui les ramasse, tandis que les meilleurs sont mis en jeu pour un tirage, pour que chacun ait une chance équitable.',
   'guide.social.lootCommonTitle': 'Objets.',
   'guide.social.lootHeading': 'Butin de groupe',
+  'guide.social.lootMasterBody':
+    "Le chef peut au contraire prendre en main les meilleurs butins, en remettant chacun au membre qui doit le recevoir. Cela évite qu'une pièce convoitée parte sur un jet de dé malheureux, comme le fait un groupe organisé en donjon.",
+  'guide.social.lootMasterTitle': 'Maître du butin.',
   'guide.social.lootRollBody':
     "Quand un objet part au tirage, chaque membre éligible choisit Besoin s'il le veut, Cupidité s'il ne le prendrait qu'à défaut, ou Passer pour se retirer. Le plus haut tirage l'emporte.",
   'guide.social.lootRollTitle': 'Besoin, Cupidité ou Passer.',
@@ -4391,6 +4462,9 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'guide.stats.dodgeBody':
     "L'esquive est votre chance d'éviter entièrement une attaque de mêlée entrante. Vous débutez avec une petite chance de base, et l'Agilité l'augmente, si bien que les classes agiles esquivent plus de coups.",
   'guide.stats.dodgeTitle': 'Esquive',
+  'guide.stats.dpsBody':
+    "Votre feuille affiche aussi une estimation des dégâts par seconde : à peu près ce que votre arme, sa vitesse de frappe et votre puissance d'attaque totalisent dans le temps. C'est un moyen rapide de comparer deux armes d'un coup d'œil.",
+  'guide.stats.dpsTitle': 'Dégâts par seconde',
   'guide.stats.growBody':
     "Deux choses augmentent vos caractéristiques. Chaque niveau ajoute une quantité fixe de chaque caractéristique adaptée à votre classe, et l'équipement que vous portez en ajoute par-dessus. Garder votre équipement à jour est la voie la plus sûre vers la puissance, jusqu'au plafond de niveau.",
   'guide.stats.growHeading': 'Comment vos caractéristiques augmentent',
@@ -4405,6 +4479,9 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'guide.stats.sheetBody':
     "Ouvrez la fenêtre de personnage en jeu pour voir tout cela en un seul endroit : vos cinq caractéristiques d'un côté et les statistiques qu'elles alimentent de l'autre. Survolez n'importe quelle valeur et une infobulle détaille ce qu'elle fait pour votre classe, afin que vous voyiez d'un coup d'œil quels chiffres une amélioration a réellement bougés.",
   'guide.stats.sheetHeading': 'Lire votre feuille de personnage',
+  'guide.stats.spBody':
+    "La puissance des sorts est, pour un lanceur de sorts, l'équivalent de la puissance d'attaque : elle augmente les dégâts de vos sorts. L'Intelligence l'alimente, et l'équipement et les bonus de lanceur en ajoutent par-dessus, si bien qu'un lanceur de sorts surveille la puissance des sorts comme un combattant de mêlée surveille la puissance d'attaque.",
+  'guide.stats.spTitle': 'Puissance des sorts',
   'guide.stats.spiBody':
     "L'Esprit régit la vitesse à laquelle le mana d'un lanceur de sorts se régénère hors combat. Comme l'Intelligence, il sert les classes à mana et ne signifie pas grand-chose pour les autres.",
   'guide.stats.spiTitle': 'Esprit',
@@ -4420,6 +4497,7 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'guide.viewer.error':
     "Le modèle 3D n'a pas pu être chargé. L'illustration ci-dessus montre quand même ce {name}.",
   'guide.viewer.loading': 'Chargement du modèle...',
+  'guide.viewer.posterAlt': '{name}',
   'guide.viewer.view3d': 'Voir {name} en 3D',
   'guide.viewer.view3dShort': 'Voir en 3D',
   'guide.worldPage.marshGreeter': 'Gardien Fenwick, Fenbridge',

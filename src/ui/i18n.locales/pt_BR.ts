@@ -3500,6 +3500,11 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'guide.controls.abilities': 'Usar habilidades',
   'guide.controls.actionHeader': 'Ação',
   'guide.controls.arena': 'Arena',
+  'guide.controls.controllerBody':
+    'Controles também funcionam, e o suporte a controle vem ativado por padrão. O analógico esquerdo move, o direito ajusta a câmera, e os botões de ação e de ombro cobrem suas habilidades, o pulo e a interação. Abra qualquer janela para fazer surgir um ponteiro na tela para os menus. Você pode remapear os botões e ajustar a zona morta do analógico, a velocidade da câmera, a vibração e a visão invertida nas configurações de controle dentro das opções.',
+  'guide.controls.controllerHeading': 'No controle',
+  'guide.controls.cycleFriendly': 'Alternar alvo aliado',
+  'guide.controls.gameMenu': 'Abrir o menu do jogo e as opções',
   'guide.controls.groupCamera': 'Câmera',
   'guide.controls.groupCombat': 'Mira e combate',
   'guide.controls.groupInterface': 'Janelas',
@@ -3512,6 +3517,40 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
     'Os controles de toque aparecem automaticamente em celulares e tablets: um analógico de movimento à esquerda, arraste em qualquer lugar à direita para olhar ao redor e botões na tela para suas habilidades e menus.',
   'guide.controls.mobileHeading': 'No celular',
   'guide.controls.talents': 'Talentos',
+  'guide.controls.targetFriendly': 'Mirar o aliado mais próximo',
+  'guide.delvesPage.affixesBody':
+    'Incursões mais difíceis sorteiam um modificador que muda como a descida se desenrola, de mortos inquietos a ar viciado, até obras de teto que cedem. Eles elevam o perigo e a recompensa na mesma medida. Uma incursão com tema de cripta pode sortear qualquer um destes:',
+  'guide.delvesPage.affixesHeading': 'Modificadores de incursão',
+  'guide.delvesPage.affixesLabel': 'Modificadores possíveis',
+  'guide.delvesPage.companionBody':
+    'Uma incursão envia uma companheira com você, então uma descida solo nunca é desesperadora. Ela luta ao seu lado, e conforme você investe nela entre as incursões ela fica cada vez mais forte, até conseguir puxar um aliado de volta da beira da morte uma vez por descida. Ela é sua durante a incursão e espera no quadro entre uma descida e outra.',
+  'guide.delvesPage.companionHeading': 'Sua companheira',
+  'guide.delvesPage.companionLabel': 'Companheira',
+  'guide.delvesPage.fromLevel': 'A partir do nível {n}',
+  'guide.delvesPage.heading': 'Incursões',
+  'guide.delvesPage.howBody':
+    'Fale com o guardião para abrir o quadro, escolha uma dificuldade e desça. Cada incursão encadeia algumas câmaras curtas e termina em seu guardião final; vença-o para reivindicar sua recompensa e voltar à superfície. Leve um amigo se tiver um, ou conte com sua companheira se não tiver.',
+  'guide.delvesPage.howHeading': 'Como funciona uma incursão',
+  'guide.delvesPage.intro':
+    'Incursões são descidas curtas e repetíveis para um ou dois jogadores, com uma companheira leal ao seu lado sempre que você desce sozinho. Encontre o quadro, escolha uma incursão e suba de volta com os espólios.',
+  'guide.delvesPage.keeperLabel': 'Guardião',
+  'guide.delvesPage.lockpickBody':
+    'Algumas portas e baús ficam selados, e abrir um é um pequeno teste de sangue-frio, não uma prova de atributos: resolva a fechadura de forma limpa e firme e você ganha um prêmio melhor do que com uma tentativa apressada e atrapalhada. É opcional, mas o aventureiro cuidadoso é o mais rico.',
+  'guide.delvesPage.lockpickHeading': 'Fechaduras e o que escondem',
+  'guide.delvesPage.marksBody':
+    'Concluir incursões rende Selos de Incursão, uma moeda mantida à parte do seu dinheiro. Gaste-os com o guardião para fortalecer sua companheira e conseguir equipamentos que você não encontra em nenhum outro lugar.',
+  'guide.delvesPage.marksHeading': 'Selos de Incursão',
+  'guide.delvesPage.partyLabel': 'Para um ou dois',
+  'guide.delvesPage.tiersBody':
+    'Uma incursão oferece mais de uma dificuldade. A mais alta deixa os inimigos mais fortes e sorteia um modificador de incursão, e paga mais em troca. Ela também exige que você tenha alguns níveis na bagagem antes de deixar você entrar.',
+  'guide.delvesPage.tiersHeading': 'Dificuldade',
+  'guide.delvesPage.tiersLabel': 'Dificuldades',
+  'guide.delvesPage.whatBody':
+    'Uma incursão é uma pequena masmorra instanciada feita só para você e até um aliado, uma cópia privada na qual você não pode ser perturbado. Você a inicia a partir de um quadro mantido por um guardião de incursões pelo mundo, entra, luta descendo por um punhado de salas e termina num único guardião. As incursões são rápidas e feitas para serem repetidas, então uma incursão é um progresso confiável sempre que o mundo aberto seca.',
+  'guide.delvesPage.whatHeading': 'O que é uma incursão',
+  'guide.delvesPage.whereBody':
+    'A primeira incursão, o Relicário Desmoronado, abre na Colina do Relicário, no vale inicial do Vale de Eastbrook. O Irmão Halven cuida do quadro por lá, e vai mandar você descer assim que estiver pronto.',
+  'guide.delvesPage.whereHeading': 'Onde encontrar uma',
   'guide.docTitle': '{page} - {brand}',
   'guide.dungeonsPage.bastionBody':
     'Uma fortaleza inundada perdida para o pântano, mantida por defensores afogados e pela própria maré crescente.',
@@ -3541,6 +3580,9 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'guide.family.beast.desc':
     'Animais selvagens de floresta e campo, de lobos e javalis às coisas que os caçam. Caçadores podem domar muitos deles.',
   'guide.family.beast.name': 'Feras',
+  'guide.family.dragonkin.desc':
+    'Criaturas escamosas e serpentinas das antigas profundezas. Raras, orgulhosas e muito mais fortes do que aparentam.',
+  'guide.family.dragonkin.name': 'Dracônicos',
   'guide.family.elemental.desc':
     'Tempestade e pedra vivas, presas aos lugares selvagens onde os elementos correm fortes.',
   'guide.family.elemental.name': 'Elementais',
@@ -3619,6 +3661,9 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'guide.glossary.pullDef':
     'Atrair um inimigo ou grupo para uma luta, geralmente de forma deliberada e um lote por vez.',
   'guide.glossary.pullTerm': 'Pull',
+  'guide.glossary.raidDef':
+    'Um grupo maior, de até dez jogadores aqui, formado para o desafio mais difícil de fim de jogo; um grupo vira um raide assim que fica cheio.',
+  'guide.glossary.raidTerm': 'Raide',
   'guide.glossary.rareDef':
     'Um inimigo nomeado incomum que vagueia por uma zona e larga saques melhores.',
   'guide.glossary.rareTerm': 'Raro',
@@ -3743,6 +3788,7 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'guide.nav.closeMenu': 'Fechar menu',
   'guide.nav.combat': 'Combate',
   'guide.nav.controls': 'Controles',
+  'guide.nav.delves': 'Incursões',
   'guide.nav.dungeons': 'Masmorras e Raides',
   'guide.nav.faq': 'FAQ',
   'guide.nav.glossary': 'Glossário',
@@ -3948,6 +3994,9 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'guide.faqPage.q10': 'O que há para fazer no nível máximo?',
   'guide.faqPage.q11': 'Como encontro um grupo?',
   'guide.faqPage.q9': 'Existe JcJ?',
+  'guide.glossary.augmentDef':
+    'Um impulso temporário que você seleciona durante uma partida 2v2 da arena Fiesta e que remodela seu arsenal apenas para aquela partida.',
+  'guide.glossary.augmentTerm': 'Aprimoramento',
   'guide.glossary.buffDef':
     'Um efeito benéfico em você ou num aliado, como uma bênção que aumenta um atributo por um tempo.',
   'guide.glossary.buffTerm': 'Benefício',
@@ -3957,6 +4006,9 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'guide.glossary.debuffDef':
     'Um efeito prejudicial num alvo, como uma redução de velocidade, um sangramento ou armadura enfraquecida.',
   'guide.glossary.debuffTerm': 'Penalidade',
+  'guide.glossary.delveDef':
+    'Uma descida instanciada curta e repetível para um ou dois jogadores, feita a partir do quadro de um guardião com uma companheira ao seu lado.',
+  'guide.glossary.delveTerm': 'Incursão',
   'guide.glossary.dotDef':
     'Dano ao longo do tempo e cura ao longo do tempo: efeitos que agem em pulsos constantes em vez de tudo de uma vez.',
   'guide.glossary.dotTerm': 'DoT e HoT',
@@ -3993,6 +4045,7 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'guide.search.placeholder': 'Busque no guia',
   'guide.search.typeClass': 'Classe',
   'guide.search.typeCreature': 'Criaturas',
+  'guide.search.typeDelve': 'Incursão',
   'guide.search.typeDungeon': 'Masmorra',
   'guide.search.typePage': 'Página',
   'guide.search.typeTerm': 'Termo',
@@ -4019,6 +4072,8 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'guide.talentsPage.resetNote':
     'Você pode redefinir seus talentos a qualquer momento, então uma escolha precoce nunca é uma armadilha. Teste coisas, veja do que gosta e mude de ideia à vontade.',
   'guide.talentsPage.resetTitle': 'Nada é permanente',
+  'guide.talentsPage.shareNote':
+    'Uma build pronta pode ser copiada para um código curto compartilhável e passada a um amigo, que o cola direto no próprio painel de talentos para carregá-la.',
   'guide.talentsPage.specsBody':
     'Toda classe tem algumas especializações, cada uma com sua própria função e um foco característico. Aqui está o formato de todas elas. Abra uma classe para ver seu arsenal completo.',
   'guide.talentsPage.specsHeading': 'Especializações por classe',
@@ -4121,6 +4176,9 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'guide.economy.marketPricing':
     'O preço fica a seu critério. Listar um pouco abaixo do que os outros pedem tende a vender mais rápido, enquanto um preço alto pode ficar parado. Navegue primeiro para ver qual é o preço de mercado antes de anunciar.',
   'guide.economy.marketTitle': 'O Mercado Mundial',
+  'guide.economy.marksBody':
+    'Moedas não são a única coisa que você acumula. As incursões pagam Selos de Incursão, uma moeda separada que você gasta apenas com o guardião de incursões, em melhorias para a companheira e equipamentos que você não encontra em outro lugar. Eles nunca se misturam com o seu dinheiro.',
+  'guide.economy.marksTitle': 'Uma segunda moeda: Selos de Incursão',
   'guide.economy.tradeBody':
     'Você pode negociar cara a cara com qualquer um que esteja perto de você. Os dois colocam itens e moedas numa janela compartilhada, e a troca só acontece depois que ambos confirmam, então nenhum dos lados pode ser enganado. É o jeito simples de passar um saque a um amigo ou fechar um acordo.',
   'guide.economy.tradeTitle': 'Negociando com outros jogadores',
@@ -4136,6 +4194,8 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'guide.gear.consumablesPotions':
     'Poções restauram vida ou mana no instante em que você as usa, mesmo no meio da luta, o que as torna uma salvação na hora certa quando uma puxada dá errado. Elas compartilham uma breve recarga, então planeje um bom momento para usá-las.',
   'guide.gear.consumablesTitle': 'Consumíveis',
+  'guide.gear.cosmeticsApply':
+    'Defina sua aparência ativa na linha de aparência na sua tela de personagem, e alterne livremente entre tudo que você desbloqueou.',
   'guide.gear.cosmeticsBody':
     'Algumas recompensas mudam apenas a aparência do seu personagem, nunca o quão forte você é. Esses adornos cosméticos deixam você se destacar sem afetar o jogo, então use o que quiser.',
   'guide.gear.cosmeticsCache':
@@ -4154,6 +4214,8 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'guide.gear.fishingTitle': 'Pesca',
   'guide.gear.intro':
     'Equipamento é o que seu personagem veste e os itens que você carrega. Um equipamento melhor é a forma mais constante de ficar mais forte, e você pega a maior parte só de jogar.',
+  'guide.gear.itemLevelBody':
+    'Se você quer um jeito rápido de comparar duas peças, ative Mostrar nível do item nas opções. Cada arma e peça de armadura passa a mostrar um nível do item, um único número para o quão poderosa ela é mais ou menos, com base em sua origem, então você percebe num relance qual melhoria pesa mais, mesmo entre espaços diferentes.',
   'guide.gear.qualityBody':
     'Cada item tem uma qualidade, e seu nome é colorido para combinar, então você lê seu valor num relance. Do mais comum ao mais cobiçado:',
   'guide.gear.qualityCommon': 'Comum',
@@ -4165,6 +4227,9 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'guide.gear.qualityRare': 'Raro',
   'guide.gear.qualityTitle': 'Qualidade, num relance',
   'guide.gear.qualityUncommon': 'Incomum',
+  'guide.gear.setsBody':
+    'As armaduras mais raras vêm em famílias combinando, várias peças talhadas para parecer e lutar como uma só. Vista o bastante de uma família ao mesmo tempo e o conjunto desperta, concedendo bônus por cima dos atributos de cada peça, e quanto mais peças você usa mais forte ele fica. Elas largam do conteúdo em grupo mais difícil perto do limite de nível, então perseguir um conjunto completo é um objetivo clássico de fim de jogo.',
+  'guide.gear.setsTitle': 'Conjuntos e bônus de conjunto',
   'guide.gear.slotChest': 'Peito',
   'guide.gear.slotFeet': 'Pés',
   'guide.gear.slotGloves': 'Mãos',
@@ -4245,6 +4310,9 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'guide.questsPage.sideCryptBody':
     'Lá no alto dos cumes corre um mistério mais discreto: sepulturas antigas marcadas com uma coroa que registro algum recorda. Leia os mortos, reúna o que eles guardavam e abra um túmulo que deveria permanecer fechado. É uma trilha de detetive que abre o caminho para um segundo desafio de fim de jogo para um raide completo.',
   'guide.questsPage.sideCryptTitle': 'O rei esquecido',
+  'guide.questsPage.sideTempleBody':
+    'Um portão de luz pálida sobre um lago alto nos picos abre para um santuário submerso onde um culto afogado ainda canta. Sua cadeia curta de missões fica à parte da história principal, um mistério autônomo para quem subir até a margem, ler os avisos gravados nas rochas e descer para ver para que serviam.',
+  'guide.questsPage.sideTempleTitle': 'O Templo Afogado',
   'guide.questsPage.sideTitle': 'Fios fora da estrada principal',
   'guide.questsPage.sideWardenBody':
     'Ao lado da história, os guardiões do Vale e do brejo oferecem uma escada de recompensas fixa. Suba por ela, inimigo a inimigo, do jeito que cada guardião antes de você conquistou seu lugar. É progressão honesta e um tour pelos piores encrenqueiros de cada zona.',
@@ -4318,6 +4386,9 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
     'Saques comuns podem ir para quem saqueia, enquanto saques melhores são postos em sorteio para todos terem uma chance justa.',
   'guide.social.lootCommonTitle': 'Itens.',
   'guide.social.lootHeading': 'Saque do grupo',
+  'guide.social.lootMasterBody':
+    'O líder pode, em vez disso, assumir o controle dos saques melhores, entregando cada um ao membro que deve recebê-lo. Isso evita que um equipamento valioso vá parar num sorteio aleatório, do jeito que um grupo organizado faz uma masmorra.',
+  'guide.social.lootMasterTitle': 'Saqueador-mestre.',
   'guide.social.lootRollBody':
     'Quando um item vai a sorteio, cada membro elegível escolhe Preciso se o quiser, Cobiça se só o levaria de sobra, ou Passar para se retirar. O maior número vence.',
   'guide.social.lootRollTitle': 'Preciso, Cobiça ou Passar.',
@@ -4343,6 +4414,9 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'guide.stats.dodgeBody':
     'Esquiva é sua chance de evitar por completo um ataque corpo a corpo. Você começa com uma pequena chance básica, e a Agilidade a aumenta, então classes ágeis escapam de mais golpes.',
   'guide.stats.dodgeTitle': 'Esquiva',
+  'guide.stats.dpsBody':
+    'Sua ficha também mostra uma estimativa de dano por segundo: mais ou menos o que sua arma, sua velocidade de ataque e seu poder de ataque somam ao longo do tempo. É um jeito rápido de comparar duas armas num relance.',
+  'guide.stats.dpsTitle': 'Dano por segundo',
   'guide.stats.growBody':
     'Duas coisas aumentam seus atributos. Cada nível adiciona uma quantidade fixa de cada atributo conforme sua classe, e o equipamento que você veste adiciona mais por cima. Manter seu equipamento atualizado é a forma mais constante de ficar mais forte, até o limite de nível.',
   'guide.stats.growHeading': 'Como seus atributos crescem',
@@ -4357,6 +4431,9 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'guide.stats.sheetBody':
     'Abra a janela de personagem no jogo para ver tudo isso num só lugar: seus cinco atributos de um lado e os atributos que eles alimentam do outro. Passe o cursor sobre qualquer valor e uma dica detalha o que ele faz para sua classe, então você vê num relance quais números uma melhoria de fato mexeu.',
   'guide.stats.sheetHeading': 'Lendo sua ficha de personagem',
+  'guide.stats.spBody':
+    'O poder mágico é a contraparte do poder de ataque para um conjurador: ele aumenta o dano que suas magias causam. O Intelecto o alimenta, e equipamentos e benefícios de conjurador somam mais por cima, então um conjurador acompanha o poder mágico do mesmo jeito que um lutador corpo a corpo acompanha o poder de ataque.',
+  'guide.stats.spTitle': 'Poder mágico',
   'guide.stats.spiBody':
     'O Espírito comanda a rapidez com que a mana de um conjurador retorna fora de combate. Como o Intelecto, ele serve às classes de mana e significa pouco para as outras.',
   'guide.stats.spiTitle': 'Espírito',
@@ -4372,6 +4449,7 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'guide.viewer.error':
     'O modelo 3D não pôde ser carregado. A arte acima ainda mostra este {name}.',
   'guide.viewer.loading': 'Carregando modelo...',
+  'guide.viewer.posterAlt': '{name}',
   'guide.viewer.view3d': 'Ver {name} em 3D',
   'guide.viewer.view3dShort': 'Ver em 3D',
   'guide.worldPage.marshGreeter': 'Guardião Fenwick, Fenbridge',

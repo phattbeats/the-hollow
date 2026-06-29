@@ -3521,6 +3521,11 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'guide.controls.abilities': 'Usar habilidades',
   'guide.controls.actionHeader': 'Acción',
   'guide.controls.arena': 'Arena',
+  'guide.controls.controllerBody':
+    'Los mandos también funcionan, y el soporte para mando está activado de forma predeterminada. El stick izquierdo mueve, el stick derecho controla la cámara, y los botones frontales y los gatillos cubren tus habilidades, el salto y la interacción. Abre cualquier ventana para que aparezca un puntero en pantalla con el que navegar los menús. Puedes reasignar los botones y ajustar la zona muerta del stick, la velocidad de la cámara, la vibración y la vista invertida desde la configuración del mando, en las opciones.',
+  'guide.controls.controllerHeading': 'Con un mando',
+  'guide.controls.cycleFriendly': 'Objetivo amistoso siguiente',
+  'guide.controls.gameMenu': 'Abrir el menú del juego y las opciones',
   'guide.controls.groupCamera': 'Cámara',
   'guide.controls.groupCombat': 'Selección de objetivo y combate',
   'guide.controls.groupInterface': 'Ventanas',
@@ -3533,6 +3538,40 @@ export const es: Partial<Record<TranslationKey, string>> = {
     'Los controles táctiles aparecen automáticamente en teléfonos y tabletas: un joystick de movimiento a la izquierda, arrastra en cualquier punto de la derecha para mirar y botones en pantalla para tus habilidades y menús.',
   'guide.controls.mobileHeading': 'En el móvil',
   'guide.controls.talents': 'Talentos',
+  'guide.controls.targetFriendly': 'Objetivo amistoso más cercano',
+  'guide.delvesPage.affixesBody':
+    'Las expediciones más difíciles añaden un modificador que cambia cómo se juega el descenso, desde muertos inquietos hasta aire viciado o estructuras a punto de ceder. Suben a la vez el peligro y la recompensa. Una expedición de tema cripta puede sacar cualquiera de estos:',
+  'guide.delvesPage.affixesHeading': 'Modificadores de partida',
+  'guide.delvesPage.affixesLabel': 'Modificadores posibles',
+  'guide.delvesPage.companionBody':
+    'Cada expedición envía contigo a una compañera, así que una partida en solitario nunca está perdida. Lucha a tu lado, y a medida que inviertes en ella entre partidas se vuelve cada vez más fuerte, hasta que puede traer de vuelta a un aliado al borde de la muerte una vez por descenso. Es tuya durante la expedición y te espera en el tablón entre partidas.',
+  'guide.delvesPage.companionHeading': 'Tu compañera',
+  'guide.delvesPage.companionLabel': 'Compañera',
+  'guide.delvesPage.fromLevel': 'A partir del nivel {n}',
+  'guide.delvesPage.heading': 'Expediciones',
+  'guide.delvesPage.howBody':
+    'Habla con el guardián para abrir el tablón, elige una dificultad y desciende. Cada partida encadena unas cuantas salas cortas y termina en su guardián; despéjala para reclamar tu recompensa y volver a la superficie. Trae a un amigo si lo tienes, o apóyate en tu compañera si no.',
+  'guide.delvesPage.howHeading': 'Cómo funciona una partida',
+  'guide.delvesPage.intro':
+    'Las expediciones son descensos cortos y repetibles para uno o dos jugadores, con una compañera leal a tu lado siempre que bajes en solitario. Encuentra el tablón, elige una partida y vuelve a salir con el botín.',
+  'guide.delvesPage.keeperLabel': 'Guardián',
+  'guide.delvesPage.lockpickBody':
+    'Algunas puertas y arcas están selladas, y abrir una es una pequeña prueba de pulso más que de características: resuelve la cerradura con limpieza y firmeza y te llevarás un premio mejor que si lo haces con prisas y torpeza. Es opcional, pero quien se toma su tiempo sale más rico.',
+  'guide.delvesPage.lockpickHeading': 'Cerraduras y lo que esconden',
+  'guide.delvesPage.marksBody':
+    'Completar expediciones otorga Marcas de Expedición, una moneda aparte de tu dinero. Gástalas con el guardián para reforzar a tu compañera y conseguir equipo que no encontrarás en ningún otro sitio.',
+  'guide.delvesPage.marksHeading': 'Marcas de Expedición',
+  'guide.delvesPage.partyLabel': 'Para uno o dos',
+  'guide.delvesPage.tiersBody':
+    'Una expedición ofrece más de una dificultad. La más alta vuelve más fuertes a los enemigos y añade un modificador de partida, y paga más a cambio. También exige que tengas unos cuantos niveles a tus espaldas antes de dejarte entrar.',
+  'guide.delvesPage.tiersHeading': 'Dificultad',
+  'guide.delvesPage.tiersLabel': 'Dificultades',
+  'guide.delvesPage.whatBody':
+    'Una expedición es una pequeña mazmorra instanciada hecha solo para ti y para un aliado como mucho, una copia privada en la que nadie puede molestarte. La empiezas desde un tablón que custodia un guardián de expediciones repartido por el mundo, te metes dentro, luchas a través de un puñado de salas y terminas frente a un único guardián. Las partidas son rápidas y están pensadas para repetirse, así que una expedición es una forma fiable de progresar siempre que el mundo abierto se queda sin nada que ofrecer.',
+  'guide.delvesPage.whatHeading': 'Qué es una expedición',
+  'guide.delvesPage.whereBody':
+    'La primera expedición, el Relicario Hundido, se abre en la Colina del Relicario, en el Valle de Eastbrook, donde comienzas tu aventura. El Hermano Halven custodia el tablón allí, y te enviará abajo en cuanto estés listo.',
+  'guide.delvesPage.whereHeading': 'Dónde encontrar una',
   'guide.docTitle': '{page} - {brand}',
   'guide.dungeonsPage.bastionBody':
     'Una fortaleza inundada perdida en la ciénaga, en poder de los defensores ahogados y de la propia marea creciente.',
@@ -3562,6 +3601,9 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'guide.family.beast.desc':
     'Animales salvajes del bosque y el campo, desde lobos y jabalíes hasta las criaturas que les dan caza. Los Cazadores pueden domesticar a muchos de ellos.',
   'guide.family.beast.name': 'Bestias',
+  'guide.family.dragonkin.desc':
+    'Criaturas escamosas y serpentinas de las viejas profundidades. Raras, orgullosas y mucho más fuertes de lo que aparentan.',
+  'guide.family.dragonkin.name': 'Dracónidos',
   'guide.family.elemental.desc':
     'Tormenta y piedra con vida propia, ligadas a los parajes salvajes donde los elementos fluyen con fuerza.',
   'guide.family.elemental.name': 'Elementales',
@@ -3641,6 +3683,9 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'guide.glossary.pullDef':
     'Atraer a un enemigo o grupo hacia el combate, normalmente de forma deliberada y por tandas.',
   'guide.glossary.pullTerm': 'Atraer',
+  'guide.glossary.raidDef':
+    'Un grupo más grande, de hasta diez jugadores aquí, formado para el encuentro más duro del final del juego; un grupo se convierte en uno en cuanto se llena.',
+  'guide.glossary.raidTerm': 'Banda',
   'guide.glossary.rareDef':
     'Un enemigo con nombre poco común que deambula por una zona y suelta mejor botín.',
   'guide.glossary.rareTerm': 'Raro',
@@ -3766,6 +3811,7 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'guide.nav.closeMenu': 'Cerrar menú',
   'guide.nav.combat': 'Combate',
   'guide.nav.controls': 'Controles',
+  'guide.nav.delves': 'Expediciones',
   'guide.nav.dungeons': 'Mazmorras y bandas',
   'guide.nav.faq': 'Preguntas frecuentes',
   'guide.nav.glossary': 'Glosario',
@@ -3972,6 +4018,9 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'guide.faqPage.q10': '¿Qué hay para hacer al nivel máximo?',
   'guide.faqPage.q11': '¿Cómo encuentro un grupo?',
   'guide.faqPage.q9': '¿Hay JcJ?',
+  'guide.glossary.augmentDef':
+    'Una mejora temporal que eliges durante una partida de la arena Fiesta dos contra dos y que reconfigura tus habilidades solo para esa partida.',
+  'guide.glossary.augmentTerm': 'Mejora',
   'guide.glossary.buffDef':
     'Un efecto beneficioso sobre ti o un aliado, como una bendición que aumenta una característica durante un tiempo.',
   'guide.glossary.buffTerm': 'Beneficio',
@@ -3981,6 +4030,9 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'guide.glossary.debuffDef':
     'Un efecto perjudicial sobre un objetivo, como una ralentización, una hemorragia o la armadura debilitada.',
   'guide.glossary.debuffTerm': 'Perjuicio',
+  'guide.glossary.delveDef':
+    'Un descenso instanciado corto y repetible para uno o dos jugadores, que se inicia desde el tablón de un guardián con una compañera a tu lado.',
+  'guide.glossary.delveTerm': 'Expedición',
   'guide.glossary.dotDef':
     'Daño con el tiempo y sanación con el tiempo: efectos que actúan en pulsos constantes en lugar de hacerlo de una vez.',
   'guide.glossary.dotTerm': 'DoT y HoT',
@@ -4017,6 +4069,7 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'guide.search.placeholder': 'Buscar en la guía',
   'guide.search.typeClass': 'Clase',
   'guide.search.typeCreature': 'Criaturas',
+  'guide.search.typeDelve': 'Expedición',
   'guide.search.typeDungeon': 'Mazmorra',
   'guide.search.typePage': 'Página',
   'guide.search.typeTerm': 'Término',
@@ -4043,6 +4096,8 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'guide.talentsPage.resetNote':
     'Puedes restablecer tus talentos en cualquier momento, así que una elección temprana nunca es una trampa. Prueba cosas, descubre lo que te gusta y cambia de opinión con libertad.',
   'guide.talentsPage.resetTitle': 'Nada es permanente',
+  'guide.talentsPage.shareNote':
+    'Una build terminada se puede copiar a un código corto para compartir y entregárselo a un amigo, que lo pega directamente en su propio panel de talentos para cargarla.',
   'guide.talentsPage.specsBody':
     'Cada clase tiene unas cuantas especializaciones, cada una con su propio rol y un enfoque distintivo. Aquí tienes la forma de todas ellas. Abre una clase para ver su repertorio completo.',
   'guide.talentsPage.specsHeading': 'Especializaciones por clase',
@@ -4145,6 +4200,9 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'guide.economy.marketPricing':
     'El precio depende de ti. Poner el anuncio un poco por debajo de lo que piden los demás suele venderse más rápido, mientras que un precio desorbitado puede quedarse sin tocar. Explora primero para ver cuál es el precio de mercado antes de publicar.',
   'guide.economy.marketTitle': 'El Mercado Mundial',
+  'guide.economy.marksBody':
+    'El dinero no es lo único que guardas. Las expediciones pagan Marcas de Expedición, una moneda aparte que solo gastas con el guardián de expediciones, en mejoras para tu compañera y equipo que no encontrarás en otro sitio. Nunca se mezclan con tu dinero.',
+  'guide.economy.marksTitle': 'Una segunda moneda: Marcas de Expedición',
   'guide.economy.tradeBody':
     'Puedes comerciar cara a cara con cualquiera que esté cerca de ti. Ambos ponéis objetos y monedas en una ventana compartida y el intercambio solo se produce cuando los dos lo confirmáis, así que ninguna de las partes puede ser engañada. Es la manera sencilla de pasarle un objeto a un amigo o cerrar un trato.',
   'guide.economy.tradeTitle': 'Comerciar con otros jugadores',
@@ -4160,6 +4218,8 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'guide.gear.consumablesPotions':
     'Las pociones restauran salud o maná en el momento en que las usas, incluso en mitad del combate, lo que las convierte en una salvación clave cuando un enfrentamiento se tuerce. Comparten un breve tiempo de reutilización, así que planifica un buen momento para usarlas.',
   'guide.gear.consumablesTitle': 'Consumibles',
+  'guide.gear.cosmeticsApply':
+    'Define tu aspecto activo desde la fila de apariencia en tu pantalla de personaje, y cambia con libertad entre cuanto hayas desbloqueado.',
   'guide.gear.cosmeticsBody':
     'Algunas recompensas solo cambian el aspecto de tu personaje, nunca su poder. Estos aspectos cosméticos te permiten destacar sin afectar al juego, así que luce el que más te guste.',
   'guide.gear.cosmeticsCache':
@@ -4178,6 +4238,8 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'guide.gear.fishingTitle': 'Pesca',
   'guide.gear.intro':
     'El equipo es lo que tu personaje viste y los objetos que llevas. Un mejor equipo es la vía más constante para volverte más fuerte, y la mayor parte lo consigues solo con jugar.',
+  'guide.gear.itemLevelBody':
+    'Si quieres una forma rápida de comparar dos piezas, activa Mostrar nivel de objeto en las opciones. Cada arma y cada pieza de armadura muestra entonces un nivel de objeto, una sola cifra de lo poderosa que es, aproximadamente, según de dónde proviene, para que veas de un vistazo qué mejora pesa más, incluso entre ranuras de equipo distintas.',
   'guide.gear.qualityBody':
     'Cada objeto tiene una calidad, y su nombre va coloreado para reflejarla, así puedes leer su valor de un vistazo. Del más común al más preciado:',
   'guide.gear.qualityCommon': 'Común',
@@ -4189,6 +4251,9 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'guide.gear.qualityRare': 'Raro',
   'guide.gear.qualityTitle': 'La calidad, de un vistazo',
   'guide.gear.qualityUncommon': 'Poco común',
+  'guide.gear.setsBody':
+    'La armadura más rara viene en familias a juego, varias piezas talladas para verse y combatir como una sola. Lleva suficientes piezas de una familia a la vez y el conjunto despierta, otorgando bonificaciones por encima de las características propias de cada pieza, y cuantas más lleves, más fuerte se vuelve. Caen del contenido en grupo más duro cerca del nivel máximo, así que perseguir un conjunto completo es un objetivo clásico del final del juego.',
+  'guide.gear.setsTitle': 'Conjuntos y bonificaciones de conjunto',
   'guide.gear.slotChest': 'Pecho',
   'guide.gear.slotFeet': 'Pies',
   'guide.gear.slotGloves': 'Manos',
@@ -4269,6 +4334,9 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'guide.questsPage.sideCryptBody':
     'En lo alto de los picos discurre un misterio más callado: viejas tumbas marcadas con una corona que ningún registro recuerda. Lee a los muertos, reúne lo que custodiaban y abre un sepulcro que debía permanecer cerrado. Es un rastro de detective que abre el paso a una segunda prueba de final del juego para una banda completa.',
   'guide.questsPage.sideCryptTitle': 'El rey olvidado',
+  'guide.questsPage.sideTempleBody':
+    'Una puerta de luz pálida sobre un lago de montaña en las cumbres se abre a un santuario hundido donde un culto ahogado aún canta. Su breve cadena de misiones queda aparte de la historia principal, un misterio autónomo para quien suba hasta la orilla, lea las advertencias talladas en las rocas y baje a ver para qué servían.',
+  'guide.questsPage.sideTempleTitle': 'El Templo Ahogado',
   'guide.questsPage.sideTitle': 'Hilos al margen del camino principal',
   'guide.questsPage.sideWardenBody':
     'Junto a la historia, los guardianes del Valle y de la ciénaga reparten una escala permanente de recompensas. Asciende por ella, enemigo a enemigo, como se ganó su puesto cada guardián antes que tú. Es subir de nivel con honradez y un recorrido por los peores alborotadores de cada zona.',
@@ -4341,6 +4409,9 @@ export const es: Partial<Record<TranslationKey, string>> = {
     'Los objetos corrientes pueden ir al saqueador, mientras que los mejores se ponen a un tirada para que todos tengan una oportunidad justa.',
   'guide.social.lootCommonTitle': 'Objetos.',
   'guide.social.lootHeading': 'Botín de grupo',
+  'guide.social.lootMasterBody':
+    'El líder puede, en su lugar, hacerse cargo de los mejores objetos y entregar cada uno al miembro que debería recibirlo. Así se evita que una pieza codiciada acabe en una tirada al azar, como hace un grupo organizado al recorrer una mazmorra.',
+  'guide.social.lootMasterTitle': 'Maestro del botín.',
   'guide.social.lootRollBody':
     'Cuando un objeto pasa a tirada, cada miembro con derecho elige Necesidad si lo quiere, Codicia si solo lo cogería por si acaso, o Paso para retirarse. Gana la tirada más alta.',
   'guide.social.lootRollTitle': 'Necesidad, Codicia o Paso.',
@@ -4366,6 +4437,9 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'guide.stats.dodgeBody':
     'La esquiva es tu probabilidad de evitar por completo un ataque cuerpo a cuerpo entrante. Comienzas con una pequeña probabilidad base, y la Agilidad la aumenta, así que las clases ágiles eluden más golpes.',
   'guide.stats.dodgeTitle': 'Esquivar',
+  'guide.stats.dpsBody':
+    'Tu hoja también muestra una estimación de daño por segundo: a grandes rasgos, lo que tu arma, su velocidad de golpeo y tu poder de ataque suman con el tiempo. Es una forma rápida de comparar dos armas de un vistazo.',
+  'guide.stats.dpsTitle': 'Daño por segundo',
   'guide.stats.growBody':
     'Dos cosas aumentan tus características. Cada nivel añade una cantidad fija de cada atributo a la medida de tu clase, y el equipo que equipas añade más por encima. Mantener tu equipo al día es la vía más constante para volverte más fuerte, hasta el límite de nivel.',
   'guide.stats.growHeading': 'Cómo crecen tus características',
@@ -4380,6 +4454,9 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'guide.stats.sheetBody':
     'Abre la ventana de personaje en el juego para verlo reunido en un solo lugar: tus cinco atributos a un lado y las características que alimentan al otro. Pasa el cursor por cualquier valor y un cuadro de información desglosa lo que hace para tu clase, así puedes ver de un vistazo qué números movió de verdad una mejora.',
   'guide.stats.sheetHeading': 'Leer tu hoja de personaje',
+  'guide.stats.spBody':
+    'El poder de hechizos es la contraparte de un lanzador de hechizos al poder de ataque: aumenta el daño que infligen tus hechizos. El intelecto lo alimenta, y el equipo de lanzador y los beneficios añaden todavía más, así que un lanzador de hechizos vigila el poder de hechizos igual que un combatiente cuerpo a cuerpo vigila el poder de ataque.',
+  'guide.stats.spTitle': 'Poder de hechizos',
   'guide.stats.spiBody':
     'El Espíritu rige la rapidez con que regresa el maná de un lanzador mientras está fuera de combate. Como el Intelecto, sirve a las clases de maná y significa poco para las demás.',
   'guide.stats.spiTitle': 'Espíritu',
@@ -4395,6 +4472,7 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'guide.viewer.error':
     'No se pudo cargar el modelo 3D. El arte de arriba sigue mostrando este {name}.',
   'guide.viewer.loading': 'Cargando modelo...',
+  'guide.viewer.posterAlt': '{name}',
   'guide.viewer.view3d': 'Ver {name} en 3D',
   'guide.viewer.view3dShort': 'Ver en 3D',
   'guide.worldPage.marshGreeter': 'Guardiana Fenwick, Fenbridge',
