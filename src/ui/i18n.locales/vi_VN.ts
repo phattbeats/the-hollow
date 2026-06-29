@@ -4752,4 +4752,10 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'entities.itemSets.wyrmshadow.bonus3': 'Tăng nhanh nhẹn thêm 15 và tỉ lệ chí mạng thêm 2%.',
   'hudChrome.itemSet.header': '{name} ({have}/{total})',
   'hudChrome.itemSet.bonusLine': '({pieces}) {bonus}',
+  'hud.combat.floatingResist': 'Kháng',
+  'hud.combat.resisted': '{target} kháng lại {ability} của bạn.',
+  'hudChrome.abilityScaling.bonus': '(+{value})',
+  'hudChrome.itemArmorType.cloth': 'Vải',
+  'hudChrome.itemArmorType.leather': 'Da',
+  'hudChrome.itemArmorType.mail': 'Giáp lưới',
 };

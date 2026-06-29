@@ -637,9 +637,9 @@ export const tr_TR: EnTranslations = {
       "tooLarge": "Beşten fazla üyesi olan bir akın yeniden gruba dönüştürülemez."
     },
     "itemArmorType": {
-      "cloth": "Cloth",
-      "leather": "Leather",
-      "mail": "Mail"
+      "cloth": "Kumaş",
+      "leather": "Deri",
+      "mail": "Zincir"
     },
     "auraEffect": {
       "dot": "Her {interval} sn {value} {school} hasarı verir",
@@ -2749,7 +2749,7 @@ export const tr_TR: EnTranslations = {
     "combat": {
       "floatingMiss": "Iskaladı",
       "floatingDodge": "Savuşturma",
-      "floatingResist": "Resist",
+      "floatingResist": "Direnildi",
       "cannotMove": "Hareket edemezsin!",
       "attack": "saldırı",
       "damageDone": "{ability} yeteneğin {target} hedefine {amount} hasar vurdu.",
@@ -2758,7 +2758,7 @@ export const tr_TR: EnTranslations = {
       "damageTakenCrit": "{source} sana kritik {amount} hasar vurdu.",
       "miss": "{ability} yeteneğin {target} hedefini ıskaladı.",
       "dodged": "{ability} yeteneğin {target} tarafından savuşturuldu.",
-      "resisted": "Your {ability} is resisted by {target}.",
+      "resisted": "{target}, {ability} yeteneğine direndi.",
       "healSelf": "{ability} yeteneğin seni {amount} iyileştirdi.",
       "healSelfCrit": "{ability} yeteneğin seni kritik {amount} iyileştirdi.",
       "healOther": "{ability} yeteneğin {target} hedefini {amount} iyileştirdi.",

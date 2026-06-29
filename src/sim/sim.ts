@@ -177,6 +177,7 @@ import {
   talentPointBudget,
 } from './progression/talents';
 import { prestige as prestigeImpl, updateRested } from './progression/xp';
+import { advancePendingProjectiles, type PendingProjectile } from './projectile_travel';
 import { sanitizeRemovedZone1Content } from './removed_zone1_content';
 import { Rng } from './rng';
 import { persistedResource } from './serialize_resource';
@@ -841,6 +842,9 @@ export class Sim {
   // Owned by E1 (entity_roster drains it); stays on Sim because N1/M3 schedule into
   // it. Exposed as a live view via SimContext.
   private delayedEvents: DelayedEvent[] = [];
+  // In-flight projectiles (projectile_travel.ts): pushed by the ranged combat paths,
+  // drained in the tick prologue when each bolt's flight elapses. Live view on ctx.
+  private pendingProjectiles: PendingProjectile[] = [];
   // social systems
   // parties / partyByPid / partyInvites / nextPartyId moved to the PartyMachine
   // (src/sim/social/party.ts, session A1); reached via `this.party`.
@@ -1751,6 +1755,12 @@ export class Sim {
       set delayedEvents(v) {
         sim.delayedEvents = v;
       },
+      get pendingProjectiles() {
+        return sim.pendingProjectiles;
+      },
+      set pendingProjectiles(v) {
+        sim.pendingProjectiles = v;
+      },
       get groundAoEs() {
         return sim.groundAoEs;
       },
@@ -2295,6 +2305,9 @@ export class Sim {
     tickGroundAoEs(this.ctx);
 
     runDespawnDecay(this.ctx);
+    // Step in-flight projectiles toward their live targets before this tick's casts and
+    // swings, so a homing bolt resolves on a fixed, deterministic phase boundary.
+    advancePendingProjectiles(this.ctx);
 
     for (const meta of this.players.values()) {
       const p = this.entities.get(meta.entityId);

@@ -4791,4 +4791,10 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
     'Meningkatkan kelincahan sebesar 15 dan peluang kritis sebesar 2%.',
   'hudChrome.itemSet.header': '{name} ({have}/{total})',
   'hudChrome.itemSet.bonusLine': '({pieces}) {bonus}',
+  'hud.combat.floatingResist': 'Ditahan',
+  'hud.combat.resisted': '{target} menahan {ability} milikmu.',
+  'hudChrome.abilityScaling.bonus': '(+{value})',
+  'hudChrome.itemArmorType.cloth': 'Kain',
+  'hudChrome.itemArmorType.leather': 'Kulit',
+  'hudChrome.itemArmorType.mail': 'Zirah rantai',
 };

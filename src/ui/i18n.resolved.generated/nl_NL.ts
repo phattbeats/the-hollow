@@ -637,9 +637,9 @@ export const nl_NL: EnTranslations = {
       "tooLarge": "Een raid met meer dan vijf leden kan niet terug omgezet worden naar een groep."
     },
     "itemArmorType": {
-      "cloth": "Cloth",
-      "leather": "Leather",
-      "mail": "Mail"
+      "cloth": "Stof",
+      "leather": "Leer",
+      "mail": "Maliën"
     },
     "auraEffect": {
       "dot": "Brengt elke {interval} s {value} {school}schade toe",
@@ -2749,7 +2749,7 @@ export const nl_NL: EnTranslations = {
     "combat": {
       "floatingMiss": "Mis",
       "floatingDodge": "Ontwijking",
-      "floatingResist": "Resist",
+      "floatingResist": "Weerstaan",
       "cannotMove": "Kan niet bewegen!",
       "attack": "aanval",
       "damageDone": "Je {ability} raakt {target} voor {amount}.",
@@ -2758,7 +2758,7 @@ export const nl_NL: EnTranslations = {
       "damageTakenCrit": "{source} raakt je kritiek voor {amount}.",
       "miss": "Je {ability} mist {target}.",
       "dodged": "Je {ability} wordt ontweken door {target}.",
-      "resisted": "Your {ability} is resisted by {target}.",
+      "resisted": "{target} weerstaat je {ability}.",
       "healSelf": "Je {ability} geneest je voor {amount}.",
       "healSelfCrit": "Je {ability} geneest je kritiek voor {amount}.",
       "healOther": "Je {ability} geneest {target} voor {amount}.",

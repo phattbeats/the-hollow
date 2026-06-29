@@ -637,9 +637,9 @@ export const vi_VN: EnTranslations = {
       "tooLarge": "Một raid có hơn năm thành viên không thể chuyển trở lại thành tổ đội."
     },
     "itemArmorType": {
-      "cloth": "Cloth",
-      "leather": "Leather",
-      "mail": "Mail"
+      "cloth": "Vải",
+      "leather": "Da",
+      "mail": "Giáp lưới"
     },
     "auraEffect": {
       "dot": "Gây {value} sát thương {school} mỗi {interval} giây",
@@ -2749,7 +2749,7 @@ export const vi_VN: EnTranslations = {
     "combat": {
       "floatingMiss": "Trượt",
       "floatingDodge": "Né",
-      "floatingResist": "Resist",
+      "floatingResist": "Kháng",
       "cannotMove": "Không thể di chuyển!",
       "attack": "tấn công",
       "damageDone": "{ability} của bạn đánh trúng {target} gây {amount}.",
@@ -2758,7 +2758,7 @@ export const vi_VN: EnTranslations = {
       "damageTakenCrit": "{source} chí mạng bạn gây {amount}.",
       "miss": "{ability} của bạn trượt {target}.",
       "dodged": "{ability} của bạn bị {target} né.",
-      "resisted": "Your {ability} is resisted by {target}.",
+      "resisted": "{target} kháng lại {ability} của bạn.",
       "healSelf": "{ability} của bạn hồi {amount} máu cho bạn.",
       "healSelfCrit": "{ability} của bạn chí mạng hồi {amount} máu cho bạn.",
       "healOther": "{ability} của bạn hồi {amount} máu cho {target}.",

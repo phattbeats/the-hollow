@@ -637,9 +637,9 @@ export const pl_PL: EnTranslations = {
       "tooLarge": "Rajd liczący ponad pięciu członków nie może zostać przekształcony z powrotem w drużynę."
     },
     "itemArmorType": {
-      "cloth": "Cloth",
-      "leather": "Leather",
-      "mail": "Mail"
+      "cloth": "Tkanina",
+      "leather": "Skóra",
+      "mail": "Kolczuga"
     },
     "auraEffect": {
       "dot": "Zadaje {value} obrażeń od {school} co {interval} s",
@@ -2749,7 +2749,7 @@ export const pl_PL: EnTranslations = {
     "combat": {
       "floatingMiss": "Pudło",
       "floatingDodge": "Unik",
-      "floatingResist": "Resist",
+      "floatingResist": "Odparto",
       "cannotMove": "Nie można się ruszyć!",
       "attack": "atak",
       "damageDone": "Twój {ability} trafia {target}, zadając {amount}.",
@@ -2758,7 +2758,7 @@ export const pl_PL: EnTranslations = {
       "damageTakenCrit": "{source} trafia cię krytycznie, zadając {amount}.",
       "miss": "Twój {ability} chybia {target}.",
       "dodged": "Twój {ability} zostaje uniknięty przez {target}.",
-      "resisted": "Your {ability} is resisted by {target}.",
+      "resisted": "{target} odpiera twoje {ability}.",
       "healSelf": "Twój {ability} leczy cię o {amount}.",
       "healSelfCrit": "Twój {ability} leczy cię krytycznie o {amount}.",
       "healOther": "Twój {ability} leczy {target} o {amount}.",

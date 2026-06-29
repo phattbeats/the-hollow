@@ -4760,4 +4760,10 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
     'Zwiększa zręczność o 15 i szansę na trafienie krytyczne o 2%.',
   'hudChrome.itemSet.header': '{name} ({have}/{total})',
   'hudChrome.itemSet.bonusLine': '({pieces}) {bonus}',
+  'hud.combat.floatingResist': 'Odparto',
+  'hud.combat.resisted': '{target} odpiera twoje {ability}.',
+  'hudChrome.abilityScaling.bonus': '(+{value})',
+  'hudChrome.itemArmorType.cloth': 'Tkanina',
+  'hudChrome.itemArmorType.leather': 'Skóra',
+  'hudChrome.itemArmorType.mail': 'Kolczuga',
 };

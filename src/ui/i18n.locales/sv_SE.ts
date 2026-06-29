@@ -4732,4 +4732,10 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'entities.itemSets.wyrmshadow.bonus3': 'Ökar smidighet med 15 och kritisk chans med 2%.',
   'hudChrome.itemSet.header': '{name} ({have}/{total})',
   'hudChrome.itemSet.bonusLine': '({pieces}) {bonus}',
+  'hud.combat.floatingResist': 'Motstod',
+  'hud.combat.resisted': '{target} motstår din {ability}.',
+  'hudChrome.abilityScaling.bonus': '(+{value})',
+  'hudChrome.itemArmorType.cloth': 'Tyg',
+  'hudChrome.itemArmorType.leather': 'Läder',
+  'hudChrome.itemArmorType.mail': 'Ringbrynja',
 };

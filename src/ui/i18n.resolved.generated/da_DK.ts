@@ -637,9 +637,9 @@ export const da_DK: EnTranslations = {
       "tooLarge": "Et raid med mere end fem medlemmer kan ikke konverteres tilbage til en gruppe."
     },
     "itemArmorType": {
-      "cloth": "Cloth",
-      "leather": "Leather",
-      "mail": "Mail"
+      "cloth": "Stof",
+      "leather": "Læder",
+      "mail": "Ringbrynje"
     },
     "auraEffect": {
       "dot": "Giver {value} {school}-skade hvert {interval}. sek",
@@ -2749,7 +2749,7 @@ export const da_DK: EnTranslations = {
     "combat": {
       "floatingMiss": "Forbier",
       "floatingDodge": "Undvigelse",
-      "floatingResist": "Resist",
+      "floatingResist": "Modstået",
       "cannotMove": "Kan ikke bevæge dig!",
       "attack": "angreb",
       "damageDone": "Din {ability} rammer {target} for {amount}.",
@@ -2758,7 +2758,7 @@ export const da_DK: EnTranslations = {
       "damageTakenCrit": "{source} rammer dig kritisk for {amount}.",
       "miss": "Din {ability} forfejler {target}.",
       "dodged": "Din {ability} undviges af {target}.",
-      "resisted": "Your {ability} is resisted by {target}.",
+      "resisted": "{target} modstår din {ability}.",
       "healSelf": "Din {ability} helbreder dig for {amount}.",
       "healSelfCrit": "Din {ability} helbreder dig kritisk for {amount}.",
       "healOther": "Din {ability} helbreder {target} for {amount}.",

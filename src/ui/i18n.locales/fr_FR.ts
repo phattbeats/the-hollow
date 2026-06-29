@@ -4857,4 +4857,10 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
     'Augmente l’agilité de 15 et les chances de critique de 2%.',
   'hudChrome.itemSet.header': '{name} ({have}/{total})',
   'hudChrome.itemSet.bonusLine': '({pieces}) {bonus}',
+  'hud.combat.floatingResist': 'Résisté',
+  'hud.combat.resisted': '{target} résiste à votre {ability}.',
+  'hudChrome.abilityScaling.bonus': '(+{value})',
+  'hudChrome.itemArmorType.cloth': 'Tissu',
+  'hudChrome.itemArmorType.leather': 'Cuir',
+  'hudChrome.itemArmorType.mail': 'Mailles',
 };

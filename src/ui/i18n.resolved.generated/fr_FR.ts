@@ -637,9 +637,9 @@ export const fr_FR: EnTranslations = {
       "tooLarge": "Un raid de plus de cinq membres ne peut pas être reconverti en groupe."
     },
     "itemArmorType": {
-      "cloth": "Cloth",
-      "leather": "Leather",
-      "mail": "Mail"
+      "cloth": "Tissu",
+      "leather": "Cuir",
+      "mail": "Mailles"
     },
     "auraEffect": {
       "dot": "Inflige {value} points de dégâts de {school} toutes les {interval} s",
@@ -2749,7 +2749,7 @@ export const fr_FR: EnTranslations = {
     "combat": {
       "floatingMiss": "Raté",
       "floatingDodge": "Esquive",
-      "floatingResist": "Resist",
+      "floatingResist": "Résisté",
       "cannotMove": "Immobilisé !",
       "attack": "attaque",
       "damageDone": "Votre {ability} touche {target} pour {amount}.",
@@ -2758,7 +2758,7 @@ export const fr_FR: EnTranslations = {
       "damageTakenCrit": "{source} vous inflige un coup critique pour {amount}.",
       "miss": "Votre {ability} rate {target}.",
       "dodged": "{target} esquive votre {ability}.",
-      "resisted": "Your {ability} is resisted by {target}.",
+      "resisted": "{target} résiste à votre {ability}.",
       "healSelf": "Votre {ability} vous rend {amount} points de vie.",
       "healSelfCrit": "Votre {ability} vous rend un soin critique de {amount}.",
       "healOther": "Votre {ability} soigne {target} pour {amount}.",

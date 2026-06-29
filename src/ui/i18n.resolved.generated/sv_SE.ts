@@ -637,9 +637,9 @@ export const sv_SE: EnTranslations = {
       "tooLarge": "En raid med fler än fem medlemmar kan inte omvandlas tillbaka till en grupp."
     },
     "itemArmorType": {
-      "cloth": "Cloth",
-      "leather": "Leather",
-      "mail": "Mail"
+      "cloth": "Tyg",
+      "leather": "Läder",
+      "mail": "Ringbrynja"
     },
     "auraEffect": {
       "dot": "Gör {value} {school}-skada var {interval}:e s",
@@ -2749,7 +2749,7 @@ export const sv_SE: EnTranslations = {
     "combat": {
       "floatingMiss": "Bom",
       "floatingDodge": "Undvek",
-      "floatingResist": "Resist",
+      "floatingResist": "Motstod",
       "cannotMove": "Kan inte röra dig!",
       "attack": "anfall",
       "damageDone": "Din {ability} träffar {target} för {amount}.",
@@ -2758,7 +2758,7 @@ export const sv_SE: EnTranslations = {
       "damageTakenCrit": "{source} träffar dig kritiskt för {amount}.",
       "miss": "Din {ability} missar {target}.",
       "dodged": "Din {ability} undviks av {target}.",
-      "resisted": "Your {ability} is resisted by {target}.",
+      "resisted": "{target} motstår din {ability}.",
       "healSelf": "Din {ability} läker dig för {amount}.",
       "healSelfCrit": "Din {ability} läker dig kritiskt för {amount}.",
       "healOther": "Din {ability} läker {target} för {amount}.",

@@ -4721,4 +4721,10 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'entities.itemSets.wyrmshadow.bonus3': 'Çevikliği 15 ve kritik şansını %2 artırır.',
   'hudChrome.itemSet.header': '{name} ({have}/{total})',
   'hudChrome.itemSet.bonusLine': '({pieces}) {bonus}',
+  'hud.combat.floatingResist': 'Direnildi',
+  'hud.combat.resisted': '{target}, {ability} yeteneğine direndi.',
+  'hudChrome.abilityScaling.bonus': '(+{value})',
+  'hudChrome.itemArmorType.cloth': 'Kumaş',
+  'hudChrome.itemArmorType.leather': 'Deri',
+  'hudChrome.itemArmorType.mail': 'Zincir',
 };

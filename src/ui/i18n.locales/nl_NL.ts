@@ -4783,4 +4783,10 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'entities.itemSets.wyrmshadow.bonus3': 'Verhoogt behendigheid met 15 en kritieke kans met 2%.',
   'hudChrome.itemSet.header': '{name} ({have}/{total})',
   'hudChrome.itemSet.bonusLine': '({pieces}) {bonus}',
+  'hud.combat.floatingResist': 'Weerstaan',
+  'hud.combat.resisted': '{target} weerstaat je {ability}.',
+  'hudChrome.abilityScaling.bonus': '(+{value})',
+  'hudChrome.itemArmorType.cloth': 'Stof',
+  'hudChrome.itemArmorType.leather': 'Leer',
+  'hudChrome.itemArmorType.mail': 'Maliën',
 };
