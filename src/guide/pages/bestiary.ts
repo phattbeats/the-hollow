@@ -1,9 +1,10 @@
 // Bestiary: overworld creatures grouped by family. Each card shows a pre-rendered still of
 // the creature (public/guide-stills, baked from the real GLB by scripts/wiki/render_model_stills.mjs),
 // so the page is a fast, crawlable, zero-WebGL gallery (the interactive turntable lives on
-// the class pages and the /wiki/models gallery). Data is generated from the per-zone mob
-// lists (content.generated.ts), which excludes elite/boss and summoned creatures, so dungeon
-// and raid encounters never appear here.
+// the class pages and the /wiki/models gallery). Data is generated from the per-zone and
+// temple mob lists (content.generated.ts), which keeps only creatures that actually spawn in a
+// camp and drops elite/boss and summon-only encounter adds, so dungeon and raid encounters
+// never appear here.
 
 import { esc } from '../../ui/esc';
 import { formatNumber, type TranslationKey, t, tOptional } from '../../ui/i18n';

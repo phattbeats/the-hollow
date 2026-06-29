@@ -66,6 +66,20 @@ export interface GuideWarlockPet { id: string; name: string; model: string; tint
 export interface GuideCreature { name: string; min: number; max: number; rare: boolean; templateId: string; model: string; tint?: string; still?: string; }
 export interface GuideFamily { family: string; creatures: GuideCreature[]; }
 
+export interface GuideDelveKeeper { name: string; title: string; }
+export interface GuideDelveCompanion { name: string; role: string; }
+export interface GuideDelve {
+  id: string;
+  name: string;
+  theme: string;
+  minLevel: number;
+  suggestedPlayers: number;
+  keeper?: GuideDelveKeeper;
+  companion?: GuideDelveCompanion;
+  tiers: string[];
+  affixes: string[];
+}
+
 export const GUIDE_CLASSES: GuideClassInfo[] = [
   {
     "id": "warrior",
@@ -1462,14 +1476,14 @@ export const GUIDE_FAMILIES: GuideFamily[] = [
         "still": "/guide-stills/mob_murloc__45b39d.webp"
       },
       {
-        "name": "Mirejaw Frenzy",
-        "min": 9,
-        "max": 10,
+        "name": "Glimmermere Wader",
+        "min": 15,
+        "max": 16,
         "rare": false,
-        "templateId": "mirejaw_frenzy",
+        "templateId": "glimmermere_wader",
         "model": "mob_murloc",
-        "tint": "#1abc9c",
-        "still": "/guide-stills/mob_murloc__1abc9c.webp"
+        "tint": "#8fb6c4",
+        "still": "/guide-stills/mob_murloc__8fb6c4.webp"
       }
     ]
   },
@@ -1495,16 +1509,6 @@ export const GUIDE_FAMILIES: GuideFamily[] = [
         "model": "mob_kobold",
         "tint": "#9c7a3c",
         "still": "/guide-stills/mob_kobold__9c7a3c.webp"
-      },
-      {
-        "name": "Ironvein Sapper",
-        "min": 15,
-        "max": 16,
-        "rare": false,
-        "templateId": "ironvein_sapper",
-        "model": "mob_kobold",
-        "tint": "#8f6b34",
-        "still": "/guide-stills/mob_kobold__8f6b34.webp"
       }
     ]
   },
@@ -1517,16 +1521,6 @@ export const GUIDE_FAMILIES: GuideFamily[] = [
         "max": 5,
         "rare": false,
         "templateId": "vale_bandit",
-        "model": "mob_bandit",
-        "tint": "#6b3a32",
-        "still": "/guide-stills/mob_bandit__6b3a32.webp"
-      },
-      {
-        "name": "Mogger Lackey",
-        "min": 5,
-        "max": 6,
-        "rare": false,
-        "templateId": "mogger_lackey",
         "model": "mob_bandit",
         "tint": "#6b3a32",
         "still": "/guide-stills/mob_bandit__6b3a32.webp"
@@ -1560,16 +1554,6 @@ export const GUIDE_FAMILIES: GuideFamily[] = [
         "model": "mob_dark_caster",
         "tint": "#884ea0",
         "still": "/guide-stills/mob_dark_caster__884ea0.webp"
-      },
-      {
-        "name": "Nhalia Mourner",
-        "min": 11,
-        "max": 12,
-        "rare": false,
-        "templateId": "nhalia_mourner",
-        "model": "mob_bandit",
-        "tint": "#6b3a32",
-        "still": "/guide-stills/mob_bandit__6b3a32.webp"
       },
       {
         "name": "Wyrmcult Zealot",
@@ -1657,6 +1641,16 @@ export const GUIDE_FAMILIES: GuideFamily[] = [
         "still": "/guide-stills/skel_minion__7fb3d5.webp"
       },
       {
+        "name": "Drowned Votary",
+        "min": 15,
+        "max": 16,
+        "rare": false,
+        "templateId": "drowned_votary",
+        "model": "skel_minion",
+        "tint": "#6c8f8a",
+        "still": "/guide-stills/skel_minion__6c8f8a.webp"
+      },
+      {
         "name": "Boneclad Revenant",
         "min": 18,
         "max": 19,
@@ -1665,16 +1659,6 @@ export const GUIDE_FAMILIES: GuideFamily[] = [
         "model": "skel_warrior",
         "tint": "#cacfd2",
         "still": "/guide-stills/skel_warrior__cacfd2.webp"
-      },
-      {
-        "name": "Varkas Boneguard",
-        "min": 18,
-        "max": 19,
-        "rare": false,
-        "templateId": "varkas_boneguard",
-        "model": "skel_minion",
-        "tint": "#c9c2b5",
-        "still": "/guide-stills/skel_minion__c9c2b5.webp"
       }
     ]
   },
@@ -1701,6 +1685,51 @@ export const GUIDE_FAMILIES: GuideFamily[] = [
         "tint": "#aed6f1",
         "still": "/guide-stills/mob_elemental__aed6f1.webp"
       }
+    ]
+  },
+  {
+    "family": "dragonkin",
+    "creatures": [
+      {
+        "name": "Sethrael the Palecoil",
+        "min": 16,
+        "max": 16,
+        "rare": true,
+        "templateId": "sethrael_palecoil",
+        "model": "mob_dragonkin",
+        "tint": "#bcd2e6",
+        "still": "/guide-stills/mob_dragonkin__bcd2e6.webp"
+      }
+    ]
+  }
+];
+
+export const GUIDE_DELVES: GuideDelve[] = [
+  {
+    "id": "collapsed_reliquary",
+    "name": "The Collapsed Reliquary",
+    "theme": "crypt",
+    "minLevel": 7,
+    "suggestedPlayers": 2,
+    "keeper": {
+      "name": "Brother Halven",
+      "title": "Reliquary Keeper"
+    },
+    "companion": {
+      "name": "Acolyte Tessa",
+      "role": "healer"
+    },
+    "tiers": [
+      "Normal",
+      "Heroic"
+    ],
+    "affixes": [
+      "Restless Graves",
+      "Bad Air",
+      "Candleblind",
+      "Grave Tax",
+      "Unstable Roof",
+      "Cult Remnants"
     ]
   }
 ];
@@ -1862,6 +1891,18 @@ export const GUIDE_MODELS: Record<string, GuideModelSpec> = {
     "height": 1.4,
     "tintStrength": 0.35
   },
+  "mob_murloc": {
+    "url": "models/creatures/frog.glb",
+    "idle": "Idle",
+    "height": 1.7,
+    "tintStrength": 0.45
+  },
+  "mob_kobold": {
+    "url": "models/creatures/goblin.glb",
+    "idle": "Idle",
+    "height": 2.1,
+    "tintStrength": 0.2
+  },
   "mob_bandit": {
     "url": "models/chars/players/rogue_hooded.glb",
     "idle": "Idle",
@@ -1877,18 +1918,6 @@ export const GUIDE_MODELS: Record<string, GuideModelSpec> = {
       }
     ],
     "tintStrength": 0.3
-  },
-  "mob_murloc": {
-    "url": "models/creatures/frog.glb",
-    "idle": "Idle",
-    "height": 1.7,
-    "tintStrength": 0.45
-  },
-  "mob_kobold": {
-    "url": "models/creatures/goblin.glb",
-    "idle": "Idle",
-    "height": 2.1,
-    "tintStrength": 0.2
   },
   "skel_minion": {
     "url": "models/chars/enemies/skeleton_minion.glb",
@@ -1935,5 +1964,12 @@ export const GUIDE_MODELS: Record<string, GuideModelSpec> = {
     "idle": "Idle_Combat",
     "height": 2.5,
     "tintStrength": 0.25
+  },
+  "mob_dragonkin": {
+    "url": "models/creatures/dragonevolved.glb",
+    "idle": "Flying_Idle",
+    "height": 2.4,
+    "hover": 0.25,
+    "tintStrength": 0.2
   }
 };
