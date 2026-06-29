@@ -1861,13 +1861,14 @@ const RULES: Rule[] = [
       }),
   },
   {
-    re: /^Banned (.+) for (.+)\.$/,
+    re: /^Suspended (.+) for (.+)\.$/,
     build: (m) =>
-      tServer('moderation.banConfirm', {
+      tServer('moderation.suspendConfirm', {
         name: m[1],
         duration: localizeServerDuration(m[2]),
       }),
   },
+  { re: /^Banned (.+)\.$/, build: (m) => tServer('moderation.banConfirm', { name: m[1] }) },
   {
     re: /^No online player named '(.+)'\.$/,
     build: (m) => tServer('moderation.spectateNotOnline', { name: m[1] }),
@@ -1881,7 +1882,7 @@ const RULES: Rule[] = [
     build: (m) => tServer('moderation.spectateEnded', { name: m[1] }),
   },
   { re: /^Usage: \/mute <minutes> <reason>$/, build: () => tServer('moderation.muteUsage') },
-  { re: /^Usage: \/ban <minutes> <reason>$/, build: () => tServer('moderation.banUsage') },
+  { re: /^Usage: \/suspend <minutes> <reason>$/, build: () => tServer('moderation.suspendUsage') },
   {
     re: /^Usage: \/spectate <name>$/,
     build: () => tServer('moderation.spectateUsage'),

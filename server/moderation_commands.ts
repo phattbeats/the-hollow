@@ -8,7 +8,8 @@ export type ModerationChatCommand =
   | { kind: 'kill'; reason: string }
   | { kind: 'forcerename'; reason: string }
   | { kind: 'mute'; minutes: number | null; reason: string }
-  | { kind: 'ban'; minutes: number | null; reason: string }
+  | { kind: 'ban'; reason: string }
+  | { kind: 'suspend'; minutes: number | null; reason: string }
   | { kind: 'spectate'; name: string }
   | { kind: 'unspectate' };
 
@@ -53,7 +54,11 @@ export function parseModerationChatCommand(text: string): ModerationChatCommand 
   }
   const ban = /^\/ban(?:\s+([\s\S]*))?$/i.exec(trimmed);
   if (ban) {
-    return { kind: 'ban', ...parseTimed(ban[1] ?? '') };
+    return { kind: 'ban', reason: cleanReason(ban[1] ?? '') };
+  }
+  const suspend = /^\/suspend(?:\s+([\s\S]*))?$/i.exec(trimmed);
+  if (suspend) {
+    return { kind: 'suspend', ...parseTimed(suspend[1] ?? '') };
   }
   const spectate = /^\/spectate(?:\s+([\s\S]*))?$/i.exec(trimmed);
   if (spectate) {

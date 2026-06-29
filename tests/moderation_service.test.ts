@@ -38,6 +38,7 @@ function setup(opts: { actor: Session; selectedTargetId?: number | null; session
   const unspectated: Session[] = [];
   const recordAction = vi.fn<ModerationAudit['recordAction']>(async () => {});
   const mute = vi.fn<ModerationAudit['mute']>(async () => {});
+  const ban = vi.fn<ModerationAudit['ban']>(async () => {});
   const suspend = vi.fn<ModerationAudit['suspend']>(async () => {});
   const forceRename = vi.fn<ModerationAudit['forceRename']>(async () => ({ accountId: 0 }));
 
@@ -57,7 +58,7 @@ function setup(opts: { actor: Session; selectedTargetId?: number | null; session
     exitSpectate: (moderator) => unspectated.push(moderator),
   };
 
-  const service = new ModerationService(host, { recordAction, mute, suspend, forceRename });
+  const service = new ModerationService(host, { recordAction, mute, ban, suspend, forceRename });
   return {
     service,
     kicked,
@@ -70,19 +71,26 @@ function setup(opts: { actor: Session; selectedTargetId?: number | null; session
     unspectated,
     recordAction,
     mute,
+    ban,
     suspend,
     forceRename,
   };
 }
 
 describe('ModerationService', () => {
-  it('routes immediate actions, audits them, and confirms them', () => {
+  it('audits kick and kill before applying their live effect', async () => {
     const actor = admin(1, 11);
     const target = player(2, 22);
     const context = setup({ actor, selectedTargetId: target.pid, sessions: [target] });
 
     expect(context.service.handleChatCommand(actor, '/kick griefing')).toBe(true);
     expect(context.service.handleChatCommand(actor, '/kill spawn camping')).toBe(true);
+
+    // The audit write is awaited, so nothing is applied synchronously.
+    expect(context.kicked).toEqual([]);
+    expect(context.killed).toEqual([]);
+    await Promise.resolve();
+    await Promise.resolve();
 
     expect(context.recordAction).toHaveBeenNthCalledWith(1, {
       action: 'kick',
@@ -104,6 +112,22 @@ describe('ModerationService', () => {
     ]);
   });
 
+  it('does not apply kick when the audit write fails', async () => {
+    const actor = admin(1, 11);
+    const target = player(2, 22);
+    const context = setup({ actor, selectedTargetId: target.pid, sessions: [target] });
+    context.recordAction.mockRejectedValueOnce(new Error('db down'));
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    context.service.handleChatCommand(actor, '/kick griefing');
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(context.kicked).toEqual([]);
+    expect(context.systemNotices).toEqual([]);
+    consoleError.mockRestore();
+  });
+
   it('applies persistent actions only after their DB write succeeds', async () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date('2026-06-29T10:00:00Z'));
@@ -112,7 +136,7 @@ describe('ModerationService', () => {
     const context = setup({ actor, selectedTargetId: target.pid, sessions: [target] });
 
     context.service.handleChatCommand(actor, '/mute 5 spamming');
-    context.service.handleChatCommand(actor, '/ban 30 cheating');
+    context.service.handleChatCommand(actor, '/suspend 30 cheating');
     context.service.handleChatCommand(actor, '/forcerename offensive name');
     await Promise.resolve();
     await Promise.resolve();
@@ -124,6 +148,12 @@ describe('ModerationService', () => {
         reason: 'spamming',
       },
     ]);
+    expect(context.suspend).toHaveBeenCalledWith({
+      accountId: 22,
+      adminAccountId: 11,
+      reason: 'cheating',
+      expiresAt: '2026-06-29T10:30:00.000Z',
+    });
     expect(context.disconnected).toEqual([
       { accountId: 22, reason: 'This account is suspended.' },
       {
@@ -138,10 +168,31 @@ describe('ModerationService', () => {
     });
     expect(context.systemNotices.map((notice) => notice.text)).toEqual([
       'Muted Player2 for 5 minutes.',
-      'Banned Player2 for 30 minutes.',
+      'Suspended Player2 for 30 minutes.',
       'Required Player2 to rename.',
     ]);
     vi.useRealTimers();
+  });
+
+  it('bans permanently without an expiry and disconnects the account', async () => {
+    const actor = admin(1, 11);
+    const target = player(2, 22);
+    const context = setup({ actor, selectedTargetId: target.pid, sessions: [target] });
+
+    context.service.handleChatCommand(actor, '/ban repeat offender');
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(context.ban).toHaveBeenCalledWith({
+      accountId: 22,
+      adminAccountId: 11,
+      reason: 'repeat offender',
+    });
+    expect(context.suspend).not.toHaveBeenCalled();
+    expect(context.disconnected).toEqual([
+      { accountId: 22, reason: 'This account has been banned.' },
+    ]);
+    expect(context.systemNotices.map((notice) => notice.text)).toEqual(['Banned Player2.']);
   });
 
   it('rejects bad durations before resolving a target', () => {
@@ -149,14 +200,29 @@ describe('ModerationService', () => {
     const context = setup({ actor });
 
     expect(context.service.handleChatCommand(actor, '/mute spamming')).toBe(true);
-    expect(context.service.handleChatCommand(actor, '/ban')).toBe(true);
+    expect(context.service.handleChatCommand(actor, '/suspend')).toBe(true);
 
     expect(context.notices.map((notice) => notice.text)).toEqual([
       'Usage: /mute <minutes> <reason>',
-      'Usage: /ban <minutes> <reason>',
+      'Usage: /suspend <minutes> <reason>',
     ]);
     expect(context.mute).not.toHaveBeenCalled();
     expect(context.suspend).not.toHaveBeenCalled();
+  });
+
+  it('refuses moderation commands from a non-admin actor', () => {
+    const actor = player(1, 11);
+    const target = player(2, 22);
+    const context = setup({ actor, selectedTargetId: target.pid, sessions: [target] });
+
+    // Still claimed (swallowed) so it cannot leak into ordinary chat, but nothing runs.
+    expect(context.service.handleChatCommand(actor, '/kick griefing')).toBe(true);
+    expect(context.service.handleChatCommand(actor, '/ban cheating')).toBe(true);
+
+    expect(context.recordAction).not.toHaveBeenCalled();
+    expect(context.ban).not.toHaveBeenCalled();
+    expect(context.notices).toEqual([]);
+    expect(context.systemNotices).toEqual([]);
   });
 
   it('starts, switches, and stops spectating without an audit write', () => {

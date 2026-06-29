@@ -140,7 +140,7 @@ describe('in-game moderation actions', () => {
 
     command(killServer, killer, '/kill spawn camping');
 
-    expect(killServer.sim.entities.get(victim.pid)?.dead).toBe(true);
+    await vi.waitFor(() => expect(killServer.sim.entities.get(victim.pid)?.dead).toBe(true));
     expect(moderation.recordInGameAction).toHaveBeenCalledWith({
       action: 'kill',
       accountId: 4,
@@ -150,7 +150,7 @@ describe('in-game moderation actions', () => {
     expect(eventTexts(killerWs)).toContain('Killed Victim.');
   });
 
-  it('persists mute, timed ban, and force-rename before applying live effects', async () => {
+  it('persists mute, timed suspend, permanent ban, and force-rename before applying', async () => {
     const server = new GameServer();
     const moderatorWs = fakeWs();
     const targetWs = fakeWs();
@@ -173,7 +173,7 @@ describe('in-game moderation actions', () => {
     );
     expect(target.chatMuteReason).toBe('spam');
 
-    command(server, moderator, '/ban 30 cheating');
+    command(server, moderator, '/suspend 30 cheating');
     await vi.waitFor(() => expect(targetWs.close).toHaveBeenCalled());
     expect(moderation.moderateAccount).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -183,6 +183,28 @@ describe('in-game moderation actions', () => {
         reason: 'cheating',
       }),
     );
+
+    const banServer = new GameServer();
+    const banModeratorWs = fakeWs();
+    const banTargetWs = fakeWs();
+    const banModerator = joined(
+      banServer.join(banModeratorWs, 50, 150, 'BanMod', 'warrior', null, false, {
+        isAdmin: true,
+      }),
+    );
+    const banTarget = joined(banServer.join(banTargetWs, 60, 160, 'Repeat', 'rogue', null));
+    entity(banServer, banModerator.pid).targetId = banTarget.pid;
+    command(banServer, banModerator, '/ban repeat offender');
+    await vi.waitFor(() => expect(banTargetWs.close).toHaveBeenCalled());
+    expect(moderation.moderateAccount).toHaveBeenCalledWith(
+      expect.objectContaining({
+        accountId: 60,
+        adminAccountId: 50,
+        action: 'ban',
+        reason: 'repeat offender',
+      }),
+    );
+    expect(eventTexts(banModeratorWs)).toContain('Banned Repeat.');
 
     const renameServer = new GameServer();
     const renameModeratorWs = fakeWs();

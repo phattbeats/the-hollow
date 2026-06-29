@@ -19,8 +19,16 @@ describe('moderation chat commands', () => {
       kind: 'forcerename',
       reason: 'offensive name',
     });
+    expect(parseModerationChatCommand('/ban repeat offender')).toEqual({
+      kind: 'ban',
+      reason: 'repeat offender',
+    });
     expect(parseModerationChatCommand('/kick')).toEqual({
       kind: 'kick',
+      reason: 'No reason specified',
+    });
+    expect(parseModerationChatCommand('/ban')).toEqual({
+      kind: 'ban',
       reason: 'No reason specified',
     });
     const bounded = parseModerationChatCommand(`/kick ${'x'.repeat(800)}`);
@@ -36,8 +44,8 @@ describe('moderation chat commands', () => {
       minutes: 5,
       reason: 'spamming the market',
     });
-    expect(parseModerationChatCommand('  /ban  60   cheating ')).toEqual({
-      kind: 'ban',
+    expect(parseModerationChatCommand('  /suspend  60   cheating ')).toEqual({
+      kind: 'suspend',
       minutes: 60,
       reason: 'cheating',
     });
@@ -46,15 +54,15 @@ describe('moderation chat commands', () => {
       minutes: null,
       reason: 'spamming',
     });
-    expect(parseModerationChatCommand('/ban 0 cheating')).toEqual({
-      kind: 'ban',
+    expect(parseModerationChatCommand('/suspend 0 cheating')).toEqual({
+      kind: 'suspend',
       minutes: null,
       reason: 'cheating',
     });
     expect(
-      parseModerationChatCommand(`/ban ${MODERATION_COMMAND_MINUTES_MAX + 1} cheating`),
+      parseModerationChatCommand(`/suspend ${MODERATION_COMMAND_MINUTES_MAX + 1} cheating`),
     ).toEqual({
-      kind: 'ban',
+      kind: 'suspend',
       minutes: null,
       reason: 'cheating',
     });
@@ -76,6 +84,7 @@ describe('moderation chat commands', () => {
   it('ignores unrelated commands and near misses', () => {
     expect(parseModerationChatCommand('/guild hello')).toBeNull();
     expect(parseModerationChatCommand('/kicker someone')).toBeNull();
+    expect(parseModerationChatCommand('/suspender someone')).toBeNull();
     expect(parseModerationChatCommand('/spectator someone')).toBeNull();
     expect(parseModerationChatCommand('/unspectate now')).toBeNull();
     expect(parseModerationChatCommand('hello /kick')).toBeNull();

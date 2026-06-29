@@ -36,6 +36,7 @@ export interface ModerationAudit {
     reason: string;
     expiresAt: string;
   }): Promise<void>;
+  ban(input: { accountId: number; adminAccountId: number; reason: string }): Promise<void>;
   suspend(input: {
     accountId: number;
     adminAccountId: number;
@@ -49,6 +50,7 @@ export interface ModerationAudit {
   }): Promise<{ accountId: number }>;
 }
 
+const BAN_MESSAGE = 'This account has been banned.';
 const SUSPEND_MESSAGE = 'This account is suspended.';
 const RENAME_MESSAGE = 'A moderator requires one of your characters to be renamed.';
 
@@ -63,6 +65,10 @@ export class ModerationService<TSession extends ModerationSession> {
   handleChatCommand(actor: TSession, text: string): boolean {
     const command = parseModerationChatCommand(text);
     if (!command) return false;
+    // Defense in depth: the live caller already gates on isAdmin, but moderation is
+    // a sensitive API, so refuse non-admins here too. Swallow (return true) rather
+    // than let a rejected "/kick ..." leak into ordinary chat.
+    if (!actor.isAdmin) return true;
     switch (command.kind) {
       case 'kick':
         this.kick(actor, command.reason);
@@ -77,7 +83,10 @@ export class ModerationService<TSession extends ModerationSession> {
         this.mute(actor, command.minutes, command.reason);
         break;
       case 'ban':
-        this.ban(actor, command.minutes, command.reason);
+        this.ban(actor, command.reason);
+        break;
+      case 'suspend':
+        this.suspend(actor, command.minutes, command.reason);
         break;
       case 'spectate':
         this.spectate(actor, command.name);
@@ -99,9 +108,11 @@ export class ModerationService<TSession extends ModerationSession> {
         adminAccountId: actor.accountId,
         reason,
       })
+      .then(() => {
+        this.host.kick(target);
+        this.host.systemNotice(actor, `Kicked ${target.name}.`);
+      })
       .catch((err) => console.error('failed to audit in-game kick:', err));
-    this.host.kick(target);
-    this.host.systemNotice(actor, `Kicked ${target.name}.`);
   }
 
   private killTarget(actor: TSession, reason: string): void {
@@ -114,9 +125,11 @@ export class ModerationService<TSession extends ModerationSession> {
         adminAccountId: actor.accountId,
         reason,
       })
+      .then(() => {
+        this.host.killEntity(target.pid);
+        this.host.systemNotice(actor, `Killed ${target.name}.`);
+      })
       .catch((err) => console.error('failed to audit in-game kill:', err));
-    this.host.killEntity(target.pid);
-    this.host.systemNotice(actor, `Killed ${target.name}.`);
   }
 
   private mute(actor: TSession, minutes: number | null, reason: string): void {
@@ -136,9 +149,21 @@ export class ModerationService<TSession extends ModerationSession> {
       .catch((err) => console.error('failed to mute in-game:', err));
   }
 
-  private ban(actor: TSession, minutes: number | null, reason: string): void {
+  private ban(actor: TSession, reason: string): void {
+    const target = this.resolveTarget(actor);
+    if (!target) return;
+    void this.audit
+      .ban({ accountId: target.accountId, adminAccountId: actor.accountId, reason })
+      .then(() => {
+        this.host.disconnect(target.accountId, BAN_MESSAGE);
+        this.host.systemNotice(actor, `Banned ${target.name}.`);
+      })
+      .catch((err) => console.error('failed to ban in-game:', err));
+  }
+
+  private suspend(actor: TSession, minutes: number | null, reason: string): void {
     if (minutes === null) {
-      this.host.notice(actor, 'Usage: /ban <minutes> <reason>');
+      this.host.notice(actor, 'Usage: /suspend <minutes> <reason>');
       return;
     }
     const target = this.resolveTarget(actor);
@@ -148,9 +173,12 @@ export class ModerationService<TSession extends ModerationSession> {
       .suspend({ accountId: target.accountId, adminAccountId: actor.accountId, reason, expiresAt })
       .then(() => {
         this.host.disconnect(target.accountId, SUSPEND_MESSAGE);
-        this.host.systemNotice(actor, `Banned ${target.name} for ${formatDuration(minutes * 60)}.`);
+        this.host.systemNotice(
+          actor,
+          `Suspended ${target.name} for ${formatDuration(minutes * 60)}.`,
+        );
       })
-      .catch((err) => console.error('failed to ban in-game:', err));
+      .catch((err) => console.error('failed to suspend in-game:', err));
   }
 
   private forceRename(actor: TSession, reason: string): void {

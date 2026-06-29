@@ -687,6 +687,7 @@ export class GameServer {
     this.moderation = new ModerationService(this.moderationHost(), {
       recordAction: (input) => recordInGameAction(input),
       mute: (input) => muteAccountChat(input),
+      ban: (input) => moderateAccount({ ...input, action: 'ban' }),
       suspend: (input) => moderateAccount({ ...input, action: 'suspend' }),
       forceRename: (input) => forceCharacterRename(input),
     });
