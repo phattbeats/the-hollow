@@ -79,6 +79,9 @@ export const bestiary: GuidePage = {
           { href: hrefFor('world'), key: 'guide.nav.world' },
           { href: hrefFor('classes'), key: 'guide.nav.classes' },
           { href: hrefFor('dungeons'), key: 'guide.nav.dungeons' },
+          // The cards above are static stills; the gallery is where a reader can rotate
+          // each creature in 3D, so point there from here.
+          { href: hrefFor('models'), key: 'guide.nav.models' },
         ])}
       </article>`;
   },
