@@ -151,6 +151,9 @@ export const nl_NL: EnTranslations = {
     }
   },
   "hudChrome": {
+    "spectate": {
+      "banner": "Toeschouwer bij {name}"
+    },
     "emotes": {
       "wave": "Zwaaien",
       "laugh": "LOL",
@@ -267,7 +270,15 @@ export const nl_NL: EnTranslations = {
       "targetAria": "Spreukbalk van Doelwit"
     },
     "leaderboard": {
-      "close": "Sluiten"
+      "close": "Sluiten",
+      "tabsLabel": "Topscorelijsten",
+      "tabPlayers": "Spelers",
+      "tabGuilds": "Gildes",
+      "guildName": "Gilde",
+      "members": "Leden",
+      "topLevel": "Top",
+      "guildXp": "Totaal XP",
+      "guildEmpty": "Nog geen gerangschikte gildes."
     },
     "raidLockout": {
       "title": "Raidvergrendelingen",
@@ -720,6 +731,128 @@ export const nl_NL: EnTranslations = {
     "nameplate": {
       "mob": "[{level}] {name}",
       "mobElite": "[{level}+] {name}"
+    },
+    "discord": {
+      "title": "Discord",
+      "panelTitle": "World of ClaudeCraft",
+      "open": "Discord",
+      "close": "Sluiten",
+      "keybind": "Discord-paneel",
+      "disabled": "Discord-integratie is momenteel niet beschikbaar.",
+      "tiers": {
+        "none": "Ongerangschikt",
+        "initiate": "Ingewijde",
+        "squire": "Schildknaap",
+        "footman": "Voetknecht",
+        "knight": "Ridder",
+        "champion": "Kampioen",
+        "warlord": "Krijgsheer",
+        "legend": "Legende",
+        "mythic": "Mythisch"
+      },
+      "loginCta": "Doorgaan met Discord",
+      "orEmail": "of gebruik e-mail",
+      "cta": {
+        "title": "Koppel je Discord om punten te verdienen en hogerop te komen",
+        "stats": "{online} online · {total} leden in de server",
+        "statsLoading": "Word lid van de gemeenschap en verdien beloningen",
+        "button": "Koppel in één klik",
+        "dismiss": "Negeren"
+      },
+      "link": {
+        "cta": "Discord koppelen",
+        "relink": "Discord opnieuw koppelen",
+        "connecting": "Discord openen...",
+        "benefits": "Koppel je Discord om punten te verdienen door spelen en gemeenschapsactiviteit, en klim door de statusrangen.",
+        "error": "Kon Discord niet koppelen. Probeer het opnieuw.",
+        "success": "Discord gekoppeld."
+      },
+      "linkedAs": "Gekoppeld als {name}",
+      "linkedTitle": "Discord: {name}",
+      "viewCharacter": "Bekijk {name}",
+      "viewProfile": "Open het openbare profiel van dit personage",
+      "unlink": "Ontkoppelen",
+      "visit": "Bezoek Discord",
+      "unlinkConfirm": "Je Discord-account loskoppelen van dit spelaccount?",
+      "statusLabel": "Status",
+      "rank": "Rang",
+      "points": "Punten",
+      "lifetime": "Aller tijden",
+      "toNext": "{points} tot volgende rang",
+      "maxRank": "Hoogste rang bereikt",
+      "tiersTitle": "Statusrangen",
+      "tierLocked": "Vergrendeld",
+      "tierCurrent": "Huidig",
+      "earnTitle": "Hoe je punten verdient",
+      "earnBody": "Verdien punten door speeltijd in het spel en door actief te blijven in de Discord. Punten verhogen je statusrang.",
+      "memberSince": "Lid sinds",
+      "memberSinceDays": "{days}d in de Discord",
+      "roleTag": {
+        "levyst": "Levy St",
+        "devs": "Dev",
+        "mods": "Mod",
+        "artists": "Artiest"
+      },
+      "guildMember": "Geverifieerd lid",
+      "notMember": "Nog niet in de server",
+      "joinCta": "Word lid van de Discord",
+      "online": "{count} online",
+      "community": "Gemeenschap",
+      "rewards": "Beloningen",
+      "voice": {
+        "title": "Spraak",
+        "channel": "In {channel}",
+        "empty": "Er is nu niemand in spraak.",
+        "speaking": "Aan het praten",
+        "muted": "Gedempt",
+        "join": "Deelnemen aan spraak",
+        "connect": "Verbinden met spraakkanaal"
+      },
+      "swag": {
+        "title": "Swag",
+        "claim": "Claimen",
+        "claimed": "Geclaimd",
+        "locked": "Vergrendeld",
+        "free": "Gratis",
+        "cost": "{points} ptn",
+        "needTier": "Bereik een hogere rang om dit te claimen.",
+        "needPoints": "Niet genoeg punten.",
+        "claimError": "Kon die beloning niet claimen. Probeer het opnieuw.",
+        "claimedToast": "Geclaimd: {name}",
+        "titleDiscordian": "Titel: Discordiaan",
+        "titleSquire": "Titel: Schildknaap van het Rijk",
+        "chromaBlurple": "Blurple Mech Chroma",
+        "titleChampion": "Titel: Kampioen van Claudemoon",
+        "swagStickers": "Stickerpakket (verzonden)",
+        "swagTee": "T-shirt (verzonden)"
+      },
+      "relay": {
+        "tooFast": "Je plaatst te snel. Wacht even en probeer het opnieuw.",
+        "lfg": {
+          "label": "Op zoek naar groep",
+          "hint": "Vind spelers voor een kerker of quest"
+        },
+        "wts": {
+          "label": "Te koop aangeboden",
+          "hint": "Adverteer een voorwerp of dienst te koop"
+        },
+        "wtb": {
+          "label": "Te koop gevraagd",
+          "hint": "Vraag naar een voorwerp dat je wilt kopen"
+        },
+        "recruit": {
+          "label": "Gilde werven",
+          "hint": "Werf spelers voor je gilde"
+        },
+        "event": {
+          "label": "Evenement / Raid",
+          "hint": "Kondig een raid, meetup of evenement aan"
+        },
+        "help": {
+          "label": "Hulp nodig",
+          "hint": "Vraag de gemeenschap om hulp"
+        }
+      }
     }
   },
   "guide": {

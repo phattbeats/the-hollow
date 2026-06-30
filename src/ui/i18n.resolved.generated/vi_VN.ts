@@ -151,6 +151,9 @@ export const vi_VN: EnTranslations = {
     }
   },
   "hudChrome": {
+    "spectate": {
+      "banner": "Đang xem {name}"
+    },
     "emotes": {
       "wave": "Vẫy Tay",
       "laugh": "Cười Lớn",
@@ -267,7 +270,15 @@ export const vi_VN: EnTranslations = {
       "targetAria": "Thanh Niệm Chú Của Mục Tiêu"
     },
     "leaderboard": {
-      "close": "Đóng"
+      "close": "Đóng",
+      "tabsLabel": "Bảng điểm cao",
+      "tabPlayers": "Người Chơi",
+      "tabGuilds": "Bang Hội",
+      "guildName": "Bang Hội",
+      "members": "Thành Viên",
+      "topLevel": "Hàng Đầu",
+      "guildXp": "Tổng XP",
+      "guildEmpty": "Chưa có bang hội nào được xếp hạng."
     },
     "raidLockout": {
       "title": "Khóa Raid",
@@ -720,6 +731,128 @@ export const vi_VN: EnTranslations = {
     "nameplate": {
       "mob": "[{level}] {name}",
       "mobElite": "[{level}+] {name}"
+    },
+    "discord": {
+      "title": "Discord",
+      "panelTitle": "World of ClaudeCraft",
+      "open": "Discord",
+      "close": "Đóng",
+      "keybind": "Bảng Discord",
+      "disabled": "Tích hợp Discord hiện không khả dụng.",
+      "tiers": {
+        "none": "Chưa Xếp Hạng",
+        "initiate": "Tân Binh",
+        "squire": "Cận Vệ",
+        "footman": "Bộ Binh",
+        "knight": "Hiệp Sĩ",
+        "champion": "Nhà Vô Địch",
+        "warlord": "Tướng Quân",
+        "legend": "Huyền Thoại",
+        "mythic": "Thần Thoại"
+      },
+      "loginCta": "Tiếp tục với Discord",
+      "orEmail": "hoặc dùng email",
+      "cta": {
+        "title": "Liên kết Discord để nhận điểm và thăng hạng",
+        "stats": "{online} đang trực tuyến · {total} thành viên trong máy chủ",
+        "statsLoading": "Tham gia cộng đồng và nhận phần thưởng",
+        "button": "Liên kết chỉ với một cú nhấp",
+        "dismiss": "Bỏ qua"
+      },
+      "link": {
+        "cta": "Liên kết Discord",
+        "relink": "Liên kết lại Discord",
+        "connecting": "Đang mở Discord...",
+        "benefits": "Liên kết Discord để nhận điểm từ việc chơi và hoạt động cộng đồng, và leo lên các bậc trạng thái.",
+        "error": "Không thể liên kết Discord. Vui lòng thử lại.",
+        "success": "Đã liên kết Discord."
+      },
+      "linkedAs": "Đã liên kết với tên {name}",
+      "linkedTitle": "Discord: {name}",
+      "viewCharacter": "Xem {name}",
+      "viewProfile": "Mở hồ sơ công khai của nhân vật này",
+      "unlink": "Hủy liên kết",
+      "visit": "Truy cập Discord",
+      "unlinkConfirm": "Hủy liên kết tài khoản Discord khỏi tài khoản game này?",
+      "statusLabel": "Trạng Thái",
+      "rank": "Hạng",
+      "points": "Điểm",
+      "lifetime": "Trọn đời",
+      "toNext": "{points} để lên hạng tiếp theo",
+      "maxRank": "Đã đạt hạng cao nhất",
+      "tiersTitle": "Các Bậc Trạng Thái",
+      "tierLocked": "Đã khóa",
+      "tierCurrent": "Hiện tại",
+      "earnTitle": "Cách nhận điểm",
+      "earnBody": "Nhận điểm từ thời gian chơi trong game và từ việc hoạt động tích cực trên Discord. Điểm sẽ nâng bậc trạng thái của bạn.",
+      "memberSince": "Thành viên từ",
+      "memberSinceDays": "{days} ngày trong Discord",
+      "roleTag": {
+        "levyst": "Levy St",
+        "devs": "Lập Trình Viên",
+        "mods": "Điều Hành Viên",
+        "artists": "Họa Sĩ"
+      },
+      "guildMember": "Thành viên đã xác minh",
+      "notMember": "Chưa tham gia máy chủ",
+      "joinCta": "Tham gia Discord",
+      "online": "{count} đang trực tuyến",
+      "community": "Cộng Đồng",
+      "rewards": "Phần Thưởng",
+      "voice": {
+        "title": "Thoại",
+        "channel": "Trong {channel}",
+        "empty": "Hiện không có ai trong kênh thoại.",
+        "speaking": "Đang nói",
+        "muted": "Đã tắt tiếng",
+        "join": "Tham gia thoại",
+        "connect": "Kết nối tới kênh thoại"
+      },
+      "swag": {
+        "title": "Quà Tặng",
+        "claim": "Nhận",
+        "claimed": "Đã nhận",
+        "locked": "Đã khóa",
+        "free": "Miễn phí",
+        "cost": "{points} điểm",
+        "needTier": "Đạt hạng cao hơn để nhận vật phẩm này.",
+        "needPoints": "Không đủ điểm.",
+        "claimError": "Không thể nhận phần thưởng đó. Vui lòng thử lại.",
+        "claimedToast": "Đã nhận: {name}",
+        "titleDiscordian": "Danh Hiệu: Discordian",
+        "titleSquire": "Danh Hiệu: Cận Vệ Vương Quốc",
+        "chromaBlurple": "Sắc Màu Mech Blurple",
+        "titleChampion": "Danh Hiệu: Nhà Vô Địch Claudemoon",
+        "swagStickers": "Bộ Sticker (giao tận nơi)",
+        "swagTee": "Áo Thun (giao tận nơi)"
+      },
+      "relay": {
+        "tooFast": "Bạn đang đăng quá nhanh. Hãy đợi một lát rồi thử lại.",
+        "lfg": {
+          "label": "Tìm Nhóm",
+          "hint": "Tìm người chơi cho một hầm ngục hoặc nhiệm vụ"
+        },
+        "wts": {
+          "label": "Cần Bán",
+          "hint": "Rao bán một vật phẩm hoặc dịch vụ"
+        },
+        "wtb": {
+          "label": "Cần Mua",
+          "hint": "Yêu cầu một vật phẩm bạn muốn mua"
+        },
+        "recruit": {
+          "label": "Tuyển Bang Hội",
+          "hint": "Tuyển người chơi cho bang hội của bạn"
+        },
+        "event": {
+          "label": "Sự Kiện / Raid",
+          "hint": "Thông báo một trận raid, buổi gặp mặt hoặc sự kiện"
+        },
+        "help": {
+          "label": "Cần Trợ Giúp",
+          "hint": "Nhờ cộng đồng giúp đỡ"
+        }
+      }
     }
   },
   "guide": {

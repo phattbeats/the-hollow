@@ -151,6 +151,9 @@ export const pl_PL: EnTranslations = {
     }
   },
   "hudChrome": {
+    "spectate": {
+      "banner": "Obserwujesz {name}"
+    },
     "emotes": {
       "wave": "Pomachaj",
       "laugh": "Hehe",
@@ -267,7 +270,15 @@ export const pl_PL: EnTranslations = {
       "targetAria": "Pasek rzucania jednostki"
     },
     "leaderboard": {
-      "close": "Zamknij"
+      "close": "Zamknij",
+      "tabsLabel": "Tablice wyników",
+      "tabPlayers": "Gracze",
+      "tabGuilds": "Gildie",
+      "guildName": "Gildia",
+      "members": "Członkowie",
+      "topLevel": "Top",
+      "guildXp": "Łączne XP",
+      "guildEmpty": "Brak sklasyfikowanych gildii."
     },
     "raidLockout": {
       "title": "Blokady rajdów",
@@ -720,6 +731,128 @@ export const pl_PL: EnTranslations = {
     "nameplate": {
       "mob": "[{level}] {name}",
       "mobElite": "[{level}+] {name}"
+    },
+    "discord": {
+      "title": "Discord",
+      "panelTitle": "World of ClaudeCraft",
+      "open": "Discord",
+      "close": "Zamknij",
+      "keybind": "Panel Discorda",
+      "disabled": "Integracja z Discord jest obecnie niedostępna.",
+      "tiers": {
+        "none": "Bez rangi",
+        "initiate": "Adept",
+        "squire": "Giermek",
+        "footman": "Piechur",
+        "knight": "Rycerz",
+        "champion": "Mistrz",
+        "warlord": "Wódz wojenny",
+        "legend": "Legenda",
+        "mythic": "Mityczny"
+      },
+      "loginCta": "Kontynuuj z Discordem",
+      "orEmail": "lub użyj e-maila",
+      "cta": {
+        "title": "Połącz Discord, aby zdobywać punkty i awansować w rankingu",
+        "stats": "{online} online · {total} członków na serwerze",
+        "statsLoading": "Dołącz do społeczności i zdobywaj nagrody",
+        "button": "Połącz jednym kliknięciem",
+        "dismiss": "Odrzuć"
+      },
+      "link": {
+        "cta": "Połącz Discord",
+        "relink": "Połącz Discord ponownie",
+        "connecting": "Otwieranie Discorda...",
+        "benefits": "Połącz Discord, aby zdobywać punkty za grę i aktywność w społeczności oraz wspinać się po progach statusu.",
+        "error": "Nie udało się połączyć Discorda. Spróbuj ponownie.",
+        "success": "Discord połączony."
+      },
+      "linkedAs": "Połączono jako {name}",
+      "linkedTitle": "Discord: {name}",
+      "viewCharacter": "Zobacz {name}",
+      "viewProfile": "Otwórz publiczny profil tej postaci",
+      "unlink": "Rozłącz",
+      "visit": "Odwiedź Discord",
+      "unlinkConfirm": "Odłączyć konto Discord od tego konta w grze?",
+      "statusLabel": "Status",
+      "rank": "Ranga",
+      "points": "Punkty",
+      "lifetime": "Łącznie",
+      "toNext": "{points} do następnej rangi",
+      "maxRank": "Osiągnięto najwyższą rangę",
+      "tiersTitle": "Progi statusu",
+      "tierLocked": "Zablokowane",
+      "tierCurrent": "Obecny",
+      "earnTitle": "Jak zdobywać punkty",
+      "earnBody": "Zdobywaj punkty za czas gry oraz za aktywność na Discordzie. Punkty podnoszą twój próg statusu.",
+      "memberSince": "Członek od",
+      "memberSinceDays": "{days}d na Discordzie",
+      "roleTag": {
+        "levyst": "Levy St",
+        "devs": "Dev",
+        "mods": "Mod",
+        "artists": "Grafik"
+      },
+      "guildMember": "Zweryfikowany członek",
+      "notMember": "Jeszcze nie na serwerze",
+      "joinCta": "Dołącz do Discorda",
+      "online": "{count} online",
+      "community": "Społeczność",
+      "rewards": "Nagrody",
+      "voice": {
+        "title": "Głos",
+        "channel": "Na {channel}",
+        "empty": "Nikogo nie ma teraz na kanale głosowym.",
+        "speaking": "Mówi",
+        "muted": "Wyciszony",
+        "join": "Dołącz do głosowego",
+        "connect": "Połącz z kanałem głosowym"
+      },
+      "swag": {
+        "title": "Gadżety",
+        "claim": "Odbierz",
+        "claimed": "Odebrano",
+        "locked": "Zablokowane",
+        "free": "Za darmo",
+        "cost": "{points} pkt",
+        "needTier": "Osiągnij wyższą rangę, aby to odebrać.",
+        "needPoints": "Za mało punktów.",
+        "claimError": "Nie udało się odebrać tej nagrody. Spróbuj ponownie.",
+        "claimedToast": "Odebrano: {name}",
+        "titleDiscordian": "Tytuł: Discordianin",
+        "titleSquire": "Tytuł: Giermek Królestwa",
+        "chromaBlurple": "Chroma mecha Blurple",
+        "titleChampion": "Tytuł: Mistrz Claudemoon",
+        "swagStickers": "Zestaw naklejek (wysyłka)",
+        "swagTee": "Koszulka (wysyłka)"
+      },
+      "relay": {
+        "tooFast": "Publikujesz zbyt szybko. Poczekaj chwilę i spróbuj ponownie.",
+        "lfg": {
+          "label": "Szukam drużyny",
+          "hint": "Znajdź graczy do lochu lub zadania"
+        },
+        "wts": {
+          "label": "Chcę sprzedać",
+          "hint": "Ogłoś przedmiot lub usługę na sprzedaż"
+        },
+        "wtb": {
+          "label": "Chcę kupić",
+          "hint": "Poproś o przedmiot, który chcesz kupić"
+        },
+        "recruit": {
+          "label": "Rekrutacja do gildii",
+          "hint": "Rekrutuj graczy do swojej gildii"
+        },
+        "event": {
+          "label": "Wydarzenie / Rajd",
+          "hint": "Ogłoś rajd, spotkanie lub wydarzenie"
+        },
+        "help": {
+          "label": "Potrzebuję pomocy",
+          "hint": "Poproś społeczność o pomoc"
+        }
+      }
     }
   },
   "guide": {

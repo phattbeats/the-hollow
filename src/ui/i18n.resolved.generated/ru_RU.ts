@@ -151,6 +151,9 @@ export const ru_RU: EnTranslations = {
     }
   },
   "hudChrome": {
+    "spectate": {
+      "banner": "Наблюдение за {name}"
+    },
     "emotes": {
       "wave": "Помахать",
       "laugh": "Смех",
@@ -267,7 +270,15 @@ export const ru_RU: EnTranslations = {
       "targetAria": "Полоса применения цели"
     },
     "leaderboard": {
-      "close": "Закрыть"
+      "close": "Закрыть",
+      "tabsLabel": "Таблицы рекордов",
+      "tabPlayers": "Игроки",
+      "tabGuilds": "Гильдии",
+      "guildName": "Гильдия",
+      "members": "Состав",
+      "topLevel": "Макс",
+      "guildXp": "Всего опыта",
+      "guildEmpty": "Пока нет гильдий в рейтинге."
     },
     "raidLockout": {
       "title": "Блокировки рейдов",
@@ -720,6 +731,128 @@ export const ru_RU: EnTranslations = {
     "nameplate": {
       "mob": "[{level}] {name}",
       "mobElite": "[{level}+] {name}"
+    },
+    "discord": {
+      "title": "Discord",
+      "panelTitle": "World of ClaudeCraft",
+      "open": "Discord",
+      "close": "Закрыть",
+      "keybind": "Панель Discord",
+      "disabled": "Интеграция с Discord сейчас недоступна.",
+      "tiers": {
+        "none": "Без ранга",
+        "initiate": "Послушник",
+        "squire": "Оруженосец",
+        "footman": "Пехотинец",
+        "knight": "Рыцарь",
+        "champion": "Чемпион",
+        "warlord": "Полководец",
+        "legend": "Легенда",
+        "mythic": "Мифический"
+      },
+      "loginCta": "Продолжить через Discord",
+      "orEmail": "или войти по почте",
+      "cta": {
+        "title": "Привяжите Discord, чтобы получать очки и повышать ранг",
+        "stats": "{online} в сети · {total} участников на сервере",
+        "statsLoading": "Присоединяйтесь к сообществу и получайте награды",
+        "button": "Привязать в один клик",
+        "dismiss": "Скрыть"
+      },
+      "link": {
+        "cta": "Привязать Discord",
+        "relink": "Перепривязать Discord",
+        "connecting": "Открываем Discord...",
+        "benefits": "Привяжите Discord, чтобы получать очки за игру и активность в сообществе и подниматься по рангам статуса.",
+        "error": "Не удалось привязать Discord. Пожалуйста, попробуйте снова.",
+        "success": "Discord привязан."
+      },
+      "linkedAs": "Привязан как {name}",
+      "linkedTitle": "Discord: {name}",
+      "viewCharacter": "Показать {name}",
+      "viewProfile": "Открыть публичный профиль этого персонажа",
+      "unlink": "Отвязать",
+      "visit": "Перейти в Discord",
+      "unlinkConfirm": "Отвязать аккаунт Discord от этого игрового аккаунта?",
+      "statusLabel": "Статус",
+      "rank": "Ранг",
+      "points": "Очки",
+      "lifetime": "За все время",
+      "toNext": "{points} до следующего ранга",
+      "maxRank": "Достигнут высший ранг",
+      "tiersTitle": "Ранги статуса",
+      "tierLocked": "Заблокировано",
+      "tierCurrent": "Текущий",
+      "earnTitle": "Как получать очки",
+      "earnBody": "Получайте очки за время в игре и за активность в Discord. Очки повышают ваш ранг статуса.",
+      "memberSince": "Участник с",
+      "memberSinceDays": "{days} дн. в Discord",
+      "roleTag": {
+        "levyst": "Levy St",
+        "devs": "Разработчик",
+        "mods": "Модератор",
+        "artists": "Художник"
+      },
+      "guildMember": "Подтвержденный участник",
+      "notMember": "Еще не на сервере",
+      "joinCta": "Присоединиться к Discord",
+      "online": "{count} в сети",
+      "community": "Сообщество",
+      "rewards": "Награды",
+      "voice": {
+        "title": "Голос",
+        "channel": "В {channel}",
+        "empty": "Сейчас в голосовом канале никого нет.",
+        "speaking": "Говорит",
+        "muted": "Без звука",
+        "join": "Войти в голосовой канал",
+        "connect": "Подключиться к голосовому каналу"
+      },
+      "swag": {
+        "title": "Мерч",
+        "claim": "Получить",
+        "claimed": "Получено",
+        "locked": "Заблокировано",
+        "free": "Бесплатно",
+        "cost": "{points} очк.",
+        "needTier": "Достигните более высокого ранга, чтобы получить это.",
+        "needPoints": "Недостаточно очков.",
+        "claimError": "Не удалось получить эту награду. Пожалуйста, попробуйте снова.",
+        "claimedToast": "Получено: {name}",
+        "titleDiscordian": "Титул: Discordian",
+        "titleSquire": "Титул: Оруженосец Королевства",
+        "chromaBlurple": "Расцветка меха Blurple",
+        "titleChampion": "Титул: Чемпион Claudemoon",
+        "swagStickers": "Набор стикеров (с доставкой)",
+        "swagTee": "Футболка (с доставкой)"
+      },
+      "relay": {
+        "tooFast": "Вы отправляете сообщения слишком часто. Подождите немного и попробуйте снова.",
+        "lfg": {
+          "label": "Поиск группы",
+          "hint": "Найдите игроков для подземелья или задания"
+        },
+        "wts": {
+          "label": "Продам",
+          "hint": "Объявите о продаже предмета или услуги"
+        },
+        "wtb": {
+          "label": "Куплю",
+          "hint": "Запросите предмет, который хотите купить"
+        },
+        "recruit": {
+          "label": "Набор в гильдию",
+          "hint": "Набирайте игроков в свою гильдию"
+        },
+        "event": {
+          "label": "Событие / Рейд",
+          "hint": "Объявите о рейде, встрече или событии"
+        },
+        "help": {
+          "label": "Нужна помощь",
+          "hint": "Попросите сообщество о помощи"
+        }
+      }
     }
   },
   "guide": {

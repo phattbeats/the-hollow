@@ -151,6 +151,9 @@ export const it_IT: EnTranslations = {
     }
   },
   "hudChrome": {
+    "spectate": {
+      "banner": "Stai osservando {name}"
+    },
     "emotes": {
       "wave": "Saluta",
       "laugh": "Ridi",
@@ -267,7 +270,15 @@ export const it_IT: EnTranslations = {
       "targetAria": "Barra di lancio del bersaglio"
     },
     "leaderboard": {
-      "close": "Chiudi"
+      "close": "Chiudi",
+      "tabsLabel": "Classifiche dei punteggi",
+      "tabPlayers": "Giocatori",
+      "tabGuilds": "Gilde",
+      "guildName": "Gilda",
+      "members": "Membri",
+      "topLevel": "Top",
+      "guildXp": "XP totali",
+      "guildEmpty": "Ancora nessuna gilda classificata."
     },
     "raidLockout": {
       "title": "Blocchi incursione",
@@ -720,6 +731,128 @@ export const it_IT: EnTranslations = {
     "nameplate": {
       "mob": "[{level}] {name}",
       "mobElite": "[{level}+] {name}"
+    },
+    "discord": {
+      "title": "Discord",
+      "panelTitle": "World of ClaudeCraft",
+      "open": "Discord",
+      "close": "Chiudi",
+      "keybind": "Pannello Discord",
+      "disabled": "L'integrazione con Discord non e disponibile al momento.",
+      "tiers": {
+        "none": "Senza grado",
+        "initiate": "Iniziato",
+        "squire": "Scudiero",
+        "footman": "Fante",
+        "knight": "Cavaliere",
+        "champion": "Campione",
+        "warlord": "Signore della Guerra",
+        "legend": "Leggenda",
+        "mythic": "Mitico"
+      },
+      "loginCta": "Continua con Discord",
+      "orEmail": "oppure usa l'email",
+      "cta": {
+        "title": "Collega il tuo Discord per ottenere punti e salire di grado",
+        "stats": "{online} online · {total} membri nel server",
+        "statsLoading": "Unisciti alla comunita e ottieni ricompense",
+        "button": "Collega con un clic",
+        "dismiss": "Ignora"
+      },
+      "link": {
+        "cta": "Collega Discord",
+        "relink": "Ricollega Discord",
+        "connecting": "Apertura di Discord...",
+        "benefits": "Collega il tuo Discord per ottenere punti dal gioco e dall'attivita nella comunita, e scalare i gradi di stato.",
+        "error": "Impossibile collegare Discord. Riprova.",
+        "success": "Discord collegato."
+      },
+      "linkedAs": "Collegato come {name}",
+      "linkedTitle": "Discord: {name}",
+      "viewCharacter": "Mostra {name}",
+      "viewProfile": "Apri il profilo pubblico di questo personaggio",
+      "unlink": "Scollega",
+      "visit": "Visita Discord",
+      "unlinkConfirm": "Scollegare il tuo account Discord da questo account di gioco?",
+      "statusLabel": "Stato",
+      "rank": "Grado",
+      "points": "Punti",
+      "lifetime": "Totale",
+      "toNext": "{points} al grado successivo",
+      "maxRank": "Grado massimo raggiunto",
+      "tiersTitle": "Gradi di stato",
+      "tierLocked": "Bloccato",
+      "tierCurrent": "Attuale",
+      "earnTitle": "Come ottenere punti",
+      "earnBody": "Ottieni punti dal tempo di gioco e restando attivo su Discord. I punti aumentano il tuo grado di stato.",
+      "memberSince": "Membro dal",
+      "memberSinceDays": "{days}g nel Discord",
+      "roleTag": {
+        "levyst": "Levy St",
+        "devs": "Dev",
+        "mods": "Mod",
+        "artists": "Artista"
+      },
+      "guildMember": "Membro verificato",
+      "notMember": "Non ancora nel server",
+      "joinCta": "Unisciti al Discord",
+      "online": "{count} online",
+      "community": "Comunita",
+      "rewards": "Ricompense",
+      "voice": {
+        "title": "Vocale",
+        "channel": "In {channel}",
+        "empty": "Non c'e nessuno in vocale al momento.",
+        "speaking": "Sta parlando",
+        "muted": "Silenziato",
+        "join": "Entra in vocale",
+        "connect": "Connettiti al canale vocale"
+      },
+      "swag": {
+        "title": "Gadget",
+        "claim": "Riscatta",
+        "claimed": "Riscattato",
+        "locked": "Bloccato",
+        "free": "Gratis",
+        "cost": "{points} pti",
+        "needTier": "Raggiungi un grado piu alto per riscattarlo.",
+        "needPoints": "Punti insufficienti.",
+        "claimError": "Impossibile riscattare questa ricompensa. Riprova.",
+        "claimedToast": "Riscattato: {name}",
+        "titleDiscordian": "Titolo: Discordiano",
+        "titleSquire": "Titolo: Scudiero del Reame",
+        "chromaBlurple": "Cromatura Mech Blurple",
+        "titleChampion": "Titolo: Campione di Claudemoon",
+        "swagStickers": "Pacchetto adesivi (spedito)",
+        "swagTee": "Maglietta (spedita)"
+      },
+      "relay": {
+        "tooFast": "Stai pubblicando troppo in fretta. Aspetta un momento e riprova.",
+        "lfg": {
+          "label": "Cerco gruppo",
+          "hint": "Trova giocatori per un dungeon o una missione"
+        },
+        "wts": {
+          "label": "Cerco di vendere",
+          "hint": "Pubblicizza un oggetto o un servizio in vendita"
+        },
+        "wtb": {
+          "label": "Cerco di comprare",
+          "hint": "Richiedi un oggetto che vuoi comprare"
+        },
+        "recruit": {
+          "label": "Reclutamento gilda",
+          "hint": "Recluta giocatori per la tua gilda"
+        },
+        "event": {
+          "label": "Evento / Incursione",
+          "hint": "Annuncia un'incursione, un raduno o un evento"
+        },
+        "help": {
+          "label": "Serve aiuto",
+          "hint": "Chiedi aiuto alla comunita"
+        }
+      }
     }
   },
   "guide": {

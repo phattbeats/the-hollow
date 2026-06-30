@@ -151,6 +151,9 @@ export const tr_TR: EnTranslations = {
     }
   },
   "hudChrome": {
+    "spectate": {
+      "banner": "{name} izleniyor"
+    },
     "emotes": {
       "wave": "El Salla",
       "laugh": "LOL",
@@ -267,7 +270,15 @@ export const tr_TR: EnTranslations = {
       "targetAria": "Birim Büyü Çubuğu"
     },
     "leaderboard": {
-      "close": "Kapat"
+      "close": "Kapat",
+      "tabsLabel": "Yüksek skor tabloları",
+      "tabPlayers": "Oyuncular",
+      "tabGuilds": "Loncalar",
+      "guildName": "Lonca",
+      "members": "Üyeler",
+      "topLevel": "En İyi",
+      "guildXp": "Toplam XP",
+      "guildEmpty": "Henüz sıralamada lonca yok."
     },
     "raidLockout": {
       "title": "Akın Kilitleri",
@@ -720,6 +731,128 @@ export const tr_TR: EnTranslations = {
     "nameplate": {
       "mob": "[{level}] {name}",
       "mobElite": "[{level}+] {name}"
+    },
+    "discord": {
+      "title": "Discord",
+      "panelTitle": "World of ClaudeCraft",
+      "open": "Discord",
+      "close": "Kapat",
+      "keybind": "Discord Paneli",
+      "disabled": "Discord entegrasyonu şu anda kullanılamıyor.",
+      "tiers": {
+        "none": "Rütbesiz",
+        "initiate": "Çömez",
+        "squire": "Silahtar",
+        "footman": "Piyade",
+        "knight": "Şövalye",
+        "champion": "Şampiyon",
+        "warlord": "Savaş Lordu",
+        "legend": "Efsane",
+        "mythic": "Mitik"
+      },
+      "loginCta": "Discord ile devam et",
+      "orEmail": "veya e-posta kullan",
+      "cta": {
+        "title": "Puan kazanmak ve rütbe atlamak için Discord hesabını bağla",
+        "stats": "{online} çevrimiçi · sunucuda {total} üye",
+        "statsLoading": "Topluluğa katıl ve ödüller kazan",
+        "button": "Tek tıkla bağla",
+        "dismiss": "Kapat"
+      },
+      "link": {
+        "cta": "Discord'u bağla",
+        "relink": "Discord'u yeniden bağla",
+        "connecting": "Discord açılıyor...",
+        "benefits": "Oyun ve topluluk etkinliğinden puan kazanmak ve statü kademelerini tırmanmak için Discord hesabını bağla.",
+        "error": "Discord bağlanamadı. Lütfen tekrar dene.",
+        "success": "Discord bağlandı."
+      },
+      "linkedAs": "{name} olarak bağlı",
+      "linkedTitle": "Discord: {name}",
+      "viewCharacter": "{name} görüntüle",
+      "viewProfile": "Bu karakterin herkese açık profilini aç",
+      "unlink": "Bağlantıyı kaldır",
+      "visit": "Discord'u ziyaret et",
+      "unlinkConfirm": "Discord hesabının bu oyun hesabıyla bağlantısı kaldırılsın mı?",
+      "statusLabel": "Statü",
+      "rank": "Rütbe",
+      "points": "Puan",
+      "lifetime": "Tüm zamanlar",
+      "toNext": "Sonraki rütbeye {points}",
+      "maxRank": "En yüksek rütbeye ulaşıldı",
+      "tiersTitle": "Statü Kademeleri",
+      "tierLocked": "Kilitli",
+      "tierCurrent": "Mevcut",
+      "earnTitle": "Nasıl puan kazanılır",
+      "earnBody": "Oyunda geçirdiğin süreden ve Discord'da aktif kalmaktan puan kazan. Puanlar statü kademeni yükseltir.",
+      "memberSince": "Üyelik tarihi",
+      "memberSinceDays": "Discord'da {days}g",
+      "roleTag": {
+        "levyst": "Levy St",
+        "devs": "Geliştirici",
+        "mods": "Moderatör",
+        "artists": "Sanatçı"
+      },
+      "guildMember": "Onaylı üye",
+      "notMember": "Henüz sunucuda değil",
+      "joinCta": "Discord'a katıl",
+      "online": "{count} çevrimiçi",
+      "community": "Topluluk",
+      "rewards": "Ödüller",
+      "voice": {
+        "title": "Ses",
+        "channel": "{channel} kanalında",
+        "empty": "Şu anda sesli kanalda kimse yok.",
+        "speaking": "Konuşuyor",
+        "muted": "Susturuldu",
+        "join": "Sese katıl",
+        "connect": "Sesli kanala bağlan"
+      },
+      "swag": {
+        "title": "Hediyelikler",
+        "claim": "Talep et",
+        "claimed": "Talep edildi",
+        "locked": "Kilitli",
+        "free": "Ücretsiz",
+        "cost": "{points} pn",
+        "needTier": "Bunu talep etmek için daha yüksek bir rütbeye ulaş.",
+        "needPoints": "Yeterli puan yok.",
+        "claimError": "Bu ödül talep edilemedi. Lütfen tekrar dene.",
+        "claimedToast": "Talep edildi: {name}",
+        "titleDiscordian": "Unvan: Discordlu",
+        "titleSquire": "Unvan: Diyarın Silahtarı",
+        "chromaBlurple": "Blurple Mech Renk Kaplaması",
+        "titleChampion": "Unvan: Claudemoon Şampiyonu",
+        "swagStickers": "Çıkartma Paketi (kargoyla)",
+        "swagTee": "Tişört (kargoyla)"
+      },
+      "relay": {
+        "tooFast": "Çok hızlı gönderiyorsun. Biraz bekle ve tekrar dene.",
+        "lfg": {
+          "label": "Grup Arıyorum",
+          "hint": "Bir zindan veya görev için oyuncu bul"
+        },
+        "wts": {
+          "label": "Satmak İstiyorum",
+          "hint": "Satılık bir eşya veya hizmet ilan et"
+        },
+        "wtb": {
+          "label": "Satın Almak İstiyorum",
+          "hint": "Almak istediğin bir eşya iste"
+        },
+        "recruit": {
+          "label": "Lonca Üye Alımı",
+          "hint": "Loncana oyuncu topla"
+        },
+        "event": {
+          "label": "Etkinlik / Akın",
+          "hint": "Bir akın, buluşma veya etkinlik duyur"
+        },
+        "help": {
+          "label": "Yardım Lazım",
+          "hint": "Topluluktan yardım iste"
+        }
+      }
     }
   },
   "guide": {

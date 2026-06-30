@@ -151,6 +151,9 @@ export const da_DK: EnTranslations = {
     }
   },
   "hudChrome": {
+    "spectate": {
+      "banner": "Tilskuer til {name}"
+    },
     "emotes": {
       "wave": "Vink",
       "laugh": "LOL",
@@ -267,7 +270,15 @@ export const da_DK: EnTranslations = {
       "targetAria": "Enhedens castbjælke"
     },
     "leaderboard": {
-      "close": "Luk"
+      "close": "Luk",
+      "tabsLabel": "Pointtavler",
+      "tabPlayers": "Spillere",
+      "tabGuilds": "Guilds",
+      "guildName": "Guild",
+      "members": "Medlemmer",
+      "topLevel": "Top",
+      "guildXp": "Samlet XP",
+      "guildEmpty": "Ingen rangerede guilds endnu."
     },
     "raidLockout": {
       "title": "Raidlåse",
@@ -720,6 +731,128 @@ export const da_DK: EnTranslations = {
     "nameplate": {
       "mob": "[{level}] {name}",
       "mobElite": "[{level}+] {name}"
+    },
+    "discord": {
+      "title": "Discord",
+      "panelTitle": "World of ClaudeCraft",
+      "open": "Discord",
+      "close": "Luk",
+      "keybind": "Discord-panel",
+      "disabled": "Discord-integration er ikke tilgængelig lige nu.",
+      "tiers": {
+        "none": "Urangeret",
+        "initiate": "Indviet",
+        "squire": "Væbner",
+        "footman": "Fodknægt",
+        "knight": "Ridder",
+        "champion": "Champion",
+        "warlord": "Krigsherre",
+        "legend": "Legende",
+        "mythic": "Mytisk"
+      },
+      "loginCta": "Fortsæt med Discord",
+      "orEmail": "eller brug e-mail",
+      "cta": {
+        "title": "Forbind din Discord for at optjene point og stige i rang",
+        "stats": "{online} online · {total} medlemmer på serveren",
+        "statsLoading": "Bliv en del af fællesskabet og optjen belønninger",
+        "button": "Forbind med ét klik",
+        "dismiss": "Afvis"
+      },
+      "link": {
+        "cta": "Forbind Discord",
+        "relink": "Forbind Discord igen",
+        "connecting": "Åbner Discord...",
+        "benefits": "Forbind din Discord for at optjene point fra spil og fællesskabsaktivitet og stige i statusrangene.",
+        "error": "Kunne ikke forbinde Discord. Prøv igen.",
+        "success": "Discord forbundet."
+      },
+      "linkedAs": "Forbundet som {name}",
+      "linkedTitle": "Discord: {name}",
+      "viewCharacter": "Vis {name}",
+      "viewProfile": "Åbn denne karakters offentlige profil",
+      "unlink": "Fjern forbindelse",
+      "visit": "Besøg Discord",
+      "unlinkConfirm": "Fjern forbindelsen mellem din Discord-konto og denne spilkonto?",
+      "statusLabel": "Status",
+      "rank": "Rang",
+      "points": "Point",
+      "lifetime": "Samlet",
+      "toNext": "{points} til næste rang",
+      "maxRank": "Højeste rang nået",
+      "tiersTitle": "Statusrange",
+      "tierLocked": "Låst",
+      "tierCurrent": "Nuværende",
+      "earnTitle": "Sådan optjener du point",
+      "earnBody": "Optjen point fra spilletid i spillet og fra at være aktiv på Discord. Point hæver din statusrang.",
+      "memberSince": "Medlem siden",
+      "memberSinceDays": "{days}d på Discord",
+      "roleTag": {
+        "levyst": "Levy St",
+        "devs": "Udvikler",
+        "mods": "Moderator",
+        "artists": "Kunstner"
+      },
+      "guildMember": "Verificeret medlem",
+      "notMember": "Ikke på serveren endnu",
+      "joinCta": "Tilslut Discord",
+      "online": "{count} online",
+      "community": "Fællesskab",
+      "rewards": "Belønninger",
+      "voice": {
+        "title": "Tale",
+        "channel": "I {channel}",
+        "empty": "Ingen er i tale lige nu.",
+        "speaking": "Taler",
+        "muted": "Lyd slået fra",
+        "join": "Gå med i tale",
+        "connect": "Forbind til talekanal"
+      },
+      "swag": {
+        "title": "Swag",
+        "claim": "Indløs",
+        "claimed": "Indløst",
+        "locked": "Låst",
+        "free": "Gratis",
+        "cost": "{points} pt",
+        "needTier": "Nå en højere rang for at indløse dette.",
+        "needPoints": "Ikke nok point.",
+        "claimError": "Kunne ikke indløse den belønning. Prøv igen.",
+        "claimedToast": "Indløst: {name}",
+        "titleDiscordian": "Titel: Discordianer",
+        "titleSquire": "Titel: Væbner af Riget",
+        "chromaBlurple": "Blurple Mech-kromfarve",
+        "titleChampion": "Titel: Champion af Claudemoon",
+        "swagStickers": "Klistermærkepakke (sendes)",
+        "swagTee": "T-shirt (sendes)"
+      },
+      "relay": {
+        "tooFast": "Du poster for hurtigt. Vent et øjeblik og prøv igen.",
+        "lfg": {
+          "label": "Søger gruppe",
+          "hint": "Find spillere til et dungeon eller en opgave"
+        },
+        "wts": {
+          "label": "Vil sælge",
+          "hint": "Reklamér for en genstand eller tjeneste til salg"
+        },
+        "wtb": {
+          "label": "Vil købe",
+          "hint": "Efterlys en genstand, du vil købe"
+        },
+        "recruit": {
+          "label": "Guild-rekruttering",
+          "hint": "Rekruttér spillere til din guild"
+        },
+        "event": {
+          "label": "Arrangement / Raid",
+          "hint": "Annoncér et raid, et møde eller et arrangement"
+        },
+        "help": {
+          "label": "Brug for hjælp",
+          "hint": "Bed fællesskabet om hjælp"
+        }
+      }
     }
   },
   "guide": {

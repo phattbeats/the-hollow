@@ -142,7 +142,22 @@ export function isDemonPetState(state: PetState | null | undefined): boolean {
 
 export function restorePet(ctx: SimContext, owner: Entity, state: PetState): void {
   const template = MOBS[state.templateId];
-  if (!template) return;
+  if (!template) {
+    // The stored pet's creature template was removed or renamed by a content
+    // update, so we can no longer rebuild it. Drop the pet (it cannot exist),
+    // but tell the owner instead of silently emptying the pet slot. When the
+    // saved name is unclean (no localizable proper noun survives), emit the
+    // generic, name-free sentence rather than splicing an English "Your pet"
+    // that the client matcher would leave untranslated in a non-English locale.
+    const lost = cleanPetName(state.name);
+    ctx.notice(
+      owner.id,
+      lost
+        ? `${lost} could not be restored and has been lost.`
+        : 'Your pet could not be restored and has been lost.',
+    );
+    return;
+  }
   const level = owner.level;
   const pos = ctx.groundPos(owner.pos.x + 2, owner.pos.z + 1);
   const pet = createMob(ctx.nextId++, template, level, pos);
@@ -353,6 +368,24 @@ export function despawnPersistentPet(ctx: SimContext, pet: Entity): void {
     if (m.aggroTargetId === pet.id && !m.dead && m.aiState !== 'dead') ctx.retargetMob(m);
   }
   ctx.dropEntity(pet.id);
+}
+
+export function stowPetForSpectate(ctx: SimContext, ownerPid: number): PetState | null {
+  const pet = petOf(ctx, ownerPid, true);
+  if (!pet) return null;
+  const state = serializePet(ctx, ownerPid);
+  despawnPersistentPet(ctx, pet);
+  return state;
+}
+
+export function restorePetAfterSpectate(
+  ctx: SimContext,
+  ownerPid: number,
+  state: PetState | null,
+): void {
+  if (!state || petOf(ctx, ownerPid, true)) return;
+  const owner = ctx.entities.get(ownerPid);
+  if (owner) restorePet(ctx, owner, state);
 }
 
 export function applyDemonHealTick(ctx: SimContext, owner: Entity): void {

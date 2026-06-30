@@ -151,6 +151,9 @@ export const id_ID: EnTranslations = {
     }
   },
   "hudChrome": {
+    "spectate": {
+      "banner": "Menonton {name}"
+    },
     "emotes": {
       "wave": "Melambai",
       "laugh": "LOL",
@@ -267,7 +270,15 @@ export const id_ID: EnTranslations = {
       "targetAria": "Bilah Rapal Unit"
     },
     "leaderboard": {
-      "close": "Tutup"
+      "close": "Tutup",
+      "tabsLabel": "Papan skor tertinggi",
+      "tabPlayers": "Pemain",
+      "tabGuilds": "Guild",
+      "guildName": "Guild",
+      "members": "Anggota",
+      "topLevel": "Teratas",
+      "guildXp": "Total XP",
+      "guildEmpty": "Belum ada guild berperingkat."
     },
     "raidLockout": {
       "title": "Penguncian Raid",
@@ -720,6 +731,128 @@ export const id_ID: EnTranslations = {
     "nameplate": {
       "mob": "[{level}] {name}",
       "mobElite": "[{level}+] {name}"
+    },
+    "discord": {
+      "title": "Discord",
+      "panelTitle": "World of ClaudeCraft",
+      "open": "Discord",
+      "close": "Tutup",
+      "keybind": "Panel Discord",
+      "disabled": "Integrasi Discord sedang tidak tersedia saat ini.",
+      "tiers": {
+        "none": "Tanpa Peringkat",
+        "initiate": "Inisiat",
+        "squire": "Pengiring",
+        "footman": "Serdadu",
+        "knight": "Ksatria",
+        "champion": "Jawara",
+        "warlord": "Panglima",
+        "legend": "Legenda",
+        "mythic": "Mistis"
+      },
+      "loginCta": "Lanjutkan dengan Discord",
+      "orEmail": "atau gunakan email",
+      "cta": {
+        "title": "Tautkan Discord-mu untuk meraih poin dan naik peringkat",
+        "stats": "{online} daring · {total} anggota di server",
+        "statsLoading": "Gabung komunitas dan raih hadiah",
+        "button": "Tautkan dalam satu klik",
+        "dismiss": "Abaikan"
+      },
+      "link": {
+        "cta": "Tautkan Discord",
+        "relink": "Tautkan ulang Discord",
+        "connecting": "Membuka Discord...",
+        "benefits": "Tautkan Discord-mu untuk meraih poin dari bermain dan aktivitas komunitas, serta naik tingkat status.",
+        "error": "Tidak dapat menautkan Discord. Silakan coba lagi.",
+        "success": "Discord tertaut."
+      },
+      "linkedAs": "Tertaut sebagai {name}",
+      "linkedTitle": "Discord: {name}",
+      "viewCharacter": "Lihat {name}",
+      "viewProfile": "Buka profil publik karakter ini",
+      "unlink": "Putuskan tautan",
+      "visit": "Kunjungi Discord",
+      "unlinkConfirm": "Putuskan tautan akun Discord-mu dari akun game ini?",
+      "statusLabel": "Status",
+      "rank": "Peringkat",
+      "points": "Poin",
+      "lifetime": "Seumur hidup",
+      "toNext": "{points} lagi ke peringkat berikutnya",
+      "maxRank": "Peringkat tertinggi tercapai",
+      "tiersTitle": "Tingkat Status",
+      "tierLocked": "Terkunci",
+      "tierCurrent": "Saat ini",
+      "earnTitle": "Cara meraih poin",
+      "earnBody": "Raih poin dari waktu bermain dalam game dan dari keaktifan di Discord. Poin menaikkan tingkat statusmu.",
+      "memberSince": "Anggota sejak",
+      "memberSinceDays": "{days}h di Discord",
+      "roleTag": {
+        "levyst": "Levy St",
+        "devs": "Pengembang",
+        "mods": "Moderator",
+        "artists": "Seniman"
+      },
+      "guildMember": "Anggota terverifikasi",
+      "notMember": "Belum berada di server",
+      "joinCta": "Gabung Discord",
+      "online": "{count} daring",
+      "community": "Komunitas",
+      "rewards": "Hadiah",
+      "voice": {
+        "title": "Suara",
+        "channel": "Di {channel}",
+        "empty": "Tidak ada yang di kanal suara saat ini.",
+        "speaking": "Berbicara",
+        "muted": "Dibisukan",
+        "join": "Gabung suara",
+        "connect": "Sambungkan ke kanal suara"
+      },
+      "swag": {
+        "title": "Suvenir",
+        "claim": "Klaim",
+        "claimed": "Diklaim",
+        "locked": "Terkunci",
+        "free": "Gratis",
+        "cost": "{points} poin",
+        "needTier": "Capai peringkat lebih tinggi untuk mengklaim ini.",
+        "needPoints": "Poin tidak cukup.",
+        "claimError": "Tidak dapat mengklaim hadiah itu. Silakan coba lagi.",
+        "claimedToast": "Diklaim: {name}",
+        "titleDiscordian": "Gelar: Discordian",
+        "titleSquire": "Gelar: Pengiring Kerajaan",
+        "chromaBlurple": "Kroma Mech Blurple",
+        "titleChampion": "Gelar: Jawara Claudemoon",
+        "swagStickers": "Paket Stiker (dikirim)",
+        "swagTee": "Kaus (dikirim)"
+      },
+      "relay": {
+        "tooFast": "Kamu mengirim terlalu cepat. Tunggu sebentar dan coba lagi.",
+        "lfg": {
+          "label": "Mencari Kelompok",
+          "hint": "Cari pemain untuk dungeon atau misi"
+        },
+        "wts": {
+          "label": "Ingin Menjual",
+          "hint": "Iklankan item atau jasa yang dijual"
+        },
+        "wtb": {
+          "label": "Ingin Membeli",
+          "hint": "Minta item yang ingin kamu beli"
+        },
+        "recruit": {
+          "label": "Rekrutmen Guild",
+          "hint": "Rekrut pemain untuk guild-mu"
+        },
+        "event": {
+          "label": "Acara / Raid",
+          "hint": "Umumkan raid, pertemuan, atau acara"
+        },
+        "help": {
+          "label": "Butuh Bantuan",
+          "hint": "Minta bantuan dari komunitas"
+        }
+      }
     }
   },
   "guide": {

@@ -151,6 +151,9 @@ export const sv_SE: EnTranslations = {
     }
   },
   "hudChrome": {
+    "spectate": {
+      "banner": "Åskådar {name}"
+    },
     "emotes": {
       "wave": "Vinka",
       "laugh": "LOL",
@@ -267,7 +270,15 @@ export const sv_SE: EnTranslations = {
       "targetAria": "Enhetens besvärjelsemätare"
     },
     "leaderboard": {
-      "close": "Stäng"
+      "close": "Stäng",
+      "tabsLabel": "Topplistor",
+      "tabPlayers": "Spelare",
+      "tabGuilds": "Gillen",
+      "guildName": "Gille",
+      "members": "Medlemmar",
+      "topLevel": "Topp",
+      "guildXp": "Total XP",
+      "guildEmpty": "Inga rankade gillen ännu."
     },
     "raidLockout": {
       "title": "Raidlåsningar",
@@ -720,6 +731,128 @@ export const sv_SE: EnTranslations = {
     "nameplate": {
       "mob": "[{level}] {name}",
       "mobElite": "[{level}+] {name}"
+    },
+    "discord": {
+      "title": "Discord",
+      "panelTitle": "World of ClaudeCraft",
+      "open": "Discord",
+      "close": "Stäng",
+      "keybind": "Discord-panel",
+      "disabled": "Discord-integrationen är inte tillgänglig just nu.",
+      "tiers": {
+        "none": "Orankad",
+        "initiate": "Novis",
+        "squire": "Väpnare",
+        "footman": "Fotsoldat",
+        "knight": "Riddare",
+        "champion": "Mästare",
+        "warlord": "Krigsherre",
+        "legend": "Legend",
+        "mythic": "Mytisk"
+      },
+      "loginCta": "Fortsätt med Discord",
+      "orEmail": "eller använd e-post",
+      "cta": {
+        "title": "Länka ditt Discord för att tjäna poäng och stiga i rang",
+        "stats": "{online} online · {total} medlemmar på servern",
+        "statsLoading": "Gå med i gemenskapen och tjäna belöningar",
+        "button": "Länka med ett klick",
+        "dismiss": "Avvisa"
+      },
+      "link": {
+        "cta": "Länka Discord",
+        "relink": "Länka om Discord",
+        "connecting": "Öppnar Discord...",
+        "benefits": "Länka ditt Discord för att tjäna poäng från spel och gemenskapsaktivitet, och klättra på statusnivåerna.",
+        "error": "Det gick inte att länka Discord. Försök igen.",
+        "success": "Discord länkat."
+      },
+      "linkedAs": "Länkad som {name}",
+      "linkedTitle": "Discord: {name}",
+      "viewCharacter": "Visa {name}",
+      "viewProfile": "Öppna den här karaktärens offentliga profil",
+      "unlink": "Avlänka",
+      "visit": "Besök Discord",
+      "unlinkConfirm": "Avlänka ditt Discord-konto från detta spelkonto?",
+      "statusLabel": "Status",
+      "rank": "Rang",
+      "points": "Poäng",
+      "lifetime": "Totalt",
+      "toNext": "{points} till nästa rang",
+      "maxRank": "Högsta rang uppnådd",
+      "tiersTitle": "Statusnivåer",
+      "tierLocked": "Låst",
+      "tierCurrent": "Nuvarande",
+      "earnTitle": "Så tjänar du poäng",
+      "earnBody": "Tjäna poäng på speltid i spelet och på att vara aktiv i Discord. Poäng höjer din statusnivå.",
+      "memberSince": "Medlem sedan",
+      "memberSinceDays": "{days}d i Discord",
+      "roleTag": {
+        "levyst": "Levy St",
+        "devs": "Utvecklare",
+        "mods": "Moderator",
+        "artists": "Konstnär"
+      },
+      "guildMember": "Verifierad medlem",
+      "notMember": "Inte med på servern ännu",
+      "joinCta": "Gå med i Discord",
+      "online": "{count} online",
+      "community": "Gemenskap",
+      "rewards": "Belöningar",
+      "voice": {
+        "title": "Röst",
+        "channel": "I {channel}",
+        "empty": "Ingen är i röstkanalen just nu.",
+        "speaking": "Talar",
+        "muted": "Tystad",
+        "join": "Anslut till röst",
+        "connect": "Anslut till röstkanal"
+      },
+      "swag": {
+        "title": "Prylar",
+        "claim": "Hämta",
+        "claimed": "Hämtad",
+        "locked": "Låst",
+        "free": "Gratis",
+        "cost": "{points} p",
+        "needTier": "Nå en högre rang för att hämta detta.",
+        "needPoints": "Inte tillräckligt med poäng.",
+        "claimError": "Det gick inte att hämta belöningen. Försök igen.",
+        "claimedToast": "Hämtad: {name}",
+        "titleDiscordian": "Titel: Discordian",
+        "titleSquire": "Titel: Väpnare av riket",
+        "chromaBlurple": "Blurple Mech-färg",
+        "titleChampion": "Titel: Champion of Claudemoon",
+        "swagStickers": "Klistermärkespaket (skickas)",
+        "swagTee": "T-shirt (skickas)"
+      },
+      "relay": {
+        "tooFast": "Du postar för snabbt. Vänta en stund och försök igen.",
+        "lfg": {
+          "label": "Söker grupp",
+          "hint": "Hitta spelare till en instans eller ett uppdrag"
+        },
+        "wts": {
+          "label": "Vill sälja",
+          "hint": "Annonsera ett föremål eller en tjänst till salu"
+        },
+        "wtb": {
+          "label": "Vill köpa",
+          "hint": "Efterfråga ett föremål du vill köpa"
+        },
+        "recruit": {
+          "label": "Gillesrekrytering",
+          "hint": "Rekrytera spelare till ditt gille"
+        },
+        "event": {
+          "label": "Evenemang / Raid",
+          "hint": "Annonsera en raid, träff eller ett evenemang"
+        },
+        "help": {
+          "label": "Behöver hjälp",
+          "hint": "Be gemenskapen om hjälp"
+        }
+      }
     }
   },
   "guide": {
