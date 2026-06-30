@@ -85,8 +85,12 @@ try {
   await page.goto(`${BASE}/wiki/classes`, { waitUntil: 'networkidle0' });
   await page.waitForSelector('.guide-class-card');
   check('classes index lists nine classes', (await page.$$('.guide-class-card')).length === 9);
-  const crestSrc = await page.$eval('.guide-class-crest', (el) => el.getAttribute('src') || '');
-  check('class crest is a procedural data URL', crestSrc.startsWith('data:image'));
+  const cardImg = await page.$eval('.guide-class-card img', (el) => el.getAttribute('src') || '');
+  check(
+    'class card shows the character still (crest fallback)',
+    cardImg.includes('/guide-stills/') || cardImg.startsWith('data:image'),
+    cardImg.slice(0, 48),
+  );
   await page.screenshot({ path: 'tmp/wiki-classes.png', fullPage: true });
 
   await page.goto(`${BASE}/wiki/classes/warrior`, { waitUntil: 'networkidle0' });
