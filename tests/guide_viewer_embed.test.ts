@@ -48,6 +48,16 @@ describe('modelViewerEmbed', () => {
     expect(off).not.toContain('data-autoplay');
   });
 
+  it('emits the status line as an empty ARIA live region for mount.ts to drive', () => {
+    // VIEW-4: the load/error copy is written imperatively on each state transition (mount.ts),
+    // because aria-live announces a text mutation, not the CSS show/hide keyed off data-state.
+    // The static markup must therefore ship an EMPTY live region, not two CSS-toggled spans.
+    const html = modelViewerEmbed({ modelKey: 'wolf', name: 'Forest Wolf' });
+    expect(html).toContain('<p class="guide-viewer-status" role="status" aria-live="polite"></p>');
+    expect(html).not.toContain('guide-viewer-status-loading');
+    expect(html).not.toContain('guide-viewer-status-error');
+  });
+
   it('carries the wirer data-attributes (model, tint, idle state) and the feature variant', () => {
     const html = modelViewerEmbed({
       modelKey: 'demon',

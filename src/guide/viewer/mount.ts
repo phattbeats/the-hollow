@@ -67,6 +67,16 @@ export function wireModelViewers(root: HTMLElement, opts: WireOptions = {}): () 
       continue;
     }
 
+    // The status pill is an empty ARIA live region (viewer/embed.ts). Write into it on every
+    // state transition so a screen-reader user actually hears load and error feedback: aria-live
+    // announces a text mutation, not the CSS show/hide that data-state performs. The data-state is
+    // set BEFORE the text so the region is already visible (in the a11y tree) when it mutates, and
+    // it is cleared on idle/ready so a stale message is never re-announced.
+    const status = fig.querySelector<HTMLElement>('.guide-viewer-status');
+    const setStatus = (text: string): void => {
+      if (status) status.textContent = text;
+    };
+
     let viewer: ModelViewer | null = null;
     let io: IntersectionObserver | null = null;
     let started = false;
@@ -86,6 +96,7 @@ export function wireModelViewers(root: HTMLElement, opts: WireOptions = {}): () 
       const i = live.indexOf(entry);
       if (i >= 0) live.splice(i, 1);
       fig.dataset.state = 'idle';
+      setStatus(''); // hidden again; drop any prior message so it is not re-announced
       if (btn) btn.disabled = false;
       started = false;
     }
@@ -117,6 +128,7 @@ export function wireModelViewers(root: HTMLElement, opts: WireOptions = {}): () 
       live.push(entry);
       fig.dataset.state = 'loading';
       btn.disabled = true;
+      setStatus(t('guide.viewer.loading'));
       try {
         const label = t('guide.viewer.canvasLabel', { name: fig.dataset.name ?? '' });
         const built = await createViewer(stage, label);
@@ -130,6 +142,7 @@ export function wireModelViewers(root: HTMLElement, opts: WireOptions = {}): () 
         built.onContextLost(() => {
           release();
           fig.dataset.state = 'error';
+          setStatus(t('guide.viewer.error', { name: fig.dataset.name ?? '' }));
         });
         const tintAttr = fig.dataset.tint;
         const tint = tintAttr ? parseInt(tintAttr.replace('#', ''), 16) : null;
@@ -137,6 +150,7 @@ export function wireModelViewers(root: HTMLElement, opts: WireOptions = {}): () 
         // Evicted during the GLB load: release() already destroyed `viewer`, so just bail.
         if (myGen !== loadGen) return;
         fig.dataset.state = 'ready';
+        setStatus(''); // hidden on success; clear so the loading message is not left to announce
         const v = built;
         io = new IntersectionObserver(
           (entries) => {
@@ -150,6 +164,7 @@ export function wireModelViewers(root: HTMLElement, opts: WireOptions = {}): () 
         console.error('Guide model viewer failed to load', err);
         release();
         fig.dataset.state = 'error';
+        setStatus(t('guide.viewer.error', { name: fig.dataset.name ?? '' }));
       }
     }
 

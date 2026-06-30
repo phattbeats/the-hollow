@@ -47,6 +47,10 @@ export function modelViewerEmbed(opts: ModelEmbedOptions): string {
   const poster = posterSrc
     ? `<img class="guide-viewer-poster${opts.still ? ' guide-viewer-poster-still' : ''}" src="${esc(posterSrc)}" alt="${esc(posterAlt)}" width="${size}" height="${size}" loading="lazy" decoding="async" />`
     : '';
+  // The status line is an empty ARIA live region. mount.ts writes guide.viewer.loading /
+  // guide.viewer.error into it on each state transition, because aria-live announces a text
+  // mutation, not the CSS show/hide that data-state drives. Keeping the copy out of the static
+  // markup (rather than two CSS-toggled spans) is what makes the load and error feedback audible.
   return `
     <figure class="${cls}" data-model="${esc(opts.modelKey)}"${opts.tint ? ` data-tint="${esc(opts.tint)}"` : ''}
       data-name="${esc(opts.name)}"${opts.autoplay ? ' data-autoplay="true"' : ''} data-state="idle">
@@ -56,10 +60,7 @@ export function modelViewerEmbed(opts: ModelEmbedOptions): string {
           <span class="guide-viewer-load-icon" aria-hidden="true"></span>
           <span class="guide-viewer-load-text">${esc(t('guide.viewer.view3dShort'))}</span>
         </button>
-        <p class="guide-viewer-status" role="status" aria-live="polite">
-          <span class="guide-viewer-status-loading">${esc(t('guide.viewer.loading'))}</span>
-          <span class="guide-viewer-status-error">${esc(t('guide.viewer.error', { name: opts.name }))}</span>
-        </p>
+        <p class="guide-viewer-status" role="status" aria-live="polite"></p>
       </div>
       <figcaption class="guide-viewer-hint">${esc(t('guide.viewer.dragHint'))}</figcaption>
     </figure>`;

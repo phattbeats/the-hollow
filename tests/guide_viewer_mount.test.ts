@@ -12,6 +12,8 @@ const h = vi.hoisted(() => {
     destroyed: boolean;
     onscreen: boolean | null;
     resolveLoad: () => void;
+    failLoad: () => void;
+    loseContext: () => void;
     label: string;
   }> = [];
   class FakeViewer {
@@ -19,11 +21,15 @@ const h = vi.hoisted(() => {
     onscreen: boolean | null = null;
     label: string;
     private loadResolvers: Array<() => void> = [];
+    private loadRejecters: Array<(e: unknown) => void> = [];
+    private contextLostCb: (() => void) | null = null;
     constructor(_stage: unknown, label: string) {
       this.label = label;
       instances.push(this);
     }
-    onContextLost(): void {}
+    onContextLost(cb: () => void): void {
+      this.contextLostCb = cb;
+    }
     isContextLost(): boolean {
       return false;
     }
@@ -33,14 +39,23 @@ const h = vi.hoisted(() => {
     setLabel(l: string): void {
       this.label = l;
     }
-    // Stays pending until the test resolves it, so we can evict a viewer mid-load.
+    // Stays pending until the test resolves OR fails it, so we can evict a viewer mid-load or
+    // drive it down the error path.
     load(): Promise<void> {
-      return new Promise((res) => {
+      return new Promise((res, rej) => {
         this.loadResolvers.push(res);
+        this.loadRejecters.push(rej);
       });
     }
     resolveLoad(): void {
       for (const r of this.loadResolvers) r();
+    }
+    failLoad(): void {
+      for (const r of this.loadRejecters) r(new Error('load failed'));
+    }
+    // Simulate a lost WebGL context: invoke the callback mount.ts registered via onContextLost.
+    loseContext(): void {
+      this.contextLostCb?.();
     }
     destroy(): void {
       this.destroyed = true;
@@ -61,11 +76,13 @@ vi.mock('../src/ui/i18n', () => ({ t: (k: string) => k }));
 class FakeEl {
   dataset: Record<string, string> = {};
   disabled = false;
+  textContent = '';
   private listeners: Record<string, Array<(e: unknown) => void>> = {};
   constructor(
-    public kind: 'figure' | 'button' | 'stage',
+    public kind: 'figure' | 'button' | 'stage' | 'status',
     private button?: FakeEl,
     private stage?: FakeEl,
+    private status?: FakeEl,
   ) {}
   addEventListener(type: string, fn: (e: unknown) => void): void {
     this.listeners[type] = this.listeners[type] ?? [];
@@ -77,10 +94,11 @@ class FakeEl {
   fire(type: string, e: unknown = {}): void {
     for (const fn of (this.listeners[type] || []).slice()) fn(e);
   }
-  // mount.ts only ever asks a figure for its load button and its stage.
+  // mount.ts asks a figure for its load button, its stage, and its status live region.
   querySelector(sel: string): FakeEl | null {
     if (sel.includes('guide-viewer-load')) return this.button ?? null;
     if (sel.includes('guide-viewer-stage')) return this.stage ?? null;
+    if (sel.includes('guide-viewer-status')) return this.status ?? null;
     return null;
   }
 }
@@ -89,14 +107,16 @@ interface Fig {
   fig: FakeEl;
   btn: FakeEl;
   stage: FakeEl;
+  status: FakeEl;
 }
 function makeFigure(model: string, opts: { autoplay?: boolean } = {}): Fig {
   const btn = new FakeEl('button');
   const stage = new FakeEl('stage');
-  const fig = new FakeEl('figure', btn, stage);
+  const status = new FakeEl('status');
+  const fig = new FakeEl('figure', btn, stage, status);
   fig.dataset = { model, name: model, state: 'idle' };
   if (opts.autoplay) fig.dataset.autoplay = 'true';
-  return { fig, btn, stage };
+  return { fig, btn, stage, status };
 }
 // Returns HTMLElement (the public wireModelViewers param type); the fake only models the
 // surface mount.ts actually touches.
@@ -254,5 +274,73 @@ describe('wireModelViewers', () => {
     expect(h.instances.filter((v) => !v.destroyed).length).toBe(2);
     cleanup();
     expect(h.instances.every((v) => v.destroyed)).toBe(true);
+  });
+
+  // VIEW-4: the status pill is an empty ARIA live region (embed.ts); mount.ts must write into it
+  // on each transition, since aria-live announces a text mutation, not the CSS show/hide keyed off
+  // data-state. The t() stub is identity, so we assert on the key the transition resolves.
+  it('writes the loading message to the live region, then clears it once the model is ready', async () => {
+    const { wireModelViewers } = await import('../src/guide/viewer/mount');
+    const figs = [makeFigure('wolf')];
+    const cleanup = wireModelViewers(makeRoot(figs), { maxConcurrent: 2 });
+    figs[0].btn.fire('click');
+    await flush(); // viewer built, load() pending: the figure is in its loading state
+    expect(figs[0].fig.dataset.state).toBe('loading');
+    expect(figs[0].status.textContent).toBe('guide.viewer.loading');
+    h.instances[0].resolveLoad(); // load settles: the figure becomes ready
+    await flush();
+    expect(figs[0].fig.dataset.state).toBe('ready');
+    expect(figs[0].status.textContent).toBe(''); // cleared so the loading line is not re-announced
+    cleanup();
+  });
+
+  it('writes the error message to the live region when the model load fails', async () => {
+    const { wireModelViewers } = await import('../src/guide/viewer/mount');
+    const figs = [makeFigure('wolf')];
+    const cleanup = wireModelViewers(makeRoot(figs), { maxConcurrent: 2 });
+    figs[0].btn.fire('click');
+    await flush();
+    expect(figs[0].status.textContent).toBe('guide.viewer.loading');
+    h.instances[0].failLoad(); // load rejects: the catch drops the figure to its error state
+    await flush();
+    expect(figs[0].fig.dataset.state).toBe('error');
+    expect(figs[0].status.textContent).toBe('guide.viewer.error');
+    cleanup();
+  });
+
+  it('writes the error message to the live region on a lost WebGL context', async () => {
+    const { wireModelViewers } = await import('../src/guide/viewer/mount');
+    const figs = [makeFigure('wolf')];
+    const cleanup = wireModelViewers(makeRoot(figs), { maxConcurrent: 2 });
+    figs[0].btn.fire('click');
+    await flush();
+    h.instances[0].resolveLoad();
+    await flush();
+    expect(figs[0].fig.dataset.state).toBe('ready');
+    expect(figs[0].status.textContent).toBe('');
+    h.instances[0].loseContext(); // context loss: release() then the error transition
+    await flush();
+    expect(figs[0].fig.dataset.state).toBe('error');
+    expect(figs[0].status.textContent).toBe('guide.viewer.error');
+    cleanup();
+  });
+
+  it('clears the live region when a loading figure is evicted (LRU), so no stale message lingers', async () => {
+    // The other half of "cleared on idle/ready": release() (LRU eviction / cleanup) must wipe the
+    // loading message. Otherwise an evicted mid-load figure keeps "Loading model..." in its live
+    // region, and re-activating it rewrites the SAME value, so textContent never mutates and the
+    // screen reader never re-announces the load.
+    const { wireModelViewers } = await import('../src/guide/viewer/mount');
+    const figs = [makeFigure('wolf'), makeFigure('bear')];
+    const cleanup = wireModelViewers(makeRoot(figs), { maxConcurrent: 1 });
+    figs[0].btn.fire('click');
+    await flush(); // wolf is loading; its live region carries the loading message
+    expect(figs[0].fig.dataset.state).toBe('loading');
+    expect(figs[0].status.textContent).toBe('guide.viewer.loading');
+    figs[1].btn.fire('click'); // cap 1: activating bear evicts wolf through release()
+    await flush();
+    expect(figs[0].fig.dataset.state).toBe('idle'); // wolf drops back to its 2D poster
+    expect(figs[0].status.textContent).toBe(''); // and its live region is wiped, not left stale
+    cleanup();
   });
 });
