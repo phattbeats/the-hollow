@@ -767,6 +767,27 @@ export const es: EnTranslations = {
         "error": "No se pudo vincular Discord. Inténtalo de nuevo.",
         "success": "Discord vinculado."
       },
+      "choice": {
+        "title": "Continuar con Discord",
+        "intro": "Crea una cuenta nueva o vincula tu Discord a una que ya tengas.",
+        "greeting": "¡Bienvenido, {name}!",
+        "createCta": "Crear una cuenta nueva",
+        "haveAccount": "¿Ya tienes una cuenta?",
+        "linkCta": "Vincular una cuenta existente",
+        "linkSubmit": "Vincular cuenta",
+        "error": "No se pudo continuar. Inténtalo de nuevo.",
+        "expired": "Ese inicio de sesión con Discord expiró. Vuelve a iniciar sesión con Discord."
+      },
+      "keep": {
+        "title": "Establece una contraseña",
+        "body": "Tu cuenta inicia sesión con Discord. Establece una contraseña para que puedas seguir iniciando sesión con tu usuario después de desvincularla.",
+        "usernameLabel": "Tu usuario",
+        "confirmLabel": "Confirmar contraseña",
+        "submit": "Establecer contraseña y desvincular",
+        "cancel": "Cancelar",
+        "mismatch": "Las contraseñas no coinciden.",
+        "tooShort": "La contraseña debe tener al menos 6 caracteres."
+      },
       "linkedAs": "Vinculado como {name}",
       "linkedTitle": "Discord: {name}",
       "viewCharacter": "Ver a {name}",

@@ -767,6 +767,27 @@ export const da_DK: EnTranslations = {
         "error": "Kunne ikke forbinde Discord. Prøv igen.",
         "success": "Discord forbundet."
       },
+      "choice": {
+        "title": "Fortsæt med Discord",
+        "intro": "Opret en ny konto, eller forbind din Discord til en, du allerede har.",
+        "greeting": "Velkommen, {name}!",
+        "createCta": "Opret en ny konto",
+        "haveAccount": "Har du allerede en konto?",
+        "linkCta": "Forbind en eksisterende konto",
+        "linkSubmit": "Forbind konto",
+        "error": "Kunne ikke fortsætte. Prøv igen.",
+        "expired": "Det Discord-login er udløbet. Log ind med Discord igen."
+      },
+      "keep": {
+        "title": "Vælg en adgangskode",
+        "body": "Din konto logger ind med Discord. Vælg en adgangskode, så du stadig kan logge ind med dit brugernavn, efter du har fjernet forbindelsen.",
+        "usernameLabel": "Dit brugernavn",
+        "confirmLabel": "Bekræft adgangskode",
+        "submit": "Vælg adgangskode og fjern forbindelse",
+        "cancel": "Annuller",
+        "mismatch": "Adgangskoderne stemmer ikke overens.",
+        "tooShort": "Adgangskoden skal være på mindst 6 tegn."
+      },
       "linkedAs": "Forbundet som {name}",
       "linkedTitle": "Discord: {name}",
       "viewCharacter": "Vis {name}",

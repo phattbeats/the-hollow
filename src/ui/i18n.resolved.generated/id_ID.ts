@@ -767,6 +767,27 @@ export const id_ID: EnTranslations = {
         "error": "Tidak dapat menautkan Discord. Silakan coba lagi.",
         "success": "Discord tertaut."
       },
+      "choice": {
+        "title": "Lanjutkan dengan Discord",
+        "intro": "Buat akun baru, atau tautkan Discord-mu ke akun yang sudah kamu miliki.",
+        "greeting": "Selamat datang, {name}!",
+        "createCta": "Buat akun baru",
+        "haveAccount": "Sudah punya akun?",
+        "linkCta": "Tautkan akun yang sudah ada",
+        "linkSubmit": "Tautkan akun",
+        "error": "Tidak dapat melanjutkan. Silakan coba lagi.",
+        "expired": "Sesi masuk Discord itu kedaluwarsa. Silakan masuk dengan Discord lagi."
+      },
+      "keep": {
+        "title": "Atur kata sandi",
+        "body": "Akunmu masuk dengan Discord. Atur kata sandi agar kamu tetap bisa masuk dengan nama penggunamu setelah memutuskan tautan.",
+        "usernameLabel": "Nama penggunamu",
+        "confirmLabel": "Konfirmasi kata sandi",
+        "submit": "Atur kata sandi dan putuskan tautan",
+        "cancel": "Batal",
+        "mismatch": "Kata sandi tidak cocok.",
+        "tooShort": "Kata sandi harus minimal 6 karakter."
+      },
       "linkedAs": "Tertaut sebagai {name}",
       "linkedTitle": "Discord: {name}",
       "viewCharacter": "Lihat {name}",

@@ -4949,6 +4949,26 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'hudChrome.discord.tiers.legend': 'Legende',
   'hudChrome.discord.tiers.mythic': 'Mythisch',
   'hudChrome.discord.loginCta': 'Mit Discord fortfahren',
+  'hudChrome.discord.choice.title': 'Mit Discord fortfahren',
+  'hudChrome.discord.choice.intro':
+    'Erstelle einen neuen Account oder verknüpfe dein Discord mit einem, den du bereits hast.',
+  'hudChrome.discord.choice.greeting': 'Willkommen, {name}!',
+  'hudChrome.discord.choice.createCta': 'Neuen Account erstellen',
+  'hudChrome.discord.choice.haveAccount': 'Schon einen Account?',
+  'hudChrome.discord.choice.linkCta': 'Bestehenden Account verknüpfen',
+  'hudChrome.discord.choice.linkSubmit': 'Account verknüpfen',
+  'hudChrome.discord.choice.error': 'Fortfahren nicht möglich. Bitte versuche es erneut.',
+  'hudChrome.discord.choice.expired':
+    'Dieser Discord-Login ist abgelaufen. Bitte logge dich erneut mit Discord ein.',
+  'hudChrome.discord.keep.title': 'Passwort festlegen',
+  'hudChrome.discord.keep.body':
+    'Dein Account verwendet Discord zum Einloggen. Lege ein Passwort fest, damit du dich nach dem Trennen weiterhin mit deinem Benutzernamen einloggen kannst.',
+  'hudChrome.discord.keep.usernameLabel': 'Dein Benutzername',
+  'hudChrome.discord.keep.confirmLabel': 'Passwort bestätigen',
+  'hudChrome.discord.keep.submit': 'Passwort festlegen und trennen',
+  'hudChrome.discord.keep.cancel': 'Abbrechen',
+  'hudChrome.discord.keep.mismatch': 'Die Passwörter stimmen nicht überein.',
+  'hudChrome.discord.keep.tooShort': 'Das Passwort muss mindestens 6 Zeichen lang sein.',
   'hudChrome.discord.orEmail': 'oder E-Mail verwenden',
   'hudChrome.discord.cta.title':
     'Verknüpfe deinen Discord, um Punkte zu verdienen und aufzusteigen',

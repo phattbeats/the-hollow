@@ -767,6 +767,27 @@ export const de_DE: EnTranslations = {
         "error": "Discord konnte nicht verknüpft werden. Bitte versuche es erneut.",
         "success": "Discord verknüpft."
       },
+      "choice": {
+        "title": "Mit Discord fortfahren",
+        "intro": "Erstelle einen neuen Account oder verknüpfe dein Discord mit einem, den du bereits hast.",
+        "greeting": "Willkommen, {name}!",
+        "createCta": "Neuen Account erstellen",
+        "haveAccount": "Schon einen Account?",
+        "linkCta": "Bestehenden Account verknüpfen",
+        "linkSubmit": "Account verknüpfen",
+        "error": "Fortfahren nicht möglich. Bitte versuche es erneut.",
+        "expired": "Dieser Discord-Login ist abgelaufen. Bitte logge dich erneut mit Discord ein."
+      },
+      "keep": {
+        "title": "Passwort festlegen",
+        "body": "Dein Account verwendet Discord zum Einloggen. Lege ein Passwort fest, damit du dich nach dem Trennen weiterhin mit deinem Benutzernamen einloggen kannst.",
+        "usernameLabel": "Dein Benutzername",
+        "confirmLabel": "Passwort bestätigen",
+        "submit": "Passwort festlegen und trennen",
+        "cancel": "Abbrechen",
+        "mismatch": "Die Passwörter stimmen nicht überein.",
+        "tooShort": "Das Passwort muss mindestens 6 Zeichen lang sein."
+      },
       "linkedAs": "Verknüpft als {name}",
       "linkedTitle": "Discord: {name}",
       "viewCharacter": "{name} ansehen",

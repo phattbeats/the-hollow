@@ -767,6 +767,27 @@ export const pl_PL: EnTranslations = {
         "error": "Nie udało się połączyć Discorda. Spróbuj ponownie.",
         "success": "Discord połączony."
       },
+      "choice": {
+        "title": "Kontynuuj z Discordem",
+        "intro": "Utwórz nowe konto lub połącz Discord z kontem, które już masz.",
+        "greeting": "Witaj, {name}!",
+        "createCta": "Utwórz nowe konto",
+        "haveAccount": "Masz już konto?",
+        "linkCta": "Połącz istniejące konto",
+        "linkSubmit": "Połącz konto",
+        "error": "Nie udało się kontynuować. Spróbuj ponownie.",
+        "expired": "Logowanie przez Discord wygasło. Zaloguj się ponownie przez Discord."
+      },
+      "keep": {
+        "title": "Ustaw hasło",
+        "body": "Twoje konto loguje się przez Discord. Ustaw hasło, aby po rozłączeniu nadal móc logować się za pomocą nazwy użytkownika.",
+        "usernameLabel": "Twoja nazwa użytkownika",
+        "confirmLabel": "Potwierdź hasło",
+        "submit": "Ustaw hasło i rozłącz",
+        "cancel": "Anuluj",
+        "mismatch": "Hasła nie są takie same.",
+        "tooShort": "Hasło musi mieć co najmniej 6 znaków."
+      },
       "linkedAs": "Połączono jako {name}",
       "linkedTitle": "Discord: {name}",
       "viewCharacter": "Zobacz {name}",

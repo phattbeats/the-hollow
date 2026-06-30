@@ -767,6 +767,27 @@ export const nl_NL: EnTranslations = {
         "error": "Kon Discord niet koppelen. Probeer het opnieuw.",
         "success": "Discord gekoppeld."
       },
+      "choice": {
+        "title": "Doorgaan met Discord",
+        "intro": "Maak een nieuw account aan, of koppel je Discord aan een account dat je al hebt.",
+        "greeting": "Welkom, {name}!",
+        "createCta": "Nieuw account aanmaken",
+        "haveAccount": "Heb je al een account?",
+        "linkCta": "Bestaand account koppelen",
+        "linkSubmit": "Account koppelen",
+        "error": "Kon niet doorgaan. Probeer het opnieuw.",
+        "expired": "Die Discord-inlogsessie is verlopen. Log opnieuw in met Discord."
+      },
+      "keep": {
+        "title": "Stel een wachtwoord in",
+        "body": "Je account logt in met Discord. Stel een wachtwoord in zodat je na het ontkoppelen nog steeds met je gebruikersnaam kunt inloggen.",
+        "usernameLabel": "Je gebruikersnaam",
+        "confirmLabel": "Bevestig wachtwoord",
+        "submit": "Wachtwoord instellen en ontkoppelen",
+        "cancel": "Annuleren",
+        "mismatch": "Wachtwoorden komen niet overeen.",
+        "tooShort": "Wachtwoord moet minstens 6 tekens lang zijn."
+      },
       "linkedAs": "Gekoppeld als {name}",
       "linkedTitle": "Discord: {name}",
       "viewCharacter": "Bekijk {name}",

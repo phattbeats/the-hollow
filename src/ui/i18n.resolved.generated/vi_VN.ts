@@ -767,6 +767,27 @@ export const vi_VN: EnTranslations = {
         "error": "Không thể liên kết Discord. Vui lòng thử lại.",
         "success": "Đã liên kết Discord."
       },
+      "choice": {
+        "title": "Tiếp tục với Discord",
+        "intro": "Tạo tài khoản mới, hoặc liên kết Discord với tài khoản bạn đã có.",
+        "greeting": "Chào mừng, {name}!",
+        "createCta": "Tạo tài khoản mới",
+        "haveAccount": "Đã có tài khoản?",
+        "linkCta": "Liên kết tài khoản hiện có",
+        "linkSubmit": "Liên kết tài khoản",
+        "error": "Không thể tiếp tục. Vui lòng thử lại.",
+        "expired": "Phiên đăng nhập Discord đó đã hết hạn. Vui lòng đăng nhập lại bằng Discord."
+      },
+      "keep": {
+        "title": "Đặt mật khẩu",
+        "body": "Tài khoản của bạn đăng nhập bằng Discord. Hãy đặt mật khẩu để bạn vẫn có thể đăng nhập bằng tên đăng nhập sau khi hủy liên kết.",
+        "usernameLabel": "Tên đăng nhập của bạn",
+        "confirmLabel": "Xác nhận mật khẩu",
+        "submit": "Đặt mật khẩu và hủy liên kết",
+        "cancel": "Hủy",
+        "mismatch": "Mật khẩu không khớp.",
+        "tooShort": "Mật khẩu phải có ít nhất 6 ký tự."
+      },
       "linkedAs": "Đã liên kết với tên {name}",
       "linkedTitle": "Discord: {name}",
       "viewCharacter": "Xem {name}",

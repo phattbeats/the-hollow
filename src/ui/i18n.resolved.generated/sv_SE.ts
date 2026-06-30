@@ -767,6 +767,27 @@ export const sv_SE: EnTranslations = {
         "error": "Det gick inte att länka Discord. Försök igen.",
         "success": "Discord länkat."
       },
+      "choice": {
+        "title": "Fortsätt med Discord",
+        "intro": "Skapa ett nytt konto, eller länka ditt Discord till ett du redan har.",
+        "greeting": "Välkommen, {name}!",
+        "createCta": "Skapa ett nytt konto",
+        "haveAccount": "Har du redan ett konto?",
+        "linkCta": "Länka ett befintligt konto",
+        "linkSubmit": "Länka konto",
+        "error": "Det gick inte att fortsätta. Försök igen.",
+        "expired": "Den Discord-inloggningen gick ut. Logga in med Discord igen."
+      },
+      "keep": {
+        "title": "Ange ett lösenord",
+        "body": "Ditt konto loggar in med Discord. Ange ett lösenord så att du fortfarande kan logga in med ditt användarnamn efter avlänkning.",
+        "usernameLabel": "Ditt användarnamn",
+        "confirmLabel": "Bekräfta lösenord",
+        "submit": "Ange lösenord och avlänka",
+        "cancel": "Avbryt",
+        "mismatch": "Lösenorden stämmer inte överens.",
+        "tooShort": "Lösenordet måste vara minst 6 tecken."
+      },
       "linkedAs": "Länkad som {name}",
       "linkedTitle": "Discord: {name}",
       "viewCharacter": "Visa {name}",

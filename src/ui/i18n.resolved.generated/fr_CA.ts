@@ -767,6 +767,27 @@ export const fr_CA: EnTranslations = {
         "error": "Impossible de lier Discord. Veuillez réessayer.",
         "success": "Discord lié."
       },
+      "choice": {
+        "title": "Continuer avec Discord",
+        "intro": "Créez un nouveau compte ou liez votre Discord à un compte existant.",
+        "greeting": "Bienvenue, {name} !",
+        "createCta": "Créer un nouveau compte",
+        "haveAccount": "Vous avez déjà un compte ?",
+        "linkCta": "Lier un compte existant",
+        "linkSubmit": "Lier le compte",
+        "error": "Impossible de continuer. Veuillez réessayer.",
+        "expired": "Cette connexion Discord a expiré. Veuillez vous reconnecter avec Discord."
+      },
+      "keep": {
+        "title": "Définir un mot de passe",
+        "body": "Votre compte se connecte avec Discord. Définissez un mot de passe pour pouvoir toujours vous connecter avec votre nom d'utilisateur après avoir délié Discord.",
+        "usernameLabel": "Votre nom d'utilisateur",
+        "confirmLabel": "Confirmer le mot de passe",
+        "submit": "Définir le mot de passe et délier",
+        "cancel": "Annuler",
+        "mismatch": "Les mots de passe ne correspondent pas.",
+        "tooShort": "Le mot de passe doit contenir au moins 6 caractères."
+      },
       "linkedAs": "Lié en tant que {name}",
       "linkedTitle": "Discord: {name}",
       "viewCharacter": "Voir {name}",

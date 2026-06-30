@@ -767,6 +767,27 @@ export const it_IT: EnTranslations = {
         "error": "Impossibile collegare Discord. Riprova.",
         "success": "Discord collegato."
       },
+      "choice": {
+        "title": "Continua con Discord",
+        "intro": "Crea un nuovo account oppure collega il tuo Discord a uno che hai già.",
+        "greeting": "Benvenuto, {name}!",
+        "createCta": "Crea un nuovo account",
+        "haveAccount": "Hai già un account?",
+        "linkCta": "Collega un account esistente",
+        "linkSubmit": "Collega account",
+        "error": "Impossibile continuare. Riprova.",
+        "expired": "L'accesso con Discord è scaduto. Accedi di nuovo con Discord."
+      },
+      "keep": {
+        "title": "Imposta una password",
+        "body": "Il tuo account accede con Discord. Imposta una password per continuare ad accedere con il nome utente dopo aver scollegato Discord.",
+        "usernameLabel": "Il tuo nome utente",
+        "confirmLabel": "Conferma password",
+        "submit": "Imposta password e scollega",
+        "cancel": "Annulla",
+        "mismatch": "Le password non corrispondono.",
+        "tooShort": "La password deve contenere almeno 6 caratteri."
+      },
       "linkedAs": "Collegato come {name}",
       "linkedTitle": "Discord: {name}",
       "viewCharacter": "Mostra {name}",

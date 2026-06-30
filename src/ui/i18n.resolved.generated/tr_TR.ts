@@ -767,6 +767,27 @@ export const tr_TR: EnTranslations = {
         "error": "Discord bağlanamadı. Lütfen tekrar dene.",
         "success": "Discord bağlandı."
       },
+      "choice": {
+        "title": "Discord ile devam et",
+        "intro": "Yeni bir hesap oluştur ya da Discord'unu mevcut bir hesabına bağla.",
+        "greeting": "Hoş geldin, {name}!",
+        "createCta": "Yeni hesap oluştur",
+        "haveAccount": "Zaten bir hesabın var mı?",
+        "linkCta": "Mevcut bir hesabı bağla",
+        "linkSubmit": "Hesabı bağla",
+        "error": "Devam edilemedi. Lütfen tekrar dene.",
+        "expired": "Bu Discord girişinin süresi doldu. Lütfen Discord ile tekrar giriş yap."
+      },
+      "keep": {
+        "title": "Parola belirle",
+        "body": "Hesabın Discord ile giriş yapıyor. Bağlantıyı kaldırdıktan sonra kullanıcı adınla giriş yapmaya devam edebilmen için bir parola belirle.",
+        "usernameLabel": "Kullanıcı adın",
+        "confirmLabel": "Parolayı onayla",
+        "submit": "Parolayı belirle ve bağlantıyı kaldır",
+        "cancel": "İptal",
+        "mismatch": "Parolalar eşleşmiyor.",
+        "tooShort": "Parola en az 6 karakter olmalıdır."
+      },
       "linkedAs": "{name} olarak bağlı",
       "linkedTitle": "Discord: {name}",
       "viewCharacter": "{name} görüntüle",
