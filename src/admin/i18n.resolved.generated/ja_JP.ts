@@ -412,7 +412,6 @@ export const ja_JP: AdminTranslations = {
   "blockedIps.colCreatedAt": "作成日",
   "blockedIps.addFailed": "IPのブロックに失敗しました。",
   "blockedIps.removeFailed": "IPのブロック解除に失敗しました。",
-  "sharedIps.description": "複数のアカウントにわたって観察された IP アドレスをアカウント数順に並べたもの。",
   "sharedIps.allDescription": "IP addresses observed across more than one account.",
   "sharedIps.onlineDescription": "現在複数のオンライン アカウントで使用されている IP アドレス。",
   "sharedIps.onlineOnly": "オンラインアカウントのみ",

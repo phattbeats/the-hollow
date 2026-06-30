@@ -412,7 +412,6 @@ export const tr_TR: AdminTranslations = {
   "blockedIps.colCreatedAt": "Oluşturuldu",
   "blockedIps.addFailed": "IP engellenemedi.",
   "blockedIps.removeFailed": "IP engeli kaldırılamadı.",
-  "sharedIps.description": "Birden fazla hesapta gözlenen IP adresleri, hesap sayısına göre sıralanmıştır.",
   "sharedIps.allDescription": "IP addresses observed across more than one account.",
   "sharedIps.onlineDescription": "Şu anda birden fazla çevrimiçi hesap tarafından kullanılan IP adresleri.",
   "sharedIps.onlineOnly": "Yalnızca çevrimiçi hesaplar",

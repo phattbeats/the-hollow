@@ -120,10 +120,10 @@ describe('admin IP association queries', () => {
 
     expect(mocks.query).toHaveBeenCalledWith(
       expect.stringContaining('HAVING count(DISTINCT account_id) > 1'),
-      [25, 25],
+      [25, 25, 'last_seen', 'asc'],
     );
     expect(mocks.query.mock.calls[0][0]).toContain(
-      'ORDER BY last_seen_at ASC, account_count DESC, ip',
+      "CASE WHEN $3 = 'last_seen' AND $4 = 'asc' THEN last_seen_at END ASC",
     );
   });
 
@@ -132,8 +132,9 @@ describe('admin IP association queries', () => {
 
     await listSharedIps(1, 25);
 
+    expect(mocks.query.mock.calls[0][1]).toEqual([25, 0, 'accounts', 'desc']);
     expect(mocks.query.mock.calls[0][0]).toContain(
-      'ORDER BY account_count DESC, last_seen_at DESC, ip',
+      "CASE WHEN $3 = 'accounts' AND $4 = 'desc' THEN account_count END DESC",
     );
   });
 

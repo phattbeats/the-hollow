@@ -412,7 +412,6 @@ export const id_ID: AdminTranslations = {
   "blockedIps.colCreatedAt": "Dibuat",
   "blockedIps.addFailed": "Gagal memblokir IP.",
   "blockedIps.removeFailed": "Gagal membuka blokir IP.",
-  "sharedIps.description": "Alamat IP diamati di lebih dari satu akun, diurutkan berdasarkan jumlah akun.",
   "sharedIps.allDescription": "IP addresses observed across more than one account.",
   "sharedIps.onlineDescription": "Alamat IP saat ini digunakan oleh lebih dari satu akun online.",
   "sharedIps.onlineOnly": "Hanya akun online",

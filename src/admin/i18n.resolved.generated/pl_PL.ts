@@ -412,7 +412,6 @@ export const pl_PL: AdminTranslations = {
   "blockedIps.colCreatedAt": "Utworzono",
   "blockedIps.addFailed": "Nie udało się zablokować IP.",
   "blockedIps.removeFailed": "Nie udało się odblokować IP.",
-  "sharedIps.description": "Adresy IP zaobserwowane na więcej niż jednym koncie, uporządkowane według liczby kont.",
   "sharedIps.allDescription": "IP addresses observed across more than one account.",
   "sharedIps.onlineDescription": "Adresy IP aktualnie używane przez więcej niż jedno konto internetowe.",
   "sharedIps.onlineOnly": "Tylko konta internetowe",

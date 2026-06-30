@@ -412,7 +412,6 @@ export const en_XA: AdminTranslations = {
   "blockedIps.colCreatedAt": "[Çŕéáţéð]",
   "blockedIps.addFailed": "[Ƒáíļéð ţó ƀļóçķ ţĥé ÍÞ.]",
   "blockedIps.removeFailed": "[Ƒáíļéð ţó úñƀļóçķ ţĥé ÍÞ.]",
-  "sharedIps.description": "[ÍÞ áððŕéššéš óƀšéŕʋéð áçŕóšš ɱóŕé ţĥáñ óñé áççóúñţ, óŕðéŕéð ƀý áççóúñţ çóúñţ.]",
   "sharedIps.allDescription": "[ÍÞ áððŕéššéš óƀšéŕʋéð áçŕóšš ɱóŕé ţĥáñ óñé áççóúñţ.]",
   "sharedIps.onlineDescription": "[ÍÞ áððŕéššéš çúŕŕéñţļý úšéð ƀý ɱóŕé ţĥáñ óñé óñļíñé áççóúñţ.]",
   "sharedIps.onlineOnly": "[Óñļíñé áççóúñţš óñļý]",

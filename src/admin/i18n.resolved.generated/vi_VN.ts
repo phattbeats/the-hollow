@@ -412,7 +412,6 @@ export const vi_VN: AdminTranslations = {
   "blockedIps.colCreatedAt": "Đã tạo",
   "blockedIps.addFailed": "Không chặn được IP.",
   "blockedIps.removeFailed": "Không bỏ chặn được IP.",
-  "sharedIps.description": "Địa chỉ IP được quan sát trên nhiều tài khoản, được sắp xếp theo số lượng tài khoản.",
   "sharedIps.allDescription": "IP addresses observed across more than one account.",
   "sharedIps.onlineDescription": "Địa chỉ IP hiện được sử dụng bởi nhiều tài khoản trực tuyến.",
   "sharedIps.onlineOnly": "Chỉ tài khoản trực tuyến",
