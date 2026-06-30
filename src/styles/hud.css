@@ -1083,9 +1083,18 @@
     padding: 6px;
   }
   /* The optional second action bar (second-action-bar feature) sits just under the
-     primary one; a tighter bottom pad keeps the pair compact. */
+     primary one; a tighter bottom pad keeps the pair compact. It is OFF by default
+     (a single classic bar): the Interface option "Show Secondary Action Bar" adds
+     body.show-actionbar2 to reveal it. The slots stay keybind-reachable either way.
+     Mobile keeps a single bar regardless (see body.mobile-touch rule in hud.mobile.css):
+     it lives in @layer hud-mobile, ordered after @layer components where this reveal rule
+     sits, so it wins by layer precedence regardless of specificity. */
   #actionbar2 {
     padding-bottom: 2px;
+    display: none;
+  }
+  body.show-actionbar2 #actionbar2 {
+    display: flex;
   }
   .action-btn {
     width: 46px;
@@ -3599,5 +3608,26 @@
     display: flex;
     gap: 3px;
     margin-top: 3px;
+  }
+
+  /* ---------- moderator spectate badge ---------- */
+  #spectate-badge {
+    position: fixed;
+    top: max(14px, env(safe-area-inset-top));
+    left: 50%;
+    z-index: 220;
+    transform: translateX(-50%);
+    padding: 7px 18px;
+    border: 1px solid var(--gold);
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--color-bg-deep) 92%, transparent);
+    box-shadow: var(--shadow-panel);
+    color: var(--gold);
+    font: 700 13px var(--title-font);
+    letter-spacing: 0.5px;
+    pointer-events: none;
+  }
+  #spectate-badge[hidden] {
+    display: none;
   }
 }
