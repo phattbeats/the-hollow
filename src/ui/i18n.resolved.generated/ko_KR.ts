@@ -268,6 +268,7 @@ export const ko_KR: EnTranslations = {
     },
     "leaderboard": {
       "close": "닫기",
+      "tabsLabel": "최고 점수 순위표",
       "tabPlayers": "플레이어",
       "tabGuilds": "길드",
       "guildName": "길드",

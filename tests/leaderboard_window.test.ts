@@ -125,6 +125,26 @@ describe('leaderboard_window: guild board tab (Players / Guilds)', () => {
     expect(code).toContain('aria-selected');
   });
 
+  it('wires the WAI-ARIA tablist: roving tabindex, aria-controls, a labelled tabpanel', () => {
+    // Roving tabindex (0 on the active tab, -1 on the rest) so Tab lands on one tab.
+    expect(code).toContain("tabindex=\"${active ? '0' : '-1'}\"");
+    // Each tab controls the shared tabpanel, which carries the matching id + role.
+    expect(code).toContain('aria-controls="lb-body-panel"');
+    expect(code).toContain('id="lb-body-panel" role="tabpanel"');
+    expect(code).toContain('aria-label="${esc(t(\'hudChrome.leaderboard.tabsLabel\'))}"');
+  });
+
+  it('drives keyboard tab nav through the shared roving core and refocuses the active tab', () => {
+    // Arrow/Home/End routed through the tested rovingTarget core (not bespoke math).
+    expect(code).toContain("rovingTarget(ke.key, i, tabs.length, 'horizontal')");
+    // Enter/Space activate, with preventDefault suppressing the synthesized click.
+    expect(code).toMatch(/ke\.key === 'Enter' \|\| ke\.key === ' '/);
+    // A tab switch re-renders with focus:'tab', and render() refocuses the active
+    // tab so the innerHTML rebuild never drops focus to <body>.
+    expect(code).toContain("void this.render('tab')");
+    expect(code).toContain(".lb-tab-active') as HTMLElement | null)?.focus()");
+  });
+
   it('awaits the guild board through the IWorld seam, not a concrete world', () => {
     expect(code).toContain('world.guildLeaderboard(this.page, LEADERBOARD_PAGE_SIZE)');
   });

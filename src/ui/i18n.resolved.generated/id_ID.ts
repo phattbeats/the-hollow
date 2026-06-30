@@ -268,6 +268,7 @@ export const id_ID: EnTranslations = {
     },
     "leaderboard": {
       "close": "Tutup",
+      "tabsLabel": "High-score boards",
       "tabPlayers": "Players",
       "tabGuilds": "Guilds",
       "guildName": "Guild",

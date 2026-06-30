@@ -16,6 +16,7 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.leaderboard.members",
     "hudChrome.leaderboard.tabGuilds",
     "hudChrome.leaderboard.tabPlayers",
+    "hudChrome.leaderboard.tabsLabel",
     "hudChrome.leaderboard.topLevel"
   ],
   "es_ES": [
@@ -25,6 +26,7 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.leaderboard.members",
     "hudChrome.leaderboard.tabGuilds",
     "hudChrome.leaderboard.tabPlayers",
+    "hudChrome.leaderboard.tabsLabel",
     "hudChrome.leaderboard.topLevel"
   ],
   "fr_FR": [
@@ -34,6 +36,7 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.leaderboard.members",
     "hudChrome.leaderboard.tabGuilds",
     "hudChrome.leaderboard.tabPlayers",
+    "hudChrome.leaderboard.tabsLabel",
     "hudChrome.leaderboard.topLevel"
   ],
   "fr_CA": [
@@ -43,6 +46,7 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.leaderboard.members",
     "hudChrome.leaderboard.tabGuilds",
     "hudChrome.leaderboard.tabPlayers",
+    "hudChrome.leaderboard.tabsLabel",
     "hudChrome.leaderboard.topLevel"
   ],
   "en_CA": [],
@@ -53,6 +57,7 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.leaderboard.members",
     "hudChrome.leaderboard.tabGuilds",
     "hudChrome.leaderboard.tabPlayers",
+    "hudChrome.leaderboard.tabsLabel",
     "hudChrome.leaderboard.topLevel"
   ],
   "de_DE": [
@@ -62,6 +67,7 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.leaderboard.members",
     "hudChrome.leaderboard.tabGuilds",
     "hudChrome.leaderboard.tabPlayers",
+    "hudChrome.leaderboard.tabsLabel",
     "hudChrome.leaderboard.topLevel"
   ],
   "zh_CN": [],
@@ -75,6 +81,7 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.leaderboard.members",
     "hudChrome.leaderboard.tabGuilds",
     "hudChrome.leaderboard.tabPlayers",
+    "hudChrome.leaderboard.tabsLabel",
     "hudChrome.leaderboard.topLevel"
   ],
   "ru_RU": [],
@@ -85,6 +92,7 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.leaderboard.members",
     "hudChrome.leaderboard.tabGuilds",
     "hudChrome.leaderboard.tabPlayers",
+    "hudChrome.leaderboard.tabsLabel",
     "hudChrome.leaderboard.topLevel"
   ],
   "pl_PL": [
@@ -94,6 +102,7 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.leaderboard.members",
     "hudChrome.leaderboard.tabGuilds",
     "hudChrome.leaderboard.tabPlayers",
+    "hudChrome.leaderboard.tabsLabel",
     "hudChrome.leaderboard.topLevel"
   ],
   "id_ID": [
@@ -103,6 +112,7 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.leaderboard.members",
     "hudChrome.leaderboard.tabGuilds",
     "hudChrome.leaderboard.tabPlayers",
+    "hudChrome.leaderboard.tabsLabel",
     "hudChrome.leaderboard.topLevel"
   ],
   "tr_TR": [
@@ -112,6 +122,7 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.leaderboard.members",
     "hudChrome.leaderboard.tabGuilds",
     "hudChrome.leaderboard.tabPlayers",
+    "hudChrome.leaderboard.tabsLabel",
     "hudChrome.leaderboard.topLevel"
   ],
   "sv_SE": [
@@ -121,6 +132,7 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.leaderboard.members",
     "hudChrome.leaderboard.tabGuilds",
     "hudChrome.leaderboard.tabPlayers",
+    "hudChrome.leaderboard.tabsLabel",
     "hudChrome.leaderboard.topLevel"
   ],
   "vi_VN": [
@@ -130,6 +142,7 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.leaderboard.members",
     "hudChrome.leaderboard.tabGuilds",
     "hudChrome.leaderboard.tabPlayers",
+    "hudChrome.leaderboard.tabsLabel",
     "hudChrome.leaderboard.topLevel"
   ],
   "da_DK": [
@@ -139,6 +152,7 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.leaderboard.members",
     "hudChrome.leaderboard.tabGuilds",
     "hudChrome.leaderboard.tabPlayers",
+    "hudChrome.leaderboard.tabsLabel",
     "hudChrome.leaderboard.topLevel"
   ]
 };

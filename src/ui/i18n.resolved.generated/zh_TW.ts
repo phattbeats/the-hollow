@@ -268,6 +268,7 @@ export const zh_TW: EnTranslations = {
     },
     "leaderboard": {
       "close": "關閉",
+      "tabsLabel": "高分榜",
       "tabPlayers": "玩家",
       "tabGuilds": "公會",
       "guildName": "公會",

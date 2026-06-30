@@ -268,6 +268,7 @@ export const sv_SE: EnTranslations = {
     },
     "leaderboard": {
       "close": "Stäng",
+      "tabsLabel": "High-score boards",
       "tabPlayers": "Players",
       "tabGuilds": "Guilds",
       "guildName": "Guild",

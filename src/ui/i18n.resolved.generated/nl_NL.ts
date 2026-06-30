@@ -268,6 +268,7 @@ export const nl_NL: EnTranslations = {
     },
     "leaderboard": {
       "close": "Sluiten",
+      "tabsLabel": "High-score boards",
       "tabPlayers": "Players",
       "tabGuilds": "Guilds",
       "guildName": "Guild",

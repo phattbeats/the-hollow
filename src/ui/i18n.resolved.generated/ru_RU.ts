@@ -268,6 +268,7 @@ export const ru_RU: EnTranslations = {
     },
     "leaderboard": {
       "close": "Закрыть",
+      "tabsLabel": "Таблицы рекордов",
       "tabPlayers": "Игроки",
       "tabGuilds": "Гильдии",
       "guildName": "Гильдия",

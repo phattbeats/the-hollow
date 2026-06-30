@@ -268,6 +268,7 @@ export const en_XA: EnTranslations = {
     },
     "leaderboard": {
       "close": "[Çļóšé]",
+      "tabsLabel": "[Ĥíĝĥ-šçóŕé ƀóáŕðš]",
       "tabPlayers": "[Þļáýéŕš]",
       "tabGuilds": "[Ĝúíļðš]",
       "guildName": "[Ĝúíļð]",

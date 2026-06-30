@@ -3135,6 +3135,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.widgets.heading': '朝向',
   'hudChrome.widgets.minimapZoom': '小地图缩放',
   'hudChrome.leaderboard.close': '关闭',
+  'hudChrome.leaderboard.tabsLabel': '高分榜',
   'hudChrome.leaderboard.tabPlayers': '玩家',
   'hudChrome.leaderboard.tabGuilds': '公会',
   'hudChrome.leaderboard.guildName': '公会',

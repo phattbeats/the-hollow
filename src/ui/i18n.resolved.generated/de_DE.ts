@@ -268,6 +268,7 @@ export const de_DE: EnTranslations = {
     },
     "leaderboard": {
       "close": "Schließen",
+      "tabsLabel": "High-score boards",
       "tabPlayers": "Players",
       "tabGuilds": "Guilds",
       "guildName": "Guild",

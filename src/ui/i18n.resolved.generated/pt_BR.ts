@@ -268,6 +268,7 @@ export const pt_BR: EnTranslations = {
     },
     "leaderboard": {
       "close": "Fechar",
+      "tabsLabel": "High-score boards",
       "tabPlayers": "Players",
       "tabGuilds": "Guilds",
       "guildName": "Guild",

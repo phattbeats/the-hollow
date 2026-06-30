@@ -200,6 +200,7 @@ export const hudChromeStrings = {
   leaderboard: {
     close: 'Close',
     // High-score board tabs: the per-character board and the per-guild board.
+    tabsLabel: 'High-score boards',
     tabPlayers: 'Players',
     tabGuilds: 'Guilds',
     // Guild-board column headers + the guild-tab empty state.

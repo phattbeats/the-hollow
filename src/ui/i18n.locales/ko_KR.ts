@@ -3270,6 +3270,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.widgets.heading': '방향',
   'hudChrome.widgets.minimapZoom': '미니맵 확대/축소',
   'hudChrome.leaderboard.close': '닫기',
+  'hudChrome.leaderboard.tabsLabel': '최고 점수 순위표',
   'hudChrome.leaderboard.tabPlayers': '플레이어',
   'hudChrome.leaderboard.tabGuilds': '길드',
   'hudChrome.leaderboard.guildName': '길드',

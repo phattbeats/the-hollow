@@ -3317,6 +3317,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.widgets.heading': 'Направление',
   'hudChrome.widgets.minimapZoom': 'Масштаб миникарты',
   'hudChrome.leaderboard.close': 'Закрыть',
+  'hudChrome.leaderboard.tabsLabel': 'Таблицы рекордов',
   'hudChrome.leaderboard.tabPlayers': 'Игроки',
   'hudChrome.leaderboard.tabGuilds': 'Гильдии',
   'hudChrome.leaderboard.guildName': 'Гильдия',

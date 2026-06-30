@@ -268,6 +268,7 @@ export const da_DK: EnTranslations = {
     },
     "leaderboard": {
       "close": "Luk",
+      "tabsLabel": "High-score boards",
       "tabPlayers": "Players",
       "tabGuilds": "Guilds",
       "guildName": "Guild",

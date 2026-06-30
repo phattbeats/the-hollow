@@ -3270,6 +3270,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.widgets.heading': '方角',
   'hudChrome.widgets.minimapZoom': 'ミニマップのズーム',
   'hudChrome.leaderboard.close': '閉じる',
+  'hudChrome.leaderboard.tabsLabel': 'ハイスコアボード',
   'hudChrome.leaderboard.tabPlayers': 'プレイヤー',
   'hudChrome.leaderboard.tabGuilds': 'ギルド',
   'hudChrome.leaderboard.guildName': 'ギルド',

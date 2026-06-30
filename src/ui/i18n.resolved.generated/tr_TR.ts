@@ -268,6 +268,7 @@ export const tr_TR: EnTranslations = {
     },
     "leaderboard": {
       "close": "Kapat",
+      "tabsLabel": "High-score boards",
       "tabPlayers": "Players",
       "tabGuilds": "Guilds",
       "guildName": "Guild",

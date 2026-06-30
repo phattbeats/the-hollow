@@ -30,6 +30,7 @@ import {
   type LeaderboardRow,
   type LeaderboardStanding,
 } from './leaderboard_view';
+import { rovingTarget } from './roving_index';
 import { svgIcon } from './ui_icons';
 import { formatXp } from './xp_bar';
 
@@ -49,9 +50,10 @@ export interface LeaderboardWindowDeps {
   restoreFocus(target: HTMLElement | null): void;
 }
 
-/** Where focus should land after a (re)render: into the window on open, or back
- *  onto the page control the keyboard user just activated. */
-type FocusTarget = 'open' | 'prev' | 'next' | null;
+/** Where focus should land after a (re)render: into the window on open, back onto
+ *  the page control the keyboard user just activated, or onto the freshly active
+ *  tab (a tab switch rebuilds the strip, so the roving focus must follow). */
+type FocusTarget = 'open' | 'prev' | 'next' | 'tab' | null;
 
 export class LeaderboardWindow {
   // The current tab + a page index PER board. The server clamps the requested
@@ -118,6 +120,10 @@ export class LeaderboardWindow {
     el.querySelector('[data-close]')?.addEventListener('click', () => this.close());
     this.wireTabs(el);
     if (focus === 'open') (el.querySelector('[data-close]') as HTMLElement | null)?.focus();
+    // A tab switch rebuilt the strip and destroyed the focused button; put the
+    // roving focus back on the now-active tab so keyboard focus is never dropped
+    // to <body> (selection-follows-focus, mirroring social_window/talents_window).
+    if (focus === 'tab') (el.querySelector('.lb-tab-active') as HTMLElement | null)?.focus();
 
     if (this.board === 'guilds') {
       await this.renderGuildBoard(el, world, focus);
@@ -227,21 +233,24 @@ export class LeaderboardWindow {
   // The in-flight state carries aria-busy + role=status (the lazy-load a11y
   // contract) so a screen reader announces the pending board.
   private loadingBodyHtml(): string {
-    return `<div class="lb-body"><div class="lb-loading" role="status" aria-busy="true">${esc(t('game.leaderboard.loading'))}</div></div>`;
+    return `<div class="lb-body" id="lb-body-panel" role="tabpanel"><div class="lb-loading" role="status" aria-busy="true">${esc(t('game.leaderboard.loading'))}</div></div>`;
   }
 
-  // The Players / Guilds tab bar. A role=tablist of two tabs; aria-selected marks
-  // the active board so a screen reader announces which one is shown.
+  // The Players / Guilds tab bar. A WAI-ARIA role=tablist of two tabs with a roving
+  // tabindex (0 on the active tab, -1 on the rest) and aria-selected, controlling the
+  // shared #lb-body-panel tabpanel, mirroring social_window/talents_window. The
+  // roving Arrow/Home/End + Enter/Space handler is wired in wireTabs.
   private tabsHtml(): string {
     const tab = (board: LeaderboardBoard, label: string): string => {
       const active = this.board === board;
       return (
         `<button type="button" role="tab" class="lb-tab${active ? ' lb-tab-active' : ''}" ` +
-        `data-leaderboard-tab="${board}" aria-selected="${active ? 'true' : 'false'}">${esc(label)}</button>`
+        `data-leaderboard-tab="${board}" aria-selected="${active ? 'true' : 'false'}" ` +
+        `tabindex="${active ? '0' : '-1'}" aria-controls="lb-body-panel">${esc(label)}</button>`
       );
     };
     return (
-      `<div class="lb-tabs" role="tablist">` +
+      `<div class="lb-tabs" role="tablist" aria-label="${esc(t('hudChrome.leaderboard.tabsLabel'))}">` +
       tab('players', t('hudChrome.leaderboard.tabPlayers')) +
       tab('guilds', t('hudChrome.leaderboard.tabGuilds')) +
       `</div>`
@@ -249,12 +258,33 @@ export class LeaderboardWindow {
   }
 
   private wireTabs(el: HTMLElement): void {
-    el.querySelectorAll<HTMLButtonElement>('[data-leaderboard-tab]').forEach((button) => {
-      button.addEventListener('click', () => {
-        const next = button.dataset.leaderboardTab as LeaderboardBoard;
-        if (next === this.board) return;
-        this.board = next;
-        void this.render(null);
+    const tabs = Array.from(el.querySelectorAll<HTMLButtonElement>('[data-leaderboard-tab]'));
+    // Switch the board and re-render with focus:'tab' so the rebuilt strip puts
+    // focus back on the now-active tab (selection-follows-focus) instead of letting
+    // the innerHTML swap drop it to <body>. A no-op when the board is unchanged.
+    const switchBoard = (next: LeaderboardBoard): void => {
+      if (next === this.board) return;
+      this.board = next;
+      void this.render('tab');
+    };
+    tabs.forEach((button, i) => {
+      const board = button.dataset.leaderboardTab as LeaderboardBoard;
+      button.addEventListener('click', () => switchBoard(board));
+      button.addEventListener('keydown', (e) => {
+        const ke = e as KeyboardEvent;
+        const next = rovingTarget(ke.key, i, tabs.length, 'horizontal');
+        if (next !== null) {
+          ke.preventDefault();
+          const target = tabs[next];
+          if (target) switchBoard(target.dataset.leaderboardTab as LeaderboardBoard);
+          return;
+        }
+        // Enter / Space activate the focused tab. preventDefault suppresses the
+        // synthesized click so the board switches (and refocuses) exactly once.
+        if (ke.key === 'Enter' || ke.key === ' ') {
+          ke.preventDefault();
+          switchBoard(board);
+        }
       });
     });
   }

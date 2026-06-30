@@ -1844,7 +1844,7 @@ export async function topLifetimeXp(
 // Aggregate JOIN of guilds -> guild_members -> characters (all in this pool); an
 // INNER JOIN drops guilds with no seated members. Realm-scoped (the in-game
 // panel) or global (cross-realm), mirroring topLifetimeXp. Read through the
-// server-side cache in main.ts — never run per request under load.
+// server-side cache in main.ts, never run per request under load.
 // ---------------------------------------------------------------------------
 
 export interface GuildLeaderRow {

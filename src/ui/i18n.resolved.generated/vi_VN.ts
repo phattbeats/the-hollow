@@ -268,6 +268,7 @@ export const vi_VN: EnTranslations = {
     },
     "leaderboard": {
       "close": "Đóng",
+      "tabsLabel": "High-score boards",
       "tabPlayers": "Players",
       "tabGuilds": "Guilds",
       "guildName": "Guild",
