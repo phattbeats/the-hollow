@@ -737,7 +737,8 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
     '戰士是久經戰場的近戰鬥士，會在造成或承受傷害時累積怒氣。他們能承受重擊，也能用強力武器粉碎敵人。',
   'classDetails.lore.paladin':
     '聖騎士是神聖的十字軍，以祝福支援盟友，用聖光治療傷口，並身披重甲保護弱者。',
-  'classDetails.lore.hunter': '獵人是遠程專家，與馴服的野獸並肩作戰，以瞄準與快速射擊不斷襲擊敵人，用叮咬與震盪射擊使其減速，並隨機應變地切換守護。',
+  'classDetails.lore.hunter':
+    '獵人是遠程專家，與馴服的野獸並肩作戰，以瞄準與快速射擊不斷襲擊敵人，用叮咬與震盪射擊使其減速，並隨機應變地切換守護。',
   'classDetails.lore.rogue': '盜賊是隱密刺客，消耗能量與連擊點，從陰影中施展背刺與終結技。',
   'classDetails.lore.priest': '牧師召喚聖光治療並保護盟友，也能以暗影魔法汲取敵人的生命。',
   'classDetails.lore.shaman': '薩滿掌控元素，強化武器，以閃電震擊敵人並恢復盟友。',
