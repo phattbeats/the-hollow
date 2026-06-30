@@ -120,7 +120,7 @@ export const models: GuidePage = {
         <h1>${esc(t('guide.models.title'))}</h1>
         ${lead('guide.models.lead')}
         <div class="guide-gallery">
-          <div class="guide-gallery-picker" aria-label="${esc(t('guide.models.pickerLabel'))}">
+          <div class="guide-gallery-picker" role="group" aria-label="${esc(t('guide.models.pickerLabel'))}">
             ${groupHtml('guide.models.groupClasses', classes)}
             ${groupHtml('guide.models.groupCreatures', creatures)}
             ${groupHtml('guide.models.groupPets', pets)}
