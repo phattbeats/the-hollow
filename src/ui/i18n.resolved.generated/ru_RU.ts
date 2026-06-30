@@ -267,7 +267,14 @@ export const ru_RU: EnTranslations = {
       "targetAria": "Полоса применения цели"
     },
     "leaderboard": {
-      "close": "Закрыть"
+      "close": "Закрыть",
+      "tabPlayers": "Игроки",
+      "tabGuilds": "Гильдии",
+      "guildName": "Гильдия",
+      "members": "Состав",
+      "topLevel": "Макс",
+      "guildXp": "Всего опыта",
+      "guildEmpty": "Пока нет гильдий в рейтинге."
     },
     "raidLockout": {
       "title": "Блокировки рейдов",

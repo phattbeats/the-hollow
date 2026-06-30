@@ -267,7 +267,14 @@ export const en_XA: EnTranslations = {
       "targetAria": "[Úñíţ Çášţ Ɓáŕ]"
     },
     "leaderboard": {
-      "close": "[Çļóšé]"
+      "close": "[Çļóšé]",
+      "tabPlayers": "[Þļáýéŕš]",
+      "tabGuilds": "[Ĝúíļðš]",
+      "guildName": "[Ĝúíļð]",
+      "members": "[Ɱéɱƀéŕš]",
+      "topLevel": "[Ţóþ]",
+      "guildXp": "[Ţóţáļ ẊÞ]",
+      "guildEmpty": "[Ñó ŕáñķéð ĝúíļðš ýéţ.]"
     },
     "raidLockout": {
       "title": "[Ŕáíð Ļóçķóúţš]",

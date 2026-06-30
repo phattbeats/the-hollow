@@ -267,7 +267,14 @@ export const ja_JP: EnTranslations = {
       "targetAria": "ターゲットの詠唱バー"
     },
     "leaderboard": {
-      "close": "閉じる"
+      "close": "閉じる",
+      "tabPlayers": "プレイヤー",
+      "tabGuilds": "ギルド",
+      "guildName": "ギルド",
+      "members": "メンバー",
+      "topLevel": "最高",
+      "guildXp": "累計経験値",
+      "guildEmpty": "ランク入りのギルドはまだありません。"
     },
     "raidLockout": {
       "title": "レイドロックアウト",

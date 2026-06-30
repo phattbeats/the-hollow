@@ -267,7 +267,14 @@ export const id_ID: EnTranslations = {
       "targetAria": "Bilah Rapal Unit"
     },
     "leaderboard": {
-      "close": "Tutup"
+      "close": "Tutup",
+      "tabPlayers": "Players",
+      "tabGuilds": "Guilds",
+      "guildName": "Guild",
+      "members": "Members",
+      "topLevel": "Top",
+      "guildXp": "Total XP",
+      "guildEmpty": "No ranked guilds yet."
     },
     "raidLockout": {
       "title": "Penguncian Raid",

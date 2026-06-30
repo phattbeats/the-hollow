@@ -267,7 +267,14 @@ export const es_ES: EnTranslations = {
       "targetAria": "Barra de lanzamiento del objetivo"
     },
     "leaderboard": {
-      "close": "Cerrar"
+      "close": "Cerrar",
+      "tabPlayers": "Players",
+      "tabGuilds": "Guilds",
+      "guildName": "Guild",
+      "members": "Members",
+      "topLevel": "Top",
+      "guildXp": "Total XP",
+      "guildEmpty": "No ranked guilds yet."
     },
     "raidLockout": {
       "title": "Bloqueos de banda",

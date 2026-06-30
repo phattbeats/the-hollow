@@ -267,7 +267,14 @@ export const tr_TR: EnTranslations = {
       "targetAria": "Birim Büyü Çubuğu"
     },
     "leaderboard": {
-      "close": "Kapat"
+      "close": "Kapat",
+      "tabPlayers": "Players",
+      "tabGuilds": "Guilds",
+      "guildName": "Guild",
+      "members": "Members",
+      "topLevel": "Top",
+      "guildXp": "Total XP",
+      "guildEmpty": "No ranked guilds yet."
     },
     "raidLockout": {
       "title": "Akın Kilitleri",

@@ -267,7 +267,14 @@ export const de_DE: EnTranslations = {
       "targetAria": "Zauberleiste des Ziels"
     },
     "leaderboard": {
-      "close": "Schließen"
+      "close": "Schließen",
+      "tabPlayers": "Players",
+      "tabGuilds": "Guilds",
+      "guildName": "Guild",
+      "members": "Members",
+      "topLevel": "Top",
+      "guildXp": "Total XP",
+      "guildEmpty": "No ranked guilds yet."
     },
     "raidLockout": {
       "title": "Schlachtzug-Sperren",

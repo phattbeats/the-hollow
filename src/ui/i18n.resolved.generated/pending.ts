@@ -9,24 +9,136 @@
 // Reproducibility is checked by tests/i18n_resolved_equivalence.test.ts.
 
 export const pending: Record<string, readonly string[]> = {
-  "es": [],
-  "es_ES": [],
-  "fr_FR": [],
-  "fr_CA": [],
+  "es": [
+    "hudChrome.leaderboard.guildEmpty",
+    "hudChrome.leaderboard.guildName",
+    "hudChrome.leaderboard.guildXp",
+    "hudChrome.leaderboard.members",
+    "hudChrome.leaderboard.tabGuilds",
+    "hudChrome.leaderboard.tabPlayers",
+    "hudChrome.leaderboard.topLevel"
+  ],
+  "es_ES": [
+    "hudChrome.leaderboard.guildEmpty",
+    "hudChrome.leaderboard.guildName",
+    "hudChrome.leaderboard.guildXp",
+    "hudChrome.leaderboard.members",
+    "hudChrome.leaderboard.tabGuilds",
+    "hudChrome.leaderboard.tabPlayers",
+    "hudChrome.leaderboard.topLevel"
+  ],
+  "fr_FR": [
+    "hudChrome.leaderboard.guildEmpty",
+    "hudChrome.leaderboard.guildName",
+    "hudChrome.leaderboard.guildXp",
+    "hudChrome.leaderboard.members",
+    "hudChrome.leaderboard.tabGuilds",
+    "hudChrome.leaderboard.tabPlayers",
+    "hudChrome.leaderboard.topLevel"
+  ],
+  "fr_CA": [
+    "hudChrome.leaderboard.guildEmpty",
+    "hudChrome.leaderboard.guildName",
+    "hudChrome.leaderboard.guildXp",
+    "hudChrome.leaderboard.members",
+    "hudChrome.leaderboard.tabGuilds",
+    "hudChrome.leaderboard.tabPlayers",
+    "hudChrome.leaderboard.topLevel"
+  ],
   "en_CA": [],
-  "it_IT": [],
-  "de_DE": [],
+  "it_IT": [
+    "hudChrome.leaderboard.guildEmpty",
+    "hudChrome.leaderboard.guildName",
+    "hudChrome.leaderboard.guildXp",
+    "hudChrome.leaderboard.members",
+    "hudChrome.leaderboard.tabGuilds",
+    "hudChrome.leaderboard.tabPlayers",
+    "hudChrome.leaderboard.topLevel"
+  ],
+  "de_DE": [
+    "hudChrome.leaderboard.guildEmpty",
+    "hudChrome.leaderboard.guildName",
+    "hudChrome.leaderboard.guildXp",
+    "hudChrome.leaderboard.members",
+    "hudChrome.leaderboard.tabGuilds",
+    "hudChrome.leaderboard.tabPlayers",
+    "hudChrome.leaderboard.topLevel"
+  ],
   "zh_CN": [],
   "zh_TW": [],
   "ko_KR": [],
   "ja_JP": [],
-  "pt_BR": [],
+  "pt_BR": [
+    "hudChrome.leaderboard.guildEmpty",
+    "hudChrome.leaderboard.guildName",
+    "hudChrome.leaderboard.guildXp",
+    "hudChrome.leaderboard.members",
+    "hudChrome.leaderboard.tabGuilds",
+    "hudChrome.leaderboard.tabPlayers",
+    "hudChrome.leaderboard.topLevel"
+  ],
   "ru_RU": [],
-  "nl_NL": [],
-  "pl_PL": [],
-  "id_ID": [],
-  "tr_TR": [],
-  "sv_SE": [],
-  "vi_VN": [],
-  "da_DK": []
+  "nl_NL": [
+    "hudChrome.leaderboard.guildEmpty",
+    "hudChrome.leaderboard.guildName",
+    "hudChrome.leaderboard.guildXp",
+    "hudChrome.leaderboard.members",
+    "hudChrome.leaderboard.tabGuilds",
+    "hudChrome.leaderboard.tabPlayers",
+    "hudChrome.leaderboard.topLevel"
+  ],
+  "pl_PL": [
+    "hudChrome.leaderboard.guildEmpty",
+    "hudChrome.leaderboard.guildName",
+    "hudChrome.leaderboard.guildXp",
+    "hudChrome.leaderboard.members",
+    "hudChrome.leaderboard.tabGuilds",
+    "hudChrome.leaderboard.tabPlayers",
+    "hudChrome.leaderboard.topLevel"
+  ],
+  "id_ID": [
+    "hudChrome.leaderboard.guildEmpty",
+    "hudChrome.leaderboard.guildName",
+    "hudChrome.leaderboard.guildXp",
+    "hudChrome.leaderboard.members",
+    "hudChrome.leaderboard.tabGuilds",
+    "hudChrome.leaderboard.tabPlayers",
+    "hudChrome.leaderboard.topLevel"
+  ],
+  "tr_TR": [
+    "hudChrome.leaderboard.guildEmpty",
+    "hudChrome.leaderboard.guildName",
+    "hudChrome.leaderboard.guildXp",
+    "hudChrome.leaderboard.members",
+    "hudChrome.leaderboard.tabGuilds",
+    "hudChrome.leaderboard.tabPlayers",
+    "hudChrome.leaderboard.topLevel"
+  ],
+  "sv_SE": [
+    "hudChrome.leaderboard.guildEmpty",
+    "hudChrome.leaderboard.guildName",
+    "hudChrome.leaderboard.guildXp",
+    "hudChrome.leaderboard.members",
+    "hudChrome.leaderboard.tabGuilds",
+    "hudChrome.leaderboard.tabPlayers",
+    "hudChrome.leaderboard.topLevel"
+  ],
+  "vi_VN": [
+    "hudChrome.leaderboard.guildEmpty",
+    "hudChrome.leaderboard.guildName",
+    "hudChrome.leaderboard.guildXp",
+    "hudChrome.leaderboard.members",
+    "hudChrome.leaderboard.tabGuilds",
+    "hudChrome.leaderboard.tabPlayers",
+    "hudChrome.leaderboard.topLevel"
+  ],
+  "da_DK": [
+    "hudChrome.leaderboard.guildEmpty",
+    "hudChrome.leaderboard.guildName",
+    "hudChrome.leaderboard.guildXp",
+    "hudChrome.leaderboard.members",
+    "hudChrome.leaderboard.tabGuilds",
+    "hudChrome.leaderboard.tabPlayers",
+    "hudChrome.leaderboard.topLevel"
+  ]
 };

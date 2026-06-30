@@ -18,10 +18,11 @@
 // hud.update()'s per-frame path.
 
 import { LEADERBOARD_PAGE_SIZE } from '../sim/leaderboard_page';
-import type { IWorld, LeaderboardPage } from '../world_api';
+import type { GuildLeaderboardPage, IWorld, LeaderboardPage } from '../world_api';
 import { markDialogRoot } from './dialog_root';
 import { classDisplayName } from './entity_i18n';
 import { esc } from './esc';
+import { buildGuildLeaderboardView, type GuildLeaderboardRow } from './guild_leaderboard_view';
 import { formatNumber, t } from './i18n';
 import {
   buildLeaderboardView,
@@ -31,6 +32,9 @@ import {
 } from './leaderboard_view';
 import { svgIcon } from './ui_icons';
 import { formatXp } from './xp_bar';
+
+/** Which high-score board the window is showing. */
+type LeaderboardBoard = 'players' | 'guilds';
 
 /**
  * Hud-supplied glue. The leaderboard window renders entirely from IWorld + these
@@ -50,12 +54,24 @@ export interface LeaderboardWindowDeps {
 type FocusTarget = 'open' | 'prev' | 'next' | null;
 
 export class LeaderboardWindow {
-  // The current page index. The server clamps the requested page; render() mirrors
-  // its answer back here so the pager state never drifts past the real last page.
-  private page = 0;
+  // The current tab + a page index PER board. The server clamps the requested
+  // page; render() mirrors its answer back here so the pager never drifts past the
+  // real last page. Per-board pages keep each tab's scroll position independent.
+  private board: LeaderboardBoard = 'players';
+  private playerPage = 0;
+  private guildPage = 0;
   private openerFocus: HTMLElement | null = null;
 
   constructor(private readonly deps: LeaderboardWindowDeps) {}
+
+  private get page(): number {
+    return this.board === 'guilds' ? this.guildPage : this.playerPage;
+  }
+
+  private set page(value: number) {
+    if (this.board === 'guilds') this.guildPage = value;
+    else this.playerPage = value;
+  }
 
   get isOpen(): boolean {
     return this.deps.root().style.display === 'block';
@@ -71,7 +87,9 @@ export class LeaderboardWindow {
     // focus-return on close cannot clobber the element we restore to (WCAG).
     this.openerFocus = this.deps.captureFocus();
     this.deps.closeOthers();
-    this.page = 0;
+    this.board = 'players';
+    this.playerPage = 0;
+    this.guildPage = 0;
     this.deps.root().style.display = 'block';
     void this.render('open');
   }
@@ -96,9 +114,15 @@ export class LeaderboardWindow {
     const el = this.deps.root();
     const world = this.deps.world();
     markDialogRoot(el, { labelledBy: 'leaderboard-title' });
-    el.innerHTML = this.titleHtml(world.realm) + this.loadingBodyHtml();
+    el.innerHTML = this.titleHtml(world.realm) + this.tabsHtml() + this.loadingBodyHtml();
     el.querySelector('[data-close]')?.addEventListener('click', () => this.close());
+    this.wireTabs(el);
     if (focus === 'open') (el.querySelector('[data-close]') as HTMLElement | null)?.focus();
+
+    if (this.board === 'guilds') {
+      await this.renderGuildBoard(el, world, focus);
+      return;
+    }
 
     let result: LeaderboardPage | null = null;
     try {
@@ -147,6 +171,48 @@ export class LeaderboardWindow {
     this.wirePager(body as HTMLElement, focus);
   }
 
+  // The guild tab: same async + page-control shape as the player path above, but
+  // it awaits the guild board and renders guild rows (the pure core decides the
+  // state). Guilds are server-only, so offline this always resolves the empty
+  // state. A rejection or offline-unavailable call maps to the error state.
+  private async renderGuildBoard(
+    el: HTMLElement,
+    world: IWorld,
+    focus: FocusTarget,
+  ): Promise<void> {
+    let result: GuildLeaderboardPage | null = null;
+    try {
+      result = await world.guildLeaderboard(this.page, LEADERBOARD_PAGE_SIZE);
+    } catch {
+      result = null;
+    }
+    if (el.style.display !== 'block') return;
+    const body = el.querySelector('.lb-body');
+    if (!body) return;
+
+    const view = buildGuildLeaderboardView(
+      result === null ? { kind: 'error' } : { kind: 'page', page: result },
+    );
+
+    if (view.kind === 'error') {
+      body.innerHTML = `<div class="lb-empty lb-error" role="alert">${esc(t('game.leaderboard.retry'))}</div>`;
+      this.focusCloseAfterPage(focus);
+      return;
+    }
+    if (view.kind === 'empty') {
+      body.innerHTML = `<div class="lb-empty">${esc(t('hudChrome.leaderboard.guildEmpty'))}</div>`;
+      this.focusCloseAfterPage(focus);
+      return;
+    }
+    if (view.kind !== 'ranked') return;
+    this.page = view.page;
+    body.innerHTML =
+      this.guildHeaderHtml() +
+      view.rows.map((r) => this.guildRowHtml(r)).join('') +
+      this.pagerHtml(view.pager);
+    this.wirePager(body as HTMLElement, focus);
+  }
+
   // ---- HTML builders (the localized DOM the pure view-model drives) ----------
 
   private titleHtml(realm: string): string {
@@ -164,6 +230,35 @@ export class LeaderboardWindow {
     return `<div class="lb-body"><div class="lb-loading" role="status" aria-busy="true">${esc(t('game.leaderboard.loading'))}</div></div>`;
   }
 
+  // The Players / Guilds tab bar. A role=tablist of two tabs; aria-selected marks
+  // the active board so a screen reader announces which one is shown.
+  private tabsHtml(): string {
+    const tab = (board: LeaderboardBoard, label: string): string => {
+      const active = this.board === board;
+      return (
+        `<button type="button" role="tab" class="lb-tab${active ? ' lb-tab-active' : ''}" ` +
+        `data-leaderboard-tab="${board}" aria-selected="${active ? 'true' : 'false'}">${esc(label)}</button>`
+      );
+    };
+    return (
+      `<div class="lb-tabs" role="tablist">` +
+      tab('players', t('hudChrome.leaderboard.tabPlayers')) +
+      tab('guilds', t('hudChrome.leaderboard.tabGuilds')) +
+      `</div>`
+    );
+  }
+
+  private wireTabs(el: HTMLElement): void {
+    el.querySelectorAll<HTMLButtonElement>('[data-leaderboard-tab]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const next = button.dataset.leaderboardTab as LeaderboardBoard;
+        if (next === this.board) return;
+        this.board = next;
+        void this.render(null);
+      });
+    });
+  }
+
   private headerHtml(): string {
     return (
       `<div class="lb-row lb-head"><span class="lb-rank">${esc(t('game.leaderboard.rank'))}</span>` +
@@ -171,6 +266,29 @@ export class LeaderboardWindow {
       `<span class="lb-lvl">${esc(t('game.leaderboard.level'))}</span>` +
       `<span class="lb-vlvl">${esc(t('game.leaderboard.vlevel'))}</span>` +
       `<span class="lb-xp">${esc(t('game.leaderboard.lifetimeXp'))}</span></div>`
+    );
+  }
+
+  // Guild-board header: rank, guild name, member count, top member level, total
+  // summed XP. Reuses the same row column classes as the player board so the two
+  // tabs share one grid; the guild-specific columns get their own classes.
+  private guildHeaderHtml(): string {
+    return (
+      `<div class="lb-row lb-row-guild lb-head"><span class="lb-rank">${esc(t('game.leaderboard.rank'))}</span>` +
+      `<span class="lb-name">${esc(t('hudChrome.leaderboard.guildName'))}</span>` +
+      `<span class="lb-members">${esc(t('hudChrome.leaderboard.members'))}</span>` +
+      `<span class="lb-vlvl">${esc(t('hudChrome.leaderboard.topLevel'))}</span>` +
+      `<span class="lb-xp">${esc(t('hudChrome.leaderboard.guildXp'))}</span></div>`
+    );
+  }
+
+  private guildRowHtml(r: GuildLeaderboardRow): string {
+    return (
+      `<div class="lb-row lb-row-guild"><span class="lb-rank">${r.rank}</span>` +
+      `<span class="lb-name">${esc(r.name)}</span>` +
+      `<span class="lb-members">${formatNumber(r.memberCount, { maximumFractionDigits: 0 })}</span>` +
+      `<span class="lb-vlvl">${r.topLevel}</span>` +
+      `<span class="lb-xp">${formatXp(r.totalLifetimeXp)}</span></div>`
     );
   }
 

@@ -267,7 +267,14 @@ export const da_DK: EnTranslations = {
       "targetAria": "Enhedens castbjælke"
     },
     "leaderboard": {
-      "close": "Luk"
+      "close": "Luk",
+      "tabPlayers": "Players",
+      "tabGuilds": "Guilds",
+      "guildName": "Guild",
+      "members": "Members",
+      "topLevel": "Top",
+      "guildXp": "Total XP",
+      "guildEmpty": "No ranked guilds yet."
     },
     "raidLockout": {
       "title": "Raidlåse",
