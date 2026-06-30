@@ -25,11 +25,11 @@ const browser = await puppeteer.launch({
 // Restore a saved pet whose template id no longer exists. restorePet emits
 // ctx.notice -> SimEvent{type:'log'}; the main loop drains it into
 // hud.handleEvents next frame, which runs the live localize pipeline.
-const triggerRestore = () => {
+const triggerRestore = (name) => {
   const sim = window.__game.sim;
   sim.restorePet(sim.player, {
     templateId: 'forest_wolf_REMOVED',
-    name: 'Rex',
+    name,
     level: sim.player.level,
     hp: 50,
     dead: false,
@@ -54,13 +54,22 @@ async function capture(lang, tag) {
   await page.evaluate(() => document.getElementById('btn-start-offline').click());
   await page.waitForFunction(() => !!window.__game?.sim?.player, { timeout: 60000, polling: 500 });
   await sleep(800);
-  await page.evaluate(triggerRestore);
+  // Clean saved name: the notice splices the localizable proper noun.
+  await page.evaluate(triggerRestore, 'Rex');
   await sleep(800);
   await page.screenshot({
     path: `${OUT}/chatlog-${tag}.png`,
     clip: { x: 4, y: 632, width: 470, height: 260 },
   });
   if (lang === 'en') await page.screenshot({ path: `${OUT}/full-hud-en.png` });
+  // Unclean saved name (cleanPetName rejects it): the notice falls back to the
+  // generic, name-free sentence, which localizes wholesale (no embedded English).
+  await page.evaluate(triggerRestore, '???');
+  await sleep(800);
+  await page.screenshot({
+    path: `${OUT}/chatlog-${tag}-noname.png`,
+    clip: { x: 4, y: 632, width: 470, height: 260 },
+  });
   console.log(`[${tag}] captured`);
   await page.close();
 }

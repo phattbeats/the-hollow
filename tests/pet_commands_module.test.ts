@@ -16,6 +16,7 @@ import {
 } from '../src/sim/pet/pet_commands';
 import { Sim } from '../src/sim/sim';
 import type { Entity, SimEvent } from '../src/sim/types';
+import { localizeSimText } from '../src/ui/sim_i18n';
 
 // Direct unit tests for the extracted pet command/lifecycle module (P1b). They drive
 // the moved functions through the real Sim.ctx seam (so the still-on-Sim helpers they
@@ -106,6 +107,33 @@ describe('pet_commands module (P1b)', () => {
     );
     expect(notice).toBeTruthy();
     expect(notice?.text).toContain('Rex');
+  });
+
+  it('restorePet emits the name-free notice when the saved name is unclean', () => {
+    const { sim, hid, hunter } = hunterWorld();
+    // Stale template AND an unclean saved name (cleanPetName rejects it), so there
+    // is no localizable proper noun to splice. The emit must be the generic,
+    // name-free sentence, not one that embeds an English "Your pet" the client
+    // matcher would leave untranslated in a non-English locale.
+    const stale = {
+      templateId: 'forest_wolf_REMOVED',
+      name: '???',
+      level: hunter.level,
+      hp: 50,
+      dead: false,
+      mode: 'defensive' as const,
+      autoTaunt: false,
+    };
+    restorePet(sim.ctx, hunter, stale);
+    expect(petOf(sim.ctx, hid, true)).toBeNull();
+    const ev = sim.drainEvents();
+    const notice = ev.find(
+      (e): e is Extract<SimEvent, { type: 'log' }> => e.type === 'log' && e.pid === hid,
+    );
+    expect(notice?.text).toBe('Your pet could not be restored and has been lost.');
+    // The whole sentence is a placeholder-free literal, so the client matcher
+    // localizes it wholesale (no embedded English survives).
+    expect(localizeSimText(notice!.text)).not.toBeNull();
   });
 
   it("setPetMode('passive') clears aggroTargetId/inCombat/autoAttack", () => {

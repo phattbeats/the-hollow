@@ -1015,6 +1015,7 @@ export const PET_NEW = {
     'log.petRenamed': 'Dit kæledyr hedder nu {name}.',
     'log.petReturns': '{name} vender tilbage til din side.',
     'log.petRestoreLost': '{name} kunne ikke genoprettes og er gået tabt.',
+    'log.petRestoreLostNoName': 'Dit kæledyr kunne ikke genoprettes og er gået tabt.',
     'petGrowl.autoOff': 'Auto-hån er slået fra.',
     'petGrowl.autoOn': 'Auto-hån er slået til.',
     'petGrowl.cooldown': 'Dit kæledyrs Knurren er på afkøling. {autoState} Klar om {seconds}s.',
@@ -1057,6 +1058,7 @@ export const PET_NEW = {
     'log.petRenamed': 'Peliharaanmu kini bernama {name}.',
     'log.petReturns': '{name} kembali ke sisimu.',
     'log.petRestoreLost': '{name} tidak dapat dipulihkan dan telah hilang.',
+    'log.petRestoreLostNoName': 'Peliharaanmu tidak dapat dipulihkan dan telah hilang.',
     'petGrowl.autoOff': 'Provokasi otomatis nonaktif.',
     'petGrowl.autoOn': 'Provokasi otomatis aktif.',
     'petGrowl.cooldown': 'Growl peliharaanmu sedang jeda. {autoState} Siap dalam {seconds}d.',
@@ -1099,6 +1101,7 @@ export const PET_NEW = {
     'log.petRenamed': 'Je huisdier heet nu {name}.',
     'log.petReturns': '{name} keert terug aan je zijde.',
     'log.petRestoreLost': '{name} kon niet worden hersteld en is verloren gegaan.',
+    'log.petRestoreLostNoName': 'Je huisdier kon niet worden hersteld en is verloren gegaan.',
     'petGrowl.autoOff': 'Automatisch provoceren staat uit.',
     'petGrowl.autoOn': 'Automatisch provoceren staat aan.',
     'petGrowl.cooldown':
@@ -1141,6 +1144,7 @@ export const PET_NEW = {
     'log.petRenamed': 'Twoje zwierzę nazywa się teraz {name}.',
     'log.petReturns': '{name} wraca u twego boku.',
     'log.petRestoreLost': '{name} nie mógł zostać przywrócony i przepadł.',
+    'log.petRestoreLostNoName': 'Twój towarzysz nie mógł zostać przywrócony i przepadł.',
     'petGrowl.autoOff': 'Automatyczna prowokacja jest wyłączona.',
     'petGrowl.autoOn': 'Automatyczna prowokacja jest włączona.',
     'petGrowl.cooldown':
@@ -1183,6 +1187,7 @@ export const PET_NEW = {
     'log.petRenamed': 'Ditt djur heter nu {name}.',
     'log.petReturns': '{name} återvänder till din sida.',
     'log.petRestoreLost': '{name} kunde inte återställas och har gått förlorad.',
+    'log.petRestoreLostNoName': 'Ditt sällskapsdjur kunde inte återställas och har gått förlorat.',
     'petGrowl.autoOff': 'Automatisk håning är av.',
     'petGrowl.autoOn': 'Automatisk håning är på.',
     'petGrowl.cooldown': 'Ditt djurs Morra har nedkylning. {autoState} Klar om {seconds}s.',
@@ -1225,6 +1230,7 @@ export const PET_NEW = {
     'log.petRenamed': 'Evcilinin adı artık {name}.',
     'log.petReturns': '{name} yanına dönüyor.',
     'log.petRestoreLost': '{name} geri getirilemedi ve kayboldu.',
+    'log.petRestoreLostNoName': 'Evcil hayvanın geri getirilemedi ve kayboldu.',
     'petGrowl.autoOff': 'Otomatik kışkırtma kapalı.',
     'petGrowl.autoOn': 'Otomatik kışkırtma açık.',
     'petGrowl.cooldown':
@@ -1267,6 +1273,7 @@ export const PET_NEW = {
     'log.petRenamed': 'Thú nuôi của bạn giờ có tên là {name}.',
     'log.petReturns': '{name} trở về bên cạnh bạn.',
     'log.petRestoreLost': '{name} không thể được khôi phục và đã bị mất.',
+    'log.petRestoreLostNoName': 'Thú cưng của bạn không thể được khôi phục và đã bị mất.',
     'petGrowl.autoOff': 'Tự động khiêu khích đã tắt.',
     'petGrowl.autoOn': 'Tự động khiêu khích đã bật.',
     'petGrowl.cooldown':
