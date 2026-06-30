@@ -454,4 +454,17 @@ export const de_DE: Record<string, string> = {
   'error.blockExpiryFuture': 'das Ablaufdatum der Sperre muss in der Zukunft liegen',
   'error.blockFailed': 'IP konnte nicht gesperrt werden',
   'error.blockNotFound': 'IP nicht gefunden',
+  'nav.suspiciousPlayers': 'Verdächtige Spieler',
+  'suspiciousPlayers.description': 'Online-Spieler mit aktiven Indizien der Bot-Erkennung.',
+  'suspiciousPlayers.autoRefresh': 'Automatisch aktualisieren ({seconds}s)',
+  'suspiciousPlayers.loading': 'Verdächtige Spieler werden geladen...',
+  'suspiciousPlayers.loadFailed': 'Verdächtige Spieler konnten nicht geladen werden.',
+  'suspiciousPlayers.empty':
+    'Derzeit liegen für keinen Online-Spieler Indizien der Bot-Erkennung vor.',
+  'suspiciousPlayers.colName': 'Name',
+  'suspiciousPlayers.colEvidence': 'Indizien',
+  'suspiciousPlayers.colScore': 'Wertung',
+  'suspiciousPlayers.evidenceList': 'Indizien für {name}',
+  'suspiciousPlayers.evidenceWeight': 'Gewichtung {value}',
+  'sharedIps.allDescription': 'IP-Adressen, die bei mehr als einem Konto beobachtet wurden.',
 };

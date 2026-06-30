@@ -456,4 +456,18 @@ export const fr_FR: Record<string, string> = {
   'error.blockExpiryFuture': "l'expiration du blocage doit être dans le futur",
   'error.blockFailed': "échec du blocage de l'IP",
   'error.blockNotFound': 'IP introuvable',
+  'nav.suspiciousPlayers': 'Joueurs suspects',
+  'suspiciousPlayers.description':
+    'Joueurs en ligne présentant des indices actifs de détection de bot.',
+  'suspiciousPlayers.autoRefresh': 'Actualisation auto ({seconds}s)',
+  'suspiciousPlayers.loading': 'Chargement des joueurs suspects...',
+  'suspiciousPlayers.loadFailed': 'Échec du chargement des joueurs suspects.',
+  'suspiciousPlayers.empty':
+    "Aucun joueur en ligne ne présente actuellement d'indices de détection de bot.",
+  'suspiciousPlayers.colName': 'Nom',
+  'suspiciousPlayers.colEvidence': 'Indices',
+  'suspiciousPlayers.colScore': 'Score',
+  'suspiciousPlayers.evidenceList': 'Indices pour {name}',
+  'suspiciousPlayers.evidenceWeight': 'poids {value}',
+  'sharedIps.allDescription': "Adresses IP observées sur plus d'un compte.",
 };

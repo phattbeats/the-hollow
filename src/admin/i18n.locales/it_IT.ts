@@ -454,4 +454,17 @@ export const it_IT: Record<string, string> = {
   'error.blockExpiryFuture': 'la scadenza del blocco deve essere nel futuro',
   'error.blockFailed': "blocco dell'IP non riuscito",
   'error.blockNotFound': 'IP non trovato',
+  'nav.suspiciousPlayers': 'Giocatori sospetti',
+  'suspiciousPlayers.description': 'Giocatori online con prove attive di rilevamento bot.',
+  'suspiciousPlayers.autoRefresh': 'Aggiornamento automatico ({seconds}s)',
+  'suspiciousPlayers.loading': 'Caricamento dei giocatori sospetti...',
+  'suspiciousPlayers.loadFailed': 'Impossibile caricare i giocatori sospetti.',
+  'suspiciousPlayers.empty':
+    'Nessun giocatore online presenta attualmente prove di rilevamento bot.',
+  'suspiciousPlayers.colName': 'Nome',
+  'suspiciousPlayers.colEvidence': 'Prove',
+  'suspiciousPlayers.colScore': 'Punteggio',
+  'suspiciousPlayers.evidenceList': 'Prove per {name}',
+  'suspiciousPlayers.evidenceWeight': 'peso {value}',
+  'sharedIps.allDescription': 'Indirizzi IP osservati su piu di un account.',
 };
