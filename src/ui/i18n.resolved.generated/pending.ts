@@ -9,24 +9,81 @@
 // Reproducibility is checked by tests/i18n_resolved_equivalence.test.ts.
 
 export const pending: Record<string, readonly string[]> = {
-  "es": [],
-  "es_ES": [],
-  "fr_FR": [],
-  "fr_CA": [],
+  "es": [
+    "guide.delvesPage.companionFmt",
+    "guide.delvesPage.keeperFmt"
+  ],
+  "es_ES": [
+    "guide.delvesPage.companionFmt",
+    "guide.delvesPage.keeperFmt"
+  ],
+  "fr_FR": [
+    "guide.delvesPage.companionFmt",
+    "guide.delvesPage.keeperFmt"
+  ],
+  "fr_CA": [
+    "guide.delvesPage.companionFmt",
+    "guide.delvesPage.keeperFmt"
+  ],
   "en_CA": [],
-  "it_IT": [],
-  "de_DE": [],
-  "zh_CN": [],
-  "zh_TW": [],
-  "ko_KR": [],
-  "ja_JP": [],
-  "pt_BR": [],
-  "ru_RU": [],
-  "nl_NL": [],
-  "pl_PL": [],
-  "id_ID": [],
-  "tr_TR": [],
-  "sv_SE": [],
-  "vi_VN": [],
-  "da_DK": []
+  "it_IT": [
+    "guide.delvesPage.companionFmt",
+    "guide.delvesPage.keeperFmt"
+  ],
+  "de_DE": [
+    "guide.delvesPage.companionFmt",
+    "guide.delvesPage.keeperFmt"
+  ],
+  "zh_CN": [
+    "guide.delvesPage.companionFmt",
+    "guide.delvesPage.keeperFmt"
+  ],
+  "zh_TW": [
+    "guide.delvesPage.companionFmt",
+    "guide.delvesPage.keeperFmt"
+  ],
+  "ko_KR": [
+    "guide.delvesPage.companionFmt",
+    "guide.delvesPage.keeperFmt"
+  ],
+  "ja_JP": [
+    "guide.delvesPage.companionFmt",
+    "guide.delvesPage.keeperFmt"
+  ],
+  "pt_BR": [
+    "guide.delvesPage.companionFmt",
+    "guide.delvesPage.keeperFmt"
+  ],
+  "ru_RU": [
+    "guide.delvesPage.companionFmt",
+    "guide.delvesPage.keeperFmt"
+  ],
+  "nl_NL": [
+    "guide.delvesPage.companionFmt",
+    "guide.delvesPage.keeperFmt"
+  ],
+  "pl_PL": [
+    "guide.delvesPage.companionFmt",
+    "guide.delvesPage.keeperFmt"
+  ],
+  "id_ID": [
+    "guide.delvesPage.companionFmt",
+    "guide.delvesPage.keeperFmt"
+  ],
+  "tr_TR": [
+    "guide.delvesPage.companionFmt",
+    "guide.delvesPage.keeperFmt"
+  ],
+  "sv_SE": [
+    "guide.delvesPage.companionFmt",
+    "guide.delvesPage.keeperFmt"
+  ],
+  "vi_VN": [
+    "guide.delvesPage.companionFmt",
+    "guide.delvesPage.keeperFmt"
+  ],
+  "da_DK": [
+    "guide.delvesPage.companionFmt",
+    "guide.delvesPage.keeperFmt"
+  ]
 };

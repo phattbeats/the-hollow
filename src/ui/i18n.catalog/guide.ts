@@ -767,7 +767,11 @@ export const guideStrings = {
     fromLevel: 'From level {n}',
     partyLabel: 'For one or two',
     keeperLabel: 'Keeper',
+    // Format strings: the separator and punctuation joining a roster name to its title or role
+    // stay translator-controlled, never a hardcoded ", " in delves.ts.
+    keeperFmt: '{name}, {title}',
     companionLabel: 'Companion',
+    companionFmt: '{name}, {role}',
     tiersLabel: 'Difficulties',
     affixesLabel: 'Possible modifiers',
     whatHeading: 'What a delve is',

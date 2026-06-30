@@ -23,14 +23,21 @@ function delveCard(d: GuideDelve): string {
   const tiers = d.tiers.map((tier) => `<span class="guide-badge">${esc(tier)}</span>`).join(' ');
   const facts: string[] = [];
   if (d.keeper) {
-    const title = d.keeper.title ? `, ${d.keeper.title}` : '';
+    // The separator/punctuation is translator-controlled via keeperFmt, not a hardcoded ", ".
+    const keeper = d.keeper.title
+      ? t('guide.delvesPage.keeperFmt', { name: d.keeper.name, title: d.keeper.title })
+      : d.keeper.name;
     facts.push(
-      `<p><span class="guide-figure-role">${esc(t('guide.delvesPage.keeperLabel'))}</span> ${esc(d.keeper.name + title)}</p>`,
+      `<p><span class="guide-figure-role">${esc(t('guide.delvesPage.keeperLabel'))}</span> ${esc(keeper)}</p>`,
     );
   }
   if (d.companion) {
+    const companion = t('guide.delvesPage.companionFmt', {
+      name: d.companion.name,
+      role: roleLabel(d.companion.role),
+    });
     facts.push(
-      `<p><span class="guide-figure-role">${esc(t('guide.delvesPage.companionLabel'))}</span> ${esc(`${d.companion.name}, ${roleLabel(d.companion.role)}`)}</p>`,
+      `<p><span class="guide-figure-role">${esc(t('guide.delvesPage.companionLabel'))}</span> ${esc(companion)}</p>`,
     );
   }
   if (tiers) {

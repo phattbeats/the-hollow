@@ -310,6 +310,18 @@ describe('Guide generated delve content', () => {
       expect(t(k as never).length).toBeGreaterThan(0);
     }
   });
+
+  it('joins the keeper and companion lines through translator-controlled format keys', () => {
+    // GUIDE-2: the name + role / name + title lines must come from a format key, not a hardcoded
+    // ", " concatenation, so the separator and punctuation stay translator-controlled.
+    setLanguage('en');
+    expect(t('guide.delvesPage.companionFmt' as never, { name: 'Vesh', role: 'Healer' })).toBe(
+      'Vesh, Healer',
+    );
+    expect(
+      t('guide.delvesPage.keeperFmt' as never, { name: 'Halven', title: 'Reliquary Keeper' }),
+    ).toBe('Halven, Reliquary Keeper');
+  });
 });
 
 // The bestiary now merges the raid zone's mobs (TEMPLE_MOBS) into its source, withholding elite
