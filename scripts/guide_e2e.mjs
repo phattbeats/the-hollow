@@ -67,6 +67,7 @@ try {
     'reference/combat',
     'reference/controls',
     'reference/glossary',
+    'delves',
     'faq',
   ]) {
     await page.goto(`${BASE}/wiki/${sub}`, { waitUntil: 'networkidle0' });
@@ -74,6 +75,11 @@ try {
     const placeholder = await page.$('.guide-placeholder');
     check(`content page renders: ${sub}`, !placeholder);
   }
+
+  // Delves page surfaces at least one delve card from the generated roster.
+  await page.goto(`${BASE}/wiki/delves`, { waitUntil: 'networkidle0' });
+  await page.waitForSelector('.guide-dungeon-card');
+  check('delves page lists at least one delve', (await page.$$('.guide-dungeon-card')).length >= 1);
   await page.goto(`${BASE}/wiki/how-to-play`, { waitUntil: 'networkidle0' });
   await page.waitForSelector('.guide-steps li');
   await page.screenshot({ path: 'tmp/wiki-howtoplay.png', fullPage: true });

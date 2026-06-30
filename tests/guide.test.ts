@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import {
   GUIDE_CLASSES,
+  GUIDE_DELVES,
   GUIDE_FAMILIES,
   GUIDE_MODELS,
   GUIDE_WARLOCK_PETS,
@@ -19,6 +20,7 @@ import {
   topbarRoutes,
   toSub,
 } from '../src/guide/routes';
+import { MOBS } from '../src/sim/data';
 import { setLanguage, t } from '../src/ui/i18n';
 
 const repoRoot = fileURLToPath(new URL('..', import.meta.url));
@@ -39,6 +41,10 @@ const serverMain = readFileSync(new URL('../server/main.ts', import.meta.url), '
 const sitemapXml = readFileSync(new URL('../public/sitemap.xml', import.meta.url), 'utf8').replace(
   /\r\n/g,
   '\n',
+);
+const generatedSource = readFileSync(
+  new URL('../src/guide/content.generated.ts', import.meta.url),
+  'utf8',
 );
 
 describe('Guide routes', () => {
@@ -261,6 +267,81 @@ describe('Guide model viewer asset integrity', () => {
           true,
         );
       }
+    }
+  });
+});
+
+// The Delves page renders entirely from GUIDE_DELVES, derived from the sim DELVE_LIST. The
+// generic route/sitemap/freshness gates above cover the page's existence, but not the shape or
+// spoiler-safety of the data: an empty or balance-leaking regeneration would render valid markup
+// and pass every other gate. This block is the structural + spoiler guard, matching the bar set
+// by the class-content test.
+describe('Guide generated delve content', () => {
+  it('emits at least one delve with grounded, spoiler-safe data', () => {
+    expect(GUIDE_DELVES.length).toBeGreaterThan(0);
+    for (const d of GUIDE_DELVES) {
+      expect(d.id.length).toBeGreaterThan(0);
+      expect(d.name.length).toBeGreaterThan(0);
+      expect(d.theme.length).toBeGreaterThan(0);
+      expect(typeof d.minLevel).toBe('number');
+      expect(d.minLevel).toBeGreaterThan(0);
+      expect(d.tiers.length).toBeGreaterThan(0);
+      // The keeper/companion are display names only (spoiler-safe roster facts).
+      if (d.keeper) expect(d.keeper.name.length).toBeGreaterThan(0);
+      if (d.companion) expect(['tank', 'healer', 'dps']).toContain(d.companion.role);
+      // Tier and affix labels are display NAMES, never balance numbers: a digit here would mean a
+      // count/multiplier/level-bonus leaked into the public wiki.
+      for (const label of [...d.tiers, ...d.affixes]) {
+        expect(label, `delve "${d.id}" surfaces a number in "${label}"`).not.toMatch(/\d/);
+      }
+    }
+  });
+
+  it('resolves the delves nav + page keys in English', () => {
+    setLanguage('en');
+    for (const k of [
+      'guide.nav.delves',
+      'guide.delvesPage.heading',
+      'guide.delvesPage.intro',
+      'guide.delvesPage.keeperLabel',
+      'guide.delvesPage.companionLabel',
+      'guide.delvesPage.fromLevel',
+    ]) {
+      expect(t(k as never).length).toBeGreaterThan(0);
+    }
+  });
+});
+
+// The bestiary now merges the raid zone's mobs (TEMPLE_MOBS) into its source, withholding elite
+// and boss creatures with an inline filter. The guide's load-bearing spoiler invariant ("never the
+// raid boss name; no instanced encounter creatures in the bestiary") is otherwise unguarded: a
+// future change to that filter would silently publish the raid boss to the public wiki with no
+// failing gate. This pins it.
+describe('Guide bestiary spoiler safety', () => {
+  it('exposes no elite or boss creature in the bestiary', () => {
+    const leaked: string[] = [];
+    for (const f of GUIDE_FAMILIES) {
+      for (const c of f.creatures) {
+        const tpl = MOBS[c.templateId];
+        if (tpl && (tpl.elite || tpl.boss)) leaked.push(`${c.templateId} (${f.family})`);
+      }
+    }
+    expect(
+      leaked,
+      `elite/boss creatures must stay out of the bestiary: ${leaked.join(', ')}`,
+    ).toEqual([]);
+  });
+
+  it('never bakes a boss display name into the generated content', () => {
+    const bossNames = Object.values(MOBS)
+      .filter((m) => m.boss)
+      .map((m) => m.name);
+    expect(bossNames.length).toBeGreaterThan(0); // the raid boss exists; this guard is meaningful
+    for (const name of bossNames) {
+      expect(
+        generatedSource.includes(name),
+        `raid/boss name "${name}" leaked into content.generated.ts`,
+      ).toBe(false);
     }
   });
 });
