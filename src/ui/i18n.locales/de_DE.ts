@@ -3551,6 +3551,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.affixesLabel': 'Mögliche Modifikatoren',
   'guide.delvesPage.companionBody':
     'Ein Tiefgang schickt eine Gefährtin mit dir hinab, sodass ein Alleingang nie aussichtslos ist. Sie kämpft an deiner Seite, und je mehr du zwischen den Läufen in sie investierst, desto stärker wird sie, bis sie einen Verbündeten einmal pro Abstieg vom Rand des Todes zurückholen kann. Sie gehört dir für den Tiefgang und wartet zwischen den Läufen an der Tafel.',
+  'guide.delvesPage.companionFmt': '{name}, {role}',
   'guide.delvesPage.companionHeading': 'Deine Gefährtin',
   'guide.delvesPage.companionLabel': 'Gefährtin',
   'guide.delvesPage.fromLevel': 'Ab Stufe {n}',
@@ -3560,6 +3561,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.howHeading': 'Wie ein Lauf abläuft',
   'guide.delvesPage.intro':
     'Tiefgänge sind kurze, wiederholbare Abstiege für einen oder zwei, mit einer treuen Gefährtin an deiner Seite, wann immer du allein hinabsteigst. Finde die Tafel, wähle einen Lauf und klettere mit der Beute wieder hinaus.',
+  'guide.delvesPage.keeperFmt': '{name}, {title}',
   'guide.delvesPage.keeperLabel': 'Hüter',
   'guide.delvesPage.lockpickBody':
     'Manche Türen und Verstecke sind versiegelt, und eines zu öffnen ist eher eine kleine Nervenprobe als eine Frage der Werte: knacke das Schloss sauber und ruhig, und du verdienst einen besseren Preis als bei einem hastigen, verpatzten Versuch. Es ist freiwillig, aber der sorgfältige Tiefgänger ist der reichere.',

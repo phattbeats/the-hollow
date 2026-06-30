@@ -3470,6 +3470,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.affixesLabel': '나타날 수 있는 고난 요소',
   'guide.delvesPage.companionBody':
     '탐굴에는 동료가 함께 내려가므로 혼자 도전하더라도 결코 가망 없는 일은 아닙니다. 동료는 당신 곁에서 싸우고, 탐굴 사이에 동료에게 투자할수록 꾸준히 강해져, 결국 탐굴마다 한 번씩 위기에 빠진 아군을 되살릴 수 있게 됩니다. 동료는 이번 탐굴 동안 당신의 편이며, 탐굴 사이에는 게시판에서 기다립니다.',
+  'guide.delvesPage.companionFmt': '{name}, {role}',
   'guide.delvesPage.companionHeading': '당신의 동료',
   'guide.delvesPage.companionLabel': '동료',
   'guide.delvesPage.fromLevel': '{n} 레벨부터',
@@ -3479,6 +3480,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.howHeading': '탐굴은 이렇게 진행됩니다',
   'guide.delvesPage.intro':
     '탐굴은 한두 명이 즐기는 짧고 반복 가능한 탐험으로, 혼자 내려갈 때면 언제나 충직한 동료가 곁을 지킵니다. 게시판을 찾아 탐굴을 고르고, 전리품을 챙겨 다시 올라오십시오.',
+  'guide.delvesPage.keeperFmt': '{name}, {title}',
   'guide.delvesPage.keeperLabel': '관리인',
   'guide.delvesPage.lockpickBody':
     '일부 문과 보관함은 잠겨 있으며, 그것을 여는 일은 능력치 검사라기보다 작은 담력 시험입니다. 잠금을 침착하고 깔끔하게 풀면 서두르다 망친 경우보다 더 좋은 보상을 얻습니다. 선택 사항이지만, 신중한 탐굴자가 더 많은 것을 챙깁니다.',

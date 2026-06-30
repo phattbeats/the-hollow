@@ -3525,6 +3525,7 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.affixesLabel': 'Modificadores possíveis',
   'guide.delvesPage.companionBody':
     'Uma incursão envia uma companheira com você, então uma descida solo nunca é desesperadora. Ela luta ao seu lado, e conforme você investe nela entre as incursões ela fica cada vez mais forte, até conseguir puxar um aliado de volta da beira da morte uma vez por descida. Ela é sua durante a incursão e espera no quadro entre uma descida e outra.',
+  'guide.delvesPage.companionFmt': '{name}, {role}',
   'guide.delvesPage.companionHeading': 'Sua companheira',
   'guide.delvesPage.companionLabel': 'Companheira',
   'guide.delvesPage.fromLevel': 'A partir do nível {n}',
@@ -3534,6 +3535,7 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.howHeading': 'Como funciona uma incursão',
   'guide.delvesPage.intro':
     'Incursões são descidas curtas e repetíveis para um ou dois jogadores, com uma companheira leal ao seu lado sempre que você desce sozinho. Encontre o quadro, escolha uma incursão e suba de volta com os espólios.',
+  'guide.delvesPage.keeperFmt': '{name}, {title}',
   'guide.delvesPage.keeperLabel': 'Guardião',
   'guide.delvesPage.lockpickBody':
     'Algumas portas e baús ficam selados, e abrir um é um pequeno teste de sangue-frio, não uma prova de atributos: resolva a fechadura de forma limpa e firme e você ganha um prêmio melhor do que com uma tentativa apressada e atrapalhada. É opcional, mas o aventureiro cuidadoso é o mais rico.',

@@ -3563,6 +3563,7 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.affixesLabel': 'Modificateurs possibles',
   'guide.delvesPage.companionBody':
     "Une plongée envoie une compagne descendre avec vous, pour qu'une partie en solo ne soit jamais désespérée. Elle combat à vos côtés, et à mesure que vous investissez en elle entre les plongées, elle gagne régulièrement en force, jusqu'à pouvoir ramener un allié du bord du gouffre une fois par descente. Elle est à vous le temps de la plongée et vous attend au tableau entre les parties.",
+  'guide.delvesPage.companionFmt': '{name}, {role}',
   'guide.delvesPage.companionHeading': 'Votre compagne',
   'guide.delvesPage.companionLabel': 'Compagne',
   'guide.delvesPage.fromLevel': 'À partir du niveau {n}',
@@ -3572,6 +3573,7 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.howHeading': 'Comment se déroule une plongée',
   'guide.delvesPage.intro':
     'Les plongées sont de courtes descentes rejouables pour un ou deux joueurs, avec une compagne fidèle à vos côtés chaque fois que vous descendez en solo. Trouvez le tableau, choisissez une plongée et remontez avec le butin.',
+  'guide.delvesPage.keeperFmt': '{name}, {title}',
   'guide.delvesPage.keeperLabel': 'Gardien',
   'guide.delvesPage.lockpickBody':
     "Certaines portes et certains coffres sont scellés, et en ouvrir un tient plus du petit test de sang-froid que de la caractéristique : forcez la serrure proprement et sans trembler, et vous gagnez un meilleur prix qu'une tentative précipitée et maladroite. C'est facultatif, mais le plongeur soigneux est le plus riche.",

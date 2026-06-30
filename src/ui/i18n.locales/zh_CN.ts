@@ -3318,6 +3318,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.affixesLabel': '可能出现的词缀',
   'guide.delvesPage.companionBody':
     '每次探秘都会有一名同伴随你下潜，因此单人挑战绝不会毫无希望。她会在你身旁并肩作战，而随着你在两次探秘之间持续投入，她会稳步变强，直到最终能在每次下潜中把濒死的盟友从鬼门关拉回一次。这次探秘里她是你的同伴，两次探秘之间则在面板旁等候。',
+  'guide.delvesPage.companionFmt': '{name}，{role}',
   'guide.delvesPage.companionHeading': '你的同伴',
   'guide.delvesPage.companionLabel': '同伴',
   'guide.delvesPage.fromLevel': '从 {n} 级起',
@@ -3327,6 +3328,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.howHeading': '一次探秘如何进行',
   'guide.delvesPage.intro':
     '探秘是供一到两人进行的短小、可反复挑战的下潜，每当你独自下潜时，都会有一名忠诚的同伴陪在身旁。找到面板，选好一次探秘，再带着战利品爬回地面。',
+  'guide.delvesPage.keeperFmt': '{name}，{title}',
   'guide.delvesPage.keeperLabel': '看守人',
   'guide.delvesPage.lockpickBody':
     '有些门扉与宝箱处于封锁状态，开启它们更像是一场小小的胆识考验，而非属性比拼：干净而沉稳地解开锁，你得到的奖励会优于慌乱仓促的开法。这并非强制，但谨慎的探秘者收获更丰。',

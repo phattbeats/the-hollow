@@ -2312,6 +2312,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.affixesLabel': 'Olası değiştiriciler',
   'guide.delvesPage.companionBody':
     'Bir mağara seferi yanınıza bir yoldaş katar, böylece tek başına yapılan bir sefer asla umutsuz değildir. Yanınızda dövüşür ve seferler arasında ona yatırım yaptıkça istikrarla güçlenir, ta ki her inişte bir kez bir müttefiki uçurumun kenarından geri çekebilecek hale gelene dek. Sefer boyunca sizindir ve seferler arasında panonun başında bekler.',
+  'guide.delvesPage.companionFmt': '{name}, {role}',
   'guide.delvesPage.companionHeading': 'Yoldaşınız',
   'guide.delvesPage.companionLabel': 'Yoldaş',
   'guide.delvesPage.fromLevel': "Seviye {n}'den itibaren",
@@ -2321,6 +2322,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.howHeading': 'Bir sefer nasıl işler',
   'guide.delvesPage.intro':
     'Mağara seferleri, bir ya da iki kişilik, tekrar tekrar oynanabilen kısa inişlerdir; tek başına indiğinizde her zaman yanınızda sadık bir yoldaş bulunur. Panoyu bulun, bir sefer seçin ve ganimetle birlikte yukarı tırmanın.',
+  'guide.delvesPage.keeperFmt': '{name}, {title}',
   'guide.delvesPage.keeperLabel': 'Bekçi',
   'guide.delvesPage.lockpickBody':
     'Bazı kapılar ve zulalar mühürlüdür ve birini açmak bir istatistik sınavından çok küçük bir soğukkanlılık sınavıdır: kilidi temiz ve istikrarlı bir şekilde çözerseniz, aceleyle ve beceriksizce açılandan daha iyi bir ödül kazanırsınız. İsteğe bağlıdır, ama daha zengin olan, dikkatli sefercidir.',

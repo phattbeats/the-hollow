@@ -2327,6 +2327,7 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.affixesLabel': 'Möjliga modifierare',
   'guide.delvesPage.companionBody':
     'En delve skickar med en följeslagare ner med dig, så en ensam omgång är aldrig hopplös. Hon slåss vid din sida, och allteftersom du investerar i henne mellan omgångar blir hon stadigt starkare, tills hon kan dra en allierad tillbaka från avgrundens rand en gång per nedstigning. Hon är din under delven och väntar vid tavlan mellan omgångar.',
+  'guide.delvesPage.companionFmt': '{name}, {role}',
   'guide.delvesPage.companionHeading': 'Din följeslagare',
   'guide.delvesPage.companionLabel': 'Följeslagare',
   'guide.delvesPage.fromLevel': 'Från nivå {n}',
@@ -2336,6 +2337,7 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.howHeading': 'Så fungerar en omgång',
   'guide.delvesPage.intro':
     'Delver är korta, omspelbara nedstigningar för en eller två, med en trogen följeslagare vid din sida närhelst du går ner ensam. Hitta tavlan, välj en omgång och klättra ut igen med bytet.',
+  'guide.delvesPage.keeperFmt': '{name}, {title}',
   'guide.delvesPage.keeperLabel': 'Vaktare',
   'guide.delvesPage.lockpickBody':
     'Vissa dörrar och förråd är förseglade, och att öppna ett är ett litet prov på nerver snarare än en egenskapskontroll: lös låset rent och stadigt så förtjänar du ett bättre pris än ett hastat, fumlat. Det är valfritt, men den försiktiga delvaren är den rikare.',

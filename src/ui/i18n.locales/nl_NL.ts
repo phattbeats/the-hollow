@@ -2361,6 +2361,7 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.affixesLabel': 'Mogelijke modifiers',
   'guide.delvesPage.companionBody':
     'Een delve stuurt een metgezel met je mee naar beneden, zodat een solotocht nooit hopeloos is. Zij vecht aan je zij, en naarmate je tussen tochten in haar investeert wordt ze gestaag sterker, tot ze eenmaal per afdaling een bondgenoot van de rand kan terughalen. Ze is van jou voor de delve en wacht bij het bord tussen tochten.',
+  'guide.delvesPage.companionFmt': '{name}, {role}',
   'guide.delvesPage.companionHeading': 'Je metgezel',
   'guide.delvesPage.companionLabel': 'Metgezel',
   'guide.delvesPage.fromLevel': 'Vanaf niveau {n}',
@@ -2370,6 +2371,7 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.howHeading': 'Hoe een tocht werkt',
   'guide.delvesPage.intro':
     'Delves zijn korte, herspeelbare afdalingen voor één of twee, met een trouwe metgezel aan je zij wanneer je alleen naar beneden gaat. Vind het bord, kies een tocht en klim terug naar boven met de buit.',
+  'guide.delvesPage.keeperFmt': '{name}, {title}',
   'guide.delvesPage.keeperLabel': 'Bewaarder',
   'guide.delvesPage.lockpickBody':
     'Sommige deuren en kisten zijn verzegeld, en er een openen is een kleine zenuwproef in plaats van een statistiektoets: kraak het slot schoon en gestaag en je verdient een betere prijs dan bij een gehaaste, geklungelde poging. Het is optioneel, maar de zorgvuldige delver is de rijkere.',

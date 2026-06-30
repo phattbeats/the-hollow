@@ -2363,6 +2363,7 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.affixesLabel': 'Pengubah yang mungkin',
   'guide.delvesPage.companionBody':
     'Sebuah delve mengirim seorang pendamping turun bersamamu, jadi penjelajahan seorang diri tak pernah tanpa harapan. Ia bertarung di sisimu, dan seiring kamu berinvestasi padanya di antara penjelajahan, ia tumbuh semakin kuat, hingga ia bisa menarik seorang sekutu kembali dari ambang ajal sekali tiap penurunan. Ia menjadi milikmu selama delve dan menanti di papan di antara penjelajahan.',
+  'guide.delvesPage.companionFmt': '{name}, {role}',
   'guide.delvesPage.companionHeading': 'Pendampingmu',
   'guide.delvesPage.companionLabel': 'Pendamping',
   'guide.delvesPage.fromLevel': 'Mulai level {n}',
@@ -2372,6 +2373,7 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.howHeading': 'Cara sebuah penjelajahan berjalan',
   'guide.delvesPage.intro':
     'Delve adalah penurunan singkat yang bisa diulang untuk satu atau dua pemain, dengan seorang pendamping setia di sisimu setiap kali kamu turun sendiri. Temukan papannya, pilih sebuah penjelajahan, dan naik kembali dengan rampasannya.',
+  'guide.delvesPage.keeperFmt': '{name}, {title}',
   'guide.delvesPage.keeperLabel': 'Penjaga',
   'guide.delvesPage.lockpickBody':
     'Sebagian pintu dan peti tersegel, dan membukanya adalah uji nyali kecil alih-alih uji statistik: pecahkan kuncinya dengan rapi dan mantap, maka kamu mendapat hadiah yang lebih baik daripada yang dibuka terburu-buru dan gegabah. Ini opsional, tetapi penjelajah yang berhati-hatilah yang lebih kaya.',

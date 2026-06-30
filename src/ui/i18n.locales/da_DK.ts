@@ -2319,6 +2319,7 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.affixesLabel': 'Mulige modifikatorer',
   'guide.delvesPage.companionBody':
     'En delve sender en ledsager med dig ned, så et sololøb aldrig er håbløst. Hun kæmper ved din side, og efterhånden som du investerer i hende mellem løbene, vokser hun støt sig stærkere, indtil hun kan trække en allieret tilbage fra afgrundens rand én gang per nedstigning. Hun er din under hele delven og venter ved tavlen mellem løbene.',
+  'guide.delvesPage.companionFmt': '{name}, {role}',
   'guide.delvesPage.companionHeading': 'Din ledsager',
   'guide.delvesPage.companionLabel': 'Ledsager',
   'guide.delvesPage.fromLevel': 'Fra niveau {n}',
@@ -2328,6 +2329,7 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.howHeading': 'Sådan forløber et løb',
   'guide.delvesPage.intro':
     'Delves er korte nedstigninger til en eller to, som kan gentages, med en trofast ledsager ved din side, når du går ned alene. Find tavlen, vælg et løb, og klatr op igen med byttet.',
+  'guide.delvesPage.keeperFmt': '{name}, {title}',
   'guide.delvesPage.keeperLabel': 'Vogter',
   'guide.delvesPage.lockpickBody':
     'Nogle døre og skjul er forseglede, og at åbne en er en lille prøve på dine nerver snarere end et tjek af dine statistikker: løs låsen rent og roligt, og du tjener en bedre præmie end et forhastet, klodset forsøg. Det er valgfrit, men den omhyggelige delver er den rigeste.',

@@ -3319,6 +3319,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.affixesLabel': '可能出現的詞綴',
   'guide.delvesPage.companionBody':
     '秘探會派一名同伴與你一同下去，因此單人旅程絕不會毫無勝算。她會在你身旁作戰，而當你在旅程之間投注於她，她也會穩定地變強，直到每趟探索能將一名瀕死的隊友從鬼門關前拉回一次。她在這趟秘探中歸你所有，並在旅程間隙於看板旁等候。',
+  'guide.delvesPage.companionFmt': '{name}，{role}',
   'guide.delvesPage.companionHeading': '你的同伴',
   'guide.delvesPage.companionLabel': '同伴',
   'guide.delvesPage.fromLevel': '從 {n} 級起',
@@ -3328,6 +3329,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.howHeading': '旅程如何進行',
   'guide.delvesPage.intro':
     '秘探是供一到兩人進行、可重複挑戰的短程探索，每當你獨自下去時，都會有一名忠誠的同伴隨侍在側。找到看板，選擇一趟旅程，再帶著戰利品爬出來。',
+  'guide.delvesPage.keeperFmt': '{name}，{title}',
   'guide.delvesPage.keeperLabel': '看守人',
   'guide.delvesPage.lockpickBody':
     '有些門扉與藏匿處上了鎖，而開啟它們考驗的是膽識而非屬性數值：俐落而沉穩地解開鎖頭，你所得的獎賞會勝過倉促失手時的所得。這並非必要，但謹慎的探索者往往更富有。',

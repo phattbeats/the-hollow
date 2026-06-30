@@ -2346,6 +2346,7 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.affixesLabel': 'Đặc tính có thể gặp',
   'guide.delvesPage.companionBody':
     'Mỗi hang sâu cử một đồng hành xuống cùng bạn, nên một lượt chơi đơn độc chẳng bao giờ là vô vọng. Cô ấy chiến đấu bên cạnh bạn, và khi bạn đầu tư cho cô giữa các lượt, cô dần mạnh lên đều đặn, cho tới khi có thể kéo một đồng đội từ bờ vực trở lại một lần mỗi cuộc xuống hầm. Cô là đồng hành của bạn trong suốt hang sâu và chờ ở bảng giữa các lượt.',
+  'guide.delvesPage.companionFmt': '{name}, {role}',
   'guide.delvesPage.companionHeading': 'Đồng hành của bạn',
   'guide.delvesPage.companionLabel': 'Đồng Hành',
   'guide.delvesPage.fromLevel': 'Từ cấp {n}',
@@ -2355,6 +2356,7 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.howHeading': 'Một lượt chơi diễn ra thế nào',
   'guide.delvesPage.intro':
     'Hang sâu là những cuộc xuống hầm ngắn, chơi đi chơi lại được, cho một hoặc hai người, với một đồng hành trung thành kề bên mỗi khi bạn xuống một mình. Tìm cái bảng, chọn một lượt chơi, và trèo trở lên với chiến lợi phẩm.',
+  'guide.delvesPage.keeperFmt': '{name}, {title}',
   'guide.delvesPage.keeperLabel': 'Người Giữ',
   'guide.delvesPage.lockpickBody':
     'Một số cánh cửa và rương chứa bị khóa kín, và mở một cái là một thử thách nhỏ về sự bình tĩnh chứ không phải về chỉ số: giải khóa gọn gàng và vững vàng thì bạn nhận được phần thưởng tốt hơn so với khi vội vàng làm hỏng. Việc này không bắt buộc, nhưng người dò hang cẩn thận mới là người giàu hơn.',

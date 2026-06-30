@@ -3528,6 +3528,7 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.affixesLabel': 'Modificatori possibili',
   'guide.delvesPage.companionBody':
     "Un'incursione manda con te una compagna, così una discesa in solitaria non è mai senza speranza. Combatte al tuo fianco, e man mano che investi su di lei tra una discesa e l'altra diventa via via più forte, fino a poter strappare un alleato dall'orlo della morte una volta per discesa. È al tuo servizio per l'incursione e ti aspetta al tabellone tra una discesa e l'altra.",
+  'guide.delvesPage.companionFmt': '{name}, {role}',
   'guide.delvesPage.companionHeading': 'La tua compagna',
   'guide.delvesPage.companionLabel': 'Compagna',
   'guide.delvesPage.fromLevel': 'Dal livello {n}',
@@ -3537,6 +3538,7 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.howHeading': "Come funziona un'incursione",
   'guide.delvesPage.intro':
     "Le incursioni sono brevi discese rigiocabili per uno o due giocatori, con una compagna fedele al tuo fianco ogni volta che scendi da solo. Trova il tabellone, scegli un'incursione e risali con il bottino.",
+  'guide.delvesPage.keeperFmt': '{name}, {title}',
   'guide.delvesPage.keeperLabel': 'Custode',
   'guide.delvesPage.lockpickBody':
     'Alcune porte e alcuni nascondigli sono sigillati, e aprirne uno è una piccola prova di sangue freddo più che di statistiche: forza la serratura in modo pulito e costante e otterrai un premio migliore di chi va di fretta e pasticcia. È facoltativo, ma chi esplora con prudenza è chi torna più ricco.',

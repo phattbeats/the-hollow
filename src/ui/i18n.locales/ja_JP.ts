@@ -3466,6 +3466,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.affixesLabel': '発生しうる修飾効果',
   'guide.delvesPage.companionBody':
     'デルヴには仲間が一緒に降りてくれるので、ソロのランでも絶望することはありません。彼女はあなたのそばで戦い、ランの合間に育てていくほど着実に強くなり、やがて一度の潜行につき一度、瀕死の味方を引き戻せるようになります。彼女はそのデルヴの間ずっとあなたとともにあり、ランの合間はボードのそばで待っています。',
+  'guide.delvesPage.companionFmt': '{name}、{role}',
   'guide.delvesPage.companionHeading': 'あなたの仲間',
   'guide.delvesPage.companionLabel': '仲間',
   'guide.delvesPage.fromLevel': 'レベル{n}から',
@@ -3475,6 +3476,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.howHeading': 'ランの流れ',
   'guide.delvesPage.intro':
     'デルヴは1人または2人で挑む、短く繰り返し遊べる潜行です。1人で降りるときはいつでも、忠実な仲間がそばに付き添います。ボードを見つけてランを選び、戦利品を手に地上へ登り戻りましょう。',
+  'guide.delvesPage.keeperFmt': '{name}、{title}',
   'guide.delvesPage.keeperLabel': '番人',
   'guide.delvesPage.lockpickBody':
     '一部の扉や隠し箱は封じられており、それを開けるのはステータス勝負ではなく、ちょっとした度胸試しです。慌てて失敗するよりも、落ち着いて丁寧に錠を解けば、より良い品が手に入ります。任意の要素ですが、慎重な探索者ほど多くの実りを得られます。',

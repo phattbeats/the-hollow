@@ -3546,6 +3546,7 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.affixesLabel': 'Modificadores posibles',
   'guide.delvesPage.companionBody':
     'Cada expedición envía contigo a una compañera, así que una partida en solitario nunca está perdida. Lucha a tu lado, y a medida que inviertes en ella entre partidas se vuelve cada vez más fuerte, hasta que puede traer de vuelta a un aliado al borde de la muerte una vez por descenso. Es tuya durante la expedición y te espera en el tablón entre partidas.',
+  'guide.delvesPage.companionFmt': '{name}, {role}',
   'guide.delvesPage.companionHeading': 'Tu compañera',
   'guide.delvesPage.companionLabel': 'Compañera',
   'guide.delvesPage.fromLevel': 'A partir del nivel {n}',
@@ -3555,6 +3556,7 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.howHeading': 'Cómo funciona una partida',
   'guide.delvesPage.intro':
     'Las expediciones son descensos cortos y repetibles para uno o dos jugadores, con una compañera leal a tu lado siempre que bajes en solitario. Encuentra el tablón, elige una partida y vuelve a salir con el botín.',
+  'guide.delvesPage.keeperFmt': '{name}, {title}',
   'guide.delvesPage.keeperLabel': 'Guardián',
   'guide.delvesPage.lockpickBody':
     'Algunas puertas y arcas están selladas, y abrir una es una pequeña prueba de pulso más que de características: resuelve la cerradura con limpieza y firmeza y te llevarás un premio mejor que si lo haces con prisas y torpeza. Es opcional, pero quien se toma su tiempo sale más rico.',

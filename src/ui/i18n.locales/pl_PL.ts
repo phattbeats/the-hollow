@@ -2334,6 +2334,7 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.affixesLabel': 'Możliwe modyfikatory',
   'guide.delvesPage.companionBody':
     'Wyprawa wysyła z tobą towarzyszkę, więc samotne zejście nigdy nie jest beznadziejne. Walczy u twego boku, a gdy inwestujesz w nią między wyprawami, stale staje się silniejsza, aż w końcu raz na zejście potrafi wyrwać sojusznika z krawędzi śmierci. Należy do ciebie na czas wyprawy i czeka przy tablicy między zejściami.',
+  'guide.delvesPage.companionFmt': '{name}, {role}',
   'guide.delvesPage.companionHeading': 'Twoja towarzyszka',
   'guide.delvesPage.companionLabel': 'Towarzyszka',
   'guide.delvesPage.fromLevel': 'Od poziomu {n}',
@@ -2343,6 +2344,7 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'guide.delvesPage.howHeading': 'Jak wygląda wyprawa',
   'guide.delvesPage.intro':
     'Wyprawy to krótkie, powtarzalne zejścia dla jednego lub dwóch graczy, z wierną towarzyszką u twego boku, ilekroć schodzisz samotnie. Znajdź tablicę, wybierz wyprawę i wespnij się z powrotem z łupami.',
+  'guide.delvesPage.keeperFmt': '{name}, {title}',
   'guide.delvesPage.keeperLabel': 'Opiekun',
   'guide.delvesPage.lockpickBody':
     'Niektóre drzwi i skrytki są zaryglowane, a ich otwarcie to mała próba nerwów, a nie sprawdzian statystyk: rozwiąż zamek czysto i spokojnie, a zdobędziesz lepszą nagrodę niż za pośpieszną, sfuszerowaną próbę. To opcjonalne, ale ostrożny śmiałek wychodzi z niej bogatszy.',
