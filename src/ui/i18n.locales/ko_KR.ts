@@ -771,7 +771,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'classDetails.lore.paladin':
     '성기사는 축복으로 아군을 돕고 성스러운 빛으로 상처를 치유하며 중갑으로 약자를 보호하는 성전사입니다.',
   'classDetails.lore.hunter':
-    '사냥꾼은 야생을 다루며 활이나 총으로 멀리서 적을 추적하고 덫으로 전장을 통제합니다.',
+    '사냥꾼은 길들인 야수와 함께 싸우는 원거리 전문가로, 일격 사격과 속사를 퍼부어 적을 공략하고 맹독과 충격 사격으로 적의 발을 묶으며 상황에 맞춰 화신을 전환합니다.',
   'classDetails.lore.rogue':
     '도적은 기력과 연계 점수를 사용해 그림자 속에서 기습과 마무리 일격을 가하는 암살자입니다.',
   'classDetails.lore.priest':
@@ -3765,7 +3765,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
     '늑대와 멧돼지부터 이들을 노리는 포식자까지, 숲과 들판의 야생 동물들. 사냥꾼은 그중 다수를 길들일 수 있습니다.',
   'guide.family.spider.name': '거미',
   'guide.family.spider.desc':
-    '어둡고 뒤엉킨 곳에 둥지를 트는 거미줄 짜는 자들과 독을 품은 잠복자들. Hunter는 야수와 마찬가지로 이들을 길들일 수 있습니다.',
+    '어둡고 뒤엉킨 곳에 둥지를 트는 거미줄 짜는 자들과 독을 품은 잠복자들. 사냥꾼은 야수와 마찬가지로 이들을 길들일 수 있습니다.',
   'guide.family.murloc.name': '멀록',
   'guide.family.murloc.desc':
     '시끄럽고 영역 의식이 강한 무리를 이루어 얕은 물가에 떼지어 모이는 양서류 늪지 거주자들.',

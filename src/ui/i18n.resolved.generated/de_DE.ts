@@ -1148,7 +1148,7 @@ export const de_DE: EnTranslations = {
       },
       "spider": {
         "name": "Spinnen",
-        "desc": "Netzweber und giftige Lauerer, die in dunklen, verwucherten Orten nisten. Hunter können sie zähmen, genau wie Wildtiere."
+        "desc": "Netzweber und giftige Lauerer, die in dunklen, verwucherten Orten nisten. Jäger können sie zähmen, genau wie Wildtiere."
       },
       "murloc": {
         "name": "Murlocs",
@@ -2511,7 +2511,7 @@ export const de_DE: EnTranslations = {
     "lore": {
       "warrior": "Krieger sind kampferprobte Nahkämpfer, die Wut aufbauen, wenn sie Schaden verursachen oder erleiden. Sie halten schwere Treffer aus oder zerschmettern Gegner.",
       "paladin": "Paladine sind heilige Kreuzritter, die mit Segen unterstützen, mit Heiligem Licht heilen und Schwache in schwerer Rüstung schützen.",
-      "hunter": "Jäger beherrschen die Wildnis, verfolgen Gegner aus der Ferne mit Bögen oder Schusswaffen und kontrollieren das Feld mit Fallen.",
+      "hunter": "Jäger sind Fernkampfspezialisten, die an der Seite eines gezähmten Tieres kämpfen, Gegner mit gezielten und schnellen Schüssen überschütten, sie mit Stichen und erschütterndem Beschuss verlangsamen und je nach Augenblick zwischen ihren Aspekten wechseln.",
       "rogue": "Schurken sind verstohlene Assassinen, die Energie und Kombopunkte für Angriffe aus den Schatten ausgeben.",
       "priest": "Priester rufen das Heilige Licht, um Verbündete zu heilen und zu schützen, während Schattenmagie Gegnern Leben entzieht.",
       "shaman": "Schamanen gebieten über die Elemente, erfüllen Waffen mit Macht, treffen Gegner mit Blitzen und stellen Verbündete wieder her.",

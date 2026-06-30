@@ -1148,7 +1148,7 @@ export const id_ID: EnTranslations = {
       },
       "spider": {
         "name": "Laba-laba",
-        "desc": "Pemintal jaring dan pengintai berbisa yang bersarang di tempat gelap dan kusut. Hunter bisa menjinakkannya, sama seperti binatang buas."
+        "desc": "Pemintal jaring dan pengintai berbisa yang bersarang di tempat gelap dan kusut. Pemburu bisa menjinakkannya, sama seperti binatang buas."
       },
       "murloc": {
         "name": "Murloc",
@@ -2511,7 +2511,7 @@ export const id_ID: EnTranslations = {
     "lore": {
       "warrior": "Prajurit adalah petarung jarak dekat yang tangguh, yang membangun Amarah saat memberi atau menerima kerusakan. Mereka menyerap pukulan keras atau meremukkan lawan dengan senjata ampuh.",
       "paladin": "Paladin adalah ksatria suci yang mendukung sekutu dengan berkah, menyembuhkan luka dengan Cahaya Suci, dan melindungi yang lemah dengan zirah berat.",
-      "hunter": "Pemburu menguasai alam liar, melacak musuh dari kejauhan dengan busur atau senapan dan menggunakan jebakan untuk mengendalikan medan perang.",
+      "hunter": "Pemburu adalah spesialis jarak jauh yang bertarung berdampingan dengan binatang buas jinak, menghujani musuh dengan tembakan terarah dan beruntun, memperlambat mereka dengan sengat dan tembakan pengguncang, serta berganti Aspek sesuai keadaan pertempuran.",
       "rogue": "Penyamun adalah pembunuh siluman yang menghabiskan Energi dan Poin Kombo untuk tikaman belakang dan jurus penutup dari balik bayangan.",
       "priest": "Pendeta memanggil Cahaya Suci untuk menyembuhkan dan melindungi sekutu, sementara sihir Bayangan memungkinkan mereka menyedot nyawa musuh.",
       "shaman": "Dukun memerintah unsur-unsur alam, mengisi senjata dengan kekuatan, mengejutkan musuh dengan petir, dan memulihkan sekutu.",

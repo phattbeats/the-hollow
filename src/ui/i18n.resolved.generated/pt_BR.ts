@@ -1148,7 +1148,7 @@ export const pt_BR: EnTranslations = {
       },
       "spider": {
         "name": "Aranhas",
-        "desc": "Tecelões de teias e espreitadores venenosos que se aninham em lugares escuros e emaranhados. Hunters podem domá-los, assim como as feras."
+        "desc": "Tecelões de teias e espreitadores venenosos que se aninham em lugares escuros e emaranhados. Caçadores podem domá-los, assim como as feras."
       },
       "murloc": {
         "name": "Murlocs",
@@ -2511,7 +2511,7 @@ export const pt_BR: EnTranslations = {
     "lore": {
       "warrior": "Guerreiros são combatentes de linha de frente que acumulam raiva ao causar ou receber dano. Eles absorvem golpes pesados ou esmagam inimigos.",
       "paladin": "Paladinos são cruzados sagrados que apoiam com bênçãos, curam com Luz Sagrada e protegem os fracos com armaduras robustas.",
-      "hunter": "Caçadores dominam a natureza, rastreiam inimigos de longe com arcos ou armas de fogo e controlam o campo com armadilhas.",
+      "hunter": "Caçadores são especialistas em combate à distância que lutam ao lado de uma fera domada, crivando inimigos com tiros certeiros e disparos rápidos, reduzindo-os com picadas e fogo concussivo, e alternando aspectos conforme o momento exige.",
       "rogue": "Ladinos são assassinos furtivos que gastam energia e pontos de combo para atacar das sombras.",
       "priest": "Sacerdotes invocam a Luz Sagrada para curar e proteger aliados, enquanto a magia Sombria drena a vida dos inimigos.",
       "shaman": "Xamãs comandam os elementos, imbuem armas com poder, chocam inimigos com relâmpagos e restauram aliados.",

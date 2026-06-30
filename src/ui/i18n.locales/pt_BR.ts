@@ -764,7 +764,7 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'classDetails.lore.paladin':
     'Paladinos são cruzados sagrados que apoiam com bênçãos, curam com Luz Sagrada e protegem os fracos com armaduras robustas.',
   'classDetails.lore.hunter':
-    'Caçadores dominam a natureza, rastreiam inimigos de longe com arcos ou armas de fogo e controlam o campo com armadilhas.',
+    'Caçadores são especialistas em combate à distância que lutam ao lado de uma fera domada, crivando inimigos com tiros certeiros e disparos rápidos, reduzindo-os com picadas e fogo concussivo, e alternando aspectos conforme o momento exige.',
   'classDetails.lore.rogue':
     'Ladinos são assassinos furtivos que gastam energia e pontos de combo para atacar das sombras.',
   'classDetails.lore.priest':
@@ -3600,7 +3600,7 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
     'Enormes, lerdos e perigosos. Eles acampam nas passagens altas e batem como um deslizamento de terra.',
   'guide.family.ogre.name': 'Ogros',
   'guide.family.spider.desc':
-    'Tecelões de teias e espreitadores venenosos que se aninham em lugares escuros e emaranhados. Hunters podem domá-los, assim como as feras.',
+    'Tecelões de teias e espreitadores venenosos que se aninham em lugares escuros e emaranhados. Caçadores podem domá-los, assim como as feras.',
   'guide.family.spider.name': 'Aranhas',
   'guide.family.troll.desc': 'Brutamontes corpulentos que se entocam nos pântanos do brejo.',
   'guide.family.troll.name': 'Trolls',

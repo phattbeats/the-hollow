@@ -135,7 +135,7 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'classDetails.lore.druid':
     'Druider kanaliserar naturen, läker sår, snärjer fiender och skiftar till djurformer för försvar eller skada.',
   'classDetails.lore.hunter':
-    'Jägare behärskar vildmarken, spårar fiender på avstånd med pilbågar eller gevär och använder fällor för att kontrollera slagfältet.',
+    'Jägare är distansspecialister som slåss vid sidan av ett tämjt vilddjur, pepprar fiender med riktade skott och snabbeld, saktar ner dem med stick och krossande eld, och skiftar skepnader efter stundens behov.',
   'classDetails.lore.mage':
     'Magiker böjer Eld-, Frost- och Arkankraft för att förgöra fiender, frammana vatten och frysa hot på plats.',
   'classDetails.lore.paladin':
@@ -2441,7 +2441,7 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
     'Enorma, trögtänkta och farliga. De slår läger i de höga passen och slår till som ett jordskred.',
   'guide.family.ogre.name': 'Ogrer',
   'guide.family.spider.desc':
-    'Nätspinnare och giftiga lurande varelser som bygger bo på mörka, snåriga platser. Hunters kan tämja dem, precis som bestar.',
+    'Nätspinnare och giftiga lurande varelser som bygger bo på mörka, snåriga platser. Jägare kan tämja dem, precis som bestar.',
   'guide.family.spider.name': 'Spindlar',
   'guide.family.troll.desc': 'Väldiga odjur som har sina nästen i kärrets träsk.',
   'guide.family.troll.name': 'Troll',

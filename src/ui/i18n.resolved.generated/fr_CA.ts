@@ -1148,7 +1148,7 @@ export const fr_CA: EnTranslations = {
       },
       "spider": {
         "name": "Araignées",
-        "desc": "Tisseuses de toiles et rôdeuses venimeuses qui nichent dans les recoins sombres et enchevêtrés. Les Hunters peuvent les apprivoiser, au même titre que les bêtes."
+        "desc": "Tisseuses de toiles et rôdeuses venimeuses qui nichent dans les recoins sombres et enchevêtrés. Les Chasseurs peuvent les apprivoiser, au même titre que les bêtes."
       },
       "murloc": {
         "name": "Murlocs",
@@ -2511,7 +2511,7 @@ export const fr_CA: EnTranslations = {
     "lore": {
       "warrior": "Les guerriers sont des combattants endurcis qui gagnent de la rage en infligeant ou subissant des dégâts. Ils encaissent ou écrasent leurs ennemis.",
       "paladin": "Les paladins sont des croisés sacrés qui aident par des bénédictions, soignent avec la Lumière sacrée et protègent les plus faibles.",
-      "hunter": "Les chasseurs maîtrisent la nature sauvage, traquent de loin avec arcs ou armes à feu et contrôlent le terrain avec des pièges.",
+      "hunter": "Les chasseurs sont des spécialistes à distance qui combattent aux côtés d'une bête apprivoisée, criblant leurs ennemis de tirs précis et rapides, les ralentissant de morsures et de traits de choc, et changeant d'aspect selon le moment.",
       "rogue": "Les voleurs sont des assassins furtifs qui dépensent énergie et points de combo pour frapper depuis les ombres.",
       "priest": "Les prêtres invoquent la Lumière sacrée pour soigner et protéger, tandis que l'Ombre draine la vie ennemie.",
       "shaman": "Les chamans commandent les éléments, imprègnent leurs armes, frappent avec la foudre et restaurent leurs alliés.",

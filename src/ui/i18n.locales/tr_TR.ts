@@ -135,7 +135,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'classDetails.lore.druid':
     'Druidler doğayı yönlendirir; yaraları iyileştirir, düşmanları kıskaca alır ve savunma ya da hasar için hayvan formlarına bürünür.',
   'classDetails.lore.hunter':
-    'Avcılar vahşi doğaya hükmeder; düşmanları uzaktan yay ya da tüfekle takip eder ve savaş alanını denetlemek için tuzaklar kullanır.',
+    'Avcılar, evcilleştirdikleri bir canavarın yanında savaşan menzilli uzmanlardır; düşmanları nişanlı ve seri atış yağmuruna tutar, sokmalar ve sersemletici atışlarla yavaşlatır ve ana uygun suretlere bürünürler.',
   'classDetails.lore.mage':
     'Büyücüler Ateş, Buz ve Gizem gücünü bükerek düşmanları yok eder, su çağırır ve tehditleri olduğu yerde dondurur.',
   'classDetails.lore.paladin':
@@ -2426,7 +2426,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
     'Devasa, kıt akıllı ve tehlikeli. Yüksek geçitlere konaklar ve bir heyelan gibi vururlar.',
   'guide.family.ogre.name': 'Devler',
   'guide.family.spider.desc':
-    "Karanlık, çapraşık yerlerde yuvalanan ağ örücüler ve zehirli pusucular. Hunter'lar onları, tıpkı yabani hayvanlar gibi evcilleştirebilir.",
+    'Karanlık, çapraşık yerlerde yuvalanan ağ örücüler ve zehirli pusucular. Avcılar onları, tıpkı yabani hayvanlar gibi evcilleştirebilir.',
   'guide.family.spider.name': 'Örümcekler',
   'guide.family.troll.desc': 'Bataklığın sazlıklarında inini kuran iri kıyım vahşiler.',
   'guide.family.troll.name': 'Troller',

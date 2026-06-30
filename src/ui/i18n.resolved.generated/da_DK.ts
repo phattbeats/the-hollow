@@ -1148,7 +1148,7 @@ export const da_DK: EnTranslations = {
       },
       "spider": {
         "name": "Edderkopper",
-        "desc": "Spindlere og giftige lurere, der bygger rede på mørke, sammenfiltrede steder. Hunters kan tæmme dem, ligesom bæster."
+        "desc": "Spindlere og giftige lurere, der bygger rede på mørke, sammenfiltrede steder. Jægere kan tæmme dem, ligesom bæster."
       },
       "murloc": {
         "name": "Murlocer",
@@ -2511,7 +2511,7 @@ export const da_DK: EnTranslations = {
     "lore": {
       "warrior": "Krigere er kamphærdede nærkæmpere, der opbygger Raseri, når de uddeler eller tager skade. De opsuger hårde slag eller knuser fjender med kraftfulde våben.",
       "paladin": "Paladiner er hellige korsfarere, der støtter allierede med velsignelser, helbreder sår med Helligt Lys og beskytter de svage i tung rustning.",
-      "hunter": "Jægere mestrer vildmarken, sporer fjender på afstand med buer eller skydevåben og bruger fælder til at styre slagmarken.",
+      "hunter": "Jægere er afstandsspecialister, der kæmper side om side med et tæmmet bæst, overøser fjender med sigtede og hurtige skud, sinker dem med stik og rystende beskydning og skifter aspekter, så de passer til øjeblikket.",
       "rogue": "Slyngler er snigende snigmordere, der bruger Energi og Combo-point på dolkestød og afsluttende manøvrer fra skyggerne.",
       "priest": "Præster påkalder Helligt Lys for at helbrede og skærme allierede, mens Skyggemagi lader dem dræne livet af deres fjender.",
       "shaman": "Shamaner befaler elementerne, gennemtrænger våben med kraft, chokerer fjender med lyn og genopretter allierede.",

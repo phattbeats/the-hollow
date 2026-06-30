@@ -1,6 +1,10 @@
 // i18n source catalog - Shell / homepage (English values).
-// Part of src/ui/i18n.catalog/; assembled into `en` by ./index.ts.
-// Translations live in src/ui/i18n.locales/<lang>.ts, never here.
+// Part of src/ui/i18n.catalog/; ONLY the `en` block is read (assembled into `en` by ./index.ts;
+// this domain is consumed en-only, so tsc does not cross-check the other blocks).
+// Translations live in src/ui/i18n.locales/<lang>.ts, never here: the inline non-English blocks
+// below are LEGACY and the build does NOT read them (i18n_build sources non-en from the overlays),
+// so a reworded English value here must have its OVERLAY translations refreshed, not these blocks
+// (the reword-staleness footgun, see docs/i18n-scaling/translation-workflow.md).
 
 export const shellStrings = {
   en: {

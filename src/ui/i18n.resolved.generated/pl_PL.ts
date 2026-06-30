@@ -1148,7 +1148,7 @@ export const pl_PL: EnTranslations = {
       },
       "spider": {
         "name": "Pająki",
-        "desc": "Tkacze sieci i jadowite czyhające stworzenia, które gnieżdżą się w ciemnych, splątanych miejscach. Hunters mogą je oswajać, tak samo jak bestie."
+        "desc": "Tkacze sieci i jadowite czyhające stworzenia, które gnieżdżą się w ciemnych, splątanych miejscach. Łowcy mogą je oswajać, tak samo jak bestie."
       },
       "murloc": {
         "name": "Murloki",
@@ -2511,7 +2511,7 @@ export const pl_PL: EnTranslations = {
     "lore": {
       "warrior": "Wojownicy to zaprawieni w boju wojownicy walki wręcz, którzy gromadzą Furię, zadając lub otrzymując obrażenia. Pochłaniają potężne ciosy lub miażdżą wrogów potężnym orężem.",
       "paladin": "Paladyni to święci krzyżowcy, którzy wspierają sojuszników błogosławieństwami, leczą rany Świętym Światłem i chronią słabych, odziani w ciężki pancerz.",
-      "hunter": "Łowcy są mistrzami dziczy, tropiąc wrogów z oddali za pomocą łuków lub strzelb i używając pułapek do kontrolowania pola bitwy.",
+      "hunter": "Łowcy to specjaliści walki dystansowej, którzy walczą u boku oswojonej bestii, zasypując wrogów celnymi i szybkimi strzałami, spowalniając ich żądłami oraz ogłuszającym ostrzałem i zmieniając aspekty stosownie do chwili.",
       "rogue": "Łotrzykowie to skradający się zabójcy, którzy wydają Energię i Punkty Kombosów na ciosy w plecy i wykończenia z cienia.",
       "priest": "Kapłani przyzywają Święte Światło, by leczyć i osłaniać sojuszników, a magia Cienia pozwala im wysysać życie z wrogów.",
       "shaman": "Szamani rozkazują żywiołom, napełniając oręż mocą, rażąc wrogów błyskawicami i przywracając siły sojusznikom.",

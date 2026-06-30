@@ -1148,7 +1148,7 @@ export const nl_NL: EnTranslations = {
       },
       "spider": {
         "name": "Spinnen",
-        "desc": "Webspinners en giftige loerders die nestelen op donkere, verwarde plekken. Hunters kunnen ze temmen, net als beesten."
+        "desc": "Webspinners en giftige loerders die nestelen op donkere, verwarde plekken. Jagers kunnen ze temmen, net als beesten."
       },
       "murloc": {
         "name": "Murlocs",
@@ -2511,7 +2511,7 @@ export const nl_NL: EnTranslations = {
     "lore": {
       "warrior": "Krijgers zijn in de strijd geharde man-tot-man-vechters die Woede opbouwen terwijl ze schade uitdelen of incasseren. Ze absorberen zware klappen of verpletteren vijanden met krachtige wapens.",
       "paladin": "Paladijnen zijn heilige kruisvaarders die bondgenoten steunen met zegeningen, wonden helen met Heilig Licht en de zwakken beschermen in zwaar pantser.",
-      "hunter": "Jagers beheersen de wildernis, sporen vijanden van veraf op met bogen of geweren en gebruiken vallen om het slagveld te beheersen.",
+      "hunter": "Jagers zijn afstandsspecialisten die aan de zijde van een getemd beest vechten, vijanden bestoken met gerichte en snelle schoten, hen vertragen met steken en verdovend vuur, en van aspect wisselen om zich aan het moment aan te passen.",
       "rogue": "Schurken zijn sluipende sluipmoordenaars die Energie en Combopunten besteden aan rugsteken en finishers vanuit de schaduwen.",
       "priest": "Priesters roepen Heilig Licht aan om bondgenoten te genezen en te beschutten, terwijl Schaduwmagie hen het leven van hun vijanden laat aftappen.",
       "shaman": "Sjamanen gebieden de elementen, doordringen wapens met kracht, schokken vijanden met bliksem en herstellen bondgenoten.",

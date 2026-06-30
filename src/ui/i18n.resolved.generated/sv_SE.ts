@@ -1148,7 +1148,7 @@ export const sv_SE: EnTranslations = {
       },
       "spider": {
         "name": "Spindlar",
-        "desc": "Nätspinnare och giftiga lurande varelser som bygger bo på mörka, snåriga platser. Hunters kan tämja dem, precis som bestar."
+        "desc": "Nätspinnare och giftiga lurande varelser som bygger bo på mörka, snåriga platser. Jägare kan tämja dem, precis som bestar."
       },
       "murloc": {
         "name": "Murlocer",
@@ -2511,7 +2511,7 @@ export const sv_SE: EnTranslations = {
     "lore": {
       "warrior": "Krigare är stridshärdade närstridskämpar som bygger upp Raseri när de utdelar eller tar skada. De absorberar tunga slag eller krossar fiender med kraftfulla vapen.",
       "paladin": "Paladiner är heliga korsriddare som stödjer allierade med välsignelser, läker sår med Heligt ljus och skyddar de svaga i tung rustning.",
-      "hunter": "Jägare behärskar vildmarken, spårar fiender på avstånd med pilbågar eller gevär och använder fällor för att kontrollera slagfältet.",
+      "hunter": "Jägare är distansspecialister som slåss vid sidan av ett tämjt vilddjur, pepprar fiender med riktade skott och snabbeld, saktar ner dem med stick och krossande eld, och skiftar skepnader efter stundens behov.",
       "rogue": "Skurkar är smygande lönnmördare som spenderar Energi och Kombopoäng på ryggdolkar och dödsstötar från skuggorna.",
       "priest": "Präster åkallar Heligt ljus för att läka och skydda allierade, medan Skuggmagi låter dem dränera livet ur sina fiender.",
       "shaman": "Schamaner befaller elementen, fyller vapen med kraft, chockar fiender med blixtar och återställer allierade.",

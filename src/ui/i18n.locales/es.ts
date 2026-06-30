@@ -766,7 +766,7 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'classDetails.lore.paladin':
     'Los paladines son cruzados sagrados que apoyan con bendiciones, curan con Luz Sagrada y protegen a los débiles con armadura pesada.',
   'classDetails.lore.hunter':
-    'Los cazadores dominan la naturaleza, rastrean enemigos desde lejos con arcos o armas de fuego y controlan el campo con trampas.',
+    'Los cazadores son especialistas a distancia que combaten junto a una bestia domada, acribillando a los enemigos con disparos certeros y rápidos, ralentizándolos con picaduras y disparos conmocionantes, y alternando aspectos según convenga al momento.',
   'classDetails.lore.rogue':
     'Los pícaros son asesinos sigilosos que gastan energía y puntos de combo en puñaladas y remates desde las sombras.',
   'classDetails.lore.priest':
@@ -3621,7 +3621,7 @@ export const es: Partial<Record<TranslationKey, string>> = {
     'Enormes, torpes de mente y peligrosos. Acampan en los pasos elevados y golpean como un alud.',
   'guide.family.ogre.name': 'Ogros',
   'guide.family.spider.desc':
-    'Tejedoras de telarañas y acechadoras venenosas que anidan en lugares oscuros y enmarañados. Los Hunters pueden domarlas, igual que a las bestias.',
+    'Tejedoras de telarañas y acechadoras venenosas que anidan en lugares oscuros y enmarañados. Los Cazadores pueden domarlas, igual que a las bestias.',
   'guide.family.spider.name': 'Arañas',
   'guide.family.troll.desc': 'Brutos corpulentos que se guarecen en las marismas de la ciénaga.',
   'guide.family.troll.name': 'Trols',

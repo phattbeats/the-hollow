@@ -765,7 +765,7 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'classDetails.lore.paladin':
     'I paladini sono crociati sacri che aiutano con benedizioni, curano con Luce Sacra e proteggono i deboli con armature robuste.',
   'classDetails.lore.hunter':
-    'I cacciatori dominano le terre selvagge, seguono i nemici da lontano con archi o armi da fuoco e controllano il campo con trappole.',
+    'I cacciatori sono specialisti a distanza che combattono al fianco di una bestia addomesticata, tempestando i nemici con tiri mirati e rapidi, rallentandoli con punture e tiri storditori, e cambiando aspetto a seconda del momento.',
   'classDetails.lore.rogue':
     'I ladri sono assassini furtivi che spendono energia e punti combo per colpire dalle ombre.',
   'classDetails.lore.priest':
@@ -3603,7 +3603,7 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
     'Enormi, ottusi e pericolosi. Si accampano sui passi alti e colpiscono come una frana.',
   'guide.family.ogre.name': 'Ogre',
   'guide.family.spider.desc':
-    'Tessitori di ragnatele e agguatatori velenosi che fanno il nido in luoghi bui e intricati. Gli Hunter possono domarli, proprio come le bestie.',
+    'Tessitori di ragnatele e agguatatori velenosi che fanno il nido in luoghi bui e intricati. I cacciatori possono domarli, proprio come le bestie.',
   'guide.family.spider.name': 'Ragni',
   'guide.family.troll.desc': "Bruti imponenti che si annidano nelle paludi dell'acquitrino.",
   'guide.family.troll.name': 'Troll',

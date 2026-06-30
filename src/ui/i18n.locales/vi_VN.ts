@@ -133,7 +133,7 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'classDetails.lore.druid':
     'Druid khơi dẫn sức mạnh thiên nhiên, chữa lành vết thương, trói buộc kẻ thù, và biến hình thành các dạng thú để phòng thủ hoặc gây sát thương.',
   'classDetails.lore.hunter':
-    'Thợ Săn làm chủ vùng hoang dã, lần theo dấu kẻ thù từ xa bằng cung hoặc súng và dùng bẫy để khống chế chiến trường.',
+    'Thợ Săn là những chuyên gia tầm xa chiến đấu bên cạnh một mãnh thú đã thuần hóa, dội vào kẻ thù những phát bắn nhắm chuẩn và liên hồi, làm chậm chúng bằng các đòn chích nọc và hỏa lực chấn động, và chuyển đổi Linh Khí để thích ứng với từng khoảnh khắc.',
   'classDetails.lore.mage':
     'Pháp Sư điều khiển sức mạnh Hỏa, Băng và Bí Thuật để tiêu diệt kẻ thù, tạo ra nước, và đóng băng các mối đe dọa tại chỗ.',
   'classDetails.lore.paladin':
@@ -2460,7 +2460,7 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
     'Khổng lồ, chậm trí, và nguy hiểm. Chúng đóng trại nơi những con đèo cao và giáng đòn như một trận lở đất.',
   'guide.family.ogre.name': 'Ogre',
   'guide.family.spider.desc':
-    'Những kẻ giăng tơ và rình rập độc địa làm tổ ở những nơi tối tăm, rậm rạp. Hunter có thể thuần hóa chúng, giống như dã thú.',
+    'Những kẻ giăng tơ và rình rập độc địa làm tổ ở những nơi tối tăm, rậm rạp. Thợ Săn có thể thuần hóa chúng, giống như dã thú.',
   'guide.family.spider.name': 'Nhện',
   'guide.family.troll.desc': 'Những kẻ vạm vỡ làm hang ổ trong những đầm lầy của vùng fen.',
   'guide.family.troll.name': 'Troll',

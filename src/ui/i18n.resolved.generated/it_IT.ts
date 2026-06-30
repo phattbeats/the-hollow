@@ -1148,7 +1148,7 @@ export const it_IT: EnTranslations = {
       },
       "spider": {
         "name": "Ragni",
-        "desc": "Tessitori di ragnatele e agguatatori velenosi che fanno il nido in luoghi bui e intricati. Gli Hunter possono domarli, proprio come le bestie."
+        "desc": "Tessitori di ragnatele e agguatatori velenosi che fanno il nido in luoghi bui e intricati. I cacciatori possono domarli, proprio come le bestie."
       },
       "murloc": {
         "name": "Murloc",
@@ -2511,7 +2511,7 @@ export const it_IT: EnTranslations = {
     "lore": {
       "warrior": "I guerrieri sono combattenti temprati che accumulano rabbia infliggendo o subendo danni. Incassano colpi pesanti o schiacciano i nemici.",
       "paladin": "I paladini sono crociati sacri che aiutano con benedizioni, curano con Luce Sacra e proteggono i deboli con armature robuste.",
-      "hunter": "I cacciatori dominano le terre selvagge, seguono i nemici da lontano con archi o armi da fuoco e controllano il campo con trappole.",
+      "hunter": "I cacciatori sono specialisti a distanza che combattono al fianco di una bestia addomesticata, tempestando i nemici con tiri mirati e rapidi, rallentandoli con punture e tiri storditori, e cambiando aspetto a seconda del momento.",
       "rogue": "I ladri sono assassini furtivi che spendono energia e punti combo per colpire dalle ombre.",
       "priest": "I sacerdoti invocano la Luce Sacra per curare e proteggere, mentre la magia d'Ombra prosciuga la vita nemica.",
       "shaman": "Gli sciamani comandano gli elementi, infondono potere nelle armi, colpiscono con fulmini e curano gli alleati.",

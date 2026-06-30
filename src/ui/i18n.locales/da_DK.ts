@@ -134,7 +134,7 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'classDetails.lore.druid':
     'Druider kanaliserer naturen, helbreder sår, omslynger fjender og skifter til dyreformer til forsvar eller skade.',
   'classDetails.lore.hunter':
-    'Jægere mestrer vildmarken, sporer fjender på afstand med buer eller skydevåben og bruger fælder til at styre slagmarken.',
+    'Jægere er afstandsspecialister, der kæmper side om side med et tæmmet bæst, overøser fjender med sigtede og hurtige skud, sinker dem med stik og rystende beskydning og skifter aspekter, så de passer til øjeblikket.',
   'classDetails.lore.mage':
     'Magikere bøjer Ild-, Frost- og Arkan-kraft for at tilintetgøre fjender, frembringe vand og fryse trusler på stedet.',
   'classDetails.lore.paladin':
@@ -2433,7 +2433,7 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
     'Enorme, langsomme i opfattelsen og farlige. De slår lejr i de høje pas og rammer som et jordskred.',
   'guide.family.ogre.name': 'Ogrer',
   'guide.family.spider.desc':
-    'Spindlere og giftige lurere, der bygger rede på mørke, sammenfiltrede steder. Hunters kan tæmme dem, ligesom bæster.',
+    'Spindlere og giftige lurere, der bygger rede på mørke, sammenfiltrede steder. Jægere kan tæmme dem, ligesom bæster.',
   'guide.family.spider.name': 'Edderkopper',
   'guide.family.troll.desc': 'Kæmpemæssige brutaler, der har tilhold i mosens sumpe.',
   'guide.family.troll.name': 'Trolde',

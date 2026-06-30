@@ -1148,7 +1148,7 @@ export const tr_TR: EnTranslations = {
       },
       "spider": {
         "name": "Örümcekler",
-        "desc": "Karanlık, çapraşık yerlerde yuvalanan ağ örücüler ve zehirli pusucular. Hunter'lar onları, tıpkı yabani hayvanlar gibi evcilleştirebilir."
+        "desc": "Karanlık, çapraşık yerlerde yuvalanan ağ örücüler ve zehirli pusucular. Avcılar onları, tıpkı yabani hayvanlar gibi evcilleştirebilir."
       },
       "murloc": {
         "name": "Murloclar",
@@ -2511,7 +2511,7 @@ export const tr_TR: EnTranslations = {
     "lore": {
       "warrior": "Savaşçılar, hasar verdikçe ya da aldıkça Öfke biriktiren çelik gibi yakın dövüş savaşçılarıdır. Ağır darbeleri soğurur ya da düşmanları güçlü silahlarla ezerler.",
       "paladin": "Paladinler, müttefiklerini kutsamalarla destekleyen, yaraları Kutsal Işık'la iyileştiren ve ağır zırhları içinde güçsüzü koruyan kutsal şövalyelerdir.",
-      "hunter": "Avcılar vahşi doğaya hükmeder; düşmanları uzaktan yay ya da tüfekle takip eder ve savaş alanını denetlemek için tuzaklar kullanır.",
+      "hunter": "Avcılar, evcilleştirdikleri bir canavarın yanında savaşan menzilli uzmanlardır; düşmanları nişanlı ve seri atış yağmuruna tutar, sokmalar ve sersemletici atışlarla yavaşlatır ve ana uygun suretlere bürünürler.",
       "rogue": "Hırsızlar, gölgelerden sırttan bıçaklamalar ve bitirici hamleler için Enerji ile Kombo Puanı harcayan gizli suikastçılardır.",
       "priest": "Rahipler müttefikleri iyileştirmek ve korumak için Kutsal Işık'a başvurur; Gölge büyüsü ise düşmanlarının canını emmelerine olanak tanır.",
       "shaman": "Şamanlar elementlere komuta eder; silahlara güç katar, düşmanları yıldırımla sarsar ve müttefikleri iyileştirir.",

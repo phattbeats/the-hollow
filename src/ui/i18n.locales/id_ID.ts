@@ -134,7 +134,7 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'classDetails.lore.druid':
     'Druid menyalurkan kekuatan alam, menyembuhkan luka, membelit musuh, dan berubah ke wujud hewan untuk bertahan atau menyerang.',
   'classDetails.lore.hunter':
-    'Pemburu menguasai alam liar, melacak musuh dari kejauhan dengan busur atau senapan dan menggunakan jebakan untuk mengendalikan medan perang.',
+    'Pemburu adalah spesialis jarak jauh yang bertarung berdampingan dengan binatang buas jinak, menghujani musuh dengan tembakan terarah dan beruntun, memperlambat mereka dengan sengat dan tembakan pengguncang, serta berganti Aspek sesuai keadaan pertempuran.',
   'classDetails.lore.mage':
     'Penyihir menundukkan kekuatan Api, Beku, dan Arkana untuk membinasakan musuh, menciptakan air, dan membekukan ancaman di tempat.',
   'classDetails.lore.paladin':
@@ -2478,7 +2478,7 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
     'Besar, berpikiran lamban, dan berbahaya. Mereka berkemah di celah gunung yang tinggi dan memukul bagai tanah longsor.',
   'guide.family.ogre.name': 'Ogre',
   'guide.family.spider.desc':
-    'Pemintal jaring dan pengintai berbisa yang bersarang di tempat gelap dan kusut. Hunter bisa menjinakkannya, sama seperti binatang buas.',
+    'Pemintal jaring dan pengintai berbisa yang bersarang di tempat gelap dan kusut. Pemburu bisa menjinakkannya, sama seperti binatang buas.',
   'guide.family.spider.name': 'Laba-laba',
   'guide.family.troll.desc': 'Bedebah besar yang bersarang di rawa-rawa fen.',
   'guide.family.troll.name': 'Troll',

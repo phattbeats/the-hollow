@@ -775,7 +775,7 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'classDetails.lore.paladin':
     'Les paladins sont des croisés sacrés qui soutiennent par des bénédictions, soignent avec la Lumière sacrée et protègent les faibles.',
   'classDetails.lore.hunter':
-    'Les chasseurs maîtrisent les terres sauvages, traquent à distance avec arcs ou armes à feu et contrôlent le terrain avec des pièges.',
+    "Les chasseurs sont des spécialistes à distance qui combattent aux côtés d'une bête apprivoisée, criblant leurs ennemis de tirs précis et rapides, les ralentissant avec des morsures et un tir concussif, et changeant d'aspect selon le moment.",
   'classDetails.lore.rogue':
     'Les voleurs sont des assassins furtifs qui dépensent énergie et points de combo pour frapper depuis les ombres.',
   'classDetails.lore.priest':
@@ -3638,7 +3638,7 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
     "Énormes, à l'esprit lent et dangereux. Ils campent les hauts cols et frappent comme un éboulement.",
   'guide.family.ogre.name': 'Ogres',
   'guide.family.spider.desc':
-    'Tisseuses de toiles et rôdeuses venimeuses qui nichent dans les recoins sombres et enchevêtrés. Les Hunters peuvent les apprivoiser, au même titre que les bêtes.',
+    'Tisseuses de toiles et rôdeuses venimeuses qui nichent dans les recoins sombres et enchevêtrés. Les Chasseurs peuvent les apprivoiser, au même titre que les bêtes.',
   'guide.family.spider.name': 'Araignées',
   'guide.family.troll.desc': 'Brutes massives qui se terrent dans les marais de la fagne.',
   'guide.family.troll.name': 'Trolls',

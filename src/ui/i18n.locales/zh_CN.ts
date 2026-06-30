@@ -736,7 +736,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
     '战士是久经沙场的近战斗士，会在造成或承受伤害时积累怒气。他们能承受重击，也能用强力武器碾碎敌人。',
   'classDetails.lore.paladin':
     '圣骑士是神圣的十字军，以祝福支援盟友，用圣光治疗伤口，并身披重甲保护弱者。',
-  'classDetails.lore.hunter': '猎人精通荒野，使用弓或火器从远处追踪敌人，并用陷阱控制战场。',
+  'classDetails.lore.hunter': '猎人是远程专家，与驯服的野兽并肩作战，用瞄准与急速射击向敌人倾泻箭矢，以钉刺和震荡射击减速对手，并随机应变地切换守护形态。',
   'classDetails.lore.rogue': '潜行者是隐秘刺客，消耗能量和连击点，从阴影中发动背刺与终结技。',
   'classDetails.lore.priest': '牧师召唤圣光治疗并保护盟友，也能用暗影魔法汲取敌人的生命。',
   'classDetails.lore.shaman': '萨满掌控元素，强化武器，以闪电震击敌人，并恢复盟友。',
@@ -3587,7 +3587,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
     '森林与原野上的野生动物，从狼和野猪到捕食它们的猛兽。猎人可以驯服其中许多。',
   'guide.family.spider.name': '蜘蛛',
   'guide.family.spider.desc':
-    '结网的织丝者与剧毒的潜伏者，盘踞在阴暗错综之地。Hunter 可以像驯服野兽那样驯服它们。',
+    '结网的织丝者与剧毒的潜伏者，盘踞在阴暗错综之地。猎人可以像驯服野兽那样驯服它们。',
   'guide.family.murloc.name': '鱼人',
   'guide.family.murloc.desc': '两栖的沼泽居民，成群涌入浅滩，吵闹而极具地盘意识。',
   'guide.family.kobold.name': '狗头人',

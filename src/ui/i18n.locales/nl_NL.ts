@@ -133,7 +133,7 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'classDetails.lore.druid':
     'Druïden kanaliseren de natuur, genezen wonden, verstrikken vijanden en veranderen in diergedaanten voor verdediging of schade.',
   'classDetails.lore.hunter':
-    'Jagers beheersen de wildernis, sporen vijanden van veraf op met bogen of geweren en gebruiken vallen om het slagveld te beheersen.',
+    'Jagers zijn afstandsspecialisten die aan de zijde van een getemd beest vechten, vijanden bestoken met gerichte en snelle schoten, hen vertragen met steken en verdovend vuur, en van aspect wisselen om zich aan het moment aan te passen.',
   'classDetails.lore.mage':
     'Magiërs buigen Vuur-, Vorst- en Arcane-kracht om vijanden te vernietigen, water op te roepen en dreigingen ter plaatse te bevriezen.',
   'classDetails.lore.paladin':
@@ -2475,7 +2475,7 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
     'Enorm, traag van geest en gevaarlijk. Ze kamperen in de hoge passen en slaan toe als een aardverschuiving.',
   'guide.family.ogre.name': 'Ogres',
   'guide.family.spider.desc':
-    'Webspinners en giftige loerders die nestelen op donkere, verwarde plekken. Hunters kunnen ze temmen, net als beesten.',
+    'Webspinners en giftige loerders die nestelen op donkere, verwarde plekken. Jagers kunnen ze temmen, net als beesten.',
   'guide.family.spider.name': 'Spinnen',
   'guide.family.troll.desc': 'Logge woestelingen die huizen in de moerassen van het veen.',
   'guide.family.troll.name': 'Trollen',

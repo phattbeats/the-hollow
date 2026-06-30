@@ -1148,7 +1148,7 @@ export const vi_VN: EnTranslations = {
       },
       "spider": {
         "name": "Nhện",
-        "desc": "Những kẻ giăng tơ và rình rập độc địa làm tổ ở những nơi tối tăm, rậm rạp. Hunter có thể thuần hóa chúng, giống như dã thú."
+        "desc": "Những kẻ giăng tơ và rình rập độc địa làm tổ ở những nơi tối tăm, rậm rạp. Thợ Săn có thể thuần hóa chúng, giống như dã thú."
       },
       "murloc": {
         "name": "Murloc",
@@ -2511,7 +2511,7 @@ export const vi_VN: EnTranslations = {
     "lore": {
       "warrior": "Chiến Binh là những đấu sĩ cận chiến dày dạn trận mạc, tích lũy Nộ Khí khi gây ra hoặc nhận sát thương. Họ hứng chịu những đòn nặng nề hoặc nghiền nát kẻ thù bằng vũ khí uy lực.",
       "paladin": "Thánh Kỵ Sĩ là những thập tự quân thần thánh, hỗ trợ đồng minh bằng các phúc lành, chữa lành vết thương bằng Thánh Quang, và bảo vệ kẻ yếu trong bộ giáp nặng.",
-      "hunter": "Thợ Săn làm chủ vùng hoang dã, lần theo dấu kẻ thù từ xa bằng cung hoặc súng và dùng bẫy để khống chế chiến trường.",
+      "hunter": "Thợ Săn là những chuyên gia tầm xa chiến đấu bên cạnh một mãnh thú đã thuần hóa, dội vào kẻ thù những phát bắn nhắm chuẩn và liên hồi, làm chậm chúng bằng các đòn chích nọc và hỏa lực chấn động, và chuyển đổi Linh Khí để thích ứng với từng khoảnh khắc.",
       "rogue": "Đạo Tặc là những sát thủ ẩn mình, tiêu hao Năng Lượng và Điểm Liên Hoàn cho những đòn đâm lén và đòn kết liễu từ trong bóng tối.",
       "priest": "Tu Sĩ kêu gọi Thánh Quang để chữa lành và che chắn cho đồng minh, trong khi ma thuật Bóng Tối cho phép họ hút sinh lực của kẻ thù.",
       "shaman": "Shaman điều khiển các nguyên tố, ban sức mạnh cho vũ khí, gây choáng kẻ thù bằng sấm sét, và hồi phục cho đồng minh.",

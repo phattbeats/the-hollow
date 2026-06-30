@@ -765,7 +765,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'classDetails.lore.paladin':
     'Paladine sind heilige Kreuzritter, die mit Segen unterstützen, mit Heiligem Licht heilen und Schwache in schwerer Rüstung schützen.',
   'classDetails.lore.hunter':
-    'Jäger beherrschen die Wildnis, verfolgen Gegner aus der Ferne mit Bögen oder Schusswaffen und kontrollieren das Feld mit Fallen.',
+    'Jäger sind Fernkampfspezialisten, die an der Seite eines gezähmten Tieres kämpfen, Gegner mit gezielten und schnellen Schüssen überschütten, sie mit Stichen und erschütterndem Beschuss verlangsamen und je nach Augenblick zwischen ihren Aspekten wechseln.',
   'classDetails.lore.rogue':
     'Schurken sind verstohlene Assassinen, die Energie und Kombopunkte für Angriffe aus den Schatten ausgeben.',
   'classDetails.lore.priest':
@@ -3626,7 +3626,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
     'Riesig, schwerfällig und gefährlich. Sie lagern an den hohen Pässen und schlagen zu wie ein Erdrutsch.',
   'guide.family.ogre.name': 'Oger',
   'guide.family.spider.desc':
-    'Netzweber und giftige Lauerer, die in dunklen, verwucherten Orten nisten. Hunter können sie zähmen, genau wie Wildtiere.',
+    'Netzweber und giftige Lauerer, die in dunklen, verwucherten Orten nisten. Jäger können sie zähmen, genau wie Wildtiere.',
   'guide.family.spider.name': 'Spinnen',
   'guide.family.troll.desc': 'Massige Schläger, die in den Sümpfen des Moors hausen.',
   'guide.family.troll.name': 'Trolle',

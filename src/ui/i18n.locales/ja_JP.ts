@@ -776,7 +776,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'classDetails.lore.paladin':
     'パラディンは祝福で味方を支え、聖なる光で傷を癒やし、重装備で弱き者を守る聖騎士です。',
   'classDetails.lore.hunter':
-    'ハンターは荒野を熟知し、弓や銃で遠距離から敵を追い、罠で戦場を支配します。',
+    'ハンターはテイムした獣を従えて戦う遠距離戦の専門家で、エイムショットやラピッドファイアで敵を撃ち抜き、スティングやコンカッシブショットで足を止め、状況に応じて相を切り替えます。',
   'classDetails.lore.rogue':
     'ローグはエネルギーとコンボポイントを使い、影から奇襲と決め技を放つ隠密の暗殺者です。',
   'classDetails.lore.priest':
@@ -3761,7 +3761,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     '森や野に生きる野生動物たち。オオカミやイノシシから、それらを狙う捕食者まで。ハンターはその多くをテイムできます。',
   'guide.family.spider.name': 'クモ',
   'guide.family.spider.desc':
-    '暗く入り組んだ場所に巣を張る、糸を操る毒持ちの待ち伏せ屋たち。Hunterは野獣と同じように手なずけることができます。',
+    '暗く入り組んだ場所に巣を張る、糸を操る毒持ちの待ち伏せ屋たち。ハンターは野獣と同じように手なずけることができます。',
   'guide.family.murloc.name': 'マーロック',
   'guide.family.murloc.desc':
     '浅瀬に群がる水陸両生の沼地の住人。騒がしく、縄張り意識の強い群れをなします。',

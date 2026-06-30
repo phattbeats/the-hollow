@@ -134,7 +134,7 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'classDetails.lore.druid':
     'Druidzi czerpią z natury, lecząc rany, pętając wrogów i przemieniając się w postacie zwierząt dla obrony lub zadawania obrażeń.',
   'classDetails.lore.hunter':
-    'Łowcy są mistrzami dziczy, tropiąc wrogów z oddali za pomocą łuków lub strzelb i używając pułapek do kontrolowania pola bitwy.',
+    'Łowcy to specjaliści walki dystansowej, którzy walczą u boku oswojonej bestii, zasypując wrogów celnymi i szybkimi strzałami, spowalniając ich żądłami oraz ogłuszającym ostrzałem i zmieniając aspekty stosownie do chwili.',
   'classDetails.lore.mage':
     'Magowie naginają moc Ognia, Mrozu i Arkanów, by niszczyć wrogów, przyzywać wodę i zamrażać zagrożenia w miejscu.',
   'classDetails.lore.paladin':
@@ -2448,7 +2448,7 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
     'Ogromne, tępe i niebezpieczne. Obozują na wysokich przełęczach i uderzają jak lawina.',
   'guide.family.ogre.name': 'Ogry',
   'guide.family.spider.desc':
-    'Tkacze sieci i jadowite czyhające stworzenia, które gnieżdżą się w ciemnych, splątanych miejscach. Hunters mogą je oswajać, tak samo jak bestie.',
+    'Tkacze sieci i jadowite czyhające stworzenia, które gnieżdżą się w ciemnych, splątanych miejscach. Łowcy mogą je oswajać, tak samo jak bestie.',
   'guide.family.spider.name': 'Pająki',
   'guide.family.troll.desc': 'Masywne brutale, które legowiska mają na bagnach trzęsawiska.',
   'guide.family.troll.name': 'Trolle',
