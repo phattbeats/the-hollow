@@ -26,7 +26,7 @@ export interface BuiltModel {
 }
 
 // GLTFLoader sanitizes node names (PropertyBinding strips [].:/ ), so an authored
-// "handslot.r" arrives as "handslotr" — try both, exactly as the renderer does.
+// "handslot.r" arrives as "handslotr", so try both, exactly as the renderer does.
 const findBone = (root: THREE.Object3D, name: string): THREE.Object3D | undefined =>
   root.getObjectByName(name) ?? root.getObjectByName(name.replace(/[[\].:/]/g, ''));
 
@@ -111,7 +111,7 @@ export async function buildModel(spec: GuideModelSpec, tint: number | null): Pro
   // Weapons and held props: load each, bind to its hand bone, copy any grip reference.
   for (const att of spec.attach ?? []) {
     const bone = findBone(model, att.bone);
-    if (!bone) continue; // manifest/bone mismatch — ship without the prop
+    if (!bone) continue; // manifest/bone mismatch, ship without the prop
     const propGltf = await loadGltf(att.url);
     const prop = cloneSkinned(propGltf.scene);
     if (att.gripRef) {

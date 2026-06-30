@@ -6,6 +6,7 @@
 // dynamically), so three.js never lands in the main Guide bundle.
 
 import * as THREE from 'three';
+import { trackWebGLContext } from '../../render/context_release';
 import type { GuideModelSpec } from '../content.generated';
 import { type Bounds3, frameTurntable } from './framing';
 import { buildModel, skinAwareBounds } from './model';
@@ -36,6 +37,8 @@ export class ModelViewer {
   private onscreen = true;
   private contextLost = false;
   private onLostCb: (() => void) | null = null;
+  /** Drops this renderer from the page-teardown release set; called once in destroy(). */
+  private readonly untrackContext: () => void;
 
   constructor(container: HTMLElement, canvasLabel: string) {
     this.container = container;
@@ -49,6 +52,11 @@ export class ModelViewer {
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, alpha: true, antialias: true });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
+    // Each viewer is its own GL context and browsers cap live contexts at ~16, so register for
+    // page-teardown release (mirrors the in-game preview, src/render/characters/preview.ts);
+    // destroy() also force-loses it up front so an LRU eviction frees the context at once
+    // instead of waiting for GC (the guide's prior "models not loading" exhaustion).
+    this.untrackContext = trackWebGLContext(this.renderer);
 
     this.scene.add(this.turntable);
     this.camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
@@ -292,6 +300,11 @@ export class ModelViewer {
       this.built.dispose();
       this.built = null;
     }
+    // forceContextLoss() hands the GL context back immediately; dispose() alone only frees
+    // programs and waits for GC to reclaim the context, so without this an evicted viewer's
+    // context lingers and the live count can still approach the browser cap.
+    this.untrackContext();
+    this.renderer.forceContextLoss();
     this.renderer.dispose();
     this.canvas.remove();
   }
