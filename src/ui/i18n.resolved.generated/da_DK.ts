@@ -335,7 +335,7 @@ export const da_DK: EnTranslations = {
       "showItemLevel": "Vis genstandsniveau",
       "itemLevelLine": "Genstandsniveau {level}",
       "itemScoreLine": "Score {score}",
-      "showSecondaryActionBar": "Show Secondary Action Bar"
+      "showSecondaryActionBar": "Vis sekundær handlingslinje"
     },
     "controller": {
       "title": "Controller",

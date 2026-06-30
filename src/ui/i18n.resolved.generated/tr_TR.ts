@@ -335,7 +335,7 @@ export const tr_TR: EnTranslations = {
       "showItemLevel": "Eşya Seviyesini Göster",
       "itemLevelLine": "Eşya Seviyesi {level}",
       "itemScoreLine": "Puan {score}",
-      "showSecondaryActionBar": "Show Secondary Action Bar"
+      "showSecondaryActionBar": "İkincil Eylem Çubuğunu Göster"
     },
     "controller": {
       "title": "Oyun Kolu",

@@ -335,7 +335,7 @@ export const pt_BR: EnTranslations = {
       "showItemLevel": "Mostrar nível do item",
       "itemLevelLine": "Nível do item {level}",
       "itemScoreLine": "Pontuação {score}",
-      "showSecondaryActionBar": "Show Secondary Action Bar"
+      "showSecondaryActionBar": "Mostrar Barra de Ação Secundária"
     },
     "controller": {
       "title": "Controle",

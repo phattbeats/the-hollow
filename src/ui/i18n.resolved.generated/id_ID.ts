@@ -335,7 +335,7 @@ export const id_ID: EnTranslations = {
       "showItemLevel": "Tampilkan Level Item",
       "itemLevelLine": "Level Item {level}",
       "itemScoreLine": "Skor {score}",
-      "showSecondaryActionBar": "Show Secondary Action Bar"
+      "showSecondaryActionBar": "Tampilkan Bilah Aksi Sekunder"
     },
     "controller": {
       "title": "Kontroler",

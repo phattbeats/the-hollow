@@ -335,7 +335,7 @@ export const sv_SE: EnTranslations = {
       "showItemLevel": "Visa föremålsnivå",
       "itemLevelLine": "Föremålsnivå {level}",
       "itemScoreLine": "Poäng {score}",
-      "showSecondaryActionBar": "Show Secondary Action Bar"
+      "showSecondaryActionBar": "Visa sekundärt handlingsfält"
     },
     "controller": {
       "title": "Handkontroll",

@@ -335,7 +335,7 @@ export const nl_NL: EnTranslations = {
       "showItemLevel": "Itemniveau tonen",
       "itemLevelLine": "Itemniveau {level}",
       "itemScoreLine": "Score {score}",
-      "showSecondaryActionBar": "Show Secondary Action Bar"
+      "showSecondaryActionBar": "Secundaire actiebalk tonen"
     },
     "controller": {
       "title": "Controller",

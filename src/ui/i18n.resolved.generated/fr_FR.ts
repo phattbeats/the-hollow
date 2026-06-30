@@ -335,7 +335,7 @@ export const fr_FR: EnTranslations = {
       "showItemLevel": "Afficher le niveau d'objet",
       "itemLevelLine": "Niveau d'objet {level}",
       "itemScoreLine": "Score {score}",
-      "showSecondaryActionBar": "Show Secondary Action Bar"
+      "showSecondaryActionBar": "Afficher la barre d'action secondaire"
     },
     "controller": {
       "title": "Manette",
