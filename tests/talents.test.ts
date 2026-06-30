@@ -801,6 +801,44 @@ describe('repairAllocation (load-time revalidation)', () => {
     const repaired = repairAllocation('warrior', a, 11);
     expect(repaired.ranks.arms_imp_overpower).toBeUndefined();
   });
+
+  it('rolls back a choice node whose points-gate is no longer met', () => {
+    // war_tactical_choice has pointsGate 5; persist it with a VALID option id but
+    // only 2 points above its row, so the validate-then-rollback branch fires and
+    // strips both the rank and the choice while leaving the legal nodes intact.
+    const a = alloc({
+      ranks: { war_toughness: 2, war_tactical_choice: 1 },
+      choices: { war_tactical_choice: 'tc_cruelty' },
+    });
+    const repaired = repairAllocation('warrior', a, 11);
+    expect(repaired.ranks.war_toughness).toBe(2);
+    expect(repaired.ranks.war_tactical_choice).toBeUndefined();
+    expect(repaired.choices.war_tactical_choice).toBeUndefined();
+    expect(validateAllocation('warrior', repaired, 11).ok).toBe(true);
+  });
+
+  it('drops a choice node whose selected option id is unknown', () => {
+    // Enough points above the gate that the node would otherwise be legal; the only
+    // reason it is dropped is the bogus option id (the unknown-choice guard). A known
+    // option at the same spend survives, isolating the guard as the cause.
+    const bogus = alloc({
+      ranks: { war_toughness: 3, war_cruelty: 2, war_tactical_choice: 1 },
+      choices: { war_tactical_choice: 'tc_does_not_exist' },
+    });
+    const repaired = repairAllocation('warrior', bogus, 11);
+    expect(repaired.ranks.war_tactical_choice).toBeUndefined();
+    expect(repaired.choices.war_tactical_choice).toBeUndefined();
+
+    const ok = repairAllocation(
+      'warrior',
+      alloc({
+        ranks: { war_toughness: 3, war_cruelty: 2, war_tactical_choice: 1 },
+        choices: { war_tactical_choice: 'tc_cruelty' },
+      }),
+      11,
+    );
+    expect(ok.choices.war_tactical_choice).toBe('tc_cruelty');
+  });
 });
 
 describe('persisted talents are revalidated on load (FR security)', () => {

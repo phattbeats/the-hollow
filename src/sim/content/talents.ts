@@ -428,7 +428,7 @@ export function dormantNodes(cls: PlayerClass, alloc: TalentAllocation): Set<str
 // save could grant over-budget / prereq-broken / gated stats and abilities.
 //
 // This rebuilds the allocation deterministically: walk the tree top-down (class
-// tree first, then the chosen spec, in row/col order — the same order defaultBuild
+// tree first, then the chosen spec, in row/col order (the same order defaultBuild
 // uses), refilling each node up to its persisted rank but never past a point where
 // validateAllocation would reject the build. Because prereqs and pointsGates only
 // reference rows above, a top-down fill satisfies them by construction, and the
@@ -442,7 +442,7 @@ export function repairAllocation(
 ): TalentAllocation {
   const ct = talentsFor(cls);
   if (!ct) return emptyAllocation();
-  // A spec needs a known id AND at least one talent point available — below
+  // A spec needs a known id AND at least one talent point available; below
   // FIRST_TALENT_LEVEL (availablePoints === 0) a spec is illegal (it would still
   // grant the signature ability + mastery passive), matching the apply-time gate.
   const spec =
