@@ -28,6 +28,7 @@ wiki:content`.
 | `index.ts` | main Guide | no, barrel (the only import surface for pages) |
 | `scene.ts` | lazy chunk | yes, the `ModelViewer` turntable (scene/camera/loop/controls) |
 | `model.ts` | lazy chunk | yes, `buildModel` (GLB assembly via `loadGltf`) |
+| `framing.ts` | lazy chunk | no, pure camera-framing math (`frameTurntable`, Node-testable); reached only via `scene.ts` |
 
 **Keep three.js out of the main bundle:** never statically import `scene.ts`/`model.ts`
 from `embed.ts`/`mount.ts`/`index.ts` or a page. The only path to three is the dynamic
