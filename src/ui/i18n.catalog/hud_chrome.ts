@@ -791,7 +791,7 @@ export const hudChromeStrings = {
   },
   discord: {
     title: 'Discord',
-    panelTitle: 'World of ClaudeCraft',
+    panelTitle: 'The Hollow',
     open: 'Discord',
     close: 'Close',
     keybind: 'Discord Panel',

@@ -1,7 +1,7 @@
 {
-  "name": "World of ClaudeCraft",
-  "short_name": "ClaudeCraft",
-  "description": "World of ClaudeCraft mobile realm",
+  "name": "The Hollow",
+  "short_name": "The Hollow",
+  "description": "The Hollow mobile realm",
   "start_url": "/",
   "scope": "/",
   "display": "fullscreen",

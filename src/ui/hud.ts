@@ -145,6 +145,7 @@ import { type CardinalId, compassView } from './compass';
 import { formatMinimapCoords } from './coords';
 import { DelveMapPainter } from './delve_map_painter';
 import { markDialogRoot } from './dialog_root';
+import { DISCORD_SURFACES_ENABLED } from './discord_flags';
 import { dropdownKeyNav } from './dropdown_nav';
 import { emoteIconUrl } from './emote_icons';
 import {
@@ -9772,6 +9773,11 @@ export class Hud {
   // and their staff-role tag. Hidden for mobs and unlinked players.
   private updateTargetDiscordLine(target: Entity): void {
     const el = this.targetDiscordEl;
+    if (!DISCORD_SURFACES_ENABLED) {
+      el.classList.remove('show');
+      el.replaceChildren();
+      return;
+    }
     const tier = target.discordTier ?? 0;
     if (target.kind !== 'player' || (!tier && !target.discordName && !target.discordRole)) {
       el.classList.remove('show');
