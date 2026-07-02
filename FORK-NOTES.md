@@ -223,3 +223,44 @@ joins; and `enterDungeon` now returns a success boolean that the three
 position-shifting callers (vase landing, exitTo, homeRespawn) check before
 computing offsets, so a failed enter can never teleport a player off a stale
 position into the dormant overworld. The Under-Shrine stays per-party.
+
+## 2026-07-02: cherry-picked upstream QoL fix, own-nameplate toggle (PHAA-408)
+
+**Show your own overhead nameplate** (upstream PR #1287, `213aea06`): adds a
+"Show My Nameplate" interface option (on by default, `showOwnNameplate` in
+`src/game/settings.ts`) that renders the local player's own overhead nameplate
+exactly as other players see it (name, level, guild, hp bar, linked-Discord
+PFP), instead of the classic suppressed self-view. `NameplatePainter` gates
+its per-field self-suppression on `suppressSelf = isSelf && !showOwnNameplate`;
+the pure `nameplate_view` core stops hiding the self plate and anchors it at
+the normal lift when the option is on.
+
+Fork adaptation: the upstream commit entangled this toggle with two features
+this fork does not have and dropped both from the cherry-pick:
+- The $WOC holder-tier badge (`e.holderTier`, `setNameplateTier`), stripped
+  from this fork in the 2026-07-01 wallet strip (constitution section 6).
+- The developer badge / dev-tier name outline (`showDevBadges`, `e.devTier`,
+  `devTierNameOutlineColor`), an upstream feature added after this fork's
+  v0.17.0 pin that was never merged here.
+
+`suppressSelf` only gates the fields this fork's `nameplate_painter.ts`
+actually renders: name, hp, guild, the Discord role tint/tag, and the
+linked-Discord PFP indicator. "Show My Nameplate" is a new wordy English
+catalog value (`hudChrome.options.showOwnNameplate`), so its five non-Latin
+fills (zh_CN/zh_TW/ja_JP/ko_KR/ru_RU) landed in the same change per the M16
+rule; resolved i18n bundles regenerated via `npm run i18n:gen`.
+
+Also surfaced, not fixed here (flagging per the docs-rot rule, a follow-up
+chore): `hudChrome.options.showWalletOnCharacterScreen` and
+`showWalletOnPlayerCard` are ANOTHER set of inert wallet leftovers (catalog +
+all locale overlays carry them, but no `options_view.ts` `boolToggle` call
+reads either key) that the 2026-07-01 wallet-strip entry above does not
+mention, distinct from the documented `wallet.*` catalog leftovers. Same
+locale-hygiene chore, wider surface than recorded.
+
+Verification: `npx vitest run tests/nameplate_view.test.ts
+tests/nameplate_projection.test.ts tests/options_view.test.ts
+tests/i18n_completeness.test.ts tests/architecture.test.ts
+tests/localization_fixes.test.ts tests/settings.test.ts` green (127 passed, 3
+pre-existing skips unrelated to this change) with NODE_ENV unset; `tsc
+--noEmit` clean.
