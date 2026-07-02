@@ -124,3 +124,56 @@ Verification: `tsc --noEmit` clean; `tests/client_shell.test.ts`,
 `tests/architecture.test.ts`, `tests/localization_fixes.test.ts`,
 `tests/discord_server.test.ts`, `tests/discord_deeplink.test.ts`, and
 `tests/i18n_completeness.test.ts` green with NODE_ENV unset.
+
+### 2026-07-02: License flip (constitution, section 6) — All Rights Reserved + NOTICE
+
+Per the constitution's settled §6 licensing decision:
+
+- **`LICENSE`** replaced. It was the inherited upstream MIT license text
+  (copyright Levy Street); it now states this project's original work is
+  copyright Brandon Kelly, **All Rights Reserved**, proprietary and
+  confidential, and points to `NOTICE` for the retained upstream terms.
+- **`NOTICE`** added at the repo root. It reproduces the original MIT license
+  text and Levy Street copyright verbatim, as the MIT license's own
+  notice-preservation clause requires, and records the fork point (pinned
+  commit `b00fb6a5d6d0e1ffab9327ddcbfeb730267ab05e`, upstream tag `v0.17.0`).
+- **`THIRD_PARTY_NOTICES.md`** rewritten. Every notice it carried was for the
+  Reown / WalletConnect / Solana wallet-adapter dependency stack removed in
+  the 2026-07-01 wallet strip above (`@reown/*`, `@walletconnect/*`,
+  `@noble/curves`, `@solana/web3.js`, `bs58`, `buffer`); none of it is a
+  runtime dependency of `package.json` anymore, so the file now says so
+  instead of carrying stale license text for code that isn't shipped.
+- **`License.txt`** (the KayKit CC0 asset-pack notice) checked and left
+  unchanged — it never referenced the wallet stack and still matches the
+  bundled KayKit assets.
+- **Consistency fixes** (same license flip, not separately scoped but
+  directly contradicted the new `LICENSE` if left alone): the README's
+  license badge and License section, `package.json`'s `"license"` field
+  (`MIT` → `UNLICENSED`), and CONTRIBUTING.md's contributor-license clause,
+  all updated to point at the proprietary terms instead of MIT.
+
+**Dependency-hygiene note (not fixed here, flagged for the Phase 0 owner):**
+`package-lock.json`'s root dependency block still lists
+`@solana/wallet-standard-chains`, `@solana/wallet-standard-features`,
+`@wallet-standard/app`, `@wallet-standard/base`, `@wallet-standard/features`,
+`@noble/curves`, and `bs58` even though none of them appear in
+`package.json` or any source import — lockfile drift left over from the
+wallet strip that a plain `npm install` would clear. Not a licensing risk
+(all MIT/Apache-permissive) but worth a clean install before shipping.
+
+**Open licensing check flagged to the Board, not resolved here (per the
+constitution's explicit "report findings, do not ship past Phase 3 without a
+verdict" instruction):** `CREDITS.md` records the CraftPix skill-icon packs
+(all 9 classes, 152 abilities) as purchased under the CraftPix commercial
+royalty-free license **by the Levy Street account** (`callum@levystreet.com`).
+CraftPix's published file-license terms grant a "limited, non-exclusive,
+**non-transferable** license to all resources purchased" to the purchasing
+account, and separately prohibit redistributing the art "in a manner that
+would make [the] art files usable to another end user." A different legal
+entity (PHATT STUDIOS / Brandon Kelly) shipping a commercial fork on a
+license purchased by Levy Street's account does not obviously fall inside
+that grant. This is a real risk, not a formality — the fix is either (a)
+PHATT STUDIOS buys its own CraftPix license for the same packs, or (b) swap
+the CraftPix skill-icon category for one of the CC0 asset sources already in
+`CREDITS.md`. Left to the Board to pick; see the linked issue for the
+verdict.
