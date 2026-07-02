@@ -5089,6 +5089,15 @@ export const de_DE: EnTranslations = {
       "wyrmshadow_talongrips": {
         "name": "Wyrmschatten-Krallengriffe"
       },
+      "cave_morsel": {
+        "name": "Höhlenhappen"
+      },
+      "emberbulb": {
+        "name": "Glutknolle"
+      },
+      "first_cutting": {
+        "name": "Ein Ableger"
+      },
       "reliquary_plate_chest": {
         "name": "Halsberge der Reliquiarwache"
       },
@@ -5534,6 +5543,15 @@ export const de_DE: EnTranslations = {
       },
       "ysolei": {
         "name": "Ysolei, Avatar des Ertränkten Mondes"
+      },
+      "palefeeder": {
+        "name": "Bleichfresser"
+      },
+      "rootmaw": {
+        "name": "Wurzelmaul"
+      },
+      "the_witness_root": {
+        "name": "Die Zeugenwurzel"
       }
     },
     "npcs": {
@@ -5646,6 +5664,11 @@ export const de_DE: EnTranslations = {
         "name": "Ondrel Vane",
         "title": "Gezeitenwächter",
         "greeting": "Der See trinkt das Mondlicht, {className}, und gibt die Ertränkten zurück. Dreißig Nächte lang habe ich jenes Tor bewacht — und heute Nacht steht es offen."
+      },
+      "brother_greenpaw": {
+        "name": "Bruder Grünpfote",
+        "title": "Erster Prophet (selbsternannt)",
+        "greeting": "hey, reisender. haste die Vase heut in Stimmung erwischt, oder bin nur wieder ich... komm her, hab ein paar heilige Angelegenheiten, die erledigt werden müssen. hauptsächlich Snacks. is eigentlich dasselbe, wenn man Grünpfote ist."
       }
     },
     "quests": {
@@ -6463,6 +6486,26 @@ export const de_DE: EnTranslations = {
             "label": "Schimmersee-Wäter erschlagen"
           }
         }
+      },
+      "q_what_burns": {
+        "title": "Das Ding, das brennt",
+        "text": "die Kommunion wird dünn, Freund... ich bin knochentrocken und die Wellenlänge schließt sich. unten unterm Schrein gibt's 'ne Knolle, die langsam und sauber brennt, Glutknolle, wächst dort, wo kein Licht hinkommt, was 'n Witz ist, den sich die Höhle selbst erlaubt... bring mir fünf. pass auf die Bleichen auf. die kommen wegen deiner Laterne, nicht wegen dir. meistens.",
+        "completion": "DAS is der gute Rauch... spürste das? der Raum wird dicht. sie wird jeden Moment näher rücken, ich spür's auf der Wellenlänge... in der Tat.",
+        "objectives": {
+          "0": {
+            "label": "Glutknolle gesammelt"
+          }
+        }
+      },
+      "q_what_fills": {
+        "title": "Das Ding, das füllt",
+        "text": "zweite Sache, und ich würd sie heilig nennen, aber unter uns is' es Frühstück... die Wurzelmäuler da unten tragen 'nen Happen bei sich, höhlengenährt, richtig erdig. vier reichen. bring sie zurück, bevor der Magen anfängt, seine eigenen Hymnen zu singen...",
+        "completion": "du bist 'n Heiliger erster Klasse, Freund. oder 'n guter Nachbar. is eigentlich dasselbe, wenn man Grünpfote ist. ...hier. wollt das eigentlich behalten, aber der Cowboy in mir sagt, is deins. lass es nicht welken.",
+        "objectives": {
+          "0": {
+            "label": "Höhlenhappen gesammelt"
+          }
+        }
       }
     },
     "zones": {
@@ -6599,6 +6642,16 @@ export const de_DE: EnTranslations = {
         "name": "Der Ertränkte Tempel",
         "enterText": "Du trittst durch das Mondtor — die Luft wird zu kaltem Wasser und bleichem Licht, und der Gesang schließt sich über deinem Haupt.",
         "leaveText": "Du tauchst durch das Mondtor empor in die Bergnacht."
+      },
+      "the_hollow": {
+        "name": "Die Höhlung",
+        "enterText": "Du trittst durch das Schreintor. Die Luft wird warm und grün, und die Vase wartet voraus.",
+        "leaveText": "Du trittst zurück durch das Tor nach Eastbrook."
+      },
+      "under_shrine": {
+        "name": "Der Unter-Schrein",
+        "enterText": "Du steigst unter den Schrein hinab. Die Luft wird still und eng, und das Dunkel voraus fühlt sich nicht leer an.",
+        "leaveText": "Du kletterst zurück in die Wärme. Über dir, kaum wahrnehmbar, Rauch."
       }
     },
     "delves": {

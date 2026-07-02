@@ -2908,6 +2908,14 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.dungeons.drowned_temple.enterText':
     '月の門をくぐり抜けると——大気は冷たい水と蒼白の光に変わり、歌声が頭上で閉ざされていく。',
   'entities.dungeons.drowned_temple.leaveText': '月の門を抜けて、山の夜へと浮かび上がる。',
+  'entities.dungeons.the_hollow.name': '空洞',
+  'entities.dungeons.the_hollow.enterText':
+    '祠の門をくぐる。大気は温かく緑がかり、壺が先で待っている。',
+  'entities.dungeons.the_hollow.leaveText': '門を抜けて、イーストブルックへと戻る。',
+  'entities.dungeons.under_shrine.name': '地下祠',
+  'entities.dungeons.under_shrine.enterText':
+    '祠の下へと降りていく。大気は静まり返って狭まり、先の闇は空虚には感じられない。',
+  'entities.dungeons.under_shrine.leaveText': '暖かさの中へと這い上がる。頭上には、かすかに煙。',
   'worldContent.corpseName': '{name}（死体）',
   'worldContent.dungeonExitName': '{name}の出口',
   'worldContent.delveLockedChestInteract': 'Fで錠を開ける',
@@ -2991,6 +2999,18 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_nythraxis_scourges_end.completion':
     'これで王冠はついに沈黙しました。ソーンピークはなお死者を抱えるでしょうが、山の下の王が彼らを再び戦へ呼ぶことはありません。あなたは、アルドレン、マルリック、そしてヴォスが封じることしかできなかったものを終わらせました。',
   'entities.quests.q_nythraxis_scourges_end.objectives.0.label': 'ニスラクシスを撃破',
+  'entities.quests.q_what_burns.title': '燃えるもの',
+  'entities.quests.q_what_burns.text':
+    '交信が薄くなってきてな、友よ……骨まで乾いちまって、波長が閉じかけてる。祠の下に、ゆっくり綺麗に燃える球根がある、残り火の球根、光の届かん場所に生えるんだ、洞窟が自分自身にかけた冗談みたいなもんだな……五つ持ってきてくれ。蒼白いやつらには気をつけろよ。奴らはお前のランタンに寄ってくるんであって、お前自身にじゃない。だいたいはな。',
+  'entities.quests.q_what_burns.completion':
+    'おお、これぞ極上の煙だ……感じるか？部屋が濃くなってきてる。あの方はもうすぐ身を乗り出してくるぞ、波長でわかるんだ……まったくもって。',
+  'entities.quests.q_what_burns.objectives.0.label': '残り火の球根を収集',
+  'entities.quests.q_what_fills.title': '満たすもの',
+  'entities.quests.q_what_fills.text':
+    '二つ目の用事だが、神聖なものと言いたいところ、実のところ朝飯だな……下にいる根顎獣どもは体に肉片を一つ持ってる、洞窟育ちで、なかなか土臭い味だ。四つでいい。腹が自分で賛美歌を歌い出す前に持ち帰ってくれ……',
+  'entities.quests.q_what_fills.completion':
+    'お前は一級の聖人だな、友よ。それか良き隣人か。緑掌的には同じようなもんだ。……ほら、これは自分用に取っとくつもりだったんだが、心の中のカウボーイがお前のもんだって言うんでな。萎れさせるなよ。',
+  'entities.quests.q_what_fills.objectives.0.label': '洞窟の肉片を収集',
   'hud.errors.silenced': '沈黙状態です！',
   'hud.pet.noPetFood': 'ペットに与える食べ物がありません。',
   'hud.pet.petEatsFoodOnly': 'ペットは食べ物しか食べられません。',
@@ -4449,6 +4469,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.items.reliquary_gloves_rog.name': '骨守りの手甲',
   'entities.items.deacon_reliquary_helm.name': '助祭の聖遺物庫の兜',
   'entities.items.varric_shadow_cowl.name': 'ヴァリックの影のフード',
+  'entities.items.cave_morsel.name': '洞窟の肉片',
+  'entities.items.emberbulb.name': '残り火の球根',
+  'entities.items.first_cutting.name': '挿し木',
   'entities.mobs.acolyte_tessa.name': '侍祭テッサ',
   'entities.mobs.deacon_varric.name': '助祭ヴァリック',
   'entities.mobs.reliquary_bonewalker.name': '蘇りし骨歩き',
@@ -4456,9 +4479,16 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_gravecall_acolyte.name': '墓呼びの侍祭',
   'entities.mobs.reliquary_ledger_wraith.name': '台帳の亡霊',
   'entities.mobs.reliquary_saintless_effigy.name': '聖人なき偶像',
+  'entities.mobs.palefeeder.name': '蒼白喰らい',
+  'entities.mobs.rootmaw.name': '根顎獣',
+  'entities.mobs.the_witness_root.name': '証しの根',
   'entities.npcs.brother_halven.greeting': '下の聖遺物庫がまた動いた。',
   'entities.npcs.brother_halven.name': 'ハルヴェン修道士',
   'entities.npcs.brother_halven.title': '聖遺物庫の番人',
+  'entities.npcs.brother_greenpaw.name': '緑掌修道士',
+  'entities.npcs.brother_greenpaw.title': '初代預言者（自称）',
+  'entities.npcs.brother_greenpaw.greeting':
+    'よお、旅人。今日の壺はご機嫌かい、それとも俺の気のせいか……まあ来いよ、片付けなきゃならん神聖な用事が二つばかりある。ほとんど食い物のことだけどな。緑掌的にはそれも同じようなもんだ。',
   'entities.delves.collapsed_reliquary.enterText': 'あなたは崩れた聖遺物庫へと降りていく。',
   'entities.delves.collapsed_reliquary.leaveText':
     'あなたは聖遺物庫の廃墟にいるハルヴェン修道士のもとへ登り戻る。',

@@ -2920,6 +2920,15 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
     'Você atravessa o portão lunar — o ar se transforma em água fria e luz pálida, e o cântico se fecha sobre a sua cabeça.',
   'entities.dungeons.drowned_temple.leaveText':
     'Você emerge através do portão lunar para a noite da montanha.',
+  'entities.dungeons.the_hollow.name': 'O Vazio',
+  'entities.dungeons.the_hollow.enterText':
+    'Você atravessa o portão do santuário. O ar fica morno e verde, e o vaso espera lá na frente.',
+  'entities.dungeons.the_hollow.leaveText': 'Você volta a sair pelo portão, de volta a Eastbrook.',
+  'entities.dungeons.under_shrine.name': 'O Santuário Subterrâneo',
+  'entities.dungeons.under_shrine.enterText':
+    'Você desce abaixo do santuário. O ar fica parado e fechado, e a escuridão à frente não parece vazia.',
+  'entities.dungeons.under_shrine.leaveText':
+    'Você sobe de volta para o calor. Acima de você, ao longe, fumaça.',
   'worldContent.corpseName': '{name} (cadáver)',
   'worldContent.dungeonExitName': 'Saída de {name}',
   'worldContent.dungeonPartyWarning':
@@ -4531,6 +4540,9 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'entities.items.reliquary_gloves_rog.name': 'Manoplas do Guardião dos Ossos',
   'entities.items.deacon_reliquary_helm.name': 'Elmo do Relicário do Diácono',
   'entities.items.varric_shadow_cowl.name': 'Capuz sombrio de Varric',
+  'entities.items.cave_morsel.name': 'Petisco da Caverna',
+  'entities.items.emberbulb.name': 'Bulbo de Brasa',
+  'entities.items.first_cutting.name': 'Uma Muda',
   'entities.mobs.acolyte_tessa.name': 'Acólita Tessa',
   'entities.mobs.deacon_varric.name': 'Diácono Varric',
   'entities.mobs.reliquary_bonewalker.name': 'Caminhante de Ossos Erguido',
@@ -4538,9 +4550,28 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_gravecall_acolyte.name': 'Acólito do Chamado Sepulcral',
   'entities.mobs.reliquary_ledger_wraith.name': 'Espectro do Registro',
   'entities.mobs.reliquary_saintless_effigy.name': 'Efígie Sem Santo',
+  'entities.mobs.palefeeder.name': 'Devorapálido',
+  'entities.mobs.rootmaw.name': 'Fauce-Raiz',
+  'entities.mobs.the_witness_root.name': 'A Raiz Testemunha',
   'entities.npcs.brother_halven.greeting': 'O relicário lá embaixo se moveu de novo.',
   'entities.npcs.brother_halven.name': 'Irmão Halven',
   'entities.npcs.brother_halven.title': 'Guardião do Relicário',
+  'entities.npcs.brother_greenpaw.name': 'Irmão Pataverde',
+  'entities.npcs.brother_greenpaw.title': 'Primeiro Profeta (autoproclamado)',
+  'entities.npcs.brother_greenpaw.greeting':
+    'e aí, viajante. o vaso tá de mau humor hoje, ou sou só eu de novo... vem cá, tenho uns assuntos sagrados pra cuidar. na maioria, lanchinho. dá no mesmo, no grau pataverde.',
+  'entities.quests.q_what_burns.title': 'A Coisa Que Arde',
+  'entities.quests.q_what_burns.text':
+    'a comunhão anda rala, amigo... tô seco até o osso e a sintonia tá se fechando. lá embaixo do santuário tem um bulbo que arde devagar e limpo: bulbo de brasa, cresce onde a luz não chega, que é uma piada que a caverna faz consigo mesma... me traga cinco. cuidado com os pálidos. eles vêm pra cima da sua lanterna, não de você. quase sempre.',
+  'entities.quests.q_what_burns.completion':
+    'ISSO sim que é fumaça boa... tá sentindo? o ar tá ficando espesso. ela vai se debruçar a qualquer momento, sinto na sintonia... pois é.',
+  'entities.quests.q_what_burns.objectives.0.label': 'Bulbo de Brasa coletado',
+  'entities.quests.q_what_fills.title': 'A Coisa Que Enche',
+  'entities.quests.q_what_fills.text':
+    'segundo assunto, e eu chamaria de sagrado, mas entre nós é café da manhã... as fauces-raiz lá embaixo carregam um petisco, criado na caverna, bem terroso. quatro já bastam. traga antes que o estômago comece a cantar seus próprios hinos...',
+  'entities.quests.q_what_fills.completion':
+    'você é um santo de primeira ordem, amigo. ou um bom vizinho. dá no mesmo, no grau pataverde. ...aqui. eu ia ficar com esse, mas o caubói de dentro diz que é seu. não deixe murchar.',
+  'entities.quests.q_what_fills.objectives.0.label': 'Petisco da Caverna coletado',
   'entities.delves.collapsed_reliquary.enterText': 'Você desce até o relicário desmoronado.',
   'entities.delves.collapsed_reliquary.leaveText':
     'Você sobe de volta até o Irmão Halven, na ruína do relicário.',

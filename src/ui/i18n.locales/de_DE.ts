@@ -2935,6 +2935,37 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
     'Du trittst durch das Mondtor — die Luft wird zu kaltem Wasser und bleichem Licht, und der Gesang schließt sich über deinem Haupt.',
   'entities.dungeons.drowned_temple.leaveText':
     'Du tauchst durch das Mondtor empor in die Bergnacht.',
+  'entities.dungeons.the_hollow.name': 'Die Höhlung',
+  'entities.dungeons.the_hollow.enterText':
+    'Du trittst durch das Schreintor. Die Luft wird warm und grün, und die Vase wartet voraus.',
+  'entities.dungeons.the_hollow.leaveText': 'Du trittst zurück durch das Tor nach Eastbrook.',
+  'entities.dungeons.under_shrine.name': 'Der Unter-Schrein',
+  'entities.dungeons.under_shrine.enterText':
+    'Du steigst unter den Schrein hinab. Die Luft wird still und eng, und das Dunkel voraus fühlt sich nicht leer an.',
+  'entities.dungeons.under_shrine.leaveText':
+    'Du kletterst zurück in die Wärme. Über dir, kaum wahrnehmbar, Rauch.',
+  'entities.items.cave_morsel.name': 'Höhlenhappen',
+  'entities.items.emberbulb.name': 'Glutknolle',
+  'entities.items.first_cutting.name': 'Ein Ableger',
+  'entities.mobs.palefeeder.name': 'Bleichfresser',
+  'entities.mobs.rootmaw.name': 'Wurzelmaul',
+  'entities.mobs.the_witness_root.name': 'Die Zeugenwurzel',
+  'entities.npcs.brother_greenpaw.name': 'Bruder Grünpfote',
+  'entities.npcs.brother_greenpaw.title': 'Erster Prophet (selbsternannt)',
+  'entities.npcs.brother_greenpaw.greeting':
+    'hey, reisender. haste die Vase heut in Stimmung erwischt, oder bin nur wieder ich... komm her, hab ein paar heilige Angelegenheiten, die erledigt werden müssen. hauptsächlich Snacks. is eigentlich dasselbe, wenn man Grünpfote ist.',
+  'entities.quests.q_what_burns.title': 'Das Ding, das brennt',
+  'entities.quests.q_what_burns.text':
+    "die Kommunion wird dünn, Freund... ich bin knochentrocken und die Wellenlänge schließt sich. unten unterm Schrein gibt's 'ne Knolle, die langsam und sauber brennt, Glutknolle, wächst dort, wo kein Licht hinkommt, was 'n Witz ist, den sich die Höhle selbst erlaubt... bring mir fünf. pass auf die Bleichen auf. die kommen wegen deiner Laterne, nicht wegen dir. meistens.",
+  'entities.quests.q_what_burns.completion':
+    "DAS is der gute Rauch... spürste das? der Raum wird dicht. sie wird jeden Moment näher rücken, ich spür's auf der Wellenlänge... in der Tat.",
+  'entities.quests.q_what_burns.objectives.0.label': 'Glutknolle gesammelt',
+  'entities.quests.q_what_fills.title': 'Das Ding, das füllt',
+  'entities.quests.q_what_fills.text':
+    "zweite Sache, und ich würd sie heilig nennen, aber unter uns is' es Frühstück... die Wurzelmäuler da unten tragen 'nen Happen bei sich, höhlengenährt, richtig erdig. vier reichen. bring sie zurück, bevor der Magen anfängt, seine eigenen Hymnen zu singen...",
+  'entities.quests.q_what_fills.completion':
+    "du bist 'n Heiliger erster Klasse, Freund. oder 'n guter Nachbar. is eigentlich dasselbe, wenn man Grünpfote ist. ...hier. wollt das eigentlich behalten, aber der Cowboy in mir sagt, is deins. lass es nicht welken.",
+  'entities.quests.q_what_fills.objectives.0.label': 'Höhlenhappen gesammelt',
   'worldContent.corpseName': '{name} (Leichnam)',
   'worldContent.dungeonExitName': 'Ausgang von {name}',
   'worldContent.dungeonPartyWarning':

@@ -815,6 +815,16 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'entities.dungeons.sunken_bastion.leaveText':
     'Kau memanjat keluar dari kegelapan yang menenggelamkan.',
   'entities.dungeons.sunken_bastion.name': 'Benteng Karam',
+  'entities.dungeons.the_hollow.enterText':
+    'Kau melangkah melewati gerbang kuil. Udara berubah hangat dan hijau, dan guci itu menunggu di depan.',
+  'entities.dungeons.the_hollow.leaveText':
+    'Kau melangkah keluar lagi melewati gerbang menuju Eastbrook.',
+  'entities.dungeons.the_hollow.name': 'Yang Berongga',
+  'entities.dungeons.under_shrine.enterText':
+    'Kau turun ke bawah kuil. Udara menjadi sunyi dan rapat, dan kegelapan di depan terasa tidak kosong.',
+  'entities.dungeons.under_shrine.leaveText':
+    'Kau memanjat kembali ke kehangatan. Di atasmu, samar-samar, asap.',
+  'entities.dungeons.under_shrine.name': 'Kuil Bawah',
   'entities.items.acolytes_circlet.name': 'Mahkota Acolyte',
   'entities.items.alien_armor_plate.name': 'Lempeng Zirah Asing',
   'entities.items.amber_crimson_armor_plate.name': 'Crimson Ambar',
@@ -848,6 +858,7 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'entities.items.captains_crest.name': 'Kunci Utama Kripta Bagian Atas',
   'entities.items.caravan_quilted_vest.name': 'Rompi Berlapis Karavan',
   'entities.items.caravan_warden_dirk.name': 'Belati Penjaga Karavan',
+  'entities.items.cave_morsel.name': 'Camilan Gua',
   'entities.items.chipped_tusk.name': 'Gading Gompal',
   'entities.items.conjured_bread.name': 'Roti Ciptaan',
   'entities.items.conjured_bread2.name': 'Pumpernickel Ciptaan',
@@ -905,6 +916,7 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'entities.items.eelscale_treads.name': 'Alas Kaki Sisik Belut',
   'entities.items.eelskin_tunic.name': 'Tunik Kulit Belut',
   'entities.items.elixir_of_the_bear.name': 'Eliksir Beruang',
+  'entities.items.emberbulb.name': 'Umbi Bara',
   'entities.items.emberfang_warblade.name': 'Bilah Perang Taring Bara',
   'entities.items.emberwing_cinderscale.name': 'Sisik Arang Emberwing',
   'entities.items.emberwing_legguards.name': 'Pelindung Kaki Emberwing',
@@ -918,6 +930,7 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'entities.items.fenmist_robe.name': 'Jubah Kabut Rawa',
   'entities.items.fenreed_staff.name': 'Tongkat Buluh Rawa',
   'entities.items.fenwalker_boots.name': 'Bot Penjelajah Rawa',
+  'entities.items.first_cutting.name': 'Sebuah Stek',
   'entities.items.footpad_jerkin.name': 'Jaket Perampok',
   'entities.items.forest_pink_armor_plate.name': 'Merah Muda Hutan',
   'entities.items.frayed_prayer_beads.name': 'Tasbih Doa Usang',
@@ -1214,6 +1227,7 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.old_cragmaw.name': 'Cragmaw Tua',
   'entities.mobs.old_greyjaw.name': 'Greyjaw Tua',
   'entities.mobs.pale_choir_acolyte.name': 'Akolit Paduan Pucat',
+  'entities.mobs.palefeeder.name': 'Pemakan Pucat',
   'entities.mobs.pearlguard_sentinel.name': 'Sentinel Pengawal Mutiara',
   'entities.mobs.raised_bonewalker.name': 'Pejalan Tulang Bangkit',
   'entities.mobs.reliquary_bonewalker.name': 'Pejalan Tulang Bangkit',
@@ -1223,6 +1237,7 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_saintless_effigy.name': 'Patung Tanpa Orang Suci',
   'entities.mobs.restless_bones.name': 'Tulang Gelisah',
   'entities.mobs.ridge_stalker.name': 'Pengintai Punggung Bukit',
+  'entities.mobs.rootmaw.name': 'Mulut-akar',
   'entities.mobs.sanctum_boneguard.name': 'Pengawal Tulang Sanktum',
   'entities.mobs.sanctum_drakonid.name': 'Drakonid Sanktum',
   'entities.mobs.sethrael_palecoil.name': 'Sethrael sang Lingkar Pucat',
@@ -1232,6 +1247,7 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.sloomtooth_the_drowned.name': 'Sloomtooth sang Tenggelam',
   'entities.mobs.stormcrag_elemental.name': 'Elemental Stormcrag',
   'entities.mobs.succubus.name': 'Succubus',
+  'entities.mobs.the_witness_root.name': 'Sang Akar Saksi',
   'entities.mobs.thornpeak_ogre.name': 'Ogre Thornpeak',
   'entities.mobs.tidebound_acolyte.name': 'Akolit Terikat Pasang',
   'entities.mobs.tunnel_rat.name': 'Tikus Penggali Terowongan',
@@ -1275,6 +1291,10 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
     'Dari halaman kapel di Lembah hingga atap dunia... jejak yang kita ikuti berakhir di sini. Aku bisa merasakan gunung ini menyimak.',
   'entities.npcs.brother_aldric_raid.name': 'Bruder Aldric',
   'entities.npcs.brother_aldric_raid.title': 'Pendeta Lembah',
+  'entities.npcs.brother_greenpaw.greeting':
+    'halo, pengembara. guci itu lagi bagus suasana hatinya hari ini, atau cuma perasaanku lagi... mari, ada dua tiga urusan suci yang mesti diurus. kebanyakan sih camilan. sama saja, kalau diukur dari kadar kepatuan hijau.',
+  'entities.npcs.brother_greenpaw.name': 'Bruder Cakarhijau',
+  'entities.npcs.brother_greenpaw.title': 'Nabi Pertama (mengangkat diri sendiri)',
   'entities.npcs.brother_halven.greeting': 'Relikuari di bawah bergeser lagi.',
   'entities.npcs.brother_halven.name': 'Bruder Halven',
   'entities.npcs.brother_halven.title': 'Penjaga Relikuari',
@@ -1786,6 +1806,18 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_voice_below.text':
     'Tadi malam seluruh perkemahan kultus berlutut serentak, {playerName}, setiap fanatik, setiap necromancer, semua menghadap Sanktum. Korzul kini berbicara kepada mereka dalam tidur; Vael mendengar suara yang sama di rawa, dan Morthen sebelumnya. Tumpas jemaah itu, sepuluh fanatik, enam necromancer, sebelum suara itu punya tangan yang cukup untuk membuka gerbang itu sendiri.',
   'entities.quests.q_voice_below.title': 'Suara dari Bawah',
+  'entities.quests.q_what_burns.completion':
+    'nah, ITU baru asap yang enak... kau rasakan itu? ruangannya makin pekat. dia bakal segera merunduk, aku bisa merasakannya di gelombang itu... memang benar.',
+  'entities.quests.q_what_burns.objectives.0.label': 'Umbi Bara terkumpul',
+  'entities.quests.q_what_burns.text':
+    'komuninya makin tipis, kawan... aku kering kerontang dan gelombangnya makin menutup. di bawah sana, di bawah kuil, ada umbi yang membara pelan dan bersih, umbi bara, tumbuh di tempat cahaya tak sampai, yang jadi semacam lelucon yang dibuat gua pada dirinya sendiri... bawakan aku lima. hati-hati sama yang pucat-pucat itu. mereka nyerang lenteramu, bukan kamu. kebanyakan sih begitu.',
+  'entities.quests.q_what_burns.title': 'Yang Membara',
+  'entities.quests.q_what_fills.completion':
+    'kau ini orang suci kelas satu, kawan. atau tetangga baik. sama saja, kalau diukur dari kadar kepatuan hijau. ...nih. tadinya mau kusimpan yang satu ini tapi si koboi dalam diriku bilang ini punyamu. jangan sampai layu.',
+  'entities.quests.q_what_fills.objectives.0.label': 'Camilan Gua terkumpul',
+  'entities.quests.q_what_fills.text':
+    'urusan kedua, dan aku bakal bilang ini suci tapi di antara kita saja ini sarapan... para mulut-akar di bawah sana bawa camilan di badannya, diberi makan gua, rasanya bener-bener tanah. empat aja udah cukup. bawa balik sebelum perutmu mulai nyanyi himne sendiri...',
+  'entities.quests.q_what_fills.title': 'Yang Mengenyangkan',
   'entities.quests.q_whispers.completion':
     'Sigil ini... membawa tanda para Gravecaller, sekte yang kuharap telah punah. Ini lebih buruk daripada yang kutakutkan, {playerName}.',
   'entities.quests.q_whispers.objectives.0.label': 'Sigil Gravecaller',

@@ -2906,6 +2906,15 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.dungeons.drowned_temple.enterText':
     '당신은 달의 관문을 지나갑니다 — 공기가 차가운 물과 창백한 빛으로 변하고, 노랫소리가 당신의 머리 위로 닫혀 옵니다.',
   'entities.dungeons.drowned_temple.leaveText': '당신은 달의 관문을 통해 산속의 밤으로 떠오릅니다.',
+  'entities.dungeons.the_hollow.name': '공동',
+  'entities.dungeons.the_hollow.enterText':
+    '사당의 문을 지나갑니다. 공기가 따뜻하고 푸르게 변하고, 항아리가 앞에서 기다립니다.',
+  'entities.dungeons.the_hollow.leaveText': '문을 지나 다시 이스트브룩으로 나갑니다.',
+  'entities.dungeons.under_shrine.name': '지하 사당',
+  'entities.dungeons.under_shrine.enterText':
+    '사당 아래로 내려갑니다. 공기가 고요하고 답답해지며, 앞의 어둠은 텅 빈 것처럼 느껴지지 않습니다.',
+  'entities.dungeons.under_shrine.leaveText':
+    '따뜻한 곳으로 다시 기어오릅니다. 머리 위로, 희미하게 연기가 보입니다.',
   'worldContent.corpseName': '{name} (시체)',
   'worldContent.dungeonExitName': '{name} 출구',
   'worldContent.delveLockedChestInteract': 'F를 눌러 자물쇠 따기',
@@ -2989,6 +2998,18 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_nythraxis_scourges_end.completion':
     '마침내 왕관이 침묵했습니다. 손피크는 여전히 죽은 이들을 품겠지만, 산 아래의 어떤 왕도 다시 그들을 전쟁으로 부르지 못할 것입니다. 당신은 알드렌과 말릭, 보스가 겨우 억눌렀던 일을 끝냈습니다.',
   'entities.quests.q_nythraxis_scourges_end.objectives.0.label': '니트락시스 처치',
+  'entities.quests.q_what_burns.title': '타오르는 것',
+  'entities.quests.q_what_burns.text':
+    '교감이 옅어지고 있어, 친구……속이 바싹 말라서 파장이 닫히고 있다네. 사당 아래에 천천히 깨끗하게 타는 구근이 있지, 불씨구근 말이야, 빛이 닿지 않는 곳에서 자라는데, 동굴이 자기 자신한테 치는 농담 같은 거지……다섯 개만 가져다주게. 창백한 놈들 조심하고. 그놈들은 당신 등불에 몰려오는 거지, 당신한테 오는 게 아니야. 대체로는.',
+  'entities.quests.q_what_burns.completion':
+    '바로 이거지, 이게 좋은 연기라는 거야……느껴지나? 방이 점점 짙어지고 있어. 그분이 곧 몸을 기울일 거야, 파장에서 느껴진다네……정말로 말이야.',
+  'entities.quests.q_what_burns.objectives.0.label': '불씨구근 수집',
+  'entities.quests.q_what_fills.title': '채워주는 것',
+  'entities.quests.q_what_fills.text':
+    '두 번째 일인데, 신성한 일이라 부르고 싶지만 우리끼리 얘기지만 사실 그냥 아침밥이야……저 아래 뿌리아가리들이 몸에 살점을 하나씩 달고 다니는데, 동굴에서 먹고 자라서 그런지 참 흙내가 나. 네 개면 되겠어. 배 속이 스스로 찬송가를 부르기 전에 가져와 주게……',
+  'entities.quests.q_what_fills.completion':
+    '자넨 정말 일등 성인일세, 친구. 아니면 좋은 이웃이거나. 뭐, 그린포우 식으로 치면 그게 그거지. ……자, 이건 내가 챙겨두려 했는데, 마음속 카우보이가 이건 자네 거라고 하는군. 시들게 하지 말게.',
+  'entities.quests.q_what_fills.objectives.0.label': '동굴 고기 조각 수집',
   'hud.errors.silenced': '침묵 상태입니다!',
   'hud.pet.noPetFood': '소환수에게 먹일 음식이 없습니다.',
   'hud.pet.petEatsFoodOnly': '소환수는 음식만 먹을 수 있습니다.',
@@ -4459,6 +4480,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.items.reliquary_gloves_rog.name': '뼈수호 손보호구',
   'entities.items.deacon_reliquary_helm.name': '부제의 성물실 투구',
   'entities.items.varric_shadow_cowl.name': '바릭의 그림자 두건',
+  'entities.items.cave_morsel.name': '동굴 고기 조각',
+  'entities.items.emberbulb.name': '불씨구근',
+  'entities.items.first_cutting.name': '꺾꽂이',
   'entities.mobs.acolyte_tessa.name': '수련사제 테사',
   'entities.mobs.deacon_varric.name': '부제 바릭',
   'entities.mobs.reliquary_bonewalker.name': '되살아난 해골보행자',
@@ -4466,9 +4490,16 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_gravecall_acolyte.name': '무덤부름 수련사제',
   'entities.mobs.reliquary_ledger_wraith.name': '명부의 망령',
   'entities.mobs.reliquary_saintless_effigy.name': '성인 잃은 조상',
+  'entities.mobs.palefeeder.name': '창백포식자',
+  'entities.mobs.rootmaw.name': '뿌리아가리',
+  'entities.mobs.the_witness_root.name': '증언의 뿌리',
   'entities.npcs.brother_halven.greeting': '아래의 성물실이 또 움직였소.',
   'entities.npcs.brother_halven.name': '브라더 할벤',
   'entities.npcs.brother_halven.title': '성물실 관리인',
+  'entities.npcs.brother_greenpaw.name': '브라더 초록발',
+  'entities.npcs.brother_greenpaw.title': '초대 선지자(자칭)',
+  'entities.npcs.brother_greenpaw.greeting':
+    '어이, 나그네. 오늘 항아리 기분이 좀 이상해 보이나, 아니면 또 나만 그렇게 느끼는 건가……이리 와 보게, 처리해야 할 신성한 일이 몇 가지 있어. 대부분 간식거리지만. 뭐, 그린포우 식으로 치면 그게 그거지.',
   'entities.delves.collapsed_reliquary.enterText': '무너진 성물실로 내려갑니다.',
   'entities.delves.collapsed_reliquary.leaveText':
     '성물실 폐허의 브라더 할벤에게로 다시 올라갑니다.',

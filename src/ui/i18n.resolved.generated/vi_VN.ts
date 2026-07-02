@@ -5089,6 +5089,15 @@ export const vi_VN: EnTranslations = {
       "wyrmshadow_talongrips": {
         "name": "Bao Tay Trảo Long Ảnh"
       },
+      "cave_morsel": {
+        "name": "Miếng Ăn Hang Động"
+      },
+      "emberbulb": {
+        "name": "Củ Than Hồng"
+      },
+      "first_cutting": {
+        "name": "Một Nhánh Giâm"
+      },
       "reliquary_plate_chest": {
         "name": "Áo Giáp Vệ Binh Thánh Tích"
       },
@@ -5534,6 +5543,15 @@ export const vi_VN: EnTranslations = {
       },
       "ysolei": {
         "name": "Ysolei, Hóa Thân Nguyệt Chết Chìm"
+      },
+      "palefeeder": {
+        "name": "Kẻ Ăn Nhợt Nhạt"
+      },
+      "rootmaw": {
+        "name": "Miệng Rễ"
+      },
+      "the_witness_root": {
+        "name": "Rễ Chứng Nhân"
       }
     },
     "npcs": {
@@ -5646,6 +5664,11 @@ export const vi_VN: EnTranslations = {
         "name": "Ondrel Vane",
         "title": "Người Canh Thủy Triều",
         "greeting": "Hồ nước uống lấy ánh trăng, {className}, rồi trả lại những kẻ chết chìm. Ta đã canh chừng cánh cổng đó suốt ba mươi đêm — và đêm nay nó đã mở."
+      },
+      "brother_greenpaw": {
+        "name": "Tu Huynh Chân Xanh",
+        "title": "Vị Tiên Tri Đầu Tiên (tự phong)",
+        "greeting": "chào, lữ khách. hôm nay cái bình có vẻ vui tính, hay chỉ mình ta thấy vậy... lại đây, có vài việc thiêng cần lo. chủ yếu là đồ ăn vặt thôi. cũng như nhau cả, xét theo mức độ chân xanh."
       }
     },
     "quests": {
@@ -6463,6 +6486,26 @@ export const vi_VN: EnTranslations = {
             "label": "Đã hạ Kẻ Lội Nước Glimmermere"
           }
         }
+      },
+      "q_what_burns": {
+        "title": "Thứ Cháy",
+        "text": "sự thông công đã cạn dần rồi, bạn hiền... ta khô khốc và tần sóng đang khép lại. bên dưới thánh điện có một củ cháy chậm và sạch, củ than hồng, mọc ở nơi ánh sáng không tới được, kể cũng là một trò đùa mà cái hang tự chơi với chính nó... mang cho ta năm củ. coi chừng đám nhợt nhạt đó. chúng nhắm vào cây đèn của ngươi, không phải ngươi. hầu hết là vậy.",
+        "completion": "ĐÓ mới là khói ngon... cảm nhận được không? căn phòng đang đặc dần lên. bà ấy sắp nghiêng người tới bất cứ lúc nào, ta cảm nhận được trên tần sóng... đúng vậy đó.",
+        "objectives": {
+          "0": {
+            "label": "Đã thu thập Củ Than Hồng"
+          }
+        }
+      },
+      "q_what_fills": {
+        "title": "Thứ Lấp Đầy",
+        "text": "chuyện thứ hai, ta muốn gọi là thiêng liêng nhưng giữa chúng ta thôi thì nó là bữa sáng... mấy con miệng rễ dưới đó mang theo một miếng ăn, nuôi bằng hang động, thơm mùi đất thiệt. bốn miếng là đủ. mang về trước khi cái bụng bắt đầu hát thánh ca của riêng nó...",
+        "completion": "ngươi là một vị thánh hạng nhất, bạn hiền. hay là một người hàng xóm tốt. cũng như nhau cả, xét theo mức độ chân xanh. ...đây. định giữ lại cái này nhưng gã cao bồi trong lòng ta bảo nó là của ngươi. đừng để nó héo.",
+        "objectives": {
+          "0": {
+            "label": "Đã thu thập Miếng Ăn Hang Động"
+          }
+        }
       }
     },
     "zones": {
@@ -6599,6 +6642,16 @@ export const vi_VN: EnTranslations = {
         "name": "Ngôi Đền Chết Chìm",
         "enterText": "Bạn bước qua nguyệt môn, không khí biến thành nước lạnh và ánh sáng nhợt nhạt, và tiếng hát khép lại trên đầu bạn.",
         "leaveText": "Bạn ngoi lên qua nguyệt môn vào màn đêm trên núi."
+      },
+      "the_hollow": {
+        "name": "Hố Rỗng",
+        "enterText": "Bạn bước qua cổng thánh điện. Không khí trở nên ấm áp và xanh tươi, và chiếc bình chờ phía trước.",
+        "leaveText": "Bạn bước trở ra qua cổng, vào Eastbrook."
+      },
+      "under_shrine": {
+        "name": "Điện Thờ Ngầm",
+        "enterText": "Bạn đi xuống dưới thánh điện. Không khí trở nên tĩnh lặng và ngột ngạt, và bóng tối phía trước không có cảm giác trống rỗng.",
+        "leaveText": "Bạn leo trở lại nơi ấm áp. Phía trên bạn, thoang thoảng, có khói."
       }
     },
     "delves": {

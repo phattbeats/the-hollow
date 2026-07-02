@@ -782,6 +782,10 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'entities.dungeons.hollow_crypt.enterText': "Oyuk Mezar'a inersin...",
   'entities.dungeons.hollow_crypt.leaveText': 'Gün ışığına geri tırmanırsın.',
   'entities.dungeons.hollow_crypt.name': 'Oyuk Mezar',
+  'entities.dungeons.the_hollow.enterText':
+    'Mabet kapısından içeri adım atarsın. Hava ısınıp yeşile döner, put ilerde seni bekler.',
+  'entities.dungeons.the_hollow.leaveText': "Kapıdan geri çıkıp Eastbrook'a dönersin.",
+  'entities.dungeons.the_hollow.name': 'Oyuk',
   'entities.dungeons.nythraxis_boss_arena.enterText': 'Mühürlü kraliyet kapısından geçersin.',
   'entities.dungeons.nythraxis_boss_arena.leaveText':
     "Dikenzirve'nin soğuk havasına geri dönersin.",
@@ -792,6 +796,11 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'entities.dungeons.sunken_bastion.enterText': "Batık Kale'ye doğru suya dalarsın...",
   'entities.dungeons.sunken_bastion.leaveText': 'Boğan karanlıktan dışarı tırmanırsın.',
   'entities.dungeons.sunken_bastion.name': 'Batık Kale',
+  'entities.dungeons.under_shrine.enterText':
+    'Mabedin altına inersin. Hava durgunlaşıp sıkışır, ilerideki karanlık boş hissettirmez.',
+  'entities.dungeons.under_shrine.leaveText':
+    'Sıcağa doğru tırmanıp geri çıkarsın. Yukarıdan, hafifçe, duman kokusu gelir.',
+  'entities.dungeons.under_shrine.name': 'Mabet Altı',
   'entities.items.acolytes_circlet.name': 'Çömezin Tacı',
   'entities.items.alien_armor_plate.name': 'Yabancı Zırh Plakası',
   'entities.items.amber_crimson_armor_plate.name': 'Kehribar Kızıl',
@@ -825,6 +834,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'entities.items.captains_crest.name': 'Mezar Kilittaşı Üst Parça',
   'entities.items.caravan_quilted_vest.name': 'Kervan Kapitone Yeleği',
   'entities.items.caravan_warden_dirk.name': 'Kervan Muhafızı Hançeri',
+  'entities.items.cave_morsel.name': 'Mağara Lokması',
   'entities.items.chipped_tusk.name': 'Çentikli Diş',
   'entities.items.conjured_bread.name': 'Çağrılmış Ekmek',
   'entities.items.conjured_bread2.name': 'Çağrılmış Çavdar Ekmeği',
@@ -882,6 +892,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'entities.items.eelscale_treads.name': 'Yılanbalığı Pulu Postalları',
   'entities.items.eelskin_tunic.name': 'Yılanbalığı Derisi Tuniği',
   'entities.items.elixir_of_the_bear.name': 'Ayı İksiri',
+  'entities.items.emberbulb.name': 'Köz Soğanı',
   'entities.items.emberfang_warblade.name': 'Közdiş Savaş Kılıcı',
   'entities.items.emberwing_cinderscale.name': 'Közkanat Köz Pulu',
   'entities.items.emberwing_legguards.name': 'Közkanat Bacaklığı',
@@ -895,6 +906,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'entities.items.fenmist_robe.name': 'Bataklık Sisi Cübbesi',
   'entities.items.fenreed_staff.name': 'Bataklık Sazı Asası',
   'entities.items.fenwalker_boots.name': 'Bataklıkyürüyen Çizmeleri',
+  'entities.items.first_cutting.name': 'Bir Filiz',
   'entities.items.footpad_jerkin.name': 'Yol Kesici Yeleği',
   'entities.items.forest_pink_armor_plate.name': 'Orman Pembesi',
   'entities.items.frayed_prayer_beads.name': 'Yıpranmış Dua Boncukları',
@@ -1191,6 +1203,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.old_cragmaw.name': 'İhtiyar Cragmaw',
   'entities.mobs.old_greyjaw.name': 'İhtiyar Greyjaw',
   'entities.mobs.pale_choir_acolyte.name': 'Solgun Koro Çömezi',
+  'entities.mobs.palefeeder.name': 'Solgunbeslen',
   'entities.mobs.pearlguard_sentinel.name': 'İncimuhafız Nöbetçisi',
   'entities.mobs.raised_bonewalker.name': 'Diriltilmiş Kemikyürüyen',
   'entities.mobs.reliquary_bonewalker.name': 'Diriltilmiş Kemikyürüyen',
@@ -1200,6 +1213,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_saintless_effigy.name': 'Azizsiz Heykel',
   'entities.mobs.restless_bones.name': 'Huzursuz Kemikler',
   'entities.mobs.ridge_stalker.name': 'Sırt Sinsisi',
+  'entities.mobs.rootmaw.name': 'Kökçene',
   'entities.mobs.sanctum_boneguard.name': 'Mabet Kemik Muhafızı',
   'entities.mobs.sanctum_drakonid.name': 'Mabet Drakonidi',
   'entities.mobs.sethrael_palecoil.name': 'Solgunkıvrım Sethrael',
@@ -1209,6 +1223,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.sloomtooth_the_drowned.name': 'Boğulmuş Sloomtooth',
   'entities.mobs.stormcrag_elemental.name': 'Fırtınakaya Elementali',
   'entities.mobs.succubus.name': 'Sukubus',
+  'entities.mobs.the_witness_root.name': 'Tanık Kök',
   'entities.mobs.thornpeak_ogre.name': 'Dikenzirve Ogresi',
   'entities.mobs.tidebound_acolyte.name': 'Gelgitbağlı Çömez',
   'entities.mobs.tunnel_rat.name': 'Tünel Faresi Kazıcısı',
@@ -1251,6 +1266,10 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
     "Vadi'deki bir şapel avlusundan dünyanın çatısına... izlediğimiz iz burada bitiyor. Dağın dinlediğini hissedebiliyorum.",
   'entities.npcs.brother_aldric_raid.name': 'Birader Aldric',
   'entities.npcs.brother_aldric_raid.title': 'Vadi Rahibi',
+  'entities.npcs.brother_greenpaw.greeting':
+    'selam sana, gezgin. put bugün keyifsiz mi yoksa yine ben mi öyle görüyorum... gel bakalım buraya, birkaç kutsal iş var görülecek. çoğu atıştırmalık aslında. greenpaw ölçeğinde ikisi de aynı kapıya çıkar.',
+  'entities.npcs.brother_greenpaw.name': 'Birader Greenpaw',
+  'entities.npcs.brother_greenpaw.title': 'İlk Peygamber (kendi kendini atadı)',
   'entities.npcs.brother_halven.greeting': 'Aşağıdaki kutsal emanetlik yine yer değiştirdi.',
   'entities.npcs.brother_halven.name': 'Birader Halven',
   'entities.npcs.brother_halven.title': 'Emanetlik Bekçisi',
@@ -1756,6 +1775,18 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_voice_below.text':
     "Dün gece bütün tarikat kampı bir anda diz çöktü, {playerName}, her yobaz, her nekromant, hepsi Mabet'e dönük. Korzul artık onlara uykularında konuşuyor; Vael bataklıkta aynı sesi duydu, ondan önce de Morthen. Cemaati biçin, on yobaz, altı nekromant, o sesin kapıyı kendi elleriyle açacak kadar ele sahip olmasından önce.",
   'entities.quests.q_voice_below.title': 'Aşağıdaki Ses',
+  'entities.quests.q_what_burns.completion':
+    "işte bu, gerçek duman bu... hissediyor musun? oda ağırlaşıyor be. put az sonra eğilir buraya, wavelength'te hissediyorum bunu... hakikaten.",
+  'entities.quests.q_what_burns.objectives.0.label': 'Köz soğanı toplandı',
+  'entities.quests.q_what_burns.text':
+    'iletişim inceldi be dostum... ben kupkuru kaldım, wavelength kapanıyor. mabedin altında yavaş ve temiz yanan bir soğan var, köz soğanı derler, ışığın erişmediği yerde büyür, mağaranın kendine yaptığı bir şaka bu bir bakıma... bana beş tane getir. solgunlara dikkat et. onlar sana değil, lambana gelir. çoğunlukla.',
+  'entities.quests.q_what_burns.title': 'Yanan Şey',
+  'entities.quests.q_what_fills.completion':
+    'sen ilk sınıf bir azizsin dostum. ya da iyi bir komşu. greenpaw ölçeğinde ikisi de aynı kapıya çıkar. ...al bakalım. bunu kendime saklayacaktım ama içimdeki kovboy sana ait dedi. soldurma sakın.',
+  'entities.quests.q_what_fills.objectives.0.label': 'Mağara lokması toplandı',
+  'entities.quests.q_what_fills.text':
+    'ikinci mesele, kutsal derdim ama aramızda kalsın, aslında kahvaltı bu... aşağıdaki kökçenelerde bir lokma taşıyorlar, mağara beslemesi, tam toprak tadında. dört tanesi yeter. karnım ilahi söylemeye başlamadan getir onları...',
+  'entities.quests.q_what_fills.title': 'Dolduran Şey',
   'entities.quests.q_whispers.completion':
     "Bu mühür... Mezar Çağıranlar'ın izini taşıyor, soyu tükendi diye dua ettiğim bir tarikatın. Bu korktuğumdan da beter, {playerName}.",
   'entities.quests.q_whispers.objectives.0.label': 'Mezar Çağıran Mührü',

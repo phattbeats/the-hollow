@@ -33,6 +33,16 @@ import {
 import { DUNGEON_DEFS, DUNGEON_MOBS } from './content/dungeons';
 import { GROUND_PICKUP_LINES } from './content/ground_pickup_lines';
 import {
+  HOLLOW_CAMPS,
+  HOLLOW_DUNGEON_DEFS,
+  HOLLOW_ITEMS,
+  HOLLOW_MOBS,
+  HOLLOW_NPCS,
+  HOLLOW_OBJECTS,
+  HOLLOW_QUEST_ORDER,
+  HOLLOW_QUESTS,
+} from './content/hollow';
+import {
   TEMPLE_CAMPS,
   TEMPLE_DUNGEON_DEFS,
   TEMPLE_DUNGEON_MOBS,
@@ -136,6 +146,7 @@ export const ITEMS: Record<string, ItemDef> = mergeItems(
   ZONE2_ITEMS,
   ZONE3_ITEMS,
   TEMPLE_ITEMS,
+  HOLLOW_ITEMS,
   DELVE_ITEMS,
 );
 
@@ -150,6 +161,7 @@ export const MOBS: Record<string, MobTemplate> = {
   ...WARLOCK_PET_MOBS,
   ...TEMPLE_MOBS,
   ...TEMPLE_DUNGEON_MOBS,
+  ...HOLLOW_MOBS,
   ...DELVE_MOBS,
 };
 
@@ -158,6 +170,7 @@ export const NPCS: Record<string, NpcDef> = {
   ...ZONE2_NPCS,
   ...ZONE3_NPCS,
   ...TEMPLE_NPCS,
+  ...HOLLOW_NPCS,
   brother_halven: BROTHER_HALVEN,
 };
 
@@ -166,6 +179,7 @@ export const QUESTS: Record<string, QuestDef> = {
   ...ZONE2_QUESTS,
   ...ZONE3_QUESTS,
   ...TEMPLE_QUESTS,
+  ...HOLLOW_QUESTS,
 };
 
 export const QUEST_ORDER: string[] = [
@@ -173,6 +187,7 @@ export const QUEST_ORDER: string[] = [
   ...ZONE2_QUEST_ORDER,
   ...ZONE3_QUEST_ORDER,
   ...TEMPLE_QUEST_ORDER,
+  ...HOLLOW_QUEST_ORDER,
 ];
 
 // Camps spawn in array order, each drawing world-gen RNG, so an entry inserted
@@ -184,6 +199,7 @@ export const CAMPS: CampDef[] = [
   ...ZONE2_CAMPS,
   ...ZONE3_CAMPS,
   ...TEMPLE_CAMPS,
+  ...HOLLOW_CAMPS,
   ...ZONE1_CHAPEL_CAMPS,
   { mobId: 'grix_the_tunnelking', center: { x: -95, z: -78 }, radius: 4, count: 1 },
 ];
@@ -193,6 +209,7 @@ export const GROUND_OBJECTS: GroundObjectDef[] = [
   ...ZONE2_OBJECTS,
   ...ZONE3_OBJECTS,
   ...TEMPLE_OBJECTS,
+  ...HOLLOW_OBJECTS,
 ];
 
 export const ROADS: { x: number; z: number }[][] = [...ZONE1_ROADS, ...ZONE2_ROADS, ...ZONE3_ROADS];
@@ -202,6 +219,10 @@ export const PROPS: ZonePropsDef = mergeProps([
   ZONE2_PROPS,
   ZONE3_PROPS,
   TEMPLE_PROPS,
+  // HOLLOW_PROPS is deliberately absent: its coordinates are hub-local (the
+  // hub is portal-instanced, not overworld terrain), so merging it here would
+  // drop its campfire at overworld (-4, 2). The Phase 1 props pass (hub
+  // dressing) renders it inside the instance instead.
 ]);
 
 function mergeProps(sets: ZonePropsDef[]): ZonePropsDef {
@@ -307,7 +328,11 @@ export function instanceOrigin(dungeonIndex: number, slot: number): { x: number;
   return { x: 900 + dungeonIndex * 600, z: -1250 + slot * 500 };
 }
 
-export const DUNGEONS: Record<string, DungeonDef> = { ...DUNGEON_DEFS, ...TEMPLE_DUNGEON_DEFS };
+export const DUNGEONS: Record<string, DungeonDef> = {
+  ...DUNGEON_DEFS,
+  ...TEMPLE_DUNGEON_DEFS,
+  ...HOLLOW_DUNGEON_DEFS,
+};
 
 export const DUNGEON_LIST: DungeonDef[] = Object.values(DUNGEONS).sort((a, b) => a.index - b.index);
 
@@ -323,13 +348,17 @@ export function dungeonAt(x: number): DungeonDef | null {
 
 // ---------------------------------------------------------------------------
 // The Ashen Coliseum — 1v1 ranked arena. Its match instances live in their own
-// far-off flat-ground x-band, well past the dungeon bands (index 0/1/2 sit at
-// x 900/1500/2100). Like dungeons, x beyond DUNGEON_X_THRESHOLD means flat
-// ground (world.groundHeight) and instance-local collision (sim/colliders.ts);
-// the band split below keeps arena positions from being read as a dungeon.
+// far-off flat-ground x-band, well past the dungeon bands (index i sits at
+// x 900 + i*600; the Hollow fork's hub and Under-Shrine hold 6 and 7, so the
+// dungeon bands now end at x 5100). Like dungeons, x beyond
+// DUNGEON_X_THRESHOLD means flat ground (world.groundHeight) and
+// instance-local collision (sim/colliders.ts); the band split below keeps
+// arena positions from being read as a dungeon. The Hollow fork moved the
+// arena east (4200 to 5400) to open dungeon bands 6 and 7, the same
+// relocation v0.10.0 performed when the arena itself landed.
 // ---------------------------------------------------------------------------
 
-export const ARENA_X = 4200; // arena instances share this x; slots stack along z
+export const ARENA_X = 5400; // arena instances share this x; slots stack along z
 export const ARENA_X_MIN = ARENA_X; // x at/after this = an arena instance, not a dungeon
 export const ARENA_SLOT_COUNT = 4; // concurrent 1v1 matches the world can host
 const ARENA_Z0 = -1250;
@@ -368,18 +397,20 @@ export const CRYPT_SPAWNS = DUNGEONS.hollow_crypt.spawns;
 
 // ---------------------------------------------------------------------------
 // Delves, private party instances past the arena x-band (see docs/prd/delves.md).
-// DELVE_X_MIN must stay above ARENA_X_MIN (4000) and ARENA_X (4200).
+// DELVE_X_MIN must stay above ARENA_X_MIN and ARENA_X (5400).
 // ---------------------------------------------------------------------------
 
-// 4800 sits clear of the v0.10.0 layout: dungeons end at ARENA_X_MIN (4000) and
-// the arena pit is centred at ARENA_X (4200, ~±22u footprint). The delve band's
-// west edge (DELVE_BAND_X_MIN = 4773) leaves a comfortable margin past the arena.
-export const DELVE_X_MIN = 4800;
+// 6000 sits clear of the Hollow-fork layout: dungeon bands end at x 5100
+// (index 7) and the arena pit is centred at ARENA_X (5400, ~±22u footprint).
+// The delve band's west edge (DELVE_BAND_X_MIN = 5973) leaves a comfortable
+// margin past the arena. (The base layout was 4200/4800 before the fork
+// opened dungeon bands 6 and 7 for the Hollow hub and the Under-Shrine.)
+export const DELVE_X_MIN = 6000;
 // Each delve room is centred at DELVE_X_MIN + index*600. Delve modules use wider
 // side walls than the base crypt kit: the side-wall centre is at instance-local
 // |x| = DELVE_WALL_X (25, mirror of delve_layout.ts WALL_X) and the collider's
 // outer face sits 1u beyond that (|x| = 26), i.e. world-x = DELVE_X_MIN - 26 =
-// 4774 for slot 0. We set the band edge 1u further west again (4773) so
+// 5974 for slot 0. We set the band edge 1u further west again (5973) so
 // isDelvePos covers the ENTIRE room footprint, including the west wall face,
 // and the west half is never misclassified as arena. Still >500u clear of ARENA_X.
 const DELVE_WALL_X = 25; // mirror of delve_layout.ts WALL_X (delve side-wall centre)
