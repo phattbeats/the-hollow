@@ -569,34 +569,37 @@ export class Vfx {
   // smoke-state interface to the god (docs/plan-the-hollow.md, section 7).
   // Cheap by the campfireEmber pattern: slow warm-grey additive puffs drifting
   // upward, count capped by the emit rate and the shared particle pool.
+  // Color and size are brighter/larger than a real-world grey: under additive
+  // blending against the warm dark hub fog, a true ash-grey barely adds any
+  // light and reads as invisible (playtest feedback: "barely there").
   vaseSmoke(at: THREE.Vector3, dt: number): void {
-    if (!this.emitChance(5, dt)) return;
-    // the column: soft grey puffs rising slow and straight, thinning as they go
+    if (!this.emitChance(9, dt)) return;
+    // the column: warm-lit puffs rising slow and straight, thinning as they go
     this.spawn(
-      at.x + (Math.random() - 0.5) * 0.25,
+      at.x + (Math.random() - 0.5) * 0.3,
       at.y + 0.15,
-      at.z + (Math.random() - 0.5) * 0.25,
-      (Math.random() - 0.5) * 0.12,
-      0.55 + Math.random() * 0.35,
-      (Math.random() - 0.5) * 0.12,
-      0x8a7f70,
-      0.85 + Math.random() * 0.6,
-      2.6 + Math.random() * 1.4,
+      at.z + (Math.random() - 0.5) * 0.3,
+      (Math.random() - 0.5) * 0.14,
+      0.5 + Math.random() * 0.35,
+      (Math.random() - 0.5) * 0.14,
+      0xc7b39a,
+      1.15 + Math.random() * 0.85,
+      3.0 + Math.random() * 1.6,
       -0.1,
       SPR.smoke,
       (Math.random() - 0.5) * 0.4,
     );
-    // a rare warm mote caught in the column: the god's breath, faintly lit
-    if (Math.random() < 0.18) {
+    // a warm mote caught in the column: the god's breath, visibly lit
+    if (Math.random() < 0.35) {
       this.spawn(
-        at.x + (Math.random() - 0.5) * 0.2,
+        at.x + (Math.random() - 0.5) * 0.22,
         at.y + 0.4,
-        at.z + (Math.random() - 0.5) * 0.2,
+        at.z + (Math.random() - 0.5) * 0.22,
         (Math.random() - 0.5) * 0.1,
         0.8 + Math.random() * 0.4,
         (Math.random() - 0.5) * 0.1,
-        0xffc36a,
-        0.16,
+        0xffcf7a,
+        0.26 + Math.random() * 0.14,
         1.6 + Math.random() * 0.8,
         -0.15,
         SPR.glowSoft,
