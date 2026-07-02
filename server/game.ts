@@ -46,10 +46,9 @@ import {
   saveCharacterAndMarketState,
   saveCharacterState,
   saveMarketState,
-  walletForAccount,
 } from './db';
 import { enqueueActivity } from './discord_activity';
-import { discordFlairForAccount, grantRewardPoints } from './discord_db';
+import { discordFlairForAccount } from './discord_db';
 import { enqueueRelay } from './discord_relay';
 import { formatDuration } from './duration';
 import { IpBlockList } from './ip_block';
@@ -68,7 +67,6 @@ import type { Presence, PresenceStatus, SocialActor, SocialTransport } from './s
 import { SocialService } from './social';
 import { PgSocialDb } from './social_db';
 import { TickProfiler } from './tick_profiler';
-import { holderInfoForPubkey } from './woc_balance';
 
 const WORLD_SEED = 20061;
 const ALDRIC_METEOR_QUEST_ID = 'q_aldrics_fallen_star';
@@ -285,16 +283,8 @@ const HEAVY_SELF_EVENTS = new Set<string>([
   'summonDemon',
 ]);
 
-// How often to re-broadcast online players' $WOC holder-tier flair. Each wallet
-// read is served from the woc_balance.ts cache (CACHE_TTL_MS), which is the real
-// freshness floor; keeping this loop at/under that TTL means a token change shows
-// on the in-world badge within ~one cache window of it landing on chain.
-const HOLDER_TIER_REFRESH_MS = 60_000;
-// Reward points for in-game playtime: a grant every PLAYTIME_GRANT_MS to each
-// online account that was active (gave input) since the last grant. Ties points
-// to real engagement, not idling. Discord activity grants the rest (bot-driven).
-const PLAYTIME_GRANT_MS = 5 * 60_000;
-const PLAYTIME_POINTS = 10;
+// How often to re-refresh online players' linked-Discord flair off the tick loop.
+const DISCORD_FLAIR_REFRESH_MS = 60_000;
 const RELAY_COOLDOWN_MS = 8_000; // min gap between a player's "!" community posts
 const ADMIN_LOCATION_POI_RADIUS = 32;
 
@@ -491,8 +481,6 @@ function identityFields(e: Entity): Record<string, unknown> {
       break;
     }
   }
-  if (e.holderTier) out.ht = e.holderTier; // $WOC holder-tier flair (cosmetic)
-  if (e.holderBalance) out.hb = Math.round(e.holderBalance); // exact $WOC, for inspect
   if (e.discordTier) out.dt = e.discordTier; // Discord status-tier flair (cosmetic)
   if (e.discordAvatar) out.dav = e.discordAvatar; // Discord PFP (linked indicator)
   if (e.discordName) out.dnm = e.discordName; // Discord handle / nickname (nameplate)
@@ -664,14 +652,9 @@ export class GameServer {
   private wireCache = new Map<number, EntityWireCache>();
   private lastWireSweepTick = 0;
   private interval: NodeJS.Timeout | null = null;
-  private holderTierInterval: NodeJS.Timeout | null = null;
-  private holderTierRefreshing = false; // overlap guard for the refresh cycle
-  private playtimeInterval: NodeJS.Timeout | null = null;
-  private lastPlaytimeGrantAt = new Map<number, number>(); // accountId -> sim time of last grant
+  private discordFlairInterval: NodeJS.Timeout | null = null;
+  private discordFlairRefreshing = false; // overlap guard for the refresh cycle
   private relayCooldown = new Map<number, number>(); // accountId -> last "!" relay post (ms)
-  // pids whose holder tier was forced via the dev /woctier command — the chain
-  // refresh leaves them alone so the override sticks during testing (dev only).
-  private devTierPids = new Set<number>();
   private saveTimer = 0;
   private socialPosTimer = 0;
   private saveAllInFlight: Promise<void> | null = null;
@@ -993,40 +976,16 @@ export class GameServer {
         void this.saveMarket();
       }
     }, 50);
-    // Refresh every online player's $WOC holder-tier flair off the 20 Hz loop:
-    // an RPC call per wallet (cached for minutes inside holderInfoForPubkey) has
-    // no place in the tick. Catches mid-session balance changes.
-    this.holderTierInterval = setInterval(() => {
-      void this.refreshAllHolderTiers();
-    }, HOLDER_TIER_REFRESH_MS);
-    // Reward in-game playtime: grant points to active online accounts off-loop.
-    this.playtimeInterval = setInterval(() => {
-      void this.grantPlaytimePoints();
-    }, PLAYTIME_GRANT_MS);
+    // Refresh every online player's linked-Discord flair off the 20 Hz loop:
+    // a DB read per player has no place in the tick. Catches mid-session changes.
+    this.discordFlairInterval = setInterval(() => {
+      void this.refreshAllDiscordFlair();
+    }, DISCORD_FLAIR_REFRESH_MS);
   }
 
   stop(): void {
     if (this.interval) clearInterval(this.interval);
-    if (this.holderTierInterval) clearInterval(this.holderTierInterval);
-    if (this.playtimeInterval) clearInterval(this.playtimeInterval);
-  }
-
-  // Grant playtime reward points to each online account that has been ACTIVE (gave
-  // input recently), so points reflect real engagement rather than idling. Lifetime
-  // points are monotonic, so this also nudges the Discord status tier over time.
-  private async grantPlaytimePoints(): Promise<void> {
-    const windowSecs = PLAYTIME_GRANT_MS / 1000;
-    for (const session of this.clients.values()) {
-      if (this.sim.time - session.lastInputAt > windowSecs) continue; // idle: skip
-      const last = this.lastPlaytimeGrantAt.get(session.accountId);
-      if (last !== undefined && this.sim.time - last < windowSecs) continue;
-      this.lastPlaytimeGrantAt.set(session.accountId, this.sim.time);
-      try {
-        await grantRewardPoints(pool, session.accountId, PLAYTIME_POINTS, 'playtime');
-      } catch (err) {
-        console.error('playtime reward grant failed:', err);
-      }
-    }
+    if (this.discordFlairInterval) clearInterval(this.discordFlairInterval);
   }
 
   // Refresh one player's linked-Discord flair (status tier + PFP + nickname +
@@ -1096,43 +1055,19 @@ export class GameServer {
     return true;
   }
 
-  // Update one player's holder-tier flair from their linked wallet's $WOC
-  // balance. Best-effort and guarded against the player leaving mid-fetch.
-  private async refreshHolderTier(session: ClientSession): Promise<void> {
-    if (this.devTierPids.has(session.pid)) return; // dev override pinned this pid
-    const wallet = await walletForAccount(session.accountId);
-    const { tier, balance } = wallet
-      ? await holderInfoForPubkey(wallet.pubkey)
-      : { tier: 0, balance: 0 };
-    // The player may have left during the await; only apply if still the live
-    // session for this pid.
-    if (this.clients.get(session.pid) !== session) return;
-    const e = this.sim.entities.get(session.pid);
-    if (e && ((e.holderTier ?? 0) !== tier || (e.holderBalance ?? 0) !== balance)) {
-      e.holderTier = tier; // identity diff re-broadcasts it to nearby players
-      e.holderBalance = balance;
-      console.log(`[woc] ${session.name} holder tier → ${tier} (${balance} $WOC)`);
-    }
-  }
-
-  private async refreshAllHolderTiers(): Promise<void> {
-    if (this.holderTierRefreshing) return; // a slow cycle (RPC) must not pile up
-    this.holderTierRefreshing = true;
+  private async refreshAllDiscordFlair(): Promise<void> {
+    if (this.discordFlairRefreshing) return; // a slow cycle must not pile up
+    this.discordFlairRefreshing = true;
     try {
       await Promise.all(
         [...this.clients.values()].map((session) =>
-          Promise.all([
-            this.refreshHolderTier(session).catch((err) =>
-              console.error('holder-tier refresh failed:', err),
-            ),
-            this.refreshDiscordFlair(session).catch((err) =>
-              console.error('discord flair refresh failed:', err),
-            ),
-          ]),
+          this.refreshDiscordFlair(session).catch((err) =>
+            console.error('discord flair refresh failed:', err),
+          ),
         ),
       );
     } finally {
-      this.holderTierRefreshing = false;
+      this.discordFlairRefreshing = false;
     }
   }
 
@@ -1428,11 +1363,7 @@ export class GameServer {
       list: [{ type: 'log', text: `${name} has entered World of ClaudeCraft.`, color: '#ffd100' }],
     });
     void this.initSocial(session);
-    // Stamp the $WOC holder-tier flair (best-effort: a balance read must never
-    // affect joining the world).
-    void this.refreshHolderTier(session).catch((err) =>
-      console.error('holder-tier refresh failed:', err),
-    );
+    // Stamp linked-Discord flair (best-effort: a read must never affect joining).
     void this.refreshDiscordFlair(session).catch((err) =>
       console.error('discord flair refresh failed:', err),
     );
@@ -1488,7 +1419,6 @@ export class GameServer {
       else this.ipSessionCounts.set(session.ip, prev - 1);
     }
     void this.recordOnlineSnapshot();
-    this.devTierPids.delete(session.pid);
     this.social.forget(session.characterId);
     // delete from clients first so friends see them as offline in the notice
     void this.social
@@ -3244,22 +3174,6 @@ export class GameServer {
   ): import('../src/sim/sim').SentChat | null {
     const text = rawText.trim();
     if (!text) return null;
-    // Dev-only: force this character's $WOC holder-tier flair so the in-world
-    // nameplate badge can be exercised without a funded linked wallet. Gated by
-    // ALLOW_DEV_COMMANDS (never set in production). Reset on the next balance
-    // refresh or rejoin.
-    if (process.env.ALLOW_DEV_COMMANDS === '1' && /^\/woctier\b/.test(text)) {
-      const n = Math.max(0, Math.min(10, parseInt(text.split(/\s+/)[1] ?? '', 10) || 0));
-      const e = this.sim.entities.get(pid);
-      if (e) {
-        e.holderTier = n;
-        // Demo balance so the inspect readout shows a plausible amount for the tier.
-        e.holderBalance = n > 0 ? 10 ** (n - 1) : 0;
-      }
-      this.devTierPids.add(pid); // keep the chain refresh from clobbering it
-      this.broadcastSystem(`[dev] ${session.name} $WOC holder tier → ${n}`);
-      return null;
-    }
     if (!text.startsWith('/')) {
       const body = text;
       if (!body.trim()) return null;

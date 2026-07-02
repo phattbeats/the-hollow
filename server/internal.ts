@@ -1,15 +1,12 @@
 import { timingSafeEqual } from 'node:crypto';
 import type * as http from 'node:http';
 import { specialRoleByKey } from '../src/sim/discord_roles';
-import { DISCORD_REWARD_GRANTS, discordStatusIndexForPoints } from '../src/sim/discord_tier';
 import { pool } from './db';
 import { discordFlexForAccount, setDiscordPresenceCache } from './discord';
 import { drainActivity } from './discord_activity';
 import {
   accountForDiscord,
   discordForAccount,
-  grantRewardPoints,
-  loadRewardState,
   setDiscordGuildMember,
   setDiscordMemberMeta,
 } from './discord_db';
@@ -59,8 +56,8 @@ export async function handleInternalApi(
 }
 
 // Secret-gated server<->bot channel. The Discord bot (a separate process) reads
-// flex/role data and pushes presence + reward grants here. A bot token is NOT a
-// user bearer, so these never touch the user-auth path; they authenticate with a
+// flex data and pushes presence + membership here. A bot token is NOT a user
+// bearer, so these never touch the user-auth path; they authenticate with a
 // shared DISCORD_BOT_SECRET and are still defensively validated.
 async function handleDiscordInternal(
   req: http.IncomingMessage,
@@ -80,20 +77,6 @@ async function handleDiscordInternal(
     return ok(res, { linked: true, ...(await discordFlexForAccount(accountId)) });
   }
 
-  // GET /internal/discord/roles?discord_user_id=... -> status tier for role sync.
-  if (req.method === 'GET' && url.pathname === '/internal/discord/roles') {
-    const discordUserId = url.searchParams.get('discord_user_id') ?? '';
-    const accountId = await accountForDiscord(pool, discordUserId);
-    if (accountId === null) return ok(res, { linked: false, statusTier: 0, points: 0 });
-    const reward = await loadRewardState(pool, accountId);
-    return ok(res, {
-      linked: true,
-      statusTier: discordStatusIndexForPoints(reward.lifetimePoints),
-      points: reward.points,
-      lifetimePoints: reward.lifetimePoints,
-    });
-  }
-
   // POST /internal/discord/presence -> cache who is online / in the voice room.
   if (req.method === 'POST' && url.pathname === '/internal/discord/presence') {
     const body = await readBody(req).catch(() => ({}) as Record<string, unknown>);
@@ -108,25 +91,7 @@ async function handleDiscordInternal(
     return ok(res, { received: true });
   }
 
-  // POST /internal/discord/grant -> award reward points (booster, daily active...).
-  if (req.method === 'POST' && url.pathname === '/internal/discord/grant') {
-    const body = await readBody(req).catch(() => ({}) as Record<string, unknown>);
-    const discordUserId = typeof body.discord_user_id === 'string' ? body.discord_user_id : '';
-    const reason = typeof body.reason === 'string' ? body.reason.slice(0, 64) : '';
-    const points = clampInt(body.points, -100_000, 100_000);
-    const dedupeKey = typeof body.dedupeKey === 'string' ? body.dedupeKey.slice(0, 128) : null;
-    if (!reason || points === 0) return fail(res, 400, 'reason and non-zero points required');
-    const accountId = await accountForDiscord(pool, discordUserId);
-    if (accountId === null) return fail(res, 404, 'discord id not linked');
-    const state = await grantRewardPoints(pool, accountId, points, reason, dedupeKey);
-    return ok(res, {
-      points: state.points,
-      lifetimePoints: state.lifetimePoints,
-      statusTier: discordStatusIndexForPoints(state.lifetimePoints),
-    });
-  }
-
-  // POST /internal/discord/member -> sync guild membership + grant the member reward.
+  // POST /internal/discord/member -> sync guild membership.
   if (req.method === 'POST' && url.pathname === '/internal/discord/member') {
     const body = await readBody(req).catch(() => ({}) as Record<string, unknown>);
     const discordUserId = typeof body.discord_user_id === 'string' ? body.discord_user_id : '';
@@ -134,10 +99,6 @@ async function handleDiscordInternal(
     const accountId = await accountForDiscord(pool, discordUserId);
     if (accountId === null) return fail(res, 404, 'discord id not linked');
     await setDiscordGuildMember(pool, accountId, guildMember);
-    if (guildMember) {
-      const g = DISCORD_REWARD_GRANTS.guildMember;
-      await grantRewardPoints(pool, accountId, g.points, g.reason, `${g.reason}:${accountId}`);
-    }
     return ok(res, { updated: true });
   }
 

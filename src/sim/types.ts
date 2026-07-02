@@ -1442,17 +1442,11 @@ export interface Entity {
   // fields (terse `eq`) so another player can be inspected. Like mainhandItemId,
   // the sim never reads it for gameplay (no effect on stats).
   equippedItems: Partial<Record<EquipSlot, string>>;
-  // $WOC holder-tier flair (cosmetic): 0/undefined = none, 1-10 = Ember…Sovereign.
-  // Set server-side from the player's connected-wallet balance and synced in
-  // identity fields like skin. The sim never reads it (no gameplay effect).
-  holderTier?: number;
-  // Exact $WOC balance backing the tier, for the inspect-profile readout. Rides
-  // alongside holderTier in identity fields; like it, the sim never reads it.
-  holderBalance?: number;
   // Linked-Discord flair (cosmetic, server-set from the account's Discord link;
-  // the sim never reads any of it): status tier, profile-picture URL, handle/
-  // nickname, server-join epoch ms (for "member since"), and top staff/special
-  // role key (drives the in-world name color + tag).
+  // the sim never reads any of it): linked flag (0/undefined = unlinked, 1 =
+  // linked), profile-picture URL, handle/nickname, server-join epoch ms (for
+  // "member since"), and top staff/special role key (drives the in-world name
+  // color + tag).
   discordTier?: number;
   discordAvatar?: string;
   discordName?: string;

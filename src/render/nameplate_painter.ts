@@ -21,11 +21,6 @@ import { ABILITIES, MOBS, QUESTS } from '../sim/data';
 import { specialRoleColor } from '../sim/discord_roles';
 import { type Entity, isQuestTurnInNpc } from '../sim/types';
 import { tEntity } from '../ui/entity_i18n';
-import {
-  holderTierBadgeDataUrl,
-  holderTierByIndex,
-  holderTierDisplayName,
-} from '../ui/holder_tier';
 import { formatNumber, type TranslationKey, t } from '../ui/i18n';
 import { raidMarkerDataUrl } from '../ui/icons';
 import { type IWorld, OVERHEAD_EMOTES } from '../world_api';
@@ -197,9 +192,7 @@ export class NameplatePainter {
           guild,
         );
         v.nameEl.style.display = nameDisplay;
-        // $WOC holder-tier flair, shown on OTHER players (own nameplate is hidden).
-        this.setNameplateTier(v, isSelf ? 0 : (e.holderTier ?? 0));
-        // Linked-Discord PFP indicator, also OTHER players only.
+        // Linked-Discord PFP indicator, OTHER players only (own nameplate is hidden).
         this.setNameplateDiscord(v, isSelf ? undefined : e.discordAvatar, e.discordName);
         this.setNameplateHp(v, e);
       } else if (e.kind === 'npc' || (!e.hostile && e.questIds.length > 0)) {
@@ -314,22 +307,6 @@ export class NameplatePainter {
       v.guildEl.style.display = '';
     } else {
       v.guildEl.style.display = 'none';
-    }
-  }
-
-  // Show/hide the $WOC holder-tier badge on a player's nameplate. Cheap-diffed
-  // on the tier value so the badge image is only rebuilt when the tier changes.
-  private setNameplateTier(v: EntityView, tier: number): void {
-    if (tier === v.tierValue) return;
-    v.tierValue = tier;
-    const def = holderTierByIndex(tier);
-    if (def) {
-      v.tierEl.src = holderTierBadgeDataUrl(def, 32);
-      v.tierEl.title = t('wallet.holderTierTitle', { tier: holderTierDisplayName(def) });
-      v.tierEl.style.display = '';
-    } else {
-      v.tierEl.removeAttribute('src');
-      v.tierEl.style.display = 'none';
     }
   }
 
