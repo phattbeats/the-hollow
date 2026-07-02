@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>Zone placement tool (dev only)</title>
+  <style>
+    /* Dev-only page: deliberately outside the game HUD's @layer CSS system. */
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; font: 13px/1.4 system-ui, sans-serif; background: #14181c; color: #dde3e8; }
+    #app { display: flex; height: 100%; }
+    #panel { width: 340px; flex: none; display: flex; flex-direction: column; gap: 8px; padding: 10px; background: #1b2127; overflow: hidden; }
+    #panel h1 { font-size: 14px; margin: 0; }
+    #panel .hint { color: #8fa0ae; font-size: 11px; }
+    select, input { width: 100%; padding: 5px 6px; background: #0f1317; color: #dde3e8; border: 1px solid #333c44; border-radius: 4px; }
+    #pieces { overflow-y: auto; min-height: 120px; flex: 1; display: flex; flex-direction: column; gap: 3px; }
+    .piece { text-align: left; padding: 5px 7px; background: #232b33; border: 1px solid #333c44; border-radius: 4px; color: inherit; cursor: pointer; }
+    .piece:hover { background: #2b3540; }
+    .piece.armed { border-color: #6fae5c; background: #26361f; }
+    .piece-label { font-weight: 600; }
+    .piece-meta { color: #8fa0ae; font-size: 11px; }
+    #output { flex: 1; min-height: 140px; display: flex; flex-direction: column; gap: 6px; overflow: hidden; }
+    #out-list { overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 3px; }
+    .out-row { display: flex; gap: 6px; align-items: center; }
+    .out-row code { flex: 1; background: #0f1317; padding: 4px 6px; border-radius: 4px; overflow-x: auto; white-space: pre; }
+    button.copy, #copy-all { padding: 4px 10px; background: #33507a; color: #fff; border: 0; border-radius: 4px; cursor: pointer; }
+    button:disabled { opacity: 0.4; cursor: default; }
+    #viewport { flex: 1; position: relative; }
+    #view { width: 100%; height: 100%; display: block; }
+    #status { position: absolute; left: 10px; bottom: 10px; background: rgba(10, 14, 18, 0.75); padding: 5px 9px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div id="panel">
+      <h1>Zone placement tool (dev only)</h1>
+      <div class="hint">WASD fly, hold right mouse to look, Q/E or Space/Shift up/down, wheel = speed.
+        Pick a piece, left-click the ground to place, R rotates 15 deg (Shift+R back), Esc disarms.
+        Nothing is saved: copy the literal into the zone content module.</div>
+      <select id="zone" aria-label="zone"></select>
+      <input id="filter" type="text" placeholder="filter pieces (name or kit substring)" />
+      <div id="pieces"></div>
+      <div id="output">
+        <button id="copy-all" disabled>copy all as ZonePropsDef fragments</button>
+        <div id="out-list"></div>
+      </div>
+    </div>
+    <div id="viewport">
+      <canvas id="view"></canvas>
+      <div id="status">booting...</div>
+    </div>
+  </div>
+  <script type="module" src="/src/devtools/placement/main.ts"></script>
+</body>
+</html>
