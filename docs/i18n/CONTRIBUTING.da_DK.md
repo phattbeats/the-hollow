@@ -199,8 +199,9 @@ lille, og nye bidragydere er altid velkomne.
 
 ## Licens
 
-Ved at bidrage accepterer du, at dine bidrag licenseres under projektets
-[MIT-licens](../../LICENSE), den samme licens, der dækker projektet.
+Dette projekts kode er proprietær (se [LICENSE](../../LICENSE)) og ikke MIT.
+Ved at bidrage accepterer du, at dine bidrag bliver en del af projektet under
+de samme proprietære vilkår, overdraget til projektets rettighedshaver.
 
 ---
 

@@ -158,6 +158,11 @@ export const BOOL_SETTINGS = {
   // off by default: show a small frames-per-second readout in the corner for
   // players tuning their graphics settings.
   showFps: { def: false },
+  // on by default: render your OWN overhead nameplate (name, level, guild, hp,
+  // linked-Discord PFP) exactly as other players see it, so you can see how your
+  // character presents. Purely a local display preference; turn it off for the
+  // classic self-view with no plate over your head.
+  showOwnNameplate: { def: true },
   // off by default: invert the vertical axis of mouselook (push mouse forward
   // to look down), the classic flight-sim preference.
   invertLookY: { def: false },

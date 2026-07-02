@@ -147,6 +147,59 @@ Verification: `tsc --noEmit` clean; `tests/client_shell.test.ts`,
 `tests/discord_server.test.ts`, `tests/discord_deeplink.test.ts`, and
 `tests/i18n_completeness.test.ts` green with NODE_ENV unset.
 
+### 2026-07-02: License flip (constitution, section 6): All Rights Reserved + NOTICE
+
+Per the constitution's settled §6 licensing decision:
+
+- **`LICENSE`** replaced. It was the inherited upstream MIT license text
+  (copyright Levy Street); it now states this project's original work is
+  copyright Brandon Kelly, **All Rights Reserved**, proprietary and
+  confidential, and points to `NOTICE` for the retained upstream terms.
+- **`NOTICE`** added at the repo root. It reproduces the original MIT license
+  text and Levy Street copyright verbatim, as the MIT license's own
+  notice-preservation clause requires, and records the fork point (pinned
+  commit `b00fb6a5d6d0e1ffab9327ddcbfeb730267ab05e`, upstream tag `v0.17.0`).
+- **`THIRD_PARTY_NOTICES.md`** rewritten. Every notice it carried was for the
+  Reown / WalletConnect / Solana wallet-adapter dependency stack removed in
+  the 2026-07-01 wallet strip above (`@reown/*`, `@walletconnect/*`,
+  `@noble/curves`, `@solana/web3.js`, `bs58`, `buffer`); none of it is a
+  runtime dependency of `package.json` anymore, so the file now says so
+  instead of carrying stale license text for code that isn't shipped.
+- **`License.txt`** (the KayKit CC0 asset-pack notice) checked and left
+  unchanged, it never referenced the wallet stack and still matches the
+  bundled KayKit assets.
+- **Consistency fixes** (same license flip, not separately scoped but
+  directly contradicted the new `LICENSE` if left alone): the README's
+  license badge and License section, `package.json`'s `"license"` field
+  (`MIT` → `UNLICENSED`), and CONTRIBUTING.md's contributor-license clause,
+  all updated to point at the proprietary terms instead of MIT.
+
+**Dependency-hygiene note (not fixed here, flagged for the Phase 0 owner):**
+`package-lock.json`'s root dependency block still lists
+`@solana/wallet-standard-chains`, `@solana/wallet-standard-features`,
+`@wallet-standard/app`, `@wallet-standard/base`, `@wallet-standard/features`,
+`@noble/curves`, and `bs58` even though none of them appear in
+`package.json` or any source import, lockfile drift left over from the
+wallet strip that a plain `npm install` would clear. Not a licensing risk
+(all MIT/Apache-permissive) but worth a clean install before shipping.
+
+**Open licensing check flagged to the Board, not resolved here (per the
+constitution's explicit "report findings, do not ship past Phase 3 without a
+verdict" instruction):** `CREDITS.md` records the CraftPix skill-icon packs
+(all 9 classes, 152 abilities) as purchased under the CraftPix commercial
+royalty-free license **by the Levy Street account** (`callum@levystreet.com`).
+CraftPix's published file-license terms grant a "limited, non-exclusive,
+**non-transferable** license to all resources purchased" to the purchasing
+account, and separately prohibit redistributing the art "in a manner that
+would make [the] art files usable to another end user." A different legal
+entity (PHATT STUDIOS / Brandon Kelly) shipping a commercial fork on a
+license purchased by Levy Street's account does not obviously fall inside
+that grant. This is a real risk, not a formality, the fix is either (a)
+PHATT STUDIOS buys its own CraftPix license for the same packs, or (b) swap
+the CraftPix skill-icon category for one of the CC0 asset sources already in
+`CREDITS.md`. Left to the Board to pick; see the linked issue for the
+verdict.
+
 ## 2026-07-02: branding deployed to PHATT-RAID (PHAA-397)
 
 Rebuilt `eastbrook-game:phase0` from main at c7923808 (the branding merge) and
@@ -224,40 +277,105 @@ position-shifting callers (vase landing, exitTo, homeRespawn) check before
 computing offsets, so a failed enter can never teleport a player off a stale
 position into the dormant overworld. The Under-Shrine stays per-party.
 
-## 2026-07-02: cherry-picked upstream QoL fix, shield HUD indicators (PHAA-408)
+## 2026-07-02: cherry-picked upstream QoL fixes (PHAA-408)
 
-**Improved shield HUD indicators** (upstream PR #1320, `a0537840`): the
-absorb-shield overlay was a single fill fraction folded into `hpFrac`, which
-read as extra health rather than a shield. Unit frames (player/target) now
-render the shield as its own segment (`absorbStartFrac`/`absorbSizeFrac` on
-`UnitFrameView`), plus an optional `showAbsorbText` flag that appends the
-resolved absorb total to `hpText` for player/target frames ("420/600 (90)",
-plain numbers, no new player-visible string). Party frames gain the same
-absorb-derived shield end to end: `server/game.ts` and `src/sim/sim.ts` both
-derive a member's absorb total from their auras identically, `PartyMemberInfo`
-carries it, and `party_frame_row`/`party_frames`/`party_frames_painter` render
-it the same way.
+Four small, stable, non-draft upstream fixes hand-picked from
+`levy-street/world-of-claudecraft`, each its own branch and PR through the
+normal QA gate:
 
-Fork adaptations:
-- Dropped an unrelated `vite.config.ts` / `scripts/browserslist_targets.mjs`
-  change bundled into the upstream commit (an inline duplicate of the
-  already-exported `.browserslistrc` floor parser); it has nothing to do with
-  shield indicators and this fork's version of that parser is unaffected.
-- Dropped `tests/loot_settings_view.test.ts` (a one-line change to a test for
-  a feature this fork does not have).
-- Kept this fork's `tests/target_frame.test.ts` structure, which documents a
-  real, pre-existing wire-parity gap: `src/net/online.ts` zeroes the absorb
-  aura value when mirroring Sim entities to ClientWorld, so the shield segment
-  (and now its `hpText` "(N)" suffix) is offline-only, not wired to the
-  client. Upstream's version of that test assumed a separate wire-parity fix
-  this fork never received; adapted rather than taken as-is, so the divergence
-  stays documented instead of a silently-broken assertion. Party frames do NOT
-  have this gap: their absorb value is computed identically on both hosts from
-  auras already on the wire.
+- **Windows path-separator fix in the architecture seam test** (upstream
+  PR #1290, `18d08534`): `path.relative()` returns backslash-separated paths on
+  Windows, but `SANCTIONED_VALUE_SIM_IMPORTS` in `tests/architecture.test.ts`
+  is keyed with forward slashes, so the sanctioned `OVERHEAD_EMOTE_IDS` import
+  never matched and the seam gate failed for every Windows contributor.
+  Normalizes the relative path with `path.sep` before the lookup. No behavior
+  change on POSIX. Clean cherry-pick, no fork drift.
+- **Gamepad ignores input while the window is unfocused** (upstream PR #1318,
+  `0310e5c3`): the browser only delivers keyboard and mouse input to a focused
+  window, but kept reporting gamepad state to a visible, unfocused one.
+  `GamepadManager.poll()` (`src/game/gamepad.ts`) now gates on
+  `document.hasFocus()`, matching the existing keyboard/mouse focus rule:
+  clears held stick movement, consumes the button state without dispatching
+  (no stale edge fires on refocus), and skips camera, edge actions, and
+  rumble while unfocused.
 
-Verification: `npx vitest run tests/absorb_bar.test.ts tests/unit_frame.test.ts
-tests/unit_frame_painter.test.ts tests/party_frames.test.ts
-tests/party_frames_painter.test.ts tests/target_frame.test.ts
-tests/social_view.test.ts tests/hud_perf_budget.test.ts
-tests/architecture.test.ts` green (108 passed, 3 pre-existing skips
-unrelated to this change) with NODE_ENV unset; `tsc --noEmit` clean.
+  `tests/gamepad.test.ts` did not exist in this fork (our v0.17.0 pin
+  predates upstream's later APM-meter work, which added a test-only
+  `onInputEdge` callback alongside `onAction`). Rather than pull that
+  unrelated feature and its base test suite in with this fix, only the new
+  window-focus coverage was ported, adapted to assert on the `onAction`
+  callback our `GamepadCallbacks` actually has. `src/game/gamepad.ts` was
+  also whole-file `biome check --write` formatted (pre-existing, unrelated
+  statement-per-line violations the changed-file gate now surfaces); no
+  functional lines besides the focus gate changed.
+- **Show your own overhead nameplate** (upstream PR #1287, `213aea06`): adds a
+  "Show My Nameplate" interface option (on by default, `showOwnNameplate` in
+  `src/game/settings.ts`) that renders the local player's own overhead
+  nameplate exactly as other players see it (name, level, guild, hp bar,
+  linked-Discord PFP), instead of the classic suppressed self-view.
+  `NameplatePainter` gates its per-field self-suppression on
+  `suppressSelf = isSelf && !showOwnNameplate`; the pure `nameplate_view` core
+  stops hiding the self plate and anchors it at the normal lift when the
+  option is on.
+
+  Fork adaptation: the upstream commit entangled this toggle with two
+  features this fork does not have and dropped both from the cherry-pick:
+  - The $WOC holder-tier badge (`e.holderTier`, `setNameplateTier`), stripped
+    from this fork in the 2026-07-01 wallet strip (constitution section 6).
+  - The developer badge / dev-tier name outline (`showDevBadges`,
+    `e.devTier`, `devTierNameOutlineColor`), an upstream feature added after
+    this fork's v0.17.0 pin that was never merged here.
+
+  `suppressSelf` only gates the fields this fork's `nameplate_painter.ts`
+  actually renders: name, hp, guild, the Discord role tint/tag, and the
+  linked-Discord PFP indicator. "Show My Nameplate" is a new wordy English
+  catalog value (`hudChrome.options.showOwnNameplate`), so its five
+  non-Latin fills (zh_CN/zh_TW/ja_JP/ko_KR/ru_RU) landed in the same change
+  per the M16 rule; resolved i18n bundles regenerated via `npm run i18n:gen`.
+
+  Also surfaced, not fixed here (flagging per the docs-rot rule, a follow-up
+  chore): `hudChrome.options.showWalletOnCharacterScreen` and
+  `showWalletOnPlayerCard` are ANOTHER set of inert wallet leftovers (catalog
+  + all locale overlays carry them, but no `options_view.ts` `boolToggle`
+  call reads either key) that the 2026-07-01 wallet-strip entry above does
+  not mention, distinct from the documented `wallet.*` catalog leftovers.
+  Same locale-hygiene chore, wider surface than recorded.
+
+  Verification: `npx vitest run tests/nameplate_view.test.ts
+  tests/nameplate_projection.test.ts tests/options_view.test.ts
+  tests/i18n_completeness.test.ts tests/architecture.test.ts
+  tests/localization_fixes.test.ts tests/settings.test.ts` green (127
+  passed, 3 pre-existing skips unrelated to this change) with NODE_ENV
+  unset; `tsc --noEmit` clean.
+- **Improved shield HUD indicators** (upstream PR #1320, `a0537840`): the
+  absorb-shield overlay was a single fill fraction folded into `hpFrac`,
+  which read as extra health rather than a shield. Unit frames
+  (player/target) now render the shield as its own segment
+  (`absorbStartFrac`/`absorbSizeFrac` on `UnitFrameView`), plus an optional
+  `showAbsorbText` flag that appends the resolved absorb total to `hpText`
+  for player/target frames ("420/600 (90)", plain numbers, no new
+  player-visible string). Party frames gain the same absorb-derived shield
+  end to end: `server/game.ts` and `src/sim/sim.ts` both derive a member's
+  absorb total from their auras identically, `PartyMemberInfo` carries it,
+  and `party_frame_row`/`party_frames`/`party_frames_painter` render it the
+  same way.
+
+  Fork adaptations: dropped an unrelated `vite.config.ts` /
+  `scripts/browserslist_targets.mjs` change bundled into the upstream commit
+  (an inline duplicate of the already-exported `.browserslistrc` floor
+  parser, unaffected here); dropped `tests/loot_settings_view.test.ts` (a
+  one-line change to a test for a feature this fork does not have); kept
+  this fork's `tests/target_frame.test.ts` structure, which documents a
+  real, pre-existing wire-parity gap (`src/net/online.ts` zeroes the absorb
+  aura value when mirroring Sim entities to ClientWorld, so the shield
+  segment and its `hpText` "(N)" suffix are offline-only, not wired to the
+  client; party frames do not have this gap since their absorb value is
+  computed identically on both hosts from auras already on the wire).
+
+  Verification: `npx vitest run tests/absorb_bar.test.ts
+  tests/unit_frame.test.ts tests/unit_frame_painter.test.ts
+  tests/party_frames.test.ts tests/party_frames_painter.test.ts
+  tests/target_frame.test.ts tests/social_view.test.ts
+  tests/hud_perf_budget.test.ts tests/architecture.test.ts` green (108
+  passed, 3 pre-existing skips unrelated to this change) with NODE_ENV
+  unset; `tsc --noEmit` clean.

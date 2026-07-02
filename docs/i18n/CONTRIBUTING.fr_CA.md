@@ -214,8 +214,10 @@ bienvenues.
 
 ## Licence
 
-En contribuant, vous acceptez que vos contributions soient placées sous la
-[licence MIT](../../LICENSE) du projet, la même licence qui couvre le projet.
+Le code de ce projet est propriétaire (voir [LICENSE](../../LICENSE)), et non
+sous licence MIT. En contribuant, vous acceptez que vos contributions
+deviennent partie intégrante du projet selon ces mêmes conditions
+propriétaires, cédées au détenteur des droits d'auteur du projet.
 
 ---
 
