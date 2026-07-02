@@ -4,8 +4,10 @@
 // render-only lantern posts. The hub floor is the flat interior plane (y=0),
 // so no terrain sampling is needed; everything is offset by the instance
 // origin. Render-only by design: HOLLOW_PROPS is excluded from the overworld
-// PROPS merge and the collider grid, so nothing placed here blocks movement
-// (see the note in sim/data.ts).
+// PROPS merge and the collider grid (see the note in sim/data.ts), so crates,
+// fences, and the rest of this decoration are walk-through. The vase and its
+// hearth are the one exception: sim/colliders.ts blocks them explicitly for
+// `the_hollow` (players used to walk straight through the urn).
 import * as THREE from 'three';
 import type { GLTF } from 'three/addons/loaders/GLTFLoader.js';
 import { HOLLOW_FLORA, HOLLOW_PROPS, type HollowFloraDef, VASE_POS } from '../sim/content/hollow';

@@ -11,6 +11,7 @@ import {
   isDelvePos,
   PROPS,
 } from './data';
+import { VASE_POS } from './content/hollow';
 import { type DelveModuleId, delveModuleColliders } from './delve_layout';
 import {
   ARENA_LAYOUT,
@@ -220,6 +221,21 @@ const TEMPLE_COLLIDERS: Collider[] = layoutColliders(TEMPLE_LAYOUT);
 const ARENA_COLLIDERS: Collider[] = layoutColliders(ARENA_LAYOUT);
 const NYTHRAXIS_COLLIDERS: Collider[] = layoutColliders(NYTHRAXIS_LAYOUT);
 
+// The Hollow hub's vase + hearth (PHAA-402): the urn on its plinth, and the
+// mantel-altar/flue cluster behind it (render/hollow_props.ts buildVase +
+// buildHearth). Without these, players walked straight through the sacred
+// centerpiece. The hollow/ash floor decals stay uncollided on purpose (same
+// walkable-decal convention as the boss dais above); only the raised solid
+// objects block. `the_hollow` reuses the Drowned Temple's room shell
+// (`interior: 'temple'`), so this is kept OUT of TEMPLE_COLLIDERS itself and
+// applied only for `the_hollow` (see the dungeonId check in resolvePosition)
+// or it would wrongly block the actual Drowned Temple, which has no vase.
+const HOLLOW_HUB_COLLIDERS: Collider[] = [
+  { type: 'circle', x: VASE_POS.x, z: VASE_POS.z, r: 1.7 },
+  { type: 'circle', x: VASE_POS.x, z: VASE_POS.z + 1.9, r: 1.5 },
+];
+const HOLLOW_HUB_TEMPLE_COLLIDERS: Collider[] = [...TEMPLE_COLLIDERS, ...HOLLOW_HUB_COLLIDERS];
+
 // Interior collider sets keyed by DungeonDef.interior.
 const INTERIOR_COLLIDERS: Record<string, Collider[]> = {
   crypt: CRYPT_COLLIDERS,
@@ -329,7 +345,10 @@ function resolveAgainst(
   return { x: px, z: pz };
 }
 
-function instanceLocal(x: number, z: number): { ox: number; oz: number; interior: string } {
+function instanceLocal(
+  x: number,
+  z: number,
+): { ox: number; oz: number; interior: string; dungeonId: string | null } {
   const dungeon = dungeonAt(x);
   const index = dungeon?.index ?? 0;
   let best = 0,
@@ -343,7 +362,7 @@ function instanceLocal(x: number, z: number): { ox: number; oz: number; interior
     }
   }
   const o = instanceOrigin(index, best);
-  return { ox: o.x, oz: o.z, interior: dungeon?.interior ?? 'crypt' };
+  return { ox: o.x, oz: o.z, interior: dungeon?.interior ?? 'crypt', dungeonId: dungeon?.id ?? null };
 }
 
 // Resolve a movement destination against all static geometry. Movers slide
@@ -370,8 +389,11 @@ export function resolvePosition(
     return { x: local.x + o.x, z: local.z + o.z };
   }
   if (x > DUNGEON_X_THRESHOLD) {
-    const { ox, oz, interior } = instanceLocal(x, z);
-    const colliders = INTERIOR_COLLIDERS[interior] ?? CRYPT_COLLIDERS;
+    const { ox, oz, interior, dungeonId } = instanceLocal(x, z);
+    const colliders =
+      dungeonId === 'the_hollow'
+        ? HOLLOW_HUB_TEMPLE_COLLIDERS
+        : (INTERIOR_COLLIDERS[interior] ?? CRYPT_COLLIDERS);
     const local = resolveAgainst(colliders, x - ox, z - oz, r, ignoreFences);
     return { x: local.x + ox, z: local.z + oz };
   }
