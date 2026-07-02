@@ -130,6 +130,7 @@ import {
 import { canEquipItem } from './equipment_rules';
 import { fleeSpeed } from './flee_speed';
 import { formatMoney } from './format_money';
+import { Housing, type HousingSave } from './housing';
 import * as interaction from './interaction';
 import * as items from './items';
 import {
@@ -153,7 +154,6 @@ import {
   setPartyLootMaster as setPartyLootMasterImpl,
   submitLootRoll as submitLootRollImpl,
 } from './loot/loot_roll';
-import { Housing, type HousingSave } from './housing';
 import { Market, type MarketListing, type MarketSave } from './market';
 import * as lifecycle from './mob/lifecycle';
 import { resetEvadingMob as resetEvadingMobFn, updateMob as updateMobFn } from './mob/locomotion';
