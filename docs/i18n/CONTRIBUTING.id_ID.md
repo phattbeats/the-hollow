@@ -209,8 +209,10 @@ terlalu kecil, dan kontributor baru selalu disambut.
 
 ## Lisensi
 
-Dengan berkontribusi, kamu setuju bahwa kontribusimu akan dilisensikan di bawah
-[Lisensi MIT](../../LICENSE) proyek, lisensi yang sama yang mencakup proyek ini.
+Kode proyek ini bersifat proprietary (lihat [LICENSE](../../LICENSE)), bukan
+MIT. Dengan berkontribusi, kamu setuju bahwa kontribusimu menjadi bagian dari
+proyek ini di bawah ketentuan proprietary yang sama, dialihkan kepada
+pemegang hak cipta proyek.
 
 ---
 

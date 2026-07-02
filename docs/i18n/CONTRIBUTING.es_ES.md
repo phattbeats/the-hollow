@@ -206,8 +206,10 @@ demasiado pequeña, y quien contribuye por primera vez siempre es bienvenido.
 
 ## Licencia
 
-Al contribuir, aceptas que tus contribuciones se licencien bajo la
-[Licencia MIT](../../LICENSE) del proyecto, la misma licencia que cubre el proyecto.
+El código de este proyecto es propietario (consulta [LICENSE](../../LICENSE)),
+no MIT. Al contribuir, aceptas que tus contribuciones pasen a formar parte
+del proyecto bajo esos mismos términos propietarios, cedidas al titular de
+los derechos de autor del proyecto.
 
 ---
 

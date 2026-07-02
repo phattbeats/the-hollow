@@ -204,8 +204,10 @@ demais, e novos contribuidores são sempre bem-vindos.
 
 ## Licença
 
-Ao contribuir, você concorda que suas contribuições serão licenciadas sob a
-[Licença MIT](../../LICENSE) do projeto, a mesma licença que cobre o projeto.
+O código deste projeto é proprietário (veja [LICENSE](../../LICENSE)), não
+MIT. Ao contribuir, você concorda que suas contribuições passam a fazer
+parte do projeto sob esses mesmos termos proprietários, cedidas ao detentor
+dos direitos autorais do projeto.
 
 ---
 

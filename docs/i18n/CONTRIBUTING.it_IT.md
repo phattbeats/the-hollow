@@ -203,8 +203,10 @@ piccola, e i nuovi contributori sono sempre benvenuti.
 
 ## Licenza
 
-Contribuendo, accetti che i tuoi contributi siano rilasciati sotto la
-[Licenza MIT](../../LICENSE) del progetto, la stessa licenza che copre il progetto.
+Il codice di questo progetto è proprietario (vedi [LICENSE](../../LICENSE)),
+non MIT. Contribuendo, accetti che i tuoi contributi diventino parte del
+progetto secondo questi stessi termini proprietari, assegnati al titolare
+dei diritti d'autore del progetto.
 
 ---
 
