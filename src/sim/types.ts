@@ -1167,6 +1167,12 @@ export interface DungeonDef {
   suggestedPlayers: number;
   enterText: string;
   leaveText: string;
+  // The Hollow hub family (see content/hollow.ts): these three fields keep the
+  // inherited base overworld unreachable while leaving its code intact.
+  sealedExit?: boolean; // no exit portal spawns; leaveDungeon is a no-op inside
+  sharedInstance?: boolean; // one instance for the whole population (the social hub), not per-party
+  exitTo?: { dungeonId: string; x: number; z: number }; // leaving emerges into another dungeon's instance at this instance-local point, never the overworld
+  homeRespawn?: { dungeonId: string; x: number; z: number }; // dying here revives at this instance-local point (in that dungeon's instance), not an overworld graveyard
 }
 
 export type BiomeId = 'vale' | 'marsh' | 'peaks';
@@ -1731,6 +1737,11 @@ export interface SimConfig {
   noPlayer?: boolean; // multiplayer server: start with an empty world and addPlayer() later
   devCommands?: boolean; // local dev: /dev level|tp|give chat cheats
   lockoutNowMs?: () => number; // host wall-clock for persisted raid lockouts
+  // The Hollow spawn policy (PHAA-404): players join inside the Hollow hub
+  // instance (new characters at the vase), never the inherited base overworld.
+  // The real hosts (offline client, online server) set this; tests and the RL
+  // env keep the legacy base-world spawn, so the dormant world stays testable.
+  hollowStart?: boolean;
 }
 
 export function emptyMoveInput(): MoveInput {

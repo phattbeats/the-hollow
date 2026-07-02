@@ -393,6 +393,8 @@ Combat is **inherited and kept;** the build layer is **reworked and is the deepe
 
 **The gate.** If the corrected simulation and the human read show diversity and a ceiling, the core holds. If one build dominates or the bar is decorative, stop and rethink before pouring content on it: tighter skill interactions and an energy/recharge economy; reworking the math rather than layering on it; or, worst case, combat becomes a strong floor and the primary depth core relocates to the economy.
 
+**Gate metric re-spec (Board-approved, July 2, 2026).** The dominance gate is measured on the **competitive frontier round-robin** (the top builds played against each other; gate: best frontier build wins under 70%), not "best build versus the whole field under 60%." The field metric is structurally broken as a dominance measure: against a few-hundred-build field that includes 9 to 12% winrate builds, the single best build clears 60% no matter what, and an ablation that zeroed snare, root, and absorb entirely still left the top build near 99% versus the field. The field number measures field depth, not one core's dominance; the frontier round-robin measures the thing the bet actually asks. Under this metric the arm c balance pass (PHAA-398: CC diminishing returns, polymorph 15s recharge, frostbolt 4s snare plus 5s recharge, non-refreshing spell snares, ice barrier 110 absorb on a 30s cooldown) killed the 99.4% polymorph/frost-nova lockdown core and moved the frontier top winrate from 70.7 to **67.4, inside the gate,** with the mage archetype intact. The profession-level gap (mage 78% versus rogue 51% by class average) remains open as its own Phase 1 tuning ticket.
+
 ---
 
 ## Scope Lock & Out of Scope

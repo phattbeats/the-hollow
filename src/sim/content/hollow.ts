@@ -40,6 +40,11 @@ export const HOLLOW_HUB_DOOR_POS = { x: -6, z: -22 };
 // object; the live god (Phase 2) attaches here.
 export const VASE_POS = { x: 0, z: 0 };
 
+// Where new characters land and where the dead return (constitution §7:
+// "create a character, land at the vase"; dying is "a teleport back to the
+// vase, never items"). A step south of the vase itself, facing it.
+export const VASE_LANDING_POS = { x: 0, z: -6 };
+
 // Every class gets the same cutting; the record shape is the engine's
 // per-class reward archetype, used here degenerately on purpose.
 const ALL_CLASSES: PlayerClass[] = [
@@ -353,7 +358,17 @@ export const HOLLOW_DUNGEON_DEFS: Record<string, DungeonDef> = {
     index: 6,
     doorPos: { ...HOLLOW_HUB_DOOR_POS },
     entry: { ...HOLLOW_GATE_POS },
-    exitOffset: { x: 0, z: -46 }, // the exit portal stands just behind the gate
+    exitOffset: { x: 0, z: -46 }, // legacy exit point behind the gate; sealed, no portal spawns
+    // PHAA-404: the Hollow is the game. The gate does not open from the
+    // inside, so the inherited base overworld (Eastbrook and the zones beyond)
+    // is unreachable while its code stays intact and dormant. Deaths in the
+    // hub return to the vase, never to a base-world graveyard.
+    sealedExit: true,
+    // One hub for the whole population: the social space where everyone sees
+    // everyone at the vase, and the reason a 24-slot per-party pool can never
+    // exhaust under full-population hollowStart joins.
+    sharedInstance: true,
+    homeRespawn: { dungeonId: 'the_hollow', ...VASE_LANDING_POS },
     spawns: [],
     objects: [
       // The cave mouth, downhill of the vase: an internal door into the
@@ -380,12 +395,14 @@ export const HOLLOW_DUNGEON_DEFS: Record<string, DungeonDef> = {
     id: 'under_shrine',
     name: 'The Under-Shrine',
     index: 7, // the x-band after the_hollow (6)
-    // Leaving the Under-Shrine returns you to the overworld beside the hub
-    // portal, exactly the way nythraxis_boss_arena's doorPos is the Abandoned
-    // Crypt's overworld door (dungeons.ts). The cave mouth itself is the
-    // internal door object in the_hollow above.
+    // doorPos is vestigial (overworldDoor false, exitTo below): the cave is
+    // reached only through the_hollow's internal Cave Mouth door, and leaving
+    // emerges back into the hub instance beside that cave mouth, never the
+    // overworld (PHAA-404). Dying below sends the spirit back to the vase.
     doorPos: { ...HOLLOW_HUB_DOOR_POS },
     overworldDoor: false, // reached only through the_hollow's internal door
+    exitTo: { dungeonId: 'the_hollow', x: 0, z: 24 },
+    homeRespawn: { dungeonId: 'the_hollow', ...VASE_LANDING_POS },
     entry: { x: 0, z: 4 },
     exitOffset: { x: 0, z: -6 },
     spawns: UNDER_SHRINE_SPAWNS,
