@@ -215,9 +215,10 @@ neue Mitwirkende sind immer willkommen.
 
 ## Lizenz
 
-Mit deinem Beitrag erklärst du dich damit einverstanden, dass deine Beiträge unter
-der [MIT License](../../LICENSE) des Projekts lizenziert werden, derselben Lizenz, die
-auch das Projekt abdeckt.
+Der Code dieses Projekts ist proprietär (siehe [LICENSE](../../LICENSE)), nicht
+MIT. Mit deinem Beitrag erklärst du dich damit einverstanden, dass deine
+Beiträge unter denselben proprietären Bedingungen Teil des Projekts werden
+und dem Rechteinhaber des Projekts übertragen werden.
 
 ---
 
