@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
+import { HOLLOW_QUEST_ORDER } from '../src/sim/content/hollow';
+import { MOBS, QUESTS } from '../src/sim/data';
 import { computeTutorialStep, isFreshCharacter, type TutorialSnapshot } from '../src/ui/tutorial';
 import type { IWorld } from '../src/world_api';
-import { QUESTS, ZONES } from '../src/sim/data';
 
 // The overlay's rendering is DOM-bound, but the step progression is a pure
 // function over observed IWorld state — that's what we pin here.
@@ -26,8 +27,8 @@ describe('computeTutorialStep', () => {
     expect(computeTutorialStep({ ...base, moved: true, nearGiver: true })).toBe('talk');
   });
 
-  it('advances to slay once the quest is accepted', () => {
-    expect(computeTutorialStep({ ...base, moved: true, questActive: true })).toBe('slay');
+  it('advances to gather once the quest is accepted', () => {
+    expect(computeTutorialStep({ ...base, moved: true, questActive: true })).toBe('gather');
   });
 
   it('advances to return when objectives are complete', () => {
@@ -38,13 +39,23 @@ describe('computeTutorialStep', () => {
     expect(computeTutorialStep({ ...base, questDone: true })).toBe('done');
   });
 
-  it('keeps guiding to slay even while standing on the giver mid-hunt', () => {
+  it('keeps guiding to gather even while standing on the giver mid-errand', () => {
     // nearGiver must not pull the player back to "talk" once the quest is live.
-    expect(computeTutorialStep({ ...base, moved: true, nearGiver: true, questActive: true })).toBe('slay');
+    expect(computeTutorialStep({ ...base, moved: true, nearGiver: true, questActive: true })).toBe(
+      'gather',
+    );
   });
 
   it('treats a turned-in quest as done regardless of position', () => {
-    expect(computeTutorialStep({ moved: true, nearGiver: true, questActive: true, questReady: true, questDone: true })).toBe('done');
+    expect(
+      computeTutorialStep({
+        moved: true,
+        nearGiver: true,
+        questActive: true,
+        questReady: true,
+        questDone: true,
+      }),
+    ).toBe('done');
   });
 });
 
@@ -52,13 +63,16 @@ describe('computeTutorialStep', () => {
 // guards against is the highest-value missing coverage (see review #729).
 describe('isFreshCharacter', () => {
   // Minimal IWorld stub — only the fields the gate reads.
-  const world = (over: Partial<IWorld> & { playerLevel?: number; playerId?: number; playerEntId?: number }): IWorld => ({
-    playerId: over.playerId ?? 7,
-    player: { id: over.playerEntId ?? 7, level: over.playerLevel ?? 1 } as any,
-    questsDone: new Set<string>(),
-    questLog: new Map(),
-    ...over,
-  } as unknown as IWorld);
+  const world = (
+    over: Partial<IWorld> & { playerLevel?: number; playerId?: number; playerEntId?: number },
+  ): IWorld =>
+    ({
+      playerId: over.playerId ?? 7,
+      player: { id: over.playerEntId ?? 7, level: over.playerLevel ?? 1 } as any,
+      questsDone: new Set<string>(),
+      questLog: new Map(),
+      ...over,
+    }) as unknown as IWorld;
 
   it('is true for a genuine fresh character (ids match, level 1, no quests)', () => {
     expect(isFreshCharacter(world({ playerId: 7, playerEntId: 7 }))).toBe(true);
@@ -77,20 +91,30 @@ describe('isFreshCharacter', () => {
   });
 
   it('is false once the player has any quest history', () => {
-    expect(isFreshCharacter(world({ questsDone: new Set(['q_wolves']) }))).toBe(false);
-    expect(isFreshCharacter(world({ questLog: new Map([['q_wolves', { counts: [0] } as any]]) }))).toBe(false);
+    expect(isFreshCharacter(world({ questsDone: new Set(['q_what_burns']) }))).toBe(false);
+    expect(
+      isFreshCharacter(world({ questLog: new Map([['q_what_burns', { counts: [0] } as any]]) })),
+    ).toBe(false);
   });
 });
 
 // Pin the content derivation so a future rename of the starter quest/giver/mob
 // fails CI instead of silently breaking onboarding (review #729, finding 3).
 describe('starter content derivation', () => {
-  it('resolves a starter quest with a giver and a kill objective', () => {
-    const questId = ZONES[0]?.welcomeQuestId;
-    expect(questId).toBeTruthy();
+  it('resolves the first Hollow errand with a giver and a collect objective', () => {
+    const questId = HOLLOW_QUEST_ORDER[0];
+    expect(questId).toBe('q_what_burns');
     const def = QUESTS[questId!];
     expect(def).toBeTruthy();
-    expect(def.giverNpcId).toBeTruthy();
-    expect(def.objectives.find((o) => o.type === 'kill')?.targetMobId).toBeTruthy();
+    expect(def.giverNpcId).toBe('brother_greenpaw');
+    expect(def.objectives.find((o) => o.type === 'collect')?.itemId).toBe('emberbulb');
+  });
+
+  it('resolves the drop mob for the collect item from the loot tables', () => {
+    const itemId = QUESTS[HOLLOW_QUEST_ORDER[0]!]?.objectives?.find(
+      (o) => o.type === 'collect',
+    )?.itemId;
+    const mob = Object.values(MOBS).find((m) => m.loot?.some((l) => l.itemId === itemId));
+    expect(mob?.id).toBe('palefeeder');
   });
 });

@@ -254,9 +254,9 @@ export const ko_KR: EnTranslations = {
     },
     "tutorial": {
       "moveBodyTouch": "이동 스틱으로 이동하고 화면을 끌어 주위를 둘러보세요. 몇 걸음 움직여 시작하세요.",
-      "talkBodyTouch": "레드브룩 원수에게 다가가 사용 버튼을 눌러 대화한 뒤 임무를 수락하세요.",
-      "returnBodyTouch": "임무를 마쳤습니다. 레드브룩 원수에게 돌아가 사용 버튼을 눌러 완료하세요.",
-      "doneBodyTouch": "기본기를 익혔습니다, {name}. 이제 골짜기를 자유롭게 누비세요. 더보기를 누른 뒤 퀘스트 기록을 눌러 언제든 퀘스트를 확인할 수 있습니다. 좋은 사냥 되세요."
+      "talkBodyTouch": "브라더 초록발에게 다가가 사용 버튼을 눌러 대화한 뒤 그의 부탁을 수락하세요.",
+      "returnBodyTouch": "타오르는 것을 지니고 있습니다. 브라더 초록발에게 돌아가 사용 버튼을 눌러 전달하세요.",
+      "doneBodyTouch": "기본기를 익혔습니다, {name}. 공동은 이제 당신 것, 자유롭게 누비세요. 초록발에게는 언제나 또 다른 부탁거리가 있습니다. 더보기를 누른 뒤 퀘스트 기록을 눌러 언제든 퀘스트를 확인할 수 있습니다."
     },
     "widgets": {
       "clockTitle": "현지 시각 - 클릭하면 12/24시간제 전환",
@@ -3100,23 +3100,23 @@ export const ko_KR: EnTranslations = {
       "friendOffline": "{name}님이 접속을 종료했습니다."
     },
     "tutorial": {
-      "title": "새내기 모험가",
+      "title": "공동에 오신 것을 환영합니다",
       "stepLabel": "{total}단계 중 {current}단계",
       "skip": "튜토리얼 건너뛰기",
       "dismiss": "닫기",
-      "doneTitle": "모험 준비 완료",
-      "doneBody": "기본기를 익혔습니다, {name}. 이제 골짜기를 자유롭게 누비세요. 언제든 {questKey} 키로 퀘스트를 확인할 수 있습니다. 좋은 사냥 되세요.",
+      "doneTitle": "피어오르는 연기",
+      "doneBody": "기본기를 익혔습니다, {name}. 공동은 이제 당신 것, 자유롭게 누비세요. 초록발에게는 언제나 또 다른 부탁거리가 있습니다. 언제든 {questKey} 키로 퀘스트를 확인할 수 있습니다.",
       "moveTitle": "첫걸음 떼기",
       "moveBody": "{moveKeys} 키로 이동하고 마우스로 주위를 둘러보세요. 몇 걸음 움직여 시작하세요.",
-      "seekTitle": "원수를 찾으세요",
-      "seekBody": "레드브룩 원수가 마을에서 기다리며 새내기에게 맡길 일이 있습니다. 표식을 따라 그에게 가세요.",
-      "talkTitle": "임무 수락",
-      "talkBody": "레드브룩 원수에게 다가가 {interactKey} 키를 눌러 대화한 뒤 임무를 수락하세요.",
-      "slayTitle": "문 앞의 늑대들",
-      "slayBody": "북쪽 길의 숲늑대를 사냥하세요. 한 마리를 대상으로 지정해 공격하여 무리를 줄이세요.",
-      "slayProgress": "처치한 숲늑대: {current} / {needed}",
-      "returnTitle": "보상 받기",
-      "returnBody": "임무를 마쳤습니다. 레드브룩 원수에게 돌아가 {interactKey} 키를 눌러 완료하세요."
+      "seekTitle": "브라더 초록발을 찾으세요",
+      "seekBody": "브라더 초록발은 항아리 발치에서, 뭐든 다 떨어지고 배고픈 채로 기다리고 있습니다. 표식을 따라가 그에게 다다르세요.",
+      "talkTitle": "부탁을 들으세요",
+      "talkBody": "브라더 초록발에게 다가가 {interactKey} 키를 눌러 대화한 뒤, 그의 부탁을 수락하세요.",
+      "gatherTitle": "타오르는 것",
+      "gatherBody": "불씨구근은 빛이 닿지 않는 곳에서 자랍니다. 지하 사당으로 내려가 창백포식자들에게서 그것을 빼앗으세요. 그들은 당신이 아니라 당신의 등불을 노립니다.",
+      "gatherProgress": "모은 불씨구근: {current} / {needed}",
+      "returnTitle": "화로를 채우세요",
+      "returnBody": "타오르는 것을 지니고 있습니다. 브라더 초록발에게 돌아가 {interactKey} 키를 눌러 전달하세요."
     },
     "markers": {
       "names": {

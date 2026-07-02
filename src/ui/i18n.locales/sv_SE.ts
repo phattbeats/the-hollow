@@ -3628,27 +3628,27 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'hud.trade.yourOffer': 'Ditt erbjudande',
   'hud.tutorial.dismiss': 'Stäng',
   'hud.tutorial.doneBody':
-    'Du behärskar grunderna, {name}. Dalen är din att utforska. Tryck på {questKey} när som helst för att se dina uppdrag. Lycka till på jakten.',
-  'hud.tutorial.doneTitle': 'Redo för äventyr',
+    'Du behärskar grunderna, {name}. Hollow är ditt att utforska, och Gröntass har alltid ett ärende till. Tryck på {questKey} när som helst för att se dina uppdrag.',
+  'hud.tutorial.doneTitle': 'Röken Stiger',
+  'hud.tutorial.gatherBody':
+    'Glödknölar växer där ljuset inte når. Stig ner i Underhelgedomen och ta dem från blekätarna. De kommer mot din lykta, inte mot dig.',
+  'hud.tutorial.gatherProgress': 'Insamlade glödknölar: {current} / {needed}',
+  'hud.tutorial.gatherTitle': 'Tinget Som Brinner',
   'hud.tutorial.moveBody':
     'Använd {moveKeys} för att röra dig och musen för att se dig omkring. Ta några steg för att börja.',
   'hud.tutorial.moveTitle': 'Hitta fotfästet',
   'hud.tutorial.returnBody':
-    'Ditt uppdrag är slutfört. Återvänd till Marshal Redbrook och tryck på {interactKey} för att lämna in det.',
-  'hud.tutorial.returnTitle': 'Hämta din belöning',
+    'Du bär tinget som brinner. Återvänd till Broder Gröntass och tryck på {interactKey} för att lämna in det.',
+  'hud.tutorial.returnTitle': 'Mata Ugnen',
   'hud.tutorial.seekBody':
-    'Marshal Redbrook väntar i staden och har arbete åt en ny klinga. Följ markören för att nå honom.',
-  'hud.tutorial.seekTitle': 'Sök upp marskalken',
+    'Broder Gröntass väntar vid foten av urnan, utan allt och hungrig. Följ markören för att nå honom.',
+  'hud.tutorial.seekTitle': 'Sök Broder Gröntass',
   'hud.tutorial.skip': 'Hoppa över handledning',
-  'hud.tutorial.slayBody':
-    'Jaga skogsvargarna på norra vägen. Sikta på en och attackera för att tunna ut flocken.',
-  'hud.tutorial.slayProgress': 'Dödade skogsvargar: {current} / {needed}',
-  'hud.tutorial.slayTitle': 'Vargar vid dörren',
   'hud.tutorial.stepLabel': 'Steg {current} av {total}',
   'hud.tutorial.talkBody':
-    'Ställ dig nära Marshal Redbrook och tryck på {interactKey} för att tala, godkänn sedan hans uppdrag.',
-  'hud.tutorial.talkTitle': 'Anta uppdraget',
-  'hud.tutorial.title': 'Ny äventyrare',
+    'Ställ dig nära Broder Gröntass och tryck på {interactKey} för att tala, godkänn sedan hans ärende.',
+  'hud.tutorial.talkTitle': 'Hör Ärendet',
+  'hud.tutorial.title': 'Ny i Hollow',
   'hudChrome.account.changeEmailHint':
     'Vi mejlar en bekräftelselänk till den nya adressen och ett meddelande till den gamla. Din e-post ändras först när du öppnar länken.',
   'hudChrome.account.changeEmailNew': 'Ny e-post',
@@ -4040,13 +4040,13 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'hudChrome.tips.joinChannels':
     'Tips: skriv /join world eller /join lfg för att chatta med spelare över hela världen.',
   'hudChrome.tutorial.doneBodyTouch':
-    'Du behärskar grunderna, {name}. Dalen är din att utforska. Tryck på Mer och sedan Uppdrag för att granska din uppdragslogg när som helst. Lycka till på jakten.',
+    'Du behärskar grunderna, {name}. Hollow är ditt att utforska, och Gröntass har alltid ett ärende till. Tryck på Mer och sedan Uppdrag för att granska din uppdragslogg när som helst.',
   'hudChrome.tutorial.moveBodyTouch':
     'Använd rörelsespaken för att gå och dra på skärmen för att se dig omkring. Ta några steg för att börja.',
   'hudChrome.tutorial.returnBodyTouch':
-    'Din uppgift är klar. Återvänd till marskalk Redbrook och tryck på Använd-knappen för att lämna in den.',
+    'Du bär tinget som brinner. Återvänd till Broder Gröntass och tryck på Använd-knappen för att lämna in det.',
   'hudChrome.tutorial.talkBodyTouch':
-    'Ställ dig nära marskalk Redbrook och tryck på Använd-knappen för att tala, anta sedan hans uppgift.',
+    'Ställ dig nära Broder Gröntass och tryck på Använd-knappen för att tala, godkänn sedan hans ärende.',
   'hudChrome.unitFrame.durationUnitSeconds': 's',
   'hudChrome.unitFrame.partyGroup': 'Grupp {n}',
   'hudChrome.unitFrame.partyLabel': 'Ditt följe',

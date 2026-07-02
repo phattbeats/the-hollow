@@ -3667,27 +3667,27 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'hud.trade.yourOffer': 'Jouw aanbod',
   'hud.tutorial.dismiss': 'Sluiten',
   'hud.tutorial.doneBody':
-    'Je kent de basis, {name}. Het Dal ligt voor je open om te verkennen. Druk op elk moment op {questKey} om je opdrachten te bekijken. Goede jacht.',
-  'hud.tutorial.doneTitle': 'Klaar voor avontuur',
+    'Je kent de basis, {name}. De Hollow is van jou om te verkennen, en Groenpoot heeft altijd nog een klusje. Druk op elk moment op {questKey} om je opdrachten te bekijken.',
+  'hud.tutorial.doneTitle': 'De Rook Stijgt Op',
+  'hud.tutorial.gatherBody':
+    'Sintelknollen groeien waar het licht niet komt. Daal af in de Onderschrijn en neem ze van de Bleekvreters af. Ze komen op je lantaarn af, niet op jou.',
+  'hud.tutorial.gatherProgress': 'Sintelknollen verzameld: {current} / {needed}',
+  'hud.tutorial.gatherTitle': 'Het Ding Dat Brandt',
   'hud.tutorial.moveBody':
     'Gebruik {moveKeys} om te bewegen en de muis om rond te kijken. Doe een paar stappen om te beginnen.',
   'hud.tutorial.moveTitle': 'Vind je houvast',
   'hud.tutorial.returnBody':
-    'Je taak is volbracht. Keer terug naar Maarschalk Redbrook en druk op {interactKey} om deze in te leveren.',
-  'hud.tutorial.returnTitle': 'Eis je beloning op',
+    'Je draagt het ding dat brandt. Keer terug naar Broeder Groenpoot en druk op {interactKey} om het in te leveren.',
+  'hud.tutorial.returnTitle': 'Voed de Oven',
   'hud.tutorial.seekBody':
-    'Maarschalk Redbrook wacht in de stad en heeft werk voor een nieuwe kling. Volg de markering om hem te bereiken.',
-  'hud.tutorial.seekTitle': 'Zoek de Maarschalk',
+    'Broeder Groenpoot wacht aan de voet van de vaas, zonder alles en hongerig. Volg de markering om hem te bereiken.',
+  'hud.tutorial.seekTitle': 'Zoek Broeder Groenpoot',
   'hud.tutorial.skip': 'Tutorial overslaan',
-  'hud.tutorial.slayBody':
-    'Jaag op de Woudwolven op de noordelijke weg. Selecteer er een en val aan om de roedel uit te dunnen.',
-  'hud.tutorial.slayProgress': 'Woudwolven gedood: {current} / {needed}',
-  'hud.tutorial.slayTitle': 'Wolven voor de deur',
   'hud.tutorial.stepLabel': 'Stap {current} van {total}',
   'hud.tutorial.talkBody':
-    'Ga dicht bij Maarschalk Redbrook staan en druk op {interactKey} om te praten, accepteer dan zijn taak.',
-  'hud.tutorial.talkTitle': 'Aanvaard de taak',
-  'hud.tutorial.title': 'Nieuwe avonturier',
+    'Ga dicht bij Broeder Groenpoot staan en druk op {interactKey} om te praten, accepteer dan zijn klusje.',
+  'hud.tutorial.talkTitle': 'Hoor het Klusje',
+  'hud.tutorial.title': 'Nieuw in de Hollow',
   'hudChrome.account.changeEmailHint':
     'We sturen een bevestigingslink naar het nieuwe adres en een melding naar het oude. Je e-mail verandert pas zodra je de link opent.',
   'hudChrome.account.changeEmailNew': 'Nieuwe e-mail',
@@ -4084,13 +4084,13 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'hudChrome.tips.joinChannels':
     'Tip: typ /join world of /join lfg om te chatten met spelers over het hele rijk.',
   'hudChrome.tutorial.doneBodyTouch':
-    'Je kent de basis, {name}. Het Dal ligt voor je om te verkennen. Tik op Meer, dan op Queesten, om je queestelogboek op elk moment na te kijken. Goede jacht.',
+    'Je kent de basis, {name}. De Hollow is van jou om te verkennen, en Groenpoot heeft altijd nog een klusje. Tik op Meer, dan op Queesten, om je queestelogboek op elk moment na te kijken.',
   'hudChrome.tutorial.moveBodyTouch':
     'Gebruik de bewegingsstick om te bewegen en sleep over het scherm om rond te kijken. Zet een paar stappen om te beginnen.',
   'hudChrome.tutorial.returnBodyTouch':
-    'Je taak is volbracht. Keer terug naar Marshal Redbrook en tik op de Gebruik-knop om hem in te leveren.',
+    'Je draagt het ding dat brandt. Keer terug naar Broeder Groenpoot en tik op de Gebruik-knop om het in te leveren.',
   'hudChrome.tutorial.talkBodyTouch':
-    'Ga dicht bij Marshal Redbrook staan en tik op de Gebruik-knop om te spreken, neem dan zijn taak aan.',
+    'Ga dicht bij Broeder Groenpoot staan en tik op de Gebruik-knop om te spreken, accepteer dan zijn klusje.',
   'hudChrome.unitFrame.durationUnitSeconds': 's',
   'hudChrome.unitFrame.partyGroup': 'Groep {n}',
   'hudChrome.unitFrame.partyLabel': 'Je Bende',

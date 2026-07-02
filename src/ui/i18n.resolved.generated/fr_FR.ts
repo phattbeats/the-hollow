@@ -254,9 +254,9 @@ export const fr_FR: EnTranslations = {
     },
     "tutorial": {
       "moveBodyTouch": "Utilise le joystick de déplacement pour te déplacer et fais glisser l'écran pour regarder autour de toi. Fais quelques pas pour commencer.",
-      "talkBodyTouch": "Tiens-toi près du maréchal Redbrook et touche le bouton Utiliser pour lui parler, puis accepte sa mission.",
-      "returnBodyTouch": "Ta mission est accomplie. Retourne voir le maréchal Redbrook et touche le bouton Utiliser pour la rendre.",
-      "doneBodyTouch": "Tu maîtrises les bases, {name}. Le Val est à toi : touche Plus, puis Journal de quêtes, pour consulter ton journal de quêtes à tout moment. Bonne chasse !"
+      "talkBodyTouch": "Tiens-toi près de Frère Pattevert et touche le bouton Utiliser pour lui parler, puis accepte sa commission.",
+      "returnBodyTouch": "Tu portes la chose qui brûle. Retourne voir Frère Pattevert et touche le bouton Utiliser pour la lui remettre.",
+      "doneBodyTouch": "Tu maîtrises les bases, {name}. Le Val est à toi, et Pattevert a toujours une commission de plus. Touche Plus, puis Journal de quêtes, pour consulter ton journal de quêtes à tout moment."
     },
     "widgets": {
       "clockTitle": "Heure locale - cliquez pour basculer 12/24 heures",
@@ -3100,23 +3100,23 @@ export const fr_FR: EnTranslations = {
       "friendOffline": "{name} vient de se déconnecter."
     },
     "tutorial": {
-      "title": "Nouvel aventurier",
+      "title": "Nouveau dans le Val",
       "stepLabel": "Étape {current} sur {total}",
       "skip": "Passer le tutoriel",
       "dismiss": "Fermer",
-      "doneTitle": "Prêt pour l'aventure",
-      "doneBody": "Tu maîtrises les bases, {name}. Le Val est à toi : appuie sur {questKey} à tout moment pour consulter tes quêtes. Bonne chasse !",
+      "doneTitle": "La fumée s'élève",
+      "doneBody": "Tu maîtrises les bases, {name}. Le Val est à toi, et Pattevert a toujours une commission de plus. Appuie sur {questKey} à tout moment pour consulter tes quêtes.",
       "moveTitle": "Trouve tes marques",
       "moveBody": "Utilise {moveKeys} pour te déplacer et la souris pour regarder autour de toi. Fais quelques pas pour commencer.",
-      "seekTitle": "Trouve le maréchal",
-      "seekBody": "Le maréchal Redbrook attend en ville et a du travail pour une nouvelle lame. Suis le repère pour le rejoindre.",
-      "talkTitle": "Accepte la mission",
-      "talkBody": "Tiens-toi près du maréchal Redbrook et appuie sur {interactKey} pour lui parler, puis accepte sa mission.",
-      "slayTitle": "Des loups à la porte",
-      "slayBody": "Traque les loups des bois sur la route du nord. Cible-en un et attaque pour réduire la meute.",
-      "slayProgress": "Loups des bois tués : {current} / {needed}",
-      "returnTitle": "Réclame ta récompense",
-      "returnBody": "Ta mission est accomplie. Retourne voir le maréchal Redbrook et appuie sur {interactKey} pour la rendre."
+      "seekTitle": "Trouve Frère Pattevert",
+      "seekBody": "Frère Pattevert attend au pied du vase, à court de tout et affamé. Suis le repère pour le rejoindre.",
+      "talkTitle": "Écoute la commission",
+      "talkBody": "Tiens-toi près de Frère Pattevert et appuie sur {interactKey} pour lui parler, puis accepte sa commission.",
+      "gatherTitle": "La chose qui brûle",
+      "gatherBody": "Les bulbes-braise poussent là où la lumière ne va pas. Descends dans le Sous-Sanctuaire et prends-les aux dévoreurs blafards. Ils en veulent à ta lanterne, pas à toi.",
+      "gatherProgress": "Bulbes-braise récoltés : {current} / {needed}",
+      "returnTitle": "Nourris la fournaise",
+      "returnBody": "Tu portes la chose qui brûle. Retourne voir Frère Pattevert et appuie sur {interactKey} pour la lui remettre."
     },
     "markers": {
       "names": {

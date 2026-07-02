@@ -3653,27 +3653,27 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'hud.trade.yourOffer': 'Vật trao của bạn',
   'hud.tutorial.dismiss': 'Bỏ Qua',
   'hud.tutorial.doneBody':
-    'Bạn đã nắm được những điều cơ bản, {name}. Thung Lũng giờ là của bạn để khám phá. Nhấn {questKey} bất cứ lúc nào để xem lại nhiệm vụ. Săn lùng vui vẻ.',
-  'hud.tutorial.doneTitle': 'Sẵn Sàng Phiêu Lưu',
+    'Bạn đã nắm được những điều cơ bản, {name}. Hố Rỗng giờ là của bạn để khám phá, và Chân Xanh luôn có thêm một việc vặt. Nhấn {questKey} bất cứ lúc nào để xem lại nhiệm vụ.',
+  'hud.tutorial.doneTitle': 'Khói Bốc Lên',
+  'hud.tutorial.gatherBody':
+    'Củ Than Hồng mọc ở nơi ánh sáng không chạm tới. Xuống Điện Thờ Ngầm và lấy chúng từ Kẻ Ăn Nhợt Nhạt. Chúng lao vào đèn lồng của bạn, không phải vào bạn.',
+  'hud.tutorial.gatherProgress': 'Củ Than Hồng đã thu thập: {current} / {needed}',
+  'hud.tutorial.gatherTitle': 'Thứ Cháy Sáng',
   'hud.tutorial.moveBody':
     'Dùng {moveKeys} để di chuyển và chuột để nhìn quanh. Bước vài bước để bắt đầu.',
   'hud.tutorial.moveTitle': 'Vững Bước Khởi Đầu',
   'hud.tutorial.returnBody':
-    'Nhiệm vụ của bạn đã xong. Quay lại gặp Cảnh Sát Trưởng Redbrook và nhấn {interactKey} để nộp nhiệm vụ.',
-  'hud.tutorial.returnTitle': 'Nhận Phần Thưởng',
+    'Bạn mang theo thứ cháy sáng. Quay lại gặp Tu Huynh Chân Xanh và nhấn {interactKey} để nộp nhiệm vụ.',
+  'hud.tutorial.returnTitle': 'Nuôi Lò Lửa',
   'hud.tutorial.seekBody':
-    'Cảnh Sát Trưởng Redbrook đang đợi trong thị trấn và có việc cho một tay kiếm mới. Theo dấu chỉ đường để đến chỗ ông ta.',
-  'hud.tutorial.seekTitle': 'Tìm Cảnh Sát Trưởng',
+    'Tu Huynh Chân Xanh đang đợi dưới chân chiếc bình, xa lánh mọi thứ và đói khát. Theo dấu chỉ đường để đến chỗ ông ta.',
+  'hud.tutorial.seekTitle': 'Tìm Tu Huynh Chân Xanh',
   'hud.tutorial.skip': 'Bỏ Qua Hướng Dẫn',
-  'hud.tutorial.slayBody':
-    'Săn Sói Rừng trên con đường phía bắc. Chọn một con và tấn công để làm thưa bầy sói.',
-  'hud.tutorial.slayProgress': 'Sói Rừng đã hạ: {current} / {needed}',
-  'hud.tutorial.slayTitle': 'Sói Trước Cửa',
   'hud.tutorial.stepLabel': 'Bước {current} trên {total}',
   'hud.tutorial.talkBody':
-    'Đứng gần Cảnh Sát Trưởng Redbrook và nhấn {interactKey} để trò chuyện, rồi nhận nhiệm vụ của ông ta.',
-  'hud.tutorial.talkTitle': 'Nhận Nhiệm Vụ',
-  'hud.tutorial.title': 'Nhà Thám Hiểm Mới',
+    'Đứng gần Tu Huynh Chân Xanh và nhấn {interactKey} để trò chuyện, rồi nhận việc vặt của ông ta.',
+  'hud.tutorial.talkTitle': 'Nghe Việc Vặt',
+  'hud.tutorial.title': 'Mới Đến Hố Rỗng',
   'hudChrome.account.changeEmailHint':
     'Chúng tôi gửi một liên kết xác nhận tới địa chỉ mới và một thông báo tới địa chỉ cũ. Email của bạn chỉ thay đổi khi bạn mở liên kết.',
   'hudChrome.account.changeEmailNew': 'Email mới',
@@ -4064,13 +4064,13 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.tips.joinChannels':
     'Mẹo: gõ /join world hoặc /join lfg để trò chuyện với người chơi khắp realm.',
   'hudChrome.tutorial.doneBodyTouch':
-    'Bạn đã nắm cơ bản rồi, {name}. Thung Lũng giờ là của bạn để khám phá. Chạm Thêm, rồi Nhiệm Vụ, để xem lại nhật ký nhiệm vụ bất cứ lúc nào. Săn lùng vui vẻ.',
+    'Bạn đã nắm cơ bản rồi, {name}. Hố Rỗng giờ là của bạn để khám phá, và Chân Xanh luôn có thêm một việc vặt. Chạm Thêm, rồi Nhiệm Vụ, để xem lại nhật ký nhiệm vụ bất cứ lúc nào.',
   'hudChrome.tutorial.moveBodyTouch':
     'Dùng cần di chuyển để đi và kéo màn hình để nhìn quanh. Bước vài bước để bắt đầu.',
   'hudChrome.tutorial.returnBodyTouch':
-    'Nhiệm vụ của bạn đã xong. Trở về chỗ Thống Soái Redbrook và chạm nút Dùng để nộp.',
+    'Bạn mang theo thứ cháy sáng. Trở về chỗ Tu Huynh Chân Xanh và chạm nút Dùng để nộp.',
   'hudChrome.tutorial.talkBodyTouch':
-    'Đứng gần Thống Soái Redbrook và chạm nút Dùng để nói chuyện, rồi nhận nhiệm vụ của ông.',
+    'Đứng gần Tu Huynh Chân Xanh và chạm nút Dùng để nói chuyện, rồi nhận việc vặt của ông.',
   'hudChrome.unitFrame.durationUnitSeconds': 's',
   'hudChrome.unitFrame.partyGroup': 'Nhóm {n}',
   'hudChrome.unitFrame.partyLabel': 'Đội Của Bạn',

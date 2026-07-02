@@ -3676,27 +3676,27 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'hud.trade.yourOffer': 'Tawaranmu',
   'hud.tutorial.dismiss': 'Tutup',
   'hud.tutorial.doneBody':
-    'Kamu sudah menguasai dasarnya, {name}. Lembah ini siap kamu jelajahi. Tekan {questKey} kapan saja untuk meninjau misimu. Selamat berburu.',
-  'hud.tutorial.doneTitle': 'Siap Berpetualang',
+    'Kamu sudah menguasai dasarnya, {name}. Yang Berongga siap kamu jelajahi, dan Cakarhijau selalu punya satu tugas lagi. Tekan {questKey} kapan saja untuk meninjau misimu.',
+  'hud.tutorial.doneTitle': 'Asap Membubung',
+  'hud.tutorial.gatherBody':
+    'Umbi bara tumbuh di tempat yang tak tersentuh cahaya. Turunlah ke Kuil Bawah dan ambil dari para pemakan pucat. Mereka menyerang lenteramu, bukan dirimu.',
+  'hud.tutorial.gatherProgress': 'Umbi bara terkumpul: {current} / {needed}',
+  'hud.tutorial.gatherTitle': 'Benda yang Membara',
   'hud.tutorial.moveBody':
     'Gunakan {moveKeys} untuk bergerak dan mouse untuk melihat sekeliling. Ambil beberapa langkah untuk memulai.',
   'hud.tutorial.moveTitle': 'Temukan Pijakanmu',
   'hud.tutorial.returnBody':
-    'Tugasmu selesai. Kembalilah ke Marshal Redbrook dan tekan {interactKey} untuk menyerahkannya.',
-  'hud.tutorial.returnTitle': 'Klaim Hadiahmu',
+    'Kamu membawa benda yang membara. Kembalilah ke Bruder Cakarhijau dan tekan {interactKey} untuk menyerahkannya.',
+  'hud.tutorial.returnTitle': 'Beri Makan Tungku',
   'hud.tutorial.seekBody':
-    'Marshal Redbrook menunggu di kota dan punya pekerjaan untuk pendekar baru. Ikuti penanda untuk mencapainya.',
-  'hud.tutorial.seekTitle': 'Cari Sang Marshal',
+    'Bruder Cakarhijau menunggu di kaki guci, terlepas dari segalanya dan lapar. Ikuti penanda untuk mencapainya.',
+  'hud.tutorial.seekTitle': 'Cari Bruder Cakarhijau',
   'hud.tutorial.skip': 'Lewati Tutorial',
-  'hud.tutorial.slayBody':
-    'Buru Serigala Hutan di jalan utara. Bidik salah satunya dan serang untuk mengurangi kawanannya.',
-  'hud.tutorial.slayProgress': 'Serigala Hutan dibasmi: {current} / {needed}',
-  'hud.tutorial.slayTitle': 'Serigala di Ambang Pintu',
   'hud.tutorial.stepLabel': 'Langkah {current} dari {total}',
   'hud.tutorial.talkBody':
-    'Berdirilah dekat Marshal Redbrook dan tekan {interactKey} untuk berbicara, lalu terima tugasnya.',
-  'hud.tutorial.talkTitle': 'Terima Tugasnya',
-  'hud.tutorial.title': 'Petualang Baru',
+    'Berdirilah dekat Bruder Cakarhijau dan tekan {interactKey} untuk berbicara, lalu terima tugasnya.',
+  'hud.tutorial.talkTitle': 'Dengarkan Tugasnya',
+  'hud.tutorial.title': 'Baru di Yang Berongga',
   'hudChrome.account.changeEmailHint':
     'Kami mengirim tautan konfirmasi ke alamat baru dan pemberitahuan ke yang lama. Emailmu baru berubah setelah kamu membuka tautannya.',
   'hudChrome.account.changeEmailNew': 'Email baru',
@@ -4090,13 +4090,13 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'hudChrome.tips.joinChannels':
     'Tips: ketik /join world atau /join lfg untuk mengobrol dengan pemain di seluruh realm.',
   'hudChrome.tutorial.doneBodyTouch':
-    'Anda sudah menguasai dasarnya, {name}. Lembah ini milik Anda untuk dijelajahi. Ketuk More, lalu Quests, untuk meninjau catatan misi Anda kapan saja. Selamat berburu.',
+    'Anda sudah menguasai dasarnya, {name}. Yang Berongga milik Anda untuk dijelajahi, dan Cakarhijau selalu punya satu tugas lagi. Ketuk More, lalu Quests, untuk meninjau catatan misi Anda kapan saja.',
   'hudChrome.tutorial.moveBodyTouch':
     'Gunakan tuas gerak untuk berpindah dan seret layar untuk melihat sekeliling. Ambil beberapa langkah untuk memulai.',
   'hudChrome.tutorial.returnBodyTouch':
-    'Tugas Anda selesai. Kembalilah ke Marshal Redbrook dan ketuk tombol Use untuk menyerahkannya.',
+    'Anda membawa benda yang membara. Kembalilah ke Bruder Cakarhijau dan ketuk tombol Use untuk menyerahkannya.',
   'hudChrome.tutorial.talkBodyTouch':
-    'Berdirilah dekat Marshal Redbrook dan ketuk tombol Use untuk berbicara, lalu terima tugasnya.',
+    'Berdirilah dekat Bruder Cakarhijau dan ketuk tombol Use untuk berbicara, lalu terima tugasnya.',
   'hudChrome.unitFrame.durationUnitSeconds': 'd',
   'hudChrome.unitFrame.partyGroup': 'Grup {n}',
   'hudChrome.unitFrame.partyLabel': 'Kelompok Anda',

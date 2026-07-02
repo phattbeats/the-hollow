@@ -254,9 +254,9 @@ export const de_DE: EnTranslations = {
     },
     "tutorial": {
       "moveBodyTouch": "Nutze den Bewegungsstick zum Bewegen und zieh über den Bildschirm, um dich umzusehen. Mach ein paar Schritte, um zu beginnen.",
-      "talkBodyTouch": "Stell dich nah an Marschall Redbrook und tippe auf die Schaltfläche Benutzen, um mit ihm zu sprechen, und nimm dann seine Aufgabe an.",
-      "returnBodyTouch": "Deine Aufgabe ist erledigt. Kehre zu Marschall Redbrook zurück und tippe auf die Schaltfläche Benutzen, um sie abzugeben.",
-      "doneBodyTouch": "Du beherrschst die Grundlagen, {name}. Das Eastbrook-Tal liegt bereit, von dir erkundet zu werden. Tippe auf Mehr und dann auf Questlog, um jederzeit dein Questlog einzusehen. Gute Jagd."
+      "talkBodyTouch": "Stell dich nah an Bruder Grünpfote und tippe auf die Schaltfläche Benutzen, um mit ihm zu sprechen, und nimm dann seine Aufgabe an.",
+      "returnBodyTouch": "Du trägst das Ding, das brennt. Kehre zu Bruder Grünpfote zurück und tippe auf die Schaltfläche Benutzen, um es abzugeben.",
+      "doneBodyTouch": "Du beherrschst die Grundlagen, {name}. Das Hollow ist dein, um es zu erkunden, und Grünpfote hat immer noch eine Aufgabe für dich. Tippe auf Mehr und dann auf Questlog, um jederzeit dein Questlog einzusehen."
     },
     "widgets": {
       "clockTitle": "Ortszeit - klicken, um zwischen 12-/24-Stunden zu wechseln",
@@ -3100,23 +3100,23 @@ export const de_DE: EnTranslations = {
       "friendOffline": "{name} ist offline gegangen."
     },
     "tutorial": {
-      "title": "Neuer Abenteurer",
+      "title": "Neu im Hollow",
       "stepLabel": "Schritt {current} von {total}",
       "skip": "Tutorial überspringen",
       "dismiss": "Schließen",
-      "doneTitle": "Bereit für das Abenteuer",
-      "doneBody": "Du beherrschst die Grundlagen, {name}. Das Eastbrook-Tal liegt bereit, von dir erkundet zu werden. Drücke jederzeit {questKey}, um deine Quests einzusehen. Gute Jagd.",
+      "doneTitle": "Der Rauch steigt auf",
+      "doneBody": "Du beherrschst die Grundlagen, {name}. Das Hollow ist dein, um es zu erkunden, und Grünpfote hat immer noch eine Aufgabe für dich. Drücke jederzeit {questKey}, um deine Quests einzusehen.",
       "moveTitle": "Erste Schritte",
       "moveBody": "Nutze {moveKeys} zum Bewegen und die Maus zum Umsehen. Mach ein paar Schritte, um zu beginnen.",
-      "seekTitle": "Suche den Marschall",
-      "seekBody": "Marschall Redbrook wartet in der Stadt und hat Arbeit für einen frischen Recken. Folge der Markierung zu ihm.",
-      "talkTitle": "Nimm die Aufgabe an",
-      "talkBody": "Stell dich nah an Marschall Redbrook und drücke {interactKey}, um mit ihm zu sprechen, und nimm dann seine Aufgabe an.",
-      "slayTitle": "Wölfe vor der Tür",
-      "slayBody": "Jage die Waldwölfe an der Nordstraße. Visiere einen an und greife ihn an, um das Rudel zu lichten.",
-      "slayProgress": "Erlegte Waldwölfe: {current} / {needed}",
-      "returnTitle": "Hol dir deine Belohnung",
-      "returnBody": "Deine Aufgabe ist erledigt. Kehre zu Marschall Redbrook zurück und drücke {interactKey}, um sie abzugeben."
+      "seekTitle": "Suche Bruder Grünpfote",
+      "seekBody": "Bruder Grünpfote wartet am Fuß der Vase, ohne alles und hungrig. Folge der Markierung, um ihn zu erreichen.",
+      "talkTitle": "Höre die Aufgabe",
+      "talkBody": "Stell dich nah an Bruder Grünpfote und drücke {interactKey}, um mit ihm zu sprechen, und nimm dann seine Aufgabe an.",
+      "gatherTitle": "Das Ding, das brennt",
+      "gatherBody": "Glutknollen wachsen dort, wo das Licht nicht hinreicht. Steig hinab in den Unter-Schrein und nimm sie den Bleichfressern ab. Sie kommen auf dein Licht zu, nicht auf dich.",
+      "gatherProgress": "Gesammelte Glutknollen: {current} / {needed}",
+      "returnTitle": "Speise den Ofen",
+      "returnBody": "Du trägst das Ding, das brennt. Kehre zu Bruder Grünpfote zurück und drücke {interactKey}, um es abzugeben."
     },
     "markers": {
       "names": {
