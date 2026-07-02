@@ -19,6 +19,7 @@ import { FlyCamera } from './fly_camera';
 import {
   buildPreviewProps,
   categoryById,
+  categoryCounts,
   filterCategories,
   formatEntry,
   formatPlacements,
@@ -128,6 +129,7 @@ async function boot(): Promise<void> {
     buildGround();
     rebuildProps();
     renderOutput();
+    renderList();
     const y = terrainHeight(zone.start.x, zone.start.z, WORLD_SEED);
     fly.camera.position.set(zone.start.x, y + 24, zone.start.z + 34);
     setStatus();
@@ -199,10 +201,18 @@ async function boot(): Promise<void> {
   const list = document.getElementById('pieces') as HTMLElement;
   function renderList(): void {
     list.textContent = '';
+    const counts = new Map(categoryCounts(placed).map((c) => [c.id, c.count]));
     for (const cat of filterCategories(filter.value)) {
       const row = el('button', `piece${armed?.id === cat.id ? ' armed' : ''}`);
       row.append(el('div', 'piece-label', cat.label));
-      row.append(el('div', 'piece-meta', `${cat.listKey} , kits: ${cat.kits.join(', ')}`));
+      const placedCount = counts.get(cat.id);
+      row.append(
+        el(
+          'div',
+          'piece-meta',
+          `${cat.listKey} , kits: ${cat.kits.join(', ')}${placedCount ? ` , placed: ${placedCount}` : ''}`,
+        ),
+      );
       row.addEventListener('click', () => {
         armed = categoryById(cat.id) ?? null;
         fenceStart = null;
@@ -215,23 +225,49 @@ async function boot(): Promise<void> {
   filter.addEventListener('input', renderList);
   renderList();
 
+  const outSummary = document.getElementById('out-summary') as HTMLElement;
   const outList = document.getElementById('out-list') as HTMLElement;
   const copyAll = document.getElementById('copy-all') as HTMLButtonElement;
+  const clearAll = document.getElementById('clear-all') as HTMLButtonElement;
   function renderOutput(): void {
     outList.textContent = '';
-    for (const entry of placed) {
+    placed.forEach((entry, i) => {
       const cat = categoryById(entry.categoryId);
       const row = el('div', 'out-row');
       const code = el('code', undefined, `${cat?.listKey}: ${formatEntry(entry)}`);
-      const btn = el('button', 'copy', 'copy');
-      btn.addEventListener('click', () => void navigator.clipboard.writeText(formatEntry(entry)));
-      row.append(code, btn);
+      const copyBtn = el('button', 'copy', 'copy');
+      copyBtn.addEventListener(
+        'click',
+        () => void navigator.clipboard.writeText(formatEntry(entry)),
+      );
+      const removeBtn = el('button', 'remove', 'x');
+      removeBtn.title = 'remove this placement from the session';
+      removeBtn.addEventListener('click', () => {
+        placed.splice(i, 1);
+        rebuildProps();
+        renderOutput();
+        renderList();
+      });
+      row.append(code, copyBtn, removeBtn);
       outList.append(row);
-    }
+    });
+    const counts = categoryCounts(placed);
+    outSummary.textContent = placed.length
+      ? `${placed.length} placed: ${counts.map((c) => `${c.label} x${c.count}`).join(', ')}`
+      : 'nothing placed yet';
     copyAll.disabled = placed.length === 0;
+    clearAll.disabled = placed.length === 0;
   }
   copyAll.addEventListener('click', () => {
     void navigator.clipboard.writeText(formatPlacements(placed));
+  });
+  clearAll.addEventListener('click', () => {
+    placed.length = 0;
+    fenceStart = null;
+    rebuildProps();
+    renderOutput();
+    renderList();
+    setStatus();
   });
 
   // ---- loop -----------------------------------------------------------------

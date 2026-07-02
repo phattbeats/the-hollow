@@ -5,6 +5,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   buildPreviewProps,
+  categoryCounts,
   filterCategories,
   formatEntry,
   formatPlacements,
@@ -90,5 +91,18 @@ describe('placement tool literal output', () => {
     const grave = filterCategories('grave');
     expect(grave.map((c) => c.id)).toEqual(['graveyard']);
     expect(filterCategories('')).toHaveLength(PLACEMENT_CATEGORIES.length);
+  });
+
+  it('counts placements per category, omitting categories with none', () => {
+    expect(categoryCounts([])).toEqual([]);
+    const counts = categoryCounts([
+      { categoryId: 'well', input: { x: 0, z: 0, yaw: 0 } },
+      { categoryId: 'campfire', input: { x: 1, z: 1, yaw: 0 } },
+      { categoryId: 'well', input: { x: 2, z: 2, yaw: 0 } },
+    ]);
+    expect(counts).toEqual([
+      { id: 'well', label: 'well', count: 2 },
+      { id: 'campfire', label: 'campfire', count: 1 },
+    ]);
   });
 });

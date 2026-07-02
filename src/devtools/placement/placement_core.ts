@@ -192,6 +192,19 @@ export function categoryById(id: string): PlacementCategory | undefined {
   return PLACEMENT_CATEGORIES.find((c) => c.id === id);
 }
 
+/** per-category placement counts for this session, in category order, zero counts omitted */
+export function categoryCounts(
+  entries: PlacedEntry[],
+): { id: string; label: string; count: number }[] {
+  const counts = new Map<string, number>();
+  for (const e of entries) counts.set(e.categoryId, (counts.get(e.categoryId) ?? 0) + 1);
+  return PLACEMENT_CATEGORIES.filter((c) => counts.has(c.id)).map((c) => ({
+    id: c.id,
+    label: c.label,
+    count: counts.get(c.id) as number,
+  }));
+}
+
 /** filter by substring over label, list key, kit names, and asset keys */
 export function filterCategories(query: string): PlacementCategory[] {
   const q = query.trim().toLowerCase();

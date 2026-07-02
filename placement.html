@@ -25,7 +25,10 @@
     .out-row { display: flex; gap: 6px; align-items: center; }
     .out-row code { flex: 1; background: #0f1317; padding: 4px 6px; border-radius: 4px; overflow-x: auto; white-space: pre; }
     button.copy, #copy-all { padding: 4px 10px; background: #33507a; color: #fff; border: 0; border-radius: 4px; cursor: pointer; }
+    button.remove, #clear-all { padding: 4px 10px; background: #7a3333; color: #fff; border: 0; border-radius: 4px; cursor: pointer; }
     button:disabled { opacity: 0.4; cursor: default; }
+    #out-summary { color: #8fa0ae; font-size: 11px; }
+    .out-actions { display: flex; gap: 6px; }
     #viewport { flex: 1; position: relative; }
     #view { width: 100%; height: 100%; display: block; }
     #status { position: absolute; left: 10px; bottom: 10px; background: rgba(10, 14, 18, 0.75); padding: 5px 9px; border-radius: 4px; }
@@ -37,12 +40,17 @@
       <h1>Zone placement tool (dev only)</h1>
       <div class="hint">WASD fly, hold right mouse to look, Q/E or Space/Shift up/down, wheel = speed.
         Pick a piece, left-click the ground to place, R rotates 15 deg (Shift+R back), Esc disarms.
+        Each row's x removes that placement; clear session resets without a reload.
         Nothing is saved: copy the literal into the zone content module.</div>
       <select id="zone" aria-label="zone"></select>
       <input id="filter" type="text" placeholder="filter pieces (name or kit substring)" />
       <div id="pieces"></div>
       <div id="output">
-        <button id="copy-all" disabled>copy all as ZonePropsDef fragments</button>
+        <div class="out-actions">
+          <button id="copy-all" type="button" disabled>copy all as ZonePropsDef fragments</button>
+          <button id="clear-all" type="button" disabled>clear session</button>
+        </div>
+        <div id="out-summary">nothing placed yet</div>
         <div id="out-list"></div>
       </div>
     </div>
