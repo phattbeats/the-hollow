@@ -2,7 +2,7 @@
   "name": "world-of-claudecraft",
   "version": "0.17.0",
   "private": true,
-  "license": "MIT",
+  "license": "UNLICENSED",
   "type": "module",
   "description": "World of Claudecraft: a WoW-Classic-style micro-MMO + headless RL training environment",
   "scripts": {

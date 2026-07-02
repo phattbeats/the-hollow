@@ -13,7 +13,7 @@
 [![Vitest](https://img.shields.io/badge/Vitest-4.1-6E9F18?logo=vitest&logoColor=white)](https://vitest.dev/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Gymnasium](https://img.shields.io/badge/Gymnasium-RL%20env-0C7BDC)](https://gymnasium.farama.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License: Proprietary](https://img.shields.io/badge/License-Proprietary-lightgrey.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-0.14.1-blue)](package.json)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 [![Discord](https://img.shields.io/badge/Discord-join-5865F2?logo=discord&logoColor=white)](https://discord.gg/GjhnUsBtw)
@@ -307,6 +307,6 @@ Contributions of every kind are welcome: code, translations, bug reports, and do
 
 ## License
 
-The code is [MIT licensed](LICENSE), so fork it, remix it, and host your own world.
+This code is proprietary; see [LICENSE](LICENSE). It began as a fork of the MIT-licensed World of ClaudeCraft — see [NOTICE](NOTICE) for the retained upstream copyright and license text, and [FORK-NOTES.md](FORK-NOTES.md) for the fork point and every modification since.
 
-The bundled third-party art assets (models, textures, HDRIs) keep their own licenses, all CC0 public domain except the MIT water normal maps, documented per pack in [CREDITS.md](CREDITS.md).
+The bundled third-party art assets (models, textures, HDRIs) keep their own licenses, all CC0 public domain except the MIT water normal maps and the CraftPix skill icons, documented per pack in [CREDITS.md](CREDITS.md).

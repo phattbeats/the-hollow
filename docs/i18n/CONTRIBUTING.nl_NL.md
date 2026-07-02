@@ -200,9 +200,10 @@ nieuwe bijdragers zijn altijd welkom.
 
 ## Licentie
 
-Door bij te dragen, ga je ermee akkoord dat je bijdragen worden gelicentieerd
-onder de [MIT-licentie](../../LICENSE) van het project, dezelfde licentie die het
-project dekt.
+De code van dit project is eigendomsrechtelijk beschermd (proprietary, zie
+[LICENSE](../../LICENSE)), niet MIT. Door bij te dragen, ga je ermee akkoord
+dat je bijdragen onder diezelfde proprietary voorwaarden onderdeel worden van
+het project, overgedragen aan de rechthebbende van het project.
 
 ---
 

@@ -203,8 +203,10 @@ và những người đóng góp mới luôn được chào đón.
 
 ## Giấy phép
 
-Khi đóng góp, bạn đồng ý rằng các đóng góp của bạn sẽ được cấp phép theo
-[Giấy phép MIT](../../LICENSE) của dự án, cùng giấy phép bao trùm toàn bộ dự án.
+Mã nguồn của dự án này là độc quyền (proprietary, xem
+[LICENSE](../../LICENSE)), không phải MIT. Khi đóng góp, bạn đồng ý rằng
+đóng góp của bạn sẽ trở thành một phần của dự án theo cùng các điều khoản
+độc quyền đó, được chuyển giao cho chủ sở hữu bản quyền của dự án.
 
 ---
 
