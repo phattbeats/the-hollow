@@ -222,6 +222,7 @@ const CHICKEN_COW: ClipMap = {
 
 const PLAYERS = 'models/chars/players';
 const ENEMIES = 'models/chars/enemies';
+const NPCS = 'models/chars/npcs';
 const CREATURES = 'models/creatures';
 const WEAPONS = 'models/weapons';
 
@@ -757,6 +758,24 @@ export const VISUALS: Record<string, VisualDef> = {
     tintStrength: 0.3,
   },
 
+  // Brother Greenpaw: the Hollow's hero-quality panther quest-giver (PHAA-413
+  // v1, Board-confirmed direction: procedural Blender build, no purchased
+  // assets). It is a static posed mesh with no armature yet (v2 polish adds
+  // rigging), so every clip name below is a placeholder that matches nothing
+  // in the GLB; he simply holds his authored slouched pose. Swap `clips` for
+  // a real ClipMap once a rigged export lands.
+  npc_greenpaw: {
+    url: `${NPCS}/greenpaw.glb`,
+    height: 2.03,
+    clips: {
+      idle: 'Idle',
+      walk: 'Idle',
+      run: 'Idle',
+      attack: ['Idle'],
+      death: 'Idle',
+    },
+  },
+
   // -- NPCs ------------------------------------------------------------------
   npc_knight: {
     url: `${PLAYERS}/knight.glb`,
@@ -909,6 +928,7 @@ const NPC_KEYS: Record<string, string> = {
   provisioner_hale: 'npc_villager',
   quartermaster_bree: 'npc_villager',
   brother_halven: 'npc_reliquary_keeper',
+  brother_greenpaw: 'npc_greenpaw',
 };
 
 export function visualKeyFor(e: Entity): string {
