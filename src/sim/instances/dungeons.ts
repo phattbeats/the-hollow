@@ -70,28 +70,37 @@ export function updateDoorTriggers(ctx: SimContext, p: Entity): void {
   }
 }
 
-export function enterDungeon(ctx: SimContext, dungeonId: string, pid?: number): void {
+// Returns true only when the player was actually teleported into an instance;
+// callers that shift the arrival position afterwards (addPlayer's vase landing,
+// exitTo, homeRespawn) must check it, or a failed enter would strand them at
+// coordinates computed off a stale position.
+export function enterDungeon(
+  ctx: SimContext,
+  dungeonId: string,
+  pid?: number,
+  opts?: { quiet?: boolean }, // suppress enterText (internal hops, e.g. exitTo)
+): boolean {
   const r = ctx.resolve(pid);
   const dungeon = DUNGEONS[dungeonId];
-  if (!r || !dungeon || r.e.dead) return;
+  if (!r || !dungeon || r.e.dead) return false;
   const party = ctx.partyOf(r.meta.entityId);
   const raidAllowed = RAID_ALLOWED_DUNGEON_IDS.has(dungeonId);
   const raidRequired = RAID_REQUIRED_DUNGEON_IDS.has(dungeonId);
   if (party?.raid && !raidAllowed) {
     ctx.error(r.meta.entityId, 'Raid groups cannot enter standard dungeons.');
-    return;
+    return false;
   }
   if (!party?.raid && raidRequired) {
     ctx.error(r.meta.entityId, 'You must convert your party to a raid group first.');
-    return;
+    return false;
   }
   if (dungeonId === 'nythraxis_boss_arena' && !canEnterNythraxisRaid(r.meta)) {
     ctx.error(r.meta.entityId, 'The royal door is sealed to you.');
-    return;
+    return false;
   }
   if (dungeonId === 'nythraxis_boss_arena' && isRaidLocked(ctx, r.meta, dungeonId)) {
     ctx.error(r.meta.entityId, 'You are locked to Nythraxis Raid Arena.');
-    return;
+    return false;
   }
   if (dungeonId === 'nythraxis_boss_arena') {
     const engaged = ctx.instances.find(
@@ -99,20 +108,20 @@ export function enterDungeon(ctx: SimContext, dungeonId: string, pid?: number): 
     );
     if (engaged && nythraxisInstanceSealed(ctx, engaged)) {
       ctx.error(r.meta.entityId, 'Nythraxis is engaged — the royal door has sealed shut.');
-      return;
+      return false;
     }
   }
-  const key = instanceKeyFor(ctx, r.meta.entityId);
+  const key = dungeon.sharedInstance ? `shared:${dungeonId}` : instanceKeyFor(ctx, r.meta.entityId);
   let inst = ctx.instances.find((i) => i.dungeonId === dungeonId && i.partyKey === key);
   if (!inst) {
     inst = ctx.instances.find((i) => i.dungeonId === dungeonId && i.partyKey === null);
     if (!inst) {
       ctx.error(r.meta.entityId, `All instances of ${dungeon.name} are busy. Try again soon.`);
-      return;
+      return false;
     }
     claimInstance(ctx, inst, key);
   }
-  if (!party || party.members.length < dungeon.suggestedPlayers) {
+  if (!opts?.quiet && (!party || party.members.length < dungeon.suggestedPlayers)) {
     ctx.emit({
       type: 'log',
       text: `${dungeon.name} is meant for a full party of ${dungeon.suggestedPlayers}. Tread carefully.`,
@@ -129,7 +138,9 @@ export function enterDungeon(ctx: SimContext, dungeonId: string, pid?: number): 
   p.targetId = null;
   p.autoAttack = false;
   inst.emptyFor = 0;
-  ctx.emit({ type: 'log', text: dungeon.enterText, color: '#b9f', pid: r.meta.entityId });
+  if (!opts?.quiet)
+    ctx.emit({ type: 'log', text: dungeon.enterText, color: '#b9f', pid: r.meta.entityId });
+  return true;
 }
 
 function canEnterNythraxisRaid(meta: PlayerMeta): boolean {
@@ -171,6 +182,28 @@ export function leaveDungeon(ctx: SimContext, pid?: number): void {
   // that silently teleported outdoor callers to the Hollow Crypt door)
   const dungeon = dungeonAt(p.pos.x);
   if (!dungeon) return;
+  // Sealed instances (the Hollow hub) have no outside: the gate does not open
+  // from within, so the inherited base overworld stays unreachable (PHAA-404).
+  if (dungeon.sealedExit) return;
+  // Nested instances (the Under-Shrine) exit into their parent instance at a
+  // fixed instance-local point (the cave mouth), never the overworld.
+  if (dungeon.exitTo) {
+    const target = DUNGEONS[dungeon.exitTo.dungeonId];
+    if (target) {
+      const leaveText = dungeon.leaveText;
+      // a failed enter (slot pool exhausted) leaves the player where they
+      // stand rather than teleporting off a stale position
+      if (!enterDungeon(ctx, target.id, p.id, { quiet: true })) return;
+      // enterDungeon parked the player at target.entry; shift to the exitTo
+      // point within the same instance (origin = pos - entry, both exact).
+      const origin = { x: p.pos.x - target.entry.x, z: p.pos.z - target.entry.z };
+      p.pos = ctx.groundPos(origin.x + dungeon.exitTo.x, origin.z + dungeon.exitTo.z);
+      p.prevPos = { ...p.pos };
+      ctx.rebucket(p);
+      ctx.emit({ type: 'log', text: leaveText, color: '#b9f', pid: r.meta.entityId });
+      return;
+    }
+  }
   if (dungeon.id === 'nythraxis_boss_arena') {
     const inst = ctx.instances.find(
       (i) => i.dungeonId === dungeon.id && i.partyKey === instanceKeyFor(ctx, p.id),
@@ -247,6 +280,9 @@ function claimInstance(ctx: SimContext, inst: InstanceSlot, key: string): void {
     ctx.addEntity(npc);
     inst.objectIds.push(npc.id);
   }
+  // Sealed instances (the Hollow hub) get no exit portal at all: there is no
+  // outside to return to (PHAA-404).
+  if (dungeon.sealedExit) return;
   const exit = createGroundObject(
     ctx.nextId++,
     '',

@@ -2409,6 +2409,7 @@ async function startOffline(playerClass: PlayerClass, name: string, skin = 0): P
     playerClass,
     playerName: name,
     devCommands: import.meta.env.DEV,
+    hollowStart: true,
   });
   sim.setPlayerSkin(sim.playerId, skin);
   // Dev convenience: ?mech drops an offline session straight into the Combat Mech
