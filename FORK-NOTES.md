@@ -73,6 +73,17 @@ which makes Vitest report `import.meta.env.PROD = true` and flips the i18n
 runtime into release semantics, failing five i18n / OG tests that are green
 under a normal test environment.
 
+## 2026-07-02: realm picker stat corrected to live online count (PR #9)
+
+Upstream's landing-page realm picker shows lifetime accounts created labeled
+just "Players" beneath the green Online dot, which reads as a live player
+count (reported by the Board with 2 accounts and 0 players online). The
+picker now binds to `players_online` from the same `/api/project-stats`
+payload and uses the existing `stats.playersOnline` label. Files:
+`index.html`, `play.html`, `src/main.ts` (`loadProjectStats`). Redeployed to
+PHATT-RAID (image `eastbrook-game:phase0` rebuilt, container recreated with
+`PUBLIC_ORIGIN=https://thehollow.phatt.vip`, previously theplant.phatt.vip).
+
 ### 2026-07-02: Branding pass, donate / upstream Discord and GitHub chrome stripped
 
 - **Stripped upstream donate chrome:** removed the three donate anchors in
