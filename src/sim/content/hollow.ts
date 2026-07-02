@@ -249,6 +249,113 @@ export const HOLLOW_PROPS: ZonePropsDef = {
   graveyards: [],
 };
 
+// Living flora dressing (PHAA-415 greener pass). Hub-local coordinates,
+// render-only exactly like HOLLOW_PROPS above: render/hollow_props.ts draws
+// each record procedurally or from the foliage GLB kit; nothing here is
+// merged into static geometry or the collider grid. Every record carries an
+// explicit growth `stage`; this whole table is stage 0 ("overgrown and
+// neglected"). The Phase 2 stage swap replaces stage-0 records wholesale
+// (or adds stage-1+ rows) without touching the renderer.
+
+export type HollowFloraKind =
+  | 'fern' // ground fern (foliage kit GLB)
+  | 'bush' // leafy shrub (foliage kit GLB)
+  | 'bush_flowers' // flowering shrub (foliage kit GLB)
+  | 'undergrowth' // low procedural moss-and-leaf clump
+  | 'glow_flower' // procedural glowing flora accent (emissive, no light)
+  | 'vine_wall'; // procedural vine strands climbing a wall face
+
+export interface HollowFloraDef {
+  kind: HollowFloraKind;
+  x: number; // hub-local
+  z: number;
+  stage: 0; // growth stage; Phase 2 swaps stages, so it is explicit per record
+  scale?: number; // optional multiplier on the kind's base size
+}
+
+const F = (kind: HollowFloraKind, x: number, z: number, scale?: number): HollowFloraDef =>
+  scale === undefined ? { kind, x, z, stage: 0 } : { kind, x, z, stage: 0, scale };
+
+export const HOLLOW_FLORA: HollowFloraDef[] = [
+  // glowing flora accents ringing the vase (clear of the 2.5u vase circle,
+  // Greenpaw at (3,4), and the cold firepit at (-4,2))
+  F('glow_flower', 3.2, -1.8),
+  F('glow_flower', -2.9, -2.4),
+  F('glow_flower', -1.5, 3.5),
+  // accents lighting the gate walk up from the portal (fence rails at |x|=5)
+  F('glow_flower', 3.8, -15),
+  F('glow_flower', -3.6, -16.5),
+  // and the cave mouth, so the descent reads marked, not hidden
+  F('glow_flower', 4.2, 30.5),
+  F('glow_flower', -4.4, 29.8),
+  // one soft accent on the sanctum aisle
+  F('glow_flower', 0, 103),
+  // ferns through the clearing and the old shrine ring
+  F('fern', -9.5, -3),
+  F('fern', 10, 1),
+  F('fern', -7, 10.5),
+  F('fern', 9, 12),
+  F('fern', -16, 20),
+  F('fern', 17, 15),
+  F('fern', -19, 34),
+  F('fern', 18.5, 38),
+  F('fern', -12, 44),
+  F('fern', 13, 52),
+  F('fern', -18, 60),
+  F('fern', 19, 63),
+  F('fern', -3, 70),
+  F('fern', 3.5, 88),
+  F('fern', -3.2, 100),
+  // shrubs filling the corners and hugging the colonnade line
+  F('bush', -11, -16),
+  F('bush', 12.5, -14),
+  F('bush', -15, 8),
+  F('bush', 16, 6),
+  F('bush', -17, 26),
+  F('bush', 18, 28),
+  F('bush', -10, 36),
+  F('bush', 11, 40),
+  F('bush', -20, 50),
+  F('bush', 20, 55),
+  F('bush', -5, 58),
+  F('bush', 6, 61),
+  // flowering shrubs, sparser, where the light pools
+  F('bush_flowers', -8.5, -6),
+  F('bush_flowers', 9.5, -5),
+  F('bush_flowers', -14, 16),
+  F('bush_flowers', 15, 18),
+  F('bush_flowers', -4, 46),
+  F('bush_flowers', 5, 44),
+  F('bush_flowers', 12, 48),
+  // low undergrowth clumps at the wall feet (the walls sit at |x|=23)
+  F('undergrowth', -21, -8),
+  F('undergrowth', 21, -2),
+  F('undergrowth', -21.5, 12),
+  F('undergrowth', 21.5, 24),
+  F('undergrowth', -21, 42),
+  F('undergrowth', 21, 58),
+  F('undergrowth', -21, 74),
+  F('undergrowth', 21, 78),
+  F('undergrowth', -21.5, 92),
+  F('undergrowth', 21.5, 98),
+  F('undergrowth', -21, 108),
+  F('undergrowth', 21, 112),
+  F('undergrowth', -12, 126),
+  F('undergrowth', 12, 127),
+  // vines climbing the side walls (the antechamber waist stubs sit at z 62-70;
+  // the strands stay off that band)
+  F('vine_wall', -21.8, -12),
+  F('vine_wall', 21.8, -6),
+  F('vine_wall', -21.8, 18),
+  F('vine_wall', 21.8, 32),
+  F('vine_wall', -21.8, 48),
+  F('vine_wall', 21.8, 52),
+  F('vine_wall', -21.8, 76),
+  F('vine_wall', 21.8, 88),
+  F('vine_wall', -21.8, 104),
+  F('vine_wall', 21.8, 120),
+];
+
 // ---------------------------------------------------------------------------
 // Housing v0: fixed homestead plots in the moon-sanctum quarter of the hub
 // ---------------------------------------------------------------------------

@@ -98,8 +98,9 @@ const TORCH_COLORS: Record<Variant, TorchColors> = {
   sanctum: { flame: 0xa6ffb8, emissive: 0x22cc55, light: 0x55e08a },
   // the Drowned Temple burns with cold moonfire — pale lilac over still water
   temple: { flame: 0xd9c9ff, emissive: 0x6a4fd0, light: 0xb79cff },
-  // the Hollow hub burns hearth-warm: root-amber lamplight over soil and moss
-  hollow: { flame: 0xffc36a, emissive: 0xc06a1a, light: 0xffa348 },
+  // the Hollow hub burns hearth-warm: sun-gold lamplight against the mossy
+  // green register (warm on green keeps the torch pools readable)
+  hollow: { flame: 0xffd27a, emissive: 0xb87a20, light: 0xffbe5e },
   // the Ashen Coliseum burns warm — amber braziers ringing the fighting sands
   arena: { flame: 0xffb24a, emissive: 0xcc5a14, light: 0xff9a3c },
   nythraxis: { flame: 0x8f5cff, emissive: 0x4b1c9a, light: 0x7b4dff },
@@ -939,14 +940,15 @@ export class DungeonInteriors {
       );
     }
     if (variant === 'hollow') {
-      // the shrine clearing: packed soil and root-broken flags, no grate pits
+      // the shrine clearing: living soil overtaking the old flags, no grate
+      // pits; the quad share carries the weed-grown small tiles below
       return pickKind(
         [
-          ['floor_tile_large', 30],
+          ['floor_tile_large', 20],
           ['floor_tile_large_rocks', 8],
-          ['floor_dirt_large', 22],
-          ['floor_dirt_large_rocky', 14],
-          ['quad', 26],
+          ['floor_dirt_large', 28],
+          ['floor_dirt_large_rocky', 16],
+          ['quad', 28],
         ],
         t,
       );
@@ -1018,14 +1020,14 @@ export class DungeonInteriors {
       );
     }
     if (variant === 'hollow') {
-      // living ground: moss and weeds reclaiming the old shrine flags
+      // living ground: moss and weeds have all but won back the shrine flags
       return pickKind(
         [
-          ['floor_tile_small', 22],
-          ['floor_tile_small_broken_A', 12],
-          ['floor_tile_small_broken_B', 12],
-          ['floor_tile_small_weeds_A', 25],
-          ['floor_tile_small_weeds_B', 25],
+          ['floor_tile_small', 12],
+          ['floor_tile_small_broken_A', 10],
+          ['floor_tile_small_broken_B', 10],
+          ['floor_tile_small_weeds_A', 32],
+          ['floor_tile_small_weeds_B', 32],
           ['floor_tile_small_decorated', 4],
         ],
         t,
@@ -1115,13 +1117,13 @@ export class DungeonInteriors {
       );
     }
     if (variant === 'hollow') {
-      // root-cracked earthwork walls; open arches breathe, few barred windows
+      // root-cracked mossy stone; open arches breathe, few barred windows
       return pickKind(
         [
-          ['wall', 38],
-          ['wall_pillar', 18],
-          ['wall_cracked', 22],
-          ['wall_arched', 16],
+          ['wall', 30],
+          ['wall_pillar', 16],
+          ['wall_cracked', 28],
+          ['wall_arched', 20],
           ['wall_archedwindow_gated', 6],
         ],
         t,
@@ -1185,12 +1187,13 @@ export class DungeonInteriors {
       );
     }
     if (variant === 'hollow') {
-      // moss-green hangings for the plant shrine, a few sun-bleached ones
+      // moss-green hangings for the plant shrine, the odd sun-bleached one
       return pickKind(
         [
           ['banner_green', 5],
-          ['banner_patternC_green', 3],
-          ['banner_thin_white', 2],
+          ['banner_patternC_green', 4],
+          ['banner_triple_green', 3],
+          ['banner_thin_white', 1],
         ],
         t,
       );
