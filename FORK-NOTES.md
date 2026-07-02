@@ -347,6 +347,38 @@ normal QA gate:
   tests/localization_fixes.test.ts tests/settings.test.ts` green (127
   passed, 3 pre-existing skips unrelated to this change) with NODE_ENV
   unset; `tsc --noEmit` clean.
+- **Improved shield HUD indicators** (upstream PR #1320, `a0537840`): the
+  absorb-shield overlay was a single fill fraction folded into `hpFrac`,
+  which read as extra health rather than a shield. Unit frames
+  (player/target) now render the shield as its own segment
+  (`absorbStartFrac`/`absorbSizeFrac` on `UnitFrameView`), plus an optional
+  `showAbsorbText` flag that appends the resolved absorb total to `hpText`
+  for player/target frames ("420/600 (90)", plain numbers, no new
+  player-visible string). Party frames gain the same absorb-derived shield
+  end to end: `server/game.ts` and `src/sim/sim.ts` both derive a member's
+  absorb total from their auras identically, `PartyMemberInfo` carries it,
+  and `party_frame_row`/`party_frames`/`party_frames_painter` render it the
+  same way.
+
+  Fork adaptations: dropped an unrelated `vite.config.ts` /
+  `scripts/browserslist_targets.mjs` change bundled into the upstream commit
+  (an inline duplicate of the already-exported `.browserslistrc` floor
+  parser, unaffected here); dropped `tests/loot_settings_view.test.ts` (a
+  one-line change to a test for a feature this fork does not have); kept
+  this fork's `tests/target_frame.test.ts` structure, which documents a
+  real, pre-existing wire-parity gap (`src/net/online.ts` zeroes the absorb
+  aura value when mirroring Sim entities to ClientWorld, so the shield
+  segment and its `hpText` "(N)" suffix are offline-only, not wired to the
+  client; party frames do not have this gap since their absorb value is
+  computed identically on both hosts from auras already on the wire).
+
+  Verification: `npx vitest run tests/absorb_bar.test.ts
+  tests/unit_frame.test.ts tests/unit_frame_painter.test.ts
+  tests/party_frames.test.ts tests/party_frames_painter.test.ts
+  tests/target_frame.test.ts tests/social_view.test.ts
+  tests/hud_perf_budget.test.ts tests/architecture.test.ts` green (108
+  passed, 3 pre-existing skips unrelated to this change) with NODE_ENV
+  unset; `tsc --noEmit` clean.
 
 ## 2026-07-02: wiki (`/wiki` guide SPA) rebranded, dead content removed (PHAA-406)
 
