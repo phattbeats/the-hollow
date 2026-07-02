@@ -100,6 +100,38 @@ aimed at the actual drivers:
      cycle; ~26% per 30s keeps the frost-defense identity without making
      the mage out-tank its hp pool.
 
+ARM D (2026-07-02, sec8 PHAA-411; profession-average tuning, no source formulas
+touched). Arm c fixed the frontier dominance gate (67.4 < 70) but left the
+class-average gap open: mage 78% vs rogue 51% (matrix eval, gate metric
+"profession gap"). Root cause read off the per-pair matrix (arm c results):
+rog/rog (pure rogue) sits at 69%, but rog/mag and rog/war (rogue primary with
+a non-rogue secondary) collapse to 44% and 42%. Mage's damage kit is
+combo-independent (every nuke fires standalone), so diluting its 8-skill draw
+across a 22-skill pool barely hurts it (mag/rog still 74%, mag/war 77.7%).
+Rogue's finishers (eviscerate, rupture, kidney_shot, slice_and_dice,
+expose_armor) are worthless without combo points, and only sinister_strike,
+backstab, ambush and garrote build them: a rogue/X build that draws few of
+those four in its random 8 can be bricked for the whole duel. Three levers,
+aimed at the two named drivers (energy economy, rogue kit undertuning) plus a
+light mage-sustained trim, all uniform so they do not depend on what a given
+build happened to draw:
+  1. COMBO-BUILDER COST: sinister_strike 8 -> 6 energy, backstab 10 -> 8. The
+     bread-and-butter builders regen ~25% faster, so whatever combo-builders
+     a build DOES draw fire more often; this helps every rog-primary build
+     (rog/rog, rog/mag, rog/war alike) without touching the finishers' payoff.
+  2. ROGUE REGEN: the flat rogue-primary energy_regen bonus 1.0 -> 1.4/s (on
+     top of the shared 2.0 base), unstarving the pool a bit further under the
+     cheaper builder cost above.
+  3. FINISHER PAYOFF: eviscerate per_combo 7 -> 9, rupture per_combo 5 -> 6.
+     The corrected stamina fix (removing the flat HP cushion) made burst
+     relatively stronger for everyone but rogue's own finisher scaling was
+     never re-tuned to match; this closes that gap directly.
+  4. MAGE SUSTAINED TRIM: scorch (the 5-energy spam nuke, top-quartile
+     pick-rate 40%, the cheapest and most spammable mage nuke) damage
+     20-28 -> 18-25, about -10%. Targets sustained pressure specifically,
+     leaving pyroblast/frostbolt/ice_barrier (arm c's already-tuned CC/burst
+     kit) untouched so the frontier's mage identity survives.
+
 ABSTRACTIONS (documented limitations):
   - 1-D distance (kiting modeled); facing/"behind" modeled as a state set by
     stealth openers and incapacitates.  No line-of-sight, no terrain.
@@ -204,7 +236,7 @@ SKILLS = {
  'fireball':   S(prof='mage',line='fire',econ='energy',cost=10,recharge=0,cast=1.5,
                  kind='attack_spell',mn=30,mx=45,school='fire'),         # ~EST base
  'scorch':     S(prof='mage',line='fire',econ='energy',cost=5,recharge=0,cast=1.5,
-                 kind='attack_spell',mn=20,mx=28,school='fire'),         # ~EST base
+                 kind='attack_spell',mn=18,mx=25,school='fire'),         # ~EST base; ARM D: 20-28 -> 18-25 (sustained-pressure trim)
  'fire_blast': S(prof='mage',line='fire',econ='energy',cost=10,recharge=8,cast=0,
                  kind='attack_spell',mn=27,mx=35,school='fire'),         # real 27-35
  'pyroblast':  S(prof='mage',line='fire',econ='energy',cost=25,recharge=0,cast=5.0,
@@ -222,16 +254,16 @@ SKILLS = {
  'polymorph':  S(prof='mage',line='arcane',econ='energy',cost=10,recharge=15,cast=1.5,
                  kind='cc_poly',dur=8,school='arcane'),                  # dur shortened for duel; ARM C: 15s recharge (duel-appropriate, was 0)
  # ---------------- ROGUE ----------------
- 'sinister_strike':S(prof='rogue',line='daggers',econ='energy',cost=8,recharge=0,cast=0,
-                 kind='attack_weapon',bonus=3,builds_combo=1,apply_snare=0.30,snare_dur=4),
- 'backstab':   S(prof='rogue',line='daggers',econ='energy',cost=10,recharge=0,cast=0,
-                 kind='attack_weapon',bonus=11,weapon_mult=1.5,requires_behind=True,builds_combo=1,apply_snare=0.30,snare_dur=4),
+ 'sinister_strike':S(prof='rogue',line='daggers',econ='energy',cost=6,recharge=0,cast=0,
+                 kind='attack_weapon',bonus=3,builds_combo=1,apply_snare=0.30,snare_dur=4),# ARM D: cost 8 -> 6
+ 'backstab':   S(prof='rogue',line='daggers',econ='energy',cost=8,recharge=0,cast=0,
+                 kind='attack_weapon',bonus=11,weapon_mult=1.5,requires_behind=True,builds_combo=1,apply_snare=0.30,snare_dur=4),# ARM D: cost 10 -> 8
  'ambush':     S(prof='rogue',line='daggers',econ='energy',cost=10,recharge=0,cast=0,
                  kind='attack_weapon',bonus=28,weapon_mult=2.5,requires_stealth=True,builds_combo=2),
  'eviscerate': S(prof='rogue',line='daggers',econ='energy',cost=10,recharge=0,cast=0,
-                 kind='finisher_damage',base=4,per_combo=7,variance=4),
+                 kind='finisher_damage',base=4,per_combo=9,variance=4),# ARM D: per_combo 7 -> 9
  'rupture':    S(prof='rogue',line='subtlety',econ='energy',cost=10,recharge=0,cast=0,
-                 kind='finisher_dot',base=5,per_combo=5,dur=8,interval=2),# ~EST
+                 kind='finisher_dot',base=5,per_combo=6,dur=8,interval=2),# ~EST; ARM D: per_combo 5 -> 6
  'kidney_shot':S(prof='rogue',line='subtlety',econ='energy',cost=5,recharge=20,cast=0,
                  kind='finisher_stun',base=1,per_combo=1),
  'slice_and_dice':S(prof='rogue',line='daggers',econ='energy',cost=5,recharge=0,cast=0,
@@ -322,11 +354,13 @@ class Fighter:
         self.armor_pen=0.0; self.energy_regen=1.0; self.crit_bonus=0.0
         es_rank=build.rank('energy_storage'); ex_rank=build.rank('expertise'); str_rank=build.rank('strength')
         self.max_energy=30 + (3*es_rank if build.primary=='mage' else 0)
-        # base regen 2.0/s; rogue keeps a flat +1.0 (WoW's fast rogue-energy
+        # base regen 2.0/s; rogue keeps a flat +1.4 (WoW's fast rogue-energy
         # origin, a 100-pool at ~10/s, that the single-bar graft would
         # otherwise crush); mage Energy Storage adds a little.
+        # ARM D: rogue flat bonus 1.0 -> 1.4/s, on top of the cheaper
+        # combo-builder costs above, to unstarve rog/X combo generation.
         self.energy_regen=2.0 + (0.10*es_rank if build.primary=='mage' else 0) \
-                              + (1.0 if build.primary=='rogue' else 0)
+                              + (1.4 if build.primary=='rogue' else 0)
         # Expertise = energy-COST reduction (GW1's actual mechanic), 4%/rank,
         # replacing the old 0.12/rank regen trickle. Rogue-primary only.
         self.cost_mult=1.0
