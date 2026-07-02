@@ -3631,7 +3631,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
     "Yanan şeyi taşıyorsun. Birader Greenpaw'a dön ve teslim etmek için {interactKey} tuşuna bas.",
   'hud.tutorial.returnTitle': 'Fırını Besle',
   'hud.tutorial.seekBody':
-    "Birader Greenpaw vazonun dibinde bekliyor, her şeyden mahrum ve aç. Ona ulaşmak için işareti takip et.",
+    'Birader Greenpaw vazonun dibinde bekliyor, her şeyden mahrum ve aç. Ona ulaşmak için işareti takip et.',
   'hud.tutorial.seekTitle': "Birader Greenpaw'ı Ara",
   'hud.tutorial.skip': 'Eğitimi Atla',
   'hud.tutorial.stepLabel': 'Adım {current} / {total}',
