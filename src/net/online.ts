@@ -494,27 +494,6 @@ export class Api {
     }
   }
 
-  // ── Non-custodial Solana wallet linking ───────────────────────────────────
-  // Step 1: ask the server for the exact message to sign for this address.
-  async walletLinkChallenge(address: string): Promise<{ nonce: string; message: string }> {
-    return this.post('/api/wallet/link/challenge', { address });
-  }
-
-  // Step 2: submit the wallet's signature; server verifies + persists the link.
-  async linkWallet(address: string, signature: string, nonce: string): Promise<{ pubkey: string }> {
-    return this.post('/api/wallet/link', { address, signature, nonce });
-  }
-
-  // Current account's linked wallet (null when none).
-  async linkedWallet(): Promise<{ pubkey: string; linkedAt: string } | null> {
-    const data = await this.get('/api/wallet');
-    return data.wallet ?? null;
-  }
-
-  async unlinkWallet(): Promise<void> {
-    await this.delete('/api/wallet/link', {});
-  }
-
   // ── Discord link/login + status ────────────────────────────────────────────
   // Returns the discord.com authorize URL the browser navigates to (login = new
   // session, link = attach to the current account).
@@ -1205,9 +1184,7 @@ export class ClientWorld implements IWorld {
         e.mainhandItemId = w.mh ?? null; // equipped mainhand → held weapon model (render-only)
         e.equippedItems = w.eq ?? {}; // full worn set (render-only), for the inspect window
         e.skinCatalog = w.cat === 'mech' ? 'mech' : 'class';
-        e.holderTier = w.ht ?? 0; // $WOC holder-tier flair (cosmetic, server-set)
-        e.holderBalance = typeof w.hb === 'number' ? w.hb : undefined; // exact $WOC, for inspect
-        e.discordTier = w.dt ?? 0; // Discord status-tier flair (cosmetic, server-set)
+        e.discordTier = w.dt ?? 0; // linked-Discord flag (cosmetic, server-set; 1 = linked)
         e.discordAvatar = typeof w.dav === 'string' ? w.dav : undefined; // Discord PFP (linked)
         e.discordName = typeof w.dnm === 'string' ? w.dnm : undefined; // Discord handle/nickname
         e.discordJoined = typeof w.dj === 'number' ? w.dj : undefined; // Discord join epoch ms

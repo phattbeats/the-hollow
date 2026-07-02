@@ -7,10 +7,6 @@ const UNLINKED: DiscordAccountStatus = {
   username: null,
   avatar: null,
   guildMember: false,
-  points: 0,
-  lifetimePoints: 0,
-  statusTier: 0,
-  claimedSwagIds: [],
   passwordSet: true,
 };
 
@@ -22,7 +18,7 @@ const NO_PRESENCE: DiscordPresenceState = {
 };
 
 function linked(over: Partial<DiscordAccountStatus> = {}): DiscordAccountStatus {
-  return { ...UNLINKED, linked: true, username: 'maxp', guildMember: true, statusTier: 1, ...over };
+  return { ...UNLINKED, linked: true, username: 'maxp', guildMember: true, ...over };
 }
 
 describe('avatar + character profile link', () => {
@@ -92,22 +88,17 @@ describe('buildDiscordWidgetView modes', () => {
       inviteUrl: 'u',
     });
     expect(v.mode).toBe('unlinked');
-    expect(v.swag).toEqual([]);
-    expect(v.pointsToNext).toBeNull();
   });
 
-  it('is linked and surfaces points/tier when linked', () => {
+  it('is linked and surfaces the username when linked', () => {
     const v = buildDiscordWidgetView({
       enabled: true,
-      status: linked({ points: 1_500, lifetimePoints: 2_500, statusTier: 4 }),
+      status: linked(),
       presence: NO_PRESENCE,
       inviteUrl: 'u',
     });
     expect(v.mode).toBe('linked');
-    expect(v.points).toBe(1_500);
-    expect(v.tierIndex).toBe(4);
-    expect(v.pointsToNext).toBe(2_500); // 2500 lifetime -> champion at 5000
-    expect(v.swag.length).toBeGreaterThan(0);
+    expect(v.username).toBe('maxp');
   });
 });
 
@@ -150,37 +141,5 @@ describe('join CTA + presence', () => {
     expect(v.onlineCount).toBe(0);
     expect(v.voiceChannelName).toBe('The Tavern');
     expect(v.voice).toHaveLength(1);
-  });
-});
-
-describe('swag claimability', () => {
-  it('counts claimable rows for the widget badge', () => {
-    // Champion tier (5) + plenty of points: the free title and several others claimable.
-    const v = buildDiscordWidgetView({
-      enabled: true,
-      status: linked({ points: 10_000, lifetimePoints: 10_000, statusTier: 5, claimedSwagIds: [] }),
-      presence: NO_PRESENCE,
-      inviteUrl: 'u',
-    });
-    expect(v.claimableCount).toBeGreaterThan(0);
-    expect(v.claimableCount).toBe(v.swag.filter((s) => s.claimable).length);
-  });
-
-  it('marks already-claimed swag as claimed and not claimable', () => {
-    const v = buildDiscordWidgetView({
-      enabled: true,
-      status: linked({
-        points: 10_000,
-        lifetimePoints: 10_000,
-        statusTier: 5,
-        claimedSwagIds: ['title_discordian'],
-      }),
-      presence: NO_PRESENCE,
-      inviteUrl: 'u',
-    });
-    const row = v.swag.find((s) => s.id === 'title_discordian')!;
-    expect(row.claimed).toBe(true);
-    expect(row.claimable).toBe(false);
-    expect(row.reason).toBe('claimed');
   });
 });

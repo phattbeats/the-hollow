@@ -1,9 +1,8 @@
 // Pure (IO-free) logic for the World of ClaudeCraft Discord bot: Gateway intents,
-// slash-command definitions + routing, role-sync diffing, embed/message building,
-// and voice-presence shaping. Kept separate from the ws/fetch IO (gateway.ts,
-// discord_api.ts, server_client.ts) so it is unit-tested without a network. This
-// is the same pure/IO split the server uses (wallet_link.ts vs wallet.ts).
-import { DISCORD_STATUS_DEFS, discordStatusByIndex } from '../src/sim/discord_tier';
+// slash-command definitions + routing, embed/message building, and voice-presence
+// shaping. Kept separate from the ws/fetch IO (gateway.ts, discord_api.ts,
+// server_client.ts) so it is unit-tested without a network. This is the same
+// pure/IO split the server uses (chat_filter.ts vs chat_filter_db.ts).
 
 // ── Gateway ──────────────────────────────────────────────────────────────────
 // Intents we need: guild metadata, members (privileged), voice states (who is in
@@ -12,8 +11,7 @@ export const GATEWAY_INTENTS =
   (1 << 0) | // GUILDS
   (1 << 1) | // GUILD_MEMBERS (privileged)
   (1 << 7) | // GUILD_VOICE_STATES
-  (1 << 8) | // GUILD_PRESENCES (privileged)
-  (1 << 9); // GUILD_MESSAGES (message events for daily-active engagement; not content)
+  (1 << 8); // GUILD_PRESENCES (privileged)
 
 export const GATEWAY_OP = {
   DISPATCH: 0,
@@ -56,7 +54,7 @@ export function resumePayload(
 
 // ── Slash commands ───────────────────────────────────────────────────────────
 export const SLASH_COMMANDS = [
-  { name: 'whoami', description: 'Show your World of ClaudeCraft link status and reward points' },
+  { name: 'whoami', description: 'Show your World of ClaudeCraft link status' },
   { name: 'link', description: 'Get the link to connect your Discord to World of ClaudeCraft' },
 ] as const;
 
@@ -64,60 +62,6 @@ export type SlashCommandName = (typeof SLASH_COMMANDS)[number]['name'];
 
 export function isSlashCommand(name: string): name is SlashCommandName {
   return SLASH_COMMANDS.some((c) => c.name === name);
-}
-
-// ── Status-tier roles ────────────────────────────────────────────────────────
-/** Discord role name for a status rung (1-8), e.g. "WoC Champion". */
-export function tierRoleName(tierIndex: number): string | null {
-  const def = discordStatusByIndex(tierIndex);
-  return def ? `WoC ${capitalize(def.key)}` : null;
-}
-
-/** All status-rung role names (for resolving/creating guild roles). */
-export function allTierRoleNames(): string[] {
-  return DISCORD_STATUS_DEFS.map((d) => `WoC ${capitalize(d.key)}`);
-}
-
-// Role colors per rung (24-bit RGB ints), climbing grey -> blurple -> gold so the
-// ladder reads at a glance. Indexed 1..8; used when auto-creating the roles.
-const TIER_ROLE_COLORS: Record<number, number> = {
-  1: 0x99aab5, // initiate  - grey
-  2: 0x57f287, // squire    - green
-  3: 0x3ba55d, // footman   - deep green
-  4: 0x5865f2, // knight    - blurple
-  5: 0x9b59b6, // champion  - purple
-  6: 0xe67e22, // warlord   - orange
-  7: 0xe91e63, // legend    - magenta
-  8: 0xf1c40f, // mythic    - gold
-};
-
-/** Suggested role color for a status rung (1-8); 0 when out of range. */
-export function tierRoleColor(tierIndex: number): number {
-  return TIER_ROLE_COLORS[tierIndex] ?? 0;
-}
-
-function capitalize(s: string): string {
-  return s.length ? s[0].toUpperCase() + s.slice(1) : s;
-}
-
-/**
- * Diff a member's current roles against the single role they should hold for
- * their status tier. They keep exactly the role for their current rung (tier >= 1)
- * and shed every other WoC-tier role. `tierRoleIds` maps a rung index to its
- * resolved guild role id. Pure so role sync is testable without the Discord API.
- */
-export function computeRoleSync(opts: {
-  tier: number;
-  memberRoleIds: readonly string[];
-  tierRoleIds: ReadonlyMap<number, string>;
-}): { toAdd: string[]; toRemove: string[] } {
-  const { tier, memberRoleIds, tierRoleIds } = opts;
-  const desired = tier >= 1 ? (tierRoleIds.get(tier) ?? null) : null;
-  const allTierRoleIds = new Set(tierRoleIds.values());
-  const have = new Set(memberRoleIds);
-  const toAdd = desired && !have.has(desired) ? [desired] : [];
-  const toRemove = [...have].filter((id) => allTierRoleIds.has(id) && id !== desired);
-  return { toAdd, toRemove };
 }
 
 // ── Level-on-name (Discord nickname) ─────────────────────────────────────────
@@ -162,38 +106,30 @@ export function buildLevelNick(baseName: string, level: number, className: strin
 }
 
 // ── Embeds + messages ────────────────────────────────────────────────────────
-// FlexData stays: the role-sync poll reads it (status tier + character for the
+// FlexData stays: the nickname-sync poll reads it (character for the
 // level-on-nickname). The /flex slash command and its embed were removed.
 export interface FlexData {
   found: boolean;
   username: string | null;
-  statusTier: number;
-  points: number;
   character: { name: string; class: string; level: number; profileUrl: string } | null;
 }
 
 /** Plain-text /whoami reply. */
-export function buildWhoamiContent(roles: {
-  linked: boolean;
-  statusTier: number;
-  points: number;
-  lifetimePoints: number;
-}): string {
-  if (!roles.linked) {
-    return 'Your Discord is not linked to a World of ClaudeCraft account yet. Use /link to connect it and start earning rewards.';
+export function buildWhoamiContent(status: { linked: boolean; username: string | null }): string {
+  if (!status.linked) {
+    return 'Your Discord is not linked to a World of ClaudeCraft account yet. Use /link to connect it.';
   }
-  const rank = tierRoleName(roles.statusTier)?.replace('WoC ', '') ?? 'Unranked';
-  return `Linked. Rank: **${rank}** · ${roles.points} reward points (lifetime ${roles.lifetimePoints}). Use /flex to show off your top character.`;
+  return `Linked as **${status.username ?? 'player'}**.`;
 }
 
 /** /link reply pointing at the in-game link flow. */
 export function buildLinkContent(gameUrl: string): string {
-  return `Connect your Discord to World of ClaudeCraft to earn rewards and flex your characters: open ${gameUrl}, log in, and press the Discord button in the game HUD (or "Continue with Discord" on the login screen).`;
+  return `Connect your Discord to World of ClaudeCraft: open ${gameUrl}, log in, and press the Discord button in the game HUD (or "Continue with Discord" on the login screen).`;
 }
 
 /** Welcome message for a new guild member. */
 export function buildWelcomeMessage(opts: { userMention: string; gameUrl: string }): string {
-  return `Welcome to World of ClaudeCraft, ${opts.userMention}! Play at ${opts.gameUrl} and link your Discord in the game HUD to earn rewards, claim swag, and rank up here in the server.`;
+  return `Welcome to World of ClaudeCraft, ${opts.userMention}! Play at ${opts.gameUrl} and link your Discord in the game HUD to show your characters here in the server.`;
 }
 
 // ── Voice presence ───────────────────────────────────────────────────────────

@@ -1,33 +1,28 @@
 // World of ClaudeCraft Discord bot.
 //
 // Two-way bridge between the game and the official Discord server:
-//  - IN DISCORD: /flex shows your top character + rank, /whoami your link status,
-//    /link the connect instructions; status-tier roles are synced from in-game
-//    reward points; new members get a welcome.
+//  - IN DISCORD: /whoami shows your link status, /link the connect instructions;
+//    linked members get their in-game level on their nickname.
 //  - INTO THE GAME: who is online + in the featured voice room is pushed to the
 //    server, which surfaces it in the HUD Discord widget.
 //
-// Discord state (gateway/REST) lives entirely here; the game server stays the
-// authority for rewards. Pure protocol/diff/embed logic is in ./logic (tested);
-// this file is the wiring. esbuild-bundled for Node via `npm run bot`.
+// Discord state (gateway/REST) lives entirely here. Pure protocol/embed logic is
+// in ./logic (tested); this file is the wiring. esbuild-bundled for Node via
+// `npm run bot`.
 
 import { DISCORD_SPECIAL_ROLES } from '../src/sim/discord_roles';
-import { DISCORD_REWARD_GRANTS } from '../src/sim/discord_tier';
 import { loadConfig } from './config';
 import { DiscordApi } from './discord_api';
 import { Gateway } from './gateway';
 import {
-  allTierRoleNames,
   buildActivityMessage,
   buildLevelNick,
   buildLinkContent,
   buildRelayMessage,
   buildWhoamiContent,
-  computeRoleSync,
   isSlashCommand,
   type RawVoiceState,
   SLASH_COMMANDS,
-  tierRoleColor,
   voiceMembersForChannel,
 } from './logic';
 import { ServerClient, type VoiceMemberPush } from './server_client';
@@ -54,40 +49,6 @@ async function main(): Promise<void> {
   const server = new ServerClient(cfg.gameServerUrl, cfg.botSecret);
 
   await discord.registerGuildCommands(cfg.clientId, cfg.guildId, [...SLASH_COMMANDS]);
-
-  // Resolve the status-tier role ids by name (WoC Initiate ... WoC Mythic).
-  // tierRoleIds maps a 1-based rung index to its role id.
-  const tierRoleIds = new Map<number, string>();
-  const refreshTierRoles = async (): Promise<void> => {
-    const roles = await discord.guildRoles(cfg.guildId);
-    const names = allTierRoleNames();
-    names.forEach((name, i) => {
-      const role = roles.find((r) => r.name === name);
-      if (role) tierRoleIds.set(i + 1, role.id);
-    });
-  };
-
-  // Auto-provision any missing WoC tier roles (needs MANAGE_ROLES). Idempotent:
-  // only creates the rungs not already present, then re-resolves the id map. If
-  // the bot lacks permission this logs and the missing rungs are simply skipped.
-  const ensureTierRoles = async (): Promise<void> => {
-    const existing = new Set((await discord.guildRoles(cfg.guildId)).map((r) => r.name));
-    const missing = allTierRoleNames()
-      .map((name, i) => ({ name, index: i + 1 }))
-      .filter((r) => !existing.has(r.name));
-    for (const { name, index } of missing) {
-      try {
-        await discord.createGuildRole(cfg.guildId, name, tierRoleColor(index));
-        console.log(`[bot] created status-tier role ${name}`);
-      } catch (e) {
-        console.error(`[bot] could not create role ${name} (need MANAGE_ROLES):`, e);
-      }
-    }
-    if (missing.length) await refreshTierRoles();
-  };
-
-  await ensureTierRoles();
-  await refreshTierRoles();
 
   // Resolve the staff/special role ids by name (Levy St / Devs / Mods / Artists),
   // so each member's top special role can be pushed to the game (name color + tag).
@@ -171,53 +132,20 @@ async function main(): Promise<void> {
     // Discord's 3s deadline) then edit the deferred reply.
     await discord.deferInteraction(interactionId, token, true /* ephemeral */);
     if (name === 'whoami') {
-      const roles = (await server.roles(userId)) ?? {
-        linked: false,
-        statusTier: 0,
-        points: 0,
-        lifetimePoints: 0,
-      };
+      const flex = await server.flex(userId);
       await discord.editOriginalResponse(cfg.clientId, token, {
-        content: buildWhoamiContent(roles),
+        content: buildWhoamiContent({
+          linked: flex?.linked ?? false,
+          username: flex?.username ?? null,
+        }),
       });
     }
   };
 
-  // ── role sync (poll the server for online linked members) ────────────────────
-  const syncRolesFor = async (userId: string): Promise<void> => {
-    // One flex read drives both the status-tier roles AND the level-on-name nick.
+  // ── nickname sync (poll the server for online linked members) ────────────────
+  const syncNickFor = async (userId: string): Promise<void> => {
     const flex = await server.flex(userId);
     if (!flex?.linked) return;
-    const { toAdd, toRemove } =
-      tierRoleIds.size > 0
-        ? computeRoleSync({
-            tier: flex.statusTier,
-            memberRoleIds: memberRoles.get(userId) ?? [],
-            tierRoleIds,
-          })
-        : { toAdd: [] as string[], toRemove: [] as string[] };
-    // Only update the cached role set when the Discord API call actually
-    // succeeds, so a failed add/remove is retried on the next sync (not masked
-    // by a cache that wrongly claims success).
-    for (const roleId of toAdd) {
-      try {
-        await discord.addMemberRole(cfg.guildId, userId, roleId);
-        memberRoles.set(userId, [...(memberRoles.get(userId) ?? []), roleId]);
-      } catch (e) {
-        console.error(e);
-      }
-    }
-    for (const roleId of toRemove) {
-      try {
-        await discord.removeMemberRole(cfg.guildId, userId, roleId);
-        memberRoles.set(
-          userId,
-          (memberRoles.get(userId) ?? []).filter((r) => r !== roleId),
-        );
-      } catch (e) {
-        console.error(e);
-      }
-    }
     // Attach the in-game level + class icon to the member's Discord nickname
     // (built from the stable Discord handle so re-syncs don't compound).
     if (cfg.syncNicknames && flex.character) {
@@ -228,8 +156,8 @@ async function main(): Promise<void> {
         .catch((e) => console.error('[bot] setNickname failed', e));
     }
   };
-  const syncAllOnlineRoles = async (): Promise<void> => {
-    for (const userId of onlineUsers) await syncRolesFor(userId);
+  const syncAllOnlineNicks = async (): Promise<void> => {
+    for (const userId of onlineUsers) await syncNickFor(userId);
   };
 
   // ── gateway dispatch ─────────────────────────────────────────────────────────
@@ -240,9 +168,9 @@ async function main(): Promise<void> {
           if (String(d.id ?? '') !== cfg.guildId) return;
           seedGuild(d);
           schedulePresencePush();
-          // Sync tier roles for everyone online right away, so a freshly linked
-          // member's role matches their points without waiting for the poll.
-          void syncAllOnlineRoles().catch((e) => console.error(e));
+          // Sync nicknames for everyone online right away, so a freshly linked
+          // member's level shows without waiting for the poll.
+          void syncAllOnlineNicks().catch((e) => console.error(e));
           // Push member join dates + staff roles so the game shows member-since +
           // role color/tag for linked players.
           void pushAllMemberMeta().catch((e) => console.error(e));
@@ -262,10 +190,7 @@ async function main(): Promise<void> {
           if (!userId) return;
           const channelId = typeof d.channel_id === 'string' ? d.channel_id : null;
           if (channelId === null) voiceStates.delete(userId);
-          else {
-            voiceStates.set(userId, { userId, channelId, selfMute: d.self_mute === true });
-            grantDailyActive(userId); // joining voice counts as daily engagement
-          }
+          else voiceStates.set(userId, { userId, channelId, selfMute: d.self_mute === true });
           schedulePresencePush();
           break;
         }
@@ -284,17 +209,8 @@ async function main(): Promise<void> {
           const userId = String(u.id ?? '');
           if (!userId) return;
           memberNames.set(userId, displayNameOf(d, u));
-          // Mark membership + grant the member reward (server dedupes). No channel
-          // welcome message is posted (intentionally quiet).
+          // Mark membership. No channel welcome message is posted (intentionally quiet).
           void server.setMember(userId, true);
-          break;
-        }
-        case 'MESSAGE_CREATE': {
-          // Chatting in the server is daily engagement (ignore bots/webhooks).
-          if (String(d.guild_id ?? '') !== cfg.guildId) return;
-          const author = (d.author ?? {}) as Record<string, unknown>;
-          if (author.bot === true) return;
-          grantDailyActive(String(author.id ?? ''));
           break;
         }
         case 'INTERACTION_CREATE':
@@ -347,22 +263,6 @@ async function main(): Promise<void> {
     if (members.length) await server.pushMembersMeta(members);
   };
 
-  // Daily Discord-engagement reward: the first time a linked member posts a message
-  // or joins voice each day, grant the daily-active points. Deduped here (per user
-  // per day) AND server-side (the grant dedupe key), so it is exactly-once.
-  const dailyActiveSeen = new Set<string>(); // `${userId}:${YYYY-MM-DD}`
-  const grantDailyActive = (userId: string): void => {
-    if (!userId) return;
-    const day = new Date().toISOString().slice(0, 10);
-    const key = `${userId}:${day}`;
-    if (dailyActiveSeen.has(key)) return;
-    dailyActiveSeen.add(key);
-    const g = DISCORD_REWARD_GRANTS.dailyActive;
-    void server
-      .grant(userId, g.reason, g.points, `${g.reason}:${userId}:${day}`)
-      .catch((e) => console.error('[bot] daily-active grant failed', e));
-  };
-
   // Drain + deliver queued in-game "!" community posts (LFG etc.) to the relay
   // channel as rich embeds with a "respond in game" button.
   const pollRelay = async (): Promise<void> => {
@@ -388,11 +288,7 @@ async function main(): Promise<void> {
 
   gateway.connect(false);
   setInterval(
-    () => void syncAllOnlineRoles().catch((e) => console.error(e)),
-    ROLE_SYNC_INTERVAL_MS,
-  ).unref();
-  setInterval(
-    () => void refreshTierRoles().catch((e) => console.error(e)),
+    () => void syncAllOnlineNicks().catch((e) => console.error(e)),
     ROLE_SYNC_INTERVAL_MS,
   ).unref();
   setInterval(() => void pollRelay().catch((e) => console.error(e)), RELAY_POLL_MS).unref();

@@ -238,8 +238,6 @@ describe('options_view: interface dispatch matrix (cluster 5)', () => {
       'frostedPanels',
       'highContrastText',
       'reduceMotion',
-      'showWalletOnCharacterScreen',
-      'showWalletOnPlayerCard',
       'landingHighContrast',
       'invertLookY',
       'showItemLevel',

@@ -67,10 +67,6 @@ import {
   NATIVE_APP,
   type ReleaseEntry,
 } from './net/online';
-// The wallet module is loaded lazily via dynamic import() in the wallet
-// controller below, so it stays out of the main entry chunk and only loads when
-// the feature is enabled + used.
-import type { WalletOption } from './net/wallet';
 import { assetsReady } from './render/assets/preload';
 import { CharacterPreview } from './render/characters';
 import { skinCount } from './render/characters/manifest';
@@ -161,13 +157,6 @@ import {
 } from './ui/two_factor_setup';
 import { UiEffectsApplier } from './ui/ui_effects_applier';
 import { hydrateIcons } from './ui/ui_icons';
-import {
-  resolveWocBalanceUpdate,
-  setWalletDisplayAvailable,
-  setWalletUiEnabled,
-  setWocBalance,
-  shouldDisconnectUnverifiedWallet,
-} from './ui/wallet_balance';
 import { formatXp } from './ui/xp_bar';
 import type { IWorld, LeaderboardEntry } from './world_api';
 
@@ -1387,15 +1376,6 @@ async function startGame(
       perfOverlay.setEnabled(settings.set('showFps', !!value));
       return;
     }
-    if (key === 'showWalletOnCharacterScreen') {
-      settings.set('showWalletOnCharacterScreen', !!value);
-      syncWalletCharacterScreenVisibility();
-      return;
-    }
-    if (key === 'showWalletOnPlayerCard') {
-      settings.set('showWalletOnPlayerCard', !!value);
-      return;
-    }
     if (key === 'invertLookY') {
       input.setInvertLookY(settings.set('invertLookY', !!value));
       return;
@@ -1555,7 +1535,6 @@ async function startGame(
       },
     },
     changeLanguage: (lang, onStatus) => changeLanguage(lang, onStatus),
-    refreshWocBalance: () => refreshWocBalanceOnDemand(),
     perfOverlay: {
       get: () => perfConfig.get(),
       patch: (p) => {
@@ -3102,28 +3081,9 @@ const revalidateAccountSession = (): Promise<void> => loadAccountPortal(true);
 // Navigating to the Account view: refresh the portal without touching the chrome.
 const renderAccountPortal = (): Promise<void> => loadAccountPortal(false);
 
-// `focusWallet` differentiates the Wallet card's CTA from "View Characters":
-// both land on the realm/character picker, but Manage Wallet then scrolls to and
-// focuses the wallet control once it renders.
-let pendingWalletFocus = false;
-function accountGoToCharacters(focusWallet = false): void {
-  pendingWalletFocus = focusWallet;
+function accountGoToCharacters(): void {
   switchMainView('#hero-view');
-  void enterRealmFlow().then(() => {
-    if (pendingWalletFocus) tryFocusWalletButton();
-  });
-}
-
-function tryFocusWalletButton(attempt = 0): void {
-  const btn = document.getElementById('btn-wallet');
-  if (btn && btn.offsetParent !== null) {
-    pendingWalletFocus = false;
-    btn.scrollIntoView({ block: 'center' });
-    btn.focus();
-    return;
-  }
-  if (attempt < 20) window.setTimeout(() => tryFocusWalletButton(attempt + 1), 100);
-  else pendingWalletFocus = false;
+  void enterRealmFlow();
 }
 
 let accountPortalWired = false;
@@ -3191,11 +3151,8 @@ function setupAccountPortal(): void {
 
   setupSecuritySection();
 
-  document
-    .getElementById('account-manage-wallet')
-    ?.addEventListener('click', () => accountGoToCharacters(true));
   ($('#account-go-characters') as HTMLElement).addEventListener('click', () =>
-    accountGoToCharacters(false),
+    accountGoToCharacters(),
   );
   ($('#account-logout') as HTMLElement).addEventListener('click', logoutAccount);
 }
@@ -4196,7 +4153,6 @@ function translatePage(): void {
 }
 
 function refreshLocalizedDynamicShell(): void {
-  updateWalletButton();
   const activePanel = document.body.dataset.startPanel;
   if (activePanel === 'realm-panel') {
     showRealmList();
@@ -4475,59 +4431,6 @@ async function loadNews(): Promise<void> {
     .join('');
 }
 
-let caCopyResetTimer: number | null = null;
-
-// Click-to-copy for the $WOC contract address on the landing page. Falls back to
-// a hidden-textarea copy when the async Clipboard API is unavailable (insecure
-// context / older browsers); the copied state is only shown on a real success.
-function wireContractAddressCopy(): void {
-  const btn = document.getElementById('btn-copy-ca');
-  const container = document.getElementById('token-ca');
-  if (!btn || !container) return;
-
-  const showCopied = () => {
-    container.classList.add('is-copied');
-    if (caCopyResetTimer !== null) window.clearTimeout(caCopyResetTimer);
-    caCopyResetTimer = window.setTimeout(() => {
-      container.classList.remove('is-copied');
-      caCopyResetTimer = null;
-    }, 1800);
-  };
-
-  const fallbackCopy = (text: string): boolean => {
-    const ta = document.createElement('textarea');
-    ta.value = text;
-    ta.setAttribute('readonly', '');
-    ta.style.position = 'fixed';
-    ta.style.opacity = '0';
-    document.body.appendChild(ta);
-    ta.select();
-    let ok = false;
-    try {
-      ok = document.execCommand('copy');
-    } catch {
-      ok = false;
-    }
-    document.body.removeChild(ta);
-    return ok;
-  };
-
-  btn.addEventListener('click', () => {
-    const ca = btn.getAttribute('data-ca');
-    if (!ca) return;
-    if (navigator.clipboard?.writeText) {
-      navigator.clipboard
-        .writeText(ca)
-        .then(showCopied)
-        .catch(() => {
-          if (fallbackCopy(ca)) showCopied();
-        });
-    } else if (fallbackCopy(ca)) {
-      showCopied();
-    }
-  });
-}
-
 function syncHomepageMusicToggle(): void {
   const btn = document.getElementById('homepage-music-toggle') as HTMLButtonElement | null;
   if (!btn) return;
@@ -4575,541 +4478,6 @@ function wireHomepageMusicToggle(): void {
   });
 }
 
-// ── Non-custodial Solana wallet linking ─────────────────────────────────────
-// The character-select wallet row connects a Wallet Standard Solana wallet and,
-// once the player is logged in, binds it to their account by signing a
-// server-issued challenge. The account↔wallet link is the durable,
-// server-verified artifact.
-let linkedWalletPubkey: string | null = null;
-let linkedWocBalance: number | null = null;
-let connectedWocBalance: number | null = null;
-let walletVerifyPending = false;
-let walletVerifyInProgress = false;
-// True from when a logged-in session starts loading its linked-wallet status until
-// that load settles. While pending, an auto-reconnected wallet must NOT be treated
-// as unverified and disconnected; otherwise a restored session re-signs on every
-// reload (the link is durable server-side; we just haven't fetched it yet).
-let walletLinkStatusPending = false;
-let walletVerifyTimeout: number | null = null;
-let walletVerifyModalUnsubscribe: (() => void) | null = null;
-let walletFlowStatus: 'connect' | 'sign' | 'verify' | null = null;
-let walletHiddenNoticeTimeout: number | null = null;
-
-// Feature flag: Wallet Standard support needs no project id. Keep an escape
-// hatch for deploys that want to hide the wallet UI entirely. Native app builds
-// intentionally exclude wallet verification for now.
-// client_shell.test guards the native exclusion:
-// const WALLET_ENABLED = !NATIVE_APP && String(import.meta.env.VITE_WALLET_DISABLED ?? '').trim() !== '1';
-const WALLET_ENABLED =
-  !NATIVE_APP && String(import.meta.env.VITE_WALLET_DISABLED ?? '').trim() !== '1';
-
-function walletCharacterScreenVisible(): boolean {
-  try {
-    return new Settings().get('showWalletOnCharacterScreen');
-  } catch {
-    return true;
-  }
-}
-
-function syncWalletCharacterScreenVisibility(): void {
-  const walletRow = document.querySelector<HTMLElement>('.cs-wallet');
-  if (!walletRow) return;
-  walletRow.hidden = !walletCharacterScreenVisible();
-}
-
-function showWalletHiddenNotice(): void {
-  const note = document.getElementById('wallet-hidden-note');
-  if (!note) return;
-  if (walletHiddenNoticeTimeout !== null) {
-    window.clearTimeout(walletHiddenNoticeTimeout);
-    walletHiddenNoticeTimeout = null;
-  }
-  note.textContent = t('wallet.hiddenNotice');
-  note.hidden = false;
-  walletHiddenNoticeTimeout = window.setTimeout(() => {
-    note.hidden = true;
-    note.textContent = '';
-    walletHiddenNoticeTimeout = null;
-  }, 8000);
-}
-
-function hideWalletCharacterScreenRow(): void {
-  new Settings().set('showWalletOnCharacterScreen', false);
-  syncWalletCharacterScreenVisibility();
-  showWalletHiddenNotice();
-}
-
-// Lazily load the heavy wallet module the first time it's needed, then cache it.
-let walletMod: typeof import('./net/wallet') | null = null;
-function loadWallet(): Promise<typeof import('./net/wallet')> {
-  return walletMod
-    ? Promise.resolve(walletMod)
-    : import('./net/wallet').then((m) => {
-        walletMod = m;
-        walletMod.setWalletPicker(showWalletPicker);
-        return walletMod;
-      });
-}
-
-const shortenAddress = (a: string): string => `${a.slice(0, 4)}…${a.slice(-4)}`;
-const formatWoc = (n: number): string => formatNumber(n, { maximumFractionDigits: 2 });
-const walletBalanceText = (n: number): string =>
-  t('wallet.balanceAmount', { amount: formatWoc(n) });
-let walletPickerModal: HTMLDivElement | null = null;
-let walletPickerResolve: ((id: string | null) => void) | null = null;
-// One module-local FocusManager INSTANCE for the pre-game wallet-picker modal:
-// the shared focus-trap implementation, not a second hand-rolled one. It is an instance, NOT
-// a module singleton exported from focus_manager, mirroring
-// how Hud owns its own FocusManager; the pre-game shell cannot reach Hud's private instance, so
-// a dedicated instance is the correct unification. It owns trap + focus-first + return-to-opener
-// only; this modal keeps its OWN Escape + backdrop-click close (below) because the manager
-// deliberately owns no Escape and the wallet picker is not a hud.closeAll window.
-const walletFocusManager = new FocusManager();
-let walletPickerFocusHandle: FocusTrapHandle | null = null;
-// The control that opened the picker, captured on the FIRST open and preserved across a
-// re-entrant re-open so closing the (re-)opened modal still returns focus to where the flow
-// started. The re-entrant close detaches the prior modal (dropping focus to document.body), so
-// re-reading document.activeElement at the new open would record body, not the real opener.
-let walletPickerOpener: HTMLElement | null = null;
-
-function closeWalletPicker(id: string | null, returnFocus = true): void {
-  const modal = walletPickerModal;
-  const resolve = walletPickerResolve;
-  const focusHandle = walletPickerFocusHandle;
-  walletPickerModal = null;
-  walletPickerResolve = null;
-  walletPickerFocusHandle = null;
-  if (modal) modal.remove();
-  // Return focus to the opener through the shared FocusManager (replacing the manual
-  // returnFocus.focus()): release(true) pops the trap and refocuses the recorded opener. The
-  // re-entrant re-open path passes returnFocus=false so the FocusManager's deferred opener
-  // focus cannot land AFTER (and steal focus from) the new modal's synchronous initial focus;
-  // the original opener is preserved separately in walletPickerOpener for the eventual real
-  // close. Drop that recorded opener only on a real (returnFocus=true) close so a re-opened
-  // picker still returns to where the flow started.
-  focusHandle?.release(returnFocus);
-  if (returnFocus) walletPickerOpener = null;
-  if (resolve) resolve(id);
-}
-
-// The wallet picker uses the shared src/ui/focus_manager FocusManager, so there
-// is ONE focus-trap implementation. It keeps its own Escape + backdrop-click close because the
-// manager owns no Escape and this is a pre-game shell modal, not a hud.closeAll window; the
-// FocusManager is a module-local INSTANCE, never a module singleton.
-function showWalletPicker(
-  wallets: readonly WalletOption[],
-  selectedId: string | null,
-): Promise<string | null> {
-  const reentrant = walletPickerResolve !== null;
-  if (reentrant) closeWalletPicker(null, false);
-  return new Promise((resolve) => {
-    walletPickerResolve = resolve;
-    // Capture the opener BEFORE focus moves into the modal; the FocusManager returns focus here
-    // on release(). On a re-entrant re-open keep the FIRST opener (the re-entrant close already
-    // detached its modal and dropped focus to body, so re-reading activeElement now would record
-    // body, not the control that started the flow).
-    if (!reentrant) {
-      walletPickerOpener =
-        document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    }
-
-    const back = document.createElement('div');
-    back.className = 'modal-backdrop wallet-picker-backdrop';
-    back.id = 'wallet-picker-modal';
-
-    const panel = document.createElement('div');
-    panel.className = 'panel wallet-picker-modal';
-    panel.setAttribute('role', 'dialog');
-    panel.setAttribute('aria-modal', 'true');
-    panel.setAttribute('aria-labelledby', 'wallet-picker-title');
-    panel.setAttribute('aria-describedby', 'wallet-picker-help');
-
-    const titleRow = document.createElement('div');
-    titleRow.className = 'panel-title';
-    const title = document.createElement('span');
-    title.id = 'wallet-picker-title';
-    title.textContent = t('wallet.connectTitle');
-    const closeBtn = document.createElement('button');
-    closeBtn.type = 'button';
-    closeBtn.className = 'x-btn wallet-picker-close';
-    closeBtn.setAttribute('aria-label', t('skinEvent.close'));
-    closeBtn.textContent = '×';
-    titleRow.append(title, closeBtn);
-
-    const help = document.createElement('p');
-    help.className = 'wallet-picker-help';
-    help.id = 'wallet-picker-help';
-    help.textContent = t('wallet.flowConnect');
-
-    const list = document.createElement('div');
-    list.className = 'wallet-picker-list';
-
-    if (wallets.length === 0) {
-      const empty = document.createElement('p');
-      empty.className = 'wallet-picker-empty';
-      empty.textContent = t('wallet.helpDisconnected');
-      list.appendChild(empty);
-    } else {
-      for (const option of wallets) {
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.className = 'wallet-picker-option';
-        button.classList.toggle('selected', option.id === selectedId);
-        button.setAttribute('aria-label', option.name);
-        button.addEventListener('click', () => closeWalletPicker(option.id));
-
-        const icon = document.createElement('img');
-        icon.className = 'wallet-picker-icon';
-        icon.src = option.icon;
-        icon.alt = '';
-        icon.decoding = 'async';
-
-        const text = document.createElement('span');
-        text.className = 'wallet-picker-name';
-        text.textContent = option.name;
-
-        button.append(icon, text);
-        if (option.connected) {
-          const badge = document.createElement('span');
-          badge.className = 'wallet-picker-badge';
-          badge.textContent = t('wallet.appConnected');
-          button.appendChild(badge);
-        }
-        list.appendChild(button);
-      }
-    }
-
-    panel.append(titleRow, help, list);
-    back.appendChild(panel);
-    document.body.appendChild(back);
-    walletPickerModal = back;
-    // Install the shared focus trap over the panel: Tab/Shift+Tab cycle + return-to-opener.
-    // This replaces the deleted hand-rolled focusable list + inline Tab cycle, so there is one
-    // focus-trap implementation (the manager re-queries the panel's focusables on each Tab).
-    walletPickerFocusHandle = walletFocusManager.open({
-      root: () => panel,
-      returnFocusTo: walletPickerOpener,
-    });
-
-    const close = () => closeWalletPicker(null);
-    closeBtn.addEventListener('click', close);
-    back.addEventListener('click', (e) => {
-      if (e.target === back) close();
-    });
-    // Keep ONLY the modal's own Escape (the FocusManager owns no Escape, and this is a
-    // pre-game shell modal, not a hud.closeAll window). Tab/Shift+Tab is the shared trap's job.
-    back.addEventListener('keydown', (e) => {
-      if (e.key !== 'Escape') return;
-      e.preventDefault();
-      e.stopPropagation();
-      close();
-    });
-
-    // Initial focus preserved byte-faithfully: the selected option, else the first option,
-    // else the close button. Kept explicit (synchronous) so the initial-focus behavior is
-    // unchanged; the shared manager owns the Tab trap + return-to-opener.
-    const initialFocus =
-      back.querySelector<HTMLElement>('.wallet-picker-option.selected') ??
-      back.querySelector<HTMLElement>('.wallet-picker-option') ??
-      closeBtn;
-    initialFocus.focus();
-  });
-}
-
-function walletAddressLabel(address: string, linked: boolean, balance: number | null): string {
-  const short = shortenAddress(address);
-  if (balance !== null) {
-    const balanceText = walletBalanceText(balance);
-    return linked
-      ? t('wallet.connectedLinkedWithBalance', { balance: balanceText, address: short })
-      : t('wallet.connectedWithBalance', { balance: balanceText, address: short });
-  }
-  return linked
-    ? t('wallet.connectedLinked', { address: short })
-    : t('wallet.connected', { address: short });
-}
-
-function walletHelpText(address: string, linked: boolean, balance: number | null): string {
-  const short = shortenAddress(address);
-  if (linked) {
-    return balance !== null
-      ? t('wallet.helpLinkedWithBalance', { balance: walletBalanceText(balance), address: short })
-      : t('wallet.helpLinked', { address: short });
-  }
-  if (!api.token) {
-    return balance !== null
-      ? t('wallet.helpLoginToLinkWithBalance', {
-          balance: walletBalanceText(balance),
-          address: short,
-        })
-      : t('wallet.helpLoginToLink', { address: short });
-  }
-  return balance !== null
-    ? t('wallet.helpReadyToLinkWithBalance', {
-        balance: walletBalanceText(balance),
-        address: short,
-      })
-    : t('wallet.helpReadyToLink', { address: short });
-}
-
-function walletLinkedDisconnectedHelpText(address: string, balance: number | null): string {
-  const short = shortenAddress(address);
-  return balance !== null
-    ? t('wallet.helpLinkedDisconnectedWithBalance', {
-        balance: walletBalanceText(balance),
-        address: short,
-      })
-    : t('wallet.helpLinkedDisconnected', { address: short });
-}
-
-function setWalletStatus(text: string | null): void {
-  const status = document.getElementById('wallet-status');
-  if (!status) return;
-  if (!text) {
-    status.hidden = true;
-    status.textContent = '';
-    status.removeAttribute('title');
-    status.removeAttribute('aria-label');
-    return;
-  }
-  status.hidden = false;
-  status.textContent = text;
-  status.title = text;
-  status.setAttribute('aria-label', text);
-}
-
-function walletFlowHelpText(): string {
-  switch (walletFlowStatus) {
-    case 'connect':
-      return t('wallet.flowConnect');
-    case 'sign':
-      return t('wallet.flowSign');
-    case 'verify':
-      return t('wallet.flowVerify');
-    default:
-      return t('wallet.helpDisconnected');
-  }
-}
-
-function setWalletHelp(text: string, state: 'default' | 'attention' | 'verified'): void {
-  const help = document.getElementById('wallet-help');
-  if (!help) return;
-  help.textContent = text;
-  help.classList.toggle('is-attention', state === 'attention');
-  help.classList.toggle('is-verified', state === 'verified');
-}
-
-function setWalletFlowStatus(status: typeof walletFlowStatus): void {
-  walletFlowStatus = status;
-  updateWalletButton();
-}
-
-function updateWalletButton(): void {
-  if (!WALLET_ENABLED) {
-    setWocBalance(null, false);
-    setWalletDisplayAvailable(false);
-    return;
-  }
-  syncWalletCharacterScreenVisibility();
-  // currentWallet is sync; before the module loads, treat as disconnected.
-  const { address, isConnected } = walletMod
-    ? walletMod.currentWallet()
-    : { address: null, isConnected: false };
-  const connected = isConnected && !!address;
-  const linked = connected && linkedWalletPubkey === address;
-  const verifiedBalance = linkedWalletPubkey
-    ? (linkedWocBalance ?? (linked ? connectedWocBalance : null))
-    : null;
-  const previewBalance = connected && !linkedWalletPubkey ? connectedWocBalance : null;
-  // Mirror the balance into the HUD store so the bag footer stays in sync. Only
-  // a balance for the linked wallet may drive verified holder claims.
-  setWocBalance(verifiedBalance ?? previewBalance, verifiedBalance !== null);
-  setWalletDisplayAvailable(connected || linkedWalletPubkey !== null);
-  const btn = document.getElementById('btn-wallet');
-  const label = document.getElementById('wallet-label');
-  if (!btn || !label) return;
-  // Switch / Unlink are account-link actions; Disconnect is only meaningful for
-  // the browser wallet-app session.
-  const switchBtn = document.getElementById('btn-wallet-switch');
-  const unlinkBtn = document.getElementById('btn-wallet-unlink');
-  const signoutBtn = document.getElementById('btn-wallet-signout');
-  if (switchBtn) switchBtn.hidden = !(api.token && linkedWalletPubkey);
-  if (unlinkBtn) unlinkBtn.hidden = !(api.token && linkedWalletPubkey);
-  if (signoutBtn) signoutBtn.hidden = !connected;
-  btn.classList.remove('is-connected', 'is-linked', 'needs-link', 'connect-app');
-  btn.classList.toggle('busy', walletFlowStatus !== null);
-  if (walletFlowStatus) {
-    label.textContent = t('wallet.verifying');
-    btn.title = t('wallet.verifyingTitle');
-    btn.setAttribute('aria-label', t('wallet.verifyingTitle'));
-    setWalletStatus(null);
-    setWalletHelp(walletFlowHelpText(), 'attention');
-    return;
-  }
-  if (!connected) {
-    if (api.token && linkedWalletPubkey) {
-      btn.classList.add('connect-app');
-      label.textContent = t('wallet.connectApp');
-      btn.title = t('wallet.connectAppTitle');
-      btn.setAttribute('aria-label', t('wallet.connectAppAria'));
-      setWalletStatus(walletAddressLabel(linkedWalletPubkey, true, linkedWocBalance));
-      setWalletHelp(
-        walletLinkedDisconnectedHelpText(linkedWalletPubkey, linkedWocBalance),
-        'verified',
-      );
-      return;
-    }
-    btn.classList.add('needs-link');
-    label.textContent = t('wallet.verify');
-    btn.title = t('wallet.verifyTitle');
-    btn.setAttribute('aria-label', t('wallet.verifyAria'));
-    setWalletStatus(null);
-    setWalletHelp(t('wallet.helpDisconnected'), 'default');
-    return;
-  }
-  // $WOC balance sits to the left of the address once it has loaded.
-  if (linked) {
-    btn.classList.add('is-linked');
-    label.textContent = t('wallet.appConnected');
-    btn.title = t('wallet.linkedTitle');
-    btn.setAttribute('aria-label', t('wallet.linkedTitle'));
-    setWalletStatus(walletAddressLabel(address, true, verifiedBalance));
-    setWalletHelp(walletHelpText(address, true, verifiedBalance), 'verified');
-  } else if (api.token) {
-    btn.classList.add('needs-link');
-    label.textContent = linkedWalletPubkey ? t('wallet.verifyNew') : t('wallet.verify');
-    btn.title = t('wallet.verifyTitle');
-    btn.setAttribute(
-      'aria-label',
-      t('wallet.verifyAddressAria', { address: shortenAddress(address) }),
-    );
-    setWalletStatus(null);
-    setWalletHelp(walletHelpText(address, false, connectedWocBalance), 'attention');
-  } else {
-    btn.classList.add('is-connected');
-    label.textContent = walletAddressLabel(address, false, connectedWocBalance);
-    btn.title = t('wallet.connectedTitle');
-    btn.setAttribute('aria-label', t('wallet.connectedTitle'));
-    setWalletStatus(null);
-    setWalletHelp(walletHelpText(address, false, connectedWocBalance), 'default');
-  }
-}
-
-function clearWalletVerifyTimeout(): void {
-  if (walletVerifyTimeout !== null) {
-    window.clearTimeout(walletVerifyTimeout);
-    walletVerifyTimeout = null;
-  }
-}
-
-function clearWalletVerifyModalWatcher(): void {
-  if (!walletVerifyModalUnsubscribe) return;
-  walletVerifyModalUnsubscribe();
-  walletVerifyModalUnsubscribe = null;
-}
-
-function cancelWalletVerifyPending(): void {
-  walletVerifyPending = false;
-  clearWalletVerifyTimeout();
-  clearWalletVerifyModalWatcher();
-  setWalletFlowStatus(null);
-}
-
-async function disconnectUnverifiedWallet(): Promise<void> {
-  if (!walletMod) return;
-  const { address } = walletMod.currentWallet();
-  if (!address || address === linkedWalletPubkey) return;
-  try {
-    await walletMod.disconnectWallet();
-  } catch (err) {
-    console.error('[wallet] disconnect unverified wallet failed', err);
-  } finally {
-    connectedWocBalance = null;
-    updateWalletButton();
-  }
-}
-
-async function disconnectUnverifiedWalletIfIdle(): Promise<void> {
-  if (
-    !shouldDisconnectUnverifiedWallet({
-      connectedAddress: walletMod?.currentWallet().address ?? null,
-      linkedPubkey: linkedWalletPubkey,
-      verifyPending: walletVerifyPending,
-      verifyInProgress: walletVerifyInProgress,
-      linkStatusPending: walletLinkStatusPending,
-    })
-  )
-    return;
-  await disconnectUnverifiedWallet();
-}
-
-// Read the connected wallet's $WOC balance and re-render. Ignores a stale
-// response if the connected wallet changed while the RPC call was in flight.
-// `fresh` bypasses the server's per-wallet cache (used when the player opens a
-// surface that shows the balance, so an on-chain token change shows up); an
-// initial (non-fresh) read clears the prior value first to show a loading state.
-async function refreshWocBalance(address: string, fresh = false): Promise<void> {
-  if (!fresh) {
-    connectedWocBalance = null;
-    updateWalletButton();
-  }
-  const wallet = await loadWallet();
-  const balance = await wallet.fetchWocBalance(address, fresh);
-  // Skip stale results (wallet switched mid-flight) and fresh-read transport blips
-  // that would wipe a shown balance — see resolveWocBalanceUpdate.
-  const { apply, setLinked } = resolveWocBalanceUpdate({
-    address,
-    fresh,
-    balance,
-    currentAddress: wallet.currentWallet().address,
-    linkedAddress: linkedWalletPubkey,
-  });
-  if (!apply) return;
-  connectedWocBalance = balance;
-  if (setLinked) linkedWocBalance = balance;
-  updateWalletButton();
-}
-
-// Re-fetch the connected/linked wallet's balance on demand (server cache
-// bypassed) so surfaces that display it — the bag footer and the player card —
-// reflect on-chain changes. No-op when the wallet feature is off or nothing is
-// connected/linked. Prefers the account-LINKED wallet (whose balance the badge
-// shows) over a merely-connected one, and a short throttle coalesces rapid
-// bag/card toggles so they don't burn the per-IP fresh-read budget.
-let lastOnDemandRefreshAddress: string | null = null;
-let lastOnDemandRefreshAt = 0;
-const ON_DEMAND_REFRESH_THROTTLE_MS = 5000;
-function refreshWocBalanceOnDemand(): void {
-  if (!WALLET_ENABLED) return;
-  const address = linkedWalletPubkey ?? walletMod?.currentWallet().address ?? null;
-  if (!address) return;
-  const now = Date.now();
-  if (
-    address === lastOnDemandRefreshAddress &&
-    now - lastOnDemandRefreshAt < ON_DEMAND_REFRESH_THROTTLE_MS
-  )
-    return;
-  lastOnDemandRefreshAddress = address;
-  lastOnDemandRefreshAt = now;
-  void refreshWocBalance(address, true);
-}
-
-function flashWalletError(message: string): void {
-  const btn = document.getElementById('btn-wallet');
-  const label = document.getElementById('wallet-label');
-  if (!btn || !label) return;
-  const previous = label.textContent;
-  label.textContent = message;
-  btn.title = message;
-  btn.setAttribute('aria-label', message);
-  window.setTimeout(() => {
-    if (label.textContent === message) label.textContent = previous;
-    updateWalletButton();
-  }, 4000);
-}
-
-// Refreshed after login: ask the server which wallet (if any) this account has
-// linked, so the button can show the verified ✓ state.
 // ── Discord login/onboarding ─────────────────────────────────────────────────
 // Discord UI is on unless the native app build disables it.
 const DISCORD_BUILD_ENABLED =
@@ -5182,12 +4550,6 @@ function coerceDiscordStatus(d: Record<string, unknown>): DiscordAccountStatus {
     username: typeof d.username === 'string' ? d.username : null,
     avatar: typeof d.avatar === 'string' ? d.avatar : null,
     guildMember: d.guildMember === true,
-    points: typeof d.points === 'number' ? d.points : 0,
-    lifetimePoints: typeof d.lifetimePoints === 'number' ? d.lifetimePoints : 0,
-    statusTier: typeof d.statusTier === 'number' ? d.statusTier : 0,
-    claimedSwagIds: Array.isArray(d.claimedSwagIds)
-      ? d.claimedSwagIds.filter((s): s is string => typeof s === 'string')
-      : [],
     // Default true: only an explicit false (a Discord-provisioned account with no
     // real password yet) makes unlink demand one.
     passwordSet: d.passwordSet !== false,
@@ -5215,7 +4577,7 @@ function coerceDiscordPresence(p: unknown): DiscordPresenceState {
   };
 }
 
-// Pull current link status + rewards + live presence and feed the in-game widget.
+// Pull current link status + live presence and feed the in-game widget.
 async function refreshDiscordStatus(): Promise<void> {
   if (!DISCORD_BUILD_ENABLED || !api.token) {
     setDiscordUiEnabled(false);
@@ -5469,207 +4831,6 @@ function clearDiscordChoice(): void {
     /* storage disabled */
   }
 }
-
-async function refreshWalletLinkStatus(): Promise<void> {
-  if (!WALLET_ENABLED) {
-    linkedWalletPubkey = null;
-    linkedWocBalance = null;
-    connectedWocBalance = null;
-    walletLinkStatusPending = false;
-    updateWalletButton();
-    return;
-  }
-  if (!api.token) {
-    linkedWalletPubkey = null;
-    linkedWocBalance = null;
-    walletLinkStatusPending = false;
-    updateWalletButton();
-    return;
-  }
-  // Set synchronously (before the first await) so an auto-reconnecting wallet that
-  // fires mid-load is held, not disconnected, until we know whether it's the link.
-  walletLinkStatusPending = true;
-  let statusKnown = false;
-  try {
-    const wallet = await api.linkedWallet();
-    linkedWalletPubkey = wallet?.pubkey ?? null;
-    linkedWocBalance = null;
-    statusKnown = true;
-  } catch (err) {
-    // Transient failure (offline/5xx): we genuinely don't know the link status, so
-    // keep any prior linked pubkey and do NOT disconnect a connected wallet, since
-    // that would force a needless re-sign. A later refresh resolves it.
-    console.error('[wallet] could not load link status', err);
-  } finally {
-    walletLinkStatusPending = false;
-  }
-  updateWalletButton();
-  const pubkey = linkedWalletPubkey;
-  if (pubkey && WALLET_ENABLED) {
-    try {
-      const wallet = await loadWallet();
-      const balance = await wallet.fetchWocBalance(pubkey);
-      if (linkedWalletPubkey === pubkey) {
-        linkedWocBalance = balance;
-        updateWalletButton();
-      }
-    } catch (err) {
-      console.error('[wallet] could not load linked balance', err);
-    }
-  }
-  // Only reap an unverified wallet once we've definitively learned the link status.
-  if (statusKnown) await disconnectUnverifiedWalletIfIdle();
-}
-
-// challenge → sign → link, with a verified mirror written server-side.
-async function completeWalletVerifyFlow(address: string): Promise<void> {
-  if (!api.token || walletVerifyInProgress) return;
-  clearWalletVerifyTimeout();
-  clearWalletVerifyModalWatcher();
-  walletVerifyPending = false;
-  walletVerifyInProgress = true;
-  let verificationFailed = false;
-  try {
-    const wallet = await loadWallet();
-    setWalletFlowStatus('sign');
-    const { message, nonce } = await api.walletLinkChallenge(address);
-    const signature = await wallet.signMessageBase58(message);
-    setWalletFlowStatus('verify');
-    const result = await api.linkWallet(address, signature, nonce);
-    linkedWalletPubkey = result.pubkey;
-    linkedWocBalance = connectedWocBalance;
-    if (linkedWocBalance === null) linkedWocBalance = await wallet.fetchWocBalance(address);
-    updateWalletButton();
-  } catch (err: unknown) {
-    console.error('[wallet] verification failed', err);
-    verificationFailed = true;
-    await disconnectUnverifiedWallet();
-  } finally {
-    walletVerifyPending = false;
-    walletVerifyInProgress = false;
-    setWalletFlowStatus(null);
-    if (verificationFailed) flashWalletError(t('wallet.verifyFailed'));
-  }
-}
-
-async function startWalletVerifyFlow(forcePicker = false): Promise<void> {
-  if (!api.token || walletVerifyPending || walletVerifyInProgress) return;
-  const wallet = await loadWallet();
-  if (forcePicker) {
-    await wallet.disconnectWallet();
-    connectedWocBalance = null;
-  }
-  const current = wallet.currentWallet();
-  if (current.address) {
-    await completeWalletVerifyFlow(current.address);
-    return;
-  }
-  walletVerifyPending = true;
-  setWalletFlowStatus('connect');
-  clearWalletVerifyTimeout();
-  clearWalletVerifyModalWatcher();
-  walletVerifyTimeout = window.setTimeout(() => {
-    if (!walletVerifyPending) return;
-    cancelWalletVerifyPending();
-  }, 120_000);
-  try {
-    await wallet.openWalletModal();
-    const connected = wallet.currentWallet();
-    if (walletVerifyPending && connected.address) await completeWalletVerifyFlow(connected.address);
-  } catch (err) {
-    cancelWalletVerifyPending();
-    if (wallet.isWalletSelectionCancelled(err)) return;
-    console.error('[wallet] open modal failed', err);
-    flashWalletError(t('wallet.verifyFailed'));
-  }
-}
-
-async function onWalletButtonClick(): Promise<void> {
-  const wallet = await loadWallet();
-  const { address, isConnected } = wallet.currentWallet();
-  if (linkedWalletPubkey && (!isConnected || linkedWalletPubkey === address)) {
-    await wallet.openWalletModal(); // linked wallet → manage / reconnect
-    return;
-  }
-  await startWalletVerifyFlow(false);
-}
-
-// Disconnect the browser wallet-app session. The account↔wallet link persists
-// server-side, so reconnecting the same wallet re-shows the verified state.
-async function signOutWallet(): Promise<void> {
-  const wallet = await loadWallet();
-  await wallet.disconnectWallet();
-}
-
-async function unlinkVerifiedWallet(): Promise<void> {
-  if (!api.token || !linkedWalletPubkey) return;
-  try {
-    await api.unlinkWallet();
-    linkedWalletPubkey = null;
-    linkedWocBalance = null;
-    await disconnectUnverifiedWallet();
-    updateWalletButton();
-  } catch (err) {
-    console.error('[wallet] unlink failed', err);
-    flashWalletError(t('wallet.unlinkFailed'));
-  }
-}
-
-// Switch: disconnect, then reopen the picker to connect a different wallet.
-async function switchWallet(): Promise<void> {
-  await startWalletVerifyFlow(true);
-}
-
-function wireWallet(): void {
-  setWalletUiEnabled(WALLET_ENABLED);
-  // Feature-gate: when explicitly disabled, remove the wallet row entirely and
-  // never download the wallet chunk.
-  if (!WALLET_ENABLED) {
-    document.querySelector('.cs-wallet')?.remove();
-    document.querySelector('.cs-wallet-hidden-note')?.remove();
-    document.querySelector('.account-wallet-card')?.remove();
-    updateWalletButton();
-    return;
-  }
-  syncWalletCharacterScreenVisibility();
-  const btn = document.getElementById('btn-wallet');
-  if (!btn) return;
-  // These async actions are fire-and-forget from the click, so attach a .catch:
-  // a wallet connect/disconnect rejection must surface, not vanish silently.
-  const onErr = (what: string) => (e: unknown) => console.error(`[wallet] ${what} failed`, e);
-  btn.addEventListener('click', () => {
-    onWalletButtonClick().catch(onErr('action'));
-  });
-  document.getElementById('btn-wallet-switch')?.addEventListener('click', () => {
-    switchWallet().catch(onErr('switch'));
-  });
-  document.getElementById('btn-wallet-unlink')?.addEventListener('click', () => {
-    unlinkVerifiedWallet().catch(onErr('unlink'));
-  });
-  document.getElementById('btn-wallet-signout')?.addEventListener('click', () => {
-    signOutWallet().catch(onErr('disconnect'));
-  });
-  document.getElementById('btn-wallet-hide')?.addEventListener('click', () => {
-    hideWalletCharacterScreenRow();
-  });
-  // Load the wallet chunk (separate async bundle), then subscribe to changes and
-  // init so a persisted connection is reflected on the character screen.
-  loadWallet()
-    .then((wallet) => {
-      wallet.onWalletChange((state) => {
-        if (state.address) void refreshWocBalance(state.address);
-        else connectedWocBalance = null;
-        if (state.address && walletVerifyPending) void completeWalletVerifyFlow(state.address);
-        else if (state.address) void disconnectUnverifiedWalletIfIdle();
-        updateWalletButton();
-      });
-      wallet.initWallet();
-      updateWalletButton();
-    })
-    .catch((e) => console.error('[wallet] load failed', e));
-  updateWalletButton();
-}
-
 // ---- Landing-page cinematic backdrop ------------------------------------
 // Decides per-visit whether the start screen shows the looping trailer video or
 // a static, dimmed, high-contrast poster — and crucially NEVER fetches the
@@ -5777,9 +4938,7 @@ function wireStartScreens(): void {
   void ensureLocaleLoaded(bootLang).then(revealLocalized, revealLocalized);
   hydrateIcons();
   void loadProjectStats();
-  wireContractAddressCopy();
   wireHomepageMusicToggle();
-  wireWallet();
 
   // mode select
   const onlineBtn = $('#btn-online');
@@ -6188,9 +5347,6 @@ function wireStartScreens(): void {
       // and reveal that tab now.
       api.saveSession();
       enterLoggedInChrome();
-      // bind-on-login: surface the account's linked wallet (and flip a
-      // connected-but-unlinked button into a "Link" call-to-action).
-      void refreshWalletLinkStatus();
       await enterRealmFlow();
     } catch (err) {
       loginError(userFacingApiError(err));
@@ -6649,7 +5805,6 @@ function wireStartScreens(): void {
     discordChoiceError('');
     api.saveSession();
     enterLoggedInChrome();
-    void refreshWalletLinkStatus();
     goToLoggedInPlay();
   };
   const onDiscordChoiceError = (err: unknown) => {
@@ -6787,10 +5942,6 @@ function wireStartScreens(): void {
   } else if (api.restoreSession()) {
     enterLoggedInChrome();
     void revalidateAccountSession();
-    // Re-bind the account's linked wallet on a restored session (not just on fresh
-    // login), so an auto-reconnected wallet shows verified and is NOT treated as
-    // unverified and disconnected (the bug that forced a re-sign on every reload).
-    void refreshWalletLinkStatus();
     // (Discord status is refreshed by enterLoggedInChrome above.)
     if (discordOnboarding) enterOnlinePlayFlow();
   } else {
