@@ -37,6 +37,24 @@ GRAFT CHOICES (documented levers, NOT from source - this is the bet's design):
     min(sta,20) + max(0,sta-20)*10 -- VERIFIED against source entity.ts:140
     on 2026-07-01 (was previously a flagged sta*10 guess).
 
+TUNING PASS A (2026-07-01, sec8-tuning a; graft levers only, no source formulas
+touched). Three changes, motivated by the corrected run's two named defects
+(adrenaline_rush at 0% of top-quartile builds; rogue at 39% overall):
+  1. STEALTH FIX: rogue-PRIMARY fighters now start duels stealthed. The old
+     code keyed stealth off a skill named 'stealth' that does not exist, so
+     ambush and garrote (requires_stealth) could never fire and backstab lost
+     its opener: three of eleven rogue skills were dead weight in every duel.
+  2. EXPERTISE REMAP: the rogue primary attribute now reduces energy-skill
+     costs by 4%/rank (GW1's actual Expertise mechanic), replacing the
+     0.12/rank regen trickle. The flat +1.0 regen and the crit bonus stay.
+     This unstarves the 30-pool kit without touching any skill's damage.
+  3. ADRENALINE_RUSH: recharge 180 -> 60 (180 was unusable inside a 45 s
+     duel), and the AI considers it below 40% energy instead of below 8.
+  4. STEALTH APPROACH: a stealthed fighter is unseen, so the duel opens in
+     melee range instead of at 25 yd. Without this a kiting mage (6.0 move)
+     can never be reached by a frostbolt-snared rogue (6.5 * 0.6 = 3.9), so
+     rog/mag was a structural near-auto-loss regardless of build.
+
 ABSTRACTIONS (documented limitations):
   - 1-D distance (kiting modeled); facing/"behind" modeled as a state set by
     stealth openers and incapacitates.  No line-of-sight, no terrain.
@@ -181,7 +199,7 @@ SKILLS = {
                  kind='buff',stat='dodge',value=0.50,dur=15),
  'expose_armor':S(prof='rogue',line='subtlety',econ='energy',cost=10,recharge=0,cast=0,
                  kind='finisher_debuff',stat='armor_pct',per_combo=0.10,dur=30),
- 'adrenaline_rush':S(prof='rogue',line='expertise',econ='energy',cost=0,recharge=180,cast=0,
+ 'adrenaline_rush':S(prof='rogue',line='expertise',econ='energy',cost=0,recharge=60,cast=0,
                  kind='energy_gain',amount=25),
 }
 
@@ -259,12 +277,17 @@ class Fighter:
         self.armor_pen=0.0; self.energy_regen=1.0; self.crit_bonus=0.0
         es_rank=build.rank('energy_storage'); ex_rank=build.rank('expertise'); str_rank=build.rank('strength')
         self.max_energy=30 + (3*es_rank if build.primary=='mage' else 0)
-        # base regen 2.0/s; rogue (Expertise) sustains faster, reflecting WoW's
-        # fast rogue-energy origin (a 100-pool at ~10/s) that the single-bar graft
-        # would otherwise crush; mage Energy Storage adds a little.
+        # base regen 2.0/s; rogue keeps a flat +1.0 (WoW's fast rogue-energy
+        # origin, a 100-pool at ~10/s, that the single-bar graft would
+        # otherwise crush); mage Energy Storage adds a little.
         self.energy_regen=2.0 + (0.10*es_rank if build.primary=='mage' else 0) \
-                              + ((1.0 + 0.12*ex_rank) if build.primary=='rogue' else 0)
-        if build.primary=='rogue': self.crit_bonus+=0.005*ex_rank
+                              + (1.0 if build.primary=='rogue' else 0)
+        # Expertise = energy-COST reduction (GW1's actual mechanic), 4%/rank,
+        # replacing the old 0.12/rank regen trickle. Rogue-primary only.
+        self.cost_mult=1.0
+        if build.primary=='rogue':
+            self.crit_bonus+=0.005*ex_rank
+            self.cost_mult=max(0.25, 1.0-0.04*ex_rank)
         if build.primary=='warrior': self.armor_pen=min(0.6,0.04*str_rank)
         # derived combat
         s=self.stats
@@ -293,7 +316,10 @@ class Fighter:
         self.stun=0.0; self.root=0.0; self.poly=0.0; self.incap=0.0
         self.snare=0.0; self.snare_val=0.0
         self.behind_until=0.0
-        self.stealth=('stealth' in build.skills)  # start stealthed if slotted
+        # TUNING A: rogue-primary fighters open from stealth (the old check
+        # referenced a nonexistent 'stealth' skill, so it was always False and
+        # ambush/garrote could never fire).
+        self.stealth=(build.primary=='rogue')
         self.shield=0.0
         self.dots=[]    # list of dict(dmg, ticks, interval, next, physical)
         self.buffs={}   # stat -> (value, expiry)  ; dmg_reduction, ap, armor, dodge
@@ -376,6 +402,7 @@ def resolve_spell(src,dst,base,cast,school,aoe=False,can_crit=True):
     return apply_damage(dst,dmg,crit),crit
 
 def adren_req(skill): return skill.get('strikes',0)
+def energy_cost(f, skill): return skill.get('cost',0)*f.cost_mult
 
 # ----------------------------------------------------------------------------
 # AI: pick an action for `me` against `foe`. Returns skill-name or None (auto).
@@ -392,7 +419,7 @@ def choose_action(me, foe):
     for name,sk in me.bar:
         if me.cd.get(name,0)>0: continue
         econ=sk['econ']
-        if econ=='energy' and me.energy<sk.get('cost',0): continue
+        if econ=='energy' and me.energy<energy_cost(me,sk): continue
         if econ=='adren' and me.adren<adren_req(sk): continue
         kind=sk['kind']
         # gating
@@ -458,7 +485,7 @@ def choose_action(me, foe):
         elif kind=='shield':
             v=40 if hp_frac<0.6 else 10
         elif kind=='energy_gain':
-            v=30 if me.energy<8 else 0
+            v=35 if me.energy<0.40*me.max_energy else 0
         if v>0: cands.append((v,name,sk))
     if not cands: return None
     cands.sort(reverse=True)
@@ -479,7 +506,7 @@ TIME_LIMIT=45.0
 def cast_skill(me, foe, name):
     sk=SKILLS[name]; me.used[name]+=1
     # pay costs
-    if sk['econ']=='energy': me.energy-=sk.get('cost',0)
+    if sk['econ']=='energy': me.energy-=energy_cost(me,sk)
     if sk['econ']=='adren': me.adren-=adren_req(sk)
     if sk.get('recharge',0)>0: me.cd[name]=sk['recharge']
     gcd = 1.0 if me.cls=='rogue' else 1.5
@@ -601,6 +628,7 @@ def tick_swing(f, foe):
     f.swing_t-=DT*(1.0/max(0.5,f.atkspeed_mult))
     if f.swing_t<=0:
         f.swing_t=f.wpn['spd']
+        f.stealth=False   # auto-attacking breaks stealth like any offense
         raw=weapon_swing_damage(f)
         dmg,_=resolve_physical(f,foe,raw)
         if f.cls=='warrior':
@@ -655,6 +683,8 @@ def run_duel(bA, bB, verbose=False, pilotA=None, pilotB=None):
     t=0.0
     # stealth opener positioning: melee start a bit closer
     if A.cls!='mage' and B.cls=='mage': A.dist=B.dist=20.0
+    # TUNING A: a stealthed fighter approaches unseen; the duel opens in melee
+    if A.stealth or B.stealth: A.dist=B.dist=4.0
     while t<TIME_LIMIT:
         if A.hp<=0 or B.hp<=0: break
         for me,foe in ((A,B),(B,A)):
@@ -869,8 +899,12 @@ def main():
     emit("  (Directional only: shared greedy AI, mapped GW1 economy, representative kits, ~EST values.)")
 
     # ---- write results artifact ----
-    import datetime
-    path='/mnt/user-data/outputs/hollow-build-sim-results.txt'
+    import datetime, os
+    path=os.environ.get('HOLLOW_SIM_OUT') or '/mnt/user-data/outputs/hollow-build-sim-results.txt'
+    try:
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+    except OSError:
+        pass
     with open(path,'w') as f:
         w=f.write
         w("THE HOLLOW - GW1-on-WoCC BUILD DIVERSITY SIM - RESULTS\n"+"="*64+"\n")
