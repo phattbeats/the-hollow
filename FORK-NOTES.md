@@ -223,3 +223,41 @@ joins; and `enterDungeon` now returns a success boolean that the three
 position-shifting callers (vase landing, exitTo, homeRespawn) check before
 computing offsets, so a failed enter can never teleport a player off a stale
 position into the dormant overworld. The Under-Shrine stays per-party.
+
+## 2026-07-02: cherry-picked upstream QoL fix, shield HUD indicators (PHAA-408)
+
+**Improved shield HUD indicators** (upstream PR #1320, `a0537840`): the
+absorb-shield overlay was a single fill fraction folded into `hpFrac`, which
+read as extra health rather than a shield. Unit frames (player/target) now
+render the shield as its own segment (`absorbStartFrac`/`absorbSizeFrac` on
+`UnitFrameView`), plus an optional `showAbsorbText` flag that appends the
+resolved absorb total to `hpText` for player/target frames ("420/600 (90)",
+plain numbers, no new player-visible string). Party frames gain the same
+absorb-derived shield end to end: `server/game.ts` and `src/sim/sim.ts` both
+derive a member's absorb total from their auras identically, `PartyMemberInfo`
+carries it, and `party_frame_row`/`party_frames`/`party_frames_painter` render
+it the same way.
+
+Fork adaptations:
+- Dropped an unrelated `vite.config.ts` / `scripts/browserslist_targets.mjs`
+  change bundled into the upstream commit (an inline duplicate of the
+  already-exported `.browserslistrc` floor parser); it has nothing to do with
+  shield indicators and this fork's version of that parser is unaffected.
+- Dropped `tests/loot_settings_view.test.ts` (a one-line change to a test for
+  a feature this fork does not have).
+- Kept this fork's `tests/target_frame.test.ts` structure, which documents a
+  real, pre-existing wire-parity gap: `src/net/online.ts` zeroes the absorb
+  aura value when mirroring Sim entities to ClientWorld, so the shield segment
+  (and now its `hpText` "(N)" suffix) is offline-only, not wired to the
+  client. Upstream's version of that test assumed a separate wire-parity fix
+  this fork never received; adapted rather than taken as-is, so the divergence
+  stays documented instead of a silently-broken assertion. Party frames do NOT
+  have this gap: their absorb value is computed identically on both hosts from
+  auras already on the wire.
+
+Verification: `npx vitest run tests/absorb_bar.test.ts tests/unit_frame.test.ts
+tests/unit_frame_painter.test.ts tests/party_frames.test.ts
+tests/party_frames_painter.test.ts tests/target_frame.test.ts
+tests/social_view.test.ts tests/hud_perf_budget.test.ts
+tests/architecture.test.ts` green (108 passed, 3 pre-existing skips
+unrelated to this change) with NODE_ENV unset; `tsc --noEmit` clean.
