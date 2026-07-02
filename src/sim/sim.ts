@@ -130,6 +130,7 @@ import {
 import { canEquipItem } from './equipment_rules';
 import { fleeSpeed } from './flee_speed';
 import { formatMoney } from './format_money';
+import { Housing, type HousingSave } from './housing';
 import * as interaction from './interaction';
 import * as items from './items';
 import {
@@ -603,6 +604,10 @@ export interface PlayerMeta {
   // Stable database character id when running on the server. Offline/sim-only
   // callers fall back to entityId for systems that need a rename-proof owner key.
   characterId?: number;
+  // Stable ACCOUNT-scoped key when running on the server (the account id as a
+  // string). Housing ownership is per account; offline hosts leave it unset and
+  // housing falls back to characterId/entityId.
+  accountKey?: string;
   cls: PlayerClass;
   name: string;
   skin: number; // appearance index into the render SKINS[player_<cls>]; persisted, synced
@@ -888,6 +893,10 @@ export class Sim {
   // keeps thin delegates + the `marketListings` getter below so server/IWorld/the
   // /listings readout call sites resolve unchanged.
   market!: Market;
+  // Housing v0 (the Hollow hub homesteads): the Housing instance owns the plot
+  // ownership book. Constructed in the ctor after the SimContext (it consumes
+  // the seam); Sim keeps thin delegates below, mirroring the market pattern.
+  housing!: Housing;
   /** When true, /dev level|tp|give chat commands are accepted (local dev only). */
   readonly devCommands: boolean;
   private pendingMobRespawns: PendingMobRespawn[] = [];
@@ -921,6 +930,9 @@ export class Sim {
     // World Market (L2): owns its state; consumes the seam, so it is built right
     // after the SimContext. The NPC loop below sets its merchantId, then seed().
     this.market = new Market(this.ctx);
+    // Housing v0: owns the hub homestead plot book; consumes the seam. Draws no
+    // rng at construction (or ever), so the draws below are unperturbed.
+    this.housing = new Housing(this.ctx);
 
     // NPCs — nudged out of buildings and deep water if their data position is bad
     for (const npcDef of Object.values(NPCS)) {
@@ -1097,7 +1109,12 @@ export class Sim {
   addPlayer(
     cls: PlayerClass,
     name: string,
-    opts?: { autoEquip?: boolean; state?: CharacterState; characterId?: number },
+    opts?: {
+      autoEquip?: boolean;
+      state?: CharacterState;
+      characterId?: number;
+      accountKey?: string;
+    },
   ): number {
     const savedState = opts?.state ? sanitizeRemovedZone1Content(opts.state).state : undefined;
     // Characters saved inside a dungeon instance rejoin at its entrance —
@@ -1134,6 +1151,7 @@ export class Sim {
     const meta: PlayerMeta = {
       entityId: player.id,
       characterId: opts?.characterId,
+      accountKey: opts?.accountKey,
       cls,
       name,
       skin: savedState?.skin ?? 0,
@@ -2164,6 +2182,9 @@ export class Sim {
       targetEntity: (id, pid) => sim.targetEntity(id, pid),
       partyCapacity: (party) => sim.party.partyCapacity(party),
       marketListingBelongsTo: (listing, meta) => sim.market.marketListingBelongsTo(listing, meta),
+      // Housing v0: the /house chat-command branch routes through the seam to the
+      // Housing instance (constructed after this literal; late-bound arrow).
+      housingChat: (raw, pid) => sim.housing.handleChat(raw, pid),
     };
     return createSimContext(host);
   }
@@ -5125,6 +5146,39 @@ export class Sim {
   }
 
   // -------------------------------------------------------------------------
+  // Housing v0 — the Hollow hub homesteads (thin delegates to this.housing)
+  // -------------------------------------------------------------------------
+
+  housingClaim(pid?: number): void {
+    this.housing.housingClaim(pid);
+  }
+
+  housingPlace(slot: number, kind: string, pid?: number): void {
+    this.housing.housingPlace(slot, kind, pid);
+  }
+
+  housingRemove(slot: number, pid?: number): void {
+    this.housing.housingRemove(slot, pid);
+  }
+
+  housingInfoFor(pid: number): import('../world_api/housing').HousingInfo | null {
+    return this.housing.housingInfoFor(pid);
+  }
+
+  /** Monotonic change counter the server polls to persist housing on change. */
+  get housingRev(): number {
+    return this.housing.rev;
+  }
+
+  serializeHousing(): HousingSave {
+    return this.housing.serializeHousing();
+  }
+
+  loadHousing(save: HousingSave | null | undefined): void {
+    this.housing.loadHousing(save);
+  }
+
+  // -------------------------------------------------------------------------
   // Dungeons: party-instanced elite content (the Hollow Crypt and friends)
   // -------------------------------------------------------------------------
 
@@ -5224,6 +5278,10 @@ export class Sim {
 
   get marketInfo(): import('../world_api').MarketInfo | null {
     return this.primaryId === -1 ? null : this.marketInfoFor(this.primaryId);
+  }
+
+  get housingInfo(): import('../world_api/housing').HousingInfo | null {
+    return this.primaryId === -1 ? null : this.housingInfoFor(this.primaryId);
   }
 
   instanceSlotAt(pos: Vec3): number | null {

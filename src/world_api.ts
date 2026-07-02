@@ -9,7 +9,7 @@
 // keep resolving to THIS file, never the sibling directory.
 //
 // ---------------------------------------------------------------------------
-// FACET MAP: the 20 domain facets (each IWorld member assigned exactly once; 142
+// FACET MAP: the 21 domain facets (each IWorld member assigned exactly once; 147
 // total). One interface per file under ./world_api/; aux types travel with their
 // facet. The authoritative member-per-facet split is the W0c parity test.
 //
@@ -32,6 +32,7 @@
 //   market.ts           IWorldMarket         World Market browse/list/buy
 //   dungeons.ts         IWorldDungeons       dungeon enter/leave + raid lockouts
 //   delves.ts           IWorldDelves         delve runs, lockpick, companion
+//   housing.ts          IWorldHousing        Hollow hub homestead plots (read)
 //   telemetry.ts        IWorldTelemetry      fire-and-forget metrics sink
 //
 // THREE GATES pin this seam (run before any facet edit):
@@ -51,6 +52,7 @@ import type { IWorldDelves } from './world_api/delves';
 import type { IWorldDuelArena } from './world_api/duel_arena';
 import type { IWorldDungeons } from './world_api/dungeons';
 import type { IWorldEntityRoster } from './world_api/entity_roster';
+import type { IWorldHousing } from './world_api/housing';
 import type { IWorldInteraction } from './world_api/interaction';
 import type { IWorldInventory } from './world_api/inventory';
 import type { IWorldLoot } from './world_api/loot';
@@ -89,6 +91,7 @@ export type {
   FiestaScoreboardPlayer,
 } from './world_api/duel_arena';
 export type { RaidLockout } from './world_api/dungeons';
+export type { HouseObjectView, HousingInfo, HousingPlotView } from './world_api/housing';
 export type { MarketInfo, MarketListingView } from './world_api/market';
 export type { PartyInfo, PartyMemberInfo } from './world_api/party';
 export type { GuildLeaderboardEntry, LeaderboardEntry } from './world_api/progression_xp';
@@ -126,6 +129,7 @@ export interface IWorld
     IWorldMarket,
     IWorldDungeons,
     IWorldDelves,
+    IWorldHousing,
     IWorldTelemetry {}
 
 // ---------------------------------------------------------------------------
@@ -315,6 +319,7 @@ export type WorldFacet =
   | 'IWorldMarket'
   | 'IWorldDungeons'
   | 'IWorldDelves'
+  | 'IWorldHousing'
   | 'IWorldTelemetry';
 
 export const COMMAND_FACETS = {
