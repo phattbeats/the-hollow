@@ -203,4 +203,27 @@ describe('The Hollow hub', () => {
     const morsel = MOBS.rootmaw.loot.find((l) => l.itemId === 'cave_morsel');
     expect(morsel?.questId).toBe('q_what_fills');
   });
+
+  it('positions saved at the PRE-fork arena/delve x-bands rejoin at an overworld door', () => {
+    // The fork moved ARENA_X 4200 to 5400 and DELVE_X_MIN 4800 to 6000 to open
+    // dungeon bands 6 and 7. A character saved mid-match or mid-delve at the
+    // OLD coordinates now resolves to the new Hollow bands; addPlayer's rejoin
+    // normalization must still eject them to an overworld door, never leave
+    // them standing inside an instance band.
+    for (const oldX of [4200, 4800]) {
+      const sim = new Sim({ seed: 3, playerClass: 'warrior', noPlayer: true });
+      const pid = sim.addPlayer('warrior', 'Old', {
+        state: {
+          pos: { x: oldX, z: -1250 },
+          questLog: [],
+          questsDone: [],
+          inventory: [],
+        } as any,
+      });
+      const e = sim.entities.get(pid)!;
+      // ejected west of every instance band, at a real overworld door
+      expect(e.pos.x).toBeLessThan(800);
+      expect(sim.instanceSlotAt(e.pos)).toBeNull();
+    }
+  });
 });
