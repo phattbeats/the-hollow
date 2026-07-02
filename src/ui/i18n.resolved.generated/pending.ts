@@ -9,24 +9,52 @@
 // Reproducibility is checked by tests/i18n_resolved_equivalence.test.ts.
 
 export const pending: Record<string, readonly string[]> = {
-  "es": [],
-  "es_ES": [],
-  "fr_FR": [],
-  "fr_CA": [],
+  "es": [
+    "hudChrome.options.showOwnNameplate"
+  ],
+  "es_ES": [
+    "hudChrome.options.showOwnNameplate"
+  ],
+  "fr_FR": [
+    "hudChrome.options.showOwnNameplate"
+  ],
+  "fr_CA": [
+    "hudChrome.options.showOwnNameplate"
+  ],
   "en_CA": [],
-  "it_IT": [],
-  "de_DE": [],
+  "it_IT": [
+    "hudChrome.options.showOwnNameplate"
+  ],
+  "de_DE": [
+    "hudChrome.options.showOwnNameplate"
+  ],
   "zh_CN": [],
   "zh_TW": [],
   "ko_KR": [],
   "ja_JP": [],
-  "pt_BR": [],
+  "pt_BR": [
+    "hudChrome.options.showOwnNameplate"
+  ],
   "ru_RU": [],
-  "nl_NL": [],
-  "pl_PL": [],
-  "id_ID": [],
-  "tr_TR": [],
-  "sv_SE": [],
-  "vi_VN": [],
-  "da_DK": []
+  "nl_NL": [
+    "hudChrome.options.showOwnNameplate"
+  ],
+  "pl_PL": [
+    "hudChrome.options.showOwnNameplate"
+  ],
+  "id_ID": [
+    "hudChrome.options.showOwnNameplate"
+  ],
+  "tr_TR": [
+    "hudChrome.options.showOwnNameplate"
+  ],
+  "sv_SE": [
+    "hudChrome.options.showOwnNameplate"
+  ],
+  "vi_VN": [
+    "hudChrome.options.showOwnNameplate"
+  ],
+  "da_DK": [
+    "hudChrome.options.showOwnNameplate"
+  ]
 };

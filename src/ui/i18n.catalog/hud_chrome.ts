@@ -291,6 +291,9 @@ export const hudChromeStrings = {
       'Keeps the mouse cursor inside the window while you drag to rotate the camera, so it cannot reach the screen edge or move to another monitor. Turn off if you prefer a free cursor.',
     showWalletOnCharacterScreen: 'Show Wallet on Character Screen',
     showWalletOnPlayerCard: 'Show Wallet on Player Card',
+    // Interface panel toggle: render your own overhead nameplate the way other
+    // players see it (on by default).
+    showOwnNameplate: 'Show My Nameplate',
     // Interface panel: global HUD zoom slider, and the mirror of the landing
     // page's high-contrast backdrop toggle.
     uiScale: 'UI Scale',

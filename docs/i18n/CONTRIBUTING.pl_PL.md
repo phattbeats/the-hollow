@@ -201,8 +201,10 @@ zbyt małe, a nowi współtwórcy są zawsze mile widziani.
 
 ## Licencja
 
-Współtworząc, zgadzasz się, że Twój wkład będzie objęty licencją projektu
-[MIT License](../../LICENSE), tą samą licencją, która obejmuje projekt.
+Kod tego projektu jest zastrzeżony (proprietary, zobacz
+[LICENSE](../../LICENSE)), a nie na licencji MIT. Współtworząc, zgadzasz się,
+że Twój wkład stanie się częścią projektu na tych samych zastrzeżonych
+warunkach, przeniesiony na posiadacza praw autorskich projektu.
 
 ---
 

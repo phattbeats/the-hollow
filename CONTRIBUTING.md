@@ -193,8 +193,10 @@ new contributors are always welcome.
 
 ## License
 
-By contributing, you agree that your contributions will be licensed under the
-project's [MIT License](LICENSE), the same license that covers the project.
+This project's code is proprietary (see [LICENSE](LICENSE)), not MIT. By
+contributing, you agree that your contributions become part of the project
+under those same proprietary terms, assigned to the project's copyright
+holder.
 
 ---
 

@@ -931,6 +931,7 @@ async function startGame(
   try {
     renderer = new Renderer(world, canvas, nameplates);
     renderer.setAudioSink(sfx);
+    renderer.showOwnNameplate = settings.get('showOwnNameplate');
     // Dev-only: ?targetcone=1 draws the Tab-target front cone on the ground in
     // front of the player, for tuning the targeting angle/radius (tab_target.ts).
     if (import.meta.env.DEV && new URLSearchParams(location.search).get('targetcone') === '1') {
@@ -1375,6 +1376,10 @@ async function startGame(
     }
     if (key === 'showFps') {
       perfOverlay.setEnabled(settings.set('showFps', !!value));
+      return;
+    }
+    if (key === 'showOwnNameplate') {
+      renderer.showOwnNameplate = settings.set('showOwnNameplate', !!value);
       return;
     }
     if (key === 'invertLookY') {

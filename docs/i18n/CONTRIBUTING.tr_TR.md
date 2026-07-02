@@ -203,8 +203,10 @@ karşılanır.
 
 ## Lisans
 
-Katkıda bulunarak, katkılarınızın, projeyi kapsayan lisansın aynısı olan projenin
-[MIT Lisansı](../../LICENSE) altında lisanslanacağını kabul edersiniz.
+Bu projenin kodu proprietary'dir ([LICENSE](../../LICENSE) dosyasına bakın),
+MIT değildir. Katkıda bulunarak, katkılarınızın aynı proprietary koşullar
+altında projenin bir parçası haline geleceğini ve projenin telif hakkı
+sahibine devredileceğini kabul edersiniz.
 
 ---
 

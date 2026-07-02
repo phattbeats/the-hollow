@@ -194,8 +194,10 @@ nya bidragsgivare är alltid välkomna.
 
 ## Licens
 
-Genom att bidra godkänner du att dina bidrag licensieras under projektets
-[MIT-licens](../../LICENSE), samma licens som täcker projektet.
+Den här projektets kod är proprietär (se [LICENSE](../../LICENSE)), inte
+MIT. Genom att bidra godkänner du att dina bidrag blir en del av projektet
+under samma proprietära villkor, överlåtna till projektets
+upphovsrättsinnehavare.
 
 ---
 

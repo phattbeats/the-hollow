@@ -59,6 +59,8 @@ export interface NameplatePainterDeps {
   getViewport: () => { width: number; height: number };
   /** the player's mob-nameplate toggle */
   showNameplates: () => boolean;
+  /** the player's own-nameplate toggle: render your own plate as others see it */
+  showOwnNameplate: () => boolean;
   /** PvP reaction check, owned by the renderer (duel/arena state) */
   isHostilePlayer: (e: Entity) => boolean;
 }
@@ -69,6 +71,7 @@ export class NameplatePainter {
   private readonly world: IWorld;
   private readonly getViewport: () => { width: number; height: number };
   private readonly showNameplates: () => boolean;
+  private readonly showOwnNameplate: () => boolean;
   private readonly isHostilePlayer: (e: Entity) => boolean;
   // scratch reused every frame (no per-frame alloc); was renderer.tmpV/tmpV2.
   private readonly tmpV = new THREE.Vector3();
@@ -82,6 +85,7 @@ export class NameplatePainter {
     this.world = deps.world;
     this.getViewport = deps.getViewport;
     this.showNameplates = deps.showNameplates;
+    this.showOwnNameplate = deps.showOwnNameplate;
     this.isHostilePlayer = deps.isHostilePlayer;
   }
 
@@ -93,10 +97,11 @@ export class NameplatePainter {
     const p = world.player;
     const { width: w, height: h } = this.getViewport();
     const showNameplates = this.showNameplates();
+    const showOwnNameplate = this.showOwnNameplate();
     for (const [id, v] of this.views) {
       const e = world.entities.get(id);
       if (!e) continue;
-      const plan = nameplatePlanInto(this.plan, e, p, v.height, showNameplates);
+      const plan = nameplatePlanInto(this.plan, e, p, v.height, showNameplates, showOwnNameplate);
       if (plan.hidden) {
         this.hideNameplate(v);
         continue;
@@ -168,14 +173,17 @@ export class NameplatePainter {
           '1',
         );
       } else if (e.kind === 'player') {
-        // other players: friendly blue with an hp bar; <Guild> tag under the name.
-        // Self has no overhead nameplate, so its guild line stays hidden too.
+        // Players: friendly blue with an hp bar; <Guild> tag under the name. Your
+        // OWN plate is normally suppressed (suppressSelf), but with the "Show My
+        // Nameplate" option on it renders exactly like another player's, so you can
+        // see your name / level / hp / guild and all your flair the way others do.
+        const suppressSelf = isSelf && !showOwnNameplate;
         const opacity = e.auras.some((a) => a.kind === 'stealth') ? '0.55' : '1';
-        const nameDisplay = isSelf ? 'none' : '';
-        const hpDisplay = e.dead || isSelf ? 'none' : '';
-        const guild = isSelf ? '' : e.guild;
-        // Staff/special Discord role: tint the name + prefix a tag (others only).
-        const roleKey = isSelf ? undefined : e.discordRole;
+        const nameDisplay = suppressSelf ? 'none' : '';
+        const hpDisplay = e.dead || suppressSelf ? 'none' : '';
+        const guild = suppressSelf ? '' : e.guild;
+        // Staff/special Discord role: tint the name + prefix a tag.
+        const roleKey = suppressSelf ? undefined : e.discordRole;
         const roleColor = specialRoleColor(roleKey);
         const roleTag = discordRoleTag(roleKey);
         const displayName = roleTag ? `[${roleTag}] ${e.name}` : e.name;
@@ -192,8 +200,8 @@ export class NameplatePainter {
           guild,
         );
         v.nameEl.style.display = nameDisplay;
-        // Linked-Discord PFP indicator, OTHER players only (own nameplate is hidden).
-        this.setNameplateDiscord(v, isSelf ? undefined : e.discordAvatar, e.discordName);
+        // Linked-Discord PFP indicator.
+        this.setNameplateDiscord(v, suppressSelf ? undefined : e.discordAvatar, e.discordName);
         this.setNameplateHp(v, e);
       } else if (e.kind === 'npc' || (!e.hostile && e.questIds.length > 0)) {
         const npcName =
