@@ -639,7 +639,14 @@ def tick_movement(f, foe):
 class _Foe:
     pass
 
-def run_duel(bA, bB, verbose=False):
+def run_duel(bA, bB, verbose=False, pilotA=None, pilotB=None):
+    # pilotA/pilotB: optional action-choosers with the signature choose_action(me, foe)
+    # -> skill-name or None. They let an external harness (see hollow-skill-ceiling.py)
+    # drive each side with a graded-quality policy. Defaulting BOTH to choose_action
+    # reproduces the original single-shared-greedy behavior byte-for-byte (choose_action
+    # draws no RNG, so the tick RNG stream is identical to the pre-hook version).
+    pilotA = pilotA or choose_action
+    pilotB = pilotB or choose_action
     A=Fighter(bA); B=Fighter(bB)
     A._foe=B; B._foe=A
     # helper attrs for AI
@@ -666,7 +673,7 @@ def run_duel(bA, bB, verbose=False):
         # share a single distance value
         d=min(A.dist,B.dist); A.dist=B.dist=d
         for me,foe in ((A,B),(B,A)):
-            act=choose_action(me,foe)
+            act=(pilotA if me is A else pilotB)(me,foe)
             if act: cast_skill(me,foe,act)
         t+=DT
     if A.hp<=0 and B.hp<=0: return 0
