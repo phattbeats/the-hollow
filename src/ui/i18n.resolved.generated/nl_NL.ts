@@ -5090,13 +5090,13 @@ export const nl_NL: EnTranslations = {
         "name": "Wurmschaduw-Klauwgrepen"
       },
       "cave_morsel": {
-        "name": "Cave Morsel"
+        "name": "Grothapje"
       },
       "emberbulb": {
-        "name": "Emberbulb"
+        "name": "Sintelknol"
       },
       "first_cutting": {
-        "name": "A Cutting"
+        "name": "Een Stek"
       },
       "reliquary_plate_chest": {
         "name": "Reliekwacht-Maliënkolder"
@@ -5545,13 +5545,13 @@ export const nl_NL: EnTranslations = {
         "name": "Ysolei, Avatar van de Verdronken Maan"
       },
       "palefeeder": {
-        "name": "Palefeeder"
+        "name": "Bleekvreter"
       },
       "rootmaw": {
-        "name": "Rootmaw"
+        "name": "Wortelbek"
       },
       "the_witness_root": {
-        "name": "The Witness-Root"
+        "name": "De Getuigenwortel"
       }
     },
     "npcs": {
@@ -5666,9 +5666,9 @@ export const nl_NL: EnTranslations = {
         "greeting": "Het meer drinkt het maanlicht, {className}, en geeft de verdronkenen terug. Ik heb dertig nachten over die poort gewaakt, en vannacht staat ze open."
       },
       "brother_greenpaw": {
-        "name": "Brother Greenpaw",
-        "title": "First Prophet (self-appointed)",
-        "greeting": "howdy, traveler. you catch the vase in a mood today, or is that just me again... c'mere, got a couple sacred matters need tendin'. mostly snacks. same thing, to a greenpaw degree."
+        "name": "Broeder Groenpoot",
+        "title": "Eerste Profeet (zelfbenoemd)",
+        "greeting": "hé, reiziger. trof je de vaas vandaag in een bepaalde bui, of ben ik het gewoon weer... kom hier, heb een paar heilige zaakjes die aandacht nodig hebben. vooral snacks. komt op hetzelfde neer, als je Groenpoot heet."
       }
     },
     "quests": {
@@ -6488,22 +6488,22 @@ export const nl_NL: EnTranslations = {
         }
       },
       "q_what_burns": {
-        "title": "The Thing That Burns",
-        "text": "the communion's gone thin, friend... i'm bone dry and the wavelength is closin'. down under the shrine there's a bulb that burns slow and clean - emberbulb, grows where the light don't reach, which is a joke the cave plays on itself... bring me five. mind the pale ones. they come at your lantern, not at you. mostly.",
-        "completion": "now THAT'S the good smoke... you feel that? room's gettin' thick. she's gonna lean in any minute now, i can feel it on the wavelength... indeed.",
+        "title": "Het Ding dat Brandt",
+        "text": "de communie wordt dun, vriend... ik ben kurkdroog en de golflengte sluit zich. onder de schrijn ligt een knol die langzaam en schoon brandt, sintelknol, groeit waar het licht niet komt, wat een grap is die de grot met zichzelf uithaalt... breng me er vijf. pas op voor de bleke. ze komen op je lantaarn af, niet op jou. meestal.",
+        "completion": "DAT is nou de goede rook... voel je dat? de kamer wordt dik. ze gaat er zo weer intrappen, ik voel het op de golflengte... inderdaad.",
         "objectives": {
           "0": {
-            "label": "Emberbulb gathered"
+            "label": "Sintelknol verzameld"
           }
         }
       },
       "q_what_fills": {
-        "title": "The Thing That Fills",
-        "text": "second matter, and i'd call it sacred but between us it's breakfast... the rootmaws down there carry a morsel on 'em, cave-fed, real earthy. four'll do. bring 'em back 'fore the stomach starts singin' hymns of its own...",
-        "completion": "you're a saint of the first order, friend. or a good neighbor. same thing, to a greenpaw degree. ...here. was gonna keep this one but the inner cowboy says it's yours. don't let it wilt.",
+        "title": "Het Ding dat Vult",
+        "text": "tweede zaak, en ik zou het heilig noemen, maar onder ons is het gewoon ontbijt... de wortelbekken daar beneden dragen een hapje bij zich, grotgevoed, lekker aards. vier is genoeg. breng ze terug voor de maag zijn eigen hymnes begint te zingen...",
+        "completion": "je bent een heilige van de eerste orde, vriend. of een goede buurman. komt op hetzelfde neer, als je Groenpoot heet. ...hier. wilde deze eigenlijk houden, maar de cowboy in mij zegt dat hij van jou is. laat 'm niet verwelken.",
         "objectives": {
           "0": {
-            "label": "Cave Morsel gathered"
+            "label": "Grothapje verzameld"
           }
         }
       }
@@ -6644,14 +6644,14 @@ export const nl_NL: EnTranslations = {
         "leaveText": "Je komt door de maanpoort boven in de bergnacht."
       },
       "the_hollow": {
-        "name": "The Hollow",
-        "enterText": "You step through the shrine gate. The air turns warm and green, and the vase waits ahead.",
-        "leaveText": "You step back out through the gate into Eastbrook."
+        "name": "De Holte",
+        "enterText": "Je stapt door de schrijnpoort. De lucht wordt warm en groen, en de vaas wacht verderop.",
+        "leaveText": "Je stapt terug door de poort naar Eastbrook."
       },
       "under_shrine": {
-        "name": "The Under-Shrine",
-        "enterText": "You descend below the shrine. The air goes still and close, and the dark ahead does not feel empty.",
-        "leaveText": "You climb back into the warm. Above you, faintly, smoke."
+        "name": "De Onderschrijn",
+        "enterText": "Je daalt af onder de schrijn. De lucht wordt stil en drukkend, en het duister verderop voelt niet leeg aan.",
+        "leaveText": "Je klimt terug de warmte in. Boven je, vaag, rook."
       }
     },
     "delves": {

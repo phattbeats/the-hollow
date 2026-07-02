@@ -5090,13 +5090,13 @@ export const ru_RU: EnTranslations = {
         "name": "Захваты когтя Тени вирма"
       },
       "cave_morsel": {
-        "name": "Cave Morsel"
+        "name": "Пещерная закуска"
       },
       "emberbulb": {
-        "name": "Emberbulb"
+        "name": "Тлеющая луковица"
       },
       "first_cutting": {
-        "name": "A Cutting"
+        "name": "Черенок"
       },
       "reliquary_plate_chest": {
         "name": "Хауберк стражи реликвария"
@@ -5545,13 +5545,13 @@ export const ru_RU: EnTranslations = {
         "name": "Изолея, Воплощение Утонувшей луны"
       },
       "palefeeder": {
-        "name": "Palefeeder"
+        "name": "Бледнопитающийся"
       },
       "rootmaw": {
-        "name": "Rootmaw"
+        "name": "Корнепасть"
       },
       "the_witness_root": {
-        "name": "The Witness-Root"
+        "name": "Корень-Свидетель"
       }
     },
     "npcs": {
@@ -5666,9 +5666,9 @@ export const ru_RU: EnTranslations = {
         "greeting": "Омут пьёт лунный свет, {className}, и возвращает утопленников. Тридцать ночей я наблюдаю за теми вратами — и нынче ночью они открыты."
       },
       "brother_greenpaw": {
-        "name": "Brother Greenpaw",
-        "title": "First Prophet (self-appointed)",
-        "greeting": "howdy, traveler. you catch the vase in a mood today, or is that just me again... c'mere, got a couple sacred matters need tendin'. mostly snacks. same thing, to a greenpaw degree."
+        "name": "Брат Зеленолап",
+        "title": "Первый Пророк (самопровозглашенный)",
+        "greeting": "здорово, путник. застал вазу нынче в настроении, или это опять я так думаю... подь сюда, есть парочка святых дел, требующих заботы. в основном перекусить. оно и то же самое, по-зеленолаповски говоря."
       }
     },
     "quests": {
@@ -6488,22 +6488,22 @@ export const ru_RU: EnTranslations = {
         }
       },
       "q_what_burns": {
-        "title": "The Thing That Burns",
-        "text": "the communion's gone thin, friend... i'm bone dry and the wavelength is closin'. down under the shrine there's a bulb that burns slow and clean - emberbulb, grows where the light don't reach, which is a joke the cave plays on itself... bring me five. mind the pale ones. they come at your lantern, not at you. mostly.",
-        "completion": "now THAT'S the good smoke... you feel that? room's gettin' thick. she's gonna lean in any minute now, i can feel it on the wavelength... indeed.",
+        "title": "То, что горит",
+        "text": "причастие-то у нас исхудало, дружок... я сухой как пыль, и волна вот-вот закроется. там, под святилищем, растет луковица, что горит медленно и чисто, тлеющая луковица, растет там, куда свет не добирается, вот вам и шутка, которую пещера сама над собой откалывает... принеси мне пять штук. бледных остерегайся. они на твой фонарь идут, не на тебя самого. в основном.",
+        "completion": "вот ЭТО я понимаю, добрый дымок... чуешь? комната прям гуще становится. она вот-вот наклонится ближе, чую это на волне... точно вам говорю.",
         "objectives": {
           "0": {
-            "label": "Emberbulb gathered"
+            "label": "Собрано тлеющих луковиц"
           }
         }
       },
       "q_what_fills": {
-        "title": "The Thing That Fills",
-        "text": "second matter, and i'd call it sacred but between us it's breakfast... the rootmaws down there carry a morsel on 'em, cave-fed, real earthy. four'll do. bring 'em back 'fore the stomach starts singin' hymns of its own...",
-        "completion": "you're a saint of the first order, friend. or a good neighbor. same thing, to a greenpaw degree. ...here. was gonna keep this one but the inner cowboy says it's yours. don't let it wilt.",
+        "title": "То, что насыщает",
+        "text": "второе дело, и назвал бы я его святым, да меж нами говоря, это завтрак... корнепасти там носят на себе закуску, пещерную, землистую такую на вкус. четырех хватит. неси их сюда, покуда живот не завел свои собственные гимны...",
+        "completion": "ты святой первого разряда, дружок. или добрый сосед. оно и то же самое, по-зеленолаповски говоря. ...на вот. хотел было себе оставить, да ковбойская душа моя говорит: твое это. не дай завянуть.",
         "objectives": {
           "0": {
-            "label": "Cave Morsel gathered"
+            "label": "Собрано пещерных закусок"
           }
         }
       }
@@ -6644,14 +6644,14 @@ export const ru_RU: EnTranslations = {
         "leaveText": "Ты всплываешь сквозь лунные врата в горную ночь."
       },
       "the_hollow": {
-        "name": "The Hollow",
-        "enterText": "You step through the shrine gate. The air turns warm and green, and the vase waits ahead.",
-        "leaveText": "You step back out through the gate into Eastbrook."
+        "name": "Пустошь",
+        "enterText": "Ты проходишь сквозь врата святилища. Воздух становится теплым и зеленым, а впереди ждет ваза.",
+        "leaveText": "Ты выходишь обратно через врата в Истврук."
       },
       "under_shrine": {
-        "name": "The Under-Shrine",
-        "enterText": "You descend below the shrine. The air goes still and close, and the dark ahead does not feel empty.",
-        "leaveText": "You climb back into the warm. Above you, faintly, smoke."
+        "name": "Подсвятилище",
+        "enterText": "Ты спускаешься под святилище. Воздух становится неподвижным и тесным, и тьма впереди не кажется пустой.",
+        "leaveText": "Ты выбираешься обратно в тепло. Над тобой, едва заметно, дым."
       }
     },
     "delves": {

@@ -5090,13 +5090,13 @@ export const zh_CN: EnTranslations = {
         "name": "龙影利爪握套"
       },
       "cave_morsel": {
-        "name": "Cave Morsel"
+        "name": "洞穴肉粒"
       },
       "emberbulb": {
-        "name": "Emberbulb"
+        "name": "余烬球茎"
       },
       "first_cutting": {
-        "name": "A Cutting"
+        "name": "插条"
       },
       "reliquary_plate_chest": {
         "name": "圣物库守卫锁甲"
@@ -5545,13 +5545,13 @@ export const zh_CN: EnTranslations = {
         "name": "伊索蕾，溺月化身"
       },
       "palefeeder": {
-        "name": "Palefeeder"
+        "name": "苍白噬光者"
       },
       "rootmaw": {
-        "name": "Rootmaw"
+        "name": "根颚兽"
       },
       "the_witness_root": {
-        "name": "The Witness-Root"
+        "name": "见证之根"
       }
     },
     "npcs": {
@@ -5666,9 +5666,9 @@ export const zh_CN: EnTranslations = {
         "greeting": "潭水饮尽月光，{className}，又将溺者吐还。我守望那道门户已有三十夜——而今夜，它开了。"
       },
       "brother_greenpaw": {
-        "name": "Brother Greenpaw",
-        "title": "First Prophet (self-appointed)",
-        "greeting": "howdy, traveler. you catch the vase in a mood today, or is that just me again... c'mere, got a couple sacred matters need tendin'. mostly snacks. same thing, to a greenpaw degree."
+        "name": "绿掌修士",
+        "title": "首席先知（自封）",
+        "greeting": "哟，旅人，你来啦。你说这瓮今儿个心情不错，还是只有我这么觉得……过来吧，有几件神圣的事儿要办。基本上就是弄点吃的。反正对绿掌来说是一回事儿。"
       }
     },
     "quests": {
@@ -6488,22 +6488,22 @@ export const zh_CN: EnTranslations = {
         }
       },
       "q_what_burns": {
-        "title": "The Thing That Burns",
-        "text": "the communion's gone thin, friend... i'm bone dry and the wavelength is closin'. down under the shrine there's a bulb that burns slow and clean - emberbulb, grows where the light don't reach, which is a joke the cave plays on itself... bring me five. mind the pale ones. they come at your lantern, not at you. mostly.",
-        "completion": "now THAT'S the good smoke... you feel that? room's gettin' thick. she's gonna lean in any minute now, i can feel it on the wavelength... indeed.",
+        "title": "燃烧之物",
+        "text": "通灵淡了，朋友……我干得跟骨头一样，频率就快断了。神龛下面有种球茎，烧得又慢又干净，余烬球茎，长在光照不到的地方，这洞穴自己跟自己开的玩笑……给我带五颗回来。留意那些苍白的家伙，它们冲着你的灯笼来，不是冲着你。大概吧。",
+        "completion": "这才是上等的烟啊……你感觉到了吗？屋里越来越浓了。她随时都要探过身来了，我在频率上都能感觉到……的确如此。",
         "objectives": {
           "0": {
-            "label": "Emberbulb gathered"
+            "label": "已采集余烬球茎"
           }
         }
       },
       "q_what_fills": {
-        "title": "The Thing That Fills",
-        "text": "second matter, and i'd call it sacred but between us it's breakfast... the rootmaws down there carry a morsel on 'em, cave-fed, real earthy. four'll do. bring 'em back 'fore the stomach starts singin' hymns of its own...",
-        "completion": "you're a saint of the first order, friend. or a good neighbor. same thing, to a greenpaw degree. ...here. was gonna keep this one but the inner cowboy says it's yours. don't let it wilt.",
+        "title": "饱腹之物",
+        "text": "第二件事，我本想说是神圣之事，但咱俩私下讲，其实就是早饭……下面那些根颚兽身上带着一小块肉，吃洞穴里的东西长大的，味道很土。四块就够了。趁肚子还没自己唱起圣歌之前带回来……",
+        "completion": "你真是头等的圣人啊，朋友。或者说是个好邻居。反正对绿掌来说都一样。……给，本来想自己留着的，但我心里那个牛仔说这个该是你的。别让它蔫了。",
         "objectives": {
           "0": {
-            "label": "Cave Morsel gathered"
+            "label": "已采集洞穴肉粒"
           }
         }
       }
@@ -6644,14 +6644,14 @@ export const zh_CN: EnTranslations = {
         "leaveText": "你穿过月门，浮上山间的夜色之中。"
       },
       "the_hollow": {
-        "name": "The Hollow",
-        "enterText": "You step through the shrine gate. The air turns warm and green, and the vase waits ahead.",
-        "leaveText": "You step back out through the gate into Eastbrook."
+        "name": "空穴",
+        "enterText": "你穿过神龛之门。空气变得温暖而翠绿，那口瓮在前方等候。",
+        "leaveText": "你穿过大门，回到东溪。"
       },
       "under_shrine": {
-        "name": "The Under-Shrine",
-        "enterText": "You descend below the shrine. The air goes still and close, and the dark ahead does not feel empty.",
-        "leaveText": "You climb back into the warm. Above you, faintly, smoke."
+        "name": "地下圣龛",
+        "enterText": "你潜入神龛之下。空气变得静止而压抑，前方的黑暗似乎并不空无一物。",
+        "leaveText": "你爬回温暖之处。头顶上方，隐约有烟。"
       }
     },
     "delves": {

@@ -5090,13 +5090,13 @@ export const da_DK: EnTranslations = {
         "name": "Ormeskygge-Klogreb"
       },
       "cave_morsel": {
-        "name": "Cave Morsel"
+        "name": "Grottebid"
       },
       "emberbulb": {
-        "name": "Emberbulb"
+        "name": "Glødeknold"
       },
       "first_cutting": {
-        "name": "A Cutting"
+        "name": "En Stikling"
       },
       "reliquary_plate_chest": {
         "name": "Relikvievogterens Brynje"
@@ -5545,13 +5545,13 @@ export const da_DK: EnTranslations = {
         "name": "Ysolei, den Druknede Månes Avatar"
       },
       "palefeeder": {
-        "name": "Palefeeder"
+        "name": "Blegæder"
       },
       "rootmaw": {
-        "name": "Rootmaw"
+        "name": "Rodgab"
       },
       "the_witness_root": {
-        "name": "The Witness-Root"
+        "name": "Vidnerod"
       }
     },
     "npcs": {
@@ -5666,9 +5666,9 @@ export const da_DK: EnTranslations = {
         "greeting": "Søen drikker måneskinnet, {className}, og giver de druknede tilbage. Jeg har vogtet den port i tredive nætter - og i nat står den åben."
       },
       "brother_greenpaw": {
-        "name": "Brother Greenpaw",
-        "title": "First Prophet (self-appointed)",
-        "greeting": "howdy, traveler. you catch the vase in a mood today, or is that just me again... c'mere, got a couple sacred matters need tendin'. mostly snacks. same thing, to a greenpaw degree."
+        "name": "Broder Grønpote",
+        "title": "Første Profet (selvudnævnt)",
+        "greeting": "hej, rejsende. fangede du vasen i humør i dag, eller er det bare mig igen... kom her, har et par hellige sager der trænger til pleje. mest snacks. samme ting, når man er Grønpote."
       }
     },
     "quests": {
@@ -6488,22 +6488,22 @@ export const da_DK: EnTranslations = {
         }
       },
       "q_what_burns": {
-        "title": "The Thing That Burns",
-        "text": "the communion's gone thin, friend... i'm bone dry and the wavelength is closin'. down under the shrine there's a bulb that burns slow and clean - emberbulb, grows where the light don't reach, which is a joke the cave plays on itself... bring me five. mind the pale ones. they come at your lantern, not at you. mostly.",
-        "completion": "now THAT'S the good smoke... you feel that? room's gettin' thick. she's gonna lean in any minute now, i can feel it on the wavelength... indeed.",
+        "title": "Tingen der Brænder",
+        "text": "fællesskabet er ved at blive tyndt, ven... jeg er knastør, og bølgelængden lukker sig. nede under skrinet er der en knold, der brænder langsomt og rent, glødeknold, gror hvor lyset ikke når, hvilket er en joke, grotten spiller på sig selv... bring mig fem. pas på de blege. de kommer efter din lanterne, ikke efter dig. mest.",
+        "completion": "DET er den gode røg... kan du mærke det? rummet bliver tykt. hun læner sig ind hvert øjeblik nu, jeg kan mærke det på bølgelængden... nemlig.",
         "objectives": {
           "0": {
-            "label": "Emberbulb gathered"
+            "label": "Glødeknold indsamlet"
           }
         }
       },
       "q_what_fills": {
-        "title": "The Thing That Fills",
-        "text": "second matter, and i'd call it sacred but between us it's breakfast... the rootmaws down there carry a morsel on 'em, cave-fed, real earthy. four'll do. bring 'em back 'fore the stomach starts singin' hymns of its own...",
-        "completion": "you're a saint of the first order, friend. or a good neighbor. same thing, to a greenpaw degree. ...here. was gonna keep this one but the inner cowboy says it's yours. don't let it wilt.",
+        "title": "Tingen der Fylder",
+        "text": "anden sag, og jeg vil kalde den hellig, men mellem os er det morgenmad... rodgabene dernede bærer et bid på sig, grottefodret, ægte jordagtigt. fire slår til. bring dem tilbage, før maven begynder at synge sine egne salmer...",
+        "completion": "du er en helgen af første rang, ven. eller en god nabo. samme ting, når man er Grønpote. ...her. skulle egentlig beholde den her, men cowboyen i mig siger, den er din. lad den ikke visne.",
         "objectives": {
           "0": {
-            "label": "Cave Morsel gathered"
+            "label": "Grottebid indsamlet"
           }
         }
       }
@@ -6644,14 +6644,14 @@ export const da_DK: EnTranslations = {
         "leaveText": "Du dukker op gennem måneporten ud i bjergnatten."
       },
       "the_hollow": {
-        "name": "The Hollow",
-        "enterText": "You step through the shrine gate. The air turns warm and green, and the vase waits ahead.",
-        "leaveText": "You step back out through the gate into Eastbrook."
+        "name": "Den Hule",
+        "enterText": "Du træder gennem skrinets port. Luften bliver varm og grøn, og vasen venter forude.",
+        "leaveText": "Du træder tilbage gennem porten ud i Eastbrook."
       },
       "under_shrine": {
-        "name": "The Under-Shrine",
-        "enterText": "You descend below the shrine. The air goes still and close, and the dark ahead does not feel empty.",
-        "leaveText": "You climb back into the warm. Above you, faintly, smoke."
+        "name": "Underhelligdommen",
+        "enterText": "Du stiger ned under skrinet. Luften bliver stille og tæt, og mørket forude føles ikke tomt.",
+        "leaveText": "Du klatrer tilbage op i varmen. Over dig, svagt, røg."
       }
     },
     "delves": {

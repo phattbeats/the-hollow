@@ -5090,13 +5090,13 @@ export const fr_FR: EnTranslations = {
         "name": "Poignes Serre Ombrewyrm"
       },
       "cave_morsel": {
-        "name": "Cave Morsel"
+        "name": "Bouchée des grottes"
       },
       "emberbulb": {
-        "name": "Emberbulb"
+        "name": "Bulbe-braise"
       },
       "first_cutting": {
-        "name": "A Cutting"
+        "name": "Une bouture"
       },
       "reliquary_plate_chest": {
         "name": "Haubert de la garde du reliquaire"
@@ -5545,13 +5545,13 @@ export const fr_FR: EnTranslations = {
         "name": "Ysolei, avatar de la Lune noyée"
       },
       "palefeeder": {
-        "name": "Palefeeder"
+        "name": "Dévoreur blafard"
       },
       "rootmaw": {
-        "name": "Rootmaw"
+        "name": "Gueule-racine"
       },
       "the_witness_root": {
-        "name": "The Witness-Root"
+        "name": "La Racine témoin"
       }
     },
     "npcs": {
@@ -5666,9 +5666,9 @@ export const fr_FR: EnTranslations = {
         "greeting": "Le lac boit le clair de lune, {className}, et rend les noyés. J'ai surveillé cette porte trente nuits durant — et cette nuit, elle est ouverte."
       },
       "brother_greenpaw": {
-        "name": "Brother Greenpaw",
-        "title": "First Prophet (self-appointed)",
-        "greeting": "howdy, traveler. you catch the vase in a mood today, or is that just me again... c'mere, got a couple sacred matters need tendin'. mostly snacks. same thing, to a greenpaw degree."
+        "name": "Frère Pattevert",
+        "title": "Premier Prophète (autoproclamé)",
+        "greeting": "hé, voyageur. le vase est de bonne humeur aujourd'hui, ou c'est encore rien que moi... viens donc, j'ai deux ou trois affaires sacrées à régler. surtout des grignotages. c'est pareil, à un degré près, façon Pattevert."
       }
     },
     "quests": {
@@ -6488,22 +6488,22 @@ export const fr_FR: EnTranslations = {
         }
       },
       "q_what_burns": {
-        "title": "The Thing That Burns",
-        "text": "the communion's gone thin, friend... i'm bone dry and the wavelength is closin'. down under the shrine there's a bulb that burns slow and clean - emberbulb, grows where the light don't reach, which is a joke the cave plays on itself... bring me five. mind the pale ones. they come at your lantern, not at you. mostly.",
-        "completion": "now THAT'S the good smoke... you feel that? room's gettin' thick. she's gonna lean in any minute now, i can feel it on the wavelength... indeed.",
+        "title": "La Chose qui brûle",
+        "text": "la communion s'est amenuisée, l'ami... je suis à sec et la longueur d'onde se referme. là-dessous, sous le sanctuaire, il y a un bulbe qui brûle lent et propre, le bulbe-braise, il pousse là où la lumière ne va pas, ce qui est une blague que la grotte se fait à elle-même... rapportes-en cinq. méfie-toi des pâles. ils en veulent à ta lanterne, pas à toi. la plupart du temps.",
+        "completion": "ça, c'est de la bonne fumée... tu sens ça ? la pièce s'épaissit. elle va se pencher d'une minute à l'autre, je le sens sur la longueur d'onde... en effet.",
         "objectives": {
           "0": {
-            "label": "Emberbulb gathered"
+            "label": "Bulbe-braise récolté"
           }
         }
       },
       "q_what_fills": {
-        "title": "The Thing That Fills",
-        "text": "second matter, and i'd call it sacred but between us it's breakfast... the rootmaws down there carry a morsel on 'em, cave-fed, real earthy. four'll do. bring 'em back 'fore the stomach starts singin' hymns of its own...",
-        "completion": "you're a saint of the first order, friend. or a good neighbor. same thing, to a greenpaw degree. ...here. was gonna keep this one but the inner cowboy says it's yours. don't let it wilt.",
+        "title": "La Chose qui remplit",
+        "text": "deuxième affaire, et je dirais bien sacrée mais entre nous c'est le petit-déjeuner... les gueule-racines là-dessous portent une bouchée sur elles, nourrie de grotte, bien terreuse. quatre feront l'affaire. rapporte-les avant que l'estomac se mette à chanter ses propres hymnes...",
+        "completion": "t'es un saint de première catégorie, l'ami. ou un bon voisin. c'est pareil, à un degré près, façon Pattevert. ...tiens. j'allais garder celle-là mais le cowboy intérieur dit qu'elle est à toi. laisse-la pas faner.",
         "objectives": {
           "0": {
-            "label": "Cave Morsel gathered"
+            "label": "Bouchée des grottes récoltée"
           }
         }
       }
@@ -6644,14 +6644,14 @@ export const fr_FR: EnTranslations = {
         "leaveText": "Tu refais surface par la porte de lune dans la nuit de la montagne."
       },
       "the_hollow": {
-        "name": "The Hollow",
-        "enterText": "You step through the shrine gate. The air turns warm and green, and the vase waits ahead.",
-        "leaveText": "You step back out through the gate into Eastbrook."
+        "name": "Le Creux",
+        "enterText": "Tu franchis le portail du sanctuaire. L'air devient chaud et vert, et le vase attend plus loin.",
+        "leaveText": "Tu ressors par le portail dans Eastbrook."
       },
       "under_shrine": {
-        "name": "The Under-Shrine",
-        "enterText": "You descend below the shrine. The air goes still and close, and the dark ahead does not feel empty.",
-        "leaveText": "You climb back into the warm. Above you, faintly, smoke."
+        "name": "Le Sous-Sanctuaire",
+        "enterText": "Tu descends sous le sanctuaire. L'air se fait immobile et proche, et l'obscurité devant toi ne semble pas vide.",
+        "leaveText": "Tu remontes dans la chaleur. Au-dessus de toi, faiblement, de la fumée."
       }
     },
     "delves": {

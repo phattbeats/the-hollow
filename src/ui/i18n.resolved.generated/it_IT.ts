@@ -5090,13 +5090,13 @@ export const it_IT: EnTranslations = {
         "name": "Prese Artiglio Ombrawyrm"
       },
       "cave_morsel": {
-        "name": "Cave Morsel"
+        "name": "Boccone di Caverna"
       },
       "emberbulb": {
-        "name": "Emberbulb"
+        "name": "Bulbo di Brace"
       },
       "first_cutting": {
-        "name": "A Cutting"
+        "name": "Una Talea"
       },
       "reliquary_plate_chest": {
         "name": "Usbergo della guardia del reliquiario"
@@ -5545,13 +5545,13 @@ export const it_IT: EnTranslations = {
         "name": "Ysolei, Avatar della Luna Annegata"
       },
       "palefeeder": {
-        "name": "Palefeeder"
+        "name": "Divoratore Pallido"
       },
       "rootmaw": {
-        "name": "Rootmaw"
+        "name": "Fauce di Radice"
       },
       "the_witness_root": {
-        "name": "The Witness-Root"
+        "name": "La Radice Testimone"
       }
     },
     "npcs": {
@@ -5666,9 +5666,9 @@ export const it_IT: EnTranslations = {
         "greeting": "Lo stagno beve la luce della luna, {className}, e restituisce gli annegati. Sorveglio quel cancello da trenta notti, e stanotte è aperto."
       },
       "brother_greenpaw": {
-        "name": "Brother Greenpaw",
-        "title": "First Prophet (self-appointed)",
-        "greeting": "howdy, traveler. you catch the vase in a mood today, or is that just me again... c'mere, got a couple sacred matters need tendin'. mostly snacks. same thing, to a greenpaw degree."
+        "name": "Fratello Zampaverde",
+        "title": "Primo Profeta (autoproclamato)",
+        "greeting": "ehi, viandante. il vaso oggi è di malumore, o sono di nuovo io... vieni qua, ho un paio di faccende sacre da sbrigare. per lo più spuntini. viene a essere lo stesso, in grado zampaverde."
       }
     },
     "quests": {
@@ -6488,22 +6488,22 @@ export const it_IT: EnTranslations = {
         }
       },
       "q_what_burns": {
-        "title": "The Thing That Burns",
-        "text": "the communion's gone thin, friend... i'm bone dry and the wavelength is closin'. down under the shrine there's a bulb that burns slow and clean - emberbulb, grows where the light don't reach, which is a joke the cave plays on itself... bring me five. mind the pale ones. they come at your lantern, not at you. mostly.",
-        "completion": "now THAT'S the good smoke... you feel that? room's gettin' thick. she's gonna lean in any minute now, i can feel it on the wavelength... indeed.",
+        "title": "La Cosa Che Arde",
+        "text": "la comunione si è fatta rada, amico... sono secco fino all'osso e la sintonia si sta chiudendo. giù sotto il santuario c'è un bulbo che arde lento e pulito: bulbo di brace, cresce dove la luce non arriva, il che è uno scherzo che la caverna fa a se stessa... portamene cinque. attento ai pallidi. vengono per la tua lanterna, non per te. quasi sempre.",
+        "completion": "QUESTO sì che è fumo buono... lo senti? l'aria si sta facendo densa. lei si sporgerà da un momento all'altro, lo sento nella sintonia... infatti.",
         "objectives": {
           "0": {
-            "label": "Emberbulb gathered"
+            "label": "Bulbo di Brace raccolto"
           }
         }
       },
       "q_what_fills": {
-        "title": "The Thing That Fills",
-        "text": "second matter, and i'd call it sacred but between us it's breakfast... the rootmaws down there carry a morsel on 'em, cave-fed, real earthy. four'll do. bring 'em back 'fore the stomach starts singin' hymns of its own...",
-        "completion": "you're a saint of the first order, friend. or a good neighbor. same thing, to a greenpaw degree. ...here. was gonna keep this one but the inner cowboy says it's yours. don't let it wilt.",
+        "title": "La Cosa Che Sazia",
+        "text": "secondo affare, e lo chiamerei sacro, ma tra noi è colazione... le fauci di radice là sotto portano addosso un boccone, cresciuto in caverna, bello terroso. quattro bastano. riportameli prima che lo stomaco cominci a cantare i suoi inni...",
+        "completion": "sei un santo di prim'ordine, amico. o un buon vicino. viene a essere lo stesso, in grado zampaverde. ...tieni. volevo tenermelo, ma il cowboy interiore dice che è tuo. non lasciarlo appassire.",
         "objectives": {
           "0": {
-            "label": "Cave Morsel gathered"
+            "label": "Boccone di Caverna raccolto"
           }
         }
       }
@@ -6644,14 +6644,14 @@ export const it_IT: EnTranslations = {
         "leaveText": "Riemergi attraverso il cancello lunare nella notte della montagna."
       },
       "the_hollow": {
-        "name": "The Hollow",
-        "enterText": "You step through the shrine gate. The air turns warm and green, and the vase waits ahead.",
-        "leaveText": "You step back out through the gate into Eastbrook."
+        "name": "Il Vuoto",
+        "enterText": "Varchi il cancello del santuario. L'aria si fa calda e verde, e il vaso attende più avanti.",
+        "leaveText": "Esci di nuovo dal cancello, verso Eastbrook."
       },
       "under_shrine": {
-        "name": "The Under-Shrine",
-        "enterText": "You descend below the shrine. The air goes still and close, and the dark ahead does not feel empty.",
-        "leaveText": "You climb back into the warm. Above you, faintly, smoke."
+        "name": "Il Sottosantuario",
+        "enterText": "Scendi sotto il santuario. L'aria si fa immobile e chiusa, e il buio davanti a te non sembra vuoto.",
+        "leaveText": "Risali nel tepore. Sopra di te, appena percettibile, fumo."
       }
     },
     "delves": {

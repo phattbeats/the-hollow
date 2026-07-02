@@ -801,6 +801,15 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'entities.dungeons.sunken_bastion.enterText': 'Bạn lội xuống Pháo Đài Chìm...',
   'entities.dungeons.sunken_bastion.leaveText': 'Bạn trèo ra khỏi bóng tối ngập nước.',
   'entities.dungeons.sunken_bastion.name': 'Pháo Đài Chìm',
+  'entities.dungeons.the_hollow.enterText':
+    'Bạn bước qua cổng thánh điện. Không khí trở nên ấm áp và xanh tươi, và chiếc bình chờ phía trước.',
+  'entities.dungeons.the_hollow.leaveText': 'Bạn bước trở ra qua cổng, vào Eastbrook.',
+  'entities.dungeons.the_hollow.name': 'Hố Rỗng',
+  'entities.dungeons.under_shrine.enterText':
+    'Bạn đi xuống dưới thánh điện. Không khí trở nên tĩnh lặng và ngột ngạt, và bóng tối phía trước không có cảm giác trống rỗng.',
+  'entities.dungeons.under_shrine.leaveText':
+    'Bạn leo trở lại nơi ấm áp. Phía trên bạn, thoang thoảng, có khói.',
+  'entities.dungeons.under_shrine.name': 'Điện Thờ Ngầm',
   'entities.items.acolytes_circlet.name': 'Vòng Đầu Tu Đồ',
   'entities.items.alien_armor_plate.name': 'Tấm Giáp Ngoại Lai',
   'entities.items.amber_crimson_armor_plate.name': 'Hổ Phách Đỏ Thẫm',
@@ -834,6 +843,7 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'entities.items.captains_crest.name': 'Đá Khóa Hầm Mộ Phần Trên',
   'entities.items.caravan_quilted_vest.name': 'Áo Chần Bông Đoàn Lữ Hành',
   'entities.items.caravan_warden_dirk.name': 'Dao Găm Vệ Trưởng Đoàn Lữ Hành',
+  'entities.items.cave_morsel.name': 'Miếng Ăn Hang Động',
   'entities.items.chipped_tusk.name': 'Ngà Sứt Mẻ',
   'entities.items.conjured_bread.name': 'Bánh Mì Triệu Hồi',
   'entities.items.conjured_bread2.name': 'Bánh Mì Đen Triệu Hồi',
@@ -891,6 +901,7 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'entities.items.eelscale_treads.name': 'Giày Vảy Lươn',
   'entities.items.eelskin_tunic.name': 'Áo Da Lươn',
   'entities.items.elixir_of_the_bear.name': 'Linh Dược Của Gấu',
+  'entities.items.emberbulb.name': 'Củ Than Hồng',
   'entities.items.emberfang_warblade.name': 'Chiến Đao Nanh Lửa Than',
   'entities.items.emberwing_cinderscale.name': 'Vảy Tro Cánh Than',
   'entities.items.emberwing_legguards.name': 'Giáp Chân Cánh Than',
@@ -904,6 +915,7 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'entities.items.fenmist_robe.name': 'Áo Choàng Sương Đầm',
   'entities.items.fenreed_staff.name': 'Trượng Sậy Đầm',
   'entities.items.fenwalker_boots.name': 'Giày Bộ Hành Đầm Lầy',
+  'entities.items.first_cutting.name': 'Một Nhánh Giâm',
   'entities.items.footpad_jerkin.name': 'Áo Da Của Kẻ Cướp Đường',
   'entities.items.forest_pink_armor_plate.name': 'Hồng Rừng Xanh',
   'entities.items.frayed_prayer_beads.name': 'Tràng Hạt Cầu Nguyện Sờn Rách',
@@ -1200,6 +1212,7 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.old_cragmaw.name': 'Lão Cragmaw',
   'entities.mobs.old_greyjaw.name': 'Lão Greyjaw',
   'entities.mobs.pale_choir_acolyte.name': 'Tu Đồ Hợp Ca Nhợt Nhạt',
+  'entities.mobs.palefeeder.name': 'Kẻ Ăn Nhợt Nhạt',
   'entities.mobs.pearlguard_sentinel.name': 'Vệ Binh Ngọc Trai',
   'entities.mobs.raised_bonewalker.name': 'Xác Xương Hồi Sinh',
   'entities.mobs.reliquary_bonewalker.name': 'Xác Xương Hồi Sinh',
@@ -1209,6 +1222,7 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_saintless_effigy.name': 'Hình Nộm Vô Thánh',
   'entities.mobs.restless_bones.name': 'Bộ Xương Bất An',
   'entities.mobs.ridge_stalker.name': 'Kẻ Rình Sườn Núi',
+  'entities.mobs.rootmaw.name': 'Miệng Rễ',
   'entities.mobs.sanctum_boneguard.name': 'Vệ Xương Thánh Đường',
   'entities.mobs.sanctum_drakonid.name': 'Nhân Long Thánh Đường',
   'entities.mobs.sethrael_palecoil.name': 'Sethrael Cuộn Nhợt',
@@ -1218,6 +1232,7 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.sloomtooth_the_drowned.name': 'Sloomtooth Kẻ Chết Chìm',
   'entities.mobs.stormcrag_elemental.name': 'Nguyên Tố Bão Nham',
   'entities.mobs.succubus.name': 'Mỹ Quỷ',
+  'entities.mobs.the_witness_root.name': 'Rễ Chứng Nhân',
   'entities.mobs.thornpeak_ogre.name': 'Quỷ Khổng Lồ Đỉnh Gai',
   'entities.mobs.tidebound_acolyte.name': 'Tu Đồ Buộc Triều',
   'entities.mobs.tunnel_rat.name': 'Chuột Đào Hầm',
@@ -1262,6 +1277,10 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
     'Từ sân nhà nguyện ở Thung Lũng đến nóc nhà của thế giới... con đường ta lần theo kết thúc tại đây. Ta cảm nhận được ngọn núi đang lắng nghe.',
   'entities.npcs.brother_aldric_raid.name': 'Tu Huynh Aldric',
   'entities.npcs.brother_aldric_raid.title': 'Tu Sĩ Thung Lũng',
+  'entities.npcs.brother_greenpaw.greeting':
+    'chào, lữ khách. hôm nay cái bình có vẻ vui tính, hay chỉ mình ta thấy vậy... lại đây, có vài việc thiêng cần lo. chủ yếu là đồ ăn vặt thôi. cũng như nhau cả, xét theo mức độ chân xanh.',
+  'entities.npcs.brother_greenpaw.name': 'Tu Huynh Chân Xanh',
+  'entities.npcs.brother_greenpaw.title': 'Vị Tiên Tri Đầu Tiên (tự phong)',
   'entities.npcs.brother_halven.greeting': 'Hầm thánh tích bên dưới lại dịch chuyển lần nữa.',
   'entities.npcs.brother_halven.name': 'Tu Huynh Halven',
   'entities.npcs.brother_halven.title': 'Người Giữ Thánh Tích',
@@ -1777,6 +1796,18 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_voice_below.text':
     'Đêm qua cả trại giáo phái quỳ rạp xuống cùng một lúc, {playerName}, từng tín đồ, từng tử linh sư, tất cả hướng về Thánh Đường. Korzul giờ nói chuyện với chúng trong giấc ngủ; Vael đã nghe thấy chính giọng nói ấy ở đầm lầy, và Morthen trước hắn. Hạ gục đám giáo đồ ấy, mười tín đồ, sáu tử linh sư, trước khi giọng nói đó có đủ tay để tự kéo mở cánh cổng.',
   'entities.quests.q_voice_below.title': 'Giọng Nói Bên Dưới',
+  'entities.quests.q_what_burns.completion':
+    'ĐÓ mới là khói ngon... cảm nhận được không? căn phòng đang đặc dần lên. bà ấy sắp nghiêng người tới bất cứ lúc nào, ta cảm nhận được trên tần sóng... đúng vậy đó.',
+  'entities.quests.q_what_burns.objectives.0.label': 'Đã thu thập Củ Than Hồng',
+  'entities.quests.q_what_burns.text':
+    'sự thông công đã cạn dần rồi, bạn hiền... ta khô khốc và tần sóng đang khép lại. bên dưới thánh điện có một củ cháy chậm và sạch, củ than hồng, mọc ở nơi ánh sáng không tới được, kể cũng là một trò đùa mà cái hang tự chơi với chính nó... mang cho ta năm củ. coi chừng đám nhợt nhạt đó. chúng nhắm vào cây đèn của ngươi, không phải ngươi. hầu hết là vậy.',
+  'entities.quests.q_what_burns.title': 'Thứ Cháy',
+  'entities.quests.q_what_fills.completion':
+    'ngươi là một vị thánh hạng nhất, bạn hiền. hay là một người hàng xóm tốt. cũng như nhau cả, xét theo mức độ chân xanh. ...đây. định giữ lại cái này nhưng gã cao bồi trong lòng ta bảo nó là của ngươi. đừng để nó héo.',
+  'entities.quests.q_what_fills.objectives.0.label': 'Đã thu thập Miếng Ăn Hang Động',
+  'entities.quests.q_what_fills.text':
+    'chuyện thứ hai, ta muốn gọi là thiêng liêng nhưng giữa chúng ta thôi thì nó là bữa sáng... mấy con miệng rễ dưới đó mang theo một miếng ăn, nuôi bằng hang động, thơm mùi đất thiệt. bốn miếng là đủ. mang về trước khi cái bụng bắt đầu hát thánh ca của riêng nó...',
+  'entities.quests.q_what_fills.title': 'Thứ Lấp Đầy',
   'entities.quests.q_whispers.completion':
     'Phù ấn này... nó mang dấu của Hội Triệu Mộ, một giáo phái mà ta đã cầu nguyện rằng đã tuyệt diệt. Chuyện này còn tệ hơn ta lo sợ, {playerName}.',
   'entities.quests.q_whispers.objectives.0.label': 'Phù Ấn Triệu Mộ',

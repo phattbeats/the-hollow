@@ -5090,13 +5090,13 @@ export const pl_PL: EnTranslations = {
         "name": "Szponiaste chwyty cienia żmija"
       },
       "cave_morsel": {
-        "name": "Cave Morsel"
+        "name": "Jaskiniowy kęs"
       },
       "emberbulb": {
-        "name": "Emberbulb"
+        "name": "Żarobulwa"
       },
       "first_cutting": {
-        "name": "A Cutting"
+        "name": "Sadzonka"
       },
       "reliquary_plate_chest": {
         "name": "Kolczuga strażnika relikwiarza"
@@ -5545,13 +5545,13 @@ export const pl_PL: EnTranslations = {
         "name": "Ysolei, Awatar Utopionego Księżyca"
       },
       "palefeeder": {
-        "name": "Palefeeder"
+        "name": "Bladożerca"
       },
       "rootmaw": {
-        "name": "Rootmaw"
+        "name": "Korzeniopaszcza"
       },
       "the_witness_root": {
-        "name": "The Witness-Root"
+        "name": "Korzeń Świadek"
       }
     },
     "npcs": {
@@ -5666,9 +5666,9 @@ export const pl_PL: EnTranslations = {
         "greeting": "Staw pije księżycowe światło, {className}, i oddaje utopionych. Pilnowałem tej bramy przez trzydzieści nocy — a dziś jest otwarta."
       },
       "brother_greenpaw": {
-        "name": "Brother Greenpaw",
-        "title": "First Prophet (self-appointed)",
-        "greeting": "howdy, traveler. you catch the vase in a mood today, or is that just me again... c'mere, got a couple sacred matters need tendin'. mostly snacks. same thing, to a greenpaw degree."
+        "name": "Brat Zielonołap",
+        "title": "Pierwszy Prorok (z własnego namaszczenia)",
+        "greeting": "hej, wędrowcze. złapałeś dziś wazę w nastroju, czy to tylko ja znowu se coś ubzdurałem... chodź no bliżej, mam parę świętych spraw do załatwienia. głównie żarcie. na miarę zielonołapa to jedno i to samo."
       }
     },
     "quests": {
@@ -6488,22 +6488,22 @@ export const pl_PL: EnTranslations = {
         }
       },
       "q_what_burns": {
-        "title": "The Thing That Burns",
-        "text": "the communion's gone thin, friend... i'm bone dry and the wavelength is closin'. down under the shrine there's a bulb that burns slow and clean - emberbulb, grows where the light don't reach, which is a joke the cave plays on itself... bring me five. mind the pale ones. they come at your lantern, not at you. mostly.",
-        "completion": "now THAT'S the good smoke... you feel that? room's gettin' thick. she's gonna lean in any minute now, i can feel it on the wavelength... indeed.",
+        "title": "To, co płonie",
+        "text": "więź się przerzedziła, przyjacielu... jestem suchy jak pieprz, a fala się zamyka. tam pod kapliczką rośnie bulwa, co pali się wolno i czysto: żarobulwa, rośnie tam, gdzie światło nie sięga, taki żarcik, co jaskinia robi sama sobie... przynieś mi pięć. uważaj na te blade. lecą na twoją latarnię, nie na ciebie. no, przeważnie.",
+        "completion": "a to dopiero dobry dym... czujesz to? robi się gęsto w powietrzu. ona zaraz się nachyli, czuję to na fali... o tak.",
         "objectives": {
           "0": {
-            "label": "Emberbulb gathered"
+            "label": "Zebrana żarobulwa"
           }
         }
       },
       "q_what_fills": {
-        "title": "The Thing That Fills",
-        "text": "second matter, and i'd call it sacred but between us it's breakfast... the rootmaws down there carry a morsel on 'em, cave-fed, real earthy. four'll do. bring 'em back 'fore the stomach starts singin' hymns of its own...",
-        "completion": "you're a saint of the first order, friend. or a good neighbor. same thing, to a greenpaw degree. ...here. was gonna keep this one but the inner cowboy says it's yours. don't let it wilt.",
+        "title": "To, co syci",
+        "text": "druga sprawa, nazwałbym ją świętą, ale między nami mówiąc, to po prostu śniadanie... te korzeniopaszcze tam na dole noszą przy sobie kęs, jaskiniowy, taki porządnie ziemisty. cztery starczą. przynieś je, zanim brzuch zacznie sam sobie śpiewać hymny...",
+        "completion": "jesteś świętym pierwszej klasy, przyjacielu. albo dobrym sąsiadem. na miarę zielonołapa to jedno i to samo. ...masz. chciałem to sobie zatrzymać, ale wewnętrzny kowboj mówi, że to twoje. nie daj temu zwiędnąć.",
         "objectives": {
           "0": {
-            "label": "Cave Morsel gathered"
+            "label": "Zebrany jaskiniowy kęs"
           }
         }
       }
@@ -6644,14 +6644,14 @@ export const pl_PL: EnTranslations = {
         "leaveText": "Wynurzasz się przez księżycową bramę w górską noc."
       },
       "the_hollow": {
-        "name": "The Hollow",
-        "enterText": "You step through the shrine gate. The air turns warm and green, and the vase waits ahead.",
-        "leaveText": "You step back out through the gate into Eastbrook."
+        "name": "Wydrążenie",
+        "enterText": "Przechodzisz przez bramę kapliczki. Powietrze robi się ciepłe i zielone, a przed tobą czeka waza.",
+        "leaveText": "Wracasz przez bramę do Eastbrook."
       },
       "under_shrine": {
-        "name": "The Under-Shrine",
-        "enterText": "You descend below the shrine. The air goes still and close, and the dark ahead does not feel empty.",
-        "leaveText": "You climb back into the warm. Above you, faintly, smoke."
+        "name": "Podziemia Kapliczki",
+        "enterText": "Schodzisz pod kapliczkę. Powietrze cichnie i gęstnieje, a mrok przed tobą wcale nie wydaje się pusty.",
+        "leaveText": "Wspinasz się z powrotem w ciepło. Gdzieś wysoko, ledwie wyczuwalnie, unosi się dym."
       }
     },
     "delves": {

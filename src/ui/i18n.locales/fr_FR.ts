@@ -2098,6 +2098,9 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'entities.items.tanned_leather_jerkin.name': 'Pourpoint en cuir tanné',
   'entities.items.hobnail_boots.name': 'Bottes cloutées',
   'entities.items.eastbrook_wool_trousers.name': "Pantalon de laine d'Eastbrook",
+  'entities.items.cave_morsel.name': 'Bouchée des grottes',
+  'entities.items.emberbulb.name': 'Bulbe-braise',
+  'entities.items.first_cutting.name': 'Une bouture',
   'entities.items.gravecaller_blade.name': 'Grande lame de Gravecaller',
   'entities.items.widowfang_dirk.name': 'Dague Croc-de-veuve',
   'entities.items.gravecaller_staff.name': 'Bâton du Creux',
@@ -2374,6 +2377,9 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.doomguard.name': "Seigneur de l'effroi",
   'entities.mobs.choirmother_selthe.name': 'Selthe, mère de chœur',
   'entities.mobs.drowned_templeguard.name': 'Garde du temple noyé',
+  'entities.mobs.palefeeder.name': 'Dévoreur blafard',
+  'entities.mobs.rootmaw.name': 'Gueule-racine',
+  'entities.mobs.the_witness_root.name': 'La Racine témoin',
   'entities.mobs.drowned_votary.name': 'Dévot noyé',
   'entities.mobs.glimmermere_wader.name': 'Pataugeur de Lac-miroitant',
   'entities.mobs.glimmerscale_lurker.name': 'Rôdeur aux écailles miroitantes',
@@ -2400,6 +2406,10 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.apothecary_lin.title': 'Herboriste',
   'entities.npcs.apothecary_lin.greeting':
     "Faites attention où vous mettez les pieds dans les bois de l'est, ami.",
+  'entities.npcs.brother_greenpaw.name': 'Frère Pattevert',
+  'entities.npcs.brother_greenpaw.title': 'Premier Prophète (autoproclamé)',
+  'entities.npcs.brother_greenpaw.greeting':
+    "hé, voyageur. le vase est de bonne humeur aujourd'hui, ou c'est encore rien que moi... viens donc, j'ai deux ou trois affaires sacrées à régler. surtout des grignotages. c'est pareil, à un degré près, façon Pattevert.",
   'entities.npcs.brother_aldric.name': 'Frère Aldric',
   'entities.npcs.brother_aldric.title': 'Prêtre du Val',
   'entities.npcs.brother_aldric.greeting':
@@ -2876,6 +2886,18 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_drowned_moon.completion':
     "L'autel est éteint, l'eau est immobile, et la lune au-dessus du tarn n'est plus que la lune. Tu as noyé une déesse cette nuit, {playerName} — et la montagne ne saura jamais à quel point elle a frôlé l'abîme. Que les gardiens des rochers du rivage reposent enfin en paix.",
   'entities.quests.q_drowned_moon.objectives.0.label': 'Ysolei, avatar de la Lune noyée, tuée',
+  'entities.quests.q_what_burns.title': 'La Chose qui brûle',
+  'entities.quests.q_what_burns.text':
+    "la communion s'est amenuisée, l'ami... je suis à sec et la longueur d'onde se referme. là-dessous, sous le sanctuaire, il y a un bulbe qui brûle lent et propre, le bulbe-braise, il pousse là où la lumière ne va pas, ce qui est une blague que la grotte se fait à elle-même... rapportes-en cinq. méfie-toi des pâles. ils en veulent à ta lanterne, pas à toi. la plupart du temps.",
+  'entities.quests.q_what_burns.completion':
+    "ça, c'est de la bonne fumée... tu sens ça ? la pièce s'épaissit. elle va se pencher d'une minute à l'autre, je le sens sur la longueur d'onde... en effet.",
+  'entities.quests.q_what_burns.objectives.0.label': 'Bulbe-braise récolté',
+  'entities.quests.q_what_fills.title': 'La Chose qui remplit',
+  'entities.quests.q_what_fills.text':
+    "deuxième affaire, et je dirais bien sacrée mais entre nous c'est le petit-déjeuner... les gueule-racines là-dessous portent une bouchée sur elles, nourrie de grotte, bien terreuse. quatre feront l'affaire. rapporte-les avant que l'estomac se mette à chanter ses propres hymnes...",
+  'entities.quests.q_what_fills.completion':
+    "t'es un saint de première catégorie, l'ami. ou un bon voisin. c'est pareil, à un degré près, façon Pattevert. ...tiens. j'allais garder celle-là mais le cowboy intérieur dit qu'elle est à toi. laisse-la pas faner.",
+  'entities.quests.q_what_fills.objectives.0.label': 'Bouchée des grottes récoltée',
   'entities.quests.q_glimmermere_light.title': "Lumière sur l'eau",
   'entities.quests.q_glimmermere_light.text':
     "Regarde là, {playerName} — sous la surface, un escalier de pierre pâle qui descend dans les ténèbres, et une porte de lumière froide à son sommet. Les anciens gardiens ont gravé des avertissements dans les rochers du rivage avant que l'eau ne les emporte. Prends-en un frottis pour moi ; je veux lire ce qu'ils redoutaient avant que nous n'allions plus loin.",
@@ -2951,6 +2973,15 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
     "Tu franchis la porte de lune — l'air se mue en eau froide et en lumière blafarde, et le chant se referme au-dessus de ta tête.",
   'entities.dungeons.drowned_temple.leaveText':
     'Tu refais surface par la porte de lune dans la nuit de la montagne.',
+  'entities.dungeons.the_hollow.name': 'Le Creux',
+  'entities.dungeons.the_hollow.enterText':
+    "Tu franchis le portail du sanctuaire. L'air devient chaud et vert, et le vase attend plus loin.",
+  'entities.dungeons.the_hollow.leaveText': 'Tu ressors par le portail dans Eastbrook.',
+  'entities.dungeons.under_shrine.name': 'Le Sous-Sanctuaire',
+  'entities.dungeons.under_shrine.enterText':
+    "Tu descends sous le sanctuaire. L'air se fait immobile et proche, et l'obscurité devant toi ne semble pas vide.",
+  'entities.dungeons.under_shrine.leaveText':
+    'Tu remontes dans la chaleur. Au-dessus de toi, faiblement, de la fumée.',
   'worldContent.corpseName': '{name} (cadavre)',
   'worldContent.dungeonExitName': 'Sortie de {name}',
   'worldContent.dungeonPartyWarning':

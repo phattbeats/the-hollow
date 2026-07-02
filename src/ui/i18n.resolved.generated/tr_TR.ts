@@ -5090,13 +5090,13 @@ export const tr_TR: EnTranslations = {
         "name": "Ejdergölgesi Pençe Kavramaları"
       },
       "cave_morsel": {
-        "name": "Cave Morsel"
+        "name": "Mağara Lokması"
       },
       "emberbulb": {
-        "name": "Emberbulb"
+        "name": "Köz Soğanı"
       },
       "first_cutting": {
-        "name": "A Cutting"
+        "name": "Bir Filiz"
       },
       "reliquary_plate_chest": {
         "name": "Emanetlik Muhafızı Zırhı"
@@ -5545,13 +5545,13 @@ export const tr_TR: EnTranslations = {
         "name": "Ysolei, Boğulmuş Ay'ın Avatarı"
       },
       "palefeeder": {
-        "name": "Palefeeder"
+        "name": "Solgunbeslen"
       },
       "rootmaw": {
-        "name": "Rootmaw"
+        "name": "Kökçene"
       },
       "the_witness_root": {
-        "name": "The Witness-Root"
+        "name": "Tanık Kök"
       }
     },
     "npcs": {
@@ -5666,9 +5666,9 @@ export const tr_TR: EnTranslations = {
         "greeting": "Göl ay ışığını içer, {className}, ve karşılığında boğulanları geri verir. O kapıyı otuz gece boyunca gözledim — ve bu gece açık."
       },
       "brother_greenpaw": {
-        "name": "Brother Greenpaw",
-        "title": "First Prophet (self-appointed)",
-        "greeting": "howdy, traveler. you catch the vase in a mood today, or is that just me again... c'mere, got a couple sacred matters need tendin'. mostly snacks. same thing, to a greenpaw degree."
+        "name": "Birader Greenpaw",
+        "title": "İlk Peygamber (kendi kendini atadı)",
+        "greeting": "selam sana, gezgin. put bugün keyifsiz mi yoksa yine ben mi öyle görüyorum... gel bakalım buraya, birkaç kutsal iş var görülecek. çoğu atıştırmalık aslında. greenpaw ölçeğinde ikisi de aynı kapıya çıkar."
       }
     },
     "quests": {
@@ -6488,22 +6488,22 @@ export const tr_TR: EnTranslations = {
         }
       },
       "q_what_burns": {
-        "title": "The Thing That Burns",
-        "text": "the communion's gone thin, friend... i'm bone dry and the wavelength is closin'. down under the shrine there's a bulb that burns slow and clean - emberbulb, grows where the light don't reach, which is a joke the cave plays on itself... bring me five. mind the pale ones. they come at your lantern, not at you. mostly.",
-        "completion": "now THAT'S the good smoke... you feel that? room's gettin' thick. she's gonna lean in any minute now, i can feel it on the wavelength... indeed.",
+        "title": "Yanan Şey",
+        "text": "iletişim inceldi be dostum... ben kupkuru kaldım, wavelength kapanıyor. mabedin altında yavaş ve temiz yanan bir soğan var, köz soğanı derler, ışığın erişmediği yerde büyür, mağaranın kendine yaptığı bir şaka bu bir bakıma... bana beş tane getir. solgunlara dikkat et. onlar sana değil, lambana gelir. çoğunlukla.",
+        "completion": "işte bu, gerçek duman bu... hissediyor musun? oda ağırlaşıyor be. put az sonra eğilir buraya, wavelength'te hissediyorum bunu... hakikaten.",
         "objectives": {
           "0": {
-            "label": "Emberbulb gathered"
+            "label": "Köz soğanı toplandı"
           }
         }
       },
       "q_what_fills": {
-        "title": "The Thing That Fills",
-        "text": "second matter, and i'd call it sacred but between us it's breakfast... the rootmaws down there carry a morsel on 'em, cave-fed, real earthy. four'll do. bring 'em back 'fore the stomach starts singin' hymns of its own...",
-        "completion": "you're a saint of the first order, friend. or a good neighbor. same thing, to a greenpaw degree. ...here. was gonna keep this one but the inner cowboy says it's yours. don't let it wilt.",
+        "title": "Dolduran Şey",
+        "text": "ikinci mesele, kutsal derdim ama aramızda kalsın, aslında kahvaltı bu... aşağıdaki kökçenelerde bir lokma taşıyorlar, mağara beslemesi, tam toprak tadında. dört tanesi yeter. karnım ilahi söylemeye başlamadan getir onları...",
+        "completion": "sen ilk sınıf bir azizsin dostum. ya da iyi bir komşu. greenpaw ölçeğinde ikisi de aynı kapıya çıkar. ...al bakalım. bunu kendime saklayacaktım ama içimdeki kovboy sana ait dedi. soldurma sakın.",
         "objectives": {
           "0": {
-            "label": "Cave Morsel gathered"
+            "label": "Mağara lokması toplandı"
           }
         }
       }
@@ -6644,14 +6644,14 @@ export const tr_TR: EnTranslations = {
         "leaveText": "Ay geçidinden dağ gecesine doğru su yüzüne çıkarsın."
       },
       "the_hollow": {
-        "name": "The Hollow",
-        "enterText": "You step through the shrine gate. The air turns warm and green, and the vase waits ahead.",
-        "leaveText": "You step back out through the gate into Eastbrook."
+        "name": "Oyuk",
+        "enterText": "Mabet kapısından içeri adım atarsın. Hava ısınıp yeşile döner, put ilerde seni bekler.",
+        "leaveText": "Kapıdan geri çıkıp Eastbrook'a dönersin."
       },
       "under_shrine": {
-        "name": "The Under-Shrine",
-        "enterText": "You descend below the shrine. The air goes still and close, and the dark ahead does not feel empty.",
-        "leaveText": "You climb back into the warm. Above you, faintly, smoke."
+        "name": "Mabet Altı",
+        "enterText": "Mabedin altına inersin. Hava durgunlaşıp sıkışır, ilerideki karanlık boş hissettirmez.",
+        "leaveText": "Sıcağa doğru tırmanıp geri çıkarsın. Yukarıdan, hafifçe, duman kokusu gelir."
       }
     },
     "delves": {

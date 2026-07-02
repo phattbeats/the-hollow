@@ -5090,13 +5090,13 @@ export const de_DE: EnTranslations = {
         "name": "Wyrmschatten-Krallengriffe"
       },
       "cave_morsel": {
-        "name": "Cave Morsel"
+        "name": "Höhlenhappen"
       },
       "emberbulb": {
-        "name": "Emberbulb"
+        "name": "Glutknolle"
       },
       "first_cutting": {
-        "name": "A Cutting"
+        "name": "Ein Ableger"
       },
       "reliquary_plate_chest": {
         "name": "Halsberge der Reliquiarwache"
@@ -5545,13 +5545,13 @@ export const de_DE: EnTranslations = {
         "name": "Ysolei, Avatar des Ertränkten Mondes"
       },
       "palefeeder": {
-        "name": "Palefeeder"
+        "name": "Bleichfresser"
       },
       "rootmaw": {
-        "name": "Rootmaw"
+        "name": "Wurzelmaul"
       },
       "the_witness_root": {
-        "name": "The Witness-Root"
+        "name": "Die Zeugenwurzel"
       }
     },
     "npcs": {
@@ -5666,9 +5666,9 @@ export const de_DE: EnTranslations = {
         "greeting": "Der See trinkt das Mondlicht, {className}, und gibt die Ertränkten zurück. Dreißig Nächte lang habe ich jenes Tor bewacht — und heute Nacht steht es offen."
       },
       "brother_greenpaw": {
-        "name": "Brother Greenpaw",
-        "title": "First Prophet (self-appointed)",
-        "greeting": "howdy, traveler. you catch the vase in a mood today, or is that just me again... c'mere, got a couple sacred matters need tendin'. mostly snacks. same thing, to a greenpaw degree."
+        "name": "Bruder Grünpfote",
+        "title": "Erster Prophet (selbsternannt)",
+        "greeting": "hey, reisender. haste die Vase heut in Stimmung erwischt, oder bin nur wieder ich... komm her, hab ein paar heilige Angelegenheiten, die erledigt werden müssen. hauptsächlich Snacks. is eigentlich dasselbe, wenn man Grünpfote ist."
       }
     },
     "quests": {
@@ -6488,22 +6488,22 @@ export const de_DE: EnTranslations = {
         }
       },
       "q_what_burns": {
-        "title": "The Thing That Burns",
-        "text": "the communion's gone thin, friend... i'm bone dry and the wavelength is closin'. down under the shrine there's a bulb that burns slow and clean - emberbulb, grows where the light don't reach, which is a joke the cave plays on itself... bring me five. mind the pale ones. they come at your lantern, not at you. mostly.",
-        "completion": "now THAT'S the good smoke... you feel that? room's gettin' thick. she's gonna lean in any minute now, i can feel it on the wavelength... indeed.",
+        "title": "Das Ding, das brennt",
+        "text": "die Kommunion wird dünn, Freund... ich bin knochentrocken und die Wellenlänge schließt sich. unten unterm Schrein gibt's 'ne Knolle, die langsam und sauber brennt, Glutknolle, wächst dort, wo kein Licht hinkommt, was 'n Witz ist, den sich die Höhle selbst erlaubt... bring mir fünf. pass auf die Bleichen auf. die kommen wegen deiner Laterne, nicht wegen dir. meistens.",
+        "completion": "DAS is der gute Rauch... spürste das? der Raum wird dicht. sie wird jeden Moment näher rücken, ich spür's auf der Wellenlänge... in der Tat.",
         "objectives": {
           "0": {
-            "label": "Emberbulb gathered"
+            "label": "Glutknolle gesammelt"
           }
         }
       },
       "q_what_fills": {
-        "title": "The Thing That Fills",
-        "text": "second matter, and i'd call it sacred but between us it's breakfast... the rootmaws down there carry a morsel on 'em, cave-fed, real earthy. four'll do. bring 'em back 'fore the stomach starts singin' hymns of its own...",
-        "completion": "you're a saint of the first order, friend. or a good neighbor. same thing, to a greenpaw degree. ...here. was gonna keep this one but the inner cowboy says it's yours. don't let it wilt.",
+        "title": "Das Ding, das füllt",
+        "text": "zweite Sache, und ich würd sie heilig nennen, aber unter uns is' es Frühstück... die Wurzelmäuler da unten tragen 'nen Happen bei sich, höhlengenährt, richtig erdig. vier reichen. bring sie zurück, bevor der Magen anfängt, seine eigenen Hymnen zu singen...",
+        "completion": "du bist 'n Heiliger erster Klasse, Freund. oder 'n guter Nachbar. is eigentlich dasselbe, wenn man Grünpfote ist. ...hier. wollt das eigentlich behalten, aber der Cowboy in mir sagt, is deins. lass es nicht welken.",
         "objectives": {
           "0": {
-            "label": "Cave Morsel gathered"
+            "label": "Höhlenhappen gesammelt"
           }
         }
       }
@@ -6644,14 +6644,14 @@ export const de_DE: EnTranslations = {
         "leaveText": "Du tauchst durch das Mondtor empor in die Bergnacht."
       },
       "the_hollow": {
-        "name": "The Hollow",
-        "enterText": "You step through the shrine gate. The air turns warm and green, and the vase waits ahead.",
-        "leaveText": "You step back out through the gate into Eastbrook."
+        "name": "Die Höhlung",
+        "enterText": "Du trittst durch das Schreintor. Die Luft wird warm und grün, und die Vase wartet voraus.",
+        "leaveText": "Du trittst zurück durch das Tor nach Eastbrook."
       },
       "under_shrine": {
-        "name": "The Under-Shrine",
-        "enterText": "You descend below the shrine. The air goes still and close, and the dark ahead does not feel empty.",
-        "leaveText": "You climb back into the warm. Above you, faintly, smoke."
+        "name": "Der Unter-Schrein",
+        "enterText": "Du steigst unter den Schrein hinab. Die Luft wird still und eng, und das Dunkel voraus fühlt sich nicht leer an.",
+        "leaveText": "Du kletterst zurück in die Wärme. Über dir, kaum wahrnehmbar, Rauch."
       }
     },
     "delves": {

@@ -5090,13 +5090,13 @@ export const id_ID: EnTranslations = {
         "name": "Sarung Tangan Cakar Bayangan Wyrm"
       },
       "cave_morsel": {
-        "name": "Cave Morsel"
+        "name": "Camilan Gua"
       },
       "emberbulb": {
-        "name": "Emberbulb"
+        "name": "Umbi Bara"
       },
       "first_cutting": {
-        "name": "A Cutting"
+        "name": "Sebuah Stek"
       },
       "reliquary_plate_chest": {
         "name": "Baju Zirah Penjaga Relikuari"
@@ -5545,13 +5545,13 @@ export const id_ID: EnTranslations = {
         "name": "Ysolei, Awatara Bulan Tenggelam"
       },
       "palefeeder": {
-        "name": "Palefeeder"
+        "name": "Pemakan Pucat"
       },
       "rootmaw": {
-        "name": "Rootmaw"
+        "name": "Mulut-akar"
       },
       "the_witness_root": {
-        "name": "The Witness-Root"
+        "name": "Sang Akar Saksi"
       }
     },
     "npcs": {
@@ -5666,9 +5666,9 @@ export const id_ID: EnTranslations = {
         "greeting": "Telaga itu meneguk cahaya bulan, {className}, dan mengembalikan mereka yang tenggelam. Sudah tiga puluh malam aku mengawasi gerbang itu, dan malam ini gerbang itu terbuka."
       },
       "brother_greenpaw": {
-        "name": "Brother Greenpaw",
-        "title": "First Prophet (self-appointed)",
-        "greeting": "howdy, traveler. you catch the vase in a mood today, or is that just me again... c'mere, got a couple sacred matters need tendin'. mostly snacks. same thing, to a greenpaw degree."
+        "name": "Bruder Cakarhijau",
+        "title": "Nabi Pertama (mengangkat diri sendiri)",
+        "greeting": "halo, pengembara. guci itu lagi bagus suasana hatinya hari ini, atau cuma perasaanku lagi... mari, ada dua tiga urusan suci yang mesti diurus. kebanyakan sih camilan. sama saja, kalau diukur dari kadar kepatuan hijau."
       }
     },
     "quests": {
@@ -6488,22 +6488,22 @@ export const id_ID: EnTranslations = {
         }
       },
       "q_what_burns": {
-        "title": "The Thing That Burns",
-        "text": "the communion's gone thin, friend... i'm bone dry and the wavelength is closin'. down under the shrine there's a bulb that burns slow and clean - emberbulb, grows where the light don't reach, which is a joke the cave plays on itself... bring me five. mind the pale ones. they come at your lantern, not at you. mostly.",
-        "completion": "now THAT'S the good smoke... you feel that? room's gettin' thick. she's gonna lean in any minute now, i can feel it on the wavelength... indeed.",
+        "title": "Yang Membara",
+        "text": "komuninya makin tipis, kawan... aku kering kerontang dan gelombangnya makin menutup. di bawah sana, di bawah kuil, ada umbi yang membara pelan dan bersih, umbi bara, tumbuh di tempat cahaya tak sampai, yang jadi semacam lelucon yang dibuat gua pada dirinya sendiri... bawakan aku lima. hati-hati sama yang pucat-pucat itu. mereka nyerang lenteramu, bukan kamu. kebanyakan sih begitu.",
+        "completion": "nah, ITU baru asap yang enak... kau rasakan itu? ruangannya makin pekat. dia bakal segera merunduk, aku bisa merasakannya di gelombang itu... memang benar.",
         "objectives": {
           "0": {
-            "label": "Emberbulb gathered"
+            "label": "Umbi Bara terkumpul"
           }
         }
       },
       "q_what_fills": {
-        "title": "The Thing That Fills",
-        "text": "second matter, and i'd call it sacred but between us it's breakfast... the rootmaws down there carry a morsel on 'em, cave-fed, real earthy. four'll do. bring 'em back 'fore the stomach starts singin' hymns of its own...",
-        "completion": "you're a saint of the first order, friend. or a good neighbor. same thing, to a greenpaw degree. ...here. was gonna keep this one but the inner cowboy says it's yours. don't let it wilt.",
+        "title": "Yang Mengenyangkan",
+        "text": "urusan kedua, dan aku bakal bilang ini suci tapi di antara kita saja ini sarapan... para mulut-akar di bawah sana bawa camilan di badannya, diberi makan gua, rasanya bener-bener tanah. empat aja udah cukup. bawa balik sebelum perutmu mulai nyanyi himne sendiri...",
+        "completion": "kau ini orang suci kelas satu, kawan. atau tetangga baik. sama saja, kalau diukur dari kadar kepatuan hijau. ...nih. tadinya mau kusimpan yang satu ini tapi si koboi dalam diriku bilang ini punyamu. jangan sampai layu.",
         "objectives": {
           "0": {
-            "label": "Cave Morsel gathered"
+            "label": "Camilan Gua terkumpul"
           }
         }
       }
@@ -6644,14 +6644,14 @@ export const id_ID: EnTranslations = {
         "leaveText": "Kau muncul ke permukaan melewati gerbang bulan menuju malam pegunungan."
       },
       "the_hollow": {
-        "name": "The Hollow",
-        "enterText": "You step through the shrine gate. The air turns warm and green, and the vase waits ahead.",
-        "leaveText": "You step back out through the gate into Eastbrook."
+        "name": "Yang Berongga",
+        "enterText": "Kau melangkah melewati gerbang kuil. Udara berubah hangat dan hijau, dan guci itu menunggu di depan.",
+        "leaveText": "Kau melangkah keluar lagi melewati gerbang menuju Eastbrook."
       },
       "under_shrine": {
-        "name": "The Under-Shrine",
-        "enterText": "You descend below the shrine. The air goes still and close, and the dark ahead does not feel empty.",
-        "leaveText": "You climb back into the warm. Above you, faintly, smoke."
+        "name": "Kuil Bawah",
+        "enterText": "Kau turun ke bawah kuil. Udara menjadi sunyi dan rapat, dan kegelapan di depan terasa tidak kosong.",
+        "leaveText": "Kau memanjat kembali ke kehangatan. Di atasmu, samar-samar, asap."
       }
     },
     "delves": {

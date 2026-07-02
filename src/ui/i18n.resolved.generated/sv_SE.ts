@@ -5090,13 +5090,13 @@ export const sv_SE: EnTranslations = {
         "name": "Lindormsskuggans klogrepp"
       },
       "cave_morsel": {
-        "name": "Cave Morsel"
+        "name": "Grottbit"
       },
       "emberbulb": {
-        "name": "Emberbulb"
+        "name": "Glödknöl"
       },
       "first_cutting": {
-        "name": "A Cutting"
+        "name": "En stickling"
       },
       "reliquary_plate_chest": {
         "name": "Relikvarievaktens ringbrynja"
@@ -5545,13 +5545,13 @@ export const sv_SE: EnTranslations = {
         "name": "Ysolei, den dränkta månens avatar"
       },
       "palefeeder": {
-        "name": "Palefeeder"
+        "name": "Blekätaren"
       },
       "rootmaw": {
-        "name": "Rootmaw"
+        "name": "Rotkäften"
       },
       "the_witness_root": {
-        "name": "The Witness-Root"
+        "name": "Vittnesroten"
       }
     },
     "npcs": {
@@ -5666,9 +5666,9 @@ export const sv_SE: EnTranslations = {
         "greeting": "Tjärnen dricker månljuset, {className}, och ger tillbaka de drunknade. Jag har vaktat den porten i trettio nätter - och i natt står den öppen."
       },
       "brother_greenpaw": {
-        "name": "Brother Greenpaw",
-        "title": "First Prophet (self-appointed)",
-        "greeting": "howdy, traveler. you catch the vase in a mood today, or is that just me again... c'mere, got a couple sacred matters need tendin'. mostly snacks. same thing, to a greenpaw degree."
+        "name": "Broder Gröntass",
+        "title": "Förste profeten (självutnämnd)",
+        "greeting": "hej där, resenär. fångade du vasen på gott humör idag, eller är det bara jag igen... kom hit, har ett par heliga angelägenheter som behöver skötas. mest mellanmål. samma sak, om man är Gröntass."
       }
     },
     "quests": {
@@ -6488,22 +6488,22 @@ export const sv_SE: EnTranslations = {
         }
       },
       "q_what_burns": {
-        "title": "The Thing That Burns",
-        "text": "the communion's gone thin, friend... i'm bone dry and the wavelength is closin'. down under the shrine there's a bulb that burns slow and clean - emberbulb, grows where the light don't reach, which is a joke the cave plays on itself... bring me five. mind the pale ones. they come at your lantern, not at you. mostly.",
-        "completion": "now THAT'S the good smoke... you feel that? room's gettin' thick. she's gonna lean in any minute now, i can feel it on the wavelength... indeed.",
+        "title": "Det som brinner",
+        "text": "gemenskapen har blivit tunn, vän... jag är torr som fnöske och våglängden stänger sig. nere under helgedomen finns en knöl som brinner sakta och rent, glödknöl, växer där ljuset inte når, vilket är ett skämt grottan spelar på sig själv... hämta fem åt mig. akta de bleka. de kommer för din lykta, inte för dig. mestadels.",
+        "completion": "DET där är den goda röken... känner du det? rummet blir tjockt. hon kommer att luta sig fram vilken sekund som helst nu, jag känner det på våglängden... minsann.",
         "objectives": {
           "0": {
-            "label": "Emberbulb gathered"
+            "label": "Glödknöl insamlad"
           }
         }
       },
       "q_what_fills": {
-        "title": "The Thing That Fills",
-        "text": "second matter, and i'd call it sacred but between us it's breakfast... the rootmaws down there carry a morsel on 'em, cave-fed, real earthy. four'll do. bring 'em back 'fore the stomach starts singin' hymns of its own...",
-        "completion": "you're a saint of the first order, friend. or a good neighbor. same thing, to a greenpaw degree. ...here. was gonna keep this one but the inner cowboy says it's yours. don't let it wilt.",
+        "title": "Det som fyller",
+        "text": "andra saken, och jag skulle kalla den helig, men oss emellan är det frukost... rotkäftarna där nere bär en bit på sig, grottfödd, riktigt jordig. fyra räcker. ta med dem tillbaka innan magen börjar sjunga sina egna psalmer...",
+        "completion": "du är ett helgon av första rang, vän. eller en god granne. samma sak, om man är Gröntass. ...här. tänkte behålla den här, men cowboyen inom mig säger att den är din. låt den inte vissna.",
         "objectives": {
           "0": {
-            "label": "Cave Morsel gathered"
+            "label": "Grottbit insamlad"
           }
         }
       }
@@ -6644,14 +6644,14 @@ export const sv_SE: EnTranslations = {
         "leaveText": "Du bryter ytan genom månporten ut i bergsnatten."
       },
       "the_hollow": {
-        "name": "The Hollow",
-        "enterText": "You step through the shrine gate. The air turns warm and green, and the vase waits ahead.",
-        "leaveText": "You step back out through the gate into Eastbrook."
+        "name": "Den ihåliga",
+        "enterText": "Du kliver genom helgedomsporten. Luften blir varm och grön, och vasen väntar framåt.",
+        "leaveText": "Du kliver tillbaka ut genom porten till Eastbrook."
       },
       "under_shrine": {
-        "name": "The Under-Shrine",
-        "enterText": "You descend below the shrine. The air goes still and close, and the dark ahead does not feel empty.",
-        "leaveText": "You climb back into the warm. Above you, faintly, smoke."
+        "name": "Underhelgedomen",
+        "enterText": "Du stiger ner under helgedomen. Luften blir stilla och tät, och mörkret framåt känns inte tomt.",
+        "leaveText": "Du klättrar tillbaka upp i värmen. Ovanför dig, svagt, rök."
       }
     },
     "delves": {

@@ -2936,6 +2936,14 @@ export const es: Partial<Record<TranslationKey, string>> = {
     'Atraviesas la puerta lunar: el aire se vuelve agua fría y luz pálida, y el canto se cierra sobre tu cabeza.',
   'entities.dungeons.drowned_temple.leaveText':
     'Emerges a través de la puerta lunar a la noche de la montaña.',
+  'entities.dungeons.the_hollow.name': 'El Hueco',
+  'entities.dungeons.the_hollow.enterText':
+    'Atraviesas la puerta del santuario. El aire se vuelve cálido y verde, y el jarrón espera más adelante.',
+  'entities.dungeons.the_hollow.leaveText': 'Vuelves a salir por la puerta hacia Eastbrook.',
+  'entities.dungeons.under_shrine.name': 'El Santuario Subterráneo',
+  'entities.dungeons.under_shrine.enterText':
+    'Desciendes bajo el santuario. El aire se vuelve quieto y cerrado, y la oscuridad de más adelante no se siente vacía.',
+  'entities.dungeons.under_shrine.leaveText': 'Subes de vuelta al calor. Sobre ti, tenue, humo.',
   'worldContent.corpseName': '{name} (cadáver)',
   'worldContent.dungeonExitName': 'Salida de {name}',
   'worldContent.dungeonPartyWarning':
@@ -4555,6 +4563,9 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'entities.items.reliquary_gloves_rog.name': 'Manoplas del Guardián de Huesos',
   'entities.items.deacon_reliquary_helm.name': 'Yelmo del Relicario del Diácono',
   'entities.items.varric_shadow_cowl.name': 'Capucha sombría de Varric',
+  'entities.items.cave_morsel.name': 'Bocado de Cueva',
+  'entities.items.emberbulb.name': 'Bulbo Ascua',
+  'entities.items.first_cutting.name': 'Un Esqueje',
   'entities.mobs.acolyte_tessa.name': 'Acólita Tessa',
   'entities.mobs.deacon_varric.name': 'Diácono Varric',
   'entities.mobs.reliquary_bonewalker.name': 'Andahuesos alzado',
@@ -4562,9 +4573,28 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_gravecall_acolyte.name': 'Acólito de la Llamada de Tumba',
   'entities.mobs.reliquary_ledger_wraith.name': 'Espectro del registro',
   'entities.mobs.reliquary_saintless_effigy.name': 'Efigie sin santo',
+  'entities.mobs.palefeeder.name': 'Devorador Pálido',
+  'entities.mobs.rootmaw.name': 'Fauce de Raíz',
+  'entities.mobs.the_witness_root.name': 'La Raíz Testigo',
   'entities.npcs.brother_halven.greeting': 'El relicario de abajo ha vuelto a desplazarse.',
   'entities.npcs.brother_halven.name': 'Hermano Halven',
   'entities.npcs.brother_halven.title': 'Guardián del Relicario',
+  'entities.npcs.brother_greenpaw.name': 'Hermano Pataverde',
+  'entities.npcs.brother_greenpaw.title': 'Primer Profeta (autoproclamado)',
+  'entities.npcs.brother_greenpaw.greeting':
+    'qué tal, viajero. ¿el jarrón está de mal humor hoy, o soy yo otra vez... ven acá, tengo un par de asuntos sagrados que atender. mayormente bocadillos. viene a ser lo mismo, en grado pataverde.',
+  'entities.quests.q_what_burns.title': 'Lo Que Arde',
+  'entities.quests.q_what_burns.text':
+    'la comunión se ha ido adelgazando, amigo... estoy seco hasta el hueso y la frecuencia se está cerrando. abajo, bajo el santuario, hay un bulbo que arde lento y limpio: bulbo ascua, crece donde no llega la luz, que es una broma que la cueva se hace a sí misma... tráeme cinco. cuidado con los pálidos. van a por tu farol, no por ti. casi siempre.',
+  'entities.quests.q_what_burns.completion':
+    'eso SÍ que es buen humo... ¿sientes eso? el aire se está espesando. ella va a asomarse en cualquier momento, lo siento en la frecuencia... en efecto.',
+  'entities.quests.q_what_burns.objectives.0.label': 'Bulbo Ascua recolectado',
+  'entities.quests.q_what_fills.title': 'Lo Que Sacia',
+  'entities.quests.q_what_fills.text':
+    'segundo asunto, y lo llamaría sagrado pero entre tú y yo es el desayuno... las fauces de raíz de ahí abajo llevan un bocado encima, criado en cueva, bien terroso. con cuatro basta. tráelos antes de que el estómago empiece a cantar sus propios himnos...',
+  'entities.quests.q_what_fills.completion':
+    'eres un santo de primer orden, amigo. o un buen vecino. viene a ser lo mismo, en grado pataverde. ...toma. iba a quedarme con este, pero el vaquero de adentro dice que es tuyo. no dejes que se marchite.',
+  'entities.quests.q_what_fills.objectives.0.label': 'Bocado de Cueva recolectado',
   'entities.delves.collapsed_reliquary.enterText': 'Desciendes al relicario hundido.',
   'entities.delves.collapsed_reliquary.leaveText':
     'Subes de vuelta hasta el Hermano Halven, en la ruina del relicario.',

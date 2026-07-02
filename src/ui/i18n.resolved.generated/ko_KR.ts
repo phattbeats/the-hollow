@@ -5090,13 +5090,13 @@ export const ko_KR: EnTranslations = {
         "name": "고룡그림자 갈퀴손아귀"
       },
       "cave_morsel": {
-        "name": "Cave Morsel"
+        "name": "동굴 고기 조각"
       },
       "emberbulb": {
-        "name": "Emberbulb"
+        "name": "불씨구근"
       },
       "first_cutting": {
-        "name": "A Cutting"
+        "name": "꺾꽂이"
       },
       "reliquary_plate_chest": {
         "name": "성물실 수호 갑옷"
@@ -5545,13 +5545,13 @@ export const ko_KR: EnTranslations = {
         "name": "이솔레이, 익사한 달의 화신"
       },
       "palefeeder": {
-        "name": "Palefeeder"
+        "name": "창백포식자"
       },
       "rootmaw": {
-        "name": "Rootmaw"
+        "name": "뿌리아가리"
       },
       "the_witness_root": {
-        "name": "The Witness-Root"
+        "name": "증언의 뿌리"
       }
     },
     "npcs": {
@@ -5666,9 +5666,9 @@ export const ko_KR: EnTranslations = {
         "greeting": "이 호수는 달빛을 마시고, {className}, 익사한 자들을 되돌려 보낸다네. 나는 서른 밤 동안 저 관문을 지켜보았지 — 그리고 오늘 밤, 마침내 그것이 열렸네."
       },
       "brother_greenpaw": {
-        "name": "Brother Greenpaw",
-        "title": "First Prophet (self-appointed)",
-        "greeting": "howdy, traveler. you catch the vase in a mood today, or is that just me again... c'mere, got a couple sacred matters need tendin'. mostly snacks. same thing, to a greenpaw degree."
+        "name": "브라더 초록발",
+        "title": "초대 선지자(자칭)",
+        "greeting": "어이, 나그네. 오늘 항아리 기분이 좀 이상해 보이나, 아니면 또 나만 그렇게 느끼는 건가……이리 와 보게, 처리해야 할 신성한 일이 몇 가지 있어. 대부분 간식거리지만. 뭐, 그린포우 식으로 치면 그게 그거지."
       }
     },
     "quests": {
@@ -6488,22 +6488,22 @@ export const ko_KR: EnTranslations = {
         }
       },
       "q_what_burns": {
-        "title": "The Thing That Burns",
-        "text": "the communion's gone thin, friend... i'm bone dry and the wavelength is closin'. down under the shrine there's a bulb that burns slow and clean - emberbulb, grows where the light don't reach, which is a joke the cave plays on itself... bring me five. mind the pale ones. they come at your lantern, not at you. mostly.",
-        "completion": "now THAT'S the good smoke... you feel that? room's gettin' thick. she's gonna lean in any minute now, i can feel it on the wavelength... indeed.",
+        "title": "타오르는 것",
+        "text": "교감이 옅어지고 있어, 친구……속이 바싹 말라서 파장이 닫히고 있다네. 사당 아래에 천천히 깨끗하게 타는 구근이 있지, 불씨구근 말이야, 빛이 닿지 않는 곳에서 자라는데, 동굴이 자기 자신한테 치는 농담 같은 거지……다섯 개만 가져다주게. 창백한 놈들 조심하고. 그놈들은 당신 등불에 몰려오는 거지, 당신한테 오는 게 아니야. 대체로는.",
+        "completion": "바로 이거지, 이게 좋은 연기라는 거야……느껴지나? 방이 점점 짙어지고 있어. 그분이 곧 몸을 기울일 거야, 파장에서 느껴진다네……정말로 말이야.",
         "objectives": {
           "0": {
-            "label": "Emberbulb gathered"
+            "label": "불씨구근 수집"
           }
         }
       },
       "q_what_fills": {
-        "title": "The Thing That Fills",
-        "text": "second matter, and i'd call it sacred but between us it's breakfast... the rootmaws down there carry a morsel on 'em, cave-fed, real earthy. four'll do. bring 'em back 'fore the stomach starts singin' hymns of its own...",
-        "completion": "you're a saint of the first order, friend. or a good neighbor. same thing, to a greenpaw degree. ...here. was gonna keep this one but the inner cowboy says it's yours. don't let it wilt.",
+        "title": "채워주는 것",
+        "text": "두 번째 일인데, 신성한 일이라 부르고 싶지만 우리끼리 얘기지만 사실 그냥 아침밥이야……저 아래 뿌리아가리들이 몸에 살점을 하나씩 달고 다니는데, 동굴에서 먹고 자라서 그런지 참 흙내가 나. 네 개면 되겠어. 배 속이 스스로 찬송가를 부르기 전에 가져와 주게……",
+        "completion": "자넨 정말 일등 성인일세, 친구. 아니면 좋은 이웃이거나. 뭐, 그린포우 식으로 치면 그게 그거지. ……자, 이건 내가 챙겨두려 했는데, 마음속 카우보이가 이건 자네 거라고 하는군. 시들게 하지 말게.",
         "objectives": {
           "0": {
-            "label": "Cave Morsel gathered"
+            "label": "동굴 고기 조각 수집"
           }
         }
       }
@@ -6644,14 +6644,14 @@ export const ko_KR: EnTranslations = {
         "leaveText": "당신은 달의 관문을 통해 산속의 밤으로 떠오릅니다."
       },
       "the_hollow": {
-        "name": "The Hollow",
-        "enterText": "You step through the shrine gate. The air turns warm and green, and the vase waits ahead.",
-        "leaveText": "You step back out through the gate into Eastbrook."
+        "name": "공동",
+        "enterText": "사당의 문을 지나갑니다. 공기가 따뜻하고 푸르게 변하고, 항아리가 앞에서 기다립니다.",
+        "leaveText": "문을 지나 다시 이스트브룩으로 나갑니다."
       },
       "under_shrine": {
-        "name": "The Under-Shrine",
-        "enterText": "You descend below the shrine. The air goes still and close, and the dark ahead does not feel empty.",
-        "leaveText": "You climb back into the warm. Above you, faintly, smoke."
+        "name": "지하 사당",
+        "enterText": "사당 아래로 내려갑니다. 공기가 고요하고 답답해지며, 앞의 어둠은 텅 빈 것처럼 느껴지지 않습니다.",
+        "leaveText": "따뜻한 곳으로 다시 기어오릅니다. 머리 위로, 희미하게 연기가 보입니다."
       }
     },
     "delves": {

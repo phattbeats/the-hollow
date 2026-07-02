@@ -2782,6 +2782,14 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.dungeons.drowned_temple.enterText':
     '你踏过那道月门——空气化作冰冷的水与苍白的光，歌声在你头顶合拢。',
   'entities.dungeons.drowned_temple.leaveText': '你穿过月门，浮上山间的夜色之中。',
+  'entities.dungeons.the_hollow.name': '空穴',
+  'entities.dungeons.the_hollow.enterText':
+    '你穿过神龛之门。空气变得温暖而翠绿，那口瓮在前方等候。',
+  'entities.dungeons.the_hollow.leaveText': '你穿过大门，回到东溪。',
+  'entities.dungeons.under_shrine.name': '地下圣龛',
+  'entities.dungeons.under_shrine.enterText':
+    '你潜入神龛之下。空气变得静止而压抑，前方的黑暗似乎并不空无一物。',
+  'entities.dungeons.under_shrine.leaveText': '你爬回温暖之处。头顶上方，隐约有烟。',
   'worldContent.corpseName': '{name}（尸体）',
   'worldContent.dungeonExitName': '{name}出口',
   'worldContent.delveLockedChestInteract': '按 F 撬锁',
@@ -2863,6 +2871,18 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_nythraxis_scourges_end.completion':
     '王冠终于沉默了。索恩峰仍会背负它的亡者，但山下再没有国王能召他们重返战争。你完成了奥德伦、马尔里克和沃斯只能暂时封住的事。',
   'entities.quests.q_nythraxis_scourges_end.objectives.0.label': '击败尼思拉克西斯',
+  'entities.quests.q_what_burns.title': '燃烧之物',
+  'entities.quests.q_what_burns.text':
+    '通灵淡了，朋友……我干得跟骨头一样，频率就快断了。神龛下面有种球茎，烧得又慢又干净，余烬球茎，长在光照不到的地方，这洞穴自己跟自己开的玩笑……给我带五颗回来。留意那些苍白的家伙，它们冲着你的灯笼来，不是冲着你。大概吧。',
+  'entities.quests.q_what_burns.completion':
+    '这才是上等的烟啊……你感觉到了吗？屋里越来越浓了。她随时都要探过身来了，我在频率上都能感觉到……的确如此。',
+  'entities.quests.q_what_burns.objectives.0.label': '已采集余烬球茎',
+  'entities.quests.q_what_fills.title': '饱腹之物',
+  'entities.quests.q_what_fills.text':
+    '第二件事，我本想说是神圣之事，但咱俩私下讲，其实就是早饭……下面那些根颚兽身上带着一小块肉，吃洞穴里的东西长大的，味道很土。四块就够了。趁肚子还没自己唱起圣歌之前带回来……',
+  'entities.quests.q_what_fills.completion':
+    '你真是头等的圣人啊，朋友。或者说是个好邻居。反正对绿掌来说都一样。……给，本来想自己留着的，但我心里那个牛仔说这个该是你的。别让它蔫了。',
+  'entities.quests.q_what_fills.objectives.0.label': '已采集洞穴肉粒',
   'hud.errors.silenced': '你已被沉默！',
   'hud.pet.noPetFood': '你没有可以喂给宠物的食物。',
   'hud.pet.petEatsFoodOnly': '你的宠物只能吃食物。',
@@ -4227,6 +4247,9 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.items.reliquary_gloves_rog.name': '护骨者护手',
   'entities.items.deacon_reliquary_helm.name': '执事的圣物库头盔',
   'entities.items.varric_shadow_cowl.name': '瓦里克的暗影兜帽',
+  'entities.items.cave_morsel.name': '洞穴肉粒',
+  'entities.items.emberbulb.name': '余烬球茎',
+  'entities.items.first_cutting.name': '插条',
   'entities.mobs.acolyte_tessa.name': '侍僧泰莎',
   'entities.mobs.deacon_varric.name': '执事瓦里克',
   'entities.mobs.reliquary_bonewalker.name': '复生的骨行者',
@@ -4234,9 +4257,16 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_gravecall_acolyte.name': '唤墓侍僧',
   'entities.mobs.reliquary_ledger_wraith.name': '名册幽魂',
   'entities.mobs.reliquary_saintless_effigy.name': '无圣徒像',
+  'entities.mobs.palefeeder.name': '苍白噬光者',
+  'entities.mobs.rootmaw.name': '根颚兽',
+  'entities.mobs.the_witness_root.name': '见证之根',
   'entities.npcs.brother_halven.greeting': '下方的圣物库又移位了。',
   'entities.npcs.brother_halven.name': '哈尔文修士',
   'entities.npcs.brother_halven.title': '圣物库守护人',
+  'entities.npcs.brother_greenpaw.name': '绿掌修士',
+  'entities.npcs.brother_greenpaw.title': '首席先知（自封）',
+  'entities.npcs.brother_greenpaw.greeting':
+    '哟，旅人，你来啦。你说这瓮今儿个心情不错，还是只有我这么觉得……过来吧，有几件神圣的事儿要办。基本上就是弄点吃的。反正对绿掌来说是一回事儿。',
   'entities.delves.collapsed_reliquary.enterText': '你向下深入坍塌的圣物库。',
   'entities.delves.collapsed_reliquary.leaveText': '你攀回圣物库废墟旁的哈尔文修士身边。',
   'entities.delves.collapsed_reliquary.name': '坍塌的圣物库',

@@ -5090,13 +5090,13 @@ export const pt_BR: EnTranslations = {
         "name": "Pegas Garra Sombra de Wyrm"
       },
       "cave_morsel": {
-        "name": "Cave Morsel"
+        "name": "Petisco da Caverna"
       },
       "emberbulb": {
-        "name": "Emberbulb"
+        "name": "Bulbo de Brasa"
       },
       "first_cutting": {
-        "name": "A Cutting"
+        "name": "Uma Muda"
       },
       "reliquary_plate_chest": {
         "name": "Cota da Guarda do Relicário"
@@ -5545,13 +5545,13 @@ export const pt_BR: EnTranslations = {
         "name": "Ysolei, Avatar da Lua Afogada"
       },
       "palefeeder": {
-        "name": "Palefeeder"
+        "name": "Devorapálido"
       },
       "rootmaw": {
-        "name": "Rootmaw"
+        "name": "Fauce-Raiz"
       },
       "the_witness_root": {
-        "name": "The Witness-Root"
+        "name": "A Raiz Testemunha"
       }
     },
     "npcs": {
@@ -5666,9 +5666,9 @@ export const pt_BR: EnTranslations = {
         "greeting": "O lago bebe o luar, {className}, e devolve os afogados. Vigio aquele portão há trinta noites — e esta noite ele está aberto."
       },
       "brother_greenpaw": {
-        "name": "Brother Greenpaw",
-        "title": "First Prophet (self-appointed)",
-        "greeting": "howdy, traveler. you catch the vase in a mood today, or is that just me again... c'mere, got a couple sacred matters need tendin'. mostly snacks. same thing, to a greenpaw degree."
+        "name": "Irmão Pataverde",
+        "title": "Primeiro Profeta (autoproclamado)",
+        "greeting": "e aí, viajante. o vaso tá de mau humor hoje, ou sou só eu de novo... vem cá, tenho uns assuntos sagrados pra cuidar. na maioria, lanchinho. dá no mesmo, no grau pataverde."
       }
     },
     "quests": {
@@ -6488,22 +6488,22 @@ export const pt_BR: EnTranslations = {
         }
       },
       "q_what_burns": {
-        "title": "The Thing That Burns",
-        "text": "the communion's gone thin, friend... i'm bone dry and the wavelength is closin'. down under the shrine there's a bulb that burns slow and clean - emberbulb, grows where the light don't reach, which is a joke the cave plays on itself... bring me five. mind the pale ones. they come at your lantern, not at you. mostly.",
-        "completion": "now THAT'S the good smoke... you feel that? room's gettin' thick. she's gonna lean in any minute now, i can feel it on the wavelength... indeed.",
+        "title": "A Coisa Que Arde",
+        "text": "a comunhão anda rala, amigo... tô seco até o osso e a sintonia tá se fechando. lá embaixo do santuário tem um bulbo que arde devagar e limpo: bulbo de brasa, cresce onde a luz não chega, que é uma piada que a caverna faz consigo mesma... me traga cinco. cuidado com os pálidos. eles vêm pra cima da sua lanterna, não de você. quase sempre.",
+        "completion": "ISSO sim que é fumaça boa... tá sentindo? o ar tá ficando espesso. ela vai se debruçar a qualquer momento, sinto na sintonia... pois é.",
         "objectives": {
           "0": {
-            "label": "Emberbulb gathered"
+            "label": "Bulbo de Brasa coletado"
           }
         }
       },
       "q_what_fills": {
-        "title": "The Thing That Fills",
-        "text": "second matter, and i'd call it sacred but between us it's breakfast... the rootmaws down there carry a morsel on 'em, cave-fed, real earthy. four'll do. bring 'em back 'fore the stomach starts singin' hymns of its own...",
-        "completion": "you're a saint of the first order, friend. or a good neighbor. same thing, to a greenpaw degree. ...here. was gonna keep this one but the inner cowboy says it's yours. don't let it wilt.",
+        "title": "A Coisa Que Enche",
+        "text": "segundo assunto, e eu chamaria de sagrado, mas entre nós é café da manhã... as fauces-raiz lá embaixo carregam um petisco, criado na caverna, bem terroso. quatro já bastam. traga antes que o estômago comece a cantar seus próprios hinos...",
+        "completion": "você é um santo de primeira ordem, amigo. ou um bom vizinho. dá no mesmo, no grau pataverde. ...aqui. eu ia ficar com esse, mas o caubói de dentro diz que é seu. não deixe murchar.",
         "objectives": {
           "0": {
-            "label": "Cave Morsel gathered"
+            "label": "Petisco da Caverna coletado"
           }
         }
       }
@@ -6644,14 +6644,14 @@ export const pt_BR: EnTranslations = {
         "leaveText": "Você emerge através do portão lunar para a noite da montanha."
       },
       "the_hollow": {
-        "name": "The Hollow",
-        "enterText": "You step through the shrine gate. The air turns warm and green, and the vase waits ahead.",
-        "leaveText": "You step back out through the gate into Eastbrook."
+        "name": "O Vazio",
+        "enterText": "Você atravessa o portão do santuário. O ar fica morno e verde, e o vaso espera lá na frente.",
+        "leaveText": "Você volta a sair pelo portão, de volta a Eastbrook."
       },
       "under_shrine": {
-        "name": "The Under-Shrine",
-        "enterText": "You descend below the shrine. The air goes still and close, and the dark ahead does not feel empty.",
-        "leaveText": "You climb back into the warm. Above you, faintly, smoke."
+        "name": "O Santuário Subterrâneo",
+        "enterText": "Você desce abaixo do santuário. O ar fica parado e fechado, e a escuridão à frente não parece vazia.",
+        "leaveText": "Você sobe de volta para o calor. Acima de você, ao longe, fumaça."
       }
     },
     "delves": {

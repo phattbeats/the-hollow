@@ -5090,13 +5090,13 @@ export const ja_JP: EnTranslations = {
         "name": "ワーム影の鉤爪握り"
       },
       "cave_morsel": {
-        "name": "Cave Morsel"
+        "name": "洞窟の肉片"
       },
       "emberbulb": {
-        "name": "Emberbulb"
+        "name": "残り火の球根"
       },
       "first_cutting": {
-        "name": "A Cutting"
+        "name": "挿し木"
       },
       "reliquary_plate_chest": {
         "name": "聖遺物庫衛兵のホーバーク"
@@ -5545,13 +5545,13 @@ export const ja_JP: EnTranslations = {
         "name": "イソレイ、溺月の化身"
       },
       "palefeeder": {
-        "name": "Palefeeder"
+        "name": "蒼白喰らい"
       },
       "rootmaw": {
-        "name": "Rootmaw"
+        "name": "根顎獣"
       },
       "the_witness_root": {
-        "name": "The Witness-Root"
+        "name": "証しの根"
       }
     },
     "npcs": {
@@ -5666,9 +5666,9 @@ export const ja_JP: EnTranslations = {
         "greeting": "この沼は月光を飲み干し、{className}よ、溺れし者を吐き返すのだ。私はあの門を三十夜も見張ってきた——そして今宵、門は開いている。"
       },
       "brother_greenpaw": {
-        "name": "Brother Greenpaw",
-        "title": "First Prophet (self-appointed)",
-        "greeting": "howdy, traveler. you catch the vase in a mood today, or is that just me again... c'mere, got a couple sacred matters need tendin'. mostly snacks. same thing, to a greenpaw degree."
+        "name": "緑掌修道士",
+        "title": "初代預言者（自称）",
+        "greeting": "よお、旅人。今日の壺はご機嫌かい、それとも俺の気のせいか……まあ来いよ、片付けなきゃならん神聖な用事が二つばかりある。ほとんど食い物のことだけどな。緑掌的にはそれも同じようなもんだ。"
       }
     },
     "quests": {
@@ -6488,22 +6488,22 @@ export const ja_JP: EnTranslations = {
         }
       },
       "q_what_burns": {
-        "title": "The Thing That Burns",
-        "text": "the communion's gone thin, friend... i'm bone dry and the wavelength is closin'. down under the shrine there's a bulb that burns slow and clean - emberbulb, grows where the light don't reach, which is a joke the cave plays on itself... bring me five. mind the pale ones. they come at your lantern, not at you. mostly.",
-        "completion": "now THAT'S the good smoke... you feel that? room's gettin' thick. she's gonna lean in any minute now, i can feel it on the wavelength... indeed.",
+        "title": "燃えるもの",
+        "text": "交信が薄くなってきてな、友よ……骨まで乾いちまって、波長が閉じかけてる。祠の下に、ゆっくり綺麗に燃える球根がある、残り火の球根、光の届かん場所に生えるんだ、洞窟が自分自身にかけた冗談みたいなもんだな……五つ持ってきてくれ。蒼白いやつらには気をつけろよ。奴らはお前のランタンに寄ってくるんであって、お前自身にじゃない。だいたいはな。",
+        "completion": "おお、これぞ極上の煙だ……感じるか？部屋が濃くなってきてる。あの方はもうすぐ身を乗り出してくるぞ、波長でわかるんだ……まったくもって。",
         "objectives": {
           "0": {
-            "label": "Emberbulb gathered"
+            "label": "残り火の球根を収集"
           }
         }
       },
       "q_what_fills": {
-        "title": "The Thing That Fills",
-        "text": "second matter, and i'd call it sacred but between us it's breakfast... the rootmaws down there carry a morsel on 'em, cave-fed, real earthy. four'll do. bring 'em back 'fore the stomach starts singin' hymns of its own...",
-        "completion": "you're a saint of the first order, friend. or a good neighbor. same thing, to a greenpaw degree. ...here. was gonna keep this one but the inner cowboy says it's yours. don't let it wilt.",
+        "title": "満たすもの",
+        "text": "二つ目の用事だが、神聖なものと言いたいところ、実のところ朝飯だな……下にいる根顎獣どもは体に肉片を一つ持ってる、洞窟育ちで、なかなか土臭い味だ。四つでいい。腹が自分で賛美歌を歌い出す前に持ち帰ってくれ……",
+        "completion": "お前は一級の聖人だな、友よ。それか良き隣人か。緑掌的には同じようなもんだ。……ほら、これは自分用に取っとくつもりだったんだが、心の中のカウボーイがお前のもんだって言うんでな。萎れさせるなよ。",
         "objectives": {
           "0": {
-            "label": "Cave Morsel gathered"
+            "label": "洞窟の肉片を収集"
           }
         }
       }
@@ -6644,14 +6644,14 @@ export const ja_JP: EnTranslations = {
         "leaveText": "月の門を抜けて、山の夜へと浮かび上がる。"
       },
       "the_hollow": {
-        "name": "The Hollow",
-        "enterText": "You step through the shrine gate. The air turns warm and green, and the vase waits ahead.",
-        "leaveText": "You step back out through the gate into Eastbrook."
+        "name": "空洞",
+        "enterText": "祠の門をくぐる。大気は温かく緑がかり、壺が先で待っている。",
+        "leaveText": "門を抜けて、イーストブルックへと戻る。"
       },
       "under_shrine": {
-        "name": "The Under-Shrine",
-        "enterText": "You descend below the shrine. The air goes still and close, and the dark ahead does not feel empty.",
-        "leaveText": "You climb back into the warm. Above you, faintly, smoke."
+        "name": "地下祠",
+        "enterText": "祠の下へと降りていく。大気は静まり返って狭まり、先の闇は空虚には感じられない。",
+        "leaveText": "暖かさの中へと這い上がる。頭上には、かすかに煙。"
       }
     },
     "delves": {
