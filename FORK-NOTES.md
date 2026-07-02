@@ -224,43 +224,73 @@ position-shifting callers (vase landing, exitTo, homeRespawn) check before
 computing offsets, so a failed enter can never teleport a player off a stale
 position into the dormant overworld. The Under-Shrine stays per-party.
 
-## 2026-07-02: cherry-picked upstream QoL fix, own-nameplate toggle (PHAA-408)
+## 2026-07-02: cherry-picked upstream QoL fixes (PHAA-408)
 
-**Show your own overhead nameplate** (upstream PR #1287, `213aea06`): adds a
-"Show My Nameplate" interface option (on by default, `showOwnNameplate` in
-`src/game/settings.ts`) that renders the local player's own overhead nameplate
-exactly as other players see it (name, level, guild, hp bar, linked-Discord
-PFP), instead of the classic suppressed self-view. `NameplatePainter` gates
-its per-field self-suppression on `suppressSelf = isSelf && !showOwnNameplate`;
-the pure `nameplate_view` core stops hiding the self plate and anchors it at
-the normal lift when the option is on.
+Four small, stable, non-draft upstream fixes hand-picked from
+`levy-street/world-of-claudecraft`, each its own branch and PR through the
+normal QA gate:
 
-Fork adaptation: the upstream commit entangled this toggle with two features
-this fork does not have and dropped both from the cherry-pick:
-- The $WOC holder-tier badge (`e.holderTier`, `setNameplateTier`), stripped
-  from this fork in the 2026-07-01 wallet strip (constitution section 6).
-- The developer badge / dev-tier name outline (`showDevBadges`, `e.devTier`,
-  `devTierNameOutlineColor`), an upstream feature added after this fork's
-  v0.17.0 pin that was never merged here.
+- **Windows path-separator fix in the architecture seam test** (upstream
+  PR #1290, `18d08534`): `path.relative()` returns backslash-separated paths on
+  Windows, but `SANCTIONED_VALUE_SIM_IMPORTS` in `tests/architecture.test.ts`
+  is keyed with forward slashes, so the sanctioned `OVERHEAD_EMOTE_IDS` import
+  never matched and the seam gate failed for every Windows contributor.
+  Normalizes the relative path with `path.sep` before the lookup. No behavior
+  change on POSIX. Clean cherry-pick, no fork drift.
+- **Gamepad ignores input while the window is unfocused** (upstream PR #1318,
+  `0310e5c3`): the browser only delivers keyboard and mouse input to a focused
+  window, but kept reporting gamepad state to a visible, unfocused one.
+  `GamepadManager.poll()` (`src/game/gamepad.ts`) now gates on
+  `document.hasFocus()`, matching the existing keyboard/mouse focus rule:
+  clears held stick movement, consumes the button state without dispatching
+  (no stale edge fires on refocus), and skips camera, edge actions, and
+  rumble while unfocused.
 
-`suppressSelf` only gates the fields this fork's `nameplate_painter.ts`
-actually renders: name, hp, guild, the Discord role tint/tag, and the
-linked-Discord PFP indicator. "Show My Nameplate" is a new wordy English
-catalog value (`hudChrome.options.showOwnNameplate`), so its five non-Latin
-fills (zh_CN/zh_TW/ja_JP/ko_KR/ru_RU) landed in the same change per the M16
-rule; resolved i18n bundles regenerated via `npm run i18n:gen`.
+  `tests/gamepad.test.ts` did not exist in this fork (our v0.17.0 pin
+  predates upstream's later APM-meter work, which added a test-only
+  `onInputEdge` callback alongside `onAction`). Rather than pull that
+  unrelated feature and its base test suite in with this fix, only the new
+  window-focus coverage was ported, adapted to assert on the `onAction`
+  callback our `GamepadCallbacks` actually has. `src/game/gamepad.ts` was
+  also whole-file `biome check --write` formatted (pre-existing, unrelated
+  statement-per-line violations the changed-file gate now surfaces); no
+  functional lines besides the focus gate changed.
+- **Show your own overhead nameplate** (upstream PR #1287, `213aea06`): adds a
+  "Show My Nameplate" interface option (on by default, `showOwnNameplate` in
+  `src/game/settings.ts`) that renders the local player's own overhead
+  nameplate exactly as other players see it (name, level, guild, hp bar,
+  linked-Discord PFP), instead of the classic suppressed self-view.
+  `NameplatePainter` gates its per-field self-suppression on
+  `suppressSelf = isSelf && !showOwnNameplate`; the pure `nameplate_view` core
+  stops hiding the self plate and anchors it at the normal lift when the
+  option is on.
 
-Also surfaced, not fixed here (flagging per the docs-rot rule, a follow-up
-chore): `hudChrome.options.showWalletOnCharacterScreen` and
-`showWalletOnPlayerCard` are ANOTHER set of inert wallet leftovers (catalog +
-all locale overlays carry them, but no `options_view.ts` `boolToggle` call
-reads either key) that the 2026-07-01 wallet-strip entry above does not
-mention, distinct from the documented `wallet.*` catalog leftovers. Same
-locale-hygiene chore, wider surface than recorded.
+  Fork adaptation: the upstream commit entangled this toggle with two
+  features this fork does not have and dropped both from the cherry-pick:
+  - The $WOC holder-tier badge (`e.holderTier`, `setNameplateTier`), stripped
+    from this fork in the 2026-07-01 wallet strip (constitution section 6).
+  - The developer badge / dev-tier name outline (`showDevBadges`,
+    `e.devTier`, `devTierNameOutlineColor`), an upstream feature added after
+    this fork's v0.17.0 pin that was never merged here.
 
-Verification: `npx vitest run tests/nameplate_view.test.ts
-tests/nameplate_projection.test.ts tests/options_view.test.ts
-tests/i18n_completeness.test.ts tests/architecture.test.ts
-tests/localization_fixes.test.ts tests/settings.test.ts` green (127 passed, 3
-pre-existing skips unrelated to this change) with NODE_ENV unset; `tsc
---noEmit` clean.
+  `suppressSelf` only gates the fields this fork's `nameplate_painter.ts`
+  actually renders: name, hp, guild, the Discord role tint/tag, and the
+  linked-Discord PFP indicator. "Show My Nameplate" is a new wordy English
+  catalog value (`hudChrome.options.showOwnNameplate`), so its five
+  non-Latin fills (zh_CN/zh_TW/ja_JP/ko_KR/ru_RU) landed in the same change
+  per the M16 rule; resolved i18n bundles regenerated via `npm run i18n:gen`.
+
+  Also surfaced, not fixed here (flagging per the docs-rot rule, a follow-up
+  chore): `hudChrome.options.showWalletOnCharacterScreen` and
+  `showWalletOnPlayerCard` are ANOTHER set of inert wallet leftovers (catalog
+  + all locale overlays carry them, but no `options_view.ts` `boolToggle`
+  call reads either key) that the 2026-07-01 wallet-strip entry above does
+  not mention, distinct from the documented `wallet.*` catalog leftovers.
+  Same locale-hygiene chore, wider surface than recorded.
+
+  Verification: `npx vitest run tests/nameplate_view.test.ts
+  tests/nameplate_projection.test.ts tests/options_view.test.ts
+  tests/i18n_completeness.test.ts tests/architecture.test.ts
+  tests/localization_fixes.test.ts tests/settings.test.ts` green (127
+  passed, 3 pre-existing skips unrelated to this change) with NODE_ENV
+  unset; `tsc --noEmit` clean.
