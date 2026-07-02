@@ -125,7 +125,6 @@ import {
   rateLimited,
   recordAuthFailure,
   requestIp,
-  wocBalanceRateLimited,
 } from './ratelimit';
 import {
   isPublicCorsPath,
@@ -139,18 +138,11 @@ import { handleSitePresenceHeartbeat } from './site_presence';
 import { cacheControlFor, etagFor, isNotModified } from './static_cache';
 import { verifyTurnstile } from './turnstile';
 import {
-  handleWalletChallenge,
-  handleWalletGet,
-  handleWalletLink,
-  handleWalletUnlink,
-} from './wallet';
-import {
   isNativeAppRequest,
   isWebClientRequest,
   NATIVE_APP_ORIGINS,
   webLoginEnforced,
 } from './web_login_guard';
-import { handleWocBalance, parseWocBalanceQuery } from './woc_balance';
 import { bufferHandshakeMessages } from './ws_buffer';
 
 const PORT = Number(process.env.PORT ?? 8787);
@@ -1190,7 +1182,7 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
     }
     // Account self-service portal — all bearer-auth, account-scoped. Each route
     // delegates to an exported, testable handler in server/account.ts (mirroring
-    // server/wallet.ts); main.ts only resolves the bearer account first.
+    // main.ts only resolves the bearer account first.
     if (req.method === 'GET' && url === '/api/account') {
       const accountId = await bearerActiveAccount(req, res);
       if (accountId === null) return;
@@ -1295,27 +1287,6 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       const token = new URL(req.url ?? '', 'http://localhost').searchParams.get('token') ?? '';
       return handleEmailUnsubscribe(res, token);
     }
-    // Non-custodial Solana wallet linking — all account-scoped.
-    if (req.method === 'POST' && url === '/api/wallet/link/challenge') {
-      const accountId = await bearerActiveAccount(req, res);
-      if (accountId === null) return;
-      return handleWalletChallenge(req, res, accountId);
-    }
-    if (req.method === 'POST' && url === '/api/wallet/link') {
-      const accountId = await bearerActiveAccount(req, res);
-      if (accountId === null) return;
-      return handleWalletLink(req, res, accountId);
-    }
-    if (req.method === 'DELETE' && url === '/api/wallet/link') {
-      const accountId = await bearerActiveAccount(req, res);
-      if (accountId === null) return;
-      return handleWalletUnlink(req, res, accountId);
-    }
-    if (req.method === 'GET' && url === '/api/wallet') {
-      const accountId = await bearerActiveAccount(req, res);
-      if (accountId === null) return;
-      return handleWalletGet(req, res, accountId);
-    }
     // Discord integration: OAuth login/link, link status, unlink. `start` returns
     // the authorize URL (the browser then navigates to Discord); `callback` is the
     // discord.com -> us redirect (no auth/Origin, so it is NOT gated by the
@@ -1358,18 +1329,6 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       if (accountId === null) return;
       if (discordRateLimited(req, accountId)) return json(res, 429, { error: 'rate limited' });
       return handleDiscordUnlink(req, res, accountId);
-    }
-    // $WOC balance proxy — keeps the Solana RPC endpoint (and any key in it)
-    // server-side so it never ships in the client bundle. Public (on-chain
-    // balances are public) but narrow + IP rate-limited + per-wallet cached.
-    if (req.method === 'GET' && url === '/api/woc/balance') {
-      if (wocBalanceRateLimited(req)) {
-        recordUsageMetric('woc.balance.rate_limited');
-        return json(res, 429, { error: 'rate limited' });
-      }
-      // `fresh=1` is parsed AFTER the IP rate-limit above, so it can't be used to hammer the RPC.
-      const { owner, fresh } = parseWocBalanceQuery(req.url ?? '');
-      return handleWocBalance(res, owner, fresh);
     }
     // Shareable player card: publish (PNG body) + referral stats for the card.
     if (req.method === 'POST' && url === '/api/card') {

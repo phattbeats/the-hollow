@@ -49,15 +49,6 @@
     letter-spacing: 0.2px;
     margin-top: -1px;
   }
-  /* $WOC holder-tier flair badge, inline to the left of a player's name */
-  .np-tier {
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    vertical-align: middle;
-    margin-right: 3px;
-    filter: drop-shadow(0 1px 1px #000);
-  }
   .np-hpbar {
     width: 78px;
     height: 6px;
@@ -2112,11 +2103,7 @@
   body.native-app .donate-cta,
   body.native-app .community-link.donate,
   body.native-app .social-link.donate,
-  body.native-app #token-ca,
   body.native-app #nav-btn-download,
-  body.native-app .cs-wallet,
-  body.native-app .cs-wallet-hidden-note,
-  body.native-app .account-wallet-card,
   body.native-app #performance-tip,
   body.native-app .official-site-copy {
     display: none !important;

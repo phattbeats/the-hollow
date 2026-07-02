@@ -1,9 +1,9 @@
 // Bridge for hosting a shared player card.
 //
 // Publishing a card requires the network layer (an authenticated upload to the
-// current realm), but src/ui must not import src/net. So, exactly like
-// wallet_balance.ts, main.ts (the one layer that knows both) injects an
-// uploader here, and the HUD reads it out. When no uploader is set (offline
+// current realm), but src/ui must not import src/net. So main.ts (the one
+// layer that knows both) injects an uploader here, and the HUD reads it out.
+// When no uploader is set (offline
 // play, or before world entry) the HUD falls back to download / native share
 // only, with no hosted link.
 

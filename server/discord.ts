@@ -1,18 +1,12 @@
 // Discord integration HTTP shell (DB + network IO). The pure URL/PKCE/parse
 // helpers live in server/discord_oauth.ts and all SQL in server/discord_db.ts;
 // this module is the OAuth-client flow (we are the CLIENT to discord.com), the
-// link/status/unlink + reward/swag endpoints, and a process-local presence cache
-// the bot pushes into. Mirrors the wallet.ts shell shape (each account-scoped
-// handler takes a pre-resolved accountId from the route).
+// link/status/unlink endpoints, and a process-local presence cache the bot
+// pushes into. Each account-scoped handler takes a pre-resolved accountId from
+// the route.
 
 import { randomBytes } from 'node:crypto';
 import type http from 'node:http';
-import {
-  canClaimSwag,
-  DISCORD_REWARD_GRANTS,
-  discordStatusIndexForPoints,
-  swagById,
-} from '../src/sim/discord_tier';
 import { verifyLoginTwoFactor } from './account';
 import { hashPassword, newToken, offensiveName, validPassword, verifyPassword } from './auth';
 import {
@@ -29,16 +23,12 @@ import {
 } from './db';
 import {
   accountForDiscord,
-  claimSwag,
   consumeDiscordOAuthState,
   consumeDiscordPendingLogin,
   createDiscordOAuthState,
   createDiscordPendingLogin,
   discordForAccount,
-  grantRewardPoints,
   linkDiscordToAccount,
-  listSwagClaims,
-  loadRewardState,
   peekDiscordPendingLogin,
   setDiscordGuildMember,
   unlinkDiscord,
@@ -261,7 +251,6 @@ async function completeLink(
     note('discord.link.conflict');
     return bouncePage(res, 409, { ok: false, mode, error: 'already_linked' });
   }
-  await grantLinkRewards(accountId, guildMember);
   note('discord.link.success');
   return bouncePage(res, 200, { ok: true, mode, username: discordDisplayName(user) });
 }
@@ -302,10 +291,9 @@ async function completeLogin(
       username: discordDisplayName(user),
     });
   }
-  // Returning Discord user: keep membership + reward fresh, then mint a session.
+  // Returning Discord user: keep membership fresh, then mint a session.
   const acct = await accountById(accountId);
   await setDiscordGuildMember(pool, accountId, guildMember);
-  if (guildMember) await grantGuildReward(accountId);
   note('discord.login.returning');
   const status = await moderationStatusForAccount(accountId);
   if (status.locked) return bouncePage(res, 403, { ok: false, mode: 'login', error: 'locked' });
@@ -381,13 +369,11 @@ export async function handleDiscordLoginNew(
       } else {
         accountId = account.id;
         username = account.username;
-        await grantLinkRewards(accountId, pending.guild_member);
         note('discord.login.provisioned');
       }
     } else {
       username = (await accountById(accountId))?.username ?? 'player';
       await setDiscordGuildMember(pool, accountId, pending.guild_member);
-      if (pending.guild_member) await grantGuildReward(accountId);
     }
     const status = await moderationStatusForAccount(accountId);
     if (status.locked) return json(res, 403, { error: status.message });
@@ -456,21 +442,9 @@ export async function handleDiscordLoginLink(
     guildMember: consumed.guild_member,
   });
   if (!linked) return json(res, 409, { error: 'already_linked' });
-  await grantLinkRewards(account.id, consumed.guild_member);
   note('discord.login.linked_existing');
   const token = await issueDiscordSession(account.id, requestMeta(req));
   return json(res, 200, { token, username: account.username });
-}
-
-async function grantLinkRewards(accountId: number, guildMember: boolean): Promise<void> {
-  const g = DISCORD_REWARD_GRANTS.link;
-  await grantRewardPoints(pool, accountId, g.points, g.reason, `${g.reason}:${accountId}`);
-  if (guildMember) await grantGuildReward(accountId);
-}
-
-async function grantGuildReward(accountId: number): Promise<void> {
-  const g = DISCORD_REWARD_GRANTS.guildMember;
-  await grantRewardPoints(pool, accountId, g.points, g.reason, `${g.reason}:${accountId}`);
 }
 
 // Exchange the auth code for a token, then fetch the user identity + guild
@@ -578,10 +552,8 @@ export async function handleDiscordStatus(
 }
 
 export async function discordStatusPayload(accountId: number): Promise<Record<string, unknown>> {
-  const [link, reward, claimedSwagIds, acct] = await Promise.all([
+  const [link, acct] = await Promise.all([
     discordForAccount(pool, accountId),
-    loadRewardState(pool, accountId),
-    listSwagClaims(pool, accountId),
     accountById(accountId),
   ]);
   const presence = discordPresenceCache();
@@ -603,11 +575,8 @@ export async function discordStatusPayload(accountId: number): Promise<Record<st
     // (avatar-less) Discord account.
     avatar: link ? discordAvatarUrl(link.discord_user_id, link.discord_avatar, 64) : null,
     guildMember: link?.guild_member ?? false,
-    points: reward.points,
-    lifetimePoints: reward.lifetimePoints,
-    // Unlinked accounts are unranked (tier 0); only a linked account climbs rungs.
-    statusTier: link ? discordStatusIndexForPoints(reward.lifetimePoints) : 0,
-    claimedSwagIds,
+    // 1 when the account has a Discord link, 0 otherwise (gates flair display).
+    statusTier: link ? 1 : 0,
     inviteUrl: discordInviteUrl(),
     presence: {
       onlineCount: presence.onlineCount,
@@ -652,74 +621,22 @@ export async function handleDiscordUnlink(
   return json(res, 200, { unlinked: true });
 }
 
-// ── POST /api/discord/swag/claim { swagId } ────────────────────────────────────
-// Server-authoritative: re-checks link + tier + points + not-already-claimed.
-// `grantCosmetic` lets the caller apply a live in-world cosmetic grant (mech
-// chroma) for cosmetic-kind swag, mirroring the card-upload live-update pattern.
-export async function handleSwagClaim(
-  req: http.IncomingMessage,
-  res: http.ServerResponse,
-  accountId: number,
-  grantCosmetic: (chromaId: string) => void,
-): Promise<void> {
-  note('discord.swag.claim.request');
-  if (discordRateLimited(req, accountId)) {
-    note('discord.swag.claim.rate_limited');
-    return json(res, 429, { error: 'rate limited' });
-  }
-  const body = await readJsonBody(req);
-  const swagId = typeof body.swagId === 'string' ? body.swagId : '';
-  const swag = swagById(swagId);
-  if (!swag) return json(res, 400, { error: 'unknown swag item' });
-
-  const link = await discordForAccount(pool, accountId);
-  if (!link) return json(res, 403, { error: 'link your Discord account first' });
-
-  const reward = await loadRewardState(pool, accountId);
-  const statusTier = discordStatusIndexForPoints(reward.lifetimePoints);
-  const claimedIds = await listSwagClaims(pool, accountId);
-  const verdict = canClaimSwag({ swag, spendablePoints: reward.points, statusTier, claimedIds });
-  if (!verdict.ok) return json(res, 409, { error: verdict.reason });
-
-  const result = await claimSwag(pool, accountId, swag.id, swag.cost);
-  if (!result.ok) return json(res, 409, { error: result.reason });
-
-  // Apply the real in-game effect for cosmetic swag (titles/physical are recorded
-  // claims fulfilled by the bot/admin). Best-effort; the claim is already durable.
-  if (swag.kind === 'cosmetic') {
-    try {
-      grantCosmetic(swag.grantId);
-    } catch (err) {
-      console.error('discord swag cosmetic grant failed:', err);
-    }
-  }
-  note('discord.swag.claim.success');
-  const claimed = [...claimedIds, swag.id];
-  return json(res, 200, { claimed, swagId: swag.id, points: result.points, kind: swag.kind });
-}
-
 // The Discord flex: the account's top character + status, for the bot embed.
 export interface DiscordFlex {
   found: boolean;
   username: string | null;
-  statusTier: number;
-  points: number;
   character: { name: string; class: string; level: number; profileUrl: string } | null;
 }
 
 export async function discordFlexForAccount(accountId: number): Promise<DiscordFlex> {
-  const [ch, reward, link] = await Promise.all([
+  const [ch, link] = await Promise.all([
     highestCharacterForAccount(accountId),
-    loadRewardState(pool, accountId),
     discordForAccount(pool, accountId),
   ]);
-  const statusTier = link ? discordStatusIndexForPoints(reward.lifetimePoints) : 0;
   const origin = REALM_PUBLIC_ORIGIN || '';
   return {
     found: ch !== null,
     username: link?.discord_username ?? null,
-    statusTier,
-    points: reward.points,
     character: ch
       ? {
           name: ch.name,
@@ -733,8 +650,7 @@ export async function discordFlexForAccount(accountId: number): Promise<DiscordF
 
 // ── small local helpers ────────────────────────────────────────────────────────
 
-// readBody is re-implemented narrowly here to avoid importing the wallet shell's
-// heavier reader; the swag claim body is tiny.
+// Narrow JSON body reader; the bodies handled here are tiny.
 async function readJsonBody(req: http.IncomingMessage): Promise<Record<string, unknown>> {
   const chunks: Buffer[] = [];
   let size = 0;

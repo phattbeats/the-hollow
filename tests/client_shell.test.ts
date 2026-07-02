@@ -71,10 +71,6 @@ const supportHtml = readFileSync(
   new URL('../public/support.html', import.meta.url),
   'utf8',
 ).replace(/\r\n/g, '\n');
-const whitepaperUrl = new URL(
-  '../public/World-of-ClaudeCraft-Whitepaper-v1.0.pdf',
-  import.meta.url,
-);
 const viteConfig = readFileSync(new URL('../vite.config.ts', import.meta.url), 'utf8').replace(
   /\r\n/g,
   '\n',
@@ -585,14 +581,6 @@ describe('client HTML shell', () => {
     expect(supportHtml).toContain('href="https://discord.gg/GjhnUsBtw"');
     expect(supportHtml).toContain('href="/data-deletion">Data Deletion page</a>');
     expect(supportHtml).toContain('"@type": "ContactPage"');
-    expect(html).toContain(
-      'href="/World-of-ClaudeCraft-Whitepaper-v1.0.pdf" class="footer-link" data-i18n="footer.whitepaper"',
-    );
-    expect(html.indexOf('data-i18n="footer.whitepaper"')).toBeLessThan(
-      html.indexOf('data-i18n="footer.terms"'),
-    );
-    expect(existsSync(whitepaperUrl)).toBe(true);
-    expect(statSync(whitepaperUrl).size).toBeGreaterThan(0);
     expect(html).toContain('href="/terms" class="footer-link" data-i18n="footer.terms"');
     expect(html).toContain('href="/privacy" class="footer-link" data-i18n="footer.privacy"');
     expect(viteConfig).toContain("['/privacy', '/privacy.html']");
@@ -624,18 +612,9 @@ describe('client HTML shell', () => {
     expect(mainTs).toContain("'DiscordClick'");
   });
 
-  it('excludes wallet verification surfaces from native app builds', () => {
+  it('hides the download button and performance tip in native app builds', () => {
     expect(hudCss).toContain('body.native-app #nav-btn-download,');
-    expect(hudCss).toContain(
-      'body.native-app .cs-wallet,\n  body.native-app .cs-wallet-hidden-note,\n  body.native-app .account-wallet-card',
-    );
     expect(hudCss).toContain('body.native-app #performance-tip,');
-    expect(html).toContain('<section class="account-card account-wallet-card">');
-    expect(mainTs).toContain(
-      "const WALLET_ENABLED = !NATIVE_APP && String(import.meta.env.VITE_WALLET_DISABLED ?? '').trim() !== '1';",
-    );
-    expect(mainTs).toContain("document.querySelector('.cs-wallet')?.remove();");
-    expect(mainTs).toContain("document.querySelector('.account-wallet-card')?.remove();");
   });
 
   it('skips the web mobile preflight in native builds and shows an in-game rotate prompt', () => {

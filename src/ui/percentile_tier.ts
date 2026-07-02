@@ -1,7 +1,7 @@
 // Leaderboard "Top N%" percentile tiers — a cosmetic rank ladder for the
-// shareable player card, parallel to the $WOC holder-tier flair but driven by
-// the character's realm standing by lifetime XP (server: lifetimeXpStanding),
-// not wallet balance. Purely presentational: it grants no gameplay power.
+// shareable player card, driven by the character's realm standing by lifetime
+// XP (server: lifetimeXpStanding). Purely presentational: it grants no
+// gameplay power.
 //
 // A character's raw percentile (rank/total × 100, e.g. 3.2) buckets to the
 // ceiling whole percent — 3.2 → "Top 4%", 0.6 → "Top 1%" — so each of Top 1%
@@ -137,9 +137,10 @@ export function percentileTierBadgeDataUrl(tier: PercentileTier, px = 128): stri
         `</radialGradient>`
       : '');
 
-  const glow = style.halo > 0
-    ? `<circle cx="32" cy="32" r="31.5" fill="url(#${hid})" opacity="${style.halo}"/>`
-    : '';
+  const glow =
+    style.halo > 0
+      ? `<circle cx="32" cy="32" r="31.5" fill="url(#${hid})" opacity="${style.halo}"/>`
+      : '';
   const rays = style.rays ? sunburstRays(tier.ring) : '';
 
   const svg =

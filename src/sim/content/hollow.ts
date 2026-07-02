@@ -36,12 +36,19 @@ export const VASE_POS = { x: 0, z: 0 };
 // Every class gets the same cutting; the record shape is the engine's
 // per-class reward archetype, used here degenerately on purpose.
 const ALL_CLASSES: PlayerClass[] = [
-  'warrior', 'paladin', 'hunter', 'rogue', 'priest',
-  'shaman', 'mage', 'warlock', 'druid',
+  'warrior',
+  'paladin',
+  'hunter',
+  'rogue',
+  'priest',
+  'shaman',
+  'mage',
+  'warlock',
+  'druid',
 ];
-const CUTTING_FOR_ALL = Object.fromEntries(
-  ALL_CLASSES.map((c) => [c, 'first_cutting']),
-) as Partial<Record<PlayerClass, string>>;
+const CUTTING_FOR_ALL = Object.fromEntries(ALL_CLASSES.map((c) => [c, 'first_cutting'])) as Partial<
+  Record<PlayerClass, string>
+>;
 
 // ---------------------------------------------------------------------------
 // Mobs — the under-shrine cave (the only combat in the slice)
@@ -142,13 +149,10 @@ export const HOLLOW_QUESTS: Record<string, QuestDef> = {
     name: 'The Thing That Burns',
     giverNpcId: 'brother_greenpaw',
     turnInNpcId: 'brother_greenpaw',
-    text:
-      "the communion's gone thin, friend... i'm bone dry and the wavelength is closin'. down under the shrine there's a bulb that burns slow and clean — emberbulb, grows where the light don't reach, which is a joke the cave plays on itself... bring me five. mind the pale ones. they come at your lantern, not at you. mostly.",
+    text: "the communion's gone thin, friend... i'm bone dry and the wavelength is closin'. down under the shrine there's a bulb that burns slow and clean — emberbulb, grows where the light don't reach, which is a joke the cave plays on itself... bring me five. mind the pale ones. they come at your lantern, not at you. mostly.",
     completionText:
       "now THAT'S the good smoke... you feel that? room's gettin' thick. she's gonna lean in any minute now, i can feel it on the wavelength... indeed.",
-    objectives: [
-      { type: 'collect', itemId: 'emberbulb', count: 5, label: 'Emberbulb gathered' },
-    ],
+    objectives: [{ type: 'collect', itemId: 'emberbulb', count: 5, label: 'Emberbulb gathered' }],
     xpReward: 90,
     copperReward: 60,
     itemRewards: {},
@@ -158,8 +162,7 @@ export const HOLLOW_QUESTS: Record<string, QuestDef> = {
     name: 'The Thing That Fills',
     giverNpcId: 'brother_greenpaw',
     turnInNpcId: 'brother_greenpaw',
-    text:
-      "second matter, and i'd call it sacred but between us it's breakfast... the rootmaws down there carry a morsel on 'em, cave-fed, real earthy. four'll do. bring 'em back 'fore the stomach starts singin' hymns of its own...",
+    text: "second matter, and i'd call it sacred but between us it's breakfast... the rootmaws down there carry a morsel on 'em, cave-fed, real earthy. four'll do. bring 'em back 'fore the stomach starts singin' hymns of its own...",
     completionText:
       "you're a saint of the first order, friend. or a good neighbor. same thing, to a greenpaw degree. ...here. was gonna keep this one but the inner cowboy says it's yours. don't let it wilt.",
     objectives: [

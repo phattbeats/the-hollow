@@ -1,12 +1,11 @@
 // Client-side Discord integration state surfaced in the HUD widget.
 //
-// Discord link status, reward points/tier, server presence and voice-room
-// membership are all external account/network state, NOT world state, so (like
-// src/ui/wallet_balance.ts) they do not belong on IWorld. main.ts is the one
-// layer that knows both net and ui; it fetches this state over REST and pushes
-// it in here, and the HUD reads it out. A single listener re-renders the widget
-// when anything changes. src/ui never imports src/net, so these view-facing
-// types are owned here.
+// Discord link status, server presence and voice-room membership are all
+// external account/network state, NOT world state, so they do not belong on
+// IWorld. main.ts is the one layer that knows both net and ui; it fetches this
+// state over REST and pushes it in here, and the HUD reads it out. A single
+// listener re-renders the widget when anything changes. src/ui never imports
+// src/net, so these view-facing types are owned here.
 
 /** A member currently sitting in the featured Discord voice room. */
 export interface DiscordVoiceMember {
@@ -16,7 +15,7 @@ export interface DiscordVoiceMember {
   selfMute: boolean;
 }
 
-/** The linked account's reward + link state (server-authoritative). */
+/** The linked account's link state (server-authoritative). */
 export interface DiscordAccountStatus {
   linked: boolean;
   username: string | null;
@@ -24,14 +23,6 @@ export interface DiscordAccountStatus {
   avatar: string | null;
   /** Whether the linked user is a member of the official Discord guild. */
   guildMember: boolean;
-  /** Spendable reward points. */
-  points: number;
-  /** Lifetime reward points (drives the status tier; never decreases). */
-  lifetimePoints: number;
-  /** 1-based status rung (0 = not linked). */
-  statusTier: number;
-  /** Swag ids already claimed by this account. */
-  claimedSwagIds: string[];
   /**
    * Whether the account has a real (owner-chosen) password. False for a
    * Discord-provisioned account that can currently log in ONLY through Discord, so
@@ -58,10 +49,6 @@ const UNLINKED: DiscordAccountStatus = {
   username: null,
   avatar: null,
   guildMember: false,
-  points: 0,
-  lifetimePoints: 0,
-  statusTier: 0,
-  claimedSwagIds: [],
   passwordSet: true,
 };
 

@@ -92,29 +92,6 @@ export class DiscordApi {
     return Array.isArray(roles) ? roles : [];
   }
 
-  // Create a guild role (needs MANAGE_ROLES). `color` is a 24-bit RGB int (0 =
-  // no color). Used to auto-provision the WoC status-tier roles on boot.
-  async createGuildRole(
-    guildId: string,
-    name: string,
-    color = 0,
-  ): Promise<{ id: string; name: string }> {
-    return (await this.request('POST', `/guilds/${guildId}/roles`, {
-      name,
-      color,
-      mentionable: false,
-      hoist: false,
-    })) as { id: string; name: string };
-  }
-
-  async addMemberRole(guildId: string, userId: string, roleId: string): Promise<void> {
-    await this.request('PUT', `/guilds/${guildId}/members/${userId}/roles/${roleId}`);
-  }
-
-  async removeMemberRole(guildId: string, userId: string, roleId: string): Promise<void> {
-    await this.request('DELETE', `/guilds/${guildId}/members/${userId}/roles/${roleId}`);
-  }
-
   // Set a member's server nickname (needs MANAGE_NICKNAMES; cannot rename the
   // guild owner). Used to attach the in-game level to their Discord name.
   async setNickname(guildId: string, userId: string, nick: string): Promise<void> {

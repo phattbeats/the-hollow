@@ -1,22 +1,17 @@
 // Thin DOM consumer for the Discord HUD window (#discord-window).
 //
-// Mirrors src/ui/vendor_window.ts: it imports t/esc/svgIcon + the formatters and
-// the pure tier presentation directly, but takes Hud's shared painters
-// (attachTooltip/hideTooltip) and the action callbacks via an injected `deps`
-// object. It owns no state and never imports Hud. The branching logic lives in
-// the pure view (discord_widget_view.ts); this just paints + wires clicks.
+// Mirrors src/ui/vendor_window.ts: it imports t/esc/svgIcon + the formatters
+// directly, but takes Hud's shared painters (attachTooltip/hideTooltip) and the
+// action callbacks via an injected `deps` object. It owns no state and never
+// imports Hud. The branching logic lives in the pure view
+// (discord_widget_view.ts); this just paints + wires clicks.
 
 import type {
   DiscordAccountStatus,
   DiscordPresenceState,
   DiscordVoiceMember,
 } from './discord_status';
-import {
-  DISCORD_STATUS_TIERS,
-  discordStatusBadgeDataUrl,
-  discordStatusDisplayName,
-} from './discord_tier';
-import { buildDiscordWidgetView, type DiscordTierRow } from './discord_widget_view';
+import { buildDiscordWidgetView } from './discord_widget_view';
 import { esc } from './esc';
 import { formatNumber, t } from './i18n';
 import { svgIcon } from './ui_icons';
@@ -46,33 +41,6 @@ function voiceMemberHtml(m: DiscordVoiceMember): string {
   );
 }
 
-// One rung of the status-tier ladder: its accent-colored badge, localized name,
-// the lifetime-points threshold, and a Current/Locked state chip.
-function tierRowHtml(row: DiscordTierRow): string {
-  const accent = DISCORD_STATUS_TIERS[row.index - 1];
-  const ring = accent ? accent.ring : '#888';
-  const name = discordStatusDisplayName(row.index);
-  const badge = discordStatusBadgeDataUrl(row.index, 40);
-  const state = row.current
-    ? `<span class="dc-tier-chip is-current">${esc(t('hudChrome.discord.tierCurrent'))}</span>`
-    : row.reached
-      ? ''
-      : `<span class="dc-tier-chip is-locked">${esc(t('hudChrome.discord.tierLocked'))}</span>`;
-  // Requirement line is the lifetime-points threshold (e.g. "2,000 pts").
-  const reqText =
-    row.threshold > 0
-      ? t('hudChrome.discord.swag.cost', { points: formatNumber(row.threshold) })
-      : '';
-  return (
-    `<li class="dc-tier-row${row.current ? ' is-current' : ''}${row.reached ? ' is-reached' : ' is-locked'}" style="--dc-tier:${ring}">` +
-    `<img class="dc-tier-badge" src="${badge}" alt="" draggable="false" />` +
-    `<span class="dc-tier-name">${esc(name)}</span>` +
-    `<span class="dc-tier-req">${esc(reqText)}</span>` +
-    state +
-    `</li>`
-  );
-}
-
 export function renderDiscordWidget(
   el: HTMLElement,
   input: {
@@ -97,27 +65,18 @@ export function renderDiscordWidget(
       `<button type="button" class="dc-btn dc-btn-primary" data-action="link">${esc(t('hudChrome.discord.link.cta'))}</button>` +
       `</div>`;
   } else if (view.mode === 'linked') {
-    const tierName = discordStatusDisplayName(view.tierIndex);
-    const tierBadge = discordStatusBadgeDataUrl(view.tierIndex);
-    const progress =
-      view.pointsToNext === null
-        ? esc(t('hudChrome.discord.maxRank'))
-        : esc(t('hudChrome.discord.toNext', { points: formatNumber(view.pointsToNext) }));
     const member = view.guildMember
       ? `<span class="dc-member-ok">${esc(t('hudChrome.discord.guildMember'))}</span>`
       : `<span class="dc-member-no">${esc(t('hudChrome.discord.notMember'))}</span>`;
-    // Discord profile picture with the status-rank badge as a corner overlay; fall
-    // back to just the rank badge when the Discord account has no custom avatar.
+    // Discord profile picture; nothing when the account has no custom avatar.
     const avatarHtml = view.avatar
-      ? `<div class="dc-avatar-wrap"><img class="dc-pfp" src="${esc(view.avatar)}" alt="" referrerpolicy="no-referrer" />` +
-        `<img class="dc-tier-corner" src="${esc(tierBadge)}" alt="" aria-hidden="true" /></div>`
-      : `<img class="dc-tier-badge" src="${esc(tierBadge)}" alt="" aria-hidden="true" />`;
+      ? `<div class="dc-avatar-wrap"><img class="dc-pfp" src="${esc(view.avatar)}" alt="" referrerpolicy="no-referrer" /></div>`
+      : '';
     account =
       `<div class="dc-account">` +
       avatarHtml +
       `<div class="dc-account-info">` +
       `<div class="dc-account-name">${esc(t('hudChrome.discord.linkedAs', { name: view.username ?? '' }))}</div>` +
-      `<div class="dc-tier-name">${esc(tierName)}</div>` +
       `<div class="dc-member-line">${member}</div>` +
       `</div>` +
       `<button type="button" class="dc-btn dc-visit" data-action="visit" title="${esc(t('hudChrome.discord.visit'))}" aria-label="${esc(t('hudChrome.discord.visit'))}">` +
@@ -125,23 +84,10 @@ export function renderDiscordWidget(
       `</button>` +
       `<button type="button" class="dc-btn dc-btn-ghost dc-unlink" data-action="unlink">${esc(t('hudChrome.discord.unlink'))}</button>` +
       `</div>` +
-      `<div class="dc-stats">` +
-      `<span class="dc-stat"><b>${esc(formatNumber(view.points))}</b> ${esc(t('hudChrome.discord.points'))}</span>` +
-      `<span class="dc-stat-sep">·</span>` +
-      `<span class="dc-stat-progress">${progress}</span>` +
-      `</div>` +
       (view.showJoinCta
         ? `<button type="button" class="dc-btn dc-btn-primary dc-join" data-action="join">${esc(t('hudChrome.discord.joinCta'))}</button>`
         : '');
   }
-
-  const ladder =
-    view.mode === 'linked' && view.tiers.length
-      ? `<section class="dc-section dc-tiers"><h3 class="dc-h3">${esc(t('hudChrome.discord.tiersTitle'))}</h3>` +
-        `<ul class="dc-tier-ladder">${view.tiers.map(tierRowHtml).join('')}</ul>` +
-        `<p class="dc-earn"><b>${esc(t('hudChrome.discord.earnTitle'))}:</b> ${esc(t('hudChrome.discord.earnBody'))}</p>` +
-        `</section>`
-      : '';
 
   const voiceMembers = view.voice.length
     ? `<ul class="dc-voice-list">${view.voice.map(voiceMemberHtml).join('')}</ul>`
@@ -155,7 +101,7 @@ export function renderDiscordWidget(
     `<div class="dc-voice"><div class="dc-voice-head">${voiceHead}</div>${voiceMembers}</div>` +
     `</section>`;
 
-  el.innerHTML = `${header}<div class="dc-body">${account}${ladder}${community}</div>`;
+  el.innerHTML = `${header}<div class="dc-body">${account}${community}</div>`;
 
   // ── wire clicks ────────────────────────────────────────────────────────────
   el.querySelector<HTMLElement>('[data-close]')?.addEventListener('click', () => deps.onClose());

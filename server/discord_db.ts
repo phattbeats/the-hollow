@@ -4,16 +4,13 @@
 // db.ts, keeping db.ts <-> discord_db.ts cycle-free.
 //
 // Three concerns live here:
-//  1. discord_links        - the durable 1:1 account <-> Discord identity mirror
-//                            (mirrors wallet_links), written after OAuth verify.
+//  1. discord_links        - the durable 1:1 account <-> Discord identity mirror,
+//                            written after OAuth verify.
 //  2. discord_oauth_states - single-use, short-lived OAuth `state` + PKCE verifier
-//                            rows (mirrors wallet_link_challenges), the CSRF guard.
-//  3. reward_points/ledger/swag_claims - the AUTHORED reward economy. Unlike the
-//                            chain-sourced $WOC balance, the server OWNS this
-//                            balance, so it is stored, audited (append-only
-//                            ledger), and mutated server-side only.
+//                            rows, the CSRF guard.
+//  3. reward_points/ledger/swag_claims - dormant legacy tables (no active callers);
+//                            the SQL helpers are kept so the data stays readable.
 import type { Pool } from 'pg';
-import { discordStatusIndexForPoints } from '../src/sim/discord_tier';
 import { discordAvatarUrl } from './discord_oauth';
 import { isUniqueViolation } from './http_util';
 
@@ -97,7 +94,7 @@ CREATE TABLE IF NOT EXISTS swag_claims (
 CREATE INDEX IF NOT EXISTS swag_claims_account ON swag_claims(account_id);
 `;
 
-// ── Discord identity link (mirrors wallet_links) ───────────────────────────────
+// ── Discord identity link ──────────────────────────────────────────────────────
 
 export interface DiscordLinkRow {
   account_id: number;
@@ -181,7 +178,7 @@ export async function setDiscordGuildMember(
   ]);
 }
 
-// ── OAuth state (mirrors wallet_link_challenges) ──────────────────────────────
+// ── OAuth state ────────────────────────────────────────────────────────────────
 
 export interface DiscordOAuthStateRow {
   state: string;
@@ -465,21 +462,13 @@ export async function listSwagClaims(pool: Pool, accountId: number): Promise<str
 }
 
 /**
- * The in-world Discord status-tier index for an account: 0 when the account has
- * no linked Discord (so unlinked players never get a flair badge), otherwise the
- * rung derived from lifetime reward points. One round-trip (join), for the
- * off-tick nameplate-flair refresh.
+ * The Discord linked flag for an account: 1 when the account has a linked
+ * Discord, 0 otherwise (so unlinked players never get flair). One round-trip,
+ * for the off-tick nameplate-flair refresh.
  */
 export async function discordTierForAccount(pool: Pool, accountId: number): Promise<number> {
-  const res = await pool.query(
-    `SELECT COALESCE(rp.lifetime_points, 0) AS lifetime_points
-       FROM discord_links dl
-       LEFT JOIN reward_points rp ON rp.account_id = dl.account_id
-      WHERE dl.account_id = $1`,
-    [accountId],
-  );
-  if (res.rows.length === 0) return 0; // not linked -> no flair
-  return discordStatusIndexForPoints(Number(res.rows[0].lifetime_points ?? 0));
+  const res = await pool.query('SELECT 1 FROM discord_links WHERE account_id = $1', [accountId]);
+  return res.rows.length === 0 ? 0 : 1;
 }
 
 export interface DiscordFlair {
@@ -493,28 +482,26 @@ export interface DiscordFlair {
 }
 
 /**
- * Full nameplate/inspect flair for an account: status tier + Discord PFP + handle.
+ * Full nameplate/inspect flair for an account: Discord PFP + handle + guild meta.
  * Null when the account has no linked Discord (so unlinked players broadcast
- * nothing). One round-trip joining the link to the reward balance.
+ * nothing). One round-trip.
  */
 export async function discordFlairForAccount(
   pool: Pool,
   accountId: number,
 ): Promise<DiscordFlair | null> {
   const res = await pool.query(
-    `SELECT dl.discord_user_id, dl.discord_username, dl.discord_avatar,
-            dl.discord_joined_at, dl.discord_role,
-            COALESCE(rp.lifetime_points, 0) AS lifetime_points
-       FROM discord_links dl
-       LEFT JOIN reward_points rp ON rp.account_id = dl.account_id
-      WHERE dl.account_id = $1`,
+    `SELECT discord_user_id, discord_username, discord_avatar,
+            discord_joined_at, discord_role
+       FROM discord_links
+      WHERE account_id = $1`,
     [accountId],
   );
   const row = res.rows[0];
   if (!row) return null;
   const joined = row.discord_joined_at ? new Date(row.discord_joined_at).getTime() : null;
   return {
-    tier: discordStatusIndexForPoints(Number(row.lifetime_points ?? 0)),
+    tier: 1,
     avatarUrl: discordAvatarUrl(row.discord_user_id, row.discord_avatar, 64),
     name: row.discord_username ?? null,
     joinedAtMs: joined !== null && Number.isFinite(joined) ? joined : null,
