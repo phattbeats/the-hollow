@@ -223,3 +223,23 @@ joins; and `enterDungeon` now returns a success boolean that the three
 position-shifting callers (vase landing, exitTo, homeRespawn) check before
 computing offsets, so a failed enter can never teleport a player off a stale
 position into the dormant overworld. The Under-Shrine stays per-party.
+
+## 2026-07-02: cherry-picked upstream QoL fix, gamepad focus gating (PHAA-408)
+
+**Gamepad ignores input while the window is unfocused** (upstream PR #1318,
+`0310e5c3`): the browser only delivers keyboard and mouse input to a focused
+window, but kept reporting gamepad state to a visible, unfocused one.
+`GamepadManager.poll()` (`src/game/gamepad.ts`) now gates on
+`document.hasFocus()`, matching the existing keyboard/mouse focus rule:
+clears held stick movement, consumes the button state without dispatching (no
+stale edge fires on refocus), and skips camera, edge actions, and rumble
+while unfocused.
+
+`tests/gamepad.test.ts` did not exist in this fork (our v0.17.0 pin predates
+upstream's later APM-meter work, which added a test-only `onInputEdge`
+callback alongside `onAction`). Rather than pull that unrelated feature and
+its base test suite in with this fix, only the new window-focus coverage was
+ported, adapted to assert on the `onAction` callback our `GamepadCallbacks`
+actually has. `src/game/gamepad.ts` was also whole-file `biome check --write`
+formatted (pre-existing, unrelated statement-per-line violations the changed-file
+gate now surfaces); no functional lines besides the focus gate changed.
