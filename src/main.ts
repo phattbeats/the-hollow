@@ -102,6 +102,7 @@ import { assembleBugReportMeta } from './ui/bug_report';
 import { ChatCommandMenu } from './ui/chat_command_menu';
 import { chatInputSize } from './ui/chat_input_autosize';
 import { CLASS_DETAILS, SIGNATURE_ABILITIES } from './ui/class_details_data';
+import { DISCORD_SURFACES_ENABLED } from './ui/discord_flags';
 import {
   type DiscordAccountStatus,
   type DiscordPresenceState,
@@ -4049,8 +4050,6 @@ function updateSeoMetadata(lang: SupportedLanguage): void {
   const jsonLd = document.getElementById('structured-data') as HTMLScriptElement | null;
   if (jsonLd) {
     const sameAs = [
-      'https://github.com/levy-street/world-of-claudecraft',
-      'https://discord.gg/GjhnUsBtw',
       'https://www.youtube.com/@WoClaudeCraft',
       'https://x.com/WoClaudecraft',
       'https://www.instagram.com/worldofclaudecraft/',
@@ -4064,8 +4063,8 @@ function updateSeoMetadata(lang: SupportedLanguage): void {
           {
             '@type': 'WebSite',
             '@id': 'https://worldofclaudecraft.com/#website',
-            name: 'World of ClaudeCraft',
-            alternateName: 'World of Claudecraft',
+            name: 'The Hollow',
+            alternateName: 'The Hollow',
             url: canonicalHref,
             inLanguage: languageTag(lang),
             description: t('seo.description'),
@@ -4074,22 +4073,22 @@ function updateSeoMetadata(lang: SupportedLanguage): void {
           {
             '@type': 'Organization',
             '@id': 'https://worldofclaudecraft.com/#organization',
-            name: 'World of ClaudeCraft',
+            name: 'The Hollow',
             url: 'https://worldofclaudecraft.com/',
-            logo: 'https://worldofclaudecraft.com/woc_logo_square.webp',
+            logo: 'https://worldofclaudecraft.com/the-hollow-square.webp',
             sameAs,
           },
           {
             '@type': 'VideoGame',
             '@id': 'https://worldofclaudecraft.com/#game',
-            name: 'World of ClaudeCraft',
-            alternateName: 'World of Claudecraft',
+            name: 'The Hollow',
+            alternateName: 'The Hollow',
             genre: t('seo.genre'),
             playMode: t('seo.playMode'),
             applicationCategory: t('seo.applicationCategory'),
             operatingSystem: t('seo.operatingSystem'),
             url: canonicalHref,
-            image: 'https://worldofclaudecraft.com/woc_logo_square.webp',
+            image: 'https://worldofclaudecraft.com/the-hollow-square.webp',
             description: t('seo.description'),
             inLanguage: languageTag(lang),
             publisher: { '@id': 'https://worldofclaudecraft.com/#organization' },
@@ -4481,9 +4480,12 @@ function wireHomepageMusicToggle(): void {
 }
 
 // ── Discord login/onboarding ─────────────────────────────────────────────────
-// Discord UI is on unless the native app build disables it.
+// Discord UI is on unless the native app build disables it, or the fork-level
+// DISCORD_SURFACES_ENABLED kill switch (src/ui/discord_flags.ts) is off.
 const DISCORD_BUILD_ENABLED =
-  !NATIVE_APP && String(import.meta.env.VITE_DISCORD_DISABLED ?? '').trim() !== '1';
+  DISCORD_SURFACES_ENABLED &&
+  !NATIVE_APP &&
+  String(import.meta.env.VITE_DISCORD_DISABLED ?? '').trim() !== '1';
 const DISCORD_ONBOARD_KEY = 'woc_discord_onboard';
 let discordPopup: Window | null = null;
 
