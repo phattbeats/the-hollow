@@ -209,8 +209,8 @@ SKILLS = {
                  kind='attack_spell',mn=27,mx=35,school='fire'),         # real 27-35
  'pyroblast':  S(prof='mage',line='fire',econ='energy',cost=25,recharge=0,cast=5.0,
                  kind='attack_spell',mn=75,mx=95,school='fire'),         # ~EST base
- 'frostbolt':  S(prof='mage',line='frost',econ='energy',cost=10,recharge=0,cast=1.5,
-                 kind='attack_spell',mn=25,mx=38,school='frost',apply_snare=0.40,snare_dur=4),  # ~EST; ARM C: snare_dur 8 -> 4 (perma-kite driver)
+ 'frostbolt':  S(prof='mage',line='frost',econ='energy',cost=10,recharge=5,cast=1.5,
+                 kind='attack_spell',mn=25,mx=38,school='frost',apply_snare=0.40,snare_dur=4),  # ~EST; ARM C: snare_dur 8 -> 4; WAVE 3: recharge 0 -> 5 (real gap between casts so the 4s snare must be re-earned, not chain-refreshed)
  'frost_nova': S(prof='mage',line='frost',econ='energy',cost=10,recharge=22,cast=0,
                  kind='aoe_root',mn=6,mx=7,dur=8,school='frost'),        # real
  'frost_armor':S(prof='mage',line='frost',econ='energy',cost=5,recharge=0,cast=0,
@@ -683,7 +683,10 @@ def resolve_effect(me, foe, name):
         if sk.get('apply_atkspeed_slow'): foe.atkspeed_mult=1+sk['apply_atkspeed_slow']
     elif kind=='attack_spell':
         dmg,_=resolve_spell(me,foe, random.uniform(sk['mn'],sk['mx'])*lm, sk['cast'], sk.get('school'))
-        if sk.get('apply_snare'): foe.snare=sk['snare_dur']; foe.snare_val=sk['apply_snare']
+        # WAVE 3: a spell snare no longer refreshes/stacks its own duration while
+        # already active on the target (classic-era slow behavior), so a mage
+        # cannot maintain the snare purely by recasting into an existing window.
+        if sk.get('apply_snare') and foe.snare<=0: foe.snare=sk['snare_dur']; foe.snare_val=sk['apply_snare']
     elif kind=='channel':
         # resolved over time; set channel ticks
         me.cast=None  # channel handled as instant burst of ticks for simplicity
