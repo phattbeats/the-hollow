@@ -72,3 +72,55 @@ the suite with NODE_ENV unset. This container exports NODE_ENV=production,
 which makes Vitest report `import.meta.env.PROD = true` and flips the i18n
 runtime into release semantics, failing five i18n / OG tests that are green
 under a normal test environment.
+
+### 2026-07-02: Branding pass, donate / upstream Discord and GitHub chrome stripped
+
+- **Stripped upstream donate chrome:** removed the three donate anchors in
+  `index.html` (community-link donate, header donate-cta, footer social-link
+  donate), all pointing at `github.com/sponsors/levy-street`.
+- **Stripped upstream Discord and GitHub community links:** removed the
+  `discord.gg/GjhnUsBtw` and `github.com/levy-street/world-of-claudecraft`
+  anchors from the title-screen community tray and the footer social row, and
+  the matching `sameAs` entries from both JSON-LD blocks in `index.html` and
+  the equivalent block `updateSeoMetadata` regenerates in `src/main.ts`. The
+  YouTube, X, Instagram, TikTok, and Reddit `sameAs` entries are untouched
+  (out of scope for this pass; they carry the old worldofclaudecraft.com
+  handles pending a real rebrand of those accounts).
+- **Discord in-game surfaces gated off, not deleted:** added
+  `src/ui/discord_flags.ts` with a single `DISCORD_SURFACES_ENABLED = false`
+  kill switch, ANDed into `main.ts`'s existing `DISCORD_BUILD_ENABLED` gate
+  (which already fences the OAuth login button, the first-time login chooser,
+  the link/unlink CTA banner, the in-game Discord panel and its U keybind,
+  and the keep-account-before-unlink modal), plus an explicit early return in
+  `Hud.updateTargetDiscordLine` (`src/ui/hud.ts`) so the target frame's
+  `#tf-discord` line never renders a nickname or staff tag. The DOM containers
+  (`#tf-discord`, `#discord-window`, `#discord-cta-banner`,
+  `#discord-keep-modal`) stay in `index.html`, unmounted. The subsystem itself
+  (`discord_widget.ts`, `discord_widget_view.ts`, `discord_status.ts`,
+  `discord_deeplink.ts`, the server-side OAuth in `server/discord_oauth.ts`
+  and the bot relay) is untouched and retained for a future PHATT Discord
+  integration; flip `DISCORD_SURFACES_ENABLED` back to `true` when that lands.
+- **Player-visible rename to The Hollow:** `index.html` title, meta
+  description, OG / Twitter tags, `apple-mobile-web-app-title`, the hero
+  `<h1>`, the main logo alt text, the JSON-LD `name` / `alternateName` fields
+  (here and in `main.ts`), and `public/manifest.webmanifest` (`name`,
+  `short_name`, `description`). English-only i18n catalog values in
+  `src/ui/i18n.catalog/shell.ts` (the `en` block only; the legacy
+  non-English blocks in that file are dead code the build does not read,
+  left alone) and `src/ui/i18n.catalog/hud_chrome.ts`
+  (`discord.panelTitle`), including `serverUnavailable.logoAlt`.
+- **Intentionally left ClaudeCraft-branded strings**, out of the stated scope
+  for this pass: `src/ui/i18n.catalog/index.ts` (`footer.copyright`,
+  `nav.playAria`, `card.defaultRealm`, `card.shareText`,
+  `card.nativeShareTitle`), `src/ui/i18n.catalog/game.ts` (`footer.*`,
+  `nav.*`), and `src/ui/i18n.catalog/guide.ts` (`brand`, `brandShort`,
+  `rights`, wiki prose). These are real player-visible ClaudeCraft strings
+  the task did not name; flag for a follow-up branding pass.
+- **Icons and the OG share image are still the old branding**
+  (`/worldofclaudecraft-logo.png`, `/icon-192.png`, `/apple-touch-icon.png`,
+  `woc_logo_square.webp`) pending Brandon's logo pick, tracked as PHAA-395.
+
+Verification: `tsc --noEmit` clean; `tests/client_shell.test.ts`,
+`tests/architecture.test.ts`, `tests/localization_fixes.test.ts`,
+`tests/discord_server.test.ts`, `tests/discord_deeplink.test.ts`, and
+`tests/i18n_completeness.test.ts` green with NODE_ENV unset.
