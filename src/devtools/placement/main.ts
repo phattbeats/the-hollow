@@ -1,7 +1,7 @@
 // Dev-only zone placement tool (see docs/plan-the-hollow.md, "The placement
-// tool"). One page: pick a zone, fly around, pick a kit piece, click the
-// ground, copy the pasteable ZonePropsDef literal. No save/load, no undo, no
-// gizmos; reload loses everything by design.
+// tool"). One page: pick a zone, fly around, pick a kit piece (or a camp/NPC
+// spawn stub), click the ground, copy the pasteable literal. No save/load, no
+// undo, no gizmos, no terrain sculpting; reload loses everything by design.
 //
 // NEVER in the player build: placement.html is not a rollup input in
 // vite.config.ts (dev server only) and this module refuses to run outside
@@ -84,6 +84,7 @@ async function boot(): Promise<void> {
   const placed: PlacedEntry[] = [];
   let ground: THREE.Mesh | null = null;
   let propsGroup: THREE.Group | null = null;
+  let markerGroup: THREE.Group | null = null;
 
   function buildGround(): void {
     if (ground) scene.remove(ground);
@@ -121,6 +122,28 @@ async function boot(): Promise<void> {
     const result = buildProps(WORLD_SEED, (id) => id, preview);
     propsGroup = result.group;
     scene.add(propsGroup);
+    rebuildMarkers();
+  }
+
+  // camps/npcs have no GLB kit piece (buildPreviewProps skips them entirely),
+  // so mark them with a plain colored cone instead of a rendered prop.
+  const MARKER_COLOR: Record<string, number> = { camps: 0xd9534f, npcs: 0x4fa3d9 };
+  function rebuildMarkers(): void {
+    if (markerGroup) scene.remove(markerGroup);
+    markerGroup = new THREE.Group();
+    for (const entry of placed) {
+      const cat = categoryById(entry.categoryId);
+      const color = cat ? MARKER_COLOR[cat.listKey] : undefined;
+      if (color === undefined) continue;
+      const y = terrainHeight(entry.input.x, entry.input.z, WORLD_SEED);
+      const mesh = new THREE.Mesh(
+        new THREE.ConeGeometry(1.2, 2.4, 8),
+        new THREE.MeshLambertMaterial({ color }),
+      );
+      mesh.position.set(entry.input.x, y + 1.2, entry.input.z);
+      markerGroup.add(mesh);
+    }
+    scene.add(markerGroup);
   }
 
   function loadZone(): void {

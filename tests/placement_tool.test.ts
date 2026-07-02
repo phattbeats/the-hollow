@@ -45,6 +45,19 @@ describe('placement tool literal output', () => {
     );
   });
 
+  it('emits a CampDef stub for a mob camp anchor', () => {
+    expect(formatEntry({ categoryId: 'campSpawn', input: { x: 5, z: -6.02, yaw: 0 } })).toBe(
+      "{ mobId: 'EDIT_ME', center: { x: 5, z: -6 }, radius: 12, count: 5 }",
+    );
+  });
+
+  it('emits an NpcDef stub with a hex color and a 2dp facing, matching zone-file style', () => {
+    expect(formatEntry({ categoryId: 'npcSpawn', input: { x: 3, z: 4.04, yaw: -0.6 } })).toBe(
+      "{ id: 'EDIT_ME', name: 'EDIT_ME', title: 'EDIT_ME', pos: { x: 3, z: 4 }, " +
+        "facing: -0.6, color: 0xffffff, questIds: [], greeting: 'EDIT_ME' }",
+    );
+  });
+
   it('groups the whole session into pasteable ZonePropsDef fragments', () => {
     const out = formatPlacements([
       { categoryId: 'campfire', input: { x: 3, z: -4, yaw: 0 } },
@@ -77,6 +90,36 @@ describe('placement tool literal output', () => {
     // the base is never mutated
     expect(base.tents).toEqual([]);
     expect(base.crates).toEqual([]);
+  });
+
+  it('camps/npcs are excluded from the ZonePropsDef preview (they paste into a separate export)', () => {
+    const preview = buildPreviewProps(emptyZoneProps(), [
+      { categoryId: 'campSpawn', input: { x: 1, z: 2, yaw: 0 } },
+      { categoryId: 'npcSpawn', input: { x: 3, z: 4, yaw: 0 } },
+      { categoryId: 'well', input: { x: 0, z: 0, yaw: 0 } },
+    ]);
+    expect(preview.wells).toEqual([{ x: 0, z: 0, r: 1.5 }]);
+    for (const key of Object.keys(preview) as (keyof typeof preview)[]) {
+      if (key === 'wells') continue;
+      expect(preview[key], `${key} should stay empty`).toEqual([]);
+    }
+  });
+
+  it('groups camps as a CampDef[] array but npcs as bare Record entries', () => {
+    const out = formatPlacements([
+      { categoryId: 'campSpawn', input: { x: 1, z: 2, yaw: 0 } },
+      { categoryId: 'npcSpawn', input: { x: 3, z: 4, yaw: 0 } },
+    ]);
+    expect(out).toBe(
+      [
+        'camps: [',
+        "  { mobId: 'EDIT_ME', center: { x: 1, z: 2 }, radius: 12, count: 5 },",
+        '],',
+        '// each entry keys into the *_NPCS Record<string, NpcDef> by its id:',
+        "{ id: 'EDIT_ME', name: 'EDIT_ME', title: 'EDIT_ME', pos: { x: 3, z: 4 }, " +
+          "facing: 0, color: 0xffffff, questIds: [], greeting: 'EDIT_ME' },",
+      ].join('\n'),
+    );
   });
 
   it('steps yaw in 15-degree increments and wraps', () => {

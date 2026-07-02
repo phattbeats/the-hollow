@@ -40,6 +40,8 @@
       <h1>Zone placement tool (dev only)</h1>
       <div class="hint">WASD fly, hold right mouse to look, Q/E or Space/Shift up/down, wheel = speed.
         Pick a piece, left-click the ground to place, R rotates 15 deg (Shift+R back), Esc disarms.
+        Camp and NPC spawns show as a plain colored cone (no kit piece backs them) and paste in as
+        an EDIT_ME stub: fill in the mob/npc id, loot, dialogue, etc. yourself.
         Each row's x removes that placement; clear session resets without a reload.
         Nothing is saved: copy the literal into the zone content module.</div>
       <select id="zone" aria-label="zone"></select>
@@ -47,7 +49,7 @@
       <div id="pieces"></div>
       <div id="output">
         <div class="out-actions">
-          <button id="copy-all" type="button" disabled>copy all as ZonePropsDef fragments</button>
+          <button id="copy-all" type="button" disabled>copy all as pasteable fragments</button>
           <button id="clear-all" type="button" disabled>clear session</button>
         </div>
         <div id="out-summary">nothing placed yet</div>
