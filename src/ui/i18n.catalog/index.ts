@@ -8,6 +8,7 @@ import { worldEntityText as worldNames } from '../world_entity_i18n';
 import { abilityStrings, classAbilityNames } from './abilities';
 import { gameStrings } from './game';
 import { guideStrings } from './guide';
+import { hollowEntities } from './hollow';
 import { hudStrings } from './hud';
 import { hudChromeStrings } from './hud_chrome';
 import { itemNames, itemStrings } from './items';
@@ -852,6 +853,7 @@ export const en = {
       ...itemNames.en.entities.items,
       ...mergeEntities.en.items,
       ...mergeExtra.en.items,
+      ...hollowEntities.en.items,
       // Delve items, Collapsed Reliquary loot and Marks vendor stock.
       reliquary_plate_chest: { name: 'Reliquary Guard Hauberk' },
       reliquary_leather_chest: { name: 'Dustwarden Jerkin' },
@@ -904,14 +906,28 @@ export const en = {
       vanguard_chrome_armor_plate: { name: 'Vanguard Chrome' },
     },
     itemSets: itemSetEntityText,
-    mobs: { ...worldNames.en.entities.mobs, ...mergeEntities.en.mobs, ...mergeExtra.en.mobs },
-    npcs: { ...worldNames.en.entities.npcs, ...mergeExtra.en.npcs },
+    mobs: {
+      ...worldNames.en.entities.mobs,
+      ...mergeEntities.en.mobs,
+      ...mergeExtra.en.mobs,
+      ...hollowEntities.en.mobs,
+    },
+    npcs: {
+      ...worldNames.en.entities.npcs,
+      ...mergeExtra.en.npcs,
+      ...hollowEntities.en.npcs,
+    },
     quests: {
       ...worldNames.en.entities.quests,
       ...mergeEntities.en.quests,
       ...mergeExtra.en.quests,
+      ...hollowEntities.en.quests,
     },
-    dungeons: { ...worldNames.en.entities.dungeons, ...mergeExtra.en.dungeons },
+    dungeons: {
+      ...worldNames.en.entities.dungeons,
+      ...mergeExtra.en.dungeons,
+      ...hollowEntities.en.dungeons,
+    },
     delves: { ...worldNames.en.entities.delves },
   },
 };

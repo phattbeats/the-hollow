@@ -5089,6 +5089,15 @@ export const ko_KR: EnTranslations = {
       "wyrmshadow_talongrips": {
         "name": "고룡그림자 갈퀴손아귀"
       },
+      "cave_morsel": {
+        "name": "Cave Morsel"
+      },
+      "emberbulb": {
+        "name": "Emberbulb"
+      },
+      "first_cutting": {
+        "name": "A Cutting"
+      },
       "reliquary_plate_chest": {
         "name": "성물실 수호 갑옷"
       },
@@ -5534,6 +5543,15 @@ export const ko_KR: EnTranslations = {
       },
       "ysolei": {
         "name": "이솔레이, 익사한 달의 화신"
+      },
+      "palefeeder": {
+        "name": "Palefeeder"
+      },
+      "rootmaw": {
+        "name": "Rootmaw"
+      },
+      "the_witness_root": {
+        "name": "The Witness-Root"
       }
     },
     "npcs": {
@@ -5646,6 +5664,11 @@ export const ko_KR: EnTranslations = {
         "name": "온드렐 베인",
         "title": "조수지기",
         "greeting": "이 호수는 달빛을 마시고, {className}, 익사한 자들을 되돌려 보낸다네. 나는 서른 밤 동안 저 관문을 지켜보았지 — 그리고 오늘 밤, 마침내 그것이 열렸네."
+      },
+      "brother_greenpaw": {
+        "name": "Brother Greenpaw",
+        "title": "First Prophet (self-appointed)",
+        "greeting": "howdy, traveler. you catch the vase in a mood today, or is that just me again... c'mere, got a couple sacred matters need tendin'. mostly snacks. same thing, to a greenpaw degree."
       }
     },
     "quests": {
@@ -6463,6 +6486,26 @@ export const ko_KR: EnTranslations = {
             "label": "글리머미어 물거리 처치"
           }
         }
+      },
+      "q_what_burns": {
+        "title": "The Thing That Burns",
+        "text": "the communion's gone thin, friend... i'm bone dry and the wavelength is closin'. down under the shrine there's a bulb that burns slow and clean - emberbulb, grows where the light don't reach, which is a joke the cave plays on itself... bring me five. mind the pale ones. they come at your lantern, not at you. mostly.",
+        "completion": "now THAT'S the good smoke... you feel that? room's gettin' thick. she's gonna lean in any minute now, i can feel it on the wavelength... indeed.",
+        "objectives": {
+          "0": {
+            "label": "Emberbulb gathered"
+          }
+        }
+      },
+      "q_what_fills": {
+        "title": "The Thing That Fills",
+        "text": "second matter, and i'd call it sacred but between us it's breakfast... the rootmaws down there carry a morsel on 'em, cave-fed, real earthy. four'll do. bring 'em back 'fore the stomach starts singin' hymns of its own...",
+        "completion": "you're a saint of the first order, friend. or a good neighbor. same thing, to a greenpaw degree. ...here. was gonna keep this one but the inner cowboy says it's yours. don't let it wilt.",
+        "objectives": {
+          "0": {
+            "label": "Cave Morsel gathered"
+          }
+        }
       }
     },
     "zones": {
@@ -6599,6 +6642,16 @@ export const ko_KR: EnTranslations = {
         "name": "익사한 신전",
         "enterText": "당신은 달의 관문을 지나갑니다 — 공기가 차가운 물과 창백한 빛으로 변하고, 노랫소리가 당신의 머리 위로 닫혀 옵니다.",
         "leaveText": "당신은 달의 관문을 통해 산속의 밤으로 떠오릅니다."
+      },
+      "the_hollow": {
+        "name": "The Hollow",
+        "enterText": "You step through the shrine gate. The air turns warm and green, and the vase waits ahead.",
+        "leaveText": "You step back out through the gate into Eastbrook."
+      },
+      "under_shrine": {
+        "name": "The Under-Shrine",
+        "enterText": "You descend below the shrine. The air goes still and close, and the dark ahead does not feel empty.",
+        "leaveText": "You climb back into the warm. Above you, faintly, smoke."
       }
     },
     "delves": {

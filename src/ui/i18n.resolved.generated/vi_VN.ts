@@ -5089,6 +5089,15 @@ export const vi_VN: EnTranslations = {
       "wyrmshadow_talongrips": {
         "name": "Bao Tay Trảo Long Ảnh"
       },
+      "cave_morsel": {
+        "name": "Cave Morsel"
+      },
+      "emberbulb": {
+        "name": "Emberbulb"
+      },
+      "first_cutting": {
+        "name": "A Cutting"
+      },
       "reliquary_plate_chest": {
         "name": "Áo Giáp Vệ Binh Thánh Tích"
       },
@@ -5534,6 +5543,15 @@ export const vi_VN: EnTranslations = {
       },
       "ysolei": {
         "name": "Ysolei, Hóa Thân Nguyệt Chết Chìm"
+      },
+      "palefeeder": {
+        "name": "Palefeeder"
+      },
+      "rootmaw": {
+        "name": "Rootmaw"
+      },
+      "the_witness_root": {
+        "name": "The Witness-Root"
       }
     },
     "npcs": {
@@ -5646,6 +5664,11 @@ export const vi_VN: EnTranslations = {
         "name": "Ondrel Vane",
         "title": "Người Canh Thủy Triều",
         "greeting": "Hồ nước uống lấy ánh trăng, {className}, rồi trả lại những kẻ chết chìm. Ta đã canh chừng cánh cổng đó suốt ba mươi đêm — và đêm nay nó đã mở."
+      },
+      "brother_greenpaw": {
+        "name": "Brother Greenpaw",
+        "title": "First Prophet (self-appointed)",
+        "greeting": "howdy, traveler. you catch the vase in a mood today, or is that just me again... c'mere, got a couple sacred matters need tendin'. mostly snacks. same thing, to a greenpaw degree."
       }
     },
     "quests": {
@@ -6463,6 +6486,26 @@ export const vi_VN: EnTranslations = {
             "label": "Đã hạ Kẻ Lội Nước Glimmermere"
           }
         }
+      },
+      "q_what_burns": {
+        "title": "The Thing That Burns",
+        "text": "the communion's gone thin, friend... i'm bone dry and the wavelength is closin'. down under the shrine there's a bulb that burns slow and clean - emberbulb, grows where the light don't reach, which is a joke the cave plays on itself... bring me five. mind the pale ones. they come at your lantern, not at you. mostly.",
+        "completion": "now THAT'S the good smoke... you feel that? room's gettin' thick. she's gonna lean in any minute now, i can feel it on the wavelength... indeed.",
+        "objectives": {
+          "0": {
+            "label": "Emberbulb gathered"
+          }
+        }
+      },
+      "q_what_fills": {
+        "title": "The Thing That Fills",
+        "text": "second matter, and i'd call it sacred but between us it's breakfast... the rootmaws down there carry a morsel on 'em, cave-fed, real earthy. four'll do. bring 'em back 'fore the stomach starts singin' hymns of its own...",
+        "completion": "you're a saint of the first order, friend. or a good neighbor. same thing, to a greenpaw degree. ...here. was gonna keep this one but the inner cowboy says it's yours. don't let it wilt.",
+        "objectives": {
+          "0": {
+            "label": "Cave Morsel gathered"
+          }
+        }
       }
     },
     "zones": {
@@ -6599,6 +6642,16 @@ export const vi_VN: EnTranslations = {
         "name": "Ngôi Đền Chết Chìm",
         "enterText": "Bạn bước qua nguyệt môn, không khí biến thành nước lạnh và ánh sáng nhợt nhạt, và tiếng hát khép lại trên đầu bạn.",
         "leaveText": "Bạn ngoi lên qua nguyệt môn vào màn đêm trên núi."
+      },
+      "the_hollow": {
+        "name": "The Hollow",
+        "enterText": "You step through the shrine gate. The air turns warm and green, and the vase waits ahead.",
+        "leaveText": "You step back out through the gate into Eastbrook."
+      },
+      "under_shrine": {
+        "name": "The Under-Shrine",
+        "enterText": "You descend below the shrine. The air goes still and close, and the dark ahead does not feel empty.",
+        "leaveText": "You climb back into the warm. Above you, faintly, smoke."
       }
     },
     "delves": {
