@@ -9,12 +9,13 @@
 //   Hollow Crypt   (interior 'crypt',  origin x 900 band)  - blue flame, coffins/graves/bones
 //   Sunken Bastion (interior 'crypt',  origin x 1500 band) - teal flame, cargo/banners fortress
 //   Gravewyrm Sanctum (interior 'sanctum')                 - green ritual fire, necromantic
-//   Drowned Temple (interior 'temple')                     - pale moon-violet, drowned reliquaries
+//   Drowned Temple (interior 'temple', base bands)         - pale moon-violet, drowned reliquaries
+//   The Hollow hub (interior 'temple', origin x 4500 band) - warm root-and-soil, dry, hearth-lit
 //   Abandoned Crypt raid (interior 'nythraxis')            - dark violet soul wards
 import * as THREE from 'three';
 import type { GLTF } from 'three/addons/loaders/GLTFLoader.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
-import { instanceOrigin } from '../sim/data';
+import { DUNGEONS, instanceOrigin } from '../sim/data';
 import {
   ARENA_LAYOUT,
   CRYPT_LAYOUT,
@@ -52,6 +53,9 @@ export type DungeonInteriorVariant =
   | 'bastion'
   | 'sanctum'
   | 'temple'
+  // The Hollow hub: shares the temple layout but reads warm root-and-soil
+  // (soil browns, root ambers, moss greens), never drowned.
+  | 'hollow'
   | 'arena'
   | 'nythraxis'
   // Collapsed Reliquary delve sub-themes (share the ember crypt-stone base, see
@@ -94,6 +98,8 @@ const TORCH_COLORS: Record<Variant, TorchColors> = {
   sanctum: { flame: 0xa6ffb8, emissive: 0x22cc55, light: 0x55e08a },
   // the Drowned Temple burns with cold moonfire — pale lilac over still water
   temple: { flame: 0xd9c9ff, emissive: 0x6a4fd0, light: 0xb79cff },
+  // the Hollow hub burns hearth-warm: root-amber lamplight over soil and moss
+  hollow: { flame: 0xffc36a, emissive: 0xc06a1a, light: 0xffa348 },
   // the Ashen Coliseum burns warm — amber braziers ringing the fighting sands
   arena: { flame: 0xffb24a, emissive: 0xcc5a14, light: 0xff9a3c },
   nythraxis: { flame: 0x8f5cff, emissive: 0x4b1c9a, light: 0x7b4dff },
@@ -777,7 +783,12 @@ export class DungeonInteriors {
     if (interior === 'arena') return 'arena';
     if (interior === 'nythraxis') return 'nythraxis';
     if (interior === 'sanctum') return 'sanctum';
-    if (interior === 'temple') return 'temple';
+    if (interior === 'temple') {
+      // The Hollow hub reuses the temple layout at its own instance band
+      // (index 6): same walls and collision, warm root-and-soil dressing.
+      const hollowX = instanceOrigin(DUNGEONS.the_hollow?.index ?? 6, 0).x;
+      return Math.abs(ox - hollowX) < 250 ? 'hollow' : 'temple';
+    }
     const bastionX = instanceOrigin(1, 0).x;
     if (Math.abs(ox - bastionX) < 250) return 'bastion';
     return 'crypt';
@@ -927,6 +938,19 @@ export class DungeonInteriors {
         t,
       );
     }
+    if (variant === 'hollow') {
+      // the shrine clearing: packed soil and root-broken flags, no grate pits
+      return pickKind(
+        [
+          ['floor_tile_large', 30],
+          ['floor_tile_large_rocks', 8],
+          ['floor_dirt_large', 22],
+          ['floor_dirt_large_rocky', 14],
+          ['quad', 26],
+        ],
+        t,
+      );
+    }
     if (isDelveVariant(variant)) {
       // collapsed reliquary: grave-dust over cracked flags, more dirt and rubble
       return pickKind(
@@ -989,6 +1013,20 @@ export class DungeonInteriors {
           ['floor_tile_small_weeds_A', 18],
           ['floor_tile_small_weeds_B', 18],
           ['floor_tile_small_decorated', 6],
+        ],
+        t,
+      );
+    }
+    if (variant === 'hollow') {
+      // living ground: moss and weeds reclaiming the old shrine flags
+      return pickKind(
+        [
+          ['floor_tile_small', 22],
+          ['floor_tile_small_broken_A', 12],
+          ['floor_tile_small_broken_B', 12],
+          ['floor_tile_small_weeds_A', 25],
+          ['floor_tile_small_weeds_B', 25],
+          ['floor_tile_small_decorated', 4],
         ],
         t,
       );
@@ -1076,6 +1114,19 @@ export class DungeonInteriors {
         t,
       );
     }
+    if (variant === 'hollow') {
+      // root-cracked earthwork walls; open arches breathe, few barred windows
+      return pickKind(
+        [
+          ['wall', 38],
+          ['wall_pillar', 18],
+          ['wall_cracked', 22],
+          ['wall_arched', 16],
+          ['wall_archedwindow_gated', 6],
+        ],
+        t,
+      );
+    }
     if (isDelveVariant(variant)) {
       // long-sealed reliquary: heavily cracked masonry, the odd gated arch
       return pickKind(
@@ -1129,6 +1180,17 @@ export class DungeonInteriors {
           ['banner_white', 5],
           ['banner_thin_white', 4],
           ['banner_blue', 2],
+        ],
+        t,
+      );
+    }
+    if (variant === 'hollow') {
+      // moss-green hangings for the plant shrine, a few sun-bleached ones
+      return pickKind(
+        [
+          ['banner_green', 5],
+          ['banner_patternC_green', 3],
+          ['banner_thin_white', 2],
         ],
         t,
       );
@@ -1221,7 +1283,10 @@ export class DungeonInteriors {
     variant: Variant,
   ): void {
     const kind =
-      variant === 'sanctum' || variant === 'temple' || variant === 'delve_hall'
+      variant === 'sanctum' ||
+      variant === 'temple' ||
+      variant === 'hollow' ||
+      variant === 'delve_hall'
         ? 'pillar_decorated'
         : 'pillar';
     const colors = TORCH_COLORS[variant];
@@ -1320,6 +1385,17 @@ export class DungeonInteriors {
         }
         continue;
       }
+      if (variant === 'hollow') {
+        // homestead stores along the antechamber walls: crates, barrels, a lamp
+        if (r < 0.5) {
+          p.add('crates_stacked', t.x, 0, t.z - 1.0, hash2(t.z, t.x) * 0.4 - 0.2, 0.95);
+          p.add('barrel_large', t.x + 0.1, 0, t.z + 1.3, hash2(t.x, t.z * 2.1) * Math.PI, 0.8);
+        } else {
+          p.add('box_stacked', t.x, 0, t.z - 1.0, hash2(t.z, t.x) * 0.4 - 0.2, 0.6);
+          p.add('candle_triple', t.x, 0, t.z + 1.5, hash2(t.x, t.z * 1.7) * Math.PI, 1.35);
+        }
+        continue;
+      }
       if (variant === 'temple') {
         // drowned reliquary altars: a candle-shrine over grave-offerings
         const face = t.x < 0 ? -Math.PI / 2 : Math.PI / 2;
@@ -1411,7 +1487,7 @@ export class DungeonInteriors {
       }
       archZ.add(s.z);
     }
-    if (variant === 'sanctum' || variant === 'temple') {
+    if (variant === 'sanctum' || variant === 'temple' || variant === 'hollow') {
       for (const z of archZ) p.add('arch', 0, 0, z, 0, [2.6, 1.9, 2.0]);
     }
   }
@@ -1453,6 +1529,8 @@ export class DungeonInteriors {
         p.add(i % 2 ? 'skull_candle' : 'candle_triple', x, 0.6, z, hash2(x, z) * Math.PI, 1.4);
       else if (variant === 'temple')
         p.add(i % 2 ? 'candle_triple' : 'shrine_candles', x, 0.6, z, hash2(x, z) * Math.PI, 1.3);
+      else if (variant === 'hollow')
+        p.add(i % 2 ? 'candle_triple' : 'shrine_candles', x, 0.6, z, hash2(x, z) * Math.PI, 1.3);
       else if (variant === 'delve_finale')
         p.add(i % 2 ? 'skull_candle' : 'candle_triple', x, 0.6, z, hash2(x, z) * Math.PI, 1.4);
       else p.add(i % 2 ? 'skull' : 'candle_lit', x, 0.6, z, hash2(x, z) * Math.PI, 1.3);
@@ -1482,6 +1560,9 @@ export class DungeonInteriors {
   // Bone piles / debris strewn along the aisle (legacy deterministic spots)
   private placeAisleClutter(p: Placements, layout: DungeonLayout, variant: Variant): void {
     if (variant === 'arena') return; // the fighting sands stay clear of obstacles
+    // The Hollow hub is a home, not a ruin to loot: no bone piles down the
+    // aisle. Its dressing comes from HOLLOW_PROPS (see render/hollow_props.ts).
+    if (variant === 'hollow') return;
     const dense = variant === 'sanctum' || variant === 'temple';
     const count = variant === 'sanctum' ? 14 : variant === 'temple' ? 12 : 10;
     for (let i = 0; i < count; i++) {
@@ -1549,7 +1630,7 @@ export class DungeonInteriors {
             [-19, 95],
             [18, 150],
           ]
-        : variant === 'temple'
+        : variant === 'temple' || variant === 'hollow'
           ? [
               [-19, -10],
               [19, 24],
@@ -1661,6 +1742,20 @@ export class DungeonInteriors {
       p.add('barrel_small_stack', 19.8, 0, 55, -0.3, 1.3);
       p.add('chest', -19.6, 0, layout.zMax - 6, 0.9, 1.3);
       p.add('keg', 20, 0, layout.zMin + 4, 0.2, 1.0);
+      return;
+    }
+    if (variant === 'hollow') {
+      // hearth-lamps set along the shrine walls, votives at the colonnade feet;
+      // no gravestones: nothing in the hub is buried (that is the point of it)
+      p.add('shrine_candles', -20, 0, 52, Math.PI / 2, 1.5);
+      p.add('plaque_candles', -20, 0, 56.2, Math.PI / 2, 1.4);
+      p.add('shrine_candles', 20, 0, 100, -Math.PI / 2, 1.5);
+      p.add('plaque_candles', 20, 0, 104.2, -Math.PI / 2, 1.4);
+      for (const pt of layout.pillars) {
+        if (hash2(pt.x, pt.z * 1.3) < 0.5) continue;
+        const dir = pt.x < 0 ? 1 : -1;
+        p.add('candle_triple', pt.x + dir * 1.9, 0, pt.z + 1.7, hash2(pt.z, pt.x) * Math.PI, 1.4);
+      }
       return;
     }
     if (variant === 'temple') {
