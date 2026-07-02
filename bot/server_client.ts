@@ -1,19 +1,12 @@
 // Client for the game server's secret-gated /internal/discord/* endpoints. The
-// bot reads flex/role data and pushes presence + reward grants; it authenticates
-// with the shared DISCORD_BOT_SECRET (x-woc-discord-secret), NOT a user bearer.
+// bot reads flex data and pushes presence + membership; it authenticates with
+// the shared DISCORD_BOT_SECRET (x-woc-discord-secret), NOT a user bearer.
 import type { ActivityItem, FlexData, RelayItem } from './logic';
 
 interface Envelope<T> {
   success: boolean;
   data: T;
   error: string | null;
-}
-
-export interface RolesData {
-  linked: boolean;
-  statusTier: number;
-  points: number;
-  lifetimePoints: number;
 }
 
 export interface VoiceMemberPush {
@@ -63,13 +56,6 @@ export class ServerClient {
     );
   }
 
-  roles(discordUserId: string): Promise<RolesData | null> {
-    return this.call(
-      'GET',
-      `/internal/discord/roles?discord_user_id=${encodeURIComponent(discordUserId)}`,
-    );
-  }
-
   pushPresence(snapshot: {
     onlineCount: number;
     memberTotal: number;
@@ -77,20 +63,6 @@ export class ServerClient {
     voice: VoiceMemberPush[];
   }): Promise<unknown> {
     return this.call('POST', '/internal/discord/presence', snapshot);
-  }
-
-  grant(
-    discordUserId: string,
-    reason: string,
-    points: number,
-    dedupeKey?: string,
-  ): Promise<unknown> {
-    return this.call('POST', '/internal/discord/grant', {
-      discord_user_id: discordUserId,
-      reason,
-      points,
-      dedupeKey,
-    });
   }
 
   setMember(discordUserId: string, guildMember: boolean): Promise<unknown> {

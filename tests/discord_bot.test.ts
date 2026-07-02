@@ -1,14 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import {
   type ActivityItem,
-  allTierRoleNames,
   buildActivityMessage,
   buildLevelNick,
   buildLinkContent,
   buildRelayMessage,
   buildWelcomeMessage,
   buildWhoamiContent,
-  computeRoleSync,
   GATEWAY_INTENTS,
   heartbeatIntervalMs,
   identifyPayload,
@@ -18,14 +16,13 @@ import {
   type RelayItem,
   relayAvatarUrl,
   relayRespondUrl,
-  tierRoleName,
   voiceMembersForChannel,
 } from '../bot/logic';
 
 describe('gateway protocol helpers', () => {
   it('requests the privileged member + presence intents', () => {
     // GUILDS(1) | GUILD_MEMBERS(2) | GUILD_VOICE_STATES(128) | GUILD_PRESENCES(256)
-    expect(GATEWAY_INTENTS).toBe(1 | 2 | 128 | 256 | 512); // + GUILD_MESSAGES (512)
+    expect(GATEWAY_INTENTS).toBe(1 | 2 | 128 | 256);
     expect(identifyPayload('tok').d).toMatchObject({ token: 'tok', intents: GATEWAY_INTENTS });
   });
 
@@ -33,49 +30,6 @@ describe('gateway protocol helpers', () => {
     expect(heartbeatIntervalMs({ d: { heartbeat_interval: 41250 } })).toBe(41250);
     expect(heartbeatIntervalMs({ d: { heartbeat_interval: 10 } })).toBe(1000); // floored
     expect(heartbeatIntervalMs({})).toBe(41250); // default
-  });
-});
-
-describe('status-tier roles', () => {
-  it('names roles "WoC <Tier>" per rung', () => {
-    expect(tierRoleName(1)).toBe('WoC Initiate');
-    expect(tierRoleName(8)).toBe('WoC Mythic');
-    expect(tierRoleName(0)).toBeNull();
-    expect(allTierRoleNames()).toHaveLength(8);
-  });
-
-  it('assigns the current rung role and removes other rung roles', () => {
-    const tierRoleIds = new Map<number, string>([
-      [1, 'r1'],
-      [4, 'r4'],
-      [5, 'r5'],
-    ]);
-    // Member is champion (5) but currently holds the knight (r4) role + a non-WoC role.
-    const { toAdd, toRemove } = computeRoleSync({
-      tier: 5,
-      memberRoleIds: ['r4', 'other'],
-      tierRoleIds,
-    });
-    expect(toAdd).toEqual(['r5']);
-    expect(toRemove).toEqual(['r4']); // sheds the stale rung role, keeps 'other'
-  });
-
-  it('removes all rung roles when the member is unranked (tier 0)', () => {
-    const tierRoleIds = new Map<number, string>([
-      [1, 'r1'],
-      [4, 'r4'],
-    ]);
-    const { toAdd, toRemove } = computeRoleSync({ tier: 0, memberRoleIds: ['r4'], tierRoleIds });
-    expect(toAdd).toEqual([]);
-    expect(toRemove).toEqual(['r4']);
-  });
-
-  it('is a no-op when the member already holds exactly the right role', () => {
-    const tierRoleIds = new Map<number, string>([[5, 'r5']]);
-    expect(computeRoleSync({ tier: 5, memberRoleIds: ['r5', 'x'], tierRoleIds })).toEqual({
-      toAdd: [],
-      toRemove: [],
-    });
   });
 });
 
@@ -88,12 +42,8 @@ describe('slash commands + messages', () => {
   });
 
   it('builds whoami + link + welcome text', () => {
-    expect(
-      buildWhoamiContent({ linked: false, statusTier: 0, points: 0, lifetimePoints: 0 }),
-    ).toContain('/link');
-    expect(
-      buildWhoamiContent({ linked: true, statusTier: 5, points: 100, lifetimePoints: 5000 }),
-    ).toContain('Champion');
+    expect(buildWhoamiContent({ linked: false, username: null })).toContain('/link');
+    expect(buildWhoamiContent({ linked: true, username: 'Aldric' })).toContain('Aldric');
     expect(buildLinkContent('https://woc')).toContain('https://woc');
     expect(buildWelcomeMessage({ userMention: '<@1>', gameUrl: 'https://woc' })).toContain('<@1>');
   });

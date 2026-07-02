@@ -24,7 +24,6 @@ import {
   handleDiscordStart,
   handleDiscordStatus,
   handleDiscordUnlink,
-  handleSwagClaim,
 } from '../server/discord';
 import { resetAuthFailures, resetDiscordRateLimits } from '../server/ratelimit';
 
@@ -203,18 +202,17 @@ describe('POST /api/auth/discord/start', () => {
 });
 
 describe('GET /api/discord (status)', () => {
-  it('reports unlinked with zeroed rewards', async () => {
+  it('reports unlinked with the flair flag off', async () => {
     const res = makeRes();
     await handleDiscordStatus(makeReq(), res, 1);
     const { status, data } = parse(res);
     expect(status).toBe(200);
     expect(data.linked).toBe(false);
-    expect(data.points).toBe(0);
     expect(data.statusTier).toBe(0);
     expect(data.inviteUrl).toContain('discord.gg');
   });
 
-  it('reports linked status, points and derived tier', async () => {
+  it('reports linked status with the flair flag on', async () => {
     linkRow = [
       {
         account_id: 1,
@@ -225,18 +223,13 @@ describe('GET /api/discord (status)', () => {
         linked_at: 'now',
       },
     ];
-    rewardRows = [{ points: '1500', lifetime_points: '2500' }];
-    swagClaimRows = [{ swag_id: 'title_discordian' }];
     const res = makeRes();
     await handleDiscordStatus(makeReq(), res, 1);
     const { data } = parse(res);
     expect(data.linked).toBe(true);
     expect(data.username).toBe('maxp');
     expect(data.guildMember).toBe(true);
-    expect(data.points).toBe(1500);
-    expect(data.lifetimePoints).toBe(2500);
-    expect(data.statusTier).toBe(4); // 2500 lifetime -> knight (rung 4)
-    expect(data.claimedSwagIds).toEqual(['title_discordian']);
+    expect(data.statusTier).toBe(1); // linked flag, not a ladder rung
   });
 
   it('surfaces passwordSet=false for a Discord-provisioned (password-less) account', async () => {
@@ -305,45 +298,6 @@ describe('DELETE /api/discord (unlink)', () => {
     expect(parse(res).status).toBe(400);
     expect(
       dbMock.query.mock.calls.some((c) => String(c[0]).includes('DELETE FROM discord_links')),
-    ).toBe(false);
-  });
-});
-
-describe('POST /api/discord/swag/claim', () => {
-  it('400s on an unknown swag id', async () => {
-    const res = makeRes();
-    await handleSwagClaim(makeReq({ body: { swagId: 'nope' } }), res, 1, noopGrant);
-    expect(parse(res).status).toBe(400);
-  });
-
-  it('403s when the account has no linked Discord', async () => {
-    linkRow = []; // not linked
-    const res = makeRes();
-    await handleSwagClaim(makeReq({ body: { swagId: 'title_discordian' } }), res, 1, noopGrant);
-    expect(parse(res).status).toBe(403);
-  });
-
-  it('409s a tier-gated claim before spending anything', async () => {
-    linkRow = [
-      {
-        account_id: 1,
-        discord_user_id: '8',
-        discord_username: 'm',
-        discord_avatar: null,
-        guild_member: false,
-        linked_at: 'now',
-      },
-    ];
-    rewardRows = [{ points: '5000', lifetime_points: '0' }]; // tier 1, below chroma minTier 3
-    swagClaimRows = [];
-    const res = makeRes();
-    await handleSwagClaim(makeReq({ body: { swagId: 'chroma_blurple' } }), res, 1, noopGrant);
-    const { status, data } = parse(res);
-    expect(status).toBe(409);
-    expect(data.error).toBe('tier');
-    // No claim insert attempted on a gated request.
-    expect(
-      dbMock.query.mock.calls.some((c) => String(c[0]).includes('INSERT INTO swag_claims')),
     ).toBe(false);
   });
 });
