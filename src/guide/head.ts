@@ -25,8 +25,6 @@ import { type GuideRoute, hrefFor } from './routes';
 // The site origin. Matches index.html's canonical/og:url host exactly.
 const ORIGIN = 'https://worldofclaudecraft.com';
 const LOGO = `${ORIGIN}/the-hollow-square.webp`;
-const GITHUB_URL = 'https://github.com/levy-street/world-of-claudecraft';
-const DISCORD_URL = 'https://discord.gg/GjhnUsBtw';
 
 // The newcomer FAQ on /guide/faq, kept in lockstep with pages/faq.ts so the FAQPage
 // JSON-LD answers the same questions the visible page does. cap rows splice the level
@@ -220,7 +218,7 @@ function videoGameNode(description: string, inLanguage: string): Record<string, 
   return {
     '@type': 'VideoGame',
     name: t('guide.brand'),
-    alternateName: 'World of Claudecraft',
+    alternateName: 'The Hollow',
     genre: t('seo.genre'),
     playMode: t('seo.playMode'),
     applicationCategory: t('seo.applicationCategory'),
@@ -229,7 +227,6 @@ function videoGameNode(description: string, inLanguage: string): Record<string, 
     image: LOGO,
     description,
     inLanguage,
-    sameAs: [GITHUB_URL, DISCORD_URL],
   };
 }
 
