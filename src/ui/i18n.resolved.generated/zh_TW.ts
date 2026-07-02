@@ -5089,6 +5089,15 @@ export const zh_TW: EnTranslations = {
       "wyrmshadow_talongrips": {
         "name": "龍影利爪握套"
       },
+      "cave_morsel": {
+        "name": "洞穴肉粒"
+      },
+      "emberbulb": {
+        "name": "餘燼球莖"
+      },
+      "first_cutting": {
+        "name": "插條"
+      },
       "reliquary_plate_chest": {
         "name": "聖物庫守衛鎖甲"
       },
@@ -5534,6 +5543,15 @@ export const zh_TW: EnTranslations = {
       },
       "ysolei": {
         "name": "伊索蕾，溺月化身"
+      },
+      "palefeeder": {
+        "name": "蒼白噬光者"
+      },
+      "rootmaw": {
+        "name": "根顎獸"
+      },
+      "the_witness_root": {
+        "name": "見證之根"
       }
     },
     "npcs": {
@@ -5646,6 +5664,11 @@ export const zh_TW: EnTranslations = {
         "name": "翁德瑞爾·韋恩",
         "title": "守潮者",
         "greeting": "湖水飲盡了月光，{className}，再將溺者吐還。我已守望那道門三十夜——而今夜，它開了。"
+      },
+      "brother_greenpaw": {
+        "name": "綠掌修士",
+        "title": "首席先知（自封）",
+        "greeting": "喲，旅人，你來啦。你說這甕今兒個心情不錯，還是只有我這麼覺得……過來吧，有幾件神聖的事兒要辦。基本上就是弄點吃的。反正對綠掌來說是一回事兒。"
       }
     },
     "quests": {
@@ -6463,6 +6486,26 @@ export const zh_TW: EnTranslations = {
             "label": "微光湖涉者已被擊殺"
           }
         }
+      },
+      "q_what_burns": {
+        "title": "燃燒之物",
+        "text": "通靈淡了，朋友……我乾得跟骨頭一樣，頻率就快斷了。神龕下面有種球莖，燒得又慢又乾淨，餘燼球莖，長在光照不到的地方，這洞穴自己跟自己開的玩笑……給我帶五顆回來。留意那些蒼白的傢伙，牠們衝著你的燈籠來，不是衝著你。大概吧。",
+        "completion": "這才是上等的煙啊……你感覺到了嗎？屋裡越來越濃了。她隨時都要探過身來了，我在頻率上都能感覺到……的確如此。",
+        "objectives": {
+          "0": {
+            "label": "已採集餘燼球莖"
+          }
+        }
+      },
+      "q_what_fills": {
+        "title": "飽腹之物",
+        "text": "第二件事，我本想說是神聖之事，但咱倆私下講，其實就是早飯……下面那些根顎獸身上帶著一小塊肉，吃洞穴裡的東西長大的，味道很土。四塊就夠了。趁肚子還沒自己唱起聖歌之前帶回來……",
+        "completion": "你真是頭等的聖人啊，朋友。或者說是個好鄰居。反正對綠掌來說都一樣。……給，本來想自己留著的，但我心裡那個牛仔說這個該是你的。別讓它蔫了。",
+        "objectives": {
+          "0": {
+            "label": "已採集洞穴肉粒"
+          }
+        }
       }
     },
     "zones": {
@@ -6599,6 +6642,16 @@ export const zh_TW: EnTranslations = {
         "name": "溺亡神殿",
         "enterText": "你踏過月門——空氣化作冰冷的水與蒼白的光，歌聲在你頭頂之上闔攏。",
         "leaveText": "你穿過月門浮出水面，回到山間的夜色之中。"
+      },
+      "the_hollow": {
+        "name": "空穴",
+        "enterText": "你穿過神龕之門。空氣變得溫暖而翠綠，那口甕在前方等候。",
+        "leaveText": "你穿過大門，回到東溪。"
+      },
+      "under_shrine": {
+        "name": "地下聖龕",
+        "enterText": "你潛入神龕之下。空氣變得靜止而壓抑，前方的黑暗似乎並不空無一物。",
+        "leaveText": "你爬回溫暖之處。頭頂上方，隱約有煙。"
       }
     },
     "delves": {

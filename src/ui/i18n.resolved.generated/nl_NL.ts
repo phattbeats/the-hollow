@@ -5089,6 +5089,15 @@ export const nl_NL: EnTranslations = {
       "wyrmshadow_talongrips": {
         "name": "Wurmschaduw-Klauwgrepen"
       },
+      "cave_morsel": {
+        "name": "Grothapje"
+      },
+      "emberbulb": {
+        "name": "Sintelknol"
+      },
+      "first_cutting": {
+        "name": "Een Stek"
+      },
       "reliquary_plate_chest": {
         "name": "Reliekwacht-Maliënkolder"
       },
@@ -5534,6 +5543,15 @@ export const nl_NL: EnTranslations = {
       },
       "ysolei": {
         "name": "Ysolei, Avatar van de Verdronken Maan"
+      },
+      "palefeeder": {
+        "name": "Bleekvreter"
+      },
+      "rootmaw": {
+        "name": "Wortelbek"
+      },
+      "the_witness_root": {
+        "name": "De Getuigenwortel"
       }
     },
     "npcs": {
@@ -5646,6 +5664,11 @@ export const nl_NL: EnTranslations = {
         "name": "Ondrel Vane",
         "title": "Tijwachter",
         "greeting": "Het meer drinkt het maanlicht, {className}, en geeft de verdronkenen terug. Ik heb dertig nachten over die poort gewaakt, en vannacht staat ze open."
+      },
+      "brother_greenpaw": {
+        "name": "Broeder Groenpoot",
+        "title": "Eerste Profeet (zelfbenoemd)",
+        "greeting": "hé, reiziger. trof je de vaas vandaag in een bepaalde bui, of ben ik het gewoon weer... kom hier, heb een paar heilige zaakjes die aandacht nodig hebben. vooral snacks. komt op hetzelfde neer, als je Groenpoot heet."
       }
     },
     "quests": {
@@ -6463,6 +6486,26 @@ export const nl_NL: EnTranslations = {
             "label": "Glimmermere-Wader gedood"
           }
         }
+      },
+      "q_what_burns": {
+        "title": "Het Ding dat Brandt",
+        "text": "de communie wordt dun, vriend... ik ben kurkdroog en de golflengte sluit zich. onder de schrijn ligt een knol die langzaam en schoon brandt, sintelknol, groeit waar het licht niet komt, wat een grap is die de grot met zichzelf uithaalt... breng me er vijf. pas op voor de bleke. ze komen op je lantaarn af, niet op jou. meestal.",
+        "completion": "DAT is nou de goede rook... voel je dat? de kamer wordt dik. ze gaat er zo weer intrappen, ik voel het op de golflengte... inderdaad.",
+        "objectives": {
+          "0": {
+            "label": "Sintelknol verzameld"
+          }
+        }
+      },
+      "q_what_fills": {
+        "title": "Het Ding dat Vult",
+        "text": "tweede zaak, en ik zou het heilig noemen, maar onder ons is het gewoon ontbijt... de wortelbekken daar beneden dragen een hapje bij zich, grotgevoed, lekker aards. vier is genoeg. breng ze terug voor de maag zijn eigen hymnes begint te zingen...",
+        "completion": "je bent een heilige van de eerste orde, vriend. of een goede buurman. komt op hetzelfde neer, als je Groenpoot heet. ...hier. wilde deze eigenlijk houden, maar de cowboy in mij zegt dat hij van jou is. laat 'm niet verwelken.",
+        "objectives": {
+          "0": {
+            "label": "Grothapje verzameld"
+          }
+        }
       }
     },
     "zones": {
@@ -6599,6 +6642,16 @@ export const nl_NL: EnTranslations = {
         "name": "De Verdronken Tempel",
         "enterText": "Je stapt door de maanpoort, de lucht wordt koud water en bleek licht, en het gezang sluit zich boven je hoofd.",
         "leaveText": "Je komt door de maanpoort boven in de bergnacht."
+      },
+      "the_hollow": {
+        "name": "De Holte",
+        "enterText": "Je stapt door de schrijnpoort. De lucht wordt warm en groen, en de vaas wacht verderop.",
+        "leaveText": "Je stapt terug door de poort naar Eastbrook."
+      },
+      "under_shrine": {
+        "name": "De Onderschrijn",
+        "enterText": "Je daalt af onder de schrijn. De lucht wordt stil en drukkend, en het duister verderop voelt niet leeg aan.",
+        "leaveText": "Je klimt terug de warmte in. Boven je, vaag, rook."
       }
     },
     "delves": {

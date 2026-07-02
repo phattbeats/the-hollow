@@ -5089,6 +5089,15 @@ export const id_ID: EnTranslations = {
       "wyrmshadow_talongrips": {
         "name": "Sarung Tangan Cakar Bayangan Wyrm"
       },
+      "cave_morsel": {
+        "name": "Camilan Gua"
+      },
+      "emberbulb": {
+        "name": "Umbi Bara"
+      },
+      "first_cutting": {
+        "name": "Sebuah Stek"
+      },
       "reliquary_plate_chest": {
         "name": "Baju Zirah Penjaga Relikuari"
       },
@@ -5534,6 +5543,15 @@ export const id_ID: EnTranslations = {
       },
       "ysolei": {
         "name": "Ysolei, Awatara Bulan Tenggelam"
+      },
+      "palefeeder": {
+        "name": "Pemakan Pucat"
+      },
+      "rootmaw": {
+        "name": "Mulut-akar"
+      },
+      "the_witness_root": {
+        "name": "Sang Akar Saksi"
       }
     },
     "npcs": {
@@ -5646,6 +5664,11 @@ export const id_ID: EnTranslations = {
         "name": "Ondrel Vane",
         "title": "Pengawas Pasang",
         "greeting": "Telaga itu meneguk cahaya bulan, {className}, dan mengembalikan mereka yang tenggelam. Sudah tiga puluh malam aku mengawasi gerbang itu, dan malam ini gerbang itu terbuka."
+      },
+      "brother_greenpaw": {
+        "name": "Bruder Cakarhijau",
+        "title": "Nabi Pertama (mengangkat diri sendiri)",
+        "greeting": "halo, pengembara. guci itu lagi bagus suasana hatinya hari ini, atau cuma perasaanku lagi... mari, ada dua tiga urusan suci yang mesti diurus. kebanyakan sih camilan. sama saja, kalau diukur dari kadar kepatuan hijau."
       }
     },
     "quests": {
@@ -6463,6 +6486,26 @@ export const id_ID: EnTranslations = {
             "label": "Glimmermere Wader dibunuh"
           }
         }
+      },
+      "q_what_burns": {
+        "title": "Yang Membara",
+        "text": "komuninya makin tipis, kawan... aku kering kerontang dan gelombangnya makin menutup. di bawah sana, di bawah kuil, ada umbi yang membara pelan dan bersih, umbi bara, tumbuh di tempat cahaya tak sampai, yang jadi semacam lelucon yang dibuat gua pada dirinya sendiri... bawakan aku lima. hati-hati sama yang pucat-pucat itu. mereka nyerang lenteramu, bukan kamu. kebanyakan sih begitu.",
+        "completion": "nah, ITU baru asap yang enak... kau rasakan itu? ruangannya makin pekat. dia bakal segera merunduk, aku bisa merasakannya di gelombang itu... memang benar.",
+        "objectives": {
+          "0": {
+            "label": "Umbi Bara terkumpul"
+          }
+        }
+      },
+      "q_what_fills": {
+        "title": "Yang Mengenyangkan",
+        "text": "urusan kedua, dan aku bakal bilang ini suci tapi di antara kita saja ini sarapan... para mulut-akar di bawah sana bawa camilan di badannya, diberi makan gua, rasanya bener-bener tanah. empat aja udah cukup. bawa balik sebelum perutmu mulai nyanyi himne sendiri...",
+        "completion": "kau ini orang suci kelas satu, kawan. atau tetangga baik. sama saja, kalau diukur dari kadar kepatuan hijau. ...nih. tadinya mau kusimpan yang satu ini tapi si koboi dalam diriku bilang ini punyamu. jangan sampai layu.",
+        "objectives": {
+          "0": {
+            "label": "Camilan Gua terkumpul"
+          }
+        }
       }
     },
     "zones": {
@@ -6599,6 +6642,16 @@ export const id_ID: EnTranslations = {
         "name": "Kuil Tenggelam",
         "enterText": "Kau melangkah melewati gerbang bulan, udara berubah menjadi air dingin dan cahaya pucat, dan nyanyian itu menutup di atas kepalamu.",
         "leaveText": "Kau muncul ke permukaan melewati gerbang bulan menuju malam pegunungan."
+      },
+      "the_hollow": {
+        "name": "Yang Berongga",
+        "enterText": "Kau melangkah melewati gerbang kuil. Udara berubah hangat dan hijau, dan guci itu menunggu di depan.",
+        "leaveText": "Kau melangkah keluar lagi melewati gerbang menuju Eastbrook."
+      },
+      "under_shrine": {
+        "name": "Kuil Bawah",
+        "enterText": "Kau turun ke bawah kuil. Udara menjadi sunyi dan rapat, dan kegelapan di depan terasa tidak kosong.",
+        "leaveText": "Kau memanjat kembali ke kehangatan. Di atasmu, samar-samar, asap."
       }
     },
     "delves": {

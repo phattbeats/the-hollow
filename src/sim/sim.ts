@@ -49,6 +49,7 @@ import { isSpellResisted } from './combat/spell_resist';
 // moved to social/fiesta.ts with that logic; sim.ts keeps only the type used by
 // the PlayerMeta interface + the power-up catalog the fiestaMatchInfo accessor reads.
 import { type AugmentSpecial, type AugmentTier, POWERUPS_BY_ID } from './content/augments';
+import { VASE_LANDING_POS } from './content/hollow';
 import {
   classHasSkin,
   EVENT_SKIN_TOKEN_ID,
@@ -84,6 +85,7 @@ import {
   DELVE_SLOT_COUNT,
   DUNGEON_LIST,
   DUNGEON_X_THRESHOLD,
+  DUNGEONS,
   delveAt,
   delveOrigin,
   dungeonAt,
@@ -130,6 +132,7 @@ import {
 import { canEquipItem } from './equipment_rules';
 import { fleeSpeed } from './flee_speed';
 import { formatMoney } from './format_money';
+import { Housing, type HousingSave } from './housing';
 import * as interaction from './interaction';
 import * as items from './items';
 import {
@@ -603,6 +606,10 @@ export interface PlayerMeta {
   // Stable database character id when running on the server. Offline/sim-only
   // callers fall back to entityId for systems that need a rename-proof owner key.
   characterId?: number;
+  // Stable ACCOUNT-scoped key when running on the server (the account id as a
+  // string). Housing ownership is per account; offline hosts leave it unset and
+  // housing falls back to characterId/entityId.
+  accountKey?: string;
   cls: PlayerClass;
   name: string;
   skin: number; // appearance index into the render SKINS[player_<cls>]; persisted, synced
@@ -888,6 +895,10 @@ export class Sim {
   // keeps thin delegates + the `marketListings` getter below so server/IWorld/the
   // /listings readout call sites resolve unchanged.
   market!: Market;
+  // Housing v0 (the Hollow hub homesteads): the Housing instance owns the plot
+  // ownership book. Constructed in the ctor after the SimContext (it consumes
+  // the seam); Sim keeps thin delegates below, mirroring the market pattern.
+  housing!: Housing;
   /** When true, /dev level|tp|give chat commands are accepted (local dev only). */
   readonly devCommands: boolean;
   private pendingMobRespawns: PendingMobRespawn[] = [];
@@ -903,6 +914,7 @@ export class Sim {
       playerName: cfg.playerName ?? 'Adventurer',
       devCommands: this.devCommands,
       lockoutNowMs: cfg.lockoutNowMs ?? (() => Math.floor(this.time * 1000)),
+      hollowStart: cfg.hollowStart ?? false,
     };
     this.rng = new Rng(cfg.seed);
     // S0b seam: the shared SimContext every extracted slice routes through. Built
@@ -921,6 +933,9 @@ export class Sim {
     // World Market (L2): owns its state; consumes the seam, so it is built right
     // after the SimContext. The NPC loop below sets its merchantId, then seed().
     this.market = new Market(this.ctx);
+    // Housing v0: owns the hub homestead plot book; consumes the seam. Draws no
+    // rng at construction (or ever), so the draws below are unperturbed.
+    this.housing = new Housing(this.ctx);
 
     // NPCs — nudged out of buildings and deep water if their data position is bad
     for (const npcDef of Object.values(NPCS)) {
@@ -1044,7 +1059,10 @@ export class Sim {
     }
 
     if (!cfg.noPlayer) {
-      this.addPlayer(this.cfg.playerClass, this.cfg.playerName, { autoEquip: this.cfg.autoEquip });
+      this.addPlayer(this.cfg.playerClass, this.cfg.playerName, {
+        autoEquip: this.cfg.autoEquip,
+        hollowStart: this.cfg.hollowStart,
+      });
     }
   }
 
@@ -1097,7 +1115,13 @@ export class Sim {
   addPlayer(
     cls: PlayerClass,
     name: string,
-    opts?: { autoEquip?: boolean; state?: CharacterState; characterId?: number },
+    opts?: {
+      autoEquip?: boolean;
+      state?: CharacterState;
+      characterId?: number;
+      accountKey?: string;
+      hollowStart?: boolean; // PHAA-404: join inside the Hollow hub, never the base overworld
+    },
   ): number {
     const savedState = opts?.state ? sanitizeRemovedZone1Content(opts.state).state : undefined;
     // Characters saved inside a dungeon instance rejoin at its entrance —
@@ -1134,6 +1158,7 @@ export class Sim {
     const meta: PlayerMeta = {
       entityId: player.id,
       characterId: opts?.characterId,
+      accountKey: opts?.accountKey,
       cls,
       name,
       skin: savedState?.skin ?? 0,
@@ -1282,6 +1307,33 @@ export class Sim {
     // cooldown_persist.ts). Re-anchored to this sim's clock; a fresh character has none.
     player.potionCooldownUntil = applyCooldowns(savedState?.cooldowns, player.cooldowns, this.time);
     if (savedState?.pet) this.restorePet(player, savedState.pet);
+
+    // The Hollow spawn policy (PHAA-404): under hollowStart every join lands
+    // inside the Hollow hub instance, and a character last saved inside the
+    // hub family (homeRespawn dungeons) rejoins the hub on ANY host rather
+    // than being ejected to the overworld door. New characters land at the
+    // vase itself (constitution §7, the cold open). The inherited base
+    // overworld stays intact but unreachable.
+    const rawSavedPos = savedState?.pos ?? null;
+    const savedDungeon =
+      rawSavedPos && !isDelvePos(rawSavedPos.x) && rawSavedPos.x > DUNGEON_X_THRESHOLD
+        ? dungeonAt(rawSavedPos.x)
+        : null;
+    const hub = DUNGEONS.the_hollow;
+    if (hub && ((opts?.hollowStart ?? false) || savedDungeon?.homeRespawn)) {
+      const entered = this.enterDungeon(hub.id, player.id);
+      // Anyone not already living in the hub band (a brand-new character, whose
+      // server-side initial state serializes an overworld pos, or a legacy
+      // base-world save being relocated) lands at the vase itself, not the gate.
+      // A failed enter (never expected: the hub is a shared instance) leaves
+      // the legacy spawn untouched rather than shifting off a stale position.
+      if (entered && !savedDungeon?.homeRespawn) {
+        const origin = { x: player.pos.x - hub.entry.x, z: player.pos.z - hub.entry.z };
+        player.pos = this.groundPos(origin.x + VASE_LANDING_POS.x, origin.z + VASE_LANDING_POS.z);
+        player.prevPos = { ...player.pos };
+        this.ctx.rebucket(player);
+      }
+    }
     return player.id;
   }
 
@@ -2164,6 +2216,9 @@ export class Sim {
       targetEntity: (id, pid) => sim.targetEntity(id, pid),
       partyCapacity: (party) => sim.party.partyCapacity(party),
       marketListingBelongsTo: (listing, meta) => sim.market.marketListingBelongsTo(listing, meta),
+      // Housing v0: the /house chat-command branch routes through the seam to the
+      // Housing instance (constructed after this literal; late-bound arrow).
+      housingChat: (raw, pid) => sim.housing.handleChat(raw, pid),
     };
     return createSimContext(host);
   }
@@ -5125,6 +5180,39 @@ export class Sim {
   }
 
   // -------------------------------------------------------------------------
+  // Housing v0 — the Hollow hub homesteads (thin delegates to this.housing)
+  // -------------------------------------------------------------------------
+
+  housingClaim(pid?: number): void {
+    this.housing.housingClaim(pid);
+  }
+
+  housingPlace(slot: number, kind: string, pid?: number): void {
+    this.housing.housingPlace(slot, kind, pid);
+  }
+
+  housingRemove(slot: number, pid?: number): void {
+    this.housing.housingRemove(slot, pid);
+  }
+
+  housingInfoFor(pid: number): import('../world_api/housing').HousingInfo | null {
+    return this.housing.housingInfoFor(pid);
+  }
+
+  /** Monotonic change counter the server polls to persist housing on change. */
+  get housingRev(): number {
+    return this.housing.rev;
+  }
+
+  serializeHousing(): HousingSave {
+    return this.housing.serializeHousing();
+  }
+
+  loadHousing(save: HousingSave | null | undefined): void {
+    this.housing.loadHousing(save);
+  }
+
+  // -------------------------------------------------------------------------
   // Dungeons: party-instanced elite content (the Hollow Crypt and friends)
   // -------------------------------------------------------------------------
 
@@ -5151,8 +5239,8 @@ export class Sim {
     updateDoorTriggersImpl(this.ctx, p);
   }
 
-  enterDungeon(dungeonId: string, pid?: number): void {
-    enterDungeonImpl(this.ctx, dungeonId, pid);
+  enterDungeon(dungeonId: string, pid?: number, opts?: { quiet?: boolean }): boolean {
+    return enterDungeonImpl(this.ctx, dungeonId, pid, opts);
   }
 
   leaveDungeon(pid?: number): void {
@@ -5224,6 +5312,10 @@ export class Sim {
 
   get marketInfo(): import('../world_api').MarketInfo | null {
     return this.primaryId === -1 ? null : this.marketInfoFor(this.primaryId);
+  }
+
+  get housingInfo(): import('../world_api/housing').HousingInfo | null {
+    return this.primaryId === -1 ? null : this.housingInfoFor(this.primaryId);
   }
 
   instanceSlotAt(pos: Vec3): number | null {

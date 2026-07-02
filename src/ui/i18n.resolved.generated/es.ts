@@ -5089,6 +5089,15 @@ export const es: EnTranslations = {
       "wyrmshadow_talongrips": {
         "name": "Agarraderas Garra Sombravermis"
       },
+      "cave_morsel": {
+        "name": "Bocado de Cueva"
+      },
+      "emberbulb": {
+        "name": "Bulbo Ascua"
+      },
+      "first_cutting": {
+        "name": "Un Esqueje"
+      },
       "reliquary_plate_chest": {
         "name": "Loriga de la Guardia del Relicario"
       },
@@ -5534,6 +5543,15 @@ export const es: EnTranslations = {
       },
       "ysolei": {
         "name": "Ysolei, Avatar de la Luna Ahogada"
+      },
+      "palefeeder": {
+        "name": "Devorador Pálido"
+      },
+      "rootmaw": {
+        "name": "Fauce de Raíz"
+      },
+      "the_witness_root": {
+        "name": "La Raíz Testigo"
       }
     },
     "npcs": {
@@ -5646,6 +5664,11 @@ export const es: EnTranslations = {
         "name": "Ondrel Vane",
         "title": "Vigía de la Marea",
         "greeting": "El lago bebe la luz de la luna, {className}, y devuelve a los ahogados. He vigilado esa puerta durante treinta noches... y esta noche está abierta."
+      },
+      "brother_greenpaw": {
+        "name": "Hermano Pataverde",
+        "title": "Primer Profeta (autoproclamado)",
+        "greeting": "qué tal, viajero. ¿el jarrón está de mal humor hoy, o soy yo otra vez... ven acá, tengo un par de asuntos sagrados que atender. mayormente bocadillos. viene a ser lo mismo, en grado pataverde."
       }
     },
     "quests": {
@@ -6463,6 +6486,26 @@ export const es: EnTranslations = {
             "label": "Vadeador de Glimmermere abatido"
           }
         }
+      },
+      "q_what_burns": {
+        "title": "Lo Que Arde",
+        "text": "la comunión se ha ido adelgazando, amigo... estoy seco hasta el hueso y la frecuencia se está cerrando. abajo, bajo el santuario, hay un bulbo que arde lento y limpio: bulbo ascua, crece donde no llega la luz, que es una broma que la cueva se hace a sí misma... tráeme cinco. cuidado con los pálidos. van a por tu farol, no por ti. casi siempre.",
+        "completion": "eso SÍ que es buen humo... ¿sientes eso? el aire se está espesando. ella va a asomarse en cualquier momento, lo siento en la frecuencia... en efecto.",
+        "objectives": {
+          "0": {
+            "label": "Bulbo Ascua recolectado"
+          }
+        }
+      },
+      "q_what_fills": {
+        "title": "Lo Que Sacia",
+        "text": "segundo asunto, y lo llamaría sagrado pero entre tú y yo es el desayuno... las fauces de raíz de ahí abajo llevan un bocado encima, criado en cueva, bien terroso. con cuatro basta. tráelos antes de que el estómago empiece a cantar sus propios himnos...",
+        "completion": "eres un santo de primer orden, amigo. o un buen vecino. viene a ser lo mismo, en grado pataverde. ...toma. iba a quedarme con este, pero el vaquero de adentro dice que es tuyo. no dejes que se marchite.",
+        "objectives": {
+          "0": {
+            "label": "Bocado de Cueva recolectado"
+          }
+        }
       }
     },
     "zones": {
@@ -6599,6 +6642,16 @@ export const es: EnTranslations = {
         "name": "El Templo Ahogado",
         "enterText": "Atraviesas la puerta lunar: el aire se vuelve agua fría y luz pálida, y el canto se cierra sobre tu cabeza.",
         "leaveText": "Emerges a través de la puerta lunar a la noche de la montaña."
+      },
+      "the_hollow": {
+        "name": "El Hueco",
+        "enterText": "Atraviesas la puerta del santuario. El aire se vuelve cálido y verde, y el jarrón espera más adelante.",
+        "leaveText": "Vuelves a salir por la puerta hacia Eastbrook."
+      },
+      "under_shrine": {
+        "name": "El Santuario Subterráneo",
+        "enterText": "Desciendes bajo el santuario. El aire se vuelve quieto y cerrado, y la oscuridad de más adelante no se siente vacía.",
+        "leaveText": "Subes de vuelta al calor. Sobre ti, tenue, humo."
       }
     },
     "delves": {

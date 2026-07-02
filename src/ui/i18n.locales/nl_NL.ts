@@ -806,6 +806,14 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'entities.dungeons.sunken_bastion.enterText': 'Je waadt naar beneden het Verzonken Bastion in...',
   'entities.dungeons.sunken_bastion.leaveText': 'Je klimt uit de verdrinkende duisternis.',
   'entities.dungeons.sunken_bastion.name': 'Het Verzonken Bastion',
+  'entities.dungeons.the_hollow.enterText':
+    'Je stapt door de schrijnpoort. De lucht wordt warm en groen, en de vaas wacht verderop.',
+  'entities.dungeons.the_hollow.leaveText': 'Je stapt terug door de poort naar Eastbrook.',
+  'entities.dungeons.the_hollow.name': 'De Holte',
+  'entities.dungeons.under_shrine.enterText':
+    'Je daalt af onder de schrijn. De lucht wordt stil en drukkend, en het duister verderop voelt niet leeg aan.',
+  'entities.dungeons.under_shrine.leaveText': 'Je klimt terug de warmte in. Boven je, vaag, rook.',
+  'entities.dungeons.under_shrine.name': 'De Onderschrijn',
   'entities.items.acolytes_circlet.name': 'Diadeem van de Acoliet',
   'entities.items.alien_armor_plate.name': 'Uitheemse Pantserplaat',
   'entities.items.amber_crimson_armor_plate.name': 'Amber Karmozijn',
@@ -839,6 +847,7 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'entities.items.captains_crest.name': 'Crypte-Sluitsteen Boven',
   'entities.items.caravan_quilted_vest.name': 'Gewatteerd Karavaanvest',
   'entities.items.caravan_warden_dirk.name': 'Dolk van de Karavaanwachter',
+  'entities.items.cave_morsel.name': 'Grothapje',
   'entities.items.chipped_tusk.name': 'Gehavende Slagtand',
   'entities.items.conjured_bread.name': 'Opgeroepen Brood',
   'entities.items.conjured_bread2.name': 'Opgeroepen Roggebrood',
@@ -896,6 +905,7 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'entities.items.eelscale_treads.name': 'Palingschub-Schreden',
   'entities.items.eelskin_tunic.name': 'Palinghuid-Tuniek',
   'entities.items.elixir_of_the_bear.name': 'Elixir van de Beer',
+  'entities.items.emberbulb.name': 'Sintelknol',
   'entities.items.emberfang_warblade.name': 'Sinteltand-Strijdkling',
   'entities.items.emberwing_cinderscale.name': 'Sintelvleugel-Asschub',
   'entities.items.emberwing_legguards.name': 'Sintelvleugel-Beenplaten',
@@ -909,6 +919,7 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'entities.items.fenmist_robe.name': 'Veennevel-Gewaad',
   'entities.items.fenreed_staff.name': 'Veenriet-Staf',
   'entities.items.fenwalker_boots.name': 'Veenloper-Laarzen',
+  'entities.items.first_cutting.name': 'Een Stek',
   'entities.items.footpad_jerkin.name': 'Struikrovers-Wambuis',
   'entities.items.forest_pink_armor_plate.name': 'Bosroze',
   'entities.items.frayed_prayer_beads.name': 'Gerafelde Bidkralen',
@@ -1205,6 +1216,7 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.old_cragmaw.name': 'Oude Cragmaw',
   'entities.mobs.old_greyjaw.name': 'Oude Grijskaak',
   'entities.mobs.pale_choir_acolyte.name': 'Bleke Koor-Acoliet',
+  'entities.mobs.palefeeder.name': 'Bleekvreter',
   'entities.mobs.pearlguard_sentinel.name': 'Parelwacht-Schildwacht',
   'entities.mobs.raised_bonewalker.name': 'Verrezen Botloper',
   'entities.mobs.reliquary_bonewalker.name': 'Verrezen Botloper',
@@ -1214,6 +1226,7 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_saintless_effigy.name': 'Heiligloze Beeltenis',
   'entities.mobs.restless_bones.name': 'Rusteloze Beenderen',
   'entities.mobs.ridge_stalker.name': 'Bergkam-Sluiper',
+  'entities.mobs.rootmaw.name': 'Wortelbek',
   'entities.mobs.sanctum_boneguard.name': 'Heiligdom-Botwacht',
   'entities.mobs.sanctum_drakonid.name': 'Heiligdom-Drakoniet',
   'entities.mobs.sethrael_palecoil.name': 'Sethrael de Bleekkronkel',
@@ -1223,6 +1236,7 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.sloomtooth_the_drowned.name': 'Sloomtooth de Verdronkene',
   'entities.mobs.stormcrag_elemental.name': 'Stormrots-Elementaal',
   'entities.mobs.succubus.name': 'Succubus',
+  'entities.mobs.the_witness_root.name': 'De Getuigenwortel',
   'entities.mobs.thornpeak_ogre.name': 'Doorntop-Oger',
   'entities.mobs.tidebound_acolyte.name': 'Getijgebonden Acoliet',
   'entities.mobs.tunnel_rat.name': 'Tunnelrat-Graver',
@@ -1267,6 +1281,10 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
     'Van een kapelhof in het Dal tot het dak van de wereld... het spoor dat we hebben gevolgd eindigt hier. Ik voel de berg luisteren.',
   'entities.npcs.brother_aldric_raid.name': 'Broeder Aldric',
   'entities.npcs.brother_aldric_raid.title': 'Priester van het Dal',
+  'entities.npcs.brother_greenpaw.greeting':
+    'hé, reiziger. trof je de vaas vandaag in een bepaalde bui, of ben ik het gewoon weer... kom hier, heb een paar heilige zaakjes die aandacht nodig hebben. vooral snacks. komt op hetzelfde neer, als je Groenpoot heet.',
+  'entities.npcs.brother_greenpaw.name': 'Broeder Groenpoot',
+  'entities.npcs.brother_greenpaw.title': 'Eerste Profeet (zelfbenoemd)',
   'entities.npcs.brother_halven.greeting': 'Het reliekschrijn beneden is opnieuw verschoven.',
   'entities.npcs.brother_halven.name': 'Broeder Halven',
   'entities.npcs.brother_halven.title': 'Reliekbewaarder',
@@ -1781,6 +1799,18 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_voice_below.text':
     'Vannacht knielde het hele cultuskamp ineens, {playerName}, elke dweper, elke necromancer, allen gericht naar het Heiligdom. Korzul spreekt nu tot hen in hun slaap; Vael hoorde dezelfde stem in het veen, en Morthen voor hem. Vel de gemeente, tien dwepers, zes necromancers, voordat die stem genoeg handen heeft om de poort zelf open te trekken.',
   'entities.quests.q_voice_below.title': 'De Stem Beneden',
+  'entities.quests.q_what_burns.completion':
+    'DAT is nou de goede rook... voel je dat? de kamer wordt dik. ze gaat er zo weer intrappen, ik voel het op de golflengte... inderdaad.',
+  'entities.quests.q_what_burns.objectives.0.label': 'Sintelknol verzameld',
+  'entities.quests.q_what_burns.text':
+    'de communie wordt dun, vriend... ik ben kurkdroog en de golflengte sluit zich. onder de schrijn ligt een knol die langzaam en schoon brandt, sintelknol, groeit waar het licht niet komt, wat een grap is die de grot met zichzelf uithaalt... breng me er vijf. pas op voor de bleke. ze komen op je lantaarn af, niet op jou. meestal.',
+  'entities.quests.q_what_burns.title': 'Het Ding dat Brandt',
+  'entities.quests.q_what_fills.completion':
+    "je bent een heilige van de eerste orde, vriend. of een goede buurman. komt op hetzelfde neer, als je Groenpoot heet. ...hier. wilde deze eigenlijk houden, maar de cowboy in mij zegt dat hij van jou is. laat 'm niet verwelken.",
+  'entities.quests.q_what_fills.objectives.0.label': 'Grothapje verzameld',
+  'entities.quests.q_what_fills.text':
+    'tweede zaak, en ik zou het heilig noemen, maar onder ons is het gewoon ontbijt... de wortelbekken daar beneden dragen een hapje bij zich, grotgevoed, lekker aards. vier is genoeg. breng ze terug voor de maag zijn eigen hymnes begint te zingen...',
+  'entities.quests.q_what_fills.title': 'Het Ding dat Vult',
   'entities.quests.q_whispers.completion':
     'Dit zegel... het draagt het merk van de Grafroepers, een sekte waarvan ik bad dat ze was uitgestorven. Dit is erger dan ik vreesde, {playerName}.',
   'entities.quests.q_whispers.objectives.0.label': 'Zegel van de Grafroeper',

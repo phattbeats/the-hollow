@@ -2941,6 +2941,15 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.dungeons.drowned_temple.enterText':
     'Ты проходишь сквозь лунные врата — воздух обращается в холодную воду и бледный свет, и пение смыкается над твоей головой.',
   'entities.dungeons.drowned_temple.leaveText': 'Ты всплываешь сквозь лунные врата в горную ночь.',
+  'entities.dungeons.the_hollow.name': 'Пустошь',
+  'entities.dungeons.the_hollow.enterText':
+    'Ты проходишь сквозь врата святилища. Воздух становится теплым и зеленым, а впереди ждет ваза.',
+  'entities.dungeons.the_hollow.leaveText': 'Ты выходишь обратно через врата в Истврук.',
+  'entities.dungeons.under_shrine.name': 'Подсвятилище',
+  'entities.dungeons.under_shrine.enterText':
+    'Ты спускаешься под святилище. Воздух становится неподвижным и тесным, и тьма впереди не кажется пустой.',
+  'entities.dungeons.under_shrine.leaveText':
+    'Ты выбираешься обратно в тепло. Над тобой, едва заметно, дым.',
   'worldContent.corpseName': '{name} (труп)',
   'worldContent.dungeonExitName': 'Выход из {name}',
   'worldContent.delveLockedChestInteract': 'Нажмите F, чтобы вскрыть замок',
@@ -3029,6 +3038,18 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_nythraxis_scourges_end.completion':
     'Теперь корона наконец молчит. Торнпик все еще будет хранить своих мертвых, но ни один король под горой больше не призовет их на войну. Вы завершили то, что Олдрен, Малрик и Восс смогли лишь сдержать.',
   'entities.quests.q_nythraxis_scourges_end.objectives.0.label': 'Нитраксис побежден',
+  'entities.quests.q_what_burns.title': 'То, что горит',
+  'entities.quests.q_what_burns.text':
+    'причастие-то у нас исхудало, дружок... я сухой как пыль, и волна вот-вот закроется. там, под святилищем, растет луковица, что горит медленно и чисто, тлеющая луковица, растет там, куда свет не добирается, вот вам и шутка, которую пещера сама над собой откалывает... принеси мне пять штук. бледных остерегайся. они на твой фонарь идут, не на тебя самого. в основном.',
+  'entities.quests.q_what_burns.completion':
+    'вот ЭТО я понимаю, добрый дымок... чуешь? комната прям гуще становится. она вот-вот наклонится ближе, чую это на волне... точно вам говорю.',
+  'entities.quests.q_what_burns.objectives.0.label': 'Собрано тлеющих луковиц',
+  'entities.quests.q_what_fills.title': 'То, что насыщает',
+  'entities.quests.q_what_fills.text':
+    'второе дело, и назвал бы я его святым, да меж нами говоря, это завтрак... корнепасти там носят на себе закуску, пещерную, землистую такую на вкус. четырех хватит. неси их сюда, покуда живот не завел свои собственные гимны...',
+  'entities.quests.q_what_fills.completion':
+    'ты святой первого разряда, дружок. или добрый сосед. оно и то же самое, по-зеленолаповски говоря. ...на вот. хотел было себе оставить, да ковбойская душа моя говорит: твое это. не дай завянуть.',
+  'entities.quests.q_what_fills.objectives.0.label': 'Собрано пещерных закусок',
   'hud.errors.silenced': 'Вы лишены дара речи!',
   'hud.pet.noPetFood': 'У вас нет пищи, чтобы покормить питомца.',
   'hud.pet.petEatsFoodOnly': 'Ваш питомец ест только пищу.',
@@ -4547,6 +4568,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.items.reliquary_gloves_rog.name': 'Рукавицы Костяного стража',
   'entities.items.deacon_reliquary_helm.name': 'Шлем реликвария дьякона',
   'entities.items.varric_shadow_cowl.name': 'Теневой капюшон Варрика',
+  'entities.items.cave_morsel.name': 'Пещерная закуска',
+  'entities.items.emberbulb.name': 'Тлеющая луковица',
+  'entities.items.first_cutting.name': 'Черенок',
   'entities.mobs.acolyte_tessa.name': 'Послушница Тесса',
   'entities.mobs.deacon_varric.name': 'Дьякон Варрик',
   'entities.mobs.reliquary_bonewalker.name': 'Поднятый костеход',
@@ -4554,9 +4578,16 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_gravecall_acolyte.name': 'Аколит могильного зова',
   'entities.mobs.reliquary_ledger_wraith.name': 'Книжный призрак',
   'entities.mobs.reliquary_saintless_effigy.name': 'Изваяние без святого',
+  'entities.mobs.palefeeder.name': 'Бледнопитающийся',
+  'entities.mobs.rootmaw.name': 'Корнепасть',
+  'entities.mobs.the_witness_root.name': 'Корень-Свидетель',
   'entities.npcs.brother_halven.greeting': 'Реликварий внизу снова сдвинулся.',
   'entities.npcs.brother_halven.name': 'Брат Хальвен',
   'entities.npcs.brother_halven.title': 'Хранитель Реликвария',
+  'entities.npcs.brother_greenpaw.name': 'Брат Зеленолап',
+  'entities.npcs.brother_greenpaw.title': 'Первый Пророк (самопровозглашенный)',
+  'entities.npcs.brother_greenpaw.greeting':
+    'здорово, путник. застал вазу нынче в настроении, или это опять я так думаю... подь сюда, есть парочка святых дел, требующих заботы. в основном перекусить. оно и то же самое, по-зеленолаповски говоря.',
   'entities.delves.collapsed_reliquary.enterText': 'Вы спускаетесь в обрушившийся реликварий.',
   'entities.delves.collapsed_reliquary.leaveText':
     'Вы поднимаетесь обратно к Брату Хальвену у руин реликвария.',

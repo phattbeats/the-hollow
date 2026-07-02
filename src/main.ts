@@ -2409,6 +2409,7 @@ async function startOffline(playerClass: PlayerClass, name: string, skin = 0): P
     playerClass,
     playerName: name,
     devCommands: import.meta.env.DEV,
+    hollowStart: true,
   });
   sim.setPlayerSkin(sim.playerId, skin);
   // Dev convenience: ?mech drops an offline session straight into the Combat Mech
@@ -4075,7 +4076,7 @@ function updateSeoMetadata(lang: SupportedLanguage): void {
             '@id': 'https://worldofclaudecraft.com/#organization',
             name: 'The Hollow',
             url: 'https://worldofclaudecraft.com/',
-            logo: 'https://worldofclaudecraft.com/woc_logo_square.webp',
+            logo: 'https://worldofclaudecraft.com/the-hollow-square.webp',
             sameAs,
           },
           {
@@ -4088,7 +4089,7 @@ function updateSeoMetadata(lang: SupportedLanguage): void {
             applicationCategory: t('seo.applicationCategory'),
             operatingSystem: t('seo.operatingSystem'),
             url: canonicalHref,
-            image: 'https://worldofclaudecraft.com/woc_logo_square.webp',
+            image: 'https://worldofclaudecraft.com/the-hollow-square.webp',
             description: t('seo.description'),
             inLanguage: languageTag(lang),
             publisher: { '@id': 'https://worldofclaudecraft.com/#organization' },
@@ -4219,10 +4220,12 @@ async function changeLanguage(
 }
 
 async function loadProjectStats(): Promise<void> {
-  // Realm status now lives in the realm dropdown — both in the trigger sub-line
-  // and inside the Online option — so update every instance by class.
-  const accountEls = document.querySelectorAll<HTMLElement>('.js-stat-accounts');
-  if (!accountEls.length) return;
+  // Realm status now lives in the realm dropdown, both in the trigger sub-line
+  // and inside the Online option, so update every instance by class. The stat
+  // shown is the LIVE online count, not lifetime accounts: next to the green
+  // "Online" dot a total-accounts number reads as players currently on.
+  const onlineEls = document.querySelectorAll<HTMLElement>('.js-stat-online');
+  if (!onlineEls.length) return;
   const setAll = (els: NodeListOf<HTMLElement>, text: string): void => {
     els.forEach((el) => {
       el.textContent = text;
@@ -4247,7 +4250,7 @@ async function loadProjectStats(): Promise<void> {
 
   // If cache exists and is fresh (within TTL), use it and skip API request
   if (cached && Date.now() - cached.timestamp < STATS_CACHE_TTL_MS) {
-    setAll(accountEls, String(cached.accounts_created));
+    setAll(onlineEls, String(cached.players_online));
     return;
   }
 
@@ -4255,7 +4258,7 @@ async function loadProjectStats(): Promise<void> {
   try {
     const data = await api.projectStats();
 
-    setAll(accountEls, String(data.accounts_created));
+    setAll(onlineEls, String(data.players_online));
 
     // Save to cache with timestamp
     if (typeof localStorage !== 'undefined') {
@@ -4271,9 +4274,9 @@ async function loadProjectStats(): Promise<void> {
     console.error('Failed to fetch project stats:', err);
     // If API fails, fall back to cached data (even if expired)
     if (cached) {
-      setAll(accountEls, String(cached.accounts_created));
+      setAll(onlineEls, String(cached.players_online));
     } else {
-      setAll(accountEls, '–');
+      setAll(onlineEls, '–');
     }
   }
 }

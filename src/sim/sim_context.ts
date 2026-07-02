@@ -173,7 +173,7 @@ export interface SimContextCallbacks {
   lockoutNowMs(): number;
   instanceKeyFor(pid: number): string;
   instanceOriginOf(inst: InstanceSlot): { x: number; z: number };
-  enterDungeon(dungeonId: string, pid?: number): void;
+  enterDungeon(dungeonId: string, pid?: number, opts?: { quiet?: boolean }): boolean;
   leaveDungeon(pid?: number): void;
 
   // C1 damage/death hub + the casting/leash/arena/duel/fiesta/loot teardown it
@@ -550,6 +550,11 @@ export interface SimContextCallbacks {
   targetEntity(id: number | null, pid?: number): void;
   partyCapacity(party: Party | null): number;
   marketListingBelongsTo(listing: MarketListing, meta: PlayerMeta): boolean;
+
+  // Housing v0: the /house chat-command branch (src/sim/social/chat.ts) routes
+  // through the seam to the Housing instance on Sim. Returns true when the raw
+  // message was a /house command (handled). Append-only, late-bound to Sim.
+  housingChat(raw: string, pid: number): boolean;
 }
 
 // The seam consumed by extracted modules.
@@ -879,5 +884,7 @@ export function createSimContext(host: SimContextHost): SimContext {
     targetEntity: host.targetEntity,
     partyCapacity: host.partyCapacity,
     marketListingBelongsTo: host.marketListingBelongsTo,
+    // Housing v0: the /house chat-command branch.
+    housingChat: host.housingChat,
   };
 }

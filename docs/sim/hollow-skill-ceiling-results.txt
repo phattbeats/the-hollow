@@ -9,7 +9,7 @@ METHOD: hold the build fixed, vary ONLY the pilot. Primary read is a MIRROR
 match (identical build both sides) so every point of WR away from 50% is
 pilot skill. Pilot tiers: random / greedy / tuned(b).
 
-(b) tuned pilot available: False  -> tuned(b) tier == greedy fallback
+(b) tuned pilot available: True
 seeds/tier: {'random': 400, 'greedy': 400, 'tuned(b)': 400}
 (lookahead tier excluded - see script docstring)
 
@@ -18,40 +18,42 @@ MIRROR CEILING  [identical build both sides; tested pilot varies, opp = greedy]
 ========================================================================
   Every point away from 50% is PILOT skill: the build is identical on both sides.
   archetype              random     greedy   tuned(b)   ceiling
-  burst_mage              65.9%      50.7%      50.7%    -15.1%  <- pilot-limited (greedy<random; needs (b))
-  control_mage            44.1%      52.8%      52.8%      8.6%
-  attrition_warrior       28.7%      50.5%      50.5%     21.8%
-  burst_warrior           62.5%      50.4%      50.4%    -12.1%  <- pilot-limited (greedy<random; needs (b))
-  combo_rogue              2.9%      51.4%      51.4%     48.5%
-  hybrid_rogue_mage        3.0%      50.0%      50.0%     47.0%
+  burst_mage              65.9%      50.7%      50.7%    -15.1%  <- pilot-limited (greedy<random; scripted pilots under-defend)
+  control_mage            44.1%      52.8%      39.6%      8.6%
+  attrition_warrior       28.7%      50.5%      49.6%     21.8%
+  burst_warrior           62.5%      50.4%      50.4%    -12.1%  <- pilot-limited (greedy<random; scripted pilots under-defend)
+  combo_rogue              1.5%      49.0%      62.9%     61.4%
+  hybrid_rogue_mage        1.9%      50.2%      36.1%     48.4%
 
   ceiling spread = WR(best available pilot) - WR(random), identical builds
-  mean ceiling (measurable 4/6): 31.5%   min 8.6%   max 48.5%
-  2 archetype(s) pilot-limited (greedy < random): ceiling not measurable without the (b) pilot
+  mean ceiling (measurable 4/6): 35.0%   min 8.6%   max 61.4%
+  2 archetype(s) pilot-limited (greedy < random): ceiling not measurable with the current scripted pilots (greedy and (b) both lose to random: a defensive-AI / balance gap, not a pilot gap)
 
 ========================================================================
 CROSS CEILING  [tested build vs a fixed strong opponent (burst_mage, greedy)]
 ========================================================================
   Asymmetric matchup; absolute WR reflects the matchup, spread reflects the ceiling.
   archetype              random     greedy   tuned(b)   ceiling
-  burst_mage              62.4%      49.6%      49.6%    -12.8%  <- pilot-limited (greedy<random; needs (b))
+  burst_mage              62.4%      49.6%      49.6%    -12.8%  <- pilot-limited (greedy<random; scripted pilots under-defend)
   control_mage            31.0%      52.0%      52.0%     21.0%
   attrition_warrior       46.0%      48.0%      48.0%      2.0%
   burst_warrior           49.8%      49.8%      49.8%      0.0%
-  combo_rogue             27.8%      49.8%      49.8%     22.0%
-  hybrid_rogue_mage       19.1%      50.0%      50.0%     30.9%
+  combo_rogue             38.5%      48.0%      48.2%      9.7%
+  hybrid_rogue_mage       42.8%      56.8%      56.8%     14.0%
 
   ceiling spread = WR(best available pilot) - WR(random), identical builds
-  mean ceiling (measurable 5/6): 15.2%   min 0.0%   max 30.9%
-  1 archetype(s) pilot-limited (greedy < random): ceiling not measurable without the (b) pilot
+  mean ceiling (measurable 5/6): 9.3%   min 0.0%   max 21.0%
+  1 archetype(s) pilot-limited (greedy < random): ceiling not measurable with the current scripted pilots (greedy and (b) both lose to random: a defensive-AI / balance gap, not a pilot gap)
 
 HARNESS INTEGRITY (must pass)
-  determinism: PASS (hash 3831bab019675c94...)
+  determinism: PASS (hash bde63a451c4b0210...)
   mirror-symmetry: PASS (all identical-build mirrors ~50%)
 
 PILOT DIAGNOSTIC (a game/pilot finding, not a harness bug)
-    - [burst_mage] greedy 50.7% < random 65.9%: the greedy pilot is WORSE than random on this build, so its ceiling is UNMEASURABLE until the (b) pilot exists (this IS the (b) rationale).
-    - [burst_warrior] greedy 50.4% < random 62.5%: the greedy pilot is WORSE than random on this build, so its ceiling is UNMEASURABLE until the (b) pilot exists (this IS the (b) rationale).
+    - [burst_mage] greedy 50.7% < random 65.9%: the greedy pilot is WORSE than random on this build - its ceiling is UNMEASURABLE with the current scripted pilots: the (b) pilot ALSO loses to random here (tuned(b) 50.7%), so this is a defensive-AI / balance gap (a lever for arm (c)), not something the (b) pilot alone fixes.
+    - [control_mage] tuned(b) 39.6% < greedy 52.8%: the (b) policy under-performs greedy here - investigate (b).
+    - [burst_warrior] greedy 50.4% < random 62.5%: the greedy pilot is WORSE than random on this build - its ceiling is UNMEASURABLE with the current scripted pilots: the (b) pilot ALSO loses to random here (tuned(b) 50.4%), so this is a defensive-AI / balance gap (a lever for arm (c)), not something the (b) pilot alone fixes.
+    - [hybrid_rogue_mage] tuned(b) 36.1% < greedy 50.2%: the (b) policy under-performs greedy here - investigate (b).
   mechanism (instrumented): on the burst builds the greedy pilot spams
   pyroblast (the 5s nuke) and NEVER casts frost_armor / ice_barrier, so a
   random pilot that stumbles into those defensive skills out-lasts it. The
@@ -61,31 +63,38 @@ PILOT DIAGNOSTIC (a game/pilot finding, not a harness bug)
 ========================================================================
 VERDICT vs sec.8 gate  ('a skill ceiling exists' vs 'outcome is build-locked')
 ========================================================================
-  mean pilot-driven WR swing (measurable archetypes): 31.5%  (max 48.5%, threshold 10%)
-  archetypes with a material (10%) ceiling: 3/6   pilot-limited (needs (b)): 2/6
-  highest-ceiling archetype: combo_rogue (48.5% swing)
+  (b) tuned pilot (PHAA-389): AVAILABLE via sim.make_pilot - this is the
+      GATE-GRADE read, not the lower-bound directional run. (Model-directional
+      caveats on the sim itself still apply, see foot.)
+  mean pilot-driven WR swing (measurable archetypes): 35.0%  (max 61.4%, threshold 10%)
+  archetypes with a material (10%) ceiling: 3/6   pilot-limited under greedy: 2/6
+  highest-ceiling archetype: combo_rogue (61.4% swing)
 
-  >>> A SKILL CEILING EXISTS (directional). On identical builds, how well the
-      encounter is piloted swings the outcome by a large margin for the
-      skill-expressive archetypes (rogue combo/hybrid ~47-49pts, warrior
-      attrition ~22pts): the graft is NOT build-locked, play is rewarded. The
-      gate's step-2 question leans YES.
+  >>> A SKILL CEILING EXISTS. On identical builds, how well the encounter is
+      piloted swings the outcome by a large margin (combo_rogue 61pts, hybrid_rogue_mage 48pts, attrition_warrior 22pts); on the
+      most skill-expressive builds a RANDOM pilot wins under 2% of mirrors while
+      a competent one is at ~50-63%. The graft is NOT build-locked: play is
+      rewarded. The gate's step-2 question is YES.
 
-  Caveat, and it cuts TOWARD the bet: 2 burst archetype(s) are
-      PILOT-LIMITED - the greedy pilot loses to RANDOM on them because it
-      spams the big nuke and never casts the build's defensive utility
-      (frost_armor / ice_barrier). Their ceiling can't be read with greedy,
-      but that greedy loses to random at all is itself proof that pilot
-      quality dominates outcome for these builds.
+  (b) tuned pilot LIFTED over plain greedy on the identical build:
+      + combo_rogue: +13.9pts  (per-build piloting pays off here)
+  (b) tuned pilot REGRESSED below plain greedy - a (b) QUALITY FINDING, not a
+      harness bug: the per-build policy mis-pilots these builds. Flag to PHAA-389:
+      - hybrid_rogue_mage: -14.1pts
+      - control_mage: -13.1pts
+      So (b) is a strong combo/melee pilot but a NET-NEGATIVE one for the
+      mage-control and hybrid builds; the ceiling above uses best-available
+      pilot per build, so these regressions do not inflate it.
 
-  *** DIRECTIONAL, NOT FINAL: the (b) tuned pilot (PHAA-389) is NOT yet
-      available, so the tuned(b) tier fell back to greedy. Every ceiling here
-      is therefore a LOWER BOUND (random -> greedy); a genuinely strong pilot
-      can only widen the measurable spreads and make the pilot-limited builds
-      measurable. Per the sec.8 ticket, the honest gate-grade read is the
-      re-run of this harness once (b) lands. This run ships the machinery and
-      the lower-bound signal.
+  Caveat, and it cuts TOWARD the bet: 2 burst archetype(s) are PILOT-LIMITED
+      - EVEN with (b), the scripted pilots lose to RANDOM on them because none
+      casts the build's defensive utility (frost_armor / ice_barrier); the (b)
+      burst policy pools burst but adds no defense. Their ceiling can't be read
+      upward with the current pilots, but that a scripted pilot loses to random
+      at all is itself proof pilot quality dominates outcome here. Consistent
+      with (b)'s own finding that burst dominance is a BALANCE problem, not a
+      piloting artifact - a lever for arm (c)'s nerf pass, out of scope here.
 
   Harness integrity: deterministic per seed; all identical-build mirrors ~50%.
-  (Directional only: mapped GW1 economy, representative kits, ~EST values, and
-   greedy standing in as the strongest pilot until the (b) policy lands.)
+  (Model-directional: mapped GW1 economy, representative kits, ~EST values. The
+   pilot axis is now the real (b) policy, no longer greedy standing in for it.)

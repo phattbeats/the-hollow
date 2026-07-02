@@ -5089,6 +5089,15 @@ export const da_DK: EnTranslations = {
       "wyrmshadow_talongrips": {
         "name": "Ormeskygge-Klogreb"
       },
+      "cave_morsel": {
+        "name": "Grottebid"
+      },
+      "emberbulb": {
+        "name": "Glødeknold"
+      },
+      "first_cutting": {
+        "name": "En Stikling"
+      },
       "reliquary_plate_chest": {
         "name": "Relikvievogterens Brynje"
       },
@@ -5534,6 +5543,15 @@ export const da_DK: EnTranslations = {
       },
       "ysolei": {
         "name": "Ysolei, den Druknede Månes Avatar"
+      },
+      "palefeeder": {
+        "name": "Blegæder"
+      },
+      "rootmaw": {
+        "name": "Rodgab"
+      },
+      "the_witness_root": {
+        "name": "Vidnerod"
       }
     },
     "npcs": {
@@ -5646,6 +5664,11 @@ export const da_DK: EnTranslations = {
         "name": "Ondrel Vane",
         "title": "Tidevogter",
         "greeting": "Søen drikker måneskinnet, {className}, og giver de druknede tilbage. Jeg har vogtet den port i tredive nætter - og i nat står den åben."
+      },
+      "brother_greenpaw": {
+        "name": "Broder Grønpote",
+        "title": "Første Profet (selvudnævnt)",
+        "greeting": "hej, rejsende. fangede du vasen i humør i dag, eller er det bare mig igen... kom her, har et par hellige sager der trænger til pleje. mest snacks. samme ting, når man er Grønpote."
       }
     },
     "quests": {
@@ -6463,6 +6486,26 @@ export const da_DK: EnTranslations = {
             "label": "Glimmermere-Vader dræbt"
           }
         }
+      },
+      "q_what_burns": {
+        "title": "Tingen der Brænder",
+        "text": "fællesskabet er ved at blive tyndt, ven... jeg er knastør, og bølgelængden lukker sig. nede under skrinet er der en knold, der brænder langsomt og rent, glødeknold, gror hvor lyset ikke når, hvilket er en joke, grotten spiller på sig selv... bring mig fem. pas på de blege. de kommer efter din lanterne, ikke efter dig. mest.",
+        "completion": "DET er den gode røg... kan du mærke det? rummet bliver tykt. hun læner sig ind hvert øjeblik nu, jeg kan mærke det på bølgelængden... nemlig.",
+        "objectives": {
+          "0": {
+            "label": "Glødeknold indsamlet"
+          }
+        }
+      },
+      "q_what_fills": {
+        "title": "Tingen der Fylder",
+        "text": "anden sag, og jeg vil kalde den hellig, men mellem os er det morgenmad... rodgabene dernede bærer et bid på sig, grottefodret, ægte jordagtigt. fire slår til. bring dem tilbage, før maven begynder at synge sine egne salmer...",
+        "completion": "du er en helgen af første rang, ven. eller en god nabo. samme ting, når man er Grønpote. ...her. skulle egentlig beholde den her, men cowboyen i mig siger, den er din. lad den ikke visne.",
+        "objectives": {
+          "0": {
+            "label": "Grottebid indsamlet"
+          }
+        }
       }
     },
     "zones": {
@@ -6599,6 +6642,16 @@ export const da_DK: EnTranslations = {
         "name": "Det Druknede Tempel",
         "enterText": "Du træder gennem måneporten, luften bliver til koldt vand og blegt lys, og sangen lukker sig over dit hoved.",
         "leaveText": "Du dukker op gennem måneporten ud i bjergnatten."
+      },
+      "the_hollow": {
+        "name": "Den Hule",
+        "enterText": "Du træder gennem skrinets port. Luften bliver varm og grøn, og vasen venter forude.",
+        "leaveText": "Du træder tilbage gennem porten ud i Eastbrook."
+      },
+      "under_shrine": {
+        "name": "Underhelligdommen",
+        "enterText": "Du stiger ned under skrinet. Luften bliver stille og tæt, og mørket forude føles ikke tomt.",
+        "leaveText": "Du klatrer tilbage op i varmen. Over dig, svagt, røg."
       }
     },
     "delves": {

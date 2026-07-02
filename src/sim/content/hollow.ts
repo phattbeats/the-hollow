@@ -1,4 +1,4 @@
-// THE HOLLOW — the home zone. The shrine of the Plant, the vase at its heart,
+// THE HOLLOW: the home zone. The shrine of the Plant, the vase at its heart,
 // and the under-shrine cave beneath it.
 //
 // Built on the temple.ts pattern (a self-contained zone module, merged into
@@ -9,7 +9,7 @@
 //
 // VOICE RULE (§5, non-negotiable): Greenpaw's lines are all-lowercase,
 // run-on, trailing "...", cowboy-fatalist, sincere. The Plant does not speak
-// in this file — quest text is where the world's voice lives; the god is
+// in this file; quest text is where the world's voice lives; the god is
 // rationed and arrives in Phase 2 as the LLM layer.
 
 import type {
@@ -29,9 +29,21 @@ import type {
 // Coordinates are hub-local; the zone is its own instanced space.
 export const HOLLOW_GATE_POS = { x: 0, z: -40 };
 
-// The vase. Not an NPC in the slice — it is the center of gravity as an
+// The overworld side of the portal: a shrine gate cut into the hillside at
+// the edge of Eastbrook, south of the graveyard, clear of the town's
+// buildings. This is the base-world doorPos a player interacts with to step
+// into the Hollow hub, exactly as MOONGATE_POS is the overworld doorPos for
+// the Drowned Temple (temple.ts).
+export const HOLLOW_HUB_DOOR_POS = { x: -6, z: -22 };
+
+// The vase. Not an NPC in the slice; it is the center of gravity as an
 // object; the live god (Phase 2) attaches here.
 export const VASE_POS = { x: 0, z: 0 };
+
+// Where new characters land and where the dead return (constitution §7:
+// "create a character, land at the vase"; dying is "a teleport back to the
+// vase, never items"). A step south of the vase itself, facing it.
+export const VASE_LANDING_POS = { x: 0, z: -6 };
 
 // Every class gets the same cutting; the record shape is the engine's
 // per-class reward archetype, used here degenerately on purpose.
@@ -51,11 +63,11 @@ const CUTTING_FOR_ALL = Object.fromEntries(ALL_CLASSES.map((c) => [c, 'first_cut
 >;
 
 // ---------------------------------------------------------------------------
-// Mobs — the under-shrine cave (the only combat in the slice)
+// Mobs: the under-shrine cave (the only combat in the slice)
 // ---------------------------------------------------------------------------
 
 export const HOLLOW_MOBS: Record<string, MobTemplate> = {
-  // The light-hating enemy: the buried memory's reach (§4). Tuned soft —
+  // The light-hating enemy: the buried memory's reach (§4). Tuned soft,
   // a level 1-3 first descent.
   palefeeder: {
     id: 'palefeeder',
@@ -130,7 +142,12 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
     id: 'brother_greenpaw',
     name: 'Brother Greenpaw',
     title: 'First Prophet (self-appointed)',
-    pos: { x: 3, z: 4 }, // at the foot of the vase, where he always is
+    // Hub-local, at the foot of the vase, where he always is. He lives INSIDE
+    // the portal-instanced hub: `dynamic` keeps the overworld spawn loop from
+    // placing him at world (3, 4); the_hollow's `npcs` entry below spawns him
+    // per instance slot.
+    pos: { x: 3, z: 4 },
+    dynamic: true,
     facing: -0.6,
     color: 0x4a5d3a,
     questIds: ['q_what_burns', 'q_what_fills'],
@@ -140,7 +157,7 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
 };
 
 // ---------------------------------------------------------------------------
-// Quests — the first run (§11): the thing that burns and the thing that fills
+// Quests: the first run (§11): the thing that burns and the thing that fills
 // ---------------------------------------------------------------------------
 
 export const HOLLOW_QUESTS: Record<string, QuestDef> = {
@@ -149,7 +166,7 @@ export const HOLLOW_QUESTS: Record<string, QuestDef> = {
     name: 'The Thing That Burns',
     giverNpcId: 'brother_greenpaw',
     turnInNpcId: 'brother_greenpaw',
-    text: "the communion's gone thin, friend... i'm bone dry and the wavelength is closin'. down under the shrine there's a bulb that burns slow and clean — emberbulb, grows where the light don't reach, which is a joke the cave plays on itself... bring me five. mind the pale ones. they come at your lantern, not at you. mostly.",
+    text: "the communion's gone thin, friend... i'm bone dry and the wavelength is closin'. down under the shrine there's a bulb that burns slow and clean - emberbulb, grows where the light don't reach, which is a joke the cave plays on itself... bring me five. mind the pale ones. they come at your lantern, not at you. mostly.",
     completionText:
       "now THAT'S the good smoke... you feel that? room's gettin' thick. she's gonna lean in any minute now, i can feel it on the wavelength... indeed.",
     objectives: [{ type: 'collect', itemId: 'emberbulb', count: 5, label: 'Emberbulb gathered' }],
@@ -189,7 +206,7 @@ export const HOLLOW_OBJECTS: GroundObjectDef[] = [];
 
 export const HOLLOW_PROPS: ZonePropsDef = {
   // Phase 1 art pass fills this: shrine clearing, warm root-and-soil palette.
-  // The cold firepit by the vase is the furnace's future footprint (§4) —
+  // The cold firepit by the vase is the furnace's future footprint (§4),
   // present from day one so its later lighting reads as the world changing.
   buildings: [],
   wells: [],
@@ -204,6 +221,49 @@ export const HOLLOW_PROPS: ZonePropsDef = {
   fences: [],
   graveyards: [],
 };
+
+// ---------------------------------------------------------------------------
+// Housing v0: fixed homestead plots in the moon-sanctum quarter of the hub
+// ---------------------------------------------------------------------------
+// Coordinates are hub-local (the hub is portal-instanced; the sim maps them to
+// world space through the instance origin, exactly like the_hollow's npcs and
+// objects above). The quarter sits behind the chamber-waist arch (z 66) of the
+// 'temple' interior, clear of the vase (0,0), Greenpaw (3,4), the campfire
+// (-4,2), the cave mouth (0,28), the gate (0,-40), the sanctum pillars
+// (|x|=14 at z 80/95/110), and the dais (0,116, r 10.5). Two lanes of four
+// plots face each other across the sanctum aisle.
+
+export interface HousePlotDef {
+  id: string;
+  x: number; // hub-local plot centre
+  z: number;
+  rot: number; // yaw of the house front (radians); lanes face the aisle
+}
+
+export const HOLLOW_HOUSE_PLOTS: HousePlotDef[] = [
+  { id: 'plot_w1', x: -9, z: 74, rot: Math.PI / 2 },
+  { id: 'plot_w2', x: -9, z: 84, rot: Math.PI / 2 },
+  { id: 'plot_w3', x: -9, z: 94, rot: Math.PI / 2 },
+  { id: 'plot_w4', x: -9, z: 104, rot: Math.PI / 2 },
+  { id: 'plot_e1', x: 9, z: 74, rot: -Math.PI / 2 },
+  { id: 'plot_e2', x: 9, z: 84, rot: -Math.PI / 2 },
+  { id: 'plot_e3', x: 9, z: 94, rot: -Math.PI / 2 },
+  { id: 'plot_e4', x: 9, z: 104, rot: -Math.PI / 2 },
+];
+
+// The placeable-decor catalog: the object kinds a plot owner may set on the
+// plot's anchor slots. Ids only; the client renders each kind procedurally.
+export const HOLLOW_HOUSE_OBJECT_KINDS = ['planter', 'lantern', 'crate', 'bench', 'stool'] as const;
+export type HouseObjectKind = (typeof HOLLOW_HOUSE_OBJECT_KINDS)[number];
+
+// Fixed anchor slots, as offsets from the plot centre BEFORE the plot's rot is
+// applied (the front yard is +z in plot space). Same four slots on every plot.
+export const HOLLOW_HOUSE_SLOT_OFFSETS: { dx: number; dz: number }[] = [
+  { dx: -3.0, dz: 3.2 },
+  { dx: -1.1, dz: 3.8 },
+  { dx: 1.1, dz: 3.8 },
+  { dx: 3.0, dz: 3.2 },
+];
 
 // ---------------------------------------------------------------------------
 // Items
@@ -250,17 +310,72 @@ const UNDER_SHRINE_SPAWNS: DungeonSpawn[] = [
   { mobId: 'the_witness_root', x: 0, z: 70 },
 ];
 
+// The Hollow hub itself. Per the constitution's Decision 19 (docs/plan-the-hollow.md
+// §12), the hub is portal-instanced using the base engine's own dungeon-instance
+// pattern, entered through HOLLOW_HUB_DOOR_POS in the overworld, exactly the way
+// the Drowned Temple's overworld doorPos (temple.ts MOONGATE_POS) opens onto its
+// instance. No spawns of its own here: the shrine clearing is unguarded floor
+// (§3); combat lives in the under_shrine cave below it.
 export const HOLLOW_DUNGEON_DEFS: Record<string, DungeonDef> = {
+  the_hollow: {
+    id: 'the_hollow',
+    name: 'The Hollow',
+    // 0-5 are taken by the base dungeons (nythraxis_boss_arena holds 5) and 3
+    // by the Drowned Temple; 6 is the first free x-band now the arena and
+    // delve bands sit east of it (see data.ts ARENA_X / DELVE_X_MIN).
+    index: 6,
+    doorPos: { ...HOLLOW_HUB_DOOR_POS },
+    entry: { ...HOLLOW_GATE_POS },
+    exitOffset: { x: 0, z: -46 }, // legacy exit point behind the gate; sealed, no portal spawns
+    // PHAA-404: the Hollow is the game. The gate does not open from the
+    // inside, so the inherited base overworld (Eastbrook and the zones beyond)
+    // is unreachable while its code stays intact and dormant. Deaths in the
+    // hub return to the vase, never to a base-world graveyard.
+    sealedExit: true,
+    // One hub for the whole population: the social space where everyone sees
+    // everyone at the vase, and the reason a 24-slot per-party pool can never
+    // exhaust under full-population hollowStart joins.
+    sharedInstance: true,
+    homeRespawn: { dungeonId: 'the_hollow', ...VASE_LANDING_POS },
+    spawns: [],
+    objects: [
+      // The cave mouth, downhill of the vase: an internal door into the
+      // Under-Shrine, exactly the way the Abandoned Crypt's sealed royal
+      // door links to nythraxis_boss_arena (dungeons.ts).
+      {
+        itemId: '',
+        name: 'Cave Mouth',
+        x: 0,
+        z: 28,
+        templateId: 'dungeon_door',
+        dungeonId: 'under_shrine',
+      },
+    ],
+    // Greenpaw lives at the foot of the vase, inside the instance.
+    npcs: [{ npcId: 'brother_greenpaw', x: 3, z: 4 }],
+    interior: 'temple',
+    suggestedPlayers: 1,
+    enterText:
+      'You step through the shrine gate. The air turns warm and green, and the vase waits ahead.',
+    leaveText: 'You step back out through the gate into Eastbrook.',
+  },
   under_shrine: {
     id: 'under_shrine',
     name: 'The Under-Shrine',
-    index: 5, // next free instance x-band (0-4 taken by base dungeons)
-    doorPos: { x: 0, z: 28 }, // the cave mouth, downhill of the vase
+    index: 7, // the x-band after the_hollow (6)
+    // doorPos is vestigial (overworldDoor false, exitTo below): the cave is
+    // reached only through the_hollow's internal Cave Mouth door, and leaving
+    // emerges back into the hub instance beside that cave mouth, never the
+    // overworld (PHAA-404). Dying below sends the spirit back to the vase.
+    doorPos: { ...HOLLOW_HUB_DOOR_POS },
+    overworldDoor: false, // reached only through the_hollow's internal door
+    exitTo: { dungeonId: 'the_hollow', x: 0, z: 24 },
+    homeRespawn: { dungeonId: 'the_hollow', ...VASE_LANDING_POS },
     entry: { x: 0, z: 4 },
     exitOffset: { x: 0, z: -6 },
     spawns: UNDER_SHRINE_SPAWNS,
     // Deliberate: the 'crypt' interior builder is the Hollow Crypt's own
-    // skeleton — sealed doors, keystones, buried-and-walled grammar — reused
+    // skeleton (sealed doors, keystones, the buried-and-walled grammar) reused
     // per the constitution (§4, the Hollow Crypt reuse) and rethemed root-cold
     interior: 'crypt',
     suggestedPlayers: 5,

@@ -5089,6 +5089,15 @@ export const pl_PL: EnTranslations = {
       "wyrmshadow_talongrips": {
         "name": "Szponiaste chwyty cienia żmija"
       },
+      "cave_morsel": {
+        "name": "Jaskiniowy kęs"
+      },
+      "emberbulb": {
+        "name": "Żarobulwa"
+      },
+      "first_cutting": {
+        "name": "Sadzonka"
+      },
       "reliquary_plate_chest": {
         "name": "Kolczuga strażnika relikwiarza"
       },
@@ -5534,6 +5543,15 @@ export const pl_PL: EnTranslations = {
       },
       "ysolei": {
         "name": "Ysolei, Awatar Utopionego Księżyca"
+      },
+      "palefeeder": {
+        "name": "Bladożerca"
+      },
+      "rootmaw": {
+        "name": "Korzeniopaszcza"
+      },
+      "the_witness_root": {
+        "name": "Korzeń Świadek"
       }
     },
     "npcs": {
@@ -5646,6 +5664,11 @@ export const pl_PL: EnTranslations = {
         "name": "Ondrel Vane",
         "title": "Strażnik Przypływów",
         "greeting": "Staw pije księżycowe światło, {className}, i oddaje utopionych. Pilnowałem tej bramy przez trzydzieści nocy — a dziś jest otwarta."
+      },
+      "brother_greenpaw": {
+        "name": "Brat Zielonołap",
+        "title": "Pierwszy Prorok (z własnego namaszczenia)",
+        "greeting": "hej, wędrowcze. złapałeś dziś wazę w nastroju, czy to tylko ja znowu se coś ubzdurałem... chodź no bliżej, mam parę świętych spraw do załatwienia. głównie żarcie. na miarę zielonołapa to jedno i to samo."
       }
     },
     "quests": {
@@ -6463,6 +6486,26 @@ export const pl_PL: EnTranslations = {
             "label": "Brodziciel z Migotliwego Jeziora pokonany"
           }
         }
+      },
+      "q_what_burns": {
+        "title": "To, co płonie",
+        "text": "więź się przerzedziła, przyjacielu... jestem suchy jak pieprz, a fala się zamyka. tam pod kapliczką rośnie bulwa, co pali się wolno i czysto: żarobulwa, rośnie tam, gdzie światło nie sięga, taki żarcik, co jaskinia robi sama sobie... przynieś mi pięć. uważaj na te blade. lecą na twoją latarnię, nie na ciebie. no, przeważnie.",
+        "completion": "a to dopiero dobry dym... czujesz to? robi się gęsto w powietrzu. ona zaraz się nachyli, czuję to na fali... o tak.",
+        "objectives": {
+          "0": {
+            "label": "Zebrana żarobulwa"
+          }
+        }
+      },
+      "q_what_fills": {
+        "title": "To, co syci",
+        "text": "druga sprawa, nazwałbym ją świętą, ale między nami mówiąc, to po prostu śniadanie... te korzeniopaszcze tam na dole noszą przy sobie kęs, jaskiniowy, taki porządnie ziemisty. cztery starczą. przynieś je, zanim brzuch zacznie sam sobie śpiewać hymny...",
+        "completion": "jesteś świętym pierwszej klasy, przyjacielu. albo dobrym sąsiadem. na miarę zielonołapa to jedno i to samo. ...masz. chciałem to sobie zatrzymać, ale wewnętrzny kowboj mówi, że to twoje. nie daj temu zwiędnąć.",
+        "objectives": {
+          "0": {
+            "label": "Zebrany jaskiniowy kęs"
+          }
+        }
       }
     },
     "zones": {
@@ -6599,6 +6642,16 @@ export const pl_PL: EnTranslations = {
         "name": "Zatopiona Świątynia",
         "enterText": "Przechodzisz przez księżycową bramę - powietrze zmienia się w zimną wodę i blade światło, a śpiew zamyka się nad twoją głową.",
         "leaveText": "Wynurzasz się przez księżycową bramę w górską noc."
+      },
+      "the_hollow": {
+        "name": "Wydrążenie",
+        "enterText": "Przechodzisz przez bramę kapliczki. Powietrze robi się ciepłe i zielone, a przed tobą czeka waza.",
+        "leaveText": "Wracasz przez bramę do Eastbrook."
+      },
+      "under_shrine": {
+        "name": "Podziemia Kapliczki",
+        "enterText": "Schodzisz pod kapliczkę. Powietrze cichnie i gęstnieje, a mrok przed tobą wcale nie wydaje się pusty.",
+        "leaveText": "Wspinasz się z powrotem w ciepło. Gdzieś wysoko, ledwie wyczuwalnie, unosi się dym."
       }
     },
     "delves": {

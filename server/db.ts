@@ -1,4 +1,5 @@
 import { Pool } from 'pg';
+import type { HousingSave } from '../src/sim/housing';
 import { LEADERBOARD_MAX } from '../src/sim/leaderboard_page';
 import { sanitizeRemovedZone1Content } from '../src/sim/removed_zone1_content';
 import type { CharacterState, MarketSave } from '../src/sim/sim';
@@ -1984,6 +1985,16 @@ export async function loadMarketState(): Promise<MarketSave | null> {
 
 export async function saveMarketState(save: MarketSave): Promise<void> {
   await saveWorldState('market', save);
+}
+
+// Housing v0 (the Hollow hub homesteads): shared global state like the market,
+// one JSONB blob under the 'housing' key. Additive: no new tables or columns.
+export async function loadHousingState(): Promise<HousingSave | null> {
+  return loadWorldState<HousingSave>('housing');
+}
+
+export async function saveHousingState(save: HousingSave): Promise<void> {
+  await saveWorldState('housing', save);
 }
 
 // ---------------------------------------------------------------------------

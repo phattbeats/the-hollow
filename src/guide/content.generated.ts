@@ -1269,6 +1269,14 @@ export const GUIDE_ZONES: GuideZoneInfo[] = [
 
 export const GUIDE_DUNGEONS: GuideDungeon[] = [
   {
+    "id": "under_shrine",
+    "isRaid": false,
+    "suggestedPlayers": 5,
+    "min": 1,
+    "max": 4,
+    "name": "The Under-Shrine"
+  },
+  {
     "id": "hollow_crypt",
     "isRaid": false,
     "suggestedPlayers": 5,

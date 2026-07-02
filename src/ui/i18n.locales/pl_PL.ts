@@ -797,6 +797,15 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'entities.dungeons.sunken_bastion.enterText': 'Brodzisz w dół, do Zatopionego Bastionu...',
   'entities.dungeons.sunken_bastion.leaveText': 'Wydostajesz się z topielnej ciemności.',
   'entities.dungeons.sunken_bastion.name': 'Zatopiony Bastion',
+  'entities.dungeons.the_hollow.enterText':
+    'Przechodzisz przez bramę kapliczki. Powietrze robi się ciepłe i zielone, a przed tobą czeka waza.',
+  'entities.dungeons.the_hollow.leaveText': 'Wracasz przez bramę do Eastbrook.',
+  'entities.dungeons.the_hollow.name': 'Wydrążenie',
+  'entities.dungeons.under_shrine.enterText':
+    'Schodzisz pod kapliczkę. Powietrze cichnie i gęstnieje, a mrok przed tobą wcale nie wydaje się pusty.',
+  'entities.dungeons.under_shrine.leaveText':
+    'Wspinasz się z powrotem w ciepło. Gdzieś wysoko, ledwie wyczuwalnie, unosi się dym.',
+  'entities.dungeons.under_shrine.name': 'Podziemia Kapliczki',
   'entities.items.acolytes_circlet.name': 'Diadem akolity',
   'entities.items.alien_armor_plate.name': 'Obca płyta pancerna',
   'entities.items.amber_crimson_armor_plate.name': 'Bursztynowy karmazyn',
@@ -830,6 +839,7 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'entities.items.captains_crest.name': 'Górny klucz sklepienia krypty',
   'entities.items.caravan_quilted_vest.name': 'Pikowana kamizela karawany',
   'entities.items.caravan_warden_dirk.name': 'Sztylet strażnika karawany',
+  'entities.items.cave_morsel.name': 'Jaskiniowy kęs',
   'entities.items.chipped_tusk.name': 'Wyszczerbiony kieł',
   'entities.items.conjured_bread.name': 'Przywołany chleb',
   'entities.items.conjured_bread2.name': 'Przywołany razowiec',
@@ -887,6 +897,7 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'entities.items.eelscale_treads.name': 'Obuwie z węgorzej łuski',
   'entities.items.eelskin_tunic.name': 'Tunika z węgorzej skóry',
   'entities.items.elixir_of_the_bear.name': 'Eliksir niedźwiedzia',
+  'entities.items.emberbulb.name': 'Żarobulwa',
   'entities.items.emberfang_warblade.name': 'Bojowe ostrze żarokła',
   'entities.items.emberwing_cinderscale.name': 'Żużlowa łuska Żaroskrzydłego',
   'entities.items.emberwing_legguards.name': 'Nagolenniki Żaroskrzydłego',
@@ -900,6 +911,7 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'entities.items.fenmist_robe.name': 'Szata bagiennej mgły',
   'entities.items.fenreed_staff.name': 'Kostur bagiennej trzciny',
   'entities.items.fenwalker_boots.name': 'Buty bagiennego wędrowca',
+  'entities.items.first_cutting.name': 'Sadzonka',
   'entities.items.footpad_jerkin.name': 'Kaftan rzezimieszka',
   'entities.items.forest_pink_armor_plate.name': 'Leśny róż',
   'entities.items.frayed_prayer_beads.name': 'Wystrzępione paciorki modlitewne',
@@ -1196,6 +1208,7 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.old_cragmaw.name': 'Stary Skalogryz',
   'entities.mobs.old_greyjaw.name': 'Stary Szaropaszczy',
   'entities.mobs.pale_choir_acolyte.name': 'Akolita Bladego Chóru',
+  'entities.mobs.palefeeder.name': 'Bladożerca',
   'entities.mobs.pearlguard_sentinel.name': 'Perłostrażny Wartownik',
   'entities.mobs.raised_bonewalker.name': 'Wskrzeszony Kościochód',
   'entities.mobs.reliquary_bonewalker.name': 'Wskrzeszony Kościochód',
@@ -1205,6 +1218,7 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_saintless_effigy.name': 'Bezświęta Kukła',
   'entities.mobs.restless_bones.name': 'Niespokojne Kości',
   'entities.mobs.ridge_stalker.name': 'Grzbietowy Tropiciel',
+  'entities.mobs.rootmaw.name': 'Korzeniopaszcza',
   'entities.mobs.sanctum_boneguard.name': 'Kościostrażnik Sanktuarium',
   'entities.mobs.sanctum_drakonid.name': 'Drakonid Sanktuarium',
   'entities.mobs.sethrael_palecoil.name': 'Sethrael Bladozwój',
@@ -1214,6 +1228,7 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.sloomtooth_the_drowned.name': 'Mulząb Utopiony',
   'entities.mobs.stormcrag_elemental.name': 'Żywiołak Burzowej Turni',
   'entities.mobs.succubus.name': 'Sukkub',
+  'entities.mobs.the_witness_root.name': 'Korzeń Świadek',
   'entities.mobs.thornpeak_ogre.name': 'Ogr z Ciernistego Szczytu',
   'entities.mobs.tidebound_acolyte.name': 'Akolita Spętany Przypływem',
   'entities.mobs.tunnel_rat.name': 'Tunelowy Szczur Kopacz',
@@ -1258,6 +1273,10 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
     'Od dziedzińca kaplicy w Dolinie aż po dach świata... ślad, którym podążaliśmy, kończy się tutaj. Czuję, że góra nasłuchuje.',
   'entities.npcs.brother_aldric_raid.name': 'Brat Aldric',
   'entities.npcs.brother_aldric_raid.title': 'Kapłan Doliny',
+  'entities.npcs.brother_greenpaw.greeting':
+    'hej, wędrowcze. złapałeś dziś wazę w nastroju, czy to tylko ja znowu se coś ubzdurałem... chodź no bliżej, mam parę świętych spraw do załatwienia. głównie żarcie. na miarę zielonołapa to jedno i to samo.',
+  'entities.npcs.brother_greenpaw.name': 'Brat Zielonołap',
+  'entities.npcs.brother_greenpaw.title': 'Pierwszy Prorok (z własnego namaszczenia)',
   'entities.npcs.brother_halven.greeting': 'Relikwiarz poniżej znów się przesunął.',
   'entities.npcs.brother_halven.name': 'Brat Halven',
   'entities.npcs.brother_halven.title': 'Strażnik Relikwiarza',
@@ -1764,6 +1783,18 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_voice_below.text':
     'Zeszłej nocy cały obóz kultu uklęknął naraz, {playerName}, każdy fanatyk, każdy nekromanta, wszyscy zwróceni ku Sanktuarium. Korzul przemawia teraz do nich we śnie; Vael słyszał ten sam głos na trzęsawisku, a Morthen przed nim. Wytnij to zgromadzenie, dziesięciu fanatyków, sześciu nekromantów, zanim ten głos zyska dość rąk, by samemu rozewrzeć bramę.',
   'entities.quests.q_voice_below.title': 'Głos z głębi',
+  'entities.quests.q_what_burns.completion':
+    'a to dopiero dobry dym... czujesz to? robi się gęsto w powietrzu. ona zaraz się nachyli, czuję to na fali... o tak.',
+  'entities.quests.q_what_burns.objectives.0.label': 'Zebrana żarobulwa',
+  'entities.quests.q_what_burns.text':
+    'więź się przerzedziła, przyjacielu... jestem suchy jak pieprz, a fala się zamyka. tam pod kapliczką rośnie bulwa, co pali się wolno i czysto: żarobulwa, rośnie tam, gdzie światło nie sięga, taki żarcik, co jaskinia robi sama sobie... przynieś mi pięć. uważaj na te blade. lecą na twoją latarnię, nie na ciebie. no, przeważnie.',
+  'entities.quests.q_what_burns.title': 'To, co płonie',
+  'entities.quests.q_what_fills.completion':
+    'jesteś świętym pierwszej klasy, przyjacielu. albo dobrym sąsiadem. na miarę zielonołapa to jedno i to samo. ...masz. chciałem to sobie zatrzymać, ale wewnętrzny kowboj mówi, że to twoje. nie daj temu zwiędnąć.',
+  'entities.quests.q_what_fills.objectives.0.label': 'Zebrany jaskiniowy kęs',
+  'entities.quests.q_what_fills.text':
+    'druga sprawa, nazwałbym ją świętą, ale między nami mówiąc, to po prostu śniadanie... te korzeniopaszcze tam na dole noszą przy sobie kęs, jaskiniowy, taki porządnie ziemisty. cztery starczą. przynieś je, zanim brzuch zacznie sam sobie śpiewać hymny...',
+  'entities.quests.q_what_fills.title': 'To, co syci',
   'entities.quests.q_whispers.completion':
     'Ten sygil... nosi znak Grobowych Przyzywaczy, sekty, o której modliłem się, że wymarła. To gorzej, niż się obawiałem, {playerName}.',
   'entities.quests.q_whispers.objectives.0.label': 'Sygil Grobowego Przyzywacza',

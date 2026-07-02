@@ -1394,6 +1394,7 @@ async function main(): Promise<void> {
       `pruned ${prunedPerfReports} client perf report row(s) older than ${PERF_REPORT_RETENTION_DAYS} days`,
     );
   await game.loadMarket();
+  await game.loadHousing();
   await game.loadChatFilter();
   await game.loadBlockedIps();
   void game.recordOnlineSnapshot();
@@ -1642,6 +1643,7 @@ async function main(): Promise<void> {
     game.stop();
     await game.saveAll('shutdown');
     await game.saveMarket();
+    await game.saveHousing();
     await game.endAllPlaySessions();
     await game.chatLog.stop();
     await pool.end();

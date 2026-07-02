@@ -73,6 +73,17 @@ which makes Vitest report `import.meta.env.PROD = true` and flips the i18n
 runtime into release semantics, failing five i18n / OG tests that are green
 under a normal test environment.
 
+## 2026-07-02: realm picker stat corrected to live online count (PR #9)
+
+Upstream's landing-page realm picker shows lifetime accounts created labeled
+just "Players" beneath the green Online dot, which reads as a live player
+count (reported by the Board with 2 accounts and 0 players online). The
+picker now binds to `players_online` from the same `/api/project-stats`
+payload and uses the existing `stats.playersOnline` label. Files:
+`index.html`, `play.html`, `src/main.ts` (`loadProjectStats`). Redeployed to
+PHATT-RAID (image `eastbrook-game:phase0` rebuilt, container recreated with
+`PUBLIC_ORIGIN=https://thehollow.phatt.vip`, previously theplant.phatt.vip).
+
 ### 2026-07-02: Branding pass, donate / upstream Discord and GitHub chrome stripped
 
 - **Stripped upstream donate chrome:** removed the three donate anchors in
@@ -116,16 +127,27 @@ under a normal test environment.
   `nav.*`), and `src/ui/i18n.catalog/guide.ts` (`brand`, `brandShort`,
   `rights`, wiki prose). These are real player-visible ClaudeCraft strings
   the task did not name; flag for a follow-up branding pass.
-- **Icons and the OG share image are still the old branding**
-  (`/worldofclaudecraft-logo.png`, `/icon-192.png`, `/apple-touch-icon.png`,
-  `woc_logo_square.webp`) pending Brandon's logo pick, tracked as PHAA-395.
+- **Logo art landed (Brandon's pick on PHAA-395: weathered old-print wordmark,
+  dark-portal mark):** the favicon set, `icon-192.png`, `icon-512.png`,
+  `apple-touch-icon.png`, and `favicon.ico` are replaced in place with the
+  portal mark; the title / loading / server-unavailable wordmark is the new
+  `public/the-hollow-logo.png`; the OG / JSON-LD share image is
+  `public/the-hollow-square.webp` (plus a PNG copy); the guide header uses
+  `public/the-hollow-guide.webp`. References updated in `index.html`,
+  `guide.html`, `src/main.ts`, `src/guide/head.ts`, `src/guide/chrome.ts`,
+  `scripts/seo_audit.mjs`, and `tests/server_unavailable.test.ts`. The old
+  `woc*` art files are kept on disk because `play.html` (the untouched
+  upstream promo entry) still references them. Generator (SVG sources +
+  render script) lives outside the repo in the studio workspace. The
+  `worldofclaudecraft.com` origin in canonical / OG URLs is unchanged:
+  domain migration is a separate pass once The Hollow has a public domain.
 
 Verification: `tsc --noEmit` clean; `tests/client_shell.test.ts`,
 `tests/architecture.test.ts`, `tests/localization_fixes.test.ts`,
 `tests/discord_server.test.ts`, `tests/discord_deeplink.test.ts`, and
 `tests/i18n_completeness.test.ts` green with NODE_ENV unset.
 
-### 2026-07-02: License flip (constitution, section 6) — All Rights Reserved + NOTICE
+### 2026-07-02: License flip (constitution, section 6): All Rights Reserved + NOTICE
 
 Per the constitution's settled §6 licensing decision:
 
@@ -144,7 +166,7 @@ Per the constitution's settled §6 licensing decision:
   runtime dependency of `package.json` anymore, so the file now says so
   instead of carrying stale license text for code that isn't shipped.
 - **`License.txt`** (the KayKit CC0 asset-pack notice) checked and left
-  unchanged — it never referenced the wallet stack and still matches the
+  unchanged, it never referenced the wallet stack and still matches the
   bundled KayKit assets.
 - **Consistency fixes** (same license flip, not separately scoped but
   directly contradicted the new `LICENSE` if left alone): the README's
@@ -157,7 +179,7 @@ Per the constitution's settled §6 licensing decision:
 `@solana/wallet-standard-chains`, `@solana/wallet-standard-features`,
 `@wallet-standard/app`, `@wallet-standard/base`, `@wallet-standard/features`,
 `@noble/curves`, and `bs58` even though none of them appear in
-`package.json` or any source import — lockfile drift left over from the
+`package.json` or any source import, lockfile drift left over from the
 wallet strip that a plain `npm install` would clear. Not a licensing risk
 (all MIT/Apache-permissive) but worth a clean install before shipping.
 
@@ -172,8 +194,117 @@ account, and separately prohibit redistributing the art "in a manner that
 would make [the] art files usable to another end user." A different legal
 entity (PHATT STUDIOS / Brandon Kelly) shipping a commercial fork on a
 license purchased by Levy Street's account does not obviously fall inside
-that grant. This is a real risk, not a formality — the fix is either (a)
+that grant. This is a real risk, not a formality, the fix is either (a)
 PHATT STUDIOS buys its own CraftPix license for the same packs, or (b) swap
 the CraftPix skill-icon category for one of the CC0 asset sources already in
 `CREDITS.md`. Left to the Board to pick; see the linked issue for the
 verdict.
+
+## 2026-07-02: branding deployed to PHATT-RAID (PHAA-397)
+
+Rebuilt `eastbrook-game:phase0` from main at c7923808 (the branding merge) and
+recreated the `eastbrook-game` container with the same config (network
+phattvip, port 8787, media-cache bind, `PUBLIC_ORIGIN=https://thehollow.phatt.vip`,
+restart unless-stopped). Verified live at thehollow.phatt.vip: title and OG
+read "The Hollow: Classic-Style Web MMO", `/the-hollow-logo.png` wordmark
+serves (200, 91 KB), `favicon.ico` matches the repo's portal-mark hash, zero
+donate strings, no `discord.gg` invite links (the remaining Discord markup is
+the retained OAuth login flow), no buildkit orphan containers left behind.
+
+## 2026-07-02: the Hollow hub registered and the shrine gate opened (PHAA-400)
+
+Registered `src/sim/content/hollow.ts` into the flat engine tables in
+`src/sim/data.ts`, following the Drowned Temple merge exactly (Decision 19:
+portal-instanced, nothing of the inherited storyline touched). The hub
+(`the_hollow`, band 6) and the Under-Shrine (`under_shrine`, band 7) are
+dungeon instances; the overworld shrine gate at `HOLLOW_HUB_DOOR_POS`
+(-6, -22, south of the Eastbrook graveyard) is the portal in, and the hub's
+cave mouth is an internal door into the Under-Shrine (the crypt-to-boss-arena
+pattern). Opening bands 6 and 7 moved the arena east (ARENA_X 4200 to 5400)
+and the delve band with it (DELVE_X_MIN 4800 to 6000), the same relocation
+v0.10.0 performed when the arena landed.
+
+One small engine extension: `DungeonDef.npcs` (instance-resident NPCs,
+spawned on slot claim and freed with it, `dynamic` in the NPCS table so the
+overworld loop skips them). Brother Greenpaw lives at the foot of the vase
+inside the hub through it. `HOLLOW_PROPS` is deliberately NOT merged into the
+overworld `PROPS` (its coordinates are hub-local); the Phase 1 dressing pass
+renders it inside the instance.
+
+Verification: `tests/hollow.test.ts` walks the acceptance end to end in-sim
+(portal entry, Greenpaw at the vase, both first-run quests taken and
+completed, the Under-Shrine spawn set, exits home); full `npm test` green
+with NODE_ENV unset; wiki content regenerated by the pretest gate.
+
+## 2026-07-02: inherited storyline neutralized, new characters land at the vase (PHAA-404)
+
+The Hollow is now the game. Three `DungeonDef` fields (`sealedExit`,
+`exitTo`, `homeRespawn`, types.ts) plus a `hollowStart` spawn policy on
+`SimConfig`/`addPlayer` make the inherited base overworld unreachable while
+leaving every line of its code intact and dormant:
+
+- New characters land at the vase (`VASE_LANDING_POS`, a step south of it,
+  hollow.ts): `addPlayer` under `hollowStart` enters a `the_hollow` instance
+  and places anyone not already living in the hub band at the vase. Both real
+  hosts set the flag (offline `src/main.ts`, server `server/game.ts` join);
+  tests and the RL env keep the legacy base-world spawn so the dormant world
+  stays testable. The server's `initialCharacterState` throwaway sim is left
+  legacy on purpose: its serialized overworld pos is what routes a fresh
+  character into the vase-landing branch on first join.
+- The hub is sealed (`sealedExit`): no exit portal spawns inside it and
+  `leaveDungeon` no-ops, so the shrine gate does not open from the inside.
+- The Under-Shrine exits into the hub (`exitTo`): climbing out lands beside
+  the cave mouth in the same party's hub instance, never Eastbrook.
+- Death returns to the vase (`homeRespawn`, constitution section 7 "a
+  teleport back to the vase, never items"): `releasePlayerSpirit` routes
+  hub-family deaths back to the vase instead of a base-world graveyard.
+- Rejoin normalization: a character saved inside the hub bands (or at the
+  pre-fork arena/delve coordinates that now resolve to them) rejoins a live
+  hub instance at the gate instead of being ejected to the overworld door.
+
+`enterDungeon` grew a `quiet` option (suppresses enterText and the
+party-size warning) for the internal hops above. Onboarding cold open
+verified in-sim by `tests/hollow.test.ts`: create character, land at the
+vase, Greenpaw's chain taken and completed there; sealed exit, cave exitTo,
+death-to-vase, and pre-fork band rejoin all asserted.
+
+Post-review hardening (same change, architecture-reviewer findings): the hub
+is a SHARED instance (`sharedInstance`, one slot for the whole population,
+claimed under a fixed `shared:the_hollow` key) so everyone meets at the same
+vase and the 24-slot per-party pool can never exhaust under full-population
+joins; and `enterDungeon` now returns a success boolean that the three
+position-shifting callers (vase landing, exitTo, homeRespawn) check before
+computing offsets, so a failed enter can never teleport a player off a stale
+position into the dormant overworld. The Under-Shrine stays per-party.
+
+## 2026-07-02: cherry-picked upstream QoL fixes (PHAA-408)
+
+Four small, stable, non-draft upstream fixes hand-picked from
+`levy-street/world-of-claudecraft`, each its own branch and PR through the
+normal QA gate:
+
+- **Windows path-separator fix in the architecture seam test** (upstream
+  PR #1290, `18d08534`): `path.relative()` returns backslash-separated paths on
+  Windows, but `SANCTIONED_VALUE_SIM_IMPORTS` in `tests/architecture.test.ts`
+  is keyed with forward slashes, so the sanctioned `OVERHEAD_EMOTE_IDS` import
+  never matched and the seam gate failed for every Windows contributor.
+  Normalizes the relative path with `path.sep` before the lookup. No behavior
+  change on POSIX. Clean cherry-pick, no fork drift.
+- **Gamepad ignores input while the window is unfocused** (upstream PR #1318,
+  `0310e5c3`): the browser only delivers keyboard and mouse input to a focused
+  window, but kept reporting gamepad state to a visible, unfocused one.
+  `GamepadManager.poll()` (`src/game/gamepad.ts`) now gates on
+  `document.hasFocus()`, matching the existing keyboard/mouse focus rule:
+  clears held stick movement, consumes the button state without dispatching
+  (no stale edge fires on refocus), and skips camera, edge actions, and
+  rumble while unfocused.
+
+  `tests/gamepad.test.ts` did not exist in this fork (our v0.17.0 pin
+  predates upstream's later APM-meter work, which added a test-only
+  `onInputEdge` callback alongside `onAction`). Rather than pull that
+  unrelated feature and its base test suite in with this fix, only the new
+  window-focus coverage was ported, adapted to assert on the `onAction`
+  callback our `GamepadCallbacks` actually has. `src/game/gamepad.ts` was
+  also whole-file `biome check --write` formatted (pre-existing, unrelated
+  statement-per-line violations the changed-file gate now surfaces); no
+  functional lines besides the focus gate changed.

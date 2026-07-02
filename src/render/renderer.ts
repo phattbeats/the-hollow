@@ -65,6 +65,7 @@ import {
   sharedUniforms,
   urlForcedTier,
 } from './gfx';
+import { HousingView } from './housing';
 import { buildImpactSite, type ImpactSiteView } from './impact_site';
 import { ensureDelveInteriorKit } from './interior_kit';
 import { type LocoTrack, newLocoTrack, updateLocomotion } from './locomotion';
@@ -822,6 +823,9 @@ export class Renderer {
   }[] = [];
   private doomedIds: number[] = [];
   private dungeons: DungeonInteriors | null = null;
+  // Housing v0: hub homestead plots drawn from IWorld.housingInfo. Lazy like
+  // `dungeons` (nothing to draw until the player enters the hub instance).
+  private housingView: HousingView | null = null;
   private envRTs = new Map<BiomeId, THREE.WebGLRenderTarget>();
   private envBiome: BiomeId = 'vale';
   private envOutdoorIntensity = ENV_INTENSITY;
@@ -4257,6 +4261,18 @@ export class Renderer {
       this.cameraLookAt.y,
       this.cameraLookAt.z,
     );
+    // Housing v0: homestead plots inside the hub instance. housingInfo.origin
+    // is null everywhere else, so the view no-ops outside the hub; the JSON
+    // change key inside update() makes the per-frame cost negligible.
+    {
+      const housing = this.sim.housingInfo;
+      if (housing?.origin || this.housingView) {
+        this.housingView ??= new HousingView(this.scene, (hx, hz) =>
+          groundHeight(hx, hz, this.sim.cfg.seed),
+        );
+        this.housingView.update(housing);
+      }
+    }
     worldStart = markWorldPhase('props', worldStart);
     this.foliage.update(
       p.pos.x,
