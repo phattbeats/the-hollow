@@ -1,8 +1,9 @@
 import * as THREE from 'three';
 import type { GLTF } from 'three/addons/loaders/GLTFLoader.js';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
-import { PROPS, WORLD_MIN_Z } from '../sim/data';
+import { WORLD_MIN_Z, PROPS as WORLD_PROPS } from '../sim/data';
 import { hash2 } from '../sim/rng';
+import type { ZonePropsDef } from '../sim/types';
 import { terrainHeight, WATER_LEVEL } from '../sim/world';
 import { loadGltf } from './assets/loader';
 import { registerPreload } from './assets/preload';
@@ -621,7 +622,15 @@ function buildDelveEmbers(
 // `delveLabel` resolves a delve id to its localized display name for the carved
 // entrance sign. Passed in by renderer.ts (the only render-side i18n surface) so
 // props.ts itself stays string-table-free; falls back to the id if absent.
-export function buildProps(seed: number, delveLabel?: (delveId: string) => string): PropsResult {
+// `propsOverride` lets the dev-only placement tool (src/devtools/placement/)
+// build a single zone's ZonePropsDef through this exact path; the game always
+// passes nothing and renders the merged world PROPS.
+export function buildProps(
+  seed: number,
+  delveLabel?: (delveId: string) => string,
+  propsOverride?: ZonePropsDef,
+): PropsResult {
+  const PROPS = propsOverride ?? WORLD_PROPS;
   const group = new THREE.Group();
   const flames: THREE.Mesh[] = [];
   const fireLights: THREE.PointLight[] = [];
