@@ -1286,6 +1286,7 @@ export class GameServer {
       state: state ?? undefined,
       characterId,
       accountKey: String(accountId),
+      hollowStart: true, // PHAA-404: every join lands in the Hollow hub
     });
     if (isGm) {
       // GM characters: invulnerable, and always at the level cap (the row is

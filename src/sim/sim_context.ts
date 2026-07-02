@@ -173,7 +173,7 @@ export interface SimContextCallbacks {
   lockoutNowMs(): number;
   instanceKeyFor(pid: number): string;
   instanceOriginOf(inst: InstanceSlot): { x: number; z: number };
-  enterDungeon(dungeonId: string, pid?: number): void;
+  enterDungeon(dungeonId: string, pid?: number, opts?: { quiet?: boolean }): boolean;
   leaveDungeon(pid?: number): void;
 
   // C1 damage/death hub + the casting/leash/arena/duel/fiesta/loot teardown it
