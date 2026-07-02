@@ -605,6 +605,30 @@ export class Vfx {
         SPR.glowSoft,
       );
     }
+    // the billow: an occasional bloom of bigger puffs expanding outward before
+    // joining the rise, so the column breathes instead of trickling at one
+    // constant thinness (feedback: the steady column alone did not read as
+    // "the mantel's infrastructure," it read as a candle).
+    if (Math.random() < 0.04) {
+      for (let i = 0; i < 4; i++) {
+        const a = Math.random() * Math.PI * 2;
+        const r = 0.15 + Math.random() * 0.35;
+        this.spawn(
+          at.x + Math.cos(a) * r,
+          at.y + 0.2 + Math.random() * 0.3,
+          at.z + Math.sin(a) * r,
+          Math.cos(a) * 0.35,
+          0.35 + Math.random() * 0.25,
+          Math.sin(a) * 0.35,
+          0xcdbba0,
+          2.2 + Math.random() * 1.1,
+          3.6 + Math.random() * 1.8,
+          -0.08,
+          SPR.smoke,
+          (Math.random() - 0.5) * 0.6,
+        );
+      }
+    }
   }
 
   campfireEmber(at: THREE.Vector3, dt: number): void {

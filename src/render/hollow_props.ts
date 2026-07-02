@@ -10,6 +10,7 @@ import * as THREE from 'three';
 import type { GLTF } from 'three/addons/loaders/GLTFLoader.js';
 import { HOLLOW_PROPS, VASE_POS } from '../sim/content/hollow';
 import { DUNGEONS, INSTANCE_SLOT_COUNT, instanceOrigin } from '../sim/data';
+import { DUNGEON_WALL_HEIGHT } from '../sim/dungeon_layout';
 import { hash2 } from '../sim/rng';
 import { loadGltf } from './assets/loader';
 
@@ -48,6 +49,8 @@ const KIT = {
   column: '/models/props/column.glb',
   columnBroken: '/models/props/column_broken.glb',
   lantern: '/models/dungeon/lantern_standing.glb',
+  shrine: '/models/dungeon/shrine.glb',
+  shrineCandles: '/models/dungeon/shrine_candles.glb',
 } as const;
 
 function clonePiece(gltf: GLTF): THREE.Object3D {
@@ -117,20 +120,78 @@ function buildVase(): THREE.Group {
 }
 
 /**
+ * The hearth: the mantel-altar the urn stands before, the ash and the hollow
+ * at its foot, and the flue climbing behind it to the ceiling (plan section
+ * 4: "the shrine's architecture is a hearth... a flue running to the
+ * surface"). Faces the gate (-z) so arriving players see the vase framed
+ * against it. Positioned relative to the vase; the caller offsets by VASE_POS
+ * and the instance origin.
+ */
+function buildHearth(shrine: GLTF, shrineCandles: GLTF): THREE.Group {
+  const g = new THREE.Group();
+
+  // the hollow: a shallow sunken pit at the foot, darker than the ash ring
+  // around it, the negative space the plan's canon calls out by name
+  const hollow = new THREE.Mesh(
+    new THREE.CircleGeometry(1.3, 20),
+    new THREE.MeshStandardMaterial({ color: 0x141210, roughness: 1 }),
+  );
+  hollow.rotation.x = -Math.PI / 2;
+  hollow.position.y = -0.03;
+  g.add(hollow);
+
+  // the ash: the wider bed the hollow sits inside
+  const ash = new THREE.Mesh(
+    new THREE.CircleGeometry(2.7, 24),
+    new THREE.MeshStandardMaterial({ color: 0x322c26, roughness: 1 }),
+  );
+  ash.rotation.x = -Math.PI / 2;
+  ash.position.y = -0.01;
+  g.add(ash);
+
+  // the mantel-altar: the shrine kit piece, enlarged, backing the urn on the
+  // side away from the gate so it reads as a hearth surround, not a headstone
+  const altar = clonePiece(shrine);
+  altar.position.set(0, 0, 1.1);
+  altar.scale.setScalar(2.2);
+  g.add(altar);
+  const candles = clonePiece(shrineCandles);
+  candles.position.set(0, 0, 1.1);
+  candles.scale.setScalar(2.0);
+  g.add(candles);
+
+  // the flue: a tapering stone duct climbing from behind the altar to the
+  // ceiling, the channel the plan says was always there, carrying the vase's
+  // smoke to the surface.
+  const flueHeight = DUNGEON_WALL_HEIGHT - 0.4;
+  const flue = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.55, 0.95, flueHeight, 8),
+    new THREE.MeshStandardMaterial({ color: 0x4a4038, roughness: 0.95 }),
+  );
+  flue.position.set(0, flueHeight / 2, 1.9);
+  g.add(flue);
+
+  return g;
+}
+
+/**
  * Build the hub dressing group for one instance copy at origin (ox, oz).
  * Async because the kit GLBs load on demand; the caller adds the resolved
  * group to the scene (the renderer does this once per built hub interior).
  */
 export async function buildHollowProps(ox: number, oz: number): Promise<THREE.Group> {
-  const [crate, barrel, fence, bonfire, column, columnBroken, lantern] = await Promise.all([
-    loadGltf(KIT.crate),
-    loadGltf(KIT.barrel),
-    loadGltf(KIT.fence),
-    loadGltf(KIT.bonfire),
-    loadGltf(KIT.column),
-    loadGltf(KIT.columnBroken),
-    loadGltf(KIT.lantern),
-  ]);
+  const [crate, barrel, fence, bonfire, column, columnBroken, lantern, shrine, shrineCandles] =
+    await Promise.all([
+      loadGltf(KIT.crate),
+      loadGltf(KIT.barrel),
+      loadGltf(KIT.fence),
+      loadGltf(KIT.bonfire),
+      loadGltf(KIT.column),
+      loadGltf(KIT.columnBroken),
+      loadGltf(KIT.lantern),
+      loadGltf(KIT.shrine),
+      loadGltf(KIT.shrineCandles),
+    ]);
   const group = new THREE.Group();
   group.name = 'hollow-hub-props';
 
@@ -149,6 +210,12 @@ export async function buildHollowProps(ox: number, oz: number): Promise<THREE.Gr
     group.add(obj);
     return obj;
   };
+
+  // the hearth: mantel-altar, ash and hollow, and the flue, all centred on
+  // the vase (the plan's canon architecture around the god's urn)
+  const hearth = buildHearth(shrine, shrineCandles);
+  hearth.position.set(VASE_POS.x, 0, VASE_POS.z);
+  group.add(hearth);
 
   // the vase, the center of gravity of the whole room
   const vase = buildVase();
