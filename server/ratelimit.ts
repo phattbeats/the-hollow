@@ -249,7 +249,6 @@ export function resetDiscordRateLimits(): void {
   discordAccountAttempts.clear();
 }
 
-
 // Public, unauthenticated read endpoints (the public character sheet, the /c/
 // profile page) get a generous per-IP bucket on their OWN map — decoupled from
 // login/register — to deter scraping without ever spilling into the auth
