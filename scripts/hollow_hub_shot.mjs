@@ -3,10 +3,12 @@
 // and mid-tier phone viewports. Needs `npm run dev` (:5173). Writes PNGs into
 // docs/screenshots/phaa-402/ (not committed; PR comment links use the two
 // committed copies under docs/pr-assets/).
-import puppeteer from 'puppeteer-core';
+
 import fs from 'node:fs';
+import puppeteer from 'puppeteer-core';
 
 import { BROWSER_PATH as EDGE } from './browser_path.mjs';
+
 const URL = process.env.GAME_URL ?? 'http://localhost:5173';
 const OUT = 'docs/screenshots/phaa-402';
 fs.mkdirSync(OUT, { recursive: true });
@@ -104,7 +106,12 @@ const browser = await puppeteer.launch({
 // --- phone pass: overview + vase closeup, touch UI active ------------------
 {
   const page = await browser.newPage();
-  const errors = await startOffline(page, { width: 390, height: 844, isMobile: true, hasTouch: true });
+  const errors = await startOffline(page, {
+    width: 390,
+    height: 844,
+    isMobile: true,
+    hasTouch: true,
+  });
 
   await tp(page, HUB_X, HUB_Z - 20, 0);
   await page.screenshot({ path: `${OUT}/hub_overview_phone.png` });
