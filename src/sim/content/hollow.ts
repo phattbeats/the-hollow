@@ -218,6 +218,49 @@ export const HOLLOW_PROPS: ZonePropsDef = {
 };
 
 // ---------------------------------------------------------------------------
+// Housing v0: fixed homestead plots in the moon-sanctum quarter of the hub
+// ---------------------------------------------------------------------------
+// Coordinates are hub-local (the hub is portal-instanced; the sim maps them to
+// world space through the instance origin, exactly like the_hollow's npcs and
+// objects above). The quarter sits behind the chamber-waist arch (z 66) of the
+// 'temple' interior, clear of the vase (0,0), Greenpaw (3,4), the campfire
+// (-4,2), the cave mouth (0,28), the gate (0,-40), the sanctum pillars
+// (|x|=14 at z 80/95/110), and the dais (0,116, r 10.5). Two lanes of four
+// plots face each other across the sanctum aisle.
+
+export interface HousePlotDef {
+  id: string;
+  x: number; // hub-local plot centre
+  z: number;
+  rot: number; // yaw of the house front (radians); lanes face the aisle
+}
+
+export const HOLLOW_HOUSE_PLOTS: HousePlotDef[] = [
+  { id: 'plot_w1', x: -9, z: 74, rot: Math.PI / 2 },
+  { id: 'plot_w2', x: -9, z: 84, rot: Math.PI / 2 },
+  { id: 'plot_w3', x: -9, z: 94, rot: Math.PI / 2 },
+  { id: 'plot_w4', x: -9, z: 104, rot: Math.PI / 2 },
+  { id: 'plot_e1', x: 9, z: 74, rot: -Math.PI / 2 },
+  { id: 'plot_e2', x: 9, z: 84, rot: -Math.PI / 2 },
+  { id: 'plot_e3', x: 9, z: 94, rot: -Math.PI / 2 },
+  { id: 'plot_e4', x: 9, z: 104, rot: -Math.PI / 2 },
+];
+
+// The placeable-decor catalog: the object kinds a plot owner may set on the
+// plot's anchor slots. Ids only; the client renders each kind procedurally.
+export const HOLLOW_HOUSE_OBJECT_KINDS = ['planter', 'lantern', 'crate', 'bench', 'stool'] as const;
+export type HouseObjectKind = (typeof HOLLOW_HOUSE_OBJECT_KINDS)[number];
+
+// Fixed anchor slots, as offsets from the plot centre BEFORE the plot's rot is
+// applied (the front yard is +z in plot space). Same four slots on every plot.
+export const HOLLOW_HOUSE_SLOT_OFFSETS: { dx: number; dz: number }[] = [
+  { dx: -3.0, dz: 3.2 },
+  { dx: -1.1, dz: 3.8 },
+  { dx: 1.1, dz: 3.8 },
+  { dx: 3.0, dz: 3.2 },
+];
+
+// ---------------------------------------------------------------------------
 // Items
 // ---------------------------------------------------------------------------
 

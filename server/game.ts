@@ -38,6 +38,7 @@ import {
   closePlaySession,
   grantAccountMechChroma,
   insertChatLogs,
+  loadHousingState,
   loadMarketState,
   markAccountQuestComplete,
   openPlaySession,
@@ -45,6 +46,7 @@ import {
   revokeAccountMechChroma,
   saveCharacterAndMarketState,
   saveCharacterState,
+  saveHousingState,
   saveMarketState,
 } from './db';
 import { enqueueActivity } from './discord_activity';
@@ -665,6 +667,12 @@ export class GameServer {
   // older snapshot over a newer one. Snapshots are captured inside the queued
   // thunk, so commit order equals capture order equals freshness order.
   private readonly enqueueMarketWrite = createSerialWriter();
+  // Serializes writes of the single global Housing blob (same freshness-order
+  // rationale as the market writer above).
+  private readonly enqueueHousingWrite = createSerialWriter();
+  // The sim's housing change counter as of the last persisted save; polled each
+  // tick so a claim/place/remove persists promptly, not only on the autosave.
+  private lastSavedHousingRev = 0;
   private restartCountdownStartedAt: number | null = null;
   private readonly restartCountdownTimers: NodeJS.Timeout[] = [];
   private readonly startedAt = Date.now();
@@ -975,6 +983,11 @@ export class GameServer {
         void this.saveAll('autosave');
         void this.saveMarket();
       }
+      // Housing persists on change (claims are rare and the blob is tiny).
+      if (this.sim.housingRev !== this.lastSavedHousingRev) {
+        this.lastSavedHousingRev = this.sim.housingRev;
+        void this.saveHousing();
+      }
     }, 50);
     // Refresh every online player's linked-Discord flair off the 20 Hz loop:
     // a DB read per player has no place in the tick. Catches mid-session changes.
@@ -1269,7 +1282,11 @@ export class GameServer {
         return { error: 'too many characters on this account are already in the world' };
       }
     }
-    const pid = this.sim.addPlayer(cls, name, { state: state ?? undefined, characterId });
+    const pid = this.sim.addPlayer(cls, name, {
+      state: state ?? undefined,
+      characterId,
+      accountKey: String(accountId),
+    });
     if (isGm) {
       // GM characters: invulnerable, and always at the level cap (the row is
       // created without state, so the first join levels them up)
@@ -1550,6 +1567,25 @@ export class GameServer {
       await this.enqueueMarketWrite(() => saveMarketState(this.sim.serializeMarket()));
     } catch (err) {
       console.error('failed to save world market:', err);
+    }
+  }
+
+  // Housing v0 is shared global state like the market: one JSONB blob under the
+  // world_state 'housing' key, loaded at boot and saved on change.
+  async loadHousing(): Promise<void> {
+    try {
+      this.sim.loadHousing(await loadHousingState());
+      this.lastSavedHousingRev = this.sim.housingRev;
+    } catch (err) {
+      console.error('failed to load housing:', err);
+    }
+  }
+
+  async saveHousing(): Promise<void> {
+    try {
+      await this.enqueueHousingWrite(() => saveHousingState(this.sim.serializeHousing()));
+    } catch (err) {
+      console.error('failed to save housing:', err);
     }
   }
 
@@ -2856,6 +2892,10 @@ export class GameServer {
     // market info is null unless the player is standing at the Merchant, so it
     // only rides the wire for players actually browsing the World Market
     maybe('market', this.sim.marketInfoFor(anchorSession.pid));
+    // housing is tiny (8 plots) and rarely changes, so the per-tick diff is
+    // negligible; it must ride per-tick because another player's claim changes
+    // it without marking this session dirty
+    maybe('housing', this.sim.housingInfoFor(anchorSession.pid));
     // open need-greed rolls this player can still answer, so a client that
     // missed the transient lootRoll event re-shows the prompt from state. Stays
     // per-tick (it's interactive state that appears from others' actions).

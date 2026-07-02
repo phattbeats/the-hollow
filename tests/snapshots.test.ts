@@ -1745,9 +1745,9 @@ describe('lockpick view rebuilds from events on the online client', () => {
 // while the prior decoded value is preserved.
 // ---------------------------------------------------------------------------
 
-// The pinned set of the 25 `maybe(...)` delta keys, sorted. Cross-checked below
+// The pinned set of the 26 `maybe(...)` delta keys, sorted. Cross-checked below
 // against the live `maybe(...)` calls scraped from server/game.ts source, so a
-// 26th unregistered delta key reddens this gate.
+// 27th unregistered delta key reddens this gate.
 const ALL_DELTA_KEYS = [
   'arena',
   'buyback',
@@ -1761,6 +1761,7 @@ const ALL_DELTA_KEYS = [
   'drun',
   'duel',
   'equip',
+  'housing',
   'inv',
   'lockouts',
   'lroll',
@@ -1795,6 +1796,7 @@ const TERSE_TO_IWORLD: Record<string, string> = {
   drun: 'delveRun',
   duel: 'duelInfo',
   equip: 'equipment',
+  housing: 'housingInfo',
   inv: 'inventory',
   lockouts: 'selfLockouts',
   lroll: 'lootRollPrompts',
@@ -1978,6 +1980,8 @@ describe('full self-state snapshot delta fixture', () => {
     expect((client.duelInfo as any)?.state).toBe('countdown'); // duel -> duelInfo
     expect(client.arenaInfo).not.toBeNull(); // arena -> arenaInfo
     expect(client.marketInfo).not.toBeNull(); // market -> marketInfo
+    expect(client.housingInfo).not.toBeNull(); // housing -> housingInfo
+    expect(client.housingInfo?.plots.length).toBeGreaterThan(0);
     expect(client.activeLootRolls().map((r) => r.rollId)).toEqual([1]); // lroll -> lootRollPrompts
     expect(client.delveRun).not.toBeNull(); // drun -> delveRun
     expect(client.companionState?.companionId).toBe('companion_tessa'); // dcompanion -> companionState
@@ -2033,9 +2037,9 @@ describe('full self-state snapshot delta fixture', () => {
 });
 
 describe('delta-key contract pins (anti-drift)', () => {
-  it('ALL_DELTA_KEYS contains exactly 25 unique keys in sorted order', () => {
-    expect(ALL_DELTA_KEYS).toHaveLength(25);
-    expect(new Set(ALL_DELTA_KEYS).size).toBe(25);
+  it('ALL_DELTA_KEYS contains exactly 26 unique keys in sorted order', () => {
+    expect(ALL_DELTA_KEYS).toHaveLength(26);
+    expect(new Set(ALL_DELTA_KEYS).size).toBe(26);
     expect([...ALL_DELTA_KEYS]).toEqual([...ALL_DELTA_KEYS].sort());
   });
 
@@ -2047,7 +2051,7 @@ describe('delta-key contract pins (anti-drift)', () => {
     const scraped = new Set<string>();
     for (let m = re.exec(src); m !== null; m = re.exec(src)) scraped.add(m[1]);
     expect(scraped.has('lockouts')).toBe(true); // the multi-line call IS captured
-    expect(scraped.size).toBe(25);
+    expect(scraped.size).toBe(26);
     expect([...scraped].sort()).toEqual([...ALL_DELTA_KEYS].sort());
   });
 
