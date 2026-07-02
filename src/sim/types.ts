@@ -1143,6 +1143,15 @@ export interface DungeonObjectSpawn {
   dungeonId?: string;
 }
 
+// An NPC living inside the instance (quest giver, vendor). The NpcDef it
+// references must be marked `dynamic` so the overworld spawn loop skips it;
+// the instance spawns it at origin + (x, z) when the slot is claimed.
+export interface DungeonNpcSpawn {
+  npcId: string;
+  x: number; // relative to instance origin
+  z: number;
+}
+
 export interface DungeonDef {
   id: string;
   name: string;
@@ -1153,6 +1162,7 @@ export interface DungeonDef {
   exitOffset: { x: number; z: number }; // exit portal (instance-local)
   spawns: DungeonSpawn[];
   objects?: DungeonObjectSpawn[];
+  npcs?: DungeonNpcSpawn[]; // instance-resident NPCs (their NpcDefs must be dynamic)
   interior: 'crypt' | 'sanctum' | 'temple' | 'nythraxis'; // renderer + collider interior builder key
   suggestedPlayers: number;
   enterText: string;

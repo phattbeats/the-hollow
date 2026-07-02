@@ -2922,6 +2922,15 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
     "Attraversi il cancello lunare — l'aria si fa acqua gelida e luce pallida, e il canto si richiude sopra la tua testa.",
   'entities.dungeons.drowned_temple.leaveText':
     'Riemergi attraverso il cancello lunare nella notte della montagna.',
+  'entities.dungeons.the_hollow.name': 'Il Vuoto',
+  'entities.dungeons.the_hollow.enterText':
+    "Varchi il cancello del santuario. L'aria si fa calda e verde, e il vaso attende più avanti.",
+  'entities.dungeons.the_hollow.leaveText': 'Esci di nuovo dal cancello, verso Eastbrook.',
+  'entities.dungeons.under_shrine.name': 'Il Sottosantuario',
+  'entities.dungeons.under_shrine.enterText':
+    "Scendi sotto il santuario. L'aria si fa immobile e chiusa, e il buio davanti a te non sembra vuoto.",
+  'entities.dungeons.under_shrine.leaveText':
+    'Risali nel tepore. Sopra di te, appena percettibile, fumo.',
   'worldContent.corpseName': '{name} (cadavere)',
   'worldContent.dungeonExitName': 'Uscita da {name}',
   'worldContent.dungeonPartyWarning':
@@ -4541,6 +4550,9 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'entities.items.reliquary_gloves_rog.name': 'Manopole del guardiano delle ossa',
   'entities.items.deacon_reliquary_helm.name': 'Elmo del reliquiario del diacono',
   'entities.items.varric_shadow_cowl.name': "Cappuccio d'ombra di Varric",
+  'entities.items.cave_morsel.name': 'Boccone di Caverna',
+  'entities.items.emberbulb.name': 'Bulbo di Brace',
+  'entities.items.first_cutting.name': 'Una Talea',
   'entities.mobs.acolyte_tessa.name': 'Accolita Tessa',
   'entities.mobs.deacon_varric.name': 'Diacono Varric',
   'entities.mobs.reliquary_bonewalker.name': 'Camminaossa Risorto',
@@ -4548,9 +4560,28 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_gravecall_acolyte.name': 'Accolito del Richiamo Sepolcrale',
   'entities.mobs.reliquary_ledger_wraith.name': 'Spettro del Registro',
   'entities.mobs.reliquary_saintless_effigy.name': 'Effigie Senza Santo',
+  'entities.mobs.palefeeder.name': 'Divoratore Pallido',
+  'entities.mobs.rootmaw.name': 'Fauce di Radice',
+  'entities.mobs.the_witness_root.name': 'La Radice Testimone',
   'entities.npcs.brother_halven.greeting': 'Il reliquiario sottostante si è spostato di nuovo.',
   'entities.npcs.brother_halven.name': 'Fratello Halven',
   'entities.npcs.brother_halven.title': 'Custode del Reliquiario',
+  'entities.npcs.brother_greenpaw.name': 'Fratello Zampaverde',
+  'entities.npcs.brother_greenpaw.title': 'Primo Profeta (autoproclamato)',
+  'entities.npcs.brother_greenpaw.greeting':
+    'ehi, viandante. il vaso oggi è di malumore, o sono di nuovo io... vieni qua, ho un paio di faccende sacre da sbrigare. per lo più spuntini. viene a essere lo stesso, in grado zampaverde.',
+  'entities.quests.q_what_burns.title': 'La Cosa Che Arde',
+  'entities.quests.q_what_burns.text':
+    "la comunione si è fatta rada, amico... sono secco fino all'osso e la sintonia si sta chiudendo. giù sotto il santuario c'è un bulbo che arde lento e pulito: bulbo di brace, cresce dove la luce non arriva, il che è uno scherzo che la caverna fa a se stessa... portamene cinque. attento ai pallidi. vengono per la tua lanterna, non per te. quasi sempre.",
+  'entities.quests.q_what_burns.completion':
+    "QUESTO sì che è fumo buono... lo senti? l'aria si sta facendo densa. lei si sporgerà da un momento all'altro, lo sento nella sintonia... infatti.",
+  'entities.quests.q_what_burns.objectives.0.label': 'Bulbo di Brace raccolto',
+  'entities.quests.q_what_fills.title': 'La Cosa Che Sazia',
+  'entities.quests.q_what_fills.text':
+    'secondo affare, e lo chiamerei sacro, ma tra noi è colazione... le fauci di radice là sotto portano addosso un boccone, cresciuto in caverna, bello terroso. quattro bastano. riportameli prima che lo stomaco cominci a cantare i suoi inni...',
+  'entities.quests.q_what_fills.completion':
+    "sei un santo di prim'ordine, amico. o un buon vicino. viene a essere lo stesso, in grado zampaverde. ...tieni. volevo tenermelo, ma il cowboy interiore dice che è tuo. non lasciarlo appassire.",
+  'entities.quests.q_what_fills.objectives.0.label': 'Boccone di Caverna raccolto',
   'entities.delves.collapsed_reliquary.enterText': 'Scendi nel reliquiario crollato.',
   'entities.delves.collapsed_reliquary.leaveText':
     'Risali da Fratello Halven, alla rovina del reliquiario.',

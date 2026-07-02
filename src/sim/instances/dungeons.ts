@@ -15,8 +15,8 @@
 // and the seam exposes instanceKeyFor/instanceOriginOf/enterDungeon/leaveDungeon for
 // the N1/quest/delve code that reaches them through `ctx`.
 
-import { DUNGEON_X_THRESHOLD, DUNGEONS, dungeonAt, instanceOrigin, MOBS } from '../data';
-import { createGroundObject, createMob } from '../entity';
+import { DUNGEON_X_THRESHOLD, DUNGEONS, dungeonAt, instanceOrigin, MOBS, NPCS } from '../data';
+import { createGroundObject, createMob, createNpc } from '../entity';
 import type { InstanceSlot, PlayerMeta } from '../sim';
 import type { SimContext } from '../sim_context';
 import {
@@ -231,6 +231,21 @@ function claimInstance(ctx: SimContext, inst: InstanceSlot, key: string): void {
     }
     ctx.addEntity(obj);
     inst.objectIds.push(obj.id);
+  }
+  // Instance-resident NPCs (quest givers living inside the instance, e.g. the
+  // Hollow hub's Brother Greenpaw). Their defs are `dynamic`, so the overworld
+  // spawn loop skipped them; they spawn with the slot and are freed with it
+  // (tracked in objectIds alongside the slot's door objects). Draws no rng.
+  for (const npcSpawn of dungeon.npcs ?? []) {
+    const def = NPCS[npcSpawn.npcId];
+    if (!def) continue;
+    const npc = createNpc(
+      ctx.nextId++,
+      def,
+      ctx.groundPos(origin.x + npcSpawn.x, origin.z + npcSpawn.z),
+    );
+    ctx.addEntity(npc);
+    inst.objectIds.push(npc.id);
   }
   const exit = createGroundObject(
     ctx.nextId++,

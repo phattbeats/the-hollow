@@ -785,6 +785,15 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'entities.dungeons.sunken_bastion.enterText': 'Du vader ned i Den Sunkne Bastion...',
   'entities.dungeons.sunken_bastion.leaveText': 'Du klatrer ud af det druknende mørke.',
   'entities.dungeons.sunken_bastion.name': 'Den Sunkne Bastion',
+  'entities.dungeons.the_hollow.enterText':
+    'Du træder gennem skrinets port. Luften bliver varm og grøn, og vasen venter forude.',
+  'entities.dungeons.the_hollow.leaveText': 'Du træder tilbage gennem porten ud i Eastbrook.',
+  'entities.dungeons.the_hollow.name': 'Den Hule',
+  'entities.dungeons.under_shrine.enterText':
+    'Du stiger ned under skrinet. Luften bliver stille og tæt, og mørket forude føles ikke tomt.',
+  'entities.dungeons.under_shrine.leaveText':
+    'Du klatrer tilbage op i varmen. Over dig, svagt, røg.',
+  'entities.dungeons.under_shrine.name': 'Underhelligdommen',
   'entities.items.acolytes_circlet.name': 'Akolyttens Diadem',
   'entities.items.alien_armor_plate.name': 'Fremmedartet Rustningsplade',
   'entities.items.amber_crimson_armor_plate.name': 'Ravrød Karmoisin',
@@ -818,6 +827,7 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'entities.items.captains_crest.name': 'Kryptnøglesten Øvre',
   'entities.items.caravan_quilted_vest.name': 'Karavanens Vatterede Vest',
   'entities.items.caravan_warden_dirk.name': 'Karavanevogterens Dolk',
+  'entities.items.cave_morsel.name': 'Grottebid',
   'entities.items.chipped_tusk.name': 'Hakket Stødtand',
   'entities.items.conjured_bread.name': 'Frembragt Brød',
   'entities.items.conjured_bread2.name': 'Frembragt Pumpernikkel',
@@ -875,6 +885,7 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'entities.items.eelscale_treads.name': 'Ålskæl-Trædesko',
   'entities.items.eelskin_tunic.name': 'Åleskinds-Tunika',
   'entities.items.elixir_of_the_bear.name': 'Bjørnens Eliksir',
+  'entities.items.emberbulb.name': 'Glødeknold',
   'entities.items.emberfang_warblade.name': 'Glødgab-Krigsklinge',
   'entities.items.emberwing_cinderscale.name': 'Glødvinge-Askeskæl',
   'entities.items.emberwing_legguards.name': 'Glødvinge-Benværn',
@@ -888,6 +899,7 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'entities.items.fenmist_robe.name': 'Kærtåge-Kåbe',
   'entities.items.fenreed_staff.name': 'Kærsiv-Stav',
   'entities.items.fenwalker_boots.name': 'Kærvandrer-Støvler',
+  'entities.items.first_cutting.name': 'En Stikling',
   'entities.items.footpad_jerkin.name': 'Stratenrøvers Vams',
   'entities.items.forest_pink_armor_plate.name': 'Skovgrøn Lyserød',
   'entities.items.frayed_prayer_beads.name': 'Flossede Bønneperler',
@@ -1184,6 +1196,7 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.old_cragmaw.name': 'Gamle Klippekæft',
   'entities.mobs.old_greyjaw.name': 'Gamle Gråkæft',
   'entities.mobs.pale_choir_acolyte.name': 'Akolyt af Det Blege Kor',
+  'entities.mobs.palefeeder.name': 'Blegæder',
   'entities.mobs.pearlguard_sentinel.name': 'Perlevogter-Skildvagt',
   'entities.mobs.raised_bonewalker.name': 'Genopvakt Benvandrer',
   'entities.mobs.reliquary_bonewalker.name': 'Genopvakt Benvandrer',
@@ -1193,6 +1206,7 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_saintless_effigy.name': 'Helgenløst Billede',
   'entities.mobs.restless_bones.name': 'Rastløse Knogler',
   'entities.mobs.ridge_stalker.name': 'Bjergkamssniger',
+  'entities.mobs.rootmaw.name': 'Rodgab',
   'entities.mobs.sanctum_boneguard.name': 'Helligdoms-Benvogter',
   'entities.mobs.sanctum_drakonid.name': 'Helligdoms-Drakonid',
   'entities.mobs.sethrael_palecoil.name': 'Sethrael Blegslyngen',
@@ -1202,6 +1216,7 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.sloomtooth_the_drowned.name': 'Sloomtand den Druknede',
   'entities.mobs.stormcrag_elemental.name': 'Stormklippe-Elemental',
   'entities.mobs.succubus.name': 'Succubus',
+  'entities.mobs.the_witness_root.name': 'Vidnerod',
   'entities.mobs.thornpeak_ogre.name': 'Tornetop-Ogre',
   'entities.mobs.tidebound_acolyte.name': 'Tidebunden Akolyt',
   'entities.mobs.tunnel_rat.name': 'Tunnelrotte-Graver',
@@ -1245,6 +1260,10 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
     'Fra en kapelgård i Dalen til verdens tag... sporet vi har fulgt ender her. Jeg kan mærke bjerget lytte.',
   'entities.npcs.brother_aldric_raid.name': 'Broder Aldric',
   'entities.npcs.brother_aldric_raid.title': 'Dalens Præst',
+  'entities.npcs.brother_greenpaw.greeting':
+    'hej, rejsende. fangede du vasen i humør i dag, eller er det bare mig igen... kom her, har et par hellige sager der trænger til pleje. mest snacks. samme ting, når man er Grønpote.',
+  'entities.npcs.brother_greenpaw.name': 'Broder Grønpote',
+  'entities.npcs.brother_greenpaw.title': 'Første Profet (selvudnævnt)',
   'entities.npcs.brother_halven.greeting': 'Relikvariet nedenunder har flyttet sig igen.',
   'entities.npcs.brother_halven.name': 'Broder Halven',
   'entities.npcs.brother_halven.title': 'Relikvarievogter',
@@ -1753,6 +1772,18 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_voice_below.text':
     'I nat knælede hele kultlejren på én gang, {playerName}, hver zelot, hver nekromantiker, alle vendt mod Helligdommen. Korzul taler til dem i deres søvn nu; Vael hørte den samme stemme i mosen, og Morthen før ham. Hug menigheden ned, ti zeloter, seks nekromantikere, før den stemme har hænder nok til selv at trække porten op.',
   'entities.quests.q_voice_below.title': 'Stemmen Nedenunder',
+  'entities.quests.q_what_burns.completion':
+    'DET er den gode røg... kan du mærke det? rummet bliver tykt. hun læner sig ind hvert øjeblik nu, jeg kan mærke det på bølgelængden... nemlig.',
+  'entities.quests.q_what_burns.objectives.0.label': 'Glødeknold indsamlet',
+  'entities.quests.q_what_burns.text':
+    'fællesskabet er ved at blive tyndt, ven... jeg er knastør, og bølgelængden lukker sig. nede under skrinet er der en knold, der brænder langsomt og rent, glødeknold, gror hvor lyset ikke når, hvilket er en joke, grotten spiller på sig selv... bring mig fem. pas på de blege. de kommer efter din lanterne, ikke efter dig. mest.',
+  'entities.quests.q_what_burns.title': 'Tingen der Brænder',
+  'entities.quests.q_what_fills.completion':
+    'du er en helgen af første rang, ven. eller en god nabo. samme ting, når man er Grønpote. ...her. skulle egentlig beholde den her, men cowboyen i mig siger, den er din. lad den ikke visne.',
+  'entities.quests.q_what_fills.objectives.0.label': 'Grottebid indsamlet',
+  'entities.quests.q_what_fills.text':
+    'anden sag, og jeg vil kalde den hellig, men mellem os er det morgenmad... rodgabene dernede bærer et bid på sig, grottefodret, ægte jordagtigt. fire slår til. bring dem tilbage, før maven begynder at synge sine egne salmer...',
+  'entities.quests.q_what_fills.title': 'Tingen der Fylder',
   'entities.quests.q_whispers.completion':
     'Denne sigille... den bærer Gravkaldernes mærke, en sekt jeg havde bedt til var uddød. Dette er værre end jeg frygtede, {playerName}.',
   'entities.quests.q_whispers.objectives.0.label': 'Gravkalderens Sigille',

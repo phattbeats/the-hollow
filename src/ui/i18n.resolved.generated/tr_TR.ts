@@ -5089,6 +5089,15 @@ export const tr_TR: EnTranslations = {
       "wyrmshadow_talongrips": {
         "name": "Ejdergölgesi Pençe Kavramaları"
       },
+      "cave_morsel": {
+        "name": "Mağara Lokması"
+      },
+      "emberbulb": {
+        "name": "Köz Soğanı"
+      },
+      "first_cutting": {
+        "name": "Bir Filiz"
+      },
       "reliquary_plate_chest": {
         "name": "Emanetlik Muhafızı Zırhı"
       },
@@ -5534,6 +5543,15 @@ export const tr_TR: EnTranslations = {
       },
       "ysolei": {
         "name": "Ysolei, Boğulmuş Ay'ın Avatarı"
+      },
+      "palefeeder": {
+        "name": "Solgunbeslen"
+      },
+      "rootmaw": {
+        "name": "Kökçene"
+      },
+      "the_witness_root": {
+        "name": "Tanık Kök"
       }
     },
     "npcs": {
@@ -5646,6 +5664,11 @@ export const tr_TR: EnTranslations = {
         "name": "Ondrel Vane",
         "title": "Gelgit Gözcüsü",
         "greeting": "Göl ay ışığını içer, {className}, ve karşılığında boğulanları geri verir. O kapıyı otuz gece boyunca gözledim — ve bu gece açık."
+      },
+      "brother_greenpaw": {
+        "name": "Birader Greenpaw",
+        "title": "İlk Peygamber (kendi kendini atadı)",
+        "greeting": "selam sana, gezgin. put bugün keyifsiz mi yoksa yine ben mi öyle görüyorum... gel bakalım buraya, birkaç kutsal iş var görülecek. çoğu atıştırmalık aslında. greenpaw ölçeğinde ikisi de aynı kapıya çıkar."
       }
     },
     "quests": {
@@ -6463,6 +6486,26 @@ export const tr_TR: EnTranslations = {
             "label": "Glimmermere Sığlıkgezeri öldürüldü"
           }
         }
+      },
+      "q_what_burns": {
+        "title": "Yanan Şey",
+        "text": "iletişim inceldi be dostum... ben kupkuru kaldım, wavelength kapanıyor. mabedin altında yavaş ve temiz yanan bir soğan var, köz soğanı derler, ışığın erişmediği yerde büyür, mağaranın kendine yaptığı bir şaka bu bir bakıma... bana beş tane getir. solgunlara dikkat et. onlar sana değil, lambana gelir. çoğunlukla.",
+        "completion": "işte bu, gerçek duman bu... hissediyor musun? oda ağırlaşıyor be. put az sonra eğilir buraya, wavelength'te hissediyorum bunu... hakikaten.",
+        "objectives": {
+          "0": {
+            "label": "Köz soğanı toplandı"
+          }
+        }
+      },
+      "q_what_fills": {
+        "title": "Dolduran Şey",
+        "text": "ikinci mesele, kutsal derdim ama aramızda kalsın, aslında kahvaltı bu... aşağıdaki kökçenelerde bir lokma taşıyorlar, mağara beslemesi, tam toprak tadında. dört tanesi yeter. karnım ilahi söylemeye başlamadan getir onları...",
+        "completion": "sen ilk sınıf bir azizsin dostum. ya da iyi bir komşu. greenpaw ölçeğinde ikisi de aynı kapıya çıkar. ...al bakalım. bunu kendime saklayacaktım ama içimdeki kovboy sana ait dedi. soldurma sakın.",
+        "objectives": {
+          "0": {
+            "label": "Mağara lokması toplandı"
+          }
+        }
       }
     },
     "zones": {
@@ -6599,6 +6642,16 @@ export const tr_TR: EnTranslations = {
         "name": "Boğulmuş Tapınak",
         "enterText": "Ay geçidinden geçersin — hava soğuk suya ve solgun ışığa dönüşür, şarkı başının üstünde kapanır.",
         "leaveText": "Ay geçidinden dağ gecesine doğru su yüzüne çıkarsın."
+      },
+      "the_hollow": {
+        "name": "Oyuk",
+        "enterText": "Mabet kapısından içeri adım atarsın. Hava ısınıp yeşile döner, put ilerde seni bekler.",
+        "leaveText": "Kapıdan geri çıkıp Eastbrook'a dönersin."
+      },
+      "under_shrine": {
+        "name": "Mabet Altı",
+        "enterText": "Mabedin altına inersin. Hava durgunlaşıp sıkışır, ilerideki karanlık boş hissettirmez.",
+        "leaveText": "Sıcağa doğru tırmanıp geri çıkarsın. Yukarıdan, hafifçe, duman kokusu gelir."
       }
     },
     "delves": {

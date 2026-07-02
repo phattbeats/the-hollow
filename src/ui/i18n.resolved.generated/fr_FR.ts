@@ -5089,6 +5089,15 @@ export const fr_FR: EnTranslations = {
       "wyrmshadow_talongrips": {
         "name": "Poignes Serre Ombrewyrm"
       },
+      "cave_morsel": {
+        "name": "Bouchée des grottes"
+      },
+      "emberbulb": {
+        "name": "Bulbe-braise"
+      },
+      "first_cutting": {
+        "name": "Une bouture"
+      },
       "reliquary_plate_chest": {
         "name": "Haubert de la garde du reliquaire"
       },
@@ -5534,6 +5543,15 @@ export const fr_FR: EnTranslations = {
       },
       "ysolei": {
         "name": "Ysolei, avatar de la Lune noyée"
+      },
+      "palefeeder": {
+        "name": "Dévoreur blafard"
+      },
+      "rootmaw": {
+        "name": "Gueule-racine"
+      },
+      "the_witness_root": {
+        "name": "La Racine témoin"
       }
     },
     "npcs": {
@@ -5646,6 +5664,11 @@ export const fr_FR: EnTranslations = {
         "name": "Ondrel Vane",
         "title": "Veille-marées",
         "greeting": "Le lac boit le clair de lune, {className}, et rend les noyés. J'ai surveillé cette porte trente nuits durant — et cette nuit, elle est ouverte."
+      },
+      "brother_greenpaw": {
+        "name": "Frère Pattevert",
+        "title": "Premier Prophète (autoproclamé)",
+        "greeting": "hé, voyageur. le vase est de bonne humeur aujourd'hui, ou c'est encore rien que moi... viens donc, j'ai deux ou trois affaires sacrées à régler. surtout des grignotages. c'est pareil, à un degré près, façon Pattevert."
       }
     },
     "quests": {
@@ -6463,6 +6486,26 @@ export const fr_FR: EnTranslations = {
             "label": "Pataugeur de Lac-miroitant tué"
           }
         }
+      },
+      "q_what_burns": {
+        "title": "La Chose qui brûle",
+        "text": "la communion s'est amenuisée, l'ami... je suis à sec et la longueur d'onde se referme. là-dessous, sous le sanctuaire, il y a un bulbe qui brûle lent et propre, le bulbe-braise, il pousse là où la lumière ne va pas, ce qui est une blague que la grotte se fait à elle-même... rapportes-en cinq. méfie-toi des pâles. ils en veulent à ta lanterne, pas à toi. la plupart du temps.",
+        "completion": "ça, c'est de la bonne fumée... tu sens ça ? la pièce s'épaissit. elle va se pencher d'une minute à l'autre, je le sens sur la longueur d'onde... en effet.",
+        "objectives": {
+          "0": {
+            "label": "Bulbe-braise récolté"
+          }
+        }
+      },
+      "q_what_fills": {
+        "title": "La Chose qui remplit",
+        "text": "deuxième affaire, et je dirais bien sacrée mais entre nous c'est le petit-déjeuner... les gueule-racines là-dessous portent une bouchée sur elles, nourrie de grotte, bien terreuse. quatre feront l'affaire. rapporte-les avant que l'estomac se mette à chanter ses propres hymnes...",
+        "completion": "t'es un saint de première catégorie, l'ami. ou un bon voisin. c'est pareil, à un degré près, façon Pattevert. ...tiens. j'allais garder celle-là mais le cowboy intérieur dit qu'elle est à toi. laisse-la pas faner.",
+        "objectives": {
+          "0": {
+            "label": "Bouchée des grottes récoltée"
+          }
+        }
       }
     },
     "zones": {
@@ -6599,6 +6642,16 @@ export const fr_FR: EnTranslations = {
         "name": "Le Temple noyé",
         "enterText": "Tu franchis la porte de lune — l'air se mue en eau froide et en lumière blafarde, et le chant se referme au-dessus de ta tête.",
         "leaveText": "Tu refais surface par la porte de lune dans la nuit de la montagne."
+      },
+      "the_hollow": {
+        "name": "Le Creux",
+        "enterText": "Tu franchis le portail du sanctuaire. L'air devient chaud et vert, et le vase attend plus loin.",
+        "leaveText": "Tu ressors par le portail dans Eastbrook."
+      },
+      "under_shrine": {
+        "name": "Le Sous-Sanctuaire",
+        "enterText": "Tu descends sous le sanctuaire. L'air se fait immobile et proche, et l'obscurité devant toi ne semble pas vide.",
+        "leaveText": "Tu remontes dans la chaleur. Au-dessus de toi, faiblement, de la fumée."
       }
     },
     "delves": {

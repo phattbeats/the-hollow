@@ -788,6 +788,15 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'entities.dungeons.sunken_bastion.enterText': 'Du vadar ner i Den sjunkna bastionen ...',
   'entities.dungeons.sunken_bastion.leaveText': 'Du klättrar ut ur det drunknande mörkret.',
   'entities.dungeons.sunken_bastion.name': 'Den sjunkna bastionen',
+  'entities.dungeons.the_hollow.enterText':
+    'Du kliver genom helgedomsporten. Luften blir varm och grön, och vasen väntar framåt.',
+  'entities.dungeons.the_hollow.leaveText': 'Du kliver tillbaka ut genom porten till Eastbrook.',
+  'entities.dungeons.the_hollow.name': 'Den ihåliga',
+  'entities.dungeons.under_shrine.enterText':
+    'Du stiger ner under helgedomen. Luften blir stilla och tät, och mörkret framåt känns inte tomt.',
+  'entities.dungeons.under_shrine.leaveText':
+    'Du klättrar tillbaka upp i värmen. Ovanför dig, svagt, rök.',
+  'entities.dungeons.under_shrine.name': 'Underhelgedomen',
   'entities.items.acolytes_circlet.name': 'Akolytens diadem',
   'entities.items.alien_armor_plate.name': 'Främmande rustningsplåt',
   'entities.items.amber_crimson_armor_plate.name': 'Bärnstensröd',
@@ -821,6 +830,7 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'entities.items.captains_crest.name': 'Kryptnyckelsten, övre',
   'entities.items.caravan_quilted_vest.name': 'Karavanens vadderade väst',
   'entities.items.caravan_warden_dirk.name': 'Karavanväktarens dolk',
+  'entities.items.cave_morsel.name': 'Grottbit',
   'entities.items.chipped_tusk.name': 'Flisad bete',
   'entities.items.conjured_bread.name': 'Frammanat bröd',
   'entities.items.conjured_bread2.name': 'Frammanat rågbröd',
@@ -878,6 +888,7 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'entities.items.eelscale_treads.name': 'Ålfjällsskor',
   'entities.items.eelskin_tunic.name': 'Ålskinnstunika',
   'entities.items.elixir_of_the_bear.name': 'Björnens elixir',
+  'entities.items.emberbulb.name': 'Glödknöl',
   'entities.items.emberfang_warblade.name': 'Glödbetes krigsklinga',
   'entities.items.emberwing_cinderscale.name': 'Glödvinges askfjäll',
   'entities.items.emberwing_legguards.name': 'Glödvinges benskydd',
@@ -891,6 +902,7 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'entities.items.fenmist_robe.name': 'Kärrdimmsrock',
   'entities.items.fenreed_staff.name': 'Kärrvasstav',
   'entities.items.fenwalker_boots.name': 'Kärrvandrarstövlar',
+  'entities.items.first_cutting.name': 'En stickling',
   'entities.items.footpad_jerkin.name': 'Stråtrövarväst',
   'entities.items.forest_pink_armor_plate.name': 'Skogsrosa',
   'entities.items.frayed_prayer_beads.name': 'Slitna böneradband',
@@ -1187,6 +1199,7 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.old_cragmaw.name': 'Gamle Klippkäft',
   'entities.mobs.old_greyjaw.name': 'Gamle Gråkäft',
   'entities.mobs.pale_choir_acolyte.name': 'Blek körakolyt',
+  'entities.mobs.palefeeder.name': 'Blekätaren',
   'entities.mobs.pearlguard_sentinel.name': 'Pärlvaktsväktare',
   'entities.mobs.raised_bonewalker.name': 'Uppstånden benvandrare',
   'entities.mobs.reliquary_bonewalker.name': 'Uppstånden benvandrare',
@@ -1196,6 +1209,7 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_saintless_effigy.name': 'Helgonlös avbild',
   'entities.mobs.restless_bones.name': 'Rastlösa ben',
   'entities.mobs.ridge_stalker.name': 'Åssmygare',
+  'entities.mobs.rootmaw.name': 'Rotkäften',
   'entities.mobs.sanctum_boneguard.name': 'Helgedomsbenvakt',
   'entities.mobs.sanctum_drakonid.name': 'Helgedomsdrakonid',
   'entities.mobs.sethrael_palecoil.name': 'Sethrael Blekringel',
@@ -1205,6 +1219,7 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.sloomtooth_the_drowned.name': 'Sloomtooth den drunknade',
   'entities.mobs.stormcrag_elemental.name': 'Stormklippselementar',
   'entities.mobs.succubus.name': 'Succubus',
+  'entities.mobs.the_witness_root.name': 'Vittnesroten',
   'entities.mobs.thornpeak_ogre.name': 'Törntoppsogre',
   'entities.mobs.tidebound_acolyte.name': 'Tidvattenbunden akolyt',
   'entities.mobs.tunnel_rat.name': 'Tunnelråttgrävare',
@@ -1249,6 +1264,10 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
     'Från en kapellgård i Dalen till världens tak... spåret vi följt slutar här. Jag känner hur berget lyssnar.',
   'entities.npcs.brother_aldric_raid.name': 'Broder Aldric',
   'entities.npcs.brother_aldric_raid.title': 'Dalens präst',
+  'entities.npcs.brother_greenpaw.greeting':
+    'hej där, resenär. fångade du vasen på gott humör idag, eller är det bara jag igen... kom hit, har ett par heliga angelägenheter som behöver skötas. mest mellanmål. samma sak, om man är Gröntass.',
+  'entities.npcs.brother_greenpaw.name': 'Broder Gröntass',
+  'entities.npcs.brother_greenpaw.title': 'Förste profeten (självutnämnd)',
   'entities.npcs.brother_halven.greeting': 'Relikvariet där nere har förskjutits igen.',
   'entities.npcs.brother_halven.name': 'Broder Halven',
   'entities.npcs.brother_halven.title': 'Relikvarievaktare',
@@ -1757,6 +1776,18 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_voice_below.text':
     'I natt knäföll hela kultlägret på en gång, {playerName} - varje fanatiker, varje nekromantiker, alla vända mot Helgedomen. Korzul talar till dem i sömnen nu; Vael hörde samma röst i kärret, och Morthen före honom. Hugg ner församlingen - tio fanatiker, sex nekromantiker - innan den rösten har händer nog att själv slita upp porten.',
   'entities.quests.q_voice_below.title': 'Rösten där nere',
+  'entities.quests.q_what_burns.completion':
+    'DET där är den goda röken... känner du det? rummet blir tjockt. hon kommer att luta sig fram vilken sekund som helst nu, jag känner det på våglängden... minsann.',
+  'entities.quests.q_what_burns.objectives.0.label': 'Glödknöl insamlad',
+  'entities.quests.q_what_burns.text':
+    'gemenskapen har blivit tunn, vän... jag är torr som fnöske och våglängden stänger sig. nere under helgedomen finns en knöl som brinner sakta och rent, glödknöl, växer där ljuset inte når, vilket är ett skämt grottan spelar på sig själv... hämta fem åt mig. akta de bleka. de kommer för din lykta, inte för dig. mestadels.',
+  'entities.quests.q_what_burns.title': 'Det som brinner',
+  'entities.quests.q_what_fills.completion':
+    'du är ett helgon av första rang, vän. eller en god granne. samma sak, om man är Gröntass. ...här. tänkte behålla den här, men cowboyen inom mig säger att den är din. låt den inte vissna.',
+  'entities.quests.q_what_fills.objectives.0.label': 'Grottbit insamlad',
+  'entities.quests.q_what_fills.text':
+    'andra saken, och jag skulle kalla den helig, men oss emellan är det frukost... rotkäftarna där nere bär en bit på sig, grottfödd, riktigt jordig. fyra räcker. ta med dem tillbaka innan magen börjar sjunga sina egna psalmer...',
+  'entities.quests.q_what_fills.title': 'Det som fyller',
   'entities.quests.q_whispers.completion':
     'Det här sigillet... det bär Gravkallarnas märke, en sekt jag hade bett att vore utdöd. Det här är värre än jag fruktade, {playerName}.',
   'entities.quests.q_whispers.objectives.0.label': 'Gravkallarens sigill',
