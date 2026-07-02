@@ -116,9 +116,20 @@ under a normal test environment.
   `nav.*`), and `src/ui/i18n.catalog/guide.ts` (`brand`, `brandShort`,
   `rights`, wiki prose). These are real player-visible ClaudeCraft strings
   the task did not name; flag for a follow-up branding pass.
-- **Icons and the OG share image are still the old branding**
-  (`/worldofclaudecraft-logo.png`, `/icon-192.png`, `/apple-touch-icon.png`,
-  `woc_logo_square.webp`) pending Brandon's logo pick, tracked as PHAA-395.
+- **Logo art landed (Brandon's pick on PHAA-395: weathered old-print wordmark,
+  dark-portal mark):** the favicon set, `icon-192.png`, `icon-512.png`,
+  `apple-touch-icon.png`, and `favicon.ico` are replaced in place with the
+  portal mark; the title / loading / server-unavailable wordmark is the new
+  `public/the-hollow-logo.png`; the OG / JSON-LD share image is
+  `public/the-hollow-square.webp` (plus a PNG copy); the guide header uses
+  `public/the-hollow-guide.webp`. References updated in `index.html`,
+  `guide.html`, `src/main.ts`, `src/guide/head.ts`, `src/guide/chrome.ts`,
+  `scripts/seo_audit.mjs`, and `tests/server_unavailable.test.ts`. The old
+  `woc*` art files are kept on disk because `play.html` (the untouched
+  upstream promo entry) still references them. Generator (SVG sources +
+  render script) lives outside the repo in the studio workspace. The
+  `worldofclaudecraft.com` origin in canonical / OG URLs is unchanged:
+  domain migration is a separate pass once The Hollow has a public domain.
 
 Verification: `tsc --noEmit` clean; `tests/client_shell.test.ts`,
 `tests/architecture.test.ts`, `tests/localization_fixes.test.ts`,

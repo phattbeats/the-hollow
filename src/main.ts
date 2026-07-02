@@ -4075,7 +4075,7 @@ function updateSeoMetadata(lang: SupportedLanguage): void {
             '@id': 'https://worldofclaudecraft.com/#organization',
             name: 'The Hollow',
             url: 'https://worldofclaudecraft.com/',
-            logo: 'https://worldofclaudecraft.com/woc_logo_square.webp',
+            logo: 'https://worldofclaudecraft.com/the-hollow-square.webp',
             sameAs,
           },
           {
@@ -4088,7 +4088,7 @@ function updateSeoMetadata(lang: SupportedLanguage): void {
             applicationCategory: t('seo.applicationCategory'),
             operatingSystem: t('seo.operatingSystem'),
             url: canonicalHref,
-            image: 'https://worldofclaudecraft.com/woc_logo_square.webp',
+            image: 'https://worldofclaudecraft.com/the-hollow-square.webp',
             description: t('seo.description'),
             inLanguage: languageTag(lang),
             publisher: { '@id': 'https://worldofclaudecraft.com/#organization' },
