@@ -58,11 +58,11 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.tutorial.moveBodyTouch':
     '移動スティックで移動し、画面をドラッグして周囲を見回します。数歩進んで始めましょう。',
   'hudChrome.tutorial.talkBodyTouch':
-    'レッドブルック元帥に近づき、「使用」ボタンをタップして話しかけ、依頼を受けましょう。',
+    '緑掌修道士に近づき、「使用」ボタンをタップして話しかけ、頼まれごとを引き受けましょう。',
   'hudChrome.tutorial.returnBodyTouch':
-    '依頼は完了しました。レッドブルック元帥のもとへ戻り、「使用」ボタンをタップして納品しましょう。',
+    '燃えるものを手にしています。緑掌修道士のもとへ戻り、「使用」ボタンをタップして渡しましょう。',
   'hudChrome.tutorial.doneBodyTouch':
-    '基本は覚えましたね、{name}。イーストブルック渓谷はあなたのもの、自由に探索しましょう。いつでも「その他」から「クエストログ」をタップしてクエストログを確認できます。よい狩りを！',
+    '基本は覚えましたね、{name}。空洞はあなたのもの、自由に歩き回りましょう。緑掌修道士にはいつでも次の用事があります。いつでも「その他」から「クエストログ」をタップしてクエストログを確認できます。',
   'hudChrome.raidLockout.title': 'レイドロックアウト',
   'hudChrome.raidLockout.allReady': 'すべてのレイドが利用可能',
   'hudChrome.raidLockout.daysHours': '{d}日{h}時間',
@@ -3329,29 +3329,29 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.controller.help':
     '左スティックで移動、右スティックで視点。ウィンドウを開くと画面ポインターが使えます。',
   // New-adventurer tutorial (PR #729)
-  'hud.tutorial.title': '新米冒険者',
+  'hud.tutorial.title': '空洞へようこそ',
   'hud.tutorial.stepLabel': 'ステップ {current}/{total}',
   'hud.tutorial.skip': 'チュートリアルをスキップ',
   'hud.tutorial.dismiss': '閉じる',
-  'hud.tutorial.doneTitle': '冒険の準備完了',
+  'hud.tutorial.doneTitle': '立ち上る煙',
   'hud.tutorial.doneBody':
-    '基本は覚えましたね、{name}。イーストブルック渓谷はあなたのもの、自由に探索しましょう。いつでも {questKey} キーでクエストを確認できます。よい狩りを！',
+    '基本は覚えましたね、{name}。空洞はあなたのもの、自由に歩き回りましょう。緑掌修道士にはいつでも次の用事があります。いつでも {questKey} キーでクエストを確認できます。',
   'hud.tutorial.moveTitle': 'まず一歩を',
   'hud.tutorial.moveBody':
     '{moveKeys} で移動し、マウスで周囲を見回します。数歩進んで始めましょう。',
-  'hud.tutorial.seekTitle': '元帥を探す',
+  'hud.tutorial.seekTitle': '緑掌修道士を探す',
   'hud.tutorial.seekBody':
-    'レッドブルック元帥が町で待っており、新人に頼みごとがあります。目印をたどって彼のもとへ向かいましょう。',
-  'hud.tutorial.talkTitle': '依頼を受ける',
+    '緑掌修道士は壺のふもとで、何もかも底をつき腹を空かせて待っています。目印をたどって彼のもとへ向かいましょう。',
+  'hud.tutorial.talkTitle': '頼まれごとを聞く',
   'hud.tutorial.talkBody':
-    'レッドブルック元帥に近づき、{interactKey} を押して話しかけ、依頼を受けましょう。',
-  'hud.tutorial.slayTitle': '戸口の狼',
-  'hud.tutorial.slayBody':
-    '北の道で森の狼を狩りましょう。一体をターゲットして攻撃し、群れを減らします。',
-  'hud.tutorial.slayProgress': '倒した森の狼：{current} / {needed}',
-  'hud.tutorial.returnTitle': '報酬を受け取る',
+    '緑掌修道士に近づき、{interactKey} を押して話しかけ、頼まれごとを引き受けましょう。',
+  'hud.tutorial.gatherTitle': '燃えるもの',
+  'hud.tutorial.gatherBody':
+    '残り火の球根は光の届かぬ場所に育ちます。地下祠へ降り、蒼白喰らいから奪い取りましょう。彼らはあなたではなく、灯りに引き寄せられます。',
+  'hud.tutorial.gatherProgress': '集めた残り火の球根：{current} / {needed}',
+  'hud.tutorial.returnTitle': '炉に捧げる',
   'hud.tutorial.returnBody':
-    '依頼は完了しました。レッドブルック元帥のもとへ戻り、{interactKey} を押して納品しましょう。',
+    '燃えるものを手にしています。緑掌修道士のもとへ戻り、{interactKey} を押して渡しましょう。',
   'itemUi.quality.legendary': '伝説',
   'entities.items.deathless_heartwood.name': '不死王冠の心材',
   'entities.items.kingsbane_last_oath.name': 'キングスベイン、ソーンピーク最後の誓い',

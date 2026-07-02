@@ -57,11 +57,11 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.tutorial.moveBodyTouch':
     '이동 스틱으로 이동하고 화면을 끌어 주위를 둘러보세요. 몇 걸음 움직여 시작하세요.',
   'hudChrome.tutorial.talkBodyTouch':
-    '레드브룩 원수에게 다가가 사용 버튼을 눌러 대화한 뒤 임무를 수락하세요.',
+    '브라더 초록발에게 다가가 사용 버튼을 눌러 대화한 뒤 그의 부탁을 수락하세요.',
   'hudChrome.tutorial.returnBodyTouch':
-    '임무를 마쳤습니다. 레드브룩 원수에게 돌아가 사용 버튼을 눌러 완료하세요.',
+    '타오르는 것을 지니고 있습니다. 브라더 초록발에게 돌아가 사용 버튼을 눌러 전달하세요.',
   'hudChrome.tutorial.doneBodyTouch':
-    '기본기를 익혔습니다, {name}. 이제 골짜기를 자유롭게 누비세요. 더보기를 누른 뒤 퀘스트 기록을 눌러 언제든 퀘스트를 확인할 수 있습니다. 좋은 사냥 되세요.',
+    '기본기를 익혔습니다, {name}. 공동은 이제 당신 것, 자유롭게 누비세요. 초록발에게는 언제나 또 다른 부탁거리가 있습니다. 더보기를 누른 뒤 퀘스트 기록을 눌러 언제든 퀘스트를 확인할 수 있습니다.',
   'hudChrome.raidLockout.title': '공격대 잠금',
   'hudChrome.raidLockout.allReady': '모든 공격대 준비됨',
   'hudChrome.raidLockout.daysHours': '{d}일 {h}시간',
@@ -3334,29 +3334,29 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.controller.help':
     '왼쪽 스틱으로 이동, 오른쪽 스틱으로 시점 조작. 창을 열면 화면 포인터를 사용할 수 있습니다.',
   // New-adventurer tutorial (PR #729)
-  'hud.tutorial.title': '새내기 모험가',
+  'hud.tutorial.title': '공동에 오신 것을 환영합니다',
   'hud.tutorial.stepLabel': '{total}단계 중 {current}단계',
   'hud.tutorial.skip': '튜토리얼 건너뛰기',
   'hud.tutorial.dismiss': '닫기',
-  'hud.tutorial.doneTitle': '모험 준비 완료',
+  'hud.tutorial.doneTitle': '피어오르는 연기',
   'hud.tutorial.doneBody':
-    '기본기를 익혔습니다, {name}. 이제 골짜기를 자유롭게 누비세요. 언제든 {questKey} 키로 퀘스트를 확인할 수 있습니다. 좋은 사냥 되세요.',
+    '기본기를 익혔습니다, {name}. 공동은 이제 당신 것, 자유롭게 누비세요. 초록발에게는 언제나 또 다른 부탁거리가 있습니다. 언제든 {questKey} 키로 퀘스트를 확인할 수 있습니다.',
   'hud.tutorial.moveTitle': '첫걸음 떼기',
   'hud.tutorial.moveBody':
     '{moveKeys} 키로 이동하고 마우스로 주위를 둘러보세요. 몇 걸음 움직여 시작하세요.',
-  'hud.tutorial.seekTitle': '원수를 찾으세요',
+  'hud.tutorial.seekTitle': '브라더 초록발을 찾으세요',
   'hud.tutorial.seekBody':
-    '레드브룩 원수가 마을에서 기다리며 새내기에게 맡길 일이 있습니다. 표식을 따라 그에게 가세요.',
-  'hud.tutorial.talkTitle': '임무 수락',
+    '브라더 초록발은 항아리 발치에서, 뭐든 다 떨어지고 배고픈 채로 기다리고 있습니다. 표식을 따라가 그에게 다다르세요.',
+  'hud.tutorial.talkTitle': '부탁을 들으세요',
   'hud.tutorial.talkBody':
-    '레드브룩 원수에게 다가가 {interactKey} 키를 눌러 대화한 뒤 임무를 수락하세요.',
-  'hud.tutorial.slayTitle': '문 앞의 늑대들',
-  'hud.tutorial.slayBody':
-    '북쪽 길의 숲늑대를 사냥하세요. 한 마리를 대상으로 지정해 공격하여 무리를 줄이세요.',
-  'hud.tutorial.slayProgress': '처치한 숲늑대: {current} / {needed}',
-  'hud.tutorial.returnTitle': '보상 받기',
+    '브라더 초록발에게 다가가 {interactKey} 키를 눌러 대화한 뒤, 그의 부탁을 수락하세요.',
+  'hud.tutorial.gatherTitle': '타오르는 것',
+  'hud.tutorial.gatherBody':
+    '불씨구근은 빛이 닿지 않는 곳에서 자랍니다. 지하 사당으로 내려가 창백포식자들에게서 그것을 빼앗으세요. 그들은 당신이 아니라 당신의 등불을 노립니다.',
+  'hud.tutorial.gatherProgress': '모은 불씨구근: {current} / {needed}',
+  'hud.tutorial.returnTitle': '화로를 채우세요',
   'hud.tutorial.returnBody':
-    '임무를 마쳤습니다. 레드브룩 원수에게 돌아가 {interactKey} 키를 눌러 완료하세요.',
+    '타오르는 것을 지니고 있습니다. 브라더 초록발에게 돌아가 {interactKey} 키를 눌러 전달하세요.',
   'entities.mobs.nythraxis_skeleton_warrior.name': '되살아난 왕실 근위병',
   'entities.mobs.nythraxis_scourge_of_thornpeak.name': '나이트락시스, 손피크의 재앙',
   'itemUi.quality.legendary': '전설',

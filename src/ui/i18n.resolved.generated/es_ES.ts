@@ -254,9 +254,9 @@ export const es_ES: EnTranslations = {
     },
     "tutorial": {
       "moveBodyTouch": "Usa el joystick de movimiento para moverte y arrastra la pantalla para mirar alrededor. Da unos pasos para empezar.",
-      "talkBodyTouch": "Acércate al mariscal Redbrook y toca el botón Usar para hablar; luego acepta su tarea.",
-      "returnBodyTouch": "Tu tarea está hecha. Vuelve con el mariscal Redbrook y toca el botón Usar para entregarla.",
-      "doneBodyTouch": "Ya dominas lo básico, {name}. El Valle es tuyo para explorar: toca Más y luego Diario de misiones para revisar tu diario de misiones en cualquier momento. ¡Buena caza!"
+      "talkBodyTouch": "Acércate al Hermano Pataverde y toca el botón Usar para hablar, luego acepta su encargo.",
+      "returnBodyTouch": "Llevas contigo lo que arde. Vuelve con el Hermano Pataverde y toca el botón Usar para entregarlo.",
+      "doneBodyTouch": "Ya dominas lo básico, {name}. El Valle es tuyo para explorar, y Pataverde siempre tiene un encargo más. Toca Más y luego Diario de misiones para revisar tu diario de misiones en cualquier momento."
     },
     "widgets": {
       "clockTitle": "Hora local: haz clic para alternar 12/24 horas",
@@ -3099,23 +3099,23 @@ export const es_ES: EnTranslations = {
       "friendOffline": "{name} se ha desconectado."
     },
     "tutorial": {
-      "title": "Nuevo Aventurero",
+      "title": "Nuevo en el Valle",
       "stepLabel": "Paso {current} de {total}",
       "skip": "Saltar tutorial",
       "dismiss": "Descartar",
-      "doneTitle": "Listo para la aventura",
-      "doneBody": "Ya dominas lo básico, {name}. El Valle es tuyo para explorar: pulsa {questKey} en cualquier momento para revisar tus misiones. ¡Buena caza!",
+      "doneTitle": "El Humo se Eleva",
+      "doneBody": "Ya dominas lo básico, {name}. El Valle es tuyo para explorar, y Pataverde siempre tiene un encargo más. Pulsa {questKey} en cualquier momento para revisar tus misiones.",
       "moveTitle": "Da tus primeros pasos",
       "moveBody": "Usa {moveKeys} para moverte y el ratón para mirar alrededor. Da unos pasos para empezar.",
-      "seekTitle": "Busca al Mariscal",
-      "seekBody": "El mariscal Redbrook espera en el pueblo y tiene trabajo para una nueva espada. Sigue la marca para llegar a él.",
-      "talkTitle": "Acepta la tarea",
-      "talkBody": "Acércate al mariscal Redbrook y pulsa {interactKey} para hablar; luego acepta su tarea.",
-      "slayTitle": "Lobos a las puertas",
-      "slayBody": "Caza a los lobos del bosque en el camino del norte. Selecciona uno y atácalo para diezmar la manada.",
-      "slayProgress": "Lobos del bosque abatidos: {current} / {needed}",
-      "returnTitle": "Reclama tu recompensa",
-      "returnBody": "Tu tarea está hecha. Vuelve con el mariscal Redbrook y pulsa {interactKey} para entregarla."
+      "seekTitle": "Busca al Hermano Pataverde",
+      "seekBody": "El Hermano Pataverde espera al pie del jarrón, sin nada y hambriento. Sigue la marca para llegar a él.",
+      "talkTitle": "Escucha el Encargo",
+      "talkBody": "Acércate al Hermano Pataverde y pulsa {interactKey} para hablar, luego acepta su encargo.",
+      "gatherTitle": "Lo Que Arde",
+      "gatherBody": "Los bulbos ascua crecen donde no llega la luz. Desciende al Santuario Subterráneo y arrebátalos a los devoradores pálidos. Van a por tu farol, no por ti.",
+      "gatherProgress": "Bulbos ascua recolectados: {current} / {needed}",
+      "returnTitle": "Alimenta el Horno",
+      "returnBody": "Llevas contigo lo que arde. Vuelve con el Hermano Pataverde y pulsa {interactKey} para entregarlo."
     },
     "markers": {
       "names": {

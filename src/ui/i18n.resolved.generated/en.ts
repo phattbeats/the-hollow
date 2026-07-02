@@ -254,9 +254,9 @@ export const en: EnTranslations = {
     },
     "tutorial": {
       "moveBodyTouch": "Use the movement stick to move and drag the screen to look around. Take a few steps to begin.",
-      "talkBodyTouch": "Stand close to Marshal Redbrook and tap the Use button to speak, then accept his task.",
-      "returnBodyTouch": "Your task is done. Return to Marshal Redbrook and tap the Use button to turn it in.",
-      "doneBodyTouch": "You have the basics, {name}. The Vale is yours to explore. Tap More, then Quests, to review your quest log anytime. Good hunting."
+      "talkBodyTouch": "Stand close to Brother Greenpaw and tap the Use button to speak, then accept his errand.",
+      "returnBodyTouch": "You carry the thing that burns. Return to Brother Greenpaw and tap the Use button to turn it in.",
+      "doneBodyTouch": "You have the basics, {name}. The Hollow is yours to wander, and Greenpaw always has one more errand. Tap More, then Quests, to review your quest log anytime."
     },
     "widgets": {
       "clockTitle": "Local time - click to toggle 12/24-hour",
@@ -3099,23 +3099,23 @@ export const en: EnTranslations = {
       "friendOffline": "{name} has gone offline."
     },
     "tutorial": {
-      "title": "New Adventurer",
+      "title": "New to the Hollow",
       "stepLabel": "Step {current} of {total}",
       "skip": "Skip Tutorial",
       "dismiss": "Dismiss",
-      "doneTitle": "Ready for Adventure",
-      "doneBody": "You have the basics, {name}. The Vale is yours to explore. Press {questKey} anytime to review your quests. Good hunting.",
+      "doneTitle": "The Smoke Rises",
+      "doneBody": "You have the basics, {name}. The Hollow is yours to wander, and Greenpaw always has one more errand. Press {questKey} anytime to review your quests.",
       "moveTitle": "Find Your Footing",
       "moveBody": "Use {moveKeys} to move and the mouse to look around. Take a few steps to begin.",
-      "seekTitle": "Seek the Marshal",
-      "seekBody": "Marshal Redbrook waits in town and has work for a new blade. Follow the marker to reach him.",
-      "talkTitle": "Take the Task",
-      "talkBody": "Stand close to Marshal Redbrook and press {interactKey} to speak, then accept his task.",
-      "slayTitle": "Wolves at the Door",
-      "slayBody": "Hunt the Forest Wolves on the north road. Target one and attack to thin the pack.",
-      "slayProgress": "Forest Wolves slain: {current} / {needed}",
-      "returnTitle": "Claim Your Reward",
-      "returnBody": "Your task is done. Return to Marshal Redbrook and press {interactKey} to turn it in."
+      "seekTitle": "Seek Brother Greenpaw",
+      "seekBody": "Brother Greenpaw waits at the foot of the vase, out of everything and hungry. Follow the marker to reach him.",
+      "talkTitle": "Hear the Errand",
+      "talkBody": "Stand close to Brother Greenpaw and press {interactKey} to speak, then accept his errand.",
+      "gatherTitle": "The Thing That Burns",
+      "gatherBody": "Emberbulbs grow where the light does not reach. Descend into the Under-Shrine and take them from the palefeeders. They come at your lantern, not at you.",
+      "gatherProgress": "Emberbulbs gathered: {current} / {needed}",
+      "returnTitle": "Feed the Furnace",
+      "returnBody": "You carry the thing that burns. Return to Brother Greenpaw and press {interactKey} to turn it in."
     },
     "markers": {
       "names": {

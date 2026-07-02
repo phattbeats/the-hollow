@@ -8,7 +8,7 @@ import {
 } from '../src/ui/tutorial_copy';
 
 describe('tutorialBodyPlan', () => {
-  const STEPS: TutorialStep[] = ['move', 'seek', 'talk', 'slay', 'return', 'done'];
+  const STEPS: TutorialStep[] = ['move', 'seek', 'talk', 'gather', 'return', 'done'];
 
   it('uses the keyboard/mouse copy when touch is off', () => {
     for (const step of STEPS) {
@@ -25,9 +25,9 @@ describe('tutorialBodyPlan', () => {
   });
 
   it('keeps the shared keyboard copy for steps that never mention controls', () => {
-    // seek/slay describe the world, not the input device: identical on both.
+    // seek/gather describe the world, not the input device: identical on both.
     expect(tutorialBodyPlan('seek', true).bodyKey).toBe('hud.tutorial.seekBody');
-    expect(tutorialBodyPlan('slay', true).bodyKey).toBe('hud.tutorial.slayBody');
+    expect(tutorialBodyPlan('gather', true).bodyKey).toBe('hud.tutorial.gatherBody');
   });
 
   it('drops keyboard-only params (moveKeys, interactKey, questKey) from touch copy', () => {
@@ -54,7 +54,7 @@ describe('tutorialNeedsRerender', () => {
 
   it('re-renders when the step advances, regardless of touch state', () => {
     expect(tutorialNeedsRerender('move', 'seek', false, false)).toBe(true);
-    expect(tutorialNeedsRerender('talk', 'slay', true, true)).toBe(true);
+    expect(tutorialNeedsRerender('talk', 'gather', true, true)).toBe(true);
     expect(tutorialNeedsRerender('move', 'seek', true, false)).toBe(true);
   });
 
@@ -67,10 +67,10 @@ describe('tutorialNeedsRerender', () => {
     }
   });
 
-  it('does not re-render on a mode toggle for mode-agnostic steps (seek/slay)', () => {
-    // seek/slay read identically on touch and keyboard, so a toggle is a no-op for
-    // the rendered card (the slay kill counter still refreshes on its own path).
-    for (const step of ['seek', 'slay'] as const) {
+  it('does not re-render on a mode toggle for mode-agnostic steps (seek/gather)', () => {
+    // seek/gather read identically on touch and keyboard, so a toggle is a no-op for
+    // the rendered card (the gather counter still refreshes on its own path).
+    for (const step of ['seek', 'gather'] as const) {
       expect(tutorialNeedsRerender(step, step, false, true)).toBe(false);
       expect(tutorialNeedsRerender(step, step, true, false)).toBe(false);
     }
@@ -78,7 +78,7 @@ describe('tutorialNeedsRerender', () => {
 
   it('does not re-render when neither the step nor the touch state changed', () => {
     expect(tutorialNeedsRerender('move', 'move', false, false)).toBe(false);
-    expect(tutorialNeedsRerender('slay', 'slay', true, true)).toBe(false);
+    expect(tutorialNeedsRerender('gather', 'gather', true, true)).toBe(false);
   });
 });
 
@@ -87,7 +87,7 @@ describe('tutorialStepDiffersByTouch', () => {
     for (const step of ['move', 'talk', 'return', 'done'] as const) {
       expect(tutorialStepDiffersByTouch(step)).toBe(true);
     }
-    for (const step of ['seek', 'slay'] as const) {
+    for (const step of ['seek', 'gather'] as const) {
       expect(tutorialStepDiffersByTouch(step)).toBe(false);
     }
   });

@@ -254,9 +254,9 @@ export const id_ID: EnTranslations = {
     },
     "tutorial": {
       "moveBodyTouch": "Gunakan tuas gerak untuk berpindah dan seret layar untuk melihat sekeliling. Ambil beberapa langkah untuk memulai.",
-      "talkBodyTouch": "Berdirilah dekat Marshal Redbrook dan ketuk tombol Use untuk berbicara, lalu terima tugasnya.",
-      "returnBodyTouch": "Tugas Anda selesai. Kembalilah ke Marshal Redbrook dan ketuk tombol Use untuk menyerahkannya.",
-      "doneBodyTouch": "Anda sudah menguasai dasarnya, {name}. Lembah ini milik Anda untuk dijelajahi. Ketuk More, lalu Quests, untuk meninjau catatan misi Anda kapan saja. Selamat berburu."
+      "talkBodyTouch": "Berdirilah dekat Bruder Cakarhijau dan ketuk tombol Use untuk berbicara, lalu terima tugasnya.",
+      "returnBodyTouch": "Anda membawa benda yang membara. Kembalilah ke Bruder Cakarhijau dan ketuk tombol Use untuk menyerahkannya.",
+      "doneBodyTouch": "Anda sudah menguasai dasarnya, {name}. Yang Berongga milik Anda untuk dijelajahi, dan Cakarhijau selalu punya satu tugas lagi. Ketuk More, lalu Quests, untuk meninjau catatan misi Anda kapan saja."
     },
     "widgets": {
       "clockTitle": "Waktu lokal - klik untuk beralih 12/24 jam",
@@ -3099,23 +3099,23 @@ export const id_ID: EnTranslations = {
       "friendOffline": "{name} telah luring."
     },
     "tutorial": {
-      "title": "Petualang Baru",
+      "title": "Baru di Yang Berongga",
       "stepLabel": "Langkah {current} dari {total}",
       "skip": "Lewati Tutorial",
       "dismiss": "Tutup",
-      "doneTitle": "Siap Berpetualang",
-      "doneBody": "Kamu sudah menguasai dasarnya, {name}. Lembah ini siap kamu jelajahi. Tekan {questKey} kapan saja untuk meninjau misimu. Selamat berburu.",
+      "doneTitle": "Asap Membubung",
+      "doneBody": "Kamu sudah menguasai dasarnya, {name}. Yang Berongga siap kamu jelajahi, dan Cakarhijau selalu punya satu tugas lagi. Tekan {questKey} kapan saja untuk meninjau misimu.",
       "moveTitle": "Temukan Pijakanmu",
       "moveBody": "Gunakan {moveKeys} untuk bergerak dan mouse untuk melihat sekeliling. Ambil beberapa langkah untuk memulai.",
-      "seekTitle": "Cari Sang Marshal",
-      "seekBody": "Marshal Redbrook menunggu di kota dan punya pekerjaan untuk pendekar baru. Ikuti penanda untuk mencapainya.",
-      "talkTitle": "Terima Tugasnya",
-      "talkBody": "Berdirilah dekat Marshal Redbrook dan tekan {interactKey} untuk berbicara, lalu terima tugasnya.",
-      "slayTitle": "Serigala di Ambang Pintu",
-      "slayBody": "Buru Serigala Hutan di jalan utara. Bidik salah satunya dan serang untuk mengurangi kawanannya.",
-      "slayProgress": "Serigala Hutan dibasmi: {current} / {needed}",
-      "returnTitle": "Klaim Hadiahmu",
-      "returnBody": "Tugasmu selesai. Kembalilah ke Marshal Redbrook dan tekan {interactKey} untuk menyerahkannya."
+      "seekTitle": "Cari Bruder Cakarhijau",
+      "seekBody": "Bruder Cakarhijau menunggu di kaki guci, terlepas dari segalanya dan lapar. Ikuti penanda untuk mencapainya.",
+      "talkTitle": "Dengarkan Tugasnya",
+      "talkBody": "Berdirilah dekat Bruder Cakarhijau dan tekan {interactKey} untuk berbicara, lalu terima tugasnya.",
+      "gatherTitle": "Benda yang Membara",
+      "gatherBody": "Umbi bara tumbuh di tempat yang tak tersentuh cahaya. Turunlah ke Kuil Bawah dan ambil dari para pemakan pucat. Mereka menyerang lenteramu, bukan dirimu.",
+      "gatherProgress": "Umbi bara terkumpul: {current} / {needed}",
+      "returnTitle": "Beri Makan Tungku",
+      "returnBody": "Kamu membawa benda yang membara. Kembalilah ke Bruder Cakarhijau dan tekan {interactKey} untuk menyerahkannya."
     },
     "markers": {
       "names": {

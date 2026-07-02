@@ -254,9 +254,9 @@ export const pl_PL: EnTranslations = {
     },
     "tutorial": {
       "moveBodyTouch": "Użyj gałki ruchu, aby się poruszać, i przeciągaj ekran, aby się rozglądać. Zrób kilka kroków, by zacząć.",
-      "talkBodyTouch": "Stań blisko marszałka Redbrooka i dotknij przycisku Użyj, aby z nim porozmawiać, a następnie przyjmij jego zadanie.",
-      "returnBodyTouch": "Twoje zadanie jest wykonane. Wróć do marszałka Redbrooka i dotknij przycisku Użyj, aby je oddać.",
-      "doneBodyTouch": "Masz już podstawy, {name}. Dolina stoi przed tobą otworem. Dotknij Więcej, a potem Zadania, aby w każdej chwili przejrzeć swój dziennik. Dobrych łowów."
+      "talkBodyTouch": "Stań blisko Brata Zielonołapa i dotknij przycisku Użyj, aby porozmawiać, a następnie przyjmij jego zlecenie.",
+      "returnBodyTouch": "Niesiesz rzecz, która płonie. Wróć do Brata Zielonołapa i dotknij przycisku Użyj, aby ją oddać.",
+      "doneBodyTouch": "Masz już podstawy, {name}. Wydrążenie stoi przed tobą otworem, a Zielonołap zawsze ma jeszcze jedno zlecenie. Dotknij Więcej, a potem Zadania, aby w każdej chwili przejrzeć swój dziennik."
     },
     "widgets": {
       "clockTitle": "Czas lokalny - kliknij, aby przełączyć format 12/24-godzinny",
@@ -3099,23 +3099,23 @@ export const pl_PL: EnTranslations = {
       "friendOffline": "{name} przeszedł w tryb offline."
     },
     "tutorial": {
-      "title": "Nowy poszukiwacz przygód",
+      "title": "Nowy w Wydrążeniu",
       "stepLabel": "Krok {current} z {total}",
       "skip": "Pomiń samouczek",
       "dismiss": "Odrzuć",
-      "doneTitle": "Gotów na przygodę",
-      "doneBody": "Znasz już podstawy, {name}. Dolina stoi przed tobą otworem. Wciśnij {questKey} w dowolnej chwili, aby przejrzeć swoje zadania. Powodzenia na łowach.",
+      "doneTitle": "Dym Się Wznosi",
+      "doneBody": "Znasz już podstawy, {name}. Wydrążenie stoi przed tobą otworem, a Zielonołap zawsze ma jeszcze jedno zlecenie. Wciśnij {questKey} w dowolnej chwili, aby przejrzeć swoje zadania.",
       "moveTitle": "Stań pewnie na nogach",
       "moveBody": "Użyj {moveKeys}, aby się poruszać, i myszy, aby rozglądać się dookoła. Zrób kilka kroków, aby zacząć.",
-      "seekTitle": "Odszukaj marszałka",
-      "seekBody": "Marszałek Redbrook czeka w mieście i ma robotę dla nowego ostrza. Podążaj za znacznikiem, aby do niego dotrzeć.",
-      "talkTitle": "Przyjmij zadanie",
-      "talkBody": "Stań blisko marszałka Redbrooka i wciśnij {interactKey}, aby porozmawiać, a następnie przyjmij jego zadanie.",
-      "slayTitle": "Wilki u wrót",
-      "slayBody": "Poluj na leśne wilki na północnej drodze. Obierz jednego za cel i zaatakuj, aby przetrzebić watahę.",
-      "slayProgress": "Ubite leśne wilki: {current} / {needed}",
-      "returnTitle": "Odbierz nagrodę",
-      "returnBody": "Twoje zadanie wykonane. Wróć do marszałka Redbrooka i wciśnij {interactKey}, aby je rozliczyć."
+      "seekTitle": "Odszukaj Brata Zielonołapa",
+      "seekBody": "Brat Zielonołap czeka u stóp wazy, odcięty od wszystkiego i głodny. Podążaj za znacznikiem, aby do niego dotrzeć.",
+      "talkTitle": "Wysłuchaj Zlecenia",
+      "talkBody": "Stań blisko Brata Zielonołapa i wciśnij {interactKey}, aby porozmawiać, a następnie przyjmij jego zlecenie.",
+      "gatherTitle": "Rzecz, Która Płonie",
+      "gatherBody": "Żarobulwy rosną tam, gdzie nie sięga światło. Zejdź do Podziemi Kapliczki i odbierz je bladożercom. Idą na twoją latarnię, nie na ciebie.",
+      "gatherProgress": "Zebrane żarobulwy: {current} / {needed}",
+      "returnTitle": "Nakarm Piec",
+      "returnBody": "Niesiesz rzecz, która płonie. Wróć do Brata Zielonołapa i wciśnij {interactKey}, aby ją oddać."
     },
     "markers": {
       "names": {

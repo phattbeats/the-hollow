@@ -254,9 +254,9 @@ export const it_IT: EnTranslations = {
     },
     "tutorial": {
       "moveBodyTouch": "Usa il joystick di movimento per muoverti e trascina lo schermo per guardarti intorno. Fai qualche passo per iniziare.",
-      "talkBodyTouch": "Avvicinati al maresciallo Redbrook e tocca il pulsante Usa per parlargli, poi accetta il suo incarico.",
-      "returnBodyTouch": "Il tuo incarico è compiuto. Torna dal maresciallo Redbrook e tocca il pulsante Usa per consegnarlo.",
-      "doneBodyTouch": "Hai imparato le basi, {name}. La Valle è tutta da esplorare: tocca Altro, poi Registro missioni, per rivedere il tuo registro missioni in qualsiasi momento. Buona caccia!"
+      "talkBodyTouch": "Avvicinati a Fratello Zampaverde e tocca il pulsante Usa per parlargli, poi accetta il suo incarico.",
+      "returnBodyTouch": "Porti con te la cosa che arde. Torna da Fratello Zampaverde e tocca il pulsante Usa per consegnarla.",
+      "doneBodyTouch": "Hai imparato le basi, {name}. La Valle è tutta da esplorare, e Zampaverde ha sempre un altro incarico. Tocca Altro, poi Registro missioni, per rivedere il tuo registro missioni in qualsiasi momento."
     },
     "widgets": {
       "clockTitle": "Ora locale - clicca per alternare 12/24 ore",
@@ -3099,23 +3099,23 @@ export const it_IT: EnTranslations = {
       "friendOffline": "{name} è uscito offline."
     },
     "tutorial": {
-      "title": "Nuovo avventuriero",
+      "title": "Nuovo nella Valle",
       "stepLabel": "Passo {current} di {total}",
       "skip": "Salta il tutorial",
       "dismiss": "Chiudi",
-      "doneTitle": "Pronto all'avventura",
-      "doneBody": "Hai imparato le basi, {name}. La Valle è tutta da esplorare: premi {questKey} in qualsiasi momento per rivedere le tue missioni. Buona caccia!",
+      "doneTitle": "Il fumo si alza",
+      "doneBody": "Hai imparato le basi, {name}. La Valle è tutta da esplorare, e Zampaverde ha sempre un altro incarico. Premi {questKey} in qualsiasi momento per rivedere le tue missioni.",
       "moveTitle": "Trova l'equilibrio",
       "moveBody": "Usa {moveKeys} per muoverti e il mouse per guardarti intorno. Fai qualche passo per iniziare.",
-      "seekTitle": "Cerca il Maresciallo",
-      "seekBody": "Il maresciallo Redbrook attende in città e ha del lavoro per una nuova lama. Segui il segnale per raggiungerlo.",
-      "talkTitle": "Accetta l'incarico",
-      "talkBody": "Avvicinati al maresciallo Redbrook e premi {interactKey} per parlargli, poi accetta il suo incarico.",
-      "slayTitle": "Lupi alle porte",
-      "slayBody": "Dai la caccia ai lupi della foresta sulla strada a nord. Seleziona un bersaglio e attacca per ridurre il branco.",
-      "slayProgress": "Lupi della foresta uccisi: {current} / {needed}",
-      "returnTitle": "Reclama la ricompensa",
-      "returnBody": "Il tuo incarico è compiuto. Torna dal maresciallo Redbrook e premi {interactKey} per consegnarlo."
+      "seekTitle": "Cerca Fratello Zampaverde",
+      "seekBody": "Fratello Zampaverde attende ai piedi del vaso, senza più nulla e affamato. Segui il segnale per raggiungerlo.",
+      "talkTitle": "Ascolta l'incarico",
+      "talkBody": "Avvicinati a Fratello Zampaverde e premi {interactKey} per parlargli, poi accetta il suo incarico.",
+      "gatherTitle": "La cosa che arde",
+      "gatherBody": "I bulbi di brace crescono dove la luce non arriva. Scendi nel Sottosantuario e strappali ai divoratori pallidi. Vengono per la tua lanterna, non per te.",
+      "gatherProgress": "Bulbi di brace raccolti: {current} / {needed}",
+      "returnTitle": "Alimenta la fornace",
+      "returnBody": "Porti con te la cosa che arde. Torna da Fratello Zampaverde e premi {interactKey} per consegnarla."
     },
     "markers": {
       "names": {

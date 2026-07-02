@@ -254,9 +254,9 @@ export const tr_TR: EnTranslations = {
     },
     "tutorial": {
       "moveBodyTouch": "Hareket etmek için hareket çubuğunu kullan ve etrafa bakmak için ekranı sürükle. Başlamak için birkaç adım at.",
-      "talkBodyTouch": "Mareşal Redbrook'a yaklaş ve konuşmak için Kullan düğmesine dokun, ardından görevini kabul et.",
-      "returnBodyTouch": "Görevin tamamlandı. Mareşal Redbrook'a dön ve teslim etmek için Kullan düğmesine dokun.",
-      "doneBodyTouch": "Temelleri öğrendin, {name}. Vadi keşfetmen için senindir. Görev günlüğünü dilediğin an gözden geçirmek için Daha Fazla'ya, ardından Görevler'e dokun. İyi avlar."
+      "talkBodyTouch": "Birader Greenpaw'a yaklaş ve konuşmak için Kullan düğmesine dokun, ardından görevini kabul et.",
+      "returnBodyTouch": "Yanan şeyi taşıyorsun. Birader Greenpaw'a dön ve teslim etmek için Kullan düğmesine dokun.",
+      "doneBodyTouch": "Temelleri öğrendin, {name}. Oyuk keşfetmen için senindir, Greenpaw'ın her zaman bir işi daha vardır. Görev günlüğünü dilediğin an gözden geçirmek için Daha Fazla'ya, ardından Görevler'e dokun."
     },
     "widgets": {
       "clockTitle": "Yerel saat - 12/24 saat biçimi arasında geçiş için tıkla",
@@ -3099,23 +3099,23 @@ export const tr_TR: EnTranslations = {
       "friendOffline": "{name} çevrimdışı oldu."
     },
     "tutorial": {
-      "title": "Yeni Maceracı",
+      "title": "Oyuk'a Yeni Gelen",
       "stepLabel": "Adım {current} / {total}",
       "skip": "Eğitimi Atla",
       "dismiss": "Kapat",
-      "doneTitle": "Maceraya Hazır",
-      "doneBody": "Temelleri öğrendin, {name}. Vadi keşfetmen için senindir. Görevlerini gözden geçirmek için istediğin an {questKey} tuşuna bas. İyi avlar.",
+      "doneTitle": "Duman Yükseliyor",
+      "doneBody": "Temelleri öğrendin, {name}. Oyuk keşfetmen için senindir, Greenpaw'ın her zaman bir işi daha vardır. Görevlerini gözden geçirmek için istediğin an {questKey} tuşuna bas.",
       "moveTitle": "Ayağını Sağlam Bas",
       "moveBody": "Hareket etmek için {moveKeys} tuşlarını, etrafa bakmak için fareyi kullan. Başlamak için birkaç adım at.",
-      "seekTitle": "Mareşal'i Ara",
-      "seekBody": "Mareşal Redbrook kasabada bekliyor ve yeni bir kılıç için işi var. Ona ulaşmak için işareti takip et.",
-      "talkTitle": "Görevi Üstlen",
-      "talkBody": "Mareşal Redbrook'un yanında dur ve konuşmak için {interactKey} tuşuna bas, ardından görevini kabul et.",
-      "slayTitle": "Kapıdaki Kurtlar",
-      "slayBody": "Kuzey yolundaki Orman Kurtlarını avla. Birini hedef al ve sürüyü seyreltmek için saldır.",
-      "slayProgress": "Öldürülen Orman Kurtları: {current} / {needed}",
-      "returnTitle": "Ödülünü Al",
-      "returnBody": "Görevin tamamlandı. Mareşal Redbrook'a dön ve teslim etmek için {interactKey} tuşuna bas."
+      "seekTitle": "Birader Greenpaw'ı Ara",
+      "seekBody": "Birader Greenpaw vazonun dibinde bekliyor, her şeyden mahrum ve aç. Ona ulaşmak için işareti takip et.",
+      "talkTitle": "Görevi Dinle",
+      "talkBody": "Birader Greenpaw'ın yanında dur ve konuşmak için {interactKey} tuşuna bas, ardından görevini kabul et.",
+      "gatherTitle": "Yanan Şey",
+      "gatherBody": "Köz soğanları ışığın ulaşmadığı yerlerde büyür. Mabet Altı'na in ve onları solgunbeslenlerden al. Senin fenerine gelirler, sana değil.",
+      "gatherProgress": "Toplanan köz soğanı: {current} / {needed}",
+      "returnTitle": "Fırını Besle",
+      "returnBody": "Yanan şeyi taşıyorsun. Birader Greenpaw'a dön ve teslim etmek için {interactKey} tuşuna bas."
     },
     "markers": {
       "names": {

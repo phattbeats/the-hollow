@@ -254,9 +254,9 @@ export const sv_SE: EnTranslations = {
     },
     "tutorial": {
       "moveBodyTouch": "Använd rörelsespaken för att gå och dra på skärmen för att se dig omkring. Ta några steg för att börja.",
-      "talkBodyTouch": "Ställ dig nära marskalk Redbrook och tryck på Använd-knappen för att tala, anta sedan hans uppgift.",
-      "returnBodyTouch": "Din uppgift är klar. Återvänd till marskalk Redbrook och tryck på Använd-knappen för att lämna in den.",
-      "doneBodyTouch": "Du behärskar grunderna, {name}. Dalen är din att utforska. Tryck på Mer och sedan Uppdrag för att granska din uppdragslogg när som helst. Lycka till på jakten."
+      "talkBodyTouch": "Ställ dig nära Broder Gröntass och tryck på Använd-knappen för att tala, godkänn sedan hans ärende.",
+      "returnBodyTouch": "Du bär tinget som brinner. Återvänd till Broder Gröntass och tryck på Använd-knappen för att lämna in det.",
+      "doneBodyTouch": "Du behärskar grunderna, {name}. Hollow är ditt att utforska, och Gröntass har alltid ett ärende till. Tryck på Mer och sedan Uppdrag för att granska din uppdragslogg när som helst."
     },
     "widgets": {
       "clockTitle": "Lokal tid - klicka för att växla mellan 12/24-timmar",
@@ -3099,23 +3099,23 @@ export const sv_SE: EnTranslations = {
       "friendOffline": "{name} har kopplat från."
     },
     "tutorial": {
-      "title": "Ny äventyrare",
+      "title": "Ny i Hollow",
       "stepLabel": "Steg {current} av {total}",
       "skip": "Hoppa över handledning",
       "dismiss": "Stäng",
-      "doneTitle": "Redo för äventyr",
-      "doneBody": "Du behärskar grunderna, {name}. Dalen är din att utforska. Tryck på {questKey} när som helst för att se dina uppdrag. Lycka till på jakten.",
+      "doneTitle": "Röken Stiger",
+      "doneBody": "Du behärskar grunderna, {name}. Hollow är ditt att utforska, och Gröntass har alltid ett ärende till. Tryck på {questKey} när som helst för att se dina uppdrag.",
       "moveTitle": "Hitta fotfästet",
       "moveBody": "Använd {moveKeys} för att röra dig och musen för att se dig omkring. Ta några steg för att börja.",
-      "seekTitle": "Sök upp marskalken",
-      "seekBody": "Marshal Redbrook väntar i staden och har arbete åt en ny klinga. Följ markören för att nå honom.",
-      "talkTitle": "Anta uppdraget",
-      "talkBody": "Ställ dig nära Marshal Redbrook och tryck på {interactKey} för att tala, godkänn sedan hans uppdrag.",
-      "slayTitle": "Vargar vid dörren",
-      "slayBody": "Jaga skogsvargarna på norra vägen. Sikta på en och attackera för att tunna ut flocken.",
-      "slayProgress": "Dödade skogsvargar: {current} / {needed}",
-      "returnTitle": "Hämta din belöning",
-      "returnBody": "Ditt uppdrag är slutfört. Återvänd till Marshal Redbrook och tryck på {interactKey} för att lämna in det."
+      "seekTitle": "Sök Broder Gröntass",
+      "seekBody": "Broder Gröntass väntar vid foten av urnan, utan allt och hungrig. Följ markören för att nå honom.",
+      "talkTitle": "Hör Ärendet",
+      "talkBody": "Ställ dig nära Broder Gröntass och tryck på {interactKey} för att tala, godkänn sedan hans ärende.",
+      "gatherTitle": "Tinget Som Brinner",
+      "gatherBody": "Glödknölar växer där ljuset inte når. Stig ner i Underhelgedomen och ta dem från blekätarna. De kommer mot din lykta, inte mot dig.",
+      "gatherProgress": "Insamlade glödknölar: {current} / {needed}",
+      "returnTitle": "Mata Ugnen",
+      "returnBody": "Du bär tinget som brinner. Återvänd till Broder Gröntass och tryck på {interactKey} för att lämna in det."
     },
     "markers": {
       "names": {

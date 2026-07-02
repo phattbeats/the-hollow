@@ -58,11 +58,11 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'hudChrome.tutorial.moveBodyTouch':
     'Usa el joystick de movimiento para moverte y arrastra la pantalla para mirar alrededor. Da unos pasos para empezar.',
   'hudChrome.tutorial.talkBodyTouch':
-    'Acércate al mariscal Redbrook y toca el botón Usar para hablar; luego acepta su tarea.',
+    'Acércate al Hermano Pataverde y toca el botón Usar para hablar, luego acepta su encargo.',
   'hudChrome.tutorial.returnBodyTouch':
-    'Tu tarea está hecha. Vuelve con el mariscal Redbrook y toca el botón Usar para entregarla.',
+    'Llevas contigo lo que arde. Vuelve con el Hermano Pataverde y toca el botón Usar para entregarlo.',
   'hudChrome.tutorial.doneBodyTouch':
-    'Ya dominas lo básico, {name}. El Valle es tuyo para explorar: toca Más y luego Diario de misiones para revisar tu diario de misiones en cualquier momento. ¡Buena caza!',
+    'Ya dominas lo básico, {name}. El Valle es tuyo para explorar, y Pataverde siempre tiene un encargo más. Toca Más y luego Diario de misiones para revisar tu diario de misiones en cualquier momento.',
   'hudChrome.raidLockout.title': 'Bloqueos de banda',
   'hudChrome.raidLockout.allReady': 'Todas las bandas listas',
   'hudChrome.raidLockout.daysHours': '{d}d {h}h',
@@ -104,29 +104,29 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'realm.popTipFull':
     'Población llena: 80 o más jugadores conectados ahora. Muy concurrido; puede que esperes en una cola de inicio de sesión.',
   'realm.popTipOffline': 'Sin conexión: este reino no está disponible ahora y no se puede entrar.',
-  'hud.tutorial.title': 'Nuevo Aventurero',
+  'hud.tutorial.title': 'Nuevo en el Valle',
   'hud.tutorial.stepLabel': 'Paso {current} de {total}',
   'hud.tutorial.skip': 'Saltar tutorial',
   'hud.tutorial.dismiss': 'Descartar',
-  'hud.tutorial.doneTitle': 'Listo para la aventura',
+  'hud.tutorial.doneTitle': 'El Humo se Eleva',
   'hud.tutorial.doneBody':
-    'Ya dominas lo básico, {name}. El Valle es tuyo para explorar: pulsa {questKey} en cualquier momento para revisar tus misiones. ¡Buena caza!',
+    'Ya dominas lo básico, {name}. El Valle es tuyo para explorar, y Pataverde siempre tiene un encargo más. Pulsa {questKey} en cualquier momento para revisar tus misiones.',
   'hud.tutorial.moveTitle': 'Da tus primeros pasos',
   'hud.tutorial.moveBody':
     'Usa {moveKeys} para moverte y el ratón para mirar alrededor. Da unos pasos para empezar.',
-  'hud.tutorial.seekTitle': 'Busca al Mariscal',
+  'hud.tutorial.seekTitle': 'Busca al Hermano Pataverde',
   'hud.tutorial.seekBody':
-    'El mariscal Redbrook espera en el pueblo y tiene trabajo para una nueva espada. Sigue la marca para llegar a él.',
-  'hud.tutorial.talkTitle': 'Acepta la tarea',
+    'El Hermano Pataverde espera al pie del jarrón, sin nada y hambriento. Sigue la marca para llegar a él.',
+  'hud.tutorial.talkTitle': 'Escucha el Encargo',
   'hud.tutorial.talkBody':
-    'Acércate al mariscal Redbrook y pulsa {interactKey} para hablar; luego acepta su tarea.',
-  'hud.tutorial.slayTitle': 'Lobos a las puertas',
-  'hud.tutorial.slayBody':
-    'Caza a los lobos del bosque en el camino del norte. Selecciona uno y atácalo para diezmar la manada.',
-  'hud.tutorial.slayProgress': 'Lobos del bosque abatidos: {current} / {needed}',
-  'hud.tutorial.returnTitle': 'Reclama tu recompensa',
+    'Acércate al Hermano Pataverde y pulsa {interactKey} para hablar, luego acepta su encargo.',
+  'hud.tutorial.gatherTitle': 'Lo Que Arde',
+  'hud.tutorial.gatherBody':
+    'Los bulbos ascua crecen donde no llega la luz. Desciende al Santuario Subterráneo y arrebátalos a los devoradores pálidos. Van a por tu farol, no por ti.',
+  'hud.tutorial.gatherProgress': 'Bulbos ascua recolectados: {current} / {needed}',
+  'hud.tutorial.returnTitle': 'Alimenta el Horno',
   'hud.tutorial.returnBody':
-    'Tu tarea está hecha. Vuelve con el mariscal Redbrook y pulsa {interactKey} para entregarla.',
+    'Llevas contigo lo que arde. Vuelve con el Hermano Pataverde y pulsa {interactKey} para entregarlo.',
   // Character-sheet stat tooltips (hudChrome.statInfo.*).
   'hudChrome.statInfo.fromYour': 'De tu {value} de {stat}:',
   'hudChrome.statInfo.desc.str':

@@ -25,14 +25,14 @@ const KEYBOARD: Record<TutorialStep, TutorialBodyPlan> = {
   move: { bodyKey: 'hud.tutorial.moveBody', params: ['moveKeys'] },
   seek: { bodyKey: 'hud.tutorial.seekBody', params: [] },
   talk: { bodyKey: 'hud.tutorial.talkBody', params: ['interactKey'] },
-  slay: { bodyKey: 'hud.tutorial.slayBody', params: [] },
+  gather: { bodyKey: 'hud.tutorial.gatherBody', params: [] },
   return: { bodyKey: 'hud.tutorial.returnBody', params: ['interactKey'] },
   done: { bodyKey: 'hud.tutorial.doneBody', params: ['name', 'questKey'] },
 };
 
-// Only the steps whose copy names a control differ on touch. seek/slay describe
-// the world (a marker to follow, wolves to hunt) and read identically, so they
-// fall through to the shared keyboard entry.
+// Only the steps whose copy names a control differ on touch. seek/gather
+// describe the world (a marker to follow, emberbulbs to gather) and read
+// identically, so they fall through to the shared keyboard entry.
 const TOUCH: Partial<Record<TutorialStep, TutorialBodyPlan>> = {
   move: { bodyKey: 'hudChrome.tutorial.moveBodyTouch', params: [] },
   talk: { bodyKey: 'hudChrome.tutorial.talkBodyTouch', params: [] },
@@ -47,9 +47,9 @@ export function tutorialBodyPlan(step: TutorialStep, touch: boolean): TutorialBo
 }
 
 // True when a step's body copy actually changes between the touch and keyboard
-// interfaces. move/talk/return/done have touch variants; seek/slay describe the
-// world (a marker to follow, wolves to hunt) and read identically, so a mode
-// toggle on them is a no-op for the rendered text.
+// interfaces. move/talk/return/done have touch variants; seek/gather describe
+// the world (a marker to follow, emberbulbs to gather) and read identically,
+// so a mode toggle on them is a no-op for the rendered text.
 export function tutorialStepDiffersByTouch(step: TutorialStep): boolean {
   return tutorialBodyPlan(step, true).bodyKey !== tutorialBodyPlan(step, false).bodyKey;
 }
@@ -59,7 +59,7 @@ export function tutorialStepDiffersByTouch(step: TutorialStep): boolean {
 // step whose copy depends on the mode is showing: touch and keyboard pick
 // different control copy, so a card left open across an Interface Mode toggle
 // would otherwise keep the stale "movement stick"/"press F" phrasing until the
-// next step. A toggle on a mode-agnostic step (seek/slay) does not rebuild.
+// next step. A toggle on a mode-agnostic step (seek/gather) does not rebuild.
 export function tutorialNeedsRerender(
   prevStep: TutorialStep | null,
   nextStep: TutorialStep,

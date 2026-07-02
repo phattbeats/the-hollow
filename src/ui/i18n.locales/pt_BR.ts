@@ -58,11 +58,11 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.tutorial.moveBodyTouch':
     'Use o analógico de movimento para se mover e arraste a tela para olhar ao redor. Dê alguns passos para começar.',
   'hudChrome.tutorial.talkBodyTouch':
-    'Aproxime-se do marechal Redbrook e toque no botão Usar para falar, então aceite a tarefa dele.',
+    'Aproxime-se do Irmão Pataverde e toque no botão Usar para falar, então aceite a tarefa dele.',
   'hudChrome.tutorial.returnBodyTouch':
-    'Sua tarefa está concluída. Volte ao marechal Redbrook e toque no botão Usar para entregá-la.',
+    'Você carrega a coisa que arde. Volte ao Irmão Pataverde e toque no botão Usar para entregá-la.',
   'hudChrome.tutorial.doneBodyTouch':
-    'Você já domina o básico, {name}. O Vale é seu para explorar. Toque em Mais e depois em Registro de missões para ver seu registro de missões a qualquer momento. Boa caçada!',
+    'Você já domina o básico, {name}. O Vale é seu para explorar, e Pataverde sempre tem mais uma tarefa. Toque em Mais e depois em Registro de missões para ver seu registro de missões a qualquer momento.',
   'hudChrome.raidLockout.title': 'Bloqueios de raide',
   'hudChrome.raidLockout.allReady': 'Todas as raides prontas',
   'hudChrome.raidLockout.daysHours': '{d}d {h}h',
@@ -104,29 +104,29 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'realm.popTipFull':
     'População cheia: 80 ou mais jogadores online agora. Muito movimentado; talvez você espere em uma fila de login.',
   'realm.popTipOffline': 'Offline: este reino está inacessível no momento e não pode ser acessado.',
-  'hud.tutorial.title': 'Novo Aventureiro',
+  'hud.tutorial.title': 'Novo no Vale',
   'hud.tutorial.stepLabel': 'Passo {current} de {total}',
   'hud.tutorial.skip': 'Pular tutorial',
   'hud.tutorial.dismiss': 'Dispensar',
-  'hud.tutorial.doneTitle': 'Pronto para a aventura',
+  'hud.tutorial.doneTitle': 'A Fumaça Sobe',
   'hud.tutorial.doneBody':
-    'Você já domina o básico, {name}. O Vale é seu para explorar. Pressione {questKey} a qualquer momento para ver suas missões. Boa caçada!',
+    'Você já domina o básico, {name}. O Vale é seu para explorar, e Pataverde sempre tem mais uma tarefa. Pressione {questKey} a qualquer momento para ver suas missões.',
   'hud.tutorial.moveTitle': 'Dê os primeiros passos',
   'hud.tutorial.moveBody':
     'Use {moveKeys} para se mover e o mouse para olhar ao redor. Dê alguns passos para começar.',
-  'hud.tutorial.seekTitle': 'Procure o Marechal',
+  'hud.tutorial.seekTitle': 'Procure o Irmão Pataverde',
   'hud.tutorial.seekBody':
-    'O marechal Redbrook espera na cidade e tem trabalho para uma nova lâmina. Siga o marcador para chegar até ele.',
-  'hud.tutorial.talkTitle': 'Aceite a tarefa',
+    'O Irmão Pataverde espera aos pés do vaso, sem nada e faminto. Siga o marcador para chegar até ele.',
+  'hud.tutorial.talkTitle': 'Ouça a Tarefa',
   'hud.tutorial.talkBody':
-    'Aproxime-se do marechal Redbrook e pressione {interactKey} para falar, então aceite a tarefa dele.',
-  'hud.tutorial.slayTitle': 'Lobos à porta',
-  'hud.tutorial.slayBody':
-    'Cace os lobos da floresta na estrada do norte. Selecione um e ataque para reduzir a matilha.',
-  'hud.tutorial.slayProgress': 'Lobos da floresta abatidos: {current} / {needed}',
-  'hud.tutorial.returnTitle': 'Reivindique sua recompensa',
+    'Aproxime-se do Irmão Pataverde e pressione {interactKey} para falar, então aceite a tarefa dele.',
+  'hud.tutorial.gatherTitle': 'A Coisa Que Arde',
+  'hud.tutorial.gatherBody':
+    'Bulbos de brasa crescem onde a luz não chega. Desça ao Santuário Subterrâneo e tome-os dos devorapálidos. Eles vêm pra cima da sua lanterna, não de você.',
+  'hud.tutorial.gatherProgress': 'Bulbos de brasa coletados: {current} / {needed}',
+  'hud.tutorial.returnTitle': 'Alimente a Fornalha',
   'hud.tutorial.returnBody':
-    'Sua tarefa está concluída. Volte ao marechal Redbrook e pressione {interactKey} para entregá-la.',
+    'Você carrega a coisa que arde. Volte ao Irmão Pataverde e pressione {interactKey} para entregá-la.',
   // Character-sheet stat tooltips (hudChrome.statInfo.*).
   'hudChrome.statInfo.fromYour': 'Do seu {value} de {stat}:',
   'hudChrome.statInfo.desc.str':

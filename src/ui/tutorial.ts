@@ -1,46 +1,53 @@
-// New-Adventurer Tutorial — a one-time guided onboarding overlay.
+// First-Errand Tutorial, a one-time guided onboarding overlay.
 //
-// Brand-new characters used to spawn in Eastbrook with only an easily-missed
-// combat-log hint. This overlay walks a first-time player through the five
-// classic first steps: move → find the starter NPC → take the quest → slay the
-// wolves → turn it in. Every step is detected by *observing* existing IWorld
-// state (player/NPC positions, quest log, completed quests), so this module is
-// pure presentation: it never writes sim state, never touches the wire
-// protocol, and runs identically against the offline Sim and the online
-// ClientWorld. Completion is remembered in localStorage so it shows only once.
+// Brand-new characters spawn at the vase in the portal-instanced hub with only
+// an easily-missed combat-log hint. This overlay walks a first-time player
+// through the five first steps: move, find Brother Greenpaw, take the errand,
+// gather the emberbulbs, turn it in. Every step is detected by *observing*
+// existing IWorld state (player/NPC positions, quest log, completed quests),
+// so this module is pure presentation: it never writes sim state, never
+// touches the wire protocol, and runs identically against the offline Sim and
+// the online ClientWorld. Completion is remembered in localStorage so it shows
+// only once.
 //
 // Reads through IWorld only (src/ CLAUDE.md). The starter ids below mirror the
-// shipped zone-1 content (the same QUESTS the HUD already imports).
+// shipped Hollow content (the same QUESTS/MOBS the HUD already imports).
 
 import type { Keybinds } from '../game/keybinds';
 import type { Renderer } from '../render/renderer';
-import { PLAYER_START, QUESTS, ZONES } from '../sim/data';
+import { HOLLOW_QUEST_ORDER } from '../sim/content/hollow';
+import { MOBS, QUESTS } from '../sim/data';
 import { dist2d, INTERACT_RANGE } from '../sim/types';
 import type { IWorld } from '../world_api';
 import type { TranslationKey } from './i18n';
 import { formatNumber, t } from './i18n';
 import { type TutorialParam, tutorialBodyPlan, tutorialNeedsRerender } from './tutorial_copy';
 
-// Starter content the onboarding guides the player toward — all derived from the
-// shipped sim sources so a content rename or a moved spawn can't silently desync
-// onboarding (a resolve test pins that the derivation still finds a giver+mob).
-const STARTER_QUEST = ZONES[0]?.welcomeQuestId ?? 'q_wolves';
+// Starter content the onboarding guides the player toward, all derived from the
+// shipped sim sources so a content rename can't silently desync onboarding (a
+// resolve test pins that the derivation still finds a giver + drop mob).
+const STARTER_QUEST = HOLLOW_QUEST_ORDER[0] ?? 'q_what_burns';
 const STARTER_DEF = QUESTS[STARTER_QUEST];
-const GIVER_NPC = STARTER_DEF?.giverNpcId ?? 'marshal_redbrook';
-const STARTER_MOB =
-  STARTER_DEF?.objectives?.find((o) => o.type === 'kill')?.targetMobId ?? 'forest_wolf';
-const SPAWN = { x: PLAYER_START.x, y: 0, z: PLAYER_START.z }; // dist2d ignores y
-const MOVE_THRESHOLD = 3; // yards from spawn before "find your footing" is satisfied
+const GIVER_NPC = STARTER_DEF?.giverNpcId ?? 'brother_greenpaw';
+const COLLECT_OBJECTIVE = STARTER_DEF?.objectives?.find((o) => o.type === 'collect');
+// The mob whose loot table drops the errand's item: the arrow points at the
+// nearest live one when any is in the interest set (they live in the
+// Under-Shrine, not the hub, so the arrow hides until the player descends).
+const STARTER_MOB = COLLECT_OBJECTIVE
+  ? (Object.values(MOBS).find((m) => m.loot.some((l) => l.itemId === COLLECT_OBJECTIVE.itemId))
+      ?.id ?? 'palefeeder')
+  : 'palefeeder';
+const MOVE_THRESHOLD = 3; // yards from the engage-time position before "find your footing" is satisfied
 const GIVER_RANGE = INTERACT_RANGE + 2; // matches the sim's accept-quest reach
-const STORAGE_KEY = 'woc.tutorial.v1';
+const STORAGE_KEY = 'hollow.tutorial.v1';
 const DONE_LINGER_MS = 9000; // auto-dismiss the closing card after this long
 
-export type TutorialStep = 'move' | 'seek' | 'talk' | 'slay' | 'return' | 'done';
+export type TutorialStep = 'move' | 'seek' | 'talk' | 'gather' | 'return' | 'done';
 
-const STEP_ORDER: TutorialStep[] = ['move', 'seek', 'talk', 'slay', 'return'];
+const STEP_ORDER: TutorialStep[] = ['move', 'seek', 'talk', 'gather', 'return'];
 
 export interface TutorialSnapshot {
-  moved: boolean; // player has stepped away from the spawn point
+  moved: boolean; // player has stepped away from the engage-time position
   nearGiver: boolean; // player is within talk range of the starter NPC
   questActive: boolean; // starter quest is in the quest log
   questReady: boolean; // all objectives met, ready to turn in
@@ -68,7 +75,7 @@ export function isFreshCharacter(world: IWorld): boolean {
 export function computeTutorialStep(s: TutorialSnapshot): TutorialStep {
   if (s.questDone) return 'done';
   if (s.questReady) return 'return';
-  if (s.questActive) return 'slay';
+  if (s.questActive) return 'gather';
   if (s.nearGiver) return 'talk';
   if (s.moved) return 'seek';
   return 'move';
@@ -80,6 +87,10 @@ export class TutorialOverlay {
   private step: TutorialStep | null = null;
   private doneSince = 0;
   private lastTouch = false; // mobile-touch state at the last renderPanel
+  // Captured on the frame the overlay first engages: new characters land
+  // inside the instanced hub, so there is no fixed world-space spawn point to
+  // anchor the "moved" threshold to. Null until engagement.
+  private spawn: { x: number; y: number; z: number } | null = null;
 
   private root: HTMLElement | null = null;
   private titleEl!: HTMLElement;
@@ -104,12 +115,13 @@ export class TutorialOverlay {
     if (!this.engaged) {
       if (!isFreshCharacter(world)) return;
       this.engaged = true;
+      this.spawn = { x: p.pos.x, y: 0, z: p.pos.z }; // dist2d ignores y
     }
 
     const giver = this.findEntity(world, 'npc', GIVER_NPC);
     const qstate = world.questState(STARTER_QUEST);
     const snapshot: TutorialSnapshot = {
-      moved: dist2d(p.pos, SPAWN) > MOVE_THRESHOLD,
+      moved: !!this.spawn && dist2d(p.pos, this.spawn) > MOVE_THRESHOLD,
       nearGiver: !!giver && dist2d(p.pos, giver.pos) <= GIVER_RANGE,
       questActive: world.questLog.has(STARTER_QUEST),
       questReady: qstate === 'ready',
@@ -125,9 +137,9 @@ export class TutorialOverlay {
       this.step = next;
       if (next === 'done' && this.doneSince === 0) this.doneSince = performance.now();
       this.renderPanel(world, keybinds);
-    } else if (this.step === 'slay') {
-      // live-refresh the kill counter without rebuilding the whole panel
-      this.progressEl.textContent = this.slayProgress(world);
+    } else if (this.step === 'gather') {
+      // live-refresh the gathered counter without rebuilding the whole panel
+      this.progressEl.textContent = this.gatherProgress(world);
     }
 
     if (this.step === 'done') {
@@ -163,11 +175,11 @@ export class TutorialOverlay {
     return best;
   }
 
-  private slayProgress(world: IWorld): string {
+  private gatherProgress(world: IWorld): string {
     const def = QUESTS[STARTER_QUEST];
     const needed = def?.objectives?.[0]?.count ?? 0;
     const current = world.questLog.get(STARTER_QUEST)?.counts?.[0] ?? 0;
-    return t('hud.tutorial.slayProgress', {
+    return t('hud.tutorial.gatherProgress', {
       current: formatNumber(Math.min(current, needed)),
       needed: formatNumber(needed),
     });
@@ -247,7 +259,7 @@ export class TutorialOverlay {
       move: 'hud.tutorial.moveTitle',
       seek: 'hud.tutorial.seekTitle',
       talk: 'hud.tutorial.talkTitle',
-      slay: 'hud.tutorial.slayTitle',
+      gather: 'hud.tutorial.gatherTitle',
       return: 'hud.tutorial.returnTitle',
       done: 'hud.tutorial.doneTitle',
     };
@@ -264,8 +276,8 @@ export class TutorialOverlay {
           })
         : '';
 
-    if (this.step === 'slay') {
-      this.progressEl.textContent = this.slayProgress(world);
+    if (this.step === 'gather') {
+      this.progressEl.textContent = this.gatherProgress(world);
       this.progressEl.style.display = '';
     } else {
       this.progressEl.style.display = 'none';
@@ -276,13 +288,17 @@ export class TutorialOverlay {
     this.root.classList.toggle('tut-done', this.step === 'done');
   }
 
-  // Points an on-screen marker at the current objective (NPC or nearest wolf).
+  // Points an on-screen marker at the current objective (NPC or nearest
+  // palefeeder). If no live palefeeder is in the interest set (the expected
+  // case while the player is still in the hub, since they live in the
+  // Under-Shrine dungeon), nearestMob returns null and the arrow just hides:
+  // the copy alone tells the player to descend.
   private updateArrow(world: IWorld, renderer: Renderer): void {
     if (!this.arrow) return;
     let target: { x: number; y: number; z: number; scale?: number } | null = null;
     if (this.step === 'seek' || this.step === 'talk' || this.step === 'return') {
       target = this.findEntity(world, 'npc', GIVER_NPC)?.pos ?? null;
-    } else if (this.step === 'slay') {
+    } else if (this.step === 'gather') {
       target = this.nearestMob(world, STARTER_MOB)?.pos ?? null;
     }
     if (!target) {

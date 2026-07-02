@@ -254,9 +254,9 @@ export const da_DK: EnTranslations = {
     },
     "tutorial": {
       "moveBodyTouch": "Brug bevægelsesstikken til at bevæge dig og træk på skærmen for at se dig omkring. Tag et par skridt for at begynde.",
-      "talkBodyTouch": "Stil dig tæt på Marskal Redbrook og tryk på Brug-knappen for at tale, og accepter derefter hans opgave.",
-      "returnBodyTouch": "Din opgave er fuldført. Vend tilbage til Marskal Redbrook og tryk på Brug-knappen for at aflevere den.",
-      "doneBodyTouch": "Du har styr på det grundlæggende, {name}. Dalen er din at udforske. Tryk på Mere, derefter Opgaver, for at gennemse din opgavelog når som helst. God jagt."
+      "talkBodyTouch": "Stil dig tæt på Broder Grønpote og tryk på Brug-knappen for at tale, og accepter derefter hans ærinde.",
+      "returnBodyTouch": "Du bærer tingen der brænder. Vend tilbage til Broder Grønpote og tryk på Brug-knappen for at aflevere den.",
+      "doneBodyTouch": "Du har det grundlæggende, {name}. Hollow er dit at udforske, og Grønpote har altid endnu et ærinde. Tryk på Mere, derefter Opgaver, for at gennemse din opgavelog når som helst."
     },
     "widgets": {
       "clockTitle": "Lokal tid - klik for at skifte mellem 12/24-timers",
@@ -3099,23 +3099,23 @@ export const da_DK: EnTranslations = {
       "friendOffline": "{name} er gået offline."
     },
     "tutorial": {
-      "title": "Ny eventyrer",
+      "title": "Ny i Hollow",
       "stepLabel": "Trin {current} af {total}",
       "skip": "Spring vejledning over",
       "dismiss": "Afvis",
-      "doneTitle": "Klar til eventyr",
-      "doneBody": "Du har det grundlæggende, {name}. Dalen er din at udforske. Tryk på {questKey} når som helst for at gennemse dine opgaver. God jagt.",
+      "doneTitle": "Røgen Stiger",
+      "doneBody": "Du har det grundlæggende, {name}. Hollow er dit at udforske, og Grønpote har altid endnu et ærinde. Tryk på {questKey} når som helst for at gennemse dine opgaver.",
       "moveTitle": "Find fodfæste",
       "moveBody": "Brug {moveKeys} til at bevæge dig og musen til at se dig omkring. Tag et par skridt for at begynde.",
-      "seekTitle": "Opsøg marskallen",
-      "seekBody": "Marskal Redbrook venter i byen og har arbejde til en ny klinge. Følg markøren for at nå ham.",
-      "talkTitle": "Tag opgaven",
-      "talkBody": "Stil dig tæt på Marskal Redbrook og tryk på {interactKey} for at tale, og accepter derefter hans opgave.",
-      "slayTitle": "Ulve ved døren",
-      "slayBody": "Jag Skovulvene på nordvejen. Vælg en som mål og angrib for at tynde flokken.",
-      "slayProgress": "Skovulve dræbt: {current} / {needed}",
-      "returnTitle": "Indkræv din belønning",
-      "returnBody": "Din opgave er fuldført. Vend tilbage til Marskal Redbrook og tryk på {interactKey} for at aflevere den."
+      "seekTitle": "Opsøg Broder Grønpote",
+      "seekBody": "Broder Grønpote venter ved foden af urnen, uden alt og sulten. Følg markøren for at nå ham.",
+      "talkTitle": "Hør Ærindet",
+      "talkBody": "Stil dig tæt på Broder Grønpote og tryk på {interactKey} for at tale, og accepter derefter hans ærinde.",
+      "gatherTitle": "Tingen Der Brænder",
+      "gatherBody": "Glødeknolde vokser hvor lyset ikke når. Stig ned i Underhelligdommen og tag dem fra blegæderne. De kommer mod din lygte, ikke mod dig.",
+      "gatherProgress": "Indsamlede glødeknolde: {current} / {needed}",
+      "returnTitle": "Fodr Ovnen",
+      "returnBody": "Du bærer tingen der brænder. Vend tilbage til Broder Grønpote og tryk på {interactKey} for at aflevere den."
     },
     "markers": {
       "names": {

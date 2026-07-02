@@ -254,9 +254,9 @@ export const pt_BR: EnTranslations = {
     },
     "tutorial": {
       "moveBodyTouch": "Use o analógico de movimento para se mover e arraste a tela para olhar ao redor. Dê alguns passos para começar.",
-      "talkBodyTouch": "Aproxime-se do marechal Redbrook e toque no botão Usar para falar, então aceite a tarefa dele.",
-      "returnBodyTouch": "Sua tarefa está concluída. Volte ao marechal Redbrook e toque no botão Usar para entregá-la.",
-      "doneBodyTouch": "Você já domina o básico, {name}. O Vale é seu para explorar. Toque em Mais e depois em Registro de missões para ver seu registro de missões a qualquer momento. Boa caçada!"
+      "talkBodyTouch": "Aproxime-se do Irmão Pataverde e toque no botão Usar para falar, então aceite a tarefa dele.",
+      "returnBodyTouch": "Você carrega a coisa que arde. Volte ao Irmão Pataverde e toque no botão Usar para entregá-la.",
+      "doneBodyTouch": "Você já domina o básico, {name}. O Vale é seu para explorar, e Pataverde sempre tem mais uma tarefa. Toque em Mais e depois em Registro de missões para ver seu registro de missões a qualquer momento."
     },
     "widgets": {
       "clockTitle": "Horário local - clique para alternar entre 12/24 horas",
@@ -3099,23 +3099,23 @@ export const pt_BR: EnTranslations = {
       "friendOffline": "{name} ficou offline."
     },
     "tutorial": {
-      "title": "Novo Aventureiro",
+      "title": "Novo no Vale",
       "stepLabel": "Passo {current} de {total}",
       "skip": "Pular tutorial",
       "dismiss": "Dispensar",
-      "doneTitle": "Pronto para a aventura",
-      "doneBody": "Você já domina o básico, {name}. O Vale é seu para explorar. Pressione {questKey} a qualquer momento para ver suas missões. Boa caçada!",
+      "doneTitle": "A Fumaça Sobe",
+      "doneBody": "Você já domina o básico, {name}. O Vale é seu para explorar, e Pataverde sempre tem mais uma tarefa. Pressione {questKey} a qualquer momento para ver suas missões.",
       "moveTitle": "Dê os primeiros passos",
       "moveBody": "Use {moveKeys} para se mover e o mouse para olhar ao redor. Dê alguns passos para começar.",
-      "seekTitle": "Procure o Marechal",
-      "seekBody": "O marechal Redbrook espera na cidade e tem trabalho para uma nova lâmina. Siga o marcador para chegar até ele.",
-      "talkTitle": "Aceite a tarefa",
-      "talkBody": "Aproxime-se do marechal Redbrook e pressione {interactKey} para falar, então aceite a tarefa dele.",
-      "slayTitle": "Lobos à porta",
-      "slayBody": "Cace os lobos da floresta na estrada do norte. Selecione um e ataque para reduzir a matilha.",
-      "slayProgress": "Lobos da floresta abatidos: {current} / {needed}",
-      "returnTitle": "Reivindique sua recompensa",
-      "returnBody": "Sua tarefa está concluída. Volte ao marechal Redbrook e pressione {interactKey} para entregá-la."
+      "seekTitle": "Procure o Irmão Pataverde",
+      "seekBody": "O Irmão Pataverde espera aos pés do vaso, sem nada e faminto. Siga o marcador para chegar até ele.",
+      "talkTitle": "Ouça a Tarefa",
+      "talkBody": "Aproxime-se do Irmão Pataverde e pressione {interactKey} para falar, então aceite a tarefa dele.",
+      "gatherTitle": "A Coisa Que Arde",
+      "gatherBody": "Bulbos de brasa crescem onde a luz não chega. Desça ao Santuário Subterrâneo e tome-os dos devorapálidos. Eles vêm pra cima da sua lanterna, não de você.",
+      "gatherProgress": "Bulbos de brasa coletados: {current} / {needed}",
+      "returnTitle": "Alimente a Fornalha",
+      "returnBody": "Você carrega a coisa que arde. Volte ao Irmão Pataverde e pressione {interactKey} para entregá-la."
     },
     "markers": {
       "names": {
