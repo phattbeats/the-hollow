@@ -3618,27 +3618,27 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'hud.trade.yourOffer': 'Dit tilbud',
   'hud.tutorial.dismiss': 'Afvis',
   'hud.tutorial.doneBody':
-    'Du har det grundlæggende, {name}. Dalen er din at udforske. Tryk på {questKey} når som helst for at gennemse dine opgaver. God jagt.',
-  'hud.tutorial.doneTitle': 'Klar til eventyr',
+    'Du har det grundlæggende, {name}. Hollow er dit at udforske, og Grønpote har altid endnu et ærinde. Tryk på {questKey} når som helst for at gennemse dine opgaver.',
+  'hud.tutorial.doneTitle': 'Røgen Stiger',
+  'hud.tutorial.gatherBody':
+    'Glødeknolde vokser hvor lyset ikke når. Stig ned i Underhelligdommen og tag dem fra blegæderne. De kommer mod din lygte, ikke mod dig.',
+  'hud.tutorial.gatherProgress': 'Indsamlede glødeknolde: {current} / {needed}',
+  'hud.tutorial.gatherTitle': 'Tingen Der Brænder',
   'hud.tutorial.moveBody':
     'Brug {moveKeys} til at bevæge dig og musen til at se dig omkring. Tag et par skridt for at begynde.',
   'hud.tutorial.moveTitle': 'Find fodfæste',
   'hud.tutorial.returnBody':
-    'Din opgave er fuldført. Vend tilbage til Marskal Redbrook og tryk på {interactKey} for at aflevere den.',
-  'hud.tutorial.returnTitle': 'Indkræv din belønning',
+    'Du bærer tingen der brænder. Vend tilbage til Broder Grønpote og tryk på {interactKey} for at aflevere den.',
+  'hud.tutorial.returnTitle': 'Fodr Ovnen',
   'hud.tutorial.seekBody':
-    'Marskal Redbrook venter i byen og har arbejde til en ny klinge. Følg markøren for at nå ham.',
-  'hud.tutorial.seekTitle': 'Opsøg marskallen',
+    'Broder Grønpote venter ved foden af urnen, uden alt og sulten. Følg markøren for at nå ham.',
+  'hud.tutorial.seekTitle': 'Opsøg Broder Grønpote',
   'hud.tutorial.skip': 'Spring vejledning over',
-  'hud.tutorial.slayBody':
-    'Jag Skovulvene på nordvejen. Vælg en som mål og angrib for at tynde flokken.',
-  'hud.tutorial.slayProgress': 'Skovulve dræbt: {current} / {needed}',
-  'hud.tutorial.slayTitle': 'Ulve ved døren',
   'hud.tutorial.stepLabel': 'Trin {current} af {total}',
   'hud.tutorial.talkBody':
-    'Stil dig tæt på Marskal Redbrook og tryk på {interactKey} for at tale, og accepter derefter hans opgave.',
-  'hud.tutorial.talkTitle': 'Tag opgaven',
-  'hud.tutorial.title': 'Ny eventyrer',
+    'Stil dig tæt på Broder Grønpote og tryk på {interactKey} for at tale, og accepter derefter hans ærinde.',
+  'hud.tutorial.talkTitle': 'Hør Ærindet',
+  'hud.tutorial.title': 'Ny i Hollow',
   'hudChrome.account.changeEmailHint':
     'Vi sender et bekræftelseslink til den nye adresse og en besked til den gamle. Din e-mail ændres først, når du åbner linket.',
   'hudChrome.account.changeEmailNew': 'Ny e-mail',
@@ -4030,13 +4030,13 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'hudChrome.tips.joinChannels':
     'Tip: skriv /join world eller /join lfg for at chatte med spillere på tværs af realmet.',
   'hudChrome.tutorial.doneBodyTouch':
-    'Du har styr på det grundlæggende, {name}. Dalen er din at udforske. Tryk på Mere, derefter Opgaver, for at gennemse din opgavelog når som helst. God jagt.',
+    'Du har det grundlæggende, {name}. Hollow er dit at udforske, og Grønpote har altid endnu et ærinde. Tryk på Mere, derefter Opgaver, for at gennemse din opgavelog når som helst.',
   'hudChrome.tutorial.moveBodyTouch':
     'Brug bevægelsesstikken til at bevæge dig og træk på skærmen for at se dig omkring. Tag et par skridt for at begynde.',
   'hudChrome.tutorial.returnBodyTouch':
-    'Din opgave er fuldført. Vend tilbage til Marskal Redbrook og tryk på Brug-knappen for at aflevere den.',
+    'Du bærer tingen der brænder. Vend tilbage til Broder Grønpote og tryk på Brug-knappen for at aflevere den.',
   'hudChrome.tutorial.talkBodyTouch':
-    'Stil dig tæt på Marskal Redbrook og tryk på Brug-knappen for at tale, og accepter derefter hans opgave.',
+    'Stil dig tæt på Broder Grønpote og tryk på Brug-knappen for at tale, og accepter derefter hans ærinde.',
   'hudChrome.unitFrame.durationUnitSeconds': 's',
   'hudChrome.unitFrame.partyGroup': 'Gruppe {n}',
   'hudChrome.unitFrame.partyLabel': 'Dit følge',

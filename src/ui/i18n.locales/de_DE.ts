@@ -58,11 +58,11 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'hudChrome.tutorial.moveBodyTouch':
     'Nutze den Bewegungsstick zum Bewegen und zieh über den Bildschirm, um dich umzusehen. Mach ein paar Schritte, um zu beginnen.',
   'hudChrome.tutorial.talkBodyTouch':
-    'Stell dich nah an Marschall Redbrook und tippe auf die Schaltfläche Benutzen, um mit ihm zu sprechen, und nimm dann seine Aufgabe an.',
+    'Stell dich nah an Bruder Grünpfote und tippe auf die Schaltfläche Benutzen, um mit ihm zu sprechen, und nimm dann seine Aufgabe an.',
   'hudChrome.tutorial.returnBodyTouch':
-    'Deine Aufgabe ist erledigt. Kehre zu Marschall Redbrook zurück und tippe auf die Schaltfläche Benutzen, um sie abzugeben.',
+    'Du trägst das Ding, das brennt. Kehre zu Bruder Grünpfote zurück und tippe auf die Schaltfläche Benutzen, um es abzugeben.',
   'hudChrome.tutorial.doneBodyTouch':
-    'Du beherrschst die Grundlagen, {name}. Das Eastbrook-Tal liegt bereit, von dir erkundet zu werden. Tippe auf Mehr und dann auf Questlog, um jederzeit dein Questlog einzusehen. Gute Jagd.',
+    'Du beherrschst die Grundlagen, {name}. Das Hollow ist dein, um es zu erkunden, und Grünpfote hat immer noch eine Aufgabe für dich. Tippe auf Mehr und dann auf Questlog, um jederzeit dein Questlog einzusehen.',
   'hudChrome.raidLockout.title': 'Schlachtzug-Sperren',
   'hudChrome.raidLockout.allReady': 'Alle Schlachtzüge bereit',
   'hudChrome.raidLockout.daysHours': '{d}T {h}Std',
@@ -105,29 +105,29 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
     'Volle Bevölkerung: derzeit 80 oder mehr Spieler online. Sehr belebt; eventuell müsst Ihr in einer Login-Warteschlange warten.',
   'realm.popTipOffline':
     'Offline: Dieser Realm ist derzeit nicht erreichbar und kann nicht betreten werden.',
-  'hud.tutorial.title': 'Neuer Abenteurer',
+  'hud.tutorial.title': 'Neu im Hollow',
   'hud.tutorial.stepLabel': 'Schritt {current} von {total}',
   'hud.tutorial.skip': 'Tutorial überspringen',
   'hud.tutorial.dismiss': 'Schließen',
-  'hud.tutorial.doneTitle': 'Bereit für das Abenteuer',
+  'hud.tutorial.doneTitle': 'Der Rauch steigt auf',
   'hud.tutorial.doneBody':
-    'Du beherrschst die Grundlagen, {name}. Das Eastbrook-Tal liegt bereit, von dir erkundet zu werden. Drücke jederzeit {questKey}, um deine Quests einzusehen. Gute Jagd.',
+    'Du beherrschst die Grundlagen, {name}. Das Hollow ist dein, um es zu erkunden, und Grünpfote hat immer noch eine Aufgabe für dich. Drücke jederzeit {questKey}, um deine Quests einzusehen.',
   'hud.tutorial.moveTitle': 'Erste Schritte',
   'hud.tutorial.moveBody':
     'Nutze {moveKeys} zum Bewegen und die Maus zum Umsehen. Mach ein paar Schritte, um zu beginnen.',
-  'hud.tutorial.seekTitle': 'Suche den Marschall',
+  'hud.tutorial.seekTitle': 'Suche Bruder Grünpfote',
   'hud.tutorial.seekBody':
-    'Marschall Redbrook wartet in der Stadt und hat Arbeit für einen frischen Recken. Folge der Markierung zu ihm.',
-  'hud.tutorial.talkTitle': 'Nimm die Aufgabe an',
+    'Bruder Grünpfote wartet am Fuß der Vase, ohne alles und hungrig. Folge der Markierung, um ihn zu erreichen.',
+  'hud.tutorial.talkTitle': 'Höre die Aufgabe',
   'hud.tutorial.talkBody':
-    'Stell dich nah an Marschall Redbrook und drücke {interactKey}, um mit ihm zu sprechen, und nimm dann seine Aufgabe an.',
-  'hud.tutorial.slayTitle': 'Wölfe vor der Tür',
-  'hud.tutorial.slayBody':
-    'Jage die Waldwölfe an der Nordstraße. Visiere einen an und greife ihn an, um das Rudel zu lichten.',
-  'hud.tutorial.slayProgress': 'Erlegte Waldwölfe: {current} / {needed}',
-  'hud.tutorial.returnTitle': 'Hol dir deine Belohnung',
+    'Stell dich nah an Bruder Grünpfote und drücke {interactKey}, um mit ihm zu sprechen, und nimm dann seine Aufgabe an.',
+  'hud.tutorial.gatherTitle': 'Das Ding, das brennt',
+  'hud.tutorial.gatherBody':
+    'Glutknollen wachsen dort, wo das Licht nicht hinreicht. Steig hinab in den Unter-Schrein und nimm sie den Bleichfressern ab. Sie kommen auf dein Licht zu, nicht auf dich.',
+  'hud.tutorial.gatherProgress': 'Gesammelte Glutknollen: {current} / {needed}',
+  'hud.tutorial.returnTitle': 'Speise den Ofen',
   'hud.tutorial.returnBody':
-    'Deine Aufgabe ist erledigt. Kehre zu Marschall Redbrook zurück und drücke {interactKey}, um sie abzugeben.',
+    'Du trägst das Ding, das brennt. Kehre zu Bruder Grünpfote zurück und drücke {interactKey}, um es abzugeben.',
   // Character-sheet stat tooltips (hudChrome.statInfo.*).
   'hudChrome.statInfo.fromYour': 'Von deinen {value} Punkten {stat}:',
   'hudChrome.statInfo.desc.str':

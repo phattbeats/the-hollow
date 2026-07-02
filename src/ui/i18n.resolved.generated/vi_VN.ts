@@ -254,9 +254,9 @@ export const vi_VN: EnTranslations = {
     },
     "tutorial": {
       "moveBodyTouch": "Dùng cần di chuyển để đi và kéo màn hình để nhìn quanh. Bước vài bước để bắt đầu.",
-      "talkBodyTouch": "Đứng gần Thống Soái Redbrook và chạm nút Dùng để nói chuyện, rồi nhận nhiệm vụ của ông.",
-      "returnBodyTouch": "Nhiệm vụ của bạn đã xong. Trở về chỗ Thống Soái Redbrook và chạm nút Dùng để nộp.",
-      "doneBodyTouch": "Bạn đã nắm cơ bản rồi, {name}. Thung Lũng giờ là của bạn để khám phá. Chạm Thêm, rồi Nhiệm Vụ, để xem lại nhật ký nhiệm vụ bất cứ lúc nào. Săn lùng vui vẻ."
+      "talkBodyTouch": "Đứng gần Tu Huynh Chân Xanh và chạm nút Dùng để nói chuyện, rồi nhận việc vặt của ông.",
+      "returnBodyTouch": "Bạn mang theo thứ cháy sáng. Trở về chỗ Tu Huynh Chân Xanh và chạm nút Dùng để nộp.",
+      "doneBodyTouch": "Bạn đã nắm cơ bản rồi, {name}. Hố Rỗng giờ là của bạn để khám phá, và Chân Xanh luôn có thêm một việc vặt. Chạm Thêm, rồi Nhiệm Vụ, để xem lại nhật ký nhiệm vụ bất cứ lúc nào."
     },
     "widgets": {
       "clockTitle": "Giờ địa phương - nhấp để chuyển 12/24 giờ",
@@ -3100,23 +3100,23 @@ export const vi_VN: EnTranslations = {
       "friendOffline": "{name} đã ngoại tuyến."
     },
     "tutorial": {
-      "title": "Nhà Thám Hiểm Mới",
+      "title": "Mới Đến Hố Rỗng",
       "stepLabel": "Bước {current} trên {total}",
       "skip": "Bỏ Qua Hướng Dẫn",
       "dismiss": "Bỏ Qua",
-      "doneTitle": "Sẵn Sàng Phiêu Lưu",
-      "doneBody": "Bạn đã nắm được những điều cơ bản, {name}. Thung Lũng giờ là của bạn để khám phá. Nhấn {questKey} bất cứ lúc nào để xem lại nhiệm vụ. Săn lùng vui vẻ.",
+      "doneTitle": "Khói Bốc Lên",
+      "doneBody": "Bạn đã nắm được những điều cơ bản, {name}. Hố Rỗng giờ là của bạn để khám phá, và Chân Xanh luôn có thêm một việc vặt. Nhấn {questKey} bất cứ lúc nào để xem lại nhiệm vụ.",
       "moveTitle": "Vững Bước Khởi Đầu",
       "moveBody": "Dùng {moveKeys} để di chuyển và chuột để nhìn quanh. Bước vài bước để bắt đầu.",
-      "seekTitle": "Tìm Cảnh Sát Trưởng",
-      "seekBody": "Cảnh Sát Trưởng Redbrook đang đợi trong thị trấn và có việc cho một tay kiếm mới. Theo dấu chỉ đường để đến chỗ ông ta.",
-      "talkTitle": "Nhận Nhiệm Vụ",
-      "talkBody": "Đứng gần Cảnh Sát Trưởng Redbrook và nhấn {interactKey} để trò chuyện, rồi nhận nhiệm vụ của ông ta.",
-      "slayTitle": "Sói Trước Cửa",
-      "slayBody": "Săn Sói Rừng trên con đường phía bắc. Chọn một con và tấn công để làm thưa bầy sói.",
-      "slayProgress": "Sói Rừng đã hạ: {current} / {needed}",
-      "returnTitle": "Nhận Phần Thưởng",
-      "returnBody": "Nhiệm vụ của bạn đã xong. Quay lại gặp Cảnh Sát Trưởng Redbrook và nhấn {interactKey} để nộp nhiệm vụ."
+      "seekTitle": "Tìm Tu Huynh Chân Xanh",
+      "seekBody": "Tu Huynh Chân Xanh đang đợi dưới chân chiếc bình, xa lánh mọi thứ và đói khát. Theo dấu chỉ đường để đến chỗ ông ta.",
+      "talkTitle": "Nghe Việc Vặt",
+      "talkBody": "Đứng gần Tu Huynh Chân Xanh và nhấn {interactKey} để trò chuyện, rồi nhận việc vặt của ông ta.",
+      "gatherTitle": "Thứ Cháy Sáng",
+      "gatherBody": "Củ Than Hồng mọc ở nơi ánh sáng không chạm tới. Xuống Điện Thờ Ngầm và lấy chúng từ Kẻ Ăn Nhợt Nhạt. Chúng lao vào đèn lồng của bạn, không phải vào bạn.",
+      "gatherProgress": "Củ Than Hồng đã thu thập: {current} / {needed}",
+      "returnTitle": "Nuôi Lò Lửa",
+      "returnBody": "Bạn mang theo thứ cháy sáng. Quay lại gặp Tu Huynh Chân Xanh và nhấn {interactKey} để nộp nhiệm vụ."
     },
     "markers": {
       "names": {

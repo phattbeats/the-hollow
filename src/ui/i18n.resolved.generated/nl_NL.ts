@@ -254,9 +254,9 @@ export const nl_NL: EnTranslations = {
     },
     "tutorial": {
       "moveBodyTouch": "Gebruik de bewegingsstick om te bewegen en sleep over het scherm om rond te kijken. Zet een paar stappen om te beginnen.",
-      "talkBodyTouch": "Ga dicht bij Marshal Redbrook staan en tik op de Gebruik-knop om te spreken, neem dan zijn taak aan.",
-      "returnBodyTouch": "Je taak is volbracht. Keer terug naar Marshal Redbrook en tik op de Gebruik-knop om hem in te leveren.",
-      "doneBodyTouch": "Je kent de basis, {name}. Het Dal ligt voor je om te verkennen. Tik op Meer, dan op Queesten, om je queestelogboek op elk moment na te kijken. Goede jacht."
+      "talkBodyTouch": "Ga dicht bij Broeder Groenpoot staan en tik op de Gebruik-knop om te spreken, accepteer dan zijn klusje.",
+      "returnBodyTouch": "Je draagt het ding dat brandt. Keer terug naar Broeder Groenpoot en tik op de Gebruik-knop om het in te leveren.",
+      "doneBodyTouch": "Je kent de basis, {name}. De Hollow is van jou om te verkennen, en Groenpoot heeft altijd nog een klusje. Tik op Meer, dan op Queesten, om je queestelogboek op elk moment na te kijken."
     },
     "widgets": {
       "clockTitle": "Lokale tijd - klik om te wisselen tussen 12/24-uurs",
@@ -3100,23 +3100,23 @@ export const nl_NL: EnTranslations = {
       "friendOffline": "{name} is offline gegaan."
     },
     "tutorial": {
-      "title": "Nieuwe avonturier",
+      "title": "Nieuw in de Hollow",
       "stepLabel": "Stap {current} van {total}",
       "skip": "Tutorial overslaan",
       "dismiss": "Sluiten",
-      "doneTitle": "Klaar voor avontuur",
-      "doneBody": "Je kent de basis, {name}. Het Dal ligt voor je open om te verkennen. Druk op elk moment op {questKey} om je opdrachten te bekijken. Goede jacht.",
+      "doneTitle": "De Rook Stijgt Op",
+      "doneBody": "Je kent de basis, {name}. De Hollow is van jou om te verkennen, en Groenpoot heeft altijd nog een klusje. Druk op elk moment op {questKey} om je opdrachten te bekijken.",
       "moveTitle": "Vind je houvast",
       "moveBody": "Gebruik {moveKeys} om te bewegen en de muis om rond te kijken. Doe een paar stappen om te beginnen.",
-      "seekTitle": "Zoek de Maarschalk",
-      "seekBody": "Maarschalk Redbrook wacht in de stad en heeft werk voor een nieuwe kling. Volg de markering om hem te bereiken.",
-      "talkTitle": "Aanvaard de taak",
-      "talkBody": "Ga dicht bij Maarschalk Redbrook staan en druk op {interactKey} om te praten, accepteer dan zijn taak.",
-      "slayTitle": "Wolven voor de deur",
-      "slayBody": "Jaag op de Woudwolven op de noordelijke weg. Selecteer er een en val aan om de roedel uit te dunnen.",
-      "slayProgress": "Woudwolven gedood: {current} / {needed}",
-      "returnTitle": "Eis je beloning op",
-      "returnBody": "Je taak is volbracht. Keer terug naar Maarschalk Redbrook en druk op {interactKey} om deze in te leveren."
+      "seekTitle": "Zoek Broeder Groenpoot",
+      "seekBody": "Broeder Groenpoot wacht aan de voet van de vaas, zonder alles en hongerig. Volg de markering om hem te bereiken.",
+      "talkTitle": "Hoor het Klusje",
+      "talkBody": "Ga dicht bij Broeder Groenpoot staan en druk op {interactKey} om te praten, accepteer dan zijn klusje.",
+      "gatherTitle": "Het Ding Dat Brandt",
+      "gatherBody": "Sintelknollen groeien waar het licht niet komt. Daal af in de Onderschrijn en neem ze van de Bleekvreters af. Ze komen op je lantaarn af, niet op jou.",
+      "gatherProgress": "Sintelknollen verzameld: {current} / {needed}",
+      "returnTitle": "Voed de Oven",
+      "returnBody": "Je draagt het ding dat brandt. Keer terug naar Broeder Groenpoot en druk op {interactKey} om het in te leveren."
     },
     "markers": {
       "names": {

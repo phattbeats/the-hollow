@@ -3643,27 +3643,27 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'hud.trade.yourOffer': 'Twoja oferta',
   'hud.tutorial.dismiss': 'Odrzuć',
   'hud.tutorial.doneBody':
-    'Znasz już podstawy, {name}. Dolina stoi przed tobą otworem. Wciśnij {questKey} w dowolnej chwili, aby przejrzeć swoje zadania. Powodzenia na łowach.',
-  'hud.tutorial.doneTitle': 'Gotów na przygodę',
+    'Znasz już podstawy, {name}. Wydrążenie stoi przed tobą otworem, a Zielonołap zawsze ma jeszcze jedno zlecenie. Wciśnij {questKey} w dowolnej chwili, aby przejrzeć swoje zadania.',
+  'hud.tutorial.doneTitle': 'Dym Się Wznosi',
+  'hud.tutorial.gatherBody':
+    'Żarobulwy rosną tam, gdzie nie sięga światło. Zejdź do Podziemi Kapliczki i odbierz je bladożercom. Idą na twoją latarnię, nie na ciebie.',
+  'hud.tutorial.gatherProgress': 'Zebrane żarobulwy: {current} / {needed}',
+  'hud.tutorial.gatherTitle': 'Rzecz, Która Płonie',
   'hud.tutorial.moveBody':
     'Użyj {moveKeys}, aby się poruszać, i myszy, aby rozglądać się dookoła. Zrób kilka kroków, aby zacząć.',
   'hud.tutorial.moveTitle': 'Stań pewnie na nogach',
   'hud.tutorial.returnBody':
-    'Twoje zadanie wykonane. Wróć do marszałka Redbrooka i wciśnij {interactKey}, aby je rozliczyć.',
-  'hud.tutorial.returnTitle': 'Odbierz nagrodę',
+    'Niesiesz rzecz, która płonie. Wróć do Brata Zielonołapa i wciśnij {interactKey}, aby ją oddać.',
+  'hud.tutorial.returnTitle': 'Nakarm Piec',
   'hud.tutorial.seekBody':
-    'Marszałek Redbrook czeka w mieście i ma robotę dla nowego ostrza. Podążaj za znacznikiem, aby do niego dotrzeć.',
-  'hud.tutorial.seekTitle': 'Odszukaj marszałka',
+    'Brat Zielonołap czeka u stóp wazy, odcięty od wszystkiego i głodny. Podążaj za znacznikiem, aby do niego dotrzeć.',
+  'hud.tutorial.seekTitle': 'Odszukaj Brata Zielonołapa',
   'hud.tutorial.skip': 'Pomiń samouczek',
-  'hud.tutorial.slayBody':
-    'Poluj na leśne wilki na północnej drodze. Obierz jednego za cel i zaatakuj, aby przetrzebić watahę.',
-  'hud.tutorial.slayProgress': 'Ubite leśne wilki: {current} / {needed}',
-  'hud.tutorial.slayTitle': 'Wilki u wrót',
   'hud.tutorial.stepLabel': 'Krok {current} z {total}',
   'hud.tutorial.talkBody':
-    'Stań blisko marszałka Redbrooka i wciśnij {interactKey}, aby porozmawiać, a następnie przyjmij jego zadanie.',
-  'hud.tutorial.talkTitle': 'Przyjmij zadanie',
-  'hud.tutorial.title': 'Nowy poszukiwacz przygód',
+    'Stań blisko Brata Zielonołapa i wciśnij {interactKey}, aby porozmawiać, a następnie przyjmij jego zlecenie.',
+  'hud.tutorial.talkTitle': 'Wysłuchaj Zlecenia',
+  'hud.tutorial.title': 'Nowy w Wydrążeniu',
   'hudChrome.account.changeEmailHint':
     'Wysyłamy łącze potwierdzające na nowy adres oraz powiadomienie na stary. Twój e-mail zmieni się dopiero po otwarciu łącza.',
   'hudChrome.account.changeEmailNew': 'Nowy e-mail',
@@ -4058,13 +4058,13 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'hudChrome.tips.joinChannels':
     'Wskazówka: wpisz /join world lub /join lfg, aby rozmawiać z graczami z całego realmu.',
   'hudChrome.tutorial.doneBodyTouch':
-    'Masz już podstawy, {name}. Dolina stoi przed tobą otworem. Dotknij Więcej, a potem Zadania, aby w każdej chwili przejrzeć swój dziennik. Dobrych łowów.',
+    'Masz już podstawy, {name}. Wydrążenie stoi przed tobą otworem, a Zielonołap zawsze ma jeszcze jedno zlecenie. Dotknij Więcej, a potem Zadania, aby w każdej chwili przejrzeć swój dziennik.',
   'hudChrome.tutorial.moveBodyTouch':
     'Użyj gałki ruchu, aby się poruszać, i przeciągaj ekran, aby się rozglądać. Zrób kilka kroków, by zacząć.',
   'hudChrome.tutorial.returnBodyTouch':
-    'Twoje zadanie jest wykonane. Wróć do marszałka Redbrooka i dotknij przycisku Użyj, aby je oddać.',
+    'Niesiesz rzecz, która płonie. Wróć do Brata Zielonołapa i dotknij przycisku Użyj, aby ją oddać.',
   'hudChrome.tutorial.talkBodyTouch':
-    'Stań blisko marszałka Redbrooka i dotknij przycisku Użyj, aby z nim porozmawiać, a następnie przyjmij jego zadanie.',
+    'Stań blisko Brata Zielonołapa i dotknij przycisku Użyj, aby porozmawiać, a następnie przyjmij jego zlecenie.',
   'hudChrome.unitFrame.durationUnitSeconds': 's',
   'hudChrome.unitFrame.partyGroup': 'Grupa {n}',
   'hudChrome.unitFrame.partyLabel': 'Twoja drużyna',

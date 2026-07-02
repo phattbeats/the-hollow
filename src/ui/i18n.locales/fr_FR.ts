@@ -58,11 +58,11 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.tutorial.moveBodyTouch':
     "Utilise le joystick de déplacement pour te déplacer et fais glisser l'écran pour regarder autour de toi. Fais quelques pas pour commencer.",
   'hudChrome.tutorial.talkBodyTouch':
-    'Tiens-toi près du maréchal Redbrook et touche le bouton Utiliser pour lui parler, puis accepte sa mission.',
+    'Tiens-toi près de Frère Pattevert et touche le bouton Utiliser pour lui parler, puis accepte sa commission.',
   'hudChrome.tutorial.returnBodyTouch':
-    'Ta mission est accomplie. Retourne voir le maréchal Redbrook et touche le bouton Utiliser pour la rendre.',
+    'Tu portes la chose qui brûle. Retourne voir Frère Pattevert et touche le bouton Utiliser pour la lui remettre.',
   'hudChrome.tutorial.doneBodyTouch':
-    'Tu maîtrises les bases, {name}. Le Val est à toi : touche Plus, puis Journal de quêtes, pour consulter ton journal de quêtes à tout moment. Bonne chasse !',
+    'Tu maîtrises les bases, {name}. Le Val est à toi, et Pattevert a toujours une commission de plus. Touche Plus, puis Journal de quêtes, pour consulter ton journal de quêtes à tout moment.',
   'hudChrome.raidLockout.title': 'Verrous de raid',
   'hudChrome.raidLockout.allReady': 'Tous les raids prêts',
   'hudChrome.raidLockout.daysHours': '{d}j {h}h',
@@ -106,29 +106,29 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
     'Population complète : 80 joueurs ou plus en ligne actuellement. Très fréquenté ; vous pourriez attendre dans une file de connexion.',
   'realm.popTipOffline':
     'Hors ligne : ce royaume est inaccessible pour le moment et ne peut pas être rejoint.',
-  'hud.tutorial.title': 'Nouvel aventurier',
+  'hud.tutorial.title': 'Nouveau dans le Val',
   'hud.tutorial.stepLabel': 'Étape {current} sur {total}',
   'hud.tutorial.skip': 'Passer le tutoriel',
   'hud.tutorial.dismiss': 'Fermer',
-  'hud.tutorial.doneTitle': "Prêt pour l'aventure",
+  'hud.tutorial.doneTitle': "La fumée s'élève",
   'hud.tutorial.doneBody':
-    'Tu maîtrises les bases, {name}. Le Val est à toi : appuie sur {questKey} à tout moment pour consulter tes quêtes. Bonne chasse !',
+    'Tu maîtrises les bases, {name}. Le Val est à toi, et Pattevert a toujours une commission de plus. Appuie sur {questKey} à tout moment pour consulter tes quêtes.',
   'hud.tutorial.moveTitle': 'Trouve tes marques',
   'hud.tutorial.moveBody':
     'Utilise {moveKeys} pour te déplacer et la souris pour regarder autour de toi. Fais quelques pas pour commencer.',
-  'hud.tutorial.seekTitle': 'Trouve le maréchal',
+  'hud.tutorial.seekTitle': 'Trouve Frère Pattevert',
   'hud.tutorial.seekBody':
-    'Le maréchal Redbrook attend en ville et a du travail pour une nouvelle lame. Suis le repère pour le rejoindre.',
-  'hud.tutorial.talkTitle': 'Accepte la mission',
+    'Frère Pattevert attend au pied du vase, à court de tout et affamé. Suis le repère pour le rejoindre.',
+  'hud.tutorial.talkTitle': 'Écoute la commission',
   'hud.tutorial.talkBody':
-    'Tiens-toi près du maréchal Redbrook et appuie sur {interactKey} pour lui parler, puis accepte sa mission.',
-  'hud.tutorial.slayTitle': 'Des loups à la porte',
-  'hud.tutorial.slayBody':
-    'Traque les loups des bois sur la route du nord. Cible-en un et attaque pour réduire la meute.',
-  'hud.tutorial.slayProgress': 'Loups des bois tués : {current} / {needed}',
-  'hud.tutorial.returnTitle': 'Réclame ta récompense',
+    'Tiens-toi près de Frère Pattevert et appuie sur {interactKey} pour lui parler, puis accepte sa commission.',
+  'hud.tutorial.gatherTitle': 'La chose qui brûle',
+  'hud.tutorial.gatherBody':
+    'Les bulbes-braise poussent là où la lumière ne va pas. Descends dans le Sous-Sanctuaire et prends-les aux dévoreurs blafards. Ils en veulent à ta lanterne, pas à toi.',
+  'hud.tutorial.gatherProgress': 'Bulbes-braise récoltés : {current} / {needed}',
+  'hud.tutorial.returnTitle': 'Nourris la fournaise',
   'hud.tutorial.returnBody':
-    'Ta mission est accomplie. Retourne voir le maréchal Redbrook et appuie sur {interactKey} pour la rendre.',
+    'Tu portes la chose qui brûle. Retourne voir Frère Pattevert et appuie sur {interactKey} pour la lui remettre.',
   // Character-sheet stat tooltips (hudChrome.statInfo.*).
   'hudChrome.statInfo.fromYour': 'Grâce à vos {value} en {stat} :',
   'hudChrome.statInfo.desc.str':

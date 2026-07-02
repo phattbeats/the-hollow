@@ -254,9 +254,9 @@ export const zh_CN: EnTranslations = {
     },
     "tutorial": {
       "moveBodyTouch": "使用摇杆移动，拖动屏幕环顾四周。先走几步开始吧。",
-      "talkBodyTouch": "靠近雷德布鲁克元帅并点击“使用”按钮与他交谈，然后接受他的任务。",
-      "returnBodyTouch": "任务已完成。返回雷德布鲁克元帅处并点击“使用”按钮交付任务。",
-      "doneBodyTouch": "你已掌握基础，{name}。东溪谷任你探索。点击“更多”，再点击“任务日志”，随时查看你的任务日志。祝你狩猎顺利。"
+      "talkBodyTouch": "靠近绿掌修士并点击“使用”按钮与他交谈，然后接受他的差事。",
+      "returnBodyTouch": "你带着会燃烧之物。返回绿掌修士处，点击“使用”按钮交付。",
+      "doneBodyTouch": "你已掌握基础，{name}。空穴任你游历，绿掌修士总有下一桩差事。点击“更多”，再点击“任务日志”，随时查看你的任务日志。"
     },
     "widgets": {
       "clockTitle": "本地时间 - 点击切换 12/24 小时制",
@@ -3100,23 +3100,23 @@ export const zh_CN: EnTranslations = {
       "friendOffline": "{name} 下线了。"
     },
     "tutorial": {
-      "title": "新冒险者",
+      "title": "欢迎来到空穴",
       "stepLabel": "第 {current} 步，共 {total} 步",
       "skip": "跳过教程",
       "dismiss": "关闭",
-      "doneTitle": "准备好冒险了",
-      "doneBody": "你已掌握基础，{name}。东溪谷任你探索。随时按 {questKey} 查看任务。祝你狩猎顺利。",
+      "doneTitle": "青烟升起",
+      "doneBody": "你已掌握基础，{name}。空穴任你游历，绿掌修士总有下一桩差事。随时按 {questKey} 查看任务。",
       "moveTitle": "迈出第一步",
       "moveBody": "使用 {moveKeys} 移动，用鼠标环顾四周。先走几步开始吧。",
-      "seekTitle": "寻找元帅",
-      "seekBody": "雷德布鲁克元帅在镇上等候，他有任务交给新人。跟随指引前往找他。",
-      "talkTitle": "接受任务",
-      "talkBody": "靠近雷德布鲁克元帅并按 {interactKey} 与他交谈，然后接受他的任务。",
-      "slayTitle": "狼群来袭",
-      "slayBody": "前往北边的道路猎杀森林狼。选中一只发起攻击，削减狼群数量。",
-      "slayProgress": "已击杀森林狼：{current} / {needed}",
-      "returnTitle": "领取奖励",
-      "returnBody": "任务已完成。返回雷德布鲁克元帅处并按 {interactKey} 交付任务。"
+      "seekTitle": "寻找绿掌修士",
+      "seekBody": "绿掌修士在瓮的脚边等候，缺东少西，饥肠辘辘。跟随标记前往找他。",
+      "talkTitle": "听差事",
+      "talkBody": "靠近绿掌修士并按 {interactKey} 与他交谈，然后接受他的差事。",
+      "gatherTitle": "会燃烧之物",
+      "gatherBody": "余烬球茎生长在光照不到的地方。深入地下圣龛，从苍白噬光者手中夺取它们。它们扑向你的灯笼，而非你本人。",
+      "gatherProgress": "已收集余烬球茎：{current} / {needed}",
+      "returnTitle": "喂养炉火",
+      "returnBody": "你带着会燃烧之物。返回绿掌修士处，按 {interactKey} 交付。"
     },
     "markers": {
       "names": {

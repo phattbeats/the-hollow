@@ -3618,27 +3618,27 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'hud.trade.yourOffer': 'Senin teklifin',
   'hud.tutorial.dismiss': 'Kapat',
   'hud.tutorial.doneBody':
-    'Temelleri öğrendin, {name}. Vadi keşfetmen için senindir. Görevlerini gözden geçirmek için istediğin an {questKey} tuşuna bas. İyi avlar.',
-  'hud.tutorial.doneTitle': 'Maceraya Hazır',
+    "Temelleri öğrendin, {name}. Oyuk keşfetmen için senindir, Greenpaw'ın her zaman bir işi daha vardır. Görevlerini gözden geçirmek için istediğin an {questKey} tuşuna bas.",
+  'hud.tutorial.doneTitle': 'Duman Yükseliyor',
+  'hud.tutorial.gatherBody':
+    "Köz soğanları ışığın ulaşmadığı yerlerde büyür. Mabet Altı'na in ve onları solgunbeslenlerden al. Senin fenerine gelirler, sana değil.",
+  'hud.tutorial.gatherProgress': 'Toplanan köz soğanı: {current} / {needed}',
+  'hud.tutorial.gatherTitle': 'Yanan Şey',
   'hud.tutorial.moveBody':
     'Hareket etmek için {moveKeys} tuşlarını, etrafa bakmak için fareyi kullan. Başlamak için birkaç adım at.',
   'hud.tutorial.moveTitle': 'Ayağını Sağlam Bas',
   'hud.tutorial.returnBody':
-    "Görevin tamamlandı. Mareşal Redbrook'a dön ve teslim etmek için {interactKey} tuşuna bas.",
-  'hud.tutorial.returnTitle': 'Ödülünü Al',
+    "Yanan şeyi taşıyorsun. Birader Greenpaw'a dön ve teslim etmek için {interactKey} tuşuna bas.",
+  'hud.tutorial.returnTitle': 'Fırını Besle',
   'hud.tutorial.seekBody':
-    'Mareşal Redbrook kasabada bekliyor ve yeni bir kılıç için işi var. Ona ulaşmak için işareti takip et.',
-  'hud.tutorial.seekTitle': "Mareşal'i Ara",
+    'Birader Greenpaw vazonun dibinde bekliyor, her şeyden mahrum ve aç. Ona ulaşmak için işareti takip et.',
+  'hud.tutorial.seekTitle': "Birader Greenpaw'ı Ara",
   'hud.tutorial.skip': 'Eğitimi Atla',
-  'hud.tutorial.slayBody':
-    'Kuzey yolundaki Orman Kurtlarını avla. Birini hedef al ve sürüyü seyreltmek için saldır.',
-  'hud.tutorial.slayProgress': 'Öldürülen Orman Kurtları: {current} / {needed}',
-  'hud.tutorial.slayTitle': 'Kapıdaki Kurtlar',
   'hud.tutorial.stepLabel': 'Adım {current} / {total}',
   'hud.tutorial.talkBody':
-    "Mareşal Redbrook'un yanında dur ve konuşmak için {interactKey} tuşuna bas, ardından görevini kabul et.",
-  'hud.tutorial.talkTitle': 'Görevi Üstlen',
-  'hud.tutorial.title': 'Yeni Maceracı',
+    "Birader Greenpaw'ın yanında dur ve konuşmak için {interactKey} tuşuna bas, ardından görevini kabul et.",
+  'hud.tutorial.talkTitle': 'Görevi Dinle',
+  'hud.tutorial.title': "Oyuk'a Yeni Gelen",
   'hudChrome.account.changeEmailHint':
     'Yeni adrese bir onay bağlantısı, eskisine de bir bildirim gönderiyoruz. E-postanız ancak bağlantıyı açtığınızda değişir.',
   'hudChrome.account.changeEmailNew': 'Yeni e-posta',
@@ -4030,13 +4030,13 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.tips.joinChannels':
     'İpucu: Sunucu genelindeki oyuncularla sohbet etmek için /join world ya da /join lfg yaz.',
   'hudChrome.tutorial.doneBodyTouch':
-    "Temelleri öğrendin, {name}. Vadi keşfetmen için senindir. Görev günlüğünü dilediğin an gözden geçirmek için Daha Fazla'ya, ardından Görevler'e dokun. İyi avlar.",
+    "Temelleri öğrendin, {name}. Oyuk keşfetmen için senindir, Greenpaw'ın her zaman bir işi daha vardır. Görev günlüğünü dilediğin an gözden geçirmek için Daha Fazla'ya, ardından Görevler'e dokun.",
   'hudChrome.tutorial.moveBodyTouch':
     'Hareket etmek için hareket çubuğunu kullan ve etrafa bakmak için ekranı sürükle. Başlamak için birkaç adım at.',
   'hudChrome.tutorial.returnBodyTouch':
-    "Görevin tamamlandı. Mareşal Redbrook'a dön ve teslim etmek için Kullan düğmesine dokun.",
+    "Yanan şeyi taşıyorsun. Birader Greenpaw'a dön ve teslim etmek için Kullan düğmesine dokun.",
   'hudChrome.tutorial.talkBodyTouch':
-    "Mareşal Redbrook'a yaklaş ve konuşmak için Kullan düğmesine dokun, ardından görevini kabul et.",
+    "Birader Greenpaw'a yaklaş ve konuşmak için Kullan düğmesine dokun, ardından görevini kabul et.",
   'hudChrome.unitFrame.durationUnitSeconds': 'sn',
   'hudChrome.unitFrame.partyGroup': 'Grup {n}',
   'hudChrome.unitFrame.partyLabel': 'Takımın',

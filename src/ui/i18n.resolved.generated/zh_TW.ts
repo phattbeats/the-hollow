@@ -254,9 +254,9 @@ export const zh_TW: EnTranslations = {
     },
     "tutorial": {
       "moveBodyTouch": "使用搖桿移動，拖曳螢幕環顧四周。先走幾步開始吧。",
-      "talkBodyTouch": "靠近雷德布魯克元帥並點按「使用」按鈕與他交談，然後接受他的任務。",
-      "returnBodyTouch": "任務已完成。返回雷德布魯克元帥處並點按「使用」按鈕繳交任務。",
-      "doneBodyTouch": "你已掌握基礎，{name}。東溪谷任你探索。點按「更多」再選「任務日誌」即可隨時查看任務。祝你狩獵順利。"
+      "talkBodyTouch": "靠近綠掌修士並點按「使用」按鈕與他交談，然後接受他的差事。",
+      "returnBodyTouch": "你帶著會燃燒之物。返回綠掌修士處，點按「使用」按鈕交付。",
+      "doneBodyTouch": "你已掌握基礎，{name}。空穴任你遊歷，綠掌修士總有下一樁差事。點按「更多」再選「任務日誌」即可隨時查看任務。"
     },
     "widgets": {
       "clockTitle": "本地時間 - 點擊切換 12／24 小時制",
@@ -3100,23 +3100,23 @@ export const zh_TW: EnTranslations = {
       "friendOffline": "{name} 下線了。"
     },
     "tutorial": {
-      "title": "新冒險者",
+      "title": "歡迎來到空穴",
       "stepLabel": "第 {current} 步，共 {total} 步",
       "skip": "跳過教學",
       "dismiss": "關閉",
-      "doneTitle": "準備好冒險了",
-      "doneBody": "你已掌握基礎，{name}。東溪谷任你探索。隨時按 {questKey} 查看任務。祝你狩獵順利。",
+      "doneTitle": "青煙升起",
+      "doneBody": "你已掌握基礎，{name}。空穴任你遊歷，綠掌修士總有下一樁差事。隨時按 {questKey} 查看任務。",
       "moveTitle": "邁出第一步",
       "moveBody": "使用 {moveKeys} 移動，用滑鼠環顧四周。先走幾步開始吧。",
-      "seekTitle": "尋找元帥",
-      "seekBody": "雷德布魯克元帥在鎮上等候，他有任務交給新人。跟隨指引前往找他。",
-      "talkTitle": "接受任務",
-      "talkBody": "靠近雷德布魯克元帥並按 {interactKey} 與他交談，然後接受他的任務。",
-      "slayTitle": "狼群來襲",
-      "slayBody": "前往北路獵殺森林狼。選定一隻並發動攻擊，削減狼群數量。",
-      "slayProgress": "已擊殺森林狼：{current} / {needed}",
-      "returnTitle": "領取獎勵",
-      "returnBody": "任務已完成。返回雷德布魯克元帥處並按 {interactKey} 繳交任務。"
+      "seekTitle": "尋找綠掌修士",
+      "seekBody": "綠掌修士在甕的腳邊等候，缺東少西，飢腸轆轆。跟隨標記前往找他。",
+      "talkTitle": "聽差事",
+      "talkBody": "靠近綠掌修士並按 {interactKey} 與他交談，然後接受他的差事。",
+      "gatherTitle": "會燃燒之物",
+      "gatherBody": "餘燼球莖生長在光照不到的地方。深入地下聖龕，從蒼白噬光者手中奪取它們。牠們撲向你的燈籠，而非你本人。",
+      "gatherProgress": "已收集餘燼球莖：{current} / {needed}",
+      "returnTitle": "餵養爐火",
+      "returnBody": "你帶著會燃燒之物。返回綠掌修士處，按 {interactKey} 交付。"
     },
     "markers": {
       "names": {

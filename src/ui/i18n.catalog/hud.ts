@@ -398,27 +398,28 @@ const hudStringsEn = {
       friendOffline: '{name} has gone offline.',
     },
     tutorial: {
-      title: 'New Adventurer',
+      title: 'New to the Hollow',
       stepLabel: 'Step {current} of {total}',
       skip: 'Skip Tutorial',
       dismiss: 'Dismiss',
-      doneTitle: 'Ready for Adventure',
+      doneTitle: 'The Smoke Rises',
       doneBody:
-        'You have the basics, {name}. The Vale is yours to explore. Press {questKey} anytime to review your quests. Good hunting.',
+        'You have the basics, {name}. The Hollow is yours to wander, and Greenpaw always has one more errand. Press {questKey} anytime to review your quests.',
       moveTitle: 'Find Your Footing',
       moveBody: 'Use {moveKeys} to move and the mouse to look around. Take a few steps to begin.',
-      seekTitle: 'Seek the Marshal',
+      seekTitle: 'Seek Brother Greenpaw',
       seekBody:
-        'Marshal Redbrook waits in town and has work for a new blade. Follow the marker to reach him.',
-      talkTitle: 'Take the Task',
+        'Brother Greenpaw waits at the foot of the vase, out of everything and hungry. Follow the marker to reach him.',
+      talkTitle: 'Hear the Errand',
       talkBody:
-        'Stand close to Marshal Redbrook and press {interactKey} to speak, then accept his task.',
-      slayTitle: 'Wolves at the Door',
-      slayBody: 'Hunt the Forest Wolves on the north road. Target one and attack to thin the pack.',
-      slayProgress: 'Forest Wolves slain: {current} / {needed}',
-      returnTitle: 'Claim Your Reward',
+        'Stand close to Brother Greenpaw and press {interactKey} to speak, then accept his errand.',
+      gatherTitle: 'The Thing That Burns',
+      gatherBody:
+        'Emberbulbs grow where the light does not reach. Descend into the Under-Shrine and take them from the palefeeders. They come at your lantern, not at you.',
+      gatherProgress: 'Emberbulbs gathered: {current} / {needed}',
+      returnTitle: 'Feed the Furnace',
       returnBody:
-        'Your task is done. Return to Marshal Redbrook and press {interactKey} to turn it in.',
+        'You carry the thing that burns. Return to Brother Greenpaw and press {interactKey} to turn it in.',
     },
   },
 };
@@ -428,29 +429,29 @@ export const hudStrings = {
   es: {
     hud: {
       tutorial: {
-        title: 'Nuevo Aventurero',
+        title: 'Nuevo en el Valle',
         stepLabel: 'Paso {current} de {total}',
         skip: 'Saltar tutorial',
         dismiss: 'Descartar',
-        doneTitle: 'Listo para la aventura',
+        doneTitle: 'El Humo se Eleva',
         doneBody:
-          'Ya dominas lo básico, {name}. El Valle es tuyo para explorar: pulsa {questKey} en cualquier momento para revisar tus misiones. ¡Buena caza!',
+          'Ya dominas lo básico, {name}. El Valle es tuyo para explorar, y Pataverde siempre tiene un encargo más. Pulsa {questKey} en cualquier momento para revisar tus misiones.',
         moveTitle: 'Da tus primeros pasos',
         moveBody:
           'Usa {moveKeys} para moverte y el ratón para mirar alrededor. Da unos pasos para empezar.',
-        seekTitle: 'Busca al Mariscal',
+        seekTitle: 'Busca al Hermano Pataverde',
         seekBody:
-          'El mariscal Redbrook espera en el pueblo y tiene trabajo para una nueva espada. Sigue la marca para llegar a él.',
-        talkTitle: 'Acepta la tarea',
+          'El Hermano Pataverde espera al pie del jarrón, sin nada y hambriento. Sigue la marca para llegar a él.',
+        talkTitle: 'Escucha el Encargo',
         talkBody:
-          'Acércate al mariscal Redbrook y pulsa {interactKey} para hablar; luego acepta su tarea.',
-        slayTitle: 'Lobos a las puertas',
-        slayBody:
-          'Caza a los lobos del bosque en el camino del norte. Selecciona uno y atácalo para diezmar la manada.',
-        slayProgress: 'Lobos del bosque abatidos: {current} / {needed}',
-        returnTitle: 'Reclama tu recompensa',
+          'Acércate al Hermano Pataverde y pulsa {interactKey} para hablar, luego acepta su encargo.',
+        gatherTitle: 'Lo Que Arde',
+        gatherBody:
+          'Los bulbos ascua crecen donde no llega la luz. Desciende al Santuario Subterráneo y arrebátalos a los devoradores pálidos. Van a por tu farol, no por ti.',
+        gatherProgress: 'Bulbos ascua recolectados: {current} / {needed}',
+        returnTitle: 'Alimenta el Horno',
         returnBody:
-          'Tu tarea está hecha. Vuelve con el mariscal Redbrook y pulsa {interactKey} para entregarla.',
+          'Llevas contigo lo que arde. Vuelve con el Hermano Pataverde y pulsa {interactKey} para entregarlo.',
       },
       core: {
         elite: 'ÉLITE',
@@ -841,29 +842,29 @@ export const hudStrings = {
   fr_FR: {
     hud: {
       tutorial: {
-        title: 'Nouvel aventurier',
+        title: 'Nouveau dans le Val',
         stepLabel: 'Étape {current} sur {total}',
         skip: 'Passer le tutoriel',
         dismiss: 'Fermer',
-        doneTitle: "Prêt pour l'aventure",
+        doneTitle: "La fumée s'élève",
         doneBody:
-          'Tu maîtrises les bases, {name}. Le Val est à toi : appuie sur {questKey} à tout moment pour consulter tes quêtes. Bonne chasse !',
+          'Tu maîtrises les bases, {name}. Le Val est à toi, et Pattevert a toujours une commission de plus. Appuie sur {questKey} à tout moment pour consulter tes quêtes.',
         moveTitle: 'Trouve tes marques',
         moveBody:
           'Utilise {moveKeys} pour te déplacer et la souris pour regarder autour de toi. Fais quelques pas pour commencer.',
-        seekTitle: 'Trouve le maréchal',
+        seekTitle: 'Trouve Frère Pattevert',
         seekBody:
-          'Le maréchal Redbrook attend en ville et a du travail pour une nouvelle lame. Suis le repère pour le rejoindre.',
-        talkTitle: 'Accepte la mission',
+          'Frère Pattevert attend au pied du vase, à court de tout et affamé. Suis le repère pour le rejoindre.',
+        talkTitle: 'Écoute la commission',
         talkBody:
-          'Tiens-toi près du maréchal Redbrook et appuie sur {interactKey} pour lui parler, puis accepte sa mission.',
-        slayTitle: 'Des loups à la porte',
-        slayBody:
-          'Traque les loups des bois sur la route du nord. Cible-en un et attaque pour réduire la meute.',
-        slayProgress: 'Loups des bois tués : {current} / {needed}',
-        returnTitle: 'Réclame ta récompense',
+          'Tiens-toi près de Frère Pattevert et appuie sur {interactKey} pour lui parler, puis accepte sa commission.',
+        gatherTitle: 'La chose qui brûle',
+        gatherBody:
+          'Les bulbes-braise poussent là où la lumière ne va pas. Descends dans le Sous-Sanctuaire et prends-les aux dévoreurs blafards. Ils en veulent à ta lanterne, pas à toi.',
+        gatherProgress: 'Bulbes-braise récoltés : {current} / {needed}',
+        returnTitle: 'Nourris la fournaise',
         returnBody:
-          'Ta mission est accomplie. Retourne voir le maréchal Redbrook et appuie sur {interactKey} pour la rendre.',
+          'Tu portes la chose qui brûle. Retourne voir Frère Pattevert et appuie sur {interactKey} pour la lui remettre.',
       },
       core: {
         elite: 'ÉLITE',
@@ -1257,29 +1258,29 @@ export const hudStrings = {
   it_IT: {
     hud: {
       tutorial: {
-        title: 'Nuovo avventuriero',
+        title: 'Nuovo nella Valle',
         stepLabel: 'Passo {current} di {total}',
         skip: 'Salta il tutorial',
         dismiss: 'Chiudi',
-        doneTitle: "Pronto all'avventura",
+        doneTitle: 'Il fumo si alza',
         doneBody:
-          'Hai imparato le basi, {name}. La Valle è tutta da esplorare: premi {questKey} in qualsiasi momento per rivedere le tue missioni. Buona caccia!',
+          'Hai imparato le basi, {name}. La Valle è tutta da esplorare, e Zampaverde ha sempre un altro incarico. Premi {questKey} in qualsiasi momento per rivedere le tue missioni.',
         moveTitle: "Trova l'equilibrio",
         moveBody:
           'Usa {moveKeys} per muoverti e il mouse per guardarti intorno. Fai qualche passo per iniziare.',
-        seekTitle: 'Cerca il Maresciallo',
+        seekTitle: 'Cerca Fratello Zampaverde',
         seekBody:
-          'Il maresciallo Redbrook attende in città e ha del lavoro per una nuova lama. Segui il segnale per raggiungerlo.',
-        talkTitle: "Accetta l'incarico",
+          'Fratello Zampaverde attende ai piedi del vaso, senza più nulla e affamato. Segui il segnale per raggiungerlo.',
+        talkTitle: "Ascolta l'incarico",
         talkBody:
-          'Avvicinati al maresciallo Redbrook e premi {interactKey} per parlargli, poi accetta il suo incarico.',
-        slayTitle: 'Lupi alle porte',
-        slayBody:
-          'Dai la caccia ai lupi della foresta sulla strada a nord. Seleziona un bersaglio e attacca per ridurre il branco.',
-        slayProgress: 'Lupi della foresta uccisi: {current} / {needed}',
-        returnTitle: 'Reclama la ricompensa',
+          'Avvicinati a Fratello Zampaverde e premi {interactKey} per parlargli, poi accetta il suo incarico.',
+        gatherTitle: 'La cosa che arde',
+        gatherBody:
+          'I bulbi di brace crescono dove la luce non arriva. Scendi nel Sottosantuario e strappali ai divoratori pallidi. Vengono per la tua lanterna, non per te.',
+        gatherProgress: 'Bulbi di brace raccolti: {current} / {needed}',
+        returnTitle: 'Alimenta la fornace',
         returnBody:
-          'Il tuo incarico è compiuto. Torna dal maresciallo Redbrook e premi {interactKey} per consegnarlo.',
+          'Porti con te la cosa che arde. Torna da Fratello Zampaverde e premi {interactKey} per consegnarla.',
       },
       core: {
         elite: 'ÉLITE',
@@ -1648,29 +1649,29 @@ export const hudStrings = {
   de_DE: {
     hud: {
       tutorial: {
-        title: 'Neuer Abenteurer',
+        title: 'Neu im Hollow',
         stepLabel: 'Schritt {current} von {total}',
         skip: 'Tutorial überspringen',
         dismiss: 'Schließen',
-        doneTitle: 'Bereit für das Abenteuer',
+        doneTitle: 'Der Rauch steigt auf',
         doneBody:
-          'Du beherrschst die Grundlagen, {name}. Das Eastbrook-Tal liegt bereit, von dir erkundet zu werden. Drücke jederzeit {questKey}, um deine Quests einzusehen. Gute Jagd.',
+          'Du beherrschst die Grundlagen, {name}. Das Hollow ist dein, um es zu erkunden, und Grünpfote hat immer noch eine Aufgabe für dich. Drücke jederzeit {questKey}, um deine Quests einzusehen.',
         moveTitle: 'Erste Schritte',
         moveBody:
           'Nutze {moveKeys} zum Bewegen und die Maus zum Umsehen. Mach ein paar Schritte, um zu beginnen.',
-        seekTitle: 'Suche den Marschall',
+        seekTitle: 'Suche Bruder Grünpfote',
         seekBody:
-          'Marschall Redbrook wartet in der Stadt und hat Arbeit für einen frischen Recken. Folge der Markierung zu ihm.',
-        talkTitle: 'Nimm die Aufgabe an',
+          'Bruder Grünpfote wartet am Fuß der Vase, ohne alles und hungrig. Folge der Markierung, um ihn zu erreichen.',
+        talkTitle: 'Höre die Aufgabe',
         talkBody:
-          'Stell dich nah an Marschall Redbrook und drücke {interactKey}, um mit ihm zu sprechen, und nimm dann seine Aufgabe an.',
-        slayTitle: 'Wölfe vor der Tür',
-        slayBody:
-          'Jage die Waldwölfe an der Nordstraße. Visiere einen an und greife ihn an, um das Rudel zu lichten.',
-        slayProgress: 'Erlegte Waldwölfe: {current} / {needed}',
-        returnTitle: 'Hol dir deine Belohnung',
+          'Stell dich nah an Bruder Grünpfote und drücke {interactKey}, um mit ihm zu sprechen, und nimm dann seine Aufgabe an.',
+        gatherTitle: 'Das Ding, das brennt',
+        gatherBody:
+          'Glutknollen wachsen dort, wo das Licht nicht hinreicht. Steig hinab in den Unter-Schrein und nimm sie den Bleichfressern ab. Sie kommen auf dein Licht zu, nicht auf dich.',
+        gatherProgress: 'Gesammelte Glutknollen: {current} / {needed}',
+        returnTitle: 'Speise den Ofen',
         returnBody:
-          'Deine Aufgabe ist erledigt. Kehre zu Marschall Redbrook zurück und drücke {interactKey}, um sie abzugeben.',
+          'Du trägst das Ding, das brennt. Kehre zu Bruder Grünpfote zurück und drücke {interactKey}, um es abzugeben.',
       },
       core: {
         elite: 'ELITE',
@@ -2043,24 +2044,25 @@ export const hudStrings = {
   zh_CN: {
     hud: {
       tutorial: {
-        title: '新冒险者',
+        title: '欢迎来到空穴',
         stepLabel: '第 {current} 步，共 {total} 步',
         skip: '跳过教程',
         dismiss: '关闭',
-        doneTitle: '准备好冒险了',
+        doneTitle: '青烟升起',
         doneBody:
-          '你已掌握基础，{name}。东溪谷任你探索。随时按 {questKey} 查看任务。祝你狩猎顺利。',
+          '你已掌握基础，{name}。空穴任你游历，绿掌修士总有下一桩差事。随时按 {questKey} 查看任务。',
         moveTitle: '迈出第一步',
         moveBody: '使用 {moveKeys} 移动，用鼠标环顾四周。先走几步开始吧。',
-        seekTitle: '寻找元帅',
-        seekBody: '雷德布鲁克元帅在镇上等候，他有任务交给新人。跟随指引前往找他。',
-        talkTitle: '接受任务',
-        talkBody: '靠近雷德布鲁克元帅并按 {interactKey} 与他交谈，然后接受他的任务。',
-        slayTitle: '狼群来袭',
-        slayBody: '前往北边的道路猎杀森林狼。选中一只发起攻击，削减狼群数量。',
-        slayProgress: '已击杀森林狼：{current} / {needed}',
-        returnTitle: '领取奖励',
-        returnBody: '任务已完成。返回雷德布鲁克元帅处并按 {interactKey} 交付任务。',
+        seekTitle: '寻找绿掌修士',
+        seekBody: '绿掌修士在瓮的脚边等候，缺东少西，饥肠辘辘。跟随标记前往找他。',
+        talkTitle: '听差事',
+        talkBody: '靠近绿掌修士并按 {interactKey} 与他交谈，然后接受他的差事。',
+        gatherTitle: '会燃烧之物',
+        gatherBody:
+          '余烬球茎生长在光照不到的地方。深入地下圣龛，从苍白噬光者手中夺取它们。它们扑向你的灯笼，而非你本人。',
+        gatherProgress: '已收集余烬球茎：{current} / {needed}',
+        returnTitle: '喂养炉火',
+        returnBody: '你带着会燃烧之物。返回绿掌修士处，按 {interactKey} 交付。',
       },
       core: {
         elite: '精英',
@@ -2419,24 +2421,25 @@ export const hudStrings = {
   zh_TW: {
     hud: {
       tutorial: {
-        title: '新冒險者',
+        title: '歡迎來到空穴',
         stepLabel: '第 {current} 步，共 {total} 步',
         skip: '跳過教學',
         dismiss: '關閉',
-        doneTitle: '準備好冒險了',
+        doneTitle: '青煙升起',
         doneBody:
-          '你已掌握基礎，{name}。東溪谷任你探索。隨時按 {questKey} 查看任務。祝你狩獵順利。',
+          '你已掌握基礎，{name}。空穴任你遊歷，綠掌修士總有下一樁差事。隨時按 {questKey} 查看任務。',
         moveTitle: '邁出第一步',
         moveBody: '使用 {moveKeys} 移動，用滑鼠環顧四周。先走幾步開始吧。',
-        seekTitle: '尋找元帥',
-        seekBody: '雷德布魯克元帥在鎮上等候，他有任務交給新人。跟隨指引前往找他。',
-        talkTitle: '接受任務',
-        talkBody: '靠近雷德布魯克元帥並按 {interactKey} 與他交談，然後接受他的任務。',
-        slayTitle: '狼群來襲',
-        slayBody: '前往北路獵殺森林狼。選定一隻並發動攻擊，削減狼群數量。',
-        slayProgress: '已擊殺森林狼：{current} / {needed}',
-        returnTitle: '領取獎勵',
-        returnBody: '任務已完成。返回雷德布魯克元帥處並按 {interactKey} 繳交任務。',
+        seekTitle: '尋找綠掌修士',
+        seekBody: '綠掌修士在甕的腳邊等候，缺東少西，飢腸轆轆。跟隨標記前往找他。',
+        talkTitle: '聽差事',
+        talkBody: '靠近綠掌修士並按 {interactKey} 與他交談，然後接受他的差事。',
+        gatherTitle: '會燃燒之物',
+        gatherBody:
+          '餘燼球莖生長在光照不到的地方。深入地下聖龕，從蒼白噬光者手中奪取它們。牠們撲向你的燈籠，而非你本人。',
+        gatherProgress: '已收集餘燼球莖：{current} / {needed}',
+        returnTitle: '餵養爐火',
+        returnBody: '你帶著會燃燒之物。返回綠掌修士處，按 {interactKey} 交付。',
       },
       core: {
         elite: '精英',
@@ -2795,27 +2798,28 @@ export const hudStrings = {
   ko_KR: {
     hud: {
       tutorial: {
-        title: '새내기 모험가',
+        title: '공동에 오신 것을 환영합니다',
         stepLabel: '{total}단계 중 {current}단계',
         skip: '튜토리얼 건너뛰기',
         dismiss: '닫기',
-        doneTitle: '모험 준비 완료',
+        doneTitle: '피어오르는 연기',
         doneBody:
-          '기본기를 익혔습니다, {name}. 이제 골짜기를 자유롭게 누비세요. 언제든 {questKey} 키로 퀘스트를 확인할 수 있습니다. 좋은 사냥 되세요.',
+          '기본기를 익혔습니다, {name}. 공동은 이제 당신 것, 자유롭게 누비세요. 초록발에게는 언제나 또 다른 부탁거리가 있습니다. 언제든 {questKey} 키로 퀘스트를 확인할 수 있습니다.',
         moveTitle: '첫걸음 떼기',
         moveBody: '{moveKeys} 키로 이동하고 마우스로 주위를 둘러보세요. 몇 걸음 움직여 시작하세요.',
-        seekTitle: '원수를 찾으세요',
+        seekTitle: '브라더 초록발을 찾으세요',
         seekBody:
-          '레드브룩 원수가 마을에서 기다리며 새내기에게 맡길 일이 있습니다. 표식을 따라 그에게 가세요.',
-        talkTitle: '임무 수락',
-        talkBody: '레드브룩 원수에게 다가가 {interactKey} 키를 눌러 대화한 뒤 임무를 수락하세요.',
-        slayTitle: '문 앞의 늑대들',
-        slayBody:
-          '북쪽 길의 숲늑대를 사냥하세요. 한 마리를 대상으로 지정해 공격하여 무리를 줄이세요.',
-        slayProgress: '처치한 숲늑대: {current} / {needed}',
-        returnTitle: '보상 받기',
+          '브라더 초록발은 항아리 발치에서, 뭐든 다 떨어지고 배고픈 채로 기다리고 있습니다. 표식을 따라가 그에게 다다르세요.',
+        talkTitle: '부탁을 들으세요',
+        talkBody:
+          '브라더 초록발에게 다가가 {interactKey} 키를 눌러 대화한 뒤, 그의 부탁을 수락하세요.',
+        gatherTitle: '타오르는 것',
+        gatherBody:
+          '불씨구근은 빛이 닿지 않는 곳에서 자랍니다. 지하 사당으로 내려가 창백포식자들에게서 그것을 빼앗으세요. 그들은 당신이 아니라 당신의 등불을 노립니다.',
+        gatherProgress: '모은 불씨구근: {current} / {needed}',
+        returnTitle: '화로를 채우세요',
         returnBody:
-          '임무를 마쳤습니다. 레드브룩 원수에게 돌아가 {interactKey} 키를 눌러 완료하세요.',
+          '타오르는 것을 지니고 있습니다. 브라더 초록발에게 돌아가 {interactKey} 키를 눌러 전달하세요.',
       },
       core: {
         elite: '정예',
@@ -3183,27 +3187,28 @@ export const hudStrings = {
   ja_JP: {
     hud: {
       tutorial: {
-        title: '新米冒険者',
+        title: '空洞へようこそ',
         stepLabel: 'ステップ {current}/{total}',
         skip: 'チュートリアルをスキップ',
         dismiss: '閉じる',
-        doneTitle: '冒険の準備完了',
+        doneTitle: '立ち上る煙',
         doneBody:
-          '基本は覚えましたね、{name}。イーストブルック渓谷はあなたのもの、自由に探索しましょう。いつでも {questKey} キーでクエストを確認できます。よい狩りを！',
+          '基本は覚えましたね、{name}。空洞はあなたのもの、自由に歩き回りましょう。緑掌修道士にはいつでも次の用事があります。いつでも {questKey} キーでクエストを確認できます。',
         moveTitle: 'まず一歩を',
         moveBody: '{moveKeys} で移動し、マウスで周囲を見回します。数歩進んで始めましょう。',
-        seekTitle: '元帥を探す',
+        seekTitle: '緑掌修道士を探す',
         seekBody:
-          'レッドブルック元帥が町で待っており、新人に頼みごとがあります。目印をたどって彼のもとへ向かいましょう。',
-        talkTitle: '依頼を受ける',
+          '緑掌修道士は壺のふもとで、何もかも底をつき腹を空かせて待っています。目印をたどって彼のもとへ向かいましょう。',
+        talkTitle: '頼まれごとを聞く',
         talkBody:
-          'レッドブルック元帥に近づき、{interactKey} を押して話しかけ、依頼を受けましょう。',
-        slayTitle: '戸口の狼',
-        slayBody: '北の道で森の狼を狩りましょう。一体をターゲットして攻撃し、群れを減らします。',
-        slayProgress: '倒した森の狼：{current} / {needed}',
-        returnTitle: '報酬を受け取る',
+          '緑掌修道士に近づき、{interactKey} を押して話しかけ、頼まれごとを引き受けましょう。',
+        gatherTitle: '燃えるもの',
+        gatherBody:
+          '残り火の球根は光の届かぬ場所に育ちます。地下祠へ降り、蒼白喰らいから奪い取りましょう。彼らはあなたではなく、灯りに引き寄せられます。',
+        gatherProgress: '集めた残り火の球根：{current} / {needed}',
+        returnTitle: '炉に捧げる',
         returnBody:
-          '依頼は完了しました。レッドブルック元帥のもとへ戻り、{interactKey} を押して納品しましょう。',
+          '燃えるものを手にしています。緑掌修道士のもとへ戻り、{interactKey} を押して渡しましょう。',
       },
       core: {
         elite: 'エリート',
@@ -3571,29 +3576,29 @@ export const hudStrings = {
   pt_BR: {
     hud: {
       tutorial: {
-        title: 'Novo Aventureiro',
+        title: 'Novo no Vale',
         stepLabel: 'Passo {current} de {total}',
         skip: 'Pular tutorial',
         dismiss: 'Dispensar',
-        doneTitle: 'Pronto para a aventura',
+        doneTitle: 'A Fumaça Sobe',
         doneBody:
-          'Você já domina o básico, {name}. O Vale é seu para explorar. Pressione {questKey} a qualquer momento para ver suas missões. Boa caçada!',
+          'Você já domina o básico, {name}. O Vale é seu para explorar, e Pataverde sempre tem mais uma tarefa. Pressione {questKey} a qualquer momento para ver suas missões.',
         moveTitle: 'Dê os primeiros passos',
         moveBody:
           'Use {moveKeys} para se mover e o mouse para olhar ao redor. Dê alguns passos para começar.',
-        seekTitle: 'Procure o Marechal',
+        seekTitle: 'Procure o Irmão Pataverde',
         seekBody:
-          'O marechal Redbrook espera na cidade e tem trabalho para uma nova lâmina. Siga o marcador para chegar até ele.',
-        talkTitle: 'Aceite a tarefa',
+          'O Irmão Pataverde espera aos pés do vaso, sem nada e faminto. Siga o marcador para chegar até ele.',
+        talkTitle: 'Ouça a Tarefa',
         talkBody:
-          'Aproxime-se do marechal Redbrook e pressione {interactKey} para falar, então aceite a tarefa dele.',
-        slayTitle: 'Lobos à porta',
-        slayBody:
-          'Cace os lobos da floresta na estrada do norte. Selecione um e ataque para reduzir a matilha.',
-        slayProgress: 'Lobos da floresta abatidos: {current} / {needed}',
-        returnTitle: 'Reivindique sua recompensa',
+          'Aproxime-se do Irmão Pataverde e pressione {interactKey} para falar, então aceite a tarefa dele.',
+        gatherTitle: 'A Coisa Que Arde',
+        gatherBody:
+          'Bulbos de brasa crescem onde a luz não chega. Desça ao Santuário Subterrâneo e tome-os dos devorapálidos. Eles vêm pra cima da sua lanterna, não de você.',
+        gatherProgress: 'Bulbos de brasa coletados: {current} / {needed}',
+        returnTitle: 'Alimente a Fornalha',
         returnBody:
-          'Sua tarefa está concluída. Volte ao marechal Redbrook e pressione {interactKey} para entregá-la.',
+          'Você carrega a coisa que arde. Volte ao Irmão Pataverde e pressione {interactKey} para entregá-la.',
       },
       core: {
         elite: 'ELITE',
@@ -3962,29 +3967,29 @@ export const hudStrings = {
   ru_RU: {
     hud: {
       tutorial: {
-        title: 'Новый искатель приключений',
+        title: 'Новичок в Пустоши',
         stepLabel: 'Шаг {current} из {total}',
         skip: 'Пропустить обучение',
         dismiss: 'Закрыть',
-        doneTitle: 'Готовы к приключениям',
+        doneTitle: 'Дым Поднимается',
         doneBody:
-          'Основы освоены, {name}. Долина в вашем распоряжении: исследуйте её. Нажмите {questKey} в любой момент, чтобы просмотреть задания. Удачной охоты!',
+          'Основы освоены, {name}. Пустошь в вашем распоряжении, а у Зеленолапа всегда найдется еще одно поручение. Нажмите {questKey} в любой момент, чтобы просмотреть задания.',
         moveTitle: 'Сделайте первые шаги',
         moveBody:
           'Используйте {moveKeys} для передвижения и мышь, чтобы осмотреться. Сделайте несколько шагов, чтобы начать.',
-        seekTitle: 'Найдите маршала',
+        seekTitle: 'Найдите Брата Зеленолапа',
         seekBody:
-          'Маршал Редбрук ждёт в городе, и у него есть работа для нового искателя приключений. Следуйте за меткой, чтобы добраться до него.',
-        talkTitle: 'Возьмите задание',
+          'Брат Зеленолап ждет у подножия вазы, отрезанный от всего и голодный. Следуйте за меткой, чтобы добраться до него.',
+        talkTitle: 'Выслушайте Поручение',
         talkBody:
-          'Подойдите к маршалу Редбруку и нажмите {interactKey}, чтобы заговорить, затем примите его задание.',
-        slayTitle: 'Волки у порога',
-        slayBody:
-          'Поохотьтесь на лесных волков на северной дороге. Выберите цель и атакуйте, чтобы проредить стаю.',
-        slayProgress: 'Лесных волков убито: {current} / {needed}',
-        returnTitle: 'Получите награду',
+          'Подойдите к Брату Зеленолапу и нажмите {interactKey}, чтобы заговорить, затем примите его поручение.',
+        gatherTitle: 'То, Что Горит',
+        gatherBody:
+          'Тлеющие луковицы растут там, куда не достает свет. Спуститесь в Подсвятилище и заберите их у бледнопитающихся. Они идут на ваш фонарь, а не на вас.',
+        gatherProgress: 'Собрано тлеющих луковиц: {current} / {needed}',
+        returnTitle: 'Накормите Печь',
         returnBody:
-          'Задание выполнено. Вернитесь к маршалу Редбруку и нажмите {interactKey}, чтобы сдать его.',
+          'Вы несете то, что горит. Вернитесь к Брату Зеленолапу и нажмите {interactKey}, чтобы сдать его.',
       },
       core: {
         elite: 'ЭЛИТА',

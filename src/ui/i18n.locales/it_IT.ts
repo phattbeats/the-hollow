@@ -58,11 +58,11 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'hudChrome.tutorial.moveBodyTouch':
     'Usa il joystick di movimento per muoverti e trascina lo schermo per guardarti intorno. Fai qualche passo per iniziare.',
   'hudChrome.tutorial.talkBodyTouch':
-    'Avvicinati al maresciallo Redbrook e tocca il pulsante Usa per parlargli, poi accetta il suo incarico.',
+    'Avvicinati a Fratello Zampaverde e tocca il pulsante Usa per parlargli, poi accetta il suo incarico.',
   'hudChrome.tutorial.returnBodyTouch':
-    'Il tuo incarico è compiuto. Torna dal maresciallo Redbrook e tocca il pulsante Usa per consegnarlo.',
+    'Porti con te la cosa che arde. Torna da Fratello Zampaverde e tocca il pulsante Usa per consegnarla.',
   'hudChrome.tutorial.doneBodyTouch':
-    'Hai imparato le basi, {name}. La Valle è tutta da esplorare: tocca Altro, poi Registro missioni, per rivedere il tuo registro missioni in qualsiasi momento. Buona caccia!',
+    'Hai imparato le basi, {name}. La Valle è tutta da esplorare, e Zampaverde ha sempre un altro incarico. Tocca Altro, poi Registro missioni, per rivedere il tuo registro missioni in qualsiasi momento.',
   'hudChrome.raidLockout.title': 'Blocchi incursione',
   'hudChrome.raidLockout.allReady': 'Tutte le incursioni pronte',
   'hudChrome.raidLockout.daysHours': '{d}g {h}h',
@@ -105,29 +105,29 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
     'Popolazione piena: 80 o più giocatori online ora. Molto affollato; potresti attendere in coda per accedere.',
   'realm.popTipOffline':
     'Offline: questo reame al momento non è raggiungibile e non è possibile entrarvi.',
-  'hud.tutorial.title': 'Nuovo avventuriero',
+  'hud.tutorial.title': 'Nuovo nella Valle',
   'hud.tutorial.stepLabel': 'Passo {current} di {total}',
   'hud.tutorial.skip': 'Salta il tutorial',
   'hud.tutorial.dismiss': 'Chiudi',
-  'hud.tutorial.doneTitle': "Pronto all'avventura",
+  'hud.tutorial.doneTitle': 'Il fumo si alza',
   'hud.tutorial.doneBody':
-    'Hai imparato le basi, {name}. La Valle è tutta da esplorare: premi {questKey} in qualsiasi momento per rivedere le tue missioni. Buona caccia!',
+    'Hai imparato le basi, {name}. La Valle è tutta da esplorare, e Zampaverde ha sempre un altro incarico. Premi {questKey} in qualsiasi momento per rivedere le tue missioni.',
   'hud.tutorial.moveTitle': "Trova l'equilibrio",
   'hud.tutorial.moveBody':
     'Usa {moveKeys} per muoverti e il mouse per guardarti intorno. Fai qualche passo per iniziare.',
-  'hud.tutorial.seekTitle': 'Cerca il Maresciallo',
+  'hud.tutorial.seekTitle': 'Cerca Fratello Zampaverde',
   'hud.tutorial.seekBody':
-    'Il maresciallo Redbrook attende in città e ha del lavoro per una nuova lama. Segui il segnale per raggiungerlo.',
-  'hud.tutorial.talkTitle': "Accetta l'incarico",
+    'Fratello Zampaverde attende ai piedi del vaso, senza più nulla e affamato. Segui il segnale per raggiungerlo.',
+  'hud.tutorial.talkTitle': "Ascolta l'incarico",
   'hud.tutorial.talkBody':
-    'Avvicinati al maresciallo Redbrook e premi {interactKey} per parlargli, poi accetta il suo incarico.',
-  'hud.tutorial.slayTitle': 'Lupi alle porte',
-  'hud.tutorial.slayBody':
-    'Dai la caccia ai lupi della foresta sulla strada a nord. Seleziona un bersaglio e attacca per ridurre il branco.',
-  'hud.tutorial.slayProgress': 'Lupi della foresta uccisi: {current} / {needed}',
-  'hud.tutorial.returnTitle': 'Reclama la ricompensa',
+    'Avvicinati a Fratello Zampaverde e premi {interactKey} per parlargli, poi accetta il suo incarico.',
+  'hud.tutorial.gatherTitle': 'La cosa che arde',
+  'hud.tutorial.gatherBody':
+    'I bulbi di brace crescono dove la luce non arriva. Scendi nel Sottosantuario e strappali ai divoratori pallidi. Vengono per la tua lanterna, non per te.',
+  'hud.tutorial.gatherProgress': 'Bulbi di brace raccolti: {current} / {needed}',
+  'hud.tutorial.returnTitle': 'Alimenta la fornace',
   'hud.tutorial.returnBody':
-    'Il tuo incarico è compiuto. Torna dal maresciallo Redbrook e premi {interactKey} per consegnarlo.',
+    'Porti con te la cosa che arde. Torna da Fratello Zampaverde e premi {interactKey} per consegnarla.',
   // Character-sheet stat tooltips (hudChrome.statInfo.*).
   'hudChrome.statInfo.fromYour': 'Dai tuoi {value} punti {stat}:',
   'hudChrome.statInfo.desc.str':
