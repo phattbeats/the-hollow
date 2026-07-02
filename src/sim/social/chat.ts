@@ -165,6 +165,14 @@ export function chat(ctx: SimContext, text: string, pid?: number): SentChat | nu
     return null;
   }
 
+  // "/house [claim|place|remove|...]" — Housing v0 (the Hollow hub homesteads).
+  // Routed through the seam to the Housing instance; self-only notices, no chat
+  // message, so it works identically offline and online without server wiring.
+  if (/^\/house(?:\s|$)/i.test(raw)) {
+    ctx.housingChat(raw, r.meta.entityId);
+    return null;
+  }
+
   // "/roll", "/roll N", "/roll M-N" — a classic random roll for loot disputes
   // and social play. Rolled through the deterministic sim RNG so it is
   // server-authoritative (clients can't fake a result) and identical offline.
@@ -918,6 +926,7 @@ export function helpLines(): string[] {
     'World readouts: /where, /zones, /nearby, /pois, /graveyard, /dungeons, /arena, /session, /listings, /buyback.',
     'Combat readouts: /target, /targetbuffs, /range, /attack, /casting, /combat, /threat, /consider, /combo, /overpower.',
     'State readouts: /pet, /pettaunt, /speed, /consumable, /potion, /form, /manaregen, /falling, /queued, /savedmana.',
+    'Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>.',
   ];
 }
 
