@@ -55,6 +55,23 @@ touched). Three changes, motivated by the corrected run's two named defects
      can never be reached by a frostbolt-snared rogue (6.5 * 0.6 = 3.9), so
      rog/mag was a structural near-auto-loss regardless of build.
 
+TUNING PASS B (2026-07-01, sec8-tuning b; AI upgrade, no combat math or graft
+values touched). The single shared greedy AI understates every build's ceiling
+and tunes the game toward its blind spots. This pass adds a PER-BUILD policy:
+  1. ARCHETYPE CLASSIFICATION: each build's bar is classified as burst /
+     control / attrition / hybrid from its skill composition (no RNG).
+  2. POLICY LAYER: the greedy candidate scorer is kept as the base, then the
+     build's policy reweights and gates it: burst pools combo points to its
+     finisher target and pools energy for its payoff skill; control never
+     overlaps CC, chains it instead, snares kiters, and unloads damage into
+     control windows; attrition keeps DoTs/buffs/shields up and skips
+     overpriced nukes; hybrid applies mild blends.
+  3. COMPARABILITY: the population, every opponent pairing, and every duel's
+     RNG seed are identical between the greedy and policy evaluations (per-duel
+     deterministic seeding + a pre-generated opponent schedule), so a build's
+     WR delta is attributable to piloting alone. Both evaluations run in the
+     same process and the report shows gate metrics before/after.
+
 ABSTRACTIONS (documented limitations):
   - 1-D distance (kiting modeled); facing/"behind" modeled as a state set by
     stealth openers and incapacitates.  No line-of-sight, no terrain.
@@ -408,10 +425,13 @@ def energy_cost(f, skill): return skill.get('cost',0)*f.cost_mult
 # AI: pick an action for `me` against `foe`. Returns skill-name or None (auto).
 # Shared, class-aware, greedy.  Both fighters use it -> fair but not optimal.
 # ----------------------------------------------------------------------------
-def choose_action(me, foe):
-    if me.controlled(): return None
-    if me.cast is not None: return None
-    if me.gcd>0: return None
+def enumerate_candidates(me, foe, keep_zero=False):
+    """Score every currently-legal skill on the bar. Returns [(v,name,sk)].
+    keep_zero=True also returns zero-valued candidates so a policy layer can
+    add its own bonuses. Draws no RNG (the tick RNG stream is untouched)."""
+    if me.controlled(): return []
+    if me.cast is not None: return []
+    if me.gcd>0: return []
     melee_range = me.dist<=5.0
     hp_frac=me.hp/me.maxhp
     foe_frac=foe.hp/foe.maxhp
@@ -486,10 +506,85 @@ def choose_action(me, foe):
             v=40 if hp_frac<0.6 else 10
         elif kind=='energy_gain':
             v=35 if me.energy<0.40*me.max_energy else 0
-        if v>0: cands.append((v,name,sk))
+        if v>0 or (keep_zero and v>=0): cands.append((v,name,sk))
+    return cands
+
+def choose_action(me, foe):
+    cands=enumerate_candidates(me, foe)
     if not cands: return None
-    cands.sort(reverse=True)
+    cands.sort(reverse=True, key=lambda c:(c[0],c[1]))
     return cands[0][1]
+
+# ----------------------------------------------------------------------------
+# TUNING B: PER-BUILD POLICY LAYER
+# The greedy scorer above stays the base evaluator; a build-specific policy
+# reweights and gates its candidates. Classification and piloting draw no RNG,
+# so per-seed determinism is preserved.
+# ----------------------------------------------------------------------------
+CONTROL_KINDS={'cc_poly','aoe_root','incapacitate','finisher_stun','snare'}
+BURST_NAMES={'pyroblast','ambush','execute','fire_blast','eviscerate','backstab','slam'}
+ATTRITION_KINDS={'dot','finisher_dot','buff','debuff','shield','finisher_debuff'}
+DAMAGE_KINDS={'attack_weapon','attack_direct','attack_spell','channel',
+              'finisher_damage','finisher_dot','dot'}
+
+def classify_archetype(build):
+    c=bu=a=0
+    for n in build.skills:
+        sk=SKILLS[n]; k=sk['kind']
+        if k in CONTROL_KINDS or sk.get('stun'): c+=1
+        if n in BURST_NAMES: bu+=1
+        if k in ATTRITION_KINDS: a+=1
+    scores=dict(control=c,burst=bu,attrition=a)
+    ordered=sorted(scores.items(), key=lambda x:(-x[1],x[0]))
+    if ordered[0][1]==ordered[1][1]: return 'hybrid'
+    return ordered[0][0]
+
+def make_pilot(build):
+    arch=classify_archetype(build)
+    # per-build parameters derived from the bar, not just the archetype
+    has_big_finisher=any(SKILLS[n]['kind']=='finisher_damage' for n in build.skills)
+    combo_target=4 if has_big_finisher else 2
+    # the build's energy payoff skill (most expensive energy attack), for pooling
+    payoff=None; payoff_cost=0
+    for n in build.skills:
+        sk=SKILLS[n]
+        if sk['econ']=='energy' and sk['kind'] in DAMAGE_KINDS and sk.get('cost',0)>payoff_cost:
+            payoff, payoff_cost = n, sk['cost']
+    def pilot(me, foe):
+        cands=enumerate_candidates(me, foe, keep_zero=True)
+        if not cands: return None
+        adj=[]
+        for v,name,sk in cands:
+            k=sk['kind']
+            if arch in ('burst','hybrid'):
+                if name in BURST_NAMES: v*=1.35 if arch=='burst' else 1.15
+                # pool combo to the finisher target instead of dumping at 2
+                if k in ('finisher_damage','finisher_dot') and me.combo<combo_target:
+                    continue
+            if arch=='control':
+                if k in CONTROL_KINDS:
+                    if foe.controlled(): continue      # never overlap CC, chain it
+                    v*=1.6
+                    # a snare on a kiting caster is how control reaches its target
+                    if k=='snare' and foe.cls=='mage' and foe.snare<=0: v+=28
+                elif k in DAMAGE_KINDS and foe.controlled():
+                    v*=1.3                             # unload into the window
+            if arch=='attrition':
+                if k in ATTRITION_KINDS: v*=1.5
+                if k=='attack_spell' and sk.get('cost',0)>=15: v*=0.8
+            if v>0: adj.append((v,name,sk))
+        if not adj: return None
+        adj.sort(reverse=True, key=lambda c:(c[0],c[1]))
+        best_v,best_name,best_sk=adj[0]
+        # burst pools energy: hold a cheap filler if the payoff skill is off
+        # cooldown and nearly affordable
+        if arch=='burst' and payoff and best_name!=payoff and best_v<30:
+            psk=SKILLS[payoff]
+            if me.cd.get(payoff,0)<=0:
+                need=energy_cost(me,psk)
+                if me.energy<need<=me.energy+6: return None
+        return best_name
+    return pilot
 
 def melee_foe(foe,me):  # is the foe a melee threat currently near me
     return foe.cls in ('warrior','rogue')
@@ -720,6 +815,66 @@ def run_duel(bA, bB, verbose=False, pilotA=None, pilotB=None):
 def build_signature(b):
     return f"{b.primary[:3]}/{b.secondary[:3]}"
 
+# Deterministic per-duel seeding: every duel's RNG stream depends only on
+# (phase, i, k), never on how long earlier duels ran, so the greedy and policy
+# evaluations fight byte-identical matchups from identical RNG states.
+def duel_seed(phase, i, k):
+    return 1337 + phase*10000019 + i*100003 + k
+
+PH_MATRIX_GREEDY, PH_MATRIX_POLICY, PH_MIRROR, PH_FRONT_GREEDY, PH_FRONT_POLICY = 1,2,3,4,5
+
+def eval_matrix(pop, pilot_of, phase, schedule):
+    results=[]; pair_w=defaultdict(lambda:[0,0])
+    for i,b in enumerate(pop):
+        w=draw=l=0
+        for k,oi in enumerate(schedule[i]):
+            if oi==i: continue
+            opp=pop[oi]
+            random.seed(duel_seed(phase,i,k))
+            r=run_duel(b,opp,pilotA=pilot_of(b),pilotB=pilot_of(opp))
+            if r==1: w+=1
+            elif r==-1: l+=1
+            else: draw+=1
+        g=w+draw+l
+        wr=(w+0.5*draw)/g if g else 0.5
+        results.append((wr,b,w,draw,l))
+        sig=build_signature(b); pair_w[sig][0]+=w; pair_w[sig][1]+=g
+    return results, pair_w
+
+def eval_frontier(front, pilot_of, phase):
+    fwins=defaultdict(float); fgames=defaultdict(int)
+    for i in range(len(front)):
+        for j in range(len(front)):
+            if i==j: continue
+            for rep in range(8):
+                random.seed(duel_seed(phase, i*64+j, rep))
+                r=run_duel(front[i],front[j],pilotA=pilot_of(front[i]),pilotB=pilot_of(front[j]))
+                fgames[i]+=1; fgames[j]+=1
+                if r==1: fwins[i]+=1
+                elif r==-1: fwins[j]+=1
+                else: fwins[i]+=0.5; fwins[j]+=0.5
+    fwr=sorted([fwins[k]/fgames[k] for k in range(len(front)) if fgames[k]], reverse=True)
+    return dict(top=fwr[0]*100, spread=statistics.pstdev(fwr)*100,
+                band=sum(1 for x in fwr if 0.40<=x<=0.60), n=len(fwr), wrs=fwr,
+                comp=Counter(build_signature(b) for b in front))
+
+def gate_metrics(results, pair_w, frontier):
+    wrs=[r[0] for r in results]
+    srt=sorted(results, reverse=True, key=lambda x:x[0])
+    viable=sum(1 for wr in wrs if 0.45<=wr<=0.55)
+    strong=sum(1 for wr in wrs if wr>=0.60)
+    weak=sum(1 for wr in wrs if wr<=0.40)
+    prof={}
+    for p in ('warrior','mage','rogue'):
+        ws=sum(wsum for sig,(wsum,gsum) in pair_w.items() if sig.startswith(p[:3]))
+        gs=sum(gsum for sig,(wsum,gsum) in pair_w.items() if sig.startswith(p[:3]))
+        prof[p]=ws/max(1,gs)
+    return dict(mean=statistics.mean(wrs), median=statistics.median(wrs),
+                stdev=statistics.pstdev(wrs), top=srt[0], bottom=srt[-1],
+                viable=viable, strong=strong, weak=weak, n=len(wrs),
+                prof=prof, gap=max(prof.values())-min(prof.values()),
+                frontier=frontier)
+
 def main():
     print("="*72)
     print("THE HOLLOW - GW1-on-WoCC Build Diversity Sim (PvP duels)")
@@ -733,7 +888,7 @@ def main():
         print(f"  {cls:7s} hp={f.maxhp:4d} ap={f.ap:3d} sp={f.sp:3d} crit={f.crit*100:4.1f}% "
               f"dodge={f.dodge*100:4.1f}% armor={f.armor} energy={f.max_energy}")
 
-    # population
+    # population (identical draw order to pass A: same seed, same builds)
     N_BUILDS=240
     DUELS_PER=160
     pop=[random_build() for _ in range(N_BUILDS)]
@@ -743,57 +898,73 @@ def main():
         for s in profs:
             pop.append(random_build(p,s))
 
-    print(f"\n[RUN] {len(pop)} random builds, {DUELS_PER} duels each vs random opponents...")
-    results=[]
+    # archetype census
+    arch_of={id(b): classify_archetype(b) for b in pop}
+    print("\n[POLICY] archetype census: "+str(dict(Counter(arch_of.values()))))
+
+    # pre-generated opponent schedule: both evaluations fight the same pairings
+    sched_rng=random.Random(4242)
+    schedule=[[sched_rng.randrange(len(pop)) for _ in range(DUELS_PER)] for _ in range(len(pop))]
+
+    greedy_pilot=lambda b: choose_action
+    policy_pilots={id(b): make_pilot(b) for b in pop}
+    policy_pilot=lambda b: policy_pilots[id(b)]
+
+    print(f"\n[RUN 1/2] {len(pop)} builds x {DUELS_PER} duels, shared greedy AI (before)...")
+    res_g, pair_g = eval_matrix(pop, greedy_pilot, PH_MATRIX_GREEDY, schedule)
+    print(f"[RUN 2/2] same builds, same pairings, per-build policy AI (after)...")
+    res_p, pair_p = eval_matrix(pop, policy_pilot, PH_MATRIX_POLICY, schedule)
+
+    # ---- per-build WR movement: does the policy exploit synergies greedy missed?
+    deltas=[]
+    for i,b in enumerate(pop):
+        deltas.append((res_p[i][0]-res_g[i][0], res_g[i][0], res_p[i][0], b))
+    deltas.sort(reverse=True, key=lambda x:x[0])
+    print("\n"+"="*72); print("PER-BUILD WR MOVEMENT (policy vs greedy, identical pairings/seeds)"); print("="*72)
+    moved_up=sum(1 for d in deltas if d[0]>=0.05)
+    moved_dn=sum(1 for d in deltas if d[0]<=-0.05)
+    mean_abs=statistics.mean(abs(d[0]) for d in deltas)
+    print(f"  builds moving >=+5pts: {moved_up}   <=-5pts: {moved_dn}   mean |delta| {mean_abs*100:.1f}pts")
+    print(f"  {'delta':>7s} {'before':>7s} {'after':>6s}  arch       build")
+    for d,wg,wp,b in deltas[:10]:
+        print(f"  {d*100:+6.1f} {wg*100:6.1f}% {wp*100:5.1f}%  {arch_of[id(b)]:9s} [{build_signature(b)}] {b.skills}")
+    print("  ... biggest losers ...")
+    for d,wg,wp,b in deltas[-3:]:
+        print(f"  {d*100:+6.1f} {wg*100:6.1f}% {wp*100:5.1f}%  {arch_of[id(b)]:9s} [{build_signature(b)}] {b.skills}")
+    # WR delta by archetype
+    by_arch=defaultdict(list)
+    for d,_,_,b in deltas: by_arch[arch_of[id(b)]].append(d)
+    print("\n  mean WR delta by archetype:")
+    for a in sorted(by_arch):
+        print(f"    {a:9s} {statistics.mean(by_arch[a])*100:+5.1f}pts  (n={len(by_arch[a])})")
+
+    # ---- distributions under the policy (the new headline numbers)
+    res_p_sorted=sorted(res_p, reverse=True, key=lambda x:x[0])
+    wrs=[r[0] for r in res_p]
+    top=res_p_sorted[0]; bottom=res_p_sorted[-1]
+    q=max(1,len(res_p_sorted)//4)
     skill_in_winners=Counter(); skill_in_pop=Counter()
-    pair_w=defaultdict(lambda:[0,0])
     for b in pop:
         for n in b.skills: skill_in_pop[n]+=1
-    for i,b in enumerate(pop):
-        w=draw=l=0
-        for _ in range(DUELS_PER):
-            opp=random.choice(pop)
-            if opp is b: continue
-            r=run_duel(b,opp)
-            if r==1: w+=1
-            elif r==-1: l+=1
-            else: draw+=1
-        g=w+draw+l
-        wr=(w+0.5*draw)/g if g else 0.5
-        results.append((wr,b,w,draw,l))
-        sig=build_signature(b); pair_w[sig][0]+=w; pair_w[sig][1]+=g
-    results.sort(reverse=True, key=lambda x:x[0])
-
-    wrs=[r[0] for r in results]
-    top=results[0]; bottom=results[-1]
-    # winners = top quartile
-    q=max(1,len(results)//4)
-    for wr,b,*_ in results[:q]:
+    for wr,b,*_ in res_p_sorted[:q]:
         for n in b.skills: skill_in_winners[n]+=1
 
-    print("\n"+"="*72); print("WIN-RATE DISTRIBUTION (vs the field)"); print("="*72)
-    print(f"  builds: {len(results)}   mean WR: {statistics.mean(wrs)*100:.1f}%  "
+    print("\n"+"="*72); print("WIN-RATE DISTRIBUTION vs the field (per-build policy AI)"); print("="*72)
+    print(f"  builds: {len(wrs)}   mean WR: {statistics.mean(wrs)*100:.1f}%  "
           f"median: {statistics.median(wrs)*100:.1f}%  stdev: {statistics.pstdev(wrs)*100:.1f}%")
     print(f"  best build : {top[0]*100:5.1f}%  [{top[1].primary}/{top[1].secondary}]  skills={top[1].skills}")
     print(f"  worst build: {bottom[0]*100:5.1f}%  [{bottom[1].primary}/{bottom[1].secondary}]")
-    # histogram
     buckets=defaultdict(int)
     for wr in wrs: buckets[min(95,int(wr*100)//5*5)]+=1
     print("\n  WR%   count")
     for k in sorted(buckets):
         print(f"  {k:3d}+  {'#'*buckets[k]} ({buckets[k]})")
-    viable=sum(1 for wr in wrs if 0.45<=wr<=0.55)
-    strong=sum(1 for wr in wrs if wr>=0.60)
-    weak=sum(1 for wr in wrs if wr<=0.40)
-    print(f"\n  builds in 45-55% (balanced band): {viable} ({viable/len(wrs)*100:.0f}%)")
-    print(f"  builds >=60% (strong/dominant):    {strong} ({strong/len(wrs)*100:.0f}%)")
-    print(f"  builds <=40% (weak):               {weak} ({weak/len(wrs)*100:.0f}%)")
 
-    print("\n"+"="*72); print("PROFESSION-PAIR WIN RATES"); print("="*72)
-    for sig,(wsum,gsum) in sorted(pair_w.items(), key=lambda x:-(x[1][0]/max(1,x[1][1]))):
+    print("\n"+"="*72); print("PROFESSION-PAIR WIN RATES (policy)"); print("="*72)
+    for sig,(wsum,gsum) in sorted(pair_p.items(), key=lambda x:-(x[1][0]/max(1,x[1][1]))):
         print(f"  {sig:9s} {wsum/max(1,gsum)*100:5.1f}%   (n={gsum})")
 
-    print("\n"+"="*72); print("SKILL USAGE: pick-rate in TOP QUARTILE vs overall"); print("="*72)
+    print("\n"+"="*72); print("SKILL USAGE: pick-rate in TOP QUARTILE vs overall (policy)"); print("="*72)
     print(f"  {'skill':18s} {'top25%':>7s} {'overall':>8s}  signal")
     rows=[]
     for n in SKILLS:
@@ -807,13 +978,13 @@ def main():
         print(f"  {n:18s} {tp*100:6.0f}% {op*100:7.0f}%  {flag}")
     never=[n for tp,op,n in rows if tp==0 and op>0.08]
 
-    # ---- WITHIN-PROFESSION (MIRROR) DIVERSITY: the clean read on the bet ----
+    # ---- WITHIN-PROFESSION (MIRROR) DIVERSITY under the policy
     by_sig=defaultdict(list)
-    for wr,b,*_ in results: by_sig[build_signature(b)].append(b)
-    print("\n"+"="*72); print("WITHIN-PROFESSION (MIRROR) DIVERSITY  [isolates build from class balance]"); print("="*72)
-    print("  same-profession builds fought round-robin against each other:")
+    for wr,b,*_ in res_p_sorted: by_sig[build_signature(b)].append(b)
+    print("\n"+"="*72); print("WITHIN-PROFESSION (MIRROR) DIVERSITY  [policy AI]"); print("="*72)
     print(f"  {'pair':9s} {'builds':>6s}  {'spread':>7s} {'topWR':>6s}   read")
     mirror_summary={}
+    mseq=0
     for sig,builds in sorted(by_sig.items()):
         bl=builds[:14]
         if len(bl)<4: continue
@@ -821,8 +992,9 @@ def main():
         for i in range(len(bl)):
             for j in range(len(bl)):
                 if i==j: continue
-                for _ in range(4):
-                    r=run_duel(bl[i],bl[j])
+                for rep in range(4):
+                    random.seed(duel_seed(PH_MIRROR, mseq, rep)); mseq+=1
+                    r=run_duel(bl[i],bl[j],pilotA=policy_pilot(bl[i]),pilotB=policy_pilot(bl[j]))
                     games[i]+=1; games[j]+=1
                     if r==1: wins[i]+=1
                     elif r==-1: wins[j]+=1
@@ -839,64 +1011,63 @@ def main():
     mirror_dom=sum(1 for v in mirror_summary.values() if v[2]>=72)
     mean_top=statistics.mean(all_top)
     print(f"\n  pairs with a dominant build (mirror top-WR >=72%): {mirror_dom}/{len(mirror_summary)}")
-    print(f"  mean within-profession top-WR: {mean_top:.1f}%   (lower = flatter ladder = more viable builds)")
-    print("  NOTE: random builds include many weak ones, so a high top-WR here partly")
-    print("        reflects bad builds losing - the frontier test below is the clean read.")
+    print(f"  mean within-profession top-WR: {mean_top:.1f}%")
 
-    # ---- COMPETITIVE FRONTIER: do the BEST builds beat EACH OTHER, or is one a king? ----
-    front=[b for _,b,*_ in results[:24]]
-    fwins=defaultdict(float); fgames=defaultdict(int)
-    for i in range(len(front)):
-        for j in range(len(front)):
-            if i==j: continue
-            for _ in range(8):
-                r=run_duel(front[i],front[j]); fgames[i]+=1; fgames[j]+=1
-                if r==1: fwins[i]+=1
-                elif r==-1: fwins[j]+=1
-                else: fwins[i]+=0.5; fwins[j]+=0.5
-    fwr=sorted([fwins[k]/fgames[k] for k in range(len(front)) if fgames[k]], reverse=True)
-    front_top=fwr[0]*100; front_spread=statistics.pstdev(fwr)*100
-    front_band=sum(1 for x in fwr if 0.40<=x<=0.60)
-    front_profs=Counter(build_signature(b) for b in front)
-    front_ok = front_top < 70 and front_band >= len(fwr)//2
-    print("\n"+"="*72); print("COMPETITIVE FRONTIER  [top 24 builds vs each other - is one a king?]"); print("="*72)
-    print(f"  frontier top-WR {front_top:.1f}%   spread {front_spread:.1f}%   in 40-60% band: {front_band}/{len(fwr)}")
-    print(f"  frontier WRs: "+" ".join(f"{x*100:.0f}" for x in fwr))
-    print(f"  frontier composition: {dict(front_profs)}")
+    # ---- COMPETITIVE FRONTIER, before and after
+    res_g_sorted=sorted(res_g, reverse=True, key=lambda x:x[0])
+    front_g=[b for _,b,*_ in res_g_sorted[:24]]
+    front_p=[b for _,b,*_ in res_p_sorted[:24]]
+    print(f"\n[FRONTIER] greedy top-24 round-robin (before)...")
+    fr_g=eval_frontier(front_g, greedy_pilot, PH_FRONT_GREEDY)
+    print(f"[FRONTIER] policy top-24 round-robin (after)...")
+    fr_p=eval_frontier(front_p, policy_pilot, PH_FRONT_POLICY)
+    print("\n"+"="*72); print("COMPETITIVE FRONTIER  [top 24 vs each other]"); print("="*72)
+    for lbl,fr in (('greedy (before)',fr_g),('policy (after) ',fr_p)):
+        print(f"  {lbl}: top-WR {fr['top']:.1f}%  spread {fr['spread']:.1f}%  in 40-60% band {fr['band']}/{fr['n']}")
+        print(f"    WRs: "+" ".join(f"{x*100:.0f}" for x in fr['wrs']))
+        print(f"    composition: {dict(fr['comp'])}")
 
-    print("\n"+"="*72); print("VERDICT vs constitution sec.8 gate"); print("="*72)
-    dom = top[0]>=0.60
-    spread_ok = viable/len(wrs) >= 0.30
-    decorative_frac = len(never)/len(SKILLS)
-    mirror_ok = mean_top < 70 and mirror_dom <= max(1,len(mirror_summary)//3)
-    prof_overall={}
-    for p in ('warrior','mage','rogue'):
-        ws=sum(wsum for sig,(wsum,gsum) in pair_w.items() if sig.startswith(p[:3]))
-        gs=sum(gsum for sig,(wsum,gsum) in pair_w.items() if sig.startswith(p[:3]))
-        prof_overall[p]=ws/max(1,gs)
-    prof_gap=max(prof_overall.values())-min(prof_overall.values())
-
+    # ---- gate metrics before/after
+    g_before=gate_metrics(res_g, pair_g, fr_g)
+    g_after =gate_metrics(res_p, pair_p, fr_p)
     vlines=[]
     def emit(s=''):
         print(s); vlines.append(s)
-    emit(f"  [{'FAIL' if dom else 'PASS'}] dominance (vs field): best build {top[0]*100:.1f}% (gate <60%)")
-    emit(f"  [{'PASS' if spread_ok else 'WEAK'}] viable spread: {viable/len(wrs)*100:.0f}% of builds in 45-55% (gate >=30%)")
+    print()
+    emit("="*72); emit("SEC.8 GATE METRICS: BEFORE (shared greedy) vs AFTER (per-build policy)"); emit("="*72)
+    emit(f"  {'metric':38s} {'before':>9s} {'after':>9s}")
+    for label,fn in (
+        ('best build vs field (gate <60%)', lambda g: f"{g['top'][0]*100:.1f}%"),
+        ('viable 45-55% band (gate >=30%)', lambda g: f"{g['viable']/g['n']*100:.0f}%"),
+        ('strong >=60%',                    lambda g: f"{g['strong']/g['n']*100:.0f}%"),
+        ('weak <=40%',                      lambda g: f"{g['weak']/g['n']*100:.0f}%"),
+        ('profession gap (war/mag/rog)',    lambda g: f"{g['gap']*100:.0f}pts"),
+        ('frontier top-WR (gate <70%)',     lambda g: f"{g['frontier']['top']:.1f}%"),
+        ('frontier 40-60% band',            lambda g: f"{g['frontier']['band']}/{g['frontier']['n']}"),
+    ):
+        emit(f"  {label:38s} {fn(g_before):>9s} {fn(g_after):>9s}")
+    for lbl,g in (('before',g_before),('after ',g_after)):
+        p=g['prof']
+        emit(f"  prof WR {lbl}: war {p['warrior']*100:.0f}% / mag {p['mage']*100:.0f}% / rog {p['rogue']*100:.0f}%")
+
+    dom = g_after['top'][0]>=0.60
+    spread_ok = g_after['viable']/g_after['n'] >= 0.30
+    decorative_frac = len(never)/len(SKILLS)
+    mirror_ok = mean_top < 70 and mirror_dom <= max(1,len(mirror_summary)//3)
+    front_ok = fr_p['top'] < 70 and fr_p['band'] >= fr_p['n']//2
+    emit("")
+    emit("VERDICT vs constitution sec.8 gate (policy AI)")
+    emit(f"  [{'FAIL' if dom else 'PASS'}] dominance (vs field): best build {g_after['top'][0]*100:.1f}% (gate <60%)")
+    emit(f"  [{'PASS' if spread_ok else 'WEAK'}] viable spread: {g_after['viable']/g_after['n']*100:.0f}% in 45-55% (gate >=30%)")
     emit(f"  [{'PASS' if decorative_frac<0.20 else 'WEAK'}] decorative skills: {len(never)}/{len(SKILLS)} never in winners ({decorative_frac*100:.0f}%)")
-    emit(f"  [{'PASS' if mirror_ok else 'WEAK'}] within-profession diversity (random builds): mean mirror top-WR {mean_top:.1f}% (gate <70%)")
-    emit(f"  [{'PASS' if front_ok else 'WEAK'}] competitive frontier: top build {front_top:.1f}% vs other top builds (gate <70%); {front_band}/{len(fwr)} in 40-60%")
-    emit(f"  [obs ] profession balance gap: {prof_gap*100:.0f}pts  (war {prof_overall['warrior']*100:.0f}% / mag {prof_overall['mage']*100:.0f}% / rog {prof_overall['rogue']*100:.0f}%)")
+    emit(f"  [{'PASS' if mirror_ok else 'WEAK'}] within-profession diversity: mean mirror top-WR {mean_top:.1f}% (gate <70%)")
+    emit(f"  [{'PASS' if front_ok else 'WEAK'}] competitive frontier: top {fr_p['top']:.1f}% (gate <70%); {fr_p['band']}/{fr_p['n']} in 40-60%")
+    emit(f"  [obs ] profession balance gap: {g_after['gap']*100:.0f}pts")
     if never: emit(f"        never-in-winners: {never}")
     bet_core = front_ok and decorative_frac<0.25
     emit("")
     emit("  >>> BUILD-CRAFTING DEPTH (the bet): "+("SUPPORTED (directional)." if bet_core else "STRAINED (directional)."))
-    if bet_core:
-        emit("      Within a controlled profession, many builds are viable and the bar")
-        emit("      is not full of dead skills - the graft carries depth.")
-    else:
-        emit("      A dominant build and/or dead skills persist within professions.")
-    emit(f"      Profession BALANCE is a SEPARATE axis: gap {prof_gap*100:.0f}pts -> "
-         + ("fine for a first pass." if prof_gap<0.20 else "needs more tuning (expected; the fallback anticipates this)."))
-    emit("  (Directional only: shared greedy AI, mapped GW1 economy, representative kits, ~EST values.)")
+    emit("  (Directional: per-build scripted policy, mapped GW1 economy, representative kits, ~EST values.)")
 
     # ---- write results artifact ----
     import datetime, os
@@ -907,44 +1078,28 @@ def main():
         pass
     with open(path,'w') as f:
         w=f.write
-        w("THE HOLLOW - GW1-on-WoCC BUILD DIVERSITY SIM - RESULTS\n"+"="*64+"\n")
-        w(f"generated {datetime.date.today().isoformat()}  seed 1337\n\n")
-        w("QUESTION (constitution sec.8): does grafting Guild Wars 1 build-crafting\n")
-        w("(primary+secondary professions, an 8-skill bar drawn from both, attribute\n")
-        w("points spread across both) onto World of ClaudeCraft's real WoW-Classic\n")
-        w("combat math yield real build diversity, or collapse to one dominant build\n")
-        w("/ a bar full of decorative skills?\n\n")
+        w("THE HOLLOW - GW1-on-WoCC BUILD DIVERSITY SIM - RESULTS (tuning pass B)\n"+"="*64+"\n")
+        w(f"generated {datetime.date.today().isoformat()}  seed 1337  AI: per-build policy vs shared greedy\n\n")
         w("SETUP\n")
-        w("  professions : Warrior x Mage x Rogue (PvP duels, 1v1)\n")
-        w("  graft       : single energy bar (base 30) + adrenaline for warrior strikes\n")
-        w(f"  population  : {len(pop)} random legal builds + all 9 ordered profession-pairs\n")
-        w(f"  volume      : {DUELS_PER} duels/build vs field (~{len(pop)*DUELS_PER//1000}k) plus mirror round-robins\n")
-        w("  grounding   : armor/hit/crit/AP/SP formulas and ability data pulled from\n")
-        w("                levy-street/world-of-claudecraft source (see sim header)\n\n")
-        w("WIN-RATE vs FIELD\n")
-        w(f"  mean {statistics.mean(wrs)*100:.1f}%   median {statistics.median(wrs)*100:.1f}%   stdev {statistics.pstdev(wrs)*100:.1f}%\n")
-        w(f"  best  {top[0]*100:5.1f}%  [{top[1].primary}/{top[1].secondary}]\n")
-        w(f"  worst {bottom[0]*100:5.1f}%  [{bottom[1].primary}/{bottom[1].secondary}]\n")
-        w(f"  balanced band 45-55%: {viable} ({viable/len(wrs)*100:.0f}%)   strong>=60%: {strong} ({strong/len(wrs)*100:.0f}%)   weak<=40%: {weak} ({weak/len(wrs)*100:.0f}%)\n\n")
-        w("PROFESSION-PAIR WIN RATES\n")
-        for sig,(wsum,gsum) in sorted(pair_w.items(), key=lambda x:-(x[1][0]/max(1,x[1][1]))):
+        w(f"  population  : {len(pop)} builds (identical to pass A), {DUELS_PER} duels/build\n")
+        w("  comparability: same builds, same opponent pairings, per-duel seeds\n\n")
+        w("PER-BUILD WR MOVEMENT (policy vs greedy)\n")
+        w(f"  moved >=+5pts: {moved_up}   <=-5pts: {moved_dn}   mean |delta| {mean_abs*100:.1f}pts\n")
+        for d,wg,wp,b in deltas[:10]:
+            w(f"  {d*100:+6.1f} {wg*100:6.1f}%->{wp*100:5.1f}%  {arch_of[id(b)]:9s} [{build_signature(b)}] {b.skills}\n")
+        w("\n  mean WR delta by archetype:\n")
+        for a in sorted(by_arch):
+            w(f"    {a:9s} {statistics.mean(by_arch[a])*100:+5.1f}pts (n={len(by_arch[a])})\n")
+        w("\nPROFESSION-PAIR WIN RATES (policy)\n")
+        for sig,(wsum,gsum) in sorted(pair_p.items(), key=lambda x:-(x[1][0]/max(1,x[1][1]))):
             w(f"  {sig:9s} {wsum/max(1,gsum)*100:5.1f}%  (n={gsum})\n")
-        w("\nWITHIN-PROFESSION (MIRROR) DIVERSITY  [isolates build from class balance]\n")
+        w("\nWITHIN-PROFESSION (MIRROR) DIVERSITY (policy)\n")
         for sig,(n,spread,topwr,read) in sorted(mirror_summary.items()):
             w(f"  {sig:9s} builds={n:2d}  spread={spread:4.1f}%  top={topwr:5.1f}%  {read}\n")
-        w(f"  mean within-profession top-WR {mean_top:.1f}%  (lower = flatter ladder = more viable builds)\n")
-        w(f"  dominant-build pairs: {mirror_dom}/{len(mirror_summary)}\n")
-        w("  (random builds include weak ones; frontier below is the clean read)\n\n")
-        w("COMPETITIVE FRONTIER  [top 24 builds round-robined against each other]\n")
-        w(f"  top {front_top:.1f}%   spread {front_spread:.1f}%   in 40-60% band {front_band}/{len(fwr)}\n")
-        w(f"  composition: {dict(front_profs)}\n\n")
-        w("DECORATIVE-SKILL CHECK (never used by top-quartile builds)\n")
+        w(f"  mean within-profession top-WR {mean_top:.1f}%   dominant pairs {mirror_dom}/{len(mirror_summary)}\n")
+        w("\nDECORATIVE-SKILL CHECK (policy top quartile)\n")
         w(f"  {len(never)}/{len(SKILLS)}: {never if never else 'none'}\n\n")
-        w("VERDICT\n")
         for ln in vlines: w(ln+"\n")
-        w("\nNEXT (if pursuing ratify): more tuning iterations on the cost mapping and\n")
-        w("attribute scaling, a smarter per-build policy, then the authoritative\n")
-        w("re-run on the live engine sim rather than this faithful port.\n")
     print(f"\n[written] {path}")
 
 if __name__=='__main__':
