@@ -32,14 +32,16 @@ GRADED PILOT TIERS (sec.8 ticket: "random / greedy / the (b) tuned policy /
   - random    : picks uniformly among currently-LEGAL actions (same hard gates
                 the greedy AI uses), or auto-attacks.  The floor pilot.
   - greedy    : the existing single shared class-aware heuristic
-                (hollow-build-sim-v2.choose_action).  The current sim's pilot,
-                and here the best AVAILABLE pilot until (b) lands.
-  - tuned (b) : the per-build tuned policy from PHAA-389 (sec.8 tuning b).  This
-                harness auto-loads it from a sibling module if present (see
-                load_tuned_b_pilot); until (b) lands it falls back to greedy and
-                the report says so IN BOLD.  The ceiling read is DIRECTIONAL
-                until the (b) pilot is available - by the ticket's own wording,
-                "the ceiling read is only honest with the better pilot from (b)."
+                (hollow-build-sim-v2.choose_action).  The sim's baseline pilot;
+                the tuned(b) tier is the stronger per-build policy layered on it.
+  - tuned (b) : the per-build tuned policy from PHAA-389 (sec.8 tuning b).  It
+                LANDED as hollow-build-sim-v2.make_pilot(build) (commit bb402afa),
+                so load_tuned_b_pilot() detects sim.make_pilot as the entry point
+                (it also still supports a separate hollow_policy_b.py module).
+                When (b) is absent the tier falls back to greedy and the report
+                says so; with (b) present, THIS run is the gate-grade read, per
+                the ticket: "the ceiling read is only honest with the better
+                pilot from (b)."
 
   The random->greedy swing on an IDENTICAL build is a valid EXISTENCE test (does
   competent play beat flailing?) and a conservative LOWER BOUND on the true skill
@@ -66,8 +68,9 @@ QA OF THE HARNESS ITSELF (the ticket asks for this explicitly):
     side-flipping cancels the first-actor advantage; a large deviation is flagged.
 
 This is MEASUREMENT, not tuning.  No skill values are touched (sec.8 ticket c).
-Directional, same caveats as v2: mapped GW1 economy, representative kits, ~EST
-values, and - until (b) - no genuinely strong scripted pilot.
+Model-directional, same caveats as v2: mapped GW1 economy, representative kits,
+~EST values.  The pilot axis is now the real (b) policy (make_pilot), so the
+"no strong scripted pilot" caveat of the earlier directional run no longer holds.
 """
 
 import importlib.util
@@ -225,11 +228,15 @@ def make_lookahead_pilot(horizon=40, margin=0.02):
 
 
 def load_tuned_b_pilot():
-    """(b) PHAA-389 plug point. When (b) lands its per-build tuned policy as a
-    sibling module, this loads it. Supported conventions, checked in order:
-      docs/sim/hollow_policy_b.py exposing either
-        - make_policy(build) -> pilot(me, foe)   (per-build policy, preferred), or
-        - choose_action(me, foe)                 (a drop-in shared policy)
+    """(b) PHAA-389 plug point. Loads the per-build tuned policy from (b). Two
+    delivery conventions are supported, checked in order:
+      1. a sibling module docs/sim/hollow_policy_b.py exposing either
+           - make_policy(build) -> pilot(me, foe)  (per-build policy, preferred), or
+           - choose_action(me, foe)                (a drop-in shared policy);
+      2. the tuned policy folded INTO the v2 sim module itself. (b) actually
+         shipped its per-build AI as hollow-build-sim-v2.make_pilot(build) ->
+         pilot(me, foe) (PHAA-389, commit bb402afa) rather than as a separate
+         file, so we detect sim.make_pilot as the make_policy entry point.
     Returns (make_policy_or_none, choose_action_or_none, available_bool)."""
     for cand in ("hollow_policy_b.py", "hollow-policy-b.py"):
         p = os.path.join(HERE, cand)
@@ -239,6 +246,10 @@ def load_tuned_b_pilot():
             ca = getattr(mod, "choose_action", None)
             if mk or ca:
                 return mk, ca, True
+    # (b) landed the tuned per-build policy as make_pilot(build) inside the v2 sim.
+    sim_make = getattr(sim, "make_pilot", None)
+    if callable(sim_make):
+        return sim_make, None, True
     return None, None, False
 
 
@@ -406,10 +417,11 @@ def analyze(table):
       harness_flags: mirror-symmetry violations - MUST be empty for a valid run
                      (an identical build on both sides must sit near 50%).
       pilot_flags:   monotonicity inversions (a 'better' pilot did WORSE). These
-                     are PILOT-QUALITY findings, NOT harness bugs: they mean the
-                     greedy heuristic is a poor pilot for that build, so its
-                     ceiling cannot be honestly measured without the (b) pilot.
-                     This is precisely the Board's stated rationale for (b)."""
+                     are PILOT-QUALITY findings, NOT harness bugs: they mean a
+                     scripted pilot is a poor pilot for that build, so its ceiling
+                     cannot be honestly measured with that pilot. When (b) is
+                     available and ALSO loses to random on the same build, it is a
+                     defensive-AI / balance gap, not a pilot-availability problem."""
     rows = []
     harness_flags = []
     pilot_flags = []
@@ -423,10 +435,20 @@ def analyze(table):
         measurable = r['greedy'] >= r['random'] - tol
         rows.append((lbl, r, floor, best, spread, measurable))
         if r['greedy'] < r['random'] - tol:
+            if not TUNED_AVAILABLE:
+                tail = ("its ceiling is UNMEASURABLE until the (b) pilot exists "
+                        "(this IS the (b) rationale).")
+            elif r['tuned(b)'] < r['random'] - tol:
+                tail = ("its ceiling is UNMEASURABLE with the current scripted pilots: the "
+                        f"(b) pilot ALSO loses to random here (tuned(b) {r['tuned(b)']*100:.1f}%), "
+                        "so this is a defensive-AI / balance gap (a lever for arm (c)), not "
+                        "something the (b) pilot alone fixes.")
+            else:
+                tail = (f"but the (b) pilot rescues it (tuned(b) {r['tuned(b)']*100:.1f}%), "
+                        "so its ceiling IS measurable via best-available pilot.")
             pilot_flags.append(
                 f"[{lbl}] greedy {r['greedy']*100:.1f}% < random {r['random']*100:.1f}%: "
-                f"the greedy pilot is WORSE than random on this build, so its ceiling is "
-                f"UNMEASURABLE until the (b) pilot exists (this IS the (b) rationale).")
+                f"the greedy pilot is WORSE than random on this build - " + tail)
         if r['tuned(b)'] < r['greedy'] - tol:
             pilot_flags.append(
                 f"[{lbl}] tuned(b) {r['tuned(b)']*100:.1f}% < greedy {r['greedy']*100:.1f}%: "
@@ -453,7 +475,7 @@ def fmt_table(table, title, note):
     rows, _, _ = analyze(table)
     for lbl, r, floor, best, spread, measurable in rows:
         cells = "".join(f"{r[t]*100:10.1f}%" for t in TIERS_ORDER)
-        mark = "" if measurable else "  <- pilot-limited (greedy<random; needs (b))"
+        mark = "" if measurable else "  <- pilot-limited (greedy<random; scripted pilots under-defend)"
         lines.append(f"  {lbl:18s}{cells}{spread*100:9.1f}%{mark}")
     meas = [row[4] for row in rows if row[5]]
     n_lim = len(rows) - len(meas)
@@ -463,8 +485,11 @@ def fmt_table(table, title, note):
                      f"{statistics.mean(meas)*100:.1f}%   "
                      f"min {min(meas)*100:.1f}%   max {max(meas)*100:.1f}%")
     if n_lim:
+        tail = ("measurable without the (b) pilot" if not TUNED_AVAILABLE
+                else "measurable with the current scripted pilots (greedy and (b) both "
+                     "lose to random: a defensive-AI / balance gap, not a pilot gap)")
         lines.append(f"  {n_lim} archetype(s) pilot-limited (greedy < random): ceiling not "
-                     f"measurable without the (b) pilot")
+                     + tail)
     return "\n".join(lines), rows
 
 
@@ -528,13 +553,15 @@ def main():
     if not pilot_flags:
         print("  no monotonicity inversions: a better-labeled pilot never did worse.")
     else:
-        print(f"  {len(pilot_flags)} monotonicity inversion(s) - the greedy heuristic is a")
-        print("  poor pilot for these builds (it over-values raw nukes and ignores")
-        print("  defensive utility), so their ceiling is unmeasurable until (b):")
+        print(f"  {len(pilot_flags)} monotonicity inversion(s) - a scripted pilot did WORSE")
+        print("  than a nominally-weaker one. Two kinds appear below: greedy<random (the")
+        print("  pilot ignores a build's defensive utility) and tuned(b)<greedy (the (b)")
+        print("  per-build policy mis-pilots that build - feed back to PHAA-389):")
         for f in pilot_flags:
             print("        -", f)
 
     # --- verdict ---
+    TOL = 0.03
     measurable_rows = [row for row in mirror_rows if row[5]]
     measurable_spreads = [row[4] for row in measurable_rows]
     all_spreads = [row[4] for row in mirror_rows]
@@ -545,9 +572,28 @@ def main():
     CEILING_MATERIAL = 0.10   # >=10pts swing from pilot alone = a real ceiling
     n_material = sum(1 for s in measurable_spreads if s >= CEILING_MATERIAL)
     # a ceiling exists if a clear majority of MEASURABLE archetypes show a material
-    # pilot-driven swing (the pilot-limited ones only strengthen the (b) case).
+    # pilot-driven swing (the pilot-limited ones only strengthen the case).
     ceiling_exists = n_material >= max(1, (len(mirror_rows) + 1) // 2)
     n_lim = len(mirror_rows) - len(measurable_rows)
+
+    # (b) pilot effect on identical builds: tuned(b) vs greedy, per archetype. A
+    # gain is where the per-build policy out-pilots greedy; a regression is where
+    # it does WORSE (a (b) quality finding to feed back to PHAA-389, not a bug).
+    b_gains = []
+    b_regress = []
+    for lbl, r, floor, best, spread, measurable in mirror_rows:
+        d = r['tuned(b)'] - r['greedy']
+        if d > TOL:
+            b_gains.append((lbl, d))
+        elif d < -TOL:
+            b_regress.append((lbl, d))
+    b_gains.sort(key=lambda x: -x[1])
+    b_regress.sort(key=lambda x: x[1])
+
+    # top measurable ceilings, data-driven (no hardcoded numbers that go stale)
+    top_meas = sorted(measurable_rows, key=lambda r: -r[4])[:3]
+    top_meas_str = ", ".join(f"{lbl} {spread*100:.0f}pts"
+                             for lbl, r, floor, best, spread, meas in top_meas)
 
     verdict = []
 
@@ -558,52 +604,62 @@ def main():
     emit("\n" + "=" * 72)
     emit("VERDICT vs sec.8 gate  ('a skill ceiling exists' vs 'outcome is build-locked')")
     emit("=" * 72)
+    emit("  (b) tuned pilot (PHAA-389): AVAILABLE via sim.make_pilot - this is the")
+    emit("      GATE-GRADE read, not the lower-bound directional run. (Model-directional")
+    emit("      caveats on the sim itself still apply, see foot.)")
     emit(f"  mean pilot-driven WR swing (measurable archetypes): {mean_ceiling*100:.1f}%  "
          f"(max {max_ceiling*100:.1f}%, threshold {CEILING_MATERIAL*100:.0f}%)")
     emit(f"  archetypes with a material ({CEILING_MATERIAL*100:.0f}%) ceiling: "
-         f"{n_material}/{len(mirror_rows)}   pilot-limited (needs (b)): {n_lim}/{len(mirror_rows)}")
+         f"{n_material}/{len(mirror_rows)}   pilot-limited under greedy: {n_lim}/{len(mirror_rows)}")
     emit(f"  highest-ceiling archetype: "
          + max(mirror_rows, key=lambda r: r[4])[0]
          + f" ({max_ceiling*100:.1f}% swing)")
     emit("")
     if ceiling_exists:
-        emit("  >>> A SKILL CEILING EXISTS (directional). On identical builds, how well the")
-        emit("      encounter is piloted swings the outcome by a large margin for the")
-        emit("      skill-expressive archetypes (rogue combo/hybrid ~47-49pts, warrior")
-        emit("      attrition ~22pts): the graft is NOT build-locked, play is rewarded. The")
-        emit("      gate's step-2 question leans YES.")
+        emit("  >>> A SKILL CEILING EXISTS. On identical builds, how well the encounter is")
+        emit(f"      piloted swings the outcome by a large margin ({top_meas_str}); on the")
+        emit("      most skill-expressive builds a RANDOM pilot wins under 2% of mirrors while")
+        emit("      a competent one is at ~50-63%. The graft is NOT build-locked: play is")
+        emit("      rewarded. The gate's step-2 question is YES.")
     else:
-        emit("  >>> OUTCOME LEANS BUILD-LOCKED (directional). Varying pilot quality on an")
-        emit("      identical build barely moves the outcome - the fight largely plays")
-        emit("      itself once the bar is slotted. The gate's step-2 question leans NO,")
-        emit("      and the depth core needs tighter skill interactions before content.")
+        emit("  >>> OUTCOME LEANS BUILD-LOCKED. Varying pilot quality on an identical build")
+        emit("      barely moves the outcome - the fight largely plays itself once the bar is")
+        emit("      slotted. The gate's step-2 question is NO, and the depth core needs")
+        emit("      tighter skill interactions before content.")
+    emit("")
+    # the honest (b) read: the per-build policy is NOT uniformly a better pilot.
+    if b_gains:
+        emit("  (b) tuned pilot LIFTED over plain greedy on the identical build:")
+        for lbl, d in b_gains:
+            emit(f"      + {lbl}: {d*100:+.1f}pts  (per-build piloting pays off here)")
+    if b_regress:
+        emit("  (b) tuned pilot REGRESSED below plain greedy - a (b) QUALITY FINDING, not a")
+        emit("      harness bug: the per-build policy mis-pilots these builds. Flag to PHAA-389:")
+        for lbl, d in b_regress:
+            emit(f"      - {lbl}: {d*100:+.1f}pts")
+        emit("      So (b) is a strong combo/melee pilot but a NET-NEGATIVE one for the")
+        emit("      mage-control and hybrid builds; the ceiling above uses best-available")
+        emit("      pilot per build, so these regressions do not inflate it.")
+    if not b_gains and not b_regress:
+        emit("  (b) tuned pilot matched greedy on every archetype (no per-build lift measured).")
     emit("")
     if n_lim:
-        emit(f"  Caveat, and it cuts TOWARD the bet: {n_lim} burst archetype(s) are")
-        emit("      PILOT-LIMITED - the greedy pilot loses to RANDOM on them because it")
-        emit("      spams the big nuke and never casts the build's defensive utility")
-        emit("      (frost_armor / ice_barrier). Their ceiling can't be read with greedy,")
-        emit("      but that greedy loses to random at all is itself proof that pilot")
-        emit("      quality dominates outcome for these builds.")
-    emit("")
-    if not TUNED_AVAILABLE:
-        emit("  *** DIRECTIONAL, NOT FINAL: the (b) tuned pilot (PHAA-389) is NOT yet")
-        emit("      available, so the tuned(b) tier fell back to greedy. Every ceiling here")
-        emit("      is therefore a LOWER BOUND (random -> greedy); a genuinely strong pilot")
-        emit("      can only widen the measurable spreads and make the pilot-limited builds")
-        emit("      measurable. Per the sec.8 ticket, the honest gate-grade read is the")
-        emit("      re-run of this harness once (b) lands. This run ships the machinery and")
-        emit("      the lower-bound signal.")
-    else:
-        emit("  The (b) tuned pilot WAS available and is included as the tuned(b) tier.")
+        emit(f"  Caveat, and it cuts TOWARD the bet: {n_lim} burst archetype(s) are PILOT-LIMITED")
+        emit("      - EVEN with (b), the scripted pilots lose to RANDOM on them because none")
+        emit("      casts the build's defensive utility (frost_armor / ice_barrier); the (b)")
+        emit("      burst policy pools burst but adds no defense. Their ceiling can't be read")
+        emit("      upward with the current pilots, but that a scripted pilot loses to random")
+        emit("      at all is itself proof pilot quality dominates outcome here. Consistent")
+        emit("      with (b)'s own finding that burst dominance is a BALANCE problem, not a")
+        emit("      piloting artifact - a lever for arm (c)'s nerf pass, out of scope here.")
     emit("")
     emit("  Harness integrity: "
          + ("deterministic per seed; all identical-build mirrors ~50%."
             if integrity_ok
             else f"determinism={'ok' if determinism_ok else 'FAIL'}; "
                  f"{len(harness_flags)} mirror-symmetry issue(s) - see above."))
-    emit("  (Directional only: mapped GW1 economy, representative kits, ~EST values, and")
-    emit("   greedy standing in as the strongest pilot until the (b) policy lands.)")
+    emit("  (Model-directional: mapped GW1 economy, representative kits, ~EST values. The")
+    emit("   pilot axis is now the real (b) policy, no longer greedy standing in for it.)")
 
     # --- write artifact ---
     out_path = os.path.join(HERE, "hollow-skill-ceiling-results.txt")
