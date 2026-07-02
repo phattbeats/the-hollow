@@ -3611,6 +3611,12 @@ export class Renderer {
             ? DUNGEON_ENV_INTENSITY
             : this.envOutdoorIntensity;
         sharedUniforms.uRimBoost.value = glade ? 1.6 : underground ? DUNGEON_RIM_BOOST : 1;
+        // and the light itself goes leaf-filtered in the glade: green-gold
+        // sun, mossy sky ambient, so the stone and soil read overgrown even
+        // where no flora sits; restored to daylight everywhere else
+        this.sun.color.setHex(glade ? 0xd8f0a0 : 0xffedd0);
+        this.hemi.color.setHex(glade ? 0xb6dc8a : 0xdcefff);
+        this.hemi.groundColor.setHex(glade ? 0x35502a : 0x465f39);
       }
       return;
     }
