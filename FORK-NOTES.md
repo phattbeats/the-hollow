@@ -146,3 +146,14 @@ Verification: `tsc --noEmit` clean; `tests/client_shell.test.ts`,
 `tests/architecture.test.ts`, `tests/localization_fixes.test.ts`,
 `tests/discord_server.test.ts`, `tests/discord_deeplink.test.ts`, and
 `tests/i18n_completeness.test.ts` green with NODE_ENV unset.
+
+## 2026-07-02: branding deployed to PHATT-RAID (PHAA-397)
+
+Rebuilt `eastbrook-game:phase0` from main at c7923808 (the branding merge) and
+recreated the `eastbrook-game` container with the same config (network
+phattvip, port 8787, media-cache bind, `PUBLIC_ORIGIN=https://thehollow.phatt.vip`,
+restart unless-stopped). Verified live at thehollow.phatt.vip: title and OG
+read "The Hollow: Classic-Style Web MMO", `/the-hollow-logo.png` wordmark
+serves (200, 91 KB), `favicon.ico` matches the repo's portal-mark hash, zero
+donate strings, no `discord.gg` invite links (the remaining Discord markup is
+the retained OAuth login flow), no buildkit orphan containers left behind.
