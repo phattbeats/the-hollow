@@ -20,7 +20,7 @@
 // `src/sim`-pure: no DOM/Three/render/ui/game/net imports, no Math.random/Date.now
 // (enforced by tests/architecture.test.ts).
 
-import { dungeonAt, isDelvePos, zoneAt } from './data';
+import { DUNGEONS, dungeonAt, isDelvePos, zoneAt } from './data';
 import { recalcPlayerStats } from './entity';
 import type { SimContext } from './sim_context';
 import type { Entity, SimEvent, Vec3 } from './types';
@@ -168,10 +168,22 @@ export function releasePlayerSpirit(ctx: SimContext, pid?: number): void {
   }
   p.dead = false;
   // dying in a dungeon sends you to the graveyard of the zone its door is
-  // in; dying outdoors, to your current zone's graveyard
+  // in; dying outdoors, to your current zone's graveyard. The Hollow hub
+  // family overrides this with homeRespawn (back to the vase, constitution
+  // §7): the spirit never leaves the hub for a base-world graveyard (PHAA-404).
   const dungeon = dungeonAt(p.pos.x);
-  const graveyard = zoneAt(dungeon ? dungeon.doorPos.z : p.pos.z).graveyard;
-  p.pos = ctx.groundPos(graveyard.x, graveyard.z);
+  const home = dungeon?.homeRespawn;
+  const homeTarget = home ? DUNGEONS[home.dungeonId] : undefined;
+  if (home && homeTarget && ctx.enterDungeon(home.dungeonId, p.id, { quiet: true })) {
+    // rejoined the home dungeon's instance (shared for the hub); shift from
+    // its entry point to the homeRespawn point inside it. On a failed enter
+    // (never expected) fall through to the graveyard branch below.
+    const origin = { x: p.pos.x - homeTarget.entry.x, z: p.pos.z - homeTarget.entry.z };
+    p.pos = ctx.groundPos(origin.x + home.x, origin.z + home.z);
+  } else {
+    const graveyard = zoneAt(dungeon ? dungeon.doorPos.z : p.pos.z).graveyard;
+    p.pos = ctx.groundPos(graveyard.x, graveyard.z);
+  }
   p.prevPos = { ...p.pos };
   rebucketEntity(ctx, p);
   p.facing = 0;

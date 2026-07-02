@@ -6,7 +6,12 @@
 // quest chain can be taken and completed there, the cave mouth links to the
 // Under-Shrine with its full spawn set, and the exits lead home.
 import { describe, expect, it } from 'vitest';
-import { HOLLOW_GATE_POS, HOLLOW_HUB_DOOR_POS, VASE_POS } from '../src/sim/content/hollow';
+import {
+  HOLLOW_GATE_POS,
+  HOLLOW_HUB_DOOR_POS,
+  VASE_LANDING_POS,
+  VASE_POS,
+} from '../src/sim/content/hollow';
 import {
   ARENA_X,
   ARENA_X_MIN,
@@ -130,10 +135,14 @@ describe('The Hollow hub', () => {
       }
     }
 
-    sim.leaveDungeon(a);
+    // PHAA-404: the hub is sealed. No exit portal spawns inside it, and
+    // leaveDungeon is a no-op, so the inherited base overworld is unreachable.
     expect(
-      dist2d(ea.pos, { x: HOLLOW_HUB_DOOR_POS.x, y: 0, z: HOLLOW_HUB_DOOR_POS.z }),
-    ).toBeLessThan(10);
+      findEntity(sim, (e) => e.templateId === 'dungeon_exit' && Math.abs(e.pos.x - origin.x) < 120),
+    ).toBeUndefined();
+    const before = { ...ea.pos };
+    sim.leaveDungeon(a);
+    expect(ea.pos).toEqual(before);
   });
 
   it('the Under-Shrine populates its descent and the Witness-Root waits in the far room', () => {
@@ -151,11 +160,16 @@ describe('The Hollow hub', () => {
     expect(witness).toBeTruthy();
     expect(witness.level).toBe(4);
 
-    // leaving the cave returns you beside the hub portal in the overworld
+    // PHAA-404: leaving the cave climbs back into the hub instance beside the
+    // cave mouth, never the base overworld
     sim.leaveDungeon(a);
+    const hubSlot = sim.instanceSlotAt(ea.pos);
+    expect(hubSlot).not.toBeNull();
+    const hubOrigin = instanceOrigin(6, hubSlot!);
+    const exitTo = DUNGEONS.under_shrine.exitTo!;
     expect(
-      dist2d(ea.pos, { x: HOLLOW_HUB_DOOR_POS.x, y: 0, z: HOLLOW_HUB_DOOR_POS.z }),
-    ).toBeLessThan(10);
+      dist2d(ea.pos, { x: hubOrigin.x + exitTo.x, y: 0, z: hubOrigin.z + exitTo.z }),
+    ).toBeLessThan(2);
   });
 
   it("Greenpaw's first-run chain can be taken and completed at the vase", () => {
@@ -204,12 +218,12 @@ describe('The Hollow hub', () => {
     expect(morsel?.questId).toBe('q_what_fills');
   });
 
-  it('positions saved at the PRE-fork arena/delve x-bands rejoin at an overworld door', () => {
+  it('positions saved at the PRE-fork arena/delve x-bands rejoin inside the hub', () => {
     // The fork moved ARENA_X 4200 to 5400 and DELVE_X_MIN 4800 to 6000 to open
     // dungeon bands 6 and 7. A character saved mid-match or mid-delve at the
-    // OLD coordinates now resolves to the new Hollow bands; addPlayer's rejoin
-    // normalization must still eject them to an overworld door, never leave
-    // them standing inside an instance band.
+    // OLD coordinates now resolves to the new Hollow bands, which are the hub
+    // family (homeRespawn): addPlayer rejoins them into a live Hollow hub
+    // instance rather than ejecting them to a base-world door (PHAA-404).
     for (const oldX of [4200, 4800]) {
       const sim = new Sim({ seed: 3, playerClass: 'warrior', noPlayer: true });
       const pid = sim.addPlayer('warrior', 'Old', {
@@ -221,9 +235,78 @@ describe('The Hollow hub', () => {
         } as any,
       });
       const e = sim.entities.get(pid)!;
-      // ejected west of every instance band, at a real overworld door
-      expect(e.pos.x).toBeLessThan(800);
-      expect(sim.instanceSlotAt(e.pos)).toBeNull();
+      const slot = sim.instanceSlotAt(e.pos);
+      expect(slot).not.toBeNull();
+      const origin = instanceOrigin(6, slot!);
+      // standing at the hub gate, inside a claimed instance
+      expect(
+        dist2d(e.pos, { x: origin.x + HOLLOW_GATE_POS.x, y: 0, z: origin.z + HOLLOW_GATE_POS.z }),
+      ).toBeLessThan(2);
     }
+  });
+
+  it('the hub is one shared instance: solo strangers land in the same slot', () => {
+    const sim = new Sim({ seed: 5, playerClass: 'warrior', noPlayer: true });
+    const a = sim.addPlayer('warrior', 'Aleph', { hollowStart: true });
+    const b = sim.addPlayer('mage', 'Beth', { hollowStart: true });
+    const sa = sim.instanceSlotAt(sim.entities.get(a)!.pos);
+    const sb = sim.instanceSlotAt(sim.entities.get(b)!.pos);
+    expect(sa).not.toBeNull();
+    expect(sa).toBe(sb);
+    // the Under-Shrine stays per-party: the same two strangers get separate caves
+    sim.enterDungeon('under_shrine', a);
+    sim.enterDungeon('under_shrine', b);
+    expect(sim.instanceSlotAt(sim.entities.get(a)!.pos)).not.toBe(
+      sim.instanceSlotAt(sim.entities.get(b)!.pos),
+    );
+  });
+
+  it('hollowStart spawns a brand-new character at the vase and death returns there (PHAA-404)', () => {
+    const sim = new Sim({ seed: 11, playerClass: 'warrior', hollowStart: true });
+    const pid = sim.playerId;
+    const e = sim.entities.get(pid)!;
+    const slot = sim.instanceSlotAt(e.pos);
+    expect(slot).not.toBeNull();
+    const origin = instanceOrigin(6, slot!);
+    // the cold open (constitution §7): land at the vase itself
+    expect(
+      dist2d(e.pos, { x: origin.x + VASE_LANDING_POS.x, y: 0, z: origin.z + VASE_LANDING_POS.z }),
+    ).toBeLessThan(2);
+
+    // a server-shaped fresh character (initial state serialized in the base
+    // overworld) also lands at the vase, not the gate
+    const sim2 = new Sim({ seed: 11, playerClass: 'mage', noPlayer: true });
+    const pid2 = sim2.addPlayer('mage', 'Newling', {
+      hollowStart: true,
+      state: { pos: { x: 2, z: -2 }, questLog: [], questsDone: [], inventory: [] } as any,
+    });
+    const e2 = sim2.entities.get(pid2)!;
+    const slot2 = sim2.instanceSlotAt(e2.pos)!;
+    const origin2 = instanceOrigin(6, slot2);
+    expect(
+      dist2d(e2.pos, {
+        x: origin2.x + VASE_LANDING_POS.x,
+        y: 0,
+        z: origin2.z + VASE_LANDING_POS.z,
+      }),
+    ).toBeLessThan(2);
+
+    // dying in the Under-Shrine releases the spirit back to the vase, never a
+    // base-world graveyard
+    sim.enterDungeon('under_shrine', pid);
+    e.hp = 0;
+    e.dead = true;
+    sim.releaseSpirit(pid);
+    expect(e.dead).toBe(false);
+    const backSlot = sim.instanceSlotAt(e.pos);
+    expect(backSlot).not.toBeNull();
+    const backOrigin = instanceOrigin(6, backSlot!);
+    expect(
+      dist2d(e.pos, {
+        x: backOrigin.x + VASE_LANDING_POS.x,
+        y: 0,
+        z: backOrigin.z + VASE_LANDING_POS.z,
+      }),
+    ).toBeLessThan(2);
   });
 });
