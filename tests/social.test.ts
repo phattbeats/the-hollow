@@ -438,6 +438,19 @@ describe('parties', () => {
     expect(info.z).toBeCloseTo(-23, 3);
   });
 
+  it("partyInfo reports a shielded member's absorb total for the HUD shield segment", () => {
+    const { sim, b } = makeDuo();
+    // b (priest) has no active shield yet.
+    expect(mustPartyMember(sim, b).absorb).toBe(0);
+    sim.setPlayerLevel(6, b);
+    mustEntity(sim, b).resource = mustEntity(sim, b).maxResource;
+    sim.castAbility('power_word_shield', b);
+    sim.tick();
+    const shieldAura = mustEntity(sim, b).auras.find((a) => a.kind === 'absorb');
+    expect(shieldAura).toBeDefined();
+    expect(mustPartyMember(sim, b).absorb).toBe(shieldAura?.value);
+  });
+
   it('converts a party to a two-group raid with a ten player cap', () => {
     const sim = makeWorld();
     const leader = sim.addPlayer('warrior', 'Leader');

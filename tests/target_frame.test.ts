@@ -105,7 +105,8 @@ function targetDescriptor(e: Entity): UnitFrameDescriptor {
   return {
     present: true,
     hpFrac: t.hp / Math.max(1, t.maxHp),
-    hpText: t.dead ? 'Dead' : `${t.hp} / ${t.maxHp}`,
+    hpText: t.dead ? 'Dead' : `${t.hp}/${t.maxHp}`,
+    showAbsorbText: !t.dead,
     resourceKind: 'none',
     resFrac: 0,
     resText: '',
@@ -134,10 +135,24 @@ describe('target frame: Sim-vs-ClientWorld parity', () => {
   it('renders the wire-carried frame fields identically across hosts', () => {
     const fromSim = unitFrameView(targetDescriptor(simTarget()));
     const fromClient = unitFrameView(targetDescriptor(clientTarget()));
-    // Every field that survives the wire is identical; only the absorb overlay (below)
-    // differs, so compare the frame minus its absorb fraction.
-    const { absorbFrac: simAbsorb, absorbOvershield: simOver, ...simRest } = fromSim;
-    const { absorbFrac: cliAbsorb, absorbOvershield: cliOver, ...cliRest } = fromClient;
+    // Every field that survives the wire is identical; only the absorb overlay and its
+    // derived hpText shield suffix (below) differ, so compare the frame minus those.
+    const {
+      absorbFrac: simAbsorb,
+      absorbStartFrac: simStart,
+      absorbSizeFrac: simSize,
+      absorbOvershield: simOver,
+      hpText: simHpText,
+      ...simRest
+    } = fromSim;
+    const {
+      absorbFrac: cliAbsorb,
+      absorbStartFrac: cliStart,
+      absorbSizeFrac: cliSize,
+      absorbOvershield: cliOver,
+      hpText: cliHpText,
+      ...cliRest
+    } = fromClient;
     expect(simRest).toEqual(cliRest);
     expect(simRest.levelText).toBe(BOSS_SKULL_GLYPH); // boss skull, not a number
     expect(simRest.resClass).toBe('none'); // a target has no resource bar
@@ -148,11 +163,14 @@ describe('target frame: Sim-vs-ClientWorld parity', () => {
 
   it('treats the absorb shield as the ONE intended offline-only divergence', () => {
     // The wire never sends the absorb value (online.ts forces aura.value=0), so the
-    // shield segment shows offline only; this is pre-existing and intended, NOT a bug.
+    // shield segment (and its "(N)" hpText suffix) shows offline only; this is
+    // pre-existing and intended, NOT a bug.
     const fromSim = unitFrameView(targetDescriptor(simTarget()));
     const fromClient = unitFrameView(targetDescriptor(clientTarget()));
     expect(fromSim.absorbFrac).toBeCloseTo((420 + 90) / 600); // 0.85, the offline shield
     expect(fromClient.absorbFrac).toBeCloseTo(420 / 600); // 0.70, no shield online
+    expect(fromSim.hpText).toBe('420/600 (90)');
+    expect(fromClient.hpText).toBe('420/600'); // no shield data online, no suffix
   });
 
   it('a dead target renders identically across hosts (no shield, hidden cast)', () => {
