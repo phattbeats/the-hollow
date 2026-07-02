@@ -72,6 +72,34 @@ and tunes the game toward its blind spots. This pass adds a PER-BUILD policy:
      WR delta is attributable to piloting alone. Both evaluations run in the
      same process and the report shows gate metrics before/after.
 
+ARM C (2026-07-02, sec8 PHAA-398; targeted nerf, no damage numbers touched).
+The v2b run found one mage/rogue control build at 99.4% vs the field by
+chaining polymorph + frost_nova root + gouge incapacitate + kidney_shot stun
+into near-permanent lockdown with no cost. This adds the classic-era PvP CC
+diminishing-returns rule:
+  1. DIMINISHING RETURNS: each fighter tracks a per-category CC stack (stun:
+     finisher_stun and gap_close stun; incapacitate: cc_poly/polymorph and
+     incapacitate/gouge share one category; root: aoe_root). Each successive
+     application of a category on the same target is multiplied by 1.0, then
+     0.5, then 0.25, then 0 (immune), and the stack resets 15s after that
+     category's effect last expired on the target.
+  2. POLYMORPH RECHARGE: polymorph goes from recharge 0 to 15 (duel-
+     appropriate), so a broken polymorph can no longer be recast the instant
+     damage breaks it.
+The CC pass alone did NOT move the dominance metric (99.4% -> 99.7%): the
+dominant build is a PURE-CASTER mage attrition core (ice_barrier, frostbolt,
+frost_armor, fireball, scorch, pyroblast, arcane_missiles, polymorph) that
+wins on permanent kiting plus absorb economics, not lockdown. Second wave,
+aimed at the actual drivers:
+  3. FROSTBOLT SNARE: snare_dur 8 -> 4. At an 8s snare per 1.5s cast, melee
+     was permanently snared and the mage kited forever in the 1-D model; at
+     4s the kite window must be re-earned and a resisted/interrupted cast
+     lets melee reconnect.
+  4. ICE BARRIER: recharge 20 -> 30 (the real classic cooldown) and absorb
+     150 -> 110. 150 every 20s on a 418 hp mage was ~36% bonus EHP per
+     cycle; ~26% per 30s keeps the frost-defense identity without making
+     the mage out-tank its hp pool.
+
 ABSTRACTIONS (documented limitations):
   - 1-D distance (kiting modeled); facing/"behind" modeled as a state set by
     stealth openers and incapacitates.  No line-of-sight, no terrain.
@@ -181,18 +209,18 @@ SKILLS = {
                  kind='attack_spell',mn=27,mx=35,school='fire'),         # real 27-35
  'pyroblast':  S(prof='mage',line='fire',econ='energy',cost=25,recharge=0,cast=5.0,
                  kind='attack_spell',mn=75,mx=95,school='fire'),         # ~EST base
- 'frostbolt':  S(prof='mage',line='frost',econ='energy',cost=10,recharge=0,cast=1.5,
-                 kind='attack_spell',mn=25,mx=38,school='frost',apply_snare=0.40,snare_dur=8),  # ~EST
+ 'frostbolt':  S(prof='mage',line='frost',econ='energy',cost=10,recharge=5,cast=1.5,
+                 kind='attack_spell',mn=25,mx=38,school='frost',apply_snare=0.40,snare_dur=4),  # ~EST; ARM C: snare_dur 8 -> 4; WAVE 3: recharge 0 -> 5 (real gap between casts so the 4s snare must be re-earned, not chain-refreshed)
  'frost_nova': S(prof='mage',line='frost',econ='energy',cost=10,recharge=22,cast=0,
                  kind='aoe_root',mn=6,mx=7,dur=8,school='frost'),        # real
  'frost_armor':S(prof='mage',line='frost',econ='energy',cost=5,recharge=0,cast=0,
                  kind='buff',stat='armor',value=120,dur=300,attacker_slow=0.10),# armor ~scaled
- 'ice_barrier':S(prof='mage',line='frost',econ='energy',cost=15,recharge=20,cast=0,
-                 kind='shield',value=150),                               # ~EST absorb
+ 'ice_barrier':S(prof='mage',line='frost',econ='energy',cost=15,recharge=30,cast=0,
+                 kind='shield',value=110),                               # ~EST absorb; ARM C: 150/20s -> 110/30s (real classic CD)
  'arcane_missiles':S(prof='mage',line='arcane',econ='energy',cost=15,recharge=0,cast=3.0,
                  kind='channel',ticks=3,mn=8,mx=8,school='arcane'),      # real 8/missile
- 'polymorph':  S(prof='mage',line='arcane',econ='energy',cost=10,recharge=0,cast=1.5,
-                 kind='cc_poly',dur=8,school='arcane'),                  # dur shortened for duel
+ 'polymorph':  S(prof='mage',line='arcane',econ='energy',cost=10,recharge=15,cast=1.5,
+                 kind='cc_poly',dur=8,school='arcane'),                  # dur shortened for duel; ARM C: 15s recharge (duel-appropriate, was 0)
  # ---------------- ROGUE ----------------
  'sinister_strike':S(prof='rogue',line='daggers',econ='energy',cost=8,recharge=0,cast=0,
                  kind='attack_weapon',bonus=3,builds_combo=1,apply_snare=0.30,snare_dur=4),
@@ -332,6 +360,15 @@ class Fighter:
         # statuses
         self.stun=0.0; self.root=0.0; self.poly=0.0; self.incap=0.0
         self.snare=0.0; self.snare_val=0.0
+        # ARM C: classic-era PvP CC diminishing returns. Per-category stack
+        # count (0..3, where 3 = immune) and the absolute clock time each
+        # category resets to 0, which is 15s after that category's CC last
+        # EXPIRED on this fighter. 'stun' covers finisher_stun and gap_close
+        # stun; 'incapacitate' covers cc_poly (polymorph) and incapacitate
+        # (gouge), which share one DR category; 'root' covers aoe_root.
+        self.now=0.0
+        self.dr={'stun':0,'incapacitate':0,'root':0}
+        self.dr_reset_at={'stun':None,'incapacitate':None,'root':None}
         self.behind_until=0.0
         # TUNING A: rogue-primary fighters open from stealth (the old check
         # referenced a nonexistent 'stealth' skill, so it was always False and
@@ -598,6 +635,20 @@ for _f in ():
 DT=0.1
 TIME_LIMIT=45.0
 
+# ARM C: classic-era PvP CC diminishing returns table. Each successive
+# application of a DR category on the same target while its stack is active
+# is multiplied by the next entry (1.0 -> 0.5 -> 0.25 -> 0 immune); the stack
+# resets 15s after that category's effect last expired (tracked in
+# fighter.dr_reset_at, set by tick_timers).
+DR_MULT=[1.0,0.5,0.25,0.0]
+
+def dr_apply(foe, category, dur):
+    stack=foe.dr.get(category,0)
+    mult=DR_MULT[min(stack,len(DR_MULT)-1)]
+    foe.dr[category]=min(stack+1,len(DR_MULT)-1)
+    foe.dr_reset_at[category]=None  # a live application cancels any pending reset
+    return dur*mult
+
 def cast_skill(me, foe, name):
     sk=SKILLS[name]; me.used[name]+=1
     # pay costs
@@ -632,7 +683,10 @@ def resolve_effect(me, foe, name):
         if sk.get('apply_atkspeed_slow'): foe.atkspeed_mult=1+sk['apply_atkspeed_slow']
     elif kind=='attack_spell':
         dmg,_=resolve_spell(me,foe, random.uniform(sk['mn'],sk['mx'])*lm, sk['cast'], sk.get('school'))
-        if sk.get('apply_snare'): foe.snare=sk['snare_dur']; foe.snare_val=sk['apply_snare']
+        # WAVE 3: a spell snare no longer refreshes/stacks its own duration while
+        # already active on the target (classic-era slow behavior), so a mage
+        # cannot maintain the snare purely by recasting into an existing window.
+        if sk.get('apply_snare') and foe.snare<=0: foe.snare=sk['snare_dur']; foe.snare_val=sk['apply_snare']
     elif kind=='channel':
         # resolved over time; set channel ticks
         me.cast=None  # channel handled as instant burst of ticks for simplicity
@@ -654,7 +708,8 @@ def resolve_effect(me, foe, name):
         foe.dots.append(dict(src=name,dmg=per,ticks=ticks,interval=sk['interval'],next=sk['interval'],physical=True))
         me.combo=0
     elif kind=='finisher_stun':
-        foe.stun=max(foe.stun, sk['base']+sk['per_combo']*combo_spent)
+        dur=dr_apply(foe,'stun', sk['base']+sk['per_combo']*combo_spent)
+        foe.stun=max(foe.stun, dur)
         me.behind_until=max(me.behind_until, foe.stun+1.5); me.combo=0
     elif kind=='finisher_haste':
         me.haste_t=sk['basedur']+sk['per_combo']*combo_spent; me.atkspeed_mult/=sk['mult']; me.combo=0
@@ -664,16 +719,17 @@ def resolve_effect(me, foe, name):
         foe.snare=sk['dur']; foe.snare_val=sk['value']
         if sk.get('mn'): resolve_physical(me,foe, random.uniform(sk['mn'],sk['mx']))
     elif kind=='aoe_root':
-        foe.root=max(foe.root,sk['dur']); resolve_spell(me,foe,random.uniform(sk['mn'],sk['mx']),0,sk.get('school'))
+        foe.root=max(foe.root,dr_apply(foe,'root',sk['dur'])); resolve_spell(me,foe,random.uniform(sk['mn'],sk['mx']),0,sk.get('school'))
     elif kind=='cc_poly':
-        foe.poly=sk['dur']; foe.dots=[]  # poly clears dots in WoW
+        foe.poly=dr_apply(foe,'incapacitate',sk['dur']); foe.dots=[]  # poly clears dots in WoW
     elif kind=='gap_close':
         me.dist=0.0
-        if sk.get('stun'): foe.stun=max(foe.stun,sk['stun'])
+        if sk.get('stun'): foe.stun=max(foe.stun,dr_apply(foe,'stun',sk['stun']))
         if sk.get('adrenaline_gain'): me.adren+=sk['adrenaline_gain']
     elif kind=='incapacitate':
-        foe.incap=sk['dur']
-        if sk.get('sets_behind'): me.behind_until=sk['dur']+2
+        dur=dr_apply(foe,'incapacitate',sk['dur'])
+        foe.incap=dur
+        if sk.get('sets_behind') and dur>0: me.behind_until=dur+2
     elif kind=='buff':
         me.buffs[sk['stat']]=(sk['value'],sk['dur'])
         if sk.get('attacker_slow'): pass
@@ -685,9 +741,22 @@ def resolve_effect(me, foe, name):
         me.energy=min(me.max_energy,me.energy+sk['amount'])
 
 def tick_timers(f):
+    f.now+=DT
+    was_stunned=f.stun>0; was_rooted=f.root>0
+    was_incap=f.poly>0 or f.incap>0
     for t in ('gcd','stun','root','poly','incap','snare','behind_until','haste_t'):
         v=getattr(f,t)
         if v>0: setattr(f,t,max(0.0,v-DT))
+    # ARM C: a category's DR stack resets 15s after that category's CC last
+    # expired on this fighter (classic-era rule), tracked from the transition
+    # to fully-expired rather than from the moment of application.
+    if was_stunned and f.stun<=0: f.dr_reset_at['stun']=f.now+15.0
+    if was_rooted and f.root<=0: f.dr_reset_at['root']=f.now+15.0
+    if was_incap and f.poly<=0 and f.incap<=0: f.dr_reset_at['incapacitate']=f.now+15.0
+    for cat,at in list(f.dr_reset_at.items()):
+        if at is not None and f.now>=at:
+            f.dr[cat]=0
+            f.dr_reset_at[cat]=None
     if f.haste_t<=0 and f.atkspeed_mult<1.0: f.atkspeed_mult=1.0
     if f.snare<=0: f.snare_val=0.0
     # buffs/debuffs expiry
