@@ -2,7 +2,13 @@
 // clear of the hub's landmarks so the art pass never crowds the things the
 // player actually uses. Data-level and Node-only: no renderer, no DOM.
 import { describe, expect, it } from 'vitest';
-import { HOLLOW_HOUSE_PLOTS, HOLLOW_PROPS, VASE_POS } from '../src/sim/content/hollow';
+import {
+  HOLLOW_FLORA,
+  HOLLOW_HOUSE_PLOTS,
+  HOLLOW_PROPS,
+  type HollowFloraKind,
+  VASE_POS,
+} from '../src/sim/content/hollow';
 
 // Landmarks (hub-local) and the clearance each keeps (in units).
 const LANDMARKS: { name: string; x: number; z: number; r: number }[] = [
@@ -49,6 +55,17 @@ function placements(): { name: string; x: number; z: number; r: number }[] {
       });
     }
   }
+  const FLORA_R: Record<HollowFloraKind, number> = {
+    fern: 0.5,
+    bush: 0.9,
+    bush_flowers: 0.9,
+    undergrowth: 0.6,
+    glow_flower: 0.4,
+    vine_wall: 0.3,
+  };
+  HOLLOW_FLORA.forEach((f, i) => {
+    pts.push({ name: `flora ${f.kind} #${i}`, x: f.x, z: f.z, r: FLORA_R[f.kind] });
+  });
   return pts;
 }
 
@@ -63,6 +80,11 @@ describe('HOLLOW_PROPS hub dressing (PHAA-402)', () => {
       expect(p.z, p.name).toBeGreaterThan(-19);
       expect(p.z, p.name).toBeLessThan(132);
     }
+  });
+
+  it('authors every flora record as growth stage 0 (Phase 2 swaps stages)', () => {
+    expect(HOLLOW_FLORA.length).toBeGreaterThan(40);
+    for (const f of HOLLOW_FLORA) expect(f.stage, `${f.kind} at ${f.x},${f.z}`).toBe(0);
   });
 
   it('keeps every placement clear of every landmark', () => {

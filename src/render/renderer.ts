@@ -65,6 +65,7 @@ import {
   sharedUniforms,
   urlForcedTier,
 } from './gfx';
+import { buildHollowCanopy } from './hollow_canopy';
 import {
   buildHollowProps,
   hollowVaseWorldPos,
@@ -3395,6 +3396,8 @@ export class Renderer {
     // The Hollow hub's dressing (HOLLOW_PROPS + the vase centerpiece) rides
     // the same lazy per-instance build as the interior shell.
     if (isHollowHubOrigin(ox)) {
+      // the canopy ceiling closes the hub under leaves (synchronous, procedural)
+      this.scene.add(buildHollowCanopy(ox, oz));
       void buildHollowProps(ox, oz)
         .then((group) => this.scene.add(group))
         .catch((err) => {
@@ -3554,11 +3557,12 @@ export class Renderer {
         fog.near = 12;
         fog.far = 78;
       } else if (desired === 'hollow') {
-        // the hub breathes warm: an amber-brown soil murk, roomier than the
-        // temple's teal so the shrine clearing reads open and safe
-        fog.color.setHex(0x2b1a0e);
-        fog.near = 16;
-        fog.far = 92;
+        // the hub breathes green: a warm mossy haze under the canopy, roomier
+        // than the temple's teal so the shrine clearing reads open, overgrown
+        // and safe, never a sewer
+        fog.color.setHex(0x24321a);
+        fog.near = 18;
+        fog.far = 104;
       } else if (desired === 'nythraxis') {
         // the raid arena is huge (±230) — push the murk back so ~50yd reads
         // clear (linear-fog midpoint (near+far)/2 = 50), not the old ~30
@@ -3592,12 +3596,26 @@ export class Renderer {
           desired === 'hollow' ||
           desired === 'nythraxis' ||
           desired === 'delve';
-        this.sun.intensity = underground ? DUNGEON_SUN_INTENSITY : SUN_INTENSITY;
-        this.hemi.intensity = underground ? DUNGEON_HEMI_INTENSITY : HEMI_INTENSITY;
-        this.scene.environmentIntensity = underground
-          ? DUNGEON_ENV_INTENSITY
-          : this.envOutdoorIntensity;
-        sharedUniforms.uRimBoost.value = underground ? DUNGEON_RIM_BOOST : 1;
+        // The Hollow hub is the exception among interiors: it sits under a
+        // leaf canopy, not earth, so it keeps a filtered slice of daylight
+        // (the dappled outdoor read) instead of the full underground drop.
+        const glade = desired === 'hollow';
+        this.sun.intensity = glade
+          ? SUN_INTENSITY * 0.3
+          : underground
+            ? DUNGEON_SUN_INTENSITY
+            : SUN_INTENSITY;
+        this.hemi.intensity = glade
+          ? HEMI_INTENSITY * 0.75
+          : underground
+            ? DUNGEON_HEMI_INTENSITY
+            : HEMI_INTENSITY;
+        this.scene.environmentIntensity = glade
+          ? this.envOutdoorIntensity * 0.35
+          : underground
+            ? DUNGEON_ENV_INTENSITY
+            : this.envOutdoorIntensity;
+        sharedUniforms.uRimBoost.value = glade ? 1.6 : underground ? DUNGEON_RIM_BOOST : 1;
       }
       return;
     }

@@ -8,7 +8,7 @@
 // (see the note in sim/data.ts).
 import * as THREE from 'three';
 import type { GLTF } from 'three/addons/loaders/GLTFLoader.js';
-import { HOLLOW_PROPS, VASE_POS } from '../sim/content/hollow';
+import { HOLLOW_FLORA, HOLLOW_PROPS, type HollowFloraDef, VASE_POS } from '../sim/content/hollow';
 import { DUNGEONS, INSTANCE_SLOT_COUNT, instanceOrigin } from '../sim/data';
 import { DUNGEON_WALL_HEIGHT } from '../sim/dungeon_layout';
 import { hash2 } from '../sim/rng';
@@ -51,6 +51,14 @@ const KIT = {
   lantern: '/models/dungeon/lantern_standing.glb',
   shrine: '/models/dungeon/shrine.glb',
   shrineCandles: '/models/dungeon/shrine_candles.glb',
+} as const;
+
+// Foliage kit GLBs for the flora dressing (same files foliage.ts already
+// loads for the overworld, so they add nothing to the asset budget).
+const FLORA_KIT = {
+  fern: '/models/foliage/fern.glb',
+  bush: '/models/foliage/bush.glb',
+  bushFlowers: '/models/foliage/bush_flowers.glb',
 } as const;
 
 function clonePiece(gltf: GLTF): THREE.Object3D {
@@ -102,7 +110,7 @@ function buildVase(): THREE.Group {
   g.add(urn);
   // the living cutting rising from the mouth: a few flat leaf fins
   const leafMat = new THREE.MeshStandardMaterial({
-    color: 0x4e7a34,
+    color: 0x5c8f3c,
     roughness: 0.8,
     side: THREE.DoubleSide,
   });
@@ -174,24 +182,144 @@ function buildHearth(shrine: GLTF, shrineCandles: GLTF): THREE.Group {
   return g;
 }
 
+// Shared procedural-flora materials, created once and reused by every
+// instance copy (no lights anywhere: the point-light budget stays untouched).
+let floraMats: {
+  moss: THREE.MeshStandardMaterial;
+  vine: THREE.MeshStandardMaterial;
+  leaf: THREE.MeshStandardMaterial;
+  glowStem: THREE.MeshStandardMaterial;
+  glowBulb: THREE.MeshStandardMaterial;
+} | null = null;
+
+function getFloraMats() {
+  floraMats ??= {
+    moss: new THREE.MeshStandardMaterial({ color: 0x3d5c2a, roughness: 1 }),
+    vine: new THREE.MeshStandardMaterial({ color: 0x466b2e, roughness: 0.95 }),
+    leaf: new THREE.MeshStandardMaterial({
+      color: 0x5c8f3c,
+      roughness: 0.85,
+      side: THREE.DoubleSide,
+    }),
+    glowStem: new THREE.MeshStandardMaterial({ color: 0x3a5a28, roughness: 0.9 }),
+    glowBulb: new THREE.MeshStandardMaterial({
+      color: 0xb9f07e,
+      roughness: 0.6,
+      emissive: 0x86d94a,
+      emissiveIntensity: 1.7,
+    }),
+  };
+  return floraMats;
+}
+
+/** Low moss-and-leaf clump hugging a wall foot. */
+function buildUndergrowth(x: number, z: number, scale: number): THREE.Group {
+  const m = getFloraMats();
+  const g = new THREE.Group();
+  const n = 3 + Math.floor(jitter(x, z, 10) * 3);
+  for (let i = 0; i < n; i++) {
+    const r = 0.45 + jitter(x + i, z, 11) * 0.5;
+    const blob = new THREE.Mesh(new THREE.SphereGeometry(r, 7, 5), m.moss);
+    blob.position.set(
+      (jitter(x, z + i, 12) - 0.5) * 1.8,
+      r * 0.35,
+      (jitter(x + i, z + i, 13) - 0.5) * 1.8,
+    );
+    blob.scale.y = 0.5;
+    g.add(blob);
+  }
+  g.scale.setScalar(scale);
+  return g;
+}
+
+/** Glowing flora accent: a stem, an emissive bulb, a fan of leaves. No light. */
+function buildGlowFlower(x: number, z: number, scale: number): THREE.Group {
+  const m = getFloraMats();
+  const g = new THREE.Group();
+  const h = 0.9 + jitter(x, z, 14) * 0.5;
+  const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.06, h, 5), m.glowStem);
+  stem.position.y = h / 2;
+  g.add(stem);
+  const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.19, 8, 6), m.glowBulb);
+  bulb.position.y = h + 0.12;
+  bulb.scale.y = 1.35;
+  g.add(bulb);
+  for (let i = 0; i < 4; i++) {
+    const a = (i / 4) * Math.PI * 2 + jitter(x, z, 15 + i) * 0.8;
+    const leaf = new THREE.Mesh(new THREE.ConeGeometry(0.07, 0.5, 4), m.leaf);
+    leaf.position.set(Math.sin(a) * 0.16, 0.22, Math.cos(a) * 0.16);
+    leaf.rotation.set(Math.cos(a) * 0.9, a, Math.sin(a) * 0.9);
+    g.add(leaf);
+  }
+  g.scale.setScalar(scale);
+  return g;
+}
+
+/**
+ * Vine strands climbing a side wall: thin tapered runners from near the wall
+ * top down to the floor, with leaf sprigs. The record's x carries the side
+ * (negative = west wall), so the strands lean into the wall behind them.
+ */
+function buildVineWall(x: number, z: number, scale: number): THREE.Group {
+  const m = getFloraMats();
+  const g = new THREE.Group();
+  const lean = x < 0 ? -0.09 : 0.09; // tip the strands into the wall face
+  const strands = 3 + Math.floor(jitter(x, z, 20) * 2);
+  for (let i = 0; i < strands; i++) {
+    const len = (DUNGEON_WALL_HEIGHT - 1.2) * (0.55 + jitter(x, z + i, 21) * 0.45);
+    const dz = (i - (strands - 1) / 2) * 1.1 + (jitter(x + i, z, 22) - 0.5) * 0.6;
+    const strand = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.09, len, 5), m.vine);
+    strand.position.set(0, len / 2, dz);
+    strand.rotation.z = lean;
+    g.add(strand);
+    // leaf sprigs along the strand
+    const sprigs = 2 + Math.floor(jitter(x, z + i, 23) * 3);
+    for (let s = 0; s < sprigs; s++) {
+      const sy = len * ((s + 0.6) / (sprigs + 0.6));
+      const a = jitter(x + s, z + i, 24) * Math.PI * 2;
+      const leaf = new THREE.Mesh(new THREE.ConeGeometry(0.09, 0.42, 4), m.leaf);
+      leaf.position.set(Math.sin(a) * 0.16 + lean * sy, sy, dz + Math.cos(a) * 0.16);
+      leaf.rotation.set(Math.PI * 0.55, a, 0);
+      g.add(leaf);
+    }
+  }
+  g.scale.setScalar(scale);
+  return g;
+}
+
 /**
  * Build the hub dressing group for one instance copy at origin (ox, oz).
  * Async because the kit GLBs load on demand; the caller adds the resolved
  * group to the scene (the renderer does this once per built hub interior).
  */
 export async function buildHollowProps(ox: number, oz: number): Promise<THREE.Group> {
-  const [crate, barrel, fence, bonfire, column, columnBroken, lantern, shrine, shrineCandles] =
-    await Promise.all([
-      loadGltf(KIT.crate),
-      loadGltf(KIT.barrel),
-      loadGltf(KIT.fence),
-      loadGltf(KIT.bonfire),
-      loadGltf(KIT.column),
-      loadGltf(KIT.columnBroken),
-      loadGltf(KIT.lantern),
-      loadGltf(KIT.shrine),
-      loadGltf(KIT.shrineCandles),
-    ]);
+  const [
+    crate,
+    barrel,
+    fence,
+    bonfire,
+    column,
+    columnBroken,
+    lantern,
+    shrine,
+    shrineCandles,
+    fern,
+    bush,
+    bushFlowers,
+  ] = await Promise.all([
+    loadGltf(KIT.crate),
+    loadGltf(KIT.barrel),
+    loadGltf(KIT.fence),
+    loadGltf(KIT.bonfire),
+    loadGltf(KIT.column),
+    loadGltf(KIT.columnBroken),
+    loadGltf(KIT.lantern),
+    loadGltf(KIT.shrine),
+    loadGltf(KIT.shrineCandles),
+    loadGltf(FLORA_KIT.fern),
+    loadGltf(FLORA_KIT.bush),
+    loadGltf(FLORA_KIT.bushFlowers),
+  ]);
   const group = new THREE.Group();
   group.name = 'hollow-hub-props';
 
@@ -275,6 +403,40 @@ export async function buildHollowProps(ox: number, oz: number): Promise<THREE.Gr
     [-4, 24],
   ] as const) {
     place(lantern, x, z, jitter(x, z, 6) * Math.PI * 2, 2.2);
+  }
+
+  // the living flora (PHAA-415 greener pass): rendered per-record from the
+  // stage-0 HOLLOW_FLORA table so the Phase 2 growth-stage swap only edits
+  // data, never this renderer, and nothing here is merged static geometry
+  const floraGltf: Partial<Record<HollowFloraDef['kind'], GLTF>> = {
+    fern,
+    bush,
+    bush_flowers: bushFlowers,
+  };
+  const floraBaseScale: Record<HollowFloraDef['kind'], number> = {
+    fern: 1.5,
+    bush: 1.7,
+    bush_flowers: 1.6,
+    undergrowth: 1,
+    glow_flower: 1,
+    vine_wall: 1,
+  };
+  for (const f of HOLLOW_FLORA) {
+    const scale = floraBaseScale[f.kind] * (f.scale ?? 1) * (0.85 + jitter(f.x, f.z, 30) * 0.3);
+    const gltf = floraGltf[f.kind];
+    if (gltf) {
+      place(gltf, f.x, f.z, jitter(f.x, f.z, 31) * Math.PI * 2, scale);
+      continue;
+    }
+    const obj =
+      f.kind === 'undergrowth'
+        ? buildUndergrowth(f.x, f.z, scale)
+        : f.kind === 'glow_flower'
+          ? buildGlowFlower(f.x, f.z, scale)
+          : buildVineWall(f.x, f.z, scale);
+    obj.position.set(f.x, 0, f.z);
+    if (f.kind !== 'vine_wall') obj.rotation.y = jitter(f.x, f.z, 32) * Math.PI * 2;
+    group.add(obj);
   }
 
   group.position.set(ox, 0, oz);
