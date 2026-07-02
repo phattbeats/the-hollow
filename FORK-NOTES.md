@@ -237,3 +237,77 @@ normal QA gate:
   never matched and the seam gate failed for every Windows contributor.
   Normalizes the relative path with `path.sep` before the lookup. No behavior
   change on POSIX. Clean cherry-pick, no fork drift.
+
+## 2026-07-02: wiki (`/wiki` guide SPA) rebranded, dead content removed (PHAA-406)
+
+First pass on the standing "keep the wiki current" mandate. Scope: the guide's
+own English catalog (`src/ui/i18n.catalog/guide.ts`), its static shell
+(`guide.html`), and the two runtime SEO/DOM call sites that hardcoded the
+upstream identity (`src/guide/chrome.ts`, `src/guide/head.ts`,
+`src/guide/pages/home.ts`). Did not touch the classes/bestiary/dungeons/
+economy pages or the world/quests zone content, which describe real, tested,
+still-shipped game systems, just ones a live player cannot currently reach
+from the sealed Hollow hub (PHAA-404); see the follow-up below.
+
+- **Brand:** `guide.brand`/`brandShort`/`home.title`/`footer.rights` (and
+  the static `guide.html` title, meta description, OG/Twitter tags, JSON-LD
+  `name`) changed from "World of ClaudeCraft"/"ClaudeCraft" to "The Hollow",
+  matching the `index.html` branding pass (PHAA-395). The runtime JSON-LD
+  `alternateName` in `head.ts`'s `videoGameNode` also updated to "The
+  Hollow" (was still "World of Claudecraft").
+- **Dead links removed, not just re-skinned:** the wiki footer and home
+  "Join the realm" section linked `github.com/levy-street/world-of-claudecraft`
+  (the upstream project, not this licensed fork) and
+  `discord.gg/GjhnUsBtw` (the exact invite already stripped from
+  `index.html`'s title screen in the branding pass, per this file's earlier
+  entry). Removed both anchors from `chrome.ts` and `home.ts`, and the
+  matching `sameAs` entries from `head.ts`'s runtime JSON-LD. The
+  `footer.github`/`footer.discord`/`home.community.discord`/
+  `home.community.github` catalog keys are left as inert, unused strings
+  (same disposition as the `wallet.*` leftovers documented above: deleting
+  translated keys is a locale-hygiene chore across ~20 overlay files,
+  deferred rather than bundled into this pass). The `guide.html` noscript
+  fallback also dropped its "browse the community wiki" link, which pointed
+  at `/wiki`, i.e. itself; there is no separate community MediaWiki.
+- **False claims fixed:** several strings asserted the game is open source
+  ("Free and open source", "it is open source on GitHub", "Can I host my own
+  copy? ... The project is open source") and offered a "crypto wallet" /
+  "community token" FAQ answer. Both are wrong under the current constitution
+  (§6: licensed, not open source) and the wallet strip (this file's
+  2026-07-01 entry: the $WOC stack is fully removed). Reworded the open-source
+  claims to plain "free to play", and repurposed the two dead wallet FAQ
+  slots (home + the fuller `/wiki/faq` page) into real, shipped-content
+  questions about housing (PHAA-403) and what the Hollow is (Greenpaw, the
+  vase).
+- **Onboarding copy updated to the actual new-player path:** `howToPlay`
+  step 2 ("Find your first quest") and `questsPage.acceptBody` described
+  Marshal Redbrook in the Eastbrook starting town, which no new character
+  reaches anymore (PHAA-404: `hollowStart` lands everyone at the vase).
+  Replaced with Brother Greenpaw and his first quest, `The Thing That
+  Burns`. `howToPlay` step 6 no longer promises "the world opens up" after
+  hitting level 2, since the hub is sealed (`sealedExit`) and there is no
+  reachable exit yet; reworded to the real next steps (claim a homestead
+  plot, head into the Under-Shrine).
+- **Stale doc comment fixed:** `guide.ts`'s header comment described the
+  guide as living at `/guide`, separate from "the community MediaWiki at
+  /wiki". Neither is true (`routes.ts`: `GUIDE_BASE = '/wiki'`; there is no
+  separate MediaWiki); corrected in the same change.
+
+Ran `npm run wiki:content` (no drift: `content.generated.ts` already carries
+the Hollow's registered dungeons from PHAA-400) and `npm run i18n:gen`.
+Verification: `tsc --noEmit` clean; `tests/guide.test.ts`,
+`tests/client_shell.test.ts`, `tests/localization_fixes.test.ts`,
+`tests/i18n_completeness.test.ts`, `tests/architecture.test.ts`,
+`tests/server_unavailable.test.ts` green with NODE_ENV unset.
+
+**Deliberately out of scope, filed as a follow-up (PHAA-418):** the
+`world.ts`/`questsPage` content still documents the inherited three-zone
+overworld (Eastbrook/Mirefen/Thornpeak) and its villain-ladder story as if a
+new player will walk it, which is no longer true now that `hollowStart`
+seals every character inside the Hollow hub. That content is not dead code,
+it is real and still exercised by tests/RL env/Phase 4+ plans, so retiring
+or reframing it is a bigger, generator-driven restructure (per
+`src/guide/CLAUDE.md`, a brand-new content type: extend
+`scripts/wiki/build_content.mjs`, add a `pages/hollow.ts` + `GUIDE_ROUTES`
+entry, regenerate the sitemap) best sequenced after the Phase 1 hub art pass
+(PHAA-402) has an actual Board verdict, so the page is not built twice.

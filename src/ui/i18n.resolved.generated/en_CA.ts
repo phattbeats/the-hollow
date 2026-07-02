@@ -878,9 +878,9 @@ export const en_CA: EnTranslations = {
     }
   },
   "guide": {
-    "brand": "World of ClaudeCraft",
-    "brandShort": "ClaudeCraft",
-    "tagline": "A classic-style MMO you play free in your browser.",
+    "brand": "The Hollow",
+    "brandShort": "Hollow",
+    "tagline": "A classic-style MMO centered on a shrine and the god bound to it, free in your browser.",
     "skipToContent": "Skip to main content",
     "loading": "Loading...",
     "docTitle": "{page} - {brand}",
@@ -934,12 +934,12 @@ export const en_CA: EnTranslations = {
       "heading": "On this page"
     },
     "footer": {
-      "blurb": "An open-source, classic-style micro-MMO. Quest, group up, and explore a hand-built world, right in your browser.",
+      "blurb": "A classic-style micro-MMO built around a shrine, a god, and the friends who keep it lit. Quest, group up, and explore a hand-built world, right in your browser.",
       "playNow": "Play Now",
       "github": "Source on GitHub",
       "discord": "Join the Discord",
       "communityWiki": "Community Wiki",
-      "rights": "World of ClaudeCraft"
+      "rights": "The Hollow"
     },
     "language": {
       "label": "Language",
@@ -959,8 +959,8 @@ export const en_CA: EnTranslations = {
     },
     "home": {
       "eyebrow": "Classic-style browser MMO",
-      "title": "World of ClaudeCraft",
-      "subtitle": "Quest, group up, and explore a hand-built world, free in your browser.",
+      "title": "The Hollow",
+      "subtitle": "Settle in at the shrine, quest with friends, and explore a hand-built world, free in your browser.",
       "ctaPlay": "Play Now",
       "ctaLearn": "How to Play",
       "what": {
@@ -969,8 +969,8 @@ export const en_CA: EnTranslations = {
         "pillarPlayBody": "No download, no launcher. Make a character and you are in the world in seconds, on desktop or phone.",
         "pillarClassesTitle": "Nine classes, three roles",
         "pillarClassesBody": "Tank, heal, or deal the damage. Every class plays the way its archetype should, with talents to make it yours.",
-        "pillarOpenTitle": "Free and open source",
-        "pillarOpenBody": "Free to play to the level cap, with the whole game open source. No pay to win, ever."
+        "pillarOpenTitle": "Free to play",
+        "pillarOpenBody": "Free to play to the level cap. No pay to win, ever."
       },
       "classes": {
         "heading": "Choose your class",
@@ -1003,9 +1003,9 @@ export const en_CA: EnTranslations = {
       "faq": {
         "heading": "Good to know",
         "q1": "Is it free to play?",
-        "a1": "Yes. The whole game is free to the level cap, and it is open source on GitHub.",
-        "q2": "Do I need a crypto wallet?",
-        "a2": "No. The game is fully playable without one. The optional community token only unlocks cosmetic flair and never affects power.",
+        "a1": "Yes. The whole game is free to the level cap.",
+        "q2": "Can I build a house?",
+        "a2": "Yes. Every character gets a homestead plot near the shrine to decorate and call their own.",
         "q3": "Can I play offline?",
         "a3": "Yes. There is an instant single-player mode in your browser, plus the shared online realm.",
         "q4": "How long to reach max level?",
@@ -1025,7 +1025,7 @@ export const en_CA: EnTranslations = {
       "step1Title": "Make a character",
       "step1Body": "Pick a class and a look, give your hero a name, and enter the world. You can make more characters later.",
       "step2Title": "Find your first quest",
-      "step2Body": "Marshal Redbrook is waiting in the starting town. Talk to him and accept Wolves at the Door.",
+      "step2Body": "Brother Greenpaw is waiting by the vase, out of supplies as usual. Talk to him and accept The Thing That Burns.",
       "step3Title": "Move and look around",
       "step3Body": "Move with W, A, S, D. Hold the right mouse button and drag to look around. That is most of it.",
       "step4Title": "Fight something",
@@ -1033,7 +1033,7 @@ export const en_CA: EnTranslations = {
       "step5Title": "Turn it in",
       "step5Body": "Finish the objective, return to the quest giver (look for the marker on your map), and collect your reward.",
       "step6Title": "Keep going",
-      "step6Body": "You just hit level 2. Follow the quest trail out of town and the world opens up from there.",
+      "step6Body": "You just hit level 2, with a cutting from Greenpaw to care for. Claim a homestead plot near the shrine, then head into the Under-Shrine cave when you are ready for a real fight.",
       "basicsHeading": "The basics",
       "resourcesTitle": "Resources",
       "resourcesBody": "Spells and abilities cost a resource. Warriors build Rage by fighting, rogues spend Energy that refills on its own, and everyone else casts from a pool of Mana.",
@@ -1132,9 +1132,9 @@ export const en_CA: EnTranslations = {
     "faqPage": {
       "intro": "The questions new players ask most often.",
       "q1": "Is it really free?",
-      "a1": "Yes. The whole game is free to play to the level cap, and the source code is open on GitHub.",
-      "q2": "Do I need a crypto wallet or any tokens?",
-      "a2": "No. The game is fully playable without one. The optional community token only unlocks cosmetic flair and never affects power or progression.",
+      "a1": "Yes. The whole game is free to play to the level cap.",
+      "q2": "What is the Hollow?",
+      "a2": "The Hollow is the game's home zone: a shrine to an ancient plant god, tended by a self-appointed prophet, Brother Greenpaw, who always needs a hand.",
       "q3": "Can I play on my phone?",
       "a3": "Yes. The game runs in a mobile browser with touch controls, and there is a desktop launcher as well.",
       "q4": "Can I play offline or solo?",
@@ -1145,8 +1145,8 @@ export const en_CA: EnTranslations = {
       "a6": "Level {cap}, reached across three connected zones of quests, dungeons, and exploration.",
       "q7": "Will my character be saved?",
       "a7": "Online characters are saved on the server automatically. Offline characters live in your browser for quick sessions and testing.",
-      "q8": "Can I host my own copy?",
-      "a8": "Yes. The project is open source, so you can run your own server. See the GitHub repository.",
+      "q8": "Can I build a house?",
+      "a8": "Yes. Every character gets a homestead plot near the shrine to decorate, no crafting required to claim one.",
       "q9": "Is there PvP?",
       "a9": "Yes. Duel anyone for fun, or step into the Ashen Coliseum to fight other players. PvP is opt in, so you are never forced into it.",
       "q10": "What is there to do at max level?",
@@ -1365,7 +1365,7 @@ export const en_CA: EnTranslations = {
       "heading": "Quests",
       "intro": "Quests are the heart of the world and the fastest way to level. Here is how they work.",
       "acceptTitle": "Finding and accepting",
-      "acceptBody": "People with a marker over their head have work for you. Talk to them to accept a quest. Your very first is Wolves at the Door, from Marshal Redbrook in Eastbrook.",
+      "acceptBody": "People with a marker over their head have work for you. Talk to them to accept a quest. Your very first is from Brother Greenpaw, at the vase in the Hollow.",
       "objectivesTitle": "Objectives",
       "objectivesBody": "Slay certain enemies, gather items, or interact with something in the world. The on-screen tracker counts your progress as you go. If you change your mind, you can drop a quest from your quest log and pick it up again from its giver later.",
       "turninTitle": "Turning in",

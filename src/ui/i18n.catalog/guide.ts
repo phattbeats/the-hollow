@@ -1,9 +1,8 @@
-// i18n source catalog - the public Guide (docs/wiki) surface at /guide. A curated,
+// i18n source catalog - the public Guide (site wiki) surface at /wiki. A curated,
 // branded front-of-house that explains the game, teaches the basics, and showcases
-// classes, the bestiary, quests, and group content, separate from the community
-// MediaWiki at /wiki. English values only; the 13 locale translations live in
-// src/ui/i18n.locales/<lang>.ts (the runtime-authoritative overlays), filled by the
-// maintainer at release.
+// classes, the bestiary, quests, and group content. English values only; the locale
+// translations live in src/ui/i18n.locales/<lang>.ts (the runtime-authoritative
+// overlays), filled by the maintainer at release.
 //
 // Assembled into `en` by ./index.ts under the `guide` namespace. Like hud_chrome.ts
 // this module carries NO per-locale blocks (no `as const`), so a new Guide string is
@@ -11,9 +10,10 @@
 
 export const guideStrings = {
   // Brand + shared chrome.
-  brand: 'World of ClaudeCraft',
-  brandShort: 'ClaudeCraft',
-  tagline: 'A classic-style MMO you play free in your browser.',
+  brand: 'The Hollow',
+  brandShort: 'Hollow',
+  tagline:
+    'A classic-style MMO centered on a shrine and the god bound to it, free in your browser.',
   skipToContent: 'Skip to main content',
   loading: 'Loading...',
   // Browser tab title: "{page} - {brand}". Hyphen separator (not an en dash).
@@ -78,12 +78,16 @@ export const guideStrings = {
   // Footer.
   footer: {
     blurb:
-      'An open-source, classic-style micro-MMO. Quest, group up, and explore a hand-built world, right in your browser.',
+      'A classic-style micro-MMO built around a shrine, a god, and the friends who keep it lit. Quest, group up, and explore a hand-built world, right in your browser.',
     playNow: 'Play Now',
+    // Unused since the branding pass dropped the upstream GitHub/Discord footer links
+    // (they pointed at the upstream open-source project, not this licensed fork); left
+    // as an inert key rather than a locale-hygiene chore, same as the wallet.* leftovers
+    // documented in FORK-NOTES.
     github: 'Source on GitHub',
     discord: 'Join the Discord',
     communityWiki: 'Community Wiki',
-    rights: 'World of ClaudeCraft',
+    rights: 'The Hollow',
   },
 
   // Language picker.
@@ -109,8 +113,9 @@ export const guideStrings = {
   // Home / overview landing.
   home: {
     eyebrow: 'Classic-style browser MMO',
-    title: 'World of ClaudeCraft',
-    subtitle: 'Quest, group up, and explore a hand-built world, free in your browser.',
+    title: 'The Hollow',
+    subtitle:
+      'Settle in at the shrine, quest with friends, and explore a hand-built world, free in your browser.',
     ctaPlay: 'Play Now',
     ctaLearn: 'How to Play',
 
@@ -123,9 +128,8 @@ export const guideStrings = {
       pillarClassesTitle: 'Nine classes, three roles',
       pillarClassesBody:
         'Tank, heal, or deal the damage. Every class plays the way its archetype should, with talents to make it yours.',
-      pillarOpenTitle: 'Free and open source',
-      pillarOpenBody:
-        'Free to play to the level cap, with the whole game open source. No pay to win, ever.',
+      pillarOpenTitle: 'Free to play',
+      pillarOpenBody: 'Free to play to the level cap. No pay to win, ever.',
     },
 
     // Class chooser teaser.
@@ -166,9 +170,9 @@ export const guideStrings = {
     faq: {
       heading: 'Good to know',
       q1: 'Is it free to play?',
-      a1: 'Yes. The whole game is free to the level cap, and it is open source on GitHub.',
-      q2: 'Do I need a crypto wallet?',
-      a2: 'No. The game is fully playable without one. The optional community token only unlocks cosmetic flair and never affects power.',
+      a1: 'Yes. The whole game is free to the level cap.',
+      q2: 'Can I build a house?',
+      a2: 'Yes. Every character gets a homestead plot near the shrine to decorate and call their own.',
       q3: 'Can I play offline?',
       a3: 'Yes. There is an instant single-player mode in your browser, plus the shared online realm.',
       q4: 'How long to reach max level?',
@@ -180,6 +184,7 @@ export const guideStrings = {
       heading: 'Join the realm',
       body: 'Jump in now, or come say hello. The world is better with company.',
       play: 'Play Now',
+      // Unused, see the note on footer.github/footer.discord above.
       discord: 'Join the Discord',
       github: 'Star on GitHub',
     },
@@ -195,7 +200,7 @@ export const guideStrings = {
       'Pick a class and a look, give your hero a name, and enter the world. You can make more characters later.',
     step2Title: 'Find your first quest',
     step2Body:
-      'Marshal Redbrook is waiting in the starting town. Talk to him and accept Wolves at the Door.',
+      'Brother Greenpaw is waiting by the vase, out of supplies as usual. Talk to him and accept The Thing That Burns.',
     step3Title: 'Move and look around',
     step3Body:
       'Move with W, A, S, D. Hold the right mouse button and drag to look around. That is most of it.',
@@ -207,7 +212,7 @@ export const guideStrings = {
       'Finish the objective, return to the quest giver (look for the marker on your map), and collect your reward.',
     step6Title: 'Keep going',
     step6Body:
-      'You just hit level 2. Follow the quest trail out of town and the world opens up from there.',
+      'You just hit level 2, with a cutting from Greenpaw to care for. Claim a homestead plot near the shrine, then head into the Under-Shrine cave when you are ready for a real fight.',
     basicsHeading: 'The basics',
     resourcesTitle: 'Resources',
     resourcesBody:
@@ -347,9 +352,9 @@ export const guideStrings = {
   faqPage: {
     intro: 'The questions new players ask most often.',
     q1: 'Is it really free?',
-    a1: 'Yes. The whole game is free to play to the level cap, and the source code is open on GitHub.',
-    q2: 'Do I need a crypto wallet or any tokens?',
-    a2: 'No. The game is fully playable without one. The optional community token only unlocks cosmetic flair and never affects power or progression.',
+    a1: 'Yes. The whole game is free to play to the level cap.',
+    q2: 'What is the Hollow?',
+    a2: "The Hollow is the game's home zone: a shrine to an ancient plant god, tended by a self-appointed prophet, Brother Greenpaw, who always needs a hand.",
     q3: 'Can I play on my phone?',
     a3: 'Yes. The game runs in a mobile browser with touch controls, and there is a desktop launcher as well.',
     q4: 'Can I play offline or solo?',
@@ -360,8 +365,8 @@ export const guideStrings = {
     a6: 'Level {cap}, reached across three connected zones of quests, dungeons, and exploration.',
     q7: 'Will my character be saved?',
     a7: 'Online characters are saved on the server automatically. Offline characters live in your browser for quick sessions and testing.',
-    q8: 'Can I host my own copy?',
-    a8: 'Yes. The project is open source, so you can run your own server. See the GitHub repository.',
+    q8: 'Can I build a house?',
+    a8: 'Yes. Every character gets a homestead plot near the shrine to decorate, no crafting required to claim one.',
     q9: 'Is there PvP?',
     a9: 'Yes. Duel anyone for fun, or step into the Ashen Coliseum to fight other players. PvP is opt in, so you are never forced into it.',
     q10: 'What is there to do at max level?',
@@ -639,7 +644,7 @@ export const guideStrings = {
     intro: 'Quests are the heart of the world and the fastest way to level. Here is how they work.',
     acceptTitle: 'Finding and accepting',
     acceptBody:
-      'People with a marker over their head have work for you. Talk to them to accept a quest. Your very first is Wolves at the Door, from Marshal Redbrook in Eastbrook.',
+      'People with a marker over their head have work for you. Talk to them to accept a quest. Your very first is from Brother Greenpaw, at the vase in the Hollow.',
     objectivesTitle: 'Objectives',
     objectivesBody:
       'Slay certain enemies, gather items, or interact with something in the world. The on-screen tracker counts your progress as you go. If you change your mind, you can drop a quest from your quest log and pick it up again from its giver later.',
