@@ -199,8 +199,17 @@ export const HOLLOW_CAMPS: CampDef[] = [];
 
 export const HOLLOW_OBJECTS: GroundObjectDef[] = [];
 
+// Hub dressing (PHAA-402 art pass, first slice). Coordinates are HUB-LOCAL
+// (the hub is portal-instanced); render/hollow_props.ts places these inside
+// the instance offset by the hub's origin. Render-only: HOLLOW_PROPS is
+// deliberately excluded from the overworld PROPS merge and the collider grid
+// (see sim/data.ts), so nothing here may imply cover or blocking.
+// Kept clear of the landmarks: the vase (0,0), Greenpaw (3,4), the cold
+// firepit (-4,2), the cave mouth (0,28), the gate (0,-40), the sanctum
+// pillars (|x|=14 at z 80/95/110), the dais (0,116, r 10.5), and the eight
+// house plots (x=+-9, z=74/84/94/104). The room itself spans TEMPLE_LAYOUT
+// (|x|<23, z -19..132).
 export const HOLLOW_PROPS: ZonePropsDef = {
-  // Phase 1 art pass fills this: shrine clearing, warm root-and-soil palette.
   // The cold firepit by the vase is the furnace's future footprint (§4),
   // present from day one so its later lighting reads as the world changing.
   buildings: [],
@@ -209,11 +218,34 @@ export const HOLLOW_PROPS: ZonePropsDef = {
   mines: [],
   docks: [],
   tents: [],
-  crates: [],
+  crates: [
+    // greenpaw's supply drop, off the path east of the vase
+    [7.5, 8],
+    [8.6, 8.8],
+    [8.1, 6.7],
+    // stores by the south colonnade, flanking the walk up from the gate
+    [-11, -12],
+    [11.5, -10],
+    // a pallet by the cave mouth, waiting to go down
+    [5.5, 26],
+  ],
   campfires: [[-4, 2]],
   mudHuts: [],
-  ruinRings: [],
-  fences: [],
+  ruinRings: [
+    // the old shrine ring the vase sits inside: broken columns, half-swallowed
+    { x: 0, z: 2, ringR: 7.5, columns: 6 },
+    // a collapsed twin ring in the north-east corner of the clearing
+    { x: 16, z: 46, ringR: 4, columns: 4 },
+  ],
+  fences: [
+    // the garden croft west of the firepit (future plantable beds)
+    { x1: -13, z1: 6, x2: -8, z2: 6 },
+    { x1: -13, z1: 6, x2: -13, z2: 14 },
+    { x1: -13, z1: 14, x2: -8, z2: 14 },
+    // a rail guiding the walk from the gate toward the vase
+    { x1: -5, z1: -16, x2: -5, z2: -8 },
+    { x1: 5, z1: -16, x2: 5, z2: -8 },
+  ],
   graveyards: [],
 };
 

@@ -65,6 +65,12 @@ import {
   sharedUniforms,
   urlForcedTier,
 } from './gfx';
+import {
+  buildHollowProps,
+  hollowVaseWorldPos,
+  isHollowHubOrigin,
+  isHollowHubPos,
+} from './hollow_props';
 import { HousingView } from './housing';
 import { buildImpactSite, type ImpactSiteView } from './impact_site';
 import { ensureDelveInteriorKit } from './interior_kit';
@@ -3367,14 +3373,29 @@ export class Renderer {
   // Delve module interiors build asynchronously; track in-flight keys so a
   // per-frame ensureDelveInteriorsNear does not re-schedule a build mid-load.
   private pendingInteriors = new Set<string>();
-  private fogState: 'outdoor' | 'dungeon' | 'temple' | 'nythraxis' | 'delve' | 'underwater' =
-    'outdoor';
+  private fogState:
+    | 'outdoor'
+    | 'dungeon'
+    | 'temple'
+    | 'hollow'
+    | 'nythraxis'
+    | 'delve'
+    | 'underwater' = 'outdoor';
 
   private buildInterior(interior: string, ox: number, oz: number): void {
     this.dungeons ??= new DungeonInteriors(this.scene, this.lowGfx, this.flames, this.fireLights);
     void this.dungeons.buildInterior(interior, ox, oz).catch((err) => {
       console.error('Failed to build dungeon interior:', err);
     });
+    // The Hollow hub's dressing (HOLLOW_PROPS + the vase centerpiece) rides
+    // the same lazy per-instance build as the interior shell.
+    if (isHollowHubOrigin(ox)) {
+      void buildHollowProps(ox, oz)
+        .then((group) => this.scene.add(group))
+        .catch((err) => {
+          console.error('Failed to build Hollow hub props:', err);
+        });
+    }
   }
 
   // Outdoor fog presets per biome (high tier eases between them as the
@@ -3489,20 +3510,33 @@ export class Renderer {
     // the Drowned Temple reads as submerged: a teal murk instead of the
     // crypt's near-black, so its flooded halls feel underwater, not just dark
     const inDelve = inside && isDelvePos(px);
-    const interior = inside && !inDelve && !isArenaPos(px) ? dungeonAt(px)?.interior : null;
-    const inTemple = interior === 'temple';
+    const dungeonHere = inside && !inDelve && !isArenaPos(px) ? dungeonAt(px) : null;
+    const interior = dungeonHere?.interior ?? null;
+    // The Hollow hub shares the temple interior but breathes its own warm
+    // root-and-soil murk (never the Drowned Temple's teal).
+    const inHollow = interior === 'temple' && isHollowHubPos(px);
+    const inTemple = interior === 'temple' && !inHollow;
     const inNythraxis = interior === 'nythraxis';
     const desired = inDelve
       ? 'delve'
-      : inTemple
-        ? 'temple'
-        : inNythraxis
-          ? 'nythraxis'
-          : inside
-            ? 'dungeon'
-            : camY < WATER_LEVEL - 0.05
-              ? 'underwater'
-              : 'outdoor';
+      : inHollow
+        ? 'hollow'
+        : inTemple
+          ? 'temple'
+          : inNythraxis
+            ? 'nythraxis'
+            : inside
+              ? 'dungeon'
+              : camY < WATER_LEVEL - 0.05
+                ? 'underwater'
+                : 'outdoor';
+    // the vase smoke: always on while the player is in the hub (the visible
+    // interface to the god; cheap capped additive puffs, see vfx.vaseSmoke)
+    if (inHollow) {
+      const vase = hollowVaseWorldPos(pz);
+      this.tmpV.set(vase.x, 2.6, vase.z);
+      this.vfx.vaseSmoke(this.tmpV, dt);
+    }
     const fog = this.scene.fog as THREE.Fog;
     if (desired !== this.fogState) {
       this.fogState = desired;
@@ -3514,6 +3548,12 @@ export class Renderer {
         fog.color.setHex(0x0a3a44);
         fog.near = 12;
         fog.far = 78;
+      } else if (desired === 'hollow') {
+        // the hub breathes warm: an amber-brown soil murk, roomier than the
+        // temple's teal so the shrine clearing reads open and safe
+        fog.color.setHex(0x2b1a0e);
+        fog.near = 16;
+        fog.far = 92;
       } else if (desired === 'nythraxis') {
         // the raid arena is huge (±230) — push the murk back so ~50yd reads
         // clear (linear-fog midpoint (near+far)/2 = 50), not the old ~30
@@ -3544,6 +3584,7 @@ export class Renderer {
         const underground =
           desired === 'dungeon' ||
           desired === 'temple' ||
+          desired === 'hollow' ||
           desired === 'nythraxis' ||
           desired === 'delve';
         this.sun.intensity = underground ? DUNGEON_SUN_INTENSITY : SUN_INTENSITY;

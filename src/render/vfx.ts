@@ -565,6 +565,45 @@ export class Vfx {
     );
   }
 
+  // The Hollow's vase smoke: the always-on column over the urn, the visible
+  // smoke-state interface to the god (docs/plan-the-hollow.md, section 7).
+  // Cheap by the campfireEmber pattern: slow warm-grey additive puffs drifting
+  // upward, count capped by the emit rate and the shared particle pool.
+  vaseSmoke(at: THREE.Vector3, dt: number): void {
+    if (!this.emitChance(5, dt)) return;
+    // the column: soft grey puffs rising slow and straight, thinning as they go
+    this.spawn(
+      at.x + (Math.random() - 0.5) * 0.25,
+      at.y + 0.15,
+      at.z + (Math.random() - 0.5) * 0.25,
+      (Math.random() - 0.5) * 0.12,
+      0.55 + Math.random() * 0.35,
+      (Math.random() - 0.5) * 0.12,
+      0x8a7f70,
+      0.85 + Math.random() * 0.6,
+      2.6 + Math.random() * 1.4,
+      -0.1,
+      SPR.smoke,
+      (Math.random() - 0.5) * 0.4,
+    );
+    // a rare warm mote caught in the column: the god's breath, faintly lit
+    if (Math.random() < 0.18) {
+      this.spawn(
+        at.x + (Math.random() - 0.5) * 0.2,
+        at.y + 0.4,
+        at.z + (Math.random() - 0.5) * 0.2,
+        (Math.random() - 0.5) * 0.1,
+        0.8 + Math.random() * 0.4,
+        (Math.random() - 0.5) * 0.1,
+        0xffc36a,
+        0.16,
+        1.6 + Math.random() * 0.8,
+        -0.15,
+        SPR.glowSoft,
+      );
+    }
+  }
+
   campfireEmber(at: THREE.Vector3, dt: number): void {
     if (!this.emitChance(6, dt)) return;
     if (Math.random() < 0.3) {
