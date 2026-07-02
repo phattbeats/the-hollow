@@ -223,3 +223,17 @@ joins; and `enterDungeon` now returns a success boolean that the three
 position-shifting callers (vase landing, exitTo, homeRespawn) check before
 computing offsets, so a failed enter can never teleport a player off a stale
 position into the dormant overworld. The Under-Shrine stays per-party.
+
+## 2026-07-02: cherry-picked upstream QoL fixes (PHAA-408)
+
+Four small, stable, non-draft upstream fixes hand-picked from
+`levy-street/world-of-claudecraft`, each its own branch and PR through the
+normal QA gate:
+
+- **Windows path-separator fix in the architecture seam test** (upstream
+  PR #1290, `18d08534`): `path.relative()` returns backslash-separated paths on
+  Windows, but `SANCTIONED_VALUE_SIM_IMPORTS` in `tests/architecture.test.ts`
+  is keyed with forward slashes, so the sanctioned `OVERHEAD_EMOTE_IDS` import
+  never matched and the seam gate failed for every Windows contributor.
+  Normalizes the relative path with `path.sep` before the lookup. No behavior
+  change on POSIX. Clean cherry-pick, no fork drift.
