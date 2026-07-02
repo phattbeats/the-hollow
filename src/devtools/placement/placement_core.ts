@@ -1,12 +1,20 @@
 // Pure placement-tool core: the placeable categories, the pasteable literal
 // formatting, and the in-memory placement state. DOM-free and Three-free so a
 // plain Vitest unit test can pin the emitted literal shape (the whole point of
-// the tool is that the output pastes straight into a zone content module's
-// ZonePropsDef arrays, so the shape here must match src/sim/types.ts exactly).
+// the tool is that the output pastes straight into a zone content module, so
+// the shape here must match src/sim/types.ts exactly). Most categories emit
+// into a ZonePropsDef array; 'camps' and 'npcs' emit CampDef/NpcDef stubs
+// instead (see listKey), since mob camps and NPCs live in separate top-level
+// exports (e.g. HOLLOW_CAMPS, HOLLOW_NPCS), not in ZonePropsDef. Both stubs
+// carry an 'EDIT_ME' id/name/greeting placeholder, same pattern as delveMarker
+// below: this tool places a point, it does not author dialogue or loot.
 //
 // Dev-only tooling (never bundled into a player entry): plain English is fine.
 
 import type { ZonePropsDef } from '../../sim/types';
+
+/** the target ZonePropsDef array, or a non-ZonePropsDef content bucket */
+export type PlacementListKey = keyof ZonePropsDef | 'camps' | 'npcs';
 
 /** One click (or two, for fences) plus the armed yaw. */
 export interface PlacementInput {
@@ -20,8 +28,8 @@ export interface PlacementInput {
 export interface PlacementCategory {
   id: string;
   label: string;
-  /** the ZonePropsDef array the emitted value belongs in */
-  listKey: keyof ZonePropsDef;
+  /** the ZonePropsDef array (or camps/npcs bucket) the emitted value belongs in */
+  listKey: PlacementListKey;
   /** GLB kits the renderer draws this category from (drives the filter) */
   kits: string[];
   /** prop registry keys (PROP_ASSET_DEFS) the renderer composes it from */
@@ -186,10 +194,52 @@ export const PLACEMENT_CATEGORIES: PlacementCategory[] = [
     usesYaw: false,
     toValue: (p) => ({ x: p.x, z: p.z, delveId: 'EDIT_ME' }),
   },
+  {
+    id: 'campSpawn',
+    label: 'mob camp anchor',
+    listKey: 'camps',
+    // no GLB kit backs a camp anchor; the 3D view marks it with a plain cone
+    // (see main.ts rebuildMarkers), not a rendered prop.
+    kits: [],
+    assets: [],
+    usesYaw: false,
+    toValue: (p) => ({ mobId: 'EDIT_ME', center: { x: p.x, z: p.z }, radius: 12, count: 5 }),
+  },
+  {
+    id: 'npcSpawn',
+    label: 'NPC spawn point',
+    listKey: 'npcs',
+    kits: [],
+    assets: [],
+    usesYaw: true,
+    toValue: (p) => ({
+      id: 'EDIT_ME',
+      name: 'EDIT_ME',
+      title: 'EDIT_ME',
+      pos: { x: p.x, z: p.z },
+      facing: p.yaw,
+      color: 0xffffff,
+      questIds: [],
+      greeting: 'EDIT_ME',
+    }),
+  },
 ];
 
 export function categoryById(id: string): PlacementCategory | undefined {
   return PLACEMENT_CATEGORIES.find((c) => c.id === id);
+}
+
+/** per-category placement counts for this session, in category order, zero counts omitted */
+export function categoryCounts(
+  entries: PlacedEntry[],
+): { id: string; label: string; count: number }[] {
+  const counts = new Map<string, number>();
+  for (const e of entries) counts.set(e.categoryId, (counts.get(e.categoryId) ?? 0) + 1);
+  return PLACEMENT_CATEGORIES.filter((c) => counts.has(c.id)).map((c) => ({
+    id: c.id,
+    label: c.label,
+    count: counts.get(c.id) as number,
+  }));
 }
 
 /** filter by substring over label, list key, kit names, and asset keys */
@@ -220,15 +270,24 @@ export function stepYaw(yaw: number, steps = 1): number {
 // trailing zeros trimmed so output matches the hand-written zone files.
 // ---------------------------------------------------------------------------
 
-const TWO_DP_KEYS = new Set(['rot', 'scale', 'hw', 'hd']);
+const TWO_DP_KEYS = new Set(['rot', 'scale', 'hw', 'hd', 'facing']);
+// fields the zone files always write as a hex literal (e.g. 0x8fb6c4), never decimal
+const HEX_KEYS = new Set(['color']);
 
 function fmtNum(n: number, dp: number): string {
   const s = n.toFixed(dp);
   return String(Number(s)); // trims trailing zeros: 12.50 -> 12.5, 3.00 -> 3
 }
 
+function fmtHex(n: number): string {
+  return `0x${Math.max(0, Math.round(n)).toString(16).padStart(6, '0')}`;
+}
+
 function fmtValue(v: unknown, key?: string): string {
-  if (typeof v === 'number') return fmtNum(v, key !== undefined && TWO_DP_KEYS.has(key) ? 2 : 1);
+  if (typeof v === 'number') {
+    if (key !== undefined && HEX_KEYS.has(key)) return fmtHex(v);
+    return fmtNum(v, key !== undefined && TWO_DP_KEYS.has(key) ? 2 : 1);
+  }
   if (typeof v === 'string') return `'${v}'`;
   if (Array.isArray(v)) return `[${v.map((e) => fmtValue(e)).join(', ')}]`;
   if (v !== null && typeof v === 'object') {
@@ -252,9 +311,9 @@ export function formatEntry(entry: PlacedEntry): string {
   return fmtValue(cat.toValue(entry.input));
 }
 
-/** the whole session as pasteable ZonePropsDef fragments, grouped per array */
+/** the whole session as pasteable fragments, grouped per array (or bucket) */
 export function formatPlacements(entries: PlacedEntry[]): string {
-  const groups = new Map<string, string[]>();
+  const groups = new Map<PlacementListKey, string[]>();
   for (const e of entries) {
     const cat = categoryById(e.categoryId);
     if (!cat) continue;
@@ -267,6 +326,13 @@ export function formatPlacements(entries: PlacedEntry[]): string {
   }
   const out: string[] = [];
   for (const [listKey, lines] of groups) {
+    if (listKey === 'npcs') {
+      // *_NPCS is a Record<string, NpcDef> keyed by npc id, not an array:
+      // each stub pastes in as its own `<npc_id>: { ... },` Record entry.
+      out.push('// each entry keys into the *_NPCS Record<string, NpcDef> by its id:');
+      for (const line of lines) out.push(`${line},`);
+      continue;
+    }
     out.push(`${listKey}: [`);
     for (const line of lines) out.push(`  ${line},`);
     out.push('],');
@@ -294,6 +360,9 @@ export function buildPreviewProps(base: ZonePropsDef, entries: PlacedEntry[]): Z
   for (const e of entries) {
     const cat = categoryById(e.categoryId);
     if (!cat) continue;
+    // camps/npcs paste into a separate top-level export, not ZonePropsDef;
+    // they get a 3D marker (main.ts rebuildMarkers) but no props-preview push.
+    if (cat.listKey === 'camps' || cat.listKey === 'npcs') continue;
     // biome-ignore lint/suspicious/noExplicitAny: the category's toValue returns the exact element type of its target array
     (props[cat.listKey] as any[]).push(cat.toValue(e.input));
   }
