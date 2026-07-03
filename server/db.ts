@@ -1,5 +1,6 @@
 import { Pool } from 'pg';
 import type { GreenpawHearthSave } from '../src/sim/greenpaw_hearth';
+import type { HomesteadSave } from '../src/sim/homestead';
 import type { HousingSave } from '../src/sim/housing';
 import { LEADERBOARD_MAX } from '../src/sim/leaderboard_page';
 import { sanitizeRemovedZone1Content } from '../src/sim/removed_zone1_content';
@@ -2007,6 +2008,17 @@ export async function loadGreenpawHearthState(): Promise<GreenpawHearthSave | nu
 
 export async function saveGreenpawHearthState(save: GreenpawHearthSave): Promise<void> {
   await saveWorldState('greenpaw_hearth', save);
+}
+
+// Homestead v0 (the open-world Hollow Reaches plots): shared global state
+// like housing, one JSONB blob under the 'homestead' key. Additive: no new
+// tables or columns.
+export async function loadHomesteadState(): Promise<HomesteadSave | null> {
+  return loadWorldState<HomesteadSave>('homestead');
+}
+
+export async function saveHomesteadState(save: HomesteadSave): Promise<void> {
+  await saveWorldState('homestead', save);
 }
 
 // ---------------------------------------------------------------------------

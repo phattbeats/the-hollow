@@ -194,6 +194,15 @@ export function chat(ctx: SimContext, text: string, pid?: number): SentChat | nu
     return null;
   }
 
+  // "/homestead [claim]", Homestead v0 (the open-world Hollow Reaches
+  // plots). Routed through the seam to the Homestead instance; self-only
+  // notices, no chat message, so it works identically offline and online
+  // without server wiring.
+  if (/^\/homestead(?:\s|$)/i.test(raw)) {
+    ctx.homesteadChat(raw, r.meta.entityId);
+    return null;
+  }
+
   // "/roll", "/roll N", "/roll M-N" — a classic random roll for loot disputes
   // and social play. Rolled through the deterministic sim RNG so it is
   // server-authoritative (clients can't fake a result) and identical offline.
@@ -956,6 +965,11 @@ export function helpLines(): string[] {
     'Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>.',
     'Greenpaw: /feed (bring what burns or what fills, from near the vase).',
     'The Plant: /plant <anything> (it rarely answers, and never to Greenpaw).',
+    // Homestead v0 (PHAA-417): the open-world Hollow Reaches tier. The original
+    // branch renamed the /house line above to "Sanctum:", but main's PHAA-428
+    // matcher pins that exact English, so the rename is deferred to a follow-up
+    // that moves both lines together with their sim_i18n matchers.
+    'Homestead: /homestead, /homestead claim.',
   ];
 }
 

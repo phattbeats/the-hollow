@@ -208,6 +208,8 @@ const CALLBACK_KEYS = [
   'plantSpeechChat',
   'notifyPlantThreshold',
   'plantSpeechAmbientChat',
+  // Homestead v0: the /homestead chat-command branch.
+  'homesteadChat',
 ] as const;
 
 // A fully-spied fake host. `clock` is mutable so a test can prove the context reads
@@ -440,6 +442,7 @@ function makeFakeHost() {
     plantSpeechChat: vi.fn(() => false),
     notifyPlantThreshold: vi.fn(),
     plantSpeechAmbientChat: vi.fn(),
+    homesteadChat: vi.fn(() => false),
   };
   return { host, rng, entities, clock };
 }

@@ -37,6 +37,7 @@
 //   delves.ts           IWorldDelves         delve runs, lockpick, companion
 //   housing.ts          IWorldHousing        Hollow hub homestead plots (read + claim/place/remove)
 //   greenpaw_hearth.ts  IWorldGreenpawHearth Hollow hub smoke/mood state (read)
+//   homestead.ts        IWorldHomestead      Hollow Reaches open-world plots (read)
 //   telemetry.ts        IWorldTelemetry      fire-and-forget metrics sink
 //
 // THREE GATES pin this seam (run before any facet edit):
@@ -44,9 +45,9 @@
 //                                          ALL_DELTA_KEYS (27) + TERSE_TO_IWORLD mapping.
 //   tests/command_schema.test.ts   (W0b)  COMMAND_NAMES universe; ClientWorld send-set
 //                                          subset-of dispatch-set; DISPATCH_ONLY (7).
-//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (155) present + same-kind on
+//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (156) present + same-kind on
 //                                          Sim + ClientWorld; aggregate == disjoint
-//                                          union of the 23 facets.
+//                                          union of the 24 facets.
 // ---------------------------------------------------------------------------
 
 import type { IWorldChat } from './world_api/chat';
@@ -57,6 +58,7 @@ import type { IWorldDuelArena } from './world_api/duel_arena';
 import type { IWorldDungeons } from './world_api/dungeons';
 import type { IWorldEntityRoster } from './world_api/entity_roster';
 import type { IWorldGreenpawHearth } from './world_api/greenpaw_hearth';
+import type { IWorldHomestead } from './world_api/homestead';
 import type { IWorldHousing } from './world_api/housing';
 import type { IWorldInteraction } from './world_api/interaction';
 import type { IWorldInventory } from './world_api/inventory';
@@ -98,6 +100,7 @@ export type {
 } from './world_api/duel_arena';
 export type { RaidLockout } from './world_api/dungeons';
 export type { GreenpawHearthInfo, SmokeLevel } from './world_api/greenpaw_hearth';
+export type { HomesteadInfo, HomesteadPlotView } from './world_api/homestead';
 export type { HouseObjectView, HousingInfo, HousingPlotView } from './world_api/housing';
 export type { MarketInfo, MarketListingView } from './world_api/market';
 export type { PartyInfo, PartyMemberInfo } from './world_api/party';
@@ -139,6 +142,7 @@ export interface IWorld
     IWorldDelves,
     IWorldHousing,
     IWorldGreenpawHearth,
+    IWorldHomestead,
     IWorldTelemetry {}
 
 // ---------------------------------------------------------------------------
@@ -335,6 +339,7 @@ export type WorldFacet =
   | 'IWorldDelves'
   | 'IWorldHousing'
   | 'IWorldGreenpawHearth'
+  | 'IWorldHomestead'
   | 'IWorldTelemetry';
 
 export const COMMAND_FACETS = {

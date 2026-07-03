@@ -1396,6 +1396,7 @@ async function main(): Promise<void> {
   await game.loadMarket();
   await game.loadHousing();
   await game.loadGreenpawHearth();
+  await game.loadHomestead();
   await game.loadChatFilter();
   await game.loadBlockedIps();
   void game.recordOnlineSnapshot();
@@ -1645,6 +1646,7 @@ async function main(): Promise<void> {
     await game.saveAll('shutdown');
     await game.saveMarket();
     await game.saveHousing();
+    await game.saveHomestead();
     await game.endAllPlaySessions();
     await game.chatLog.stop();
     await pool.end();
