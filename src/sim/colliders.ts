@@ -1,3 +1,4 @@
+import { VASE_POS } from './content/hollow';
 import {
   arenaOriginAt,
   DUNGEON_X_THRESHOLD,
@@ -11,7 +12,6 @@ import {
   isDelvePos,
   PROPS,
 } from './data';
-import { VASE_POS } from './content/hollow';
 import { type DelveModuleId, delveModuleColliders } from './delve_layout';
 import {
   ARENA_LAYOUT,
@@ -362,7 +362,12 @@ function instanceLocal(
     }
   }
   const o = instanceOrigin(index, best);
-  return { ox: o.x, oz: o.z, interior: dungeon?.interior ?? 'crypt', dungeonId: dungeon?.id ?? null };
+  return {
+    ox: o.x,
+    oz: o.z,
+    interior: dungeon?.interior ?? 'crypt',
+    dungeonId: dungeon?.id ?? null,
+  };
 }
 
 // Resolve a movement destination against all static geometry. Movers slide

@@ -5,8 +5,8 @@
 // but has no vase) untouched.
 import { describe, expect, it } from 'vitest';
 import { isBlocked, resolvePosition } from '../src/sim/colliders';
-import { instanceOrigin } from '../src/sim/data';
 import { VASE_POS } from '../src/sim/content/hollow';
+import { instanceOrigin } from '../src/sim/data';
 
 const SEED = 42;
 const HUB = instanceOrigin(6, 0); // the_hollow
