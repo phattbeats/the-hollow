@@ -2789,8 +2789,8 @@
     background: #040408;
   }
 
-  /* ---------- Ambient login backdrop: bioluminescent spore field ----------
-     The sole animated backdrop over the near-black base (src/game/spore_drift.ts
+  /* ---------- Ambient login backdrop: bioluminescent spore field ---------- */
+  /* The sole animated backdrop over the near-black base (src/game/spore_drift.ts
      mounts the motes; main.ts skips the mount on phones). It replaced the old
      licensed-provenance-unclear trailer video plus the portal/nebula/ember
      assembly, per PHAA-406, for a minimal "let the page breathe" login. Hidden
