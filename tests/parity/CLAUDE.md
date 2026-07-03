@@ -103,7 +103,7 @@ confirmed each):
 ```
 npx vitest run tests/parity                  # the gate (+ coverage + unit tests)
 UPDATE_PARITY=1 npx vitest run tests/parity  # mint/refresh goldens (deliberate, reviewable)
-du -sh tests/parity/golden                   # confirm ~100 KB, NOT MB
+du -sh tests/parity/golden                   # confirm it's still in the low single-digit MB, not tens of MB
 ```
 
 ## The rule
