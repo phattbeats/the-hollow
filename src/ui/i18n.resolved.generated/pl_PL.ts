@@ -5671,15 +5671,15 @@ export const pl_PL: EnTranslations = {
         "title": "Pierwszy Prorok (z własnego namaszczenia)",
         "greeting": "hej, wędrowcze. złapałeś dziś wazę w nastroju, czy to tylko ja znowu se coś ubzdurałem... chodź no bliżej, mam parę świętych spraw do załatwienia. głównie żarcie. na miarę zielonołapa to jedno i to samo."
       },
-      "warden_fennick": {
-        "name": "Warden Fennick",
-        "title": "Ranger of the Reaches",
-        "greeting": "Root Hollow's lousy with boar this season, tearing up the roots chasing grubs. Mind the loose dirt unless you mean to fight 'em."
+      "verger_zebediah": {
+        "name": "Verger Zebediah",
+        "title": "Warden of Root Hollow",
+        "greeting": "Root Hollow's overrun with boar this season, tearing up the roots after grubs. Mind the loose dirt unless you mean to fight them."
       },
-      "old_badger_thistlewick": {
-        "name": "Old Badger Thistlewick",
-        "title": "Fallow Acres Farmer",
-        "greeting": "Good ground here, once the fences hold. Can't build a thing with wolves circling the flock every night."
+      "sexton_faddick": {
+        "name": "Sexton Faddick",
+        "title": "The Wandering Keeper",
+        "greeting": "Good ground, this, I pass through more than I stay. Can't build a thing with wolves circling the flock every night, though."
       }
     },
     "quests": {

@@ -76,36 +76,45 @@ export const HOLLOW_ZONE_ROADS: { x: number; z: number }[][] = [
   ], // toward Mossbank, stopping short of the lake basin
 ];
 
-// Quest-giver pass (board follow-up on PHAA-420): a warden posted at each of
-// the starter zone's two wildlife camps, each offering a two-quest kill chain
-// against that camp's mob (mirrors content/hollow.ts's brother_greenpaw
-// chain). Two quests per NPC rather than one: tests/progression.test.ts's xp
-// pacing budget requires this zone's quest+kill xp to cover its levelRange
-// [1,4] (2700 xp) with headroom, which one quest each falls well short of.
-// Overworld NPC pattern (real world pos, no `dynamic` flag) per zone1.ts, not
-// the portal-instanced hub pattern in content/hollow.ts.
+// Quest-giver pass (board follow-up on PHAA-420): a quest-giver posted at
+// each of the starter zone's two wildlife camps, each offering a two-quest
+// kill chain against that camp's mob (mirrors content/hollow.ts's
+// brother_greenpaw chain). Two quests per NPC rather than one:
+// tests/progression.test.ts's xp pacing budget requires this zone's
+// quest+kill xp to cover its levelRange [1,4] (2700 xp) with headroom, which
+// one quest each falls well short of. Overworld NPC pattern (real world pos,
+// no `dynamic` flag) per zone1.ts, not the portal-instanced hub pattern in
+// content/hollow.ts.
+//
+// Board follow-up (PHAA-420 reopen): both are drawn from the constitution's
+// cast (docs/plan-the-hollow.md §4), not invented names. Verger Zebediah is
+// the constitution's "straight man," the grey heron; Sexton Faddick is its
+// badger, "not hub-bound, wanders across the zones." Both already have
+// hero-quality GLBs from the PHAA-413/414 prophet-cast pass (see
+// src/render/characters/manifest.ts npc_zebediah/npc_faddick), unused until
+// now.
 export const HOLLOW_ZONE_NPCS: Record<string, NpcDef> = {
-  warden_fennick: {
-    id: 'warden_fennick',
-    name: 'Warden Fennick',
-    title: 'Ranger of the Reaches',
+  verger_zebediah: {
+    id: 'verger_zebediah',
+    name: 'Verger Zebediah',
+    title: 'Warden of Root Hollow',
     pos: { x: 34, z: -334 },
     facing: 0.6,
     color: 0x3f5233,
     questIds: ['q_root_hollow_boars', 'q_root_hollow_boars_ii'],
     greeting:
-      "Root Hollow's lousy with boar this season, tearing up the roots chasing grubs. Mind the loose dirt unless you mean to fight 'em.",
+      "Root Hollow's overrun with boar this season, tearing up the roots after grubs. Mind the loose dirt unless you mean to fight them.",
   },
-  old_badger_thistlewick: {
-    id: 'old_badger_thistlewick',
-    name: 'Old Badger Thistlewick',
-    title: 'Fallow Acres Farmer',
+  sexton_faddick: {
+    id: 'sexton_faddick',
+    name: 'Sexton Faddick',
+    title: 'The Wandering Keeper',
     pos: { x: -34, z: -238 },
     facing: -1.0,
     color: 0x5b4636,
     questIds: ['q_fallow_acres_wolves', 'q_fallow_acres_wolves_ii'],
     greeting:
-      "Good ground here, once the fences hold. Can't build a thing with wolves circling the flock every night.",
+      "Good ground, this, I pass through more than I stay. Can't build a thing with wolves circling the flock every night, though.",
   },
 };
 
@@ -113,8 +122,8 @@ export const HOLLOW_ZONE_QUESTS: Record<string, QuestDef> = {
   q_root_hollow_boars: {
     id: 'q_root_hollow_boars',
     name: "Root Hollow's Boars",
-    giverNpcId: 'warden_fennick',
-    turnInNpcId: 'warden_fennick',
+    giverNpcId: 'verger_zebediah',
+    turnInNpcId: 'verger_zebediah',
     text: "Boars have dug up half of Root Hollow chasing grubs, and they don't scare easy anymore. Cull five and the roots might get a season's rest.",
     completionText:
       "Five less snouts in the dirt. Root Hollow thanks you, even if it can't say so.",
@@ -127,8 +136,8 @@ export const HOLLOW_ZONE_QUESTS: Record<string, QuestDef> = {
   q_root_hollow_boars_ii: {
     id: 'q_root_hollow_boars_ii',
     name: "Root Hollow's Reckoning",
-    giverNpcId: 'warden_fennick',
-    turnInNpcId: 'warden_fennick',
+    giverNpcId: 'verger_zebediah',
+    turnInNpcId: 'verger_zebediah',
     requiresQuest: 'q_root_hollow_boars',
     text: 'Five was a start, but more keep pushing up from the lower dens. Finish it: eight more and Root Hollow gets its rest.',
     completionText: "That's the last of the diggers, or near enough. The roots can breathe.",
@@ -141,8 +150,8 @@ export const HOLLOW_ZONE_QUESTS: Record<string, QuestDef> = {
   q_fallow_acres_wolves: {
     id: 'q_fallow_acres_wolves',
     name: 'Wolves Off the Furrows',
-    giverNpcId: 'old_badger_thistlewick',
-    turnInNpcId: 'old_badger_thistlewick',
+    giverNpcId: 'sexton_faddick',
+    turnInNpcId: 'sexton_faddick',
     text: "Can't hold a plot with wolves circling every night. Thin the pack at Fallow Acres and I'll make it worth the walk.",
     completionText: "That's a few nights' sleep, right there. Preciate it.",
     objectives: [
@@ -156,8 +165,8 @@ export const HOLLOW_ZONE_QUESTS: Record<string, QuestDef> = {
   q_fallow_acres_wolves_ii: {
     id: 'q_fallow_acres_wolves_ii',
     name: 'The Last of the Pack',
-    giverNpcId: 'old_badger_thistlewick',
-    turnInNpcId: 'old_badger_thistlewick',
+    giverNpcId: 'sexton_faddick',
+    turnInNpcId: 'sexton_faddick',
     requiresQuest: 'q_fallow_acres_wolves',
     text: "Thinned the edges, but the den's still full. Eight more and Fallow Acres might get a quiet night.",
     completionText: 'Quiet at last. Reckon I can start on those fences now.',
@@ -179,9 +188,10 @@ export const HOLLOW_ZONE_QUEST_ORDER: string[] = [
 ];
 
 // Hand-placed landmarks (creativity pass, board follow-up on PHAA-420): a
-// well marking Old Badger's plot and a campfire at Warden Fennick's post. The
-// Fallow Acres fence frames a small kept garden, not the open build clearing
-// itself, so it stays out of the way of the ground Homestead v0 plots want.
+// well marking Sexton Faddick's plot and a campfire at Verger Zebediah's
+// post. The Fallow Acres fence frames a small kept garden, not the open
+// build clearing itself, so it stays out of the way of the ground
+// Homestead v0 plots want.
 export const HOLLOW_ZONE_PROPS: ZonePropsDef = {
   buildings: [],
   wells: [{ x: -40, z: -250, r: 1.4 }],

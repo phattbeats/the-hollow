@@ -2892,14 +2892,14 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.zones.the_hollow_reaches.pois.3.label': '苔の土手',
   'entities.zones.the_hollow_reaches.welcome':
     '門を抜けると、開けた大地が広がっています。道の西側にある休閑地は、家を建てるのに良さそうです。',
-  'entities.npcs.warden_fennick.name': '番人フェニック',
-  'entities.npcs.warden_fennick.title': '外域の野伏せり',
-  'entities.npcs.warden_fennick.greeting':
+  'entities.npcs.verger_zebediah.name': '堂守のゼベダイア',
+  'entities.npcs.verger_zebediah.title': '根の空洞の衛士',
+  'entities.npcs.verger_zebediah.greeting':
     '根の空洞は今季、猪だらけだ。虫を追って根を掘り返しておる。やり合う気がないなら、緩んだ土に気をつけるんだな。',
-  'entities.npcs.old_badger_thistlewick.name': '老アナグマのシスルウィック',
-  'entities.npcs.old_badger_thistlewick.title': '休閑地の農夫',
-  'entities.npcs.old_badger_thistlewick.greeting':
-    'ここは良い土地だ、柵さえ保てばな。毎晩狼が群れの周りをうろついて、何も建てられやしない。',
+  'entities.npcs.sexton_faddick.name': '墓守のファディック',
+  'entities.npcs.sexton_faddick.title': '放浪の番人',
+  'entities.npcs.sexton_faddick.greeting':
+    'ここは良い土地だ、もっとも俺は通りすがりの方が長い。毎晩狼が群れの周りをうろついて、何も建てられやしない。',
   'entities.quests.q_root_hollow_boars.title': '根の空洞の猪',
   'entities.quests.q_root_hollow_boars.text':
     '猪どもが虫を追って根の空洞を半分も掘り返し、もう滅多なことじゃ怖がらん。五頭狩れば、根も一季は休めよう。',

@@ -2889,14 +2889,14 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.zones.the_hollow_reaches.pois.3.label': '이끼둔덕',
   'entities.zones.the_hollow_reaches.welcome':
     '문을 나서면 탁 트인 대지가 펼쳐집니다. 길 서쪽의 묵정밭은 집을 짓기에 좋아 보입니다.',
-  'entities.npcs.warden_fennick.name': '감시관 페닉',
-  'entities.npcs.warden_fennick.title': '외곽의 순찰자',
-  'entities.npcs.warden_fennick.greeting':
+  'entities.npcs.verger_zebediah.name': '성당지기 제베디아',
+  'entities.npcs.verger_zebediah.title': '뿌리굴의 파수꾼',
+  'entities.npcs.verger_zebediah.greeting':
     '이번 철엔 뿌리굴에 멧돼지가 들끓어서, 벌레를 쫓다가 뿌리를 다 파헤쳐 놨소. 맞붙을 생각이 아니면 무른 흙을 조심하시오.',
-  'entities.npcs.old_badger_thistlewick.name': '늙은 오소리 시슬윅',
-  'entities.npcs.old_badger_thistlewick.title': '묵정밭 농부',
-  'entities.npcs.old_badger_thistlewick.greeting':
-    '여기 땅은 좋아, 울타리만 버텨준다면 말이지. 밤마다 늑대가 가축 떼 주위를 맴도니 뭘 짓지도 못하겠구먼.',
+  'entities.npcs.sexton_faddick.name': '무덤지기 패딕',
+  'entities.npcs.sexton_faddick.title': '떠도는 관리인',
+  'entities.npcs.sexton_faddick.greeting':
+    '여기 땅은 좋아, 나야 머무르기보단 지나가는 편이지만. 밤마다 늑대가 가축 떼 주위를 맴도니 뭘 짓지도 못하겠구먼.',
   'entities.quests.q_root_hollow_boars.title': '뿌리굴의 멧돼지',
   'entities.quests.q_root_hollow_boars.text':
     '멧돼지들이 벌레를 쫓다가 뿌리굴 절반을 파헤쳐 놨고, 이젠 겁도 잘 안 내오. 다섯 마리만 잡아주면 뿌리도 한 철은 쉴 수 있을 거요.',

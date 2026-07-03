@@ -2926,14 +2926,14 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.zones.the_hollow_reaches.pois.3.label': 'Моховой Берег',
   'entities.zones.the_hollow_reaches.welcome':
     'Врата ведут на открытую местность. Перелоги, к западу от дороги, выглядят пригодными для застройки.',
-  'entities.npcs.warden_fennick.name': 'Страж Фенник',
-  'entities.npcs.warden_fennick.title': 'Дозорный Пустоши',
-  'entities.npcs.warden_fennick.greeting':
+  'entities.npcs.verger_zebediah.name': 'Пономарь Зеведей',
+  'entities.npcs.verger_zebediah.title': 'Страж Корневой Лощины',
+  'entities.npcs.verger_zebediah.greeting':
     'В этот сезон в Корневой Лощине развелось кабанов, роют корни в поисках личинок. Гляди под ноги, если не собираешься с ними драться.',
-  'entities.npcs.old_badger_thistlewick.name': 'Старый барсук Тислвик',
-  'entities.npcs.old_badger_thistlewick.title': 'Фермер с Перелогов',
-  'entities.npcs.old_badger_thistlewick.greeting':
-    'Земля тут хорошая, были бы только изгороди целы. Волки каждую ночь кружат вокруг стада, ничего не построишь.',
+  'entities.npcs.sexton_faddick.name': 'Могильщик Фаддик',
+  'entities.npcs.sexton_faddick.title': 'Странствующий Хранитель',
+  'entities.npcs.sexton_faddick.greeting':
+    'Земля тут хорошая, только я больше прохожу мимо, чем задерживаюсь. Волки каждую ночь кружат вокруг стада, ничего не построишь.',
   'entities.quests.q_root_hollow_boars.title': 'Кабаны Корневой Лощины',
   'entities.quests.q_root_hollow_boars.text':
     'Кабаны перерыли половину Корневой Лощины в поисках личинок и уже почти не боятся людей. Убей пятерых, и корни, может, отдохнут сезон.',

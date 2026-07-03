@@ -5671,15 +5671,15 @@ export const nl_NL: EnTranslations = {
         "title": "Eerste Profeet (zelfbenoemd)",
         "greeting": "hé, reiziger. trof je de vaas vandaag in een bepaalde bui, of ben ik het gewoon weer... kom hier, heb een paar heilige zaakjes die aandacht nodig hebben. vooral snacks. komt op hetzelfde neer, als je Groenpoot heet."
       },
-      "warden_fennick": {
-        "name": "Warden Fennick",
-        "title": "Ranger of the Reaches",
-        "greeting": "Root Hollow's lousy with boar this season, tearing up the roots chasing grubs. Mind the loose dirt unless you mean to fight 'em."
+      "verger_zebediah": {
+        "name": "Verger Zebediah",
+        "title": "Warden of Root Hollow",
+        "greeting": "Root Hollow's overrun with boar this season, tearing up the roots after grubs. Mind the loose dirt unless you mean to fight them."
       },
-      "old_badger_thistlewick": {
-        "name": "Old Badger Thistlewick",
-        "title": "Fallow Acres Farmer",
-        "greeting": "Good ground here, once the fences hold. Can't build a thing with wolves circling the flock every night."
+      "sexton_faddick": {
+        "name": "Sexton Faddick",
+        "title": "The Wandering Keeper",
+        "greeting": "Good ground, this, I pass through more than I stay. Can't build a thing with wolves circling the flock every night, though."
       }
     },
     "quests": {

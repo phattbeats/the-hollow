@@ -5671,15 +5671,15 @@ export const vi_VN: EnTranslations = {
         "title": "Vị Tiên Tri Đầu Tiên (tự phong)",
         "greeting": "chào, lữ khách. hôm nay cái bình có vẻ vui tính, hay chỉ mình ta thấy vậy... lại đây, có vài việc thiêng cần lo. chủ yếu là đồ ăn vặt thôi. cũng như nhau cả, xét theo mức độ chân xanh."
       },
-      "warden_fennick": {
-        "name": "Warden Fennick",
-        "title": "Ranger of the Reaches",
-        "greeting": "Root Hollow's lousy with boar this season, tearing up the roots chasing grubs. Mind the loose dirt unless you mean to fight 'em."
+      "verger_zebediah": {
+        "name": "Verger Zebediah",
+        "title": "Warden of Root Hollow",
+        "greeting": "Root Hollow's overrun with boar this season, tearing up the roots after grubs. Mind the loose dirt unless you mean to fight them."
       },
-      "old_badger_thistlewick": {
-        "name": "Old Badger Thistlewick",
-        "title": "Fallow Acres Farmer",
-        "greeting": "Good ground here, once the fences hold. Can't build a thing with wolves circling the flock every night."
+      "sexton_faddick": {
+        "name": "Sexton Faddick",
+        "title": "The Wandering Keeper",
+        "greeting": "Good ground, this, I pass through more than I stay. Can't build a thing with wolves circling the flock every night, though."
       }
     },
     "quests": {
