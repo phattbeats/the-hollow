@@ -6557,7 +6557,7 @@ export const it_IT: EnTranslations = {
       },
       "q_fallow_acres_wolves_ii": {
         "title": "The Last of the Pack",
-        "text": "The edges are thinner, the den is not. Eight more, and Fallow Acres can hold a roof without losing what sleeps under it in the night. I would tend to it myself, but I am rarely anywhere twice, and the ground below the Reaches wants keeping more than these furrows do.",
+        "text": "The edges are thinner, the den is not. Eight more, and Fallow Acres can hold a roof without losing what sleeps under it in the night. I would tend to it myself, but I am rarely anywhere twice, and the ground below the shrine wants keeping more than these furrows do.",
         "completion": "There. A quiet night, and perhaps a hundred behind it. Build well. And if you ever dig deep enough to hear something down there keeping slow time, do not answer it. That part is mine to keep; I carry the key for it. Go on, now.",
         "objectives": {
           "0": {

@@ -2920,7 +2920,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_fallow_acres_wolves.objectives.0.label': '森の狼を討伐',
   'entities.quests.q_fallow_acres_wolves_ii.title': '最後の群れ',
   'entities.quests.q_fallow_acres_wolves_ii.text':
-    '端は薄くなったが、巣はそうでない。あと八頭で、休閑地は夜のうちに屋根の下で眠る者を失わずに、家を構えられる。俺が自ら見てやりたいが、同じ場所に二度いることは滅多にない。それに外域の地下の方が、この畝よりも守りを要しておる。',
+    '端は薄くなったが、巣はそうでない。あと八頭で、休閑地は夜のうちに屋根の下で眠る者を失わずに、家を構えられる。俺が自ら見てやりたいが、同じ場所に二度いることは滅多にない。それに祠の下の地の方が、この畝よりも守りを要しておる。',
   'entities.quests.q_fallow_acres_wolves_ii.completion':
     'よし。静かな夜が一つ、その後ろにおそらく百の夜が続く。よく建てよ。そしてもしいつか、深く掘って地の底で何かがゆっくりと時を刻むのを聞いても、応えてはならん。それは俺が守るべきもの、その鍵は俺が持っておる。さあ、行け。',
   'entities.quests.q_fallow_acres_wolves_ii.objectives.0.label': '森の狼を討伐',
