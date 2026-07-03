@@ -2892,6 +2892,38 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.zones.the_hollow_reaches.pois.3.label': '苔の土手',
   'entities.zones.the_hollow_reaches.welcome':
     '門を抜けると、開けた大地が広がっています。道の西側にある休閑地は、家を建てるのに良さそうです。',
+  'entities.npcs.verger_zebediah.name': '堂守のゼベダイア',
+  'entities.npcs.verger_zebediah.title': '根の空洞の衛士',
+  'entities.npcs.verger_zebediah.greeting':
+    '堂守のゼベダイアだ。この外域を暦に沿って管理しておる、少なくとも努めてはおる。根の空洞は今季、休ませると記しておいた。だが猪どもは告示を読まん。緩んだ土に気をつけ、台帳には触れるな。',
+  'entities.npcs.sexton_faddick.name': '墓守のファディック',
+  'entities.npcs.sexton_faddick.title': '放浪の番人',
+  'entities.npcs.sexton_faddick.greeting':
+    'ファディックだ。まだ守るべき祠があるうちは、墓守を務める。俺はどこにも留まらん、ただ守るだけだ。毎晩、狼が休閑地の群れの周りを回っておる。長く回れば、回っている相手の形を覚えるものだ。あれはただの群れのままでいてもらいたい。',
+  'entities.quests.q_root_hollow_boars.title': '根の空洞の猪',
+  'entities.quests.q_root_hollow_boars.text':
+    '暦によれば、根の空洞は今季休むはずだった。だが猪どもには通達しておらん。虫を追ってこの地を半分も掘り返し、もう鷺が羽ばたいても逃げん。これは俺個人として腹に据えかねる。五頭狩れば、この季を記録どおりに記せる。',
+  'entities.quests.q_root_hollow_boars.completion':
+    '五頭。数え、日付を入れ、台帳に記した。根の空洞は今や自らの季にわずか二週の遅れ、この職ではこれを大勝利と呼ぶ。今のところ俺一人となった教団を代表して、礼を言う。',
+  'entities.quests.q_root_hollow_boars.objectives.0.label': '野生の猪を討伐',
+  'entities.quests.q_root_hollow_boars_ii.title': '根の空洞の清算',
+  'entities.quests.q_root_hollow_boars_ii.text':
+    'この職では認めるべきでないことを認めよう。五頭は楽観が過ぎた。下の巣からまだ湧いてくる。あと八頭で、記録を三度目に書き直さずに季を閉じられる。記録は書き直しを嫌う。俺もだ。',
+  'entities.quests.q_root_hollow_boars_ii.completion':
+    '閉じた。署名した。綴じた。これで季は予定どおり進められる、暦を守る者が再び現れたのだからな。おまえは極めて小さな会衆を大いに助けた。念のため言っておくが、その会衆とは俺のことだ。',
+  'entities.quests.q_root_hollow_boars_ii.objectives.0.label': '野生の猪を討伐',
+  'entities.quests.q_fallow_acres_wolves.title': '畝を追われる狼たち',
+  'entities.quests.q_fallow_acres_wolves.text':
+    '誰かが休閑地に家を建てるつもりらしい。よいことだ。人の住む地は住まぬ地より物覚えがよい、そしてこの一帯は多くを忘れてしまった。だが狼が夜を働かせているうちは、何も落ち着かん。群れを五頭まで間引いてくれ、その足労には必ず報いる。報いること、それが今の俺に残された役目のほとんどだ。',
+  'entities.quests.q_fallow_acres_wolves.completion':
+    '静かになった。よい。俺はかつて人で賑わっていた静かな地に数多く立ってきた。ここは逆の道をたどる望みがある。礼を言う、道中気をつけてな。',
+  'entities.quests.q_fallow_acres_wolves.objectives.0.label': '森の狼を討伐',
+  'entities.quests.q_fallow_acres_wolves_ii.title': '最後の群れ',
+  'entities.quests.q_fallow_acres_wolves_ii.text':
+    '端は薄くなったが、巣はそうでない。あと八頭で、休閑地は夜のうちに屋根の下で眠る者を失わずに、家を構えられる。俺が自ら見てやりたいが、同じ場所に二度いることは滅多にない。それに外域の地下の方が、この畝よりも守りを要しておる。',
+  'entities.quests.q_fallow_acres_wolves_ii.completion':
+    'よし。静かな夜が一つ、その後ろにおそらく百の夜が続く。よく建てよ。そしてもしいつか、深く掘って地の底で何かがゆっくりと時を刻むのを聞いても、応えてはならん。それは俺が守るべきもの、その鍵は俺が持っておる。さあ、行け。',
+  'entities.quests.q_fallow_acres_wolves_ii.objectives.0.label': '森の狼を討伐',
   'entities.zones.thornpeak_heights.pois.0.label': 'ハイウォッチ',
   'entities.zones.thornpeak_heights.pois.1.label': '追跡者の尾根',
   'entities.zones.thornpeak_heights.pois.2.label': 'ディープロックの巣穴',

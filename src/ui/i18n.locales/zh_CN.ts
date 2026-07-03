@@ -2765,6 +2765,38 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.zones.the_hollow_reaches.pois.3.label': '苔岸',
   'entities.zones.the_hollow_reaches.welcome':
     '大门外是一片开阔之地，道路以西的闲田庄看起来很适合安家。',
+  'entities.npcs.verger_zebediah.name': '司事泽比迪亚',
+  'entities.npcs.verger_zebediah.title': '根穴守卫',
+  'entities.npcs.verger_zebediah.greeting':
+    '司事泽比迪亚。我给外域记着一本历书，至少一直在努力记。根穴这一季本该休养，可野猪没读那张告示。留神脚下的浮土，还有，别碰我的登记簿。',
+  'entities.npcs.sexton_faddick.name': '守墓人法迪克',
+  'entities.npcs.sexton_faddick.title': '流浪的守护者',
+  'entities.npcs.sexton_faddick.greeting':
+    '法迪克。哪里还有神龛需要守墓人，我就在哪儿守。我从不在一处久留，只管看顾。狼群夜夜绕着闲田庄的羊群打转，绕得久了，便摸清了所绕之物的形状。最好让它一直只是群羊。',
+  'entities.quests.q_root_hollow_boars.title': '根穴野猪',
+  'entities.quests.q_root_hollow_boars.text':
+    '按历书，根穴这一季本该休养。可没人通知野猪。它们追着虫子把这里拱翻了一半，如今连苍鹭扑翅都吓不走，这一点我很往心里去。杀五头，我才好把这一季照实记下。',
+  'entities.quests.q_root_hollow_boars.completion':
+    '五头。清点、记日、录入登记簿。根穴如今只落后自己这一季两周，在本职上，这已算大捷。谨代表一个眼下只剩我一人的教团，向你道谢。',
+  'entities.quests.q_root_hollow_boars.objectives.0.label': '野猪已杀',
+  'entities.quests.q_root_hollow_boars_ii.title': '根穴的清算',
+  'entities.quests.q_root_hollow_boars_ii.text':
+    '我就说句本职上不该说的实话：五头，是我乐观了。底下的窝还在不断往外拱。再杀八头，我便能结清这一季，不必第三回去改记录。记录不喜被改。我也不喜。',
+  'entities.quests.q_root_hollow_boars_ii.completion':
+    '结案。签字。归档。这一季总算能照原定的历程走了，毕竟又有人来看着这本历书。你帮了一个极小的会众一个大忙。我得澄清一句：这会众，就是我。',
+  'entities.quests.q_root_hollow_boars_ii.objectives.0.label': '野猪已杀',
+  'entities.quests.q_fallow_acres_wolves.title': '赶走田垄上的狼',
+  'entities.quests.q_fallow_acres_wolves.text':
+    '有人打算在闲田庄盖房。好事。有人住过的地比没人住过的地记性好，而这一带已经忘了太多。可只要狼群还在夜里活动，什么都安定不下来。把狼群清到剩五头，我定叫你这趟不白走。偿还，几乎是我如今仅存的用处了。',
+  'entities.quests.q_fallow_acres_wolves.completion':
+    '安静些了。好。我在许多安静的地方站过，那些地方从前满是人声；这一处，还有机会往相反的方向走。谢你，路上当心。',
+  'entities.quests.q_fallow_acres_wolves.objectives.0.label': '森林狼已杀',
+  'entities.quests.q_fallow_acres_wolves_ii.title': '最后的狼群',
+  'entities.quests.q_fallow_acres_wolves_ii.text':
+    '边上是稀疏了，窝却没有。再杀八头，闲田庄便能撑起一片屋顶，而不必在夜里失去屋下安睡之人。我本想亲自照看，可我极少在一处停留两回，何况外域底下的地，比这些田垄更需要看顾。',
+  'entities.quests.q_fallow_acres_wolves_ii.completion':
+    '好了。一个安静的夜，兴许后头还有一百个。好好建吧。还有，你若哪天挖得够深，听见底下有什么在缓缓打着节拍，千万别应它。那一样，归我看守；开它的钥匙在我身上。去吧，走吧。',
+  'entities.quests.q_fallow_acres_wolves_ii.objectives.0.label': '森林狼已杀',
   'entities.zones.thornpeak_heights.pois.0.label': '高望',
   'entities.zones.thornpeak_heights.pois.1.label': '潜猎者山脊',
   'entities.zones.thornpeak_heights.pois.2.label': '深岩洞穴',

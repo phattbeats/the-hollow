@@ -5670,6 +5670,16 @@ export const es_ES: EnTranslations = {
         "name": "Hermano Pataverde",
         "title": "Primer Profeta (autoproclamado)",
         "greeting": "qué tal, viajero. ¿el jarrón está de mal humor hoy, o soy yo otra vez... ven acá, tengo un par de asuntos sagrados que atender. mayormente bocadillos. viene a ser lo mismo, en grado pataverde."
+      },
+      "verger_zebediah": {
+        "name": "Verger Zebediah",
+        "title": "Warden of Root Hollow",
+        "greeting": "Verger Zebediah. I keep the Reaches to a calendar, or I keep trying. Root Hollow was marked to rest this season, and the boars did not read the notice. Mind the loose dirt, and do not touch the register."
+      },
+      "sexton_faddick": {
+        "name": "Sexton Faddick",
+        "title": "The Wandering Keeper",
+        "greeting": "Faddick. Sexton, where there is still a shrine to sexton. I do not stay anywhere; I keep. Wolves have circled the flock at Fallow Acres every night, and a thing that circles long enough learns the shape of what it circles. Best it stays a flock."
       }
     },
     "quests": {
@@ -6505,6 +6515,46 @@ export const es_ES: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Bocado de Cueva recolectado"
+          }
+        }
+      },
+      "q_root_hollow_boars": {
+        "title": "Root Hollow's Boars",
+        "text": "By the calendar, Root Hollow rests this season. The boars have not been informed. They have rooted up half of it chasing grubs, and they no longer scatter when a heron flaps at them, which I take personally. Cull five, and I can enter the season as observed.",
+        "completion": "Five. Counted, dated, and entered in the register. Root Hollow is now only a fortnight behind its own season, which in this office we call a triumph. My thanks, on behalf of an order that is, at present, me.",
+        "objectives": {
+          "0": {
+            "label": "Wild Boar slain"
+          }
+        }
+      },
+      "q_root_hollow_boars_ii": {
+        "title": "Root Hollow's Reckoning",
+        "text": "I will admit what the office discourages admitting: five was optimistic. The lower dens keep pushing up more. Eight further, and I can close the season without amending the record a third time. The record resents amendment. So do I.",
+        "completion": "Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me.",
+        "objectives": {
+          "0": {
+            "label": "Wild Boar slain"
+          }
+        }
+      },
+      "q_fallow_acres_wolves": {
+        "title": "Wolves Off the Furrows",
+        "text": "Someone means to build at Fallow Acres. Good. Ground with people on it remembers better than ground without, and this stretch has forgotten a great deal. But nothing settles with wolves working the dark. Thin the pack to five, and I will see the walk repaid. Repaying is most of what I am still for.",
+        "completion": "Quieter. Good. I have stood in a great many quiet places that were once loud with a whole people; this one has a chance to go the other way. My thanks, and mind how you go.",
+        "objectives": {
+          "0": {
+            "label": "Forest Wolf slain"
+          }
+        }
+      },
+      "q_fallow_acres_wolves_ii": {
+        "title": "The Last of the Pack",
+        "text": "The edges are thinner, the den is not. Eight more, and Fallow Acres can hold a roof without losing what sleeps under it in the night. I would tend to it myself, but I am rarely anywhere twice, and the ground below the Reaches wants keeping more than these furrows do.",
+        "completion": "There. A quiet night, and perhaps a hundred behind it. Build well. And if you ever dig deep enough to hear something down there keeping slow time, do not answer it. That part is mine to keep; I carry the key for it. Go on, now.",
+        "objectives": {
+          "0": {
+            "label": "Forest Wolf slain"
           }
         }
       }

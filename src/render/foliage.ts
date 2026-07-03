@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import type { GLTF } from 'three/addons/loaders/GLTFLoader.js';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+import { HOLLOW_ZONE_ZONE } from '../sim/content/hollow_zone';
 import {
   CAMPS,
   DUNGEON_X_THRESHOLD,
@@ -1046,6 +1047,15 @@ interface DressingSpot {
 const DRESS_STEP_HIGH = 12;
 const DRESS_STEP_LOW = 10;
 const DRESS_DENSITY: Record<BiomeId, number> = { vale: 0.26, marsh: 0.26, peaks: 0.15 };
+// Creativity/hand-placement pass (board follow-up on PHAA-420): the Hollow
+// Reaches starter zone reads lusher than the rest of the vale strip. Ground
+// dressing only (bushes/ferns/mushrooms are walk-through, no colliders), so
+// this cannot block the Fallow Acres build clearing or shift sim/rng state.
+const HOLLOW_REACHES_DRESS_BOOST = 1.6;
+
+function inHollowReaches(gz: number): boolean {
+  return gz >= HOLLOW_ZONE_ZONE.zMin && gz < HOLLOW_ZONE_ZONE.zMax;
+}
 const DRESS_DENSITY_LOW_SCALE = 1.24;
 const DRESS_LOW_SCALE_BOOST = 1.08;
 const DRESS_TINT_SOFTEN_LOW = 0.56;
@@ -1093,7 +1103,10 @@ function generateDressing(seed: number): DressingSpot[] {
     for (let gz = WORLD_MIN_Z + 16; gz < WORLD_MAX_Z - 16; gz += step) {
       const r = hashAt(gx, gz, 41);
       const biome = zoneBiomeAt(gz);
-      const density = DRESS_DENSITY[biome] * (GFX.leanFoliage ? DRESS_DENSITY_LOW_SCALE : 1);
+      const density =
+        DRESS_DENSITY[biome] *
+        (GFX.leanFoliage ? DRESS_DENSITY_LOW_SCALE : 1) *
+        (inHollowReaches(gz) ? HOLLOW_REACHES_DRESS_BOOST : 1);
       if (r > density) continue;
       const x = gx + (hashAt(gx, gz, 42) - 0.5) * step;
       const z = gz + (hashAt(gx, gz, 43) - 0.5) * step;

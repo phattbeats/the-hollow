@@ -42,7 +42,15 @@ import {
   HOLLOW_QUEST_ORDER,
   HOLLOW_QUESTS,
 } from './content/hollow';
-import { HOLLOW_ZONE_CAMPS, HOLLOW_ZONE_ROADS, HOLLOW_ZONE_ZONE } from './content/hollow_zone';
+import {
+  HOLLOW_ZONE_CAMPS,
+  HOLLOW_ZONE_NPCS,
+  HOLLOW_ZONE_PROPS,
+  HOLLOW_ZONE_QUEST_ORDER,
+  HOLLOW_ZONE_QUESTS,
+  HOLLOW_ZONE_ROADS,
+  HOLLOW_ZONE_ZONE,
+} from './content/hollow_zone';
 import {
   TEMPLE_CAMPS,
   TEMPLE_DUNGEON_DEFS,
@@ -173,6 +181,7 @@ export const NPCS: Record<string, NpcDef> = {
   ...TEMPLE_NPCS,
   ...HOLLOW_NPCS,
   brother_halven: BROTHER_HALVEN,
+  ...HOLLOW_ZONE_NPCS,
 };
 
 export const QUESTS: Record<string, QuestDef> = {
@@ -181,6 +190,7 @@ export const QUESTS: Record<string, QuestDef> = {
   ...ZONE3_QUESTS,
   ...TEMPLE_QUESTS,
   ...HOLLOW_QUESTS,
+  ...HOLLOW_ZONE_QUESTS,
 };
 
 export const QUEST_ORDER: string[] = [
@@ -189,6 +199,7 @@ export const QUEST_ORDER: string[] = [
   ...ZONE3_QUEST_ORDER,
   ...TEMPLE_QUEST_ORDER,
   ...HOLLOW_QUEST_ORDER,
+  ...HOLLOW_ZONE_QUEST_ORDER,
 ];
 
 // Camps spawn in array order, each drawing world-gen RNG, so an entry inserted
@@ -231,6 +242,7 @@ export const PROPS: ZonePropsDef = mergeProps([
   // hub is portal-instanced, not overworld terrain), so merging it here would
   // drop its campfire at overworld (-4, 2). The Phase 1 props pass (hub
   // dressing) renders it inside the instance instead.
+  HOLLOW_ZONE_PROPS, // real overworld coords (the_hollow_reaches), safe to merge here
 ]);
 
 function mergeProps(sets: ZonePropsDef[]): ZonePropsDef {
