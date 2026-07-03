@@ -5669,7 +5669,7 @@ export const en_CA: EnTranslations = {
       "brother_greenpaw": {
         "name": "Brother Greenpaw",
         "title": "First Prophet (self-appointed)",
-        "greeting": "howdy, traveler. you catch the vase in a mood today, or is that just me again... c'mere, got a couple sacred matters need tendin'. mostly snacks. same thing, to a greenpaw degree."
+        "greeting": "uhh... hi. hi. didn't hear you walk up, i was someplace green... name's greenpaw. first prophet, self-appointed, which don't count for much, but somebody's got to tend the vase, and the rest of the old tribe ain't around to argue it. c'mere, got a couple sacred matters need tendin'. mostly snacks. same thing, to a greenpaw degree."
       },
       "warden_fennick": {
         "name": "Warden Fennick",

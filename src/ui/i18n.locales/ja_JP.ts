@@ -4528,7 +4528,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.brother_greenpaw.name': '緑掌修道士',
   'entities.npcs.brother_greenpaw.title': '初代預言者（自称）',
   'entities.npcs.brother_greenpaw.greeting':
-    'よお、旅人。今日の壺はご機嫌かい、それとも俺の気のせいか……まあ来いよ、片付けなきゃならん神聖な用事が二つばかりある。ほとんど食い物のことだけどな。緑掌的にはそれも同じようなもんだ。',
+    'えっと……よお。よお。近づいてくるの気づかなかったよ、ちょいと緑のどこかに心が飛んでてな……名は緑掌。初代預言者、自称だがね、大した意味はねえ。だが誰かが壺の面倒を見なきゃならんし、古い部族の残りももういなくて、文句を言う奴もいねえのさ。まあ来いよ、片付けなきゃならん神聖な用事が二つばかりある。ほとんど食い物のことだけどな。緑掌的にはそれも同じようなもんだ。',
   'entities.delves.collapsed_reliquary.enterText': 'あなたは崩れた聖遺物庫へと降りていく。',
   'entities.delves.collapsed_reliquary.leaveText':
     'あなたは聖遺物庫の廃墟にいるハルヴェン修道士のもとへ登り戻る。',

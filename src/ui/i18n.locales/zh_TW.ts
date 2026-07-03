@@ -4303,7 +4303,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.brother_greenpaw.name': '綠掌修士',
   'entities.npcs.brother_greenpaw.title': '首席先知（自封）',
   'entities.npcs.brother_greenpaw.greeting':
-    '喲，旅人，你來啦。你說這甕今兒個心情不錯，還是只有我這麼覺得……過來吧，有幾件神聖的事兒要辦。基本上就是弄點吃的。反正對綠掌來說是一回事兒。',
+    '呃……你好。你好啊。沒聽見你走過來，我剛才神遊到什麼綠油油的地方去了……我叫綠掌。首席先知，自封的，其實不算什麼，可總得有人照看這只甕，再說老部族剩下的那些人也都不在了，沒誰來跟我爭這名頭。過來吧，有幾件神聖的事兒要辦。基本上就是弄點吃的。反正對綠掌來說是一回事兒。',
   'entities.delves.collapsed_reliquary.enterText': '你向下深入崩塌的聖物庫。',
   'entities.delves.collapsed_reliquary.leaveText': '你爬回聖物庫遺墟處的哈爾文修士身邊。',
   'entities.delves.collapsed_reliquary.name': '崩塌的聖物庫',

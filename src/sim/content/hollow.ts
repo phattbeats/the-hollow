@@ -170,7 +170,7 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
     color: 0x4a5d3a,
     questIds: ['q_what_burns', 'q_what_fills'],
     greeting:
-      "howdy, traveler. you catch the vase in a mood today, or is that just me again... c'mere, got a couple sacred matters need tendin'. mostly snacks. same thing, to a greenpaw degree.",
+      "uhh... hi. hi. didn't hear you walk up, i was someplace green... name's greenpaw. first prophet, self-appointed, which don't count for much, but somebody's got to tend the vase, and the rest of the old tribe ain't around to argue it. c'mere, got a couple sacred matters need tendin'. mostly snacks. same thing, to a greenpaw degree.",
   },
 };
 

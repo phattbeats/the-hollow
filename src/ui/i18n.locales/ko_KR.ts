@@ -4539,7 +4539,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.brother_greenpaw.name': '브라더 초록발',
   'entities.npcs.brother_greenpaw.title': '초대 선지자(자칭)',
   'entities.npcs.brother_greenpaw.greeting':
-    '어이, 나그네. 오늘 항아리 기분이 좀 이상해 보이나, 아니면 또 나만 그렇게 느끼는 건가……이리 와 보게, 처리해야 할 신성한 일이 몇 가지 있어. 대부분 간식거리지만. 뭐, 그린포우 식으로 치면 그게 그거지.',
+    '어······ 안녕. 안녕하신가. 다가오는 걸 못 들었네, 잠깐 어딘가 푸른 데로 정신이 팔려 있어서 말이야······ 이름은 그린포우. 초대 선지자, 자칭이지만 뭐 대단할 건 없지. 그래도 누군가는 이 항아리를 돌봐야 하고, 옛 부족에 남은 이들도 이제 없으니 딱히 뭐라 할 사람도 없다네. 이리 와 보게, 처리해야 할 신성한 일이 몇 가지 있어. 대부분 간식거리지만. 뭐, 그린포우 식으로 치면 그게 그거지.',
   'entities.delves.collapsed_reliquary.enterText': '무너진 성물실로 내려갑니다.',
   'entities.delves.collapsed_reliquary.leaveText':
     '성물실 폐허의 브라더 할벤에게로 다시 올라갑니다.',
