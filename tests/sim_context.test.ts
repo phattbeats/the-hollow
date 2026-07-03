@@ -203,6 +203,10 @@ const CALLBACK_KEYS = [
   'housingChat',
   // Greenpaw's hearth (PHAA-421): the /feed chat-command branch.
   'greenpawFeedChat',
+  // The Plant's deterministic floor (PHAA-422): the /plant chat-command
+  // branch + the real-threshold report-in.
+  'plantSpeechChat',
+  'notifyPlantThreshold',
 ] as const;
 
 // A fully-spied fake host. `clock` is mutable so a test can prove the context reads
@@ -432,6 +436,8 @@ function makeFakeHost() {
     marketListingBelongsTo: vi.fn(() => false),
     housingChat: vi.fn(() => false),
     greenpawFeedChat: vi.fn(() => false),
+    plantSpeechChat: vi.fn(() => false),
+    notifyPlantThreshold: vi.fn(),
   };
   return { host, rng, entities, clock };
 }

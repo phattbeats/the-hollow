@@ -184,6 +184,16 @@ export function chat(ctx: SimContext, text: string, pid?: number): SentChat | nu
     return null;
   }
 
+  // "/plant [text]", the Plant's deterministic floor (PHAA-422): addressing
+  // it at all earns contempt (5.3), so unlike /feed this takes optional free
+  // text. Routed through the seam; self-only side effect (a possible
+  // world-wide broadcast log line, not a "sent chat" from this player), so it
+  // works identically offline and online without server wiring.
+  if (/^\/plant\b/i.test(raw)) {
+    ctx.plantSpeechChat(raw, r.meta.entityId);
+    return null;
+  }
+
   // "/roll", "/roll N", "/roll M-N" — a classic random roll for loot disputes
   // and social play. Rolled through the deterministic sim RNG so it is
   // server-authoritative (clients can't fake a result) and identical offline.
@@ -939,6 +949,7 @@ export function helpLines(): string[] {
     'State readouts: /pet, /pettaunt, /speed, /consumable, /potion, /form, /manaregen, /falling, /queued, /savedmana.',
     'Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>.',
     'Greenpaw: /feed (bring what burns or what fills, from near the vase).',
+    'The Plant: /plant <anything> (it rarely answers, and never to Greenpaw).',
   ];
 }
 
