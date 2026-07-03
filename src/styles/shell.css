@@ -97,7 +97,7 @@
   }
 
   #title-logo {
-    width: min(216px, 50vw);
+    width: min(420px, 68vw);
     height: auto;
     filter: drop-shadow(0 0 20px rgba(199, 148, 26, 0.25)) drop-shadow(2px 2px 4px #000);
     animation: logo-pulse 2.5s ease-in-out infinite alternate;
@@ -1049,33 +1049,6 @@
       inset 0 1px 0 rgba(255, 255, 255, 0.05);
     -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
-  }
-
-  .official-site-copy {
-    width: min(620px, calc(100vw - 32px));
-    margin: 0 auto 18px;
-    text-align: center;
-    color: var(--color-text-light);
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.82);
-  }
-
-  .official-site-copy__label {
-    display: block;
-    margin-bottom: 6px;
-    font-family: var(--font-heading);
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 1.2px;
-    text-transform: uppercase;
-    color: var(--color-primary);
-  }
-
-  .official-site-copy__body {
-    max-width: 56ch;
-    margin: 0 auto;
-    font-size: 13px;
-    line-height: 1.35;
-    color: var(--color-text-muted);
   }
 
   /* Realm stats, live counts shown in the realm dropdown (trigger sub-line +
@@ -3696,7 +3669,7 @@
 
     /* Logo scales up with the viewport on desktop, bigger screen, bigger wordmark. */
     #title-logo {
-      width: clamp(204px, 12vw, 264px) !important;
+      width: clamp(440px, 32vw, 620px) !important;
     }
   }
 

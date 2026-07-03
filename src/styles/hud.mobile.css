@@ -1623,12 +1623,7 @@
       max-width: none;
       padding: 14px;
     }
-    body.mobile-touch[data-start-panel="mode-select"] .play-tip,
-    body.mobile-touch[data-start-panel="mode-select"] .official-site-copy {
-      display: none;
-    }
-    body.mobile-touch[data-start-panel="charselect-panel"] .official-site-copy,
-    body.mobile-touch[data-start-panel="charcreate-panel"] .official-site-copy {
+    body.mobile-touch[data-start-panel="mode-select"] .play-tip {
       display: none;
     }
     body.mobile-touch .play-console {
