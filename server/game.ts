@@ -38,6 +38,7 @@ import {
   closePlaySession,
   grantAccountMechChroma,
   insertChatLogs,
+  loadHomesteadState,
   loadHousingState,
   loadMarketState,
   markAccountQuestComplete,
@@ -46,6 +47,7 @@ import {
   revokeAccountMechChroma,
   saveCharacterAndMarketState,
   saveCharacterState,
+  saveHomesteadState,
   saveHousingState,
   saveMarketState,
 } from './db';
@@ -673,6 +675,12 @@ export class GameServer {
   // The sim's housing change counter as of the last persisted save; polled each
   // tick so a claim/place/remove persists promptly, not only on the autosave.
   private lastSavedHousingRev = 0;
+  // Serializes writes of the single global Homestead blob (same freshness-order
+  // rationale as the market writer above).
+  private readonly enqueueHomesteadWrite = createSerialWriter();
+  // The sim's homestead change counter as of the last persisted save; polled
+  // each tick so a claim persists promptly, not only on the autosave.
+  private lastSavedHomesteadRev = 0;
   private restartCountdownStartedAt: number | null = null;
   private readonly restartCountdownTimers: NodeJS.Timeout[] = [];
   private readonly startedAt = Date.now();
@@ -987,6 +995,11 @@ export class GameServer {
       if (this.sim.housingRev !== this.lastSavedHousingRev) {
         this.lastSavedHousingRev = this.sim.housingRev;
         void this.saveHousing();
+      }
+      // Homestead persists on change (claims are rare and the blob is tiny).
+      if (this.sim.homesteadRev !== this.lastSavedHomesteadRev) {
+        this.lastSavedHomesteadRev = this.sim.homesteadRev;
+        void this.saveHomestead();
       }
     }, 50);
     // Refresh every online player's linked-Discord flair off the 20 Hz loop:
@@ -1587,6 +1600,25 @@ export class GameServer {
       await this.enqueueHousingWrite(() => saveHousingState(this.sim.serializeHousing()));
     } catch (err) {
       console.error('failed to save housing:', err);
+    }
+  }
+
+  // Homestead v0 is shared global state like housing: one JSONB blob under the
+  // world_state 'homestead' key, loaded at boot and saved on change.
+  async loadHomestead(): Promise<void> {
+    try {
+      this.sim.loadHomestead(await loadHomesteadState());
+      this.lastSavedHomesteadRev = this.sim.homesteadRev;
+    } catch (err) {
+      console.error('failed to load homestead:', err);
+    }
+  }
+
+  async saveHomestead(): Promise<void> {
+    try {
+      await this.enqueueHomesteadWrite(() => saveHomesteadState(this.sim.serializeHomestead()));
+    } catch (err) {
+      console.error('failed to save homestead:', err);
     }
   }
 
@@ -2897,6 +2929,8 @@ export class GameServer {
     // negligible; it must ride per-tick because another player's claim changes
     // it without marking this session dirty
     maybe('housing', this.sim.housingInfoFor(anchorSession.pid));
+    // homestead is tiny and rarely changes, same rationale as housing above.
+    maybe('homestead', this.sim.homesteadInfoFor(anchorSession.pid));
     // open need-greed rolls this player can still answer, so a client that
     // missed the transient lootRoll event re-shows the prompt from state. Stays
     // per-tick (it's interactive state that appears from others' actions).

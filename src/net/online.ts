@@ -45,6 +45,7 @@ import {
   type DuelInfo,
   type FriendInfo,
   type GuildLeaderboardPage,
+  type HomesteadInfo,
   type HousingInfo,
   type IWorld,
   isOverheadEmoteId,
@@ -813,6 +814,9 @@ export class ClientWorld implements IWorld {
   // --- IWorldHousing: Hollow hub homestead view, mirrored from the snapshot
   // self (`s.housing`, delta-omitted). ---
   housingInfo: HousingInfo | null = null;
+  // --- IWorldHomestead: Hollow Reaches open-world plot view, mirrored from
+  // the snapshot self (`s.homestead`, delta-omitted). ---
+  homesteadInfo: HomesteadInfo | null = null;
   // --- IWorldDelves: active delve run + companion + marks/upgrades + daily, all
   // mirrored from the snapshot self (delta-omitted). lockpickState is the exception:
   // it has NO snapshot field and is rebuilt from the lockpick* events by the private
@@ -1428,6 +1432,7 @@ export class ClientWorld implements IWorld {
       if (s.arena !== undefined) this.arenaInfo = s.arena;
       if (s.market !== undefined) this.marketInfo = s.market;
       if (s.housing !== undefined) this.housingInfo = s.housing;
+      if (s.homestead !== undefined) this.homesteadInfo = s.homestead;
       if (s.lroll !== undefined) this.lootRollPrompts = s.lroll ?? [];
       if (s.drun !== undefined) this.delveRun = s.drun;
       if (s.dcompanion !== undefined) this.companionState = s.dcompanion;

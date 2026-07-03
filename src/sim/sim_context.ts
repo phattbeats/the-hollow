@@ -555,6 +555,12 @@ export interface SimContextCallbacks {
   // through the seam to the Housing instance on Sim. Returns true when the raw
   // message was a /house command (handled). Append-only, late-bound to Sim.
   housingChat(raw: string, pid: number): boolean;
+
+  // Homestead v0: the /homestead chat-command branch (src/sim/social/chat.ts)
+  // routes through the seam to the Homestead instance on Sim. Returns true
+  // when the raw message was a /homestead command (handled). Append-only,
+  // late-bound to Sim.
+  homesteadChat(raw: string, pid: number): boolean;
 }
 
 // The seam consumed by extracted modules.
@@ -886,5 +892,7 @@ export function createSimContext(host: SimContextHost): SimContext {
     marketListingBelongsTo: host.marketListingBelongsTo,
     // Housing v0: the /house chat-command branch.
     housingChat: host.housingChat,
+    // Homestead v0: the /homestead chat-command branch.
+    homesteadChat: host.homesteadChat,
   };
 }

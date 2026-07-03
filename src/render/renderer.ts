@@ -72,6 +72,7 @@ import {
   isHollowHubOrigin,
   isHollowHubPos,
 } from './hollow_props';
+import { HomesteadView } from './homestead';
 import { HousingView } from './housing';
 import { buildImpactSite, type ImpactSiteView } from './impact_site';
 import { ensureDelveInteriorKit } from './interior_kit';
@@ -837,6 +838,9 @@ export class Renderer {
   // Housing v0: hub homestead plots drawn from IWorld.housingInfo. Lazy like
   // `dungeons` (nothing to draw until the player enters the hub instance).
   private housingView: HousingView | null = null;
+  // Homestead v0: open-world plots drawn from IWorld.homesteadInfo. Lazy like
+  // `housingView` (nothing to draw before the primary entity resolves).
+  private homesteadView: HomesteadView | null = null;
   private envRTs = new Map<BiomeId, THREE.WebGLRenderTarget>();
   private envBiome: BiomeId = 'vale';
   private envOutdoorIntensity = ENV_INTENSITY;
@@ -4341,6 +4345,18 @@ export class Renderer {
           groundHeight(hx, hz, this.sim.cfg.seed),
         );
         this.housingView.update(housing);
+      }
+    }
+    // Homestead v0: open-world Hollow Reaches plots, always world-space (no
+    // hub-origin gate, unlike Housing v0 above); the JSON change key inside
+    // update() makes the per-frame cost negligible.
+    {
+      const homestead = this.sim.homesteadInfo;
+      if (homestead || this.homesteadView) {
+        this.homesteadView ??= new HomesteadView(this.scene, (hx, hz) =>
+          groundHeight(hx, hz, this.sim.cfg.seed),
+        );
+        this.homesteadView.update(homestead);
       }
     }
     worldStart = markWorldPhase('props', worldStart);

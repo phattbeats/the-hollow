@@ -173,6 +173,15 @@ export function chat(ctx: SimContext, text: string, pid?: number): SentChat | nu
     return null;
   }
 
+  // "/homestead [claim]" — Homestead v0 (the open-world Hollow Reaches
+  // plots). Routed through the seam to the Homestead instance; self-only
+  // notices, no chat message, so it works identically offline and online
+  // without server wiring.
+  if (/^\/homestead(?:\s|$)/i.test(raw)) {
+    ctx.homesteadChat(raw, r.meta.entityId);
+    return null;
+  }
+
   // "/roll", "/roll N", "/roll M-N" — a classic random roll for loot disputes
   // and social play. Rolled through the deterministic sim RNG so it is
   // server-authoritative (clients can't fake a result) and identical offline.
@@ -926,7 +935,10 @@ export function helpLines(): string[] {
     'World readouts: /where, /zones, /nearby, /pois, /graveyard, /dungeons, /arena, /session, /listings, /buyback.',
     'Combat readouts: /target, /targetbuffs, /range, /attack, /casting, /combat, /threat, /consider, /combo, /overpower.',
     'State readouts: /pet, /pettaunt, /speed, /consumable, /potion, /form, /manaregen, /falling, /queued, /savedmana.',
-    'Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>.',
+    // Renamed from "Homesteads:" (PHAA-417): that label now belongs to the
+    // open-world tier below, so the hub Sanctum plots read as Sanctum here.
+    'Sanctum: /house, /house claim, /house place <slot> <kind>, /house remove <slot>.',
+    'Homestead: /homestead, /homestead claim.',
   ];
 }
 
