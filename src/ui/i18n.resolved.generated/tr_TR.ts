@@ -5674,12 +5674,12 @@ export const tr_TR: EnTranslations = {
       "verger_zebediah": {
         "name": "Verger Zebediah",
         "title": "Warden of Root Hollow",
-        "greeting": "Root Hollow's overrun with boar this season, tearing up the roots after grubs. Mind the loose dirt unless you mean to fight them."
+        "greeting": "Verger Zebediah. I keep the Reaches to a calendar, or I keep trying. Root Hollow was marked to rest this season, and the boars did not read the notice. Mind the loose dirt, and do not touch the register."
       },
       "sexton_faddick": {
         "name": "Sexton Faddick",
         "title": "The Wandering Keeper",
-        "greeting": "Good ground, this, I pass through more than I stay. Can't build a thing with wolves circling the flock every night, though."
+        "greeting": "Faddick. Sexton, where there is still a shrine to sexton. I do not stay anywhere; I keep. Wolves have circled the flock at Fallow Acres every night, and a thing that circles long enough learns the shape of what it circles. Best it stays a flock."
       }
     },
     "quests": {
@@ -6520,8 +6520,8 @@ export const tr_TR: EnTranslations = {
       },
       "q_root_hollow_boars": {
         "title": "Root Hollow's Boars",
-        "text": "Boars have dug up half of Root Hollow chasing grubs, and they don't scare easy anymore. Cull five and the roots might get a season's rest.",
-        "completion": "Five less snouts in the dirt. Root Hollow thanks you, even if it can't say so.",
+        "text": "By the calendar, Root Hollow rests this season. The boars have not been informed. They have rooted up half of it chasing grubs, and they no longer scatter when a heron flaps at them, which I take personally. Cull five, and I can enter the season as observed.",
+        "completion": "Five. Counted, dated, and entered in the register. Root Hollow is now only a fortnight behind its own season, which in this office we call a triumph. My thanks, on behalf of an order that is, at present, me.",
         "objectives": {
           "0": {
             "label": "Wild Boar slain"
@@ -6530,8 +6530,8 @@ export const tr_TR: EnTranslations = {
       },
       "q_root_hollow_boars_ii": {
         "title": "Root Hollow's Reckoning",
-        "text": "Five was a start, but more keep pushing up from the lower dens. Finish it: eight more and Root Hollow gets its rest.",
-        "completion": "That's the last of the diggers, or near enough. The roots can breathe.",
+        "text": "I will admit what the office discourages admitting: five was optimistic. The lower dens keep pushing up more. Eight further, and I can close the season without amending the record a third time. The record resents amendment. So do I.",
+        "completion": "Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me.",
         "objectives": {
           "0": {
             "label": "Wild Boar slain"
@@ -6540,8 +6540,8 @@ export const tr_TR: EnTranslations = {
       },
       "q_fallow_acres_wolves": {
         "title": "Wolves Off the Furrows",
-        "text": "Can't hold a plot with wolves circling every night. Thin the pack at Fallow Acres and I'll make it worth the walk.",
-        "completion": "That's a few nights' sleep, right there. Preciate it.",
+        "text": "Someone means to build at Fallow Acres. Good. Ground with people on it remembers better than ground without, and this stretch has forgotten a great deal. But nothing settles with wolves working the dark. Thin the pack to five, and I will see the walk repaid. Repaying is most of what I am still for.",
+        "completion": "Quieter. Good. I have stood in a great many quiet places that were once loud with a whole people; this one has a chance to go the other way. My thanks, and mind how you go.",
         "objectives": {
           "0": {
             "label": "Forest Wolf slain"
@@ -6550,8 +6550,8 @@ export const tr_TR: EnTranslations = {
       },
       "q_fallow_acres_wolves_ii": {
         "title": "The Last of the Pack",
-        "text": "Thinned the edges, but the den's still full. Eight more and Fallow Acres might get a quiet night.",
-        "completion": "Quiet at last. Reckon I can start on those fences now.",
+        "text": "The edges are thinner, the den is not. Eight more, and Fallow Acres can hold a roof without losing what sleeps under it in the night. I would tend to it myself, but I am rarely anywhere twice, and the ground below the Reaches wants keeping more than these furrows do.",
+        "completion": "There. A quiet night, and perhaps a hundred behind it. Build well. And if you ever dig deep enough to hear something down there keeping slow time, do not answer it. That part is mine to keep; I carry the key for it. Go on, now.",
         "objectives": {
           "0": {
             "label": "Forest Wolf slain"
