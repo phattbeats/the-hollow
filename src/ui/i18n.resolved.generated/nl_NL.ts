@@ -2506,9 +2506,7 @@ export const nl_NL: EnTranslations = {
     "genre": "MMORPG",
     "playMode": "Multiplayer",
     "applicationCategory": "Spel",
-    "operatingSystem": "Webbrowser",
-    "officialLabel": "Officiële website van World of ClaudeCraft",
-    "officialBody": "worldofclaudecraft.com is de officiële gratis browser-MMO voor de Claudemoon-realm. Speel online met een blijvend personage, verken solo offline, lees de wiki en volg geverifieerde communitylinks vanaf deze site."
+    "operatingSystem": "Webbrowser"
   },
   "a11y": {
     "goHome": "Ga naar de startpagina",

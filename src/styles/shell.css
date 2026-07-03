@@ -1051,33 +1051,6 @@
     backdrop-filter: blur(12px);
   }
 
-  .official-site-copy {
-    width: min(620px, calc(100vw - 32px));
-    margin: 0 auto 18px;
-    text-align: center;
-    color: var(--color-text-light);
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.82);
-  }
-
-  .official-site-copy__label {
-    display: block;
-    margin-bottom: 6px;
-    font-family: var(--font-heading);
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 1.2px;
-    text-transform: uppercase;
-    color: var(--color-primary);
-  }
-
-  .official-site-copy__body {
-    max-width: 56ch;
-    margin: 0 auto;
-    font-size: 13px;
-    line-height: 1.35;
-    color: var(--color-text-muted);
-  }
-
   /* Realm stats, live counts shown in the realm dropdown (trigger sub-line +
      the opened Online option). */
   .realm-status-sep {

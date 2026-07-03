@@ -31,9 +31,6 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.unitFrame.playerLabel': '你的角色',
   'hudChrome.unitFrame.targetAnnounce': '目标：{name}',
   'hudChrome.unitFrame.targetLabel': '你的目标',
-  'seo.officialLabel': 'World of ClaudeCraft 官方网站',
-  'seo.officialBody':
-    'worldofclaudecraft.com 是 Claudemoon 服务器的官方免费浏览器 MMO。你可以用持久角色在线游玩，也可以离线单人探索，阅读 wiki，并从本站访问已验证的社区链接。',
   'hudChrome.questShare.notShareable': '该任务无法分享。',
   'hudChrome.questShare.notInSharerParty': '你必须在 {name} 的队伍中才能接受该任务。',
   'hudChrome.questShare.accepted': '{name} 接受了你分享的任务。',

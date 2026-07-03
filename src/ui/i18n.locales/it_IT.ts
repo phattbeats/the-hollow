@@ -33,9 +33,6 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'hudChrome.unitFrame.playerLabel': 'Il tuo personaggio',
   'hudChrome.unitFrame.targetAnnounce': 'Bersaglio: {name}',
   'hudChrome.unitFrame.targetLabel': 'Il tuo bersaglio',
-  'seo.officialLabel': 'Sito ufficiale di World of ClaudeCraft',
-  'seo.officialBody':
-    "worldofclaudecraft.com è l'MMO gratuito ufficiale da browser del reame Claudemoon. Gioca online con un personaggio persistente, esplora offline in solitaria, leggi il wiki e segui i link della community verificati da questo sito.",
   'hudChrome.questShare.notShareable': 'Questa missione non può essere condivisa.',
   'hudChrome.questShare.notInSharerParty':
     'Devi essere nel gruppo di {name} per accettare quella missione.',

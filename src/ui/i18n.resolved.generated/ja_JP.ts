@@ -2506,9 +2506,7 @@ export const ja_JP: EnTranslations = {
     "genre": "MMORPG",
     "playMode": "マルチプレイヤー",
     "applicationCategory": "ゲーム",
-    "operatingSystem": "Webブラウザ",
-    "officialLabel": "World of ClaudeCraft 公式サイト",
-    "officialBody": "worldofclaudecraft.com は Claudemoon レルムの公式無料ブラウザMMOです。永続キャラクターでオンラインプレイし、オフラインでソロ探索し、wikiを読み、このサイトから確認済みのコミュニティリンクをたどれます。"
+    "operatingSystem": "Webブラウザ"
   },
   "a11y": {
     "goHome": "ホームへ移動",

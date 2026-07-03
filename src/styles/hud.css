@@ -2107,8 +2107,7 @@
   body.native-app .community-link.donate,
   body.native-app .social-link.donate,
   body.native-app #nav-btn-download,
-  body.native-app #performance-tip,
-  body.native-app .official-site-copy {
+  body.native-app #performance-tip {
     display: none !important;
   }
 

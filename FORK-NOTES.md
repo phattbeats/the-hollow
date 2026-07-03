@@ -521,3 +521,54 @@ check` on changed files clean of errors (48 pre-existing-style
 wiring tests) and the full surrounding regression set
 (`sim_context`/`greenpaw_hearth`/`housing`/`chat`/`architecture`/
 `localization_fixes`) green with `NODE_ENV` unset.
+## 2026-07-02: second wiki/homepage pass, "official website" self-promo copy removed (PHAA-406)
+
+Follow-up pass per PHAA-406 review feedback. Scope: the homepage hero
+(`index.html`), its runtime SEO regenerator (`src/main.ts`'s
+`updateSeoMetadata`), the `en` shell catalog (`src/ui/i18n.catalog/shell.ts`),
+and the dead CSS/overlay cruft that copy left behind.
+
+- **Removed the `official-site-copy` hero block:** the `<section>` under the
+  main logo told players "worldofclaudecraft.com is the official free browser
+  MMO for the Claudemoon realm... follow verified community links from this
+  site" (`seo.officialLabel`/`seo.officialBody`). Self-promotional SEO copy,
+  not useful to a player already on the page; removed the markup, the two
+  catalog keys, the matching selectors in `shell.css`/`hud.css`/
+  `hud.mobile.css`, and (since the keys left the `en` type) the 19 now-invalid
+  `seo.officialLabel`/`seo.officialBody` overlay entries across
+  `src/ui/i18n.locales/*.ts` (each locale had translated one or both; a typed
+  key removal is not the same "leave it inert" case as the `wallet.*`/
+  `footer.github` disposition logged above, since the type itself is gone,
+  not just the render site, so `tsc` fails on any leftover overlay entry).
+- **Removed the JSON-LD `sameAs` blocks in the same two files:** both
+  `index.html`'s static structured data and `main.ts`'s runtime regenerator
+  claimed `youtube.com/@WoClaudeCraft`, `x.com/WoClaudecraft`,
+  `instagram.com/worldofclaudecraft`, `tiktok.com/@worldofclaudecraft`, and
+  `reddit.com/r/WorldofClaudecraft` as this Organization's own channels. Per
+  this file's 2026-07-02 branding-pass entry above, these were already flagged
+  as "the old worldofclaudecraft.com handles pending a real rebrand," i.e.
+  accounts this fork does not control being asserted as official under The
+  Hollow's identity, the same failure mode `press.html`'s impersonator-warning
+  copy exists to guard against. Removing rather than relabeling: there is no
+  real Hollow social presence yet to point `sameAs` at, and a `sameAs` claim
+  is a factual assertion search engines act on, not decorative copy.
+- **Stale doc comment fixed:** `src/guide/styles.css`'s header comment still
+  read "World of ClaudeCraft Guide (/guide)"; the guide has been "The Hollow
+  Guide (/wiki)" since PHAA-406's first pass (`GUIDE_BASE = '/wiki'`).
+
+**Investigated, not changed: `public/home-bg.mp4`.** Board asked who made the
+homepage background video and whether it is AI-generated. It is a real
+committed asset (5.7 MB, referenced by `index.html`'s `#bg-home` `<video>`),
+added upstream in commit `9dfe4fbbc` ("Logo change + video background +
+pathfinding fixes," bundled with unrelated pathfinding/keybind changes, no
+sourcing note) by contributor `CharlieSaxton`. It has no `CREDITS.md` entry
+and no author/license metadata of any kind, unlike every other bundled asset
+in this repo. The only embedded metadata is an FFmpeg mux signature
+(`Lavf62.3.100`), which just means it was re-encoded through FFmpeg at some
+point; that is consistent with AI-generated output, filmed footage, or stock
+footage alike, so it does not answer the AI question either way. Net: same
+class of risk as the CraftPix icon licensing question (PHAA-396), an
+uncredited third-party asset with unknown provenance, just not confirmed
+infringing. Left in place since PHAA-406 was not asked to touch it; the
+provenance question is answered in a comment on the issue and it is the
+Board's call whether to source a replacement or accept the risk.
