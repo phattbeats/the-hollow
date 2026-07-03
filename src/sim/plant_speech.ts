@@ -245,8 +245,14 @@ export class PlantSpeech {
   // through (coordinator glue between two sibling modules) rather than adding
   // a new SimContext primitive for one number.
   update(smoke: number): void {
-    if (this.nextWhimAt < 0)
-      this.nextWhimAt = this.ctx.time + this.drawGap(WHIM_MIN_SECONDS, WHIM_MAX_SECONDS);
+    // Deterministic, RNG-free initial arm (matching GreenpawHearth's
+    // discipline: update() never draws RNG on its own, only a player-
+    // triggered action does). A random draw here would run on the very
+    // first tick of every world regardless of whether anyone ever engages
+    // the Plant, permanently perturbing the RNG stream for every scenario
+    // in the game. The first whim window is simply its minimum length;
+    // drawGap only kicks in once a real whim has fired and this reschedules.
+    if (this.nextWhimAt < 0) this.nextWhimAt = this.ctx.time + WHIM_MIN_SECONDS;
 
     const mood = levelFor(smoke);
     // "the room is full of smoke" (5.2): an edge trigger, not a level trigger
