@@ -203,8 +203,8 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
     // resolver reads); the sim record stays language-agnostic.
     introLines: [
       "uhh... hi. hi. didn't hear you come up, i was someplace else, someplace green... you got the just-woke-up look, friend. i know it well, i wear it most days...",
-      "name's greenpaw. brother greenpaw, first prophet, self-appointed, which the vase'll tell you means exactly nothin', and she's not wrong, but somebody's gotta tend her...",
-      "this here's the hollow. was a whole tribe once, big doings, so they tell me, and now it's mostly me, the vase, and whatever's breathin' down in that cave... anyway. she's hungry, i'm hungry, same wavelength. c'mere, got a couple sacred matters need tendin'.",
+      "name's greenpaw. brother greenpaw, first prophet, self-appointed, which the vase'll tell you means exactly nothin', and he's not wrong, but somebody's gotta tend him...",
+      "this here's the hollow. was a whole tribe once, big doings, so they tell me, and now it's mostly me, the vase, and whatever's breathin' down in that cave... anyway. he's hungry, i'm hungry, same wavelength. c'mere, got a couple sacred matters need tendin'.",
     ],
   },
   // GW1 build system multiclassing (Phase 3, PHAA-464): teaches every profession
