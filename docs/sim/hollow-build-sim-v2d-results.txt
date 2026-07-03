@@ -1,0 +1,77 @@
+THE HOLLOW - GW1-on-WoCC BUILD DIVERSITY SIM - RESULTS (tuning pass B)
+================================================================
+generated 2026-07-02  seed 1337  AI: per-build policy vs shared greedy
+
+SETUP
+  population  : 249 builds (identical to pass A), 160 duels/build
+  comparability: same builds, same opponent pairings, per-duel seeds
+
+PER-BUILD WR MOVEMENT (policy vs greedy)
+  moved >=+5pts: 13   <=-5pts: 17   mean |delta| 2.6pts
+   +14.4   27.2%-> 41.6%  burst     [rog/rog] ['backstab', 'adrenaline_rush', 'eviscerate', 'garrote', 'kidney_shot', 'ambush', 'slice_and_dice', 'expose_armor']
+   +12.8   82.2%-> 95.0%  attrition [war/mag] ['hamstring', 'rend', 'battle_shout', 'ice_barrier', 'scorch', 'demo_shout', 'heroic_strike', 'defensive_stance']
+   +10.6   72.5%-> 83.1%  attrition [rog/war] ['sinister_strike', 'charge', 'demo_shout', 'backstab', 'rend', 'kidney_shot', 'rupture', 'adrenaline_rush']
+    +8.1   78.1%-> 86.2%  hybrid    [rog/rog] ['kidney_shot', 'garrote', 'gouge', 'eviscerate', 'adrenaline_rush', 'sinister_strike', 'rupture', 'backstab']
+    +7.9   66.7%-> 74.5%  attrition [mag/war] ['polymorph', 'battle_shout', 'defensive_stance', 'scorch', 'heroic_strike', 'overpower', 'arcane_missiles', 'rend']
+    +7.2   67.2%-> 74.4%  burst     [mag/rog] ['frostbolt', 'arcane_missiles', 'pyroblast', 'evasion', 'eviscerate', 'fire_blast', 'kidney_shot', 'sinister_strike']
+    +6.9   75.3%-> 82.2%  burst     [rog/rog] ['ambush', 'adrenaline_rush', 'kidney_shot', 'eviscerate', 'garrote', 'backstab', 'expose_armor', 'sinister_strike']
+    +6.6   84.0%-> 90.6%  hybrid    [rog/rog] ['adrenaline_rush', 'backstab', 'rupture', 'garrote', 'ambush', 'evasion', 'sinister_strike', 'eviscerate']
+    +6.0   59.7%-> 65.7%  attrition [mag/rog] ['ice_barrier', 'frostbolt', 'backstab', 'pyroblast', 'garrote', 'evasion', 'sinister_strike', 'fireball']
+    +5.9   84.7%-> 90.6%  hybrid    [mag/mag] ['pyroblast', 'scorch', 'frost_nova', 'fire_blast', 'frostbolt', 'arcane_missiles', 'frost_armor', 'ice_barrier']
+
+  mean WR delta by archetype:
+    attrition  +0.4pts (n=106)
+    burst      +0.0pts (n=42)
+    control    -0.1pts (n=27)
+    hybrid     +0.0pts (n=74)
+
+PROFESSION-PAIR WIN RATES (policy)
+  mag/mag    81.9%  (n=4781)
+  mag/war    77.6%  (n=3977)
+  war/rog    76.7%  (n=3189)
+  mag/rog    74.1%  (n=5253)
+  war/war    73.9%  (n=3190)
+  rog/rog    72.6%  (n=3983)
+  war/mag    62.6%  (n=5422)
+  rog/mag    45.7%  (n=5414)
+  rog/war    45.4%  (n=4462)
+
+WITHIN-PROFESSION (MIRROR) DIVERSITY (policy)
+  mag/mag   builds=14  spread=21.4%  top= 93.3%  DOMINANT-BUILD
+  mag/rog   builds=14  spread=26.7%  top= 97.6%  DOMINANT-BUILD
+  mag/war   builds=14  spread=26.5%  top= 90.9%  DOMINANT-BUILD
+  rog/mag   builds=14  spread=25.0%  top= 81.7%  DOMINANT-BUILD
+  rog/rog   builds=14  spread=26.2%  top= 90.4%  DOMINANT-BUILD
+  rog/war   builds=14  spread=25.3%  top= 86.5%  DOMINANT-BUILD
+  war/mag   builds=14  spread=23.9%  top= 91.3%  DOMINANT-BUILD
+  war/rog   builds=14  spread=26.3%  top= 86.5%  DOMINANT-BUILD
+  war/war   builds=14  spread=18.6%  top= 81.2%  DOMINANT-BUILD
+  mean within-profession top-WR 88.8%   dominant pairs 9/9
+
+DECORATIVE-SKILL CHECK (policy top quartile)
+  0/33: none
+
+========================================================================
+SEC.8 GATE METRICS: BEFORE (shared greedy) vs AFTER (per-build policy)
+========================================================================
+  metric                                    before     after
+  best build vs field (gate <60%)           100.0%     99.4%
+  viable 45-55% band (gate >=30%)               8%        7%
+  strong >=60%                                 71%       72%
+  weak <=40%                                   13%       13%
+  profession gap (war/mag/rog)               24pts     24pts
+  frontier top-WR (gate <70%)                69.4%     64.4%
+  frontier 40-60% band                       19/24     15/24
+  prof WR before: war 70% / mag 77% / rog 53%
+  prof WR after : war 69% / mag 78% / rog 53%
+
+VERDICT vs constitution sec.8 gate (policy AI)
+  [FAIL] dominance (vs field): best build 99.4% (gate <60%)
+  [WEAK] viable spread: 7% in 45-55% (gate >=30%)
+  [PASS] decorative skills: 0/33 never in winners (0%)
+  [WEAK] within-profession diversity: mean mirror top-WR 88.8% (gate <70%)
+  [PASS] competitive frontier: top 64.4% (gate <70%); 15/24 in 40-60%
+  [obs ] profession balance gap: 24pts
+
+  >>> BUILD-CRAFTING DEPTH (the bet): SUPPORTED (directional).
+  (Directional: per-build scripted policy, mapped GW1 economy, representative kits, ~EST values.)
