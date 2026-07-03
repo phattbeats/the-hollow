@@ -2506,9 +2506,7 @@ export const tr_TR: EnTranslations = {
     "genre": "MMORPG",
     "playMode": "Çok Oyunculu",
     "applicationCategory": "Oyun",
-    "operatingSystem": "Web tarayıcısı",
-    "officialLabel": "Resmi World of ClaudeCraft web sitesi",
-    "officialBody": "worldofclaudecraft.com, Claudemoon diyarının resmi ücretsiz tarayıcı MMO'sudur. Kalıcı bir karakterle çevrimiçi oyna, çevrimdışı tek başına keşfet, wiki'yi oku ve bu siteden doğrulanmış topluluk bağlantılarını takip et."
+    "operatingSystem": "Web tarayıcısı"
   },
   "a11y": {
     "goHome": "Ana sayfaya git",

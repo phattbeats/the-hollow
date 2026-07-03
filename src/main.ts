@@ -4055,13 +4055,6 @@ function updateSeoMetadata(lang: SupportedLanguage): void {
 
   const jsonLd = document.getElementById('structured-data') as HTMLScriptElement | null;
   if (jsonLd) {
-    const sameAs = [
-      'https://www.youtube.com/@WoClaudeCraft',
-      'https://x.com/WoClaudecraft',
-      'https://www.instagram.com/worldofclaudecraft/',
-      'https://www.tiktok.com/@worldofclaudecraft',
-      'https://www.reddit.com/r/WorldofClaudecraft/',
-    ];
     jsonLd.textContent = JSON.stringify(
       {
         '@context': 'https://schema.org',
@@ -4082,7 +4075,6 @@ function updateSeoMetadata(lang: SupportedLanguage): void {
             name: 'The Hollow',
             url: 'https://worldofclaudecraft.com/',
             logo: 'https://worldofclaudecraft.com/the-hollow-square.webp',
-            sameAs,
           },
           {
             '@type': 'VideoGame',
@@ -4098,7 +4090,6 @@ function updateSeoMetadata(lang: SupportedLanguage): void {
             description: t('seo.description'),
             inLanguage: languageTag(lang),
             publisher: { '@id': 'https://worldofclaudecraft.com/#organization' },
-            sameAs,
           },
         ],
       },

@@ -4494,9 +4494,6 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'seo.description':
     'Begiv dig ud på et episk eventyr i World of ClaudeCraft, en klassisk-inspireret micro-MMO, der kan spilles direkte i din browser. Slut dig til et vedvarende delt rige, lev op dine klasser, og besejr fjender!',
   'seo.genre': 'MMORPG',
-  'seo.officialBody':
-    'worldofclaudecraft.com er den officielle gratis browser-MMO for Claudemoon-riget. Spil online med en vedvarende karakter, udforsk solo offline, læs wikien, og følg verificerede fællesskabslinks fra denne side.',
-  'seo.officialLabel': 'Officiel World of ClaudeCraft-hjemmeside',
   'seo.operatingSystem': 'Webbrowser',
   'seo.playMode': 'Flerspiller',
   'seo.title': 'World of ClaudeCraft: Klassisk-inspireret web-MMO',

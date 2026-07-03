@@ -33,9 +33,6 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'hudChrome.unitFrame.playerLabel': 'Euer Charakter',
   'hudChrome.unitFrame.targetAnnounce': 'Ziel: {name}',
   'hudChrome.unitFrame.targetLabel': 'Euer Ziel',
-  'seo.officialLabel': 'Offizielle Website von World of ClaudeCraft',
-  'seo.officialBody':
-    'worldofclaudecraft.com ist das offizielle kostenlose Browser-MMO für das Reich Claudemoon. Spiele online mit einem dauerhaften Charakter, erkunde solo offline, lies das Wiki und folge den verifizierten Community-Links auf dieser Website.',
   'hudChrome.questShare.notShareable': 'Diese Quest kann nicht geteilt werden.',
   'hudChrome.questShare.notInSharerParty':
     'Ihr müsst in der Gruppe von {name} sein, um diese Quest anzunehmen.',

@@ -614,7 +614,7 @@ describe('client HTML shell', () => {
 
   it('hides the download button and performance tip in native app builds', () => {
     expect(hudCss).toContain('body.native-app #nav-btn-download,');
-    expect(hudCss).toContain('body.native-app #performance-tip,');
+    expect(hudCss).toContain('body.native-app #performance-tip {');
   });
 
   it('skips the web mobile preflight in native builds and shows an in-game rotate prompt', () => {

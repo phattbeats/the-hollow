@@ -4553,9 +4553,6 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'seo.description':
     'Begin aan een episch avontuur in World of ClaudeCraft, een micro-MMO in klassieke stijl die je rechtstreeks in je browser kunt spelen. Sluit je aan bij een blijvende gedeelde realm, level je klassen op en versla vijanden!',
   'seo.genre': 'MMORPG',
-  'seo.officialBody':
-    'worldofclaudecraft.com is de officiële gratis browser-MMO voor de Claudemoon-realm. Speel online met een blijvend personage, verken solo offline, lees de wiki en volg geverifieerde communitylinks vanaf deze site.',
-  'seo.officialLabel': 'Officiële website van World of ClaudeCraft',
   'seo.operatingSystem': 'Webbrowser',
   'seo.playMode': 'Multiplayer',
   'seo.title': 'World of ClaudeCraft: Web-MMO in Klassieke Stijl',

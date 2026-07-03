@@ -4528,9 +4528,6 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'seo.description':
     'Bắt đầu cuộc phiêu lưu hoành tráng trong World of ClaudeCraft, một micro-MMO phong cách cổ điển chơi trực tiếp trên trình duyệt của bạn. Tham gia một máy chủ chung bền vững, lên cấp các lớp nhân vật và đánh bại kẻ thù!',
   'seo.genre': 'MMORPG',
-  'seo.officialBody':
-    'worldofclaudecraft.com là trang MMO trên trình duyệt miễn phí chính thức cho máy chủ Claudemoon. Chơi trực tuyến với một nhân vật bền vững, khám phá đơn lẻ ngoại tuyến, đọc wiki và theo dõi các liên kết cộng đồng đã được xác minh từ trang này.',
-  'seo.officialLabel': 'Trang web World of ClaudeCraft chính thức',
   'seo.operatingSystem': 'Trình duyệt web',
   'seo.playMode': 'Nhiều người chơi',
   'seo.title': 'World of ClaudeCraft: MMO Web Phong Cách Cổ Điển',

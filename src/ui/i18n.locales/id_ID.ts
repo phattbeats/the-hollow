@@ -4557,9 +4557,6 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'seo.description':
     'Mulailah petualangan epik di World of ClaudeCraft, micro-MMO bergaya klasik yang dapat dimainkan langsung di peramban. Bergabunglah dengan realm bersama yang persisten, naikkan level kelas, dan kalahkan musuh!',
   'seo.genre': 'MMORPG',
-  'seo.officialBody':
-    'worldofclaudecraft.com adalah MMO peramban gratis resmi untuk realm Claudemoon. Bermain daring dengan karakter yang persisten, jelajahi solo secara luring, baca wiki, dan ikuti tautan komunitas terverifikasi dari situs ini.',
-  'seo.officialLabel': 'Situs resmi World of ClaudeCraft',
   'seo.operatingSystem': 'Peramban web',
   'seo.playMode': 'Multipemain',
   'seo.title': 'World of ClaudeCraft: MMO Web Bergaya Klasik',
