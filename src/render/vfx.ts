@@ -665,6 +665,46 @@ export class Vfx {
     );
   }
 
+  // The Hollow's shrine haze (PHAA-431, Brandon's cold-open feedback: the smoke
+  // should not read as a single column at the vase but as a haze that travels
+  // through the whole shrine clearing, "very minimal at low energy, then more as
+  // it goes up"). Two gradients answer that literally:
+  //  - HEIGHT: the spawn height is weighted upward (pow < 1) and puff size grows
+  //    with it, so the haze is very minimal near the floor and thickens with
+  //    altitude ("very minimal at low, then more as it goes up").
+  //  - ENERGY: `intensity` (Greenpaw's hearth, hollowSmokeIntensity) thickens the
+  //    whole bank as the hearth is fed, floored so a fresh character at rest still
+  //    reads a haze filling the clearing (the vase column, vaseSmoke, is floored
+  //    the same way for the cold-open).
+  // Wide, slow, long-lived low-opacity green-grey puffs drifting across a ~15yd
+  // disc around the vase; lit green by the vase glow and canopy fog. Cheap by
+  // the vaseMist pattern: even at full energy the modest emit rate and multi
+  // second lifetimes keep only ~1.5e2 puffs alive, and `emitChance` scales the
+  // rate by the quality tier (cosmetic-only, gameplay-neutral: the hub is a safe
+  // zone and this hides no actionable information).
+  hubHaze(at: THREE.Vector3, dt: number, intensity = 1): void {
+    const amt = 0.5 + 0.5 * Math.max(0, Math.min(1, intensity));
+    if (!this.emitChance(15 * amt, dt)) return;
+    const a = Math.random() * Math.PI * 2;
+    const r = Math.sqrt(Math.random()) * 15; // even area coverage across the clearing
+    const h = Math.random() ** 0.45 * 9; // 0..9yd, biased high (more as it goes up)
+    const frac = h / 9;
+    this.spawn(
+      at.x + Math.cos(a) * r,
+      at.y + 0.4 + h,
+      at.z + Math.sin(a) * r,
+      (Math.random() - 0.5) * 0.16,
+      0.04 + Math.random() * 0.06, // barely rising, so it hangs as a bank
+      (Math.random() - 0.5) * 0.16,
+      0x6f8a56,
+      2.4 + frac * 3.2 + Math.random() * 1.1, // small and sparse low, big and hazy high
+      7 + Math.random() * 4,
+      -0.01,
+      SPR.smoke,
+      (Math.random() - 0.5) * 0.25,
+    );
+  }
+
   campfireEmber(at: THREE.Vector3, dt: number): void {
     if (!this.emitChance(6, dt)) return;
     if (Math.random() < 0.3) {

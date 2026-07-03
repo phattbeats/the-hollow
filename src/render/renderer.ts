@@ -3569,6 +3569,9 @@ export class Renderer {
       // the ground fog pooling around the shrine, lit green by the vase glow
       this.tmpV.set(vase.x, 0, vase.z);
       this.vfx.vaseMist(this.tmpV, dt);
+      // the shrine haze: smoke traveling through the whole clearing, thin low
+      // and thickening with height, keyed to the hearth energy (PHAA-431)
+      this.vfx.hubHaze(this.tmpV, dt, hollowSmokeIntensity(this.sim.hollowHearth));
     }
     const fog = this.scene.fog as THREE.Fog;
     if (desired !== this.fogState) {
