@@ -2760,6 +2760,13 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.zones.mirefen_marsh.pois.7.label': '沉沒堡壘',
   'entities.zones.thornpeak_heights.name': '荊峰高地',
   'entities.zones.thornpeak_heights.welcome': '瑟薩莉隊長勉強守住高望城牆。',
+  'entities.zones.the_hollow_reaches.name': '空穴外域',
+  'entities.zones.the_hollow_reaches.pois.0.label': '空穴之門',
+  'entities.zones.the_hollow_reaches.pois.1.label': '閒田莊',
+  'entities.zones.the_hollow_reaches.pois.2.label': '根穴',
+  'entities.zones.the_hollow_reaches.pois.3.label': '苔岸',
+  'entities.zones.the_hollow_reaches.welcome':
+    '大門外是一片開闊之地，道路以西的閒田莊看起來很適合安家。',
   'entities.zones.thornpeak_heights.pois.0.label': '高望',
   'entities.zones.thornpeak_heights.pois.1.label': '潛獵者山脊',
   'entities.zones.thornpeak_heights.pois.2.label': '深岩洞穴',

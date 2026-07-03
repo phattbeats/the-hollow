@@ -182,8 +182,9 @@ export function leaveDungeon(ctx: SimContext, pid?: number): void {
   // that silently teleported outdoor callers to the Hollow Crypt door)
   const dungeon = dungeonAt(p.pos.x);
   if (!dungeon) return;
-  // Sealed instances (the Hollow hub) have no outside: the gate does not open
-  // from within, so the inherited base overworld stays unreachable (PHAA-404).
+  // A sealed instance has no outside: the gate does not open from within.
+  // Unused by any current dungeon since PHAA-420 reopened the Hollow hub's
+  // gate, but kept as a general mechanism for a future fully-instanced space.
   if (dungeon.sealedExit) return;
   // Nested instances (the Under-Shrine) exit into their parent instance at a
   // fixed instance-local point (the cave mouth), never the overworld.
@@ -280,8 +281,8 @@ function claimInstance(ctx: SimContext, inst: InstanceSlot, key: string): void {
     ctx.addEntity(npc);
     inst.objectIds.push(npc.id);
   }
-  // Sealed instances (the Hollow hub) get no exit portal at all: there is no
-  // outside to return to (PHAA-404).
+  // A sealed instance gets no exit portal at all: there is no outside to
+  // return to. See the leaveDungeon note above; unused since PHAA-420.
   if (dungeon.sealedExit) return;
   const exit = createGroundObject(
     ctx.nextId++,

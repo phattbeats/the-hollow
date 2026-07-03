@@ -6510,6 +6510,24 @@ export const sv_SE: EnTranslations = {
       }
     },
     "zones": {
+      "the_hollow_reaches": {
+        "name": "Den ihåligas utmarker",
+        "welcome": "Porten öppnar sig mot öppen mark. Trädesängarna, väster om vägen, verkar lämpliga att bygga på.",
+        "pois": {
+          "0": {
+            "label": "Den ihåligas port"
+          },
+          "1": {
+            "label": "Trädesängarna"
+          },
+          "2": {
+            "label": "Rothålan"
+          },
+          "3": {
+            "label": "Mossbrinken"
+          }
+        }
+      },
       "eastbrook_vale": {
         "name": "Östbäcksdalen",
         "welcome": "Hitta marskalk Redbrook i staden - han har arbete åt dig.",

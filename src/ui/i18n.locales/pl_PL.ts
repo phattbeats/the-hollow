@@ -1863,6 +1863,13 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'entities.zones.thornpeak_heights.pois.9.label': 'Sanktuarium Grobowego Żmija',
   'entities.zones.thornpeak_heights.welcome':
     'Kapitan Thessaly utrzymuje mur w Wysokiej Strażnicy, ledwie.',
+  'entities.zones.the_hollow_reaches.name': 'Rubieże Wydrążenia',
+  'entities.zones.the_hollow_reaches.pois.0.label': 'Brama Wydrążenia',
+  'entities.zones.the_hollow_reaches.pois.1.label': 'Wolne Ugory',
+  'entities.zones.the_hollow_reaches.pois.2.label': 'Korzeniowe Wydrążenie',
+  'entities.zones.the_hollow_reaches.pois.3.label': 'Mszysty Brzeg',
+  'entities.zones.the_hollow_reaches.welcome':
+    'Za bramą rozciąga się otwarty teren. Wolne Ugory, na zachód od drogi, wyglądają na dobre miejsce pod zabudowę.',
   'errors.api.accountBanned': 'To konto zostało zbanowane.',
   'errors.api.accountSuspended': 'To konto jest zawieszone do {date}.',
   'errors.api.alreadyInWorld': 'Postać jest już w świecie.',

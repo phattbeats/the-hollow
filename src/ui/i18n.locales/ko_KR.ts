@@ -2882,6 +2882,13 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.zones.thornpeak_heights.name': '쏜피크 고지',
   'entities.zones.thornpeak_heights.welcome':
     '테살리 대장이 간신히 하이워치 성벽을 지키고 있습니다.',
+  'entities.zones.the_hollow_reaches.name': '공동 외곽',
+  'entities.zones.the_hollow_reaches.pois.0.label': '공동의 문',
+  'entities.zones.the_hollow_reaches.pois.1.label': '묵정밭',
+  'entities.zones.the_hollow_reaches.pois.2.label': '뿌리굴',
+  'entities.zones.the_hollow_reaches.pois.3.label': '이끼둔덕',
+  'entities.zones.the_hollow_reaches.welcome':
+    '문을 나서면 탁 트인 대지가 펼쳐집니다. 길 서쪽의 묵정밭은 집을 짓기에 좋아 보입니다.',
   'entities.zones.thornpeak_heights.pois.0.label': '하이워치',
   'entities.zones.thornpeak_heights.pois.1.label': '추적자 산등성이',
   'entities.zones.thornpeak_heights.pois.2.label': '딥록 굴',

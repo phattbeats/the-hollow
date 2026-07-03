@@ -6510,6 +6510,24 @@ export const id_ID: EnTranslations = {
       }
     },
     "zones": {
+      "the_hollow_reaches": {
+        "name": "Kawasan Luar Yang Berongga",
+        "welcome": "Gerbangnya terbuka ke tanah lapang. Ladang Bera, di sebelah barat jalan, tampak cocok untuk dibangun.",
+        "pois": {
+          "0": {
+            "label": "Gerbang Yang Berongga"
+          },
+          "1": {
+            "label": "Ladang Bera"
+          },
+          "2": {
+            "label": "Ceruk Akar"
+          },
+          "3": {
+            "label": "Lereng Berlumut"
+          }
+        }
+      },
       "eastbrook_vale": {
         "name": "Lembah Eastbrook",
         "welcome": "Temui Marsekal Redbrook di kota, ia punya tugas untukmu.",

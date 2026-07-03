@@ -1854,6 +1854,13 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'entities.zones.thornpeak_heights.pois.9.label': 'Gravlindormens helgedom',
   'entities.zones.thornpeak_heights.welcome':
     'Kapten Thessaly håller muren vid Högvakten - knappt.',
+  'entities.zones.the_hollow_reaches.name': 'Den ihåligas utmarker',
+  'entities.zones.the_hollow_reaches.pois.0.label': 'Den ihåligas port',
+  'entities.zones.the_hollow_reaches.pois.1.label': 'Trädesängarna',
+  'entities.zones.the_hollow_reaches.pois.2.label': 'Rothålan',
+  'entities.zones.the_hollow_reaches.pois.3.label': 'Mossbrinken',
+  'entities.zones.the_hollow_reaches.welcome':
+    'Porten öppnar sig mot öppen mark. Trädesängarna, väster om vägen, verkar lämpliga att bygga på.',
   'errors.api.accountBanned': 'Detta konto har bannlysts.',
   'errors.api.accountSuspended': 'Detta konto är avstängt till {date}.',
   'errors.api.alreadyInWorld': 'Karaktären är redan i världen.',

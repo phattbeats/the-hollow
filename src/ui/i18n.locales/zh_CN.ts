@@ -2758,6 +2758,13 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.zones.mirefen_marsh.pois.7.label': '沉没堡垒',
   'entities.zones.thornpeak_heights.name': '荆峰高地',
   'entities.zones.thornpeak_heights.welcome': '瑟萨莉队长勉强守住高望城墙。',
+  'entities.zones.the_hollow_reaches.name': '空穴外域',
+  'entities.zones.the_hollow_reaches.pois.0.label': '空穴之门',
+  'entities.zones.the_hollow_reaches.pois.1.label': '闲田庄',
+  'entities.zones.the_hollow_reaches.pois.2.label': '根穴',
+  'entities.zones.the_hollow_reaches.pois.3.label': '苔岸',
+  'entities.zones.the_hollow_reaches.welcome':
+    '大门外是一片开阔之地，道路以西的闲田庄看起来很适合安家。',
   'entities.zones.thornpeak_heights.pois.0.label': '高望',
   'entities.zones.thornpeak_heights.pois.1.label': '潜猎者山脊',
   'entities.zones.thornpeak_heights.pois.2.label': '深岩洞穴',

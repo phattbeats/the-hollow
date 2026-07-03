@@ -1874,6 +1874,13 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'entities.zones.thornpeak_heights.pois.9.label': 'Thánh Đường Mộ Long',
   'entities.zones.thornpeak_heights.welcome':
     'Đội Trưởng Thessaly đang trấn giữ bức tường ở Vọng Đài Cao, vất vả lắm mới giữ nổi.',
+  'entities.zones.the_hollow_reaches.name': 'Vùng Ngoại Ô Hố Rỗng',
+  'entities.zones.the_hollow_reaches.pois.0.label': 'Cổng Hố Rỗng',
+  'entities.zones.the_hollow_reaches.pois.1.label': 'Ruộng Hoang',
+  'entities.zones.the_hollow_reaches.pois.2.label': 'Hố Rễ',
+  'entities.zones.the_hollow_reaches.pois.3.label': 'Bờ Rêu',
+  'entities.zones.the_hollow_reaches.welcome':
+    'Cổng mở ra một vùng đất trống. Ruộng Hoang, phía tây con đường, có vẻ thích hợp để dựng nhà.',
   'errors.api.accountBanned': 'Tài khoản này đã bị cấm.',
   'errors.api.accountSuspended': 'Tài khoản này bị đình chỉ đến {date}.',
   'errors.api.alreadyInWorld': 'Nhân vật đã ở trong thế giới.',

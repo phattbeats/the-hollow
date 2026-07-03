@@ -6510,6 +6510,24 @@ export const ja_JP: EnTranslations = {
       }
     },
     "zones": {
+      "the_hollow_reaches": {
+        "name": "空洞外域",
+        "welcome": "門を抜けると、開けた大地が広がっています。道の西側にある休閑地は、家を建てるのに良さそうです。",
+        "pois": {
+          "0": {
+            "label": "空洞の門"
+          },
+          "1": {
+            "label": "休閑地"
+          },
+          "2": {
+            "label": "根の空洞"
+          },
+          "3": {
+            "label": "苔の土手"
+          }
+        }
+      },
       "eastbrook_vale": {
         "name": "イーストブルック渓谷",
         "welcome": "町のレッドブルック元帥を訪ねてください。あなたに頼みたい仕事があります。",

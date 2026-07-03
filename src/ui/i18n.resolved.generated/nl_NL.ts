@@ -6510,6 +6510,24 @@ export const nl_NL: EnTranslations = {
       }
     },
     "zones": {
+      "the_hollow_reaches": {
+        "name": "Buitenholte",
+        "welcome": "De poort komt uit op open land. Braakakkers, ten westen van de weg, lijkt geschikt om te bebouwen.",
+        "pois": {
+          "0": {
+            "label": "Holtepoort"
+          },
+          "1": {
+            "label": "Braakakkers"
+          },
+          "2": {
+            "label": "Wortelholte"
+          },
+          "3": {
+            "label": "Mosoever"
+          }
+        }
+      },
       "eastbrook_vale": {
         "name": "Oostbeekdal",
         "welcome": "Zoek Maarschalk Redbrook in de stad, hij heeft werk voor je.",

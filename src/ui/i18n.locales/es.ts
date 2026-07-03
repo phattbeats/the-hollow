@@ -2920,6 +2920,13 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'entities.zones.thornpeak_heights.pois.7.label': 'Tiendas del Culto del Wyrm',
   'entities.zones.thornpeak_heights.pois.8.label': 'Campos de aparecidos',
   'entities.zones.thornpeak_heights.pois.9.label': 'Santuario del Gravewyrm',
+  'entities.zones.the_hollow_reaches.name': 'Los Confines del Hueco',
+  'entities.zones.the_hollow_reaches.welcome':
+    'La puerta se abre a un terreno despejado. Campos de Barbecho, al oeste del camino, parece un buen lugar para construir.',
+  'entities.zones.the_hollow_reaches.pois.0.label': 'La Puerta del Hueco',
+  'entities.zones.the_hollow_reaches.pois.1.label': 'Campos de Barbecho',
+  'entities.zones.the_hollow_reaches.pois.2.label': 'Hueco de las Raíces',
+  'entities.zones.the_hollow_reaches.pois.3.label': 'Ribera Musgosa',
   'entities.dungeons.hollow_crypt.name': 'La Cripta Hueca',
   'entities.dungeons.hollow_crypt.enterText': 'Desciendes a la Cripta Hueca...',
   'entities.dungeons.hollow_crypt.leaveText': 'Vuelves a subir a la luz del día.',

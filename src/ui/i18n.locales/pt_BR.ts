@@ -2905,6 +2905,13 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'entities.zones.thornpeak_heights.pois.7.label': 'Tendas do Culto do Wyrm',
   'entities.zones.thornpeak_heights.pois.8.label': 'Campos de revenantes',
   'entities.zones.thornpeak_heights.pois.9.label': 'Santuário do Gravewyrm',
+  'entities.zones.the_hollow_reaches.name': 'Confins do Vazio',
+  'entities.zones.the_hollow_reaches.welcome':
+    'O portão se abre para um terreno aberto. Campos de Pousio, a oeste da estrada, parece um bom lugar para construir.',
+  'entities.zones.the_hollow_reaches.pois.0.label': 'Portão do Vazio',
+  'entities.zones.the_hollow_reaches.pois.1.label': 'Campos de Pousio',
+  'entities.zones.the_hollow_reaches.pois.2.label': 'Covão das Raízes',
+  'entities.zones.the_hollow_reaches.pois.3.label': 'Margem Musgosa',
   'entities.dungeons.hollow_crypt.name': 'A Cripta Vazia',
   'entities.dungeons.hollow_crypt.enterText': 'Você desce para a Cripta Vazia...',
   'entities.dungeons.hollow_crypt.leaveText': 'Você volta à luz do dia.',

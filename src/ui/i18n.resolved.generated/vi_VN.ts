@@ -6510,6 +6510,24 @@ export const vi_VN: EnTranslations = {
       }
     },
     "zones": {
+      "the_hollow_reaches": {
+        "name": "Vùng Ngoại Ô Hố Rỗng",
+        "welcome": "Cổng mở ra một vùng đất trống. Ruộng Hoang, phía tây con đường, có vẻ thích hợp để dựng nhà.",
+        "pois": {
+          "0": {
+            "label": "Cổng Hố Rỗng"
+          },
+          "1": {
+            "label": "Ruộng Hoang"
+          },
+          "2": {
+            "label": "Hố Rễ"
+          },
+          "3": {
+            "label": "Bờ Rêu"
+          }
+        }
+      },
       "eastbrook_vale": {
         "name": "Thung Lũng Đông Khê",
         "welcome": "Hãy tìm Thống Chế Redbrook trong thị trấn, ông ấy có việc cho ngươi.",

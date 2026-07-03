@@ -1205,6 +1205,21 @@ export const GUIDE_CLASSES: GuideClassInfo[] = [
 
 export const GUIDE_ZONES: GuideZoneInfo[] = [
   {
+    "id": "the_hollow_reaches",
+    "name": "The Hollow Reaches",
+    "min": 1,
+    "max": 4,
+    "biome": "vale",
+    "hub": "The Hollow Gate",
+    "pois": [
+      "The Hollow Gate",
+      "Fallow Acres",
+      "Root Hollow",
+      "Mossbank"
+    ],
+    "welcome": "The gate opens onto open ground. Fallow Acres, west of the road, looks fit to build on."
+  },
+  {
     "id": "eastbrook_vale",
     "name": "Eastbrook Vale",
     "min": 1,

@@ -6510,6 +6510,24 @@ export const zh_TW: EnTranslations = {
       }
     },
     "zones": {
+      "the_hollow_reaches": {
+        "name": "空穴外域",
+        "welcome": "大門外是一片開闊之地，道路以西的閒田莊看起來很適合安家。",
+        "pois": {
+          "0": {
+            "label": "空穴之門"
+          },
+          "1": {
+            "label": "閒田莊"
+          },
+          "2": {
+            "label": "根穴"
+          },
+          "3": {
+            "label": "苔岸"
+          }
+        }
+      },
       "eastbrook_vale": {
         "name": "東溪谷",
         "welcome": "去鎮上找雷德布魯克元帥，他有任務交給你。",

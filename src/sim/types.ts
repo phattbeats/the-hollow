@@ -1190,6 +1190,12 @@ export interface ZoneDef {
   pois: { x: number; z: number; label: string }[];
   welcome: string; // chat-log hint shown on first entry
   welcomeQuestId?: string; // only show the hint while this quest is available
+  // No mountain pass opens at this zone's shared boundary with the next zone
+  // in ZONES order (world.ts's ZONE_RIDGES): the two z-bands stay geographically
+  // disconnected on foot despite tiling the same strip. Used to grow a new zone
+  // (content/hollow_zone.ts) without reopening a walkable route into the
+  // inherited, still-neutralized base zones (PHAA-404).
+  sealedFrontier?: boolean;
 }
 
 export interface BuildingDef {

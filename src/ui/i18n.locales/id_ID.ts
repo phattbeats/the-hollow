@@ -1884,6 +1884,13 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'entities.zones.thornpeak_heights.pois.9.label': 'Sanktum Gravewyrm',
   'entities.zones.thornpeak_heights.welcome':
     'Kapten Thessaly mempertahankan tembok di Menara Pengawas, nyaris saja.',
+  'entities.zones.the_hollow_reaches.name': 'Kawasan Luar Yang Berongga',
+  'entities.zones.the_hollow_reaches.pois.0.label': 'Gerbang Yang Berongga',
+  'entities.zones.the_hollow_reaches.pois.1.label': 'Ladang Bera',
+  'entities.zones.the_hollow_reaches.pois.2.label': 'Ceruk Akar',
+  'entities.zones.the_hollow_reaches.pois.3.label': 'Lereng Berlumut',
+  'entities.zones.the_hollow_reaches.welcome':
+    'Gerbangnya terbuka ke tanah lapang. Ladang Bera, di sebelah barat jalan, tampak cocok untuk dibangun.',
   'errors.api.accountBanned': 'Akun ini telah diblokir.',
   'errors.api.accountSuspended': 'Akun ini ditangguhkan hingga {date}.',
   'errors.api.alreadyInWorld': 'Karakter sudah berada di dalam dunia.',
