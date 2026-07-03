@@ -94,6 +94,13 @@ export const HOLLOW_MOBS: Record<string, MobTemplate> = {
     loot: [
       { copper: 8, chance: 1 },
       { itemId: 'emberbulb', chance: 0.5, questId: 'q_what_burns' },
+      // PHAA-421: an unconditional (non-quest-gated) drop line so emberbulb
+      // stays farmable for Greenpaw's renewable feeding loop after the
+      // one-time q_what_burns quest is done (a questId-scoped entry only
+      // rolls while that quest is active and incomplete, loot/loot_roll.ts
+      // needsQuestDrop). Lower chance than the quest line: this is the
+      // long-tail resupply rate, not the guided first descent.
+      { itemId: 'emberbulb', chance: 0.3 },
     ],
     scale: 0.9,
     color: 0xcfd8cf, // pale, root-blanched
@@ -115,6 +122,9 @@ export const HOLLOW_MOBS: Record<string, MobTemplate> = {
     loot: [
       { copper: 14, chance: 1 },
       { itemId: 'cave_morsel', chance: 0.6, questId: 'q_what_fills' },
+      // PHAA-421: same unconditional resupply line as emberbulb above, for
+      // Greenpaw's renewable feeding loop after q_what_fills is done.
+      { itemId: 'cave_morsel', chance: 0.35 },
     ],
     scale: 1.1,
     color: 0x6b5d4f,
