@@ -453,3 +453,21 @@ or reframing it is a bigger, generator-driven restructure (per
 `scripts/wiki/build_content.mjs`, add a `pages/hollow.ts` + `GUIDE_ROUTES`
 entry, regenerate the sitemap) best sequenced after the Phase 1 hub art pass
 (PHAA-402) has an actual Board verdict, so the page is not built twice.
+
+### 2026-07-02: Commit history author fix (PHAA-416)
+
+Nine early fork commits (2026-07-01 to 2026-07-02, from "Establish the
+fork" through the realm-picker and branding redeploy log entries) carried
+the git author `Marlowe <brandon@phatt.tech>`, an agent identity used
+before the studio settled on committing all agent work under the single
+`phattbeats` account. Re-attributed those nine commits to `phattbeats
+<obiwouldjablowme@protonmail.com>` via a scoped `git-filter-repo` rewrite
+(metadata only, content byte-identical, verified with an empty tree diff
+against the pre-rewrite tips and matching commit counts). No commit
+authored by a real upstream contributor (the pinned `v0.17.0` donor
+history) was touched. Backup tags pushed to origin before the rewrite:
+`backup/pre-author-fix-main-20260702`, `backup/pre-author-fix-pr27-20260702`,
+`backup/pre-author-fix-greenpaw-20260702`. `main`, PR #27's branch
+(`feature/sec8-profession-gap`), and `feature/hollow-hub-greenpaw` were
+force-pushed with the fix; all local checkouts already used the
+`phattbeats` identity going forward, so this should not recur.
