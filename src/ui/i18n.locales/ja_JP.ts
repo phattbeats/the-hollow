@@ -2885,6 +2885,13 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.zones.thornpeak_heights.name': 'ソーンピーク高地',
   'entities.zones.thornpeak_heights.welcome':
     'テサリー隊長がかろうじてハイウォッチの壁を保っています。',
+  'entities.zones.the_hollow_reaches.name': '空洞外域',
+  'entities.zones.the_hollow_reaches.pois.0.label': '空洞の門',
+  'entities.zones.the_hollow_reaches.pois.1.label': '休閑地',
+  'entities.zones.the_hollow_reaches.pois.2.label': '根の空洞',
+  'entities.zones.the_hollow_reaches.pois.3.label': '苔の土手',
+  'entities.zones.the_hollow_reaches.welcome':
+    '門を抜けると、開けた大地が広がっています。道の西側にある休閑地は、家を建てるのに良さそうです。',
   'entities.zones.thornpeak_heights.pois.0.label': 'ハイウォッチ',
   'entities.zones.thornpeak_heights.pois.1.label': '追跡者の尾根',
   'entities.zones.thornpeak_heights.pois.2.label': 'ディープロックの巣穴',

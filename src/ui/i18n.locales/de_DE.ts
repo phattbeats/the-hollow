@@ -2920,6 +2920,13 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.zones.thornpeak_heights.pois.7.label': 'Wyrmkult-Zelte',
   'entities.zones.thornpeak_heights.pois.8.label': 'Wiedergängerfelder',
   'entities.zones.thornpeak_heights.pois.9.label': 'Gravewyrm-Heiligtum',
+  'entities.zones.the_hollow_reaches.name': 'Höhlungsweiten',
+  'entities.zones.the_hollow_reaches.welcome':
+    'Das Tor öffnet sich zu freiem Gelände. Die Brachäcker westlich der Straße wirken wie ein guter Bauplatz.',
+  'entities.zones.the_hollow_reaches.pois.0.label': 'Höhlungstor',
+  'entities.zones.the_hollow_reaches.pois.1.label': 'Brachäcker',
+  'entities.zones.the_hollow_reaches.pois.2.label': 'Wurzelmulde',
+  'entities.zones.the_hollow_reaches.pois.3.label': 'Moosufer',
   'entities.dungeons.hollow_crypt.name': 'Die Hohle Gruft',
   'entities.dungeons.hollow_crypt.enterText': 'Du steigst in die Hohle Gruft hinab...',
   'entities.dungeons.hollow_crypt.leaveText': 'Du kletterst zurück ins Tageslicht.',

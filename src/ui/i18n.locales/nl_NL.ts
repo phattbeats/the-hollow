@@ -1877,6 +1877,13 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'entities.zones.thornpeak_heights.pois.9.label': 'Grafwurm-Heiligdom',
   'entities.zones.thornpeak_heights.welcome':
     'Kapitein Thessaly houdt de muur bij Hoogwacht, ternauwernood.',
+  'entities.zones.the_hollow_reaches.name': 'Buitenholte',
+  'entities.zones.the_hollow_reaches.pois.0.label': 'Holtepoort',
+  'entities.zones.the_hollow_reaches.pois.1.label': 'Braakakkers',
+  'entities.zones.the_hollow_reaches.pois.2.label': 'Wortelholte',
+  'entities.zones.the_hollow_reaches.pois.3.label': 'Mosoever',
+  'entities.zones.the_hollow_reaches.welcome':
+    'De poort komt uit op open land. Braakakkers, ten westen van de weg, lijkt geschikt om te bebouwen.',
   'errors.api.accountBanned': 'Dit account is verbannen.',
   'errors.api.accountSuspended': 'Dit account is geschorst tot {date}.',
   'errors.api.alreadyInWorld': 'Personage is al in de wereld.',

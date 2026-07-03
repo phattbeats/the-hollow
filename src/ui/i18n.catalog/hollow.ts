@@ -48,7 +48,8 @@ const hollowEntitiesEn = {
       name: 'The Hollow',
       enterText:
         'You step through the shrine gate. The air turns warm and green, and the vase waits ahead.',
-      leaveText: 'You step back out through the gate into Eastbrook.',
+      // PHAA-420: the gate opens onto the Hollow Reaches now, not Eastbrook.
+      leaveText: 'You step back out through the gate into the wider Hollow.',
     },
     under_shrine: {
       name: 'The Under-Shrine',

@@ -42,6 +42,7 @@ import {
   HOLLOW_QUEST_ORDER,
   HOLLOW_QUESTS,
 } from './content/hollow';
+import { HOLLOW_ZONE_CAMPS, HOLLOW_ZONE_ROADS, HOLLOW_ZONE_ZONE } from './content/hollow_zone';
 import {
   TEMPLE_CAMPS,
   TEMPLE_DUNGEON_DEFS,
@@ -192,7 +193,8 @@ export const QUEST_ORDER: string[] = [
 
 // Camps spawn in array order, each drawing world-gen RNG, so an entry inserted
 // before others shifts their spawn positions. New rare-elite camps
-// (ZONE1_CHAPEL_CAMPS) and the Eastbrook rare Grix are appended LAST so every
+// (ZONE1_CHAPEL_CAMPS), the Eastbrook rare Grix, and the Hollow Reaches'
+// starter wildlife (HOLLOW_ZONE_CAMPS, PHAA-420) are appended LAST so every
 // existing zone camp keeps its exact draw order (determinism).
 export const CAMPS: CampDef[] = [
   ...ZONE1_CAMPS,
@@ -202,6 +204,7 @@ export const CAMPS: CampDef[] = [
   ...HOLLOW_CAMPS,
   ...ZONE1_CHAPEL_CAMPS,
   { mobId: 'grix_the_tunnelking', center: { x: -95, z: -78 }, radius: 4, count: 1 },
+  ...HOLLOW_ZONE_CAMPS,
 ];
 
 export const GROUND_OBJECTS: GroundObjectDef[] = [
@@ -212,7 +215,12 @@ export const GROUND_OBJECTS: GroundObjectDef[] = [
   ...HOLLOW_OBJECTS,
 ];
 
-export const ROADS: { x: number; z: number }[][] = [...ZONE1_ROADS, ...ZONE2_ROADS, ...ZONE3_ROADS];
+export const ROADS: { x: number; z: number }[][] = [
+  ...ZONE1_ROADS,
+  ...ZONE2_ROADS,
+  ...ZONE3_ROADS,
+  ...HOLLOW_ZONE_ROADS,
+];
 
 export const PROPS: ZonePropsDef = mergeProps([
   ZONE1_PROPS,
@@ -277,9 +285,14 @@ export const GROUP_XP_BONUS = [1, 1, 1.166, 1.3, 1.43];
 // [-WORLD_SIZE/2, WORLD_SIZE/2], z from WORLD_MIN_Z through the last zone's
 // zMax. Each zone owns a hub settlement (terrain flattens there), a
 // graveyard, its lakes, and a biome palette the renderer keys off.
+//
+// HOLLOW_ZONE_ZONE (PHAA-420) is prepended south of Eastbrook Vale and marks
+// its own northern boundary `sealedFrontier` (see ZoneDef, world.ts's
+// ZONE_RIDGES): the strip stays contiguous for the "zones tile the world"
+// invariant, but no mountain pass opens into the inherited base zones.
 // ---------------------------------------------------------------------------
 
-export const ZONES: ZoneDef[] = [ZONE1_ZONE, ZONE2_ZONE, ZONE3_ZONE];
+export const ZONES: ZoneDef[] = [HOLLOW_ZONE_ZONE, ZONE1_ZONE, ZONE2_ZONE, ZONE3_ZONE];
 
 export const WORLD_SIZE = 360; // world width: x spans [-180, 180]
 export const WORLD_MIN_X = -WORLD_SIZE / 2;

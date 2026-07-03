@@ -25,10 +25,12 @@ const BIOME_SHAPE: Record<BiomeId, { hill: number; base: number; hubHeight: numb
   peaks: { hill: 34, base: 7, hubHeight: 9 },
 };
 
-// Ridge walls between zone bands, each opened by a road pass.
-const ZONE_RIDGES: { z: number; passX: number }[] = [];
+// Ridge walls between zone bands, each opened by a road pass - unless the
+// earlier zone requests `sealedFrontier`, in which case the wall runs solid
+// the whole way (see ZoneDef.sealedFrontier).
+const ZONE_RIDGES: { z: number; passX: number; sealed: boolean }[] = [];
 for (let i = 0; i + 1 < ZONES.length; i++) {
-  ZONE_RIDGES.push({ z: ZONES[i].zMax, passX: 0 });
+  ZONE_RIDGES.push({ z: ZONES[i].zMax, passX: 0, sealed: ZONES[i].sealedFrontier === true });
 }
 const RIDGE_HEIGHT = 22;
 const RIDGE_SIGMA = 18; // gaussian width of the wall
@@ -142,7 +144,9 @@ export function terrainHeight(x: number, z: number, seed: number): number {
     const dz = Math.abs(z - ridge.z);
     if (dz < RIDGE_SIGMA * 3) {
       const profile = Math.exp(-(dz * dz) / (2 * RIDGE_SIGMA * RIDGE_SIGMA));
-      const pass = smoothstep(PASS_HALF_WIDTH, PASS_SHOULDER, Math.abs(x - ridge.passX));
+      const pass = ridge.sealed
+        ? 1
+        : smoothstep(PASS_HALF_WIDTH, PASS_SHOULDER, Math.abs(x - ridge.passX));
       // jagged crest so the wall reads as mountains, not a berm
       const crest = 1 + (fbm2(x * 0.03, ridge.z * 0.03, seed + 19, 2) - 0.5) * 0.7;
       h += RIDGE_HEIGHT * crest * profile * pass;

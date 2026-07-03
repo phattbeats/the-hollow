@@ -6510,6 +6510,24 @@ export const tr_TR: EnTranslations = {
       }
     },
     "zones": {
+      "the_hollow_reaches": {
+        "name": "Oyuk Açıkları",
+        "welcome": "Kapı açık araziye açılıyor. Yolun batısındaki Nadas Tarlaları, üzerine bir şeyler kurmaya elverişli görünüyor.",
+        "pois": {
+          "0": {
+            "label": "Oyuk Kapısı"
+          },
+          "1": {
+            "label": "Nadas Tarlaları"
+          },
+          "2": {
+            "label": "Kök Oyuğu"
+          },
+          "3": {
+            "label": "Yosun Kıyısı"
+          }
+        }
+      },
       "eastbrook_vale": {
         "name": "Doğudere Vadisi",
         "welcome": "Kasabada Mareşal Redbrook'u bul, senin için işi var.",

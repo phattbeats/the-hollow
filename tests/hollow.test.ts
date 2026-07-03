@@ -4,7 +4,9 @@
 // their own instance bands, the overworld shrine gate leads into the hub,
 // Brother Greenpaw lives at the vase inside the instance and his first-run
 // quest chain can be taken and completed there, the cave mouth links to the
-// Under-Shrine with its full spawn set, and the exits lead home.
+// Under-Shrine with its full spawn set, and the exits lead home. PHAA-420
+// adds the open-world Hollow Reaches around the gate: see the second
+// describe block below.
 import { describe, expect, it } from 'vitest';
 import {
   HOLLOW_GATE_POS,
@@ -12,6 +14,8 @@ import {
   VASE_LANDING_POS,
   VASE_POS,
 } from '../src/sim/content/hollow';
+import { HOLLOW_ZONE_ZONE } from '../src/sim/content/hollow_zone';
+import { ZONE1_ZONE } from '../src/sim/content/zone1';
 import {
   ARENA_X,
   ARENA_X_MIN,
@@ -24,10 +28,12 @@ import {
   NPCS,
   QUESTS,
   questRewardItemId,
+  ZONES,
+  zoneAt,
 } from '../src/sim/data';
 import { Sim } from '../src/sim/sim';
 import { dist2d, type PlayerClass } from '../src/sim/types';
-import { groundHeight } from '../src/sim/world';
+import { groundHeight, terrainHeight } from '../src/sim/world';
 
 function teleport(sim: Sim, pid: number, x: number, z: number) {
   const e = sim.entities.get(pid)!;
@@ -135,14 +141,17 @@ describe('The Hollow hub', () => {
       }
     }
 
-    // PHAA-404: the hub is sealed. No exit portal spawns inside it, and
-    // leaveDungeon is a no-op, so the inherited base overworld is unreachable.
-    expect(
-      findEntity(sim, (e) => e.templateId === 'dungeon_exit' && Math.abs(e.pos.x - origin.x) < 120),
-    ).toBeUndefined();
-    const before = { ...ea.pos };
+    // PHAA-420: the hub gate opens both ways again. An exit portal spawns
+    // inside it, and leaving lands back at the gate in the Hollow Reaches.
+    const exit = findEntity(
+      sim,
+      (e) => e.templateId === 'dungeon_exit' && Math.abs(e.pos.x - origin.x) < 120,
+    );
+    expect(exit).toBeTruthy();
     sim.leaveDungeon(a);
-    expect(ea.pos).toEqual(before);
+    expect(
+      dist2d(ea.pos, { x: HOLLOW_HUB_DOOR_POS.x, y: 0, z: HOLLOW_HUB_DOOR_POS.z - 4 }),
+    ).toBeLessThan(1);
   });
 
   it('the Under-Shrine populates its descent and the Witness-Root waits in the far room', () => {
@@ -308,5 +317,34 @@ describe('The Hollow hub', () => {
         z: backOrigin.z + VASE_LANDING_POS.z,
       }),
     ).toBeLessThan(2);
+  });
+});
+
+describe('The Hollow Reaches (PHAA-420)', () => {
+  it('is a real open-world zone prepended to the strip, tiling and sealed at the Eastbrook boundary', () => {
+    expect(ZONES[0]).toBe(HOLLOW_ZONE_ZONE);
+    expect(HOLLOW_ZONE_ZONE.zMax).toBe(ZONE1_ZONE.zMin);
+    expect(HOLLOW_ZONE_ZONE.sealedFrontier).toBe(true);
+    expect(zoneAt(HOLLOW_HUB_DOOR_POS.z).id).toBe(HOLLOW_ZONE_ZONE.id);
+  });
+
+  it('the shrine gate sits on real, walkable ground (the terrain function, not an instance floor)', () => {
+    const seed = 42;
+    const h = terrainHeight(HOLLOW_HUB_DOOR_POS.x, HOLLOW_HUB_DOOR_POS.z, seed);
+    expect(h).toBeGreaterThan(-4.5); // above WATER_LEVEL
+    expect(h).toBeLessThan(10); // the hub plateau is flattened, not a hillside
+  });
+
+  it('no mountain pass opens into Eastbrook: the sealed boundary is a wall the whole way across', () => {
+    const seed = 42;
+    const sealedZ = HOLLOW_ZONE_ZONE.zMax;
+    // every sampled x, including the ordinary pass position (0), reads as wall
+    for (const x of [-150, -100, -34, -10, 0, 10, 34, 100, 150]) {
+      expect(terrainHeight(x, sealedZ, seed), `sealed boundary at x=${x}`).toBeGreaterThan(15);
+    }
+    // contrast: an ordinary (non-sealed) boundary keeps its walkable pass at x=0
+    const openZ = ZONE1_ZONE.zMax;
+    expect(terrainHeight(0, openZ, seed)).toBeLessThan(5);
+    expect(terrainHeight(100, openZ, seed)).toBeGreaterThan(15);
   });
 });

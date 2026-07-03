@@ -1852,6 +1852,13 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'entities.zones.thornpeak_heights.pois.9.label': 'Mezarejderi Mabedi',
   'entities.zones.thornpeak_heights.welcome':
     "Yüzbaşı Thessaly, Yüksek Gözcü'deki duvarı tutuyor, zar zor.",
+  'entities.zones.the_hollow_reaches.name': 'Oyuk Açıkları',
+  'entities.zones.the_hollow_reaches.pois.0.label': 'Oyuk Kapısı',
+  'entities.zones.the_hollow_reaches.pois.1.label': 'Nadas Tarlaları',
+  'entities.zones.the_hollow_reaches.pois.2.label': 'Kök Oyuğu',
+  'entities.zones.the_hollow_reaches.pois.3.label': 'Yosun Kıyısı',
+  'entities.zones.the_hollow_reaches.welcome':
+    'Kapı açık araziye açılıyor. Yolun batısındaki Nadas Tarlaları, üzerine bir şeyler kurmaya elverişli görünüyor.',
   'errors.api.accountBanned': 'Bu hesap yasaklandı.',
   'errors.api.accountSuspended': 'Bu hesap {date} tarihine kadar askıya alındı.',
   'errors.api.alreadyInWorld': 'Karakter zaten dünyada.',

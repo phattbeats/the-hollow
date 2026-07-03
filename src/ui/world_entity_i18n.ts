@@ -181,7 +181,12 @@ const QUEST_IDS = [
   'q_mogger',
 ] as const;
 
-const ZONE_IDS = ['eastbrook_vale', 'mirefen_marsh', 'thornpeak_heights'] as const;
+const ZONE_IDS = [
+  'eastbrook_vale',
+  'mirefen_marsh',
+  'thornpeak_heights',
+  'the_hollow_reaches',
+] as const;
 const DUNGEON_IDS = [
   'hollow_crypt',
   'sunken_bastion',

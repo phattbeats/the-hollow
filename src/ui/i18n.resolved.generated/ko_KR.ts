@@ -6510,6 +6510,24 @@ export const ko_KR: EnTranslations = {
       }
     },
     "zones": {
+      "the_hollow_reaches": {
+        "name": "공동 외곽",
+        "welcome": "문을 나서면 탁 트인 대지가 펼쳐집니다. 길 서쪽의 묵정밭은 집을 짓기에 좋아 보입니다.",
+        "pois": {
+          "0": {
+            "label": "공동의 문"
+          },
+          "1": {
+            "label": "묵정밭"
+          },
+          "2": {
+            "label": "뿌리굴"
+          },
+          "3": {
+            "label": "이끼둔덕"
+          }
+        }
+      },
       "eastbrook_vale": {
         "name": "이스트브룩 골짜기",
         "welcome": "마을의 레드브룩 원수를 찾아가십시오. 그가 당신에게 맡길 일이 있습니다.",
