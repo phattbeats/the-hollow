@@ -302,8 +302,11 @@ describe('Nythraxis raid encounter', () => {
     engage(boss, tank);
     boss.aiState = 'attack';
     boss.swingTimer = 0;
+    // A single swing can whiff on the hit-table roll; loop like the chase/idle
+    // Nythraxis tests below and give it a few swings to land instead of
+    // asserting on exactly one roll.
     const hp = tank.hp;
-    sim.tick();
+    for (let i = 0; i < 20 * 12 && tank.hp === hp; i++) sim.tick();
     expect(tank.hp).toBeLessThan(hp);
   });
 
