@@ -3410,7 +3410,7 @@ export class Renderer {
     if (isHollowHubOrigin(ox)) {
       // the canopy ceiling closes the hub under leaves (synchronous, procedural)
       this.scene.add(buildHollowCanopy(ox, oz));
-      void buildHollowProps(ox, oz)
+      void buildHollowProps(ox, oz, this.fireLights)
         .then((group) => this.scene.add(group))
         .catch((err) => {
           console.error('Failed to build Hollow hub props:', err);
@@ -3566,6 +3566,9 @@ export class Renderer {
       const vase = hollowVaseWorldPos(pz);
       this.tmpV.set(vase.x, 2.6, vase.z);
       this.vfx.vaseSmoke(this.tmpV, dt, hollowSmokeIntensity(this.sim.hollowHearth));
+      // the ground fog pooling around the shrine, lit green by the vase glow
+      this.tmpV.set(vase.x, 0, vase.z);
+      this.vfx.vaseMist(this.tmpV, dt);
     }
     const fog = this.scene.fog as THREE.Fog;
     if (desired !== this.fogState) {
@@ -3579,12 +3582,14 @@ export class Renderer {
         fog.near = 12;
         fog.far = 78;
       } else if (desired === 'hollow') {
-        // the hub breathes green: a warm mossy haze under the canopy, roomier
-        // than the temple's teal so the shrine clearing reads open, overgrown
-        // and safe, never a sewer
-        fog.color.setHex(0x24321a);
-        fog.near = 18;
-        fog.far = 104;
+        // the hub breathes green: a mossy haze under the canopy. Darker and a
+        // touch tighter than before (PHAA-431, Brandon's cold-open feedback:
+        // slightly darker, more lit by internal sources) so the vase glow and
+        // the smoke/mist own the shrine clearing, but still roomier than the
+        // temple's teal so it reads overgrown and safe, never a sewer.
+        fog.color.setHex(0x16220e);
+        fog.near = 15;
+        fog.far = 88;
       } else if (desired === 'nythraxis') {
         // the raid arena is huge (±230) — push the murk back so ~50yd reads
         // clear (linear-fog midpoint (near+far)/2 = 50), not the old ~30
@@ -3622,18 +3627,21 @@ export class Renderer {
         // leaf canopy, not earth, so it keeps a filtered slice of daylight
         // (the dappled outdoor read) instead of the full underground drop.
         const glade = desired === 'hollow';
+        // the glade keeps a filtered slice of daylight, but dimmer than before
+        // (PHAA-431: slightly darker, more lit by internal sources) so the vase
+        // glow and torch pools read as the light in the room, not fill.
         this.sun.intensity = glade
-          ? SUN_INTENSITY * 0.3
+          ? SUN_INTENSITY * 0.22
           : underground
             ? DUNGEON_SUN_INTENSITY
             : SUN_INTENSITY;
         this.hemi.intensity = glade
-          ? HEMI_INTENSITY * 0.75
+          ? HEMI_INTENSITY * 0.58
           : underground
             ? DUNGEON_HEMI_INTENSITY
             : HEMI_INTENSITY;
         this.scene.environmentIntensity = glade
-          ? this.envOutdoorIntensity * 0.35
+          ? this.envOutdoorIntensity * 0.28
           : underground
             ? DUNGEON_ENV_INTENSITY
             : this.envOutdoorIntensity;

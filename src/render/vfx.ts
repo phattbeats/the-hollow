@@ -568,16 +568,18 @@ export class Vfx {
   // The Hollow's vase smoke: the visible smoke-state interface to the god
   // (docs/plan-the-hollow.md, section 7), now reactive to Greenpaw's hearth
   // (PHAA-421, IWorld.hollowHearth) instead of a constant column: `intensity`
-  // is smoke/100 (0 clear .. 1 full), floored at 0.2 so the vase never goes
-  // fully dark (it is still "the mantel's infrastructure" at rest). Cheap by
+  // is smoke/100 (0 clear .. 1 full), floored at 0.5 so a fresh character at
+  // the resting hearth still reads a real smoke column, not a candle wisp
+  // (PHAA-431, Brandon's cold-open feedback: the area read as having "none of
+  // that"); it is still "the mantel's infrastructure" at rest. Cheap by
   // the campfireEmber pattern: slow warm-grey additive puffs drifting upward,
   // count capped by the emit rate and the shared particle pool. Color and size
   // are brighter/larger than a real-world grey: under additive blending
   // against the warm dark hub fog, a true ash-grey barely adds any light and
   // reads as invisible (playtest feedback: "barely there").
   vaseSmoke(at: THREE.Vector3, dt: number, intensity = 1): void {
-    const amount = 0.2 + 0.8 * Math.max(0, Math.min(1, intensity));
-    if (!this.emitChance(9 * amount, dt)) return;
+    const amount = 0.5 + 0.5 * Math.max(0, Math.min(1, intensity));
+    if (!this.emitChance(14 * amount, dt)) return;
     // the column: warm-lit puffs rising slow and straight, thinning as they go
     this.spawn(
       at.x + (Math.random() - 0.5) * 0.3,
@@ -635,6 +637,32 @@ export class Vfx {
         );
       }
     }
+  }
+
+  // The Hollow's ground mist (PHAA-431, Brandon's cold-open feedback: the
+  // shrine wanted fog): a low bank of slow, wide, soft puffs hugging the floor
+  // around the vase, lit green by the vase glow above them. Cheap: a handful of
+  // long-lived big sprites drifting outward with near-zero gravity, so at any
+  // moment only a few sit in the pool. Separate from vaseSmoke (that rises in a
+  // column; this pools flat and low), so the two read as smoke AND fog.
+  vaseMist(at: THREE.Vector3, dt: number): void {
+    if (!this.emitChance(5, dt)) return;
+    const a = Math.random() * Math.PI * 2;
+    const r = 0.6 + Math.random() * 2.4;
+    this.spawn(
+      at.x + Math.cos(a) * r,
+      at.y + 0.05 + Math.random() * 0.25,
+      at.z + Math.sin(a) * r,
+      Math.cos(a) * 0.12,
+      0.03 + Math.random() * 0.05,
+      Math.sin(a) * 0.12,
+      0x637950,
+      3.2 + Math.random() * 2.2,
+      5.5 + Math.random() * 2.5,
+      -0.02,
+      SPR.smoke,
+      (Math.random() - 0.5) * 0.3,
+    );
   }
 
   campfireEmber(at: THREE.Vector3, dt: number): void {
