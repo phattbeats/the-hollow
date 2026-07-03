@@ -2139,6 +2139,36 @@ export const ko_KR: EnTranslations = {
       "toolSlips": "도구가 이 자물쇠에서 미끄러집니다.",
       "lockJammed": "자물쇠가 더는 딸 수 없게 걸려 버렸습니다. 다시 시도하려면 탐굴을 다시 정리하세요.",
       "lastPickSnaps": "마지막 도구가 부러집니다. 자물쇠가 걸려 버립니다. 탐굴을 다시 정리하지 않으면 상자를 잃습니다."
+    },
+    "hearth": {
+      "tooFar": "브라더 초록발에게 먹이를 주려면 그의 곁에 있어야 한다.",
+      "noItems1": "……친구, 빈손이구먼. 태울 것이든 배 채울 것이든 좀 가져오게, 그럼 얘기해보세.",
+      "noItems2": "가진 거라곤 좋은 마음뿐이구먼, 응… 마음만으로는 화로에 불을 지필 수 없다네.",
+      "emberbulb1": "이거야말로 제대로 된 땔감이지… 보게, 그녀가 숨 쉬는 걸, 친구…",
+      "emberbulb2": "화로는 천천히, 깨끗하게 태우는 걸 좋아하지, 그녀가 딱 그렇다네…",
+      "emberbulb3": "불을 지피고 연기도 났군… 파장이 벌써 열리기 시작했어, 느껴지는군.",
+      "morsel1": "……오, 고맙네, 친구. 자네와 자네가 딛고 선 이 땅에 축복이 있기를.",
+      "morsel2": "배 속이 잠시 노래를 그치는군. 참으로 고맙네…",
+      "morsel3": "좋은 한입은 좋은 친구와 같지… 귀하고, 먼 길을 올 가치가 있다네.",
+      "helpLine": "그린포우: /feed (항아리 근처에서 태울 것이나 배 채울 것을 가져오라)."
+    },
+    "house": {
+      "mustStandToClaim": "공동의 주택지에 서 있어야 소유권을 주장할 수 있다.",
+      "alreadyOwn": "당신은 이미 공동에 주택을 소유하고 있다.",
+      "noFreePlot": "여기에는 빈 주택지가 없다. 빈 땅 위에 서서 소유권을 주장하라.",
+      "plotTaken": "그 주택지에는 이미 주인이 있다.",
+      "claimed": "이 주택은 이제 당신 것이다. /house place <슬롯> <종류>로 꾸며 보라.",
+      "noHomestead": "당신은 주택이 없다. /house claim으로 하나 얻으라.",
+      "mustBeInHollow": "주택을 관리하려면 공동에 있어야 한다.",
+      "slotRange": "슬롯 번호는 1부터 {count}까지다.",
+      "unknownKind": "알 수 없는 장식 종류. 종류: {kinds}.",
+      "placed": "슬롯 {slot}에 {kind}을(를) 배치했다.",
+      "slotEmpty": "그 슬롯은 이미 비어 있다.",
+      "cleared": "슬롯 {slot}을(를) 비웠다.",
+      "readoutNone": "당신은 주택이 없다. 공동의 빈 구역에 서서 /house claim을 입력하라.",
+      "readoutMine": "당신의 주택: {plotId}. 장식: {decor}.",
+      "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <슬롯>.",
+      "helpLine": "주택: /house, /house claim, /house place <슬롯> <종류>, /house remove <슬롯>."
     }
   },
   "lockpickUi": {

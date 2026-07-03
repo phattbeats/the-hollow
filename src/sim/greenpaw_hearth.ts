@@ -11,10 +11,10 @@
 // randomness (which of Greenpaw's in-voice feed lines plays) goes through
 // SimContext's Rng.
 //
-// Player-facing /feed command text and Greenpaw's feed-response lines are
-// deliberately English here, the same documented backstop housing.ts uses for
-// its /house command text: a dedicated localization pass is tracked follow-up
-// work, not blocking this state machine (PHAA-421 ticket note).
+// Player-facing /feed command text and Greenpaw's feed-response lines emit in
+// English here (the sim core stays language-agnostic); the client re-localizes
+// them through src/ui/sim_i18n.ts's RULES against the sim.hearth.* catalog keys
+// (PHAA-428), the same matcher pattern housing.ts uses for its /house text.
 
 import type { SimContext } from './sim_context';
 import { dist2d, type Entity, INTERACT_RANGE } from './types';

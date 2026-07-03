@@ -2139,6 +2139,36 @@ export const zh_CN: EnTranslations = {
       "toolSlips": "这件工具在这把锁上打滑了。",
       "lockJammed": "锁已卡死，无法撬开，请再次通关探秘以获得新的尝试机会。",
       "lastPickSnaps": "最后一根撬锁器折断了。锁卡死了，除非再次通关探秘，否则这只宝箱就此失去。"
+    },
+    "hearth": {
+      "tooFar": "你得靠近绿掌修士才能喂他。",
+      "noItems1": "……伙计，你两手空空啊。带点能烧的或能填饱肚子的东西来，我们再唠。",
+      "noItems2": "身上啥也没有，就剩一片好心，是吧……好心可点不着炉子。",
+      "emberbulb1": "这才叫柴火……瞧瞧她喘气的样子，伙计……",
+      "emberbulb2": "炉子慢慢地、干干净净地吃下去，她就爱这样……",
+      "emberbulb3": "添了柴，冒了烟……那个波长已经开始松动了，我能感觉到。",
+      "morsel1": "……哦，愿神保佑你，伙计。保佑你脚下的这片土地。",
+      "morsel2": "肚子总算不咕咕叫了，消停一会儿。多谢了……",
+      "morsel3": "一口好干粮，就像一个好朋友……难得，也值得一路寻来。",
+      "helpLine": "绿掌：/feed（从瓮边带上能烧的或能填饱肚子的东西）。"
+    },
+    "house": {
+      "mustStandToClaim": "你必须站在空穴中的宅基地上才能认领。",
+      "alreadyOwn": "你在空穴已经拥有一处宅邸了。",
+      "noFreePlot": "这里没有空闲的宅基地。站到一块地上再认领。",
+      "plotTaken": "那块宅基地已经有主人了。",
+      "claimed": "这处宅邸归你了。用 /house place <槽位> <种类> 来装饰它。",
+      "noHomestead": "你还没有宅邸。用 /house claim 认领一处。",
+      "mustBeInHollow": "你必须在空穴里才能打理你的宅邸。",
+      "slotRange": "槽位编号为 1 到 {count}。",
+      "unknownKind": "未知的装饰种类。可选种类：{kinds}。",
+      "placed": "在槽位 {slot} 放置了 {kind}。",
+      "slotEmpty": "那个槽位本来就是空的。",
+      "cleared": "清空了槽位 {slot}。",
+      "readoutNone": "你没有宅邸。站到空穴里的空闲地块上，输入 /house claim。",
+      "readoutMine": "你的宅邸：{plotId}。装饰：{decor}。",
+      "readoutUsage": "/house place <1-{count}> <{kinds}>，/house remove <槽位>。",
+      "helpLine": "宅邸：/house、/house claim、/house place <槽位> <种类>、/house remove <槽位>。"
     }
   },
   "lockpickUi": {

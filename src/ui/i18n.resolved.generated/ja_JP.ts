@@ -2139,6 +2139,36 @@ export const ja_JP: EnTranslations = {
       "toolSlips": "その道具はこの錠から滑り落ちる。",
       "lockJammed": "錠は開けられないほど固まっている。もう一度デルヴを踏破すれば再挑戦できる。",
       "lastPickSnaps": "最後のピックが折れる。錠が固まった。もう一度デルヴを踏破しない限り、この宝箱は失われる。"
+    },
+    "hearth": {
+      "tooFar": "緑掌修道士のそばに行かねば、彼に餌をやれんぞ。",
+      "noItems1": "……手ぶらじゃな、お前さん。燃えるもんか、腹の足しになるもんを持ってきな、話はそれからだ。",
+      "noItems2": "持ってるのは良い心がけだけか……気持ちだけじゃ炉は焚けんのう。",
+      "emberbulb1": "こいつぁ上物の燃料だ……見ろ、あの子が息をしとる、なあ……",
+      "emberbulb2": "炉はゆっくり、きれいに食うのが好きなんじゃ、あの子はな……",
+      "emberbulb3": "焚べて、煙も立った……もう波長が開きかけとる、感じるわい。",
+      "morsel1": "……ああ、ありがとうよ。お前さんとその足で歩く大地に、恵みあれ。",
+      "morsel2": "腹の虫がしばし静かになったわ。えらい世話になったな……",
+      "morsel3": "良い糧は、良い友のようなもんじゃ……めったにない、探す価値のあるもんよ。",
+      "helpLine": "緑掌：/feed（甕のそばで、燃えるものか腹の足しになるものを持ってこい）。"
+    },
+    "house": {
+      "mustStandToClaim": "空洞の宅地に立たなければ、権利を主張できない。",
+      "alreadyOwn": "あなたは既に空洞に住居を持っている。",
+      "noFreePlot": "ここには空いている宅地がない。空き地の上に立ってから権利を主張せよ。",
+      "plotTaken": "その宅地には既に持ち主がいる。",
+      "claimed": "この住居はあなたのものだ。/house place <スロット> <種類> で飾り付けよう。",
+      "noHomestead": "あなたは住居を持っていない。/house claim で一つ手に入れよう。",
+      "mustBeInHollow": "住居の手入れをするには空洞にいなければならない。",
+      "slotRange": "スロットは1から{count}まで番号が振られている。",
+      "unknownKind": "不明な装飾の種類。種類：{kinds}。",
+      "placed": "スロット{slot}に{kind}を置いた。",
+      "slotEmpty": "そのスロットは既に空だ。",
+      "cleared": "スロット{slot}を空にした。",
+      "readoutNone": "あなたは住居を持っていない。空洞の空いている区画に立ち、/house claim と入力しよう。",
+      "readoutMine": "あなたの住居：{plotId}。装飾：{decor}。",
+      "readoutUsage": "/house place <1-{count}> <{kinds}>、/house remove <スロット>。",
+      "helpLine": "住居：/house、/house claim、/house place <スロット> <種類>、/house remove <スロット>。"
     }
   },
   "lockpickUi": {
