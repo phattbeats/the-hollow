@@ -32,8 +32,12 @@ import type {
 import { HOLLOW_ZONE_GATE_POS } from './hollow_zone';
 
 // Where the portal from the base world opens onto the shrine clearing.
-// Coordinates are hub-local; the zone is its own instanced space.
-export const HOLLOW_GATE_POS = { x: 0, z: -40 };
+// Coordinates are hub-local; the zone is its own instanced space. Must stay
+// INSIDE the temple room floor (TEMPLE_LAYOUT zMin -19, dungeon_layout.ts):
+// the old value (0, -40) parked arrivals and the exit portal in the void
+// south of the front wall. The arrival spot sits between the gate-approach
+// lantern posts (render/hollow_props.ts, z -17.5), facing the vase.
+export const HOLLOW_GATE_POS = { x: 0, z: -10 };
 
 // The overworld side of the portal: the shrine gate at the heart of the
 // Hollow Reaches (content/hollow_zone.ts), the open-world zone Decision 23
@@ -207,7 +211,7 @@ export const HOLLOW_QUESTS: Record<string, QuestDef> = {
     turnInNpcId: 'brother_greenpaw',
     text: "the communion's gone thin, friend... i'm bone dry and the wavelength is closin'. down under the shrine there's a bulb that burns slow and clean - emberbulb, grows where the light don't reach, which is a joke the cave plays on itself... bring me five. mind the pale ones. they come at your lantern, not at you. mostly.",
     completionText:
-      "now THAT'S the good smoke... you feel that? room's gettin' thick. she's gonna lean in any minute now, i can feel it on the wavelength... indeed.",
+      "now THAT'S the good smoke... you feel that? room's gettin' thick. he's gonna lean in any minute now, i can feel it on the wavelength... indeed.",
     objectives: [{ type: 'collect', itemId: 'emberbulb', count: 5, label: 'Emberbulb gathered' }],
     xpReward: 90,
     copperReward: 60,
@@ -538,7 +542,9 @@ export const HOLLOW_DUNGEON_DEFS: Record<string, DungeonDef> = {
     index: 6,
     doorPos: { ...HOLLOW_HUB_DOOR_POS },
     entry: { ...HOLLOW_GATE_POS },
-    exitOffset: { x: 0, z: -46 }, // exit portal, behind the gate
+    // Exit portal between entry and the front wall (zMin -19): 6u south of
+    // entry so arriving never trips the 2u walk-out trigger, still on floor.
+    exitOffset: { x: 0, z: -16 },
     // One hub for the whole population: the social space where everyone sees
     // everyone at the vase, and the reason a 24-slot per-party pool can never
     // exhaust under full-population hollowStart joins.

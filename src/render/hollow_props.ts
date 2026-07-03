@@ -184,16 +184,21 @@ function buildHearth(shrine: GLTF, shrineCandles: GLTF): THREE.Group {
   candles.scale.setScalar(2.0);
   g.add(candles);
 
-  // the flue: a tapering stone duct climbing from behind the altar to the
-  // ceiling, the channel the plan says was always there, carrying the vase's
-  // smoke to the surface. Kept at the same offset behind the altar as before
-  // (0.8 back from altarZ) so it still reads as emerging from within it.
+  // the flue: a tapering stone duct climbing to the ceiling, the channel the
+  // plan says was always there carrying the vase's smoke to the surface. It
+  // now stands FLUSH BEHIND the mantel-altar (front face at altarZ + 1.9 - 0.7
+  // = the altar's back, ~4.5 hub-local) rather than centred inside it, so it
+  // reads as the hearth's chimney stack instead of a free column clipping
+  // straight up through the pavilion roof: from the arrival view (-z) the solid
+  // altar occludes its base and only the stack above the roofline shows
+  // (PHAA-434). Slimmed from the old 0.95 base so it reads as a duct, not a
+  // pillar.
   const flueHeight = DUNGEON_WALL_HEIGHT - 0.4;
   const flue = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.55, 0.95, flueHeight, 8),
+    new THREE.CylinderGeometry(0.45, 0.7, flueHeight, 8),
     new THREE.MeshStandardMaterial({ color: 0x4a4038, roughness: 0.95 }),
   );
-  flue.position.set(0, flueHeight / 2, altarZ + 0.8);
+  flue.position.set(0, flueHeight / 2, altarZ + 1.9);
   g.add(flue);
 
   return g;

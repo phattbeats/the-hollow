@@ -31,6 +31,7 @@ import {
   ZONES,
   zoneAt,
 } from '../src/sim/data';
+import { TEMPLE_LAYOUT } from '../src/sim/dungeon_layout';
 import { Sim } from '../src/sim/sim';
 import { dist2d, type PlayerClass } from '../src/sim/types';
 import { groundHeight, terrainHeight } from '../src/sim/world';
@@ -69,6 +70,14 @@ describe('The Hollow hub', () => {
     expect(hub.interior).toBe('temple');
     expect(hub.doorPos).toEqual(HOLLOW_HUB_DOOR_POS);
     expect(hub.entry).toEqual(HOLLOW_GATE_POS);
+    // entry and the exit portal must land ON the temple room floor: outside
+    // TEMPLE_LAYOUT's z-range there is only void (the pre-fix (0, -40) gate
+    // stranded arrivals south of the front wall, board bug on PHAA-405)
+    for (const pos of [hub.entry, hub.exitOffset]) {
+      expect(pos.z).toBeGreaterThan(TEMPLE_LAYOUT.zMin);
+      expect(pos.z).toBeLessThan(TEMPLE_LAYOUT.zMax);
+      expect(Math.abs(pos.x)).toBeLessThan(23); // inside the side walls
+    }
     // no combat on the shrine floor; the cave below holds all of it
     expect(hub.spawns).toEqual([]);
     expect(DUNGEON_LIST.some((d) => d.id === 'the_hollow')).toBe(true);
