@@ -132,6 +132,7 @@ import {
 import { canEquipItem } from './equipment_rules';
 import { fleeSpeed } from './flee_speed';
 import { formatMoney } from './format_money';
+import { GreenpawHearth, type GreenpawHearthSave } from './greenpaw_hearth';
 import { Housing, type HousingSave } from './housing';
 import * as interaction from './interaction';
 import * as items from './items';
@@ -899,6 +900,11 @@ export class Sim {
   // ownership book. Constructed in the ctor after the SimContext (it consumes
   // the seam); Sim keeps thin delegates below, mirroring the market pattern.
   housing!: Housing;
+  // Greenpaw's hearth (PHAA-421): owns the hunger/smoke state machine.
+  // Constructed in the ctor after the SimContext, mirroring the housing
+  // pattern. Draws rng only from feed() (a player command), never at
+  // construction, so the construction draws below are unperturbed.
+  greenpawHearth!: GreenpawHearth;
   /** When true, /dev level|tp|give chat commands are accepted (local dev only). */
   readonly devCommands: boolean;
   private pendingMobRespawns: PendingMobRespawn[] = [];
@@ -936,6 +942,10 @@ export class Sim {
     // Housing v0: owns the hub homestead plot book; consumes the seam. Draws no
     // rng at construction (or ever), so the draws below are unperturbed.
     this.housing = new Housing(this.ctx);
+    // Greenpaw's hearth (PHAA-421): owns the hunger/smoke state machine;
+    // consumes the seam. Draws no rng at construction, so the draws below
+    // are unperturbed.
+    this.greenpawHearth = new GreenpawHearth(this.ctx);
 
     // NPCs — nudged out of buildings and deep water if their data position is bad
     for (const npcDef of Object.values(NPCS)) {
@@ -2219,6 +2229,10 @@ export class Sim {
       // Housing v0: the /house chat-command branch routes through the seam to the
       // Housing instance (constructed after this literal; late-bound arrow).
       housingChat: (raw, pid) => sim.housing.handleChat(raw, pid),
+      // Greenpaw's hearth (PHAA-421): the /feed chat-command branch routes through
+      // the seam to the GreenpawHearth instance (constructed after this literal;
+      // late-bound arrow).
+      greenpawFeedChat: (raw, pid) => sim.greenpawHearth.handleChat(raw, pid),
     };
     return createSimContext(host);
   }
@@ -2453,6 +2467,7 @@ export class Sim {
     this.updateInstances();
     this.updateDelveRuns();
     this.market.update();
+    this.greenpawHearth.update(DT);
     drainDelayedEvents(this.ctx);
 
     // movement re-bucketing: queries during the next tick and the server's
@@ -5210,6 +5225,26 @@ export class Sim {
 
   loadHousing(save: HousingSave | null | undefined): void {
     this.housing.loadHousing(save);
+  }
+
+  // -------------------------------------------------------------------------
+  // Greenpaw's hearth (PHAA-421) — thin delegates to this.greenpawHearth
+  // -------------------------------------------------------------------------
+
+  feedGreenpaw(pid?: number): void {
+    this.greenpawHearth.feed(pid);
+  }
+
+  get hollowHearth(): import('../world_api/greenpaw_hearth').GreenpawHearthInfo {
+    return this.greenpawHearth.info();
+  }
+
+  serializeGreenpawHearth(): GreenpawHearthSave {
+    return this.greenpawHearth.serialize();
+  }
+
+  loadGreenpawHearth(save: GreenpawHearthSave | null | undefined): void {
+    this.greenpawHearth.load(save);
   }
 
   // -------------------------------------------------------------------------

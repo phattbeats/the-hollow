@@ -565,15 +565,19 @@ export class Vfx {
     );
   }
 
-  // The Hollow's vase smoke: the always-on column over the urn, the visible
-  // smoke-state interface to the god (docs/plan-the-hollow.md, section 7).
-  // Cheap by the campfireEmber pattern: slow warm-grey additive puffs drifting
-  // upward, count capped by the emit rate and the shared particle pool.
-  // Color and size are brighter/larger than a real-world grey: under additive
-  // blending against the warm dark hub fog, a true ash-grey barely adds any
-  // light and reads as invisible (playtest feedback: "barely there").
-  vaseSmoke(at: THREE.Vector3, dt: number): void {
-    if (!this.emitChance(9, dt)) return;
+  // The Hollow's vase smoke: the visible smoke-state interface to the god
+  // (docs/plan-the-hollow.md, section 7), now reactive to Greenpaw's hearth
+  // (PHAA-421, IWorld.hollowHearth) instead of a constant column: `intensity`
+  // is smoke/100 (0 clear .. 1 full), floored at 0.2 so the vase never goes
+  // fully dark (it is still "the mantel's infrastructure" at rest). Cheap by
+  // the campfireEmber pattern: slow warm-grey additive puffs drifting upward,
+  // count capped by the emit rate and the shared particle pool. Color and size
+  // are brighter/larger than a real-world grey: under additive blending
+  // against the warm dark hub fog, a true ash-grey barely adds any light and
+  // reads as invisible (playtest feedback: "barely there").
+  vaseSmoke(at: THREE.Vector3, dt: number, intensity = 1): void {
+    const amount = 0.2 + 0.8 * Math.max(0, Math.min(1, intensity));
+    if (!this.emitChance(9 * amount, dt)) return;
     // the column: warm-lit puffs rising slow and straight, thinning as they go
     this.spawn(
       at.x + (Math.random() - 0.5) * 0.3,
@@ -590,7 +594,7 @@ export class Vfx {
       (Math.random() - 0.5) * 0.4,
     );
     // a warm mote caught in the column: the god's breath, visibly lit
-    if (Math.random() < 0.35) {
+    if (Math.random() < 0.35 * amount) {
       this.spawn(
         at.x + (Math.random() - 0.5) * 0.22,
         at.y + 0.4,
@@ -608,8 +612,10 @@ export class Vfx {
     // the billow: an occasional bloom of bigger puffs expanding outward before
     // joining the rise, so the column breathes instead of trickling at one
     // constant thinness (feedback: the steady column alone did not read as
-    // "the mantel's infrastructure," it read as a candle).
-    if (Math.random() < 0.04) {
+    // "the mantel's infrastructure," it read as a candle). Billows need real
+    // smoke behind them (>= hazy-ish), so this scales with the square of
+    // amount rather than linearly.
+    if (Math.random() < 0.04 * amount * amount) {
       for (let i = 0; i < 4; i++) {
         const a = Math.random() * Math.PI * 2;
         const r = 0.15 + Math.random() * 0.35;
