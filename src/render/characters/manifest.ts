@@ -221,6 +221,7 @@ const CHICKEN_COW: ClipMap = {
 // ---------------------------------------------------------------------------
 
 const PLAYERS = 'models/chars/players';
+const NPCS = 'models/chars/npcs';
 const ENEMIES = 'models/chars/enemies';
 const CREATURES = 'models/creatures';
 const WEAPONS = 'models/weapons';
@@ -824,6 +825,52 @@ export const VISUALS: Record<string, VisualDef> = {
     height: HUMANOID_H,
     clips: kaykit(['1H_Melee_Attack_Chop']),
   },
+
+  // The Hollow's hero-quality prophet cast (PHAA-413 base meshes, Board-confirmed
+  // direction; PHAA-414 material/shader coating pass: every surface material carries
+  // a small baked grain texture in the hub's warm root-and-soil register instead of
+  // a flat factor, glossy-clean materials (eyes, beaks, the lantern glass) excepted
+  // on purpose). Fully procedural Blender builds, no purchased assets, no armature
+  // yet, so every clip name below is a placeholder that matches nothing in the GLB;
+  // each simply holds its authored pose. Swap `clips` for a real ClipMap once a
+  // rigged export lands.
+  npc_greenpaw: {
+    url: `${NPCS}/greenpaw.glb`,
+    height: 2.03,
+    clips: {
+      idle: 'Idle',
+      walk: 'Idle',
+      run: 'Idle',
+      attack: ['Idle'],
+      death: 'Idle',
+    },
+  },
+  // Verger Zebediah and Sexton Faddick: textured hero models ready for the render
+  // pipeline. Not yet placed as sim NPCs (no `templateId` maps here, so `NPC_KEYS`
+  // has no entry for either), so this is inert until a future content ticket wires
+  // one in; see PHAA-414.
+  npc_zebediah: {
+    url: `${NPCS}/zebediah.glb`,
+    height: 2.05,
+    clips: {
+      idle: 'Idle',
+      walk: 'Idle',
+      run: 'Idle',
+      attack: ['Idle'],
+      death: 'Idle',
+    },
+  },
+  npc_faddick: {
+    url: `${NPCS}/faddick.glb`,
+    height: 1.3,
+    clips: {
+      idle: 'Idle',
+      walk: 'Idle',
+      run: 'Idle',
+      attack: ['Idle'],
+      death: 'Idle',
+    },
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -909,6 +956,7 @@ const NPC_KEYS: Record<string, string> = {
   provisioner_hale: 'npc_villager',
   quartermaster_bree: 'npc_villager',
   brother_halven: 'npc_reliquary_keeper',
+  brother_greenpaw: 'npc_greenpaw',
 };
 
 export function visualKeyFor(e: Entity): string {
