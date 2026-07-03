@@ -65,6 +65,9 @@ export class ColdOpenOverlay {
     // fits the modal-style card; it never traps focus (presentation-only).
     root.setAttribute('role', 'dialog');
     root.setAttribute('aria-labelledby', 'cold-open-title');
+    // Point the dialog at its narration so a screen reader announces the card
+    // prose (not just the title) when focus moves to the advance button below.
+    root.setAttribute('aria-describedby', 'cold-open-body');
 
     this.titleEl = document.createElement('div');
     this.titleEl.className = 'cold-open-title';
@@ -72,6 +75,7 @@ export class ColdOpenOverlay {
 
     this.bodyEl = document.createElement('div');
     this.bodyEl.className = 'cold-open-body';
+    this.bodyEl.id = 'cold-open-body';
 
     const actions = document.createElement('div');
     actions.className = 'cold-open-actions';
