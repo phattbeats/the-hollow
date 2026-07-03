@@ -836,7 +836,7 @@ export const VISUALS: Record<string, VisualDef> = {
   // rigged export lands.
   npc_greenpaw: {
     url: `${NPCS}/greenpaw.glb`,
-    height: 2.03,
+    height: 2.29,
     clips: {
       idle: 'Idle',
       walk: 'Idle',
