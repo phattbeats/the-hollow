@@ -5102,6 +5102,10 @@ export const ja_JP: EnTranslations = {
       "witness_root_cincture": {
         "name": "証しの根の帯紐"
       },
+      "shrine_diary_page": {
+        "name": "破れた日記のページ",
+        "flavorText": "……蝋燭で四十日を数えたところで、数えるのをやめた。ここの闇は今もあの方を忘れない、あの方がこの場所を忘れてしまっても。鷺が低く舞うのを見たら、灯守りに芯はまだ燃えていると伝えてくれ……"
+      },
       "reliquary_plate_chest": {
         "name": "聖遺物庫衛兵のホーバーク"
       },
@@ -6722,8 +6726,8 @@ export const ja_JP: EnTranslations = {
       },
       "under_shrine": {
         "name": "地下祠",
-        "enterText": "祠の下へと降りていく。大気は静まり返って狭まり、先の闇は空虚には感じられない。この奥深くで何かが、誰も耳を傾けなくなって久しいというのに、なおも独りで時を刻み続けている。",
-        "leaveText": "暖かさの中へと這い上がる。頭上には、かすかに煙。その下では、闇がゆっくりと数え続けている。"
+        "enterText": "祠の下へ、冷たく静かな闇の中へ降りていく。",
+        "leaveText": "頭上の温かな空気の中へと戻っていく。"
       }
     },
     "delves": {

@@ -811,8 +811,8 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'entities.dungeons.the_hollow.leaveText': 'Je stapt terug door de poort naar Eastbrook.',
   'entities.dungeons.the_hollow.name': 'De Holte',
   'entities.dungeons.under_shrine.enterText':
-    'Je daalt af onder de schrijn. De lucht wordt stil en drukkend, en het duister verderop voelt niet leeg aan.',
-  'entities.dungeons.under_shrine.leaveText': 'Je klimt terug de warmte in. Boven je, vaag, rook.',
+    'Je daalt af onder het heiligdom, de koele, stille duisternis in.',
+  'entities.dungeons.under_shrine.leaveText': 'Je klimt terug omhoog naar de warme lucht.',
   'entities.dungeons.under_shrine.name': 'De Onderschrijn',
   'entities.items.acolytes_circlet.name': 'Diadeem van de Acoliet',
   'entities.items.alien_armor_plate.name': 'Uitheemse Pantserplaat',
@@ -921,6 +921,9 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'entities.items.fenwalker_boots.name': 'Veenloper-Laarzen',
   'entities.items.first_cutting.name': 'Een Stek',
   'entities.items.witness_root_cincture.name': 'Getuigenwortels Gordel',
+  'entities.items.shrine_diary_page.name': 'Gescheurde Dagboekpagina',
+  'entities.items.shrine_diary_page.flavorText':
+    '...telde veertig dagen bij kaarslicht voor ik de draad kwijtraakte. Het duister hier beneden vergeet Hem niet, ook al is Hij deze plek vergeten. Als de reiger laag cirkelt, zeg de Koster dat de pit nog brandt...',
   'entities.items.footpad_jerkin.name': 'Struikrovers-Wambuis',
   'entities.items.forest_pink_armor_plate.name': 'Bosroze',
   'entities.items.frayed_prayer_beads.name': 'Gerafelde Bidkralen',

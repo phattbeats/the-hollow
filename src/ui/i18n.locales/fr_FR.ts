@@ -2102,6 +2102,9 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'entities.items.emberbulb.name': 'Bulbe-braise',
   'entities.items.first_cutting.name': 'Une bouture',
   'entities.items.witness_root_cincture.name': 'Ceinturon de la Racine témoin',
+  'entities.items.shrine_diary_page.name': 'Page de Journal Déchirée',
+  'entities.items.shrine_diary_page.flavorText':
+    "...j'ai compté quarante jours à la chandelle avant de perdre le fil. L'obscurité d'ici-bas ne L'oublie pas, même s'Il a oublié cet endroit. Si le héron plane bas, dis au Sacristain que la mèche brûle encore...",
   'entities.items.gravecaller_blade.name': 'Grande lame de Gravecaller',
   'entities.items.widowfang_dirk.name': 'Dague Croc-de-veuve',
   'entities.items.gravecaller_staff.name': 'Bâton du Creux',
@@ -2987,9 +2990,8 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'entities.dungeons.the_hollow.leaveText': 'Tu ressors par le portail dans Eastbrook.',
   'entities.dungeons.under_shrine.name': 'Le Sous-Sanctuaire',
   'entities.dungeons.under_shrine.enterText':
-    "Tu descends sous le sanctuaire. L'air se fait immobile et proche, et l'obscurité devant toi ne semble pas vide.",
-  'entities.dungeons.under_shrine.leaveText':
-    'Tu remontes dans la chaleur. Au-dessus de toi, faiblement, de la fumée.',
+    'Vous descendez sous le sanctuaire dans une obscurité fraîche et immobile.',
+  'entities.dungeons.under_shrine.leaveText': "Vous remontez à l'air chaud, au-dessus.",
   'worldContent.corpseName': '{name} (cadavre)',
   'worldContent.dungeonExitName': 'Sortie de {name}',
   'worldContent.dungeonPartyWarning':

@@ -487,6 +487,19 @@ export const HOLLOW_ITEMS: Record<string, ItemDef> = {
     stats: { armor: 40, sta: 3 },
     sellValue: 180,
   },
+  // PHAA-433 (board-directed lore ask): a found object, not enter/leave prose.
+  // A ground pickup like nythraxis_crypt's 'Ancient Diary' (dungeons.ts), read
+  // in the item tooltip (flavorText) rather than a new interactable system.
+  shrine_diary_page: {
+    id: 'shrine_diary_page',
+    name: 'Torn Diary Page',
+    kind: 'junk',
+    sellValue: 1,
+    flavorText:
+      '...counted forty days by candle before I lost the thread. The dark down ' +
+      'here does not forget Him, even if He has forgotten this place. If the ' +
+      'heron circles low, tell the Verger the wick still burns...',
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -589,18 +602,18 @@ export const HOLLOW_DUNGEON_DEFS: Record<string, DungeonDef> = {
     entry: { x: 0, z: 4 },
     exitOffset: { x: 0, z: -6 },
     spawns: UNDER_SHRINE_SPAWNS,
+    // PHAA-433 (board feedback): lore lives on a found object (a ground
+    // pickup, same pattern as nythraxis_crypt's 'Ancient Diary' in
+    // dungeons.ts), not enter/leave prose. Tucked in the wall aisle just past
+    // the entrance (pillars run |x|=14 for z 10..130, walls at |x|=22), clear
+    // of the spawn line.
+    objects: [{ itemId: 'shrine_diary_page', name: 'Torn Diary Page', x: -18, z: 14 }],
     // Deliberate: the 'crypt' interior builder is the Hollow Crypt's own
     // skeleton (sealed doors, keystones, the buried-and-walled grammar) reused
     // per the constitution (§4, the Hollow Crypt reuse) and rethemed root-cold
     interior: 'crypt',
     suggestedPlayers: 5,
-    // PHAA-433: light lore dressing, tying the cave to the LORE BOOK canon
-    // (PHAA-429) that the Sexton's archive and engine sit below the shrine
-    // without naming him outright (he wanders, and is never placed) or
-    // adding any new interactable object system for it.
-    enterText:
-      'You descend below the shrine. The air goes still and close, and the dark ahead does not feel empty. Something down here has kept its own time long after anyone stopped listening.',
-    leaveText:
-      'You climb back into the warm. Above you, faintly, smoke. Below, the dark keeps its slow count.',
+    enterText: 'You descend below the shrine into cool, still dark.',
+    leaveText: 'You climb back up into the warm air above.',
   },
 };

@@ -2952,9 +2952,8 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.dungeons.the_hollow.leaveText': '문을 지나 다시 이스트브룩으로 나갑니다.',
   'entities.dungeons.under_shrine.name': '지하 사당',
   'entities.dungeons.under_shrine.enterText':
-    '사당 아래로 내려갑니다. 공기가 고요하고 답답해지며, 앞의 어둠은 텅 빈 것처럼 느껴지지 않습니다. 이 아래 무언가가, 아무도 귀 기울이지 않게 된 지 오래되었어도, 여전히 스스로 시간을 헤아리고 있습니다.',
-  'entities.dungeons.under_shrine.leaveText':
-    '따뜻한 곳으로 다시 기어오릅니다. 머리 위로, 희미하게 연기가 보입니다. 그 아래에서는, 어둠이 천천히 수를 세고 있습니다.',
+    '그대는 신전 아래로 내려가 서늘하고 고요한 어둠 속으로 들어간다.',
+  'entities.dungeons.under_shrine.leaveText': '그대는 위쪽의 따뜻한 공기 속으로 다시 올라간다.',
   'worldContent.corpseName': '{name} (시체)',
   'worldContent.dungeonExitName': '{name} 출구',
   'worldContent.delveLockedChestInteract': 'F를 눌러 자물쇠 따기',
@@ -4524,6 +4523,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.items.emberbulb.name': '불씨구근',
   'entities.items.first_cutting.name': '꺾꽂이',
   'entities.items.witness_root_cincture.name': '증인뿌리의 허리띠',
+  'entities.items.shrine_diary_page.name': '찢어진 일기장 페이지',
+  'entities.items.shrine_diary_page.flavorText':
+    '...촛불로 마흔 날을 세다가 결국 놓쳐버렸다. 이 아래의 어둠은 그분을 잊지 않는다, 그분이 이곳을 잊으셨어도. 왜가리가 낮게 돌면, 등지기에게 심지가 아직 타고 있다고 전해라...',
   'entities.mobs.acolyte_tessa.name': '수련사제 테사',
   'entities.mobs.deacon_varric.name': '부제 바릭',
   'entities.mobs.reliquary_bonewalker.name': '되살아난 해골보행자',

@@ -271,6 +271,32 @@ describe('The Hollow hub', () => {
     expect(2 * rootmaws * morselDrop).toBeGreaterThanOrEqual(4);
   });
 
+  it('the Witness-Root can close the item gap alone and has a rare drop chance (PHAA-433)', () => {
+    const loot = MOBS.the_witness_root.loot;
+    const emberRolls = loot.filter((l) => l.itemId === 'emberbulb');
+    const morselRolls = loot.filter((l) => l.itemId === 'cave_morsel');
+    // Two independent quest-gated rolls each, same pattern as the trash mobs,
+    // so a single boss kill can plausibly hand over more than one of each.
+    expect(emberRolls).toHaveLength(2);
+    expect(morselRolls).toHaveLength(2);
+    for (const roll of [...emberRolls, ...morselRolls]) {
+      expect(roll.questId).toBeDefined();
+    }
+    const rare = loot.find((l) => l.itemId === 'witness_root_cincture');
+    expect(rare).toBeTruthy();
+    expect(ITEMS.witness_root_cincture.quality).toBe('rare');
+  });
+
+  it('the Under-Shrine has a found diary page, not enter/leave lore prose (PHAA-433)', () => {
+    // Board feedback: lore belongs on a found object, read in its tooltip
+    // (flavorText), not shown automatically on dungeon enter/exit.
+    const note = DUNGEONS.under_shrine.objects?.find((o) => o.itemId === 'shrine_diary_page');
+    expect(note).toBeTruthy();
+    expect(ITEMS.shrine_diary_page.flavorText).toBeTruthy();
+    expect(DUNGEONS.under_shrine.enterText).not.toContain('kept its own time');
+    expect(DUNGEONS.under_shrine.leaveText).not.toContain('slow count');
+  });
+
   it('positions saved at the PRE-fork arena/delve x-bands rejoin inside the hub', () => {
     // The fork moved ARENA_X 4200 to 5400 and DELVE_X_MIN 4800 to 6000 to open
     // dungeon bands 6 and 7. A character saved mid-match or mid-delve at the

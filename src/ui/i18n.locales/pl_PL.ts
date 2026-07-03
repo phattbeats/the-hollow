@@ -801,10 +801,8 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
     'Przechodzisz przez bramę kapliczki. Powietrze robi się ciepłe i zielone, a przed tobą czeka waza.',
   'entities.dungeons.the_hollow.leaveText': 'Wracasz przez bramę do Eastbrook.',
   'entities.dungeons.the_hollow.name': 'Wydrążenie',
-  'entities.dungeons.under_shrine.enterText':
-    'Schodzisz pod kapliczkę. Powietrze cichnie i gęstnieje, a mrok przed tobą wcale nie wydaje się pusty.',
-  'entities.dungeons.under_shrine.leaveText':
-    'Wspinasz się z powrotem w ciepło. Gdzieś wysoko, ledwie wyczuwalnie, unosi się dym.',
+  'entities.dungeons.under_shrine.enterText': 'Schodzisz pod świątynię w chłodny, nieruchomy mrok.',
+  'entities.dungeons.under_shrine.leaveText': 'Wspinasz się z powrotem w ciepłe powietrze powyżej.',
   'entities.dungeons.under_shrine.name': 'Podziemia Kapliczki',
   'entities.items.acolytes_circlet.name': 'Diadem akolity',
   'entities.items.alien_armor_plate.name': 'Obca płyta pancerna',
@@ -913,6 +911,9 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'entities.items.fenwalker_boots.name': 'Buty bagiennego wędrowca',
   'entities.items.first_cutting.name': 'Sadzonka',
   'entities.items.witness_root_cincture.name': 'Pas Korzenia Świadka',
+  'entities.items.shrine_diary_page.name': 'Wydarta Strona z Dziennika',
+  'entities.items.shrine_diary_page.flavorText':
+    '...liczyłem czterdzieści dni przy świecy, zanim zgubiłem rachubę. Mrok tu, w dole, nie zapomina o Nim, choć On zapomniał o tym miejscu. Jeśli czapla zatoczy niski krąg, powiedz Zakrystianowi, że knot wciąż płonie...',
   'entities.items.footpad_jerkin.name': 'Kaftan rzezimieszka',
   'entities.items.forest_pink_armor_plate.name': 'Leśny róż',
   'entities.items.frayed_prayer_beads.name': 'Wystrzępione paciorki modlitewne',

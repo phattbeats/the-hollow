@@ -2933,9 +2933,8 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'entities.dungeons.the_hollow.leaveText': 'Você volta a sair pelo portão, de volta a Eastbrook.',
   'entities.dungeons.under_shrine.name': 'O Santuário Subterrâneo',
   'entities.dungeons.under_shrine.enterText':
-    'Você desce abaixo do santuário. O ar fica parado e fechado, e a escuridão à frente não parece vazia.',
-  'entities.dungeons.under_shrine.leaveText':
-    'Você sobe de volta para o calor. Acima de você, ao longe, fumaça.',
+    'Você desce abaixo do santuário para uma escuridão fria e imóvel.',
+  'entities.dungeons.under_shrine.leaveText': 'Você sobe de volta para o ar quente, lá em cima.',
   'worldContent.corpseName': '{name} (cadáver)',
   'worldContent.dungeonExitName': 'Saída de {name}',
   'worldContent.dungeonPartyWarning':
@@ -4551,6 +4550,9 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'entities.items.emberbulb.name': 'Bulbo de Brasa',
   'entities.items.first_cutting.name': 'Uma Muda',
   'entities.items.witness_root_cincture.name': 'Cinturão da Raiz Testemunha',
+  'entities.items.shrine_diary_page.name': 'Página de Diário Rasgada',
+  'entities.items.shrine_diary_page.flavorText':
+    '...contei quarenta dias à luz de vela antes de perder a conta. A escuridão aqui embaixo não O esquece, mesmo que Ele tenha esquecido este lugar. Se a garça voar baixo, diga ao Sacristão que o pavio ainda arde...',
   'entities.mobs.acolyte_tessa.name': 'Acólita Tessa',
   'entities.mobs.deacon_varric.name': 'Diácono Varric',
   'entities.mobs.reliquary_bonewalker.name': 'Caminhante de Ossos Erguido',

@@ -2987,9 +2987,8 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.dungeons.the_hollow.leaveText': 'Ты выходишь обратно через врата в Истврук.',
   'entities.dungeons.under_shrine.name': 'Подсвятилище',
   'entities.dungeons.under_shrine.enterText':
-    'Ты спускаешься под святилище. Воздух становится неподвижным и тесным, и тьма впереди не кажется пустой. Что-то здесь, внизу, всё ещё ведёт свой счёт времени, хотя его давно никто не слушает.',
-  'entities.dungeons.under_shrine.leaveText':
-    'Ты выбираешься обратно в тепло. Над тобой, едва заметно, дым. А внизу тьма продолжает свой медленный счёт.',
+    'Ты спускаешься под святилище, в прохладную, неподвижную тьму.',
+  'entities.dungeons.under_shrine.leaveText': 'Ты поднимаешься обратно в тёплый воздух наверху.',
   'worldContent.corpseName': '{name} (труп)',
   'worldContent.dungeonExitName': 'Выход из {name}',
   'worldContent.delveLockedChestInteract': 'Нажмите F, чтобы вскрыть замок',
@@ -4612,6 +4611,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.items.emberbulb.name': 'Тлеющая луковица',
   'entities.items.first_cutting.name': 'Черенок',
   'entities.items.witness_root_cincture.name': 'Обвязка Корня-Свидетеля',
+  'entities.items.shrine_diary_page.name': 'Обрывок страницы дневника',
+  'entities.items.shrine_diary_page.flavorText':
+    '...считал сорок дней при свече, пока не сбился со счёта. Тьма здесь, внизу, не забывает Его, даже если Он забыл это место. Если цапля пролетит низко, скажи пономарю, что фитиль всё ещё горит...',
   'entities.mobs.acolyte_tessa.name': 'Послушница Тесса',
   'entities.mobs.deacon_varric.name': 'Дьякон Варрик',
   'entities.mobs.reliquary_bonewalker.name': 'Поднятый костеход',

@@ -2948,13 +2948,15 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.dungeons.the_hollow.leaveText': 'Du trittst zurück durch das Tor nach Eastbrook.',
   'entities.dungeons.under_shrine.name': 'Der Unter-Schrein',
   'entities.dungeons.under_shrine.enterText':
-    'Du steigst unter den Schrein hinab. Die Luft wird still und eng, und das Dunkel voraus fühlt sich nicht leer an.',
-  'entities.dungeons.under_shrine.leaveText':
-    'Du kletterst zurück in die Wärme. Über dir, kaum wahrnehmbar, Rauch.',
+    'Du steigst unter den Schrein in kühle, stille Dunkelheit hinab.',
+  'entities.dungeons.under_shrine.leaveText': 'Du steigst zurück in die warme Luft darüber.',
   'entities.items.cave_morsel.name': 'Höhlenhappen',
   'entities.items.emberbulb.name': 'Glutknolle',
   'entities.items.first_cutting.name': 'Ein Ableger',
   'entities.items.witness_root_cincture.name': 'Zeugenwurzels Gürtel',
+  'entities.items.shrine_diary_page.name': 'Zerrissene Tagebuchseite',
+  'entities.items.shrine_diary_page.flavorText':
+    '...zählte vierzig Tage bei Kerzenlicht, bevor ich den Faden verlor. Das Dunkel hier unten vergisst Ihn nicht, auch wenn Er diesen Ort vergessen hat. Wenn der Reiher tief kreist, sag dem Küster, der Docht brennt noch...',
   'entities.mobs.palefeeder.name': 'Bleichfresser',
   'entities.mobs.rootmaw.name': 'Wurzelmaul',
   'entities.mobs.the_witness_root.name': 'Die Zeugenwurzel',

@@ -793,9 +793,8 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'entities.dungeons.the_hollow.leaveText': 'Du kliver tillbaka ut genom porten till Eastbrook.',
   'entities.dungeons.the_hollow.name': 'Den ihåliga',
   'entities.dungeons.under_shrine.enterText':
-    'Du stiger ner under helgedomen. Luften blir stilla och tät, och mörkret framåt känns inte tomt.',
-  'entities.dungeons.under_shrine.leaveText':
-    'Du klättrar tillbaka upp i värmen. Ovanför dig, svagt, rök.',
+    'Du stiger ner under helgedomen i sval, stilla mörker.',
+  'entities.dungeons.under_shrine.leaveText': 'Du klättrar upp igen till den varma luften ovanför.',
   'entities.dungeons.under_shrine.name': 'Underhelgedomen',
   'entities.items.acolytes_circlet.name': 'Akolytens diadem',
   'entities.items.alien_armor_plate.name': 'Främmande rustningsplåt',
@@ -904,6 +903,9 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'entities.items.fenwalker_boots.name': 'Kärrvandrarstövlar',
   'entities.items.first_cutting.name': 'En stickling',
   'entities.items.witness_root_cincture.name': 'Vittnesrotens gördel',
+  'entities.items.shrine_diary_page.name': 'Sönderriven Dagbokssida',
+  'entities.items.shrine_diary_page.flavorText':
+    '...räknade fyrtio dagar vid ljusets sken innan jag tappade tråden. Mörkret här nere glömmer Honom inte, även om Han har glömt denna plats. Om hägern cirklar lågt, säg till Klockaren att veken fortfarande brinner...',
   'entities.items.footpad_jerkin.name': 'Stråtrövarväst',
   'entities.items.forest_pink_armor_plate.name': 'Skogsrosa',
   'entities.items.frayed_prayer_beads.name': 'Slitna böneradband',

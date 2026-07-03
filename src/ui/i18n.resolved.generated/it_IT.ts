@@ -5102,6 +5102,10 @@ export const it_IT: EnTranslations = {
       "witness_root_cincture": {
         "name": "Cintura della Radice Testimone"
       },
+      "shrine_diary_page": {
+        "name": "Pagina di Diario Strappata",
+        "flavorText": "...ho contato quaranta giorni a lume di candela prima di perdere il filo. Il buio quaggiù non Lo dimentica, anche se Lui ha dimenticato questo luogo. Se l'airone vola basso, di' al Sagrestano che lo stoppino brucia ancora..."
+      },
       "reliquary_plate_chest": {
         "name": "Usbergo della guardia del reliquiario"
       },
@@ -6722,8 +6726,8 @@ export const it_IT: EnTranslations = {
       },
       "under_shrine": {
         "name": "Il Sottosantuario",
-        "enterText": "Scendi sotto il santuario. L'aria si fa immobile e chiusa, e il buio davanti a te non sembra vuoto.",
-        "leaveText": "Risali nel tepore. Sopra di te, appena percettibile, fumo."
+        "enterText": "Scendi sotto il santuario in un buio freddo e immobile.",
+        "leaveText": "Risali all'aria calda, sopra di te."
       }
     },
     "delves": {

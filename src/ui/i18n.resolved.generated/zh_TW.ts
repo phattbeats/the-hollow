@@ -5102,6 +5102,10 @@ export const zh_TW: EnTranslations = {
       "witness_root_cincture": {
         "name": "見證根的束帶"
       },
+      "shrine_diary_page": {
+        "name": "撕碎的日記頁",
+        "flavorText": "……我數著燭光過了四十天，後來便斷了數。這底下的黑暗從未忘記祂，儘管祂已經忘了這個地方。若鷺鳥低飛掠過，告訴守燈人，燭芯還燃著……"
+      },
       "reliquary_plate_chest": {
         "name": "聖物庫守衛鎖甲"
       },
@@ -6722,8 +6726,8 @@ export const zh_TW: EnTranslations = {
       },
       "under_shrine": {
         "name": "地下聖龕",
-        "enterText": "你潛入神龕之下。空氣變得靜止而壓抑，前方的黑暗似乎並不空無一物。這下面的某個東西，在無人聆聽許久之後，仍自顧自地計著時間。",
-        "leaveText": "你爬回溫暖之處。頭頂上方，隱約有煙。而在下方，黑暗仍在緩緩計數。"
+        "enterText": "你走下神龕，進入清冷寂靜的黑暗。",
+        "leaveText": "你爬回上方溫暖的空氣中。"
       }
     },
     "delves": {

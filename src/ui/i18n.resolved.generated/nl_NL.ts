@@ -5102,6 +5102,10 @@ export const nl_NL: EnTranslations = {
       "witness_root_cincture": {
         "name": "Getuigenwortels Gordel"
       },
+      "shrine_diary_page": {
+        "name": "Gescheurde Dagboekpagina",
+        "flavorText": "...telde veertig dagen bij kaarslicht voor ik de draad kwijtraakte. Het duister hier beneden vergeet Hem niet, ook al is Hij deze plek vergeten. Als de reiger laag cirkelt, zeg de Koster dat de pit nog brandt..."
+      },
       "reliquary_plate_chest": {
         "name": "Reliekwacht-Maliënkolder"
       },
@@ -6722,8 +6726,8 @@ export const nl_NL: EnTranslations = {
       },
       "under_shrine": {
         "name": "De Onderschrijn",
-        "enterText": "Je daalt af onder de schrijn. De lucht wordt stil en drukkend, en het duister verderop voelt niet leeg aan.",
-        "leaveText": "Je klimt terug de warmte in. Boven je, vaag, rook."
+        "enterText": "Je daalt af onder het heiligdom, de koele, stille duisternis in.",
+        "leaveText": "Je klimt terug omhoog naar de warme lucht."
       }
     },
     "delves": {

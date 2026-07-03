@@ -5102,6 +5102,10 @@ export const pt_BR: EnTranslations = {
       "witness_root_cincture": {
         "name": "Cinturão da Raiz Testemunha"
       },
+      "shrine_diary_page": {
+        "name": "Página de Diário Rasgada",
+        "flavorText": "...contei quarenta dias à luz de vela antes de perder a conta. A escuridão aqui embaixo não O esquece, mesmo que Ele tenha esquecido este lugar. Se a garça voar baixo, diga ao Sacristão que o pavio ainda arde..."
+      },
       "reliquary_plate_chest": {
         "name": "Cota da Guarda do Relicário"
       },
@@ -6722,8 +6726,8 @@ export const pt_BR: EnTranslations = {
       },
       "under_shrine": {
         "name": "O Santuário Subterrâneo",
-        "enterText": "Você desce abaixo do santuário. O ar fica parado e fechado, e a escuridão à frente não parece vazia.",
-        "leaveText": "Você sobe de volta para o calor. Acima de você, ao longe, fumaça."
+        "enterText": "Você desce abaixo do santuário para uma escuridão fria e imóvel.",
+        "leaveText": "Você sobe de volta para o ar quente, lá em cima."
       }
     },
     "delves": {

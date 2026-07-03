@@ -5102,6 +5102,10 @@ export const id_ID: EnTranslations = {
       "witness_root_cincture": {
         "name": "Sabuk Akar Saksi"
       },
+      "shrine_diary_page": {
+        "name": "Halaman Buku Harian yang Robek",
+        "flavorText": "...menghitung empat puluh hari dengan cahaya lilin sebelum kehilangan hitungan. Kegelapan di bawah sini tak melupakan-Nya, meski Dia telah melupakan tempat ini. Jika bangau terbang rendah, katakan pada Sang Penjaga sumbunya masih menyala..."
+      },
       "reliquary_plate_chest": {
         "name": "Baju Zirah Penjaga Relikuari"
       },
@@ -6722,8 +6726,8 @@ export const id_ID: EnTranslations = {
       },
       "under_shrine": {
         "name": "Kuil Bawah",
-        "enterText": "Kau turun ke bawah kuil. Udara menjadi sunyi dan rapat, dan kegelapan di depan terasa tidak kosong.",
-        "leaveText": "Kau memanjat kembali ke kehangatan. Di atasmu, samar-samar, asap."
+        "enterText": "Kau turun ke bawah kuil, masuk ke kegelapan yang dingin dan sunyi.",
+        "leaveText": "Kau naik kembali ke udara hangat di atas."
       }
     },
     "delves": {

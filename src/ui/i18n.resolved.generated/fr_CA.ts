@@ -5102,6 +5102,10 @@ export const fr_CA: EnTranslations = {
       "witness_root_cincture": {
         "name": "Ceinturon de la Racine témoin"
       },
+      "shrine_diary_page": {
+        "name": "Page de Journal Déchirée",
+        "flavorText": "...j'ai compté quarante jours à la chandelle avant de perdre le fil. L'obscurité d'ici-bas ne L'oublie pas, même s'Il a oublié cet endroit. Si le héron plane bas, dis au Sacristain que la mèche brûle encore..."
+      },
       "reliquary_plate_chest": {
         "name": "Haubert de la garde du reliquaire"
       },
@@ -6722,8 +6726,8 @@ export const fr_CA: EnTranslations = {
       },
       "under_shrine": {
         "name": "Le Sous-Sanctuaire",
-        "enterText": "Tu descends sous le sanctuaire. L'air se fait immobile et proche, et l'obscurité devant toi ne semble pas vide.",
-        "leaveText": "Tu remontes dans la chaleur. Au-dessus de toi, faiblement, de la fumée."
+        "enterText": "Vous descendez sous le sanctuaire dans une obscurité fraîche et immobile.",
+        "leaveText": "Vous remontez à l'air chaud, au-dessus."
       }
     },
     "delves": {

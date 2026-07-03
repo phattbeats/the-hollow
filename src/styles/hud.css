@@ -2182,6 +2182,14 @@
     margin-top: 4px;
     font-size: 11.5px;
   }
+  /* Quoted lore line on a found book/note/diary item (a "flavor text" quote,
+     classic-style), distinct from tt-desc's use-instruction text. */
+  #tooltip .tt-flavor {
+    color: var(--color-accent);
+    font-style: italic;
+    margin-top: 4px;
+    font-size: 11.5px;
+  }
   #tooltip .tt-stat {
     color: #fff;
     font-size: 11.5px;
@@ -2340,6 +2348,7 @@
     font-size: calc(11.5px * var(--tooltip-scale, 1));
   }
   #tooltip .tt-desc,
+  #tooltip .tt-flavor,
   #tooltip .tt-stat,
   #tooltip .tt-green,
   #tooltip .tt-body {
@@ -2384,7 +2393,8 @@
   body.high-contrast-text .panel,
   body.high-contrast-text .set-name,
   body.high-contrast-text .tt-stat,
-  body.high-contrast-text .tt-desc {
+  body.high-contrast-text .tt-desc,
+  body.high-contrast-text .tt-flavor {
     text-shadow:
       0 0 2px #000,
       1px 1px 2px #000,

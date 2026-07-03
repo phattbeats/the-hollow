@@ -5102,6 +5102,10 @@ export const tr_TR: EnTranslations = {
       "witness_root_cincture": {
         "name": "Tanık Kök'ün Kemeri"
       },
+      "shrine_diary_page": {
+        "name": "Yırtık Günlük Sayfası",
+        "flavorText": "...ipin ucunu kaçırana dek mum ışığında kırk gün saydım. Buradaki karanlık O'nu unutmuyor, O bu yeri unutmuş olsa bile. Balıkçıl alçaktan süzülürse, Bekçi'ye söyle, fitil hâlâ yanıyor..."
+      },
       "reliquary_plate_chest": {
         "name": "Emanetlik Muhafızı Zırhı"
       },
@@ -6722,8 +6726,8 @@ export const tr_TR: EnTranslations = {
       },
       "under_shrine": {
         "name": "Mabet Altı",
-        "enterText": "Mabedin altına inersin. Hava durgunlaşıp sıkışır, ilerideki karanlık boş hissettirmez.",
-        "leaveText": "Sıcağa doğru tırmanıp geri çıkarsın. Yukarıdan, hafifçe, duman kokusu gelir."
+        "enterText": "Mabedin altına, serin ve durgun karanlığa iniyorsun.",
+        "leaveText": "Yukarıdaki sıcak havaya geri tırmanıyorsun."
       }
     },
     "delves": {

@@ -821,9 +821,8 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
     'Kau melangkah keluar lagi melewati gerbang menuju Eastbrook.',
   'entities.dungeons.the_hollow.name': 'Yang Berongga',
   'entities.dungeons.under_shrine.enterText':
-    'Kau turun ke bawah kuil. Udara menjadi sunyi dan rapat, dan kegelapan di depan terasa tidak kosong.',
-  'entities.dungeons.under_shrine.leaveText':
-    'Kau memanjat kembali ke kehangatan. Di atasmu, samar-samar, asap.',
+    'Kau turun ke bawah kuil, masuk ke kegelapan yang dingin dan sunyi.',
+  'entities.dungeons.under_shrine.leaveText': 'Kau naik kembali ke udara hangat di atas.',
   'entities.dungeons.under_shrine.name': 'Kuil Bawah',
   'entities.items.acolytes_circlet.name': 'Mahkota Acolyte',
   'entities.items.alien_armor_plate.name': 'Lempeng Zirah Asing',
@@ -932,6 +931,9 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'entities.items.fenwalker_boots.name': 'Bot Penjelajah Rawa',
   'entities.items.first_cutting.name': 'Sebuah Stek',
   'entities.items.witness_root_cincture.name': 'Sabuk Akar Saksi',
+  'entities.items.shrine_diary_page.name': 'Halaman Buku Harian yang Robek',
+  'entities.items.shrine_diary_page.flavorText':
+    '...menghitung empat puluh hari dengan cahaya lilin sebelum kehilangan hitungan. Kegelapan di bawah sini tak melupakan-Nya, meski Dia telah melupakan tempat ini. Jika bangau terbang rendah, katakan pada Sang Penjaga sumbunya masih menyala...',
   'entities.items.footpad_jerkin.name': 'Jaket Perampok',
   'entities.items.forest_pink_armor_plate.name': 'Merah Muda Hutan',
   'entities.items.frayed_prayer_beads.name': 'Tasbih Doa Usang',

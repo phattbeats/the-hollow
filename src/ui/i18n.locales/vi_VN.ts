@@ -806,9 +806,8 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'entities.dungeons.the_hollow.leaveText': 'Bạn bước trở ra qua cổng, vào Eastbrook.',
   'entities.dungeons.the_hollow.name': 'Hố Rỗng',
   'entities.dungeons.under_shrine.enterText':
-    'Bạn đi xuống dưới thánh điện. Không khí trở nên tĩnh lặng và ngột ngạt, và bóng tối phía trước không có cảm giác trống rỗng.',
-  'entities.dungeons.under_shrine.leaveText':
-    'Bạn leo trở lại nơi ấm áp. Phía trên bạn, thoang thoảng, có khói.',
+    'Bạn đi xuống dưới điện thờ, vào bóng tối lạnh lẽo và tĩnh lặng.',
+  'entities.dungeons.under_shrine.leaveText': 'Bạn leo trở lên không khí ấm áp phía trên.',
   'entities.dungeons.under_shrine.name': 'Điện Thờ Ngầm',
   'entities.items.acolytes_circlet.name': 'Vòng Đầu Tu Đồ',
   'entities.items.alien_armor_plate.name': 'Tấm Giáp Ngoại Lai',
@@ -917,6 +916,9 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'entities.items.fenwalker_boots.name': 'Giày Bộ Hành Đầm Lầy',
   'entities.items.first_cutting.name': 'Một Nhánh Giâm',
   'entities.items.witness_root_cincture.name': 'Đai Lưng Của Rễ Chứng Nhân',
+  'entities.items.shrine_diary_page.name': 'Trang Nhật Ký Bị Xé',
+  'entities.items.shrine_diary_page.flavorText':
+    '...đếm bốn mươi ngày bằng ánh nến trước khi mất dấu. Bóng tối dưới đây không quên Người, dù Người đã quên nơi này. Nếu con diệc lượn thấp, hãy nói với Người Giữ Đền rằng bấc đèn vẫn còn cháy...',
   'entities.items.footpad_jerkin.name': 'Áo Da Của Kẻ Cướp Đường',
   'entities.items.forest_pink_armor_plate.name': 'Hồng Rừng Xanh',
   'entities.items.frayed_prayer_beads.name': 'Tràng Hạt Cầu Nguyện Sờn Rách',

@@ -5102,6 +5102,10 @@ export const pl_PL: EnTranslations = {
       "witness_root_cincture": {
         "name": "Pas Korzenia Świadka"
       },
+      "shrine_diary_page": {
+        "name": "Wydarta Strona z Dziennika",
+        "flavorText": "...liczyłem czterdzieści dni przy świecy, zanim zgubiłem rachubę. Mrok tu, w dole, nie zapomina o Nim, choć On zapomniał o tym miejscu. Jeśli czapla zatoczy niski krąg, powiedz Zakrystianowi, że knot wciąż płonie..."
+      },
       "reliquary_plate_chest": {
         "name": "Kolczuga strażnika relikwiarza"
       },
@@ -6722,8 +6726,8 @@ export const pl_PL: EnTranslations = {
       },
       "under_shrine": {
         "name": "Podziemia Kapliczki",
-        "enterText": "Schodzisz pod kapliczkę. Powietrze cichnie i gęstnieje, a mrok przed tobą wcale nie wydaje się pusty.",
-        "leaveText": "Wspinasz się z powrotem w ciepło. Gdzieś wysoko, ledwie wyczuwalnie, unosi się dym."
+        "enterText": "Schodzisz pod świątynię w chłodny, nieruchomy mrok.",
+        "leaveText": "Wspinasz się z powrotem w ciepłe powietrze powyżej."
       }
     },
     "delves": {
