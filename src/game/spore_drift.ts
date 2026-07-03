@@ -1,10 +1,12 @@
-// Bioluminescent spore login-screen backdrop candidate (PHAA-406). Similar DOM-
-// particle mechanic to the .ember background in main.ts (a handful of
-// CSS-animated dots), but each spore hovers and drifts gently in place near
-// where it spawns, rather than sweeping the full viewport height, so it stays
-// visible instead of fading out while still crossing into frame. Takes only a
-// container element so it can be mounted anywhere and previewed standalone via
-// ?bg=spore-drift.
+// Bioluminescent spore login-screen backdrop (PHAA-406): the sole ambient
+// backdrop for the start screen, mounted over the near-black base by main.ts.
+// A handful of CSS-animated DOM dots (the same lightweight mechanic as the old
+// ember field it replaced), but each spore hovers and drifts gently in place
+// near where it spawns rather than sweeping the full viewport height, so it
+// stays visible instead of fading out while still crossing into frame. Takes
+// only a container element so it can be mounted anywhere. Reduced-motion /
+// high-contrast / phone / Save-Data hide the field via CSS (.backdrop-static /
+// prefers-reduced-motion in shell.css).
 
 export function mountSporeDrift(backdrop: HTMLElement, count = 28): void {
   const container = document.createElement('div');
