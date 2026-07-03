@@ -1112,6 +1112,12 @@ export interface NpcDef {
   // mid-fight). Keeping the def in NPCS lets the online client reconstruct its
   // questIds and treat it as a turn-in NPC.
   dynamic?: boolean;
+  // Ambient idle walk (npc_wander.ts): the NPC paces a slow circle of this
+  // radius around its own spawn point instead of standing still. Presentation
+  // only (no quest/interaction logic reads it) and deliberately RNG-free
+  // (driven by ctx.tickCount, never ctx.rng) so it never perturbs the shared
+  // Rng draw order golden/parity traces depend on. Omit for a stationary NPC.
+  wanderRadius?: number;
 }
 
 export interface CampDef {

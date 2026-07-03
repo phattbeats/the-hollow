@@ -166,6 +166,7 @@ import {
   updateMobTarget as updateMobTargetFn,
 } from './mob/targeting';
 import { combatProfileForMob, effectiveMobMeleeRange, type MobCombatProfile } from './mob_combat';
+import { updateNpcWander } from './npc_wander';
 import {
   findPlayerPath,
   PLAYER_BODY_RADIUS,
@@ -2468,6 +2469,7 @@ export class Sim {
     this.updateDelveRuns();
     this.market.update();
     this.greenpawHearth.update(DT);
+    updateNpcWander(this.ctx);
     drainDelayedEvents(this.ctx);
 
     // movement re-bucketing: queries during the next tick and the server's
