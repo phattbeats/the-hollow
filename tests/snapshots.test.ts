@@ -1734,20 +1734,20 @@ describe('lockpick view rebuilds from events on the online client', () => {
 // ---------------------------------------------------------------------------
 // W0a: full self-snapshot delta round-trip gate.
 //
-// `selfWireJson` (server/game.ts) emits 25 heavy "delta" fields through a
+// `selfWireJson` (server/game.ts) emits 27 heavy "delta" fields through a
 // `maybe(key, value)` closure that ships a key only when its serialized form
 // changed since this session last received it; `applySnapshot` (src/net/
 // online.ts) mirrors each with `if (s.X !== undefined)` (or the inline
 // `s.X ?? e.X` form for `stats`/`weapon`). This is the single most fragile codec
-// in the workstream, so we pin: (a) the exact 25-key set against drift, (b) the
+// in the workstream, so we pin: (a) the exact 27-key set against drift, (b) the
 // terse-key -> IWorld-name rename map, (c) that every dirtied value round-trips
-// onto the correct decode target, and (d) that a no-op re-broadcast omits all 25
+// onto the correct decode target, and (d) that a no-op re-broadcast omits all 27
 // while the prior decoded value is preserved.
 // ---------------------------------------------------------------------------
 
-// The pinned set of the 26 `maybe(...)` delta keys, sorted. Cross-checked below
+// The pinned set of the 27 `maybe(...)` delta keys, sorted. Cross-checked below
 // against the live `maybe(...)` calls scraped from server/game.ts source, so a
-// 27th unregistered delta key reddens this gate.
+// 28th unregistered delta key reddens this gate.
 const ALL_DELTA_KEYS = [
   'arena',
   'buyback',
@@ -1761,6 +1761,7 @@ const ALL_DELTA_KEYS = [
   'drun',
   'duel',
   'equip',
+  'hearth',
   'housing',
   'inv',
   'lockouts',
@@ -1796,6 +1797,7 @@ const TERSE_TO_IWORLD: Record<string, string> = {
   drun: 'delveRun',
   duel: 'duelInfo',
   equip: 'equipment',
+  hearth: 'hollowHearth',
   housing: 'housingInfo',
   inv: 'inventory',
   lockouts: 'selfLockouts',
@@ -1867,6 +1869,8 @@ function dirtyEveryDeltaField(): {
   (sim as any).targeting.partyMarkers.set(party.id, new Map([[mp, 3]]));
   const merchant = sim.entities.get(sim.market.merchantId);
   if (merchant) merchant.pos = { ...p.pos };
+  // hearth: global state, no player positioning needed to dirty it.
+  sim.loadGreenpawHearth({ hunger: 50, smoke: 42 });
 
   // Direct PlayerMeta fields.
   meta.inventory = [{ itemId: 'baked_bread', count: 3 }];
@@ -1925,7 +1929,7 @@ function dirtyEveryDeltaField(): {
 }
 
 describe('full self-state snapshot delta fixture', () => {
-  it('carries every one of the 25 dirtied delta keys on the first snapshot', () => {
+  it('carries every one of the 27 dirtied delta keys on the first snapshot', () => {
     const { server, fc } = dirtyEveryDeltaField();
     broadcast(server);
     const snap = lastSnap(fc.sent);
@@ -1982,6 +1986,7 @@ describe('full self-state snapshot delta fixture', () => {
     expect(client.marketInfo).not.toBeNull(); // market -> marketInfo
     expect(client.housingInfo).not.toBeNull(); // housing -> housingInfo
     expect(client.housingInfo?.plots.length).toBeGreaterThan(0);
+    expect(client.hollowHearth).toEqual({ smoke: 42, level: 'hazy' }); // hearth -> hollowHearth
     expect(client.activeLootRolls().map((r) => r.rollId)).toEqual([1]); // lroll -> lootRollPrompts
     expect(client.delveRun).not.toBeNull(); // drun -> delveRun
     expect(client.companionState?.companionId).toBe('companion_tessa'); // dcompanion -> companionState
@@ -1998,7 +2003,7 @@ describe('full self-state snapshot delta fixture', () => {
     expect(client.activeLoadout).toBe(0);
   });
 
-  it('omits all 25 delta keys on a no-op re-broadcast and preserves the prior mirror', () => {
+  it('omits all 27 delta keys on a no-op re-broadcast and preserves the prior mirror', () => {
     const { server, fc, leader, memberPid } = dirtyEveryDeltaField();
     broadcast(server);
     const client = bareClient(leader.pid);
@@ -2037,9 +2042,9 @@ describe('full self-state snapshot delta fixture', () => {
 });
 
 describe('delta-key contract pins (anti-drift)', () => {
-  it('ALL_DELTA_KEYS contains exactly 26 unique keys in sorted order', () => {
-    expect(ALL_DELTA_KEYS).toHaveLength(26);
-    expect(new Set(ALL_DELTA_KEYS).size).toBe(26);
+  it('ALL_DELTA_KEYS contains exactly 27 unique keys in sorted order', () => {
+    expect(ALL_DELTA_KEYS).toHaveLength(27);
+    expect(new Set(ALL_DELTA_KEYS).size).toBe(27);
     expect([...ALL_DELTA_KEYS]).toEqual([...ALL_DELTA_KEYS].sort());
   });
 
@@ -2051,7 +2056,7 @@ describe('delta-key contract pins (anti-drift)', () => {
     const scraped = new Set<string>();
     for (let m = re.exec(src); m !== null; m = re.exec(src)) scraped.add(m[1]);
     expect(scraped.has('lockouts')).toBe(true); // the multi-line call IS captured
-    expect(scraped.size).toBe(26);
+    expect(scraped.size).toBe(27);
     expect([...scraped].sort()).toEqual([...ALL_DELTA_KEYS].sort());
   });
 

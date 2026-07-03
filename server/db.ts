@@ -1,4 +1,5 @@
 import { Pool } from 'pg';
+import type { GreenpawHearthSave } from '../src/sim/greenpaw_hearth';
 import type { HousingSave } from '../src/sim/housing';
 import { LEADERBOARD_MAX } from '../src/sim/leaderboard_page';
 import { sanitizeRemovedZone1Content } from '../src/sim/removed_zone1_content';
@@ -1995,6 +1996,17 @@ export async function loadHousingState(): Promise<HousingSave | null> {
 
 export async function saveHousingState(save: HousingSave): Promise<void> {
   await saveWorldState('housing', save);
+}
+
+// Greenpaw's hearth (PHAA-421): shared global state like the market, one
+// JSONB blob under the 'greenpaw_hearth' key. Additive: no new tables or
+// columns.
+export async function loadGreenpawHearthState(): Promise<GreenpawHearthSave | null> {
+  return loadWorldState<GreenpawHearthSave>('greenpaw_hearth');
+}
+
+export async function saveGreenpawHearthState(save: GreenpawHearthSave): Promise<void> {
+  await saveWorldState('greenpaw_hearth', save);
 }
 
 // ---------------------------------------------------------------------------

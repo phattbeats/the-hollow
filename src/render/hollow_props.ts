@@ -39,6 +39,17 @@ export function hollowVaseWorldPos(pz: number): { x: number; y: number; z: numbe
   return { x: o.x + VASE_POS.x, y: 0, z: o.z + VASE_POS.z };
 }
 
+/**
+ * Vase-smoke particle intensity (0..1) from Greenpaw's hearth (PHAA-421,
+ * IWorld.hollowHearth): a straight smoke/100 read, so `vfx.vaseSmoke` scales
+ * continuously with the sim's smoke value rather than jumping at the
+ * clear/hazy/full bucket edges. `null` (no hearth data yet) reads as clear.
+ */
+export function hollowSmokeIntensity(hearth: { smoke: number } | null): number {
+  if (!hearth) return 0;
+  return Math.max(0, Math.min(1, hearth.smoke / 100));
+}
+
 // GLB kit pieces reused from the overworld prop set (same files props.ts
 // loads, so they are already part of the asset budget).
 const KIT = {

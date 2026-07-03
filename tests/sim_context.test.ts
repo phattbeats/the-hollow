@@ -201,6 +201,8 @@ const CALLBACK_KEYS = [
   'marketListingBelongsTo',
   // Housing v0: the /house chat-command branch.
   'housingChat',
+  // Greenpaw's hearth (PHAA-421): the /feed chat-command branch.
+  'greenpawFeedChat',
 ] as const;
 
 // A fully-spied fake host. `clock` is mutable so a test can prove the context reads
@@ -429,6 +431,7 @@ function makeFakeHost() {
     partyCapacity: vi.fn(() => 5),
     marketListingBelongsTo: vi.fn(() => false),
     housingChat: vi.fn(() => false),
+    greenpawFeedChat: vi.fn(() => false),
   };
   return { host, rng, entities, clock };
 }

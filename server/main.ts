@@ -1395,6 +1395,7 @@ async function main(): Promise<void> {
     );
   await game.loadMarket();
   await game.loadHousing();
+  await game.loadGreenpawHearth();
   await game.loadChatFilter();
   await game.loadBlockedIps();
   void game.recordOnlineSnapshot();
