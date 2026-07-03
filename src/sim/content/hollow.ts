@@ -91,6 +91,11 @@ export const HOLLOW_MOBS: Record<string, MobTemplate> = {
     armorPerLevel: 4,
     moveSpeed: 8,
     aggroRadius: 9, // they come at your light, not at you
+    // PHAA-433: 15s respawn (0.6 of the 25s default) so the first-run farm loop
+    // stays fed for a solo gatherer. Faster than open-world trash on purpose:
+    // this is the guided first descent, and palefeeder/rootmaw live only in the
+    // Under-Shrine, so the shorter timer is scoped to that room.
+    respawnMult: 0.6,
     loot: [
       { copper: 8, chance: 1 },
       { itemId: 'emberbulb', chance: 0.5, questId: 'q_what_burns' },
@@ -119,6 +124,7 @@ export const HOLLOW_MOBS: Record<string, MobTemplate> = {
     armorPerLevel: 6,
     moveSpeed: 9,
     aggroRadius: 8,
+    respawnMult: 0.6, // PHAA-433: 15s respawn, matching palefeeder (see note above)
     loot: [
       { copper: 14, chance: 1 },
       { itemId: 'cave_morsel', chance: 0.6, questId: 'q_what_fills' },
@@ -456,14 +462,25 @@ export const HOLLOW_ITEMS: Record<string, ItemDef> = {
 
 // Phase 3 fills the real rooms and the furnace mechanic; the skeleton gives
 // the descent a first chamber, a deep chamber, and something waiting.
+// PHAA-433: density raised (4 palefeeder to 6, 3 rootmaw to 5) so a solo
+// level 1-3 player gathers the first run's 5 emberbulb + 4 cave_morsel in one
+// descent without dead-waiting on respawns. With the room this full it can
+// never be cleared solo faster than the shortened 15s respawn (palefeeder /
+// rootmaw respawnMult above), so there is always something live to fight on
+// the walk back, yet 11 soft trash spread over z 14..58 still pull in ones and
+// twos (aggroRadius 8-9), never a wipe-inducing swarm.
 const UNDER_SHRINE_SPAWNS: DungeonSpawn[] = [
   { mobId: 'palefeeder', x: -4, z: 14 },
   { mobId: 'palefeeder', x: 5, z: 18 },
+  { mobId: 'palefeeder', x: 2, z: 22 },
   { mobId: 'palefeeder', x: -2, z: 26 },
+  { mobId: 'rootmaw', x: -4, z: 30 },
   { mobId: 'rootmaw', x: 3, z: 34 },
-  { mobId: 'rootmaw', x: -5, z: 40 },
+  { mobId: 'palefeeder', x: 4, z: 38 },
+  { mobId: 'rootmaw', x: -5, z: 42 },
   { mobId: 'palefeeder', x: 0, z: 48 },
-  { mobId: 'rootmaw', x: 4, z: 55 },
+  { mobId: 'rootmaw', x: 4, z: 52 },
+  { mobId: 'rootmaw', x: -3, z: 58 },
   { mobId: 'the_witness_root', x: 0, z: 70 },
 ];
 

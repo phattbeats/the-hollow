@@ -227,6 +227,41 @@ describe('The Hollow hub', () => {
     expect(morsel?.questId).toBe('q_what_fills');
   });
 
+  it('the Under-Shrine is dense and fast-respawning enough to farm the first run solo (PHAA-433)', () => {
+    const spawns = DUNGEONS.under_shrine.spawns;
+    const palefeeders = spawns.filter((s) => s.mobId === 'palefeeder').length;
+    const rootmaws = spawns.filter((s) => s.mobId === 'rootmaw').length;
+    const witnesses = spawns.filter((s) => s.mobId === 'the_witness_root').length;
+    expect(witnesses).toBe(1); // still exactly one boss at the back
+
+    // The first run needs 5 emberbulb (palefeeder, 0.5 quest-drop) + 4 cave_morsel
+    // (rootmaw, 0.6). Density must let a solo player clear those in one descent.
+    expect(palefeeders).toBeGreaterThanOrEqual(6);
+    expect(rootmaws).toBeGreaterThanOrEqual(5);
+
+    // Respawn is shortened below the 25s default so the room stays fed on the
+    // walk back rather than emptying out (the reported "too slow" stall).
+    const DEFAULT_RESPAWN_SECONDS = 25; // sim.ts: cfg.respawnSeconds ?? 25
+    const sim = new Sim({ seed: 42, playerClass: 'warrior', noPlayer: true });
+    expect(sim.cfg.respawnSeconds ?? DEFAULT_RESPAWN_SECONDS).toBe(DEFAULT_RESPAWN_SECONDS);
+    for (const mobId of ['palefeeder', 'rootmaw'] as const) {
+      const mult = MOBS[mobId].respawnMult ?? 1;
+      expect(mult).toBeLessThan(1);
+      // materially faster than default, but not instant whack-a-mole
+      expect(DEFAULT_RESPAWN_SECONDS * mult).toBeLessThanOrEqual(20);
+      expect(DEFAULT_RESPAWN_SECONDS * mult).toBeGreaterThanOrEqual(10);
+    }
+
+    // Sanity on the farm loop: two laps of the room (the first clear plus one
+    // respawn wave, which the shortened timer makes ready before the descent
+    // ends) comfortably exceeds the 5 + 4 the quests ask for, so a solo run
+    // finishes without dead-waiting even on a below-average drop seed.
+    const emberDrop = MOBS.palefeeder.loot.find((l) => l.itemId === 'emberbulb')!.chance;
+    const morselDrop = MOBS.rootmaw.loot.find((l) => l.itemId === 'cave_morsel')!.chance;
+    expect(2 * palefeeders * emberDrop).toBeGreaterThanOrEqual(5);
+    expect(2 * rootmaws * morselDrop).toBeGreaterThanOrEqual(4);
+  });
+
   it('positions saved at the PRE-fork arena/delve x-bands rejoin inside the hub', () => {
     // The fork moved ARENA_X 4200 to 5400 and DELVE_X_MIN 4800 to 6000 to open
     // dungeon bands 6 and 7. A character saved mid-match or mid-delve at the
