@@ -5720,7 +5720,12 @@ export const da_DK: EnTranslations = {
       "brother_greenpaw": {
         "name": "Broder Grønpote",
         "title": "Første Profet (selvudnævnt)",
-        "greeting": "hej, rejsende. fangede du vasen i humør i dag, eller er det bare mig igen... kom her, har et par hellige sager der trænger til pleje. mest snacks. samme ting, når man er Grønpote."
+        "greeting": "hej, rejsende. fangede du vasen i humør i dag, eller er det bare mig igen... kom her, har et par hellige sager der trænger til pleje. mest snacks. samme ting, når man er Grønpote.",
+        "introLines": {
+          "0": "uhh... hi. hi. didn't hear you come up, i was someplace else, someplace green... you got the just-woke-up look, friend. i know it well, i wear it most days...",
+          "1": "name's greenpaw. brother greenpaw, first prophet, self-appointed, which the vase'll tell you means exactly nothin', and she's not wrong, but somebody's gotta tend her...",
+          "2": "this here's the hollow. was a whole tribe once, big doings, so they tell me, and now it's mostly me, the vase, and whatever's breathin' down in that cave... anyway. she's hungry, i'm hungry, same wavelength. c'mere, got a couple sacred matters need tendin'."
+        }
       },
       "verger_zebediah": {
         "name": "Verger Zebediah",

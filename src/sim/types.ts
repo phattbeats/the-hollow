@@ -1114,6 +1114,11 @@ export interface NpcDef {
   // a secondary class (see setSecondaryClass in world_api/trainer.ts).
   trainer?: { professions: PlayerClass[] };
   greeting: string;
+  // Optional ordered intro lines the player clicks through once, before the
+  // gossip/quest hook, on first meeting this NPC (presentation-only; the UI
+  // pages them and remembers completion client-side). In-voice character
+  // flavor, not gameplay: an NPC with no introLines opens straight to gossip.
+  introLines?: string[];
   // Registered but not surface-placed at world init. The owning system spawns
   // the entity on demand (e.g. the Nythraxis encounter walks Brother Aldric in
   // mid-fight). Keeping the def in NPCS lets the online client reconstruct its

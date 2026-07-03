@@ -4557,6 +4557,12 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.brother_greenpaw.title': '초대 선지자(자칭)',
   'entities.npcs.brother_greenpaw.greeting':
     '어이, 나그네. 오늘 항아리 기분이 좀 이상해 보이나, 아니면 또 나만 그렇게 느끼는 건가……이리 와 보게, 처리해야 할 신성한 일이 몇 가지 있어. 대부분 간식거리지만. 뭐, 그린포우 식으로 치면 그게 그거지.',
+  'entities.npcs.brother_greenpaw.introLines.0':
+    '어어……안녕. 안녕하신가. 다가오는 걸 못 들었네, 잠깐 딴 데 가 있었거든, 어디 푸르른 곳에……자네 방금 잠에서 깬 얼굴이구먼, 친구. 그 표정 나도 잘 알지, 나야 거의 매일 그 얼굴이니까……',
+  'entities.npcs.brother_greenpaw.introLines.1':
+    '이름은 그린포우일세. 그린포우 수도사, 초대 예언자, 자칭이지만. 저 항아리한테 물으면 그딴 건 아무 의미 없다 할 거야, 틀린 말도 아니고, 그래도 누군가는 저 아이를 돌봐야 하지 않겠나……',
+  'entities.npcs.brother_greenpaw.introLines.2':
+    '여기가 바로 공동일세. 한때는 부족 하나가 통째로 있었지, 큰일들도 많았다더군, 뭐 들은 얘기지만. 이제는 대부분 나하고, 저 항아리하고, 저 동굴 밑에서 숨 쉬는 뭔가뿐이야……아무튼. 저 아이도 배고프고, 나도 배고프고, 같은 주파수지. 이리 와 보게, 처리해야 할 신성한 일이 몇 가지 있어.',
   'entities.delves.collapsed_reliquary.enterText': '무너진 성물실로 내려갑니다.',
   'entities.delves.collapsed_reliquary.leaveText':
     '성물실 폐허의 브라더 할벤에게로 다시 올라갑니다.',
