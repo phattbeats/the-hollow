@@ -2907,6 +2907,13 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'entities.zones.thornpeak_heights.pois.7.label': 'Tende del Culto del Wyrm',
   'entities.zones.thornpeak_heights.pois.8.label': 'Campi dei revenant',
   'entities.zones.thornpeak_heights.pois.9.label': 'Santuario del Gravewyrm',
+  'entities.zones.the_hollow_reaches.name': 'I Confini del Vuoto',
+  'entities.zones.the_hollow_reaches.welcome':
+    'Il cancello si apre su un terreno sgombro. Campi a Maggese, a ovest della strada, sembra adatto per costruire.',
+  'entities.zones.the_hollow_reaches.pois.0.label': 'La Porta del Vuoto',
+  'entities.zones.the_hollow_reaches.pois.1.label': 'Campi a Maggese',
+  'entities.zones.the_hollow_reaches.pois.2.label': 'Incavo delle Radici',
+  'entities.zones.the_hollow_reaches.pois.3.label': 'Riva Muschiosa',
   'entities.dungeons.hollow_crypt.name': 'La Cripta Vuota',
   'entities.dungeons.hollow_crypt.enterText': 'Scendi nella Cripta Vuota...',
   'entities.dungeons.hollow_crypt.leaveText': 'Risali alla luce del giorno.',

@@ -6510,6 +6510,24 @@ export const es: EnTranslations = {
       }
     },
     "zones": {
+      "the_hollow_reaches": {
+        "name": "Los Confines del Hueco",
+        "welcome": "La puerta se abre a un terreno despejado. Campos de Barbecho, al oeste del camino, parece un buen lugar para construir.",
+        "pois": {
+          "0": {
+            "label": "La Puerta del Hueco"
+          },
+          "1": {
+            "label": "Campos de Barbecho"
+          },
+          "2": {
+            "label": "Hueco de las Raíces"
+          },
+          "3": {
+            "label": "Ribera Musgosa"
+          }
+        }
+      },
       "eastbrook_vale": {
         "name": "Valle de Eastbrook",
         "welcome": "Busca al mariscal Redbrook en la ciudad: tiene trabajo para ti.",

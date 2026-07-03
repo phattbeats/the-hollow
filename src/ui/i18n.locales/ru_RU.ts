@@ -2919,6 +2919,13 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.zones.mirefen_marsh.pois.7.label': 'Затонувший бастион',
   'entities.zones.thornpeak_heights.name': 'Терновые высоты',
   'entities.zones.thornpeak_heights.welcome': 'Капитан Тессали едва удерживает стену Хайвотча.',
+  'entities.zones.the_hollow_reaches.name': 'Окраины Пустоши',
+  'entities.zones.the_hollow_reaches.pois.0.label': 'Врата Пустоши',
+  'entities.zones.the_hollow_reaches.pois.1.label': 'Перелоги',
+  'entities.zones.the_hollow_reaches.pois.2.label': 'Корневая Лощина',
+  'entities.zones.the_hollow_reaches.pois.3.label': 'Моховой Берег',
+  'entities.zones.the_hollow_reaches.welcome':
+    'Врата ведут на открытую местность. Перелоги, к западу от дороги, выглядят пригодными для застройки.',
   'entities.zones.thornpeak_heights.pois.0.label': 'Хайвотч',
   'entities.zones.thornpeak_heights.pois.1.label': 'Хребет охотника',
   'entities.zones.thornpeak_heights.pois.2.label': 'Норы Глубокоскалья',

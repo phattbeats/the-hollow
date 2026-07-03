@@ -6510,6 +6510,24 @@ export const pt_BR: EnTranslations = {
       }
     },
     "zones": {
+      "the_hollow_reaches": {
+        "name": "Confins do Vazio",
+        "welcome": "O portão se abre para um terreno aberto. Campos de Pousio, a oeste da estrada, parece um bom lugar para construir.",
+        "pois": {
+          "0": {
+            "label": "Portão do Vazio"
+          },
+          "1": {
+            "label": "Campos de Pousio"
+          },
+          "2": {
+            "label": "Covão das Raízes"
+          },
+          "3": {
+            "label": "Margem Musgosa"
+          }
+        }
+      },
       "eastbrook_vale": {
         "name": "Vale de Eastbrook",
         "welcome": "Procure o marechal Redbrook na cidade: ele tem trabalho para você.",

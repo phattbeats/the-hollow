@@ -297,6 +297,7 @@ function makeCtx() {
     partyCapacity: vi.fn(() => 5),
     marketListingBelongsTo: vi.fn(() => false),
     housingChat: vi.fn(() => false),
+    greenpawFeedChat: vi.fn(() => false),
   };
   const ctx = createSimContext(host);
   return {

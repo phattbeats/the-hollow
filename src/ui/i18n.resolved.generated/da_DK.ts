@@ -6510,6 +6510,24 @@ export const da_DK: EnTranslations = {
       }
     },
     "zones": {
+      "the_hollow_reaches": {
+        "name": "Den Hules Udmarker",
+        "welcome": "Porten åbner sig ud mod åbent land. Brakmarken, vest for vejen, ser ud til at være god at bygge på.",
+        "pois": {
+          "0": {
+            "label": "Den Hules Port"
+          },
+          "1": {
+            "label": "Brakmarken"
+          },
+          "2": {
+            "label": "Rodhulen"
+          },
+          "3": {
+            "label": "Mosbrinken"
+          }
+        }
+      },
       "eastbrook_vale": {
         "name": "Østbæk Dal",
         "welcome": "Find Marskal Redbrook i byen, han har arbejde til dig.",

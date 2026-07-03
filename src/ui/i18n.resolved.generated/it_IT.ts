@@ -6510,6 +6510,24 @@ export const it_IT: EnTranslations = {
       }
     },
     "zones": {
+      "the_hollow_reaches": {
+        "name": "I Confini del Vuoto",
+        "welcome": "Il cancello si apre su un terreno sgombro. Campi a Maggese, a ovest della strada, sembra adatto per costruire.",
+        "pois": {
+          "0": {
+            "label": "La Porta del Vuoto"
+          },
+          "1": {
+            "label": "Campi a Maggese"
+          },
+          "2": {
+            "label": "Incavo delle Radici"
+          },
+          "3": {
+            "label": "Riva Muschiosa"
+          }
+        }
+      },
       "eastbrook_vale": {
         "name": "Valle di Eastbrook",
         "welcome": "Cerca il maresciallo Redbrook in città: ha lavoro per te.",

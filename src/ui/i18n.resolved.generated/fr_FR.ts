@@ -6510,6 +6510,24 @@ export const fr_FR: EnTranslations = {
       }
     },
     "zones": {
+      "the_hollow_reaches": {
+        "name": "Les Confins du Creux",
+        "welcome": "La porte s'ouvre sur un terrain dégagé. Prés en Jachère, à l'ouest de la route, semble propice à la construction.",
+        "pois": {
+          "0": {
+            "label": "La Porte du Creux"
+          },
+          "1": {
+            "label": "Prés en Jachère"
+          },
+          "2": {
+            "label": "Creux des Racines"
+          },
+          "3": {
+            "label": "Berge Moussue"
+          }
+        }
+      },
       "eastbrook_vale": {
         "name": "Val d'Eastbrook",
         "welcome": "Trouvez le maréchal Redbrook en ville: il a du travail pour vous.",

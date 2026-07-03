@@ -6510,6 +6510,24 @@ export const en: EnTranslations = {
       }
     },
     "zones": {
+      "the_hollow_reaches": {
+        "name": "The Hollow Reaches",
+        "welcome": "The gate opens onto open ground. Fallow Acres, west of the road, looks fit to build on.",
+        "pois": {
+          "0": {
+            "label": "The Hollow Gate"
+          },
+          "1": {
+            "label": "Fallow Acres"
+          },
+          "2": {
+            "label": "Root Hollow"
+          },
+          "3": {
+            "label": "Mossbank"
+          }
+        }
+      },
       "eastbrook_vale": {
         "name": "Eastbrook Vale",
         "welcome": "Find Marshal Redbrook in town - he has work for you.",
@@ -6647,7 +6665,7 @@ export const en: EnTranslations = {
       "the_hollow": {
         "name": "The Hollow",
         "enterText": "You step through the shrine gate. The air turns warm and green, and the vase waits ahead.",
-        "leaveText": "You step back out through the gate into Eastbrook."
+        "leaveText": "You step back out through the gate into the wider Hollow."
       },
       "under_shrine": {
         "name": "The Under-Shrine",

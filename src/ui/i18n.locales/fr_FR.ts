@@ -2957,6 +2957,13 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'entities.zones.thornpeak_heights.pois.7.label': 'Tentes du Culte du Wyrm',
   'entities.zones.thornpeak_heights.pois.8.label': 'Champs des revenants',
   'entities.zones.thornpeak_heights.pois.9.label': 'Sanctuaire du Gravewyrm',
+  'entities.zones.the_hollow_reaches.name': 'Les Confins du Creux',
+  'entities.zones.the_hollow_reaches.welcome':
+    "La porte s'ouvre sur un terrain dégagé. Prés en Jachère, à l'ouest de la route, semble propice à la construction.",
+  'entities.zones.the_hollow_reaches.pois.0.label': 'La Porte du Creux',
+  'entities.zones.the_hollow_reaches.pois.1.label': 'Prés en Jachère',
+  'entities.zones.the_hollow_reaches.pois.2.label': 'Creux des Racines',
+  'entities.zones.the_hollow_reaches.pois.3.label': 'Berge Moussue',
   'entities.dungeons.hollow_crypt.name': 'La Crypte creuse',
   'entities.dungeons.hollow_crypt.enterText': 'Vous descendez dans la Crypte creuse...',
   'entities.dungeons.hollow_crypt.leaveText': 'Vous remontez à la lumière du jour.',

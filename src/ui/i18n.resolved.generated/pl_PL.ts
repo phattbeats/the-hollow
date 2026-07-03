@@ -6510,6 +6510,24 @@ export const pl_PL: EnTranslations = {
       }
     },
     "zones": {
+      "the_hollow_reaches": {
+        "name": "Rubieże Wydrążenia",
+        "welcome": "Za bramą rozciąga się otwarty teren. Wolne Ugory, na zachód od drogi, wyglądają na dobre miejsce pod zabudowę.",
+        "pois": {
+          "0": {
+            "label": "Brama Wydrążenia"
+          },
+          "1": {
+            "label": "Wolne Ugory"
+          },
+          "2": {
+            "label": "Korzeniowe Wydrążenie"
+          },
+          "3": {
+            "label": "Mszysty Brzeg"
+          }
+        }
+      },
       "eastbrook_vale": {
         "name": "Dolina Wschodniego Strumienia",
         "welcome": "Odszukaj Marszałka Redbrooka w mieście, ma dla ciebie zadanie.",

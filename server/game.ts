@@ -38,6 +38,7 @@ import {
   closePlaySession,
   grantAccountMechChroma,
   insertChatLogs,
+  loadGreenpawHearthState,
   loadHousingState,
   loadMarketState,
   markAccountQuestComplete,
@@ -46,6 +47,7 @@ import {
   revokeAccountMechChroma,
   saveCharacterAndMarketState,
   saveCharacterState,
+  saveGreenpawHearthState,
   saveHousingState,
   saveMarketState,
 } from './db';
@@ -673,6 +675,9 @@ export class GameServer {
   // The sim's housing change counter as of the last persisted save; polled each
   // tick so a claim/place/remove persists promptly, not only on the autosave.
   private lastSavedHousingRev = 0;
+  // Serializes writes of the single global Greenpaw's hearth blob (same
+  // freshness-order rationale as the market writer above).
+  private readonly enqueueGreenpawHearthWrite = createSerialWriter();
   private restartCountdownStartedAt: number | null = null;
   private readonly restartCountdownTimers: NodeJS.Timeout[] = [];
   private readonly startedAt = Date.now();
@@ -982,6 +987,7 @@ export class GameServer {
         this.saveTimer = 0;
         void this.saveAll('autosave');
         void this.saveMarket();
+        void this.saveGreenpawHearth();
       }
       // Housing persists on change (claims are rare and the blob is tiny).
       if (this.sim.housingRev !== this.lastSavedHousingRev) {
@@ -1587,6 +1593,28 @@ export class GameServer {
       await this.enqueueHousingWrite(() => saveHousingState(this.sim.serializeHousing()));
     } catch (err) {
       console.error('failed to save housing:', err);
+    }
+  }
+
+  // Greenpaw's hearth (PHAA-421) is shared global state like the market: one
+  // JSONB blob under the world_state 'greenpaw_hearth' key. Unlike Housing
+  // (a rare-change ownership book saved on rev-diff), hunger/smoke drift every
+  // tick, so this loads at boot and saves on the autosave cadence, like Market.
+  async loadGreenpawHearth(): Promise<void> {
+    try {
+      this.sim.loadGreenpawHearth(await loadGreenpawHearthState());
+    } catch (err) {
+      console.error('failed to load greenpaw hearth:', err);
+    }
+  }
+
+  async saveGreenpawHearth(): Promise<void> {
+    try {
+      await this.enqueueGreenpawHearthWrite(() =>
+        saveGreenpawHearthState(this.sim.serializeGreenpawHearth()),
+      );
+    } catch (err) {
+      console.error('failed to save greenpaw hearth:', err);
     }
   }
 
@@ -2897,6 +2925,11 @@ export class GameServer {
     // negligible; it must ride per-tick because another player's claim changes
     // it without marking this session dirty
     maybe('housing', this.sim.housingInfoFor(anchorSession.pid));
+    // the vase hub's smoke/mood state (PHAA-421): global (not per-viewer), and
+    // rounded on the sim side so ordinary tick-to-tick decay doesn't dirty the
+    // diff every tick; must still ride per-tick because another player's feed
+    // changes it without marking this session dirty
+    maybe('hearth', this.sim.hollowHearth);
     // open need-greed rolls this player can still answer, so a client that
     // missed the transient lootRoll event re-shows the prompt from state. Stays
     // per-tick (it's interactive state that appears from others' actions).

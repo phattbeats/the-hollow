@@ -7,6 +7,11 @@
 // storyline. Slice scope (§11): the vase, Greenpaw, the first run, one
 // dungeon. Levels 1-4: this is where a character begins.
 //
+// Decision 23 (PHAA-420) partially reverses Decision 19: the hub keeps its
+// portal-instanced interior, but it is no longer sealed. The overworld gate
+// now opens onto a real zone (content/hollow_zone.ts) instead of Eastbrook,
+// so the door and the exit portal work both ways again.
+//
 // VOICE RULE (§5, non-negotiable): Greenpaw's lines are all-lowercase,
 // run-on, trailing "...", cowboy-fatalist, sincere. The Plant does not speak
 // in this file; quest text is where the world's voice lives; the god is
@@ -24,17 +29,20 @@ import type {
   QuestDef,
   ZonePropsDef,
 } from '../types';
+import { HOLLOW_ZONE_GATE_POS } from './hollow_zone';
 
 // Where the portal from the base world opens onto the shrine clearing.
 // Coordinates are hub-local; the zone is its own instanced space.
 export const HOLLOW_GATE_POS = { x: 0, z: -40 };
 
-// The overworld side of the portal: a shrine gate cut into the hillside at
-// the edge of Eastbrook, south of the graveyard, clear of the town's
-// buildings. This is the base-world doorPos a player interacts with to step
-// into the Hollow hub, exactly as MOONGATE_POS is the overworld doorPos for
-// the Drowned Temple (temple.ts).
-export const HOLLOW_HUB_DOOR_POS = { x: -6, z: -22 };
+// The overworld side of the portal: the shrine gate at the heart of the
+// Hollow Reaches (content/hollow_zone.ts), the open-world zone Decision 23
+// grows around it. This is the base-world doorPos a player interacts with to
+// step into the Hollow hub, exactly as MOONGATE_POS is the overworld doorPos
+// for the Drowned Temple (temple.ts). Pre-PHAA-420 this sat inside Eastbrook
+// (-6, -22); it moved so leaving the hub no longer surfaces the inherited,
+// still-neutralized base town.
+export const HOLLOW_HUB_DOOR_POS = { ...HOLLOW_ZONE_GATE_POS };
 
 // The vase. Not an NPC in the slice; it is the center of gravity as an
 // object; the live god (Phase 2) attaches here.
@@ -86,6 +94,13 @@ export const HOLLOW_MOBS: Record<string, MobTemplate> = {
     loot: [
       { copper: 8, chance: 1 },
       { itemId: 'emberbulb', chance: 0.5, questId: 'q_what_burns' },
+      // PHAA-421: an unconditional (non-quest-gated) drop line so emberbulb
+      // stays farmable for Greenpaw's renewable feeding loop after the
+      // one-time q_what_burns quest is done (a questId-scoped entry only
+      // rolls while that quest is active and incomplete, loot/loot_roll.ts
+      // needsQuestDrop). Lower chance than the quest line: this is the
+      // long-tail resupply rate, not the guided first descent.
+      { itemId: 'emberbulb', chance: 0.3 },
     ],
     scale: 0.9,
     color: 0xcfd8cf, // pale, root-blanched
@@ -107,6 +122,9 @@ export const HOLLOW_MOBS: Record<string, MobTemplate> = {
     loot: [
       { copper: 14, chance: 1 },
       { itemId: 'cave_morsel', chance: 0.6, questId: 'q_what_fills' },
+      // PHAA-421: same unconditional resupply line as emberbulb above, for
+      // Greenpaw's renewable feeding loop after q_what_fills is done.
+      { itemId: 'cave_morsel', chance: 0.35 },
     ],
     scale: 1.1,
     color: 0x6b5d4f,
@@ -465,12 +483,7 @@ export const HOLLOW_DUNGEON_DEFS: Record<string, DungeonDef> = {
     index: 6,
     doorPos: { ...HOLLOW_HUB_DOOR_POS },
     entry: { ...HOLLOW_GATE_POS },
-    exitOffset: { x: 0, z: -46 }, // legacy exit point behind the gate; sealed, no portal spawns
-    // PHAA-404: the Hollow is the game. The gate does not open from the
-    // inside, so the inherited base overworld (Eastbrook and the zones beyond)
-    // is unreachable while its code stays intact and dormant. Deaths in the
-    // hub return to the vase, never to a base-world graveyard.
-    sealedExit: true,
+    exitOffset: { x: 0, z: -46 }, // exit portal, behind the gate
     // One hub for the whole population: the social space where everyone sees
     // everyone at the vase, and the reason a 24-slot per-party pool can never
     // exhaust under full-population hollowStart joins.
@@ -496,7 +509,9 @@ export const HOLLOW_DUNGEON_DEFS: Record<string, DungeonDef> = {
     suggestedPlayers: 1,
     enterText:
       'You step through the shrine gate. The air turns warm and green, and the vase waits ahead.',
-    leaveText: 'You step back out through the gate into Eastbrook.',
+    // PHAA-420: the gate opens both ways again into the Hollow Reaches
+    // (content/hollow_zone.ts), not the inherited Eastbrook.
+    leaveText: 'You step back out through the gate into the wider Hollow.',
   },
   under_shrine: {
     id: 'under_shrine',

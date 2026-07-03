@@ -1849,6 +1849,13 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'entities.zones.thornpeak_heights.pois.9.label': 'Gravormens Helligdom',
   'entities.zones.thornpeak_heights.welcome':
     'Kaptajn Thessaly holder muren ved Højvagten, knap nok.',
+  'entities.zones.the_hollow_reaches.name': 'Den Hules Udmarker',
+  'entities.zones.the_hollow_reaches.pois.0.label': 'Den Hules Port',
+  'entities.zones.the_hollow_reaches.pois.1.label': 'Brakmarken',
+  'entities.zones.the_hollow_reaches.pois.2.label': 'Rodhulen',
+  'entities.zones.the_hollow_reaches.pois.3.label': 'Mosbrinken',
+  'entities.zones.the_hollow_reaches.welcome':
+    'Porten åbner sig ud mod åbent land. Brakmarken, vest for vejen, ser ud til at være god at bygge på.',
   'errors.api.accountBanned': 'Denne konto er blevet udelukket.',
   'errors.api.accountSuspended': 'Denne konto er suspenderet indtil {date}.',
   'errors.api.alreadyInWorld': 'Karakteren er allerede i verdenen.',

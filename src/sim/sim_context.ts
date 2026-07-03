@@ -555,6 +555,11 @@ export interface SimContextCallbacks {
   // through the seam to the Housing instance on Sim. Returns true when the raw
   // message was a /house command (handled). Append-only, late-bound to Sim.
   housingChat(raw: string, pid: number): boolean;
+
+  // Greenpaw's hearth (PHAA-421): the /feed chat-command branch routes through
+  // the seam to the GreenpawHearth instance on Sim. Returns true when the raw
+  // message was a /feed command (handled). Append-only, late-bound to Sim.
+  greenpawFeedChat(raw: string, pid: number): boolean;
 }
 
 // The seam consumed by extracted modules.
@@ -886,5 +891,7 @@ export function createSimContext(host: SimContextHost): SimContext {
     marketListingBelongsTo: host.marketListingBelongsTo,
     // Housing v0: the /house chat-command branch.
     housingChat: host.housingChat,
+    // Greenpaw's hearth (PHAA-421): the /feed chat-command branch.
+    greenpawFeedChat: host.greenpawFeedChat,
   };
 }

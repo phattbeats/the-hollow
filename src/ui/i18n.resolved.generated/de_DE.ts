@@ -6510,6 +6510,24 @@ export const de_DE: EnTranslations = {
       }
     },
     "zones": {
+      "the_hollow_reaches": {
+        "name": "Höhlungsweiten",
+        "welcome": "Das Tor öffnet sich zu freiem Gelände. Die Brachäcker westlich der Straße wirken wie ein guter Bauplatz.",
+        "pois": {
+          "0": {
+            "label": "Höhlungstor"
+          },
+          "1": {
+            "label": "Brachäcker"
+          },
+          "2": {
+            "label": "Wurzelmulde"
+          },
+          "3": {
+            "label": "Moosufer"
+          }
+        }
+      },
       "eastbrook_vale": {
         "name": "Eastbrook-Tal",
         "welcome": "Suche Marschall Redbrook in der Stadt: Er hat Arbeit für dich.",
