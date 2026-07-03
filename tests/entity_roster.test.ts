@@ -298,6 +298,8 @@ function makeCtx() {
     marketListingBelongsTo: vi.fn(() => false),
     housingChat: vi.fn(() => false),
     greenpawFeedChat: vi.fn(() => false),
+    plantSpeechChat: vi.fn(() => false),
+    notifyPlantThreshold: vi.fn(),
   };
   const ctx = createSimContext(host);
   return {

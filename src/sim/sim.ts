@@ -174,6 +174,7 @@ import {
 } from './pathfind';
 import * as petAi from './pet/pet_ai';
 import * as petCommands from './pet/pet_commands';
+import { PlantSpeech } from './plant_speech';
 import {
   applyTalentAllocation,
   deleteTalentLoadout,
@@ -905,6 +906,12 @@ export class Sim {
   // pattern. Draws rng only from feed() (a player command), never at
   // construction, so the construction draws below are unperturbed.
   greenpawHearth!: GreenpawHearth;
+  // The Plant's deterministic floor (PHAA-422): owns the rationing/mode
+  // state machine. Constructed in the ctor after the SimContext, mirroring
+  // the greenpawHearth pattern. Draws no rng at construction (its first whim
+  // target is lazily drawn on the first update() tick instead), so the
+  // construction draws below are unperturbed.
+  plantSpeech!: PlantSpeech;
   /** When true, /dev level|tp|give chat commands are accepted (local dev only). */
   readonly devCommands: boolean;
   private pendingMobRespawns: PendingMobRespawn[] = [];
@@ -946,6 +953,10 @@ export class Sim {
     // consumes the seam. Draws no rng at construction, so the draws below
     // are unperturbed.
     this.greenpawHearth = new GreenpawHearth(this.ctx);
+    // The Plant's deterministic floor (PHAA-422): owns the rationing/mode
+    // state machine; consumes the seam. Draws no rng at construction, so the
+    // draws below are unperturbed.
+    this.plantSpeech = new PlantSpeech(this.ctx);
 
     // NPCs — nudged out of buildings and deep water if their data position is bad
     for (const npcDef of Object.values(NPCS)) {
@@ -2233,6 +2244,11 @@ export class Sim {
       // the seam to the GreenpawHearth instance (constructed after this literal;
       // late-bound arrow).
       greenpawFeedChat: (raw, pid) => sim.greenpawHearth.handleChat(raw, pid),
+      // The Plant's deterministic floor (PHAA-422): the /plant chat-command
+      // branch + the real-threshold report-in route through the seam to the
+      // PlantSpeech instance (constructed after this literal; late-bound arrows).
+      plantSpeechChat: (raw, pid) => sim.plantSpeech.handleChat(raw, pid),
+      notifyPlantThreshold: (kind) => sim.plantSpeech.notifyThreshold(kind),
     };
     return createSimContext(host);
   }
@@ -2468,6 +2484,7 @@ export class Sim {
     this.updateDelveRuns();
     this.market.update();
     this.greenpawHearth.update(DT);
+    this.plantSpeech.update(this.greenpawHearth.smokeValue);
     drainDelayedEvents(this.ctx);
 
     // movement re-bucketing: queries during the next tick and the server's

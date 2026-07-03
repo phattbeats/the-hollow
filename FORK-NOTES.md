@@ -471,3 +471,53 @@ history) was touched. Backup tags pushed to origin before the rewrite:
 (`feature/sec8-profession-gap`), and `feature/hollow-hub-greenpaw` were
 force-pushed with the fix; all local checkouts already used the
 `phattbeats` identity going forward, so this should not recur.
+
+### 2026-07-02: The Plant's deterministic floor (PHAA-422)
+
+Added `src/sim/plant_speech.ts`: the Plant's rationed, mood-driven
+hand-written line set (constitution §5.2-5.4, §10 floor 1 - the god has a
+floor before any live LLM work). Built on the `greenpaw_hearth.ts` pattern:
+a self-contained system module behind `SimContext`, with two new seam
+callbacks (`plantSpeechChat`, `notifyPlantThreshold`). Speaks only on four
+triggers (the room crossing into full smoke, a real threshold - a homestead
+claimed in its shade, via `Housing.housingClaim` - being addressed via the
+new `/plant [text]` chat command, or its own whim on a long cooldown), all
+gated by one shared anti-spam cooldown so no trigger can make it chatty.
+Every utterance broadcasts world-wide (`emit` with no `pid`), per §5.2's
+one-shared-voice rule. Draws no rng at construction (the first whim target
+is lazily armed on the first tick), matching `greenpaw_hearth.ts`'s
+discipline.
+
+**Deliberate deviation from the ticket's i18n instruction.** PHAA-422 asked
+for "same-change locale fills" per the PHAA-400 recipe, but that recipe is
+for content-table entity keys (`entity_i18n.ts`/`world_entity_i18n.ts`),
+not this module's shape: ~30 curated, idiom- and slang-heavy dynamic lines
+emitted from a system module, the same shape as `greenpaw_hearth.ts`'s feed
+lines and `housing.ts`'s command text, both of which already ship as the
+same documented English-only backstop (neither file is in the
+`tests/localization_fixes.test.ts` S3 scan list). Hand-translating this
+"locked voice" signature content into 17+ languages without a native-speaker
+pass risks materially bad, unlocked-voice translations for the system the
+Phase 2 gate is judged on - worse than shipping English with a tracked
+follow-up. Followed the existing precedent rather than the literal ticket
+text; flagged on PHAA-422 for the Board.
+
+**Pre-existing test drift found, not caused by this change** (verified via
+`git stash` against a clean `origin/main` checkout): `tests/parity`'s
+golden traces are stale (an entity-id/`nextId` offset baked in before this
+branch, unrelated to rng draw order) and three `tests/snapshots.test.ts`
+`/who` cases still assert the pre-PHAA-420 `Eastbrook Vale` spawn zone name
+instead of `The Hollow Reaches`. Filed as a follow-up rather than folded
+into this diff.
+
+Fixed a stale hardcoded count in `tests/chat.test.ts` (`helpLines().length`
+went from 9 to 10 with the new `/plant` help line) and added the two new
+`SimContext` callbacks to the fake hosts in `tests/sim_context.test.ts` /
+`tests/entity_roster.test.ts`. Verification: `tsc --noEmit` clean; `biome
+check` on changed files clean of errors (48 pre-existing-style
+`noNonNullAssertion` warnings, non-blocking per the PR-tier gate);
+`tests/plant_speech.test.ts` (19 new tests, unit-level against a fake
+`SimContext` for the rationing/mode logic plus a handful of real-`Sim`
+wiring tests) and the full surrounding regression set
+(`sim_context`/`greenpaw_hearth`/`housing`/`chat`/`architecture`/
+`localization_fixes`) green with `NODE_ENV` unset.

@@ -116,6 +116,10 @@ export class Housing {
       color: '#8f8',
       pid: meta.entityId,
     });
+    // A real threshold the Plant (PHAA-422) may lean in and comment on
+    // (section 11: "finally says something about your house"); rationed on
+    // its own side, so this simply reports the milestone in.
+    this.ctx.notifyPlantThreshold('house_claimed');
   }
 
   housingPlace(slot: number, kind: string, pid?: number): void {

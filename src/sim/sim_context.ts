@@ -16,6 +16,7 @@ import type { TalentModifiers } from './content/talents';
 import type { DelayedEvent, GroundAoE } from './entity_roster';
 import type { PendingLootRoll } from './loot/loot_roll';
 import type { MarketListing } from './market';
+import type { PlantThresholdKind } from './plant_speech';
 import type { PendingProjectile } from './projectile_travel';
 import type { Rng } from './rng';
 import type {
@@ -560,6 +561,15 @@ export interface SimContextCallbacks {
   // the seam to the GreenpawHearth instance on Sim. Returns true when the raw
   // message was a /feed command (handled). Append-only, late-bound to Sim.
   greenpawFeedChat(raw: string, pid: number): boolean;
+
+  // The Plant's deterministic floor (PHAA-422): the /plant chat-command
+  // branch routes through the seam to the PlantSpeech instance on Sim.
+  // Returns true when the raw message was a /plant command (handled, even
+  // when rationed into silence). notifyPlantThreshold lets a foreign system
+  // (Housing today) report a real milestone the Plant may comment on.
+  // Append-only, late-bound to Sim.
+  plantSpeechChat(raw: string, pid: number): boolean;
+  notifyPlantThreshold(kind: PlantThresholdKind): void;
 }
 
 // The seam consumed by extracted modules.
@@ -893,5 +903,9 @@ export function createSimContext(host: SimContextHost): SimContext {
     housingChat: host.housingChat,
     // Greenpaw's hearth (PHAA-421): the /feed chat-command branch.
     greenpawFeedChat: host.greenpawFeedChat,
+    // The Plant's deterministic floor (PHAA-422): the /plant chat-command
+    // branch + the real-threshold report-in.
+    plantSpeechChat: host.plantSpeechChat,
+    notifyPlantThreshold: host.notifyPlantThreshold,
   };
 }
