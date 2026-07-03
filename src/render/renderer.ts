@@ -68,6 +68,7 @@ import {
 import { buildHollowCanopy } from './hollow_canopy';
 import {
   buildHollowProps,
+  hollowSmokeIntensity,
   hollowVaseWorldPos,
   isHollowHubOrigin,
   isHollowHubPos,
@@ -3538,12 +3539,14 @@ export class Renderer {
               : camY < WATER_LEVEL - 0.05
                 ? 'underwater'
                 : 'outdoor';
-    // the vase smoke: always on while the player is in the hub (the visible
-    // interface to the god; cheap capped additive puffs, see vfx.vaseSmoke)
+    // the vase smoke: on while the player is in the hub, reactive to
+    // Greenpaw's hearth (PHAA-421, IWorld.hollowHearth) instead of a constant
+    // column, the visible interface to the god; cheap capped additive puffs,
+    // see vfx.vaseSmoke
     if (inHollow) {
       const vase = hollowVaseWorldPos(pz);
       this.tmpV.set(vase.x, 2.6, vase.z);
-      this.vfx.vaseSmoke(this.tmpV, dt);
+      this.vfx.vaseSmoke(this.tmpV, dt, hollowSmokeIntensity(this.sim.hollowHearth));
     }
     const fog = this.scene.fog as THREE.Fog;
     if (desired !== this.fogState) {

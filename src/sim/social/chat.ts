@@ -173,6 +173,17 @@ export function chat(ctx: SimContext, text: string, pid?: number): SentChat | nu
     return null;
   }
 
+  // "/feed" — Greenpaw's hearth (PHAA-421): resupply Brother Greenpaw with
+  // whatever burns/fills you carry. Takes no arguments, so this matches the
+  // exact same pattern as GreenpawHearth.handleChat's own regex: "/feed foo"
+  // falls through to the unknown-command error below instead of being
+  // silently swallowed. Routed through the seam; self-only notices, no chat
+  // message.
+  if (/^\/feed\s*$/i.test(raw)) {
+    ctx.greenpawFeedChat(raw, r.meta.entityId);
+    return null;
+  }
+
   // "/roll", "/roll N", "/roll M-N" — a classic random roll for loot disputes
   // and social play. Rolled through the deterministic sim RNG so it is
   // server-authoritative (clients can't fake a result) and identical offline.
@@ -927,6 +938,7 @@ export function helpLines(): string[] {
     'Combat readouts: /target, /targetbuffs, /range, /attack, /casting, /combat, /threat, /consider, /combo, /overpower.',
     'State readouts: /pet, /pettaunt, /speed, /consumable, /potion, /form, /manaregen, /falling, /queued, /savedmana.',
     'Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>.',
+    'Greenpaw: /feed (bring what burns or what fills, from near the vase).',
   ];
 }
 

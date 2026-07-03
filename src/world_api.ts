@@ -33,16 +33,17 @@
 //   dungeons.ts         IWorldDungeons       dungeon enter/leave + raid lockouts
 //   delves.ts           IWorldDelves         delve runs, lockpick, companion
 //   housing.ts          IWorldHousing        Hollow hub homestead plots (read)
+//   greenpaw_hearth.ts  IWorldGreenpawHearth Hollow hub smoke/mood state (read)
 //   telemetry.ts        IWorldTelemetry      fire-and-forget metrics sink
 //
 // THREE GATES pin this seam (run before any facet edit):
 //   tests/snapshots.test.ts        (W0a)  selfWireJson <-> applySnapshot round-trip;
-//                                          ALL_DELTA_KEYS (25) + TERSE_TO_IWORLD mapping.
+//                                          ALL_DELTA_KEYS (27) + TERSE_TO_IWORLD mapping.
 //   tests/command_schema.test.ts   (W0b)  COMMAND_NAMES universe; ClientWorld send-set
 //                                          subset-of dispatch-set; DISPATCH_ONLY (7).
-//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (142) present + same-kind on
+//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (148) present + same-kind on
 //                                          Sim + ClientWorld; aggregate == disjoint
-//                                          union of the 20 facets.
+//                                          union of the 22 facets.
 // ---------------------------------------------------------------------------
 
 import type { IWorldChat } from './world_api/chat';
@@ -52,6 +53,7 @@ import type { IWorldDelves } from './world_api/delves';
 import type { IWorldDuelArena } from './world_api/duel_arena';
 import type { IWorldDungeons } from './world_api/dungeons';
 import type { IWorldEntityRoster } from './world_api/entity_roster';
+import type { IWorldGreenpawHearth } from './world_api/greenpaw_hearth';
 import type { IWorldHousing } from './world_api/housing';
 import type { IWorldInteraction } from './world_api/interaction';
 import type { IWorldInventory } from './world_api/inventory';
@@ -91,6 +93,7 @@ export type {
   FiestaScoreboardPlayer,
 } from './world_api/duel_arena';
 export type { RaidLockout } from './world_api/dungeons';
+export type { GreenpawHearthInfo, SmokeLevel } from './world_api/greenpaw_hearth';
 export type { HouseObjectView, HousingInfo, HousingPlotView } from './world_api/housing';
 export type { MarketInfo, MarketListingView } from './world_api/market';
 export type { PartyInfo, PartyMemberInfo } from './world_api/party';
@@ -130,6 +133,7 @@ export interface IWorld
     IWorldDungeons,
     IWorldDelves,
     IWorldHousing,
+    IWorldGreenpawHearth,
     IWorldTelemetry {}
 
 // ---------------------------------------------------------------------------
@@ -320,6 +324,7 @@ export type WorldFacet =
   | 'IWorldDungeons'
   | 'IWorldDelves'
   | 'IWorldHousing'
+  | 'IWorldGreenpawHearth'
   | 'IWorldTelemetry';
 
 export const COMMAND_FACETS = {

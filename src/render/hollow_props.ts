@@ -39,6 +39,17 @@ export function hollowVaseWorldPos(pz: number): { x: number; y: number; z: numbe
   return { x: o.x + VASE_POS.x, y: 0, z: o.z + VASE_POS.z };
 }
 
+/**
+ * Vase-smoke particle intensity (0..1) from Greenpaw's hearth (PHAA-421,
+ * IWorld.hollowHearth): a straight smoke/100 read, so `vfx.vaseSmoke` scales
+ * continuously with the sim's smoke value rather than jumping at the
+ * clear/hazy/full bucket edges. `null` (no hearth data yet) reads as clear.
+ */
+export function hollowSmokeIntensity(hearth: { smoke: number } | null): number {
+  if (!hearth) return 0;
+  return Math.max(0, Math.min(1, hearth.smoke / 100));
+}
+
 // GLB kit pieces reused from the overworld prop set (same files props.ts
 // loads, so they are already part of the asset budget).
 const KIT = {
@@ -158,25 +169,31 @@ function buildHearth(shrine: GLTF, shrineCandles: GLTF): THREE.Group {
   g.add(ash);
 
   // the mantel-altar: the shrine kit piece, enlarged, backing the urn on the
-  // side away from the gate so it reads as a hearth surround, not a headstone
+  // side away from the gate so it reads as a hearth surround, not a headstone.
+  // At this 2.2x scale the kit piece's own footprint is a ~1.2-unit radius
+  // around its origin, so it needs to sit clear of the vase's plinth (radius
+  // up to 1.7) or the altar face clips through the urn; altarZ backs it off
+  // far enough that the two footprints no longer overlap.
+  const altarZ = 3.3;
   const altar = clonePiece(shrine);
-  altar.position.set(0, 0, 1.1);
+  altar.position.set(0, 0, altarZ);
   altar.scale.setScalar(2.2);
   g.add(altar);
   const candles = clonePiece(shrineCandles);
-  candles.position.set(0, 0, 1.1);
+  candles.position.set(0, 0, altarZ);
   candles.scale.setScalar(2.0);
   g.add(candles);
 
   // the flue: a tapering stone duct climbing from behind the altar to the
   // ceiling, the channel the plan says was always there, carrying the vase's
-  // smoke to the surface.
+  // smoke to the surface. Kept at the same offset behind the altar as before
+  // (0.8 back from altarZ) so it still reads as emerging from within it.
   const flueHeight = DUNGEON_WALL_HEIGHT - 0.4;
   const flue = new THREE.Mesh(
     new THREE.CylinderGeometry(0.55, 0.95, flueHeight, 8),
     new THREE.MeshStandardMaterial({ color: 0x4a4038, roughness: 0.95 }),
   );
-  flue.position.set(0, flueHeight / 2, 1.9);
+  flue.position.set(0, flueHeight / 2, altarZ + 0.8);
   g.add(flue);
 
   return g;

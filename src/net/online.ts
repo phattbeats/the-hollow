@@ -44,6 +44,7 @@ import {
   type DelveShopOfferView,
   type DuelInfo,
   type FriendInfo,
+  type GreenpawHearthInfo,
   type GuildLeaderboardPage,
   type HousingInfo,
   type IWorld,
@@ -813,6 +814,11 @@ export class ClientWorld implements IWorld {
   // --- IWorldHousing: Hollow hub homestead view, mirrored from the snapshot
   // self (`s.housing`, delta-omitted). ---
   housingInfo: HousingInfo | null = null;
+  // --- IWorldGreenpawHearth: the vase hub room's smoke/mood state (PHAA-421),
+  // mirrored from the snapshot self (`s.hearth`, delta-omitted). Always
+  // present (global world state, not per-viewer), so the default is a real
+  // value, not null, matching a freshly-fed-nothing hearth. ---
+  hollowHearth: GreenpawHearthInfo = { smoke: 0, level: 'clear' };
   // --- IWorldDelves: active delve run + companion + marks/upgrades + daily, all
   // mirrored from the snapshot self (delta-omitted). lockpickState is the exception:
   // it has NO snapshot field and is rebuilt from the lockpick* events by the private
@@ -1428,6 +1434,7 @@ export class ClientWorld implements IWorld {
       if (s.arena !== undefined) this.arenaInfo = s.arena;
       if (s.market !== undefined) this.marketInfo = s.market;
       if (s.housing !== undefined) this.housingInfo = s.housing;
+      if (s.hearth !== undefined) this.hollowHearth = s.hearth;
       if (s.lroll !== undefined) this.lootRollPrompts = s.lroll ?? [];
       if (s.drun !== undefined) this.delveRun = s.drun;
       if (s.dcompanion !== undefined) this.companionState = s.dcompanion;
