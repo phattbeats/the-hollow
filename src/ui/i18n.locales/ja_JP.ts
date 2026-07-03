@@ -2892,6 +2892,38 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.zones.the_hollow_reaches.pois.3.label': '苔の土手',
   'entities.zones.the_hollow_reaches.welcome':
     '門を抜けると、開けた大地が広がっています。道の西側にある休閑地は、家を建てるのに良さそうです。',
+  'entities.npcs.warden_fennick.name': '番人フェニック',
+  'entities.npcs.warden_fennick.title': '外域の野伏せり',
+  'entities.npcs.warden_fennick.greeting':
+    '根の空洞は今季、猪だらけだ。虫を追って根を掘り返しておる。やり合う気がないなら、緩んだ土に気をつけるんだな。',
+  'entities.npcs.old_badger_thistlewick.name': '老アナグマのシスルウィック',
+  'entities.npcs.old_badger_thistlewick.title': '休閑地の農夫',
+  'entities.npcs.old_badger_thistlewick.greeting':
+    'ここは良い土地だ、柵さえ保てばな。毎晩狼が群れの周りをうろついて、何も建てられやしない。',
+  'entities.quests.q_root_hollow_boars.title': '根の空洞の猪',
+  'entities.quests.q_root_hollow_boars.text':
+    '猪どもが虫を追って根の空洞を半分も掘り返し、もう滅多なことじゃ怖がらん。五頭狩れば、根も一季は休めよう。',
+  'entities.quests.q_root_hollow_boars.completion':
+    '土を掘り返す鼻面が五つ減った。根の空洞は感謝しておる、口には出せんがな。',
+  'entities.quests.q_root_hollow_boars.objectives.0.label': '野生の猪を討伐',
+  'entities.quests.q_root_hollow_boars_ii.title': '根の空洞の清算',
+  'entities.quests.q_root_hollow_boars_ii.text':
+    '五頭は始まりに過ぎん、下の巣からまだまだ湧いてくる。けりをつけろ、あと八頭で根の空洞も本当に休める。',
+  'entities.quests.q_root_hollow_boars_ii.completion':
+    'これでほぼ最後の掘り返し屋どもだ。根も息がつける。',
+  'entities.quests.q_root_hollow_boars_ii.objectives.0.label': '野生の猪を討伐',
+  'entities.quests.q_fallow_acres_wolves.title': '畝を追われる狼たち',
+  'entities.quests.q_fallow_acres_wolves.text':
+    '毎晩狼がうろついて、ここでは何も守れやしない。休閑地の群れを間引いてくれ、わざわざ来た甲斐はあるはずだ。',
+  'entities.quests.q_fallow_acres_wolves.completion':
+    'これで幾晩か安眠できるというもんだ。恩に着る。',
+  'entities.quests.q_fallow_acres_wolves.objectives.0.label': '森の狼を討伐',
+  'entities.quests.q_fallow_acres_wolves_ii.title': '最後の群れ',
+  'entities.quests.q_fallow_acres_wolves_ii.text':
+    '端は間引いたが、巣はまだいっぱいだ。あと八頭で休閑地にも静かな夜が来よう。',
+  'entities.quests.q_fallow_acres_wolves_ii.completion':
+    'やっと静かになった。これで柵の続きに取りかかれる。',
+  'entities.quests.q_fallow_acres_wolves_ii.objectives.0.label': '森の狼を討伐',
   'entities.zones.thornpeak_heights.pois.0.label': 'ハイウォッチ',
   'entities.zones.thornpeak_heights.pois.1.label': '追跡者の尾根',
   'entities.zones.thornpeak_heights.pois.2.label': 'ディープロックの巣穴',

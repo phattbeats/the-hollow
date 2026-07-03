@@ -2926,6 +2926,38 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.zones.the_hollow_reaches.pois.3.label': 'Моховой Берег',
   'entities.zones.the_hollow_reaches.welcome':
     'Врата ведут на открытую местность. Перелоги, к западу от дороги, выглядят пригодными для застройки.',
+  'entities.npcs.warden_fennick.name': 'Страж Фенник',
+  'entities.npcs.warden_fennick.title': 'Дозорный Пустоши',
+  'entities.npcs.warden_fennick.greeting':
+    'В этот сезон в Корневой Лощине развелось кабанов, роют корни в поисках личинок. Гляди под ноги, если не собираешься с ними драться.',
+  'entities.npcs.old_badger_thistlewick.name': 'Старый барсук Тислвик',
+  'entities.npcs.old_badger_thistlewick.title': 'Фермер с Перелогов',
+  'entities.npcs.old_badger_thistlewick.greeting':
+    'Земля тут хорошая, были бы только изгороди целы. Волки каждую ночь кружат вокруг стада, ничего не построишь.',
+  'entities.quests.q_root_hollow_boars.title': 'Кабаны Корневой Лощины',
+  'entities.quests.q_root_hollow_boars.text':
+    'Кабаны перерыли половину Корневой Лощины в поисках личинок и уже почти не боятся людей. Убей пятерых, и корни, может, отдохнут сезон.',
+  'entities.quests.q_root_hollow_boars.completion':
+    'На пять рыл меньше в грязи. Корневая Лощина благодарна, хоть и не умеет сказать об этом.',
+  'entities.quests.q_root_hollow_boars.objectives.0.label': 'Дикий кабан убит',
+  'entities.quests.q_root_hollow_boars_ii.title': 'Расплата Корневой Лощины',
+  'entities.quests.q_root_hollow_boars_ii.text':
+    'Пятеро были только началом, из нижних нор лезут еще. Доведи дело до конца: еще восемь, и Корневая Лощина правда отдохнет.',
+  'entities.quests.q_root_hollow_boars_ii.completion':
+    'Считай, последних землероев прикончили. Корни могут вздохнуть.',
+  'entities.quests.q_root_hollow_boars_ii.objectives.0.label': 'Дикий кабан убит',
+  'entities.quests.q_fallow_acres_wolves.title': 'Волки прочь с борозд',
+  'entities.quests.q_fallow_acres_wolves.text':
+    'Волки кружат каждую ночь, участок не удержать. Проредите стаю на Перелогах, и прогулка того стоит.',
+  'entities.quests.q_fallow_acres_wolves.completion':
+    'Вот теперь можно пару ночей поспать спокойно. Благодарен.',
+  'entities.quests.q_fallow_acres_wolves.objectives.0.label': 'Лесной волк убит',
+  'entities.quests.q_fallow_acres_wolves_ii.title': 'Последняя стая',
+  'entities.quests.q_fallow_acres_wolves_ii.text':
+    'С краю проредили, а логово все еще полное. Еще восемь, и на Перелогах, может, будет тихая ночь.',
+  'entities.quests.q_fallow_acres_wolves_ii.completion':
+    'Наконец-то тихо. Теперь можно взяться за изгороди.',
+  'entities.quests.q_fallow_acres_wolves_ii.objectives.0.label': 'Лесной волк убит',
   'entities.zones.thornpeak_heights.pois.0.label': 'Хайвотч',
   'entities.zones.thornpeak_heights.pois.1.label': 'Хребет охотника',
   'entities.zones.thornpeak_heights.pois.2.label': 'Норы Глубокоскалья',

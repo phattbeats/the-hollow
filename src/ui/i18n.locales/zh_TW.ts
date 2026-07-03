@@ -2767,6 +2767,36 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.zones.the_hollow_reaches.pois.3.label': '苔岸',
   'entities.zones.the_hollow_reaches.welcome':
     '大門外是一片開闊之地，道路以西的閒田莊看起來很適合安家。',
+  'entities.npcs.warden_fennick.name': '守望者芬尼克',
+  'entities.npcs.warden_fennick.title': '外域遊俠',
+  'entities.npcs.warden_fennick.greeting':
+    '這季節根穴的野豬鬧得兇，拱得到處都是，追著蟲子刨土。除非你想跟牠們幹一架，不然當心腳下的浮土。',
+  'entities.npcs.old_badger_thistlewick.name': '老獾希斯爾威克',
+  'entities.npcs.old_badger_thistlewick.title': '閒田莊農夫',
+  'entities.npcs.old_badger_thistlewick.greeting':
+    '這塊地不錯，只要籬笆能守得住。狼群夜夜繞著羊群轉，啥都建不成。',
+  'entities.quests.q_root_hollow_boars.title': '根穴野豬',
+  'entities.quests.q_root_hollow_boars.text':
+    '野豬把根穴刨了個遍，追著蟲子鬧騰，現在也不怎麼怕人了。殺五頭，樹根也許能歇一季。',
+  'entities.quests.q_root_hollow_boars.completion':
+    '少了五個獾嘴拱土的。根穴謝你了，雖然它自己說不出口。',
+  'entities.quests.q_root_hollow_boars.objectives.0.label': '野豬已殺',
+  'entities.quests.q_root_hollow_boars_ii.title': '根穴的清算',
+  'entities.quests.q_root_hollow_boars_ii.text':
+    '五頭只是個開頭，底下的窩裡還在往外拱。斬草除根：再殺八頭，根穴才能真正歇口氣。',
+  'entities.quests.q_root_hollow_boars_ii.completion':
+    '這下拱土的都清得差不多了。樹根總算能喘口氣。',
+  'entities.quests.q_root_hollow_boars_ii.objectives.0.label': '野豬已殺',
+  'entities.quests.q_fallow_acres_wolves.title': '趕走田壟上的狼',
+  'entities.quests.q_fallow_acres_wolves.text':
+    '狼群夜夜繞著圈子，這地方守不住。去閒田莊清清狼群，這趟不會讓你白跑。',
+  'entities.quests.q_fallow_acres_wolves.completion': '這下總算能睡幾個安穩覺了。多謝。',
+  'entities.quests.q_fallow_acres_wolves.objectives.0.label': '森林狼已殺',
+  'entities.quests.q_fallow_acres_wolves_ii.title': '最後的狼群',
+  'entities.quests.q_fallow_acres_wolves_ii.text':
+    '邊上是清乾淨了，可窩裡還滿滿當當。再殺八頭，閒田莊也許能有個安靜夜。',
+  'entities.quests.q_fallow_acres_wolves_ii.completion': '總算安靜了。這下我能開始修籬笆了。',
+  'entities.quests.q_fallow_acres_wolves_ii.objectives.0.label': '森林狼已殺',
   'entities.zones.thornpeak_heights.pois.0.label': '高望',
   'entities.zones.thornpeak_heights.pois.1.label': '潛獵者山脊',
   'entities.zones.thornpeak_heights.pois.2.label': '深岩洞穴',

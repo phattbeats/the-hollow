@@ -5670,6 +5670,16 @@ export const da_DK: EnTranslations = {
         "name": "Broder Grønpote",
         "title": "Første Profet (selvudnævnt)",
         "greeting": "hej, rejsende. fangede du vasen i humør i dag, eller er det bare mig igen... kom her, har et par hellige sager der trænger til pleje. mest snacks. samme ting, når man er Grønpote."
+      },
+      "warden_fennick": {
+        "name": "Warden Fennick",
+        "title": "Ranger of the Reaches",
+        "greeting": "Root Hollow's lousy with boar this season, tearing up the roots chasing grubs. Mind the loose dirt unless you mean to fight 'em."
+      },
+      "old_badger_thistlewick": {
+        "name": "Old Badger Thistlewick",
+        "title": "Fallow Acres Farmer",
+        "greeting": "Good ground here, once the fences hold. Can't build a thing with wolves circling the flock every night."
       }
     },
     "quests": {
@@ -6505,6 +6515,46 @@ export const da_DK: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Grottebid indsamlet"
+          }
+        }
+      },
+      "q_root_hollow_boars": {
+        "title": "Root Hollow's Boars",
+        "text": "Boars have dug up half of Root Hollow chasing grubs, and they don't scare easy anymore. Cull five and the roots might get a season's rest.",
+        "completion": "Five less snouts in the dirt. Root Hollow thanks you, even if it can't say so.",
+        "objectives": {
+          "0": {
+            "label": "Wild Boar slain"
+          }
+        }
+      },
+      "q_root_hollow_boars_ii": {
+        "title": "Root Hollow's Reckoning",
+        "text": "Five was a start, but more keep pushing up from the lower dens. Finish it: eight more and Root Hollow gets its rest.",
+        "completion": "That's the last of the diggers, or near enough. The roots can breathe.",
+        "objectives": {
+          "0": {
+            "label": "Wild Boar slain"
+          }
+        }
+      },
+      "q_fallow_acres_wolves": {
+        "title": "Wolves Off the Furrows",
+        "text": "Can't hold a plot with wolves circling every night. Thin the pack at Fallow Acres and I'll make it worth the walk.",
+        "completion": "That's a few nights' sleep, right there. Preciate it.",
+        "objectives": {
+          "0": {
+            "label": "Forest Wolf slain"
+          }
+        }
+      },
+      "q_fallow_acres_wolves_ii": {
+        "title": "The Last of the Pack",
+        "text": "Thinned the edges, but the den's still full. Eight more and Fallow Acres might get a quiet night.",
+        "completion": "Quiet at last. Reckon I can start on those fences now.",
+        "objectives": {
+          "0": {
+            "label": "Forest Wolf slain"
           }
         }
       }
