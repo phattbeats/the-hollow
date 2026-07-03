@@ -2952,9 +2952,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.dungeons.the_hollow.leaveText': '문을 지나 다시 이스트브룩으로 나갑니다.',
   'entities.dungeons.under_shrine.name': '지하 사당',
   'entities.dungeons.under_shrine.enterText':
-    '사당 아래로 내려갑니다. 공기가 고요하고 답답해지며, 앞의 어둠은 텅 빈 것처럼 느껴지지 않습니다.',
+    '사당 아래로 내려갑니다. 공기가 고요하고 답답해지며, 앞의 어둠은 텅 빈 것처럼 느껴지지 않습니다. 이 아래 무언가가, 아무도 귀 기울이지 않게 된 지 오래되었어도, 여전히 스스로 시간을 헤아리고 있습니다.',
   'entities.dungeons.under_shrine.leaveText':
-    '따뜻한 곳으로 다시 기어오릅니다. 머리 위로, 희미하게 연기가 보입니다.',
+    '따뜻한 곳으로 다시 기어오릅니다. 머리 위로, 희미하게 연기가 보입니다. 그 아래에서는, 어둠이 천천히 수를 세고 있습니다.',
   'worldContent.corpseName': '{name} (시체)',
   'worldContent.dungeonExitName': '{name} 출구',
   'worldContent.delveLockedChestInteract': 'F를 눌러 자물쇠 따기',
@@ -4523,6 +4523,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': '동굴 고기 조각',
   'entities.items.emberbulb.name': '불씨구근',
   'entities.items.first_cutting.name': '꺾꽂이',
+  'entities.items.witness_root_cincture.name': '증인뿌리의 허리띠',
   'entities.mobs.acolyte_tessa.name': '수련사제 테사',
   'entities.mobs.deacon_varric.name': '부제 바릭',
   'entities.mobs.reliquary_bonewalker.name': '되살아난 해골보행자',

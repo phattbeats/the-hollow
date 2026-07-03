@@ -4560,6 +4560,7 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': 'Boccone di Caverna',
   'entities.items.emberbulb.name': 'Bulbo di Brace',
   'entities.items.first_cutting.name': 'Una Talea',
+  'entities.items.witness_root_cincture.name': 'Cintura della Radice Testimone',
   'entities.mobs.acolyte_tessa.name': 'Accolita Tessa',
   'entities.mobs.deacon_varric.name': 'Diacono Varric',
   'entities.mobs.reliquary_bonewalker.name': 'Camminaossa Risorto',

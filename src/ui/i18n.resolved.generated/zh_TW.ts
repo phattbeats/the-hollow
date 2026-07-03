@@ -5099,6 +5099,9 @@ export const zh_TW: EnTranslations = {
       "first_cutting": {
         "name": "插條"
       },
+      "witness_root_cincture": {
+        "name": "見證根的束帶"
+      },
       "reliquary_plate_chest": {
         "name": "聖物庫守衛鎖甲"
       },
@@ -6719,8 +6722,8 @@ export const zh_TW: EnTranslations = {
       },
       "under_shrine": {
         "name": "地下聖龕",
-        "enterText": "你潛入神龕之下。空氣變得靜止而壓抑，前方的黑暗似乎並不空無一物。",
-        "leaveText": "你爬回溫暖之處。頭頂上方，隱約有煙。"
+        "enterText": "你潛入神龕之下。空氣變得靜止而壓抑，前方的黑暗似乎並不空無一物。這下面的某個東西，在無人聆聽許久之後，仍自顧自地計著時間。",
+        "leaveText": "你爬回溫暖之處。頭頂上方，隱約有煙。而在下方，黑暗仍在緩緩計數。"
       }
     },
     "delves": {

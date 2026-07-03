@@ -2824,8 +2824,9 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.dungeons.the_hollow.leaveText': '你穿过大门，回到东溪。',
   'entities.dungeons.under_shrine.name': '地下圣龛',
   'entities.dungeons.under_shrine.enterText':
-    '你潜入神龛之下。空气变得静止而压抑，前方的黑暗似乎并不空无一物。',
-  'entities.dungeons.under_shrine.leaveText': '你爬回温暖之处。头顶上方，隐约有烟。',
+    '你潜入神龛之下。空气变得静止而压抑，前方的黑暗似乎并不空无一物。这下面的什么东西，在无人聆听许久之后，仍自顾自地计着时间。',
+  'entities.dungeons.under_shrine.leaveText':
+    '你爬回温暖之处。头顶上方，隐约有烟。而在下方，黑暗仍在缓缓计数。',
   'worldContent.corpseName': '{name}（尸体）',
   'worldContent.dungeonExitName': '{name}出口',
   'worldContent.delveLockedChestInteract': '按 F 撬锁',
@@ -4287,6 +4288,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': '洞穴肉粒',
   'entities.items.emberbulb.name': '余烬球茎',
   'entities.items.first_cutting.name': '插条',
+  'entities.items.witness_root_cincture.name': '见证根的束带',
   'entities.mobs.acolyte_tessa.name': '侍僧泰莎',
   'entities.mobs.deacon_varric.name': '执事瓦里克',
   'entities.mobs.reliquary_bonewalker.name': '复生的骨行者',

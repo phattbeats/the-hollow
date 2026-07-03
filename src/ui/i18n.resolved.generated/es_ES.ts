@@ -5099,6 +5099,9 @@ export const es_ES: EnTranslations = {
       "first_cutting": {
         "name": "Un Esqueje"
       },
+      "witness_root_cincture": {
+        "name": "Cinturón de la Raíz Testigo"
+      },
       "reliquary_plate_chest": {
         "name": "Loriga de la Guardia del Relicario"
       },

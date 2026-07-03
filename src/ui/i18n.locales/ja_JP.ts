@@ -2954,8 +2954,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.dungeons.the_hollow.leaveText': '門を抜けて、イーストブルックへと戻る。',
   'entities.dungeons.under_shrine.name': '地下祠',
   'entities.dungeons.under_shrine.enterText':
-    '祠の下へと降りていく。大気は静まり返って狭まり、先の闇は空虚には感じられない。',
-  'entities.dungeons.under_shrine.leaveText': '暖かさの中へと這い上がる。頭上には、かすかに煙。',
+    '祠の下へと降りていく。大気は静まり返って狭まり、先の闇は空虚には感じられない。この奥深くで何かが、誰も耳を傾けなくなって久しいというのに、なおも独りで時を刻み続けている。',
+  'entities.dungeons.under_shrine.leaveText':
+    '暖かさの中へと這い上がる。頭上には、かすかに煙。その下では、闇がゆっくりと数え続けている。',
   'worldContent.corpseName': '{name}（死体）',
   'worldContent.dungeonExitName': '{name}の出口',
   'worldContent.delveLockedChestInteract': 'Fで錠を開ける',
@@ -4512,6 +4513,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': '洞窟の肉片',
   'entities.items.emberbulb.name': '残り火の球根',
   'entities.items.first_cutting.name': '挿し木',
+  'entities.items.witness_root_cincture.name': '証しの根の帯紐',
   'entities.mobs.acolyte_tessa.name': '侍祭テッサ',
   'entities.mobs.deacon_varric.name': '助祭ヴァリック',
   'entities.mobs.reliquary_bonewalker.name': '蘇りし骨歩き',

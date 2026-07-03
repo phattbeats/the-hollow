@@ -5099,6 +5099,9 @@ export const ko_KR: EnTranslations = {
       "first_cutting": {
         "name": "꺾꽂이"
       },
+      "witness_root_cincture": {
+        "name": "증인뿌리의 허리띠"
+      },
       "reliquary_plate_chest": {
         "name": "성물실 수호 갑옷"
       },
@@ -6719,8 +6722,8 @@ export const ko_KR: EnTranslations = {
       },
       "under_shrine": {
         "name": "지하 사당",
-        "enterText": "사당 아래로 내려갑니다. 공기가 고요하고 답답해지며, 앞의 어둠은 텅 빈 것처럼 느껴지지 않습니다.",
-        "leaveText": "따뜻한 곳으로 다시 기어오릅니다. 머리 위로, 희미하게 연기가 보입니다."
+        "enterText": "사당 아래로 내려갑니다. 공기가 고요하고 답답해지며, 앞의 어둠은 텅 빈 것처럼 느껴지지 않습니다. 이 아래 무언가가, 아무도 귀 기울이지 않게 된 지 오래되었어도, 여전히 스스로 시간을 헤아리고 있습니다.",
+        "leaveText": "따뜻한 곳으로 다시 기어오릅니다. 머리 위로, 희미하게 연기가 보입니다. 그 아래에서는, 어둠이 천천히 수를 세고 있습니다."
       }
     },
     "delves": {

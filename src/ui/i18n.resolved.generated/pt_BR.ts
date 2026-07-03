@@ -5099,6 +5099,9 @@ export const pt_BR: EnTranslations = {
       "first_cutting": {
         "name": "Uma Muda"
       },
+      "witness_root_cincture": {
+        "name": "Cinturão da Raiz Testemunha"
+      },
       "reliquary_plate_chest": {
         "name": "Cota da Guarda do Relicário"
       },

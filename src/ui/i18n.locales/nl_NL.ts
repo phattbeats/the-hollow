@@ -920,6 +920,7 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'entities.items.fenreed_staff.name': 'Veenriet-Staf',
   'entities.items.fenwalker_boots.name': 'Veenloper-Laarzen',
   'entities.items.first_cutting.name': 'Een Stek',
+  'entities.items.witness_root_cincture.name': 'Getuigenwortels Gordel',
   'entities.items.footpad_jerkin.name': 'Struikrovers-Wambuis',
   'entities.items.forest_pink_armor_plate.name': 'Bosroze',
   'entities.items.frayed_prayer_beads.name': 'Gerafelde Bidkralen',

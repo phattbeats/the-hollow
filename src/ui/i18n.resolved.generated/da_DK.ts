@@ -5099,6 +5099,9 @@ export const da_DK: EnTranslations = {
       "first_cutting": {
         "name": "En Stikling"
       },
+      "witness_root_cincture": {
+        "name": "Vidnerods Bælte"
+      },
       "reliquary_plate_chest": {
         "name": "Relikvievogterens Brynje"
       },

@@ -78,6 +78,25 @@ export const CRYPT_LAYOUT: DungeonLayout = {
   dais: { x: 0, z: 96, r: 9.5 },
 };
 
+// The Under-Shrine (PHAA-433): the same straight crypt-family nave, stretched
+// roughly a third longer (z -19..148 vs the crypt's -19..112) so the first
+// descent's trash spreads through a real span instead of packing the front
+// third of the room. Collider-only: this dungeon still reads as the shared
+// 'crypt' render variant (root-cold reskin is tracked separately), so it is
+// its OWN layout picked by dungeon id in colliders.ts/renderer.ts rather than
+// widening the shared DungeonDef.interior union or CRYPT_LAYOUT itself, which
+// would also resize Hollow Crypt and Sunken Bastion.
+export const UNDER_SHRINE_LAYOUT: DungeonLayout = {
+  zMin: -19,
+  zMax: 148,
+  sideWallZ: 65,
+  sideWallHd: 84,
+  pillars: grid(10, 130, 15, [-14, 14]),
+  tombs: grid(16, 111, 19, [-19, 19]),
+  stubs: [],
+  dais: { x: 0, z: 132, r: 9.5 },
+};
+
 // Gravewyrm Sanctum: a stretched three-chamber crypt (z -19..158) with
 // narrowed waists at z 67/115 leaving a ~10u centre passage at |x| <= 5.
 export const SANCTUM_LAYOUT: DungeonLayout = (() => {

@@ -151,7 +151,22 @@ export const HOLLOW_MOBS: Record<string, MobTemplate> = {
     armorPerLevel: 10,
     moveSpeed: 6,
     aggroRadius: 12,
-    loot: [{ copper: 120, chance: 1 }],
+    // PHAA-433: the boss meaningfully closes the first run's item gap on its
+    // own, not just adds one more shot at the pile. Same quest-gated pattern
+    // as palefeeder/rootmaw above (two independent rolls per item instead of
+    // a bigger single chance, so it stays a Rng.chance draw per line, never a
+    // guaranteed multi-count drop the engine has no field for), plus a real
+    // classic-style chance at a themed rare (src/sim/types.ts quality ladder;
+    // odds in line with this game's other early rare-tier boss drops, e.g.
+    // zone1.ts's grix_tunnelking_chase rollGroup).
+    loot: [
+      { copper: 120, chance: 1 },
+      { itemId: 'emberbulb', chance: 0.9, questId: 'q_what_burns' },
+      { itemId: 'emberbulb', chance: 0.6, questId: 'q_what_burns' },
+      { itemId: 'cave_morsel', chance: 0.9, questId: 'q_what_fills' },
+      { itemId: 'cave_morsel', chance: 0.6, questId: 'q_what_fills' },
+      { itemId: 'witness_root_cincture', chance: 0.15 },
+    ],
     scale: 1.6,
     color: 0x39412f,
   },
@@ -454,6 +469,20 @@ export const HOLLOW_ITEMS: Record<string, ItemDef> = {
     sellValue: 0, // it is alive; it is not for sale
     questId: 'q_what_fills',
   },
+  // PHAA-433: the Witness-Root's rare-chance drop. Class-neutral single-stat
+  // budget, same convention as the other class-neutral pieces (cf. items.ts's
+  // cryptbone_helm). Item level derives automatically from the boss's own
+  // level (src/sim/item_level.ts): source 4 + the rare quality bonus (+3) = 7.
+  witness_root_cincture: {
+    id: 'witness_root_cincture',
+    name: "The Witness-Root's Cincture",
+    kind: 'armor',
+    armorType: 'leather',
+    slot: 'waist',
+    quality: 'rare',
+    stats: { armor: 40, sta: 3 },
+    sellValue: 180,
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -467,21 +496,30 @@ export const HOLLOW_ITEMS: Record<string, ItemDef> = {
 // descent without dead-waiting on respawns. With the room this full it can
 // never be cleared solo faster than the shortened 15s respawn (palefeeder /
 // rootmaw respawnMult above), so there is always something live to fight on
-// the walk back, yet 11 soft trash spread over z 14..58 still pull in ones and
-// twos (aggroRadius 8-9), never a wipe-inducing swarm.
+// the walk back.
+//
+// PHAA-433 (second pass, board-directed): the same 11 trash now spread the
+// FULL length of the room (UNDER_SHRINE_LAYOUT, z -19..148, its own footprint
+// so this doesn't also resize Hollow Crypt/Sunken Bastion) instead of packing
+// the front third, and swing across most of the walkable width (the crypt
+// side walls sit at |x|=22; pillars run |x|=14 z 10..130, so spawns keep
+// clear of both) rather than a narrow x -5..5 lane. It reads as a steady
+// trickle down a real cave, never a pile, and the widened aggroRadius 8-9
+// pulls still never chain past two mobs at these spacings/x-offsets. The
+// boss sits on the room's own dais at the far end.
 const UNDER_SHRINE_SPAWNS: DungeonSpawn[] = [
-  { mobId: 'palefeeder', x: -4, z: 14 },
-  { mobId: 'palefeeder', x: 5, z: 18 },
-  { mobId: 'palefeeder', x: 2, z: 22 },
-  { mobId: 'palefeeder', x: -2, z: 26 },
-  { mobId: 'rootmaw', x: -4, z: 30 },
-  { mobId: 'rootmaw', x: 3, z: 34 },
-  { mobId: 'palefeeder', x: 4, z: 38 },
-  { mobId: 'rootmaw', x: -5, z: 42 },
-  { mobId: 'palefeeder', x: 0, z: 48 },
-  { mobId: 'rootmaw', x: 4, z: 52 },
-  { mobId: 'rootmaw', x: -3, z: 58 },
-  { mobId: 'the_witness_root', x: 0, z: 70 },
+  { mobId: 'palefeeder', x: -8, z: 12 },
+  { mobId: 'rootmaw', x: 9, z: 22 },
+  { mobId: 'palefeeder', x: -11, z: 32 },
+  { mobId: 'rootmaw', x: 6, z: 42 },
+  { mobId: 'palefeeder', x: -4, z: 52 },
+  { mobId: 'rootmaw', x: 11, z: 62 },
+  { mobId: 'palefeeder', x: 8, z: 72 },
+  { mobId: 'rootmaw', x: -9, z: 82 },
+  { mobId: 'palefeeder', x: -2, z: 92 },
+  { mobId: 'rootmaw', x: 10, z: 102 },
+  { mobId: 'palefeeder', x: -6, z: 112 },
+  { mobId: 'the_witness_root', x: 0, z: 132 }, // on UNDER_SHRINE_LAYOUT's dais
 ];
 
 // The Hollow hub itself. Per the constitution's Decision 19 (docs/plan-the-hollow.md
@@ -550,8 +588,13 @@ export const HOLLOW_DUNGEON_DEFS: Record<string, DungeonDef> = {
     // per the constitution (§4, the Hollow Crypt reuse) and rethemed root-cold
     interior: 'crypt',
     suggestedPlayers: 5,
+    // PHAA-433: light lore dressing, tying the cave to the LORE BOOK canon
+    // (PHAA-429) that the Sexton's archive and engine sit below the shrine
+    // without naming him outright (he wanders, and is never placed) or
+    // adding any new interactable object system for it.
     enterText:
-      'You descend below the shrine. The air goes still and close, and the dark ahead does not feel empty.',
-    leaveText: 'You climb back into the warm. Above you, faintly, smoke.',
+      'You descend below the shrine. The air goes still and close, and the dark ahead does not feel empty. Something down here has kept its own time long after anyone stopped listening.',
+    leaveText:
+      'You climb back into the warm. Above you, faintly, smoke. Below, the dark keeps its slow count.',
   },
 };

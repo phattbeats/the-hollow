@@ -5099,6 +5099,9 @@ export const fr_FR: EnTranslations = {
       "first_cutting": {
         "name": "Une bouture"
       },
+      "witness_root_cincture": {
+        "name": "Ceinturon de la Racine témoin"
+      },
       "reliquary_plate_chest": {
         "name": "Haubert de la garde du reliquaire"
       },

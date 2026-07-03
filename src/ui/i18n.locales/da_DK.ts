@@ -900,6 +900,7 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'entities.items.fenreed_staff.name': 'Kærsiv-Stav',
   'entities.items.fenwalker_boots.name': 'Kærvandrer-Støvler',
   'entities.items.first_cutting.name': 'En Stikling',
+  'entities.items.witness_root_cincture.name': 'Vidnerods Bælte',
   'entities.items.footpad_jerkin.name': 'Stratenrøvers Vams',
   'entities.items.forest_pink_armor_plate.name': 'Skovgrøn Lyserød',
   'entities.items.frayed_prayer_beads.name': 'Flossede Bønneperler',

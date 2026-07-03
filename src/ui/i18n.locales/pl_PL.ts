@@ -912,6 +912,7 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'entities.items.fenreed_staff.name': 'Kostur bagiennej trzciny',
   'entities.items.fenwalker_boots.name': 'Buty bagiennego wędrowca',
   'entities.items.first_cutting.name': 'Sadzonka',
+  'entities.items.witness_root_cincture.name': 'Pas Korzenia Świadka',
   'entities.items.footpad_jerkin.name': 'Kaftan rzezimieszka',
   'entities.items.forest_pink_armor_plate.name': 'Leśny róż',
   'entities.items.frayed_prayer_beads.name': 'Wystrzępione paciorki modlitewne',

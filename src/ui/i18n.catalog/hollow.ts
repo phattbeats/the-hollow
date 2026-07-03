@@ -13,6 +13,7 @@ const hollowEntitiesEn = {
     cave_morsel: { name: 'Cave Morsel' },
     emberbulb: { name: 'Emberbulb' },
     first_cutting: { name: 'A Cutting' },
+    witness_root_cincture: { name: "The Witness-Root's Cincture" },
   },
   mobs: {
     palefeeder: { name: 'Palefeeder' },
@@ -90,8 +91,9 @@ const hollowEntitiesEn = {
     under_shrine: {
       name: 'The Under-Shrine',
       enterText:
-        'You descend below the shrine. The air goes still and close, and the dark ahead does not feel empty.',
-      leaveText: 'You climb back into the warm. Above you, faintly, smoke.',
+        'You descend below the shrine. The air goes still and close, and the dark ahead does not feel empty. Something down here has kept its own time long after anyone stopped listening.',
+      leaveText:
+        'You climb back into the warm. Above you, faintly, smoke. Below, the dark keeps its slow count.',
     },
   },
 };

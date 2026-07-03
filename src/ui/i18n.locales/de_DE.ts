@@ -2954,6 +2954,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': 'Höhlenhappen',
   'entities.items.emberbulb.name': 'Glutknolle',
   'entities.items.first_cutting.name': 'Ein Ableger',
+  'entities.items.witness_root_cincture.name': 'Zeugenwurzels Gürtel',
   'entities.mobs.palefeeder.name': 'Bleichfresser',
   'entities.mobs.rootmaw.name': 'Wurzelmaul',
   'entities.mobs.the_witness_root.name': 'Die Zeugenwurzel',

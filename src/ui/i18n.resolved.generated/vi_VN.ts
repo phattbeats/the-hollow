@@ -5099,6 +5099,9 @@ export const vi_VN: EnTranslations = {
       "first_cutting": {
         "name": "Một Nhánh Giâm"
       },
+      "witness_root_cincture": {
+        "name": "Đai Lưng Của Rễ Chứng Nhân"
+      },
       "reliquary_plate_chest": {
         "name": "Áo Giáp Vệ Binh Thánh Tích"
       },

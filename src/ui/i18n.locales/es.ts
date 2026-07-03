@@ -4573,6 +4573,7 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': 'Bocado de Cueva',
   'entities.items.emberbulb.name': 'Bulbo Ascua',
   'entities.items.first_cutting.name': 'Un Esqueje',
+  'entities.items.witness_root_cincture.name': 'Cinturón de la Raíz Testigo',
   'entities.mobs.acolyte_tessa.name': 'Acólita Tessa',
   'entities.mobs.deacon_varric.name': 'Diácono Varric',
   'entities.mobs.reliquary_bonewalker.name': 'Andahuesos alzado',

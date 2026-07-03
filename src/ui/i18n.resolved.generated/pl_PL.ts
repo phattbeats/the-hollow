@@ -5099,6 +5099,9 @@ export const pl_PL: EnTranslations = {
       "first_cutting": {
         "name": "Sadzonka"
       },
+      "witness_root_cincture": {
+        "name": "Pas Korzenia Świadka"
+      },
       "reliquary_plate_chest": {
         "name": "Kolczuga strażnika relikwiarza"
       },

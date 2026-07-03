@@ -5099,6 +5099,9 @@ export const it_IT: EnTranslations = {
       "first_cutting": {
         "name": "Una Talea"
       },
+      "witness_root_cincture": {
+        "name": "Cintura della Radice Testimone"
+      },
       "reliquary_plate_chest": {
         "name": "Usbergo della guardia del reliquiario"
       },

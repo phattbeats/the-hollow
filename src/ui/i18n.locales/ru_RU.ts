@@ -2987,9 +2987,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.dungeons.the_hollow.leaveText': 'Ты выходишь обратно через врата в Истврук.',
   'entities.dungeons.under_shrine.name': 'Подсвятилище',
   'entities.dungeons.under_shrine.enterText':
-    'Ты спускаешься под святилище. Воздух становится неподвижным и тесным, и тьма впереди не кажется пустой.',
+    'Ты спускаешься под святилище. Воздух становится неподвижным и тесным, и тьма впереди не кажется пустой. Что-то здесь, внизу, всё ещё ведёт свой счёт времени, хотя его давно никто не слушает.',
   'entities.dungeons.under_shrine.leaveText':
-    'Ты выбираешься обратно в тепло. Над тобой, едва заметно, дым.',
+    'Ты выбираешься обратно в тепло. Над тобой, едва заметно, дым. А внизу тьма продолжает свой медленный счёт.',
   'worldContent.corpseName': '{name} (труп)',
   'worldContent.dungeonExitName': 'Выход из {name}',
   'worldContent.delveLockedChestInteract': 'Нажмите F, чтобы вскрыть замок',
@@ -4611,6 +4611,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': 'Пещерная закуска',
   'entities.items.emberbulb.name': 'Тлеющая луковица',
   'entities.items.first_cutting.name': 'Черенок',
+  'entities.items.witness_root_cincture.name': 'Обвязка Корня-Свидетеля',
   'entities.mobs.acolyte_tessa.name': 'Послушница Тесса',
   'entities.mobs.deacon_varric.name': 'Дьякон Варрик',
   'entities.mobs.reliquary_bonewalker.name': 'Поднятый костеход',

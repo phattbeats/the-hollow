@@ -5099,6 +5099,9 @@ export const de_DE: EnTranslations = {
       "first_cutting": {
         "name": "Ein Ableger"
       },
+      "witness_root_cincture": {
+        "name": "Zeugenwurzels Gürtel"
+      },
       "reliquary_plate_chest": {
         "name": "Halsberge der Reliquiarwache"
       },

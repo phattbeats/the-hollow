@@ -5099,6 +5099,9 @@ export const tr_TR: EnTranslations = {
       "first_cutting": {
         "name": "Bir Filiz"
       },
+      "witness_root_cincture": {
+        "name": "Tanık Kök'ün Kemeri"
+      },
       "reliquary_plate_chest": {
         "name": "Emanetlik Muhafızı Zırhı"
       },

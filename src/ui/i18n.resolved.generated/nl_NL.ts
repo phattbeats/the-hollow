@@ -5099,6 +5099,9 @@ export const nl_NL: EnTranslations = {
       "first_cutting": {
         "name": "Een Stek"
       },
+      "witness_root_cincture": {
+        "name": "Getuigenwortels Gordel"
+      },
       "reliquary_plate_chest": {
         "name": "Reliekwacht-Maliënkolder"
       },

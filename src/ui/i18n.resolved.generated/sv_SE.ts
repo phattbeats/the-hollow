@@ -5099,6 +5099,9 @@ export const sv_SE: EnTranslations = {
       "first_cutting": {
         "name": "En stickling"
       },
+      "witness_root_cincture": {
+        "name": "Vittnesrotens gördel"
+      },
       "reliquary_plate_chest": {
         "name": "Relikvarievaktens ringbrynja"
       },

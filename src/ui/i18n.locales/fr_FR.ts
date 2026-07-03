@@ -2101,6 +2101,7 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': 'Bouchée des grottes',
   'entities.items.emberbulb.name': 'Bulbe-braise',
   'entities.items.first_cutting.name': 'Une bouture',
+  'entities.items.witness_root_cincture.name': 'Ceinturon de la Racine témoin',
   'entities.items.gravecaller_blade.name': 'Grande lame de Gravecaller',
   'entities.items.widowfang_dirk.name': 'Dague Croc-de-veuve',
   'entities.items.gravecaller_staff.name': 'Bâton du Creux',

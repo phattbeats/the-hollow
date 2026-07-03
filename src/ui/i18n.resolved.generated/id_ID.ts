@@ -5099,6 +5099,9 @@ export const id_ID: EnTranslations = {
       "first_cutting": {
         "name": "Sebuah Stek"
       },
+      "witness_root_cincture": {
+        "name": "Sabuk Akar Saksi"
+      },
       "reliquary_plate_chest": {
         "name": "Baju Zirah Penjaga Relikuari"
       },

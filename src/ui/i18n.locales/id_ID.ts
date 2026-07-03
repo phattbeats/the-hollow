@@ -931,6 +931,7 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'entities.items.fenreed_staff.name': 'Tongkat Buluh Rawa',
   'entities.items.fenwalker_boots.name': 'Bot Penjelajah Rawa',
   'entities.items.first_cutting.name': 'Sebuah Stek',
+  'entities.items.witness_root_cincture.name': 'Sabuk Akar Saksi',
   'entities.items.footpad_jerkin.name': 'Jaket Perampok',
   'entities.items.forest_pink_armor_plate.name': 'Merah Muda Hutan',
   'entities.items.frayed_prayer_beads.name': 'Tasbih Doa Usang',

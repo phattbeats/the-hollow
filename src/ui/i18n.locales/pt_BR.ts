@@ -4550,6 +4550,7 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': 'Petisco da Caverna',
   'entities.items.emberbulb.name': 'Bulbo de Brasa',
   'entities.items.first_cutting.name': 'Uma Muda',
+  'entities.items.witness_root_cincture.name': 'Cinturão da Raiz Testemunha',
   'entities.mobs.acolyte_tessa.name': 'Acólita Tessa',
   'entities.mobs.deacon_varric.name': 'Diácono Varric',
   'entities.mobs.reliquary_bonewalker.name': 'Caminhante de Ossos Erguido',
