@@ -30,7 +30,7 @@ import {
   isAttackableEntity,
 } from './game/interactions';
 import { Keybinds } from './game/keybinds';
-import { shouldUseStaticBackdrop } from './game/landing_backdrop';
+import { pickLandingBackgroundVariant, shouldUseStaticBackdrop } from './game/landing_backdrop';
 import {
   interfaceModeFromSetting,
   isPhoneTouchDevice,
@@ -50,6 +50,7 @@ import {
   Settings,
 } from './game/settings';
 import { sfx } from './game/sfx';
+import { mountSporeDrift } from './game/spore_drift';
 import { resolveUiEffectsProfile } from './game/ui_effects_profile';
 import { voice } from './game/voice';
 import {
@@ -6081,6 +6082,20 @@ function wireStartScreens(): void {
   };
   syncContrastToggle(landingSettings.get('landingHighContrast'));
   applyLandingBackdrop(landingSettings.get('landingHighContrast'));
+
+  // PHAA-406 login-screen backdrop drafts: ?bg=<variant> previews a candidate
+  // replacement for the licensed-provenance-unclear trailer video, side by
+  // side, before the board picks one. Runs after applyLandingBackdrop so it can
+  // tear down the just-attached video source; no param means unchanged behavior.
+  const backgroundVariant = pickLandingBackgroundVariant(window.location.search);
+  if (backgroundVariant !== 'video') {
+    const backdrop = $('#start-screen-backdrop');
+    if (backdrop) {
+      stopLandingTrailer();
+      backdrop.classList.add(`bg-variant-${backgroundVariant}`);
+      if (backgroundVariant === 'spore-drift') mountSporeDrift(backdrop);
+    }
+  }
 
   // Stamp the engine/device + CSS-effects classes on the landing screen too, so
   // the decorative #start-screen-backdrop work (portal rings' heavy blur, nebula,

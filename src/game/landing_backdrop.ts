@@ -20,3 +20,26 @@ export interface BackdropSignals {
 export function shouldUseStaticBackdrop(s: BackdropSignals): boolean {
   return s.phone || s.saveData || s.reducedMotion || s.highContrast;
 }
+
+// Candidate login-screen backdrops (PHAA-406): the board flagged the licensed
+// trailer video (public/home-bg.mp4, undocumented provenance) as unwanted
+// regardless of license. These are original, license-free replacements to
+// preview side by side before one is picked. 'video' is the unchanged default.
+export type LandingBackgroundVariant = 'video' | 'spore-drift' | 'root-pulse' | 'canopy-sway';
+
+const BACKGROUND_VARIANTS: readonly LandingBackgroundVariant[] = [
+  'video',
+  'spore-drift',
+  'root-pulse',
+  'canopy-sway',
+];
+
+// Reads ?bg=<variant> so each candidate can be compared live in a browser
+// without deciding the pick in code. Unset or unrecognized falls back to
+// 'video', so normal play is unaffected.
+export function pickLandingBackgroundVariant(search: string): LandingBackgroundVariant {
+  const raw = new URLSearchParams(search).get('bg') ?? '';
+  return (BACKGROUND_VARIANTS as readonly string[]).includes(raw)
+    ? (raw as LandingBackgroundVariant)
+    : 'video';
+}
