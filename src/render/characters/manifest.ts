@@ -845,10 +845,9 @@ export const VISUALS: Record<string, VisualDef> = {
       death: 'Idle',
     },
   },
-  // Verger Zebediah and Sexton Faddick: textured hero models ready for the render
-  // pipeline. Not yet placed as sim NPCs (no `templateId` maps here, so `NPC_KEYS`
-  // has no entry for either), so this is inert until a future content ticket wires
-  // one in; see PHAA-414.
+  // Verger Zebediah and Sexton Faddick: textured hero models from the PHAA-413/414
+  // prophet-cast pass. Placed as sim NPCs in the Hollow Reaches starter zone
+  // (src/sim/content/hollow_zone.ts, PHAA-420); see the NPC_KEYS entries below.
   npc_zebediah: {
     url: `${NPCS}/zebediah.glb`,
     height: 2.05,
@@ -957,6 +956,8 @@ const NPC_KEYS: Record<string, string> = {
   quartermaster_bree: 'npc_villager',
   brother_halven: 'npc_reliquary_keeper',
   brother_greenpaw: 'npc_greenpaw',
+  verger_zebediah: 'npc_zebediah',
+  sexton_faddick: 'npc_faddick',
 };
 
 export function visualKeyFor(e: Entity): string {

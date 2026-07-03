@@ -2765,14 +2765,14 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.zones.the_hollow_reaches.pois.3.label': '苔岸',
   'entities.zones.the_hollow_reaches.welcome':
     '大门外是一片开阔之地，道路以西的闲田庄看起来很适合安家。',
-  'entities.npcs.warden_fennick.name': '守望者芬尼克',
-  'entities.npcs.warden_fennick.title': '外域游侠',
-  'entities.npcs.warden_fennick.greeting':
+  'entities.npcs.verger_zebediah.name': '司事泽比迪亚',
+  'entities.npcs.verger_zebediah.title': '根穴守卫',
+  'entities.npcs.verger_zebediah.greeting':
     '这季节根穴的野猪闹得凶，拱得到处都是，追着虫子刨土。除非你想跟它们干一架，不然当心脚下的浮土。',
-  'entities.npcs.old_badger_thistlewick.name': '老獾希斯尔威克',
-  'entities.npcs.old_badger_thistlewick.title': '闲田庄农夫',
-  'entities.npcs.old_badger_thistlewick.greeting':
-    '这块地不错，只要篱笆能守得住。狼群夜夜绕着羊群转，啥都建不成。',
+  'entities.npcs.sexton_faddick.name': '守墓人法迪克',
+  'entities.npcs.sexton_faddick.title': '流浪的守护者',
+  'entities.npcs.sexton_faddick.greeting':
+    '这块地不错，只是我路过的多，久留的少。狼群夜夜绕着羊群转，啥都建不成。',
   'entities.quests.q_root_hollow_boars.title': '根穴野猪',
   'entities.quests.q_root_hollow_boars.text':
     '野猪把根穴刨了个遍，追着虫子闹腾，现在也不怎么怕人了。杀五头，树根也许能歇一季。',

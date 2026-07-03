@@ -5671,15 +5671,15 @@ export const zh_TW: EnTranslations = {
         "title": "首席先知（自封）",
         "greeting": "喲，旅人，你來啦。你說這甕今兒個心情不錯，還是只有我這麼覺得……過來吧，有幾件神聖的事兒要辦。基本上就是弄點吃的。反正對綠掌來說是一回事兒。"
       },
-      "warden_fennick": {
-        "name": "守望者芬尼克",
-        "title": "外域遊俠",
+      "verger_zebediah": {
+        "name": "司事澤比迪亞",
+        "title": "根穴守衛",
         "greeting": "這季節根穴的野豬鬧得兇，拱得到處都是，追著蟲子刨土。除非你想跟牠們幹一架，不然當心腳下的浮土。"
       },
-      "old_badger_thistlewick": {
-        "name": "老獾希斯爾威克",
-        "title": "閒田莊農夫",
-        "greeting": "這塊地不錯，只要籬笆能守得住。狼群夜夜繞著羊群轉，啥都建不成。"
+      "sexton_faddick": {
+        "name": "守墓人法迪克",
+        "title": "流浪的守護者",
+        "greeting": "這塊地不錯，只是我路過的多，久留的少。狼群夜夜繞著羊群轉，啥都建不成。"
       }
     },
     "quests": {
