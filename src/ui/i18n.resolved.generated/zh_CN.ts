@@ -5670,6 +5670,16 @@ export const zh_CN: EnTranslations = {
         "name": "绿掌修士",
         "title": "首席先知（自封）",
         "greeting": "哟，旅人，你来啦。你说这瓮今儿个心情不错，还是只有我这么觉得……过来吧，有几件神圣的事儿要办。基本上就是弄点吃的。反正对绿掌来说是一回事儿。"
+      },
+      "warden_fennick": {
+        "name": "守望者芬尼克",
+        "title": "外域游侠",
+        "greeting": "这季节根穴的野猪闹得凶，拱得到处都是，追着虫子刨土。除非你想跟它们干一架，不然当心脚下的浮土。"
+      },
+      "old_badger_thistlewick": {
+        "name": "老獾希斯尔威克",
+        "title": "闲田庄农夫",
+        "greeting": "这块地不错，只要篱笆能守得住。狼群夜夜绕着羊群转，啥都建不成。"
       }
     },
     "quests": {
@@ -6505,6 +6515,46 @@ export const zh_CN: EnTranslations = {
         "objectives": {
           "0": {
             "label": "已采集洞穴肉粒"
+          }
+        }
+      },
+      "q_root_hollow_boars": {
+        "title": "根穴野猪",
+        "text": "野猪把根穴刨了个遍，追着虫子闹腾，现在也不怎么怕人了。杀五头，树根也许能歇一季。",
+        "completion": "少了五个獾嘴拱土的。根穴谢你了，虽然它自己说不出口。",
+        "objectives": {
+          "0": {
+            "label": "野猪已杀"
+          }
+        }
+      },
+      "q_root_hollow_boars_ii": {
+        "title": "根穴的清算",
+        "text": "五头只是个开头，底下的窝里还在往外拱。斩草除根：再杀八头，根穴才能真正歇口气。",
+        "completion": "这下拱土的都清得差不多了。树根总算能喘口气。",
+        "objectives": {
+          "0": {
+            "label": "野猪已杀"
+          }
+        }
+      },
+      "q_fallow_acres_wolves": {
+        "title": "赶走田垄上的狼",
+        "text": "狼群夜夜绕着圈子，这地方守不住。去闲田庄清清狼群，这趟不会让你白跑。",
+        "completion": "这下总算能睡几个安稳觉了。多谢。",
+        "objectives": {
+          "0": {
+            "label": "森林狼已杀"
+          }
+        }
+      },
+      "q_fallow_acres_wolves_ii": {
+        "title": "最后的狼群",
+        "text": "边上是清干净了，可窝里还满满当当。再杀八头，闲田庄也许能有个安静夜。",
+        "completion": "总算安静了。这下我能开始修篱笆了。",
+        "objectives": {
+          "0": {
+            "label": "森林狼已杀"
           }
         }
       }
