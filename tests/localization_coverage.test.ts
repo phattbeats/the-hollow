@@ -505,6 +505,10 @@ describe('i18n Localization Key Coverage', () => {
         values: { className: 'Mage', classNameLower: 'mage', playerName: 'Mira' },
       };
     }
+    if (entry.kind === 'npcIntro') {
+      const { ownerId, index } = parseIndexedEntry(entry.id, 'introLines');
+      return { kind: 'npcIntro', id: ownerId, lineIndex: index, field: 'introLine' };
+    }
     if (entry.kind === 'quest') {
       return {
         kind: 'quest',
@@ -937,6 +941,7 @@ describe('i18n Localization Key Coverage', () => {
     const expectedWorldCount =
       Object.keys(MOBS).length +
       Object.keys(NPCS).length * 3 +
+      Object.values(NPCS).reduce((sum, npc) => sum + (npc.introLines?.length ?? 0), 0) +
       Object.keys(QUESTS).length * 3 +
       Object.values(QUESTS).reduce((sum, quest) => sum + quest.objectives.length, 0) +
       ZONES.length * 2 +

@@ -4304,6 +4304,12 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.brother_greenpaw.title': '首席先知（自封）',
   'entities.npcs.brother_greenpaw.greeting':
     '喲，旅人，你來啦。你說這甕今兒個心情不錯，還是只有我這麼覺得……過來吧，有幾件神聖的事兒要辦。基本上就是弄點吃的。反正對綠掌來說是一回事兒。',
+  'entities.npcs.brother_greenpaw.introLines.0':
+    '呃……你好。你好啊。沒聽見你過來，我剛才神遊去了，去了個綠油油的地方……你這一臉剛睡醒的樣子，朋友。我太熟這表情了，我自己十天有九天掛著它……',
+  'entities.npcs.brother_greenpaw.introLines.1':
+    '我叫綠掌。綠掌修士，初代先知，自封的，這甕會告訴你這頭銜一文不值，她說得沒錯，可總得有人照看她不是……',
+  'entities.npcs.brother_greenpaw.introLines.2':
+    '這地方就是空穴。從前是一整個部族，熱鬧得很，聽他們說的，如今嘛，多半就剩我、這甕，還有那洞裡頭喘氣的那些玩意兒……罷了。她餓了，我也餓了，同一個頻道。過來吧，有幾件神聖的事兒得辦。',
   'entities.delves.collapsed_reliquary.enterText': '你向下深入崩塌的聖物庫。',
   'entities.delves.collapsed_reliquary.leaveText': '你爬回聖物庫遺墟處的哈爾文修士身邊。',
   'entities.delves.collapsed_reliquary.name': '崩塌的聖物庫',

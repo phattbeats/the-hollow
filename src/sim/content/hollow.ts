@@ -171,6 +171,16 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
     questIds: ['q_what_burns', 'q_what_fills'],
     greeting:
       "howdy, traveler. you catch the vase in a mood today, or is that just me again... c'mere, got a couple sacred matters need tendin'. mostly snacks. same thing, to a greenpaw degree.",
+    // First-meeting click-through intro (PHAA-432): three beats in-voice
+    // (all-lowercase, run-on, trailing "...", cowboy-fatalist, sincere) that
+    // carry the "remnants of a once great tribe" throughline before the errand.
+    // Kept identical in src/ui/i18n.catalog/hollow.ts (the English source the
+    // resolver reads); the sim record stays language-agnostic.
+    introLines: [
+      "uhh... hi. hi. didn't hear you come up, i was someplace else, someplace green... you got the just-woke-up look, friend. i know it well, i wear it most days...",
+      "name's greenpaw. brother greenpaw, first prophet, self-appointed, which the vase'll tell you means exactly nothin', and she's not wrong, but somebody's gotta tend her...",
+      "this here's the hollow. was a whole tribe once, big doings, so they tell me, and now it's mostly me, the vase, and whatever's breathin' down in that cave... anyway. she's hungry, i'm hungry, same wavelength. c'mere, got a couple sacred matters need tendin'.",
+    ],
   },
 };
 

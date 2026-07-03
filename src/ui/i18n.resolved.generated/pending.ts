@@ -10,6 +10,9 @@
 
 export const pending: Record<string, readonly string[]> = {
   "es": [
+    "entities.npcs.brother_greenpaw.introLines.0",
+    "entities.npcs.brother_greenpaw.introLines.1",
+    "entities.npcs.brother_greenpaw.introLines.2",
     "entities.npcs.sexton_faddick.greeting",
     "entities.npcs.sexton_faddick.name",
     "entities.npcs.sexton_faddick.title",
@@ -35,6 +38,9 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.options.showOwnNameplate"
   ],
   "es_ES": [
+    "entities.npcs.brother_greenpaw.introLines.0",
+    "entities.npcs.brother_greenpaw.introLines.1",
+    "entities.npcs.brother_greenpaw.introLines.2",
     "entities.npcs.sexton_faddick.greeting",
     "entities.npcs.sexton_faddick.name",
     "entities.npcs.sexton_faddick.title",
@@ -60,6 +66,9 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.options.showOwnNameplate"
   ],
   "fr_FR": [
+    "entities.npcs.brother_greenpaw.introLines.0",
+    "entities.npcs.brother_greenpaw.introLines.1",
+    "entities.npcs.brother_greenpaw.introLines.2",
     "entities.npcs.sexton_faddick.greeting",
     "entities.npcs.sexton_faddick.name",
     "entities.npcs.sexton_faddick.title",
@@ -85,6 +94,9 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.options.showOwnNameplate"
   ],
   "fr_CA": [
+    "entities.npcs.brother_greenpaw.introLines.0",
+    "entities.npcs.brother_greenpaw.introLines.1",
+    "entities.npcs.brother_greenpaw.introLines.2",
     "entities.npcs.sexton_faddick.greeting",
     "entities.npcs.sexton_faddick.name",
     "entities.npcs.sexton_faddick.title",
@@ -111,6 +123,9 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "en_CA": [],
   "it_IT": [
+    "entities.npcs.brother_greenpaw.introLines.0",
+    "entities.npcs.brother_greenpaw.introLines.1",
+    "entities.npcs.brother_greenpaw.introLines.2",
     "entities.npcs.sexton_faddick.greeting",
     "entities.npcs.sexton_faddick.name",
     "entities.npcs.sexton_faddick.title",
@@ -136,6 +151,9 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.options.showOwnNameplate"
   ],
   "de_DE": [
+    "entities.npcs.brother_greenpaw.introLines.0",
+    "entities.npcs.brother_greenpaw.introLines.1",
+    "entities.npcs.brother_greenpaw.introLines.2",
     "entities.npcs.sexton_faddick.greeting",
     "entities.npcs.sexton_faddick.name",
     "entities.npcs.sexton_faddick.title",
@@ -165,6 +183,9 @@ export const pending: Record<string, readonly string[]> = {
   "ko_KR": [],
   "ja_JP": [],
   "pt_BR": [
+    "entities.npcs.brother_greenpaw.introLines.0",
+    "entities.npcs.brother_greenpaw.introLines.1",
+    "entities.npcs.brother_greenpaw.introLines.2",
     "entities.npcs.sexton_faddick.greeting",
     "entities.npcs.sexton_faddick.name",
     "entities.npcs.sexton_faddick.title",
@@ -191,6 +212,9 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "ru_RU": [],
   "nl_NL": [
+    "entities.npcs.brother_greenpaw.introLines.0",
+    "entities.npcs.brother_greenpaw.introLines.1",
+    "entities.npcs.brother_greenpaw.introLines.2",
     "entities.npcs.sexton_faddick.greeting",
     "entities.npcs.sexton_faddick.name",
     "entities.npcs.sexton_faddick.title",
@@ -216,6 +240,9 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.options.showOwnNameplate"
   ],
   "pl_PL": [
+    "entities.npcs.brother_greenpaw.introLines.0",
+    "entities.npcs.brother_greenpaw.introLines.1",
+    "entities.npcs.brother_greenpaw.introLines.2",
     "entities.npcs.sexton_faddick.greeting",
     "entities.npcs.sexton_faddick.name",
     "entities.npcs.sexton_faddick.title",
@@ -241,6 +268,9 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.options.showOwnNameplate"
   ],
   "id_ID": [
+    "entities.npcs.brother_greenpaw.introLines.0",
+    "entities.npcs.brother_greenpaw.introLines.1",
+    "entities.npcs.brother_greenpaw.introLines.2",
     "entities.npcs.sexton_faddick.greeting",
     "entities.npcs.sexton_faddick.name",
     "entities.npcs.sexton_faddick.title",
@@ -266,6 +296,9 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.options.showOwnNameplate"
   ],
   "tr_TR": [
+    "entities.npcs.brother_greenpaw.introLines.0",
+    "entities.npcs.brother_greenpaw.introLines.1",
+    "entities.npcs.brother_greenpaw.introLines.2",
     "entities.npcs.sexton_faddick.greeting",
     "entities.npcs.sexton_faddick.name",
     "entities.npcs.sexton_faddick.title",
@@ -291,6 +324,9 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.options.showOwnNameplate"
   ],
   "sv_SE": [
+    "entities.npcs.brother_greenpaw.introLines.0",
+    "entities.npcs.brother_greenpaw.introLines.1",
+    "entities.npcs.brother_greenpaw.introLines.2",
     "entities.npcs.sexton_faddick.greeting",
     "entities.npcs.sexton_faddick.name",
     "entities.npcs.sexton_faddick.title",
@@ -316,6 +352,9 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.options.showOwnNameplate"
   ],
   "vi_VN": [
+    "entities.npcs.brother_greenpaw.introLines.0",
+    "entities.npcs.brother_greenpaw.introLines.1",
+    "entities.npcs.brother_greenpaw.introLines.2",
     "entities.npcs.sexton_faddick.greeting",
     "entities.npcs.sexton_faddick.name",
     "entities.npcs.sexton_faddick.title",
@@ -341,6 +380,9 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.options.showOwnNameplate"
   ],
   "da_DK": [
+    "entities.npcs.brother_greenpaw.introLines.0",
+    "entities.npcs.brother_greenpaw.introLines.1",
+    "entities.npcs.brother_greenpaw.introLines.2",
     "entities.npcs.sexton_faddick.greeting",
     "entities.npcs.sexton_faddick.name",
     "entities.npcs.sexton_faddick.title",
