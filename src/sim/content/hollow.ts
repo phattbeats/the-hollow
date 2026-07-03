@@ -606,8 +606,9 @@ export const HOLLOW_DUNGEON_DEFS: Record<string, DungeonDef> = {
     // pickup, same pattern as nythraxis_crypt's 'Ancient Diary' in
     // dungeons.ts), not enter/leave prose. Tucked in the wall aisle just past
     // the entrance (pillars run |x|=14 for z 10..130, walls at |x|=22), clear
-    // of the spawn line.
-    objects: [{ itemId: 'shrine_diary_page', name: 'Torn Diary Page', x: -18, z: 14 }],
+    // of the spawn line and short of the first tomb obstacle at (-19, 16),
+    // whose OBB spans x -20.1..-17.9, z 13.9..18.1.
+    objects: [{ itemId: 'shrine_diary_page', name: 'Torn Diary Page', x: -17, z: 9 }],
     // Deliberate: the 'crypt' interior builder is the Hollow Crypt's own
     // skeleton (sealed doors, keystones, the buried-and-walled grammar) reused
     // per the constitution (§4, the Hollow Crypt reuse) and rethemed root-cold
