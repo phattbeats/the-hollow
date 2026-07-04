@@ -3622,6 +3622,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.home.world.sub': '고요한 골짜기부터 얼어붙은 봉우리까지, 하나로 이어진 대지와 3개의 지역.',
   'guide.home.world.levels': '{min} - {max} 레벨',
   'guide.home.world.cta': '세계 둘러보기',
+  'guide.home.world.hollowReachesName': '우묵골 지대',
+  'guide.home.world.hollowReachesBlurb':
+    '성소 문 아래 고요한 땅으로, 새 이주자들이 묵정밭과 뿌리굴 주변에서 실력을 쌓는 곳.',
   'guide.home.world.valeName': '동부개울 골짜기',
   'guide.home.world.valeBlurb': '모든 모험이 시작되는 푸른 언덕과 오래된 숲.',
   'guide.home.world.marshName': '진흙늪 습지',
@@ -3862,6 +3865,8 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.worldPage.intro':
     'World of ClaudeCraft는 두 발로 가로지르는 하나로 이어진 대지이며, 남에서 북으로 펼쳐진 세 개의 지역으로 이루어져 있습니다. 빠른 이동이 없으니, 여정 자체가 모험의 일부입니다.',
   'guide.worldPage.hub': '본거지',
+  'guide.worldPage.hollowReachesBlurb':
+    '성소 문을 막 지난 고요한 땅으로, 새내기들이 묵정밭과 뿌리굴 주변에서 늑대와 멧돼지를 상대로 실력을 갈고닦는 곳.',
   'guide.worldPage.valeBlurb':
     '새내기 영웅들이 동개울 마을 주변에서 늑대와 산적을 상대로 실력을 갈고닦는 푸른 시작의 골짜기.',
   'guide.worldPage.marshBlurb':
@@ -4497,6 +4502,11 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
     '이 성벽이 이백 년을 버텨 왔소. 내가 지키는 한 무너지지 않겠지만, 신음하고 있긴 하지.',
   'guide.worldPage.peaksPlaceNotes':
     '하이워치가 성벽을 지킵니다. 추적자 능선과 깊은바위 굴은 능선 들고양이와 코볼트의 차지이고, 오우거 산기슭과 드로그마르의 전쟁 야영지는 고용된 흉포한 자들의 것입니다. 스톰크래그는 정령들로 들끓고 그 아래에서 글리머미어가 빛나며, 고룡교단 천막과 망령의 들판이 교단의 높은 거점을 에워싸고, 그 정점에 무덤고룡 성소가 있습니다.',
+  'guide.worldPage.hollowReachesGreeter': '성물지기 제베디아, 뿌리굴',
+  'guide.worldPage.hollowReachesGreeting':
+    '이 우묵골을 달력대로 지키려 하오, 애는 쓰고 있소. 흙이 무르니 조심하고, 장부에는 손대지 마시오.',
+  'guide.worldPage.hollowReachesPlaceNotes':
+    '홀로우 관문은 열린 땅으로 다시 열린 성소의 문이다. 서쪽 묵정밭에서는 묘지기 패딕이 건설 예정지에서 늑대를 몰아내고, 동쪽 뿌리굴에서는 성물지기 제베디아가 멧돼지가 들끓는 구획을 달력대로 관리한다. 호숫가의 이끼둑은 낚시하기 좋은 조용한 곳이다.',
   'guide.worldPage.valeGreeter': '레드브룩 원수, 이스트브룩',
   'guide.worldPage.valeGreeting': '칼을 가까이 두시오. 골짜기는 예전 같지 않으니.',
   'guide.worldPage.valePlaceNotes':
