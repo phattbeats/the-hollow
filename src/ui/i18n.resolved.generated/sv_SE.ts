@@ -3518,6 +3518,9 @@ export const sv_SE: EnTranslations = {
       "clickUse": "Klicka för att använda",
       "clickBuyback": "Klicka för att köpa tillbaka"
     },
+    "error": {
+      "requiresLevelToEquip": "Requires level {level} to equip."
+    },
     "bags": {
       "title": "Väskor",
       "close": "Stäng väskor",

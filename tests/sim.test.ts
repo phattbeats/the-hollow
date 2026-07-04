@@ -847,6 +847,15 @@ describe('food, drink, vendor', () => {
     expect(sim.countItem('minor_mana_potion')).toBe(1); // not consumed
   });
 
+  it('the shared potion cooldown is the classic 2 minutes (#103/PHAA-449)', () => {
+    const sim = makeSim('mage');
+    sim.addItem('minor_mana_potion', 1);
+    sim.player.resource = 10;
+    const before = sim.time;
+    sim.useItem('minor_mana_potion');
+    expect(sim.player.potionCooldownUntil - before).toBe(120);
+  });
+
   it('a mana potion is not wasted (consumed + put on cooldown) at full mana', () => {
     const sim = makeSim('mage');
     sim.addItem('minor_mana_potion', 1);
@@ -1526,6 +1535,34 @@ describe('quests', () => {
       text: 'You already have enough supply crates.',
       pid: sim.player.id,
     });
+  });
+
+  it('equipping an item under its required level is rejected server-side (PHAA-449)', () => {
+    const sim = makeSim('warrior');
+    const def = ITEMS.worn_sword;
+    const savedRequiredLevel = def.requiredLevel;
+    def.requiredLevel = 99;
+    try {
+      sim.addItem('worn_sword', 1);
+      sim.equipment.mainhand = undefined;
+      sim.events = [];
+      sim.equipItem('worn_sword');
+      expect(sim.equipment.mainhand).not.toBe('worn_sword');
+      expect(sim.events).toContainEqual({
+        type: 'error',
+        text: 'Requires level 99.',
+        pid: sim.player.id,
+      });
+      // a crafted command cannot bypass the gate: retrying does not equip it either
+      sim.equipItem('worn_sword');
+      expect(sim.equipment.mainhand).not.toBe('worn_sword');
+
+      def.requiredLevel = 1;
+      sim.equipItem('worn_sword');
+      expect(sim.equipment.mainhand).toBe('worn_sword');
+    } finally {
+      def.requiredLevel = savedRequiredLevel;
+    }
   });
 
   it('quest reward weapon is granted and auto-equipped', () => {

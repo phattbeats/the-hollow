@@ -3955,6 +3955,10 @@ const RULES: Rule[] = [
     build: (m) => tSim('error.specLevel', { level: m[1] }),
   },
   {
+    re: /^Requires level (\d+)\.$/,
+    build: (m) => t('itemUi.error.requiresLevelToEquip', { level: m[1] }),
+  },
+  {
     re: /^You can save at most (\d+) loadouts\.$/,
     build: (m) => tSim('error.maxLoadouts', { count: m[1] }),
   },

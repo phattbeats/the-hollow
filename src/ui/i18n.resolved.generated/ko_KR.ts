@@ -3518,6 +3518,9 @@ export const ko_KR: EnTranslations = {
       "clickUse": "클릭하여 사용",
       "clickBuyback": "클릭하여 되사기"
     },
+    "error": {
+      "requiresLevelToEquip": "장착하려면 레벨 {level}이 필요합니다."
+    },
     "bags": {
       "title": "가방",
       "close": "가방 닫기",
