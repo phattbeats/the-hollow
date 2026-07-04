@@ -63,7 +63,6 @@ import { HOUSE_SLOT_COUNT } from '../sim/housing';
 import { isItemLevelEligible, itemLevel, itemScore } from '../sim/item_level';
 import type { Ante, PickAction } from '../sim/lockpick';
 import { PICK_ACTIONS } from '../sim/lockpick';
-import { SECONDARY_CLASS_MIN_LEVEL } from '../sim/progression/trainer';
 import type { ResolvedAbility } from '../sim/sim';
 import type {
   AbilityDef,
@@ -262,6 +261,7 @@ import { localizeTalentTitle, roleLabel, tTalent } from './talent_i18n';
 import { TalentsWindow } from './talents_window';
 import type { PresetId, ThemeKnob, ThemeState } from './theme';
 import { TOOLTIP_PEEK_MS, TouchPeekGuard } from './touch_peek';
+import { TrainerPanel } from './trainer_panel';
 import { TutorialOverlay } from './tutorial';
 import { svgIcon } from './ui_icons';
 import { getUiScale } from './ui_scale';
@@ -2570,6 +2570,26 @@ export class Hud {
     confirmDialog: (title, body, okText, cancelText, onOk) =>
       this.confirmDialog(title, body, okText, cancelText, onOk),
     showError: (text) => this.showError(text),
+  });
+  // Profession Trainer picker (trainer_view.ts core + trainer_panel.ts painter,
+  // PHAA-465). It paints into the shared NPC-talk dialog element (like the quest
+  // detail view) rather than its own window; Hud stays the coordinator that owns
+  // the dialog + focus trap and routes the world reads / commit / navigation.
+  private readonly trainerPanel = new TrainerPanel({
+    root: () => $('#quest-dialog'),
+    primaryClass: () => this.sim.primaryCls,
+    secondaryClass: () => this.sim.secondaryCls,
+    secondaryChanges: () => this.sim.secondaryClsChanges,
+    playerLevel: () => this.sim.player.level,
+    copper: () => this.sim.copper,
+    totalTalentPoints: () => this.sim.talentPoints().total,
+    setSecondaryClass: (npcId, cls) => this.sim.setSecondaryClass(npcId, cls),
+    back: (npcId) => {
+      const npc = this.sim.entities.get(npcId);
+      if (npc) this.renderGossip(npc);
+    },
+    close: () => this.closeQuestDialog(),
+    focusFirst: () => this.questDialogTrap?.focusFirst(),
   });
   // Social panel painter (social_view.ts core + social_window.ts painter). The
   // window renders no item rows, so it composes no PainterHostPresentation bag; it
@@ -7590,56 +7610,12 @@ export class Hud {
       this.openMarket();
     });
     el.querySelector('[data-trainer]')?.addEventListener('click', () => {
-      this.renderTrainerPanel(npc);
+      this.trainerPanel.open(npc.id, npc.templateId);
     });
     el.querySelector('[data-delve-board]')?.addEventListener('click', () => {
       this.closeQuestDialog(false);
       this.openDelveBoard(npc.id);
     });
-    el.querySelector('[data-close]')?.addEventListener('click', () => this.closeQuestDialog());
-    el.style.display = 'block';
-    this.questDialogTrap?.focusFirst();
-  }
-
-  // The Profession Trainer picker (PHAA-464): reuses the quest-dialog window/
-  // focus-trap (like renderQuestDetail) rather than a new window, since it is
-  // just another view inside the same NPC-talk dialog.
-  private renderTrainerPanel(npc: Entity): void {
-    const def = NPCS[npc.templateId];
-    const trainer = def?.trainer;
-    if (!trainer) return;
-    const el = $('#quest-dialog');
-    const level = this.sim.player.level;
-    let html = `<div class="panel-title"><span id="quest-dialog-title">${esc(t('questUi.dialog.trainerTitle'))}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('questUi.dialog.close'))}">${svgIcon('close')}</button></div>`;
-    if (level < SECONDARY_CLASS_MIN_LEVEL) {
-      html += `<div class="qd-text">${esc(t('questUi.dialog.trainerLevelLocked', { level: SECONDARY_CLASS_MIN_LEVEL }))}</div>`;
-    } else {
-      for (const cls of trainer.professions) {
-        if (cls === this.sim.cfg.playerClass) continue;
-        const isCurrent = cls === this.sim.secondaryCls;
-        const cost = this.sim.secondaryClassCost(cls);
-        const costText = isCurrent
-          ? t('questUi.dialog.trainerCurrent')
-          : cost === 0
-            ? t('questUi.dialog.trainerFree')
-            : formatLocalizedMoney(cost ?? 0);
-        const aria = t('questUi.dialog.trainerPickAria', {
-          cls: classDisplayName(cls),
-          cost: costText,
-        });
-        html += `<button type="button" class="qd-list-item" data-train-cls="${esc(cls)}" aria-label="${esc(aria)}" ${isCurrent ? 'disabled' : ''}>${esc(classDisplayName(cls))} <span class="quest-muted">${esc(costText)}</span></button>`;
-      }
-    }
-    html += `<button type="button" class="qd-list-item" data-back="1">${esc(t('questUi.dialog.back'))}</button>`;
-    el.innerHTML = html;
-    el.querySelectorAll('[data-train-cls]').forEach((item) => {
-      item.addEventListener('click', () => {
-        const cls = (item as HTMLElement).dataset.trainCls as PlayerClass;
-        this.sim.setSecondaryClass(npc.id, cls);
-        this.renderTrainerPanel(npc);
-      });
-    });
-    el.querySelector('[data-back]')?.addEventListener('click', () => this.renderGossip(npc));
     el.querySelector('[data-close]')?.addEventListener('click', () => this.closeQuestDialog());
     el.style.display = 'block';
     this.questDialogTrap?.focusFirst();

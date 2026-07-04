@@ -85,6 +85,8 @@ export const ru_RU: EnTranslations = {
       "title": "Таланты",
       "classTab": "Класс",
       "specTab": "Специализация",
+      "secondaryTab": "Secondary: {cls}",
+      "secondaryCapHint": "Secondary tree: {spent}/{cap} points (capped at half your shared pool).",
       "available": "Доступно",
       "spent": "Потрачено",
       "pointSource": "Получайте 1 очко талантов за каждый уровень с {first} по {cap}. Повышайте уровень, чтобы получить больше очков.",
@@ -2720,7 +2722,9 @@ export const ru_RU: EnTranslations = {
       "druid": "Друиды направляют силу природы, лечат раны, оплетают врагов и принимают звериные формы для защиты или урона."
     },
     "aria": "Описание класса {className}: роль {role}. Начальные характеристики: Сила {str}, Ловкость {agi}, Выносливость {sta}, Интеллект {int}, Дух {spi}.",
-    "statBarAria": "{stat}: {value} из 25"
+    "statBarAria": "{stat}: {value} из 25",
+    "classPairLabel": "{primary} / {secondary}",
+    "classPairAria": "{primary}, secondary {secondary}"
   },
   "mobilePreflight": {
     "title": "Играйте в полноэкранном альбомном режиме",
@@ -3408,6 +3412,13 @@ export const ru_RU: EnTranslations = {
       "trainerCurrent": "Текущая",
       "trainerFree": "Бесплатно",
       "trainerPickAria": "Обучиться как дополнительный {cls}: {cost}",
+      "trainerNeedsGold": "Not enough gold",
+      "trainerConfirmTitle": "Confirm secondary class",
+      "trainerConfirmBody": "Train as {cls} for {cost}?",
+      "trainerConfirmYes": "Yes, train me",
+      "trainerConfirmNo": "No, go back",
+      "trainerHowTitle": "How do secondary professions work?",
+      "trainerHowBody": "A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities translate their resource cost to your primary resource. Your first pick is free; changing later costs gold.",
       "accept": "Принять",
       "decline": "Отклонить",
       "continue": "Продолжить",

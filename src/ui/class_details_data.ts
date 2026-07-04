@@ -11,7 +11,9 @@
 // role/armor/weapon labels and the curated "signature" ability picks.
 
 import type { PlayerClass } from '../sim/types';
+import { classDisplayName } from './entity_i18n';
 import type { TranslationKey } from './i18n';
+import { t } from './i18n';
 
 export interface ClassDetails {
   roleKey: TranslationKey;
@@ -74,7 +76,7 @@ export const CLASS_DETAILS: Record<PlayerClass, ClassDetails> = {
     roleType: 'hybrid',
     armorKey: 'classDetails.armor.leatherCloth',
     weaponsKey: 'classDetails.weapons.staves',
-  }
+  },
 };
 
 // Three curated "signature" abilities per class, shown on the select screen.
@@ -89,5 +91,21 @@ export const SIGNATURE_ABILITIES: Record<PlayerClass, string[]> = {
   shaman: ['lightning_bolt', 'rockbiter_weapon', 'ghost_wolf'],
   mage: ['fireball', 'frostbolt', 'polymorph'],
   warlock: ['shadow_bolt', 'corruption', 'life_tap'],
-  druid: ['wrath', 'bear_form', 'rejuvenation']
+  druid: ['wrath', 'bear_form', 'rejuvenation'],
 };
+
+/**
+ * Charselect / character-sheet display label for a class pair (PHAA-465): a
+ * character with a secondary profession (GW1-style multiclass) reads as
+ * "Primary / Secondary", otherwise just the primary class name. Pure and
+ * DOM-free so it can be unit-tested directly; the only render sink is
+ * classDetails.classPairLabel (t()), never string concat.
+ */
+export function classPairLabel(primary: PlayerClass, secondary: PlayerClass | null): string {
+  const primaryLabel = classDisplayName(primary);
+  if (!secondary) return primaryLabel;
+  return t('classDetails.classPairLabel', {
+    primary: primaryLabel,
+    secondary: classDisplayName(secondary),
+  });
+}

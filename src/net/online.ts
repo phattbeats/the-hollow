@@ -77,6 +77,8 @@ export interface CharacterSummary {
   forceRename: boolean;
   lastPlayed?: string | null;
   playtimeSeconds?: number;
+  /** The secondary profession picked at a trainer (PHAA-465), or null. */
+  secondaryCls?: PlayerClass | null;
 }
 
 function stringList(value: unknown): string[] {

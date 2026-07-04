@@ -391,6 +391,7 @@ function characterListPayload(chars: CharacterRow[]): {
     forceRename: boolean;
     lastPlayed: string | null;
     playtimeSeconds: number;
+    secondaryCls: PlayerClass | null;
   }[];
 } {
   return {
@@ -405,6 +406,7 @@ function characterListPayload(chars: CharacterRow[]): {
       forceRename: c.force_rename,
       lastPlayed: c.last_played ? new Date(c.last_played).toISOString() : null,
       playtimeSeconds: Number(c.playtime_seconds ?? 0),
+      secondaryCls: c.state?.secondaryCls ?? null,
     })),
   };
 }

@@ -6,11 +6,11 @@
 // VIEW LAYER (filtering, picking, confirm stage, affordability, secondary cap).
 
 import { describe, expect, it } from 'vitest';
-import type { PlayerClass } from '../src/sim/types';
 import {
   SECONDARY_CLASS_CHANGE_COST,
   SECONDARY_CLASS_MIN_LEVEL,
 } from '../src/sim/progression/trainer';
+import type { PlayerClass } from '../src/sim/types';
 import {
   buildTrainerView,
   TRAINER_CHANGE_COST_TIERS,
@@ -25,12 +25,26 @@ import {
 function npcs(): Record<string, { trainer?: { professions: readonly PlayerClass[] } }> {
   return {
     // Elder Yarrow, the hub trainer. Teaches every profession as a secondary.
-    elder_yarrow: { trainer: { professions: ['warrior', 'paladin', 'hunter', 'rogue', 'priest', 'shaman', 'mage', 'warlock', 'druid'] } },
+    elder_yarrow: {
+      trainer: {
+        professions: [
+          'warrior',
+          'paladin',
+          'hunter',
+          'rogue',
+          'priest',
+          'shaman',
+          'mage',
+          'warlock',
+          'druid',
+        ],
+      },
+    },
     // A trainer who only teaches a small subset (a hypothetical off-hub trainer).
     ranger_only: { trainer: { professions: ['hunter'] } },
     // A non-trainer NPC: never returned by the trainer panel in the first place,
     // but a defensive empty-state is part of the view's contract.
-    merchant: { vendorItems: ['water'] },
+    merchant: {},
   };
 }
 
@@ -156,7 +170,9 @@ describe('trainer_view (PHAA-465)', () => {
         copper: 0,
       });
       const capped = vMax.picks.find((p) => p.cls === 'mage')!;
-      expect(capped.costCopper).toBe(SECONDARY_CLASS_CHANGE_COST[SECONDARY_CLASS_CHANGE_COST.length - 1]);
+      expect(capped.costCopper).toBe(
+        SECONDARY_CLASS_CHANGE_COST[SECONDARY_CLASS_CHANGE_COST.length - 1],
+      );
     });
 
     it('affordable tracks copper >= costCopper for every row', () => {

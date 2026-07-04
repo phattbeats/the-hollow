@@ -11,11 +11,9 @@ export interface IWorldTrainer {
   // this together with `secondaryCls` to render "Ranger / Priest", and the
   // trainer painter uses it to filter its pick list.
   primaryCls: PlayerClass;
-  // The player's currently-bound secondary class, or null when they have not
-  // yet visited a Profession Trainer NPC (or the level gate holds). The
-  // character sheet / charselect / nameplate-tooltip read this together with
-  // `primaryCls` to render the "Primary / Secondary" subtitle.
-  secondaryCls: PlayerClass | null;
+  // (The currently-bound secondary class, `secondaryCls`, lives on the
+  // IWorldTalents facet; read it from there together with `primaryCls` to
+  // render the "Primary / Secondary" subtitle.)
   // Number of secondary-class changes PAID for so far (the very first pick is
   // free and does not count). Drives the escalating gold cost in
   // secondaryClassCost. Persisted in CharacterState alongside secondaryCls.

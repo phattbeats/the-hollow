@@ -26,6 +26,8 @@ import {
   pointsSpent,
   type Role,
   type SpecDef,
+  secondaryPointCap,
+  secondaryPointsSpent,
   type TalentAllocation,
   type TalentChoiceOption,
   type TalentNode,
@@ -102,11 +104,24 @@ export interface TalentsView {
   classTree: TalentTreeVM;
   /** The chosen spec's tree, or null when no spec is selected. */
   specTree: TalentTreeVM | null;
+  /** The player's secondary profession, or null (single-class build). */
+  secondaryCls: PlayerClass | null;
+  /** Points spent in the secondary profession's own class tree. */
+  secondarySpent: number;
+  /** The secondary pool cap: floor(total / 2), mirrors secondaryPointCap. */
+  secondaryCap: number;
+  /**
+   * The secondary profession's own class tree (a GW1-style dual tree,
+   * PHAA-465/467), or null when the player has no secondary. There is no
+   * secondary spec tree: a secondary profession only unlocks its class tree,
+   * capped at half the shared pool (secondaryPointCap).
+   */
+  secondaryTree: TalentTreeVM | null;
 }
 
 const EMPTY_TREE: TalentTreeVM = { empty: true, width: 0, height: 0, nodes: [], arrows: [] };
 
-function emptyView(total: number): TalentsView {
+function emptyView(total: number, secondaryCls: PlayerClass | null = null): TalentsView {
   return {
     hasTree: false,
     available: Math.max(0, total),
@@ -119,6 +134,10 @@ function emptyView(total: number): TalentsView {
     selectedSpec: null,
     classTree: EMPTY_TREE,
     specTree: null,
+    secondaryCls,
+    secondarySpent: 0,
+    secondaryCap: secondaryPointCap(total),
+    secondaryTree: null,
   };
 }
 
@@ -206,6 +225,93 @@ function buildTree(
 }
 
 /**
+ * The secondary profession's own class tree (PHAA-465/467: the trainer half
+ * ships the dual-tree consumer). Unlike {@link buildTree}, this always reads
+ * the `tree === 'class'` nodes of the SECONDARY class's own ClassTalents (a
+ * secondary profession has no spec tree, see docs/prd on GW1 multiclass), and
+ * validates a full candidate allocation (primary ranks untouched, one
+ * secondary node bumped) against the shared pool + secondaryPointCap so the
+ * "avail" gating can never grant a secondary node the primary tree could not
+ * otherwise afford.
+ */
+function buildSecondaryTree(
+  ct2: NonNullable<ReturnType<typeof talentsFor>>,
+  stage: TalentAllocation,
+  primaryCls: PlayerClass,
+  secondaryCls: PlayerClass,
+  total: number,
+): TalentTreeVM {
+  const nodes = ct2.nodes.filter((n) => n.tree === 'class');
+  if (nodes.length === 0) return { ...EMPTY_TREE };
+
+  const sec = stage.secondary ?? { spec: null, ranks: {}, choices: {} };
+  const cols = Math.max(...nodes.map((n) => n.col)) + 1;
+  const rows = Math.max(...nodes.map((n) => n.row)) + 1;
+  const width = cols * TALENT_CELL_W;
+  const height = rows * TALENT_CELL_H + TALENT_TOP_PAD;
+
+  const byId = new Map(nodes.map((n) => [n.id, n]));
+  // dormantNodes reads only spec/ranks/choices, the exact shape SecondaryAllocation
+  // shares with TalentAllocation, so the secondary block can be passed directly.
+  const dormant = dormantNodes(secondaryCls, sec);
+
+  const arrows: TalentArrowVM[] = [];
+  for (const n of nodes)
+    for (const req of n.requires ?? []) {
+      const r = byId.get(req);
+      if (!r) continue;
+      arrows.push({
+        x1: centerX(r),
+        y1: centerY(r) + TALENT_NODE_SIZE / 2,
+        x2: centerX(n),
+        y2: centerY(n) - TALENT_NODE_SIZE / 2,
+        filled: (sec.ranks[req] ?? 0) > 0,
+      });
+    }
+
+  const nodeVMs: TalentNodeVM[] = [];
+  for (const n of nodes) {
+    const ranks = sec.ranks[n.id] ?? 0;
+    const isDormant = dormant.has(n.id);
+    const cand = cloneAllocation(stage);
+    const candSecRanks = { ...sec.ranks, [n.id]: ranks + 1 };
+    const candSecChoices = { ...sec.choices };
+    if (n.kind === 'choice' && !candSecChoices[n.id] && n.choices?.[0]) {
+      candSecChoices[n.id] = n.choices[0].id;
+    }
+    cand.secondary = { spec: sec.spec, ranks: candSecRanks, choices: candSecChoices };
+    const canAdd =
+      ranks < n.maxRank && validateAllocation(primaryCls, cand, total, secondaryCls).ok;
+    const shape: TalentNodeShape =
+      n.kind === 'active' ? 'square' : n.kind === 'choice' ? 'octagon' : 'circle';
+    const state: TalentNodeState = isDormant
+      ? 'dormant'
+      : ranks >= n.maxRank
+        ? 'maxed'
+        : ranks > 0
+          ? 'filled'
+          : canAdd
+            ? 'avail'
+            : 'locked';
+    const chosen =
+      n.kind === 'choice' ? n.choices?.find((c) => c.id === sec.choices[n.id]) : undefined;
+    nodeVMs.push({
+      node: n,
+      shape,
+      state,
+      ranks,
+      maxRank: n.maxRank,
+      disabled: !canAdd && ranks <= 0,
+      left: n.col * TALENT_CELL_W + (TALENT_CELL_W - TALENT_NODE_SIZE) / 2,
+      top: n.row * TALENT_CELL_H + TALENT_TOP_PAD,
+      chosen,
+    });
+  }
+
+  return { empty: false, width, height, nodes: nodeVMs, arrows };
+}
+
+/**
  * Derive the full talents view from the staged edit buffer.
  *
  * @param stage the mutable LOCAL edit buffer (a clone of IWorld.talents); read,
@@ -222,7 +328,7 @@ export function buildTalentsView(
   secondaryCls: PlayerClass | null = null,
 ): TalentsView {
   const ct = talentsFor(cls);
-  if (!ct) return emptyView(total);
+  if (!ct) return emptyView(total, secondaryCls);
 
   const spent = pointsSpent(stage);
   const treeSpent = (tree: 'class' | 'spec'): number =>
@@ -231,6 +337,7 @@ export function buildTalentsView(
       .reduce((a, n) => a + (stage.ranks[n.id] ?? 0), 0);
 
   const selectedSpec = ct.specs.find((s) => s.id === stage.spec) ?? null;
+  const ct2 = secondaryCls ? talentsFor(secondaryCls) : null;
 
   return {
     hasTree: true,
@@ -245,6 +352,12 @@ export function buildTalentsView(
     classTree: buildTree(ct, stage, cls, total, 'class', undefined, secondaryCls),
     specTree: selectedSpec
       ? buildTree(ct, stage, cls, total, 'spec', selectedSpec.id, secondaryCls)
+      : null,
+    secondaryCls: secondaryCls,
+    secondarySpent: secondaryPointsSpent(stage),
+    secondaryCap: secondaryPointCap(total),
+    secondaryTree: ct2
+      ? buildSecondaryTree(ct2, stage, cls, secondaryCls as PlayerClass, total)
       : null,
   };
 }

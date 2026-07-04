@@ -200,6 +200,8 @@ export const shellStrings = {
       },
       aria: 'Class details for {className}: role {role}. Starting stats: Strength {str}, Agility {agi}, Stamina {sta}, Intellect {int}, Spirit {spi}.',
       statBarAria: '{stat}: {value} out of 25',
+      classPairLabel: '{primary} / {secondary}',
+      classPairAria: '{primary}, secondary {secondary}',
     },
     mobilePreflight: {
       title: 'Play in Landscape Fullscreen',
