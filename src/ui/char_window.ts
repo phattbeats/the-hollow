@@ -23,7 +23,7 @@ import type { EquipSlot } from '../sim/types';
 import type { IWorld } from '../world_api';
 import { buildPaperdollView, type PaperdollSlot } from './char_view';
 import { markDialogRoot } from './dialog_root';
-import { classDisplayName, itemDisplayName } from './entity_i18n';
+import { classPairLabel, itemDisplayName } from './entity_i18n';
 import { esc } from './esc';
 import { formatNumber, t } from './i18n';
 import { iconDataUrl, QUALITY_COLOR } from './icons';
@@ -131,7 +131,7 @@ export class CharWindow {
     const el = this.deps.root();
     const world = this.deps.world();
     const p = world.player;
-    const className = classDisplayName(world.cfg.playerClass);
+    const className = classPairLabel(world.cfg.playerClass, world.secondaryCls);
     const level = formatNumber(p.level, { maximumFractionDigits: 0 });
     // WCAG 2.2 AA: name the focus-trapped root via the character title span.
     markDialogRoot(el, { labelledBy: 'char-title' });

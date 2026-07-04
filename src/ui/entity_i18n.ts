@@ -351,6 +351,18 @@ export function classDisplayName(cls: PlayerClass): string {
   return tEntity({ kind: 'class', id: cls, field: 'name' });
 }
 
+// A character's build identity label (GW1 multiclass, PHAA-465): the primary
+// class name alone, or "Primary / Secondary" (e.g. "Ranger / Priest") once a
+// secondary profession is bound. Both names localize through classDisplayName;
+// the " / " is an enumeration separator (like the requiredClass list join), not
+// a translated sentence, so no new t() key is needed. The single shared home so
+// the character sheet, talents window, spellbook, player card, and charselect
+// render the pair identically.
+export function classPairLabel(primary: PlayerClass, secondary: PlayerClass | null): string {
+  const primaryName = classDisplayName(primary);
+  return secondary ? `${primaryName} / ${classDisplayName(secondary)}` : primaryName;
+}
+
 export function zoneDisplayName(zoneId: string): string {
   return tEntity({ kind: 'zone', id: zoneId, field: 'name' });
 }

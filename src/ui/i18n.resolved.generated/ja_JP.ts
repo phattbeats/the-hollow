@@ -85,6 +85,8 @@ export const ja_JP: EnTranslations = {
       "title": "タレント",
       "classTab": "クラス",
       "specTab": "専門化",
+      "secondaryTab": "Secondary: {cls}",
+      "secondaryCapHint": "Secondary tree: {spent}/{cap} points (capped at half your shared pool).",
       "available": "使用可能",
       "spent": "使用済み",
       "pointSource": "レベル{first}から{cap}まで、レベルごとにタレントポイントを1獲得します。さらにポイントを得るにはレベルを上げてください。",
@@ -2720,7 +2722,9 @@ export const ja_JP: EnTranslations = {
       "druid": "ドルイドは自然の力を導き、傷を癒やし、敵を絡め取り、動物形態に変身して守りまたは攻めます。"
     },
     "aria": "{className}のクラス詳細: 役割 {role}。開始ステータス: 筋力 {str}、敏捷性 {agi}、スタミナ {sta}、知力 {int}、精神力 {spi}。",
-    "statBarAria": "{stat}: {value}/25"
+    "statBarAria": "{stat}: {value}/25",
+    "classPairLabel": "{primary} / {secondary}",
+    "classPairAria": "{primary}, secondary {secondary}"
   },
   "mobilePreflight": {
     "title": "横向き全画面でプレイ",
@@ -3408,6 +3412,13 @@ export const ja_JP: EnTranslations = {
       "trainerCurrent": "現在",
       "trainerFree": "無料",
       "trainerPickAria": "{cls} を副次に訓練する: {cost}",
+      "trainerNeedsGold": "Not enough gold",
+      "trainerConfirmTitle": "Confirm secondary class",
+      "trainerConfirmBody": "Train as {cls} for {cost}?",
+      "trainerConfirmYes": "Yes, train me",
+      "trainerConfirmNo": "No, go back",
+      "trainerHowTitle": "How do secondary professions work?",
+      "trainerHowBody": "A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities translate their resource cost to your primary resource. Your first pick is free; changing later costs gold.",
       "accept": "受諾",
       "decline": "辞退",
       "continue": "続ける",

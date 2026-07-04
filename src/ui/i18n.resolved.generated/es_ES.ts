@@ -85,6 +85,8 @@ export const es_ES: EnTranslations = {
       "title": "Talentos",
       "classTab": "Clase",
       "specTab": "Especialización",
+      "secondaryTab": "Secondary: {cls}",
+      "secondaryCapHint": "Secondary tree: {spent}/{cap} points (capped at half your shared pool).",
       "available": "Disponibles",
       "spent": "Gastados",
       "pointSource": "Ganas 1 punto de talento por nivel desde el nivel {first} hasta el {cap}. Sube de nivel para conseguir más puntos.",
@@ -2720,7 +2722,9 @@ export const es_ES: EnTranslations = {
       "druid": "Los druidas canalizan la naturaleza, curan heridas, enredan enemigos y cambian a formas animales para defender o dañar."
     },
     "aria": "Detalles de clase para {className}: rol {role}. Atributos iniciales: Fuerza {str}, Agilidad {agi}, Aguante {sta}, Intelecto {int}, Espíritu {spi}.",
-    "statBarAria": "{stat}: {value} de 25"
+    "statBarAria": "{stat}: {value} de 25",
+    "classPairLabel": "{primary} / {secondary}",
+    "classPairAria": "{primary}, secondary {secondary}"
   },
   "mobilePreflight": {
     "title": "Jugar en pantalla completa horizontal",
@@ -3408,6 +3412,13 @@ export const es_ES: EnTranslations = {
       "trainerCurrent": "Current",
       "trainerFree": "Free",
       "trainerPickAria": "Train as secondary {cls}: {cost}",
+      "trainerNeedsGold": "Not enough gold",
+      "trainerConfirmTitle": "Confirm secondary class",
+      "trainerConfirmBody": "Train as {cls} for {cost}?",
+      "trainerConfirmYes": "Yes, train me",
+      "trainerConfirmNo": "No, go back",
+      "trainerHowTitle": "How do secondary professions work?",
+      "trainerHowBody": "A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities translate their resource cost to your primary resource. Your first pick is free; changing later costs gold.",
       "accept": "Aceptar",
       "decline": "Rechazar",
       "continue": "Continuar",

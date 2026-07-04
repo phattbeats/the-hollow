@@ -1,7 +1,7 @@
-import { describe, it, expect } from 'vitest';
-import { CLASS_DETAILS, SIGNATURE_ABILITIES } from '../src/ui/class_details_data';
-import { CLASSES, ABILITIES } from '../src/sim/content/classes';
+import { describe, expect, it } from 'vitest';
+import { ABILITIES, CLASSES } from '../src/sim/content/classes';
 import type { PlayerClass } from '../src/sim/types';
+import { CLASS_DETAILS, classPairLabel, SIGNATURE_ABILITIES } from '../src/ui/class_details_data';
 
 // Guards the hand-maintained character-select showcase data against drift from
 // the sim's source of truth. If a class's ability kit or roster changes, these
@@ -41,4 +41,26 @@ describe('character-select class details parity', () => {
       }
     });
   }
+});
+
+// PHAA-465: the charselect showcase reads "Primary / Secondary" once a
+// character has picked a secondary profession at a trainer.
+describe('classPairLabel (Primary / Secondary charselect labels)', () => {
+  it('renders just the primary class when there is no secondary', () => {
+    const label = classPairLabel('warrior', null);
+    expect(label).not.toContain('/');
+    expect(label.length).toBeGreaterThan(0);
+  });
+
+  it('renders "primary / secondary" when a secondary is set', () => {
+    const primaryOnly = classPairLabel('warrior', null);
+    const paired = classPairLabel('warrior', 'priest');
+    expect(paired).toContain(primaryOnly);
+    expect(paired).toContain('/');
+    expect(paired).not.toBe(primaryOnly);
+  });
+
+  it('never mixes up which slot is primary vs secondary', () => {
+    expect(classPairLabel('warrior', 'priest')).not.toBe(classPairLabel('priest', 'warrior'));
+  });
 });

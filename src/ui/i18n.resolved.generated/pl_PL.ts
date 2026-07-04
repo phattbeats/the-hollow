@@ -85,6 +85,8 @@ export const pl_PL: EnTranslations = {
       "title": "Talenty",
       "classTab": "Klasa",
       "specTab": "Specjalizacja",
+      "secondaryTab": "Secondary: {cls}",
+      "secondaryCapHint": "Secondary tree: {spent}/{cap} points (capped at half your shared pool).",
       "available": "Dostępne",
       "spent": "Wydano",
       "pointSource": "Zdobywasz 1 punkt talentu na każdym poziomie od poziomu {first} do {cap}. Awansuj, aby zdobyć więcej punktów.",
@@ -2720,7 +2722,9 @@ export const pl_PL: EnTranslations = {
       "druid": "Druidzi czerpią z natury, lecząc rany, pętając wrogów i przemieniając się w postacie zwierząt dla obrony lub zadawania obrażeń."
     },
     "aria": "Szczegóły klasy {className}: rola {role}. Statystyki początkowe: Siła {str}, Zręczność {agi}, Wytrzymałość {sta}, Intelekt {int}, Duch {spi}.",
-    "statBarAria": "{stat}: {value} z 25"
+    "statBarAria": "{stat}: {value} z 25",
+    "classPairLabel": "{primary} / {secondary}",
+    "classPairAria": "{primary}, secondary {secondary}"
   },
   "mobilePreflight": {
     "title": "Graj w poziomym trybie pełnoekranowym",
@@ -3408,6 +3412,13 @@ export const pl_PL: EnTranslations = {
       "trainerCurrent": "Current",
       "trainerFree": "Free",
       "trainerPickAria": "Train as secondary {cls}: {cost}",
+      "trainerNeedsGold": "Not enough gold",
+      "trainerConfirmTitle": "Confirm secondary class",
+      "trainerConfirmBody": "Train as {cls} for {cost}?",
+      "trainerConfirmYes": "Yes, train me",
+      "trainerConfirmNo": "No, go back",
+      "trainerHowTitle": "How do secondary professions work?",
+      "trainerHowBody": "A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities translate their resource cost to your primary resource. Your first pick is free; changing later costs gold.",
       "accept": "Przyjmij",
       "decline": "Odrzuć",
       "continue": "Dalej",
