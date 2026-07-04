@@ -168,6 +168,7 @@ import {
   updateMobTarget as updateMobTargetFn,
 } from './mob/targeting';
 import { combatProfileForMob, effectiveMobMeleeRange, type MobCombatProfile } from './mob_combat';
+import { updateNpcWander } from './npc_wander';
 import {
   findPlayerPath,
   PLAYER_BODY_RADIUS,
@@ -2549,6 +2550,7 @@ export class Sim {
     this.market.update();
     this.greenpawHearth.update(DT);
     this.plantSpeech.update(this.greenpawHearth.smokeValue);
+    updateNpcWander(this.ctx);
     drainDelayedEvents(this.ctx);
 
     // movement re-bucketing: queries during the next tick and the server's
