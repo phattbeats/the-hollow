@@ -18,6 +18,7 @@ import { saveCharacterState } from '../server/db';
 import { type ClientSession, GameServer, wireEntity } from '../server/game';
 import { ClientWorld } from '../src/net/online';
 import { mechHeldWeaponOverride, visualKeyFor } from '../src/render/characters/manifest';
+import { HOLLOW_QUEST_ORDER } from '../src/sim/content/hollow';
 import { DELVES } from '../src/sim/data';
 import { Sim } from '../src/sim/sim';
 import { type Aura, DT, type PlayerClass } from '../src/sim/types';
@@ -321,7 +322,7 @@ describe('delta snapshots', () => {
     const snap = lastSnap(fc.sent);
     expect(snap).not.toBeNull();
     // a fresh session has an empty lastSent, so EVERY maybe() delta key rides the
-    // first snapshot (even the null-valued ones like party/trade); widened to all 25
+    // first snapshot (even the null-valued ones like party/trade); widened to all 27
     for (const key of ALL_DELTA_KEYS) {
       expect(snap.self, `self.${key} missing from first snapshot`).toHaveProperty(key);
     }
@@ -384,7 +385,7 @@ describe('delta snapshots', () => {
     const snap = lastSnap(fc.sent);
     // This single-tick test stays on the decay-safe subset: cds and the timer-backed
     // keys (delve/arena timers, delveDaily) can re-emit after a real sim.tick(), so the
-    // widened all-25 omission is proven by the no-op re-broadcast test instead.
+    // widened all-27 omission is proven by the no-op re-broadcast test instead.
     for (const key of DELTA_KEYS) {
       expect(snap.self, `self.${key} resent although unchanged`).not.toHaveProperty(key);
     }
@@ -687,7 +688,7 @@ describe('delta snapshots', () => {
     joinServer(server, fc2, 2, 'Testb');
     broadcast(server);
     const snapNew = lastSnap(fc2.sent);
-    // a fresh session always receives the full self state: all 25 delta keys
+    // a fresh session always receives the full self state: all 27 delta keys
     for (const key of ALL_DELTA_KEYS) {
       expect(snapNew.self, `self.${key} missing for fresh session`).toHaveProperty(key);
     }
@@ -1046,6 +1047,8 @@ describe('/who command', () => {
 
     const text = eventTexts(fc.sent).join('\n');
     expect(text).toContain('Who: 2 players online on Claudemoon.');
+    // PHAA-420 moved the cold-open door to the Hollow Reaches gate, so a
+    // fresh character's zone reads as the new starter zone, not Eastbrook.
     expect(text).toContain('Aleph - level 1 warrior - The Hollow Reaches');
     expect(text).toContain('Bet - level 7 mage - The Hollow Reaches');
   });
@@ -1066,6 +1069,7 @@ describe('/who command', () => {
 
     const text = eventTexts(fc.sent).join('\n');
     expect(text).toContain('Who: 1 player online on Claudemoon.');
+    // PHAA-420 moved the cold-open door to the Hollow Reaches gate.
     expect(text).toContain('Aleph - level 1 warrior - The Hollow Reaches');
     expect(text).not.toContain('Bet');
     expect(text).not.toContain('Gimel');
@@ -1098,6 +1102,7 @@ describe('/who command', () => {
 
     const text = eventTexts(fc.sent).join('\n');
     expect(text).toContain('Who: 1 player online on Claudemoon.');
+    // PHAA-420 moved the cold-open door to the Hollow Reaches gate.
     expect(text).toContain('Aleph - level 1 warrior - The Hollow Reaches');
     expect(text).not.toContain('Bet');
   });
@@ -1762,6 +1767,7 @@ const ALL_DELTA_KEYS = [
   'duel',
   'equip',
   'hearth',
+  'homestead',
   'housing',
   'inv',
   'lockouts',
@@ -1799,6 +1805,7 @@ const TERSE_TO_IWORLD: Record<string, string> = {
   duel: 'duelInfo',
   equip: 'equipment',
   hearth: 'hollowHearth',
+  homestead: 'homesteadInfo',
   housing: 'housingInfo',
   inv: 'inventory',
   lockouts: 'selfLockouts',
@@ -1821,9 +1828,9 @@ const TERSE_TO_IWORLD: Record<string, string> = {
 // filter without a wall-clock read in test scaffolding.
 const FAR_FUTURE_MS = 8_000_000_000_000;
 
-// Dirty every one of the 25 `maybe()` delta fields with a distinguishable,
+// Dirty every one of the 27 `maybe()` delta fields with a distinguishable,
 // non-default value so the round-trip + no-op-omission assertions are meaningful
-// (a fresh session carries all 25 on snapshot #1 regardless, since lastSent is
+// (a fresh session carries all 27 on snapshot #1 regardless, since lastSent is
 // empty). Most fields are set on their real PlayerMeta/Entity/session source;
 // for the few whose authentic setup is mutually exclusive in one player state we
 // poke the exact source field the encoder reads, per the brief (the gate asserts
@@ -1849,6 +1856,15 @@ function dirtyEveryDeltaField(): {
   const lp = leader.pid;
   const mp = member.pid;
   const meta = sim.meta(lp)!;
+
+  // Homestead (homestead): a real claim, since HomesteadInfo carries no fixed
+  // slot list like housing's 8 plots - it starts empty until someone claims.
+  for (const qid of HOLLOW_QUEST_ORDER) meta.questsDone.add(qid);
+  const homesteadEntity = sim.entities.get(lp)!;
+  homesteadEntity.pos.x = -85;
+  homesteadEntity.pos.z = -234;
+  homesteadEntity.prevPos = { ...homesteadEntity.pos };
+  sim.homesteadClaim(lp);
 
   // Real 2-player party (party) and a real delve run (drun).
   sim.partyInvite(mp, lp);
@@ -1988,6 +2004,8 @@ describe('full self-state snapshot delta fixture', () => {
     expect(client.housingInfo).not.toBeNull(); // housing -> housingInfo
     expect(client.housingInfo?.plots.length).toBeGreaterThan(0);
     expect(client.hollowHearth).toEqual({ smoke: 42, level: 'hazy' }); // hearth -> hollowHearth
+    expect(client.homesteadInfo).not.toBeNull(); // homestead -> homesteadInfo
+    expect(client.homesteadInfo?.plots.length).toBeGreaterThan(0);
     expect(client.activeLootRolls().map((r) => r.rollId)).toEqual([1]); // lroll -> lootRollPrompts
     expect(client.delveRun).not.toBeNull(); // drun -> delveRun
     expect(client.companionState?.companionId).toBe('companion_tessa'); // dcompanion -> companionState
@@ -2019,7 +2037,7 @@ describe('full self-state snapshot delta fixture', () => {
     const delveRunRef = client.delveRun;
 
     // a second broadcast with NO intervening sim.tick() and no state mutation: the
-    // maybe() closure sees byte-identical JSON for all 25 and omits every one
+    // maybe() closure sees byte-identical JSON for all 27 and omits every one
     fc.sent.length = 0;
     broadcast(server);
     const snap2 = lastSnap(fc.sent);
@@ -2043,9 +2061,9 @@ describe('full self-state snapshot delta fixture', () => {
 });
 
 describe('delta-key contract pins (anti-drift)', () => {
-  it('ALL_DELTA_KEYS contains exactly 28 unique keys in sorted order', () => {
-    expect(ALL_DELTA_KEYS).toHaveLength(28);
-    expect(new Set(ALL_DELTA_KEYS).size).toBe(28);
+  it('ALL_DELTA_KEYS contains exactly 29 unique keys in sorted order', () => {
+    expect(ALL_DELTA_KEYS).toHaveLength(29);
+    expect(new Set(ALL_DELTA_KEYS).size).toBe(29);
     expect([...ALL_DELTA_KEYS]).toEqual([...ALL_DELTA_KEYS].sort());
   });
 
@@ -2057,7 +2075,7 @@ describe('delta-key contract pins (anti-drift)', () => {
     const scraped = new Set<string>();
     for (let m = re.exec(src); m !== null; m = re.exec(src)) scraped.add(m[1]);
     expect(scraped.has('lockouts')).toBe(true); // the multi-line call IS captured
-    expect(scraped.size).toBe(28);
+    expect(scraped.size).toBe(29);
     expect([...scraped].sort()).toEqual([...ALL_DELTA_KEYS].sort());
   });
 

@@ -575,6 +575,11 @@ export interface SimContextCallbacks {
   plantSpeechChat(raw: string, pid: number): boolean;
   notifyPlantThreshold(kind: PlantThresholdKind): void;
   plantSpeechAmbientChat(text: string): void;
+  // Homestead v0: the /homestead chat-command branch (src/sim/social/chat.ts)
+  // routes through the seam to the Homestead instance on Sim. Returns true
+  // when the raw message was a /homestead command (handled). Append-only,
+  // late-bound to Sim.
+  homesteadChat(raw: string, pid: number): boolean;
 }
 
 // The seam consumed by extracted modules.
@@ -913,5 +918,7 @@ export function createSimContext(host: SimContextHost): SimContext {
     plantSpeechChat: host.plantSpeechChat,
     notifyPlantThreshold: host.notifyPlantThreshold,
     plantSpeechAmbientChat: host.plantSpeechAmbientChat,
+    // Homestead v0: the /homestead chat-command branch.
+    homesteadChat: host.homesteadChat,
   };
 }

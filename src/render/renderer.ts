@@ -75,6 +75,7 @@ import {
   isHollowHubPos,
   updateHollowVaseBreath,
 } from './hollow_props';
+import { HomesteadView } from './homestead';
 import { HousingView } from './housing';
 import { type NearbyHousingPlot, nearestHousingPlot } from './housing_proximity';
 import { buildImpactSite, type ImpactSiteView } from './impact_site';
@@ -854,6 +855,9 @@ export class Renderer {
   // recomputed alongside housingView each frame. main.ts's interact-key handler
   // reads this instead of re-deriving the same distance check.
   nearHousingPlot: NearbyHousingPlot | null = null;
+  // Homestead v0: open-world plots drawn from IWorld.homesteadInfo. Lazy like
+  // `housingView` (nothing to draw before the primary entity resolves).
+  private homesteadView: HomesteadView | null = null;
   private envRTs = new Map<BiomeId, THREE.WebGLRenderTarget>();
   private envBiome: BiomeId = 'vale';
   private envOutdoorIntensity = ENV_INTENSITY;
@@ -4450,6 +4454,18 @@ export class Renderer {
         this.housingView.updateProximity(this.nearHousingPlot?.plotId ?? null, this.time);
       } else {
         this.nearHousingPlot = null;
+      }
+    }
+    // Homestead v0: open-world Hollow Reaches plots, always world-space (no
+    // hub-origin gate, unlike Housing v0 above); the JSON change key inside
+    // update() makes the per-frame cost negligible.
+    {
+      const homestead = this.sim.homesteadInfo;
+      if (homestead || this.homesteadView) {
+        this.homesteadView ??= new HomesteadView(this.scene, (hx, hz) =>
+          groundHeight(hx, hz, this.sim.cfg.seed),
+        );
+        this.homesteadView.update(homestead);
       }
     }
     worldStart = markWorldPhase('props', worldStart);

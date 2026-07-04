@@ -244,3 +244,11 @@ export const HOLLOW_ZONE_PROPS: ZonePropsDef = {
   ],
   graveyards: [],
 };
+// Homestead v0 (PHAA-417) buildable ground: Fallow Acres, west of the road to
+// it (this zone's welcome hint above), the stretch the terrain pass was built
+// for. A bounding box rather than the whole zone, so placement stays a
+// curated stretch rather than "anywhere in the strip"; sim/homestead.ts's
+// per-point collision-avoidance additionally carves the Fallow Acres wolf
+// camp (HOLLOW_ZONE_CAMPS), the gate, the lake, the graveyard, and the roads
+// out of it, plus keeps homesteads a minimum distance apart from each other.
+export const HOLLOW_HOMESTEAD_AREA = { xMin: -95, xMax: -25, zMin: -274, zMax: -214 };

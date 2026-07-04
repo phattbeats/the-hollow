@@ -135,6 +135,7 @@ import { canEquipItem } from './equipment_rules';
 import { fleeSpeed } from './flee_speed';
 import { formatMoney } from './format_money';
 import { GreenpawHearth, type GreenpawHearthSave } from './greenpaw_hearth';
+import { Homestead, type HomesteadSave } from './homestead';
 import { Housing, type HousingSave } from './housing';
 import * as interaction from './interaction';
 import * as items from './items';
@@ -933,6 +934,10 @@ export class Sim {
   // target is lazily drawn on the first update() tick instead), so the
   // construction draws below are unperturbed.
   plantSpeech!: PlantSpeech;
+  // Homestead v0 (the open-world Hollow Reaches plots): the Homestead instance
+  // owns the plot ownership book. Constructed in the ctor after the SimContext
+  // (it consumes the seam); Sim keeps thin delegates below, mirroring housing.
+  homestead!: Homestead;
   /** When true, /dev level|tp|give chat commands are accepted (local dev only). */
   readonly devCommands: boolean;
   private pendingMobRespawns: PendingMobRespawn[] = [];
@@ -978,6 +983,9 @@ export class Sim {
     // state machine; consumes the seam. Draws no rng at construction, so the
     // draws below are unperturbed.
     this.plantSpeech = new PlantSpeech(this.ctx);
+    // Homestead v0: owns the open-world plot book; consumes the seam. Draws no
+    // rng at construction (or ever), so the draws below are unperturbed.
+    this.homestead = new Homestead(this.ctx);
 
     // NPCs — nudged out of buildings and deep water if their data position is bad
     for (const npcDef of Object.values(NPCS)) {
@@ -2306,6 +2314,9 @@ export class Sim {
       plantSpeechChat: (raw, pid) => sim.plantSpeech.handleChat(raw, pid),
       notifyPlantThreshold: (kind) => sim.plantSpeech.notifyThreshold(kind),
       plantSpeechAmbientChat: (text) => sim.plantSpeech.handleAmbientChat(text),
+      // Homestead v0: the /homestead chat-command branch routes through the seam to
+      // the Homestead instance (constructed after this literal; late-bound arrow).
+      homesteadChat: (raw, pid) => sim.homestead.handleChat(raw, pid),
     };
     return createSimContext(host);
   }
@@ -5338,6 +5349,32 @@ export class Sim {
   }
 
   // -------------------------------------------------------------------------
+  // Homestead v0 (the open-world Hollow Reaches plots, thin delegates to
+  // this.homestead)
+  // -------------------------------------------------------------------------
+
+  homesteadClaim(pid?: number): void {
+    this.homestead.homesteadClaim(pid);
+  }
+
+  homesteadInfoFor(pid: number): import('../world_api/homestead').HomesteadInfo {
+    return this.homestead.homesteadInfoFor(pid);
+  }
+
+  /** Monotonic change counter the server polls to persist homestead on change. */
+  get homesteadRev(): number {
+    return this.homestead.rev;
+  }
+
+  serializeHomestead(): HomesteadSave {
+    return this.homestead.serializeHomestead();
+  }
+
+  loadHomestead(save: HomesteadSave | null | undefined): void {
+    this.homestead.loadHomestead(save);
+  }
+
+  // -------------------------------------------------------------------------
   // Dungeons: party-instanced elite content (the Hollow Crypt and friends)
   // -------------------------------------------------------------------------
 
@@ -5445,6 +5482,10 @@ export class Sim {
 
   get housingInfo(): import('../world_api/housing').HousingInfo | null {
     return this.primaryId === -1 ? null : this.housingInfoFor(this.primaryId);
+  }
+
+  get homesteadInfo(): import('../world_api/homestead').HomesteadInfo | null {
+    return this.primaryId === -1 ? null : this.homesteadInfoFor(this.primaryId);
   }
 
   instanceSlotAt(pos: Vec3): number | null {
