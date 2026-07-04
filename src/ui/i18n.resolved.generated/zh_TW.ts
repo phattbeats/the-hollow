@@ -3401,8 +3401,8 @@ export const zh_TW: EnTranslations = {
     }
   },
   "housingUi": {
-    "claimedBanner": "You claim this plot as your home.",
-    "ownerBanner": "This is {name}'s homestead.",
+    "claimedBanner": "你將這塊地認領為家園。",
+    "ownerBanner": "這是{name}的家園。",
     "window": {
       "title": "你的家園",
       "close": "關閉家園",
