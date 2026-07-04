@@ -2249,6 +2249,7 @@ export class Sim {
       // PlantSpeech instance (constructed after this literal; late-bound arrows).
       plantSpeechChat: (raw, pid) => sim.plantSpeech.handleChat(raw, pid),
       notifyPlantThreshold: (kind) => sim.plantSpeech.notifyThreshold(kind),
+      plantSpeechAmbientChat: (text) => sim.plantSpeech.handleAmbientChat(text),
     };
     return createSimContext(host);
   }

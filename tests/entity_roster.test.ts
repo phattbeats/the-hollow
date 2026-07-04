@@ -300,6 +300,7 @@ function makeCtx() {
     greenpawFeedChat: vi.fn(() => false),
     plantSpeechChat: vi.fn(() => false),
     notifyPlantThreshold: vi.fn(),
+    plantSpeechAmbientChat: vi.fn(),
   };
   const ctx = createSimContext(host);
   return {

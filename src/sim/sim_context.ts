@@ -567,9 +567,14 @@ export interface SimContextCallbacks {
   // Returns true when the raw message was a /plant command (handled, even
   // when rationed into silence). notifyPlantThreshold lets a foreign system
   // (Housing today) report a real milestone the Plant may comment on.
+  // plantSpeechAmbientChat is the eavesdrop trigger: the ordinary /say or
+  // /yell branch in social/chat.ts reports every line through the seam so
+  // PlantSpeech can roll its own low, independent chance to react; it is not
+  // a "handled" command branch like the others, so it returns void, not bool.
   // Append-only, late-bound to Sim.
   plantSpeechChat(raw: string, pid: number): boolean;
   notifyPlantThreshold(kind: PlantThresholdKind): void;
+  plantSpeechAmbientChat(text: string): void;
 }
 
 // The seam consumed by extracted modules.
@@ -907,5 +912,6 @@ export function createSimContext(host: SimContextHost): SimContext {
     // branch + the real-threshold report-in.
     plantSpeechChat: host.plantSpeechChat,
     notifyPlantThreshold: host.notifyPlantThreshold,
+    plantSpeechAmbientChat: host.plantSpeechAmbientChat,
   };
 }

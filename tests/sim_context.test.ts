@@ -207,6 +207,7 @@ const CALLBACK_KEYS = [
   // branch + the real-threshold report-in.
   'plantSpeechChat',
   'notifyPlantThreshold',
+  'plantSpeechAmbientChat',
 ] as const;
 
 // A fully-spied fake host. `clock` is mutable so a test can prove the context reads
@@ -438,6 +439,7 @@ function makeFakeHost() {
     greenpawFeedChat: vi.fn(() => false),
     plantSpeechChat: vi.fn(() => false),
     notifyPlantThreshold: vi.fn(),
+    plantSpeechAmbientChat: vi.fn(),
   };
   return { host, rng, entities, clock };
 }
