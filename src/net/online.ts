@@ -847,6 +847,9 @@ export class ClientWorld implements IWorld {
   // entity id -> performance.now() when it first went missing from a snapshot;
   // used for the despawn grace window (anti-flicker), cleared once it returns
   private missingSince = new Map<number, number>();
+  // scratch for applySnapshot's per-message "ids present in this snap" set,
+  // reused across snapshots (20 Hz) instead of allocating a Set per message
+  private wireSeen = new Set<number>();
   // camera follow for keyboard turns applied by the main loop
   pendingFacingDelta = 0;
   connected = false;
@@ -1166,7 +1169,11 @@ export class ClientWorld implements IWorld {
     }
     this.lastSnapAt = now;
 
-    const seen = new Set<number>();
+    // lazy init (not the field initializer alone): tests build bare instances
+    // via Object.create(ClientWorld.prototype), which skips field initializers
+    if (this.wireSeen === undefined) this.wireSeen = new Set();
+    const seen = this.wireSeen;
+    seen.clear();
     const prevSelf = this.entities.get(this.playerId);
     const prevSelfFacing = prevSelf?.facing;
     const prevSelfDead = prevSelf?.dead ?? false;
@@ -1284,27 +1291,60 @@ export class ClientWorld implements IWorld {
       e.petTauntTimer = w.pt ?? 0;
       e.petAutoTaunt = !!w.pa;
       e.petManualTauntPending = false;
-      e.threat = new Map(w.thr ?? []);
-      e.auras = (w.auras ?? []).map((a: any) => ({
-        id: a.id,
-        name: a.name,
-        kind: a.kind,
-        remaining: a.rem,
-        duration: a.dur,
-        // The wire carries value only for negative-value buff_* stat-saps (sparse,
-        // server/game.ts), so the UI classifies them as debuffs identically to offline; a
-        // missing value (ordinary buffs, absorb, non-buff auras, an old server) decodes to 0
-        // as before. sourceId/school stay simplified (separate pre-existing wire reductions,
-        // not part of this change).
-        value: a.value ?? 0,
-        sourceId: 0,
-        school: 'physical' as const,
-        stacks: a.stacks,
-        // Mirror the charge count for a charge-limited aura (Lightning Shield); the wire sends it
-        // only when defined (server/game.ts), so an ordinary aura or an old server decodes to
-        // undefined and the badge falls back to the stacks path, exactly as before.
-        charges: a.charges,
-      }));
+      // same semantics as `new Map(w.thr ?? [])` (absent thr = empty table), but
+      // updates the existing Map in place: no per-entity Map churn at 20 Hz
+      e.threat.clear();
+      if (w.thr) for (const [tid, tv] of w.thr as [number, number][]) e.threat.set(tid, tv);
+      // The wire carries value only for negative-value buff_* stat-saps (sparse,
+      // server/game.ts), so the UI classifies them as debuffs identically to offline; a
+      // missing value (ordinary buffs, absorb, non-buff auras, an old server) decodes to 0
+      // as before. sourceId/school stay simplified (separate pre-existing wire reductions,
+      // not part of this change).
+      //
+      // Between snapshots the aura SET is usually unchanged (only `rem` ticks down), so when
+      // the incoming ids line up index-for-index with the existing records, update those
+      // records in place: no array + per-aura object allocation per entity at 20 Hz, and the
+      // preserved object identity matches the offline Sim (one live aura object across ticks).
+      // Any composition change (gain/fade/reorder) falls back to the fresh build below.
+      const wireAuras: any[] = w.auras ?? [];
+      let sameAuraShape = e.auras.length === wireAuras.length;
+      if (sameAuraShape) {
+        for (let i = 0; i < wireAuras.length; i++) {
+          if (e.auras[i].id !== wireAuras[i].id) {
+            sameAuraShape = false;
+            break;
+          }
+        }
+      }
+      if (sameAuraShape) {
+        for (let i = 0; i < wireAuras.length; i++) {
+          const a = wireAuras[i];
+          const rec = e.auras[i];
+          rec.name = a.name;
+          rec.kind = a.kind;
+          rec.remaining = a.rem;
+          rec.duration = a.dur;
+          rec.value = a.value ?? 0;
+          rec.stacks = a.stacks;
+          // Mirror the charge count for a charge-limited aura (Lightning Shield); the wire
+          // sends it only when defined (server/game.ts), so an ordinary aura or an old server
+          // decodes to undefined and the badge falls back to the stacks path, exactly as before.
+          rec.charges = a.charges;
+        }
+      } else {
+        e.auras = wireAuras.map((a: any) => ({
+          id: a.id,
+          name: a.name,
+          kind: a.kind,
+          remaining: a.rem,
+          duration: a.dur,
+          value: a.value ?? 0,
+          sourceId: 0,
+          school: 'physical' as const,
+          stacks: a.stacks,
+          charges: a.charges,
+        }));
+      }
       e.loot = w.lootList ?? null;
       return e;
     };
@@ -1347,8 +1387,12 @@ export class ClientWorld implements IWorld {
       e.resourceType = s.rtype;
       // delta fields: the server omits them while unchanged, so only the
       // snapshots that carry them rebuild the local structures
-      if (s.cds !== undefined)
-        e.cooldowns = new Map(Object.entries(s.cds).map(([k, v]) => [k, Number(v)]));
+      if (s.cds !== undefined) {
+        // in-place rebuild (same result as `new Map(Object.entries(...))`): no
+        // intermediate entry arrays and no Map churn on the 20 Hz self record
+        e.cooldowns.clear();
+        for (const k in s.cds) e.cooldowns.set(k, Number(s.cds[k]));
+      }
       e.gcdRemaining = s.gcd ?? 0;
       e.comboPoints = s.combo ?? 0;
       e.comboTargetId = s.comboTgt ?? null;

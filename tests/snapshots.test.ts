@@ -2221,3 +2221,103 @@ describe('aura value over the wire (stat-sap debuff parity)', () => {
     expect(mirror.value).toBe(0);
   });
 });
+
+describe('aura decode reuses records across snapshots (allocation fast path)', () => {
+  function applyWith(client: ClientWorld, auras: any[]): void {
+    (client as any).applySnapshot({
+      ents: [
+        {
+          id: 2,
+          k: 'mob',
+          tid: 'wolf',
+          nm: 'Wolf',
+          lv: 3,
+          x: 0,
+          y: 0,
+          z: 0,
+          f: 0,
+          hp: 40,
+          mhp: 40,
+          auras,
+        },
+      ],
+    });
+  }
+
+  it('keeps the same array and record objects while only fields change', () => {
+    const client = bareClient(1);
+    applyWith(client, [
+      { id: 'corruption', name: 'Corruption', kind: 'dot', rem: 12, dur: 12, value: 15 },
+    ]);
+    const firstArr = client.entities.get(2)!.auras;
+    const firstRec = firstArr[0];
+    expect(firstRec.remaining).toBe(12);
+
+    // same aura set, only `rem` ticked down: the decode must update the SAME
+    // objects in place (no per-snapshot churn) with the new field values
+    applyWith(client, [
+      { id: 'corruption', name: 'Corruption', kind: 'dot', rem: 7.5, dur: 12, value: 15 },
+    ]);
+    const secondArr = client.entities.get(2)!.auras;
+    expect(secondArr).toBe(firstArr);
+    expect(secondArr[0]).toBe(firstRec);
+    expect(firstRec.remaining).toBe(7.5);
+    expect(firstRec.value).toBe(15);
+  });
+
+  it('rebuilds the list when the aura composition changes', () => {
+    const client = bareClient(1);
+    applyWith(client, [
+      { id: 'corruption', name: 'Corruption', kind: 'dot', rem: 12, dur: 12, value: 15 },
+    ]);
+    const firstArr = client.entities.get(2)!.auras;
+
+    applyWith(client, [
+      { id: 'corruption', name: 'Corruption', kind: 'dot', rem: 12, dur: 12, value: 15 },
+      { id: 'venom_bite', name: 'Venom Bite', kind: 'dot', rem: 6, dur: 6, value: 4 },
+    ]);
+    const secondArr = client.entities.get(2)!.auras;
+    expect(secondArr).not.toBe(firstArr); // composition changed: fresh build
+    expect(secondArr.map((a) => a.id)).toEqual(['corruption', 'venom_bite']);
+    expect(secondArr[1].value).toBe(4);
+
+    // and dropping back to one aura rebuilds again (length mismatch path)
+    applyWith(client, [
+      { id: 'corruption', name: 'Corruption', kind: 'dot', rem: 12, dur: 12, value: 15 },
+    ]);
+    expect(client.entities.get(2)!.auras.map((a) => a.id)).toEqual(['corruption']);
+  });
+
+  it('a same-length REORDER rebuilds instead of smearing fields across records', () => {
+    const client = bareClient(1);
+    applyWith(client, [
+      { id: 'corruption', name: 'Corruption', kind: 'dot', rem: 12, dur: 12, value: 15 },
+      { id: 'weakness', name: 'Weakness', kind: 'buff_ap', rem: 9, dur: 9, value: -5 },
+    ]);
+    // swap the two auras: same ids, same length, different order
+    applyWith(client, [
+      { id: 'weakness', name: 'Weakness', kind: 'buff_ap', rem: 9, dur: 9, value: -5 },
+      { id: 'corruption', name: 'Corruption', kind: 'dot', rem: 12, dur: 12, value: 15 },
+    ]);
+    const mirrored = client.entities.get(2)!.auras;
+    expect(mirrored.map((a) => a.id)).toEqual(['weakness', 'corruption']);
+    // each record carries ITS aura's fields, not the other slot's
+    expect(mirrored[0].value).toBe(-5);
+    expect(mirrored[1].value).toBe(15);
+  });
+
+  it('the in-place path clears optional sub-fields the wire stops sending', () => {
+    const client = bareClient(1);
+    applyWith(client, [
+      { id: 'corruption', name: 'Corruption', kind: 'dot', rem: 12, dur: 12, value: 15, stacks: 3 },
+    ]);
+    const rec = client.entities.get(2)!.auras[0];
+    expect(rec.stacks).toBe(3);
+    // same aura set (fast path), but stacks dropped off the wire
+    applyWith(client, [
+      { id: 'corruption', name: 'Corruption', kind: 'dot', rem: 12, dur: 12, value: 15 },
+    ]);
+    expect(client.entities.get(2)!.auras[0]).toBe(rec); // fast path taken
+    expect(rec.stacks).toBeUndefined(); // not a stale 3
+  });
+});

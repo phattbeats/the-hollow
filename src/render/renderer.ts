@@ -95,6 +95,7 @@ import { downscaleDims } from './screenshot';
 import { drapeRingLocalY } from './selection_ring';
 import { buildClouds, buildSky, type SkyView } from './sky';
 import { nearestSloppyPickId, type SloppyPickCandidate } from './sloppy_pick';
+import { freezeStaticMatrices } from './static_matrix';
 import { shouldRenderStealthGhost } from './stealth';
 import { buildFlaredConeFan, buildRingXZ, drapeConeWorld } from './target_cone_debug';
 import { buildTerrain, type TerrainView } from './terrain';
@@ -682,6 +683,9 @@ export class Renderer {
   camera: THREE.PerspectiveCamera;
   webgl: THREE.WebGLRenderer;
   views = new Map<number, EntityView>();
+  // view groups that own a budgeted point light: exempt from the hidden-view
+  // matrix gate (see the gate pass in sync and the note at registration)
+  private lightOwnerGroups = new WeakSet<THREE.Object3D>();
   nameplateLayer: HTMLDivElement;
   // Travel-form speed-illusion overlay (presentation only; see travel_speed_fx*).
   private travelSpeedFx: TravelSpeedFxPainter;
@@ -703,6 +707,11 @@ export class Renderer {
   // so sync() can re-drape the ring over the terrain without allocating.
   selectionRingLocalXZ: Float32Array;
   selectionRingDrapeY: Float32Array;
+  // last drape anchor: the drape is a pure function of (x, z, scale), so a
+  // stationary target skips the per-vertex groundHeight resample entirely.
+  private selRingX = Number.NaN;
+  private selRingZ = Number.NaN;
+  private selRingScale = Number.NaN;
   // Dev-only Tab-target cone overlay (enabled via ?targetcone=1 in main.ts).
   // Null until enabled; once built it is re-draped over the terrain in front of
   // the local player every frame. See target_cone_debug.ts.
@@ -923,6 +932,14 @@ export class Renderer {
   ) {
     this.nameplateLayer = nameplateLayer;
     this.travelSpeedFx = new TravelSpeedFxPainter(nameplateLayer);
+    // The scene root sits at identity forever, but with the default
+    // matrixAutoUpdate the root recomposes each frame, which flags
+    // matrixWorldNeedsUpdate and force-cascades a matrixWorld multiply through
+    // every node in the graph (three r165 updateMatrixWorld), defeating both
+    // the static-subtree freeze and the hidden-rig gate below. Freeze the root:
+    // children with auto-update still recompose themselves normally.
+    this.scene.updateMatrix();
+    this.scene.matrixAutoUpdate = false;
     // No default-framebuffer MSAA on any tier: high/ultra get AA from the
     // composer's MSAA HalfFloat target, low is meant to run without AA — and
     // requesting it here would hit software GL (the autodetect can only run
@@ -1159,10 +1176,14 @@ export class Renderer {
     this.terrainView = buildTerrain(this.sim.cfg.seed);
     setRenderCategory(this.terrainView.group, 'terrain');
     this.scene.add(this.terrainView.group);
+    // Terrain chunks never move after build (the LOD update only toggles
+    // visibility): stop their per-frame matrix recompose (static_matrix.ts).
+    freezeStaticMatrices(this.terrainView.group);
     this.waterView = buildWater(this.sim.cfg.seed);
     for (const mesh of this.waterView.meshes) {
       setRenderCategory(mesh, 'water');
       this.scene.add(mesh);
+      freezeStaticMatrices(mesh); // water animates via uniforms, never transforms
     }
 
     this.foliage = buildFoliage(this.sim.cfg.seed);
@@ -1187,6 +1208,11 @@ export class Renderer {
     this.scene.add(props.group);
     this.flames = props.flames;
     this.fireLights = props.fireLights;
+    // Props are baked into world space at build and their update() only toggles
+    // visibility, so the whole tree is matrix-static, EXCEPT the campfire
+    // flames, whose flicker rescales them every frame: re-enable those.
+    freezeStaticMatrices(props.group);
+    for (const flame of this.flames) flame.matrixAutoUpdate = true;
     // The impact-site light rides the campfire point-light budget so the visible
     // point-light count stays constant as the player travels (constant
     // numPointLights -> materials never recompile for a light-count change).
@@ -3215,6 +3241,11 @@ export class Renderer {
         this.viewLights.push(light);
       }
       this.lightRankDirty = true;
+      // A light-owning view is exempt from the hidden-view matrix gate below:
+      // the light-budget rebuild caches light.getWorldPosition, and r165's
+      // updateWorldMatrix does not heal through a matrixWorldAutoUpdate=false
+      // ancestor, so a gated group would rank the light at a stale position.
+      this.lightOwnerGroups.add(group);
     }
     this.views.set(e.id, {
       group,
@@ -3885,14 +3916,30 @@ export class Renderer {
     for (const [id, v] of this.views) {
       const e = sim.entities.get(id);
       if (!e) continue;
-      // form swaps (polymorph sheep, druid forms) — computed up front because
-      // the shadow gates below must not run the base rig's proxy under a form
-      const polyed = e.auras.some((a) => a.kind === 'polymorph');
-      const bear = !polyed && e.auras.some((a) => a.kind === 'form_bear');
-      const ghostWolf = !polyed && !bear && e.auras.some((a) => a.id === 'ghost_wolf');
-      const cat = !polyed && !bear && (ghostWolf || e.auras.some((a) => a.kind === 'form_cat'));
-      const travel = !polyed && !bear && !cat && e.auras.some((a) => a.kind === 'form_travel');
-      const _stealthed = e.auras.some((a) => a.kind === 'stealth');
+      // form swaps (polymorph sheep, druid forms), computed up front because
+      // the shadow gates below must not run the base rig's proxy under a form.
+      // One pass over the aura list instead of six .some() scans per entity per
+      // frame; the flag combination below preserves the original precedence.
+      let hasPoly = false;
+      let hasBear = false;
+      let hasGhostWolf = false;
+      let hasCatForm = false;
+      let hasTravelForm = false;
+      let hasStealth = false;
+      for (const a of e.auras) {
+        if (a.kind === 'polymorph') hasPoly = true;
+        if (a.kind === 'form_bear') hasBear = true;
+        if (a.id === 'ghost_wolf') hasGhostWolf = true;
+        if (a.kind === 'form_cat') hasCatForm = true;
+        if (a.kind === 'form_travel') hasTravelForm = true;
+        if (a.kind === 'stealth') hasStealth = true;
+      }
+      const polyed = hasPoly;
+      const bear = !polyed && hasBear;
+      const ghostWolf = !polyed && !bear && hasGhostWolf;
+      const cat = !polyed && !bear && (ghostWolf || hasCatForm);
+      const travel = !polyed && !bear && !cat && hasTravelForm;
+      const _stealthed = hasStealth;
       // distance cull: far rigs are invisible specks but cost real draw calls
       const cdx = e.pos.x - p.pos.x,
         cdz = e.pos.z - p.pos.z;
@@ -3984,9 +4031,8 @@ export class Renderer {
         v.group.visible = vis;
         if (v.sparkle && vis) {
           // sub-pixel beyond ~45u but still a full transparent draw each
-          const sdx = e.pos.x - p.pos.x,
-            sdz = e.pos.z - p.pos.z;
-          v.sparkle.visible = sdx * sdx + sdz * sdz < SPARKLE_DRAW_RANGE_SQ;
+          // (d2 is this entity's player distance, computed once above)
+          v.sparkle.visible = d2 < SPARKLE_DRAW_RANGE_SQ;
           const pulse = 0.75 + Math.sin(this.time * 3 + e.id) * 0.25;
           v.sparkle.scale.set(pulse, pulse, 1);
           v.sparkle.material.rotation = this.time * 0.8;
@@ -4211,6 +4257,19 @@ export class Renderer {
     }
     this.lastVisibleRigCount = visibleRigCount;
 
+    // Hidden views skip their whole matrix subtree: three recomposes even
+    // invisible hierarchies, and a distance-culled or off-screen rig is 30-60
+    // nodes of dead per-frame compose+multiply. Re-showing flips the gate back
+    // on, and the next scene update revisits the subtree and recomposes it
+    // from the live position/rotation properties, so nothing renders stale.
+    // (pick() skips hidden views, so a frozen matrix never ghosts a hitbox.
+    // CAUTION: getWorldPosition on a node inside a gated subtree does not heal
+    // the chain in r165, hence the light-owner exemption; any new world-space
+    // read of a view child must use group.position or exempt the view too.)
+    for (const [, v] of this.views) {
+      v.group.matrixWorldAutoUpdate = v.group.visible || this.lightOwnerGroups.has(v.group);
+    }
+
     // selection ring
     const target = p.targetId !== null ? sim.entities.get(p.targetId) : null;
     if (target) {
@@ -4218,28 +4277,36 @@ export class Renderer {
       if (tv) {
         const cx = tv.group.position.x;
         const cz = tv.group.position.z;
-        const seed = this.sim.cfg.seed;
         // anchor the reticle to the ground under the unit (a classic decal: it
         // stays grounded even if the target jumps) and drape it over the slope.
-        const gy = groundHeight(cx, cz, seed);
-        this.selectionRing.position.set(cx, gy, cz);
-        this.selectionRing.scale.setScalar(target.scale);
-        const drape = drapeRingLocalY(
-          this.selectionRingLocalXZ,
-          cx,
-          cz,
-          gy,
-          target.scale,
-          0.08,
-          (sx, sz) => groundHeight(sx, sz, seed),
-          this.selectionRingDrapeY,
-        );
-        const ringPos = this.selectionRingMesh.geometry.getAttribute(
-          'position',
-        ) as THREE.BufferAttribute;
-        for (let i = 0; i < drape.length; i++) ringPos.setY(i, drape[i]);
-        ringPos.needsUpdate = true;
-        this.selectionRingTicks.position.y = 0.08; // ticks float just above the footing
+        // The drape is a pure function of (cx, cz, scale) and nothing else writes
+        // the ring's position attribute, so a stationary target reuses last
+        // frame's per-vertex groundHeight samples untouched.
+        if (cx !== this.selRingX || cz !== this.selRingZ || target.scale !== this.selRingScale) {
+          this.selRingX = cx;
+          this.selRingZ = cz;
+          this.selRingScale = target.scale;
+          const seed = this.sim.cfg.seed;
+          const gy = groundHeight(cx, cz, seed);
+          this.selectionRing.position.set(cx, gy, cz);
+          this.selectionRing.scale.setScalar(target.scale);
+          const drape = drapeRingLocalY(
+            this.selectionRingLocalXZ,
+            cx,
+            cz,
+            gy,
+            target.scale,
+            0.08,
+            (sx, sz) => groundHeight(sx, sz, seed),
+            this.selectionRingDrapeY,
+          );
+          const ringPos = this.selectionRingMesh.geometry.getAttribute(
+            'position',
+          ) as THREE.BufferAttribute;
+          for (let i = 0; i < drape.length; i++) ringPos.setY(i, drape[i]);
+          ringPos.needsUpdate = true;
+          this.selectionRingTicks.position.y = 0.08; // ticks float just above the footing
+        }
         this.selectionRingTicks.rotation.y += dt * SELECTION_RING_SPIN; // slow reticle spin
         const ringMat = this.selectionRingMat;
         ringMat.color.setHex(this.isHostileSelectionTarget(target) ? 0xcc2222 : 0xd4af37);
@@ -4862,9 +4929,15 @@ export class Renderer {
       let o: THREE.Object3D | null = hit.object;
       while (o) {
         if (o.userData.entityId !== undefined && o.userData.entityId !== this.sim.playerId) {
-          const e = this.sim.entities.get(o.userData.entityId as number);
+          const id = o.userData.entityId as number;
+          // a hidden view is not clickable: the player cannot see it, and its
+          // matrixWorld is frozen while hidden (the rig gate in sync), so a hit
+          // against it would be a ghost hitbox at the hide-time position
+          const hitView = this.views.get(id);
+          if (hitView && !hitView.group.visible) break;
+          const e = this.sim.entities.get(id);
           if (e?.kind === 'object' && !e.lootable) return null;
-          return o.userData.entityId as number;
+          return id;
         }
         o = o.parent;
       }
