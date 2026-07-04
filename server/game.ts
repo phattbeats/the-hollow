@@ -255,6 +255,7 @@ const HEAVY_SELF_CMDS = new Set<string>([
   'saveLoadout',
   'switchLoadout',
   'deleteLoadout',
+  'setSecondaryClass',
   'change_skin',
   'unequip_mech_chroma',
   'claim_event_skin',
@@ -2515,6 +2516,14 @@ export class GameServer {
       case 'deleteLoadout':
         if (typeof msg.index === 'number') sim.deleteLoadout(msg.index | 0, pid);
         break;
+      // Profession Trainer NPC: pick/change the secondary class (GW1 build system
+      // multiclassing, PHAA-464). Level gate, gold cost, and profession legality
+      // are all re-validated in sim.setSecondaryClass; the client cannot skip them.
+      case 'setSecondaryClass':
+        if (typeof msg.npc === 'number' && typeof msg.cls === 'string') {
+          sim.setSecondaryClass(msg.npc, msg.cls as import('../src/sim/types').PlayerClass, pid);
+        }
+        break;
       // World Market (the Merchant's auction house)
       case 'market_search':
         if (typeof msg.q === 'string') sim.marketSearch(msg.q, pid);
@@ -2991,6 +3000,7 @@ export class GameServer {
         loadouts: meta.loadouts,
         activeLoadout: meta.activeLoadout,
         secondaryCls: meta.secondaryCls,
+        secondaryClsChanges: meta.secondaryClsChanges,
       });
     }
     return extra === '' ? json : `${json.slice(0, -1)}${extra}}`;

@@ -9,9 +9,9 @@
 // keep resolving to THIS file, never the sibling directory.
 //
 // ---------------------------------------------------------------------------
-// FACET MAP: the 22 domain facets (each IWorld member assigned exactly once; 151
-// total; this count was previously stale at 21/147, corrected alongside the
-// PHAA-405 housing command addition below). One interface per file under
+// FACET MAP: the 23 domain facets (each IWorld member assigned exactly once; 155
+// total; this count was previously stale at 22/152, corrected alongside the
+// PHAA-464 trainer command addition below). One interface per file under
 // ./world_api/; aux types travel with their facet. The authoritative
 // member-per-facet split is the W0c parity test.
 //
@@ -25,6 +25,7 @@
 //   quests.ts           IWorldQuests         quest log + accept/turn-in/abandon
 //   progression_xp.ts   IWorldProgressionXp  xp/lifetimeXp/prestige/rested/leaderboard
 //   talents.ts          IWorldTalents        talents, specs, loadouts
+//   trainer.ts          IWorldTrainer        secondary-class trainer NPC (GW1 multiclass)
 //   pet.ts              IWorldPet            hunter-pet command surface
 //   party.ts            IWorldParty          party/raid + raid-target markers
 //   trade.ts            IWorldTrade          peer-to-peer trade window
@@ -43,9 +44,9 @@
 //                                          ALL_DELTA_KEYS (27) + TERSE_TO_IWORLD mapping.
 //   tests/command_schema.test.ts   (W0b)  COMMAND_NAMES universe; ClientWorld send-set
 //                                          subset-of dispatch-set; DISPATCH_ONLY (7).
-//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (151) present + same-kind on
+//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (155) present + same-kind on
 //                                          Sim + ClientWorld; aggregate == disjoint
-//                                          union of the 22 facets.
+//                                          union of the 23 facets.
 // ---------------------------------------------------------------------------
 
 import type { IWorldChat } from './world_api/chat';
@@ -70,6 +71,7 @@ import type { IWorldTalents } from './world_api/talents';
 import type { IWorldTargeting } from './world_api/targeting';
 import type { IWorldTelemetry } from './world_api/telemetry';
 import type { IWorldTrade } from './world_api/trade';
+import type { IWorldTrainer } from './world_api/trainer';
 
 // --- pass-through sim re-exports: downstream imports these FROM world_api ---
 export type { GuildLeaderboardPage, LeaderboardPage } from './sim/leaderboard_page';
@@ -125,6 +127,7 @@ export interface IWorld
     IWorldQuests,
     IWorldProgressionXp,
     IWorldTalents,
+    IWorldTrainer,
     IWorldPet,
     IWorldParty,
     IWorldTrade,
@@ -244,6 +247,7 @@ export const COMMAND_NAMES = [
   'saveLoadout',
   'switchLoadout',
   'deleteLoadout',
+  'setSecondaryClass',
   'market_search',
   'market_list',
   'market_buy',
@@ -319,6 +323,7 @@ export type WorldFacet =
   | 'IWorldQuests'
   | 'IWorldProgressionXp'
   | 'IWorldTalents'
+  | 'IWorldTrainer'
   | 'IWorldPet'
   | 'IWorldParty'
   | 'IWorldTrade'
@@ -360,6 +365,9 @@ export const COMMAND_FACETS = {
   saveLoadout: 'IWorldTalents',
   switchLoadout: 'IWorldTalents',
   deleteLoadout: 'IWorldTalents',
+  // IWorldTrainer: the Profession Trainer NPC command to pick/change a secondary
+  // class (secondaryClassCost is a local read, no send).
+  setSecondaryClass: 'IWorldTrainer',
   // IWorldCosmetics: skin + mech-chroma equips (snake_case wire strings, by design).
   change_skin: 'IWorldCosmetics',
   claim_event_skin: 'IWorldCosmetics',

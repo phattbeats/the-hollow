@@ -197,6 +197,21 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
     greeting:
       "howdy, traveler. you catch the vase in a mood today, or is that just me again... c'mere, got a couple sacred matters need tendin'. mostly snacks. same thing, to a greenpaw degree.",
   },
+  // GW1 build system multiclassing (Phase 3, PHAA-464): teaches every profession
+  // as a secondary class. Hub-local, mirrored across the vase from Greenpaw;
+  // `dynamic` for the same reason as brother_greenpaw above.
+  elder_yarrow: {
+    id: 'elder_yarrow',
+    name: 'Elder Yarrow',
+    title: 'Profession Trainer',
+    pos: { x: -3, z: 4 },
+    dynamic: true,
+    facing: 0.6,
+    color: 0x8a9a5b,
+    questIds: [],
+    trainer: { professions: ALL_CLASSES },
+    greeting: 'Every build starts as a question. Which second calling speaks to you?',
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -577,8 +592,12 @@ export const HOLLOW_DUNGEON_DEFS: Record<string, DungeonDef> = {
         dungeonId: 'under_shrine',
       },
     ],
-    // Greenpaw lives at the foot of the vase, inside the instance.
-    npcs: [{ npcId: 'brother_greenpaw', x: 3, z: 4 }],
+    // Greenpaw and the Profession Trainer live at the foot of the vase, inside
+    // the instance, mirrored across it from each other.
+    npcs: [
+      { npcId: 'brother_greenpaw', x: 3, z: 4 },
+      { npcId: 'elder_yarrow', x: -3, z: 4 },
+    ],
     interior: 'temple',
     suggestedPlayers: 1,
     enterText:
