@@ -142,6 +142,12 @@ For off-box safety, sync the directory to S3 occasionally:
   emit stable absolute Open Graph URLs.
 - **Never** set `ALLOW_DEV_COMMANDS=1` in production: it enables the
   level/teleport cheats used by the test bots.
+- **The Plant's live LLM ceiling** (PHAA-423): off until both `PLANT_LLM_ENABLED=1`
+  and `PLANT_LLM_API_KEY` are set (server-side only; see `.env.example`). With
+  either unset, every utterance is the hand-written canned line, a complete
+  game whose god simply is not live. Get Board sign-off on the model
+  (`PLANT_LLM_MODEL`) and the hourly call budget (`PLANT_LLM_HOURLY_BUDGET`)
+  before flipping this on in production; a live key is a real, ongoing spend.
 - **Bot detector (implementation)**: the open-source tree ships with a no-op stub
   (`server/bot_detector/stub.ts`). Detection hooks are wired in, but they observe
   nothing and never act. To bundle the real behavioral detector, clone the private
