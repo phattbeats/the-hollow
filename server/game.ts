@@ -443,11 +443,20 @@ interface WireAura {
   kind: string;
   rem: number;
   dur: number;
-  // Sent SPARSELY: only a negative-value buff_* aura (a stat-sap) rides the wire (see the
-  // serializer below), the exact case auras_view.isAuraDebuff reads value for. Everything
-  // else (positive buffs, absorb shields, and negative-value non-buff auras like the random
-  // fear angle on an incapacitate) stays off the wire and decodes to 0, exactly as before.
-  value?: number;
+  // The real effect magnitude (dot/hot tick amount, flat stat buff, slow/haste
+  // multiplier, absorb remaining, ...). Rides the wire unconditionally so the online
+  // tooltip (auras_view/aura_effect) reads the same numbers as the offline Sim; it is
+  // also the field auras_view.isAuraDebuff keys a negative-value buff_* stat-sap on.
+  value: number;
+  // Secondary/tertiary magnitudes (e.g. judgement min/max) and the DoT/HoT tick
+  // interval, sent only when the aura actually uses them (most auras leave them
+  // undefined on the sim side too).
+  value2?: number;
+  value3?: number;
+  tickInterval?: number;
+  // Damage school, for the tooltip's DoT/absorb/thorns school name. Sent only when
+  // the sim aura defines one (school defaults to 'physical' offline).
+  school?: string;
   stacks?: number;
   // Remaining charges on a charge-limited aura (Lightning Shield's reflect count). Sent only
   // when defined, so ordinary auras stay off the wire and decode to undefined as before; the
@@ -543,15 +552,16 @@ function dynamicFields(e: Entity): Record<string, unknown> {
         kind: a.kind,
         rem: round2(a.remaining),
         dur: a.duration,
-        // Carry the value ONLY for the exact case the client UI reads it: a negative-value
-        // buff_* aura (a stat-sap), which auras_view.isAuraDebuff classifies as a debuff via
-        // `kind.startsWith('buff_') && value < 0`. Mirroring that predicate keeps the wire in
-        // lockstep with the classification, so a graphics preset can never hide such a debuff
-        // and nothing else (positive buffs, absorb shields, a fear's random facing angle, any
-        // other negative-value non-buff aura) rides the wire or changes online behavior. Sent
-        // RAW (like `dur`, not round2) so the sign the classification keys on survives the
-        // wire exactly: round2 could round a tiny negative to -0, which JSON writes as 0.
-        ...(a.value < 0 && a.kind.startsWith('buff_') ? { value: a.value } : {}),
+        // Sent RAW (not round2'd): auras_view.isAuraDebuff keys a negative-value buff_*
+        // stat-sap off the sign, and round2 could round a tiny negative to -0, which JSON
+        // writes as 0. The tooltip effect descriptor (aura_effect.ts) needs the real
+        // magnitude for every aura, not just the debuff-classifying ones, so this now
+        // rides the wire unconditionally (previously sent only for negative buff_* auras).
+        value: a.value,
+        ...(a.value2 !== undefined ? { value2: a.value2 } : {}),
+        ...(a.value3 !== undefined ? { value3: a.value3 } : {}),
+        ...(a.tickInterval !== undefined ? { tickInterval: a.tickInterval } : {}),
+        ...(a.school !== 'physical' ? { school: a.school } : {}),
         ...(a.stacks && a.stacks > 1 ? { stacks: a.stacks } : {}),
         // Carry the remaining charges only for a charge-limited aura (Lightning Shield), so the
         // buff icon can badge the count online exactly as offline; undefined for every other aura.
