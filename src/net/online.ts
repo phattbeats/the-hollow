@@ -797,6 +797,12 @@ export class ClientWorld implements IWorld {
   secondaryCls: PlayerClass | null = null;
   // --- IWorldTrainer: mirrored from the same 'tal' snapshot block. ---
   secondaryClsChanges = 0;
+  // IWorldTrainer.primaryCls (PHAA-465): the player's primary class is the
+  // one chosen at creation; mirror it under a typed name on the seam so the
+  // UI does not reach into `cfg` for it.
+  get primaryCls(): PlayerClass {
+    return this.cfg.playerClass;
+  }
   questLog = new Map<string, QuestProgress>();
   questsDone = new Set<string>();
   // --- IWorldParty: party/raid roster, mirrored from the snapshot self (`party`).
