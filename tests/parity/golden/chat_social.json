@@ -9,8 +9,8 @@
     "/me + predefined /wave emotes via broadcastEmote + findPlayerByName; playEmote bubble",
     "handleChannelMembership /join opt-in channels; chatAllowed token-bucket throttle"
   ],
-  "draws": 0,
-  "drawDigest": "811c9dc5",
+  "draws": 7,
+  "drawDigest": "cd2b631a",
   "frames": [
     {
       "tick": 0,
@@ -252,8 +252,8 @@
       "state": "73304eb2",
       "events": "33811aa7",
       "rng": {
-        "draws": 0,
-        "digest": "811c9dc5"
+        "draws": 2,
+        "digest": "dada23c9"
       },
       "label": "a-chats",
       "players": [
@@ -471,8 +471,8 @@
       "state": "73304eb2",
       "events": "3c981dea",
       "rng": {
-        "draws": 0,
-        "digest": "811c9dc5"
+        "draws": 2,
+        "digest": "dada23c9"
       },
       "label": "b-chats",
       "players": [
@@ -690,8 +690,8 @@
       "state": "73304eb2",
       "events": "d08496cb",
       "rng": {
-        "draws": 0,
-        "digest": "811c9dc5"
+        "draws": 2,
+        "digest": "dada23c9"
       },
       "label": "readout-emote",
       "players": [
@@ -907,10 +907,10 @@
       "time": 0,
       "nextId": 402,
       "state": "73304eb2",
-      "events": "0b5fe7b5",
+      "events": "3ed972da",
       "rng": {
-        "draws": 0,
-        "digest": "811c9dc5"
+        "draws": 7,
+        "digest": "cd2b631a"
       },
       "label": "throttled",
       "players": [
@@ -1128,8 +1128,8 @@
       "state": "73304eb2",
       "events": "741638a5",
       "rng": {
-        "draws": 0,
-        "digest": "811c9dc5"
+        "draws": 7,
+        "digest": "cd2b631a"
       },
       "label": "final",
       "players": [
