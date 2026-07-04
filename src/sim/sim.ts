@@ -5,6 +5,7 @@ import type {
   LockpickView,
 } from '../world_api';
 import { lineOfSightClear, resolveMovement, resolvePosition } from './colliders';
+import { needsCostTranslation, translateAbilityCost } from './combat/ability_cost';
 import { auraAffectsStats, removeCancelableAura } from './combat/aura_cancel';
 import {
   cleanseFriendlyNpcAuras,
@@ -24,6 +25,7 @@ import {
   cancelCast as cancelCastImpl,
   castAbilityBySlot as castAbilityBySlotImpl,
   castAbility as castAbilityImpl,
+  isFormToggle,
   pushbackCast as pushbackCastImpl,
   spendResource as spendResourceImpl,
   updateCasting as updateCastingImpl,
@@ -2404,14 +2406,28 @@ export class Sim {
     if (!r) return null;
     const found = r.meta.known.find((k) => k.def.id === abilityId) ?? null;
     if (!found) return null;
+    // Resolve here, the single choke point all cost checks/spends read, so the
+    // affordability check and the spend stay in lockstep. Return a shallow copy
+    // so the cached known-list entry is never mutated.
+    let cost = found.cost;
+    // Multiclass secondary-ability resource-cost translation (PHAA-467): a
+    // secondary-kit ability's cost is denominated in ITS class's resource, not
+    // the caster's live pool. Never runs for druid form toggles, which swap the
+    // bar instead of spending from it.
+    if (needsCostTranslation(found.def, r.meta.cls, isFormToggle(found.def))) {
+      cost = translateAbilityCost(
+        cost,
+        found.def.class,
+        r.e.resourceType ?? 'mana',
+        r.e.maxResource,
+        r.e.level,
+      );
+    }
     // A "draining curse" (cost_tax aura) inflates the resource cost of every
-    // ability the victim uses. Resolve it here, the single choke point all cost
-    // checks/spends read, so the affordability check and the spend stay in
-    // lockstep. Return a shallow copy so the cached known-list entry is never
-    // mutated.
+    // ability the victim uses.
     const tax = this.costTaxMult(r.e);
-    if (tax > 1 && found.cost > 0) return { ...found, cost: Math.ceil(found.cost * tax) };
-    return found;
+    if (tax > 1 && cost > 0) cost = Math.ceil(cost * tax);
+    return cost !== found.cost ? { ...found, cost } : found;
   }
 
   // Highest active cost_tax aura, expressed as a cost multiplier (1 = no tax).
