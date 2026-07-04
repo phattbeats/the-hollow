@@ -1653,6 +1653,17 @@ async function startGame(
       else hud.openQuestDialog(bestNpc);
       return;
     }
+    // Housing v0 (PHAA-405): homestead plots are not entities, so they sit
+    // outside the loop above. renderer.nearHousingPlot mirrors the same
+    // interact-range check the server enforces on claim (housing_proximity.ts).
+    // An unclaimed plot claims on interact; the viewer's own plot opens the
+    // placement window; someone else's plot has nothing to do here yet.
+    const nearPlot = renderer.nearHousingPlot;
+    if (nearPlot) {
+      if (!nearPlot.claimed) world.housingClaim();
+      else if (nearPlot.mine) hud.openHousing();
+      return;
+    }
     hud.showError(t('errors.nothingInteract'));
   }
 

@@ -2538,6 +2538,20 @@ export class GameServer {
       case 'market_collect':
         sim.marketCollect(pid);
         break;
+      // Housing v0 (PHAA-405): interact-key commands, replacing the /house chat
+      // form as the primary flow. sim.housingClaim/Place/Remove re-validate range
+      // and ownership server-side exactly like the chat path did.
+      case 'housingClaim':
+        sim.housingClaim(pid);
+        break;
+      case 'housingPlace':
+        if (typeof msg.slot === 'number' && typeof msg.kind === 'string') {
+          sim.housingPlace(msg.slot, msg.kind, pid);
+        }
+        break;
+      case 'housingRemove':
+        if (typeof msg.slot === 'number') sim.housingRemove(msg.slot, pid);
+        break;
       // dev/ops commands, only when ALLOW_DEV_COMMANDS=1 (never in production)
       case 'dev_level': {
         if (process.env.ALLOW_DEV_COMMANDS === '1' && typeof msg.level === 'number') {

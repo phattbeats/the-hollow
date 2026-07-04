@@ -24,8 +24,10 @@ import type { SimContext } from './sim_context';
 import type { Entity } from './types';
 
 const HUB_DUNGEON_ID = 'the_hollow';
-// You must stand this close to a plot centre to claim it.
-const CLAIM_RADIUS = 8;
+// You must stand this close to a plot centre to claim it. Exported so the
+// client-only proximity check (src/render/housing_proximity.ts) shares the
+// exact radius the server enforces, instead of a duplicated magic number.
+export const CLAIM_RADIUS = 8;
 export const HOUSE_SLOT_COUNT = HOLLOW_HOUSE_SLOT_OFFSETS.length;
 
 export interface HousePlotState {

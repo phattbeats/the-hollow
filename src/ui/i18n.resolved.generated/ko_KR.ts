@@ -3392,6 +3392,24 @@ export const ko_KR: EnTranslations = {
       "tooFar": "너무 멉니다."
     }
   },
+  "housingUi": {
+    "window": {
+      "title": "나의 보금자리",
+      "close": "보금자리 닫기",
+      "slotEmpty": "비어 있음",
+      "clear": "비우기",
+      "clearAria": "슬롯 {slot} 비우기",
+      "placeAria": "슬롯 {slot}에 {decor} 배치",
+      "hint": "각 슬롯에 배치할 장식을 선택하세요."
+    },
+    "decor": {
+      "planter": "화분",
+      "lantern": "랜턴",
+      "crate": "상자",
+      "bench": "벤치",
+      "stool": "스툴"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "금",

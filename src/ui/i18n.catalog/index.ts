@@ -9,6 +9,7 @@ import { abilityStrings, classAbilityNames } from './abilities';
 import { gameStrings } from './game';
 import { guideStrings } from './guide';
 import { hollowEntities } from './hollow';
+import { housingStrings } from './housing';
 import { hudStrings } from './hud';
 import { hudChromeStrings } from './hud_chrome';
 import { itemNames, itemStrings } from './items';
@@ -34,6 +35,7 @@ export {
   gameStringsZhTW,
 } from './game';
 export { guideStrings } from './guide';
+export { housingStrings } from './housing';
 export { hudStrings } from './hud';
 export { hudChromeStrings } from './hud_chrome';
 export { itemNames, itemStrings } from './items';
@@ -840,6 +842,7 @@ export const en = {
   ...hudStrings.en,
   ...abilityStrings.en,
   ...questStrings.en,
+  ...housingStrings.en,
   ...itemStrings.en,
   ...classAbilityNames.en,
   ...itemNames.en,

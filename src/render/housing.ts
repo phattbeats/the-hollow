@@ -9,6 +9,12 @@
 // decor edit), so the per-frame cost is one JSON.stringify of a tiny blob.
 // All geometry is deterministic; no Math.random. Procedural materials go
 // through surfaceMat() for dedup, like delve_props.ts.
+//
+// PHAA-405: every signpost also carries a glow ring (hidden by default), toggled
+// by updateProximity() every frame from the renderer's cheap nearestHousingPlot()
+// check (housing_proximity.ts). This is the ONLY per-frame write this module
+// does outside a rebuild: a visibility flip plus an opacity write on the one
+// active ring, so it stays within the per-frame cost budget.
 
 import * as THREE from 'three';
 // Mirror of src/sim/content/hollow.ts HOLLOW_HOUSE_SLOT_OFFSETS (render-local
@@ -48,6 +54,34 @@ function makeSignBoardTexture(text: string): THREE.CanvasTexture {
   return tex;
 }
 
+// A soft radial-gradient glow, additive-blended so it reads as light rather
+// than a flat decal. Hidden by default; updateProximity() toggles it and
+// pulses its opacity while the player stands near this signpost.
+function buildInteractGlow(): THREE.Mesh {
+  const canvas = document.createElement('canvas');
+  canvas.width = 128;
+  canvas.height = 128;
+  const g = canvas.getContext('2d')!;
+  const grad = g.createRadialGradient(64, 64, 4, 64, 64, 64);
+  grad.addColorStop(0, 'rgba(255, 226, 150, 0.9)');
+  grad.addColorStop(1, 'rgba(255, 226, 150, 0)');
+  g.fillStyle = grad;
+  g.fillRect(0, 0, canvas.width, canvas.height);
+  const tex = new THREE.CanvasTexture(canvas);
+  const mat = new THREE.MeshBasicMaterial({
+    map: tex,
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+  });
+  const mesh = new THREE.Mesh(new THREE.CircleGeometry(1.4, 24), mat);
+  mesh.name = 'houseInteractGlow';
+  mesh.rotation.x = -Math.PI / 2;
+  mesh.position.y = 0.03;
+  mesh.visible = false;
+  return mesh;
+}
+
 function buildSignpost(text: string): THREE.Group {
   const g = new THREE.Group();
   const post = new THREE.Mesh(new THREE.BoxGeometry(0.18, 1.6, 0.18), woodMat(0x6b5138));
@@ -60,6 +94,7 @@ function buildSignpost(text: string): THREE.Group {
   );
   board.position.y = 1.35;
   g.add(board);
+  g.add(buildInteractGlow());
   return g;
 }
 
@@ -167,6 +202,9 @@ function buildUnclaimedMarker(): THREE.Group {
 export class HousingView {
   private readonly group = new THREE.Group();
   private lastKey = '';
+  // plotId -> its signpost's glow ring, rebuilt alongside the group in update().
+  private glowByPlot = new Map<string, THREE.Mesh>();
+  private nearPlotId: string | null = null;
 
   constructor(
     private readonly scene: THREE.Scene,
@@ -187,6 +225,7 @@ export class HousingView {
     if (key === this.lastKey) return;
     this.lastKey = key;
     this.clear();
+    this.glowByPlot.clear();
     if (!info || !info.origin) return;
     const { x: ox, z: oz } = info.origin;
     for (const plot of info.plots) {
@@ -211,6 +250,28 @@ export class HousingView {
         }
       }
       this.group.add(holder);
+      const glow = holder.getObjectByName('houseInteractGlow') as THREE.Mesh | null;
+      if (glow) this.glowByPlot.set(plot.plotId, glow);
+    }
+    // A rebuild replaces every mesh, including the previously-active glow;
+    // re-apply proximity so the ring doesn't drop out for one frame.
+    this.applyProximity();
+  }
+
+  /** Toggle the one active plot's glow ring; called every frame (cheap: a
+   * visibility flip plus one opacity write, never a rebuild). */
+  updateProximity(plotId: string | null, elapsedSec: number): void {
+    this.nearPlotId = plotId;
+    this.applyProximity(elapsedSec);
+  }
+
+  private applyProximity(elapsedSec = 0): void {
+    for (const [plotId, glow] of this.glowByPlot) {
+      const near = plotId === this.nearPlotId;
+      glow.visible = near;
+      if (near) {
+        (glow.material as THREE.MeshBasicMaterial).opacity = 0.55 + 0.25 * Math.sin(elapsedSec * 3);
+      }
     }
   }
 

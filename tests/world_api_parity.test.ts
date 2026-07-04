@@ -139,8 +139,11 @@ export const IWORLD_MEMBERS = [
   { name: 'duelInfo', kind: 'data' },
   { name: 'arenaInfo', kind: 'data' },
   { name: 'marketInfo', kind: 'data' },
-  // --- Housing v0: the Hollow hub homestead read surface (data) ---
+  // --- Housing v0: the Hollow hub homestead read + claim/place/remove (PHAA-405) ---
   { name: 'housingInfo', kind: 'data' },
+  { name: 'housingClaim', kind: 'method' },
+  { name: 'housingPlace', kind: 'method' },
+  { name: 'housingRemove', kind: 'method' },
   // --- Greenpaw's hearth (PHAA-421): the vase hub room's smoke/mood state (data) ---
   { name: 'hollowHearth', kind: 'data' },
   // --- party / raid commands + marker read ---
@@ -329,9 +332,9 @@ beforeAll(() => {
 
 describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => {
   it('pins total / data / method counts', () => {
-    expect(IWORLD_MEMBERS.length).toBe(148);
+    expect(IWORLD_MEMBERS.length).toBe(151);
     expect(DATA_MEMBERS.length).toBe(38);
-    expect(METHOD_MEMBERS.length).toBe(110);
+    expect(METHOD_MEMBERS.length).toBe(113);
   });
 
   it('has no duplicate member names', () => {
@@ -341,7 +344,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
 
   // Sorted-name `toEqual` snapshots: a dropped, renamed, or kind-flipped member reddens
   // these deliberately, forcing a reviewed edit. NOT length-only.
-  it('the full sorted member set is exactly the pinned 148', () => {
+  it('the full sorted member set is exactly the pinned 151', () => {
     expect(IWORLD_MEMBERS.map((m) => m.name).sort()).toEqual([
       'abandonPet',
       'abandonQuest',
@@ -409,7 +412,10 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'guildTransfer',
       'healPet',
       'hollowHearth',
+      'housingClaim',
       'housingInfo',
+      'housingPlace',
+      'housingRemove',
       'interact',
       'inventory',
       'known',
@@ -537,7 +543,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
     ]);
   });
 
-  it('the sorted method-kind set is exactly the pinned 107', () => {
+  it('the sorted method-kind set is exactly the pinned 113', () => {
     expect(METHOD_MEMBERS.map((m) => m.name).sort()).toEqual([
       'abandonPet',
       'abandonQuest',
@@ -591,6 +597,9 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'guildPromote',
       'guildTransfer',
       'healPet',
+      'housingClaim',
+      'housingPlace',
+      'housingRemove',
       'interact',
       'leaderboard',
       'leaveDelve',
@@ -694,7 +703,7 @@ describe('membership, not equality: world extras do not fail the gate', () => {
 //       a MISSING name (if the array omits a key, Exclude<> is a non-never union and tsc
 //       fails) -- (1)+(2) together make each array EXACTLY its facet key-set;
 //   (3) the 21 arrays are pairwise DISJOINT (a member filed in two facets reddens);
-//   (4) their union, sorted, equals the pinned 148-name IWORLD_MEMBERS set (a member
+//   (4) their union, sorted, equals the pinned 151-name IWORLD_MEMBERS set (a member
 //       dropped from the split reddens).
 // This is the rigorous form, NOT the tautological `keyof IWorld === keyof (A & B & ...)`
 // (IWorld extends them, so that self-equality proves nothing): it asserts against the
@@ -912,7 +921,12 @@ const FACET_MARKET = [
 ] as const satisfies readonly (keyof IWorldMarket)[];
 type _ExhaustMarket = AssertNever<Exclude<keyof IWorldMarket, (typeof FACET_MARKET)[number]>>;
 
-const FACET_HOUSING = ['housingInfo'] as const satisfies readonly (keyof IWorldHousing)[];
+const FACET_HOUSING = [
+  'housingInfo',
+  'housingClaim',
+  'housingPlace',
+  'housingRemove',
+] as const satisfies readonly (keyof IWorldHousing)[];
 type _ExhaustHousing = AssertNever<Exclude<keyof IWorldHousing, (typeof FACET_HOUSING)[number]>>;
 
 const FACET_GREENPAW_HEARTH = [
@@ -1008,10 +1022,10 @@ describe('W1: aggregate IWorld member set equals the disjoint union of the 22 fa
     expect(overlaps, `members filed in more than one facet:\n${overlaps.join('\n')}`).toEqual([]);
   });
 
-  it('the union of the 22 facets equals the pinned 148-member IWORLD_MEMBERS set', () => {
+  it('the union of the 22 facets equals the pinned 151-member IWORLD_MEMBERS set', () => {
     const union = Object.values(FACET_MEMBER_ARRAYS).flatMap((arr) => [...arr]);
-    expect(union.length, 'union size before dedup (catches a duplicated member)').toBe(148);
-    expect(new Set(union).size, 'union size after dedup (catches a duplicated member)').toBe(148);
+    expect(union.length, 'union size before dedup (catches a duplicated member)').toBe(151);
+    expect(new Set(union).size, 'union size after dedup (catches a duplicated member)').toBe(151);
     const sortedUnion = [...union].sort();
     const pinned = IWORLD_MEMBERS.map((m) => m.name).sort();
     expect(sortedUnion).toEqual(pinned);

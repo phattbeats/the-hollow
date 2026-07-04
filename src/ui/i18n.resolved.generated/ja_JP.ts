@@ -3392,6 +3392,24 @@ export const ja_JP: EnTranslations = {
       "tooFar": "遠すぎます。"
     }
   },
+  "housingUi": {
+    "window": {
+      "title": "あなたの住居",
+      "close": "住居を閉じる",
+      "slotEmpty": "空き",
+      "clear": "クリア",
+      "clearAria": "スロット{slot}をクリア",
+      "placeAria": "スロット{slot}に{decor}を配置",
+      "hint": "各スロットに装飾を選んでください。"
+    },
+    "decor": {
+      "planter": "プランター",
+      "lantern": "ランタン",
+      "crate": "木箱",
+      "bench": "ベンチ",
+      "stool": "スツール"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "金",

@@ -168,4 +168,30 @@ describe('housing over the wire', () => {
     expect(plot.ownerName).toBe('Keep');
     expect(plot.mine).toBe(true);
   });
+
+  it('claims and decorates via the housingClaim/Place/Remove wire commands (PHAA-405 interact flow)', () => {
+    const server = new GameServer();
+    const fc = fakeWs();
+    const s = joinServer(server, fc, 3, 'Rue');
+    standOnPlot(server, s.pid, 4);
+
+    server.handleMessage(s, JSON.stringify({ t: 'cmd', cmd: 'housingClaim' }));
+    server.handleMessage(
+      s,
+      JSON.stringify({ t: 'cmd', cmd: 'housingPlace', slot: 0, kind: 'lantern' }),
+    );
+    broadcast(server);
+    const client = bareClient(s.pid);
+    (client as any).applySnapshot(lastSnap(fc.sent));
+    let plot = client.housingInfo!.plots.find((p) => p.plotId === HOLLOW_HOUSE_PLOTS[4].id)!;
+    expect(plot.ownerName).toBe('Rue');
+    expect(plot.mine).toBe(true);
+    expect(plot.objects).toEqual([{ slot: 0, kind: 'lantern' }]);
+
+    server.handleMessage(s, JSON.stringify({ t: 'cmd', cmd: 'housingRemove', slot: 0 }));
+    broadcast(server);
+    (client as any).applySnapshot(lastSnap(fc.sent));
+    plot = client.housingInfo!.plots.find((p) => p.plotId === HOLLOW_HOUSE_PLOTS[4].id)!;
+    expect(plot.objects).toEqual([]);
+  });
 });
