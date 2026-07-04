@@ -3410,9 +3410,9 @@ export const ru_RU: EnTranslations = {
     "claimedBanner": "Вы объявили этот участок своим домом.",
     "ownerBanner": "Это усадьба {name}.",
     "prompt": {
-      "claim": "Claim this plot",
-      "manage": "Manage your homestead",
-      "visit": "Visit {name}'s home"
+      "claim": "Заявить права на этот участок",
+      "manage": "Управлять усадьбой",
+      "visit": "Посетить дом {name}"
     },
     "window": {
       "title": "Ваша усадьба",
