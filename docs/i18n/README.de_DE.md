@@ -4,7 +4,7 @@
 
 **Begib dich auf Quests, schließe dich Gruppen an und raide eine handgebaute Welt, kostenlos in deinem Browser. Open Source, web3 und ab sofort online.**
 
-**Offizielle Website: https://worldofclaudecraft.com/**
+**Offizielle Website: https://thehollow.world/**
 
 [![CI](https://github.com/levy-street/world-of-claudecraft/actions/workflows/ci.yml/badge.svg)](https://github.com/levy-street/world-of-claudecraft/actions/workflows/ci.yml)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -20,7 +20,7 @@
 
 [English](../../README.md) · [Español](README.es.md) · [Español (España)](README.es_ES.md) · [Français](README.fr_FR.md) · [Français (Canada)](README.fr_CA.md) · [Italiano](README.it_IT.md) · **Deutsch** · [简体中文](README.zh_CN.md) · [繁體中文](README.zh_TW.md) · [한국어](README.ko_KR.md) · [日本語](README.ja_JP.md) · [Português (Brasil)](README.pt_BR.md) · [Русский](README.ru_RU.md) · [Nederlands](README.nl_NL.md) · [Polski](README.pl_PL.md) · [Bahasa Indonesia](README.id_ID.md) · [Türkçe](README.tr_TR.md) · [Svenska](README.sv_SE.md) · [Tiếng Việt](README.vi_VN.md) · [Dansk](README.da_DK.md)
 
-[Jetzt spielen](https://worldofclaudecraft.com/) · [Hoste deine eigene Welt](#host-your-own-world-one-command) · [Trainiere einen Agenten](#train-an-agent-headless-rl) · [Web3](#web3) · [Mitwirken](CONTRIBUTING.de_DE.md) · [Discord](https://discord.gg/GjhnUsBtw)
+[Jetzt spielen](https://thehollow.world/) · [Hoste deine eigene Welt](#host-your-own-world-one-command) · [Trainiere einen Agenten](#train-an-agent-headless-rl) · [Web3](#web3) · [Mitwirken](CONTRIBUTING.de_DE.md) · [Discord](https://discord.gg/GjhnUsBtw)
 
 ![Titelbildschirm von World of ClaudeCraft](../../docs/screenshots/title-screen.jpg)
 
@@ -28,7 +28,7 @@
 
 ## Was das ist
 
-World of ClaudeCraft ist ein komplettes MMO im Stil der klassischen Ära, das du sofort in deinem Browser spielen, mit einem einzigen Befehl selbst hosten und sogar KI-Agenten zum Spielen trainieren kannst. Es ist kostenlos, Open Source und live unter [worldofclaudecraft.com](https://worldofclaudecraft.com/).
+World of ClaudeCraft ist ein komplettes MMO im Stil der klassischen Ära, das du sofort in deinem Browser spielen, mit einem einzigen Befehl selbst hosten und sogar KI-Agenten zum Spielen trainieren kannst. Es ist kostenlos, Open Source und live unter [thehollow.world](https://thehollow.world/).
 
 Eine geteilte Welt läuft an drei Orten, alle aus demselben Spielkern:
 
@@ -164,7 +164,7 @@ Es ist rein kosmetisch und zum Spielen nicht erforderlich. Im Spiel wird nichts 
 3WjLscH2JsXLEFJZRA9z8ti8yRGxWGKbqymPd7UicRth
 ```
 
-Mehr zum Token unter [worldofclaudecraft.com](https://worldofclaudecraft.com/).
+Mehr zum Token unter [thehollow.world](https://thehollow.world/).
 
 ## Eine Tour durch die Welt
 

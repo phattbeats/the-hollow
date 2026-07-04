@@ -95,7 +95,7 @@ PHATT-RAID (image `eastbrook-game:phase0` rebuilt, container recreated with
   the matching `sameAs` entries from both JSON-LD blocks in `index.html` and
   the equivalent block `updateSeoMetadata` regenerates in `src/main.ts`. The
   YouTube, X, Instagram, TikTok, and Reddit `sameAs` entries are untouched
-  (out of scope for this pass; they carry the old worldofclaudecraft.com
+  (out of scope for this pass; they carry the old thehollow.world
   handles pending a real rebrand of those accounts).
 - **Discord in-game surfaces gated off, not deleted:** added
   `src/ui/discord_flags.ts` with a single `DISCORD_SURFACES_ENABLED = false`
@@ -139,7 +139,7 @@ PHATT-RAID (image `eastbrook-game:phase0` rebuilt, container recreated with
   `woc*` art files are kept on disk because `play.html` (the untouched
   upstream promo entry) still references them. Generator (SVG sources +
   render script) lives outside the repo in the studio workspace. The
-  `worldofclaudecraft.com` origin in canonical / OG URLs is unchanged:
+  `thehollow.world` origin in canonical / OG URLs is unchanged:
   domain migration is a separate pass once The Hollow has a public domain.
 
 Verification: `tsc --noEmit` clean; `tests/client_shell.test.ts`,
@@ -529,7 +529,7 @@ Follow-up pass per PHAA-406 review feedback. Scope: the homepage hero
 and the dead CSS/overlay cruft that copy left behind.
 
 - **Removed the `official-site-copy` hero block:** the `<section>` under the
-  main logo told players "worldofclaudecraft.com is the official free browser
+  main logo told players "thehollow.world is the official free browser
   MMO for the Claudemoon realm... follow verified community links from this
   site" (`seo.officialLabel`/`seo.officialBody`). Self-promotional SEO copy,
   not useful to a player already on the page; removed the markup, the two
@@ -546,7 +546,7 @@ and the dead CSS/overlay cruft that copy left behind.
   `instagram.com/worldofclaudecraft`, `tiktok.com/@worldofclaudecraft`, and
   `reddit.com/r/WorldofClaudecraft` as this Organization's own channels. Per
   this file's 2026-07-02 branding-pass entry above, these were already flagged
-  as "the old worldofclaudecraft.com handles pending a real rebrand," i.e.
+  as "the old thehollow.world handles pending a real rebrand," i.e.
   accounts this fork does not control being asserted as official under The
   Hollow's identity, the same failure mode `press.html`'s impersonator-warning
   copy exists to guard against. Removing rather than relabeling: there is no

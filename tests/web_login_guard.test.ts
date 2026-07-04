@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { isNativeAppRequest, isWebClientRequest, webLoginEnforced } from '../server/web_login_guard';
+import {
+  isNativeAppRequest,
+  isWebClientRequest,
+  webLoginEnforced,
+} from '../server/web_login_guard';
 
 const req = (headers: Record<string, string>) => ({ headers }) as any;
 
@@ -18,35 +22,61 @@ describe('web login guard (anti-bot)', () => {
   });
 
   it('accepts a same-origin browser POST (Origin host matches Host / X-Forwarded-Host)', () => {
-    expect(isWebClientRequest(req({ origin: 'https://play.example.com', host: 'play.example.com' }))).toBe(true);
     expect(
-      isWebClientRequest(req({ origin: 'https://play.example.com', 'x-forwarded-host': 'play.example.com' })),
+      isWebClientRequest(req({ origin: 'https://play.example.com', host: 'play.example.com' })),
+    ).toBe(true);
+    expect(
+      isWebClientRequest(
+        req({ origin: 'https://play.example.com', 'x-forwarded-host': 'play.example.com' }),
+      ),
     ).toBe(true);
   });
 
   it('accepts an explicit WEB_ORIGINS allow-list entry and localhost dev', () => {
     expect(
-      isWebClientRequest(req({ origin: 'https://play.example.com' }), { WEB_ORIGINS: 'https://play.example.com' } as any),
+      isWebClientRequest(req({ origin: 'https://play.example.com' }), {
+        WEB_ORIGINS: 'https://play.example.com',
+      } as any),
     ).toBe(true);
-    expect(isWebClientRequest(req({ origin: 'http://localhost:5173', host: '127.0.0.1:8787' }))).toBe(true);
+    expect(
+      isWebClientRequest(req({ origin: 'http://localhost:5173', host: '127.0.0.1:8787' })),
+    ).toBe(true);
   });
 
   it('accepts Capacitor native app origins', () => {
-    expect(isWebClientRequest(req({ origin: 'capacitor://localhost', host: 'worldofclaudecraft.com' }))).toBe(true);
-    expect(isWebClientRequest(req({ origin: 'http://localhost', host: 'worldofclaudecraft.com' }))).toBe(true);
-    expect(isWebClientRequest(req({ origin: 'https://localhost', host: 'worldofclaudecraft.com' }))).toBe(true);
+    expect(
+      isWebClientRequest(req({ origin: 'capacitor://localhost', host: 'thehollow.world' })),
+    ).toBe(true);
+    expect(isWebClientRequest(req({ origin: 'http://localhost', host: 'thehollow.world' }))).toBe(
+      true,
+    );
+    expect(isWebClientRequest(req({ origin: 'https://localhost', host: 'thehollow.world' }))).toBe(
+      true,
+    );
   });
 
   it('identifies native app origins for Turnstile bypass', () => {
-    expect(isNativeAppRequest(req({ origin: 'capacitor://localhost', host: 'worldofclaudecraft.com' }))).toBe(true);
-    expect(isNativeAppRequest(req({ origin: 'http://localhost', host: 'worldofclaudecraft.com' }))).toBe(true);
-    expect(isNativeAppRequest(req({ origin: 'https://localhost', host: 'worldofclaudecraft.com' }))).toBe(true);
-    expect(isNativeAppRequest(req({ origin: 'https://worldofclaudecraft.com', host: 'worldofclaudecraft.com' }))).toBe(false);
-    expect(isNativeAppRequest(req({ origin: 'https://evil.example.com', host: 'worldofclaudecraft.com' }))).toBe(false);
-    expect(isNativeAppRequest(req({ host: 'worldofclaudecraft.com' }))).toBe(false);
+    expect(
+      isNativeAppRequest(req({ origin: 'capacitor://localhost', host: 'thehollow.world' })),
+    ).toBe(true);
+    expect(isNativeAppRequest(req({ origin: 'http://localhost', host: 'thehollow.world' }))).toBe(
+      true,
+    );
+    expect(isNativeAppRequest(req({ origin: 'https://localhost', host: 'thehollow.world' }))).toBe(
+      true,
+    );
+    expect(
+      isNativeAppRequest(req({ origin: 'https://thehollow.world', host: 'thehollow.world' })),
+    ).toBe(false);
+    expect(
+      isNativeAppRequest(req({ origin: 'https://evil.example.com', host: 'thehollow.world' })),
+    ).toBe(false);
+    expect(isNativeAppRequest(req({ host: 'thehollow.world' }))).toBe(false);
   });
 
   it('rejects a foreign origin', () => {
-    expect(isWebClientRequest(req({ origin: 'https://evil.example.com', host: 'play.example.com' }))).toBe(false);
+    expect(
+      isWebClientRequest(req({ origin: 'https://evil.example.com', host: 'play.example.com' })),
+    ).toBe(false);
   });
 });

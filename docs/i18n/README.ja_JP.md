@@ -4,7 +4,7 @@
 
 **手作りの世界でクエストを進め、パーティを組み、レイドに挑もう。ブラウザで無料、オープンソース、web3対応、そして今すぐオンラインでプレイできます。**
 
-**公式サイト: https://worldofclaudecraft.com/**
+**公式サイト: https://thehollow.world/**
 
 [![CI](https://github.com/levy-street/world-of-claudecraft/actions/workflows/ci.yml/badge.svg)](https://github.com/levy-street/world-of-claudecraft/actions/workflows/ci.yml)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -20,7 +20,7 @@
 
 [English](../../README.md) · [Español](README.es.md) · [Español (España)](README.es_ES.md) · [Français](README.fr_FR.md) · [Français (Canada)](README.fr_CA.md) · [Italiano](README.it_IT.md) · [Deutsch](README.de_DE.md) · [简体中文](README.zh_CN.md) · [繁體中文](README.zh_TW.md) · [한국어](README.ko_KR.md) · **日本語** · [Português (Brasil)](README.pt_BR.md) · [Русский](README.ru_RU.md) · [Nederlands](README.nl_NL.md) · [Polski](README.pl_PL.md) · [Bahasa Indonesia](README.id_ID.md) · [Türkçe](README.tr_TR.md) · [Svenska](README.sv_SE.md) · [Tiếng Việt](README.vi_VN.md) · [Dansk](README.da_DK.md)
 
-[今すぐプレイ](https://worldofclaudecraft.com/) · [自分の世界をホストする](#host-your-own-world-one-command) · [エージェントを訓練する](#train-an-agent-headless-rl) · [Web3](#web3) · [コントリビュート](CONTRIBUTING.ja_JP.md) · [Discord](https://discord.gg/GjhnUsBtw)
+[今すぐプレイ](https://thehollow.world/) · [自分の世界をホストする](#host-your-own-world-one-command) · [エージェントを訓練する](#train-an-agent-headless-rl) · [Web3](#web3) · [コントリビュート](CONTRIBUTING.ja_JP.md) · [Discord](https://discord.gg/GjhnUsBtw)
 
 ![World of ClaudeCraft タイトル画面](../../docs/screenshots/title-screen.jpg)
 
@@ -28,7 +28,7 @@
 
 ## これは何か
 
-World of ClaudeCraft は、今すぐブラウザでプレイでき、コマンド一つで自分でホストでき、さらにはAIエージェントにプレイを学習させることもできる、完全なクラシック時代のMMOです。無料でオープンソース、[worldofclaudecraft.com](https://worldofclaudecraft.com/) で稼働中です。
+World of ClaudeCraft は、今すぐブラウザでプレイでき、コマンド一つで自分でホストでき、さらにはAIエージェントにプレイを学習させることもできる、完全なクラシック時代のMMOです。無料でオープンソース、[thehollow.world](https://thehollow.world/) で稼働中です。
 
 一つの共有された世界が、同じゲームコアから三つの場所で動きます。
 
@@ -164,7 +164,7 @@ World of ClaudeCraft は、Solana 上のコミュニティトークン **$WOC** 
 3WjLscH2JsXLEFJZRA9z8ti8yRGxWGKbqymPd7UicRth
 ```
 
-トークンの詳細は [worldofclaudecraft.com](https://worldofclaudecraft.com/) で。
+トークンの詳細は [thehollow.world](https://thehollow.world/) で。
 
 ## 世界をめぐる
 

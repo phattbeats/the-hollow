@@ -4,7 +4,7 @@
 
 **在浏览器里免费畅玩一个纯手工打造的世界：做任务、组队、打团。开源、web3，现在就能在线游玩。**
 
-**官方网站：https://worldofclaudecraft.com/**
+**官方网站：https://thehollow.world/**
 
 [![CI](https://github.com/levy-street/world-of-claudecraft/actions/workflows/ci.yml/badge.svg)](https://github.com/levy-street/world-of-claudecraft/actions/workflows/ci.yml)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -20,7 +20,7 @@
 
 [English](../../README.md) · [Español](README.es.md) · [Español (España)](README.es_ES.md) · [Français](README.fr_FR.md) · [Français (Canada)](README.fr_CA.md) · [Italiano](README.it_IT.md) · [Deutsch](README.de_DE.md) · **简体中文** · [繁體中文](README.zh_TW.md) · [한국어](README.ko_KR.md) · [日本語](README.ja_JP.md) · [Português (Brasil)](README.pt_BR.md) · [Русский](README.ru_RU.md) · [Nederlands](README.nl_NL.md) · [Polski](README.pl_PL.md) · [Bahasa Indonesia](README.id_ID.md) · [Türkçe](README.tr_TR.md) · [Svenska](README.sv_SE.md) · [Tiếng Việt](README.vi_VN.md) · [Dansk](README.da_DK.md)
 
-[立即游玩](https://worldofclaudecraft.com/) · [搭建你自己的世界](#host-your-own-world-one-command) · [训练智能体](#train-an-agent-headless-rl) · [Web3](#web3) · [参与贡献](CONTRIBUTING.zh_CN.md) · [Discord](https://discord.gg/GjhnUsBtw)
+[立即游玩](https://thehollow.world/) · [搭建你自己的世界](#host-your-own-world-one-command) · [训练智能体](#train-an-agent-headless-rl) · [Web3](#web3) · [参与贡献](CONTRIBUTING.zh_CN.md) · [Discord](https://discord.gg/GjhnUsBtw)
 
 ![World of ClaudeCraft 标题画面](../../docs/screenshots/title-screen.jpg)
 
@@ -28,7 +28,7 @@
 
 ## 这是什么
 
-World of ClaudeCraft 是一款完整的经典时代 MMO：你现在就能在浏览器里直接游玩，用一条命令自行搭建，甚至还能训练 AI 智能体来玩它。它免费、开源，并已在 [worldofclaudecraft.com](https://worldofclaudecraft.com/) 上线运行。
+World of ClaudeCraft 是一款完整的经典时代 MMO：你现在就能在浏览器里直接游玩，用一条命令自行搭建，甚至还能训练 AI 智能体来玩它。它免费、开源，并已在 [thehollow.world](https://thehollow.world/) 上线运行。
 
 同一个共享世界在三个地方运行，全部出自同一份游戏核心：
 
@@ -164,7 +164,7 @@ World of ClaudeCraft 以 **$WOC**（我们在 Solana 上的社区代币）为核
 3WjLscH2JsXLEFJZRA9z8ti8yRGxWGKbqymPd7UicRth
 ```
 
-关于代币的更多信息见 [worldofclaudecraft.com](https://worldofclaudecraft.com/)。
+关于代币的更多信息见 [thehollow.world](https://thehollow.world/)。
 
 ## 世界巡礼
 

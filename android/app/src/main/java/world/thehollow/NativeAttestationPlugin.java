@@ -1,4 +1,4 @@
-package com.worldofclaudecraft;
+package world.thehollow;
 
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;

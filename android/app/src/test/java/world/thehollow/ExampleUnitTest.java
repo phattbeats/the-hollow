@@ -1,4 +1,4 @@
-package com.worldofclaudecraft;
+package world.thehollow;
 
 import static org.junit.Assert.*;
 

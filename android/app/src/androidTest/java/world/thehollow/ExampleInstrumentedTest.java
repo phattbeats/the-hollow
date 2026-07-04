@@ -1,4 +1,4 @@
-package com.worldofclaudecraft;
+package world.thehollow;
 
 import static org.junit.Assert.*;
 
@@ -15,6 +15,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() throws Exception {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.worldofclaudecraft", appContext.getPackageName());
+        assertEquals("world.thehollow", appContext.getPackageName());
     }
 }

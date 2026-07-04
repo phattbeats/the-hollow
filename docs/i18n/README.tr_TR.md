@@ -4,7 +4,7 @@
 
 **Elle örülmüş bir dünyada görev yap, grup kur ve raid yap, üstelik tarayıcında ücretsiz. Açık kaynak, web3 ve şu anda çevrimiçi.**
 
-**Resmi web sitesi: https://worldofclaudecraft.com/**
+**Resmi web sitesi: https://thehollow.world/**
 
 [![CI](https://github.com/levy-street/world-of-claudecraft/actions/workflows/ci.yml/badge.svg)](https://github.com/levy-street/world-of-claudecraft/actions/workflows/ci.yml)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -20,7 +20,7 @@
 
 [English](../../README.md) · [Español](README.es.md) · [Español (España)](README.es_ES.md) · [Français](README.fr_FR.md) · [Français (Canada)](README.fr_CA.md) · [Italiano](README.it_IT.md) · [Deutsch](README.de_DE.md) · [简体中文](README.zh_CN.md) · [繁體中文](README.zh_TW.md) · [한국어](README.ko_KR.md) · [日本語](README.ja_JP.md) · [Português (Brasil)](README.pt_BR.md) · [Русский](README.ru_RU.md) · [Nederlands](README.nl_NL.md) · [Polski](README.pl_PL.md) · [Bahasa Indonesia](README.id_ID.md) · **Türkçe** · [Svenska](README.sv_SE.md) · [Tiếng Việt](README.vi_VN.md) · [Dansk](README.da_DK.md)
 
-[Hemen oyna](https://worldofclaudecraft.com/) · [Kendi dünyanı barındır](#host-your-own-world-one-command) · [Bir ajan eğit](#train-an-agent-headless-rl) · [Web3](#web3) · [Katkıda bulun](CONTRIBUTING.tr_TR.md) · [Discord](https://discord.gg/GjhnUsBtw)
+[Hemen oyna](https://thehollow.world/) · [Kendi dünyanı barındır](#host-your-own-world-one-command) · [Bir ajan eğit](#train-an-agent-headless-rl) · [Web3](#web3) · [Katkıda bulun](CONTRIBUTING.tr_TR.md) · [Discord](https://discord.gg/GjhnUsBtw)
 
 ![World of ClaudeCraft başlık ekranı](../../docs/screenshots/title-screen.jpg)
 
@@ -28,7 +28,7 @@
 
 ## Bu nedir
 
-World of ClaudeCraft, şu anda tarayıcında oynayabileceğin, tek bir komutla kendin barındırabileceğin ve hatta oynaması için yapay zeka ajanları eğitebileceğin eksiksiz, klasik dönem tarzı bir MMO oyunudur. Ücretsiz, açık kaynaklı ve [worldofclaudecraft.com](https://worldofclaudecraft.com/) adresinde canlı.
+World of ClaudeCraft, şu anda tarayıcında oynayabileceğin, tek bir komutla kendin barındırabileceğin ve hatta oynaması için yapay zeka ajanları eğitebileceğin eksiksiz, klasik dönem tarzı bir MMO oyunudur. Ücretsiz, açık kaynaklı ve [thehollow.world](https://thehollow.world/) adresinde canlı.
 
 Tek bir paylaşılan dünya, hepsi aynı oyun çekirdeğinden gelen üç farklı yerde çalışır:
 
@@ -164,7 +164,7 @@ Yalnızca kozmetiktir ve oynamak için gerekli değildir. Oyun içinde hiçbir �
 3WjLscH2JsXLEFJZRA9z8ti8yRGxWGKbqymPd7UicRth
 ```
 
-Jeton hakkında daha fazla bilgi: [worldofclaudecraft.com](https://worldofclaudecraft.com/).
+Jeton hakkında daha fazla bilgi: [thehollow.world](https://thehollow.world/).
 
 ## Dünyada bir tur
 

@@ -4,7 +4,7 @@
 
 **在瀏覽器中免費探索一個純手工打造的世界：接任務、組隊、打團。開放原始碼、web3，現在就能上線遊玩。**
 
-**官方網站：https://worldofclaudecraft.com/**
+**官方網站：https://thehollow.world/**
 
 [![CI](https://github.com/levy-street/world-of-claudecraft/actions/workflows/ci.yml/badge.svg)](https://github.com/levy-street/world-of-claudecraft/actions/workflows/ci.yml)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -20,7 +20,7 @@
 
 [English](../../README.md) · [Español](README.es.md) · [Español (España)](README.es_ES.md) · [Français](README.fr_FR.md) · [Français (Canada)](README.fr_CA.md) · [Italiano](README.it_IT.md) · [Deutsch](README.de_DE.md) · [简体中文](README.zh_CN.md) · **繁體中文** · [한국어](README.ko_KR.md) · [日本語](README.ja_JP.md) · [Português (Brasil)](README.pt_BR.md) · [Русский](README.ru_RU.md) · [Nederlands](README.nl_NL.md) · [Polski](README.pl_PL.md) · [Bahasa Indonesia](README.id_ID.md) · [Türkçe](README.tr_TR.md) · [Svenska](README.sv_SE.md) · [Tiếng Việt](README.vi_VN.md) · [Dansk](README.da_DK.md)
 
-[立即遊玩](https://worldofclaudecraft.com/) · [架設你自己的世界](#host-your-own-world-one-command) · [訓練一個代理](#train-an-agent-headless-rl) · [Web3](#web3) · [參與貢獻](CONTRIBUTING.zh_TW.md) · [Discord](https://discord.gg/GjhnUsBtw)
+[立即遊玩](https://thehollow.world/) · [架設你自己的世界](#host-your-own-world-one-command) · [訓練一個代理](#train-an-agent-headless-rl) · [Web3](#web3) · [參與貢獻](CONTRIBUTING.zh_TW.md) · [Discord](https://discord.gg/GjhnUsBtw)
 
 ![World of ClaudeCraft 標題畫面](../../docs/screenshots/title-screen.jpg)
 
@@ -28,7 +28,7 @@
 
 ## 這是什麼
 
-World of ClaudeCraft 是一款完整的經典時代 MMO，你現在就能直接在瀏覽器裡遊玩，用一行指令自行架設，甚至還能訓練 AI 代理來遊玩。它免費、開放原始碼，並在 [worldofclaudecraft.com](https://worldofclaudecraft.com/) 上線運作中。
+World of ClaudeCraft 是一款完整的經典時代 MMO，你現在就能直接在瀏覽器裡遊玩，用一行指令自行架設，甚至還能訓練 AI 代理來遊玩。它免費、開放原始碼，並在 [thehollow.world](https://thehollow.world/) 上線運作中。
 
 同一個共用世界在三個地方運行，全都來自同一套遊戲核心：
 
@@ -164,7 +164,7 @@ World of ClaudeCraft 圍繞 **$WOC**（我們在 Solana 上的社群代幣）打
 3WjLscH2JsXLEFJZRA9z8ti8yRGxWGKbqymPd7UicRth
 ```
 
-關於代幣的更多資訊請見 [worldofclaudecraft.com](https://worldofclaudecraft.com/)。
+關於代幣的更多資訊請見 [thehollow.world](https://thehollow.world/)。
 
 ## 世界巡禮
 

@@ -204,7 +204,7 @@ function isNativeRuntime(): boolean {
   return cap?.isNativePlatform?.() === true;
 }
 
-const SITE_URL = 'https://worldofclaudecraft.com/';
+const SITE_URL = 'https://thehollow.world/';
 
 const RESOURCE_KEYS = {
   mana: 'classDetails.resources.mana',
@@ -4073,24 +4073,24 @@ function updateSeoMetadata(lang: SupportedLanguage): void {
         '@graph': [
           {
             '@type': 'WebSite',
-            '@id': 'https://worldofclaudecraft.com/#website',
+            '@id': 'https://thehollow.world/#website',
             name: 'The Hollow',
             alternateName: 'The Hollow',
             url: canonicalHref,
             inLanguage: languageTag(lang),
             description: t('seo.description'),
-            publisher: { '@id': 'https://worldofclaudecraft.com/#organization' },
+            publisher: { '@id': 'https://thehollow.world/#organization' },
           },
           {
             '@type': 'Organization',
-            '@id': 'https://worldofclaudecraft.com/#organization',
+            '@id': 'https://thehollow.world/#organization',
             name: 'The Hollow',
-            url: 'https://worldofclaudecraft.com/',
-            logo: 'https://worldofclaudecraft.com/the-hollow-square.webp',
+            url: 'https://thehollow.world/',
+            logo: 'https://thehollow.world/the-hollow-square.webp',
           },
           {
             '@type': 'VideoGame',
-            '@id': 'https://worldofclaudecraft.com/#game',
+            '@id': 'https://thehollow.world/#game',
             name: 'The Hollow',
             alternateName: 'The Hollow',
             genre: t('seo.genre'),
@@ -4098,10 +4098,10 @@ function updateSeoMetadata(lang: SupportedLanguage): void {
             applicationCategory: t('seo.applicationCategory'),
             operatingSystem: t('seo.operatingSystem'),
             url: canonicalHref,
-            image: 'https://worldofclaudecraft.com/the-hollow-square.webp',
+            image: 'https://thehollow.world/the-hollow-square.webp',
             description: t('seo.description'),
             inLanguage: languageTag(lang),
-            publisher: { '@id': 'https://worldofclaudecraft.com/#organization' },
+            publisher: { '@id': 'https://thehollow.world/#organization' },
           },
         ],
       },

@@ -3,7 +3,7 @@
 > **Levy Street production** is deployed via Ansible, not this document:
 > the `eastbrook_game` role in the internal `ansible-scripts` repo runs
 > the stack on `idyllic-games-prod` behind nginx + certbot at
-> https://worldofclaudecraft.com. Re-running
+> https://thehollow.world. Re-running
 > `ansible-playbook playbooks/setup_server.yml -e target_host=idyllic-games-prod`
 > pulls and redeploys. The guide below is the generic, standalone path.
 
@@ -172,7 +172,7 @@ For off-box safety, sync the directory to S3 occasionally:
 The admin dashboard (account/character/session metrics, live players,
 server health) is served by the same game server process:
 
-- **Production**: point `admin.worldofclaudecraft.com` at the instance
+- **Production**: point `admin.thehollow.world` at the instance
   (A record) and add a server block for it in the nginx config in the
   internal `ansible-scripts` repo, proxying to the same game port as the
   main site. The Node server serves the dashboard for any hostname
