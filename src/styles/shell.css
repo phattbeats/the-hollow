@@ -97,7 +97,7 @@
   }
 
   #title-logo {
-    width: min(216px, 50vw);
+    width: min(420px, 68vw);
     height: auto;
     filter: drop-shadow(0 0 20px rgba(199, 148, 26, 0.25)) drop-shadow(2px 2px 4px #000);
     animation: logo-pulse 2.5s ease-in-out infinite alternate;
@@ -696,7 +696,7 @@
     gap: 12px;
     flex-wrap: wrap;
   }
-  /* Landing accessibility toggle: cinematic trailer vs static high-contrast
+  /* Landing accessibility toggle: animated spore field vs static high-contrast
      backdrop. Sits beside the language picker (the page's preferences area).
      ≥40px tall tap target, aria-pressed reflects state. */
   .landing-contrast-toggle {
@@ -1049,33 +1049,6 @@
       inset 0 1px 0 rgba(255, 255, 255, 0.05);
     -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
-  }
-
-  .official-site-copy {
-    width: min(620px, calc(100vw - 32px));
-    margin: 0 auto 18px;
-    text-align: center;
-    color: var(--color-text-light);
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.82);
-  }
-
-  .official-site-copy__label {
-    display: block;
-    margin-bottom: 6px;
-    font-family: var(--font-heading);
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 1.2px;
-    text-transform: uppercase;
-    color: var(--color-primary);
-  }
-
-  .official-site-copy__body {
-    max-width: 56ch;
-    margin: 0 auto;
-    font-size: 13px;
-    line-height: 1.35;
-    color: var(--color-text-muted);
   }
 
   /* Realm stats, live counts shown in the realm dropdown (trigger sub-line +
@@ -2816,163 +2789,32 @@
     background: #040408;
   }
 
-  .portal-ring {
-    position: absolute;
-    width: 140vmax;
-    height: 140vmax;
-    left: 50%;
-    top: 30%;
-    transform: translate(-50%, -50%) rotate(0deg);
-    background: conic-gradient(
-      from 0deg,
-      transparent 0%,
-      rgba(255, 209, 0, 0.04) 20%,
-      rgba(255, 209, 0, 0.08) 40%,
-      transparent 60%,
-      rgba(42, 58, 85, 0.1) 80%,
-      transparent 100%
-    );
-    filter: blur(80px);
-    animation: rotate-portal 45s linear infinite;
-    opacity: 0.5;
-  }
-
-  .portal-ring-reverse {
-    position: absolute;
-    width: 160vmax;
-    height: 160vmax;
-    left: 50%;
-    top: 30%;
-    transform: translate(-50%, -50%) rotate(0deg);
-    background: conic-gradient(
-      from 180deg,
-      transparent 0%,
-      rgba(42, 58, 85, 0.06) 25%,
-      rgba(255, 209, 0, 0.03) 50%,
-      transparent 75%,
-      rgba(255, 209, 0, 0.05) 100%
-    );
-    filter: blur(100px);
-    animation: rotate-portal-reverse 60s linear infinite;
-    opacity: 0.38;
-  }
-
-  .nebula-overlay {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(
-      circle at 50% 30%,
-      rgba(42, 58, 85, 0.4) 0%,
-      rgba(10, 13, 20, 0.95) 70%
-    );
-    /* soft-light (not color-dodge) so the radial vignette darkens edges for legibility
-       without blowing the trailer's highlights into a glare. */
-    mix-blend-mode: soft-light;
-    animation: breathe-nebula 12s ease-in-out infinite alternate;
-  }
-
-  /* ---------- looping cinematic backdrop ---------- */
-  .bg-trailer {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center 42%;
-    /* held dark + slightly desaturated so the gold UI and white type stay dominant;
-       JS fades opacity in once the first frame is actually playing. */
-    opacity: 0;
-    filter: saturate(1.08) contrast(1.02) brightness(1);
-    transform: scale(1.04); /* hide cover-fit edge crawl + give a faint Ken-Burns drift */
-    transition: opacity 1.1s ease;
-    will-change: opacity;
-    pointer-events: none;
-  }
-  /* The poster (the <video>'s poster frame) is held hidden by .bg-trailer's
-     opacity:0 above; it is revealed ONLY when JS adds trailer-ready (the video
-     started, or a play/decode failure fallback) or backdrop-static (the static
-     poster path). That is what keeps the still key-art from flashing before the
-     trailer plays. */
-  /* The backdrop only shows on the Play page; switchMainView toggles this when
-     navigating to High Scores / Wiki / News / Download. */
-  #start-screen-backdrop.trailer-off .bg-trailer {
-    display: none;
-  }
-
-  /* trailer-ready: reveal the layer (also used for the static poster on
-     reduced-motion / save-data). trailer-playing: add drift only when truly playing. */
-  #start-screen-backdrop.trailer-ready .bg-trailer {
-    opacity: 0.85;
-  }
-  #start-screen-backdrop.trailer-playing .bg-trailer {
-    animation: trailer-drift 38s ease-in-out infinite alternate;
-  }
-  body.native-app.mobile-touch[data-start-panel="login-panel"] .portal-ring,
-  body.native-app.mobile-touch[data-start-panel="login-panel"] .portal-ring-reverse,
-  body.native-app.mobile-touch[data-start-panel="login-panel"] .nebula-overlay,
-  body.native-app.mobile-touch[data-start-panel="login-panel"] .bg-trailer {
-    animation: none !important;
-    filter: none !important;
-    transform: none !important;
-  }
-  .bg-trailer-scrim {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    /* three stacked layers: top + bottom darkening for header/CTA legibility,
-       an edge vignette, and a brand-tinted wash to keep the palette cohesive.
-       Bumped from the original (0.46/0.58 top/bottom) so white/gold type clears
-       4.5:1 contrast over the brightest trailer frames, an accessibility fix. */
-    background:
-      linear-gradient(
-        180deg,
-        rgba(4, 4, 8, 0.62) 0%,
-        rgba(4, 4, 8, 0.18) 30%,
-        rgba(4, 4, 8, 0.2) 60%,
-        rgba(4, 4, 8, 0.7) 100%
-      ),
-      radial-gradient(130% 100% at 50% 42%, transparent 46%, rgba(4, 4, 8, 0.46) 100%),
-      linear-gradient(180deg, rgba(20, 17, 8, 0.08), rgba(8, 10, 18, 0.12));
-  }
-  /* High-contrast / static backdrop mode (landingHighContrast setting, or forced
-     for phones / Save-Data / reduced-motion). The trailer is hidden by JS; the
-     poster is dimmed hard and the scrim goes near-solid so type is unmissable. */
-  #start-screen-backdrop.backdrop-static .bg-home {
-    opacity: 0.4;
-  }
-  #start-screen-backdrop.backdrop-static .bg-trailer-scrim {
-    background:
-      linear-gradient(
-        180deg,
-        rgba(4, 4, 8, 0.8) 0%,
-        rgba(4, 4, 8, 0.62) 50%,
-        rgba(4, 4, 8, 0.86) 100%
-      ),
-      radial-gradient(130% 100% at 50% 42%, rgba(4, 4, 8, 0.3) 30%, rgba(4, 4, 8, 0.62) 100%);
-  }
-  @keyframes trailer-drift {
-    0% {
-      transform: scale(1.04) translate3d(0, 0, 0);
-    }
-    100% {
-      transform: scale(1.12) translate3d(-1.4%, -1.4%, 0);
-    }
-  }
-
-  .embers-container {
+  /* ---------- Ambient login backdrop: bioluminescent spore field ---------- */
+  /* The sole animated backdrop over the near-black base (src/game/spore_drift.ts
+     mounts the motes; main.ts skips the mount on phones). It replaced the old
+     licensed-provenance-unclear trailer video plus the portal/nebula/ember
+     assembly, per PHAA-406, for a minimal "let the page breathe" login. Hidden
+     on the static path (.backdrop-static) and under reduced-motion below, so the
+     base stays a clean, legible dark wash. */
+  .spore-drift-container {
     position: absolute;
     inset: 0;
     pointer-events: none;
     overflow: hidden;
   }
-
-  .ember {
+  .spore {
     position: absolute;
-    background: radial-gradient(circle, rgba(255, 170, 0, 0.8) 0%, rgba(255, 85, 0, 0) 70%);
+    background: radial-gradient(circle, rgba(180, 255, 200, 0.85) 0%, rgba(120, 220, 160, 0) 70%);
     border-radius: 50%;
-    filter: drop-shadow(0 0 4px rgba(255, 130, 0, 0.6));
-    animation: float-up linear infinite;
+    filter: drop-shadow(0 0 5px rgba(160, 255, 190, 0.55));
+    animation: spore-hover ease-in-out infinite;
     opacity: 0;
+  }
+  /* Static backdrop path (high-contrast setting, or forced for phones / Save-Data
+     / reduced-motion): drop the spore field so the base stays a clean dark wash
+     with maximum type legibility. */
+  #start-screen-backdrop.backdrop-static .spore-drift-container {
+    display: none;
   }
 
   /* Focus Indicator Styling (A11y compliance) */
@@ -2985,48 +2827,21 @@
 
   /* Support prefers-reduced-motion for motion sensitivity / visionOS prevention */
   @media (prefers-reduced-motion: reduce) {
-    .portal-ring,
-    .portal-ring-reverse,
-    .nebula-overlay,
-    .ember,
     #title-logo,
     .class-card,
-    .bg-trailer,
     .btn-play-sheen,
     .server-select-menu:not([hidden]),
-    .btn-play {
+    .btn-play,
+    .spore {
       animation: none !important;
       transition: none !important;
       transform: none !important;
     }
-    .portal-ring {
-      opacity: 0.25 !important;
-      transform: translate(-50%, -50%) rotate(15deg) !important;
-    }
-    .portal-ring-reverse,
-    .embers-container {
+    .spore-drift-container {
       display: none !important;
     }
     #title-logo {
       filter: drop-shadow(0 0 20px rgba(255, 209, 0, 0.35)) drop-shadow(2px 2px 5px #000) !important;
-    }
-  }
-
-  @keyframes rotate-portal {
-    0% {
-      transform: translate(-50%, -50%) rotate(0deg);
-    }
-    100% {
-      transform: translate(-50%, -50%) rotate(360deg);
-    }
-  }
-
-  @keyframes rotate-portal-reverse {
-    0% {
-      transform: translate(-50%, -50%) rotate(360deg);
-    }
-    100% {
-      transform: translate(-50%, -50%) rotate(0deg);
     }
   }
 
@@ -3039,30 +2854,24 @@
     }
   }
 
-  @keyframes breathe-nebula {
+  /* Gentle hover-in-place rather than a full-viewport rise: the spore stays
+     near its spawn point (top/left) the whole time it is visible. */
+  @keyframes spore-hover {
     0% {
-      opacity: 0.8;
-      filter: brightness(1);
-    }
-    100% {
-      opacity: 0.95;
-      filter: brightness(1.25);
-    }
-  }
-
-  @keyframes float-up {
-    0% {
-      transform: translateY(110vh) translateX(0) scale(var(--ember-scale, 1));
+      transform: translateY(0) translateX(0);
       opacity: 0;
     }
-    10% {
-      opacity: var(--ember-opacity, 0.75);
+    15% {
+      opacity: var(--spore-opacity, 0.6);
     }
-    90% {
-      opacity: var(--ember-opacity, 0.75);
+    50% {
+      transform: translateY(calc(-1 * var(--spore-rise, 40px))) translateX(var(--spore-drift, 20px));
+    }
+    85% {
+      opacity: var(--spore-opacity, 0.6);
     }
     100% {
-      transform: translateY(-10vh) translateX(var(--drift, 50px)) scale(var(--ember-scale, 1));
+      transform: translateY(calc(-2 * var(--spore-rise, 40px))) translateX(0);
       opacity: 0;
     }
   }
@@ -3860,7 +3669,7 @@
 
     /* Logo scales up with the viewport on desktop, bigger screen, bigger wordmark. */
     #title-logo {
-      width: clamp(204px, 12vw, 264px) !important;
+      width: clamp(440px, 32vw, 620px) !important;
     }
   }
 

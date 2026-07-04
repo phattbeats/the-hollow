@@ -444,16 +444,10 @@
   <main id="start-screen">
     <!-- Keep the backdrop here at the top level so it spans the entire screen behind content -->
     <div id="start-screen-backdrop" aria-hidden="true">
-      <!-- Looping cinematic background video; poster = static key-art for instant paint + fallback. -->
-      <!-- The poster (static key-art) paints instantly. The 5.7 MB looping trailer
-           is NOT eagerly fetched: no autoplay/preload/source here — main.ts attaches
-           the source and plays only on capable devices (see applyLandingBackdrop).
-           Phones / Save-Data / reduced-motion / high-contrast keep the poster only. -->
-      <video id="bg-home" class="bg-trailer bg-home" loop muted playsinline preload="none" poster="/home-bg.png" aria-hidden="true" data-trailer-src="/home-bg.mp4"></video>
-      <div class="bg-trailer-scrim"></div>
-      <div class="portal-ring"></div>
-      <div class="portal-ring-reverse"></div>
-      <div class="nebula-overlay"></div>
+      <!-- Minimalist ambient backdrop: a sparse field of drifting bioluminescent
+           spores mounted by src/game/spore_drift.ts over the near-black base. No
+           video, no attribution question. Hidden on reduced-motion / high-contrast /
+           phone / Save-Data (the base stays a clean dark wash). -->
     </div>
 
     <header class="homepage-header">
@@ -511,11 +505,6 @@
 
         <!-- Main Logo -->
         <img class="main-logo" id="title-logo" src="/the-hollow-logo.png" data-i18n-alt="serverUnavailable.logoAlt" alt="The Hollow" />
-
-        <section class="official-site-copy" aria-labelledby="official-site-copy-heading">
-          <p class="official-site-copy__label" id="official-site-copy-heading" data-i18n="seo.officialLabel">Official The Hollow website</p>
-          <p class="official-site-copy__body" data-i18n="seo.officialBody">worldofclaudecraft.com is the official free browser MMO for the Claudemoon realm. Play online with a persistent character, explore solo offline, read the wiki, and follow verified community links from this site.</p>
-        </section>
 
         <div id="mode-select">
           <div class="play-console">

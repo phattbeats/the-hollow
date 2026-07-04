@@ -50,6 +50,7 @@ import {
   Settings,
 } from './game/settings';
 import { sfx } from './game/sfx';
+import { mountSporeDrift } from './game/spore_drift';
 import { resolveUiEffectsProfile } from './game/ui_effects_profile';
 import { voice } from './game/voice';
 import {
@@ -831,10 +832,6 @@ async function startGame(
   // The loading screen covers the gap - not a silent black screen.
   enterLoadingState(t('loading.world'));
   document.body.classList.add('game-active');
-  // We've left the start screen for the world, so pause + release the landing
-  // trailer: it's hidden now, and a decoding background video just wastes CPU/GPU
-  // and battery during play.
-  stopLandingTrailer();
   resetMobileGameplayOverlays();
   syncPhoneTouchClass();
   syncAppViewport();
@@ -2695,11 +2692,6 @@ function switchMainView(targetId: string): void {
         el.setAttribute('aria-hidden', isTarget ? 'false' : 'true');
       }
     });
-
-    // The key-art backdrop is for the Play page only; hide it on other views.
-    const onPlayPage = targetId === '#hero-view';
-    const backdrop = document.getElementById('start-screen-backdrop');
-    if (backdrop) backdrop.classList.toggle('trailer-off', !onPlayPage);
 
     if (targetId === '#hero-view') {
       const activePlayPanel = ['#charselect-panel', '#charcreate-panel', '#offline-select'].find(
@@ -4841,36 +4833,21 @@ function clearDiscordChoice(): void {
     /* storage disabled */
   }
 }
-// ---- Landing-page cinematic backdrop ------------------------------------
-// Decides per-visit whether the start screen shows the looping trailer video or
-// a static, dimmed, high-contrast poster — and crucially NEVER fetches the
-// 5.7 MB mp4 in the static case (the <video> ships with no source/autoplay; we
-// attach the source only when we choose the video path). Called at boot, when the
-// footer toggle flips, and when the in-game mirror setting changes.
-// Pause + tear down the start-screen trailer video (on enter-world). Releasing
-// the source frees the decoded buffer so it isn't still churning behind the HUD.
-function stopLandingTrailer(): void {
-  const backdrop = document.getElementById('start-screen-backdrop');
-  const video = document.getElementById('bg-home') as HTMLVideoElement | null;
-  backdrop?.classList.remove('trailer-ready', 'trailer-playing');
-  if (!video) return;
-  video.pause();
-  if (video.src) {
-    video.removeAttribute('src');
-    video.load();
-  }
-}
-
-let landingTrailerWired = false;
+// ---- Landing-page ambient backdrop --------------------------------------
+// The start screen shows a sparse field of drifting bioluminescent spores over
+// a near-black base (mounted once in wireStartScreens via mountSporeDrift). This
+// only decides whether the motion runs: on high-contrast / reduced-motion /
+// phone / Save-Data it toggles backdrop-static, which CSS uses to hide the spore
+// field so the base stays a clean, legible dark wash. Called at boot, when the
+// footer high-contrast toggle flips, and when the in-game mirror setting changes.
 function applyLandingBackdrop(highContrast: boolean): void {
   const backdrop = document.getElementById('start-screen-backdrop');
-  const video = document.getElementById('bg-home') as HTMLVideoElement | null;
   if (!backdrop) return;
 
   const saveData = navigatorSaveData();
   // Reduced motion: honour BOTH the OS-level prefers-reduced-motion query and
-  // the player's persisted in-app Reduce Motion toggle, so the drifting trailer
-  // stays off for anyone who asked for less motion in either place.
+  // the player's persisted in-app Reduce Motion toggle, so the drifting spores
+  // stay off for anyone who asked for less motion in either place.
   const reducedMotion =
     (typeof window.matchMedia === 'function' &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches) ||
@@ -4883,43 +4860,6 @@ function applyLandingBackdrop(highContrast: boolean): void {
   });
 
   backdrop.classList.toggle('backdrop-static', useStatic);
-
-  if (!video) return;
-  if (useStatic) {
-    // Keep the poster only; tear down any playing trailer and release the buffer.
-    backdrop.classList.remove('trailer-ready', 'trailer-playing');
-    if (video.src) {
-      video.pause();
-      video.removeAttribute('src');
-      video.load(); // drop the decoded video so the poster shows + memory frees
-    }
-    return;
-  }
-
-  // Video path: attach the source lazily and play. The trailer is held hidden
-  // (opacity 0) until it is genuinely playing, so the static poster never flashes
-  // before the video. trailer-ready reveals the layer; trailer-playing adds the
-  // drift, and only on real playback.
-  const src = video.dataset.trailerSrc;
-  if (src && !video.src) {
-    video.src = src;
-    if (!landingTrailerWired) {
-      landingTrailerWired = true;
-      video.addEventListener('playing', () => {
-        backdrop.classList.add('trailer-ready', 'trailer-playing');
-      });
-      // Failure fallback: a trailer that cannot decode/load still reveals the
-      // static poster (trailer-ready, no drift) instead of leaving a black void.
-      video.addEventListener('error', () => {
-        backdrop.classList.add('trailer-ready');
-      });
-    }
-    video.load();
-  }
-  video.play().catch(() => {
-    // autoplay blocked: reveal the static poster (no drift), not a black backdrop.
-    backdrop.classList.add('trailer-ready');
-  });
 }
 
 function wireStartScreens(): void {
@@ -6035,41 +5975,17 @@ function wireStartScreens(): void {
     });
   }
 
-  // Dynamically initialize background embers
-  const initBackgroundEmbers = () => {
-    if (isPhoneTouchDevice()) return;
-    const backdrop = $('#start-screen-backdrop');
-    if (!backdrop) return;
-
-    const container = document.createElement('div');
-    container.className = 'embers-container';
-    backdrop.appendChild(container);
-
-    for (let i = 0; i < 24; i++) {
-      const ember = document.createElement('div');
-      ember.className = 'ember';
-      ember.style.left = `${Math.random() * 100}%`;
-      ember.style.bottom = `${Math.random() * 20 - 10}%`;
-
-      const size = Math.random() * 4 + 2;
-      ember.style.width = `${size}px`;
-      ember.style.height = `${size}px`;
-
-      ember.style.setProperty('--drift', `${Math.random() * 120 - 60}px`);
-      ember.style.setProperty('--ember-scale', `${Math.random() * 0.8 + 0.6}`);
-      ember.style.setProperty('--ember-opacity', `${Math.random() * 0.4 + 0.5}`);
-
-      ember.style.animationDelay = `${Math.random() * 10}s`;
-      ember.style.animationDuration = `${Math.random() * 8 + 6}s`;
-
-      container.appendChild(ember);
-    }
-  };
-
-  initBackgroundEmbers();
+  // Ambient login backdrop: a sparse field of drifting bioluminescent spores
+  // (src/game/spore_drift.ts) over the near-black base. Skipped on phones for the
+  // same perf reason the old ember field was; reduced-motion / high-contrast hide
+  // it via CSS (.backdrop-static / prefers-reduced-motion in shell.css).
+  if (!isPhoneTouchDevice()) {
+    const sporeBackdrop = $('#start-screen-backdrop');
+    if (sporeBackdrop) mountSporeDrift(sporeBackdrop);
+  }
 
   // Landing backdrop: read the persisted high-contrast preference and decide
-  // trailer-vs-static (also forced static on phones / Save-Data / reduced-motion).
+  // spore-field-vs-static (also forced static on phones / Save-Data / reduced-motion).
   // Uses a throwaway Settings read so it works before the game's settings object
   // exists; the footer toggle persists changes through the same store.
   const landingSettings = new Settings();
@@ -6083,8 +5999,8 @@ function wireStartScreens(): void {
   applyLandingBackdrop(landingSettings.get('landingHighContrast'));
 
   // Stamp the engine/device + CSS-effects classes on the landing screen too, so
-  // the decorative #start-screen-backdrop work (portal rings' heavy blur, nebula,
-  // embers, trailer) is toned down from the first paint on costly engines (mobile
+  // the decorative #start-screen-backdrop work (the spore field) is toned down
+  // from the first paint on costly engines (mobile
   // WebKit above all). The renderer (and its GPU tier) does not exist yet, so we
   // pass the conservative 'high' render tier here: only known-bad engine/device
   // quirks tone the first paint down. startGame() re-stamps with the real GFX.tier

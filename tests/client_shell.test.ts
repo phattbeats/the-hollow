@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, statSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
@@ -614,7 +614,7 @@ describe('client HTML shell', () => {
 
   it('hides the download button and performance tip in native app builds', () => {
     expect(hudCss).toContain('body.native-app #nav-btn-download,');
-    expect(hudCss).toContain('body.native-app #performance-tip,');
+    expect(hudCss).toContain('body.native-app #performance-tip {');
   });
 
   it('skips the web mobile preflight in native builds and shows an in-game rotate prompt', () => {
@@ -922,9 +922,6 @@ describe('client HTML shell', () => {
       'body.native-app.mobile-touch .auth-panel-premium {\n    -webkit-backdrop-filter: none;\n    backdrop-filter: none;',
     );
     expect(shellCss).toContain(
-      'body.native-app.mobile-touch[data-start-panel="login-panel"] .portal-ring,',
-    );
-    expect(shellCss).toContain(
       'body.native-app.mobile-touch[data-start-panel="login-panel"] #login-panel {\n    display: grid;\n    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);',
     );
     expect(shellCss).toContain(
@@ -1139,47 +1136,36 @@ describe('client HTML shell', () => {
     );
   });
 
-  it('ships a looping cinematic backdrop with a poster fallback, lazy-loaded for perf', () => {
-    expect(html).toContain('id="bg-home"');
-    expect(html).toContain('poster="/home-bg.png"');
-    // The 5.7MB mp4 is NOT eagerly fetched: no <source>/autoplay/preload in the
-    // static markup. main.ts attaches data-trailer-src only on capable devices;
-    // phones / Save-Data / reduced-motion / high-contrast keep the poster only.
-    expect(html).toContain('data-trailer-src="/home-bg.mp4"');
-    expect(html).toContain('preload="none"');
-    expect(html).not.toContain('<source src="/home-bg.mp4"');
+  it('ships a minimal spore-field login backdrop with no video/attribution baggage', () => {
+    // PHAA-406: the licensed-provenance-unclear trailer video was retired for a
+    // procedural bioluminescent spore field over the near-black base. No <video>,
+    // no home-bg asset, no poster: nothing to attribute or lazy-load.
+    expect(html).toContain('id="start-screen-backdrop"');
+    expect(html).not.toContain('id="bg-home"');
+    expect(html).not.toContain('home-bg');
+    expect(html).not.toContain('bg-trailer');
+    // The spore field is authored in shell.css and mounted by main.ts (skipped on
+    // phones, the same perf carve-out the old ember field used).
+    expect(shellCss).toMatch(/\.spore-drift-container\s*\{/);
+    expect(shellCss).toMatch(/\.spore\s*\{[\s\S]*?animation:\s*spore-hover/);
+    expect(shellCss).toMatch(/@keyframes spore-hover\b/);
+    expect(mainTs).toContain('mountSporeDrift');
+    expect(mainTs).toContain('if (!isPhoneTouchDevice())');
+  });
+
+  it('drops the spore field on the static / reduced-motion path so the base stays legible', () => {
+    // High-contrast setting / phone / Save-Data / reduced-motion force the static
+    // path: the field is hidden and the near-black base is the whole backdrop.
+    expect(shellCss).toContain(
+      '#start-screen-backdrop.backdrop-static .spore-drift-container {\n    display: none;',
+    );
+    // Reduced-motion also hides the field outright (not just freezing the motion).
+    expect(shellCss).toMatch(
+      /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.spore-drift-container\s*\{\s*display:\s*none/,
+    );
     expect(mainTs).toContain('applyLandingBackdrop');
     // View transitions still honour reduced-motion.
     expect(mainTs).toContain('prefers-reduced-motion: reduce');
-  });
-
-  it('holds the cinematic trailer hidden until it plays, so the poster never flashes first', () => {
-    // The backdrop is one <video class="bg-trailer bg-home" poster=...>. The poster
-    // must stay hidden until JS reveals the layer, otherwise it paints at full
-    // opacity from first paint and the user sees the still key-art for the whole
-    // time the 5.7MB mp4 is still downloading, then it abruptly swaps to video.
-    // The trailer layer is held transparent by default:
-    expect(shellCss).toMatch(/\.bg-trailer\s*\{[\s\S]*?\bopacity:\s*0;/);
-    // ...and there is NO bare `.bg-home { opacity: 0.85 }` base rule overriding that
-    // hold (the bug: a later equal-specificity rule revealed the poster early).
-    expect(shellCss).not.toContain('.bg-home {\n    opacity: 0.85;');
-    // The poster is revealed ONLY by JS: trailer-ready (the video is playing, or a
-    // play/decode failure fallback)...
-    expect(shellCss).toContain(
-      '#start-screen-backdrop.trailer-ready .bg-trailer {\n    opacity: 0.85;',
-    );
-    // ...or backdrop-static (the static-poster path for phone / Save-Data /
-    // reduced-motion / high-contrast), which still shows the poster, dimmed.
-    expect(shellCss).toContain(
-      '#start-screen-backdrop.backdrop-static .bg-home {\n    opacity: 0.4;',
-    );
-    // main.ts reveals the static poster as a fallback when the trailer cannot play,
-    // so a failed/blocked video never leaves a black backdrop.
-    expect(mainTs).toContain("video.addEventListener('error'");
-    // The dead black-wipe overlay (never in the markup, never toggled by JS) is gone.
-    expect(shellCss).not.toContain('bg-trailer-fade');
-    expect(shellCss).not.toContain('trailer-fade-in');
-    expect(shellCss).not.toContain('trailer-fade-out');
   });
 
   it('omits Meters from the mobile More tray while keeping the desktop window', () => {

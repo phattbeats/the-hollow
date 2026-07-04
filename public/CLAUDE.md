@@ -31,7 +31,7 @@ are the imported KayKit/Quaternius/Kenney models plus PBR/HDRI/sprite/audio asse
 | `ui` | `skills/<class>/` (WebP ability icons) + `cursors/` (PNG) + `emotes/` (PNG) + `weapons/` (JPG icons) | `<img>` / CSS cursor |
 
 Top level also holds favicons/PWA icons, `manifest.webmanifest`, `robots.txt`,
-`sitemap.xml`, `loading-screen.jpg`, `home-bg.{mp4,png}`, logos, and the two
+`sitemap.xml`, `loading-screen.jpg`, logos, and the two
 standalone localized HTML pages `server-unavailable.html` (offline page) and
 `links.html` (link-tree landing).
 

@@ -1465,23 +1465,6 @@
   body.mobile-touch .realm-pop {
     font-size: 11px;
   }
-  body.mobile-touch .portal-ring,
-  body.mobile-touch .portal-ring-reverse,
-  body.mobile-touch .nebula-overlay {
-    animation: none;
-  }
-  body.mobile-touch .portal-ring,
-  body.mobile-touch .portal-ring-reverse {
-    filter: none;
-    opacity: 0.18;
-  }
-  body.mobile-touch .nebula-overlay {
-    mix-blend-mode: normal;
-    opacity: 0.78;
-  }
-  body.mobile-touch .embers-container {
-    display: none;
-  }
   body.mobile-touch .class-row {
     grid-template-columns: repeat(2, minmax(138px, 1fr));
     gap: 8px;
@@ -1640,12 +1623,7 @@
       max-width: none;
       padding: 14px;
     }
-    body.mobile-touch[data-start-panel="mode-select"] .play-tip,
-    body.mobile-touch[data-start-panel="mode-select"] .official-site-copy {
-      display: none;
-    }
-    body.mobile-touch[data-start-panel="charselect-panel"] .official-site-copy,
-    body.mobile-touch[data-start-panel="charcreate-panel"] .official-site-copy {
+    body.mobile-touch[data-start-panel="mode-select"] .play-tip {
       display: none;
     }
     body.mobile-touch .play-console {

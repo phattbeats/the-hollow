@@ -2107,8 +2107,7 @@
   body.native-app .community-link.donate,
   body.native-app .social-link.donate,
   body.native-app #nav-btn-download,
-  body.native-app #performance-tip,
-  body.native-app .official-site-copy {
+  body.native-app #performance-tip {
     display: none !important;
   }
 
@@ -2441,23 +2440,13 @@
   }
 
   /* Minimal: also retire the decorative start/loading-screen background work,
-     freeze the infinite ambient animations (portal spin, nebula breathe, ember
-     float, trailer drift, logo pulse) and drop the giant blur layers (the two
-     portal rings carry filter: blur(80 to 100px), a heavy fullscreen GPU pass). */
-  body.fx-minimal .portal-ring,
-  body.fx-minimal .portal-ring-reverse,
-  body.fx-minimal .nebula-overlay,
-  body.fx-minimal .bg-trailer,
-  body.fx-minimal .ember,
+     freezing the infinite ambient animations (spore drift, logo pulse). */
+  body.fx-minimal .spore,
   body.fx-minimal #title-logo {
     animation: none !important;
   }
-  body.fx-minimal .portal-ring,
-  body.fx-minimal .portal-ring-reverse {
-    filter: none !important;
-  }
-  /* The ember particle field is pure ambience; hide it outright on Minimal. */
-  body.fx-minimal .embers-container {
+  /* The spore field is pure ambience; hide it outright on Minimal. */
+  body.fx-minimal .spore-drift-container {
     display: none !important;
   }
 
