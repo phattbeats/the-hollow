@@ -187,20 +187,21 @@ const TABLES: Record<PlantArchetype, ArchetypeTable> = {
       { stalk: 0xc6cfbe, leaf: 0xaebfa4, head: 0xfdd6ad, accent: 0xdde4d5, emissive: 0xffab63 },
     ],
   },
-  // Squat, earthy, wide: a thick brown trunk crowned with a splitting maw
-  // (two half-bulbs it opens to bite), broad heavy leaves on a gnarled root mass.
+  // Squat, earthy, much wider than tall: a thick, barely-tapered brown trunk
+  // crowned with a splitting maw (two half-bulbs it opens to bite), broad
+  // heavy leaves splayed wide, on a gnarled root mass.
   rootmaw: {
     salt: 0x2c1b,
     segments: [3, 5],
     segLength: [0.24, 0.32],
-    baseRadius: [0.14, 0.2],
-    taper: [0.55, 0.75],
+    baseRadius: [0.26, 0.36],
+    taper: [0.8, 0.95],
     lean: 0.1,
     leafPairs: [2, 4],
-    leafLength: [0.34, 0.5],
+    leafLength: [0.52, 0.74],
     leafDroop: [0.25, 0.6],
     head: 'maw',
-    headSize: [0.3, 0.44],
+    headSize: [0.48, 0.66],
     petals: [0, 0],
     glow: [0, 0],
     base: 'roots',
