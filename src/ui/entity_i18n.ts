@@ -28,6 +28,7 @@ export type EntityTranslationKind =
   | 'item'
   | 'mob'
   | 'npc'
+  | 'npcIntro'
   | 'quest'
   | 'questObjective'
   | 'zone'
@@ -42,6 +43,7 @@ export type EntityTranslationField =
   | 'text'
   | 'completion'
   | 'greeting'
+  | 'introLine'
   | 'label'
   | 'welcome'
   | 'enterText'
@@ -62,6 +64,13 @@ export type EntityTranslationRequest =
     }
   | { kind: 'mob'; id: string; field: 'name'; values?: InterpolationValues }
   | { kind: 'npc'; id: string; field: 'name' | 'title' | 'greeting'; values?: InterpolationValues }
+  | {
+      kind: 'npcIntro';
+      id: string;
+      lineIndex: number;
+      field: 'introLine';
+      values?: InterpolationValues;
+    }
   | {
       kind: 'quest';
       id: string;
@@ -208,6 +217,11 @@ function canonicalEntityText(request: EntityTranslationRequest): string {
       if (request.field === 'greeting') return npc.greeting;
       return npc.name;
     }
+    case 'npcIntro':
+      return (
+        NPCS[request.id]?.introLines?.[request.lineIndex] ??
+        `${request.id}.introLines.${request.lineIndex}`
+      );
     case 'quest': {
       const quest = QUESTS[request.id];
       if (!quest) return request.id;
@@ -262,6 +276,8 @@ export function entityTranslationKey(request: EntityTranslationRequest): string 
       return `entities.mobs.${entityPathSegment(request.id)}.name`;
     case 'npc':
       return `entities.npcs.${entityPathSegment(request.id)}.${request.field}`;
+    case 'npcIntro':
+      return `entities.npcs.${entityPathSegment(request.id)}.introLines.${request.lineIndex}`;
     case 'quest':
       return `entities.quests.${entityPathSegment(request.id)}.${request.field}`;
     case 'questObjective':
@@ -283,7 +299,9 @@ function requestManifestEntry(request: EntityTranslationRequest): EntityTranslat
       ? `${request.questId}.objectives.${request.objectiveIndex}`
       : request.kind === 'zonePoi'
         ? `${request.zoneId}.pois.${request.poiIndex}`
-        : request.id;
+        : request.kind === 'npcIntro'
+          ? `${request.id}.introLines.${request.lineIndex}`
+          : request.id;
   const group: EntityTranslationGroup =
     request.kind === 'class' || request.kind === 'ability'
       ? 'classAbility'
@@ -485,6 +503,18 @@ export function entityTranslationManifest(): EntityTranslationManifestEntry[] {
         entityTranslationKey({ kind: 'npc', id: npc.id, field: 'greeting' }),
       ),
     );
+    (npc.introLines ?? []).forEach((line, lineIndex) => {
+      entries.push(
+        entry(
+          'npcIntro',
+          `${npc.id}.introLines.${lineIndex}`,
+          'introLine',
+          line,
+          'world',
+          entityTranslationKey({ kind: 'npcIntro', id: npc.id, lineIndex, field: 'introLine' }),
+        ),
+      );
+    });
   }
   for (const quest of Object.values(QUESTS).sort(compareById)) {
     entries.push(

@@ -5764,7 +5764,12 @@ export const nl_NL: EnTranslations = {
       "brother_greenpaw": {
         "name": "Broeder Groenpoot",
         "title": "Eerste Profeet (zelfbenoemd)",
-        "greeting": "hé, reiziger. trof je de vaas vandaag in een bepaalde bui, of ben ik het gewoon weer... kom hier, heb een paar heilige zaakjes die aandacht nodig hebben. vooral snacks. komt op hetzelfde neer, als je Groenpoot heet."
+        "greeting": "hé, reiziger. trof je de vaas vandaag in een bepaalde bui, of ben ik het gewoon weer... kom hier, heb een paar heilige zaakjes die aandacht nodig hebben. vooral snacks. komt op hetzelfde neer, als je Groenpoot heet.",
+        "introLines": {
+          "0": "uhh... hi. hi. didn't hear you come up, i was someplace else, someplace green... you got the just-woke-up look, friend. i know it well, i wear it most days...",
+          "1": "name's greenpaw. brother greenpaw, first prophet, self-appointed, which the vase'll tell you means exactly nothin', and he's not wrong, but somebody's gotta tend him...",
+          "2": "this here's the hollow. was a whole tribe once, big doings, so they tell me, and now it's mostly me, the vase, and whatever's breathin' down in that cave... anyway. he's hungry, i'm hungry, same wavelength. c'mere, got a couple sacred matters need tendin'."
+        }
       },
       "verger_zebediah": {
         "name": "Verger Zebediah",

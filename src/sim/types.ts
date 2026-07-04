@@ -1116,11 +1116,22 @@ export interface NpcDef {
   // a secondary class (see setSecondaryClass in world_api/trainer.ts).
   trainer?: { professions: PlayerClass[] };
   greeting: string;
+  // Optional ordered intro lines the player clicks through once, before the
+  // gossip/quest hook, on first meeting this NPC (presentation-only; the UI
+  // pages them and remembers completion client-side). In-voice character
+  // flavor, not gameplay: an NPC with no introLines opens straight to gossip.
+  introLines?: string[];
   // Registered but not surface-placed at world init. The owning system spawns
   // the entity on demand (e.g. the Nythraxis encounter walks Brother Aldric in
   // mid-fight). Keeping the def in NPCS lets the online client reconstruct its
   // questIds and treat it as a turn-in NPC.
   dynamic?: boolean;
+  // Ambient idle walk (npc_wander.ts): the NPC paces a slow circle of this
+  // radius around its own spawn point instead of standing still. Presentation
+  // only (no quest/interaction logic reads it) and deliberately RNG-free
+  // (driven by ctx.tickCount, never ctx.rng) so it never perturbs the shared
+  // Rng draw order golden/parity traces depend on. Omit for a stationary NPC.
+  wanderRadius?: number;
 }
 
 export interface CampDef {

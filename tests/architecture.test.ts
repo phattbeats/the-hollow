@@ -152,6 +152,7 @@ const UI_PURE_CORES = [
   'src/ui/spellbook_view.ts',
   'src/ui/questlog_view.ts',
   'src/ui/trainer_view.ts',
+  'src/ui/npc_intro_view.ts',
   'src/ui/swing_timer.ts',
   'src/ui/unit_frame.ts',
   'src/ui/action_bar_view.ts',

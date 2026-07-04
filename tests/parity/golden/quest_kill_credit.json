@@ -10,13 +10,13 @@
     "turnInQuest (xp + copper reward)"
   ],
   "draws": 32,
-  "drawDigest": "4d328729",
+  "drawDigest": "2878f988",
   "frames": [
     {
       "tick": 0,
       "time": 0,
-      "nextId": 400,
-      "state": "8df53963",
+      "nextId": 402,
+      "state": "f04cb373",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -34,7 +34,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 399,
+          "entityId": 401,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
@@ -56,7 +56,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 90,
-          "id": 399,
+          "id": 401,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -99,9 +99,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 400,
-      "state": "e1ca7b10",
-      "events": "8c467819",
+      "nextId": 402,
+      "state": "416dfccc",
+      "events": "3d6acfe5",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -118,7 +118,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 399,
+          "entityId": 401,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
@@ -153,7 +153,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 50000,
-          "id": 399,
+          "id": 401,
           "kind": "player",
           "level": 10,
           "lootFfaTimer": "Infinity",
@@ -196,12 +196,12 @@
     {
       "tick": 8,
       "time": 0.4,
-      "nextId": 408,
-      "state": "6a73eb38",
-      "events": "6cdb2d44",
+      "nextId": 410,
+      "state": "24c025fc",
+      "events": "80930594",
       "rng": {
         "draws": 32,
-        "digest": "4d328729"
+        "digest": "2878f988"
       },
       "label": "quest-ready",
       "players": [
@@ -219,7 +219,7 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 399,
+          "entityId": 401,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
@@ -254,7 +254,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99.4,
           "hp": 50000,
-          "id": 399,
+          "id": 401,
           "inCombat": true,
           "kind": "player",
           "level": 10,
@@ -298,12 +298,12 @@
     {
       "tick": 8,
       "time": 0.4,
-      "nextId": 408,
-      "state": "2404d823",
-      "events": "2a1aa60b",
+      "nextId": 410,
+      "state": "bb5ba31f",
+      "events": "ace7f38f",
       "rng": {
         "draws": 32,
-        "digest": "4d328729"
+        "digest": "2878f988"
       },
       "label": "quest-turned-in",
       "players": [
@@ -324,7 +324,7 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 399,
+          "entityId": 401,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
@@ -351,7 +351,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99.4,
           "hp": 50000,
-          "id": 399,
+          "id": 401,
           "inCombat": true,
           "kind": "player",
           "level": 10,
@@ -395,12 +395,12 @@
     {
       "tick": 10,
       "time": 0.5,
-      "nextId": 408,
-      "state": "7bb6ed9f",
+      "nextId": 410,
+      "state": "7509703b",
       "events": "741638a5",
       "rng": {
         "draws": 32,
-        "digest": "4d328729"
+        "digest": "2878f988"
       },
       "label": "final",
       "players": [
@@ -421,7 +421,7 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 399,
+          "entityId": 401,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
@@ -448,7 +448,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99.5,
           "hp": 50000,
-          "id": 399,
+          "id": 401,
           "inCombat": true,
           "kind": "player",
           "level": 10,

@@ -50,10 +50,19 @@ export const HOLLOW_ZONE_ZONE: ZoneDef = {
 };
 
 // Light wildlife so the ground reads as a real outdoor zone rather than an
-// empty staging lot; kept clear of the gate plateau (hub radius 22).
+// empty staging lot; kept clear of the gate plateau (hub radius 22). Board
+// follow-up on PHAA-420 (reopen): each mob now spawns from two smaller,
+// separated sub-camps instead of one radius-16 blob, so a look across either
+// area reads as spread wildlife rather than a single cluster. The Fallow
+// Acres pair stays inside HOLLOW_HOMESTEAD_AREA's carve-out box (feature/
+// homestead-v0, PR #33, still unmerged): kept at radius 10 (down from the
+// original 16) so the combined exclusion footprint for future plot placement
+// doesn't grow past what one radius-16 camp already reserved.
 export const HOLLOW_ZONE_CAMPS: CampDef[] = [
-  { mobId: 'forest_wolf', center: { x: -46, z: -246 }, radius: 16, count: 4 },
-  { mobId: 'wild_boar', center: { x: 40, z: -350 }, radius: 16, count: 4 },
+  { mobId: 'forest_wolf', center: { x: -46, z: -246 }, radius: 12, count: 3 },
+  { mobId: 'forest_wolf', center: { x: -64, z: -222 }, radius: 10, count: 2 },
+  { mobId: 'wild_boar', center: { x: 40, z: -350 }, radius: 12, count: 3 },
+  { mobId: 'wild_boar', center: { x: 56, z: -374 }, radius: 12, count: 2 },
 ];
 
 // Roads from the gate outward - the "roads connecting the starter zone to the
@@ -104,6 +113,10 @@ export const HOLLOW_ZONE_NPCS: Record<string, NpcDef> = {
     questIds: ['q_root_hollow_boars', 'q_root_hollow_boars_ii'],
     greeting:
       'Verger Zebediah. I keep the Reaches to a calendar, or I keep trying. Root Hollow was marked to rest this season, and the boars did not read the notice. Mind the loose dirt, and do not touch the register.',
+    // Ambient idle walk (board follow-up on PHAA-420: "some walking around"),
+    // see src/sim/npc_wander.ts. Small radius on purpose: he stays findable at
+    // his posted warden's station rather than roaming off it.
+    wanderRadius: 4,
   },
   sexton_faddick: {
     id: 'sexton_faddick',
@@ -115,6 +128,7 @@ export const HOLLOW_ZONE_NPCS: Record<string, NpcDef> = {
     questIds: ['q_fallow_acres_wolves', 'q_fallow_acres_wolves_ii'],
     greeting:
       'Faddick. Sexton, where there is still a shrine to sexton. I do not stay anywhere; I keep. Wolves have circled the flock at Fallow Acres every night, and a thing that circles long enough learns the shape of what it circles. Best it stays a flock.',
+    wanderRadius: 4,
   },
 };
 
@@ -195,20 +209,38 @@ export const HOLLOW_ZONE_QUEST_ORDER: string[] = [
 // post. The Fallow Acres fence frames a small kept garden, not the open
 // build clearing itself, so it stays out of the way of the ground
 // Homestead v0 plots want.
+//
+// Second pass (board follow-up: "both of their areas need to feel more
+// lived in... more decor"): a bedroll tent and supply crates at each post,
+// a second Root Hollow fire so Zebediah's warden's station reads as an
+// established outpost rather than one lonely flame, and the Fallow Acres
+// garden fence closed into a real perimeter (with a gap left for a gate)
+// instead of the original two open sides. Kept close to each NPC's existing
+// post and outside their wanderRadius circle (npc_wander.ts) so nothing new
+// clips them mid-patrol.
 export const HOLLOW_ZONE_PROPS: ZonePropsDef = {
   buildings: [],
   wells: [{ x: -40, z: -250, r: 1.4 }],
   stalls: [],
   mines: [],
   docks: [],
-  tents: [],
-  crates: [],
-  campfires: [[36, -336]],
+  tents: [{ x: -44, z: -243, rot: 2.1, scale: 1 }],
+  crates: [
+    [-36, -247], // Faddick's supply stash, Fallow Acres
+    [30, -328], // Zebediah's ledger crates, Root Hollow
+  ],
+  campfires: [
+    [36, -336],
+    [30, -343], // second Root Hollow fire
+  ],
   mudHuts: [],
   ruinRings: [],
   fences: [
     { x1: -52, z1: -254, x2: -40, z2: -254 },
     { x1: -52, z1: -254, x2: -52, z2: -242 },
+    { x1: -40, z1: -254, x2: -40, z2: -242 },
+    { x1: -52, z1: -242, x2: -46, z2: -242 }, // bottom side, gap left for a gate
+    { x1: -42, z1: -242, x2: -40, z2: -242 },
   ],
   graveyards: [],
 };
