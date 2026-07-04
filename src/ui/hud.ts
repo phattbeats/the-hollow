@@ -533,6 +533,7 @@ const SFX_MOB_FAMILIES = new Set([
   'elemental',
   'dragonkin',
   'demon',
+  'plant',
 ]);
 const SFX_CAST_SCHOOLS = new Set(['fire', 'frost', 'arcane', 'shadow', 'holy', 'nature']);
 // Combat/spell/creature SFX are trimmed this much under movement/ambience so the

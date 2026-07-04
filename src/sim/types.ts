@@ -443,7 +443,8 @@ export type MobFamily =
   | 'ogre'
   | 'elemental'
   | 'dragonkin'
-  | 'demon';
+  | 'demon'
+  | 'plant';
 export type PetMode = 'passive' | 'defensive' | 'aggressive';
 export type PetRole = 'melee_tank' | 'ranged_dps';
 
