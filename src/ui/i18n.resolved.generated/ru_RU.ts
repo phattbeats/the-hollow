@@ -2506,9 +2506,7 @@ export const ru_RU: EnTranslations = {
     "genre": "MMORPG",
     "playMode": "Многопользовательская игра",
     "applicationCategory": "Игра",
-    "operatingSystem": "Веб-браузер",
-    "officialLabel": "Официальный сайт World of ClaudeCraft",
-    "officialBody": "worldofclaudecraft.com - официальная бесплатная браузерная MMO для мира Claudemoon. Играйте онлайн с постоянным персонажем, исследуйте мир в одиночку офлайн, читайте wiki и переходите по проверенным ссылкам сообщества с этого сайта."
+    "operatingSystem": "Веб-браузер"
   },
   "a11y": {
     "goHome": "Перейти на главную",

@@ -31,9 +31,6 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.unitFrame.playerLabel': 'あなたのキャラクター',
   'hudChrome.unitFrame.targetAnnounce': 'ターゲット：{name}',
   'hudChrome.unitFrame.targetLabel': 'あなたのターゲット',
-  'seo.officialLabel': 'World of ClaudeCraft 公式サイト',
-  'seo.officialBody':
-    'worldofclaudecraft.com は Claudemoon レルムの公式無料ブラウザMMOです。永続キャラクターでオンラインプレイし、オフラインでソロ探索し、wikiを読み、このサイトから確認済みのコミュニティリンクをたどれます。',
   'hudChrome.questShare.notShareable': 'このクエストは共有できません。',
   'hudChrome.questShare.notInSharerParty':
     '{name} のパーティに参加していないと、このクエストを受諾できません。',
