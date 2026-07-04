@@ -116,16 +116,25 @@ export function splitCopper(copper: number): MoneySplit {
 function normalizeAllocation(state: CharacterState): TalentAllocation {
   const a = state.talents;
   if (!a || typeof a !== 'object') return emptyAllocation();
-  return {
+  const out: TalentAllocation = {
     spec: typeof a.spec === 'string' ? a.spec : null,
     ranks: a.ranks && typeof a.ranks === 'object' ? a.ranks : {},
     choices: a.choices && typeof a.choices === 'object' ? a.choices : {},
   };
+  const sec = a.secondary;
+  if (sec && typeof sec === 'object') {
+    out.secondary = {
+      spec: typeof sec.spec === 'string' ? sec.spec : null,
+      ranks: sec.ranks && typeof sec.ranks === 'object' ? sec.ranks : {},
+      choices: sec.choices && typeof sec.choices === 'object' ? sec.choices : {},
+    };
+  }
+  return out;
 }
 
 function talentMods(cls: PlayerClass, state: CharacterState): TalentModifiers | undefined {
   try {
-    return computeTalentModifiers(cls, normalizeAllocation(state));
+    return computeTalentModifiers(cls, normalizeAllocation(state), state.secondaryCls ?? null);
   } catch {
     return undefined; // never let a malformed allocation break a public read
   }

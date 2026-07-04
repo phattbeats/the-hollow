@@ -54,7 +54,7 @@ import type { Entity } from '../types';
 // The ONLY place a talent tree is walked. Re-resolves the flat modifier struct and
 // refreshes the stat pass + known-ability resolver that consume it.
 function recomputeTalents(ctx: SimContext, meta: PlayerMeta): void {
-  meta.talentMods = computeTalentModifiers(meta.cls, meta.talents);
+  meta.talentMods = computeTalentModifiers(meta.cls, meta.talents, meta.secondaryCls);
   const e = ctx.entities.get(meta.entityId);
   if (e) recalcPlayerStats(e, meta.cls, meta.equipment, ctx.playerMods(meta));
   ctx.refreshKnownAbilities(meta, false);
@@ -82,6 +82,20 @@ function sanitizeTalentAllocation(alloc: TalentAllocation): TalentAllocation {
     const v = Math.floor(alloc.ranks[id]);
     if (v > 0) sanitized.ranks[id] = v;
   }
+  const sec = alloc.secondary;
+  if (sec && typeof sec === 'object') {
+    const secOut: NonNullable<TalentAllocation['secondary']> = {
+      spec: sec.spec ?? null,
+      ranks: {},
+      choices: sec.choices && typeof sec.choices === 'object' ? { ...sec.choices } : {},
+    };
+    const secRanks = sec.ranks && typeof sec.ranks === 'object' ? sec.ranks : {};
+    for (const id in secRanks) {
+      const v = Math.floor(secRanks[id]);
+      if (v > 0) secOut.ranks[id] = v;
+    }
+    if (secOut.spec !== null || Object.keys(secOut.ranks).length > 0) sanitized.secondary = secOut;
+  }
   return sanitized;
 }
 
@@ -100,11 +114,16 @@ export function applyTalentAllocation(
     return false;
   }
   const sanitized = sanitizeTalentAllocation(alloc);
-  if (sanitized.spec && r.e.level < FIRST_TALENT_LEVEL) {
+  if ((sanitized.spec || sanitized.secondary?.spec) && r.e.level < FIRST_TALENT_LEVEL) {
     ctx.error(r.e.id, `You may choose a specialization at level ${FIRST_TALENT_LEVEL}.`);
     return false;
   }
-  const check = validateAllocation(r.meta.cls, sanitized, talentPointsAtLevel(r.e.level));
+  const check = validateAllocation(
+    r.meta.cls,
+    sanitized,
+    talentPointsAtLevel(r.e.level),
+    r.meta.secondaryCls,
+  );
   if (!check.ok) {
     ctx.error(r.e.id, check.reason ?? 'Invalid talent build.');
     return false;
@@ -161,7 +180,11 @@ export function respecTalents(ctx: SimContext, pid?: number): boolean {
     ctx.error(r.e.id, lock);
     return false;
   }
-  r.meta.talents = { spec: r.meta.talents.spec, ranks: {}, choices: {} };
+  // Respec clears BOTH professions' trees; the chosen specs are retained.
+  const cleared: TalentAllocation = { spec: r.meta.talents.spec, ranks: {}, choices: {} };
+  const sec = r.meta.talents.secondary;
+  if (sec) cleared.secondary = { spec: sec.spec, ranks: {}, choices: {} };
+  r.meta.talents = cleared;
   recomputeTalents(ctx, r.meta);
   ctx.emit({ type: 'log', pid: r.e.id, text: 'Talents reset.', color: '#ffd100' });
   return true;
@@ -188,11 +211,16 @@ export function saveTalentLoadout(
       return -1;
     }
     const sanitized = sanitizeTalentAllocation(alloc);
-    if (sanitized.spec && r.e.level < FIRST_TALENT_LEVEL) {
+    if ((sanitized.spec || sanitized.secondary?.spec) && r.e.level < FIRST_TALENT_LEVEL) {
       ctx.error(r.e.id, `You may choose a specialization at level ${FIRST_TALENT_LEVEL}.`);
       return -1;
     }
-    const check = validateAllocation(r.meta.cls, sanitized, talentPointsAtLevel(r.e.level));
+    const check = validateAllocation(
+      r.meta.cls,
+      sanitized,
+      talentPointsAtLevel(r.e.level),
+      r.meta.secondaryCls,
+    );
     if (!check.ok) {
       ctx.error(r.e.id, check.reason ?? 'Invalid talent build.');
       return -1;
@@ -237,11 +265,16 @@ export function switchTalentLoadout(ctx: SimContext, index: number, pid?: number
     ctx.error(r.e.id, 'No such loadout.');
     return false;
   }
-  if (lo.alloc.spec && r.e.level < FIRST_TALENT_LEVEL) {
+  if ((lo.alloc.spec || lo.alloc.secondary?.spec) && r.e.level < FIRST_TALENT_LEVEL) {
     ctx.error(r.e.id, 'That loadout needs a higher level.');
     return false;
   }
-  const check = validateAllocation(r.meta.cls, lo.alloc, talentPointsAtLevel(r.e.level));
+  const check = validateAllocation(
+    r.meta.cls,
+    lo.alloc,
+    talentPointsAtLevel(r.e.level),
+    r.meta.secondaryCls,
+  );
   if (!check.ok) {
     ctx.error(r.e.id, `Loadout invalid: ${check.reason ?? 'unknown'}`);
     return false;
@@ -272,7 +305,12 @@ export function deleteTalentLoadout(ctx: SimContext, index: number, pid?: number
       // This is an AUTO-apply (no user gate), so repair against the level budget
       // first: switchTalentLoadout validates on its path, but here a stale or
       // tampered next loadout would otherwise be baked into live mods wholesale.
-      r.meta.talents = repairAllocation(r.meta.cls, next.alloc, talentPointsAtLevel(r.e.level));
+      r.meta.talents = repairAllocation(
+        r.meta.cls,
+        next.alloc,
+        talentPointsAtLevel(r.e.level),
+        r.meta.secondaryCls,
+      );
       recomputeTalents(ctx, r.meta);
     }
   } else if (r.meta.activeLoadout > index) r.meta.activeLoadout -= 1;

@@ -137,6 +137,7 @@ function buildTree(
   total: number,
   tree: 'class' | 'spec',
   specId: string | undefined,
+  secondaryCls: PlayerClass | null,
 ): TalentTreeVM {
   const nodes = ct.nodes.filter(
     (n) => n.tree === tree && (tree === 'class' || n.specId === specId),
@@ -174,7 +175,7 @@ function buildTree(
     if (n.kind === 'choice' && !cand.choices[n.id] && n.choices?.[0]) {
       cand.choices[n.id] = n.choices[0].id;
     }
-    const canAdd = ranks < n.maxRank && validateAllocation(cls, cand, total).ok;
+    const canAdd = ranks < n.maxRank && validateAllocation(cls, cand, total, secondaryCls).ok;
     const shape: TalentNodeShape =
       n.kind === 'active' ? 'square' : n.kind === 'choice' ? 'octagon' : 'circle';
     const state: TalentNodeState = isDormant
@@ -211,11 +212,14 @@ function buildTree(
  *   never mutated here.
  * @param cls   the player's class.
  * @param total the total available talent points (IWorld.talentPoints().total).
+ * @param secondaryCls the secondary profession (IWorld.secondaryCls), so a
+ *   dual-profession stage validates against the shared pool and half-cap.
  */
 export function buildTalentsView(
   stage: TalentAllocation,
   cls: PlayerClass,
   total: number,
+  secondaryCls: PlayerClass | null = null,
 ): TalentsView {
   const ct = talentsFor(cls);
   if (!ct) return emptyView(total);
@@ -235,10 +239,12 @@ export function buildTalentsView(
     spent,
     classSpent: treeSpent('class'),
     specSpent: treeSpent('spec'),
-    valid: validateAllocation(cls, stage, total).ok,
+    valid: validateAllocation(cls, stage, total, secondaryCls).ok,
     specs: ct.specs.map((sp) => ({ spec: sp, selected: stage.spec === sp.id, role: sp.role })),
     selectedSpec,
-    classTree: buildTree(ct, stage, cls, total, 'class', undefined),
-    specTree: selectedSpec ? buildTree(ct, stage, cls, total, 'spec', selectedSpec.id) : null,
+    classTree: buildTree(ct, stage, cls, total, 'class', undefined, secondaryCls),
+    specTree: selectedSpec
+      ? buildTree(ct, stage, cls, total, 'spec', selectedSpec.id, secondaryCls)
+      : null,
   };
 }
