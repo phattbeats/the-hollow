@@ -9,9 +9,9 @@
 // `src/sim`-pure: no DOM/Three/render-ui-game-net imports, no Math.random /
 // Date.now (enforced by tests/architecture.test.ts). Housing draws NO rng.
 //
-// Player-facing /house command text is deliberately English here, like the
-// v0.7 slash-command readouts (a documented backstop pending a dedicated
-// localization pass); the sim core stays language-agnostic.
+// Player-facing /house command text emits in English here (the sim core stays
+// language-agnostic); the client re-localizes it through src/ui/sim_i18n.ts's
+// RULES against the sim.house.* catalog keys (PHAA-428).
 
 import {
   HOLLOW_HOUSE_OBJECT_KINDS,
