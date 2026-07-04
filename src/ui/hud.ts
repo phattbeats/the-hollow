@@ -63,6 +63,7 @@ import { HOUSE_SLOT_COUNT } from '../sim/housing';
 import { isItemLevelEligible, itemLevel, itemScore } from '../sim/item_level';
 import type { Ante, PickAction } from '../sim/lockpick';
 import { PICK_ACTIONS } from '../sim/lockpick';
+import { SECONDARY_CLASS_MIN_LEVEL } from '../sim/progression/trainer';
 import type { ResolvedAbility } from '../sim/sim';
 import type {
   AbilityDef,
@@ -7544,6 +7545,9 @@ export class Hud {
     if (def?.market) {
       html += `<button type="button" class="qd-list-item" data-market="1" aria-label="${esc(t('questUi.dialog.worldMarketAria'))}"><span class="gold">${svgIcon('market')}</span> ${esc(t('questUi.dialog.worldMarket'))}</button>`;
     }
+    if (def?.trainer) {
+      html += `<button type="button" class="qd-list-item" data-trainer="1" aria-label="${esc(t('questUi.dialog.trainSecondaryAria', { name: npcName }))}"><span class="quest-complete">+</span> ${esc(t('questUi.dialog.trainSecondary'))}</button>`;
+    }
     if (Object.values(DELVES).some((d) => d.boardNpcId === npc.templateId)) {
       html += `<button type="button" class="qd-list-item" data-delve-board="1" aria-label="${esc(t('delveUi.board.openDelveAria', { name: npcName }))}"><span class="gold">${svgIcon('skull')}</span> ${esc(t('delveUi.board.openDelve'))}</button>`;
     }
@@ -7568,10 +7572,57 @@ export class Hud {
       this.closeQuestDialog(false);
       this.openMarket();
     });
+    el.querySelector('[data-trainer]')?.addEventListener('click', () => {
+      this.renderTrainerPanel(npc);
+    });
     el.querySelector('[data-delve-board]')?.addEventListener('click', () => {
       this.closeQuestDialog(false);
       this.openDelveBoard(npc.id);
     });
+    el.querySelector('[data-close]')?.addEventListener('click', () => this.closeQuestDialog());
+    el.style.display = 'block';
+    this.questDialogTrap?.focusFirst();
+  }
+
+  // The Profession Trainer picker (PHAA-464): reuses the quest-dialog window/
+  // focus-trap (like renderQuestDetail) rather than a new window, since it is
+  // just another view inside the same NPC-talk dialog.
+  private renderTrainerPanel(npc: Entity): void {
+    const def = NPCS[npc.templateId];
+    const trainer = def?.trainer;
+    if (!trainer) return;
+    const el = $('#quest-dialog');
+    const level = this.sim.player.level;
+    let html = `<div class="panel-title"><span id="quest-dialog-title">${esc(t('questUi.dialog.trainerTitle'))}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('questUi.dialog.close'))}">${svgIcon('close')}</button></div>`;
+    if (level < SECONDARY_CLASS_MIN_LEVEL) {
+      html += `<div class="qd-text">${esc(t('questUi.dialog.trainerLevelLocked', { level: SECONDARY_CLASS_MIN_LEVEL }))}</div>`;
+    } else {
+      for (const cls of trainer.professions) {
+        if (cls === this.sim.cfg.playerClass) continue;
+        const isCurrent = cls === this.sim.secondaryCls;
+        const cost = this.sim.secondaryClassCost(cls);
+        const costText = isCurrent
+          ? t('questUi.dialog.trainerCurrent')
+          : cost === 0
+            ? t('questUi.dialog.trainerFree')
+            : formatLocalizedMoney(cost ?? 0);
+        const aria = t('questUi.dialog.trainerPickAria', {
+          cls: classDisplayName(cls),
+          cost: costText,
+        });
+        html += `<button type="button" class="qd-list-item" data-train-cls="${esc(cls)}" aria-label="${esc(aria)}" ${isCurrent ? 'disabled' : ''}>${esc(classDisplayName(cls))} <span class="quest-muted">${esc(costText)}</span></button>`;
+      }
+    }
+    html += `<button type="button" class="qd-list-item" data-back="1">${esc(t('questUi.dialog.back'))}</button>`;
+    el.innerHTML = html;
+    el.querySelectorAll('[data-train-cls]').forEach((item) => {
+      item.addEventListener('click', () => {
+        const cls = (item as HTMLElement).dataset.trainCls as PlayerClass;
+        this.sim.setSecondaryClass(npc.id, cls);
+        this.renderTrainerPanel(npc);
+      });
+    });
+    el.querySelector('[data-back]')?.addEventListener('click', () => this.renderGossip(npc));
     el.querySelector('[data-close]')?.addEventListener('click', () => this.closeQuestDialog());
     el.style.display = 'block';
     this.questDialogTrap?.focusFirst();

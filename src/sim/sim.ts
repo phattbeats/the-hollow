@@ -185,6 +185,10 @@ import {
   switchTalentLoadout,
   talentPointBudget,
 } from './progression/talents';
+import {
+  secondaryClassCost as trainerSecondaryClassCost,
+  setSecondaryClass as trainerSetSecondaryClass,
+} from './progression/trainer';
 import { prestige as prestigeImpl, updateRested } from './progression/xp';
 import { advancePendingProjectiles, type PendingProjectile } from './projectile_travel';
 import { sanitizeRemovedZone1Content } from './removed_zone1_content';
@@ -617,6 +621,10 @@ export interface PlayerMeta {
   // into abilitiesKnownAt at its own normal learn levels. Null until a trainer
   // NPC sets it (see PHAA-464). Persisted in CharacterState.
   secondaryCls: PlayerClass | null;
+  // Number of secondary-class changes PAID for at the trainer (the first-ever
+  // pick is free and does not count). Drives the escalating gold cost. See
+  // src/sim/progression/trainer.ts. Persisted in CharacterState.
+  secondaryClsChanges: number;
   name: string;
   skin: number; // appearance index into the render SKINS[player_<cls>]; persisted, synced
   skinCatalog: SkinCatalog;
@@ -730,6 +738,9 @@ export interface CharacterState {
   // GW1 build system multiclassing. Optional/nullable so saves from before
   // multiclassing existed load cleanly (back-compat: null secondary).
   secondaryCls?: PlayerClass | null;
+  // Optional/absent so pre-PHAA-464 saves (and legacy no-secondary saves) load
+  // cleanly, defaulting to 0 (see addPlayer).
+  secondaryClsChanges?: number;
   // Post-cap progression. All optional so characters saved before the Max-Level
   // XP Overflow system load cleanly (addPlayer backfills lifetimeXp from level).
   lifetimeXp?: number;
@@ -1189,6 +1200,7 @@ export class Sim {
       accountKey: opts?.accountKey,
       cls,
       secondaryCls: savedState?.secondaryCls ?? null,
+      secondaryClsChanges: savedState?.secondaryClsChanges ?? 0,
       name,
       skin: savedState?.skin ?? 0,
       skinCatalog: savedState?.skinCatalog === 'mech' ? 'mech' : 'class',
@@ -1454,6 +1466,7 @@ export class Sim {
       level: restore ? restore.level : e.level,
       xp: restore ? restore.xp : meta.xp,
       secondaryCls: meta.secondaryCls,
+      secondaryClsChanges: meta.secondaryClsChanges,
       lifetimeXp: meta.lifetimeXp,
       prestigeRank: meta.prestigeRank,
       unlockedMilestones: [...meta.unlockedMilestones],
@@ -1766,6 +1779,17 @@ export class Sim {
   }
   get secondaryCls(): PlayerClass | null {
     return this.primary.secondaryCls;
+  }
+  get secondaryClsChanges(): number {
+    return this.primary.secondaryClsChanges;
+  }
+
+  secondaryClassCost(cls: PlayerClass, pid?: number): number | null {
+    return trainerSecondaryClassCost(this.ctx, cls, pid);
+  }
+
+  setSecondaryClass(npcId: number, cls: PlayerClass, pid?: number): void {
+    trainerSetSecondaryClass(this.ctx, npcId, cls, pid);
   }
 
   meta(pid: number): PlayerMeta | null {

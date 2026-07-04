@@ -1109,6 +1109,10 @@ export interface NpcDef {
   // The Merchant: talking to this NPC opens the player-driven World Market
   // (auction house) instead of a fixed vendor stock.
   market?: boolean;
+  // A Profession Trainer (GW1 build system multiclassing, Phase 3, PHAA-464):
+  // talking to this NPC opens the trainer panel, offering these professions as
+  // a secondary class (see setSecondaryClass in world_api/trainer.ts).
+  trainer?: { professions: PlayerClass[] };
   greeting: string;
   // Registered but not surface-placed at world init. The owning system spawns
   // the entity on demand (e.g. the Nythraxis encounter walks Brother Aldric in
@@ -1611,6 +1615,10 @@ export type SimEvent = { pid?: number } & (
   // itemId names the single item for buy/sell/buyback; it is omitted for the
   // bulk "sell all junk" sweep, which the client treats as a plain refresh signal.
   | { type: 'vendor'; action: 'buy' | 'sell' | 'buyback'; itemId?: string }
+  // A Profession Trainer NPC command resolved (PHAA-464 multiclassing); the
+  // client re-renders its known abilities from the synced secondaryCls, this
+  // is just the "something changed" signal + the class for a toast.
+  | { type: 'trainer'; action: 'setSecondaryClass'; cls: PlayerClass }
   // say/yell are delivered only to players in range and carry the speaker's
   // entity id so the client can hang a chat bubble over their head; whisper
   // goes to the target (and echoes to the sender with `to` set); general is

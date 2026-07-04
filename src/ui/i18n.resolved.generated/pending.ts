@@ -61,7 +61,14 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
-    "hudChrome.options.showOwnNameplate"
+    "hudChrome.options.showOwnNameplate",
+    "questUi.dialog.trainSecondary",
+    "questUi.dialog.trainSecondaryAria",
+    "questUi.dialog.trainerCurrent",
+    "questUi.dialog.trainerFree",
+    "questUi.dialog.trainerLevelLocked",
+    "questUi.dialog.trainerPickAria",
+    "questUi.dialog.trainerTitle"
   ],
   "es_ES": [
     "coldOpen.begin",
@@ -115,7 +122,14 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
-    "hudChrome.options.showOwnNameplate"
+    "hudChrome.options.showOwnNameplate",
+    "questUi.dialog.trainSecondary",
+    "questUi.dialog.trainSecondaryAria",
+    "questUi.dialog.trainerCurrent",
+    "questUi.dialog.trainerFree",
+    "questUi.dialog.trainerLevelLocked",
+    "questUi.dialog.trainerPickAria",
+    "questUi.dialog.trainerTitle"
   ],
   "fr_FR": [
     "coldOpen.begin",
@@ -169,7 +183,14 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
-    "hudChrome.options.showOwnNameplate"
+    "hudChrome.options.showOwnNameplate",
+    "questUi.dialog.trainSecondary",
+    "questUi.dialog.trainSecondaryAria",
+    "questUi.dialog.trainerCurrent",
+    "questUi.dialog.trainerFree",
+    "questUi.dialog.trainerLevelLocked",
+    "questUi.dialog.trainerPickAria",
+    "questUi.dialog.trainerTitle"
   ],
   "fr_CA": [
     "coldOpen.begin",
@@ -223,7 +244,14 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
-    "hudChrome.options.showOwnNameplate"
+    "hudChrome.options.showOwnNameplate",
+    "questUi.dialog.trainSecondary",
+    "questUi.dialog.trainSecondaryAria",
+    "questUi.dialog.trainerCurrent",
+    "questUi.dialog.trainerFree",
+    "questUi.dialog.trainerLevelLocked",
+    "questUi.dialog.trainerPickAria",
+    "questUi.dialog.trainerTitle"
   ],
   "en_CA": [],
   "it_IT": [
@@ -278,7 +306,14 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
-    "hudChrome.options.showOwnNameplate"
+    "hudChrome.options.showOwnNameplate",
+    "questUi.dialog.trainSecondary",
+    "questUi.dialog.trainSecondaryAria",
+    "questUi.dialog.trainerCurrent",
+    "questUi.dialog.trainerFree",
+    "questUi.dialog.trainerLevelLocked",
+    "questUi.dialog.trainerPickAria",
+    "questUi.dialog.trainerTitle"
   ],
   "de_DE": [
     "coldOpen.begin",
@@ -332,7 +367,14 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
-    "hudChrome.options.showOwnNameplate"
+    "hudChrome.options.showOwnNameplate",
+    "questUi.dialog.trainSecondary",
+    "questUi.dialog.trainSecondaryAria",
+    "questUi.dialog.trainerCurrent",
+    "questUi.dialog.trainerFree",
+    "questUi.dialog.trainerLevelLocked",
+    "questUi.dialog.trainerPickAria",
+    "questUi.dialog.trainerTitle"
   ],
   "zh_CN": [],
   "zh_TW": [],
@@ -390,7 +432,14 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
-    "hudChrome.options.showOwnNameplate"
+    "hudChrome.options.showOwnNameplate",
+    "questUi.dialog.trainSecondary",
+    "questUi.dialog.trainSecondaryAria",
+    "questUi.dialog.trainerCurrent",
+    "questUi.dialog.trainerFree",
+    "questUi.dialog.trainerLevelLocked",
+    "questUi.dialog.trainerPickAria",
+    "questUi.dialog.trainerTitle"
   ],
   "ru_RU": [],
   "nl_NL": [
@@ -445,7 +494,14 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
-    "hudChrome.options.showOwnNameplate"
+    "hudChrome.options.showOwnNameplate",
+    "questUi.dialog.trainSecondary",
+    "questUi.dialog.trainSecondaryAria",
+    "questUi.dialog.trainerCurrent",
+    "questUi.dialog.trainerFree",
+    "questUi.dialog.trainerLevelLocked",
+    "questUi.dialog.trainerPickAria",
+    "questUi.dialog.trainerTitle"
   ],
   "pl_PL": [
     "coldOpen.begin",
@@ -499,7 +555,14 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
-    "hudChrome.options.showOwnNameplate"
+    "hudChrome.options.showOwnNameplate",
+    "questUi.dialog.trainSecondary",
+    "questUi.dialog.trainSecondaryAria",
+    "questUi.dialog.trainerCurrent",
+    "questUi.dialog.trainerFree",
+    "questUi.dialog.trainerLevelLocked",
+    "questUi.dialog.trainerPickAria",
+    "questUi.dialog.trainerTitle"
   ],
   "id_ID": [
     "coldOpen.begin",
@@ -553,7 +616,14 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
-    "hudChrome.options.showOwnNameplate"
+    "hudChrome.options.showOwnNameplate",
+    "questUi.dialog.trainSecondary",
+    "questUi.dialog.trainSecondaryAria",
+    "questUi.dialog.trainerCurrent",
+    "questUi.dialog.trainerFree",
+    "questUi.dialog.trainerLevelLocked",
+    "questUi.dialog.trainerPickAria",
+    "questUi.dialog.trainerTitle"
   ],
   "tr_TR": [
     "coldOpen.begin",
@@ -607,7 +677,14 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
-    "hudChrome.options.showOwnNameplate"
+    "hudChrome.options.showOwnNameplate",
+    "questUi.dialog.trainSecondary",
+    "questUi.dialog.trainSecondaryAria",
+    "questUi.dialog.trainerCurrent",
+    "questUi.dialog.trainerFree",
+    "questUi.dialog.trainerLevelLocked",
+    "questUi.dialog.trainerPickAria",
+    "questUi.dialog.trainerTitle"
   ],
   "sv_SE": [
     "coldOpen.begin",
@@ -661,7 +738,14 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
-    "hudChrome.options.showOwnNameplate"
+    "hudChrome.options.showOwnNameplate",
+    "questUi.dialog.trainSecondary",
+    "questUi.dialog.trainSecondaryAria",
+    "questUi.dialog.trainerCurrent",
+    "questUi.dialog.trainerFree",
+    "questUi.dialog.trainerLevelLocked",
+    "questUi.dialog.trainerPickAria",
+    "questUi.dialog.trainerTitle"
   ],
   "vi_VN": [
     "coldOpen.begin",
@@ -715,7 +799,14 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
-    "hudChrome.options.showOwnNameplate"
+    "hudChrome.options.showOwnNameplate",
+    "questUi.dialog.trainSecondary",
+    "questUi.dialog.trainSecondaryAria",
+    "questUi.dialog.trainerCurrent",
+    "questUi.dialog.trainerFree",
+    "questUi.dialog.trainerLevelLocked",
+    "questUi.dialog.trainerPickAria",
+    "questUi.dialog.trainerTitle"
   ],
   "da_DK": [
     "coldOpen.begin",
@@ -769,6 +860,13 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
-    "hudChrome.options.showOwnNameplate"
+    "hudChrome.options.showOwnNameplate",
+    "questUi.dialog.trainSecondary",
+    "questUi.dialog.trainSecondaryAria",
+    "questUi.dialog.trainerCurrent",
+    "questUi.dialog.trainerFree",
+    "questUi.dialog.trainerLevelLocked",
+    "questUi.dialog.trainerPickAria",
+    "questUi.dialog.trainerTitle"
   ]
 };

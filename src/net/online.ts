@@ -18,6 +18,7 @@ import { deadTargetSelectable } from '../sim/dead_target';
 import { LEADERBOARD_PAGE_SIZE } from '../sim/leaderboard_page';
 import type { Ante, PickAction } from '../sim/lockpick';
 import { normalizeMoveFacing, sanitizeMoveInput } from '../sim/move_input';
+import { secondaryClassCostFor } from '../sim/progression/trainer';
 import { computeQuestState, type ResolvedAbility } from '../sim/sim';
 import {
   type Aura,
@@ -793,6 +794,8 @@ export class ClientWorld implements IWorld {
   loadouts: SavedLoadout[] = [];
   activeLoadout = -1;
   secondaryCls: PlayerClass | null = null;
+  // --- IWorldTrainer: mirrored from the same 'tal' snapshot block. ---
+  secondaryClsChanges = 0;
   questLog = new Map<string, QuestProgress>();
   questsDone = new Set<string>();
   // --- IWorldParty: party/raid roster, mirrored from the snapshot self (`party`).
@@ -1418,6 +1421,8 @@ export class ClientWorld implements IWorld {
         this.loadouts = s.tal.loadouts ?? [];
         this.activeLoadout = typeof s.tal.activeLoadout === 'number' ? s.tal.activeLoadout : -1;
         this.secondaryCls = s.tal.secondaryCls ?? null;
+        this.secondaryClsChanges =
+          typeof s.tal.secondaryClsChanges === 'number' ? s.tal.secondaryClsChanges : 0;
       }
       if (!this.talents) this.talents = emptyAllocation();
       const talents = this.talents;
@@ -2128,6 +2133,21 @@ export class ClientWorld implements IWorld {
         );
       }
     } else if (this.activeLoadout > index) this.activeLoadout -= 1;
+  }
+  // --- IWorldTrainer: Profession Trainer NPC (PHAA-464). secondaryClassCost is a
+  // local display-only preview; the server re-validates level/cost/legality on
+  // every setSecondaryClass send (it does not locally mutate secondaryCls, same
+  // as respec/setSpec, since the trainer command is fully server-authoritative). ---
+  secondaryClassCost(cls: PlayerClass): number | null {
+    return secondaryClassCostFor(
+      this.cfg.playerClass,
+      this.secondaryCls,
+      this.secondaryClsChanges,
+      cls,
+    );
+  }
+  setSecondaryClass(npcId: number, cls: PlayerClass): void {
+    this.cmd({ cmd: 'setSecondaryClass', npc: npcId, cls });
   }
   // legacy aliases kept for older scripts
   enterCrypt(): void {
