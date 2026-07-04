@@ -65,6 +65,7 @@ import {
   recordInGameAction,
 } from './moderation_db';
 import { type ModerationHost, ModerationService } from './moderation_service';
+import { generatePlantLine, isPlantLlmConfigured } from './plant_llm';
 import { REALM, REALM_PUBLIC_ORIGIN } from './realm';
 import { createSerialWriter } from './serial_writer';
 import type { Presence, PresenceStatus, SocialActor, SocialTransport } from './social';
@@ -960,7 +961,7 @@ export class GameServer {
         lap('stale');
         const events = this.sim.tick();
         lap('tick');
-        this.routeEvents(events);
+        this.routeEvents(this.interceptPlantUtterances(events));
         this.detectActivity(events);
         lap('events');
         this.runAntibotTick();
@@ -3545,6 +3546,51 @@ export class GameServer {
   private broadcastSystem(text: string): void {
     for (const session of this.clients.values()) {
       this.send(session, { t: 'events', list: [{ type: 'log', text, color: '#ffd100' }] });
+    }
+  }
+
+  // The Plant's live LLM ceiling (PHAA-423). plant_speech.ts (src/sim/) emits
+  // its canned line on a 'log' event tagged with `.plant` context; the sim
+  // never decides the words live, only WHEN/mode/mood (docs/plan-the-hollow.md
+  // section 7). `.plant` is ALWAYS stripped here, whether or not the live
+  // feature is configured - types.ts documents it never reaching real
+  // clients, and that must hold in the shipped-dark default too, not just
+  // once the Board flips the flag. When the feature is off (the default),
+  // the now-plain canned-line event still flows through the same tick's
+  // normal routeEvents broadcast below, so player-visible timing is
+  // unchanged from PHAA-422. When on, the tagged event is pulled out of
+  // THIS tick's routed batch entirely (never sent with the canned line
+  // first) and resolved async; the eventual line - live or, on any failure,
+  // the same canned fallback - broadcasts once, on its own, via
+  // broadcastPlantLine.
+  private interceptPlantUtterances(events: SimEvent[]): SimEvent[] {
+    // Every ordinary tick (no Plant utterance) returns `events` untouched,
+    // with no allocation - the Plant is rationed to speak rarely, so this
+    // runs 20 times a second and must stay free when there is nothing to do.
+    let out: SimEvent[] | null = null;
+    for (let i = 0; i < events.length; i++) {
+      const ev = events[i];
+      if (ev.type !== 'log' || !ev.plant) {
+        if (out) out.push(ev);
+        continue;
+      }
+      if (!out) out = events.slice(0, i);
+      const { plant, ...bare } = ev;
+      if (isPlantLlmConfigured()) {
+        const { text, color } = bare;
+        void generatePlantLine(plant, text).then((finalText) => {
+          this.broadcastPlantLine(finalText, color);
+        });
+        continue; // drop from this tick's batch; broadcastPlantLine sends it later
+      }
+      out.push(bare);
+    }
+    return out ?? events;
+  }
+
+  private broadcastPlantLine(text: string, color: string | undefined): void {
+    for (const session of this.clients.values()) {
+      this.send(session, { t: 'events', list: [{ type: 'log', text, color }] });
     }
   }
 

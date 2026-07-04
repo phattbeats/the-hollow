@@ -43,18 +43,22 @@
 // blocking this deterministic floor.
 
 import type { SimContext } from './sim_context';
+import type {
+  PlantMode,
+  PlantMood,
+  PlantSoreSpot,
+  PlantThresholdKind,
+  PlantTrigger,
+  PlantUtteranceMeta,
+} from './types';
 
-export type PlantMode =
-  | 'default_cutting'
-  | 'storyteller'
-  | 'plant_fact'
-  | 'prophecy'
-  | 'divine_rage'
-  | 'music_reaction';
+// Re-exported for existing external importers (sim_context.ts); the
+// canonical definitions now live in types.ts alongside the SimEvent union
+// that carries them (PHAA-423: the live LLM ceiling needs PlantMode/mood on
+// the wire between this module and server/plant_llm.ts).
+export type { PlantMode, PlantThresholdKind } from './types';
 
-export type PlantThresholdKind = 'house_claimed';
-
-type Mood = 'clear' | 'hazy'; // 'hazy' also covers the 'full' smoke band
+type Mood = PlantMood; // 'hazy' also covers the 'full' smoke band
 
 // Mirrors greenpaw_hearth.ts's levelFor thresholds; duplicated rather than
 // imported so this module reads the raw smoke number Sim threads through at
@@ -248,6 +252,11 @@ export class PlantSpeech {
   private nextWhimAt = -1;
   private sawFull = false;
   private lastMode: PlantMode | null = null;
+  // The mood computed on the most recent update() tick, so notifyThreshold()
+  // and handleChat() (called off-tick, from other systems / chat) can stamp
+  // an utterance's PlantUtteranceMeta without a second SimContext primitive
+  // for a value Sim already threads through update() every tick.
+  private currentMood: Mood = 'clear';
   // pool key ("mode:mood" or "threshold:kind" or an address pool name) -> the
   // last line index drawn from it, so the same line never repeats back to
   // back within its own pool.
@@ -278,20 +287,21 @@ export class PlantSpeech {
     if (this.nextWhimAt < 0) this.nextWhimAt = this.ctx.time + WHIM_MIN_SECONDS;
 
     const mood = levelFor(smoke);
+    this.currentMood = mood;
     // "the room is full of smoke" (5.2): an edge trigger, not a level trigger
     // - it fires once when the room crosses INTO full, not on every tick
     // spent there, and re-arms the next time it drops back out of full.
     if (smoke >= SMOKE_FULL_AT) {
       if (!this.sawFull) {
         this.sawFull = true;
-        this.trySpeak(mood);
+        this.trySpeak(mood, 'full_smoke');
       }
     } else {
       this.sawFull = false;
     }
 
     if (this.ctx.time >= this.nextWhimAt) {
-      this.trySpeak(mood);
+      this.trySpeak(mood, 'whim');
       this.nextWhimAt = this.ctx.time + this.drawGap(WHIM_MIN_SECONDS, WHIM_MAX_SECONDS);
     }
   }
@@ -304,7 +314,9 @@ export class PlantSpeech {
     if (this.ctx.time < this.nextEarliestSpeakAt) return; // rationed into silence
     const pool = THRESHOLD_LINES[kind];
     if (!pool || pool.length === 0) return;
-    this.speak('default_cutting', this.pickLine(`threshold:${kind}`, pool));
+    this.speak('default_cutting', this.pickLine(`threshold:${kind}`, pool), {
+      trigger: 'threshold',
+    });
   }
 
   // "/plant [text]" - addressing the Plant directly earns contempt (5.3:
@@ -318,8 +330,14 @@ export class PlantSpeech {
     if (this.ctx.time < this.nextEarliestSpeakAt) return true; // handled, but rationed into silence
     const meta = this.ctx.players.get(pid);
     const name = meta?.name ?? 'mortal';
-    const { mode, text } = this.pickAddressLine(m[1] ?? '', name);
-    this.speak(mode, text);
+    const addressedText = m[1] ?? '';
+    const { mode, text, soreSpot } = this.pickAddressLine(addressedText, name);
+    this.speak(mode, text, {
+      trigger: 'address',
+      addressedByName: name,
+      addressedText,
+      soreSpot,
+    });
     return true;
   }
 
@@ -334,13 +352,15 @@ export class PlantSpeech {
     if (this.ctx.rng.next() >= CHAT_REACT_CHANCE) return; // most chat goes unremarked
     const topic = this.matchTopicLine(text.toLowerCase());
     if (topic) {
-      this.speak(topic.mode, topic.text);
+      this.speak(topic.mode, topic.text, { trigger: 'ambient', soreSpot: topic.soreSpot });
       return;
     }
-    this.speak('default_cutting', this.pickLine('eavesdrop', EAVESDROP_LINES));
+    this.speak('default_cutting', this.pickLine('eavesdrop', EAVESDROP_LINES), {
+      trigger: 'ambient',
+    });
   }
 
-  private trySpeak(mood: Mood): void {
+  private trySpeak(mood: Mood, trigger: Extract<PlantTrigger, 'whim' | 'full_smoke'>): void {
     if (this.ctx.time < this.nextEarliestSpeakAt) return; // rationed into silence
     let mode = this.pickMode(mood);
     // Retire stale gags: don't let the same FLAVOR mode (storyteller/
@@ -353,7 +373,7 @@ export class PlantSpeech {
       mode = this.pickMode(mood);
     }
     const text = this.pickLine(`${mode}:${mood}`, poolFor(mode, mood));
-    this.speak(mode, text);
+    this.speak(mode, text, { trigger });
   }
 
   private pickMode(mood: Mood): PlantMode {
@@ -372,12 +392,22 @@ export class PlantSpeech {
   // chat (handleAmbientChat): sore spots (5.5) and the never-honors-the-
   // clergy-name rule (5.3) fire the same way whether the Plant was addressed
   // or merely overheard the topic.
-  private matchTopicLine(lower: string): { mode: PlantMode; text: string } | null {
+  private matchTopicLine(
+    lower: string,
+  ): { mode: PlantMode; text: string; soreSpot?: PlantSoreSpot } | null {
     if (/smokey/.test(lower)) {
-      return { mode: 'divine_rage', text: this.pickLine('address:smokey', SMOKEY_LINES) };
+      return {
+        mode: 'divine_rage',
+        text: this.pickLine('address:smokey', SMOKEY_LINES),
+        soreSpot: 'smokey',
+      };
     }
     if (/\bbur(y|ied|ial)\b|\bdig\b|foundations?/.test(lower)) {
-      return { mode: 'prophecy', text: this.pickLine('address:buried', BURIED_LINES) };
+      return {
+        mode: 'prophecy',
+        text: this.pickLine('address:buried', BURIED_LINES),
+        soreSpot: 'buried',
+      };
     }
     if (/brother greenpaw|high priest|first prophet|clergy/.test(lower)) {
       return {
@@ -391,7 +421,10 @@ export class PlantSpeech {
     return null;
   }
 
-  private pickAddressLine(message: string, name: string): { mode: PlantMode; text: string } {
+  private pickAddressLine(
+    message: string,
+    name: string,
+  ): { mode: PlantMode; text: string; soreSpot?: PlantSoreSpot } {
     const topic = this.matchTopicLine(message.toLowerCase());
     if (topic) return topic;
     const text = this.pickLine('address:command', COMMAND_REFUSAL_LINES).replace('{name}', name);
@@ -412,11 +445,28 @@ export class PlantSpeech {
     return this.ctx.rng.range(min, max);
   }
 
-  private speak(mode: PlantMode, text: string): void {
+  // `text` is always the deterministic, curated fallback (PHAA-422's floor):
+  // this module NEVER calls out to anything external and NEVER decides the
+  // words live (docs/plan-the-hollow.md section 7: "the sim decides WHEN the
+  // Plant speaks and in what mode/mood; the server-side generator decides the
+  // words"). `meta` carries just enough context for the server's optional
+  // live-LLM ceiling (server/plant_llm.ts) to prompt without re-deriving
+  // state; offline/no-server builds and a disabled/unconfigured server
+  // ignore it and simply show `text`.
+  private speak(
+    mode: PlantMode,
+    text: string,
+    meta: Omit<PlantUtteranceMeta, 'mode' | 'mood'>,
+  ): void {
     this.lastMode = mode;
     // No `pid`: a world-wide broadcast, one shared voice for the whole
     // server (5.2), exactly like a world-boss "awakens!" log line.
-    this.ctx.emit({ type: 'log', text, color: PLANT_COLOR });
+    this.ctx.emit({
+      type: 'log',
+      text,
+      color: PLANT_COLOR,
+      plant: { mode, mood: this.currentMood, ...meta },
+    });
     this.nextEarliestSpeakAt = this.ctx.time + this.drawGap(MIN_GAP_SECONDS, MAX_GAP_SECONDS);
   }
 }

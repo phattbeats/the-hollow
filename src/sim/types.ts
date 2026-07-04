@@ -1521,6 +1521,40 @@ export interface NythraxisEncounterState {
 
 export type ErrorReason = 'target_dead';
 
+// The Plant (PHAA-422 the deterministic floor, PHAA-423 the live LLM
+// ceiling). PlantMode/PlantThresholdKind live here (not plant_speech.ts)
+// because the SimEvent union below needs them; plant_speech.ts re-exports
+// both for its existing external importers.
+export type PlantMode =
+  | 'default_cutting'
+  | 'storyteller'
+  | 'plant_fact'
+  | 'prophecy'
+  | 'divine_rage'
+  | 'music_reaction';
+
+export type PlantThresholdKind = 'house_claimed';
+
+export type PlantMood = 'clear' | 'hazy';
+
+export type PlantTrigger = 'whim' | 'full_smoke' | 'threshold' | 'address' | 'ambient';
+
+export type PlantSoreSpot = 'smokey' | 'buried';
+
+// Server-only context threaded alongside a Plant utterance's canned fallback
+// text, so the live LLM generator (server/plant_llm.ts) can prompt without
+// re-deriving state the sim already decided. Never DOM/network-related, so
+// carrying it on the sim-emitted event does not violate sim purity: it is
+// inert data the server may or may not act on. `src/sim/` never reads it back.
+export interface PlantUtteranceMeta {
+  mode: PlantMode;
+  mood: PlantMood;
+  trigger: PlantTrigger;
+  addressedByName?: string;
+  addressedText?: string;
+  soreSpot?: PlantSoreSpot;
+}
+
 // `pid` (when present) marks a personal event that should only be delivered to
 // that player entity's owner; events without pid are world-visible.
 export type SimEvent = { pid?: number } & (
@@ -1671,8 +1705,13 @@ export type SimEvent = { pid?: number } & (
       fx: 'projectile' | 'beam' | 'tick' | 'nova';
     }
   // entityId (when set) anchors the log to that entity so the server only
-  // delivers it to nearby players; anchorless logs broadcast server-wide
-  | { type: 'log'; text: string; color?: string; entityId?: number }
+  // delivers it to nearby players; anchorless logs broadcast server-wide.
+  // `plant` (when set) marks a Plant utterance and carries the context the
+  // live LLM generator needs; it rides the wire in offline/no-server builds
+  // (harmless - the client only reads text/color) but the online server
+  // strips it before broadcasting (server/plant_llm.ts), so real players
+  // never see it over the wire.
+  | { type: 'log'; text: string; color?: string; entityId?: number; plant?: PlantUtteranceMeta }
   | { type: 'delveEntered'; delveId: string; tierId: string }
   | { type: 'delveComplete'; delveId: string; tierId: string }
   | { type: 'delveFailed'; delveId: string; tierId: string }
