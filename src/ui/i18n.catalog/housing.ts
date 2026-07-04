@@ -4,6 +4,8 @@
 
 const housingStringsEn = {
   housingUi: {
+    claimedBanner: 'You claim this plot as your home.',
+    ownerBanner: "This is {name}'s homestead.",
     window: {
       title: 'Your Homestead',
       close: 'Close homestead',

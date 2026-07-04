@@ -3401,6 +3401,8 @@ export const en_XA: EnTranslations = {
     }
   },
   "housingUi": {
+    "claimedBanner": "[Ýóú çļáíɱ ţĥíš þļóţ áš ýóúŕ ĥóɱé.]",
+    "ownerBanner": "[Ţĥíš íš {name}'š ĥóɱéšţéáð.]",
     "window": {
       "title": "[Ýóúŕ Ĥóɱéšţéáð]",
       "close": "[Çļóšé ĥóɱéšţéáð]",

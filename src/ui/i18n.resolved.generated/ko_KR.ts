@@ -3401,6 +3401,8 @@ export const ko_KR: EnTranslations = {
     }
   },
   "housingUi": {
+    "claimedBanner": "You claim this plot as your home.",
+    "ownerBanner": "This is {name}'s homestead.",
     "window": {
       "title": "나의 보금자리",
       "close": "보금자리 닫기",
