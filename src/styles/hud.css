@@ -3256,6 +3256,27 @@
     letter-spacing: 1px;
     white-space: nowrap;
   }
+  /* Housing signpost interact prompt (PHAA-405): sits low and stays hidden by
+     default, toggled per-frame while the player is close enough to make the
+     signpost glow (housing_prompt_painter.ts). Snappier than the story banners
+     above since it must track the player walking in and out of range. */
+  #housing-prompt {
+    display: none;
+    position: absolute;
+    left: 50%;
+    bottom: 22%;
+    transform: translateX(-50%);
+    color: var(--gold);
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow:
+      0 0 10px #00000088,
+      1px 1px 3px #000;
+    pointer-events: none;
+    font-family: var(--title-font);
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
 
   /* ---------- low-health screen vignette ---------- */
   /* Pulsing red edge glow that fades in as the player nears death. Opacity and

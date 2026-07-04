@@ -3403,6 +3403,11 @@ export const ru_RU: EnTranslations = {
   "housingUi": {
     "claimedBanner": "Вы объявили этот участок своим домом.",
     "ownerBanner": "Это усадьба {name}.",
+    "prompt": {
+      "claim": "Claim this plot",
+      "manage": "Manage your homestead",
+      "visit": "Visit {name}'s home"
+    },
     "window": {
       "title": "Ваша усадьба",
       "close": "Закрыть усадьбу",

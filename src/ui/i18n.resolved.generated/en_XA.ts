@@ -3403,6 +3403,11 @@ export const en_XA: EnTranslations = {
   "housingUi": {
     "claimedBanner": "[Ýóú çļáíɱ ţĥíš þļóţ áš ýóúŕ ĥóɱé.]",
     "ownerBanner": "[Ţĥíš íš {name}'š ĥóɱéšţéáð.]",
+    "prompt": {
+      "claim": "[Çļáíɱ ţĥíš þļóţ]",
+      "manage": "[Ɱáñáĝé ýóúŕ ĥóɱéšţéáð]",
+      "visit": "[Ʋíšíţ {name}'š ĥóɱé]"
+    },
     "window": {
       "title": "[Ýóúŕ Ĥóɱéšţéáð]",
       "close": "[Çļóšé ĥóɱéšţéáð]",

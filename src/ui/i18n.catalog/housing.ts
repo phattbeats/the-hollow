@@ -6,6 +6,11 @@ const housingStringsEn = {
   housingUi: {
     claimedBanner: 'You claim this plot as your home.',
     ownerBanner: "This is {name}'s homestead.",
+    prompt: {
+      claim: 'Claim this plot',
+      manage: 'Manage your homestead',
+      visit: "Visit {name}'s home",
+    },
     window: {
       title: 'Your Homestead',
       close: 'Close homestead',
