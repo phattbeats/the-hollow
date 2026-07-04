@@ -62,6 +62,8 @@ export interface TalentsWindowDeps extends PainterHostPresentation {
   setStage(stage: TalentAllocation | null): void;
   // World reads: the seed + the point economy + the saved loadouts. Read, not mutated.
   playerClass(): PlayerClass;
+  /** The secondary profession (null on single-class characters); validation context only. */
+  secondaryClass(): PlayerClass | null;
   totalPoints(): number;
   currentAllocation(): TalentAllocation;
   activeLoadout(): number;
@@ -181,7 +183,7 @@ export class TalentsWindow {
       this.deps.setStage(stage);
     }
     const total = this.deps.totalPoints();
-    const view = buildTalentsView(stage, cls, total);
+    const view = buildTalentsView(stage, cls, total, this.deps.secondaryClass());
 
     el.innerHTML =
       `<div class="panel-title"><span>${t('game.talents.title')} <span style="color:${TAL_COLOR.classAccent};font-size:11px">${esc(classDisplayName(cls))}</span></span>${close}</div>` +
@@ -384,7 +386,7 @@ export class TalentsWindow {
     if (ranks >= n.maxRank) return;
     const cand = cloneAllocation(stage);
     cand.ranks[n.id] = ranks + 1;
-    if (!validateAllocation(cls, cand, total).ok) return;
+    if (!validateAllocation(cls, cand, total, this.deps.secondaryClass()).ok) return;
     stage.ranks[n.id] = ranks + 1;
     this.render();
   }
@@ -484,7 +486,7 @@ export class TalentsWindow {
         const cand = cloneAllocation(stage);
         cand.ranks[node.id] = 1;
         cand.choices[node.id] = optId;
-        if (!validateAllocation(cls, cand, total).ok) {
+        if (!validateAllocation(cls, cand, total, this.deps.secondaryClass()).ok) {
           dismiss(true); // can't afford / gated: no re-render, so return focus to the node
           return;
         }
@@ -604,7 +606,7 @@ export class TalentsWindow {
       });
     };
     el.querySelector('[data-act="save"]')?.addEventListener('click', () => {
-      if (!validateAllocation(cls, stage, total).ok) {
+      if (!validateAllocation(cls, stage, total, this.deps.secondaryClass()).ok) {
         this.deps.showError(t('game.talents.buildInvalid'));
         return;
       }
@@ -614,7 +616,7 @@ export class TalentsWindow {
       else promptNewBuild();
     });
     el.querySelector('[data-act="new"]')?.addEventListener('click', () => {
-      if (!validateAllocation(cls, stage, total).ok) {
+      if (!validateAllocation(cls, stage, total, this.deps.secondaryClass()).ok) {
         this.deps.showError(t('game.talents.buildInvalid'));
         return;
       }
@@ -676,7 +678,7 @@ export class TalentsWindow {
       this.deps.inputDialog({
         title: t('game.talents.export'),
         label: t('game.talents.exportTitle'),
-        value: exportBuild(cls, active?.alloc ?? stage),
+        value: exportBuild(cls, active?.alloc ?? stage, this.deps.secondaryClass()),
         multiline: true,
         readOnly: true,
         copy: true,
@@ -693,6 +695,12 @@ export class TalentsWindow {
         onOk: (str) => {
           const res = importBuild(str.trim());
           if (!res.ok || res.cls !== cls) {
+            this.deps.showError(t('game.talents.invalidBuild'));
+            return;
+          }
+          // A dual-profession build only fits a character with that same
+          // secondary; the server re-validates authoritatively on apply.
+          if (res.secondaryCls && res.secondaryCls !== this.deps.secondaryClass()) {
             this.deps.showError(t('game.talents.invalidBuild'));
             return;
           }

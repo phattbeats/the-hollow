@@ -1421,7 +1421,7 @@ export class ClientWorld implements IWorld {
       this.known = abilitiesKnownAt(
         this.cfg.playerClass,
         e.level,
-        computeTalentModifiers(this.cfg.playerClass, talents),
+        computeTalentModifiers(this.cfg.playerClass, talents, this.secondaryCls),
         this.secondaryCls,
       );
       // --- IWorldParty: party roster + raid markers, delta-omitted self-decode
@@ -2098,7 +2098,7 @@ export class ClientWorld implements IWorld {
       this.known = abilitiesKnownAt(
         this.cfg.playerClass,
         this.player.level,
-        computeTalentModifiers(this.cfg.playerClass, this.talents),
+        computeTalentModifiers(this.cfg.playerClass, this.talents, this.secondaryCls),
         this.secondaryCls,
       );
     }
@@ -2120,7 +2120,7 @@ export class ClientWorld implements IWorld {
         this.known = abilitiesKnownAt(
           this.cfg.playerClass,
           this.player.level,
-          computeTalentModifiers(this.cfg.playerClass, this.talents),
+          computeTalentModifiers(this.cfg.playerClass, this.talents, this.secondaryCls),
           this.secondaryCls,
         );
       }

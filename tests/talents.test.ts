@@ -915,3 +915,217 @@ describe('performance invariant (no per-tick tree walk)', () => {
     expect(sim.meta(sim.playerId)!.known.find((k) => k.def.id === 'overpower')).toBe(overpowerRef);
   });
 });
+
+describe('dual-profession shared point pool (PHAA-463)', () => {
+  const dual = (
+    primary: Partial<TalentAllocation> = {},
+    secondary: {
+      spec?: string | null;
+      ranks?: Record<string, number>;
+      choices?: Record<string, string>;
+    } = {},
+  ): TalentAllocation =>
+    alloc({
+      ...primary,
+      secondary: { spec: null, ranks: {}, choices: {}, ...secondary },
+    });
+
+  it('accepts secondary spend up to floor(total/2) and rejects one point past it', () => {
+    // 11-point pool -> secondary cap 5
+    const atCap = dual({}, { ranks: { dru_natures_grasp: 3, dru_feral_aggression: 2 } });
+    expect(validateAllocation('warrior', atCap, 11, 'druid').ok).toBe(true);
+    const overCap = dual({}, { ranks: { dru_natures_grasp: 3, dru_feral_aggression: 3 } });
+    expect(validateAllocation('warrior', overCap, 11, 'druid')).toMatchObject({
+      ok: false,
+      reason: 'too many points in the secondary profession',
+    });
+  });
+
+  it('enforces the SHARED pool across both trees', () => {
+    const a = dual(
+      { ranks: { war_toughness: 3, war_cruelty: 3, war_imp_heroic_strike: 1 } }, // 7
+      { ranks: { dru_natures_grasp: 3, dru_feral_aggression: 2 } }, // 5 -> 12 > 11
+    );
+    expect(validateAllocation('warrior', a, 11, 'druid')).toMatchObject({
+      ok: false,
+      reason: 'not enough talent points',
+    });
+    const b = dual(
+      { ranks: { war_toughness: 3, war_cruelty: 3 } }, // 6
+      { ranks: { dru_natures_grasp: 3, dru_feral_aggression: 2 } }, // 5 -> 11 ok
+    );
+    expect(validateAllocation('warrior', b, 11, 'druid').ok).toBe(true);
+    expect(pointsSpent(b)).toBe(11);
+  });
+
+  it('rejects secondary spend without a secondary profession', () => {
+    const a = dual({}, { ranks: { dru_natures_grasp: 1 } });
+    expect(validateAllocation('warrior', a, 11)).toMatchObject({
+      ok: false,
+      reason: 'no secondary profession',
+    });
+  });
+
+  it('enforces node rules inside the secondary tree', () => {
+    // dru_imp_mark requires dru_natures_grasp
+    const noPrereq = dual({}, { ranks: { dru_imp_mark: 1 } });
+    expect(validateAllocation('warrior', noPrereq, 11, 'druid').ok).toBe(false);
+    const withPrereq = dual({}, { ranks: { dru_natures_grasp: 1, dru_imp_mark: 1 } });
+    expect(validateAllocation('warrior', withPrereq, 11, 'druid').ok).toBe(true);
+    // secondary spec-tree points need the matching secondary spec
+    const wrongSpec = dual({}, { spec: 'balance', ranks: { bal_imp_wrath: 1 } });
+    expect(validateAllocation('warrior', wrongSpec, 11, 'druid').ok).toBe(true);
+    const noSpec = dual({}, { ranks: { bal_imp_wrath: 1 } });
+    expect(validateAllocation('warrior', noSpec, 11, 'druid').ok).toBe(false);
+  });
+
+  it('merges both trees into one flat struct, deterministically', () => {
+    const a = dual(
+      { ranks: { war_toughness: 2 } },
+      { ranks: { dru_natures_grasp: 3, dru_feral_aggression: 2 } },
+    );
+    const merged = computeTalentModifiers('warrior', a, 'druid');
+    const primaryOnly = computeTalentModifiers('warrior', alloc({ ranks: { war_toughness: 2 } }));
+    const secondaryOnly = computeTalentModifiers('druid', {
+      spec: null,
+      ranks: { dru_natures_grasp: 3, dru_feral_aggression: 2 },
+      choices: {},
+    });
+    // same output shape: flat sums of the two single-tree computes
+    expect(merged.stats.spi).toBe(primaryOnly.stats.spi + secondaryOnly.stats.spi);
+    expect(merged.stats.sta).toBe(primaryOnly.stats.sta + secondaryOnly.stats.sta);
+    expect(merged.abilities.maul?.dmgPct).toBeCloseTo(0.1, 10);
+    expect(merged.abilities.entangling_roots?.costPct).toBeCloseTo(-0.18, 10);
+    // deterministic: identical calls produce identical structs
+    expect(computeTalentModifiers('warrior', a, 'druid')).toEqual(merged);
+    // ignoring the secondary class param drops only the secondary contribution
+    expect(computeTalentModifiers('warrior', a, null)).toEqual(primaryOnly);
+  });
+
+  it('keeps the PRIMARY spec/role while granting the secondary spec signature (druid forms as secondary)', () => {
+    const a: TalentAllocation = {
+      spec: 'arms',
+      ranks: {},
+      choices: {},
+      secondary: { spec: 'feral', ranks: {}, choices: {} },
+    };
+    const mods = computeTalentModifiers('warrior', a, 'druid');
+    expect(mods.spec).toBe('arms');
+    expect(mods.role).toBe('dps');
+    // Tyler-Ask: bear form stays grantable via talents with druid as SECONDARY
+    expect(mods.grants.some((g) => g.ability === 'bear_form')).toBe(true);
+  });
+
+  it('round-trips a two-tree build string exactly', () => {
+    const a = dual(
+      { spec: 'arms', ranks: { war_toughness: 2 }, choices: {} },
+      { spec: 'feral', ranks: { dru_natures_grasp: 2 }, choices: {} },
+    );
+    const res = importBuild(exportBuild('warrior', a, 'druid'));
+    expect(res.ok).toBe(true);
+    if (res.ok) {
+      expect(res.cls).toBe('warrior');
+      expect(res.secondaryCls).toBe('druid');
+      expect(res.alloc).toEqual(a);
+    }
+  });
+
+  it('imports an old single-tree build string unchanged (back-compat)', () => {
+    const single = alloc({ spec: 'arms', ranks: { war_toughness: 3 } });
+    const res = importBuild(exportBuild('warrior', single));
+    expect(res.ok).toBe(true);
+    if (res.ok) {
+      expect(res.secondaryCls).toBeNull();
+      expect(res.alloc.secondary).toBeUndefined();
+      expect(res.alloc).toEqual(single);
+    }
+    // a hand-built v1 payload without the c2/s2/r2/h2 fields (pre-463 exporter)
+    const legacy = Buffer.from(
+      JSON.stringify({
+        v: TALENT_BUILD_VERSION,
+        c: 'warrior',
+        s: null,
+        r: { war_cruelty: 2 },
+        h: {},
+      }),
+      'utf-8',
+    ).toString('base64');
+    const res2 = importBuild(legacy);
+    expect(res2.ok).toBe(true);
+    if (res2.ok) expect(res2.alloc).toEqual(alloc({ ranks: { war_cruelty: 2 } }));
+  });
+
+  it('rejects a secondary block naming an unknown or same-as-primary profession', () => {
+    const bad = Buffer.from(
+      JSON.stringify({
+        v: TALENT_BUILD_VERSION,
+        c: 'warrior',
+        s: null,
+        r: {},
+        h: {},
+        c2: 'warrior',
+      }),
+      'utf-8',
+    ).toString('base64');
+    expect(importBuild(bad)).toMatchObject({ ok: false });
+  });
+
+  it('repairAllocation clamps an over-cap secondary while preserving the primary', () => {
+    const tampered = dual(
+      { ranks: { war_toughness: 3, war_cruelty: 3 } }, // 6
+      { ranks: { dru_natures_grasp: 3, dru_feral_aggression: 3 } }, // 6 > cap 5
+    );
+    const repaired = repairAllocation('warrior', tampered, 11, 'druid');
+    expect(repaired.ranks).toEqual({ war_toughness: 3, war_cruelty: 3 });
+    const secSpent = Object.values(repaired.secondary!.ranks).reduce((a, b) => a + b, 0);
+    expect(secSpent).toBe(5);
+    expect(validateAllocation('warrior', repaired, 11, 'druid').ok).toBe(true);
+    // an honest dual build repairs to itself
+    const honest = dual({ ranks: { war_toughness: 2 } }, { ranks: { dru_natures_grasp: 2 } });
+    expect(repairAllocation('warrior', honest, 11, 'druid')).toEqual(honest);
+  });
+
+  it('Sim: applies a dual allocation, persists it, and respec clears BOTH trees', () => {
+    const sim = warriorAtCap();
+    sim.meta(sim.playerId)!.secondaryCls = 'druid';
+    const a = dual(
+      { spec: 'arms', ranks: { war_toughness: 2 } },
+      { spec: 'feral', ranks: { dru_natures_grasp: 2 } },
+    );
+    expect(sim.applyTalents(a)).toBe(true);
+    expect(sim.meta(sim.playerId)!.talentMods.grants.some((g) => g.ability === 'bear_form')).toBe(
+      true,
+    );
+    // JSONB round-trip: the secondary block persists and reloads
+    const state = sim.serializeCharacter(sim.playerId)!;
+    expect(state.talents?.secondary).toEqual({
+      spec: 'feral',
+      ranks: { dru_natures_grasp: 2 },
+      choices: {},
+    });
+    const sim2 = new Sim({ seed: 7, playerClass: 'warrior', noPlayer: true });
+    const pid2 = sim2.addPlayer('warrior', 'Dual', { state });
+    expect(sim2.meta(pid2)!.talents.secondary).toEqual({
+      spec: 'feral',
+      ranks: { dru_natures_grasp: 2 },
+      choices: {},
+    });
+    expect(sim2.meta(pid2)!.talentMods.grants.some((g) => g.ability === 'bear_form')).toBe(true);
+    // respec: both trees cleared, both specs retained
+    expect(sim.respec()).toBe(true);
+    const t = sim.meta(sim.playerId)!.talents;
+    expect(t.ranks).toEqual({});
+    expect(t.secondary).toEqual({ spec: 'feral', ranks: {}, choices: {} });
+    expect(t.spec).toBe('arms');
+  });
+
+  it('Sim: rejects an over-cap secondary spend server-side', () => {
+    const sim = warriorAtCap();
+    sim.meta(sim.playerId)!.secondaryCls = 'druid';
+    const over = dual({}, { ranks: { dru_natures_grasp: 3, dru_feral_aggression: 3 } });
+    expect(sim.applyTalents(over)).toBe(false);
+    // and any secondary spend at all without a secondary profession
+    const sim2 = warriorAtCap();
+    expect(sim2.applyTalents(dual({}, { ranks: { dru_natures_grasp: 1 } }))).toBe(false);
+  });
+});

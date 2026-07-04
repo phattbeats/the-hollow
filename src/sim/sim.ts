@@ -1280,8 +1280,18 @@ export class Sim {
             spec: s.talents.spec ?? null,
             ranks: { ...s.talents.ranks },
             choices: { ...s.talents.choices },
+            ...(s.talents.secondary
+              ? {
+                  secondary: {
+                    spec: s.talents.secondary.spec ?? null,
+                    ranks: { ...s.talents.secondary.ranks },
+                    choices: { ...s.talents.secondary.choices },
+                  },
+                }
+              : {}),
           },
           talentPointsAtLevel(player.level),
+          meta.secondaryCls,
         );
       if (s.loadouts)
         meta.loadouts = s.loadouts.map((l) => ({
@@ -1311,7 +1321,7 @@ export class Sim {
 
     // Resolve the flat talent struct once, before the stat pass + ability
     // resolver below consume it (they only ever read these flat numbers).
-    meta.talentMods = computeTalentModifiers(cls, meta.talents);
+    meta.talentMods = computeTalentModifiers(cls, meta.talents, meta.secondaryCls);
     this.refreshKnownAbilities(meta, false);
     recalcPlayerStats(player, cls, meta.equipment, meta.talentMods);
     if (savedState) {

@@ -2538,6 +2538,7 @@ export class Hud {
       this.talentStage = s;
     },
     playerClass: () => this.sim.cfg.playerClass,
+    secondaryClass: () => this.sim.secondaryCls,
     totalPoints: () => this.sim.talentPoints().total,
     currentAllocation: () => this.sim.talents,
     activeLoadout: () => this.sim.activeLoadout,

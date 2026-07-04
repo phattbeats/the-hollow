@@ -115,12 +115,24 @@ export interface ClassTalents {
   specs: SpecDef[];
 }
 
+// The secondary profession's tree picks (GW1 multiclass, PHAA-463). Same shape
+// as the primary block but keyed by the SECONDARY class's node/spec ids. Spend
+// here draws from the one shared point pool, capped at floor(total/2).
+export interface SecondaryAllocation {
+  spec: string | null;
+  ranks: Record<string, number>;
+  choices: Record<string, string>;
+}
+
 // What the player has chosen. Persisted in CharacterState and round-tripped
 // through build strings.
 export interface TalentAllocation {
   spec: string | null;
   ranks: Record<string, number>; // nodeId -> ranks spent
   choices: Record<string, string>; // choice nodeId -> chosen option id
+  // Present only for a character with a secondary profession; absent/null on
+  // single-class builds (back-compat: old saves have no field).
+  secondary?: SecondaryAllocation | null;
 }
 
 export function emptyAllocation(): TalentAllocation {
@@ -128,7 +140,15 @@ export function emptyAllocation(): TalentAllocation {
 }
 
 export function cloneAllocation(a: TalentAllocation): TalentAllocation {
-  return { spec: a.spec, ranks: { ...a.ranks }, choices: { ...a.choices } };
+  const out: TalentAllocation = { spec: a.spec, ranks: { ...a.ranks }, choices: { ...a.choices } };
+  if (a.secondary) {
+    out.secondary = {
+      spec: a.secondary.spec,
+      ranks: { ...a.secondary.ranks },
+      choices: { ...a.secondary.choices },
+    };
+  }
+  return out;
 }
 
 export interface SavedLoadout {
@@ -198,10 +218,24 @@ export function talentPointsAtLevel(level: number): number {
   return Math.max(0, Math.min(level, MAX_LEVEL) - (FIRST_TALENT_LEVEL - 1));
 }
 
+// Total spend across BOTH professions' trees (the shared pool consumes both).
 export function pointsSpent(alloc: TalentAllocation): number {
   let n = 0;
   for (const k in alloc.ranks) n += alloc.ranks[k];
+  n += secondaryPointsSpent(alloc);
   return n;
+}
+
+export function secondaryPointsSpent(alloc: TalentAllocation): number {
+  let n = 0;
+  const sec = alloc.secondary;
+  if (sec) for (const k in sec.ranks) n += sec.ranks[k];
+  return n;
+}
+
+// The secondary tree may hold at most half the shared pool (PHAA-463).
+export function secondaryPointCap(totalPoints: number): number {
+  return Math.floor(Math.max(0, totalPoints) / 2);
 }
 
 function _pointsSpentInTree(ct: ClassTalents, alloc: TalentAllocation, tree: TalentTree): number {
@@ -246,13 +280,13 @@ export function specLabel(
 
 // Points spent in `node`'s tree on nodes strictly above its row — what a
 // pointsGate is measured against (avoids the self-reference paradox).
-function pointsAboveRow(ct: ClassTalents, alloc: TalentAllocation, node: TalentNode): number {
+function pointsAboveRow(ct: ClassTalents, ranks: Record<string, number>, node: TalentNode): number {
   const idx = nodeIndex(ct);
   let n = 0;
-  for (const id in alloc.ranks) {
+  for (const id in ranks) {
     const other = idx.get(id);
     if (other && other.tree === node.tree && other.specId === node.specId && other.row < node.row) {
-      n += alloc.ranks[id];
+      n += ranks[id];
     }
   }
   return n;
@@ -355,40 +389,70 @@ export interface AllocCheck {
   reason?: string;
 }
 
-export function validateAllocation(
-  cls: PlayerClass,
-  alloc: TalentAllocation,
-  availablePoints: number,
-): AllocCheck {
-  const ct = talentsFor(cls);
-  if (!ct) return { ok: false, reason: 'no talent tree for class' };
+// Node-level validation for ONE profession's picks (spec + ranks + choices
+// against that class's tree). Returns the points spent in the block on success.
+function validateBlock(
+  ct: ClassTalents,
+  spec: string | null,
+  ranks: Record<string, number>,
+  choices: Record<string, string>,
+): { ok: true; total: number } | { ok: false; reason: string } {
   const idx = nodeIndex(ct);
-
-  if (alloc.spec !== null && !ct.specs.some((s) => s.id === alloc.spec)) {
+  if (spec !== null && !ct.specs.some((s) => s.id === spec)) {
     return { ok: false, reason: 'unknown specialization' };
   }
-
   let total = 0;
-  for (const id in alloc.ranks) {
-    const rank = alloc.ranks[id];
+  for (const id in ranks) {
+    const rank = ranks[id];
     if (rank <= 0) continue;
     const node = idx.get(id);
     if (!node) return { ok: false, reason: `unknown talent "${id}"` };
     if (rank > node.maxRank) return { ok: false, reason: `"${node.name}" exceeds max rank` };
-    if (node.tree === 'spec' && node.specId !== alloc.spec) {
+    if (node.tree === 'spec' && node.specId !== spec) {
       return { ok: false, reason: `"${node.name}" belongs to another specialization` };
     }
-    if (node.kind === 'choice' && !node.choices?.some((c) => c.id === alloc.choices[id])) {
+    if (node.kind === 'choice' && !node.choices?.some((c) => c.id === choices[id])) {
       return { ok: false, reason: `"${node.name}" needs a valid choice` };
     }
     for (const req of node.requires ?? []) {
-      if ((alloc.ranks[req] ?? 0) <= 0)
+      if ((ranks[req] ?? 0) <= 0)
         return { ok: false, reason: `"${node.name}" requires "${idx.get(req)?.name ?? req}"` };
     }
-    if (node.pointsGate && pointsAboveRow(ct, alloc, node) < node.pointsGate) {
+    if (node.pointsGate && pointsAboveRow(ct, ranks, node) < node.pointsGate) {
       return { ok: false, reason: `"${node.name}" needs ${node.pointsGate} points spent above it` };
     }
     total += rank;
+  }
+  return { ok: true, total };
+}
+
+export function validateAllocation(
+  cls: PlayerClass,
+  alloc: TalentAllocation,
+  availablePoints: number,
+  secondaryCls: PlayerClass | null = null,
+): AllocCheck {
+  const ct = talentsFor(cls);
+  if (!ct) return { ok: false, reason: 'no talent tree for class' };
+
+  const primary = validateBlock(ct, alloc.spec, alloc.ranks, alloc.choices);
+  if (!primary.ok) return { ok: false, reason: primary.reason };
+  let total = primary.total;
+
+  const sec = alloc.secondary;
+  const secHasContent = !!sec && (sec.spec !== null || Object.keys(sec.ranks).length > 0);
+  if (secHasContent && sec) {
+    if (!secondaryCls) {
+      return { ok: false, reason: 'no secondary profession' };
+    }
+    const ct2 = talentsFor(secondaryCls);
+    if (!ct2) return { ok: false, reason: 'no talent tree for secondary profession' };
+    const secondary = validateBlock(ct2, sec.spec, sec.ranks, sec.choices);
+    if (!secondary.ok) return { ok: false, reason: secondary.reason };
+    if (secondary.total > secondaryPointCap(availablePoints)) {
+      return { ok: false, reason: 'too many points in the secondary profession' };
+    }
+    total += secondary.total;
   }
   if (total > availablePoints) return { ok: false, reason: 'not enough talent points' };
   return { ok: true };
@@ -415,7 +479,7 @@ export function dormantNodes(cls: PlayerClass, alloc: TalentAllocation): Set<str
     }
     let dormant = false;
     for (const req of node.requires ?? []) if ((alloc.ranks[req] ?? 0) <= 0) dormant = true;
-    if (node.pointsGate && pointsAboveRow(ct, alloc, node) < node.pointsGate) dormant = true;
+    if (node.pointsGate && pointsAboveRow(ct, alloc.ranks, node) < node.pointsGate) dormant = true;
     if (dormant) out.add(id);
   }
   return out;
@@ -439,6 +503,7 @@ export function repairAllocation(
   cls: PlayerClass,
   alloc: TalentAllocation,
   availablePoints: number,
+  secondaryCls: PlayerClass | null = null,
 ): TalentAllocation {
   const ct = talentsFor(cls);
   if (!ct) return emptyAllocation();
@@ -450,36 +515,72 @@ export function repairAllocation(
       ? alloc.spec
       : null;
   const out: TalentAllocation = { spec, ranks: {}, choices: {} };
+  refillBlock(cls, ct, out, alloc, spec, availablePoints, secondaryCls, 'primary');
+  // Secondary refill runs after the primary fill so a shrunken budget preserves
+  // the primary tree first (the primary defines the character; the secondary
+  // half-cap makes it the junior partner by design).
+  const secIn = alloc.secondary;
+  const ct2 = secondaryCls ? talentsFor(secondaryCls) : null;
+  if (secIn && secondaryCls && ct2) {
+    const secSpec =
+      secIn.spec !== null && availablePoints > 0 && ct2.specs.some((s) => s.id === secIn.spec)
+        ? secIn.spec
+        : null;
+    if (secSpec !== null || Object.keys(secIn.ranks).length > 0) {
+      out.secondary = { spec: secSpec, ranks: {}, choices: {} };
+      refillBlock(cls, ct2, out, secIn, secSpec, availablePoints, secondaryCls, 'secondary');
+      if (out.secondary.spec === null && Object.keys(out.secondary.ranks).length === 0) {
+        delete out.secondary;
+      }
+    }
+  }
+  return out;
+}
+
+// Shared top-down refill for one profession block of `out`. Each candidate rank
+// is committed only if the WHOLE allocation (both blocks, shared pool, the
+// secondary half-cap) still validates, so cross-block budgets hold by
+// construction.
+function refillBlock(
+  cls: PlayerClass,
+  ct: ClassTalents,
+  out: TalentAllocation,
+  from: { ranks: Record<string, number>; choices: Record<string, string> },
+  spec: string | null,
+  availablePoints: number,
+  secondaryCls: PlayerClass | null,
+  block: 'primary' | 'secondary',
+): void {
+  const target = block === 'primary' ? out : (out.secondary as SecondaryAllocation);
   const order = [...ct.nodes].sort((a, b) => {
     if (a.tree !== b.tree) return a.tree === 'class' ? -1 : 1;
     return a.row - b.row || a.col - b.col;
   });
   for (const node of order) {
     if (node.tree === 'spec' && node.specId !== spec) continue;
-    const want = Math.floor(alloc.ranks[node.id] ?? 0);
+    const want = Math.floor(from.ranks[node.id] ?? 0);
     if (want <= 0) continue;
     if (node.kind === 'choice') {
-      const chosen = alloc.choices[node.id];
+      const chosen = from.choices[node.id];
       if (!node.choices?.some((c) => c.id === chosen)) continue;
-      out.choices[node.id] = chosen;
-      out.ranks[node.id] = 1;
-      if (!validateAllocation(cls, out, availablePoints).ok) {
-        delete out.ranks[node.id];
-        delete out.choices[node.id];
+      target.choices[node.id] = chosen;
+      target.ranks[node.id] = 1;
+      if (!validateAllocation(cls, out, availablePoints, secondaryCls).ok) {
+        delete target.ranks[node.id];
+        delete target.choices[node.id];
       }
       continue;
     }
     const max = Math.min(want, node.maxRank);
-    for (let target = 1; target <= max; target++) {
-      out.ranks[node.id] = target;
-      if (!validateAllocation(cls, out, availablePoints).ok) {
-        if (target === 1) delete out.ranks[node.id];
-        else out.ranks[node.id] = target - 1;
+    for (let tryRank = 1; tryRank <= max; tryRank++) {
+      target.ranks[node.id] = tryRank;
+      if (!validateAllocation(cls, out, availablePoints, secondaryCls).ok) {
+        if (tryRank === 1) delete target.ranks[node.id];
+        else target.ranks[node.id] = tryRank - 1;
         break;
       }
     }
   }
-  return out;
 }
 
 // ---------------------------------------------------------------------------
@@ -612,32 +713,56 @@ export function defaultBuild(cls: PlayerClass, points: number): TalentAllocation
   return alloc;
 }
 
-export function computeTalentModifiers(cls: PlayerClass, alloc: TalentAllocation): TalentModifiers {
-  const mods = emptyModifiers();
-  const ct = talentsFor(cls);
-  if (!ct) return mods;
+// Fold one profession block's spec + nodes into `mods`. The primary block owns
+// `mods.spec`/`mods.role` (the character's displayed spec and role); the
+// secondary block still contributes its spec's signature grant + mastery and
+// its node effects, merged into the SAME flat output shape.
+function accumulateBlock(
+  mods: TalentModifiers,
+  ct: ClassTalents,
+  spec: string | null,
+  ranks: Record<string, number>,
+  choices: Record<string, string>,
+  isPrimary: boolean,
+): void {
   const idx = nodeIndex(ct);
-
-  const spec = alloc.spec ? (ct.specs.find((s) => s.id === alloc.spec) ?? null) : null;
-  if (spec) {
-    mods.spec = spec.id;
-    mods.role = spec.role;
-    mods.grants.push({ ability: spec.signature, rank: 1 }); // signature ability
-    accumulate(mods, spec.mastery.effect, 1); // Mastery passive
+  const sp = spec ? (ct.specs.find((s) => s.id === spec) ?? null) : null;
+  if (sp) {
+    if (isPrimary) {
+      mods.spec = sp.id;
+      mods.role = sp.role;
+    }
+    mods.grants.push({ ability: sp.signature, rank: 1 }); // signature ability
+    accumulate(mods, sp.mastery.effect, 1); // Mastery passive
   }
-
-  for (const id in alloc.ranks) {
-    const rank = alloc.ranks[id];
+  for (const id in ranks) {
+    const rank = ranks[id];
     if (rank <= 0) continue;
     const node = idx.get(id);
     if (!node) continue;
-    if (node.tree === 'spec' && node.specId !== mods.spec) continue; // dormant: ignore
+    if (node.tree === 'spec' && node.specId !== (sp?.id ?? null)) continue; // dormant: ignore
     if (node.kind === 'choice') {
-      const opt = node.choices?.find((c) => c.id === alloc.choices[id]);
+      const opt = node.choices?.find((c) => c.id === choices[id]);
       if (opt) accumulate(mods, opt.effect, 1);
     } else {
       accumulate(mods, node.effect, rank);
     }
+  }
+}
+
+export function computeTalentModifiers(
+  cls: PlayerClass,
+  alloc: TalentAllocation,
+  secondaryCls: PlayerClass | null = null,
+): TalentModifiers {
+  const mods = emptyModifiers();
+  const ct = talentsFor(cls);
+  if (!ct) return mods;
+  accumulateBlock(mods, ct, alloc.spec, alloc.ranks, alloc.choices, true);
+  const sec = alloc.secondary;
+  if (sec && secondaryCls) {
+    const ct2 = talentsFor(secondaryCls);
+    if (ct2) accumulateBlock(mods, ct2, sec.spec, sec.ranks, sec.choices, false);
   }
   return mods;
 }
@@ -659,19 +784,31 @@ function b64decode(s: string): string {
   return decodeURIComponent(escape(atob(s)));
 }
 
-export function exportBuild(cls: PlayerClass, alloc: TalentAllocation): string {
-  const payload = {
+export function exportBuild(
+  cls: PlayerClass,
+  alloc: TalentAllocation,
+  secondaryCls: PlayerClass | null = null,
+): string {
+  const payload: Record<string, unknown> = {
     v: TALENT_BUILD_VERSION,
     c: cls,
     s: alloc.spec,
     r: alloc.ranks,
     h: alloc.choices,
   };
+  // Dual-profession builds append the secondary block as optional fields, so
+  // the string stays version 1 and single-tree importers keep working.
+  if (alloc.secondary && secondaryCls) {
+    payload.c2 = secondaryCls;
+    payload.s2 = alloc.secondary.spec;
+    payload.r2 = alloc.secondary.ranks;
+    payload.h2 = alloc.secondary.choices;
+  }
   return b64encode(JSON.stringify(payload));
 }
 
 export type BuildImport =
-  | { ok: true; cls: PlayerClass; alloc: TalentAllocation }
+  | { ok: true; cls: PlayerClass; alloc: TalentAllocation; secondaryCls: PlayerClass | null }
   | { ok: false; reason: string };
 
 export function importBuild(str: string): BuildImport {
@@ -687,20 +824,45 @@ export function importBuild(str: string): BuildImport {
     return { ok: false, reason: 'incompatible build version' };
   if (typeof payload.c !== 'string' || !hasTalents(payload.c))
     return { ok: false, reason: 'unknown class build' };
-  const ranks: Record<string, number> = {};
-  if (payload.r && typeof payload.r === 'object') {
-    for (const k in payload.r) {
-      const v = payload.r[k];
-      if (typeof v === 'number' && v > 0) ranks[k] = Math.floor(v);
+  const readRanks = (src: any): Record<string, number> => {
+    const out: Record<string, number> = {};
+    if (src && typeof src === 'object') {
+      for (const k in src) {
+        const v = src[k];
+        if (typeof v === 'number' && v > 0) out[k] = Math.floor(v);
+      }
     }
-  }
-  const choices: Record<string, string> = {};
-  if (payload.h && typeof payload.h === 'object') {
-    for (const k in payload.h) {
-      const v = payload.h[k];
-      if (typeof v === 'string') choices[k] = v;
+    return out;
+  };
+  const readChoices = (src: any): Record<string, string> => {
+    const out: Record<string, string> = {};
+    if (src && typeof src === 'object') {
+      for (const k in src) {
+        const v = src[k];
+        if (typeof v === 'string') out[k] = v;
+      }
     }
-  }
+    return out;
+  };
   const spec = typeof payload.s === 'string' ? payload.s : null;
-  return { ok: true, cls: payload.c, alloc: { spec, ranks, choices } };
+  const alloc: TalentAllocation = {
+    spec,
+    ranks: readRanks(payload.r),
+    choices: readChoices(payload.h),
+  };
+  // Optional dual-profession block (PHAA-463). Old single-tree strings have no
+  // c2/s2/r2/h2 fields and import exactly as before.
+  let secondaryCls: PlayerClass | null = null;
+  if (payload.c2 !== undefined) {
+    if (typeof payload.c2 !== 'string' || !hasTalents(payload.c2) || payload.c2 === payload.c) {
+      return { ok: false, reason: 'unknown secondary profession build' };
+    }
+    secondaryCls = payload.c2;
+    alloc.secondary = {
+      spec: typeof payload.s2 === 'string' ? payload.s2 : null,
+      ranks: readRanks(payload.r2),
+      choices: readChoices(payload.h2),
+    };
+  }
+  return { ok: true, cls: payload.c, alloc, secondaryCls };
 }
