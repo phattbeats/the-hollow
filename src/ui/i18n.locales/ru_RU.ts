@@ -1486,6 +1486,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'itemUi.tooltip.cannotMarket': 'Нельзя продать на рынке',
   'itemUi.tooltip.cannotVendor': 'Нельзя продать торговцам',
   'itemUi.tooltip.clickDestroy': 'Нажмите, чтобы уничтожить',
+  'itemUi.error.requiresLevelToEquip': 'Чтобы экипировать это, нужен {level} уровень.',
   'itemUi.tooltip.useFishing': 'Использование: ловите рыбу в ближайшей воде.',
   'itemUi.tooltip.useHealingPotion':
     'Использование: мгновенно восстанавливает {amount} здоровья. Можно использовать в бою. Восстановление 1 мин.',
@@ -4798,6 +4799,38 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'sim.delve.unknownTier': 'Неизвестная сложность вылазки.',
   'sim.delve.wayOutNotOpen': 'Выход ещё не открыт.',
   'sim.delve.whileTrading': 'Нельзя войти в вылазку во время обмена.',
+  'sim.hearth.emberbulb1': 'вот это дровишки… гляди, как она задышала, дружище…',
+  'sim.hearth.emberbulb2': 'печь берёт своё медленно и чисто, ей так по нраву…',
+  'sim.hearth.emberbulb3': 'растопили, задымило… уже чую, как открывается волна.',
+  'sim.hearth.helpLine':
+    'Зеленолап: /feed (принеси то, что горит, или то, чем сыт бываешь, от вазы).',
+  'sim.hearth.morsel1': '…ох, благослови тебя, дружище. Благослови и землю, по которой ты ходишь.',
+  'sim.hearth.morsel2': 'живот перестал петь гимны хоть на минутку. премного благодарен…',
+  'sim.hearth.morsel3':
+    'хороший кусок — что хороший друг… редкость, и стоит того, чтобы за ним идти.',
+  'sim.hearth.noItems1':
+    '…у тебя пусто в руках, дружище. Принеси то, что горит, или то, чем сыт бываешь, тогда и поговорим.',
+  'sim.hearth.noItems2':
+    'На тебе одни добрые намерения, а? …добрыми намерениями печь не растопишь.',
+  'sim.hearth.tooFar': 'Чтобы покормить брата Зеленолапа, нужно быть рядом с ним.',
+  'sim.house.alreadyOwn': 'У вас уже есть свой дом в Пустоши.',
+  'sim.house.claimed': 'Этот дом теперь ваш. Украсьте его командой /house place <слот> <вид>.',
+  'sim.house.cleared': 'Слот {slot} очищен.',
+  'sim.house.helpLine':
+    'Дома: /house, /house claim, /house place <слот> <вид>, /house remove <слот>.',
+  'sim.house.mustBeInHollow': 'Чтобы заниматься своим домом, нужно находиться в Пустоши.',
+  'sim.house.mustStandToClaim': 'Чтобы заявить права на участок, нужно стоять на нём в Пустоши.',
+  'sim.house.noFreePlot': 'Здесь нет свободного участка. Встаньте на него, чтобы заявить права.',
+  'sim.house.noHomestead': 'У вас нет дома. Получите его командой /house claim.',
+  'sim.house.placed': 'В слот {slot} помещено: {kind}.',
+  'sim.house.plotTaken': 'У этого участка уже есть хозяин.',
+  'sim.house.readoutMine': 'Ваш дом: {plotId}. Украшения: {decor}.',
+  'sim.house.readoutNone':
+    'У вас нет дома. Встаньте на свободный участок в Пустоши и введите /house claim.',
+  'sim.house.readoutUsage': '/house place <1-{count}> <{kinds}>, /house remove <слот>.',
+  'sim.house.slotEmpty': 'Этот слот уже пуст.',
+  'sim.house.slotRange': 'Слоты пронумерованы от 1 до {count}.',
+  'sim.house.unknownKind': 'Неизвестный вид украшения. Виды: {kinds}.',
   'sim.lockpick.alreadyInProgress': 'Кто-то уже возится с замком.',
   'sim.lockpick.cannotPickThat': 'Это нельзя взломать.',
   'sim.lockpick.chooseAnte': 'Выберите 1, 2 или 3 отмычки.',

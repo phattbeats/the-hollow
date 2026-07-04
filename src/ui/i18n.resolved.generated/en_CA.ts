@@ -2153,6 +2153,36 @@ export const en_CA: EnTranslations = {
       "toolSlips": "That tool slips off this lock.",
       "lockJammed": "The lock is jammed beyond picking. Clear the delve again for another attempt.",
       "lastPickSnaps": "The last pick snaps. The lock jams. The chest is lost unless you clear the delve again."
+    },
+    "hearth": {
+      "tooFar": "You need to be near Brother Greenpaw to feed him.",
+      "noItems1": "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",
+      "noItems2": "nothin' on you but good intentions, huh... intentions don't stoke a furnace.",
+      "emberbulb1": "now THAT'S fuel... watch her breathe, friend...",
+      "emberbulb2": "the furnace takes it slow and clean, just like she likes it...",
+      "emberbulb3": "stoked and smokin'... the wavelength's openin' up already, i can feel it.",
+      "morsel1": "...oh, bless you, friend. bless you and the ground you walk on.",
+      "morsel2": "stomach quits singin' hymns for a minute. much obliged...",
+      "morsel3": "a good morsel, is like a good friend... rare, and worth the walk.",
+      "helpLine": "Greenpaw: /feed (bring what burns or what fills, from near the vase)."
+    },
+    "house": {
+      "mustStandToClaim": "You must stand on a homestead plot in the Hollow to claim.",
+      "alreadyOwn": "You already own a homestead in the Hollow.",
+      "noFreePlot": "There is no free homestead plot here. Stand on one to claim.",
+      "plotTaken": "That homestead already has an owner.",
+      "claimed": "The homestead is yours. Decorate it with /house place <slot> <kind>.",
+      "noHomestead": "You do not own a homestead. Claim one with /house claim.",
+      "mustBeInHollow": "You must be in the Hollow to tend your homestead.",
+      "slotRange": "Slots are numbered 1 to {count}.",
+      "unknownKind": "Unknown decor kind. Kinds: {kinds}.",
+      "placed": "Placed the {kind} on slot {slot}.",
+      "slotEmpty": "That slot is already empty.",
+      "cleared": "Cleared slot {slot}.",
+      "readoutNone": "You own no homestead. Stand on a free plot in the Hollow and type /house claim.",
+      "readoutMine": "Your homestead: {plotId}. Decor: {decor}.",
+      "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <slot>.",
+      "helpLine": "Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>."
     }
   },
   "lockpickUi": {
@@ -3512,11 +3542,14 @@ export const en_CA: EnTranslations = {
       "cannotVendor": "Cannot be sold to merchants",
       "clickDestroy": "Click to destroy",
       "useFishing": "Use: Fish in nearby waters.",
-      "useHealingPotion": "Use: Instantly restores {amount} health. Usable in combat. 1 min cooldown.",
-      "useManaPotion": "Use: Instantly restores {amount} mana. Usable in combat. 1 min cooldown.",
+      "useHealingPotion": "Use: Instantly restores {amount} health. Usable in combat. 2 min cooldown.",
+      "useManaPotion": "Use: Instantly restores {amount} mana. Usable in combat. 2 min cooldown.",
       "clickUseInstant": "Click to use instantly in combat",
       "clickUse": "Click to use",
       "clickBuyback": "Click to buy back"
+    },
+    "error": {
+      "requiresLevelToEquip": "Requires level {level} to equip."
     },
     "bags": {
       "title": "Bags",

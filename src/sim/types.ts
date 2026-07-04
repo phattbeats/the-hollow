@@ -313,6 +313,8 @@ interface BaseItemDef {
   elixir?: { aura: string; kind: AuraKind; value: number; duration: number };
   quality?: 'poor' | 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary'; // gray/white/green/blue/purple/orange name colors
   requiredClass?: PlayerClass[];
+  /** Minimum character level required to equip this item; enforced server-side in equipItem. */
+  requiredLevel?: number;
   /** Set id this piece belongs to; equipping enough pieces grants the set bonuses (see ITEM_SETS). */
   set?: string;
 }
@@ -1315,6 +1317,11 @@ export interface QuestProgress {
 export const CONSUME_DURATION = 18; // seconds
 export const CONSUME_TICKS = 9; // CONSUME_DURATION / 2s regen tick
 
+// Shared cooldown across combat potions (classic 2 min, #103/PHAA-449). Exported so
+// the HUD action bar (src/ui/action_bar_view.ts) can size its cooldown sweep to the
+// same duration instead of a second hardcoded number.
+export const POTION_COOLDOWN = 120;
+
 export interface Consuming {
   itemId: string;
   kind: 'food' | 'drink';
@@ -1395,6 +1402,12 @@ export interface Entity {
   comboTargetId: number | null;
   overpowerUntil: number; // sim-time until which overpower is usable
   potionCooldownUntil: number; // sim-time until a combat potion can be used again (#103)
+  // Same cooldown as potionCooldownUntil, expressed as remaining seconds and
+  // decremented by DT in updateTimers (combat/auras.ts), mirroring `cooldowns`.
+  // IWorld-consuming HUD code (action_bar_view.ts) has no sim clock to diff
+  // potionCooldownUntil against, so this is the wire/HUD-facing read model;
+  // the gate check in items.ts keeps using the absolute potionCooldownUntil.
+  potionCooldownRemaining: number;
   // warrior charge: forced run toward the target along a pathfound route
   chargeTargetId: number | null;
   chargeTimeLeft: number; // seconds; failsafe so a blocked charge can't run forever

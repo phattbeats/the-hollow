@@ -3955,6 +3955,10 @@ const RULES: Rule[] = [
     build: (m) => tSim('error.specLevel', { level: m[1] }),
   },
   {
+    re: /^Requires level (\d+)\.$/,
+    build: (m) => t('itemUi.error.requiresLevelToEquip', { level: m[1] }),
+  },
+  {
     re: /^You can save at most (\d+) loadouts\.$/,
     build: (m) => tSim('error.maxLoadouts', { count: m[1] }),
   },
@@ -4391,6 +4395,106 @@ const RULES: Rule[] = [
   {
     re: /^FIESTA OVER! What a party\. Returning to the world[.…]{1,3}$/,
     build: () => t('fiesta.log.over'),
+  },
+  // Brother Greenpaw's hearth (PHAA-421/PHAA-428): TOO_FAR_LINE, NO_ITEMS_LINES,
+  // and the FEED_ITEMS in-voice lines (src/sim/greenpaw_hearth.ts), plus the
+  // /feed helpLines entry (src/sim/social/chat.ts). Exact lines, no interpolation.
+  {
+    re: /^You need to be near Brother Greenpaw to feed him\.$/,
+    build: () => t('sim.hearth.tooFar'),
+  },
+  {
+    re: /^\.\.\.you're empty-handed, friend\. bring me what burns or what fills, and we'll talk\.$/,
+    build: () => t('sim.hearth.noItems1'),
+  },
+  {
+    re: /^nothin' on you but good intentions, huh\.\.\. intentions don't stoke a furnace\.$/,
+    build: () => t('sim.hearth.noItems2'),
+  },
+  {
+    re: /^now THAT'S fuel\.\.\. watch her breathe, friend\.\.\.$/,
+    build: () => t('sim.hearth.emberbulb1'),
+  },
+  {
+    re: /^the furnace takes it slow and clean, just like she likes it\.\.\.$/,
+    build: () => t('sim.hearth.emberbulb2'),
+  },
+  {
+    re: /^stoked and smokin'\.\.\. the wavelength's openin' up already, i can feel it\.$/,
+    build: () => t('sim.hearth.emberbulb3'),
+  },
+  {
+    re: /^\.\.\.oh, bless you, friend\. bless you and the ground you walk on\.$/,
+    build: () => t('sim.hearth.morsel1'),
+  },
+  {
+    re: /^stomach quits singin' hymns for a minute\. much obliged\.\.\.$/,
+    build: () => t('sim.hearth.morsel2'),
+  },
+  {
+    re: /^a good morsel, is like a good friend\.\.\. rare, and worth the walk\.$/,
+    build: () => t('sim.hearth.morsel3'),
+  },
+  {
+    re: /^Greenpaw: \/feed \(bring what burns or what fills, from near the vase\)\.$/,
+    build: () => t('sim.hearth.helpLine'),
+  },
+  // Housing v0 (PHAA-428): the /house command text (src/sim/housing.ts), plus the
+  // /house helpLines entry (src/sim/social/chat.ts).
+  {
+    re: /^You must stand on a homestead plot in the Hollow to claim\.$/,
+    build: () => t('sim.house.mustStandToClaim'),
+  },
+  {
+    re: /^You already own a homestead in the Hollow\.$/,
+    build: () => t('sim.house.alreadyOwn'),
+  },
+  {
+    re: /^There is no free homestead plot here\. Stand on one to claim\.$/,
+    build: () => t('sim.house.noFreePlot'),
+  },
+  { re: /^That homestead already has an owner\.$/, build: () => t('sim.house.plotTaken') },
+  {
+    re: /^The homestead is yours\. Decorate it with \/house place <slot> <kind>\.$/,
+    build: () => t('sim.house.claimed'),
+  },
+  {
+    re: /^You do not own a homestead\. Claim one with \/house claim\.$/,
+    build: () => t('sim.house.noHomestead'),
+  },
+  {
+    re: /^You must be in the Hollow to tend your homestead\.$/,
+    build: () => t('sim.house.mustBeInHollow'),
+  },
+  {
+    re: /^Slots are numbered 1 to (\d+)\.$/,
+    build: (m) => t('sim.house.slotRange', { count: m[1] }),
+  },
+  {
+    re: /^Unknown decor kind\. Kinds: (.+)\.$/,
+    build: (m) => t('sim.house.unknownKind', { kinds: m[1] }),
+  },
+  {
+    re: /^Placed the (.+) on slot (.+)\.$/,
+    build: (m) => t('sim.house.placed', { kind: m[1], slot: m[2] }),
+  },
+  { re: /^That slot is already empty\.$/, build: () => t('sim.house.slotEmpty') },
+  { re: /^Cleared slot (.+)\.$/, build: (m) => t('sim.house.cleared', { slot: m[1] }) },
+  {
+    re: /^You own no homestead\. Stand on a free plot in the Hollow and type \/house claim\.$/,
+    build: () => t('sim.house.readoutNone'),
+  },
+  {
+    re: /^Your homestead: (.+)\. Decor: (.+)\.$/,
+    build: (m) => t('sim.house.readoutMine', { plotId: m[1], decor: m[2] }),
+  },
+  {
+    re: /^\/house place <1-(\d+)> <(.+)>, \/house remove <slot>\.$/,
+    build: (m) => t('sim.house.readoutUsage', { count: m[1], kinds: m[2] }),
+  },
+  {
+    re: /^Homesteads: \/house, \/house claim, \/house place <slot> <kind>, \/house remove <slot>\.$/,
+    build: () => t('sim.house.helpLine'),
   },
   // Boss/mob mechanic broadcast. Broad (two open captures), so it MUST stay last -
   // after every more-specific "{X} {verb}!" rule above (awakens, enraged, calls for aid).

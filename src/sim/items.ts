@@ -30,10 +30,10 @@ import {
   type EquipSlot,
   FISHING_CAST_ID,
   INTERACT_RANGE,
+  POTION_COOLDOWN,
 } from './types';
 
 const VENDOR_BUYBACK_LIMIT = 12;
-const POTION_COOLDOWN = 60; // seconds; shared cooldown across combat potions (#103)
 
 export function discardItem(ctx: SimContext, itemId: string, count = 1, pid?: number): void {
   const r = ctx.resolve(pid);
@@ -67,6 +67,10 @@ export function equipItem(ctx: SimContext, itemId: string, pid?: number): void {
   if (ctx.countItem(itemId, meta.entityId) <= 0) return;
   if (!canEquipItem(meta.cls, def)) {
     ctx.error(meta.entityId, 'You cannot equip that.');
+    return;
+  }
+  if (def.requiredLevel && p.level < def.requiredLevel) {
+    ctx.error(meta.entityId, `Requires level ${def.requiredLevel}.`);
     return;
   }
   const slot = def.slot;
@@ -175,6 +179,7 @@ export function useItem(ctx: SimContext, itemId: string, pid?: number): ItemUseR
     }
     ctx.removeItem(itemId, 1, meta.entityId);
     p.potionCooldownUntil = ctx.time + POTION_COOLDOWN;
+    p.potionCooldownRemaining = POTION_COOLDOWN;
     if (restoresHp) {
       const heal = Math.min(Math.round(def.potionHp! * ctx.healingTakenMult(p)), p.maxHp - p.hp);
       p.hp += heal;
