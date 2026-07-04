@@ -2981,13 +2981,15 @@ export class GameServer {
       maybe('qlog', [...meta.questLog.values()]);
       maybe('qdone', [...meta.questsDone]);
       maybe('milestones', [...meta.unlockedMilestones]);
-      // talents/spec/loadouts: the client recomputes its known abilities from this.
+      // talents/spec/loadouts/secondaryCls: the client recomputes its known
+      // abilities from this (secondaryCls merges a second class's kit in).
       maybe('tal', {
         alloc: meta.talents,
         spec: meta.talentMods.spec,
         role: meta.talentMods.role,
         loadouts: meta.loadouts,
         activeLoadout: meta.activeLoadout,
+        secondaryCls: meta.secondaryCls,
       });
     }
     return extra === '' ? json : `${json.slice(0, -1)}${extra}}`;

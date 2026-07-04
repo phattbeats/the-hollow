@@ -41,6 +41,7 @@ describe('serializeCharacter <-> addPlayer round-trip (G2 persistence)', () => {
     meta.companionUpgrades = { tessa: 2 };
     meta.delveLoreUnlocked = new Set(['lore_1']);
     meta.delveDaily = { date: '2026-06-26', firstClearXp: new Set(['crypt']), markClears: 2 };
+    meta.secondaryCls = 'druid';
 
     const s1 = sim.serializeCharacter(pid)!;
     const sim2 = makeWorld();
@@ -52,6 +53,7 @@ describe('serializeCharacter <-> addPlayer round-trip (G2 persistence)', () => {
     expect(s2.delveMarks).toBe(17);
     expect(s2.loadouts?.length).toBe(1);
     expect(s2.skinCatalog).toBe('mech');
+    expect(s2.secondaryCls).toBe('druid');
   });
 
   it('a legacy state missing the post-launch fields loads with sane defaults', () => {
@@ -86,6 +88,7 @@ describe('serializeCharacter <-> addPlayer round-trip (G2 persistence)', () => {
       'unlockedMilestones',
       'lifetimeXp',
       'restedXp',
+      'secondaryCls',
     ]) {
       delete legacy[key];
     }
@@ -93,6 +96,7 @@ describe('serializeCharacter <-> addPlayer round-trip (G2 persistence)', () => {
     const sim2 = makeWorld();
     const pid = sim2.addPlayer('warrior', 'Legacy', { state: legacy as never });
     const m = sim2.meta(pid)!;
+    expect(m.secondaryCls).toBeNull(); // pre-multiclass saves load with no secondary
     expect(m.arena2v2Rating).toBe(m.arenaRating); // both default to ARENA_BASE_RATING
     expect(m.arena2v2Wins).toBe(0);
     expect(m.delveMarks).toBe(0);

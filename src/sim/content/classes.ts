@@ -3600,14 +3600,22 @@ function applyTalentMods(entry: KnownAbility, mods: TalentModifiers): void {
 
 // Abilities a class knows at a given level, with rank values resolved and any
 // talent modifiers (granted abilities + per-ability/global tweaks) applied.
+// `secondaryCls` (multiclassing, GW1 build system) merges a second class's kit
+// in at its own normal learn levels, alongside the primary kit; this is how a
+// druid's forms come along intact when druid is the secondary class, since
+// they are ordinary entries in CLASSES[secondaryCls].abilities like any other.
 export function abilitiesKnownAt(
   cls: PlayerClass,
   level: number,
   mods?: TalentModifiers,
+  secondaryCls?: PlayerClass | null,
 ): KnownAbility[] {
   const out: KnownAbility[] = [];
   const baseIds = CLASSES[cls].abilities;
+  const secondaryIds = secondaryCls && secondaryCls !== cls ? CLASSES[secondaryCls].abilities : [];
+  const kitIds = new Set([...baseIds, ...secondaryIds]);
   const ids = [...baseIds];
+  for (const id of secondaryIds) if (!ids.includes(id)) ids.push(id);
   const grantIds = new Set<string>();
   for (const g of mods?.grants ?? []) grantIds.add(g.ability);
   for (const g of mods?.grants ?? []) if (!ids.includes(g.ability)) ids.push(g.ability);
@@ -3615,7 +3623,7 @@ export function abilitiesKnownAt(
   for (const id of ids) {
     const def = ABILITIES[id];
     if (!def) continue;
-    const granted = grantIds.has(id) || !baseIds.includes(id);
+    const granted = grantIds.has(id) || !kitIds.has(id);
     if (!granted && def.learnLevel > level) continue; // class kit is level-gated; grants bypass it
 
     let rank = 1,

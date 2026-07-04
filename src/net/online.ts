@@ -791,6 +791,7 @@ export class ClientWorld implements IWorld {
   talentRole: Role | null = null;
   loadouts: SavedLoadout[] = [];
   activeLoadout = -1;
+  secondaryCls: PlayerClass | null = null;
   questLog = new Map<string, QuestProgress>();
   questsDone = new Set<string>();
   // --- IWorldParty: party/raid roster, mirrored from the snapshot self (`party`).
@@ -1413,6 +1414,7 @@ export class ClientWorld implements IWorld {
         this.talentRole = s.tal.role ?? null;
         this.loadouts = s.tal.loadouts ?? [];
         this.activeLoadout = typeof s.tal.activeLoadout === 'number' ? s.tal.activeLoadout : -1;
+        this.secondaryCls = s.tal.secondaryCls ?? null;
       }
       if (!this.talents) this.talents = emptyAllocation();
       const talents = this.talents;
@@ -1420,6 +1422,7 @@ export class ClientWorld implements IWorld {
         this.cfg.playerClass,
         e.level,
         computeTalentModifiers(this.cfg.playerClass, talents),
+        this.secondaryCls,
       );
       // --- IWorldParty: party roster + raid markers, delta-omitted self-decode
       // (keep the prior value when absent; `marks: null` clears on disband). ---
@@ -2096,6 +2099,7 @@ export class ClientWorld implements IWorld {
         this.cfg.playerClass,
         this.player.level,
         computeTalentModifiers(this.cfg.playerClass, this.talents),
+        this.secondaryCls,
       );
     }
   }
@@ -2117,6 +2121,7 @@ export class ClientWorld implements IWorld {
           this.cfg.playerClass,
           this.player.level,
           computeTalentModifiers(this.cfg.playerClass, this.talents),
+          this.secondaryCls,
         );
       }
     } else if (this.activeLoadout > index) this.activeLoadout -= 1;
