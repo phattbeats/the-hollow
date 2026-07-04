@@ -1781,6 +1781,12 @@ export class Sim {
   get activeLoadout(): number {
     return this.primary.activeLoadout;
   }
+  // IWorldTrainer surface (PHAA-465): the primary class is the one chosen at
+  // creation; it does not change. Mirrored on IWorldTrainer so the UI can
+  // render "Primary / Secondary" without reaching into cfg.
+  get primaryCls(): PlayerClass {
+    return this.primary.cls;
+  }
   get secondaryCls(): PlayerClass | null {
     return this.primary.secondaryCls;
   }

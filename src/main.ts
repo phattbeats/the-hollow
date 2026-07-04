@@ -104,7 +104,7 @@ import {
 import { assembleBugReportMeta } from './ui/bug_report';
 import { ChatCommandMenu } from './ui/chat_command_menu';
 import { chatInputSize } from './ui/chat_input_autosize';
-import { CLASS_DETAILS, SIGNATURE_ABILITIES } from './ui/class_details_data';
+import { CLASS_DETAILS, classPairLabel, SIGNATURE_ABILITIES } from './ui/class_details_data';
 import { DISCORD_SURFACES_ENABLED } from './ui/discord_flags';
 import {
   type DiscordAccountStatus,
@@ -2672,7 +2672,7 @@ function syncPreviewAfterPanelLayout(): void {
   });
 }
 
-const currentlyRenderedClass: Record<string, PlayerClass | null> = {
+const currentlyRenderedClass: Record<string, string | PlayerClass | null> = {
   'offline-class-details': null,
   'charselect-class-details': null,
   'charcreate-class-details': null,
@@ -3696,7 +3696,7 @@ async function refreshCharacters(): Promise<void> {
 
         row.classList.add('sel');
         row.setAttribute('aria-selected', 'true');
-        renderClassDetails('charselect-class-details', c.class);
+        renderClassDetails('charselect-class-details', c.class, c.secondaryCls ?? null);
         characterPreview?.setSkin(c.skin ?? 0);
       };
 
@@ -3804,13 +3804,19 @@ async function enterWorld(c: CharacterSummary, button?: HTMLButtonElement): Prom
 
 const activeClassDetailsTimeouts: Record<string, number | null> = {};
 
-function renderClassDetails(panelId: string, className: PlayerClass): void {
+function renderClassDetails(
+  panelId: string,
+  className: PlayerClass,
+  secondaryCls: PlayerClass | null = null,
+): void {
   const panel = document.getElementById(panelId);
   if (!panel) return;
 
-  // Redundant render check
-  if (currentlyRenderedClass[panelId] === className) return;
-  currentlyRenderedClass[panelId] = className;
+  // Redundant render check (secondary is part of the identity so a trainer
+  // pick reflected in a fresh character list forces a repaint).
+  const renderKey = secondaryCls ? `${className}:${secondaryCls}` : className;
+  if (currentlyRenderedClass[panelId] === renderKey) return;
+  currentlyRenderedClass[panelId] = renderKey;
 
   if (characterPreview) {
     characterPreview.setClass(className);
@@ -3831,7 +3837,7 @@ function renderClassDetails(panelId: string, className: PlayerClass): void {
 
   const existingContent = panel.querySelector('.class-details-content');
   const existingName = panel.querySelector('.class-details-name')?.textContent;
-  const classLabel = classDisplayName(className);
+  const classLabel = classPairLabel(className, secondaryCls);
   const roleLabel = t(details.roleKey);
   const armorLabel = t(details.armorKey);
   const weaponsLabel = t(details.weaponsKey);

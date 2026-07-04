@@ -151,6 +151,7 @@ const UI_PURE_CORES = [
   'src/ui/guild_leaderboard_view.ts',
   'src/ui/spellbook_view.ts',
   'src/ui/questlog_view.ts',
+  'src/ui/trainer_view.ts',
   'src/ui/npc_intro_view.ts',
   'src/ui/swing_timer.ts',
   'src/ui/unit_frame.ts',
