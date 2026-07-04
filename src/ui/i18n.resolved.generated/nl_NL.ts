@@ -3511,6 +3511,9 @@ export const nl_NL: EnTranslations = {
       "clickUse": "Klik om te gebruiken",
       "clickBuyback": "Klik om terug te kopen"
     },
+    "error": {
+      "requiresLevelToEquip": "Requires level {level} to equip."
+    },
     "bags": {
       "title": "Tassen",
       "close": "Tassen sluiten",

@@ -3511,6 +3511,9 @@ export const es: EnTranslations = {
       "clickUse": "Haz clic para usar",
       "clickBuyback": "Haz clic para recomprar"
     },
+    "error": {
+      "requiresLevelToEquip": "Requires level {level} to equip."
+    },
     "bags": {
       "title": "Bolsas",
       "close": "Cerrar bolsas",

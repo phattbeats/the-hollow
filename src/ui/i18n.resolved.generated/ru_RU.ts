@@ -3511,6 +3511,9 @@ export const ru_RU: EnTranslations = {
       "clickUse": "Нажмите, чтобы использовать",
       "clickBuyback": "Нажмите, чтобы выкупить"
     },
+    "error": {
+      "requiresLevelToEquip": "Чтобы экипировать это, нужен {level} уровень."
+    },
     "bags": {
       "title": "Сумки",
       "close": "Закрыть сумки",

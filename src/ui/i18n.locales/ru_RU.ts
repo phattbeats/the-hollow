@@ -1479,6 +1479,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'itemUi.tooltip.cannotMarket': 'Нельзя продать на рынке',
   'itemUi.tooltip.cannotVendor': 'Нельзя продать торговцам',
   'itemUi.tooltip.clickDestroy': 'Нажмите, чтобы уничтожить',
+  'itemUi.error.requiresLevelToEquip': 'Чтобы экипировать это, нужен {level} уровень.',
   'itemUi.tooltip.useFishing': 'Использование: ловите рыбу в ближайшей воде.',
   'itemUi.tooltip.useHealingPotion':
     'Использование: мгновенно восстанавливает {amount} здоровья. Можно использовать в бою. Восстановление 1 мин.',

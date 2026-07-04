@@ -61,7 +61,8 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
-    "hudChrome.options.showOwnNameplate"
+    "hudChrome.options.showOwnNameplate",
+    "itemUi.error.requiresLevelToEquip"
   ],
   "es_ES": [
     "coldOpen.begin",
@@ -115,7 +116,8 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
-    "hudChrome.options.showOwnNameplate"
+    "hudChrome.options.showOwnNameplate",
+    "itemUi.error.requiresLevelToEquip"
   ],
   "fr_FR": [
     "coldOpen.begin",
@@ -169,7 +171,8 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
-    "hudChrome.options.showOwnNameplate"
+    "hudChrome.options.showOwnNameplate",
+    "itemUi.error.requiresLevelToEquip"
   ],
   "fr_CA": [
     "coldOpen.begin",
@@ -223,7 +226,8 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
-    "hudChrome.options.showOwnNameplate"
+    "hudChrome.options.showOwnNameplate",
+    "itemUi.error.requiresLevelToEquip"
   ],
   "en_CA": [],
   "it_IT": [
@@ -278,7 +282,8 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
-    "hudChrome.options.showOwnNameplate"
+    "hudChrome.options.showOwnNameplate",
+    "itemUi.error.requiresLevelToEquip"
   ],
   "de_DE": [
     "coldOpen.begin",
@@ -332,7 +337,8 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
-    "hudChrome.options.showOwnNameplate"
+    "hudChrome.options.showOwnNameplate",
+    "itemUi.error.requiresLevelToEquip"
   ],
   "zh_CN": [
     "housingUi.prompt.claim",
@@ -406,7 +412,8 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
-    "hudChrome.options.showOwnNameplate"
+    "hudChrome.options.showOwnNameplate",
+    "itemUi.error.requiresLevelToEquip"
   ],
   "ru_RU": [
     "housingUi.prompt.claim",
@@ -465,7 +472,8 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
-    "hudChrome.options.showOwnNameplate"
+    "hudChrome.options.showOwnNameplate",
+    "itemUi.error.requiresLevelToEquip"
   ],
   "pl_PL": [
     "coldOpen.begin",
@@ -519,7 +527,8 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
-    "hudChrome.options.showOwnNameplate"
+    "hudChrome.options.showOwnNameplate",
+    "itemUi.error.requiresLevelToEquip"
   ],
   "id_ID": [
     "coldOpen.begin",
@@ -573,7 +582,8 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
-    "hudChrome.options.showOwnNameplate"
+    "hudChrome.options.showOwnNameplate",
+    "itemUi.error.requiresLevelToEquip"
   ],
   "tr_TR": [
     "coldOpen.begin",
@@ -627,7 +637,8 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
-    "hudChrome.options.showOwnNameplate"
+    "hudChrome.options.showOwnNameplate",
+    "itemUi.error.requiresLevelToEquip"
   ],
   "sv_SE": [
     "coldOpen.begin",
@@ -681,7 +692,8 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
-    "hudChrome.options.showOwnNameplate"
+    "hudChrome.options.showOwnNameplate",
+    "itemUi.error.requiresLevelToEquip"
   ],
   "vi_VN": [
     "coldOpen.begin",
@@ -735,7 +747,8 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
-    "hudChrome.options.showOwnNameplate"
+    "hudChrome.options.showOwnNameplate",
+    "itemUi.error.requiresLevelToEquip"
   ],
   "da_DK": [
     "coldOpen.begin",
@@ -789,6 +802,7 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
-    "hudChrome.options.showOwnNameplate"
+    "hudChrome.options.showOwnNameplate",
+    "itemUi.error.requiresLevelToEquip"
   ]
 };

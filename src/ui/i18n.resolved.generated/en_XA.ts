@@ -3505,11 +3505,14 @@ export const en_XA: EnTranslations = {
       "cannotVendor": "[Çáññóţ ƀé šóļð ţó ɱéŕçĥáñţš]",
       "clickDestroy": "[Çļíçķ ţó ðéšţŕóý]",
       "useFishing": "[Úšé: Ƒíšĥ íñ ñéáŕƀý ŵáţéŕš.]",
-      "useHealingPotion": "[Úšé: Íñšţáñţļý ŕéšţóŕéš {amount} ĥéáļţĥ. Úšáƀļé íñ çóɱƀáţ. 1 ɱíñ çóóļðóŵñ.]",
-      "useManaPotion": "[Úšé: Íñšţáñţļý ŕéšţóŕéš {amount} ɱáñá. Úšáƀļé íñ çóɱƀáţ. 1 ɱíñ çóóļðóŵñ.]",
+      "useHealingPotion": "[Úšé: Íñšţáñţļý ŕéšţóŕéš {amount} ĥéáļţĥ. Úšáƀļé íñ çóɱƀáţ. 2 ɱíñ çóóļðóŵñ.]",
+      "useManaPotion": "[Úšé: Íñšţáñţļý ŕéšţóŕéš {amount} ɱáñá. Úšáƀļé íñ çóɱƀáţ. 2 ɱíñ çóóļðóŵñ.]",
       "clickUseInstant": "[Çļíçķ ţó úšé íñšţáñţļý íñ çóɱƀáţ]",
       "clickUse": "[Çļíçķ ţó úšé]",
       "clickBuyback": "[Çļíçķ ţó ƀúý ƀáçķ]"
+    },
+    "error": {
+      "requiresLevelToEquip": "[Ŕéɋúíŕéš ļéʋéļ {level} ţó éɋúíþ.]"
     },
     "bags": {
       "title": "[Ɓáĝš]",

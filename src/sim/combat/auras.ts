@@ -98,6 +98,7 @@ export function updateTimers(p: Entity): void {
   p.gcdRemaining = Math.max(0, p.gcdRemaining - DT);
   p.fiveSecondRule += DT;
   p.combatTimer += DT;
+  p.potionCooldownRemaining = Math.max(0, p.potionCooldownRemaining - DT);
   for (const [k, v] of p.cooldowns) {
     const nv = v - DT;
     if (nv <= 0) p.cooldowns.delete(k);

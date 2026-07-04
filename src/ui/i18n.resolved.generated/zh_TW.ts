@@ -3511,6 +3511,9 @@ export const zh_TW: EnTranslations = {
       "clickUse": "點擊使用",
       "clickBuyback": "點擊買回"
     },
+    "error": {
+      "requiresLevelToEquip": "需要等級 {level} 才能裝備。"
+    },
     "bags": {
       "title": "背包",
       "close": "關閉背包",

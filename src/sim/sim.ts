@@ -1345,6 +1345,7 @@ export class Sim {
     // Restore ability/potion cooldowns so a relog cannot reset them (see
     // cooldown_persist.ts). Re-anchored to this sim's clock; a fresh character has none.
     player.potionCooldownUntil = applyCooldowns(savedState?.cooldowns, player.cooldowns, this.time);
+    player.potionCooldownRemaining = Math.max(0, player.potionCooldownUntil - this.time);
     if (savedState?.pet) this.restorePet(player, savedState.pet);
 
     // The Hollow spawn policy (PHAA-404): under hollowStart every join lands

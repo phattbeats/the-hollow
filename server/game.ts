@@ -2923,6 +2923,7 @@ export class GameServer {
       Object.fromEntries([...meta.raidLockouts].filter(([, until]) => until > Date.now())),
     );
     maybe('cds', Object.fromEntries([...p.cooldowns.entries()].map(([k, v]) => [k, round2(v)])));
+    maybe('pcd', round2(p.potionCooldownRemaining));
     maybe('stats', p.stats);
     maybe('weapon', p.weapon);
     maybe('party', this.partyWire(anchorSession.pid));

@@ -3511,6 +3511,9 @@ export const id_ID: EnTranslations = {
       "clickUse": "Klik untuk memakai",
       "clickBuyback": "Klik untuk membeli kembali"
     },
+    "error": {
+      "requiresLevelToEquip": "Requires level {level} to equip."
+    },
     "bags": {
       "title": "Tas",
       "close": "Tutup tas",

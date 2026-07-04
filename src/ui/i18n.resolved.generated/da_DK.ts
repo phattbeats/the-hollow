@@ -3511,6 +3511,9 @@ export const da_DK: EnTranslations = {
       "clickUse": "Klik for at bruge",
       "clickBuyback": "Klik for at købe tilbage"
     },
+    "error": {
+      "requiresLevelToEquip": "Requires level {level} to equip."
+    },
     "bags": {
       "title": "Tasker",
       "close": "Luk tasker",

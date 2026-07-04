@@ -3511,6 +3511,9 @@ export const ja_JP: EnTranslations = {
       "clickUse": "クリックして使用",
       "clickBuyback": "クリックして買い戻す"
     },
+    "error": {
+      "requiresLevelToEquip": "装備するにはレベル{level}が必要です。"
+    },
     "bags": {
       "title": "バッグ",
       "close": "バッグを閉じる",
