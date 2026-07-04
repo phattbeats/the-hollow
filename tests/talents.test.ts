@@ -1098,7 +1098,7 @@ describe('dual-profession shared point pool (PHAA-463)', () => {
     );
     // JSONB round-trip: the secondary block persists and reloads
     const state = sim.serializeCharacter(sim.playerId)!;
-    expect(state.talents.secondary).toEqual({
+    expect(state.talents?.secondary).toEqual({
       spec: 'feral',
       ranks: { dru_natures_grasp: 2 },
       choices: {},
