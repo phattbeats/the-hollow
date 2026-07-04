@@ -3392,6 +3392,24 @@ export const en_XA: EnTranslations = {
       "tooFar": "[Ţóó ƒáŕ áŵáý.]"
     }
   },
+  "housingUi": {
+    "window": {
+      "title": "[Ýóúŕ Ĥóɱéšţéáð]",
+      "close": "[Çļóšé ĥóɱéšţéáð]",
+      "slotEmpty": "[Éɱþţý]",
+      "clear": "[Çļéáŕ]",
+      "clearAria": "[Çļéáŕ šļóţ {slot}]",
+      "placeAria": "[Þļáçé {decor} íñ šļóţ {slot}]",
+      "hint": "[Çĥóóšé á ðéçóŕáţíóñ ƒóŕ éáçĥ šļóţ.]"
+    },
+    "decor": {
+      "planter": "[Þļáñţéŕ]",
+      "lantern": "[Ļáñţéŕñ]",
+      "crate": "[Çŕáţé]",
+      "bench": "[Ɓéñçĥ]",
+      "stool": "[Šţóóļ]"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "[ĝ]",

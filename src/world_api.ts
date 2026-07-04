@@ -9,9 +9,11 @@
 // keep resolving to THIS file, never the sibling directory.
 //
 // ---------------------------------------------------------------------------
-// FACET MAP: the 21 domain facets (each IWorld member assigned exactly once; 147
-// total). One interface per file under ./world_api/; aux types travel with their
-// facet. The authoritative member-per-facet split is the W0c parity test.
+// FACET MAP: the 22 domain facets (each IWorld member assigned exactly once; 151
+// total; this count was previously stale at 21/147, corrected alongside the
+// PHAA-405 housing command addition below). One interface per file under
+// ./world_api/; aux types travel with their facet. The authoritative
+// member-per-facet split is the W0c parity test.
 //
 //   entity_roster.ts    IWorldEntityRoster   cfg/entities/player/moveInput/realm reads
 //   combat.ts           IWorldCombat         ability casts, auto-attack, spirit release
@@ -32,7 +34,7 @@
 //   market.ts           IWorldMarket         World Market browse/list/buy
 //   dungeons.ts         IWorldDungeons       dungeon enter/leave + raid lockouts
 //   delves.ts           IWorldDelves         delve runs, lockpick, companion
-//   housing.ts          IWorldHousing        Hollow hub homestead plots (read)
+//   housing.ts          IWorldHousing        Hollow hub homestead plots (read + claim/place/remove)
 //   greenpaw_hearth.ts  IWorldGreenpawHearth Hollow hub smoke/mood state (read)
 //   telemetry.ts        IWorldTelemetry      fire-and-forget metrics sink
 //
@@ -41,7 +43,7 @@
 //                                          ALL_DELTA_KEYS (27) + TERSE_TO_IWORLD mapping.
 //   tests/command_schema.test.ts   (W0b)  COMMAND_NAMES universe; ClientWorld send-set
 //                                          subset-of dispatch-set; DISPATCH_ONLY (7).
-//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (148) present + same-kind on
+//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (151) present + same-kind on
 //                                          Sim + ClientWorld; aggregate == disjoint
 //                                          union of the 22 facets.
 // ---------------------------------------------------------------------------
@@ -264,6 +266,9 @@ export const COMMAND_NAMES = [
   'lockpick_abort',
   'collect_delve_chest_loot',
   'telemetry',
+  'housingClaim',
+  'housingPlace',
+  'housingRemove',
 ] as const;
 
 // The union both the send path (`online.ts`) and the dispatch switch
@@ -447,4 +452,9 @@ export const COMMAND_FACETS = {
   lockpick_action: 'IWorldDelves',
   lockpick_abort: 'IWorldDelves',
   collect_delve_chest_loot: 'IWorldDelves',
+  // IWorldHousing: claim a free hub homestead plot, or place/clear a decor slot on
+  // the plot the viewer owns (PHAA-405: an interact-key command, not chat text).
+  housingClaim: 'IWorldHousing',
+  housingPlace: 'IWorldHousing',
+  housingRemove: 'IWorldHousing',
 } as const satisfies Partial<Record<ClientCommand, WorldFacet>>;

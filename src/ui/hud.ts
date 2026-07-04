@@ -59,6 +59,7 @@ import {
 } from '../sim/data';
 import { specialRoleColor } from '../sim/discord_roles';
 import { armorTypeForItem, canEquipItem, weaponArchetypeForItem } from '../sim/equipment_rules';
+import { HOUSE_SLOT_COUNT } from '../sim/housing';
 import { isItemLevelEligible, itemLevel, itemScore } from '../sim/item_level';
 import type { Ante, PickAction } from '../sim/lockpick';
 import { PICK_ACTIONS } from '../sim/lockpick';
@@ -176,6 +177,8 @@ import {
   swapHotbarSlots,
   syncHotbarActions,
 } from './hotbar';
+import { buildHousingWindowView } from './housing_view';
+import { renderHousingWindow } from './housing_window';
 import {
   formatMoney as formatLocalizedMoney,
   formatNumber,
@@ -820,6 +823,9 @@ export class Hud {
     { event: Extract<SimEvent, { type: 'masterLoot' }>; receivedAt: number; durationMs: number }
   >();
   private openVendorNpcId: number | null = null;
+  // Housing v0 placement window (PHAA-405): the viewer owns at most one plot,
+  // so unlike vendor/loot this needs no target id, just an open flag.
+  private housingOpenFlag = false;
   private openDelveBoardNpcId: number | null = null;
   private lastDelveTrackerSig = '';
   private selectedDelveTier: 'normal' | 'heroic' = 'normal';
@@ -1559,6 +1565,9 @@ export class Hud {
         break;
       case 'vendor-window':
         this.closeVendor();
+        break;
+      case 'housing-window':
+        this.closeHousing();
         break;
       case 'loot-window':
         this.closeLoot();
@@ -4587,6 +4596,15 @@ export class Hud {
       if (this.openVendorNpcId !== null) {
         const npc = sim.entities.get(this.openVendorNpcId);
         if (!npc || dist2d(p.pos, npc.pos) > 8) this.closeVendor();
+      }
+      if (this.housingOpenFlag) {
+        const housing = sim.housingInfo;
+        const plot = housing?.plots.find((pl) => pl.mine);
+        const wx = housing?.origin ? housing.origin.x + (plot?.x ?? 0) : null;
+        const wz = housing?.origin ? housing.origin.z + (plot?.z ?? 0) : null;
+        if (!plot || wx === null || wz === null || Math.hypot(p.pos.x - wx, p.pos.z - wz) > 10) {
+          this.closeHousing();
+        }
       }
     }
 
@@ -8108,6 +8126,56 @@ export class Hud {
 
   get vendorOpen(): boolean {
     return this.openVendorNpcId !== null;
+  }
+
+  // -------------------------------------------------------------------------
+  // Housing v0: the interact-driven homestead placement window (PHAA-405).
+  // Opened by main.ts's interact-key handler when the viewer interacts with
+  // their own plot's signpost (renderer.nearHousingPlot); there is no target
+  // id since a viewer owns at most one plot.
+  // -------------------------------------------------------------------------
+
+  openHousing(): void {
+    this.closeOtherWindows(['#housing-window', '#bags']);
+    this.housingOpenFlag = true;
+    this.renderHousing();
+  }
+
+  // renderHousingWindow() sets #housing-window's display itself (like
+  // renderVendorWindow); this only bails to closeHousing() when the plot
+  // has vanished from under the window (e.g. it expired mid-session).
+  private renderHousing(): void {
+    if (!this.housingOpenFlag) return;
+    const plot = this.sim.housingInfo?.plots.find((p) => p.mine);
+    if (!plot) {
+      this.closeHousing();
+      return;
+    }
+    renderHousingWindow(
+      $('#housing-window'),
+      buildHousingWindowView(HOUSE_SLOT_COUNT, plot.objects),
+      {
+        onPlace: (slot, kind) => {
+          this.sim.housingPlace(slot, kind);
+          this.renderHousing();
+        },
+        onClear: (slot) => {
+          this.sim.housingRemove(slot);
+          this.renderHousing();
+        },
+        onClose: () => this.closeHousing(),
+      },
+    );
+  }
+
+  closeHousing(): void {
+    $('#housing-window').style.display = 'none';
+    this.housingOpenFlag = false;
+    this.hideTooltip();
+  }
+
+  get housingOpen(): boolean {
+    return this.housingOpenFlag;
   }
 
   // -------------------------------------------------------------------------

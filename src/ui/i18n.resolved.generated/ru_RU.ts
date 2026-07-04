@@ -3392,6 +3392,24 @@ export const ru_RU: EnTranslations = {
       "tooFar": "Слишком далеко."
     }
   },
+  "housingUi": {
+    "window": {
+      "title": "Ваша усадьба",
+      "close": "Закрыть усадьбу",
+      "slotEmpty": "Пусто",
+      "clear": "Очистить",
+      "clearAria": "Очистить слот {slot}",
+      "placeAria": "Поместить {decor} в слот {slot}",
+      "hint": "Выберите украшение для каждого слота."
+    },
+    "decor": {
+      "planter": "Кашпо",
+      "lantern": "Фонарь",
+      "crate": "Ящик",
+      "bench": "Скамья",
+      "stool": "Табурет"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "з",

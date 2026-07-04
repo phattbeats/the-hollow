@@ -4,8 +4,10 @@
 // a small always-present blob: `plots` carries the global ownership book
 // (hub-local coordinates) and `origin` is the viewer's current hub-instance
 // origin, or null when the viewer is not standing inside a hub instance (the
-// renderer draws nothing then). Claiming and decorating go through the /house
-// chat commands (the existing chat wire), so this facet carries no commands.
+// renderer draws nothing then). Claiming/placing/removing decor is a direct
+// interact-key command (PHAA-405: walk up to a plot signpost, it glows, press
+// interact), not a typed /house chat command; the /house chat form still
+// works underneath (src/sim/housing.ts handleChat) as a plain-text fallback.
 // ---------------------------------------------------------------------------
 
 export interface HouseObjectView {
@@ -32,4 +34,10 @@ export interface HousingInfo {
 
 export interface IWorldHousing {
   housingInfo: HousingInfo | null;
+  /** Claim the nearest free plot within interact range (server re-checks range/ownership). */
+  housingClaim(): void;
+  /** Place (or replace) a decor kind on a slot of the plot the viewer owns. */
+  housingPlace(slot: number, kind: string): void;
+  /** Clear a decor slot on the plot the viewer owns. */
+  housingRemove(slot: number): void;
 }

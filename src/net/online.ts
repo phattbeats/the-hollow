@@ -1898,6 +1898,17 @@ export class ClientWorld implements IWorld {
   marketCollect(): void {
     this.cmd({ cmd: 'market_collect' });
   }
+  // --- IWorldHousing: claim/place/remove command sends (housingInfo is a snapshot
+  // read, mirror field above). PHAA-405: an interact-key command, not chat text. ---
+  housingClaim(): void {
+    this.cmd({ cmd: 'housingClaim' });
+  }
+  housingPlace(slot: number, kind: string): void {
+    this.cmd({ cmd: 'housingPlace', slot, kind });
+  }
+  housingRemove(slot: number): void {
+    this.cmd({ cmd: 'housingRemove', slot });
+  }
   // --- IWorldDungeons: dungeon enter/leave sends + the raid-lockout countdown read.
   // selfLockouts mirrors the snapshot `s.lockouts`; raidLockouts derives the live
   // countdown locally so it ticks without traffic. enter_crypt/leave_crypt are legacy

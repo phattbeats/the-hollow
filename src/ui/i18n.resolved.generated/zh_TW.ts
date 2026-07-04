@@ -3392,6 +3392,24 @@ export const zh_TW: EnTranslations = {
       "tooFar": "距離太遠。"
     }
   },
+  "housingUi": {
+    "window": {
+      "title": "你的家園",
+      "close": "關閉家園",
+      "slotEmpty": "空",
+      "clear": "清除",
+      "clearAria": "清除欄位 {slot}",
+      "placeAria": "將{decor}放置在欄位{slot}",
+      "hint": "為每個欄位選擇一個裝飾。"
+    },
+    "decor": {
+      "planter": "花盆",
+      "lantern": "燈籠",
+      "crate": "板條箱",
+      "bench": "長椅",
+      "stool": "凳子"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "金",

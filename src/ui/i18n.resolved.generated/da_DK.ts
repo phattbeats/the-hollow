@@ -3392,6 +3392,24 @@ export const da_DK: EnTranslations = {
       "tooFar": "For langt væk."
     }
   },
+  "housingUi": {
+    "window": {
+      "title": "Your Homestead",
+      "close": "Close homestead",
+      "slotEmpty": "Empty",
+      "clear": "Clear",
+      "clearAria": "Clear slot {slot}",
+      "placeAria": "Place {decor} in slot {slot}",
+      "hint": "Choose a decoration for each slot."
+    },
+    "decor": {
+      "planter": "Planter",
+      "lantern": "Lantern",
+      "crate": "Crate",
+      "bench": "Bench",
+      "stool": "Stool"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "g",

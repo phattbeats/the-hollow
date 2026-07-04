@@ -75,6 +75,7 @@ import {
   isHollowHubPos,
 } from './hollow_props';
 import { HousingView } from './housing';
+import { type NearbyHousingPlot, nearestHousingPlot } from './housing_proximity';
 import { buildImpactSite, type ImpactSiteView } from './impact_site';
 import { ensureDelveInteriorKit } from './interior_kit';
 import { type LocoTrack, newLocoTrack, updateLocomotion } from './locomotion';
@@ -839,6 +840,10 @@ export class Renderer {
   // Housing v0: hub homestead plots drawn from IWorld.housingInfo. Lazy like
   // `dungeons` (nothing to draw until the player enters the hub instance).
   private housingView: HousingView | null = null;
+  // PHAA-405: the plot the player is currently in interact range of (if any),
+  // recomputed alongside housingView each frame. main.ts's interact-key handler
+  // reads this instead of re-deriving the same distance check.
+  nearHousingPlot: NearbyHousingPlot | null = null;
   private envRTs = new Map<BiomeId, THREE.WebGLRenderTarget>();
   private envBiome: BiomeId = 'vale';
   private envOutdoorIntensity = ENV_INTENSITY;
@@ -4351,6 +4356,9 @@ export class Renderer {
     // Housing v0: homestead plots inside the hub instance. housingInfo.origin
     // is null everywhere else, so the view no-ops outside the hub; the JSON
     // change key inside update() makes the per-frame cost negligible.
+    // PHAA-405: also recompute the nearest-plot proximity (a cheap distance
+    // check, no allocation on the common no-plot-nearby path) so the signpost
+    // glow and main.ts's interact-key handler share one answer.
     {
       const housing = this.sim.housingInfo;
       if (housing?.origin || this.housingView) {
@@ -4358,6 +4366,10 @@ export class Renderer {
           groundHeight(hx, hz, this.sim.cfg.seed),
         );
         this.housingView.update(housing);
+        this.nearHousingPlot = nearestHousingPlot(p.pos.x, p.pos.z, housing);
+        this.housingView.updateProximity(this.nearHousingPlot?.plotId ?? null, this.time);
+      } else {
+        this.nearHousingPlot = null;
       }
     }
     worldStart = markWorldPhase('props', worldStart);
