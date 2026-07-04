@@ -3469,6 +3469,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.home.world.sub': '一片相連的大陸，三座區域，從寧靜的山谷到冰封的高峰。',
   'guide.home.world.levels': '等級 {min} 至 {max}',
   'guide.home.world.cta': '瀏覽世界',
+  'guide.home.world.hollowReachesName': '空谷地',
+  'guide.home.world.hollowReachesBlurb':
+    '神殿門下的靜謐之地，新人在Fallow Acres與Root Hollow一帶磨練身手。',
   'guide.home.world.valeName': '東溪谷地',
   'guide.home.world.valeBlurb': '翠綠的丘陵與古老的林地，每段冒險的起點。',
   'guide.home.world.marshName': '泥沼澤地',
@@ -3677,6 +3680,8 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.worldPage.intro':
     'World of ClaudeCraft 是一片你需徒步橫越的連綿大地，三大區域由南向北排列。沒有快速旅行，所以旅程本身就是冒險的一部分。',
   'guide.worldPage.hub': '主據點',
+  'guide.worldPage.hollowReachesBlurb':
+    '緊鄰神殿門外的平靜之地，新人在Fallow Acres與Root Hollow一帶與野狼、野豬交手磨練身手。',
   'guide.worldPage.valeBlurb': '翠綠的起始山谷，新英雄在東溪鎮周圍與群狼和盜匪交手、磨練本領之處。',
   'guide.worldPage.marshBlurb':
     '一片被霧氣與廢墟淹沒的國度。魚人成群湧入淺灘，更古老之物在水下蠢動，沼橋鎮的人們從橋上警戒注視著。',
@@ -4263,6 +4268,11 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.worldPage.peaksGreeting': '這座城牆已守了兩百年。它不會在我當值時破，但它正在呻吟。',
   'guide.worldPage.peaksPlaceNotes':
     '高守哨站鎮守著城牆。潛行者山脊與深岩地洞屬於山脊巨貓與狗頭人；食人魔山麓與卓格瑪戰營屬於受僱的暴徒；風暴岩劈啪作響地竄動著元素，微光湖則在其下發著光；龍裔邪教帳篷與亡魂之野環繞著邪教佔據的高地，墓龍聖所就矗立於其頂峰。',
+  'guide.worldPage.hollowReachesGreeter': '司事澤比迪亞，Root Hollow',
+  'guide.worldPage.hollowReachesGreeting':
+    '我盡量按曆書打理這片谷地，至少在努力。當心鬆軟的泥土，別碰登記簿。',
+  'guide.worldPage.hollowReachesPlaceNotes':
+    'Hollow Gate 是重新開向曠野的神殿傳送門。西邊的 Fallow Acres，司事法迪克把狼群趕出預留的建設用地；東邊的 Root Hollow，司事澤比迪亞按曆書照看一塊野豬成患的地塊。湖邊的 Mossbank 是垂釣的寧靜去處。',
   'guide.worldPage.valeGreeter': '雷德布魯克元帥，東溪鎮',
   'guide.worldPage.valeGreeting': '把你的劍帶在身邊。谷地已不復昔日。',
   'guide.worldPage.valePlaceNotes':

@@ -316,38 +316,10 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.title",
     "hudChrome.options.showOwnNameplate"
   ],
-  "zh_CN": [
-    "guide.home.world.hollowReachesBlurb",
-    "guide.home.world.hollowReachesName",
-    "guide.worldPage.hollowReachesBlurb",
-    "guide.worldPage.hollowReachesGreeter",
-    "guide.worldPage.hollowReachesGreeting",
-    "guide.worldPage.hollowReachesPlaceNotes"
-  ],
-  "zh_TW": [
-    "guide.home.world.hollowReachesBlurb",
-    "guide.home.world.hollowReachesName",
-    "guide.worldPage.hollowReachesBlurb",
-    "guide.worldPage.hollowReachesGreeter",
-    "guide.worldPage.hollowReachesGreeting",
-    "guide.worldPage.hollowReachesPlaceNotes"
-  ],
-  "ko_KR": [
-    "guide.home.world.hollowReachesBlurb",
-    "guide.home.world.hollowReachesName",
-    "guide.worldPage.hollowReachesBlurb",
-    "guide.worldPage.hollowReachesGreeter",
-    "guide.worldPage.hollowReachesGreeting",
-    "guide.worldPage.hollowReachesPlaceNotes"
-  ],
-  "ja_JP": [
-    "guide.home.world.hollowReachesBlurb",
-    "guide.home.world.hollowReachesName",
-    "guide.worldPage.hollowReachesBlurb",
-    "guide.worldPage.hollowReachesGreeter",
-    "guide.worldPage.hollowReachesGreeting",
-    "guide.worldPage.hollowReachesPlaceNotes"
-  ],
+  "zh_CN": [],
+  "zh_TW": [],
+  "ko_KR": [],
+  "ja_JP": [],
   "pt_BR": [
     "coldOpen.begin",
     "coldOpen.continue",
@@ -399,14 +371,7 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.title",
     "hudChrome.options.showOwnNameplate"
   ],
-  "ru_RU": [
-    "guide.home.world.hollowReachesBlurb",
-    "guide.home.world.hollowReachesName",
-    "guide.worldPage.hollowReachesBlurb",
-    "guide.worldPage.hollowReachesGreeter",
-    "guide.worldPage.hollowReachesGreeting",
-    "guide.worldPage.hollowReachesPlaceNotes"
-  ],
+  "ru_RU": [],
   "nl_NL": [
     "coldOpen.begin",
     "coldOpen.continue",
