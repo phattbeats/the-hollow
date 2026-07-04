@@ -176,7 +176,7 @@ export function fiestaApplyAugments(meta: PlayerMeta, e: Entity): void {
     if (s.scorePerKill) sp.scorePerKill = (sp.scorePerKill ?? 0) + s.scorePerKill;
   }
   meta.fiestaSpecial = sp;
-  meta.known = abilitiesKnownAt(meta.cls, e.level, meta.fiestaMods);
+  meta.known = abilitiesKnownAt(meta.cls, e.level, meta.fiestaMods, meta.secondaryCls);
   const frac = e.maxHp > 0 ? e.hp / e.maxHp : 1;
   recalcPlayerStats(e, meta.cls, meta.equipment, meta.fiestaMods);
   e.hp = e.dead ? 0 : Math.max(1, Math.round(e.maxHp * frac));
@@ -195,7 +195,7 @@ export function clearFiestaAugments(meta: PlayerMeta, e: Entity): void {
   meta.fiestaAugments = [];
   meta.fiestaMods = null;
   meta.fiestaSpecial = {};
-  meta.known = abilitiesKnownAt(meta.cls, e.level, meta.talentMods);
+  meta.known = abilitiesKnownAt(meta.cls, e.level, meta.talentMods, meta.secondaryCls);
   recalcPlayerStats(e, meta.cls, meta.equipment, meta.talentMods);
 }
 
@@ -208,7 +208,7 @@ export function fiestaStandardize(ctx: SimContext, meta: PlayerMeta, e: Entity):
   e.level = FIESTA_STANDARD_LEVEL;
   meta.talents = defaultBuild(meta.cls, talentPointsAtLevel(FIESTA_STANDARD_LEVEL));
   meta.talentMods = computeTalentModifiers(meta.cls, meta.talents);
-  meta.known = abilitiesKnownAt(meta.cls, e.level, ctx.playerMods(meta));
+  meta.known = abilitiesKnownAt(meta.cls, e.level, ctx.playerMods(meta), meta.secondaryCls);
   meta.wireRev++; // talents/loadouts swapped for the bout, refresh the wire promptly
   recalcPlayerStats(e, meta.cls, meta.equipment, ctx.playerMods(meta));
 }
@@ -222,7 +222,7 @@ export function fiestaRestoreChar(meta: PlayerMeta, e: Entity): void {
   meta.talents = snap.talents;
   meta.talentMods = computeTalentModifiers(meta.cls, meta.talents);
   meta.fiestaRestore = null;
-  meta.known = abilitiesKnownAt(meta.cls, e.level, meta.talentMods);
+  meta.known = abilitiesKnownAt(meta.cls, e.level, meta.talentMods, meta.secondaryCls);
   meta.wireRev++; // real talents restored, refresh the wire promptly
   recalcPlayerStats(e, meta.cls, meta.equipment, meta.talentMods);
 }

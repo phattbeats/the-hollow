@@ -451,7 +451,7 @@ export function gearReadout(meta: PlayerMeta): string {
   return `Equipped (${worn}/${slots.length}): ${parts.join(', ')}.`;
 }
 export function abilitiesReadout(meta: PlayerMeta, e: Entity): string {
-  const known = abilitiesKnownAt(meta.cls, e.level);
+  const known = abilitiesKnownAt(meta.cls, e.level, undefined, meta.secondaryCls);
   if (known.length === 0) return 'You have not learned any abilities yet.';
   const list = known.map((k) => `${k.def.name} (Rank ${k.rank})`).join(', ');
   return `Spellbook (${known.length}): ${list}.`;

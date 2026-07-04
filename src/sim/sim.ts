@@ -613,6 +613,10 @@ export interface PlayerMeta {
   // housing falls back to characterId/entityId.
   accountKey?: string;
   cls: PlayerClass;
+  // GW1 build system multiclassing (Phase 3): a second class whose kit merges
+  // into abilitiesKnownAt at its own normal learn levels. Null until a trainer
+  // NPC sets it (see PHAA-464). Persisted in CharacterState.
+  secondaryCls: PlayerClass | null;
   name: string;
   skin: number; // appearance index into the render SKINS[player_<cls>]; persisted, synced
   skinCatalog: SkinCatalog;
@@ -723,6 +727,9 @@ export interface AwayStatus {
 export interface CharacterState {
   level: number;
   xp: number;
+  // GW1 build system multiclassing. Optional/nullable so saves from before
+  // multiclassing existed load cleanly (back-compat: null secondary).
+  secondaryCls?: PlayerClass | null;
   // Post-cap progression. All optional so characters saved before the Max-Level
   // XP Overflow system load cleanly (addPlayer backfills lifetimeXp from level).
   lifetimeXp?: number;
@@ -1181,6 +1188,7 @@ export class Sim {
       characterId: opts?.characterId,
       accountKey: opts?.accountKey,
       cls,
+      secondaryCls: savedState?.secondaryCls ?? null,
       name,
       skin: savedState?.skin ?? 0,
       skinCatalog: savedState?.skinCatalog === 'mech' ? 'mech' : 'class',
@@ -1435,6 +1443,7 @@ export class Sim {
     const state: CharacterState = {
       level: restore ? restore.level : e.level,
       xp: restore ? restore.xp : meta.xp,
+      secondaryCls: meta.secondaryCls,
       lifetimeXp: meta.lifetimeXp,
       prestigeRank: meta.prestigeRank,
       unlockedMilestones: [...meta.unlockedMilestones],
@@ -1744,6 +1753,9 @@ export class Sim {
   }
   get activeLoadout(): number {
     return this.primary.activeLoadout;
+  }
+  get secondaryCls(): PlayerClass | null {
+    return this.primary.secondaryCls;
   }
 
   meta(pid: number): PlayerMeta | null {
@@ -2258,7 +2270,7 @@ export class Sim {
     const e = this.entities.get(meta.entityId);
     if (!e) return;
     const before = new Map(meta.known.map((k) => [k.def.id, k.rank]));
-    meta.known = abilitiesKnownAt(meta.cls, e.level, meta.talentMods);
+    meta.known = abilitiesKnownAt(meta.cls, e.level, meta.talentMods, meta.secondaryCls);
     if (announce) {
       for (const k of meta.known) {
         const prev = before.get(k.def.id);
