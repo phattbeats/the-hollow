@@ -37,7 +37,7 @@ function makeReq(opts: { url?: string; body?: unknown } = {}): any {
           },
         });
   req.url = opts.url ?? '/';
-  req.headers = { host: 'worldofclaudecraft.com' };
+  req.headers = { host: 'thehollow.world' };
   req.socket = { remoteAddress: '127.0.0.1' };
   return req;
 }

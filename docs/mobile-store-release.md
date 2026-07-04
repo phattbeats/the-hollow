@@ -2,7 +2,7 @@
 
 World of ClaudeCraft ships to iOS and Android through Capacitor. The native apps
 bundle the built Vite client and connect to the production backend at
-`https://worldofclaudecraft.com`.
+`https://thehollow.world`.
 
 ## Prerequisites
 
@@ -56,7 +56,7 @@ npm run native:open:android
 
 ```sh
 VITE_NATIVE_APP=1
-VITE_API_ORIGIN=https://worldofclaudecraft.com
+VITE_API_ORIGIN=https://thehollow.world
 ```
 
 The copied web assets under the native projects are generated and ignored by git.
@@ -108,7 +108,7 @@ been approved:
 ## Store Review Notes
 
 - App name: World of ClaudeCraft.
-- Bundle/application ID: `com.worldofclaudecraft`.
+- Bundle/application ID: `world.thehollow`.
 - App Store tags: Action, Fantasy, Free, Co-Op, PvP, Leaderboard, MMO,
   Multiplayer, Open World.
 - The iOS asset catalog includes Light, Dark, and Tinted app icon variants. The
@@ -119,5 +119,5 @@ been approved:
   native builds.
 - Online play uses the hosted production REST and WebSocket backend.
 - Privacy and terms URLs:
-  - `https://worldofclaudecraft.com/privacy.html`
-  - `https://worldofclaudecraft.com/terms.html`
+  - `https://thehollow.world/privacy.html`
+  - `https://thehollow.world/terms.html`

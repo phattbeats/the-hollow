@@ -4,7 +4,7 @@
 
 **Jalankan quest, bentuk grup, dan serbu dunia buatan tangan, gratis di browser Anda. Open source, web3, dan online sekarang juga.**
 
-**Situs resmi: https://worldofclaudecraft.com/**
+**Situs resmi: https://thehollow.world/**
 
 [![CI](https://github.com/levy-street/world-of-claudecraft/actions/workflows/ci.yml/badge.svg)](https://github.com/levy-street/world-of-claudecraft/actions/workflows/ci.yml)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -20,7 +20,7 @@
 
 [English](../../README.md) · [Español](README.es.md) · [Español (España)](README.es_ES.md) · [Français](README.fr_FR.md) · [Français (Canada)](README.fr_CA.md) · [Italiano](README.it_IT.md) · [Deutsch](README.de_DE.md) · [简体中文](README.zh_CN.md) · [繁體中文](README.zh_TW.md) · [한국어](README.ko_KR.md) · [日本語](README.ja_JP.md) · [Português (Brasil)](README.pt_BR.md) · [Русский](README.ru_RU.md) · [Nederlands](README.nl_NL.md) · [Polski](README.pl_PL.md) · **Bahasa Indonesia** · [Türkçe](README.tr_TR.md) · [Svenska](README.sv_SE.md) · [Tiếng Việt](README.vi_VN.md) · [Dansk](README.da_DK.md)
 
-[Main sekarang](https://worldofclaudecraft.com/) · [Hosting dunia Anda sendiri](#host-your-own-world-one-command) · [Latih sebuah agen](#train-an-agent-headless-rl) · [Web3](#web3) · [Berkontribusi](CONTRIBUTING.id_ID.md) · [Discord](https://discord.gg/GjhnUsBtw)
+[Main sekarang](https://thehollow.world/) · [Hosting dunia Anda sendiri](#host-your-own-world-one-command) · [Latih sebuah agen](#train-an-agent-headless-rl) · [Web3](#web3) · [Berkontribusi](CONTRIBUTING.id_ID.md) · [Discord](https://discord.gg/GjhnUsBtw)
 
 ![Layar judul World of ClaudeCraft](../../docs/screenshots/title-screen.jpg)
 
@@ -28,7 +28,7 @@
 
 ## Apa ini
 
-World of ClaudeCraft adalah MMO era klasik yang lengkap dan bisa Anda mainkan sekarang juga di browser, Anda hosting sendiri dengan satu perintah, dan bahkan bisa melatih agen AI untuk memainkannya. Ini gratis, open source, dan live di [worldofclaudecraft.com](https://worldofclaudecraft.com/).
+World of ClaudeCraft adalah MMO era klasik yang lengkap dan bisa Anda mainkan sekarang juga di browser, Anda hosting sendiri dengan satu perintah, dan bahkan bisa melatih agen AI untuk memainkannya. Ini gratis, open source, dan live di [thehollow.world](https://thehollow.world/).
 
 Satu dunia bersama berjalan di tiga tempat, semuanya dari inti game yang sama:
 
@@ -164,7 +164,7 @@ Ini hanya kosmetik dan tidak diperlukan untuk bermain. Tidak ada yang dihabiskan
 3WjLscH2JsXLEFJZRA9z8ti8yRGxWGKbqymPd7UicRth
 ```
 
-Selengkapnya tentang token di [worldofclaudecraft.com](https://worldofclaudecraft.com/).
+Selengkapnya tentang token di [thehollow.world](https://thehollow.world/).
 
 ## Tur keliling dunia
 
