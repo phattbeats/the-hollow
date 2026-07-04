@@ -13,7 +13,7 @@
 // wiring (GreenpawHearth -> PlantSpeech, Housing -> PlantSpeech, the /plant
 // chat route) end to end, each using only a handful of real ticks.
 
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { HOLLOW_HOUSE_PLOTS } from '../src/sim/content/hollow';
 import { PlantSpeech } from '../src/sim/plant_speech';
 import { Rng } from '../src/sim/rng';
@@ -197,6 +197,42 @@ describe('the Plant: rationed, mood-driven canned-line floor (unit)', () => {
     expect(plantLines(t.events).length).toBe(1);
   });
 
+  it('eavesdrops on ordinary chat: a sore-spot keyword lands the same line as an address', () => {
+    const t = makeCtx();
+    const plant = new PlantSpeech(t.ctx);
+    // The eavesdrop roll (CHAT_REACT_CHANCE) is independent of the keyword
+    // match, so retry with the cooldown cleared each time until it fires.
+    let line: string | undefined;
+    for (let i = 0; i < 300 && !line; i++) {
+      t.clock.time += 200; // clear the shared cooldown every attempt (max gap is 180s)
+      plant.handleAmbientChat('anyone know what happened to smokey?');
+      line = plantLines(t.events)[0]?.text.toLowerCase();
+    }
+    expect(line).toBeTruthy();
+    expect(/smokey|dignity/.test(line!)).toBe(true);
+  });
+
+  it('eavesdrops on ordinary chat with a generic line when no keyword matches', () => {
+    const t = makeCtx();
+    const plant = new PlantSpeech(t.ctx);
+    let sawLine = false;
+    for (let i = 0; i < 300 && !sawLine; i++) {
+      t.clock.time += 200; // clear the shared cooldown every attempt (max gap is 180s)
+      plant.handleAmbientChat('anyone want to go grind the crypt tonight');
+      sawLine = plantLines(t.events).length > 0;
+    }
+    expect(sawLine).toBe(true);
+  });
+
+  it('the eavesdrop roll never bypasses the shared rationing cooldown', () => {
+    const t = makeCtx();
+    const plant = new PlantSpeech(t.ctx);
+    plant.update(70); // speaks once, arms the shared cooldown
+    const before = plantLines(t.events).length;
+    for (let i = 0; i < 100; i++) plant.handleAmbientChat('smokey smokey smokey');
+    expect(plantLines(t.events).length).toBe(before); // still rationed: no ambient line leaked through
+  });
+
   it('eventually speaks on its own whim with no trigger at all', () => {
     const t = makeCtx();
     const plant = new PlantSpeech(t.ctx);
@@ -293,5 +329,17 @@ describe('the Plant: real-Sim wiring', () => {
     sim.chat('/who', pid);
     const events = tickCollect(1);
     expect(plantLines(events).length).toBe(0);
+  });
+
+  it('ordinary /say chat routes to the Plant through the real chat router', () => {
+    // The eavesdrop roll is a rare 4% independent chance (see plant_speech.ts),
+    // too low to fire reliably within a handful of real ticks. This test
+    // proves the WIRING (the /say branch in chat.ts reaches PlantSpeech via
+    // the seam), which the roll itself and its mode/line selection are
+    // already covered deterministically by the fake-ctx unit tests above.
+    const spy = vi.spyOn(sim.plantSpeech, 'handleAmbientChat');
+    sim.chat('/say just chatting about builds', pid);
+    tickCollect(1);
+    expect(spy).toHaveBeenCalledWith('just chatting about builds');
   });
 });

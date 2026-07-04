@@ -775,6 +775,12 @@ export function chat(ctx: SimContext, text: string, pid?: number): SentChat | nu
       pid: meta.entityId,
     });
   }
+  // The Plant's eavesdrop trigger (PHAA-422 follow-up): every /say or /yell
+  // line is reported through the seam so PlantSpeech can roll its own low,
+  // independent chance to react. Unconditional (not gated on range/zone),
+  // matching the existing /plant address convention of "one shared voice"
+  // reachable from anywhere.
+  ctx.plantSpeechAmbientChat(clean);
   return { channel, message: clean };
 }
 

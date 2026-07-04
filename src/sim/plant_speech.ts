@@ -23,14 +23,18 @@
 // the rng draws Sim already makes while it builds a fresh world.
 //
 // RATIONING (5.2, the mechanic - default to silence). The Plant speaks only on
-// four triggers: the room going full of smoke; a real threshold (a homestead
+// five triggers: the room going full of smoke; a real threshold (a homestead
 // claimed in its shade, section 11); being addressed (5.3 - any /plant text
-// counts, since ordering a god around is itself the insult); or its own whim
-// on a long, independent cooldown. Whatever the trigger, every utterance
+// counts, since ordering a god around is itself the insult); overhearing
+// ordinary /say or /yell chat, on a low independent roll (a player request,
+// not in the original 5.2 spec - it stands in for "the Plant is always
+// listening" without an LLM to actually understand what was said); or its own
+// whim on a long, independent cooldown. Whatever the trigger, every utterance
 // re-arms one shared short cooldown before the Plant will speak again, so no
-// single trigger (least of all spamming /plant) can make it chatty - a chatty
-// god is spam for the whole server, since every utterance broadcasts
-// (`ctx.emit` with no `pid`, exactly like a world-boss "awakens!" log line).
+// single trigger (least of all spamming /plant, or a busy chat channel) can
+// make it chatty - a chatty god is spam for the whole server, since every
+// utterance broadcasts (`ctx.emit` with no `pid`, exactly like a world-boss
+// "awakens!" log line).
 //
 // Player-facing lines are deliberately English here, the same documented
 // backstop housing.ts / greenpaw_hearth.ts use for their command text: a
@@ -70,6 +74,14 @@ const MAX_GAP_SECONDS = 180;
 // unprompted lines with no trigger at all.
 const WHIM_MIN_SECONDS = 4 * 60;
 const WHIM_MAX_SECONDS = 10 * 60;
+
+// Eavesdropping on ordinary chat (5.2 extension, see the header note): an
+// independent roll on top of the shared cooldown, not a replacement for it,
+// so a busy /say channel earns the Plant noticeably more chances to speak
+// without actually letting it speak more often than the cooldown allows.
+// Low on purpose - this is a rare "it heard that" surprise, not a running
+// commentary track on every line of chat.
+const CHAT_REACT_CHANCE = 0.04;
 
 function levelFor(smoke: number): Mood {
   return smoke >= SMOKE_HAZY_AT ? 'hazy' : 'clear';
@@ -177,6 +189,17 @@ const HOUSE_CLAIMED_LINES: string[] = [
 const THRESHOLD_LINES: Record<PlantThresholdKind, string[]> = {
   house_claimed: HOUSE_CLAIMED_LINES,
 };
+
+// Eavesdrop-only: the generic reaction when overheard chat matches none of
+// the sore-spot/keyword pools above (see matchTopicLine). Reacts to the fact
+// that chatter is happening at all, never to specific words - there is no LLM
+// here to actually parse what was said (5.7/section 10 floor 1).
+const EAVESDROP_LINES: string[] = [
+  "i heard that. i wish i hadn't. carry on.",
+  'was that aimed at me? no? disappointing. continue being tedious at each other.',
+  'four hundred years and this is the conversation the room settles on. history will not remember it fondly. neither will i.',
+  "i don't eavesdrop. the room is small and you are loud. there's a difference and it isn't mine.",
+];
 
 // Every mode's weight in the AMBIENT (threshold/whim) roll. Proportions match
 // docs/plan-the-hollow.md 5.4 for a hazy/full room; a clear room is dialed
@@ -300,6 +323,23 @@ export class PlantSpeech {
     return true;
   }
 
+  // Overhearing ordinary /say or /yell chat (5.2 extension, see the header
+  // note): called once per message, never gated on channel range or zone -
+  // "one shared voice" already treats an address from anywhere as fair game
+  // (see handleChat), so this follows the same convention. A cheap RNG roll
+  // on top of the shared cooldown keeps it rare; the cooldown gate is checked
+  // FIRST so a busy channel never burns RNG draws while rationed silent.
+  handleAmbientChat(text: string): void {
+    if (this.ctx.time < this.nextEarliestSpeakAt) return; // rationed into silence
+    if (this.ctx.rng.next() >= CHAT_REACT_CHANCE) return; // most chat goes unremarked
+    const topic = this.matchTopicLine(text.toLowerCase());
+    if (topic) {
+      this.speak(topic.mode, topic.text);
+      return;
+    }
+    this.speak('default_cutting', this.pickLine('eavesdrop', EAVESDROP_LINES));
+  }
+
   private trySpeak(mood: Mood): void {
     if (this.ctx.time < this.nextEarliestSpeakAt) return; // rationed into silence
     let mode = this.pickMode(mood);
@@ -328,8 +368,11 @@ export class PlantSpeech {
     return entries[entries.length - 1][0]; // float-rounding fallback
   }
 
-  private pickAddressLine(message: string, name: string): { mode: PlantMode; text: string } {
-    const lower = message.toLowerCase();
+  // Shared by an explicit /plant address and by eavesdropping on ordinary
+  // chat (handleAmbientChat): sore spots (5.5) and the never-honors-the-
+  // clergy-name rule (5.3) fire the same way whether the Plant was addressed
+  // or merely overheard the topic.
+  private matchTopicLine(lower: string): { mode: PlantMode; text: string } | null {
     if (/smokey/.test(lower)) {
       return { mode: 'divine_rage', text: this.pickLine('address:smokey', SMOKEY_LINES) };
     }
@@ -345,6 +388,12 @@ export class PlantSpeech {
     if (/\b(song|music|lute|sing|tune|chorus|beat)\b/.test(lower)) {
       return { mode: 'music_reaction', text: this.pickLine('address:music', MUSIC_REACTION_LINES) };
     }
+    return null;
+  }
+
+  private pickAddressLine(message: string, name: string): { mode: PlantMode; text: string } {
+    const topic = this.matchTopicLine(message.toLowerCase());
+    if (topic) return topic;
     const text = this.pickLine('address:command', COMMAND_REFUSAL_LINES).replace('{name}', name);
     return { mode: 'default_cutting', text };
   }
