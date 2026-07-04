@@ -10,6 +10,7 @@ import {
   PLANT_ARCHETYPES,
   type PlantArchetype,
   plantCreatureSpec,
+  tentacleCoil,
 } from '../src/render/plant_creature_core';
 
 // The plant-creature GENERATOR is deterministic by contract (PHAA-437): the
@@ -60,7 +61,7 @@ describe('plantCreatureSpec determinism', () => {
     expect(p.segments.length !== r.segments.length || p.height !== r.height).toBe(true);
     expect(p.head.kind).toBe('bulb');
     expect(r.head.kind).toBe('maw');
-    expect(w.head.kind).toBe('flower');
+    expect(w.head.kind).toBe('crown');
   });
 
   it('varies structure across seeds (not a constant model)', () => {
@@ -75,7 +76,7 @@ describe('plantCreatureSpec structural bounds', () => {
   const archetypeBounds: Record<PlantArchetype, { seg: [number, number]; head: string }> = {
     palefeeder: { seg: [4, 6], head: 'bulb' },
     rootmaw: { seg: [3, 5], head: 'maw' },
-    witness_root: { seg: [6, 8], head: 'flower' },
+    witness_root: { seg: [7, 9], head: 'crown' },
   };
 
   it('stalk/leaf/head/base fields stay within the archetype envelope for many seeds', () => {
@@ -100,8 +101,20 @@ describe('plantCreatureSpec structural bounds', () => {
         );
         expect(spec.height).toBeGreaterThan(0);
         expect(spec.base.prongs).toBeGreaterThanOrEqual(3);
-        if (a === 'witness_root') expect(spec.head.petals).toBeGreaterThanOrEqual(6);
-        else expect(spec.head.petals).toBe(0);
+        if (a === 'witness_root') {
+          expect(spec.head.petals).toBeGreaterThanOrEqual(7);
+          expect(spec.head.spikes?.length).toBe(spec.head.petals);
+          expect(spec.tentacles.length).toBeGreaterThanOrEqual(3);
+          for (const tc of spec.tentacles) {
+            expect(tc.segment).toBeGreaterThanOrEqual(0);
+            expect(tc.segment).toBeLessThan(spec.segments.length);
+            expect(tc.thornCount).toBeGreaterThanOrEqual(4);
+          }
+        } else {
+          expect(spec.head.petals).toBe(0);
+          expect(spec.head.spikes).toBeUndefined();
+          expect(spec.tentacles.length).toBe(0);
+        }
       }
     }
   });
@@ -148,5 +161,23 @@ describe('motion envelopes', () => {
     expect(attackLunge(-1)).toBe(0);
     for (let e = 0; e < ATTACK_DURATION; e += 0.02)
       expect(attackLunge(e)).toBeGreaterThanOrEqual(0);
+  });
+
+  it('tentacle coil is bounded by its own amplitude and out of phase per limb', () => {
+    for (let i = 0; i < spec.tentacles.length; i++) {
+      const tc = spec.tentacles[i];
+      let maxX = 0;
+      for (let t = 0; t < 8; t += 0.05) maxX = Math.max(maxX, Math.abs(tentacleCoil(spec, i, t).x));
+      expect(maxX).toBeGreaterThan(0);
+      expect(maxX).toBeLessThanOrEqual(tc.coilAmp + 1e-9);
+    }
+    // distinct tentacles do not move in lockstep (independent phase)
+    if (spec.tentacles.length > 1) {
+      const a = tentacleCoil(spec, 0, 1.7).x;
+      const b = tentacleCoil(spec, 1, 1.7).x;
+      expect(a).not.toBeCloseTo(b, 6);
+    }
+    // out of range index is inert, not a crash
+    expect(tentacleCoil(spec, spec.tentacles.length + 5, 1)).toEqual({ x: 0, z: 0 });
   });
 });
