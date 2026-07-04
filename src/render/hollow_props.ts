@@ -134,8 +134,40 @@ function buildVase(): THREE.Group {
   }
   // No PointLight here on purpose: the renderer keeps the visible point-light
   // count constant (budgetFireLights), and an unmanaged light would force a
-  // shader recompile. The urn's emissive plus the interior torch pools carry it.
+  // shader recompile. The urn's emissive plus the interior torch pools carry it;
+  // the god's green glow is a MANAGED light added in buildHollowProps (below),
+  // pushed into the same fireLights budget a dungeon torch uses.
   return g;
+}
+
+/**
+ * The vase's green glow (PHAA-431, Brandon's cold-open feedback): the god's
+ * light welling out of the urn mouth. A visible emissive core so the source
+ * itself reads, plus a contained green PointLight the caller registers in the
+ * renderer's fireLights budget (like a dungeon torch, so numPointLights never
+ * changes); the flicker pass gives it a slow breathe. buildVase keeps no light
+ * of its own (see the note there).
+ */
+function buildVaseGlow(): { core: THREE.Mesh; light: THREE.PointLight } {
+  // the visible source: a soft emissive bulb at the urn mouth, welling up
+  const core = new THREE.Mesh(
+    new THREE.SphereGeometry(0.3, 10, 8),
+    new THREE.MeshStandardMaterial({
+      color: 0xbdf089,
+      emissive: 0x8fe04a,
+      emissiveIntensity: 2.2,
+      roughness: 0.5,
+    }),
+  );
+  core.position.y = 2.35;
+  core.scale.y = 1.25;
+  // the pooled light: contained hollow-green, gentle breathe via the flicker
+  // pass (userData.baseIntensity). Softer and shorter-range than a torch so it
+  // pools around the shrine rather than washing the whole clearing.
+  const light = new THREE.PointLight(0x8fe04a, 22, 18, 2);
+  light.userData.baseIntensity = 22;
+  light.position.y = 2.2;
+  return { core, light };
 }
 
 /**
@@ -314,7 +346,11 @@ function buildVineWall(x: number, z: number, scale: number): THREE.Group {
  * Async because the kit GLBs load on demand; the caller adds the resolved
  * group to the scene (the renderer does this once per built hub interior).
  */
-export async function buildHollowProps(ox: number, oz: number): Promise<THREE.Group> {
+export async function buildHollowProps(
+  ox: number,
+  oz: number,
+  fireLights?: THREE.PointLight[],
+): Promise<THREE.Group> {
   const [
     crate,
     barrel,
@@ -371,6 +407,17 @@ export async function buildHollowProps(ox: number, oz: number): Promise<THREE.Gr
   const vase = buildVase();
   vase.position.set(VASE_POS.x, 0, VASE_POS.z);
   group.add(vase);
+
+  // the vase's green glow: a visible mouth core plus a managed point light
+  // registered in the renderer's fireLights budget (buildVase keeps no light of
+  // its own). getWorldPosition sees the instance offset once group.position is
+  // set below, so budgetFireLights ranks this copy at its true world spot.
+  const glow = buildVaseGlow();
+  glow.core.position.set(VASE_POS.x, glow.core.position.y, VASE_POS.z);
+  glow.light.position.set(VASE_POS.x, glow.light.position.y, VASE_POS.z);
+  group.add(glow.core);
+  group.add(glow.light);
+  fireLights?.push(glow.light);
 
   // crates: wooden crate / barrel mix, same cadence as the overworld set
   HOLLOW_PROPS.crates.forEach(([x, z], i) => {

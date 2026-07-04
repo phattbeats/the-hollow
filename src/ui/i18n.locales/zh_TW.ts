@@ -4728,4 +4728,12 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'housingUi.decor.crate': '板條箱',
   'housingUi.decor.bench': '長椅',
   'housingUi.decor.stool': '凳子',
+  'coldOpen.title': '空穴',
+  'coldOpen.wakeBody':
+    '你在溫熱的地面上醒來，記不起自己的名字、族人，也想不起是如何來到此處的。前方一只巨大的花瓶中漾出綠光，那光彷彿一直在等著你。',
+  'coldOpen.orientBody':
+    '神龕一片寂靜，煙火的氣味久久不散。花點時間站穩腳跟。準備好後，循著綠光前行：前方有人守著火焰，或許知道你失去了什麼。',
+  'coldOpen.continue': '繼續',
+  'coldOpen.begin': '開始',
+  'coldOpen.skip': '跳過',
 };

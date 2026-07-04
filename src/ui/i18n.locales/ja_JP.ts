@@ -4967,4 +4967,12 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'housingUi.decor.crate': '木箱',
   'housingUi.decor.bench': 'ベンチ',
   'housingUi.decor.stool': 'スツール',
+  'coldOpen.title': '空洞',
+  'coldOpen.wakeBody':
+    '温かい地面の上で、あなたは目を覚ます。自分の名も、一族のことも、どうやってここへ来たのかも思い出せない。前方の大きな壺から緑の光がにじみ出ており、その光はまるでずっとあなたを待っていたかのようだ。',
+  'coldOpen.orientBody':
+    '祠は静まり返り、煙のにおいがかすかに漂っている。まずは足元を確かめるといい。準備ができたら、緑の光をたどって進もう。この先で誰かが炎の番をしている。あなたが失ったものを知っているかもしれない。',
+  'coldOpen.continue': 'つづける',
+  'coldOpen.begin': 'はじめる',
+  'coldOpen.skip': 'スキップ',
 };
