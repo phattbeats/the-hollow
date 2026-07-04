@@ -29,6 +29,7 @@ import {
   type PlantArchetype,
   type PlantCreatureSpec,
   plantCreatureSpec,
+  tentacleCoil,
 } from './plant_creature_core';
 
 export interface PlantCreature {
@@ -165,9 +166,18 @@ function mat(
   return m;
 }
 
+function lerp(a: number, b: number, t: number): number {
+  return a + (b - a) * t;
+}
+
 function tintColor(hex: number, tint: number | undefined, strength: number): number {
   if (tint === undefined || strength <= 0) return hex;
   return new THREE.Color(hex).lerp(new THREE.Color(tint), Math.min(1, strength)).getHex();
+}
+
+/** Lerp a color toward pale bone so thorns/spikes read against a dark body. */
+function lightenColor(hex: number, strength: number): number {
+  return new THREE.Color(hex).lerp(new THREE.Color(0xcfc7ab), strength).getHex();
 }
 
 // --------------------------------------------------------------------------
@@ -184,6 +194,12 @@ interface Joint {
 interface LeafNode {
   pivot: THREE.Group;
   droop: number;
+  index: number;
+}
+
+interface TentacleNode {
+  basePivot: THREE.Group;
+  tipPivot: THREE.Group;
   index: number;
 }
 
@@ -205,6 +221,8 @@ export function buildFromSpec(spec: PlantCreatureSpec, opts: BuildPlantOpts = {}
   const stalkMat = mat(std, tintColor(pal.stalk, opts.tint, ts));
   const leafMat = mat(std, tintColor(pal.leaf, opts.tint, ts));
   const accentMat = mat(std, tintColor(pal.accent, opts.tint, ts));
+  // thorns/spikes lighten toward bone so they read against a dark boss body
+  const thornMat = mat(std, tintColor(lightenColor(pal.accent, 0.55), opts.tint, ts));
   const headEmissiveI = spec.head.glow > 0 ? spec.head.glow * 1.6 : 0;
   const headMat = mat(
     std,
@@ -266,12 +284,46 @@ export function buildFromSpec(spec: PlantCreatureSpec, opts: BuildPlantOpts = {}
     leaves.push({ pivot: droopPivot, droop: leaf.droop, index });
   });
 
+  // Thorned tentacles whip off the upper stalk (boss-tier archetypes only).
+  const tentacles: TentacleNode[] = spec.tentacles.map((tc, index) => {
+    const joint = joints[Math.min(tc.segment, joints.length - 1)];
+    const yawPivot = new THREE.Group();
+    yawPivot.rotation.y = tc.yaw;
+    yawPivot.position.y = spec.segments[Math.min(tc.segment, joints.length - 1)].length * 0.5;
+    joint.pivot.add(yawPivot);
+
+    const basePivot = new THREE.Group();
+    yawPivot.add(basePivot);
+
+    const seg1Len = tc.length * 0.55;
+    const seg2Len = tc.length * 0.45;
+    const midRadius = (tc.baseRadius + tc.tipRadius) * 0.5;
+
+    const seg1 = new THREE.Mesh(segmentGeo(), accentMat);
+    seg1.scale.set(tc.baseRadius, seg1Len, tc.baseRadius);
+    seg1.castShadow = true;
+    basePivot.add(seg1);
+    addThorns(basePivot, tc, seg1Len, tc.baseRadius, midRadius, thornMat);
+
+    const tipPivot = new THREE.Group();
+    tipPivot.position.y = seg1Len;
+    basePivot.add(tipPivot);
+
+    const seg2 = new THREE.Mesh(segmentGeo(), accentMat);
+    seg2.scale.set(midRadius, seg2Len, midRadius);
+    seg2.castShadow = true;
+    tipPivot.add(seg2);
+    addThorns(tipPivot, tc, seg2Len, midRadius, tc.tipRadius, thornMat);
+
+    return { basePivot, tipPivot, index };
+  });
+
   // Head at the crown pivot.
   const crown = joints.length ? joints[joints.length - 1].pivot : root;
   const headGroup = new THREE.Group();
   headGroup.position.y = joints.length ? spec.segments[spec.segments.length - 1].length : baseY;
   crown.add(headGroup);
-  const head = buildHead(headGroup, spec, headMat, accentMat, leafMat);
+  const head = buildHead(headGroup, spec, headMat, accentMat, leafMat, thornMat);
 
   const creature: PlantCreatureInternal = {
     root,
@@ -279,6 +331,7 @@ export function buildFromSpec(spec: PlantCreatureSpec, opts: BuildPlantOpts = {}
     spec,
     joints,
     leaves,
+    tentacles,
     head,
     hitElapsed: Infinity,
     atkElapsed: Infinity,
@@ -297,6 +350,15 @@ export function buildFromSpec(spec: PlantCreatureSpec, opts: BuildPlantOpts = {}
       }
       for (const leaf of this.leaves) {
         leaf.pivot.rotation.x = leaf.droop + leafFlutter(this.spec, leaf.index, t);
+      }
+      for (const tn of this.tentacles) {
+        const tc = this.spec.tentacles[tn.index];
+        const coil = tentacleCoil(this.spec, tn.index, t);
+        // tentacles lash forward hard on attack, well past the trunk's lunge
+        const lash = lunge * 0.85;
+        tn.basePivot.rotation.x = tc.baseDroop + coil.x + recoil * 0.3 - lash * 0.45;
+        tn.basePivot.rotation.z = coil.z;
+        tn.tipPivot.rotation.x = tc.curl + coil.x * 1.5 - lash * 0.65 + recoil * 0.5;
       }
       this.head.update(t, lunge, this.spec);
     },
@@ -322,9 +384,35 @@ interface HeadRig {
 interface PlantCreatureInternal extends PlantCreature {
   joints: Joint[];
   leaves: LeafNode[];
+  tentacles: TentacleNode[];
   head: HeadRig;
   hitElapsed: number;
   atkElapsed: number;
+}
+
+/** Small thorn cones jutting off a tentacle segment, spread by a deterministic
+ *  golden-angle azimuth so a cluster never lines up on one side. */
+function addThorns(
+  parent: THREE.Group,
+  tc: import('./plant_creature_core').TentacleSpec,
+  segLen: number,
+  radiusNear: number,
+  radiusFar: number,
+  mat: THREE.Material,
+): void {
+  const count = Math.max(1, Math.round(tc.thornCount / 2));
+  for (let i = 0; i < count; i++) {
+    const f = (i + 0.5) / count;
+    const r = lerp(radiusNear, radiusFar, f);
+    const thorn = new THREE.Mesh(petalBlade(), mat);
+    thorn.scale.set(tc.thornSize, tc.thornSize * 1.8, tc.thornSize);
+    const azimuth = i * 2.399963 + segLen; // golden-angle spread, deterministic
+    thorn.position.set(Math.cos(azimuth) * r * 0.95, segLen * f, Math.sin(azimuth) * r * 0.95);
+    thorn.rotation.z = -Math.cos(azimuth) * 1.15;
+    thorn.rotation.x = Math.sin(azimuth) * 1.15;
+    thorn.castShadow = true;
+    parent.add(thorn);
+  }
 }
 
 function buildBase(
@@ -370,6 +458,7 @@ function buildHead(
   headMat: THREE.Material,
   accentMat: THREE.Material,
   leafMat: THREE.Material,
+  thornMat: THREE.Material,
 ): HeadRig {
   const s = spec.head.size;
   if (spec.head.kind === 'bulb') {
@@ -421,40 +510,45 @@ function buildHead(
     };
   }
 
-  // flower: a disc, a ring of petals, and a faintly glowing central eye
-  const disc = new THREE.Mesh(discHead(), accentMat);
-  disc.scale.set(s * 0.7, s * 0.5, s * 0.7);
-  disc.position.y = s * 0.7;
-  disc.castShadow = true;
-  parent.add(disc);
-
-  const petalRing = new THREE.Group();
-  petalRing.position.y = s * 0.72;
-  parent.add(petalRing);
-  for (let i = 0; i < spec.head.petals; i++) {
-    const a = (i / spec.head.petals) * Math.PI * 2;
-    const petal = new THREE.Mesh(petalBlade(), leafMat);
-    petal.scale.set(s * 0.42, s * 0.9, s * 0.14);
-    petal.position.set(Math.cos(a) * s * 0.5, 0, Math.sin(a) * s * 0.5);
-    petal.rotation.z = Math.cos(a) * 1.15;
-    petal.rotation.x = -Math.sin(a) * 1.15;
-    petal.rotation.y = -a;
-    petal.castShadow = true;
-    petalRing.add(petal);
-  }
+  // crown: a small dark sunken socket (not a broad hat-brim disc), a single
+  // sunken glowing eye, and a wide antler-like crown of jagged spikes that
+  // flare outward and up: no two the same length or flare, so the silhouette
+  // reads craggy and boss-like, not a tidy even flower.
+  const socket = new THREE.Mesh(discHead(), accentMat);
+  socket.scale.set(s * 0.42, s * 0.24, s * 0.42);
+  socket.position.y = s * 0.6;
+  socket.castShadow = true;
+  parent.add(socket);
 
   const eye = new THREE.Mesh(bulbHead(), headMat);
-  eye.scale.setScalar(s * 0.34);
-  eye.position.y = s * 0.78;
+  eye.scale.setScalar(s * 0.22);
+  eye.position.y = s * 0.72;
   parent.add(eye);
+
+  const spikeGroup = new THREE.Group();
+  spikeGroup.position.y = s * 0.58;
+  parent.add(spikeGroup);
+  for (const sp of spec.head.spikes ?? []) {
+    const spike = new THREE.Mesh(petalBlade(), sp.thorny ? thornMat : leafMat);
+    spike.scale.set(s * 0.17, s * 1.1 * sp.length, s * 0.17);
+    spike.position.set(Math.cos(sp.angle) * s * 0.5, 0, Math.sin(sp.angle) * s * 0.5);
+    // a bigger base flare so the ring reads as antler-like horns radiating
+    // outward, not a tuft of quills pointing straight up
+    const flare = 1.5 + sp.tilt;
+    spike.rotation.z = Math.cos(sp.angle) * flare;
+    spike.rotation.x = -Math.sin(sp.angle) * flare;
+    spike.rotation.y = -sp.angle;
+    spike.castShadow = true;
+    spikeGroup.add(spike);
+  }
 
   return {
     update(t) {
       const m = eye.material as THREE.MeshStandardMaterial;
       if ('emissiveIntensity' in m) {
-        m.emissiveIntensity = spec.head.glow * (1.3 + Math.sin(t * 1.4) * 0.4);
+        m.emissiveIntensity = spec.head.glow * (1.2 + Math.sin(t * 1.1) * 0.5);
       }
-      petalRing.rotation.y = Math.sin(t * 0.5) * 0.08;
+      spikeGroup.rotation.y = Math.sin(t * 0.35) * 0.05;
     },
   };
 }

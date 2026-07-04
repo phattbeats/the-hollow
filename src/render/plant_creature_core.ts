@@ -21,7 +21,7 @@ export const PLANT_ARCHETYPES: readonly PlantArchetype[] = [
   'witness_root',
 ];
 
-export type HeadKind = 'bulb' | 'maw' | 'flower';
+export type HeadKind = 'bulb' | 'maw' | 'crown';
 export type BaseKind = 'roots' | 'pot';
 
 export interface SegmentSpec {
@@ -49,13 +49,53 @@ export interface LeafSpec {
   phase: number;
 }
 
+/** One jagged spike on a crown head: irregular length/tilt so the ring reads
+ *  craggy and asymmetric rather than a tidy, even flower. */
+export interface SpikeSpec {
+  /** azimuth around the head axis (radians), already jittered off an even ring */
+  angle: number;
+  /** relative length multiplier vs. the head size */
+  length: number;
+  /** extra outward/upward flare added to the base fan angle (radians) */
+  tilt: number;
+  /** this spike renders in the darker accent tone instead of the head tone */
+  thorny: boolean;
+}
+
 export interface HeadSpec {
   kind: HeadKind;
   size: number;
-  /** petal count for the flower head; 0 otherwise */
+  /** spike count for the crown head; 0 otherwise */
   petals: number;
   /** 0..1 emissive strength of the head (the emberbulb glows; the maw does not) */
   glow: number;
+  /** per-spike jitter for the crown head; unset otherwise */
+  spikes?: SpikeSpec[];
+}
+
+/** A single thorned, whip-limbed tentacle grown off the upper stalk (boss-tier
+ *  archetypes only). Two-segment chain (base + tip) so it coils and lashes
+ *  independently of the trunk's sway. */
+export interface TentacleSpec {
+  /** stalk segment index it grows from */
+  segment: number;
+  /** yaw around the stalk (radians) */
+  yaw: number;
+  /** rest pitch below horizontal at the attach point (radians) */
+  baseDroop: number;
+  length: number;
+  baseRadius: number;
+  tipRadius: number;
+  thornCount: number;
+  thornSize: number;
+  /** independent coil phase so tentacles do not whip in unison */
+  phase: number;
+  /** coil/whip amplitude (radians) */
+  coilAmp: number;
+  /** coil angular speed (radians/second) */
+  coilSpeed: number;
+  /** static hook/curl baked into the tip's rest pose (radians) */
+  curl: number;
 }
 
 export interface BaseSpec {
@@ -93,6 +133,8 @@ export interface PlantCreatureSpec {
   seed: number;
   segments: SegmentSpec[];
   leaves: LeafSpec[];
+  /** thorned whip limbs; empty for non-boss archetypes */
+  tentacles: TentacleSpec[];
   head: HeadSpec;
   base: BaseSpec;
   palette: PlantPalette;
@@ -158,6 +200,21 @@ interface ArchetypeTable {
   sway: [number, number];
   swaySpeed: [number, number];
   palettes: PlantPalette[];
+  /** boss-tier only: thorned tentacle knobs. Unset -> no tentacles grown. */
+  tentacle?: TentacleTable;
+}
+
+interface TentacleTable {
+  count: [number, number];
+  length: [number, number];
+  baseRadius: [number, number];
+  tipRadius: [number, number];
+  thornCount: [number, number];
+  thornSize: [number, number];
+  droop: [number, number];
+  coilAmp: [number, number];
+  coilSpeed: [number, number];
+  curl: [number, number];
 }
 
 const TABLES: Record<PlantArchetype, ArchetypeTable> = {
@@ -214,31 +271,47 @@ const TABLES: Record<PlantArchetype, ArchetypeTable> = {
       { stalk: 0x746455, leaf: 0x67734d, head: 0x82503d, accent: 0x957250, emissive: 0x000000 },
     ],
   },
-  // The boss: a tall, dark, imposing multi-whorl stalk topped by a wide petal
-  // flower with a faintly glowing central eye, planted on a heavy root pedestal.
+  // The boss: a tall, heavy-trunked stalk that barely tapers, thorned tentacle
+  // limbs lashing from the shoulders, and a jagged crown head sunk around a
+  // single glowing socket, planted on a wide gnarled root mass. Redesigned per
+  // Board feedback (PHAA-437): the old wide-petal flower head read as cute /
+  // "pokemon-like"; this pass trades foliage silhouette for imposing mass and
+  // a dark, cold palette instead of garden green.
   witness_root: {
     salt: 0x5d8f,
-    segments: [6, 8],
-    segLength: [0.32, 0.42],
-    baseRadius: [0.2, 0.28],
-    taper: [0.35, 0.5],
-    lean: 0.08,
-    leafPairs: [3, 5],
-    leafLength: [0.5, 0.72],
-    leafDroop: [0.35, 0.7],
-    head: 'flower',
-    headSize: [0.5, 0.68],
-    petals: [6, 9],
-    glow: [0.3, 0.55],
+    segments: [7, 9],
+    segLength: [0.34, 0.46],
+    baseRadius: [0.34, 0.46],
+    taper: [0.62, 0.78],
+    lean: 0.05,
+    leafPairs: [1, 2],
+    leafLength: [0.4, 0.55],
+    leafDroop: [0.5, 0.85],
+    head: 'crown',
+    headSize: [0.62, 0.82],
+    petals: [7, 11],
+    glow: [0.35, 0.6],
     base: 'roots',
-    prongs: [5, 7],
-    sway: [0.05, 0.1],
-    swaySpeed: [0.6, 0.95],
+    prongs: [7, 10],
+    sway: [0.03, 0.06],
+    swaySpeed: [0.45, 0.7],
     palettes: [
-      { stalk: 0x39412f, leaf: 0x2f3a24, head: 0x6f7a3c, accent: 0x4a5533, emissive: 0x9fd06a },
-      { stalk: 0x333c2b, leaf: 0x2a3420, head: 0x66723a, accent: 0x445030, emissive: 0x8fc85e },
-      { stalk: 0x3f4833, leaf: 0x354028, head: 0x77833f, accent: 0x505c38, emissive: 0xaad875 },
+      { stalk: 0x2a2420, leaf: 0x3a3226, head: 0x241c2e, accent: 0x4a3a2e, emissive: 0x8a4fd6 },
+      { stalk: 0x241f1c, leaf: 0x332c22, head: 0x1e1626, accent: 0x40332a, emissive: 0x7a3fc2 },
+      { stalk: 0x2e2822, leaf: 0x3d3428, head: 0x2a2030, accent: 0x50402f, emissive: 0x9a5fe0 },
     ],
+    tentacle: {
+      count: [3, 5],
+      length: [1.7, 2.4],
+      baseRadius: [0.13, 0.18],
+      tipRadius: [0.035, 0.055],
+      thornCount: [4, 6],
+      thornSize: [0.09, 0.14],
+      droop: [0.85, 1.25],
+      coilAmp: [0.25, 0.45],
+      coilSpeed: [0.5, 0.9],
+      curl: [0.3, 0.7],
+    },
   },
 };
 
@@ -312,9 +385,47 @@ export function plantCreatureSpec(archetype: PlantArchetype, seed: number): Plan
   const head: HeadSpec = {
     kind: t.head,
     size: randRange(rng, t.headSize),
-    petals: t.head === 'flower' ? randInt(rng, t.petals) : 0,
+    petals: t.head === 'crown' ? randInt(rng, t.petals) : 0,
     glow: randRange(rng, t.glow),
   };
+  if (t.head === 'crown') {
+    const spikes: SpikeSpec[] = [];
+    for (let i = 0; i < head.petals; i++) {
+      spikes.push({
+        // jitter off an even ring so the crown reads craggy, not a tidy flower
+        angle: (i / head.petals) * Math.PI * 2 + (rng() - 0.5) * 0.5,
+        length: lerp(0.75, 1.45, rng()),
+        tilt: lerp(-0.25, 0.5, rng()),
+        thorny: rng() < 0.5,
+      });
+    }
+    head.spikes = spikes;
+  }
+
+  const tentacleTable = t.tentacle;
+  const tentacles: TentacleSpec[] = [];
+  if (tentacleTable) {
+    const count = randInt(rng, tentacleTable.count);
+    // whip limbs grow off the mid stalk (shoulders), not the crown or the base
+    const lowSeg = Math.max(0, Math.floor(segCount * 0.4));
+    for (let i = 0; i < count; i++) {
+      const span = Math.max(1, segCount - lowSeg);
+      tentacles.push({
+        segment: Math.min(segCount - 1, lowSeg + Math.floor(rng() * span)),
+        yaw: rng() * Math.PI * 2,
+        baseDroop: randRange(rng, tentacleTable.droop),
+        length: randRange(rng, tentacleTable.length),
+        baseRadius: randRange(rng, tentacleTable.baseRadius),
+        tipRadius: randRange(rng, tentacleTable.tipRadius),
+        thornCount: randInt(rng, tentacleTable.thornCount),
+        thornSize: randRange(rng, tentacleTable.thornSize),
+        phase: rng() * Math.PI * 2,
+        coilAmp: randRange(rng, tentacleTable.coilAmp),
+        coilSpeed: randRange(rng, tentacleTable.coilSpeed),
+        curl: randRange(rng, tentacleTable.curl),
+      });
+    }
+  }
 
   const base: BaseSpec = {
     kind: t.base,
@@ -338,6 +449,7 @@ export function plantCreatureSpec(archetype: PlantArchetype, seed: number): Plan
     seed: seed >>> 0,
     segments,
     leaves,
+    tentacles,
     head,
     base,
     palette,
@@ -372,6 +484,22 @@ export function leafFlutter(spec: PlantCreatureSpec, leafIndex: number, t: numbe
   const leaf = spec.leaves[leafIndex];
   if (!leaf) return 0;
   return Math.sin(t * spec.sway.speed * 1.7 + leaf.phase) * spec.sway.flutter;
+}
+
+/** Independent coil/whip offset (radians) for one tentacle: its own phase and
+ *  amplitude so a cluster of limbs never lash in lockstep. */
+export function tentacleCoil(
+  spec: PlantCreatureSpec,
+  index: number,
+  t: number,
+): { x: number; z: number } {
+  const tc = spec.tentacles[index];
+  if (!tc) return { x: 0, z: 0 };
+  const phase = t * tc.coilSpeed + tc.phase;
+  return {
+    x: Math.sin(phase) * tc.coilAmp,
+    z: Math.cos(phase * 0.83 + 0.6) * tc.coilAmp * 0.6,
+  };
 }
 
 export const HIT_REACT_DURATION = 0.6;
