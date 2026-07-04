@@ -2825,9 +2825,8 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
     '你穿过神龛之门。空气变得温暖而翠绿，那口瓮在前方等候。',
   'entities.dungeons.the_hollow.leaveText': '你穿过大门，回到东溪。',
   'entities.dungeons.under_shrine.name': '地下圣龛',
-  'entities.dungeons.under_shrine.enterText':
-    '你潜入神龛之下。空气变得静止而压抑，前方的黑暗似乎并不空无一物。',
-  'entities.dungeons.under_shrine.leaveText': '你爬回温暖之处。头顶上方，隐约有烟。',
+  'entities.dungeons.under_shrine.enterText': '你走下神龛，进入清冷寂静的黑暗。',
+  'entities.dungeons.under_shrine.leaveText': '你爬回上方温暖的空气中。',
   'worldContent.corpseName': '{name}（尸体）',
   'worldContent.dungeonExitName': '{name}出口',
   'worldContent.delveLockedChestInteract': '按 F 撬锁',
@@ -4289,6 +4288,10 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': '洞穴肉粒',
   'entities.items.emberbulb.name': '余烬球茎',
   'entities.items.first_cutting.name': '插条',
+  'entities.items.witness_root_cincture.name': '见证根的束带',
+  'entities.items.shrine_diary_page.name': '撕碎的日记页',
+  'entities.items.shrine_diary_page.flavorText':
+    '……我数着烛光过了四十天，后来便断了数。这底下的黑暗从未忘记祂，尽管祂已经忘了这个地方。若鹭鸟低飞掠过，告诉守灯人，烛芯还燃着……',
   'entities.mobs.acolyte_tessa.name': '侍僧泰莎',
   'entities.mobs.deacon_varric.name': '执事瓦里克',
   'entities.mobs.reliquary_bonewalker.name': '复生的骨行者',

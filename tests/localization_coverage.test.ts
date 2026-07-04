@@ -480,7 +480,7 @@ describe('i18n Localization Key Coverage', () => {
 
   function itemRequest(entry: EntityManifestEntry): EntityRequest {
     if (entry.kind === 'item') {
-      return { kind: 'item', id: entry.id, field: 'name' };
+      return { kind: 'item', id: entry.id, field: entry.field as 'name' | 'flavorText' };
     }
     throw new Error(`Unexpected entity kind: ${entry.kind}`);
   }
@@ -842,7 +842,8 @@ describe('i18n Localization Key Coverage', () => {
 
   it('should provide every item translation in every locale without canonical fallbacks', () => {
     const itemEntries = entityTranslationManifest().filter((entry) => entry.group === 'item');
-    expect(itemEntries).toHaveLength(Object.keys(ITEMS).length);
+    const flavorTextCount = Object.values(ITEMS).filter((item) => item.flavorText).length;
+    expect(itemEntries).toHaveLength(Object.keys(ITEMS).length + flavorTextCount);
     expect(missingEntityTranslationsForGroups(['classAbility', 'item'])).toHaveLength(0);
 
     for (const lang of supportedLanguages) {

@@ -2949,8 +2949,8 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'entities.dungeons.the_hollow.leaveText': 'Vuelves a salir por la puerta hacia Eastbrook.',
   'entities.dungeons.under_shrine.name': 'El Santuario Subterráneo',
   'entities.dungeons.under_shrine.enterText':
-    'Desciendes bajo el santuario. El aire se vuelve quieto y cerrado, y la oscuridad de más adelante no se siente vacía.',
-  'entities.dungeons.under_shrine.leaveText': 'Subes de vuelta al calor. Sobre ti, tenue, humo.',
+    'Desciendes bajo el santuario hacia una oscuridad fría y quieta.',
+  'entities.dungeons.under_shrine.leaveText': 'Subes de vuelta al aire cálido de arriba.',
   'worldContent.corpseName': '{name} (cadáver)',
   'worldContent.dungeonExitName': 'Salida de {name}',
   'worldContent.dungeonPartyWarning':
@@ -4573,6 +4573,10 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': 'Bocado de Cueva',
   'entities.items.emberbulb.name': 'Bulbo Ascua',
   'entities.items.first_cutting.name': 'Un Esqueje',
+  'entities.items.witness_root_cincture.name': 'Cinturón de la Raíz Testigo',
+  'entities.items.shrine_diary_page.name': 'Página de Diario Rasgada',
+  'entities.items.shrine_diary_page.flavorText':
+    '...conté cuarenta días con velas antes de perder la cuenta. La oscuridad de aquí abajo no Lo olvida, aunque Él haya olvidado este lugar. Si la garza vuela bajo, dile al Sacristán que la mecha aún arde...',
   'entities.mobs.acolyte_tessa.name': 'Acólita Tessa',
   'entities.mobs.deacon_varric.name': 'Diácono Varric',
   'entities.mobs.reliquary_bonewalker.name': 'Andahuesos alzado',

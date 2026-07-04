@@ -152,6 +152,7 @@ import {
   classDisplayName,
   dungeonDisplayName,
   itemDisplayName,
+  itemFlavorText,
   tEntity,
   zoneDisplayName,
   zonePoiLabel,
@@ -2980,6 +2981,8 @@ export class Hud {
       html += `<div class="tt-sub">${esc(t('itemUi.tooltip.classes', { classes: item.requiredClass.map(classDisplayName).join(', ') }))}</div>`;
     }
     html += this.itemSetBlock(item);
+    const flavor = itemFlavorText(item);
+    if (flavor) html += `<div class="tt-flavor">${esc(flavor)}</div>`;
     if (item.sellValue > 0)
       html += `<div class="tt-sub">${esc(t('itemUi.tooltip.sellPrice', { money: formatLocalizedMoney(item.sellValue) }))}</div>`;
     if (compare) html += this.itemCompareBlock(item);

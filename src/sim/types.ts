@@ -299,6 +299,8 @@ interface BaseItemDef {
   pickupDeny?: string;
   /** Shown when the quest is active but the collect count is already met. */
   pickupEnough?: string;
+  /** Quoted lore line rendered in the tooltip (a book/note/diary item's found text), i18n via entity_i18n's 'item'/'flavorText' field, not this raw string. */
+  flavorText?: string;
   // consumables: total restored over 18 seconds while sitting
   foodHp?: number;
   drinkMana?: number;

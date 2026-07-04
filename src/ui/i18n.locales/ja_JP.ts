@@ -2953,9 +2953,8 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     '祠の門をくぐる。大気は温かく緑がかり、壺が先で待っている。',
   'entities.dungeons.the_hollow.leaveText': '門を抜けて、イーストブルックへと戻る。',
   'entities.dungeons.under_shrine.name': '地下祠',
-  'entities.dungeons.under_shrine.enterText':
-    '祠の下へと降りていく。大気は静まり返って狭まり、先の闇は空虚には感じられない。',
-  'entities.dungeons.under_shrine.leaveText': '暖かさの中へと這い上がる。頭上には、かすかに煙。',
+  'entities.dungeons.under_shrine.enterText': '祠の下へ、冷たく静かな闇の中へ降りていく。',
+  'entities.dungeons.under_shrine.leaveText': '頭上の温かな空気の中へと戻っていく。',
   'worldContent.corpseName': '{name}（死体）',
   'worldContent.dungeonExitName': '{name}の出口',
   'worldContent.delveLockedChestInteract': 'Fで錠を開ける',
@@ -4512,6 +4511,10 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': '洞窟の肉片',
   'entities.items.emberbulb.name': '残り火の球根',
   'entities.items.first_cutting.name': '挿し木',
+  'entities.items.witness_root_cincture.name': '証しの根の帯紐',
+  'entities.items.shrine_diary_page.name': '破れた日記のページ',
+  'entities.items.shrine_diary_page.flavorText':
+    '……蝋燭で四十日を数えたところで、数えるのをやめた。ここの闇は今もあの方を忘れない、あの方がこの場所を忘れてしまっても。鷺が低く舞うのを見たら、灯守りに芯はまだ燃えていると伝えてくれ……',
   'entities.mobs.acolyte_tessa.name': '侍祭テッサ',
   'entities.mobs.deacon_varric.name': '助祭ヴァリック',
   'entities.mobs.reliquary_bonewalker.name': '蘇りし骨歩き',

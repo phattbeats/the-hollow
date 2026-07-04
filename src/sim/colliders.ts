@@ -19,6 +19,7 @@ import {
   NYTHRAXIS_LAYOUT,
   SANCTUM_LAYOUT,
   TEMPLE_LAYOUT,
+  UNDER_SHRINE_LAYOUT,
 } from './dungeon_layout';
 import { generateDecorations, groundHeight } from './world';
 
@@ -219,13 +220,19 @@ const SANCTUM_COLLIDERS: Collider[] = layoutColliders(SANCTUM_LAYOUT);
 const TEMPLE_COLLIDERS: Collider[] = layoutColliders(TEMPLE_LAYOUT);
 const ARENA_COLLIDERS: Collider[] = layoutColliders(ARENA_LAYOUT);
 const NYTHRAXIS_COLLIDERS: Collider[] = layoutColliders(NYTHRAXIS_LAYOUT);
+const UNDER_SHRINE_COLLIDERS: Collider[] = layoutColliders(UNDER_SHRINE_LAYOUT);
 
-// Interior collider sets keyed by DungeonDef.interior.
+// Interior collider sets keyed by DungeonDef.interior, EXCEPT 'under_shrine'
+// which is keyed by dungeon id (see instanceLocal below): the Under-Shrine
+// shares interior 'crypt' (same render styling as Hollow Crypt/Sunken
+// Bastion) but PHAA-433 gave it its own, larger footprint, so it cannot use
+// the interior-keyed CRYPT_COLLIDERS without also resizing those two.
 const INTERIOR_COLLIDERS: Record<string, Collider[]> = {
   crypt: CRYPT_COLLIDERS,
   sanctum: SANCTUM_COLLIDERS,
   temple: TEMPLE_COLLIDERS,
   nythraxis: NYTHRAXIS_COLLIDERS,
+  under_shrine: UNDER_SHRINE_COLLIDERS,
 };
 
 // ---------------------------------------------------------------------------
@@ -343,7 +350,11 @@ function instanceLocal(x: number, z: number): { ox: number; oz: number; interior
     }
   }
   const o = instanceOrigin(index, best);
-  return { ox: o.x, oz: o.z, interior: dungeon?.interior ?? 'crypt' };
+  // The Under-Shrine keys off its own dungeon id, not interior 'crypt' (see
+  // INTERIOR_COLLIDERS above): it needs UNDER_SHRINE_COLLIDERS, not the
+  // smaller CRYPT_COLLIDERS Hollow Crypt/Sunken Bastion share that interior.
+  const interior = dungeon?.id === 'under_shrine' ? 'under_shrine' : (dungeon?.interior ?? 'crypt');
+  return { ox: o.x, oz: o.z, interior };
 }
 
 // Resolve a movement destination against all static geometry. Movers slide

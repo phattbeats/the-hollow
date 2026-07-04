@@ -5099,6 +5099,13 @@ export const da_DK: EnTranslations = {
       "first_cutting": {
         "name": "En Stikling"
       },
+      "witness_root_cincture": {
+        "name": "Vidnerods Bælte"
+      },
+      "shrine_diary_page": {
+        "name": "Iturevet Dagbogsside",
+        "flavorText": "...talte fyrre dage ved stearinlys, før jeg mistede tråden. Mørket hernede glemmer Ham ikke, selvom Han har glemt dette sted. Hvis hejren kredser lavt, så sig til Degnen at vægen stadig brænder..."
+      },
       "reliquary_plate_chest": {
         "name": "Relikvievogterens Brynje"
       },
@@ -6719,8 +6726,8 @@ export const da_DK: EnTranslations = {
       },
       "under_shrine": {
         "name": "Underhelligdommen",
-        "enterText": "Du stiger ned under skrinet. Luften bliver stille og tæt, og mørket forude føles ikke tomt.",
-        "leaveText": "Du klatrer tilbage op i varmen. Over dig, svagt, røg."
+        "enterText": "Du stiger ned under helligdommen i kølig, stille mørke.",
+        "leaveText": "Du klatrer tilbage op i den varme luft ovenover."
       }
     },
     "delves": {

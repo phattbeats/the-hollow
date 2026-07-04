@@ -5099,6 +5099,13 @@ export const vi_VN: EnTranslations = {
       "first_cutting": {
         "name": "Một Nhánh Giâm"
       },
+      "witness_root_cincture": {
+        "name": "Đai Lưng Của Rễ Chứng Nhân"
+      },
+      "shrine_diary_page": {
+        "name": "Trang Nhật Ký Bị Xé",
+        "flavorText": "...đếm bốn mươi ngày bằng ánh nến trước khi mất dấu. Bóng tối dưới đây không quên Người, dù Người đã quên nơi này. Nếu con diệc lượn thấp, hãy nói với Người Giữ Đền rằng bấc đèn vẫn còn cháy..."
+      },
       "reliquary_plate_chest": {
         "name": "Áo Giáp Vệ Binh Thánh Tích"
       },
@@ -6719,8 +6726,8 @@ export const vi_VN: EnTranslations = {
       },
       "under_shrine": {
         "name": "Điện Thờ Ngầm",
-        "enterText": "Bạn đi xuống dưới thánh điện. Không khí trở nên tĩnh lặng và ngột ngạt, và bóng tối phía trước không có cảm giác trống rỗng.",
-        "leaveText": "Bạn leo trở lại nơi ấm áp. Phía trên bạn, thoang thoảng, có khói."
+        "enterText": "Bạn đi xuống dưới điện thờ, vào bóng tối lạnh lẽo và tĩnh lặng.",
+        "leaveText": "Bạn leo trở lên không khí ấm áp phía trên."
       }
     },
     "delves": {

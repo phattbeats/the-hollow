@@ -5099,6 +5099,13 @@ export const en_CA: EnTranslations = {
       "first_cutting": {
         "name": "A Cutting"
       },
+      "witness_root_cincture": {
+        "name": "The Witness-Root's Cincture"
+      },
+      "shrine_diary_page": {
+        "name": "Torn Diary Page",
+        "flavorText": "...counted forty days by candle before I lost the thread. The dark down here does not forget Him, even if He has forgotten this place. If the heron circles low, tell the Verger the wick still burns..."
+      },
       "reliquary_plate_chest": {
         "name": "Reliquary Guard Hauberk"
       },
@@ -6719,8 +6726,8 @@ export const en_CA: EnTranslations = {
       },
       "under_shrine": {
         "name": "The Under-Shrine",
-        "enterText": "You descend below the shrine. The air goes still and close, and the dark ahead does not feel empty.",
-        "leaveText": "You climb back into the warm. Above you, faintly, smoke."
+        "enterText": "You descend below the shrine into cool, still dark.",
+        "leaveText": "You climb back up into the warm air above."
       }
     },
     "delves": {

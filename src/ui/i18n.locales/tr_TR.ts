@@ -797,9 +797,8 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'entities.dungeons.sunken_bastion.leaveText': 'Boğan karanlıktan dışarı tırmanırsın.',
   'entities.dungeons.sunken_bastion.name': 'Batık Kale',
   'entities.dungeons.under_shrine.enterText':
-    'Mabedin altına inersin. Hava durgunlaşıp sıkışır, ilerideki karanlık boş hissettirmez.',
-  'entities.dungeons.under_shrine.leaveText':
-    'Sıcağa doğru tırmanıp geri çıkarsın. Yukarıdan, hafifçe, duman kokusu gelir.',
+    'Mabedin altına, serin ve durgun karanlığa iniyorsun.',
+  'entities.dungeons.under_shrine.leaveText': 'Yukarıdaki sıcak havaya geri tırmanıyorsun.',
   'entities.dungeons.under_shrine.name': 'Mabet Altı',
   'entities.items.acolytes_circlet.name': 'Çömezin Tacı',
   'entities.items.alien_armor_plate.name': 'Yabancı Zırh Plakası',
@@ -907,6 +906,10 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'entities.items.fenreed_staff.name': 'Bataklık Sazı Asası',
   'entities.items.fenwalker_boots.name': 'Bataklıkyürüyen Çizmeleri',
   'entities.items.first_cutting.name': 'Bir Filiz',
+  'entities.items.witness_root_cincture.name': "Tanık Kök'ün Kemeri",
+  'entities.items.shrine_diary_page.name': 'Yırtık Günlük Sayfası',
+  'entities.items.shrine_diary_page.flavorText':
+    "...ipin ucunu kaçırana dek mum ışığında kırk gün saydım. Buradaki karanlık O'nu unutmuyor, O bu yeri unutmuş olsa bile. Balıkçıl alçaktan süzülürse, Bekçi'ye söyle, fitil hâlâ yanıyor...",
   'entities.items.footpad_jerkin.name': 'Yol Kesici Yeleği',
   'entities.items.forest_pink_armor_plate.name': 'Orman Pembesi',
   'entities.items.frayed_prayer_beads.name': 'Yıpranmış Dua Boncukları',

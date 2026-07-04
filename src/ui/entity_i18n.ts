@@ -47,12 +47,13 @@ export type EntityTranslationField =
   | 'enterText'
   | 'leaveText'
   | 'bonus2'
-  | 'bonus3';
+  | 'bonus3'
+  | 'flavorText';
 
 export type EntityTranslationRequest =
   | { kind: 'class'; id: PlayerClass; field: 'name' | 'description'; values?: InterpolationValues }
   | { kind: 'ability'; id: string; field: 'name' | 'description'; values?: InterpolationValues }
-  | { kind: 'item'; id: string; field: 'name'; values?: InterpolationValues }
+  | { kind: 'item'; id: string; field: 'name' | 'flavorText'; values?: InterpolationValues }
   | {
       kind: 'itemSet';
       id: string;
@@ -186,8 +187,11 @@ function canonicalEntityText(request: EntityTranslationRequest): string {
       if (!ability) return request.id;
       return request.field === 'name' ? ability.name : ability.description;
     }
-    case 'item':
-      return ITEMS[request.id]?.name ?? request.id;
+    case 'item': {
+      const item = ITEMS[request.id];
+      if (!item) return request.id;
+      return request.field === 'flavorText' ? (item.flavorText ?? request.id) : item.name;
+    }
     case 'itemSet': {
       const set = ITEM_SETS[request.id];
       if (!set) return request.id;
@@ -251,7 +255,7 @@ export function entityTranslationKey(request: EntityTranslationRequest): string 
     case 'ability':
       return `entities.abilities.${entityPathSegment(request.id)}.${request.field}`;
     case 'item':
-      return `entities.items.${entityPathSegment(request.id)}.name`;
+      return `entities.items.${entityPathSegment(request.id)}.${request.field}`;
     case 'itemSet':
       return `entities.itemSets.${entityPathSegment(request.id)}.${request.field}`;
     case 'mob':
@@ -315,6 +319,10 @@ export function tEntity(request: EntityTranslationRequest): string {
 
 export function itemDisplayName(item: ItemDef): string {
   return tEntity({ kind: 'item', id: item.id, field: 'name' });
+}
+
+export function itemFlavorText(item: ItemDef): string | undefined {
+  return item.flavorText ? tEntity({ kind: 'item', id: item.id, field: 'flavorText' }) : undefined;
 }
 
 // Thin tEntity wrappers for the display helpers that several windows + painters each
@@ -394,6 +402,18 @@ export function entityTranslationManifest(): EntityTranslationManifestEntry[] {
         entityTranslationKey({ kind: 'item', id: item.id, field: 'name' }),
       ),
     );
+    if (item.flavorText) {
+      entries.push(
+        entry(
+          'item',
+          item.id,
+          'flavorText',
+          item.flavorText,
+          'item',
+          entityTranslationKey({ kind: 'item', id: item.id, field: 'flavorText' }),
+        ),
+      );
+    }
   }
   for (const set of Object.values(ITEM_SETS).sort(compareById)) {
     const fields: ('name' | 'bonus2' | 'bonus3')[] = ['name', 'bonus2', 'bonus3'];

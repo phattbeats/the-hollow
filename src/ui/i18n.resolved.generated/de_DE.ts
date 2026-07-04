@@ -5099,6 +5099,13 @@ export const de_DE: EnTranslations = {
       "first_cutting": {
         "name": "Ein Ableger"
       },
+      "witness_root_cincture": {
+        "name": "Zeugenwurzels Gürtel"
+      },
+      "shrine_diary_page": {
+        "name": "Zerrissene Tagebuchseite",
+        "flavorText": "...zählte vierzig Tage bei Kerzenlicht, bevor ich den Faden verlor. Das Dunkel hier unten vergisst Ihn nicht, auch wenn Er diesen Ort vergessen hat. Wenn der Reiher tief kreist, sag dem Küster, der Docht brennt noch..."
+      },
       "reliquary_plate_chest": {
         "name": "Halsberge der Reliquiarwache"
       },
@@ -6719,8 +6726,8 @@ export const de_DE: EnTranslations = {
       },
       "under_shrine": {
         "name": "Der Unter-Schrein",
-        "enterText": "Du steigst unter den Schrein hinab. Die Luft wird still und eng, und das Dunkel voraus fühlt sich nicht leer an.",
-        "leaveText": "Du kletterst zurück in die Wärme. Über dir, kaum wahrnehmbar, Rauch."
+        "enterText": "Du steigst unter den Schrein in kühle, stille Dunkelheit hinab.",
+        "leaveText": "Du steigst zurück in die warme Luft darüber."
       }
     },
     "delves": {

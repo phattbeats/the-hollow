@@ -5099,6 +5099,13 @@ export const es_ES: EnTranslations = {
       "first_cutting": {
         "name": "Un Esqueje"
       },
+      "witness_root_cincture": {
+        "name": "Cinturón de la Raíz Testigo"
+      },
+      "shrine_diary_page": {
+        "name": "Página de Diario Rasgada",
+        "flavorText": "...conté cuarenta días con velas antes de perder la cuenta. La oscuridad de aquí abajo no Lo olvida, aunque Él haya olvidado este lugar. Si la garza vuela bajo, dile al Sacristán que la mecha aún arde..."
+      },
       "reliquary_plate_chest": {
         "name": "Loriga de la Guardia del Relicario"
       },
@@ -6719,8 +6726,8 @@ export const es_ES: EnTranslations = {
       },
       "under_shrine": {
         "name": "El Santuario Subterráneo",
-        "enterText": "Desciendes bajo el santuario. El aire se vuelve quieto y cerrado, y la oscuridad de más adelante no se siente vacía.",
-        "leaveText": "Subes de vuelta al calor. Sobre ti, tenue, humo."
+        "enterText": "Desciendes bajo el santuario hacia una oscuridad fría y quieta.",
+        "leaveText": "Subes de vuelta al aire cálido de arriba."
       }
     },
     "delves": {

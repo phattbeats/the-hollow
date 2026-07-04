@@ -5099,6 +5099,13 @@ export const sv_SE: EnTranslations = {
       "first_cutting": {
         "name": "En stickling"
       },
+      "witness_root_cincture": {
+        "name": "Vittnesrotens gördel"
+      },
+      "shrine_diary_page": {
+        "name": "Sönderriven Dagbokssida",
+        "flavorText": "...räknade fyrtio dagar vid ljusets sken innan jag tappade tråden. Mörkret här nere glömmer Honom inte, även om Han har glömt denna plats. Om hägern cirklar lågt, säg till Klockaren att veken fortfarande brinner..."
+      },
       "reliquary_plate_chest": {
         "name": "Relikvarievaktens ringbrynja"
       },
@@ -6719,8 +6726,8 @@ export const sv_SE: EnTranslations = {
       },
       "under_shrine": {
         "name": "Underhelgedomen",
-        "enterText": "Du stiger ner under helgedomen. Luften blir stilla och tät, och mörkret framåt känns inte tomt.",
-        "leaveText": "Du klättrar tillbaka upp i värmen. Ovanför dig, svagt, rök."
+        "enterText": "Du stiger ner under helgedomen i sval, stilla mörker.",
+        "leaveText": "Du klättrar upp igen till den varma luften ovanför."
       }
     },
     "delves": {

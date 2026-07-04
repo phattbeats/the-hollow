@@ -790,9 +790,8 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'entities.dungeons.the_hollow.leaveText': 'Du træder tilbage gennem porten ud i Eastbrook.',
   'entities.dungeons.the_hollow.name': 'Den Hule',
   'entities.dungeons.under_shrine.enterText':
-    'Du stiger ned under skrinet. Luften bliver stille og tæt, og mørket forude føles ikke tomt.',
-  'entities.dungeons.under_shrine.leaveText':
-    'Du klatrer tilbage op i varmen. Over dig, svagt, røg.',
+    'Du stiger ned under helligdommen i kølig, stille mørke.',
+  'entities.dungeons.under_shrine.leaveText': 'Du klatrer tilbage op i den varme luft ovenover.',
   'entities.dungeons.under_shrine.name': 'Underhelligdommen',
   'entities.items.acolytes_circlet.name': 'Akolyttens Diadem',
   'entities.items.alien_armor_plate.name': 'Fremmedartet Rustningsplade',
@@ -900,6 +899,10 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'entities.items.fenreed_staff.name': 'Kærsiv-Stav',
   'entities.items.fenwalker_boots.name': 'Kærvandrer-Støvler',
   'entities.items.first_cutting.name': 'En Stikling',
+  'entities.items.witness_root_cincture.name': 'Vidnerods Bælte',
+  'entities.items.shrine_diary_page.name': 'Iturevet Dagbogsside',
+  'entities.items.shrine_diary_page.flavorText':
+    '...talte fyrre dage ved stearinlys, før jeg mistede tråden. Mørket hernede glemmer Ham ikke, selvom Han har glemt dette sted. Hvis hejren kredser lavt, så sig til Degnen at vægen stadig brænder...',
   'entities.items.footpad_jerkin.name': 'Stratenrøvers Vams',
   'entities.items.forest_pink_armor_plate.name': 'Skovgrøn Lyserød',
   'entities.items.frayed_prayer_beads.name': 'Flossede Bønneperler',

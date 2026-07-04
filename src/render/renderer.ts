@@ -27,6 +27,7 @@ import {
   ZONES,
 } from '../sim/data';
 import type { DelveModuleId } from '../sim/delve_layout';
+import { type DungeonLayout, UNDER_SHRINE_LAYOUT } from '../sim/dungeon_layout';
 import type { BiomeId } from '../sim/types';
 import { ALL_CLASSES, type Entity, type SimEvent } from '../sim/types';
 import { groundHeight, WATER_LEVEL, zoneBiomeAt } from '../sim/world';
@@ -3389,9 +3390,14 @@ export class Renderer {
     | 'delve'
     | 'underwater' = 'outdoor';
 
-  private buildInterior(interior: string, ox: number, oz: number): void {
+  private buildInterior(
+    interior: string,
+    ox: number,
+    oz: number,
+    opts?: { layout?: DungeonLayout },
+  ): void {
     this.dungeons ??= new DungeonInteriors(this.scene, this.lowGfx, this.flames, this.fireLights);
-    void this.dungeons.buildInterior(interior, ox, oz).catch((err) => {
+    void this.dungeons.buildInterior(interior, ox, oz, opts).catch((err) => {
       console.error('Failed to build dungeon interior:', err);
     });
     // The Hollow hub's dressing (HOLLOW_PROPS + the vase centerpiece) rides
@@ -3511,7 +3517,15 @@ export class Renderer {
           const o = instanceOrigin(dungeon.index, i);
           if (Math.abs(px - o.x) < 200 && Math.abs(this.sim.player.pos.z - o.z) < 250) {
             this.builtInteriors.add(key);
-            this.buildInterior(dungeon.interior, o.x, o.z);
+            // PHAA-433: the Under-Shrine keeps the shared 'crypt' render styling
+            // but gets its own, larger footprint (see UNDER_SHRINE_LAYOUT / the
+            // matching under_shrine collider set in sim/colliders.ts).
+            this.buildInterior(
+              dungeon.interior,
+              o.x,
+              o.z,
+              dungeon.id === 'under_shrine' ? { layout: UNDER_SHRINE_LAYOUT } : undefined,
+            );
           }
         }
       }

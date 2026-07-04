@@ -2935,9 +2935,8 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'entities.dungeons.the_hollow.leaveText': 'Esci di nuovo dal cancello, verso Eastbrook.',
   'entities.dungeons.under_shrine.name': 'Il Sottosantuario',
   'entities.dungeons.under_shrine.enterText':
-    "Scendi sotto il santuario. L'aria si fa immobile e chiusa, e il buio davanti a te non sembra vuoto.",
-  'entities.dungeons.under_shrine.leaveText':
-    'Risali nel tepore. Sopra di te, appena percettibile, fumo.',
+    'Scendi sotto il santuario in un buio freddo e immobile.',
+  'entities.dungeons.under_shrine.leaveText': "Risali all'aria calda, sopra di te.",
   'worldContent.corpseName': '{name} (cadavere)',
   'worldContent.dungeonExitName': 'Uscita da {name}',
   'worldContent.dungeonPartyWarning':
@@ -4560,6 +4559,10 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': 'Boccone di Caverna',
   'entities.items.emberbulb.name': 'Bulbo di Brace',
   'entities.items.first_cutting.name': 'Una Talea',
+  'entities.items.witness_root_cincture.name': 'Cintura della Radice Testimone',
+  'entities.items.shrine_diary_page.name': 'Pagina di Diario Strappata',
+  'entities.items.shrine_diary_page.flavorText':
+    "...ho contato quaranta giorni a lume di candela prima di perdere il filo. Il buio quaggiù non Lo dimentica, anche se Lui ha dimenticato questo luogo. Se l'airone vola basso, di' al Sagrestano che lo stoppino brucia ancora...",
   'entities.mobs.acolyte_tessa.name': 'Accolita Tessa',
   'entities.mobs.deacon_varric.name': 'Diacono Varric',
   'entities.mobs.reliquary_bonewalker.name': 'Camminaossa Risorto',
