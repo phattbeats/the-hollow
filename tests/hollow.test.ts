@@ -172,6 +172,15 @@ describe('The Hollow hub', () => {
     expect(Math.hypot(dx, dz)).toBeGreaterThan(0.5);
   });
 
+  it('the moon-sanctum dais is a physical obstacle: a mover cannot walk through the raised platform (board bug on PHAA-405)', () => {
+    const origin = instanceOrigin(6, 0);
+    const d = TEMPLE_LAYOUT.dais;
+    const resolved = resolvePosition(42, origin.x + d.x, origin.z + d.z, 0.5);
+    const dx = resolved.x - (origin.x + d.x);
+    const dz = resolved.z - (origin.z + d.z);
+    expect(Math.hypot(dx, dz)).toBeGreaterThan(0.5);
+  });
+
   it('the Under-Shrine populates its descent and the Witness-Root waits in the far room', () => {
     const sim = new Sim({ seed: 42, playerClass: 'warrior', noPlayer: true });
     const a = sim.addPlayer('warrior', 'Aleph');

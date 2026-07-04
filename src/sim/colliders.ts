@@ -230,9 +230,21 @@ const UNDER_SHRINE_COLLIDERS: Collider[] = layoutColliders(UNDER_SHRINE_LAYOUT);
 // urn's plinth footprint (see hollow_props.ts buildHearth: "plinth radius up
 // to 1.7"), kept a hair under so it never fights the hearth's ash-bed dressing
 // (radius 2.7, walkable) that surrounds it.
+//
+// The moon-sanctum dais is also render-only in the base temple layout contract
+// (placeDais deliberately omits a collider so boss platforms stay walkable),
+// but the Hollow hub reuses that layout and renders the dais as a raised 0.6u
+// foundation platform at the back of the room. Without a matching collider a
+// mover walks straight through the grey platform (board bug on PHAA-405).
 const HOLLOW_HUB_COLLIDERS: Collider[] = [
   ...TEMPLE_COLLIDERS,
   { type: 'circle', x: VASE_POS.x, z: VASE_POS.z, r: 1.5 },
+  {
+    type: 'circle',
+    x: TEMPLE_LAYOUT.dais.x,
+    z: TEMPLE_LAYOUT.dais.z,
+    r: TEMPLE_LAYOUT.dais.r,
+  },
 ];
 
 // Interior collider sets keyed by DungeonDef.interior, EXCEPT 'under_shrine'
