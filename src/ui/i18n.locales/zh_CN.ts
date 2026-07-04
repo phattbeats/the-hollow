@@ -1308,6 +1308,13 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'questUi.dialog.continue': '继续',
   'questUi.dialog.completeQuest': '完成任务',
   'questUi.dialog.done': '完成',
+  'questUi.dialog.trainSecondary': '训练我一项副职业。',
+  'questUi.dialog.trainSecondaryAria': '向 {name} 学习一项副职业',
+  'questUi.dialog.trainerTitle': '副职业',
+  'questUi.dialog.trainerLevelLocked': '{level} 级解锁。',
+  'questUi.dialog.trainerCurrent': '当前',
+  'questUi.dialog.trainerFree': '免费',
+  'questUi.dialog.trainerPickAria': '将 {cls} 训练为副职业：{cost}',
   'questUi.dialog.turnIn': '交付',
   'questUi.dialog.back': '返回',
   'questUi.dialog.unavailable': '不可用',
@@ -3467,6 +3474,9 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'guide.home.world.sub': '一片连绵不绝的大陆,三大区域,从静谧的山谷到冰封的峰巅。',
   'guide.home.world.levels': '{min} 至 {max} 级',
   'guide.home.world.cta': '一览世界',
+  'guide.home.world.hollowReachesName': '空谷地',
+  'guide.home.world.hollowReachesBlurb':
+    '神殿门下的静谧之地,新人在Fallow Acres与Root Hollow一带磨练身手。',
   'guide.home.world.valeName': '东溪谷地',
   'guide.home.world.valeBlurb': '翠绿的丘陵与古老的林地,一切冒险由此启程。',
   'guide.home.world.marshName': '泥沼湿地',
@@ -3677,6 +3687,8 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'guide.worldPage.intro':
     'World of ClaudeCraft 是一片连绵不绝、需你徒步穿越的大陆，三大区域由南向北依次铺展。这里没有快速旅行，因此旅途本身便是冒险的一部分。',
   'guide.worldPage.hub': '大本营',
+  'guide.worldPage.hollowReachesBlurb':
+    '紧邻神殿门外的平静之地，新人在Fallow Acres与Root Hollow一带与野狼、野猪交手磨练身手。',
   'guide.worldPage.valeBlurb': '青翠的起始山谷，新英雄在东溪镇周边的野狼与盗匪身上磨砺技艺。',
   'guide.worldPage.marshBlurb':
     '一片被洪水淹没、迷雾与废墟交织的国度。鱼人涌入浅滩，水下有更古老之物蠢蠢欲动，由桥镇芬桥镇守望着。',
@@ -4263,6 +4275,11 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'guide.worldPage.peaksGreeting': '这堵墙已守了两百年。在我当值时它绝不会破，但它在呻吟。',
   'guide.worldPage.peaksPlaceNotes':
     '高守哨站扼守着城墙。潜猎者山脊与深岩洞穴属于山脊猫和狗头人；食人魔丘陵与卓格玛的战营属于受雇的莽夫；风暴岩中元素噼啪作响，饮月之池在它下方泛着微光；蜿龙教帐篷与亡魂之野环绕着邪教的制高点，墓龙圣所则居于其巅。',
+  'guide.worldPage.hollowReachesGreeter': '司事泽比迪亚，Root Hollow',
+  'guide.worldPage.hollowReachesGreeting':
+    '我尽量按历书打理这片谷地，至少在努力。当心松软的泥土，别碰登记簿。',
+  'guide.worldPage.hollowReachesPlaceNotes':
+    'Hollow Gate 是重新开向旷野的神殿传送门。西边的 Fallow Acres，司事法迪克把狼群赶出预留的建设用地；东边的 Root Hollow，司事泽比迪亚按历书照看一块野猪成患的地块。湖边的 Mossbank 是垂钓的宁静去处。',
   'guide.worldPage.valeGreeter': '雷德布鲁克元帅，东溪',
   'guide.worldPage.valeGreeting': '把你的刀剑带在身边。谷地已不复往日。',
   'guide.worldPage.valePlaceNotes':
@@ -4716,6 +4733,11 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.discord.relay.wts.label': '出售',
   'hudChrome.discord.relay.wtb.label': '收购',
   'hudChrome.discord.relay.help.label': '求助',
+  'housingUi.claimedBanner': '你将这块地认领为家园。',
+  'housingUi.ownerBanner': '这是{name}的家园。',
+  'housingUi.prompt.claim': '认领这块地',
+  'housingUi.prompt.manage': '管理你的家园',
+  'housingUi.prompt.visit': '拜访{name}的家',
   'housingUi.window.title': '你的家园',
   'housingUi.window.close': '关闭家园',
   'housingUi.window.slotEmpty': '空',
