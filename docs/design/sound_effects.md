@@ -88,7 +88,8 @@ entity positions. It imports the `sfx` singleton (precedent: it already imports
   `WATER_LEVEL` from `src/sim/world.ts`.
 - **Creature family** (vocalizations): `MOBS[templateId].family` ∈ {beast,
   humanoid, murloc, spider, kobold, undead, troll, ogre, elemental, dragonkin,
-  demon}, with a `wild_boar`/`elder_bristleback` → **boar** templateId override.
+  demon, plant}, with a `wild_boar`/`elder_bristleback` → **boar** templateId
+  override.
 - **Weapon class** (swings) & **material** (impacts) derive from the source/target
   player class or mob family (plate: warrior/paladin → metal; leather: rogue/hunter/
   shaman; cloth: mage/priest/warlock/druid; undead → bone; else flesh).
@@ -180,7 +181,7 @@ Keys map to `public/audio/sfx/<key>.mp3`; the manifest
 Per family: `mob_<family>_aggro` (alerted, entering combat), `mob_<family>_attack`
 (lunging strike vocalization), `mob_<family>_death` (slain). Hurt reuses a
 pitched-up `attack`. Families: `beast`, `boar`, `spider`, `murloc`, `kobold`,
-`humanoid`, `undead`, `troll`, `ogre`, `elemental`, `dragonkin`, `demon`.
+`humanoid`, `undead`, `troll`, `ogre`, `elemental`, `dragonkin`, `demon`, `plant`.
 
 | family | aggro / attack / death prompt summary |
 |---|---|
@@ -196,6 +197,11 @@ pitched-up `attack`. Families: `beast`, `boar`, `spider`, `murloc`, `kobold`,
 | `elemental` | an elemental — crackling energy hum alert / surging energy burst / dissipating crackle |
 | `dragonkin` | a dragonkin — fierce roaring alert with wing flap / snapping bite roar / dying roar collapse |
 | `demon` | a demon — sinister hissing snarl / shrieking demonic strike / agonized demonic death wail |
+| `plant` | a carnivorous plant creature — creaking/rustling thorn alert / wet vine-snap strike / creaking wilting collapse |
+
+Not yet wired to content: adding a mob template to this family requires the clips to
+exist first (see Generation below), or the mob plays no vocalizations at all
+(missing keys are silent no-ops, not an error).
 
 ### Ambient loops
 | key | loop | spatial | prompt summary |
