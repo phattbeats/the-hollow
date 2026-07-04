@@ -1399,6 +1399,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'itemUi.tooltip.cannotMarket': '不能在市場出售',
   'itemUi.tooltip.cannotVendor': '不能賣給商人',
   'itemUi.tooltip.clickDestroy': '點擊摧毀',
+  'itemUi.error.requiresLevelToEquip': '需要等級 {level} 才能裝備。',
   'itemUi.tooltip.useFishing': '使用：在附近水域釣魚。',
   'itemUi.tooltip.useHealingPotion': '使用：立即恢復 {amount} 點生命值。戰鬥中可用。1 分鐘冷卻。',
   'itemUi.tooltip.useManaPotion': '使用：立即恢復 {amount} 點法力值。戰鬥中可用。1 分鐘冷卻。',

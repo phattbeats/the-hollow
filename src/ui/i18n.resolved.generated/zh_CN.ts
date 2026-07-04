@@ -3548,6 +3548,9 @@ export const zh_CN: EnTranslations = {
       "clickUse": "点击使用",
       "clickBuyback": "点击回购"
     },
+    "error": {
+      "requiresLevelToEquip": "需要等级 {level} 才能装备。"
+    },
     "bags": {
       "title": "背包",
       "close": "关闭背包",

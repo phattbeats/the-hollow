@@ -1463,6 +1463,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'itemUi.tooltip.cannotMarket': '市場では売却できません',
   'itemUi.tooltip.cannotVendor': '商人には売却できません',
   'itemUi.tooltip.clickDestroy': 'クリックして破棄',
+  'itemUi.error.requiresLevelToEquip': '装備するにはレベル{level}が必要です。',
   'itemUi.tooltip.useFishing': '使用: 近くの水辺で釣りをします。',
   'itemUi.tooltip.useHealingPotion':
     '使用: 即座に体力を{amount}回復します。戦闘中に使用可能。クールダウン1分。',

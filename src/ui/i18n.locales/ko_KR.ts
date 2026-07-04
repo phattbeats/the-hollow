@@ -1453,6 +1453,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'itemUi.tooltip.cannotMarket': '시장에서 판매할 수 없음',
   'itemUi.tooltip.cannotVendor': '상인에게 판매할 수 없음',
   'itemUi.tooltip.clickDestroy': '클릭하여 파괴',
+  'itemUi.error.requiresLevelToEquip': '장착하려면 레벨 {level}이 필요합니다.',
   'itemUi.tooltip.useFishing': '사용: 가까운 물가에서 낚시합니다.',
   'itemUi.tooltip.useHealingPotion':
     '사용: 즉시 생명력을 {amount} 회복합니다. 전투 중 사용 가능. 재사용 대기시간 1분.',

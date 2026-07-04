@@ -699,6 +699,7 @@ function blankEntity(id: number): Entity {
     comboTargetId: null,
     overpowerUntil: -1,
     potionCooldownUntil: -1,
+    potionCooldownRemaining: 0,
     savedMana: 0,
     chargeTargetId: null,
     chargeTimeLeft: 0,
@@ -1402,6 +1403,7 @@ export class ClientWorld implements IWorld {
         e.cooldowns.clear();
         for (const k in s.cds) e.cooldowns.set(k, Number(s.cds[k]));
       }
+      if (s.pcd !== undefined) e.potionCooldownRemaining = Number(s.pcd);
       e.gcdRemaining = s.gcd ?? 0;
       e.comboPoints = s.combo ?? 0;
       e.comboTargetId = s.comboTgt ?? null;

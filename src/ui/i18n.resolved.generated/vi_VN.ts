@@ -3548,6 +3548,9 @@ export const vi_VN: EnTranslations = {
       "clickUse": "Nhấp để sử dụng",
       "clickBuyback": "Nhấp để mua lại"
     },
+    "error": {
+      "requiresLevelToEquip": "Requires level {level} to equip."
+    },
     "bags": {
       "title": "Túi Đồ",
       "close": "Đóng túi",

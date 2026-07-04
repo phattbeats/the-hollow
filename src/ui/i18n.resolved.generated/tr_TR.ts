@@ -3548,6 +3548,9 @@ export const tr_TR: EnTranslations = {
       "clickUse": "Kullanmak için tıkla",
       "clickBuyback": "Geri satın almak için tıkla"
     },
+    "error": {
+      "requiresLevelToEquip": "Requires level {level} to equip."
+    },
     "bags": {
       "title": "Çantalar",
       "close": "Çantaları kapat",
