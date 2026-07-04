@@ -4956,7 +4956,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.discord.relay.wtb.label': '購入希望',
   'hudChrome.discord.relay.help.label': 'ヘルプが必要',
   'housingUi.claimedBanner': 'あなたはこの区画を住居として登録した。',
-  "housingUi.ownerBanner": "ここは{name}の住居です。",
+  'housingUi.ownerBanner': 'ここは{name}の住居です。',
   'housingUi.window.title': 'あなたの住居',
   'housingUi.window.close': '住居を閉じる',
   'housingUi.window.slotEmpty': '空き',

@@ -5069,7 +5069,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.discord.relay.wtb.label': 'Куплю',
   'hudChrome.discord.relay.help.label': 'Нужна помощь',
   'housingUi.claimedBanner': 'Вы объявили этот участок своим домом.',
-  "housingUi.ownerBanner": "Это усадьба {name}.",
+  'housingUi.ownerBanner': 'Это усадьба {name}.',
   'housingUi.window.title': 'Ваша усадьба',
   'housingUi.window.close': 'Закрыть усадьбу',
   'housingUi.window.slotEmpty': 'Пусто',
