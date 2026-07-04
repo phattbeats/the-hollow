@@ -142,9 +142,12 @@ export const guideStrings = {
     // World teaser.
     world: {
       heading: 'Explore the world',
-      sub: 'One continuous land, three zones, from quiet valleys to frozen peaks.',
+      sub: 'The Hollow Reaches, where every adventure begins now, plus three more zones waiting beyond it.',
       levels: 'Levels {min} to {max}',
       cta: 'See the world',
+      hollowReachesName: 'The Hollow Reaches',
+      hollowReachesBlurb:
+        'Quiet ground below the shrine gate, where new arrivals cut their teeth around Fallow Acres and Root Hollow.',
       valeName: 'Eastbrook Vale',
       valeBlurb: 'Green hills and old woods where every adventure begins.',
       marshName: 'Mirefen Marsh',
@@ -176,7 +179,7 @@ export const guideStrings = {
       q3: 'Can I play offline?',
       a3: 'Yes. There is an instant single-player mode in your browser, plus the shared online realm.',
       q4: 'How long to reach max level?',
-      a4: 'The cap is level {cap}, reached across three zones of quests, dungeons, and exploration.',
+      a4: 'The cap is level {cap}, reached across the Hollow Reaches and the zones beyond it, through quests, dungeons, and exploration.',
     },
 
     // Community call to action.
@@ -599,13 +602,15 @@ export const guideStrings = {
   worldPage: {
     heading: 'The world',
     intro:
-      'World of ClaudeCraft is one continuous land you cross on foot, three zones laid south to north. There is no fast travel, so the journey is part of the adventure.',
+      'The Hollow Reaches is where every new arrival takes their first steps, quiet ground just beyond the shrine gate. Three more zones lie north of it, laid out south to north; the road to them is not open yet, but they are real and waiting.',
     hub: 'Home base',
     mapHeading: 'The road north',
     mapSub:
-      'Three zones, south to north, each a step higher in level. Follow the quest trail and the land carries you from the valley to the peaks.',
+      'Four zones, south to north, each a step higher in level. The Hollow Reaches is open now; the road beyond will open in time.',
     places: 'Notable places',
     residents: 'Who you will meet',
+    hollowReachesBlurb:
+      'The calm ground just beyond the shrine gate, where new arrivals cut their teeth on wolves and boars around Fallow Acres and Root Hollow.',
     valeBlurb:
       'The green starting valley, where new heroes cut their teeth on wolves and bandits around the town of Eastbrook.',
     marshBlurb:
@@ -613,8 +618,14 @@ export const guideStrings = {
     peaksBlurb:
       "Wind-scoured ridges and old mine-works climbing to the realm's coldest, highest dangers, held by the outpost of Highwatch.",
 
-    // One quotable hub greeting per zone, keyed by biome. Speaker names are proper nouns
-    // (passed as raw text in world.ts), so only the spoken line is a key here.
+    // One quotable hub greeting per zone, keyed by a per-zone prefix (see
+    // world.ts's ZONE_KEY_PREFIX; the Hollow Reaches and Eastbrook Vale share a
+    // render biome, so the prefix can't just be the biome name). Speaker names
+    // are proper nouns (passed as raw text in world.ts), so only the spoken
+    // line is a key here.
+    hollowReachesGreeting:
+      'I keep the Reaches to a calendar, or I keep trying. Mind the loose dirt, and do not touch the register.',
+    hollowReachesGreeter: 'Verger Zebediah, Root Hollow',
     valeGreeting: 'Keep your blade close. The Vale is not what it was.',
     valeGreeter: 'Marshal Redbrook, Eastbrook',
     marshGreeting: 'Hold at the gate. Past those reeds, the fen does the killing for us.',
@@ -623,8 +634,11 @@ export const guideStrings = {
       'Two hundred years this wall has held. It will not break on my watch, but it groans.',
     peaksGreeter: 'Captain Thessaly, Highwatch',
 
-    // Short, spoiler-safe one-liners for each zone's notable places (keyed by biome). One
-    // sentence per place, in the same order as the POI list.
+    // Short, spoiler-safe one-liners for each zone's notable places (same
+    // per-zone prefix as above). One sentence per place, in the same order as
+    // the POI list.
+    hollowReachesPlaceNotes:
+      'The Hollow Gate is the shrine portal reopening onto open ground. West at Fallow Acres, Sexton Faddick keeps the wolves off land meant for building; east at Root Hollow, Verger Zebediah keeps a boar-plagued patch to its calendar. Mossbank, by the lake, is a quiet place to fish.',
     valePlaceNotes:
       "Eastbrook is your first home base. Wolf Run and Boar Meadow are gentle hunting ground; Mirror Lake is quiet water to fish; the Webwood and the Copper Dig hide spiders and ore-greedy diggers; a Bandit Camp and the Fallen Chapel hold rougher work; Reliquary Hill drops into the Collapsed Reliquary, the realm's first delve; and Brightwood Glade is a quiet, sunlit grove to the north.",
     marshPlaceNotes:
@@ -656,7 +670,7 @@ export const guideStrings = {
       'Party members nearby share kill and objective credit, so questing together is faster, never slower. You can also share a quest with your group: post it to chat as a clickable link with the /share command, and any nearby member who qualifies can pick up the same quest in one click.',
     storyTitle: 'A thread runs through it all',
     storyBody:
-      'From your first errands in Eastbrook, something is wrong with the dead. A cult is at work, and the trail leads north through every zone. Follow it to learn who stands behind it.',
+      'Your first errands are quiet ones around the Hollow Reaches. Further along the road, something is wrong with the dead: a cult is at work, and the trail leads north through every zone beyond. Follow it to learn who stands behind it.',
     soloNote:
       "The main story is soloable right up to each chapter's finale, which is a five-player dungeon.",
 
@@ -666,10 +680,10 @@ export const guideStrings = {
       'Most quests are one of a few familiar shapes. The on-screen tracker spells out exactly what each one wants, so you are never left guessing.',
     typeSlayTitle: 'Slay',
     typeSlayBody:
-      "Thin out a pack of beasts or break a cult's hold by defeating a set number of a marked enemy. The first quest in the game, clearing wolves off the Eastbrook road, is one of these.",
+      "Thin out a pack of beasts or break a cult's hold by defeating a set number of a marked enemy. An early one, thinning the wolves at Fallow Acres in the Hollow Reaches, is one of these.",
     typeGatherTitle: 'Gather',
     typeGatherBody:
-      "Collect items from the world or from what enemies drop: herbs, ore, lost letters, a cult's grim reagents. Some pieces only fall from a particular foe, so the hunt and the haul go together.",
+      "Collect items from the world or from what enemies drop: herbs, ore, lost letters, a cult's grim reagents. Your very first quest, a handful of emberbulbs for Brother Greenpaw at the vase, is one of these. Some pieces only fall from a particular foe, so the hunt and the haul go together.",
     typeInteractTitle: 'Interact',
     typeInteractBody:
       'Use, cleanse, or read something fixed in the world: a defiled grave, a warning carved on a shore-rock, a sealed crypt door. Walk up to the marker and act on it.',
@@ -1203,10 +1217,10 @@ export const guideStrings = {
       'You earn experience by completing quests and by defeating enemies. Quests give the most by far, so following the quest trail is the fastest way to climb. Killing things along the way fills in the rest.',
     capBody:
       'Each level makes you tougher and brings new abilities, all the way to the cap of level {cap}.',
-    // The leveling journey across the three zones, south to north.
+    // The leveling journey across the zones, south to north.
     journeyTitle: 'The journey north',
     journeyBody:
-      'The world is one continuous land, three zones laid south to north, each a step higher in level. You start in the green valley, press on through the marsh, and finish in the cold high peaks. Follow the quest trail and the land carries you from one to the next.',
+      'You start in the Hollow Reaches, quiet ground below the shrine gate. Three more zones lie north of it, each a step higher in level, from a green valley through a marsh to the cold high peaks. Follow the quest trail and the land carries you onward.',
     bandLabel: 'Levels {min} to {max}',
     // Rested XP, described without numbers.
     restedTitle: 'Rested experience',

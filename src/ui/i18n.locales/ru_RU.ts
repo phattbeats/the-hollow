@@ -3670,6 +3670,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'guide.home.world.sub': 'Единая земля и три зоны, от тихих долин до ледяных вершин.',
   'guide.home.world.levels': 'Уровни с {min} по {max}',
   'guide.home.world.cta': 'Посмотреть мир',
+  'guide.home.world.hollowReachesName': 'Лощинные Плёсы',
+  'guide.home.world.hollowReachesBlurb':
+    'Тихая земля у ворот святилища, где новички набираются опыта в районе Fallow Acres и Root Hollow.',
   'guide.home.world.valeName': 'Долина Истбрук',
   'guide.home.world.valeBlurb': 'Зелёные холмы и древние леса, где начинается любое приключение.',
   'guide.home.world.marshName': 'Топь Мирфен',
@@ -3920,6 +3923,8 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'guide.worldPage.intro':
     'World of ClaudeCraft - это единый цельный край, который вы пересекаете пешком, три зоны, протянувшиеся с юга на север. Здесь нет быстрых перемещений, так что дорога - это часть приключения.',
   'guide.worldPage.hub': 'Опорная база',
+  'guide.worldPage.hollowReachesBlurb':
+    'Спокойная земля сразу за воротами святилища, где новички набираются опыта на волках и кабанах в районе Fallow Acres и Root Hollow.',
   'guide.worldPage.valeBlurb':
     'Зеленая стартовая долина, где новые герои набираются опыта на волках и разбойниках вокруг города Восточный Брод.',
   'guide.worldPage.marshBlurb':
@@ -4585,6 +4590,11 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
     'Две сотни лет держится эта стена. На моём посту она не падёт, но стонет.',
   'guide.worldPage.peaksPlaceNotes':
     'Хайвотч держит стену. Хребет Преследователя и Глубокоскальные норы принадлежат горным котам и кобольдам, Огрские предгорья и Военный лагерь Дрогмара, наёмным громилам, Бурехребет трещит от элементалей, а под ним сияет Глиммермир, Шатры Культа Вирма и Поля ревенантов кольцом окружают высоты культа, а на самом их пике, Святилище Могильного Вирма.',
+  'guide.worldPage.hollowReachesGreeter': 'Ризничий Зебедия, Root Hollow',
+  'guide.worldPage.hollowReachesGreeting':
+    'Я веду календарь для этих Плёсов, или хотя бы пытаюсь. Берегитесь рыхлой земли и не трогайте реестр.',
+  'guide.worldPage.hollowReachesPlaceNotes':
+    'Hollow Gate — портал святилища, вновь открывшийся в открытые земли. К западу, в Fallow Acres, пономарь Faddick отгоняет волков от земли, отведённой под застройку; к востоку, в Root Hollow, ризничий Зебедия по календарю следит за участком, кишащим кабанами. Mossbank у озера — тихое место для рыбалки.',
   'guide.worldPage.valeGreeter': 'Маршал Редбрук, Истврук',
   'guide.worldPage.valeGreeting': 'Держите клинок наготове. Долина уже не та, что прежде.',
   'guide.worldPage.valePlaceNotes':

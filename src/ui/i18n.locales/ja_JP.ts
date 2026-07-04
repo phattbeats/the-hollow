@@ -3618,6 +3618,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.home.world.sub': 'ひと続きの大地、3つのゾーン。静かな谷から凍てつく頂まで。',
   'guide.home.world.levels': 'レベル{min}から{max}',
   'guide.home.world.cta': 'ワールドを見る',
+  'guide.home.world.hollowReachesName': 'ホロウ低地',
+  'guide.home.world.hollowReachesBlurb':
+    '聖堂の門の下に広がる静かな土地。新参者はFallow AcresとRoot Hollow周辺で腕を磨く。',
   'guide.home.world.valeName': 'イーストブルックの谷',
   'guide.home.world.valeBlurb': 'すべての冒険が始まる、緑の丘と古い森。',
   'guide.home.world.marshName': 'マイアフェン湿地',
@@ -3856,6 +3859,8 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.worldPage.intro':
     'World of ClaudeCraftは、自らの足で歩いて渡る一続きの大地です。南から北へと3つのゾーンが連なっています。ファストトラベルはなく、その旅路こそが冒険の一部です。',
   'guide.worldPage.hub': '拠点',
+  'guide.worldPage.hollowReachesBlurb':
+    '聖堂の門をすぐ越えた先の穏やかな土地で、新参者はFallow AcresとRoot Hollow周辺の狼や猪を相手に腕を磨く。',
   'guide.worldPage.valeBlurb':
     '緑あふれる始まりの谷。新たな英雄たちが、イーストブルックの町の周りでオオカミや盗賊を相手に腕を磨く場所です。',
   'guide.worldPage.marshBlurb':
@@ -4486,6 +4491,11 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     'この壁は二百年立ち続けてきた。私が守る限り崩れはしないが、軋んでいる。',
   'guide.worldPage.peaksPlaceNotes':
     'ハイウォッチは壁を守っています。ストーカー尾根とディープロックの巣穴は尾根猫とコボルドのもの、オーガの丘陵とドログマーの戦営は雇われの荒くれ者のもの。ストームクラグはエレメンタルで弾け、その下にはグリマーミアが輝きます。ワームカルトのテントとレヴェナントの野原がカルトの高所を囲み、その頂には墓守竜の聖域があります。',
+  'guide.worldPage.hollowReachesGreeter': 'ヴァージャー・ゼベディア、Root Hollow',
+  'guide.worldPage.hollowReachesGreeting':
+    'この低地は暦通りに保とうとしている、努力はしているがな。土がゆるいから気をつけて、台帳には触れるな。',
+  'guide.worldPage.hollowReachesPlaceNotes':
+    'the Hollow Gateは、開けた土地へと再び開いた聖堂の門だ。西のFallow Acresでは、セクストン・ファディックが建設予定地から狼を追い払っている。東のRoot Hollowでは、ヴァージャー・ゼベディアが猪に荒らされた区画を暦通りに管理している。湖畔のMossbankは釣りに適した静かな場所だ。',
   'guide.worldPage.valeGreeter': 'レッドブルック元帥、イーストブルック',
   'guide.worldPage.valeGreeting': '刃を手放すな。渓谷はかつての姿ではない。',
   'guide.worldPage.valePlaceNotes':
