@@ -3401,6 +3401,8 @@ export const zh_CN: EnTranslations = {
     }
   },
   "housingUi": {
+    "claimedBanner": "You claim this plot as your home.",
+    "ownerBanner": "This is {name}'s homestead.",
     "window": {
       "title": "你的家园",
       "close": "关闭家园",

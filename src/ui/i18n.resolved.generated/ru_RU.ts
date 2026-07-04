@@ -3401,6 +3401,8 @@ export const ru_RU: EnTranslations = {
     }
   },
   "housingUi": {
+    "claimedBanner": "You claim this plot as your home.",
+    "ownerBanner": "This is {name}'s homestead.",
     "window": {
       "title": "Ваша усадьба",
       "close": "Закрыть усадьбу",

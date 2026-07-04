@@ -92,12 +92,21 @@ function buildSignpost(text: string): THREE.Group {
     new THREE.BoxGeometry(1.9, 0.5, 0.08),
     new THREE.MeshBasicMaterial({ map: tex }),
   );
-  board.position.y = 1.35;
+  // The post sat directly behind the board's centre (both at z=0), and its
+  // 0.18-deep box stuck out past the board's 0.08-deep face on the front
+  // side, clipping straight through the middle of the printed name. Push
+  // the post fully behind the board (no z-overlap) so it reads as a back
+  // support, never crossing the visible face.
+  board.position.set(0, 1.35, 0.13);
   g.add(board);
   g.add(buildInteractGlow());
   return g;
 }
 
+// PHAA-405: this stone-and-thatch cottage is a placeholder shape. The Board
+// wants owned plots to read as a shrine to the Hollow's plant-creature life
+// (see the Under-Shrine mob family, src/sim/content/hollow.ts), not a
+// generic house; that reskin is an art-direction call, tracked separately.
 function buildCottage(): THREE.Group {
   const g = new THREE.Group();
   const walls = new THREE.Mesh(new THREE.BoxGeometry(4.6, 2.6, 4.0), stoneMat(0x8a7a63));

@@ -1660,8 +1660,17 @@ async function startGame(
     // placement window; someone else's plot has nothing to do here yet.
     const nearPlot = renderer.nearHousingPlot;
     if (nearPlot) {
-      if (!nearPlot.claimed) world.housingClaim();
-      else if (nearPlot.mine) hud.openHousing();
+      if (!nearPlot.claimed) {
+        world.housingClaim();
+        hud.showBanner(t('housingUi.claimedBanner'));
+      } else if (nearPlot.mine) {
+        hud.openHousing();
+      } else {
+        const owner = world.housingInfo?.plots.find(
+          (pl) => pl.plotId === nearPlot.plotId,
+        )?.ownerName;
+        hud.showBanner(t('housingUi.ownerBanner', { name: owner ?? '' }));
+      }
       return;
     }
     hud.showError(t('errors.nothingInteract'));
