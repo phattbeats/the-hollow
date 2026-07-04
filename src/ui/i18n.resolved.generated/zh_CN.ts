@@ -3410,9 +3410,9 @@ export const zh_CN: EnTranslations = {
     "claimedBanner": "你将这块地认领为家园。",
     "ownerBanner": "这是{name}的家园。",
     "prompt": {
-      "claim": "Claim this plot",
-      "manage": "Manage your homestead",
-      "visit": "Visit {name}'s home"
+      "claim": "认领这块地",
+      "manage": "管理你的家园",
+      "visit": "拜访{name}的家"
     },
     "window": {
       "title": "你的家园",

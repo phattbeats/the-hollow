@@ -3410,9 +3410,9 @@ export const ja_JP: EnTranslations = {
     "claimedBanner": "あなたはこの区画を住居として登録した。",
     "ownerBanner": "ここは{name}の住居です。",
     "prompt": {
-      "claim": "Claim this plot",
-      "manage": "Manage your homestead",
-      "visit": "Visit {name}'s home"
+      "claim": "この区画を登録する",
+      "manage": "住居を管理する",
+      "visit": "{name}の家を訪れる"
     },
     "window": {
       "title": "あなたの住居",
