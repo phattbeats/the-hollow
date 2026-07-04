@@ -280,22 +280,10 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.title",
     "hudChrome.options.showOwnNameplate"
   ],
-  "zh_CN": [
-    "housingUi.claimedBanner",
-    "housingUi.ownerBanner"
-  ],
-  "zh_TW": [
-    "housingUi.claimedBanner",
-    "housingUi.ownerBanner"
-  ],
-  "ko_KR": [
-    "housingUi.claimedBanner",
-    "housingUi.ownerBanner"
-  ],
-  "ja_JP": [
-    "housingUi.claimedBanner",
-    "housingUi.ownerBanner"
-  ],
+  "zh_CN": [],
+  "zh_TW": [],
+  "ko_KR": [],
+  "ja_JP": [],
   "pt_BR": [
     "coldOpen.begin",
     "coldOpen.continue",
@@ -341,10 +329,7 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.title",
     "hudChrome.options.showOwnNameplate"
   ],
-  "ru_RU": [
-    "housingUi.claimedBanner",
-    "housingUi.ownerBanner"
-  ],
+  "ru_RU": [],
   "nl_NL": [
     "coldOpen.begin",
     "coldOpen.continue",

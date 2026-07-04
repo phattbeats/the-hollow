@@ -3401,8 +3401,8 @@ export const ja_JP: EnTranslations = {
     }
   },
   "housingUi": {
-    "claimedBanner": "You claim this plot as your home.",
-    "ownerBanner": "This is {name}'s homestead.",
+    "claimedBanner": "あなたはこの区画を住居として登録した。",
+    "ownerBanner": "ここは{name}の住居です。",
     "window": {
       "title": "あなたの住居",
       "close": "住居を閉じる",

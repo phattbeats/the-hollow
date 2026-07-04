@@ -4964,6 +4964,8 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.discord.relay.wts.label': '판매 희망',
   'hudChrome.discord.relay.wtb.label': '구매 희망',
   'hudChrome.discord.relay.help.label': '도움 요청',
+  'housingUi.claimedBanner': '당신은 이 부지를 보금자리로 인정했습니다.',
+  "housingUi.ownerBanner": "여기는 {name}의 보금자리입니다.",
   'housingUi.window.title': '나의 보금자리',
   'housingUi.window.close': '보금자리 닫기',
   'housingUi.window.slotEmpty': '비어 있음',

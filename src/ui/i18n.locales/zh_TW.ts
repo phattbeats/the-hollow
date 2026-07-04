@@ -4716,6 +4716,8 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.discord.relay.wts.label': '想要出售',
   'hudChrome.discord.relay.wtb.label': '想要購買',
   'hudChrome.discord.relay.help.label': '需要協助',
+  'housingUi.claimedBanner': '你將這塊地認領為家園。',
+  "housingUi.ownerBanner": "這是{name}的家園。",
   'housingUi.window.title': '你的家園',
   'housingUi.window.close': '關閉家園',
   'housingUi.window.slotEmpty': '空',
