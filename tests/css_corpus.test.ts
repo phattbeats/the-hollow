@@ -140,7 +140,7 @@ const INDEX_SECTIONS = [
   'Skin picker (alternate body textures)',
   'Premium Accessible Login Form styling',
   'Animated Backdrop',
-  'looping cinematic backdrop',
+  'Ambient login backdrop: bioluminescent spore field',
   'chat',
   'party frames',
   'context menu',

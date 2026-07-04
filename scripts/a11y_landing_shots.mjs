@@ -1,8 +1,10 @@
 // Before/after-style evidence for the UI accessibility pass. Captures the landing
-// page in cinematic mode, high-contrast mode, and on an emulated phone (asserting
-// the 5.7MB trailer mp4 is never requested there). Needs `npm run dev` on :5173.
-import puppeteer from 'puppeteer-core';
+// page in its default spore-field mode, in high-contrast mode, and on an emulated
+// phone (where the animated field is dropped for the static dark wash). Needs
+// `npm run dev` on :5173.
+
 import { mkdirSync } from 'node:fs';
+import puppeteer from 'puppeteer-core';
 import { BROWSER_PATH as EXEC } from './browser_path.mjs';
 
 const BASE = 'http://localhost:5173/';
@@ -17,10 +19,8 @@ const browser = await puppeteer.launch({
   args: ['--no-sandbox', '--disable-dev-shm-usage'],
 });
 
-async function shot(name, { phone = false } = {}) {
+async function shot({ phone = false } = {}) {
   const page = await browser.newPage();
-  const mp4 = [];
-  page.on('request', (r) => { if (r.url().includes('home-bg.mp4')) mp4.push(r.url()); });
   await page.setViewport(
     phone
       ? { width: 414, height: 896, isMobile: true, hasTouch: true, deviceScaleFactor: 2 }
@@ -28,37 +28,43 @@ async function shot(name, { phone = false } = {}) {
   );
   await page.goto(BASE, { waitUntil: 'networkidle2' });
   await wait(1500);
-  return { page, mp4 };
+  return { page };
 }
 
-// 1. Cinematic (default desktop)
+// 1. Default desktop (animated spore field)
 {
-  const { page } = await shot('cinematic');
-  await page.screenshot({ path: `${OUT}/landing-cinematic.png` });
+  const { page } = await shot();
+  await page.screenshot({ path: `${OUT}/landing-default.png` });
   await page.close();
-  console.log('✓ landing-cinematic.png');
+  console.log('landing-default.png');
 }
 
 // 2. High-contrast (click the footer toggle)
 {
-  const { page } = await shot('contrast');
+  const { page } = await shot();
   await page.click('#landing-contrast-toggle');
   await wait(600);
-  const pressed = await page.$eval('#landing-contrast-toggle', (b) => b.getAttribute('aria-pressed'));
-  const isStatic = await page.$eval('#start-screen-backdrop', (b) => b.classList.contains('backdrop-static'));
+  const pressed = await page.$eval('#landing-contrast-toggle', (b) =>
+    b.getAttribute('aria-pressed'),
+  );
+  const isStatic = await page.$eval('#start-screen-backdrop', (b) =>
+    b.classList.contains('backdrop-static'),
+  );
   await page.screenshot({ path: `${OUT}/landing-highcontrast.png` });
   await page.close();
-  console.log(`✓ landing-highcontrast.png (aria-pressed=${pressed}, backdrop-static=${isStatic})`);
+  console.log(`landing-highcontrast.png (aria-pressed=${pressed}, backdrop-static=${isStatic})`);
 }
 
-// 3. Phone (poster only — mp4 must NOT be fetched)
+// 3. Phone (static dark wash, spore field dropped)
 {
-  const { page, mp4 } = await shot('phone', { phone: true });
-  const isStatic = await page.$eval('#start-screen-backdrop', (b) => b.classList.contains('backdrop-static'));
+  const { page } = await shot({ phone: true });
+  const isStatic = await page.$eval('#start-screen-backdrop', (b) =>
+    b.classList.contains('backdrop-static'),
+  );
   await page.screenshot({ path: `${OUT}/landing-phone.png` });
   await page.close();
-  console.log(`✓ landing-phone.png (backdrop-static=${isStatic}, mp4 requests=${mp4.length} — expect 0)`);
+  console.log(`landing-phone.png (backdrop-static=${isStatic}, expect true)`);
 }
 
 await browser.close();
-console.log('done →', OUT);
+console.log('done', OUT);

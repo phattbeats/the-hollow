@@ -2790,7 +2790,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_fallow_acres_wolves.objectives.0.label': '森林狼已杀',
   'entities.quests.q_fallow_acres_wolves_ii.title': '最后的狼群',
   'entities.quests.q_fallow_acres_wolves_ii.text':
-    '边上是稀疏了，窝却没有。再杀八头，闲田庄便能撑起一片屋顶，而不必在夜里失去屋下安睡之人。我本想亲自照看，可我极少在一处停留两回，何况外域底下的地，比这些田垄更需要看顾。',
+    '边上是稀疏了，窝却没有。再杀八头，闲田庄便能撑起一片屋顶，而不必在夜里失去屋下安睡之人。我本想亲自照看，可我极少在一处停留两回，何况神龛底下的地，比这些田垄更需要看顾。',
   'entities.quests.q_fallow_acres_wolves_ii.completion':
     '好了。一个安静的夜，兴许后头还有一百个。好好建吧。还有，你若哪天挖得够深，听见底下有什么在缓缓打着节拍，千万别应它。那一样，归我看守；开它的钥匙在我身上。去吧，走吧。',
   'entities.quests.q_fallow_acres_wolves_ii.objectives.0.label': '森林狼已杀',

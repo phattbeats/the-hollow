@@ -1,14 +1,19 @@
 import { describe, expect, it } from 'vitest';
-import { shouldUseStaticBackdrop, BackdropSignals } from '../src/game/landing_backdrop';
+import { type BackdropSignals, shouldUseStaticBackdrop } from '../src/game/landing_backdrop';
 
-const NONE: BackdropSignals = { phone: false, saveData: false, reducedMotion: false, highContrast: false };
+const NONE: BackdropSignals = {
+  phone: false,
+  saveData: false,
+  reducedMotion: false,
+  highContrast: false,
+};
 
 describe('shouldUseStaticBackdrop', () => {
-  it('plays the trailer (not static) for a desktop user with no preferences', () => {
+  it('runs the spore field (not static) for a desktop user with no preferences', () => {
     expect(shouldUseStaticBackdrop(NONE)).toBe(false);
   });
 
-  it('forces the static poster on phones (battery/data/decode cost)', () => {
+  it('forces the static dark wash on phones (battery/compositing cost)', () => {
     expect(shouldUseStaticBackdrop({ ...NONE, phone: true })).toBe(true);
   });
 
@@ -25,6 +30,13 @@ describe('shouldUseStaticBackdrop', () => {
   });
 
   it('stays static when several reasons stack', () => {
-    expect(shouldUseStaticBackdrop({ phone: true, saveData: true, reducedMotion: false, highContrast: true })).toBe(true);
+    expect(
+      shouldUseStaticBackdrop({
+        phone: true,
+        saveData: true,
+        reducedMotion: false,
+        highContrast: true,
+      }),
+    ).toBe(true);
   });
 });
