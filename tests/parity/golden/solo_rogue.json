@@ -9,13 +9,13 @@
     "combo points"
   ],
   "draws": 153,
-  "drawDigest": "8e1d10d3",
+  "drawDigest": "cec0439f",
   "frames": [
     {
       "tick": 0,
       "time": 0,
-      "nextId": 400,
-      "state": "c45b7944",
+      "nextId": 402,
+      "state": "25d1ee04",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -33,7 +33,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 399,
+          "entityId": 401,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
@@ -55,7 +55,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 62,
-          "id": 399,
+          "id": 401,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -100,45 +100,45 @@
     {
       "tick": 20,
       "time": 1,
-      "nextId": 401,
-      "state": "29f843f0",
-      "events": "c2f12837",
+      "nextId": 403,
+      "state": "248c7a5d",
+      "events": "c02b647d",
       "rng": {
         "draws": 7,
-        "digest": "f255225d"
+        "digest": "09f3b538"
       }
     },
     {
       "tick": 40,
       "time": 2,
-      "nextId": 401,
-      "state": "968f3ddf",
-      "events": "0fdb0934",
+      "nextId": 403,
+      "state": "3b149d32",
+      "events": "be266894",
       "rng": {
         "draws": 13,
-        "digest": "17b3d170"
+        "digest": "ec7cecf6"
       }
     },
     {
       "tick": 60,
       "time": 3,
-      "nextId": 401,
-      "state": "fdf5fb7c",
-      "events": "4caf5a1c",
+      "nextId": 403,
+      "state": "b0f6a2bc",
+      "events": "0058395e",
       "rng": {
-        "draws": 97,
-        "digest": "6212c905"
+        "draws": 96,
+        "digest": "34a98606"
       }
     },
     {
       "tick": 72,
       "time": 3.6,
-      "nextId": 401,
-      "state": "eb8f4af2",
+      "nextId": 403,
+      "state": "151a91b2",
       "events": "741638a5",
       "rng": {
         "draws": 153,
-        "digest": "8e1d10d3"
+        "digest": "cec0439f"
       },
       "label": "final",
       "players": [
@@ -150,12 +150,12 @@
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {
-            "damageDealt": 66,
-            "damageTaken": 12
+            "damageDealt": 82,
+            "damageTaken": 9
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 399,
+          "entityId": 401,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
@@ -174,15 +174,15 @@
           "autoAttack": true,
           "combatTimer": 1.2,
           "comboPoints": 3,
-          "comboTargetId": 400,
+          "comboTargetId": 402,
           "critChance": 0.076,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.076,
           "facing": 1.570796,
           "fallStartY": 1.5,
           "fiveSecondRule": 102.6,
-          "hp": 49988,
-          "id": 399,
+          "hp": 49991,
+          "id": 401,
           "inCombat": true,
           "kind": "player",
           "level": 10,
@@ -216,7 +216,7 @@
             "str": 26
           },
           "swingTimer": 0.05,
-          "targetId": 400,
+          "targetId": 402,
           "templateId": "rogue",
           "weapon": {
             "dagger": true,
@@ -226,7 +226,7 @@
           }
         },
         {
-          "aggroTargetId": 399,
+          "aggroTargetId": 401,
           "aiState": "attack",
           "combatTimer": 1.2,
           "critChance": 0.05,
@@ -236,8 +236,8 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 8934,
-          "id": 400,
+          "hp": 8918,
+          "id": 402,
           "inCombat": true,
           "kind": "mob",
           "leashAnchor": {
@@ -267,13 +267,13 @@
             "armor": 40
           },
           "swingTimer": 0.45,
-          "tappedById": 399,
-          "targetId": 399,
+          "tappedById": 401,
+          "targetId": 401,
           "templateId": "forest_wolf",
           "threat": [
             [
-              399,
-              67
+              401,
+              83
             ]
           ],
           "weapon": {
