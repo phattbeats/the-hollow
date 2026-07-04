@@ -2911,7 +2911,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_what_burns.text':
     '通靈淡了，朋友……我乾得跟骨頭一樣，頻率就快斷了。神龕下面有種球莖，燒得又慢又乾淨，餘燼球莖，長在光照不到的地方，這洞穴自己跟自己開的玩笑……給我帶五顆回來。留意那些蒼白的傢伙，牠們衝著你的燈籠來，不是衝著你。大概吧。',
   'entities.quests.q_what_burns.completion':
-    '這才是上等的煙啊……你感覺到了嗎？屋裡越來越濃了。她隨時都要探過身來了，我在頻率上都能感覺到……的確如此。',
+    '這才是上等的煙啊……你感覺到了嗎？屋裡越來越濃了。他隨時都要探過身來了，我在頻率上都能感覺到……的確如此。',
   'entities.quests.q_what_burns.objectives.0.label': '已採集餘燼球莖',
   'entities.quests.q_what_fills.title': '飽腹之物',
   'entities.quests.q_what_fills.text':

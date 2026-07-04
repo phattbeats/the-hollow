@@ -2909,7 +2909,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_what_burns.text':
     '通灵淡了，朋友……我干得跟骨头一样，频率就快断了。神龛下面有种球茎，烧得又慢又干净，余烬球茎，长在光照不到的地方，这洞穴自己跟自己开的玩笑……给我带五颗回来。留意那些苍白的家伙，它们冲着你的灯笼来，不是冲着你。大概吧。',
   'entities.quests.q_what_burns.completion':
-    '这才是上等的烟啊……你感觉到了吗？屋里越来越浓了。她随时都要探过身来了，我在频率上都能感觉到……的确如此。',
+    '这才是上等的烟啊……你感觉到了吗？屋里越来越浓了。他随时都要探过身来了，我在频率上都能感觉到……的确如此。',
   'entities.quests.q_what_burns.objectives.0.label': '已采集余烬球茎',
   'entities.quests.q_what_fills.title': '饱腹之物',
   'entities.quests.q_what_fills.text':
