@@ -77,6 +77,9 @@ const itemStringsEn = {
       cannotVendor: 'Cannot be sold to merchants',
       clickDestroy: 'Click to destroy',
     },
+    error: {
+      requiresLevelToEquip: 'Requires level {level} to equip.',
+    },
     bags: {
       title: 'Bags',
       close: 'Close bags',
@@ -269,6 +272,9 @@ export const itemStrings = {
         cannotVendor: 'No se puede vender a comerciantes',
         clickDestroy: 'Haz clic para destruir',
       },
+      error: {
+        requiresLevelToEquip: 'Requiere nivel {level} para equipar.',
+      },
       bags: {
         title: 'Bolsas',
         close: 'Cerrar bolsas',
@@ -426,6 +432,9 @@ export const itemStrings = {
         cannotMarket: 'Ne peut pas être vendu au marché',
         cannotVendor: 'Ne peut pas être vendu aux marchands',
         clickDestroy: 'Cliquer pour détruire',
+      },
+      error: {
+        requiresLevelToEquip: 'Niveau {level} requis pour équiper.',
       },
       bags: {
         title: 'Sacs',
@@ -585,6 +594,9 @@ export const itemStrings = {
         cannotVendor: 'Non può essere venduto ai mercanti',
         clickDestroy: 'Clicca per distruggere',
       },
+      error: {
+        requiresLevelToEquip: 'Richiede livello {level} per equipaggiare.',
+      },
       bags: {
         title: 'Borse',
         close: 'Chiudi borse',
@@ -741,6 +753,9 @@ export const itemStrings = {
         cannotVendor: 'Kann nicht an Händler verkauft werden',
         clickDestroy: 'Zum Zerstören klicken',
       },
+      error: {
+        requiresLevelToEquip: 'Erfordert Stufe {level} zum Ausrüsten.',
+      },
       bags: {
         title: 'Taschen',
         close: 'Taschen schließen',
@@ -896,6 +911,9 @@ export const itemStrings = {
         cannotVendor: '不能卖给商人',
         clickDestroy: '点击摧毁',
       },
+      error: {
+        requiresLevelToEquip: '需要等级 {level} 才能装备。',
+      },
       bags: {
         title: '背包',
         close: '关闭背包',
@@ -1045,6 +1063,9 @@ export const itemStrings = {
         cannotMarket: '不能在市場出售',
         cannotVendor: '不能賣給商人',
         clickDestroy: '點擊摧毀',
+      },
+      error: {
+        requiresLevelToEquip: '需要等級 {level} 才能裝備。',
       },
       bags: {
         title: '背包',
@@ -1197,6 +1218,9 @@ export const itemStrings = {
         cannotMarket: '시장에서 판매할 수 없음',
         cannotVendor: '상인에게 판매할 수 없음',
         clickDestroy: '클릭하여 파괴',
+      },
+      error: {
+        requiresLevelToEquip: '장착하려면 레벨 {level}이 필요합니다.',
       },
       bags: {
         title: '가방',
@@ -1352,6 +1376,9 @@ export const itemStrings = {
         cannotVendor: '商人には売却できません',
         clickDestroy: 'クリックして破棄',
       },
+      error: {
+        requiresLevelToEquip: '装備するにはレベル{level}が必要です。',
+      },
       bags: {
         title: 'バッグ',
         close: 'バッグを閉じる',
@@ -1506,6 +1533,9 @@ export const itemStrings = {
         cannotVendor: 'Não pode ser vendido a mercadores',
         clickDestroy: 'Clique para destruir',
       },
+      error: {
+        requiresLevelToEquip: 'Requer nível {level} para equipar.',
+      },
       bags: {
         title: 'Bolsas',
         close: 'Fechar bolsas',
@@ -1659,6 +1689,9 @@ export const itemStrings = {
         cannotMarket: 'Нельзя продать на рынке',
         cannotVendor: 'Нельзя продать торговцам',
         clickDestroy: 'Нажмите, чтобы уничтожить',
+      },
+      error: {
+        requiresLevelToEquip: 'Требуется {level} уровень, чтобы экипировать.',
       },
       bags: {
         title: 'Сумки',

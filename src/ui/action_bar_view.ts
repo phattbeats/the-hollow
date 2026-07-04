@@ -24,7 +24,15 @@
 // the offline Sim and the online ClientWorld mirror expose (player.cooldowns is a
 // Map, inventory is InvSlot[]); the core never reaches for a Sim-only field.
 
-import { type AbilityDef, dist2d, GCD, type ItemDef, MELEE_RANGE, type Vec3 } from '../sim/types';
+import {
+  type AbilityDef,
+  dist2d,
+  GCD,
+  type ItemDef,
+  MELEE_RANGE,
+  POTION_COOLDOWN,
+  type Vec3,
+} from '../sim/types';
 import type { InterpolationValues, TranslationKey } from './i18n';
 
 // The four slot kinds (a discriminated tag the painter maps to DOM classes).
@@ -111,6 +119,7 @@ export interface ActionBarPlayerInput {
   dead: boolean;
   resource: number;
   cooldowns: { get(id: string): number | undefined };
+  potionCooldownRemaining: number;
   gcdRemaining: number;
   queuedOnSwing: string | null;
   pos: Vec3;
@@ -270,16 +279,27 @@ export function createActionBarView(
 
         if (item !== null) {
           const count = inventoryCount(world.inventory, item.id);
+          // potions share one global cooldown (classic 2 min, #103/PHAA-449); other
+          // item kinds (food/drink/elixir/quest/etc.) have no action-bar cooldown.
+          const potionCd = item.kind === 'potion' ? player.potionCooldownRemaining : 0;
           slot.kind = 'item';
           slot.abilityId = null;
           slot.itemId = item.id;
           slot.iconKey = `${ITEM_ICON_PREFIX}${item.id}`;
-          slot.cooldownRemaining = 0;
-          slot.cooldownTotal = 0;
-          slot.cooldownPercent = 0;
-          slot.cdText = '';
+          slot.cooldownRemaining = potionCd;
+          slot.cooldownTotal = potionCd > 0 ? POTION_COOLDOWN : 0;
+          slot.cooldownPercent =
+            potionCd > 0
+              ? Math.min(
+                  MAX_COOLDOWN_PERCENT,
+                  (potionCd / Math.max(COOLDOWN_DENOM_FLOOR, POTION_COOLDOWN)) *
+                    MAX_COOLDOWN_PERCENT,
+                )
+              : 0;
+          slot.cdText =
+            potionCd > COOLDOWN_TEXT_THRESHOLD ? deps.formatCount(Math.ceil(potionCd)) : '';
           slot.count = deps.formatCount(count);
-          slot.usable = !(count <= 0 || player.dead);
+          slot.usable = !(count <= 0 || player.dead || potionCd > 0);
           slot.outOfRange = false;
           slot.queued = false;
           slot.ariaLabel = deps.t(SLOT_ARIA_KEY, {

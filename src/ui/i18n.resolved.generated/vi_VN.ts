@@ -3548,6 +3548,9 @@ export const vi_VN: EnTranslations = {
       "clickUse": "Nhấp để sử dụng",
       "clickBuyback": "Nhấp để mua lại"
     },
+    "error": {
+      "requiresLevelToEquip": "Requires level {level} to equip."
+    },
     "bags": {
       "title": "Túi Đồ",
       "close": "Đóng túi",
@@ -5750,7 +5753,12 @@ export const vi_VN: EnTranslations = {
       "brother_greenpaw": {
         "name": "Tu Huynh Chân Xanh",
         "title": "Vị Tiên Tri Đầu Tiên (tự phong)",
-        "greeting": "chào, lữ khách. hôm nay cái bình có vẻ vui tính, hay chỉ mình ta thấy vậy... lại đây, có vài việc thiêng cần lo. chủ yếu là đồ ăn vặt thôi. cũng như nhau cả, xét theo mức độ chân xanh."
+        "greeting": "chào, lữ khách. hôm nay cái bình có vẻ vui tính, hay chỉ mình ta thấy vậy... lại đây, có vài việc thiêng cần lo. chủ yếu là đồ ăn vặt thôi. cũng như nhau cả, xét theo mức độ chân xanh.",
+        "introLines": {
+          "0": "uhh... hi. hi. didn't hear you come up, i was someplace else, someplace green... you got the just-woke-up look, friend. i know it well, i wear it most days...",
+          "1": "name's greenpaw. brother greenpaw, first prophet, self-appointed, which the vase'll tell you means exactly nothin', and he's not wrong, but somebody's gotta tend him...",
+          "2": "this here's the hollow. was a whole tribe once, big doings, so they tell me, and now it's mostly me, the vase, and whatever's breathin' down in that cave... anyway. he's hungry, i'm hungry, same wavelength. c'mere, got a couple sacred matters need tendin'."
+        }
       },
       "verger_zebediah": {
         "name": "Verger Zebediah",
