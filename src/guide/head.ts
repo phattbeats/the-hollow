@@ -23,7 +23,7 @@ import { GLOSSARY_TERMS } from './pages/glossary';
 import { type GuideRoute, hrefFor } from './routes';
 
 // The site origin. Matches index.html's canonical/og:url host exactly.
-const ORIGIN = 'https://worldofclaudecraft.com';
+const ORIGIN = 'https://thehollow.world';
 const LOGO = `${ORIGIN}/the-hollow-square.webp`;
 
 // The newcomer FAQ on /guide/faq, kept in lockstep with pages/faq.ts so the FAQPage

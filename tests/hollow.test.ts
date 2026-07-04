@@ -8,6 +8,7 @@
 // adds the open-world Hollow Reaches around the gate: see the second
 // describe block below.
 import { describe, expect, it } from 'vitest';
+import { resolvePosition } from '../src/sim/colliders';
 import {
   HOLLOW_GATE_POS,
   HOLLOW_HUB_DOOR_POS,
@@ -161,6 +162,14 @@ describe('The Hollow hub', () => {
     expect(
       dist2d(ea.pos, { x: HOLLOW_HUB_DOOR_POS.x, y: 0, z: HOLLOW_HUB_DOOR_POS.z - 4 }),
     ).toBeLessThan(1);
+  });
+
+  it('the vase is a physical obstacle: a mover cannot walk through it (board bug on PHAA-405)', () => {
+    const origin = instanceOrigin(6, 0);
+    const resolved = resolvePosition(42, origin.x + VASE_POS.x, origin.z + VASE_POS.z, 0.5);
+    const dx = resolved.x - (origin.x + VASE_POS.x);
+    const dz = resolved.z - (origin.z + VASE_POS.z);
+    expect(Math.hypot(dx, dz)).toBeGreaterThan(0.5);
   });
 
   it('the Under-Shrine populates its descent and the Witness-Root waits in the far room', () => {

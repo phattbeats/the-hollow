@@ -21,6 +21,7 @@ import { normalizeMoveFacing, sanitizeMoveInput } from '../sim/move_input';
 import { secondaryClassCostFor } from '../sim/progression/trainer';
 import { computeQuestState, type ResolvedAbility } from '../sim/sim';
 import {
+  type Aura,
   type Entity,
   type EquipSlot,
   emptyMoveInput,
@@ -1294,14 +1295,16 @@ export class ClientWorld implements IWorld {
         kind: a.kind,
         remaining: a.rem,
         duration: a.dur,
-        // The wire carries value only for negative-value buff_* stat-saps (sparse,
-        // server/game.ts), so the UI classifies them as debuffs identically to offline; a
-        // missing value (ordinary buffs, absorb, non-buff auras, an old server) decodes to 0
-        // as before. sourceId/school stay simplified (separate pre-existing wire reductions,
-        // not part of this change).
+        // The wire now carries the real effect magnitude for every aura (server/game.ts),
+        // so the tooltip effect descriptor (aura_effect.ts) reads the same numbers online
+        // as offline; a missing value (an old server) decodes to 0 as before. sourceId
+        // stays simplified (a pre-existing wire reduction, not part of this change).
         value: a.value ?? 0,
+        value2: a.value2,
+        value3: a.value3,
+        tickInterval: a.tickInterval,
         sourceId: 0,
-        school: 'physical' as const,
+        school: (a.school as Aura['school'] | undefined) ?? 'physical',
         stacks: a.stacks,
         // Mirror the charge count for a charge-limited aura (Lightning Shield); the wire sends it
         // only when defined (server/game.ts), so an ordinary aura or an old server decodes to

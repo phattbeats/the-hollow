@@ -4,7 +4,7 @@
 
 **Nhận nhiệm vụ, lập nhóm và raid một thế giới được dựng thủ công, miễn phí ngay trên trình duyệt. Mã nguồn mở, web3 và trực tuyến ngay bây giờ.**
 
-**Trang web chính thức: https://worldofclaudecraft.com/**
+**Trang web chính thức: https://thehollow.world/**
 
 [![CI](https://github.com/levy-street/world-of-claudecraft/actions/workflows/ci.yml/badge.svg)](https://github.com/levy-street/world-of-claudecraft/actions/workflows/ci.yml)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -20,7 +20,7 @@
 
 [English](../../README.md) · [Español](README.es.md) · [Español (España)](README.es_ES.md) · [Français](README.fr_FR.md) · [Français (Canada)](README.fr_CA.md) · [Italiano](README.it_IT.md) · [Deutsch](README.de_DE.md) · [简体中文](README.zh_CN.md) · [繁體中文](README.zh_TW.md) · [한국어](README.ko_KR.md) · [日本語](README.ja_JP.md) · [Português (Brasil)](README.pt_BR.md) · [Русский](README.ru_RU.md) · [Nederlands](README.nl_NL.md) · [Polski](README.pl_PL.md) · [Bahasa Indonesia](README.id_ID.md) · [Türkçe](README.tr_TR.md) · [Svenska](README.sv_SE.md) · **Tiếng Việt** · [Dansk](README.da_DK.md)
 
-[Chơi ngay](https://worldofclaudecraft.com/) · [Tự dựng thế giới của bạn](#host-your-own-world-one-command) · [Huấn luyện một agent](#train-an-agent-headless-rl) · [Web3](#web3) · [Đóng góp](CONTRIBUTING.vi_VN.md) · [Discord](https://discord.gg/GjhnUsBtw)
+[Chơi ngay](https://thehollow.world/) · [Tự dựng thế giới của bạn](#host-your-own-world-one-command) · [Huấn luyện một agent](#train-an-agent-headless-rl) · [Web3](#web3) · [Đóng góp](CONTRIBUTING.vi_VN.md) · [Discord](https://discord.gg/GjhnUsBtw)
 
 ![Màn hình tiêu đề World of ClaudeCraft](../../docs/screenshots/title-screen.jpg)
 
@@ -28,7 +28,7 @@
 
 ## Đây là gì
 
-World of ClaudeCraft là một tựa MMO kinh điển hoàn chỉnh mà bạn có thể chơi ngay bây giờ trên trình duyệt, tự dựng với một lệnh duy nhất, và thậm chí còn huấn luyện được các agent AI để chơi. Trò chơi miễn phí, mã nguồn mở, và đang chạy trực tiếp tại [worldofclaudecraft.com](https://worldofclaudecraft.com/).
+World of ClaudeCraft là một tựa MMO kinh điển hoàn chỉnh mà bạn có thể chơi ngay bây giờ trên trình duyệt, tự dựng với một lệnh duy nhất, và thậm chí còn huấn luyện được các agent AI để chơi. Trò chơi miễn phí, mã nguồn mở, và đang chạy trực tiếp tại [thehollow.world](https://thehollow.world/).
 
 Một thế giới chung chạy ở ba nơi, tất cả đều từ cùng một lõi game:
 
@@ -164,7 +164,7 @@ Nó chỉ mang tính trang trí và không cần thiết để chơi. Không có
 3WjLscH2JsXLEFJZRA9z8ti8yRGxWGKbqymPd7UicRth
 ```
 
-Tìm hiểu thêm về token tại [worldofclaudecraft.com](https://worldofclaudecraft.com/).
+Tìm hiểu thêm về token tại [thehollow.world](https://thehollow.world/).
 
 ## Một chuyến tham quan thế giới
 

@@ -528,53 +528,47 @@ describe('client HTML shell', () => {
     expect(html).toContain(
       '<meta name="robots" content="index, follow, max-image-preview:large" />',
     );
-    expect(html).toContain('<link rel="canonical" href="https://worldofclaudecraft.com/" />');
+    expect(html).toContain('<link rel="canonical" href="https://thehollow.world/" />');
     expect(html).toContain('<meta property="og:site_name" content="The Hollow" />');
     expect(html).toContain('"alternateName": "The Hollow"');
     expect(html).not.toContain('"https://github.com/levy-street/world-of-claudecraft"');
     expect(mainTs).toContain("alternateName: 'The Hollow'");
     expect(mainTs).not.toContain("'https://github.com/levy-street/world-of-claudecraft'");
     expect(robotsTxt.trim()).toBe(
-      'User-agent: *\nAllow: /\n\nSitemap: https://worldofclaudecraft.com/sitemap.xml\nSitemap: https://worldofclaudecraft.com/sitemap-characters.xml',
+      'User-agent: *\nAllow: /\n\nSitemap: https://thehollow.world/sitemap.xml\nSitemap: https://thehollow.world/sitemap-characters.xml',
     );
-    expect(robotsTxt).toContain('Sitemap: https://worldofclaudecraft.com/sitemap.xml');
+    expect(robotsTxt).toContain('Sitemap: https://thehollow.world/sitemap.xml');
     // The dynamic per-character sitemap (served by the game server) is advertised too.
-    expect(robotsTxt).toContain('Sitemap: https://worldofclaudecraft.com/sitemap-characters.xml');
-    expect(sitemapXml).toContain('<loc>https://worldofclaudecraft.com/</loc>');
-    expect(sitemapXml).toContain('<loc>https://worldofclaudecraft.com/links</loc>');
-    expect(sitemapXml).toContain('<loc>https://worldofclaudecraft.com/play</loc>');
-    expect(playHtml).toContain(
-      '<link rel="canonical" href="https://worldofclaudecraft.com/play" />',
-    );
-    expect(playHtml).toContain(
-      '<meta property="og:url" content="https://worldofclaudecraft.com/play" />',
-    );
-    expect(playHtml).toContain('"url": "https://worldofclaudecraft.com/play"');
-    expect(sitemapXml).toContain('<loc>https://worldofclaudecraft.com/privacy</loc>');
-    expect(sitemapXml).toContain('<loc>https://worldofclaudecraft.com/terms</loc>');
-    expect(sitemapXml).toContain('<loc>https://worldofclaudecraft.com/data-deletion</loc>');
-    expect(sitemapXml).toContain('<loc>https://worldofclaudecraft.com/support</loc>');
+    expect(robotsTxt).toContain('Sitemap: https://thehollow.world/sitemap-characters.xml');
+    expect(sitemapXml).toContain('<loc>https://thehollow.world/</loc>');
+    expect(sitemapXml).toContain('<loc>https://thehollow.world/links</loc>');
+    expect(sitemapXml).toContain('<loc>https://thehollow.world/play</loc>');
+    expect(playHtml).toContain('<link rel="canonical" href="https://thehollow.world/play" />');
+    expect(playHtml).toContain('<meta property="og:url" content="https://thehollow.world/play" />');
+    expect(playHtml).toContain('"url": "https://thehollow.world/play"');
+    expect(sitemapXml).toContain('<loc>https://thehollow.world/privacy</loc>');
+    expect(sitemapXml).toContain('<loc>https://thehollow.world/terms</loc>');
+    expect(sitemapXml).toContain('<loc>https://thehollow.world/data-deletion</loc>');
+    expect(sitemapXml).toContain('<loc>https://thehollow.world/support</loc>');
     expect(privacyHtml).toContain(
-      '<link rel="canonical" href="https://worldofclaudecraft.com/privacy" />',
+      '<link rel="canonical" href="https://thehollow.world/privacy" />',
     );
     expect(privacyHtml).toContain('<h1>Privacy Policy</h1>');
     expect(privacyHtml).toContain('href="/support">Support</a>');
     expect(privacyHtml).toContain('href="/data-deletion">Data Deletion</a>');
-    expect(termsHtml).toContain(
-      '<link rel="canonical" href="https://worldofclaudecraft.com/terms" />',
-    );
+    expect(termsHtml).toContain('<link rel="canonical" href="https://thehollow.world/terms" />');
     expect(termsHtml).toContain('<h1>Terms and Conditions</h1>');
     expect(termsHtml).toContain('href="/support">Support</a>');
     expect(termsHtml).toContain('href="/data-deletion">Data Deletion</a>');
     expect(dataDeletionHtml).toContain(
-      '<link rel="canonical" href="https://worldofclaudecraft.com/data-deletion" />',
+      '<link rel="canonical" href="https://thehollow.world/data-deletion" />',
     );
     expect(dataDeletionHtml).toContain('<h1>Data Deletion</h1>');
     expect(dataDeletionHtml).toContain('href="mailto:woc@levystreet.com"');
     expect(dataDeletionHtml).toContain('href="https://discord.gg/GjhnUsBtw"');
     expect(dataDeletionHtml).toContain('href="/support">Support</a>');
     expect(supportHtml).toContain(
-      '<link rel="canonical" href="https://worldofclaudecraft.com/support" />',
+      '<link rel="canonical" href="https://thehollow.world/support" />',
     );
     expect(supportHtml).toContain('<h1>Support</h1>');
     expect(supportHtml).toContain('href="mailto:woc@levystreet.com"');

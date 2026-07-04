@@ -4,7 +4,7 @@
 
 **브라우저에서 무료로 직접 만든 세계를 모험하고, 파티를 맺고, 레이드하세요. 오픈 소스, web3, 그리고 지금 바로 온라인.**
 
-**공식 웹사이트: https://worldofclaudecraft.com/**
+**공식 웹사이트: https://thehollow.world/**
 
 [![CI](https://github.com/levy-street/world-of-claudecraft/actions/workflows/ci.yml/badge.svg)](https://github.com/levy-street/world-of-claudecraft/actions/workflows/ci.yml)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -20,7 +20,7 @@
 
 [English](../../README.md) · [Español](README.es.md) · [Español (España)](README.es_ES.md) · [Français](README.fr_FR.md) · [Français (Canada)](README.fr_CA.md) · [Italiano](README.it_IT.md) · [Deutsch](README.de_DE.md) · [简体中文](README.zh_CN.md) · [繁體中文](README.zh_TW.md) · **한국어** · [日本語](README.ja_JP.md) · [Português (Brasil)](README.pt_BR.md) · [Русский](README.ru_RU.md) · [Nederlands](README.nl_NL.md) · [Polski](README.pl_PL.md) · [Bahasa Indonesia](README.id_ID.md) · [Türkçe](README.tr_TR.md) · [Svenska](README.sv_SE.md) · [Tiếng Việt](README.vi_VN.md) · [Dansk](README.da_DK.md)
 
-[지금 플레이](https://worldofclaudecraft.com/) · [직접 세계 호스팅하기](#host-your-own-world-one-command) · [에이전트 훈련하기](#train-an-agent-headless-rl) · [Web3](#web3) · [기여하기](CONTRIBUTING.ko_KR.md) · [Discord](https://discord.gg/GjhnUsBtw)
+[지금 플레이](https://thehollow.world/) · [직접 세계 호스팅하기](#host-your-own-world-one-command) · [에이전트 훈련하기](#train-an-agent-headless-rl) · [Web3](#web3) · [기여하기](CONTRIBUTING.ko_KR.md) · [Discord](https://discord.gg/GjhnUsBtw)
 
 ![World of ClaudeCraft 타이틀 화면](../../docs/screenshots/title-screen.jpg)
 
@@ -28,7 +28,7 @@
 
 ## 이것은 무엇인가
 
-World of ClaudeCraft는 지금 바로 브라우저에서 플레이할 수 있고, 명령어 하나로 직접 호스팅할 수 있으며, 심지어 AI 에이전트를 훈련시켜 플레이하게 할 수도 있는 완성된 클래식 시대 MMO입니다. 무료이고, 오픈 소스이며, [worldofclaudecraft.com](https://worldofclaudecraft.com/)에서 실시간으로 운영됩니다.
+World of ClaudeCraft는 지금 바로 브라우저에서 플레이할 수 있고, 명령어 하나로 직접 호스팅할 수 있으며, 심지어 AI 에이전트를 훈련시켜 플레이하게 할 수도 있는 완성된 클래식 시대 MMO입니다. 무료이고, 오픈 소스이며, [thehollow.world](https://thehollow.world/)에서 실시간으로 운영됩니다.
 
 하나의 공유 세계가 동일한 게임 코어에서 세 곳에서 실행됩니다:
 
@@ -164,7 +164,7 @@ World of ClaudeCraft는 Solana 위의 커뮤니티 토큰 **$WOC**를 중심으�
 3WjLscH2JsXLEFJZRA9z8ti8yRGxWGKbqymPd7UicRth
 ```
 
-토큰에 대한 더 자세한 내용은 [worldofclaudecraft.com](https://worldofclaudecraft.com/)에 있습니다.
+토큰에 대한 더 자세한 내용은 [thehollow.world](https://thehollow.world/)에 있습니다.
 
 ## 세계 둘러보기
 

@@ -179,6 +179,8 @@ import {
   swapHotbarSlots,
   syncHotbarActions,
 } from './hotbar';
+import { HousingPromptPainter } from './housing_prompt_painter';
+import { housingPromptView } from './housing_prompt_view';
 import { buildHousingWindowView } from './housing_view';
 import { renderHousingWindow } from './housing_window';
 import {
@@ -732,6 +734,7 @@ export class Hud {
   private targetCastbarLabelEl = this.targetCastbarEl.querySelector('.label') as HTMLElement;
   private targetCastbarTimerEl = this.targetCastbarEl.querySelector('.timer') as HTMLElement;
   private actionbarEl = $('#actionbar');
+  private housingPromptEl = $('#housing-prompt');
   private xpFillEl = $('#xpbar .fill');
   private xpLabelEl = $('#xpbar .label');
   // XP + swing bar element refs cached once for their painters (the #xpbar /
@@ -2342,6 +2345,12 @@ export class Hud {
     this.swingbarEl,
     this.swingFillEl,
     this.swingLabelEl,
+  );
+  // Housing signpost interact prompt (PHAA-405 follow-up): purely proximity-driven
+  // (renderer.nearHousingPlot), so it shares the xp/swing bars' per-frame facet.
+  private readonly housingPromptPainter = new HousingPromptPainter(
+    this.writerFacet,
+    this.housingPromptEl,
   );
   // The per-frame FCT painter: the pooled-div ring that replaced the per-event
   // createElement + setTimeout fct() below. handleEvents + showSelfNote feed spawn(), which
@@ -4475,6 +4484,13 @@ export class Hud {
       showOverflow,
     });
     this.xpBarPainter.paint(bar);
+
+    // housing prompt: mirrors the same nearestHousingPlot() the signpost glow
+    // and the interact-key handler already use (renderer.nearHousingPlot),
+    // so the text tracks the glow exactly.
+    this.housingPromptPainter.paint(
+      housingPromptView(this.renderer.nearHousingPlot, sim.housingInfo),
+    );
 
     // FCT painter: drive the pooled floating-combat-text ring on the every-frame
     // tier (folded into the existing `hud` perf bucket, not a second rAF).
@@ -9268,7 +9284,7 @@ export class Hud {
       topPercent,
       referralHandle: referral?.slug ?? this.cardSlug(p.name),
       referralCount: referral?.count ?? null,
-      siteUrl: 'worldofclaudecraft.com',
+      siteUrl: 'thehollow.world',
     };
   }
 

@@ -11,16 +11,26 @@ import { hrefFor } from '../routes';
 import type { GuidePage } from './types';
 import { loreFigure, loreQuote, pageHeader, related } from './ui';
 
-// Blurbs are keyed by biome (vale / marsh / peaks), so they never depend on zone order.
-const blurbKey = (biome: string): TranslationKey =>
-  `guide.worldPage.${biome}Blurb` as TranslationKey;
-// Per-biome hub greeting (the spoken line + its speaker proper noun) and place notes.
-const greetingKey = (biome: string): TranslationKey =>
-  `guide.worldPage.${biome}Greeting` as TranslationKey;
-const greeterText = (biome: string): string =>
-  t(`guide.worldPage.${biome}Greeter` as TranslationKey);
-const placeNotesKey = (biome: string): TranslationKey =>
-  `guide.worldPage.${biome}PlaceNotes` as TranslationKey;
+// Keyed by zone id, not biome: the Hollow Reaches shares the 'vale' render biome with
+// Eastbrook Vale (see hollow_zone.ts), so biome alone can no longer tell zones apart
+// for copy or for the anchor id below. Explicit rather than derived from the id so the
+// existing vale/marsh/peaks catalog keys (and their locale overlays) don't need renaming.
+const ZONE_KEY_PREFIX: Record<string, string> = {
+  the_hollow_reaches: 'hollowReaches',
+  eastbrook_vale: 'vale',
+  mirefen_marsh: 'marsh',
+  thornpeak_heights: 'peaks',
+};
+const zoneKeyPrefix = (z: GuideZoneInfo): string => ZONE_KEY_PREFIX[z.id] ?? z.biome;
+const blurbKey = (z: GuideZoneInfo): TranslationKey =>
+  `guide.worldPage.${zoneKeyPrefix(z)}Blurb` as TranslationKey;
+// Per-zone hub greeting (the spoken line + its speaker proper noun) and place notes.
+const greetingKey = (z: GuideZoneInfo): TranslationKey =>
+  `guide.worldPage.${zoneKeyPrefix(z)}Greeting` as TranslationKey;
+const greeterText = (z: GuideZoneInfo): string =>
+  t(`guide.worldPage.${zoneKeyPrefix(z)}Greeter` as TranslationKey);
+const placeNotesKey = (z: GuideZoneInfo): TranslationKey =>
+  `guide.worldPage.${zoneKeyPrefix(z)}PlaceNotes` as TranslationKey;
 const familyName = (family: string): string => t(`guide.family.${family}.name` as TranslationKey);
 const bandLabel = (z: GuideZoneInfo): string =>
   t('guide.home.world.levels', { min: formatNumber(z.min), max: formatNumber(z.max) });
@@ -36,7 +46,7 @@ function residentFamilies(z: GuideZoneInfo): string[] {
 function mapHtml(): string {
   const bands = GUIDE_ZONES.map(
     (z) => `
-      <a class="guide-worldmap-zone guide-zone-${esc(z.biome)}" href="#zone-${esc(z.biome)}">
+      <a class="guide-worldmap-zone guide-zone-${esc(z.biome)}" href="#zone-${esc(z.id)}">
         <span class="guide-worldmap-band">${esc(bandLabel(z))}</span>
         <span class="guide-worldmap-name">${esc(z.name)}</span>
         ${z.hub ? `<span class="guide-worldmap-hub">${esc(z.hub)}</span>` : ''}
@@ -57,7 +67,7 @@ function poisHtml(z: GuideZoneInfo): string {
     <div class="guide-zone-detail">
       <h3 class="guide-zone-subh">${esc(t('guide.worldPage.places'))}</h3>
       <ul class="guide-poi-list">${items}</ul>
-      <p class="guide-zone-places-note">${esc(t(placeNotesKey(z.biome)))}</p>
+      <p class="guide-zone-places-note">${esc(t(placeNotesKey(z)))}</p>
     </div>`;
 }
 
@@ -79,13 +89,13 @@ function residentsHtml(z: GuideZoneInfo): string {
 
 function zoneCard(z: GuideZoneInfo): string {
   return `
-    <section class="guide-zone-card guide-zone-${esc(z.biome)}" id="zone-${esc(z.biome)}">
+    <section class="guide-zone-card guide-zone-${esc(z.biome)}" id="zone-${esc(z.id)}">
       <div class="guide-zone-body">
         <span class="guide-zone-band">${esc(bandLabel(z))}</span>
         <h2 class="guide-zone-name">${esc(z.name)}</h2>
-        <p class="guide-zone-blurb">${esc(t(blurbKey(z.biome)))}</p>
+        <p class="guide-zone-blurb">${esc(t(blurbKey(z)))}</p>
         ${z.hub ? `<p class="guide-zone-hub"><span>${esc(t('guide.worldPage.hub'))}:</span> ${esc(z.hub)}</p>` : ''}
-        ${loreQuote(greetingKey(z.biome), greeterText(z.biome))}
+        ${loreQuote(greetingKey(z), greeterText(z))}
         ${poisHtml(z)}
         ${residentsHtml(z)}
       </div>

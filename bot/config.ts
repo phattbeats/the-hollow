@@ -53,7 +53,7 @@ export function loadConfig(): BotConfig {
       process.env.DISCORD_RELAY_CHANNEL_ID ||
       process.env.DISCORD_TEST_CHANNEL_ID ||
       '',
-    gameUrl: process.env.PUBLIC_GAME_URL || 'https://worldofclaudecraft.com',
+    gameUrl: process.env.PUBLIC_GAME_URL || 'https://thehollow.world',
     syncNicknames: process.env.DISCORD_SYNC_NICKNAMES !== '0',
   };
 }

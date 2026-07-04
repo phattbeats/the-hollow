@@ -171,13 +171,13 @@ export interface AurasView {
  *  classification, lifted into the core.
  *
  *  PARITY: the `value < 0` branch fires identically in both worlds. The wire carries the
- *  aura value SPARSELY (server/game.ts WireAura sends it only when negative, the sole case
- *  that flips this classification; src/net/online.ts decodes `a.value ?? 0`), so a
- *  negative-value buff_* stat-sap shows the debuff border online and offline, and the
- *  low-tier debuff-priority aura cap (auras_painter.ts) can never hide it. The allowlisted
- *  kinds (dot, debuff_ap, ...) never depended on value and have always classified the same
- *  in both worlds (the kind is on the wire). The end-to-end encode/decode round trip is
- *  pinned in tests/snapshots.test.ts. */
+ *  aura value unconditionally (server/game.ts WireAura; src/net/online.ts decodes
+ *  `a.value ?? 0` for backward compat with an old server), so a negative-value buff_*
+ *  stat-sap shows the debuff border online and offline, and the low-tier debuff-priority
+ *  aura cap (auras_painter.ts) can never hide it. The allowlisted kinds (dot, debuff_ap,
+ *  ...) never depended on value and have always classified the same in both worlds (the
+ *  kind is on the wire). The end-to-end encode/decode round trip is pinned in
+ *  tests/snapshots.test.ts. */
 export function isAuraDebuff(aura: AuraInput): boolean {
   return DEBUFF_AURA_KINDS.has(aura.kind) || (aura.kind.startsWith('buff_') && aura.value < 0);
 }
