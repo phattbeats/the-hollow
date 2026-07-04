@@ -20,6 +20,7 @@ import type { Ante, PickAction } from '../sim/lockpick';
 import { normalizeMoveFacing, sanitizeMoveInput } from '../sim/move_input';
 import { computeQuestState, type ResolvedAbility } from '../sim/sim';
 import {
+  type Aura,
   type Entity,
   type EquipSlot,
   emptyMoveInput,
@@ -1295,11 +1296,9 @@ export class ClientWorld implements IWorld {
       // updates the existing Map in place: no per-entity Map churn at 20 Hz
       e.threat.clear();
       if (w.thr) for (const [tid, tv] of w.thr as [number, number][]) e.threat.set(tid, tv);
-      // The wire carries value only for negative-value buff_* stat-saps (sparse,
-      // server/game.ts), so the UI classifies them as debuffs identically to offline; a
-      // missing value (ordinary buffs, absorb, non-buff auras, an old server) decodes to 0
-      // as before. sourceId/school stay simplified (separate pre-existing wire reductions,
-      // not part of this change).
+      // The wire carries the real effect magnitude for every aura (server/game.ts), so the
+      // tooltip effect descriptor (aura_effect.ts) reads the same numbers online as offline;
+      // a missing value (an old server) decodes to 0 as before.
       //
       // Between snapshots the aura SET is usually unchanged (only `rem` ticks down), so when
       // the incoming ids line up index-for-index with the existing records, update those
@@ -1325,6 +1324,10 @@ export class ClientWorld implements IWorld {
           rec.remaining = a.rem;
           rec.duration = a.dur;
           rec.value = a.value ?? 0;
+          rec.value2 = a.value2;
+          rec.value3 = a.value3;
+          rec.tickInterval = a.tickInterval;
+          rec.school = (a.school as Aura['school'] | undefined) ?? 'physical';
           rec.stacks = a.stacks;
           // Mirror the charge count for a charge-limited aura (Lightning Shield); the wire
           // sends it only when defined (server/game.ts), so an ordinary aura or an old server
@@ -1339,8 +1342,11 @@ export class ClientWorld implements IWorld {
           remaining: a.rem,
           duration: a.dur,
           value: a.value ?? 0,
+          value2: a.value2,
+          value3: a.value3,
+          tickInterval: a.tickInterval,
           sourceId: 0,
-          school: 'physical' as const,
+          school: (a.school as Aura['school'] | undefined) ?? 'physical',
           stacks: a.stacks,
           charges: a.charges,
         }));

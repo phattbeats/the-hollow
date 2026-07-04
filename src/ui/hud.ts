@@ -9250,7 +9250,7 @@ export class Hud {
       topPercent,
       referralHandle: referral?.slug ?? this.cardSlug(p.name),
       referralCount: referral?.count ?? null,
-      siteUrl: 'worldofclaudecraft.com',
+      siteUrl: 'thehollow.world',
     };
   }
 

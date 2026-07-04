@@ -4,7 +4,7 @@
 
 **Lös uppdrag, slå dig samman och raida en handbyggd värld, gratis i din webbläsare. Öppen källkod, web3 och online just nu.**
 
-**Officiell webbplats: https://worldofclaudecraft.com/**
+**Officiell webbplats: https://thehollow.world/**
 
 [![CI](https://github.com/levy-street/world-of-claudecraft/actions/workflows/ci.yml/badge.svg)](https://github.com/levy-street/world-of-claudecraft/actions/workflows/ci.yml)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -20,7 +20,7 @@
 
 [English](../../README.md) · [Español](README.es.md) · [Español (España)](README.es_ES.md) · [Français](README.fr_FR.md) · [Français (Canada)](README.fr_CA.md) · [Italiano](README.it_IT.md) · [Deutsch](README.de_DE.md) · [简体中文](README.zh_CN.md) · [繁體中文](README.zh_TW.md) · [한국어](README.ko_KR.md) · [日本語](README.ja_JP.md) · [Português (Brasil)](README.pt_BR.md) · [Русский](README.ru_RU.md) · [Nederlands](README.nl_NL.md) · [Polski](README.pl_PL.md) · [Bahasa Indonesia](README.id_ID.md) · [Türkçe](README.tr_TR.md) · **Svenska** · [Tiếng Việt](README.vi_VN.md) · [Dansk](README.da_DK.md)
 
-[Spela nu](https://worldofclaudecraft.com/) · [Hosta din egen värld](#host-your-own-world-one-command) · [Träna en agent](#train-an-agent-headless-rl) · [Web3](#web3) · [Bidra](CONTRIBUTING.sv_SE.md) · [Discord](https://discord.gg/GjhnUsBtw)
+[Spela nu](https://thehollow.world/) · [Hosta din egen värld](#host-your-own-world-one-command) · [Träna en agent](#train-an-agent-headless-rl) · [Web3](#web3) · [Bidra](CONTRIBUTING.sv_SE.md) · [Discord](https://discord.gg/GjhnUsBtw)
 
 ![World of ClaudeCraft titelskärm](../../docs/screenshots/title-screen.jpg)
 
@@ -28,7 +28,7 @@
 
 ## Vad det här är
 
-World of ClaudeCraft är en komplett MMO i klassisk stil som du kan spela just nu i din webbläsare, hosta själv med ett enda kommando och till och med träna AI-agenter att spela. Den är gratis, öppen källkod och live på [worldofclaudecraft.com](https://worldofclaudecraft.com/).
+World of ClaudeCraft är en komplett MMO i klassisk stil som du kan spela just nu i din webbläsare, hosta själv med ett enda kommando och till och med träna AI-agenter att spela. Den är gratis, öppen källkod och live på [thehollow.world](https://thehollow.world/).
 
 En gemensam värld körs på tre platser, alla från samma spelkärna:
 
@@ -164,7 +164,7 @@ Det är endast kosmetiskt och behövs inte för att spela. Inget spenderas eller
 3WjLscH2JsXLEFJZRA9z8ti8yRGxWGKbqymPd7UicRth
 ```
 
-Mer om token på [worldofclaudecraft.com](https://worldofclaudecraft.com/).
+Mer om token på [thehollow.world](https://thehollow.world/).
 
 ## En rundtur i världen
 

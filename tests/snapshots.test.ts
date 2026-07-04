@@ -2092,16 +2092,16 @@ describe('delta-key contract pins (anti-drift)', () => {
   });
 });
 
-// A negative-value buff_* aura (a stat-sap: an intellect-draining curse on buff_int, an
-// attack-power drain on buff_ap) reads as a DEBUFF via auras_view.isAuraDebuff's
-// `value < 0` branch. That branch can only fire online if the wire carries the value. The
-// serializer sends `value` SPARSELY: only when it is negative (the sole case that flips the
-// classification), so an ordinary buff and the positive absorb shield stay off the wire and
-// decode to 0 exactly as before (no absorb-overlay regression; see target_frame.test.ts).
-// The client decode reads `a.value ?? 0`, so an old server that never sends it still decodes
-// to 0 (backward compatible). This drives a real Sim aura through the real serializer
-// (wireEntity) and the real client decode (ClientWorld.applySnapshot).
-describe('aura value over the wire (stat-sap debuff parity)', () => {
+// The wire carries the aura's real effect magnitude (value/value2/value3/tickInterval/school)
+// for EVERY aura, not just the negative-value buff_* stat-saps that flip auras_view.isAuraDebuff.
+// That keeps the online tooltip's effect descriptor (aura_effect.ts, value/tickInterval/school)
+// reading the same numbers as offline for flat buffs, percent buffs, DoTs/HoTs, and absorbs
+// alike (PHAA-447; upstream PR #1220). `school` is omitted when it's the default 'physical' (a
+// size optimization, not a behavior difference: the client decode falls back to 'physical' too).
+// The client decode reads `a.value ?? 0`, so an old server that never sends it still decodes to
+// 0 (backward compatible). This drives a real Sim aura through the real serializer (wireEntity)
+// and the real client decode (ClientWorld.applySnapshot).
+describe('aura magnitude over the wire (online tooltip parity)', () => {
   function roundTrip(aura: Aura): { wire: Record<string, unknown>; mirror: Aura } {
     const sim = new Sim({ seed: 1, playerClass: 'warrior', noPlayer: true });
     const pid = sim.addPlayer('warrior', 'Sapped');
@@ -2140,25 +2140,23 @@ describe('aura value over the wire (stat-sap debuff parity)', () => {
   it('sends a NEGATIVE buff_* value so the sap classifies as a debuff in BOTH worlds', () => {
     const simSap = sapInt(-30);
     const { wire, mirror } = roundTrip(simSap);
-    // the serializer carried the negative value...
     expect(wireAura(wire, 'enfeeble').value).toBe(-30);
-    // ...and the client decoded it (not the old hardcoded 0).
     expect(mirror.value).toBe(-30);
     // so isAuraDebuff agrees across the wire: a debuff offline AND online.
     expect(isAuraDebuff(simSap)).toBe(true);
     expect(isAuraDebuff(mirror)).toBe(true);
   });
 
-  it('does NOT send a POSITIVE buff value (sparse): a real buff stays a buff in both worlds', () => {
+  it('sends a POSITIVE buff value too, so the online tooltip reads the real amount, not 0', () => {
     const buff: Aura = { ...sapInt(40), id: 'arcane_intellect', name: 'Arcane Intellect' };
     const { wire, mirror } = roundTrip(buff);
-    expect('value' in wireAura(wire, 'arcane_intellect')).toBe(false); // omitted on the wire
-    expect(mirror.value).toBe(0); // decodes to 0 (?? 0)
+    expect(wireAura(wire, 'arcane_intellect').value).toBe(40);
+    expect(mirror.value).toBe(40);
     expect(isAuraDebuff(buff)).toBe(false);
     expect(isAuraDebuff(mirror)).toBe(false);
   });
 
-  it('does NOT send a POSITIVE absorb value: the shield overlay stays offline-only (no regression)', () => {
+  it('sends the absorb amount and school, so the online tooltip/shield overlay matches offline', () => {
     const shield: Aura = {
       id: 'power_word_shield',
       name: 'Power Word: Shield',
@@ -2170,16 +2168,32 @@ describe('aura value over the wire (stat-sap debuff parity)', () => {
       school: 'holy',
     };
     const { wire, mirror } = roundTrip(shield);
-    expect('value' in wireAura(wire, 'power_word_shield')).toBe(false);
-    // online absorb is still 0, so the shield overlay remains offline-only (target_frame parity).
-    expect(mirror.value).toBe(0);
+    expect(wireAura(wire, 'power_word_shield').value).toBe(250);
+    expect(wireAura(wire, 'power_word_shield').school).toBe('holy');
+    expect(mirror.value).toBe(250);
+    expect(mirror.school).toBe('holy');
   });
 
-  it('does NOT send a NEGATIVE value for a non-buff_ aura (kind-gated): fear keeps its kind classification', () => {
-    // The emit mirrors isAuraDebuff's value branch (buff_* only), so a negative-value
-    // non-buff aura -- e.g. an incapacitate (fear) carrying a random facing angle that is
-    // negative about half the time -- never ships its value. It stays a debuff via its KIND,
-    // identically in both worlds, and no inert value rides the wire.
+  it('sends a periodic DoT with its tick value, interval, and school (no more "0 damage" tooltip)', () => {
+    const dot: Aura = {
+      id: 'rend',
+      name: 'Rend',
+      kind: 'dot',
+      remaining: 12,
+      duration: 12,
+      value: 18,
+      tickInterval: 3,
+      sourceId: 0,
+      school: 'physical',
+    };
+    const { wire, mirror } = roundTrip(dot);
+    expect(wireAura(wire, 'rend').value).toBe(18);
+    expect(wireAura(wire, 'rend').tickInterval).toBe(3);
+    expect(mirror.value).toBe(18);
+    expect(mirror.tickInterval).toBe(3);
+  });
+
+  it('omits school on the wire when it is the default "physical" (size optimization)', () => {
     const fear: Aura = {
       id: 'fear',
       name: 'Fear',
@@ -2188,11 +2202,12 @@ describe('aura value over the wire (stat-sap debuff parity)', () => {
       duration: 4,
       value: -1.5,
       sourceId: 0,
-      school: 'shadow',
+      school: 'physical',
     };
     const { wire, mirror } = roundTrip(fear);
-    expect('value' in wireAura(wire, 'fear')).toBe(false); // negative, but not buff_ -> omitted
-    expect(mirror.value).toBe(0);
+    expect('school' in wireAura(wire, 'fear')).toBe(false);
+    expect(mirror.value).toBe(-1.5); // still sent: value now rides the wire unconditionally
+    expect(mirror.school).toBe('physical'); // decode falls back to the default
     expect(isAuraDebuff(fear)).toBe(true); // debuff via kind, in both worlds
     expect(isAuraDebuff(mirror)).toBe(true);
   });

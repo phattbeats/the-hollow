@@ -7,21 +7,21 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const indexPath = path.resolve(__dirname, '../index.html');
 const expectedAlternates = [
-  { hreflang: 'en', href: 'https://worldofclaudecraft.com/' },
-  { hreflang: 'es', href: 'https://worldofclaudecraft.com/?lang=es' },
-  { hreflang: 'es-ES', href: 'https://worldofclaudecraft.com/?lang=es_ES' },
-  { hreflang: 'fr-FR', href: 'https://worldofclaudecraft.com/?lang=fr_FR' },
-  { hreflang: 'fr-CA', href: 'https://worldofclaudecraft.com/?lang=fr_CA' },
-  { hreflang: 'en-CA', href: 'https://worldofclaudecraft.com/?lang=en_CA' },
-  { hreflang: 'it-IT', href: 'https://worldofclaudecraft.com/?lang=it_IT' },
-  { hreflang: 'de-DE', href: 'https://worldofclaudecraft.com/?lang=de_DE' },
-  { hreflang: 'zh-CN', href: 'https://worldofclaudecraft.com/?lang=zh_CN' },
-  { hreflang: 'zh-TW', href: 'https://worldofclaudecraft.com/?lang=zh_TW' },
-  { hreflang: 'ko-KR', href: 'https://worldofclaudecraft.com/?lang=ko_KR' },
-  { hreflang: 'ja-JP', href: 'https://worldofclaudecraft.com/?lang=ja_JP' },
-  { hreflang: 'pt-BR', href: 'https://worldofclaudecraft.com/?lang=pt_BR' },
-  { hreflang: 'ru-RU', href: 'https://worldofclaudecraft.com/?lang=ru_RU' },
-  { hreflang: 'x-default', href: 'https://worldofclaudecraft.com/' },
+  { hreflang: 'en', href: 'https://thehollow.world/' },
+  { hreflang: 'es', href: 'https://thehollow.world/?lang=es' },
+  { hreflang: 'es-ES', href: 'https://thehollow.world/?lang=es_ES' },
+  { hreflang: 'fr-FR', href: 'https://thehollow.world/?lang=fr_FR' },
+  { hreflang: 'fr-CA', href: 'https://thehollow.world/?lang=fr_CA' },
+  { hreflang: 'en-CA', href: 'https://thehollow.world/?lang=en_CA' },
+  { hreflang: 'it-IT', href: 'https://thehollow.world/?lang=it_IT' },
+  { hreflang: 'de-DE', href: 'https://thehollow.world/?lang=de_DE' },
+  { hreflang: 'zh-CN', href: 'https://thehollow.world/?lang=zh_CN' },
+  { hreflang: 'zh-TW', href: 'https://thehollow.world/?lang=zh_TW' },
+  { hreflang: 'ko-KR', href: 'https://thehollow.world/?lang=ko_KR' },
+  { hreflang: 'ja-JP', href: 'https://thehollow.world/?lang=ja_JP' },
+  { hreflang: 'pt-BR', href: 'https://thehollow.world/?lang=pt_BR' },
+  { hreflang: 'ru-RU', href: 'https://thehollow.world/?lang=ru_RU' },
+  { hreflang: 'x-default', href: 'https://thehollow.world/' },
 ];
 
 function audit() {
@@ -200,7 +200,7 @@ function audit() {
 
   // 8. Canonical Link Check
   const hasCanonical =
-    html.includes('rel="canonical"') && html.includes('href="https://worldofclaudecraft.com/"');
+    html.includes('rel="canonical"') && html.includes('href="https://thehollow.world/"');
   checks.push({
     category: 'SEO',
     name: 'Canonical link tag is present and correct',
@@ -208,7 +208,7 @@ function audit() {
     score: hasCanonical ? 10 : 0,
     maxScore: 10,
     details: hasCanonical
-      ? 'Found rel="canonical" pointing to worldofclaudecraft.com.'
+      ? 'Found rel="canonical" pointing to thehollow.world.'
       : 'Missing rel="canonical" link tag.',
   });
 

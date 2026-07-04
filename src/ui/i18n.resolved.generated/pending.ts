@@ -334,26 +334,10 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.title",
     "hudChrome.options.showOwnNameplate"
   ],
-  "zh_CN": [
-    "housingUi.prompt.claim",
-    "housingUi.prompt.manage",
-    "housingUi.prompt.visit"
-  ],
-  "zh_TW": [
-    "housingUi.prompt.claim",
-    "housingUi.prompt.manage",
-    "housingUi.prompt.visit"
-  ],
-  "ko_KR": [
-    "housingUi.prompt.claim",
-    "housingUi.prompt.manage",
-    "housingUi.prompt.visit"
-  ],
-  "ja_JP": [
-    "housingUi.prompt.claim",
-    "housingUi.prompt.manage",
-    "housingUi.prompt.visit"
-  ],
+  "zh_CN": [],
+  "zh_TW": [],
+  "ko_KR": [],
+  "ja_JP": [],
   "pt_BR": [
     "coldOpen.begin",
     "coldOpen.continue",
@@ -408,11 +392,7 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.title",
     "hudChrome.options.showOwnNameplate"
   ],
-  "ru_RU": [
-    "housingUi.prompt.claim",
-    "housingUi.prompt.manage",
-    "housingUi.prompt.visit"
-  ],
+  "ru_RU": [],
   "nl_NL": [
     "coldOpen.begin",
     "coldOpen.continue",

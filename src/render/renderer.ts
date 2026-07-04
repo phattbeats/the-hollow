@@ -73,6 +73,7 @@ import {
   hollowVaseWorldPos,
   isHollowHubOrigin,
   isHollowHubPos,
+  updateHollowVaseBreath,
 } from './hollow_props';
 import { HousingView } from './housing';
 import { type NearbyHousingPlot, nearestHousingPlot } from './housing_proximity';
@@ -3857,6 +3858,7 @@ export class Renderer {
     }
     this.time += dt;
     sharedUniforms.uTime.value = this.time;
+    updateHollowVaseBreath(this.time);
     const sim = this.sim;
     const p = sim.player;
     if (this.lastSelfId !== p.id) {

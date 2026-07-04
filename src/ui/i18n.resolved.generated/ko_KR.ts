@@ -3410,9 +3410,9 @@ export const ko_KR: EnTranslations = {
     "claimedBanner": "당신은 이 부지를 보금자리로 인정했습니다.",
     "ownerBanner": "여기는 {name}의 보금자리입니다.",
     "prompt": {
-      "claim": "Claim this plot",
-      "manage": "Manage your homestead",
-      "visit": "Visit {name}'s home"
+      "claim": "이 부지 인정하기",
+      "manage": "보금자리 관리하기",
+      "visit": "{name}의 집 방문하기"
     },
     "window": {
       "title": "나의 보금자리",

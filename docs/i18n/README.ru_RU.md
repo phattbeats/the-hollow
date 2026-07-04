@@ -4,7 +4,7 @@
 
 **Выполняйте задания, собирайтесь в группы и штурмуйте вручную созданный мир, бесплатно прямо в браузере. Открытый исходный код, web3 и онлайн прямо сейчас.**
 
-**Официальный сайт: https://worldofclaudecraft.com/**
+**Официальный сайт: https://thehollow.world/**
 
 [![CI](https://github.com/levy-street/world-of-claudecraft/actions/workflows/ci.yml/badge.svg)](https://github.com/levy-street/world-of-claudecraft/actions/workflows/ci.yml)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -20,7 +20,7 @@
 
 [English](../../README.md) · [Español](README.es.md) · [Español (España)](README.es_ES.md) · [Français](README.fr_FR.md) · [Français (Canada)](README.fr_CA.md) · [Italiano](README.it_IT.md) · [Deutsch](README.de_DE.md) · [简体中文](README.zh_CN.md) · [繁體中文](README.zh_TW.md) · [한국어](README.ko_KR.md) · [日本語](README.ja_JP.md) · [Português (Brasil)](README.pt_BR.md) · **Русский** · [Nederlands](README.nl_NL.md) · [Polski](README.pl_PL.md) · [Bahasa Indonesia](README.id_ID.md) · [Türkçe](README.tr_TR.md) · [Svenska](README.sv_SE.md) · [Tiếng Việt](README.vi_VN.md) · [Dansk](README.da_DK.md)
 
-[Играть сейчас](https://worldofclaudecraft.com/) · [Разверните свой мир](#host-your-own-world-one-command) · [Обучите агента](#train-an-agent-headless-rl) · [Web3](#web3) · [Участие в разработке](CONTRIBUTING.ru_RU.md) · [Discord](https://discord.gg/GjhnUsBtw)
+[Играть сейчас](https://thehollow.world/) · [Разверните свой мир](#host-your-own-world-one-command) · [Обучите агента](#train-an-agent-headless-rl) · [Web3](#web3) · [Участие в разработке](CONTRIBUTING.ru_RU.md) · [Discord](https://discord.gg/GjhnUsBtw)
 
 ![Титульный экран World of ClaudeCraft](../../docs/screenshots/title-screen.jpg)
 
@@ -28,7 +28,7 @@
 
 ## Что это такое
 
-World of ClaudeCraft — это полноценная MMO классической эпохи, в которую можно играть прямо сейчас в браузере, развернуть самостоятельно одной командой и даже обучать ИИ-агентов игре. Она бесплатна, имеет открытый исходный код и работает по адресу [worldofclaudecraft.com](https://worldofclaudecraft.com/).
+World of ClaudeCraft: полноценная MMO классической эпохи, в которую можно играть прямо сейчас в браузере, развернуть самостоятельно одной командой и даже обучать ИИ-агентов игре. Она бесплатна, имеет открытый исходный код и работает по адресу [thehollow.world](https://thehollow.world/).
 
 Один общий мир работает в трёх местах, и всё из одного игрового ядра:
 
@@ -164,7 +164,7 @@ World of ClaudeCraft является web3-native вокруг **$WOC**, наш�
 3WjLscH2JsXLEFJZRA9z8ti8yRGxWGKbqymPd7UicRth
 ```
 
-Подробнее о токене на [worldofclaudecraft.com](https://worldofclaudecraft.com/).
+Подробнее о токене на [thehollow.world](https://thehollow.world/).
 
 ## Тур по миру
 

@@ -330,7 +330,7 @@ body {
   padding: 14px;
   background:
     linear-gradient(rgba(24, 15, 10, 0), rgba(24, 15, 10, 0.85)),
-    url(&apos;/wiki/resources/assets/worldofclaudecraft-logo.png&apos;) center / contain no-repeat;
+    url(&apos;/wiki/resources/assets/the-hollow-logo.png&apos;) center / contain no-repeat;
   color: var(--woc-gold-soft);
   font-family: var(--woc-display);
   font-weight: 700;

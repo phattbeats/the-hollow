@@ -62,6 +62,7 @@ const KIT = {
   lantern: '/models/dungeon/lantern_standing.glb',
   shrine: '/models/dungeon/shrine.glb',
   shrineCandles: '/models/dungeon/shrine_candles.glb',
+  vase: '/models/props/hollow_vase.glb',
 } as const;
 
 // Foliage kit GLBs for the flora dressing (same files foliage.ts already
@@ -86,58 +87,69 @@ function jitter(x: number, z: number, salt: number): number {
   return hash2(x * 3.1, z * 1.7, salt);
 }
 
-/** The vase: a procedural terracotta urn on a low stone plinth. */
-function buildVase(): THREE.Group {
-  const g = new THREE.Group();
-  const plinth = new THREE.Mesh(
-    new THREE.CylinderGeometry(1.5, 1.7, 0.5, 10),
-    new THREE.MeshStandardMaterial({ color: 0x6b6258, roughness: 0.95 }),
-  );
-  plinth.position.y = 0.25;
-  g.add(plinth);
-  // urn profile: foot, belly, shoulder, neck, lip
-  const pts = [
-    [0.32, 0],
-    [0.42, 0.08],
-    [0.36, 0.25],
-    [0.62, 0.7],
-    [0.72, 1.1],
-    [0.58, 1.55],
-    [0.34, 1.8],
-    [0.3, 1.98],
-    [0.4, 2.1],
-    [0.36, 2.16],
-  ].map(([r, y]) => new THREE.Vector2(r, y));
-  const urn = new THREE.Mesh(
-    new THREE.LatheGeometry(pts, 18),
-    new THREE.MeshStandardMaterial({
-      color: 0xb0623a,
-      roughness: 0.85,
-      emissive: 0x3a180a,
-      emissiveIntensity: 0.35,
-    }),
-  );
-  urn.position.y = 0.5;
-  g.add(urn);
-  // the living cutting rising from the mouth: a few flat leaf fins
-  const leafMat = new THREE.MeshStandardMaterial({
-    color: 0x5c8f3c,
-    roughness: 0.8,
-    side: THREE.DoubleSide,
-  });
-  for (let i = 0; i < 5; i++) {
-    const leaf = new THREE.Mesh(new THREE.ConeGeometry(0.09, 0.85, 4), leafMat);
-    const a = (i / 5) * Math.PI * 2 + 0.4;
-    leaf.position.set(Math.sin(a) * 0.12, 2.95, Math.cos(a) * 0.12);
-    leaf.rotation.set(Math.cos(a) * 0.45, a, Math.sin(a) * 0.45);
-    g.add(leaf);
+// Scales the Blender-authored vase (native top-of-bouquet height 2.74, urn
+// lip at 1.4) up to roughly the footprint the hearth/altar around it was
+// built for (PHAA-433/434): about 3.5 units of total height, lip near 1.8.
+const VASE_SCALE = 1.3;
+
+// The living bouquet's mesh objects, exported by name from the Blender source
+// (PHAA-430): everything parented under Urn except the metal Relief band.
+// Kept separate from the urn/relief so the breathing pulse (below) only ever
+// touches the organic parts, never the pewter.
+const VASE_FOLIAGE_NAMES = [
+  'Berries',
+  'Flowers_cream',
+  'Flowers_mauve',
+  'Flowers_purple',
+  'Flowers_tan',
+  'Leaves_dusk',
+  'Leaves_olive',
+  'Leaves_rose',
+  'Leaves_sage',
+  'Vines',
+] as const;
+
+// Foliage objects currently in the scene, across every built hub instance
+// copy, paired with their own Blender-authored base scale (each is already a
+// hair under 1 from the v4 polish pass, see hollow-blender-glb-export memory)
+// so the breathing pulse multiplies onto it instead of clobbering it.
+const breathingFoliage: { obj: THREE.Object3D; baseScale: number }[] = [];
+
+/**
+ * The vase: the ornate pewter urn + dried-flower bouquet (PHAA-430), sculpted
+ * in Blender from Brandon's reference photo rather than built procedurally
+ * here (the gadrooned relief band and hand-placed foliage clusters are far
+ * cheaper to model once than to recreate as parametric Three.js primitives).
+ * Registers the bouquet's mesh objects for the breathing pulse as a side
+ * effect, since every hub instance copy gets its own clone.
+ */
+function buildVase(gltf: GLTF): THREE.Object3D {
+  const vase = clonePiece(gltf);
+  vase.scale.setScalar(VASE_SCALE);
+  for (const name of VASE_FOLIAGE_NAMES) {
+    const obj = vase.getObjectByName(name);
+    if (obj) breathingFoliage.push({ obj, baseScale: obj.scale.x });
   }
   // No PointLight here on purpose: the renderer keeps the visible point-light
   // count constant (budgetFireLights), and an unmanaged light would force a
-  // shader recompile. The urn's emissive plus the interior torch pools carry it;
-  // the god's green glow is a MANAGED light added in buildHollowProps (below),
-  // pushed into the same fireLights budget a dungeon torch uses.
-  return g;
+  // shader recompile. The urn's own materials plus the interior torch pools
+  // carry it; the god's green glow is a MANAGED light added in
+  // buildHollowProps (below), pushed into the same fireLights budget a
+  // dungeon torch uses.
+  return vase;
+}
+
+/**
+ * Very slight breathing pulse on the vase's living bouquet (Brandon's
+ * PHAA-430 follow-up to the model itself): a slow, subtle uniform scale
+ * pulse on the foliage meshes only, so the bouquet reads as quietly alive
+ * without looking like it is inflating. Cheap (a handful of objects, one
+ * sin() call each) and gated on nothing, since it costs about as much as a
+ * single dungeon torch flicker; called once per render frame.
+ */
+export function updateHollowVaseBreath(t: number): void {
+  const breath = 1 + Math.sin(t * 1.3) * 0.02;
+  for (const { obj, baseScale } of breathingFoliage) obj.scale.setScalar(baseScale * breath);
 }
 
 /**
@@ -159,14 +171,16 @@ function buildVaseGlow(): { core: THREE.Mesh; light: THREE.PointLight } {
       roughness: 0.5,
     }),
   );
-  core.position.y = 2.35;
+  // Height matches the PHAA-430 urn's scaled lip (VASE_SCALE * 1.4 ~= 1.82),
+  // just above the mouth so the source reads as welling out of it.
+  core.position.y = 2.0;
   core.scale.y = 1.25;
   // the pooled light: contained hollow-green, gentle breathe via the flicker
   // pass (userData.baseIntensity). Softer and shorter-range than a torch so it
   // pools around the shrine rather than washing the whole clearing.
   const light = new THREE.PointLight(0x8fe04a, 22, 18, 2);
   light.userData.baseIntensity = 22;
-  light.position.y = 2.2;
+  light.position.y = 1.85;
   return { core, light };
 }
 
@@ -361,6 +375,7 @@ export async function buildHollowProps(
     lantern,
     shrine,
     shrineCandles,
+    vaseGltf,
     fern,
     bush,
     bushFlowers,
@@ -374,6 +389,7 @@ export async function buildHollowProps(
     loadGltf(KIT.lantern),
     loadGltf(KIT.shrine),
     loadGltf(KIT.shrineCandles),
+    loadGltf(KIT.vase),
     loadGltf(FLORA_KIT.fern),
     loadGltf(FLORA_KIT.bush),
     loadGltf(FLORA_KIT.bushFlowers),
@@ -404,7 +420,7 @@ export async function buildHollowProps(
   group.add(hearth);
 
   // the vase, the center of gravity of the whole room
-  const vase = buildVase();
+  const vase = buildVase(vaseGltf);
   vase.position.set(VASE_POS.x, 0, VASE_POS.z);
   group.add(vase);
 
