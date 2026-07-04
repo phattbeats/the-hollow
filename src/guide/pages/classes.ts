@@ -28,7 +28,7 @@ import { GUIDE_CLASSES, GUIDE_WARLOCK_PETS, type GuideClassInfo } from '../conte
 import { hrefFor } from '../routes';
 import { modelViewerEmbed, wireModelViewers } from '../viewer';
 import type { GuidePage, PageContext } from './types';
-import { badge, crestImg, related } from './ui';
+import { badge, callout, crestImg, related } from './ui';
 
 // ---------------------------------------------------------------- index + chooser
 const FILTER_GROUPS: {
@@ -133,6 +133,15 @@ function indexHtml(): string {
       ${chooserHtml()}
       <div class="guide-class-cards" data-class-grid>${cards}</div>
       <p class="guide-chooser-none" data-none hidden>${esc(t('guide.chooser.none'))}</p>
+      ${callout(
+        esc(t('guide.classPage.professionsNote')) +
+          ' <a class="guide-cta" href="' +
+          esc(hrefFor('reference/professions')) +
+          '">' +
+          esc(t('guide.classPage.professionsLink')) +
+          '</a>',
+        { variant: 'note', titleKey: 'guide.classPage.professionsTitle' },
+      )}
     </div>`;
 }
 

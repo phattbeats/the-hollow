@@ -183,6 +183,13 @@ export const GUIDE_ROUTES: GuideRoute[] = [
     descKey: 'guide.talentsPage.intro',
   },
   {
+    id: 'professions',
+    sub: 'reference/professions',
+    navKey: 'guide.nav.professions',
+    group: 'reference',
+    descKey: 'guide.professionsPage.intro',
+  },
+  {
     id: 'glossary',
     sub: 'reference/glossary',
     navKey: 'guide.nav.glossary',

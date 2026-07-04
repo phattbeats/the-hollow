@@ -907,6 +907,7 @@ export const zh_TW: EnTranslations = {
       "controls": "操作按鍵",
       "combat": "戰鬥",
       "talents": "天賦",
+      "professions": "Professions",
       "arena": "競技場與PvP",
       "glossary": "詞彙表",
       "wishIKnew": "我希望早點知道的事",
@@ -1184,7 +1185,10 @@ export const zh_TW: EnTranslations = {
       "fullKitHeading": "完整技能",
       "fullKitNote": "此職業能學習的每一項技能，依照解鎖順序排列。天賦決定哪些技能撐起你的配置。",
       "petsHeading": "惡魔",
-      "petsNote": "術士召喚惡魔並肩作戰，每隻各擅長不同的任務。"
+      "petsNote": "術士召喚惡魔並肩作戰，每隻各擅長不同的任務。",
+      "professionsTitle": "Pair with a second class",
+      "professionsNote": "Any class above can also be taken as a profession, a secondary class that opens a second talent tree without dropping your primary role. See how professions work before you pick.",
+      "professionsLink": "Professions and multiclassing"
     },
     "classHook": {
       "warrior": "一名不屈不撓的前線戰士，將承受的每一擊都化為下一擊的燃料。",
@@ -1485,6 +1489,21 @@ export const zh_TW: EnTranslations = {
       "resetNote": "只要脫離戰鬥，你隨時都能重置天賦，所以早期的選擇絕不會是陷阱。儘管嘗試，看看自己喜歡什麼，並自由地改變主意。",
       "specsHeading": "各職業的專精",
       "specsBody": "每個職業都有數種專精，各有自己的角色定位和標誌性的著重方向。以下是它們全部的輪廓。打開某個職業即可查看其完整技能。"
+    },
+    "professionsPage": {
+      "heading": "Professions and multiclassing",
+      "intro": "A profession is a second class you train alongside your primary one, opening a second talent tree and a slice of its ability kit without leaving your first role behind.",
+      "whatHeading": "What a profession is",
+      "whatBody": "Every class can be taken as a profession by any other class. Pairing one adds a second talent tree and lets you borrow a few of its abilities, so a Warrior can dabble in the Priest's healing or a Mage pick up a Rogue's sting. Your primary class still sets your role, your resource, and your identity; the profession bends the build without replacing it.",
+      "howHeading": "How to pick one",
+      "howBody": "Professions open at level 10, the same moment your first talent tree unlocks. Visit a Profession Trainer in the hub town, open their dialog, and pick the class you want as your secondary.",
+      "costBody": "Your first pick is free. Changing to a different class later costs gold, and the fee steps up each time you swap, so an early decision is never punished while later reshuffles carry a small price.",
+      "resetTitle": "Nothing is locked in",
+      "resetNote": "You can refund points in either tree any time you are out of combat, and you can swap your secondary class at the same trainer for an escalating gold fee. An early profession pick is a first draft, not a commitment.",
+      "talentsHeading": "How talents split across the two trees",
+      "talentsBody": "A profession adds a whole second talent tree beside your primary one, but the two draw from the same pool of points. The secondary tree can hold at most half of that pool, so your primary class always stays the heart of the build. A point dropped into the secondary tree unlocks its abilities, and those abilities cast from your primary resource, not theirs: a Priest profession on a Warrior spends rage to heal, not mana.",
+      "trainersHeading": "Finding a trainer",
+      "trainersBody": "A Profession Trainer stands in the hub town near the shrine. Any single trainer can teach you any class as a profession (other than your primary), so one visit is enough to set or change your secondary."
     },
     "arenaPage": {
       "heading": "競技場與PvP",

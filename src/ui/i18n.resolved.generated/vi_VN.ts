@@ -907,6 +907,7 @@ export const vi_VN: EnTranslations = {
       "controls": "Điều Khiển",
       "combat": "Chiến Đấu",
       "talents": "Tài Năng",
+      "professions": "Professions",
       "arena": "Đấu Trường & PvP",
       "glossary": "Thuật Ngữ",
       "wishIKnew": "Những Điều Tôi Ước Mình Biết Sớm",
@@ -1184,7 +1185,10 @@ export const vi_VN: EnTranslations = {
       "fullKitHeading": "Toàn bộ kỹ năng",
       "fullKitNote": "Mọi kỹ năng lớp này có thể học, theo thứ tự chúng mở khóa. Điểm thiên phú quyết định kỹ năng nào dẫn dắt lối xây dựng của bạn.",
       "petsHeading": "Quỷ Triệu Hồi",
-      "petsNote": "Thuật Sĩ Hắc Ám triệu quỷ để chiến đấu bên cạnh họ, mỗi loài thích hợp cho một nhiệm vụ khác nhau."
+      "petsNote": "Thuật Sĩ Hắc Ám triệu quỷ để chiến đấu bên cạnh họ, mỗi loài thích hợp cho một nhiệm vụ khác nhau.",
+      "professionsTitle": "Pair with a second class",
+      "professionsNote": "Any class above can also be taken as a profession, a secondary class that opens a second talent tree without dropping your primary role. See how professions work before you pick.",
+      "professionsLink": "Professions and multiclassing"
     },
     "classHook": {
       "warrior": "Một chiến binh tuyến đầu kiên cường biến mỗi đòn hứng chịu thành nhiên liệu cho đòn kế tiếp.",
@@ -1485,6 +1489,21 @@ export const vi_VN: EnTranslations = {
       "resetNote": "Bạn có thể đặt lại tài năng bất cứ khi nào bạn ở ngoài chiến đấu, nên một lựa chọn sớm không bao giờ là cái bẫy. Cứ thử, xem bạn thích gì, và đổi ý thoải mái.",
       "specsHeading": "Chuyên môn hóa theo lớp",
       "specsBody": "Mỗi lớp nhân vật có một vài chuyên môn hóa, mỗi cái có vai trò riêng và một trọng tâm đặc trưng. Đây là hình hài của tất cả chúng. Mở một lớp để xem trọn bộ kỹ năng của nó."
+    },
+    "professionsPage": {
+      "heading": "Professions and multiclassing",
+      "intro": "A profession is a second class you train alongside your primary one, opening a second talent tree and a slice of its ability kit without leaving your first role behind.",
+      "whatHeading": "What a profession is",
+      "whatBody": "Every class can be taken as a profession by any other class. Pairing one adds a second talent tree and lets you borrow a few of its abilities, so a Warrior can dabble in the Priest's healing or a Mage pick up a Rogue's sting. Your primary class still sets your role, your resource, and your identity; the profession bends the build without replacing it.",
+      "howHeading": "How to pick one",
+      "howBody": "Professions open at level 10, the same moment your first talent tree unlocks. Visit a Profession Trainer in the hub town, open their dialog, and pick the class you want as your secondary.",
+      "costBody": "Your first pick is free. Changing to a different class later costs gold, and the fee steps up each time you swap, so an early decision is never punished while later reshuffles carry a small price.",
+      "resetTitle": "Nothing is locked in",
+      "resetNote": "You can refund points in either tree any time you are out of combat, and you can swap your secondary class at the same trainer for an escalating gold fee. An early profession pick is a first draft, not a commitment.",
+      "talentsHeading": "How talents split across the two trees",
+      "talentsBody": "A profession adds a whole second talent tree beside your primary one, but the two draw from the same pool of points. The secondary tree can hold at most half of that pool, so your primary class always stays the heart of the build. A point dropped into the secondary tree unlocks its abilities, and those abilities cast from your primary resource, not theirs: a Priest profession on a Warrior spends rage to heal, not mana.",
+      "trainersHeading": "Finding a trainer",
+      "trainersBody": "A Profession Trainer stands in the hub town near the shrine. Any single trainer can teach you any class as a profession (other than your primary), so one visit is enough to set or change your secondary."
     },
     "arenaPage": {
       "heading": "Đấu Trường và PvP",

@@ -907,6 +907,7 @@ export const ja_JP: EnTranslations = {
       "controls": "操作方法",
       "combat": "戦闘",
       "talents": "タレント",
+      "professions": "Professions",
       "arena": "アリーナとPvP",
       "glossary": "用語集",
       "wishIKnew": "知っておきたかったこと",
@@ -1184,7 +1185,10 @@ export const ja_JP: EnTranslations = {
       "fullKitHeading": "全アビリティ一覧",
       "fullKitNote": "このクラスが習得できるすべてのアビリティを、使えるようになる順に並べています。どれがビルドの軸になるかはタレントが決めます。",
       "petsHeading": "デーモン",
-      "petsNote": "ウォーロックはデーモンを召喚して共に戦わせます。それぞれ得意な役割が異なります。"
+      "petsNote": "ウォーロックはデーモンを召喚して共に戦わせます。それぞれ得意な役割が異なります。",
+      "professionsTitle": "Pair with a second class",
+      "professionsNote": "Any class above can also be taken as a profession, a secondary class that opens a second talent tree without dropping your primary role. See how professions work before you pick.",
+      "professionsLink": "Professions and multiclassing"
     },
     "classHook": {
       "warrior": "受けた一撃すべてを次の一撃の糧に変える、執拗な前線の戦士。",
@@ -1485,6 +1489,21 @@ export const ja_JP: EnTranslations = {
       "resetNote": "タレントは戦闘の外であればいつでもリセットできるので、序盤の選択が落とし穴になることはありません。いろいろ試し、好みを見つけ、自由に考えを変えましょう。",
       "specsHeading": "クラス別のスペシャライゼーション",
       "specsBody": "どのクラスにもいくつかのスペシャライゼーションがあり、それぞれに固有のロールと特徴的な軸があります。ここではそのすべての概要を示します。全アビリティはクラスを開いて確認してください。"
+    },
+    "professionsPage": {
+      "heading": "Professions and multiclassing",
+      "intro": "A profession is a second class you train alongside your primary one, opening a second talent tree and a slice of its ability kit without leaving your first role behind.",
+      "whatHeading": "What a profession is",
+      "whatBody": "Every class can be taken as a profession by any other class. Pairing one adds a second talent tree and lets you borrow a few of its abilities, so a Warrior can dabble in the Priest's healing or a Mage pick up a Rogue's sting. Your primary class still sets your role, your resource, and your identity; the profession bends the build without replacing it.",
+      "howHeading": "How to pick one",
+      "howBody": "Professions open at level 10, the same moment your first talent tree unlocks. Visit a Profession Trainer in the hub town, open their dialog, and pick the class you want as your secondary.",
+      "costBody": "Your first pick is free. Changing to a different class later costs gold, and the fee steps up each time you swap, so an early decision is never punished while later reshuffles carry a small price.",
+      "resetTitle": "Nothing is locked in",
+      "resetNote": "You can refund points in either tree any time you are out of combat, and you can swap your secondary class at the same trainer for an escalating gold fee. An early profession pick is a first draft, not a commitment.",
+      "talentsHeading": "How talents split across the two trees",
+      "talentsBody": "A profession adds a whole second talent tree beside your primary one, but the two draw from the same pool of points. The secondary tree can hold at most half of that pool, so your primary class always stays the heart of the build. A point dropped into the secondary tree unlocks its abilities, and those abilities cast from your primary resource, not theirs: a Priest profession on a Warrior spends rage to heal, not mana.",
+      "trainersHeading": "Finding a trainer",
+      "trainersBody": "A Profession Trainer stands in the hub town near the shrine. Any single trainer can teach you any class as a profession (other than your primary), so one visit is enough to set or change your secondary."
     },
     "arenaPage": {
       "heading": "アリーナとPvP",
