@@ -780,6 +780,11 @@ export class Hud {
   private compassMarks = new Map<string, HTMLElement>();
   private compassHeadingEl: HTMLElement | null = null;
   private lastCompassHeading = '';
+  // compassView is a pure function of the player facing, so an unchanged facing
+  // skips the whole rose repositioning pass (and this scratch Set avoids a
+  // per-call allocation on the frames that do reposition)
+  private lastCompassFacing = Number.NaN;
+  private compassVisibleScratch = new Set<string>();
   // Minimap zoom: a multiplier on the minimap's base pixels-per-yard. Discrete
   // presets (see minimap_zoom.ts), persisted to localStorage. 1 = shipped look.
   private minimapZoom = MINIMAP_ZOOM_DEFAULT;
@@ -2860,6 +2865,11 @@ export class Hud {
 
   attachTooltip(el: HTMLElement, html: () => string): void {
     let touchTimer: number | undefined;
+    // tooltip box size, measured once in showAt (right after the content is set)
+    // and reused by every mousemove: the content cannot change between showAt
+    // calls, so re-reading offsetWidth/Height per mousemove only forced a reflow
+    let ttW = 0;
+    let ttH = 0;
     const mobile = () => document.body.classList.contains('mobile-touch');
     const clearTouchTimer = () => {
       if (touchTimer !== undefined) window.clearTimeout(touchTimer);
@@ -2876,10 +2886,10 @@ export class Hud {
       // arrive in visual (zoomed) space, so map x/y into author space (÷ scale)
       // before clamping against the author-space tooltip box + viewport.
       const z = getUiScale();
-      const tw = this.tooltipEl.offsetWidth,
-        th = this.tooltipEl.offsetHeight;
-      this.tooltipEl.style.left = `${Math.max(8, Math.min(window.innerWidth / z - tw - 8, x / z + 14))}px`;
-      this.tooltipEl.style.top = `${Math.max(8, y / z - th - 10)}px`;
+      ttW = this.tooltipEl.offsetWidth;
+      ttH = this.tooltipEl.offsetHeight;
+      this.tooltipEl.style.left = `${Math.max(8, Math.min(window.innerWidth / z - ttW - 8, x / z + 14))}px`;
+      this.tooltipEl.style.top = `${Math.max(8, y / z - ttH - 10)}px`;
     };
     const showNearElement = () => {
       const rect = el.getBoundingClientRect();
@@ -2893,8 +2903,9 @@ export class Hud {
     el.addEventListener('mousemove', (e) => {
       if (mobile()) return;
       const z = getUiScale();
-      const tw = this.tooltipEl.offsetWidth,
-        th = this.tooltipEl.offsetHeight;
+      // reuse the box size measured in showAt: same content, no forced reflow
+      const tw = ttW,
+        th = ttH;
       this.tooltipEl.style.left = `${Math.min(window.innerWidth / z - tw - 8, e.clientX / z + 14)}px`;
       this.tooltipEl.style.top = `${Math.max(8, e.clientY / z - th - 10)}px`;
     });
@@ -4418,9 +4429,11 @@ export class Hud {
           }
         }
         const points = p.comboTargetId === target.id ? p.comboPoints : 0;
-        [...this.comboRowEl.children].forEach((pip, i) => {
-          this.toggleClass(pip as HTMLElement, 'on', i < points);
-        });
+        // indexed walk over the live collection: no per-frame array copy
+        const pips = this.comboRowEl.children;
+        for (let i = 0; i < pips.length; i++) {
+          this.toggleClass(pips[i] as HTMLElement, 'on', i < points);
+        }
       } else {
         this.setDisplay(this.comboRowEl, 'none');
       }
@@ -5431,8 +5444,12 @@ export class Hud {
 
   private updateCompass(): void {
     if (this.compassMarks.size === 0) return;
-    const view = compassView(this.sim.player.facing);
-    const visible = new Set<string>();
+    const facing = this.sim.player.facing;
+    if (facing === this.lastCompassFacing) return; // pure function of facing: nothing can have changed
+    this.lastCompassFacing = facing;
+    const view = compassView(facing);
+    const visible = this.compassVisibleScratch;
+    visible.clear();
     for (const m of view.marks) {
       const el = this.compassMarks.get(m.label);
       if (!el) continue;

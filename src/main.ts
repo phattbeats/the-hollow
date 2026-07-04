@@ -25,6 +25,7 @@ import { Input } from './game/input';
 import { InputActivityMeter, installInputActivityTracking } from './game/input_activity';
 import {
   activePvpOpponentIds,
+  HoverPickGate,
   handlePickedEntity,
   hoverCursorKind,
   isAttackableEntity,
@@ -52,6 +53,7 @@ import {
 import { sfx } from './game/sfx';
 import { mountSporeDrift } from './game/spore_drift';
 import { resolveUiEffectsProfile } from './game/ui_effects_profile';
+import { currentUtcDay } from './game/utc_day';
 import { voice } from './game/voice';
 import {
   CHAR_SORT_MODES,
@@ -136,6 +138,7 @@ import {
   t,
   tPlural,
 } from './ui/i18n';
+import { defaultIconPrewarmEntries, prewarmIconCache } from './ui/icon_prewarm';
 import { iconDataUrl } from './ui/icons';
 import { createMetricsSampler } from './ui/perf_metrics_sampler';
 import { PerfOverlay } from './ui/perf_overlay';
@@ -2095,13 +2098,22 @@ async function startGame(
     return ids;
   }
 
+  // The scene raycast is the expensive half of the hover cursor; the gate re-picks
+  // on pointer movement (instantly) or every HOVER_REPICK_MS while stationary. The
+  // cursor KIND below still re-resolves every frame from live entity state, so a
+  // hovered mob dying or turning hostile updates without waiting for a re-pick.
+  const hoverPickGate = new HoverPickGate();
+  let hoverPickedId: number | null = null;
+
   function updateHoverCursor(): void {
     if (!input.hoverActive || input.isDragging() || hud.isModalOpen()) {
       input.setHoverCursor('default');
       return;
     }
-    const id = renderer.pick(input.hoverX, input.hoverY);
-    const entity = id !== null ? world.entities.get(id) : undefined;
+    if (hoverPickGate.shouldPick(input.hoverX, input.hoverY, performance.now())) {
+      hoverPickedId = renderer.pick(input.hoverX, input.hoverY);
+    }
+    const entity = hoverPickedId !== null ? world.entities.get(hoverPickedId) : undefined;
     input.setHoverCursor(
       hoverCursorKind(entity, world.playerId, partyMemberIds(), activePvpOpponentIds(world)),
     );
@@ -2192,7 +2204,7 @@ async function startGame(
       acc += frameDt;
       // Supply the UTC day for the delve daily reset (the sim never reads the wall
       // clock itself, to stay deterministic).
-      offlineSim.utcDay = new Date().toISOString().slice(0, 10);
+      offlineSim.utcDay = currentUtcDay();
       while (acc >= DT) {
         const { mi, facing } = resolveMove(
           mouselook,
@@ -2383,6 +2395,10 @@ async function startGame(
           tokenProvider: () => api.token,
           characterIdProvider: () => online?.characterId ?? null,
         });
+        // Warm the procedural icon cache during idle time so the first
+        // bags/vendor/loot open never pays the compose burst synchronously
+        // (icon_prewarm.ts). Re-entry is a fast no-op: the cache is module-global.
+        prewarmIconCache(defaultIconPrewarmEntries());
         (window as any).__game = {
           sim: world,
           world,
