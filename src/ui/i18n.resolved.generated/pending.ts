@@ -10,6 +10,12 @@
 
 export const pending: Record<string, readonly string[]> = {
   "es": [
+    "coldOpen.begin",
+    "coldOpen.continue",
+    "coldOpen.orientBody",
+    "coldOpen.skip",
+    "coldOpen.title",
+    "coldOpen.wakeBody",
     "entities.npcs.sexton_faddick.greeting",
     "entities.npcs.sexton_faddick.name",
     "entities.npcs.sexton_faddick.title",
@@ -47,6 +53,12 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.options.showOwnNameplate"
   ],
   "es_ES": [
+    "coldOpen.begin",
+    "coldOpen.continue",
+    "coldOpen.orientBody",
+    "coldOpen.skip",
+    "coldOpen.title",
+    "coldOpen.wakeBody",
     "entities.npcs.sexton_faddick.greeting",
     "entities.npcs.sexton_faddick.name",
     "entities.npcs.sexton_faddick.title",
@@ -84,6 +96,12 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.options.showOwnNameplate"
   ],
   "fr_FR": [
+    "coldOpen.begin",
+    "coldOpen.continue",
+    "coldOpen.orientBody",
+    "coldOpen.skip",
+    "coldOpen.title",
+    "coldOpen.wakeBody",
     "entities.npcs.sexton_faddick.greeting",
     "entities.npcs.sexton_faddick.name",
     "entities.npcs.sexton_faddick.title",
@@ -121,6 +139,12 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.options.showOwnNameplate"
   ],
   "fr_CA": [
+    "coldOpen.begin",
+    "coldOpen.continue",
+    "coldOpen.orientBody",
+    "coldOpen.skip",
+    "coldOpen.title",
+    "coldOpen.wakeBody",
     "entities.npcs.sexton_faddick.greeting",
     "entities.npcs.sexton_faddick.name",
     "entities.npcs.sexton_faddick.title",
@@ -159,6 +183,12 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "en_CA": [],
   "it_IT": [
+    "coldOpen.begin",
+    "coldOpen.continue",
+    "coldOpen.orientBody",
+    "coldOpen.skip",
+    "coldOpen.title",
+    "coldOpen.wakeBody",
     "entities.npcs.sexton_faddick.greeting",
     "entities.npcs.sexton_faddick.name",
     "entities.npcs.sexton_faddick.title",
@@ -196,6 +226,12 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.options.showOwnNameplate"
   ],
   "de_DE": [
+    "coldOpen.begin",
+    "coldOpen.continue",
+    "coldOpen.orientBody",
+    "coldOpen.skip",
+    "coldOpen.title",
+    "coldOpen.wakeBody",
     "entities.npcs.sexton_faddick.greeting",
     "entities.npcs.sexton_faddick.name",
     "entities.npcs.sexton_faddick.title",
@@ -237,6 +273,12 @@ export const pending: Record<string, readonly string[]> = {
   "ko_KR": [],
   "ja_JP": [],
   "pt_BR": [
+    "coldOpen.begin",
+    "coldOpen.continue",
+    "coldOpen.orientBody",
+    "coldOpen.skip",
+    "coldOpen.title",
+    "coldOpen.wakeBody",
     "entities.npcs.sexton_faddick.greeting",
     "entities.npcs.sexton_faddick.name",
     "entities.npcs.sexton_faddick.title",
@@ -275,6 +317,12 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "ru_RU": [],
   "nl_NL": [
+    "coldOpen.begin",
+    "coldOpen.continue",
+    "coldOpen.orientBody",
+    "coldOpen.skip",
+    "coldOpen.title",
+    "coldOpen.wakeBody",
     "entities.npcs.sexton_faddick.greeting",
     "entities.npcs.sexton_faddick.name",
     "entities.npcs.sexton_faddick.title",
@@ -312,6 +360,12 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.options.showOwnNameplate"
   ],
   "pl_PL": [
+    "coldOpen.begin",
+    "coldOpen.continue",
+    "coldOpen.orientBody",
+    "coldOpen.skip",
+    "coldOpen.title",
+    "coldOpen.wakeBody",
     "entities.npcs.sexton_faddick.greeting",
     "entities.npcs.sexton_faddick.name",
     "entities.npcs.sexton_faddick.title",
@@ -349,6 +403,12 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.options.showOwnNameplate"
   ],
   "id_ID": [
+    "coldOpen.begin",
+    "coldOpen.continue",
+    "coldOpen.orientBody",
+    "coldOpen.skip",
+    "coldOpen.title",
+    "coldOpen.wakeBody",
     "entities.npcs.sexton_faddick.greeting",
     "entities.npcs.sexton_faddick.name",
     "entities.npcs.sexton_faddick.title",
@@ -386,6 +446,12 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.options.showOwnNameplate"
   ],
   "tr_TR": [
+    "coldOpen.begin",
+    "coldOpen.continue",
+    "coldOpen.orientBody",
+    "coldOpen.skip",
+    "coldOpen.title",
+    "coldOpen.wakeBody",
     "entities.npcs.sexton_faddick.greeting",
     "entities.npcs.sexton_faddick.name",
     "entities.npcs.sexton_faddick.title",
@@ -423,6 +489,12 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.options.showOwnNameplate"
   ],
   "sv_SE": [
+    "coldOpen.begin",
+    "coldOpen.continue",
+    "coldOpen.orientBody",
+    "coldOpen.skip",
+    "coldOpen.title",
+    "coldOpen.wakeBody",
     "entities.npcs.sexton_faddick.greeting",
     "entities.npcs.sexton_faddick.name",
     "entities.npcs.sexton_faddick.title",
@@ -460,6 +532,12 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.options.showOwnNameplate"
   ],
   "vi_VN": [
+    "coldOpen.begin",
+    "coldOpen.continue",
+    "coldOpen.orientBody",
+    "coldOpen.skip",
+    "coldOpen.title",
+    "coldOpen.wakeBody",
     "entities.npcs.sexton_faddick.greeting",
     "entities.npcs.sexton_faddick.name",
     "entities.npcs.sexton_faddick.title",
@@ -497,6 +575,12 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.options.showOwnNameplate"
   ],
   "da_DK": [
+    "coldOpen.begin",
+    "coldOpen.continue",
+    "coldOpen.orientBody",
+    "coldOpen.skip",
+    "coldOpen.title",
+    "coldOpen.wakeBody",
     "entities.npcs.sexton_faddick.greeting",
     "entities.npcs.sexton_faddick.name",
     "entities.npcs.sexton_faddick.title",

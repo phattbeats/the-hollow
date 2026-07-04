@@ -1704,6 +1704,14 @@ export const fr_CA: EnTranslations = {
       "home": "Retour à l'aperçu"
     }
   },
+  "coldOpen": {
+    "title": "The Hollow",
+    "wakeBody": "You come to on warm ground, no memory of your name, your people, or how you got here. Green light pools from a great vase ahead, and something about it feels like it has been waiting.",
+    "orientBody": "The shrine is quiet, and the smell of smoke lingers. Take a moment to find your footing. When you are ready, follow the green light: someone tends the flame ahead, and may know what you have lost.",
+    "continue": "Continue",
+    "begin": "Begin",
+    "skip": "Skip"
+  },
   "skinEvent": {
     "title": "Cache cosmétique",
     "subtitle": "Vous avez débloqué une récompense {rank} — choisissez n'importe quelle apparence de ce rang ou inférieur.",

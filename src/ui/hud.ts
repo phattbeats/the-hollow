@@ -136,6 +136,7 @@ import {
 import { type ChatClock, clampChatClock, formatChatTimestamp } from './chat_timestamp';
 import { type ChatBoxGeometry, clampChatBox, parseChatBox, serializeChatBox } from './chat_window';
 import { formatClockTime } from './clock';
+import { ColdOpenOverlay } from './cold_open';
 import { CombatAnnouncer } from './combat_announcer';
 import {
   shouldPlayCombatImpactForTarget,
@@ -949,6 +950,9 @@ export class Hud {
   // Shared by the confirm + input modals (one #confirm-dialog id; they never coexist).
   private confirmTrap: FocusTrapHandle | null = null;
   private meters: Meters;
+  // The one-time cold-open intro shows before the first-errand tutorial; while it
+  // is on screen it holds the tutorial coachmark back (see the update() gate).
+  private coldOpen = new ColdOpenOverlay();
   private tutorial = new TutorialOverlay();
   private lastPetBarSig = '';
   private pendingPetFeed = false;
@@ -4229,7 +4233,11 @@ export class Hud {
 
     this.meters.update();
     this.lockpickWindow.repaintIfChanged();
-    this.tutorial.update(sim, this.renderer, this.keybinds);
+    // Cold-open first: while the intro is up it returns true and the first-errand
+    // tutorial stays held back until the player dismisses it.
+    if (!this.coldOpen.update(sim)) {
+      this.tutorial.update(sim, this.renderer, this.keybinds);
+    }
     this.reconcileLootRolls();
     this.updateLootRollTimers(now);
     if (slowHud) this.updateRaidLockoutBadge();

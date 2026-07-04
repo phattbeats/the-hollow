@@ -6,6 +6,7 @@
 import { ITEM_SETS } from '../../sim/data';
 import { worldEntityText as worldNames } from '../world_entity_i18n';
 import { abilityStrings, classAbilityNames } from './abilities';
+import { coldOpenStrings } from './cold_open';
 import { gameStrings } from './game';
 import { guideStrings } from './guide';
 import { hollowEntities } from './hollow';
@@ -18,6 +19,7 @@ import { questStrings } from './quests';
 import { shellStrings } from './shell';
 
 export { abilityStrings, classAbilityNames } from './abilities';
+export { coldOpenStrings } from './cold_open';
 export {
   gameStrings,
   gameStringsDeDE,
@@ -78,6 +80,8 @@ export const en = {
   game: gameStrings,
   hudChrome: hudChromeStrings,
   guide: guideStrings,
+  // One-time cold-open intro (cold_open.ts). Own domain, not hud.*, per PHAA-431.
+  coldOpen: coldOpenStrings,
   // Cosmetic skin-select event overlay. Rarity names reuse itemUi.quality.*.
   skinEvent: {
     title: 'Cosmetic Cache',

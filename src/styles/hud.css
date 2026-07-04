@@ -370,6 +370,115 @@
     }
   }
 
+  /* ---------- cold-open intro ---------- */
+  .cold-open-backdrop {
+    position: absolute;
+    inset: 0;
+    /* Cosmetic vignette only: pointer-events stay off so the intro never traps
+       world input (presentation-only, dismissed via the card buttons). */
+    pointer-events: none;
+    background: radial-gradient(120% 90% at 50% 45%, #0000 30%, #000a 100%);
+    z-index: 23;
+    animation: cold-open-fade 420ms ease-out;
+  }
+  .cold-open {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 460px;
+    box-sizing: border-box;
+    pointer-events: auto;
+    background: var(--panel-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow:
+      0 10px 34px #000c,
+      inset 0 0 0 1px #ffffff10;
+    padding: 22px 24px 18px;
+    color: #e8e2d0;
+    text-align: center;
+    z-index: 24;
+    animation: cold-open-rise 520ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .cold-open-title {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    color: var(--gold);
+    text-shadow: 0 1px 3px #000;
+  }
+  .cold-open-body {
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #d8d0bc;
+  }
+  .cold-open-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+  }
+  .cold-open-skip,
+  .cold-open-advance {
+    min-height: 40px;
+    padding: 0 18px;
+    flex: 1;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    transition:
+      background 120ms,
+      color 120ms;
+  }
+  .cold-open-skip {
+    background: #1c1b14;
+    color: #cfc6ab;
+    flex: 0 0 auto;
+  }
+  .cold-open-advance {
+    background: #2a2718;
+    color: #f0e9d2;
+  }
+  .cold-open-skip:hover {
+    background: #2a2718;
+    color: #f0e9d2;
+  }
+  .cold-open-advance:hover {
+    background: #3a361f;
+  }
+  .cold-open-skip:focus-visible,
+  .cold-open-advance:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+  }
+  @keyframes cold-open-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes cold-open-rise {
+    from {
+      transform: translate(-50%, -46%);
+      opacity: 0;
+    }
+    to {
+      transform: translate(-50%, -50%);
+      opacity: 1;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cold-open-backdrop,
+    .cold-open {
+      animation: none;
+    }
+  }
+
   /* ---------- unit frames ---------- */
   .unitframe {
     position: absolute;

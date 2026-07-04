@@ -4976,4 +4976,12 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'housingUi.decor.crate': '상자',
   'housingUi.decor.bench': '벤치',
   'housingUi.decor.stool': '스툴',
+  'coldOpen.title': '공동',
+  'coldOpen.wakeBody':
+    '당신은 따뜻한 땅 위에서 깨어난다. 자신의 이름도, 일족도, 어떻게 이곳에 왔는지도 기억나지 않는다. 앞쪽의 커다란 항아리에서 초록빛이 배어 나오고, 그 빛은 마치 줄곧 당신을 기다려 온 것만 같다.',
+  'coldOpen.orientBody':
+    '사당은 고요하고, 연기 냄새가 은은히 남아 있다. 잠시 숨을 고르며 발밑을 살펴보라. 준비가 되면 초록빛을 따라 나아가라. 저 앞에서 누군가 불꽃을 지키고 있으니, 당신이 잃어버린 것을 알고 있을지도 모른다.',
+  'coldOpen.continue': '계속',
+  'coldOpen.begin': '시작',
+  'coldOpen.skip': '건너뛰기',
 };
