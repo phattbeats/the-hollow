@@ -71,6 +71,7 @@ import type {
   InvSlot,
   LootRollChoice,
   MasterLootThreshold,
+  NpcDef,
   PetMode,
   PlayerClass,
   ResourceType,
@@ -219,6 +220,7 @@ import {
   minimapZoomValue,
   nextMinimapZoom,
 } from './minimap_zoom';
+import { npcIntroAdvance, npcIntroPageAt } from './npc_intro_view';
 import { OptionsWindow } from './options_window';
 import { makeWriterFacet, type PainterHostPresentation } from './painter_host';
 import { partyFrameSignature, selectPartyFrameMembers } from './party_frames';
@@ -7504,7 +7506,58 @@ export class Hud {
     // navigating back from a quest detail or after accept/turn-in, where a
     // re-greeting would be noise.
     voice.play(`greeting__${npc.templateId}`);
+    // First meeting an NPC with intro lines pages through them once, in-voice,
+    // before the gossip/quest hook (PHAA-432). Presentation-only: the shown-once
+    // gate is client-side (localStorage), so it never touches sim state and runs
+    // identically against the offline Sim and the online ClientWorld.
+    const def = NPCS[npc.templateId];
+    if (def?.introLines && def.introLines.length > 0 && !hasSeenNpcIntro(def.id)) {
+      this.renderNpcIntro(npc, def, 0);
+      return;
+    }
     this.renderGossip(npc);
+  }
+
+  // Render one page of an NPC's first-meeting intro sequence into the quest
+  // dialog. Advancing past the last line marks the intro seen and opens the
+  // normal gossip menu. The line ordering lives in the pure npc_intro_view core;
+  // this method is the thin DOM consumer.
+  private renderNpcIntro(npc: Entity, def: NpcDef, index: number): void {
+    const lines = def.introLines ?? [];
+    const page = npcIntroPageAt(index, lines.length);
+    if (!page) {
+      markNpcIntroSeen(def.id);
+      this.renderGossip(npc);
+      return;
+    }
+    // Hold the gossip window's ownership so [X]/Escape close cleanly mid-intro.
+    this.openGossipNpcId = npc.id;
+    this.openQuestDetailId = null;
+    const el = $('#quest-dialog');
+    markDialogRoot(el, { labelledBy: 'quest-dialog-title' });
+    const npcName = npcDisplayName(npc.templateId);
+    const npcTitle = npcDisplayTitle(def.id);
+    let html = `<div class="panel-title"><span id="quest-dialog-title">${esc(npcName)}<span class="quest-muted"> &lt;${esc(npcTitle)}&gt;</span></span><button type="button" class="x-btn" data-close aria-label="${esc(t('questUi.dialog.close'))}">${svgIcon('close')}</button></div>`;
+    html += `<div class="qd-text">"${esc(npcIntroLine(def.id, index))}"</div>`;
+    el.innerHTML = html;
+    const btn = document.createElement('button');
+    btn.className = 'btn';
+    btn.type = 'button';
+    // "Continue" on every line: the final one continues into the gossip menu.
+    btn.textContent = t('questUi.dialog.continue');
+    btn.addEventListener('click', () => {
+      const next = npcIntroAdvance(index, lines.length);
+      if (next === null) {
+        markNpcIntroSeen(def.id);
+        this.renderGossip(npc);
+      } else {
+        this.renderNpcIntro(npc, def, next);
+      }
+    });
+    el.appendChild(btn);
+    el.querySelector('[data-close]')?.addEventListener('click', () => this.closeQuestDialog());
+    el.style.display = 'block';
+    this.questDialogTrap?.focusFirst();
   }
 
   private renderGossip(npc: Entity): void {
@@ -10706,6 +10759,32 @@ function npcGreeting(npcId: string, playerClass: PlayerClass, playerName: string
     field: 'greeting',
     values: { className, classNameLower: className.toLocaleLowerCase(), playerName },
   });
+}
+
+function npcIntroLine(npcId: string, lineIndex: number): string {
+  return tEntity({ kind: 'npcIntro', id: npcId, lineIndex, field: 'introLine' });
+}
+
+// Client-side shown-once gate for an NPC's first-meeting intro lines. Purely
+// presentation (skipping flavor text), so it lives outside the sim and never
+// affects gameplay, determinism, or parity. Guarded against private-mode /
+// missing localStorage, matching cold_open.ts and tutorial.ts.
+function npcIntroStorageKey(npcId: string): string {
+  return `hollow.npcintro.${npcId}.v1`;
+}
+function hasSeenNpcIntro(npcId: string): boolean {
+  try {
+    return localStorage.getItem(npcIntroStorageKey(npcId)) === 'seen';
+  } catch {
+    return false;
+  }
+}
+function markNpcIntroSeen(npcId: string): void {
+  try {
+    localStorage.setItem(npcIntroStorageKey(npcId), 'seen');
+  } catch {
+    /* private mode */
+  }
 }
 
 function questTitle(questId: string): string {

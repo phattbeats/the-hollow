@@ -5753,7 +5753,12 @@ export const id_ID: EnTranslations = {
       "brother_greenpaw": {
         "name": "Bruder Cakarhijau",
         "title": "Nabi Pertama (mengangkat diri sendiri)",
-        "greeting": "halo, pengembara. guci itu lagi bagus suasana hatinya hari ini, atau cuma perasaanku lagi... mari, ada dua tiga urusan suci yang mesti diurus. kebanyakan sih camilan. sama saja, kalau diukur dari kadar kepatuan hijau."
+        "greeting": "halo, pengembara. guci itu lagi bagus suasana hatinya hari ini, atau cuma perasaanku lagi... mari, ada dua tiga urusan suci yang mesti diurus. kebanyakan sih camilan. sama saja, kalau diukur dari kadar kepatuan hijau.",
+        "introLines": {
+          "0": "uhh... hi. hi. didn't hear you come up, i was someplace else, someplace green... you got the just-woke-up look, friend. i know it well, i wear it most days...",
+          "1": "name's greenpaw. brother greenpaw, first prophet, self-appointed, which the vase'll tell you means exactly nothin', and he's not wrong, but somebody's gotta tend him...",
+          "2": "this here's the hollow. was a whole tribe once, big doings, so they tell me, and now it's mostly me, the vase, and whatever's breathin' down in that cave... anyway. he's hungry, i'm hungry, same wavelength. c'mere, got a couple sacred matters need tendin'."
+        }
       },
       "verger_zebediah": {
         "name": "Verger Zebediah",

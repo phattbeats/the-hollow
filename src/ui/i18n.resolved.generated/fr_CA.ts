@@ -5753,7 +5753,12 @@ export const fr_CA: EnTranslations = {
       "brother_greenpaw": {
         "name": "Frère Pattevert",
         "title": "Premier Prophète (autoproclamé)",
-        "greeting": "hé, voyageur. le vase est de bonne humeur aujourd'hui, ou c'est encore rien que moi... viens donc, j'ai deux ou trois affaires sacrées à régler. surtout des grignotages. c'est pareil, à un degré près, façon Pattevert."
+        "greeting": "hé, voyageur. le vase est de bonne humeur aujourd'hui, ou c'est encore rien que moi... viens donc, j'ai deux ou trois affaires sacrées à régler. surtout des grignotages. c'est pareil, à un degré près, façon Pattevert.",
+        "introLines": {
+          "0": "uhh... hi. hi. didn't hear you come up, i was someplace else, someplace green... you got the just-woke-up look, friend. i know it well, i wear it most days...",
+          "1": "name's greenpaw. brother greenpaw, first prophet, self-appointed, which the vase'll tell you means exactly nothin', and he's not wrong, but somebody's gotta tend him...",
+          "2": "this here's the hollow. was a whole tribe once, big doings, so they tell me, and now it's mostly me, the vase, and whatever's breathin' down in that cave... anyway. he's hungry, i'm hungry, same wavelength. c'mere, got a couple sacred matters need tendin'."
+        }
       },
       "verger_zebediah": {
         "name": "Verger Zebediah",
