@@ -7,6 +7,7 @@
 import { describe, expect, it } from 'vitest';
 import { abilitiesKnownAt, CLASSES } from '../src/sim/content/classes';
 import { Sim } from '../src/sim/sim';
+import { clearFiestaAugments, fiestaRestoreChar } from '../src/sim/social/fiesta';
 
 function makeWorld() {
   return new Sim({ seed: 7, playerClass: 'warrior', noPlayer: true });
@@ -104,5 +105,31 @@ describe('secondaryCls persistence (PlayerMeta / CharacterState)', () => {
     expect(sim.secondaryCls).toBeNull();
     sim.meta(pid)!.secondaryCls = 'mage';
     expect(sim.secondaryCls).toBe('mage');
+  });
+});
+
+describe('secondaryCls survives Ashen Coliseum 2v2 Fiesta rebuilds', () => {
+  it('clearFiestaAugments keeps the secondary kit in meta.known', () => {
+    const sim = makeWorld();
+    const pid = sim.addPlayer('warrior', 'Fiestagoer');
+    sim.setPlayerLevel(30, pid);
+    const meta = sim.meta(pid)!;
+    meta.secondaryCls = 'druid';
+    meta.fiestaAugments = ['dummy_augment']; // any non-empty value so the early return is skipped
+    const e = sim.entities.get(meta.entityId)!;
+    clearFiestaAugments(meta, e);
+    expect(meta.known.map((k) => k.def.id)).toContain('bear_form');
+  });
+
+  it('fiestaRestoreChar keeps the secondary kit in meta.known after a bout ends', () => {
+    const sim = makeWorld();
+    const pid = sim.addPlayer('warrior', 'Fiestagoer2');
+    sim.setPlayerLevel(30, pid);
+    const meta = sim.meta(pid)!;
+    meta.secondaryCls = 'druid';
+    meta.fiestaRestore = { level: 30, xp: meta.xp, talents: meta.talents };
+    const e = sim.entities.get(meta.entityId)!;
+    fiestaRestoreChar(meta, e);
+    expect(meta.known.map((k) => k.def.id)).toContain('bear_form');
   });
 });
