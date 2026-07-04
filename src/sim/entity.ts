@@ -150,6 +150,19 @@ function manaFromIntellect(int: number): number {
   return Math.min(i, 20) + Math.max(0, i - 20) * 15;
 }
 
+// Stat-neutral resource ceiling for a class at a level: the same baseMana/
+// manaPerLevel curve recalcPlayerStats uses, but WITHOUT the live player's
+// intellect term (rage/energy always cap at 100). Used to translate a
+// secondary-kit ability's cost onto the player's own live pool (multiclass
+// resource translation, PHAA-467): the fraction of the secondary class's bar
+// an ability costs must stay the same regardless of the primary class's
+// stats, so this deliberately ignores the caster's actual Intellect.
+export function nativeMaxResource(cls: PlayerClass, level: number): number {
+  const def = CLASSES[cls];
+  if (def.resourceType !== 'mana') return 100;
+  return def.baseMana + def.manaPerLevel * (level - 1);
+}
+
 // Recompute all derived stats for the player from class, level, gear, buffs, and
 // precomputed talent modifiers. `mods` is the flat struct resolved at
 // allocation/respec time (computeTalentModifiers) — this never walks the tree.

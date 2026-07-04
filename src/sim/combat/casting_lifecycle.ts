@@ -53,7 +53,7 @@ import { isSpellResisted } from './spell_resist';
 // for the shared-cooldown predicate. Moved with the casting slice (only callers).
 const SHAMAN_SHOCK_COOLDOWN_IDS = ['earth_shock', 'flame_shock', 'frost_shock'] as const;
 
-function isFormToggle(ability: AbilityDef): boolean {
+export function isFormToggle(ability: AbilityDef): boolean {
   return ability.effects.some(
     (e) =>
       e.type === 'selfBuff' &&
