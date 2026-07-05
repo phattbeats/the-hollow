@@ -907,6 +907,7 @@ export const ru_RU: EnTranslations = {
       "controls": "Управление",
       "combat": "Бой",
       "talents": "Таланты",
+      "professions": "Professions",
       "arena": "Арена и PvP",
       "glossary": "Глоссарий",
       "wishIKnew": "Что бы я хотел знать заранее",
@@ -1184,7 +1185,10 @@ export const ru_RU: EnTranslations = {
       "fullKitHeading": "Полный набор",
       "fullKitNote": "Все способности, которые может выучить этот класс, в порядке их появления. Таланты решают, какие из них станут основой вашей сборки.",
       "petsHeading": "Демоны",
-      "petsNote": "Чернокнижники призывают демонов сражаться рядом с собой, каждый из которых подходит для своей задачи."
+      "petsNote": "Чернокнижники призывают демонов сражаться рядом с собой, каждый из которых подходит для своей задачи.",
+      "professionsTitle": "Pair with a second class",
+      "professionsNote": "Any class above can also be taken as a profession, a secondary class that opens a second talent tree without dropping your primary role. See how professions work before you pick.",
+      "professionsLink": "Professions and multiclassing"
     },
     "classHook": {
       "warrior": "Неумолимый боец передовой, что обращает каждый принятый удар в топливо для следующего.",
@@ -1485,6 +1489,21 @@ export const ru_RU: EnTranslations = {
       "resetNote": "Вы можете сбросить таланты в любой момент вне боя, так что ранний выбор никогда не становится ловушкой. Пробуйте, смотрите, что вам нравится, и свободно меняйте решение.",
       "specsHeading": "Специализации по классам",
       "specsBody": "У каждого класса есть несколько специализаций, у каждой своя роль и характерный упор. Здесь дан общий вид всех. Откройте класс, чтобы увидеть его полный набор."
+    },
+    "professionsPage": {
+      "heading": "Professions and multiclassing",
+      "intro": "A profession is a second class you train alongside your primary one, opening a second talent tree and a slice of its ability kit without leaving your first role behind.",
+      "whatHeading": "What a profession is",
+      "whatBody": "Every class can be taken as a profession by any other class. Pairing one adds a second talent tree and lets you borrow a few of its abilities, so a Warrior can dabble in the Priest's healing or a Mage pick up a Rogue's sting. Your primary class still sets your role, your resource, and your identity; the profession bends the build without replacing it.",
+      "howHeading": "How to pick one",
+      "howBody": "Professions open at level 10, the same moment your first talent tree unlocks. Visit a Profession Trainer in the hub town, open their dialog, and pick the class you want as your secondary.",
+      "costBody": "Your first pick is free. Changing to a different class later costs gold, and the fee steps up each time you swap, so an early decision is never punished while later reshuffles carry a small price.",
+      "resetTitle": "Nothing is locked in",
+      "resetNote": "You can refund points in either tree any time you are out of combat, and you can swap your secondary class at the same trainer for an escalating gold fee. An early profession pick is a first draft, not a commitment.",
+      "talentsHeading": "How talents split across the two trees",
+      "talentsBody": "A profession adds a whole second talent tree beside your primary one, but the two draw from the same pool of points. The secondary tree can hold at most half of that pool, so your primary class always stays the heart of the build. A point dropped into the secondary tree unlocks its abilities, and those abilities cast from your primary resource, not theirs: a Priest profession on a Warrior spends rage to heal, not mana.",
+      "trainersHeading": "Finding a trainer",
+      "trainersBody": "A Profession Trainer stands in the hub town near the shrine. Any single trainer can teach you any class as a profession (other than your primary), so one visit is enough to set or change your secondary."
     },
     "arenaPage": {
       "heading": "Арена и PvP",

@@ -171,6 +171,11 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://thehollow.world/wiki/reference/professions</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://thehollow.world/wiki/reference/glossary</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

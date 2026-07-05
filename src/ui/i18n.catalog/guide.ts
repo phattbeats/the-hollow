@@ -41,6 +41,7 @@ export const guideStrings = {
     controls: 'Controls',
     combat: 'Combat',
     talents: 'Talents',
+    professions: 'Professions',
     arena: 'Arena & PvP',
     glossary: 'Glossary',
     wishIKnew: 'Things I Wish I Knew',
@@ -407,6 +408,10 @@ export const guideStrings = {
       'Every ability this class can learn, in the order it comes online. Talents decide which ones carry your build.',
     petsHeading: 'Demons',
     petsNote: 'Warlocks summon demons to fight beside them, each suited to a different job.',
+    professionsTitle: 'Pair with a second class',
+    professionsNote:
+      'Any class above can also be taken as a profession, a secondary class that opens a second talent tree without dropping your primary role. See how professions work before you pick.',
+    professionsLink: 'Professions and multiclassing',
   },
   // Deprecated: short fantasy hooks. The class index and class page now use the canonical
   // character-creation description (classDetails.lore.*) so there is a single source of
@@ -838,6 +843,35 @@ export const guideStrings = {
     specsHeading: 'Specializations by class',
     specsBody:
       'Every class has a handful of specializations, each with its own role and a signature focus. Here is the shape of all of them. Open a class for its full kit.',
+  },
+
+  // The multiclass / secondary-profession system (GW1 build, Phase 3, PHAA-466).
+  // Spoiler-safe: names only the level the gate opens, the shared-pool half cap, the
+  // escalating respec gold cost tiers, and that the trainer NPC lives in the hub town.
+  // No balance numbers, no exact copper amounts, no tree names. Mirrors the in-game
+  // "How do secondary professions work?" copy in questUi.dialog.trainerHowBody so the
+  // guide and the trainer panel say the same thing.
+  professionsPage: {
+    heading: 'Professions and multiclassing',
+    intro:
+      'A profession is a second class you train alongside your primary one, opening a second talent tree and a slice of its ability kit without leaving your first role behind.',
+    whatHeading: 'What a profession is',
+    whatBody:
+      "Every class can be taken as a profession by any other class. Pairing one adds a second talent tree and lets you borrow a few of its abilities, so a Warrior can dabble in the Priest's healing or a Mage pick up a Rogue's sting. Your primary class still sets your role, your resource, and your identity; the profession bends the build without replacing it.",
+    howHeading: 'How to pick one',
+    howBody:
+      'Professions open at level 10, the same moment your first talent tree unlocks. Visit a Profession Trainer in the hub town, open their dialog, and pick the class you want as your secondary.',
+    costBody:
+      'Your first pick is free. Changing to a different class later costs gold, and the fee steps up each time you swap, so an early decision is never punished while later reshuffles carry a small price.',
+    resetTitle: 'Nothing is locked in',
+    resetNote:
+      'You can refund points in either tree any time you are out of combat, and you can swap your secondary class at the same trainer for an escalating gold fee. An early profession pick is a first draft, not a commitment.',
+    talentsHeading: 'How talents split across the two trees',
+    talentsBody:
+      'A profession adds a whole second talent tree beside your primary one, but the two draw from the same pool of points. The secondary tree can hold at most half of that pool, so your primary class always stays the heart of the build. A point dropped into the secondary tree unlocks its abilities, and those abilities cast from your primary resource, not theirs: a Priest profession on a Warrior spends rage to heal, not mana.',
+    trainersHeading: 'Finding a trainer',
+    trainersBody:
+      'A Profession Trainer stands in the hub town near the shrine. Any single trainer can teach you any class as a profession (other than your primary), so one visit is enough to set or change your secondary.',
   },
 
   // Arena and PvP.
