@@ -736,6 +736,19 @@ export const pl_PL: EnTranslations = {
       "mob": "[{level}] {name}",
       "mobElite": "[{level}+] {name}"
     },
+    "mobTooltip": {
+      "levelFamily": "Level {level} {family}",
+      "familyDemon": "Demon",
+      "hostile": "Hostile",
+      "friendly": "Friendly"
+    },
+    "targetFrame": {
+      "unlock": "Move target frame",
+      "lock": "Lock target frame"
+    },
+    "itemTooltip": {
+      "requiresLevel": "Requires Level {level}"
+    },
     "discord": {
       "title": "Discord",
       "panelTitle": "World of ClaudeCraft",
@@ -3392,7 +3405,9 @@ export const pl_PL: EnTranslations = {
   "questUi": {
     "tracker": {
       "title": "Zadania",
-      "complete": "Gotowe"
+      "complete": "Gotowe",
+      "showOnMap": "Show {name} on the map",
+      "hideFromMap": "Hide {name} from the map"
     },
     "log": {
       "title": "Dziennik zadań",

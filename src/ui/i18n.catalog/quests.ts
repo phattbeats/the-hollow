@@ -7,6 +7,8 @@ const questStringsEn = {
     tracker: {
       title: 'Quests',
       complete: 'Complete',
+      showOnMap: 'Show {name} on the map',
+      hideFromMap: 'Hide {name} from the map',
     },
     log: {
       title: 'Quest Log',
@@ -98,6 +100,8 @@ export const questStrings = {
       tracker: {
         title: 'Misiones',
         complete: 'Completada',
+        showOnMap: 'Mostrar {name} en el mapa',
+        hideFromMap: 'Ocultar {name} del mapa',
       },
       log: {
         title: 'Diario de misiones',
@@ -187,6 +191,8 @@ export const questStrings = {
       tracker: {
         title: 'Quêtes',
         complete: 'Terminée',
+        showOnMap: 'Afficher {name} sur la carte',
+        hideFromMap: 'Masquer {name} sur la carte',
       },
       log: {
         title: 'Journal de quêtes',
@@ -277,6 +283,8 @@ export const questStrings = {
       tracker: {
         title: 'Missioni',
         complete: 'Completata',
+        showOnMap: 'Mostra {name} sulla mappa',
+        hideFromMap: 'Nascondi {name} dalla mappa',
       },
       log: {
         title: 'Registro missioni',
@@ -365,6 +373,8 @@ export const questStrings = {
       tracker: {
         title: 'Quests',
         complete: 'Abgeschlossen',
+        showOnMap: '{name} auf der Karte anzeigen',
+        hideFromMap: '{name} auf der Karte ausblenden',
       },
       log: {
         title: 'Questlog',
@@ -453,6 +463,8 @@ export const questStrings = {
       tracker: {
         title: '任务',
         complete: '完成',
+        showOnMap: '在地图上显示{name}',
+        hideFromMap: '在地图上隐藏{name}',
       },
       log: {
         title: '任务日志',
@@ -541,6 +553,8 @@ export const questStrings = {
       tracker: {
         title: '任務',
         complete: '完成',
+        showOnMap: '在地圖上顯示{name}',
+        hideFromMap: '在地圖上隱藏{name}',
       },
       log: {
         title: '任務日誌',
@@ -629,6 +643,8 @@ export const questStrings = {
       tracker: {
         title: '퀘스트',
         complete: '완료',
+        showOnMap: '{name} 지도에 표시',
+        hideFromMap: '{name} 지도에서 숨기기',
       },
       log: {
         title: '퀘스트 기록',
@@ -717,6 +733,8 @@ export const questStrings = {
       tracker: {
         title: 'クエスト',
         complete: '完了',
+        showOnMap: '{name}をマップに表示',
+        hideFromMap: '{name}をマップから隠す',
       },
       log: {
         title: 'クエストログ',
@@ -805,6 +823,8 @@ export const questStrings = {
       tracker: {
         title: 'Missões',
         complete: 'Concluída',
+        showOnMap: 'Mostrar {name} no mapa',
+        hideFromMap: 'Ocultar {name} do mapa',
       },
       log: {
         title: 'Registro de missões',
@@ -893,6 +913,8 @@ export const questStrings = {
       tracker: {
         title: 'Задания',
         complete: 'Готово',
+        showOnMap: 'Показать {name} на карте',
+        hideFromMap: 'Скрыть {name} с карты',
       },
       log: {
         title: 'Журнал заданий',

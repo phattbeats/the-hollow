@@ -736,6 +736,19 @@ export const en_XA: EnTranslations = {
       "mob": "[[{level}] {name}]",
       "mobElite": "[[{level}+] {name}]"
     },
+    "mobTooltip": {
+      "levelFamily": "[Ļéʋéļ {level} {family}]",
+      "familyDemon": "[Ðéɱóñ]",
+      "hostile": "[Ĥóšţíļé]",
+      "friendly": "[Ƒŕíéñðļý]"
+    },
+    "targetFrame": {
+      "unlock": "[Ɱóʋé ţáŕĝéţ ƒŕáɱé]",
+      "lock": "[Ļóçķ ţáŕĝéţ ƒŕáɱé]"
+    },
+    "itemTooltip": {
+      "requiresLevel": "[Ŕéɋúíŕéš Ļéʋéļ {level}]"
+    },
     "discord": {
       "title": "[Ðíšçóŕð]",
       "panelTitle": "[Ţĥé Ĥóļļóŵ]",
@@ -3392,7 +3405,9 @@ export const en_XA: EnTranslations = {
   "questUi": {
     "tracker": {
       "title": "[Ɋúéšţš]",
-      "complete": "[Çóɱþļéţé]"
+      "complete": "[Çóɱþļéţé]",
+      "showOnMap": "[Šĥóŵ {name} óñ ţĥé ɱáþ]",
+      "hideFromMap": "[Ĥíðé {name} ƒŕóɱ ţĥé ɱáþ]"
     },
     "log": {
       "title": "[Ɋúéšţ Ļóĝ]",

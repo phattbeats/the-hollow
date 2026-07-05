@@ -736,6 +736,19 @@ export const ko_KR: EnTranslations = {
       "mob": "[{level}] {name}",
       "mobElite": "[{level}+] {name}"
     },
+    "mobTooltip": {
+      "levelFamily": "{level}레벨 {family}",
+      "familyDemon": "악마",
+      "hostile": "적대",
+      "friendly": "아군"
+    },
+    "targetFrame": {
+      "unlock": "대상 프레임 이동",
+      "lock": "대상 프레임 고정"
+    },
+    "itemTooltip": {
+      "requiresLevel": "Requires Level {level}"
+    },
     "discord": {
       "title": "Discord",
       "panelTitle": "World of ClaudeCraft",
@@ -3392,7 +3405,9 @@ export const ko_KR: EnTranslations = {
   "questUi": {
     "tracker": {
       "title": "퀘스트",
-      "complete": "완료"
+      "complete": "완료",
+      "showOnMap": "{name} 지도에 표시",
+      "hideFromMap": "{name} 지도에서 숨기기"
     },
     "log": {
       "title": "퀘스트 기록",

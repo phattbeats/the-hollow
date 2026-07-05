@@ -736,6 +736,19 @@ export const tr_TR: EnTranslations = {
       "mob": "[{level}] {name}",
       "mobElite": "[{level}+] {name}"
     },
+    "mobTooltip": {
+      "levelFamily": "Level {level} {family}",
+      "familyDemon": "Demon",
+      "hostile": "Hostile",
+      "friendly": "Friendly"
+    },
+    "targetFrame": {
+      "unlock": "Move target frame",
+      "lock": "Lock target frame"
+    },
+    "itemTooltip": {
+      "requiresLevel": "Requires Level {level}"
+    },
     "discord": {
       "title": "Discord",
       "panelTitle": "World of ClaudeCraft",
@@ -3392,7 +3405,9 @@ export const tr_TR: EnTranslations = {
   "questUi": {
     "tracker": {
       "title": "Görevler",
-      "complete": "Tamamlandı"
+      "complete": "Tamamlandı",
+      "showOnMap": "Show {name} on the map",
+      "hideFromMap": "Hide {name} from the map"
     },
     "log": {
       "title": "Görev Kaydı",

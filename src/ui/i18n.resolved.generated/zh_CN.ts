@@ -736,6 +736,19 @@ export const zh_CN: EnTranslations = {
       "mob": "[{level}] {name}",
       "mobElite": "[{level}+] {name}"
     },
+    "mobTooltip": {
+      "levelFamily": "等级 {level} {family}",
+      "familyDemon": "恶魔",
+      "hostile": "敌对",
+      "friendly": "友方"
+    },
+    "targetFrame": {
+      "unlock": "移动目标框",
+      "lock": "锁定目标框"
+    },
+    "itemTooltip": {
+      "requiresLevel": "Requires Level {level}"
+    },
     "discord": {
       "title": "Discord",
       "panelTitle": "World of ClaudeCraft",
@@ -3392,7 +3405,9 @@ export const zh_CN: EnTranslations = {
   "questUi": {
     "tracker": {
       "title": "任务",
-      "complete": "完成"
+      "complete": "完成",
+      "showOnMap": "在地图上显示{name}",
+      "hideFromMap": "在地图上隐藏{name}"
     },
     "log": {
       "title": "任务日志",
