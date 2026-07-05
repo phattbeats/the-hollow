@@ -143,7 +143,9 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-<link rel="preload" as="image" href="/loading-screen.jpg" />
+<!-- The loading screen renders its own abstract backdrop (gradient + drifting motes),
+     not the previously-preloaded /loading-screen.jpg, which is still served for the
+     static marketing pages (server-unavailable, privacy, etc.). -->
 <link rel="preload" as="image" href="./ui/cursors/gauntlet.png" />
 <link rel="preload" as="image" href="./ui/cursors/arrow.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1110,6 +1112,21 @@
   </div>
 
   <div id="loading-screen">
+    <div class="ls-backdrop" aria-hidden="true">
+      <div class="ls-bloom"></div>
+      <div class="ls-motes">
+        <span class="ls-mote"></span><span class="ls-mote"></span><span class="ls-mote"></span>
+        <span class="ls-mote"></span><span class="ls-mote"></span><span class="ls-mote"></span>
+        <span class="ls-mote"></span><span class="ls-mote"></span><span class="ls-mote"></span>
+        <span class="ls-mote"></span><span class="ls-mote"></span><span class="ls-mote"></span>
+        <span class="ls-mote"></span><span class="ls-mote"></span><span class="ls-mote"></span>
+        <span class="ls-mote"></span><span class="ls-mote"></span><span class="ls-mote"></span>
+        <span class="ls-mote"></span><span class="ls-mote"></span><span class="ls-mote"></span>
+        <span class="ls-mote"></span><span class="ls-mote"></span><span class="ls-mote"></span>
+        <span class="ls-mote"></span><span class="ls-mote"></span><span class="ls-mote"></span>
+        <span class="ls-mote"></span><span class="ls-mote"></span><span class="ls-mote"></span>
+      </div>
+    </div>
     <img class="ls-logo" src="/the-hollow-logo.png" data-i18n-alt="serverUnavailable.logoAlt" alt="The Hollow" />
     <div class="ls-progress">
       <div class="ls-bar"><div id="ls-fill"></div></div>

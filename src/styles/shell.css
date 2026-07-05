@@ -1762,18 +1762,34 @@
   }
 
   /* ---------- loading screen (entering the world) ---------- */
+  /* Minimalist abstract backdrop for the world-entry loading screen.
+     A layered radial gradient in warm root-and-soil tones (deep moss edges,
+     a soft amber bloom in the middle) sits behind a sparse field of slow
+     drifting motes (CSS-only, GPU-cheap). The motes and the bloom drift on
+     independent loops; motion drops out under prefers-reduced-motion. The
+     previous /loading-screen.jpg background (a low-poly fantasy cast) is
+     intentionally gone; that file is still served for static marketing pages
+     (server-unavailable, privacy, etc.) but it is no longer the loading art. */
   #loading-screen {
     position: absolute;
     inset: 0;
     z-index: 150;
     display: none;
-    background: #0a0d14 url("/loading-screen.jpg") center / cover no-repeat;
+    overflow: hidden;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
     padding: 6vh 0 7vh;
     opacity: 1;
     transition: opacity 0.35s ease;
+    /* Layered gradient: dark moss vignette, warm amber bloom, faint warm
+       wash on top. Built from CSS so it scales to any screen without
+       bitmap artifacts. */
+    background-color: #0c1410;
+    background-image:
+      radial-gradient(120% 90% at 50% 38%, rgba(232, 168, 76, 0.18) 0%, rgba(232, 168, 76, 0) 55%),
+      radial-gradient(140% 100% at 50% 110%, rgba(20, 38, 28, 0.85) 0%, rgba(20, 38, 28, 0) 60%),
+      linear-gradient(180deg, #0a120d 0%, #0f1a14 50%, #0a120d 100%);
   }
   #loading-screen.visible {
     display: flex;
@@ -1781,10 +1797,112 @@
   #loading-screen.fade {
     opacity: 0;
   }
+  /* The backdrop layer is absolutely positioned behind the logo + progress.
+     It owns the slow bloom drift animation. */
+  #loading-screen .ls-backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  /* A second, slower bloom layer gives the impression of light breathing
+     through a canopy. Two stacked radial gradients drift on independent
+     cycles; the result is a gentle, non-mechanical shimmer. */
+  #loading-screen .ls-bloom {
+    position: absolute;
+    inset: -10%;
+    background:
+      radial-gradient(35% 28% at 30% 32%, rgba(232, 200, 120, 0.22), transparent 70%),
+      radial-gradient(30% 24% at 70% 60%, rgba(180, 210, 160, 0.14), transparent 72%),
+      radial-gradient(45% 32% at 50% 50%, rgba(255, 209, 100, 0.10), transparent 75%);
+    filter: blur(2px);
+    animation: ls-bloom-drift 24s ease-in-out infinite alternate;
+    will-change: transform, opacity;
+  }
+  @keyframes ls-bloom-drift {
+    0%   { transform: translate3d(-2%, -1%, 0) scale(1);    opacity: 0.85; }
+    50%  { transform: translate3d(2%, 1.5%, 0) scale(1.06); opacity: 1; }
+    100% { transform: translate3d(-1%, 1%, 0) scale(1.02);  opacity: 0.9; }
+  }
+  /* Motes: 30 absolutely-positioned spans, each animated independently with
+     a random-feeling drift (upward + lateral sway), randomized delay and
+     duration via :nth-child rules. They sit above the bloom but below the
+     logo and progress, and inherit pointer-events: none. */
+  #loading-screen .ls-motes {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+  #loading-screen .ls-mote {
+    position: absolute;
+    bottom: -8px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 230, 160, 0.95) 0%, rgba(255, 230, 160, 0.5) 55%, rgba(255, 230, 160, 0) 100%);
+    box-shadow: 0 0 6px rgba(255, 220, 140, 0.45);
+    opacity: 0;
+    animation: ls-mote-rise 18s linear infinite;
+    will-change: transform, opacity;
+  }
+  /* Per-mote variation: position on the horizontal axis, drift length, sway,
+     duration, and delay. The deterministic :nth-child assignment means the
+     exact field is reproducible on every load (no Math.random in CSS or JS). */
+  #loading-screen .ls-mote:nth-child(1)  { left:  4%; animation-duration: 22s; animation-delay:  -2s; --ls-sway:  22px; --ls-rise: 78vh; }
+  #loading-screen .ls-mote:nth-child(2)  { left:  9%; animation-duration: 18s; animation-delay:  -6s; --ls-sway: -16px; --ls-rise: 70vh; }
+  #loading-screen .ls-mote:nth-child(3)  { left: 14%; animation-duration: 26s; animation-delay:  -1s; --ls-sway:  28px; --ls-rise: 80vh; transform-origin: 50% 50%; }
+  #loading-screen .ls-mote:nth-child(4)  { left: 19%; animation-duration: 20s; animation-delay: -10s; --ls-sway: -22px; --ls-rise: 72vh; }
+  #loading-screen .ls-mote:nth-child(5)  { left: 24%; animation-duration: 24s; animation-delay:  -4s; --ls-sway:  14px; --ls-rise: 76vh; }
+  #loading-screen .ls-mote:nth-child(6)  { left: 28%; animation-duration: 19s; animation-delay:  -8s; --ls-sway: -26px; --ls-rise: 68vh; }
+  #loading-screen .ls-mote:nth-child(7)  { left: 33%; animation-duration: 23s; animation-delay: -12s; --ls-sway:  18px; --ls-rise: 82vh; }
+  #loading-screen .ls-mote:nth-child(8)  { left: 37%; animation-duration: 17s; animation-delay:  -3s; --ls-sway: -20px; --ls-rise: 66vh; }
+  #loading-screen .ls-mote:nth-child(9)  { left: 42%; animation-duration: 28s; animation-delay:  -7s; --ls-sway:  24px; --ls-rise: 84vh; }
+  #loading-screen .ls-mote:nth-child(10) { left: 46%; animation-duration: 21s; animation-delay:  -2s; --ls-sway: -14px; --ls-rise: 74vh; }
+  #loading-screen .ls-mote:nth-child(11) { left: 51%; animation-duration: 25s; animation-delay:  -9s; --ls-sway:  20px; --ls-rise: 78vh; }
+  #loading-screen .ls-mote:nth-child(12) { left: 55%; animation-duration: 19s; animation-delay: -11s; --ls-sway: -28px; --ls-rise: 70vh; }
+  #loading-screen .ls-mote:nth-child(13) { left: 60%; animation-duration: 22s; animation-delay:  -5s; --ls-sway:  16px; --ls-rise: 80vh; }
+  #loading-screen .ls-mote:nth-child(14) { left: 64%; animation-duration: 26s; animation-delay:  -1s; --ls-sway: -18px; --ls-rise: 72vh; }
+  #loading-screen .ls-mote:nth-child(15) { left: 68%; animation-duration: 18s; animation-delay: -13s; --ls-sway:  22px; --ls-rise: 68vh; }
+  #loading-screen .ls-mote:nth-child(16) { left: 72%; animation-duration: 23s; animation-delay:  -6s; --ls-sway: -24px; --ls-rise: 82vh; }
+  #loading-screen .ls-mote:nth-child(17) { left: 76%; animation-duration: 20s; animation-delay:  -3s; --ls-sway:  14px; --ls-rise: 74vh; }
+  #loading-screen .ls-mote:nth-child(18) { left: 80%; animation-duration: 27s; animation-delay:  -8s; --ls-sway: -20px; --ls-rise: 78vh; }
+  #loading-screen .ls-mote:nth-child(19) { left: 84%; animation-duration: 21s; animation-delay: -10s; --ls-sway:  26px; --ls-rise: 66vh; }
+  #loading-screen .ls-mote:nth-child(20) { left: 88%; animation-duration: 24s; animation-delay:  -4s; --ls-sway: -16px; --ls-rise: 80vh; }
+  #loading-screen .ls-mote:nth-child(21) { left:  6%; animation-duration: 29s; animation-delay: -14s; --ls-sway:  20px; --ls-rise: 84vh; }
+  #loading-screen .ls-mote:nth-child(22) { left: 17%; animation-duration: 16s; animation-delay:  -7s; --ls-sway: -22px; --ls-rise: 62vh; }
+  #loading-screen .ls-mote:nth-child(23) { left: 30%; animation-duration: 27s; animation-delay:  -2s; --ls-sway:  28px; --ls-rise: 86vh; }
+  #loading-screen .ls-mote:nth-child(24) { left: 44%; animation-duration: 17s; animation-delay: -15s; --ls-sway: -14px; --ls-rise: 64vh; }
+  #loading-screen .ls-mote:nth-child(25) { left: 57%; animation-duration: 25s; animation-delay:  -9s; --ls-sway:  18px; --ls-rise: 76vh; }
+  #loading-screen .ls-mote:nth-child(26) { left: 70%; animation-duration: 22s; animation-delay:  -5s; --ls-sway: -26px; --ls-rise: 78vh; }
+  #loading-screen .ls-mote:nth-child(27) { left:  2%; animation-duration: 19s; animation-delay: -11s; --ls-sway:  16px; --ls-rise: 70vh; }
+  #loading-screen .ls-mote:nth-child(28) { left: 38%; animation-duration: 28s; animation-delay:  -1s; --ls-sway: -20px; --ls-rise: 82vh; }
+  #loading-screen .ls-mote:nth-child(29) { left: 62%; animation-duration: 23s; animation-delay: -12s; --ls-sway:  24px; --ls-rise: 74vh; }
+  #loading-screen .ls-mote:nth-child(30) { left: 92%; animation-duration: 26s; animation-delay:  -6s; --ls-sway: -18px; --ls-rise: 80vh; }
+  @keyframes ls-mote-rise {
+    0%   { transform: translate3d(0, 0, 0)                  scale(0.6); opacity: 0; }
+    12%  { opacity: 0.7; }
+    50%  { transform: translate3d(calc(var(--ls-sway) * 0.5), calc(var(--ls-rise) * -0.5), 0) scale(1); opacity: 0.9; }
+    88%  { opacity: 0.5; }
+    100% { transform: translate3d(var(--ls-sway), calc(var(--ls-rise) * -1), 0) scale(0.7); opacity: 0; }
+  }
+  /* Logo + progress sit above the backdrop layer so the bloom never washes
+     out the wordmark. */
+  #loading-screen > .ls-logo,
+  #loading-screen > .ls-progress {
+    position: relative;
+    z-index: 2;
+  }
   #loading-screen .ls-logo {
-    width: min(380px, 64vw);
+    width: min(320px, 56vw);
     height: auto;
-    filter: drop-shadow(0 0 24px #000c) drop-shadow(2px 2px 5px #000);
+    filter: drop-shadow(0 0 28px rgba(0, 0, 0, 0.55)) drop-shadow(1px 2px 4px rgba(0, 0, 0, 0.6));
+    animation: ls-logo-breathe 6s ease-in-out infinite;
+    will-change: opacity, filter;
+  }
+  @keyframes ls-logo-breathe {
+    0%, 100% { opacity: 0.94; filter: drop-shadow(0 0 28px rgba(0, 0, 0, 0.55)) drop-shadow(1px 2px 4px rgba(0, 0, 0, 0.6)); }
+    50%      { opacity: 1;    filter: drop-shadow(0 0 36px rgba(232, 168, 76, 0.35)) drop-shadow(1px 2px 4px rgba(0, 0, 0, 0.6)); }
   }
   .ls-progress {
     display: flex;
@@ -1794,27 +1912,56 @@
   }
   .ls-bar {
     width: min(420px, 70vw);
-    height: 14px;
-    border: 2px solid var(--color-border-default);
-    outline: 1px solid #000;
-    border-radius: 8px;
-    background: #0009;
+    height: 6px;
+    border: 1px solid rgba(232, 200, 120, 0.25);
+    border-radius: 999px;
+    background: rgba(8, 14, 10, 0.55);
     overflow: hidden;
-    box-shadow:
-      0 2px 14px #000c,
-      inset 0 1px 4px #000a;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
   }
   #ls-fill {
     height: 100%;
     width: 0%;
-    background: linear-gradient(180deg, var(--color-primary), var(--color-primary-dim));
-    transition: width 0.2s ease;
+    background: linear-gradient(90deg, rgba(232, 200, 120, 0.7) 0%, var(--color-primary) 50%, rgba(255, 230, 160, 0.95) 100%);
+    box-shadow: 0 0 10px rgba(232, 168, 76, 0.6);
+    transition: width 0.25s ease;
+    position: relative;
+  }
+  /* Subtle moving sheen on the fill so the bar reads as alive even when
+     the width stays near 0 for a moment. */
+  #ls-fill::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 250, 230, 0.45) 50%, transparent 100%);
+    transform: translateX(-100%);
+    animation: ls-fill-sheen 2.4s ease-in-out infinite;
+  }
+  @keyframes ls-fill-sheen {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(120%); }
   }
   #ls-status {
     color: var(--color-text-light);
     font-family: var(--font-heading);
-    font-size: 13px;
-    text-shadow: 1px 1px 2px #000;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: lowercase;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.85);
+    opacity: 0.85;
+  }
+  /* Respect reduced-motion: hold the bloom and motes still and keep the sheen
+     off the fill so the screen is still alive but not jittery. */
+  @media (prefers-reduced-motion: reduce) {
+    #loading-screen .ls-bloom,
+    #loading-screen .ls-mote,
+    #loading-screen .ls-logo,
+    #ls-fill::after {
+      animation: none;
+    }
+    #loading-screen .ls-mote {
+      opacity: 0.35;
+    }
   }
 
   /* ---------- play console (realm selector + Play CTA) ---------- */
