@@ -113,6 +113,16 @@ export const HOLLOW_ZONE_NPCS: Record<string, NpcDef> = {
     questIds: ['q_root_hollow_boars', 'q_root_hollow_boars_ii'],
     greeting:
       'Verger Zebediah. I keep the Reaches to a calendar, or I keep trying. Root Hollow was marked to rest this season, and the boars did not read the notice. Mind the loose dirt, and do not touch the register.',
+    // First-meeting click-through intro (PHAA-439): three beats in voice
+    // (formal, clipped, ecclesiastical, no contractions, the "straight man"
+    // warden of the constitution). Carries the "sole surviving keeper of a
+    // register" throughline before the first errand. Kept identical in
+    // src/ui/i18n.catalog/hollow.ts (the English source the resolver reads).
+    introLines: [
+      'Verger Zebediah. Warden of Root Hollow, by appointment of an office that is, presently, also me. You will find me here on most days; I find myself here on the others. The Reaches do not require a quorum, only a record.',
+      'I keep the calendar. The calendar is not keeping me, though some seasons it tries. Root Hollow is marked to rest this turn, the lower dens have not received the notice, and the heron has stopped pretending to be surprised. This is the situation. It is not a complaint; complaints require witnesses.',
+      'There is a register inside the shrine. Do not touch it. There is loose dirt underfoot where the boars have been. Mind both. If you have come about the ward, I can offer two errands, neither of them small, and one of them I would rather not amend a third time. Which brings us to why I am talking to you at all.',
+    ],
     // Ambient idle walk (board follow-up on PHAA-420: "some walking around"),
     // see src/sim/npc_wander.ts. Small radius on purpose: he stays findable at
     // his posted warden's station rather than roaming off it.
@@ -128,6 +138,16 @@ export const HOLLOW_ZONE_NPCS: Record<string, NpcDef> = {
     questIds: ['q_fallow_acres_wolves', 'q_fallow_acres_wolves_ii'],
     greeting:
       'Faddick. Sexton, where there is still a shrine to sexton. I do not stay anywhere; I keep. Wolves have circled the flock at Fallow Acres every night, and a thing that circles long enough learns the shape of what it circles. Best it stays a flock.',
+    // First-meeting click-through intro (PHAA-439): three beats in voice
+    // (aphoristic, wandering-keeper, longer arc, present-tense verbs, the
+    // "badger who is not hub-bound" energy from the constitution). Carries
+    // the "I do not stay anywhere; I keep" throughline before the first
+    // errand. Kept identical in src/ui/i18n.catalog/hollow.ts.
+    introLines: [
+      'Faddick. Sexton, where there is still a shrine to sexton, which is fewer shrines than there used to be. I do not stay anywhere; I keep. The keeping is most of what I am still for.',
+      'A thing that circles long enough learns the shape of what it circles. The wolves at Fallow Acres have been circling the flock every night since before I came through, and they have not yet learned the flock, which is something. The flock has learned them, which is more.',
+      'I would offer you tea, but the kettle is somewhere I was yesterday. There is a quiet stretch of ground by the lake that means to be built on; nothing settles on ground with wolves working the dark. Two errands, then, and one of them I would rather not do alone. Best we walk while we talk.',
+    ],
     wanderRadius: 4,
   },
 };

@@ -2898,10 +2898,28 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.verger_zebediah.title': '뿌리굴의 파수꾼',
   'entities.npcs.verger_zebediah.greeting':
     '성당지기 제베디아요. 나는 이 외곽을 달력에 맞춰 관리하오, 적어도 그러려고 애는 쓰지. 뿌리굴은 이번 철엔 쉬게 한다고 적어 뒀는데, 멧돼지들은 그 고시를 읽지 않았소. 무른 흙을 조심하고, 장부엔 손대지 마시오.',
+  // First-meeting click-through intro (PHAA-439). Voice matched to the
+  // existing Korean register (해요체, ecclesiastical), keeping the
+  // "sole surviving keeper of a register" throughline.
+  'entities.npcs.verger_zebediah.introLines.0':
+    '성당지기 제베디아요. 뿌리굴의 파수꾼, 현재로선 그 직책도 나 한 사람이오. 대부분의 날은 여기서 찾을 수 있고, 나머지 날에도 여기서 나를 찾게 되오. 외곽에는 정족수는 필요 없소, 장부만 있으면 되오.',
+  'entities.npcs.verger_zebediah.introLines.1':
+    '달력을 지킨다는 게 내 일이오. 달력이 날 지키는 건 아니지만, 철에 따라 시도는 해보지. 뿌리굴은 이번 철에 쉰다고 적혀 있소만, 아래 굴들에는 그 통지가 닿지 않았고, 왜가리도 더는 놀란 척을 하질 않소. 이게 현 상황이라오. 불평은 아니오, 불평엔 증인이 필요하니까.',
+  'entities.npcs.verger_zebediah.introLines.2':
+    '사당 안엔 장부가 있소. 손대지 마시오. 발밑에는 멧돼지가 뒤집어놓은 무른 흙이 퍼져 있소. 둘 다 조심하시오. 만약 이곳 파수一事로 오신 거라면, 두 가지 일을 맡길 수 있소. 어느 쪽도 작진 않고, 그중 하나는 세 번째 고치고 싶지 않은 일이오. 이게 결국 내가 그대에게 말을 붙인 까닭이라오.',
   'entities.npcs.sexton_faddick.name': '무덤지기 패딕',
   'entities.npcs.sexton_faddick.title': '떠도는 관리인',
   'entities.npcs.sexton_faddick.greeting':
     '패딕이오. 아직 지켜야 할 사당이 있는 한, 무덤지기 노릇을 하지. 나는 어디에도 머물지 않소, 그저 지킬 뿐이오. 밤마다 늑대가 묵정밭의 가축 떼 주위를 맴도는데, 오래 맴돌다 보면 제가 맴도는 것의 모양을 익히게 되는 법이오. 그저 가축 떼로 남는 편이 낫겠지.',
+  // First-meeting click-through intro (PHAA-439). Wandering-keeper voice,
+  // aphoristic, longer arc. Keeps the "I do not stay anywhere; I keep"
+  // throughline.
+  'entities.npcs.sexton_faddick.introLines.0':
+    '패딕이오. 무덤지기 노릇을 할 사당이 아직 있는 한, 무덤지기 노릇을 하지. 그런 사당은 예전보다 적어졌소만. 나는 어디에도 머물지 않소, 그저 지킬 뿐이오. 지키는 일, 그것이 지금도 내가 하고 있는 거의 전부라오.',
+  'entities.npcs.sexton_faddick.introLines.1':
+    '오래 맴돌다 보면 제가 맴도는 것의 모양을 익히게 되는 법이오. 묵정밭의 늑대들은 내가 오기 훨씬 전부터 밤마다 가축 떼 주위를 맴돌아 왔소만, 떼의 모양은 아직 못 익혔으니, 그게 어떤 의미가 있소. 떼 쪽이 오히려 그들을 더 잘 알고 있으니, 그것이 더 큰 의미라오.',
+  'entities.npcs.sexton_faddick.introLines.2':
+    '찻물을 내고 싶지만, 주전자는 내가 어제 있던 어딘가에 있소. 호수가엔 집을 짓기를 기다리는 조용한 땅이 있소. 어둠 속에서 늑대가 노는 땅엔 아무것도 뿌리를 내지 못하오. 자, 두 가지 일이 있소, 그중 하나는 혼자 하고 싶지 않은 일이오. 걸으면서 이야기를 나누는 편이 낫겠소.',
   'entities.quests.q_root_hollow_boars.title': '뿌리굴의 멧돼지',
   'entities.quests.q_root_hollow_boars.text':
     '달력대로라면 뿌리굴은 이번 철에 쉬어야 하오. 한데 멧돼지들에겐 통보가 안 갔지. 벌레를 쫓다가 절반을 파헤쳐 놨고, 이젠 왜가리가 날갯짓을 해도 흩어지질 않소. 나로선 이게 여간 괘씸한 게 아니오. 다섯 마리만 잡으면, 이 철을 기록대로 적어 넣을 수 있소.',
