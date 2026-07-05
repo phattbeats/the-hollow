@@ -1046,7 +1046,7 @@ describe('/who command', () => {
     server.handleMessage(self, JSON.stringify({ t: 'cmd', cmd: 'chat', text: '/who' }));
 
     const text = eventTexts(fc.sent).join('\n');
-    expect(text).toContain('Who: 2 players online on Claudemoon.');
+    expect(text).toContain('Who: 2 players online on The Hollow.');
     // PHAA-420 moved the cold-open door to the Hollow Reaches gate, so a
     // fresh character's zone reads as the new starter zone, not Eastbrook.
     expect(text).toContain('Aleph - level 1 warrior - The Hollow Reaches');
@@ -1068,7 +1068,7 @@ describe('/who command', () => {
     server.handleMessage(self, JSON.stringify({ t: 'cmd', cmd: 'chat', text: '/who' }));
 
     const text = eventTexts(fc.sent).join('\n');
-    expect(text).toContain('Who: 1 player online on Claudemoon.');
+    expect(text).toContain('Who: 1 player online on The Hollow.');
     // PHAA-420 moved the cold-open door to the Hollow Reaches gate.
     expect(text).toContain('Aleph - level 1 warrior - The Hollow Reaches');
     expect(text).not.toContain('Bet');
@@ -1101,7 +1101,7 @@ describe('/who command', () => {
     server.handleMessage(self, JSON.stringify({ t: 'cmd', cmd: 'chat', text: '/who' }));
 
     const text = eventTexts(fc.sent).join('\n');
-    expect(text).toContain('Who: 1 player online on Claudemoon.');
+    expect(text).toContain('Who: 1 player online on The Hollow.');
     // PHAA-420 moved the cold-open door to the Hollow Reaches gate.
     expect(text).toContain('Aleph - level 1 warrior - The Hollow Reaches');
     expect(text).not.toContain('Bet');

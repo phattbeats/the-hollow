@@ -847,7 +847,7 @@ export const en: EnTranslations = {
         "titleDiscordian": "Title: Discordian",
         "titleSquire": "Title: Squire of the Realm",
         "chromaBlurple": "Blurple Mech Chroma",
-        "titleChampion": "Title: Champion of Claudemoon",
+        "titleChampion": "Title: Champion of The Hollow",
         "swagStickers": "Sticker Pack (shipped)",
         "swagTee": "T-Shirt (shipped)"
       },
@@ -2768,7 +2768,7 @@ export const en: EnTranslations = {
     "logoAlt": "The Hollow",
     "eyebrow": "Realm maintenance",
     "heading": "The realm is temporarily unavailable.",
-    "body": "We are restarting the game service and expect Claudemoon to return shortly. This page will keep checking automatically.",
+    "body": "We are restarting the game service and expect The Hollow to return shortly. This page will keep checking automatically.",
     "status": "Back soon"
   },
   "hud": {
