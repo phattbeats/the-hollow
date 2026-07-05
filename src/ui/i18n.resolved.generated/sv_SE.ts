@@ -5204,7 +5204,8 @@ export const sv_SE: EnTranslations = {
         "name": "Glödknöl"
       },
       "first_cutting": {
-        "name": "En stickling"
+        "name": "En stickling",
+        "flavorText": "A slip of living green from Brother Greenpaw, wrapped in damp moss. Once a homestead plot can be edited, this is the first thing you plant."
       },
       "witness_root_cincture": {
         "name": "Vittnesrotens gördel"

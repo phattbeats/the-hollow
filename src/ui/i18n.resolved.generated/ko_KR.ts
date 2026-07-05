@@ -5204,7 +5204,8 @@ export const ko_KR: EnTranslations = {
         "name": "불씨구근"
       },
       "first_cutting": {
-        "name": "꺾꽂이"
+        "name": "꺾꽂이",
+        "flavorText": "A slip of living green from Brother Greenpaw, wrapped in damp moss. Once a homestead plot can be edited, this is the first thing you plant."
       },
       "witness_root_cincture": {
         "name": "증인뿌리의 허리띠"

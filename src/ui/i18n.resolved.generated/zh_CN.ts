@@ -5204,7 +5204,8 @@ export const zh_CN: EnTranslations = {
         "name": "余烬球茎"
       },
       "first_cutting": {
-        "name": "插条"
+        "name": "插条",
+        "flavorText": "A slip of living green from Brother Greenpaw, wrapped in damp moss. Once a homestead plot can be edited, this is the first thing you plant."
       },
       "witness_root_cincture": {
         "name": "见证根的束带"

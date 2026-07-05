@@ -5204,7 +5204,8 @@ export const vi_VN: EnTranslations = {
         "name": "Củ Than Hồng"
       },
       "first_cutting": {
-        "name": "Một Nhánh Giâm"
+        "name": "Một Nhánh Giâm",
+        "flavorText": "A slip of living green from Brother Greenpaw, wrapped in damp moss. Once a homestead plot can be edited, this is the first thing you plant."
       },
       "witness_root_cincture": {
         "name": "Đai Lưng Của Rễ Chứng Nhân"
