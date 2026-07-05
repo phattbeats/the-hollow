@@ -19,31 +19,47 @@
 // catches escapes regardless of the bypass the player used: jump, swim,
 // slow-walk, anything.
 //
-// Bounds sit at the base of each visible rim, so the wall reads as
-// "terrain got too steep" instead of an invisible barrier on flat ground.
-// All Hollow Reaches content lives inside |x| < 100 and z in [-374, -238]
-// (Hollow Zone camps, NPCs, gate, lake). The bounds leave a small viewing
-// band outside the playable strip so the rim still rises around the
-// player on the visual side; the clamp puts the wall at the start of the
-// ramp rather than at its top, which is what was leaking.
+// Bounds sit at the TOP of each visible rim, not the base, per board
+// follow-up ("make sure its not too restrictive"): the player walks the
+// full ramp up to the world edge before the clamp catches them, so the
+// wall reads as the slope itself rather than an invisible barrier on
+// flat ground. The climb-slope gate still blocks grounded walking past
+// ~x=155; the clamp only matters for jumpers (and for the absolute top
+// of the ramp). All Hollow Reaches content lives inside |x| < 100 and z
+// in [-374, -238] (Hollow Zone camps, NPCs, gate, lake); pushing the x
+// bounds to the world edge gives the player the entire rim ramp to
+// explore without sacrificing the closure of the original exploit.
+//
+// z bounds stay at their original positions: the south bound sits a hair
+// past the southernmost boar camp (z=-374 center, radius 12 -> edge
+// -386, zMin=-388) so camp content stays reachable, and the north bound
+// sits at the sealed mountain ridge (zMax=-180). The Hollow Gate at
+// (0, -290) is the portal into the next zone; the open-world Hollow
+// Reaches does not tile into Eastbrook Vale on foot (PHAA-420 / parent
+// PHAA-419 keep the vase hub as the only forward route), so the z
+// direction is already closed by terrain and needs no further relaxation.
 //
 // Pure, sim-side: zero DOM/three/render imports, no Math.random. Run from
 // node and from the browser without dragging the renderer.
 
 import { HOLLOW_ZONE_ZONE } from './content/hollow_zone';
 
-// Visible Hollow Reaches extents clamp. x edges sit at the smoothstep
-// start of the world rim ramp (|WORLD_MAX_X| - 30 = 150), z edges sit at
-// the smoothstep south-rim start (WORLD_MIN_Z + 30 = -370) but pulled in
-// past the southernmost boar camp (z = -374 center, radius 12 -> edge at
-// -386; zMin = -388 leaves a 2-unit crawl so the player can still reach
-// camp content) and at the sealed mountain ridge (zMax = -180). PLAYER
-// bodies carry a radius (0.6), so the player stops a body-radius shy of
-// each bound. The padding keeps the visual base of the wall readable as
-// a one-pixel shimmer rather than clipping into the terrain.
+// Visible Hollow Reaches extents clamp. x edges sit at the world edge
+// (WORLD_MAX_X = 180), the top of the smoothstep rim ramp
+// (smoothstep(WORLD_MAX_X - 30, WORLD_MAX_X, |x|) in world.ts). Pushing
+// the clamp from the ramp base (150) up to the world edge (180) per
+// board feedback lets the climb-slope gate do most of the work on the
+// visible ramp while the clamp only catches the airborne-jump bypass
+// at the world edge. z edges: south pulled in past the southernmost
+// boar camp (z=-374 center, radius 12 -> edge -386; zMin=-388 leaves a
+// 2-unit crawl so the player can still reach camp content); north at
+// the sealed mountain ridge (zMax=-180). PLAYER bodies carry a radius
+// (0.6), so the player stops a body-radius shy of each bound. The
+// padding keeps the visual base of the wall readable as a one-pixel
+// shimmer rather than clipping into the terrain.
 export const STARTER_ZONE_BOUNDS = {
-  xMin: -150,
-  xMax: 150,
+  xMin: -180,
+  xMax: 180,
   zMin: -388,
   zMax: -180,
 } as const;

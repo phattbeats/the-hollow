@@ -443,20 +443,23 @@ describe('The Hollow Reaches (PHAA-420)', () => {
 });
 
 describe('Starter zone bounds (PHAA-472)', () => {
-  // Bounds clamp the Hollow Reaches at the BASE of each visible rim, not at
-  // the world edge: the east/west world rim starts ramping at |x| = 150
-  // (smoothstep(WORLD_MAX_X - 30, WORLD_MAX_X, |x|) in world.ts), and the
-  // board screenshot showed the player standing ON the slope at x=179. We
-  // put the wall where the ramp starts, not at the top, so a player who
-  // walks east reads the wall as "the terrain got too steep" instead of a
-  // barrier on flat ground at the world's end. The south rim starts at
-  // z = -370; the bounds sit a touch further south (-388) so the player can
-  // still reach the southernmost boar camp (center -374, radius 12, edge
-  // -386). The north bound is at the sealed ridge (zMax = -180).
-  it('declares the Hollow Reaches bounds at the visible rim base', () => {
-    // x bounds sit where the east/west world rim starts ramping
-    expect(STARTER_ZONE_BOUNDS.xMin).toBe(-150);
-    expect(STARTER_ZONE_BOUNDS.xMax).toBe(150);
+  // Bounds clamp the Hollow Reaches at the TOP of each visible rim, not at
+  // the ramp base. The east/west world rim ramps smoothstep(|x| 150..180)
+  // to a 40-unit cliff; the climb-slope gate blocks grounded walking past
+  // ~x=155, but airborne jumps bypass the gate, so the clamp sits at the
+  // world edge (180) and catches jumpers at the rim top (board follow-up:
+  // "make sure its not too restrictive"). Board screenshot showed BRAPADIN
+  // on the slope at x=179; the relaxed clamp now stops them at x=179.4
+  // instead of teleporting them back to flat ground at x=149.4. The south
+  // rim starts at z=-370; bounds sit a touch further south (-388) so the
+  // player can still reach the southernmost boar camp (center -374,
+  // radius 12, edge -386). The north bound is at the sealed ridge
+  // (zMax = -180); the Hollow Gate portal at (0, -290) is the only
+  // forward route into the vase hub.
+  it('declares the Hollow Reaches bounds at the world edge', () => {
+    // x bounds sit at the world edge (top of the smoothstep rim ramp)
+    expect(STARTER_ZONE_BOUNDS.xMin).toBe(-180);
+    expect(STARTER_ZONE_BOUNDS.xMax).toBe(180);
     // north bound is the sealed ridge at zMax
     expect(STARTER_ZONE_BOUNDS.zMax).toBe(HOLLOW_ZONE_ZONE.zMax);
     expect(STARTER_ZONE_BOUNDS.zMax).toBe(-180);
@@ -509,9 +512,10 @@ describe('Starter zone bounds (PHAA-472)', () => {
   it('resolvePosition pulls the board-reported escape (x=179, z=-224) back inside the strip (PHAA-472)', () => {
     const seed = 42;
     // the screenshot case: the player was standing at (179, -224), on the
-    // eastern world-rim slope. With xMax clamped to 150, resolvePosition
-    // now pulls that point back to xMax - r = 149.4 instead of leaving the
-    // player on the slope.
+    // eastern world-rim slope. With xMax pushed to 180 (the world edge,
+    // board follow-up "make sure its not too restrictive"), resolvePosition
+    // now pulls that point back to xMax - r = 179.4, holding the player at
+    // the rim top rather than teleporting them back to the rim base.
     const still = resolvePosition(seed, 179, -224, 0.6);
     expect(still.x).toBeLessThanOrEqual(STARTER_ZONE_BOUNDS.xMax - 0.6 + 1e-6);
     expect(still.x).toBeGreaterThanOrEqual(STARTER_ZONE_BOUNDS.xMin + 0.6 - 1e-6);
@@ -523,16 +527,21 @@ describe('Starter zone bounds (PHAA-472)', () => {
     expect(west.x).toBeGreaterThanOrEqual(STARTER_ZONE_BOUNDS.xMin + 0.6 - 1e-6);
   });
 
-  it('resolveMovement stops a swept eastbound move at the rim (the screenshot walk)', () => {
+  it('resolveMovement lets a walker reach the rim top before the clamp catches them (PHAA-472 relaxation)', () => {
     const seed = 42;
-    // start at the Hollow Gate, attempt to walk east past the rim. We should
-    // stop within body radius of the eastern bound, well shy of the slope.
+    // board follow-up: "make sure its not too restrictive". With the bounds
+    // pushed to the world edge (180), a walker can now travel most of the
+    // way up the smoothstep ramp before being clamped; the climb-slope
+    // gate still blocks grounded walking past ~x=155 but jumpers land on
+    // the slope and walk to the rim top, where the clamp holds them at
+    // xMax - r = 179.4 instead of teleporting them back to flat ground.
     const start = { x: 0, z: -290 };
     const dest = { x: 500, z: -290 };
     const final = resolveMovement(seed, start.x, start.z, dest.x, dest.z, 0.6);
     expect(final.x).toBeLessThanOrEqual(STARTER_ZONE_BOUNDS.xMax - 0.6 + 1e-6);
     expect(final.x).toBeGreaterThan(start.x); // we did walk some
-    expect(final.x).toBeLessThan(STARTER_ZONE_BOUNDS.xMax); // and did NOT climb the rim
+    // the relaxed clamp lets the player reach the rim top, not the base
+    expect(final.x).toBeGreaterThan(150); // walked past the old 150 base
     expect(final.z).toBeGreaterThanOrEqual(STARTER_ZONE_BOUNDS.zMin + 0.6 - 1e-6);
     expect(final.z).toBeLessThanOrEqual(STARTER_ZONE_BOUNDS.zMax - 0.6 + 1e-6);
   });
