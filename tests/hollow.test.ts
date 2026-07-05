@@ -8,14 +8,14 @@
 // adds the open-world Hollow Reaches around the gate: see the second
 // describe block below.
 import { describe, expect, it } from 'vitest';
-import { resolvePosition } from '../src/sim/colliders';
+import { resolveMovement, resolvePosition } from '../src/sim/colliders';
 import {
   HOLLOW_GATE_POS,
   HOLLOW_HUB_DOOR_POS,
   VASE_LANDING_POS,
   VASE_POS,
 } from '../src/sim/content/hollow';
-import { HOLLOW_ZONE_ZONE } from '../src/sim/content/hollow_zone';
+import { HOLLOW_ZONE_GATE_POS, HOLLOW_ZONE_ZONE } from '../src/sim/content/hollow_zone';
 import { ZONE1_ZONE } from '../src/sim/content/zone1';
 import {
   ARENA_X,
@@ -36,6 +36,11 @@ import { TEMPLE_LAYOUT } from '../src/sim/dungeon_layout';
 import { Sim } from '../src/sim/sim';
 import { dist2d, type PlayerClass } from '../src/sim/types';
 import { groundHeight, terrainHeight } from '../src/sim/world';
+import {
+  clampToStarterZoneBounds,
+  isInsideStarterZone,
+  STARTER_ZONE_BOUNDS,
+} from '../src/sim/zone_bounds';
 
 function teleport(sim: Sim, pid: number, x: number, z: number) {
   const e = sim.entities.get(pid)!;
@@ -434,5 +439,122 @@ describe('The Hollow Reaches (PHAA-420)', () => {
     const openZ = ZONE1_ZONE.zMax;
     expect(terrainHeight(0, openZ, seed)).toBeLessThan(5);
     expect(terrainHeight(100, openZ, seed)).toBeGreaterThan(15);
+  });
+});
+
+describe('Starter zone bounds (PHAA-472)', () => {
+  // Bounds clamp the Hollow Reaches at the BASE of each visible rim, not at
+  // the world edge: the east/west world rim starts ramping at |x| = 150
+  // (smoothstep(WORLD_MAX_X - 30, WORLD_MAX_X, |x|) in world.ts), and the
+  // board screenshot showed the player standing ON the slope at x=179. We
+  // put the wall where the ramp starts, not at the top, so a player who
+  // walks east reads the wall as "the terrain got too steep" instead of a
+  // barrier on flat ground at the world's end. The south rim starts at
+  // z = -370; the bounds sit a touch further south (-388) so the player can
+  // still reach the southernmost boar camp (center -374, radius 12, edge
+  // -386). The north bound is at the sealed ridge (zMax = -180).
+  it('declares the Hollow Reaches bounds at the visible rim base', () => {
+    // x bounds sit where the east/west world rim starts ramping
+    expect(STARTER_ZONE_BOUNDS.xMin).toBe(-150);
+    expect(STARTER_ZONE_BOUNDS.xMax).toBe(150);
+    // north bound is the sealed ridge at zMax
+    expect(STARTER_ZONE_BOUNDS.zMax).toBe(HOLLOW_ZONE_ZONE.zMax);
+    expect(STARTER_ZONE_BOUNDS.zMax).toBe(-180);
+    // south bound sits a hair past the southernmost camp content
+    expect(STARTER_ZONE_BOUNDS.zMin).toBe(-388);
+    // all Hollow Reaches content sits inside |x| < 100 (hub at x=0, NPCs at
+    // x in {34, -34}, camps at x in [-64, 56], homestead at xMax=-25)
+    expect(STARTER_ZONE_BOUNDS.xMax).toBeGreaterThan(100);
+  });
+
+  it('isInsideStarterZone fires inside the strip and in the buffer ring around it', () => {
+    // inside the strip
+    expect(isInsideStarterZone(HOLLOW_ZONE_ZONE.zMin)).toBe(true);
+    expect(isInsideStarterZone(-300)).toBe(true);
+    // at the bounds themselves (inclusive)
+    expect(isInsideStarterZone(STARTER_ZONE_BOUNDS.zMax)).toBe(true);
+    expect(isInsideStarterZone(STARTER_ZONE_BOUNDS.zMin)).toBe(true);
+    // inside the 10-unit buffer ring catches jump escapes
+    expect(isInsideStarterZone(HOLLOW_ZONE_ZONE.zMax + 5)).toBe(true); // 5 into zone 1
+    expect(isInsideStarterZone(STARTER_ZONE_BOUNDS.zMin - 5)).toBe(true); // 5 into south rim
+    // outside the buffer ring, the gate is off
+    expect(isInsideStarterZone(0)).toBe(false); // zone 2-ish (far north of buffer)
+    expect(isInsideStarterZone(HOLLOW_ZONE_ZONE.zMax + 20)).toBe(false); // past the 10-unit north buffer
+    // the south gate uses the zone zMin (-400) minus the 10-unit buffer; a
+    // point at -415 (past the buffer ring, in the empty heightfield south
+    // of the world rim) is no longer gated and the gate is off
+    expect(isInsideStarterZone(HOLLOW_ZONE_ZONE.zMin - 15)).toBe(false);
+  });
+
+  it('clampToStarterZoneBounds pads the wall by the body radius', () => {
+    // far past xMax -> pulled in to xMax - r, vertically still inside
+    const out = clampToStarterZoneBounds(500, -300, 0.5);
+    expect(out.x).toBe(STARTER_ZONE_BOUNDS.xMax - 0.5);
+    expect(out.z).toBe(-300);
+    // far past xMin -> pulled in to xMin + r
+    const lo = clampToStarterZoneBounds(-500, -300, 0.5);
+    expect(lo.x).toBe(STARTER_ZONE_BOUNDS.xMin + 0.5);
+    expect(lo.z).toBe(-300);
+    // far past the south wall (target z below zMin) -> pulled to zMin + r
+    const so = clampToStarterZoneBounds(0, -1000, 0.5);
+    expect(so.z).toBe(STARTER_ZONE_BOUNDS.zMin + 0.5);
+    // already inside, untouched
+    const mid = clampToStarterZoneBounds(20, -300, 0.5);
+    expect(mid).toEqual({ x: 20, z: -300 });
+    // inside the buffer ring but past zMax still gets z clamped south
+    const north = clampToStarterZoneBounds(0, -175, 0.5);
+    expect(north.z).toBe(STARTER_ZONE_BOUNDS.zMax - 0.5);
+  });
+
+  it('resolvePosition pulls the board-reported escape (x=179, z=-224) back inside the strip (PHAA-472)', () => {
+    const seed = 42;
+    // the screenshot case: the player was standing at (179, -224), on the
+    // eastern world-rim slope. With xMax clamped to 150, resolvePosition
+    // now pulls that point back to xMax - r = 149.4 instead of leaving the
+    // player on the slope.
+    const still = resolvePosition(seed, 179, -224, 0.6);
+    expect(still.x).toBeLessThanOrEqual(STARTER_ZONE_BOUNDS.xMax - 0.6 + 1e-6);
+    expect(still.x).toBeGreaterThanOrEqual(STARTER_ZONE_BOUNDS.xMin + 0.6 - 1e-6);
+    // a target further east past the world edge also clamps inside
+    const target = resolvePosition(seed, 500, -224, 0.6);
+    expect(target.x).toBeLessThanOrEqual(STARTER_ZONE_BOUNDS.xMax - 0.6 + 1e-6);
+    // and the inverse on the west rim
+    const west = resolvePosition(seed, -179, -340, 0.6);
+    expect(west.x).toBeGreaterThanOrEqual(STARTER_ZONE_BOUNDS.xMin + 0.6 - 1e-6);
+  });
+
+  it('resolveMovement stops a swept eastbound move at the rim (the screenshot walk)', () => {
+    const seed = 42;
+    // start at the Hollow Gate, attempt to walk east past the rim. We should
+    // stop within body radius of the eastern bound, well shy of the slope.
+    const start = { x: 0, z: -290 };
+    const dest = { x: 500, z: -290 };
+    const final = resolveMovement(seed, start.x, start.z, dest.x, dest.z, 0.6);
+    expect(final.x).toBeLessThanOrEqual(STARTER_ZONE_BOUNDS.xMax - 0.6 + 1e-6);
+    expect(final.x).toBeGreaterThan(start.x); // we did walk some
+    expect(final.x).toBeLessThan(STARTER_ZONE_BOUNDS.xMax); // and did NOT climb the rim
+    expect(final.z).toBeGreaterThanOrEqual(STARTER_ZONE_BOUNDS.zMin + 0.6 - 1e-6);
+    expect(final.z).toBeLessThanOrEqual(STARTER_ZONE_BOUNDS.zMax - 0.6 + 1e-6);
+  });
+
+  it('content stays reachable: every Hollow Reaches camp, NPC, and POI sits inside the bounds', () => {
+    // bounds must not wall off any placed content; the strip relaxes past
+    // the southernmost camp edge so the boar spawn stays reachable.
+    const points = [
+      HOLLOW_ZONE_GATE_POS, // the gate/hub (overworld)
+      { x: -46, z: -246 }, // Fallow Acres (Faddick)
+      { x: 40, z: -350 }, // Root Hollow (Faddick)
+      { x: 56, z: -374 }, // southernmost boar camp center
+      { x: 42, z: -235 }, // Mossbank lake
+      { x: -95, z: -244 }, // homestead area xMin edge (z mid)
+    ];
+    for (const p of points) {
+      const c = clampToStarterZoneBounds(p.x, p.z, 0.6);
+      expect(c.x, `content at (${p.x}, ${p.z}) x clamped`).toBeCloseTo(p.x, 1);
+      expect(c.z, `content at (${p.x}, ${p.z}) z clamped`).toBeCloseTo(p.z, 1);
+    }
+    // the southernmost camp edge (z = -386) also stays reachable
+    const edge = clampToStarterZoneBounds(56, -386, 0.6);
+    expect(edge.z).toBeCloseTo(-386, 1);
   });
 });
