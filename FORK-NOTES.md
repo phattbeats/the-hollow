@@ -572,3 +572,46 @@ uncredited third-party asset with unknown provenance, just not confirmed
 infringing. Left in place since PHAA-406 was not asked to touch it; the
 provenance question is answered in a comment on the issue and it is the
 Board's call whether to source a replacement or accept the risk.
+
+### 2026-07-05: Cherry-pick upstream PR #1316 quest direction indicators (PHAA-409)
+
+Cherry-picked upstream PR #1316 (merge a1b2031b, 16 commits, 63 files,
++3153/-711) from release/v0.20.0 onto our fork at origin/main (15f27593).
+
+**What it adds:**
+- World-map objective areas (translucent blue blobs over quest targets)
+- Quest-target mob marks on nameplates
+- Numbered quest side list with track/untrack toggles
+- Quest-giver glyph hover tooltips
+- Mob mouseover tooltip (name/level/family/reaction/quest lines)
+- Movable, lockable target frame
+
+**New pure leaves:** `src/sim/quest_targets.ts`, `src/ui/map_quest_list_view.ts`,
+`src/ui/mob_tooltip_view.ts`, `src/ui/target_frame_pos.ts`. All registered in
+`UI_PURE_CORES` via `tests/architecture.test.ts`.
+
+**Architecture improvement:** `src/world_api/chat.ts` refactored from a value sim
+import (`OVERHEAD_EMOTE_IDS`) to a type-only import + local derivation. This
+empties the `SANCTIONED_VALUE_SIM_IMPORTS` allowlist entry for chat.ts, a net
+improvement to the sim purity boundary.
+
+**i18n:** 6 new wordy keys (mobTooltip.* + targetFrame.*). 10 locale overlays
+updated. 5 non-Latin locales (ja/ko/ru/zh-CN/zh-TW) filled by upstream. 5 Latin
+locales (de/es/fr/it/pt) ship English-only (PR-tier legal; follow-up needed
+before release-tier gate). Build-managed files regenerated via `npm run i18n:gen`.
+
+**Conflicts resolved:**
+- `src/ui/hud.ts`: kept both our `npc_intro_view` import and the new
+  `mob_tooltip_view` import (our fork's NPC intro system is additive)
+- `src/ui/i18n.catalog/quests.ts`: preserved our fork's multiclass trainer
+  catalog keys (de/es/fr/it/pt/ja/ko/zh-CN/zh-TW/ru); added PR's
+  `showOnMap`/`hideFromMap` keys per locale
+- `src/ui/i18n.catalog/hud_chrome.ts`: added `mobTooltip` + `targetFrame` +
+  `itemTooltip` sections
+- `tests/map_window_view.test.ts`: kept our `DELVE_X_MIN` import alongside the
+  new `CAMPS` and `QuestProgress` imports
+
+**Verification:** tsc clean, architecture 24/24 pass, targeted suites 95 pass,
+i18n suites 54 pass, painter_host + hud_perf_budget 38 pass, biome ci green.
+
+PR: https://github.com/phattbeats/the-hollow/pull/90
