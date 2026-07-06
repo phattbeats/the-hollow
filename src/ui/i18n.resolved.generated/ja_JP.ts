@@ -880,6 +880,27 @@ export const ja_JP: EnTranslations = {
       }
     }
   },
+  "mailUi": {
+    "title": "レイヴンポスト",
+    "subtitle": "手紙の送受信",
+    "close": "郵便を閉じる",
+    "inbox": "受信箱",
+    "compose": "手紙を書く",
+    "noPostOffice": "郵便を利用するにはレイヴンポストに近づいてください。",
+    "emptyInbox": "届いている手紙はありません。誰かが手紙を書くとカラスが届けてくれます。",
+    "from": "{name} より",
+    "noSubject": "(件名なし)",
+    "take": "受け取る",
+    "delete": "削除",
+    "postageNote": "手紙の送付には{money}の郵便料金がかかります。",
+    "recipient": "宛先",
+    "subjectLabel": "件名",
+    "bodyPlaceholder": "手紙を書いてください...",
+    "send": "手紙を送る",
+    "needRecipientOrText": "送信する前に宛先を指定し、本文を入力してください。",
+    "openButton": "レイヴンポストへ案内してください。",
+    "openButtonAria": "レイヴンポストの郵便ウィンドウを開く"
+  },
   "guide": {
     "brand": "World of ClaudeCraft",
     "brandShort": "ClaudeCraft",

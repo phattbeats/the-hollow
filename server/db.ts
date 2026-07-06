@@ -4,7 +4,7 @@ import type { HomesteadSave } from '../src/sim/homestead';
 import type { HousingSave } from '../src/sim/housing';
 import { LEADERBOARD_MAX } from '../src/sim/leaderboard_page';
 import { sanitizeRemovedZone1Content } from '../src/sim/removed_zone1_content';
-import type { CharacterState, MarketSave } from '../src/sim/sim';
+import type { CharacterState, MailSave, MarketSave } from '../src/sim/sim';
 import type { ArenaFormat, PlayerClass } from '../src/sim/types';
 import { seedChatFilterDefaults } from './chat_filter_db';
 import type { ChatLogRow } from './chat_log';
@@ -1987,6 +1987,17 @@ export async function loadMarketState(): Promise<MarketSave | null> {
 
 export async function saveMarketState(save: MarketSave): Promise<void> {
   await saveWorldState('market', save);
+}
+
+// The Ravenpost (PHAA-495, in-game mail): shared global state like the
+// market, one JSONB blob under the 'mail' key. Additive: no new tables or
+// columns (world_state already exists for exactly this shape).
+export async function loadMailState(): Promise<MailSave | null> {
+  return loadWorldState<MailSave>('mail');
+}
+
+export async function saveMailState(save: MailSave): Promise<void> {
+  await saveWorldState('mail', save);
 }
 
 // Housing v0 (the Hollow hub homesteads): shared global state like the market,

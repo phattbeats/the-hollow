@@ -880,6 +880,27 @@ export const es_ES: EnTranslations = {
       }
     }
   },
+  "mailUi": {
+    "title": "The Ravenpost",
+    "subtitle": "send and collect letters",
+    "close": "Close mail",
+    "inbox": "Inbox",
+    "compose": "Compose",
+    "noPostOffice": "Step up to the Ravenpost to tend your mail.",
+    "emptyInbox": "No letters waiting. A raven will arrive when someone writes to you.",
+    "from": "From {name}",
+    "noSubject": "(no subject)",
+    "take": "Take",
+    "delete": "Delete",
+    "postageNote": "Sending a letter costs {money} postage.",
+    "recipient": "Recipient",
+    "subjectLabel": "Subject",
+    "bodyPlaceholder": "Write your letter...",
+    "send": "Send Letter",
+    "needRecipientOrText": "Name a recipient and write something before sending.",
+    "openButton": "Show me the Ravenpost.",
+    "openButtonAria": "Open the Ravenpost mail window"
+  },
   "guide": {
     "brand": "World of ClaudeCraft",
     "brandShort": "ClaudeCraft",

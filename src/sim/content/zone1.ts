@@ -512,6 +512,19 @@ export const ZONE1_NPCS: Record<string, NpcDef> = {
     greeting:
       'Welcome to the World Market, $C. Buy from every adventurer in the realm — or set out your own wares and let coin find you.',
   },
+  the_ravenpost: {
+    id: 'the_ravenpost',
+    name: 'The Ravenpost',
+    title: 'Keeper of the Mail',
+    // opposite the well from the Marshal, a few strides from the World Market
+    pos: { x: -4, z: 6 },
+    facing: Math.PI,
+    color: 0x2c3e50,
+    questIds: [],
+    ravenpost: true,
+    greeting:
+      'Post a letter, $C, and my ravens will find your friend wherever they roam — coin and parcels ride along, safe until claimed.',
+  },
   marshal_redbrook: {
     id: 'marshal_redbrook',
     name: 'Marshal Redbrook',

@@ -1772,6 +1772,7 @@ const ALL_DELTA_KEYS = [
   'inv',
   'lockouts',
   'lroll',
+  'mail',
   'market',
   'marks',
   'milestones',
@@ -1811,6 +1812,7 @@ const TERSE_TO_IWORLD: Record<string, string> = {
   lockouts: 'selfLockouts',
   lroll: 'lootRollPrompts',
   lxp: 'lifetimeXp',
+  mail: 'mailInfo',
   market: 'marketInfo',
   marks: 'markers',
   milestones: 'unlockedMilestones',
@@ -1886,6 +1888,10 @@ function dirtyEveryDeltaField(): {
   (sim as any).targeting.partyMarkers.set(party.id, new Map([[mp, 3]]));
   const merchant = sim.entities.get(sim.market.merchantId);
   if (merchant) merchant.pos = { ...p.pos };
+  // mail: mailInfoFor is null unless near the Ravenpost, so we relocate it
+  // onto the (in-delve) player too.
+  const ravenpost = sim.entities.get(sim.postOffice.postOfficeId);
+  if (ravenpost) ravenpost.pos = { ...p.pos };
   // hearth: global state, no player positioning needed to dirty it.
   sim.loadGreenpawHearth({ hunger: 50, smoke: 42 });
 
@@ -1946,7 +1952,7 @@ function dirtyEveryDeltaField(): {
 }
 
 describe('full self-state snapshot delta fixture', () => {
-  it('carries every one of the 27 dirtied delta keys on the first snapshot', () => {
+  it('carries every one of the 30 dirtied delta keys on the first snapshot', () => {
     const { server, fc } = dirtyEveryDeltaField();
     broadcast(server);
     const snap = lastSnap(fc.sent);
@@ -2061,9 +2067,9 @@ describe('full self-state snapshot delta fixture', () => {
 });
 
 describe('delta-key contract pins (anti-drift)', () => {
-  it('ALL_DELTA_KEYS contains exactly 29 unique keys in sorted order', () => {
-    expect(ALL_DELTA_KEYS).toHaveLength(29);
-    expect(new Set(ALL_DELTA_KEYS).size).toBe(29);
+  it('ALL_DELTA_KEYS contains exactly 30 unique keys in sorted order', () => {
+    expect(ALL_DELTA_KEYS).toHaveLength(30);
+    expect(new Set(ALL_DELTA_KEYS).size).toBe(30);
     expect([...ALL_DELTA_KEYS]).toEqual([...ALL_DELTA_KEYS].sort());
   });
 
@@ -2075,7 +2081,7 @@ describe('delta-key contract pins (anti-drift)', () => {
     const scraped = new Set<string>();
     for (let m = re.exec(src); m !== null; m = re.exec(src)) scraped.add(m[1]);
     expect(scraped.has('lockouts')).toBe(true); // the multi-line call IS captured
-    expect(scraped.size).toBe(29);
+    expect(scraped.size).toBe(30);
     expect([...scraped].sort()).toEqual([...ALL_DELTA_KEYS].sort());
   });
 

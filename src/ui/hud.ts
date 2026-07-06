@@ -204,6 +204,7 @@ import { LockpickWindow } from './lockpick_window';
 import { reconcileLootRolls as computeLootRollReconcile } from './loot_roll_reconcile';
 import { lowHealthVignette } from './low_health';
 import { lowResourceView } from './low_resource';
+import { MailWindow } from './mail_window';
 import { type MapRegion, mapCanvasHeight, paintTerrainRows } from './map_terrain';
 import { MapWindowPainter } from './map_window_painter';
 import { MAP_MAX_ZOOM, mapWindowMode } from './map_window_view';
@@ -1575,6 +1576,10 @@ export class Hud {
       case 'market-window':
         this.closeMarket();
         break;
+      case 'mail-window':
+        // Route through the painter so focus returns to the opener (WCAG 2.2 AA).
+        this.mailWindow.close();
+        break;
       case 'arena-window':
         // Route through the painter so focus returns to the opener (WCAG 2.2 AA),
         // consistent with the toggle / X close path.
@@ -2666,6 +2671,19 @@ export class Hud {
         this.renderBags();
       }
     },
+  });
+  // Ravenpost mail window painter (mail_view.ts core + mail_window.ts painter,
+  // PHAA-495). It composes the shared presentation bag and owns the window's
+  // view-state (tab, compose fields). No bags cross-sync: the compose form
+  // sends coin attachments only for now (item attachments are a follow-up).
+  private readonly mailWindow = new MailWindow({
+    ...this.presentationBag,
+    root: () => $('#mail-window'),
+    world: () => this.sim,
+    closeOthers: () => this.closeOtherWindows('#mail-window'),
+    hideTooltip: () => this.hideTooltip(),
+    ...this.windowFocus('#mail-window'),
+    showError: (text) => this.showError(text),
   });
   // Ashen Coliseum window painter (arena_window_view.ts offline/live model +
   // arena_window.ts painter). It owns the selected bracket, the all-time-ladder
@@ -4695,6 +4713,10 @@ export class Hud {
     // Social repaints only on the slow divider, behind the painter's struct/content
     // diff-gate; a content tick swaps the body innerHTML without re-wiring rows.
     if (slowHud) this.socialWindow.refreshIfChanged();
+    if (slowHud && this.mailWindow.isOpen) {
+      if (!this.nearbyRavenpostNpc()) this.mailWindow.close();
+      else this.mailWindow.refreshIfChanged();
+    }
     if (slowHud && this.marketWindow.isOpen) {
       if (!this.nearbyMarketNpc()) this.marketWindow.close();
       else this.marketWindow.refreshIfChanged();
@@ -7637,6 +7659,9 @@ export class Hud {
     if (def?.market) {
       html += `<button type="button" class="qd-list-item" data-market="1" aria-label="${esc(t('questUi.dialog.worldMarketAria'))}"><span class="gold">${svgIcon('market')}</span> ${esc(t('questUi.dialog.worldMarket'))}</button>`;
     }
+    if (def?.ravenpost) {
+      html += `<button type="button" class="qd-list-item" data-mail="1" aria-label="${esc(t('mailUi.openButtonAria'))}"><span class="gold">${svgIcon('whisper')}</span> ${esc(t('mailUi.openButton'))}</button>`;
+    }
     if (def?.trainer) {
       html += `<button type="button" class="qd-list-item" data-trainer="1" aria-label="${esc(t('questUi.dialog.trainSecondaryAria', { name: npcName }))}"><span class="quest-complete">+</span> ${esc(t('questUi.dialog.trainSecondary'))}</button>`;
     }
@@ -7666,6 +7691,10 @@ export class Hud {
     el.querySelector('[data-market]')?.addEventListener('click', () => {
       this.closeQuestDialog(false);
       this.openMarket();
+    });
+    el.querySelector('[data-mail]')?.addEventListener('click', () => {
+      this.closeQuestDialog(false);
+      this.openMail();
     });
     el.querySelector('[data-feed-hearth]')?.addEventListener('click', () => {
       this.sim.feedGreenpaw();
@@ -8384,6 +8413,30 @@ export class Hud {
     const p = this.sim.player;
     for (const e of this.sim.entities.values()) {
       if (e.kind === 'npc' && NPCS[e.templateId]?.market && dist2d(p.pos, e.pos) <= 8) return e;
+    }
+    return null;
+  }
+
+  // -------------------------------------------------------------------------
+  // The Ravenpost — in-game mail (PHAA-495)
+  // -------------------------------------------------------------------------
+
+  openMail(): void {
+    this.mailWindow.open();
+  }
+
+  closeMail(): void {
+    this.mailWindow.close();
+  }
+
+  get mailWindowOpen(): boolean {
+    return this.mailWindow.isOpen;
+  }
+
+  private nearbyRavenpostNpc(): Entity | null {
+    const p = this.sim.player;
+    for (const e of this.sim.entities.values()) {
+      if (e.kind === 'npc' && NPCS[e.templateId]?.ravenpost && dist2d(p.pos, e.pos) <= 8) return e;
     }
     return null;
   }

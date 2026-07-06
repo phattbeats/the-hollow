@@ -880,6 +880,27 @@ export const zh_CN: EnTranslations = {
       }
     }
   },
+  "mailUi": {
+    "title": "渡鸦驿站",
+    "subtitle": "寄送与领取信件",
+    "close": "关闭邮件",
+    "inbox": "收件箱",
+    "compose": "写信",
+    "noPostOffice": "请前往渡鸦驿站处理邮件。",
+    "emptyInbox": "暂无信件。有人写信给你时渡鸦便会送达。",
+    "from": "来自 {name}",
+    "noSubject": "(无主题)",
+    "take": "领取",
+    "delete": "删除",
+    "postageNote": "寄送一封信需要 {money} 邮费。",
+    "recipient": "收件人",
+    "subjectLabel": "主题",
+    "bodyPlaceholder": "写下你的信件……",
+    "send": "寄出信件",
+    "needRecipientOrText": "请先填写收件人并写点内容再寄送。",
+    "openButton": "带我去渡鸦驿站。",
+    "openButtonAria": "打开渡鸦驿站邮件窗口"
+  },
   "guide": {
     "brand": "World of ClaudeCraft",
     "brandShort": "ClaudeCraft",

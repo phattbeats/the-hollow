@@ -9,11 +9,12 @@
 // keep resolving to THIS file, never the sibling directory.
 //
 // ---------------------------------------------------------------------------
-// FACET MAP: the 24 domain facets (each IWorld member assigned exactly once; 158
+// FACET MAP: the 25 domain facets (each IWorld member assigned exactly once; 164
 // total; this count was previously stale at 23/155, corrected alongside the
-// PHAA-482 feedGreenpaw command addition below). One interface per file under
-// ./world_api/; aux types travel with their facet. The authoritative
-// member-per-facet split is the W0c parity test.
+// PHAA-482 feedGreenpaw command addition below, and again at 24/158 with the
+// PHAA-495 Ravenpost mail facet). One interface per file under ./world_api/;
+// aux types travel with their facet. The authoritative member-per-facet split
+// is the W0c parity test.
 //
 //   entity_roster.ts    IWorldEntityRoster   cfg/entities/player/moveInput/realm reads
 //   combat.ts           IWorldCombat         ability casts, auto-attack, spirit release
@@ -33,6 +34,7 @@
 //   duel_arena.ts       IWorldDuelArena      duels + ranked arena + 2v2 fiesta
 //   social_graph.ts     IWorldSocialGraph    friends/blocks/guild (online-only frames)
 //   market.ts           IWorldMarket         World Market browse/list/buy
+//   mail.ts             IWorldMail           Ravenpost mail: send/take/delete/read
 //   dungeons.ts         IWorldDungeons       dungeon enter/leave + raid lockouts
 //   delves.ts           IWorldDelves         delve runs, lockpick, companion
 //   housing.ts          IWorldHousing        Hollow hub homestead plots (read + claim/place/remove)
@@ -63,6 +65,7 @@ import type { IWorldHousing } from './world_api/housing';
 import type { IWorldInteraction } from './world_api/interaction';
 import type { IWorldInventory } from './world_api/inventory';
 import type { IWorldLoot } from './world_api/loot';
+import type { IWorldMail } from './world_api/mail';
 import type { IWorldMarket } from './world_api/market';
 import type { IWorldParty } from './world_api/party';
 import type { IWorldPet } from './world_api/pet';
@@ -102,6 +105,7 @@ export type { RaidLockout } from './world_api/dungeons';
 export type { GreenpawHearthInfo, SmokeLevel } from './world_api/greenpaw_hearth';
 export type { HomesteadInfo, HomesteadPlotView } from './world_api/homestead';
 export type { HouseObjectView, HousingInfo, HousingPlotView } from './world_api/housing';
+export type { MailInfo, MailMessageView } from './world_api/mail';
 export type { MarketInfo, MarketListingView } from './world_api/market';
 export type { PartyInfo, PartyMemberInfo } from './world_api/party';
 export type { GuildLeaderboardEntry, LeaderboardEntry } from './world_api/progression_xp';
@@ -138,6 +142,7 @@ export interface IWorld
     IWorldDuelArena,
     IWorldSocialGraph,
     IWorldMarket,
+    IWorldMail,
     IWorldDungeons,
     IWorldDelves,
     IWorldHousing,
@@ -258,6 +263,10 @@ export const COMMAND_NAMES = [
   'market_buy',
   'market_cancel',
   'market_collect',
+  'mail_send',
+  'mail_take',
+  'mail_delete',
+  'mail_markread',
   'dev_level',
   'dev_teleport',
   'dev_give',
@@ -337,6 +346,7 @@ export type WorldFacet =
   | 'IWorldDuelArena'
   | 'IWorldSocialGraph'
   | 'IWorldMarket'
+  | 'IWorldMail'
   | 'IWorldDungeons'
   | 'IWorldDelves'
   | 'IWorldHousing'
@@ -447,6 +457,12 @@ export const COMMAND_FACETS = {
   market_buy: 'IWorldMarket',
   market_cancel: 'IWorldMarket',
   market_collect: 'IWorldMarket',
+  // IWorldMail: Ravenpost mail send/take/delete/read (snake_case wire strings,
+  // by design). mailInfo/mailUnread are snapshot reads (no send, untagged).
+  mail_send: 'IWorldMail',
+  mail_take: 'IWorldMail',
+  mail_delete: 'IWorldMail',
+  mail_markread: 'IWorldMail',
   // IWorldDungeons: dungeon enter/leave. raidLockouts is a snapshot-derived read
   // (no send, untagged). enter_crypt/leave_crypt are legacy dispatch-only aliases
   // (untagged; on the DISPATCH_ONLY_COMMANDS allowlist), NOT IWorldDungeons.

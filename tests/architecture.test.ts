@@ -144,6 +144,7 @@ const UI_PURE_CORES = [
   'src/ui/housing_view.ts',
   'src/ui/housing_prompt_view.ts',
   'src/ui/market_view.ts',
+  'src/ui/mail_view.ts',
   'src/ui/char_view.ts',
   'src/ui/map_window_view.ts',
   'src/ui/arena_window_view.ts',

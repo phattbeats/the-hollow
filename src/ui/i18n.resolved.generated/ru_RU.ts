@@ -880,6 +880,27 @@ export const ru_RU: EnTranslations = {
       }
     }
   },
+  "mailUi": {
+    "title": "Воронья почта",
+    "subtitle": "отправка и получение писем",
+    "close": "Закрыть почту",
+    "inbox": "Входящие",
+    "compose": "Написать письмо",
+    "noPostOffice": "Подойдите к Вороньей почте, чтобы разобрать письма.",
+    "emptyInbox": "Писем нет. Ворон принесёт письмо, как только кто-то вам напишет.",
+    "from": "От {name}",
+    "noSubject": "(без темы)",
+    "take": "Забрать",
+    "delete": "Удалить",
+    "postageNote": "Отправка письма стоит {money} за пересылку.",
+    "recipient": "Получатель",
+    "subjectLabel": "Тема",
+    "bodyPlaceholder": "Напишите ваше письмо...",
+    "send": "Отправить письмо",
+    "needRecipientOrText": "Укажите получателя и напишите что-нибудь перед отправкой.",
+    "openButton": "Покажите мне Воронью почту.",
+    "openButtonAria": "Открыть окно Вороньей почты"
+  },
   "guide": {
     "brand": "World of ClaudeCraft",
     "brandShort": "ClaudeCraft",

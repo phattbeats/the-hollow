@@ -880,6 +880,27 @@ export const ko_KR: EnTranslations = {
       }
     }
   },
+  "mailUi": {
+    "title": "레이븐포스트",
+    "subtitle": "편지를 보내고 받기",
+    "close": "우편 닫기",
+    "inbox": "받은 편지함",
+    "compose": "편지 쓰기",
+    "noPostOffice": "우편물을 확인하려면 레이븐포스트로 가세요.",
+    "emptyInbox": "도착한 편지가 없습니다. 누군가 편지를 쓰면 까마귀가 배달해 줄 거예요.",
+    "from": "{name} 님으로부터",
+    "noSubject": "(제목 없음)",
+    "take": "받기",
+    "delete": "삭제",
+    "postageNote": "편지를 보내려면 우편 요금 {money}이(가) 듭니다.",
+    "recipient": "받는 사람",
+    "subjectLabel": "제목",
+    "bodyPlaceholder": "편지를 작성하세요...",
+    "send": "편지 보내기",
+    "needRecipientOrText": "보내기 전에 받는 사람을 지정하고 내용을 입력하세요.",
+    "openButton": "레이븐포스트로 안내해 주세요.",
+    "openButtonAria": "레이븐포스트 우편 창 열기"
+  },
   "guide": {
     "brand": "World of ClaudeCraft",
     "brandShort": "ClaudeCraft",

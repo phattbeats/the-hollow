@@ -18,6 +18,7 @@ import { IN_GAME_MODERATION_MESSAGES } from './server_i18n_moderation';
 export const DICT: Record<string, Record<string, string>> = {
   en: {
     'friends.specifyName': 'Specify a character name.',
+    'mail.notAcceptingMail': 'That adventurer is not accepting mail from you.',
     'friends.noCharExists': "No character named '{name}' exists.",
     'friends.cannotBefriendSelf': 'You cannot befriend yourself.',
     'friends.ignoringRemoveFirst':
@@ -134,6 +135,7 @@ export const DICT: Record<string, Record<string, string>> = {
     'time.days': '{count} days',
     'time.day': '{count} day',
     'friends.specifyName': 'Specify a character name.',
+    'mail.notAcceptingMail': 'That adventurer is not accepting mail from you.',
     'friends.noCharExists': "No character named '{name}' exists.",
     'friends.cannotBefriendSelf': 'You cannot befriend yourself.',
     'friends.ignoringRemoveFirst':
@@ -235,6 +237,7 @@ export const DICT: Record<string, Record<string, string>> = {
     'time.days': '{count} días',
     'time.day': '{count} día',
     'friends.specifyName': 'Especifica el nombre de un personaje.',
+    'mail.notAcceptingMail': 'Ese aventurero no acepta correo de tu parte.',
     'friends.noCharExists': "No existe ningún personaje llamado '{name}'.",
     'friends.cannotBefriendSelf': 'No puedes agregarte a ti mismo como amigo.',
     'friends.ignoringRemoveFirst':
@@ -341,6 +344,7 @@ export const DICT: Record<string, Record<string, string>> = {
     'time.days': '{count} días',
     'time.day': '{count} día',
     'friends.specifyName': 'Especifica el nombre de un personaje.',
+    'mail.notAcceptingMail': 'Ese aventurero no acepta correo de tu parte.',
     'friends.noCharExists': "No existe ningún personaje llamado '{name}'.",
     'friends.cannotBefriendSelf': 'No puedes añadirte a ti mismo como amigo.',
     'friends.ignoringRemoveFirst':
@@ -450,6 +454,7 @@ export const DICT: Record<string, Record<string, string>> = {
     'time.days': '{count} jours',
     'time.day': '{count} jour',
     'friends.specifyName': "Précisez le nom d'un personnage.",
+    'mail.notAcceptingMail': "Cet aventurier n'accepte pas de courrier de votre part.",
     'friends.noCharExists': "Aucun personnage du nom de « {name} » n'existe.",
     'friends.cannotBefriendSelf': 'Vous ne pouvez pas vous ajouter vous-même comme ami.',
     'friends.ignoringRemoveFirst':
@@ -557,6 +562,7 @@ export const DICT: Record<string, Record<string, string>> = {
     'time.days': '{count} jours',
     'time.day': '{count} jour',
     'friends.specifyName': 'Indiquez un nom de personnage.',
+    'mail.notAcceptingMail': "Cet aventurier n'accepte pas de courrier de votre part.",
     'friends.noCharExists': "Aucun personnage nommé « {name} » n'existe.",
     'friends.cannotBefriendSelf': 'Vous ne pouvez pas vous ajouter vous-même à vos amis.',
     'friends.ignoringRemoveFirst':
@@ -663,6 +669,7 @@ export const DICT: Record<string, Record<string, string>> = {
     'time.days': '{count} giorni',
     'time.day': '{count} giorno',
     'friends.specifyName': 'Specifica il nome di un personaggio.',
+    'mail.notAcceptingMail': "Quell'avventuriero non accetta posta da te.",
     'friends.noCharExists': "Non esiste nessun personaggio chiamato '{name}'.",
     'friends.cannotBefriendSelf': 'Non puoi aggiungere te stesso agli amici.',
     'friends.ignoringRemoveFirst': 'Stai ignorando {name}. Rimuovilo prima dalla lista ignorati.',
@@ -768,6 +775,7 @@ export const DICT: Record<string, Record<string, string>> = {
     'time.days': '{count} Tage',
     'time.day': '{count} Tag',
     'friends.specifyName': 'Gib einen Charakternamen an.',
+    'mail.notAcceptingMail': 'Dieser Abenteurer nimmt keine Post von Euch an.',
     'friends.noCharExists': "Es existiert kein Charakter mit dem Namen '{name}'.",
     'friends.cannotBefriendSelf': 'Ihr könnt Euch nicht selbst als Freund hinzufügen.',
     'friends.ignoringRemoveFirst':
@@ -873,6 +881,7 @@ export const DICT: Record<string, Record<string, string>> = {
     'time.days': '{count} 天',
     'time.day': '{count} 天',
     'friends.specifyName': '请指定一个角色名称。',
+    'mail.notAcceptingMail': '那位冒险者不接受你的来信。',
     'friends.noCharExists': '不存在名为“{name}”的角色。',
     'friends.cannotBefriendSelf': '你无法将自己加为好友。',
     'friends.ignoringRemoveFirst': '你正在屏蔽{name}。请先将其从屏蔽列表中移除。',
@@ -971,6 +980,7 @@ export const DICT: Record<string, Record<string, string>> = {
     'time.days': '{count} 天',
     'time.day': '{count} 天',
     'friends.specifyName': '請指定一個角色名稱。',
+    'mail.notAcceptingMail': '那位冒險者不接受你的來信。',
     'friends.noCharExists': '沒有名為「{name}」的角色。',
     'friends.cannotBefriendSelf': '你無法將自己加為好友。',
     'friends.ignoringRemoveFirst': '你正在忽略 {name}。請先將其從你的忽略名單中移除。',
@@ -1070,6 +1080,7 @@ export const DICT: Record<string, Record<string, string>> = {
     'time.days': '{count}일',
     'time.day': '{count}일',
     'friends.specifyName': '캐릭터 이름을 입력하십시오.',
+    'mail.notAcceptingMail': '그 모험가는 당신의 우편을 받지 않습니다.',
     'friends.noCharExists': "'{name}'(이)라는 이름의 캐릭터가 존재하지 않습니다.",
     'friends.cannotBefriendSelf': '자신을 친구로 추가할 수 없습니다.',
     'friends.ignoringRemoveFirst': '{name}님을 무시하고 있습니다. 먼저 무시 목록에서 제거하십시오.',
@@ -1170,6 +1181,7 @@ export const DICT: Record<string, Record<string, string>> = {
     'time.days': '{count}日',
     'time.day': '{count}日',
     'friends.specifyName': 'キャラクター名を指定してください。',
+    'mail.notAcceptingMail': 'その冒険者はあなたからの郵便を受け取りません。',
     'friends.noCharExists': '「{name}」という名前のキャラクターは存在しません。',
     'friends.cannotBefriendSelf': '自分自身をフレンドに追加することはできません。',
     'friends.ignoringRemoveFirst': '{name}を無視しています。先に無視リストから削除してください。',
@@ -1274,6 +1286,7 @@ export const DICT: Record<string, Record<string, string>> = {
     'time.days': '{count} dias',
     'time.day': '{count} dia',
     'friends.specifyName': 'Especifique o nome de um personagem.',
+    'mail.notAcceptingMail': 'Esse aventureiro não aceita correspondência sua.',
     'friends.noCharExists': "Não existe nenhum personagem chamado '{name}'.",
     'friends.cannotBefriendSelf': 'Você não pode adicionar a si mesmo como amigo.',
     'friends.ignoringRemoveFirst':
@@ -1377,6 +1390,7 @@ export const DICT: Record<string, Record<string, string>> = {
     'time.days': '{count} дн.',
     'time.day': '{count} дн.',
     'friends.specifyName': 'Укажите имя персонажа.',
+    'mail.notAcceptingMail': 'Этот искатель приключений не принимает почту от вас.',
     'friends.noCharExists': 'Персонаж с именем «{name}» не существует.',
     'friends.cannotBefriendSelf': 'Вы не можете добавить в друзья самого себя.',
     'friends.ignoringRemoveFirst':
