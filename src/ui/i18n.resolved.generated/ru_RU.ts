@@ -291,6 +291,9 @@ export const ru_RU: EnTranslations = {
       "lessThanMinute": "<1м",
       "lockedToast": "Вы привязаны к {raid}. Разблокировка через {time}."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "С",
       "NE": "СВ",
@@ -5215,6 +5218,16 @@ export const ru_RU: EnTranslations = {
         "name": "Обрывок страницы дневника",
         "flavorText": "...считал сорок дней при свече, пока не сбился со счёта. Тьма здесь, внизу, не забывает Его, даже если Он забыл это место. Если цапля пролетит низко, скажи пономарю, что фитиль всё ещё горит..."
       },
+      "heartwood_splinter": {
+        "name": "Щепка сердцевины",
+        "flavorText": "Тёплая на ощупь, долго после того, как дерево, из которого она взята, перестало двигаться."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Наплечники Цветущей Короны"
+      },
+      "verdantguard_mantle": {
+        "name": "Мантия Зелёного Стража"
+      },
       "reliquary_plate_chest": {
         "name": "Хауберк стражи реликвария"
       },
@@ -5669,6 +5682,9 @@ export const ru_RU: EnTranslations = {
       },
       "the_witness_root": {
         "name": "Корень-Свидетель"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {

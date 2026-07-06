@@ -291,6 +291,9 @@ export const da_DK: EnTranslations = {
       "lessThanMinute": "<1m",
       "lockedToast": "Du er låst til {raid}. Låses op om {time}."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "N",
       "NE": "NØ",
@@ -5215,6 +5218,16 @@ export const da_DK: EnTranslations = {
         "name": "Iturevet Dagbogsside",
         "flavorText": "...talte fyrre dage ved stearinlys, før jeg mistede tråden. Mørket hernede glemmer Ham ikke, selvom Han har glemt dette sted. Hvis hejren kredser lavt, så sig til Degnen at vægen stadig brænder..."
       },
+      "heartwood_splinter": {
+        "name": "Kærnetræsplint",
+        "flavorText": "Varm at røre ved, længe efter at træet, den kom fra, holdt op med at bevæge sig."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Blomsterkronede Skulderplader"
+      },
+      "verdantguard_mantle": {
+        "name": "Frodig Vogterkappe"
+      },
       "reliquary_plate_chest": {
         "name": "Relikvievogterens Brynje"
       },
@@ -5669,6 +5682,9 @@ export const da_DK: EnTranslations = {
       },
       "the_witness_root": {
         "name": "Vidnerod"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {

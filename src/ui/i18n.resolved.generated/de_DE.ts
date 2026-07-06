@@ -291,6 +291,9 @@ export const de_DE: EnTranslations = {
       "lessThanMinute": "<1Min",
       "lockedToast": "Du bist für {raid} gesperrt. Freischaltung in {time}."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "N",
       "NE": "NO",
@@ -5215,6 +5218,16 @@ export const de_DE: EnTranslations = {
         "name": "Zerrissene Tagebuchseite",
         "flavorText": "...zählte vierzig Tage bei Kerzenlicht, bevor ich den Faden verlor. Das Dunkel hier unten vergisst Ihn nicht, auch wenn Er diesen Ort vergessen hat. Wenn der Reiher tief kreist, sag dem Küster, der Docht brennt noch..."
       },
+      "heartwood_splinter": {
+        "name": "Herzholzsplitter",
+        "flavorText": "Warm anzufassen, lange nachdem der Baum, aus dem es stammt, aufgehört hat, sich zu bewegen."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Blütenkronen-Schulterplatten"
+      },
+      "verdantguard_mantle": {
+        "name": "Mantel des Grünhüters"
+      },
       "reliquary_plate_chest": {
         "name": "Halsberge der Reliquiarwache"
       },
@@ -5669,6 +5682,9 @@ export const de_DE: EnTranslations = {
       },
       "the_witness_root": {
         "name": "Die Zeugenwurzel"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {

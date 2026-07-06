@@ -1202,6 +1202,11 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.old_cragmaw.name': 'Gamle Klippkäft',
   'entities.mobs.old_greyjaw.name': 'Gamle Gråkäft',
   'entities.mobs.pale_choir_acolyte.name': 'Blek körakolyt',
+  'entities.items.heartwood_splinter.name': 'Kärnvedsplitta',
+  'entities.items.heartwood_splinter.flavorText':
+    'Varm att röra vid, långt efter att trädet den kom från slutat röra sig.',
+  'entities.items.bloomcrown_pauldrons.name': 'Blomkronans Axelskydd',
+  'entities.items.verdantguard_mantle.name': 'Den Gröna Väktarens Mantel',
   'entities.mobs.palefeeder.name': 'Blekätaren',
   'entities.mobs.pearlguard_sentinel.name': 'Pärlvaktsväktare',
   'entities.mobs.raised_bonewalker.name': 'Uppstånden benvandrare',

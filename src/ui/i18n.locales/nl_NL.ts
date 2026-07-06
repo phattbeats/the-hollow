@@ -1220,6 +1220,11 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.old_cragmaw.name': 'Oude Cragmaw',
   'entities.mobs.old_greyjaw.name': 'Oude Grijskaak',
   'entities.mobs.pale_choir_acolyte.name': 'Bleke Koor-Acoliet',
+  'entities.items.heartwood_splinter.name': 'Kernhoutsplinter',
+  'entities.items.heartwood_splinter.flavorText':
+    'Warm om aan te raken, lang nadat de boom waar het vandaan kwam ophield te bewegen.',
+  'entities.items.bloomcrown_pauldrons.name': 'Bloesemkroon Schouderstukken',
+  'entities.items.verdantguard_mantle.name': 'Mantel van de Groene Wachter',
   'entities.mobs.palefeeder.name': 'Bleekvreter',
   'entities.mobs.pearlguard_sentinel.name': 'Parelwacht-Schildwacht',
   'entities.mobs.raised_bonewalker.name': 'Verrezen Botloper',

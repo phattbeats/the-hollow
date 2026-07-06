@@ -291,6 +291,9 @@ export const pl_PL: EnTranslations = {
       "lessThanMinute": "<1m",
       "lockedToast": "Jesteś przypisany do rajdu {raid}. Odblokowanie za {time}."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "Pn",
       "NE": "PnW",
@@ -5215,6 +5218,16 @@ export const pl_PL: EnTranslations = {
         "name": "Wydarta Strona z Dziennika",
         "flavorText": "...liczyłem czterdzieści dni przy świecy, zanim zgubiłem rachubę. Mrok tu, w dole, nie zapomina o Nim, choć On zapomniał o tym miejscu. Jeśli czapla zatoczy niski krąg, powiedz Zakrystianowi, że knot wciąż płonie..."
       },
+      "heartwood_splinter": {
+        "name": "Drzazga Twardzieli",
+        "flavorText": "Ciepła w dotyku, długo po tym, jak drzewo, z którego pochodzi, przestało się poruszać."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Naramienniki Kwietnej Korony"
+      },
+      "verdantguard_mantle": {
+        "name": "Płaszcz Zielonego Strażnika"
+      },
       "reliquary_plate_chest": {
         "name": "Kolczuga strażnika relikwiarza"
       },
@@ -5669,6 +5682,9 @@ export const pl_PL: EnTranslations = {
       },
       "the_witness_root": {
         "name": "Korzeń Świadek"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {

@@ -291,6 +291,9 @@ export const zh_CN: EnTranslations = {
       "lessThanMinute": "<1分",
       "lockedToast": "你已锁定到{raid}。{time}后解锁。"
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "北",
       "NE": "东北",
@@ -5215,6 +5218,16 @@ export const zh_CN: EnTranslations = {
         "name": "撕碎的日记页",
         "flavorText": "……我数着烛光过了四十天，后来便断了数。这底下的黑暗从未忘记祂，尽管祂已经忘了这个地方。若鹭鸟低飞掠过，告诉守灯人，烛芯还燃着……"
       },
+      "heartwood_splinter": {
+        "name": "心材碎片",
+        "flavorText": "触摸时依然温暖,尽管孕育它的树早已停止生长。"
+      },
+      "bloomcrown_pauldrons": {
+        "name": "繁花王冠护肩"
+      },
+      "verdantguard_mantle": {
+        "name": "常青守卫者披风"
+      },
       "reliquary_plate_chest": {
         "name": "圣物库守卫锁甲"
       },
@@ -5669,6 +5682,9 @@ export const zh_CN: EnTranslations = {
       },
       "the_witness_root": {
         "name": "见证之根"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {

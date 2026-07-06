@@ -1206,6 +1206,11 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.old_cragmaw.name': 'İhtiyar Cragmaw',
   'entities.mobs.old_greyjaw.name': 'İhtiyar Greyjaw',
   'entities.mobs.pale_choir_acolyte.name': 'Solgun Koro Çömezi',
+  'entities.items.heartwood_splinter.name': 'Öz Odun Kıymığı',
+  'entities.items.heartwood_splinter.flavorText':
+    'Geldiği ağaç hareket etmeyi bıraktıktan çok sonra bile dokunulduğunda sıcacık.',
+  'entities.items.bloomcrown_pauldrons.name': 'Çiçek Taçlı Omuzluklar',
+  'entities.items.verdantguard_mantle.name': 'Yeşil Bekçinin Pelerini',
   'entities.mobs.palefeeder.name': 'Solgunbeslen',
   'entities.mobs.pearlguard_sentinel.name': 'İncimuhafız Nöbetçisi',
   'entities.mobs.raised_bonewalker.name': 'Diriltilmiş Kemikyürüyen',

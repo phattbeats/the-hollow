@@ -21,11 +21,18 @@ const hollowEntitiesEn = {
         'here does not forget Him, even if He has forgotten this place. If the ' +
         'heron circles low, tell the Verger the wick still burns...',
     },
+    heartwood_splinter: {
+      name: 'Heartwood Splinter',
+      flavorText: 'Warm to the touch, long after the tree it came from stopped moving.',
+    },
+    bloomcrown_pauldrons: { name: 'Bloomcrown Pauldrons' },
+    verdantguard_mantle: { name: 'Verdantguard Mantle' },
   },
   mobs: {
     palefeeder: { name: 'Palefeeder' },
     rootmaw: { name: 'Rootmaw' },
     the_witness_root: { name: 'The Witness-Root' },
+    heartwood_colossus: { name: 'Heartwood Colossus' },
   },
   npcs: {
     brother_greenpaw: {

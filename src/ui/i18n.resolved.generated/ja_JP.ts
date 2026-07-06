@@ -291,6 +291,9 @@ export const ja_JP: EnTranslations = {
       "lessThanMinute": "1分未満",
       "lockedToast": "{raid}にロックされています。解除まで{time}。"
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "北",
       "NE": "北東",
@@ -5215,6 +5218,16 @@ export const ja_JP: EnTranslations = {
         "name": "破れた日記のページ",
         "flavorText": "……蝋燭で四十日を数えたところで、数えるのをやめた。ここの闇は今もあの方を忘れない、あの方がこの場所を忘れてしまっても。鷺が低く舞うのを見たら、灯守りに芯はまだ燃えていると伝えてくれ……"
       },
+      "heartwood_splinter": {
+        "name": "心材の破片",
+        "flavorText": "触れると温かい、それが生まれた木が動かなくなってからずっと。"
+      },
+      "bloomcrown_pauldrons": {
+        "name": "花冠の肩当て"
+      },
+      "verdantguard_mantle": {
+        "name": "常磐の守護者のマント"
+      },
       "reliquary_plate_chest": {
         "name": "聖遺物庫衛兵のホーバーク"
       },
@@ -5669,6 +5682,9 @@ export const ja_JP: EnTranslations = {
       },
       "the_witness_root": {
         "name": "証しの根"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {

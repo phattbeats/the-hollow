@@ -291,6 +291,9 @@ export const en_XA: EnTranslations = {
       "lessThanMinute": "[<1ɱ]",
       "lockedToast": "[Ýóú áŕé ļóçķéð ţó {raid}. Úñļóçķš íñ {time}.]"
     },
+    "worldBoss": {
+      "spawn": "[{name} ŕíšéš óʋéŕ Ŕóóţ Ĥóļļóŵ!]"
+    },
     "compass": {
       "N": "[Ñ]",
       "NE": "[ÑÉ]",
@@ -5215,6 +5218,16 @@ export const en_XA: EnTranslations = {
         "name": "[Ţóŕñ Ðíáŕý Þáĝé]",
         "flavorText": "[...çóúñţéð ƒóŕţý ðáýš ƀý çáñðļé ƀéƒóŕé Í ļóšţ ţĥé ţĥŕéáð. Ţĥé ðáŕķ ðóŵñ ĥéŕé ðóéš ñóţ ƒóŕĝéţ Ĥíɱ, éʋéñ íƒ Ĥé ĥáš ƒóŕĝóţţéñ ţĥíš þļáçé. Íƒ ţĥé ĥéŕóñ çíŕçļéš ļóŵ, ţéļļ ţĥé Ʋéŕĝéŕ ţĥé ŵíçķ šţíļļ ƀúŕñš...]"
       },
+      "heartwood_splinter": {
+        "name": "[Ĥéáŕţŵóóð Šþļíñţéŕ]",
+        "flavorText": "[Ŵáŕɱ ţó ţĥé ţóúçĥ, ļóñĝ áƒţéŕ ţĥé ţŕéé íţ çáɱé ƒŕóɱ šţóþþéð ɱóʋíñĝ.]"
+      },
+      "bloomcrown_pauldrons": {
+        "name": "[Ɓļóóɱçŕóŵñ Þáúļðŕóñš]"
+      },
+      "verdantguard_mantle": {
+        "name": "[Ʋéŕðáñţĝúáŕð Ɱáñţļé]"
+      },
       "reliquary_plate_chest": {
         "name": "[Ŕéļíɋúáŕý Ĝúáŕð Ĥáúƀéŕķ]"
       },
@@ -5669,6 +5682,9 @@ export const en_XA: EnTranslations = {
       },
       "the_witness_root": {
         "name": "[Ţĥé Ŵíţñéšš-Ŕóóţ]"
+      },
+      "heartwood_colossus": {
+        "name": "[Ĥéáŕţŵóóð Çóļóššúš]"
       }
     },
     "npcs": {

@@ -2954,6 +2954,11 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': 'Zerrissene Tagebuchseite',
   'entities.items.shrine_diary_page.flavorText':
     '...zählte vierzig Tage bei Kerzenlicht, bevor ich den Faden verlor. Das Dunkel hier unten vergisst Ihn nicht, auch wenn Er diesen Ort vergessen hat. Wenn der Reiher tief kreist, sag dem Küster, der Docht brennt noch...',
+  'entities.items.heartwood_splinter.name': 'Herzholzsplitter',
+  'entities.items.heartwood_splinter.flavorText':
+    'Warm anzufassen, lange nachdem der Baum, aus dem es stammt, aufgehört hat, sich zu bewegen.',
+  'entities.items.bloomcrown_pauldrons.name': 'Blütenkronen-Schulterplatten',
+  'entities.items.verdantguard_mantle.name': 'Mantel des Grünhüters',
   'entities.mobs.palefeeder.name': 'Bleichfresser',
   'entities.mobs.rootmaw.name': 'Wurzelmaul',
   'entities.mobs.the_witness_root.name': 'Die Zeugenwurzel',

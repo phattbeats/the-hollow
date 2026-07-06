@@ -291,6 +291,9 @@ export const nl_NL: EnTranslations = {
       "lessThanMinute": "<1m",
       "lockedToast": "Je bent vergrendeld voor {raid}. Ontgrendelt over {time}."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "N",
       "NE": "NO",
@@ -5215,6 +5218,16 @@ export const nl_NL: EnTranslations = {
         "name": "Gescheurde Dagboekpagina",
         "flavorText": "...telde veertig dagen bij kaarslicht voor ik de draad kwijtraakte. Het duister hier beneden vergeet Hem niet, ook al is Hij deze plek vergeten. Als de reiger laag cirkelt, zeg de Koster dat de pit nog brandt..."
       },
+      "heartwood_splinter": {
+        "name": "Kernhoutsplinter",
+        "flavorText": "Warm om aan te raken, lang nadat de boom waar het vandaan kwam ophield te bewegen."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Bloesemkroon Schouderstukken"
+      },
+      "verdantguard_mantle": {
+        "name": "Mantel van de Groene Wachter"
+      },
       "reliquary_plate_chest": {
         "name": "Reliekwacht-Maliënkolder"
       },
@@ -5669,6 +5682,9 @@ export const nl_NL: EnTranslations = {
       },
       "the_witness_root": {
         "name": "De Getuigenwortel"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {

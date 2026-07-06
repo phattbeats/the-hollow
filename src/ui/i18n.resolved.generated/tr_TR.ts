@@ -291,6 +291,9 @@ export const tr_TR: EnTranslations = {
       "lessThanMinute": "<1d",
       "lockedToast": "{raid} akınına kilitlisin. {time} içinde açılır."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "K",
       "NE": "KD",
@@ -5215,6 +5218,16 @@ export const tr_TR: EnTranslations = {
         "name": "Yırtık Günlük Sayfası",
         "flavorText": "...ipin ucunu kaçırana dek mum ışığında kırk gün saydım. Buradaki karanlık O'nu unutmuyor, O bu yeri unutmuş olsa bile. Balıkçıl alçaktan süzülürse, Bekçi'ye söyle, fitil hâlâ yanıyor..."
       },
+      "heartwood_splinter": {
+        "name": "Öz Odun Kıymığı",
+        "flavorText": "Geldiği ağaç hareket etmeyi bıraktıktan çok sonra bile dokunulduğunda sıcacık."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Çiçek Taçlı Omuzluklar"
+      },
+      "verdantguard_mantle": {
+        "name": "Yeşil Bekçinin Pelerini"
+      },
       "reliquary_plate_chest": {
         "name": "Emanetlik Muhafızı Zırhı"
       },
@@ -5669,6 +5682,9 @@ export const tr_TR: EnTranslations = {
       },
       "the_witness_root": {
         "name": "Tanık Kök"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {

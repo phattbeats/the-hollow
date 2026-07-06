@@ -291,6 +291,9 @@ export const fr_FR: EnTranslations = {
       "lessThanMinute": "<1min",
       "lockedToast": "Vous êtes verrouillé sur {raid}. Déverrouillage dans {time}."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "N",
       "NE": "NE",
@@ -5215,6 +5218,16 @@ export const fr_FR: EnTranslations = {
         "name": "Page de Journal Déchirée",
         "flavorText": "...j'ai compté quarante jours à la chandelle avant de perdre le fil. L'obscurité d'ici-bas ne L'oublie pas, même s'Il a oublié cet endroit. Si le héron plane bas, dis au Sacristain que la mèche brûle encore..."
       },
+      "heartwood_splinter": {
+        "name": "Écharde de Duramen",
+        "flavorText": "Chaude au toucher, longtemps après que l'arbre dont elle provient ait cessé de bouger."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Épaulières de la Couronne Fleurie"
+      },
+      "verdantguard_mantle": {
+        "name": "Manteau du Gardien Verdoyant"
+      },
       "reliquary_plate_chest": {
         "name": "Haubert de la garde du reliquaire"
       },
@@ -5669,6 +5682,9 @@ export const fr_FR: EnTranslations = {
       },
       "the_witness_root": {
         "name": "La Racine témoin"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {

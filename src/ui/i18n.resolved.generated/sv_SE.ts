@@ -291,6 +291,9 @@ export const sv_SE: EnTranslations = {
       "lessThanMinute": "<1m",
       "lockedToast": "Du är låst till {raid}. Låses upp om {time}."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "N",
       "NE": "NÖ",
@@ -5215,6 +5218,16 @@ export const sv_SE: EnTranslations = {
         "name": "Sönderriven Dagbokssida",
         "flavorText": "...räknade fyrtio dagar vid ljusets sken innan jag tappade tråden. Mörkret här nere glömmer Honom inte, även om Han har glömt denna plats. Om hägern cirklar lågt, säg till Klockaren att veken fortfarande brinner..."
       },
+      "heartwood_splinter": {
+        "name": "Kärnvedsplitta",
+        "flavorText": "Varm att röra vid, långt efter att trädet den kom från slutat röra sig."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Blomkronans Axelskydd"
+      },
+      "verdantguard_mantle": {
+        "name": "Den Gröna Väktarens Mantel"
+      },
       "reliquary_plate_chest": {
         "name": "Relikvarievaktens ringbrynja"
       },
@@ -5669,6 +5682,9 @@ export const sv_SE: EnTranslations = {
       },
       "the_witness_root": {
         "name": "Vittnesroten"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {

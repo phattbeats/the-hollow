@@ -1210,6 +1210,11 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.old_cragmaw.name': 'Stary Skalogryz',
   'entities.mobs.old_greyjaw.name': 'Stary Szaropaszczy',
   'entities.mobs.pale_choir_acolyte.name': 'Akolita Bladego Chóru',
+  'entities.items.heartwood_splinter.name': 'Drzazga Twardzieli',
+  'entities.items.heartwood_splinter.flavorText':
+    'Ciepła w dotyku, długo po tym, jak drzewo, z którego pochodzi, przestało się poruszać.',
+  'entities.items.bloomcrown_pauldrons.name': 'Naramienniki Kwietnej Korony',
+  'entities.items.verdantguard_mantle.name': 'Płaszcz Zielonego Strażnika',
   'entities.mobs.palefeeder.name': 'Bladożerca',
   'entities.mobs.pearlguard_sentinel.name': 'Perłostrażny Wartownik',
   'entities.mobs.raised_bonewalker.name': 'Wskrzeszony Kościochód',

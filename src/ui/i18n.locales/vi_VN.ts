@@ -1215,6 +1215,11 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.old_cragmaw.name': 'Lão Cragmaw',
   'entities.mobs.old_greyjaw.name': 'Lão Greyjaw',
   'entities.mobs.pale_choir_acolyte.name': 'Tu Đồ Hợp Ca Nhợt Nhạt',
+  'entities.items.heartwood_splinter.name': 'Mảnh Lõi Gỗ',
+  'entities.items.heartwood_splinter.flavorText':
+    'Ấm khi chạm vào, rất lâu sau khi cái cây sinh ra nó đã ngừng chuyển động.',
+  'entities.items.bloomcrown_pauldrons.name': 'Giáp Vai Vương Miện Nở Hoa',
+  'entities.items.verdantguard_mantle.name': 'Áo Choàng Của Vệ Binh Xanh Tươi',
   'entities.mobs.palefeeder.name': 'Kẻ Ăn Nhợt Nhạt',
   'entities.mobs.pearlguard_sentinel.name': 'Vệ Binh Ngọc Trai',
   'entities.mobs.raised_bonewalker.name': 'Xác Xương Hồi Sinh',

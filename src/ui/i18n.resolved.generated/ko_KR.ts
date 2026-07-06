@@ -291,6 +291,9 @@ export const ko_KR: EnTranslations = {
       "lessThanMinute": "1분 미만",
       "lockedToast": "{raid}에 잠겨 있습니다. {time} 후 해제됩니다."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "북",
       "NE": "북동",
@@ -5215,6 +5218,16 @@ export const ko_KR: EnTranslations = {
         "name": "찢어진 일기장 페이지",
         "flavorText": "...촛불로 마흔 날을 세다가 결국 놓쳐버렸다. 이 아래의 어둠은 그분을 잊지 않는다, 그분이 이곳을 잊으셨어도. 왜가리가 낮게 돌면, 등지기에게 심지가 아직 타고 있다고 전해라..."
       },
+      "heartwood_splinter": {
+        "name": "심재 조각",
+        "flavorText": "그것이 자라난 나무가 움직임을 멈춘 지 오래되었어도, 만지면 따뜻하다."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "만개한 왕관 견갑"
+      },
+      "verdantguard_mantle": {
+        "name": "상록 수호자의 망토"
+      },
       "reliquary_plate_chest": {
         "name": "성물실 수호 갑옷"
       },
@@ -5669,6 +5682,9 @@ export const ko_KR: EnTranslations = {
       },
       "the_witness_root": {
         "name": "증언의 뿌리"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {

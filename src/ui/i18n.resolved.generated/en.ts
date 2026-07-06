@@ -291,6 +291,9 @@ export const en: EnTranslations = {
       "lessThanMinute": "<1m",
       "lockedToast": "You are locked to {raid}. Unlocks in {time}."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "N",
       "NE": "NE",
@@ -5215,6 +5218,16 @@ export const en: EnTranslations = {
         "name": "Torn Diary Page",
         "flavorText": "...counted forty days by candle before I lost the thread. The dark down here does not forget Him, even if He has forgotten this place. If the heron circles low, tell the Verger the wick still burns..."
       },
+      "heartwood_splinter": {
+        "name": "Heartwood Splinter",
+        "flavorText": "Warm to the touch, long after the tree it came from stopped moving."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Bloomcrown Pauldrons"
+      },
+      "verdantguard_mantle": {
+        "name": "Verdantguard Mantle"
+      },
       "reliquary_plate_chest": {
         "name": "Reliquary Guard Hauberk"
       },
@@ -5669,6 +5682,9 @@ export const en: EnTranslations = {
       },
       "the_witness_root": {
         "name": "The Witness-Root"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {

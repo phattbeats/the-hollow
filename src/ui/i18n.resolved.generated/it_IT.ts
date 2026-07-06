@@ -291,6 +291,9 @@ export const it_IT: EnTranslations = {
       "lessThanMinute": "<1m",
       "lockedToast": "Sei bloccato in {raid}. Si sblocca tra {time}."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "N",
       "NE": "NE",
@@ -5215,6 +5218,16 @@ export const it_IT: EnTranslations = {
         "name": "Pagina di Diario Strappata",
         "flavorText": "...ho contato quaranta giorni a lume di candela prima di perdere il filo. Il buio quaggiù non Lo dimentica, anche se Lui ha dimenticato questo luogo. Se l'airone vola basso, di' al Sagrestano che lo stoppino brucia ancora..."
       },
+      "heartwood_splinter": {
+        "name": "Scheggia di Durame",
+        "flavorText": "Calda al tatto, molto tempo dopo che l'albero da cui proviene ha smesso di muoversi."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Spallacci della Corona in Fiore"
+      },
+      "verdantguard_mantle": {
+        "name": "Manto del Guardiano Verdeggiante"
+      },
       "reliquary_plate_chest": {
         "name": "Usbergo della guardia del reliquiario"
       },
@@ -5669,6 +5682,9 @@ export const it_IT: EnTranslations = {
       },
       "the_witness_root": {
         "name": "La Radice Testimone"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {

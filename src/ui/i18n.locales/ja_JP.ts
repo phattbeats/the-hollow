@@ -4544,6 +4544,11 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_gravecall_acolyte.name': '墓呼びの侍祭',
   'entities.mobs.reliquary_ledger_wraith.name': '台帳の亡霊',
   'entities.mobs.reliquary_saintless_effigy.name': '聖人なき偶像',
+  'entities.items.heartwood_splinter.name': '心材の破片',
+  'entities.items.heartwood_splinter.flavorText':
+    '触れると温かい、それが生まれた木が動かなくなってからずっと。',
+  'entities.items.bloomcrown_pauldrons.name': '花冠の肩当て',
+  'entities.items.verdantguard_mantle.name': '常磐の守護者のマント',
   'entities.mobs.palefeeder.name': '蒼白喰らい',
   'entities.mobs.rootmaw.name': '根顎獣',
   'entities.mobs.the_witness_root.name': '証しの根',

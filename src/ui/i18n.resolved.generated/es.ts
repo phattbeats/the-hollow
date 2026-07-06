@@ -291,6 +291,9 @@ export const es: EnTranslations = {
       "lessThanMinute": "<1min",
       "lockedToast": "Estás bloqueado en {raid}. Se desbloquea en {time}."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "N",
       "NE": "NE",
@@ -5215,6 +5218,16 @@ export const es: EnTranslations = {
         "name": "Página de Diario Rasgada",
         "flavorText": "...conté cuarenta días con velas antes de perder la cuenta. La oscuridad de aquí abajo no Lo olvida, aunque Él haya olvidado este lugar. Si la garza vuela bajo, dile al Sacristán que la mecha aún arde..."
       },
+      "heartwood_splinter": {
+        "name": "Astilla de Duramen",
+        "flavorText": "Cálida al tacto, mucho después de que el árbol del que proviene dejara de moverse."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Hombreras de la Corona Florida"
+      },
+      "verdantguard_mantle": {
+        "name": "Manto del Guardián Verde"
+      },
       "reliquary_plate_chest": {
         "name": "Loriga de la Guardia del Relicario"
       },
@@ -5669,6 +5682,9 @@ export const es: EnTranslations = {
       },
       "the_witness_root": {
         "name": "La Raíz Testigo"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {
