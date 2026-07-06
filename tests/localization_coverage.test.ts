@@ -355,6 +355,7 @@ describe('i18n Localization Key Coverage', () => {
     item: 'Rough Bracers',
     key: 'K',
     kind: 'Weapon',
+    slots: 14,
     label: 'Wolf',
     level: 10,
     losses: 4,

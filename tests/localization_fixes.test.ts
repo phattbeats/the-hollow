@@ -846,6 +846,13 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
     // the dedicated "Greenpaw hearth and /house helpLines" describe block.
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/housing.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/greenpaw_hearth.ts'), 'utf8'),
+    // PHAA-491: the bags capacity module (equipBag/unequipBag + the shared
+    // "Your bags are full."/socket/swap/remove error literals). Its own emit
+    // literals are scanned here; the same literals reused by market.ts,
+    // quests/quest_commands.ts, interaction.ts, and social/trade.ts (the
+    // latter under socialSrc below) are already covered by the sim.bags.*
+    // RULES in sim_i18n.ts, whether or not those call sites are scanned.
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/bags.ts'), 'utf8'),
     socialSrc,
   ].join('\n');
   // Hardened S3: also scan the authoritative server's player-facing emits. The

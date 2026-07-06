@@ -32,7 +32,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "e5357eac",
+      "state": "d9e8e64b",
       "events": "9ebb741a",
       "rng": {
         "draws": 4,
@@ -44,6 +44,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -162,7 +168,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 404,
-      "state": "7f0c813f",
+      "state": "f8f31c4c",
       "events": "d28a2342",
       "rng": {
         "draws": 8,
@@ -174,6 +180,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -346,7 +358,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 405,
-      "state": "41834d3f",
+      "state": "1e44454c",
       "events": "9b05051c",
       "rng": {
         "draws": 13,
@@ -358,6 +370,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -585,7 +603,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 406,
-      "state": "01d06dfe",
+      "state": "46e2db67",
       "events": "741638a5",
       "rng": {
         "draws": 15,
@@ -597,6 +615,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -871,7 +895,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 407,
-      "state": "1b013be4",
+      "state": "6f082685",
       "events": "741638a5",
       "rng": {
         "draws": 16,
@@ -883,6 +907,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -1198,7 +1228,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "0d3dc1aa",
+      "state": "0f60592b",
       "events": "260accd6",
       "rng": {
         "draws": 16,
@@ -1210,6 +1240,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -1569,7 +1605,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "7a44278f",
+      "state": "c0d919fc",
       "events": "741638a5",
       "rng": {
         "draws": 16,
@@ -1581,6 +1617,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -1941,7 +1983,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "7a44278f",
+      "state": "c0d919fc",
       "events": "741638a5",
       "rng": {
         "draws": 16,
@@ -1953,6 +1995,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {

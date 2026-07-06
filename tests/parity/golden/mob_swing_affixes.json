@@ -17,7 +17,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "f04cb373",
+      "state": "d40ee3cc",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -30,6 +30,12 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
@@ -101,7 +107,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 408,
-      "state": "73dacec5",
+      "state": "9554fffa",
       "events": "0bb66e36",
       "rng": {
         "draws": 55,
@@ -112,7 +118,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 408,
-      "state": "e3f72a7a",
+      "state": "a90f8cb9",
       "events": "ff321a09",
       "rng": {
         "draws": 102,
@@ -123,7 +129,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 408,
-      "state": "6ded5f0e",
+      "state": "6ea72ef3",
       "events": "461d80f2",
       "rng": {
         "draws": 241,
@@ -134,7 +140,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 408,
-      "state": "09800fd4",
+      "state": "4a904ee9",
       "events": "741638a5",
       "rng": {
         "draws": 241,
@@ -147,6 +153,12 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -566,7 +578,7 @@
       "tick": 64,
       "time": 3.2,
       "nextId": 408,
-      "state": "f1721c78",
+      "state": "4c1d6095",
       "events": "741638a5",
       "rng": {
         "draws": 263,
@@ -579,6 +591,12 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {

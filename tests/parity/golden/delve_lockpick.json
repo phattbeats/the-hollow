@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "25d1ee04",
+      "state": "eb646bf9",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -29,6 +29,12 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {},
@@ -102,7 +108,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 415,
-      "state": "bf179657",
+      "state": "40d54288",
       "events": "9312ec02",
       "rng": {
         "draws": 4,
@@ -113,7 +119,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 415,
-      "state": "666fed45",
+      "state": "1a18e7ce",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -124,7 +130,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 415,
-      "state": "9e375f0c",
+      "state": "c3c16b6d",
       "events": "92136cf6",
       "rng": {
         "draws": 5,
@@ -135,7 +141,7 @@
       "tick": 38,
       "time": 1.9,
       "nextId": 417,
-      "state": "3f4bcddf",
+      "state": "99121dba",
       "events": "a88a2cd6",
       "rng": {
         "draws": 8,
@@ -148,6 +154,12 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "cls": "rogue",
           "companionUpgrades": {},
           "copper": 22,
@@ -374,7 +386,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 417,
-      "state": "951c1788",
+      "state": "e7b0907b",
       "events": "741638a5",
       "rng": {
         "draws": 8,
@@ -385,7 +397,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 417,
-      "state": "951c1788",
+      "state": "e7b0907b",
       "events": "741638a5",
       "rng": {
         "draws": 8,
@@ -398,6 +410,12 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "cls": "rogue",
           "companionUpgrades": {},
           "copper": 22,
