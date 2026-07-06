@@ -643,7 +643,12 @@ export const es: EnTranslations = {
       "sortName": "Nombre",
       "searchPlaceholder": "Buscar objetos",
       "searchAria": "Buscar objetos de la bolsa por nombre",
-      "noMatch": "Ningún objeto coincide con tus filtros."
+      "noMatch": "Ningún objeto coincide con tus filtros.",
+      "capacity": "{used}/{total}",
+      "capacityAria": "Bag slots used: {used} of {total}",
+      "backpack": "Backpack",
+      "socketEmpty": "Empty bag slot",
+      "unequipHint": "Click to remove this bag"
     },
     "raidConvert": {
       "toPartyDone": "Tu banda ha vuelto a convertirse en grupo.",
@@ -2204,6 +2209,13 @@ export const es: EnTranslations = {
       "readoutMine": "Your homestead: {plotId}. Decor: {decor}.",
       "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <slot>.",
       "helpLine": "Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>."
+    },
+    "bags": {
+      "full": "Your bags are full.",
+      "socketsFull": "All your bag slots are full.",
+      "swapTooManyItems": "You have too many items to swap to that bag.",
+      "removeTooManyItems": "You have too many items to remove that bag.",
+      "tradeSpace": "Trade failed: not enough bag space."
     }
   },
   "lockpickUi": {
@@ -3536,7 +3548,8 @@ export const es: EnTranslations = {
       "drink": "Bebida",
       "tool": "Herramienta",
       "potion": "Poción",
-      "elixir": "Elixir"
+      "elixir": "Elixir",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "Armadura",
@@ -3578,7 +3591,8 @@ export const es: EnTranslations = {
       "useManaPotion": "Uso: restaura al instante {amount} de maná. Se puede usar en combate. Reutilización de 1 min.",
       "clickUseInstant": "Haz clic para usar al instante en combate",
       "clickUse": "Haz clic para usar",
-      "clickBuyback": "Haz clic para recomprar"
+      "clickBuyback": "Haz clic para recomprar",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "Requires level {level} to equip."

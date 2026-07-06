@@ -3534,6 +3534,10 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.bags.searchPlaceholder': 'アイテムを検索',
   'hudChrome.bags.searchAria': '名前でバッグのアイテムを検索',
   'hudChrome.bags.noMatch': '条件に一致するアイテムはありません。',
+  'hudChrome.bags.capacityAria': 'バッグスロット使用数：{total}中{used}',
+  'hudChrome.bags.backpack': 'バックパック',
+  'hudChrome.bags.socketEmpty': '空のバッグスロット',
+  'hudChrome.bags.unequipHint': 'クリックしてこのバッグを外す',
   // Guide (/guide) localization.
   'guide.brand': 'World of ClaudeCraft',
   'guide.brandShort': 'ClaudeCraft',
@@ -4659,6 +4663,11 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'delveUi.tracker.module': 'モジュール {current}/{total}',
   'delveUi.tracker.objective': '目標',
   'delveUi.tracker.title': 'デルヴ',
+  'sim.bags.full': 'バッグがいっぱいです。',
+  'sim.bags.socketsFull': 'バッグスロットはすべて使用中です。',
+  'sim.bags.swapTooManyItems': 'アイテムが多すぎてそのバッグに交換できません。',
+  'sim.bags.removeTooManyItems': 'アイテムが多すぎてそのバッグを外せません。',
+  'sim.bags.tradeSpace': '取引失敗：バッグの空きが足りません。',
   'sim.delve.alreadyInDelve': 'あなたはすでにデルヴの中にいる。',
   'sim.delve.bossChest':
     'ボスが倒れる。守りの聖遺物庫の宝箱が祭壇にせり上がる。錠を開けて戦利品を手に入れろ。',

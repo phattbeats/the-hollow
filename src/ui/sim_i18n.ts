@@ -4496,6 +4496,26 @@ const RULES: Rule[] = [
     re: /^Homesteads: \/house, \/house claim, \/house place <slot> <kind>, \/house remove <slot>\.$/,
     build: () => t('sim.house.helpLine'),
   },
+  // Bags capacity (PHAA-491): the pooled-inventory error toasts, emitted from
+  // src/sim/bags.ts and reused verbatim by market.ts, quests/quest_commands.ts,
+  // social/trade.ts, and combat/casting_lifecycle.ts wherever bags are full.
+  // Exact lines, no interpolation. ("Equipped {item}."/"Unequipped {item}."
+  // for equipBag/unequipBag reuse the existing log.equipped/log.unequipped
+  // rules above, since bags.ts emits the identical format.)
+  { re: /^Your bags are full\.$/, build: () => t('sim.bags.full') },
+  { re: /^All your bag slots are full\.$/, build: () => t('sim.bags.socketsFull') },
+  {
+    re: /^You have too many items to swap to that bag\.$/,
+    build: () => t('sim.bags.swapTooManyItems'),
+  },
+  {
+    re: /^You have too many items to remove that bag\.$/,
+    build: () => t('sim.bags.removeTooManyItems'),
+  },
+  {
+    re: /^Trade failed: not enough bag space\.$/,
+    build: () => t('sim.bags.tradeSpace'),
+  },
   // Boss/mob mechanic broadcast. Broad (two open captures), so it MUST stay last -
   // after every more-specific "{X} {verb}!" rule above (awakens, enraged, calls for aid).
   {

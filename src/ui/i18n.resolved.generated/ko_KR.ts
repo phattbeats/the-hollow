@@ -643,7 +643,12 @@ export const ko_KR: EnTranslations = {
       "sortName": "이름",
       "searchPlaceholder": "아이템 검색",
       "searchAria": "이름으로 가방 아이템 검색",
-      "noMatch": "필터와 일치하는 아이템이 없습니다."
+      "noMatch": "필터와 일치하는 아이템이 없습니다.",
+      "capacity": "{used}/{total}",
+      "capacityAria": "사용 중인 가방 칸: {total}중 {used}",
+      "backpack": "배낭",
+      "socketEmpty": "빈 가방 칸",
+      "unequipHint": "클릭하여 이 가방을 제거"
     },
     "raidConvert": {
       "toPartyDone": "공격대가 파티로 다시 전환되었습니다.",
@@ -2204,6 +2209,13 @@ export const ko_KR: EnTranslations = {
       "readoutMine": "당신의 주택: {plotId}. 장식: {decor}.",
       "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <슬롯>.",
       "helpLine": "주택: /house, /house claim, /house place <슬롯> <종류>, /house remove <슬롯>."
+    },
+    "bags": {
+      "full": "가방이 가득 찼습니다.",
+      "socketsFull": "모든 가방 칸이 사용 중입니다.",
+      "swapTooManyItems": "소지품이 너무 많아 그 가방으로 교체할 수 없습니다.",
+      "removeTooManyItems": "소지품이 너무 많아 그 가방을 해제할 수 없습니다.",
+      "tradeSpace": "거래 실패: 가방 공간이 부족합니다."
     }
   },
   "lockpickUi": {
@@ -3536,7 +3548,8 @@ export const ko_KR: EnTranslations = {
       "drink": "음료",
       "tool": "도구",
       "potion": "물약",
-      "elixir": "비약"
+      "elixir": "비약",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "방어도",
@@ -3578,7 +3591,8 @@ export const ko_KR: EnTranslations = {
       "useManaPotion": "사용: 즉시 마나를 {amount} 회복합니다. 전투 중 사용 가능. 재사용 대기시간 1분.",
       "clickUseInstant": "클릭하여 전투 중 즉시 사용",
       "clickUse": "클릭하여 사용",
-      "clickBuyback": "클릭하여 되사기"
+      "clickBuyback": "클릭하여 되사기",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "장착하려면 레벨 {level}이 필요합니다."

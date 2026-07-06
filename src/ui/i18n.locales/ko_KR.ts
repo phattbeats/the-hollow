@@ -3539,6 +3539,10 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.bags.searchPlaceholder': '아이템 검색',
   'hudChrome.bags.searchAria': '이름으로 가방 아이템 검색',
   'hudChrome.bags.noMatch': '필터와 일치하는 아이템이 없습니다.',
+  'hudChrome.bags.capacityAria': '사용 중인 가방 칸: {total}중 {used}',
+  'hudChrome.bags.backpack': '배낭',
+  'hudChrome.bags.socketEmpty': '빈 가방 칸',
+  'hudChrome.bags.unequipHint': '클릭하여 이 가방을 제거',
   // Guide (/guide) localization.
   'guide.brand': 'World of ClaudeCraft',
   'guide.brandShort': 'ClaudeCraft',
@@ -4671,6 +4675,11 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'delveUi.tracker.module': '구역 {current}/{total}',
   'delveUi.tracker.objective': '목표',
   'delveUi.tracker.title': '탐굴',
+  'sim.bags.full': '가방이 가득 찼습니다.',
+  'sim.bags.socketsFull': '모든 가방 칸이 사용 중입니다.',
+  'sim.bags.swapTooManyItems': '소지품이 너무 많아 그 가방으로 교체할 수 없습니다.',
+  'sim.bags.removeTooManyItems': '소지품이 너무 많아 그 가방을 해제할 수 없습니다.',
+  'sim.bags.tradeSpace': '거래 실패: 가방 공간이 부족합니다.',
   'sim.delve.alreadyInDelve': '이미 탐굴 중입니다.',
   'sim.delve.bossChest':
     '우두머리가 쓰러집니다. 봉인된 성물실 상자가 단상 위로 솟아오릅니다. 자물쇠를 따서 전리품을 차지하세요.',

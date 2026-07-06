@@ -643,7 +643,12 @@ export const fr_CA: EnTranslations = {
       "sortName": "Nom",
       "searchPlaceholder": "Rechercher des objets",
       "searchAria": "Rechercher les objets du sac par nom",
-      "noMatch": "Aucun objet ne correspond à vos filtres."
+      "noMatch": "Aucun objet ne correspond à vos filtres.",
+      "capacity": "{used}/{total}",
+      "capacityAria": "Bag slots used: {used} of {total}",
+      "backpack": "Backpack",
+      "socketEmpty": "Empty bag slot",
+      "unequipHint": "Click to remove this bag"
     },
     "raidConvert": {
       "toPartyDone": "Votre raid a été reconverti en groupe.",
@@ -2204,6 +2209,13 @@ export const fr_CA: EnTranslations = {
       "readoutMine": "Your homestead: {plotId}. Decor: {decor}.",
       "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <slot>.",
       "helpLine": "Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>."
+    },
+    "bags": {
+      "full": "Your bags are full.",
+      "socketsFull": "All your bag slots are full.",
+      "swapTooManyItems": "You have too many items to swap to that bag.",
+      "removeTooManyItems": "You have too many items to remove that bag.",
+      "tradeSpace": "Trade failed: not enough bag space."
     }
   },
   "lockpickUi": {
@@ -3536,7 +3548,8 @@ export const fr_CA: EnTranslations = {
       "drink": "Boisson",
       "tool": "Outil",
       "potion": "Potion",
-      "elixir": "Élixir"
+      "elixir": "Élixir",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "Armure",
@@ -3578,7 +3591,8 @@ export const fr_CA: EnTranslations = {
       "useManaPotion": "Utiliser : rend instantanément {amount} mana. Utilisable en combat. Recharge de 1 min.",
       "clickUseInstant": "Cliquer pour utiliser instantanément en combat",
       "clickUse": "Cliquer pour utiliser",
-      "clickBuyback": "Cliquer pour racheter"
+      "clickBuyback": "Cliquer pour racheter",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "Requires level {level} to equip."

@@ -643,7 +643,12 @@ export const pt_BR: EnTranslations = {
       "sortName": "Nome",
       "searchPlaceholder": "Pesquisar itens",
       "searchAria": "Pesquisar itens da bolsa por nome",
-      "noMatch": "Nenhum item corresponde aos seus filtros."
+      "noMatch": "Nenhum item corresponde aos seus filtros.",
+      "capacity": "{used}/{total}",
+      "capacityAria": "Bag slots used: {used} of {total}",
+      "backpack": "Backpack",
+      "socketEmpty": "Empty bag slot",
+      "unequipHint": "Click to remove this bag"
     },
     "raidConvert": {
       "toPartyDone": "Sua raide foi convertida de volta em um grupo.",
@@ -2204,6 +2209,13 @@ export const pt_BR: EnTranslations = {
       "readoutMine": "Your homestead: {plotId}. Decor: {decor}.",
       "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <slot>.",
       "helpLine": "Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>."
+    },
+    "bags": {
+      "full": "Your bags are full.",
+      "socketsFull": "All your bag slots are full.",
+      "swapTooManyItems": "You have too many items to swap to that bag.",
+      "removeTooManyItems": "You have too many items to remove that bag.",
+      "tradeSpace": "Trade failed: not enough bag space."
     }
   },
   "lockpickUi": {
@@ -3536,7 +3548,8 @@ export const pt_BR: EnTranslations = {
       "drink": "Bebida",
       "tool": "Ferramenta",
       "potion": "Poção",
-      "elixir": "Elixir"
+      "elixir": "Elixir",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "Armadura",
@@ -3578,7 +3591,8 @@ export const pt_BR: EnTranslations = {
       "useManaPotion": "Uso: restaura instantaneamente {amount} de mana. Pode ser usada em combate. Recarga de 1 min.",
       "clickUseInstant": "Clique para usar instantaneamente em combate",
       "clickUse": "Clique para usar",
-      "clickBuyback": "Clique para recomprar"
+      "clickBuyback": "Clique para recomprar",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "Requires level {level} to equip."

@@ -643,7 +643,12 @@ export const it_IT: EnTranslations = {
       "sortName": "Nome",
       "searchPlaceholder": "Cerca oggetti",
       "searchAria": "Cerca gli oggetti della borsa per nome",
-      "noMatch": "Nessun oggetto corrisponde ai tuoi filtri."
+      "noMatch": "Nessun oggetto corrisponde ai tuoi filtri.",
+      "capacity": "{used}/{total}",
+      "capacityAria": "Bag slots used: {used} of {total}",
+      "backpack": "Backpack",
+      "socketEmpty": "Empty bag slot",
+      "unequipHint": "Click to remove this bag"
     },
     "raidConvert": {
       "toPartyDone": "La tua incursione è tornata a essere un gruppo.",
@@ -2204,6 +2209,13 @@ export const it_IT: EnTranslations = {
       "readoutMine": "Your homestead: {plotId}. Decor: {decor}.",
       "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <slot>.",
       "helpLine": "Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>."
+    },
+    "bags": {
+      "full": "Your bags are full.",
+      "socketsFull": "All your bag slots are full.",
+      "swapTooManyItems": "You have too many items to swap to that bag.",
+      "removeTooManyItems": "You have too many items to remove that bag.",
+      "tradeSpace": "Trade failed: not enough bag space."
     }
   },
   "lockpickUi": {
@@ -3536,7 +3548,8 @@ export const it_IT: EnTranslations = {
       "drink": "Bevanda",
       "tool": "Strumento",
       "potion": "Pozione",
-      "elixir": "Elisir"
+      "elixir": "Elisir",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "Armatura",
@@ -3578,7 +3591,8 @@ export const it_IT: EnTranslations = {
       "useManaPotion": "Uso: ripristina istantaneamente {amount} mana. Usabile in combattimento. Recupero 1 min.",
       "clickUseInstant": "Clicca per usare subito in combattimento",
       "clickUse": "Clicca per usare",
-      "clickBuyback": "Clicca per ricomprare"
+      "clickBuyback": "Clicca per ricomprare",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "Requires level {level} to equip."

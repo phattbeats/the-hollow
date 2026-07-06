@@ -3386,6 +3386,10 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.bags.searchPlaceholder': '搜尋物品',
   'hudChrome.bags.searchAria': '依名稱搜尋背包物品',
   'hudChrome.bags.noMatch': '沒有符合篩選條件的物品。',
+  'hudChrome.bags.capacityAria': '背包已用欄位：{used}/{total}',
+  'hudChrome.bags.backpack': '背包',
+  'hudChrome.bags.socketEmpty': '空背包欄位',
+  'hudChrome.bags.unequipHint': '點擊移除此背包',
   // Guide (/guide) localization.
   'guide.brand': 'World of ClaudeCraft',
   'guide.brandShort': 'ClaudeCraft',
@@ -4429,6 +4433,11 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'delveUi.tracker.module': '第 {current} 區，共 {total} 區',
   'delveUi.tracker.objective': '目標',
   'delveUi.tracker.title': '秘探',
+  'sim.bags.full': '你的背包已滿。',
+  'sim.bags.socketsFull': '你的所有背包欄位都已佔用。',
+  'sim.bags.swapTooManyItems': '物品太多，無法換成那個背包。',
+  'sim.bags.removeTooManyItems': '物品太多，無法移除那個背包。',
+  'sim.bags.tradeSpace': '交易失敗：背包空間不足。',
   'sim.delve.alreadyInDelve': '你已經身處一場秘探之中。',
   'sim.delve.bossChest':
     '首領倒下了。一只受守護的聖物庫寶箱自祭壇升起，撬開它的鎖以取得你的戰利品。',

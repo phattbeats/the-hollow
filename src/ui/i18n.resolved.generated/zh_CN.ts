@@ -643,7 +643,12 @@ export const zh_CN: EnTranslations = {
       "sortName": "名称",
       "searchPlaceholder": "搜索物品",
       "searchAria": "按名称搜索背包物品",
-      "noMatch": "没有符合筛选条件的物品。"
+      "noMatch": "没有符合筛选条件的物品。",
+      "capacity": "{used}/{total}",
+      "capacityAria": "背包已用槽位：{used}/{total}",
+      "backpack": "背包",
+      "socketEmpty": "空背包栏位",
+      "unequipHint": "点击移除此背包"
     },
     "raidConvert": {
       "toPartyDone": "你的团队已转换回队伍。",
@@ -2204,6 +2209,13 @@ export const zh_CN: EnTranslations = {
       "readoutMine": "你的宅邸：{plotId}。装饰：{decor}。",
       "readoutUsage": "/house place <1-{count}> <{kinds}>，/house remove <槽位>。",
       "helpLine": "宅邸：/house、/house claim、/house place <槽位> <种类>、/house remove <槽位>。"
+    },
+    "bags": {
+      "full": "你的背包已满。",
+      "socketsFull": "你的所有背包栏位都已占用。",
+      "swapTooManyItems": "物品太多，无法换成那个背包。",
+      "removeTooManyItems": "物品太多，无法移除那个背包。",
+      "tradeSpace": "交易失败：背包空间不足。"
     }
   },
   "lockpickUi": {
@@ -3536,7 +3548,8 @@ export const zh_CN: EnTranslations = {
       "drink": "饮料",
       "tool": "工具",
       "potion": "药水",
-      "elixir": "药剂"
+      "elixir": "药剂",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "护甲",
@@ -3578,7 +3591,8 @@ export const zh_CN: EnTranslations = {
       "useManaPotion": "使用：立即恢复 {amount} 点法力值。战斗中可用。1 分钟冷却。",
       "clickUseInstant": "点击在战斗中立即使用",
       "clickUse": "点击使用",
-      "clickBuyback": "点击回购"
+      "clickBuyback": "点击回购",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "需要等级 {level} 才能装备。"

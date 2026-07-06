@@ -643,7 +643,12 @@ export const nl_NL: EnTranslations = {
       "sortName": "Naam",
       "searchPlaceholder": "Items zoeken",
       "searchAria": "Tasitems zoeken op naam",
-      "noMatch": "Geen items komen overeen met je filters."
+      "noMatch": "Geen items komen overeen met je filters.",
+      "capacity": "{used}/{total}",
+      "capacityAria": "Bag slots used: {used} of {total}",
+      "backpack": "Backpack",
+      "socketEmpty": "Empty bag slot",
+      "unequipHint": "Click to remove this bag"
     },
     "raidConvert": {
       "toPartyDone": "Je raid is terug omgezet naar een groep.",
@@ -2204,6 +2209,13 @@ export const nl_NL: EnTranslations = {
       "readoutMine": "Your homestead: {plotId}. Decor: {decor}.",
       "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <slot>.",
       "helpLine": "Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>."
+    },
+    "bags": {
+      "full": "Your bags are full.",
+      "socketsFull": "All your bag slots are full.",
+      "swapTooManyItems": "You have too many items to swap to that bag.",
+      "removeTooManyItems": "You have too many items to remove that bag.",
+      "tradeSpace": "Trade failed: not enough bag space."
     }
   },
   "lockpickUi": {
@@ -3536,7 +3548,8 @@ export const nl_NL: EnTranslations = {
       "drink": "Drank",
       "tool": "Gereedschap",
       "potion": "Toverdrank",
-      "elixir": "Elixer"
+      "elixir": "Elixer",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "Pantser",
@@ -3578,7 +3591,8 @@ export const nl_NL: EnTranslations = {
       "useManaPotion": "Gebruik: Herstelt direct {amount} mana. Bruikbaar in gevecht. 1 min afkoeltijd.",
       "clickUseInstant": "Klik om direct te gebruiken in gevecht",
       "clickUse": "Klik om te gebruiken",
-      "clickBuyback": "Klik om terug te kopen"
+      "clickBuyback": "Klik om terug te kopen",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "Requires level {level} to equip."

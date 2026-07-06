@@ -3586,6 +3586,10 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.bags.searchPlaceholder': 'Поиск предметов',
   'hudChrome.bags.searchAria': 'Поиск предметов в сумках по названию',
   'hudChrome.bags.noMatch': 'Нет предметов, соответствующих фильтрам.',
+  'hudChrome.bags.capacityAria': 'Занято ячеек сумок: {used} из {total}',
+  'hudChrome.bags.backpack': 'Рюкзак',
+  'hudChrome.bags.socketEmpty': 'Пустая ячейка для сумки',
+  'hudChrome.bags.unequipHint': 'Нажмите, чтобы снять эту сумку',
   // Guide (/guide) localization.
   'guide.brand': 'World of ClaudeCraft',
   'guide.brandShort': 'ClaudeCraft',
@@ -4761,6 +4765,11 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'delveUi.tracker.module': 'Секция {current} из {total}',
   'delveUi.tracker.objective': 'Задача',
   'delveUi.tracker.title': 'Вылазка',
+  'sim.bags.full': 'Ваши сумки полны.',
+  'sim.bags.socketsFull': 'Все ячейки для сумок заняты.',
+  'sim.bags.swapTooManyItems': 'У вас слишком много предметов, чтобы сменить эту сумку.',
+  'sim.bags.removeTooManyItems': 'У вас слишком много предметов, чтобы снять эту сумку.',
+  'sim.bags.tradeSpace': 'Обмен не удался: недостаточно места в сумках.',
   'sim.delve.alreadyInDelve': 'Вы уже находитесь в вылазке.',
   'sim.delve.bossChest':
     'Босс пал. На возвышении поднимается заговорённый сундук реликвария: взломайте его замок, чтобы забрать добычу.',
