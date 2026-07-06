@@ -3426,6 +3426,8 @@ export const ko_KR: EnTranslations = {
       "worldMarketAria": "세계 시장 열기",
       "trainSecondary": "보조 직업 하나를 가르쳐 주세요.",
       "trainSecondaryAria": "{name}에게 보조 직업을 배웁니다",
+      "feedHearth": "I have something for the hearth.",
+      "feedHearthAria": "Feed the hearth",
       "trainerTitle": "보조 직업",
       "trainerLevelLocked": "레벨 {level}에 해제됩니다.",
       "trainerCurrent": "현재",

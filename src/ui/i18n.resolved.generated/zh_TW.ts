@@ -3426,6 +3426,8 @@ export const zh_TW: EnTranslations = {
       "worldMarketAria": "開啟世界市場",
       "trainSecondary": "訓練我一項副職業。",
       "trainSecondaryAria": "向 {name} 學習一項副職業",
+      "feedHearth": "I have something for the hearth.",
+      "feedHearthAria": "Feed the hearth",
       "trainerTitle": "副職業",
       "trainerLevelLocked": "{level} 級解鎖。",
       "trainerCurrent": "目前",

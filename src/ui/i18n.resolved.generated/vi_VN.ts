@@ -3426,6 +3426,8 @@ export const vi_VN: EnTranslations = {
       "worldMarketAria": "Mở Chợ Thế Giới",
       "trainSecondary": "Train me in a secondary profession.",
       "trainSecondaryAria": "Train a secondary profession with {name}",
+      "feedHearth": "I have something for the hearth.",
+      "feedHearthAria": "Feed the hearth",
       "trainerTitle": "Secondary Profession",
       "trainerLevelLocked": "Unlocks at level {level}.",
       "trainerCurrent": "Current",

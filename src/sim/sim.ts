@@ -2301,13 +2301,6 @@ export class Sim {
       targetEntity: (id, pid) => sim.targetEntity(id, pid),
       partyCapacity: (party) => sim.party.partyCapacity(party),
       marketListingBelongsTo: (listing, meta) => sim.market.marketListingBelongsTo(listing, meta),
-      // Housing v0: the /house chat-command branch routes through the seam to the
-      // Housing instance (constructed after this literal; late-bound arrow).
-      housingChat: (raw, pid) => sim.housing.handleChat(raw, pid),
-      // Greenpaw's hearth (PHAA-421): the /feed chat-command branch routes through
-      // the seam to the GreenpawHearth instance (constructed after this literal;
-      // late-bound arrow).
-      greenpawFeedChat: (raw, pid) => sim.greenpawHearth.handleChat(raw, pid),
       // The Plant's deterministic floor (PHAA-422): the /plant chat-command
       // branch + the real-threshold report-in route through the seam to the
       // PlantSpeech instance (constructed after this literal; late-bound arrows).

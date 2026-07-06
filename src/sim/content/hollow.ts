@@ -194,6 +194,7 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
     facing: -0.6,
     color: 0x4a5d3a,
     questIds: ['q_what_burns', 'q_what_fills'],
+    hearth: true,
     greeting:
       "howdy, traveler. you catch the vase in a mood today, or is that just me again... c'mere, got a couple sacred matters need tendin'. mostly snacks. same thing, to a greenpaw degree.",
     // First-meeting click-through intro (PHAA-432): three beats in-voice

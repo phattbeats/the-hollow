@@ -7638,6 +7638,9 @@ export class Hud {
     if (def?.trainer) {
       html += `<button type="button" class="qd-list-item" data-trainer="1" aria-label="${esc(t('questUi.dialog.trainSecondaryAria', { name: npcName }))}"><span class="quest-complete">+</span> ${esc(t('questUi.dialog.trainSecondary'))}</button>`;
     }
+    if (def?.hearth) {
+      html += `<button type="button" class="qd-list-item" data-feed-hearth="1" aria-label="${esc(t('questUi.dialog.feedHearthAria'))}"><span class="gold">+</span> ${esc(t('questUi.dialog.feedHearth'))}</button>`;
+    }
     if (Object.values(DELVES).some((d) => d.boardNpcId === npc.templateId)) {
       html += `<button type="button" class="qd-list-item" data-delve-board="1" aria-label="${esc(t('delveUi.board.openDelveAria', { name: npcName }))}"><span class="gold">${svgIcon('skull')}</span> ${esc(t('delveUi.board.openDelve'))}</button>`;
     }
@@ -7661,6 +7664,9 @@ export class Hud {
     el.querySelector('[data-market]')?.addEventListener('click', () => {
       this.closeQuestDialog(false);
       this.openMarket();
+    });
+    el.querySelector('[data-feed-hearth]')?.addEventListener('click', () => {
+      this.sim.feedGreenpaw();
     });
     el.querySelector('[data-trainer]')?.addEventListener('click', () => {
       this.trainerPanel.open(npc.id, npc.templateId);

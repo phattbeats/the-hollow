@@ -3426,6 +3426,8 @@ export const ru_RU: EnTranslations = {
       "worldMarketAria": "Открыть мировой рынок",
       "trainSecondary": "Обучите меня дополнительной профессии.",
       "trainSecondaryAria": "Обучиться дополнительной профессии у {name}",
+      "feedHearth": "I have something for the hearth.",
+      "feedHearthAria": "Feed the hearth",
       "trainerTitle": "Дополнительная профессия",
       "trainerLevelLocked": "Откроется на уровне {level}.",
       "trainerCurrent": "Текущая",

@@ -11,10 +11,12 @@
 // randomness (which of Greenpaw's in-voice feed lines plays) goes through
 // SimContext's Rng.
 //
-// Player-facing /feed command text and Greenpaw's feed-response lines emit in
-// English here (the sim core stays language-agnostic); the client re-localizes
-// them through src/ui/sim_i18n.ts's RULES against the sim.hearth.* catalog keys
-// (PHAA-428), the same matcher pattern housing.ts uses for its /house text.
+// Greenpaw's feed-response lines emit in English here (the sim core stays
+// language-agnostic); the client re-localizes them through src/ui/sim_i18n.ts's
+// RULES against the sim.hearth.* catalog keys (PHAA-428), the same matcher
+// pattern housing.ts uses for its housing text. Feeding is triggered from
+// Greenpaw's dialogue menu (feedGreenpaw(), an IWorld command; PHAA-482), not
+// a typed /feed chat command.
 
 import type { SimContext } from './sim_context';
 import { dist2d, type Entity, INTERACT_RANGE } from './types';
@@ -172,14 +174,6 @@ export class GreenpawHearth {
         pid: meta.entityId,
       });
     }
-  }
-
-  // "/feed ..." chat routing (called from social/chat.ts). Returns true when
-  // the message was a /feed command (handled, even if it errored).
-  handleChat(raw: string, pid: number): boolean {
-    if (!/^\/feed\s*$/i.test(raw)) return false;
-    this.feed(pid);
-    return true;
   }
 
   serialize(): GreenpawHearthSave {
