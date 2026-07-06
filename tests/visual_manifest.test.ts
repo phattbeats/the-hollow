@@ -3,17 +3,26 @@ import { ALL_EXTENSIONS } from '@gltf-transform/extensions';
 import { MeshoptDecoder } from 'meshoptimizer';
 import { describe, expect, it } from 'vitest';
 import {
+  type ClipMap,
   manifestUrls,
   manifestUrlsForGraphics,
-  visibleAttachmentsForGraphics,
   VISUALS,
-  type ClipMap,
+  visibleAttachmentsForGraphics,
 } from '../src/render/characters/manifest';
 
 function expectedClipNames(clips: ClipMap): string[] {
   return [
-    clips.idle, clips.walk, clips.run, clips.death,
-    clips.cast, clips.sitDown, clips.sitIdle, clips.swim, clips.jump, clips.walkBack, clips.flourish,
+    clips.idle,
+    clips.walk,
+    clips.run,
+    clips.death,
+    clips.cast,
+    clips.sitDown,
+    clips.sitIdle,
+    clips.swim,
+    clips.jump,
+    clips.walkBack,
+    clips.flourish,
     ...clips.attack,
     ...(clips.hit ?? []),
     ...Object.values(clips.emote ?? {}).flatMap((spec) => spec.clips),
@@ -26,7 +35,12 @@ async function glbAnimationNames(path: string): Promise<Set<string>> {
     .registerExtensions(ALL_EXTENSIONS)
     .registerDependencies({ 'meshopt.decoder': MeshoptDecoder });
   const doc = await io.read(path);
-  return new Set(doc.getRoot().listAnimations().map((animation) => animation.getName()));
+  return new Set(
+    doc
+      .getRoot()
+      .listAnimations()
+      .map((animation) => animation.getName()),
+  );
 }
 
 describe('character visual manifest', () => {
@@ -40,16 +54,31 @@ describe('character visual manifest', () => {
     const animationNames = await glbAnimationNames(`public/${visual.url}`);
 
     expect(animationNames.size).toBeGreaterThan(0);
-    expect([...new Set(expectedClipNames(visual.clips))].filter((name) => !animationNames.has(name))).toEqual([]);
+    expect(
+      [...new Set(expectedClipNames(visual.clips))].filter((name) => !animationNames.has(name)),
+    ).toEqual([]);
+  });
+
+  it('bumps Verger Zebediah to near player parity height (board follow-up on PHAA-405)', () => {
+    expect(VISUALS.npc_zebediah.height).toBeCloseTo(2.05 * 1.25, 2);
+    expect(VISUALS.npc_zebediah.height).toBeLessThan(VISUALS.player_warrior.height);
+  });
+
+  it('has no baked animation clips for the prophet-cast heron rig (placeholder clips only)', async () => {
+    const animationNames = await glbAnimationNames(`public/${VISUALS.npc_zebediah.url}`);
+    expect(animationNames.size).toBe(0);
   });
 
   it('keeps held weapons and props available on low graphics', () => {
     const allWeaponUrls = manifestUrls().filter((url) => url.startsWith('models/weapons/'));
     expect(allWeaponUrls.length).toBeGreaterThan(0);
     expect(manifestUrlsForGraphics(false)).toEqual(expect.arrayContaining(allWeaponUrls));
-    expect(visibleAttachmentsForGraphics(VISUALS.player_warrior).map((a) => a.url))
-      .toContain('models/weapons/sword_1handed.glb');
-    expect(visibleAttachmentsForGraphics(VISUALS.player_rogue).map((a) => a.url))
-      .toEqual(['models/weapons/dagger.glb', 'models/weapons/dagger.glb']);
+    expect(visibleAttachmentsForGraphics(VISUALS.player_warrior).map((a) => a.url)).toContain(
+      'models/weapons/sword_1handed.glb',
+    );
+    expect(visibleAttachmentsForGraphics(VISUALS.player_rogue).map((a) => a.url)).toEqual([
+      'models/weapons/dagger.glb',
+      'models/weapons/dagger.glb',
+    ]);
   });
 });
