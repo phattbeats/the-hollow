@@ -1115,6 +1115,10 @@ export interface NpcDef {
   // talking to this NPC opens the trainer panel, offering these professions as
   // a secondary class (see setSecondaryClass in world_api/trainer.ts).
   trainer?: { professions: PlayerClass[] };
+  // Greenpaw's hearth (PHAA-421): talking to this NPC offers a "feed the
+  // hearth" gossip option (feedGreenpaw in world_api/greenpaw_hearth.ts),
+  // replacing the old /feed chat command (PHAA-482).
+  hearth?: boolean;
   greeting: string;
   // Optional ordered intro lines the player clicks through once, before the
   // gossip/quest hook, on first meeting this NPC (presentation-only; the UI

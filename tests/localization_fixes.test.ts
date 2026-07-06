@@ -1126,19 +1126,19 @@ describe('server restart-countdown announcements are localized (broadcastSystem 
 
 // PHAA-428: Greenpaw's hearth (src/sim/greenpaw_hearth.ts) emits TOO_FAR_LINE,
 // NO_ITEMS_LINES, and the FEED_ITEMS in-voice lines via named consts (one drawn
-// through ctx.rng.pick), and chat.ts's helpLines() returns a plain string array -
-// both are VARIABLE-routed / array-literal forms the S3 source scanner above
+// through ctx.rng.pick) - a VARIABLE-routed form the S3 source scanner above
 // cannot see (same blind-spot class as RESTART_COUNTDOWN_STEPS). This guard
 // parses the literal strings straight from source and proves each is recognized,
 // so editing one without updating its sim_i18n.ts matcher fails here. PHAA-428
 // filled zh_CN/zh_TW/ja_JP/ko_KR/ru_RU (the M16 non-Latin set); the other locales
-// legitimately still ship English pending a fuller pass (see CLAUDE.md).
-describe('Greenpaw hearth and /house helpLines command text are localized (variable-routed / array-literal blind spot)', () => {
+// legitimately still ship English pending a fuller pass (see CLAUDE.md). The
+// /feed and /house chat-command helpLines entries this guard used to also check
+// were removed by PHAA-482 (both moved to menu/interact flows).
+describe('Greenpaw hearth command text is localized (variable-routed blind spot)', () => {
   const hearthSrc = fs.readFileSync(
     path.resolve(process.cwd(), 'src/sim/greenpaw_hearth.ts'),
     'utf8',
   );
-  const chatSrc = fs.readFileSync(path.resolve(process.cwd(), 'src/sim/social/chat.ts'), 'utf8');
   const strLit = /'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"/g;
   const unq = (s: string) => s.slice(1, -1);
   const literalsBetween = (src: string, start: string, endMarker = '\n\n'): string[] => {
@@ -1154,22 +1154,15 @@ describe('Greenpaw hearth and /house helpLines command text are localized (varia
     ...literalsBetween(hearthSrc, 'const NO_ITEMS_LINES ='),
     ...literalsBetween(hearthSrc, 'const TOO_FAR_LINE ='),
   ];
-  const helpFeedLine = 'Greenpaw: /feed (bring what burns or what fills, from near the vase).';
-  const helpHouseLine =
-    'Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>.';
 
-  it('parses the hearth literal constants and the /feed + /house helpLines entries', () => {
+  it('parses the hearth literal constants', () => {
     // FEED_ITEMS (6 lines) + NO_ITEMS_LINES (2) + TOO_FAR_LINE (1) = 9.
     expect(hearthLines.length, 'should find every hearth literal').toBe(9);
-    expect(chatSrc.includes(`'${helpFeedLine}'`), '/feed helpLine text drifted').toBe(true);
-    expect(chatSrc.includes(`'${helpHouseLine}'`), '/house helpLine text drifted').toBe(true);
   });
 
-  const allStrings = [...hearthLines, helpFeedLine, helpHouseLine];
-
-  it('every hearth/helpLine string is recognized by localizeSimText (PR tier)', () => {
+  it('every hearth string is recognized by localizeSimText (PR tier)', () => {
     setLanguage('en');
-    for (const s of allStrings) {
+    for (const s of hearthLines) {
       expect(
         localizeSimText(s),
         `sim text "${s}" not recognized (would leak raw English)`,
@@ -1177,10 +1170,10 @@ describe('Greenpaw hearth and /house helpLines command text are localized (varia
     }
   });
 
-  it('recognizes and translates every hearth/helpLine string in the filled non-Latin locales', () => {
+  it('recognizes and translates every hearth string in the filled non-Latin locales', () => {
     for (const lang of ['zh_CN', 'zh_TW', 'ja_JP', 'ko_KR', 'ru_RU'] as const) {
       setLanguage(lang);
-      for (const s of allStrings) {
+      for (const s of hearthLines) {
         const out = localizeSimText(s);
         expect(out, `${lang}: "${s}" should be recognized`).not.toBeNull();
         expect(out, `${lang}: "${s}" should not stay English`).not.toBe(s);

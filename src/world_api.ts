@@ -9,9 +9,9 @@
 // keep resolving to THIS file, never the sibling directory.
 //
 // ---------------------------------------------------------------------------
-// FACET MAP: the 23 domain facets (each IWorld member assigned exactly once; 155
-// total; this count was previously stale at 22/152, corrected alongside the
-// PHAA-464 trainer command addition below). One interface per file under
+// FACET MAP: the 24 domain facets (each IWorld member assigned exactly once; 158
+// total; this count was previously stale at 23/155, corrected alongside the
+// PHAA-482 feedGreenpaw command addition below). One interface per file under
 // ./world_api/; aux types travel with their facet. The authoritative
 // member-per-facet split is the W0c parity test.
 //
@@ -45,7 +45,7 @@
 //                                          ALL_DELTA_KEYS (27) + TERSE_TO_IWORLD mapping.
 //   tests/command_schema.test.ts   (W0b)  COMMAND_NAMES universe; ClientWorld send-set
 //                                          subset-of dispatch-set; DISPATCH_ONLY (7).
-//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (156) present + same-kind on
+//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (158) present + same-kind on
 //                                          Sim + ClientWorld; aggregate == disjoint
 //                                          union of the 24 facets.
 // ---------------------------------------------------------------------------
@@ -277,6 +277,7 @@ export const COMMAND_NAMES = [
   'housingClaim',
   'housingPlace',
   'housingRemove',
+  'feedGreenpaw',
 ] as const;
 
 // The union both the send path (`online.ts`) and the dispatch switch
@@ -470,4 +471,7 @@ export const COMMAND_FACETS = {
   housingClaim: 'IWorldHousing',
   housingPlace: 'IWorldHousing',
   housingRemove: 'IWorldHousing',
+  // IWorldGreenpawHearth: feed the hearth from Greenpaw's dialogue menu
+  // (PHAA-482: an interact-key command, replacing the old /feed chat text).
+  feedGreenpaw: 'IWorldGreenpawHearth',
 } as const satisfies Partial<Record<ClientCommand, WorldFacet>>;

@@ -3426,6 +3426,8 @@ export const en_XA: EnTranslations = {
       "worldMarketAria": "[Óþéñ ţĥé Ŵóŕļð Ɱáŕķéţ]",
       "trainSecondary": "[Ţŕáíñ ɱé íñ á šéçóñðáŕý þŕóƒéššíóñ.]",
       "trainSecondaryAria": "[Ţŕáíñ á šéçóñðáŕý þŕóƒéššíóñ ŵíţĥ {name}]",
+      "feedHearth": "[Í ĥáʋé šóɱéţĥíñĝ ƒóŕ ţĥé ĥéáŕţĥ.]",
+      "feedHearthAria": "[Ƒééð ţĥé ĥéáŕţĥ]",
       "trainerTitle": "[Šéçóñðáŕý Þŕóƒéššíóñ]",
       "trainerLevelLocked": "[Úñļóçķš áţ ļéʋéļ {level}.]",
       "trainerCurrent": "[Çúŕŕéñţ]",

@@ -3426,6 +3426,8 @@ export const ja_JP: EnTranslations = {
       "worldMarketAria": "ワールドマーケットを開く",
       "trainSecondary": "二手の職業を教えてください。",
       "trainSecondaryAria": "{name} に二手の職業を学ぶ",
+      "feedHearth": "I have something for the hearth.",
+      "feedHearthAria": "Feed the hearth",
       "trainerTitle": "副次職業",
       "trainerLevelLocked": "レベル {level} で解放されます。",
       "trainerCurrent": "現在",

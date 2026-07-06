@@ -5,8 +5,9 @@
 // unlike Housing's per-viewer HousingInfo, this is always present and carries
 // no origin. `smoke` is the single mood input the Plant system (PHAA-422)
 // reads; `level` is the same value bucketed for the renderer's room dressing.
-// Feeding goes through the /feed chat command (the existing chat wire), so
-// this facet carries no commands.
+// Feeding is an interact-key command from Greenpaw's dialogue menu (PHAA-482:
+// a "feed the hearth" gossip option, replacing the old /feed chat command),
+// resolved server-side against whatever FEED_ITEMS the player is carrying.
 // ---------------------------------------------------------------------------
 
 export type SmokeLevel = 'clear' | 'hazy' | 'full';
@@ -18,4 +19,6 @@ export interface GreenpawHearthInfo {
 
 export interface IWorldGreenpawHearth {
   hollowHearth: GreenpawHearthInfo;
+  /** Feed Greenpaw's hearth with whatever FEED_ITEMS the viewer is carrying (server re-checks range). */
+  feedGreenpaw(): void;
 }

@@ -1982,6 +1982,12 @@ export class ClientWorld implements IWorld {
   housingRemove(slot: number): void {
     this.cmd({ cmd: 'housingRemove', slot });
   }
+  // --- IWorldGreenpawHearth: feed command send (hollowHearth is a snapshot read,
+  // mirror field above). PHAA-482: an interact-key command from Greenpaw's
+  // dialogue menu, not chat text. ---
+  feedGreenpaw(): void {
+    this.cmd({ cmd: 'feedGreenpaw' });
+  }
   // --- IWorldDungeons: dungeon enter/leave sends + the raid-lockout countdown read.
   // selfLockouts mirrors the snapshot `s.lockouts`; raidLockouts derives the live
   // countdown locally so it ticks without traffic. enter_crypt/leave_crypt are legacy

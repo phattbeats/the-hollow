@@ -199,10 +199,6 @@ const CALLBACK_KEYS = [
   'targetEntity',
   'partyCapacity',
   'marketListingBelongsTo',
-  // Housing v0: the /house chat-command branch.
-  'housingChat',
-  // Greenpaw's hearth (PHAA-421): the /feed chat-command branch.
-  'greenpawFeedChat',
   // The Plant's deterministic floor (PHAA-422): the /plant chat-command
   // branch + the real-threshold report-in.
   'plantSpeechChat',
@@ -437,8 +433,6 @@ function makeFakeHost() {
     targetEntity: vi.fn(),
     partyCapacity: vi.fn(() => 5),
     marketListingBelongsTo: vi.fn(() => false),
-    housingChat: vi.fn(() => false),
-    greenpawFeedChat: vi.fn(() => false),
     plantSpeechChat: vi.fn(() => false),
     notifyPlantThreshold: vi.fn(),
     plantSpeechAmbientChat: vi.fn(),
