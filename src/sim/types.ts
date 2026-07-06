@@ -276,7 +276,8 @@ type ItemKind =
   | 'drink'
   | 'tool'
   | 'potion'
-  | 'elixir';
+  | 'elixir'
+  | 'bag';
 
 interface BaseItemDef {
   id: string;
@@ -312,6 +313,12 @@ interface BaseItemDef {
   // `duration` the buff length in seconds. Folds through the normal aura/stat path.
   elixir?: { aura: string; kind: AuraKind; value: number; duration: number };
   quality?: 'poor' | 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary'; // gray/white/green/blue/purple/orange name colors
+  // bags (kind:'bag'): extra inventory slots granted while equipped in one of
+  // the 4 bag sockets (see src/sim/bags.ts; the 16-slot backpack is implicit).
+  bagSlots?: number;
+  // Max copies per inventory slot. When omitted the default is derived from
+  // `kind` (weapon/armor/bag/tool: 1, everything else: 20); see stackSizeOf.
+  stackSize?: number;
   requiredClass?: PlayerClass[];
   /** Minimum character level required to equip this item; enforced server-side in equipItem. */
   requiredLevel?: number;

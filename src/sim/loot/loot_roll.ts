@@ -284,14 +284,21 @@ function startMasterLootRoll(ctx: SimContext, itemId: string, mob: Entity): bool
   return true;
 }
 
+// Returns true when the item was consumed off the corpse (a roll started, or
+// it landed in the looter's bags); false when the direct-grant path found the
+// looter's bags full, so the caller leaves it on the corpse. Roll paths are
+// not capacity-gated: a roll win force-adds (items are never destroyed).
 export function awardSharedLootItem(
   ctx: SimContext,
   itemId: string,
   mob: Entity,
   looter: PlayerMeta,
-): void {
-  if (startMasterLootRoll(ctx, itemId, mob)) return;
-  if (!startNeedGreedRoll(ctx, itemId, mob)) ctx.addItem(itemId, 1, looter.entityId);
+): boolean {
+  if (startMasterLootRoll(ctx, itemId, mob)) return true;
+  if (startNeedGreedRoll(ctx, itemId, mob)) return true;
+  if (!ctx.canAddItem(itemId, 1, looter.entityId)) return false;
+  ctx.addItem(itemId, 1, looter.entityId);
+  return true;
 }
 
 // Open need-greed rolls the given player may still answer. Mirrors the

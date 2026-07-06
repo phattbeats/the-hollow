@@ -570,6 +570,10 @@ export interface SimContextCallbacks {
   // when the raw message was a /homestead command (handled). Append-only,
   // late-bound to Sim.
   homesteadChat(raw: string, pid: number): boolean;
+  // Bags (src/sim/bags.ts): the capacity pre-check every blocking command path
+  // calls before granting (buy/loot/pickup/fish/conjure/collect/trade/turn-in).
+  // Stays on Sim next to the addItem/removeItem/countItem inventory hub.
+  canAddItem(itemId: string, count: number, pid?: number): boolean;
 }
 
 // The seam consumed by extracted modules.
@@ -906,5 +910,7 @@ export function createSimContext(host: SimContextHost): SimContext {
     plantSpeechAmbientChat: host.plantSpeechAmbientChat,
     // Homestead v0: the /homestead chat-command branch.
     homesteadChat: host.homesteadChat,
+    // Bags capacity pre-check (stays on Sim next to the inventory hub).
+    canAddItem: host.canAddItem,
   };
 }

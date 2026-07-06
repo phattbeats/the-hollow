@@ -240,6 +240,8 @@ const HEAVY_SELF_REFRESH_TICKS = 40; // ~2 s backstop; staggered per session so 
 const HEAVY_SELF_CMDS = new Set<string>([
   'equip',
   'unequip_item',
+  'equip_bag',
+  'unequip_bag',
   'use',
   'discard',
   'buy',
@@ -2219,6 +2221,18 @@ export class GameServer {
           sim.unequipItem(msg.slot as EquipSlot, pid);
         }
         break;
+      case 'equip_bag':
+        if (typeof msg.item === 'string') {
+          const socket =
+            typeof msg.socket === 'number' && Number.isInteger(msg.socket) ? msg.socket : undefined;
+          sim.equipBag(msg.item, socket, pid);
+        }
+        break;
+      case 'unequip_bag':
+        if (typeof msg.socket === 'number' && Number.isInteger(msg.socket)) {
+          sim.unequipBag(msg.socket, pid);
+        }
+        break;
       case 'use':
         if (typeof msg.item === 'string') {
           const result = sim.useItem(msg.item, pid);
@@ -3042,6 +3056,7 @@ export class GameServer {
       session.selfHeavyDirty = false;
       session.lastWireRev = meta.wireRev;
       maybe('inv', meta.inventory);
+      maybe('bags', meta.bags);
       maybe('buyback', meta.vendorBuyback);
       maybe('equip', meta.equipment);
       maybe('cosmetics', anchorSession.accountCosmetics);
