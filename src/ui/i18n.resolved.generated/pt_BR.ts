@@ -6852,6 +6852,10 @@ export const pt_BR: EnTranslations = {
       }
     },
     "itemSets": {
+      "boundstone_vanguard": {
+        "name": "Boundstone Vanguard",
+        "bonus3": "Increases attack and casting speed by 15%."
+      },
       "crownforged": {
         "name": "Traje de batalha Forjacoroa",
         "bonus2": "Aumenta o poder de ataque em 40.",
@@ -6861,6 +6865,10 @@ export const pt_BR: EnTranslations = {
         "name": "Traje de batalha do Senhor da Morte",
         "bonus2": "Aumenta o poder de ataque em 40.",
         "bonus3": "Aumenta a força em 15 e o vigor em 15."
+      },
+      "greyjaw_stalker": {
+        "name": "Greyjaw Stalker's Kit",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "necromancers": {
         "name": "Vestes do necromante",
@@ -6881,6 +6889,10 @@ export const pt_BR: EnTranslations = {
         "name": "Vestes do Chamatormentas",
         "bonus2": "Reduz em 50% o atraso de conjuração causado por dano.",
         "bonus3": "Dano recebido não atrasa suas conjurações."
+      },
+      "vale_arcanist": {
+        "name": "Vale Arcanist's Regalia",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "wyrmshadow": {
         "name": "Traje Sombraverme",

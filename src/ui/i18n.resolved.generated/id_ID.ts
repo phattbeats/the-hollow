@@ -6852,6 +6852,10 @@ export const id_ID: EnTranslations = {
       }
     },
     "itemSets": {
+      "boundstone_vanguard": {
+        "name": "Boundstone Vanguard",
+        "bonus3": "Increases attack and casting speed by 15%."
+      },
       "crownforged": {
         "name": "Perlengkapan tempur Tempa Mahkota",
         "bonus2": "Meningkatkan daya serang sebesar 40.",
@@ -6861,6 +6865,10 @@ export const id_ID: EnTranslations = {
         "name": "Perlengkapan tempur Penguasa Maut",
         "bonus2": "Meningkatkan daya serang sebesar 40.",
         "bonus3": "Meningkatkan kekuatan sebesar 15 dan stamina sebesar 15."
+      },
+      "greyjaw_stalker": {
+        "name": "Greyjaw Stalker's Kit",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "necromancers": {
         "name": "Jubah ahli nujum",
@@ -6881,6 +6889,10 @@ export const id_ID: EnTranslations = {
         "name": "Jubah Pemanggil Badai",
         "bonus2": "Mengurangi dorongan balik sihir akibat kerusakan sebesar 50%.",
         "bonus3": "Kerusakan yang diterima tidak menunda perapalan sihir."
+      },
+      "vale_arcanist": {
+        "name": "Vale Arcanist's Regalia",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "wyrmshadow": {
         "name": "Perlengkapan Bayangan Wyrm",

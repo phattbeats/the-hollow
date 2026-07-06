@@ -6852,6 +6852,10 @@ export const nl_NL: EnTranslations = {
       }
     },
     "itemSets": {
+      "boundstone_vanguard": {
+        "name": "Boundstone Vanguard",
+        "bonus3": "Increases attack and casting speed by 15%."
+      },
       "crownforged": {
         "name": "Kroongesmede gevechtsuitrusting",
         "bonus2": "Verhoogt aanvalskracht met 40.",
@@ -6861,6 +6865,10 @@ export const nl_NL: EnTranslations = {
         "name": "Gevechtsuitrusting van de Dodenheer",
         "bonus2": "Verhoogt aanvalskracht met 40.",
         "bonus3": "Verhoogt kracht met 15 en uithoudingsvermogen met 15."
+      },
+      "greyjaw_stalker": {
+        "name": "Greyjaw Stalker's Kit",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "necromancers": {
         "name": "Gewaden van de necromant",
@@ -6881,6 +6889,10 @@ export const nl_NL: EnTranslations = {
         "name": "Gewaden van de Stormroeper",
         "bonus2": "Vermindert terugslag bij spreuken door schade met 50%.",
         "bonus3": "Opgelopen schade vertraagt je spreuken niet."
+      },
+      "vale_arcanist": {
+        "name": "Vale Arcanist's Regalia",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "wyrmshadow": {
         "name": "Wurmschaduw-uitrusting",

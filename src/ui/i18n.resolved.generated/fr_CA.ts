@@ -6852,6 +6852,10 @@ export const fr_CA: EnTranslations = {
       }
     },
     "itemSets": {
+      "boundstone_vanguard": {
+        "name": "Boundstone Vanguard",
+        "bonus3": "Increases attack and casting speed by 15%."
+      },
       "crownforged": {
         "name": "Tenue de guerre Couronneforge",
         "bonus2": "Augmente la puissance d'attaque de 40.",
@@ -6861,6 +6865,10 @@ export const fr_CA: EnTranslations = {
         "name": "Tenue de guerre du seigneur de la mort",
         "bonus2": "Augmente la puissance d'attaque de 40.",
         "bonus3": "Augmente la force de 15 et l'endurance de 15."
+      },
+      "greyjaw_stalker": {
+        "name": "Greyjaw Stalker's Kit",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "necromancers": {
         "name": "Robe du nécromancien",
@@ -6881,6 +6889,10 @@ export const fr_CA: EnTranslations = {
         "name": "Robe de l’Appel-tempête",
         "bonus2": "Réduit de 50% le recul des incantations causé par les dégâts.",
         "bonus3": "Les dégâts subis ne retardent pas l'incantation."
+      },
+      "vale_arcanist": {
+        "name": "Vale Arcanist's Regalia",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "wyrmshadow": {
         "name": "Tenue d’Ombre-drake",

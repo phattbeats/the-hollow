@@ -6852,6 +6852,10 @@ export const sv_SE: EnTranslations = {
       }
     },
     "itemSets": {
+      "boundstone_vanguard": {
+        "name": "Boundstone Vanguard",
+        "bonus3": "Increases attack and casting speed by 15%."
+      },
       "crownforged": {
         "name": "Kronsmidd stridsutrustning",
         "bonus2": "Ökar attackkraft med 40.",
@@ -6861,6 +6865,10 @@ export const sv_SE: EnTranslations = {
         "name": "Dödsherrens stridsutrustning",
         "bonus2": "Ökar attackkraft med 40.",
         "bonus3": "Ökar styrka med 15 och uthållighet med 15."
+      },
+      "greyjaw_stalker": {
+        "name": "Greyjaw Stalker's Kit",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "necromancers": {
         "name": "Nekromantikerns skrud",
@@ -6881,6 +6889,10 @@ export const sv_SE: EnTranslations = {
         "name": "Stormkallarens skrud",
         "bonus2": "Minskar kastfördröjning från skada med 50%.",
         "bonus3": "Skada du tar fördröjer inte dina besvärjelser."
+      },
+      "vale_arcanist": {
+        "name": "Vale Arcanist's Regalia",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "wyrmshadow": {
         "name": "Wyrmskuggans utrustning",

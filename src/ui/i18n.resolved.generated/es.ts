@@ -6852,6 +6852,10 @@ export const es: EnTranslations = {
       }
     },
     "itemSets": {
+      "boundstone_vanguard": {
+        "name": "Boundstone Vanguard",
+        "bonus3": "Increases attack and casting speed by 15%."
+      },
       "crownforged": {
         "name": "Equipo de batalla Forjacorona",
         "bonus2": "Aumenta el poder de ataque en 40.",
@@ -6861,6 +6865,10 @@ export const es: EnTranslations = {
         "name": "Equipo de batalla del Señor de la Muerte",
         "bonus2": "Aumenta el poder de ataque en 40.",
         "bonus3": "Aumenta la fuerza en 15 y el aguante en 15."
+      },
+      "greyjaw_stalker": {
+        "name": "Greyjaw Stalker's Kit",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "necromancers": {
         "name": "Vestiduras del nigromante",
@@ -6881,6 +6889,10 @@ export const es: EnTranslations = {
         "name": "Vestiduras del Invocatormentas",
         "bonus2": "Reduce un 50% el retroceso de lanzamiento causado por daño.",
         "bonus3": "El daño recibido no retrasa tus lanzamientos."
+      },
+      "vale_arcanist": {
+        "name": "Vale Arcanist's Regalia",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "wyrmshadow": {
         "name": "Atuendo de Sombra de Vermis",

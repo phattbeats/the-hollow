@@ -6852,6 +6852,10 @@ export const de_DE: EnTranslations = {
       }
     },
     "itemSets": {
+      "boundstone_vanguard": {
+        "name": "Boundstone Vanguard",
+        "bonus3": "Increases attack and casting speed by 15%."
+      },
       "crownforged": {
         "name": "Kronengeschmiedete Kriegstracht",
         "bonus2": "Erhöht Angriffskraft um 40.",
@@ -6861,6 +6865,10 @@ export const de_DE: EnTranslations = {
         "name": "Kriegstracht des Todesfürsten",
         "bonus2": "Erhöht Angriffskraft um 40.",
         "bonus3": "Erhöht Stärke um 15 und Ausdauer um 15."
+      },
+      "greyjaw_stalker": {
+        "name": "Greyjaw Stalker's Kit",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "necromancers": {
         "name": "Gewänder des Nekromanten",
@@ -6881,6 +6889,10 @@ export const de_DE: EnTranslations = {
         "name": "Gewänder des Sturmrufers",
         "bonus2": "Verringert Zauberrückstoß durch Schaden um 50%.",
         "bonus3": "Erlittener Schaden verzögert das Zauberwirken nicht."
+      },
+      "vale_arcanist": {
+        "name": "Vale Arcanist's Regalia",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "wyrmshadow": {
         "name": "Wyrmschattentracht",

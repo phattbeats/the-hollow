@@ -6852,15 +6852,23 @@ export const en_CA: EnTranslations = {
       }
     },
     "itemSets": {
+      "boundstone_vanguard": {
+        "name": "Boundstone Vanguard",
+        "bonus3": "Increases attack and casting speed by 15%."
+      },
       "crownforged": {
         "name": "Crownforged Regalia",
         "bonus2": "Increases attack power by 40.",
-        "bonus3": "Increases Strength by 15 and Stamina by 15."
+        "bonus3": "Increases Strength by 15, Stamina by 15, and attack and casting speed by 15%."
       },
       "deathlord": {
         "name": "Deathlord Battlegear",
         "bonus2": "Increases attack power by 40.",
         "bonus3": "Increases Strength by 15 and Stamina by 15."
+      },
+      "greyjaw_stalker": {
+        "name": "Greyjaw Stalker's Kit",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "necromancers": {
         "name": "Necromancer's Raiment",
@@ -6870,17 +6878,21 @@ export const en_CA: EnTranslations = {
       "nighttalon": {
         "name": "Nighttalon Pelt",
         "bonus2": "Increases attack power by 40.",
-        "bonus3": "Increases Agility by 15 and critical strike chance by 2%."
+        "bonus3": "Increases Agility by 15, critical strike chance by 2%, and attack and casting speed by 15%."
       },
       "soulflame": {
         "name": "Soulflame Regalia",
         "bonus2": "Reduces cast pushback from damage by 50%.",
-        "bonus3": "You cannot be pushed back while casting (immune to cast pushback from damage)."
+        "bonus3": "You cannot be pushed back while casting (immune to cast pushback from damage), and attack and casting speed is increased by 15%."
       },
       "stormcallers": {
         "name": "Stormcaller's Vestments",
         "bonus2": "Reduces cast pushback from damage by 50%.",
-        "bonus3": "You cannot be pushed back while casting (immune to cast pushback from damage)."
+        "bonus3": "You cannot be pushed back while casting (immune to cast pushback from damage), and attack and casting speed is increased by 15%."
+      },
+      "vale_arcanist": {
+        "name": "Vale Arcanist's Regalia",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "wyrmshadow": {
         "name": "Wyrmshadow Vestments",
