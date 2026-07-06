@@ -50,7 +50,10 @@ ${cssFlat}
     <img class="ls-logo" src="https://thehollow.world/the-hollow-logo.png" alt="The Hollow" />
     <div class="ls-progress">
       <div class="ls-bar"><div id="ls-fill" style="width: 64%"></div></div>
-      <div id="ls-status">entering the world...</div>
+      <div class="ls-meta">
+        <div id="ls-status">Loading world... 30/47</div>
+        <div id="ls-percent" aria-hidden="true">64%</div>
+      </div>
     </div>
   </div>
 </body>

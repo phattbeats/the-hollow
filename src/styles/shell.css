@@ -1941,14 +1941,54 @@
     0%   { transform: translateX(-100%); }
     100% { transform: translateX(120%); }
   }
+  /* The meta row under the bar carries the status text on the left and the
+     numeric percentage on the right. flex-space-between keeps them anchored
+     to opposite ends of the same line so the bar + its readout read as one
+     composed cluster, not two loose elements. */
+  .ls-meta {
+    width: min(420px, 70vw);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 14px;
+    margin-top: 4px;
+  }
+  /* Status text: readability pass.
+     - bumped from 12px to 14px so it clears the small-text floor at the
+       desktop and mobile viewports in the QA shot script.
+     - lifted from var(--color-text-light) (a dim parchment) to the same
+       warm cream used by the wordmark/logo so it sits in the same hue
+       family and reads at >= 4.5:1 against the dark backdrop.
+     - opacity raised to 0.95; the wordmark reads at 0.94-1.0, so the
+       status no longer looks like a debug print.
+     - text-shadow strengthened (2px 2px 4px) so motes drifting past the
+       glyphs cannot knock out legibility.
+     - dropped `text-transform: lowercase` so the strings render in the
+       case the i18n authors chose (lowercase tracking is reserved for
+       small caption rules elsewhere in the shell). */
   #ls-status {
-    color: var(--color-text-light);
+    color: #f1e4c6;
     font-family: var(--font-heading);
-    font-size: 12px;
-    letter-spacing: 0.06em;
-    text-transform: lowercase;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.85);
-    opacity: 0.85;
+    font-size: 14px;
+    line-height: 1.4;
+    letter-spacing: 0.04em;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.85), 0 0 8px rgba(0, 0, 0, 0.6);
+    opacity: 0.95;
+    min-width: 0;
+  }
+  /* Numeric percentage on the right edge of the meta row. Same cream
+     family, slightly tabular-feeling so the digits do not jitter as the
+     bar advances. mono-stack fallback so the column stays the same width
+     whether the count is "7%" or "100%". */
+  #ls-percent {
+    color: #f1e4c6;
+    font-family: var(--font-mono, ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace);
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.85), 0 0 8px rgba(0, 0, 0, 0.6);
+    opacity: 0.92;
+    flex: 0 0 auto;
   }
   /* Respect reduced-motion: hold the bloom and motes still and keep the sheen
      off the fill so the screen is still alive but not jittery. */

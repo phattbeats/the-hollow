@@ -753,7 +753,11 @@ function setLoadingStatus(text: string): void {
 }
 
 function setLoadingProgress(done: number, total: number): void {
-  $('#ls-fill').style.width = total > 0 ? `${Math.round((done / total) * 100)}%` : '0%';
+  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+  const fill = $('#ls-fill');
+  const percent = $('#ls-percent');
+  if (fill) fill.style.width = `${pct}%`;
+  if (percent) percent.textContent = `${pct}%`;
   setLoadingStatus(t('loading.worldProgress', { done, total }));
 }
 
