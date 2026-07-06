@@ -848,9 +848,11 @@ export const VISUALS: Record<string, VisualDef> = {
   // Verger Zebediah and Sexton Faddick: textured hero models from the PHAA-413/414
   // prophet-cast pass. Placed as sim NPCs in the Hollow Reaches starter zone
   // (src/sim/content/hollow_zone.ts, PHAA-420); see the NPC_KEYS entries below.
+  // Zebediah's height bumped 25% (Board follow-up, PHAA-483): the base build read
+  // tiny next to a player; 2.56 lands just under HUMANOID_H (2.6) for parity.
   npc_zebediah: {
     url: `${NPCS}/zebediah.glb`,
-    height: 2.05,
+    height: 2.56,
     clips: {
       idle: 'Idle',
       walk: 'Idle',
