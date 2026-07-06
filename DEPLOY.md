@@ -159,9 +159,11 @@ For off-box safety, sync the directory to S3 occasionally:
   `[build:server] bot detector: stub (no-op)` vs `… bot detector: private`.
 - **Anti-bot runtime knobs**: `MAX_WS_PER_IP_HARD` (default `20`) caps simultaneous
   WebSocket connections per source IP; extra connections are refused at the
-  handshake. `ANTIBOT_ENFORCE=1` lets the detector act on its findings (e.g. kick);
-  when unset, detection is observe-only. With the no-op stub, enforcement has no
-  effect regardless of this flag.
+  handshake. Whether the detector acts on its findings (e.g. kick) versus stays
+  observe-only is now a live, operator-tunable field under admin dashboard
+  **Bot Detector > Configuration** (`ANTIBOT_ENFORCE` remains a detector-defined
+  default for that field, not a host-level gate). With the no-op stub, there are
+  no configurable fields and enforcement has no effect regardless.
 - Logs: `sudo docker compose -f /opt/eastbrook/docker-compose.yml logs -f game`.
 - If the instance ever feels tight, stop → change instance type →
   start. Everything lives in Docker plus one EBS volume, so nothing
