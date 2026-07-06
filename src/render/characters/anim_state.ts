@@ -21,7 +21,11 @@ const DEFAULT_WALK_REF = 2.2;
 const DEFAULT_RUN_REF = 7;
 
 export function desiredBaseState(s: AnimState, hasWalkBackClip: boolean): BaseState {
-  if (s.swimming) return 'swim';
+  // Swimming uses the Lie_Idle clip (horizontal/prone), which reads as a sleeping
+  // pose when the entity is stationary in water rather than a swimmer. Only pick
+  // swim when the entity is actually moving through the water; stationary
+  // waders fall through to idle so the rig stands upright on the lake bed.
+  if (s.swimming && s.moving) return 'swim';
   if (s.airborne) return 'jump';
   if (s.casting) return 'cast';
   if (s.sitting) return 'sit';
