@@ -242,6 +242,71 @@ describe('The Hollow hub', () => {
     expect(sim.countItem('first_cutting')).toBe(1);
   });
 
+  // PHAA-471: his last request can be refused outright. The refusal completes the
+  // quest as normal (full rewards, cutting included) without the second descent.
+  it("refusing Greenpaw's last request completes q_what_fills with its rewards", () => {
+    const cls: PlayerClass = 'druid';
+    const sim = new Sim({ seed: 7, playerClass: cls, playerName: 'Q', autoEquip: false });
+    const meta = (sim as any).primary;
+    const pid = meta.entityId as number;
+    teleport(sim, pid, HOLLOW_HUB_DOOR_POS.x, HOLLOW_HUB_DOOR_POS.z);
+    sim.enterDungeon('the_hollow', pid);
+    const greenpaw = findEntity(
+      sim,
+      (e) => e.kind === 'npc' && e.templateId === 'brother_greenpaw',
+    )!;
+    sim.player.pos = { ...greenpaw.pos };
+
+    // Not refusable before the prerequisite is done (state is unavailable)
+    sim.refuseQuest('q_what_fills');
+    expect(meta.questsDone.has('q_what_fills')).toBe(false);
+
+    // A quest without offerDialog can never be refused
+    expect(QUESTS.q_what_burns.offerDialog).toBeUndefined();
+    sim.refuseQuest('q_what_burns');
+    expect(meta.questsDone.has('q_what_burns')).toBe(false);
+
+    sim.acceptQuest('q_what_burns');
+    sim.addItem('emberbulb', 5);
+    sim.tick();
+    sim.turnInQuest('q_what_burns');
+    expect(meta.questsDone.has('q_what_burns')).toBe(true);
+    sim.drainEvents();
+
+    // Out of range: the refusal is rejected like any other quest verb
+    const atGreenpaw = { ...sim.player.pos };
+    sim.player.pos = { x: atGreenpaw.x + 50, y: atGreenpaw.y, z: atGreenpaw.z };
+    sim.refuseQuest('q_what_fills');
+    expect(meta.questsDone.has('q_what_fills')).toBe(false);
+    sim.player.pos = atGreenpaw;
+
+    const copperBefore = meta.copper as number;
+    const xpBefore = meta.xp as number;
+    sim.refuseQuest('q_what_fills');
+    expect(meta.questsDone.has('q_what_fills')).toBe(true);
+    expect(meta.questLog.has('q_what_fills')).toBe(false);
+    expect(sim.questState('q_what_fills')).toBe('done');
+    expect(sim.countItem('first_cutting')).toBe(1);
+    expect(meta.copper).toBe(copperBefore + QUESTS.q_what_fills.copperReward);
+    expect(meta.xp).toBe(xpBefore + QUESTS.q_what_fills.xpReward);
+    const events = sim.drainEvents();
+    expect(events.some((e: any) => e.type === 'questDone' && e.questId === 'q_what_fills')).toBe(
+      true,
+    );
+
+    // Refusing again is a no-op error path: nothing double-grants
+    sim.refuseQuest('q_what_fills');
+    expect(sim.countItem('first_cutting')).toBe(1);
+  });
+
+  it('q_what_fills carries the full branching offer dialog', () => {
+    const dialog = QUESTS.q_what_fills.offerDialog!;
+    expect(dialog).toBeTruthy();
+    for (const part of ['complain', 'complainReply', 'refuse', 'refuseReply'] as const) {
+      expect(dialog[part].length).toBeGreaterThan(0);
+    }
+  });
+
   it('the quest loot and rewards resolve to real items on the right mobs', () => {
     expect(QUESTS.q_what_fills.requiresQuest).toBe('q_what_burns');
     expect(NPCS.brother_greenpaw.questIds).toEqual(['q_what_burns', 'q_what_fills']);

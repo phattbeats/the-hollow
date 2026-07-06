@@ -181,6 +181,7 @@ export const COMMAND_NAMES = [
   'accept',
   'turnin',
   'abandon',
+  'refuse',
   'qlinkaccept',
   'equip',
   'unequip_item',

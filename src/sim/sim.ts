@@ -4622,6 +4622,10 @@ export class Sim {
     questCommands.turnInQuest(this.ctx, questId, pid);
   }
 
+  refuseQuest(questId: string, pid?: number): void {
+    questCommands.refuseQuest(this.ctx, questId, pid);
+  }
+
   // No-op in offline mode
   reportTelemetry(): void {}
 
