@@ -934,6 +934,11 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': 'Halaman Buku Harian yang Robek',
   'entities.items.shrine_diary_page.flavorText':
     '...menghitung empat puluh hari dengan cahaya lilin sebelum kehilangan hitungan. Kegelapan di bawah sini tak melupakan-Nya, meski Dia telah melupakan tempat ini. Jika bangau terbang rendah, katakan pada Sang Penjaga sumbunya masih menyala...',
+  'entities.items.linen_pouch.name': 'Kantong Linen',
+  'entities.items.travelers_knapsack.name': 'Ransel Pengembara',
+  'entities.items.wolfhide_satchel.name': 'Tas Kulit Serigala',
+  'entities.items.gravewoven_bag.name': 'Tas Anyaman Kubur',
+  'entities.items.mistcallers_duffel.name': 'Tas Duffel Mistcaller',
   'entities.items.footpad_jerkin.name': 'Jaket Perampok',
   'entities.items.forest_pink_armor_plate.name': 'Merah Muda Hutan',
   'entities.items.frayed_prayer_beads.name': 'Tasbih Doa Usang',

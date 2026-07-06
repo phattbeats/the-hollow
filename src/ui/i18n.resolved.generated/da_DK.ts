@@ -4877,6 +4877,21 @@ export const da_DK: EnTranslations = {
       "monarch_crown_helm": {
         "name": "Monarkens Krone"
       },
+      "linen_pouch": {
+        "name": "Lærredspose"
+      },
+      "travelers_knapsack": {
+        "name": "Rejsendes Rygsæk"
+      },
+      "wolfhide_satchel": {
+        "name": "Ulveskinds Taske"
+      },
+      "gravewoven_bag": {
+        "name": "Gravvævet Taske"
+      },
+      "mistcallers_duffel": {
+        "name": "Mistcallers Sømandssæk"
+      },
       "bristleback_maul": {
         "name": "Børsterygs-Lemlæster"
       },

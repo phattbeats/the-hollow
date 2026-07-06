@@ -903,6 +903,11 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': 'Iturevet Dagbogsside',
   'entities.items.shrine_diary_page.flavorText':
     '...talte fyrre dage ved stearinlys, før jeg mistede tråden. Mørket hernede glemmer Ham ikke, selvom Han har glemt dette sted. Hvis hejren kredser lavt, så sig til Degnen at vægen stadig brænder...',
+  'entities.items.linen_pouch.name': 'Lærredspose',
+  'entities.items.travelers_knapsack.name': 'Rejsendes Rygsæk',
+  'entities.items.wolfhide_satchel.name': 'Ulveskinds Taske',
+  'entities.items.gravewoven_bag.name': 'Gravvævet Taske',
+  'entities.items.mistcallers_duffel.name': 'Mistcallers Sømandssæk',
   'entities.items.footpad_jerkin.name': 'Stratenrøvers Vams',
   'entities.items.forest_pink_armor_plate.name': 'Skovgrøn Lyserød',
   'entities.items.frayed_prayer_beads.name': 'Flossede Bønneperler',

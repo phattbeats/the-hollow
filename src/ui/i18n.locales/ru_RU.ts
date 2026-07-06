@@ -4640,6 +4640,11 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': 'Обрывок страницы дневника',
   'entities.items.shrine_diary_page.flavorText':
     '...считал сорок дней при свече, пока не сбился со счёта. Тьма здесь, внизу, не забывает Его, даже если Он забыл это место. Если цапля пролетит низко, скажи пономарю, что фитиль всё ещё горит...',
+  'entities.items.linen_pouch.name': 'Льняная Сумка',
+  'entities.items.travelers_knapsack.name': 'Рюкзак Путника',
+  'entities.items.wolfhide_satchel.name': 'Сумка из Волчьей Шкуры',
+  'entities.items.gravewoven_bag.name': 'Могильная Сумка',
+  'entities.items.mistcallers_duffel.name': 'Баул Мистколлера',
   'entities.mobs.acolyte_tessa.name': 'Послушница Тесса',
   'entities.mobs.deacon_varric.name': 'Дьякон Варрик',
   'entities.mobs.reliquary_bonewalker.name': 'Поднятый костеход',

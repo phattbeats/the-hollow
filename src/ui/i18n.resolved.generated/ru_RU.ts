@@ -4877,6 +4877,21 @@ export const ru_RU: EnTranslations = {
       "monarch_crown_helm": {
         "name": "Корона Монарха"
       },
+      "linen_pouch": {
+        "name": "Льняная Сумка"
+      },
+      "travelers_knapsack": {
+        "name": "Рюкзак Путника"
+      },
+      "wolfhide_satchel": {
+        "name": "Сумка из Волчьей Шкуры"
+      },
+      "gravewoven_bag": {
+        "name": "Могильная Сумка"
+      },
+      "mistcallers_duffel": {
+        "name": "Баул Мистколлера"
+      },
       "bristleback_maul": {
         "name": "Кувалда Щетиноспина"
       },

@@ -4877,6 +4877,21 @@ export const nl_NL: EnTranslations = {
       "monarch_crown_helm": {
         "name": "Monarchenkroon"
       },
+      "linen_pouch": {
+        "name": "Linnen Buidel"
+      },
+      "travelers_knapsack": {
+        "name": "Reizigersrugzak"
+      },
+      "wolfhide_satchel": {
+        "name": "Wolvenhuid Schoudertas"
+      },
+      "gravewoven_bag": {
+        "name": "Grafgeweven Tas"
+      },
+      "mistcallers_duffel": {
+        "name": "Plunjezak van Mistcaller"
+      },
       "bristleback_maul": {
         "name": "Borstelrug-Strijdhamer"
       },

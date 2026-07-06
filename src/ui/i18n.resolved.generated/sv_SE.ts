@@ -4877,6 +4877,21 @@ export const sv_SE: EnTranslations = {
       "monarch_crown_helm": {
         "name": "Monarkens krona"
       },
+      "linen_pouch": {
+        "name": "Linnepåse"
+      },
+      "travelers_knapsack": {
+        "name": "Vandrarens Ryggsäck"
+      },
+      "wolfhide_satchel": {
+        "name": "Vargskinnsväska"
+      },
+      "gravewoven_bag": {
+        "name": "Gravvävd Väska"
+      },
+      "mistcallers_duffel": {
+        "name": "Mistcallers Sjösäck"
+      },
       "bristleback_maul": {
         "name": "Borstryggens klubba"
       },

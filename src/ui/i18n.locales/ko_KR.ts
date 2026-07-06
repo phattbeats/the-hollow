@@ -4552,6 +4552,11 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': '찢어진 일기장 페이지',
   'entities.items.shrine_diary_page.flavorText':
     '...촛불로 마흔 날을 세다가 결국 놓쳐버렸다. 이 아래의 어둠은 그분을 잊지 않는다, 그분이 이곳을 잊으셨어도. 왜가리가 낮게 돌면, 등지기에게 심지가 아직 타고 있다고 전해라...',
+  'entities.items.linen_pouch.name': '리넨 주머니',
+  'entities.items.travelers_knapsack.name': '여행자의 배낭',
+  'entities.items.wolfhide_satchel.name': '늑대가죽 가방',
+  'entities.items.gravewoven_bag.name': '무덤을 엮은 가방',
+  'entities.items.mistcallers_duffel.name': '미스트콜러의 더플백',
   'entities.mobs.acolyte_tessa.name': '수련사제 테사',
   'entities.mobs.deacon_varric.name': '부제 바릭',
   'entities.mobs.reliquary_bonewalker.name': '되살아난 해골보행자',

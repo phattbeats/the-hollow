@@ -4877,6 +4877,21 @@ export const id_ID: EnTranslations = {
       "monarch_crown_helm": {
         "name": "Mahkota Sang Raja"
       },
+      "linen_pouch": {
+        "name": "Kantong Linen"
+      },
+      "travelers_knapsack": {
+        "name": "Ransel Pengembara"
+      },
+      "wolfhide_satchel": {
+        "name": "Tas Kulit Serigala"
+      },
+      "gravewoven_bag": {
+        "name": "Tas Anyaman Kubur"
+      },
+      "mistcallers_duffel": {
+        "name": "Tas Duffel Mistcaller"
+      },
       "bristleback_maul": {
         "name": "Cabikan Punggung Berbulu"
       },

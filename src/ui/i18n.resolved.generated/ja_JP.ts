@@ -4877,6 +4877,21 @@ export const ja_JP: EnTranslations = {
       "monarch_crown_helm": {
         "name": "君主の王冠"
       },
+      "linen_pouch": {
+        "name": "リネンの小袋"
+      },
+      "travelers_knapsack": {
+        "name": "旅人のナップサック"
+      },
+      "wolfhide_satchel": {
+        "name": "狼皮のサッチェル"
+      },
+      "gravewoven_bag": {
+        "name": "墓織りの鞄"
+      },
+      "mistcallers_duffel": {
+        "name": "ミストコーラーのダッフルバッグ"
+      },
       "bristleback_maul": {
         "name": "ブリストルバックの大槌"
       },

@@ -4877,6 +4877,21 @@ export const vi_VN: EnTranslations = {
       "monarch_crown_helm": {
         "name": "Vương Miện Quân Vương"
       },
+      "linen_pouch": {
+        "name": "Túi Vải Lanh"
+      },
+      "travelers_knapsack": {
+        "name": "Balô Lữ Khách"
+      },
+      "wolfhide_satchel": {
+        "name": "Túi Da Sói"
+      },
+      "gravewoven_bag": {
+        "name": "Túi Dệt Từ Mộ"
+      },
+      "mistcallers_duffel": {
+        "name": "Túi Du Lịch Của Mistcaller"
+      },
       "bristleback_maul": {
         "name": "Vồ Lưng Gai"
       },

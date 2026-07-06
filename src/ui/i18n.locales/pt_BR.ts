@@ -4550,6 +4550,11 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': 'Página de Diário Rasgada',
   'entities.items.shrine_diary_page.flavorText':
     '...contei quarenta dias à luz de vela antes de perder a conta. A escuridão aqui embaixo não O esquece, mesmo que Ele tenha esquecido este lugar. Se a garça voar baixo, diga ao Sacristão que o pavio ainda arde...',
+  'entities.items.linen_pouch.name': 'Bolsa de Linho',
+  'entities.items.travelers_knapsack.name': 'Mochila do Viajante',
+  'entities.items.wolfhide_satchel.name': 'Bolsa de Pele de Lobo',
+  'entities.items.gravewoven_bag.name': 'Bolsa Tecida da Tumba',
+  'entities.items.mistcallers_duffel.name': 'Mala de Viagem de Mistcaller',
   'entities.mobs.acolyte_tessa.name': 'Acólita Tessa',
   'entities.mobs.deacon_varric.name': 'Diácono Varric',
   'entities.mobs.reliquary_bonewalker.name': 'Caminhante de Ossos Erguido',

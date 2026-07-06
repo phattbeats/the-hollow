@@ -4877,6 +4877,21 @@ export const pt_BR: EnTranslations = {
       "monarch_crown_helm": {
         "name": "Coroa do Monarca"
       },
+      "linen_pouch": {
+        "name": "Bolsa de Linho"
+      },
+      "travelers_knapsack": {
+        "name": "Mochila do Viajante"
+      },
+      "wolfhide_satchel": {
+        "name": "Bolsa de Pele de Lobo"
+      },
+      "gravewoven_bag": {
+        "name": "Bolsa Tecida da Tumba"
+      },
+      "mistcallers_duffel": {
+        "name": "Mala de Viagem de Mistcaller"
+      },
       "bristleback_maul": {
         "name": "Malho Bristleback"
       },

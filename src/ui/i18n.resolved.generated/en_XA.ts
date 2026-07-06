@@ -4877,6 +4877,21 @@ export const en_XA: EnTranslations = {
       "monarch_crown_helm": {
         "name": "[Ɱóñáŕçĥ'š Çŕóŵñ]"
       },
+      "linen_pouch": {
+        "name": "[Ļíñéñ Þóúçĥ]"
+      },
+      "travelers_knapsack": {
+        "name": "[Ţŕáʋéļéŕ'š Ķñáþšáçķ]"
+      },
+      "wolfhide_satchel": {
+        "name": "[Ŵóļƒĥíðé Šáţçĥéļ]"
+      },
+      "gravewoven_bag": {
+        "name": "[Ĝŕáʋéŵóʋéñ Ɓáĝ]"
+      },
+      "mistcallers_duffel": {
+        "name": "[Ɱíšţçáļļéŕ'š Ðúƒƒéļ]"
+      },
       "bristleback_maul": {
         "name": "[Ɓŕíšţļéƀáçķ Ɱáúļ]"
       },

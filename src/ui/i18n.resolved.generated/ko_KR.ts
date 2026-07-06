@@ -4877,6 +4877,21 @@ export const ko_KR: EnTranslations = {
       "monarch_crown_helm": {
         "name": "군주의 왕관"
       },
+      "linen_pouch": {
+        "name": "리넨 주머니"
+      },
+      "travelers_knapsack": {
+        "name": "여행자의 배낭"
+      },
+      "wolfhide_satchel": {
+        "name": "늑대가죽 가방"
+      },
+      "gravewoven_bag": {
+        "name": "무덤을 엮은 가방"
+      },
+      "mistcallers_duffel": {
+        "name": "미스트콜러의 더플백"
+      },
       "bristleback_maul": {
         "name": "뻣센등뼈 철퇴"
       },

@@ -229,6 +229,7 @@ function completeQuest(ctx: SimContext, questId: string, quest: QuestDef, meta: 
       pid: meta.entityId,
     });
   }
+  const rewardItem = questRewardItemId(quest, meta.cls);
   if (rewardItem) ctx.addItem(rewardItem, 1, meta.entityId);
   ctx.grantXp(quest.xpReward, meta);
   ctx.emit({ type: 'questDone', questId, pid: meta.entityId });

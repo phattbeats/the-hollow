@@ -4541,6 +4541,11 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': '破れた日記のページ',
   'entities.items.shrine_diary_page.flavorText':
     '……蝋燭で四十日を数えたところで、数えるのをやめた。ここの闇は今もあの方を忘れない、あの方がこの場所を忘れてしまっても。鷺が低く舞うのを見たら、灯守りに芯はまだ燃えていると伝えてくれ……',
+  'entities.items.linen_pouch.name': 'リネンの小袋',
+  'entities.items.travelers_knapsack.name': '旅人のナップサック',
+  'entities.items.wolfhide_satchel.name': '狼皮のサッチェル',
+  'entities.items.gravewoven_bag.name': '墓織りの鞄',
+  'entities.items.mistcallers_duffel.name': 'ミストコーラーのダッフルバッグ',
   'entities.mobs.acolyte_tessa.name': '侍祭テッサ',
   'entities.mobs.deacon_varric.name': '助祭ヴァリック',
   'entities.mobs.reliquary_bonewalker.name': '蘇りし骨歩き',
