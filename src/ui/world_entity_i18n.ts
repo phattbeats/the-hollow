@@ -105,6 +105,7 @@ const NPC_IDS = [
   'loremaster_caddis',
   'brother_aldric_raid', // dynamically-spawned raid turn-in NPC (Crypt of Nythraxis)
   'brother_halven', // Collapsed Reliquary delve board NPC
+  'elder_yarrow', // GW1 build system multiclassing (Phase 3, PHAA-464) profession trainer
 ] as const;
 
 const QUEST_IDS = [

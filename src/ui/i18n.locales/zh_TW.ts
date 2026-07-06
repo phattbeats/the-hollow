@@ -4807,4 +4807,48 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'coldOpen.continue': '繼續',
   'coldOpen.begin': '開始',
   'coldOpen.skip': '跳過',
+
+  // PHAA-499: fill the professions/multiclassing (PHAA-465/466/467) M16 gap.
+  'guide.nav.professions': '副職業',
+  'guide.classPage.professionsTitle': '搭配副職業',
+  'guide.classPage.professionsNote':
+    '以上任意職業都可以作為副職業來學習：這是一種能開啟第二棵天賦樹的副職業，且不會影響你的主職業定位。選擇前，請先了解副職業的運作方式。',
+  'guide.classPage.professionsLink': '副職業與多職業',
+  'guide.professionsPage.heading': '副職業與多職業',
+  'guide.professionsPage.intro':
+    '副職業是你在主職業之外訓練的第二個職業，它會開啟第二棵天賦樹，並讓你學到其部分技能，而不會讓你離開原本的定位。',
+  'guide.professionsPage.whatHeading': '什麼是副職業',
+  'guide.professionsPage.whatBody':
+    '任何職業都可以被其他職業選為副職業。搭配副職業會新增一棵天賦樹，並讓你借用其部分技能：比如戰士可以涉獵牧師的治療，法師也能學到盜賊的毒刺。你的主職業依舊決定你的定位、資源和身分；副職業只是讓build更靈活，而不會取代它。',
+  'guide.professionsPage.howHeading': '如何選擇副職業',
+  'guide.professionsPage.howBody':
+    '副職業在10級開放，與你的第一棵天賦樹同時解鎖。前往主城拜訪副職業訓練師，開啟對話框，選擇你想要的副職業。',
+  'guide.professionsPage.costBody':
+    '第一次選擇是免費的。之後更換副職業需要花費金幣，且每次更換的費用都會提高，因此儘早做決定不會受到懲罰，而之後反覆更改則要付出一點代價。',
+  'guide.professionsPage.resetTitle': '一切都可以重來',
+  'guide.professionsPage.resetNote':
+    '只要不在戰鬥中，你隨時都可以重置兩棵天賦樹的天賦點，也可以在同一位訓練師那裡更換副職業（費用會遞增）。儘早選定的副職業只是初稿，而非最終定案。',
+  'guide.professionsPage.talentsHeading': '天賦點如何在兩棵樹之間分配',
+  'guide.professionsPage.talentsBody':
+    '副職業會在主職業之外新增一整棵天賦樹，但兩棵樹共用同一份天賦點。副職業天賦樹最多只能佔用這份點數的一半，因此你的主職業始終是build的核心。投入副職業天賦樹的點數會解鎖其技能，而這些技能消耗的是你主職業的資源，而非副職業本身的資源：戰士學習牧師副職業後，技能消耗的是怒氣，而不是法力。',
+  'guide.professionsPage.trainersHeading': '尋找訓練師',
+  'guide.professionsPage.trainersBody':
+    '副職業訓練師就站在主城神龕附近。任意一位訓練師都能教你除主職業外的任何職業作為副職業，因此只需拜訪一次即可設定或更換你的副職業。',
+  'classDetails.classPairAria': '{primary}，副職業 {secondary}',
+  'classDetails.classPairLabel': '{primary} / {secondary}',
+  'game.talents.secondaryTab': '副職業：{cls}',
+  'game.talents.secondaryCapHint': '副職業天賦樹：{spent}/{cap}點（上限為共享天賦池的一半）。',
+  'questUi.dialog.feedHearth': '我這兒有點東西要添進爐子。',
+  'questUi.dialog.feedHearthAria': '給爐子添東西',
+  'questUi.dialog.trainerNeedsGold': '金幣不足',
+  'questUi.dialog.trainerConfirmTitle': '確認副職業',
+  'questUi.dialog.trainerConfirmBody': '花費{cost}訓練為{cls}？',
+  'questUi.dialog.trainerConfirmYes': '是，訓練我',
+  'questUi.dialog.trainerConfirmNo': '否，返回',
+  'questUi.dialog.trainerHowTitle': '副職業是如何運作的？',
+  'questUi.dialog.trainerHowBody':
+    '副職業會在你的主職業之上增加第二棵天賦樹和一套技能，從{level}級開始解鎖。你保留主職業的定位；副職業與主職業共享天賦池，最多佔用其中的{pct}%，其技能的資源消耗會換算為你的主資源。首次選擇免費；之後更換需要花費金幣。',
+  'entities.npcs.elder_yarrow.name': '長老亞羅',
+  'entities.npcs.elder_yarrow.title': '副職業訓練師',
+  'entities.npcs.elder_yarrow.greeting': '每一套build都始於一個問題：哪個副職業在召喚你？',
 };

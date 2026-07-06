@@ -4807,4 +4807,48 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'coldOpen.continue': '继续',
   'coldOpen.begin': '开始',
   'coldOpen.skip': '跳过',
+
+  // PHAA-499: fill the professions/multiclassing (PHAA-465/466/467) M16 gap.
+  'guide.nav.professions': '副职业',
+  'guide.classPage.professionsTitle': '搭配副职业',
+  'guide.classPage.professionsNote':
+    '以上任意职业都可以作为副职业来学习：这是一种能开启第二棵天赋树的副职业，且不会影响你的主职业定位。选择前，请先了解副职业的运作方式。',
+  'guide.classPage.professionsLink': '副职业与多职业',
+  'guide.professionsPage.heading': '副职业与多职业',
+  'guide.professionsPage.intro':
+    '副职业是你在主职业之外训练的第二个职业，它会开启第二棵天赋树，并让你学到其部分技能，而不会让你离开原本的定位。',
+  'guide.professionsPage.whatHeading': '什么是副职业',
+  'guide.professionsPage.whatBody':
+    '任何职业都可以被其他职业选为副职业。搭配副职业会新增一棵天赋树，并让你借用其部分技能：比如战士可以涉猎牧师的治疗，法师也能学到盗贼的毒刺。你的主职业依旧决定你的定位、资源和身份；副职业只是让build更灵活，而不会取代它。',
+  'guide.professionsPage.howHeading': '如何选择副职业',
+  'guide.professionsPage.howBody':
+    '副职业在10级开放，与你的第一棵天赋树同时解锁。前往主城拜访副职业训练师，打开对话框，选择你想要的副职业。',
+  'guide.professionsPage.costBody':
+    '第一次选择是免费的。之后更换副职业需要花费金币，且每次更换的费用都会提高，因此尽早做决定不会受到惩罚，而之后反复更改则要付出一点代价。',
+  'guide.professionsPage.resetTitle': '一切都可以重来',
+  'guide.professionsPage.resetNote':
+    '只要不在战斗中，你随时都可以重置两棵天赋树的天赋点，也可以在同一位训练师那里更换副职业（费用会递增）。尽早选定的副职业只是初稿，而非最终定案。',
+  'guide.professionsPage.talentsHeading': '天赋点如何在两棵树之间分配',
+  'guide.professionsPage.talentsBody':
+    '副职业会在主职业之外新增一整棵天赋树，但两棵树共用同一份天赋点。副职业天赋树最多只能占用这份点数的一半，因此你的主职业始终是build的核心。投入副职业天赋树的点数会解锁其技能，而这些技能消耗的是你主职业的资源，而非副职业本身的资源：战士学习牧师副职业后，技能消耗的是怒气，而不是法力。',
+  'guide.professionsPage.trainersHeading': '寻找训练师',
+  'guide.professionsPage.trainersBody':
+    '副职业训练师就站在主城神龛附近。任意一位训练师都能教你除主职业外的任何职业作为副职业，因此只需拜访一次即可设置或更换你的副职业。',
+  'classDetails.classPairAria': '{primary}，副职业 {secondary}',
+  'classDetails.classPairLabel': '{primary} / {secondary}',
+  'game.talents.secondaryTab': '副职业：{cls}',
+  'game.talents.secondaryCapHint': '副职业天赋树：{spent}/{cap}点（上限为共享天赋池的一半）。',
+  'questUi.dialog.feedHearth': '我这儿有点东西要添进炉子。',
+  'questUi.dialog.feedHearthAria': '给炉子添东西',
+  'questUi.dialog.trainerNeedsGold': '金币不足',
+  'questUi.dialog.trainerConfirmTitle': '确认副职业',
+  'questUi.dialog.trainerConfirmBody': '花费{cost}训练为{cls}？',
+  'questUi.dialog.trainerConfirmYes': '是，训练我',
+  'questUi.dialog.trainerConfirmNo': '否，返回',
+  'questUi.dialog.trainerHowTitle': '副职业是如何运作的？',
+  'questUi.dialog.trainerHowBody':
+    '副职业会在你的主职业之上增加第二棵天赋树和一套技能，从{level}级开始解锁。你保留主职业的定位；副职业与主职业共享天赋池，最多占用其中的{pct}%，其技能的资源消耗会换算为你的主资源。首次选择免费；之后更换需要花费金币。',
+  'entities.npcs.elder_yarrow.name': '长老亚罗',
+  'entities.npcs.elder_yarrow.title': '副职业训练师',
+  'entities.npcs.elder_yarrow.greeting': '每一套build都始于一个问题：哪个副职业在召唤你？',
 };
