@@ -5191,22 +5191,29 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.calendar.result.created': 'Событие внесено в календарь гильдии.',
   'hudChrome.calendar.result.removed': 'Событие убрано из календаря.',
   'hudChrome.calendar.result.notInGuild': 'Вы не состоите в гильдии.',
-  'hudChrome.calendar.result.notOfficer': 'Управлять событиями гильдии могут только офицеры и глава гильдии.',
+  'hudChrome.calendar.result.notOfficer':
+    'Управлять событиями гильдии могут только офицеры и глава гильдии.',
   'hudChrome.calendar.result.badInput': 'Укажите название события и корректный день.',
   'hudChrome.calendar.result.calendarFull': 'Календарь гильдии заполнен.',
   'hudChrome.calendar.result.eventGone': 'Этого события больше нет в календаре.',
   'hudChrome.calendar.events.raidCall.title': 'Рейдовый сбор',
   'hudChrome.calendar.events.raidCall.note': 'Стражи трубят в рог: собирайте отряд на рейд.',
   'hudChrome.calendar.events.marketDay.title': 'Ярмарочный день',
-  'hudChrome.calendar.events.marketDay.note': 'Торговец ждёт свежий товар. Отличный день, чтобы заглянуть на Мировой рынок.',
+  'hudChrome.calendar.events.marketDay.note':
+    'Торговец ждёт свежий товар. Отличный день, чтобы заглянуть на Мировой рынок.',
   'hudChrome.calendar.events.fiestaNight.title': 'Ночь фиесты',
-  'hudChrome.calendar.events.fiestaNight.note': 'Сегодня ринг фиесты 2 на 2 собирает самые шумные толпы.',
+  'hudChrome.calendar.events.fiestaNight.note':
+    'Сегодня ринг фиесты 2 на 2 собирает самые шумные толпы.',
   'hudChrome.calendar.events.arenaClash.title': 'Битва на арене',
-  'hudChrome.calendar.events.arenaClash.note': 'Дуэлянты стекаются в Пепельный Колизей. Вставайте в очередь и поднимайтесь по лестнице.',
+  'hudChrome.calendar.events.arenaClash.note':
+    'Дуэлянты стекаются в Пепельный Колизей. Вставайте в очередь и поднимайтесь по лестнице.',
   'hudChrome.calendar.events.fishingDerby.title': 'Рыбацкое дерби',
-  'hudChrome.calendar.events.fishingDerby.note': 'Рыбаки выстраиваются вдоль озёр. Берите удочку и делитесь байками.',
+  'hudChrome.calendar.events.fishingDerby.note':
+    'Рыбаки выстраиваются вдоль озёр. Берите удочку и делитесь байками.',
   'hudChrome.calendar.events.delveDay.title': 'День вылазки',
-  'hudChrome.calendar.events.delveDay.note': 'Хороший день, чтобы бросить вызов Обрушенной реликварии вместе со спутником.',
+  'hudChrome.calendar.events.delveDay.note':
+    'Хороший день, чтобы бросить вызов Обрушенной реликварии вместе со спутником.',
   'hudChrome.calendar.events.moongateCommunion.title': 'Единение у лунных врат',
-  'hudChrome.calendar.events.moongateCommunion.note': 'Паломники собираются у лунного святилища под срединной луной.',
+  'hudChrome.calendar.events.moongateCommunion.note':
+    'Паломники собираются у лунного святилища под срединной луной.',
 };
