@@ -1,10 +1,19 @@
 # Sound Effects — design, catalog & integration
 
-Generated spatial sound effects for World of ClaudeCraft, produced with the
-**ElevenLabs Sound Effects API** (`POST /v1/sound-generation`) and played through
-a new lightweight 3D Web Audio engine. This document is the human-readable
-catalog; the authoritative machine list (prompts, durations, loop flags) lives in
-`scripts/sfx/sfx_prompts.mjs` and is consumed by `scripts/gen_sfx.mjs`.
+Spatial sound effects for World of ClaudeCraft, played through a lightweight 3D
+Web Audio engine. The 93 clips under `public/audio/sfx/` are **real recorded
+CC0/CC-BY audio** (Kenney.nl and OpenGameArt Foley/creature/magic packs),
+trimmed, loudness-normalized, and (for loops) seam-crossfaded; see
+`public/audio/sfx/CREDITS.md` for the per-key source/author/license mapping and
+the known best-effort substitutions. This document is the human-readable
+catalog of keys, durations, and integration points.
+
+Earlier revisions of this catalog were synthesized with the ElevenLabs Sound
+Effects API via `scripts/gen_sfx.mjs` / `scripts/sfx/sfx_prompts.mjs` (kept in
+the repo for history; they are no longer how these clips are produced, and
+`gen_sfx.mjs` must not be re-run over the current files). The key set, file
+paths, and loop flags are unchanged from that era, so
+`src/game/sfx_manifest.generated.ts` did not need to be regenerated.
 
 ## Goals
 - **Immersive world layer:** footsteps that change with surface (grass / dirt /
@@ -219,15 +228,31 @@ exist first (see Generation below), or the mob plays no vocalizations at all
 
 ---
 
-## Generation
-`ELEVENLABS_API_KEY=… node scripts/gen_sfx.mjs [--force]` — reads
-`scripts/sfx/sfx_prompts.mjs`, calls `POST /v1/sound-generation` per clip
-(`duration_seconds`, `prompt_influence` 0.4, `loop` per entry,
-`output_format=mp3_44100_128`), writes `public/audio/sfx/<key>.mp3`, and emits
-`src/game/sfx_manifest.generated.ts` (key → `/audio/sfx/<key>.mp3`). Idempotent
-(skips existing; `--force` to regenerate). Offline-only; the key is never read at
-runtime. Served from `public/` via plain `/audio/sfx/...` paths (no media-manifest
+## Sourcing (current pipeline)
+Each key is drop-in replaced from a real recorded pack (Kenney.nl RPG Audio /
+Impact Sounds; OpenGameArt creature, RPG, magic, Foley-whoosh, water/mud, and
+nature-ambience packs), keeping the same `public/audio/sfx/<key>.mp3` filename
+and the same `loop` flag as before so `src/game/sfx_manifest.generated.ts`
+needs no change. Processing per clip: trim to the moment that reads as the
+event, loudness-normalize to about -16 LUFS, and for loop keys (the 10 `amb_*`
+plus the 6 `cast_*`), crossfade the clip's own tail into its head so the loop
+point doesn't click. Some keys layer two source recordings (e.g. a chain
+rattle plus a groan for the undead family, or spaced metal-impact hits over a
+fire bed for `amb_forge`) or reuse one recording pitch/filter-shifted for
+several related keys (the six magic-school casts share a small pool of magic
+recordings). Full key -> source/author/license table, plus the handful of
+best-effort substitutions where no exact recording exists (undead, elemental,
+per-biome wind beds): `public/audio/sfx/CREDITS.md`.
+
+Served from `public/` via plain `/audio/sfx/...` paths (no media-manifest
 hashing), matching the voice-over assets.
+
+### Superseded: ElevenLabs generation
+`ELEVENLABS_API_KEY=… node scripts/gen_sfx.mjs [--force]` (reads
+`scripts/sfx/sfx_prompts.mjs`, calls `POST /v1/sound-generation` per clip) is
+the prior synthesis pipeline. It is kept for history only: do not run it
+against the current files, it would overwrite the recorded audio above with
+synthesized clips again.
 
 ## Efficiency budget
 - One decoded `AudioBuffer` per clip, shared across all sources.
