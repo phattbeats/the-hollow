@@ -159,6 +159,27 @@ describe('the Ravenpost — in-game mail', () => {
     expect(sim.countItem('wolf_fang', recipient)).toBe(2);
   });
 
+  it('refuses to dupe an item by splitting one held stack across duplicate attachment slots', () => {
+    const sim = makeWorld();
+    const sender = sim.addPlayer('warrior', 'Sender');
+    const recipient = sim.addPlayer('mage', 'Recipient');
+    standAtRavenpost(sim, sender);
+    sim.players.get(sender)!.copper = 1000;
+    sim.addItem('wolf_fang', 5, sender);
+    sim.events.length = 0;
+
+    const dupeSlots = [
+      { itemId: 'wolf_fang', count: 5 },
+      { itemId: 'wolf_fang', count: 5 },
+      { itemId: 'wolf_fang', count: 5 },
+    ];
+    sim.mailSend('Recipient', 'x', '', 0, dupeSlots, sender);
+
+    expect(errorsSince(sim).length).toBeGreaterThan(0);
+    expect(sim.countItem('wolf_fang', sender)).toBe(5);
+    expect(sim.mailInfoFor(recipient)).toBeNull();
+  });
+
   it('refuses to delete a letter with unclaimed attachments, but allows it once claimed', () => {
     const sim = makeWorld();
     const sender = sim.addPlayer('warrior', 'Sender');

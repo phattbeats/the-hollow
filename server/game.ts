@@ -2649,14 +2649,17 @@ export class GameServer {
             });
             break;
           }
-          const items = msg.items.filter(
-            (s): s is InvSlot =>
-              !!s &&
-              typeof s.itemId === 'string' &&
-              typeof s.count === 'number' &&
-              Number.isFinite(s.count) &&
-              s.count > 0,
-          );
+          const items = msg.items
+            .filter(
+              (s): s is InvSlot =>
+                !!s &&
+                typeof s.itemId === 'string' &&
+                typeof s.count === 'number' &&
+                Number.isFinite(s.count) &&
+                s.count > 0,
+            )
+            .map((s) => ({ ...s, count: Math.floor(s.count) }))
+            .filter((s) => s.count > 0);
           sim.mailSend(msg.to, msg.subject, msg.body, msg.copper, items, pid);
         }
         break;

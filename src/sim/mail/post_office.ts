@@ -217,6 +217,12 @@ export class PostOffice {
       this.ctx.error(meta.entityId, 'You cannot afford the postage and attached coin.');
       return;
     }
+    // Multiple slots can name the same itemId (a client is free to split a
+    // stack across parcels), so validate against the TOTAL requested per
+    // itemId, not each slot against the sender's full balance in isolation.
+    // Checking per-slot would let N slots of the same item each pass against
+    // an unchanged balance and duplicate the surplus into escrow.
+    const totalRequested = new Map<string, number>();
     for (const slot of items) {
       const def = ITEMS[slot.itemId];
       if (!def) {
@@ -227,7 +233,10 @@ export class PostOffice {
         this.ctx.error(meta.entityId, 'The raven will not carry quest items.');
         return;
       }
-      if (this.ctx.countItem(slot.itemId, meta.entityId) < slot.count) {
+      totalRequested.set(slot.itemId, (totalRequested.get(slot.itemId) ?? 0) + slot.count);
+    }
+    for (const [itemId, count] of totalRequested) {
+      if (this.ctx.countItem(itemId, meta.entityId) < count) {
         this.ctx.error(meta.entityId, 'You do not have that parcel to send.');
         return;
       }
