@@ -521,6 +521,14 @@ describe('i18n Localization Key Coverage', () => {
       const { ownerId, index } = parseIndexedEntry(entry.id, 'objectives');
       return { kind: 'questObjective', questId: ownerId, objectiveIndex: index, field: 'label' };
     }
+    if (entry.kind === 'questDialog') {
+      const ownerId = entry.id.slice(0, entry.id.indexOf('.dialog.'));
+      return {
+        kind: 'questDialog',
+        id: ownerId,
+        field: entry.field as 'complain' | 'complainReply' | 'refuse' | 'refuseReply',
+      };
+    }
     if (entry.kind === 'zone') {
       return { kind: 'zone', id: entry.id, field: entry.field as 'name' | 'welcome' };
     }
@@ -945,6 +953,7 @@ describe('i18n Localization Key Coverage', () => {
       Object.values(NPCS).reduce((sum, npc) => sum + (npc.introLines?.length ?? 0), 0) +
       Object.keys(QUESTS).length * 3 +
       Object.values(QUESTS).reduce((sum, quest) => sum + quest.objectives.length, 0) +
+      Object.values(QUESTS).reduce((sum, quest) => sum + (quest.offerDialog ? 4 : 0), 0) +
       ZONES.length * 2 +
       ZONES.reduce((sum, zone) => sum + zone.pois.length, 0) +
       Object.keys(DUNGEONS).length * 3 +

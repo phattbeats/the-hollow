@@ -245,6 +245,7 @@ import { chatPlayerContextActions } from './player_context_menu';
 import { hydratePortraits, portraitChipHtml } from './portrait_chip';
 import { maskProfanity } from './profanity';
 import { encodeQuestLink, parseChatSegments } from './quest_link';
+import { type QuestOfferStage, questOfferAdvance, questOfferChoices } from './quest_offer_view';
 import { type QuestTrackerView, questTrackerView, type TrackedQuest } from './quest_tracker';
 import { QuestLogWindow } from './questlog_window';
 import { lockoutParts, lockoutShape } from './raid_lockout';
@@ -7680,24 +7681,34 @@ export class Hud {
     this.questDialogTrap?.focusFirst();
   }
 
-  private renderQuestDetail(npc: Entity, questId: string): void {
+  // `offerStage` drives the branching offer dialog (PHAA-471) when the def carries
+  // offerDialog: 'offer' is the normal detail view (with complain/refuse choices
+  // added), 'complained' swaps the text for the NPC's complainReply, and 'refused'
+  // shows the concession line after the refusal completed the quest server-side.
+  // The stage machine is the pure quest_offer_view core; this stays the thin painter.
+  private renderQuestDetail(
+    npc: Entity,
+    questId: string,
+    offerStage: QuestOfferStage = 'offer',
+  ): void {
     const el = $('#quest-dialog');
     const quest = QUESTS[questId];
     this.openQuestDetailId = questId;
     const state = this.sim.questState(questId);
-    const text = questNarrative(
-      questId,
-      state === 'ready' ? 'completion' : 'text',
-      this.sim.player.name,
-    );
-    voice.play(state === 'ready' ? `quest__${questId}__complete` : `quest__${questId}__offer`);
+    const dialog = quest.offerDialog;
+    const text =
+      dialog && offerStage !== 'offer'
+        ? questDialogLine(questId, offerStage === 'complained' ? 'complainReply' : 'refuseReply')
+        : questNarrative(questId, state === 'ready' ? 'completion' : 'text', this.sim.player.name);
+    if (offerStage === 'offer')
+      voice.play(state === 'ready' ? `quest__${questId}__complete` : `quest__${questId}__offer`);
     markDialogRoot(el, { labelledBy: 'quest-dialog-title' });
     let html = `<div class="panel-title"><span id="quest-dialog-title">${esc(questTitle(questId))}${this.questSuggestedPlayersHtml(quest.suggestedPlayers)}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('questUi.dialog.close'))}">${svgIcon('close')}</button></div>`;
     if (state === 'available' && quest.minLevel) {
       html += `<div class="qd-req">${esc(t('questUi.detail.requiresLevel', { level: this.questNumber(quest.minLevel) }))}</div>`;
     }
     html += `<div class="qd-text">${esc(text)}</div>`;
-    if (state !== 'ready') {
+    if (state !== 'ready' && offerStage === 'offer') {
       const qp = this.sim.questLog.get(questId);
       html += `<div class="qd-sub">${esc(t('questUi.detail.objectives'))}</div>`;
       html += quest.objectives
@@ -7707,19 +7718,64 @@ export class Hud {
         )
         .join('');
     }
-    html += `<div class="qd-sub">${esc(t('questUi.detail.rewards'))}</div>`;
-    html += `<div class="qd-obj">${esc(t('questUi.detail.xpReward', { xp: this.questNumber(quest.xpReward) }))} &nbsp; ${this.moneyHtml(quest.copperReward)}</div>`;
-    const rewardItem = questRewardItem(quest, this.sim.cfg.playerClass);
-    if (rewardItem) {
-      const item = ITEMS[rewardItem];
-      html += `<div class="qd-reward-row" data-reward><span class="qd-reward-label">${esc(t('questUi.detail.itemReward'))}</span>${this.itemIcon(item)}<span class="qd-reward-name" style="color:${QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff'}">${esc(itemDisplayName(item))}</span></div>`;
+    let rewardItem: string | undefined;
+    if (offerStage !== 'refused') {
+      html += `<div class="qd-sub">${esc(t('questUi.detail.rewards'))}</div>`;
+      html += `<div class="qd-obj">${esc(t('questUi.detail.xpReward', { xp: this.questNumber(quest.xpReward) }))} &nbsp; ${this.moneyHtml(quest.copperReward)}</div>`;
+      rewardItem = questRewardItem(quest, this.sim.cfg.playerClass);
+      if (rewardItem) {
+        const item = ITEMS[rewardItem];
+        html += `<div class="qd-reward-row" data-reward><span class="qd-reward-label">${esc(t('questUi.detail.itemReward'))}</span>${this.itemIcon(item)}<span class="qd-reward-name" style="color:${QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff'}">${esc(itemDisplayName(item))}</span></div>`;
+      }
     }
     el.innerHTML = html;
     const rewardRow = el.querySelector('[data-reward]') as HTMLElement | null;
     if (rewardRow && rewardItem)
       this.attachTooltip(rewardRow, () => this.itemTooltip(ITEMS[rewardItem]));
 
-    if (state === 'available') {
+    if (dialog && offerStage === 'refused') {
+      // The refusal already completed the quest server-side; the concession line is
+      // showing, so the only move left is back to the gossip menu.
+      const btn = document.createElement('button');
+      btn.className = 'btn';
+      btn.type = 'button';
+      btn.textContent = t('questUi.dialog.continue');
+      btn.addEventListener('click', () => this.renderGossip(npc));
+      el.appendChild(btn);
+      el.querySelector('[data-close]')?.addEventListener('click', () => this.closeQuestDialog());
+      el.style.display = 'block';
+      this.questDialogTrap?.focusFirst();
+      return;
+    }
+    if (state === 'available' && dialog) {
+      // Branching offer (PHAA-471): Accept plus the player's own lines as choices.
+      for (const choice of questOfferChoices(offerStage)) {
+        const btn = document.createElement('button');
+        btn.className = 'btn';
+        btn.type = 'button';
+        btn.textContent =
+          choice === 'accept' ? t('questUi.dialog.accept') : questDialogLine(questId, choice);
+        btn.addEventListener('click', () => {
+          if (choice === 'accept') {
+            this.sim.acceptQuest(questId);
+            this.sim.reportTelemetry('quest_accept', {
+              timeMs: performance.now() - this.questDialogOpenedAtMs,
+            });
+            this.renderGossip(npc);
+            return;
+          }
+          if (choice === 'refuse') {
+            this.sim.refuseQuest(questId);
+            this.sim.reportTelemetry('quest_refuse', {
+              timeMs: performance.now() - this.questDialogOpenedAtMs,
+            });
+          }
+          const next = questOfferAdvance(offerStage, choice);
+          if (next) this.renderQuestDetail(npc, questId, next);
+        });
+        el.appendChild(btn);
+      }
+    } else if (state === 'available') {
       const btn = document.createElement('button');
       btn.className = 'btn';
       btn.type = 'button';
@@ -10779,6 +10835,13 @@ function questNarrative(questId: string, field: 'text' | 'completion', playerNam
 
 function questObjectiveLabel(questId: string, objectiveIndex: number): string {
   return tEntity({ kind: 'questObjective', questId, objectiveIndex, field: 'label' });
+}
+
+function questDialogLine(
+  questId: string,
+  part: 'complain' | 'complainReply' | 'refuse' | 'refuseReply',
+): string {
+  return tEntity({ kind: 'questDialog', id: questId, field: part });
 }
 
 function questTitleFromSource(name: string): string {

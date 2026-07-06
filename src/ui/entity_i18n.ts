@@ -31,6 +31,7 @@ export type EntityTranslationKind =
   | 'npcIntro'
   | 'quest'
   | 'questObjective'
+  | 'questDialog'
   | 'zone'
   | 'zonePoi'
   | 'dungeon'
@@ -50,7 +51,11 @@ export type EntityTranslationField =
   | 'leaveText'
   | 'bonus2'
   | 'bonus3'
-  | 'flavorText';
+  | 'flavorText'
+  | 'complain'
+  | 'complainReply'
+  | 'refuse'
+  | 'refuseReply';
 
 export type EntityTranslationRequest =
   | { kind: 'class'; id: PlayerClass; field: 'name' | 'description'; values?: InterpolationValues }
@@ -82,6 +87,12 @@ export type EntityTranslationRequest =
       questId: string;
       objectiveIndex: number;
       field: 'label';
+      values?: InterpolationValues;
+    }
+  | {
+      kind: 'questDialog';
+      id: string;
+      field: 'complain' | 'complainReply' | 'refuse' | 'refuseReply';
       values?: InterpolationValues;
     }
   | { kind: 'zone'; id: string; field: 'name' | 'welcome'; values?: InterpolationValues }
@@ -234,6 +245,10 @@ function canonicalEntityText(request: EntityTranslationRequest): string {
         QUESTS[request.questId]?.objectives[request.objectiveIndex]?.label ??
         `${request.questId}.${request.objectiveIndex}`
       );
+    case 'questDialog':
+      return (
+        QUESTS[request.id]?.offerDialog?.[request.field] ?? `${request.id}.dialog.${request.field}`
+      );
     case 'zone': {
       const zone = ZONES.find((candidate) => candidate.id === request.id);
       if (!zone) return request.id;
@@ -282,6 +297,8 @@ export function entityTranslationKey(request: EntityTranslationRequest): string 
       return `entities.quests.${entityPathSegment(request.id)}.${request.field}`;
     case 'questObjective':
       return `entities.quests.${entityPathSegment(request.questId)}.objectives.${request.objectiveIndex}.label`;
+    case 'questDialog':
+      return `entities.quests.${entityPathSegment(request.id)}.dialog.${request.field}`;
     case 'zone':
       return `entities.zones.${entityPathSegment(request.id)}.${request.field}`;
     case 'zonePoi':
@@ -301,7 +318,9 @@ function requestManifestEntry(request: EntityTranslationRequest): EntityTranslat
         ? `${request.zoneId}.pois.${request.poiIndex}`
         : request.kind === 'npcIntro'
           ? `${request.id}.introLines.${request.lineIndex}`
-          : request.id;
+          : request.kind === 'questDialog'
+            ? `${request.id}.dialog.${request.field}`
+            : request.id;
   const group: EntityTranslationGroup =
     request.kind === 'class' || request.kind === 'ability'
       ? 'classAbility'
@@ -564,6 +583,20 @@ export function entityTranslationManifest(): EntityTranslationManifestEntry[] {
         ),
       );
     });
+    if (quest.offerDialog) {
+      for (const part of ['complain', 'complainReply', 'refuse', 'refuseReply'] as const) {
+        entries.push(
+          entry(
+            'questDialog',
+            `${quest.id}.dialog.${part}`,
+            part,
+            quest.offerDialog[part],
+            'world',
+            entityTranslationKey({ kind: 'questDialog', id: quest.id, field: part }),
+          ),
+        );
+      }
+    }
   }
   for (const zone of [...ZONES].sort(compareById)) {
     entries.push(

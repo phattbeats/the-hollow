@@ -1283,6 +1283,19 @@ export interface QuestObjective {
   label: string;
 }
 
+// Optional branching offer dialog (PHAA-471): choice lines the client renders on a
+// quest offer instead of the plain Accept button. `complain` / `refuse` are the
+// PLAYER's lines (the button labels); the two replies are the NPC's answers. Only
+// `refuse` has a gameplay effect: it completes the quest with its normal rewards
+// without running the objectives (server-validated in quest_commands.refuseQuest).
+// `complain` is pure flavor and re-offers accept/refuse.
+export interface QuestOfferDialog {
+  complain: string;
+  complainReply: string;
+  refuse: string;
+  refuseReply: string;
+}
+
 export interface QuestDef {
   id: string;
   name: string;
@@ -1302,6 +1315,7 @@ export interface QuestDef {
   retired?: boolean; // remains finishable if already accepted, but cannot be newly accepted
   shareable?: boolean; // quest-link sharing allowed (default true; set false to opt out)
   suggestedPlayers?: number; // group quests ("Suggested players: 5")
+  offerDialog?: QuestOfferDialog; // branching offer choices (PHAA-471); presence makes the quest refusable
 }
 
 export function questTurnInNpcIds(quest: QuestDef): readonly string[] {

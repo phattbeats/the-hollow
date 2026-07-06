@@ -2925,6 +2925,12 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_what_fills.completion':
     '你真是头等的圣人啊，朋友。或者说是个好邻居。反正对绿掌来说都一样。……给，本来想自己留着的，但我心里那个牛仔说这个该是你的。别让它蔫了。',
   'entities.quests.q_what_fills.objectives.0.label': '已采集洞穴肉粒',
+  'entities.quests.q_what_fills.dialog.complain': '我刚从下面上来。你亲眼看着我从洞里爬出来的。',
+  'entities.quests.q_what_fills.dialog.complainReply':
+    '我知道，朋友，我知道……瓶子不看日历，我的肚子也不看。可你看看那双靴子，再告诉我它们走不动最后一趟……不急。那个洞哪儿也不会去。这差不多就是它的全部本事……',
+  'entities.quests.q_what_fills.dialog.refuse': '不。我不会再下去了。',
+  'entities.quests.q_what_fills.dialog.refuseReply':
+    '哦……哦，好吧。……好吧。这……是啊。不，这很公道，朋友，很公道……瓶子也听见了，偷偷跟你说，我觉得他还挺敬佩你的。来，这根插枝你还是拿着。你下去过一次，就已经比大多数人多一次了……',
   'hud.errors.silenced': '你已被沉默！',
   'hud.pet.noPetFood': '你没有可以喂给宠物的食物。',
   'hud.pet.petEatsFoodOnly': '你的宠物只能吃食物。',

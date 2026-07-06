@@ -111,6 +111,7 @@ export const IWORLD_MEMBERS = [
   { name: 'turnInQuest', kind: 'method' },
   { name: 'reportTelemetry', kind: 'method' },
   { name: 'abandonQuest', kind: 'method' },
+  { name: 'refuseQuest', kind: 'method' },
   { name: 'acceptLinkedQuest', kind: 'method' },
   { name: 'equipItem', kind: 'method' },
   { name: 'unequipItem', kind: 'method' },
@@ -472,6 +473,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'questsDone',
       'raidLockouts',
       'realm',
+      'refuseQuest',
       'releaseSpirit',
       'renamePet',
       'reportTelemetry',
@@ -651,6 +653,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'prestige',
       'questState',
       'raidLockouts',
+      'refuseQuest',
       'releaseSpirit',
       'renamePet',
       'reportTelemetry',
@@ -823,6 +826,7 @@ const FACET_QUESTS = [
   'acceptQuest',
   'turnInQuest',
   'abandonQuest',
+  'refuseQuest',
   'acceptLinkedQuest',
 ] as const satisfies readonly (keyof IWorldQuests)[];
 type _ExhaustQuests = AssertNever<Exclude<keyof IWorldQuests, (typeof FACET_QUESTS)[number]>>;
