@@ -4981,12 +4981,19 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.auraEffect.school.shadow': 'Тьма',
   'hudChrome.auraEffect.school.holy': 'Свет',
   'hudChrome.auraEffect.school.nature': 'Природа',
+  'entities.itemSets.boundstone_vanguard.name': 'Авангард Скрепленного Камня',
+  'entities.itemSets.boundstone_vanguard.bonus3':
+    'Скорость атаки и произнесения заклинаний повышается на 15%.',
   'entities.itemSets.crownforged.name': 'Боевой доспех Кованой Короны',
   'entities.itemSets.crownforged.bonus2': 'Сила атаки повышается на 40.',
-  'entities.itemSets.crownforged.bonus3': 'Сила повышается на 15, выносливость на 15.',
+  'entities.itemSets.crownforged.bonus3':
+    'Сила повышается на 15, выносливость на 15, скорость атаки и произнесения заклинаний на 15%.',
   'entities.itemSets.deathlord.name': 'Боевой доспех Владыки Смерти',
   'entities.itemSets.deathlord.bonus2': 'Сила атаки повышается на 40.',
   'entities.itemSets.deathlord.bonus3': 'Сила повышается на 15, выносливость на 15.',
+  'entities.itemSets.greyjaw_stalker.name': 'Снаряжение Серочелюстного Ловчего',
+  'entities.itemSets.greyjaw_stalker.bonus3':
+    'Скорость атаки и произнесения заклинаний повышается на 15%.',
   'entities.itemSets.necromancers.name': 'Одеяние некроманта',
   'entities.itemSets.necromancers.bonus2':
     'Задержка произнесения от полученного урона снижена на 50%.',
@@ -4995,16 +5002,23 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.itemSets.nighttalon.name': 'Кожаный доспех Ночного Когтя',
   'entities.itemSets.nighttalon.bonus2': 'Сила атаки повышается на 40.',
   'entities.itemSets.nighttalon.bonus3':
-    'Ловкость повышается на 15, вероятность критического удара на 2%.',
+    'Ловкость повышается на 15, вероятность критического удара на 2%, скорость атаки и ' +
+    'произнесения заклинаний на 15%.',
   'entities.itemSets.soulflame.name': 'Одеяние Пламени Души',
   'entities.itemSets.soulflame.bonus2':
     'Задержка произнесения от полученного урона снижена на 50%.',
-  'entities.itemSets.soulflame.bonus3': 'Полученный урон не задерживает произнесение заклинаний.',
+  'entities.itemSets.soulflame.bonus3':
+    'Полученный урон не задерживает произнесение заклинаний, а скорость атаки и произнесения ' +
+    'заклинаний повышается на 15%.',
   'entities.itemSets.stormcallers.name': 'Одеяние Зовущего Бурю',
   'entities.itemSets.stormcallers.bonus2':
     'Задержка произнесения от полученного урона снижена на 50%.',
   'entities.itemSets.stormcallers.bonus3':
-    'Полученный урон не задерживает произнесение заклинаний.',
+    'Полученный урон не задерживает произнесение заклинаний, а скорость атаки и произнесения ' +
+    'заклинаний повышается на 15%.',
+  'entities.itemSets.vale_arcanist.name': 'Одеяние Дольского чародея',
+  'entities.itemSets.vale_arcanist.bonus3':
+    'Скорость атаки и произнесения заклинаний повышается на 15%.',
   'entities.itemSets.wyrmshadow.name': 'Облачение Тени Дракона',
   'entities.itemSets.wyrmshadow.bonus2': 'Сила атаки повышается на 40.',
   'entities.itemSets.wyrmshadow.bonus3':

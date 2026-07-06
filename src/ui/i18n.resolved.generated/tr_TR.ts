@@ -6858,6 +6858,10 @@ export const tr_TR: EnTranslations = {
       }
     },
     "itemSets": {
+      "boundstone_vanguard": {
+        "name": "Boundstone Vanguard",
+        "bonus3": "Increases attack and casting speed by 15%."
+      },
       "crownforged": {
         "name": "Taçdövme savaş takımı",
         "bonus2": "Saldırı gücünü 40 artırır.",
@@ -6867,6 +6871,10 @@ export const tr_TR: EnTranslations = {
         "name": "Ölüm Lordu savaş takımı",
         "bonus2": "Saldırı gücünü 40 artırır.",
         "bonus3": "Gücü 15 ve dayanıklılığı 15 artırır."
+      },
+      "greyjaw_stalker": {
+        "name": "Greyjaw Stalker's Kit",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "necromancers": {
         "name": "Nekromansır giysileri",
@@ -6887,6 +6895,10 @@ export const tr_TR: EnTranslations = {
         "name": "Fırtına Çağıran giysileri",
         "bonus2": "Hasarın neden olduğu büyü geri itmesini %50 azaltır.",
         "bonus3": "Alınan hasar büyü yapmanı geciktirmez."
+      },
+      "vale_arcanist": {
+        "name": "Vale Arcanist's Regalia",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "wyrmshadow": {
         "name": "Wyrm Gölgesi takımı",

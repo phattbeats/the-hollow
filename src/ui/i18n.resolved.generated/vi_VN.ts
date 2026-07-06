@@ -6858,6 +6858,10 @@ export const vi_VN: EnTranslations = {
       }
     },
     "itemSets": {
+      "boundstone_vanguard": {
+        "name": "Boundstone Vanguard",
+        "bonus3": "Increases attack and casting speed by 15%."
+      },
       "crownforged": {
         "name": "Bộ chiến Crownforged",
         "bonus2": "Tăng sức mạnh tấn công thêm 40.",
@@ -6867,6 +6871,10 @@ export const vi_VN: EnTranslations = {
         "name": "Bộ chiến Deathlord",
         "bonus2": "Tăng sức mạnh tấn công thêm 40.",
         "bonus3": "Tăng sức mạnh thêm 15 và thể lực thêm 15."
+      },
+      "greyjaw_stalker": {
+        "name": "Greyjaw Stalker's Kit",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "necromancers": {
         "name": "Áo choàng pháp sư gọi hồn",
@@ -6887,6 +6895,10 @@ export const vi_VN: EnTranslations = {
         "name": "Áo choàng Gọi Bão",
         "bonus2": "Giảm 50% độ lùi khi niệm phép do sát thương.",
         "bonus3": "Sát thương nhận vào không làm chậm niệm phép."
+      },
+      "vale_arcanist": {
+        "name": "Vale Arcanist's Regalia",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "wyrmshadow": {
         "name": "Bộ Bóng Wyrm",

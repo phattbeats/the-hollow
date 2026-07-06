@@ -6858,6 +6858,10 @@ export const pl_PL: EnTranslations = {
       }
     },
     "itemSets": {
+      "boundstone_vanguard": {
+        "name": "Boundstone Vanguard",
+        "bonus3": "Increases attack and casting speed by 15%."
+      },
       "crownforged": {
         "name": "Koronokuty rynsztunek bojowy",
         "bonus2": "Zwiększa siłę ataku o 40.",
@@ -6867,6 +6871,10 @@ export const pl_PL: EnTranslations = {
         "name": "Rynsztunek bojowy Władcy Śmierci",
         "bonus2": "Zwiększa siłę ataku o 40.",
         "bonus3": "Zwiększa siłę o 15 i wytrzymałość o 15."
+      },
+      "greyjaw_stalker": {
+        "name": "Greyjaw Stalker's Kit",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "necromancers": {
         "name": "Szaty nekromanty",
@@ -6887,6 +6895,10 @@ export const pl_PL: EnTranslations = {
         "name": "Szaty Przyzywacza Burz",
         "bonus2": "Zmniejsza opóźnianie zaklęć przez obrażenia o 50%.",
         "bonus3": "Otrzymywane obrażenia nie opóźniają rzucania zaklęć."
+      },
+      "vale_arcanist": {
+        "name": "Vale Arcanist's Regalia",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "wyrmshadow": {
         "name": "Rynsztunek Cienia Żmija",

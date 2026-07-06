@@ -6858,6 +6858,10 @@ export const it_IT: EnTranslations = {
       }
     },
     "itemSets": {
+      "boundstone_vanguard": {
+        "name": "Boundstone Vanguard",
+        "bonus3": "Increases attack and casting speed by 15%."
+      },
       "crownforged": {
         "name": "Tenuta da battaglia Forgiacorona",
         "bonus2": "Aumenta la potenza d'attacco di 40.",
@@ -6867,6 +6871,10 @@ export const it_IT: EnTranslations = {
         "name": "Tenuta da battaglia del Signore della Morte",
         "bonus2": "Aumenta la potenza d'attacco di 40.",
         "bonus3": "Aumenta la forza di 15 e la vigoria di 15."
+      },
+      "greyjaw_stalker": {
+        "name": "Greyjaw Stalker's Kit",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "necromancers": {
         "name": "Vesti del negromante",
@@ -6887,6 +6895,10 @@ export const it_IT: EnTranslations = {
         "name": "Vesti del Chiamatempeste",
         "bonus2": "Riduce del 50% il ritardo al lancio causato dai danni.",
         "bonus3": "I danni subiti non ritardano il lancio degli incantesimi."
+      },
+      "vale_arcanist": {
+        "name": "Vale Arcanist's Regalia",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "wyrmshadow": {
         "name": "Tenuta Ombra del Dragone",
