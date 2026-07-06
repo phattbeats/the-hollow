@@ -213,11 +213,22 @@ describe('world music zone selection', () => {
 });
 
 describe('hub ambient cycler zone selection (PHAA-435)', () => {
-  afterEach(() => {
+  // Snapshot whatever ships in the constant, then run each case against a
+  // known-empty baseline so these tests do not depend on the live playlist.
+  const shipped = [...HUB_AMBIENT_TRACKS];
+  beforeEach(() => {
     HUB_AMBIENT_TRACKS.length = 0;
   });
+  afterEach(() => {
+    HUB_AMBIENT_TRACKS.length = 0;
+    HUB_AMBIENT_TRACKS.push(...shipped);
+  });
 
-  it('falls back to the plain vale bed while no tracks are configured (no-op today)', () => {
+  it('ships a non-empty hub playlist (tracks are wired)', () => {
+    expect(shipped.length).toBeGreaterThan(0);
+  });
+
+  it('falls back to the plain vale bed while no tracks are configured', () => {
     expect(HUB_AMBIENT_TRACKS.length).toBe(0);
     expect(musicZoneForLocation('the_hollow_reaches', 'vale', true, false)).toBe('vale');
   });
@@ -234,8 +245,13 @@ describe('hub ambient cycler zone selection (PHAA-435)', () => {
 });
 
 describe('MusicDirector hub ambient playback (PHAA-435)', () => {
+  const shipped = [...HUB_AMBIENT_TRACKS];
+  beforeEach(() => {
+    HUB_AMBIENT_TRACKS.length = 0;
+  });
   afterEach(() => {
     HUB_AMBIENT_TRACKS.length = 0;
+    HUB_AMBIENT_TRACKS.push(...shipped);
     vi.unstubAllGlobals();
     vi.restoreAllMocks();
     FakeAudio.instances = [];
