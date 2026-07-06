@@ -3055,6 +3055,13 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_what_fills.completion':
     'お前は一級の聖人だな、友よ。それか良き隣人か。緑掌的には同じようなもんだ。……ほら、これは自分用に取っとくつもりだったんだが、心の中のカウボーイがお前のもんだって言うんでな。萎れさせるなよ。',
   'entities.quests.q_what_fills.objectives.0.label': '洞窟の肉片を収集',
+  'entities.quests.q_what_fills.dialog.complain':
+    'ついさっき下りてきたところだ。俺が穴から這い出るのを見ていただろう。',
+  'entities.quests.q_what_fills.dialog.complainReply':
+    'わかってる、友よ、わかってるんだ……壺は暦なんて持っちゃいないし、俺の腹もそうだ。だがそのブーツを見てみろ、もう一回くらい下りられるって顔してるだろう……急がなくていい。穴はどこにも行きゃしない。それがあいつの持ち味ってやつだ……',
+  'entities.quests.q_what_fills.dialog.refuse': 'いやだ。もう二度とあそこには下りない。',
+  'entities.quests.q_what_fills.dialog.refuseReply':
+    'ああ……あ、ああ、わかった。……わかったよ。それは……そうか。いや、もっともだ、友よ、もっともだ……壺も聞いてたし、ここだけの話、あいつも一目置いてると思うぜ。ほら、挿し木はとにかく持っていけ。一度は下りたんだ、それだけで大抵のやつより一回多い……',
   'hud.errors.silenced': '沈黙状態です！',
   'hud.pet.noPetFood': 'ペットに与える食べ物がありません。',
   'hud.pet.petEatsFoodOnly': 'ペットは食べ物しか食べられません。',

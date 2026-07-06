@@ -2199,6 +2199,12 @@ export class GameServer {
           this.resyncQuests(session);
         }
         break;
+      case 'refuse':
+        if (typeof msg.quest === 'string') {
+          sim.refuseQuest(msg.quest, pid);
+          this.resyncQuests(session);
+        }
+        break;
       case 'qlinkaccept':
         if (typeof msg.quest === 'string' && typeof msg.from === 'number') {
           sim.acceptLinkedQuest(msg.quest, msg.from, pid);

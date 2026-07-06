@@ -3054,6 +3054,13 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_what_fills.completion':
     '자넨 정말 일등 성인일세, 친구. 아니면 좋은 이웃이거나. 뭐, 그린포우 식으로 치면 그게 그거지. ……자, 이건 내가 챙겨두려 했는데, 마음속 카우보이가 이건 자네 거라고 하는군. 시들게 하지 말게.',
   'entities.quests.q_what_fills.objectives.0.label': '동굴 고기 조각 수집',
+  'entities.quests.q_what_fills.dialog.complain':
+    '방금 거기 내려갔다 왔잖아요. 내가 구멍에서 기어 나오는 걸 봤으면서.',
+  'entities.quests.q_what_fills.dialog.complainReply':
+    '알아, 친구, 알지... 항아리는 달력 같은 건 안 챙기고, 내 뱃속도 마찬가지야. 그래도 그 장화를 보라고, 한 번은 더 내려갔다 올 수 있게 생겼잖아... 서두를 건 없어. 구멍은 어디 안 가. 그게 그 녀석의 본분이거든...',
+  'entities.quests.q_what_fills.dialog.refuse': '싫습니다. 다시는 안 내려가요.',
+  'entities.quests.q_what_fills.dialog.refuseReply':
+    '오... 오, 그래. ...그래. 그건... 그렇지. 아니, 맞는 말이야, 친구, 맞는 말이지... 항아리도 들었고, 우리끼리 얘기지만 그 녀석도 존중하는 눈치야. 자, 꺾꽂이는 그냥 가져가. 한 번은 내려갔잖아, 그것만으로도 대부분보다 한 번은 더 간 거야...',
   'hud.errors.silenced': '침묵 상태입니다!',
   'hud.pet.noPetFood': '소환수에게 먹일 음식이 없습니다.',
   'hud.pet.petEatsFoodOnly': '소환수는 음식만 먹을 수 있습니다.',

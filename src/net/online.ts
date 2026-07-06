@@ -890,7 +890,7 @@ export class ClientWorld implements IWorld {
   // chat locally when the player's filter is on. Hard words never arrive here.
   profanityWords: string[] = [];
   private profanityDirty = false;
-  private pendingQuestCommands = new Map<string, 'accept' | 'turnin'>();
+  private pendingQuestCommands = new Map<string, 'accept' | 'turnin' | 'refuse'>();
   private mouselookFacing: number | null = null;
   private sendTimer: number | undefined;
   private lastInputSentAt = 0;
@@ -1583,6 +1583,9 @@ export class ClientWorld implements IWorld {
     ) {
       return 'active';
     }
+    // A refusal completes the quest server-side (PHAA-471); project 'done' until the
+    // next quest resync confirms it so the offer never flashes available again.
+    if (pending === 'refuse' && state === 'available') return 'done';
     return state;
   }
 
@@ -1701,6 +1704,11 @@ export class ClientWorld implements IWorld {
     this.questLog.delete(questId);
     this.pendingQuestCommands.delete(questId);
     this.cmd({ cmd: 'abandon', quest: questId });
+  }
+  refuseQuest(questId: string): void {
+    if (!this.canSendCommand()) return;
+    this.pendingQuestCommands.set(questId, 'refuse');
+    this.cmd({ cmd: 'refuse', quest: questId });
   }
   acceptLinkedQuest(questId: string, fromPid: number): void {
     this.cmd({ cmd: 'qlinkaccept', quest: questId, from: fromPid });
