@@ -2783,6 +2783,15 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
     '我替这本历书做主，历书却并不替我做主，不过某些季里它也试着来过。根穴这一轮本记作休养，底下的兽穴却未收到那张告示，苍鹭也早不再装作吃惊。这便是现状。这并非抱怨，抱怨是要有旁人的。',
   'entities.npcs.verger_zebediah.introLines.2':
     '神龛之内有一本登记簿，切莫去碰。脚下是野猪拱过的浮土，二者皆请留神。若是为守土之事而来，我可托付两桩差事，都不算小，其中一桩我实在不愿再改第三回。这便是我为何同你搭话的缘由。',
+  // Persistent journal/lore (PHAA-480). Same literary classical register as
+  // the intro, longer arc: the "簿记得住行人所忘" throughline plus the heron
+  // and the room beneath the shrine.
+  'entities.npcs.verger_zebediah.journalLines.0':
+    '这本登记簿比苍鹭更老。第一笔并非我所书，最后一笔也并非我所能书；这便是一桩无人等候承继的职务，所能给我的慰藉。外域曾是一条通衢。有人沿湖道携盐而上，归时携一桩无以名状之物而去，我既不便过问，便也未曾过问。簿中记其来、记其去，亦记一段长久无人来往的空白。那段空白，我也一并看顾。',
+  'entities.npcs.verger_zebediah.journalLines.1':
+    '苍鹭比簿更老，簿对这点心有不悦。它不说出口。也不必说。我曾见它单足而立，熬过那一季，梨树尽枯，它连眼也不曾眨一眨，我便将此看作它对某事的一种态度，虽从未被告知究竟是哪一桩。神龛底下有一间我不入内的房。苍鹭入内。它做些什么，我不问；我在上头做些什么，它也不问。这一桩彼此的默契，比你我任何一人都更长久。',
+  'entities.npcs.verger_zebediah.journalLines.2':
+    '读到此处之人，非好奇即避难，二者我皆敬重。长篇记录的简短版是：此地记得它曾是什么，亦记得它将成什么，二者之间的差，便是这桩差事。记，是我的分内之事。将成什么、其主是谁，我无从得知。我书以「待定」二字，便去歇了。簿允许待定，不允许遗忘。',
   'entities.npcs.sexton_faddick.name': '守墓人法迪克',
   'entities.npcs.sexton_faddick.title': '流浪的守护者',
   'entities.npcs.sexton_faddick.greeting':
@@ -2796,6 +2805,15 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
     '绕得久了，便摸清了所绕之物的形状。闲田庄的狼群在我路过之前便夜夜绕着羊群打转，至今仍未摸清羊群的形状，这也算是一桩事。倒是羊群已把它们摸清，那便是更大的事。',
   'entities.npcs.sexton_faddick.introLines.2':
     '本想请你喝杯茶，可茶壶留在我昨日待过的地方了。湖边有一片安静的地，等着人起屋；狼群在暗中出没之地，什么都扎不下根来。喏，两桩差事，其中一桩我不想独个儿去办。边走边说罢。',
+  // Persistent journal/lore (PHAA-480). Wandering-keeper voice, aphoristic,
+  // longer arc. The "地比我们记得更牢" throughline and the slow time under
+  // the stones.
+  'entities.npcs.sexton_faddick.journalLines.0':
+    '我所看顾的地方，记在脑中便好，因纸易主比地易主来得快。神龛居多，皆是已无人奉祀之神龛。闲田庄在册。湖东那无名池塘亦在册。还有一柱立石，风花了一百年才把它磨圆。册子不长，在要紧处，册子便是全部。一地之留存，不在久留，而在仍是那个记得它曾在此的人。',
+  'entities.npcs.sexton_faddick.journalLines.1':
+    '地比我们记得更牢。这便是全部的交换。地上之人走不过两代，便忘了自己本来的名，又起个新的，照旧叫它；地下之物一无所忘，只管等。石头底下有一种慢时辰。我听过一次，没答，因为一答，那慢东西便寻到了门。我携着不答的钥匙，非金属之钥，是习惯，习比重一些。',
+  'entities.npcs.sexton_faddick.journalLines.2':
+    '狼并非问题，狼只是症候；问题在于那桩使地静到狼都以为是自己的事。这样的事我见过，一处之地朝错的方向静下去，修法向来只有一种：以对的噪声再把它弄响，而这噪声便是人，这便是为何有人去建。你或要问，我何德何能，担得这些。我是那仍走着的人，这便是全部的资格。够也不够，够与不够之间的那段空隙，我已同它讲和。',
   'entities.quests.q_root_hollow_boars.title': '根穴野猪',
   'entities.quests.q_root_hollow_boars.text':
     '按历书，根穴这一季本该休养。可没人通知野猪。它们追着虫子把这里拱翻了一半，如今连苍鹭扑翅都吓不走，这一点我很往心里去。杀五头，我才好把这一季照实记下。',
@@ -4785,6 +4803,14 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.discord.relay.wts.label': '出售',
   'hudChrome.discord.relay.wtb.label': '收购',
   'hudChrome.discord.relay.help.label': '求助',
+  // Persistent NPC journal/lore gossip-menu option (PHAA-480). M16 fill only;
+  // English is the source of truth in src/ui/i18n.catalog/hud_chrome.ts.
+  'hudChrome.npcJournal.readLabel': '跟我说说你的日记吧。',
+  'hudChrome.npcJournal.readAria': '阅读{name}的日记',
+  'hudChrome.npcJournal.back': '上一页',
+  'hudChrome.npcJournal.next': '下一页',
+  'hudChrome.npcJournal.close': '关闭日记',
+  'hudChrome.npcJournal.title': '{name}的日记',
   'housingUi.claimedBanner': '你将这块地认领为家园。',
   'housingUi.ownerBanner': '这是{name}的家园。',
   'housingUi.prompt.claim': '认领这块地',

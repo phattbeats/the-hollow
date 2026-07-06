@@ -1121,6 +1121,13 @@ export interface NpcDef {
   // pages them and remembers completion client-side). In-voice character
   // flavor, not gameplay: an NPC with no introLines opens straight to gossip.
   introLines?: string[];
+  // Optional ordered journal/lore lines a curious player can re-read at any
+  // time via the gossip-menu "read the journal" affordance (PHAA-480). Deeper
+  // lore than the quest text and NOT first-meeting-only like introLines: the
+  // journal is always available and re-readable, no shown-once gate. Declarative
+  // data only; the UI owns the view (src/ui/npc_journal_view.ts). Order matters
+  // (the player reads top-down). Flavors, not gameplay.
+  journalLines?: string[];
   // Registered but not surface-placed at world init. The owning system spawns
   // the entity on demand (e.g. the Nythraxis encounter walks Brother Aldric in
   // mid-fight). Keeping the def in NPCS lets the online client reconstruct its

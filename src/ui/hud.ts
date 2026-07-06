@@ -220,6 +220,7 @@ import {
   nextMinimapZoom,
 } from './minimap_zoom';
 import { npcIntroAdvance, npcIntroPageAt } from './npc_intro_view';
+import { npcJournalPageAt } from './npc_journal_view';
 import { OptionsWindow } from './options_window';
 import { makeWriterFacet, type PainterHostPresentation } from './painter_host';
 import { partyFrameSignature, selectPartyFrameMembers } from './party_frames';
@@ -7641,6 +7642,12 @@ export class Hud {
     if (Object.values(DELVES).some((d) => d.boardNpcId === npc.templateId)) {
       html += `<button type="button" class="qd-list-item" data-delve-board="1" aria-label="${esc(t('delveUi.board.openDelveAria', { name: npcName }))}"><span class="gold">${svgIcon('skull')}</span> ${esc(t('delveUi.board.openDelve'))}</button>`;
     }
+    // Persistent journal/lore option (PHAA-480): unlike introLines, this is
+    // never gated by the shown-once localStorage check and stays offered on
+    // every visit.
+    if (def?.journalLines && def.journalLines.length > 0) {
+      html += `<button type="button" class="qd-list-item" data-journal="1" aria-label="${esc(t('hudChrome.npcJournal.readAria', { name: npcName }))}"><span class="gold">${svgIcon('spellbook')}</span> ${esc(t('hudChrome.npcJournal.readLabel'))}</button>`;
+    }
     el.innerHTML = html;
     el.querySelectorAll('[data-quest]').forEach((item) => {
       item.addEventListener('click', () =>
@@ -7669,6 +7676,59 @@ export class Hud {
       this.closeQuestDialog(false);
       this.openDelveBoard(npc.id);
     });
+    if (def?.journalLines && def.journalLines.length > 0) {
+      el.querySelector('[data-journal]')?.addEventListener('click', () => {
+        this.renderNpcJournal(npc, def, 0);
+      });
+    }
+    el.querySelector('[data-close]')?.addEventListener('click', () => this.closeQuestDialog());
+    el.style.display = 'block';
+    this.questDialogTrap?.focusFirst();
+  }
+
+  // Render one page of an NPC's persistent journal/lore sequence (PHAA-480).
+  // Distinct from renderNpcIntro: no shown-once gate, freely re-readable in
+  // either direction, and a Close button always returns to the gossip menu
+  // rather than handing off to another dialog. The line ordering lives in the
+  // pure npc_journal_view core; this method is the thin DOM consumer.
+  private renderNpcJournal(npc: Entity, def: NpcDef, index: number): void {
+    const lines = def.journalLines ?? [];
+    const page = npcJournalPageAt(index, lines.length);
+    if (!page) {
+      this.renderGossip(npc);
+      return;
+    }
+    this.openGossipNpcId = npc.id;
+    this.openQuestDetailId = null;
+    const el = $('#quest-dialog');
+    markDialogRoot(el, { labelledBy: 'quest-dialog-title' });
+    const npcName = npcDisplayName(npc.templateId);
+    let html = `<div class="panel-title"><span id="quest-dialog-title">${esc(t('hudChrome.npcJournal.title', { name: npcName }))}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('questUi.dialog.close'))}">${svgIcon('close')}</button></div>`;
+    html += `<div class="qd-text">"${esc(npcJournalLine(def.id, index))}"</div>`;
+    html += `<div class="qd-req">${esc(t('hudChrome.npcJournal.pageOf', { index: this.questNumber(index + 1), total: this.questNumber(lines.length) }))}</div>`;
+    el.innerHTML = html;
+    if (page.canRetreat) {
+      const back = document.createElement('button');
+      back.className = 'btn';
+      back.type = 'button';
+      back.textContent = t('hudChrome.npcJournal.back');
+      back.addEventListener('click', () => this.renderNpcJournal(npc, def, index - 1));
+      el.appendChild(back);
+    }
+    if (page.canAdvance) {
+      const next = document.createElement('button');
+      next.className = 'btn';
+      next.type = 'button';
+      next.textContent = t('hudChrome.npcJournal.next');
+      next.addEventListener('click', () => this.renderNpcJournal(npc, def, index + 1));
+      el.appendChild(next);
+    }
+    const close = document.createElement('button');
+    close.className = 'btn';
+    close.type = 'button';
+    close.textContent = t('hudChrome.npcJournal.close');
+    close.addEventListener('click', () => this.renderGossip(npc));
+    el.appendChild(close);
     el.querySelector('[data-close]')?.addEventListener('click', () => this.closeQuestDialog());
     el.style.display = 'block';
     this.questDialogTrap?.focusFirst();
@@ -10739,6 +10799,10 @@ function npcGreeting(npcId: string, playerClass: PlayerClass, playerName: string
 
 function npcIntroLine(npcId: string, lineIndex: number): string {
   return tEntity({ kind: 'npcIntro', id: npcId, lineIndex, field: 'introLine' });
+}
+
+function npcJournalLine(npcId: string, lineIndex: number): string {
+  return tEntity({ kind: 'npcJournal', id: npcId, lineIndex, field: 'journalLine' });
 }
 
 // Client-side shown-once gate for an NPC's first-meeting intro lines. Purely

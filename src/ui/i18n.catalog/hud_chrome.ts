@@ -926,4 +926,18 @@ export const hudChromeStrings = {
       help: { label: 'Need Help', hint: 'Ask the community for help' },
     },
   },
+  // NPC journal/lore (PHAA-480): a persistent "read the journal" gossip-menu
+  // option on any NPC carrying `journalLines`, distinct from the first-meeting
+  // `npcIntro` click-through. The journal is always available and re-readable,
+  // never first-meeting-only. Page chrome + button label live here (en-only)
+  // and translate through the standard overlay path at release.
+  npcJournal: {
+    readLabel: 'Tell me about the journal.',
+    readAria: 'Read the journal of {name}',
+    pageOf: 'Page {index} of {total}',
+    back: 'Previous page',
+    next: 'Next page',
+    close: 'Close journal',
+    title: "{name}'s Journal",
+  },
 };

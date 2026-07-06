@@ -2907,6 +2907,15 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
     '달력을 지킨다는 게 내 일이오. 달력이 날 지키는 건 아니지만, 철에 따라 시도는 해보지. 뿌리굴은 이번 철에 쉰다고 적혀 있소만, 아래 굴들에는 그 통지가 닿지 않았고, 왜가리도 더는 놀란 척을 하질 않소. 이게 현 상황이라오. 불평은 아니오, 불평엔 증인이 필요하니까.',
   'entities.npcs.verger_zebediah.introLines.2':
     '사당 안엔 장부가 있소. 손대지 마시오. 발밑에는 멧돼지가 뒤집어놓은 무른 흙이 퍼져 있소. 둘 다 조심하시오. 만약 이곳 파수一事로 오신 거라면, 두 가지 일을 맡길 수 있소. 어느 쪽도 작진 않고, 그중 하나는 세 번째 고치고 싶지 않은 일이오. 이게 결국 내가 그대에게 말을 붙인 까닭이라오.',
+  // Persistent journal/lore (PHAA-480). Same 해요체 register as the intro,
+  // longer arc: the "장부는 걷는 자들이 잊은 것을 기억하오" throughline plus
+  // the heron and the room beneath the shrine.
+  'entities.npcs.verger_zebediah.journalLines.0':
+    '장부는 왜가리보다 더 오래되었소. 첫 항목을 적은 사람이 나였던 것도 아니요, 마지막 항목을 적을 사람도 내가 아닐 것이오. 그게 이 직을 기다리는 이가 없는 위로라오. 외곽은 한때 통행로였다오. 소금을 안은 이들이 호숫길로 올라와, 이름 붙일 수 없는 무엇을 가지고 내려갔었소. 그것은 내가 물을 일이 아니었기에, 나 또한 묻지 않았소. 장부에는 오고 감과, 그 어느 쪽도 없던 긴 공백이 적혀 있소. 그 공백도 내가 지키고 있소.',
+  'entities.npcs.verger_zebediah.journalLines.1':
+    '왜가리는 장부보다 나이가 많소. 장부는 그것을 탐탁치 않게 여기오. 말로는 하지 않소. 할 필요도 없소. 배나무들을 말라 죽인 한 철을 한쪽 다리로 버티며 눈 하나 깜짝이지 않는 것을 보아 왔으니, 그것이 무엇에 관한 입장이라 받아들이고 있소만, 그게 무엇인지는 들어 본 적이 없소. 사당 아래에 내가 들어가지 않는 방이 있소. 왜가리는 들어가지. 무엇을 하는지 묻지 않고, 왜가리도 내가 위에서 무엇을 하는지 묻지 않소. 이 합의는 우리 둘의 나이보다 더 오래 이어져 왔소.',
+  'entities.npcs.verger_zebediah.journalLines.2':
+    '이만큼 읽으신 분이면 호기심이 있거나 멧돼지를 피하는 중이거나, 둘 다 존중하오. 긴 기록의 짧은 요약을 말씀드리자면, 이 자리는 자기가 무엇이었는지, 그리고 무엇이 되고자 하는지를 기억하고 있고, 그 차이가 바로 일이오. 기억하는 게 내 몫이오. 무엇이 되는가의 주인이 누구인지는 모르겠소. 보류로 적어 두고 잠자리에 듭니다. 장부는 보류를 허용하오. 망각은 허용하지 않소.',
   'entities.npcs.sexton_faddick.name': '무덤지기 패딕',
   'entities.npcs.sexton_faddick.title': '떠도는 관리인',
   'entities.npcs.sexton_faddick.greeting':
@@ -2920,6 +2929,15 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
     '오래 맴돌다 보면 제가 맴도는 것의 모양을 익히게 되는 법이오. 묵정밭의 늑대들은 내가 오기 훨씬 전부터 밤마다 가축 떼 주위를 맴돌아 왔소만, 떼의 모양은 아직 못 익혔으니, 그게 어떤 의미가 있소. 떼 쪽이 오히려 그들을 더 잘 알고 있으니, 그것이 더 큰 의미라오.',
   'entities.npcs.sexton_faddick.introLines.2':
     '찻물을 내고 싶지만, 주전자는 내가 어제 있던 어딘가에 있소. 호수가엔 집을 짓기를 기다리는 조용한 땅이 있소. 어둠 속에서 늑대가 노는 땅엔 아무것도 뿌리를 내지 못하오. 자, 두 가지 일이 있소, 그중 하나는 혼자 하고 싶지 않은 일이오. 걸으면서 이야기를 나누는 편이 낫겠소.',
+  // Persistent journal/lore (PHAA-480). Wandering-keeper voice, aphoristic,
+  // longer arc. The "땅이 우리보다 더 잘 기억하오" throughline and the slow
+  // time under the stones.
+  'entities.npcs.sexton_faddick.journalLines.0':
+    '지켜온 곳들의 목록을 머릿속에 두오. 종이보다 땅이 더 오래 남고, 종이는 더 자주 주인을 바꾸니까. 대부분은 사당이오, 이제는 아무도 돌보지 않는 사당들. 묵정밭도 그 목록에 있소. 호수 동쪽의 이름을 모르는 못도 그렇고, 백 년의 바람에 둥글게 깎인 세움돌도 그렇고. 목록은 길지 않소. 그러나 의미가 있는 자리에서는 목록 자체가 곧 전부라오. 머무는 것으로 자리는 지켜지지 않소. 거기에 있었다는 것을 아는 자로 남아 있을 때, 그것이 지키는 일이오.',
+  'entities.npcs.sexton_faddick.journalLines.1':
+    '땅이 우리보다 더 잘 기억하오. 그게 거래의 전부라오. 위를 걷는 이는 두어 세대 안에 자기의 이름도 잊어버리고, 새 이름을 지어 같은 이름이라 부르지. 아래에 머무는 것은 아무것도 잊지 않고 기다리오. 돌 아래의 느린 시간이 있소. 한 번 들어 보았소만, 대답하지 않았소. 대답하는 것이 느린 것에게 문을 알려 주는 길이니까. 대답하지 않음의 열쇠는 내가 지니고 있소. 쇠로 된 열쇠가 아니오. 습관이오, 무거운.',
+  'entities.npcs.sexton_faddick.journalLines.2':
+    '늑대가 문제가 아니오. 늑대는 증상이오. 문제는, 땅을 너무 조용하게 만들어서 늑대들이 자기 땅이라 여긴 그 무엇이오. 그런 것은 보아 왔소, 잘못된 쪽으로 조용해지는 자리를. 처방은 늘 같소: 옳은 소란으로 다시 시끄럽게 만드는 것. 소란이 곧 사람이오. 누군가가 지어야 하는 까닭이 바로 그것이오. 내가 무엇이라고 그 모든 것을 지니고 있겠냐고 물으실 수 있겠소. 아직 걷고 있는 자가 나라오. 그게 자격의 전부라오. 부족하면서도 충분하고, 그 사이의 간격과는 화해해 왔소.',
   'entities.quests.q_root_hollow_boars.title': '뿌리굴의 멧돼지',
   'entities.quests.q_root_hollow_boars.text':
     '달력대로라면 뿌리굴은 이번 철에 쉬어야 하오. 한데 멧돼지들에겐 통보가 안 갔지. 벌레를 쫓다가 절반을 파헤쳐 놨고, 이젠 왜가리가 날갯짓을 해도 흩어지질 않소. 나로선 이게 여간 괘씸한 게 아니오. 다섯 마리만 잡으면, 이 철을 기록대로 적어 넣을 수 있소.',
@@ -5035,6 +5053,14 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.discord.relay.wts.label': '판매 희망',
   'hudChrome.discord.relay.wtb.label': '구매 희망',
   'hudChrome.discord.relay.help.label': '도움 요청',
+  // Persistent NPC journal/lore gossip-menu option (PHAA-480). M16 fill only;
+  // English is the source of truth in src/ui/i18n.catalog/hud_chrome.ts.
+  'hudChrome.npcJournal.readLabel': '일지에 대해 들려주세요.',
+  'hudChrome.npcJournal.readAria': '{name}의 일지 읽기',
+  'hudChrome.npcJournal.back': '이전 페이지',
+  'hudChrome.npcJournal.next': '다음 페이지',
+  'hudChrome.npcJournal.close': '일지 닫기',
+  'hudChrome.npcJournal.title': '{name}의 일지',
   'housingUi.claimedBanner': '당신은 이 부지를 보금자리로 인정했습니다.',
   'housingUi.ownerBanner': '여기는 {name}의 보금자리입니다.',
   'housingUi.prompt.claim': '이 부지 인정하기',
