@@ -55,8 +55,48 @@ export function isWebClientRequest(
     return false;
   }
   if (host === '') return false;
-  const fwd = String(req.headers['x-forwarded-host'] ?? '').split(',')[0].trim();
+  const fwd = String(req.headers['x-forwarded-host'] ?? '')
+    .split(',')[0]
+    .trim();
   const reqHost = String(req.headers.host ?? '');
   if (host === fwd || host === reqHost) return true;
   return /^(localhost|127\.0\.0\.1|\[::1\])(:\d+)?$/.test(host);
+}
+
+// Ported from upstream's cross-site Origin check (server/http/middleware/
+// origin_check.ts, levy-street/world-of-claudecraft#1491, primitive 2/6 of the
+// PHAA-519 REST decomposition), as a targeted gate rather than their onion
+// middleware: state-changing (non-GET/HEAD/OPTIONS) /api requests whose Origin
+// is present but not recognised as ours are rejected outright, no log-only mode.
+// GET/HEAD are read-only and OPTIONS is the CORS preflight (already
+// short-circuited before any handler runs), so neither is ever gated.
+const MUTATING_METHODS = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
+
+// True when `req` is a state-changing request whose Origin is clearly
+// cross-site: present, and not recognised by isWebClientRequest (the SAME
+// allow-list the web-login guard above uses, so a WEB_ORIGINS entry or
+// same-origin host that satisfies one satisfies both, and the two guards
+// cannot drift onto different notions of "ours"). An absent Origin is never
+// cross-site here: the API is bearer-only with no cookies (CSRF risk is
+// minimal), and native clients/beacons that send no Origin header must keep
+// working.
+//
+// Gated on webLoginEnforced (the SAME on/off condition as the sibling login
+// guard above: production by default, or forced via REQUIRE_WEB_LOGIN), not
+// unconditional. Without this, a LAN-host dev/e2e setup (`vite --host` plus the
+// browserless screenshot/E2E scripts connecting from a non-localhost origin,
+// e.g. `http://10.0.0.100:5173`) would start getting its mutating requests
+// rejected outright, even though that traffic was never audited the way
+// production's REALM_ORIGINS/WEB_ORIGINS allow-list is. Sharing the flag keeps
+// the two guards' enforcement conditions from diverging.
+export function isCrossSiteApiRequest(
+  req: Pick<IncomingMessage, 'headers' | 'method'>,
+  env: NodeJS.ProcessEnv = process.env,
+): boolean {
+  if (!webLoginEnforced(env)) return false;
+  const method = (req.method ?? '').toUpperCase();
+  if (!MUTATING_METHODS.has(method)) return false;
+  const origin = req.headers.origin;
+  if (typeof origin !== 'string' || origin === '') return false;
+  return !isWebClientRequest(req, env);
 }

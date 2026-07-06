@@ -2680,6 +2680,7 @@ export const ko_KR: EnTranslations = {
       "notAuthenticated": "인증되지 않았습니다.",
       "accountBanned": "이 계정은 이용 정지되었습니다.",
       "webLoginOnly": "로그인은 게임 클라이언트에서만 허용됩니다.",
+      "crossSiteRejected": "교차 사이트 요청이 거부되었습니다.",
       "accountSuspended": "이 계정은 {date}까지 정지되었습니다.",
       "alreadyInWorld": "캐릭터가 이미 세계에 있습니다.",
       "takenOver": "다른 세션이 캐릭터를 넘겨받았습니다.",
