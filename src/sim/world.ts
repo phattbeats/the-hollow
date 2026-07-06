@@ -18,6 +18,51 @@ const DETAIL_SCALE = 0.05;
 
 export const WATER_LEVEL = -4.5;
 
+// A declared lake's footprint reaches this multiple past its authored radius
+// (the same soft-edge basin blend baseHeight uses below), so the render plane,
+// the walkable-depth floor, and the terrain basin itself all agree on where a
+// lake actually ends.
+export const LAKE_BLEND_RADIUS_MULT = 1.6;
+
+// True when (x, z) falls inside a declared lake's footprint (any zone's
+// `lakes` list). Terrain outside every declared water body is never "water",
+// no matter how far its height dips below WATER_LEVEL: a content author's
+// sunken feature (crater, sinkhole, tunnel) stays dry and walkable as long as
+// it isn't inside one of these footprints.
+export function isInWaterBody(x: number, z: number): boolean {
+  for (const zone of ZONES) {
+    for (const lake of zone.lakes) {
+      const dSq = (x - lake.x) ** 2 + (z - lake.z) ** 2;
+      const rMax = lake.radius * LAKE_BLEND_RADIUS_MULT;
+      if (dSq < rMax * rMax) return true;
+    }
+  }
+  return false;
+}
+
+// The water surface height AT this location: WATER_LEVEL inside a declared
+// lake's footprint, else -Infinity (there is no water surface here, so
+// nothing reads as flooded and no swim-depth floor applies). Callers that
+// need "is there water here at all" should prefer this over the flat global
+// constant.
+export function waterLevelAt(x: number, z: number): number {
+  return isInWaterBody(x, z) ? WATER_LEVEL : -Infinity;
+}
+
+// Every declared lake across the active zones, in render/authoring footprint
+// (radius already includes the basin blend margin). Used to draw water only
+// where it is actually declared, instead of one flat plane across an entire
+// zone's footprint.
+export function waterBodies(): { x: number; z: number; radius: number }[] {
+  const out: { x: number; z: number; radius: number }[] = [];
+  for (const zone of ZONES) {
+    for (const lake of zone.lakes) {
+      out.push({ x: lake.x, z: lake.z, radius: lake.radius * LAKE_BLEND_RADIUS_MULT });
+    }
+  }
+  return out;
+}
+
 // Hill amplitude / base elevation / hub plateau height per biome.
 const BIOME_SHAPE: Record<BiomeId, { hill: number; base: number; hubHeight: number }> = {
   vale: { hill: 26, base: 0, hubHeight: 1.5 },
@@ -110,8 +155,8 @@ function baseHeight(x: number, z: number, seed: number): number {
   for (const zone of ZONES) {
     for (const lake of zone.lakes) {
       const dLake = Math.sqrt((x - lake.x) ** 2 + (z - lake.z) ** 2);
-      if (dLake < lake.radius * 1.6) {
-        const lakeBlend = smoothstep(lake.radius * 0.55, lake.radius * 1.6, dLake);
+      if (dLake < lake.radius * LAKE_BLEND_RADIUS_MULT) {
+        const lakeBlend = smoothstep(lake.radius * 0.55, lake.radius * LAKE_BLEND_RADIUS_MULT, dLake);
         h = h * lakeBlend + (WATER_LEVEL - 4) * (1 - lakeBlend);
       }
     }
@@ -147,8 +192,14 @@ export function terrainHeight(x: number, z: number, seed: number): number {
       const pass = ridge.sealed
         ? 1
         : smoothstep(PASS_HALF_WIDTH, PASS_SHOULDER, Math.abs(x - ridge.passX));
-      // jagged crest so the wall reads as mountains, not a berm
-      const crest = 1 + (fbm2(x * 0.03, ridge.z * 0.03, seed + 19, 2) - 0.5) * 0.7;
+      // jagged crest so the wall reads as mountains, not a berm: a coarse layer
+      // for peak/saddle shape plus a finer layer for crag/shoulder detail.
+      // Combined variance kept tight so the lowest saddle still beats the
+      // climb limit (tests/terrain_walls.test.ts).
+      const crest =
+        1 +
+        (fbm2(x * 0.03, ridge.z * 0.03, seed + 19, 2) - 0.5) * 0.4 +
+        (fbm2(x * 0.11, ridge.z * 0.11, seed + 23, 2) - 0.5) * 0.14;
       h += RIDGE_HEIGHT * crest * profile * pass;
     }
   }
@@ -158,7 +209,16 @@ export function terrainHeight(x: number, z: number, seed: number): number {
   const rimS = smoothstep(WORLD_MIN_Z + 30, WORLD_MIN_Z, z);
   const rimN = smoothstep(WORLD_MAX_Z - 30, WORLD_MAX_Z, z);
   const rim = Math.max(rimX, rimS, rimN);
-  h += rim * 40;
+  // The rim wall used to be a perfectly smooth berm with zero noise, which
+  // read as artificial from a distance. Give it the same two-layer jagged
+  // crest as the inter-zone ridges: a coarse peak/saddle layer plus a finer
+  // crag layer, with conservative combined variance so the climb-limit
+  // invariant (tests/terrain_walls.test.ts) still holds along the whole rim.
+  const rimCrest =
+    1 +
+    (fbm2(x * 0.025, z * 0.025, seed + 29, 3) - 0.5) * 0.35 +
+    (fbm2(x * 0.09, z * 0.09, seed + 37, 2) - 0.5) * 0.15;
+  h += rim * 40 * rimCrest;
   h += mirefenImpactCraterOffset(x, z);
   return h;
 }
