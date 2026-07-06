@@ -43,6 +43,7 @@ describe('linkDiscordToAccount', () => {
       discordUserId: '80351110224678912',
       username: 'x',
       avatar: null,
+      email: null,
       guildMember: true,
     });
     expect(ok).toBe(false);
@@ -60,6 +61,7 @@ describe('linkDiscordToAccount', () => {
       discordUserId: '80351110224678912',
       username: 'maxp',
       avatar: 'abc',
+      email: 'maxp@example.com',
       guildMember: true,
     });
     expect(ok).toBe(true);
@@ -81,6 +83,7 @@ describe('linkDiscordToAccount', () => {
         discordUserId: '80351110224678912',
         username: 'x',
         avatar: null,
+        email: null,
         guildMember: false,
       }),
     ).resolves.toBe(false);
@@ -207,6 +210,8 @@ describe('discord pending logins', () => {
     discord_user_id: '80351110224678912',
     discord_username: 'Maxp',
     discord_avatar: null,
+    discord_email: null,
+    discord_email_verified: false,
     guild_member: true,
   };
 
@@ -217,12 +222,23 @@ describe('discord pending logins', () => {
       discordUserId: '80351110224678912',
       username: 'Maxp',
       avatar: null,
+      email: null,
+      emailVerified: false,
       guildMember: true,
       ttlMinutes: 15,
     });
     expect(didRun('INSERT INTO discord_pending_logins')).toBe(true);
     const insert = calls.find((c) => c.sql.includes('INSERT INTO discord_pending_logins'));
-    expect(insert?.params).toEqual(['tok', '80351110224678912', 'Maxp', null, true, '15']);
+    expect(insert?.params).toEqual([
+      'tok',
+      '80351110224678912',
+      'Maxp',
+      null,
+      null,
+      false,
+      true,
+      '15',
+    ]);
   });
 
   it('peekDiscordPendingLogin reads WITHOUT deleting (live row, then null)', async () => {
