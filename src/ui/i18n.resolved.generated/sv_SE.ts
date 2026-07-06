@@ -2592,6 +2592,7 @@ export const sv_SE: EnTranslations = {
     "rendererFailed": "Kunde inte starta renderaren: försök läsa om sidan. {error}",
     "enterTimeout": "Kunde inte gå in i världen. Anslutningen tog för lång tid. Körs spelservern?",
     "connectionLost": "Anslutningen till servern bröts.",
+    "reconnecting": "Connection lost. Reconnecting...",
     "connectionRejected": "Servern stängde anslutningen."
   },
   "errors": {
