@@ -315,7 +315,7 @@ import {
   virtualLevel,
   xpToReachLevel,
 } from './types';
-import { groundHeight, waterLevelAt, WATER_LEVEL } from './world';
+import { groundHeight, WATER_LEVEL, waterLevelAt } from './world';
 
 // TRIVIAL_LEVEL_GAP moved to mob/targeting.ts (used only by isTrivialTo).
 // CORPSE_DURATION moved to combat/damage.ts (C1; used only by the death path).
@@ -3983,7 +3983,8 @@ export class Sim {
       // landlocked creatures stop at the waterline instead of walking under it;
       // only declared lakes count, so a sunken feature outside every footprint
       // is dry ground for non-swimmers.
-      if (!canSwim && groundHeight(nx, nz, this.cfg.seed) < waterLevelAt(nx, nz) - SWIM_DEPTH) continue;
+      if (!canSwim && groundHeight(nx, nz, this.cfg.seed) < waterLevelAt(nx, nz) - SWIM_DEPTH)
+        continue;
       const r = this.resolveMovePoint(nx, nz, BODY_RADIUS, e);
       const progress = d - Math.hypot(r.x - dest.x, r.z - dest.z);
       if (progress > bestProgress) {
@@ -3996,7 +3997,8 @@ export class Sim {
     e.pos.x = bestX;
     e.pos.z = bestZ;
     const g = groundHeight(bestX, bestZ, this.cfg.seed);
-    e.pos.y = canSwim && g < waterLevelAt(bestX, bestZ) - SWIM_DEPTH ? swimSurfaceY(bestX, bestZ) : g;
+    e.pos.y =
+      canSwim && g < waterLevelAt(bestX, bestZ) - SWIM_DEPTH ? swimSurfaceY(bestX, bestZ) : g;
     return dist2d(e.pos, dest) < 0.3;
   }
 
