@@ -134,6 +134,7 @@ import {
   REALM_ORIGINS,
 } from './realm';
 import { resolveReportTarget } from './report_target';
+import { applySecurityHeaders } from './security_headers';
 import { handleSitePresenceHeartbeat } from './site_presence';
 import { cacheControlFor, etagFor, isNotModified } from './static_cache';
 import { verifyTurnstile } from './turnstile';
@@ -1367,6 +1368,41 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
   }
 }
 
+// The single top-level entry point for every HTTP response the server emits
+// (not the WS upgrade handshake, which server.on('upgrade') handles
+// separately). Hoisted to module scope, mirroring upstream's routeHttpRequest,
+// so a test can drive real request shapes through the actual routing ladder
+// without booting the server or touching Postgres. applySecurityHeaders runs
+// first so it lands on every branch below: CORS, the OPTIONS-204 preflight
+// short-circuit, and every route including static/404.
+export function routeHttpRequest(req: http.IncomingMessage, res: http.ServerResponse): void {
+  applySecurityHeaders(res);
+  const url = req.url ?? '';
+  const path = url.split('?')[0];
+  const isApi = url.startsWith('/api/') || url.startsWith('/admin/api/');
+  // Public read surfaces (/api/public/..., /avatar/...) are CORS-open to any
+  // origin so browser-origin companion apps can call them client-side; every
+  // other /api route keeps the narrow realm/native allowlist.
+  const publicCorsPath = isPublicCorsPath(path);
+  if (publicCorsPath) publicCors(res);
+  else if (isApi) maybeCors(req, res);
+  if (req.method === 'OPTIONS' && (isApi || publicCorsPath)) {
+    res.writeHead(204);
+    res.end();
+    return;
+  }
+  if (url.startsWith('/internal/')) void handleInternalApi(req, res, game);
+  else if (url.startsWith('/admin/api/')) void handleAdminApi(req, res, game);
+  else if (url.startsWith('/api/')) void handleApi(req, res);
+  else if (url.startsWith('/oauth/')) void handleOAuth(req, res);
+  else if (req.method === 'GET' && url.startsWith('/p/')) void handleCardRoutes(req, res);
+  else if (req.method === 'GET' && path.startsWith('/avatar/')) void handleAvatar(req, res);
+  else if (req.method === 'GET' && path.startsWith('/c/')) void handleProfilePage(req, res);
+  else if (req.method === 'GET' && path === '/sitemap-characters.xml')
+    void handleCharacterSitemap(req, res);
+  else serveStatic(req, res);
+}
+
 // ---------------------------------------------------------------------------
 // Boot
 // ---------------------------------------------------------------------------
@@ -1458,32 +1494,7 @@ async function main(): Promise<void> {
   setInterval(warmLeaderboards, LEADERBOARD_TTL_MS).unref();
   console.log('database ready');
 
-  const server = http.createServer((req, res) => {
-    const url = req.url ?? '';
-    const path = url.split('?')[0];
-    const isApi = url.startsWith('/api/') || url.startsWith('/admin/api/');
-    // Public read surfaces (/api/public/..., /avatar/...) are CORS-open to any
-    // origin so browser-origin companion apps can call them client-side; every
-    // other /api route keeps the narrow realm/native allowlist.
-    const publicCorsPath = isPublicCorsPath(path);
-    if (publicCorsPath) publicCors(res);
-    else if (isApi) maybeCors(req, res);
-    if (req.method === 'OPTIONS' && (isApi || publicCorsPath)) {
-      res.writeHead(204);
-      res.end();
-      return;
-    }
-    if (url.startsWith('/internal/')) void handleInternalApi(req, res, game);
-    else if (url.startsWith('/admin/api/')) void handleAdminApi(req, res, game);
-    else if (url.startsWith('/api/')) void handleApi(req, res);
-    else if (url.startsWith('/oauth/')) void handleOAuth(req, res);
-    else if (req.method === 'GET' && url.startsWith('/p/')) void handleCardRoutes(req, res);
-    else if (req.method === 'GET' && path.startsWith('/avatar/')) void handleAvatar(req, res);
-    else if (req.method === 'GET' && path.startsWith('/c/')) void handleProfilePage(req, res);
-    else if (req.method === 'GET' && path === '/sitemap-characters.xml')
-      void handleCharacterSitemap(req, res);
-    else serveStatic(req, res);
-  });
+  const server = http.createServer(routeHttpRequest);
 
   // cap frame size: the largest legitimate client message is a small JSON
   // command; without this the ws default (~100 MiB) lets one socket force a
@@ -1670,7 +1681,15 @@ async function main(): Promise<void> {
   });
 }
 
-main().catch((err) => {
-  console.error('fatal:', err);
-  process.exit(1);
-});
+// Boot only when this module is the process entrypoint, never on a bare
+// import. The server always runs as the esbuild CJS bundle (npm run server /
+// npm run realms, then node dist-server/server.cjs), where require.main ===
+// module marks the entry. A Vitest import() of this module does not match, so
+// the bare import stays inert (no socket bound, no DB connection) and tests
+// can drive routeHttpRequest directly.
+if (typeof require !== 'undefined' && require.main === module) {
+  main().catch((err) => {
+    console.error('fatal:', err);
+    process.exit(1);
+  });
+}
