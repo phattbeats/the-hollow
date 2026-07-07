@@ -9,9 +9,9 @@
 // keep resolving to THIS file, never the sibling directory.
 //
 // ---------------------------------------------------------------------------
-// FACET MAP: the 24 domain facets (each IWorld member assigned exactly once; 160
+// FACET MAP: the 24 domain facets (each IWorld member assigned exactly once; 161
 // total; this count was previously stale at 23/155, corrected alongside the
-// PHAA-482 feedGreenpaw command addition below, and again at 24/160 with the
+// PHAA-482 feedGreenpaw command addition below, and again at 24/161 with the
 // PHAA-511 guild-calendar-events addition). One interface per file under
 // ./world_api/; aux types travel with their facet. The authoritative
 // member-per-facet split is the W0c parity test.
@@ -46,7 +46,7 @@
 //                                          ALL_DELTA_KEYS (27) + TERSE_TO_IWORLD mapping.
 //   tests/command_schema.test.ts   (W0b)  COMMAND_NAMES universe; ClientWorld send-set
 //                                          subset-of dispatch-set; DISPATCH_ONLY (7).
-//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (160) present + same-kind on
+//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (161) present + same-kind on
 //                                          Sim + ClientWorld; aggregate == disjoint
 //                                          union of the 24 facets.
 // ---------------------------------------------------------------------------
