@@ -5059,4 +5059,50 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'coldOpen.continue': '계속',
   'coldOpen.begin': '시작',
   'coldOpen.skip': '건너뛰기',
+
+  // PHAA-499: fill the professions/multiclassing (PHAA-465/466/467) M16 gap.
+  'guide.nav.professions': '보조 직업',
+  'guide.classPage.professionsTitle': '보조 직업 조합하기',
+  'guide.classPage.professionsNote':
+    '위의 어떤 직업이든 보조 직업으로 배울 수 있습니다. 보조 직업은 주 역할을 유지한 채 두 번째 특성 트리를 여는 부 직업입니다. 선택하기 전에 보조 직업의 작동 방식을 확인하세요.',
+  'guide.classPage.professionsLink': '보조 직업과 다중 직업',
+  'guide.professionsPage.heading': '보조 직업과 다중 직업',
+  'guide.professionsPage.intro':
+    '보조 직업은 주 직업과 함께 훈련하는 두 번째 직업으로, 원래의 역할을 유지한 채 두 번째 특성 트리와 그 기술 일부를 열어줍니다.',
+  'guide.professionsPage.whatHeading': '보조 직업이란',
+  'guide.professionsPage.whatBody':
+    '모든 직업은 다른 어떤 직업의 보조 직업으로도 선택할 수 있습니다. 보조 직업을 조합하면 두 번째 특성 트리가 추가되고 그 기술 일부를 빌려 쓸 수 있습니다. 전사가 사제의 치유를 조금 익히거나, 마법사가 도적의 독침을 배울 수 있는 식입니다. 주 직업은 여전히 당신의 역할, 자원, 정체성을 결정합니다. 보조 직업은 그것을 대체하지 않고 빌드를 더 다채롭게 만들어 줄 뿐입니다.',
+  'guide.professionsPage.howHeading': '고르는 방법',
+  'guide.professionsPage.howBody':
+    '보조 직업은 레벨 10에 열리며, 이는 첫 번째 특성 트리가 해제되는 시점과 같습니다. 마을에 있는 보조 직업 훈련사를 찾아가 대화창을 열고 원하는 보조 직업을 선택하세요.',
+  'guide.professionsPage.costBody':
+    '첫 선택은 무료입니다. 나중에 다른 직업으로 바꾸려면 골드가 들며, 바꿀 때마다 비용이 올라갑니다. 그래서 이른 결정에는 불이익이 없고, 이후에 여러 번 바꾸면 약간의 대가가 따릅니다.',
+  'guide.professionsPage.resetTitle': '무엇도 확정되지 않습니다',
+  'guide.professionsPage.resetNote':
+    '전투 중이 아니라면 언제든 두 특성 트리의 포인트를 환불할 수 있고, 같은 훈련사에게서 보조 직업을 바꿀 수도 있습니다 (비용은 점점 늘어납니다). 초반의 보조 직업 선택은 확정이 아니라 초안일 뿐입니다.',
+  'guide.professionsPage.talentsHeading': '두 트리 간 특성 포인트 배분',
+  'guide.professionsPage.talentsBody':
+    '보조 직업은 주 직업 외에 완전한 두 번째 특성 트리를 추가하지만, 두 트리는 같은 포인트 풀을 공유합니다. 보조 트리는 그 풀의 최대 절반까지만 사용할 수 있어, 주 직업이 항상 빌드의 중심으로 남습니다. 보조 트리에 포인트를 투자하면 그 기술이 해제되며, 그 기술은 보조 직업이 아니라 주 직업의 자원을 소모합니다. 전사가 사제를 보조 직업으로 삼으면, 소모되는 것은 마나가 아니라 분노입니다.',
+  'guide.professionsPage.trainersHeading': '훈련사 찾기',
+  'guide.professionsPage.trainersBody':
+    '보조 직업 훈련사는 마을의 사당 근처에 서 있습니다. 훈련사 한 명이 주 직업을 제외한 어떤 직업이든 보조 직업으로 가르칠 수 있어, 한 번만 방문해도 보조 직업을 설정하거나 바꿀 수 있습니다.',
+  'classDetails.classPairAria': '{primary}, 보조 {secondary}',
+  'classDetails.classPairLabel': '{primary} / {secondary}',
+  'game.talents.secondaryTab': '보조 직업: {cls}',
+  'game.talents.secondaryCapHint':
+    '보조 직업 특성 트리: {spent}/{cap} 포인트 (공유 풀의 절반까지만 사용 가능).',
+  'questUi.dialog.feedHearth': '화로에 바칠 것이 있다.',
+  'questUi.dialog.feedHearthAria': '화로에 바치기',
+  'questUi.dialog.trainerNeedsGold': '골드가 부족합니다',
+  'questUi.dialog.trainerConfirmTitle': '보조 직업 확인',
+  'questUi.dialog.trainerConfirmBody': '{cost}(으)로 {cls}(으)로 훈련하시겠습니까?',
+  'questUi.dialog.trainerConfirmYes': '네, 훈련하겠습니다',
+  'questUi.dialog.trainerConfirmNo': '아니요, 돌아가기',
+  'questUi.dialog.trainerHowTitle': '보조 직업은 어떻게 작동하나요?',
+  'questUi.dialog.trainerHowBody':
+    '보조 직업은 {level}레벨부터 주 직업 위에 두 번째 특성 트리와 기술 세트를 추가합니다. 주 역할은 유지되며, 보조 직업은 특성 풀을 공유하고 최대 {pct}%까지만 사용할 수 있습니다. 보조 직업 기술의 자원 소모는 주 자원으로 환산됩니다. 첫 선택은 무료이며, 이후 변경에는 골드가 듭니다.',
+  'entities.npcs.elder_yarrow.name': '원로 야로우',
+  'entities.npcs.elder_yarrow.title': '보조 직업 훈련사',
+  'entities.npcs.elder_yarrow.greeting':
+    '모든 빌드는 질문에서 시작됩니다. 어떤 보조 직업이 당신을 부르고 있나요?',
 };

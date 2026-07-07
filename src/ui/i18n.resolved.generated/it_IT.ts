@@ -3440,7 +3440,7 @@ export const it_IT: EnTranslations = {
       "trainerConfirmYes": "Yes, train me",
       "trainerConfirmNo": "No, go back",
       "trainerHowTitle": "How do secondary professions work?",
-      "trainerHowBody": "A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities translate their resource cost to your primary resource. Your first pick is free; changing later costs gold.",
+      "trainerHowBody": "A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities convert their resource cost to your primary resource. Your first pick is free; changing later costs gold.",
       "accept": "Accetta",
       "decline": "Rifiuta",
       "continue": "Continua",
@@ -5777,6 +5777,11 @@ export const it_IT: EnTranslations = {
         "name": "Fratello Halven",
         "title": "Custode del Reliquiario",
         "greeting": "Il reliquiario sottostante si è spostato di nuovo."
+      },
+      "elder_yarrow": {
+        "name": "Elder Yarrow",
+        "title": "Profession Trainer",
+        "greeting": "Every build starts as a question. Which second calling speaks to you?"
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
