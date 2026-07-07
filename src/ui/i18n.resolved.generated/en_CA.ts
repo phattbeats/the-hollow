@@ -5355,6 +5355,9 @@ export const en_CA: EnTranslations = {
       "first_cutting": {
         "name": "A Cutting"
       },
+      "greenpaw_bead": {
+        "name": "A Bead From the Bandolier"
+      },
       "witness_root_cincture": {
         "name": "The Witness-Root's Cincture"
       },
@@ -6795,6 +6798,25 @@ export const en_CA: EnTranslations = {
           "complainReply": "i know it, friend, i know... the vase don't keep a calendar and neither does my stomach. but look at them boots and tell me they don't got one more descent in 'em... no rush. the hole ain't goin' anywhere. that's kinda its whole deal...",
           "refuse": "No. I'm not going back down there.",
           "refuseReply": "oh... oh, okay. ...okay. that's... yeah. no, that's fair, friend, that's fair... the vase heard it too, and between you and me i think he respects it. here, take the cutting anyway. you went down once, and that's once more than most..."
+        }
+      },
+      "q_the_wavelength": {
+        "title": "On the Wavelength",
+        "text": "the cutting's yours now, friend, so let's talk about what comes after... two things, and neither one's a trial, more like an interduction. first, cross the vase and meet elder yarrow, she teaches a whole second callin', a different way to play this whole thing, and every soul that comes through here oughta know that door's open... second, come on back and feed me somethin', don't matter which, emberbulb or morsel, i'm always runnin' on empty and the vase always wants for smoke. that part never really ends, to a greenpaw degree.",
+        "completion": "there it is... you felt the room go thick for a second, right? that's him, noticin'. that's the whole trick, friend - you feed me, i smoke up the place, he leans in a little closer to payin' attention. ain't complicated. ain't never gonna stop bein' true, neither. c'mere anytime you're carryin' spare bulbs or morsels, the hearth don't keep a calendar... and hey. welcome to the hollow. i realize i never actually said that part.",
+        "objectives": {
+          "0": {
+            "label": "Elder Yarrow met"
+          },
+          "1": {
+            "label": "Fed at the hearth"
+          }
+        },
+        "dialog": {
+          "complain": "Another errand? I just climbed out of that hole.",
+          "complainReply": "no, no, hear me out, this ain't cave work... this one's easy, this one's just walkin' and one good feed. lightest thing i ever asked of you, i promise, on the wavelength and everything.",
+          "refuse": "I'll find my own training, thanks.",
+          "refuseReply": "...fair 'nough. can't make a soul learn somethin' 'fore they're ready. door's open when it ain't 'not yet' no more... here, take this anyway, least i can do for you showin' up at all."
         }
       },
       "q_root_hollow_boars": {

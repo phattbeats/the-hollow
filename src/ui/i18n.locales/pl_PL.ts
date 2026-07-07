@@ -910,6 +910,7 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'entities.items.fenreed_staff.name': 'Kostur bagiennej trzciny',
   'entities.items.fenwalker_boots.name': 'Buty bagiennego wędrowca',
   'entities.items.first_cutting.name': 'Sadzonka',
+  'entities.items.greenpaw_bead.name': 'Paciorek Z Bandolieru',
   'entities.items.witness_root_cincture.name': 'Pas Korzenia Świadka',
   'entities.items.shrine_diary_page.name': 'Wydarta Strona z Dziennika',
   'entities.items.shrine_diary_page.flavorText':
