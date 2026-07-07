@@ -2592,6 +2592,7 @@ export const id_ID: EnTranslations = {
     "rendererFailed": "Tidak bisa memulai perender: coba muat ulang. {error}",
     "enterTimeout": "Tidak bisa masuk dunia. Koneksi kehabisan waktu. Apakah server gim berjalan?",
     "connectionLost": "Koneksi ke server terputus.",
+    "reconnecting": "Connection lost. Reconnecting...",
     "connectionRejected": "Server menutup koneksi."
   },
   "errors": {
@@ -3426,6 +3427,8 @@ export const id_ID: EnTranslations = {
       "worldMarketAria": "Buka World Market",
       "trainSecondary": "Train me in a secondary profession.",
       "trainSecondaryAria": "Train a secondary profession with {name}",
+      "feedHearth": "I have something for the hearth.",
+      "feedHearthAria": "Feed the hearth",
       "trainerTitle": "Secondary Profession",
       "trainerLevelLocked": "Unlocks at level {level}.",
       "trainerCurrent": "Current",
@@ -3437,7 +3440,7 @@ export const id_ID: EnTranslations = {
       "trainerConfirmYes": "Yes, train me",
       "trainerConfirmNo": "No, go back",
       "trainerHowTitle": "How do secondary professions work?",
-      "trainerHowBody": "A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities translate their resource cost to your primary resource. Your first pick is free; changing later costs gold.",
+      "trainerHowBody": "A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities convert their resource cost to your primary resource. Your first pick is free; changing later costs gold.",
       "accept": "Terima",
       "decline": "Tolak",
       "continue": "Lanjutkan",
@@ -5775,6 +5778,11 @@ export const id_ID: EnTranslations = {
         "title": "Penjaga Relikuari",
         "greeting": "Relikuari di bawah bergeser lagi."
       },
+      "elder_yarrow": {
+        "name": "Elder Yarrow",
+        "title": "Profession Trainer",
+        "greeting": "Every build starts as a question. Which second calling speaks to you?"
+      },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
         "title": "Pengawas Pasang",
@@ -6635,6 +6643,12 @@ export const id_ID: EnTranslations = {
           "0": {
             "label": "Camilan Gua terkumpul"
           }
+        },
+        "dialog": {
+          "complain": "I was just down there. You watched me climb out of the hole.",
+          "complainReply": "i know it, friend, i know... the vase don't keep a calendar and neither does my stomach. but look at them boots and tell me they don't got one more descent in 'em... no rush. the hole ain't goin' anywhere. that's kinda its whole deal...",
+          "refuse": "No. I'm not going back down there.",
+          "refuseReply": "oh... oh, okay. ...okay. that's... yeah. no, that's fair, friend, that's fair... the vase heard it too, and between you and me i think he respects it. here, take the cutting anyway. you went down once, and that's once more than most..."
         }
       },
       "q_root_hollow_boars": {
@@ -6850,6 +6864,10 @@ export const id_ID: EnTranslations = {
       }
     },
     "itemSets": {
+      "boundstone_vanguard": {
+        "name": "Boundstone Vanguard",
+        "bonus3": "Increases attack and casting speed by 15%."
+      },
       "crownforged": {
         "name": "Perlengkapan tempur Tempa Mahkota",
         "bonus2": "Meningkatkan daya serang sebesar 40.",
@@ -6859,6 +6877,10 @@ export const id_ID: EnTranslations = {
         "name": "Perlengkapan tempur Penguasa Maut",
         "bonus2": "Meningkatkan daya serang sebesar 40.",
         "bonus3": "Meningkatkan kekuatan sebesar 15 dan stamina sebesar 15."
+      },
+      "greyjaw_stalker": {
+        "name": "Greyjaw Stalker's Kit",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "necromancers": {
         "name": "Jubah ahli nujum",
@@ -6879,6 +6901,10 @@ export const id_ID: EnTranslations = {
         "name": "Jubah Pemanggil Badai",
         "bonus2": "Mengurangi dorongan balik sihir akibat kerusakan sebesar 50%.",
         "bonus3": "Kerusakan yang diterima tidak menunda perapalan sihir."
+      },
+      "vale_arcanist": {
+        "name": "Vale Arcanist's Regalia",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "wyrmshadow": {
         "name": "Perlengkapan Bayangan Wyrm",

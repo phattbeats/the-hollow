@@ -629,6 +629,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'loading.rendererFailed': '無法啟動渲染器：請嘗試重新整理。{error}',
   'loading.enterTimeout': '無法進入世界。連線已逾時。遊戲伺服器是否正在執行？',
   'loading.connectionLost': '與伺服器的連線已中斷。',
+  'loading.reconnecting': '連線已中斷。正在重新連線...',
   'loading.connectionRejected': '伺服器已關閉連線。',
   'errors.nothingInteract': '附近沒有可互動目標。',
   'errors.noEnemyNearby': '附近沒有敵人。',
@@ -2927,6 +2928,12 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_what_fills.completion':
     '你真是頭等的聖人啊，朋友。或者說是個好鄰居。反正對綠掌來說都一樣。……給，本來想自己留著的，但我心裡那個牛仔說這個該是你的。別讓它蔫了。',
   'entities.quests.q_what_fills.objectives.0.label': '已採集洞穴肉粒',
+  'entities.quests.q_what_fills.dialog.complain': '我剛從下面上來。你親眼看著我從洞裡爬出來的。',
+  'entities.quests.q_what_fills.dialog.complainReply':
+    '我知道，朋友，我知道……瓶子不看日曆，我的肚子也不看。可你看看那雙靴子，再告訴我它們走不動最後一趟……不急。那個洞哪兒也不會去。這差不多就是它的全部本事……',
+  'entities.quests.q_what_fills.dialog.refuse': '不。我不會再下去了。',
+  'entities.quests.q_what_fills.dialog.refuseReply':
+    '哦……哦，好吧。……好吧。這……是啊。不，這很公道，朋友，很公道……瓶子也聽見了，偷偷跟你說，我覺得他還挺敬佩你的。來，這根插枝你還是拿著。你下去過一次，就已經比大多數人多一次了……',
   'hud.errors.silenced': '你已被沉默！',
   'hud.pet.noPetFood': '你沒有可餵食寵物的食物。',
   'hud.pet.petEatsFoodOnly': '你的寵物只能吃食物。',
@@ -4629,24 +4636,33 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.auraEffect.school.shadow': '暗影',
   'hudChrome.auraEffect.school.holy': '神聖',
   'hudChrome.auraEffect.school.nature': '自然',
+  'entities.itemSets.boundstone_vanguard.name': '縛石先鋒鎧',
+  'entities.itemSets.boundstone_vanguard.bonus3': '攻擊與施法速度提高 15%。',
   'entities.itemSets.crownforged.name': '鑄冠戰裝',
   'entities.itemSets.crownforged.bonus2': '攻擊強度提高 40 點。',
-  'entities.itemSets.crownforged.bonus3': '力量提高 15 點，耐力提高 15 點。',
+  'entities.itemSets.crownforged.bonus3':
+    '力量提高 15 點，耐力提高 15 點，攻擊與施法速度提高 15%。',
   'entities.itemSets.deathlord.name': '死王戰甲',
   'entities.itemSets.deathlord.bonus2': '攻擊強度提高 40 點。',
   'entities.itemSets.deathlord.bonus3': '力量提高 15 點，耐力提高 15 點。',
+  'entities.itemSets.greyjaw_stalker.name': '灰顎潛行者裝備',
+  'entities.itemSets.greyjaw_stalker.bonus3': '攻擊與施法速度提高 15%。',
   'entities.itemSets.necromancers.name': '死靈法師法衣',
   'entities.itemSets.necromancers.bonus2': '受到傷害造成的施法延退降低 50%。',
   'entities.itemSets.necromancers.bonus3': '施法時不會因受到傷害而被延退。',
   'entities.itemSets.nighttalon.name': '夜爪皮甲',
   'entities.itemSets.nighttalon.bonus2': '攻擊強度提高 40 點。',
-  'entities.itemSets.nighttalon.bonus3': '敏捷提高 15 點，致命一擊機率提高 2%。',
+  'entities.itemSets.nighttalon.bonus3':
+    '敏捷提高 15 點，致命一擊機率提高 2%，攻擊與施法速度提高 15%。',
   'entities.itemSets.soulflame.name': '魂焰法衣',
   'entities.itemSets.soulflame.bonus2': '受到傷害造成的施法延退降低 50%。',
-  'entities.itemSets.soulflame.bonus3': '施法時不會因受到傷害而被延退。',
+  'entities.itemSets.soulflame.bonus3': '施法時不會因受到傷害而被延退，且攻擊與施法速度提高 15%。',
   'entities.itemSets.stormcallers.name': '喚雷者法衣',
   'entities.itemSets.stormcallers.bonus2': '受到傷害造成的施法延退降低 50%。',
-  'entities.itemSets.stormcallers.bonus3': '施法時不會因受到傷害而被延退。',
+  'entities.itemSets.stormcallers.bonus3':
+    '施法時不會因受到傷害而被延退，且攻擊與施法速度提高 15%。',
+  'entities.itemSets.vale_arcanist.name': '山谷秘法師法衣',
+  'entities.itemSets.vale_arcanist.bonus3': '攻擊與施法速度提高 15%。',
   'entities.itemSets.wyrmshadow.name': '龍影外衣',
   'entities.itemSets.wyrmshadow.bonus2': '攻擊強度提高 40 點。',
   'entities.itemSets.wyrmshadow.bonus3': '敏捷提高 15 點，致命一擊機率提高 2%。',
@@ -4792,4 +4808,48 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'coldOpen.continue': '繼續',
   'coldOpen.begin': '開始',
   'coldOpen.skip': '跳過',
+
+  // PHAA-499: fill the professions/multiclassing (PHAA-465/466/467) M16 gap.
+  'guide.nav.professions': '副職業',
+  'guide.classPage.professionsTitle': '搭配副職業',
+  'guide.classPage.professionsNote':
+    '以上任意職業都可以作為副職業來學習：這是一種能開啟第二棵天賦樹的副職業，且不會影響你的主職業定位。選擇前，請先了解副職業的運作方式。',
+  'guide.classPage.professionsLink': '副職業與多職業',
+  'guide.professionsPage.heading': '副職業與多職業',
+  'guide.professionsPage.intro':
+    '副職業是你在主職業之外訓練的第二個職業，它會開啟第二棵天賦樹，並讓你學到其部分技能，而不會讓你離開原本的定位。',
+  'guide.professionsPage.whatHeading': '什麼是副職業',
+  'guide.professionsPage.whatBody':
+    '任何職業都可以被其他職業選為副職業。搭配副職業會新增一棵天賦樹，並讓你借用其部分技能：比如戰士可以涉獵牧師的治療，法師也能學到盜賊的毒刺。你的主職業依舊決定你的定位、資源和身分；副職業只是讓build更靈活，而不會取代它。',
+  'guide.professionsPage.howHeading': '如何選擇副職業',
+  'guide.professionsPage.howBody':
+    '副職業在10級開放，與你的第一棵天賦樹同時解鎖。前往主城拜訪副職業訓練師，開啟對話框，選擇你想要的副職業。',
+  'guide.professionsPage.costBody':
+    '第一次選擇是免費的。之後更換副職業需要花費金幣，且每次更換的費用都會提高，因此儘早做決定不會受到懲罰，而之後反覆更改則要付出一點代價。',
+  'guide.professionsPage.resetTitle': '一切都可以重來',
+  'guide.professionsPage.resetNote':
+    '只要不在戰鬥中，你隨時都可以重置兩棵天賦樹的天賦點，也可以在同一位訓練師那裡更換副職業（費用會遞增）。儘早選定的副職業只是初稿，而非最終定案。',
+  'guide.professionsPage.talentsHeading': '天賦點如何在兩棵樹之間分配',
+  'guide.professionsPage.talentsBody':
+    '副職業會在主職業之外新增一整棵天賦樹，但兩棵樹共用同一份天賦點。副職業天賦樹最多只能佔用這份點數的一半，因此你的主職業始終是build的核心。投入副職業天賦樹的點數會解鎖其技能，而這些技能消耗的是你主職業的資源，而非副職業本身的資源：戰士學習牧師副職業後，技能消耗的是怒氣，而不是法力。',
+  'guide.professionsPage.trainersHeading': '尋找訓練師',
+  'guide.professionsPage.trainersBody':
+    '副職業訓練師就站在主城神龕附近。任意一位訓練師都能教你除主職業外的任何職業作為副職業，因此只需拜訪一次即可設定或更換你的副職業。',
+  'classDetails.classPairAria': '{primary}，副職業 {secondary}',
+  'classDetails.classPairLabel': '{primary} / {secondary}',
+  'game.talents.secondaryTab': '副職業：{cls}',
+  'game.talents.secondaryCapHint': '副職業天賦樹：{spent}/{cap}點（上限為共享天賦池的一半）。',
+  'questUi.dialog.feedHearth': '我這兒有點東西要添進爐子。',
+  'questUi.dialog.feedHearthAria': '給爐子添東西',
+  'questUi.dialog.trainerNeedsGold': '金幣不足',
+  'questUi.dialog.trainerConfirmTitle': '確認副職業',
+  'questUi.dialog.trainerConfirmBody': '花費{cost}訓練為{cls}？',
+  'questUi.dialog.trainerConfirmYes': '是，訓練我',
+  'questUi.dialog.trainerConfirmNo': '否，返回',
+  'questUi.dialog.trainerHowTitle': '副職業是如何運作的？',
+  'questUi.dialog.trainerHowBody':
+    '副職業會在你的主職業之上增加第二棵天賦樹和一套技能，從{level}級開始解鎖。你保留主職業的定位；副職業與主職業共享天賦池，最多佔用其中的{pct}%，其技能的資源消耗會換算為你的主資源。首次選擇免費；之後更換需要花費金幣。',
+  'entities.npcs.elder_yarrow.name': '長老亞羅',
+  'entities.npcs.elder_yarrow.title': '副職業訓練師',
+  'entities.npcs.elder_yarrow.greeting': '每一套build都始於一個問題：哪個副職業在召喚你？',
 };

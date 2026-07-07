@@ -114,7 +114,7 @@ For off-box safety, sync the directory to S3 occasionally:
   are still read **once**, on the first boot of a fresh database, to seed the soft
   list — after that they are ignored and the dashboard is authoritative.
 - **Realms (horizontal scaling)**: each server process serves one realm,
-  set by `REALM_NAME` (default `Claudemoon`). To add a realm, run another
+  set by `REALM_NAME` (default `The Hollow`). To add a realm, run another
   process against the **same** `DATABASE_URL` with a different `REALM_NAME`
   and `PORT` (e.g. behind its own vhost or compose service). Characters,
   friends, guilds, and presence are realm-scoped, so the worlds are fully

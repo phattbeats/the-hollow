@@ -245,6 +245,7 @@ import { chatPlayerContextActions } from './player_context_menu';
 import { hydratePortraits, portraitChipHtml } from './portrait_chip';
 import { maskProfanity } from './profanity';
 import { encodeQuestLink, parseChatSegments } from './quest_link';
+import { type QuestOfferStage, questOfferAdvance, questOfferChoices } from './quest_offer_view';
 import { type QuestTrackerView, questTrackerView, type TrackedQuest } from './quest_tracker';
 import { QuestLogWindow } from './questlog_window';
 import { lockoutParts, lockoutShape } from './raid_lockout';
@@ -2789,7 +2790,8 @@ export class Hud {
     ...this.windowFocus('#spellbook'),
     hideTooltip: () => this.hideTooltip(),
     attachTooltip: (el, html) => this.attachTooltip(el, html),
-    abilitySummary: (known) => describeAbilitySummary(known, this.sim.player.resourceType),
+    abilitySummary: (known) =>
+      describeAbilitySummary(known, this.sim.player.resourceType, this.sim.player.spellHaste),
     abilityTooltip: (known) => this.abilityTooltip(known),
     barAbilityIds: () =>
       this.hotbarActions.flatMap((a) => (a && a.type === 'ability' ? [a.id] : [])),
@@ -3211,7 +3213,7 @@ export class Hud {
     const rangeLine = abilityRangeLine(a);
     if (rangeLine) costLine.push(rangeLine);
     if (costLine.length) html += `<div class="tt-stat">${costLine.map(esc).join(' &nbsp; ')}</div>`;
-    const castLine = [abilityCastLine(res)];
+    const castLine = [abilityCastLine(res, this.sim.player.spellHaste)];
     if (a.cooldown > 0)
       castLine.push(
         t('abilityUi.tooltip.cooldownSeconds', { seconds: formatAbilityNumber(a.cooldown) }),
@@ -7638,6 +7640,9 @@ export class Hud {
     if (def?.trainer) {
       html += `<button type="button" class="qd-list-item" data-trainer="1" aria-label="${esc(t('questUi.dialog.trainSecondaryAria', { name: npcName }))}"><span class="quest-complete">+</span> ${esc(t('questUi.dialog.trainSecondary'))}</button>`;
     }
+    if (def?.hearth) {
+      html += `<button type="button" class="qd-list-item" data-feed-hearth="1" aria-label="${esc(t('questUi.dialog.feedHearthAria'))}"><span class="gold">+</span> ${esc(t('questUi.dialog.feedHearth'))}</button>`;
+    }
     if (Object.values(DELVES).some((d) => d.boardNpcId === npc.templateId)) {
       html += `<button type="button" class="qd-list-item" data-delve-board="1" aria-label="${esc(t('delveUi.board.openDelveAria', { name: npcName }))}"><span class="gold">${svgIcon('skull')}</span> ${esc(t('delveUi.board.openDelve'))}</button>`;
     }
@@ -7662,6 +7667,9 @@ export class Hud {
       this.closeQuestDialog(false);
       this.openMarket();
     });
+    el.querySelector('[data-feed-hearth]')?.addEventListener('click', () => {
+      this.sim.feedGreenpaw();
+    });
     el.querySelector('[data-trainer]')?.addEventListener('click', () => {
       this.trainerPanel.open(npc.id, npc.templateId);
     });
@@ -7674,24 +7682,34 @@ export class Hud {
     this.questDialogTrap?.focusFirst();
   }
 
-  private renderQuestDetail(npc: Entity, questId: string): void {
+  // `offerStage` drives the branching offer dialog (PHAA-471) when the def carries
+  // offerDialog: 'offer' is the normal detail view (with complain/refuse choices
+  // added), 'complained' swaps the text for the NPC's complainReply, and 'refused'
+  // shows the concession line after the refusal completed the quest server-side.
+  // The stage machine is the pure quest_offer_view core; this stays the thin painter.
+  private renderQuestDetail(
+    npc: Entity,
+    questId: string,
+    offerStage: QuestOfferStage = 'offer',
+  ): void {
     const el = $('#quest-dialog');
     const quest = QUESTS[questId];
     this.openQuestDetailId = questId;
     const state = this.sim.questState(questId);
-    const text = questNarrative(
-      questId,
-      state === 'ready' ? 'completion' : 'text',
-      this.sim.player.name,
-    );
-    voice.play(state === 'ready' ? `quest__${questId}__complete` : `quest__${questId}__offer`);
+    const dialog = quest.offerDialog;
+    const text =
+      dialog && offerStage !== 'offer'
+        ? questDialogLine(questId, offerStage === 'complained' ? 'complainReply' : 'refuseReply')
+        : questNarrative(questId, state === 'ready' ? 'completion' : 'text', this.sim.player.name);
+    if (offerStage === 'offer')
+      voice.play(state === 'ready' ? `quest__${questId}__complete` : `quest__${questId}__offer`);
     markDialogRoot(el, { labelledBy: 'quest-dialog-title' });
     let html = `<div class="panel-title"><span id="quest-dialog-title">${esc(questTitle(questId))}${this.questSuggestedPlayersHtml(quest.suggestedPlayers)}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('questUi.dialog.close'))}">${svgIcon('close')}</button></div>`;
     if (state === 'available' && quest.minLevel) {
       html += `<div class="qd-req">${esc(t('questUi.detail.requiresLevel', { level: this.questNumber(quest.minLevel) }))}</div>`;
     }
     html += `<div class="qd-text">${esc(text)}</div>`;
-    if (state !== 'ready') {
+    if (state !== 'ready' && offerStage === 'offer') {
       const qp = this.sim.questLog.get(questId);
       html += `<div class="qd-sub">${esc(t('questUi.detail.objectives'))}</div>`;
       html += quest.objectives
@@ -7701,19 +7719,64 @@ export class Hud {
         )
         .join('');
     }
-    html += `<div class="qd-sub">${esc(t('questUi.detail.rewards'))}</div>`;
-    html += `<div class="qd-obj">${esc(t('questUi.detail.xpReward', { xp: this.questNumber(quest.xpReward) }))} &nbsp; ${this.moneyHtml(quest.copperReward)}</div>`;
-    const rewardItem = questRewardItem(quest, this.sim.cfg.playerClass);
-    if (rewardItem) {
-      const item = ITEMS[rewardItem];
-      html += `<div class="qd-reward-row" data-reward><span class="qd-reward-label">${esc(t('questUi.detail.itemReward'))}</span>${this.itemIcon(item)}<span class="qd-reward-name" style="color:${QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff'}">${esc(itemDisplayName(item))}</span></div>`;
+    let rewardItem: string | undefined;
+    if (offerStage !== 'refused') {
+      html += `<div class="qd-sub">${esc(t('questUi.detail.rewards'))}</div>`;
+      html += `<div class="qd-obj">${esc(t('questUi.detail.xpReward', { xp: this.questNumber(quest.xpReward) }))} &nbsp; ${this.moneyHtml(quest.copperReward)}</div>`;
+      rewardItem = questRewardItem(quest, this.sim.cfg.playerClass);
+      if (rewardItem) {
+        const item = ITEMS[rewardItem];
+        html += `<div class="qd-reward-row" data-reward><span class="qd-reward-label">${esc(t('questUi.detail.itemReward'))}</span>${this.itemIcon(item)}<span class="qd-reward-name" style="color:${QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff'}">${esc(itemDisplayName(item))}</span></div>`;
+      }
     }
     el.innerHTML = html;
     const rewardRow = el.querySelector('[data-reward]') as HTMLElement | null;
     if (rewardRow && rewardItem)
       this.attachTooltip(rewardRow, () => this.itemTooltip(ITEMS[rewardItem]));
 
-    if (state === 'available') {
+    if (dialog && offerStage === 'refused') {
+      // The refusal already completed the quest server-side; the concession line is
+      // showing, so the only move left is back to the gossip menu.
+      const btn = document.createElement('button');
+      btn.className = 'btn';
+      btn.type = 'button';
+      btn.textContent = t('questUi.dialog.continue');
+      btn.addEventListener('click', () => this.renderGossip(npc));
+      el.appendChild(btn);
+      el.querySelector('[data-close]')?.addEventListener('click', () => this.closeQuestDialog());
+      el.style.display = 'block';
+      this.questDialogTrap?.focusFirst();
+      return;
+    }
+    if (state === 'available' && dialog) {
+      // Branching offer (PHAA-471): Accept plus the player's own lines as choices.
+      for (const choice of questOfferChoices(offerStage)) {
+        const btn = document.createElement('button');
+        btn.className = 'btn';
+        btn.type = 'button';
+        btn.textContent =
+          choice === 'accept' ? t('questUi.dialog.accept') : questDialogLine(questId, choice);
+        btn.addEventListener('click', () => {
+          if (choice === 'accept') {
+            this.sim.acceptQuest(questId);
+            this.sim.reportTelemetry('quest_accept', {
+              timeMs: performance.now() - this.questDialogOpenedAtMs,
+            });
+            this.renderGossip(npc);
+            return;
+          }
+          if (choice === 'refuse') {
+            this.sim.refuseQuest(questId);
+            this.sim.reportTelemetry('quest_refuse', {
+              timeMs: performance.now() - this.questDialogOpenedAtMs,
+            });
+          }
+          const next = questOfferAdvance(offerStage, choice);
+          if (next) this.renderQuestDetail(npc, questId, next);
+        });
+        el.appendChild(btn);
+      }
+    } else if (state === 'available') {
       const btn = document.createElement('button');
       btn.className = 'btn';
       btn.type = 'button';
@@ -10671,7 +10734,11 @@ export class Hud {
   }
 }
 
-function describeAbilitySummary(known: ResolvedAbility, resourceType: ResourceType | null): string {
+function describeAbilitySummary(
+  known: ResolvedAbility,
+  resourceType: ResourceType | null,
+  spellHaste = 0,
+): string {
   const parts: string[] = [];
   if (known.cost > 0) {
     parts.push(
@@ -10681,7 +10748,7 @@ function describeAbilitySummary(known: ResolvedAbility, resourceType: ResourceTy
       }),
     );
   }
-  parts.push(abilityCastLine(known));
+  parts.push(abilityCastLine(known, spellHaste));
   if (known.def.cooldown > 0) {
     parts.push(
       t('abilityUi.tooltip.cooldownSeconds', { seconds: formatAbilityNumber(known.def.cooldown) }),
@@ -10773,6 +10840,13 @@ function questNarrative(questId: string, field: 'text' | 'completion', playerNam
 
 function questObjectiveLabel(questId: string, objectiveIndex: number): string {
   return tEntity({ kind: 'questObjective', questId, objectiveIndex, field: 'label' });
+}
+
+function questDialogLine(
+  questId: string,
+  part: 'complain' | 'complainReply' | 'refuse' | 'refuseReply',
+): string {
+  return tEntity({ kind: 'questDialog', id: questId, field: part });
 }
 
 function questTitleFromSource(name: string): string {
@@ -10887,14 +10961,18 @@ function abilityRangeLine(def: AbilityDef): string | null {
   return t('abilityUi.tooltip.range', { range: formatAbilityNumber(def.range) });
 }
 
-function abilityCastLine(known: ResolvedAbility): string {
+// `spellHaste` (the live character's set-bonus spell haste, a fraction) shortens
+// the shown cast / channel time exactly as the sim does, so a hasted caster's
+// tooltips reflect the real, faster cast.
+function abilityCastLine(known: ResolvedAbility, spellHaste = 0): string {
+  const h = 1 + Math.max(0, spellHaste);
   if (known.def.channel) {
     return t('abilityUi.tooltip.channeledSeconds', {
-      seconds: formatAbilityNumber(known.def.channel.duration),
+      seconds: formatAbilityNumber(known.def.channel.duration / h),
     });
   }
   if (known.castTime > 0) {
-    return t('abilityUi.tooltip.castSeconds', { seconds: formatAbilityNumber(known.castTime) });
+    return t('abilityUi.tooltip.castSeconds', { seconds: formatAbilityNumber(known.castTime / h) });
   }
   return t('abilityUi.tooltip.instant');
 }

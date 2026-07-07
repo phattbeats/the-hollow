@@ -332,6 +332,10 @@ export interface SetBonusEffect {
   spi?: number;
   ap?: number; // flat attack power
   crit?: number; // flat crit chance, 0..1
+  // Haste fraction (0.15 = 15% faster). ONE stat: it speeds melee and ranged
+  // auto-attack swings AND shortens spell cast/channel time, all together
+  // (folded into Entity.meleeHaste/rangedHaste/spellHaste in recalcPlayerStats).
+  haste?: number;
   castPushbackReduction?: number; // 0..1: fraction of damage cast-pushback removed (1 = immune)
 }
 
@@ -1115,6 +1119,10 @@ export interface NpcDef {
   // talking to this NPC opens the trainer panel, offering these professions as
   // a secondary class (see setSecondaryClass in world_api/trainer.ts).
   trainer?: { professions: PlayerClass[] };
+  // Greenpaw's hearth (PHAA-421): talking to this NPC offers a "feed the
+  // hearth" gossip option (feedGreenpaw in world_api/greenpaw_hearth.ts),
+  // replacing the old /feed chat command (PHAA-482).
+  hearth?: boolean;
   greeting: string;
   // Optional ordered intro lines the player clicks through once, before the
   // gossip/quest hook, on first meeting this NPC (presentation-only; the UI
@@ -1146,6 +1154,18 @@ export interface GroundObjectDef {
   itemId: string;
   name: string;
   positions: { x: number; z: number }[];
+}
+
+// Gatherable world nodes (amber/heartwood/spore). Permanent, unowned
+// fixtures: this issue is content plus visibility only, no harvest logic
+// (see PHAA-504).
+export type GatherNodeType = 'amber' | 'heartwood' | 'spore';
+
+export interface GatherNodeDef {
+  id: string;
+  zoneId: string;
+  type: GatherNodeType;
+  pos: { x: number; z: number };
 }
 
 export interface DungeonSpawn {
@@ -1279,6 +1299,19 @@ export interface QuestObjective {
   label: string;
 }
 
+// Optional branching offer dialog (PHAA-471): choice lines the client renders on a
+// quest offer instead of the plain Accept button. `complain` / `refuse` are the
+// PLAYER's lines (the button labels); the two replies are the NPC's answers. Only
+// `refuse` has a gameplay effect: it completes the quest with its normal rewards
+// without running the objectives (server-validated in quest_commands.refuseQuest).
+// `complain` is pure flavor and re-offers accept/refuse.
+export interface QuestOfferDialog {
+  complain: string;
+  complainReply: string;
+  refuse: string;
+  refuseReply: string;
+}
+
 export interface QuestDef {
   id: string;
   name: string;
@@ -1298,6 +1331,7 @@ export interface QuestDef {
   retired?: boolean; // remains finishable if already accepted, but cannot be newly accepted
   shareable?: boolean; // quest-link sharing allowed (default true; set false to opt out)
   suggestedPlayers?: number; // group quests ("Suggested players: 5")
+  offerDialog?: QuestOfferDialog; // branching offer choices (PHAA-471); presence makes the quest refusable
 }
 
 export function questTurnInNpcIds(quest: QuestDef): readonly string[] {
@@ -1377,6 +1411,11 @@ export interface Entity {
   attackPower: number;
   rangedPower: number; // hunters: ranged attack power
   spellPower: number; // casters: added to spell damage via per-spell coefficients
+  // Haste fractions from item-set bonuses (0 = none). Melee/ranged haste speed up
+  // the respective auto-attack swing; spell haste shortens cast and channel time.
+  meleeHaste: number;
+  rangedHaste: number;
+  spellHaste: number;
   critChance: number; // 0..1
   dodgeChance: number;
   castPushbackReduction: number; // 0..1: damage cast-pushback removed by item-set bonuses (1 = immune)

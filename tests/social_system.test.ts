@@ -1,10 +1,16 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import {
-  SocialService, validateGuildName,
-  type CharInfo, type CharRef, type GuildRank, type Presence,
-  type SocialDb, type SocialEvent, type SocialTransport,
-} from '../server/social';
 import { resolveRealm } from '../server/realm';
+import {
+  type CharInfo,
+  type CharRef,
+  type GuildRank,
+  type Presence,
+  type SocialDb,
+  type SocialEvent,
+  SocialService,
+  type SocialTransport,
+  validateGuildName,
+} from '../server/social';
 
 // ---------------------------------------------------------------------------
 // In-memory fakes — let us exercise the full SocialService logic (friends,
@@ -19,7 +25,7 @@ class FakeDb implements SocialDb {
   private members = new Map<number, { guildId: number; rank: GuildRank }>();
   private nextGuildId = 1;
 
-  addChar(id: number, name: string, cls = 'warrior', level = 10, realm = 'Claudemoon'): void {
+  addChar(id: number, name: string, cls = 'warrior', level = 10, realm = 'The Hollow'): void {
     this.chars.set(id, { id, name, cls, level, realm });
   }
 
@@ -27,13 +33,21 @@ class FakeDb implements SocialDb {
     const trimmed = name.trim();
     const exact = [...this.chars.values()].find((c) => c.name === trimmed);
     if (exact) return exact;
-    const ci = [...this.chars.values()].filter((c) => c.name.toLowerCase() === trimmed.toLowerCase());
+    const ci = [...this.chars.values()].filter(
+      (c) => c.name.toLowerCase() === trimmed.toLowerCase(),
+    );
     return ci.length === 1 ? ci[0] : null;
   }
-  async getCharacter(id: number): Promise<CharInfo | null> { return this.chars.get(id) ?? null; }
+  async getCharacter(id: number): Promise<CharInfo | null> {
+    return this.chars.get(id) ?? null;
+  }
 
-  async addFriend(c: number, f: number): Promise<void> { (this.friends.get(c) ?? this.friends.set(c, new Set()).get(c)!).add(f); }
-  async removeFriend(c: number, f: number): Promise<void> { this.friends.get(c)?.delete(f); }
+  async addFriend(c: number, f: number): Promise<void> {
+    (this.friends.get(c) ?? this.friends.set(c, new Set()).get(c)!).add(f);
+  }
+  async removeFriend(c: number, f: number): Promise<void> {
+    this.friends.get(c)?.delete(f);
+  }
   async listFriends(c: number): Promise<CharInfo[]> {
     return [...(this.friends.get(c) ?? [])].map((id) => this.chars.get(id)!).filter(Boolean);
   }
@@ -41,15 +55,28 @@ class FakeDb implements SocialDb {
     return [...this.friends.entries()].filter(([, set]) => set.has(c)).map(([id]) => id);
   }
 
-  async addBlock(c: number, b: number): Promise<void> { (this.blocks.get(c) ?? this.blocks.set(c, new Set()).get(c)!).add(b); }
-  async removeBlock(c: number, b: number): Promise<void> { this.blocks.get(c)?.delete(b); }
-  async listBlocks(c: number): Promise<CharRef[]> {
-    return [...(this.blocks.get(c) ?? [])].map((id) => { const ch = this.chars.get(id)!; return { id: ch.id, name: ch.name }; });
+  async addBlock(c: number, b: number): Promise<void> {
+    (this.blocks.get(c) ?? this.blocks.set(c, new Set()).get(c)!).add(b);
   }
-  async blockedIds(c: number): Promise<number[]> { return [...(this.blocks.get(c) ?? [])]; }
+  async removeBlock(c: number, b: number): Promise<void> {
+    this.blocks.get(c)?.delete(b);
+  }
+  async listBlocks(c: number): Promise<CharRef[]> {
+    return [...(this.blocks.get(c) ?? [])].map((id) => {
+      const ch = this.chars.get(id)!;
+      return { id: ch.id, name: ch.name };
+    });
+  }
+  async blockedIds(c: number): Promise<number[]> {
+    return [...(this.blocks.get(c) ?? [])];
+  }
 
-  async createGuildWithLeader(name: string, leaderId: number): Promise<{ guildId: number } | { error: 'name_taken' | 'already_in_guild' }> {
-    if ([...this.guilds.values()].some((n) => n.toLowerCase() === name.toLowerCase())) return { error: 'name_taken' };
+  async createGuildWithLeader(
+    name: string,
+    leaderId: number,
+  ): Promise<{ guildId: number } | { error: 'name_taken' | 'already_in_guild' }> {
+    if ([...this.guilds.values()].some((n) => n.toLowerCase() === name.toLowerCase()))
+      return { error: 'name_taken' };
     if (this.members.has(leaderId)) return { error: 'already_in_guild' };
     const id = this.nextGuildId++;
     this.guilds.set(id, name);
@@ -60,11 +87,18 @@ class FakeDb implements SocialDb {
     this.guilds.delete(id);
     for (const [cid, m] of [...this.members]) if (m.guildId === id) this.members.delete(cid);
   }
-  async guildMembership(c: number): Promise<{ guildId: number; guildName: string; rank: GuildRank } | null> {
+  async guildMembership(
+    c: number,
+  ): Promise<{ guildId: number; guildName: string; rank: GuildRank } | null> {
     const m = this.members.get(c);
     return m ? { guildId: m.guildId, guildName: this.guilds.get(m.guildId)!, rank: m.rank } : null;
   }
-  async addGuildMemberAtomic(guildId: number, c: number, rank: GuildRank, limit: number): Promise<'ok' | 'full' | 'already_member' | 'no_guild'> {
+  async addGuildMemberAtomic(
+    guildId: number,
+    c: number,
+    rank: GuildRank,
+    limit: number,
+  ): Promise<'ok' | 'full' | 'already_member' | 'no_guild'> {
     if (!this.guilds.has(guildId)) return 'no_guild';
     if (this.members.has(c)) return 'already_member';
     const count = [...this.members.values()].filter((m) => m.guildId === guildId).length;
@@ -72,14 +106,21 @@ class FakeDb implements SocialDb {
     this.members.set(c, { guildId, rank });
     return 'ok';
   }
-  async removeGuildMember(c: number): Promise<void> { this.members.delete(c); }
-  async setGuildRank(c: number, rank: GuildRank): Promise<void> { const m = this.members.get(c); if (m) m.rank = rank; }
+  async removeGuildMember(c: number): Promise<void> {
+    this.members.delete(c);
+  }
+  async setGuildRank(c: number, rank: GuildRank): Promise<void> {
+    const m = this.members.get(c);
+    if (m) m.rank = rank;
+  }
   async guildMembers(guildId: number): Promise<(CharInfo & { rank: GuildRank })[]> {
     return [...this.members.entries()]
       .filter(([, m]) => m.guildId === guildId)
       .map(([cid, m]) => ({ ...this.chars.get(cid)!, rank: m.rank }));
   }
-  guildCount(): number { return this.guilds.size; } // test helper: detect orphaned guilds
+  guildCount(): number {
+    return this.guilds.size;
+  } // test helper: detect orphaned guilds
 }
 
 class FakeTransport implements SocialTransport {
@@ -95,31 +136,57 @@ class FakeTransport implements SocialTransport {
     this.online.add(id);
     this.presence.set(id, p);
   }
-  setOffline(id: number): void { this.online.delete(id); this.presence.delete(id); }
+  setOffline(id: number): void {
+    this.online.delete(id);
+    this.presence.delete(id);
+  }
 
   charCache = new Map<number, CharInfo>();
   byCharacterId(id: number) {
-    const c = this.online.has(id) ? this.charCache.get(id) ?? null : null;
+    const c = this.online.has(id) ? (this.charCache.get(id) ?? null) : null;
     return c ? { characterId: c.id, name: c.name } : null;
   }
-  byName(_name: string) { return null; }
-  isOnline(id: number): boolean { return this.online.has(id); }
-  locationOf(id: number): Presence | null { return this.online.has(id) ? this.presence.get(id) ?? null : null; }
+  byName(_name: string) {
+    return null;
+  }
+  isOnline(id: number): boolean {
+    return this.online.has(id);
+  }
+  locationOf(id: number): Presence | null {
+    return this.online.has(id) ? (this.presence.get(id) ?? null) : null;
+  }
   deliver(id: number, events: SocialEvent[]): void {
     const arr = this.delivered.get(id) ?? [];
     arr.push(...events);
     this.delivered.set(id, arr);
   }
-  pushSnapshot(id: number): void { this.snapshotCount.set(id, (this.snapshotCount.get(id) ?? 0) + 1); }
-  onBlocksChanged(id: number, ids: number[]): void { this.blockSets.set(id, ids); }
+  pushSnapshot(id: number): void {
+    this.snapshotCount.set(id, (this.snapshotCount.get(id) ?? 0) + 1);
+  }
+  onBlocksChanged(id: number, ids: number[]): void {
+    this.blockSets.set(id, ids);
+  }
   isIgnoring(recipientId: number, senderCharacterId: number): boolean {
     return !!this.db.blocks.get(recipientId)?.has(senderCharacterId);
   }
 
-  eventsFor(id: number): SocialEvent[] { return this.delivered.get(id) ?? []; }
-  errorsFor(id: number): string[] { return this.eventsFor(id).filter((e) => e.type === 'error').map((e: any) => e.text); }
-  textFor(id: number): string[] { return this.eventsFor(id).filter((e) => e.type === 'log' || e.type === 'chat').map((e: any) => e.text ?? ''); }
-  clear(): void { this.delivered.clear(); this.snapshotCount.clear(); }
+  eventsFor(id: number): SocialEvent[] {
+    return this.delivered.get(id) ?? [];
+  }
+  errorsFor(id: number): string[] {
+    return this.eventsFor(id)
+      .filter((e) => e.type === 'error')
+      .map((e: any) => e.text);
+  }
+  textFor(id: number): string[] {
+    return this.eventsFor(id)
+      .filter((e) => e.type === 'log' || e.type === 'chat')
+      .map((e: any) => e.text ?? '');
+  }
+  clear(): void {
+    this.delivered.clear();
+    this.snapshotCount.clear();
+  }
 }
 
 // Test harness: characters 1..N, with helpers to flip presence.
@@ -131,28 +198,40 @@ function setup() {
   const actors = new Map<number, { characterId: number; name: string }>();
   const add = (id: number, name: string, opts: { cls?: string; level?: number } = {}) => {
     db.addChar(id, name, opts.cls, opts.level);
-    tx.charCache.set(id, { id, name, cls: opts.cls ?? 'warrior', level: opts.level ?? 10, realm: 'Claudemoon' });
+    tx.charCache.set(id, {
+      id,
+      name,
+      cls: opts.cls ?? 'warrior',
+      level: opts.level ?? 10,
+      realm: 'The Hollow',
+    });
     actors.set(id, { characterId: id, name });
   };
   return {
-    db, tx, svc, actors, add,
+    db,
+    tx,
+    svc,
+    actors,
+    add,
     actor: (id: number) => actors.get(id)!,
-    advance: (ms: number) => { clock += ms; },
+    advance: (ms: number) => {
+      clock += ms;
+    },
   };
 }
 
 describe('resolveRealm', () => {
   it('accepts realm-style display names', () => {
-    expect(resolveRealm('Claudemoon')).toBe('Claudemoon');
+    expect(resolveRealm('The Hollow')).toBe('The Hollow');
     expect(resolveRealm('Area 52')).toBe('Area 52');
     expect(resolveRealm("Mal'Ganis")).toBe("Mal'Ganis");
     expect(resolveRealm('  Ironforge  ')).toBe('Ironforge');
   });
   it('falls back to the default for empty or invalid names', () => {
-    expect(resolveRealm(undefined)).toBe('Claudemoon');
-    expect(resolveRealm('')).toBe('Claudemoon');
-    expect(resolveRealm('x'.repeat(25))).toBe('Claudemoon');
-    expect(resolveRealm('drop;table')).toBe('Claudemoon');
+    expect(resolveRealm(undefined)).toBe('The Hollow');
+    expect(resolveRealm('')).toBe('The Hollow');
+    expect(resolveRealm('x'.repeat(25))).toBe('The Hollow');
+    expect(resolveRealm('drop;table')).toBe('The Hollow');
   });
 });
 
@@ -171,7 +250,11 @@ describe('validateGuildName', () => {
 
 describe('friends', () => {
   let h: ReturnType<typeof setup>;
-  beforeEach(() => { h = setup(); h.add(1, 'Aleph'); h.add(2, 'Bet'); });
+  beforeEach(() => {
+    h = setup();
+    h.add(1, 'Aleph');
+    h.add(2, 'Bet');
+  });
 
   it('adds a friend and reflects it in the snapshot', async () => {
     await h.svc.friendAdd(h.actor(1), 'Bet');
@@ -241,7 +324,11 @@ describe('friends', () => {
 
 describe('ignore / block', () => {
   let h: ReturnType<typeof setup>;
-  beforeEach(() => { h = setup(); h.add(1, 'Aleph'); h.add(2, 'Bet'); });
+  beforeEach(() => {
+    h = setup();
+    h.add(1, 'Aleph');
+    h.add(2, 'Bet');
+  });
 
   it('blocks a player and surfaces the updated block set to the transport', async () => {
     await h.svc.blockAdd(h.actor(1), 'Bet');
@@ -290,8 +377,12 @@ describe('guilds', () => {
   let h: ReturnType<typeof setup>;
   beforeEach(() => {
     h = setup();
-    h.add(1, 'Aleph'); h.add(2, 'Bet'); h.add(3, 'Gimel');
-    h.tx.setOnline(1); h.tx.setOnline(2); h.tx.setOnline(3);
+    h.add(1, 'Aleph');
+    h.add(2, 'Bet');
+    h.add(3, 'Gimel');
+    h.tx.setOnline(1);
+    h.tx.setOnline(2);
+    h.tx.setOnline(3);
   });
 
   it('creates a guild with the founder as leader', async () => {
@@ -302,7 +393,7 @@ describe('guilds', () => {
     expect(snap.guild?.members.map((m) => m.name)).toEqual(['Aleph']);
   });
 
-  it('refreshes guildmates\' panels when a member comes online, even non-friends (#100)', async () => {
+  it("refreshes guildmates' panels when a member comes online, even non-friends (#100)", async () => {
     await h.svc.guildCreate(h.actor(1), 'Iron Vanguard');
     await h.svc.guildInvite(h.actor(1), 'Bet');
     await h.svc.guildAccept(h.actor(2));
@@ -374,7 +465,11 @@ describe('guilds', () => {
     // promote notice will not have been delivered by the time the call resolves.
     const realMembers = h.db.guildMembers.bind(h.db);
     h.db.guildMembers = (guildId: number) =>
-      new Promise((resolve) => { setTimeout(() => { void realMembers(guildId).then(resolve); }, 0); });
+      new Promise((resolve) => {
+        setTimeout(() => {
+          void realMembers(guildId).then(resolve);
+        }, 0);
+      });
     await h.svc.guildSetRank(h.actor(1), 'Bet', 'officer');
     expect(h.tx.textFor(2).join()).toMatch(/Bet is now Officer/);
   });
@@ -419,7 +514,11 @@ describe('guilds', () => {
     h.tx.clear();
     const ok = await h.svc.guildChat(h.actor(1), 'hello guild');
     expect(ok).toBe(true);
-    expect(h.tx.eventsFor(1).some((e) => e.type === 'chat' && e.channel === 'guild' && e.text === 'hello guild')).toBe(true);
+    expect(
+      h.tx
+        .eventsFor(1)
+        .some((e) => e.type === 'chat' && e.channel === 'guild' && e.text === 'hello guild'),
+    ).toBe(true);
     expect(h.tx.eventsFor(2).some((e) => e.type === 'chat' && e.text === 'hello guild')).toBe(true);
     expect(h.tx.eventsFor(3)).toHaveLength(0); // Gimel is not in the guild
   });
@@ -506,7 +605,11 @@ describe('guilds', () => {
     await h.svc.guildSetRank(h.actor(1), 'Bet', 'officer');
     h.tx.clear();
     expect(await h.svc.officerChat(h.actor(1), 'officers only')).toBe(true);
-    expect(h.tx.eventsFor(1).some((e) => e.type === 'chat' && e.channel === 'officer' && e.text === 'officers only')).toBe(true);
+    expect(
+      h.tx
+        .eventsFor(1)
+        .some((e) => e.type === 'chat' && e.channel === 'officer' && e.text === 'officers only'),
+    ).toBe(true);
     expect(h.tx.eventsFor(2).some((e) => e.type === 'chat' && e.channel === 'officer')).toBe(true);
   });
 
@@ -545,8 +648,10 @@ describe('guild atomicity (#149)', () => {
   let h: ReturnType<typeof setup>;
   beforeEach(() => {
     h = setup();
-    h.add(1, 'Aleph'); h.add(2, 'Bet');
-    h.tx.setOnline(1); h.tx.setOnline(2);
+    h.add(1, 'Aleph');
+    h.add(2, 'Bet');
+    h.tx.setOnline(1);
+    h.tx.setOnline(2);
   });
 
   it('two racing guild_create packets from one character leave no orphan guild', async () => {

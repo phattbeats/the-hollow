@@ -2592,6 +2592,7 @@ export const fr_CA: EnTranslations = {
     "rendererFailed": "Impossible de démarrer le rendu: rechargez la page. {error}",
     "enterTimeout": "Impossible d'entrer dans le monde. La connexion a expiré. Le serveur de jeu fonctionne-t-il ?",
     "connectionLost": "La connexion au serveur a été perdue.",
+    "reconnecting": "Connection lost. Reconnecting...",
     "connectionRejected": "Le serveur a fermé la connexion."
   },
   "errors": {
@@ -3426,6 +3427,8 @@ export const fr_CA: EnTranslations = {
       "worldMarketAria": "Ouvrir le marché mondial",
       "trainSecondary": "Train me in a secondary profession.",
       "trainSecondaryAria": "Train a secondary profession with {name}",
+      "feedHearth": "I have something for the hearth.",
+      "feedHearthAria": "Feed the hearth",
       "trainerTitle": "Secondary Profession",
       "trainerLevelLocked": "Unlocks at level {level}.",
       "trainerCurrent": "Current",
@@ -3437,7 +3440,7 @@ export const fr_CA: EnTranslations = {
       "trainerConfirmYes": "Yes, train me",
       "trainerConfirmNo": "No, go back",
       "trainerHowTitle": "How do secondary professions work?",
-      "trainerHowBody": "A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities translate their resource cost to your primary resource. Your first pick is free; changing later costs gold.",
+      "trainerHowBody": "A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities convert their resource cost to your primary resource. Your first pick is free; changing later costs gold.",
       "accept": "Accepter",
       "decline": "Refuser",
       "continue": "Continuer",
@@ -5775,6 +5778,11 @@ export const fr_CA: EnTranslations = {
         "title": "Gardien du reliquaire",
         "greeting": "Le reliquaire en bas s'est encore déplacé."
       },
+      "elder_yarrow": {
+        "name": "Elder Yarrow",
+        "title": "Profession Trainer",
+        "greeting": "Every build starts as a question. Which second calling speaks to you?"
+      },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
         "title": "Veille-marées",
@@ -6635,6 +6643,12 @@ export const fr_CA: EnTranslations = {
           "0": {
             "label": "Bouchée des grottes récoltée"
           }
+        },
+        "dialog": {
+          "complain": "I was just down there. You watched me climb out of the hole.",
+          "complainReply": "i know it, friend, i know... the vase don't keep a calendar and neither does my stomach. but look at them boots and tell me they don't got one more descent in 'em... no rush. the hole ain't goin' anywhere. that's kinda its whole deal...",
+          "refuse": "No. I'm not going back down there.",
+          "refuseReply": "oh... oh, okay. ...okay. that's... yeah. no, that's fair, friend, that's fair... the vase heard it too, and between you and me i think he respects it. here, take the cutting anyway. you went down once, and that's once more than most..."
         }
       },
       "q_root_hollow_boars": {
@@ -6850,6 +6864,10 @@ export const fr_CA: EnTranslations = {
       }
     },
     "itemSets": {
+      "boundstone_vanguard": {
+        "name": "Boundstone Vanguard",
+        "bonus3": "Increases attack and casting speed by 15%."
+      },
       "crownforged": {
         "name": "Tenue de guerre Couronneforge",
         "bonus2": "Augmente la puissance d'attaque de 40.",
@@ -6859,6 +6877,10 @@ export const fr_CA: EnTranslations = {
         "name": "Tenue de guerre du seigneur de la mort",
         "bonus2": "Augmente la puissance d'attaque de 40.",
         "bonus3": "Augmente la force de 15 et l'endurance de 15."
+      },
+      "greyjaw_stalker": {
+        "name": "Greyjaw Stalker's Kit",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "necromancers": {
         "name": "Robe du nécromancien",
@@ -6879,6 +6901,10 @@ export const fr_CA: EnTranslations = {
         "name": "Robe de l’Appel-tempête",
         "bonus2": "Réduit de 50% le recul des incantations causé par les dégâts.",
         "bonus3": "Les dégâts subis ne retardent pas l'incantation."
+      },
+      "vale_arcanist": {
+        "name": "Vale Arcanist's Regalia",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "wyrmshadow": {
         "name": "Tenue d’Ombre-drake",

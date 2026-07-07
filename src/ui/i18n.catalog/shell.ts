@@ -36,6 +36,7 @@ export const shellStrings = {
       rendererFailed: 'Could not start the renderer: try reloading. {error}',
       enterTimeout: 'Could not enter world. The connection timed out. Is the game server running?',
       connectionLost: 'Connection to the server was lost.',
+      reconnecting: 'Connection lost. Reconnecting...',
       connectionRejected: 'The server closed the connection.',
     },
     errors: {
@@ -230,7 +231,7 @@ export const shellStrings = {
       logoAlt: 'The Hollow',
       eyebrow: 'Realm maintenance',
       heading: 'The realm is temporarily unavailable.',
-      body: 'We are restarting the game service and expect Claudemoon to return shortly. This page will keep checking automatically.',
+      body: 'We are restarting the game service and expect The Hollow to return shortly. This page will keep checking automatically.',
       status: 'Back soon',
     },
   },

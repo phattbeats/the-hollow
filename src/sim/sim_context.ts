@@ -552,16 +552,6 @@ export interface SimContextCallbacks {
   partyCapacity(party: Party | null): number;
   marketListingBelongsTo(listing: MarketListing, meta: PlayerMeta): boolean;
 
-  // Housing v0: the /house chat-command branch (src/sim/social/chat.ts) routes
-  // through the seam to the Housing instance on Sim. Returns true when the raw
-  // message was a /house command (handled). Append-only, late-bound to Sim.
-  housingChat(raw: string, pid: number): boolean;
-
-  // Greenpaw's hearth (PHAA-421): the /feed chat-command branch routes through
-  // the seam to the GreenpawHearth instance on Sim. Returns true when the raw
-  // message was a /feed command (handled). Append-only, late-bound to Sim.
-  greenpawFeedChat(raw: string, pid: number): boolean;
-
   // The Plant's deterministic floor (PHAA-422): the /plant chat-command
   // branch routes through the seam to the PlantSpeech instance on Sim.
   // Returns true when the raw message was a /plant command (handled, even
@@ -909,10 +899,6 @@ export function createSimContext(host: SimContextHost): SimContext {
     targetEntity: host.targetEntity,
     partyCapacity: host.partyCapacity,
     marketListingBelongsTo: host.marketListingBelongsTo,
-    // Housing v0: the /house chat-command branch.
-    housingChat: host.housingChat,
-    // Greenpaw's hearth (PHAA-421): the /feed chat-command branch.
-    greenpawFeedChat: host.greenpawFeedChat,
     // The Plant's deterministic floor (PHAA-422): the /plant chat-command
     // branch + the real-threshold report-in.
     plantSpeechChat: host.plantSpeechChat,

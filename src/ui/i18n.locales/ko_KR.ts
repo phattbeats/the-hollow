@@ -662,6 +662,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'loading.enterTimeout':
     '세계에 입장할 수 없습니다. 연결 시간이 초과되었습니다. 게임 서버가 실행 중인가요?',
   'loading.connectionLost': '서버와의 연결이 끊어졌습니다.',
+  'loading.reconnecting': '연결이 끊어졌습니다. 다시 연결하는 중...',
   'loading.connectionRejected': '서버가 연결을 종료했습니다.',
   'errors.nothingInteract': '상호작용할 대상이 없습니다.',
   'errors.noEnemyNearby': '근처에 적이 없습니다.',
@@ -3054,6 +3055,13 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_what_fills.completion':
     '자넨 정말 일등 성인일세, 친구. 아니면 좋은 이웃이거나. 뭐, 그린포우 식으로 치면 그게 그거지. ……자, 이건 내가 챙겨두려 했는데, 마음속 카우보이가 이건 자네 거라고 하는군. 시들게 하지 말게.',
   'entities.quests.q_what_fills.objectives.0.label': '동굴 고기 조각 수집',
+  'entities.quests.q_what_fills.dialog.complain':
+    '방금 거기 내려갔다 왔잖아요. 내가 구멍에서 기어 나오는 걸 봤으면서.',
+  'entities.quests.q_what_fills.dialog.complainReply':
+    '알아, 친구, 알지... 항아리는 달력 같은 건 안 챙기고, 내 뱃속도 마찬가지야. 그래도 그 장화를 보라고, 한 번은 더 내려갔다 올 수 있게 생겼잖아... 서두를 건 없어. 구멍은 어디 안 가. 그게 그 녀석의 본분이거든...',
+  'entities.quests.q_what_fills.dialog.refuse': '싫습니다. 다시는 안 내려가요.',
+  'entities.quests.q_what_fills.dialog.refuseReply':
+    '오... 오, 그래. ...그래. 그건... 그렇지. 아니, 맞는 말이야, 친구, 맞는 말이지... 항아리도 들었고, 우리끼리 얘기지만 그 녀석도 존중하는 눈치야. 자, 꺾꽂이는 그냥 가져가. 한 번은 내려갔잖아, 그것만으로도 대부분보다 한 번은 더 간 거야...',
   'hud.errors.silenced': '침묵 상태입니다!',
   'hud.pet.noPetFood': '소환수에게 먹일 음식이 없습니다.',
   'hud.pet.petEatsFoodOnly': '소환수는 음식만 먹을 수 있습니다.',
@@ -4877,24 +4885,33 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.auraEffect.school.shadow': '암흑',
   'hudChrome.auraEffect.school.holy': '신성',
   'hudChrome.auraEffect.school.nature': '자연',
+  'entities.itemSets.boundstone_vanguard.name': '바운드스톤 선봉대',
+  'entities.itemSets.boundstone_vanguard.bonus3': '공격 및 시전 속도가 15% 증가합니다.',
   'entities.itemSets.crownforged.name': '왕관벼림 전투장비',
   'entities.itemSets.crownforged.bonus2': '전투력이 40만큼 증가합니다.',
-  'entities.itemSets.crownforged.bonus3': '힘이 15, 체력이 15만큼 증가합니다.',
+  'entities.itemSets.crownforged.bonus3': '힘이 15, 체력이 15, 공격 및 시전 속도가 15% 증가합니다.',
   'entities.itemSets.deathlord.name': '죽음군주의 전투장비',
   'entities.itemSets.deathlord.bonus2': '전투력이 40만큼 증가합니다.',
   'entities.itemSets.deathlord.bonus3': '힘이 15, 체력이 15만큼 증가합니다.',
+  'entities.itemSets.greyjaw_stalker.name': '그레이조 추적자 장비',
+  'entities.itemSets.greyjaw_stalker.bonus3': '공격 및 시전 속도가 15% 증가합니다.',
   'entities.itemSets.necromancers.name': '강령술사의 의복',
   'entities.itemSets.necromancers.bonus2': '피해로 인한 시전 밀림이 50% 감소합니다.',
   'entities.itemSets.necromancers.bonus3': '시전 중 피해를 받아도 밀려나지 않습니다.',
   'entities.itemSets.nighttalon.name': '밤발톱 가죽장비',
   'entities.itemSets.nighttalon.bonus2': '전투력이 40만큼 증가합니다.',
-  'entities.itemSets.nighttalon.bonus3': '민첩이 15, 치명타 확률이 2% 증가합니다.',
+  'entities.itemSets.nighttalon.bonus3':
+    '민첩이 15, 치명타 확률이 2%, 공격 및 시전 속도가 15% 증가합니다.',
   'entities.itemSets.soulflame.name': '영혼불꽃 의복',
   'entities.itemSets.soulflame.bonus2': '피해로 인한 시전 밀림이 50% 감소합니다.',
-  'entities.itemSets.soulflame.bonus3': '시전 중 피해를 받아도 밀려나지 않습니다.',
+  'entities.itemSets.soulflame.bonus3':
+    '시전 중 피해를 받아도 밀려나지 않으며, 공격 및 시전 속도가 15% 증가합니다.',
   'entities.itemSets.stormcallers.name': '폭풍소환사의 의복',
   'entities.itemSets.stormcallers.bonus2': '피해로 인한 시전 밀림이 50% 감소합니다.',
-  'entities.itemSets.stormcallers.bonus3': '시전 중 피해를 받아도 밀려나지 않습니다.',
+  'entities.itemSets.stormcallers.bonus3':
+    '시전 중 피해를 받아도 밀려나지 않으며, 공격 및 시전 속도가 15% 증가합니다.',
+  'entities.itemSets.vale_arcanist.name': '베일 비전술사의 의복',
+  'entities.itemSets.vale_arcanist.bonus3': '공격 및 시전 속도가 15% 증가합니다.',
   'entities.itemSets.wyrmshadow.name': '고룡그림자 의복',
   'entities.itemSets.wyrmshadow.bonus2': '전투력이 40만큼 증가합니다.',
   'entities.itemSets.wyrmshadow.bonus3': '민첩이 15, 치명타 확률이 2% 증가합니다.',
@@ -5042,4 +5059,50 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'coldOpen.continue': '계속',
   'coldOpen.begin': '시작',
   'coldOpen.skip': '건너뛰기',
+
+  // PHAA-499: fill the professions/multiclassing (PHAA-465/466/467) M16 gap.
+  'guide.nav.professions': '보조 직업',
+  'guide.classPage.professionsTitle': '보조 직업 조합하기',
+  'guide.classPage.professionsNote':
+    '위의 어떤 직업이든 보조 직업으로 배울 수 있습니다. 보조 직업은 주 역할을 유지한 채 두 번째 특성 트리를 여는 부 직업입니다. 선택하기 전에 보조 직업의 작동 방식을 확인하세요.',
+  'guide.classPage.professionsLink': '보조 직업과 다중 직업',
+  'guide.professionsPage.heading': '보조 직업과 다중 직업',
+  'guide.professionsPage.intro':
+    '보조 직업은 주 직업과 함께 훈련하는 두 번째 직업으로, 원래의 역할을 유지한 채 두 번째 특성 트리와 그 기술 일부를 열어줍니다.',
+  'guide.professionsPage.whatHeading': '보조 직업이란',
+  'guide.professionsPage.whatBody':
+    '모든 직업은 다른 어떤 직업의 보조 직업으로도 선택할 수 있습니다. 보조 직업을 조합하면 두 번째 특성 트리가 추가되고 그 기술 일부를 빌려 쓸 수 있습니다. 전사가 사제의 치유를 조금 익히거나, 마법사가 도적의 독침을 배울 수 있는 식입니다. 주 직업은 여전히 당신의 역할, 자원, 정체성을 결정합니다. 보조 직업은 그것을 대체하지 않고 빌드를 더 다채롭게 만들어 줄 뿐입니다.',
+  'guide.professionsPage.howHeading': '고르는 방법',
+  'guide.professionsPage.howBody':
+    '보조 직업은 레벨 10에 열리며, 이는 첫 번째 특성 트리가 해제되는 시점과 같습니다. 마을에 있는 보조 직업 훈련사를 찾아가 대화창을 열고 원하는 보조 직업을 선택하세요.',
+  'guide.professionsPage.costBody':
+    '첫 선택은 무료입니다. 나중에 다른 직업으로 바꾸려면 골드가 들며, 바꿀 때마다 비용이 올라갑니다. 그래서 이른 결정에는 불이익이 없고, 이후에 여러 번 바꾸면 약간의 대가가 따릅니다.',
+  'guide.professionsPage.resetTitle': '무엇도 확정되지 않습니다',
+  'guide.professionsPage.resetNote':
+    '전투 중이 아니라면 언제든 두 특성 트리의 포인트를 환불할 수 있고, 같은 훈련사에게서 보조 직업을 바꿀 수도 있습니다 (비용은 점점 늘어납니다). 초반의 보조 직업 선택은 확정이 아니라 초안일 뿐입니다.',
+  'guide.professionsPage.talentsHeading': '두 트리 간 특성 포인트 배분',
+  'guide.professionsPage.talentsBody':
+    '보조 직업은 주 직업 외에 완전한 두 번째 특성 트리를 추가하지만, 두 트리는 같은 포인트 풀을 공유합니다. 보조 트리는 그 풀의 최대 절반까지만 사용할 수 있어, 주 직업이 항상 빌드의 중심으로 남습니다. 보조 트리에 포인트를 투자하면 그 기술이 해제되며, 그 기술은 보조 직업이 아니라 주 직업의 자원을 소모합니다. 전사가 사제를 보조 직업으로 삼으면, 소모되는 것은 마나가 아니라 분노입니다.',
+  'guide.professionsPage.trainersHeading': '훈련사 찾기',
+  'guide.professionsPage.trainersBody':
+    '보조 직업 훈련사는 마을의 사당 근처에 서 있습니다. 훈련사 한 명이 주 직업을 제외한 어떤 직업이든 보조 직업으로 가르칠 수 있어, 한 번만 방문해도 보조 직업을 설정하거나 바꿀 수 있습니다.',
+  'classDetails.classPairAria': '{primary}, 보조 {secondary}',
+  'classDetails.classPairLabel': '{primary} / {secondary}',
+  'game.talents.secondaryTab': '보조 직업: {cls}',
+  'game.talents.secondaryCapHint':
+    '보조 직업 특성 트리: {spent}/{cap} 포인트 (공유 풀의 절반까지만 사용 가능).',
+  'questUi.dialog.feedHearth': '화로에 바칠 것이 있다.',
+  'questUi.dialog.feedHearthAria': '화로에 바치기',
+  'questUi.dialog.trainerNeedsGold': '골드가 부족합니다',
+  'questUi.dialog.trainerConfirmTitle': '보조 직업 확인',
+  'questUi.dialog.trainerConfirmBody': '{cost}(으)로 {cls}(으)로 훈련하시겠습니까?',
+  'questUi.dialog.trainerConfirmYes': '네, 훈련하겠습니다',
+  'questUi.dialog.trainerConfirmNo': '아니요, 돌아가기',
+  'questUi.dialog.trainerHowTitle': '보조 직업은 어떻게 작동하나요?',
+  'questUi.dialog.trainerHowBody':
+    '보조 직업은 {level}레벨부터 주 직업 위에 두 번째 특성 트리와 기술 세트를 추가합니다. 주 역할은 유지되며, 보조 직업은 특성 풀을 공유하고 최대 {pct}%까지만 사용할 수 있습니다. 보조 직업 기술의 자원 소모는 주 자원으로 환산됩니다. 첫 선택은 무료이며, 이후 변경에는 골드가 듭니다.',
+  'entities.npcs.elder_yarrow.name': '원로 야로우',
+  'entities.npcs.elder_yarrow.title': '보조 직업 훈련사',
+  'entities.npcs.elder_yarrow.greeting':
+    '모든 빌드는 질문에서 시작됩니다. 어떤 보조 직업이 당신을 부르고 있나요?',
 };

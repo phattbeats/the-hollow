@@ -296,8 +296,6 @@ function makeCtx() {
     targetEntity: vi.fn(),
     partyCapacity: vi.fn(() => 5),
     marketListingBelongsTo: vi.fn(() => false),
-    housingChat: vi.fn(() => false),
-    greenpawFeedChat: vi.fn(() => false),
     plantSpeechChat: vi.fn(() => false),
     notifyPlantThreshold: vi.fn(),
     plantSpeechAmbientChat: vi.fn(),

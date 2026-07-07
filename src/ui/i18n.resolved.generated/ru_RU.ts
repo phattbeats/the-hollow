@@ -85,8 +85,8 @@ export const ru_RU: EnTranslations = {
       "title": "Таланты",
       "classTab": "Класс",
       "specTab": "Специализация",
-      "secondaryTab": "Secondary: {cls}",
-      "secondaryCapHint": "Secondary tree: {spent}/{cap} points (capped at half your shared pool).",
+      "secondaryTab": "Доп. профессия: {cls}",
+      "secondaryCapHint": "Древо доп. профессии: {spent}/{cap} очков (не более половины общего запаса).",
       "available": "Доступно",
       "spent": "Потрачено",
       "pointSource": "Получайте 1 очко талантов за каждый уровень с {first} по {cap}. Повышайте уровень, чтобы получить больше очков.",
@@ -907,7 +907,7 @@ export const ru_RU: EnTranslations = {
       "controls": "Управление",
       "combat": "Бой",
       "talents": "Таланты",
-      "professions": "Professions",
+      "professions": "Профессии",
       "arena": "Арена и PvP",
       "glossary": "Глоссарий",
       "wishIKnew": "Что бы я хотел знать заранее",
@@ -1186,9 +1186,9 @@ export const ru_RU: EnTranslations = {
       "fullKitNote": "Все способности, которые может выучить этот класс, в порядке их появления. Таланты решают, какие из них станут основой вашей сборки.",
       "petsHeading": "Демоны",
       "petsNote": "Чернокнижники призывают демонов сражаться рядом с собой, каждый из которых подходит для своей задачи.",
-      "professionsTitle": "Pair with a second class",
-      "professionsNote": "Any class above can also be taken as a profession, a secondary class that opens a second talent tree without dropping your primary role. See how professions work before you pick.",
-      "professionsLink": "Professions and multiclassing"
+      "professionsTitle": "Совместите со второй профессией",
+      "professionsNote": "Любой класс выше можно также взять как дополнительную профессию: она открывает второе древо талантов, не лишая вас основной роли. Прежде чем выбирать, посмотрите, как работают дополнительные профессии.",
+      "professionsLink": "Дополнительные профессии и мультиклассы"
     },
     "classHook": {
       "warrior": "Неумолимый боец передовой, что обращает каждый принятый удар в топливо для следующего.",
@@ -1491,19 +1491,19 @@ export const ru_RU: EnTranslations = {
       "specsBody": "У каждого класса есть несколько специализаций, у каждой своя роль и характерный упор. Здесь дан общий вид всех. Откройте класс, чтобы увидеть его полный набор."
     },
     "professionsPage": {
-      "heading": "Professions and multiclassing",
-      "intro": "A profession is a second class you train alongside your primary one, opening a second talent tree and a slice of its ability kit without leaving your first role behind.",
-      "whatHeading": "What a profession is",
-      "whatBody": "Every class can be taken as a profession by any other class. Pairing one adds a second talent tree and lets you borrow a few of its abilities, so a Warrior can dabble in the Priest's healing or a Mage pick up a Rogue's sting. Your primary class still sets your role, your resource, and your identity; the profession bends the build without replacing it.",
-      "howHeading": "How to pick one",
-      "howBody": "Professions open at level 10, the same moment your first talent tree unlocks. Visit a Profession Trainer in the hub town, open their dialog, and pick the class you want as your secondary.",
-      "costBody": "Your first pick is free. Changing to a different class later costs gold, and the fee steps up each time you swap, so an early decision is never punished while later reshuffles carry a small price.",
-      "resetTitle": "Nothing is locked in",
-      "resetNote": "You can refund points in either tree any time you are out of combat, and you can swap your secondary class at the same trainer for an escalating gold fee. An early profession pick is a first draft, not a commitment.",
-      "talentsHeading": "How talents split across the two trees",
-      "talentsBody": "A profession adds a whole second talent tree beside your primary one, but the two draw from the same pool of points. The secondary tree can hold at most half of that pool, so your primary class always stays the heart of the build. A point dropped into the secondary tree unlocks its abilities, and those abilities cast from your primary resource, not theirs: a Priest profession on a Warrior spends rage to heal, not mana.",
-      "trainersHeading": "Finding a trainer",
-      "trainersBody": "A Profession Trainer stands in the hub town near the shrine. Any single trainer can teach you any class as a profession (other than your primary), so one visit is enough to set or change your secondary."
+      "heading": "Дополнительные профессии и мультиклассы",
+      "intro": "Дополнительная профессия - это второй класс, который вы осваиваете наряду с основным: он открывает второе древо талантов и часть его способностей, не заставляя вас покидать вашу первую роль.",
+      "whatHeading": "Что такое дополнительная профессия",
+      "whatBody": "Любой класс можно взять как дополнительную профессию любого другого класса. Это добавляет второе древо талантов и позволяет позаимствовать несколько его способностей: воин может немного освоить лечение жреца, а маг - перенять укус разбойника. Ваш основной класс по-прежнему определяет вашу роль, ресурс и личность; дополнительная профессия лишь расширяет билд, не заменяя его.",
+      "howHeading": "Как её выбрать",
+      "howBody": "Дополнительные профессии открываются на 10 уровне, в тот же момент, когда разблокируется ваше первое древо талантов. Посетите наставника дополнительных профессий в городе, откройте диалог и выберите класс, который хотите взять как дополнительный.",
+      "costBody": "Первый выбор бесплатен. Смена на другой класс позже стоит золота, и плата растёт с каждой сменой, так что раннее решение никогда не наказывается, а более поздние перестановки стоят немного дороже.",
+      "resetTitle": "Ничего не высечено в камне",
+      "resetNote": "Вы можете вернуть очки в любом из двух древ в любое время вне боя, а также сменить дополнительную профессию у того же наставника за растущую плату золотом. Ранний выбор дополнительной профессии - лишь черновик, а не окончательное решение.",
+      "talentsHeading": "Как распределяются очки талантов между двумя древами",
+      "talentsBody": "Дополнительная профессия добавляет целое второе древо талантов рядом с основным, но оба древа берут очки из одного и того же запаса. Древо дополнительной профессии может занимать не более половины этого запаса, поэтому ваш основной класс всегда остаётся сердцем билда. Очко, вложенное в древо дополнительной профессии, открывает её способности, а эти способности расходуют ресурс вашего основного класса, а не свой собственный: дополнительная профессия жреца у воина тратит ярость, а не ману.",
+      "trainersHeading": "Где найти наставника",
+      "trainersBody": "Наставник дополнительных профессий стоит в городе неподалёку от святилища. Любой наставник может обучить вас любому классу как дополнительной профессии (кроме вашего основного), так что достаточно одного визита, чтобы выбрать или сменить вашу дополнительную профессию."
     },
     "arenaPage": {
       "heading": "Арена и PvP",
@@ -2592,6 +2592,7 @@ export const ru_RU: EnTranslations = {
     "rendererFailed": "Не удалось запустить рендерер: попробуйте обновить страницу. {error}",
     "enterTimeout": "Не удалось войти в мир. Время подключения истекло. Запущен ли игровой сервер?",
     "connectionLost": "Соединение с сервером потеряно.",
+    "reconnecting": "Соединение потеряно. Повторное подключение...",
     "connectionRejected": "Сервер закрыл соединение."
   },
   "errors": {
@@ -2743,7 +2744,7 @@ export const ru_RU: EnTranslations = {
     "aria": "Описание класса {className}: роль {role}. Начальные характеристики: Сила {str}, Ловкость {agi}, Выносливость {sta}, Интеллект {int}, Дух {spi}.",
     "statBarAria": "{stat}: {value} из 25",
     "classPairLabel": "{primary} / {secondary}",
-    "classPairAria": "{primary}, secondary {secondary}"
+    "classPairAria": "{primary}, дополнительная профессия {secondary}"
   },
   "mobilePreflight": {
     "title": "Играйте в полноэкранном альбомном режиме",
@@ -3426,18 +3427,20 @@ export const ru_RU: EnTranslations = {
       "worldMarketAria": "Открыть мировой рынок",
       "trainSecondary": "Обучите меня дополнительной профессии.",
       "trainSecondaryAria": "Обучиться дополнительной профессии у {name}",
+      "feedHearth": "У меня есть кое-что для очага.",
+      "feedHearthAria": "Покормить очаг",
       "trainerTitle": "Дополнительная профессия",
       "trainerLevelLocked": "Откроется на уровне {level}.",
       "trainerCurrent": "Текущая",
       "trainerFree": "Бесплатно",
       "trainerPickAria": "Обучиться как дополнительный {cls}: {cost}",
-      "trainerNeedsGold": "Not enough gold",
-      "trainerConfirmTitle": "Confirm secondary class",
-      "trainerConfirmBody": "Train as {cls} for {cost}?",
-      "trainerConfirmYes": "Yes, train me",
-      "trainerConfirmNo": "No, go back",
-      "trainerHowTitle": "How do secondary professions work?",
-      "trainerHowBody": "A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities translate their resource cost to your primary resource. Your first pick is free; changing later costs gold.",
+      "trainerNeedsGold": "Недостаточно золота",
+      "trainerConfirmTitle": "Подтвердите дополнительную профессию",
+      "trainerConfirmBody": "Обучиться профессии {cls} за {cost}?",
+      "trainerConfirmYes": "Да, обучи меня",
+      "trainerConfirmNo": "Нет, назад",
+      "trainerHowTitle": "Как работают дополнительные профессии?",
+      "trainerHowBody": "Дополнительная профессия добавляет к основному классу второе древо талантов и набор способностей начиная с {level} уровня. Основная роль сохраняется; дополнительная профессия делит с основной общий запас талантов и может занимать не более {pct}% от него, а её способности пересчитывают стоимость ресурса в ваш основной ресурс. Первый выбор бесплатен; последующая смена стоит золота.",
       "accept": "Принять",
       "decline": "Отклонить",
       "continue": "Продолжить",
@@ -5775,6 +5778,11 @@ export const ru_RU: EnTranslations = {
         "title": "Хранитель Реликвария",
         "greeting": "Реликварий внизу снова сдвинулся."
       },
+      "elder_yarrow": {
+        "name": "Старейшина Ярроу",
+        "title": "Наставник дополнительных профессий",
+        "greeting": "Каждый билд начинается с вопроса. Какое ещё призвание зовёт вас?"
+      },
       "tidewatcher_ondrel": {
         "name": "Ондрел Вейн",
         "title": "Страж приливов",
@@ -6635,6 +6643,12 @@ export const ru_RU: EnTranslations = {
           "0": {
             "label": "Собрано пещерных закусок"
           }
+        },
+        "dialog": {
+          "complain": "Я только что оттуда. Ты же видел, как я вылезаю из этой дыры.",
+          "complainReply": "знаю, друг, знаю... ваза календаря не ведёт, и желудок мой тоже. но глянь на свои сапоги и скажи, что в них не осталось ещё одного спуска... не спеши. дыра никуда не денется. в этом, считай, вся её суть...",
+          "refuse": "Нет. Я туда больше не полезу.",
+          "refuseReply": "о... о, ладно. ...ладно. это... да. нет, это честно, друг, это честно... ваза тоже слышала, и, между нами, кажется, она это уважает. вот, возьми черенок всё равно. ты спускался один раз, а это на один раз больше, чем у большинства..."
         }
       },
       "q_root_hollow_boars": {
@@ -6850,15 +6864,23 @@ export const ru_RU: EnTranslations = {
       }
     },
     "itemSets": {
+      "boundstone_vanguard": {
+        "name": "Авангард Скрепленного Камня",
+        "bonus3": "Скорость атаки и произнесения заклинаний повышается на 15%."
+      },
       "crownforged": {
         "name": "Боевой доспех Кованой Короны",
         "bonus2": "Сила атаки повышается на 40.",
-        "bonus3": "Сила повышается на 15, выносливость на 15."
+        "bonus3": "Сила повышается на 15, выносливость на 15, скорость атаки и произнесения заклинаний на 15%."
       },
       "deathlord": {
         "name": "Боевой доспех Владыки Смерти",
         "bonus2": "Сила атаки повышается на 40.",
         "bonus3": "Сила повышается на 15, выносливость на 15."
+      },
+      "greyjaw_stalker": {
+        "name": "Снаряжение Серочелюстного Ловчего",
+        "bonus3": "Скорость атаки и произнесения заклинаний повышается на 15%."
       },
       "necromancers": {
         "name": "Одеяние некроманта",
@@ -6868,17 +6890,21 @@ export const ru_RU: EnTranslations = {
       "nighttalon": {
         "name": "Кожаный доспех Ночного Когтя",
         "bonus2": "Сила атаки повышается на 40.",
-        "bonus3": "Ловкость повышается на 15, вероятность критического удара на 2%."
+        "bonus3": "Ловкость повышается на 15, вероятность критического удара на 2%, скорость атаки и произнесения заклинаний на 15%."
       },
       "soulflame": {
         "name": "Одеяние Пламени Души",
         "bonus2": "Задержка произнесения от полученного урона снижена на 50%.",
-        "bonus3": "Полученный урон не задерживает произнесение заклинаний."
+        "bonus3": "Полученный урон не задерживает произнесение заклинаний, а скорость атаки и произнесения заклинаний повышается на 15%."
       },
       "stormcallers": {
         "name": "Одеяние Зовущего Бурю",
         "bonus2": "Задержка произнесения от полученного урона снижена на 50%.",
-        "bonus3": "Полученный урон не задерживает произнесение заклинаний."
+        "bonus3": "Полученный урон не задерживает произнесение заклинаний, а скорость атаки и произнесения заклинаний повышается на 15%."
+      },
+      "vale_arcanist": {
+        "name": "Одеяние Дольского чародея",
+        "bonus3": "Скорость атаки и произнесения заклинаний повышается на 15%."
       },
       "wyrmshadow": {
         "name": "Облачение Тени Дракона",

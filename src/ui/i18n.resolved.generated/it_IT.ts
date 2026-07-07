@@ -2592,6 +2592,7 @@ export const it_IT: EnTranslations = {
     "rendererFailed": "Impossibile avviare il renderer: ricarica la pagina. {error}",
     "enterTimeout": "Impossibile entrare nel mondo. La connessione è scaduta. Il server di gioco è in esecuzione?",
     "connectionLost": "Connessione al server persa.",
+    "reconnecting": "Connection lost. Reconnecting...",
     "connectionRejected": "Il server ha chiuso la connessione."
   },
   "errors": {
@@ -3426,6 +3427,8 @@ export const it_IT: EnTranslations = {
       "worldMarketAria": "Apri il Mercato Mondiale",
       "trainSecondary": "Train me in a secondary profession.",
       "trainSecondaryAria": "Train a secondary profession with {name}",
+      "feedHearth": "I have something for the hearth.",
+      "feedHearthAria": "Feed the hearth",
       "trainerTitle": "Secondary Profession",
       "trainerLevelLocked": "Unlocks at level {level}.",
       "trainerCurrent": "Current",
@@ -3437,7 +3440,7 @@ export const it_IT: EnTranslations = {
       "trainerConfirmYes": "Yes, train me",
       "trainerConfirmNo": "No, go back",
       "trainerHowTitle": "How do secondary professions work?",
-      "trainerHowBody": "A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities translate their resource cost to your primary resource. Your first pick is free; changing later costs gold.",
+      "trainerHowBody": "A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities convert their resource cost to your primary resource. Your first pick is free; changing later costs gold.",
       "accept": "Accetta",
       "decline": "Rifiuta",
       "continue": "Continua",
@@ -5775,6 +5778,11 @@ export const it_IT: EnTranslations = {
         "title": "Custode del Reliquiario",
         "greeting": "Il reliquiario sottostante si è spostato di nuovo."
       },
+      "elder_yarrow": {
+        "name": "Elder Yarrow",
+        "title": "Profession Trainer",
+        "greeting": "Every build starts as a question. Which second calling speaks to you?"
+      },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
         "title": "Guardamarea",
@@ -6635,6 +6643,12 @@ export const it_IT: EnTranslations = {
           "0": {
             "label": "Boccone di Caverna raccolto"
           }
+        },
+        "dialog": {
+          "complain": "I was just down there. You watched me climb out of the hole.",
+          "complainReply": "i know it, friend, i know... the vase don't keep a calendar and neither does my stomach. but look at them boots and tell me they don't got one more descent in 'em... no rush. the hole ain't goin' anywhere. that's kinda its whole deal...",
+          "refuse": "No. I'm not going back down there.",
+          "refuseReply": "oh... oh, okay. ...okay. that's... yeah. no, that's fair, friend, that's fair... the vase heard it too, and between you and me i think he respects it. here, take the cutting anyway. you went down once, and that's once more than most..."
         }
       },
       "q_root_hollow_boars": {
@@ -6850,6 +6864,10 @@ export const it_IT: EnTranslations = {
       }
     },
     "itemSets": {
+      "boundstone_vanguard": {
+        "name": "Boundstone Vanguard",
+        "bonus3": "Increases attack and casting speed by 15%."
+      },
       "crownforged": {
         "name": "Tenuta da battaglia Forgiacorona",
         "bonus2": "Aumenta la potenza d'attacco di 40.",
@@ -6859,6 +6877,10 @@ export const it_IT: EnTranslations = {
         "name": "Tenuta da battaglia del Signore della Morte",
         "bonus2": "Aumenta la potenza d'attacco di 40.",
         "bonus3": "Aumenta la forza di 15 e la vigoria di 15."
+      },
+      "greyjaw_stalker": {
+        "name": "Greyjaw Stalker's Kit",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "necromancers": {
         "name": "Vesti del negromante",
@@ -6879,6 +6901,10 @@ export const it_IT: EnTranslations = {
         "name": "Vesti del Chiamatempeste",
         "bonus2": "Riduce del 50% il ritardo al lancio causato dai danni.",
         "bonus3": "I danni subiti non ritardano il lancio degli incantesimi."
+      },
+      "vale_arcanist": {
+        "name": "Vale Arcanist's Regalia",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "wyrmshadow": {
         "name": "Tenuta Ombra del Dragone",

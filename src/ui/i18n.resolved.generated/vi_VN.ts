@@ -2592,6 +2592,7 @@ export const vi_VN: EnTranslations = {
     "rendererFailed": "Không thể khởi động bộ kết xuất: thử tải lại. {error}",
     "enterTimeout": "Không thể vào thế giới. Kết nối đã quá thời gian. Máy chủ trò chơi có đang chạy không?",
     "connectionLost": "Đã mất kết nối tới máy chủ.",
+    "reconnecting": "Connection lost. Reconnecting...",
     "connectionRejected": "Máy chủ đã đóng kết nối."
   },
   "errors": {
@@ -3426,6 +3427,8 @@ export const vi_VN: EnTranslations = {
       "worldMarketAria": "Mở Chợ Thế Giới",
       "trainSecondary": "Train me in a secondary profession.",
       "trainSecondaryAria": "Train a secondary profession with {name}",
+      "feedHearth": "I have something for the hearth.",
+      "feedHearthAria": "Feed the hearth",
       "trainerTitle": "Secondary Profession",
       "trainerLevelLocked": "Unlocks at level {level}.",
       "trainerCurrent": "Current",
@@ -3437,7 +3440,7 @@ export const vi_VN: EnTranslations = {
       "trainerConfirmYes": "Yes, train me",
       "trainerConfirmNo": "No, go back",
       "trainerHowTitle": "How do secondary professions work?",
-      "trainerHowBody": "A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities translate their resource cost to your primary resource. Your first pick is free; changing later costs gold.",
+      "trainerHowBody": "A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities convert their resource cost to your primary resource. Your first pick is free; changing later costs gold.",
       "accept": "Nhận",
       "decline": "Từ Chối",
       "continue": "Tiếp Tục",
@@ -5775,6 +5778,11 @@ export const vi_VN: EnTranslations = {
         "title": "Người Giữ Thánh Tích",
         "greeting": "Hầm thánh tích bên dưới lại dịch chuyển lần nữa."
       },
+      "elder_yarrow": {
+        "name": "Elder Yarrow",
+        "title": "Profession Trainer",
+        "greeting": "Every build starts as a question. Which second calling speaks to you?"
+      },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
         "title": "Người Canh Thủy Triều",
@@ -6635,6 +6643,12 @@ export const vi_VN: EnTranslations = {
           "0": {
             "label": "Đã thu thập Miếng Ăn Hang Động"
           }
+        },
+        "dialog": {
+          "complain": "I was just down there. You watched me climb out of the hole.",
+          "complainReply": "i know it, friend, i know... the vase don't keep a calendar and neither does my stomach. but look at them boots and tell me they don't got one more descent in 'em... no rush. the hole ain't goin' anywhere. that's kinda its whole deal...",
+          "refuse": "No. I'm not going back down there.",
+          "refuseReply": "oh... oh, okay. ...okay. that's... yeah. no, that's fair, friend, that's fair... the vase heard it too, and between you and me i think he respects it. here, take the cutting anyway. you went down once, and that's once more than most..."
         }
       },
       "q_root_hollow_boars": {
@@ -6850,6 +6864,10 @@ export const vi_VN: EnTranslations = {
       }
     },
     "itemSets": {
+      "boundstone_vanguard": {
+        "name": "Boundstone Vanguard",
+        "bonus3": "Increases attack and casting speed by 15%."
+      },
       "crownforged": {
         "name": "Bộ chiến Crownforged",
         "bonus2": "Tăng sức mạnh tấn công thêm 40.",
@@ -6859,6 +6877,10 @@ export const vi_VN: EnTranslations = {
         "name": "Bộ chiến Deathlord",
         "bonus2": "Tăng sức mạnh tấn công thêm 40.",
         "bonus3": "Tăng sức mạnh thêm 15 và thể lực thêm 15."
+      },
+      "greyjaw_stalker": {
+        "name": "Greyjaw Stalker's Kit",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "necromancers": {
         "name": "Áo choàng pháp sư gọi hồn",
@@ -6879,6 +6901,10 @@ export const vi_VN: EnTranslations = {
         "name": "Áo choàng Gọi Bão",
         "bonus2": "Giảm 50% độ lùi khi niệm phép do sát thương.",
         "bonus3": "Sát thương nhận vào không làm chậm niệm phép."
+      },
+      "vale_arcanist": {
+        "name": "Vale Arcanist's Regalia",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "wyrmshadow": {
         "name": "Bộ Bóng Wyrm",

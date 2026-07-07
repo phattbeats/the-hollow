@@ -69,6 +69,17 @@ const hollowEntitiesEn = {
       completion:
         "you're a saint of the first order, friend. or a good neighbor. same thing, to a greenpaw degree. ...here. was gonna keep this one but the inner cowboy says it's yours. don't let it wilt.",
       objectives: { 0: { label: 'Cave Morsel gathered' } },
+      // Branching offer dialog (PHAA-471). `complain`/`refuse` are the player's
+      // lines; the replies are Greenpaw's. Kept identical to the sim record in
+      // src/sim/content/hollow.ts; non-Latin fills live in src/ui/i18n.locales/.
+      dialog: {
+        complain: 'I was just down there. You watched me climb out of the hole.',
+        complainReply:
+          "i know it, friend, i know... the vase don't keep a calendar and neither does my stomach. but look at them boots and tell me they don't got one more descent in 'em... no rush. the hole ain't goin' anywhere. that's kinda its whole deal...",
+        refuse: "No. I'm not going back down there.",
+        refuseReply:
+          "oh... oh, okay. ...okay. that's... yeah. no, that's fair, friend, that's fair... the vase heard it too, and between you and me i think he respects it. here, take the cutting anyway. you went down once, and that's once more than most...",
+      },
     },
     q_root_hollow_boars: {
       title: "Root Hollow's Boars",

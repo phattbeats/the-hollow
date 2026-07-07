@@ -847,7 +847,7 @@ export const en_CA: EnTranslations = {
         "titleDiscordian": "Title: Discordian",
         "titleSquire": "Title: Squire of the Realm",
         "chromaBlurple": "Blurple Mech Chroma",
-        "titleChampion": "Title: Champion of Claudemoon",
+        "titleChampion": "Title: Champion of The Hollow",
         "swagStickers": "Sticker Pack (shipped)",
         "swagTee": "T-Shirt (shipped)"
       },
@@ -2592,6 +2592,7 @@ export const en_CA: EnTranslations = {
     "rendererFailed": "Could not start the renderer: try reloading. {error}",
     "enterTimeout": "Could not enter world. The connection timed out. Is the game server running?",
     "connectionLost": "Connection to the server was lost.",
+    "reconnecting": "Connection lost. Reconnecting...",
     "connectionRejected": "The server closed the connection."
   },
   "errors": {
@@ -2768,7 +2769,7 @@ export const en_CA: EnTranslations = {
     "logoAlt": "The Hollow",
     "eyebrow": "Realm maintenance",
     "heading": "The realm is temporarily unavailable.",
-    "body": "We are restarting the game service and expect Claudemoon to return shortly. This page will keep checking automatically.",
+    "body": "We are restarting the game service and expect The Hollow to return shortly. This page will keep checking automatically.",
     "status": "Back soon"
   },
   "hud": {
@@ -3426,6 +3427,8 @@ export const en_CA: EnTranslations = {
       "worldMarketAria": "Open the World Market",
       "trainSecondary": "Train me in a secondary profession.",
       "trainSecondaryAria": "Train a secondary profession with {name}",
+      "feedHearth": "I have something for the hearth.",
+      "feedHearthAria": "Feed the hearth",
       "trainerTitle": "Secondary Profession",
       "trainerLevelLocked": "Unlocks at level {level}.",
       "trainerCurrent": "Current",
@@ -3437,7 +3440,7 @@ export const en_CA: EnTranslations = {
       "trainerConfirmYes": "Yes, train me",
       "trainerConfirmNo": "No, go back",
       "trainerHowTitle": "How do secondary professions work?",
-      "trainerHowBody": "A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities translate their resource cost to your primary resource. Your first pick is free; changing later costs gold.",
+      "trainerHowBody": "A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities convert their resource cost to your primary resource. Your first pick is free; changing later costs gold.",
       "accept": "Accept",
       "decline": "Decline",
       "continue": "Continue",
@@ -5775,6 +5778,11 @@ export const en_CA: EnTranslations = {
         "title": "Reliquary Keeper",
         "greeting": "The reliquary below has shifted again."
       },
+      "elder_yarrow": {
+        "name": "Elder Yarrow",
+        "title": "Profession Trainer",
+        "greeting": "Every build starts as a question. Which second calling speaks to you?"
+      },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
         "title": "Tidewatcher",
@@ -6635,6 +6643,12 @@ export const en_CA: EnTranslations = {
           "0": {
             "label": "Cave Morsel gathered"
           }
+        },
+        "dialog": {
+          "complain": "I was just down there. You watched me climb out of the hole.",
+          "complainReply": "i know it, friend, i know... the vase don't keep a calendar and neither does my stomach. but look at them boots and tell me they don't got one more descent in 'em... no rush. the hole ain't goin' anywhere. that's kinda its whole deal...",
+          "refuse": "No. I'm not going back down there.",
+          "refuseReply": "oh... oh, okay. ...okay. that's... yeah. no, that's fair, friend, that's fair... the vase heard it too, and between you and me i think he respects it. here, take the cutting anyway. you went down once, and that's once more than most..."
         }
       },
       "q_root_hollow_boars": {
@@ -6850,15 +6864,23 @@ export const en_CA: EnTranslations = {
       }
     },
     "itemSets": {
+      "boundstone_vanguard": {
+        "name": "Boundstone Vanguard",
+        "bonus3": "Increases attack and casting speed by 15%."
+      },
       "crownforged": {
         "name": "Crownforged Regalia",
         "bonus2": "Increases attack power by 40.",
-        "bonus3": "Increases Strength by 15 and Stamina by 15."
+        "bonus3": "Increases Strength by 15, Stamina by 15, and attack and casting speed by 15%."
       },
       "deathlord": {
         "name": "Deathlord Battlegear",
         "bonus2": "Increases attack power by 40.",
         "bonus3": "Increases Strength by 15 and Stamina by 15."
+      },
+      "greyjaw_stalker": {
+        "name": "Greyjaw Stalker's Kit",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "necromancers": {
         "name": "Necromancer's Raiment",
@@ -6868,17 +6890,21 @@ export const en_CA: EnTranslations = {
       "nighttalon": {
         "name": "Nighttalon Pelt",
         "bonus2": "Increases attack power by 40.",
-        "bonus3": "Increases Agility by 15 and critical strike chance by 2%."
+        "bonus3": "Increases Agility by 15, critical strike chance by 2%, and attack and casting speed by 15%."
       },
       "soulflame": {
         "name": "Soulflame Regalia",
         "bonus2": "Reduces cast pushback from damage by 50%.",
-        "bonus3": "You cannot be pushed back while casting (immune to cast pushback from damage)."
+        "bonus3": "You cannot be pushed back while casting (immune to cast pushback from damage), and attack and casting speed is increased by 15%."
       },
       "stormcallers": {
         "name": "Stormcaller's Vestments",
         "bonus2": "Reduces cast pushback from damage by 50%.",
-        "bonus3": "You cannot be pushed back while casting (immune to cast pushback from damage)."
+        "bonus3": "You cannot be pushed back while casting (immune to cast pushback from damage), and attack and casting speed is increased by 15%."
+      },
+      "vale_arcanist": {
+        "name": "Vale Arcanist's Regalia",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "wyrmshadow": {
         "name": "Wyrmshadow Vestments",

@@ -85,8 +85,8 @@ export const zh_CN: EnTranslations = {
       "title": "天赋",
       "classTab": "职业",
       "specTab": "专精",
-      "secondaryTab": "Secondary: {cls}",
-      "secondaryCapHint": "Secondary tree: {spent}/{cap} points (capped at half your shared pool).",
+      "secondaryTab": "副职业：{cls}",
+      "secondaryCapHint": "副职业天赋树：{spent}/{cap}点（上限为共享天赋池的一半）。",
       "available": "可用",
       "spent": "已用",
       "pointSource": "从 {first} 级到 {cap} 级，每升一级获得 1 点天赋点。继续升级可获得更多点数。",
@@ -907,7 +907,7 @@ export const zh_CN: EnTranslations = {
       "controls": "操作键",
       "combat": "战斗",
       "talents": "天赋",
-      "professions": "Professions",
+      "professions": "副职业",
       "arena": "竞技场与 PvP",
       "glossary": "术语表",
       "wishIKnew": "我希望早点知道的事",
@@ -1186,9 +1186,9 @@ export const zh_CN: EnTranslations = {
       "fullKitNote": "这个职业能学到的每一项技能，按解锁顺序排列。天赋决定哪些技能撑起你的构筑。",
       "petsHeading": "恶魔",
       "petsNote": "术士召唤恶魔与自己并肩作战，每一只都擅长不同的活儿。",
-      "professionsTitle": "Pair with a second class",
-      "professionsNote": "Any class above can also be taken as a profession, a secondary class that opens a second talent tree without dropping your primary role. See how professions work before you pick.",
-      "professionsLink": "Professions and multiclassing"
+      "professionsTitle": "搭配副职业",
+      "professionsNote": "以上任意职业都可以作为副职业来学习：这是一种能开启第二棵天赋树的副职业，且不会影响你的主职业定位。选择前，请先了解副职业的运作方式。",
+      "professionsLink": "副职业与多职业"
     },
     "classHook": {
       "warrior": "勇往直前的前线战士,将承受的每一次打击都化作下一击的燃料。",
@@ -1491,19 +1491,19 @@ export const zh_CN: EnTranslations = {
       "specsBody": "每个职业都有几种专精，各有自己的定位和标志性的侧重。这里是它们全部的大致面貌。打开某个职业可查看其全部技能。"
     },
     "professionsPage": {
-      "heading": "Professions and multiclassing",
-      "intro": "A profession is a second class you train alongside your primary one, opening a second talent tree and a slice of its ability kit without leaving your first role behind.",
-      "whatHeading": "What a profession is",
-      "whatBody": "Every class can be taken as a profession by any other class. Pairing one adds a second talent tree and lets you borrow a few of its abilities, so a Warrior can dabble in the Priest's healing or a Mage pick up a Rogue's sting. Your primary class still sets your role, your resource, and your identity; the profession bends the build without replacing it.",
-      "howHeading": "How to pick one",
-      "howBody": "Professions open at level 10, the same moment your first talent tree unlocks. Visit a Profession Trainer in the hub town, open their dialog, and pick the class you want as your secondary.",
-      "costBody": "Your first pick is free. Changing to a different class later costs gold, and the fee steps up each time you swap, so an early decision is never punished while later reshuffles carry a small price.",
-      "resetTitle": "Nothing is locked in",
-      "resetNote": "You can refund points in either tree any time you are out of combat, and you can swap your secondary class at the same trainer for an escalating gold fee. An early profession pick is a first draft, not a commitment.",
-      "talentsHeading": "How talents split across the two trees",
-      "talentsBody": "A profession adds a whole second talent tree beside your primary one, but the two draw from the same pool of points. The secondary tree can hold at most half of that pool, so your primary class always stays the heart of the build. A point dropped into the secondary tree unlocks its abilities, and those abilities cast from your primary resource, not theirs: a Priest profession on a Warrior spends rage to heal, not mana.",
-      "trainersHeading": "Finding a trainer",
-      "trainersBody": "A Profession Trainer stands in the hub town near the shrine. Any single trainer can teach you any class as a profession (other than your primary), so one visit is enough to set or change your secondary."
+      "heading": "副职业与多职业",
+      "intro": "副职业是你在主职业之外训练的第二个职业，它会开启第二棵天赋树，并让你学到其部分技能，而不会让你离开原本的定位。",
+      "whatHeading": "什么是副职业",
+      "whatBody": "任何职业都可以被其他职业选为副职业。搭配副职业会新增一棵天赋树，并让你借用其部分技能：比如战士可以涉猎牧师的治疗，法师也能学到盗贼的毒刺。你的主职业依旧决定你的定位、资源和身份；副职业只是让build更灵活，而不会取代它。",
+      "howHeading": "如何选择副职业",
+      "howBody": "副职业在10级开放，与你的第一棵天赋树同时解锁。前往主城拜访副职业训练师，打开对话框，选择你想要的副职业。",
+      "costBody": "第一次选择是免费的。之后更换副职业需要花费金币，且每次更换的费用都会提高，因此尽早做决定不会受到惩罚，而之后反复更改则要付出一点代价。",
+      "resetTitle": "一切都可以重来",
+      "resetNote": "只要不在战斗中，你随时都可以重置两棵天赋树的天赋点，也可以在同一位训练师那里更换副职业（费用会递增）。尽早选定的副职业只是初稿，而非最终定案。",
+      "talentsHeading": "天赋点如何在两棵树之间分配",
+      "talentsBody": "副职业会在主职业之外新增一整棵天赋树，但两棵树共用同一份天赋点。副职业天赋树最多只能占用这份点数的一半，因此你的主职业始终是build的核心。投入副职业天赋树的点数会解锁其技能，而这些技能消耗的是你主职业的资源，而非副职业本身的资源：战士学习牧师副职业后，技能消耗的是怒气，而不是法力。",
+      "trainersHeading": "寻找训练师",
+      "trainersBody": "副职业训练师就站在主城神龛附近。任意一位训练师都能教你除主职业外的任何职业作为副职业，因此只需拜访一次即可设置或更换你的副职业。"
     },
     "arenaPage": {
       "heading": "竞技场与 PvP",
@@ -2592,6 +2592,7 @@ export const zh_CN: EnTranslations = {
     "rendererFailed": "无法启动渲染器：请尝试刷新。{error}",
     "enterTimeout": "无法进入世界。连接已超时。游戏服务器是否正在运行？",
     "connectionLost": "与服务器的连接已断开。",
+    "reconnecting": "连接已断开。正在重新连接...",
     "connectionRejected": "服务器关闭了连接。"
   },
   "errors": {
@@ -2743,7 +2744,7 @@ export const zh_CN: EnTranslations = {
     "aria": "{className} 职业详情：职责 {role}。初始属性：力量 {str}，敏捷 {agi}，耐力 {sta}，智力 {int}，精神 {spi}。",
     "statBarAria": "{stat}：{value}/25",
     "classPairLabel": "{primary} / {secondary}",
-    "classPairAria": "{primary}, secondary {secondary}"
+    "classPairAria": "{primary}，副职业 {secondary}"
   },
   "mobilePreflight": {
     "title": "横屏全屏游玩",
@@ -3426,18 +3427,20 @@ export const zh_CN: EnTranslations = {
       "worldMarketAria": "打开世界市场",
       "trainSecondary": "训练我一项副职业。",
       "trainSecondaryAria": "向 {name} 学习一项副职业",
+      "feedHearth": "我这儿有点东西要添进炉子。",
+      "feedHearthAria": "给炉子添东西",
       "trainerTitle": "副职业",
       "trainerLevelLocked": "{level} 级解锁。",
       "trainerCurrent": "当前",
       "trainerFree": "免费",
       "trainerPickAria": "将 {cls} 训练为副职业：{cost}",
-      "trainerNeedsGold": "Not enough gold",
-      "trainerConfirmTitle": "Confirm secondary class",
-      "trainerConfirmBody": "Train as {cls} for {cost}?",
-      "trainerConfirmYes": "Yes, train me",
-      "trainerConfirmNo": "No, go back",
-      "trainerHowTitle": "How do secondary professions work?",
-      "trainerHowBody": "A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities translate their resource cost to your primary resource. Your first pick is free; changing later costs gold.",
+      "trainerNeedsGold": "金币不足",
+      "trainerConfirmTitle": "确认副职业",
+      "trainerConfirmBody": "花费{cost}训练为{cls}？",
+      "trainerConfirmYes": "是，训练我",
+      "trainerConfirmNo": "否，返回",
+      "trainerHowTitle": "副职业是如何运作的？",
+      "trainerHowBody": "副职业会在你的主职业之上增加第二棵天赋树和一套技能，从{level}级开始解锁。你保留主职业的定位；副职业与主职业共享天赋池，最多占用其中的{pct}%，其技能的资源消耗会换算为你的主资源。首次选择免费；之后更换需要花费金币。",
       "accept": "接受",
       "decline": "拒绝",
       "continue": "继续",
@@ -5775,6 +5778,11 @@ export const zh_CN: EnTranslations = {
         "title": "圣物库守护人",
         "greeting": "下方的圣物库又移位了。"
       },
+      "elder_yarrow": {
+        "name": "长老亚罗",
+        "title": "副职业训练师",
+        "greeting": "每一套build都始于一个问题：哪个副职业在召唤你？"
+      },
       "tidewatcher_ondrel": {
         "name": "翁德雷尔·凡恩",
         "title": "守潮者",
@@ -6635,6 +6643,12 @@ export const zh_CN: EnTranslations = {
           "0": {
             "label": "已采集洞穴肉粒"
           }
+        },
+        "dialog": {
+          "complain": "我刚从下面上来。你亲眼看着我从洞里爬出来的。",
+          "complainReply": "我知道，朋友，我知道……瓶子不看日历，我的肚子也不看。可你看看那双靴子，再告诉我它们走不动最后一趟……不急。那个洞哪儿也不会去。这差不多就是它的全部本事……",
+          "refuse": "不。我不会再下去了。",
+          "refuseReply": "哦……哦，好吧。……好吧。这……是啊。不，这很公道，朋友，很公道……瓶子也听见了，偷偷跟你说，我觉得他还挺敬佩你的。来，这根插枝你还是拿着。你下去过一次，就已经比大多数人多一次了……"
         }
       },
       "q_root_hollow_boars": {
@@ -6850,15 +6864,23 @@ export const zh_CN: EnTranslations = {
       }
     },
     "itemSets": {
+      "boundstone_vanguard": {
+        "name": "缚石先锋铠",
+        "bonus3": "攻击与施法速度提高 15%。"
+      },
       "crownforged": {
         "name": "铸冠战装",
         "bonus2": "攻击强度提高 40 点。",
-        "bonus3": "力量提高 15 点，耐力提高 15 点。"
+        "bonus3": "力量提高 15 点，耐力提高 15 点，攻击与施法速度提高 15%。"
       },
       "deathlord": {
         "name": "死王战甲",
         "bonus2": "攻击强度提高 40 点。",
         "bonus3": "力量提高 15 点，耐力提高 15 点。"
+      },
+      "greyjaw_stalker": {
+        "name": "灰颚潜行者装备",
+        "bonus3": "攻击与施法速度提高 15%。"
       },
       "necromancers": {
         "name": "死灵法师法衣",
@@ -6868,17 +6890,21 @@ export const zh_CN: EnTranslations = {
       "nighttalon": {
         "name": "夜爪皮甲",
         "bonus2": "攻击强度提高 40 点。",
-        "bonus3": "敏捷提高 15 点，致命一击几率提高 2%。"
+        "bonus3": "敏捷提高 15 点，致命一击几率提高 2%，攻击与施法速度提高 15%。"
       },
       "soulflame": {
         "name": "魂焰法衣",
         "bonus2": "受到伤害造成的施法延退降低 50%。",
-        "bonus3": "施法时不会因受到伤害而被延退。"
+        "bonus3": "施法时不会因受到伤害而被延退，且攻击与施法速度提高 15%。"
       },
       "stormcallers": {
         "name": "唤雷者法衣",
         "bonus2": "受到伤害造成的施法延退降低 50%。",
-        "bonus3": "施法时不会因受到伤害而被延退。"
+        "bonus3": "施法时不会因受到伤害而被延退，且攻击与施法速度提高 15%。"
+      },
+      "vale_arcanist": {
+        "name": "山谷秘法师法衣",
+        "bonus3": "攻击与施法速度提高 15%。"
       },
       "wyrmshadow": {
         "name": "龙影外衣",

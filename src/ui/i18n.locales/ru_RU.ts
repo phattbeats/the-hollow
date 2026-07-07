@@ -681,6 +681,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'loading.enterTimeout':
     'Не удалось войти в мир. Время подключения истекло. Запущен ли игровой сервер?',
   'loading.connectionLost': 'Соединение с сервером потеряно.',
+  'loading.reconnecting': 'Соединение потеряно. Повторное подключение...',
   'loading.connectionRejected': 'Сервер закрыл соединение.',
   'errors.nothingInteract': 'Нет объекта для взаимодействия.',
   'errors.noEnemyNearby': 'Рядом нет врагов.',
@@ -3094,6 +3095,13 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_what_fills.completion':
     'ты святой первого разряда, дружок. или добрый сосед. оно и то же самое, по-зеленолаповски говоря. ...на вот. хотел было себе оставить, да ковбойская душа моя говорит: твое это. не дай завянуть.',
   'entities.quests.q_what_fills.objectives.0.label': 'Собрано пещерных закусок',
+  'entities.quests.q_what_fills.dialog.complain':
+    'Я только что оттуда. Ты же видел, как я вылезаю из этой дыры.',
+  'entities.quests.q_what_fills.dialog.complainReply':
+    'знаю, друг, знаю... ваза календаря не ведёт, и желудок мой тоже. но глянь на свои сапоги и скажи, что в них не осталось ещё одного спуска... не спеши. дыра никуда не денется. в этом, считай, вся её суть...',
+  'entities.quests.q_what_fills.dialog.refuse': 'Нет. Я туда больше не полезу.',
+  'entities.quests.q_what_fills.dialog.refuseReply':
+    'о... о, ладно. ...ладно. это... да. нет, это честно, друг, это честно... ваза тоже слышала, и, между нами, кажется, она это уважает. вот, возьми черенок всё равно. ты спускался один раз, а это на один раз больше, чем у большинства...',
   'hud.errors.silenced': 'Вы лишены дара речи!',
   'hud.pet.noPetFood': 'У вас нет пищи, чтобы покормить питомца.',
   'hud.pet.petEatsFoodOnly': 'Ваш питомец ест только пищу.',
@@ -4974,12 +4982,19 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.auraEffect.school.shadow': 'Тьма',
   'hudChrome.auraEffect.school.holy': 'Свет',
   'hudChrome.auraEffect.school.nature': 'Природа',
+  'entities.itemSets.boundstone_vanguard.name': 'Авангард Скрепленного Камня',
+  'entities.itemSets.boundstone_vanguard.bonus3':
+    'Скорость атаки и произнесения заклинаний повышается на 15%.',
   'entities.itemSets.crownforged.name': 'Боевой доспех Кованой Короны',
   'entities.itemSets.crownforged.bonus2': 'Сила атаки повышается на 40.',
-  'entities.itemSets.crownforged.bonus3': 'Сила повышается на 15, выносливость на 15.',
+  'entities.itemSets.crownforged.bonus3':
+    'Сила повышается на 15, выносливость на 15, скорость атаки и произнесения заклинаний на 15%.',
   'entities.itemSets.deathlord.name': 'Боевой доспех Владыки Смерти',
   'entities.itemSets.deathlord.bonus2': 'Сила атаки повышается на 40.',
   'entities.itemSets.deathlord.bonus3': 'Сила повышается на 15, выносливость на 15.',
+  'entities.itemSets.greyjaw_stalker.name': 'Снаряжение Серочелюстного Ловчего',
+  'entities.itemSets.greyjaw_stalker.bonus3':
+    'Скорость атаки и произнесения заклинаний повышается на 15%.',
   'entities.itemSets.necromancers.name': 'Одеяние некроманта',
   'entities.itemSets.necromancers.bonus2':
     'Задержка произнесения от полученного урона снижена на 50%.',
@@ -4988,16 +5003,23 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.itemSets.nighttalon.name': 'Кожаный доспех Ночного Когтя',
   'entities.itemSets.nighttalon.bonus2': 'Сила атаки повышается на 40.',
   'entities.itemSets.nighttalon.bonus3':
-    'Ловкость повышается на 15, вероятность критического удара на 2%.',
+    'Ловкость повышается на 15, вероятность критического удара на 2%, скорость атаки и ' +
+    'произнесения заклинаний на 15%.',
   'entities.itemSets.soulflame.name': 'Одеяние Пламени Души',
   'entities.itemSets.soulflame.bonus2':
     'Задержка произнесения от полученного урона снижена на 50%.',
-  'entities.itemSets.soulflame.bonus3': 'Полученный урон не задерживает произнесение заклинаний.',
+  'entities.itemSets.soulflame.bonus3':
+    'Полученный урон не задерживает произнесение заклинаний, а скорость атаки и произнесения ' +
+    'заклинаний повышается на 15%.',
   'entities.itemSets.stormcallers.name': 'Одеяние Зовущего Бурю',
   'entities.itemSets.stormcallers.bonus2':
     'Задержка произнесения от полученного урона снижена на 50%.',
   'entities.itemSets.stormcallers.bonus3':
-    'Полученный урон не задерживает произнесение заклинаний.',
+    'Полученный урон не задерживает произнесение заклинаний, а скорость атаки и произнесения ' +
+    'заклинаний повышается на 15%.',
+  'entities.itemSets.vale_arcanist.name': 'Одеяние Дольского чародея',
+  'entities.itemSets.vale_arcanist.bonus3':
+    'Скорость атаки и произнесения заклинаний повышается на 15%.',
   'entities.itemSets.wyrmshadow.name': 'Облачение Тени Дракона',
   'entities.itemSets.wyrmshadow.bonus2': 'Сила атаки повышается на 40.',
   'entities.itemSets.wyrmshadow.bonus3':
@@ -5149,4 +5171,50 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'coldOpen.continue': 'Далее',
   'coldOpen.begin': 'Начать',
   'coldOpen.skip': 'Пропустить',
+
+  // PHAA-499: fill the professions/multiclassing (PHAA-465/466/467) M16 gap.
+  'guide.nav.professions': 'Профессии',
+  'guide.classPage.professionsTitle': 'Совместите со второй профессией',
+  'guide.classPage.professionsNote':
+    'Любой класс выше можно также взять как дополнительную профессию: она открывает второе древо талантов, не лишая вас основной роли. Прежде чем выбирать, посмотрите, как работают дополнительные профессии.',
+  'guide.classPage.professionsLink': 'Дополнительные профессии и мультиклассы',
+  'guide.professionsPage.heading': 'Дополнительные профессии и мультиклассы',
+  'guide.professionsPage.intro':
+    'Дополнительная профессия - это второй класс, который вы осваиваете наряду с основным: он открывает второе древо талантов и часть его способностей, не заставляя вас покидать вашу первую роль.',
+  'guide.professionsPage.whatHeading': 'Что такое дополнительная профессия',
+  'guide.professionsPage.whatBody':
+    'Любой класс можно взять как дополнительную профессию любого другого класса. Это добавляет второе древо талантов и позволяет позаимствовать несколько его способностей: воин может немного освоить лечение жреца, а маг - перенять укус разбойника. Ваш основной класс по-прежнему определяет вашу роль, ресурс и личность; дополнительная профессия лишь расширяет билд, не заменяя его.',
+  'guide.professionsPage.howHeading': 'Как её выбрать',
+  'guide.professionsPage.howBody':
+    'Дополнительные профессии открываются на 10 уровне, в тот же момент, когда разблокируется ваше первое древо талантов. Посетите наставника дополнительных профессий в городе, откройте диалог и выберите класс, который хотите взять как дополнительный.',
+  'guide.professionsPage.costBody':
+    'Первый выбор бесплатен. Смена на другой класс позже стоит золота, и плата растёт с каждой сменой, так что раннее решение никогда не наказывается, а более поздние перестановки стоят немного дороже.',
+  'guide.professionsPage.resetTitle': 'Ничего не высечено в камне',
+  'guide.professionsPage.resetNote':
+    'Вы можете вернуть очки в любом из двух древ в любое время вне боя, а также сменить дополнительную профессию у того же наставника за растущую плату золотом. Ранний выбор дополнительной профессии - лишь черновик, а не окончательное решение.',
+  'guide.professionsPage.talentsHeading': 'Как распределяются очки талантов между двумя древами',
+  'guide.professionsPage.talentsBody':
+    'Дополнительная профессия добавляет целое второе древо талантов рядом с основным, но оба древа берут очки из одного и того же запаса. Древо дополнительной профессии может занимать не более половины этого запаса, поэтому ваш основной класс всегда остаётся сердцем билда. Очко, вложенное в древо дополнительной профессии, открывает её способности, а эти способности расходуют ресурс вашего основного класса, а не свой собственный: дополнительная профессия жреца у воина тратит ярость, а не ману.',
+  'guide.professionsPage.trainersHeading': 'Где найти наставника',
+  'guide.professionsPage.trainersBody':
+    'Наставник дополнительных профессий стоит в городе неподалёку от святилища. Любой наставник может обучить вас любому классу как дополнительной профессии (кроме вашего основного), так что достаточно одного визита, чтобы выбрать или сменить вашу дополнительную профессию.',
+  'classDetails.classPairAria': '{primary}, дополнительная профессия {secondary}',
+  'classDetails.classPairLabel': '{primary} / {secondary}',
+  'game.talents.secondaryTab': 'Доп. профессия: {cls}',
+  'game.talents.secondaryCapHint':
+    'Древо доп. профессии: {spent}/{cap} очков (не более половины общего запаса).',
+  'questUi.dialog.feedHearth': 'У меня есть кое-что для очага.',
+  'questUi.dialog.feedHearthAria': 'Покормить очаг',
+  'questUi.dialog.trainerNeedsGold': 'Недостаточно золота',
+  'questUi.dialog.trainerConfirmTitle': 'Подтвердите дополнительную профессию',
+  'questUi.dialog.trainerConfirmBody': 'Обучиться профессии {cls} за {cost}?',
+  'questUi.dialog.trainerConfirmYes': 'Да, обучи меня',
+  'questUi.dialog.trainerConfirmNo': 'Нет, назад',
+  'questUi.dialog.trainerHowTitle': 'Как работают дополнительные профессии?',
+  'questUi.dialog.trainerHowBody':
+    'Дополнительная профессия добавляет к основному классу второе древо талантов и набор способностей начиная с {level} уровня. Основная роль сохраняется; дополнительная профессия делит с основной общий запас талантов и может занимать не более {pct}% от него, а её способности пересчитывают стоимость ресурса в ваш основной ресурс. Первый выбор бесплатен; последующая смена стоит золота.',
+  'entities.npcs.elder_yarrow.name': 'Старейшина Ярроу',
+  'entities.npcs.elder_yarrow.title': 'Наставник дополнительных профессий',
+  'entities.npcs.elder_yarrow.greeting':
+    'Каждый билд начинается с вопроса. Какое ещё призвание зовёт вас?',
 };

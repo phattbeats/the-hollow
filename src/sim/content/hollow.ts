@@ -194,6 +194,7 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
     facing: -0.6,
     color: 0x4a5d3a,
     questIds: ['q_what_burns', 'q_what_fills'],
+    hearth: true,
     greeting:
       "howdy, traveler. you catch the vase in a mood today, or is that just me again... c'mere, got a couple sacred matters need tendin'. mostly snacks. same thing, to a greenpaw degree.",
     // First-meeting click-through intro (PHAA-432): three beats in-voice
@@ -257,6 +258,20 @@ export const HOLLOW_QUESTS: Record<string, QuestDef> = {
     copperReward: 60,
     itemRewards: CUTTING_FOR_ALL, // Greenpaw hands you your first cutting (§4, §11)
     requiresQuest: 'q_what_burns',
+    // PHAA-471: his last request is a second descent, and the player gets a say.
+    // `complain`/`refuse` are the PLAYER's lines; the replies are Greenpaw's.
+    // Refusing completes the quest as normal (rewards included: he hands over
+    // the cutting anyway), the first hint that the player can push back on this
+    // world. Kept identical in src/ui/i18n.catalog/hollow.ts (the English source
+    // the resolver reads); the sim record stays language-agnostic.
+    offerDialog: {
+      complain: 'I was just down there. You watched me climb out of the hole.',
+      complainReply:
+        "i know it, friend, i know... the vase don't keep a calendar and neither does my stomach. but look at them boots and tell me they don't got one more descent in 'em... no rush. the hole ain't goin' anywhere. that's kinda its whole deal...",
+      refuse: "No. I'm not going back down there.",
+      refuseReply:
+        "oh... oh, okay. ...okay. that's... yeah. no, that's fair, friend, that's fair... the vase heard it too, and between you and me i think he respects it. here, take the cutting anyway. you went down once, and that's once more than most...",
+    },
   },
 };
 

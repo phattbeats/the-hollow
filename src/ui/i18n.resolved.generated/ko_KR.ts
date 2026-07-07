@@ -85,8 +85,8 @@ export const ko_KR: EnTranslations = {
       "title": "특성",
       "classTab": "직업",
       "specTab": "전문화",
-      "secondaryTab": "Secondary: {cls}",
-      "secondaryCapHint": "Secondary tree: {spent}/{cap} points (capped at half your shared pool).",
+      "secondaryTab": "보조 직업: {cls}",
+      "secondaryCapHint": "보조 직업 특성 트리: {spent}/{cap} 포인트 (공유 풀의 절반까지만 사용 가능).",
       "available": "사용 가능",
       "spent": "사용함",
       "pointSource": "{first}레벨부터 {cap}레벨까지 레벨마다 특성 점수 1점을 얻습니다. 더 많은 점수를 얻으려면 레벨을 올리세요.",
@@ -907,7 +907,7 @@ export const ko_KR: EnTranslations = {
       "controls": "조작법",
       "combat": "전투",
       "talents": "특성",
-      "professions": "Professions",
+      "professions": "보조 직업",
       "arena": "투기장과 PvP",
       "glossary": "용어집",
       "wishIKnew": "미리 알았으면 좋았을 것들",
@@ -1186,9 +1186,9 @@ export const ko_KR: EnTranslations = {
       "fullKitNote": "이 직업이 배울 수 있는 모든 기술을, 사용 가능해지는 순서대로 정리했습니다. 어떤 기술이 빌드의 중심이 될지는 특성이 결정합니다.",
       "petsHeading": "악마",
       "petsNote": "흑마법사는 곁에서 함께 싸울 악마를 소환하며, 각 악마는 서로 다른 역할에 맞습니다.",
-      "professionsTitle": "Pair with a second class",
-      "professionsNote": "Any class above can also be taken as a profession, a secondary class that opens a second talent tree without dropping your primary role. See how professions work before you pick.",
-      "professionsLink": "Professions and multiclassing"
+      "professionsTitle": "보조 직업 조합하기",
+      "professionsNote": "위의 어떤 직업이든 보조 직업으로 배울 수 있습니다. 보조 직업은 주 역할을 유지한 채 두 번째 특성 트리를 여는 부 직업입니다. 선택하기 전에 보조 직업의 작동 방식을 확인하세요.",
+      "professionsLink": "보조 직업과 다중 직업"
     },
     "classHook": {
       "warrior": "받아낸 모든 일격을 다음 공격의 연료로 바꾸는, 집요한 최전방 전투원.",
@@ -1491,19 +1491,19 @@ export const ko_KR: EnTranslations = {
       "specsBody": "모든 직업에는 몇 가지 전문화가 있으며, 각각 고유한 역할과 대표적인 특징을 지닙니다. 여기 그 전체 윤곽을 정리했습니다. 전체 기술 구성은 직업을 열어 확인하세요."
     },
     "professionsPage": {
-      "heading": "Professions and multiclassing",
-      "intro": "A profession is a second class you train alongside your primary one, opening a second talent tree and a slice of its ability kit without leaving your first role behind.",
-      "whatHeading": "What a profession is",
-      "whatBody": "Every class can be taken as a profession by any other class. Pairing one adds a second talent tree and lets you borrow a few of its abilities, so a Warrior can dabble in the Priest's healing or a Mage pick up a Rogue's sting. Your primary class still sets your role, your resource, and your identity; the profession bends the build without replacing it.",
-      "howHeading": "How to pick one",
-      "howBody": "Professions open at level 10, the same moment your first talent tree unlocks. Visit a Profession Trainer in the hub town, open their dialog, and pick the class you want as your secondary.",
-      "costBody": "Your first pick is free. Changing to a different class later costs gold, and the fee steps up each time you swap, so an early decision is never punished while later reshuffles carry a small price.",
-      "resetTitle": "Nothing is locked in",
-      "resetNote": "You can refund points in either tree any time you are out of combat, and you can swap your secondary class at the same trainer for an escalating gold fee. An early profession pick is a first draft, not a commitment.",
-      "talentsHeading": "How talents split across the two trees",
-      "talentsBody": "A profession adds a whole second talent tree beside your primary one, but the two draw from the same pool of points. The secondary tree can hold at most half of that pool, so your primary class always stays the heart of the build. A point dropped into the secondary tree unlocks its abilities, and those abilities cast from your primary resource, not theirs: a Priest profession on a Warrior spends rage to heal, not mana.",
-      "trainersHeading": "Finding a trainer",
-      "trainersBody": "A Profession Trainer stands in the hub town near the shrine. Any single trainer can teach you any class as a profession (other than your primary), so one visit is enough to set or change your secondary."
+      "heading": "보조 직업과 다중 직업",
+      "intro": "보조 직업은 주 직업과 함께 훈련하는 두 번째 직업으로, 원래의 역할을 유지한 채 두 번째 특성 트리와 그 기술 일부를 열어줍니다.",
+      "whatHeading": "보조 직업이란",
+      "whatBody": "모든 직업은 다른 어떤 직업의 보조 직업으로도 선택할 수 있습니다. 보조 직업을 조합하면 두 번째 특성 트리가 추가되고 그 기술 일부를 빌려 쓸 수 있습니다. 전사가 사제의 치유를 조금 익히거나, 마법사가 도적의 독침을 배울 수 있는 식입니다. 주 직업은 여전히 당신의 역할, 자원, 정체성을 결정합니다. 보조 직업은 그것을 대체하지 않고 빌드를 더 다채롭게 만들어 줄 뿐입니다.",
+      "howHeading": "고르는 방법",
+      "howBody": "보조 직업은 레벨 10에 열리며, 이는 첫 번째 특성 트리가 해제되는 시점과 같습니다. 마을에 있는 보조 직업 훈련사를 찾아가 대화창을 열고 원하는 보조 직업을 선택하세요.",
+      "costBody": "첫 선택은 무료입니다. 나중에 다른 직업으로 바꾸려면 골드가 들며, 바꿀 때마다 비용이 올라갑니다. 그래서 이른 결정에는 불이익이 없고, 이후에 여러 번 바꾸면 약간의 대가가 따릅니다.",
+      "resetTitle": "무엇도 확정되지 않습니다",
+      "resetNote": "전투 중이 아니라면 언제든 두 특성 트리의 포인트를 환불할 수 있고, 같은 훈련사에게서 보조 직업을 바꿀 수도 있습니다 (비용은 점점 늘어납니다). 초반의 보조 직업 선택은 확정이 아니라 초안일 뿐입니다.",
+      "talentsHeading": "두 트리 간 특성 포인트 배분",
+      "talentsBody": "보조 직업은 주 직업 외에 완전한 두 번째 특성 트리를 추가하지만, 두 트리는 같은 포인트 풀을 공유합니다. 보조 트리는 그 풀의 최대 절반까지만 사용할 수 있어, 주 직업이 항상 빌드의 중심으로 남습니다. 보조 트리에 포인트를 투자하면 그 기술이 해제되며, 그 기술은 보조 직업이 아니라 주 직업의 자원을 소모합니다. 전사가 사제를 보조 직업으로 삼으면, 소모되는 것은 마나가 아니라 분노입니다.",
+      "trainersHeading": "훈련사 찾기",
+      "trainersBody": "보조 직업 훈련사는 마을의 사당 근처에 서 있습니다. 훈련사 한 명이 주 직업을 제외한 어떤 직업이든 보조 직업으로 가르칠 수 있어, 한 번만 방문해도 보조 직업을 설정하거나 바꿀 수 있습니다."
     },
     "arenaPage": {
       "heading": "투기장과 PvP",
@@ -2592,6 +2592,7 @@ export const ko_KR: EnTranslations = {
     "rendererFailed": "렌더러를 시작할 수 없습니다. 새로고침해 보세요. {error}",
     "enterTimeout": "세계에 입장할 수 없습니다. 연결 시간이 초과되었습니다. 게임 서버가 실행 중인가요?",
     "connectionLost": "서버와의 연결이 끊어졌습니다.",
+    "reconnecting": "연결이 끊어졌습니다. 다시 연결하는 중...",
     "connectionRejected": "서버가 연결을 종료했습니다."
   },
   "errors": {
@@ -2743,7 +2744,7 @@ export const ko_KR: EnTranslations = {
     "aria": "{className} 직업 세부 정보: 역할 {role}. 시작 능력치: 힘 {str}, 민첩 {agi}, 체력 {sta}, 지능 {int}, 정신력 {spi}.",
     "statBarAria": "{stat}: {value}/25",
     "classPairLabel": "{primary} / {secondary}",
-    "classPairAria": "{primary}, secondary {secondary}"
+    "classPairAria": "{primary}, 보조 {secondary}"
   },
   "mobilePreflight": {
     "title": "가로 전체 화면으로 플레이",
@@ -3426,18 +3427,20 @@ export const ko_KR: EnTranslations = {
       "worldMarketAria": "세계 시장 열기",
       "trainSecondary": "보조 직업 하나를 가르쳐 주세요.",
       "trainSecondaryAria": "{name}에게 보조 직업을 배웁니다",
+      "feedHearth": "화로에 바칠 것이 있다.",
+      "feedHearthAria": "화로에 바치기",
       "trainerTitle": "보조 직업",
       "trainerLevelLocked": "레벨 {level}에 해제됩니다.",
       "trainerCurrent": "현재",
       "trainerFree": "무료",
       "trainerPickAria": "{cls} 보조 직업 훈련: {cost}",
-      "trainerNeedsGold": "Not enough gold",
-      "trainerConfirmTitle": "Confirm secondary class",
-      "trainerConfirmBody": "Train as {cls} for {cost}?",
-      "trainerConfirmYes": "Yes, train me",
-      "trainerConfirmNo": "No, go back",
-      "trainerHowTitle": "How do secondary professions work?",
-      "trainerHowBody": "A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities translate their resource cost to your primary resource. Your first pick is free; changing later costs gold.",
+      "trainerNeedsGold": "골드가 부족합니다",
+      "trainerConfirmTitle": "보조 직업 확인",
+      "trainerConfirmBody": "{cost}(으)로 {cls}(으)로 훈련하시겠습니까?",
+      "trainerConfirmYes": "네, 훈련하겠습니다",
+      "trainerConfirmNo": "아니요, 돌아가기",
+      "trainerHowTitle": "보조 직업은 어떻게 작동하나요?",
+      "trainerHowBody": "보조 직업은 {level}레벨부터 주 직업 위에 두 번째 특성 트리와 기술 세트를 추가합니다. 주 역할은 유지되며, 보조 직업은 특성 풀을 공유하고 최대 {pct}%까지만 사용할 수 있습니다. 보조 직업 기술의 자원 소모는 주 자원으로 환산됩니다. 첫 선택은 무료이며, 이후 변경에는 골드가 듭니다.",
       "accept": "수락",
       "decline": "거절",
       "continue": "계속",
@@ -5775,6 +5778,11 @@ export const ko_KR: EnTranslations = {
         "title": "성물실 관리인",
         "greeting": "아래의 성물실이 또 움직였소."
       },
+      "elder_yarrow": {
+        "name": "원로 야로우",
+        "title": "보조 직업 훈련사",
+        "greeting": "모든 빌드는 질문에서 시작됩니다. 어떤 보조 직업이 당신을 부르고 있나요?"
+      },
       "tidewatcher_ondrel": {
         "name": "온드렐 베인",
         "title": "조수지기",
@@ -6635,6 +6643,12 @@ export const ko_KR: EnTranslations = {
           "0": {
             "label": "동굴 고기 조각 수집"
           }
+        },
+        "dialog": {
+          "complain": "방금 거기 내려갔다 왔잖아요. 내가 구멍에서 기어 나오는 걸 봤으면서.",
+          "complainReply": "알아, 친구, 알지... 항아리는 달력 같은 건 안 챙기고, 내 뱃속도 마찬가지야. 그래도 그 장화를 보라고, 한 번은 더 내려갔다 올 수 있게 생겼잖아... 서두를 건 없어. 구멍은 어디 안 가. 그게 그 녀석의 본분이거든...",
+          "refuse": "싫습니다. 다시는 안 내려가요.",
+          "refuseReply": "오... 오, 그래. ...그래. 그건... 그렇지. 아니, 맞는 말이야, 친구, 맞는 말이지... 항아리도 들었고, 우리끼리 얘기지만 그 녀석도 존중하는 눈치야. 자, 꺾꽂이는 그냥 가져가. 한 번은 내려갔잖아, 그것만으로도 대부분보다 한 번은 더 간 거야..."
         }
       },
       "q_root_hollow_boars": {
@@ -6850,15 +6864,23 @@ export const ko_KR: EnTranslations = {
       }
     },
     "itemSets": {
+      "boundstone_vanguard": {
+        "name": "바운드스톤 선봉대",
+        "bonus3": "공격 및 시전 속도가 15% 증가합니다."
+      },
       "crownforged": {
         "name": "왕관벼림 전투장비",
         "bonus2": "전투력이 40만큼 증가합니다.",
-        "bonus3": "힘이 15, 체력이 15만큼 증가합니다."
+        "bonus3": "힘이 15, 체력이 15, 공격 및 시전 속도가 15% 증가합니다."
       },
       "deathlord": {
         "name": "죽음군주의 전투장비",
         "bonus2": "전투력이 40만큼 증가합니다.",
         "bonus3": "힘이 15, 체력이 15만큼 증가합니다."
+      },
+      "greyjaw_stalker": {
+        "name": "그레이조 추적자 장비",
+        "bonus3": "공격 및 시전 속도가 15% 증가합니다."
       },
       "necromancers": {
         "name": "강령술사의 의복",
@@ -6868,17 +6890,21 @@ export const ko_KR: EnTranslations = {
       "nighttalon": {
         "name": "밤발톱 가죽장비",
         "bonus2": "전투력이 40만큼 증가합니다.",
-        "bonus3": "민첩이 15, 치명타 확률이 2% 증가합니다."
+        "bonus3": "민첩이 15, 치명타 확률이 2%, 공격 및 시전 속도가 15% 증가합니다."
       },
       "soulflame": {
         "name": "영혼불꽃 의복",
         "bonus2": "피해로 인한 시전 밀림이 50% 감소합니다.",
-        "bonus3": "시전 중 피해를 받아도 밀려나지 않습니다."
+        "bonus3": "시전 중 피해를 받아도 밀려나지 않으며, 공격 및 시전 속도가 15% 증가합니다."
       },
       "stormcallers": {
         "name": "폭풍소환사의 의복",
         "bonus2": "피해로 인한 시전 밀림이 50% 감소합니다.",
-        "bonus3": "시전 중 피해를 받아도 밀려나지 않습니다."
+        "bonus3": "시전 중 피해를 받아도 밀려나지 않으며, 공격 및 시전 속도가 15% 증가합니다."
+      },
+      "vale_arcanist": {
+        "name": "베일 비전술사의 의복",
+        "bonus3": "공격 및 시전 속도가 15% 증가합니다."
       },
       "wyrmshadow": {
         "name": "고룡그림자 의복",

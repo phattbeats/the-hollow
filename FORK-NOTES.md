@@ -530,7 +530,7 @@ and the dead CSS/overlay cruft that copy left behind.
 
 - **Removed the `official-site-copy` hero block:** the `<section>` under the
   main logo told players "thehollow.world is the official free browser
-  MMO for the Claudemoon realm... follow verified community links from this
+  MMO for The Hollow... follow verified community links from this
   site" (`seo.officialLabel`/`seo.officialBody`). Self-promotional SEO copy,
   not useful to a player already on the page; removed the markup, the two
   catalog keys, the matching selectors in `shell.css`/`hud.css`/
