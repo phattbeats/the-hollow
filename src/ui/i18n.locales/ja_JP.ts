@@ -5049,4 +5049,49 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'coldOpen.continue': 'つづける',
   'coldOpen.begin': 'はじめる',
   'coldOpen.skip': 'スキップ',
+
+  // PHAA-499: fill the professions/multiclassing (PHAA-465/466/467) M16 gap.
+  'guide.nav.professions': '副職業',
+  'guide.classPage.professionsTitle': '副職業を組み合わせる',
+  'guide.classPage.professionsNote':
+    '上記のどのクラスも副職業として学べます。副職業は、メインの役割を保ったまま2つ目のタレントツリーを開く仕組みです。選ぶ前に副職業の仕組みを確認しましょう。',
+  'guide.classPage.professionsLink': '副職業とマルチクラス',
+  'guide.professionsPage.heading': '副職業とマルチクラス',
+  'guide.professionsPage.intro':
+    '副職業とは、メインクラスと並行して鍛える2つ目のクラスです。メインの役割を保ったまま、2つ目のタレントツリーとその一部のアビリティが使えるようになります。',
+  'guide.professionsPage.whatHeading': '副職業とは何か',
+  'guide.professionsPage.whatBody':
+    'どのクラスも、他のどのクラスからでも副職業として選べます。副職業を組み合わせると2つ目のタレントツリーが増え、そのアビリティの一部を借りられます。戦士が僧侶の治療をかじったり、魔術師が盗賊の毒針を覚えたりできるのです。メインクラスはあなたの役割、リソース、そしてアイデンティティを決め続けます。副職業はビルドに幅を持たせるだけで、それを置き換えることはありません。',
+  'guide.professionsPage.howHeading': '選び方',
+  'guide.professionsPage.howBody':
+    '副職業はレベル10で解放され、最初のタレントツリーが開くのと同じタイミングです。街の副職業トレーナーを訪ね、会話を開いて副職業にしたいクラスを選びましょう。',
+  'guide.professionsPage.costBody':
+    '最初の選択は無料です。後で別のクラスに変更するにはゴールドがかかり、変更するたびに手数料が上がっていきます。そのため早い決断が損になることはなく、後からの入れ替えには少しの代償が伴います。',
+  'guide.professionsPage.resetTitle': '何も固定されない',
+  'guide.professionsPage.resetNote':
+    '戦闘外であればいつでも、どちらのツリーのタレントポイントも払い戻せます。また同じトレーナーのもとで副職業を変更することもでき、その手数料は徐々に上がっていきます。早い段階での副職業選びは、あくまで下書きであり、確定した決定ではありません。',
+  'guide.professionsPage.talentsHeading': '2つのツリーへのタレント配分',
+  'guide.professionsPage.talentsBody':
+    '副職業はメインクラスの他にまるごと2つ目のタレントツリーを追加しますが、両者は同じポイントプールを共有します。副職業のツリーはそのプールの最大半分までしか使えないため、メインクラスは常にビルドの核であり続けます。副職業ツリーに振ったポイントはそのアビリティを解放しますが、そのアビリティが消費するのはメインクラスのリソースです。副職業のリソースではありません。ウォリアーが僧侶を副職業にした場合、消費するのはマナではなく怒りです。',
+  'guide.professionsPage.trainersHeading': 'トレーナーを見つける',
+  'guide.professionsPage.trainersBody':
+    '副職業トレーナーは、街の祠の近くに立っています。1人のトレーナーで、メインクラス以外のどのクラスも副職業として教えられるため、一度訪れるだけで副職業の設定や変更ができます。',
+  'classDetails.classPairAria': '{primary}、副職業 {secondary}',
+  'classDetails.classPairLabel': '{primary} / {secondary}',
+  'game.talents.secondaryTab': '副職業: {cls}',
+  'game.talents.secondaryCapHint': '副職業ツリー: {spent}/{cap}ポイント（共有プールの半分まで）。',
+  'questUi.dialog.feedHearth': '炉にくべる物がある。',
+  'questUi.dialog.feedHearthAria': '炉にくべる',
+  'questUi.dialog.trainerNeedsGold': 'ゴールドが足りません',
+  'questUi.dialog.trainerConfirmTitle': '副職業の確認',
+  'questUi.dialog.trainerConfirmBody': '{cost}で{cls}を習得しますか？',
+  'questUi.dialog.trainerConfirmYes': 'はい、習得します',
+  'questUi.dialog.trainerConfirmNo': 'いいえ、戻る',
+  'questUi.dialog.trainerHowTitle': '副職業の仕組みは？',
+  'questUi.dialog.trainerHowBody':
+    '副職業はレベル{level}から、メインクラスに2つ目のタレントツリーとアビリティ一式を追加します。メインの役割はそのままで、副職業はタレントプールを共有し、最大{pct}%まで使用できます。副職業のアビリティは、リソースコストをメインのリソースに換算して消費します。最初の選択は無料で、以降の変更にはゴールドがかかります。',
+  'entities.npcs.elder_yarrow.name': 'ヤロウ長老',
+  'entities.npcs.elder_yarrow.title': '副職業トレーナー',
+  'entities.npcs.elder_yarrow.greeting':
+    'ビルドはすべて、ひとつの問いから始まる。どの副職業があなたを呼んでいる？',
 };

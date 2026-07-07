@@ -2062,7 +2062,11 @@ export class Sim {
       arenaAllPids: sim.arenaAllPids.bind(sim),
       rollLoot: sim.rollLoot.bind(sim),
       applyHeal: sim.applyHeal.bind(sim),
-      spellCrit: sim.spellCrit.bind(sim),
+      // Lazy arrow, not a ctor-time .bind: applyHeal/effect_dispatch/casting_lifecycle
+      // read ctx.spellCrit long after buildSimContext runs, and unit tests override
+      // `(sim as any).spellCrit` post-construction (see the applyHeal thin-delegate
+      // comment above); a .bind snapshot would freeze the pre-override function.
+      spellCrit: (p: Entity) => sim.spellCrit(p),
       applyAura: sim.applyAura.bind(sim),
       // General control-aura predicate (stays on Sim); the extracted Nythraxis
       // isNythraxisControlAura consults it through the seam.
