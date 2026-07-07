@@ -544,6 +544,32 @@ export const en = {
       helpLine:
         'Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>.',
     },
+    // Homestead v0 (PHAA-533): the open-world Hollow Reaches tier, distinct from
+    // Housing v0's Sanctum plots. Player-facing /homestead command text lives in
+    // src/sim/homestead.ts (the placement rejections, the Greenpaw quest-gate,
+    // the already-own / ground-claimed / sits-at / no-homestead variants) plus the
+    // /homestead /help line in src/sim/social/chat.ts helpLines. Re-localized via
+    // the RULES array in src/ui/sim_i18n.ts (no EXACT entries: the (x, z) readout
+    // is parameterized and the helpLines line goes through the variable-routed
+    // guard below). The (x, z) sit-at position is rounded by the sim.
+    homestead: {
+      outsideArea: 'That is outside the homestead ground. Try Fallow Acres, west of the road.',
+      tooCloseGate: 'Too close to the gate. Move further out.',
+      tooCloseWater: 'Too close to the water.',
+      tooCloseGraveyard: 'Too close to the graveyard.',
+      tooCloseWildlife: 'Too close to the wildlife. Clear the area or move further off.',
+      tooCloseRoad: 'Too close to the road.',
+      tooCloseOther: 'Too close to another homestead.',
+      questGate: "Brother Greenpaw hasn't sent you off yet. Finish his errands first.",
+      alreadyOwn: 'You already own a homestead.',
+      claimed: 'The ground is yours. This homestead is claimed.',
+      readoutMine: 'Your homestead sits at ({x}, {z}).',
+      readoutNoHomesteadQuest:
+        "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
+      readoutNoHomesteadHint:
+        'You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.',
+      helpLine: 'Homestead: /homestead, /homestead claim.',
+    },
   },
   // Lockpicking minigame ("Tumbler's Path") panel chrome. Rendered through t()
   // from hud.ts; the pure lockpick_panel.ts view returns stable discriminators
