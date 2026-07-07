@@ -10,6 +10,9 @@
 
 export const pending: Record<string, readonly string[]> = {
   "es": [
+    "auth.sex",
+    "auth.sexFemale",
+    "auth.sexMale",
     "classDetails.classPairAria",
     "classDetails.classPairLabel",
     "coldOpen.begin",
@@ -187,6 +190,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind"
   ],
   "es_ES": [
+    "auth.sex",
+    "auth.sexFemale",
+    "auth.sexMale",
     "classDetails.classPairAria",
     "classDetails.classPairLabel",
     "coldOpen.begin",
@@ -364,6 +370,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind"
   ],
   "fr_FR": [
+    "auth.sex",
+    "auth.sexFemale",
+    "auth.sexMale",
     "classDetails.classPairAria",
     "classDetails.classPairLabel",
     "coldOpen.begin",
@@ -541,6 +550,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind"
   ],
   "fr_CA": [
+    "auth.sex",
+    "auth.sexFemale",
+    "auth.sexMale",
     "classDetails.classPairAria",
     "classDetails.classPairLabel",
     "coldOpen.begin",
@@ -719,6 +731,9 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "en_CA": [],
   "it_IT": [
+    "auth.sex",
+    "auth.sexFemale",
+    "auth.sexMale",
     "classDetails.classPairAria",
     "classDetails.classPairLabel",
     "coldOpen.begin",
@@ -896,6 +911,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind"
   ],
   "de_DE": [
+    "auth.sex",
+    "auth.sexFemale",
+    "auth.sexMale",
     "classDetails.classPairAria",
     "classDetails.classPairLabel",
     "coldOpen.begin",
@@ -1077,6 +1095,9 @@ export const pending: Record<string, readonly string[]> = {
   "ko_KR": [],
   "ja_JP": [],
   "pt_BR": [
+    "auth.sex",
+    "auth.sexFemale",
+    "auth.sexMale",
     "classDetails.classPairAria",
     "classDetails.classPairLabel",
     "coldOpen.begin",
@@ -1255,6 +1276,9 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "ru_RU": [],
   "nl_NL": [
+    "auth.sex",
+    "auth.sexFemale",
+    "auth.sexMale",
     "classDetails.classPairAria",
     "classDetails.classPairLabel",
     "coldOpen.begin",
@@ -1432,6 +1456,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind"
   ],
   "pl_PL": [
+    "auth.sex",
+    "auth.sexFemale",
+    "auth.sexMale",
     "classDetails.classPairAria",
     "classDetails.classPairLabel",
     "coldOpen.begin",
@@ -1609,6 +1636,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind"
   ],
   "id_ID": [
+    "auth.sex",
+    "auth.sexFemale",
+    "auth.sexMale",
     "classDetails.classPairAria",
     "classDetails.classPairLabel",
     "coldOpen.begin",
@@ -1786,6 +1816,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind"
   ],
   "tr_TR": [
+    "auth.sex",
+    "auth.sexFemale",
+    "auth.sexMale",
     "classDetails.classPairAria",
     "classDetails.classPairLabel",
     "coldOpen.begin",
@@ -1963,6 +1996,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind"
   ],
   "sv_SE": [
+    "auth.sex",
+    "auth.sexFemale",
+    "auth.sexMale",
     "classDetails.classPairAria",
     "classDetails.classPairLabel",
     "coldOpen.begin",
@@ -2140,6 +2176,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind"
   ],
   "vi_VN": [
+    "auth.sex",
+    "auth.sexFemale",
+    "auth.sexMale",
     "classDetails.classPairAria",
     "classDetails.classPairLabel",
     "coldOpen.begin",
@@ -2317,6 +2356,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind"
   ],
   "da_DK": [
+    "auth.sex",
+    "auth.sexFemale",
+    "auth.sexMale",
     "classDetails.classPairAria",
     "classDetails.classPairLabel",
     "coldOpen.begin",
