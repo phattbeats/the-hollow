@@ -142,6 +142,7 @@ import { adminRolesForAccount } from './staff_db';
 import { cacheControlFor, etagFor, isNotModified } from './static_cache';
 import { verifyTurnstile } from './turnstile';
 import {
+  isCrossSiteApiRequest,
   isNativeAppRequest,
   isWebClientRequest,
   NATIVE_APP_ORIGINS,
@@ -1387,6 +1388,17 @@ export function routeHttpRequest(req: http.IncomingMessage, res: http.ServerResp
   // origin so browser-origin companion apps can call them client-side; every
   // other /api route keeps the narrow realm/native allowlist.
   const publicCorsPath = isPublicCorsPath(path);
+  // Cross-site Origin gate (PHAA-524): scoped to the plain /api surface, same
+  // as upstream's carve-out (admin and oauth have their own auth models, and
+  // public reads never mutate state). Runs BEFORE the CORS reflection headers
+  // below so a rejected request never gets an Access-Control-Allow-Origin.
+  // Only active when isCrossSiteApiRequest's webLoginEnforced check is on
+  // (production, or REQUIRE_WEB_LOGIN forced) so dev/e2e origins never audited
+  // against the allow-list are not suddenly rejected.
+  if (url.startsWith('/api/') && !publicCorsPath && isCrossSiteApiRequest(req)) {
+    json(res, 403, { error: 'cross-site request rejected' });
+    return;
+  }
   if (publicCorsPath) publicCors(res);
   else if (isApi) maybeCors(req, res);
   if (req.method === 'OPTIONS' && (isApi || publicCorsPath)) {

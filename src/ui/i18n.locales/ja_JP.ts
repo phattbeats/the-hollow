@@ -689,6 +689,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'errors.api.nameTaken': 'その名前は既に使われています。',
   'errors.api.characterNotFound': 'キャラクターが見つかりません。',
   'errors.api.characterOnline': 'キャラクターは現在オンラインです。',
+  'errors.api.crossSiteRejected': 'クロスサイトリクエストは拒否されました。',
   'errors.api.deleteConfirm': '削除を確認するにはキャラクター名を入力してください。',
   'errors.api.notAuthenticated': '認証されていません。',
   'errors.api.accountBanned': 'このアカウントは利用停止されています。',
