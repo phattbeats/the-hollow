@@ -4473,6 +4473,8 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'sim.delve.unknownTier': '未知的探秘难度。',
   'sim.delve.wayOutNotOpen': '出路尚未开启。',
   'sim.delve.whileTrading': '交易期间无法进入探秘。',
+  'sim.gathering.alreadyHarvested': '这具尸体已经被采集过了。',
+  'sim.gathering.nothingToHarvest': '这具尸体没有什么可以采集的。',
   'sim.hearth.emberbulb1': '这才叫柴火……瞧瞧她喘气的样子，伙计……',
   'sim.hearth.emberbulb2': '炉子慢慢地、干干净净地吃下去，她就爱这样……',
   'sim.hearth.emberbulb3': '添了柴，冒了烟……那个波长已经开始松动了，我能感觉到。',

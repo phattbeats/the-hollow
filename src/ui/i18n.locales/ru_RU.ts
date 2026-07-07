@@ -4808,6 +4808,8 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'sim.delve.unknownTier': 'Неизвестная сложность вылазки.',
   'sim.delve.wayOutNotOpen': 'Выход ещё не открыт.',
   'sim.delve.whileTrading': 'Нельзя войти в вылазку во время обмена.',
+  'sim.gathering.alreadyHarvested': 'Этот труп уже разделан.',
+  'sim.gathering.nothingToHarvest': 'С этого трупа нечего собирать.',
   'sim.hearth.emberbulb1': 'вот это дровишки… гляди, как она задышала, дружище…',
   'sim.hearth.emberbulb2': 'печь берёт своё медленно и чисто, ей так по нраву…',
   'sim.hearth.emberbulb3': 'растопили, задымило… уже чую, как открывается волна.',

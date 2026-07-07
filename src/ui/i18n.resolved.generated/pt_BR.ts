@@ -2233,6 +2233,10 @@ export const pt_BR: EnTranslations = {
       "lockJammed": "A fechadura está emperrada além de qualquer arrombamento: conclua a incursão novamente para outra tentativa.",
       "lastPickSnaps": "A última gazua se parte. A fechadura emperra: o baú está perdido a menos que você conclua a incursão novamente."
     },
+    "gathering": {
+      "nothingToHarvest": "That corpse has nothing to harvest.",
+      "alreadyHarvested": "This corpse has already been harvested."
+    },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
       "noItems1": "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",

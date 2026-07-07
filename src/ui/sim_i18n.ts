@@ -4439,6 +4439,18 @@ const RULES: Rule[] = [
     re: /^Greenpaw: \/feed \(bring what burns or what fills, from near the vase\)\.$/,
     build: () => t('sim.hearth.helpLine'),
   },
+  // Gathering v0 (PHAA-504): corpse-harvest error text (src/sim/interaction.ts's
+  // harvestCorpse). Its range-check error reuses the literal "Too far away."
+  // that lootCorpse/pickUpObject already emit (same pre-existing gap, not
+  // widened by this addition).
+  {
+    re: /^That corpse has nothing to harvest\.$/,
+    build: () => t('sim.gathering.nothingToHarvest'),
+  },
+  {
+    re: /^This corpse has already been harvested\.$/,
+    build: () => t('sim.gathering.alreadyHarvested'),
+  },
   // Housing v0 (PHAA-428): the /house command text (src/sim/housing.ts), plus the
   // /house helpLines entry (src/sim/social/chat.ts).
   {

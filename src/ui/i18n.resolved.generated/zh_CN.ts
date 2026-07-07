@@ -2233,6 +2233,10 @@ export const zh_CN: EnTranslations = {
       "lockJammed": "锁已卡死，无法撬开，请再次通关探秘以获得新的尝试机会。",
       "lastPickSnaps": "最后一根撬锁器折断了。锁卡死了，除非再次通关探秘，否则这只宝箱就此失去。"
     },
+    "gathering": {
+      "nothingToHarvest": "这具尸体没有什么可以采集的。",
+      "alreadyHarvested": "这具尸体已经被采集过了。"
+    },
     "hearth": {
       "tooFar": "你得靠近绿掌修士才能喂他。",
       "noItems1": "……伙计，你两手空空啊。带点能烧的或能填饱肚子的东西来，我们再唠。",

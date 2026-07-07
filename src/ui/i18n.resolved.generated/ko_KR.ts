@@ -2233,6 +2233,10 @@ export const ko_KR: EnTranslations = {
       "lockJammed": "자물쇠가 더는 딸 수 없게 걸려 버렸습니다. 다시 시도하려면 탐굴을 다시 정리하세요.",
       "lastPickSnaps": "마지막 도구가 부러집니다. 자물쇠가 걸려 버립니다. 탐굴을 다시 정리하지 않으면 상자를 잃습니다."
     },
+    "gathering": {
+      "nothingToHarvest": "그 시체에서는 채집할 것이 없습니다.",
+      "alreadyHarvested": "이 시체는 이미 채집되었습니다."
+    },
     "hearth": {
       "tooFar": "브라더 초록발에게 먹이를 주려면 그의 곁에 있어야 한다.",
       "noItems1": "……친구, 빈손이구먼. 태울 것이든 배 채울 것이든 좀 가져오게, 그럼 얘기해보세.",

@@ -206,6 +206,8 @@ const CALLBACK_KEYS = [
   'plantSpeechAmbientChat',
   // Homestead v0: the /homestead chat-command branch.
   'homesteadChat',
+  // Gathering v0 (PHAA-504): the corpse-harvest item-selection rng draw.
+  'gatherHarvestItemFor',
 ] as const;
 
 // A fully-spied fake host. `clock` is mutable so a test can prove the context reads
@@ -437,6 +439,7 @@ function makeFakeHost() {
     notifyPlantThreshold: vi.fn(),
     plantSpeechAmbientChat: vi.fn(),
     homesteadChat: vi.fn(() => false),
+    gatherHarvestItemFor: vi.fn(() => null),
   };
   return { host, rng, entities, clock };
 }

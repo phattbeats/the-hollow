@@ -2233,6 +2233,10 @@ export const fr_CA: EnTranslations = {
       "lockJammed": "La serrure est bloquée, impossible à crocheter : terminez l'excavation de nouveau pour une autre tentative.",
       "lastPickSnaps": "Le dernier crochet se brise. La serrure se bloque : le coffre est perdu à moins de terminer l'excavation de nouveau."
     },
+    "gathering": {
+      "nothingToHarvest": "That corpse has nothing to harvest.",
+      "alreadyHarvested": "This corpse has already been harvested."
+    },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
       "noItems1": "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",

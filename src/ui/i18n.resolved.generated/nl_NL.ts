@@ -2233,6 +2233,10 @@ export const nl_NL: EnTranslations = {
       "lockJammed": "Het slot zit muurvast en is niet meer te peuteren. Speel de delve opnieuw uit voor een nieuwe poging.",
       "lastPickSnaps": "De laatste loper breekt. Het slot klemt vast. De kist is verloren tenzij je de delve opnieuw uitspeelt."
     },
+    "gathering": {
+      "nothingToHarvest": "That corpse has nothing to harvest.",
+      "alreadyHarvested": "This corpse has already been harvested."
+    },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
       "noItems1": "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",

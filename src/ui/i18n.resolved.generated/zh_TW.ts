@@ -2233,6 +2233,10 @@ export const zh_TW: EnTranslations = {
       "lockJammed": "這道鎖已卡死到無法撬開，再次通關秘探以獲得另一次嘗試。",
       "lastPickSnaps": "最後一根撬棒折斷了。鎖卡死了，除非你再次通關這場秘探，否則寶箱將就此失去。"
     },
+    "gathering": {
+      "nothingToHarvest": "這具屍體沒有什麼可以採集的。",
+      "alreadyHarvested": "這具屍體已經被採集過了。"
+    },
     "hearth": {
       "tooFar": "你得靠近綠掌修士才能餵他。",
       "noItems1": "……夥計，你兩手空空啊。帶點能燒的或能填飽肚子的東西來，我們再聊。",
