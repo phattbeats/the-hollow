@@ -846,6 +846,13 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
     // the dedicated "Greenpaw hearth and /house helpLines" describe block.
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/housing.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/greenpaw_hearth.ts'), 'utf8'),
+    // PHAA-533: Homestead v0 (src/sim/homestead.ts) - the open-world Hollow
+    // Reaches tier, distinct from Housing v0's Sanctum plots. Inline literal
+    // error/log strings (the "Too close to..." rejections, the quest-gate
+    // message, "The ground is yours...", "Your homestead sits at (x, z).",
+    // and the two "You own no homestead..." variants). /help line is emitted
+    // from src/sim/social/chat.ts, picked up by the socialSrc glob below.
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/homestead.ts'), 'utf8'),
     socialSrc,
   ].join('\n');
   // Hardened S3: also scan the authoritative server's player-facing emits. The
@@ -1133,59 +1140,111 @@ describe('server restart-countdown announcements are localized (broadcastSystem 
 // so editing one without updating its sim_i18n.ts matcher fails here. PHAA-428
 // filled zh_CN/zh_TW/ja_JP/ko_KR/ru_RU (the M16 non-Latin set); the other locales
 // legitimately still ship English pending a fuller pass (see CLAUDE.md).
-describe('Greenpaw hearth and /house helpLines command text are localized (variable-routed / array-literal blind spot)', () => {
-  const hearthSrc = fs.readFileSync(
-    path.resolve(process.cwd(), 'src/sim/greenpaw_hearth.ts'),
-    'utf8',
-  );
-  const chatSrc = fs.readFileSync(path.resolve(process.cwd(), 'src/sim/social/chat.ts'), 'utf8');
-  const strLit = /'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"/g;
-  const unq = (s: string) => s.slice(1, -1);
-  const literalsBetween = (src: string, start: string, endMarker = '\n\n'): string[] => {
-    const startIdx = src.indexOf(start);
-    expect(startIdx, `"${start}" not found`).toBeGreaterThanOrEqual(0);
-    const endIdx = src.indexOf(endMarker, startIdx);
-    const block = src.slice(startIdx, endIdx > startIdx ? endIdx : undefined);
-    return [...block.matchAll(strLit)].map((m) => unq(m[0]));
-  };
+// PHAA-533: Homestead v0 (src/sim/homestead.ts) has THREE more multi-line
+  // `this.ctx.error(...)` calls with trailing commas - the S3 er regex requires
+  // `${lit}\s*\)`, so a literal followed by `,\n  )` does not match the regex
+  // even when the literal is in source. The S3 rr regex (return-statements) does
+  // catch placementIssue()'s seven rejections; the three in-homesteadClaim /
+  // handleChat multi-line ctx.error calls (the Greenpaw quest-gate and the two
+  // `You own no homestead...` variants) plus the chat.ts /homestead helpLines
+  // entry are listed here. The parameterized (x, z) sit-at template is captured
+  // by the S3 scanner (Math.round -> digit substitution). All four are recognized
+  // by RULES in sim_i18n.ts (the runtime path), so this guard keeps the source
+  // in sync with the matcher. Per CLAUDE.md contributors add English only; the
+  // M16 non-Latin fill is the maintainer's release pass, so the contributor-side
+  // homestead entries are NOT yet in the filled-locale set below. They are still
+  // asserted as RECOGNIZED at the PR tier.
+  describe('Greenpaw hearth, /house + /homestead helpLines, and multi-line ctx.error blind spots are localized', () => {
+    const hearthSrc = fs.readFileSync(
+      path.resolve(process.cwd(), 'src/sim/greenpaw_hearth.ts'),
+      'utf8',
+    );
+    const chatSrc = fs.readFileSync(path.resolve(process.cwd(), 'src/sim/social/chat.ts'), 'utf8');
+    const homesteadSrc = fs.readFileSync(
+      path.resolve(process.cwd(), 'src/sim/homestead.ts'),
+      'utf8',
+    );
+    const strLit = /'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"/g;
+    const unq = (s: string) => s.slice(1, -1);
+    const literalsBetween = (src: string, start: string, endMarker = '\n\n'): string[] => {
+      const startIdx = src.indexOf(start);
+      expect(startIdx, `"${start}" not found`).toBeGreaterThanOrEqual(0);
+      const endIdx = src.indexOf(endMarker, startIdx);
+      const block = src.slice(startIdx, endIdx > startIdx ? endIdx : undefined);
+      return [...block.matchAll(strLit)].map((m) => unq(m[0]));
+    };
 
-  const hearthLines = [
-    ...literalsBetween(hearthSrc, 'const FEED_ITEMS:'),
-    ...literalsBetween(hearthSrc, 'const NO_ITEMS_LINES ='),
-    ...literalsBetween(hearthSrc, 'const TOO_FAR_LINE ='),
-  ];
-  const helpFeedLine = 'Greenpaw: /feed (bring what burns or what fills, from near the vase).';
-  const helpHouseLine =
-    'Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>.';
+    const hearthLines = [
+      ...literalsBetween(hearthSrc, 'const FEED_ITEMS:'),
+      ...literalsBetween(hearthSrc, 'const NO_ITEMS_LINES ='),
+      ...literalsBetween(hearthSrc, 'const TOO_FAR_LINE ='),
+    ];
+    const helpFeedLine = 'Greenpaw: /feed (bring what burns or what fills, from near the vase).';
+    const helpHouseLine =
+      'Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>.';
+    const helpHomesteadLine = 'Homestead: /homestead, /homestead claim.';
+    // The three multi-line this.ctx.error literals in homestead.ts. The S3 er
+    // regex requires `${lit}\s*\)`, which does NOT match `<lit>,\n  )`, so these
+    // slip past the main scanner. All three appear verbatim in homestead.ts and
+    // are recognized by RULES in sim_i18n.ts.
+    const homesteadMultiLineCtxError = [
+      "Brother Greenpaw hasn't sent you off yet. Finish his errands first.",
+      "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
+      'You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.',
+    ];
 
-  it('parses the hearth literal constants and the /feed + /house helpLines entries', () => {
-    // FEED_ITEMS (6 lines) + NO_ITEMS_LINES (2) + TOO_FAR_LINE (1) = 9.
-    expect(hearthLines.length, 'should find every hearth literal').toBe(9);
-    expect(chatSrc.includes(`'${helpFeedLine}'`), '/feed helpLine text drifted').toBe(true);
-    expect(chatSrc.includes(`'${helpHouseLine}'`), '/house helpLine text drifted').toBe(true);
-  });
-
-  const allStrings = [...hearthLines, helpFeedLine, helpHouseLine];
-
-  it('every hearth/helpLine string is recognized by localizeSimText (PR tier)', () => {
-    setLanguage('en');
-    for (const s of allStrings) {
+    it('parses the hearth literal constants and the /feed + /house + /homestead helpLines entries', () => {
+      // FEED_ITEMS (6 lines) + NO_ITEMS_LINES (2) + TOO_FAR_LINE (1) = 9.
+      expect(hearthLines.length, 'should find every hearth literal').toBe(9);
+      expect(chatSrc.includes(`'${helpFeedLine}'`), '/feed helpLine text drifted').toBe(true);
+      expect(chatSrc.includes(`'${helpHouseLine}'`), '/house helpLine text drifted').toBe(true);
       expect(
-        localizeSimText(s),
-        `sim text "${s}" not recognized (would leak raw English)`,
-      ).not.toBeNull();
-    }
-  });
-
-  it('recognizes and translates every hearth/helpLine string in the filled non-Latin locales', () => {
-    for (const lang of ['zh_CN', 'zh_TW', 'ja_JP', 'ko_KR', 'ru_RU'] as const) {
-      setLanguage(lang);
-      for (const s of allStrings) {
-        const out = localizeSimText(s);
-        expect(out, `${lang}: "${s}" should be recognized`).not.toBeNull();
-        expect(out, `${lang}: "${s}" should not stay English`).not.toBe(s);
+        chatSrc.includes(`'${helpHomesteadLine}'`),
+        '/homestead helpLine text drifted',
+      ).toBe(true);
+      for (const s of homesteadMultiLineCtxError) {
+        expect(
+          homesteadSrc.includes(s),
+          `homestead.ts no longer contains the multi-line ctx.error literal "${s}"`,
+        ).toBe(true);
       }
-    }
-    setLanguage('en');
+    });
+
+    // PR tier (recognized in en): all of these. The maintainer fills every
+    // locale at release; contributors do not edit i18n.locales overlays.
+    const allStrings = [
+      ...hearthLines,
+      helpFeedLine,
+      helpHouseLine,
+      helpHomesteadLine,
+      ...homesteadMultiLineCtxError,
+    ];
+
+    // Release tier (non-Latin fills landed): only the strings PHAA-428 already
+    // localized. The new PHAA-533 homestead entries are contributor-side and
+    // remain English-only until a future maintainer pass adds the non-Latin
+    // overlays (mirrors the doc'd release-tier workflow).
+    const nonLatinFilledStrings = [...hearthLines, helpFeedLine, helpHouseLine];
+
+    it('every hearth/helpLine/multi-line literal is recognized by localizeSimText (PR tier)', () => {
+      setLanguage('en');
+      for (const s of allStrings) {
+        expect(
+          localizeSimText(s),
+          `sim text "${s}" not recognized (would leak raw English)`,
+        ).not.toBeNull();
+      }
+    });
+
+    it('recognizes and translates the PHAA-428 filled strings in the filled non-Latin locales', () => {
+      for (const lang of ['zh_CN', 'zh_TW', 'ja_JP', 'ko_KR', 'ru_RU'] as const) {
+        setLanguage(lang);
+        for (const s of nonLatinFilledStrings) {
+          const out = localizeSimText(s);
+          expect(out, `${lang}: "${s}" should be recognized`).not.toBeNull();
+          expect(out, `${lang}: "${s}" should not stay English`).not.toBe(s);
+        }
+      }
+      setLanguage('en');
+    });
   });
-});

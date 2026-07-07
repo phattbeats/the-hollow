@@ -4496,6 +4496,63 @@ const RULES: Rule[] = [
     re: /^Homesteads: \/house, \/house claim, \/house place <slot> <kind>, \/house remove <slot>\.$/,
     build: () => t('sim.house.helpLine'),
   },
+  // Homestead v0 (PHAA-533): the open-world Hollow Reaches tier, distinct from
+  // Housing v0's Sanctum plots (src/sim/homestead.ts). Player-facing /homestead
+  // command text: the seven placement-rejection errors returned by
+  // placementIssue() (also literal-emitted from inside homesteadClaim via the
+  // returned string), the Greenpaw quest-gate, the already-own / ground-claimed /
+  // sits-at / no-homestead variants, plus the /homestead helpLines entry in
+  // src/sim/social/chat.ts (recognized through the variable-routed describe
+  // guard below; its rule here also serves runtime lookups).
+  {
+    re: /^That is outside the homestead ground\. Try Fallow Acres, west of the road\.$/,
+    build: () => t('sim.homestead.outsideArea'),
+  },
+  {
+    re: /^Too close to the gate\. Move further out\.$/,
+    build: () => t('sim.homestead.tooCloseGate'),
+  },
+  { re: /^Too close to the water\.$/, build: () => t('sim.homestead.tooCloseWater') },
+  {
+    re: /^Too close to the graveyard\.$/,
+    build: () => t('sim.homestead.tooCloseGraveyard'),
+  },
+  {
+    re: /^Too close to the wildlife\. Clear the area or move further off\.$/,
+    build: () => t('sim.homestead.tooCloseWildlife'),
+  },
+  { re: /^Too close to the road\.$/, build: () => t('sim.homestead.tooCloseRoad') },
+  {
+    re: /^Too close to another homestead\.$/,
+    build: () => t('sim.homestead.tooCloseOther'),
+  },
+  {
+    re: /^Brother Greenpaw hasn't sent you off yet\. Finish his errands first\.$/,
+    build: () => t('sim.homestead.questGate'),
+  },
+  { re: /^You already own a homestead\.$/, build: () => t('sim.homestead.alreadyOwn') },
+  {
+    re: /^The ground is yours\. This homestead is claimed\.$/,
+    build: () => t('sim.homestead.claimed'),
+  },
+  {
+    // Math.round(plot.x/z) on the sim side -> digits, possibly negative; the
+    // RULES pattern captures them as {x}/{z} for the t() placeholder.
+    re: /^Your homestead sits at \((-?\d+), (-?\d+)\)\.$/,
+    build: (m) => t('sim.homestead.readoutMine', { x: m[1], z: m[2] }),
+  },
+  {
+    re: /^You own no homestead\. Finish Brother Greenpaw's full errand chain to unlock one\.$/,
+    build: () => t('sim.homestead.readoutNoHomesteadQuest'),
+  },
+  {
+    re: /^You own no homestead\. Stand somewhere viable in the Hollow Reaches and type \/homestead claim\.$/,
+    build: () => t('sim.homestead.readoutNoHomesteadHint'),
+  },
+  {
+    re: /^Homestead: \/homestead, \/homestead claim\.$/,
+    build: () => t('sim.homestead.helpLine'),
+  },
   // Boss/mob mechanic broadcast. Broad (two open captures), so it MUST stay last -
   // after every more-specific "{X} {verb}!" rule above (awakens, enraged, calls for aid).
   {
