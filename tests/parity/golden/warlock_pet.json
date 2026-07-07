@@ -203,30 +203,30 @@
       "state": "f870579c",
       "events": "dd853ce1",
       "rng": {
-        "draws": 943,
-        "digest": "d204585d"
+        "draws": 942,
+        "digest": "94a3109b"
       }
     },
     {
       "tick": 220,
       "time": 11,
       "nextId": 404,
-      "state": "35918967",
-      "events": "69ce591c",
+      "state": "640d6394",
+      "events": "7550b897",
       "rng": {
-        "draws": 1042,
-        "digest": "f8ddd615"
+        "draws": 1041,
+        "digest": "86b2fc30"
       }
     },
     {
       "tick": 220,
       "time": 11,
       "nextId": 404,
-      "state": "3fda8e7e",
+      "state": "a6c1b905",
       "events": "741638a5",
       "rng": {
-        "draws": 1042,
-        "digest": "f8ddd615"
+        "draws": 1041,
+        "digest": "86b2fc30"
       },
       "label": "pet-taunt",
       "players": [
@@ -238,7 +238,7 @@
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {
-            "damageDealt": 15
+            "damageDealt": 14
           },
           "delveClears": {},
           "delveDaily": {},
@@ -366,7 +366,7 @@
           "forcedTargetId": 402,
           "forcedTargetTimer": 3,
           "hostile": true,
-          "hp": 49948,
+          "hp": 49949,
           "id": 403,
           "inCombat": true,
           "kind": "mob",
@@ -403,7 +403,7 @@
           "threat": [
             [
               401,
-              16
+              15
             ],
             [
               402,
@@ -422,7 +422,7 @@
       "tick": 224,
       "time": 11.2,
       "nextId": 404,
-      "state": "d244f993",
+      "state": "47737994",
       "events": "ba785ca6",
       "rng": {
         "draws": 1057,
@@ -438,7 +438,7 @@
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {
-            "damageDealt": 15
+            "damageDealt": 14
           },
           "delveClears": {},
           "delveDaily": {},
@@ -568,7 +568,7 @@
           "forcedTargetId": 402,
           "forcedTargetTimer": 2.8,
           "hostile": true,
-          "hp": 49948,
+          "hp": 49949,
           "id": 403,
           "inCombat": true,
           "kind": "mob",
@@ -605,7 +605,7 @@
           "threat": [
             [
               401,
-              16
+              15
             ],
             [
               402,
