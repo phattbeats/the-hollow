@@ -16,6 +16,7 @@ import type { TalentAllocation } from '../../src/sim/content/talents';
 import { ITEMS, QUESTS } from '../../src/sim/data';
 import { ArenaWindow } from '../../src/ui/arena_window';
 import { BagsWindow } from '../../src/ui/bags_window';
+import { CalendarWindow } from '../../src/ui/calendar_window';
 import { CharWindow } from '../../src/ui/char_window';
 import { FOCUSABLE_SELECTOR } from '../../src/ui/focus_manager';
 import { t } from '../../src/ui/i18n';
@@ -27,6 +28,7 @@ import { SocialWindow } from '../../src/ui/social_window';
 import { SpellbookWindow } from '../../src/ui/spellbook_window';
 import { TalentsWindow } from '../../src/ui/talents_window';
 import type {
+  GuildEventInfo,
   LeaderboardEntry,
   LeaderboardPage,
   MarketInfo,
@@ -694,5 +696,75 @@ describe('axe: bags discard prompt', () => {
     win.close();
     expect(root.style.display).toBe('none');
     expect(document.activeElement).toBe(opener);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Event calendar (#calendar-window) - system events (no guild) AND the guild lane
+// with an officer's booking form + a delete button on an existing event, both of
+// which axe the grid's role=grid day buttons and the day-pane's dynamic content.
+// ---------------------------------------------------------------------------
+
+function calendarEvent(over: Partial<GuildEventInfo> = {}): GuildEventInfo {
+  return {
+    id: 1,
+    day: new Date().toISOString().slice(0, 10),
+    hour: 20,
+    title: 'Crypt night',
+    note: 'Bring water.',
+    createdBy: 'Aurelia',
+    ...over,
+  };
+}
+
+describe('axe: calendar window', () => {
+  it('no-guild state is clean (dialog role, month grid)', async () => {
+    const root = host('calendar-window');
+    const win = new CalendarWindow(
+      stubDeps({
+        root: () => root,
+        world: () => ({ socialInfo: null }) as never,
+        captureFocus: () => null,
+      }),
+    );
+    win.toggle();
+    expect(root.getAttribute('role')).toBe('dialog');
+    expect(root.querySelector('[role="grid"]')).toBeTruthy();
+    await expectClean(root);
+  });
+
+  it("an officer's guild lane with an event and the booking form is clean", async () => {
+    const today = new Date().toISOString().slice(0, 10);
+    const root = host('calendar-window');
+    const win = new CalendarWindow(
+      stubDeps({
+        root: () => root,
+        world: () =>
+          ({
+            socialInfo: {
+              friends: [],
+              blocks: [],
+              guild: {
+                id: 1,
+                name: 'Night Watch',
+                rank: 'officer',
+                members: [],
+                events: [calendarEvent({ day: today })],
+              },
+            },
+          }) as never,
+        captureFocus: () => null,
+      }),
+    );
+    win.toggle();
+    expect(
+      root.querySelector('[data-cal-del]'),
+      'the delete button renders for an officer',
+    ).toBeTruthy();
+    expect(
+      root.querySelector('#cal-ev-add'),
+      'the booking form renders for an officer',
+    ).toBeTruthy();
+    await expectClean(root);
   });
 });

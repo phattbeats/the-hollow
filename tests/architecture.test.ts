@@ -149,6 +149,7 @@ const UI_PURE_CORES = [
   'src/ui/arena_window_view.ts',
   'src/ui/leaderboard_view.ts',
   'src/ui/guild_leaderboard_view.ts',
+  'src/ui/calendar_view.ts',
   'src/ui/spellbook_view.ts',
   'src/ui/questlog_view.ts',
   'src/ui/trainer_view.ts',
