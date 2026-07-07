@@ -69,7 +69,11 @@ import {
   muteAccountChat,
   recordInGameAction,
 } from './moderation_db';
-import { type ModerationHost, ModerationService } from './moderation_service';
+import {
+  canAttemptModerationCommands,
+  type ModerationHost,
+  ModerationService,
+} from './moderation_service';
 import { generatePlantLine, isPlantLlmConfigured } from './plant_llm';
 import { REALM, REALM_PUBLIC_ORIGIN } from './realm';
 import { createSerialWriter } from './serial_writer';
@@ -368,6 +372,9 @@ export interface ClientSession {
   // IP address at join time (from requestMetadata); used for per-IP session counting.
   ip: string;
   isAdmin: boolean;
+  // Expanded admin permissions, snapshotted at join like isAdmin (a role change
+  // applies at the next login). Gates the in-game moderation commands.
+  adminPermissions: ReadonlySet<string>;
   // Seed the client sends at auth; signs its challenge answers.
   clientSeed: string;
   // Behavioral bot-detection state. Ephemeral — reset on every join.
@@ -1352,6 +1359,7 @@ export class GameServer {
         accountCosmetics?: AccountCosmetics;
         chatStrikes?: number;
         isAdmin?: boolean;
+        adminPermissions?: readonly string[];
         clientSeed?: string;
       } = {},
   ): ClientSession | { error: string } {
@@ -1445,6 +1453,11 @@ export class GameServer {
       sentEnts: new Map(),
       ip: sessionIp,
       isAdmin: meta.isAdmin ?? false,
+      // Permissions come only from the explicit set main.ts computes from the
+      // account's roles; no is_admin fallback (fail closed, matching
+      // staff_db.effectiveAdminRoles). A staff member with zero permissions has
+      // no in-game moderation commands.
+      adminPermissions: new Set(meta.adminPermissions ?? []),
       clientSeed: meta.clientSeed ?? '',
       botTrackingContext,
       spectating: null,
@@ -1523,6 +1536,7 @@ export class GameServer {
     session.chatMuteReason = meta.reason ?? '';
     session.chatStrikes = meta.chatStrikes ?? session.chatStrikes;
     session.isAdmin = meta.isAdmin ?? false;
+    session.adminPermissions = new Set(meta.adminPermissions ?? []);
     session.lastInputSeq = 0;
     session.lastInputAt = this.sim.time;
     session.lastSent = {};
@@ -2284,7 +2298,8 @@ export class GameServer {
     if (session.spectating) {
       if (msg.cmd !== 'chat' || typeof msg.text !== 'string') return;
       const text = msg.text.trim();
-      if (session.isAdmin && this.moderation.handleChatCommand(session, text)) return;
+      if (canAttemptModerationCommands(session) && this.moderation.handleChatCommand(session, text))
+        return;
       if (this.isSpectateLocalChat(session, text)) {
         this.sendChatNotice(session, 'Local chat is unavailable while spectating.');
         return;
@@ -2462,7 +2477,11 @@ export class GameServer {
       case 'chat': {
         if (typeof msg.text !== 'string') break;
         const text = msg.text.trim();
-        if (session.isAdmin && this.moderation.handleChatCommand(session, text)) break;
+        if (
+          canAttemptModerationCommands(session) &&
+          this.moderation.handleChatCommand(session, text)
+        )
+          break;
         if (this.isChatMuted(session)) break;
         if (!this.consumeChatToken(session)) break;
         if (/^\/who(?:\s|$)/i.test(text)) {
