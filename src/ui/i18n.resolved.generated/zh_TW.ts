@@ -2680,6 +2680,7 @@ export const zh_TW: EnTranslations = {
       "notAuthenticated": "尚未驗證。",
       "accountBanned": "此帳號已被封鎖。",
       "webLoginOnly": "只能從遊戲客戶端登入。",
+      "crossSiteRejected": "跨站請求已被拒絕。",
       "accountSuspended": "此帳號停權至 {date}。",
       "alreadyInWorld": "角色已在世界中。",
       "takenOver": "你的角色已被另一個工作階段接管。",

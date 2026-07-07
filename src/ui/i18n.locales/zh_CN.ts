@@ -652,6 +652,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'errors.api.nameTaken': '该名称已被占用。',
   'errors.api.characterNotFound': '未找到角色。',
   'errors.api.characterOnline': '角色当前在线。',
+  'errors.api.crossSiteRejected': '跨站请求被拒绝。',
   'errors.api.deleteConfirm': '输入角色名称以确认删除。',
   'errors.api.notAuthenticated': '尚未认证。',
   'errors.api.accountBanned': '此账号已被封禁。',

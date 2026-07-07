@@ -653,6 +653,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'errors.api.nameTaken': '此名稱已被使用。',
   'errors.api.characterNotFound': '找不到角色。',
   'errors.api.characterOnline': '角色目前在線上。',
+  'errors.api.crossSiteRejected': '跨站請求已被拒絕。',
   'errors.api.deleteConfirm': '輸入角色名稱以確認刪除。',
   'errors.api.notAuthenticated': '尚未驗證。',
   'errors.api.accountBanned': '此帳號已被封鎖。',

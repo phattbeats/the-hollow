@@ -2680,6 +2680,7 @@ export const sv_SE: EnTranslations = {
       "notAuthenticated": "Inte autentiserad.",
       "accountBanned": "Detta konto har bannlysts.",
       "webLoginOnly": "Inloggningar är endast tillåtna från spelklienten.",
+      "crossSiteRejected": "Cross-site request rejected.",
       "accountSuspended": "Detta konto är avstängt till {date}.",
       "alreadyInWorld": "Karaktären är redan i världen.",
       "takenOver": "Din karaktär togs över av en annan session.",
