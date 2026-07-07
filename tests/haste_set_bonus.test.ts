@@ -15,9 +15,10 @@ import {
   SET_NIGHTTALON,
   SET_VALE_ARCANIST,
 } from '../src/sim/content/item_sets';
-import { ITEMS, MOBS } from '../src/sim/data';
+import { CLASSES, ITEMS, MOBS } from '../src/sim/data';
 import { createMob, type PlayerEquipment, recalcPlayerStats } from '../src/sim/entity';
 import { Sim } from '../src/sim/sim';
+import { attackReadout } from '../src/sim/social/chat_readouts';
 import type { Entity, ItemDef, PlayerClass } from '../src/sim/types';
 
 type AnySim = Sim & Record<string, any>;
@@ -215,5 +216,30 @@ describe('melee / ranged haste shorten the swing interval', () => {
     p.swingTimer = 0;
     updatePlayerAutoAttack(sim.ctx, p, meta);
     expect(p.swingTimer).toBeCloseTo(unhasted, 6);
+  });
+});
+
+describe('/attack readout reflects haste', () => {
+  it('reports the meleeHaste-adjusted swing interval, not the base weapon speed', () => {
+    const { sim, p } = player('warrior');
+    const meta = sim.players.get(p.id)!;
+    spawnDummy(sim, p);
+    p.autoAttack = true;
+    p.meleeHaste = SET_HASTE_3PC;
+    const text = attackReadout(sim.ctx, p, meta);
+    const hasted = (p.weapon.speed * sim.swingIntervalMult(p)) / (1 + SET_HASTE_3PC);
+    expect(text).toContain(`${hasted.toFixed(1)}s swing`);
+  });
+
+  it('reports the rangedHaste-adjusted swing interval for ranged classes', () => {
+    const { sim, p } = player('hunter');
+    const meta = sim.players.get(p.id)!;
+    spawnDummy(sim, p, 12);
+    p.autoAttack = true;
+    p.rangedHaste = SET_HASTE_3PC;
+    const text = attackReadout(sim.ctx, p, meta);
+    const ranged = CLASSES[meta.cls].ranged!;
+    const hasted = (ranged.speed * sim.swingIntervalMult(p)) / (1 + SET_HASTE_3PC);
+    expect(text).toContain(`${hasted.toFixed(1)}s swing`);
   });
 });
