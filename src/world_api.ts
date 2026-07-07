@@ -9,9 +9,10 @@
 // keep resolving to THIS file, never the sibling directory.
 //
 // ---------------------------------------------------------------------------
-// FACET MAP: the 24 domain facets (each IWorld member assigned exactly once; 158
+// FACET MAP: the 25 domain facets (each IWorld member assigned exactly once; 160
 // total; this count was previously stale at 23/155, corrected alongside the
-// PHAA-482 feedGreenpaw command addition below). One interface per file under
+// PHAA-482 feedGreenpaw command addition, then again here for PHAA-504's
+// gathering.ts facet). One interface per file under
 // ./world_api/; aux types travel with their facet. The authoritative
 // member-per-facet split is the W0c parity test.
 //
@@ -38,6 +39,7 @@
 //   housing.ts          IWorldHousing        Hollow hub homestead plots (read + claim/place/remove)
 //   greenpaw_hearth.ts  IWorldGreenpawHearth Hollow hub smoke/mood state (read)
 //   homestead.ts        IWorldHomestead      Hollow Reaches open-world plots (read)
+//   gathering.ts        IWorldGathering      profession harvest (PHAA-504: corpse harvest)
 //   telemetry.ts        IWorldTelemetry      fire-and-forget metrics sink
 //
 // THREE GATES pin this seam (run before any facet edit):
@@ -45,9 +47,9 @@
 //                                          ALL_DELTA_KEYS (27) + TERSE_TO_IWORLD mapping.
 //   tests/command_schema.test.ts   (W0b)  COMMAND_NAMES universe; ClientWorld send-set
 //                                          subset-of dispatch-set; DISPATCH_ONLY (7).
-//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (158) present + same-kind on
+//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (160) present + same-kind on
 //                                          Sim + ClientWorld; aggregate == disjoint
-//                                          union of the 24 facets.
+//                                          union of the 25 facets.
 // ---------------------------------------------------------------------------
 
 import type { IWorldChat } from './world_api/chat';
@@ -57,6 +59,7 @@ import type { IWorldDelves } from './world_api/delves';
 import type { IWorldDuelArena } from './world_api/duel_arena';
 import type { IWorldDungeons } from './world_api/dungeons';
 import type { IWorldEntityRoster } from './world_api/entity_roster';
+import type { IWorldGathering } from './world_api/gathering';
 import type { IWorldGreenpawHearth } from './world_api/greenpaw_hearth';
 import type { IWorldHomestead } from './world_api/homestead';
 import type { IWorldHousing } from './world_api/housing';
@@ -143,6 +146,7 @@ export interface IWorld
     IWorldHousing,
     IWorldGreenpawHearth,
     IWorldHomestead,
+    IWorldGathering,
     IWorldTelemetry {}
 
 // ---------------------------------------------------------------------------
@@ -279,6 +283,7 @@ export const COMMAND_NAMES = [
   'housingPlace',
   'housingRemove',
   'feedGreenpaw',
+  'harvestCorpse',
 ] as const;
 
 // The union both the send path (`online.ts`) and the dispatch switch
@@ -342,6 +347,7 @@ export type WorldFacet =
   | 'IWorldHousing'
   | 'IWorldGreenpawHearth'
   | 'IWorldHomestead'
+  | 'IWorldGathering'
   | 'IWorldTelemetry';
 
 export const COMMAND_FACETS = {
@@ -475,4 +481,6 @@ export const COMMAND_FACETS = {
   // IWorldGreenpawHearth: feed the hearth from Greenpaw's dialogue menu
   // (PHAA-482: an interact-key command, replacing the old /feed chat text).
   feedGreenpaw: 'IWorldGreenpawHearth',
+  // IWorldGathering: single-use, first-come corpse harvest (PHAA-504).
+  harvestCorpse: 'IWorldGathering',
 } as const satisfies Partial<Record<ClientCommand, WorldFacet>>;

@@ -2175,6 +2175,10 @@ export const en: EnTranslations = {
       "lockJammed": "The lock is jammed beyond picking. Clear the delve again for another attempt.",
       "lastPickSnaps": "The last pick snaps. The lock jams. The chest is lost unless you clear the delve again."
     },
+    "gathering": {
+      "nothingToHarvest": "That corpse has nothing to harvest.",
+      "alreadyHarvested": "This corpse has already been harvested."
+    },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
       "noItems1": "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",

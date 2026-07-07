@@ -2175,6 +2175,10 @@ export const sv_SE: EnTranslations = {
       "lockJammed": "Låset har kärvat bortom upplåsning. Rensa fördjupningen igen för ett nytt försök.",
       "lastPickSnaps": "Den sista dyrken går av. Låset kärvar. Kistan är förlorad om du inte rensar fördjupningen igen."
     },
+    "gathering": {
+      "nothingToHarvest": "That corpse has nothing to harvest.",
+      "alreadyHarvested": "This corpse has already been harvested."
+    },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
       "noItems1": "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",

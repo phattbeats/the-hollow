@@ -2175,6 +2175,10 @@ export const da_DK: EnTranslations = {
       "lockJammed": "Låsen sidder så fast, at den ikke kan dirkes. Ryd dit delve igen for endnu et forsøg.",
       "lastPickSnaps": "Den sidste dirk knækker. Låsen sætter sig fast. Kisten er tabt, medmindre du rydder dit delve igen."
     },
+    "gathering": {
+      "nothingToHarvest": "That corpse has nothing to harvest.",
+      "alreadyHarvested": "This corpse has already been harvested."
+    },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
       "noItems1": "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",

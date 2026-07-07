@@ -495,6 +495,14 @@ export const en = {
       lastPickSnaps:
         'The last pick snaps. The lock jams. The chest is lost unless you clear the delve again.',
     },
+    // Gathering v0 (PHAA-504): corpse-harvest error text (src/sim/interaction.ts's
+    // harvestCorpse). Same fill scope as hearth/house below: PHAA-504 filled the
+    // five non-Latin locales required by the M16 completeness gate, the rest
+    // ship English + pending.
+    gathering: {
+      nothingToHarvest: 'That corpse has nothing to harvest.',
+      alreadyHarvested: 'This corpse has already been harvested.',
+    },
     // Brother Greenpaw's hearth (PHAA-421/PHAA-428): /feed command text and his
     // in-voice feed-response lines. Re-localized through t() against these keys
     // (src/sim/greenpaw_hearth.ts + the /feed helpLines entry in

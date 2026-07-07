@@ -2175,6 +2175,10 @@ export const ja_JP: EnTranslations = {
       "lockJammed": "錠は開けられないほど固まっている。もう一度デルヴを踏破すれば再挑戦できる。",
       "lastPickSnaps": "最後のピックが折れる。錠が固まった。もう一度デルヴを踏破しない限り、この宝箱は失われる。"
     },
+    "gathering": {
+      "nothingToHarvest": "その死骸には採集できるものが何もない。",
+      "alreadyHarvested": "この死骸はすでに採集済みだ。"
+    },
     "hearth": {
       "tooFar": "緑掌修道士のそばに行かねば、彼に餌をやれんぞ。",
       "noItems1": "……手ぶらじゃな、お前さん。燃えるもんか、腹の足しになるもんを持ってきな、話はそれからだ。",

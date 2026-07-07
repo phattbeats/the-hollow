@@ -2175,6 +2175,10 @@ export const id_ID: EnTranslations = {
       "lockJammed": "Kunci macet tak dapat dibobol. Selesaikan delve lagi untuk percobaan lain.",
       "lastPickSnaps": "Cungkil terakhir patah. Kunci macet. Peti hilang kecuali kamu menyelesaikan delve lagi."
     },
+    "gathering": {
+      "nothingToHarvest": "That corpse has nothing to harvest.",
+      "alreadyHarvested": "This corpse has already been harvested."
+    },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
       "noItems1": "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",

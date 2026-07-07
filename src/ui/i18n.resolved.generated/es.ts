@@ -2175,6 +2175,10 @@ export const es: EnTranslations = {
       "lockJammed": "La cerradura está demasiado atascada para forzarla: vuelve a superar la expedición para otro intento.",
       "lastPickSnaps": "La última ganzúa se rompe. La cerradura se atasca: el cofre se pierde a menos que vuelvas a superar la expedición."
     },
+    "gathering": {
+      "nothingToHarvest": "That corpse has nothing to harvest.",
+      "alreadyHarvested": "This corpse has already been harvested."
+    },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
       "noItems1": "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",

@@ -570,6 +570,10 @@ export interface SimContextCallbacks {
   // when the raw message was a /homestead command (handled). Append-only,
   // late-bound to Sim.
   homesteadChat(raw: string, pid: number): boolean;
+  // Gathering v0 (PHAA-504): the one rng draw a corpse harvest needs (which
+  // component tag's item a multi-tag corpse yields) routes through the seam
+  // to the Gathering instance on Sim. Append-only, late-bound to Sim.
+  gatherHarvestItemFor(componentTags: readonly string[]): string | null;
 }
 
 // The seam consumed by extracted modules.
@@ -906,5 +910,7 @@ export function createSimContext(host: SimContextHost): SimContext {
     plantSpeechAmbientChat: host.plantSpeechAmbientChat,
     // Homestead v0: the /homestead chat-command branch.
     homesteadChat: host.homesteadChat,
+    // Gathering v0 (PHAA-504): the corpse-harvest item-selection rng draw.
+    gatherHarvestItemFor: host.gatherHarvestItemFor,
   };
 }

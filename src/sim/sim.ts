@@ -134,6 +134,7 @@ import {
 import { canEquipItem } from './equipment_rules';
 import { fleeSpeed } from './flee_speed';
 import { formatMoney } from './format_money';
+import { Gathering } from './gathering';
 import { GreenpawHearth, type GreenpawHearthSave } from './greenpaw_hearth';
 import { Homestead, type HomesteadSave } from './homestead';
 import { Housing, type HousingSave } from './housing';
@@ -938,6 +939,11 @@ export class Sim {
   // owns the plot ownership book. Constructed in the ctor after the SimContext
   // (it consumes the seam); Sim keeps thin delegates below, mirroring housing.
   homestead!: Homestead;
+  // Gathering v0 (PHAA-504): corpse harvest, the single-use first-come opposite
+  // of a world gathering node. Constructed in the ctor after the SimContext (it
+  // consumes the seam for its one rng draw); Sim keeps a thin delegate below,
+  // mirroring housing.
+  gathering!: Gathering;
   /** When true, /dev level|tp|give chat commands are accepted (local dev only). */
   readonly devCommands: boolean;
   private pendingMobRespawns: PendingMobRespawn[] = [];
@@ -975,6 +981,10 @@ export class Sim {
     // Housing v0: owns the hub homestead plot book; consumes the seam. Draws no
     // rng at construction (or ever), so the draws below are unperturbed.
     this.housing = new Housing(this.ctx);
+    // Gathering v0 (PHAA-504): owns the corpse-harvest item-selection draw;
+    // consumes the seam. Draws no rng at construction (only when a harvest
+    // command resolves), so the draws below are unperturbed.
+    this.gathering = new Gathering(this.ctx);
     // Greenpaw's hearth (PHAA-421): owns the hunger/smoke state machine;
     // consumes the seam. Draws no rng at construction, so the draws below
     // are unperturbed.
@@ -2314,6 +2324,10 @@ export class Sim {
       // Homestead v0: the /homestead chat-command branch routes through the seam to
       // the Homestead instance (constructed after this literal; late-bound arrow).
       homesteadChat: (raw, pid) => sim.homestead.handleChat(raw, pid),
+      // Gathering v0 (PHAA-504): corpse-harvest item selection (the one rng draw)
+      // routes through the seam to the Gathering instance (constructed after this
+      // literal; late-bound arrow).
+      gatherHarvestItemFor: (tags) => sim.gathering.harvestItemFor(tags),
     };
     return createSimContext(host);
   }
@@ -4527,6 +4541,15 @@ export class Sim {
   // on Sim (W4) and is reached through two append-only SimContext callbacks.
   lootCorpse(mobId: number, pid?: number): void {
     interaction.lootCorpse(this.ctx, mobId, pid);
+  }
+
+  // Gathering v0 (PHAA-504): corpse harvest, the one IWorldGathering member.
+  // Same thin-delegate shape as lootCorpse above (the body lives in
+  // interaction.ts, right beside lootCorpse, since it is the same
+  // "player-facing corpse command" family); the item-selection rng draw
+  // lives on Gathering via the ctx seam (see gatherHarvestItemFor).
+  harvestCorpse(mobId: number, pid?: number): void {
+    interaction.harvestCorpse(this.ctx, mobId, pid);
   }
 
   pickUpObject(objId: number, pid?: number): void {

@@ -2175,6 +2175,10 @@ export const vi_VN: EnTranslations = {
       "lockJammed": "Ổ khóa đã kẹt cứng không thể cạy được nữa. Hãy quét sạch hầm thám hiểm lần nữa để thử lại.",
       "lastPickSnaps": "Cây cạy cuối cùng gãy. Ổ khóa kẹt cứng. Chiếc rương sẽ mất trừ khi bạn quét sạch hầm thám hiểm lần nữa."
     },
+    "gathering": {
+      "nothingToHarvest": "That corpse has nothing to harvest.",
+      "alreadyHarvested": "This corpse has already been harvested."
+    },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
       "noItems1": "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",

@@ -4472,6 +4472,8 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'sim.delve.unknownTier': '未知的秘探難度。',
   'sim.delve.wayOutNotOpen': '出路尚未開啟。',
   'sim.delve.whileTrading': '交易期間無法進入秘探。',
+  'sim.gathering.alreadyHarvested': '這具屍體已經被採集過了。',
+  'sim.gathering.nothingToHarvest': '這具屍體沒有什麼可以採集的。',
   'sim.hearth.emberbulb1': '這才叫柴火……瞧瞧她喘氣的樣子，夥計……',
   'sim.hearth.emberbulb2': '爐子慢慢地、乾乾淨淨地吃下去，她就愛這樣……',
   'sim.hearth.emberbulb3': '添了柴，冒了煙……那個波長已經開始鬆動了，我能感覺到。',

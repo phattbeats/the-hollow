@@ -4703,6 +4703,8 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'sim.delve.unknownTier': '不明なデルヴの難易度だ。',
   'sim.delve.wayOutNotOpen': '出口はまだ開いていない。',
   'sim.delve.whileTrading': '取引中はデルヴに入れない。',
+  'sim.gathering.alreadyHarvested': 'この死骸はすでに採集済みだ。',
+  'sim.gathering.nothingToHarvest': 'その死骸には採集できるものが何もない。',
   'sim.hearth.emberbulb1': 'こいつぁ上物の燃料だ……見ろ、あの子が息をしとる、なあ……',
   'sim.hearth.emberbulb2': '炉はゆっくり、きれいに食うのが好きなんじゃ、あの子はな……',
   'sim.hearth.emberbulb3': '焚べて、煙も立った……もう波長が開きかけとる、感じるわい。',

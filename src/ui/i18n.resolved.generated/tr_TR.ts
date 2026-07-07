@@ -2175,6 +2175,10 @@ export const tr_TR: EnTranslations = {
       "lockJammed": "Kilit, açılamayacak kadar sıkıştı. Başka bir deneme için delveyi tekrar temizle.",
       "lastPickSnaps": "Son maymuncuk kırılır. Kilit sıkışır. Delveyi tekrar temizlemezsen sandık kaybolur."
     },
+    "gathering": {
+      "nothingToHarvest": "That corpse has nothing to harvest.",
+      "alreadyHarvested": "This corpse has already been harvested."
+    },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
       "noItems1": "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",
