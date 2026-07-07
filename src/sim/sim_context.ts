@@ -291,6 +291,7 @@ export interface SimContextCallbacks {
   dropPartyMarkers(partyId: number): void;
   onMobKilledForQuests(mob: Entity, meta: PlayerMeta): void;
   onInventoryChangedForQuests(meta: PlayerMeta): void;
+  onGreenpawFedForQuests(meta: PlayerMeta): void;
   checkQuestReady(qp: QuestProgress, meta: PlayerMeta): void;
   countItem(itemId: string, pid?: number): number;
 
@@ -785,6 +786,7 @@ export function createSimContext(host: SimContextHost): SimContext {
     dropPartyMarkers: host.dropPartyMarkers,
     onMobKilledForQuests: host.onMobKilledForQuests,
     onInventoryChangedForQuests: host.onInventoryChangedForQuests,
+    onGreenpawFedForQuests: host.onGreenpawFedForQuests,
     checkQuestReady: host.checkQuestReady,
     countItem: host.countItem,
     addEntity: host.addEntity,

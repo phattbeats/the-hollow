@@ -245,6 +245,20 @@ describe('The Hollow hub', () => {
     sim.turnInQuest('q_what_fills');
     expect(meta.questsDone.has('q_what_fills')).toBe(true);
     expect(sim.countItem('first_cutting')).toBe(1);
+
+    // q_keep_him_lit (PHAA-484) unlocks behind it and is credited through the
+    // hearth's feedGreenpaw(), not a collect turn-in: it teaches the standing
+    // mechanic instead of handing out one more one-shot fetch.
+    sim.acceptQuest('q_keep_him_lit');
+    expect(meta.questLog.get('q_keep_him_lit')?.state).toBe('active');
+    for (let i = 0; i < 3; i++) {
+      sim.addItem('emberbulb', 1);
+      sim.feedGreenpaw(pid);
+    }
+    sim.tick();
+    expect(meta.questLog.get('q_keep_him_lit')?.state).toBe('ready');
+    sim.turnInQuest('q_keep_him_lit');
+    expect(meta.questsDone.has('q_keep_him_lit')).toBe(true);
   });
 
   // PHAA-471: his last request can be refused outright. The refusal completes the
@@ -314,7 +328,11 @@ describe('The Hollow hub', () => {
 
   it('the quest loot and rewards resolve to real items on the right mobs', () => {
     expect(QUESTS.q_what_fills.requiresQuest).toBe('q_what_burns');
-    expect(NPCS.brother_greenpaw.questIds).toEqual(['q_what_burns', 'q_what_fills']);
+    expect(NPCS.brother_greenpaw.questIds).toEqual([
+      'q_what_burns',
+      'q_what_fills',
+      'q_keep_him_lit',
+    ]);
     for (const id of ['emberbulb', 'cave_morsel', 'first_cutting']) {
       expect(ITEMS[id], `item ${id}`).toBeTruthy();
     }

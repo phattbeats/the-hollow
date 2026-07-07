@@ -6717,6 +6717,16 @@ export const ja_JP: EnTranslations = {
           "refuseReply": "ああ……あ、ああ、わかった。……わかったよ。それは……そうか。いや、もっともだ、友よ、もっともだ……壺も聞いてたし、ここだけの話、あいつも一目置いてると思うぜ。ほら、挿し木はとにかく持っていけ。一度は下りたんだ、それだけで大抵のやつより一回多い……"
         }
       },
+      "q_keep_him_lit": {
+        "title": "Keep Him Lit",
+        "text": "one more thing, and then i'll quit botherin' you, promise... you handed me what you had and i turned it into smoke, but that ain't how the rite's supposed to run, friend. you gather it, you bring it, you feed the hearth yourself, right here, and you WATCH it happen... go get your own. emberbulb, morsel, don't matter which. bring it back and feed me proper, three times over. i'll wait. i'm good at waitin'.",
+        "completion": "there it is... you felt that, right? that ain't me talkin', that's the room. you do that enough times and it stops bein' a chore and starts bein' a habit, and a habit's just a rite that got comfortable. keep him lit, friend. wavelength's countin' on it now.",
+        "objectives": {
+          "0": {
+            "label": "Feed Brother Greenpaw"
+          }
+        }
+      },
       "q_root_hollow_boars": {
         "title": "根の空洞の猪",
         "text": "暦によれば、根の空洞は今季休むはずだった。だが猪どもには通達しておらん。虫を追ってこの地を半分も掘り返し、もう鷺が羽ばたいても逃げん。これは俺個人として腹に据えかねる。五頭狩れば、この季を記録どおりに記せる。",

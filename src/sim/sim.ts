@@ -222,6 +222,7 @@ import {
 import * as questCommands from './quests/quest_commands';
 import {
   checkQuestReady,
+  onGreenpawFedForQuests,
   onInventoryChangedForQuests,
   onMobKilledForQuests,
 } from './quests/quest_credit';
@@ -2116,6 +2117,7 @@ export class Sim {
       // stays on Sim (L2 inventory hub) and is consumed by the collect updater.
       onMobKilledForQuests: (mob, meta) => onMobKilledForQuests(sim.ctx, mob, meta),
       onInventoryChangedForQuests: (meta) => onInventoryChangedForQuests(sim.ctx, meta),
+      onGreenpawFedForQuests: (meta) => onGreenpawFedForQuests(sim.ctx, meta),
       checkQuestReady: (qp, meta) => checkQuestReady(sim.ctx, qp, meta),
       countItem: sim.countItem.bind(sim),
       // I1 dungeon instancing now lives in instances/dungeons.ts; these route through

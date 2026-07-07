@@ -6717,6 +6717,16 @@ export const pt_BR: EnTranslations = {
           "refuseReply": "oh... oh, okay. ...okay. that's... yeah. no, that's fair, friend, that's fair... the vase heard it too, and between you and me i think he respects it. here, take the cutting anyway. you went down once, and that's once more than most..."
         }
       },
+      "q_keep_him_lit": {
+        "title": "Keep Him Lit",
+        "text": "one more thing, and then i'll quit botherin' you, promise... you handed me what you had and i turned it into smoke, but that ain't how the rite's supposed to run, friend. you gather it, you bring it, you feed the hearth yourself, right here, and you WATCH it happen... go get your own. emberbulb, morsel, don't matter which. bring it back and feed me proper, three times over. i'll wait. i'm good at waitin'.",
+        "completion": "there it is... you felt that, right? that ain't me talkin', that's the room. you do that enough times and it stops bein' a chore and starts bein' a habit, and a habit's just a rite that got comfortable. keep him lit, friend. wavelength's countin' on it now.",
+        "objectives": {
+          "0": {
+            "label": "Feed Brother Greenpaw"
+          }
+        }
+      },
       "q_root_hollow_boars": {
         "title": "Root Hollow's Boars",
         "text": "By the calendar, Root Hollow rests this season. The boars have not been informed. They have rooted up half of it chasing grubs, and they no longer scatter when a heron flaps at them, which I take personally. Cull five, and I can enter the season as observed.",

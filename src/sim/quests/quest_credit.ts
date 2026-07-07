@@ -39,6 +39,33 @@ export function onMobKilledForQuests(ctx: SimContext, mob: Entity, meta: PlayerM
   }
 }
 
+// PHAA-484: credits a successful GreenpawHearth.feed() toward any active
+// 'feedGreenpaw' objective, so a quest can teach the hearth mechanic
+// (Greenpaw's dialogue-menu "I have something for the hearth." gossip
+// option) instead of it staying an undiscoverable side mechanic once the
+// first-run fetch quests hand out their one-shot supply.
+export function onGreenpawFedForQuests(ctx: SimContext, meta: PlayerMeta): void {
+  for (const qp of meta.questLog.values()) {
+    if (qp.state !== 'active') continue;
+    const quest = QUESTS[qp.questId];
+    let changed = false;
+    quest.objectives.forEach((obj, i) => {
+      if (obj.type === 'feedGreenpaw' && qp.counts[i] < obj.count) {
+        qp.counts[i]++;
+        changed = true;
+        meta.counters.questProgress++;
+        ctx.emit({
+          type: 'questProgress',
+          questId: qp.questId,
+          text: `${obj.label}: ${qp.counts[i]}/${obj.count}`,
+          pid: meta.entityId,
+        });
+      }
+    });
+    if (changed) checkQuestReady(ctx, qp, meta);
+  }
+}
+
 export function onInventoryChangedForQuests(ctx: SimContext, meta: PlayerMeta): void {
   // Inventory mutated (add/remove/sell/buyback all route through here): flag
   // the player's wire state dirty so hosts re-send bags + derived quest state.

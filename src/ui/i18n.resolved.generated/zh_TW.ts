@@ -6717,6 +6717,16 @@ export const zh_TW: EnTranslations = {
           "refuseReply": "哦……哦，好吧。……好吧。這……是啊。不，這很公道，朋友，很公道……瓶子也聽見了，偷偷跟你說，我覺得他還挺敬佩你的。來，這根插枝你還是拿著。你下去過一次，就已經比大多數人多一次了……"
         }
       },
+      "q_keep_him_lit": {
+        "title": "Keep Him Lit",
+        "text": "one more thing, and then i'll quit botherin' you, promise... you handed me what you had and i turned it into smoke, but that ain't how the rite's supposed to run, friend. you gather it, you bring it, you feed the hearth yourself, right here, and you WATCH it happen... go get your own. emberbulb, morsel, don't matter which. bring it back and feed me proper, three times over. i'll wait. i'm good at waitin'.",
+        "completion": "there it is... you felt that, right? that ain't me talkin', that's the room. you do that enough times and it stops bein' a chore and starts bein' a habit, and a habit's just a rite that got comfortable. keep him lit, friend. wavelength's countin' on it now.",
+        "objectives": {
+          "0": {
+            "label": "Feed Brother Greenpaw"
+          }
+        }
+      },
       "q_root_hollow_boars": {
         "title": "根穴野豬",
         "text": "按曆書，根穴這一季本該休養。可沒人通知野豬。牠們追著蟲子把這裡拱翻了一半，如今連蒼鷺撲翅都嚇不走，這一點我很往心裡去。殺五頭，我才好把這一季照實記下。",

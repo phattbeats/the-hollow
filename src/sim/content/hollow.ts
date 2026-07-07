@@ -193,7 +193,7 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
     dynamic: true,
     facing: -0.6,
     color: 0x4a5d3a,
-    questIds: ['q_what_burns', 'q_what_fills'],
+    questIds: ['q_what_burns', 'q_what_fills', 'q_keep_him_lit'],
     hearth: true,
     greeting:
       "howdy, traveler. you catch the vase in a mood today, or is that just me again... c'mere, got a couple sacred matters need tendin'. mostly snacks. same thing, to a greenpaw degree.",
@@ -273,9 +273,30 @@ export const HOLLOW_QUESTS: Record<string, QuestDef> = {
         "oh... oh, okay. ...okay. that's... yeah. no, that's fair, friend, that's fair... the vase heard it too, and between you and me i think he respects it. here, take the cutting anyway. you went down once, and that's once more than most...",
     },
   },
+  // PHAA-484: the first two quests hand out a one-shot supply that a turn-in
+  // consumes whole, so a player can finish both without ever discovering the
+  // hearth is a standing, repeatable mechanic (feedGreenpaw(), Greenpaw's "I
+  // have something for the hearth." gossip option) rather than a fetch-quest
+  // reward pipe. This one sends them back to gather their OWN supply and use
+  // it there, closing the loop the constitution calls the hub floor (§9):
+  // feed him, watch the room fill with smoke, the Plant leans in.
+  q_keep_him_lit: {
+    id: 'q_keep_him_lit',
+    name: 'Keep Him Lit',
+    giverNpcId: 'brother_greenpaw',
+    turnInNpcId: 'brother_greenpaw',
+    text: "one more thing, and then i'll quit botherin' you, promise... you handed me what you had and i turned it into smoke, but that ain't how the rite's supposed to run, friend. you gather it, you bring it, you feed the hearth yourself, right here, and you WATCH it happen... go get your own. emberbulb, morsel, don't matter which. bring it back and feed me proper, three times over. i'll wait. i'm good at waitin'.",
+    completionText:
+      "there it is... you felt that, right? that ain't me talkin', that's the room. you do that enough times and it stops bein' a chore and starts bein' a habit, and a habit's just a rite that got comfortable. keep him lit, friend. wavelength's countin' on it now.",
+    objectives: [{ type: 'feedGreenpaw', count: 3, label: 'Feed Brother Greenpaw' }],
+    xpReward: 110,
+    copperReward: 75,
+    itemRewards: {},
+    requiresQuest: 'q_what_fills',
+  },
 };
 
-export const HOLLOW_QUEST_ORDER = ['q_what_burns', 'q_what_fills'];
+export const HOLLOW_QUEST_ORDER = ['q_what_burns', 'q_what_fills', 'q_keep_him_lit'];
 
 // ---------------------------------------------------------------------------
 // World dressing

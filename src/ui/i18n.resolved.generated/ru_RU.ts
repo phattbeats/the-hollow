@@ -6717,6 +6717,16 @@ export const ru_RU: EnTranslations = {
           "refuseReply": "о... о, ладно. ...ладно. это... да. нет, это честно, друг, это честно... ваза тоже слышала, и, между нами, кажется, она это уважает. вот, возьми черенок всё равно. ты спускался один раз, а это на один раз больше, чем у большинства..."
         }
       },
+      "q_keep_him_lit": {
+        "title": "Keep Him Lit",
+        "text": "one more thing, and then i'll quit botherin' you, promise... you handed me what you had and i turned it into smoke, but that ain't how the rite's supposed to run, friend. you gather it, you bring it, you feed the hearth yourself, right here, and you WATCH it happen... go get your own. emberbulb, morsel, don't matter which. bring it back and feed me proper, three times over. i'll wait. i'm good at waitin'.",
+        "completion": "there it is... you felt that, right? that ain't me talkin', that's the room. you do that enough times and it stops bein' a chore and starts bein' a habit, and a habit's just a rite that got comfortable. keep him lit, friend. wavelength's countin' on it now.",
+        "objectives": {
+          "0": {
+            "label": "Feed Brother Greenpaw"
+          }
+        }
+      },
       "q_root_hollow_boars": {
         "title": "Кабаны Корневой Лощины",
         "text": "По календарю Корневая Лощина в этот сезон отдыхает. Кабанов об этом не уведомили. Они перерыли половину её в поисках личинок и больше не разбегаются, когда на них машет крыльями цапля, что я принимаю на свой счёт. Убей пятерых, и я смогу занести сезон как положено.",

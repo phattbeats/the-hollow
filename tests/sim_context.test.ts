@@ -71,6 +71,7 @@ const CALLBACK_KEYS = [
   // Q1 quest-credit trio + the countItem it consumes.
   'onMobKilledForQuests',
   'onInventoryChangedForQuests',
+  'onGreenpawFedForQuests',
   'checkQuestReady',
   'countItem',
   // E1 entity-roster surface.
@@ -314,6 +315,7 @@ function makeFakeHost() {
     dropPartyMarkers: vi.fn(),
     onMobKilledForQuests: vi.fn(),
     onInventoryChangedForQuests: vi.fn(),
+    onGreenpawFedForQuests: vi.fn(),
     checkQuestReady: vi.fn(),
     countItem: vi.fn(() => 0),
     lockoutNowMs: vi.fn(() => 0),

@@ -166,7 +166,11 @@ export class GreenpawHearth {
         pid: meta.entityId,
       });
     }
-    if (!fed) {
+    if (fed) {
+      // PHAA-484: let a "feed Greenpaw" quest objective track real hearth
+      // feeds, distinct from the one-shot collect-and-turn-in fetch quests.
+      this.ctx.onGreenpawFedForQuests(meta);
+    } else {
       this.ctx.emit({
         type: 'log',
         text: this.ctx.rng.pick(NO_ITEMS_LINES),

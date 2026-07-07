@@ -6717,6 +6717,16 @@ export const ko_KR: EnTranslations = {
           "refuseReply": "오... 오, 그래. ...그래. 그건... 그렇지. 아니, 맞는 말이야, 친구, 맞는 말이지... 항아리도 들었고, 우리끼리 얘기지만 그 녀석도 존중하는 눈치야. 자, 꺾꽂이는 그냥 가져가. 한 번은 내려갔잖아, 그것만으로도 대부분보다 한 번은 더 간 거야..."
         }
       },
+      "q_keep_him_lit": {
+        "title": "Keep Him Lit",
+        "text": "one more thing, and then i'll quit botherin' you, promise... you handed me what you had and i turned it into smoke, but that ain't how the rite's supposed to run, friend. you gather it, you bring it, you feed the hearth yourself, right here, and you WATCH it happen... go get your own. emberbulb, morsel, don't matter which. bring it back and feed me proper, three times over. i'll wait. i'm good at waitin'.",
+        "completion": "there it is... you felt that, right? that ain't me talkin', that's the room. you do that enough times and it stops bein' a chore and starts bein' a habit, and a habit's just a rite that got comfortable. keep him lit, friend. wavelength's countin' on it now.",
+        "objectives": {
+          "0": {
+            "label": "Feed Brother Greenpaw"
+          }
+        }
+      },
       "q_root_hollow_boars": {
         "title": "뿌리굴의 멧돼지",
         "text": "달력대로라면 뿌리굴은 이번 철에 쉬어야 하오. 한데 멧돼지들에겐 통보가 안 갔지. 벌레를 쫓다가 절반을 파헤쳐 놨고, 이젠 왜가리가 날갯짓을 해도 흩어지질 않소. 나로선 이게 여간 괘씸한 게 아니오. 다섯 마리만 잡으면, 이 철을 기록대로 적어 넣을 수 있소.",
