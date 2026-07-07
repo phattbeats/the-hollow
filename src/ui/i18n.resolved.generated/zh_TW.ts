@@ -878,6 +878,64 @@ export const zh_TW: EnTranslations = {
           "hint": "向社群尋求協助"
         }
       }
+    },
+    "calendar": {
+      "title": "活動日曆",
+      "close": "關閉日曆",
+      "keybindLabel": "活動日曆",
+      "prevMonth": "上個月",
+      "nextMonth": "下個月",
+      "dayAria": "{date}：{count} 個活動",
+      "noEvents": "這一天沒有安排。",
+      "allDay": "全天",
+      "bookedBy": "由 {name} 安排",
+      "deleteAria": "移除活動 {title}",
+      "bookTitle": "安排公會活動",
+      "titlePlaceholder": "活動名稱",
+      "notePlaceholder": "備註（可選）",
+      "hourLabel": "小時（UTC）",
+      "hourAllDay": "全天",
+      "addButton": "安排活動",
+      "guildOnlyNote": "加入公會即可一起計劃活動。",
+      "result": {
+        "created": "活動已列入公會日曆。",
+        "removed": "活動已從日曆中移除。",
+        "notInGuild": "你不在公會中。",
+        "notOfficer": "只有幹部和會長可以管理公會活動。",
+        "badInput": "請為活動填寫名稱和有效日期。",
+        "calendarFull": "公會日曆已滿。",
+        "eventGone": "該活動已不在日曆上。"
+      },
+      "events": {
+        "raidCall": {
+          "title": "團隊集結",
+          "note": "守衛吹響號角：組隊前往團隊副本。"
+        },
+        "marketDay": {
+          "title": "集市日",
+          "note": "商人正等著新貨。今天很適合逛逛世界市場。"
+        },
+        "fiestaNight": {
+          "title": "狂歡之夜",
+          "note": "今晚 2v2 狂歡擂台的人氣最旺。"
+        },
+        "arenaClash": {
+          "title": "競技場之戰",
+          "note": "決鬥者湧向灰燼鬥獸場。排隊開打，向天梯進發。"
+        },
+        "fishingDerby": {
+          "title": "釣魚大賽",
+          "note": "釣手們在湖邊排開。帶上魚竿，交流釣魚趣聞。"
+        },
+        "delveDay": {
+          "title": "探窟日",
+          "note": "與同伴一起挑戰坍塌聖物窖的好日子。"
+        },
+        "moongateCommunion": {
+          "title": "月門共禱",
+          "note": "朝聖者在月中之月下聚於月之聖所。"
+        }
+      }
     }
   },
   "guide": {
@@ -2596,6 +2654,7 @@ export const zh_TW: EnTranslations = {
     "rendererFailed": "無法啟動渲染器：請嘗試重新整理。{error}",
     "enterTimeout": "無法進入世界。連線已逾時。遊戲伺服器是否正在執行？",
     "connectionLost": "與伺服器的連線已中斷。",
+    "reconnecting": "連線已中斷。正在重新連線...",
     "connectionRejected": "伺服器已關閉連線。"
   },
   "errors": {

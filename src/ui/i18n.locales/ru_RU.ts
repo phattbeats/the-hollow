@@ -681,6 +681,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'loading.enterTimeout':
     'Не удалось войти в мир. Время подключения истекло. Запущен ли игровой сервер?',
   'loading.connectionLost': 'Соединение с сервером потеряно.',
+  'loading.reconnecting': 'Соединение потеряно. Повторное подключение...',
   'loading.connectionRejected': 'Сервер закрыл соединение.',
   'errors.nothingInteract': 'Нет объекта для взаимодействия.',
   'errors.noEnemyNearby': 'Рядом нет врагов.',
@@ -5172,6 +5173,52 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'coldOpen.continue': 'Далее',
   'coldOpen.begin': 'Начать',
   'coldOpen.skip': 'Пропустить',
+  // Event calendar (M16 non-Latin fill)
+  'hudChrome.calendar.title': 'Календарь событий',
+  'hudChrome.calendar.close': 'Закрыть календарь',
+  'hudChrome.calendar.keybindLabel': 'Календарь событий',
+  'hudChrome.calendar.prevMonth': 'Предыдущий месяц',
+  'hudChrome.calendar.nextMonth': 'Следующий месяц',
+  'hudChrome.calendar.dayAria': '{date}: событий: {count}',
+  'hudChrome.calendar.noEvents': 'На этот день ничего не запланировано.',
+  'hudChrome.calendar.allDay': 'Весь день',
+  'hudChrome.calendar.bookedBy': 'Записал(а): {name}',
+  'hudChrome.calendar.deleteAria': 'Убрать событие {title}',
+  'hudChrome.calendar.bookTitle': 'Запланировать событие гильдии',
+  'hudChrome.calendar.titlePlaceholder': 'Название события',
+  'hudChrome.calendar.notePlaceholder': 'Заметка (необязательно)',
+  'hudChrome.calendar.hourLabel': 'Час (UTC)',
+  'hudChrome.calendar.hourAllDay': 'Весь день',
+  'hudChrome.calendar.addButton': 'Записать событие',
+  'hudChrome.calendar.guildOnlyNote': 'Вступите в гильдию, чтобы планировать события вместе.',
+  'hudChrome.calendar.result.created': 'Событие внесено в календарь гильдии.',
+  'hudChrome.calendar.result.removed': 'Событие убрано из календаря.',
+  'hudChrome.calendar.result.notInGuild': 'Вы не состоите в гильдии.',
+  'hudChrome.calendar.result.notOfficer':
+    'Управлять событиями гильдии могут только офицеры и глава гильдии.',
+  'hudChrome.calendar.result.badInput': 'Укажите название события и корректный день.',
+  'hudChrome.calendar.result.calendarFull': 'Календарь гильдии заполнен.',
+  'hudChrome.calendar.result.eventGone': 'Этого события больше нет в календаре.',
+  'hudChrome.calendar.events.raidCall.title': 'Рейдовый сбор',
+  'hudChrome.calendar.events.raidCall.note': 'Стражи трубят в рог: собирайте отряд на рейд.',
+  'hudChrome.calendar.events.marketDay.title': 'Ярмарочный день',
+  'hudChrome.calendar.events.marketDay.note':
+    'Торговец ждёт свежий товар. Отличный день, чтобы заглянуть на Мировой рынок.',
+  'hudChrome.calendar.events.fiestaNight.title': 'Ночь фиесты',
+  'hudChrome.calendar.events.fiestaNight.note':
+    'Сегодня ринг фиесты 2 на 2 собирает самые шумные толпы.',
+  'hudChrome.calendar.events.arenaClash.title': 'Битва на арене',
+  'hudChrome.calendar.events.arenaClash.note':
+    'Дуэлянты стекаются в Пепельный Колизей. Вставайте в очередь и поднимайтесь по лестнице.',
+  'hudChrome.calendar.events.fishingDerby.title': 'Рыбацкое дерби',
+  'hudChrome.calendar.events.fishingDerby.note':
+    'Рыбаки выстраиваются вдоль озёр. Берите удочку и делитесь байками.',
+  'hudChrome.calendar.events.delveDay.title': 'День вылазки',
+  'hudChrome.calendar.events.delveDay.note':
+    'Хороший день, чтобы бросить вызов Обрушенной реликварии вместе со спутником.',
+  'hudChrome.calendar.events.moongateCommunion.title': 'Единение у лунных врат',
+  'hudChrome.calendar.events.moongateCommunion.note':
+    'Паломники собираются у лунного святилища под срединной луной.',
 
   // PHAA-499: fill the professions/multiclassing (PHAA-465/466/467) M16 gap.
   'guide.nav.professions': 'Профессии',
