@@ -936,6 +936,9 @@ export const en_XA: EnTranslations = {
           "note": "[Þíļĝŕíɱš ĝáţĥéŕ áţ ţĥé ɱóóñ-šáñçţúɱ úñðéŕ ţĥé ɱíð-ɱóñţĥ ɱóóñ.]"
         }
       }
+    },
+    "trainer": {
+      "secondaryClassSet": "[Ýóú ĥáʋé ţáķéñ úþ {cls} áš ýóúŕ šéçóñðáŕý þŕóƒéššíóñ.]"
     }
   },
   "guide": {

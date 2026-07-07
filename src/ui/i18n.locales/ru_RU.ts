@@ -5266,4 +5266,5 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.elder_yarrow.title': 'Наставник дополнительных профессий',
   'entities.npcs.elder_yarrow.greeting':
     'Каждый билд начинается с вопроса. Какое ещё призвание зовёт вас?',
+  'hudChrome.trainer.secondaryClassSet': 'Вы выбрали {cls} дополнительной профессией.',
 };

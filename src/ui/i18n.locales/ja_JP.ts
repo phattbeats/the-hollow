@@ -5140,4 +5140,5 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.elder_yarrow.title': '副職業トレーナー',
   'entities.npcs.elder_yarrow.greeting':
     'ビルドはすべて、ひとつの問いから始まる。どの副職業があなたを呼んでいる？',
+  'hudChrome.trainer.secondaryClassSet': '副職業として{cls}を習得しました。',
 };

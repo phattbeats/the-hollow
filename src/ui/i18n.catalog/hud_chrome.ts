@@ -986,4 +986,7 @@ export const hudChromeStrings = {
       },
     },
   },
+  trainer: {
+    secondaryClassSet: 'You have taken up {cls} as your secondary profession.',
+  },
 };

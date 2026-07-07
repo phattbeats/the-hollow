@@ -936,6 +936,9 @@ export const ja_JP: EnTranslations = {
           "note": "月半ばの月の下、巡礼者が月の聖域に集う。"
         }
       }
+    },
+    "trainer": {
+      "secondaryClassSet": "副職業として{cls}を習得しました。"
     }
   },
   "guide": {
