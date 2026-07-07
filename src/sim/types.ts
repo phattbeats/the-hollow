@@ -1156,6 +1156,18 @@ export interface GroundObjectDef {
   positions: { x: number; z: number }[];
 }
 
+// Gatherable world nodes (amber/heartwood/spore). Permanent, unowned
+// fixtures: this issue is content plus visibility only, no harvest logic
+// (see PHAA-504).
+export type GatherNodeType = 'amber' | 'heartwood' | 'spore';
+
+export interface GatherNodeDef {
+  id: string;
+  zoneId: string;
+  type: GatherNodeType;
+  pos: { x: number; z: number };
+}
+
 export interface DungeonSpawn {
   mobId: string;
   x: number; // relative to instance origin

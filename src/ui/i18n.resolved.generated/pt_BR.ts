@@ -2650,6 +2650,7 @@ export const pt_BR: EnTranslations = {
     "rendererFailed": "Não foi possível iniciar o renderizador: tente recarregar. {error}",
     "enterTimeout": "Não foi possível entrar no mundo. A conexão expirou. O servidor do jogo está em execução?",
     "connectionLost": "A conexão com o servidor foi perdida.",
+    "reconnecting": "Connection lost. Reconnecting...",
     "connectionRejected": "O servidor encerrou a conexão."
   },
   "errors": {
@@ -3497,7 +3498,7 @@ export const pt_BR: EnTranslations = {
       "trainerConfirmYes": "Yes, train me",
       "trainerConfirmNo": "No, go back",
       "trainerHowTitle": "How do secondary professions work?",
-      "trainerHowBody": "A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities translate their resource cost to your primary resource. Your first pick is free; changing later costs gold.",
+      "trainerHowBody": "A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities convert their resource cost to your primary resource. Your first pick is free; changing later costs gold.",
       "accept": "Aceitar",
       "decline": "Recusar",
       "continue": "Continuar",
@@ -5834,6 +5835,11 @@ export const pt_BR: EnTranslations = {
         "name": "Irmão Halven",
         "title": "Guardião do Relicário",
         "greeting": "O relicário lá embaixo se moveu de novo."
+      },
+      "elder_yarrow": {
+        "name": "Elder Yarrow",
+        "title": "Profession Trainer",
+        "greeting": "Every build starts as a question. Which second calling speaks to you?"
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",

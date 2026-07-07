@@ -2650,6 +2650,7 @@ export const fr_CA: EnTranslations = {
     "rendererFailed": "Impossible de démarrer le rendu: rechargez la page. {error}",
     "enterTimeout": "Impossible d'entrer dans le monde. La connexion a expiré. Le serveur de jeu fonctionne-t-il ?",
     "connectionLost": "La connexion au serveur a été perdue.",
+    "reconnecting": "Connection lost. Reconnecting...",
     "connectionRejected": "Le serveur a fermé la connexion."
   },
   "errors": {
@@ -3497,7 +3498,7 @@ export const fr_CA: EnTranslations = {
       "trainerConfirmYes": "Yes, train me",
       "trainerConfirmNo": "No, go back",
       "trainerHowTitle": "How do secondary professions work?",
-      "trainerHowBody": "A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities translate their resource cost to your primary resource. Your first pick is free; changing later costs gold.",
+      "trainerHowBody": "A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities convert their resource cost to your primary resource. Your first pick is free; changing later costs gold.",
       "accept": "Accepter",
       "decline": "Refuser",
       "continue": "Continuer",
@@ -5834,6 +5835,11 @@ export const fr_CA: EnTranslations = {
         "name": "Frère Halven",
         "title": "Gardien du reliquaire",
         "greeting": "Le reliquaire en bas s'est encore déplacé."
+      },
+      "elder_yarrow": {
+        "name": "Elder Yarrow",
+        "title": "Profession Trainer",
+        "greeting": "Every build starts as a question. Which second calling speaks to you?"
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
