@@ -83,6 +83,7 @@ export const fr_CA: AdminTranslations = {
   "antibot.invalidFields": "Fix the highlighted fields before saving.",
   "antibot.loading": "Loading configuration...",
   "antibot.loadFailed": "Failed to load the configuration.",
+  "antibot.saveFailed": "Failed to save the configuration.",
   "antibot.save": "Save and apply",
   "antibot.saving": "Saving...",
   "antibot.saved": "Applied.",

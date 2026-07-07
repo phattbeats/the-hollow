@@ -83,6 +83,7 @@ export const en_XA: AdminTranslations = {
   "antibot.invalidFields": "[Ƒíẋ ţĥé ĥíĝĥļíĝĥţéð ƒíéļðš ƀéƒóŕé šáʋíñĝ.]",
   "antibot.loading": "[Ļóáðíñĝ çóñƒíĝúŕáţíóñ...]",
   "antibot.loadFailed": "[Ƒáíļéð ţó ļóáð ţĥé çóñƒíĝúŕáţíóñ.]",
+  "antibot.saveFailed": "[Ƒáíļéð ţó šáʋé ţĥé çóñƒíĝúŕáţíóñ.]",
   "antibot.save": "[Šáʋé áñð áþþļý]",
   "antibot.saving": "[Šáʋíñĝ...]",
   "antibot.saved": "[Áþþļíéð.]",

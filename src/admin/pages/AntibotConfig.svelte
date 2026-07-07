@@ -112,7 +112,7 @@
     } catch (err) {
       if (!auth.handleAuthFailure(err)) {
         window.alert(
-          err instanceof Error ? localizeAdminError(err.message) : t('alert.saveConfigFailed'),
+          err instanceof Error ? localizeAdminError(err.message) : t('antibot.saveFailed'),
         );
       }
     } finally {
