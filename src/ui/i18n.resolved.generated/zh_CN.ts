@@ -2684,6 +2684,7 @@ export const zh_CN: EnTranslations = {
       "notAuthenticated": "尚未认证。",
       "accountBanned": "此账号已被封禁。",
       "webLoginOnly": "只能从游戏客户端登录。",
+      "crossSiteRejected": "跨站请求被拒绝。",
       "accountSuspended": "此账号被停用至 {date}。",
       "alreadyInWorld": "角色已在世界中。",
       "takenOver": "你的角色已被另一个会话接管。",

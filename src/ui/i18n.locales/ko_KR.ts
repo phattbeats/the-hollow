@@ -686,6 +686,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'errors.api.nameTaken': '이미 사용 중인 이름입니다.',
   'errors.api.characterNotFound': '캐릭터를 찾을 수 없습니다.',
   'errors.api.characterOnline': '캐릭터가 현재 접속 중입니다.',
+  'errors.api.crossSiteRejected': '교차 사이트 요청이 거부되었습니다.',
   'errors.api.deleteConfirm': '삭제를 확인하려면 캐릭터 이름을 입력하세요.',
   'errors.api.notAuthenticated': '인증되지 않았습니다.',
   'errors.api.accountBanned': '이 계정은 이용 정지되었습니다.',

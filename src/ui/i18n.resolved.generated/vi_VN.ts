@@ -2684,6 +2684,7 @@ export const vi_VN: EnTranslations = {
       "notAuthenticated": "Chưa xác thực.",
       "accountBanned": "Tài khoản này đã bị cấm.",
       "webLoginOnly": "Chỉ được phép đăng nhập từ trình khách trò chơi.",
+      "crossSiteRejected": "Cross-site request rejected.",
       "accountSuspended": "Tài khoản này bị đình chỉ đến {date}.",
       "alreadyInWorld": "Nhân vật đã ở trong thế giới.",
       "takenOver": "Nhân vật của bạn đã bị một phiên khác chiếm quyền.",

@@ -2684,6 +2684,7 @@ export const nl_NL: EnTranslations = {
       "notAuthenticated": "Niet geauthenticeerd.",
       "accountBanned": "Dit account is verbannen.",
       "webLoginOnly": "Inloggen is alleen toegestaan vanuit de spelclient.",
+      "crossSiteRejected": "Cross-site request rejected.",
       "accountSuspended": "Dit account is geschorst tot {date}.",
       "alreadyInWorld": "Personage is al in de wereld.",
       "takenOver": "Je personage is overgenomen door een andere sessie.",

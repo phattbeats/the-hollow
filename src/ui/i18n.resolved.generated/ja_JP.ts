@@ -2684,6 +2684,7 @@ export const ja_JP: EnTranslations = {
       "notAuthenticated": "認証されていません。",
       "accountBanned": "このアカウントは利用停止されています。",
       "webLoginOnly": "ログインはゲームクライアントからのみ可能です。",
+      "crossSiteRejected": "クロスサイトリクエストは拒否されました。",
       "accountSuspended": "このアカウントは {date} まで停止されています。",
       "alreadyInWorld": "キャラクターは既に世界にいます。",
       "takenOver": "あなたのキャラクターは別のセッションに引き継がれました。",

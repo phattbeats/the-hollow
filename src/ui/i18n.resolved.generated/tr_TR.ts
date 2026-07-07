@@ -2684,6 +2684,7 @@ export const tr_TR: EnTranslations = {
       "notAuthenticated": "Kimlik doğrulanmadı.",
       "accountBanned": "Bu hesap yasaklandı.",
       "webLoginOnly": "Girişlere yalnızca oyun istemcisinden izin verilir.",
+      "crossSiteRejected": "Cross-site request rejected.",
       "accountSuspended": "Bu hesap {date} tarihine kadar askıya alındı.",
       "alreadyInWorld": "Karakter zaten dünyada.",
       "takenOver": "Karakteriniz başka bir oturum tarafından devralındı.",

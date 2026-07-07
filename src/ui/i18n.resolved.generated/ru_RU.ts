@@ -2684,6 +2684,7 @@ export const ru_RU: EnTranslations = {
       "notAuthenticated": "Нет авторизации.",
       "accountBanned": "Эта учетная запись заблокирована.",
       "webLoginOnly": "Вход разрешён только из игрового клиента.",
+      "crossSiteRejected": "Межсайтовый запрос отклонён.",
       "accountSuspended": "Эта учетная запись заблокирована до {date}.",
       "alreadyInWorld": "Персонаж уже находится в мире.",
       "takenOver": "Вашего персонажа перехватила другая сессия.",

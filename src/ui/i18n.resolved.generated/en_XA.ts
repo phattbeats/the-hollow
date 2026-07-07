@@ -2684,6 +2684,7 @@ export const en_XA: EnTranslations = {
       "notAuthenticated": "[Ñóţ áúţĥéñţíçáţéð.]",
       "accountBanned": "[Ţĥíš áççóúñţ ĥáš ƀééñ ƀáññéð.]",
       "webLoginOnly": "[Ļóĝíñš áŕé óñļý áļļóŵéð ƒŕóɱ ţĥé ĝáɱé çļíéñţ.]",
+      "crossSiteRejected": "[Çŕóšš-šíţé ŕéɋúéšţ ŕéĵéçţéð.]",
       "accountSuspended": "[Ţĥíš áççóúñţ íš šúšþéñðéð úñţíļ {date}.]",
       "alreadyInWorld": "[Çĥáŕáçţéŕ íš áļŕéáðý íñ ŵóŕļð.]",
       "takenOver": "[Ýóúŕ çĥáŕáçţéŕ ŵáš ţáķéñ óʋéŕ ƀý áñóţĥéŕ šéššíóñ.]",

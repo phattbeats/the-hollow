@@ -312,6 +312,7 @@ function userFacingApiError(err: unknown): string {
     return t('errors.api.renameBeforeEntering');
   if (normalized === 'logins are only allowed from the game client')
     return t('errors.api.webLoginOnly');
+  if (normalized === 'cross-site request rejected') return t('errors.api.crossSiteRejected');
   // Account portal REST errors (server/main.ts /api/account/*). English-source,
   // re-localized here onto the English-only hudChrome.account.* keys.
   if (normalized === 'current password is incorrect')

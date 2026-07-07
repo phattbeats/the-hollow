@@ -2684,6 +2684,7 @@ export const pt_BR: EnTranslations = {
       "notAuthenticated": "Não autenticado.",
       "accountBanned": "Esta conta foi banida.",
       "webLoginOnly": "O login só é permitido pelo cliente do jogo.",
+      "crossSiteRejected": "Cross-site request rejected.",
       "accountSuspended": "Esta conta está suspensa até {date}.",
       "alreadyInWorld": "O personagem já está no mundo.",
       "takenOver": "Seu personagem foi assumido por outra sessão.",

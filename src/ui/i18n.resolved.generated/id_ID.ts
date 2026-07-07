@@ -2684,6 +2684,7 @@ export const id_ID: EnTranslations = {
       "notAuthenticated": "Belum terautentikasi.",
       "accountBanned": "Akun ini telah diblokir.",
       "webLoginOnly": "Masuk hanya diperbolehkan dari klien permainan.",
+      "crossSiteRejected": "Cross-site request rejected.",
       "accountSuspended": "Akun ini ditangguhkan hingga {date}.",
       "alreadyInWorld": "Karakter sudah berada di dalam dunia.",
       "takenOver": "Karakter Anda telah diambil alih oleh sesi lain.",

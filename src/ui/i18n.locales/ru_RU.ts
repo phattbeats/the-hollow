@@ -706,6 +706,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'errors.api.nameTaken': 'Это имя уже занято.',
   'errors.api.characterNotFound': 'Персонаж не найден.',
   'errors.api.characterOnline': 'Персонаж сейчас в сети.',
+  'errors.api.crossSiteRejected': 'Межсайтовый запрос отклонён.',
   'errors.api.deleteConfirm': 'Введите имя персонажа, чтобы подтвердить удаление.',
   'errors.api.notAuthenticated': 'Нет авторизации.',
   'errors.api.accountBanned': 'Эта учетная запись заблокирована.',

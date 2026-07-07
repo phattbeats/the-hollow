@@ -2684,6 +2684,7 @@ export const da_DK: EnTranslations = {
       "notAuthenticated": "Ikke godkendt.",
       "accountBanned": "Denne konto er blevet udelukket.",
       "webLoginOnly": "Login er kun tilladt fra spilklienten.",
+      "crossSiteRejected": "Cross-site request rejected.",
       "accountSuspended": "Denne konto er suspenderet indtil {date}.",
       "alreadyInWorld": "Karakteren er allerede i verdenen.",
       "takenOver": "Din karakter blev overtaget af en anden session.",
