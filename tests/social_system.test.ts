@@ -3,6 +3,7 @@ import { resolveRealm } from '../server/realm';
 import {
   type CharInfo,
   type CharRef,
+  type GuildEventRow,
   type GuildRank,
   type Presence,
   type SocialDb,
@@ -24,6 +25,16 @@ class FakeDb implements SocialDb {
   private guilds = new Map<number, string>();
   private members = new Map<number, { guildId: number; rank: GuildRank }>();
   private nextGuildId = 1;
+  private events: {
+    id: number;
+    guildId: number;
+    day: string;
+    hour: number | null;
+    title: string;
+    note: string;
+    createdBy: number;
+  }[] = [];
+  private nextEventId = 1;
 
   addChar(id: number, name: string, cls = 'warrior', level = 10, realm = 'The Hollow'): void {
     this.chars.set(id, { id, name, cls, level, realm });
@@ -121,6 +132,43 @@ class FakeDb implements SocialDb {
   guildCount(): number {
     return this.guilds.size;
   } // test helper: detect orphaned guilds
+
+  async guildEvents(guildId: number, fromDay: string): Promise<GuildEventRow[]> {
+    return this.events
+      .filter((e) => e.guildId === guildId && e.day >= fromDay)
+      .sort((a, b) => a.day.localeCompare(b.day) || (a.hour ?? -1) - (b.hour ?? -1) || a.id - b.id)
+      .map((e) => ({
+        id: e.id,
+        day: e.day,
+        hour: e.hour,
+        title: e.title,
+        note: e.note,
+        createdBy: this.chars.get(e.createdBy)?.name ?? '',
+      }));
+  }
+  async guildEventCount(guildId: number, fromDay: string): Promise<number> {
+    return this.events.filter((e) => e.guildId === guildId && e.day >= fromDay).length;
+  }
+  async createGuildEvent(
+    guildId: number,
+    creatorId: number,
+    day: string,
+    hour: number | null,
+    title: string,
+    note: string,
+  ): Promise<number> {
+    const id = this.nextEventId++;
+    this.events.push({ id, guildId, day, hour, title, note, createdBy: creatorId });
+    return id;
+  }
+  async deleteGuildEvent(eventId: number, guildId: number): Promise<boolean> {
+    const before = this.events.length;
+    this.events = this.events.filter((e) => !(e.id === eventId && e.guildId === guildId));
+    return this.events.length < before;
+  }
+  async pruneGuildEvents(guildId: number, beforeDay: string): Promise<void> {
+    this.events = this.events.filter((e) => !(e.guildId === guildId && e.day < beforeDay));
+  }
 }
 
 class FakeTransport implements SocialTransport {
@@ -692,5 +740,130 @@ describe('guild atomicity (#149)', () => {
     await h.svc.guildAccept(h.actor(2));
     expect(h.tx.errorsFor(2).join()).toMatch(/no longer exists/i);
     expect((await h.svc.snapshot(2)).guild).toBeNull();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Guild calendar events (PHAA-511): officers and the Guild Master book/remove
+// dated events, refusals report a structured code (never server English), the
+// upcoming cap applies, and the calendar rides the existing GuildInfo snapshot
+// lane, and the structured calendarResult outcomes the client localizes.
+// ---------------------------------------------------------------------------
+
+describe('guild calendar events', () => {
+  // The fake clock starts at epoch 1000ms, so "today" is 1970-01-01.
+  const TODAY = '1970-01-01';
+  const NEXT_WEEK = '1970-01-08';
+
+  async function seatedGuild() {
+    const h = setup();
+    h.add(1, 'Lead');
+    h.add(2, 'Officer');
+    h.add(3, 'Member');
+    h.tx.setOnline(2);
+    h.tx.setOnline(3);
+    await h.svc.guildCreate(h.actor(1), 'Night Watch');
+    await h.svc.guildInvite(h.actor(1), 'Officer');
+    await h.svc.guildAccept(h.actor(2));
+    await h.svc.guildInvite(h.actor(1), 'Member');
+    await h.svc.guildAccept(h.actor(3));
+    await h.svc.guildSetRank(h.actor(1), 'Officer', 'officer');
+    h.tx.clear();
+    return h;
+  }
+
+  function resultsFor(h: Awaited<ReturnType<typeof seatedGuild>>, id: number): string[] {
+    return h.tx
+      .eventsFor(id)
+      .filter((e) => e.type === 'calendarResult')
+      .map((e: any) => e.code);
+  }
+
+  it('lets the leader and officers book events; members see them in the snapshot', async () => {
+    const h = await seatedGuild();
+    await h.svc.guildEventCreate(h.actor(1), {
+      day: NEXT_WEEK,
+      hour: 20,
+      title: 'Crypt night',
+      note: 'Bring water.',
+    });
+    await h.svc.guildEventCreate(h.actor(2), {
+      day: TODAY,
+      hour: null,
+      title: 'Fishing derby',
+      note: '',
+    });
+    expect(resultsFor(h, 1)).toEqual(['created']);
+    expect(resultsFor(h, 2)).toEqual(['created']);
+    const snap = await h.svc.snapshot(3);
+    expect(snap.guild?.events.map((e) => e.title)).toEqual(['Fishing derby', 'Crypt night']);
+    expect(snap.guild?.events[1]).toMatchObject({ day: NEXT_WEEK, hour: 20, createdBy: 'Lead' });
+  });
+
+  it('refuses a plain member, a non-member, and bad input', async () => {
+    const h = await seatedGuild();
+    await h.svc.guildEventCreate(h.actor(3), { day: NEXT_WEEK, hour: 20, title: 'X', note: '' });
+    expect(resultsFor(h, 3)).toEqual(['notOfficer']);
+    h.add(9, 'Loner');
+    await h.svc.guildEventCreate(h.actor(9), { day: NEXT_WEEK, hour: 20, title: 'X', note: '' });
+    expect(resultsFor(h, 9)).toEqual(['notInGuild']);
+    await h.svc.guildEventCreate(h.actor(1), { day: 'not-a-day', hour: 20, title: 'X', note: '' });
+    await h.svc.guildEventCreate(h.actor(1), { day: '1970-02-30', hour: 20, title: 'X', note: '' });
+    await h.svc.guildEventCreate(h.actor(1), { day: '1969-12-01', hour: 20, title: 'X', note: '' });
+    await h.svc.guildEventCreate(h.actor(1), { day: NEXT_WEEK, hour: 20, title: '   ', note: '' });
+    expect(resultsFor(h, 1)).toEqual(['badInput', 'badInput', 'badInput', 'badInput']);
+    expect((await h.svc.snapshot(1)).guild?.events).toHaveLength(0);
+  });
+
+  it('caps the upcoming calendar and reports calendarFull', async () => {
+    const h = await seatedGuild();
+    for (let i = 0; i < 25; i++) {
+      await h.svc.guildEventCreate(h.actor(1), {
+        day: NEXT_WEEK,
+        hour: null,
+        title: `Event ${i}`,
+        note: '',
+      });
+    }
+    await h.svc.guildEventCreate(h.actor(1), {
+      day: NEXT_WEEK,
+      hour: null,
+      title: 'One too many',
+      note: '',
+    });
+    expect(resultsFor(h, 1).filter((c) => c === 'calendarFull')).toHaveLength(1);
+    expect((await h.svc.snapshot(1)).guild?.events).toHaveLength(25);
+  });
+
+  it('removes events (officer+ only) and reports eventGone for a stale id', async () => {
+    const h = await seatedGuild();
+    await h.svc.guildEventCreate(h.actor(1), {
+      day: NEXT_WEEK,
+      hour: 19,
+      title: 'Raid',
+      note: '',
+    });
+    const evId = (await h.svc.snapshot(1)).guild?.events[0]?.id;
+    if (evId === undefined) throw new Error('event not created');
+    h.tx.clear();
+    await h.svc.guildEventRemove(h.actor(3), evId);
+    expect(resultsFor(h, 3)).toEqual(['notOfficer']);
+    await h.svc.guildEventRemove(h.actor(2), evId);
+    expect(resultsFor(h, 2)).toEqual(['removed']);
+    await h.svc.guildEventRemove(h.actor(2), evId);
+    expect(resultsFor(h, 2)).toEqual(['removed', 'eventGone']);
+    expect((await h.svc.snapshot(1)).guild?.events).toHaveLength(0);
+  });
+
+  it('pushes a fresh snapshot to online members after create and remove', async () => {
+    const h = await seatedGuild();
+    await h.svc.guildEventCreate(h.actor(2), {
+      day: NEXT_WEEK,
+      hour: null,
+      title: 'Meet',
+      note: '',
+    });
+    expect(h.tx.snapshotCount.get(2) ?? 0).toBeGreaterThan(0);
+    expect(h.tx.snapshotCount.get(3) ?? 0).toBeGreaterThan(0);
   });
 });

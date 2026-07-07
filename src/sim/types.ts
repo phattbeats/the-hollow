@@ -1623,6 +1623,17 @@ export interface PlantUtteranceMeta {
   soreSpot?: PlantSoreSpot;
 }
 
+// Guild calendar command outcomes (mirrors server/social.ts CalendarResultCode;
+// `created`/`removed` are successes, the rest refusals).
+export type CalendarResultCode =
+  | 'created'
+  | 'removed'
+  | 'notInGuild'
+  | 'notOfficer'
+  | 'badInput'
+  | 'calendarFull'
+  | 'eventGone';
+
 // `pid` (when present) marks a personal event that should only be delivered to
 // that player entity's owner; events without pid are world-visible.
 export type SimEvent = { pid?: number } & (
@@ -1710,6 +1721,10 @@ export type SimEvent = { pid?: number } & (
   // a guild invitation from an online guild officer/leader; resolved by name
   // server-side so it carries no pid
   | { type: 'guildInvite'; fromName: string; guildName: string }
+  // Guild calendar outcome. Emitted only by the server's SocialService (the
+  // sim never books guild events); declared here so the one client event
+  // switch stays exhaustively typed.
+  | { type: 'calendarResult'; code: CalendarResultCode }
   | { type: 'tradeRequest'; fromPid: number; fromName: string }
   | { type: 'tradeDone' }
   | { type: 'duelRequest'; fromPid: number; fromName: string }

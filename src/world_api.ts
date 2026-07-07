@@ -9,9 +9,10 @@
 // keep resolving to THIS file, never the sibling directory.
 //
 // ---------------------------------------------------------------------------
-// FACET MAP: the 24 domain facets (each IWorld member assigned exactly once; 158
+// FACET MAP: the 24 domain facets (each IWorld member assigned exactly once; 161
 // total; this count was previously stale at 23/155, corrected alongside the
-// PHAA-482 feedGreenpaw command addition below). One interface per file under
+// PHAA-482 feedGreenpaw command addition below, and again at 24/161 with the
+// PHAA-511 guild-calendar-events addition). One interface per file under
 // ./world_api/; aux types travel with their facet. The authoritative
 // member-per-facet split is the W0c parity test.
 //
@@ -45,7 +46,7 @@
 //                                          ALL_DELTA_KEYS (27) + TERSE_TO_IWORLD mapping.
 //   tests/command_schema.test.ts   (W0b)  COMMAND_NAMES universe; ClientWorld send-set
 //                                          subset-of dispatch-set; DISPATCH_ONLY (7).
-//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (158) present + same-kind on
+//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (161) present + same-kind on
 //                                          Sim + ClientWorld; aggregate == disjoint
 //                                          union of the 24 facets.
 // ---------------------------------------------------------------------------
@@ -108,6 +109,7 @@ export type { GuildLeaderboardEntry, LeaderboardEntry } from './world_api/progre
 export type {
   CharacterSearchResult,
   FriendInfo,
+  GuildEventInfo,
   GuildInfo,
   GuildMemberInfo,
   GuildRank,
@@ -242,6 +244,8 @@ export const COMMAND_NAMES = [
   'guild_demote',
   'guild_transfer',
   'guild_disband',
+  'guild_event_create',
+  'guild_event_remove',
   'arena_queue',
   'arena_leave',
   'arena_augment',
@@ -440,6 +444,8 @@ export const COMMAND_FACETS = {
   guild_demote: 'IWorldSocialGraph',
   guild_transfer: 'IWorldSocialGraph',
   guild_disband: 'IWorldSocialGraph',
+  guild_event_create: 'IWorldSocialGraph',
+  guild_event_remove: 'IWorldSocialGraph',
   // IWorldMarket: World Market browse/list/buy/cancel/collect (snake_case wire
   // strings, by design). marketInfo is a snapshot read (no send, untagged).
   market_search: 'IWorldMarket',
