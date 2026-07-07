@@ -414,8 +414,15 @@ export class Api {
     return data.characters;
   }
 
-  async createCharacter(name: string, cls: PlayerClass, skin = 0): Promise<void> {
-    await this.post('/api/characters', { name, class: cls, skin });
+  async createCharacter(
+    name: string,
+    cls: PlayerClass,
+    skin = 0,
+    sex: 'm' | 'f' = 'm',
+  ): Promise<void> {
+    const body: Record<string, unknown> = { name, class: cls, skin };
+    if (sex === 'f') body.sex = 'f'; // omit when 'm' so older servers stay compatible
+    await this.post('/api/characters', body);
   }
 
   async renameCharacter(characterId: number, name: string): Promise<void> {
@@ -768,6 +775,7 @@ function blankEntity(id: number): Entity {
     color: 0xffffff,
     skinCatalog: 'class',
     skin: 0,
+    sex: 'm',
     mainhandItemId: null,
     equippedItems: {},
     guild: '',
@@ -1311,6 +1319,7 @@ export class ClientWorld implements IWorld {
         e.name = w.nm;
         e.level = w.lv;
         e.skin = w.sk ?? 0;
+        e.sex = w.sx === 'f' ? 'f' : 'm'; // PHAA-501: defaults to 'm' on absence
         e.mainhandItemId = w.mh ?? null; // equipped mainhand → held weapon model (render-only)
         e.equippedItems = w.eq ?? {}; // full worn set (render-only), for the inspect window
         e.skinCatalog = w.cat === 'mech' ? 'mech' : 'class';

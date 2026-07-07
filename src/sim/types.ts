@@ -70,6 +70,13 @@ export type PlayerClass =
   | 'warlock'
   | 'druid';
 
+// Player character sex. Drives which visual variant the renderer places: when
+// a `player_<class>_f` entry exists in the manifest, female characters resolve
+// to it; otherwise they fall back to the default (male) model for the class.
+// Persisted in CharacterState and carried in the entity wire identity fields.
+// Optional in saved state so pre-PHAA-501 characters load as 'm'.
+export type Sex = 'm' | 'f';
+
 // Classes that command a persistent pet (hunter beast, warlock demon). Pure
 // predicate, here so the pet-command slice imports it without a sim.ts cycle.
 export function isPetClass(cls: PlayerClass): boolean {
@@ -1535,6 +1542,11 @@ export interface Entity {
   color: number;
   skinCatalog: SkinCatalog; // player appearance catalog: class texture set or cosmetic body.
   skin: number; // player appearance: index into SKINS[visualKey]; 0 = default. synced in identity fields.
+  // Player character sex. Drives the female visual variant when a
+  // `player_<class>_f` VisualDef exists; otherwise the default model is used.
+  // Persisted in CharacterState, mirrored from PlayerMeta in addPlayer, and
+  // synced in identity fields (terse `sx`). Defaults to 'm' for back-compat.
+  sex: Sex;
   // Equipped mainhand item id (players only; null otherwise). Render-only: the
   // client maps it to a held weapon model. Recomputed in recalcPlayerStats and
   // synced in identity fields (terse `mh`). The sim never reads it for gameplay.

@@ -9,7 +9,7 @@ import {
   paginateLeaderboard,
 } from '../src/sim/leaderboard_page';
 import { Sim } from '../src/sim/sim';
-import type { PlayerClass } from '../src/sim/types';
+import type { PlayerClass, Sex } from '../src/sim/types';
 import { virtualLevel } from '../src/sim/types';
 import type { GuildLeaderboardEntry, LeaderboardEntry } from '../src/world_api';
 import {
@@ -196,9 +196,14 @@ function initialCharacterState(
   cls: PlayerClass,
   name: string,
   skin: number,
+  sex: Sex = 'm',
 ): import('../src/sim/sim').CharacterState {
   const sim = new Sim({ seed: 20061, playerClass: cls, playerName: name });
   sim.setPlayerSkin(sim.playerId, skin);
+  // PHAA-501: set the chosen sex on the offline Sim before serialising, so the
+  // initial CharacterState carries it through to the database row and the live
+  // online entity mirror. Falls back to 'm' on the type default.
+  sim.setPlayerSex(sim.playerId, sex);
   const character = sim.serializeCharacter(sim.playerId);
   if (!character) throw new Error('failed to serialize initial character');
   return character;
@@ -805,13 +810,17 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
           0,
           Math.min(7, Math.floor(typeof body.skin === 'number' ? body.skin : 0)),
         );
+        // PHAA-501: sex defaults to 'm'; 'f' is the only accepted alternative.
+        // Anything else (including missing) becomes 'm' so an older client keeps
+        // creating male characters and a tampered body cannot escape the union.
+        const sex: Sex = body.sex === 'f' ? 'f' : 'm';
         const create = () =>
           createCharacterCapped(
             accountId,
             name,
             body.class,
             10,
-            initialCharacterState(body.class, name, skin),
+            initialCharacterState(body.class, name, skin, sex),
           );
         const created = (c: NonNullable<Awaited<ReturnType<typeof createCharacterCapped>>>) =>
           json(res, 200, {
@@ -820,6 +829,7 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
             class: c.class,
             level: c.level,
             skin: c.state?.skin ?? skin,
+            sex: c.state?.sex ?? sex,
             forceRename: c.force_rename,
           });
         try {
