@@ -349,7 +349,7 @@ function userFacingApiError(err: unknown): string {
   if (normalized === 'connection to the server was lost.') return t('loading.connectionLost');
   if (normalized === 'rejected by server') return t('loading.connectionRejected');
   // NOTE: protocol/transport diagnostics ('bad auth message', 'authentication timed out',
-  // etc.) are intentionally NOT translated , they are developer/diagnostic errors and must
+  // etc.) are intentionally NOT translated; they are developer/diagnostic errors and must
   // stay English so browser logs and support reports match the server source.
   // Moderation kicks and the login brute-force throttle (server/admin.ts, server/main.ts).
   if (normalized === 'this account is suspended.') return tServer('moderation.suspended');
@@ -364,7 +364,7 @@ function userFacingApiError(err: unknown): string {
 // --- Cloudflare Turnstile (bot gate on the login/register form) ---------------
 // The site key is injected at build time; when it is empty (local/offline dev or
 // a build without the env var) the widget never renders and the token is '', so
-// the server , which also skips verification without its secret , lets requests
+// the server, which also skips verification without its secret, lets requests
 // through unchanged. The api.js <script> is in index.html.
 const TURNSTILE_SITEKEY = String(import.meta.env.VITE_TURNSTILE_SITEKEY ?? '');
 
@@ -777,7 +777,7 @@ function hideLoadingScreen(): void {
 // (new Renderer/new Hud) runs fully synchronously and blocks the main thread,
 // so without a real paint first the loading screen never shows on warm loads
 // (cached assets ⇒ assetsReady resolves on a microtask) and entry looks frozen.
-// Two rAFs guarantee a paint happened between them , same idiom used to cut to
+// Two rAFs guarantee a paint happened between them; same idiom used to cut to
 // the game on the first rendered frame below.
 function nextPaint(): Promise<void> {
   return new Promise((resolve) => {
@@ -849,7 +849,7 @@ async function startGame(
   if (document.activeElement instanceof HTMLElement) {
     document.activeElement.blur();
   }
-  // Paint the loading screen before anything can block , assetsReady may resolve
+  // Paint the loading screen before anything can block; assetsReady may resolve
   // immediately when assets are already cached, and the scene build is synchronous.
   await nextPaint();
   // Lazy locale flip: fetch the active locale's chunk and make it resident before the HUD
@@ -1082,7 +1082,7 @@ async function startGame(
       onTab: () => world.tabTarget(),
       onTargetFriendly: () => world.targetNearestFriendly(),
       onCycleFriendly: () => world.friendlyTabTarget(),
-      // slot 0 (key 1) is Attack for every class , auto-attack without needing
+      // slot 0 (key 1) is Attack for every class; auto-attack without needing
       // right-click; keys and clicks share the Hud's remappable slot layout
       onAbility: (slot) => hud.castSlot(slot),
       onInputIntent: (kind) => perf.markInputIntent(kind),
@@ -1714,7 +1714,7 @@ async function startGame(
 
   function clickMovePathTo(target: { x: number; z: number }): { x: number; z: number }[] {
     // ignoreFences: the player can hop fences, so route straight over them
-    // instead of around , resolveMove fires the jump as we reach the rail.
+    // instead of around; resolveMove fires the jump as we reach the rail.
     // swim: the player can swim, so let the route cross/enter water.
     return findPlayerPath(world.cfg.seed, world.player.pos, target, undefined, true, true);
   }
@@ -1859,7 +1859,7 @@ async function startGame(
   }
 
   // The player can't move toward a click-to-move destination while rooted/stunned
-  // , surface that on the marker so the freeze reads as crowd control, not a bug.
+  // Surface that on the marker so the freeze reads as crowd control, not a bug.
   function playerImmobilized(): boolean {
     return world.player.auras.some((a) => IMMOBILE_AURA_KINDS.has(a.kind));
   }
@@ -1982,7 +1982,7 @@ async function startGame(
       orbiting: input.leftDown && input.isCameraDragActive(),
     });
     input.camYaw = next.camYaw;
-    lastInterpFacing = next.lastInterpFacing; // track through mouselook too , no snap on release
+    lastInterpFacing = next.lastInterpFacing; // track through mouselook too; no snap on release
   }
 
   // Resolve this step's movement input, folding in click-to-move (#95). Returns
@@ -2058,7 +2058,7 @@ async function startGame(
           // can turn at close range.
           mi.forward = clickMoveShouldWalk(smoothFacing, step.facing);
           // The path can route over fences (the player jumps them), so hop when
-          // one is just ahead along our heading , the sim only jumps while
+          // one is just ahead along our heading; the sim only jumps while
           // grounded, so setting this every frame near a fence is safe. Once we
           // give up on jumping and reroute around, stop auto-hopping.
           if (mi.forward && !clickMoveReroutedAround) {
@@ -2536,7 +2536,7 @@ let offlineSkin = 0; // chosen appearance skin for the offline quick-start chara
 let onlineSkin = 0; // chosen appearance skin for new online characters
 // PHAA-501: chosen sex for the offline quick-start + new online characters.
 // Defaults to 'm' so every existing flow keeps working; flip to 'f' once the
-// Quaternius UBC variant GLBs land (PHAA-539) , the model falls back to the
+// Quaternius UBC variant GLBs land (PHAA-539); the model falls back to the
 // male GLB until then, but the wire / persistence / preview plumbing is live.
 let offlineSex: 'm' | 'f' = 'm';
 let onlineSex: 'm' | 'f' = 'm';
@@ -2561,7 +2561,7 @@ function renderSkinPicker(
   const count = skinCount(`player_${cls}`);
   const picker = row.closest('.skin-picker') as HTMLElement | null;
   if (count <= 1) {
-    // only the default exists , nothing to pick
+    // only the default exists; nothing to pick
     if (picker) picker.style.display = 'none';
     return;
   }
@@ -3667,7 +3667,7 @@ async function refreshCharacters(): Promise<void> {
     if (api.realm) $('#charselect-realm').textContent = api.realm;
     listEl.innerHTML = '';
     if (chars.length === 0) {
-      // No characters on this realm , drop straight into the create screen.
+      // No characters on this realm; drop straight into the create screen.
       listEl.innerHTML = `<li class="char-list-message">${escapeHtml(t('character.noneYet'))}</li>`;
       show('#charcreate-panel');
       return;
@@ -4377,7 +4377,7 @@ async function loadProjectStats(): Promise<void> {
     if (cached) {
       setAll(onlineEls, String(cached.players_online));
     } else {
-      setAll(onlineEls, ',');
+      setAll(onlineEls, '-');
     }
   }
 }
@@ -4450,7 +4450,7 @@ function renderReleaseBody(md: string): string {
     s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
   const inline = (s: string): string =>
     esc(s)
-      // [text](url) , only http(s) links survive; anything else renders as text.
+      // [text](url); only http(s) links survive; anything else renders as text.
       .replace(
         /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
         (_m, text, url) => `<a href="${url}" target="_blank" rel="noopener noreferrer">${text}</a>`,
@@ -5398,7 +5398,7 @@ function wireStartScreens(): void {
       resetTurnstile();
       return;
     }
-    // Auth succeeded , a later realm-entry error is NOT a verification failure,
+    // Auth succeeded; a later realm-entry error is NOT a verification failure,
     // so don't reset the widget or let the user re-submit the (now duplicate) auth.
     try {
       $('#charselect-user').textContent = api.username ?? '';
@@ -6225,7 +6225,7 @@ function fadeOutHomepageMusic(durationMs = 1600): void {
     for (const name of Object.keys(vars))
       document.documentElement.style.setProperty(name, vars[name]);
   } catch {
-    /* localStorage/DOM unavailable , fall back to index.html defaults */
+    /* localStorage/DOM unavailable; fall back to index.html defaults */
   }
 })();
 
