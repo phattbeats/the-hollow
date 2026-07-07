@@ -813,6 +813,10 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/combat/auto_attack.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/progression/talents.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/progression/xp.ts'), 'utf8'),
+    // PHAA-540: the Profession Trainer command surface (setSecondaryClass) was missing
+    // from this scan list, so its four error literals passed the S3 guard falsely (the
+    // same blind spot as PHAA-533's homestead.ts).
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/progression/trainer.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/mob/locomotion.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/mob/mob_swing.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/mob/lifecycle.ts'), 'utf8'),
