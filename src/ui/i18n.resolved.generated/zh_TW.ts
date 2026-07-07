@@ -936,6 +936,9 @@ export const zh_TW: EnTranslations = {
           "note": "朝聖者在月中之月下聚於月之聖所。"
         }
       }
+    },
+    "trainer": {
+      "secondaryClassSet": "你已選擇{cls}作為你的副職業。"
     }
   },
   "guide": {

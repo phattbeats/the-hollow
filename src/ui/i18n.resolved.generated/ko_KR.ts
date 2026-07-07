@@ -936,6 +936,9 @@ export const ko_KR: EnTranslations = {
           "note": "보름의 달 아래 순례자들이 달의 성소에 모입니다."
         }
       }
+    },
+    "trainer": {
+      "secondaryClassSet": "보조 직업으로 {cls}을(를) 선택했습니다."
     }
   },
   "guide": {

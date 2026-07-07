@@ -936,6 +936,9 @@ export const ru_RU: EnTranslations = {
           "note": "Паломники собираются у лунного святилища под срединной луной."
         }
       }
+    },
+    "trainer": {
+      "secondaryClassSet": "Вы выбрали {cls} дополнительной профессией."
     }
   },
   "guide": {

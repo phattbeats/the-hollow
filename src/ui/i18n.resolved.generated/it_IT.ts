@@ -936,6 +936,9 @@ export const it_IT: EnTranslations = {
           "note": "Pilgrims gather at the moon-sanctum under the mid-month moon."
         }
       }
+    },
+    "trainer": {
+      "secondaryClassSet": "You have taken up {cls} as your secondary profession."
     }
   },
   "guide": {

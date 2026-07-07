@@ -5151,4 +5151,5 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.elder_yarrow.title': '보조 직업 훈련사',
   'entities.npcs.elder_yarrow.greeting':
     '모든 빌드는 질문에서 시작됩니다. 어떤 보조 직업이 당신을 부르고 있나요?',
+  'hudChrome.trainer.secondaryClassSet': '보조 직업으로 {cls}을(를) 선택했습니다.',
 };
