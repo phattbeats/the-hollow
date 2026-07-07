@@ -35,7 +35,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "74633792",
+      "state": "6d38f5e3",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -58,6 +58,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -119,7 +121,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "69060df4",
+      "state": "5baad4a5",
       "events": "ddca878e",
       "rng": {
         "draws": 0,
@@ -142,6 +144,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -156,6 +159,7 @@
               "itemId": "minor_healing_potion"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -217,7 +221,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "aa61f56e",
+      "state": "d71f8ed7",
       "events": "17132d76",
       "rng": {
         "draws": 0,
@@ -241,6 +245,7 @@
             "helmet": "cryptbone_helm",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -259,6 +264,7 @@
               "itemId": "roadwardens_helm"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -320,7 +326,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "1fe1cdfa",
+      "state": "54d8e4cb",
       "events": "76309110",
       "rng": {
         "draws": 0,
@@ -344,6 +350,7 @@
             "helmet": "roadwardens_helm",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -362,6 +369,7 @@
               "itemId": "cryptbone_helm"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -423,7 +431,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "93b7e1f6",
+      "state": "a33c1d37",
       "events": "8dc8fb89",
       "rng": {
         "draws": 0,
@@ -446,6 +454,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -468,6 +477,7 @@
               "itemId": "roadwardens_helm"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -529,7 +539,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "d3c9db60",
+      "state": "73aa0dd9",
       "events": "58967549",
       "rng": {
         "draws": 0,
@@ -552,6 +562,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -566,6 +577,7 @@
               "itemId": "roadwardens_helm"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -640,7 +652,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "a9c487e0",
+      "state": "24bc35c9",
       "events": "6078006e",
       "rng": {
         "draws": 0,
@@ -663,6 +675,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -673,6 +686,7 @@
               "itemId": "roadwardens_helm"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -748,7 +762,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "8e1b2b68",
+      "state": "8efbbb91",
       "events": "6ceb7f37",
       "rng": {
         "draws": 0,
@@ -771,6 +785,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -781,6 +796,7 @@
               "itemId": "roadwardens_helm"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -868,7 +884,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "628096f6",
+      "state": "3ecd9dbf",
       "events": "2e03fa4e",
       "rng": {
         "draws": 0,
@@ -891,6 +907,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -905,6 +922,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -992,7 +1010,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "07894c01",
+      "state": "e95cee4a",
       "events": "4e4f7728",
       "rng": {
         "draws": 0,
@@ -1015,6 +1033,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -1029,6 +1048,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1122,7 +1142,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "18c6078e",
+      "state": "36bdd661",
       "events": "35ff864a",
       "rng": {
         "draws": 0,
@@ -1145,6 +1165,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -1155,6 +1176,7 @@
               "itemId": "roadwardens_helm"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1252,7 +1274,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "9ca08f70",
+      "state": "fa6c8493",
       "events": "9d63bb3d",
       "rng": {
         "draws": 0,
@@ -1275,6 +1297,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -1289,6 +1312,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1386,7 +1410,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "9ca08f70",
+      "state": "fa6c8493",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -1409,6 +1433,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -1423,6 +1448,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}

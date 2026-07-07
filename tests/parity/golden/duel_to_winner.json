@@ -29,7 +29,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 403,
-      "state": "9569d79a",
+      "state": "9d3ec3b6",
       "events": "9784fda0",
       "rng": {
         "draws": 0,
@@ -40,7 +40,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 403,
-      "state": "c0cbb4a2",
+      "state": "b5f5535e",
       "events": "b487682a",
       "rng": {
         "draws": 0,
@@ -51,7 +51,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 403,
-      "state": "8b7b5aea",
+      "state": "bbc95606",
       "events": "12a8595c",
       "rng": {
         "draws": 78,
@@ -62,7 +62,7 @@
       "tick": 61,
       "time": 3.05,
       "nextId": 403,
-      "state": "22077258",
+      "state": "0c3681bc",
       "events": "4ca07ec9",
       "rng": {
         "draws": 84,
@@ -85,6 +85,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -105,6 +107,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -214,7 +218,7 @@
       "tick": 61,
       "time": 3.05,
       "nextId": 403,
-      "state": "d172b35a",
+      "state": "c94bbd76",
       "events": "985dd020",
       "rng": {
         "draws": 84,
@@ -237,6 +241,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -257,6 +263,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -366,7 +374,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 403,
-      "state": "26681f0e",
+      "state": "4a04f1aa",
       "events": "741638a5",
       "rng": {
         "draws": 160,
@@ -377,7 +385,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 403,
-      "state": "8752767e",
+      "state": "16e6c11a",
       "events": "741638a5",
       "rng": {
         "draws": 286,
@@ -388,7 +396,7 @@
       "tick": 101,
       "time": 5.05,
       "nextId": 403,
-      "state": "4eccedc4",
+      "state": "5b9b8bf8",
       "events": "741638a5",
       "rng": {
         "draws": 288,
@@ -411,6 +419,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -431,6 +441,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}

@@ -28,7 +28,7 @@
       "tick": 3,
       "time": 0.15,
       "nextId": 404,
-      "state": "a7a71dae",
+      "state": "97ea2450",
       "events": "a191a45b",
       "rng": {
         "draws": 2,
@@ -50,6 +50,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -69,12 +71,14 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
               "itemId": "greyjaw_hide_boots"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}

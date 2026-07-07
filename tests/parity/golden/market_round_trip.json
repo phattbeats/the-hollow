@@ -32,7 +32,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "d35c7648",
+      "state": "fe5a7b76",
       "events": "6f281ba9",
       "rng": {
         "draws": 0,
@@ -54,12 +54,14 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 4,
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -80,6 +82,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -190,7 +194,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "8c7bba66",
+      "state": "a3ef95c4",
       "events": "8510e15d",
       "rng": {
         "draws": 0,
@@ -212,12 +216,14 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 2,
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -238,6 +244,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -348,7 +356,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "8c7bba66",
+      "state": "a3ef95c4",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -370,12 +378,14 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 2,
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -396,6 +406,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -506,7 +518,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "8c7bba66",
+      "state": "a3ef95c4",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -528,12 +540,14 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 2,
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -554,6 +568,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -664,7 +680,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "c29ba39c",
+      "state": "9d08dcb0",
       "events": "9c8ceac2",
       "rng": {
         "draws": 0,
@@ -686,12 +702,14 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 2,
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -712,12 +730,14 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 2,
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -828,7 +848,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "c29ba39c",
+      "state": "9d08dcb0",
       "events": "7643e234",
       "rng": {
         "draws": 0,
@@ -850,12 +870,14 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 2,
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -876,12 +898,14 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 2,
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -992,7 +1016,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 403,
-      "state": "f5eaef09",
+      "state": "c1374e0d",
       "events": "ca3710c4",
       "rng": {
         "draws": 0,
@@ -1003,7 +1027,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 403,
-      "state": "f5eaef09",
+      "state": "c1374e0d",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -1025,12 +1049,14 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1051,12 +1077,14 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 2,
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1167,7 +1195,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 403,
-      "state": "9bdc3f5a",
+      "state": "f56acdae",
       "events": "d760bc49",
       "rng": {
         "draws": 0,
@@ -1190,12 +1218,14 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 2,
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1216,12 +1246,14 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 2,
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1332,7 +1364,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 403,
-      "state": "9bdc3f5a",
+      "state": "f56acdae",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -1355,12 +1387,14 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 2,
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1381,12 +1415,14 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 2,
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}

@@ -17,7 +17,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "f04cb373",
+      "state": "b1a48b8a",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -40,6 +40,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -101,7 +103,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "177c4163",
+      "state": "dfbe39e6",
       "events": "cd56ed8d",
       "rng": {
         "draws": 0,
@@ -124,7 +126,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {
@@ -190,7 +194,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "b16d22e8",
+      "state": "3b97aec5",
       "events": "35dfb915",
       "rng": {
         "draws": 0,
@@ -213,7 +217,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {},
@@ -276,7 +282,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "9a670a71",
+      "state": "3fd9c976",
       "events": "fc92ab25",
       "rng": {
         "draws": 0,
@@ -298,6 +304,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
           "loadouts": [
             {
@@ -316,6 +323,7 @@
               "name": "Arms"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {
@@ -380,7 +388,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "8ca20cb8",
+      "state": "1f2c0a8d",
       "events": "1444b9dd",
       "rng": {
         "draws": 0,
@@ -402,6 +410,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
           "loadouts": [
             {
@@ -420,6 +429,7 @@
               "name": "Arms"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {
@@ -484,7 +494,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "5f48ecdc",
+      "state": "16e6e759",
       "events": "cd56ed8d",
       "rng": {
         "draws": 0,
@@ -506,6 +516,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
           "loadouts": [
             {
@@ -524,6 +535,7 @@
               "name": "Arms"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {},
@@ -586,7 +598,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "5f48ecdc",
+      "state": "16e6e759",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -608,6 +620,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
           "loadouts": [
             {
@@ -626,6 +639,7 @@
               "name": "Arms"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {},

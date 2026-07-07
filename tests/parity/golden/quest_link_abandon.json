@@ -29,7 +29,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "5e419b7b",
+      "state": "8cd13879",
       "events": "47a7d65d",
       "rng": {
         "draws": 0,
@@ -51,6 +51,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -70,6 +72,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -180,7 +184,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "5e419b7b",
+      "state": "8cd13879",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -202,6 +206,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -221,6 +227,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -331,7 +339,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "5e419b7b",
+      "state": "8cd13879",
       "events": "883ca10d",
       "rng": {
         "draws": 0,
@@ -353,6 +361,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -372,6 +382,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -482,7 +494,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "b003d037",
+      "state": "1650027d",
       "events": "4474da9b",
       "rng": {
         "draws": 0,
@@ -504,6 +516,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -523,6 +537,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "questLog": [
             [
               "q_wolves",
@@ -645,7 +661,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "5e419b7b",
+      "state": "8cd13879",
       "events": "d2523ccb",
       "rng": {
         "draws": 0,
@@ -667,6 +683,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -686,6 +704,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -796,7 +816,7 @@
       "tick": 2,
       "time": 0.1,
       "nextId": 403,
-      "state": "946b744f",
+      "state": "7c5635cd",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -818,6 +838,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -837,6 +859,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}

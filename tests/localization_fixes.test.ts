@@ -846,6 +846,9 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
     // the dedicated "Greenpaw hearth and /house helpLines" describe block.
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/housing.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/greenpaw_hearth.ts'), 'utf8'),
+    // PHAA-505: per-player node harvest command denials (dead gate, unknown
+    // node, range, respawn timer).
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/gathering.ts'), 'utf8'),
     socialSrc,
   ].join('\n');
   // Hardened S3: also scan the authoritative server's player-facing emits. The
