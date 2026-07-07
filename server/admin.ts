@@ -33,7 +33,6 @@ import {
   type WordTier,
 } from './chat_filter_db';
 import {
-  accountForToken,
   accountMailTarget,
   findAccount,
   isAdminAccount,
@@ -55,6 +54,7 @@ import {
   moderationReportsForAccount,
   muteAccountChat,
 } from './moderation_db';
+import { requireAdminAccount } from './ownership';
 import { providerUsageSnapshot } from './provider_usage';
 import { rateLimited } from './ratelimit';
 
@@ -138,14 +138,6 @@ function getBlockedIpsForAccount(
   if (detail.lastLoginIp) ips.add(detail.lastLoginIp);
   for (const s of detail.recentSessions) if (s.ip) ips.add(s.ip);
   return [...ips].filter((ip) => game.isIpBlocked(ip));
-}
-
-async function adminAccountId(req: http.IncomingMessage): Promise<number | null> {
-  const m = /^Bearer ([a-f0-9]{64})$/.exec(req.headers.authorization ?? '');
-  if (!m) return null;
-  const accountId = await accountForToken(m[1]);
-  if (accountId === null) return null;
-  return (await isAdminAccount(accountId)) ? accountId : null;
 }
 
 async function handleLogin(req: http.IncomingMessage, res: http.ServerResponse): Promise<void> {
@@ -237,7 +229,7 @@ export async function handleAdminApi(
       return await handleLogin(req, res);
     }
 
-    const accountId = await adminAccountId(req);
+    const accountId = await requireAdminAccount(req);
     if (accountId === null) return fail(res, 401, 'admin authentication required');
 
     const actionMatch =
