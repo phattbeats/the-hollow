@@ -9,7 +9,7 @@
 // keep resolving to THIS file, never the sibling directory.
 //
 // ---------------------------------------------------------------------------
-// FACET MAP: the 25 domain facets (each IWorld member assigned exactly once; 161
+// FACET MAP: the 25 domain facets (each IWorld member assigned exactly once; 162
 // total; this count was previously stale at 23/155, corrected alongside the
 // PHAA-482 feedGreenpaw command addition, again at 24/161 with the PHAA-511
 // guild-calendar-events addition, and again here for PHAA-504's gathering.ts
@@ -48,7 +48,7 @@
 //                                          ALL_DELTA_KEYS (27) + TERSE_TO_IWORLD mapping.
 //   tests/command_schema.test.ts   (W0b)  COMMAND_NAMES universe; ClientWorld send-set
 //                                          subset-of dispatch-set; DISPATCH_ONLY (7).
-//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (161) present + same-kind on
+//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (162) present + same-kind on
 //                                          Sim + ClientWorld; aggregate == disjoint
 //                                          union of the 25 facets.
 // ---------------------------------------------------------------------------
