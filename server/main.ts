@@ -1607,12 +1607,25 @@ async function main(): Promise<void> {
     ws.on('message', (data) => {
       game.handleMessage(session, String(data));
     });
+    // A dropped socket starts the linkdead grace instead of logging the
+    // character out: the session is held in-world so the client's
+    // auto-reconnect (or a fresh login on the same character) resumes it.
+    // socketClosed no-ops for kicked sessions and for stale events from a
+    // socket that a resume has already replaced; the grace-expiry sweep in
+    // game.ts runs the eventual leave().
     ws.on('close', () => {
-      void game.leave(session, 'disconnected');
-      console.log(`- ${character.name} left — ${game.clients.size} online`);
+      if (game.socketClosed(session, ws)) {
+        console.log(`~ ${character.name} linkdead — ${game.clients.size} online`);
+      }
     });
     ws.on('error', () => {
-      void game.leave(session, 'connection error');
+      game.socketClosed(session, ws);
+    });
+    // Clears the keepalive liveness flag (game.ts pingLiveSessions). Guarded
+    // on socket identity so a late pong from a pre-resume socket cannot mask
+    // a black-holed replacement.
+    ws.on('pong', () => {
+      if (session.ws === ws) session.awaitingPong = false;
     });
   }
 

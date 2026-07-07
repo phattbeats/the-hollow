@@ -2592,6 +2592,7 @@ export const da_DK: EnTranslations = {
     "rendererFailed": "Kunne ikke starte gengiveren: prøv at genindlæse. {error}",
     "enterTimeout": "Kunne ikke komme ind i verdenen. Forbindelsen fik timeout. Kører spilserveren?",
     "connectionLost": "Forbindelsen til serveren gik tabt.",
+    "reconnecting": "Connection lost. Reconnecting...",
     "connectionRejected": "Serveren lukkede forbindelsen."
   },
   "errors": {
