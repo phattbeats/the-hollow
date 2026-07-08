@@ -4415,7 +4415,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.brother_greenpaw.name': '綠掌修士',
   'entities.npcs.brother_greenpaw.title': '首席先知（自封）',
   'entities.npcs.brother_greenpaw.greeting':
-    '喲，旅人，你來啦。你說這甕今兒個心情不錯，還是只有我這麼覺得……過來吧，有幾件神聖的事兒要辦。基本上就是弄點吃的。反正對綠掌來說是一回事兒。',
+    '你又來啦，真是福氣……這甕一早上唉聲嘆氣的，幾件神聖的事兒又排上了，跟上回一個路子。過來坐一會兒……',
   'entities.npcs.brother_greenpaw.introLines.0':
     '呃……你好。你好啊。沒聽見你過來，我剛才神遊去了，去了個綠油油的地方……你這一臉剛睡醒的樣子，朋友。我太熟這表情了，我自己十天有九天掛著它……',
   'entities.npcs.brother_greenpaw.introLines.1':
