@@ -2948,6 +2948,17 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_the_wavelength.dialog.refuse': '我自己去找我的訓練，謝了。',
   'entities.quests.q_the_wavelength.dialog.refuseReply':
     '……那也行吧。一個靈魂還沒準備好之前，是沒法強求學東西的。等哪天不是「還沒準備好」了，門就一直開著……給，這個還是拿著吧，好歹你來了一趟。',
+  'entities.quests.q_keep_him_lit.text':
+    '三次，朋友，就是這個數……不是什麼神聖的數字，就是剛好能把一個人情變成一個習慣，習慣才是我真正信的那種信仰……回來餵爐子三次，分開的三次，先後順序不重要，殘火球莖還是洞穴肉粒也不重要，只要你做到了，我就信你是真的打算留下來，不是路過順道辦完事就走……',
+  'entities.quests.q_keep_him_lit.completion':
+    '三次都到了……你不再只是個訪客了，朋友，你是在守著一樣活著的東西，這就是全部的意義，雖然沒人問過我，但我還是要說……給，拿著這個吧，它什麼用也沒有，只是個念想，跟咱們這兒的人一樣……',
+  'entities.quests.q_keep_him_lit.objectives.0.label': '已在爐邊餵食三次',
+  'entities.quests.q_keep_him_lit.dialog.complain': '我不是已經餵過你一次了嗎？這還不夠？',
+  'entities.quests.q_keep_him_lit.dialog.complainReply':
+    '一次是個人情，朋友，三次才是習慣，人情我吃過虧……這不是爐子需不需要，爐子好得很，我照顧得來，這是關於你願不願意自己走回來，不是因為任務標記逼你來的……三次。不急著數。',
+  'entities.quests.q_keep_him_lit.dialog.refuse': '我不會分三次來做這件事。一次就夠了。',
+  'entities.quests.q_keep_him_lit.dialog.refuseReply':
+    '……好吧。好吧，我懂你的意思，朋友，這條線劃得也算公道……這樣吧，還是拿著，嚴格說不算你掙來的，但我給出去的大半也不算，頻率這東西，其實沒真的在計較。',
   'hud.errors.silenced': '你已被沉默！',
   'hud.pet.noPetFood': '你沒有可餵食寵物的食物。',
   'hud.pet.petEatsFoodOnly': '你的寵物只能吃食物。',
@@ -4409,6 +4420,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.items.emberbulb.name': '餘燼球莖',
   'entities.items.first_cutting.name': '插條',
   'entities.items.greenpaw_bead.name': '彈藥帶上的一顆唸珠',
+  'entities.items.keeper_coal.name': '一塊永不冷卻的炭',
   'entities.items.witness_root_cincture.name': '見證根的束帶',
   'entities.items.shrine_diary_page.name': '撕碎的日記頁',
   'entities.items.shrine_diary_page.flavorText':

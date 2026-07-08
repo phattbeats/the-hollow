@@ -76,6 +76,9 @@ const CUTTING_FOR_ALL = Object.fromEntries(ALL_CLASSES.map((c) => [c, 'first_cut
 const BEAD_FOR_ALL = Object.fromEntries(ALL_CLASSES.map((c) => [c, 'greenpaw_bead'])) as Partial<
   Record<PlayerClass, string>
 >;
+const COAL_FOR_ALL = Object.fromEntries(ALL_CLASSES.map((c) => [c, 'keeper_coal'])) as Partial<
+  Record<PlayerClass, string>
+>;
 
 // ---------------------------------------------------------------------------
 // Mobs: the under-shrine cave (the only combat in the slice)
@@ -196,7 +199,7 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
     dynamic: true,
     facing: -0.6,
     color: 0x4a5d3a,
-    questIds: ['q_what_burns', 'q_what_fills', 'q_the_wavelength'],
+    questIds: ['q_what_burns', 'q_what_fills', 'q_the_wavelength', 'q_keep_him_lit'],
     hearth: true,
     // Greeting is the line rendered every time the player opens Greenpaw's
     // gossip dialog after the intro has played, so it must read as
@@ -319,9 +322,44 @@ export const HOLLOW_QUESTS: Record<string, QuestDef> = {
         "...fair 'nough. can't make a soul learn somethin' 'fore they're ready. door's open when it ain't 'not yet' no more... here, take this anyway, least i can do for you showin' up at all.",
     },
   },
+  // PHAA-484 beat 4: rebuilds the habit quest first drafted (and closed, in favor
+  // of q_the_wavelength as the base) on PR #134's q_keep_him_lit, now sitting on
+  // top of the merged 'feed' objective type instead of a bespoke one. Where
+  // q_the_wavelength teaches the feed/smoke mechanic exists at all, this one
+  // turns it into a habit: the same 'feed' objective, credited three separate
+  // times instead of once (quest_credit.ts's onFeedForQuests already loops every
+  // in-progress quest's objectives, so a count of 3 falls out of the existing
+  // credit path with no engine change).
+  q_keep_him_lit: {
+    id: 'q_keep_him_lit',
+    name: 'Keep Him Lit',
+    giverNpcId: 'brother_greenpaw',
+    turnInNpcId: 'brother_greenpaw',
+    text: "three times, friend, that's the number... not sacred, just enough to turn a favor into a habit, and habits are the only religion i actually trust... c'mon back and feed the hearth three separate times, don't matter the order, don't matter which of the two, emberbulb or morsel, and i'll believe you're really here to stay, not just passin' through on your way to somethin' bigger...",
+    completionText:
+      "three for three... you're not just visitin' anymore, friend, you're keepin' somethin' alive, and that's the whole ballgame if you ask me, which nobody did, but i'm sayin' it anyway... here. hold onto this, it don't do nothin', it just remembers, same as the rest of us down here...",
+    objectives: [{ type: 'feed', count: 3, label: 'Hearth fed' }],
+    xpReward: 150,
+    copperReward: 100,
+    itemRewards: COAL_FOR_ALL,
+    requiresQuest: 'q_the_wavelength',
+    offerDialog: {
+      complain: "I already fed you once. Isn't that enough?",
+      complainReply:
+        "once is a favor, friend, three's a habit, and i been burned by favors before... this ain't about the hearth needin' it, the hearth's fine, i keep it fine, it's about you comin' back on your own two feet 'cause you wanted to, not 'cause some quest marker told you to... three times. no rush on the countin'.",
+      refuse: "I'm not doing this three separate times. Once was enough.",
+      refuseReply:
+        "...yeah. yeah, okay, i hear you, friend, that's a fair enough line to draw... tell you what, here, take it anyway, ain't earned in the strictest sense but neither's most of what i hand out, and the wavelength don't really keep score the way i pretend it does...",
+    },
+  },
 };
 
-export const HOLLOW_QUEST_ORDER = ['q_what_burns', 'q_what_fills', 'q_the_wavelength'];
+export const HOLLOW_QUEST_ORDER = [
+  'q_what_burns',
+  'q_what_fills',
+  'q_the_wavelength',
+  'q_keep_him_lit',
+];
 
 // ---------------------------------------------------------------------------
 // World dressing
@@ -566,6 +604,14 @@ export const HOLLOW_ITEMS: Record<string, ItemDef> = {
     kind: 'quest',
     sellValue: 0,
     questId: 'q_the_wavelength',
+  },
+  // PHAA-484 beat 4: q_keep_him_lit's keepsake, same convention as greenpaw_bead.
+  keeper_coal: {
+    id: 'keeper_coal',
+    name: 'A Coal That Never Cooled',
+    kind: 'quest',
+    sellValue: 0,
+    questId: 'q_keep_him_lit',
   },
   // PHAA-433: the Witness-Root's rare-chance drop. Class-neutral single-stat
   // budget, same convention as the other class-neutral pieces (cf. items.ts's

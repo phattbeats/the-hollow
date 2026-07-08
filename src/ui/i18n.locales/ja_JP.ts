@@ -3079,6 +3079,18 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     '自分の修業くらい自分で見つけるさ、ありがとよ。',
   'entities.quests.q_the_wavelength.dialog.refuseReply':
     '……そうか、まあいい。準備がまだの魂に、無理に学ばせることはできんからな。「まだ」じゃなくなったら、扉は開いてる……ほら、これは持ってけ、せめて顔を出してくれたお礼だ。',
+  'entities.quests.q_keep_him_lit.text':
+    '三回だ、友よ、それが数字だ……神聖な意味はない、ただ一つの恩を習慣に変えるにはちょうどいい数ってだけさ、習慣こそ俺が本当に信じてる宗教ってわけだ……戻ってきて、炉に三回、別々に餌をやってくれ、順番はどうでもいい、燠火球根でも洞窟の欠片でもどっちでもいい、そうすりゃお前が本当にここに留まるつもりなんだって信じられる、もっと大きな何かに向かう途中で立ち寄っただけじゃなくてな……',
+  'entities.quests.q_keep_him_lit.completion':
+    '三回で三回……お前はもう訪問者じゃない、友よ、お前は何かを生かし続けてるんだ、それが全部だと俺は思う、誰にも聞かれちゃいないがな……ほら。持っといてくれ、何の役にも立たない、ただ覚えてるだけさ、俺たちみんなと同じでな……',
+  'entities.quests.q_keep_him_lit.objectives.0.label': '炉で三回餌をやった',
+  'entities.quests.q_keep_him_lit.dialog.complain':
+    'もう一度餌をやったじゃないか。それじゃ足りないのか？',
+  'entities.quests.q_keep_him_lit.dialog.complainReply':
+    '一回は恩、友よ、三回は習慣だ、俺は恩ってやつに痛い目を見てきた……炉が必要としてるって話じゃない、炉は元気だ、俺がちゃんと世話してる、これはお前が自分の意志で戻ってくるかどうかって話だ、クエストの印に言われたからじゃなくてな……三回。急いで数えなくていい。',
+  'entities.quests.q_keep_him_lit.dialog.refuse': '三回に分けてなんてやらない。一回で十分だ。',
+  'entities.quests.q_keep_him_lit.dialog.refuseReply':
+    '……ああ。ああ、わかった、友よ、それも十分公平な線引きだ……なら、これでもとにかく持っといてくれ、厳密には稼いだもんじゃないが、俺が渡すもののほとんどもそうだしな、波長ってやつは、俺が装ってるほど几帳面に数えちゃいないんだ……',
   'hud.errors.silenced': '沈黙状態です！',
   'hud.pet.noPetFood': 'ペットに与える食べ物がありません。',
   'hud.pet.petEatsFoodOnly': 'ペットは食べ物しか食べられません。',
@@ -4640,6 +4652,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.items.emberbulb.name': '残り火の球根',
   'entities.items.first_cutting.name': '挿し木',
   'entities.items.greenpaw_bead.name': '弾帯の数珠玉',
+  'entities.items.keeper_coal.name': '冷めることのない炭',
   'entities.items.witness_root_cincture.name': '証しの根の帯紐',
   'entities.items.shrine_diary_page.name': '破れた日記のページ',
   'entities.items.shrine_diary_page.flavorText':

@@ -2946,6 +2946,17 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_the_wavelength.dialog.refuse': '我自己去找我的训练，谢了。',
   'entities.quests.q_the_wavelength.dialog.refuseReply':
     '……那也行吧。一个灵魂还没准备好之前，是没法强求学东西的。等哪天不是"还没准备好"了，门就一直开着……给，这个还是拿着吧，好歹你来了一趟。',
+  'entities.quests.q_keep_him_lit.text':
+    '三次，朋友，就是这个数……不是什么神圣的数字，就是刚好能把一个人情变成一个习惯，习惯才是我真正信的那种信仰……回来喂炉子三次，分开的三次，先后顺序不重要，残火球茎还是洞穴肉粒也不重要，只要你做到了，我就信你是真的打算留下来，不是路过顺道办完事就走……',
+  'entities.quests.q_keep_him_lit.completion':
+    '三次都到了……你不再只是个访客了，朋友，你是在守着一样活着的东西，这就是全部的意义，虽然没人问过我，但我还是要说……给，拿着这个吧，它什么用也没有，只是个念想，跟咱们这儿的人一样……',
+  'entities.quests.q_keep_him_lit.objectives.0.label': '已在炉边喂食三次',
+  'entities.quests.q_keep_him_lit.dialog.complain': '我不是已经喂过你一次了吗？这还不够？',
+  'entities.quests.q_keep_him_lit.dialog.complainReply':
+    '一次是个人情，朋友，三次才是习惯，人情我吃过亏……这不是炉子需不需要，炉子好得很，我照顾得来，这是关于你愿不愿意自己走回来，不是因为任务标记逼你来的……三次。不急着数。',
+  'entities.quests.q_keep_him_lit.dialog.refuse': '我不会分三次来做这件事。一次就够了。',
+  'entities.quests.q_keep_him_lit.dialog.refuseReply':
+    '……好吧。好吧，我懂你的意思，朋友，这条线划得也算公道……这样吧，还是拿着，严格说不算你挣来的，但我给出去的大半也不算，频率这东西，其实没真的在计较。',
   'hud.errors.silenced': '你已被沉默！',
   'hud.pet.noPetFood': '你没有可以喂给宠物的食物。',
   'hud.pet.petEatsFoodOnly': '你的宠物只能吃食物。',
@@ -4409,6 +4420,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.items.emberbulb.name': '余烬球茎',
   'entities.items.first_cutting.name': '插条',
   'entities.items.greenpaw_bead.name': '弹药带上的一颗念珠',
+  'entities.items.keeper_coal.name': '一块永不冷却的炭',
   'entities.items.witness_root_cincture.name': '见证根的束带',
   'entities.items.shrine_diary_page.name': '撕碎的日记页',
   'entities.items.shrine_diary_page.flavorText':

@@ -14,6 +14,7 @@ const hollowEntitiesEn = {
     emberbulb: { name: 'Emberbulb' },
     first_cutting: { name: 'A Cutting' },
     greenpaw_bead: { name: 'A Bead From the Bandolier' },
+    keeper_coal: { name: 'A Coal That Never Cooled' },
     witness_root_cincture: { name: "The Witness-Root's Cincture" },
     shrine_diary_page: {
       name: 'Torn Diary Page',
@@ -107,6 +108,23 @@ const hollowEntitiesEn = {
         refuse: "I'll find my own training, thanks.",
         refuseReply:
           "...fair 'nough. can't make a soul learn somethin' 'fore they're ready. door's open when it ain't 'not yet' no more... here, take this anyway, least i can do for you showin' up at all.",
+      },
+    },
+    // PHAA-484 beat 4: kept identical to the sim record in
+    // src/sim/content/hollow.ts; non-Latin fills live in src/ui/i18n.locales/.
+    q_keep_him_lit: {
+      title: 'Keep Him Lit',
+      text: "three times, friend, that's the number... not sacred, just enough to turn a favor into a habit, and habits are the only religion i actually trust... c'mon back and feed the hearth three separate times, don't matter the order, don't matter which of the two, emberbulb or morsel, and i'll believe you're really here to stay, not just passin' through on your way to somethin' bigger...",
+      completion:
+        "three for three... you're not just visitin' anymore, friend, you're keepin' somethin' alive, and that's the whole ballgame if you ask me, which nobody did, but i'm sayin' it anyway... here. hold onto this, it don't do nothin', it just remembers, same as the rest of us down here...",
+      objectives: { 0: { label: 'Hearth fed' } },
+      dialog: {
+        complain: "I already fed you once. Isn't that enough?",
+        complainReply:
+          "once is a favor, friend, three's a habit, and i been burned by favors before... this ain't about the hearth needin' it, the hearth's fine, i keep it fine, it's about you comin' back on your own two feet 'cause you wanted to, not 'cause some quest marker told you to... three times. no rush on the countin'.",
+        refuse: "I'm not doing this three separate times. Once was enough.",
+        refuseReply:
+          "...yeah. yeah, okay, i hear you, friend, that's a fair enough line to draw... tell you what, here, take it anyway, ain't earned in the strictest sense but neither's most of what i hand out, and the wavelength don't really keep score the way i pretend it does...",
       },
     },
     q_root_hollow_boars: {
