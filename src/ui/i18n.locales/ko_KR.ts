@@ -4821,6 +4821,22 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'sim.hearth.noItems2':
     '가진 거라곤 좋은 마음뿐이구먼, 응… 마음만으로는 화로에 불을 지필 수 없다네.',
   'sim.hearth.tooFar': '브라더 초록발에게 먹이를 주려면 그의 곁에 있어야 한다.',
+  'sim.homestead.alreadyOwn': '당신은 이미 정착지를 소유하고 있다.',
+  'sim.homestead.claimed': '이 땅은 당신의 것이다. 정착지가 확정되었다.',
+  'sim.homestead.helpLine': '정착지: /homestead, /homestead claim.',
+  'sim.homestead.outsideArea': '그곳은 정착지 부지가 아니다. 길 서쪽의 Fallow Acres를 시도해 보라.',
+  'sim.homestead.questGate': '브라더 초록발이 아직 당신을 보내지 않았다. 먼저 그의 용무를 마쳐라.',
+  'sim.homestead.readoutMine': '당신의 정착지는 ({x}, {z})에 있다.',
+  'sim.homestead.readoutNoHomesteadHint':
+    '당신은 정착지가 없다. 우묵골 지대의 적당한 곳에 서서 /homestead claim이라고 입력하라.',
+  'sim.homestead.readoutNoHomesteadQuest':
+    '당신은 정착지가 없다. 브라더 초록발의 용무를 모두 마쳐야 하나를 얻을 수 있다.',
+  'sim.homestead.tooCloseGate': '문에 너무 가깝다. 더 멀리 이동하라.',
+  'sim.homestead.tooCloseGraveyard': '묘지에 너무 가깝다.',
+  'sim.homestead.tooCloseOther': '다른 이의 정착지에 너무 가깝다.',
+  'sim.homestead.tooCloseRoad': '길에 너무 가깝다.',
+  'sim.homestead.tooCloseWater': '물가에 너무 가깝다.',
+  'sim.homestead.tooCloseWildlife': '야생동물에 너무 가깝다. 주변을 정리하거나 더 멀리 이동하라.',
   'sim.house.alreadyOwn': '당신은 이미 공동에 주택을 소유하고 있다.',
   'sim.house.claimed': '이 주택은 이제 당신 것이다. /house place <슬롯> <종류>로 꾸며 보라.',
   'sim.house.cleared': '슬롯 {slot}을(를) 비웠다.',

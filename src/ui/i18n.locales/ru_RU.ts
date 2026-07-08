@@ -4913,6 +4913,25 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'sim.hearth.noItems2':
     'На тебе одни добрые намерения, а? …добрыми намерениями печь не растопишь.',
   'sim.hearth.tooFar': 'Чтобы покормить брата Зеленолапа, нужно быть рядом с ним.',
+  'sim.homestead.alreadyOwn': 'У вас уже есть хутор.',
+  'sim.homestead.claimed': 'Эта земля ваша. Хутор застолблен.',
+  'sim.homestead.helpLine': 'Хутор: /homestead, /homestead claim.',
+  'sim.homestead.outsideArea':
+    'Это не хуторская земля. Попробуйте Fallow Acres, к западу от дороги.',
+  'sim.homestead.questGate':
+    'Брат Зеленолап еще не отправил вас в путь. Сперва закончите его поручения.',
+  'sim.homestead.readoutMine': 'Ваш хутор находится в точке ({x}, {z}).',
+  'sim.homestead.readoutNoHomesteadHint':
+    'У вас нет хутора. Встаньте на подходящем месте в Лощинных Плёсах и введите /homestead claim.',
+  'sim.homestead.readoutNoHomesteadQuest':
+    'У вас нет хутора. Закончите всю цепочку поручений брата Зеленолапа, чтобы получить его.',
+  'sim.homestead.tooCloseGate': 'Слишком близко к воротам. Отойдите дальше.',
+  'sim.homestead.tooCloseGraveyard': 'Слишком близко к кладбищу.',
+  'sim.homestead.tooCloseOther': 'Слишком близко к чужому хутору.',
+  'sim.homestead.tooCloseRoad': 'Слишком близко к дороге.',
+  'sim.homestead.tooCloseWater': 'Слишком близко к воде.',
+  'sim.homestead.tooCloseWildlife':
+    'Слишком близко к дикой живности. Расчистите округу или отойдите дальше.',
   'sim.house.alreadyOwn': 'У вас уже есть свой дом в Пустоши.',
   'sim.house.claimed': 'Этот дом теперь ваш. Украсьте его командой /house place <слот> <вид>.',
   'sim.house.cleared': 'Слот {slot} очищен.',

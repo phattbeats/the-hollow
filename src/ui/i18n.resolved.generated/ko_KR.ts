@@ -2335,20 +2335,20 @@ export const ko_KR: EnTranslations = {
       "helpLine": "주택: /house, /house claim, /house place <슬롯> <종류>, /house remove <슬롯>."
     },
     "homestead": {
-      "outsideArea": "That is outside the homestead ground. Try Fallow Acres, west of the road.",
-      "tooCloseGate": "Too close to the gate. Move further out.",
-      "tooCloseWater": "Too close to the water.",
-      "tooCloseGraveyard": "Too close to the graveyard.",
-      "tooCloseWildlife": "Too close to the wildlife. Clear the area or move further off.",
-      "tooCloseRoad": "Too close to the road.",
-      "tooCloseOther": "Too close to another homestead.",
-      "questGate": "Brother Greenpaw hasn't sent you off yet. Finish his errands first.",
-      "alreadyOwn": "You already own a homestead.",
-      "claimed": "The ground is yours. This homestead is claimed.",
-      "readoutMine": "Your homestead sits at ({x}, {z}).",
-      "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
-      "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
-      "helpLine": "Homestead: /homestead, /homestead claim."
+      "outsideArea": "그곳은 정착지 부지가 아니다. 길 서쪽의 Fallow Acres를 시도해 보라.",
+      "tooCloseGate": "문에 너무 가깝다. 더 멀리 이동하라.",
+      "tooCloseWater": "물가에 너무 가깝다.",
+      "tooCloseGraveyard": "묘지에 너무 가깝다.",
+      "tooCloseWildlife": "야생동물에 너무 가깝다. 주변을 정리하거나 더 멀리 이동하라.",
+      "tooCloseRoad": "길에 너무 가깝다.",
+      "tooCloseOther": "다른 이의 정착지에 너무 가깝다.",
+      "questGate": "브라더 초록발이 아직 당신을 보내지 않았다. 먼저 그의 용무를 마쳐라.",
+      "alreadyOwn": "당신은 이미 정착지를 소유하고 있다.",
+      "claimed": "이 땅은 당신의 것이다. 정착지가 확정되었다.",
+      "readoutMine": "당신의 정착지는 ({x}, {z})에 있다.",
+      "readoutNoHomesteadQuest": "당신은 정착지가 없다. 브라더 초록발의 용무를 모두 마쳐야 하나를 얻을 수 있다.",
+      "readoutNoHomesteadHint": "당신은 정착지가 없다. 우묵골 지대의 적당한 곳에 서서 /homestead claim이라고 입력하라.",
+      "helpLine": "정착지: /homestead, /homestead claim."
     }
   },
   "lockpickUi": {

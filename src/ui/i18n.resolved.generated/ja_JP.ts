@@ -2335,20 +2335,20 @@ export const ja_JP: EnTranslations = {
       "helpLine": "住居：/house、/house claim、/house place <スロット> <種類>、/house remove <スロット>。"
     },
     "homestead": {
-      "outsideArea": "That is outside the homestead ground. Try Fallow Acres, west of the road.",
-      "tooCloseGate": "Too close to the gate. Move further out.",
-      "tooCloseWater": "Too close to the water.",
-      "tooCloseGraveyard": "Too close to the graveyard.",
-      "tooCloseWildlife": "Too close to the wildlife. Clear the area or move further off.",
-      "tooCloseRoad": "Too close to the road.",
-      "tooCloseOther": "Too close to another homestead.",
-      "questGate": "Brother Greenpaw hasn't sent you off yet. Finish his errands first.",
-      "alreadyOwn": "You already own a homestead.",
-      "claimed": "The ground is yours. This homestead is claimed.",
-      "readoutMine": "Your homestead sits at ({x}, {z}).",
-      "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
-      "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
-      "helpLine": "Homestead: /homestead, /homestead claim."
+      "outsideArea": "そこは開拓地の外だ。道を西に進んだFallow Acresを試してみるといい。",
+      "tooCloseGate": "門に近すぎる。もっと離れろ。",
+      "tooCloseWater": "水場に近すぎる。",
+      "tooCloseGraveyard": "墓地に近すぎる。",
+      "tooCloseWildlife": "野生動物に近すぎる。周りを片付けるか、もっと離れろ。",
+      "tooCloseRoad": "道に近すぎる。",
+      "tooCloseOther": "他人の開拓地に近すぎる。",
+      "questGate": "緑掌修道士はまだお前を送り出していない。まずは彼の用事を済ませろ。",
+      "alreadyOwn": "お前はすでに開拓地を持っている。",
+      "claimed": "この土地はお前のものだ。開拓地の権利が確定した。",
+      "readoutMine": "お前の開拓地は ({x}, {z}) にある。",
+      "readoutNoHomesteadQuest": "お前は開拓地を持っていない。緑掌修道士の用事をすべて終えれば手に入る。",
+      "readoutNoHomesteadHint": "お前は開拓地を持っていない。ホロウ低地の適した場所に立ち、/homestead claim と入力しろ。",
+      "helpLine": "開拓地：/homestead、/homestead claim。"
     }
   },
   "lockpickUi": {
