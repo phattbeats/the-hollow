@@ -462,6 +462,28 @@ export const VISUALS: Record<string, VisualDef> = {
     lazyPreload: true,
   },
 
+  // -- female base body (PHAA-557; ship-mixed decision on PHAA-545) ---------
+  // The styloo chibi female base model, registered so it loads through the
+  // roster pipeline: CharacterVisual sets castShadow/receiveShadow on every
+  // mesh and applyMaterials swaps in the tier-correct lit materials, fixing
+  // the shadowless, lighting-ignoring read from the raw scene.add harness in
+  // PHAA-550. Own rig and clip set (not KayKit Rig_Medium), so no attach or
+  // weaponSlots yet; per-class female wiring is PHAA-539's scope. Lazy: no
+  // entity resolves to this key yet, so it must not bloat every client's boot.
+  chibi_female_base: {
+    url: `${PLAYERS}/chibi_female.glb`,
+    height: 2.29,
+    clips: {
+      idle: 'anim_iddle',
+      walk: 'anim_walk',
+      run: 'anim_run',
+      attack: ['anim_push'],
+      death: 'anim_dying',
+      jump: 'anim_jump',
+    },
+    lazyPreload: true,
+  },
+
   // -- forms ---------------------------------------------------------------
   form_sheep: {
     url: `${CREATURES}/alpaca.glb`,
