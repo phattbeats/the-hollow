@@ -1198,14 +1198,8 @@ describe('Greenpaw hearth command text is localized (variable-routed blind spot)
 // homestead entries are NOT yet in the filled-locale set below. They are still
 // asserted as RECOGNIZED at the PR tier.
 describe('Homestead v0 blind spots are localized (multi-line ctx.error + /homestead helpLine)', () => {
-  const chatSrc = fs.readFileSync(
-    path.resolve(process.cwd(), 'src/sim/social/chat.ts'),
-    'utf8',
-  );
-  const homesteadSrc = fs.readFileSync(
-    path.resolve(process.cwd(), 'src/sim/homestead.ts'),
-    'utf8',
-  );
+  const chatSrc = fs.readFileSync(path.resolve(process.cwd(), 'src/sim/social/chat.ts'), 'utf8');
+  const homesteadSrc = fs.readFileSync(path.resolve(process.cwd(), 'src/sim/homestead.ts'), 'utf8');
 
   const helpHomesteadLine = 'Homestead: /homestead, /homestead claim.';
   // The three multi-line this.ctx.error literals in homestead.ts. The S3 er
@@ -1219,10 +1213,9 @@ describe('Homestead v0 blind spots are localized (multi-line ctx.error + /homest
   ];
 
   it('the /homestead helpLine still appears in chat.ts and the three multi-line ctx.error literals still appear in homestead.ts', () => {
-    expect(
-      chatSrc.includes(`'${helpHomesteadLine}'`),
-      '/homestead helpLine text drifted',
-    ).toBe(true);
+    expect(chatSrc.includes(`'${helpHomesteadLine}'`), '/homestead helpLine text drifted').toBe(
+      true,
+    );
     for (const s of homesteadMultiLineCtxError) {
       expect(
         homesteadSrc.includes(s),
