@@ -195,8 +195,14 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
     color: 0x4a5d3a,
     questIds: ['q_what_burns', 'q_what_fills'],
     hearth: true,
+    // Greeting is the line rendered every time the player opens Greenpaw's
+    // gossip dialog after the intro has played, so it must read as
+    // already-met voice rather than first-meeting voice (PHAA-432 follow-up,
+    // Brandon feedback on PR #82). The intro itself carries the meet-and-greet
+    // beats; the greeting assumes shared context and leads straight back to
+    // the errand queue.
     greeting:
-      "howdy, traveler. you catch the vase in a mood today, or is that just me again... c'mere, got a couple sacred matters need tendin'. mostly snacks. same thing, to a greenpaw degree.",
+      "you're back, that's a blessin'... the vase has been sighin' all mornin', got a couple sacred matters queued up, same wavelength as last time. c'mere a minute...",
     // First-meeting click-through intro (PHAA-432): three beats in-voice
     // (all-lowercase, run-on, trailing "...", cowboy-fatalist, sincere) that
     // carry the "remnants of a once great tribe" throughline before the errand.

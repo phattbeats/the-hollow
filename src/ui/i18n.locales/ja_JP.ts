@@ -4644,7 +4644,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.brother_greenpaw.name': '緑掌修道士',
   'entities.npcs.brother_greenpaw.title': '初代預言者（自称）',
   'entities.npcs.brother_greenpaw.greeting':
-    'よお、旅人。今日の壺はご機嫌かい、それとも俺の気のせいか……まあ来いよ、片付けなきゃならん神聖な用事が二つばかりある。ほとんど食い物のことだけどな。緑掌的にはそれも同じようなもんだ。',
+    'また来たか、助かるよ……壺が一晩中ため息ばかりついてるんだ、神聖な用事がいくつか溜まっててな、前回と同じ波長だ。ちょいと来い……',
   'entities.npcs.brother_greenpaw.introLines.0':
     'うっ……よお。よお。来たのに気づかんかった、俺はどっか別の場所にいてな、緑いっぱいのとこに……あんた、寝起きみたいな顔してるな、友よ。その顔ならよく知ってる、俺なんざ大抵の日はその顔だ……',
   'entities.npcs.brother_greenpaw.introLines.1':

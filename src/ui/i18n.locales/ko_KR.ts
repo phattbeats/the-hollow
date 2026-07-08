@@ -4656,7 +4656,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.brother_greenpaw.name': '브라더 초록발',
   'entities.npcs.brother_greenpaw.title': '초대 선지자(자칭)',
   'entities.npcs.brother_greenpaw.greeting':
-    '어이, 나그네. 오늘 항아리 기분이 좀 이상해 보이나, 아니면 또 나만 그렇게 느끼는 건가……이리 와 보게, 처리해야 할 신성한 일이 몇 가지 있어. 대부분 간식거리지만. 뭐, 그린포우 식으로 치면 그게 그거지.',
+    '다시 왔네, 그게 신의 축복이지……그 항아리가 아침부터 한숨만 쉬고 있어, 처리해야 할 신성한 일들이 줄을 서 있고, 지난번이랑 같은 주파수야. 잠깐 이리 와 보게……',
   'entities.npcs.brother_greenpaw.introLines.0':
     '어어……안녕. 안녕하신가. 다가오는 걸 못 들었네, 잠깐 딴 데 가 있었거든, 어디 푸르른 곳에……자네 방금 잠에서 깬 얼굴이구먼, 친구. 그 표정 나도 잘 알지, 나야 거의 매일 그 얼굴이니까……',
   'entities.npcs.brother_greenpaw.introLines.1':

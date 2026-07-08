@@ -31,8 +31,15 @@ const hollowEntitiesEn = {
     brother_greenpaw: {
       name: 'Brother Greenpaw',
       title: 'First Prophet (self-appointed)',
+      // Greeting renders every time the player opens Greenpaw's gossip dialog
+      // after the intro has played, so it must read as already-met voice
+      // rather than first-meeting voice (PHAA-432 follow-up, Brandon feedback
+      // on PR #82). The intro itself carries the meet-and-greet beats; the
+      // greeting assumes shared context and leads straight back to the
+      // errand queue. Kept identical to the sim record in
+      // src/sim/content/hollow.ts.
       greeting:
-        "howdy, traveler. you catch the vase in a mood today, or is that just me again... c'mere, got a couple sacred matters need tendin'. mostly snacks. same thing, to a greenpaw degree.",
+        "you're back, that's a blessin'... the vase has been sighin' all mornin', got a couple sacred matters queued up, same wavelength as last time. c'mere a minute...",
       // First-meeting click-through intro (PHAA-432). Kept identical to the sim
       // record in src/sim/content/hollow.ts; the resolver reads this English
       // source, non-Latin fills live in src/ui/i18n.locales/<lang>.ts.
