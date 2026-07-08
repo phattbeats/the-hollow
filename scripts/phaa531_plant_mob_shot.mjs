@@ -62,7 +62,13 @@ const staged = await page.evaluate(() => {
   const specs = [
     { templateId: 'palefeeder', name: 'Palefeeder', color: 0xcfd8cf, scale: 0.9, dx: -5 },
     { templateId: 'rootmaw', name: 'Rootmaw', color: 0x6b5d4f, scale: 1.1, dx: 0 },
-    { templateId: 'the_witness_root', name: 'The Witness-Root', color: 0x39412f, scale: 1.6, dx: 5 },
+    {
+      templateId: 'the_witness_root',
+      name: 'The Witness-Root',
+      color: 0x39412f,
+      scale: 1.6,
+      dx: 5,
+    },
   ];
   const ids = [];
   for (const s of specs) {
