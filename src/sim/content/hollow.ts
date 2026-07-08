@@ -640,6 +640,37 @@ export const HOLLOW_ITEMS: Record<string, ItemDef> = {
       'here does not forget Him, even if He has forgotten this place. If the ' +
       'heron circles low, tell the Verger the wick still burns...',
   },
+  // PHAA-560 (tribe-mystery breadcrumb, one of 2-3, docs/plan-the-hollow.md's
+  // PROTECTED OPEN QUESTION stays unresolved): a second Under-Shrine found
+  // object, same convention as shrine_diary_page above, different find and a
+  // different unnamed writer. Indirect: implies a congregation large enough
+  // to wear a groove into a great many tokens, never says what became of it.
+  worn_prayer_token: {
+    id: 'worn_prayer_token',
+    name: 'Worn Prayer Token',
+    kind: 'junk',
+    sellValue: 1,
+    flavorText:
+      "...smooth on one face from a thumb that isn't mine, worn the same shallow " +
+      'groove into a hundred more like it before this one, or so the pile down ' +
+      "here would have you believe. one thumb doesn't wear a hundred tokens. a " +
+      'lot of thumbs wear one groove, though...',
+  },
+  // PHAA-560 (tribe-mystery breadcrumb): found where the boars rooted up half of
+  // Root Hollow (q_root_hollow_boars's own text), an item-flavor hint rather
+  // than an NPC line. Indirect: a tally with hundreds of marks and an
+  // unfinished last row, never says what stopped the counting.
+  tally_shard: {
+    id: 'tally_shard',
+    name: 'Tally-Marked Shard',
+    kind: 'quest',
+    sellValue: 0,
+    questId: 'q_root_hollow_boars',
+    flavorText:
+      '...marks in fives, scratched deep, crossed each time the count came round. ' +
+      'hundreds of fives before the crossing stops, and the last row was never ' +
+      'finished...',
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -752,7 +783,13 @@ export const HOLLOW_DUNGEON_DEFS: Record<string, DungeonDef> = {
     // the entrance (pillars run |x|=14 for z 10..130, walls at |x|=22), clear
     // of the spawn line and short of the first tomb obstacle at (-19, 16),
     // whose OBB spans x -20.1..-17.9, z 13.9..18.1.
-    objects: [{ itemId: 'shrine_diary_page', name: 'Torn Diary Page', x: -17, z: 9 }],
+    objects: [
+      { itemId: 'shrine_diary_page', name: 'Torn Diary Page', x: -17, z: 9 },
+      // PHAA-560 (tribe-mystery breadcrumb): the wall aisle's mirror spot,
+      // same z as the diary page above (clear of the tomb row, which starts
+      // at z 16) and clear of the pillars (which start at z 10).
+      { itemId: 'worn_prayer_token', name: 'Worn Prayer Token', x: 17, z: 9 },
+    ],
     // Deliberate: the 'crypt' interior builder is the Hollow Crypt's own
     // skeleton (sealed doors, keystones, the buried-and-walled grammar) reused
     // per the constitution (§4, the Hollow Crypt reuse) and rethemed root-cold
