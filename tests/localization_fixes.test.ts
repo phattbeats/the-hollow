@@ -1186,3 +1186,55 @@ describe('Greenpaw hearth command text is localized (variable-routed blind spot)
     setLanguage('en');
   });
 });
+
+// PHAA-533: Homestead v0 (src/sim/homestead.ts) has THREE multi-line
+// `this.ctx.error(...)` calls with trailing commas - the S3 er regex requires
+// `${lit}\\s*\\)`, so a literal followed by `,\\n  )` does not match the regex
+// even when the literal is in source. The S3 rr regex (return-statements) does
+// catch placementIssue()'s seven rejections; the three in-homesteadClaim /
+// handleChat multi-line ctx.error calls (the Greenpaw quest-gate and the two
+// `You own no homestead...` variants) plus the chat.ts /homestead helpLines
+// entry are listed here. The parameterized (x, z) sit-at template is captured
+// by the S3 scanner (Math.round -> digit substitution). All four are recognized
+// by RULES in sim_i18n.ts (the runtime path), so this guard keeps the source
+// in sync with the matcher. Per CLAUDE.md contributors add English only; the
+// M16 non-Latin fill is the maintainer's release pass, so the contributor-side
+// homestead entries are NOT yet in the filled-locale set below. They are still
+// asserted as RECOGNIZED at the PR tier.
+describe('Homestead v0 blind spots are localized (multi-line ctx.error + /homestead helpLine)', () => {
+  const chatSrc = fs.readFileSync(path.resolve(process.cwd(), 'src/sim/social/chat.ts'), 'utf8');
+  const homesteadSrc = fs.readFileSync(path.resolve(process.cwd(), 'src/sim/homestead.ts'), 'utf8');
+
+  const helpHomesteadLine = 'Homestead: /homestead, /homestead claim.';
+  // The three multi-line this.ctx.error literals in homestead.ts. The S3 er
+  // regex requires `${lit}\\s*\\)`, which does NOT match `<lit>,\\n  )`, so these
+  // slip past the main scanner. All three appear verbatim in homestead.ts and
+  // are recognized by RULES in sim_i18n.ts.
+  const homesteadMultiLineCtxError = [
+    "Brother Greenpaw hasn't sent you off yet. Finish his errands first.",
+    "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
+    'You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.',
+  ];
+
+  it('the /homestead helpLine still appears in chat.ts and the three multi-line ctx.error literals still appear in homestead.ts', () => {
+    expect(chatSrc.includes(`'${helpHomesteadLine}'`), '/homestead helpLine text drifted').toBe(
+      true,
+    );
+    for (const s of homesteadMultiLineCtxError) {
+      expect(
+        homesteadSrc.includes(s),
+        `homestead.ts no longer contains the multi-line ctx.error literal "${s}"`,
+      ).toBe(true);
+    }
+  });
+
+  it('every homestead blind-spot string is recognized by localizeSimText (PR tier)', () => {
+    setLanguage('en');
+    for (const s of [helpHomesteadLine, ...homesteadMultiLineCtxError]) {
+      expect(
+        localizeSimText(s),
+        `sim text "${s}" not recognized (would leak raw English)`,
+      ).not.toBeNull();
+    }
+  });
+});
