@@ -2935,6 +2935,19 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_what_fills.dialog.refuse': '不。我不會再下去了。',
   'entities.quests.q_what_fills.dialog.refuseReply':
     '哦……哦，好吧。……好吧。這……是啊。不，這很公道，朋友，很公道……瓶子也聽見了，偷偷跟你說，我覺得他還挺敬佩你的。來，這根插枝你還是拿著。你下去過一次，就已經比大多數人多一次了……',
+  'entities.quests.q_the_wavelength.title': '同一頻率上',
+  'entities.quests.q_the_wavelength.text':
+    '挖來的插條現在是你的了，朋友，那接下來該聊聊後面的事了……兩件事，都不算考驗，更像是引見。第一，穿過瓶子那邊，去見見耶羅長老，她教的是第二天職，一種完全不同的玩法，凡是路過這兒的靈魂都該知道那扇門是開著的……第二，回來餵我點什麼，不管是哪樣，殘火球莖也好，洞穴肉粒也好，我永遠處於飢餓狀態，瓶子也永遠想要煙。這部分是不會真正結束的，對綠掌來說就是這樣。',
+  'entities.quests.q_the_wavelength.completion':
+    '看吧……你感覺到了吧，房間一下子變濃了？那是他，注意到了。這就是全部的竅門，朋友——你餵我，我就冒煙，他就多湊近一點聽著。沒什麼複雜的。以後也永遠不會變。手頭有多餘的殘火球莖或洞穴肉粒，隨時過來，爐子不看日曆……哦對了。歡迎來到聖所。我這才意識到之前一直沒說過這句。',
+  'entities.quests.q_the_wavelength.objectives.0.label': '已拜見耶羅長老',
+  'entities.quests.q_the_wavelength.objectives.1.label': '已在爐邊餵食',
+  'entities.quests.q_the_wavelength.dialog.complain': '又要跑腿？我才剛從那洞裡爬出來。',
+  'entities.quests.q_the_wavelength.dialog.complainReply':
+    '不不，聽我說完，這次不是洞裡的活兒……這次簡單，就是走一趟，好好餵我一次。這是我求過你最輕鬆的一件事了，我保證，同頻共振，絕不騙你。',
+  'entities.quests.q_the_wavelength.dialog.refuse': '我自己去找我的訓練，謝了。',
+  'entities.quests.q_the_wavelength.dialog.refuseReply':
+    '……那也行吧。一個靈魂還沒準備好之前，是沒法強求學東西的。等哪天不是「還沒準備好」了，門就一直開著……給，這個還是拿著吧，好歹你來了一趟。',
   'hud.errors.silenced': '你已被沉默！',
   'hud.pet.noPetFood': '你沒有可餵食寵物的食物。',
   'hud.pet.petEatsFoodOnly': '你的寵物只能吃食物。',
@@ -4395,6 +4408,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': '洞穴肉粒',
   'entities.items.emberbulb.name': '餘燼球莖',
   'entities.items.first_cutting.name': '插條',
+  'entities.items.greenpaw_bead.name': '彈藥帶上的一顆唸珠',
   'entities.items.witness_root_cincture.name': '見證根的束帶',
   'entities.items.shrine_diary_page.name': '撕碎的日記頁',
   'entities.items.shrine_diary_page.flavorText':

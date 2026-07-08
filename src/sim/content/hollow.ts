@@ -73,6 +73,9 @@ const ALL_CLASSES: PlayerClass[] = [
 const CUTTING_FOR_ALL = Object.fromEntries(ALL_CLASSES.map((c) => [c, 'first_cutting'])) as Partial<
   Record<PlayerClass, string>
 >;
+const BEAD_FOR_ALL = Object.fromEntries(ALL_CLASSES.map((c) => [c, 'greenpaw_bead'])) as Partial<
+  Record<PlayerClass, string>
+>;
 
 // ---------------------------------------------------------------------------
 // Mobs: the under-shrine cave (the only combat in the slice)
@@ -193,7 +196,7 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
     dynamic: true,
     facing: -0.6,
     color: 0x4a5d3a,
-    questIds: ['q_what_burns', 'q_what_fills'],
+    questIds: ['q_what_burns', 'q_what_fills', 'q_the_wavelength'],
     hearth: true,
     // Greeting is the line rendered every time the player opens Greenpaw's
     // gossip dialog after the intro has played, so it must read as
@@ -225,7 +228,10 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
     dynamic: true,
     facing: 0.6,
     color: 0x8a9a5b,
-    questIds: [],
+    // PHAA-484: q_the_wavelength sends the player here first, so its "talk to
+    // Elder Yarrow" objective (interactNpcForQuests, sim.ts) can surface the
+    // in-progress quest in her own gossip window too.
+    questIds: ['q_the_wavelength'],
     trainer: { professions: ALL_CLASSES },
     greeting: 'Every build starts as a question. Which second calling speaks to you?',
   },
@@ -279,9 +285,43 @@ export const HOLLOW_QUESTS: Record<string, QuestDef> = {
         "oh... oh, okay. ...okay. that's... yeah. no, that's fair, friend, that's fair... the vase heard it too, and between you and me i think he respects it. here, take the cutting anyway. you went down once, and that's once more than most...",
     },
   },
+  // PHAA-484 (the Greenpaw Arc): the chain's third beat, and the first that
+  // isn't a cave fetch. Teaches two standing mechanics by walking the player
+  // through them once each, in-voice: the profession trainer across the vase
+  // (the 'interact' objective on elder_yarrow, credited the moment she's
+  // talked to, sim.ts's interactNpcForQuests), and the feed/smoke hearth loop
+  // itself (the 'feed' objective, credited by greenpaw_hearth.ts's feed() on
+  // any successful feed - see quests/quest_credit.ts's onFeedForQuests). No
+  // new cave descent, no new farmable item: the "quest" is entirely two
+  // things the player can already do, now narrated and rewarded once.
+  q_the_wavelength: {
+    id: 'q_the_wavelength',
+    name: 'On the Wavelength',
+    giverNpcId: 'brother_greenpaw',
+    turnInNpcId: 'brother_greenpaw',
+    text: "the cutting's yours now, friend, so let's talk about what comes after... two things, and neither one's a trial, more like an interduction. first, cross the vase and meet elder yarrow, she teaches a whole second callin', a different way to play this whole thing, and every soul that comes through here oughta know that door's open... second, come on back and feed me somethin', don't matter which, emberbulb or morsel, i'm always runnin' on empty and the vase always wants for smoke. that part never really ends, to a greenpaw degree.",
+    completionText:
+      "there it is... you felt the room go thick for a second, right? that's him, noticin'. that's the whole trick, friend - you feed me, i smoke up the place, he leans in a little closer to payin' attention. ain't complicated. ain't never gonna stop bein' true, neither. c'mere anytime you're carryin' spare bulbs or morsels, the hearth don't keep a calendar... and hey. welcome to the hollow. i realize i never actually said that part.",
+    objectives: [
+      { type: 'interact', targetNpcId: 'elder_yarrow', count: 1, label: 'Elder Yarrow met' },
+      { type: 'feed', count: 1, label: 'Fed at the hearth' },
+    ],
+    xpReward: 120,
+    copperReward: 80,
+    itemRewards: BEAD_FOR_ALL,
+    requiresQuest: 'q_what_fills',
+    offerDialog: {
+      complain: 'Another errand? I just climbed out of that hole.',
+      complainReply:
+        "no, no, hear me out, this ain't cave work... this one's easy, this one's just walkin' and one good feed. lightest thing i ever asked of you, i promise, on the wavelength and everything.",
+      refuse: "I'll find my own training, thanks.",
+      refuseReply:
+        "...fair 'nough. can't make a soul learn somethin' 'fore they're ready. door's open when it ain't 'not yet' no more... here, take this anyway, least i can do for you showin' up at all.",
+    },
+  },
 };
 
-export const HOLLOW_QUEST_ORDER = ['q_what_burns', 'q_what_fills'];
+export const HOLLOW_QUEST_ORDER = ['q_what_burns', 'q_what_fills', 'q_the_wavelength'];
 
 // ---------------------------------------------------------------------------
 // World dressing
@@ -518,6 +558,14 @@ export const HOLLOW_ITEMS: Record<string, ItemDef> = {
     kind: 'quest',
     sellValue: 0, // it is alive; it is not for sale
     questId: 'q_what_fills',
+  },
+  // PHAA-484: q_the_wavelength's keepsake, same convention as first_cutting.
+  greenpaw_bead: {
+    id: 'greenpaw_bead',
+    name: 'A Bead From the Bandolier',
+    kind: 'quest',
+    sellValue: 0,
+    questId: 'q_the_wavelength',
   },
   // PHAA-433: the Witness-Root's rare-chance drop. Class-neutral single-stat
   // budget, same convention as the other class-neutral pieces (cf. items.ts's

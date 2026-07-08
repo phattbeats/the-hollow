@@ -3064,6 +3064,21 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_what_fills.dialog.refuse': 'いやだ。もう二度とあそこには下りない。',
   'entities.quests.q_what_fills.dialog.refuseReply':
     'ああ……あ、ああ、わかった。……わかったよ。それは……そうか。いや、もっともだ、友よ、もっともだ……壺も聞いてたし、ここだけの話、あいつも一目置いてると思うぜ。ほら、挿し木はとにかく持っていけ。一度は下りたんだ、それだけで大抵のやつより一回多い……',
+  'entities.quests.q_the_wavelength.title': '波長に乗って',
+  'entities.quests.q_the_wavelength.text':
+    '挿し木はもうお前のもんだ、友よ、だからその先の話をしようや……二つあるが、どっちも試練ってほどじゃない、どっちかって言うと紹介だな。まず、壺を越えてエルダー・ヤロウに会ってこい、あの人はもう一つの生き方、まったく違う遊び方を教えてくれる、ここを通る魂は誰だって、その扉が開いてるって知っとくべきだ……それから、戻ってきて何か食わせてくれ、残り火の球根でも肉片でもどっちでもいい、俺はいつだって空っぽで、壺はいつだって煙を欲しがってる。そこだけは、終わることがないんだよ、緑掌的に言えばな。',
+  'entities.quests.q_the_wavelength.completion':
+    'そら……一瞬、部屋が濃くなったの感じただろ？あの方が気づいたんだ。それが全部のからくりだよ、友よ――お前が俺に食わせて、俺が煙を焚いて、あの方がちょっとだけこっちに耳を傾ける。難しいことなんて何もない。これから先もずっと変わらんよ。残り火の球根でも肉片でも、余分に持ってたらいつでも来い、炉は暦なんて持っちゃいない……あとな。ホロウへようこそ。そこ、ちゃんと言ってなかったなって、今気づいた。',
+  'entities.quests.q_the_wavelength.objectives.0.label': 'エルダー・ヤロウに会った',
+  'entities.quests.q_the_wavelength.objectives.1.label': '炉で餌をやった',
+  'entities.quests.q_the_wavelength.dialog.complain':
+    'また使いっ走りか？穴から這い出たばっかりだぞ。',
+  'entities.quests.q_the_wavelength.dialog.complainReply':
+    'いやいや、聞いてくれ、これは洞窟仕事じゃない……今度のは楽な話で、歩いて、一回ちゃんと食わせるだけだ。俺が今まで頼んだ中で一番軽い頼みごとだよ、約束する、波長にかけてもな。',
+  'entities.quests.q_the_wavelength.dialog.refuse':
+    '自分の修業くらい自分で見つけるさ、ありがとよ。',
+  'entities.quests.q_the_wavelength.dialog.refuseReply':
+    '……そうか、まあいい。準備がまだの魂に、無理に学ばせることはできんからな。「まだ」じゃなくなったら、扉は開いてる……ほら、これは持ってけ、せめて顔を出してくれたお礼だ。',
   'hud.errors.silenced': '沈黙状態です！',
   'hud.pet.noPetFood': 'ペットに与える食べ物がありません。',
   'hud.pet.petEatsFoodOnly': 'ペットは食べ物しか食べられません。',
@@ -4624,6 +4639,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': '洞窟の肉片',
   'entities.items.emberbulb.name': '残り火の球根',
   'entities.items.first_cutting.name': '挿し木',
+  'entities.items.greenpaw_bead.name': '弾帯の数珠玉',
   'entities.items.witness_root_cincture.name': '証しの根の帯紐',
   'entities.items.shrine_diary_page.name': '破れた日記のページ',
   'entities.items.shrine_diary_page.flavorText':

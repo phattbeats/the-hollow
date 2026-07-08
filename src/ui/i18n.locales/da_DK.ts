@@ -899,6 +899,7 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'entities.items.fenreed_staff.name': 'Kærsiv-Stav',
   'entities.items.fenwalker_boots.name': 'Kærvandrer-Støvler',
   'entities.items.first_cutting.name': 'En Stikling',
+  'entities.items.greenpaw_bead.name': 'En Perle Fra Bandoleret',
   'entities.items.witness_root_cincture.name': 'Vidnerods Bælte',
   'entities.items.shrine_diary_page.name': 'Iturevet Dagbogsside',
   'entities.items.shrine_diary_page.flavorText':

@@ -68,9 +68,11 @@ const CALLBACK_KEYS = [
   'partyOf',
   'removeFromParty',
   'dropPartyMarkers',
-  // Q1 quest-credit trio + the countItem it consumes.
+  // Q1 quest-credit trio + the countItem it consumes; onGreenpawFedForQuests
+  // (PHAA-484) is the hearth's own feed-credit callback.
   'onMobKilledForQuests',
   'onInventoryChangedForQuests',
+  'onGreenpawFedForQuests',
   'checkQuestReady',
   'countItem',
   // E1 entity-roster surface.
@@ -314,6 +316,7 @@ function makeFakeHost() {
     dropPartyMarkers: vi.fn(),
     onMobKilledForQuests: vi.fn(),
     onInventoryChangedForQuests: vi.fn(),
+    onGreenpawFedForQuests: vi.fn(),
     checkQuestReady: vi.fn(),
     countItem: vi.fn(() => 0),
     lockoutNowMs: vi.fn(() => 0),

@@ -1302,12 +1302,12 @@ export function emptyZoneProps(): ZonePropsDef {
 }
 
 export interface QuestObjective {
-  type: 'kill' | 'collect' | 'interact';
+  type: 'kill' | 'collect' | 'interact' | 'feed';
   targetMobId?: string; // for kill
   itemId?: string; // for collect
   targetObjectItemId?: string; // for interactable ground objects
   targetNpcId?: string; // for interactable NPC objectives
-  count: number;
+  count: number; // for 'feed', the number of successful feedGreenpaw() calls
   label: string;
 }
 
