@@ -82,6 +82,12 @@ export const en = {
   game: gameStrings,
   hudChrome: hudChromeStrings,
   guide: guideStrings,
+  // World-placed readable book "Read" prompt (PHAA-552). One word, not "wordy"
+  // by the M16 rule, so English-only at PR tier; the build English-fills the
+  // other locales. The book title and page text are entities, not chrome (see
+  // entities.readables + src/ui/entity_i18n.ts). The reader window reuses the
+  // existing questUi.dialog.continue / .close chrome, so no new keys there.
+  readableUi: { prompt: { read: 'Read' } },
   // One-time cold-open intro (cold_open.ts). Own domain, not hud.*, per PHAA-431.
   coldOpen: coldOpenStrings,
   // Cosmetic skin-select event overlay. Rarity names reuse itemUi.quality.*.
@@ -1016,6 +1022,7 @@ export const en = {
       ...hollowEntities.en.dungeons,
     },
     delves: { ...worldNames.en.entities.delves },
+    readables: { ...hollowEntities.en.readables },
   },
 };
 

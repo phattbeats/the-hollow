@@ -1180,6 +1180,23 @@ export interface GatherNodeDef {
   pos: { x: number; z: number };
 }
 
+// World-placed readable props (WoW-style journals/books lying around, PHAA-552).
+// Static, unowned world dressing with a client-only reveal: reading one mutates
+// no game state, so (unlike a gather node's harvest) there is no server command,
+// wire field, or sim tick logic, only a proximity prompt and a paginated reader.
+// `pages` and `title` are the canonical ENGLISH content; the client resolves the
+// displayed text through the `readable` entity-i18n kind (src/ui/entity_i18n.ts),
+// the sim stays language-agnostic. Placement mirrors GatherNodeDef: world-space
+// x/z in an overworld zone, plus a `facing` yaw for the rendered book.
+export interface ReadableDef {
+  id: string;
+  zoneId: string;
+  pos: { x: number; z: number };
+  facing: number; // radians, yaw applied to the rendered book prop
+  title: string; // canonical English title shown in the reader window
+  pages: string[]; // canonical English pages, one per reader page turn
+}
+
 export interface DungeonSpawn {
   mobId: string;
   x: number; // relative to instance origin

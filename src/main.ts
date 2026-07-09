@@ -1668,6 +1668,15 @@ async function startGame(
       else hud.openQuestDialog(bestNpc);
       return;
     }
+    // World-placed readable books (PHAA-552): like housing plots, these are not
+    // entities, so they sit outside the entity loop above. renderer.nearReadable
+    // mirrors the same read-range check the HUD "Read" prompt uses; opening the
+    // book is a client-only reveal, no world command is sent.
+    const nearReadable = renderer.nearReadable;
+    if (nearReadable) {
+      hud.openReadable(nearReadable.id);
+      return;
+    }
     // Housing v0 (PHAA-405): homestead plots are not entities, so they sit
     // outside the loop above. renderer.nearHousingPlot mirrors the same
     // interact-range check the server enforces on claim (housing_proximity.ts).
