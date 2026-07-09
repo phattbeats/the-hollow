@@ -328,7 +328,6 @@ import { groundHeight, WATER_LEVEL, waterLevelAt } from './world';
 // can slide around a prop instead of pinning on it. Desired heading (0) first;
 // only evaluated past the first entry when that straight step is obstructed.
 const MOVE_SLIDE_FAN = [0, 0.5, -0.5, 1.0, -1.0, 1.6, -1.6];
-const BACKPEDAL_MULT = 0.65;
 // Low-HP flee ("fear"): a cowardly mob at or below this HP fraction panics, turns
 // and runs from its attacker for FLEE_DURATION seconds at FLEE_SPEED_MULT speed,
 // rallying same-family allies it runs past (mob/social_aggro.ts). It flees only once
@@ -340,11 +339,8 @@ const FLEE_DURATION = 5;
 // Only sentient, cowardly families flee; beasts/undead/elementals/dragonkin fight
 // to the death. Elites, rares, and bosses never flee regardless of family.
 const FLEEING_FAMILIES: ReadonlySet<MobFamily> = new Set(['humanoid', 'kobold', 'murloc', 'troll']);
-const GRAVITY = 16;
-const JUMP_VELOCITY = 6; // apex = v^2/2g ≈ 1.125 yd
-// Exported for social/chat_readouts.ts (the /falling readout shares the landing-damage
-// threshold with the in-sim fall-damage model below).
-export const FALL_SAFE_DISTANCE = 12; // yards of free fall before damage
+// GRAVITY / JUMP_VELOCITY / BACKPEDAL_MULT / FALL_SAFE_DISTANCE moved to
+// ./player_motion with the movement kernel (FALL_SAFE_DISTANCE re-exported above).
 // OBJECT_RESPAWN moved to types.ts (shared with the extracted Nythraxis crypt-relic
 // respawn). The NYTHRAXIS_* encounter consts (relic summons, Aldric id, wardstone /
 // gravebreaker / soul-rend / deathless / transition tuning, room radius, lockout ms,
@@ -415,6 +411,14 @@ const DELVE_COMPANION_LEVEL_PCT = [0, 0.5, 0.75, 1.0]; // index = rank
 // re-exported from there so external importers (src/ui/sim_i18n.ts, tests) are unchanged.
 export { DELVE_IMPLEMENTED_AFFIXES, DELVE_MODULE_NAMES } from './delves/runs';
 
+// The player movement kernel (turn/wish/collision/vertical) moved VERBATIM to
+// ./player_motion (the online client's display-only extrapolator binds the same
+// step). swimSurfaceY is imported back for the swim/fall paths elsewhere in Sim;
+// FALL_SAFE_DISTANCE is re-exported for social/chat_readouts.ts.
+import { type PlayerMotionDeps, stepPlayerMotion, swimSurfaceY } from './player_motion';
+
+export { FALL_SAFE_DISTANCE } from './player_motion';
+
 const MAX_CLIMB_SLOPE = PLAYER_MAX_CLIMB_SLOPE; // rise/run above which a ground move is blocked (cliffs, world rim)
 
 // How far a mob pulls same-family neighbours into a fight ("social aggro").
@@ -428,12 +432,8 @@ const SOCIAL_PULL_RADIUS: Partial<Record<MobFamily, number>> = {
 };
 // PACK_FRENZY_AURA_ID moved to mob/lifecycle.ts (M4; used only by frenzyPackmates).
 // BLOOD_FRENZY_AURA_ID moved to combat/damage.ts (C1; used only by maybeFrenzyOnHit).
-// Body bobs just below the water line AT this location (terrain/feature-aware:
-// -Infinity outside a declared lake, so this is never called off a waterline
-// that doesn't exist there).
-function swimSurfaceY(x: number, z: number): number {
-  return waterLevelAt(x, z) - 0.75;
-}
+// swimSurfaceY moved to ./player_motion (imported back above; the swim/fall paths
+// below still call it).
 const SWIM_DEPTH = PLAYER_SWIM_DEPTH; // ground this far under the water line = deep water
 const SWIM_SPEED_MULT = 0.65;
 const FISHING_SAMPLE_DISTANCES = [4, 8, 12, 16, 20, 24];
@@ -2706,12 +2706,6 @@ export class Sim {
   // recoverFromFlee moved to mob/locomotion.ts (M2; called only by the flee arm).
 
   // Fiesta "Moon Boots" power-up: a buff_jump aura multiplies jump height.
-  private jumpMult(e: Entity): number {
-    let m = 1;
-    for (const a of e.auras) if (a.kind === 'buff_jump') m = Math.max(m, a.value);
-    return m;
-  }
-
   // Sunder Armor stacks shave flat armor off the defender for physical hits.
   private effectiveArmor(e: Entity): number {
     let armor = e.stats.armor;
@@ -2920,164 +2914,28 @@ export class Sim {
     if (this.updateChargeMovement(p)) return;
     if (this.updateFollowMovement(p, meta)) return;
     if (this.updateFearMovement(p)) return;
-    const inp = meta.moveInput;
-    // Convention: facing f points along (sin f, cos f); the camera sits behind
-    // the player, so screen-right is the world vector (-cos f, sin f).
-    // Turning right therefore DECREASES facing.
-    if (!isStunned(p)) {
-      if (inp.turnLeft) p.facing = normAngle(p.facing + TURN_SPEED * DT);
-      if (inp.turnRight) p.facing = normAngle(p.facing - TURN_SPEED * DT);
-    }
+    // The kernel (turn/wish/collision/vertical) is host-agnostic; the live Sim
+    // binds its fiesta-aware speed, delve-aware collision, and real cast/damage
+    // callbacks. The online client's display-only extrapolator binds no-ops.
+    stepPlayerMotion(this.playerMotionDeps(), p, meta.moveInput);
+  }
 
-    let mx = 0,
-      mz = 0; // local: z forward, x strafe-right
-    if (inp.forward) mz += 1;
-    if (inp.back) mz -= 1;
-    if (inp.strafeLeft) mx -= 1;
-    if (inp.strafeRight) mx += 1;
-
-    const wantsMove = mx !== 0 || mz !== 0 || inp.jump;
-    if (wantsMove && p.sitting) this.standUp(p);
-
-    const hasMoveInput = mx !== 0 || mz !== 0;
-    const moving = hasMoveInput && !isRooted(p);
-    const swimming = this.isSwimming(p);
-    let wishX = 0,
-      wishZ = 0,
-      wishSpeed = 0;
-    if (moving) {
-      if (p.castingAbility) this.cancelCast(p);
-      const len = Math.hypot(mx, mz);
-      mx /= len;
-      mz /= len;
-      let speed = RUN_SPEED * this.moveSpeedMult(p);
-      if (mz < 0) speed *= BACKPEDAL_MULT;
-      if (swimming) speed *= SWIM_SPEED_MULT;
-      // world = forward * mz + right * mx, with right = (-cos f, sin f)
-      const sin = Math.sin(p.facing),
-        cos = Math.cos(p.facing);
-      const wx = mz * sin - mx * cos;
-      const wz = mz * cos + mx * sin;
-      wishX = wx;
-      wishZ = wz;
-      wishSpeed = speed;
+  // Cached PlayerMotionDeps bound to this Sim's methods (stable across ticks).
+  private _playerMotionDeps: PlayerMotionDeps | null = null;
+  private playerMotionDeps(): PlayerMotionDeps {
+    if (!this._playerMotionDeps) {
+      this._playerMotionDeps = {
+        seed: this.cfg.seed,
+        moveSpeedMult: (e) => this.moveSpeedMult(e),
+        resolveMove: (fromX, fromZ, nx, nz, r, e, ignoreFences) =>
+          this.resolveMove(fromX, fromZ, nx, nz, r, e, ignoreFences),
+        cancelCast: (p) => this.cancelCast(p),
+        standUp: (p) => this.standUp(p),
+        dealDamage: (source, target, amount, crit, school, ability, kind, noRage) =>
+          this.dealDamage(source, target, amount, crit, school, ability, kind, noRage),
+      };
     }
-
-    const movingOnGround = moving && (p.onGround || swimming);
-    if (movingOnGround || (!p.onGround && (p.vx !== 0 || p.vz !== 0))) {
-      const stepX = movingOnGround ? wishX * wishSpeed : p.vx;
-      const stepZ = movingOnGround ? wishZ * wishSpeed : p.vz;
-      let nx = p.pos.x + stepX * DT;
-      let nz = p.pos.z + stepZ * DT;
-      // cliffs and the world rim are walls, not ramps
-      if (p.onGround && !swimming) {
-        const h0 = groundHeight(p.pos.x, p.pos.z, this.cfg.seed);
-        const h1 = groundHeight(nx, nz, this.cfg.seed);
-        const run = Math.hypot(nx - p.pos.x, nz - p.pos.z);
-        if (h1 > h0 && run > 1e-5 && (h1 - h0) / run > MAX_CLIMB_SLOPE) {
-          nx = p.pos.x;
-          nz = p.pos.z;
-          if (!p.onGround) {
-            p.vx = 0;
-            p.vz = 0;
-          }
-        }
-      }
-      // Slide along buildings, trees, crypt walls — but while airborne from a
-      // jump, pass through fences for the whole arc. Keying off the jump itself
-      // (not a height threshold) makes this independent of slope: an uphill
-      // approach no longer flickers the clearance off right at the rail.
-      const clearFences = !p.onGround && p.jumping;
-      const resolved = this.resolveMove(p.pos.x, p.pos.z, nx, nz, BODY_RADIUS, p, clearFences);
-      p.pos.x = resolved.x;
-      p.pos.z = resolved.z;
-      if (!p.onGround && (resolved.x !== nx || resolved.z !== nz)) {
-        p.vx = (resolved.x - p.prevPos.x) / DT;
-        p.vz = (resolved.z - p.prevPos.z) / DT;
-      }
-    }
-
-    // Vertical: jumping, gravity, swimming, fall damage
-    const ground = groundHeight(p.pos.x, p.pos.z, this.cfg.seed);
-    const deepWater = ground < waterLevelAt(p.pos.x, p.pos.z) - SWIM_DEPTH;
-    if (deepWater && p.pos.y <= swimSurfaceY(p.pos.x, p.pos.z) + 0.05) {
-      // treading water at the surface
-      p.pos.y = swimSurfaceY(p.pos.x, p.pos.z);
-      p.vy = 0;
-      p.vx = 0;
-      p.vz = 0;
-      p.onGround = true;
-      p.jumping = false;
-      p.fallStartY = p.pos.y;
-      if (inp.jump && !isRooted(p)) {
-        // small hop to climb onto shores and docks
-        p.vy = JUMP_VELOCITY * 0.7 * this.jumpMult(p);
-        p.vx = wishX * wishSpeed;
-        p.vz = wishZ * wishSpeed;
-        p.onGround = false;
-        p.jumping = true;
-      }
-      return;
-    }
-    if (inp.jump && p.onGround && !isRooted(p)) {
-      p.vy = JUMP_VELOCITY * this.jumpMult(p);
-      p.vx = wishX * wishSpeed;
-      p.vz = wishZ * wishSpeed;
-      p.onGround = false;
-      p.jumping = true;
-      p.fallStartY = p.pos.y;
-    }
-    if (!p.onGround) {
-      p.vy -= GRAVITY * DT;
-      p.pos.y += p.vy * DT;
-      p.fallStartY = Math.max(p.fallStartY, p.pos.y);
-      if (deepWater && p.pos.y <= swimSurfaceY(p.pos.x, p.pos.z)) {
-        // splashing into deep water breaks the fall
-        p.pos.y = swimSurfaceY(p.pos.x, p.pos.z);
-        p.vy = 0;
-        p.vx = 0;
-        p.vz = 0;
-        p.onGround = true;
-        p.jumping = false;
-        p.fallStartY = p.pos.y;
-        return;
-      }
-      if (p.pos.y <= ground) {
-        p.pos.y = ground;
-        p.vy = 0;
-        p.vx = 0;
-        p.vz = 0;
-        p.onGround = true;
-        p.jumping = false;
-        const drop = p.fallStartY - ground;
-        if (drop > FALL_SAFE_DISTANCE) {
-          const dmg = Math.round(p.maxHp * (drop - FALL_SAFE_DISTANCE) * 0.07);
-          if (dmg > 0) this.dealDamage(null, p, dmg, false, 'physical', 'Falling', 'hit', true);
-        }
-        p.fallStartY = ground;
-      }
-    } else {
-      // Distinguish a walkable downhill slope from a genuine cliff/ledge. The
-      // drop the ground can take in one tick scales with how far we moved: a
-      // slope no steeper than MAX_CLIMB_SLOPE (the same gate that blocks uphill
-      // climbs) is walkable, so we snap down to follow it instead of falling.
-      // Only a steeper-than-walkable drop counts as walking off a ledge. The
-      // 0.4 base keeps a near-stationary player snapped over tiny terrain noise.
-      const run = Math.hypot(p.pos.x - p.prevPos.x, p.pos.z - p.prevPos.z);
-      const maxStepDown = 0.4 + run * MAX_CLIMB_SLOPE;
-      if (ground < p.pos.y - maxStepDown) {
-        // walked off a ledge — not a jump, so fences still block
-        p.onGround = false;
-        p.jumping = false;
-        p.vx = 0;
-        p.vz = 0;
-        p.vy = 0;
-        p.fallStartY = p.pos.y;
-      } else {
-        p.pos.y = ground;
-        p.fallStartY = ground;
-      }
-    }
+    return this._playerMotionDeps;
   }
 
   private standUp(p: Entity): void {
