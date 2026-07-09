@@ -205,6 +205,11 @@ const ADMIN_ERROR_KEYS: Record<string, string> = {
   'block expiry must be in the future': 'error.blockExpiryFuture',
   'failed to block ip': 'error.blockFailed',
   'ip not found': 'error.blockNotFound',
+  'admin authentication required': 'error.adminAuthRequired',
+  'you do not have permission to do this': 'error.noPermission',
+  'unknown role': 'error.unknownRole',
+  'superadmin roles are managed via direct sql': 'error.superadminManagedElsewhere',
+  'you cannot change your own roles': 'error.cannotChangeOwnRoles',
 };
 export function localizeAdminError(message: string): string {
   const key = ADMIN_ERROR_KEYS[message.trim().toLowerCase()];

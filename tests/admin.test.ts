@@ -13,6 +13,12 @@ vi.mock('../server/db', () => ({
   isAdminAccount: vi.fn(),
   accountMailTarget: vi.fn(async () => null),
 }));
+vi.mock('../server/staff_db', () => ({
+  adminRolesForAccount: vi.fn(),
+  listStaff: vi.fn(),
+  roleChangeHistory: vi.fn(),
+  setAccountAdminRoles: vi.fn(),
+}));
 vi.mock('../server/admin_db', async () => {
   const actual = await vi.importActual<typeof import('../server/admin_db')>('../server/admin_db');
   return {
@@ -97,6 +103,12 @@ import {
   moderationReportsForAccount,
   muteAccountChat,
 } from '../server/moderation_db';
+import {
+  adminRolesForAccount,
+  listStaff,
+  roleChangeHistory,
+  setAccountAdminRoles,
+} from '../server/staff_db';
 
 const VALID_TOKEN = 'a'.repeat(64);
 
@@ -183,6 +195,16 @@ beforeEach(() => {
     chatMutedUntil: null,
     chatStrikes: 0,
     violations: [],
+  });
+  // Every existing test drives access with the legacy isAdminAccount boolean;
+  // derive the fine-grained staff identity from it by default so those tests
+  // keep working unmodified. The 'admin' role holds every permission except
+  // staff.manage, which matches the old is_admin flag's blast radius. Tests
+  // that need staff.manage or a narrower role override adminRolesForAccount
+  // directly.
+  vi.mocked(adminRolesForAccount).mockImplementation(async (accountId) => {
+    const admin = await isAdminAccount(accountId);
+    return admin ? { username: 'admin', roles: ['admin'] } : null;
   });
 });
 
@@ -1230,5 +1252,148 @@ describe('blocked-ips admin route', () => {
     );
     expect(res.statusCode).toBe(400);
     expect(removeBlockedIp).not.toHaveBeenCalled();
+  });
+});
+
+describe('admin api fine-grained permissions', () => {
+  beforeEach(() => {
+    vi.mocked(accountForToken).mockResolvedValue(7);
+  });
+
+  it('403s a route the caller lacks the permission for', async () => {
+    // viewer has accounts.read but not moderation.act.
+    vi.mocked(adminRolesForAccount).mockResolvedValue({ username: 'view', roles: ['viewer'] });
+    const res = fakeRes();
+
+    await handleAdminApi(
+      fakeReq({
+        method: 'POST',
+        token: VALID_TOKEN,
+        url: '/admin/api/moderation/accounts/9/suspend',
+        body: { reason: 'test' },
+      }),
+      res,
+      fakeGame,
+    );
+
+    expect(res.statusCode).toBe(403);
+    expect(moderateAccount).not.toHaveBeenCalled();
+  });
+
+  it('serves /me with the caller identity and expanded permissions', async () => {
+    vi.mocked(adminRolesForAccount).mockResolvedValue({ username: 'view', roles: ['viewer'] });
+    const res = fakeRes();
+
+    await handleAdminApi(fakeReq({ token: VALID_TOKEN, url: '/admin/api/me' }), res, fakeGame);
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.data).toEqual({
+      username: 'view',
+      roles: ['viewer'],
+      permissions: expect.arrayContaining(['accounts.read', 'analytics.read']),
+    });
+    expect(res.body.data.permissions).not.toContain('staff.manage');
+  });
+
+  it('rejects /staff for a caller without staff.manage', async () => {
+    vi.mocked(adminRolesForAccount).mockResolvedValue({ username: 'mod', roles: ['moderator'] });
+    const res = fakeRes();
+
+    await handleAdminApi(fakeReq({ token: VALID_TOKEN, url: '/admin/api/staff' }), res, fakeGame);
+
+    expect(res.statusCode).toBe(403);
+    expect(listStaff).not.toHaveBeenCalled();
+  });
+
+  it('serves /staff and /staff/history to a superadmin', async () => {
+    vi.mocked(adminRolesForAccount).mockResolvedValue({ username: 'root', roles: ['superadmin'] });
+    vi.mocked(listStaff).mockResolvedValue([
+      { accountId: 7, username: 'root', roles: ['superadmin'], lastLogin: null },
+    ]);
+    vi.mocked(roleChangeHistory).mockResolvedValue([]);
+    const res = fakeRes();
+
+    await handleAdminApi(fakeReq({ token: VALID_TOKEN, url: '/admin/api/staff' }), res, fakeGame);
+    expect(res.statusCode).toBe(200);
+    expect(res.body.data).toEqual({
+      rows: [{ accountId: 7, username: 'root', roles: ['superadmin'], lastLogin: null }],
+      assignableRoles: ['admin', 'moderator', 'viewer'],
+    });
+
+    const historyRes = fakeRes();
+    await handleAdminApi(
+      fakeReq({ token: VALID_TOKEN, url: '/admin/api/staff/history' }),
+      historyRes,
+      fakeGame,
+    );
+    expect(historyRes.statusCode).toBe(200);
+    expect(roleChangeHistory).toHaveBeenCalledWith(50);
+  });
+
+  it('refuses to change your own roles', async () => {
+    vi.mocked(adminRolesForAccount).mockResolvedValue({ username: 'root', roles: ['superadmin'] });
+    vi.mocked(findAccount).mockResolvedValue({ id: 7, username: 'root', password_hash: 'x' });
+    const res = fakeRes();
+
+    await handleAdminApi(
+      fakeReq({
+        method: 'POST',
+        token: VALID_TOKEN,
+        url: '/admin/api/staff/roles',
+        body: { username: 'root', roles: ['admin'] },
+      }),
+      res,
+      fakeGame,
+    );
+
+    expect(res.statusCode).toBe(400);
+    expect(setAccountAdminRoles).not.toHaveBeenCalled();
+  });
+
+  it('refuses to grant or revoke superadmin from the dashboard', async () => {
+    vi.mocked(adminRolesForAccount).mockResolvedValue({ username: 'root', roles: ['superadmin'] });
+    const res = fakeRes();
+
+    await handleAdminApi(
+      fakeReq({
+        method: 'POST',
+        token: VALID_TOKEN,
+        url: '/admin/api/staff/roles',
+        body: { username: 'bob', roles: ['superadmin'] },
+      }),
+      res,
+      fakeGame,
+    );
+
+    expect(res.statusCode).toBe(400);
+    expect(setAccountAdminRoles).not.toHaveBeenCalled();
+  });
+
+  it('grants roles and disconnects the target account live sessions', async () => {
+    vi.mocked(adminRolesForAccount).mockImplementation(async (accountId) =>
+      accountId === 7 ? { username: 'root', roles: ['superadmin'] } : null,
+    );
+    vi.mocked(findAccount).mockResolvedValue({ id: 12, username: 'bob', password_hash: 'x' });
+    vi.mocked(setAccountAdminRoles).mockResolvedValue({ before: [], after: ['moderator'] });
+    const res = fakeRes();
+
+    await handleAdminApi(
+      fakeReq({
+        method: 'POST',
+        token: VALID_TOKEN,
+        url: '/admin/api/staff/roles',
+        body: { username: 'bob', roles: ['moderator'] },
+      }),
+      res,
+      fakeGame,
+    );
+
+    expect(res.statusCode).toBe(200);
+    expect(setAccountAdminRoles).toHaveBeenCalledWith({
+      accountId: 12,
+      roles: ['moderator'],
+      actorAccountId: 7,
+    });
+    expect(fakeGame.disconnectAccount).toHaveBeenCalledWith(12, expect.any(String));
   });
 });

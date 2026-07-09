@@ -440,6 +440,32 @@ export interface AntibotConfigHistoryEntry {
   adminUsername: string | null;
 }
 
+export interface StaffRow {
+  accountId: number;
+  username: string;
+  roles: string[];
+  lastLogin: string | null;
+}
+
+export interface StaffData {
+  rows: StaffRow[];
+  assignableRoles: string[];
+}
+
+export interface RoleChangeRow {
+  id: number;
+  accountId: number;
+  username: string | null;
+  adminUsername: string | null;
+  rolesBefore: string[];
+  rolesAfter: string[];
+  createdAt: string;
+}
+
+export interface StaffHistoryData {
+  rows: RoleChangeRow[];
+}
+
 export interface AntibotConfigHistory {
   entries: AntibotConfigHistoryEntry[];
 }
