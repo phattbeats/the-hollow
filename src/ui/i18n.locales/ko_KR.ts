@@ -3994,9 +3994,39 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.family.dragonkin.name': '용족',
   'guide.family.elemental.desc':
     '원소가 강하게 흐르는 야생의 장소에 매여 있는, 살아 있는 폭풍과 돌.',
+  'guide.hollowPage.intro':
+    '성소 문을 지나면 화병이 있는 공터가 나온다. 모든 새 영웅이 눈을 뜨는 곳이자, 언제나 돌아오게 되는 곳. 대륙 전체가 공유하는 하나의 거점으로, 처음 마주치는 얼굴들과 첫 임무, 그리고 정말로 필요한 유일한 집이 이곳에 있다.',
+  'guide.hollowPage.greeting':
+    '돌아왔구먼, 그거 참 축복이지... 신성한 일거리가 몇 개 밀려 있소, 지난번과 같은 파장으로. 이리 좀 와보시게...',
+  'guide.hollowPage.greeter': '그린포 수사, 화병 곁에서',
+  'guide.hollowPage.vaseHeading': '화병',
+  'guide.hollowPage.vaseBody':
+    '모두가 화병에서 시작한다. 우묵골이 세워진 중심에 자리한, 오래되고 귀 기울이는 존재다. 엠버벌브를 태우거나 동굴 모르셀을 먹이는 등 작은 공물을 바라며, 받으면 알아채는 듯하다. 화병 아래쪽에는 지하 성소로 이어지는 동굴 입구가 있고, 양옆에는 자신만의 집을 지을 수 있는 부지가 놓여 있다.',
+  'guide.hollowPage.figuresHeading': '누가 돌보는가',
+  'guide.hollowPage.figuresBody':
+    '화병을 지키는 두 사람이 있으며, 처음 몇 분 안에 둘 다 만나게 된다.',
+  'guide.hollowPage.greenpawBody':
+    '화병의 유일한 관리자이자 가장 첫 임무를 내주는 이. 자칭한 직함임을 본인이 가장 먼저 인정하며, 우묵골에서 안내자에 가장 가까운 존재다.',
+  'guide.hollowPage.yarrowBody':
+    '두 번째 소명을 가르치는 이. 어떤 직업이든 그녀에게서 부전공을 배울 수 있으며, 화병을 사이에 두고 그린포와 마주해 있다.',
+  'guide.hollowPage.questsHeading': '첫 심부름',
+  'guide.hollowPage.questsBody':
+    '그린포 자신의 임무 사슬이 가장 먼저 해야 할 일이다. 화병의 리듬을 가르쳐 주는 네 개의 짧은 심부름을 마치면 더 넓은 우묵골로 나서게 된다.',
+  'guide.hollowPage.questBurnsBody': '화병이 빛을 위해 태우는 동굴산 구근을 한 움큼씩 모은다.',
+  'guide.hollowPage.questFillsBody':
+    '더 조용한 허기를 달래주는 동굴 모르셀을 같은 방식으로 모은다.',
+  'guide.hollowPage.questWavelengthBody':
+    '화병의 두 번째 소명을 소개받고, 직접 먹이는 법을 배운다.',
+  'guide.hollowPage.questKeepLitBody': '한 번의 호의를 세 번 연달아 반복해 습관으로 바꾼다.',
+  'guide.hollowPage.housingHeading': '나만의 집',
+  'guide.hollowPage.housingBody':
+    '화병 주위로 {n}개의 집터가 둘러싸고 있으며, 우묵골 속 당신만의 사적인 한 구석으로 꾸며지길 기다린다.',
+  'guide.hollowPage.shrineHeading': '지하 성소',
+  'guide.hollowPage.shrineBody':
+    '화병 옆 동굴 입구는 지하 성소로 이어진다. 우묵골 자체의 인스턴스 던전이며, 새 영웅이 처음으로 파티와 함께 맞이하는 진짜 시험이다.',
   'guide.worldPage.heading': '세계',
   'guide.worldPage.intro':
-    'World of ClaudeCraft는 두 발로 가로지르는 하나로 이어진 대지이며, 남에서 북으로 펼쳐진 세 개의 지역으로 이루어져 있습니다. 빠른 이동이 없으니, 여정 자체가 모험의 일부입니다.',
+    '화병에서 성소 문을 나서면 우묵골에 들어선다. 새로 온 이가 야외에서 첫걸음을 내딛는 고요한 땅이다. 그 너머 북쪽으로 세 개의 지역이 남에서 북으로 이어져 있으며, 그곳으로 가는 길은 아직 열리지 않았지만 실재하며 기다리고 있다.',
   'guide.worldPage.hub': '본거지',
   'guide.worldPage.hollowReachesBlurb':
     '성소 문을 막 지난 고요한 땅으로, 새내기들이 묵정밭과 뿌리굴 주변에서 늑대와 멧돼지를 상대로 실력을 갈고닦는 곳.',
@@ -4023,9 +4053,11 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
     '가까이 있는 파티원은 처치와 목표 공로를 나누므로, 함께하는 퀘스트는 더 빠르면 빨랐지 결코 느리지 않습니다. 퀘스트를 파티와 공유할 수도 있습니다. /share 명령으로 클릭할 수 있는 링크를 채팅에 올리면, 가까이 있는 자격을 갖춘 파티원 누구나 클릭 한 번으로 같은 퀘스트를 받을 수 있습니다.',
   'guide.questsPage.storyTitle': '하나의 실타래가 모든 것을 꿰뚫습니다',
   'guide.questsPage.storyBody':
-    '동개울에서의 첫 심부름부터, 죽은 자들에게 무언가 잘못되어 갑니다. 한 교단이 암약하고 있으며, 그 자취는 모든 지역을 거쳐 북쪽으로 이어집니다. 자취를 좇아 그 배후가 누구인지 밝혀내세요.',
+    '당신의 가장 첫 실마리는 바로 화병 곁, 그린포 수사 자신의 짧은 임무 사슬이다. 그 너머에는 우묵골 안쪽의 조용한 심부름들이 있고, 더 멀리에는 골짜기에서 봉우리까지 진군하는 죽음의 교단을 둘러싼 더 긴 이야기가 있다. 실제로 존재하는 완결된 콘텐츠지만, 아직 새 영웅이 걸어갈 길은 아니다. 화병 자체의 임무는 우묵골 페이지에서, 나머지는 앞으로 다가올 내용으로 아래에 정리되어 있다.',
   'guide.questsPage.soloNote':
     '메인 스토리는 각 장의 대단원까지 완전히 혼자서 진행할 수 있으며, 그 대단원은 5인 던전입니다.',
+  'guide.questsPage.sagaGateNote':
+    '이 이야기는 실제로 존재하는, 완결된 콘텐츠로, 북쪽 길이 다시 열릴 때 열리는 바로 그 여정이다. 새 영웅이 오늘 시작하는 곳은 아니다. 그 시작점은 우묵골 속 화병이다.',
   'guide.dungeonsPage.heading': '던전과 공격대',
   'guide.dungeonsPage.intro':
     '열린 세계만으로 부족할 때, 파티를 모아 인스턴스에 들어서세요. 당신의 파티만을 위해 만들어진 던전의 개별 사본입니다.',
