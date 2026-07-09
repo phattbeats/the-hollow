@@ -415,7 +415,12 @@ export { DELVE_IMPLEMENTED_AFFIXES, DELVE_MODULE_NAMES } from './delves/runs';
 // ./player_motion (the online client's display-only extrapolator binds the same
 // step). swimSurfaceY is imported back for the swim/fall paths elsewhere in Sim;
 // FALL_SAFE_DISTANCE is re-exported for social/chat_readouts.ts.
-import { type PlayerMotionDeps, stepPlayerMotion, swimSurfaceY } from './player_motion';
+import {
+  moveSpeedMult,
+  type PlayerMotionDeps,
+  stepPlayerMotion,
+  swimSurfaceY,
+} from './player_motion';
 
 export { FALL_SAFE_DISTANCE } from './player_motion';
 
@@ -2684,19 +2689,12 @@ export class Sim {
     return partyLootCandidatesForMobImpl(this.ctx, mob);
   }
   moveSpeedMult(e: Entity): number {
-    let slow = 1,
-      speed = 1;
-    for (const a of e.auras) {
-      if (a.kind === 'slow' || a.kind === 'stealth') slow = Math.min(slow, a.value);
-      // buff_speed and form_travel both carry a 1+fraction multiplier (1.4 = +40%).
-      if (a.kind === 'buff_speed' || a.kind === 'form_travel') speed = Math.max(speed, a.value);
-    }
-    // Fiesta move-speed augments (only ever non-zero inside a Fiesta bout).
-    if (e.kind === 'player') {
-      const ms = this.players.get(e.id)?.fiestaSpecial.moveSpeedPct;
-      if (ms) speed += ms;
-    }
-    return slow * speed;
+    // The Fiesta move-speed augment lives on PlayerMeta; fold it into the shared
+    // aura-only kernel (player_motion.moveSpeedMult, which the online client's
+    // display extrapolator also calls) via extraSpeedPct so both stay in lockstep.
+    const extra =
+      e.kind === 'player' ? (this.players.get(e.id)?.fiestaSpecial.moveSpeedPct ?? 0) : 0;
+    return moveSpeedMult(e, extra);
   }
 
   private fleeMoveSpeed(e: Entity): number {

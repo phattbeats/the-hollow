@@ -42,6 +42,24 @@ export function swimSurfaceY(x: number, z: number): number {
   return waterLevelAt(x, z) - 0.75;
 }
 
+// Movement speed multiplier from the entity's own aura state. The Fiesta
+// move-speed augment lives on PlayerMeta (off-Entity), so the live Sim folds it
+// in via extraSpeedPct; hosts without PlayerMeta (the online client's display
+// extrapolator) pass 0. This is the ONE speed function both the server tick and
+// the client predictor call, so they stay in lockstep by construction.
+export function moveSpeedMult(e: Entity, extraSpeedPct = 0): number {
+  let slow = 1,
+    speed = 1;
+  for (const a of e.auras) {
+    if (a.kind === 'slow' || a.kind === 'stealth') slow = Math.min(slow, a.value);
+    // buff_speed and form_travel both carry a 1+fraction multiplier (1.4 = +40%).
+    if (a.kind === 'buff_speed' || a.kind === 'form_travel') speed = Math.max(speed, a.value);
+  }
+  // Fiesta move-speed augments (only ever non-zero inside a Fiesta bout).
+  if (extraSpeedPct) speed += extraSpeedPct;
+  return slow * speed;
+}
+
 // A buff_jump aura multiplies jump height (Fiesta "Moon Boots" power-up).
 export function jumpMult(e: Entity): number {
   let m = 1;
