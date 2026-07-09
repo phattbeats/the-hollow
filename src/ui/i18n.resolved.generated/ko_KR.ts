@@ -2543,6 +2543,21 @@ export const ko_KR: EnTranslations = {
       "flavor": "죽은 자들이 내어줄 수 있는 것을 내놓았습니다."
     }
   },
+  "boarball": {
+    "queue": {
+      "join": "보어볼 대기열에 참가했습니다. 다른 플레이어 세 명을 기다리는 중…",
+      "leave": "보어볼 대기열에서 나갑니다."
+    },
+    "log": {
+      "welcome": "보어볼에 오신 것을 환영합니다! 슛하고 패스해서 상대 팀보다 많은 점수를 내세요.",
+      "kickoff": "킥오프!",
+      "over": "경기 종료! 월드로 돌아갑니다…"
+    },
+    "error": {
+      "tooFar": "공에 충분히 가까이 있지 않습니다.",
+      "noTeammate": "지정된 아군이 없습니다."
+    }
+  },
   "fiesta": {
     "bracket": "Fiesta",
     "enterQueue": "Fiesta에 참가하세요!",
@@ -5705,6 +5720,9 @@ export const ko_KR: EnTranslations = {
       },
       "acolyte_tessa": {
         "name": "수련사제 테사"
+      },
+      "boarball_ball": {
+        "name": "Boarball"
       },
       "ironvein_foreman": {
         "name": "철맥 감독관"

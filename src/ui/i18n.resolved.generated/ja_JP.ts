@@ -2543,6 +2543,21 @@ export const ja_JP: EnTranslations = {
       "flavor": "死者たちが、譲れるものを差し出した。"
     }
   },
+  "boarball": {
+    "queue": {
+      "join": "ボアボールのキューに参加しました。あと3人のプレイヤーを待っています…",
+      "leave": "ボアボールのキューから離脱しました。"
+    },
+    "log": {
+      "welcome": "ボアボールへようこそ！シュートとパスで相手チームを上回れ。",
+      "kickoff": "キックオフ！",
+      "over": "試合終了！ワールドに戻ります…"
+    },
+    "error": {
+      "tooFar": "ボールに近づいていません。",
+      "noTeammate": "味方がターゲットされていません。"
+    }
+  },
   "fiesta": {
     "bracket": "Fiesta",
     "enterQueue": "Fiestaに参加！",
@@ -5705,6 +5720,9 @@ export const ja_JP: EnTranslations = {
       },
       "acolyte_tessa": {
         "name": "侍祭テッサ"
+      },
+      "boarball_ball": {
+        "name": "Boarball"
       },
       "ironvein_foreman": {
         "name": "鉄脈の現場監督"

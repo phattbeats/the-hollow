@@ -3230,6 +3230,14 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hud.options.npcVoices': 'Голоса НИП',
   'hud.options.voiceVolume': 'Громкость голоса',
   'entities.zones.eastbrook_vale.pois.8.label': 'Поляна Брайтвуда',
+  'boarball.queue.join': 'Вы вступаете в очередь на боарбол. Ожидайте ещё троих игроков…',
+  'boarball.queue.leave': 'Вы покидаете очередь на боарбол.',
+  'boarball.log.welcome':
+    'Добро пожаловать в боарбол! Бейте по воротам, делайте передачи и обыграйте соперника по счёту.',
+  'boarball.log.kickoff': 'Начало матча!',
+  'boarball.log.over': 'Матч окончен! Возвращение в мир…',
+  'boarball.error.tooFar': 'Вы недостаточно близко к мячу.',
+  'boarball.error.noTeammate': 'Союзник не выбран.',
   'fiesta.augment.aug_apex_predator.desc':
     '+40% к физическому урону, +15% к крит. удару, исцеление на 12% от нанесённого урона.',
   'fiesta.augment.aug_apex_predator.name': 'Высший хищник',

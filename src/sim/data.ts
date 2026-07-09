@@ -4,6 +4,7 @@
 // merges those records into the flat tables the rest of the engine consumes,
 // and owns the world-layout constants.
 
+import { BOARBALL_MOBS } from './content/boarball';
 import { BASE_ITEMS, FISHING_RARE_ID, FISHING_TABLES } from './content/items';
 import type {
   CampDef,
@@ -177,6 +178,7 @@ export const MOBS: Record<string, MobTemplate> = {
   ...TEMPLE_DUNGEON_MOBS,
   ...HOLLOW_MOBS,
   ...DELVE_MOBS,
+  ...BOARBALL_MOBS,
 };
 
 export const NPCS: Record<string, NpcDef> = {

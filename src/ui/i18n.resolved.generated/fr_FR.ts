@@ -2543,6 +2543,21 @@ export const fr_FR: EnTranslations = {
       "flavor": "Les morts ont cédé ce dont ils pouvaient se passer."
     }
   },
+  "boarball": {
+    "queue": {
+      "join": "You join the boarball queue. Stand by for three more players…",
+      "leave": "You leave the boarball queue."
+    },
+    "log": {
+      "welcome": "Welcome to boarball! Shoot, pass, and outscore the other team.",
+      "kickoff": "Kickoff!",
+      "over": "Full time! Returning to the world…"
+    },
+    "error": {
+      "tooFar": "You're not close enough to the ball.",
+      "noTeammate": "No teammate targeted."
+    }
+  },
   "fiesta": {
     "bracket": "Fiesta",
     "enterQueue": "Rejoignez la Fiesta !",
@@ -5705,6 +5720,9 @@ export const fr_FR: EnTranslations = {
       },
       "acolyte_tessa": {
         "name": "Acolyte Tessa"
+      },
+      "boarball_ball": {
+        "name": "Boarball"
       },
       "ironvein_foreman": {
         "name": "Contremaître Veinefer"

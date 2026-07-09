@@ -2543,6 +2543,21 @@ export const de_DE: EnTranslations = {
       "flavor": "Die Toten haben hergegeben, was sie entbehren können."
     }
   },
+  "boarball": {
+    "queue": {
+      "join": "You join the boarball queue. Stand by for three more players…",
+      "leave": "You leave the boarball queue."
+    },
+    "log": {
+      "welcome": "Welcome to boarball! Shoot, pass, and outscore the other team.",
+      "kickoff": "Kickoff!",
+      "over": "Full time! Returning to the world…"
+    },
+    "error": {
+      "tooFar": "You're not close enough to the ball.",
+      "noTeammate": "No teammate targeted."
+    }
+  },
   "fiesta": {
     "bracket": "Fiesta",
     "enterQueue": "Tretet der Fiesta bei!",
@@ -5705,6 +5720,9 @@ export const de_DE: EnTranslations = {
       },
       "acolyte_tessa": {
         "name": "Akolythin Tessa"
+      },
+      "boarball_ball": {
+        "name": "Boarball"
       },
       "ironvein_foreman": {
         "name": "Eisenader-Vorarbeiter"

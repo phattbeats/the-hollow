@@ -4457,11 +4457,28 @@ const RULES: Rule[] = [
     re: /^Welcome to the 2v2 FIESTA! Score takedowns, grab augments, survive the ring!$/,
     build: () => t('fiesta.log.welcome'),
   },
-  { re: /^FIESTA — GO!$/, build: () => t('fiesta.log.go') },
+  { re: /^FIESTA, GO!$/, build: () => t('fiesta.log.go') },
   {
     re: /^FIESTA OVER! What a party\. Returning to the world[.…]{1,3}$/,
     build: () => t('fiesta.log.over'),
   },
+  // Boarball (PHAA-572): the unranked 2v2 sport minigame.
+  {
+    re: /^You join the boarball queue\. Stand by for three more players[.…]{1,3}$/,
+    build: () => t('boarball.queue.join'),
+  },
+  { re: /^You leave the boarball queue\.$/, build: () => t('boarball.queue.leave') },
+  {
+    re: /^Welcome to boarball! Shoot, pass, and outscore the other team\.$/,
+    build: () => t('boarball.log.welcome'),
+  },
+  { re: /^Kickoff!$/, build: () => t('boarball.log.kickoff') },
+  {
+    re: /^Full time! Returning to the world[.…]{1,3}$/,
+    build: () => t('boarball.log.over'),
+  },
+  { re: /^You're not close enough to the ball\.$/, build: () => t('boarball.error.tooFar') },
+  { re: /^No teammate targeted\.$/, build: () => t('boarball.error.noTeammate') },
   // Brother Greenpaw's hearth (PHAA-421/PHAA-428): TOO_FAR_LINE, NO_ITEMS_LINES,
   // and the FEED_ITEMS in-voice lines (src/sim/greenpaw_hearth.ts), plus the
   // /feed helpLines entry (src/sim/social/chat.ts). Exact lines, no interpolation.
