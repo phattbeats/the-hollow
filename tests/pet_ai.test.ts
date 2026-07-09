@@ -104,6 +104,21 @@ describe('pet_ai module (P1a) — direct unit tests', () => {
     expect(petPickTarget(sim.ctx, pet, owner)).toBeNull();
   });
 
+  it('petPickTarget grid scan still finds an engaging hostile just inside PET_ASSIST_RANGE (50yd)', () => {
+    const { sim, pid, owner } = world();
+    const pet = adopt(sim, pid);
+    pet.petMode = 'defensive';
+    const target = wildHostile(sim, [pet.id]);
+    isolate(sim, [pid, pet.id, target.id]);
+    place(owner, 0, 0);
+    place(pet, 0, 0);
+    place(target, 49, 0); // just inside PET_ASSIST_RANGE (50), a superset radius in both modes
+    target.aggroTargetId = pet.id; // engagingUs
+    sim.rebucket(pet);
+    sim.rebucket(target);
+    expect(petPickTarget(sim.ctx, pet, owner)?.id).toBe(target.id);
+  });
+
   it('petRangedAttack hurls a fire-school bolt that deals AP-scaled damage', () => {
     const { sim, pid } = world();
     const pet = adopt(sim, pid);
