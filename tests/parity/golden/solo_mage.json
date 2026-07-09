@@ -14,8 +14,8 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 402,
-      "state": "3337a5f5",
+      "nextId": 403,
+      "state": "ef88d193",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -33,11 +33,12 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -55,7 +56,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 54,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -73,6 +74,7 @@
           "potionCooldownUntil": -1,
           "resource": 195,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -99,9 +101,9 @@
     {
       "tick": 20,
       "time": 1,
-      "nextId": 403,
-      "state": "6b62985a",
-      "events": "5e63c649",
+      "nextId": 404,
+      "state": "d62b698f",
+      "events": "b9ff88bc",
       "rng": {
         "draws": 2,
         "digest": "e313f022"
@@ -110,9 +112,9 @@
     {
       "tick": 40,
       "time": 2,
-      "nextId": 403,
-      "state": "183f93ce",
-      "events": "ac946b88",
+      "nextId": 404,
+      "state": "503b70fb",
+      "events": "7a86a3b1",
       "rng": {
         "draws": 2,
         "digest": "e313f022"
@@ -121,9 +123,9 @@
     {
       "tick": 60,
       "time": 3,
-      "nextId": 403,
-      "state": "fcde3774",
-      "events": "d40cfcdb",
+      "nextId": 404,
+      "state": "812b2e0b",
+      "events": "b00949d9",
       "rng": {
         "draws": 75,
         "digest": "032f8fd0"
@@ -132,8 +134,8 @@
     {
       "tick": 80,
       "time": 4,
-      "nextId": 403,
-      "state": "1f3cd179",
+      "nextId": 404,
+      "state": "5cdbeaee",
       "events": "741638a5",
       "rng": {
         "draws": 164,
@@ -143,9 +145,9 @@
     {
       "tick": 100,
       "time": 5,
-      "nextId": 403,
-      "state": "fdce55d3",
-      "events": "05ddd8dd",
+      "nextId": 404,
+      "state": "2e345e77",
+      "events": "a38e9096",
       "rng": {
         "draws": 280,
         "digest": "d8899923"
@@ -154,9 +156,9 @@
     {
       "tick": 120,
       "time": 6,
-      "nextId": 403,
-      "state": "2e63d75c",
-      "events": "d951e0f5",
+      "nextId": 404,
+      "state": "90e1100e",
+      "events": "6bedd8ed",
       "rng": {
         "draws": 390,
         "digest": "8950862e"
@@ -165,8 +167,8 @@
     {
       "tick": 128,
       "time": 6.4,
-      "nextId": 403,
-      "state": "f5282670",
+      "nextId": 404,
+      "state": "865593b6",
       "events": "741638a5",
       "rng": {
         "draws": 438,
@@ -187,12 +189,13 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
           "lifetimeXp": 27600,
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -214,7 +217,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 2.05,
           "hp": 49982,
-          "id": 401,
+          "id": 402,
           "inCombat": true,
           "kind": "player",
           "level": 10,
@@ -233,6 +236,7 @@
           "potionCooldownUntil": -1,
           "resource": 816,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -247,7 +251,7 @@
             "sta": 23,
             "str": 10
           },
-          "targetId": 402,
+          "targetId": 403,
           "templateId": "mage",
           "weapon": {
             "max": 6,
@@ -256,7 +260,7 @@
           }
         },
         {
-          "aggroTargetId": 401,
+          "aggroTargetId": 402,
           "aiState": "attack",
           "auras": [
             {
@@ -266,7 +270,7 @@
               "name": "Fireball",
               "remaining": 2.55,
               "school": "fire",
-              "sourceId": 401,
+              "sourceId": 402,
               "tickInterval": 2,
               "tickTimer": 0.55,
               "value": 1
@@ -278,7 +282,7 @@
               "name": "Frostbolt",
               "remaining": 4.4,
               "school": "frost",
-              "sourceId": 401,
+              "sourceId": 402,
               "value": 0.6
             }
           ],
@@ -291,7 +295,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 8913,
-          "id": 402,
+          "id": 403,
           "inCombat": true,
           "kind": "mob",
           "leashAnchor": {
@@ -312,6 +316,7 @@
             "z": 2.756284
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -321,11 +326,11 @@
             "armor": 40
           },
           "swingTimer": 1.55,
-          "tappedById": 401,
+          "tappedById": 402,
           "templateId": "forest_wolf",
           "threat": [
             [
-              401,
+              402,
               88
             ]
           ],

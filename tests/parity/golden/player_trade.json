@@ -15,7 +15,7 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 401,
+      "nextId": 402,
       "state": "5bc471b0",
       "events": "741638a5",
       "rng": {
@@ -29,9 +29,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 403,
-      "state": "b2e80355",
-      "events": "34eabb16",
+      "nextId": 404,
+      "state": "26b51649",
+      "events": "daf2aaf0",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -48,7 +48,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
@@ -59,6 +59,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -74,7 +75,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "entityId": 403,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
@@ -85,6 +86,7 @@
               "itemId": "baked_bread"
             }
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -102,7 +104,7 @@
           "fallStartY": -3.129532,
           "fiveSecondRule": 99,
           "hp": 90,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -118,6 +120,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -149,7 +152,7 @@
           "fallStartY": -3.128605,
           "fiveSecondRule": 99,
           "hp": 54,
-          "id": 402,
+          "id": 403,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -167,6 +170,7 @@
           "potionCooldownUntil": -1,
           "resource": 195,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -193,9 +197,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 403,
-      "state": "df9a7ca5",
-      "events": "9b065c69",
+      "nextId": 404,
+      "state": "0256b099",
+      "events": "99bcdb14",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -212,7 +216,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
@@ -227,6 +231,7 @@
               "itemId": "baked_bread"
             }
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -242,7 +247,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "entityId": 403,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
@@ -257,6 +262,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -274,7 +280,7 @@
           "fallStartY": -3.129532,
           "fiveSecondRule": 99,
           "hp": 90,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -290,6 +296,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -321,7 +328,7 @@
           "fallStartY": -3.128605,
           "fiveSecondRule": 99,
           "hp": 54,
-          "id": 402,
+          "id": 403,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -339,6 +346,7 @@
           "potionCooldownUntil": -1,
           "resource": 195,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -365,9 +373,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 403,
-      "state": "df9a7ca5",
-      "events": "b94cbe0a",
+      "nextId": 404,
+      "state": "0256b099",
+      "events": "ab776db5",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -384,7 +392,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
@@ -399,6 +407,7 @@
               "itemId": "baked_bread"
             }
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -414,7 +423,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "entityId": 403,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
@@ -429,6 +438,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -446,7 +456,7 @@
           "fallStartY": -3.129532,
           "fiveSecondRule": 99,
           "hp": 90,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -462,6 +472,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -493,7 +504,7 @@
           "fallStartY": -3.128605,
           "fiveSecondRule": 99,
           "hp": 54,
-          "id": 402,
+          "id": 403,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -511,6 +522,7 @@
           "potionCooldownUntil": -1,
           "resource": 195,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -537,9 +549,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 403,
-      "state": "df9a7ca5",
-      "events": "aadbd6e5",
+      "nextId": 404,
+      "state": "0256b099",
+      "events": "0d60d5c4",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -556,7 +568,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
@@ -571,6 +583,7 @@
               "itemId": "baked_bread"
             }
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -586,7 +599,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "entityId": 403,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
@@ -601,6 +614,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -618,7 +632,7 @@
           "fallStartY": -3.129532,
           "fiveSecondRule": 99,
           "hp": 90,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -634,6 +648,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -665,7 +680,7 @@
           "fallStartY": -3.128605,
           "fiveSecondRule": 99,
           "hp": 54,
-          "id": 402,
+          "id": 403,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -683,6 +698,7 @@
           "potionCooldownUntil": -1,
           "resource": 195,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -709,9 +725,9 @@
     {
       "tick": 1,
       "time": 0.05,
-      "nextId": 403,
-      "state": "84414a6e",
-      "events": "4bc2f582",
+      "nextId": 404,
+      "state": "12bd60a2",
+      "events": "8dd018f4",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -728,7 +744,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
@@ -743,6 +759,7 @@
               "itemId": "baked_bread"
             }
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -758,7 +775,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "entityId": 403,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
@@ -773,6 +790,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -790,7 +808,7 @@
           "fallStartY": -3.129532,
           "fiveSecondRule": 99.05,
           "hp": 90,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -806,6 +824,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -837,7 +856,7 @@
           "fallStartY": 1.465152,
           "fiveSecondRule": 99.05,
           "hp": 54,
-          "id": 402,
+          "id": 403,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -855,6 +874,7 @@
           "potionCooldownUntil": -1,
           "resource": 195,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -881,8 +901,8 @@
     {
       "tick": 1,
       "time": 0.05,
-      "nextId": 403,
-      "state": "84414a6e",
+      "nextId": 404,
+      "state": "12bd60a2",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -900,7 +920,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
@@ -915,6 +935,7 @@
               "itemId": "baked_bread"
             }
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -930,7 +951,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "entityId": 403,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
@@ -945,6 +966,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -962,7 +984,7 @@
           "fallStartY": -3.129532,
           "fiveSecondRule": 99.05,
           "hp": 90,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -978,6 +1000,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1009,7 +1032,7 @@
           "fallStartY": 1.465152,
           "fiveSecondRule": 99.05,
           "hp": 54,
-          "id": 402,
+          "id": 403,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -1027,6 +1050,7 @@
           "potionCooldownUntil": -1,
           "resource": 195,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,

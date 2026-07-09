@@ -16,7 +16,7 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 401,
+      "nextId": 402,
       "state": "5bc471b0",
       "events": "741638a5",
       "rng": {
@@ -30,9 +30,9 @@
     {
       "tick": 25,
       "time": 1.25,
-      "nextId": 405,
-      "state": "c71c7b4f",
-      "events": "a12f69cf",
+      "nextId": 406,
+      "state": "9059b301",
+      "events": "2469b117",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -41,9 +41,9 @@
     {
       "tick": 50,
       "time": 2.5,
-      "nextId": 405,
-      "state": "d5dc46a1",
-      "events": "7fc93399",
+      "nextId": 406,
+      "state": "b82801bf",
+      "events": "4b4213b5",
       "rng": {
         "draws": 28,
         "digest": "917ad51f"
@@ -52,9 +52,9 @@
     {
       "tick": 75,
       "time": 3.75,
-      "nextId": 405,
-      "state": "5aad31a7",
-      "events": "59acab11",
+      "nextId": 406,
+      "state": "54ad2881",
+      "events": "2ef940a5",
       "rng": {
         "draws": 143,
         "digest": "2ee22fec"
@@ -63,9 +63,9 @@
     {
       "tick": 100,
       "time": 5,
-      "nextId": 405,
-      "state": "9d8b0c6d",
-      "events": "72fdf341",
+      "nextId": 406,
+      "state": "6a627913",
+      "events": "6d44da7d",
       "rng": {
         "draws": 304,
         "digest": "2fe81b1f"
@@ -74,9 +74,9 @@
     {
       "tick": 101,
       "time": 5.05,
-      "nextId": 405,
-      "state": "7f68300e",
-      "events": "9e6a5a8d",
+      "nextId": 406,
+      "state": "e8a4083e",
+      "events": "91c9f98f",
       "rng": {
         "draws": 310,
         "digest": "cced2c26"
@@ -94,7 +94,7 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
@@ -106,6 +106,7 @@
               "ranks": {}
             }
           },
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {
@@ -127,7 +128,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "entityId": 403,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
@@ -139,6 +140,7 @@
               "ranks": {}
             }
           },
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {
@@ -162,7 +164,7 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 403,
+          "entityId": 404,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
@@ -174,6 +176,7 @@
               "ranks": {}
             }
           },
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {
@@ -195,7 +198,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 404,
+          "entityId": 405,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
@@ -207,6 +210,7 @@
               "ranks": {}
             }
           },
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {
@@ -229,7 +233,7 @@
           "dodgeChance": 0.0795,
           "fiveSecondRule": 104.05,
           "hp": 812,
-          "id": 401,
+          "id": 402,
           "inCombat": true,
           "kind": "player",
           "level": 20,
@@ -247,6 +251,7 @@
           "potionCooldownUntil": -1,
           "resource": 5.1717,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -277,7 +282,7 @@
           "dodgeChance": 0.056,
           "fiveSecondRule": 104.05,
           "hp": 418,
-          "id": 402,
+          "id": 403,
           "kind": "player",
           "level": 20,
           "lootFfaTimer": "Infinity",
@@ -294,6 +299,7 @@
           "potionCooldownUntil": -1,
           "resource": 1671,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -327,7 +333,7 @@
           "facing": 3.141593,
           "fiveSecondRule": 104.05,
           "hp": 4950,
-          "id": 403,
+          "id": 404,
           "inCombat": true,
           "kind": "player",
           "level": 20,
@@ -345,6 +351,7 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "energy",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -377,7 +384,7 @@
           "facing": 3.141593,
           "fiveSecondRule": 104.05,
           "hp": 848,
-          "id": 404,
+          "id": 405,
           "kind": "player",
           "level": 20,
           "lootFfaTimer": "Infinity",
@@ -395,6 +402,7 @@
           "rangedPower": 194,
           "resource": 622,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -421,9 +429,9 @@
     {
       "tick": 101,
       "time": 5.05,
-      "nextId": 405,
-      "state": "9f4303ce",
-      "events": "cf9ec829",
+      "nextId": 406,
+      "state": "820623b0",
+      "events": "55588f22",
       "rng": {
         "draws": 310,
         "digest": "cced2c26"
@@ -441,7 +449,7 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
@@ -453,6 +461,7 @@
               "ranks": {}
             }
           },
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {
@@ -474,7 +483,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "entityId": 403,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
@@ -486,6 +495,7 @@
               "ranks": {}
             }
           },
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {
@@ -509,7 +519,7 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 403,
+          "entityId": 404,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
@@ -521,6 +531,7 @@
               "ranks": {}
             }
           },
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {
@@ -542,7 +553,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 404,
+          "entityId": 405,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
@@ -554,6 +565,7 @@
               "ranks": {}
             }
           },
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {
@@ -576,7 +588,7 @@
           "dodgeChance": 0.0795,
           "fiveSecondRule": 104.05,
           "hp": 812,
-          "id": 401,
+          "id": 402,
           "inCombat": true,
           "kind": "player",
           "level": 20,
@@ -594,6 +606,7 @@
           "potionCooldownUntil": -1,
           "resource": 10.343401,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -624,7 +637,7 @@
           "dodgeChance": 0.056,
           "fiveSecondRule": 104.05,
           "hp": 418,
-          "id": 402,
+          "id": 403,
           "kind": "player",
           "level": 20,
           "lootFfaTimer": "Infinity",
@@ -641,6 +654,7 @@
           "potionCooldownUntil": -1,
           "resource": 1671,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -672,7 +686,7 @@
           "facing": 3.141593,
           "fiveSecondRule": 104.05,
           "hp": 4900,
-          "id": 403,
+          "id": 404,
           "inCombat": true,
           "kind": "player",
           "level": 20,
@@ -690,6 +704,7 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "energy",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -722,7 +737,7 @@
           "facing": 3.141593,
           "fiveSecondRule": 104.05,
           "hp": 848,
-          "id": 404,
+          "id": 405,
           "kind": "player",
           "level": 20,
           "lootFfaTimer": "Infinity",
@@ -740,6 +755,7 @@
           "rangedPower": 194,
           "resource": 622,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -766,9 +782,9 @@
     {
       "tick": 101,
       "time": 5.05,
-      "nextId": 405,
-      "state": "eab874ee",
-      "events": "6e8891dd",
+      "nextId": 406,
+      "state": "bf06b844",
+      "events": "9d947969",
       "rng": {
         "draws": 310,
         "digest": "cced2c26"
@@ -787,7 +803,7 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
@@ -799,6 +815,7 @@
               "ranks": {}
             }
           },
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {
@@ -820,7 +837,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "entityId": 403,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
@@ -832,6 +849,7 @@
               "ranks": {}
             }
           },
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {
@@ -856,7 +874,7 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 403,
+          "entityId": 404,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
@@ -868,6 +886,7 @@
               "ranks": {}
             }
           },
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {
@@ -889,7 +908,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 404,
+          "entityId": 405,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
@@ -901,6 +920,7 @@
               "ranks": {}
             }
           },
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {
@@ -923,7 +943,7 @@
           "dodgeChance": 0.0795,
           "fiveSecondRule": 104.05,
           "hp": 812,
-          "id": 401,
+          "id": 402,
           "inCombat": true,
           "kind": "player",
           "level": 20,
@@ -941,6 +961,7 @@
           "potionCooldownUntil": -1,
           "resource": 10.343401,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -971,7 +992,7 @@
           "dodgeChance": 0.056,
           "fiveSecondRule": 104.05,
           "hp": 418,
-          "id": 402,
+          "id": 403,
           "kind": "player",
           "level": 20,
           "lootFfaTimer": "Infinity",
@@ -988,6 +1009,7 @@
           "potionCooldownUntil": -1,
           "resource": 1671,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1019,7 +1041,7 @@
           "dodgeChance": 0.1345,
           "facing": 3.141593,
           "fiveSecondRule": 104.05,
-          "id": 403,
+          "id": 404,
           "inCombat": true,
           "kind": "player",
           "level": 20,
@@ -1037,6 +1059,7 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "energy",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1069,7 +1092,7 @@
           "facing": 3.141593,
           "fiveSecondRule": 104.05,
           "hp": 848,
-          "id": 404,
+          "id": 405,
           "kind": "player",
           "level": 20,
           "lootFfaTimer": "Infinity",
@@ -1087,6 +1110,7 @@
           "rangedPower": 194,
           "resource": 622,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1113,8 +1137,8 @@
     {
       "tick": 125,
       "time": 6.25,
-      "nextId": 405,
-      "state": "27262fa0",
+      "nextId": 406,
+      "state": "cf437422",
       "events": "741638a5",
       "rng": {
         "draws": 434,
@@ -1124,8 +1148,8 @@
     {
       "tick": 142,
       "time": 7.1,
-      "nextId": 405,
-      "state": "5fe4f228",
+      "nextId": 406,
+      "state": "47f23d0a",
       "events": "741638a5",
       "rng": {
         "draws": 528,
@@ -1145,7 +1169,7 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
@@ -1157,6 +1181,7 @@
               "ranks": {}
             }
           },
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {
@@ -1178,7 +1203,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "entityId": 403,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
@@ -1190,6 +1215,7 @@
               "ranks": {}
             }
           },
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {
@@ -1214,7 +1240,7 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 403,
+          "entityId": 404,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
@@ -1226,6 +1252,7 @@
               "ranks": {}
             }
           },
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {
@@ -1247,7 +1274,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 404,
+          "entityId": 405,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
@@ -1259,6 +1286,7 @@
               "ranks": {}
             }
           },
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {
@@ -1282,7 +1310,7 @@
           "dodgeChance": 0.0795,
           "fiveSecondRule": 106.1,
           "hp": 812,
-          "id": 401,
+          "id": 402,
           "inCombat": true,
           "kind": "player",
           "level": 20,
@@ -1300,6 +1328,7 @@
           "potionCooldownUntil": -1,
           "resource": 10.343401,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1330,7 +1359,7 @@
           "dodgeChance": 0.056,
           "fiveSecondRule": 106.1,
           "hp": 418,
-          "id": 402,
+          "id": 403,
           "kind": "player",
           "level": 20,
           "lootFfaTimer": "Infinity",
@@ -1347,6 +1376,7 @@
           "potionCooldownUntil": -1,
           "resource": 1671,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1379,7 +1409,7 @@
           "dodgeChance": 0.1345,
           "facing": 3.141593,
           "fiveSecondRule": 106.1,
-          "id": 403,
+          "id": 404,
           "inCombat": true,
           "kind": "player",
           "level": 20,
@@ -1397,6 +1427,7 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "energy",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1429,7 +1460,7 @@
           "facing": 3.141593,
           "fiveSecondRule": 106.1,
           "hp": 848,
-          "id": 404,
+          "id": 405,
           "kind": "player",
           "level": 20,
           "lootFfaTimer": "Infinity",
@@ -1447,6 +1478,7 @@
           "rangedPower": 194,
           "resource": 622,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,

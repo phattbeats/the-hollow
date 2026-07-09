@@ -15,8 +15,8 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 402,
-      "state": "f04cb373",
+      "nextId": 403,
+      "state": "2ecfd0b5",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -34,11 +34,12 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -56,7 +57,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 90,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -73,6 +74,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -99,9 +101,9 @@
     {
       "tick": 5,
       "time": 0.25,
-      "nextId": 419,
-      "state": "9cb3b9a9",
-      "events": "0e86288d",
+      "nextId": 420,
+      "state": "5907b227",
+      "events": "3fc146f4",
       "rng": {
         "draws": 1,
         "digest": "e763f88a"
@@ -110,8 +112,8 @@
     {
       "tick": 7,
       "time": 0.35,
-      "nextId": 419,
-      "state": "77b2b1e3",
+      "nextId": 420,
+      "state": "4eb4b1a1",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -129,12 +131,13 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
           "lifetimeXp": 11200,
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -151,7 +154,7 @@
           "dodgeChance": 0.063,
           "fiveSecondRule": 99.35,
           "hp": 50000,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 7,
           "lootFfaTimer": "Infinity",
@@ -167,6 +170,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -193,9 +197,9 @@
     {
       "tick": 7,
       "time": 0.35,
-      "nextId": 419,
-      "state": "0818ea87",
-      "events": "62e6ce51",
+      "nextId": 420,
+      "state": "9efb9595",
+      "events": "60be9013",
       "rng": {
         "draws": 3,
         "digest": "391d1f61"
@@ -218,13 +222,14 @@
             "date": "2099-06-25"
           },
           "delveMarks": 89,
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "legs": "reliquary_legs",
             "mainhand": "worn_sword"
           },
           "lifetimeXp": 11200,
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -241,7 +246,7 @@
           "dodgeChance": 0.063,
           "fiveSecondRule": 99.35,
           "hp": 338,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 7,
           "lootFfaTimer": "Infinity",
@@ -257,6 +262,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -283,8 +289,8 @@
     {
       "tick": 9,
       "time": 0.45,
-      "nextId": 419,
-      "state": "86e45c85",
+      "nextId": 420,
+      "state": "9618d563",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -308,13 +314,14 @@
             "date": "2099-06-25"
           },
           "delveMarks": 89,
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "legs": "reliquary_legs",
             "mainhand": "worn_sword"
           },
           "lifetimeXp": 11200,
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -331,7 +338,7 @@
           "dodgeChance": 0.063,
           "fiveSecondRule": 99.45,
           "hp": 338,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 7,
           "lootFfaTimer": "Infinity",
@@ -347,6 +354,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,

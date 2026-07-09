@@ -14,8 +14,8 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 402,
-      "state": "25d1ee04",
+      "nextId": 403,
+      "state": "dc4e8026",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -33,11 +33,12 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -55,7 +56,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 62,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -73,6 +74,7 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "energy",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -100,9 +102,9 @@
     {
       "tick": 20,
       "time": 1,
-      "nextId": 403,
-      "state": "248c7a5d",
-      "events": "c02b647d",
+      "nextId": 404,
+      "state": "c6aa6ded",
+      "events": "f51e9316",
       "rng": {
         "draws": 7,
         "digest": "09f3b538"
@@ -111,9 +113,9 @@
     {
       "tick": 40,
       "time": 2,
-      "nextId": 403,
-      "state": "3b149d32",
-      "events": "be266894",
+      "nextId": 404,
+      "state": "7f196d30",
+      "events": "ce024e35",
       "rng": {
         "draws": 13,
         "digest": "ec7cecf6"
@@ -122,9 +124,9 @@
     {
       "tick": 60,
       "time": 3,
-      "nextId": 403,
-      "state": "b0f6a2bc",
-      "events": "0058395e",
+      "nextId": 404,
+      "state": "f4428256",
+      "events": "e1c33051",
       "rng": {
         "draws": 96,
         "digest": "34a98606"
@@ -133,8 +135,8 @@
     {
       "tick": 72,
       "time": 3.6,
-      "nextId": 403,
-      "state": "151a91b2",
+      "nextId": 404,
+      "state": "a52e1656",
       "events": "741638a5",
       "rng": {
         "draws": 153,
@@ -155,12 +157,13 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
           "lifetimeXp": 27600,
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -174,7 +177,7 @@
           "autoAttack": true,
           "combatTimer": 1.2,
           "comboPoints": 3,
-          "comboTargetId": 402,
+          "comboTargetId": 403,
           "critChance": 0.076,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.076,
@@ -182,7 +185,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 102.6,
           "hp": 49991,
-          "id": 401,
+          "id": 402,
           "inCombat": true,
           "kind": "player",
           "level": 10,
@@ -201,6 +204,7 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "energy",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -216,7 +220,7 @@
             "str": 26
           },
           "swingTimer": 0.05,
-          "targetId": 402,
+          "targetId": 403,
           "templateId": "rogue",
           "weapon": {
             "dagger": true,
@@ -226,7 +230,7 @@
           }
         },
         {
-          "aggroTargetId": 401,
+          "aggroTargetId": 402,
           "aiState": "attack",
           "combatTimer": 1.2,
           "critChance": 0.05,
@@ -237,7 +241,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 8918,
-          "id": 402,
+          "id": 403,
           "inCombat": true,
           "kind": "mob",
           "leashAnchor": {
@@ -258,6 +262,7 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 4,
             "y": 1.5,
@@ -267,12 +272,12 @@
             "armor": 40
           },
           "swingTimer": 0.45,
-          "tappedById": 401,
-          "targetId": 401,
+          "tappedById": 402,
+          "targetId": 402,
           "templateId": "forest_wolf",
           "threat": [
             [
-              401,
+              402,
               83
             ]
           ],

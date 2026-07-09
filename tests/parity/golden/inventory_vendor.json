@@ -20,7 +20,7 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 401,
+      "nextId": 402,
       "state": "5bc471b0",
       "events": "741638a5",
       "rng": {
@@ -34,8 +34,8 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 402,
-      "state": "74633792",
+      "nextId": 403,
+      "state": "5012d914",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -53,11 +53,12 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -75,7 +76,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 90,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -92,6 +93,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -118,9 +120,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 402,
-      "state": "69060df4",
-      "events": "ddca878e",
+      "nextId": 403,
+      "state": "ad33abb8",
+      "events": "2cb20faa",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -137,7 +139,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
@@ -156,6 +158,7 @@
               "itemId": "minor_healing_potion"
             }
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -173,7 +176,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 90,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -190,6 +193,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -216,9 +220,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 402,
-      "state": "aa61f56e",
-      "events": "17132d76",
+      "nextId": 403,
+      "state": "beac2d80",
+      "events": "d299de55",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -235,7 +239,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "helmet": "cryptbone_helm",
@@ -259,6 +263,7 @@
               "itemId": "roadwardens_helm"
             }
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -276,7 +281,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 120,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -293,6 +298,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -319,9 +325,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 402,
-      "state": "1fe1cdfa",
-      "events": "76309110",
+      "nextId": 403,
+      "state": "7e374074",
+      "events": "0864a3d1",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -338,7 +344,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "helmet": "roadwardens_helm",
@@ -362,6 +368,7 @@
               "itemId": "cryptbone_helm"
             }
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -379,7 +386,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 110,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -396,6 +403,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -422,9 +430,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 402,
-      "state": "93b7e1f6",
-      "events": "8dc8fb89",
+      "nextId": 403,
+      "state": "377ec9be",
+      "events": "6524e3dc",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -441,7 +449,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
@@ -468,6 +476,7 @@
               "itemId": "roadwardens_helm"
             }
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -485,7 +494,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 90,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -502,6 +511,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -528,9 +538,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 402,
-      "state": "d3c9db60",
-      "events": "58967549",
+      "nextId": 403,
+      "state": "5f6786ca",
+      "events": "40e7d301",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -547,7 +557,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
@@ -566,6 +576,7 @@
               "itemId": "roadwardens_helm"
             }
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -595,7 +606,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 90,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -612,6 +623,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "sitting": true,
           "spawnPos": {
             "x": 2,
@@ -639,9 +651,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 402,
-      "state": "a9c487e0",
-      "events": "6078006e",
+      "nextId": 403,
+      "state": "45651478",
+      "events": "c476417c",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -658,7 +670,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
@@ -673,6 +685,7 @@
               "itemId": "roadwardens_helm"
             }
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -702,7 +715,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 90,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -720,6 +733,7 @@
           "potionCooldownRemaining": 120,
           "potionCooldownUntil": 120,
           "resourceType": "rage",
+          "sex": "m",
           "sitting": true,
           "spawnPos": {
             "x": 2,
@@ -747,9 +761,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 402,
-      "state": "8e1b2b68",
-      "events": "6ceb7f37",
+      "nextId": 403,
+      "state": "86311be3",
+      "events": "de6284fa",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -766,7 +780,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
@@ -781,6 +795,7 @@
               "itemId": "roadwardens_helm"
             }
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -799,7 +814,7 @@
               "name": "Might of the Bear",
               "remaining": 900,
               "school": "nature",
-              "sourceId": 401,
+              "sourceId": 402,
               "value": 12
             }
           ],
@@ -822,7 +837,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 210,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -840,6 +855,7 @@
           "potionCooldownRemaining": 120,
           "potionCooldownUntil": 120,
           "resourceType": "rage",
+          "sex": "m",
           "sitting": true,
           "spawnPos": {
             "x": 2,
@@ -867,9 +883,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 402,
-      "state": "628096f6",
-      "events": "2e03fa4e",
+      "nextId": 403,
+      "state": "ec30f625",
+      "events": "307ecb04",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -886,7 +902,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
@@ -905,6 +921,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -923,7 +940,7 @@
               "name": "Might of the Bear",
               "remaining": 900,
               "school": "nature",
-              "sourceId": 401,
+              "sourceId": 402,
               "value": 12
             }
           ],
@@ -946,7 +963,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 210,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -964,6 +981,7 @@
           "potionCooldownRemaining": 120,
           "potionCooldownUntil": 120,
           "resourceType": "rage",
+          "sex": "m",
           "sitting": true,
           "spawnPos": {
             "x": 2,
@@ -991,9 +1009,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 402,
-      "state": "07894c01",
-      "events": "4e4f7728",
+      "nextId": 403,
+      "state": "72064634",
+      "events": "16e2c83c",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -1010,7 +1028,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
@@ -1029,6 +1047,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1053,7 +1072,7 @@
               "name": "Might of the Bear",
               "remaining": 900,
               "school": "nature",
-              "sourceId": 401,
+              "sourceId": 402,
               "value": 12
             }
           ],
@@ -1076,7 +1095,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 210,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -1094,6 +1113,7 @@
           "potionCooldownRemaining": 120,
           "potionCooldownUntil": 120,
           "resourceType": "rage",
+          "sex": "m",
           "sitting": true,
           "spawnPos": {
             "x": 2,
@@ -1121,9 +1141,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 402,
-      "state": "18c6078e",
-      "events": "35ff864a",
+      "nextId": 403,
+      "state": "2a4471e7",
+      "events": "7993e9dd",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -1140,7 +1160,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
@@ -1155,6 +1175,7 @@
               "itemId": "roadwardens_helm"
             }
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1183,7 +1204,7 @@
               "name": "Might of the Bear",
               "remaining": 900,
               "school": "nature",
-              "sourceId": 401,
+              "sourceId": 402,
               "value": 12
             }
           ],
@@ -1206,7 +1227,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 210,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -1224,6 +1245,7 @@
           "potionCooldownRemaining": 120,
           "potionCooldownUntil": 120,
           "resourceType": "rage",
+          "sex": "m",
           "sitting": true,
           "spawnPos": {
             "x": 2,
@@ -1251,9 +1273,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 402,
-      "state": "9ca08f70",
-      "events": "9d63bb3d",
+      "nextId": 403,
+      "state": "60b426f5",
+      "events": "c2e37db9",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -1270,7 +1292,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
@@ -1289,6 +1311,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1317,7 +1340,7 @@
               "name": "Might of the Bear",
               "remaining": 900,
               "school": "nature",
-              "sourceId": 401,
+              "sourceId": 402,
               "value": 12
             }
           ],
@@ -1340,7 +1363,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 210,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -1358,6 +1381,7 @@
           "potionCooldownRemaining": 120,
           "potionCooldownUntil": 120,
           "resourceType": "rage",
+          "sex": "m",
           "sitting": true,
           "spawnPos": {
             "x": 2,
@@ -1385,8 +1409,8 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 402,
-      "state": "9ca08f70",
+      "nextId": 403,
+      "state": "60b426f5",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -1404,7 +1428,7 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
@@ -1423,6 +1447,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1451,7 +1476,7 @@
               "name": "Might of the Bear",
               "remaining": 900,
               "school": "nature",
-              "sourceId": 401,
+              "sourceId": 402,
               "value": 12
             }
           ],
@@ -1474,7 +1499,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 210,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -1492,6 +1517,7 @@
           "potionCooldownRemaining": 120,
           "potionCooldownUntil": 120,
           "resourceType": "rage",
+          "sex": "m",
           "sitting": true,
           "spawnPos": {
             "x": 2,
