@@ -207,6 +207,8 @@ import * as tradeMod from './social/trade';
 // stays valid now that the type lives in market.ts.
 export type { MarketSave } from './market';
 
+import type { DialogRuntimeState } from './dialog/dialog_commands';
+import * as dialogCommands from './dialog/dialog_commands';
 import {
   enterCrypt as enterCryptImpl,
   enterDungeon as enterDungeonImpl,
@@ -277,6 +279,7 @@ import {
   type DelveDef,
   type DelveModuleDef,
   type DelveRun,
+  type DialogStateSave,
   DT,
   DUNGEON_LEASH_DISTANCE,
   dist2d,
@@ -675,6 +678,10 @@ export interface PlayerMeta {
   known: ResolvedAbility[];
   questLog: Map<string, QuestProgress>;
   questsDone: Set<string>;
+  // Branching-dialogue state (PHAA-553): disposition toward each NPC + persistent
+  // conversation flags. Nudged by dialogChoose, gates dialogue branches, persisted
+  // in CharacterState (see dialog/dialog_commands.ts).
+  dialogState: DialogRuntimeState;
   counters: RewardCounters;
   autoEquip: boolean;
   // sim.time when this character entered the world; powers /played. Session-only
@@ -775,6 +782,9 @@ export interface CharacterState {
   vendorBuyback?: InvSlot[];
   questLog: { questId: string; counts: number[]; state: 'active' | 'ready' | 'done' }[];
   questsDone: string[];
+  // Branching-dialogue state (PHAA-553; JSONB, no schema migration). Optional so
+  // characters saved before dialogue trees existed load cleanly (empty default).
+  dialogState?: DialogStateSave;
   // Legacy arenaRating/Wins/Losses are treated as 1v1 data. The explicit
   // 1v1 fields are written by new saves, while old saves fall back cleanly.
   arenaRating?: number;
@@ -1259,6 +1269,7 @@ export class Sim {
       known: [],
       questLog: new Map(),
       questsDone: new Set(),
+      dialogState: dialogCommands.freshDialogState(),
       counters: freshCounters(),
       autoEquip: opts?.autoEquip ?? false,
       joinedAt: this.time,
@@ -1319,6 +1330,8 @@ export class Sim {
           });
       }
       for (const q of s.questsDone) meta.questsDone.add(q);
+      // PHAA-553: absent in pre-dialogue saves, loads to an empty default.
+      meta.dialogState = dialogCommands.loadDialogState(s.dialogState);
       if (s.talents)
         // Revalidate the persisted build against the current rules + level budget
         // before it is baked into the flat mods below. A stored allocation replays
@@ -1533,6 +1546,7 @@ export class Sim {
         state: q.state,
       })),
       questsDone: [...meta.questsDone],
+      dialogState: dialogCommands.serializeDialogState(meta.dialogState),
       arenaRating: meta.arenaRating,
       arenaWins: meta.arenaWins,
       arenaLosses: meta.arenaLosses,
@@ -4689,6 +4703,15 @@ export class Sim {
 
   refuseQuest(questId: string, pid?: number): void {
     questCommands.refuseQuest(this.ctx, questId, pid);
+  }
+
+  // Branching dialogue (PHAA-553) — thin delegates to dialog/dialog_commands.
+  dialogChoose(npcId: string, choiceId: string, pid?: number): void {
+    dialogCommands.dialogChoose(this.ctx, npcId, choiceId, pid);
+  }
+
+  dialogState(pid?: number): DialogStateSave {
+    return dialogCommands.dialogStateView(this.ctx, pid);
   }
 
   // No-op in offline mode

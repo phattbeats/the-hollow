@@ -1764,6 +1764,7 @@ const ALL_DELTA_KEYS = [
   'delveDaily',
   'dmarks',
   'drun',
+  'dstate',
   'duel',
   'equip',
   'hearth',
@@ -1802,6 +1803,7 @@ const TERSE_TO_IWORLD: Record<string, string> = {
   dcompanion: 'companionState',
   dmarks: 'delveMarks',
   drun: 'delveRun',
+  dstate: 'dialogState',
   duel: 'duelInfo',
   equip: 'equipment',
   hearth: 'hollowHearth',
@@ -1888,6 +1890,9 @@ function dirtyEveryDeltaField(): {
   if (merchant) merchant.pos = { ...p.pos };
   // hearth: global state, no player positioning needed to dirty it.
   sim.loadGreenpawHearth({ hunger: 50, smoke: 42 });
+  // dstate (PHAA-553): per-player dialogue disposition + a flag, non-default.
+  meta.dialogState.disposition.set('brother_greenpaw', 3);
+  meta.dialogState.flags.add('gp.promised_fuel');
 
   // Direct PlayerMeta fields.
   meta.inventory = [{ itemId: 'baked_bread', count: 3 }];
@@ -1992,6 +1997,11 @@ describe('full self-state snapshot delta fixture', () => {
     ]); // qlog -> questLog (Map)
     expect(client.questsDone.has('q_wolves')).toBe(true); // qdone -> questsDone (Set)
     expect(client.unlockedMilestones).toEqual(['milestone_test']); // milestones -> unlockedMilestones
+    // dstate -> dialogState() (private dialogStateMirror), via the IWorld read
+    expect(client.dialogState()).toEqual({
+      disposition: { brother_greenpaw: 3 },
+      flags: ['gp.promised_fuel'],
+    });
     // lockouts -> selfLockouts (private), via the raidLockouts() accessor
     expect(client.raidLockouts().map((l) => l.id)).toEqual(['nythraxis_boss_arena']);
     expect(client.partyInfo).not.toBeNull(); // party -> partyInfo
@@ -2061,9 +2071,9 @@ describe('full self-state snapshot delta fixture', () => {
 });
 
 describe('delta-key contract pins (anti-drift)', () => {
-  it('ALL_DELTA_KEYS contains exactly 29 unique keys in sorted order', () => {
-    expect(ALL_DELTA_KEYS).toHaveLength(29);
-    expect(new Set(ALL_DELTA_KEYS).size).toBe(29);
+  it('ALL_DELTA_KEYS contains exactly 30 unique keys in sorted order', () => {
+    expect(ALL_DELTA_KEYS).toHaveLength(30);
+    expect(new Set(ALL_DELTA_KEYS).size).toBe(30);
     expect([...ALL_DELTA_KEYS]).toEqual([...ALL_DELTA_KEYS].sort());
   });
 
@@ -2075,7 +2085,7 @@ describe('delta-key contract pins (anti-drift)', () => {
     const scraped = new Set<string>();
     for (let m = re.exec(src); m !== null; m = re.exec(src)) scraped.add(m[1]);
     expect(scraped.has('lockouts')).toBe(true); // the multi-line call IS captured
-    expect(scraped.size).toBe(29);
+    expect(scraped.size).toBe(30);
     expect([...scraped].sort()).toEqual([...ALL_DELTA_KEYS].sort());
   });
 

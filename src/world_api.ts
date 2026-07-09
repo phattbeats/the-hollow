@@ -57,6 +57,7 @@ import type { IWorldChat } from './world_api/chat';
 import type { IWorldCombat } from './world_api/combat';
 import type { IWorldCosmetics } from './world_api/cosmetics';
 import type { IWorldDelves } from './world_api/delves';
+import type { IWorldDialog } from './world_api/dialog';
 import type { IWorldDuelArena } from './world_api/duel_arena';
 import type { IWorldDungeons } from './world_api/dungeons';
 import type { IWorldEntityRoster } from './world_api/entity_roster';
@@ -93,6 +94,7 @@ export type {
   DelveShopOfferView,
   LockpickView,
 } from './world_api/delves';
+export type { DialogStateView } from './world_api/dialog';
 export type {
   ArenaInfo,
   ArenaLadderEntry,
@@ -149,6 +151,7 @@ export interface IWorld
     IWorldGreenpawHearth,
     IWorldHomestead,
     IWorldGathering,
+    IWorldDialog,
     IWorldTelemetry {}
 
 // ---------------------------------------------------------------------------
@@ -288,6 +291,7 @@ export const COMMAND_NAMES = [
   'housingRemove',
   'feedGreenpaw',
   'harvestCorpse',
+  'dialogChoose',
 ] as const;
 
 // The union both the send path (`online.ts`) and the dispatch switch
@@ -352,6 +356,7 @@ export type WorldFacet =
   | 'IWorldGreenpawHearth'
   | 'IWorldHomestead'
   | 'IWorldGathering'
+  | 'IWorldDialog'
   | 'IWorldTelemetry';
 
 export const COMMAND_FACETS = {
@@ -489,4 +494,7 @@ export const COMMAND_FACETS = {
   feedGreenpaw: 'IWorldGreenpawHearth',
   // IWorldGathering: single-use, first-come corpse harvest (PHAA-504).
   harvestCorpse: 'IWorldGathering',
+  // IWorldDialog: resolve a picked branching-dialogue choice (PHAA-553); the
+  // dialogState read carries no wire command (it rides the self-snapshot).
+  dialogChoose: 'IWorldDialog',
 } as const satisfies Partial<Record<ClientCommand, WorldFacet>>;
