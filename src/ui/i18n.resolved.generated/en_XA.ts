@@ -3519,6 +3519,7 @@ export const en_XA: EnTranslations = {
       "offGlobalCooldown": "[Óƒƒ ţĥé ĝļóƀáļ çóóļðóŵñ]",
       "friendlyTarget": "[Ƒŕíéñðļý ţáŕĝéţ]",
       "enemyTarget": "[Éñéɱý ţáŕĝéţ]",
+      "selfOnly": "[Šéļƒ óñļý]",
       "damageRange": "[{min} ţó {max}]",
       "finisherDamage": "[{base} þļúš {perCombo} þéŕ çóɱƀó þóíñţ]"
     },
