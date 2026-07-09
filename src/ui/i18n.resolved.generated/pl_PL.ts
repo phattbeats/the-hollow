@@ -5577,6 +5577,9 @@ export const pl_PL: EnTranslations = {
       "deacon_voss": {
         "name": "Diakon Voss"
       },
+      "training_dummy": {
+        "name": "Training Dummy"
+      },
       "ridge_stalker": {
         "name": "Grzbietowy Tropiciel"
       },

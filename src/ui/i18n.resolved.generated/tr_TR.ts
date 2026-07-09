@@ -5577,6 +5577,9 @@ export const tr_TR: EnTranslations = {
       "deacon_voss": {
         "name": "Diyakoz Voss"
       },
+      "training_dummy": {
+        "name": "Training Dummy"
+      },
       "ridge_stalker": {
         "name": "Sırt Sinsisi"
       },

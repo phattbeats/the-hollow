@@ -5577,6 +5577,9 @@ export const ru_RU: EnTranslations = {
       "deacon_voss": {
         "name": "Дьякон Восс"
       },
+      "training_dummy": {
+        "name": "Training Dummy"
+      },
       "ridge_stalker": {
         "name": "Хребтовый охотник"
       },

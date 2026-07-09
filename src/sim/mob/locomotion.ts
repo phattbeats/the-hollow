@@ -53,6 +53,10 @@ const EVADE_STALL_TIMEOUT = 3;
 const FLEE_RETURN_GRACE = 8;
 const SWIM_DEPTH = PLAYER_SWIM_DEPTH; // ground this far under the water line = deep water
 const BODY_RADIUS = PLAYER_BODY_RADIUS;
+// Training dummy: seconds after the last hit before it drops combat and heals to
+// full (mirrors the player out-of-combat window, so combat exits cleanly while the
+// damage meter keeps the finished segment's DPS).
+const DUMMY_RESET_SECONDS = 5;
 
 export function updateMob(ctx: SimContext, mob: Entity): void {
   if (mob.dead) {
@@ -83,6 +87,20 @@ export function updateMob(ctx: SimContext, mob: Entity): void {
   }
 
   mob.combatTimer += DT;
+
+  if (MOBS[mob.templateId]?.dummy) {
+    // Training dummy: stays hostile/attackable so it counts for damage and shows on
+    // the meters, but is otherwise inert (never aggros, moves, or fights back). It
+    // drops combat and heals to full a few seconds after the last hit, so the player
+    // leaves combat while the meter retains the finished encounter's DPS.
+    if (mob.combatTimer >= DUMMY_RESET_SECONDS) {
+      mob.inCombat = false;
+      mob.hp = mob.maxHp;
+    } else {
+      mob.inCombat = true;
+    }
+    return;
+  }
 
   if (mob.templateId.startsWith('vision_')) {
     mob.hostile = false;

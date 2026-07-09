@@ -546,7 +546,14 @@ export function handleDeath(ctx: SimContext, e: Entity, killer: Entity | null): 
     if (e.templateId === NYTHRAXIS_BOSS_ID) ctx.grantNythraxisLockout(e);
     e.aiState = 'dead';
     e.corpseTimer = CORPSE_DURATION;
-    e.respawnTimer = ctx.cfg.respawnSeconds * (template?.respawnMult ?? (template?.rare ? 4 : 1));
+    e.respawnTimer =
+      template?.respawnSeconds ??
+      ctx.cfg.respawnSeconds * (template?.respawnMult ?? (template?.rare ? 4 : 1));
+    // A fixed respawn also caps corpse decay so the mob returns on schedule whether
+    // or not its loot was looted (training dummy: 10s).
+    if (template?.respawnSeconds !== undefined) {
+      e.corpseTimer = Math.min(e.corpseTimer, template.respawnSeconds);
+    }
     e.aggroTargetId = null;
     clearThreat(e);
     if (e.ownerId !== null) {
