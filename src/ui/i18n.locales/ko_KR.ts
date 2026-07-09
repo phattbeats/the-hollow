@@ -2901,6 +2901,35 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.verger_zebediah.greeting':
     '성당지기 제베디아요. 나는 이 외곽을 달력에 맞춰 관리하오, 적어도 그러려고 애는 쓰지. 뿌리굴은 이번 철엔 쉬게 한다고 적어 뒀는데, 멧돼지들은 그 고시를 읽지 않았소. 무른 흙을 조심하고, 장부엔 손대지 마시오.',
   'entities.npcs.sexton_faddick.name': '무덤지기 패딕',
+  'entities.items.willow_sprig.name': '버드나무 잔가지 하나',
+  'entities.npcs.shade.name': '셰이드',
+  'entities.npcs.shade.title': '떠도는 이',
+  'entities.npcs.shade.greeting':
+    '아, 당신이군요. 원하면 앉아요, 물은 어디 가지 않으니까. 오늘 뭐 좀 먹었어요? 먹어야 해요.',
+  'entities.npcs.shade.introLines.0':
+    '허드렛일 하는 걸 들켰네요. 이 물뿌리개는 신경 쓰지 마요, 그냥 물이에요. 물 조금이 아쉬운 건 언제나 있는 법이니까.',
+  'entities.npcs.shade.introLines.1':
+    '나요? 내세울 것 없는 사람이에요. 셰이드. 걷다가 일손이 모자란 데서 손을 보태죠. 많이 지쳐 보이네요. 원하면 잠깐 앉았다 가요.',
+  'entities.npcs.gate_bard.name': '음유시인 할덴',
+  'entities.npcs.gate_bard.title': '문앞의 악사',
+  'entities.npcs.gate_bard.greeting':
+    '노래 한 곡에 동전 한 닢? 싫다고요? 괜찮아요, 대개는 싫다고들 하죠. 나는 이 문을 위해 연주하지만, 문은 단 한 번도 지갑에 손을 댄 적이 없어요.',
+  'entities.npcs.goodwife_orla.name': '오를라',
+  'entities.npcs.goodwife_orla.title': '한때 뿌리굴의 사람',
+  'entities.npcs.goodwife_orla.greeting':
+    '앉아도 돼요. 다들 그냥 지나가죠. 성당지기가 오래전에 내 이름을 장부에서 지워 버렸어요. 지워진 이름은 조용히 있는 법을 배우죠, 아직 여기 있다는 걸 아무도 떠올리지 않도록.',
+  'entities.quests.q_have_you_eaten.title': '밥은 먹었어요?',
+  'entities.quests.q_have_you_eaten.text':
+    '문앞에 동전으로 먹고사는 음유시인이 있어요. 동전이 들어올 때만 먹는데, 그게 흔치 않죠. 따뜻한 국 한 그릇이 남아요. 그에게 가져다줄래요? 동정이라고는 말하지 말아요. 그냥 남은 거라고 해요.',
+  'entities.quests.q_have_you_eaten.completion':
+    '돌아왔군요. 그는 먹었어요? 잘됐네요. 다행이에요. 당신은요? …… 안 먹었군요, 보면 알아요. 그럼 앉아요. 좋은 사람이 되는 데 위대할 필요는 없어요. 위대함은 친절이 아니니까. 어서 먹어요.',
+  'entities.quests.q_have_you_eaten.objectives.0.label': '따뜻한 식사를 음유시인에게 전함',
+  'entities.quests.q_someone_your_own_size.title': '당신 몸집에 맞는 상대를',
+  'entities.quests.q_someone_your_own_size.text':
+    '뿌리굴 근처에 세상이 모질게 대한 여인이 있어요. 그녀의 이름은 장부에서 지워졌고, 사람들은 지워진 이름을 못 듣는 것처럼 대하죠. 가서 잠시 곁에 앉아 줘요. 뭘 고칠 필요는 없어요. 그저 그녀와 같은 몸집인 사람이 되어 줘요.',
+  'entities.quests.q_someone_your_own_size.completion':
+    '있어 줬군요. 그녀는 별거 아니었다고 하겠지만, 별거였어요, 정말이에요. 자, 이건 당신 거예요. 내가 아끼는 버드나무에서 딴 잔가지. 아무 쓸모도 없어요. 그저 아무도 시키지 않았는데도 당신이 친절했다는 걸 기억할 뿐이죠.',
+  'entities.quests.q_someone_your_own_size.objectives.0.label': '오를라 곁에 잠시 앉음',
   'entities.npcs.sexton_faddick.title': '떠도는 관리인',
   'entities.npcs.sexton_faddick.greeting':
     '패딕이오. 아직 지켜야 할 사당이 있는 한, 무덤지기 노릇을 하지. 나는 어디에도 머물지 않소, 그저 지킬 뿐이오. 밤마다 늑대가 묵정밭의 가축 떼 주위를 맴도는데, 오래 맴돌다 보면 제가 맴도는 것의 모양을 익히게 되는 법이오. 그저 가축 떼로 남는 편이 낫겠지.',
