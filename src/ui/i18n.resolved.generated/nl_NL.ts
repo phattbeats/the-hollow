@@ -629,6 +629,12 @@ export const nl_NL: EnTranslations = {
       "unassigned": "{item} is niet toegewezen en is vrij voor iedereen.",
       "leaderOnly": "Alleen de groepsleider kan de buitmethode wijzigen."
     },
+    "lootRollGroup": {
+      "pending": "Waiting...",
+      "need": "Need",
+      "greed": "Greed",
+      "pass": "Pass"
+    },
     "bags": {
       "filterGroupAria": "Tassen filteren op categorie",
       "filterAll": "Alle",

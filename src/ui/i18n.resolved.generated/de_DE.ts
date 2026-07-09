@@ -629,6 +629,12 @@ export const de_DE: EnTranslations = {
       "unassigned": "{item} wurde nicht zugewiesen und ist fuer alle frei.",
       "leaderOnly": "Nur der Gruppenleiter kann die Beutemethode aendern."
     },
+    "lootRollGroup": {
+      "pending": "Waiting...",
+      "need": "Need",
+      "greed": "Greed",
+      "pass": "Pass"
+    },
     "bags": {
       "filterGroupAria": "Taschen nach Kategorie filtern",
       "filterAll": "Alle",

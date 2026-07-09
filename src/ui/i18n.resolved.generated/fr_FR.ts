@@ -629,6 +629,12 @@ export const fr_FR: EnTranslations = {
       "unassigned": "{item} n a pas ete attribue et devient libre pour tous.",
       "leaderOnly": "Seul le chef de groupe peut changer le mode de butin."
     },
+    "lootRollGroup": {
+      "pending": "Waiting...",
+      "need": "Need",
+      "greed": "Greed",
+      "pass": "Pass"
+    },
     "bags": {
       "filterGroupAria": "Filtrer les sacs par catégorie",
       "filterAll": "Tous",

@@ -629,6 +629,12 @@ export const en_XA: EnTranslations = {
       "unassigned": "[{item} ŵáš ñóţ áššíĝñéð áñð íš ƒŕéé ƒóŕ áļļ.]",
       "leaderOnly": "[Óñļý ţĥé þáŕţý ļéáðéŕ çáñ çĥáñĝé ţĥé ļóóţ ɱéţĥóð.]"
     },
+    "lootRollGroup": {
+      "pending": "[Ŵáíţíñĝ...]",
+      "need": "[Ñééð]",
+      "greed": "[Ĝŕééð]",
+      "pass": "[Þášš]"
+    },
     "bags": {
       "filterGroupAria": "[Ƒíļţéŕ ƀáĝš ƀý çáţéĝóŕý]",
       "filterAll": "[Áļļ]",

@@ -629,6 +629,12 @@ export const sv_SE: EnTranslations = {
       "unassigned": "{item} tilldelades inte och ar fritt for alla.",
       "leaderOnly": "Endast gruppledaren kan andra lootmetoden."
     },
+    "lootRollGroup": {
+      "pending": "Waiting...",
+      "need": "Need",
+      "greed": "Greed",
+      "pass": "Pass"
+    },
     "bags": {
       "filterGroupAria": "Filtrera väskor efter kategori",
       "filterAll": "Alla",

@@ -629,6 +629,12 @@ export const en_CA: EnTranslations = {
       "unassigned": "{item} was not assigned and is free for all.",
       "leaderOnly": "Only the party leader can change the loot method."
     },
+    "lootRollGroup": {
+      "pending": "Waiting...",
+      "need": "Need",
+      "greed": "Greed",
+      "pass": "Pass"
+    },
     "bags": {
       "filterGroupAria": "Filter bags by category",
       "filterAll": "All",

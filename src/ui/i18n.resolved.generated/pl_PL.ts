@@ -629,6 +629,12 @@ export const pl_PL: EnTranslations = {
       "unassigned": "{item} nie zostal przydzielony i jest wolny dla wszystkich.",
       "leaderOnly": "Tylko przywodca grupy moze zmienic metode lupow."
     },
+    "lootRollGroup": {
+      "pending": "Waiting...",
+      "need": "Need",
+      "greed": "Greed",
+      "pass": "Pass"
+    },
     "bags": {
       "filterGroupAria": "Filtruj torby według kategorii",
       "filterAll": "Wszystko",

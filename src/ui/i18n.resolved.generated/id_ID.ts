@@ -629,6 +629,12 @@ export const id_ID: EnTranslations = {
       "unassigned": "{item} tidak diberikan dan bebas untuk semua.",
       "leaderOnly": "Hanya pemimpin grup yang dapat mengubah metode loot."
     },
+    "lootRollGroup": {
+      "pending": "Waiting...",
+      "need": "Need",
+      "greed": "Greed",
+      "pass": "Pass"
+    },
     "bags": {
       "filterGroupAria": "Saring tas menurut kategori",
       "filterAll": "Semua",
