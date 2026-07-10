@@ -3519,6 +3519,7 @@ export const da_DK: EnTranslations = {
       "offGlobalCooldown": "Uden for den globale nedkøling",
       "friendlyTarget": "Venligt mål",
       "enemyTarget": "Fjendtligt mål",
+      "selfOnly": "Self only",
       "damageRange": "{min} til {max}",
       "finisherDamage": "{base} plus {perCombo} per combopoint"
     },

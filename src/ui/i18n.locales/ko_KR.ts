@@ -1324,6 +1324,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'abilityUi.tooltip.offGlobalCooldown': '공용 재사용 대기시간 없음',
   'abilityUi.tooltip.friendlyTarget': '아군 대상',
   'abilityUi.tooltip.enemyTarget': '적 대상',
+  'abilityUi.tooltip.selfOnly': '자신에게만',
   'abilityUi.tooltip.damageRange': '{min}에서 {max}',
   'abilityUi.tooltip.finisherDamage': '기본 {base}, 연계 점수당 {perCombo}',
   'abilityUi.resources.mana': '마나',

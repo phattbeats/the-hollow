@@ -3519,6 +3519,7 @@ export const pl_PL: EnTranslations = {
       "offGlobalCooldown": "Poza globalnym czasem odnowienia",
       "friendlyTarget": "Cel przyjazny",
       "enemyTarget": "Cel wrogi",
+      "selfOnly": "Self only",
       "damageRange": "{min} do {max}",
       "finisherDamage": "{base} plus {perCombo} za punkt kombinacji"
     },
