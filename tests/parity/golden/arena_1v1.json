@@ -29,7 +29,7 @@
       "tick": 25,
       "time": 1.25,
       "nextId": 403,
-      "state": "539a04cd",
+      "state": "5421f5cd",
       "events": "2b655403",
       "rng": {
         "draws": 0,
@@ -40,7 +40,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 403,
-      "state": "481005e1",
+      "state": "9c391db1",
       "events": "2806c2e4",
       "rng": {
         "draws": 36,
@@ -51,7 +51,7 @@
       "tick": 75,
       "time": 3.75,
       "nextId": 403,
-      "state": "73da0f55",
+      "state": "f8579715",
       "events": "aa847cdc",
       "rng": {
         "draws": 136,
@@ -62,7 +62,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 403,
-      "state": "5c372a7d",
+      "state": "b599a8bd",
       "events": "b8851e04",
       "rng": {
         "draws": 266,
@@ -73,7 +73,7 @@
       "tick": 125,
       "time": 6.25,
       "nextId": 403,
-      "state": "c21e655a",
+      "state": "ced5b706",
       "events": "c791cb6b",
       "rng": {
         "draws": 398,
@@ -84,7 +84,7 @@
       "tick": 142,
       "time": 7.1,
       "nextId": 403,
-      "state": "7685d796",
+      "state": "48686152",
       "events": "741638a5",
       "rng": {
         "draws": 506,
@@ -97,6 +97,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1516,
           "arenaWins": 1,
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
@@ -120,6 +121,7 @@
           "arena2v2Rating": 1500,
           "arenaLosses": 1,
           "arenaRating": 1484,
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {

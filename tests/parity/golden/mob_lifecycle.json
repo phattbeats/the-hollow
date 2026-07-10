@@ -31,7 +31,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 406,
-      "state": "509e5ca9",
+      "state": "c3ab3655",
       "events": "cd0e3939",
       "rng": {
         "draws": 4,
@@ -43,6 +43,7 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -353,7 +354,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 407,
-      "state": "a3afbb5b",
+      "state": "38a07e8f",
       "events": "5a65aef6",
       "rng": {
         "draws": 7,
@@ -365,6 +366,7 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -734,7 +736,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 407,
-      "state": "4dfb5e9f",
+      "state": "cbe1859b",
       "events": "7d434878",
       "rng": {
         "draws": 8,
@@ -746,6 +748,7 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -1117,7 +1120,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 409,
-      "state": "da9c3b59",
+      "state": "2cfde6fd",
       "events": "b01cc973",
       "rng": {
         "draws": 13,
@@ -1129,6 +1132,7 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -1543,7 +1547,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 410,
-      "state": "89de7236",
+      "state": "5205595e",
       "events": "10004817",
       "rng": {
         "draws": 17,
@@ -1555,6 +1559,7 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -2024,7 +2029,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 410,
-      "state": "89de7236",
+      "state": "5205595e",
       "events": "741638a5",
       "rng": {
         "draws": 17,
@@ -2036,6 +2041,7 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {

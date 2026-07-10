@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "c4bda38f",
+      "state": "2206f93b",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -29,6 +29,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {},
@@ -106,7 +107,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 415,
-      "state": "e571ec3e",
+      "state": "1d41de4a",
       "events": "9312ec02",
       "rng": {
         "draws": 4,
@@ -117,7 +118,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 415,
-      "state": "d08341e6",
+      "state": "d0319092",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -128,7 +129,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 415,
-      "state": "97c51565",
+      "state": "3f20ecf5",
       "events": "92136cf6",
       "rng": {
         "draws": 5,
@@ -139,7 +140,7 @@
       "tick": 38,
       "time": 1.9,
       "nextId": 417,
-      "state": "742ecdcb",
+      "state": "cf72ab43",
       "events": "a88a2cd6",
       "rng": {
         "draws": 8,
@@ -152,6 +153,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "copper": 22,
@@ -385,7 +387,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 417,
-      "state": "621b2c58",
+      "state": "0020d434",
       "events": "741638a5",
       "rng": {
         "draws": 8,
@@ -396,7 +398,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 417,
-      "state": "621b2c58",
+      "state": "0020d434",
       "events": "741638a5",
       "rng": {
         "draws": 8,
@@ -409,6 +411,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "copper": 22,

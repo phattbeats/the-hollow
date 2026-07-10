@@ -15,7 +15,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "1e5d0dc1",
+      "state": "50172e1d",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -28,6 +28,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
@@ -105,7 +106,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 405,
-      "state": "6c2c344a",
+      "state": "de444ad2",
       "events": "f204331a",
       "rng": {
         "draws": 6,
@@ -116,7 +117,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 405,
-      "state": "b008fe92",
+      "state": "9188e5fa",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -127,7 +128,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 405,
-      "state": "6f38642c",
+      "state": "2cdc82d0",
       "events": "cd05d551",
       "rng": {
         "draws": 100,
@@ -138,7 +139,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 405,
-      "state": "39070050",
+      "state": "36d450bc",
       "events": "741638a5",
       "rng": {
         "draws": 203,
@@ -149,7 +150,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 405,
-      "state": "56ac87e3",
+      "state": "88f06f27",
       "events": "96cd5722",
       "rng": {
         "draws": 305,
@@ -160,7 +161,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 405,
-      "state": "c97cd00f",
+      "state": "70a36a5b",
       "events": "741638a5",
       "rng": {
         "draws": 413,
@@ -171,7 +172,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 405,
-      "state": "c97cd00f",
+      "state": "70a36a5b",
       "events": "741638a5",
       "rng": {
         "draws": 413,
@@ -184,6 +185,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {
