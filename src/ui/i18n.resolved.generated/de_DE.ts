@@ -5375,7 +5375,7 @@ export const de_DE: EnTranslations = {
         "name": "Eine Perle vom Bandolier"
       },
       "keeper_coal": {
-        "name": "A Coal That Never Cooled"
+        "name": "Eine Kohle, die nie erkaltete"
       },
       "witness_root_cincture": {
         "name": "Zeugenwurzels Gürtel"
@@ -5385,12 +5385,12 @@ export const de_DE: EnTranslations = {
         "flavorText": "...zählte vierzig Tage bei Kerzenlicht, bevor ich den Faden verlor. Das Dunkel hier unten vergisst Ihn nicht, auch wenn Er diesen Ort vergessen hat. Wenn der Reiher tief kreist, sag dem Küster, der Docht brennt noch..."
       },
       "worn_prayer_token": {
-        "name": "Worn Prayer Token",
-        "flavorText": "...smooth on one face from a thumb that isn't mine, worn the same shallow groove into a hundred more like it before this one, or so the pile down here would have you believe. one thumb doesn't wear a hundred tokens. a lot of thumbs wear one groove, though..."
+        "name": "Abgegriffene Gebetsmarke",
+        "flavorText": "...auf einer Seite glatt von einem Daumen, der nicht meiner ist, der dieselbe flache Rille in hundert weitere wie diese gerieben hat, bevor diese kam, so will es einem der Haufen hier unten weismachen. ein Daumen wetzt keine hundert Marken ab. viele Daumen wetzen aber eine Rille..."
       },
       "tally_shard": {
-        "name": "Tally-Marked Shard",
-        "flavorText": "...marks in fives, scratched deep, crossed each time the count came round. hundreds of fives before the crossing stops, and the last row was never finished..."
+        "name": "Scherbe mit Zählkerben",
+        "flavorText": "...Kerben in Fünfergruppen, tief geritzt, durchgestrichen, sooft die Zählung herumkam. hunderte Fünfer, bevor das Durchstreichen aufhört, und die letzte Reihe wurde nie vollendet..."
       },
       "reliquary_plate_chest": {
         "name": "Halsberge der Reliquiarwache"

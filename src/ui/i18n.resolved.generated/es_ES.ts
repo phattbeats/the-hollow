@@ -5375,7 +5375,7 @@ export const es_ES: EnTranslations = {
         "name": "Una Cuenta De La Bandolera"
       },
       "keeper_coal": {
-        "name": "A Coal That Never Cooled"
+        "name": "Un Carbón Que Nunca Se Enfrió"
       },
       "witness_root_cincture": {
         "name": "Cinturón de la Raíz Testigo"
@@ -5385,12 +5385,12 @@ export const es_ES: EnTranslations = {
         "flavorText": "...conté cuarenta días con velas antes de perder la cuenta. La oscuridad de aquí abajo no Lo olvida, aunque Él haya olvidado este lugar. Si la garza vuela bajo, dile al Sacristán que la mecha aún arde..."
       },
       "worn_prayer_token": {
-        "name": "Worn Prayer Token",
-        "flavorText": "...smooth on one face from a thumb that isn't mine, worn the same shallow groove into a hundred more like it before this one, or so the pile down here would have you believe. one thumb doesn't wear a hundred tokens. a lot of thumbs wear one groove, though..."
+        "name": "Ficha de Oración Desgastada",
+        "flavorText": "...lisa por una cara por un pulgar que no es el mío, que gastó el mismo surco poco profundo en cien más como esta antes que esta, o eso quiere hacerte creer el montón de aquí abajo. un solo pulgar no desgasta cien fichas. muchos pulgares sí desgastan un mismo surco..."
       },
       "tally_shard": {
-        "name": "Tally-Marked Shard",
-        "flavorText": "...marks in fives, scratched deep, crossed each time the count came round. hundreds of fives before the crossing stops, and the last row was never finished..."
+        "name": "Esquirla con Marcas de Cuenta",
+        "flavorText": "...marcas de cinco en cinco, grabadas hondo, tachadas cada vez que la cuenta daba la vuelta. cientos de cincos antes de que el tachado se detenga, y la última fila nunca se terminó..."
       },
       "reliquary_plate_chest": {
         "name": "Loriga de la Guardia del Relicario"

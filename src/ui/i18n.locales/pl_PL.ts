@@ -915,6 +915,13 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': 'Wydarta Strona z Dziennika',
   'entities.items.shrine_diary_page.flavorText':
     '...liczyłem czterdzieści dni przy świecy, zanim zgubiłem rachubę. Mrok tu, w dole, nie zapomina o Nim, choć On zapomniał o tym miejscu. Jeśli czapla zatoczy niski krąg, powiedz Zakrystianowi, że knot wciąż płonie...',
+  'entities.items.keeper_coal.name': 'Węgiel, Który Nigdy Nie Ostygł',
+  'entities.items.worn_prayer_token.name': 'Wytarty Żeton Modlitewny',
+  'entities.items.worn_prayer_token.flavorText':
+    '...gładki z jednej strony od kciuka, który nie jest mój, i który wytarł ten sam płytki rowek w stu innych takich jak ten, zanim trafił na ten, a przynajmniej w to chciałby, żebyś uwierzył ten stos tutaj na dole. jeden kciuk nie wytrze stu żetonów. wiele kciuków wytrze za to jeden rowek...',
+  'entities.items.tally_shard.name': 'Odłamek z Karbami',
+  'entities.items.tally_shard.flavorText':
+    '...karby piątkami, ryte głęboko, przekreślane za każdym razem, gdy rachunek się domykał. setki piątek, nim przekreślenia ustają, a ostatni rząd nigdy nie został dokończony...',
   'entities.items.footpad_jerkin.name': 'Kaftan rzezimieszka',
   'entities.items.forest_pink_armor_plate.name': 'Leśny róż',
   'entities.items.frayed_prayer_beads.name': 'Wystrzępione paciorki modlitewne',

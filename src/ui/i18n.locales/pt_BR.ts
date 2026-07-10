@@ -4551,6 +4551,13 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': 'Página de Diário Rasgada',
   'entities.items.shrine_diary_page.flavorText':
     '...contei quarenta dias à luz de vela antes de perder a conta. A escuridão aqui embaixo não O esquece, mesmo que Ele tenha esquecido este lugar. Se a garça voar baixo, diga ao Sacristão que o pavio ainda arde...',
+  'entities.items.keeper_coal.name': 'Um Carvão Que Nunca Esfriou',
+  'entities.items.worn_prayer_token.name': 'Ficha de Oração Gasta',
+  'entities.items.worn_prayer_token.flavorText':
+    '...lisa de um lado por um polegar que não é o meu, que gastou o mesmo sulco raso em outras cem como esta antes desta, ou é nisso que a pilha aqui embaixo quer que você acredite. um polegar só não gasta cem fichas. muitos polegares gastam um mesmo sulco, isso sim...',
+  'entities.items.tally_shard.name': 'Caco com Marcas de Contagem',
+  'entities.items.tally_shard.flavorText':
+    '...marcas de cinco em cinco, riscadas fundo, cortadas cada vez que a conta fechava. centenas de cincos antes de os cortes pararem, e a última fileira nunca foi terminada...',
   'entities.mobs.acolyte_tessa.name': 'Acólita Tessa',
   'entities.mobs.deacon_varric.name': 'Diácono Varric',
   'entities.mobs.reliquary_bonewalker.name': 'Caminhante de Ossos Erguido',

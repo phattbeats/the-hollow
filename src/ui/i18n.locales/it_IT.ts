@@ -4561,6 +4561,13 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': 'Pagina di Diario Strappata',
   'entities.items.shrine_diary_page.flavorText':
     "...ho contato quaranta giorni a lume di candela prima di perdere il filo. Il buio quaggiù non Lo dimentica, anche se Lui ha dimenticato questo luogo. Se l'airone vola basso, di' al Sagrestano che lo stoppino brucia ancora...",
+  'entities.items.keeper_coal.name': 'Un Carbone Mai Raffreddato',
+  'entities.items.worn_prayer_token.name': 'Gettone di Preghiera Consumato',
+  'entities.items.worn_prayer_token.flavorText':
+    '...liscio su una faccia per un pollice che non è il mio, che ha scavato lo stesso solco poco profondo in altri cento come questo prima di questo, o così vorrebbe farti credere il mucchio quaggiù. un solo pollice non consuma cento gettoni. molti pollici consumano però un solo solco...',
+  'entities.items.tally_shard.name': 'Scheggia con Tacche di Conteggio',
+  'entities.items.tally_shard.flavorText':
+    "...tacche a gruppi di cinque, incise a fondo, sbarrate ogni volta che il conto tornava. centinaia di cinque prima che le sbarrature si fermino, e l'ultima fila non fu mai finita...",
   'entities.mobs.acolyte_tessa.name': 'Accolita Tessa',
   'entities.mobs.deacon_varric.name': 'Diacono Varric',
   'entities.mobs.reliquary_bonewalker.name': 'Camminaossa Risorto',

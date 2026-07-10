@@ -5375,7 +5375,7 @@ export const fr_CA: EnTranslations = {
         "name": "Une perle du baudrier"
       },
       "keeper_coal": {
-        "name": "A Coal That Never Cooled"
+        "name": "Un Charbon Qui N'a Jamais Refroidi"
       },
       "witness_root_cincture": {
         "name": "Ceinturon de la Racine témoin"
@@ -5385,12 +5385,12 @@ export const fr_CA: EnTranslations = {
         "flavorText": "...j'ai compté quarante jours à la chandelle avant de perdre le fil. L'obscurité d'ici-bas ne L'oublie pas, même s'Il a oublié cet endroit. Si le héron plane bas, dis au Sacristain que la mèche brûle encore..."
       },
       "worn_prayer_token": {
-        "name": "Worn Prayer Token",
-        "flavorText": "...smooth on one face from a thumb that isn't mine, worn the same shallow groove into a hundred more like it before this one, or so the pile down here would have you believe. one thumb doesn't wear a hundred tokens. a lot of thumbs wear one groove, though..."
+        "name": "Jeton de Prière Usé",
+        "flavorText": "...lisse sur une face par un pouce qui n'est pas le mien, qui a creusé le même sillon peu profond dans cent autres comme celui-ci avant lui, du moins c'est ce que le tas d'ici-bas voudrait faire croire. un seul pouce n'use pas cent jetons. beaucoup de pouces usent un même sillon, par contre..."
       },
       "tally_shard": {
-        "name": "Tally-Marked Shard",
-        "flavorText": "...marks in fives, scratched deep, crossed each time the count came round. hundreds of fives before the crossing stops, and the last row was never finished..."
+        "name": "Éclat aux Marques de Compte",
+        "flavorText": "...des marques par cinq, gravées profond, barrées chaque fois que le compte revenait. des centaines de cinq avant que les barres ne cessent, et la dernière rangée ne fut jamais finie..."
       },
       "reliquary_plate_chest": {
         "name": "Haubert de la garde du reliquaire"

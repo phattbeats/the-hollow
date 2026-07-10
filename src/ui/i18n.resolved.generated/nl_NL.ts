@@ -5375,7 +5375,7 @@ export const nl_NL: EnTranslations = {
         "name": "Een Kraal Van De Bandelier"
       },
       "keeper_coal": {
-        "name": "A Coal That Never Cooled"
+        "name": "Een Kool Die Nooit Afkoelde"
       },
       "witness_root_cincture": {
         "name": "Getuigenwortels Gordel"
@@ -5385,12 +5385,12 @@ export const nl_NL: EnTranslations = {
         "flavorText": "...telde veertig dagen bij kaarslicht voor ik de draad kwijtraakte. Het duister hier beneden vergeet Hem niet, ook al is Hij deze plek vergeten. Als de reiger laag cirkelt, zeg de Koster dat de pit nog brandt..."
       },
       "worn_prayer_token": {
-        "name": "Worn Prayer Token",
-        "flavorText": "...smooth on one face from a thumb that isn't mine, worn the same shallow groove into a hundred more like it before this one, or so the pile down here would have you believe. one thumb doesn't wear a hundred tokens. a lot of thumbs wear one groove, though..."
+        "name": "Versleten Gebedspenning",
+        "flavorText": "...glad aan één kant door een duim die niet de mijne is, die dezelfde ondiepe groef in honderd andere zoals deze sleet voor deze, althans dat wil de stapel hier beneden je doen geloven. één duim slijt geen honderd penningen. veel duimen slijten wel één groef..."
       },
       "tally_shard": {
-        "name": "Tally-Marked Shard",
-        "flavorText": "...marks in fives, scratched deep, crossed each time the count came round. hundreds of fives before the crossing stops, and the last row was never finished..."
+        "name": "Scherf met Telkerven",
+        "flavorText": "...kerven in vijven, diep gekrast, doorgestreept telkens als de telling rondkwam. honderden vijven voor het doorstrepen stopt, en de laatste rij is nooit afgemaakt..."
       },
       "reliquary_plate_chest": {
         "name": "Reliekwacht-Maliënkolder"

@@ -5375,7 +5375,7 @@ export const it_IT: EnTranslations = {
         "name": "Una Perlina Dalla Bandoliera"
       },
       "keeper_coal": {
-        "name": "A Coal That Never Cooled"
+        "name": "Un Carbone Mai Raffreddato"
       },
       "witness_root_cincture": {
         "name": "Cintura della Radice Testimone"
@@ -5385,12 +5385,12 @@ export const it_IT: EnTranslations = {
         "flavorText": "...ho contato quaranta giorni a lume di candela prima di perdere il filo. Il buio quaggiù non Lo dimentica, anche se Lui ha dimenticato questo luogo. Se l'airone vola basso, di' al Sagrestano che lo stoppino brucia ancora..."
       },
       "worn_prayer_token": {
-        "name": "Worn Prayer Token",
-        "flavorText": "...smooth on one face from a thumb that isn't mine, worn the same shallow groove into a hundred more like it before this one, or so the pile down here would have you believe. one thumb doesn't wear a hundred tokens. a lot of thumbs wear one groove, though..."
+        "name": "Gettone di Preghiera Consumato",
+        "flavorText": "...liscio su una faccia per un pollice che non è il mio, che ha scavato lo stesso solco poco profondo in altri cento come questo prima di questo, o così vorrebbe farti credere il mucchio quaggiù. un solo pollice non consuma cento gettoni. molti pollici consumano però un solo solco..."
       },
       "tally_shard": {
-        "name": "Tally-Marked Shard",
-        "flavorText": "...marks in fives, scratched deep, crossed each time the count came round. hundreds of fives before the crossing stops, and the last row was never finished..."
+        "name": "Scheggia con Tacche di Conteggio",
+        "flavorText": "...tacche a gruppi di cinque, incise a fondo, sbarrate ogni volta che il conto tornava. centinaia di cinque prima che le sbarrature si fermino, e l'ultima fila non fu mai finita..."
       },
       "reliquary_plate_chest": {
         "name": "Usbergo della guardia del reliquiario"
