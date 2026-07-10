@@ -384,6 +384,24 @@ export function preloadMechAssets(): Promise<void> {
   return mechAssetsPromise;
 }
 
+// Lazy fetch for a single lazyPreload visual (e.g. chibi_female_base, which no
+// entity resolves to yet): loads the def's GLB into the same registry the boot
+// sweep fills, so assembleModel/prepareVisual work for keys the sweep skipped.
+// Memoized per key. The mech keeps its own richer loader (chromas + emissives).
+const visualPreloadPromises = new Map<string, Promise<void>>();
+export function preloadVisual(key: string): Promise<void> {
+  const hit = visualPreloadPromises.get(key);
+  if (hit) return hit;
+  const def = VISUALS[key];
+  if (!def) return Promise.reject(new Error(`preloadVisual: unknown visual key ${key}`));
+  const url = assetUrl(def.url);
+  const p = loadGltf(url).then((g) => {
+    gltfByUrl.set(url, g);
+  });
+  visualPreloadPromises.set(key, p);
+  return p;
+}
+
 export function mechAssetsReady(): boolean {
   const def = VISUALS.player_mech;
   if (!def || !gltfByUrl.has(assetUrl(def.url))) return false;

@@ -38,7 +38,13 @@ import type { SpatialAudioSink, Surface } from './audio_sink';
 import { type BirdsView, buildBirds } from './birds';
 import { type CameraOcclusionState, stepCameraOcclusion } from './camera_collision';
 import { characterSoulRendActive } from './character_effects';
-import { type AnimState, type CharacterVisual, createCharacterVisual } from './characters';
+import {
+  type AnimState,
+  type CharacterVisual,
+  createCharacterVisual,
+  type MobVisual,
+  plantArchetypeFor,
+} from './characters';
 import { mechAssetsReady, preloadMechAssets } from './characters/assets';
 import { skinCount, visualKeyFor } from './characters/manifest';
 import { CLICK_MARKER_LIFETIME, clickMarkerAnim, clickMarkerColor } from './click_marker';
@@ -465,8 +471,9 @@ function selfSnapshotAlpha(alpha: number, lead: number): number {
 
 export interface EntityView {
   group: THREE.Group;
-  /** rigged glTF visual for characters; null for object views (doors/crates) */
-  visual: CharacterVisual | null;
+  /** rigged glTF visual, or (PHAA-531) a seeded plant creature; null for object
+   *  views (doors/crates) */
+  visual: MobVisual | null;
   visualKey: string | null;
   visualPoolKey: string | null;
   sheepVisual: CharacterVisual | null; // polymorph form, built lazily
@@ -928,7 +935,7 @@ export class Renderer {
   private renderDiagnosticsLastTextures = 0;
   private appliedBudgetLevels: RenderBudgetState['levels'] | null = null;
   private lastQualityChange: Omit<RendererQualityChangeStats, 'ageMs'> | null = null;
-  private visualPool = new Map<string, CharacterVisual[]>();
+  private visualPool = new Map<string, MobVisual[]>();
   private objectPool = new Map<string, PooledObjectView[]>();
 
   constructor(
@@ -2058,7 +2065,12 @@ export class Renderer {
   }
 
   private visualPoolKeyFor(e: Entity): string | null {
-    if (e.kind === 'mob') return `mob:${e.templateId}:${e.color}:${e.scale}`;
+    if (e.kind === 'mob') {
+      // seeded per-entity-id (PHAA-531): recycling one entity's build for
+      // another would show the wrong creature, so these are never pooled
+      if (plantArchetypeFor(e.templateId)) return null;
+      return `mob:${e.templateId}:${e.color}:${e.scale}`;
+    }
     // NPCs are skinned characters too: pool them like mobs so their Skeleton (and its
     // bone-matrix DataTexture) survives interest churn instead of being disposed and
     // re-uploaded every time one streams out and back into view - that dispose +
@@ -2068,7 +2080,7 @@ export class Renderer {
     return null;
   }
 
-  private takePooledVisual(key: string): CharacterVisual | null {
+  private takePooledVisual(key: string): MobVisual | null {
     const pool = this.visualPool.get(key);
     const visual = pool?.pop() ?? null;
     if (!visual) return null;
@@ -2082,7 +2094,7 @@ export class Renderer {
     return visual;
   }
 
-  private storePooledVisual(key: string, visual: CharacterVisual): void {
+  private storePooledVisual(key: string, visual: MobVisual): void {
     visual.root.removeFromParent();
     visual.root.visible = false;
     visual.root.position.set(0, 0, 0);
@@ -3055,7 +3067,7 @@ export class Renderer {
   private createView(e: Entity): void {
     const group = new THREE.Group();
     setRenderCategory(group, `entity:${e.kind}`);
-    let visual: CharacterVisual | null = null;
+    let visual: MobVisual | null = null;
     let body: THREE.Group | null = null; // object views build meshes into this
     let height = 1.2;
     let sparkle: THREE.Sprite | undefined;
@@ -3347,7 +3359,7 @@ export class Renderer {
   }
 
   /** The visual the player currently sees (form swaps hide the base rig). */
-  private activeVisual(v: EntityView): CharacterVisual | null {
+  private activeVisual(v: EntityView): MobVisual | null {
     if (v.sheepVisual?.root.visible) return v.sheepVisual;
     if (v.bearVisual?.root.visible) return v.bearVisual;
     if (v.catVisual?.root.visible) return v.catVisual;

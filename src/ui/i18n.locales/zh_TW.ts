@@ -2792,7 +2792,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_root_hollow_boars_ii.text':
     '我就說句本職上不該說的實話：五頭，是我樂觀了。底下的窩還在不斷往外拱。再殺八頭，我便能結清這一季，不必第三回去改記錄。記錄不喜被改。我也不喜。',
   'entities.quests.q_root_hollow_boars_ii.completion':
-    '結案。簽字。歸檔。這一季總算能照原定的曆程走了，畢竟又有人來看著這本曆書。你幫了一個極小的會眾一個大忙。我得澄清一句：這會眾，就是我。',
+    '結案。簽字。歸檔。這一季總算能照原定的曆程走了，畢竟又有人來看著這本曆書。你幫了一個極小的會眾一個大忙。我得澄清一句：這會眾，就是我。這本曆書本身比這安排還要古老，裝訂出自一雙我從未謀面的手，記著一個我不願去加總的數目。曾經有人在此極為用心。我不過是盡力跟上罷了。',
   'entities.quests.q_root_hollow_boars_ii.objectives.0.label': '野豬已殺',
   'entities.quests.q_fallow_acres_wolves.title': '趕走田壟上的狼',
   'entities.quests.q_fallow_acres_wolves.text':
@@ -2935,6 +2935,30 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_what_fills.dialog.refuse': '不。我不會再下去了。',
   'entities.quests.q_what_fills.dialog.refuseReply':
     '哦……哦，好吧。……好吧。這……是啊。不，這很公道，朋友，很公道……瓶子也聽見了，偷偷跟你說，我覺得他還挺敬佩你的。來，這根插枝你還是拿著。你下去過一次，就已經比大多數人多一次了……',
+  'entities.quests.q_the_wavelength.title': '同一頻率上',
+  'entities.quests.q_the_wavelength.text':
+    '挖來的插條現在是你的了，朋友，那接下來該聊聊後面的事了……兩件事，都不算考驗，更像是引見。第一，穿過瓶子那邊，去見見耶羅長老，她教的是第二天職，一種完全不同的玩法，凡是路過這兒的靈魂都該知道那扇門是開著的……第二，回來餵我點什麼，不管是哪樣，殘火球莖也好，洞穴肉粒也好，我永遠處於飢餓狀態，瓶子也永遠想要煙。這部分是不會真正結束的，對綠掌來說就是這樣。',
+  'entities.quests.q_the_wavelength.completion':
+    '看吧……你感覺到了吧，房間一下子變濃了？那是他，注意到了。這就是全部的竅門，朋友——你餵我，我就冒煙，他就多湊近一點聽著。沒什麼複雜的。以後也永遠不會變。手頭有多餘的殘火球莖或洞穴肉粒，隨時過來，爐子不看日曆……哦對了。歡迎來到聖所。我這才意識到之前一直沒說過這句。',
+  'entities.quests.q_the_wavelength.objectives.0.label': '已拜見耶羅長老',
+  'entities.quests.q_the_wavelength.objectives.1.label': '已在爐邊餵食',
+  'entities.quests.q_the_wavelength.dialog.complain': '又要跑腿？我才剛從那洞裡爬出來。',
+  'entities.quests.q_the_wavelength.dialog.complainReply':
+    '不不，聽我說完，這次不是洞裡的活兒……這次簡單，就是走一趟，好好餵我一次。這是我求過你最輕鬆的一件事了，我保證，同頻共振，絕不騙你。',
+  'entities.quests.q_the_wavelength.dialog.refuse': '我自己去找我的訓練，謝了。',
+  'entities.quests.q_the_wavelength.dialog.refuseReply':
+    '……那也行吧。一個靈魂還沒準備好之前，是沒法強求學東西的。等哪天不是「還沒準備好」了，門就一直開著……給，這個還是拿著吧，好歹你來了一趟。',
+  'entities.quests.q_keep_him_lit.text':
+    '三次，朋友，就是這個數……不是什麼神聖的數字，就是剛好能把一個人情變成一個習慣，習慣才是我真正信的那種信仰……回來餵爐子三次，分開的三次，先後順序不重要，殘火球莖還是洞穴肉粒也不重要，只要你做到了，我就信你是真的打算留下來，不是路過順道辦完事就走……',
+  'entities.quests.q_keep_him_lit.completion':
+    '三次都到了……你不再只是個訪客了，朋友，你是在守著一樣活著的東西，這就是全部的意義，雖然沒人問過我，但我還是要說……給，拿著這個吧，它什麼用也沒有，只是個念想，跟咱們這兒的人一樣……',
+  'entities.quests.q_keep_him_lit.objectives.0.label': '已在爐邊餵食三次',
+  'entities.quests.q_keep_him_lit.dialog.complain': '我不是已經餵過你一次了嗎？這還不夠？',
+  'entities.quests.q_keep_him_lit.dialog.complainReply':
+    '一次是個人情，朋友，三次才是習慣，人情我吃過虧……這不是爐子需不需要，爐子好得很，我照顧得來，這是關於你願不願意自己走回來，不是因為任務標記逼你來的……三次。不急著數。',
+  'entities.quests.q_keep_him_lit.dialog.refuse': '我不會分三次來做這件事。一次就夠了。',
+  'entities.quests.q_keep_him_lit.dialog.refuseReply':
+    '……好吧。好吧，我懂你的意思，朋友，這條線劃得也算公道……這樣吧，還是拿著，嚴格說不算你掙來的，但我給出去的大半也不算，頻率這東西，其實沒真的在計較。',
   'hud.errors.silenced': '你已被沉默！',
   'hud.pet.noPetFood': '你沒有可餵食寵物的食物。',
   'hud.pet.petEatsFoodOnly': '你的寵物只能吃食物。',
@@ -2964,6 +2988,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'auth.realm': '伺服器',
   'auth.newCharacter': '新增角色',
   'auth.appearance': '外觀',
+  'auth.sex': '性別',
+  'auth.sexMale': '男性',
+  'auth.sexFemale': '女性',
   'auth.class': '職業',
   'auth.name': '名稱',
   'auth.chromaOption': '配色 {n}',
@@ -3441,6 +3468,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.nav.dungeons': '地城與團隊副本',
   'guide.nav.reference': '參考資料',
   'guide.nav.controls': '操作按鍵',
+  'guide.nav.settings': '設定與效能',
   'guide.nav.combat': '戰鬥',
   'guide.nav.glossary': '詞彙表',
   'guide.nav.faq': '常見問題',
@@ -3575,6 +3603,86 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.controls.mobileHeading': '行動裝置上',
   'guide.controls.mobileBody':
     '在手機與平板上會自動顯示觸控操作：左側為移動搖桿，在右側任意處拖曳即可環顧，並有螢幕上的按鈕供你使用技能與選單。',
+  'guide.settingsPage.heading': '設定與效能',
+  'guide.settingsPage.intro':
+    '讓遊戲畫面美到極致，或跑得飛快。三套現成配置，加上每個圖形選項的真正作用。',
+  'guide.settingsPage.wherePath':
+    '本頁介紹的一切都在遊戲裡：按下 Esc，就能在「圖形」、「介面」與「效能監視器」中找到。',
+  'guide.settingsPage.fairnessTitle': '天生公平',
+  'guide.settingsPage.fairnessBody':
+    '這裡沒有任何選項會用畫面換取優勢。調低設定只會捨去外觀上的修飾，絕不會犧牲作戰所需的資訊：你的減益效果、施法條、隊伍血量與傷害數字，從「低」到「超高」完全相同。用入門機器遊玩絕不吃虧。',
+  'guide.settingsPage.loadoutsHeading': '三套現成配置',
+  'guide.settingsPage.loadoutsIntro':
+    '先從聽起來最像你機器的配置開始，再一次調整一個選項，直到感覺對了為止。',
+  'guide.settingsPage.recommended': '推薦',
+  'guide.settingsPage.whyLabel': '為什麼有效：',
+  'guide.settingsPage.tagReload': '需重新載入',
+  'guide.settingsPage.fpsTitle': '效能優先',
+  'guide.settingsPage.fpsTagline': '適合較舊的筆電、內顯，以及使用電池遊玩的時候。',
+  'guide.settingsPage.fpsWhy':
+    '圖形品質是總開關，渲染品質則是效果最強的滑桿：調到 70% 時，世界只需繪製約一半的像素，介面卻依然完全清晰。',
+  'guide.settingsPage.balancedTitle': '平衡',
+  'guide.settingsPage.balancedTagline': '大多數機器的甜蜜點，也是我們的預設建議。',
+  'guide.settingsPage.balancedWhy':
+    '「中」就有真實陰影與完整材質，「高」再加上環境光遮蔽與光暈。只要低於「超高」，內建安全網就會在激烈戰鬥中吸收突然的效能下滑，因此「平衡」不必費心照顧也能保持順暢。',
+  'guide.settingsPage.visualsTitle': '極致畫質',
+  'guide.settingsPage.visualsTagline': '給高階桌機的截圖模式。',
+  'guide.settingsPage.visualsWhy':
+    '「超高」會以你螢幕支援的最高解析度繪製，並呈現最豐富的光照。它同時會關閉安全網，而且僅限桌機：手機與 App 版最高到「高」為止。',
+  'guide.settingsPage.value50to70': '50% 到 70%',
+  'guide.settingsPage.value90to100': '90% 到 100%',
+  'guide.settingsPage.value100': '100%',
+  'guide.settingsPage.valueHighOrMedium': '電競電腦用「高」，筆電用「中」',
+  'guide.settingsPage.valueOnOptional': '開啟（可選）',
+  'guide.settingsPage.howHeading': '選項的運作方式',
+  'guide.settingsPage.factDetectTitle': '遊戲會先自我調校',
+  'guide.settingsPage.factDetectBody':
+    '首次啟動時，遊戲會偵測你的裝置並挑選合適的檔位：入門手機用「低」，高效能桌機用「超高」。而你親自做的選擇永遠優先。',
+  'guide.settingsPage.factReloadTitle': '兩種類型的選項',
+  'guide.settingsPage.factReloadBody':
+    '圖形品質與進階選項需要重新載入後才會生效，必要時面板會出現「立即重新載入」按鈕。其他所有選項則是一改就生效。',
+  'guide.settingsPage.factGovernorTitle': '內建安全網',
+  'guide.settingsPage.factGovernorBody':
+    '在「超高」以下的所有檔位，當大型戰鬥造成瞬間負載時，遊戲會悄悄暫時減少草叢、特效與光照，狀況過去後再恢復原狀。選擇「超高」則代表你寧可保留每一分細節。',
+  'guide.settingsPage.advancedHeading': '「進階」預設：自由調配',
+  'guide.settingsPage.advancedBody':
+    '「進階」以「高」這一檔為起點，並解鎖四個額外選項，讓你把效能花在真正看得出差別的地方：地形細節、植被密度、特效與光照，以及陰影品質。它們和圖形品質一樣，需要重新載入後才會生效。',
+  'guide.settingsPage.advancedMixes':
+    '兩種人氣搭配：把陰影品質維持在「高」、特效與光照調成「低」，畫面清爽俐落、沒有光暈，跑起來也輕鬆；或者反過來，保留光暈，讓陰影柔和一些。',
+  'guide.settingsPage.tableHeading': '每個選項，逐一解說',
+  'guide.settingsPage.colSetting': '選項',
+  'guide.settingsPage.colDoes': '作用',
+  'guide.settingsPage.colImpact': 'FPS 影響',
+  'guide.settingsPage.impactNone': '無',
+  'guide.settingsPage.impactLight': '輕微',
+  'guide.settingsPage.impactModerate': '中等',
+  'guide.settingsPage.impactHeavy': '顯著',
+  'guide.settingsPage.rowGraphicsQuality':
+    '總開關。每調一檔，解析度、陰影、材質、植被與光照特效都會一起改變。這是影響最大的單一選項。',
+  'guide.settingsPage.rowRenderQuality':
+    '以較低的內部解析度繪製 3D 世界再放大，介面維持清晰。在較弱的機器與高解析度螢幕上，是立即見效、威力最強的滑桿。',
+  'guide.settingsPage.rowFieldOfView':
+    '決定畫面能容納多少世界：從拉近的 55 度到開闊的 100 度。屬於舒適度選擇；視野越廣，繪製量會略微增加。',
+  'guide.settingsPage.rowBrightness': '調整場景曝光的明暗，純屬個人喜好。',
+  'guide.settingsPage.rowWeather': '環境雨雪效果。純屬氣氛營造，關閉後在暴風雨中還能省下一點效能。',
+  'guide.settingsPage.rowBrowserEffects':
+    '決定介面本身可以多華麗：玻璃模糊、光暈、選單動畫。「自動」會配合你的瀏覽器；無論怎麼選，3D 世界都不受影響。',
+  'guide.settingsPage.rowTerrainDetail': '豐富細膩的混合地面材質，或是較簡單、跑得較快的地形外觀。',
+  'guide.settingsPage.rowFoliageDensity': '角色周圍草叢生長的範圍與密度。',
+  'guide.settingsPage.rowEffectsQuality':
+    '光暈、環境光遮蔽，以及有多少火把和法術會投射真實光源。是進階選項中省效能最多的一項。',
+  'guide.settingsPage.rowShadowQuality': '陰影的銳利程度。「低」仍保留陰影，只是邊緣較柔和。',
+  'guide.settingsPage.rowFrostedPanels':
+    '視窗背後的霧面玻璃模糊。很漂亮，但也正是較弱的瀏覽器最有感的那種效果；關閉它，就是經典的俐落外觀。',
+  'guide.settingsPage.rowReduceMotion':
+    '移除介面動畫，讓視窗立即出現。首先是無障礙選項，順帶帶來少許效能提升。',
+  'guide.settingsPage.rowPerfOverlay':
+    '在畫面上即時顯示 FPS、影格時間等數據。調整本頁設定時先開著，調完再關掉。',
+  'guide.settingsPage.tableFoot':
+    '想找繪製距離滑桿或 FPS 上限嗎？其實不必找：可視距離已內建在各品質檔位中，影格節奏則交由你的顯示器決定。',
+  'guide.settingsPage.mobileTitle': '在手機與平板上',
+  'guide.settingsPage.mobileBody':
+    '行動裝置上，遊戲會替你打理更多：自動挑選檔位、將解析度稍微壓低以節省電力並抑制發熱，最高的幾個檔位則僅限桌機。上面的配置依然適用，只是手機最高到「高」為止。',
   'guide.combat.intro':
     '戰鬥遵循熟悉的經典MMO規則。你完全不需要研究這些就能玩得很好，這只是讓你了解戰鬥運作的大致樣貌。',
   'guide.combat.hitTitle': '並非每一擊都會命中',
@@ -4311,10 +4419,18 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': '洞穴肉粒',
   'entities.items.emberbulb.name': '餘燼球莖',
   'entities.items.first_cutting.name': '插條',
+  'entities.items.greenpaw_bead.name': '彈藥帶上的一顆唸珠',
+  'entities.items.keeper_coal.name': '一塊永不冷卻的炭',
   'entities.items.witness_root_cincture.name': '見證根的束帶',
   'entities.items.shrine_diary_page.name': '撕碎的日記頁',
   'entities.items.shrine_diary_page.flavorText':
     '……我數著燭光過了四十天，後來便斷了數。這底下的黑暗從未忘記祂，儘管祂已經忘了這個地方。若鷺鳥低飛掠過，告訴守燈人，燭芯還燃著……',
+  'entities.items.worn_prayer_token.name': '磨損的禱牌',
+  'entities.items.worn_prayer_token.flavorText':
+    '……一面被一根不是我的拇指磨得光滑，磨出的淺溝和這堆裡另外上百枚一模一樣，至少這堆東西是這麼告訴我的。一根拇指磨不出一百枚令牌的痕跡。可一百根拇指，倒是能磨出同一道淺溝……',
+  'entities.items.tally_shard.name': '刻痕碎片',
+  'entities.items.tally_shard.flavorText':
+    '……以五為一組刻得極深，每數完一輪便劃去一道。劃去的五連一組，累計上百組，最後一行卻始終沒有劃完……',
   'entities.mobs.acolyte_tessa.name': '侍僧泰莎',
   'entities.mobs.deacon_varric.name': '執事瓦瑞克',
   'entities.mobs.reliquary_bonewalker.name': '復起的骨行者',
@@ -4331,7 +4447,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.brother_greenpaw.name': '綠掌修士',
   'entities.npcs.brother_greenpaw.title': '首席先知（自封）',
   'entities.npcs.brother_greenpaw.greeting':
-    '喲，旅人，你來啦。你說這甕今兒個心情不錯，還是只有我這麼覺得……過來吧，有幾件神聖的事兒要辦。基本上就是弄點吃的。反正對綠掌來說是一回事兒。',
+    '你又來啦，真是福氣……這甕一早上唉聲嘆氣的，幾件神聖的事兒又排上了，跟上回一個路子。過來坐一會兒……',
   'entities.npcs.brother_greenpaw.introLines.0':
     '呃……你好。你好啊。沒聽見你過來，我剛才神遊去了，去了個綠油油的地方……你這一臉剛睡醒的樣子，朋友。我太熟這表情了，我自己十天有九天掛著它……',
   'entities.npcs.brother_greenpaw.introLines.1':
@@ -4894,4 +5010,5 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.elder_yarrow.name': '長老亞羅',
   'entities.npcs.elder_yarrow.title': '副職業訓練師',
   'entities.npcs.elder_yarrow.greeting': '每一套build都始於一個問題：哪個副職業在召喚你？',
+  'hudChrome.trainer.secondaryClassSet': '你已選擇{cls}作為你的副職業。',
 };

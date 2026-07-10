@@ -13,7 +13,6 @@
 import type http from 'node:http';
 import {
   accountForSlug,
-  getCharacter,
   getPlayerCardBySlug,
   getPlayerCardMetaBySlug,
   recordReferral,
@@ -21,6 +20,7 @@ import {
   upsertPlayerCard,
 } from './db';
 import { isUniqueViolation, json, parsePngInfo, readBinaryBody } from './http_util';
+import { requireOwnedCharacter } from './ownership';
 import { PLAYERCARD_NEW } from './player_card.newlocales';
 import { recordUsageMetric } from './provider_usage';
 import { REALM_PUBLIC_ORIGIN } from './realm';
@@ -569,10 +569,10 @@ export async function handleCardUpload(
     recordUsageMetric('card.publish.rejected');
     return json(res, 413, { error: 'image too large' });
   }
-  const character = await getCharacter(accountId, characterId);
+  const character = await requireOwnedCharacter(res, accountId, characterId);
   if (!character) {
     recordUsageMetric('card.publish.rejected');
-    return json(res, 404, { error: 'character not found' });
+    return;
   }
 
   let png: Buffer;

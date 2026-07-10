@@ -228,6 +228,7 @@ import {
 import * as questCommands from './quests/quest_commands';
 import {
   checkQuestReady,
+  onFeedForQuests,
   onInventoryChangedForQuests,
   onMobKilledForQuests,
 } from './quests/quest_credit';
@@ -313,6 +314,7 @@ import {
   type QuestProgress,
   type QuestState,
   RUN_SPEED,
+  type Sex,
   type SimConfig,
   type SimEvent,
   type SkinCatalog,
@@ -645,6 +647,11 @@ export interface PlayerMeta {
   name: string;
   skin: number; // appearance index into the render SKINS[player_<cls>]; persisted, synced
   skinCatalog: SkinCatalog;
+  // Player character sex. 'm' is the default for pre-PHAA-501 saves (addPlayer
+  // backfills). Mirrored onto the entity in addPlayer and synced in identity
+  // fields (terse `sx`); drives the female visual variant when a
+  // `player_<cls>_f` entry exists in the manifest.
+  sex: Sex;
   // Cosmetic skin-select event: the rank rolled when the event token was used,
   // pending a lock-in. Set on use, cleared on claim. Persisted so the reward
   // survives reconnect; re-using the token re-shows the same rank (no reroll).
@@ -814,6 +821,9 @@ export interface CharacterState {
   pendingSkinRank?: SkinRank | null;
   pendingSkinCatalog?: SkinCatalog | null;
   pendingSkinItemId?: string | null;
+  // PHAA-501: character sex (visual variant dispatch). Optional so pre-PHAA-501
+  // saves load cleanly; addPlayer backfills to 'm' on read.
+  sex?: Sex;
   delveMarks?: number;
   delveClears?: Record<string, number>;
   companionUpgrades?: Record<string, number>;
@@ -1207,6 +1217,7 @@ export class Sim {
       characterId?: number;
       accountKey?: string;
       hollowStart?: boolean; // PHAA-404: join inside the Hollow hub, never the base overworld
+      sex?: Sex; // PHAA-501: explicit override (server create path); otherwise read from saved state
     },
   ): number {
     const savedState = opts?.state ? sanitizeRemovedZone1Content(opts.state).state : undefined;
@@ -1251,6 +1262,7 @@ export class Sim {
       name,
       skin: savedState?.skin ?? 0,
       skinCatalog: savedState?.skinCatalog === 'mech' ? 'mech' : 'class',
+      sex: opts?.sex ?? savedState?.sex ?? 'm',
       pendingSkinRank: savedState?.pendingSkinRank ?? null,
       pendingSkinCatalog: savedState?.pendingSkinCatalog ?? null,
       pendingSkinItemId: savedState?.pendingSkinItemId ?? null,
@@ -1300,6 +1312,7 @@ export class Sim {
     this.players.set(player.id, meta);
     player.skinCatalog = meta.skinCatalog;
     player.skin = meta.skin; // mirror onto the entity so the renderer + wire can read it
+    player.sex = meta.sex; // mirror sex onto the entity for the visual dispatch + wire
     if (this.primaryId === -1) this.primaryId = player.id;
 
     if (savedState) {
@@ -1569,6 +1582,7 @@ export class Sim {
       cooldowns: serializeCooldowns(e.cooldowns, e.potionCooldownUntil, this.time),
       skin: meta.skin,
       skinCatalog: meta.skinCatalog,
+      sex: meta.sex, // PHAA-501: persisted; absent in pre-PHAA-501 saves (back-compat default 'm')
       pendingSkinRank: meta.pendingSkinRank,
       pendingSkinCatalog: meta.pendingSkinCatalog,
       pendingSkinItemId: meta.pendingSkinItemId,
@@ -1604,6 +1618,20 @@ export class Sim {
 
   changeSkin(skin: number, catalog: SkinCatalog = 'class'): void {
     this.setPlayerSkin(this.primaryId, skin, catalog);
+  }
+
+  /** Set a player's sex (meta + entity). Clamped to 'm'|'f' so a malformed
+   *  payload from the wire or a tampered save cannot escape the union. Used
+   *  by creation (PHAA-501) and the in-world visual mirror. */
+  setPlayerSex(pid: number, sex: Sex): boolean {
+    const meta = this.players.get(pid);
+    const e = this.entities.get(pid);
+    if (!meta || !e) return false;
+    const normalized: Sex = sex === 'f' ? 'f' : 'm';
+    if (meta.sex === normalized && e.sex === normalized) return true;
+    meta.sex = normalized;
+    e.sex = normalized;
+    return true;
   }
 
   /** Set a player's guild name (online only) so it rides the entity wire and
@@ -2143,6 +2171,7 @@ export class Sim {
       // stays on Sim (L2 inventory hub) and is consumed by the collect updater.
       onMobKilledForQuests: (mob, meta) => onMobKilledForQuests(sim.ctx, mob, meta),
       onInventoryChangedForQuests: (meta) => onInventoryChangedForQuests(sim.ctx, meta),
+      onGreenpawFedForQuests: (meta) => onFeedForQuests(sim.ctx, meta),
       checkQuestReady: (qp, meta) => checkQuestReady(sim.ctx, qp, meta),
       countItem: sim.countItem.bind(sim),
       // I1 dungeon instancing now lives in instances/dungeons.ts; these route through
