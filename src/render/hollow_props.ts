@@ -63,6 +63,7 @@ const KIT = {
   shrine: '/models/dungeon/shrine.glb',
   shrineCandles: '/models/dungeon/shrine_candles.glb',
   vase: '/models/props/hollow_vase.glb',
+  archGate: '/models/dungeon/arch_gate.glb',
 } as const;
 
 // Foliage kit GLBs for the flora dressing (same files foliage.ts already
@@ -250,6 +251,35 @@ function buildHearth(shrine: GLTF, shrineCandles: GLTF): THREE.Group {
   return g;
 }
 
+// The shrine gate spans this fraction of the walk between the guide rails at
+// x +-5 (HOLLOW_PROPS.fences): native arch width ~4.2 units, so 1.8x gives a
+// ~7.6-wide, ~7.9-tall frame, just under DUNGEON_WALL_HEIGHT (8).
+const GATE_SCALE = 1.8;
+
+/**
+ * The shrine gate (PHAA-589): the narrative "shrine gate" the hub entry/exit
+ * flow text promises ("You step through the shrine gate...", hollow.ts),
+ * finally given geometry. The arch_gate kit piece stands ON the walk-out
+ * trigger line (DUNGEONS.the_hollow.exitOffset), so arriving reads as having
+ * just come through it and leaving passes under the arch as the exit fires.
+ * Both door leaves are posed swung open toward the vase: hub props never
+ * collide (see the module header), so the opening must read walkable; a shut
+ * gate would visually block a line players pass straight through.
+ */
+function buildShrineGate(gltf: GLTF): THREE.Object3D {
+  const gate = clonePiece(gltf);
+  gate.scale.setScalar(GATE_SCALE);
+  // The leaves hinge at their own node origins (arch_gate_left sits at native
+  // x +0.8, right at -0.8); a ~65 degree yaw swings each panel off the arch
+  // plane toward +z, the vase side, as if pushed open by the arrival.
+  const OPEN = 1.15;
+  const left = gate.getObjectByName('arch_gate_left');
+  const right = gate.getObjectByName('arch_gate_right');
+  if (left) left.rotation.y = OPEN;
+  if (right) right.rotation.y = -OPEN;
+  return gate;
+}
+
 // Shared procedural-flora materials, created once and reused by every
 // instance copy (no lights anywhere: the point-light budget stays untouched).
 let floraMats: {
@@ -376,6 +406,7 @@ export async function buildHollowProps(
     shrine,
     shrineCandles,
     vaseGltf,
+    archGate,
     fern,
     bush,
     bushFlowers,
@@ -390,6 +421,7 @@ export async function buildHollowProps(
     loadGltf(KIT.shrine),
     loadGltf(KIT.shrineCandles),
     loadGltf(KIT.vase),
+    loadGltf(KIT.archGate),
     loadGltf(FLORA_KIT.fern),
     loadGltf(FLORA_KIT.bush),
     loadGltf(FLORA_KIT.bushFlowers),
@@ -480,6 +512,14 @@ export async function buildHollowProps(
       group.add(obj);
     }
   }
+
+  // the shrine gate at the threshold, centred on the sim's walk-out trigger
+  // line so entering/leaving the hub reads as passing through it (PHAA-589);
+  // reading exitOffset keeps the mesh glued to the trigger if content moves
+  const exitLine = DUNGEONS.the_hollow?.exitOffset ?? { x: 0, z: -16 };
+  const shrineGate = buildShrineGate(archGate);
+  shrineGate.position.set(exitLine.x, -0.02, exitLine.z);
+  group.add(shrineGate);
 
   // render-only lantern posts marking the walk: gate approach and cave mouth
   for (const [x, z] of [
