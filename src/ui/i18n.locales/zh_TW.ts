@@ -2272,6 +2272,10 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.the_merchant.title': '世界市場守護者',
   'entities.npcs.the_merchant.greeting':
     '歡迎來到世界市場，{className}。向王國各地的冒險者購買，或出售你自己的貨物。',
+  'entities.npcs.the_ravenpost.name': '渡鴉驛站',
+  'entities.npcs.the_ravenpost.title': '郵務守護者',
+  'entities.npcs.the_ravenpost.greeting':
+    '寄一封信吧，{className}，我的渡鴉會找到你的朋友，無論他們漂泊何方，隨信附上的錢幣和包裹也會安然相隨，直到被領取。',
   'entities.npcs.marshal_redbrook.name': '雷德布魯克元帥',
   'entities.npcs.marshal_redbrook.title': '城鎮元帥',
   'entities.npcs.marshal_redbrook.greeting': '刀別離手，{className}。山谷已經不是從前的山谷了。',

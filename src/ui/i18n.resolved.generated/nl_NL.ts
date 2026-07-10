@@ -5868,6 +5868,11 @@ export const nl_NL: EnTranslations = {
         "title": "Hoeder van de Wereldmarkt",
         "greeting": "Welkom op de Wereldmarkt, {className}. Koop van elke avonturier in het rijk, of leg je eigen waren uit en laat het goud jou vinden."
       },
+      "the_ravenpost": {
+        "name": "The Ravenpost",
+        "title": "Keeper of the Mail",
+        "greeting": "Post a letter, {className}, and my ravens will find your friend wherever they roam, coin and parcels riding along, safe until claimed."
+      },
       "marshal_redbrook": {
         "name": "Maarschalk Redbrook",
         "title": "Stadsmaarschalk",

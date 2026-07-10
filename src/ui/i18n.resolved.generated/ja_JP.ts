@@ -5868,6 +5868,11 @@ export const ja_JP: EnTranslations = {
         "title": "世界市場の守り手",
         "greeting": "世界市場へようこそ、{className}。王国中の冒険者から買うことも、自分の品を売ることもできます。"
       },
+      "the_ravenpost": {
+        "name": "レイヴンポスト",
+        "title": "郵便の守り手",
+        "greeting": "手紙を出してください、{className}。私のカラスが、どこを旅していようとあなたの友を見つけ出します。同封の金貨も小包も、受け取られるまで安全に届けられます。"
+      },
       "marshal_redbrook": {
         "name": "レッドブルック元帥",
         "title": "町の元帥",

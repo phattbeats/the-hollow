@@ -5868,6 +5868,11 @@ export const ko_KR: EnTranslations = {
         "title": "세계 시장 관리자",
         "greeting": "세계 시장에 오신 것을 환영합니다, {className}. 왕국의 모험가들에게서 물건을 사거나 자신의 물건을 내놓으십시오."
       },
+      "the_ravenpost": {
+        "name": "레이븐포스트",
+        "title": "우편 관리자",
+        "greeting": "편지를 보내세요, {className}. 제 까마귀들이 어디를 떠돌든 당신의 친구를 찾아낼 것입니다. 함께 부친 금화와 소포도 찾아갈 때까지 안전하게 전해집니다."
+      },
       "marshal_redbrook": {
         "name": "레드브룩 원수",
         "title": "마을 원수",

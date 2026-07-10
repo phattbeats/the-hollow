@@ -5868,6 +5868,11 @@ export const sv_SE: EnTranslations = {
         "title": "Väktare av Världsmarknaden",
         "greeting": "Välkommen till Världsmarknaden, {className}. Köp av varje äventyrare i riket - eller ställ ut dina egna varor och låt mynten finna dig."
       },
+      "the_ravenpost": {
+        "name": "The Ravenpost",
+        "title": "Keeper of the Mail",
+        "greeting": "Post a letter, {className}, and my ravens will find your friend wherever they roam, coin and parcels riding along, safe until claimed."
+      },
       "marshal_redbrook": {
         "name": "Marskalk Redbrook",
         "title": "Stadsmarskalk",

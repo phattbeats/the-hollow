@@ -5868,6 +5868,11 @@ export const es_ES: EnTranslations = {
         "title": "Guardián del Mercado Mundial",
         "greeting": "Bienvenido al Mercado Mundial, {className}. Compra a aventureros de cada rincón del reino o vende tus propias mercancías."
       },
+      "the_ravenpost": {
+        "name": "The Ravenpost",
+        "title": "Keeper of the Mail",
+        "greeting": "Post a letter, {className}, and my ravens will find your friend wherever they roam, coin and parcels riding along, safe until claimed."
+      },
       "marshal_redbrook": {
         "name": "Mariscal Redbrook",
         "title": "Mariscal de la ciudad",

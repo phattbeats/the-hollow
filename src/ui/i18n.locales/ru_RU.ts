@@ -2402,6 +2402,10 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.the_merchant.title': 'Хранитель мирового рынка',
   'entities.npcs.the_merchant.greeting':
     'Добро пожаловать на Мировой рынок, {className}. Покупайте у искателей приключений всего королевства или выставляйте свои товары.',
+  'entities.npcs.the_ravenpost.name': 'Воронья почта',
+  'entities.npcs.the_ravenpost.title': 'Хранитель почты',
+  'entities.npcs.the_ravenpost.greeting':
+    'Отправьте письмо, {className}, и мои вороны отыщут вашего друга, где бы он ни странствовал, а вложенные монеты и посылки будут в целости, пока их не заберут.',
   'entities.npcs.marshal_redbrook.name': 'Маршал Редбрук',
   'entities.npcs.marshal_redbrook.title': 'Городской маршал',
   'entities.npcs.marshal_redbrook.greeting':

@@ -5868,6 +5868,11 @@ export const pl_PL: EnTranslations = {
         "title": "Strażnik Światowego Rynku",
         "greeting": "Witaj na Światowym Rynku, {className}. Kupuj od każdego poszukiwacza przygód w królestwie lub wystaw własne towary i pozwól, by złoto samo cię znalazło."
       },
+      "the_ravenpost": {
+        "name": "The Ravenpost",
+        "title": "Keeper of the Mail",
+        "greeting": "Post a letter, {className}, and my ravens will find your friend wherever they roam, coin and parcels riding along, safe until claimed."
+      },
       "marshal_redbrook": {
         "name": "Marszałek Redbrook",
         "title": "Marszałek Miasta",

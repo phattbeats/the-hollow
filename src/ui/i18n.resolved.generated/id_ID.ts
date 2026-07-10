@@ -5868,6 +5868,11 @@ export const id_ID: EnTranslations = {
         "title": "Penjaga Pasar Dunia",
         "greeting": "Selamat datang di Pasar Dunia, {className}. Berbelanja dari setiap petualang di kerajaan ini, atau gelar barang daganganmu sendiri dan biarkan keping emas mendatangimu."
       },
+      "the_ravenpost": {
+        "name": "The Ravenpost",
+        "title": "Keeper of the Mail",
+        "greeting": "Post a letter, {className}, and my ravens will find your friend wherever they roam, coin and parcels riding along, safe until claimed."
+      },
       "marshal_redbrook": {
         "name": "Marsekal Redbrook",
         "title": "Marsekal Kota",

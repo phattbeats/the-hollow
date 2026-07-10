@@ -5868,6 +5868,11 @@ export const zh_CN: EnTranslations = {
         "title": "世界市场守护者",
         "greeting": "欢迎来到世界市场，{className}。从王国各地的冒险者手中购买，或出售你自己的货物。"
       },
+      "the_ravenpost": {
+        "name": "渡鸦驿站",
+        "title": "邮务守护者",
+        "greeting": "寄一封信吧，{className}，我的渡鸦会找到你的朋友，无论他们漂泊何方，随信附上的钱币和包裹也会安然相随，直到被认领。"
+      },
       "marshal_redbrook": {
         "name": "雷德布鲁克元帅",
         "title": "城镇元帅",

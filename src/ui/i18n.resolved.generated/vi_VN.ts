@@ -5868,6 +5868,11 @@ export const vi_VN: EnTranslations = {
         "title": "Người Giữ Chợ Thế Giới",
         "greeting": "Chào mừng đến Chợ Thế Giới, {className}. Hãy mua hàng từ mọi nhà thám hiểm trong vương quốc, hoặc bày bán hàng của riêng ngươi và để vàng tự tìm đến."
       },
+      "the_ravenpost": {
+        "name": "The Ravenpost",
+        "title": "Keeper of the Mail",
+        "greeting": "Post a letter, {className}, and my ravens will find your friend wherever they roam, coin and parcels riding along, safe until claimed."
+      },
       "marshal_redbrook": {
         "name": "Cảnh Trưởng Redbrook",
         "title": "Cảnh Trưởng Thị Trấn",

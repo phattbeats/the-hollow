@@ -2270,6 +2270,10 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.the_merchant.title': '世界市场守护者',
   'entities.npcs.the_merchant.greeting':
     '欢迎来到世界市场，{className}。从王国各地的冒险者手中购买，或出售你自己的货物。',
+  'entities.npcs.the_ravenpost.name': '渡鸦驿站',
+  'entities.npcs.the_ravenpost.title': '邮务守护者',
+  'entities.npcs.the_ravenpost.greeting':
+    '寄一封信吧，{className}，我的渡鸦会找到你的朋友，无论他们漂泊何方，随信附上的钱币和包裹也会安然相随，直到被认领。',
   'entities.npcs.marshal_redbrook.name': '雷德布鲁克元帅',
   'entities.npcs.marshal_redbrook.title': '城镇元帅',
   'entities.npcs.marshal_redbrook.greeting': '刀别离手，{className}。山谷已经不是从前的山谷了。',

@@ -5868,6 +5868,11 @@ export const tr_TR: EnTranslations = {
         "title": "Dünya Pazarı'nın Bekçisi",
         "greeting": "Dünya Pazarı'na hoş geldin, {className}. Diyardaki her maceracıdan alışveriş yap, ya da kendi mallarını sergile ve bırak altın seni bulsun."
       },
+      "the_ravenpost": {
+        "name": "The Ravenpost",
+        "title": "Keeper of the Mail",
+        "greeting": "Post a letter, {className}, and my ravens will find your friend wherever they roam, coin and parcels riding along, safe until claimed."
+      },
       "marshal_redbrook": {
         "name": "Mareşal Redbrook",
         "title": "Kasaba Mareşali",

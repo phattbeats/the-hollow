@@ -5868,6 +5868,11 @@ export const da_DK: EnTranslations = {
         "title": "Vogter af Verdensmarkedet",
         "greeting": "Velkommen til Verdensmarkedet, {className}. Køb fra hver eneste eventyrer i riget - eller læg dine egne varer frem og lad mønterne finde dig."
       },
+      "the_ravenpost": {
+        "name": "The Ravenpost",
+        "title": "Keeper of the Mail",
+        "greeting": "Post a letter, {className}, and my ravens will find your friend wherever they roam, coin and parcels riding along, safe until claimed."
+      },
       "marshal_redbrook": {
         "name": "Marskal Redbrook",
         "title": "Bymarskal",

@@ -2369,6 +2369,10 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.the_merchant.title': '世界市場の守り手',
   'entities.npcs.the_merchant.greeting':
     '世界市場へようこそ、{className}。王国中の冒険者から買うことも、自分の品を売ることもできます。',
+  'entities.npcs.the_ravenpost.name': 'レイヴンポスト',
+  'entities.npcs.the_ravenpost.title': '郵便の守り手',
+  'entities.npcs.the_ravenpost.greeting':
+    '手紙を出してください、{className}。私のカラスが、どこを旅していようとあなたの友を見つけ出します。同封の金貨も小包も、受け取られるまで安全に届けられます。',
   'entities.npcs.marshal_redbrook.name': 'レッドブルック元帥',
   'entities.npcs.marshal_redbrook.title': '町の元帥',
   'entities.npcs.marshal_redbrook.greeting':
