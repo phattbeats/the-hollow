@@ -1329,6 +1329,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'abilityUi.tooltip.offGlobalCooldown': '공용 재사용 대기시간 없음',
   'abilityUi.tooltip.friendlyTarget': '아군 대상',
   'abilityUi.tooltip.enemyTarget': '적 대상',
+  'abilityUi.tooltip.selfOnly': '자신에게만',
   'abilityUi.tooltip.damageRange': '{min}에서 {max}',
   'abilityUi.tooltip.finisherDamage': '기본 {base}, 연계 점수당 {perCombo}',
   'abilityUi.resources.mana': '마나',
@@ -2919,7 +2920,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_root_hollow_boars_ii.text':
     '이 직분에서 인정해선 안 될 것을 인정하리다. 다섯은 너무 낙관했소. 아래 굴에서 계속 밀려 올라오는구려. 여덟만 더 잡으면, 기록을 세 번째로 고치지 않고 이 철을 마감할 수 있소. 기록은 고쳐지길 싫어하지. 나도 그렇소.',
   'entities.quests.q_root_hollow_boars_ii.completion':
-    '마감. 서명. 편철. 이제 이 철은 예정대로 흘러갈 수 있소, 달력을 지킬 자가 다시 생겼으니. 그대는 아주 작은 회중에게 큰 도움을 주었소. 분명히 해두자면, 그 회중이란 바로 나요.',
+    '마감. 서명. 편철. 이제 이 철은 예정대로 흘러갈 수 있소, 달력을 지킬 자가 다시 생겼으니. 그대는 아주 작은 회중에게 큰 도움을 주었소. 분명히 해두자면, 그 회중이란 바로 나요. 이 장부 자체는 이 체제보다도 오래되었소, 만난 적 없는 손으로 철해졌고, 내가 굳이 합산하지 않는 수를 담고 있소. 한때 이곳엔 참으로 꼼꼼한 이가 있었던 모양이오. 나는 그저 그 걸음을 따라가려 할 뿐이오.',
   'entities.quests.q_root_hollow_boars_ii.objectives.0.label': '야생 멧돼지 처치',
   'entities.quests.q_fallow_acres_wolves.title': '이랑에서 몰아낸 늑대',
   'entities.quests.q_fallow_acres_wolves.text':
@@ -3068,6 +3069,32 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_what_fills.dialog.refuse': '싫습니다. 다시는 안 내려가요.',
   'entities.quests.q_what_fills.dialog.refuseReply':
     '오... 오, 그래. ...그래. 그건... 그렇지. 아니, 맞는 말이야, 친구, 맞는 말이지... 항아리도 들었고, 우리끼리 얘기지만 그 녀석도 존중하는 눈치야. 자, 꺾꽂이는 그냥 가져가. 한 번은 내려갔잖아, 그것만으로도 대부분보다 한 번은 더 간 거야...',
+  'entities.quests.q_the_wavelength.title': '파장 위에서',
+  'entities.quests.q_the_wavelength.text':
+    '꺾꽂이는 이제 네 거다, 친구, 그러니 그다음 얘기를 좀 하자고... 두 가지가 있는데, 둘 다 시련은 아니고, 그보다는 소개에 가깝지. 먼저, 항아리를 건너가서 엘더 야로우를 만나봐, 그 사람은 완전히 다른 두 번째 소명을, 이 모든 걸 즐기는 다른 방법을 가르쳐주거든, 여길 지나가는 영혼이라면 누구나 그 문이 열려 있다는 걸 알아야 해... 둘째로, 다시 돌아와서 나한테 뭐라도 좀 먹여줘, 잉걸송이든 동굴 살점이든 상관없어, 난 항상 텅 비어 있고 항아리는 항상 연기를 원하거든. 그 부분은 절대 안 끝나, 그린포 식으로 말하자면.',
+  'entities.quests.q_the_wavelength.completion':
+    '거봐... 방금 방 안이 순간 짙어지는 거 느꼈지? 그분이 알아챈 거야. 그게 요령의 전부야, 친구 - 네가 날 먹이면, 내가 연기를 피우고, 그분이 조금 더 귀를 기울이시지. 복잡할 거 하나 없어. 앞으로도 절대 안 변할 거고. 남는 잉걸송이나 살점 있으면 언제든 와, 화로는 달력 같은 거 안 챙기니까... 아, 그리고. 홀로우에 온 걸 환영해. 그 말을 여태 안 했다는 걸 이제야 깨달았네.',
+  'entities.quests.q_the_wavelength.objectives.0.label': '엘더 야로우를 만남',
+  'entities.quests.q_the_wavelength.objectives.1.label': '화로에서 먹임',
+  'entities.quests.q_the_wavelength.dialog.complain':
+    '또 심부름이야? 방금 그 구멍에서 기어 나왔잖아.',
+  'entities.quests.q_the_wavelength.dialog.complainReply':
+    '아니, 아니, 들어봐, 이건 동굴 일이 아니야... 이번 건 쉬워, 그냥 걷고 한 번 잘 먹이기만 하면 돼. 내가 여태 부탁한 것 중 제일 가벼운 거야, 약속하지, 파장에 걸고.',
+  'entities.quests.q_the_wavelength.dialog.refuse': '내 수련은 내가 알아서 찾을게, 고맙지만.',
+  'entities.quests.q_the_wavelength.dialog.refuseReply':
+    '...뭐, 그럴 수도 있지. 아직 준비 안 된 영혼한테 뭘 배우라고 강요할 순 없으니까. "아직"이 아니게 되면 문은 열려 있어... 자, 이거라도 가져가, 그래도 와줬으니 이 정도는 해야지.',
+  'entities.quests.q_keep_him_lit.text':
+    '세 번이야, 친구, 그게 숫자지... 신성한 건 아니고, 그냥 은혜 하나를 습관으로 바꾸기에 딱 맞는 횟수일 뿐이야, 그리고 습관이야말로 내가 진짜로 믿는 유일한 종교거든... 돌아와서 화로에 세 번, 따로따로 세 번 먹여줘, 순서는 상관없고, 잉걸구근이든 동굴 조각이든 뭐든 상관없어, 그러면 네가 정말로 여기 머물려는 거지, 더 큰 뭔가로 가는 길에 그냥 스쳐 지나가는 게 아니라는 걸 믿을게...',
+  'entities.quests.q_keep_him_lit.completion':
+    '세 번에 세 번... 이제 넌 그냥 방문객이 아니야, 친구, 넌 뭔가를 살려두고 있는 거고, 내가 보기엔 그게 이 판의 전부야, 아무도 물어본 적 없지만 그래도 말해두는 거야... 자. 이거 챙겨둬, 아무 쓸모도 없어, 그냥 기억할 뿐이야, 우리 여기 있는 다른 것들이랑 똑같이...',
+  'entities.quests.q_keep_him_lit.objectives.0.label': '화로에서 세 번 먹임',
+  'entities.quests.q_keep_him_lit.dialog.complain': '이미 한 번 먹였잖아요. 그걸로 부족한가요?',
+  'entities.quests.q_keep_him_lit.dialog.complainReply':
+    '한 번은 호의야, 친구, 세 번은 습관이지, 나는 호의 때문에 데인 적이 있거든... 화로가 필요해서 그런 게 아니야, 화로는 멀쩡해, 내가 잘 돌보고 있어, 이건 네가 자기 발로 다시 돌아오고 싶어서 오는 건지에 관한 거야, 퀘스트 표시가 시켜서가 아니라... 세 번. 서두를 필요 없어.',
+  'entities.quests.q_keep_him_lit.dialog.refuse':
+    '세 번씩 나눠서 하지 않을 거예요. 한 번이면 충분해요.',
+  'entities.quests.q_keep_him_lit.dialog.refuseReply':
+    '...그래. 그래, 알겠어, 친구, 그것도 충분히 공정한 선이지... 그럼 이거라도 가져가, 엄밀히 말하면 네가 번 건 아니지만, 내가 나눠주는 것 대부분도 그렇긴 해, 파장이라는 것도 내가 그런 척하는 것만큼 딱 맞게 점수를 매기진 않거든...',
   'hud.errors.silenced': '침묵 상태입니다!',
   'hud.pet.noPetFood': '소환수에게 먹일 음식이 없습니다.',
   'hud.pet.petEatsFoodOnly': '소환수는 음식만 먹을 수 있습니다.',
@@ -4641,10 +4668,18 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': '동굴 고기 조각',
   'entities.items.emberbulb.name': '불씨구근',
   'entities.items.first_cutting.name': '꺾꽂이',
+  'entities.items.greenpaw_bead.name': '탄띠에서 나온 염주 하나',
+  'entities.items.keeper_coal.name': '결코 식지 않는 숯덩이',
   'entities.items.witness_root_cincture.name': '증인뿌리의 허리띠',
   'entities.items.shrine_diary_page.name': '찢어진 일기장 페이지',
   'entities.items.shrine_diary_page.flavorText':
     '...촛불로 마흔 날을 세다가 결국 놓쳐버렸다. 이 아래의 어둠은 그분을 잊지 않는다, 그분이 이곳을 잊으셨어도. 왜가리가 낮게 돌면, 등지기에게 심지가 아직 타고 있다고 전해라...',
+  'entities.items.worn_prayer_token.name': '닳은 기도패',
+  'entities.items.worn_prayer_token.flavorText':
+    '...한쪽 면이 내 것이 아닌 엄지에 매끄럽게 닳아 있다, 여기 쌓인 다른 백여 개와 똑같은 얕은 홈이 패어 있는데, 적어도 이 더미는 그렇게 말하고 있다. 엄지 하나로는 토큰 백 개를 닳게 할 수 없다. 하지만 수많은 엄지가 하나의 홈을 닳게 하는 일은, 가능하다...',
+  'entities.items.tally_shard.name': '눈금이 새겨진 파편',
+  'entities.items.tally_shard.flavorText':
+    '...다섯 개씩 한 묶음으로 깊이 새겨져, 셀 때마다 하나씩 그어 지워졌다. 지워진 다섯 묶음이 수백에 이르는데, 그 지움이 멈춘 마지막 줄만은 끝내 채워지지 않았다...',
   'entities.mobs.acolyte_tessa.name': '수련사제 테사',
   'entities.mobs.deacon_varric.name': '부제 바릭',
   'entities.mobs.reliquary_bonewalker.name': '되살아난 해골보행자',
@@ -4661,7 +4696,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.brother_greenpaw.name': '브라더 초록발',
   'entities.npcs.brother_greenpaw.title': '초대 선지자(자칭)',
   'entities.npcs.brother_greenpaw.greeting':
-    '어이, 나그네. 오늘 항아리 기분이 좀 이상해 보이나, 아니면 또 나만 그렇게 느끼는 건가……이리 와 보게, 처리해야 할 신성한 일이 몇 가지 있어. 대부분 간식거리지만. 뭐, 그린포우 식으로 치면 그게 그거지.',
+    '다시 왔네, 그게 신의 축복이지……그 항아리가 아침부터 한숨만 쉬고 있어, 처리해야 할 신성한 일들이 줄을 서 있고, 지난번이랑 같은 주파수야. 잠깐 이리 와 보게……',
   'entities.npcs.brother_greenpaw.introLines.0':
     '어어……안녕. 안녕하신가. 다가오는 걸 못 들었네, 잠깐 딴 데 가 있었거든, 어디 푸르른 곳에……자네 방금 잠에서 깬 얼굴이구먼, 친구. 그 표정 나도 잘 알지, 나야 거의 매일 그 얼굴이니까……',
   'entities.npcs.brother_greenpaw.introLines.1':

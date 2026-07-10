@@ -134,7 +134,13 @@ import {
 import { canEquipItem } from './equipment_rules';
 import { fleeSpeed } from './flee_speed';
 import { formatMoney } from './format_money';
-import { Gathering } from './gathering';
+import {
+  emptyGatheringProficiency,
+  Gathering,
+  gatherNodeById,
+  harvestNode as harvestNodeImpl,
+  isNodeHarvestableBy,
+} from './gathering';
 import { GreenpawHearth, type GreenpawHearthSave } from './greenpaw_hearth';
 import { Homestead, type HomesteadSave } from './homestead';
 import { Housing, type HousingSave } from './housing';
@@ -223,6 +229,7 @@ import {
 import * as questCommands from './quests/quest_commands';
 import {
   checkQuestReady,
+  onFeedForQuests,
   onInventoryChangedForQuests,
   onMobKilledForQuests,
 } from './quests/quest_credit';
@@ -286,6 +293,7 @@ import {
   emptyMoveInput,
   FISHING_CAST_ID,
   FISHING_CAST_TIME,
+  type GatherNodeType,
   GCD,
   type InvSlot,
   isConsuming,
@@ -731,6 +739,17 @@ export interface PlayerMeta {
   companionUpgrades: Record<string, number>;
   delveLoreUnlocked: Set<string>;
   delveDaily: { date: string; firstClearXp: Set<string>; markClears: number };
+  // Per-player, per-node gather-node respawn readiness (PHAA-505): nodeId ->
+  // sim.time (seconds) at or after which THIS player may harvest that node
+  // again. Absent means never harvested (always ready). Session-only, never
+  // persisted, and never shared across players: see src/sim/gathering.ts
+  // (isNodeHarvestableBy/resolveHarvest).
+  nodeHarvestReadyAt: Record<string, number>;
+  // Per-player gather-node proficiency (PHAA-505): one counter per node type,
+  // incremented on every successful harvest of that type. Persisted
+  // (CharacterState.gatheringProficiency); feeds a future proficiency-scaled
+  // rarity roll.
+  gatheringProficiency: Record<GatherNodeType, number>;
 }
 
 // Away-from-keyboard / do-not-disturb presence. `afk` still delivers whispers
@@ -812,6 +831,9 @@ export interface CharacterState {
   companionUpgrades?: Record<string, number>;
   delveLoreUnlocked?: string[];
   delveDaily?: { date: string; firstClearXp: string[]; markClears: number };
+  // Optional so characters saved before per-node gathering proficiency
+  // existed load cleanly (addPlayer backfills to all-zero).
+  gatheringProficiency?: Partial<Record<GatherNodeType, number>>;
 }
 
 export interface PetState {
@@ -1286,6 +1308,8 @@ export class Sim {
       companionUpgrades: {},
       delveLoreUnlocked: new Set(),
       delveDaily: { date: '', firstClearXp: new Set(), markClears: 0 },
+      nodeHarvestReadyAt: {},
+      gatheringProficiency: emptyGatheringProficiency(),
     };
     this.players.set(player.id, meta);
     player.skinCatalog = meta.skinCatalog;
@@ -1361,6 +1385,9 @@ export class Sim {
       meta.delveMarks = s.delveMarks ?? 0;
       meta.delveClears = { ...(s.delveClears ?? {}) };
       meta.companionUpgrades = { ...(s.companionUpgrades ?? {}) };
+      if (s.gatheringProficiency) {
+        meta.gatheringProficiency = { ...emptyGatheringProficiency(), ...s.gatheringProficiency };
+      }
       if (s.delveLoreUnlocked) for (const id of s.delveLoreUnlocked) meta.delveLoreUnlocked.add(id);
       if (s.delveDaily) {
         meta.delveDaily = {
@@ -1564,6 +1591,7 @@ export class Sim {
       delveMarks: meta.delveMarks,
       delveClears: { ...meta.delveClears },
       companionUpgrades: { ...meta.companionUpgrades },
+      gatheringProficiency: { ...meta.gatheringProficiency },
       delveLoreUnlocked: [...meta.delveLoreUnlocked],
       delveDaily: {
         date: meta.delveDaily.date,
@@ -2145,6 +2173,7 @@ export class Sim {
       // stays on Sim (L2 inventory hub) and is consumed by the collect updater.
       onMobKilledForQuests: (mob, meta) => onMobKilledForQuests(sim.ctx, mob, meta),
       onInventoryChangedForQuests: (meta) => onInventoryChangedForQuests(sim.ctx, meta),
+      onGreenpawFedForQuests: (meta) => onFeedForQuests(sim.ctx, meta),
       checkQuestReady: (qp, meta) => checkQuestReady(sim.ctx, qp, meta),
       countItem: sim.countItem.bind(sim),
       // I1 dungeon instancing now lives in instances/dungeons.ts; these route through
@@ -4592,6 +4621,37 @@ export class Sim {
   // lives on Gathering via the ctx seam (see gatherHarvestItemFor).
   harvestCorpse(mobId: number, pid?: number): void {
     interaction.harvestCorpse(this.ctx, mobId, pid);
+  }
+
+  // Gathering v1 (PHAA-505): per-player world-node harvest, a thin delegate
+  // onto src/sim/gathering.ts, resolved on the deterministic tick the command
+  // arrives on, same as harvestCorpse above.
+  harvestNode(nodeId: string, pid?: number): void {
+    harvestNodeImpl(this.ctx, nodeId, pid);
+  }
+
+  // IWorld read surface (IWorldGathering): whether the given node is
+  // harvestable right now BY THIS PLAYER specifically (per-player respawn
+  // timer). Never reflects another player's cooldown for the same node.
+  // Takes an explicit pid (mirrors gatheringProficiencyFor) so both the
+  // local-viewer getter below and tests can check any player's own timer.
+  nodeHarvestableByMeFor(nodeId: string, pid: number): boolean {
+    const meta = this.players.get(pid);
+    if (!meta) return false;
+    if (!gatherNodeById(nodeId)) return false;
+    return isNodeHarvestableBy(meta, nodeId, this.time);
+  }
+
+  nodeHarvestableByMe(nodeId: string): boolean {
+    return this.nodeHarvestableByMeFor(nodeId, this.primaryId);
+  }
+
+  gatheringProficiencyFor(pid: number): Record<GatherNodeType, number> {
+    return this.players.get(pid)?.gatheringProficiency ?? emptyGatheringProficiency();
+  }
+
+  get gatheringProficiency(): Record<GatherNodeType, number> {
+    return this.gatheringProficiencyFor(this.primaryId);
   }
 
   pickUpObject(objId: number, pid?: number): void {

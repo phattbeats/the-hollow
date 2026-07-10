@@ -13,10 +13,10 @@
 // file is presentation only; it reads a spec, never the sim. It is NOT a
 // registered pure core (it imports three) and MUST NOT be named *_core/*_view.
 //
-// Not yet wired into live mob spawns: the Under-Shrine palefeeder / rootmaw /
-// witness-root still render as their GLB family visuals until the art
-// direction is Board-signed (see PHAA-437). scripts/render_plant_creatures.mjs
-// renders a preview sheet of N seeds for that sign-off.
+// Wired into live mob spawns (PHAA-531) via characters/plant_dispatch.ts, which
+// wraps a PlantCreature in the same call surface renderer.ts drives every
+// CharacterVisual through. scripts/render_plant_creatures.mjs still renders a
+// preview sheet of N seeds for future archetype sign-off passes.
 
 import * as THREE from 'three';
 import {

@@ -222,20 +222,20 @@ export function petPickTarget(ctx: SimContext, pet: Entity, owner: Entity): Enti
   const ownerIdle = !ownerMeta || ctx.tickCount - ownerMeta.lastActiveTick > PET_OWNER_IDLE_TICKS;
   let best: Entity | null = null;
   let bestD = pet.petMode === 'aggressive' ? PET_AGGRESSIVE_RANGE : PET_ASSIST_RANGE;
-  for (const m of ctx.entities.values()) {
-    if (m.id === pet.id || m.dead || !ctx.isHostileTo(pet, m)) continue;
+  ctx.grid.forEachInRadius(pet.pos.x, pet.pos.z, PET_ASSIST_RANGE, (m) => {
+    if (m.id === pet.id || m.dead || !ctx.isHostileTo(pet, m)) return;
     const engagingUs =
       m.kind === 'mob' && (m.aggroTargetId === owner.id || m.aggroTargetId === pet.id);
     const ownerOffense =
       owner.targetId === m.id && (owner.autoAttack || (m.kind === 'mob' && m.threat.has(owner.id)));
     const aggressive =
       pet.petMode === 'aggressive' && !ownerIdle && dist2d(pet.pos, m.pos) <= PET_AGGRESSIVE_RANGE;
-    if (!engagingUs && !ownerOffense && !aggressive) continue;
+    if (!engagingUs && !ownerOffense && !aggressive) return;
     const d = dist2d(pet.pos, m.pos);
     if (d < bestD) {
       best = m;
       bestD = d;
     }
-  }
+  });
   return best;
 }

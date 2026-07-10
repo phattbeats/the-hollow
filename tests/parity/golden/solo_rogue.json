@@ -15,7 +15,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "25d1ee04",
+      "state": "c4bda38f",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -38,6 +38,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -73,6 +76,7 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "energy",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -101,7 +105,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 403,
-      "state": "248c7a5d",
+      "state": "6278af2b",
       "events": "c02b647d",
       "rng": {
         "draws": 7,
@@ -112,7 +116,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 403,
-      "state": "3b149d32",
+      "state": "d2352f60",
       "events": "be266894",
       "rng": {
         "draws": 13,
@@ -123,7 +127,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 403,
-      "state": "b0f6a2bc",
+      "state": "5987adea",
       "events": "0058395e",
       "rng": {
         "draws": 96,
@@ -134,7 +138,7 @@
       "tick": 72,
       "time": 3.6,
       "nextId": 403,
-      "state": "151a91b2",
+      "state": "0b851dd8",
       "events": "741638a5",
       "rng": {
         "draws": 153,
@@ -160,7 +164,10 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 27600,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -201,6 +208,7 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "energy",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -258,6 +266,7 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 4,
             "y": 1.5,

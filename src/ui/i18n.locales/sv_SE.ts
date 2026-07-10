@@ -902,6 +902,7 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'entities.items.fenreed_staff.name': 'Kärrvasstav',
   'entities.items.fenwalker_boots.name': 'Kärrvandrarstövlar',
   'entities.items.first_cutting.name': 'En stickling',
+  'entities.items.greenpaw_bead.name': 'En pärla från bandoleret',
   'entities.items.witness_root_cincture.name': 'Vittnesrotens gördel',
   'entities.items.shrine_diary_page.name': 'Sönderriven Dagbokssida',
   'entities.items.shrine_diary_page.flavorText':

@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "25d1ee04",
+      "state": "c4bda38f",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -39,6 +39,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -74,6 +77,7 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "energy",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -102,7 +106,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 416,
-      "state": "40973969",
+      "state": "8bbccc83",
       "events": "2e13ada4",
       "rng": {
         "draws": 3,
@@ -113,7 +117,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 416,
-      "state": "26631c19",
+      "state": "48676e53",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -124,7 +128,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 416,
-      "state": "e95598fb",
+      "state": "19930195",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -135,7 +139,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 416,
-      "state": "250b67b5",
+      "state": "6c51442f",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -146,7 +150,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 416,
-      "state": "21c73273",
+      "state": "16018c6d",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -157,7 +161,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 416,
-      "state": "d659e369",
+      "state": "acb7f683",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -168,7 +172,7 @@
       "tick": 69,
       "time": 3.45,
       "nextId": 417,
-      "state": "72fa9e7b",
+      "state": "ea65e715",
       "events": "97d53ce6",
       "rng": {
         "draws": 3,
@@ -195,7 +199,10 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 11398,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -231,6 +238,7 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "energy",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -278,6 +286,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": -0.05,
+          "sex": "m",
           "spawnPos": {
             "x": 6000,
             "z": -1176
@@ -296,7 +305,7 @@
       "tick": 70,
       "time": 3.5,
       "nextId": 417,
-      "state": "6b5aa3bf",
+      "state": "12292bd9",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -307,7 +316,7 @@
       "tick": 71,
       "time": 3.55,
       "nextId": 417,
-      "state": "80cb288b",
+      "state": "69814e85",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -334,7 +343,10 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 11398,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -370,6 +382,7 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "energy",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -417,6 +430,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": -0.05,
+          "sex": "m",
           "spawnPos": {
             "x": 6000,
             "z": -1176
