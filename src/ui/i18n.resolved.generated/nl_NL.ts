@@ -633,7 +633,8 @@ export const nl_NL: EnTranslations = {
       "pending": "Waiting...",
       "need": "Need",
       "greed": "Greed",
-      "pass": "Pass"
+      "pass": "Pass",
+      "aria": "Group roll status for {item}"
     },
     "bags": {
       "filterGroupAria": "Tassen filteren op categorie",

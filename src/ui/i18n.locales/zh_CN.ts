@@ -16,6 +16,11 @@ import type { TranslationKey } from '../i18n.catalog';
 export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.spectate.banner': '正在观察 {name}',
   'hudChrome.loot.chestTitle': '宝箱',
+  'hudChrome.lootRollGroup.pending': '等待中...',
+  'hudChrome.lootRollGroup.need': '需求',
+  'hudChrome.lootRollGroup.greed': '贪婪',
+  'hudChrome.lootRollGroup.pass': '放弃',
+  'hudChrome.lootRollGroup.aria': '{item} 的团队掷骰状态',
   'hudChrome.spellbook.addToBarAria': '将{name}添加到动作条',
   'hudChrome.spellbook.removeFromBarAria': '从动作条移除{name}',
   'hudChrome.nameplate.mob': '[{level}] {name}',

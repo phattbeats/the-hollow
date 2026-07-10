@@ -633,7 +633,8 @@ export const id_ID: EnTranslations = {
       "pending": "Waiting...",
       "need": "Need",
       "greed": "Greed",
-      "pass": "Pass"
+      "pass": "Pass",
+      "aria": "Group roll status for {item}"
     },
     "bags": {
       "filterGroupAria": "Saring tas menurut kategori",

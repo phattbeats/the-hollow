@@ -16,6 +16,11 @@ import type { TranslationKey } from '../i18n.catalog';
 export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.spectate.banner': 'Наблюдение за {name}',
   'hudChrome.loot.chestTitle': 'Сундук',
+  'hudChrome.lootRollGroup.pending': 'Ожидание...',
+  'hudChrome.lootRollGroup.need': 'Нужда',
+  'hudChrome.lootRollGroup.greed': 'Жадность',
+  'hudChrome.lootRollGroup.pass': 'Пропуск',
+  'hudChrome.lootRollGroup.aria': 'Статус группового броска: {item}',
   'hudChrome.spellbook.addToBarAria': 'Добавить {name} на панель действий',
   'hudChrome.spellbook.removeFromBarAria': 'Убрать {name} с панели действий',
   'hudChrome.nameplate.mob': '[{level}] {name}',

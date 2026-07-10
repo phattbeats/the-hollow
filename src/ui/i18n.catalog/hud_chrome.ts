@@ -675,6 +675,10 @@ export const hudChromeStrings = {
     need: 'Need',
     greed: 'Greed',
     pass: 'Pass',
+    // Screen-reader label for the whole vote strip. {item} is the rolled item
+    // name; localized in loot_roll_group_view.ts and set on the strip via the
+    // painter's setAttr writer (never a raw setAttribute literal).
+    aria: 'Group roll status for {item}',
   },
   // Modular bag filtering controls: the category chips, sort dropdown, and live
   // search above the bag grid, plus the "no items match" empty state.

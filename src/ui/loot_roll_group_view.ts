@@ -48,6 +48,10 @@ export interface LootRollGroupViewRoll {
   // answer or have already answered). Drives whether the painter needs to
   // keep a hover/focus affordance and whether the local-pid chip is bolded.
   viewerIsCandidate: boolean;
+  // Already-localized screen-reader label for the whole strip. The painter
+  // drops this onto the strip's aria-label via the host's setAttr writer, so
+  // (like the per-choice labels) the painter never calls t() itself.
+  ariaLabel: string;
   entries: LootRollGroupViewEntry[];
 }
 
@@ -96,6 +100,7 @@ export function lootRollGroupRollView(
     itemName: status.itemName,
     quality: status.quality,
     viewerIsCandidate: status.entries.some((entry) => entry.pid === viewerPid),
+    ariaLabel: t('hudChrome.lootRollGroup.aria', { item: status.itemName }),
     entries,
   };
 }
@@ -111,4 +116,3 @@ export function lootRollGroupView(world: IWorld, viewerPid: number): LootRollGro
   }
   return { rolls };
 }
-

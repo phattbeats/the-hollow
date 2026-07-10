@@ -630,10 +630,11 @@ export const ja_JP: EnTranslations = {
       "leaderOnly": "分配方式を変更できるのはパーティリーダーだけです。"
     },
     "lootRollGroup": {
-      "pending": "Waiting...",
-      "need": "Need",
-      "greed": "Greed",
-      "pass": "Pass"
+      "pending": "待機中...",
+      "need": "ニード",
+      "greed": "グリード",
+      "pass": "パス",
+      "aria": "{item} のグループロール状況"
     },
     "bags": {
       "filterGroupAria": "バッグをカテゴリーで絞り込む",

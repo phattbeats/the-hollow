@@ -630,10 +630,11 @@ export const zh_CN: EnTranslations = {
       "leaderOnly": "只有队长才能更改拾取方式。"
     },
     "lootRollGroup": {
-      "pending": "Waiting...",
-      "need": "Need",
-      "greed": "Greed",
-      "pass": "Pass"
+      "pending": "等待中...",
+      "need": "需求",
+      "greed": "贪婪",
+      "pass": "放弃",
+      "aria": "{item} 的团队掷骰状态"
     },
     "bags": {
       "filterGroupAria": "按类别筛选背包",

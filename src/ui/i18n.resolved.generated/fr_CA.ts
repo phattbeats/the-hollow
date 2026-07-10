@@ -633,7 +633,8 @@ export const fr_CA: EnTranslations = {
       "pending": "Waiting...",
       "need": "Need",
       "greed": "Greed",
-      "pass": "Pass"
+      "pass": "Pass",
+      "aria": "Group roll status for {item}"
     },
     "bags": {
       "filterGroupAria": "Filtrer les sacs par catégorie",

@@ -16,6 +16,11 @@ import type { TranslationKey } from '../i18n.catalog';
 export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.spectate.banner': '{name} 관전 중',
   'hudChrome.loot.chestTitle': '상자',
+  'hudChrome.lootRollGroup.pending': '대기 중...',
+  'hudChrome.lootRollGroup.need': '니드',
+  'hudChrome.lootRollGroup.greed': '그리드',
+  'hudChrome.lootRollGroup.pass': '포기',
+  'hudChrome.lootRollGroup.aria': '{item} 그룹 굴림 상태',
   'hudChrome.spellbook.addToBarAria': '{name}을(를) 행동 단축바에 추가',
   'hudChrome.spellbook.removeFromBarAria': '{name}을(를) 행동 단축바에서 제거',
   'hudChrome.nameplate.mob': '[{level}] {name}',

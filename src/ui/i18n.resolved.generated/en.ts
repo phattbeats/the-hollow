@@ -633,7 +633,8 @@ export const en: EnTranslations = {
       "pending": "Waiting...",
       "need": "Need",
       "greed": "Greed",
-      "pass": "Pass"
+      "pass": "Pass",
+      "aria": "Group roll status for {item}"
     },
     "bags": {
       "filterGroupAria": "Filter bags by category",

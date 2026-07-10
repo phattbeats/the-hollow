@@ -630,10 +630,11 @@ export const ru_RU: EnTranslations = {
       "leaderOnly": "Только лидер группы может менять способ добычи."
     },
     "lootRollGroup": {
-      "pending": "Waiting...",
-      "need": "Need",
-      "greed": "Greed",
-      "pass": "Pass"
+      "pending": "Ожидание...",
+      "need": "Нужда",
+      "greed": "Жадность",
+      "pass": "Пропуск",
+      "aria": "Статус группового броска: {item}"
     },
     "bags": {
       "filterGroupAria": "Фильтровать сумки по категории",

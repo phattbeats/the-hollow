@@ -44,7 +44,6 @@ const GREED_CLASS = 'greed';
 const PASS_CLASS = 'pass';
 const PENDING_CLASS = 'pending';
 const VIEWER_CLASS = 'viewer';
-const EMPTY_CLASS = 'loot-roll-group-empty';
 
 // Display values used to toggle the strip visibility. The empty-state is
 // shown when the local player's party has no open need-greed rolls; the
@@ -57,7 +56,10 @@ export class LootRollGroupPainter {
   // Keyed pool: rollId -> { strip, chips: pid -> chip element }. The chips
   // map is a per-pool sub-pool so a fresh answer for the same rollId reuses
   // the same node (keyed by pid) without any DOM churn.
-  private readonly pool = new Map<number, { strip: HTMLElement; chips: Map<number, HTMLElement> }>();
+  private readonly pool = new Map<
+    number,
+    { strip: HTMLElement; chips: Map<number, HTMLElement> }
+  >();
   // Lazy host: the parent element strips are appended to. Resolved on the
   // first paint() call (the host creates the element if it doesn't yet
   // exist) and cached for subsequent calls. Null until first paint.
@@ -82,8 +84,7 @@ export class LootRollGroupPainter {
     // shown).
     if (view.rolls.length === 0) {
       if (this.emptyEl) this.writers.setDisplay(this.emptyEl, DISPLAY_BLOCK);
-      for (const { strip } of this.pool.values())
-        this.writers.setDisplay(strip, DISPLAY_NONE);
+      for (const { strip } of this.pool.values()) this.writers.setDisplay(strip, DISPLAY_NONE);
       this.pool.clear();
       return;
     }
@@ -122,36 +123,20 @@ export class LootRollGroupPainter {
     return this.pool.get(rollId)?.strip ?? null;
   }
 
-  // Build a fresh strip element + the initial chip nodes. Each chip holds
-  // three pieces of state (name, choice label, choice class) and one toggle
-  // (the viewer-is-candidate bold). The name node and the label node are
-  // separate so a name change (a rename) re-touches one chip text without
-  // re-rendering the label, and vice-versa.
+  // Build a fresh EMPTY strip container. The per-candidate chips are owned
+  // solely by paintStrip (keyed by pid in `entry.chips`); building them here
+  // too would double every chip (an untracked set from createStrip plus the
+  // tracked set paintStrip creates on first paint). The static ARIA role is a
+  // constant, so a raw setAttribute is fine; the localized aria-label is a
+  // player-visible string and is set by paintStrip through the setAttr writer.
   private createStrip(roll: LootRollGroupViewRoll): HTMLElement {
     const strip = document.createElement('div');
     strip.className = STRIP_CLASS;
     strip.setAttribute('role', 'group');
-    strip.setAttribute(
-      'aria-label',
-      `Group roll status for ${roll.itemName}`,
-    );
     strip.dataset.rollId = String(roll.rollId);
     // Hide by default; paint() shows it after appending. The pre-append
     // `display: none` keeps a one-frame stale node invisible.
     strip.style.display = DISPLAY_NONE;
-    for (const entry of roll.entries) {
-      const chip = document.createElement('span');
-      chip.className = `${CHIP_CLASS} ${PENDING_CLASS}`;
-      chip.dataset.pid = String(entry.pid);
-      const name = document.createElement('span');
-      name.className = `${CHIP_CLASS}-name`;
-      const label = document.createElement('span');
-      label.className = `${CHIP_CLASS}-label`;
-      chip.appendChild(name);
-      chip.appendChild(document.createTextNode(' '));
-      chip.appendChild(label);
-      strip.appendChild(chip);
-    }
     return strip;
   }
 
@@ -162,6 +147,10 @@ export class LootRollGroupPainter {
     entry: { strip: HTMLElement; chips: Map<number, HTMLElement> },
     roll: LootRollGroupViewRoll,
   ): void {
+    // Localized strip aria-label, routed through the elided setAttr writer (a
+    // steady frame re-writes nothing). Set here rather than in createStrip so
+    // it always reflects the current localized view text.
+    this.writers.setAttr(entry.strip, 'aria-label', roll.ariaLabel);
     const seenPids = new Set<number>();
     for (const viewEntry of roll.entries) {
       seenPids.add(viewEntry.pid);

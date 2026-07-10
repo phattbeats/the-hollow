@@ -132,6 +132,8 @@ export const BASE_NEW = {
     'loot.marketSellerBought':
       '{buyer} købte din {item} for {price} - hent {proceeds} hos Købmanden.',
     'loot.rollWin': '{winner} vinder {item} ({roll})',
+    'loot.rollNeed': 'Behovskast - {roll} for {item} af {name}',
+    'loot.rollGreed': 'Griskast - {roll} for {item} af {name}',
     'mechanic.bansheesWail': 'Banshee-Klagen',
     'mechanic.boneCarapace': 'Knoglepanser',
     'mechanic.crushingSweep': 'Knusende Fejning',
@@ -276,6 +278,8 @@ export const BASE_NEW = {
     'loot.marketSellerBought':
       '{buyer} membeli {item} milikmu seharga {price} - ambil {proceeds} dari Pedagang.',
     'loot.rollWin': '{winner} memenangkan {item} ({roll})',
+    'loot.rollNeed': 'Lemparan Butuh - {roll} untuk {item} oleh {name}',
+    'loot.rollGreed': 'Lemparan Serakah - {roll} untuk {item} oleh {name}',
     'mechanic.bansheesWail': 'Ratapan Banshee',
     'mechanic.boneCarapace': 'Cangkang Tulang',
     'mechanic.crushingSweep': 'Sapuan Penghancur',
@@ -420,6 +424,8 @@ export const BASE_NEW = {
     'loot.marketSellerBought':
       '{buyer} heeft je {item} gekocht voor {price} - haal {proceeds} op bij de Koopman.',
     'loot.rollWin': '{winner} wint {item} ({roll})',
+    'loot.rollNeed': 'Behoefteworp - {roll} voor {item} door {name}',
+    'loot.rollGreed': 'Hebzuchtworp - {roll} voor {item} door {name}',
     'mechanic.bansheesWail': 'Weeklacht van de Banshee',
     'mechanic.boneCarapace': 'Bottenpantser',
     'mechanic.crushingSweep': 'Verpletterende Zwaai',
@@ -564,6 +570,8 @@ export const BASE_NEW = {
     'loot.marketSellerBought':
       '{buyer} kupił twój przedmiot {item} za {price} - odbierz {proceeds} u Kupca.',
     'loot.rollWin': '{winner} wygrywa {item} ({roll})',
+    'loot.rollNeed': 'Rzut Potrzeby - {roll} na {item} od {name}',
+    'loot.rollGreed': 'Rzut Chciwości - {roll} na {item} od {name}',
     'mechanic.bansheesWail': 'Zawodzenie banshee',
     'mechanic.boneCarapace': 'Kostny pancerz',
     'mechanic.crushingSweep': 'Miażdżący zamach',
@@ -708,6 +716,8 @@ export const BASE_NEW = {
     'loot.marketSellerBought':
       '{buyer} köpte din {item} för {price} - hämta {proceeds} hos Köpmannen.',
     'loot.rollWin': '{winner} vinner {item} ({roll})',
+    'loot.rollNeed': 'Behovskast - {roll} för {item} av {name}',
+    'loot.rollGreed': 'Girigkast - {roll} för {item} av {name}',
     'mechanic.bansheesWail': 'Bansheens klagan',
     'mechanic.boneCarapace': 'Benpansar',
     'mechanic.crushingSweep': 'Krossande svep',
@@ -851,6 +861,8 @@ export const BASE_NEW = {
     'loot.marketSellerBought':
       '{buyer}, {item} eşyanı {price} karşılığında satın aldı - {proceeds} tutarını Tüccardan al.',
     'loot.rollWin': '{winner}, {item} eşyasını kazandı ({roll})',
+    'loot.rollNeed': 'İhtiyaç Atışı - {name}, {item} için {roll}',
+    'loot.rollGreed': 'Açgözlülük Atışı - {name}, {item} için {roll}',
     'mechanic.bansheesWail': 'Ölüm Perisi Çığlığı',
     'mechanic.boneCarapace': 'Kemik Kabuğu',
     'mechanic.crushingSweep': 'Ezici Savurma',
@@ -994,6 +1006,8 @@ export const BASE_NEW = {
     'loot.marketSellerBought':
       '{buyer} đã mua {item} của bạn với giá {price} - hãy nhận {proceeds} từ Thương Nhân.',
     'loot.rollWin': '{winner} thắng {item} ({roll})',
+    'loot.rollNeed': 'Tung Cần - {roll} cho {item} bởi {name}',
+    'loot.rollGreed': 'Tung Tham - {roll} cho {item} bởi {name}',
     'mechanic.bansheesWail': 'Tiếng Than Ma Nữ',
     'mechanic.boneCarapace': 'Mai Xương',
     'mechanic.crushingSweep': 'Quét Nghiền Nát',

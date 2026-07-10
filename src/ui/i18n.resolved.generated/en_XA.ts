@@ -633,7 +633,8 @@ export const en_XA: EnTranslations = {
       "pending": "[Ŵáíţíñĝ...]",
       "need": "[Ñééð]",
       "greed": "[Ĝŕééð]",
-      "pass": "[Þášš]"
+      "pass": "[Þášš]",
+      "aria": "[Ĝŕóúþ ŕóļļ šţáţúš ƒóŕ {item}]"
     },
     "bags": {
       "filterGroupAria": "[Ƒíļţéŕ ƀáĝš ƀý çáţéĝóŕý]",
