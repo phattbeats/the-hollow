@@ -28,8 +28,8 @@
       "tick": 3,
       "time": 0.15,
       "nextId": 404,
-      "state": "3757cc8b",
-      "events": "a191a45b",
+      "state": "0f58e853",
+      "events": "8fb4544d",
       "rng": {
         "draws": 2,
         "digest": "c02d8868"
@@ -40,6 +40,7 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
@@ -62,6 +63,7 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
