@@ -74,6 +74,7 @@ import {
   urlForcedTier,
 } from './gfx';
 import { buildHollowCanopy } from './hollow_canopy';
+import { buildHollowFlora, type HollowFloraView } from './hollow_flora';
 import {
   buildHollowProps,
   hollowSmokeIntensity,
@@ -822,6 +823,7 @@ export class Renderer {
   private waterView: WaterView;
   private terrainView: TerrainView;
   private foliage: FoliageView;
+  private hollowFlora: HollowFloraView;
   private fish: FishView;
   private critters: CritterField;
   private motes: MotesView;
@@ -1202,6 +1204,11 @@ export class Renderer {
     this.foliage = buildFoliage(this.sim.cfg.seed);
     setRenderCategory(this.foliage.group, 'foliage');
     this.scene.add(this.foliage.group);
+    // Otherworldly starter-zone garden flora clustered around the Hollow
+    // Reaches camps (PHAA-581): static plant-creature decor, walk-through.
+    this.hollowFlora = buildHollowFlora(this.sim.cfg.seed);
+    setRenderCategory(this.hollowFlora.group, 'foliage');
+    this.scene.add(this.hollowFlora.group);
     this.fish = buildFish(this.sim.cfg.seed);
     setRenderCategory(this.fish.group, 'fish');
     this.scene.add(this.fish.group);
