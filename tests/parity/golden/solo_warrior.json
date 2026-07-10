@@ -17,7 +17,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "b1a48b8a",
+      "state": "dc1b0bfe",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -42,6 +42,7 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -76,6 +77,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -103,7 +105,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 403,
-      "state": "beb0fc56",
+      "state": "e01b52af",
       "events": "14304087",
       "rng": {
         "draws": 6,
@@ -114,7 +116,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 403,
-      "state": "f68bbb0f",
+      "state": "b52ad5e2",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -125,7 +127,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 403,
-      "state": "ddda02e5",
+      "state": "e7d72886",
       "events": "22751cf5",
       "rng": {
         "draws": 98,
@@ -136,7 +138,7 @@
       "tick": 72,
       "time": 3.6,
       "nextId": 403,
-      "state": "fab29ca4",
+      "state": "9390ef69",
       "events": "596c3d7f",
       "rng": {
         "draws": 154,
@@ -166,6 +168,7 @@
           "gatheringProficiency": {},
           "lifetimeXp": 27600,
           "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -202,6 +205,7 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -271,6 +275,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 25,
+          "sex": "m",
           "spawnPos": {
             "x": 4,
             "y": 1.5,
@@ -295,7 +300,7 @@
       "tick": 76,
       "time": 3.8,
       "nextId": 403,
-      "state": "94c57618",
+      "state": "db270cad",
       "events": "741638a5",
       "rng": {
         "draws": 172,
@@ -325,6 +330,7 @@
           "gatheringProficiency": {},
           "lifetimeXp": 27600,
           "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -362,6 +368,7 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -431,6 +438,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 24.8,
+          "sex": "m",
           "spawnPos": {
             "x": 4,
             "y": 1.5,

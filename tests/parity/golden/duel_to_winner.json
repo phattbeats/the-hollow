@@ -29,7 +29,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 403,
-      "state": "9d3ec3b6",
+      "state": "c8de0486",
       "events": "9784fda0",
       "rng": {
         "draws": 0,
@@ -40,7 +40,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 403,
-      "state": "b5f5535e",
+      "state": "b974e522",
       "events": "b487682a",
       "rng": {
         "draws": 0,
@@ -51,7 +51,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 403,
-      "state": "bbc95606",
+      "state": "c3c93862",
       "events": "12a8595c",
       "rng": {
         "draws": 78,
@@ -62,7 +62,7 @@
       "tick": 61,
       "time": 3.05,
       "nextId": 403,
-      "state": "0c3681bc",
+      "state": "857a88c8",
       "events": "4ca07ec9",
       "rng": {
         "draws": 84,
@@ -87,6 +87,7 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -109,6 +110,7 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -142,6 +144,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -191,6 +194,7 @@
           "potionCooldownUntil": -1,
           "resource": 195,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -218,7 +222,7 @@
       "tick": 61,
       "time": 3.05,
       "nextId": 403,
-      "state": "c94bbd76",
+      "state": "6533c4ec",
       "events": "985dd020",
       "rng": {
         "draws": 84,
@@ -243,6 +247,7 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -265,6 +270,7 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -298,6 +304,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -347,6 +354,7 @@
           "potionCooldownUntil": -1,
           "resource": 195,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -374,7 +382,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 403,
-      "state": "4a04f1aa",
+      "state": "c21452ac",
       "events": "741638a5",
       "rng": {
         "draws": 160,
@@ -385,7 +393,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 403,
-      "state": "16e6c11a",
+      "state": "79d6bbf4",
       "events": "741638a5",
       "rng": {
         "draws": 286,
@@ -396,7 +404,7 @@
       "tick": 101,
       "time": 5.05,
       "nextId": 403,
-      "state": "5b9b8bf8",
+      "state": "f997ed76",
       "events": "741638a5",
       "rng": {
         "draws": 288,
@@ -421,6 +429,7 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -443,6 +452,7 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -476,6 +486,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -525,6 +536,7 @@
           "potionCooldownUntil": -1,
           "resource": 195,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,

@@ -17,7 +17,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "b1a48b8a",
+      "state": "dc1b0bfe",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -42,6 +42,7 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -76,6 +77,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -103,7 +105,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "dfbe39e6",
+      "state": "f2b2c6da",
       "events": "cd56ed8d",
       "rng": {
         "draws": 0,
@@ -129,6 +131,7 @@
           "gatheringProficiency": {},
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {
@@ -167,6 +170,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -194,7 +198,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "3b97aec5",
+      "state": "fde71a49",
       "events": "35dfb915",
       "rng": {
         "draws": 0,
@@ -220,6 +224,7 @@
           "gatheringProficiency": {},
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {},
@@ -255,6 +260,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -282,7 +288,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "3fd9c976",
+      "state": "443d8568",
       "events": "fc92ab25",
       "rng": {
         "draws": 0,
@@ -324,6 +330,7 @@
             }
           ],
           "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {
@@ -361,6 +368,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -388,7 +396,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "1f2c0a8d",
+      "state": "a1e9bbdb",
       "events": "1444b9dd",
       "rng": {
         "draws": 0,
@@ -430,6 +438,7 @@
             }
           ],
           "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {
@@ -467,6 +476,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -494,7 +504,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "16e6e759",
+      "state": "ca00285b",
       "events": "cd56ed8d",
       "rng": {
         "draws": 0,
@@ -536,6 +546,7 @@
             }
           ],
           "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {},
@@ -571,6 +582,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -598,7 +610,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "16e6e759",
+      "state": "ca00285b",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -640,6 +652,7 @@
             }
           ],
           "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {},
@@ -675,6 +688,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,

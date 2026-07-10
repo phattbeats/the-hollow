@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "b1a48b8a",
+      "state": "dc1b0bfe",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -41,6 +41,7 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -75,6 +76,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -102,7 +104,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "92025657",
+      "state": "2005637b",
       "events": "3d6acfe5",
       "rng": {
         "draws": 0,
@@ -140,6 +142,7 @@
               }
             ]
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -174,6 +177,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -201,7 +205,7 @@
       "tick": 8,
       "time": 0.4,
       "nextId": 410,
-      "state": "8a7252dd",
+      "state": "eafc9c6b",
       "events": "80930594",
       "rng": {
         "draws": 32,
@@ -243,6 +247,7 @@
               }
             ]
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -278,6 +283,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -305,7 +311,7 @@
       "tick": 8,
       "time": 0.4,
       "nextId": 410,
-      "state": "32da8674",
+      "state": "3cc5c14c",
       "events": "ace7f38f",
       "rng": {
         "draws": 32,
@@ -341,6 +347,7 @@
           "questsDone": [
             "q_wolves"
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -377,6 +384,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -404,7 +412,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 410,
-      "state": "25a9cbf8",
+      "state": "99816490",
       "events": "741638a5",
       "rng": {
         "draws": 32,
@@ -440,6 +448,7 @@
           "questsDone": [
             "q_wolves"
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -476,6 +485,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
