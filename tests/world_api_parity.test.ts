@@ -1,6 +1,6 @@
 // W0c: the IWorld structural-parity gate.
 //
-// `IWorld` (src/world_api.ts, 165 members) is the ONE seam render/ui depend
+// `IWorld` (src/world_api.ts, 166 members) is the ONE seam render/ui depend
 // on. `tsc` already proves both the offline `Sim` and the online `ClientWorld` satisfy
 // it structurally, but the interface is erased at build: there is NO runtime member
 // list, so nothing catches a present-but-throws stub or a kind flip (method vs read).
@@ -9,7 +9,7 @@
 // IWORLD_MEMBERS below is the hand-maintained member list, the W0c analog of the
 // append-only CALLBACK_KEYS in tests/sim_context.test.ts. It is APPEND-ONLY WITH THE
 // INTERFACE: whenever a future slice adds (or removes/renames) a member on `IWorld`,
-// it lands the matching edit here in the SAME commit. The count pins (165 / 43 / 122)
+// it lands the matching edit here in the SAME commit. The count pins (166 / 43 / 123)
 // plus the sorted-name `toEqual` snapshots (modeled on the anti-loosening exclude-set
 // pin in tests/parity/harness.test.ts:131-162) are what force that: a dropped or
 // renamed member reddens deliberately, never silently.
@@ -107,6 +107,7 @@ export const IWORLD_MEMBERS = [
   { name: 'lootCorpse', kind: 'method' },
   { name: 'submitLootRoll', kind: 'method' },
   { name: 'activeLootRolls', kind: 'method' }, // read-returning (2/6)
+  { name: 'lootRollGroupStatus', kind: 'method' }, // read-returning
   { name: 'pickUpObject', kind: 'method' },
   { name: 'acceptQuest', kind: 'method' },
   { name: 'turnInQuest', kind: 'method' },
@@ -354,9 +355,9 @@ beforeAll(() => {
 
 describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => {
   it('pins total / data / method counts', () => {
-    expect(IWORLD_MEMBERS.length).toBe(165);
+    expect(IWORLD_MEMBERS.length).toBe(166);
     expect(DATA_MEMBERS.length).toBe(43);
-    expect(METHOD_MEMBERS.length).toBe(122);
+    expect(METHOD_MEMBERS.length).toBe(123);
   });
 
   it('has no duplicate member names', () => {
@@ -458,6 +459,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'lockpickEngage',
       'lockpickState',
       'lootCorpse',
+      'lootRollGroupStatus',
       'markerFor',
       'marketBuy',
       'marketCancel',
@@ -654,6 +656,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'lockpickAction',
       'lockpickEngage',
       'lootCorpse',
+      'lootRollGroupStatus',
       'markerFor',
       'marketBuy',
       'marketCancel',
@@ -809,6 +812,7 @@ type _ExhaustInteraction = AssertNever<
 const FACET_LOOT = [
   'submitLootRoll',
   'activeLootRolls',
+  'lootRollGroupStatus',
 ] as const satisfies readonly (keyof IWorldLoot)[];
 type _ExhaustLoot = AssertNever<Exclude<keyof IWorldLoot, (typeof FACET_LOOT)[number]>>;
 
@@ -1103,10 +1107,10 @@ describe('W1: aggregate IWorld member set equals the disjoint union of the 25 fa
     expect(overlaps, `members filed in more than one facet:\n${overlaps.join('\n')}`).toEqual([]);
   });
 
-  it('the union of the 25 facets equals the pinned 165-member IWORLD_MEMBERS set', () => {
+  it('the union of the 25 facets equals the pinned 166-member IWORLD_MEMBERS set', () => {
     const union = Object.values(FACET_MEMBER_ARRAYS).flatMap((arr) => [...arr]);
-    expect(union.length, 'union size before dedup (catches a duplicated member)').toBe(165);
-    expect(new Set(union).size, 'union size after dedup (catches a duplicated member)').toBe(165);
+    expect(union.length, 'union size before dedup (catches a duplicated member)').toBe(166);
+    expect(new Set(union).size, 'union size after dedup (catches a duplicated member)').toBe(166);
     const sortedUnion = [...union].sort();
     const pinned = IWORLD_MEMBERS.map((m) => m.name).sort();
     expect(sortedUnion).toEqual(pinned);

@@ -16,6 +16,11 @@ import type { TranslationKey } from '../i18n.catalog';
 export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.spectate.banner': '{name}を観戦中',
   'hudChrome.loot.chestTitle': '宝箱',
+  'hudChrome.lootRollGroup.pending': '待機中...',
+  'hudChrome.lootRollGroup.need': 'ニード',
+  'hudChrome.lootRollGroup.greed': 'グリード',
+  'hudChrome.lootRollGroup.pass': 'パス',
+  'hudChrome.lootRollGroup.aria': '{item} のグループロール状況',
   'hudChrome.spellbook.addToBarAria': '{name}をアクションバーに追加',
   'hudChrome.spellbook.removeFromBarAria': '{name}をアクションバーから削除',
   'hudChrome.nameplate.mob': '[{level}] {name}',

@@ -28,6 +28,7 @@ import {
   type GatherNodeType,
   type InvSlot,
   type LootRollChoice,
+  type LootRollGroupStatus,
   type LootRollPrompt,
   type MasterLootThreshold,
   type MoveInput,
@@ -879,6 +880,8 @@ export class ClientWorld implements IWorld {
   // reads it, no send). ---
   markers: Record<number, number> = {}; // entityId -> markerId, mirrored from the self-wire
   private lootRollPrompts: LootRollPrompt[] = []; // open need-greed rolls, mirrored from the self-wire
+  // group-visible choices on the open rolls (the vote strip), mirrored from the self-wire
+  private lootRollGroup: LootRollGroupStatus[] = [];
   // bumped whenever a fresh social snapshot lands, so an open panel re-renders
   private socialDirty = false;
   // snapshot interpolation
@@ -1617,6 +1620,7 @@ export class ClientWorld implements IWorld {
       if (s.hearth !== undefined) this.hollowHearth = s.hearth;
       if (s.homestead !== undefined) this.homesteadInfo = s.homestead;
       if (s.lroll !== undefined) this.lootRollPrompts = s.lroll ?? [];
+      if (s.lrollg !== undefined) this.lootRollGroup = s.lrollg ?? [];
       if (s.drun !== undefined) this.delveRun = s.drun;
       if (s.dcompanion !== undefined) this.companionState = s.dcompanion;
       if (s.dmarks !== undefined) this.delveMarks = s.dmarks ?? 0;
@@ -1807,6 +1811,9 @@ export class ClientWorld implements IWorld {
   }
   activeLootRolls(): LootRollPrompt[] {
     return this.lootRollPrompts;
+  }
+  lootRollGroupStatus(): LootRollGroupStatus[] {
+    return this.lootRollGroup;
   }
   pickUpObject(id: number): void {
     this.cmd({ cmd: 'pickup', id });

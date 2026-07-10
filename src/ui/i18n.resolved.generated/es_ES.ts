@@ -629,6 +629,13 @@ export const es_ES: EnTranslations = {
       "unassigned": "{item} no fue asignado y queda libre para todos.",
       "leaderOnly": "Solo el lider del grupo puede cambiar el metodo de botin."
     },
+    "lootRollGroup": {
+      "pending": "Waiting...",
+      "need": "Need",
+      "greed": "Greed",
+      "pass": "Pass",
+      "aria": "Group roll status for {item}"
+    },
     "bags": {
       "filterGroupAria": "Filtrar bolsas por categoría",
       "filterAll": "Todos",

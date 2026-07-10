@@ -629,6 +629,13 @@ export const ja_JP: EnTranslations = {
       "unassigned": "{item}は分配されず、誰でも入手できます。",
       "leaderOnly": "分配方式を変更できるのはパーティリーダーだけです。"
     },
+    "lootRollGroup": {
+      "pending": "待機中...",
+      "need": "ニード",
+      "greed": "グリード",
+      "pass": "パス",
+      "aria": "{item} のグループロール状況"
+    },
     "bags": {
       "filterGroupAria": "バッグをカテゴリーで絞り込む",
       "filterAll": "すべて",

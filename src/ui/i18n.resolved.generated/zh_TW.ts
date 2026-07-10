@@ -629,6 +629,13 @@ export const zh_TW: EnTranslations = {
       "unassigned": "{item}未被分配，現可自由拾取。",
       "leaderOnly": "只有隊長才能更改拾取方式。"
     },
+    "lootRollGroup": {
+      "pending": "等待中...",
+      "need": "需求",
+      "greed": "貪婪",
+      "pass": "放棄",
+      "aria": "{item} 的團隊擲骰狀態"
+    },
     "bags": {
       "filterGroupAria": "依類別篩選背包",
       "filterAll": "全部",

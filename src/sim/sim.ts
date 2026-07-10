@@ -161,6 +161,7 @@ import type { Ante, PickAction } from './lockpick';
 import {
   activeLootRolls as activeLootRollsImpl,
   assignMasterLoot as assignMasterLootImpl,
+  lootRollGroupStatus as lootRollGroupStatusImpl,
   type PendingLootRoll,
   partyLootCandidatesForMob as partyLootCandidatesForMobImpl,
   resolveLootRoll as resolveLootRollImpl,
@@ -301,6 +302,7 @@ import {
   isQuestTurnInNpc,
   LEASH_DISTANCE,
   type LootRollChoice,
+  type LootRollGroupStatus,
   type LootRollPrompt,
   type LootStrategies,
   MAX_LEVEL,
@@ -3708,6 +3710,10 @@ export class Sim {
 
   activeLootRolls(pid = this.playerId): LootRollPrompt[] {
     return activeLootRollsImpl(this.ctx, pid);
+  }
+
+  lootRollGroupStatus(pid = this.playerId): LootRollGroupStatus[] {
+    return lootRollGroupStatusImpl(this.ctx, pid);
   }
 
   submitLootRoll(rollId: number, choice: LootRollChoice, pid?: number): void {

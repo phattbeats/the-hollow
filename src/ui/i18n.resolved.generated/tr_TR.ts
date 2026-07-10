@@ -629,6 +629,13 @@ export const tr_TR: EnTranslations = {
       "unassigned": "{item} atanmadi ve herkes icin serbest.",
       "leaderOnly": "Ganimet yontemini yalnizca grup lideri degistirebilir."
     },
+    "lootRollGroup": {
+      "pending": "Waiting...",
+      "need": "Need",
+      "greed": "Greed",
+      "pass": "Pass",
+      "aria": "Group roll status for {item}"
+    },
     "bags": {
       "filterGroupAria": "Çantaları kategoriye göre filtrele",
       "filterAll": "Tümü",

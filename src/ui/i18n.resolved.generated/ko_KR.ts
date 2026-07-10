@@ -629,6 +629,13 @@ export const ko_KR: EnTranslations = {
       "unassigned": "{item}이(가) 분배되지 않아 모두가 획득할 수 있습니다.",
       "leaderOnly": "파티장만 전리품 방식을 변경할 수 있습니다."
     },
+    "lootRollGroup": {
+      "pending": "대기 중...",
+      "need": "니드",
+      "greed": "그리드",
+      "pass": "포기",
+      "aria": "{item} 그룹 굴림 상태"
+    },
     "bags": {
       "filterGroupAria": "가방을 분류별로 필터링",
       "filterAll": "전체",
