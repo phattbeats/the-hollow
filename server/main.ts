@@ -30,6 +30,7 @@ import {
 } from './account';
 import { handleAdminApi } from './admin';
 import { currentSitePresenceUsers, recordSitePresenceSample } from './admin_db';
+import { permissionsForRoles } from './admin_permissions';
 import { loadAntibotConfig } from './antibot_config_db';
 import {
   hashPassword,
@@ -141,6 +142,7 @@ import {
 import { resolveReportTarget } from './report_target';
 import { applySecurityHeaders } from './security_headers';
 import { handleSitePresenceHeartbeat } from './site_presence';
+import { adminRolesForAccount } from './staff_db';
 import { cacheControlFor, etagFor, isNotModified } from './static_cache';
 import { verifyTurnstile } from './turnstile';
 import {
@@ -1540,7 +1542,9 @@ async function main(): Promise<void> {
     // is handled inside game.join(); this guard blocks egregious bot farms before
     // they consume a session slot.
     const ip = requestMetadata(req).ip;
-    const isAdmin = await isAdminAccount(accountId);
+    const staff = await adminRolesForAccount(accountId);
+    const isAdmin = staff !== null;
+    const adminPermissions = staff ? [...permissionsForRoles(staff.roles)] : [];
     if (
       isConnectionRefused({
         blocked: game.isIpBlocked(ip),
@@ -1568,6 +1572,7 @@ async function main(): Promise<void> {
         chatStrikes: status.chatStrikes,
         accountCosmetics,
         isAdmin,
+        adminPermissions,
         clientSeed,
       },
     );
