@@ -229,20 +229,32 @@ exist first (see Generation below), or the mob plays no vocalizations at all
 ---
 
 ## Sourcing (current pipeline)
-Each key is drop-in replaced from a real recorded pack (Kenney.nl RPG Audio /
-Impact Sounds; OpenGameArt creature, RPG, magic, Foley-whoosh, water/mud, and
-nature-ambience packs), keeping the same `public/audio/sfx/<key>.mp3` filename
-and the same `loop` flag as before so `src/game/sfx_manifest.generated.ts`
-needs no change. Processing per clip: trim to the moment that reads as the
-event, loudness-normalize to about -16 LUFS, and for loop keys (the 10 `amb_*`
-plus the 6 `cast_*`), crossfade the clip's own tail into its head so the loop
-point doesn't click. Some keys layer two source recordings (e.g. a chain
-rattle plus a groan for the undead family, or spaced metal-impact hits over a
-fire bed for `amb_forge`) or reuse one recording pitch/filter-shifted for
-several related keys (the six magic-school casts share a small pool of magic
-recordings). Full key -> source/author/license table, plus the handful of
-best-effort substitutions where no exact recording exists (undead, elemental,
-per-biome wind beds): `public/audio/sfx/CREDITS.md`.
+Every key is built from real recorded / musician-produced CC0/CC-BY/CC-BY-SA
+sources (Kenney.nl, OpenGameArt packs, single OGA recordings) by a
+deterministic build step, keeping the same `public/audio/sfx/<key>.mp3`
+filename and `loop` flag so `src/game/sfx_manifest.generated.ts` needs no
+change. The pipeline has three checked-in pieces under `scripts/sfx/`:
+
+- `sfx_v2_spec.md`: the per-key character spec (what each sound must feel
+  like, duration bounds, layering and loop rules, one sonic identity per
+  magic school / wind zone / creature family).
+- `sfx_v2_mapping.json`: the machine-readable mapping, one entry per key:
+  source file(s) within the downloaded packs, trim offsets, pitch shifts,
+  per-layer gains, loop and loudness targets.
+- `build_from_mapping.mjs`: builds the mp3s from a mapping + a directory of
+  raw packs (`node scripts/sfx/build_from_mapping.mjs <mapping> <packsRoot>
+  [outDir] [keys...]`). Per clip: trim, optional pitch shift
+  (`asetrate`-based), up to two layered sources mixed, loudness-normalize
+  (one-shots about -16 LUFS, `amb_*` beds -22 LUFS), lead-in silence strip,
+  and for loop keys (the 10 `amb_*` plus the 6 `cast_*`) a tail-into-head
+  crossfade seam so the loop point doesn't click.
+
+To rebuild or replace a clip: re-download the pack listed in
+`public/audio/sfx/CREDITS.md`, adjust the mapping entry, and re-run the
+builder for that key. Full key -> source/author/license attribution, plus the
+noted best-effort compromises (no dedicated stone footstep or insect-scream
+source in the pool; `amb_snow` reuses the peaks wind recording with a
+different window and +20% pitch): `public/audio/sfx/CREDITS.md`.
 
 Served from `public/` via plain `/audio/sfx/...` paths (no media-manifest
 hashing), matching the voice-over assets.

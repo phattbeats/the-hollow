@@ -134,6 +134,7 @@ import {
 import { canEquipItem } from './equipment_rules';
 import { fleeSpeed } from './flee_speed';
 import { formatMoney } from './format_money';
+import { Gathering } from './gathering';
 import { GreenpawHearth, type GreenpawHearthSave } from './greenpaw_hearth';
 import { Homestead, type HomesteadSave } from './homestead';
 import { Housing, type HousingSave } from './housing';
@@ -221,6 +222,7 @@ import {
 import * as questCommands from './quests/quest_commands';
 import {
   checkQuestReady,
+  onFeedForQuests,
   onInventoryChangedForQuests,
   onMobKilledForQuests,
 } from './quests/quest_credit';
@@ -305,6 +307,7 @@ import {
   type QuestProgress,
   type QuestState,
   RUN_SPEED,
+  type Sex,
   type SimConfig,
   type SimEvent,
   type SkinCatalog,
@@ -637,6 +640,11 @@ export interface PlayerMeta {
   name: string;
   skin: number; // appearance index into the render SKINS[player_<cls>]; persisted, synced
   skinCatalog: SkinCatalog;
+  // Player character sex. 'm' is the default for pre-PHAA-501 saves (addPlayer
+  // backfills). Mirrored onto the entity in addPlayer and synced in identity
+  // fields (terse `sx`); drives the female visual variant when a
+  // `player_<cls>_f` entry exists in the manifest.
+  sex: Sex;
   // Cosmetic skin-select event: the rank rolled when the event token was used,
   // pending a lock-in. Set on use, cleared on claim. Persisted so the reward
   // survives reconnect; re-using the token re-shows the same rank (no reroll).
@@ -795,6 +803,9 @@ export interface CharacterState {
   pendingSkinRank?: SkinRank | null;
   pendingSkinCatalog?: SkinCatalog | null;
   pendingSkinItemId?: string | null;
+  // PHAA-501: character sex (visual variant dispatch). Optional so pre-PHAA-501
+  // saves load cleanly; addPlayer backfills to 'm' on read.
+  sex?: Sex;
   delveMarks?: number;
   delveClears?: Record<string, number>;
   companionUpgrades?: Record<string, number>;
@@ -943,6 +954,11 @@ export class Sim {
   // owns the plot ownership book. Constructed in the ctor after the SimContext
   // (it consumes the seam); Sim keeps thin delegates below, mirroring housing.
   homestead!: Homestead;
+  // Gathering v0 (PHAA-504): corpse harvest, the single-use first-come opposite
+  // of a world gathering node. Constructed in the ctor after the SimContext (it
+  // consumes the seam for its one rng draw); Sim keeps a thin delegate below,
+  // mirroring housing.
+  gathering!: Gathering;
   /** When true, /dev level|tp|give chat commands are accepted (local dev only). */
   readonly devCommands: boolean;
   private pendingMobRespawns: PendingMobRespawn[] = [];
@@ -980,6 +996,10 @@ export class Sim {
     // Housing v0: owns the hub homestead plot book; consumes the seam. Draws no
     // rng at construction (or ever), so the draws below are unperturbed.
     this.housing = new Housing(this.ctx);
+    // Gathering v0 (PHAA-504): owns the corpse-harvest item-selection draw;
+    // consumes the seam. Draws no rng at construction (only when a harvest
+    // command resolves), so the draws below are unperturbed.
+    this.gathering = new Gathering(this.ctx);
     // Greenpaw's hearth (PHAA-421): owns the hunger/smoke state machine;
     // consumes the seam. Draws no rng at construction, so the draws below
     // are unperturbed.
@@ -1176,6 +1196,7 @@ export class Sim {
       characterId?: number;
       accountKey?: string;
       hollowStart?: boolean; // PHAA-404: join inside the Hollow hub, never the base overworld
+      sex?: Sex; // PHAA-501: explicit override (server create path); otherwise read from saved state
     },
   ): number {
     const savedState = opts?.state ? sanitizeRemovedZone1Content(opts.state).state : undefined;
@@ -1220,6 +1241,7 @@ export class Sim {
       name,
       skin: savedState?.skin ?? 0,
       skinCatalog: savedState?.skinCatalog === 'mech' ? 'mech' : 'class',
+      sex: opts?.sex ?? savedState?.sex ?? 'm',
       pendingSkinRank: savedState?.pendingSkinRank ?? null,
       pendingSkinCatalog: savedState?.pendingSkinCatalog ?? null,
       pendingSkinItemId: savedState?.pendingSkinItemId ?? null,
@@ -1267,6 +1289,7 @@ export class Sim {
     this.players.set(player.id, meta);
     player.skinCatalog = meta.skinCatalog;
     player.skin = meta.skin; // mirror onto the entity so the renderer + wire can read it
+    player.sex = meta.sex; // mirror sex onto the entity for the visual dispatch + wire
     if (this.primaryId === -1) this.primaryId = player.id;
 
     if (savedState) {
@@ -1533,6 +1556,7 @@ export class Sim {
       cooldowns: serializeCooldowns(e.cooldowns, e.potionCooldownUntil, this.time),
       skin: meta.skin,
       skinCatalog: meta.skinCatalog,
+      sex: meta.sex, // PHAA-501: persisted; absent in pre-PHAA-501 saves (back-compat default 'm')
       pendingSkinRank: meta.pendingSkinRank,
       pendingSkinCatalog: meta.pendingSkinCatalog,
       pendingSkinItemId: meta.pendingSkinItemId,
@@ -1567,6 +1591,20 @@ export class Sim {
 
   changeSkin(skin: number, catalog: SkinCatalog = 'class'): void {
     this.setPlayerSkin(this.primaryId, skin, catalog);
+  }
+
+  /** Set a player's sex (meta + entity). Clamped to 'm'|'f' so a malformed
+   *  payload from the wire or a tampered save cannot escape the union. Used
+   *  by creation (PHAA-501) and the in-world visual mirror. */
+  setPlayerSex(pid: number, sex: Sex): boolean {
+    const meta = this.players.get(pid);
+    const e = this.entities.get(pid);
+    if (!meta || !e) return false;
+    const normalized: Sex = sex === 'f' ? 'f' : 'm';
+    if (meta.sex === normalized && e.sex === normalized) return true;
+    meta.sex = normalized;
+    e.sex = normalized;
+    return true;
   }
 
   /** Set a player's guild name (online only) so it rides the entity wire and
@@ -2106,6 +2144,7 @@ export class Sim {
       // stays on Sim (L2 inventory hub) and is consumed by the collect updater.
       onMobKilledForQuests: (mob, meta) => onMobKilledForQuests(sim.ctx, mob, meta),
       onInventoryChangedForQuests: (meta) => onInventoryChangedForQuests(sim.ctx, meta),
+      onGreenpawFedForQuests: (meta) => onFeedForQuests(sim.ctx, meta),
       checkQuestReady: (qp, meta) => checkQuestReady(sim.ctx, qp, meta),
       countItem: sim.countItem.bind(sim),
       // I1 dungeon instancing now lives in instances/dungeons.ts; these route through
@@ -2319,6 +2358,10 @@ export class Sim {
       // Homestead v0: the /homestead chat-command branch routes through the seam to
       // the Homestead instance (constructed after this literal; late-bound arrow).
       homesteadChat: (raw, pid) => sim.homestead.handleChat(raw, pid),
+      // Gathering v0 (PHAA-504): corpse-harvest item selection (the one rng draw)
+      // routes through the seam to the Gathering instance (constructed after this
+      // literal; late-bound arrow).
+      gatherHarvestItemFor: (tags) => sim.gathering.harvestItemFor(tags),
     };
     return createSimContext(host);
   }
@@ -4536,6 +4579,15 @@ export class Sim {
   // on Sim (W4) and is reached through two append-only SimContext callbacks.
   lootCorpse(mobId: number, pid?: number): void {
     interaction.lootCorpse(this.ctx, mobId, pid);
+  }
+
+  // Gathering v0 (PHAA-504): corpse harvest, the one IWorldGathering member.
+  // Same thin-delegate shape as lootCorpse above (the body lives in
+  // interaction.ts, right beside lootCorpse, since it is the same
+  // "player-facing corpse command" family); the item-selection rng draw
+  // lives on Gathering via the ctx seam (see gatherHarvestItemFor).
+  harvestCorpse(mobId: number, pid?: number): void {
+    interaction.harvestCorpse(this.ctx, mobId, pid);
   }
 
   pickUpObject(objId: number, pid?: number): void {

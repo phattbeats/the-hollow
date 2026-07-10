@@ -55,3 +55,40 @@ describe('Brother Greenpaw intro content', () => {
     expect(npcIntroAdvance(lines.length - 1, lines.length)).toBeNull();
   });
 });
+
+// PHAA-432 follow-up (Brandon feedback on PR #82): the greeting is the line
+// rendered in the gossip dialog every time the player re-opens Greenpaw AFTER
+// the click-through intro has played. It must read as already-met voice rather
+// than first-meeting voice, so it cannot share its first beat with the intro
+// (otherwise it lands on the player as a second "uhh... hi.").
+describe("Brother Greenpaw's greeting doesn't re-fight the intro", () => {
+  const greeting = NPCS.brother_greenpaw?.greeting ?? '';
+  const introLines = NPCS.brother_greenpaw?.introLines ?? [];
+
+  it('is non-empty and distinct from every intro line', () => {
+    expect(greeting.trim().length).toBeGreaterThan(0);
+    expect(introLines).not.toContain(greeting);
+  });
+
+  it('does not share a 24-char opening with any intro line', () => {
+    // Strip the trailing "..." off both sides before comparing openings, so
+    // "you're back, that's a..." vs "uhh... hi. hi. didn't..." doesn't trip
+    // on an ellipsis collision. Use [\s\S] rather than the `s` flag to stay
+    // compatible with the project's older TS target.
+    const stripDots = (s: string) => s.replace(/\.{3,}[\s\S]*$/, '').trim();
+    const greetingOpen = stripDots(greeting).toLowerCase().slice(0, 24);
+    expect(greetingOpen.length).toBeGreaterThanOrEqual(8);
+    for (const line of introLines) {
+      const lineOpen = stripDots(line).toLowerCase().slice(0, 24);
+      expect(greetingOpen, `greeting shares an opening with intro: "${lineOpen}"`).not.toBe(
+        lineOpen,
+      );
+    }
+  });
+
+  it("drops the 'traveler' / first-meeting opener pattern", () => {
+    // The pre-fix greeting opened with "howdy, traveler.": re-introducing that
+    // would re-fire the bug Brandon flagged.
+    expect(greeting.toLowerCase()).not.toMatch(/^\s*howdy,\s+traveler/);
+  });
+});

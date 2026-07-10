@@ -312,10 +312,190 @@ describe('The Hollow hub', () => {
     }
   });
 
+  // PHAA-484: the chain's third beat teaches the profession trainer (an
+  // 'interact' objective on elder_yarrow) and the feed/smoke hearth loop
+  // itself (a 'feed' objective, credited by greenpaw_hearth.ts's feed()).
+  it('q_the_wavelength unlocks behind q_what_fills and teaches the trainer + hearth loop', () => {
+    const cls: PlayerClass = 'druid';
+    const sim = new Sim({ seed: 7, playerClass: cls, playerName: 'Q', autoEquip: false });
+    const meta = (sim as any).primary;
+    const pid = meta.entityId as number;
+    teleport(sim, pid, HOLLOW_HUB_DOOR_POS.x, HOLLOW_HUB_DOOR_POS.z);
+    sim.enterDungeon('the_hollow', pid);
+    const greenpaw = findEntity(
+      sim,
+      (e) => e.kind === 'npc' && e.templateId === 'brother_greenpaw',
+    )!;
+    const elderYarrow = findEntity(
+      sim,
+      (e) => e.kind === 'npc' && e.templateId === 'elder_yarrow',
+    )!;
+    sim.player.pos = { ...greenpaw.pos };
+
+    // Not available before q_what_fills is done.
+    expect(sim.questState('q_the_wavelength')).toBe('unavailable');
+    sim.acceptQuest('q_what_burns');
+    sim.addItem('emberbulb', 5);
+    sim.tick();
+    sim.turnInQuest('q_what_burns');
+    sim.acceptQuest('q_what_fills');
+    sim.addItem('cave_morsel', 4);
+    sim.tick();
+    sim.turnInQuest('q_what_fills');
+    sim.drainEvents();
+
+    expect(sim.questState('q_the_wavelength')).toBe('available');
+    sim.acceptQuest('q_the_wavelength');
+    expect(meta.questLog.get('q_the_wavelength')?.state).toBe('active');
+    expect(meta.questLog.get('q_the_wavelength')?.counts).toEqual([0, 0]);
+
+    // Objective 0: talk to Elder Yarrow (any distance; talkToNpc trusts the
+    // client's target selection, same as the aldric/warden precedent tests).
+    sim.talkToNpc(elderYarrow.id, pid);
+    expect(meta.questLog.get('q_the_wavelength')?.counts).toEqual([1, 0]);
+    // Talking again does not over-credit past the objective's count.
+    sim.talkToNpc(elderYarrow.id, pid);
+    expect(meta.questLog.get('q_the_wavelength')?.counts).toEqual([1, 0]);
+
+    // Objective 1: feed Greenpaw at the hearth.
+    sim.player.pos = { ...greenpaw.pos };
+    sim.addItem('emberbulb', 1);
+    sim.feedGreenpaw(pid);
+    expect(meta.questLog.get('q_the_wavelength')?.counts).toEqual([1, 1]);
+    expect(meta.questLog.get('q_the_wavelength')?.state).toBe('ready');
+
+    const reward = questRewardItemId(QUESTS.q_the_wavelength, cls);
+    expect(reward).toBe('greenpaw_bead');
+    sim.turnInQuest('q_the_wavelength');
+    expect(meta.questsDone.has('q_the_wavelength')).toBe(true);
+    expect(sim.countItem('greenpaw_bead')).toBe(1);
+  });
+
+  it('q_the_wavelength carries the full branching offer dialog and can be refused for full rewards', () => {
+    const dialog = QUESTS.q_the_wavelength.offerDialog!;
+    expect(dialog).toBeTruthy();
+    for (const part of ['complain', 'complainReply', 'refuse', 'refuseReply'] as const) {
+      expect(dialog[part].length).toBeGreaterThan(0);
+    }
+
+    const cls: PlayerClass = 'druid';
+    const sim = new Sim({ seed: 7, playerClass: cls, playerName: 'Q', autoEquip: false });
+    const meta = (sim as any).primary;
+    const pid = meta.entityId as number;
+    teleport(sim, pid, HOLLOW_HUB_DOOR_POS.x, HOLLOW_HUB_DOOR_POS.z);
+    sim.enterDungeon('the_hollow', pid);
+    const greenpaw = findEntity(
+      sim,
+      (e) => e.kind === 'npc' && e.templateId === 'brother_greenpaw',
+    )!;
+    sim.player.pos = { ...greenpaw.pos };
+    sim.acceptQuest('q_what_burns');
+    sim.addItem('emberbulb', 5);
+    sim.tick();
+    sim.turnInQuest('q_what_burns');
+    sim.acceptQuest('q_what_fills');
+    sim.addItem('cave_morsel', 4);
+    sim.tick();
+    sim.turnInQuest('q_what_fills');
+    sim.drainEvents();
+
+    expect(sim.questState('q_the_wavelength')).toBe('available');
+    const copperBefore = meta.copper as number;
+    const xpBefore = meta.xp as number;
+    sim.refuseQuest('q_the_wavelength');
+    expect(meta.questsDone.has('q_the_wavelength')).toBe(true);
+    expect(sim.countItem('greenpaw_bead')).toBe(1);
+    expect(meta.copper).toBe(copperBefore + QUESTS.q_the_wavelength.copperReward);
+    expect(meta.xp).toBe(xpBefore + QUESTS.q_the_wavelength.xpReward);
+  });
+
+  // PHAA-484 beat 4: rebuilds the closed PR #134 habit quest on top of the
+  // merged 'feed' objective type: same feed() credit hook as q_the_wavelength,
+  // just a count of 3 instead of 1, plus its own offer dialog and keepsake.
+  it('q_keep_him_lit unlocks behind q_the_wavelength and needs three separate feeds', () => {
+    const cls: PlayerClass = 'druid';
+    const sim = new Sim({ seed: 7, playerClass: cls, playerName: 'Q', autoEquip: false });
+    const meta = (sim as any).primary;
+    const pid = meta.entityId as number;
+    teleport(sim, pid, HOLLOW_HUB_DOOR_POS.x, HOLLOW_HUB_DOOR_POS.z);
+    sim.enterDungeon('the_hollow', pid);
+    const greenpaw = findEntity(
+      sim,
+      (e) => e.kind === 'npc' && e.templateId === 'brother_greenpaw',
+    )!;
+    const elderYarrow = findEntity(
+      sim,
+      (e) => e.kind === 'npc' && e.templateId === 'elder_yarrow',
+    )!;
+    sim.player.pos = { ...greenpaw.pos };
+
+    expect(sim.questState('q_keep_him_lit')).toBe('unavailable');
+    sim.acceptQuest('q_what_burns');
+    sim.addItem('emberbulb', 5);
+    sim.tick();
+    sim.turnInQuest('q_what_burns');
+    sim.acceptQuest('q_what_fills');
+    sim.addItem('cave_morsel', 4);
+    sim.tick();
+    sim.turnInQuest('q_what_fills');
+    sim.acceptQuest('q_the_wavelength');
+    sim.talkToNpc(elderYarrow.id, pid);
+    sim.addItem('emberbulb', 1);
+    sim.feedGreenpaw(pid);
+    sim.turnInQuest('q_the_wavelength');
+    sim.drainEvents();
+
+    expect(sim.questState('q_keep_him_lit')).toBe('available');
+    sim.acceptQuest('q_keep_him_lit');
+    expect(meta.questLog.get('q_keep_him_lit')?.counts).toEqual([0]);
+
+    sim.addItem('emberbulb', 1);
+    sim.feedGreenpaw(pid);
+    expect(meta.questLog.get('q_keep_him_lit')?.counts).toEqual([1]);
+    expect(meta.questLog.get('q_keep_him_lit')?.state).toBe('active');
+
+    sim.addItem('cave_morsel', 1);
+    sim.feedGreenpaw(pid);
+    expect(meta.questLog.get('q_keep_him_lit')?.counts).toEqual([2]);
+
+    sim.addItem('emberbulb', 1);
+    sim.feedGreenpaw(pid);
+    expect(meta.questLog.get('q_keep_him_lit')?.counts).toEqual([3]);
+    expect(meta.questLog.get('q_keep_him_lit')?.state).toBe('ready');
+
+    // A fourth feed does not over-credit past the objective's count.
+    sim.addItem('emberbulb', 1);
+    sim.feedGreenpaw(pid);
+    expect(meta.questLog.get('q_keep_him_lit')?.counts).toEqual([3]);
+
+    const dialog = QUESTS.q_keep_him_lit.offerDialog!;
+    expect(dialog).toBeTruthy();
+    for (const part of ['complain', 'complainReply', 'refuse', 'refuseReply'] as const) {
+      expect(dialog[part].length).toBeGreaterThan(0);
+    }
+
+    const reward = questRewardItemId(QUESTS.q_keep_him_lit, cls);
+    expect(reward).toBe('keeper_coal');
+    sim.turnInQuest('q_keep_him_lit');
+    expect(meta.questsDone.has('q_keep_him_lit')).toBe(true);
+    expect(sim.countItem('keeper_coal')).toBe(1);
+  });
+
   it('the quest loot and rewards resolve to real items on the right mobs', () => {
     expect(QUESTS.q_what_fills.requiresQuest).toBe('q_what_burns');
-    expect(NPCS.brother_greenpaw.questIds).toEqual(['q_what_burns', 'q_what_fills']);
-    for (const id of ['emberbulb', 'cave_morsel', 'first_cutting']) {
+    expect(NPCS.brother_greenpaw.questIds).toEqual([
+      'q_what_burns',
+      'q_what_fills',
+      'q_the_wavelength',
+      'q_keep_him_lit',
+    ]);
+    for (const id of [
+      'emberbulb',
+      'cave_morsel',
+      'first_cutting',
+      'greenpaw_bead',
+      'keeper_coal',
+    ]) {
       expect(ITEMS[id], `item ${id}`).toBeTruthy();
     }
     const bulb = MOBS.palefeeder.loot.find((l) => l.itemId === 'emberbulb');

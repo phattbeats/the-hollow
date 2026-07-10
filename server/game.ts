@@ -254,6 +254,7 @@ const HEAVY_SELF_CMDS = new Set<string>([
   'sell',
   'buyback',
   'loot',
+  'harvestCorpse',
   'pickup',
   'interact',
   'accept',
@@ -507,6 +508,7 @@ function identityFields(e: Entity): Record<string, unknown> {
   const out: Record<string, unknown> = { k: e.kind, tid: e.templateId, nm: e.name, lv: e.level };
   if (e.skinCatalog === 'mech') out.cat = 'mech';
   if (e.skin) out.sk = e.skin;
+  if (e.sex === 'f') out.sx = 'f'; // PHAA-501: absent for 'm' (the default) to keep the wire lean
   if (e.mainhandItemId) out.mh = e.mainhandItemId; // equipped mainhand → held weapon model (render-only)
   // Full worn set, for the inspect-another-player window. Players only and only
   // when something is equipped; rides the identity record (first appearance +
@@ -2359,6 +2361,9 @@ export class GameServer {
         break;
       case 'loot':
         if (typeof msg.id === 'number') sim.lootCorpse(msg.id, pid);
+        break;
+      case 'harvestCorpse':
+        if (typeof msg.id === 'number') sim.harvestCorpse(msg.id, pid);
         break;
       case 'lootRoll':
         if (

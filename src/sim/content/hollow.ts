@@ -73,6 +73,12 @@ const ALL_CLASSES: PlayerClass[] = [
 const CUTTING_FOR_ALL = Object.fromEntries(ALL_CLASSES.map((c) => [c, 'first_cutting'])) as Partial<
   Record<PlayerClass, string>
 >;
+const BEAD_FOR_ALL = Object.fromEntries(ALL_CLASSES.map((c) => [c, 'greenpaw_bead'])) as Partial<
+  Record<PlayerClass, string>
+>;
+const COAL_FOR_ALL = Object.fromEntries(ALL_CLASSES.map((c) => [c, 'keeper_coal'])) as Partial<
+  Record<PlayerClass, string>
+>;
 
 // ---------------------------------------------------------------------------
 // Mobs: the under-shrine cave (the only combat in the slice)
@@ -193,10 +199,16 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
     dynamic: true,
     facing: -0.6,
     color: 0x4a5d3a,
-    questIds: ['q_what_burns', 'q_what_fills'],
+    questIds: ['q_what_burns', 'q_what_fills', 'q_the_wavelength', 'q_keep_him_lit'],
     hearth: true,
+    // Greeting is the line rendered every time the player opens Greenpaw's
+    // gossip dialog after the intro has played, so it must read as
+    // already-met voice rather than first-meeting voice (PHAA-432 follow-up,
+    // Brandon feedback on PR #82). The intro itself carries the meet-and-greet
+    // beats; the greeting assumes shared context and leads straight back to
+    // the errand queue.
     greeting:
-      "howdy, traveler. you catch the vase in a mood today, or is that just me again... c'mere, got a couple sacred matters need tendin'. mostly snacks. same thing, to a greenpaw degree.",
+      "you're back, that's a blessin'... the vase has been sighin' all mornin', got a couple sacred matters queued up, same wavelength as last time. c'mere a minute...",
     // First-meeting click-through intro (PHAA-432): three beats in-voice
     // (all-lowercase, run-on, trailing "...", cowboy-fatalist, sincere) that
     // carry the "remnants of a once great tribe" throughline before the errand.
@@ -219,7 +231,10 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
     dynamic: true,
     facing: 0.6,
     color: 0x8a9a5b,
-    questIds: [],
+    // PHAA-484: q_the_wavelength sends the player here first, so its "talk to
+    // Elder Yarrow" objective (interactNpcForQuests, sim.ts) can surface the
+    // in-progress quest in her own gossip window too.
+    questIds: ['q_the_wavelength'],
     trainer: { professions: ALL_CLASSES },
     greeting: 'Every build starts as a question. Which second calling speaks to you?',
   },
@@ -273,9 +288,78 @@ export const HOLLOW_QUESTS: Record<string, QuestDef> = {
         "oh... oh, okay. ...okay. that's... yeah. no, that's fair, friend, that's fair... the vase heard it too, and between you and me i think he respects it. here, take the cutting anyway. you went down once, and that's once more than most...",
     },
   },
+  // PHAA-484 (the Greenpaw Arc): the chain's third beat, and the first that
+  // isn't a cave fetch. Teaches two standing mechanics by walking the player
+  // through them once each, in-voice: the profession trainer across the vase
+  // (the 'interact' objective on elder_yarrow, credited the moment she's
+  // talked to, sim.ts's interactNpcForQuests), and the feed/smoke hearth loop
+  // itself (the 'feed' objective, credited by greenpaw_hearth.ts's feed() on
+  // any successful feed - see quests/quest_credit.ts's onFeedForQuests). No
+  // new cave descent, no new farmable item: the "quest" is entirely two
+  // things the player can already do, now narrated and rewarded once.
+  q_the_wavelength: {
+    id: 'q_the_wavelength',
+    name: 'On the Wavelength',
+    giverNpcId: 'brother_greenpaw',
+    turnInNpcId: 'brother_greenpaw',
+    text: "the cutting's yours now, friend, so let's talk about what comes after... two things, and neither one's a trial, more like an interduction. first, cross the vase and meet elder yarrow, she teaches a whole second callin', a different way to play this whole thing, and every soul that comes through here oughta know that door's open... second, come on back and feed me somethin', don't matter which, emberbulb or morsel, i'm always runnin' on empty and the vase always wants for smoke. that part never really ends, to a greenpaw degree.",
+    completionText:
+      "there it is... you felt the room go thick for a second, right? that's him, noticin'. that's the whole trick, friend - you feed me, i smoke up the place, he leans in a little closer to payin' attention. ain't complicated. ain't never gonna stop bein' true, neither. c'mere anytime you're carryin' spare bulbs or morsels, the hearth don't keep a calendar... and hey. welcome to the hollow. i realize i never actually said that part.",
+    objectives: [
+      { type: 'interact', targetNpcId: 'elder_yarrow', count: 1, label: 'Elder Yarrow met' },
+      { type: 'feed', count: 1, label: 'Fed at the hearth' },
+    ],
+    xpReward: 120,
+    copperReward: 80,
+    itemRewards: BEAD_FOR_ALL,
+    requiresQuest: 'q_what_fills',
+    offerDialog: {
+      complain: 'Another errand? I just climbed out of that hole.',
+      complainReply:
+        "no, no, hear me out, this ain't cave work... this one's easy, this one's just walkin' and one good feed. lightest thing i ever asked of you, i promise, on the wavelength and everything.",
+      refuse: "I'll find my own training, thanks.",
+      refuseReply:
+        "...fair 'nough. can't make a soul learn somethin' 'fore they're ready. door's open when it ain't 'not yet' no more... here, take this anyway, least i can do for you showin' up at all.",
+    },
+  },
+  // PHAA-484 beat 4: rebuilds the habit quest first drafted (and closed, in favor
+  // of q_the_wavelength as the base) on PR #134's q_keep_him_lit, now sitting on
+  // top of the merged 'feed' objective type instead of a bespoke one. Where
+  // q_the_wavelength teaches the feed/smoke mechanic exists at all, this one
+  // turns it into a habit: the same 'feed' objective, credited three separate
+  // times instead of once (quest_credit.ts's onFeedForQuests already loops every
+  // in-progress quest's objectives, so a count of 3 falls out of the existing
+  // credit path with no engine change).
+  q_keep_him_lit: {
+    id: 'q_keep_him_lit',
+    name: 'Keep Him Lit',
+    giverNpcId: 'brother_greenpaw',
+    turnInNpcId: 'brother_greenpaw',
+    text: "three times, friend, that's the number... not sacred, just enough to turn a favor into a habit, and habits are the only religion i actually trust... c'mon back and feed the hearth three separate times, don't matter the order, don't matter which of the two, emberbulb or morsel, and i'll believe you're really here to stay, not just passin' through on your way to somethin' bigger...",
+    completionText:
+      "three for three... you're not just visitin' anymore, friend, you're keepin' somethin' alive, and that's the whole ballgame if you ask me, which nobody did, but i'm sayin' it anyway... here. hold onto this, it don't do nothin', it just remembers, same as the rest of us down here...",
+    objectives: [{ type: 'feed', count: 3, label: 'Hearth fed' }],
+    xpReward: 150,
+    copperReward: 100,
+    itemRewards: COAL_FOR_ALL,
+    requiresQuest: 'q_the_wavelength',
+    offerDialog: {
+      complain: "I already fed you once. Isn't that enough?",
+      complainReply:
+        "once is a favor, friend, three's a habit, and i been burned by favors before... this ain't about the hearth needin' it, the hearth's fine, i keep it fine, it's about you comin' back on your own two feet 'cause you wanted to, not 'cause some quest marker told you to... three times. no rush on the countin'.",
+      refuse: "I'm not doing this three separate times. Once was enough.",
+      refuseReply:
+        "...yeah. yeah, okay, i hear you, friend, that's a fair enough line to draw... tell you what, here, take it anyway, ain't earned in the strictest sense but neither's most of what i hand out, and the wavelength don't really keep score the way i pretend it does...",
+    },
+  },
 };
 
-export const HOLLOW_QUEST_ORDER = ['q_what_burns', 'q_what_fills'];
+export const HOLLOW_QUEST_ORDER = [
+  'q_what_burns',
+  'q_what_fills',
+  'q_the_wavelength',
+  'q_keep_him_lit',
+];
 
 // ---------------------------------------------------------------------------
 // World dressing
@@ -513,6 +597,22 @@ export const HOLLOW_ITEMS: Record<string, ItemDef> = {
     sellValue: 0, // it is alive; it is not for sale
     questId: 'q_what_fills',
   },
+  // PHAA-484: q_the_wavelength's keepsake, same convention as first_cutting.
+  greenpaw_bead: {
+    id: 'greenpaw_bead',
+    name: 'A Bead From the Bandolier',
+    kind: 'quest',
+    sellValue: 0,
+    questId: 'q_the_wavelength',
+  },
+  // PHAA-484 beat 4: q_keep_him_lit's keepsake, same convention as greenpaw_bead.
+  keeper_coal: {
+    id: 'keeper_coal',
+    name: 'A Coal That Never Cooled',
+    kind: 'quest',
+    sellValue: 0,
+    questId: 'q_keep_him_lit',
+  },
   // PHAA-433: the Witness-Root's rare-chance drop. Class-neutral single-stat
   // budget, same convention as the other class-neutral pieces (cf. items.ts's
   // cryptbone_helm). Item level derives automatically from the boss's own
@@ -539,6 +639,37 @@ export const HOLLOW_ITEMS: Record<string, ItemDef> = {
       '...counted forty days by candle before I lost the thread. The dark down ' +
       'here does not forget Him, even if He has forgotten this place. If the ' +
       'heron circles low, tell the Verger the wick still burns...',
+  },
+  // PHAA-560 (tribe-mystery breadcrumb, one of 2-3, docs/plan-the-hollow.md's
+  // PROTECTED OPEN QUESTION stays unresolved): a second Under-Shrine found
+  // object, same convention as shrine_diary_page above, different find and a
+  // different unnamed writer. Indirect: implies a congregation large enough
+  // to wear a groove into a great many tokens, never says what became of it.
+  worn_prayer_token: {
+    id: 'worn_prayer_token',
+    name: 'Worn Prayer Token',
+    kind: 'junk',
+    sellValue: 1,
+    flavorText:
+      "...smooth on one face from a thumb that isn't mine, worn the same shallow " +
+      'groove into a hundred more like it before this one, or so the pile down ' +
+      "here would have you believe. one thumb doesn't wear a hundred tokens. a " +
+      'lot of thumbs wear one groove, though...',
+  },
+  // PHAA-560 (tribe-mystery breadcrumb): found where the boars rooted up half of
+  // Root Hollow (q_root_hollow_boars's own text), an item-flavor hint rather
+  // than an NPC line. Indirect: a tally with hundreds of marks and an
+  // unfinished last row, never says what stopped the counting.
+  tally_shard: {
+    id: 'tally_shard',
+    name: 'Tally-Marked Shard',
+    kind: 'quest',
+    sellValue: 0,
+    questId: 'q_root_hollow_boars',
+    flavorText:
+      '...marks in fives, scratched deep, crossed each time the count came round. ' +
+      'hundreds of fives before the crossing stops, and the last row was never ' +
+      'finished...',
   },
 };
 
@@ -652,7 +783,13 @@ export const HOLLOW_DUNGEON_DEFS: Record<string, DungeonDef> = {
     // the entrance (pillars run |x|=14 for z 10..130, walls at |x|=22), clear
     // of the spawn line and short of the first tomb obstacle at (-19, 16),
     // whose OBB spans x -20.1..-17.9, z 13.9..18.1.
-    objects: [{ itemId: 'shrine_diary_page', name: 'Torn Diary Page', x: -17, z: 9 }],
+    objects: [
+      { itemId: 'shrine_diary_page', name: 'Torn Diary Page', x: -17, z: 9 },
+      // PHAA-560 (tribe-mystery breadcrumb): the wall aisle's mirror spot,
+      // same z as the diary page above (clear of the tomb row, which starts
+      // at z 16) and clear of the pillars (which start at z 10).
+      { itemId: 'worn_prayer_token', name: 'Worn Prayer Token', x: 17, z: 9 },
+    ],
     // Deliberate: the 'crypt' interior builder is the Hollow Crypt's own
     // skeleton (sealed doors, keystones, the buried-and-walled grammar) reused
     // per the constitution (§4, the Hollow Crypt reuse) and rethemed root-cold

@@ -936,6 +936,9 @@ export const de_DE: EnTranslations = {
           "note": "Pilgrims gather at the moon-sanctum under the mid-month moon."
         }
       }
+    },
+    "trainer": {
+      "secondaryClassSet": "You have taken up {cls} as your secondary profession."
     }
   },
   "guide": {
@@ -963,6 +966,7 @@ export const de_DE: EnTranslations = {
       "delves": "Tiefgänge",
       "reference": "Nachschlagewerk",
       "controls": "Steuerung",
+      "settings": "Settings & Performance",
       "combat": "Kampf",
       "talents": "Talente",
       "professions": "Professions",
@@ -1133,6 +1137,66 @@ export const de_DE: EnTranslations = {
       "mobileBody": "Auf Smartphones und Tablets erscheinen die Touch-Steuerungen automatisch: ein Bewegungsstick links, ziehen an einer beliebigen Stelle rechts zum Umsehen und Bildschirmtasten für deine Fähigkeiten und Menüs.",
       "controllerHeading": "Mit einem Controller",
       "controllerBody": "Gamepads funktionieren ebenfalls, und die Controller-Unterstützung ist standardmäßig aktiviert. Der linke Stick bewegt dich, der rechte Stick richtet die Kamera aus, und die Aktions- und Schultertasten decken deine Fähigkeiten, das Springen und das Interagieren ab. Öffne ein beliebiges Fenster, um einen Bildschirmzeiger für Menüs einzublenden. Du kannst die Tasten neu belegen und Stick-Totzone, Kamerageschwindigkeit, Vibration und die invertierte Blickrichtung in den Controller-Einstellungen in den Optionen anpassen."
+    },
+    "settingsPage": {
+      "heading": "Settings & Performance",
+      "intro": "Make the game look its best or run its fastest. Three ready-made loadouts, plus what every graphics option really does.",
+      "wherePath": "Everything on this page lives in the game: press Esc and look in Graphics, Interface, and the Performance Overlay panel.",
+      "fairnessTitle": "Fair by design",
+      "fairnessBody": "No option here trades beauty for power. Lower settings shed cosmetic polish only, never information you fight with: your own debuffs and crowd control, party and raid member health, the target and boss cast bar, target health, and enemy positions are identical from Low to Ultra. Playing on a modest machine is never a handicap.",
+      "loadoutsHeading": "Three ready-made loadouts",
+      "loadoutsIntro": "Start from the loadout that sounds like your machine, then adjust one option at a time until it feels right.",
+      "recommended": "Recommended",
+      "whyLabel": "Why it works:",
+      "tagReload": "after reload",
+      "fpsTitle": "Best FPS",
+      "fpsTagline": "For older laptops, integrated graphics, and battery play.",
+      "fpsWhy": "Graphics Quality is the master switch, and Render Quality is the strongest slider: at 50 to 70% the world draws roughly half the pixels while the interface stays perfectly sharp.",
+      "balancedTitle": "Balanced",
+      "balancedTagline": "The sweet spot for most machines, and our default advice.",
+      "balancedWhy": "Medium brings real shadows and full materials; High adds ambient occlusion and bloom. Below Ultra a built-in safety net quietly thins effects for a moment when a big fight spikes, then restores them, so Balanced stays smooth without babysitting.",
+      "visualsTitle": "Best Visuals",
+      "visualsTagline": "Screenshot mode for powerful desktop machines.",
+      "visualsWhy": "Ultra renders at the highest resolution your display offers with the richest lighting. It also switches the safety net off, and it is desktop-only: phones and tablets top out at High to keep heat and battery in check.",
+      "value50to70": "50 to 70%",
+      "value90to100": "90 to 100%",
+      "value100": "100%",
+      "valueHighOrMedium": "High on a gaming PC, Medium on a laptop",
+      "valueOnOptional": "On (optional)",
+      "howHeading": "How the options behave",
+      "factDetectTitle": "The game tunes itself first",
+      "factDetectBody": "On your first launch the game reads your device and picks a sensible tier, from Low on a modest phone to Ultra on a strong desktop. Any choice you make yourself always wins.",
+      "factReloadTitle": "Two kinds of options",
+      "factReloadBody": "Graphics Quality and the Advanced pickers take effect after a reload, and the panel offers a Reload Now button when needed. Every other option applies the moment you change it.",
+      "factGovernorTitle": "A built-in safety net",
+      "factGovernorBody": "On every tier below Ultra, the game quietly thins effects for a moment when a big fight spikes, then restores them. Choosing Ultra tells it you would rather keep every detail.",
+      "advancedHeading": "The Advanced preset: mix your own",
+      "advancedBody": "Advanced starts from the High tier and unlocks four extra pickers, so you can spend your frames where you actually notice them: Terrain Detail, Foliage Density, Effects and Lighting, and Shadow Quality. Like Graphics Quality, they apply after a reload.",
+      "advancedMixes": "Two favorite mixes: keep Shadow Quality on High and set Effects and Lighting to Low for a crisp, glow-free look that runs light, or do the reverse to keep the bloom and soften the shadows.",
+      "tableHeading": "Every option, explained",
+      "colSetting": "Setting",
+      "colDoes": "What it does",
+      "colImpact": "FPS impact",
+      "impactNone": "None",
+      "impactLight": "Light",
+      "impactModerate": "Moderate",
+      "impactHeavy": "Heavy",
+      "rowGraphicsQuality": "The master switch. Each step changes resolution, shadows, materials, foliage, and lighting effects together. The biggest single difference you can make.",
+      "rowRenderQuality": "Draws the 3D world at a lower internal resolution and scales it up; the interface stays sharp. The strongest instant slider on weaker machines and high-resolution screens.",
+      "rowFieldOfView": "How much of the world fits on screen, from a zoomed 55 to a sweeping 100 degrees. A comfort choice; wider views draw slightly more.",
+      "rowBrightness": "Scene exposure, darker or brighter. Pure preference.",
+      "rowWeather": "Ambient rain and snow. Atmosphere only, and switching it off saves a little during storms.",
+      "rowBrowserEffects": "How fancy the interface itself is allowed to be: glass blur, glow, animated menus. Auto matches your browser; the 3D world is untouched either way.",
+      "rowTerrainDetail": "Rich, blended ground textures versus a simpler, faster terrain look.",
+      "rowFoliageDensity": "How far and how thick the grass grows around your character.",
+      "rowEffectsQuality": "Bloom, ambient occlusion, and how many torches and spells cast real light. The single biggest saving among the Advanced pickers.",
+      "rowShadowQuality": "Shadow crispness. Low keeps shadows but softens their edges.",
+      "rowFrostedPanels": "A frosted-glass blur behind windows. Pretty, and exactly the kind of effect a weaker browser feels; leave it off for the classic crisp look.",
+      "rowReduceMotion": "Removes interface animations so windows appear instantly. An accessibility option first, with a small performance bonus.",
+      "rowPerfOverlay": "An on-screen readout of FPS, frame time, and more. Turn it on while you tune this page, then hide it again.",
+      "tableFoot": "Looking for a draw-distance slider or an FPS cap? There is nothing to hunt for: view distance is part of each quality tier, and frame pacing follows your display.",
+      "mobileTitle": "On phones and tablets",
+      "mobileBody": "Mobile manages more for you: the game picks the tier, holds resolution a touch lower to protect battery and heat, and keeps the highest tiers desktop-only. The loadouts above still apply; phones simply top out at High."
     },
     "combat": {
       "intro": "Der Kampf folgt vertrauten Regeln aus klassischen MMOs. Du musst nichts davon studieren, um gut zu spielen, dies ist nur der grobe Aufbau, wie Kämpfe funktionieren.",
@@ -1928,6 +1992,9 @@ export const de_DE: EnTranslations = {
     "realm": "Realm",
     "newCharacter": "Neuer Charakter",
     "appearance": "Aussehen",
+    "sex": "Sex",
+    "sexMale": "Male",
+    "sexFemale": "Female",
     "class": "Klasse",
     "name": "Name",
     "chromaOption": "Chroma {n}",
@@ -2233,6 +2300,10 @@ export const de_DE: EnTranslations = {
       "lockJammed": "Das Schloss ist so verklemmt, dass es sich nicht mehr knacken lässt. Schließe den Tiefgang erneut ab für einen weiteren Versuch.",
       "lastPickSnaps": "Der letzte Dietrich bricht ab. Das Schloss klemmt. Die Truhe ist verloren, es sei denn, du schließt den Tiefgang erneut ab."
     },
+    "gathering": {
+      "nothingToHarvest": "That corpse has nothing to harvest.",
+      "alreadyHarvested": "This corpse has already been harvested."
+    },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
       "noItems1": "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",
@@ -2262,6 +2333,22 @@ export const de_DE: EnTranslations = {
       "readoutMine": "Your homestead: {plotId}. Decor: {decor}.",
       "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <slot>.",
       "helpLine": "Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>."
+    },
+    "homestead": {
+      "outsideArea": "That is outside the homestead ground. Try Fallow Acres, west of the road.",
+      "tooCloseGate": "Too close to the gate. Move further out.",
+      "tooCloseWater": "Too close to the water.",
+      "tooCloseGraveyard": "Too close to the graveyard.",
+      "tooCloseWildlife": "Too close to the wildlife. Clear the area or move further off.",
+      "tooCloseRoad": "Too close to the road.",
+      "tooCloseOther": "Too close to another homestead.",
+      "questGate": "Brother Greenpaw hasn't sent you off yet. Finish his errands first.",
+      "alreadyOwn": "You already own a homestead.",
+      "claimed": "The ground is yours. This homestead is claimed.",
+      "readoutMine": "Your homestead sits at ({x}, {z}).",
+      "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
+      "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
+      "helpLine": "Homestead: /homestead, /homestead claim."
     }
   },
   "lockpickUi": {
@@ -5268,12 +5355,26 @@ export const de_DE: EnTranslations = {
       "first_cutting": {
         "name": "Ein Ableger"
       },
+      "greenpaw_bead": {
+        "name": "Eine Perle vom Bandolier"
+      },
+      "keeper_coal": {
+        "name": "A Coal That Never Cooled"
+      },
       "witness_root_cincture": {
         "name": "Zeugenwurzels Gürtel"
       },
       "shrine_diary_page": {
         "name": "Zerrissene Tagebuchseite",
         "flavorText": "...zählte vierzig Tage bei Kerzenlicht, bevor ich den Faden verlor. Das Dunkel hier unten vergisst Ihn nicht, auch wenn Er diesen Ort vergessen hat. Wenn der Reiher tief kreist, sag dem Küster, der Docht brennt noch..."
+      },
+      "worn_prayer_token": {
+        "name": "Worn Prayer Token",
+        "flavorText": "...smooth on one face from a thumb that isn't mine, worn the same shallow groove into a hundred more like it before this one, or so the pile down here would have you believe. one thumb doesn't wear a hundred tokens. a lot of thumbs wear one groove, though..."
+      },
+      "tally_shard": {
+        "name": "Tally-Marked Shard",
+        "flavorText": "...marks in fives, scratched deep, crossed each time the count came round. hundreds of fives before the crossing stops, and the last row was never finished..."
       },
       "reliquary_plate_chest": {
         "name": "Halsberge der Reliquiarwache"
@@ -6710,6 +6811,41 @@ export const de_DE: EnTranslations = {
           "refuseReply": "oh... oh, okay. ...okay. that's... yeah. no, that's fair, friend, that's fair... the vase heard it too, and between you and me i think he respects it. here, take the cutting anyway. you went down once, and that's once more than most..."
         }
       },
+      "q_the_wavelength": {
+        "title": "On the Wavelength",
+        "text": "the cutting's yours now, friend, so let's talk about what comes after... two things, and neither one's a trial, more like an interduction. first, cross the vase and meet elder yarrow, she teaches a whole second callin', a different way to play this whole thing, and every soul that comes through here oughta know that door's open... second, come on back and feed me somethin', don't matter which, emberbulb or morsel, i'm always runnin' on empty and the vase always wants for smoke. that part never really ends, to a greenpaw degree.",
+        "completion": "there it is... you felt the room go thick for a second, right? that's him, noticin'. that's the whole trick, friend - you feed me, i smoke up the place, he leans in a little closer to payin' attention. ain't complicated. ain't never gonna stop bein' true, neither. c'mere anytime you're carryin' spare bulbs or morsels, the hearth don't keep a calendar... and hey. welcome to the hollow. i realize i never actually said that part.",
+        "objectives": {
+          "0": {
+            "label": "Elder Yarrow met"
+          },
+          "1": {
+            "label": "Fed at the hearth"
+          }
+        },
+        "dialog": {
+          "complain": "Another errand? I just climbed out of that hole.",
+          "complainReply": "no, no, hear me out, this ain't cave work... this one's easy, this one's just walkin' and one good feed. lightest thing i ever asked of you, i promise, on the wavelength and everything.",
+          "refuse": "I'll find my own training, thanks.",
+          "refuseReply": "...fair 'nough. can't make a soul learn somethin' 'fore they're ready. door's open when it ain't 'not yet' no more... here, take this anyway, least i can do for you showin' up at all."
+        }
+      },
+      "q_keep_him_lit": {
+        "title": "Keep Him Lit",
+        "text": "three times, friend, that's the number... not sacred, just enough to turn a favor into a habit, and habits are the only religion i actually trust... c'mon back and feed the hearth three separate times, don't matter the order, don't matter which of the two, emberbulb or morsel, and i'll believe you're really here to stay, not just passin' through on your way to somethin' bigger...",
+        "completion": "three for three... you're not just visitin' anymore, friend, you're keepin' somethin' alive, and that's the whole ballgame if you ask me, which nobody did, but i'm sayin' it anyway... here. hold onto this, it don't do nothin', it just remembers, same as the rest of us down here...",
+        "objectives": {
+          "0": {
+            "label": "Hearth fed"
+          }
+        },
+        "dialog": {
+          "complain": "I already fed you once. Isn't that enough?",
+          "complainReply": "once is a favor, friend, three's a habit, and i been burned by favors before... this ain't about the hearth needin' it, the hearth's fine, i keep it fine, it's about you comin' back on your own two feet 'cause you wanted to, not 'cause some quest marker told you to... three times. no rush on the countin'.",
+          "refuse": "I'm not doing this three separate times. Once was enough.",
+          "refuseReply": "...yeah. yeah, okay, i hear you, friend, that's a fair enough line to draw... tell you what, here, take it anyway, ain't earned in the strictest sense but neither's most of what i hand out, and the wavelength don't really keep score the way i pretend it does..."
+        }
+      },
       "q_root_hollow_boars": {
         "title": "Root Hollow's Boars",
         "text": "By the calendar, Root Hollow rests this season. The boars have not been informed. They have rooted up half of it chasing grubs, and they no longer scatter when a heron flaps at them, which I take personally. Cull five, and I can enter the season as observed.",
@@ -6723,7 +6859,7 @@ export const de_DE: EnTranslations = {
       "q_root_hollow_boars_ii": {
         "title": "Root Hollow's Reckoning",
         "text": "I will admit what the office discourages admitting: five was optimistic. The lower dens keep pushing up more. Eight further, and I can close the season without amending the record a third time. The record resents amendment. So do I.",
-        "completion": "Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me.",
+        "completion": "Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me. The register itself is older than that arrangement, bound in a hand I have never met, keeping a count I choose not to add. Someone was thorough here, once. I only try to keep pace.",
         "objectives": {
           "0": {
             "label": "Wild Boar slain"

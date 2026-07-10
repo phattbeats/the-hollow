@@ -4570,6 +4570,7 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': 'Bocado de Cueva',
   'entities.items.emberbulb.name': 'Bulbo Ascua',
   'entities.items.first_cutting.name': 'Un Esqueje',
+  'entities.items.greenpaw_bead.name': 'Una Cuenta De La Bandolera',
   'entities.items.witness_root_cincture.name': 'Cinturón de la Raíz Testigo',
   'entities.items.shrine_diary_page.name': 'Página de Diario Rasgada',
   'entities.items.shrine_diary_page.flavorText':

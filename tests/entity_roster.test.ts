@@ -171,6 +171,7 @@ function makeCtx() {
     dropPartyMarkers: vi.fn(),
     onMobKilledForQuests: vi.fn(),
     onInventoryChangedForQuests: vi.fn(),
+    onGreenpawFedForQuests: vi.fn(),
     checkQuestReady: vi.fn(),
     countItem: vi.fn(() => 0),
     lockoutNowMs: vi.fn(() => 0),
@@ -300,6 +301,7 @@ function makeCtx() {
     notifyPlantThreshold: vi.fn(),
     plantSpeechAmbientChat: vi.fn(),
     homesteadChat: vi.fn(() => false),
+    gatherHarvestItemFor: vi.fn(() => null),
   };
   const ctx = createSimContext(host);
   return {

@@ -41,7 +41,6 @@ import {
   type WordTier,
 } from './chat_filter_db';
 import {
-  accountForToken,
   accountMailTarget,
   findAccount,
   isAdminAccount,
@@ -63,6 +62,7 @@ import {
   moderationReportsForAccount,
   muteAccountChat,
 } from './moderation_db';
+import { bearerAccount } from './ownership';
 import { providerUsageSnapshot } from './provider_usage';
 import { rateLimited } from './ratelimit';
 import {
@@ -168,9 +168,7 @@ interface AdminIdentity {
 // Roles are re-read on every request, so a dashboard revocation applies to the
 // next call (a revoked operator's next request 401s: no roles means not staff).
 async function adminIdentity(req: http.IncomingMessage): Promise<AdminIdentity | null> {
-  const m = /^Bearer ([a-f0-9]{64})$/.exec(req.headers.authorization ?? '');
-  if (!m) return null;
-  const accountId = await accountForToken(m[1]);
+  const accountId = await bearerAccount(req);
   if (accountId === null) return null;
   const staff = await adminRolesForAccount(accountId);
   if (staff === null) return null;

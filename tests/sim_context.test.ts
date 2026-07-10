@@ -68,9 +68,11 @@ const CALLBACK_KEYS = [
   'partyOf',
   'removeFromParty',
   'dropPartyMarkers',
-  // Q1 quest-credit trio + the countItem it consumes.
+  // Q1 quest-credit trio + the countItem it consumes; onGreenpawFedForQuests
+  // (PHAA-484) is the hearth's own feed-credit callback.
   'onMobKilledForQuests',
   'onInventoryChangedForQuests',
+  'onGreenpawFedForQuests',
   'checkQuestReady',
   'countItem',
   // E1 entity-roster surface.
@@ -206,6 +208,8 @@ const CALLBACK_KEYS = [
   'plantSpeechAmbientChat',
   // Homestead v0: the /homestead chat-command branch.
   'homesteadChat',
+  // Gathering v0 (PHAA-504): the corpse-harvest item-selection rng draw.
+  'gatherHarvestItemFor',
 ] as const;
 
 // A fully-spied fake host. `clock` is mutable so a test can prove the context reads
@@ -312,6 +316,7 @@ function makeFakeHost() {
     dropPartyMarkers: vi.fn(),
     onMobKilledForQuests: vi.fn(),
     onInventoryChangedForQuests: vi.fn(),
+    onGreenpawFedForQuests: vi.fn(),
     checkQuestReady: vi.fn(),
     countItem: vi.fn(() => 0),
     lockoutNowMs: vi.fn(() => 0),
@@ -437,6 +442,7 @@ function makeFakeHost() {
     notifyPlantThreshold: vi.fn(),
     plantSpeechAmbientChat: vi.fn(),
     homesteadChat: vi.fn(() => false),
+    gatherHarvestItemFor: vi.fn(() => null),
   };
   return { host, rng, entities, clock };
 }

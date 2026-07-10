@@ -70,6 +70,13 @@ export type PlayerClass =
   | 'warlock'
   | 'druid';
 
+// Player character sex. Drives which visual variant the renderer places: when
+// a `player_<class>_f` entry exists in the manifest, female characters resolve
+// to it; otherwise they fall back to the default (male) model for the class.
+// Persisted in CharacterState and carried in the entity wire identity fields.
+// Optional in saved state so pre-PHAA-501 characters load as 'm'.
+export type Sex = 'm' | 'f';
+
 // Classes that command a persistent pet (hunter beast, warlock demon). Pure
 // predicate, here so the pet-command slice imports it without a sim.ts cycle.
 export function isPetClass(cls: PlayerClass): boolean {
@@ -471,6 +478,11 @@ export interface MobTemplate {
   loot: LootEntry[];
   scale: number; // render hint
   color: number; // render hint
+  // Profession harvesting (PHAA-504): the skinning/salvage component types this
+  // mob's corpse can yield (e.g. 'hide', 'fang', 'silk'). Data-as-code; consumed
+  // by src/sim/gathering.ts. A tag with no entry in HARVEST_COMPONENT_ITEMS still
+  // makes the corpse single-use claimable, it just yields no item yet.
+  componentTags?: string[];
   boss?: boolean;
   rare?: boolean;
   // Elite scaling, vanilla-style: ~2.3x health, ~1.5x damage, double XP.
@@ -1290,12 +1302,12 @@ export function emptyZoneProps(): ZonePropsDef {
 }
 
 export interface QuestObjective {
-  type: 'kill' | 'collect' | 'interact';
+  type: 'kill' | 'collect' | 'interact' | 'feed';
   targetMobId?: string; // for kill
   itemId?: string; // for collect
   targetObjectItemId?: string; // for interactable ground objects
   targetNpcId?: string; // for interactable NPC objectives
-  count: number;
+  count: number; // for 'feed', the number of successful feedGreenpaw() calls
   label: string;
 }
 
@@ -1507,6 +1519,11 @@ export interface Entity {
   respawnTimer: number;
   corpseTimer: number;
   lootFfaTimer: number; // seconds of owner-lock left before tap loot opens to all (FFA); Infinity until rollLoot starts it
+  // Profession harvest (PHAA-504): single-use, first-come claim on this corpse's
+  // componentTags yield. null = unharvested; once set to a player's entity id,
+  // every later attempt (same tick or later) is denied. Reset on respawn
+  // (src/sim/mob/lifecycle.ts). The opposite of a world gathering node (per-player).
+  harvestClaimedBy: number | null;
   despawnTimer?: number;
   damageIdleDespawnTimer?: number;
   lootable: boolean;
@@ -1525,6 +1542,11 @@ export interface Entity {
   color: number;
   skinCatalog: SkinCatalog; // player appearance catalog: class texture set or cosmetic body.
   skin: number; // player appearance: index into SKINS[visualKey]; 0 = default. synced in identity fields.
+  // Player character sex. Drives the female visual variant when a
+  // `player_<class>_f` VisualDef exists; otherwise the default model is used.
+  // Persisted in CharacterState, mirrored from PlayerMeta in addPlayer, and
+  // synced in identity fields (terse `sx`). Defaults to 'm' for back-compat.
+  sex: Sex;
   // Equipped mainhand item id (players only; null otherwise). Render-only: the
   // client maps it to a held weapon model. Recomputed in recalcPlayerStats and
   // synced in identity fields (terse `mh`). The sim never reads it for gameplay.

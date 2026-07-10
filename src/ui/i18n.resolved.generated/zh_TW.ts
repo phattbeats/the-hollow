@@ -936,6 +936,9 @@ export const zh_TW: EnTranslations = {
           "note": "朝聖者在月中之月下聚於月之聖所。"
         }
       }
+    },
+    "trainer": {
+      "secondaryClassSet": "你已選擇{cls}作為你的副職業。"
     }
   },
   "guide": {
@@ -963,6 +966,7 @@ export const zh_TW: EnTranslations = {
       "delves": "秘探",
       "reference": "參考資料",
       "controls": "操作按鍵",
+      "settings": "設定與效能",
       "combat": "戰鬥",
       "talents": "天賦",
       "professions": "副職業",
@@ -1133,6 +1137,66 @@ export const zh_TW: EnTranslations = {
       "mobileBody": "在手機與平板上會自動顯示觸控操作：左側為移動搖桿，在右側任意處拖曳即可環顧，並有螢幕上的按鈕供你使用技能與選單。",
       "controllerHeading": "使用手把時",
       "controllerBody": "手把同樣可用，且預設即開啟手把支援。左搖桿負責移動，右搖桿控制鏡頭，正面按鍵與肩鍵則涵蓋你的技能、跳躍與互動。開啟任何視窗都會喚出畫面上的指標，供你操作選單。你可以在選項中的手把設定裡重新配置按鍵，並調整搖桿盲區、鏡頭速度、震動以及反轉視角。"
+    },
+    "settingsPage": {
+      "heading": "設定與效能",
+      "intro": "讓遊戲畫面美到極致，或跑得飛快。三套現成配置，加上每個圖形選項的真正作用。",
+      "wherePath": "本頁介紹的一切都在遊戲裡：按下 Esc，就能在「圖形」、「介面」與「效能監視器」中找到。",
+      "fairnessTitle": "天生公平",
+      "fairnessBody": "這裡沒有任何選項會用畫面換取優勢。調低設定只會捨去外觀上的修飾，絕不會犧牲作戰所需的資訊：你的減益效果、施法條、隊伍血量與傷害數字，從「低」到「超高」完全相同。用入門機器遊玩絕不吃虧。",
+      "loadoutsHeading": "三套現成配置",
+      "loadoutsIntro": "先從聽起來最像你機器的配置開始，再一次調整一個選項，直到感覺對了為止。",
+      "recommended": "推薦",
+      "whyLabel": "為什麼有效：",
+      "tagReload": "需重新載入",
+      "fpsTitle": "效能優先",
+      "fpsTagline": "適合較舊的筆電、內顯，以及使用電池遊玩的時候。",
+      "fpsWhy": "圖形品質是總開關，渲染品質則是效果最強的滑桿：調到 70% 時，世界只需繪製約一半的像素，介面卻依然完全清晰。",
+      "balancedTitle": "平衡",
+      "balancedTagline": "大多數機器的甜蜜點，也是我們的預設建議。",
+      "balancedWhy": "「中」就有真實陰影與完整材質，「高」再加上環境光遮蔽與光暈。只要低於「超高」，內建安全網就會在激烈戰鬥中吸收突然的效能下滑，因此「平衡」不必費心照顧也能保持順暢。",
+      "visualsTitle": "極致畫質",
+      "visualsTagline": "給高階桌機的截圖模式。",
+      "visualsWhy": "「超高」會以你螢幕支援的最高解析度繪製，並呈現最豐富的光照。它同時會關閉安全網，而且僅限桌機：手機與 App 版最高到「高」為止。",
+      "value50to70": "50% 到 70%",
+      "value90to100": "90% 到 100%",
+      "value100": "100%",
+      "valueHighOrMedium": "電競電腦用「高」，筆電用「中」",
+      "valueOnOptional": "開啟（可選）",
+      "howHeading": "選項的運作方式",
+      "factDetectTitle": "遊戲會先自我調校",
+      "factDetectBody": "首次啟動時，遊戲會偵測你的裝置並挑選合適的檔位：入門手機用「低」，高效能桌機用「超高」。而你親自做的選擇永遠優先。",
+      "factReloadTitle": "兩種類型的選項",
+      "factReloadBody": "圖形品質與進階選項需要重新載入後才會生效，必要時面板會出現「立即重新載入」按鈕。其他所有選項則是一改就生效。",
+      "factGovernorTitle": "內建安全網",
+      "factGovernorBody": "在「超高」以下的所有檔位，當大型戰鬥造成瞬間負載時，遊戲會悄悄暫時減少草叢、特效與光照，狀況過去後再恢復原狀。選擇「超高」則代表你寧可保留每一分細節。",
+      "advancedHeading": "「進階」預設：自由調配",
+      "advancedBody": "「進階」以「高」這一檔為起點，並解鎖四個額外選項，讓你把效能花在真正看得出差別的地方：地形細節、植被密度、特效與光照，以及陰影品質。它們和圖形品質一樣，需要重新載入後才會生效。",
+      "advancedMixes": "兩種人氣搭配：把陰影品質維持在「高」、特效與光照調成「低」，畫面清爽俐落、沒有光暈，跑起來也輕鬆；或者反過來，保留光暈，讓陰影柔和一些。",
+      "tableHeading": "每個選項，逐一解說",
+      "colSetting": "選項",
+      "colDoes": "作用",
+      "colImpact": "FPS 影響",
+      "impactNone": "無",
+      "impactLight": "輕微",
+      "impactModerate": "中等",
+      "impactHeavy": "顯著",
+      "rowGraphicsQuality": "總開關。每調一檔，解析度、陰影、材質、植被與光照特效都會一起改變。這是影響最大的單一選項。",
+      "rowRenderQuality": "以較低的內部解析度繪製 3D 世界再放大，介面維持清晰。在較弱的機器與高解析度螢幕上，是立即見效、威力最強的滑桿。",
+      "rowFieldOfView": "決定畫面能容納多少世界：從拉近的 55 度到開闊的 100 度。屬於舒適度選擇；視野越廣，繪製量會略微增加。",
+      "rowBrightness": "調整場景曝光的明暗，純屬個人喜好。",
+      "rowWeather": "環境雨雪效果。純屬氣氛營造，關閉後在暴風雨中還能省下一點效能。",
+      "rowBrowserEffects": "決定介面本身可以多華麗：玻璃模糊、光暈、選單動畫。「自動」會配合你的瀏覽器；無論怎麼選，3D 世界都不受影響。",
+      "rowTerrainDetail": "豐富細膩的混合地面材質，或是較簡單、跑得較快的地形外觀。",
+      "rowFoliageDensity": "角色周圍草叢生長的範圍與密度。",
+      "rowEffectsQuality": "光暈、環境光遮蔽，以及有多少火把和法術會投射真實光源。是進階選項中省效能最多的一項。",
+      "rowShadowQuality": "陰影的銳利程度。「低」仍保留陰影，只是邊緣較柔和。",
+      "rowFrostedPanels": "視窗背後的霧面玻璃模糊。很漂亮，但也正是較弱的瀏覽器最有感的那種效果；關閉它，就是經典的俐落外觀。",
+      "rowReduceMotion": "移除介面動畫，讓視窗立即出現。首先是無障礙選項，順帶帶來少許效能提升。",
+      "rowPerfOverlay": "在畫面上即時顯示 FPS、影格時間等數據。調整本頁設定時先開著，調完再關掉。",
+      "tableFoot": "想找繪製距離滑桿或 FPS 上限嗎？其實不必找：可視距離已內建在各品質檔位中，影格節奏則交由你的顯示器決定。",
+      "mobileTitle": "在手機與平板上",
+      "mobileBody": "行動裝置上，遊戲會替你打理更多：自動挑選檔位、將解析度稍微壓低以節省電力並抑制發熱，最高的幾個檔位則僅限桌機。上面的配置依然適用，只是手機最高到「高」為止。"
     },
     "combat": {
       "intro": "戰鬥遵循熟悉的經典MMO規則。你完全不需要研究這些就能玩得很好，這只是讓你了解戰鬥運作的大致樣貌。",
@@ -1928,6 +1992,9 @@ export const zh_TW: EnTranslations = {
     "realm": "伺服器",
     "newCharacter": "新增角色",
     "appearance": "外觀",
+    "sex": "性別",
+    "sexMale": "男性",
+    "sexFemale": "女性",
     "class": "職業",
     "name": "名稱",
     "chromaOption": "配色 {n}",
@@ -2233,6 +2300,10 @@ export const zh_TW: EnTranslations = {
       "lockJammed": "這道鎖已卡死到無法撬開，再次通關秘探以獲得另一次嘗試。",
       "lastPickSnaps": "最後一根撬棒折斷了。鎖卡死了，除非你再次通關這場秘探，否則寶箱將就此失去。"
     },
+    "gathering": {
+      "nothingToHarvest": "這具屍體沒有什麼可以採集的。",
+      "alreadyHarvested": "這具屍體已經被採集過了。"
+    },
     "hearth": {
       "tooFar": "你得靠近綠掌修士才能餵他。",
       "noItems1": "……夥計，你兩手空空啊。帶點能燒的或能填飽肚子的東西來，我們再聊。",
@@ -2262,6 +2333,22 @@ export const zh_TW: EnTranslations = {
       "readoutMine": "你的宅邸：{plotId}。裝飾：{decor}。",
       "readoutUsage": "/house place <1-{count}> <{kinds}>，/house remove <槽位>。",
       "helpLine": "宅邸：/house、/house claim、/house place <槽位> <種類>、/house remove <槽位>。"
+    },
+    "homestead": {
+      "outsideArea": "That is outside the homestead ground. Try Fallow Acres, west of the road.",
+      "tooCloseGate": "Too close to the gate. Move further out.",
+      "tooCloseWater": "Too close to the water.",
+      "tooCloseGraveyard": "Too close to the graveyard.",
+      "tooCloseWildlife": "Too close to the wildlife. Clear the area or move further off.",
+      "tooCloseRoad": "Too close to the road.",
+      "tooCloseOther": "Too close to another homestead.",
+      "questGate": "Brother Greenpaw hasn't sent you off yet. Finish his errands first.",
+      "alreadyOwn": "You already own a homestead.",
+      "claimed": "The ground is yours. This homestead is claimed.",
+      "readoutMine": "Your homestead sits at ({x}, {z}).",
+      "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
+      "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
+      "helpLine": "Homestead: /homestead, /homestead claim."
     }
   },
   "lockpickUi": {
@@ -5268,12 +5355,26 @@ export const zh_TW: EnTranslations = {
       "first_cutting": {
         "name": "插條"
       },
+      "greenpaw_bead": {
+        "name": "彈藥帶上的一顆唸珠"
+      },
+      "keeper_coal": {
+        "name": "一塊永不冷卻的炭"
+      },
       "witness_root_cincture": {
         "name": "見證根的束帶"
       },
       "shrine_diary_page": {
         "name": "撕碎的日記頁",
         "flavorText": "……我數著燭光過了四十天，後來便斷了數。這底下的黑暗從未忘記祂，儘管祂已經忘了這個地方。若鷺鳥低飛掠過，告訴守燈人，燭芯還燃著……"
+      },
+      "worn_prayer_token": {
+        "name": "磨損的禱牌",
+        "flavorText": "……一面被一根不是我的拇指磨得光滑，磨出的淺溝和這堆裡另外上百枚一模一樣，至少這堆東西是這麼告訴我的。一根拇指磨不出一百枚令牌的痕跡。可一百根拇指，倒是能磨出同一道淺溝……"
+      },
+      "tally_shard": {
+        "name": "刻痕碎片",
+        "flavorText": "……以五為一組刻得極深，每數完一輪便劃去一道。劃去的五連一組，累計上百組，最後一行卻始終沒有劃完……"
       },
       "reliquary_plate_chest": {
         "name": "聖物庫守衛鎖甲"
@@ -5850,7 +5951,7 @@ export const zh_TW: EnTranslations = {
       "brother_greenpaw": {
         "name": "綠掌修士",
         "title": "首席先知（自封）",
-        "greeting": "喲，旅人，你來啦。你說這甕今兒個心情不錯，還是只有我這麼覺得……過來吧，有幾件神聖的事兒要辦。基本上就是弄點吃的。反正對綠掌來說是一回事兒。",
+        "greeting": "你又來啦，真是福氣……這甕一早上唉聲嘆氣的，幾件神聖的事兒又排上了，跟上回一個路子。過來坐一會兒……",
         "introLines": {
           "0": "呃……你好。你好啊。沒聽見你過來，我剛才神遊去了，去了個綠油油的地方……你這一臉剛睡醒的樣子，朋友。我太熟這表情了，我自己十天有九天掛著它……",
           "1": "我叫綠掌。綠掌修士，初代先知，自封的，這甕會告訴你這頭銜一文不值，他說得沒錯，可總得有人照看他不是……",
@@ -6710,6 +6811,41 @@ export const zh_TW: EnTranslations = {
           "refuseReply": "哦……哦，好吧。……好吧。這……是啊。不，這很公道，朋友，很公道……瓶子也聽見了，偷偷跟你說，我覺得他還挺敬佩你的。來，這根插枝你還是拿著。你下去過一次，就已經比大多數人多一次了……"
         }
       },
+      "q_the_wavelength": {
+        "title": "同一頻率上",
+        "text": "挖來的插條現在是你的了，朋友，那接下來該聊聊後面的事了……兩件事，都不算考驗，更像是引見。第一，穿過瓶子那邊，去見見耶羅長老，她教的是第二天職，一種完全不同的玩法，凡是路過這兒的靈魂都該知道那扇門是開著的……第二，回來餵我點什麼，不管是哪樣，殘火球莖也好，洞穴肉粒也好，我永遠處於飢餓狀態，瓶子也永遠想要煙。這部分是不會真正結束的，對綠掌來說就是這樣。",
+        "completion": "看吧……你感覺到了吧，房間一下子變濃了？那是他，注意到了。這就是全部的竅門，朋友——你餵我，我就冒煙，他就多湊近一點聽著。沒什麼複雜的。以後也永遠不會變。手頭有多餘的殘火球莖或洞穴肉粒，隨時過來，爐子不看日曆……哦對了。歡迎來到聖所。我這才意識到之前一直沒說過這句。",
+        "objectives": {
+          "0": {
+            "label": "已拜見耶羅長老"
+          },
+          "1": {
+            "label": "已在爐邊餵食"
+          }
+        },
+        "dialog": {
+          "complain": "又要跑腿？我才剛從那洞裡爬出來。",
+          "complainReply": "不不，聽我說完，這次不是洞裡的活兒……這次簡單，就是走一趟，好好餵我一次。這是我求過你最輕鬆的一件事了，我保證，同頻共振，絕不騙你。",
+          "refuse": "我自己去找我的訓練，謝了。",
+          "refuseReply": "……那也行吧。一個靈魂還沒準備好之前，是沒法強求學東西的。等哪天不是「還沒準備好」了，門就一直開著……給，這個還是拿著吧，好歹你來了一趟。"
+        }
+      },
+      "q_keep_him_lit": {
+        "title": "Keep Him Lit",
+        "text": "三次，朋友，就是這個數……不是什麼神聖的數字，就是剛好能把一個人情變成一個習慣，習慣才是我真正信的那種信仰……回來餵爐子三次，分開的三次，先後順序不重要，殘火球莖還是洞穴肉粒也不重要，只要你做到了，我就信你是真的打算留下來，不是路過順道辦完事就走……",
+        "completion": "三次都到了……你不再只是個訪客了，朋友，你是在守著一樣活著的東西，這就是全部的意義，雖然沒人問過我，但我還是要說……給，拿著這個吧，它什麼用也沒有，只是個念想，跟咱們這兒的人一樣……",
+        "objectives": {
+          "0": {
+            "label": "已在爐邊餵食三次"
+          }
+        },
+        "dialog": {
+          "complain": "我不是已經餵過你一次了嗎？這還不夠？",
+          "complainReply": "一次是個人情，朋友，三次才是習慣，人情我吃過虧……這不是爐子需不需要，爐子好得很，我照顧得來，這是關於你願不願意自己走回來，不是因為任務標記逼你來的……三次。不急著數。",
+          "refuse": "我不會分三次來做這件事。一次就夠了。",
+          "refuseReply": "……好吧。好吧，我懂你的意思，朋友，這條線劃得也算公道……這樣吧，還是拿著，嚴格說不算你掙來的，但我給出去的大半也不算，頻率這東西，其實沒真的在計較。"
+        }
+      },
       "q_root_hollow_boars": {
         "title": "根穴野豬",
         "text": "按曆書，根穴這一季本該休養。可沒人通知野豬。牠們追著蟲子把這裡拱翻了一半，如今連蒼鷺撲翅都嚇不走，這一點我很往心裡去。殺五頭，我才好把這一季照實記下。",
@@ -6723,7 +6859,7 @@ export const zh_TW: EnTranslations = {
       "q_root_hollow_boars_ii": {
         "title": "根穴的清算",
         "text": "我就說句本職上不該說的實話：五頭，是我樂觀了。底下的窩還在不斷往外拱。再殺八頭，我便能結清這一季，不必第三回去改記錄。記錄不喜被改。我也不喜。",
-        "completion": "結案。簽字。歸檔。這一季總算能照原定的曆程走了，畢竟又有人來看著這本曆書。你幫了一個極小的會眾一個大忙。我得澄清一句：這會眾，就是我。",
+        "completion": "結案。簽字。歸檔。這一季總算能照原定的曆程走了，畢竟又有人來看著這本曆書。你幫了一個極小的會眾一個大忙。我得澄清一句：這會眾，就是我。這本曆書本身比這安排還要古老，裝訂出自一雙我從未謀面的手，記著一個我不願去加總的數目。曾經有人在此極為用心。我不過是盡力跟上罷了。",
         "objectives": {
           "0": {
             "label": "野豬已殺"

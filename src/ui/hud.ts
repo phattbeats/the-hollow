@@ -6145,6 +6145,12 @@ export class Hud {
         case 'skinEvent':
           this.openSkinEvent(ev.rank, ev.catalog === 'mech' ? { mech: true } : undefined);
           break;
+        case 'trainer':
+          this.log(
+            t('hudChrome.trainer.secondaryClassSet', { cls: classDisplayName(ev.cls) }),
+            '#7fdc4f',
+          );
+          break;
         case 'error':
           this.showError(this.localizeErrorText(ev.text));
           break;
