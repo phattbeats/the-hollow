@@ -44,7 +44,9 @@ import {
   verifyPassword,
 } from './auth';
 import { BUG_DESCRIPTION_MAX, BugReportRateLimitError, createBugReport } from './bug_report_db';
+import { registerBusinessMetrics } from './business_metrics';
 import { characterSheet, type SheetRank } from './character_sheet';
+import { registerClientPerfMetrics } from './client_perf_metrics';
 import {
   accountForToken,
   type CharacterRow,
@@ -96,6 +98,8 @@ import {
 import { pruneDiscordOAuthStates, pruneDiscordPendingLogins } from './discord_db';
 import { emailAccountCreated } from './email';
 import { GameServer } from './game';
+import { type GameStateSource, registerGameStateMetrics } from './game_metrics';
+import { gameMetricsCounters, setGameMetricsCounters } from './game_signals';
 import { isUniqueViolation, json, readBody } from './http_util';
 import { handleInternalApi } from './internal';
 import { isConnectionRefused } from './ip_block';
@@ -765,8 +769,11 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
             10,
             initialCharacterState(body.class, name, skin, sex),
           );
-        const created = (c: NonNullable<Awaited<ReturnType<typeof createCharacterCapped>>>) =>
-          json(res, 200, {
+        const created = (c: NonNullable<Awaited<ReturnType<typeof createCharacterCapped>>>) => {
+          // One character successfully created (woc_characters_created_total). Only
+          // the success responder counts, so a rejected create never increments.
+          gameMetricsCounters().characterCreated();
+          return json(res, 200, {
             id: c.id,
             name: c.name,
             class: c.class,
@@ -775,6 +782,7 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
             sex: c.state?.sex ?? sex,
             forceRename: c.force_rename,
           });
+        };
         try {
           const c = await create();
           if (!c) return json(res, 400, { error: 'character limit reached' });
@@ -1694,6 +1702,31 @@ async function main(): Promise<void> {
     });
   }
 
+  // Register the game-state gauges + throughput counters on the SAME registry the
+  // RED exporter built at module scope, then install the counter sink process-wide
+  // (mirrors setAttackSignalSink). Wired here, after `game` and `wss` exist, so the
+  // gauges read live state at scrape time; ws_connections is the raw open-socket
+  // count (joined or not), distinct from players_online (joined sessions).
+  const gameStateSource: GameStateSource = {
+    playersOnline: () => game.clients.size,
+    accountsOnline: () => game.liveAccountIds().size,
+    wsConnections: () => wss.clients.size,
+    simEntities: () => game.sim.entities.size,
+    simTickHz: () => game.simTickHz(),
+    tickPhaseMillis: () => game.tickPhaseMillis(),
+  };
+  setGameMetricsCounters(registerGameStateMetrics(httpMetrics.registry, gameStateSource));
+
+  // The app-aggregate /metrics collectors (Phase 3 business, Phase 4 client-perf):
+  // each registers bounded gauges on the SAME exporter registry and runs ONE cached
+  // Postgres aggregate on a fixed interval, so a scrape publishes the cached snapshot
+  // and never queries the DB. start() kicks off an immediate refresh plus the
+  // interval (both unref()'d); shutdown stops them below.
+  const businessMetrics = registerBusinessMetrics(httpMetrics.registry);
+  const clientPerfMetrics = registerClientPerfMetrics(httpMetrics.registry);
+  businessMetrics.start();
+  clientPerfMetrics.start();
+
   game.start();
   server.listen(PORT, () => {
     logger.info({ port: PORT }, 'World of ClaudeCraft server listening');
@@ -1703,6 +1736,11 @@ async function main(): Promise<void> {
 
   const shutdown = async () => {
     logger.info('shutting down: saving characters');
+    // Stop the app-aggregate metric collectors so no refresh query races the pool
+    // close below (their intervals are unref()'d, but an in-flight tick could still
+    // fire before pool.end()).
+    businessMetrics.stop();
+    clientPerfMetrics.stop();
     game.stop();
     await game.saveAll('shutdown');
     await game.saveMarket();
