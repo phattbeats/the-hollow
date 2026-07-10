@@ -30,7 +30,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 405,
-      "state": "7c2680e7",
+      "state": "ad7b13b3",
       "events": "d077634b",
       "rng": {
         "draws": 3,
@@ -54,6 +54,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -75,6 +78,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -96,6 +102,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -130,6 +139,7 @@
           "potionCooldownUntil": -1,
           "resource": 29.963644,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -179,6 +189,7 @@
           "potionCooldownUntil": -1,
           "resource": 195,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -228,6 +239,7 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "energy",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -293,6 +305,7 @@
             "z": -28
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 1,
             "y": 2.312838,
@@ -329,7 +342,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 405,
-      "state": "188f6af8",
+      "state": "722d1464",
       "events": "82c8d4d1",
       "rng": {
         "draws": 6,
@@ -353,6 +366,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -374,6 +390,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -395,6 +414,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -429,6 +451,7 @@
           "potionCooldownUntil": -1,
           "resource": 59.927288,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -478,6 +501,7 @@
           "potionCooldownUntil": -1,
           "resource": 195,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -527,6 +551,7 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "energy",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -592,6 +617,7 @@
             "z": -28
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 1,
             "y": 2.312838,
@@ -628,7 +654,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 405,
-      "state": "22af73b0",
+      "state": "b4dff020",
       "events": "82c8d4d1",
       "rng": {
         "draws": 9,
@@ -652,6 +678,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -673,6 +702,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -694,6 +726,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -728,6 +763,7 @@
           "potionCooldownUntil": -1,
           "resource": 89.890932,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -777,6 +813,7 @@
           "potionCooldownUntil": -1,
           "resource": 195,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -826,6 +863,7 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "energy",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -891,6 +929,7 @@
             "z": -28
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 1,
             "y": 2.312838,
@@ -927,7 +966,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 405,
-      "state": "a083d4d7",
+      "state": "3bc590af",
       "events": "82c8d4d1",
       "rng": {
         "draws": 12,
@@ -951,6 +990,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -972,6 +1014,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -993,6 +1038,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1027,6 +1075,7 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1076,6 +1125,7 @@
           "potionCooldownUntil": -1,
           "resource": 195,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1125,6 +1175,7 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "energy",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1190,6 +1241,7 @@
             "z": -28
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 1,
             "y": 2.312838,
@@ -1226,7 +1278,7 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 405,
-      "state": "5f3cdf31",
+      "state": "ccc660a7",
       "events": "68543bd3",
       "rng": {
         "draws": 15,
@@ -1237,7 +1289,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 405,
-      "state": "483d97be",
+      "state": "9c79a564",
       "events": "741638a5",
       "rng": {
         "draws": 15,
@@ -1248,7 +1300,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 405,
-      "state": "483d97be",
+      "state": "9c79a564",
       "events": "741638a5",
       "rng": {
         "draws": 15,
@@ -1273,6 +1325,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1294,6 +1349,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1315,6 +1373,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1350,6 +1411,7 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1400,6 +1462,7 @@
           "potionCooldownUntil": -1,
           "resource": 195,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1450,6 +1513,7 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "energy",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1517,6 +1581,7 @@
             "z": -28
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 1,
             "y": 2.312838,

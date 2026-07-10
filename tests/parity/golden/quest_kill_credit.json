@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "f04cb373",
+      "state": "dc1b0bfe",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -39,6 +39,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -73,6 +76,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -100,7 +104,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "416dfccc",
+      "state": "2005637b",
       "events": "3d6acfe5",
       "rng": {
         "draws": 0,
@@ -123,7 +127,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 27600,
+          "nodeHarvestReadyAt": {},
           "questLog": [
             [
               "q_wolves",
@@ -136,6 +142,7 @@
               }
             ]
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -170,6 +177,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -197,7 +205,7 @@
       "tick": 8,
       "time": 0.4,
       "nextId": 410,
-      "state": "24c025fc",
+      "state": "eafc9c6b",
       "events": "80930594",
       "rng": {
         "draws": 32,
@@ -224,7 +232,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 27600,
+          "nodeHarvestReadyAt": {},
           "questLog": [
             [
               "q_wolves",
@@ -237,6 +247,7 @@
               }
             ]
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -272,6 +283,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -299,7 +311,7 @@
       "tick": 8,
       "time": 0.4,
       "nextId": 410,
-      "state": "bb5ba31f",
+      "state": "3cc5c14c",
       "events": "ace7f38f",
       "rng": {
         "draws": 32,
@@ -329,10 +341,13 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 27850,
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_wolves"
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -369,6 +384,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -396,7 +412,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 410,
-      "state": "7509703b",
+      "state": "99816490",
       "events": "741638a5",
       "rng": {
         "draws": 32,
@@ -426,10 +442,13 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 27850,
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_wolves"
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -466,6 +485,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,

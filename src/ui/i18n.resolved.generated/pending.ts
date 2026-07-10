@@ -10,6 +10,7 @@
 
 export const pending: Record<string, readonly string[]> = {
   "es": [
+    "abilityUi.tooltip.selfOnly",
     "auth.sex",
     "auth.sexFemale",
     "auth.sexMale",
@@ -28,6 +29,10 @@ export const pending: Record<string, readonly string[]> = {
     "entities.itemSets.vale_arcanist.bonus3",
     "entities.itemSets.vale_arcanist.name",
     "entities.items.keeper_coal.name",
+    "entities.items.tally_shard.flavorText",
+    "entities.items.tally_shard.name",
+    "entities.items.worn_prayer_token.flavorText",
+    "entities.items.worn_prayer_token.name",
     "entities.npcs.brother_greenpaw.introLines.0",
     "entities.npcs.brother_greenpaw.introLines.1",
     "entities.npcs.brother_greenpaw.introLines.2",
@@ -287,6 +292,7 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind"
   ],
   "es_ES": [
+    "abilityUi.tooltip.selfOnly",
     "auth.sex",
     "auth.sexFemale",
     "auth.sexMale",
@@ -305,6 +311,10 @@ export const pending: Record<string, readonly string[]> = {
     "entities.itemSets.vale_arcanist.bonus3",
     "entities.itemSets.vale_arcanist.name",
     "entities.items.keeper_coal.name",
+    "entities.items.tally_shard.flavorText",
+    "entities.items.tally_shard.name",
+    "entities.items.worn_prayer_token.flavorText",
+    "entities.items.worn_prayer_token.name",
     "entities.npcs.brother_greenpaw.introLines.0",
     "entities.npcs.brother_greenpaw.introLines.1",
     "entities.npcs.brother_greenpaw.introLines.2",
@@ -564,6 +574,7 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind"
   ],
   "fr_FR": [
+    "abilityUi.tooltip.selfOnly",
     "auth.sex",
     "auth.sexFemale",
     "auth.sexMale",
@@ -582,6 +593,10 @@ export const pending: Record<string, readonly string[]> = {
     "entities.itemSets.vale_arcanist.bonus3",
     "entities.itemSets.vale_arcanist.name",
     "entities.items.keeper_coal.name",
+    "entities.items.tally_shard.flavorText",
+    "entities.items.tally_shard.name",
+    "entities.items.worn_prayer_token.flavorText",
+    "entities.items.worn_prayer_token.name",
     "entities.npcs.brother_greenpaw.introLines.0",
     "entities.npcs.brother_greenpaw.introLines.1",
     "entities.npcs.brother_greenpaw.introLines.2",
@@ -841,6 +856,7 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind"
   ],
   "fr_CA": [
+    "abilityUi.tooltip.selfOnly",
     "auth.sex",
     "auth.sexFemale",
     "auth.sexMale",
@@ -859,6 +875,10 @@ export const pending: Record<string, readonly string[]> = {
     "entities.itemSets.vale_arcanist.bonus3",
     "entities.itemSets.vale_arcanist.name",
     "entities.items.keeper_coal.name",
+    "entities.items.tally_shard.flavorText",
+    "entities.items.tally_shard.name",
+    "entities.items.worn_prayer_token.flavorText",
+    "entities.items.worn_prayer_token.name",
     "entities.npcs.brother_greenpaw.introLines.0",
     "entities.npcs.brother_greenpaw.introLines.1",
     "entities.npcs.brother_greenpaw.introLines.2",
@@ -1119,6 +1139,7 @@ export const pending: Record<string, readonly string[]> = {
   ],
   "en_CA": [],
   "it_IT": [
+    "abilityUi.tooltip.selfOnly",
     "auth.sex",
     "auth.sexFemale",
     "auth.sexMale",
@@ -1137,6 +1158,10 @@ export const pending: Record<string, readonly string[]> = {
     "entities.itemSets.vale_arcanist.bonus3",
     "entities.itemSets.vale_arcanist.name",
     "entities.items.keeper_coal.name",
+    "entities.items.tally_shard.flavorText",
+    "entities.items.tally_shard.name",
+    "entities.items.worn_prayer_token.flavorText",
+    "entities.items.worn_prayer_token.name",
     "entities.npcs.brother_greenpaw.introLines.0",
     "entities.npcs.brother_greenpaw.introLines.1",
     "entities.npcs.brother_greenpaw.introLines.2",
@@ -1396,6 +1421,7 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind"
   ],
   "de_DE": [
+    "abilityUi.tooltip.selfOnly",
     "auth.sex",
     "auth.sexFemale",
     "auth.sexMale",
@@ -1414,6 +1440,10 @@ export const pending: Record<string, readonly string[]> = {
     "entities.itemSets.vale_arcanist.bonus3",
     "entities.itemSets.vale_arcanist.name",
     "entities.items.keeper_coal.name",
+    "entities.items.tally_shard.flavorText",
+    "entities.items.tally_shard.name",
+    "entities.items.worn_prayer_token.flavorText",
+    "entities.items.worn_prayer_token.name",
     "entities.npcs.brother_greenpaw.introLines.0",
     "entities.npcs.brother_greenpaw.introLines.1",
     "entities.npcs.brother_greenpaw.introLines.2",
@@ -1741,6 +1771,7 @@ export const pending: Record<string, readonly string[]> = {
     "sim.homestead.tooCloseWildlife"
   ],
   "pt_BR": [
+    "abilityUi.tooltip.selfOnly",
     "auth.sex",
     "auth.sexFemale",
     "auth.sexMale",
@@ -1759,6 +1790,10 @@ export const pending: Record<string, readonly string[]> = {
     "entities.itemSets.vale_arcanist.bonus3",
     "entities.itemSets.vale_arcanist.name",
     "entities.items.keeper_coal.name",
+    "entities.items.tally_shard.flavorText",
+    "entities.items.tally_shard.name",
+    "entities.items.worn_prayer_token.flavorText",
+    "entities.items.worn_prayer_token.name",
     "entities.npcs.brother_greenpaw.introLines.0",
     "entities.npcs.brother_greenpaw.introLines.1",
     "entities.npcs.brother_greenpaw.introLines.2",
@@ -2035,6 +2070,7 @@ export const pending: Record<string, readonly string[]> = {
     "sim.homestead.tooCloseWildlife"
   ],
   "nl_NL": [
+    "abilityUi.tooltip.selfOnly",
     "auth.sex",
     "auth.sexFemale",
     "auth.sexMale",
@@ -2053,6 +2089,10 @@ export const pending: Record<string, readonly string[]> = {
     "entities.itemSets.vale_arcanist.bonus3",
     "entities.itemSets.vale_arcanist.name",
     "entities.items.keeper_coal.name",
+    "entities.items.tally_shard.flavorText",
+    "entities.items.tally_shard.name",
+    "entities.items.worn_prayer_token.flavorText",
+    "entities.items.worn_prayer_token.name",
     "entities.npcs.brother_greenpaw.introLines.0",
     "entities.npcs.brother_greenpaw.introLines.1",
     "entities.npcs.brother_greenpaw.introLines.2",
@@ -2312,6 +2352,7 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind"
   ],
   "pl_PL": [
+    "abilityUi.tooltip.selfOnly",
     "auth.sex",
     "auth.sexFemale",
     "auth.sexMale",
@@ -2330,6 +2371,10 @@ export const pending: Record<string, readonly string[]> = {
     "entities.itemSets.vale_arcanist.bonus3",
     "entities.itemSets.vale_arcanist.name",
     "entities.items.keeper_coal.name",
+    "entities.items.tally_shard.flavorText",
+    "entities.items.tally_shard.name",
+    "entities.items.worn_prayer_token.flavorText",
+    "entities.items.worn_prayer_token.name",
     "entities.npcs.brother_greenpaw.introLines.0",
     "entities.npcs.brother_greenpaw.introLines.1",
     "entities.npcs.brother_greenpaw.introLines.2",
@@ -2589,6 +2634,7 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind"
   ],
   "id_ID": [
+    "abilityUi.tooltip.selfOnly",
     "auth.sex",
     "auth.sexFemale",
     "auth.sexMale",
@@ -2607,6 +2653,10 @@ export const pending: Record<string, readonly string[]> = {
     "entities.itemSets.vale_arcanist.bonus3",
     "entities.itemSets.vale_arcanist.name",
     "entities.items.keeper_coal.name",
+    "entities.items.tally_shard.flavorText",
+    "entities.items.tally_shard.name",
+    "entities.items.worn_prayer_token.flavorText",
+    "entities.items.worn_prayer_token.name",
     "entities.npcs.brother_greenpaw.introLines.0",
     "entities.npcs.brother_greenpaw.introLines.1",
     "entities.npcs.brother_greenpaw.introLines.2",
@@ -2866,6 +2916,7 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind"
   ],
   "tr_TR": [
+    "abilityUi.tooltip.selfOnly",
     "auth.sex",
     "auth.sexFemale",
     "auth.sexMale",
@@ -2884,6 +2935,10 @@ export const pending: Record<string, readonly string[]> = {
     "entities.itemSets.vale_arcanist.bonus3",
     "entities.itemSets.vale_arcanist.name",
     "entities.items.keeper_coal.name",
+    "entities.items.tally_shard.flavorText",
+    "entities.items.tally_shard.name",
+    "entities.items.worn_prayer_token.flavorText",
+    "entities.items.worn_prayer_token.name",
     "entities.npcs.brother_greenpaw.introLines.0",
     "entities.npcs.brother_greenpaw.introLines.1",
     "entities.npcs.brother_greenpaw.introLines.2",
@@ -3143,6 +3198,7 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind"
   ],
   "sv_SE": [
+    "abilityUi.tooltip.selfOnly",
     "auth.sex",
     "auth.sexFemale",
     "auth.sexMale",
@@ -3161,6 +3217,10 @@ export const pending: Record<string, readonly string[]> = {
     "entities.itemSets.vale_arcanist.bonus3",
     "entities.itemSets.vale_arcanist.name",
     "entities.items.keeper_coal.name",
+    "entities.items.tally_shard.flavorText",
+    "entities.items.tally_shard.name",
+    "entities.items.worn_prayer_token.flavorText",
+    "entities.items.worn_prayer_token.name",
     "entities.npcs.brother_greenpaw.introLines.0",
     "entities.npcs.brother_greenpaw.introLines.1",
     "entities.npcs.brother_greenpaw.introLines.2",
@@ -3420,6 +3480,7 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind"
   ],
   "vi_VN": [
+    "abilityUi.tooltip.selfOnly",
     "auth.sex",
     "auth.sexFemale",
     "auth.sexMale",
@@ -3438,6 +3499,10 @@ export const pending: Record<string, readonly string[]> = {
     "entities.itemSets.vale_arcanist.bonus3",
     "entities.itemSets.vale_arcanist.name",
     "entities.items.keeper_coal.name",
+    "entities.items.tally_shard.flavorText",
+    "entities.items.tally_shard.name",
+    "entities.items.worn_prayer_token.flavorText",
+    "entities.items.worn_prayer_token.name",
     "entities.npcs.brother_greenpaw.introLines.0",
     "entities.npcs.brother_greenpaw.introLines.1",
     "entities.npcs.brother_greenpaw.introLines.2",
@@ -3697,6 +3762,7 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind"
   ],
   "da_DK": [
+    "abilityUi.tooltip.selfOnly",
     "auth.sex",
     "auth.sexFemale",
     "auth.sexMale",
@@ -3715,6 +3781,10 @@ export const pending: Record<string, readonly string[]> = {
     "entities.itemSets.vale_arcanist.bonus3",
     "entities.itemSets.vale_arcanist.name",
     "entities.items.keeper_coal.name",
+    "entities.items.tally_shard.flavorText",
+    "entities.items.tally_shard.name",
+    "entities.items.worn_prayer_token.flavorText",
+    "entities.items.worn_prayer_token.name",
     "entities.npcs.brother_greenpaw.introLines.0",
     "entities.npcs.brother_greenpaw.introLines.1",
     "entities.npcs.brother_greenpaw.introLines.2",

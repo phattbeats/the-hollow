@@ -1334,6 +1334,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'abilityUi.tooltip.offGlobalCooldown': 'グローバルクールダウン外',
   'abilityUi.tooltip.friendlyTarget': '味方対象',
   'abilityUi.tooltip.enemyTarget': '敵対象',
+  'abilityUi.tooltip.selfOnly': '自分のみ',
   'abilityUi.tooltip.damageRange': '{min}から{max}',
   'abilityUi.tooltip.finisherDamage': '{base}にコンボポイントごと{perCombo}',
   'abilityUi.resources.mana': 'マナ',
@@ -2917,7 +2918,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_root_hollow_boars_ii.text':
     'この職では認めるべきでないことを認めよう。五頭は楽観が過ぎた。下の巣からまだ湧いてくる。あと八頭で、記録を三度目に書き直さずに季を閉じられる。記録は書き直しを嫌う。俺もだ。',
   'entities.quests.q_root_hollow_boars_ii.completion':
-    '閉じた。署名した。綴じた。これで季は予定どおり進められる、暦を守る者が再び現れたのだからな。おまえは極めて小さな会衆を大いに助けた。念のため言っておくが、その会衆とは俺のことだ。',
+    '閉じた。署名した。綴じた。これで季は予定どおり進められる、暦を守る者が再び現れたのだからな。おまえは極めて小さな会衆を大いに助けた。念のため言っておくが、その会衆とは俺のことだ。この台帳自体は、この取り決めよりもさらに古い。会ったこともない手によって綴じられ、俺が数え上げるつもりのない数を記している。かつて、ここには実に几帳面な者がいたのだろう。俺はただ、その歩調に追いつこうとしているだけだ。',
   'entities.quests.q_root_hollow_boars_ii.objectives.0.label': '野生の猪を討伐',
   'entities.quests.q_fallow_acres_wolves.title': '畝を追われる狼たち',
   'entities.quests.q_fallow_acres_wolves.text':
@@ -4657,6 +4658,12 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': '破れた日記のページ',
   'entities.items.shrine_diary_page.flavorText':
     '……蝋燭で四十日を数えたところで、数えるのをやめた。ここの闇は今もあの方を忘れない、あの方がこの場所を忘れてしまっても。鷺が低く舞うのを見たら、灯守りに芯はまだ燃えていると伝えてくれ……',
+  'entities.items.worn_prayer_token.name': 'すり減った祈りの証',
+  'entities.items.worn_prayer_token.flavorText':
+    '……片面が、自分のものではない親指に磨かれて滑らかになっている。ここに積まれた他の百枚近くと、同じ浅い溝が刻まれている、少なくともこの山はそう語っている。一本の親指で百枚も磨り減らせはしない。だが、大勢の親指がひとつの溝を磨くことなら、できる……',
+  'entities.items.tally_shard.name': '刻み跡の欠片',
+  'entities.items.tally_shard.flavorText':
+    '……五本ひと組で深く刻まれ、数え終えるたびに線で消されている。消された五本組が幾百とあり、それが途絶える、最後の一列だけは最後まで消されずに終わっている……',
   'entities.mobs.acolyte_tessa.name': '侍祭テッサ',
   'entities.mobs.deacon_varric.name': '助祭ヴァリック',
   'entities.mobs.reliquary_bonewalker.name': '蘇りし骨歩き',

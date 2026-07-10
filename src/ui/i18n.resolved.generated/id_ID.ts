@@ -3527,6 +3527,7 @@ export const id_ID: EnTranslations = {
       "offGlobalCooldown": "Di luar jeda global",
       "friendlyTarget": "Target kawan",
       "enemyTarget": "Target musuh",
+      "selfOnly": "Self only",
       "damageRange": "{min} hingga {max}",
       "finisherDamage": "{base} ditambah {perCombo} per poin kombo"
     },
@@ -5376,6 +5377,14 @@ export const id_ID: EnTranslations = {
         "name": "Halaman Buku Harian yang Robek",
         "flavorText": "...menghitung empat puluh hari dengan cahaya lilin sebelum kehilangan hitungan. Kegelapan di bawah sini tak melupakan-Nya, meski Dia telah melupakan tempat ini. Jika bangau terbang rendah, katakan pada Sang Penjaga sumbunya masih menyala..."
       },
+      "worn_prayer_token": {
+        "name": "Worn Prayer Token",
+        "flavorText": "...smooth on one face from a thumb that isn't mine, worn the same shallow groove into a hundred more like it before this one, or so the pile down here would have you believe. one thumb doesn't wear a hundred tokens. a lot of thumbs wear one groove, though..."
+      },
+      "tally_shard": {
+        "name": "Tally-Marked Shard",
+        "flavorText": "...marks in fives, scratched deep, crossed each time the count came round. hundreds of fives before the crossing stops, and the last row was never finished..."
+      },
       "reliquary_plate_chest": {
         "name": "Baju Zirah Penjaga Relikuari"
       },
@@ -6859,7 +6868,7 @@ export const id_ID: EnTranslations = {
       "q_root_hollow_boars_ii": {
         "title": "Root Hollow's Reckoning",
         "text": "I will admit what the office discourages admitting: five was optimistic. The lower dens keep pushing up more. Eight further, and I can close the season without amending the record a third time. The record resents amendment. So do I.",
-        "completion": "Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me.",
+        "completion": "Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me. The register itself is older than that arrangement, bound in a hand I have never met, keeping a count I choose not to add. Someone was thorough here, once. I only try to keep pace.",
         "objectives": {
           "0": {
             "label": "Wild Boar slain"

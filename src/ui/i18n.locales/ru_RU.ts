@@ -1357,6 +1357,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'abilityUi.tooltip.offGlobalCooldown': 'Вне глобального восстановления',
   'abilityUi.tooltip.friendlyTarget': 'Дружественная цель',
   'abilityUi.tooltip.enemyTarget': 'Вражеская цель',
+  'abilityUi.tooltip.selfOnly': 'Только на себя',
   'abilityUi.tooltip.damageRange': 'от {min} до {max}',
   'abilityUi.tooltip.finisherDamage': '{base} плюс {perCombo} за прием серии',
   'abilityUi.resources.mana': 'маны',
@@ -2951,7 +2952,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_root_hollow_boars_ii.text':
     'Признаю то, что должность признавать не велит: пять было оптимизмом. Из нижних нор лезут всё новые. Ещё восемь, и я смогу закрыть сезон, не правя запись в третий раз. Запись не терпит правок. Как и я.',
   'entities.quests.q_root_hollow_boars_ii.completion':
-    'Закрыто. Подписано. Подшито. Сезон может идти точно по расписанию, раз снова есть кому вести расписание. Ты весьма помог очень малой пастве. Уточню: паства эта и есть я.',
+    'Закрыто. Подписано. Подшито. Сезон может идти точно по расписанию, раз снова есть кому вести расписание. Ты весьма помог очень малой пастве. Уточню: паства эта и есть я. Сам реестр старше этого порядка, переплетён рукой, которую я никогда не встречал, и хранит счёт, который я предпочитаю не подводить. Кто-то был здесь весьма скрупулёзен, некогда. Я лишь стараюсь поспевать.',
   'entities.quests.q_root_hollow_boars_ii.objectives.0.label': 'Дикий кабан убит',
   'entities.quests.q_fallow_acres_wolves.title': 'Волки прочь с борозд',
   'entities.quests.q_fallow_acres_wolves.text':
@@ -4756,6 +4757,12 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': 'Обрывок страницы дневника',
   'entities.items.shrine_diary_page.flavorText':
     '...считал сорок дней при свече, пока не сбился со счёта. Тьма здесь, внизу, не забывает Его, даже если Он забыл это место. Если цапля пролетит низко, скажи пономарю, что фитиль всё ещё горит...',
+  'entities.items.worn_prayer_token.name': 'Потёртый молитвенный жетон',
+  'entities.items.worn_prayer_token.flavorText':
+    '...с одной стороны отполирован не моим большим пальцем, та же неглубокая бороздка, что и на добрых сотне таких же в этой груде, если верить самой груде. один палец не сотрёт сотню жетонов. а вот множество пальцев одну бороздку, вполне могут...',
+  'entities.items.tally_shard.name': 'Осколок с зарубками',
+  'entities.items.tally_shard.flavorText':
+    '...зарубки по пять, глубокие, каждая вычеркнута по завершении счёта. сотни пятёрок вычеркнуты, прежде чем вычёркивание прекращается, а последний ряд так и остался незавершённым...',
   'entities.mobs.acolyte_tessa.name': 'Послушница Тесса',
   'entities.mobs.deacon_varric.name': 'Дьякон Варрик',
   'entities.mobs.reliquary_bonewalker.name': 'Поднятый костеход',
