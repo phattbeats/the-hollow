@@ -1627,7 +1627,13 @@ export type PlantThresholdKind = 'house_claimed';
 
 export type PlantMood = 'clear' | 'hazy';
 
-export type PlantTrigger = 'whim' | 'full_smoke' | 'threshold' | 'address' | 'ambient';
+export type PlantTrigger =
+  | 'whim'
+  | 'full_smoke'
+  | 'sustained_smoke'
+  | 'threshold'
+  | 'address'
+  | 'ambient';
 
 export type PlantSoreSpot = 'smokey' | 'buried';
 
@@ -1643,6 +1649,9 @@ export interface PlantUtteranceMeta {
   addressedByName?: string;
   addressedText?: string;
   soreSpot?: PlantSoreSpot;
+  // sustained_smoke only: the player who most recently fed the hearth, when
+  // known - the keeper the lean-in line lands on.
+  keeperName?: string;
 }
 
 // Guild calendar command outcomes (mirrors server/social.ts CalendarResultCode;
