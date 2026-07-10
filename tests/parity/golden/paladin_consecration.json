@@ -15,7 +15,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "57fa0b60",
+      "state": "8447e665",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -38,6 +38,9 @@
             "chest": "recruit_tunic",
             "mainhand": "training_mace"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -73,6 +76,7 @@
           "potionCooldownUntil": -1,
           "resource": 93,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -100,7 +104,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 403,
-      "state": "654f5fc3",
+      "state": "ed4bf7bb",
       "events": "ebc63ba4",
       "rng": {
         "draws": 6,
@@ -111,7 +115,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 403,
-      "state": "fad37a42",
+      "state": "4d6a57f6",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -122,7 +126,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 403,
-      "state": "c8cb868e",
+      "state": "bf59d672",
       "events": "23190ea9",
       "rng": {
         "draws": 88,
@@ -133,7 +137,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 403,
-      "state": "7f2b5bb1",
+      "state": "84f31171",
       "events": "741638a5",
       "rng": {
         "draws": 178,
@@ -144,7 +148,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 403,
-      "state": "775286b3",
+      "state": "a8b0b82b",
       "events": "afce7a9d",
       "rng": {
         "draws": 287,
@@ -155,7 +159,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 403,
-      "state": "f89a006e",
+      "state": "9834043e",
       "events": "741638a5",
       "rng": {
         "draws": 405,
@@ -166,7 +170,7 @@
       "tick": 140,
       "time": 7,
       "nextId": 403,
-      "state": "3d1a570b",
+      "state": "3c482dcb",
       "events": "d77d156f",
       "rng": {
         "draws": 520,
@@ -177,7 +181,7 @@
       "tick": 160,
       "time": 8,
       "nextId": 403,
-      "state": "5b20e5a5",
+      "state": "0d588ee1",
       "events": "741638a5",
       "rng": {
         "draws": 645,
@@ -188,7 +192,7 @@
       "tick": 180,
       "time": 9,
       "nextId": 403,
-      "state": "4fdf37e8",
+      "state": "38736140",
       "events": "2e8e3128",
       "rng": {
         "draws": 794,
@@ -199,7 +203,7 @@
       "tick": 200,
       "time": 10,
       "nextId": 403,
-      "state": "121f15c7",
+      "state": "9c5c7dd3",
       "events": "741638a5",
       "rng": {
         "draws": 934,
@@ -210,7 +214,7 @@
       "tick": 201,
       "time": 10.05,
       "nextId": 403,
-      "state": "795dcd43",
+      "state": "70034f79",
       "events": "741638a5",
       "rng": {
         "draws": 935,
@@ -236,7 +240,10 @@
             "chest": "recruit_tunic",
             "mainhand": "training_mace"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -273,6 +280,7 @@
           "potionCooldownUntil": -1,
           "resource": 657,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -328,6 +336,7 @@
             "z": 1.015171
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,

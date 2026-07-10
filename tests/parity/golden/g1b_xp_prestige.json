@@ -17,7 +17,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "f04cb373",
+      "state": "dc1b0bfe",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -40,6 +40,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -74,6 +77,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -101,7 +105,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 402,
-      "state": "c1776321",
+      "state": "d3770e6c",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -112,7 +116,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 402,
-      "state": "5b494625",
+      "state": "13e03df8",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -123,7 +127,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 402,
-      "state": "4f9f7a47",
+      "state": "002599a2",
       "events": "741638a5",
       "rng": {
         "draws": 76,
@@ -134,7 +138,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 402,
-      "state": "4f9f7a47",
+      "state": "002599a2",
       "events": "741638a5",
       "rng": {
         "draws": 76,
@@ -157,7 +161,10 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "restedXp": 0.125,
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -192,6 +199,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -219,7 +227,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 402,
-      "state": "4eae75b0",
+      "state": "b38831fd",
       "events": "86e8ff47",
       "rng": {
         "draws": 76,
@@ -244,8 +252,11 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 160,
+          "nodeHarvestReadyAt": {},
           "restedXp": 920,
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -281,6 +292,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -308,7 +320,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 402,
-      "state": "211c0791",
+      "state": "ad50e5e6",
       "events": "459a6d77",
       "rng": {
         "draws": 76,
@@ -334,8 +346,11 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 610,
+          "nodeHarvestReadyAt": {},
           "restedXp": 920,
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -371,6 +386,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -398,7 +414,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 402,
-      "state": "07febad7",
+      "state": "468725f2",
       "events": "e34a40f5",
       "rng": {
         "draws": 76,
@@ -424,8 +440,11 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 190400,
+          "nodeHarvestReadyAt": {},
           "restedXp": 920,
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -461,6 +480,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -488,7 +508,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 402,
-      "state": "1b32bfcc",
+      "state": "0b36a76b",
       "events": "f513be62",
       "rng": {
         "draws": 76,
@@ -514,9 +534,12 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 190400,
+          "nodeHarvestReadyAt": {},
           "prestigeRank": 1,
           "restedXp": 920,
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -551,6 +574,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -578,7 +602,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 402,
-      "state": "1b32bfcc",
+      "state": "0b36a76b",
       "events": "741638a5",
       "rng": {
         "draws": 76,
@@ -604,9 +628,12 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 190400,
+          "nodeHarvestReadyAt": {},
           "prestigeRank": 1,
           "restedXp": 920,
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -641,6 +668,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -668,7 +696,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 402,
-      "state": "1b32bfcc",
+      "state": "0b36a76b",
       "events": "741638a5",
       "rng": {
         "draws": 76,
@@ -694,9 +722,12 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 190400,
+          "nodeHarvestReadyAt": {},
           "prestigeRank": 1,
           "restedXp": 920,
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -731,6 +762,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,

@@ -176,6 +176,7 @@ type ClientMessage = Record<string, unknown> & {
   mode?: string;
   n?: string;
   name?: string;
+  node?: string;
   npc?: number;
   objectId?: number;
   price?: number;
@@ -2365,6 +2366,9 @@ export class GameServer {
       case 'harvestCorpse':
         if (typeof msg.id === 'number') sim.harvestCorpse(msg.id, pid);
         break;
+      case 'harvestNode':
+        if (typeof msg.node === 'string') sim.harvestNode(msg.node, pid);
+        break;
       case 'lootRoll':
         if (
           typeof msg.rollId === 'number' &&
@@ -3254,6 +3258,7 @@ export class GameServer {
     maybe('dcompanion', this.sim.delveCompanionWire(anchorSession.pid));
     maybe('dmarks', this.sim.delveMarksFor(anchorSession.pid));
     maybe('dcomp', this.sim.companionUpgradesFor(anchorSession.pid));
+    maybe('gprof', this.sim.gatheringProficiencyFor(anchorSession.pid));
     maybe('dclears', this.sim.delveClearsFor(anchorSession.pid));
     maybe('delveDaily', this.sim.delveDailyWire(anchorSession.pid));
     // stats + weapon stay per-tick: recalcPlayerStats re-derives them on every

@@ -35,7 +35,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "74633792",
+      "state": "7710d27d",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -58,6 +58,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -92,6 +95,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -119,7 +123,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "69060df4",
+      "state": "2712f02f",
       "events": "ddca878e",
       "rng": {
         "draws": 0,
@@ -142,6 +146,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -156,6 +161,8 @@
               "itemId": "minor_healing_potion"
             }
           ],
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -190,6 +197,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -217,7 +225,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "aa61f56e",
+      "state": "3029987d",
       "events": "17132d76",
       "rng": {
         "draws": 0,
@@ -241,6 +249,7 @@
             "helmet": "cryptbone_helm",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -259,6 +268,8 @@
               "itemId": "roadwardens_helm"
             }
           ],
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -293,6 +304,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -320,7 +332,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "1fe1cdfa",
+      "state": "fafec2c5",
       "events": "76309110",
       "rng": {
         "draws": 0,
@@ -344,6 +356,7 @@
             "helmet": "roadwardens_helm",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -362,6 +375,8 @@
               "itemId": "cryptbone_helm"
             }
           ],
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -396,6 +411,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -423,7 +439,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "93b7e1f6",
+      "state": "41bf9d79",
       "events": "8dc8fb89",
       "rng": {
         "draws": 0,
@@ -446,6 +462,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -468,6 +485,8 @@
               "itemId": "roadwardens_helm"
             }
           ],
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -502,6 +521,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -529,7 +549,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "d3c9db60",
+      "state": "ee244837",
       "events": "58967549",
       "rng": {
         "draws": 0,
@@ -552,6 +572,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -566,6 +587,8 @@
               "itemId": "roadwardens_helm"
             }
           ],
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -612,6 +635,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "sitting": true,
           "spawnPos": {
             "x": 2,
@@ -640,7 +664,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "a9c487e0",
+      "state": "4ab220cb",
       "events": "6078006e",
       "rng": {
         "draws": 0,
@@ -663,6 +687,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -673,6 +698,8 @@
               "itemId": "roadwardens_helm"
             }
           ],
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -720,6 +747,7 @@
           "potionCooldownRemaining": 120,
           "potionCooldownUntil": 120,
           "resourceType": "rage",
+          "sex": "m",
           "sitting": true,
           "spawnPos": {
             "x": 2,
@@ -748,7 +776,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "8e1b2b68",
+      "state": "e3d8e7af",
       "events": "6ceb7f37",
       "rng": {
         "draws": 0,
@@ -771,6 +799,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -781,6 +810,8 @@
               "itemId": "roadwardens_helm"
             }
           ],
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -840,6 +871,7 @@
           "potionCooldownRemaining": 120,
           "potionCooldownUntil": 120,
           "resourceType": "rage",
+          "sex": "m",
           "sitting": true,
           "spawnPos": {
             "x": 2,
@@ -868,7 +900,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "628096f6",
+      "state": "4f53dacf",
       "events": "2e03fa4e",
       "rng": {
         "draws": 0,
@@ -891,6 +923,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -905,6 +938,8 @@
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -964,6 +999,7 @@
           "potionCooldownRemaining": 120,
           "potionCooldownUntil": 120,
           "resourceType": "rage",
+          "sex": "m",
           "sitting": true,
           "spawnPos": {
             "x": 2,
@@ -992,7 +1028,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "07894c01",
+      "state": "8119647a",
       "events": "4e4f7728",
       "rng": {
         "draws": 0,
@@ -1015,6 +1051,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -1029,6 +1066,8 @@
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1094,6 +1133,7 @@
           "potionCooldownRemaining": 120,
           "potionCooldownUntil": 120,
           "resourceType": "rage",
+          "sex": "m",
           "sitting": true,
           "spawnPos": {
             "x": 2,
@@ -1122,7 +1162,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "18c6078e",
+      "state": "3880423f",
       "events": "35ff864a",
       "rng": {
         "draws": 0,
@@ -1145,6 +1185,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -1155,6 +1196,8 @@
               "itemId": "roadwardens_helm"
             }
           ],
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1224,6 +1267,7 @@
           "potionCooldownRemaining": 120,
           "potionCooldownUntil": 120,
           "resourceType": "rage",
+          "sex": "m",
           "sitting": true,
           "spawnPos": {
             "x": 2,
@@ -1252,7 +1296,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "9ca08f70",
+      "state": "09a02b4b",
       "events": "9d63bb3d",
       "rng": {
         "draws": 0,
@@ -1275,6 +1319,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -1289,6 +1334,8 @@
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1358,6 +1405,7 @@
           "potionCooldownRemaining": 120,
           "potionCooldownUntil": 120,
           "resourceType": "rage",
+          "sex": "m",
           "sitting": true,
           "spawnPos": {
             "x": 2,
@@ -1386,7 +1434,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "9ca08f70",
+      "state": "09a02b4b",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -1409,6 +1457,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -1423,6 +1472,8 @@
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1492,6 +1543,7 @@
           "potionCooldownRemaining": 120,
           "potionCooldownUntil": 120,
           "resourceType": "rage",
+          "sex": "m",
           "sitting": true,
           "spawnPos": {
             "x": 2,

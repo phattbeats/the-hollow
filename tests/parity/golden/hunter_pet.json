@@ -15,7 +15,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "922bf058",
+      "state": "1e5d0dc1",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -38,6 +38,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -74,6 +77,7 @@
           "rangedPower": 50,
           "resource": 93,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -101,7 +105,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 405,
-      "state": "a485792a",
+      "state": "6c2c344a",
       "events": "f204331a",
       "rng": {
         "draws": 6,
@@ -112,7 +116,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 405,
-      "state": "0f95963e",
+      "state": "b008fe92",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -123,7 +127,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 405,
-      "state": "3462b768",
+      "state": "6f38642c",
       "events": "cd05d551",
       "rng": {
         "draws": 100,
@@ -134,7 +138,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 405,
-      "state": "71b1f6d8",
+      "state": "39070050",
       "events": "741638a5",
       "rng": {
         "draws": 203,
@@ -145,7 +149,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 405,
-      "state": "e571639f",
+      "state": "56ac87e3",
       "events": "96cd5722",
       "rng": {
         "draws": 305,
@@ -156,7 +160,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 405,
-      "state": "3db9589f",
+      "state": "c97cd00f",
       "events": "741638a5",
       "rng": {
         "draws": 413,
@@ -167,7 +171,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 405,
-      "state": "3db9589f",
+      "state": "c97cd00f",
       "events": "741638a5",
       "rng": {
         "draws": 413,
@@ -192,7 +196,10 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -231,6 +238,7 @@
           "rangedPower": 116,
           "resource": 358,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -281,6 +289,7 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3,
             "y": 1.5,
@@ -330,6 +339,7 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 9,
             "y": 1.5,
@@ -382,6 +392,7 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": -6,
             "y": 1.5,
