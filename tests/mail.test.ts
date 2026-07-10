@@ -38,7 +38,7 @@ function errorsSince(sim: Sim): string[] {
   return sim.events.filter((e) => e.type === 'error').map((e) => (e as { text: string }).text);
 }
 
-describe('the Ravenpost — in-game mail', () => {
+describe('the Ravenpost: in-game mail', () => {
   it('spawns a single Ravenpost NPC', () => {
     const sim = makeWorld();
     const posts = [...sim.entities.values()].filter((e) => e.templateId === 'the_ravenpost');
@@ -267,5 +267,60 @@ describe('the Ravenpost — in-game mail', () => {
     standAtRavenpost(sim, recipient);
     for (let i = 0; i < 60 * 20; i++) sim.tick();
     expect(sim.mailInfoFor(recipient)!.messages.length).toBe(1);
+  });
+
+  it('mailSendResolved delivers to a recipient who is offline at send time (PHAA-495 offline gate)', () => {
+    // The board's one-online-character-per-account decision is justified by
+    // Ravenpost covering cross-character transfers, which REQUIRES mail to reach
+    // an offline recipient. The sim's live-players-only mailSend cannot; the
+    // server resolves the recipient against the character DB and hands the
+    // resolved identity to mailSendResolved. Character 77 is never a live player
+    // here: it stands in for that offline recipient.
+    const sim = makeWorld();
+    const sender = sim.addPlayer('warrior', 'Sender', { characterId: 1 });
+    standAtRavenpost(sim, sender);
+    sim.players.get(sender)!.copper = 1000;
+    sim.events.length = 0;
+
+    sim.mailSendResolved({ key: '77', name: 'Offline' }, 'Hi', 'hello', 40, [], sender);
+
+    // No "no adventurer by that name" error, and postage + coin are escrowed now.
+    expect(errorsSince(sim)).toEqual([]);
+    expect(copperOf(sim, sender)).toBe(1000 - 40 - MAIL_POSTAGE);
+    const save = sim.serializeMail();
+    expect(save.mail.length).toBe(1);
+    expect(save.mail[0].recipientKey).toBe('77');
+
+    // The recipient logs in for the first time and finds the waiting letter.
+    const recipient = sim.addPlayer('mage', 'Offline', { characterId: 77 });
+    standAtRavenpost(sim, recipient);
+    for (let i = 0; i < 60 * 20; i++) sim.tick();
+    const info = sim.mailInfoFor(recipient)!;
+    expect(info.messages.length).toBe(1);
+    expect(info.messages[0].copper).toBe(40);
+  });
+
+  it('mailTake emits the collect message via formatMoney for the client matcher (PHAA-495 money-format)', () => {
+    // The collect message must carry formatMoney output (e.g. "1s 25c"), not a raw
+    // "125 copper", so the sim_i18n matcher key loot.mailCollectCopper re-localizes
+    // it. A bare number bakes English into every locale.
+    const sim = makeWorld();
+    const sender = sim.addPlayer('warrior', 'Sender', { characterId: 1 });
+    const recipient = sim.addPlayer('mage', 'Recipient', { characterId: 2 });
+    standAtRavenpost(sim, sender);
+    sim.players.get(sender)!.copper = 1000;
+    sim.mailSend('Recipient', 'Coin', '', 125, [], sender);
+
+    standAtRavenpost(sim, recipient);
+    for (let i = 0; i < 60 * 20; i++) sim.tick();
+    sim.events.length = 0;
+    const letterId = sim.mailInfoFor(recipient)!.messages[0].id;
+    sim.mailTake(letterId, recipient);
+
+    const loot = sim.events
+      .filter((e) => e.type === 'loot')
+      .map((e) => (e as { text: string }).text);
+    expect(loot).toContain('You collect 1s 25c from a letter.');
+    expect(loot.some((text) => text.includes('copper'))).toBe(false);
   });
 });

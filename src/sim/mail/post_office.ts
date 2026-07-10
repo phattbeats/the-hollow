@@ -293,7 +293,7 @@ export class PostOffice {
       meta.copper += m.copper;
       this.ctx.emit({
         type: 'loot',
-        text: `You collect ${m.copper} copper from a letter.`,
+        text: `You collect ${formatMoney(m.copper)} from a letter.`,
         pid: meta.entityId,
       });
     }
@@ -355,7 +355,7 @@ export class PostOffice {
     const meta = this.ctx.players.get(pid);
     const e = this.ctx.entities.get(pid);
     if (!meta || !e) return null;
-    // The Ravenpost is a place you visit — only stream the letter contents
+    // The Ravenpost is a place you visit, only stream the letter contents
     // while standing there; the unread count (mailUnreadFor) is separate and
     // always available so the HUD envelope indicator works anywhere.
     if (!this.nearPostOffice(e)) return null;

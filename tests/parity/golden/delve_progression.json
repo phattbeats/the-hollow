@@ -15,8 +15,8 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 402,
-      "state": "dc1b0bfe",
+      "nextId": 403,
+      "state": "bde832dc",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -29,12 +29,13 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
@@ -59,7 +60,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 90,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -103,9 +104,9 @@
     {
       "tick": 5,
       "time": 0.25,
-      "nextId": 419,
-      "state": "60a0fc26",
-      "events": "0e86288d",
+      "nextId": 420,
+      "state": "a3b97122",
+      "events": "3fc146f4",
       "rng": {
         "draws": 1,
         "digest": "e763f88a"
@@ -114,8 +115,8 @@
     {
       "tick": 7,
       "time": 0.35,
-      "nextId": 419,
-      "state": "241024b0",
+      "nextId": 420,
+      "state": "f75b5420",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -128,12 +129,13 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
@@ -158,7 +160,7 @@
           "dodgeChance": 0.063,
           "fiveSecondRule": 99.35,
           "hp": 50000,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 7,
           "lootFfaTimer": "Infinity",
@@ -201,9 +203,9 @@
     {
       "tick": 7,
       "time": 0.35,
-      "nextId": 419,
-      "state": "2031d8d4",
-      "events": "62e6ce51",
+      "nextId": 420,
+      "state": "61e06448",
+      "events": "60be9013",
       "rng": {
         "draws": 3,
         "digest": "391d1f61"
@@ -215,6 +217,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {
             "companion_tessa": 2
@@ -226,7 +229,7 @@
             "date": "2099-06-25"
           },
           "delveMarks": 89,
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "legs": "reliquary_legs",
@@ -252,7 +255,7 @@
           "dodgeChance": 0.063,
           "fiveSecondRule": 99.35,
           "hp": 338,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 7,
           "lootFfaTimer": "Infinity",
@@ -295,8 +298,8 @@
     {
       "tick": 9,
       "time": 0.45,
-      "nextId": 419,
-      "state": "318b1dba",
+      "nextId": 420,
+      "state": "9ee4193a",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -309,6 +312,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {
             "companion_tessa": 2
@@ -320,7 +324,7 @@
             "date": "2099-06-25"
           },
           "delveMarks": 89,
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "legs": "reliquary_legs",
@@ -346,7 +350,7 @@
           "dodgeChance": 0.063,
           "fiveSecondRule": 99.45,
           "hp": 338,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 7,
           "lootFfaTimer": "Infinity",

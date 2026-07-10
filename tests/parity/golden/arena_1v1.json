@@ -14,7 +14,7 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 401,
+      "nextId": 402,
       "state": "5bc471b0",
       "events": "741638a5",
       "rng": {
@@ -28,9 +28,9 @@
     {
       "tick": 25,
       "time": 1.25,
-      "nextId": 403,
-      "state": "539a04cd",
-      "events": "2b655403",
+      "nextId": 404,
+      "state": "f77cedc1",
+      "events": "75927fe7",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -39,9 +39,9 @@
     {
       "tick": 50,
       "time": 2.5,
-      "nextId": 403,
-      "state": "481005e1",
-      "events": "2806c2e4",
+      "nextId": 404,
+      "state": "dbeef6e1",
+      "events": "43253096",
       "rng": {
         "draws": 36,
         "digest": "454db431"
@@ -50,9 +50,9 @@
     {
       "tick": 75,
       "time": 3.75,
-      "nextId": 403,
-      "state": "73da0f55",
-      "events": "aa847cdc",
+      "nextId": 404,
+      "state": "9f1cbbb5",
+      "events": "baf76cc6",
       "rng": {
         "draws": 136,
         "digest": "2a230b90"
@@ -61,9 +61,9 @@
     {
       "tick": 100,
       "time": 5,
-      "nextId": 403,
-      "state": "5c372a7d",
-      "events": "b8851e04",
+      "nextId": 404,
+      "state": "ceda8c11",
+      "events": "b310e3f6",
       "rng": {
         "draws": 266,
         "digest": "8e2105d7"
@@ -72,9 +72,9 @@
     {
       "tick": 125,
       "time": 6.25,
-      "nextId": 403,
-      "state": "c21e655a",
-      "events": "c791cb6b",
+      "nextId": 404,
+      "state": "279bf0aa",
+      "events": "82e136fa",
       "rng": {
         "draws": 398,
         "digest": "78172419"
@@ -83,8 +83,8 @@
     {
       "tick": 142,
       "time": 7.1,
-      "nextId": 403,
-      "state": "7685d796",
+      "nextId": 404,
+      "state": "480d0446",
       "events": "741638a5",
       "rng": {
         "draws": 506,
@@ -97,12 +97,13 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1516,
           "arenaWins": 1,
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
@@ -120,6 +121,7 @@
           "arena2v2Rating": 1500,
           "arenaLosses": 1,
           "arenaRating": 1484,
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -127,7 +129,7 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "entityId": 403,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
@@ -151,7 +153,7 @@
           "dodgeChance": 0.06,
           "fiveSecondRule": 106.1,
           "hp": 90,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -199,7 +201,7 @@
           "dodgeChance": 0.056,
           "facing": 3.141593,
           "fiveSecondRule": 106.1,
-          "id": 402,
+          "id": 403,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",

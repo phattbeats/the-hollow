@@ -1136,8 +1136,8 @@ describe('W1: aggregate IWorld member set equals the disjoint union of the 26 fa
 
   it('the union of the 26 facets equals the pinned 171-member IWORLD_MEMBERS set', () => {
     const union = Object.values(FACET_MEMBER_ARRAYS).flatMap((arr) => [...arr]);
-    expect(union.length, 'union size before dedup (catches a duplicated member)').toBe(165);
-    expect(new Set(union).size, 'union size after dedup (catches a duplicated member)').toBe(165);
+    expect(union.length, 'union size before dedup (catches a duplicated member)').toBe(171);
+    expect(new Set(union).size, 'union size after dedup (catches a duplicated member)').toBe(171);
     const sortedUnion = [...union].sort();
     const pinned = IWORLD_MEMBERS.map((m) => m.name).sort();
     expect(sortedUnion).toEqual(pinned);

@@ -5478,7 +5478,7 @@ export class Sim {
   }
 
   // -------------------------------------------------------------------------
-  // The Ravenpost (in-game mail, PHAA-495) — thin delegates to this.postOffice
+  // The Ravenpost (in-game mail, PHAA-495): thin delegates to this.postOffice
   // -------------------------------------------------------------------------
 
   rekeyMailRecipient(characterId: number, oldName: string, newName: string): boolean {
@@ -5494,6 +5494,21 @@ export class Sim {
     pid?: number,
   ): void {
     this.postOffice.mailSend(to, subject, body, copper, items, pid);
+  }
+
+  // Authoritative send with a pre-resolved recipient identity. The server calls
+  // this after resolving the recipient against the character DB (online OR
+  // offline) and consulting their persisted block list; it is not on IWorld
+  // (the offline browser world resolves live players through mailSend instead).
+  mailSendResolved(
+    recipient: { key: string; name: string },
+    subject: string,
+    body: string,
+    copper: number,
+    items: InvSlot[],
+    pid?: number,
+  ): void {
+    this.postOffice.mailSendResolved(recipient, subject, body, copper, items, pid);
   }
 
   mailTake(mailId: number, pid?: number): void {

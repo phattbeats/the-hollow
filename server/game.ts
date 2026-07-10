@@ -1812,6 +1812,49 @@ export class GameServer {
     }
   }
 
+  // Resolve a mail recipient against the character database (realm-scoped, online
+  // OR offline) and enforce their persisted block list, then hand the resolved
+  // identity to the sim. The sim's own mailSend only sees live players, so this
+  // is the authoritative send path for the server: it is the one place that can
+  // deliver to an offline character and honour a block the recipient set while
+  // logged out (or under a case-insensitive name collision sessionByName misses).
+  private async sendMail(
+    session: ClientSession,
+    to: string,
+    subject: string,
+    body: string,
+    copper: number,
+    items: InvSlot[],
+  ): Promise<void> {
+    const recipient = await this.socialDb.findCharacterByName(to.trim());
+    if (!recipient) {
+      this.send(session, {
+        t: 'events',
+        list: [{ type: 'error', text: 'No adventurer by that name is known.' }],
+      });
+      return;
+    }
+    // The recipient's block list is authoritative in the DB. Query it directly so
+    // the check holds whether the recipient is online or offline; the live
+    // session cache (blockedIds) only exists while they are logged in.
+    const blocked = await this.socialDb.blockedIds(recipient.id);
+    if (blocked.includes(session.characterId)) {
+      this.send(session, {
+        t: 'events',
+        list: [{ type: 'error', text: 'That adventurer is not accepting mail from you.' }],
+      });
+      return;
+    }
+    this.sim.mailSendResolved(
+      { key: String(recipient.id), name: recipient.name },
+      subject,
+      body,
+      copper,
+      items,
+      session.pid,
+    );
+  }
+
   // Housing v0 is shared global state like the market: one JSONB blob under the
   // world_state 'housing' key, loaded at boot and saved on change.
   async loadHousing(): Promise<void> {
@@ -2858,12 +2901,14 @@ export class GameServer {
       case 'market_collect':
         sim.marketCollect(pid);
         break;
-      // The Ravenpost (in-game mail, PHAA-495). mail_send is rejected before it
-      // ever reaches the sim (and its escrow) when the recipient has blocked the
-      // sender, the same "before any escrow" rule mail_block.test.ts covers for
-      // the market/whisper path (Finding 3 upstream). Only enforceable against a
-      // currently-online recipient (their block list lives on the live session);
-      // an offline recipient's block list is not consulted here.
+      // The Ravenpost (in-game mail, PHAA-495). The recipient is resolved against
+      // the character database (online OR offline) and their persisted block list
+      // is consulted, so async mail reaches an offline character and a block is
+      // enforced whether or not the recipient is logged in. The reject happens
+      // before the sim escrows anything, the same "before any escrow" rule
+      // mail_block.test.ts covers for the market/whisper path (Finding 3 upstream).
+      // The DB round-trip makes this async, so it is fire-and-forget (the social
+      // command pattern); the sim command lands on whatever tick resolves it.
       case 'mail_send':
         if (
           typeof msg.to === 'string' &&
@@ -2873,17 +2918,6 @@ export class GameServer {
           Number.isFinite(msg.copper) &&
           Array.isArray(msg.items)
         ) {
-          const recipientSession = this.sessionByName(msg.to.trim());
-          if (
-            recipientSession?.blockListLoaded &&
-            recipientSession.blockedIds.has(session.characterId)
-          ) {
-            this.send(session, {
-              t: 'events',
-              list: [{ type: 'error', text: 'That adventurer is not accepting mail from you.' }],
-            });
-            break;
-          }
           const items = msg.items
             .filter(
               (s): s is InvSlot =>
@@ -2895,7 +2929,9 @@ export class GameServer {
             )
             .map((s) => ({ ...s, count: Math.floor(s.count) }))
             .filter((s) => s.count > 0);
-          sim.mailSend(msg.to, msg.subject, msg.body, msg.copper, items, pid);
+          void this.sendMail(session, msg.to, msg.subject, msg.body, msg.copper, items).catch(
+            (err) => console.error('mail send failed:', err),
+          );
         }
         break;
       case 'mail_take':
