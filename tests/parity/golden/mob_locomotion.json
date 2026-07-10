@@ -32,7 +32,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "fb604f84",
+      "state": "b02c1b59",
       "events": "9ebb741a",
       "rng": {
         "draws": 4,
@@ -44,6 +44,7 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -58,7 +59,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -94,7 +94,6 @@
           "potionCooldownUntil": -1,
           "resource": 5.777778,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -143,7 +142,6 @@
           },
           "potionCooldownUntil": -1,
           "pulseTimer": 10,
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -167,7 +165,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 404,
-      "state": "fcdf9462",
+      "state": "f77adb1e",
       "events": "d28a2342",
       "rng": {
         "draws": 8,
@@ -179,6 +177,7 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -193,7 +192,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -240,7 +238,6 @@
           "potionCooldownUntil": -1,
           "resource": 9.211111,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -289,7 +286,6 @@
           },
           "potionCooldownUntil": -1,
           "pulseTimer": 10,
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -333,7 +329,6 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -357,7 +352,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 405,
-      "state": "646edb4f",
+      "state": "4e69c762",
       "events": "9b05051c",
       "rng": {
         "draws": 13,
@@ -369,6 +364,7 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -383,7 +379,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -441,7 +436,6 @@
           "potionCooldownUntil": -1,
           "resource": 15.1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -490,7 +484,6 @@
           },
           "potionCooldownUntil": -1,
           "pulseTimer": 10,
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -534,7 +527,6 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -579,7 +571,6 @@
           },
           "potionCooldownUntil": -1,
           "pulseTimer": 9,
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -603,7 +594,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 406,
-      "state": "71cbe50f",
+      "state": "08333e89",
       "events": "741638a5",
       "rng": {
         "draws": 15,
@@ -615,6 +606,7 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -629,7 +621,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -687,7 +678,6 @@
           "potionCooldownUntil": -1,
           "resource": 15.1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -736,7 +726,6 @@
           },
           "potionCooldownUntil": -1,
           "pulseTimer": 10,
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -780,7 +769,6 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -825,7 +813,6 @@
           },
           "potionCooldownUntil": -1,
           "pulseTimer": 9,
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -869,7 +856,6 @@
             "z": 299.902451
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 300,
             "y": 41.773845,
@@ -897,7 +883,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 407,
-      "state": "0d308d52",
+      "state": "f792f0db",
       "events": "741638a5",
       "rng": {
         "draws": 16,
@@ -909,6 +895,7 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -923,7 +910,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -981,7 +967,6 @@
           "potionCooldownUntil": -1,
           "resource": 15.1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1030,7 +1015,6 @@
           },
           "potionCooldownUntil": -1,
           "pulseTimer": 10,
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1074,7 +1058,6 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1119,7 +1102,6 @@
           },
           "potionCooldownUntil": -1,
           "pulseTimer": 9,
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1163,7 +1145,6 @@
             "z": 299.902451
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 300,
             "y": 41.773845,
@@ -1210,7 +1191,6 @@
             "z": 320
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 320,
             "y": 42.887514,
@@ -1233,7 +1213,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "d78e8d4f",
+      "state": "9025d979",
       "events": "260accd6",
       "rng": {
         "draws": 16,
@@ -1245,6 +1225,7 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -1259,7 +1240,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1317,7 +1297,6 @@
           "potionCooldownUntil": -1,
           "resource": 15.1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1366,7 +1345,6 @@
           },
           "potionCooldownUntil": -1,
           "pulseTimer": 10,
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1410,7 +1388,6 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1455,7 +1432,6 @@
           },
           "potionCooldownUntil": -1,
           "pulseTimer": 9,
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1499,7 +1475,6 @@
             "z": 299.902451
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 300,
             "y": 41.773845,
@@ -1546,7 +1521,6 @@
             "z": 320
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 320,
             "y": 42.887514,
@@ -1592,7 +1566,6 @@
             "z": -1
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 3,
             "y": 1.5,
@@ -1614,7 +1587,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "d3932ca2",
+      "state": "36a6215c",
       "events": "741638a5",
       "rng": {
         "draws": 16,
@@ -1626,6 +1599,7 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -1640,7 +1614,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1698,7 +1671,6 @@
           "potionCooldownUntil": -1,
           "resource": 15.1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1747,7 +1719,6 @@
           },
           "potionCooldownUntil": -1,
           "pulseTimer": 10,
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1791,7 +1762,6 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1836,7 +1806,6 @@
           },
           "potionCooldownUntil": -1,
           "pulseTimer": 9,
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1880,7 +1849,6 @@
             "z": 299.902451
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 300,
             "y": 41.773845,
@@ -1927,7 +1895,6 @@
             "z": 320
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 320,
             "y": 42.887514,
@@ -1974,7 +1941,6 @@
             "z": -0.839133
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 3,
             "y": 1.5,
@@ -1996,7 +1962,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "d3932ca2",
+      "state": "36a6215c",
       "events": "741638a5",
       "rng": {
         "draws": 16,
@@ -2008,6 +1974,7 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -2022,7 +1989,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2080,7 +2046,6 @@
           "potionCooldownUntil": -1,
           "resource": 15.1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -2129,7 +2094,6 @@
           },
           "potionCooldownUntil": -1,
           "pulseTimer": 10,
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -2173,7 +2137,6 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -2218,7 +2181,6 @@
           },
           "potionCooldownUntil": -1,
           "pulseTimer": 9,
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -2262,7 +2224,6 @@
             "z": 299.902451
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 300,
             "y": 41.773845,
@@ -2309,7 +2270,6 @@
             "z": 320
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 320,
             "y": 42.887514,
@@ -2356,7 +2316,6 @@
             "z": -0.839133
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 3,
             "y": 1.5,

@@ -17,7 +17,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "8447e665",
+      "state": "2beb90f1",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -30,6 +30,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bank": {},
           "cls": "paladin",
           "companionUpgrades": {},
           "counters": {},
@@ -42,7 +43,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -78,7 +78,6 @@
           "potionCooldownUntil": -1,
           "resource": 93,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -106,7 +105,7 @@
       "tick": 2,
       "time": 0.1,
       "nextId": 403,
-      "state": "ee10c46f",
+      "state": "1c7ecd82",
       "events": "36063b10",
       "rng": {
         "draws": 2,
@@ -119,6 +118,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bank": {},
           "cls": "paladin",
           "companionUpgrades": {},
           "counters": {},
@@ -132,7 +132,6 @@
           "gatheringProficiency": {},
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -168,7 +167,6 @@
           "potionCooldownUntil": -1,
           "resource": 660,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -218,7 +216,6 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 24.95,
-          "sex": "m",
           "spawnPos": {
             "x": 40,
             "y": 1.5,
@@ -246,7 +243,7 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 403,
-      "state": "f9ea4b6f",
+      "state": "c8c3b45e",
       "events": "741638a5",
       "rng": {
         "draws": 2,
@@ -257,7 +254,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 403,
-      "state": "9cf97c10",
+      "state": "99572f8d",
       "events": "741638a5",
       "rng": {
         "draws": 2,
@@ -268,7 +265,7 @@
       "tick": 15,
       "time": 0.75,
       "nextId": 403,
-      "state": "997e15b3",
+      "state": "e82d6012",
       "events": "741638a5",
       "rng": {
         "draws": 2,
@@ -279,7 +276,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 403,
-      "state": "9113569c",
+      "state": "2376b5a9",
       "events": "741638a5",
       "rng": {
         "draws": 2,
@@ -290,7 +287,7 @@
       "tick": 25,
       "time": 1.25,
       "nextId": 403,
-      "state": "307bca58",
+      "state": "9df7d86d",
       "events": "741638a5",
       "rng": {
         "draws": 2,
@@ -301,7 +298,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 403,
-      "state": "84b7d63d",
+      "state": "e43856b8",
       "events": "741638a5",
       "rng": {
         "draws": 2,
@@ -312,7 +309,7 @@
       "tick": 35,
       "time": 1.75,
       "nextId": 403,
-      "state": "983760ac",
+      "state": "7abb5889",
       "events": "53d3a356",
       "rng": {
         "draws": 2,
@@ -323,7 +320,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 403,
-      "state": "bf71e29b",
+      "state": "25f20dba",
       "events": "5c7f1025",
       "rng": {
         "draws": 2,
@@ -334,7 +331,7 @@
       "tick": 45,
       "time": 2.25,
       "nextId": 403,
-      "state": "bf844795",
+      "state": "67be3014",
       "events": "741638a5",
       "rng": {
         "draws": 20,
@@ -345,7 +342,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 403,
-      "state": "a6137bf1",
+      "state": "65e1a938",
       "events": "741638a5",
       "rng": {
         "draws": 44,
@@ -356,7 +353,7 @@
       "tick": 55,
       "time": 2.75,
       "nextId": 403,
-      "state": "57661415",
+      "state": "4314e244",
       "events": "741638a5",
       "rng": {
         "draws": 62,
@@ -367,7 +364,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 403,
-      "state": "d3bb93ad",
+      "state": "2628ac94",
       "events": "741638a5",
       "rng": {
         "draws": 80,
@@ -378,7 +375,7 @@
       "tick": 62,
       "time": 3.1,
       "nextId": 403,
-      "state": "5ed4e4af",
+      "state": "686812c6",
       "events": "741638a5",
       "rng": {
         "draws": 87,
@@ -391,6 +388,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bank": {},
           "cls": "paladin",
           "companionUpgrades": {},
           "counters": {},
@@ -404,7 +402,6 @@
           "gatheringProficiency": {},
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -452,7 +449,6 @@
           "potionCooldownUntil": -1,
           "resource": 429,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -502,7 +498,6 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 21.95,
-          "sex": "m",
           "spawnPos": {
             "x": 40,
             "y": 1.5,
@@ -530,7 +525,7 @@
       "tick": 65,
       "time": 3.25,
       "nextId": 405,
-      "state": "9d372dc4",
+      "state": "7a5069f1",
       "events": "5893072b",
       "rng": {
         "draws": 109,
@@ -541,7 +536,7 @@
       "tick": 70,
       "time": 3.5,
       "nextId": 405,
-      "state": "4886bc3f",
+      "state": "7896ddce",
       "events": "741638a5",
       "rng": {
         "draws": 135,
@@ -552,7 +547,7 @@
       "tick": 75,
       "time": 3.75,
       "nextId": 405,
-      "state": "4914e3bd",
+      "state": "9bc3548c",
       "events": "741638a5",
       "rng": {
         "draws": 157,
@@ -563,7 +558,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 405,
-      "state": "78d4a440",
+      "state": "624da74d",
       "events": "741638a5",
       "rng": {
         "draws": 168,
@@ -574,7 +569,7 @@
       "tick": 85,
       "time": 4.25,
       "nextId": 405,
-      "state": "7dbad62e",
+      "state": "cbbd83ab",
       "events": "741638a5",
       "rng": {
         "draws": 198,
@@ -585,7 +580,7 @@
       "tick": 90,
       "time": 4.5,
       "nextId": 405,
-      "state": "bafce58f",
+      "state": "d4dc06da",
       "events": "741638a5",
       "rng": {
         "draws": 225,
@@ -596,7 +591,7 @@
       "tick": 95,
       "time": 4.75,
       "nextId": 405,
-      "state": "d630d0cf",
+      "state": "073bb9d6",
       "events": "741638a5",
       "rng": {
         "draws": 269,
@@ -607,7 +602,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 405,
-      "state": "9053b8e3",
+      "state": "c419cd3e",
       "events": "741638a5",
       "rng": {
         "draws": 288,
@@ -618,7 +613,7 @@
       "tick": 105,
       "time": 5.25,
       "nextId": 405,
-      "state": "b56ebf8e",
+      "state": "0e8afadb",
       "events": "40282766",
       "rng": {
         "draws": 315,
@@ -629,7 +624,7 @@
       "tick": 110,
       "time": 5.5,
       "nextId": 405,
-      "state": "7743729c",
+      "state": "867b9f91",
       "events": "741638a5",
       "rng": {
         "draws": 340,
@@ -640,7 +635,7 @@
       "tick": 115,
       "time": 5.75,
       "nextId": 405,
-      "state": "5c31ad3f",
+      "state": "86fbeb02",
       "events": "741638a5",
       "rng": {
         "draws": 377,
@@ -651,7 +646,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 405,
-      "state": "51653961",
+      "state": "938fa1e8",
       "events": "741638a5",
       "rng": {
         "draws": 399,
@@ -662,7 +657,7 @@
       "tick": 125,
       "time": 6.25,
       "nextId": 405,
-      "state": "dac6f6bb",
+      "state": "1ba1a1be",
       "events": "741638a5",
       "rng": {
         "draws": 437,
@@ -673,7 +668,7 @@
       "tick": 130,
       "time": 6.5,
       "nextId": 405,
-      "state": "ae852c2b",
+      "state": "d1303e0a",
       "events": "741638a5",
       "rng": {
         "draws": 471,
@@ -684,7 +679,7 @@
       "tick": 135,
       "time": 6.75,
       "nextId": 405,
-      "state": "89d2e662",
+      "state": "65858f4f",
       "events": "741638a5",
       "rng": {
         "draws": 510,
@@ -695,7 +690,7 @@
       "tick": 140,
       "time": 7,
       "nextId": 405,
-      "state": "513473a2",
+      "state": "ef536dd7",
       "events": "741638a5",
       "rng": {
         "draws": 541,
@@ -706,7 +701,7 @@
       "tick": 145,
       "time": 7.25,
       "nextId": 405,
-      "state": "7a64d953",
+      "state": "6a21b24a",
       "events": "b8e17742",
       "rng": {
         "draws": 575,
@@ -717,7 +712,7 @@
       "tick": 150,
       "time": 7.5,
       "nextId": 405,
-      "state": "9cea14e5",
+      "state": "c79dc5d8",
       "events": "741638a5",
       "rng": {
         "draws": 605,
@@ -728,7 +723,7 @@
       "tick": 155,
       "time": 7.75,
       "nextId": 405,
-      "state": "7dc27f20",
+      "state": "4d4e7995",
       "events": "741638a5",
       "rng": {
         "draws": 642,
@@ -739,7 +734,7 @@
       "tick": 160,
       "time": 8,
       "nextId": 405,
-      "state": "a11c8756",
+      "state": "0b4f465b",
       "events": "741638a5",
       "rng": {
         "draws": 666,
@@ -750,7 +745,7 @@
       "tick": 165,
       "time": 8.25,
       "nextId": 405,
-      "state": "32917f28",
+      "state": "b33dd945",
       "events": "741638a5",
       "rng": {
         "draws": 697,
@@ -761,7 +756,7 @@
       "tick": 170,
       "time": 8.5,
       "nextId": 405,
-      "state": "4d811990",
+      "state": "554c142d",
       "events": "741638a5",
       "rng": {
         "draws": 723,
@@ -772,7 +767,7 @@
       "tick": 175,
       "time": 8.75,
       "nextId": 405,
-      "state": "833b217b",
+      "state": "ee517e22",
       "events": "741638a5",
       "rng": {
         "draws": 765,
@@ -783,7 +778,7 @@
       "tick": 180,
       "time": 9,
       "nextId": 405,
-      "state": "a5ec64d3",
+      "state": "e0d832ae",
       "events": "741638a5",
       "rng": {
         "draws": 801,
@@ -794,7 +789,7 @@
       "tick": 182,
       "time": 9.1,
       "nextId": 405,
-      "state": "fb2a4878",
+      "state": "c3168c7f",
       "events": "43927765",
       "rng": {
         "draws": 808,
@@ -807,6 +802,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bank": {},
           "cls": "paladin",
           "companionUpgrades": {},
           "counters": {
@@ -823,7 +819,6 @@
           "gatheringProficiency": {},
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -866,7 +861,6 @@
           "potionCooldownUntil": -1,
           "resource": 600,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -916,7 +910,6 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 15.95,
-          "sex": "m",
           "spawnPos": {
             "x": 40,
             "y": 1.5,
@@ -969,7 +962,6 @@
             "y": 1.5
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 4,
             "y": 1.5
@@ -1023,7 +1015,6 @@
             "z": -4
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "y": 1.5,
             "z": -4

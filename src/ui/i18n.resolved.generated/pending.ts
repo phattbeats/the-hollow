@@ -1733,72 +1733,16 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind"
   ],
   "zh_CN": [
-    "entities.quests.q_keep_him_lit.title",
-    "sim.homestead.alreadyOwn",
-    "sim.homestead.claimed",
-    "sim.homestead.helpLine",
-    "sim.homestead.outsideArea",
-    "sim.homestead.questGate",
-    "sim.homestead.readoutMine",
-    "sim.homestead.readoutNoHomesteadHint",
-    "sim.homestead.readoutNoHomesteadQuest",
-    "sim.homestead.tooCloseGate",
-    "sim.homestead.tooCloseGraveyard",
-    "sim.homestead.tooCloseOther",
-    "sim.homestead.tooCloseRoad",
-    "sim.homestead.tooCloseWater",
-    "sim.homestead.tooCloseWildlife"
+    "entities.quests.q_keep_him_lit.title"
   ],
   "zh_TW": [
-    "entities.quests.q_keep_him_lit.title",
-    "sim.homestead.alreadyOwn",
-    "sim.homestead.claimed",
-    "sim.homestead.helpLine",
-    "sim.homestead.outsideArea",
-    "sim.homestead.questGate",
-    "sim.homestead.readoutMine",
-    "sim.homestead.readoutNoHomesteadHint",
-    "sim.homestead.readoutNoHomesteadQuest",
-    "sim.homestead.tooCloseGate",
-    "sim.homestead.tooCloseGraveyard",
-    "sim.homestead.tooCloseOther",
-    "sim.homestead.tooCloseRoad",
-    "sim.homestead.tooCloseWater",
-    "sim.homestead.tooCloseWildlife"
+    "entities.quests.q_keep_him_lit.title"
   ],
   "ko_KR": [
-    "entities.quests.q_keep_him_lit.title",
-    "sim.homestead.alreadyOwn",
-    "sim.homestead.claimed",
-    "sim.homestead.helpLine",
-    "sim.homestead.outsideArea",
-    "sim.homestead.questGate",
-    "sim.homestead.readoutMine",
-    "sim.homestead.readoutNoHomesteadHint",
-    "sim.homestead.readoutNoHomesteadQuest",
-    "sim.homestead.tooCloseGate",
-    "sim.homestead.tooCloseGraveyard",
-    "sim.homestead.tooCloseOther",
-    "sim.homestead.tooCloseRoad",
-    "sim.homestead.tooCloseWater",
-    "sim.homestead.tooCloseWildlife"
+    "entities.quests.q_keep_him_lit.title"
   ],
   "ja_JP": [
-    "entities.quests.q_keep_him_lit.title",
-    "sim.homestead.alreadyOwn",
-    "sim.homestead.claimed",
-    "sim.homestead.helpLine",
-    "sim.homestead.outsideArea",
-    "sim.homestead.questGate",
-    "sim.homestead.readoutMine",
-    "sim.homestead.readoutNoHomesteadHint",
-    "sim.homestead.readoutNoHomesteadQuest",
-    "sim.homestead.tooCloseGate",
-    "sim.homestead.tooCloseGraveyard",
-    "sim.homestead.tooCloseOther",
-    "sim.homestead.tooCloseRoad",
-    "sim.homestead.tooCloseWater",
-    "sim.homestead.tooCloseWildlife"
+    "entities.quests.q_keep_him_lit.title"
   ],
   "pt_BR": [
     "abilityUi.tooltip.selfOnly",
@@ -2088,21 +2032,7 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind"
   ],
   "ru_RU": [
-    "entities.quests.q_keep_him_lit.title",
-    "sim.homestead.alreadyOwn",
-    "sim.homestead.claimed",
-    "sim.homestead.helpLine",
-    "sim.homestead.outsideArea",
-    "sim.homestead.questGate",
-    "sim.homestead.readoutMine",
-    "sim.homestead.readoutNoHomesteadHint",
-    "sim.homestead.readoutNoHomesteadQuest",
-    "sim.homestead.tooCloseGate",
-    "sim.homestead.tooCloseGraveyard",
-    "sim.homestead.tooCloseOther",
-    "sim.homestead.tooCloseRoad",
-    "sim.homestead.tooCloseWater",
-    "sim.homestead.tooCloseWildlife"
+    "entities.quests.q_keep_him_lit.title"
   ],
   "nl_NL": [
     "abilityUi.tooltip.selfOnly",

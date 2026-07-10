@@ -15,7 +15,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "4e106082",
+      "state": "3a9b8b44",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -28,6 +28,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -40,7 +41,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -76,7 +76,6 @@
           "potionCooldownUntil": -1,
           "resource": 195,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -104,7 +103,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 403,
-      "state": "edcb9994",
+      "state": "9ecc99a3",
       "events": "5e63c649",
       "rng": {
         "draws": 2,
@@ -115,7 +114,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 403,
-      "state": "902b610c",
+      "state": "00b67217",
       "events": "ac946b88",
       "rng": {
         "draws": 2,
@@ -126,7 +125,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 403,
-      "state": "cae33fd8",
+      "state": "49f549a5",
       "events": "d40cfcdb",
       "rng": {
         "draws": 75,
@@ -137,7 +136,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 403,
-      "state": "04a130e1",
+      "state": "dfd33264",
       "events": "741638a5",
       "rng": {
         "draws": 164,
@@ -148,7 +147,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 403,
-      "state": "1b8e9191",
+      "state": "9c8a36aa",
       "events": "05ddd8dd",
       "rng": {
         "draws": 280,
@@ -159,7 +158,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 403,
-      "state": "6dac0f6c",
+      "state": "37518255",
       "events": "d951e0f5",
       "rng": {
         "draws": 390,
@@ -170,7 +169,7 @@
       "tick": 128,
       "time": 6.4,
       "nextId": 403,
-      "state": "6e4f421e",
+      "state": "6931d109",
       "events": "741638a5",
       "rng": {
         "draws": 438,
@@ -183,6 +182,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -199,7 +199,6 @@
           "gatheringProficiency": {},
           "lifetimeXp": 27600,
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -240,7 +239,6 @@
           "potionCooldownUntil": -1,
           "resource": 816,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -320,7 +318,6 @@
             "z": 2.756284
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,

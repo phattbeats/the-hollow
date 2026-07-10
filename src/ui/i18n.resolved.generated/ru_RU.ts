@@ -2350,20 +2350,20 @@ export const ru_RU: EnTranslations = {
       "purchased": "Вы приобрели дополнительные ячейки банка."
     },
     "homestead": {
-      "outsideArea": "That is outside the homestead ground. Try Fallow Acres, west of the road.",
-      "tooCloseGate": "Too close to the gate. Move further out.",
-      "tooCloseWater": "Too close to the water.",
-      "tooCloseGraveyard": "Too close to the graveyard.",
-      "tooCloseWildlife": "Too close to the wildlife. Clear the area or move further off.",
-      "tooCloseRoad": "Too close to the road.",
-      "tooCloseOther": "Too close to another homestead.",
-      "questGate": "Brother Greenpaw hasn't sent you off yet. Finish his errands first.",
-      "alreadyOwn": "You already own a homestead.",
-      "claimed": "The ground is yours. This homestead is claimed.",
-      "readoutMine": "Your homestead sits at ({x}, {z}).",
-      "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
-      "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
-      "helpLine": "Homestead: /homestead, /homestead claim."
+      "outsideArea": "Это не хуторская земля. Попробуйте Fallow Acres, к западу от дороги.",
+      "tooCloseGate": "Слишком близко к воротам. Отойдите дальше.",
+      "tooCloseWater": "Слишком близко к воде.",
+      "tooCloseGraveyard": "Слишком близко к кладбищу.",
+      "tooCloseWildlife": "Слишком близко к дикой живности. Расчистите округу или отойдите дальше.",
+      "tooCloseRoad": "Слишком близко к дороге.",
+      "tooCloseOther": "Слишком близко к чужому хутору.",
+      "questGate": "Брат Зеленолап еще не отправил вас в путь. Сперва закончите его поручения.",
+      "alreadyOwn": "У вас уже есть хутор.",
+      "claimed": "Эта земля ваша. Хутор застолблен.",
+      "readoutMine": "Ваш хутор находится в точке ({x}, {z}).",
+      "readoutNoHomesteadQuest": "У вас нет хутора. Закончите всю цепочку поручений брата Зеленолапа, чтобы получить его.",
+      "readoutNoHomesteadHint": "У вас нет хутора. Встаньте на подходящем месте в Лощинных Плёсах и введите /homestead claim.",
+      "helpLine": "Хутор: /homestead, /homestead claim."
     }
   },
   "lockpickUi": {

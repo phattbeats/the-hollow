@@ -2350,20 +2350,20 @@ export const zh_CN: EnTranslations = {
       "purchased": "你购买了额外的银行槽位。"
     },
     "homestead": {
-      "outsideArea": "That is outside the homestead ground. Try Fallow Acres, west of the road.",
-      "tooCloseGate": "Too close to the gate. Move further out.",
-      "tooCloseWater": "Too close to the water.",
-      "tooCloseGraveyard": "Too close to the graveyard.",
-      "tooCloseWildlife": "Too close to the wildlife. Clear the area or move further off.",
-      "tooCloseRoad": "Too close to the road.",
-      "tooCloseOther": "Too close to another homestead.",
-      "questGate": "Brother Greenpaw hasn't sent you off yet. Finish his errands first.",
-      "alreadyOwn": "You already own a homestead.",
-      "claimed": "The ground is yours. This homestead is claimed.",
-      "readoutMine": "Your homestead sits at ({x}, {z}).",
-      "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
-      "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
-      "helpLine": "Homestead: /homestead, /homestead claim."
+      "outsideArea": "这里不属于家园用地。去路西边的 Fallow Acres 试试。",
+      "tooCloseGate": "离大门太近了。再往外挪一挪。",
+      "tooCloseWater": "离水域太近了。",
+      "tooCloseGraveyard": "离墓地太近了。",
+      "tooCloseWildlife": "离野生动物太近了。清空这片区域，或者再挪远一些。",
+      "tooCloseRoad": "离大路太近了。",
+      "tooCloseOther": "离别人的家园太近了。",
+      "questGate": "绿掌修士还没让你出发呢。先把他的差事做完。",
+      "alreadyOwn": "你已经拥有一处家园了。",
+      "claimed": "这片土地归你了。家园认领成功。",
+      "readoutMine": "你的家园坐落在 ({x}, {z})。",
+      "readoutNoHomesteadQuest": "你还没有家园。先完成绿掌修士的全部差事才能解锁。",
+      "readoutNoHomesteadHint": "你还没有家园。站在空谷地里合适的位置，输入 /homestead claim。",
+      "helpLine": "家园：/homestead，/homestead claim。"
     }
   },
   "lockpickUi": {
