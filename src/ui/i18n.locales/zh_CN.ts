@@ -2791,7 +2791,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_root_hollow_boars_ii.text':
     '我就说句本职上不该说的实话：五头，是我乐观了。底下的窝还在不断往外拱。再杀八头，我便能结清这一季，不必第三回去改记录。记录不喜被改。我也不喜。',
   'entities.quests.q_root_hollow_boars_ii.completion':
-    '结案。签字。归档。这一季总算能照原定的历程走了，毕竟又有人来看着这本历书。你帮了一个极小的会众一个大忙。我得澄清一句：这会众，就是我。',
+    '结案。签字。归档。这一季总算能照原定的历程走了，毕竟又有人来看着这本历书。你帮了一个极小的会众一个大忙。我得澄清一句：这会众，就是我。这本历书本身比这安排还要古老，装订出自一双我从未谋面的手，记着一个我不愿去加总的数目。曾经有人在此极为用心。我不过是尽力跟上罢了。',
   'entities.quests.q_root_hollow_boars_ii.objectives.0.label': '野猪已杀',
   'entities.quests.q_fallow_acres_wolves.title': '赶走田垄上的狼',
   'entities.quests.q_fallow_acres_wolves.text':
@@ -4426,6 +4426,12 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': '撕碎的日记页',
   'entities.items.shrine_diary_page.flavorText':
     '……我数着烛光过了四十天，后来便断了数。这底下的黑暗从未忘记祂，尽管祂已经忘了这个地方。若鹭鸟低飞掠过，告诉守灯人，烛芯还燃着……',
+  'entities.items.worn_prayer_token.name': '磨损的祷牌',
+  'entities.items.worn_prayer_token.flavorText':
+    '……一面被一根不是我的拇指磨得光滑，磨出的浅沟和这堆里另外上百枚一模一样，至少这堆东西是这么告诉我的。一根拇指磨不出一百枚令牌的痕迹。可一百根拇指，倒是能磨出同一道浅沟……',
+  'entities.items.tally_shard.name': '刻痕碎片',
+  'entities.items.tally_shard.flavorText':
+    '……以五为一组刻得极深，每数完一轮便划去一道。划去的五连一组，累计上百组，最后一行却始终没有划完……',
   'entities.mobs.acolyte_tessa.name': '侍僧泰莎',
   'entities.mobs.deacon_varric.name': '执事瓦里克',
   'entities.mobs.reliquary_bonewalker.name': '复生的骨行者',
