@@ -1197,12 +1197,29 @@ export interface GatherNodeDef {
 // without reading as a monument. Render: src/render/readables.ts.
 export type ReadableProp = 'page' | 'journal';
 
+// What the loose page/journal rests on or against (PHAA-552 board follow-up:
+// "we need other variations, like it up against a tree, or on a chest, or a
+// table, that way we can put them in many places"). Orthogonal to ReadableProp:
+// any page/journal can sit on any support, so the world can dress a readable to
+// fit wherever it is dropped instead of every one looking like the same rock.
+//   `stone`  a low natural fieldstone in the grass (the original, dropped-note look)
+//   `table`  lying flat on a small rough field table
+//   `chest`  lying flat on the lid of a closed banded chest
+//   `tree`   propped upright, leaning against the base of a tree trunk
+// Render: src/render/readables.ts. Adding a support kind is render-only; it has
+// no sim state, so it never touches i18n, the wire, or server commands.
+// Authoring note: `tree` leans the paper upright, so pair it with `page` (a note
+// propped against the bark). A `journal` (an OPEN notebook) reads wrong standing
+// on end; keep journals on the flat supports (stone/table/chest).
+export type ReadableSupport = 'stone' | 'table' | 'chest' | 'tree';
+
 export interface ReadableDef {
   id: string;
   zoneId: string;
   pos: { x: number; z: number };
   facing: number; // radians, yaw applied to the rendered prop
   prop: ReadableProp; // which loose object it is drawn as (see ReadableProp)
+  support?: ReadableSupport; // what it rests on/against (default 'stone'); see ReadableSupport
   title: string; // canonical English title shown in the reader window
   pages: string[]; // canonical English pages, one per reader page turn
 }

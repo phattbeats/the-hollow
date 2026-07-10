@@ -34,6 +34,8 @@ export const READABLES: ReadableDef[] = [
     facing: 2.4,
     // A single sheet the warden tore loose and dropped, not a bound book.
     prop: 'page',
+    // Dropped on a fieldstone in the grass, the look the board signed off on.
+    support: 'stone',
     title: 'A Torn Ledger Page',
     pages: [
       'Root Hollow, entered to rest. Fallow Acres, entered to rest. The lake at Mossbank, which rests whether we enter it or not. Signed and dated, as the register wants.',
@@ -49,6 +51,8 @@ export const READABLES: ReadableDef[] = [
     facing: 1.1,
     // Margin notes in a worn hymnbook, so this one is an actual open notebook.
     prop: 'journal',
+    // Left open on a rough field table at the flock-ground watch post.
+    support: 'table',
     title: "A Keeper's Marginalia",
     pages: [
       'Left in the margin of a hymnbook with the hymns worn out of it. The hand is quick, the way a hand is quick when it writes while walking.',
@@ -57,3 +61,15 @@ export const READABLES: ReadableDef[] = [
     ],
   },
 ];
+
+// Support variety (PHAA-552 board follow-up: "we need other variations, like it
+// up against a tree, or on a chest, or a table, that way we can put them in many
+// places"): the two placements above already exercise `stone` and `table` live.
+// The renderer draws all four supports (stone/table/chest/tree, see
+// ReadableSupport + src/render/readables.ts); placing new readables on `chest`
+// and `tree` in the world is a pure data addition here, but each new readable
+// also needs its title+pages translated across the 20 shipped locales (real
+// translations, see src/ui/i18n.catalog/hollow.ts + src/ui/i18n.locales/*.ts;
+// the release-gate localization suite rejects English left in a translated
+// build). So new chest/tree placements come with a translation pass, tracked
+// separately, rather than shipping untranslated content here.

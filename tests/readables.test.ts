@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { READABLES } from '../src/sim/content/readables';
 import { READABLES_BY_ID, ZONES } from '../src/sim/data';
 import { readablePropsAt } from '../src/sim/readables_query';
+import type { ReadableSupport } from '../src/sim/types';
 import { npcIntroAdvance, npcIntroPageAt } from '../src/ui/npc_intro_view';
 
 const ZONE_IDS = new Set(ZONES.map((z) => z.id));
@@ -27,6 +28,27 @@ describe('READABLES content', () => {
     }
     // A torn ledger page must be the loose sheet, not a bound book.
     expect(READABLES_BY_ID.torn_ledger_page.prop).toBe('page');
+  });
+
+  it('declares a known support kind when one is set (PHAA-552 variety follow-up)', () => {
+    // The board asked for variety in what a readable rests on/against ("up
+    // against a tree, or on a chest, or a table"); `support` gates the render in
+    // src/render/readables.ts. It is optional (default 'stone'), but any value
+    // present must be one the renderer draws, or the readable falls back silently.
+    const KNOWN: ReadableSupport[] = ['stone', 'table', 'chest', 'tree'];
+    for (const r of READABLES) {
+      if (r.support !== undefined) {
+        expect(KNOWN, `readable ${r.id} has unknown support ${r.support}`).toContain(r.support);
+      }
+    }
+    // Live content exercises more than the original single rock, so the world
+    // shows the variety even before new chest/tree placements land (those carry a
+    // translation pass, see the note in content/readables.ts). The renderer's
+    // coverage of all four supports is guarded by tests/readables_render.test.ts.
+    const supports = new Set(READABLES.map((r) => r.support ?? 'stone'));
+    expect(supports.size, 'live readables should exercise more than one support').toBeGreaterThan(
+      1,
+    );
   });
 
   it('carries a title and at least one non-empty page per book', () => {
