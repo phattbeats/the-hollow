@@ -25,6 +25,7 @@ import {
   type Entity,
   type EquipSlot,
   emptyMoveInput,
+  type GatherNodeType,
   type InvSlot,
   type LootRollChoice,
   type LootRollPrompt,
@@ -1620,6 +1621,8 @@ export class ClientWorld implements IWorld {
       if (s.dcompanion !== undefined) this.companionState = s.dcompanion;
       if (s.dmarks !== undefined) this.delveMarks = s.dmarks ?? 0;
       if (s.dcomp !== undefined) this.companionUpgrades = s.dcomp ?? {};
+      if (s.gprof !== undefined)
+        this.gatheringProficiency = s.gprof ?? { amber: 0, heartwood: 0, spore: 0 };
       if (s.dclears !== undefined) this.delveClears = s.dclears ?? {};
       if (s.delveDaily !== undefined) this.delveDaily = s.delveDaily;
       // camera follows server-side facing changes when not mouselooking
@@ -1780,10 +1783,24 @@ export class ClientWorld implements IWorld {
   lootCorpse(id: number): void {
     this.cmd({ cmd: 'loot', id });
   }
-  // --- IWorldGathering: single-use, first-come corpse harvest (PHAA-504) ---
+  // --- IWorldGathering: single-use, first-come corpse harvest (PHAA-504); the
+  // per-player world-node harvest + proficiency (PHAA-505) ---
   harvestCorpse(id: number): void {
     this.cmd({ cmd: 'harvestCorpse', id });
   }
+  // Per-node respawn state is server-authoritative and not mirrored onto the
+  // snapshot, so the client cannot know another player's, or even its own,
+  // real per-node timer. Always reports harvestable; the server re-validates
+  // and denies via a normal error event on an actual attempt, never
+  // predicting the outcome client-side (see src/net/CLAUDE.md). Wiring the
+  // real per-player timer is future work once the snapshot carries it.
+  nodeHarvestableByMe(_nodeId: string): boolean {
+    return true;
+  }
+  harvestNode(nodeId: string): void {
+    this.cmd({ cmd: 'harvestNode', node: nodeId });
+  }
+  gatheringProficiency: Record<GatherNodeType, number> = { amber: 0, heartwood: 0, spore: 0 };
   // --- IWorldLoot: need-greed roll submit + HUD reconcile read ---
   submitLootRoll(rollId: number, choice: LootRollChoice): void {
     this.cmd({ cmd: 'lootRoll', rollId, choice });

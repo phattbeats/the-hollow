@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "25d1ee04",
+      "state": "c4bda38f",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -39,6 +39,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -74,6 +77,7 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "energy",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -102,7 +106,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 415,
-      "state": "bf179657",
+      "state": "e571ec3e",
       "events": "9312ec02",
       "rng": {
         "draws": 4,
@@ -113,7 +117,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 415,
-      "state": "666fed45",
+      "state": "d08341e6",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -124,7 +128,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 415,
-      "state": "9e375f0c",
+      "state": "97c51565",
       "events": "92136cf6",
       "rng": {
         "draws": 5,
@@ -135,7 +139,7 @@
       "tick": 38,
       "time": 1.9,
       "nextId": 417,
-      "state": "3f4bcddf",
+      "state": "742ecdcb",
       "events": "a88a2cd6",
       "rng": {
         "draws": 8,
@@ -174,7 +178,10 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 12098,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -210,6 +217,7 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "energy",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -257,6 +265,7 @@
             "z": -1176
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 6001.5,
             "z": -1253
@@ -310,6 +319,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 24.6,
+          "sex": "m",
           "spawnPos": {
             "x": 6000,
             "z": -1170
@@ -356,6 +366,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": -0.05,
+          "sex": "m",
           "spawnPos": {
             "x": 6000,
             "z": -1176
@@ -374,7 +385,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 417,
-      "state": "951c1788",
+      "state": "621b2c58",
       "events": "741638a5",
       "rng": {
         "draws": 8,
@@ -385,7 +396,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 417,
-      "state": "951c1788",
+      "state": "621b2c58",
       "events": "741638a5",
       "rng": {
         "draws": 8,
@@ -424,7 +435,10 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 12098,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -460,6 +474,7 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "energy",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -507,6 +522,7 @@
             "z": -1176
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 6001.5,
             "z": -1253
@@ -560,6 +576,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 24.5,
+          "sex": "m",
           "spawnPos": {
             "x": 6000,
             "z": -1170
@@ -606,6 +623,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": -0.05,
+          "sex": "m",
           "spawnPos": {
             "x": 6000,
             "z": -1176
