@@ -28,7 +28,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 406,
-      "state": "284509e0",
+      "state": "8a63c90a",
       "events": "aa947dfc",
       "rng": {
         "draws": 0,
@@ -62,7 +62,6 @@
               999999999
             ]
           ],
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -85,7 +84,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -108,7 +106,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -131,7 +128,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -154,7 +150,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -189,7 +184,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -239,7 +233,6 @@
           "potionCooldownUntil": -1,
           "resource": 175,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -289,7 +282,6 @@
           "potionCooldownUntil": -1,
           "resource": 175,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -339,7 +331,6 @@
           "potionCooldownUntil": -1,
           "resource": 175,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -389,7 +380,6 @@
           "potionCooldownUntil": -1,
           "resource": 175,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -417,7 +407,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 406,
-      "state": "284509e0",
+      "state": "8a63c90a",
       "events": "7ff177a1",
       "rng": {
         "draws": 0,
@@ -451,7 +441,6 @@
               999999999
             ]
           ],
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -474,7 +463,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -497,7 +485,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -520,7 +507,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -543,7 +529,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -578,7 +563,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -628,7 +612,6 @@
           "potionCooldownUntil": -1,
           "resource": 175,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -678,7 +661,6 @@
           "potionCooldownUntil": -1,
           "resource": 175,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -728,7 +710,6 @@
           "potionCooldownUntil": -1,
           "resource": 175,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -778,7 +759,6 @@
           "potionCooldownUntil": -1,
           "resource": 175,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -806,7 +786,7 @@
       "tick": 1,
       "time": 0.05,
       "nextId": 406,
-      "state": "9eaad08c",
+      "state": "eeaf3166",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -840,7 +820,6 @@
               999999999
             ]
           ],
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -863,7 +842,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -886,7 +864,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -909,7 +886,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -932,7 +908,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -967,7 +942,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1017,7 +991,6 @@
           "potionCooldownUntil": -1,
           "resource": 175,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1067,7 +1040,6 @@
           "potionCooldownUntil": -1,
           "resource": 175,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1117,7 +1089,6 @@
           "potionCooldownUntil": -1,
           "resource": 175,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1167,7 +1138,6 @@
           "potionCooldownUntil": -1,
           "resource": 175,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,

@@ -30,7 +30,7 @@
       "tick": 25,
       "time": 1.25,
       "nextId": 405,
-      "state": "c192b631",
+      "state": "4e28dfc9",
       "events": "230b829b",
       "rng": {
         "draws": 0,
@@ -41,7 +41,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 405,
-      "state": "0a5d9843",
+      "state": "76e242db",
       "events": "7fc93399",
       "rng": {
         "draws": 36,
@@ -52,7 +52,7 @@
       "tick": 75,
       "time": 3.75,
       "nextId": 405,
-      "state": "74b11809",
+      "state": "ef8b36c1",
       "events": "59acab11",
       "rng": {
         "draws": 126,
@@ -63,7 +63,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 405,
-      "state": "a468e593",
+      "state": "563dda87",
       "events": "72fdf341",
       "rng": {
         "draws": 245,
@@ -74,7 +74,7 @@
       "tick": 125,
       "time": 6.25,
       "nextId": 405,
-      "state": "b8c6dbe5",
+      "state": "817748a9",
       "events": "b6688c79",
       "rng": {
         "draws": 402,
@@ -85,7 +85,7 @@
       "tick": 150,
       "time": 7.5,
       "nextId": 405,
-      "state": "f7b415e5",
+      "state": "d34a8f5d",
       "events": "741638a5",
       "rng": {
         "draws": 556,
@@ -96,7 +96,7 @@
       "tick": 163,
       "time": 8.15,
       "nextId": 405,
-      "state": "363fc3da",
+      "state": "4759e04e",
       "events": "5ba07080",
       "rng": {
         "draws": 638,
@@ -130,7 +130,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {
@@ -167,7 +166,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {
@@ -209,7 +207,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {
@@ -246,7 +243,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {
@@ -286,7 +282,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -334,7 +329,6 @@
           "potionCooldownUntil": -1,
           "resource": 1671,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -383,7 +377,6 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "energy",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -434,7 +427,6 @@
           "rangedPower": 194,
           "resource": 622,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,

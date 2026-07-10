@@ -15,7 +15,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "2206f93b",
+      "state": "95729859",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -41,7 +41,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -77,7 +76,6 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "energy",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -106,7 +104,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 403,
-      "state": "091cbcd3",
+      "state": "7de6f720",
       "events": "c02b647d",
       "rng": {
         "draws": 7,
@@ -117,7 +115,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 403,
-      "state": "72c2cbf0",
+      "state": "ab2205e7",
       "events": "be266894",
       "rng": {
         "draws": 13,
@@ -128,7 +126,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 403,
-      "state": "8758e24e",
+      "state": "23f98335",
       "events": "0058395e",
       "rng": {
         "draws": 96,
@@ -139,7 +137,7 @@
       "tick": 72,
       "time": 3.6,
       "nextId": 403,
-      "state": "ca6af6f0",
+      "state": "a848258f",
       "events": "741638a5",
       "rng": {
         "draws": 153,
@@ -169,7 +167,6 @@
           "gatheringProficiency": {},
           "lifetimeXp": 27600,
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -210,7 +207,6 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "energy",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -268,7 +264,6 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 4,
             "y": 1.5,

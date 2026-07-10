@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "6c0a4233",
+      "state": "c9321a11",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -41,7 +41,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -76,7 +75,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -104,7 +102,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "7472879b",
+      "state": "e6bf50d3",
       "events": "b10defc3",
       "rng": {
         "draws": 0,
@@ -141,7 +139,6 @@
               }
             ]
           ],
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -176,7 +173,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -204,7 +200,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "7a7205f0",
+      "state": "6d629336",
       "events": "630600a6",
       "rng": {
         "draws": 0,
@@ -249,7 +245,6 @@
               }
             ]
           ],
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -284,7 +279,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -312,7 +306,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "7332450d",
+      "state": "7af338b1",
       "events": "2c0f0efe",
       "rng": {
         "draws": 0,
@@ -357,7 +351,6 @@
               }
             ]
           ],
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -392,7 +385,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -420,7 +412,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "ad0f7917",
+      "state": "5306a969",
       "events": "4c489652",
       "rng": {
         "draws": 0,
@@ -465,7 +457,6 @@
               }
             ]
           ],
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -500,7 +491,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -528,7 +518,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "4f5d7fae",
+      "state": "04f4bc76",
       "events": "28f243cf",
       "rng": {
         "draws": 0,
@@ -562,7 +552,6 @@
           "questsDone": [
             "q_boars"
           ],
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -598,7 +587,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -626,7 +614,7 @@
       "tick": 2,
       "time": 0.1,
       "nextId": 402,
-      "state": "5afd6e2c",
+      "state": "6a34caec",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -660,7 +648,6 @@
           "questsDone": [
             "q_boars"
           ],
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -696,7 +683,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
