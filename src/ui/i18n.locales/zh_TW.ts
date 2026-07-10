@@ -4548,6 +4548,12 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'delveUi.tracker.module': '第 {current} 區，共 {total} 區',
   'delveUi.tracker.objective': '目標',
   'delveUi.tracker.title': '秘探',
+  'sim.bank.cannotAfford': '你負擔不起這次銀行擴容。',
+  'sim.bank.expansionCapped': '你的銀行無法再擴容了。',
+  'sim.bank.full': '你的銀行已滿。',
+  'sim.bank.noQuestItems': '你不能把任務物品存入銀行。',
+  'sim.bank.purchased': '你購買了額外的銀行槽位。',
+  'sim.bank.tooFar': '你離銀行職員太遠了。',
   'sim.delve.alreadyInDelve': '你已經身處一場秘探之中。',
   'sim.delve.bossChest':
     '首領倒下了。一只受守護的聖物庫寶箱自祭壇升起，撬開它的鎖以取得你的戰利品。',

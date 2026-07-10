@@ -4540,6 +4540,21 @@ const RULES: Rule[] = [
   // harvestCorpse). Its range-check error reuses the literal "Too far away."
   // that lootCorpse/pickUpObject already emit (same pre-existing gap, not
   // widened by this addition).
+  // The bank vault core (PHAA-571): src/sim/bank.ts's deposit/withdraw/buySlots
+  // error + purchase-notice text. Core-only port, not yet player-reachable (no
+  // banker NPC placed), registered now so the S3 guard has a matcher ready.
+  { re: /^You are too far from the banker\.$/, build: () => t('sim.bank.tooFar') },
+  {
+    re: /^You cannot store quest items in the bank\.$/,
+    build: () => t('sim.bank.noQuestItems'),
+  },
+  { re: /^Your bank is full\.$/, build: () => t('sim.bank.full') },
+  {
+    re: /^Your bank cannot be expanded further\.$/,
+    build: () => t('sim.bank.expansionCapped'),
+  },
+  { re: /^You cannot afford that bank expansion\.$/, build: () => t('sim.bank.cannotAfford') },
+  { re: /^You purchase additional bank slots\.$/, build: () => t('sim.bank.purchased') },
   {
     re: /^That corpse has nothing to harvest\.$/,
     build: () => t('sim.gathering.nothingToHarvest'),

@@ -2334,6 +2334,14 @@ export const ja_JP: EnTranslations = {
       "readoutUsage": "/house place <1-{count}> <{kinds}>、/house remove <スロット>。",
       "helpLine": "住居：/house、/house claim、/house place <スロット> <種類>、/house remove <スロット>。"
     },
+    "bank": {
+      "tooFar": "銀行員から離れすぎている。",
+      "noQuestItems": "クエストアイテムは銀行に預けられない。",
+      "full": "銀行の保管庫がいっぱいだ。",
+      "expansionCapped": "これ以上銀行を拡張できない。",
+      "cannotAfford": "その銀行拡張の代金が足りない。",
+      "purchased": "追加の銀行スロットを購入した。"
+    },
     "homestead": {
       "outsideArea": "That is outside the homestead ground. Try Fallow Acres, west of the road.",
       "tooCloseGate": "Too close to the gate. Move further out.",

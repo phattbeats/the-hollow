@@ -62,6 +62,10 @@ export interface SimContextPrimitives {
   // Live player roster (keyed by entity id). Stays a Sim field; exposed here so the
   // moved party machine (A1) resolves member names/metas through the seam.
   readonly players: Map<number, PlayerMeta>;
+  // Banker NPC entity ids (PHAA-571: bank.ts's nearBanker gate). Always empty
+  // until a follow-up ticket places banker NPCs in zone content; Sim-owned field,
+  // exposed here so bank.ts resolves proximity through the seam.
+  readonly bankerIds: readonly number[];
   // The local / RL player id (single-player + renderer contexts). Reassigned on the
   // first join and on the primary's departure, so it is a LIVE getter, not a snapshot.
   // Stays a Sim field; the moved raid-marker `markerFor` (T1) reads it through the seam.
@@ -609,6 +613,9 @@ export function createSimContext(host: SimContextHost): SimContext {
     },
     get players() {
       return host.players;
+    },
+    get bankerIds() {
+      return host.bankerIds;
     },
     get primaryId() {
       return host.primaryId;

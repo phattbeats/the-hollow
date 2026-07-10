@@ -4888,6 +4888,12 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'delveUi.tracker.module': 'Секция {current} из {total}',
   'delveUi.tracker.objective': 'Задача',
   'delveUi.tracker.title': 'Вылазка',
+  'sim.bank.cannotAfford': 'Вам не хватает средств на это расширение банка.',
+  'sim.bank.expansionCapped': 'Ваш банк больше нельзя расширить.',
+  'sim.bank.full': 'Ваш банк переполнен.',
+  'sim.bank.noQuestItems': 'Квестовые предметы нельзя хранить в банке.',
+  'sim.bank.purchased': 'Вы приобрели дополнительные ячейки банка.',
+  'sim.bank.tooFar': 'Вы слишком далеко от банкира.',
   'sim.delve.alreadyInDelve': 'Вы уже находитесь в вылазке.',
   'sim.delve.bossChest':
     'Босс пал. На возвышении поднимается заговорённый сундук реликвария: взломайте его замок, чтобы забрать добычу.',

@@ -4786,6 +4786,12 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'delveUi.tracker.module': 'モジュール {current}/{total}',
   'delveUi.tracker.objective': '目標',
   'delveUi.tracker.title': 'デルヴ',
+  'sim.bank.cannotAfford': 'その銀行拡張の代金が足りない。',
+  'sim.bank.expansionCapped': 'これ以上銀行を拡張できない。',
+  'sim.bank.full': '銀行の保管庫がいっぱいだ。',
+  'sim.bank.noQuestItems': 'クエストアイテムは銀行に預けられない。',
+  'sim.bank.purchased': '追加の銀行スロットを購入した。',
+  'sim.bank.tooFar': '銀行員から離れすぎている。',
   'sim.delve.alreadyInDelve': 'あなたはすでにデルヴの中にいる。',
   'sim.delve.bossChest':
     'ボスが倒れる。守りの聖遺物庫の宝箱が祭壇にせり上がる。錠を開けて戦利品を手に入れろ。',

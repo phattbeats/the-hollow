@@ -4,6 +4,7 @@ import type {
   DelveRunInfo,
   LockpickView,
 } from '../world_api';
+import * as bankMod from './bank';
 import { lineOfSightClear, resolveMovement, resolvePosition } from './colliders';
 import { needsCostTranslation, translateAbilityCost } from './combat/ability_cost';
 import { auraAffectsStats, removeCancelableAura } from './combat/aura_cancel';
@@ -667,6 +668,11 @@ export interface PlayerMeta {
   inventory: InvSlot[];
   vendorBuyback: InvSlot[];
   copper: number;
+  // The personal bank vault (PHAA-571: core only, not yet player-reachable; see
+  // src/sim/bank.ts). bankBonusSources is the server-stamped per-source breakdown
+  // behind bank.bonusSlots, recomputed at join (empty offline).
+  bank: bankMod.BankState;
+  bankBonusSources: bankMod.BankBonusSource[];
   equipment: PlayerEquipment;
   xp: number;
   // Post-cap progression (Max-Level XP Overflow). `lifetimeXp` is the monotonic
@@ -791,6 +797,11 @@ export interface CharacterState {
   equipment: PlayerEquipment;
   inventory: InvSlot[];
   vendorBuyback?: InvSlot[];
+  // The personal bank vault. Optional so pre-bank saves load cleanly (defaults to
+  // empty/0/0 via sanitizeBankState). bonusSlots is re-stamped from the account
+  // entitlement registry at every online join; a persisted value only matters
+  // offline (RL env / local play with no server).
+  bank?: { inventory: InvSlot[]; purchasedSlots: number; bonusSlots: number };
   questLog: { questId: string; counts: number[]; state: 'active' | 'ready' | 'done' }[];
   questsDone: string[];
   // Legacy arenaRating/Wins/Losses are treated as 1v1 data. The explicit
@@ -1271,6 +1282,8 @@ export class Sim {
       inventory: [],
       vendorBuyback: [],
       copper: 0,
+      bank: { inventory: [], purchasedSlots: 0, bonusSlots: 0 },
+      bankBonusSources: [],
       equipment: { mainhand: classDef.startWeapon, chest: classDef.startChest },
       xp: 0,
       lifetimeXp: 0,
@@ -1333,6 +1346,7 @@ export class Sim {
       meta.equipment = { ...s.equipment };
       meta.inventory = s.inventory.map((i) => ({ ...i }));
       meta.vendorBuyback = (s.vendorBuyback ?? []).map((i) => ({ ...i }));
+      meta.bank = bankMod.sanitizeBankState(s.bank);
       for (const q of s.questLog) {
         if (q.state !== 'done')
           meta.questLog.set(q.questId, {
@@ -1553,6 +1567,11 @@ export class Sim {
       equipment: { ...meta.equipment },
       inventory: meta.inventory.map((i) => ({ ...i })),
       vendorBuyback: meta.vendorBuyback.map((i) => ({ ...i })),
+      bank: {
+        inventory: meta.bank.inventory.map((i) => ({ ...i })),
+        purchasedSlots: meta.bank.purchasedSlots,
+        bonusSlots: meta.bank.bonusSlots,
+      },
       questLog: [...meta.questLog.values()].map((q) => ({
         questId: q.questId,
         counts: [...q.counts],
@@ -1958,6 +1977,9 @@ export class Sim {
       },
       get players() {
         return sim.players;
+      },
+      get bankerIds() {
+        return sim.bankerIds;
       },
       get primaryId() {
         return sim.primaryId;
@@ -4465,6 +4487,32 @@ export class Sim {
   unequipItem(slot: EquipSlot, pid?: number): boolean {
     return items.unequipItem(this.ctx, slot, pid);
   }
+
+  // The personal bank vault (PHAA-571: core only, see src/sim/bank.ts). Thin
+  // delegates so tests and any future foreign caller resolve these on the Sim
+  // facade; nearBanker always refuses today since bankerIds is empty until a
+  // follow-up ticket places banker NPCs in zone content.
+  bankDeposit(slotIndex: number, count?: number, pid?: number): void {
+    bankMod.bankDeposit(this.ctx, slotIndex, count, pid);
+  }
+
+  bankWithdraw(slotIndex: number, count?: number, pid?: number): void {
+    bankMod.bankWithdraw(this.ctx, slotIndex, count, pid);
+  }
+
+  bankBuySlots(pid?: number): void {
+    bankMod.bankBuySlots(this.ctx, pid);
+  }
+
+  bankInfoFor(pid: number): bankMod.BankInfo | null {
+    return bankMod.bankInfoFor(this.ctx, pid);
+  }
+
+  // Banker NPC anchors bank.ts's nearBanker gate reads through ctx.bankerIds.
+  // Always empty until a follow-up ticket places banker NPCs in zone content
+  // (mirrors Market's merchantId seeding, plural since a banker belongs in every
+  // hub town). Sim-owned; exposed as a live SimContext view.
+  private bankerIds: number[] = [];
 
   private hasFishableWaterAhead(p: Entity): boolean {
     const sin = Math.sin(p.facing);

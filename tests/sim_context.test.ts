@@ -232,6 +232,7 @@ function makeFakeHost() {
       return entities;
     },
     players: new Map(),
+    bankerIds: [],
     primaryId: -1,
     tradeInvites: new Map(),
     duelInvites: new Map(),

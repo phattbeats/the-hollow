@@ -101,6 +101,7 @@ function makeCtx() {
     get players() {
       return players;
     },
+    bankerIds: [],
     get cfg() {
       return cfg;
     },

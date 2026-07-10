@@ -6,6 +6,7 @@ import { LEADERBOARD_MAX } from '../src/sim/leaderboard_page';
 import { sanitizeRemovedZone1Content } from '../src/sim/removed_zone1_content';
 import type { CharacterState, MarketSave } from '../src/sim/sim';
 import type { ArenaFormat, PlayerClass } from '../src/sim/types';
+import type { BankBonusFacts } from './bank_entitlements';
 import { seedChatFilterDefaults } from './chat_filter_db';
 import type { ChatLogRow } from './chat_log';
 import { DISCORD_SCHEMA } from './discord_db';
@@ -725,6 +726,33 @@ export async function accountById(accountId: number): Promise<AccountInfoRow | n
     [accountId],
   );
   return res.rows[0] ?? null;
+}
+
+// The account facts that drive the bank bonus-slot registry
+// (server/bank_entitlements.ts), read in ONE round trip at every fresh join. A
+// missing account returns all-false (the FROM accounts row is absent, so
+// res.rows[0] is undefined and the fallback applies).
+//   - emailVerified: the RESOLVED criterion, email_verified_at IS NOT NULL, never
+//     email-present.
+//   - discordLinked: a link ROW is the whole proof. NEVER a balance or any other
+//     account-facing token.
+// ADAPT NOTE (PHAA-571): upstream also read wallet_links + a qualified-referral
+// count here; both are dropped with the wallet-link and referral entitlement
+// sources (see server/bank_entitlements.ts).
+export async function bankBonusFactsForAccount(accountId: number): Promise<BankBonusFacts> {
+  const res = await pool.query(
+    `SELECT
+       (a.email_verified_at IS NOT NULL) AS email_verified,
+       EXISTS(SELECT 1 FROM discord_links dl WHERE dl.account_id = $1) AS discord_linked
+     FROM accounts a
+     WHERE a.id = $1`,
+    [accountId],
+  );
+  const row = res.rows[0];
+  return {
+    emailVerified: row?.email_verified ?? false,
+    discordLinked: row?.discord_linked ?? false,
+  };
 }
 
 // Account-wide character count across every realm. The account portal is an
