@@ -4803,6 +4803,12 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'delveUi.tracker.module': '구역 {current}/{total}',
   'delveUi.tracker.objective': '목표',
   'delveUi.tracker.title': '탐굴',
+  'sim.bank.cannotAfford': '그 은행 확장 비용을 감당할 수 없습니다.',
+  'sim.bank.expansionCapped': '더 이상 은행을 확장할 수 없습니다.',
+  'sim.bank.full': '은행 보관함이 가득 찼습니다.',
+  'sim.bank.noQuestItems': '퀘스트 아이템은 은행에 보관할 수 없습니다.',
+  'sim.bank.purchased': '추가 은행 슬롯을 구매했습니다.',
+  'sim.bank.tooFar': '은행원과 너무 멀리 떨어져 있습니다.',
   'sim.delve.alreadyInDelve': '이미 탐굴 중입니다.',
   'sim.delve.bossChest':
     '우두머리가 쓰러집니다. 봉인된 성물실 상자가 단상 위로 솟아오릅니다. 자물쇠를 따서 전리품을 차지하세요.',

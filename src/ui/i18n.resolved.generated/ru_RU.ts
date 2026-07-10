@@ -2341,6 +2341,14 @@ export const ru_RU: EnTranslations = {
       "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <слот>.",
       "helpLine": "Дома: /house, /house claim, /house place <слот> <вид>, /house remove <слот>."
     },
+    "bank": {
+      "tooFar": "Вы слишком далеко от банкира.",
+      "noQuestItems": "Квестовые предметы нельзя хранить в банке.",
+      "full": "Ваш банк переполнен.",
+      "expansionCapped": "Ваш банк больше нельзя расширить.",
+      "cannotAfford": "Вам не хватает средств на это расширение банка.",
+      "purchased": "Вы приобрели дополнительные ячейки банка."
+    },
     "homestead": {
       "outsideArea": "That is outside the homestead ground. Try Fallow Acres, west of the road.",
       "tooCloseGate": "Too close to the gate. Move further out.",

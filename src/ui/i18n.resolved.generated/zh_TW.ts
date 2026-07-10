@@ -2341,6 +2341,14 @@ export const zh_TW: EnTranslations = {
       "readoutUsage": "/house place <1-{count}> <{kinds}>，/house remove <槽位>。",
       "helpLine": "宅邸：/house、/house claim、/house place <槽位> <種類>、/house remove <槽位>。"
     },
+    "bank": {
+      "tooFar": "你離銀行職員太遠了。",
+      "noQuestItems": "你不能把任務物品存入銀行。",
+      "full": "你的銀行已滿。",
+      "expansionCapped": "你的銀行無法再擴容了。",
+      "cannotAfford": "你負擔不起這次銀行擴容。",
+      "purchased": "你購買了額外的銀行槽位。"
+    },
     "homestead": {
       "outsideArea": "That is outside the homestead ground. Try Fallow Acres, west of the road.",
       "tooCloseGate": "Too close to the gate. Move further out.",

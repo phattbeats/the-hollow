@@ -2341,6 +2341,14 @@ export const ko_KR: EnTranslations = {
       "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <슬롯>.",
       "helpLine": "주택: /house, /house claim, /house place <슬롯> <종류>, /house remove <슬롯>."
     },
+    "bank": {
+      "tooFar": "은행원과 너무 멀리 떨어져 있습니다.",
+      "noQuestItems": "퀘스트 아이템은 은행에 보관할 수 없습니다.",
+      "full": "은행 보관함이 가득 찼습니다.",
+      "expansionCapped": "더 이상 은행을 확장할 수 없습니다.",
+      "cannotAfford": "그 은행 확장 비용을 감당할 수 없습니다.",
+      "purchased": "추가 은행 슬롯을 구매했습니다."
+    },
     "homestead": {
       "outsideArea": "That is outside the homestead ground. Try Fallow Acres, west of the road.",
       "tooCloseGate": "Too close to the gate. Move further out.",
