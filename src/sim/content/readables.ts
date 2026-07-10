@@ -32,6 +32,8 @@ export const READABLES: ReadableDef[] = [
     zoneId: 'the_hollow_reaches',
     pos: { x: 6, z: -262 },
     facing: 2.4,
+    // A single sheet the warden tore loose and dropped, not a bound book.
+    prop: 'page',
     title: 'A Torn Ledger Page',
     pages: [
       'Root Hollow, entered to rest. Fallow Acres, entered to rest. The lake at Mossbank, which rests whether we enter it or not. Signed and dated, as the register wants.',
@@ -45,6 +47,8 @@ export const READABLES: ReadableDef[] = [
     zoneId: 'the_hollow_reaches',
     pos: { x: -42, z: -244 },
     facing: 1.1,
+    // Margin notes in a worn hymnbook, so this one is an actual open notebook.
+    prop: 'journal',
     title: "A Keeper's Marginalia",
     pages: [
       'Left in the margin of a hymnbook with the hymns worn out of it. The hand is quick, the way a hand is quick when it writes while walking.',

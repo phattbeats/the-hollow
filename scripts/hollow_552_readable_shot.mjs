@@ -92,13 +92,15 @@ console.log('readableProps:', JSON.stringify(readable));
 // Framing note (PHAA-552): the follow camera sits directly behind the player
 // along its facing, so anything DEAD AHEAD (yaw 0, book due north) is occluded
 // by the player character model and the near grass tuft. Stand off to one side
-// and look diagonally/laterally so the book is beside the player, not behind
-// them. Verified projections: at (2,-270) yaw ~PI/4 the lectern frames cleanly
-// to the player's right; standing close with yaw -PI/2 puts it screen-left.
+// and look diagonally/laterally so the readable is beside the player, not behind
+// them. The readable is now a LOW loose item on a fieldstone (PHAA-552 board
+// follow-up, no more tall lectern), so stand closer than the old pedestal shot
+// so it reads at size: at (4,-266) yaw ~PI/4 it frames to the player's right;
+// standing close with yaw -PI/2 puts it screen-left.
 //
-// Clean prop shot: stand back and to the side, book unoccluded, outside
+// Clean prop shot: stand back and to the side, readable unoccluded, outside
 // READ_RADIUS (3) so no prompt overlay.
-await tp(page, 2, -270, Math.PI / 4);
+await tp(page, 4, -266, Math.PI / 4);
 await dismissColdOpen(page);
 await page.screenshot({ path: `${OUT}/00_book_prop.png` });
 

@@ -1187,12 +1187,22 @@ export interface GatherNodeDef {
 // `pages` and `title` are the canonical ENGLISH content; the client resolves the
 // displayed text through the `readable` entity-i18n kind (src/ui/entity_i18n.ts),
 // the sim stays language-agnostic. Placement mirrors GatherNodeDef: world-space
-// x/z in an overworld zone, plus a `facing` yaw for the rendered book.
+// x/z in an overworld zone, plus a `facing` yaw for the rendered prop.
+//
+// Which physical object it draws as (PHAA-552 follow-up): the board asked for
+// "random journals or books you find lying around", so a readable is a loose
+// item resting on the ground, not a tome on a pedestal. `page` is a single loose
+// sheet (a torn ledger page, a dropped note); `journal` is a small open field
+// notebook. Both lie on a low natural fieldstone so they clear the grass ring
+// without reading as a monument. Render: src/render/readables.ts.
+export type ReadableProp = 'page' | 'journal';
+
 export interface ReadableDef {
   id: string;
   zoneId: string;
   pos: { x: number; z: number };
-  facing: number; // radians, yaw applied to the rendered book prop
+  facing: number; // radians, yaw applied to the rendered prop
+  prop: ReadableProp; // which loose object it is drawn as (see ReadableProp)
   title: string; // canonical English title shown in the reader window
   pages: string[]; // canonical English pages, one per reader page turn
 }

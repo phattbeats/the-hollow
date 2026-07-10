@@ -18,6 +18,17 @@ describe('READABLES content', () => {
     }
   });
 
+  it('declares a known loose-object prop kind (PHAA-552 follow-up)', () => {
+    // The board rejected the "book on a pedestal" look: a readable must render as
+    // a loose item (a single page or an open field notebook), so `prop` gates the
+    // render in src/render/readables.ts and only these two kinds are drawn.
+    for (const r of READABLES) {
+      expect(['page', 'journal'], `readable ${r.id} has unknown prop ${r.prop}`).toContain(r.prop);
+    }
+    // A torn ledger page must be the loose sheet, not a bound book.
+    expect(READABLES_BY_ID.torn_ledger_page.prop).toBe('page');
+  });
+
   it('carries a title and at least one non-empty page per book', () => {
     for (const r of READABLES) {
       expect(r.title.trim().length).toBeGreaterThan(0);
