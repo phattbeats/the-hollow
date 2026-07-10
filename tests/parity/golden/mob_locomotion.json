@@ -32,7 +32,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "e5357eac",
+      "state": "fb604f84",
       "events": "9ebb741a",
       "rng": {
         "draws": 4,
@@ -56,6 +56,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -91,6 +94,7 @@
           "potionCooldownUntil": -1,
           "resource": 5.777778,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -139,6 +143,7 @@
           },
           "potionCooldownUntil": -1,
           "pulseTimer": 10,
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -162,7 +167,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 404,
-      "state": "7f0c813f",
+      "state": "fcdf9462",
       "events": "d28a2342",
       "rng": {
         "draws": 8,
@@ -186,6 +191,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -232,6 +240,7 @@
           "potionCooldownUntil": -1,
           "resource": 9.211111,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -280,6 +289,7 @@
           },
           "potionCooldownUntil": -1,
           "pulseTimer": 10,
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -323,6 +333,7 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -346,7 +357,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 405,
-      "state": "41834d3f",
+      "state": "646edb4f",
       "events": "9b05051c",
       "rng": {
         "draws": 13,
@@ -370,6 +381,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -427,6 +441,7 @@
           "potionCooldownUntil": -1,
           "resource": 15.1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -475,6 +490,7 @@
           },
           "potionCooldownUntil": -1,
           "pulseTimer": 10,
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -518,6 +534,7 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -562,6 +579,7 @@
           },
           "potionCooldownUntil": -1,
           "pulseTimer": 9,
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -585,7 +603,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 406,
-      "state": "01d06dfe",
+      "state": "71cbe50f",
       "events": "741638a5",
       "rng": {
         "draws": 15,
@@ -609,6 +627,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -666,6 +687,7 @@
           "potionCooldownUntil": -1,
           "resource": 15.1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -714,6 +736,7 @@
           },
           "potionCooldownUntil": -1,
           "pulseTimer": 10,
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -757,6 +780,7 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -801,6 +825,7 @@
           },
           "potionCooldownUntil": -1,
           "pulseTimer": 9,
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -825,7 +850,7 @@
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
           "facing": -2.341693,
-          "fallStartY": 43.188532,
+          "fallStartY": 41.773845,
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 84,
@@ -840,13 +865,14 @@
           "petMode": "defensive",
           "pos": {
             "x": 299.89958,
-            "y": 43.189554,
+            "y": 41.7742,
             "z": 299.902451
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 300,
-            "y": 43.188532,
+            "y": 41.773845,
             "z": 300
           },
           "stats": {
@@ -855,7 +881,7 @@
           "templateId": "forest_wolf",
           "wanderTarget": {
             "x": 294.238577,
-            "y": 42.301071,
+            "y": 41.695351,
             "z": 294.403301
           },
           "wanderTimer": 30,
@@ -871,7 +897,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 407,
-      "state": "1b013be4",
+      "state": "0d308d52",
       "events": "741638a5",
       "rng": {
         "draws": 16,
@@ -895,6 +921,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -952,6 +981,7 @@
           "potionCooldownUntil": -1,
           "resource": 15.1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1000,6 +1030,7 @@
           },
           "potionCooldownUntil": -1,
           "pulseTimer": 10,
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1043,6 +1074,7 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1087,6 +1119,7 @@
           },
           "potionCooldownUntil": -1,
           "pulseTimer": 9,
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1111,7 +1144,7 @@
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
           "facing": -2.341693,
-          "fallStartY": 43.188532,
+          "fallStartY": 41.773845,
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 84,
@@ -1126,13 +1159,14 @@
           "petMode": "defensive",
           "pos": {
             "x": 299.89958,
-            "y": 43.189554,
+            "y": 41.7742,
             "z": 299.902451
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 300,
-            "y": 43.188532,
+            "y": 41.773845,
             "z": 300
           },
           "stats": {
@@ -1141,7 +1175,7 @@
           "templateId": "forest_wolf",
           "wanderTarget": {
             "x": 294.238577,
-            "y": 42.301071,
+            "y": 41.695351,
             "z": 294.403301
           },
           "wanderTimer": 30,
@@ -1157,7 +1191,7 @@
           "critChance": 0.05,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
-          "fallStartY": 42.211832,
+          "fallStartY": 42.887514,
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 84,
@@ -1172,13 +1206,14 @@
           "petMode": "defensive",
           "pos": {
             "x": 320,
-            "y": 42.211832,
+            "y": 42.887514,
             "z": 320
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 320,
-            "y": 42.211832,
+            "y": 42.887514,
             "z": 320
           },
           "stats": {
@@ -1198,7 +1233,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "0d3dc1aa",
+      "state": "d78e8d4f",
       "events": "260accd6",
       "rng": {
         "draws": 16,
@@ -1222,6 +1257,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1279,6 +1317,7 @@
           "potionCooldownUntil": -1,
           "resource": 15.1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1327,6 +1366,7 @@
           },
           "potionCooldownUntil": -1,
           "pulseTimer": 10,
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1370,6 +1410,7 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1414,6 +1455,7 @@
           },
           "potionCooldownUntil": -1,
           "pulseTimer": 9,
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1438,7 +1480,7 @@
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
           "facing": -2.341693,
-          "fallStartY": 43.188532,
+          "fallStartY": 41.773845,
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 84,
@@ -1453,13 +1495,14 @@
           "petMode": "defensive",
           "pos": {
             "x": 299.89958,
-            "y": 43.189554,
+            "y": 41.7742,
             "z": 299.902451
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 300,
-            "y": 43.188532,
+            "y": 41.773845,
             "z": 300
           },
           "stats": {
@@ -1468,7 +1511,7 @@
           "templateId": "forest_wolf",
           "wanderTarget": {
             "x": 294.238577,
-            "y": 42.301071,
+            "y": 41.695351,
             "z": 294.403301
           },
           "wanderTimer": 30,
@@ -1484,7 +1527,7 @@
           "critChance": 0.05,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
-          "fallStartY": 42.211832,
+          "fallStartY": 42.887514,
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 84,
@@ -1499,13 +1542,14 @@
           "petMode": "defensive",
           "pos": {
             "x": 320,
-            "y": 42.211832,
+            "y": 42.887514,
             "z": 320
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 320,
-            "y": 42.211832,
+            "y": 42.887514,
             "z": 320
           },
           "stats": {
@@ -1548,6 +1592,7 @@
             "z": -1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3,
             "y": 1.5,
@@ -1569,7 +1614,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "7a44278f",
+      "state": "d3932ca2",
       "events": "741638a5",
       "rng": {
         "draws": 16,
@@ -1593,6 +1638,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1650,6 +1698,7 @@
           "potionCooldownUntil": -1,
           "resource": 15.1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1698,6 +1747,7 @@
           },
           "potionCooldownUntil": -1,
           "pulseTimer": 10,
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1741,6 +1791,7 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1785,6 +1836,7 @@
           },
           "potionCooldownUntil": -1,
           "pulseTimer": 9,
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1809,7 +1861,7 @@
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
           "facing": -2.341693,
-          "fallStartY": 43.188532,
+          "fallStartY": 41.773845,
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 84,
@@ -1824,13 +1876,14 @@
           "petMode": "defensive",
           "pos": {
             "x": 299.89958,
-            "y": 43.189554,
+            "y": 41.7742,
             "z": 299.902451
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 300,
-            "y": 43.188532,
+            "y": 41.773845,
             "z": 300
           },
           "stats": {
@@ -1839,7 +1892,7 @@
           "templateId": "forest_wolf",
           "wanderTarget": {
             "x": 294.238577,
-            "y": 42.301071,
+            "y": 41.695351,
             "z": 294.403301
           },
           "wanderTimer": 30,
@@ -1855,7 +1908,7 @@
           "critChance": 0.05,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
-          "fallStartY": 42.211832,
+          "fallStartY": 42.887514,
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 84,
@@ -1870,13 +1923,14 @@
           "petMode": "defensive",
           "pos": {
             "x": 320,
-            "y": 42.211832,
+            "y": 42.887514,
             "z": 320
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 320,
-            "y": 42.211832,
+            "y": 42.887514,
             "z": 320
           },
           "stats": {
@@ -1920,6 +1974,7 @@
             "z": -0.839133
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3,
             "y": 1.5,
@@ -1941,7 +1996,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "7a44278f",
+      "state": "d3932ca2",
       "events": "741638a5",
       "rng": {
         "draws": 16,
@@ -1965,6 +2020,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2022,6 +2080,7 @@
           "potionCooldownUntil": -1,
           "resource": 15.1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -2070,6 +2129,7 @@
           },
           "potionCooldownUntil": -1,
           "pulseTimer": 10,
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -2113,6 +2173,7 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -2157,6 +2218,7 @@
           },
           "potionCooldownUntil": -1,
           "pulseTimer": 9,
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -2181,7 +2243,7 @@
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
           "facing": -2.341693,
-          "fallStartY": 43.188532,
+          "fallStartY": 41.773845,
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 84,
@@ -2196,13 +2258,14 @@
           "petMode": "defensive",
           "pos": {
             "x": 299.89958,
-            "y": 43.189554,
+            "y": 41.7742,
             "z": 299.902451
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 300,
-            "y": 43.188532,
+            "y": 41.773845,
             "z": 300
           },
           "stats": {
@@ -2211,7 +2274,7 @@
           "templateId": "forest_wolf",
           "wanderTarget": {
             "x": 294.238577,
-            "y": 42.301071,
+            "y": 41.695351,
             "z": 294.403301
           },
           "wanderTimer": 30,
@@ -2227,7 +2290,7 @@
           "critChance": 0.05,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
-          "fallStartY": 42.211832,
+          "fallStartY": 42.887514,
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 84,
@@ -2242,13 +2305,14 @@
           "petMode": "defensive",
           "pos": {
             "x": 320,
-            "y": 42.211832,
+            "y": 42.887514,
             "z": 320
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 320,
-            "y": 42.211832,
+            "y": 42.887514,
             "z": 320
           },
           "stats": {
@@ -2292,6 +2356,7 @@
             "z": -0.839133
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3,
             "y": 1.5,

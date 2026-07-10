@@ -1,8 +1,15 @@
-import { fbm2, hash2 } from './rng';
 import {
-  CAMPS, DUNGEON_FLOOR_Y, DUNGEON_X_THRESHOLD, ROADS, WORLD_MAX_X, WORLD_MAX_Z,
-  WORLD_MIN_X, WORLD_MIN_Z, ZONES,
+  CAMPS,
+  DUNGEON_FLOOR_Y,
+  DUNGEON_X_THRESHOLD,
+  ROADS,
+  WORLD_MAX_X,
+  WORLD_MAX_Z,
+  WORLD_MIN_X,
+  WORLD_MIN_Z,
+  ZONES,
 } from './data';
+import { fbm2, hash2 } from './rng';
 import type { BiomeId } from './types';
 
 // Terrain is a pure function of (x, z, seed): both the sim (ground clamping)
@@ -17,6 +24,51 @@ const HILL_SCALE = 0.013;
 const DETAIL_SCALE = 0.05;
 
 export const WATER_LEVEL = -4.5;
+
+// A declared lake's footprint reaches this multiple past its authored radius
+// (the same soft-edge basin blend baseHeight uses below), so the render plane,
+// the walkable-depth floor, and the terrain basin itself all agree on where a
+// lake actually ends.
+export const LAKE_BLEND_RADIUS_MULT = 1.6;
+
+// True when (x, z) falls inside a declared lake's footprint (any zone's
+// `lakes` list). Terrain outside every declared water body is never "water",
+// no matter how far its height dips below WATER_LEVEL: a content author's
+// sunken feature (crater, sinkhole, tunnel) stays dry and walkable as long as
+// it isn't inside one of these footprints.
+export function isInWaterBody(x: number, z: number): boolean {
+  for (const zone of ZONES) {
+    for (const lake of zone.lakes) {
+      const dSq = (x - lake.x) ** 2 + (z - lake.z) ** 2;
+      const rMax = lake.radius * LAKE_BLEND_RADIUS_MULT;
+      if (dSq < rMax * rMax) return true;
+    }
+  }
+  return false;
+}
+
+// The water surface height AT this location: WATER_LEVEL inside a declared
+// lake's footprint, else -Infinity (there is no water surface here, so
+// nothing reads as flooded and no swim-depth floor applies). Callers that
+// need "is there water here at all" should prefer this over the flat global
+// constant.
+export function waterLevelAt(x: number, z: number): number {
+  return isInWaterBody(x, z) ? WATER_LEVEL : -Infinity;
+}
+
+// Every declared lake across the active zones, in render/authoring footprint
+// (radius already includes the basin blend margin). Used to draw water only
+// where it is actually declared, instead of one flat plane across an entire
+// zone's footprint.
+export function waterBodies(): { x: number; z: number; radius: number }[] {
+  const out: { x: number; z: number; radius: number }[] = [];
+  for (const zone of ZONES) {
+    for (const lake of zone.lakes) {
+      out.push({ x: lake.x, z: lake.z, radius: lake.radius * LAKE_BLEND_RADIUS_MULT });
+    }
+  }
+  return out;
+}
 
 // Hill amplitude / base elevation / hub plateau height per biome.
 const BIOME_SHAPE: Record<BiomeId, { hill: number; base: number; hubHeight: number }> = {
@@ -62,16 +114,16 @@ export function mirefenImpactCraterOffset(x: number, z: number): number {
   if (d >= MIREFEN_IMPACT_CRATER.radius) return 0;
 
   const bowlT = d / MIREFEN_IMPACT_CRATER.bowlRadius;
-  const bowl = d < MIREFEN_IMPACT_CRATER.bowlRadius
-    ? -MIREFEN_IMPACT_CRATER.depth * (1 - smoothstep(0, 1, bowlT))
-    : 0;
+  const bowl =
+    d < MIREFEN_IMPACT_CRATER.bowlRadius
+      ? -MIREFEN_IMPACT_CRATER.depth * (1 - smoothstep(0, 1, bowlT))
+      : 0;
 
   const rimStart = MIREFEN_IMPACT_CRATER.bowlRadius * 0.82;
   if (d <= rimStart) return bowl;
   const rimT = (d - rimStart) / (MIREFEN_IMPACT_CRATER.radius - rimStart);
-  const rim = MIREFEN_IMPACT_CRATER.rimHeight
-    * smoothstep(0, 0.35, rimT)
-    * (1 - smoothstep(0.72, 1, rimT));
+  const rim =
+    MIREFEN_IMPACT_CRATER.rimHeight * smoothstep(0, 0.35, rimT) * (1 - smoothstep(0.72, 1, rimT));
   return bowl + rim;
 }
 
@@ -92,11 +144,13 @@ function shapeAt(z: number): { hill: number; base: number } {
 
 function baseHeight(x: number, z: number, seed: number): number {
   const shape = shapeAt(z);
-  let h = (fbm2(x * HILL_SCALE + 100, z * HILL_SCALE + 100, seed, 4) - 0.5) * shape.hill + shape.base;
+  let h =
+    (fbm2(x * HILL_SCALE + 100, z * HILL_SCALE + 100, seed, 4) - 0.5) * shape.hill + shape.base;
   h += (fbm2(x * DETAIL_SCALE, z * DETAIL_SCALE, seed + 7, 2) - 0.5) * 2.2;
   // Flatten each zone's hub settlement into a plateau
   for (const zone of ZONES) {
-    const dx = x - zone.hub.x, dz = z - zone.hub.z;
+    const dx = x - zone.hub.x,
+      dz = z - zone.hub.z;
     const dHub = Math.sqrt(dx * dx + dz * dz);
     if (dHub < zone.hub.radius * 1.6) {
       const blend = smoothstep(zone.hub.radius * 0.7, zone.hub.radius * 1.6, dHub);
@@ -110,8 +164,12 @@ function baseHeight(x: number, z: number, seed: number): number {
   for (const zone of ZONES) {
     for (const lake of zone.lakes) {
       const dLake = Math.sqrt((x - lake.x) ** 2 + (z - lake.z) ** 2);
-      if (dLake < lake.radius * 1.6) {
-        const lakeBlend = smoothstep(lake.radius * 0.55, lake.radius * 1.6, dLake);
+      if (dLake < lake.radius * LAKE_BLEND_RADIUS_MULT) {
+        const lakeBlend = smoothstep(
+          lake.radius * 0.55,
+          lake.radius * LAKE_BLEND_RADIUS_MULT,
+          dLake,
+        );
         h = h * lakeBlend + (WATER_LEVEL - 4) * (1 - lakeBlend);
       }
     }
@@ -130,7 +188,8 @@ export function terrainHeight(x: number, z: number, seed: number): number {
 
   // Flatten each camp a little so mobs don't stand on cliffs
   for (const camp of CAMPS) {
-    const dx = x - camp.center.x, dz = z - camp.center.z;
+    const dx = x - camp.center.x,
+      dz = z - camp.center.z;
     const d = Math.sqrt(dx * dx + dz * dz);
     if (d < camp.radius * 1.8) {
       const ch = baseHeight(camp.center.x, camp.center.z, seed);
@@ -147,8 +206,14 @@ export function terrainHeight(x: number, z: number, seed: number): number {
       const pass = ridge.sealed
         ? 1
         : smoothstep(PASS_HALF_WIDTH, PASS_SHOULDER, Math.abs(x - ridge.passX));
-      // jagged crest so the wall reads as mountains, not a berm
-      const crest = 1 + (fbm2(x * 0.03, ridge.z * 0.03, seed + 19, 2) - 0.5) * 0.7;
+      // jagged crest so the wall reads as mountains, not a berm: a coarse layer
+      // for peak/saddle shape plus a finer layer for crag/shoulder detail.
+      // Combined variance kept tight so the lowest saddle still beats the
+      // climb limit (tests/terrain_walls.test.ts).
+      const crest =
+        1 +
+        (fbm2(x * 0.03, ridge.z * 0.03, seed + 19, 2) - 0.5) * 0.4 +
+        (fbm2(x * 0.11, ridge.z * 0.11, seed + 23, 2) - 0.5) * 0.14;
       h += RIDGE_HEIGHT * crest * profile * pass;
     }
   }
@@ -158,7 +223,16 @@ export function terrainHeight(x: number, z: number, seed: number): number {
   const rimS = smoothstep(WORLD_MIN_Z + 30, WORLD_MIN_Z, z);
   const rimN = smoothstep(WORLD_MAX_Z - 30, WORLD_MAX_Z, z);
   const rim = Math.max(rimX, rimS, rimN);
-  h += rim * 40;
+  // The rim wall used to be a perfectly smooth berm with zero noise, which
+  // read as artificial from a distance. Give it the same two-layer jagged
+  // crest as the inter-zone ridges: a coarse peak/saddle layer plus a finer
+  // crag layer, with conservative combined variance so the climb-limit
+  // invariant (tests/terrain_walls.test.ts) still holds along the whole rim.
+  const rimCrest =
+    1 +
+    (fbm2(x * 0.025, z * 0.025, seed + 29, 3) - 0.5) * 0.35 +
+    (fbm2(x * 0.09, z * 0.09, seed + 37, 2) - 0.5) * 0.15;
+  h += rim * 40 * rimCrest;
   h += mirefenImpactCraterOffset(x, z);
   return h;
 }
@@ -168,12 +242,16 @@ export function roadDistance(x: number, z: number): number {
   let best = Infinity;
   for (const road of ROADS) {
     for (let i = 0; i < road.length - 1; i++) {
-      const a = road[i], b = road[i + 1];
-      const abx = b.x - a.x, abz = b.z - a.z;
-      const apx = x - a.x, apz = z - a.z;
+      const a = road[i],
+        b = road[i + 1];
+      const abx = b.x - a.x,
+        abz = b.z - a.z;
+      const apx = x - a.x,
+        apz = z - a.z;
       const len2 = abx * abx + abz * abz;
       const t = len2 > 0 ? Math.max(0, Math.min(1, (apx * abx + apz * abz) / len2)) : 0;
-      const dx = apx - abx * t, dz = apz - abz * t;
+      const dx = apx - abx * t,
+        dz = apz - abz * t;
       const d = Math.sqrt(dx * dx + dz * dz);
       if (d < best) best = d;
     }
@@ -195,12 +273,12 @@ export interface Decoration {
 }
 
 const DECORATION_EXCLUSION_RADIUS = 1.2;
-const DECORATION_EXCLUSIONS = [
-  { x: 2.456450840458274, z: 211.33819991815835 },
-];
+const DECORATION_EXCLUSIONS = [{ x: 2.456450840458274, z: 211.33819991815835 }];
 
 function isExcludedDecoration(x: number, z: number): boolean {
-  return DECORATION_EXCLUSIONS.some((p) => Math.hypot(x - p.x, z - p.z) < DECORATION_EXCLUSION_RADIUS);
+  return DECORATION_EXCLUSIONS.some(
+    (p) => Math.hypot(x - p.x, z - p.z) < DECORATION_EXCLUSION_RADIUS,
+  );
 }
 
 export function zoneBiomeAt(z: number): BiomeId {
@@ -222,35 +300,45 @@ export function generateDecorations(seed: number): Decoration[] {
       let kind: Decoration['kind'] | null = null;
       if (biome === 'vale') {
         if (r > 0.48) continue;
-        kind = r < 0.30 ? 'tree' : r < 0.40 ? 'tree2' : 'rock';
+        kind = r < 0.3 ? 'tree' : r < 0.4 ? 'tree2' : 'rock';
       } else if (biome === 'marsh') {
         if (r > 0.34) continue;
         kind = r < 0.08 ? 'tree' : r < 0.26 ? 'tree2' : 'rock';
       } else {
         if (r > 0.44) continue;
-        kind = r < 0.20 ? 'tree' : r < 0.24 ? 'tree2' : 'rock';
+        kind = r < 0.2 ? 'tree' : r < 0.24 ? 'tree2' : 'rock';
       }
       const ox = (hash2(Math.round(gx), Math.round(gz), seed + 57) - 0.5) * step;
       const oz = (hash2(Math.round(gx), Math.round(gz), seed + 91) - 0.5) * step;
-      const x = gx + ox, z = gz + oz;
+      const x = gx + ox,
+        z = gz + oz;
       if (isExcludedDecoration(x, z)) continue;
       let inHub = false;
       for (const zone of ZONES) {
-        const dx = x - zone.hub.x, dz = z - zone.hub.z;
-        if (Math.sqrt(dx * dx + dz * dz) < zone.hub.radius + 4) { inHub = true; break; }
+        const dx = x - zone.hub.x,
+          dz = z - zone.hub.z;
+        if (Math.sqrt(dx * dx + dz * dz) < zone.hub.radius + 4) {
+          inHub = true;
+          break;
+        }
       }
       if (inHub) continue;
       if (terrainHeight(x, z, seed) < WATER_LEVEL + 1) continue;
       if (roadDistance(x, z) < 5) continue;
       let inCamp = false;
       for (const c of CAMPS) {
-        const dx = x - c.center.x, dz = z - c.center.z;
-        if (Math.sqrt(dx * dx + dz * dz) < c.radius + 3) { inCamp = true; break; }
+        const dx = x - c.center.x,
+          dz = z - c.center.z;
+        if (Math.sqrt(dx * dx + dz * dz) < c.radius + 3) {
+          inCamp = true;
+          break;
+        }
       }
       if (inCamp) continue;
       out.push({
         kind,
-        x, z,
+        x,
+        z,
         scale: 0.7 + hash2(Math.round(gx), Math.round(gz), seed + 13) * 0.9,
         variant: Math.floor(hash2(Math.round(gx), Math.round(gz), seed + 77) * 3),
         biome,

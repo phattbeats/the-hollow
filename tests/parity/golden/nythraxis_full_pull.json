@@ -34,7 +34,7 @@
       "tick": 1,
       "time": 0.05,
       "nextId": 411,
-      "state": "e118a721",
+      "state": "a9f95537",
       "events": "04fa9102",
       "rng": {
         "draws": 4,
@@ -58,10 +58,13 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_nythraxis_bound_guardian"
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -81,7 +84,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -101,7 +107,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -121,7 +130,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -141,7 +153,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -175,6 +190,7 @@
           "potionCooldownUntil": -1,
           "resource": 12.966667,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -222,6 +238,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -269,6 +286,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -316,6 +334,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -363,6 +382,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -419,6 +439,7 @@
             "z": -1154.7875
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1154
@@ -446,7 +467,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 411,
-      "state": "5767b6e2",
+      "state": "185ec6ec",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -457,7 +478,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 411,
-      "state": "93c92947",
+      "state": "7bfd8c41",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -468,7 +489,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 411,
-      "state": "d30bee33",
+      "state": "22070ac9",
       "events": "b06542c9",
       "rng": {
         "draws": 5,
@@ -479,7 +500,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 411,
-      "state": "12d08db7",
+      "state": "6c54b4f1",
       "events": "741638a5",
       "rng": {
         "draws": 5,
@@ -490,7 +511,7 @@
       "tick": 42,
       "time": 2.1,
       "nextId": 413,
-      "state": "9c99c0eb",
+      "state": "491b56bd",
       "events": "46fd4ea7",
       "rng": {
         "draws": 11,
@@ -514,10 +535,13 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_nythraxis_bound_guardian"
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -537,7 +561,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -557,7 +584,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -577,7 +607,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -597,7 +630,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -632,6 +668,7 @@
           "potionCooldownUntil": -1,
           "resource": 26.633333,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -679,6 +716,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -726,6 +764,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -773,6 +812,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -820,6 +860,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -878,6 +919,7 @@
             "z": -1155.575
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1154
@@ -933,6 +975,7 @@
             "z": -1138.636474
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1154
@@ -983,6 +1026,7 @@
             "z": -1138.636474
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1154
@@ -1009,7 +1053,7 @@
       "tick": 43,
       "time": 2.15,
       "nextId": 414,
-      "state": "8ab46d99",
+      "state": "de6adf87",
       "events": "c6264378",
       "rng": {
         "draws": 15,
@@ -1033,10 +1077,13 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_nythraxis_bound_guardian"
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1056,7 +1103,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1076,7 +1126,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1096,7 +1149,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1116,7 +1172,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1162,6 +1221,7 @@
           "potionCooldownUntil": -1,
           "resource": 26.633333,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1220,6 +1280,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1278,6 +1339,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1336,6 +1398,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1394,6 +1457,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1465,6 +1529,7 @@
             "z": -1155.575
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1154
@@ -1526,6 +1591,7 @@
             "z": -1171
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3860,
             "z": -1171
@@ -1574,6 +1640,7 @@
             "z": -1171
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3940,
             "z": -1171
@@ -1622,6 +1689,7 @@
             "z": -1187
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1187
@@ -1675,6 +1743,7 @@
             "z": -1138.636474
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1154
@@ -1736,6 +1805,7 @@
             "z": -1138.636474
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1154
@@ -1781,6 +1851,7 @@
           "questIds": [
             "q_nythraxis_scourges_end"
           ],
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1204
@@ -1799,7 +1870,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 414,
-      "state": "925747d3",
+      "state": "5c0b452b",
       "events": "741638a5",
       "rng": {
         "draws": 37,
@@ -1810,7 +1881,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 414,
-      "state": "712c2ffe",
+      "state": "6802cbde",
       "events": "741638a5",
       "rng": {
         "draws": 77,
@@ -1821,7 +1892,7 @@
       "tick": 70,
       "time": 3.5,
       "nextId": 414,
-      "state": "260d2add",
+      "state": "6d108d7f",
       "events": "741638a5",
       "rng": {
         "draws": 120,
@@ -1832,7 +1903,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 414,
-      "state": "fe3feb56",
+      "state": "e01fcf18",
       "events": "9759b96e",
       "rng": {
         "draws": 179,
@@ -1843,7 +1914,7 @@
       "tick": 90,
       "time": 4.5,
       "nextId": 414,
-      "state": "b5c07882",
+      "state": "18332dda",
       "events": "1b9ed8d2",
       "rng": {
         "draws": 238,
@@ -1854,7 +1925,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 414,
-      "state": "883cc8db",
+      "state": "6cba819b",
       "events": "741638a5",
       "rng": {
         "draws": 296,
@@ -1865,7 +1936,7 @@
       "tick": 110,
       "time": 5.5,
       "nextId": 414,
-      "state": "cf25dc0b",
+      "state": "82f6a69f",
       "events": "741638a5",
       "rng": {
         "draws": 353,
@@ -1876,7 +1947,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 414,
-      "state": "afc7832e",
+      "state": "4dfcf4ea",
       "events": "741638a5",
       "rng": {
         "draws": 408,
@@ -1887,7 +1958,7 @@
       "tick": 130,
       "time": 6.5,
       "nextId": 414,
-      "state": "648e19a1",
+      "state": "fa0a3537",
       "events": "a2b09976",
       "rng": {
         "draws": 478,
@@ -1898,7 +1969,7 @@
       "tick": 140,
       "time": 7,
       "nextId": 414,
-      "state": "4792789c",
+      "state": "fbf910ce",
       "events": "65d34aa6",
       "rng": {
         "draws": 543,
@@ -1909,7 +1980,7 @@
       "tick": 150,
       "time": 7.5,
       "nextId": 414,
-      "state": "44924cd6",
+      "state": "e372dc44",
       "events": "741638a5",
       "rng": {
         "draws": 582,
@@ -1920,7 +1991,7 @@
       "tick": 160,
       "time": 8,
       "nextId": 414,
-      "state": "dc43a92f",
+      "state": "f0c7c895",
       "events": "741638a5",
       "rng": {
         "draws": 631,
@@ -1931,7 +2002,7 @@
       "tick": 170,
       "time": 8.5,
       "nextId": 414,
-      "state": "405943b5",
+      "state": "0b66d131",
       "events": "b8163833",
       "rng": {
         "draws": 704,
@@ -1942,7 +2013,7 @@
       "tick": 180,
       "time": 9,
       "nextId": 414,
-      "state": "91e8c093",
+      "state": "9743a3d7",
       "events": "ee0d4c14",
       "rng": {
         "draws": 792,
@@ -1953,7 +2024,7 @@
       "tick": 190,
       "time": 9.5,
       "nextId": 414,
-      "state": "d2eccd4a",
+      "state": "15129bb0",
       "events": "82a08be2",
       "rng": {
         "draws": 872,
@@ -1964,7 +2035,7 @@
       "tick": 200,
       "time": 10,
       "nextId": 414,
-      "state": "f9b1233f",
+      "state": "8ed07ae5",
       "events": "741638a5",
       "rng": {
         "draws": 939,
@@ -1975,7 +2046,7 @@
       "tick": 203,
       "time": 10.15,
       "nextId": 414,
-      "state": "e46912d6",
+      "state": "9c920dcc",
       "events": "741638a5",
       "rng": {
         "draws": 955,
@@ -1999,10 +2070,13 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_nythraxis_bound_guardian"
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2022,7 +2096,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2042,7 +2119,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2062,7 +2142,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2082,7 +2165,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2117,6 +2203,7 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -2175,6 +2262,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -2222,6 +2310,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -2280,6 +2369,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -2338,6 +2428,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -2412,6 +2503,7 @@
             "z": -1155.575
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1154
@@ -2473,6 +2565,7 @@
             "z": -1171
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3860,
             "z": -1171
@@ -2521,6 +2614,7 @@
             "z": -1171
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3940,
             "z": -1171
@@ -2569,6 +2663,7 @@
             "z": -1187
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1187
@@ -2611,6 +2706,7 @@
             "z": -1156.457754
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1154
@@ -2662,6 +2758,7 @@
             "z": -1156.457754
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1154
@@ -2708,6 +2805,7 @@
           "questIds": [
             "q_nythraxis_scourges_end"
           ],
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1204
@@ -2726,7 +2824,7 @@
       "tick": 204,
       "time": 10.2,
       "nextId": 414,
-      "state": "80e87840",
+      "state": "738f6a84",
       "events": "b21c6ddf",
       "rng": {
         "draws": 965,
@@ -2750,10 +2848,13 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_nythraxis_bound_guardian"
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2773,7 +2874,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2793,7 +2897,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2813,7 +2920,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2833,7 +2943,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2868,6 +2981,7 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -2926,6 +3040,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -2984,6 +3099,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -3042,6 +3158,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -3100,6 +3217,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -3174,6 +3292,7 @@
             "z": -1155.575
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1154
@@ -3235,6 +3354,7 @@
             "z": -1171
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3860,
             "z": -1171
@@ -3283,6 +3403,7 @@
             "z": -1171
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3940,
             "z": -1171
@@ -3331,6 +3452,7 @@
             "z": -1187
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1187
@@ -3373,6 +3495,7 @@
             "z": -1156.457754
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1154
@@ -3424,6 +3547,7 @@
             "z": -1156.457754
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1154
@@ -3470,6 +3594,7 @@
           "questIds": [
             "q_nythraxis_scourges_end"
           ],
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1204
@@ -3488,7 +3613,7 @@
       "tick": 210,
       "time": 10.5,
       "nextId": 414,
-      "state": "df25da74",
+      "state": "174fffdc",
       "events": "741638a5",
       "rng": {
         "draws": 979,
@@ -3499,7 +3624,7 @@
       "tick": 220,
       "time": 11,
       "nextId": 414,
-      "state": "1c98de4e",
+      "state": "e1456ce2",
       "events": "55bcc1a6",
       "rng": {
         "draws": 1026,
@@ -3510,7 +3635,7 @@
       "tick": 230,
       "time": 11.5,
       "nextId": 414,
-      "state": "130662be",
+      "state": "620b8242",
       "events": "741638a5",
       "rng": {
         "draws": 1057,
@@ -3521,7 +3646,7 @@
       "tick": 240,
       "time": 12,
       "nextId": 414,
-      "state": "cdd7fbb6",
+      "state": "44754f82",
       "events": "7b7da7f6",
       "rng": {
         "draws": 1102,
@@ -3532,7 +3657,7 @@
       "tick": 250,
       "time": 12.5,
       "nextId": 414,
-      "state": "6e807f0e",
+      "state": "f26b7f7e",
       "events": "741638a5",
       "rng": {
         "draws": 1162,
@@ -3543,7 +3668,7 @@
       "tick": 260,
       "time": 13,
       "nextId": 414,
-      "state": "b7e604c0",
+      "state": "3e8caad4",
       "events": "741638a5",
       "rng": {
         "draws": 1215,
@@ -3554,7 +3679,7 @@
       "tick": 270,
       "time": 13.5,
       "nextId": 414,
-      "state": "2ed73d13",
+      "state": "b76a9877",
       "events": "93b12f06",
       "rng": {
         "draws": 1279,
@@ -3565,7 +3690,7 @@
       "tick": 280,
       "time": 14,
       "nextId": 414,
-      "state": "be3ca662",
+      "state": "76b8ee9e",
       "events": "741638a5",
       "rng": {
         "draws": 1317,
@@ -3576,7 +3701,7 @@
       "tick": 290,
       "time": 14.5,
       "nextId": 414,
-      "state": "486d8737",
+      "state": "a72364b3",
       "events": "1717c889",
       "rng": {
         "draws": 1370,
@@ -3587,7 +3712,7 @@
       "tick": 300,
       "time": 15,
       "nextId": 414,
-      "state": "db36e4cf",
+      "state": "976d4313",
       "events": "741638a5",
       "rng": {
         "draws": 1424,
@@ -3598,7 +3723,7 @@
       "tick": 310,
       "time": 15.5,
       "nextId": 414,
-      "state": "6c0b6cab",
+      "state": "bd8a8fa7",
       "events": "cb692c3d",
       "rng": {
         "draws": 1471,
@@ -3609,7 +3734,7 @@
       "tick": 320,
       "time": 16,
       "nextId": 414,
-      "state": "67b2c081",
+      "state": "6f910865",
       "events": "741638a5",
       "rng": {
         "draws": 1515,
@@ -3620,7 +3745,7 @@
       "tick": 330,
       "time": 16.5,
       "nextId": 414,
-      "state": "c79cd559",
+      "state": "a11dd973",
       "events": "c357424c",
       "rng": {
         "draws": 1572,
@@ -3631,7 +3756,7 @@
       "tick": 340,
       "time": 17,
       "nextId": 414,
-      "state": "27541071",
+      "state": "1e3ab73d",
       "events": "1c645ae9",
       "rng": {
         "draws": 1633,
@@ -3642,7 +3767,7 @@
       "tick": 350,
       "time": 17.5,
       "nextId": 414,
-      "state": "bcd06d89",
+      "state": "ff17901d",
       "events": "741638a5",
       "rng": {
         "draws": 1692,
@@ -3653,7 +3778,7 @@
       "tick": 360,
       "time": 18,
       "nextId": 414,
-      "state": "7c205764",
+      "state": "bf74ef60",
       "events": "80d91f42",
       "rng": {
         "draws": 1751,
@@ -3664,7 +3789,7 @@
       "tick": 370,
       "time": 18.5,
       "nextId": 414,
-      "state": "6aa81bee",
+      "state": "bf70265c",
       "events": "2ad2fd5c",
       "rng": {
         "draws": 1808,
@@ -3675,7 +3800,7 @@
       "tick": 380,
       "time": 19,
       "nextId": 414,
-      "state": "ed7df92b",
+      "state": "9d838e59",
       "events": "741638a5",
       "rng": {
         "draws": 1860,
@@ -3686,7 +3811,7 @@
       "tick": 386,
       "time": 19.3,
       "nextId": 414,
-      "state": "8089ae80",
+      "state": "0c98b2d4",
       "events": "e5e14c09",
       "rng": {
         "draws": 1881,
@@ -3713,10 +3838,13 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167366,
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_nythraxis_bound_guardian"
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -3739,7 +3867,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167366,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -3762,7 +3893,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167366,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -3784,7 +3918,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167366,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -3807,7 +3944,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167366,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -3842,6 +3982,7 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -3890,6 +4031,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -3938,6 +4080,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -3985,6 +4128,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -4033,6 +4177,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -4112,6 +4257,7 @@
             "z": -1155.575
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1154
@@ -4173,6 +4319,7 @@
             "z": -1171
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3860,
             "z": -1171
@@ -4221,6 +4368,7 @@
             "z": -1171
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3940,
             "z": -1171
@@ -4269,6 +4417,7 @@
             "z": -1187
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1187
@@ -4318,6 +4467,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 24.9,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1154
@@ -4371,6 +4521,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 24.9,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1154
@@ -4412,6 +4563,7 @@
           "questIds": [
             "q_nythraxis_scourges_end"
           ],
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1204
@@ -4430,7 +4582,7 @@
       "tick": 390,
       "time": 19.5,
       "nextId": 414,
-      "state": "2521267c",
+      "state": "cec7a8b6",
       "events": "51fe6414",
       "rng": {
         "draws": 1896,
@@ -4441,7 +4593,7 @@
       "tick": 400,
       "time": 20,
       "nextId": 414,
-      "state": "5c9ca2d5",
+      "state": "4d6085c7",
       "events": "f6ded1ef",
       "rng": {
         "draws": 1952,
@@ -4452,7 +4604,7 @@
       "tick": 410,
       "time": 20.5,
       "nextId": 414,
-      "state": "873756c3",
+      "state": "8e468681",
       "events": "f6ded1ef",
       "rng": {
         "draws": 1996,
@@ -4463,7 +4615,7 @@
       "tick": 420,
       "time": 21,
       "nextId": 414,
-      "state": "b4454eda",
+      "state": "776c4458",
       "events": "f6ded1ef",
       "rng": {
         "draws": 2056,
@@ -4474,7 +4626,7 @@
       "tick": 430,
       "time": 21.5,
       "nextId": 414,
-      "state": "f4dd3ffe",
+      "state": "3a5b37bc",
       "events": "f6ded1ef",
       "rng": {
         "draws": 2118,
@@ -4485,7 +4637,7 @@
       "tick": 440,
       "time": 22,
       "nextId": 414,
-      "state": "b8bd264f",
+      "state": "ee999285",
       "events": "f6ded1ef",
       "rng": {
         "draws": 2160,
@@ -4496,7 +4648,7 @@
       "tick": 450,
       "time": 22.5,
       "nextId": 414,
-      "state": "510dee95",
+      "state": "a20e4aff",
       "events": "f6ded1ef",
       "rng": {
         "draws": 2201,
@@ -4507,7 +4659,7 @@
       "tick": 460,
       "time": 23,
       "nextId": 414,
-      "state": "b7ba37d0",
+      "state": "a31d76b2",
       "events": "f6ded1ef",
       "rng": {
         "draws": 2236,
@@ -4518,7 +4670,7 @@
       "tick": 470,
       "time": 23.5,
       "nextId": 414,
-      "state": "0adaca2f",
+      "state": "6b5a2dad",
       "events": "f6ded1ef",
       "rng": {
         "draws": 2288,
@@ -4529,7 +4681,7 @@
       "tick": 480,
       "time": 24,
       "nextId": 414,
-      "state": "84a6d492",
+      "state": "be984800",
       "events": "f6ded1ef",
       "rng": {
         "draws": 2338,
@@ -4540,7 +4692,7 @@
       "tick": 490,
       "time": 24.5,
       "nextId": 414,
-      "state": "43f7c903",
+      "state": "1168aa57",
       "events": "7e72552e",
       "rng": {
         "draws": 2392,
@@ -4551,7 +4703,7 @@
       "tick": 500,
       "time": 25,
       "nextId": 414,
-      "state": "dc1097cb",
+      "state": "28c42e47",
       "events": "741638a5",
       "rng": {
         "draws": 2442,
@@ -4562,7 +4714,7 @@
       "tick": 506,
       "time": 25.3,
       "nextId": 414,
-      "state": "9be75b30",
+      "state": "0e58f7d4",
       "events": "741638a5",
       "rng": {
         "draws": 2478,
@@ -4589,10 +4741,13 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167366,
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_nythraxis_bound_guardian"
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -4615,7 +4770,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167366,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -4638,7 +4796,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167366,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -4660,7 +4821,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167366,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -4683,7 +4847,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167366,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -4718,6 +4885,7 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -4766,6 +4934,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -4814,6 +4983,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -4862,6 +5032,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -4909,6 +5080,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -4999,6 +5171,7 @@
             "z": -1155.575
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1154
@@ -5060,6 +5233,7 @@
             "z": -1171
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3860,
             "z": -1171
@@ -5108,6 +5282,7 @@
             "z": -1171
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3940,
             "z": -1171
@@ -5156,6 +5331,7 @@
             "z": -1187
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1187
@@ -5205,6 +5381,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 18.9,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1154
@@ -5258,6 +5435,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 18.9,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1154
@@ -5299,6 +5477,7 @@
           "questIds": [
             "q_nythraxis_scourges_end"
           ],
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1204
@@ -5317,7 +5496,7 @@
       "tick": 510,
       "time": 25.5,
       "nextId": 414,
-      "state": "a4687d95",
+      "state": "29e0e899",
       "events": "741638a5",
       "rng": {
         "draws": 2504,
@@ -5328,7 +5507,7 @@
       "tick": 520,
       "time": 26,
       "nextId": 414,
-      "state": "3ecb0885",
+      "state": "9a2506e9",
       "events": "741638a5",
       "rng": {
         "draws": 2536,
@@ -5339,7 +5518,7 @@
       "tick": 530,
       "time": 26.5,
       "nextId": 414,
-      "state": "3ff63f5f",
+      "state": "c0158ef3",
       "events": "741638a5",
       "rng": {
         "draws": 2588,
@@ -5350,7 +5529,7 @@
       "tick": 540,
       "time": 27,
       "nextId": 414,
-      "state": "e0bbffe7",
+      "state": "e3ec501b",
       "events": "741638a5",
       "rng": {
         "draws": 2631,
@@ -5361,7 +5540,7 @@
       "tick": 550,
       "time": 27.5,
       "nextId": 414,
-      "state": "2d4e7065",
+      "state": "ce306e71",
       "events": "741638a5",
       "rng": {
         "draws": 2677,
@@ -5372,7 +5551,7 @@
       "tick": 560,
       "time": 28,
       "nextId": 414,
-      "state": "250ebe15",
+      "state": "5034c019",
       "events": "741638a5",
       "rng": {
         "draws": 2720,
@@ -5383,7 +5562,7 @@
       "tick": 570,
       "time": 28.5,
       "nextId": 414,
-      "state": "02b0da27",
+      "state": "9fcca3c7",
       "events": "741638a5",
       "rng": {
         "draws": 2781,
@@ -5394,7 +5573,7 @@
       "tick": 580,
       "time": 29,
       "nextId": 414,
-      "state": "911b1305",
+      "state": "4abc5e61",
       "events": "741638a5",
       "rng": {
         "draws": 2832,
@@ -5405,7 +5584,7 @@
       "tick": 590,
       "time": 29.5,
       "nextId": 414,
-      "state": "65ac37e9",
+      "state": "958f0749",
       "events": "2156e604",
       "rng": {
         "draws": 2883,
@@ -5416,7 +5595,7 @@
       "tick": 600,
       "time": 30,
       "nextId": 414,
-      "state": "de458d5f",
+      "state": "ccbb8647",
       "events": "7b7da7f6",
       "rng": {
         "draws": 2941,
@@ -5427,7 +5606,7 @@
       "tick": 610,
       "time": 30.5,
       "nextId": 414,
-      "state": "6b2ec7d5",
+      "state": "ce5a7cf3",
       "events": "741638a5",
       "rng": {
         "draws": 2993,
@@ -5438,7 +5617,7 @@
       "tick": 620,
       "time": 31,
       "nextId": 414,
-      "state": "be693049",
+      "state": "ccb0ebf7",
       "events": "741638a5",
       "rng": {
         "draws": 3037,
@@ -5449,7 +5628,7 @@
       "tick": 627,
       "time": 31.35,
       "nextId": 414,
-      "state": "d51785bc",
+      "state": "ed8f2a1a",
       "events": "016ee8ae",
       "rng": {
         "draws": 3070,
@@ -5476,10 +5655,13 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167366,
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_nythraxis_bound_guardian"
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -5502,7 +5684,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167366,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -5525,7 +5710,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167366,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -5547,7 +5735,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167366,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -5570,7 +5761,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167366,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -5605,6 +5799,7 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -5653,6 +5848,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -5701,6 +5897,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -5749,6 +5946,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -5796,6 +5994,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -5888,6 +6087,7 @@
             "z": -1155.575
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1154
@@ -5949,6 +6149,7 @@
             "z": -1171
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3860,
             "z": -1171
@@ -5997,6 +6198,7 @@
             "z": -1171
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3940,
             "z": -1171
@@ -6045,6 +6247,7 @@
             "z": -1187
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1187
@@ -6094,6 +6297,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 12.85,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1154
@@ -6147,6 +6351,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 12.85,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1154
@@ -6188,6 +6393,7 @@
           "questIds": [
             "q_nythraxis_scourges_end"
           ],
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1204
@@ -6206,7 +6412,7 @@
       "tick": 628,
       "time": 31.4,
       "nextId": 414,
-      "state": "7d43ec15",
+      "state": "5016373f",
       "events": "994f4336",
       "rng": {
         "draws": 3083,
@@ -6233,7 +6439,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167449,
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_nythraxis_bound_guardian"
           ],
@@ -6243,6 +6451,7 @@
               86431350
             ]
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -6265,13 +6474,16 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167449,
+          "nodeHarvestReadyAt": {},
           "raidLockouts": [
             [
               "nythraxis_boss_arena",
               86431350
             ]
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -6294,13 +6506,16 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167449,
+          "nodeHarvestReadyAt": {},
           "raidLockouts": [
             [
               "nythraxis_boss_arena",
               86431350
             ]
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -6322,13 +6537,16 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167449,
+          "nodeHarvestReadyAt": {},
           "raidLockouts": [
             [
               "nythraxis_boss_arena",
               86431350
             ]
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -6351,13 +6569,16 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167449,
+          "nodeHarvestReadyAt": {},
           "raidLockouts": [
             [
               "nythraxis_boss_arena",
               86431350
             ]
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -6392,6 +6613,7 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -6440,6 +6662,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -6488,6 +6711,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -6536,6 +6760,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -6583,6 +6808,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -6697,6 +6923,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 24.95,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1154
@@ -6753,6 +6980,7 @@
             "z": -1171
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3860,
             "z": -1171
@@ -6801,6 +7029,7 @@
             "z": -1171
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3940,
             "z": -1171
@@ -6849,6 +7078,7 @@
             "z": -1187
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1187
@@ -6898,6 +7128,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 12.8,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1154
@@ -6951,6 +7182,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 12.8,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1154
@@ -6992,6 +7224,7 @@
           "questIds": [
             "q_nythraxis_scourges_end"
           ],
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1204
@@ -7010,7 +7243,7 @@
       "tick": 630,
       "time": 31.5,
       "nextId": 414,
-      "state": "204d9836",
+      "state": "35a1fea0",
       "events": "741638a5",
       "rng": {
         "draws": 3089,
@@ -7021,7 +7254,7 @@
       "tick": 640,
       "time": 32,
       "nextId": 414,
-      "state": "65b5392f",
+      "state": "119e6dbd",
       "events": "741638a5",
       "rng": {
         "draws": 3139,
@@ -7032,7 +7265,7 @@
       "tick": 650,
       "time": 32.5,
       "nextId": 414,
-      "state": "50925fbb",
+      "state": "5dc49f3d",
       "events": "741638a5",
       "rng": {
         "draws": 3194,
@@ -7043,7 +7276,7 @@
       "tick": 660,
       "time": 33,
       "nextId": 414,
-      "state": "2aafd166",
+      "state": "71024dd0",
       "events": "741638a5",
       "rng": {
         "draws": 3228,
@@ -7054,7 +7287,7 @@
       "tick": 670,
       "time": 33.5,
       "nextId": 414,
-      "state": "4f67a3cc",
+      "state": "5d326ae2",
       "events": "741638a5",
       "rng": {
         "draws": 3290,
@@ -7065,7 +7298,7 @@
       "tick": 680,
       "time": 34,
       "nextId": 414,
-      "state": "f1b766a5",
+      "state": "0ee2dfef",
       "events": "741638a5",
       "rng": {
         "draws": 3347,
@@ -7076,7 +7309,7 @@
       "tick": 688,
       "time": 34.4,
       "nextId": 414,
-      "state": "fa25add2",
+      "state": "d0463d92",
       "events": "e554452e",
       "rng": {
         "draws": 3377,
@@ -7103,7 +7336,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167449,
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_nythraxis_bound_guardian"
           ],
@@ -7113,6 +7348,7 @@
               86431350
             ]
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -7135,13 +7371,16 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167449,
+          "nodeHarvestReadyAt": {},
           "raidLockouts": [
             [
               "nythraxis_boss_arena",
               86431350
             ]
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -7164,13 +7403,16 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167449,
+          "nodeHarvestReadyAt": {},
           "raidLockouts": [
             [
               "nythraxis_boss_arena",
               86431350
             ]
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -7192,13 +7434,16 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167449,
+          "nodeHarvestReadyAt": {},
           "raidLockouts": [
             [
               "nythraxis_boss_arena",
               86431350
             ]
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -7221,13 +7466,16 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167449,
+          "nodeHarvestReadyAt": {},
           "raidLockouts": [
             [
               "nythraxis_boss_arena",
               86431350
             ]
           ],
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -7262,6 +7510,7 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -7310,6 +7559,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -7358,6 +7608,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -7406,6 +7657,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -7453,6 +7705,7 @@
           "potionCooldownUntil": -1,
           "resource": 1506,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -7567,6 +7820,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 21.95,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1154
@@ -7623,6 +7877,7 @@
             "z": -1171
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3860,
             "z": -1171
@@ -7671,6 +7926,7 @@
             "z": -1171
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3940,
             "z": -1171
@@ -7719,6 +7975,7 @@
             "z": -1187
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1187
@@ -7768,6 +8025,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 9.8,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1154
@@ -7821,6 +8079,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 9.8,
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1154
@@ -7862,6 +8121,7 @@
           "questIds": [
             "q_nythraxis_scourges_end"
           ],
+          "sex": "m",
           "spawnPos": {
             "x": 3900,
             "z": -1204

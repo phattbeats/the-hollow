@@ -9,7 +9,7 @@ import {
   paginateLeaderboard,
 } from '../src/sim/leaderboard_page';
 import { Sim } from '../src/sim/sim';
-import type { PlayerClass } from '../src/sim/types';
+import type { PlayerClass, Sex } from '../src/sim/types';
 import { virtualLevel } from '../src/sim/types';
 import type { GuildLeaderboardEntry, LeaderboardEntry } from '../src/world_api';
 import {
@@ -30,6 +30,8 @@ import {
 } from './account';
 import { handleAdminApi } from './admin';
 import { currentSitePresenceUsers, recordSitePresenceSample } from './admin_db';
+import { permissionsForRoles } from './admin_permissions';
+import { loadAntibotConfig } from './antibot_config_db';
 import {
   hashPassword,
   newToken,
@@ -42,7 +44,6 @@ import {
 import { BUG_DESCRIPTION_MAX, BugReportRateLimitError, createBugReport } from './bug_report_db';
 import { characterSheet, type SheetRank } from './character_sheet';
 import {
-  accountAndScopeForToken,
   accountForToken,
   type CharacterRow,
   characterCountsByRealm,
@@ -75,10 +76,8 @@ import {
   renameCharacter,
   revokeCompanionToken,
   saveToken,
-  scopeAllowsMutation,
   searchCharacters,
   setAccountEmail,
-  type TokenScope,
   topArenaRatings,
   topGuilds,
   topLifetimeXp,
@@ -107,6 +106,13 @@ import {
 import { createNativeAttestationChallenge, verifyNativeAttestation } from './native_attestation';
 import { handleOAuth, seedOAuthClients } from './oauth';
 import { pruneExpiredOAuthGrants } from './oauth_db';
+import {
+  bearerAccount,
+  bearerActiveAccount,
+  bearerReadAccount,
+  bearerToken,
+  requireOwnedCharacter,
+} from './ownership';
 import { handlePerfReport } from './perf_report';
 import {
   captureReferral,
@@ -134,10 +140,13 @@ import {
   REALM_ORIGINS,
 } from './realm';
 import { resolveReportTarget } from './report_target';
+import { applySecurityHeaders } from './security_headers';
 import { handleSitePresenceHeartbeat } from './site_presence';
+import { adminRolesForAccount } from './staff_db';
 import { cacheControlFor, etagFor, isNotModified } from './static_cache';
 import { verifyTurnstile } from './turnstile';
 import {
+  isCrossSiteApiRequest,
   isNativeAppRequest,
   isWebClientRequest,
   NATIVE_APP_ORIGINS,
@@ -193,9 +202,14 @@ function initialCharacterState(
   cls: PlayerClass,
   name: string,
   skin: number,
+  sex: Sex = 'm',
 ): import('../src/sim/sim').CharacterState {
   const sim = new Sim({ seed: 20061, playerClass: cls, playerName: name });
   sim.setPlayerSkin(sim.playerId, skin);
+  // PHAA-501: set the chosen sex on the offline Sim before serialising, so the
+  // initial CharacterState carries it through to the database row and the live
+  // online entity mirror. Falls back to 'm' on the type default.
+  sim.setPlayerSex(sim.playerId, sex);
   const character = sim.serializeCharacter(sim.playerId);
   if (!character) throw new Error('failed to serialize initial character');
   return character;
@@ -409,75 +423,6 @@ function characterListPayload(chars: CharacterRow[]): {
       secondaryCls: c.state?.secondaryCls ?? null,
     })),
   };
-}
-
-async function bearerAccount(req: http.IncomingMessage): Promise<number | null> {
-  const auth = req.headers.authorization ?? '';
-  const m = /^Bearer ([a-f0-9]{64})$/.exec(auth);
-  if (!m) return null;
-  return accountForToken(m[1]);
-}
-
-// Account + token scope for the bearer (or null when unauthenticated). The scope
-// is what lets read-only companion/OAuth tokens be accepted on read routes and
-// rejected on mutating ones.
-async function bearerScopeAccount(
-  req: http.IncomingMessage,
-): Promise<{ accountId: number; scope: TokenScope } | null> {
-  const m = /^Bearer ([a-f0-9]{64})$/.exec(req.headers.authorization ?? '');
-  if (!m) return null;
-  return accountAndScopeForToken(m[1]);
-}
-
-// Raw bearer token string (or null) — needed when an account action must keep
-// the caller's own session alive while revoking the rest (password change).
-function bearerToken(req: http.IncomingMessage): string | null {
-  const m = /^Bearer ([a-f0-9]{64})$/.exec(req.headers.authorization ?? '');
-  return m ? m[1] : null;
-}
-
-// Mutating + owner-scoped routes funnel through here. HARDENED: a read-only
-// token (scope!=='full') is rejected with 403, so every existing mutating route
-// (which already calls this) automatically refuses companion/OAuth read tokens —
-// the single choke point that keeps read tokens harmless.
-async function bearerActiveAccount(
-  req: http.IncomingMessage,
-  res: http.ServerResponse,
-): Promise<number | null> {
-  const info = await bearerScopeAccount(req);
-  if (info === null) {
-    json(res, 401, { error: 'not authenticated' });
-    return null;
-  }
-  if (!scopeAllowsMutation(info.scope)) {
-    json(res, 403, { error: 'this token is read-only' });
-    return null;
-  }
-  const status = await moderationStatusForAccount(info.accountId);
-  if (status.locked) {
-    json(res, 403, { error: status.message });
-    return null;
-  }
-  return info.accountId;
-}
-
-// Read routes (the owner character sheet) accept both 'read' and 'full' tokens.
-// Moderation still applies — a banned account can't read through a read token.
-async function bearerReadAccount(
-  req: http.IncomingMessage,
-  res: http.ServerResponse,
-): Promise<number | null> {
-  const info = await bearerScopeAccount(req);
-  if (info === null) {
-    json(res, 401, { error: 'not authenticated' });
-    return null;
-  }
-  const status = await moderationStatusForAccount(info.accountId);
-  if (status.locked) {
-    json(res, 403, { error: status.message });
-    return null;
-  }
-  return info.accountId;
 }
 
 function requestMetadata(req: http.IncomingMessage): { ip: string; userAgent: string } {
@@ -802,13 +747,17 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
           0,
           Math.min(7, Math.floor(typeof body.skin === 'number' ? body.skin : 0)),
         );
+        // PHAA-501: sex defaults to 'm'; 'f' is the only accepted alternative.
+        // Anything else (including missing) becomes 'm' so an older client keeps
+        // creating male characters and a tampered body cannot escape the union.
+        const sex: Sex = body.sex === 'f' ? 'f' : 'm';
         const create = () =>
           createCharacterCapped(
             accountId,
             name,
             body.class,
             10,
-            initialCharacterState(body.class, name, skin),
+            initialCharacterState(body.class, name, skin, sex),
           );
         const created = (c: NonNullable<Awaited<ReturnType<typeof createCharacterCapped>>>) =>
           json(res, 200, {
@@ -817,6 +766,7 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
             class: c.class,
             level: c.level,
             skin: c.state?.skin ?? skin,
+            sex: c.state?.sex ?? sex,
             forceRename: c.force_rename,
           });
         try {
@@ -874,8 +824,8 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
     if (req.method === 'GET' && ownerSheetMatch) {
       const accountId = await bearerReadAccount(req, res);
       if (accountId === null) return;
-      const row = await getCharacter(accountId, Number(ownerSheetMatch[1]));
-      if (!row) return json(res, 404, { error: 'character not found' });
+      const row = await requireOwnedCharacter(res, accountId, Number(ownerSheetMatch[1]));
+      if (!row) return;
       const [guild, rank] = await Promise.all([
         guildNameForCharacter(row.id),
         lifetimeXpRankForCharacter(row.id),
@@ -912,8 +862,8 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       if (name === null) return json(res, 400, { error: 'invalid character name (2-16 letters)' });
       if (offensiveName(name)) return json(res, 400, { error: 'character name is not allowed' });
       const characterId = Number(renameMatch[1]);
-      const character = await getCharacter(accountId, characterId);
-      if (!character) return json(res, 404, { error: 'character not found' });
+      const character = await requireOwnedCharacter(res, accountId, characterId);
+      if (!character) return;
       // A rename is a moderator-sanctioned action: the character-select UI only
       // shows the rename control when a moderator has set force_rename. The UI is
       // not a security boundary, so gate here too: a normal owner hitting this
@@ -970,8 +920,8 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       const accountId = await bearerActiveAccount(req, res);
       if (accountId === null) return;
       const characterId = Number(takeoverMatch[1]);
-      const character = await getCharacter(accountId, characterId);
-      if (!character) return json(res, 404, { error: 'not found' });
+      const character = await requireOwnedCharacter(res, accountId, characterId, 'not found');
+      if (!character) return;
       const result = await game.takeOverCharacter(accountId, characterId);
       return json(res, 200, { ok: true, takenOver: result === 'taken-over' });
     }
@@ -980,8 +930,8 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       if (accountId === null) return;
       const characterId = Number(delMatch[1]);
       const body = await readBody(req);
-      const character = await getCharacter(accountId, characterId);
-      if (!character) return json(res, 404, { error: 'not found' });
+      const character = await requireOwnedCharacter(res, accountId, characterId, 'not found');
+      if (!character) return;
       if ([...game.clients.values()].some((s) => s.characterId === characterId)) {
         return json(res, 400, { error: 'character is currently online' });
       }
@@ -1015,8 +965,13 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       if (!Number.isFinite(reporterCharacterId)) {
         return json(res, 400, { error: 'invalid report target' });
       }
-      const reporter = await getCharacter(accountId, reporterCharacterId);
-      if (!reporter) return json(res, 404, { error: 'reporting character not found' });
+      const reporter = await requireOwnedCharacter(
+        res,
+        accountId,
+        reporterCharacterId,
+        'reporting character not found',
+      );
+      if (!reporter) return;
       const resolved = await resolveReportTarget(body, {
         reportTargetForPid: (pid) => game.reportTargetForPid(pid),
         findCharacterReportTargetByName,
@@ -1370,6 +1325,52 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
   }
 }
 
+// The single top-level entry point for every HTTP response the server emits
+// (not the WS upgrade handshake, which server.on('upgrade') handles
+// separately). Hoisted to module scope, mirroring upstream's routeHttpRequest,
+// so a test can drive real request shapes through the actual routing ladder
+// without booting the server or touching Postgres. applySecurityHeaders runs
+// first so it lands on every branch below: CORS, the OPTIONS-204 preflight
+// short-circuit, and every route including static/404.
+export function routeHttpRequest(req: http.IncomingMessage, res: http.ServerResponse): void {
+  applySecurityHeaders(res);
+  const url = req.url ?? '';
+  const path = url.split('?')[0];
+  const isApi = url.startsWith('/api/') || url.startsWith('/admin/api/');
+  // Public read surfaces (/api/public/..., /avatar/...) are CORS-open to any
+  // origin so browser-origin companion apps can call them client-side; every
+  // other /api route keeps the narrow realm/native allowlist.
+  const publicCorsPath = isPublicCorsPath(path);
+  // Cross-site Origin gate (PHAA-524): scoped to the plain /api surface, same
+  // as upstream's carve-out (admin and oauth have their own auth models, and
+  // public reads never mutate state). Runs BEFORE the CORS reflection headers
+  // below so a rejected request never gets an Access-Control-Allow-Origin.
+  // Only active when isCrossSiteApiRequest's webLoginEnforced check is on
+  // (production, or REQUIRE_WEB_LOGIN forced) so dev/e2e origins never audited
+  // against the allow-list are not suddenly rejected.
+  if (url.startsWith('/api/') && !publicCorsPath && isCrossSiteApiRequest(req)) {
+    json(res, 403, { error: 'cross-site request rejected' });
+    return;
+  }
+  if (publicCorsPath) publicCors(res);
+  else if (isApi) maybeCors(req, res);
+  if (req.method === 'OPTIONS' && (isApi || publicCorsPath)) {
+    res.writeHead(204);
+    res.end();
+    return;
+  }
+  if (url.startsWith('/internal/')) void handleInternalApi(req, res, game);
+  else if (url.startsWith('/admin/api/')) void handleAdminApi(req, res, game);
+  else if (url.startsWith('/api/')) void handleApi(req, res);
+  else if (url.startsWith('/oauth/')) void handleOAuth(req, res);
+  else if (req.method === 'GET' && url.startsWith('/p/')) void handleCardRoutes(req, res);
+  else if (req.method === 'GET' && path.startsWith('/avatar/')) void handleAvatar(req, res);
+  else if (req.method === 'GET' && path.startsWith('/c/')) void handleProfilePage(req, res);
+  else if (req.method === 'GET' && path === '/sitemap-characters.xml')
+    void handleCharacterSitemap(req, res);
+  else serveStatic(req, res);
+}
+
 // ---------------------------------------------------------------------------
 // Boot
 // ---------------------------------------------------------------------------
@@ -1388,6 +1389,17 @@ async function main(): Promise<void> {
   }
   await ensureSchema();
   await seedOAuthClients();
+  // Bot detector: replay this realm's saved config overrides onto the fresh
+  // detector. Boot applies what it can; a stale entry (schema drift after a
+  // deploy) is skipped and logged, never allowed to drop the whole document.
+  const storedAntibotConfig = await loadAntibotConfig();
+  const antibotOverrides =
+    typeof storedAntibotConfig.data === 'object' && storedAntibotConfig.data !== null
+      ? (storedAntibotConfig.data as Record<string, unknown>)
+      : {};
+  for (const error of game.applyAntibotConfig(antibotOverrides).errors) {
+    console.warn(`bot-detector config override skipped: ${error}`);
+  }
   const orphans = await closeOrphanSessions();
   if (orphans > 0) console.log(`closed ${orphans} orphaned play session(s) from a previous run`);
   const pruned = await pruneChatLogs(CHAT_LOG_RETENTION_DAYS);
@@ -1462,32 +1474,7 @@ async function main(): Promise<void> {
   setInterval(warmLeaderboards, LEADERBOARD_TTL_MS).unref();
   console.log('database ready');
 
-  const server = http.createServer((req, res) => {
-    const url = req.url ?? '';
-    const path = url.split('?')[0];
-    const isApi = url.startsWith('/api/') || url.startsWith('/admin/api/');
-    // Public read surfaces (/api/public/..., /avatar/...) are CORS-open to any
-    // origin so browser-origin companion apps can call them client-side; every
-    // other /api route keeps the narrow realm/native allowlist.
-    const publicCorsPath = isPublicCorsPath(path);
-    if (publicCorsPath) publicCors(res);
-    else if (isApi) maybeCors(req, res);
-    if (req.method === 'OPTIONS' && (isApi || publicCorsPath)) {
-      res.writeHead(204);
-      res.end();
-      return;
-    }
-    if (url.startsWith('/internal/')) void handleInternalApi(req, res, game);
-    else if (url.startsWith('/admin/api/')) void handleAdminApi(req, res, game);
-    else if (url.startsWith('/api/')) void handleApi(req, res);
-    else if (url.startsWith('/oauth/')) void handleOAuth(req, res);
-    else if (req.method === 'GET' && url.startsWith('/p/')) void handleCardRoutes(req, res);
-    else if (req.method === 'GET' && path.startsWith('/avatar/')) void handleAvatar(req, res);
-    else if (req.method === 'GET' && path.startsWith('/c/')) void handleProfilePage(req, res);
-    else if (req.method === 'GET' && path === '/sitemap-characters.xml')
-      void handleCharacterSitemap(req, res);
-    else serveStatic(req, res);
-  });
+  const server = http.createServer(routeHttpRequest);
 
   // cap frame size: the largest legitimate client message is a small JSON
   // command; without this the ws default (~100 MiB) lets one socket force a
@@ -1559,7 +1546,9 @@ async function main(): Promise<void> {
     // is handled inside game.join(); this guard blocks egregious bot farms before
     // they consume a session slot.
     const ip = requestMetadata(req).ip;
-    const isAdmin = await isAdminAccount(accountId);
+    const staff = await adminRolesForAccount(accountId);
+    const isAdmin = staff !== null;
+    const adminPermissions = staff ? [...permissionsForRoles(staff.roles)] : [];
     if (
       isConnectionRefused({
         blocked: game.isIpBlocked(ip),
@@ -1587,6 +1576,7 @@ async function main(): Promise<void> {
         chatStrikes: status.chatStrikes,
         accountCosmetics,
         isAdmin,
+        adminPermissions,
         clientSeed,
       },
     );
@@ -1600,12 +1590,25 @@ async function main(): Promise<void> {
     ws.on('message', (data) => {
       game.handleMessage(session, String(data));
     });
+    // A dropped socket starts the linkdead grace instead of logging the
+    // character out: the session is held in-world so the client's
+    // auto-reconnect (or a fresh login on the same character) resumes it.
+    // socketClosed no-ops for kicked sessions and for stale events from a
+    // socket that a resume has already replaced; the grace-expiry sweep in
+    // game.ts runs the eventual leave().
     ws.on('close', () => {
-      void game.leave(session, 'disconnected');
-      console.log(`- ${character.name} left — ${game.clients.size} online`);
+      if (game.socketClosed(session, ws)) {
+        console.log(`~ ${character.name} linkdead — ${game.clients.size} online`);
+      }
     });
     ws.on('error', () => {
-      void game.leave(session, 'connection error');
+      game.socketClosed(session, ws);
+    });
+    // Clears the keepalive liveness flag (game.ts pingLiveSessions). Guarded
+    // on socket identity so a late pong from a pre-resume socket cannot mask
+    // a black-holed replacement.
+    ws.on('pong', () => {
+      if (session.ws === ws) session.awaitingPong = false;
     });
   }
 
@@ -1675,7 +1678,15 @@ async function main(): Promise<void> {
   });
 }
 
-main().catch((err) => {
-  console.error('fatal:', err);
-  process.exit(1);
-});
+// Boot only when this module is the process entrypoint, never on a bare
+// import. The server always runs as the esbuild CJS bundle (npm run server /
+// npm run realms, then node dist-server/server.cjs), where require.main ===
+// module marks the entry. A Vitest import() of this module does not match, so
+// the bare import stays inert (no socket bound, no DB connection) and tests
+// can drive routeHttpRequest directly.
+if (typeof require !== 'undefined' && require.main === module) {
+  main().catch((err) => {
+    console.error('fatal:', err);
+    process.exit(1);
+  });
+}

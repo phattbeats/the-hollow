@@ -9,12 +9,14 @@
 // keep resolving to THIS file, never the sibling directory.
 //
 // ---------------------------------------------------------------------------
-// FACET MAP: the 25 domain facets (each IWorld member assigned exactly once; 164
+// FACET MAP: the 26 domain facets (each IWorld member assigned exactly once; 171
 // total; this count was previously stale at 23/155, corrected alongside the
-// PHAA-482 feedGreenpaw command addition below, and again at 24/158 with the
-// PHAA-495 Ravenpost mail facet). One interface per file under ./world_api/;
-// aux types travel with their facet. The authoritative member-per-facet split
-// is the W0c parity test.
+// PHAA-482 feedGreenpaw command addition, again at 24/161 with the PHAA-511
+// guild-calendar-events addition, again at 25/162 with PHAA-504's gathering.ts
+// facet, again with PHAA-505's per-player node harvest + proficiency, and again
+// here at 26/171 with the PHAA-495 Ravenpost mail facet (6 members). One
+// interface per file under ./world_api/; aux types travel with their facet. The
+// authoritative member-per-facet split is the W0c parity test.
 //
 //   entity_roster.ts    IWorldEntityRoster   cfg/entities/player/moveInput/realm reads
 //   combat.ts           IWorldCombat         ability casts, auto-attack, spirit release
@@ -40,16 +42,18 @@
 //   housing.ts          IWorldHousing        Hollow hub homestead plots (read + claim/place/remove)
 //   greenpaw_hearth.ts  IWorldGreenpawHearth Hollow hub smoke/mood state (read)
 //   homestead.ts        IWorldHomestead      Hollow Reaches open-world plots (read)
+//   gathering.ts        IWorldGathering      profession harvest (PHAA-504 corpse harvest;
+//                                            PHAA-505 per-player node harvest + proficiency)
 //   telemetry.ts        IWorldTelemetry      fire-and-forget metrics sink
 //
 // THREE GATES pin this seam (run before any facet edit):
 //   tests/snapshots.test.ts        (W0a)  selfWireJson <-> applySnapshot round-trip;
-//                                          ALL_DELTA_KEYS (27) + TERSE_TO_IWORLD mapping.
+//                                          ALL_DELTA_KEYS (30) + TERSE_TO_IWORLD mapping.
 //   tests/command_schema.test.ts   (W0b)  COMMAND_NAMES universe; ClientWorld send-set
 //                                          subset-of dispatch-set; DISPATCH_ONLY (7).
-//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (158) present + same-kind on
+//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (171) present + same-kind on
 //                                          Sim + ClientWorld; aggregate == disjoint
-//                                          union of the 24 facets.
+//                                          union of the 26 facets.
 // ---------------------------------------------------------------------------
 
 import type { IWorldChat } from './world_api/chat';
@@ -59,6 +63,7 @@ import type { IWorldDelves } from './world_api/delves';
 import type { IWorldDuelArena } from './world_api/duel_arena';
 import type { IWorldDungeons } from './world_api/dungeons';
 import type { IWorldEntityRoster } from './world_api/entity_roster';
+import type { IWorldGathering } from './world_api/gathering';
 import type { IWorldGreenpawHearth } from './world_api/greenpaw_hearth';
 import type { IWorldHomestead } from './world_api/homestead';
 import type { IWorldHousing } from './world_api/housing';
@@ -112,6 +117,7 @@ export type { GuildLeaderboardEntry, LeaderboardEntry } from './world_api/progre
 export type {
   CharacterSearchResult,
   FriendInfo,
+  GuildEventInfo,
   GuildInfo,
   GuildMemberInfo,
   GuildRank,
@@ -148,6 +154,7 @@ export interface IWorld
     IWorldHousing,
     IWorldGreenpawHearth,
     IWorldHomestead,
+    IWorldGathering,
     IWorldTelemetry {}
 
 // ---------------------------------------------------------------------------
@@ -247,6 +254,8 @@ export const COMMAND_NAMES = [
   'guild_demote',
   'guild_transfer',
   'guild_disband',
+  'guild_event_create',
+  'guild_event_remove',
   'arena_queue',
   'arena_leave',
   'arena_augment',
@@ -288,6 +297,8 @@ export const COMMAND_NAMES = [
   'housingPlace',
   'housingRemove',
   'feedGreenpaw',
+  'harvestCorpse',
+  'harvestNode',
 ] as const;
 
 // The union both the send path (`online.ts`) and the dispatch switch
@@ -352,6 +363,7 @@ export type WorldFacet =
   | 'IWorldHousing'
   | 'IWorldGreenpawHearth'
   | 'IWorldHomestead'
+  | 'IWorldGathering'
   | 'IWorldTelemetry';
 
 export const COMMAND_FACETS = {
@@ -450,6 +462,8 @@ export const COMMAND_FACETS = {
   guild_demote: 'IWorldSocialGraph',
   guild_transfer: 'IWorldSocialGraph',
   guild_disband: 'IWorldSocialGraph',
+  guild_event_create: 'IWorldSocialGraph',
+  guild_event_remove: 'IWorldSocialGraph',
   // IWorldMarket: World Market browse/list/buy/cancel/collect (snake_case wire
   // strings, by design). marketInfo is a snapshot read (no send, untagged).
   market_search: 'IWorldMarket',
@@ -491,4 +505,8 @@ export const COMMAND_FACETS = {
   // IWorldGreenpawHearth: feed the hearth from Greenpaw's dialogue menu
   // (PHAA-482: an interact-key command, replacing the old /feed chat text).
   feedGreenpaw: 'IWorldGreenpawHearth',
+  // IWorldGathering: single-use, first-come corpse harvest (PHAA-504); the
+  // per-player world-node harvest (PHAA-505).
+  harvestCorpse: 'IWorldGathering',
+  harvestNode: 'IWorldGathering',
 } as const satisfies Partial<Record<ClientCommand, WorldFacet>>;

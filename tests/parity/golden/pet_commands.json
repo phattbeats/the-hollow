@@ -23,7 +23,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "922bf058",
+      "state": "1e5d0dc1",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -46,6 +46,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -82,6 +85,7 @@
           "rangedPower": 50,
           "resource": 93,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -109,7 +113,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 404,
-      "state": "c65f4df1",
+      "state": "28282873",
       "events": "4be65fd8",
       "rng": {
         "draws": 0,
@@ -132,7 +136,10 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -169,6 +176,7 @@
           "rangedPower": 116,
           "resource": 358,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -215,6 +223,7 @@
             "z": -1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 4,
             "y": 1.5,
@@ -236,7 +245,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 404,
-      "state": "02ca73ff",
+      "state": "b59d64c3",
       "events": "0d9575e5",
       "rng": {
         "draws": 0,
@@ -259,7 +268,10 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -296,6 +308,7 @@
           "rangedPower": 116,
           "resource": 358,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -356,6 +369,7 @@
             "z": -1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 4,
             "y": 1.5,
@@ -377,7 +391,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 404,
-      "state": "3f4801a2",
+      "state": "d4b6982a",
       "events": "acacfa45",
       "rng": {
         "draws": 0,
@@ -388,7 +402,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 404,
-      "state": "82a9f3eb",
+      "state": "bbf3519b",
       "events": "acacfa45",
       "rng": {
         "draws": 0,
@@ -399,7 +413,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 405,
-      "state": "9a6963f2",
+      "state": "7f4b121b",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -422,7 +436,10 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -459,6 +476,7 @@
           "rangedPower": 116,
           "resource": 358,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -521,6 +539,7 @@
             "z": -1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 4,
             "y": 1.5,
@@ -569,6 +588,7 @@
             "z": -1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 5,
             "y": 1.5,
@@ -601,7 +621,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 405,
-      "state": "a308c563",
+      "state": "1c4ba9ad",
       "events": "2046c55d",
       "rng": {
         "draws": 0,
@@ -624,7 +644,10 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -661,6 +684,7 @@
           "rangedPower": 116,
           "resource": 358,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -715,6 +739,7 @@
             "z": -1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 5,
             "y": 1.5,
@@ -743,7 +768,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 407,
-      "state": "8c0eb95b",
+      "state": "dcf7ed9c",
       "events": "4d95e958",
       "rng": {
         "draws": 0,
@@ -766,7 +791,10 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -803,6 +831,7 @@
           "rangedPower": 116,
           "resource": 358,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -857,6 +886,7 @@
             "z": -1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 5,
             "y": 1.5,
@@ -904,6 +934,7 @@
             "z": -1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 4,
             "y": 1.5,
@@ -925,7 +956,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 407,
-      "state": "aad3c51b",
+      "state": "0032f3b4",
       "events": "e25dfabf",
       "rng": {
         "draws": 0,
@@ -948,7 +979,10 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -985,6 +1019,7 @@
           "rangedPower": 116,
           "resource": 358,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1039,6 +1074,7 @@
             "z": -1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 5,
             "y": 1.5,
@@ -1086,6 +1122,7 @@
             "z": -1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 4,
             "y": 1.5,
@@ -1107,7 +1144,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 407,
-      "state": "a308c563",
+      "state": "1c4ba9ad",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -1130,7 +1167,10 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1167,6 +1207,7 @@
           "rangedPower": 116,
           "resource": 358,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1221,6 +1262,7 @@
             "z": -1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 5,
             "y": 1.5,
@@ -1249,7 +1291,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 408,
-      "state": "a308c563",
+      "state": "1c4ba9ad",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -1272,7 +1314,10 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1309,6 +1354,7 @@
           "rangedPower": 116,
           "resource": 358,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1363,6 +1409,7 @@
             "z": -1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 5,
             "y": 1.5,
@@ -1391,7 +1438,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 410,
-      "state": "b379245d",
+      "state": "b916ffd9",
       "events": "1cee9fc9",
       "rng": {
         "draws": 0,
@@ -1414,7 +1461,10 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1434,7 +1484,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1471,6 +1524,7 @@
           "rangedPower": 116,
           "resource": 358,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1525,6 +1579,7 @@
             "z": -1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 5,
             "y": 1.5,
@@ -1581,6 +1636,7 @@
           "potionCooldownUntil": -1,
           "resource": 870,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1627,6 +1683,7 @@
             "z": -1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 34,
             "y": -0.525705,
@@ -1648,7 +1705,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 410,
-      "state": "11bba749",
+      "state": "8bf30955",
       "events": "f0e6e4ab",
       "rng": {
         "draws": 84,
@@ -1659,7 +1716,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 410,
-      "state": "da968c97",
+      "state": "515e104f",
       "events": "a7921fb2",
       "rng": {
         "draws": 164,
@@ -1670,7 +1727,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 410,
-      "state": "da968c97",
+      "state": "515e104f",
       "events": "741638a5",
       "rng": {
         "draws": 164,
@@ -1695,7 +1752,10 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1715,7 +1775,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1753,6 +1816,7 @@
           "rangedPower": 116,
           "resource": 358,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1809,6 +1873,7 @@
             "z": -1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 5,
             "y": 1.5,
@@ -1871,6 +1936,7 @@
           "potionCooldownUntil": -1,
           "resource": 870,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1917,6 +1983,7 @@
             "z": -1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 34,
             "y": -0.525705,
@@ -1938,7 +2005,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 411,
-      "state": "532a7b54",
+      "state": "8e642cab",
       "events": "d8909161",
       "rng": {
         "draws": 164,
@@ -1963,7 +2030,10 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1983,7 +2053,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2021,6 +2094,7 @@
           "rangedPower": 116,
           "resource": 358,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -2077,6 +2151,7 @@
             "z": -1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 5,
             "y": 1.5,
@@ -2139,6 +2214,7 @@
           "potionCooldownUntil": -1,
           "resource": 870,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -2166,7 +2242,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 413,
-      "state": "673b64d5",
+      "state": "1f91600b",
       "events": "cfe10c08",
       "rng": {
         "draws": 164,
@@ -2191,7 +2267,10 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2211,7 +2290,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2249,6 +2331,7 @@
           "rangedPower": 116,
           "resource": 358,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -2305,6 +2388,7 @@
             "z": -1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 5,
             "y": 1.5,
@@ -2367,6 +2451,7 @@
           "potionCooldownUntil": -1,
           "resource": 870,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -2415,6 +2500,7 @@
             "z": -1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 35,
             "y": -0.525705,
@@ -2443,7 +2529,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 413,
-      "state": "673b64d5",
+      "state": "1f91600b",
       "events": "741638a5",
       "rng": {
         "draws": 164,
@@ -2468,7 +2554,10 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2488,7 +2577,10 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2526,6 +2618,7 @@
           "rangedPower": 116,
           "resource": 358,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -2582,6 +2675,7 @@
             "z": -1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 5,
             "y": 1.5,
@@ -2644,6 +2738,7 @@
           "potionCooldownUntil": -1,
           "resource": 870,
           "resourceType": "mana",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -2692,6 +2787,7 @@
             "z": -1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 35,
             "y": -0.525705,

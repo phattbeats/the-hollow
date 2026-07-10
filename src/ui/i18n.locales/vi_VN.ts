@@ -915,6 +915,7 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'entities.items.fenreed_staff.name': 'Trượng Sậy Đầm',
   'entities.items.fenwalker_boots.name': 'Giày Bộ Hành Đầm Lầy',
   'entities.items.first_cutting.name': 'Một Nhánh Giâm',
+  'entities.items.greenpaw_bead.name': 'Một Hạt Cườm Từ Dây Đạn',
   'entities.items.witness_root_cincture.name': 'Đai Lưng Của Rễ Chứng Nhân',
   'entities.items.shrine_diary_page.name': 'Trang Nhật Ký Bị Xé',
   'entities.items.shrine_diary_page.flavorText':

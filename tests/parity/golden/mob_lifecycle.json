@@ -31,7 +31,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 406,
-      "state": "30d1e5a0",
+      "state": "509e5ca9",
       "events": "cd0e3939",
       "rng": {
         "draws": 4,
@@ -57,7 +57,10 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 84,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -93,6 +96,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -153,6 +157,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 25,
+          "sex": "m",
           "spawnPos": {
             "x": 5,
             "y": 1.5,
@@ -213,6 +218,7 @@
             "z": 1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 7,
             "y": 1.5,
@@ -278,6 +284,7 @@
             "z": 1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 9,
             "y": 1.5,
@@ -324,6 +331,7 @@
             "z": 2
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 6,
             "y": 1.5,
@@ -345,7 +353,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 407,
-      "state": "e9ccb6ab",
+      "state": "a3afbb5b",
       "events": "5a65aef6",
       "rng": {
         "draws": 7,
@@ -371,7 +379,10 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 198,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -407,6 +418,7 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -467,6 +479,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 25,
+          "sex": "m",
           "spawnPos": {
             "x": 5,
             "y": 1.5,
@@ -527,6 +540,7 @@
             "z": 1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 7,
             "y": 1.5,
@@ -592,6 +606,7 @@
             "z": 1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 9,
             "y": 1.5,
@@ -638,6 +653,7 @@
             "z": 2
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 6,
             "y": 1.5,
@@ -696,6 +712,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 25,
+          "sex": "m",
           "spawnPos": {
             "x": 4,
             "y": 1.5
@@ -717,7 +734,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 407,
-      "state": "64c02f8b",
+      "state": "4dfb5e9f",
       "events": "7d434878",
       "rng": {
         "draws": 8,
@@ -744,7 +761,10 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 198,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -781,6 +801,7 @@
           "potionCooldownUntil": -1,
           "resource": 1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -841,6 +862,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 25,
+          "sex": "m",
           "spawnPos": {
             "x": 5,
             "y": 1.5,
@@ -901,6 +923,7 @@
             "z": 1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 7,
             "y": 1.5,
@@ -966,6 +989,7 @@
             "z": 1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 9,
             "y": 1.5,
@@ -1012,6 +1036,7 @@
             "z": 2
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 6,
             "y": 1.5,
@@ -1070,6 +1095,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 23.45,
+          "sex": "m",
           "spawnPos": {
             "x": 4,
             "y": 1.5
@@ -1091,7 +1117,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 409,
-      "state": "d287be31",
+      "state": "da9c3b59",
       "events": "b01cc973",
       "rng": {
         "draws": 13,
@@ -1118,7 +1144,10 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 282,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1155,6 +1184,7 @@
           "potionCooldownUntil": -1,
           "resource": 1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1215,6 +1245,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 25,
+          "sex": "m",
           "spawnPos": {
             "x": 5,
             "y": 1.5,
@@ -1275,6 +1306,7 @@
             "z": 1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 7,
             "y": 1.5,
@@ -1340,6 +1372,7 @@
             "z": 1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 9,
             "y": 1.5,
@@ -1386,6 +1419,7 @@
             "z": 2
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 6,
             "y": 1.5,
@@ -1444,6 +1478,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 23.45,
+          "sex": "m",
           "spawnPos": {
             "x": 4,
             "y": 1.5
@@ -1465,7 +1500,7 @@
           "critChance": 0.05,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
-          "fallStartY": 39.410541,
+          "fallStartY": 40.856461,
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 84,
@@ -1480,14 +1515,15 @@
           "petMode": "defensive",
           "pos": {
             "x": 300,
-            "y": 39.410541,
+            "y": 40.856461,
             "z": 300
           },
           "potionCooldownUntil": -1,
           "respawnTimer": -0.05,
+          "sex": "m",
           "spawnPos": {
             "x": 300,
-            "y": 39.410541,
+            "y": 40.856461,
             "z": 300
           },
           "stats": {
@@ -1507,7 +1543,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 410,
-      "state": "00c375ed",
+      "state": "89de7236",
       "events": "10004817",
       "rng": {
         "draws": 17,
@@ -1534,7 +1570,10 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 366,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1571,6 +1610,7 @@
           "potionCooldownUntil": -1,
           "resource": 1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1631,6 +1671,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 25,
+          "sex": "m",
           "spawnPos": {
             "x": 5,
             "y": 1.5,
@@ -1691,6 +1732,7 @@
             "z": 1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 7,
             "y": 1.5,
@@ -1756,6 +1798,7 @@
             "z": 1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 9,
             "y": 1.5,
@@ -1802,6 +1845,7 @@
             "z": 2
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 6,
             "y": 1.5,
@@ -1860,6 +1904,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 23.45,
+          "sex": "m",
           "spawnPos": {
             "x": 4,
             "y": 1.5
@@ -1881,7 +1926,7 @@
           "critChance": 0.05,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
-          "fallStartY": 39.410541,
+          "fallStartY": 40.856461,
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 84,
@@ -1896,14 +1941,15 @@
           "petMode": "defensive",
           "pos": {
             "x": 300,
-            "y": 39.410541,
+            "y": 40.856461,
             "z": 300
           },
           "potionCooldownUntil": -1,
           "respawnTimer": -0.05,
+          "sex": "m",
           "spawnPos": {
             "x": 300,
-            "y": 39.410541,
+            "y": 40.856461,
             "z": 300
           },
           "stats": {
@@ -1924,7 +1970,7 @@
           "dead": true,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
-          "fallStartY": 41.399945,
+          "fallStartY": 37.271268,
           "fiveSecondRule": 99,
           "hostile": true,
           "id": 409,
@@ -1932,7 +1978,7 @@
           "kind": "mob",
           "leashAnchor": {
             "x": 700,
-            "y": 41.399945,
+            "y": 37.271268,
             "z": 300
           },
           "level": 5,
@@ -1950,14 +1996,15 @@
           "petMode": "defensive",
           "pos": {
             "x": 700,
-            "y": 41.399945,
+            "y": 37.271268,
             "z": 300
           },
           "potionCooldownUntil": -1,
           "respawnTimer": -0.05,
+          "sex": "m",
           "spawnPos": {
             "x": 700,
-            "y": 41.399945,
+            "y": 37.271268,
             "z": 300
           },
           "stats": {
@@ -1977,7 +2024,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 410,
-      "state": "00c375ed",
+      "state": "89de7236",
       "events": "741638a5",
       "rng": {
         "draws": 17,
@@ -2004,7 +2051,10 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 366,
+          "nodeHarvestReadyAt": {},
+          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2041,6 +2091,7 @@
           "potionCooldownUntil": -1,
           "resource": 1,
           "resourceType": "rage",
+          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -2101,6 +2152,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 25,
+          "sex": "m",
           "spawnPos": {
             "x": 5,
             "y": 1.5,
@@ -2161,6 +2213,7 @@
             "z": 1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 7,
             "y": 1.5,
@@ -2226,6 +2279,7 @@
             "z": 1
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 9,
             "y": 1.5,
@@ -2272,6 +2326,7 @@
             "z": 2
           },
           "potionCooldownUntil": -1,
+          "sex": "m",
           "spawnPos": {
             "x": 6,
             "y": 1.5,
@@ -2330,6 +2385,7 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 23.45,
+          "sex": "m",
           "spawnPos": {
             "x": 4,
             "y": 1.5
@@ -2351,7 +2407,7 @@
           "critChance": 0.05,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
-          "fallStartY": 39.410541,
+          "fallStartY": 40.856461,
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 84,
@@ -2366,14 +2422,15 @@
           "petMode": "defensive",
           "pos": {
             "x": 300,
-            "y": 39.410541,
+            "y": 40.856461,
             "z": 300
           },
           "potionCooldownUntil": -1,
           "respawnTimer": -0.05,
+          "sex": "m",
           "spawnPos": {
             "x": 300,
-            "y": 39.410541,
+            "y": 40.856461,
             "z": 300
           },
           "stats": {
@@ -2394,7 +2451,7 @@
           "dead": true,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
-          "fallStartY": 41.399945,
+          "fallStartY": 37.271268,
           "fiveSecondRule": 99,
           "hostile": true,
           "id": 409,
@@ -2402,7 +2459,7 @@
           "kind": "mob",
           "leashAnchor": {
             "x": 700,
-            "y": 41.399945,
+            "y": 37.271268,
             "z": 300
           },
           "level": 5,
@@ -2420,14 +2477,15 @@
           "petMode": "defensive",
           "pos": {
             "x": 700,
-            "y": 41.399945,
+            "y": 37.271268,
             "z": 300
           },
           "potionCooldownUntil": -1,
           "respawnTimer": -0.05,
+          "sex": "m",
           "spawnPos": {
             "x": 700,
-            "y": 41.399945,
+            "y": 37.271268,
             "z": 300
           },
           "stats": {

@@ -4,6 +4,7 @@ import type {
   DelveRunInfo,
   LockpickView,
 } from '../world_api';
+import * as bankMod from './bank';
 import { lineOfSightClear, resolveMovement, resolvePosition } from './colliders';
 import { needsCostTranslation, translateAbilityCost } from './combat/ability_cost';
 import { auraAffectsStats, removeCancelableAura } from './combat/aura_cancel';
@@ -134,6 +135,13 @@ import {
 import { canEquipItem } from './equipment_rules';
 import { fleeSpeed } from './flee_speed';
 import { formatMoney } from './format_money';
+import {
+  emptyGatheringProficiency,
+  Gathering,
+  gatherNodeById,
+  harvestNode as harvestNodeImpl,
+  isNodeHarvestableBy,
+} from './gathering';
 import { GreenpawHearth, type GreenpawHearthSave } from './greenpaw_hearth';
 import { Homestead, type HomesteadSave } from './homestead';
 import { Housing, type HousingSave } from './housing';
@@ -223,6 +231,7 @@ import {
 import * as questCommands from './quests/quest_commands';
 import {
   checkQuestReady,
+  onFeedForQuests,
   onInventoryChangedForQuests,
   onMobKilledForQuests,
 } from './quests/quest_credit';
@@ -286,6 +295,7 @@ import {
   emptyMoveInput,
   FISHING_CAST_ID,
   FISHING_CAST_TIME,
+  type GatherNodeType,
   GCD,
   type InvSlot,
   isConsuming,
@@ -307,6 +317,7 @@ import {
   type QuestProgress,
   type QuestState,
   RUN_SPEED,
+  type Sex,
   type SimConfig,
   type SimEvent,
   type SkinCatalog,
@@ -317,7 +328,7 @@ import {
   virtualLevel,
   xpToReachLevel,
 } from './types';
-import { groundHeight, WATER_LEVEL } from './world';
+import { groundHeight, WATER_LEVEL, waterLevelAt } from './world';
 
 // TRIVIAL_LEVEL_GAP moved to mob/targeting.ts (used only by isTrivialTo).
 // CORPSE_DURATION moved to combat/damage.ts (C1; used only by the death path).
@@ -427,7 +438,12 @@ const SOCIAL_PULL_RADIUS: Partial<Record<MobFamily, number>> = {
 };
 // PACK_FRENZY_AURA_ID moved to mob/lifecycle.ts (M4; used only by frenzyPackmates).
 // BLOOD_FRENZY_AURA_ID moved to combat/damage.ts (C1; used only by maybeFrenzyOnHit).
-const SWIM_SURFACE_Y = WATER_LEVEL - 0.75; // body bobs just below the water line
+// Body bobs just below the water line AT this location (terrain/feature-aware:
+// -Infinity outside a declared lake, so this is never called off a waterline
+// that doesn't exist there).
+function swimSurfaceY(x: number, z: number): number {
+  return waterLevelAt(x, z) - 0.75;
+}
 const SWIM_DEPTH = PLAYER_SWIM_DEPTH; // ground this far under the water line = deep water
 const SWIM_SPEED_MULT = 0.65;
 const FISHING_SAMPLE_DISTANCES = [4, 8, 12, 16, 20, 24];
@@ -634,6 +650,11 @@ export interface PlayerMeta {
   name: string;
   skin: number; // appearance index into the render SKINS[player_<cls>]; persisted, synced
   skinCatalog: SkinCatalog;
+  // Player character sex. 'm' is the default for pre-PHAA-501 saves (addPlayer
+  // backfills). Mirrored onto the entity in addPlayer and synced in identity
+  // fields (terse `sx`); drives the female visual variant when a
+  // `player_<cls>_f` entry exists in the manifest.
+  sex: Sex;
   // Cosmetic skin-select event: the rank rolled when the event token was used,
   // pending a lock-in. Set on use, cleared on claim. Persisted so the reward
   // survives reconnect; re-using the token re-shows the same rank (no reroll).
@@ -649,6 +670,11 @@ export interface PlayerMeta {
   inventory: InvSlot[];
   vendorBuyback: InvSlot[];
   copper: number;
+  // The personal bank vault (PHAA-571: core only, not yet player-reachable; see
+  // src/sim/bank.ts). bankBonusSources is the server-stamped per-source breakdown
+  // behind bank.bonusSlots, recomputed at join (empty offline).
+  bank: bankMod.BankState;
+  bankBonusSources: bankMod.BankBonusSource[];
   equipment: PlayerEquipment;
   xp: number;
   // Post-cap progression (Max-Level XP Overflow). `lifetimeXp` is the monotonic
@@ -719,6 +745,17 @@ export interface PlayerMeta {
   companionUpgrades: Record<string, number>;
   delveLoreUnlocked: Set<string>;
   delveDaily: { date: string; firstClearXp: Set<string>; markClears: number };
+  // Per-player, per-node gather-node respawn readiness (PHAA-505): nodeId ->
+  // sim.time (seconds) at or after which THIS player may harvest that node
+  // again. Absent means never harvested (always ready). Session-only, never
+  // persisted, and never shared across players: see src/sim/gathering.ts
+  // (isNodeHarvestableBy/resolveHarvest).
+  nodeHarvestReadyAt: Record<string, number>;
+  // Per-player gather-node proficiency (PHAA-505): one counter per node type,
+  // incremented on every successful harvest of that type. Persisted
+  // (CharacterState.gatheringProficiency); feeds a future proficiency-scaled
+  // rarity roll.
+  gatheringProficiency: Record<GatherNodeType, number>;
 }
 
 // Away-from-keyboard / do-not-disturb presence. `afk` still delivers whispers
@@ -762,6 +799,11 @@ export interface CharacterState {
   equipment: PlayerEquipment;
   inventory: InvSlot[];
   vendorBuyback?: InvSlot[];
+  // The personal bank vault. Optional so pre-bank saves load cleanly (defaults to
+  // empty/0/0 via sanitizeBankState). bonusSlots is re-stamped from the account
+  // entitlement registry at every online join; a persisted value only matters
+  // offline (RL env / local play with no server).
+  bank?: { inventory: InvSlot[]; purchasedSlots: number; bonusSlots: number };
   questLog: { questId: string; counts: number[]; state: 'active' | 'ready' | 'done' }[];
   questsDone: string[];
   // Legacy arenaRating/Wins/Losses are treated as 1v1 data. The explicit
@@ -792,11 +834,17 @@ export interface CharacterState {
   pendingSkinRank?: SkinRank | null;
   pendingSkinCatalog?: SkinCatalog | null;
   pendingSkinItemId?: string | null;
+  // PHAA-501: character sex (visual variant dispatch). Optional so pre-PHAA-501
+  // saves load cleanly; addPlayer backfills to 'm' on read.
+  sex?: Sex;
   delveMarks?: number;
   delveClears?: Record<string, number>;
   companionUpgrades?: Record<string, number>;
   delveLoreUnlocked?: string[];
   delveDaily?: { date: string; firstClearXp: string[]; markClears: number };
+  // Optional so characters saved before per-node gathering proficiency
+  // existed load cleanly (addPlayer backfills to all-zero).
+  gatheringProficiency?: Partial<Record<GatherNodeType, number>>;
 }
 
 export interface PetState {
@@ -945,6 +993,11 @@ export class Sim {
   // owns the plot ownership book. Constructed in the ctor after the SimContext
   // (it consumes the seam); Sim keeps thin delegates below, mirroring housing.
   homestead!: Homestead;
+  // Gathering v0 (PHAA-504): corpse harvest, the single-use first-come opposite
+  // of a world gathering node. Constructed in the ctor after the SimContext (it
+  // consumes the seam for its one rng draw); Sim keeps a thin delegate below,
+  // mirroring housing.
+  gathering!: Gathering;
   /** When true, /dev level|tp|give chat commands are accepted (local dev only). */
   readonly devCommands: boolean;
   private pendingMobRespawns: PendingMobRespawn[] = [];
@@ -985,6 +1038,10 @@ export class Sim {
     // Housing v0: owns the hub homestead plot book; consumes the seam. Draws no
     // rng at construction (or ever), so the draws below are unperturbed.
     this.housing = new Housing(this.ctx);
+    // Gathering v0 (PHAA-504): owns the corpse-harvest item-selection draw;
+    // consumes the seam. Draws no rng at construction (only when a harvest
+    // command resolves), so the draws below are unperturbed.
+    this.gathering = new Gathering(this.ctx);
     // Greenpaw's hearth (PHAA-421): owns the hunger/smoke state machine;
     // consumes the seam. Draws no rng at construction, so the draws below
     // are unperturbed.
@@ -1182,6 +1239,7 @@ export class Sim {
       characterId?: number;
       accountKey?: string;
       hollowStart?: boolean; // PHAA-404: join inside the Hollow hub, never the base overworld
+      sex?: Sex; // PHAA-501: explicit override (server create path); otherwise read from saved state
     },
   ): number {
     const savedState = opts?.state ? sanitizeRemovedZone1Content(opts.state).state : undefined;
@@ -1226,6 +1284,7 @@ export class Sim {
       name,
       skin: savedState?.skin ?? 0,
       skinCatalog: savedState?.skinCatalog === 'mech' ? 'mech' : 'class',
+      sex: opts?.sex ?? savedState?.sex ?? 'm',
       pendingSkinRank: savedState?.pendingSkinRank ?? null,
       pendingSkinCatalog: savedState?.pendingSkinCatalog ?? null,
       pendingSkinItemId: savedState?.pendingSkinItemId ?? null,
@@ -1234,6 +1293,8 @@ export class Sim {
       inventory: [],
       vendorBuyback: [],
       copper: 0,
+      bank: { inventory: [], purchasedSlots: 0, bonusSlots: 0 },
+      bankBonusSources: [],
       equipment: { mainhand: classDef.startWeapon, chest: classDef.startChest },
       xp: 0,
       lifetimeXp: 0,
@@ -1269,10 +1330,13 @@ export class Sim {
       companionUpgrades: {},
       delveLoreUnlocked: new Set(),
       delveDaily: { date: '', firstClearXp: new Set(), markClears: 0 },
+      nodeHarvestReadyAt: {},
+      gatheringProficiency: emptyGatheringProficiency(),
     };
     this.players.set(player.id, meta);
     player.skinCatalog = meta.skinCatalog;
     player.skin = meta.skin; // mirror onto the entity so the renderer + wire can read it
+    player.sex = meta.sex; // mirror sex onto the entity for the visual dispatch + wire
     if (this.primaryId === -1) this.primaryId = player.id;
 
     if (savedState) {
@@ -1293,6 +1357,7 @@ export class Sim {
       meta.equipment = { ...s.equipment };
       meta.inventory = s.inventory.map((i) => ({ ...i }));
       meta.vendorBuyback = (s.vendorBuyback ?? []).map((i) => ({ ...i }));
+      meta.bank = bankMod.sanitizeBankState(s.bank);
       for (const q of s.questLog) {
         if (q.state !== 'done')
           meta.questLog.set(q.questId, {
@@ -1343,6 +1408,9 @@ export class Sim {
       meta.delveMarks = s.delveMarks ?? 0;
       meta.delveClears = { ...(s.delveClears ?? {}) };
       meta.companionUpgrades = { ...(s.companionUpgrades ?? {}) };
+      if (s.gatheringProficiency) {
+        meta.gatheringProficiency = { ...emptyGatheringProficiency(), ...s.gatheringProficiency };
+      }
       if (s.delveLoreUnlocked) for (const id of s.delveLoreUnlocked) meta.delveLoreUnlocked.add(id);
       if (s.delveDaily) {
         meta.delveDaily = {
@@ -1510,6 +1578,11 @@ export class Sim {
       equipment: { ...meta.equipment },
       inventory: meta.inventory.map((i) => ({ ...i })),
       vendorBuyback: meta.vendorBuyback.map((i) => ({ ...i })),
+      bank: {
+        inventory: meta.bank.inventory.map((i) => ({ ...i })),
+        purchasedSlots: meta.bank.purchasedSlots,
+        bonusSlots: meta.bank.bonusSlots,
+      },
       questLog: [...meta.questLog.values()].map((q) => ({
         questId: q.questId,
         counts: [...q.counts],
@@ -1539,12 +1612,14 @@ export class Sim {
       cooldowns: serializeCooldowns(e.cooldowns, e.potionCooldownUntil, this.time),
       skin: meta.skin,
       skinCatalog: meta.skinCatalog,
+      sex: meta.sex, // PHAA-501: persisted; absent in pre-PHAA-501 saves (back-compat default 'm')
       pendingSkinRank: meta.pendingSkinRank,
       pendingSkinCatalog: meta.pendingSkinCatalog,
       pendingSkinItemId: meta.pendingSkinItemId,
       delveMarks: meta.delveMarks,
       delveClears: { ...meta.delveClears },
       companionUpgrades: { ...meta.companionUpgrades },
+      gatheringProficiency: { ...meta.gatheringProficiency },
       delveLoreUnlocked: [...meta.delveLoreUnlocked],
       delveDaily: {
         date: meta.delveDaily.date,
@@ -1573,6 +1648,20 @@ export class Sim {
 
   changeSkin(skin: number, catalog: SkinCatalog = 'class'): void {
     this.setPlayerSkin(this.primaryId, skin, catalog);
+  }
+
+  /** Set a player's sex (meta + entity). Clamped to 'm'|'f' so a malformed
+   *  payload from the wire or a tampered save cannot escape the union. Used
+   *  by creation (PHAA-501) and the in-world visual mirror. */
+  setPlayerSex(pid: number, sex: Sex): boolean {
+    const meta = this.players.get(pid);
+    const e = this.entities.get(pid);
+    if (!meta || !e) return false;
+    const normalized: Sex = sex === 'f' ? 'f' : 'm';
+    if (meta.sex === normalized && e.sex === normalized) return true;
+    meta.sex = normalized;
+    e.sex = normalized;
+    return true;
   }
 
   /** Set a player's guild name (online only) so it rides the entity wire and
@@ -1900,6 +1989,9 @@ export class Sim {
       get players() {
         return sim.players;
       },
+      get bankerIds() {
+        return sim.bankerIds;
+      },
       get primaryId() {
         return sim.primaryId;
       },
@@ -2073,7 +2165,11 @@ export class Sim {
       arenaAllPids: sim.arenaAllPids.bind(sim),
       rollLoot: sim.rollLoot.bind(sim),
       applyHeal: sim.applyHeal.bind(sim),
-      spellCrit: sim.spellCrit.bind(sim),
+      // Lazy arrow, not a ctor-time .bind: applyHeal/effect_dispatch/casting_lifecycle
+      // read ctx.spellCrit long after buildSimContext runs, and unit tests override
+      // `(sim as any).spellCrit` post-construction (see the applyHeal thin-delegate
+      // comment above); a .bind snapshot would freeze the pre-override function.
+      spellCrit: (p: Entity) => sim.spellCrit(p),
       applyAura: sim.applyAura.bind(sim),
       // General control-aura predicate (stays on Sim); the extracted Nythraxis
       // isNythraxisControlAura consults it through the seam.
@@ -2108,6 +2204,7 @@ export class Sim {
       // stays on Sim (L2 inventory hub) and is consumed by the collect updater.
       onMobKilledForQuests: (mob, meta) => onMobKilledForQuests(sim.ctx, mob, meta),
       onInventoryChangedForQuests: (meta) => onInventoryChangedForQuests(sim.ctx, meta),
+      onGreenpawFedForQuests: (meta) => onFeedForQuests(sim.ctx, meta),
       checkQuestReady: (qp, meta) => checkQuestReady(sim.ctx, qp, meta),
       countItem: sim.countItem.bind(sim),
       // I1 dungeon instancing now lives in instances/dungeons.ts; these route through
@@ -2321,6 +2418,10 @@ export class Sim {
       // Homestead v0: the /homestead chat-command branch routes through the seam to
       // the Homestead instance (constructed after this literal; late-bound arrow).
       homesteadChat: (raw, pid) => sim.homestead.handleChat(raw, pid),
+      // Gathering v0 (PHAA-504): corpse-harvest item selection (the one rng draw)
+      // routes through the seam to the Gathering instance (constructed after this
+      // literal; late-bound arrow).
+      gatherHarvestItemFor: (tags) => sim.gathering.harvestItemFor(tags),
     };
     return createSimContext(host);
   }
@@ -2747,8 +2848,8 @@ export class Sim {
 
   isSwimming(e: Entity): boolean {
     return (
-      groundHeight(e.pos.x, e.pos.z, this.cfg.seed) < WATER_LEVEL - SWIM_DEPTH &&
-      e.pos.y <= SWIM_SURFACE_Y + 0.15
+      groundHeight(e.pos.x, e.pos.z, this.cfg.seed) < waterLevelAt(e.pos.x, e.pos.z) - SWIM_DEPTH &&
+      e.pos.y <= swimSurfaceY(e.pos.x, e.pos.z) + 0.15
     );
   }
 
@@ -2789,7 +2890,7 @@ export class Sim {
     // deep water and cliffs end the charge early rather than dragging the player in
     const h0 = groundHeight(p.pos.x, p.pos.z, this.cfg.seed);
     const h1 = groundHeight(nx, nz, this.cfg.seed);
-    if (h1 < WATER_LEVEL - SWIM_DEPTH) return done(false);
+    if (h1 < waterLevelAt(nx, nz) - SWIM_DEPTH) return done(false);
     if (h1 > h0 && (h1 - h0) / step > MAX_CLIMB_SLOPE) return done(false);
     const resolved = this.resolveMove(p.pos.x, p.pos.z, nx, nz, BODY_RADIUS, p);
     p.pos.x = resolved.x;
@@ -2851,7 +2952,7 @@ export class Sim {
     const nz = p.pos.z + Math.cos(p.facing) * step;
     const h0 = groundHeight(p.pos.x, p.pos.z, this.cfg.seed);
     const h1 = groundHeight(nx, nz, this.cfg.seed);
-    if (h1 < WATER_LEVEL - SWIM_DEPTH) return true; // don't trail into deep water
+    if (h1 < waterLevelAt(nx, nz) - SWIM_DEPTH) return true; // don't trail into deep water
     if (h1 > h0 && step > 1e-5 && (h1 - h0) / step > MAX_CLIMB_SLOPE) return true; // wall/cliff
     const resolved = this.resolveMove(p.pos.x, p.pos.z, nx, nz, BODY_RADIUS, p);
     p.pos.x = resolved.x;
@@ -2959,10 +3060,10 @@ export class Sim {
 
     // Vertical: jumping, gravity, swimming, fall damage
     const ground = groundHeight(p.pos.x, p.pos.z, this.cfg.seed);
-    const deepWater = ground < WATER_LEVEL - SWIM_DEPTH;
-    if (deepWater && p.pos.y <= SWIM_SURFACE_Y + 0.05) {
+    const deepWater = ground < waterLevelAt(p.pos.x, p.pos.z) - SWIM_DEPTH;
+    if (deepWater && p.pos.y <= swimSurfaceY(p.pos.x, p.pos.z) + 0.05) {
       // treading water at the surface
-      p.pos.y = SWIM_SURFACE_Y;
+      p.pos.y = swimSurfaceY(p.pos.x, p.pos.z);
       p.vy = 0;
       p.vx = 0;
       p.vz = 0;
@@ -2991,9 +3092,9 @@ export class Sim {
       p.vy -= GRAVITY * DT;
       p.pos.y += p.vy * DT;
       p.fallStartY = Math.max(p.fallStartY, p.pos.y);
-      if (deepWater && p.pos.y <= SWIM_SURFACE_Y) {
+      if (deepWater && p.pos.y <= swimSurfaceY(p.pos.x, p.pos.z)) {
         // splashing into deep water breaks the fall
-        p.pos.y = SWIM_SURFACE_Y;
+        p.pos.y = swimSurfaceY(p.pos.x, p.pos.z);
         p.vy = 0;
         p.vx = 0;
         p.vz = 0;
@@ -3287,7 +3388,7 @@ export class Sim {
         nz = cz + uz * adv;
       const h0 = groundHeight(cx, cz, this.cfg.seed);
       const h1 = groundHeight(nx, nz, this.cfg.seed);
-      if (h1 < WATER_LEVEL - SWIM_DEPTH) break; // would land in deep water
+      if (h1 < waterLevelAt(nx, nz) - SWIM_DEPTH) break; // would land in deep water
       if (h1 > h0 && (h1 - h0) / adv > MAX_CLIMB_SLOPE) break; // would slam into a cliff
       cx = nx;
       cz = nz;
@@ -3973,7 +4074,7 @@ export class Sim {
       e.pos.x = nx;
       e.pos.z = nz;
       const g = groundHeight(nx, nz, this.cfg.seed);
-      e.pos.y = Math.max(g, SWIM_SURFACE_Y); // ride the surface while phasing, don't sink under terrain/water
+      e.pos.y = Math.max(g, swimSurfaceY(nx, nz)); // ride the surface while phasing, don't sink under terrain/water
       return d - step < 0.3;
     }
     // Mobs have no nav mesh. Try the straight path first; only if a prop or the
@@ -3987,8 +4088,11 @@ export class Sim {
       const a = desired + off;
       const nx = e.pos.x + Math.sin(a) * step;
       const nz = e.pos.z + Math.cos(a) * step;
-      // landlocked creatures stop at the waterline instead of walking under it
-      if (!canSwim && groundHeight(nx, nz, this.cfg.seed) < WATER_LEVEL - SWIM_DEPTH) continue;
+      // landlocked creatures stop at the waterline instead of walking under it;
+      // only declared lakes count, so a sunken feature outside every footprint
+      // is dry ground for non-swimmers.
+      if (!canSwim && groundHeight(nx, nz, this.cfg.seed) < waterLevelAt(nx, nz) - SWIM_DEPTH)
+        continue;
       const r = this.resolveMovePoint(nx, nz, BODY_RADIUS, e);
       const progress = d - Math.hypot(r.x - dest.x, r.z - dest.z);
       if (progress > bestProgress) {
@@ -4001,7 +4105,8 @@ export class Sim {
     e.pos.x = bestX;
     e.pos.z = bestZ;
     const g = groundHeight(bestX, bestZ, this.cfg.seed);
-    e.pos.y = canSwim && g < WATER_LEVEL - SWIM_DEPTH ? SWIM_SURFACE_Y : g;
+    e.pos.y =
+      canSwim && g < waterLevelAt(bestX, bestZ) - SWIM_DEPTH ? swimSurfaceY(bestX, bestZ) : g;
     return dist2d(e.pos, dest) < 0.3;
   }
 
@@ -4395,13 +4500,39 @@ export class Sim {
     return items.unequipItem(this.ctx, slot, pid);
   }
 
+  // The personal bank vault (PHAA-571: core only, see src/sim/bank.ts). Thin
+  // delegates so tests and any future foreign caller resolve these on the Sim
+  // facade; nearBanker always refuses today since bankerIds is empty until a
+  // follow-up ticket places banker NPCs in zone content.
+  bankDeposit(slotIndex: number, count?: number, pid?: number): void {
+    bankMod.bankDeposit(this.ctx, slotIndex, count, pid);
+  }
+
+  bankWithdraw(slotIndex: number, count?: number, pid?: number): void {
+    bankMod.bankWithdraw(this.ctx, slotIndex, count, pid);
+  }
+
+  bankBuySlots(pid?: number): void {
+    bankMod.bankBuySlots(this.ctx, pid);
+  }
+
+  bankInfoFor(pid: number): bankMod.BankInfo | null {
+    return bankMod.bankInfoFor(this.ctx, pid);
+  }
+
+  // Banker NPC anchors bank.ts's nearBanker gate reads through ctx.bankerIds.
+  // Always empty until a follow-up ticket places banker NPCs in zone content
+  // (mirrors Market's merchantId seeding, plural since a banker belongs in every
+  // hub town). Sim-owned; exposed as a live SimContext view.
+  private bankerIds: number[] = [];
+
   private hasFishableWaterAhead(p: Entity): boolean {
     const sin = Math.sin(p.facing);
     const cos = Math.cos(p.facing);
     return FISHING_SAMPLE_DISTANCES.some(
       (d) =>
         groundHeight(p.pos.x + sin * d, p.pos.z + cos * d, this.cfg.seed) <
-        WATER_LEVEL - SWIM_DEPTH,
+        waterLevelAt(p.pos.x + sin * d, p.pos.z + cos * d) - SWIM_DEPTH,
     );
   }
 
@@ -4535,6 +4666,46 @@ export class Sim {
   // on Sim (W4) and is reached through two append-only SimContext callbacks.
   lootCorpse(mobId: number, pid?: number): void {
     interaction.lootCorpse(this.ctx, mobId, pid);
+  }
+
+  // Gathering v0 (PHAA-504): corpse harvest, the one IWorldGathering member.
+  // Same thin-delegate shape as lootCorpse above (the body lives in
+  // interaction.ts, right beside lootCorpse, since it is the same
+  // "player-facing corpse command" family); the item-selection rng draw
+  // lives on Gathering via the ctx seam (see gatherHarvestItemFor).
+  harvestCorpse(mobId: number, pid?: number): void {
+    interaction.harvestCorpse(this.ctx, mobId, pid);
+  }
+
+  // Gathering v1 (PHAA-505): per-player world-node harvest, a thin delegate
+  // onto src/sim/gathering.ts, resolved on the deterministic tick the command
+  // arrives on, same as harvestCorpse above.
+  harvestNode(nodeId: string, pid?: number): void {
+    harvestNodeImpl(this.ctx, nodeId, pid);
+  }
+
+  // IWorld read surface (IWorldGathering): whether the given node is
+  // harvestable right now BY THIS PLAYER specifically (per-player respawn
+  // timer). Never reflects another player's cooldown for the same node.
+  // Takes an explicit pid (mirrors gatheringProficiencyFor) so both the
+  // local-viewer getter below and tests can check any player's own timer.
+  nodeHarvestableByMeFor(nodeId: string, pid: number): boolean {
+    const meta = this.players.get(pid);
+    if (!meta) return false;
+    if (!gatherNodeById(nodeId)) return false;
+    return isNodeHarvestableBy(meta, nodeId, this.time);
+  }
+
+  nodeHarvestableByMe(nodeId: string): boolean {
+    return this.nodeHarvestableByMeFor(nodeId, this.primaryId);
+  }
+
+  gatheringProficiencyFor(pid: number): Record<GatherNodeType, number> {
+    return this.players.get(pid)?.gatheringProficiency ?? emptyGatheringProficiency();
+  }
+
+  get gatheringProficiency(): Record<GatherNodeType, number> {
+    return this.gatheringProficiencyFor(this.primaryId);
   }
 
   pickUpObject(objId: number, pid?: number): void {
@@ -4846,6 +5017,8 @@ export class Sim {
   guildDemote(_name: string): void {}
   guildTransfer(_name: string): void {}
   guildDisband(): void {}
+  guildEventCreate(_day: string, _hour: number | null, _title: string, _note: string): void {}
+  guildEventRemove(_eventId: number): void {}
   searchCharacters(_query: string): Promise<import('../world_api').CharacterSearchResult[]> {
     return Promise.resolve([]);
   }

@@ -813,6 +813,10 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/combat/auto_attack.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/progression/talents.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/progression/xp.ts'), 'utf8'),
+    // PHAA-540: the Profession Trainer command surface (setSecondaryClass) was missing
+    // from this scan list, so its four error literals passed the S3 guard falsely (the
+    // same blind spot as PHAA-533's homestead.ts).
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/progression/trainer.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/mob/locomotion.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/mob/mob_swing.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/mob/lifecycle.ts'), 'utf8'),
@@ -848,6 +852,12 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
     // the dedicated "Greenpaw hearth and /house helpLines" describe block.
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/housing.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/greenpaw_hearth.ts'), 'utf8'),
+    // PHAA-571: the bank vault core's error/notice literals (too-far, quest-item
+    // refusal, bank-full, expansion cap/afford, purchase confirmation).
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/bank.ts'), 'utf8'),
+    // PHAA-505: per-player node harvest command denials (dead gate, unknown
+    // node, range, respawn timer).
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/gathering.ts'), 'utf8'),
     socialSrc,
   ].join('\n');
   // Hardened S3: also scan the authoritative server's player-facing emits. The
@@ -1182,5 +1192,57 @@ describe('Greenpaw hearth command text is localized (variable-routed blind spot)
       }
     }
     setLanguage('en');
+  });
+});
+
+// PHAA-533: Homestead v0 (src/sim/homestead.ts) has THREE multi-line
+// `this.ctx.error(...)` calls with trailing commas - the S3 er regex requires
+// `${lit}\\s*\\)`, so a literal followed by `,\\n  )` does not match the regex
+// even when the literal is in source. The S3 rr regex (return-statements) does
+// catch placementIssue()'s seven rejections; the three in-homesteadClaim /
+// handleChat multi-line ctx.error calls (the Greenpaw quest-gate and the two
+// `You own no homestead...` variants) plus the chat.ts /homestead helpLines
+// entry are listed here. The parameterized (x, z) sit-at template is captured
+// by the S3 scanner (Math.round -> digit substitution). All four are recognized
+// by RULES in sim_i18n.ts (the runtime path), so this guard keeps the source
+// in sync with the matcher. Per CLAUDE.md contributors add English only; the
+// M16 non-Latin fill is the maintainer's release pass, so the contributor-side
+// homestead entries are NOT yet in the filled-locale set below. They are still
+// asserted as RECOGNIZED at the PR tier.
+describe('Homestead v0 blind spots are localized (multi-line ctx.error + /homestead helpLine)', () => {
+  const chatSrc = fs.readFileSync(path.resolve(process.cwd(), 'src/sim/social/chat.ts'), 'utf8');
+  const homesteadSrc = fs.readFileSync(path.resolve(process.cwd(), 'src/sim/homestead.ts'), 'utf8');
+
+  const helpHomesteadLine = 'Homestead: /homestead, /homestead claim.';
+  // The three multi-line this.ctx.error literals in homestead.ts. The S3 er
+  // regex requires `${lit}\\s*\\)`, which does NOT match `<lit>,\\n  )`, so these
+  // slip past the main scanner. All three appear verbatim in homestead.ts and
+  // are recognized by RULES in sim_i18n.ts.
+  const homesteadMultiLineCtxError = [
+    "Brother Greenpaw hasn't sent you off yet. Finish his errands first.",
+    "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
+    'You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.',
+  ];
+
+  it('the /homestead helpLine still appears in chat.ts and the three multi-line ctx.error literals still appear in homestead.ts', () => {
+    expect(chatSrc.includes(`'${helpHomesteadLine}'`), '/homestead helpLine text drifted').toBe(
+      true,
+    );
+    for (const s of homesteadMultiLineCtxError) {
+      expect(
+        homesteadSrc.includes(s),
+        `homestead.ts no longer contains the multi-line ctx.error literal "${s}"`,
+      ).toBe(true);
+    }
+  });
+
+  it('every homestead blind-spot string is recognized by localizeSimText (PR tier)', () => {
+    setLanguage('en');
+    for (const s of [helpHomesteadLine, ...homesteadMultiLineCtxError]) {
+      expect(
+        localizeSimText(s),
+        `sim text "${s}" not recognized (would leak raw English)`,
+      ).not.toBeNull();
+    }
   });
 });

@@ -309,9 +309,15 @@ describe('movement directions', () => {
     const STEP = 0.35;
     // A dry forward step that drops more than the old 0.4 ledge threshold yet
     // stays within the walkable MAX_CLIMB_SLOPE (1.5, so <= 0.525 over one step).
+    // Constrain the search to the playable world strip (x in ±178 so the
+    // starter-zone clamp doesn't teleport the player back to the rim mid-walk)
+    // and skip any spot whose z sits inside the Hollow Reaches starter zone
+    // (the PHAA-472 zone_bounds clamp pulls the player to the rim wall there,
+    // which would mask the slope behaviour this test is exercising).
     let found: { x: number; z: number; facing: number } | null = null;
-    outer: for (let x = -250; x <= 250 && !found; x += 2) {
-      for (let z = -250; z <= 250; z += 2) {
+    outer: for (let x = -178; x <= 178 && !found; x += 2) {
+      for (let z = -388; z <= 388; z += 2) {
+        if (z >= -388 - 10 && z <= -180 + 10) continue; // skip starter-zone z-band
         if (terrainHeight(x, z, seed) < WATER_LEVEL) continue;
         for (let f = 0; f < Math.PI * 2; f += Math.PI / 12) {
           const h0 = terrainHeight(x, z, seed);
