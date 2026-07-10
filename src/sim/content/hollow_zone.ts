@@ -172,13 +172,13 @@ export const HOLLOW_ZONE_NPCS: Record<string, NpcDef> = {
     // she reads as busy with small chores rather than posted like a quest-giver.
     wanderRadius: 3,
     greeting:
-      'Oh, it is you. Sit if you like, the water is not going anywhere. Have you eaten today? You should eat.',
+      "Oh, it's you. Sit if you like, the water's not going anywhere. Have you eaten today? You should eat.",
     // First meeting: she is filling the can and deflects into ordinary small talk.
     // No destiny, no hook, nothing that marks her as more than a civilian, which
     // is the whole point of the first sighting.
     introLines: [
-      'You caught me at my chores. Do not mind the can, it is only water. There is always something that could use a little water.',
-      'Me? No one to speak of. Shade. I walk, I lend a hand where hands are short. You look worn through. Sit a moment, if you like.',
+      "You caught me at my chores. Don't mind the can, it's only water. There's always something somewhere that wants a little water.",
+      'Me? Nobody much. Shade. I walk, I lend a hand where hands are short. You look worn through. Sit a moment, if you like.',
     ],
   },
   // PHAA-558: the Bard at the gate, the target of "Have You Eaten?" (quest 1). He
@@ -195,7 +195,7 @@ export const HOLLOW_ZONE_NPCS: Record<string, NpcDef> = {
     color: 0x7a6a4a,
     questIds: [],
     greeting:
-      'A copper for a song? No? That is all right, most days it is no. I play for the gate, and the gate has never once reached for its purse.',
+      "A copper for a song? No? That's all right, most days it's no. I play for the gate, and the gate's never once reached for its purse.",
   },
   // PHAA-558: the target of "Someone Your Own Size" (quest 3). A struck-through
   // name from the Verger's rolls, someone the world has been cruel to, whom the
@@ -211,7 +211,7 @@ export const HOLLOW_ZONE_NPCS: Record<string, NpcDef> = {
     color: 0x6a5b53,
     questIds: [],
     greeting:
-      'You can sit. Most walk on. The Verger crossed my name off his register a long while back, and a crossed name learns to keep quiet so no one has to be reminded it is still here.',
+      "You can sit. Most walk on. The Verger crossed my name off his register a long while back, and a crossed name learns to keep quiet so nobody has to be reminded it's still here.",
   },
 };
 
@@ -293,9 +293,9 @@ export const HOLLOW_ZONE_QUESTS: Record<string, QuestDef> = {
     name: 'Have You Eaten?',
     giverNpcId: 'shade',
     turnInNpcId: 'shade',
-    text: 'There is a bard at the gate who plays for coppers and eats when the coppers come, which is not often. I have a bowl warm and one to spare. Carry it down to him, would you? And do not tell him it was pity. Tell him it was extra.',
+    text: "There's a bard at the gate who plays for coppers and eats when the coppers come, which isn't often. I've got a bowl warm and one to spare. Carry it down to him, would you? And don't tell him it was pity. Tell him it was extra.",
     completionText:
-      'You are back. Did he eat? Good. That is good. And did you? ... You did not, I can see it. Sit, then. You do not have to be great to be something good. Greatness is not kindness. Eat.',
+      "You're back. Did he eat? Good. That's good. And did you? ... You didn't, I can see it. Sit, then. You don't have to be great to be something good. Greatness isn't kindness. Eat.",
     objectives: [
       {
         type: 'interact',
@@ -317,9 +317,9 @@ export const HOLLOW_ZONE_QUESTS: Record<string, QuestDef> = {
     giverNpcId: 'shade',
     turnInNpcId: 'shade',
     requiresQuest: 'q_have_you_eaten',
-    text: 'There is a woman near Root Hollow the world has been unkind to. Her name was struck from the register, and people treat a struck name like it cannot hear. Go and sit with her a while. You do not have to fix anything. Just be someone her own size.',
+    text: "There's a woman near Root Hollow the world has been unkind to. Her name was struck from the register, and people treat a struck name like it can't hear. Go and sit with her a while. You don't have to fix anything. Just be someone her own size.",
     completionText:
-      'You stayed. She will not say it mattered, but it did, I promise you it did. Here, this is for you. A sprig off a willow I am fond of. It does nothing at all. It only remembers that you were kind when nothing made you.',
+      "You stayed. She won't say it mattered, but it did, I promise you it did. Here, this is for you. A sprig off a willow I'm fond of. It does nothing at all. It only remembers that you were kind when nothing made you.",
     objectives: [
       { type: 'interact', targetNpcId: 'goodwife_orla', count: 1, label: 'Sat a while with Orla' },
     ],

@@ -40,8 +40,9 @@ and her greeting asks if the player has eaten. She never asks about destiny.
   gate (`gate_bard`), who plays for coppers that rarely come and never gets a warm
   meal. Modeled as an `interact` objective (no combat, no item to farm).
 - The completion text is the point: she asks if the bard ate, then notices the
-  player has not, and lands the character's whole thesis: "You do not have to be
-  great to be something good. Greatness is not kindness. Eat."
+  player has not, and lands the character's whole thesis, verbatim as the Board
+  locked it: "You don't have to be great to be something good. Greatness isn't
+  kindness. Eat."
 - Reward: small xp/copper, no item. `minLevel: 2`.
 
 ### Quest 2: "The Long Way Around" (WRITTEN, GATED on PHAA-559)
@@ -57,13 +58,13 @@ and her greeting asks if the player has eaten. She never asks about destiny.
   design). It lands as sim content only after the spike, using whatever traversal
   mechanic the spike blesses.
 - Draft dialogue (adjust to the final mechanic):
-  - Offer: "There is a planting the tribe left half-finished up the old willow, and
-    it is dying for the want of one good pour. I cannot make that climb anymore, but
-    you have the legs for it. Take the can. Mind the branches; they hold if you are
-    honest with them."
-  - Completion: "It will live now. You would not think one climb and one pour is much
-    against everything else out there. It is not much. It is only everything to the
-    one thing you poured it on."
+  - Offer: "There's a planting the tribe left half-finished up the old willow, and
+    it's dying for want of one good pour. I can't make that climb anymore, but you've
+    got the legs for it. Take the can. Mind the branches; they hold if you're honest
+    with them."
+  - Completion: "It'll live now. You wouldn't think one climb and one pour was much,
+    against everything else out there. It isn't much. It's only everything to the one
+    thing you poured it on."
 
 ### Quest 3: "Someone Your Own Size" (SHIPPED)
 
@@ -87,15 +88,15 @@ and her greeting asks if the player has eaten. She never asks about destiny.
   to that ending (she tells the Plant it can leave the vase, love without illusion).
   Write last, keep adjustable; if PHAA-543 changes, this beat moves with it.
 - Draft dialogue (adjustable):
-  - Offer: "I have asked you for small things, and you have done them all without
-    once asking why. Here is the last one, and it is not small, though it will look
-    it. Take my can down under the shrine, to the thing that is buried there, and
-    give it water. It has been waiting a long time to be given something instead of
-    asked for something."
+  - Offer: "I've asked you for small things, and you've done them all without once
+    asking why. Here's the last one, and it isn't small, though it'll look it. Take
+    my can down under the shrine, to the thing that's buried there, and give it
+    water. It's been waiting a long time to be given something instead of asked for
+    something."
   - Completion: "You did it. Of course you did. That was the water, you understand.
     All of it, all the way back to the day you found me at the lake and thought
     nothing of it. The same pour, the same promise, kept one more time. Thank you.
-    Now go and be gentle with the world. It is the only thing that ever changed it."
+    Now go and be gentle with the world. It's the only thing that ever changed it."
 
 ## Deferred, engine-dependent beats (NOT built here)
 
