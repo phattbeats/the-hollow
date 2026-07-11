@@ -33,6 +33,7 @@ export const guideStrings = {
     social: 'Social & Groups',
     stats: 'Character & Stats',
     progression: 'Leveling & Progression',
+    hollow: 'The Hollow',
     world: 'World',
     quests: 'Quests',
     dungeons: 'Dungeons & Raids',
@@ -694,11 +695,56 @@ export const guideStrings = {
     },
   },
 
+  // The Hollow hub: the sealed starting instance every new arrival lands in (the vase,
+  // the two hub NPCs, the first quest chain, housing, the Under-Shrine). NPC titles and
+  // quest names surface via the Guide's own npcFmt/questFmt format keys, same convention
+  // as delvesPage's keeperFmt/companionFmt.
+  hollowPage: {
+    heading: 'The Hollow',
+    intro:
+      'Past the shrine gate lies the vase: the clearing every new hero wakes into, and always returns to. It is shared ground, one hub for the whole realm, home to your first faces, your first quests, and your first home.',
+    greeting:
+      "you're back, that's a blessin'... got a couple sacred matters queued up, same wavelength as last time. c'mere a minute...",
+    greeter: 'Brother Greenpaw, at the vase',
+
+    vaseHeading: 'The vase',
+    vaseBody:
+      'Everyone begins at the vase, an old, listening presence the Hollow is built around. It asks for small things, an emberbulb burned or a cave morsel fed, and seems to notice when it gets them. Downhill of it, a cave mouth opens onto the Under-Shrine, and to either side lie plots where you can raise a home of your own.',
+
+    figuresHeading: 'Who tends it',
+    figuresBody:
+      'Two people keep the vase running, and you will meet them both in your first minutes.',
+    // Format string joining an NPC's name to their title; translator-controlled
+    // punctuation, not a hardcoded ", " (matches delvesPage's keeperFmt).
+    npcFmt: '{name}, {title}',
+    greenpawBody:
+      "The vase's sole caretaker and the one who hands out its earliest errands. Self-appointed and the first to admit it, he is the closest thing the Hollow has to a guide.",
+    yarrowBody:
+      'Keeper of the second calling: every class can learn a profession from her, mirrored across the vase from Greenpaw.',
+
+    questsHeading: 'Your first errands',
+    questsBody:
+      "Greenpaw's own chain of quests comes first: four short errands that teach the vase's rhythm before sending you on into the wider Hollow.",
+    questBurnsBody: 'A cave-grown bulb the vase burns for light, gathered a handful at a time.',
+    questFillsBody: 'A cave-fed morsel that answers a quieter hunger, gathered the same way.',
+    questWavelengthBody:
+      "An introduction to the vase's second calling, and to feeding it yourself.",
+    questKeepLitBody: 'Turning a single favor into a standing habit, three times over.',
+
+    housingHeading: 'A home of your own',
+    housingBody:
+      '{n} house plots ring the vase, waiting to be claimed and furnished as your own private corner of the Hollow.',
+
+    shrineHeading: 'The Under-Shrine',
+    shrineBody:
+      "A cave mouth beside the vase opens onto the Under-Shrine, the Hollow's own instanced descent and every new hero's first real test of a party.",
+  },
+
   // World / zones.
   worldPage: {
     heading: 'The world',
     intro:
-      'The Hollow Reaches is where every new arrival takes their first steps, quiet ground just beyond the shrine gate. Three more zones lie north of it, laid out south to north; the road to them is not open yet, but they are real and waiting.',
+      'Step out through the shrine gate from the vase and you are in the Hollow Reaches, the quiet outdoor ground where every new arrival takes their first steps. Three more zones lie north of it, laid out south to north; the road to them is not open yet, but they are real and waiting.',
     hub: 'Home base',
     mapHeading: 'The road north',
     mapSub:
@@ -766,9 +812,11 @@ export const guideStrings = {
       'Party members nearby share kill and objective credit, so questing together is faster, never slower. You can also share a quest with your group: post it to chat as a clickable link with the /share command, and any nearby member who qualifies can pick up the same quest in one click.',
     storyTitle: 'A thread runs through it all',
     storyBody:
-      'Your first errands are quiet ones around the Hollow Reaches. Further along the road, something is wrong with the dead: a cult is at work, and the trail leads north through every zone beyond. Follow it to learn who stands behind it.',
+      "Your first thread is Brother Greenpaw's own short chain, right at the vase; see it laid out on the Hollow page. Beyond it lie the quiet errands of the Hollow Reaches, and further out still, a longer tale of a death-cult marching from valley to peak, laid out below as what is coming.",
     soloNote:
       "The main story is soloable right up to each chapter's finale, which is a five-player dungeon.",
+    sagaGateNote:
+      'This saga is real, completed content, the same trail that opens once the road north does. It is not where a new hero starts today; that is the vase, in the Hollow.',
 
     // Quest types section: the shapes an objective can take.
     typesTitle: 'The kinds of quest you will see',

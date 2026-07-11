@@ -852,6 +852,13 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
     // the dedicated "Greenpaw hearth and /house helpLines" describe block.
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/housing.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/greenpaw_hearth.ts'), 'utf8'),
+    // PHAA-542: src/sim/interaction.ts (lootCorpse / harvestCorpse / pickUpObject / interact).
+    // Same gap PHAA-533 closed for homestead.ts: the W3 extraction of the corpse/object
+    // interact surface lands here, and it emits player-facing ctx.error(...) literals
+    // (loot permission + range + harvest guard + quest pickup) that the client re-localizes
+    // via the sim_i18n RULES array and simDICT. Without this entry the S3 guard cannot see
+    // a broken/missing matcher for any of these strings, identical to the previous blind spot.
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/interaction.ts'), 'utf8'),
     // PHAA-491: the bags capacity module (equipBag/unequipBag + the shared
     // "Your bags are full."/socket/swap/remove error literals). Its own emit
     // literals are scanned here; the same literals reused by market.ts,

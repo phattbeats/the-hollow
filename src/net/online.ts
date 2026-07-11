@@ -20,6 +20,7 @@ import { LEADERBOARD_PAGE_SIZE } from '../sim/leaderboard_page';
 import type { Ante, PickAction } from '../sim/lockpick';
 import { normalizeMoveFacing, sanitizeMoveInput } from '../sim/move_input';
 import { secondaryClassCostFor } from '../sim/progression/trainer';
+import { readablePropsAt } from '../sim/readables_query';
 import { computeQuestState, type ResolvedAbility } from '../sim/sim';
 import {
   type Aura,
@@ -65,6 +66,7 @@ import {
   type PartyInfo,
   type PresenceStatus,
   type RaidLockout,
+  type ReadablePropView,
   type SocialInfo,
   type TradeInfo,
 } from '../world_api';
@@ -1021,6 +1023,15 @@ export class ClientWorld implements IWorld {
 
   get player(): Entity {
     return this.entities.get(this.playerId) ?? blankEntity(-1);
+  }
+
+  // IWorldReadables (PHAA-552): world-placed readables are static content, so
+  // they are NOT snapshot-mirrored; ClientWorld computes them from the same
+  // shared table + local player position as the offline Sim, through the one
+  // readablePropsAt helper, keeping the two IWorld impls byte-identical.
+  get readableProps(): ReadablePropView[] {
+    const p = this.entities.get(this.playerId);
+    return p ? readablePropsAt(p.pos.x, p.pos.z) : [];
   }
 
   drainEvents(): SimEvent[] {
@@ -2193,7 +2204,7 @@ export class ClientWorld implements IWorld {
   // --- IWorldDialog (PHAA-553): send a picked branching-dialogue choice; the
   // effect resolves server-side. dialogState is a snapshot read (dstate mirror). ---
   dialogChoose(npcId: string, choiceId: string): void {
-    this.cmd({ cmd: 'dialogChoose', npc: npcId, choice: choiceId });
+    this.cmd({ cmd: 'dialogChoose', npcId, choiceId });
   }
   dialogState(): DialogStateView {
     return this.dialogStateMirror;

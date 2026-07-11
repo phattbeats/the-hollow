@@ -37,6 +37,7 @@ const MOB_IDS = [
   'gravecaller_summoner',
   'gravecaller_mender',
   'deacon_voss',
+  'training_dummy',
   'ridge_stalker',
   'deeprock_kobold',
   'thornpeak_ogre',
@@ -81,6 +82,7 @@ const MOB_IDS = [
   'reliquary_saintless_effigy',
   'deacon_varric',
   'acolyte_tessa',
+  'boarball_ball', // PHAA-572: the inert ball entity driving the boarball minigame
 ] as const;
 
 const NPC_IDS = [

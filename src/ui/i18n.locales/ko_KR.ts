@@ -1359,6 +1359,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'questUi.log.abandonCancel': '취소',
   'questUi.log.suggestedPlayers': '권장 플레이어: {count}',
   'questUi.dialog.close': '퀘스트 대화 닫기',
+  'questUi.dialog.chat': '잠깐 이야기 좀 하죠.',
   'questUi.dialog.greetingFallback': '안녕하세요.',
   'questUi.dialog.availableQuestAria': '받을 수 있는 퀘스트: {name}',
   'questUi.dialog.readyQuestAria': '완료 보고 가능한 퀘스트: {name}',
@@ -2909,8 +2910,31 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
     '문을 나서면 탁 트인 대지가 펼쳐집니다. 길 서쪽의 묵정밭은 집을 짓기에 좋아 보입니다.',
   'entities.npcs.verger_zebediah.name': '성당지기 제베디아',
   'entities.npcs.verger_zebediah.title': '뿌리굴의 파수꾼',
+  'entities.readables.torn_ledger_page.title': '찢어진 장부',
+  'entities.readables.torn_ledger_page.pages.0':
+    '뿌리굴, 쉬게 함으로 기재. 묵정밭, 쉬게 함으로 기재. 모스뱅크의 호수는 우리가 기재하든 말든 알아서 쉰다. 장부가 원하는 대로 서명하고 날짜를 적었다.',
+  'entities.readables.torn_ledger_page.pages.1':
+    '이번 철 지금까지의 집계. 길바닥 돌 사이로 새싹 셋이 올라왔는데, 내 어느 달력에도 없는 일이다. 지워 긁어내는 건 그만뒀다. 잉크가 마르기도 전에 다시 돋아나고, 그 잉크는 싸지도 않았다.',
+  'entities.readables.torn_ledger_page.pages.2':
+    '내 뒤에 이것을 맡을 이에게 남기는 글. 멧돼지를 세라, 늑대를 세라, 날을 세라. 초록만은 세지 마라. 그것은 도로 세어 온다. 그리고 네가 멈춘 자리에서 멈추지 않는다.',
+  'entities.readables.keepers_marginalia.title': '지킴이의 난외 기록',
+  'entities.readables.keepers_marginalia.pages.0':
+    '찬송이 다 닳아 없어진 성가집 여백에 남겨져 있었다. 필체가 빠르다, 걸으면서 쓰는 손이 빠른 그 방식으로.',
+  'entities.readables.keepers_marginalia.pages.1':
+    '늑대들은 나무 경계에서 묵정밭을 맴돈다, 언제나 같은 원, 언제나 해 도는 방향으로. 오래 맴도는 것은 제가 맴도는 것의 모양을 익힌다. 나도 그렇다. 그리고 땅도, 아마 그럴 것이다.',
+  'entities.readables.keepers_marginalia.pages.2':
+    '이 글을 읽고 있다면 당신은 걸음을 멈춘 것이다, 내가 끝내 배우지 못한 그 한 가지를. 잠시 쉬어라. 외곽은 그대로 여기 있을 테니. 그게 바로 이곳의 골칫거리이긴 하다만.',
   'entities.npcs.verger_zebediah.greeting':
     '성당지기 제베디아요. 나는 이 외곽을 달력에 맞춰 관리하오, 적어도 그러려고 애는 쓰지. 뿌리굴은 이번 철엔 쉬게 한다고 적어 뒀는데, 멧돼지들은 그 고시를 읽지 않았소. 무른 흙을 조심하고, 장부엔 손대지 마시오.',
+  // First-meeting click-through intro (PHAA-439). Voice matched to the
+  // existing Korean register (해요체, ecclesiastical), keeping the
+  // "sole surviving keeper of a register" throughline.
+  'entities.npcs.verger_zebediah.introLines.0':
+    '성당지기 제베디아요. 뿌리굴의 파수꾼, 현재로선 그 직책도 나 한 사람이오. 대부분의 날은 여기서 찾을 수 있고, 나머지 날에도 여기서 나를 찾게 되오. 외곽에는 정족수는 필요 없소, 장부만 있으면 되오.',
+  'entities.npcs.verger_zebediah.introLines.1':
+    '달력을 지킨다는 게 내 일이오. 달력이 날 지키는 건 아니지만, 철에 따라 시도는 해보지. 뿌리굴은 이번 철에 쉰다고 적혀 있소만, 아래 굴들에는 그 통지가 닿지 않았고, 왜가리도 더는 놀란 척을 하질 않소. 이게 현 상황이라오. 불평은 아니오, 불평엔 증인이 필요하니까.',
+  'entities.npcs.verger_zebediah.introLines.2':
+    '사당 안엔 장부가 있소. 손대지 마시오. 발밑에는 멧돼지가 뒤집어놓은 무른 흙이 퍼져 있소. 둘 다 조심하시오. 만약 이곳 파수 일로 오신 거라면, 두 가지 일을 맡길 수 있소. 어느 쪽도 작진 않고, 그중 하나는 세 번째 고치고 싶지 않은 일이오. 이게 결국 내가 그대에게 말을 붙인 까닭이라오.',
   'entities.npcs.sexton_faddick.name': '무덤지기 패딕',
   'entities.items.willow_sprig.name': '버드나무 잔가지 하나',
   'entities.npcs.shade.name': '셰이드',
@@ -2944,6 +2968,15 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.sexton_faddick.title': '떠도는 관리인',
   'entities.npcs.sexton_faddick.greeting':
     '패딕이오. 아직 지켜야 할 사당이 있는 한, 무덤지기 노릇을 하지. 나는 어디에도 머물지 않소, 그저 지킬 뿐이오. 밤마다 늑대가 묵정밭의 가축 떼 주위를 맴도는데, 오래 맴돌다 보면 제가 맴도는 것의 모양을 익히게 되는 법이오. 그저 가축 떼로 남는 편이 낫겠지.',
+  // First-meeting click-through intro (PHAA-439). Wandering-keeper voice,
+  // aphoristic, longer arc. Keeps the "I do not stay anywhere; I keep"
+  // throughline.
+  'entities.npcs.sexton_faddick.introLines.0':
+    '패딕이오. 무덤지기 노릇을 할 사당이 아직 있는 한, 무덤지기 노릇을 하지. 그런 사당은 예전보다 적어졌소만. 나는 어디에도 머물지 않소, 그저 지킬 뿐이오. 지키는 일, 그것이 지금도 내가 하고 있는 거의 전부라오.',
+  'entities.npcs.sexton_faddick.introLines.1':
+    '오래 맴돌다 보면 제가 맴도는 것의 모양을 익히게 되는 법이오. 묵정밭의 늑대들은 내가 오기 훨씬 전부터 밤마다 가축 떼 주위를 맴돌아 왔소만, 떼의 모양은 아직 못 익혔으니, 그게 어떤 의미가 있소. 떼 쪽이 오히려 그들을 더 잘 알고 있으니, 그것이 더 큰 의미라오.',
+  'entities.npcs.sexton_faddick.introLines.2':
+    '찻물을 내고 싶지만, 주전자는 내가 어제 있던 어딘가에 있소. 호수가엔 집을 짓기를 기다리는 조용한 땅이 있소. 어둠 속에서 늑대가 노는 땅엔 아무것도 뿌리를 내지 못하오. 자, 두 가지 일이 있소, 그중 하나는 혼자 하고 싶지 않은 일이오. 걸으면서 이야기를 나누는 편이 낫겠소.',
   'entities.quests.q_root_hollow_boars.title': '뿌리굴의 멧돼지',
   'entities.quests.q_root_hollow_boars.text':
     '달력대로라면 뿌리굴은 이번 철에 쉬어야 하오. 한데 멧돼지들에겐 통보가 안 갔지. 벌레를 쫓다가 절반을 파헤쳐 놨고, 이젠 왜가리가 날갯짓을 해도 흩어지질 않소. 나로선 이게 여간 괘씸한 게 아니오. 다섯 마리만 잡으면, 이 철을 기록대로 적어 넣을 수 있소.',
@@ -3229,6 +3262,14 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hud.options.npcVoices': 'NPC 음성',
   'hud.options.voiceVolume': '음성 음량',
   'entities.zones.eastbrook_vale.pois.8.label': '브라이트우드 숲',
+  'boarball.queue.join': '보어볼 대기열에 참가했습니다. 다른 플레이어 세 명을 기다리는 중…',
+  'boarball.queue.leave': '보어볼 대기열에서 나갑니다.',
+  'boarball.log.welcome':
+    '보어볼에 오신 것을 환영합니다! 슛하고 패스해서 상대 팀보다 많은 점수를 내세요.',
+  'boarball.log.kickoff': '킥오프!',
+  'boarball.log.over': '경기 종료! 월드로 돌아갑니다…',
+  'boarball.error.tooFar': '공에 충분히 가까이 있지 않습니다.',
+  'boarball.error.noTeammate': '지정된 아군이 없습니다.',
   'fiesta.augment.aug_apex_predator.desc':
     '물리 피해 +40%, 치명타 +15%, 입힌 피해의 12%만큼 회복합니다.',
   'fiesta.augment.aug_apex_predator.name': '최상위 포식자',
@@ -4038,9 +4079,39 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.family.dragonkin.name': '용족',
   'guide.family.elemental.desc':
     '원소가 강하게 흐르는 야생의 장소에 매여 있는, 살아 있는 폭풍과 돌.',
+  'guide.hollowPage.intro':
+    '성소 문을 지나면 화병이 있는 공터가 나온다. 모든 새 영웅이 눈을 뜨는 곳이자, 언제나 돌아오게 되는 곳. 대륙 전체가 공유하는 하나의 거점으로, 처음 마주치는 얼굴들과 첫 임무, 그리고 정말로 필요한 유일한 집이 이곳에 있다.',
+  'guide.hollowPage.greeting':
+    '돌아왔구먼, 그거 참 축복이지... 신성한 일거리가 몇 개 밀려 있소, 지난번과 같은 파장으로. 이리 좀 와보시게...',
+  'guide.hollowPage.greeter': '그린포 수사, 화병 곁에서',
+  'guide.hollowPage.vaseHeading': '화병',
+  'guide.hollowPage.vaseBody':
+    '모두가 화병에서 시작한다. 우묵골이 세워진 중심에 자리한, 오래되고 귀 기울이는 존재다. 엠버벌브를 태우거나 동굴 모르셀을 먹이는 등 작은 공물을 바라며, 받으면 알아채는 듯하다. 화병 아래쪽에는 지하 성소로 이어지는 동굴 입구가 있고, 양옆에는 자신만의 집을 지을 수 있는 부지가 놓여 있다.',
+  'guide.hollowPage.figuresHeading': '누가 돌보는가',
+  'guide.hollowPage.figuresBody':
+    '화병을 지키는 두 사람이 있으며, 처음 몇 분 안에 둘 다 만나게 된다.',
+  'guide.hollowPage.greenpawBody':
+    '화병의 유일한 관리자이자 가장 첫 임무를 내주는 이. 자칭한 직함임을 본인이 가장 먼저 인정하며, 우묵골에서 안내자에 가장 가까운 존재다.',
+  'guide.hollowPage.yarrowBody':
+    '두 번째 소명을 가르치는 이. 어떤 직업이든 그녀에게서 부전공을 배울 수 있으며, 화병을 사이에 두고 그린포와 마주해 있다.',
+  'guide.hollowPage.questsHeading': '첫 심부름',
+  'guide.hollowPage.questsBody':
+    '그린포 자신의 임무 사슬이 가장 먼저 해야 할 일이다. 화병의 리듬을 가르쳐 주는 네 개의 짧은 심부름을 마치면 더 넓은 우묵골로 나서게 된다.',
+  'guide.hollowPage.questBurnsBody': '화병이 빛을 위해 태우는 동굴산 구근을 한 움큼씩 모은다.',
+  'guide.hollowPage.questFillsBody':
+    '더 조용한 허기를 달래주는 동굴 모르셀을 같은 방식으로 모은다.',
+  'guide.hollowPage.questWavelengthBody':
+    '화병의 두 번째 소명을 소개받고, 직접 먹이는 법을 배운다.',
+  'guide.hollowPage.questKeepLitBody': '한 번의 호의를 세 번 연달아 반복해 습관으로 바꾼다.',
+  'guide.hollowPage.housingHeading': '나만의 집',
+  'guide.hollowPage.housingBody':
+    '화병 주위로 {n}개의 집터가 둘러싸고 있으며, 우묵골 속 당신만의 사적인 한 구석으로 꾸며지길 기다린다.',
+  'guide.hollowPage.shrineHeading': '지하 성소',
+  'guide.hollowPage.shrineBody':
+    '화병 옆 동굴 입구는 지하 성소로 이어진다. 우묵골 자체의 인스턴스 던전이며, 새 영웅이 처음으로 파티와 함께 맞이하는 진짜 시험이다.',
   'guide.worldPage.heading': '세계',
   'guide.worldPage.intro':
-    'World of ClaudeCraft는 두 발로 가로지르는 하나로 이어진 대지이며, 남에서 북으로 펼쳐진 세 개의 지역으로 이루어져 있습니다. 빠른 이동이 없으니, 여정 자체가 모험의 일부입니다.',
+    '화병에서 성소 문을 나서면 우묵골에 들어선다. 새로 온 이가 야외에서 첫걸음을 내딛는 고요한 땅이다. 그 너머 북쪽으로 세 개의 지역이 남에서 북으로 이어져 있으며, 그곳으로 가는 길은 아직 열리지 않았지만 실재하며 기다리고 있다.',
   'guide.worldPage.hub': '본거지',
   'guide.worldPage.hollowReachesBlurb':
     '성소 문을 막 지난 고요한 땅으로, 새내기들이 묵정밭과 뿌리굴 주변에서 늑대와 멧돼지를 상대로 실력을 갈고닦는 곳.',
@@ -4067,9 +4138,11 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
     '가까이 있는 파티원은 처치와 목표 공로를 나누므로, 함께하는 퀘스트는 더 빠르면 빨랐지 결코 느리지 않습니다. 퀘스트를 파티와 공유할 수도 있습니다. /share 명령으로 클릭할 수 있는 링크를 채팅에 올리면, 가까이 있는 자격을 갖춘 파티원 누구나 클릭 한 번으로 같은 퀘스트를 받을 수 있습니다.',
   'guide.questsPage.storyTitle': '하나의 실타래가 모든 것을 꿰뚫습니다',
   'guide.questsPage.storyBody':
-    '동개울에서의 첫 심부름부터, 죽은 자들에게 무언가 잘못되어 갑니다. 한 교단이 암약하고 있으며, 그 자취는 모든 지역을 거쳐 북쪽으로 이어집니다. 자취를 좇아 그 배후가 누구인지 밝혀내세요.',
+    '당신의 가장 첫 실마리는 바로 화병 곁, 그린포 수사 자신의 짧은 임무 사슬이다. 그 너머에는 우묵골 안쪽의 조용한 심부름들이 있고, 더 멀리에는 골짜기에서 봉우리까지 진군하는 죽음의 교단을 둘러싼 더 긴 이야기가 있다. 실제로 존재하는 완결된 콘텐츠지만, 아직 새 영웅이 걸어갈 길은 아니다. 화병 자체의 임무는 우묵골 페이지에서, 나머지는 앞으로 다가올 내용으로 아래에 정리되어 있다.',
   'guide.questsPage.soloNote':
     '메인 스토리는 각 장의 대단원까지 완전히 혼자서 진행할 수 있으며, 그 대단원은 5인 던전입니다.',
+  'guide.questsPage.sagaGateNote':
+    '이 이야기는 실제로 존재하는, 완결된 콘텐츠로, 북쪽 길이 다시 열릴 때 열리는 바로 그 여정이다. 새 영웅이 오늘 시작하는 곳은 아니다. 그 시작점은 우묵골 속 화병이다.',
   'guide.dungeonsPage.heading': '던전과 공격대',
   'guide.dungeonsPage.intro':
     '열린 세계만으로 부족할 때, 파티를 모아 인스턴스에 들어서세요. 당신의 파티만을 위해 만들어진 던전의 개별 사본입니다.',
@@ -4751,6 +4824,42 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
     '이름은 그린포우일세. 그린포우 수도사, 초대 예언자, 자칭이지만. 저 항아리한테 물으면 그딴 건 아무 의미 없다 할 거야, 틀린 말도 아니고, 그래도 누군가는 저 아이를 돌봐야 하지 않겠나……',
   'entities.npcs.brother_greenpaw.introLines.2':
     '여기가 바로 공동일세. 한때는 부족 하나가 통째로 있었지, 큰일들도 많았다더군, 뭐 들은 얘기지만. 이제는 대부분 나하고, 저 항아리하고, 저 동굴 밑에서 숨 쉬는 뭔가뿐이야……아무튼. 저 아이도 배고프고, 나도 배고프고, 같은 주파수지. 이리 와 보게, 처리해야 할 신성한 일이 몇 가지 있어.',
+  'entities.npcs.brother_greenpaw.dialogNode.hearth':
+    '다시 항아리 곁으로 왔군, 친구여……오늘은 그 녀석이 조용해. 열심히 귀 기울이고 있는 건지, 아니면 삐쳐 있는 건지, 나로선 도무지 알 수가 없다네. 할로우는 자네를 어떻게 대접해 주던가?',
+  'entities.npcs.brother_greenpaw.dialogNode.warmed':
+    '……그 말은 부드럽게 와닿는군, 친구여. 자네가 아는 것보다 더 부드럽게 말일세. 여길 지나는 대부분은 출구를 찾아 헤매지. 헌데 자네는 이곳의 한가운데를 계속 찾고 있어. 그건 생각보다 훨씬 드문 일이라네.',
+  'entities.npcs.brother_greenpaw.dialogNode.vase':
+    '늘 똑같지. 그 녀석은 연기를 원하고, 보살핌을 원하고, 곁에 앉아 이 고요를 대화인 척 함께해 줄 누군가를 원한다네……뭐, 눈을 가늘게 뜨고 보면 정말 대화이기도 하지. 그게 대충 신앙이란 것의 전부일세.',
+  'entities.npcs.brother_greenpaw.dialogNode.faith':
+    '믿음이란 건 무거운 말이야, 친구여. 나는 그저 돌볼 뿐이지. 돌보는 것, 그건 이 두 손으로 할 수 있는 일이니까. 귀 기울이는 건 그 녀석에게 맡겨 두네. 설령 듣고 있지 않다 해도, 뭐, 연기는 어차피 향기롭게 피어오르니……',
+  'entities.npcs.brother_greenpaw.dialogNode.stung':
+    '……어휴. 그래. 그래, 어쩌면 그럴지도 모르지. 추운 아침에, 항아리가 한숨도 쉬지 않고 아무도 이 길을 올라오지 않을 때면, 나도 스스로 그런 생각을 한다네……허나 나는 여전히 여기 있어, 친구여. 그러니 그것만은 아니겠지. 적어도 나에겐 말일세.',
+  'entities.npcs.brother_greenpaw.dialogNode.mended':
+    '괜찮네, 친구여. 이런 곳은 이따금 모진 말 한마디쯤은 들을 만하지. 아니라고 시치미 떼진 않겠네. 그래도 자네는 다시 돌아와 부드럽게 말해 주었어. 그건 무덤가라면 해 주지 않았을 일이지. 우리 둘은 이제 셈이 끝난 걸세, 자네와 나 말이야.',
+  'entities.npcs.brother_greenpaw.dialogNode.tribe':
+    '예전엔 큰 부족이었다지, 오래된 표식들이 그리 말하네. 어둠 속에 줄줄이 새겨진 셈의 눈금들, 다섯씩 그어 지운 자국이, 한 사람의 손으로는 도저히 만들 수 없을 만큼 많았어……그들은 아주 오랫동안 그 녀석의 불을 밝혀 두었지, 마침내 나 혼자만 남을 때까지 말일세. 그들이 어디로 갔는지는 모른다네, 친구여. 다만 내가 지키는 동안에는 이 심지가 꺼지게 둘 수 없다는 것, 그것만은 알지.',
+  'entities.npcs.brother_greenpaw.dialogNode.confide':
+    '……참으로 고마운 제안일세. 그중 아주 작은 조각만은 기꺼이 받겠네. 솔직히 말하면, 내가 자네에게 이야기하는 건 절반은 항아리가 대답하지 않아서고, 절반은 언젠가 아무도 이 길을 올라오지 않을 그날이 두려워서라네. 그러니, 올라와 줘서 고맙네. 그게 바로 신성한 부분일세, 친구여. 혹시 하나쯤 바랐다면 말이야.',
+  'entities.npcs.brother_greenpaw.dialogChoice.kind':
+    '이곳이 조금씩 어딘가 정말 머물 곳처럼 느껴지기 시작했어요, 형님. 진심입니다.',
+  'entities.npcs.brother_greenpaw.dialogChoice.ask': '요즘 항아리가 뭐라고 하던가요?',
+  'entities.npcs.brother_greenpaw.dialogChoice.blunt':
+    '이곳은 관리인이 딸린 무덤가일 뿐이에요, 그린포. 그게 다예요.',
+  'entities.npcs.brother_greenpaw.dialogChoice.tribe':
+    '예전에 이곳에 살았다는 그 부족 이야기를 들려주세요.',
+  'entities.npcs.brother_greenpaw.dialogChoice.warm_bye': '그 녀석 곁으로 돌아가시게 두겠습니다.',
+  'entities.npcs.brother_greenpaw.dialogChoice.vase_more':
+    '그래서, 그가 정말 듣고 있다고 믿으세요?',
+  'entities.npcs.brother_greenpaw.dialogChoice.vase_bye':
+    '그럼 그 녀석 곁을 지켜 주세요. 저는 근처에 있을게요.',
+  'entities.npcs.brother_greenpaw.dialogChoice.faith_bye': '그럴 만하네요, 그린포.',
+  'entities.npcs.brother_greenpaw.dialogChoice.sorry': '본심보다 심하게 나와 버렸네요. 죄송합니다.',
+  'entities.npcs.brother_greenpaw.dialogChoice.cold_bye': '믿고 싶은 대로 믿으세요.',
+  'entities.npcs.brother_greenpaw.dialogChoice.mended_bye': '우리 셈은 끝났어요. 또 봬요.',
+  'entities.npcs.brother_greenpaw.dialogChoice.confide': '그걸 혼자 짊어질 필요는 없어요, 형님.',
+  'entities.npcs.brother_greenpaw.dialogChoice.tribe_bye':
+    '아직 누군가 그걸 돌보고 있잖아요. 그것도 뜻있는 일이죠.',
+  'entities.npcs.brother_greenpaw.dialogChoice.confide_bye': '앞으로도 이 길을 올라올게요, 그린포.',
   'entities.delves.collapsed_reliquary.enterText': '무너진 성물실로 내려갑니다.',
   'entities.delves.collapsed_reliquary.leaveText':
     '성물실 폐허의 브라더 할벤에게로 다시 올라갑니다.',
