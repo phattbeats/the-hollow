@@ -156,6 +156,7 @@ const UI_PURE_CORES = [
   'src/ui/questlog_view.ts',
   'src/ui/trainer_view.ts',
   'src/ui/npc_intro_view.ts',
+  'src/ui/npc_journal_view.ts',
   'src/ui/quest_offer_view.ts',
   'src/ui/loot_roll_group_view.ts',
   'src/ui/npc_dialog_tree_view.ts',
