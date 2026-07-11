@@ -5582,31 +5582,31 @@ export const pt_BR: EnTranslations = {
         "name": "Baú cosmético misterioso"
       },
       "flint_amber_pick": {
-        "name": "Flint Amber Pick"
+        "name": "Picareta de âmbar de sílex"
       },
       "bonewood_amber_pick": {
-        "name": "Bonewood Amber Pick"
+        "name": "Picareta de âmbar de madeira óssea"
       },
       "starleaf_amber_pick": {
-        "name": "Starleaf Amber Pick"
+        "name": "Picareta de âmbar de folha estelar"
       },
       "flint_bark_axe": {
-        "name": "Flint Bark Axe"
+        "name": "Machado de casca de sílex"
       },
       "bonewood_bark_axe": {
-        "name": "Bonewood Bark Axe"
+        "name": "Machado de casca de madeira óssea"
       },
       "starleaf_bark_axe": {
-        "name": "Starleaf Bark Axe"
+        "name": "Machado de casca de folha estelar"
       },
       "flint_spore_sickle": {
-        "name": "Flint Spore Sickle"
+        "name": "Foice de esporos de sílex"
       },
       "bonewood_spore_sickle": {
-        "name": "Bonewood Spore Sickle"
+        "name": "Foice de esporos de madeira óssea"
       },
       "starleaf_spore_sickle": {
-        "name": "Starleaf Spore Sickle"
+        "name": "Foice de esporos de folha estelar"
       },
       "deathless_heartwood": {
         "name": "Cerne da Coroa Imortal"

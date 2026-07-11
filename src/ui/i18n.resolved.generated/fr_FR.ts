@@ -5582,31 +5582,31 @@ export const fr_FR: EnTranslations = {
         "name": "Cache cosmétique mystérieuse"
       },
       "flint_amber_pick": {
-        "name": "Flint Amber Pick"
+        "name": "Pic à ambre en silex"
       },
       "bonewood_amber_pick": {
-        "name": "Bonewood Amber Pick"
+        "name": "Pic à ambre en bois d'os"
       },
       "starleaf_amber_pick": {
-        "name": "Starleaf Amber Pick"
+        "name": "Pic à ambre en feuille d'étoile"
       },
       "flint_bark_axe": {
-        "name": "Flint Bark Axe"
+        "name": "Hache à écorce en silex"
       },
       "bonewood_bark_axe": {
-        "name": "Bonewood Bark Axe"
+        "name": "Hache à écorce en bois d'os"
       },
       "starleaf_bark_axe": {
-        "name": "Starleaf Bark Axe"
+        "name": "Hache à écorce en feuille d'étoile"
       },
       "flint_spore_sickle": {
-        "name": "Flint Spore Sickle"
+        "name": "Faucille à spores en silex"
       },
       "bonewood_spore_sickle": {
-        "name": "Bonewood Spore Sickle"
+        "name": "Faucille à spores en bois d'os"
       },
       "starleaf_spore_sickle": {
-        "name": "Starleaf Spore Sickle"
+        "name": "Faucille à spores en feuille d'étoile"
       },
       "deathless_heartwood": {
         "name": "Bois-coeur de la Couronne immortelle"

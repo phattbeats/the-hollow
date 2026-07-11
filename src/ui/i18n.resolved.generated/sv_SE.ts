@@ -5582,31 +5582,31 @@ export const sv_SE: EnTranslations = {
         "name": "Mystiskt kosmetiskt förråd"
       },
       "flint_amber_pick": {
-        "name": "Flint Amber Pick"
+        "name": "Flintbärnstenshacka"
       },
       "bonewood_amber_pick": {
-        "name": "Bonewood Amber Pick"
+        "name": "Benträbärnstenshacka"
       },
       "starleaf_amber_pick": {
-        "name": "Starleaf Amber Pick"
+        "name": "Stjärnbladbärnstenshacka"
       },
       "flint_bark_axe": {
-        "name": "Flint Bark Axe"
+        "name": "Flintbarkyxa"
       },
       "bonewood_bark_axe": {
-        "name": "Bonewood Bark Axe"
+        "name": "Benträbarkyxa"
       },
       "starleaf_bark_axe": {
-        "name": "Starleaf Bark Axe"
+        "name": "Stjärnbladbarkyxa"
       },
       "flint_spore_sickle": {
-        "name": "Flint Spore Sickle"
+        "name": "Flintsporskära"
       },
       "bonewood_spore_sickle": {
-        "name": "Bonewood Spore Sickle"
+        "name": "Benträsporskära"
       },
       "starleaf_spore_sickle": {
-        "name": "Starleaf Spore Sickle"
+        "name": "Stjärnbladsporskära"
       },
       "deathless_heartwood": {
         "name": "Kärnved från den odödliga kronan"

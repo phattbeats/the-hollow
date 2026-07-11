@@ -5582,31 +5582,31 @@ export const id_ID: EnTranslations = {
         "name": "Peti Kosmetik Misterius"
       },
       "flint_amber_pick": {
-        "name": "Flint Amber Pick"
+        "name": "Beliung Amber Batu Api"
       },
       "bonewood_amber_pick": {
-        "name": "Bonewood Amber Pick"
+        "name": "Beliung Amber Kayu Tulang"
       },
       "starleaf_amber_pick": {
-        "name": "Starleaf Amber Pick"
+        "name": "Beliung Amber Daun Bintang"
       },
       "flint_bark_axe": {
-        "name": "Flint Bark Axe"
+        "name": "Kapak Kulit Kayu Batu Api"
       },
       "bonewood_bark_axe": {
-        "name": "Bonewood Bark Axe"
+        "name": "Kapak Kulit Kayu Kayu Tulang"
       },
       "starleaf_bark_axe": {
-        "name": "Starleaf Bark Axe"
+        "name": "Kapak Kulit Kayu Daun Bintang"
       },
       "flint_spore_sickle": {
-        "name": "Flint Spore Sickle"
+        "name": "Sabit Spora Batu Api"
       },
       "bonewood_spore_sickle": {
-        "name": "Bonewood Spore Sickle"
+        "name": "Sabit Spora Kayu Tulang"
       },
       "starleaf_spore_sickle": {
-        "name": "Starleaf Spore Sickle"
+        "name": "Sabit Spora Daun Bintang"
       },
       "deathless_heartwood": {
         "name": "Inti Kayu Mahkota Baka"

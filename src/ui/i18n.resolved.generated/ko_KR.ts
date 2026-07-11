@@ -5479,7 +5479,7 @@ export const ko_KR: EnTranslations = {
       },
       "first_cutting": {
         "name": "꺾꽂이",
-        "flavorText": "A slip of living green from Brother Greenpaw, wrapped in damp moss. Once a homestead plot can be edited, this is the first thing you plant."
+        "flavorText": "그린포 수사에게서 받은, 젖은 이끼로 감싼 살아있는 초록빛 꺾꽂이. 홈스테드 부지를 편집할 수 있게 되면 가장 먼저 심게 될 것이다."
       },
       "greenpaw_bead": {
         "name": "탄띠에서 나온 염주 하나"
@@ -5752,7 +5752,7 @@ export const ko_KR: EnTranslations = {
         "name": "부제 보스"
       },
       "training_dummy": {
-        "name": "Training Dummy"
+        "name": "훈련용 인형"
       },
       "ridge_stalker": {
         "name": "산등성이 추적자"
@@ -5884,7 +5884,7 @@ export const ko_KR: EnTranslations = {
         "name": "수련사제 테사"
       },
       "boarball_ball": {
-        "name": "Boarball"
+        "name": "보어볼"
       },
       "ironvein_foreman": {
         "name": "철맥 감독관"

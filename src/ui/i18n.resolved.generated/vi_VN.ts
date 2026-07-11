@@ -5582,31 +5582,31 @@ export const vi_VN: EnTranslations = {
         "name": "Rương Trang Phục Bí Ẩn"
       },
       "flint_amber_pick": {
-        "name": "Flint Amber Pick"
+        "name": "Cuốc Hổ Phách Đá Lửa"
       },
       "bonewood_amber_pick": {
-        "name": "Bonewood Amber Pick"
+        "name": "Cuốc Hổ Phách Gỗ Xương"
       },
       "starleaf_amber_pick": {
-        "name": "Starleaf Amber Pick"
+        "name": "Cuốc Hổ Phách Lá Sao"
       },
       "flint_bark_axe": {
-        "name": "Flint Bark Axe"
+        "name": "Rìu Vỏ Cây Đá Lửa"
       },
       "bonewood_bark_axe": {
-        "name": "Bonewood Bark Axe"
+        "name": "Rìu Vỏ Cây Gỗ Xương"
       },
       "starleaf_bark_axe": {
-        "name": "Starleaf Bark Axe"
+        "name": "Rìu Vỏ Cây Lá Sao"
       },
       "flint_spore_sickle": {
-        "name": "Flint Spore Sickle"
+        "name": "Liềm Bào Tử Đá Lửa"
       },
       "bonewood_spore_sickle": {
-        "name": "Bonewood Spore Sickle"
+        "name": "Liềm Bào Tử Gỗ Xương"
       },
       "starleaf_spore_sickle": {
-        "name": "Starleaf Spore Sickle"
+        "name": "Liềm Bào Tử Lá Sao"
       },
       "deathless_heartwood": {
         "name": "Lõi Gỗ Của Vương Miện Bất Tử"

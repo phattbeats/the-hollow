@@ -5582,31 +5582,31 @@ export const de_DE: EnTranslations = {
         "name": "Geheimnisvolle Kosmetiktruhe"
       },
       "flint_amber_pick": {
-        "name": "Flint Amber Pick"
+        "name": "Feuerstein-Bernsteinspitzhacke"
       },
       "bonewood_amber_pick": {
-        "name": "Bonewood Amber Pick"
+        "name": "Knochenholz-Bernsteinspitzhacke"
       },
       "starleaf_amber_pick": {
-        "name": "Starleaf Amber Pick"
+        "name": "Sternblatt-Bernsteinspitzhacke"
       },
       "flint_bark_axe": {
-        "name": "Flint Bark Axe"
+        "name": "Feuerstein-Rindenaxt"
       },
       "bonewood_bark_axe": {
-        "name": "Bonewood Bark Axe"
+        "name": "Knochenholz-Rindenaxt"
       },
       "starleaf_bark_axe": {
-        "name": "Starleaf Bark Axe"
+        "name": "Sternblatt-Rindenaxt"
       },
       "flint_spore_sickle": {
-        "name": "Flint Spore Sickle"
+        "name": "Feuerstein-Sporensichel"
       },
       "bonewood_spore_sickle": {
-        "name": "Bonewood Spore Sickle"
+        "name": "Knochenholz-Sporensichel"
       },
       "starleaf_spore_sickle": {
-        "name": "Starleaf Spore Sickle"
+        "name": "Sternblatt-Sporensichel"
       },
       "deathless_heartwood": {
         "name": "Herzholz der todlosen Krone"

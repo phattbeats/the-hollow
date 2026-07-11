@@ -5582,31 +5582,31 @@ export const tr_TR: EnTranslations = {
         "name": "Gizemli Kozmetik Sandığı"
       },
       "flint_amber_pick": {
-        "name": "Flint Amber Pick"
+        "name": "Çakmaktaşı Kehribar Kazması"
       },
       "bonewood_amber_pick": {
-        "name": "Bonewood Amber Pick"
+        "name": "Kemik Odunu Kehribar Kazması"
       },
       "starleaf_amber_pick": {
-        "name": "Starleaf Amber Pick"
+        "name": "Yıldız Yaprağı Kehribar Kazması"
       },
       "flint_bark_axe": {
-        "name": "Flint Bark Axe"
+        "name": "Çakmaktaşı Kabuk Baltası"
       },
       "bonewood_bark_axe": {
-        "name": "Bonewood Bark Axe"
+        "name": "Kemik Odunu Kabuk Baltası"
       },
       "starleaf_bark_axe": {
-        "name": "Starleaf Bark Axe"
+        "name": "Yıldız Yaprağı Kabuk Baltası"
       },
       "flint_spore_sickle": {
-        "name": "Flint Spore Sickle"
+        "name": "Çakmaktaşı Spor Orağı"
       },
       "bonewood_spore_sickle": {
-        "name": "Bonewood Spore Sickle"
+        "name": "Kemik Odunu Spor Orağı"
       },
       "starleaf_spore_sickle": {
-        "name": "Starleaf Spore Sickle"
+        "name": "Yıldız Yaprağı Spor Orağı"
       },
       "deathless_heartwood": {
         "name": "Ölümsüz Taç'ın Öz Odunu"
