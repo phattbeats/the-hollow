@@ -5436,7 +5436,7 @@ export const tr_TR: EnTranslations = {
         "name": "Hiç Soğumayan Bir Kor"
       },
       "willow_sprig": {
-        "name": "A Willow Sprig"
+        "name": "Bir Söğüt Dalı"
       },
       "witness_root_cincture": {
         "name": "Tanık Kök'ün Kemeri"

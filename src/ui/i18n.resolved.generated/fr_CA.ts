@@ -5436,7 +5436,7 @@ export const fr_CA: EnTranslations = {
         "name": "Un Charbon Qui N'a Jamais Refroidi"
       },
       "willow_sprig": {
-        "name": "A Willow Sprig"
+        "name": "Une brindille de saule"
       },
       "witness_root_cincture": {
         "name": "Ceinturon de la Racine témoin"

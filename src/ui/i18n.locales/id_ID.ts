@@ -936,6 +936,7 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.flavorText':
     '...menghitung empat puluh hari dengan cahaya lilin sebelum kehilangan hitungan. Kegelapan di bawah sini tak melupakan-Nya, meski Dia telah melupakan tempat ini. Jika bangau terbang rendah, katakan pada Sang Penjaga sumbunya masih menyala...',
   'entities.items.keeper_coal.name': 'Arang yang Tak Pernah Dingin',
+  'entities.items.willow_sprig.name': 'Sebuah Ranting Willow',
   'entities.items.worn_prayer_token.name': 'Token Doa Usang',
   'entities.items.worn_prayer_token.flavorText':
     '...halus di satu sisi oleh ibu jari yang bukan milikku, yang mengikis alur dangkal yang sama pada seratus token lain seperti ini sebelum yang ini, atau begitulah tumpukan di bawah sini ingin kaupercaya. satu ibu jari tidak mengikis seratus token. tapi banyak ibu jari mengikis satu alur yang sama...',

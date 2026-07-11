@@ -5436,7 +5436,7 @@ export const sv_SE: EnTranslations = {
         "name": "Ett Kol Som Aldrig Svalnade"
       },
       "willow_sprig": {
-        "name": "A Willow Sprig"
+        "name": "En videkvist"
       },
       "witness_root_cincture": {
         "name": "Vittnesrotens gördel"

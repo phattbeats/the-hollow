@@ -5436,7 +5436,7 @@ export const da_DK: EnTranslations = {
         "name": "Et Kul Der Aldrig Kølede Af"
       },
       "willow_sprig": {
-        "name": "A Willow Sprig"
+        "name": "En Pilekvist"
       },
       "witness_root_cincture": {
         "name": "Vidnerods Bælte"

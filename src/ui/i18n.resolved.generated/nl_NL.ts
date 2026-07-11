@@ -5436,7 +5436,7 @@ export const nl_NL: EnTranslations = {
         "name": "Een Kool Die Nooit Afkoelde"
       },
       "willow_sprig": {
-        "name": "A Willow Sprig"
+        "name": "Een Wilgentakje"
       },
       "witness_root_cincture": {
         "name": "Getuigenwortels Gordel"

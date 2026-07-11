@@ -5436,7 +5436,7 @@ export const vi_VN: EnTranslations = {
         "name": "Hòn Than Không Bao Giờ Nguội"
       },
       "willow_sprig": {
-        "name": "A Willow Sprig"
+        "name": "Một Cành Liễu"
       },
       "witness_root_cincture": {
         "name": "Đai Lưng Của Rễ Chứng Nhân"

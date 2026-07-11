@@ -2337,6 +2337,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.korzul_the_gravewyrm.name': '무덤고룡 코르줄',
   'entities.mobs.ironvein_foreman.name': '철맥 감독관',
   'entities.mobs.ironvein_sapper.name': '철맥 폭파병',
+  'entities.mobs.heartwood_colossus.name': '심재 거상',
   'entities.mobs.marrowlord_varkas.name': '골수군주 바르카스',
   'entities.mobs.mirejaw_frenzy.name': '마이어죠 광란어',
   'entities.mobs.mirejaw_the_ravenous.name': '굶주린 마이어죠',
@@ -3384,6 +3385,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.chatWindow.resetAction': '초기화',
   'hudChrome.chatWindow.note':
     '채팅 탭 줄을 드래그하면 창을 이동하고, 모서리 손잡이를 드래그하면 크기를 조절할 수 있습니다. 초기화하면 기본 위치와 크기로 돌아갑니다.',
+  'hudChrome.worldBoss.spawn': '{name}이(가) 뿌리굴 위로 떠오릅니다!',
   'hudChrome.compass.E': '동',
   'hudChrome.compass.N': '북',
   'hudChrome.compass.NE': '북동',

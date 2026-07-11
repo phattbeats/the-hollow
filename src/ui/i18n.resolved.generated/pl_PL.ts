@@ -5436,7 +5436,7 @@ export const pl_PL: EnTranslations = {
         "name": "Węgiel, Który Nigdy Nie Ostygł"
       },
       "willow_sprig": {
-        "name": "A Willow Sprig"
+        "name": "Gałązka Wierzby"
       },
       "witness_root_cincture": {
         "name": "Pas Korzenia Świadka"
