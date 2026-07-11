@@ -307,7 +307,7 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
       nodes: {
         hearth: {
           npcLine:
-            "howdy, friend, back at the vase huh, he's quiet today which means he's either listenin' real hard or straight up ignorin' me, can never tell with him, honestly... anyway how's the hollow been treatin' you, good, bad, you got a snack on you, no? okay just checkin', askin' for a friend, the friend is me...",
+            "howdy, friend, back at the vase huh, he's quiet today which means he's either listenin' real hard or straight up ignorin' me, and honestly i respect both, those are my only two settings too... anyway how's the hollow been treatin' you, good, bad, you got a snack on you, no? okay just checkin', askin' for a friend, the friend is me...",
           choices: [
             {
               id: 'kind',
@@ -351,7 +351,7 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
         },
         vase: {
           npcLine:
-            "same ol' same ol', he wants smoke, wants tendin', wants somebody sittin' close so it feels like a conversation even when it ain't one, which, hey, works for me, i talk at him plenty and he ain't said a word back in, uh, ever, but that's fine, that's the whole deal really, to a greenpaw degree... wait, what were we talkin' about... oh. right. him. he's fine. probably hungry. same.",
+            "same ol' same ol', he wants smoke, wants tendin', wants somebody sittin' close so it feels like a conversation even when it ain't one, which... huh. that's most conversations, ain't it. whoa. okay, anyway, i talk at him plenty and he ain't said a word back in, uh, ever, but that's fine, that's the whole deal really, to a greenpaw degree... wait, what were we talkin' about... oh. right. him. he's fine. probably hungry. same.",
           choices: [
             {
               id: 'vase_more',
@@ -368,7 +368,7 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
         },
         faith: {
           npcLine:
-            "believe's a big word, friend, i just tend, tendin' i can do, got two hands and a lighter and that's about the whole résumé... whether he's listenin' or not i couldn't tell ya, but the smoke smells good regardless so, wavelength's covered either way. indeed.",
+            "believe's a big word, friend, i just tend, tendin' i can do, got two hands and a lighter and that's about the whole résumé... whether he's listenin' or not i couldn't tell ya, but the smoke smells good and it don't judge me neither, which puts it ahead of most things with ears, so, wavelength's covered either way. indeed.",
           choices: [
             {
               id: 'faith_bye',
@@ -397,7 +397,7 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
         },
         mended: {
           npcLine:
-            "s'all good, friend, it's all gambit, always has been, that's the cowboy in me talkin'... place like this earns a hard word now'n then, i ain't gonna pretend it don't... you came back and said sorry though, and that means somethin', or it means you want somethin', either way we're square, you and me, same wavelength, snack's on me later if you want one.",
+            "s'all good, friend, it's all gambit, always has been, that's the cowboy in me talkin', don't ask him what gambit means, he don't know neither, he just says it real confident... place like this earns a hard word now'n then, i ain't gonna pretend it don't... you came back and said sorry though, and that means somethin', or it means you want somethin', either way we're square, you and me, same wavelength, snack's on me later if you want one.",
           choices: [
             {
               id: 'mended_bye',
