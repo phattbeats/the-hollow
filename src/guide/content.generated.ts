@@ -66,6 +66,23 @@ export interface GuideWarlockPet { id: string; name: string; model: string; tint
 export interface GuideCreature { name: string; min: number; max: number; rare: boolean; templateId: string; model: string; tint?: string; still?: string; }
 export interface GuideFamily { family: string; creatures: GuideCreature[]; }
 
+// The Hollow hub: the sealed starting instance (the vase, Greenpaw, housing, the
+// Under-Shrine descent). Names and roles only, no coordinates or balance numbers.
+export interface GuideHollowNpc { id: string; name: string; title: string; }
+export interface GuideHollowQuest { id: string; name: string; }
+export interface GuideHollowUnderShrine {
+  name: string;
+  suggestedPlayers: number;
+  min: number | null;
+  max: number | null;
+}
+export interface GuideHollowHub {
+  npcs: GuideHollowNpc[];
+  quests: GuideHollowQuest[];
+  housePlots: number;
+  underShrine: GuideHollowUnderShrine;
+}
+
 export interface GuideDelveKeeper { name: string; title: string; }
 export interface GuideDelveCompanion { name: string; role: string; }
 export interface GuideDelve {
@@ -1332,6 +1349,46 @@ export const GUIDE_DUNGEONS: GuideDungeon[] = [
   }
 ];
 
+export const GUIDE_HOLLOW_HUB: GuideHollowHub = {
+  "npcs": [
+    {
+      "id": "brother_greenpaw",
+      "name": "Brother Greenpaw",
+      "title": "First Prophet (self-appointed)"
+    },
+    {
+      "id": "elder_yarrow",
+      "name": "Elder Yarrow",
+      "title": "Profession Trainer"
+    }
+  ],
+  "quests": [
+    {
+      "id": "q_what_burns",
+      "name": "The Thing That Burns"
+    },
+    {
+      "id": "q_what_fills",
+      "name": "The Thing That Fills"
+    },
+    {
+      "id": "q_the_wavelength",
+      "name": "On the Wavelength"
+    },
+    {
+      "id": "q_keep_him_lit",
+      "name": "Keep Him Lit"
+    }
+  ],
+  "housePlots": 8,
+  "underShrine": {
+    "name": "The Under-Shrine",
+    "suggestedPlayers": 5,
+    "min": 1,
+    "max": 4
+  }
+};
+
 export const GUIDE_WARLOCK_PETS: GuideWarlockPet[] = [
   {
     "id": "imp",
@@ -1597,6 +1654,16 @@ export const GUIDE_FAMILIES: GuideFamily[] = [
         "model": "mob_dark_caster",
         "tint": "#533566",
         "still": "/guide-stills/mob_dark_caster__533566.webp"
+      },
+      {
+        "name": "Training Dummy",
+        "min": 20,
+        "max": 20,
+        "rare": false,
+        "templateId": "training_dummy",
+        "model": "mob_bandit",
+        "tint": "#6b3a32",
+        "still": "/guide-stills/mob_bandit__6b3a32.webp"
       }
     ]
   },

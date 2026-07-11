@@ -247,16 +247,20 @@ export class CharacterVisual {
       }
     }
 
-    // swim pose: Lie_Idle (when the rig has it) + pitch and surface bob
+    // swim pose: Lie_Idle (when the rig has it) + pitch and surface bob.
+    // Only apply the prone pitch + surface rise while the entity is actually
+    // moving through the water; stationary waders stand upright on the lake
+    // bed (their rig's idle pose) and the swim clip would otherwise read as
+    // a sleeping pose (PHAA-473).
+    const actuallySwimming = s.swimming && s.moving && !s.dead;
     const proneAngle = this.action(this.def.clips.swim) ? SWIM_PITCH_CLIP : SWIM_PITCH_PROCEDURAL;
-    const wantPitch = s.swimming && !s.dead ? proneAngle : 0;
+    const wantPitch = actuallySwimming ? proneAngle : 0;
     this.swimPitch += (wantPitch - this.swimPitch) * Math.min(1, dt * 8);
     this.poseWrap.rotation.x = this.swimPitch;
     this.poseWrap.rotation.z = 0;
-    this.poseWrap.position.y =
-      s.swimming && !s.dead
-        ? SWIM_RISE + Math.sin(performance.now() / 500 + this.bobPhase) * 0.08
-        : 0;
+    this.poseWrap.position.y = actuallySwimming
+      ? SWIM_RISE + Math.sin(performance.now() / 500 + this.bobPhase) * 0.08
+      : 0;
 
     // slide-fade-on-move fallback for clip-less rigs (no walk cycle to play,
     // see noClipMoveFadeTarget): ease opacity toward the target and mutate the

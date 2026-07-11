@@ -2990,7 +2990,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_what_burns.text':
     '通灵淡了，朋友……我干得跟骨头一样，频率就快断了。神龛下面有种球茎，烧得又慢又干净，余烬球茎，长在光照不到的地方，这洞穴自己跟自己开的玩笑……给我带五颗回来。留意那些苍白的家伙，它们冲着你的灯笼来，不是冲着你。大概吧。',
   'entities.quests.q_what_burns.completion':
-    '这才是上等的烟啊……你感觉到了吗？屋里越来越浓了。她随时都要探过身来了，我在频率上都能感觉到……的确如此。',
+    '这才是上等的烟啊……你感觉到了吗？屋里越来越浓了。他随时都要探过身来了，我在频率上都能感觉到……的确如此。',
   'entities.quests.q_what_burns.objectives.0.label': '已采集余烬球茎',
   'entities.quests.q_what_fills.title': '饱腹之物',
   'entities.quests.q_what_fills.text':
@@ -3875,9 +3875,35 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
     '源自远古深渊、披着鳞甲、形似巨蛇的造物。它们罕见、骄傲，远比看上去更强大。',
   'guide.family.dragonkin.name': '龙类',
   'guide.family.elemental.desc': '由风暴与岩石化成的活物，被束缚于元素之力旺盛的荒野之地。',
+  'guide.hollowPage.intro':
+    '穿过神殿之门便是花瓶所在的空地：每位新英雄苏醒之处，也是你始终会回来的地方。这里是共享之地，整个大陆共用的一个据点，也是你初见的面孔、初次的任务，唯一真正需要的家。',
+  'guide.hollowPage.greeting':
+    '你回来了，那可真是件幸事……有几桩神圣的差事在等你呢，跟上次一个频道。过来一下……',
+  'guide.hollowPage.greeter': '格林保修士，于花瓶旁',
+  'guide.hollowPage.vaseHeading': '花瓶',
+  'guide.hollowPage.vaseBody':
+    '所有人都从花瓶开始：这个古老而有灵性的存在，正是幽谷得以建立的核心。它渴求些微小的供奉，燃一颗余烬球，或喂一份洞穴嫩肉，似乎都能有所察觉。花瓶下坡处，一处洞口通向地窟深处；两侧则留着地块，供你建造属于自己的家。',
+  'guide.hollowPage.figuresHeading': '谁在照看它',
+  'guide.hollowPage.figuresBody': '有两个人维系着花瓶的运转，你在最初的几分钟内便会与他们相遇。',
+  'guide.hollowPage.greenpawBody':
+    '花瓶唯一的照看者，也是最早派发差事的人。他自封头衔，也是第一个承认这一点的人，算是幽谷里最接近向导的存在。',
+  'guide.hollowPage.yarrowBody':
+    '第二职业的传授者：每个职业都能向她学习一门副业，她的位置正好与格林保隔瓶相望。',
+  'guide.hollowPage.questsHeading': '你最初的差事',
+  'guide.hollowPage.questsBody':
+    '格林保自己的任务链是你要做的第一件事：四桩短小的差事，教会你花瓶的节奏，然后送你踏入更广阔的幽谷。',
+  'guide.hollowPage.questBurnsBody': '花瓶焚烧以取光的洞穴产球茎，一次采集一把。',
+  'guide.hollowPage.questFillsBody': '能填饱另一种更安静饥饿的洞穴嫩肉，采集方式相同。',
+  'guide.hollowPage.questWavelengthBody': '引荐花瓶的第二职业，并教你亲手喂养它。',
+  'guide.hollowPage.questKeepLitBody': '把一次的恩惠变成一种固定的习惯，连续三次。',
+  'guide.hollowPage.housingHeading': '属于你自己的家',
+  'guide.hollowPage.housingBody': '{n}块宅地环绕着花瓶，等待被认领，装点成你在幽谷中私有的一角。',
+  'guide.hollowPage.shrineHeading': '地窟深处',
+  'guide.hollowPage.shrineBody':
+    '花瓶旁的一处洞口通向地窟深处，那是幽谷自身的副本地下城，也是每位新英雄组队面对的第一场真正考验。',
   'guide.worldPage.heading': '世界',
   'guide.worldPage.intro':
-    'World of ClaudeCraft 是一片连绵不绝、需你徒步穿越的大陆，三大区域由南向北依次铺展。这里没有快速旅行，因此旅途本身便是冒险的一部分。',
+    '穿过花瓶的神殿之门，你便置身幽谷腹地：新人踏出户外第一步的宁静之地。再往北还有三个区域，由南向北依次铺展；通往那里的道路尚未开启，但它们是真实存在、静候你的到来的。',
   'guide.worldPage.hub': '大本营',
   'guide.worldPage.hollowReachesBlurb':
     '紧邻神殿门外的平静之地，新人在Fallow Acres与Root Hollow一带与野狼、野猪交手磨练身手。',
@@ -3902,9 +3928,11 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
     '附近的队员会共享击杀和目标进度，因此组队做任务只会更快，绝不会更慢。你还可以与你的小队分享任务：用 /share 命令把它作为可点击的链接发到聊天中，任何符合条件的附近队员都能一键接取同一个任务。',
   'guide.questsPage.storyTitle': '一条主线贯穿始终',
   'guide.questsPage.storyBody':
-    '从你在东溪镇的第一批差事起，死者便有了异样。一个邪教正在暗中行动，线索向北贯穿每一个区域。循迹而行，揭开幕后黑手的真面目。',
+    '你最初的线索，是格林保修士自己那条短短的任务链，就在花瓶旁。往外则是幽谷腹地里那些安静的差事，再往外，还有一段更长的故事：一个邪教从山谷一路作乱到山巅，真实且已完成，只是新英雄眼下还走不到那条路。花瓶自己的任务见幽谷页面，其余的则列在下方，作为即将到来的内容。',
   'guide.questsPage.soloNote':
     '主线剧情一直到每个章节的高潮之前都可单人完成，而那场高潮是一座五人地下城。',
+  'guide.questsPage.sagaGateNote':
+    '这段传奇是真实、已完成的内容，正是道路重新北通之后开启的同一条线索。它并非新英雄如今的起点；起点是花瓶，在幽谷之中。',
   'guide.dungeonsPage.heading': '地下城与团队副本',
   'guide.dungeonsPage.intro':
     '当开放世界已不能满足你时，召集一支队伍，踏入副本：一份专为你的队伍生成的地下城私有副本。',

@@ -996,6 +996,7 @@ export const id_ID: EnTranslations = {
       "social": "Sosial & Kelompok",
       "stats": "Karakter & Statistik",
       "progression": "Naik Level & Perkembangan",
+      "hollow": "The Hollow",
       "world": "Dunia",
       "quests": "Misi",
       "dungeons": "Dungeon & Raid",
@@ -1505,6 +1506,29 @@ export const id_ID: EnTranslations = {
         "desc": "Makhluk bersisik dan berlekuk ular dari kedalaman purba. Langka, angkuh, dan jauh lebih kuat dari penampakannya."
       }
     },
+    "hollowPage": {
+      "heading": "The Hollow",
+      "intro": "Past the shrine gate lies the vase: the clearing every new hero wakes into, and always returns to. It is shared ground, one hub for the whole realm, home to your first faces, your first quests, and your first home.",
+      "greeting": "you're back, that's a blessin'... got a couple sacred matters queued up, same wavelength as last time. c'mere a minute...",
+      "greeter": "Brother Greenpaw, at the vase",
+      "vaseHeading": "The vase",
+      "vaseBody": "Everyone begins at the vase, an old, listening presence the Hollow is built around. It asks for small things, an emberbulb burned or a cave morsel fed, and seems to notice when it gets them. Downhill of it, a cave mouth opens onto the Under-Shrine, and to either side lie plots where you can raise a home of your own.",
+      "figuresHeading": "Who tends it",
+      "figuresBody": "Two people keep the vase running, and you will meet them both in your first minutes.",
+      "npcFmt": "{name}, {title}",
+      "greenpawBody": "The vase's sole caretaker and the one who hands out its earliest errands. Self-appointed and the first to admit it, he is the closest thing the Hollow has to a guide.",
+      "yarrowBody": "Keeper of the second calling: every class can learn a profession from her, mirrored across the vase from Greenpaw.",
+      "questsHeading": "Your first errands",
+      "questsBody": "Greenpaw's own chain of quests comes first: four short errands that teach the vase's rhythm before sending you on into the wider Hollow.",
+      "questBurnsBody": "A cave-grown bulb the vase burns for light, gathered a handful at a time.",
+      "questFillsBody": "A cave-fed morsel that answers a quieter hunger, gathered the same way.",
+      "questWavelengthBody": "An introduction to the vase's second calling, and to feeding it yourself.",
+      "questKeepLitBody": "Turning a single favor into a standing habit, three times over.",
+      "housingHeading": "A home of your own",
+      "housingBody": "{n} house plots ring the vase, waiting to be claimed and furnished as your own private corner of the Hollow.",
+      "shrineHeading": "The Under-Shrine",
+      "shrineBody": "A cave mouth beside the vase opens onto the Under-Shrine, the Hollow's own instanced descent and every new hero's first real test of a party."
+    },
     "worldPage": {
       "heading": "Dunia",
       "intro": "World of ClaudeCraft adalah satu daratan menyambung yang kamu lintasi dengan berjalan kaki, tiga zona terbentang dari selatan ke utara. Tidak ada perjalanan kilat, jadi pengembaraan itu sendiri bagian dari petualangan.",
@@ -1546,6 +1570,7 @@ export const id_ID: EnTranslations = {
       "storyTitle": "Satu benang merah membentang di seluruhnya",
       "storyBody": "Sejak tugas-tugas pertamamu di Eastbrook, ada yang tak beres dengan orang mati. Sebuah sekte sedang bekerja, dan jejaknya menuju utara melewati setiap zona. Ikuti jejak itu untuk mengetahui siapa yang berdiri di baliknya.",
       "soloNote": "Kisah utama bisa dimainkan sendirian sampai ke akhir tiap babak, yang merupakan dungeon lima pemain.",
+      "sagaGateNote": "This saga is real, completed content, the same trail that opens once the road north does. It is not where a new hero starts today; that is the vase, in the Hollow.",
       "typesTitle": "Jenis-jenis misi yang akan kamu temui",
       "typesBody": "Sebagian besar misi mengikuti salah satu dari beberapa bentuk yang sudah dikenal. Pelacak di layar menjelaskan persis apa yang diminta masing-masing, jadi kamu tak pernah dibiarkan menebak-nebak.",
       "typeSlayTitle": "Membunuh",
@@ -5427,7 +5452,8 @@ export const id_ID: EnTranslations = {
         "name": "Umbi Bara"
       },
       "first_cutting": {
-        "name": "Sebuah Stek"
+        "name": "Sebuah Stek",
+        "flavorText": "A slip of living green from Brother Greenpaw, wrapped in damp moss. Once a homestead plot can be edited, this is the first thing you plant."
       },
       "greenpaw_bead": {
         "name": "Sebuah Manik Dari Bandolier"
@@ -5671,6 +5697,9 @@ export const id_ID: EnTranslations = {
       },
       "deacon_voss": {
         "name": "Diaken Voss"
+      },
+      "training_dummy": {
+        "name": "Training Dummy"
       },
       "ridge_stalker": {
         "name": "Pengintai Punggung Bukit"

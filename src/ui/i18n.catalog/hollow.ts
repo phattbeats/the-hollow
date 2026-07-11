@@ -12,7 +12,17 @@ const hollowEntitiesEn = {
   items: {
     cave_morsel: { name: 'Cave Morsel' },
     emberbulb: { name: 'Emberbulb' },
-    first_cutting: { name: 'A Cutting' },
+    first_cutting: {
+      name: 'A Cutting',
+      // PHAA-474: the item carries no in-bag 'use' action yet (click still routes
+      // to the destroy prompt by the quest-kind branch in src/ui/bags_view.ts).
+      // The intended mechanic is a Homestead v0 planting once the world-editing
+      // follow-up to PHAA-417 lands; until then, this tooltip line is the player's
+      // breadcrumb that the cutting has purpose and is not junk.
+      flavorText:
+        'A slip of living green from Brother Greenpaw, wrapped in damp moss. Once ' +
+        'a homestead plot can be edited, this is the first thing you plant.',
+    },
     greenpaw_bead: { name: 'A Bead From the Bandolier' },
     keeper_coal: { name: 'A Coal That Never Cooled' },
     // PHAA-558: kept identical to the sim record in src/sim/content/hollow.ts.

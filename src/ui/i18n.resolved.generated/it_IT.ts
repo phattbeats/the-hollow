@@ -996,6 +996,7 @@ export const it_IT: EnTranslations = {
       "social": "Socialità e gruppi",
       "stats": "Personaggio e statistiche",
       "progression": "Avanzamento di livello",
+      "hollow": "The Hollow",
       "world": "Mondo",
       "quests": "Missioni",
       "dungeons": "Dungeon e Incursioni",
@@ -1505,6 +1506,29 @@ export const it_IT: EnTranslations = {
         "desc": "Creature squamose e serpentine delle antiche profondità. Rare, fiere e ben più forti di quanto sembrino."
       }
     },
+    "hollowPage": {
+      "heading": "The Hollow",
+      "intro": "Past the shrine gate lies the vase: the clearing every new hero wakes into, and always returns to. It is shared ground, one hub for the whole realm, home to your first faces, your first quests, and your first home.",
+      "greeting": "you're back, that's a blessin'... got a couple sacred matters queued up, same wavelength as last time. c'mere a minute...",
+      "greeter": "Brother Greenpaw, at the vase",
+      "vaseHeading": "The vase",
+      "vaseBody": "Everyone begins at the vase, an old, listening presence the Hollow is built around. It asks for small things, an emberbulb burned or a cave morsel fed, and seems to notice when it gets them. Downhill of it, a cave mouth opens onto the Under-Shrine, and to either side lie plots where you can raise a home of your own.",
+      "figuresHeading": "Who tends it",
+      "figuresBody": "Two people keep the vase running, and you will meet them both in your first minutes.",
+      "npcFmt": "{name}, {title}",
+      "greenpawBody": "The vase's sole caretaker and the one who hands out its earliest errands. Self-appointed and the first to admit it, he is the closest thing the Hollow has to a guide.",
+      "yarrowBody": "Keeper of the second calling: every class can learn a profession from her, mirrored across the vase from Greenpaw.",
+      "questsHeading": "Your first errands",
+      "questsBody": "Greenpaw's own chain of quests comes first: four short errands that teach the vase's rhythm before sending you on into the wider Hollow.",
+      "questBurnsBody": "A cave-grown bulb the vase burns for light, gathered a handful at a time.",
+      "questFillsBody": "A cave-fed morsel that answers a quieter hunger, gathered the same way.",
+      "questWavelengthBody": "An introduction to the vase's second calling, and to feeding it yourself.",
+      "questKeepLitBody": "Turning a single favor into a standing habit, three times over.",
+      "housingHeading": "A home of your own",
+      "housingBody": "{n} house plots ring the vase, waiting to be claimed and furnished as your own private corner of the Hollow.",
+      "shrineHeading": "The Under-Shrine",
+      "shrineBody": "A cave mouth beside the vase opens onto the Under-Shrine, the Hollow's own instanced descent and every new hero's first real test of a party."
+    },
     "worldPage": {
       "heading": "Il mondo",
       "intro": "World of ClaudeCraft è una terra continua che attraversi a piedi, tre zone disposte da sud a nord. Non c'è viaggio rapido, perciò il viaggio è parte dell'avventura.",
@@ -1546,6 +1570,7 @@ export const it_IT: EnTranslations = {
       "storyTitle": "Un filo li attraversa tutti",
       "storyBody": "Fin dalle tue prime commissioni a Eastbrook, qualcosa non va con i morti. Un culto è all'opera, e la pista conduce a nord attraverso ogni zona. Seguila per scoprire chi c'è dietro.",
       "soloNote": "La storia principale è affrontabile in solitaria fino al finale di ogni capitolo, che è un dungeon per cinque giocatori.",
+      "sagaGateNote": "This saga is real, completed content, the same trail that opens once the road north does. It is not where a new hero starts today; that is the vase, in the Hollow.",
       "typesTitle": "I tipi di missione che incontrerai",
       "typesBody": "Gran parte delle missioni rientra in poche forme familiari. Il tracciatore a schermo spiega esattamente cosa vuole ciascuna, così non resti mai a tirare a indovinare.",
       "typeSlayTitle": "Uccidi",
@@ -5427,7 +5452,8 @@ export const it_IT: EnTranslations = {
         "name": "Bulbo di Brace"
       },
       "first_cutting": {
-        "name": "Una Talea"
+        "name": "Una Talea",
+        "flavorText": "A slip of living green from Brother Greenpaw, wrapped in damp moss. Once a homestead plot can be edited, this is the first thing you plant."
       },
       "greenpaw_bead": {
         "name": "Una Perlina Dalla Bandoliera"
@@ -5671,6 +5697,9 @@ export const it_IT: EnTranslations = {
       },
       "deacon_voss": {
         "name": "Diacono Voss"
+      },
+      "training_dummy": {
+        "name": "Training Dummy"
       },
       "ridge_stalker": {
         "name": "Braccatore della cresta"
