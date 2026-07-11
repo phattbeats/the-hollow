@@ -1772,6 +1772,42 @@ export async function saveCharacterAndMarketState(
   }
 }
 
+// Persist a character row AND the global Ravenpost mail blob in ONE transaction.
+// A mail claim (mailTake) is an escrow release, the mirror of the Market case
+// above: an attachment leaves the letter and lands in the character's bags in
+// the same Sim action. Saving them as two independent writes lets an unclean
+// crash persist one half and not the other: a reboot can reload the OLD letter
+// (attachment still present) against the NEW character (item already banked),
+// letting the recipient claim it again. The claim path uses this so the credit
+// and the letter-clear commit or fail together.
+export async function saveCharacterAndMailState(
+  characterId: number,
+  level: number,
+  state: CharacterState,
+  mail: MailSave,
+): Promise<void> {
+  const cleanState = sanitizeRemovedZone1Content(state).state;
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    await client.query(
+      'UPDATE characters SET level = $2, state = $3, updated_at = now() WHERE id = $1',
+      [characterId, level, JSON.stringify(cleanState)],
+    );
+    await client.query(
+      `INSERT INTO world_state (key, data, updated_at) VALUES ($1, $2, now())
+       ON CONFLICT (key) DO UPDATE SET data = EXCLUDED.data, updated_at = now()`,
+      ['mail', JSON.stringify(mail)],
+    );
+    await client.query('COMMIT');
+  } catch (err) {
+    await client.query('ROLLBACK').catch(() => {});
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
 export async function isAdminAccount(accountId: number): Promise<boolean> {
   const res = await pool.query('SELECT is_admin FROM accounts WHERE id = $1', [accountId]);
   return res.rows[0]?.is_admin === true;
