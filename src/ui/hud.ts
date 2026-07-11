@@ -227,6 +227,8 @@ import {
   minimapZoomValue,
   nextMinimapZoom,
 } from './minimap_zoom';
+import { renderNpcDialogTreePanel } from './npc_dialog_tree_panel';
+import { type DialogViewState, dialogAdvance } from './npc_dialog_tree_view';
 import { npcIntroAdvance, npcIntroPageAt } from './npc_intro_view';
 import { OptionsWindow } from './options_window';
 import { makeWriterFacet, type PainterHostPresentation } from './painter_host';
@@ -7677,6 +7679,49 @@ export class Hud {
     this.questDialogTrap?.focusFirst();
   }
 
+  // Walk one node of an NPC's branching dialogue tree (PHAA-562). The pure
+  // npc_dialog_tree_view core decides which choices are offered and where each
+  // leads; this thin consumer resolves the text through tEntity, sends a picked
+  // choice's consequence over the IWorldDialog seam (dialogChoose, effect-only),
+  // and re-renders the next node or returns to the gossip menu. DOM lives in the
+  // sibling npc_dialog_tree_panel module, so this never grows hud.ts's DOM banks.
+  private renderDialogTree(npc: Entity, nodeId: string): void {
+    const def = NPCS[npc.templateId];
+    const tree = def?.dialogTree;
+    if (!def || !tree) return;
+    this.openGossipNpcId = npc.id;
+    this.openQuestDetailId = null;
+    const npcId = npc.templateId;
+    const ds = this.sim.dialogState();
+    const state: DialogViewState = {
+      disposition: ds.disposition[npcId] ?? 0,
+      flags: new Set(ds.flags),
+    };
+    renderNpcDialogTreePanel({
+      el: $('#quest-dialog'),
+      npcName: npcDisplayName(npcId),
+      npcTitle: npcDisplayTitle(def.id),
+      tree,
+      nodeId,
+      state,
+      resolveNpcLine: (n) => tEntity({ kind: 'npcDialog', npcId, node: n, field: 'npcLine' }),
+      resolveChoiceLabel: (c) =>
+        tEntity({ kind: 'npcDialog', npcId, choice: c, field: 'choiceLabel' }),
+      closeAria: t('questUi.dialog.close'),
+      continueLabel: t('questUi.dialog.continue'),
+      onChoose: (choice) => {
+        // Only a consequential choice crosses the seam; navigation is client-side.
+        if (choice.effect) this.sim.dialogChoose(npcId, choice.id);
+        const next = dialogAdvance(choice);
+        if (next) this.renderDialogTree(npc, next);
+        else this.renderGossip(npc);
+      },
+      onContinue: () => this.renderGossip(npc),
+      onClose: () => this.closeQuestDialog(),
+      focusFirst: () => this.questDialogTrap?.focusFirst(),
+    });
+  }
+
   // Open a world-placed readable book (PHAA-552) in the shared quest dialog and
   // page through its content with the SAME pure paginator the NPC intro uses
   // (npc_intro_view), so there is no second reader. Reading is client-only: no
@@ -7790,6 +7835,10 @@ export class Hud {
     if (def?.hearth) {
       html += `<button type="button" class="qd-list-item" data-feed-hearth="1" aria-label="${esc(t('questUi.dialog.feedHearthAria'))}"><span class="gold">+</span> ${esc(t('questUi.dialog.feedHearth'))}</button>`;
     }
+    // Branching heart-to-heart (PHAA-562): opens the NPC's dialogTree walker.
+    if (def?.dialogTree) {
+      html += `<button type="button" class="qd-list-item" data-dialog="1" aria-label="${esc(t('questUi.dialog.chat'))}"><span class="gold">${svgIcon('whisper')}</span> ${esc(t('questUi.dialog.chat'))}</button>`;
+    }
     if (Object.values(DELVES).some((d) => d.boardNpcId === npc.templateId)) {
       html += `<button type="button" class="qd-list-item" data-delve-board="1" aria-label="${esc(t('delveUi.board.openDelveAria', { name: npcName }))}"><span class="gold">${svgIcon('skull')}</span> ${esc(t('delveUi.board.openDelve'))}</button>`;
     }
@@ -7823,6 +7872,9 @@ export class Hud {
     });
     el.querySelector('[data-trainer]')?.addEventListener('click', () => {
       this.trainerPanel.open(npc.id, npc.templateId);
+    });
+    el.querySelector('[data-dialog]')?.addEventListener('click', () => {
+      if (def?.dialogTree) this.renderDialogTree(npc, def.dialogTree.root);
     });
     el.querySelector('[data-delve-board]')?.addEventListener('click', () => {
       this.closeQuestDialog(false);

@@ -1368,6 +1368,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'questUi.log.abandonCancel': 'キャンセル',
   'questUi.log.suggestedPlayers': '推奨プレイヤー数: {count}',
   'questUi.dialog.close': 'クエスト会話を閉じる',
+  'questUi.dialog.chat': '少し話そう。',
   'questUi.dialog.greetingFallback': 'こんにちは。',
   'questUi.dialog.availableQuestAria': '受諾可能なクエスト: {name}',
   'questUi.dialog.readyQuestAria': '報告可能なクエスト: {name}',
@@ -4810,6 +4811,45 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     '名は緑掌。緑掌修道士、初代預言者、自称のな、この壺に言わせりゃそんな肩書きは何の意味もねえ、で、壺の言う通りなんだが、それでも誰かが世話してやらんとな……',
   'entities.npcs.brother_greenpaw.introLines.2':
     'ここが空洞さ。昔は一つの部族まるごとあってな、大した賑わいだったと、まあ聞いた話だが、今じゃほとんど俺と、この壺と、あの洞穴の底で息してる何かだけだ……ともかくだ。壺は腹を空かせてる、俺も腹が減ってる、同じ波長ってわけだ。こっち来いよ、片付けなきゃならん神聖な用事が二つばかりある。',
+  'entities.npcs.brother_greenpaw.dialogNode.hearth':
+    'また壺のところに戻ってきたな、友よ……あいつは今日は静かでな、じっと聴き入ってるのか、それともすねてるのか、どっちなのかわしにはさっぱりわからん。ホロウの暮らしはどうだった？',
+  'entities.npcs.brother_greenpaw.dialogNode.warmed':
+    '……その言葉は優しく染みるな、友よ。お前が思う以上にな。ここを通る大抵の連中は、出口を探しておる。だがお前は、この場所の真ん中を探し続けておる。それは思うよりずっと珍しいことだ。',
+  'entities.npcs.brother_greenpaw.dialogNode.vase':
+    'いつもどおりさ。あいつは煙を欲しがり、世話を欲しがり、そばに座って、この静けさを会話のふりして付き合ってくれる誰かを欲しがる……まあ、見方を変えれば、そりゃ立派な会話さ。それがだいたい信仰ってやつの全部だよ。',
+  'entities.npcs.brother_greenpaw.dialogNode.faith':
+    '信じる、なんて大げさな言葉だよ、友よ。わしはただ世話をする。世話をすることは、この二本の手でできることだからな。聴くのはあいつに任せておる。もし聴いておらんでも、まあ、煙はどのみちいい匂いがするからな……',
+  'entities.npcs.brother_greenpaw.dialogNode.stung':
+    '……ううむ。ああ。ああ、そうかもしれんな。寒い朝に、壺がため息もつかず、誰も小道を上ってこん時、わし自身もそう思ったことがある……だがわしはまだここにおる、友よ。だからそれだけじゃないのさ。少なくともわしにとってはな。',
+  'entities.npcs.brother_greenpaw.dialogNode.mended':
+    'いいんだよ、友よ。こんな場所だ、たまにきつい言葉のひとつも言われて当然さ。それは否定せんよ。だがお前はわざわざ戻ってきて、優しく言い直してくれた。それは墓場がしてくれる以上のことだ。わしとお前は、これでおあいこだ。',
+  'entities.npcs.brother_greenpaw.dialogNode.tribe':
+    '昔は大きな部族だったそうだ、古い刻み跡がそう言っておる。暗がりに勘定の刻み目がずらりと並び、五つずつ消されて、そのどれもが一人の手じゃとても刻めん数だ……連中は長い長い間あいつの灯を絶やさずにおった、やがてわし一人になるまでな。連中がどこへ行ったかはわからん、友よ。ただ、わしが見張っている間はこの灯芯を消させはせん、それだけはわかっておる。',
+  'entities.npcs.brother_greenpaw.dialogNode.confide':
+    '……ありがたい申し出だ。そのほんのひとかけらだけ、遠慮なくもらうとしよう。正直に言うとな、わしがお前に話すのは、半分は壺が答えてくれんからで、半分は、いつか誰もこの小道を上ってこなくなる日が怖いからさ。だから、上ってきてくれてありがとうな。それこそが神聖ってやつだよ、友よ。もし探しておるならな。',
+  'entities.npcs.brother_greenpaw.dialogChoice.kind':
+    'だんだん、居場所らしくなってきたよ、兄者。本気でそう思ってる。',
+  'entities.npcs.brother_greenpaw.dialogChoice.ask': '壺は最近、何て言ってるんだ？',
+  'entities.npcs.brother_greenpaw.dialogChoice.blunt':
+    'ここは番人のいる墓場さ、緑掌。それだけのことだ。',
+  'entities.npcs.brother_greenpaw.dialogChoice.tribe':
+    'その昔ここにいたっていう部族の話を聞かせてくれ。',
+  'entities.npcs.brother_greenpaw.dialogChoice.warm_bye': 'あいつのそばに戻ってやってくれ。',
+  'entities.npcs.brother_greenpaw.dialogChoice.vase_more':
+    'で、あいつが本当に聴いてると信じてるのか？',
+  'entities.npcs.brother_greenpaw.dialogChoice.vase_bye':
+    'じゃあ、あいつに付き合ってやってくれ。わしはこの辺にいるよ。',
+  'entities.npcs.brother_greenpaw.dialogChoice.faith_bye': 'なるほどな、緑掌。',
+  'entities.npcs.brother_greenpaw.dialogChoice.sorry':
+    '思ってたよりきつい言い方になっちまった。すまない。',
+  'entities.npcs.brother_greenpaw.dialogChoice.cold_bye': '好きに信じてればいいさ。',
+  'entities.npcs.brother_greenpaw.dialogChoice.mended_bye': 'これでおあいこだ。またな。',
+  'entities.npcs.brother_greenpaw.dialogChoice.confide':
+    'それを一人で背負う必要はないんだよ、兄者。',
+  'entities.npcs.brother_greenpaw.dialogChoice.tribe_bye':
+    'まだ誰かが世話をしてる。それにも意味はあるさ。',
+  'entities.npcs.brother_greenpaw.dialogChoice.confide_bye':
+    'これからもこの小道を上ってくるよ、緑掌。',
   'entities.delves.collapsed_reliquary.enterText': 'あなたは崩れた聖遺物庫へと降りていく。',
   'entities.delves.collapsed_reliquary.leaveText':
     'あなたは聖遺物庫の廃墟にいるハルヴェン修道士のもとへ登り戻る。',

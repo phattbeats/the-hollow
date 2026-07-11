@@ -1304,6 +1304,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'questUi.log.abandonCancel': '取消',
   'questUi.log.suggestedPlayers': '建议玩家数：{count}',
   'questUi.dialog.close': '关闭任务对话',
+  'questUi.dialog.chat': '聊一会儿吧。',
   'questUi.dialog.greetingFallback': '你好。',
   'questUi.dialog.availableQuestAria': '可接任务：{name}',
   'questUi.dialog.readyQuestAria': '可交付任务：{name}',
@@ -4573,6 +4574,37 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
     '我叫绿掌。绿掌修士，初代先知，自封的，这瓮会告诉你这头衔一文不值，他说得没错，可总得有人照看他不是……',
   'entities.npcs.brother_greenpaw.introLines.2':
     '这地方就是空穴。从前是一整个部族，热闹得很，听他们说的，如今嘛，多半就剩我、这瓮，还有那洞里头喘气的那些玩意儿……罢了。他饿了，我也饿了，同一个频道。过来吧，有几件神圣的事儿得办。',
+  'entities.npcs.brother_greenpaw.dialogNode.hearth':
+    '又回到瓶子这儿了，朋友……他今天很安静，要么是听得入神，要么是在闹别扭，我从来分不清是哪一种。空谷这阵子待你可还好？',
+  'entities.npcs.brother_greenpaw.dialogNode.warmed':
+    '……这话落得轻柔，朋友，比你想的还要轻柔。大多数人打这儿路过，都在找出口。可你却总在寻这地方的中间，那可比你以为的要难得多。',
+  'entities.npcs.brother_greenpaw.dialogNode.vase':
+    '跟往常一样。他想要香烟，想要人照料，想要有人坐得近近的，把这份寂静当成一场交谈来陪着他……嘿，要是你换个眼光去看，那还真就是一场交谈。这差不多就是全部的信仰了。',
+  'entities.npcs.brother_greenpaw.dialogNode.faith':
+    '信仰这词儿太重了，朋友。我只是照料。照料是我这双手能做的事。倾听我留给他，就算他没在听，嗯，那香烟闻着终归还是香的……',
+  'entities.npcs.brother_greenpaw.dialogNode.stung':
+    '……唉。是啊。是啊，也许就是这样。在那些冷清的早晨，瓶子不叹气，也没人走上这条小路的时候，我自己也这么想过……可我还在这儿呢，朋友，所以它不只是这样。至少对我来说不是。',
+  'entities.npcs.brother_greenpaw.dialogNode.mended':
+    '没事的，朋友。这样的地方，时不时招来一句重话也是应该的，我不装作不是这样。可你还是回来把话说软了，这比乱葬岗肯做的要多得多。咱俩两清了，你和我。',
+  'entities.npcs.brother_greenpaw.dialogNode.tribe':
+    '从前是个大部族，那些古老的刻痕是这么说的。黑暗里刻着一排排计数的划痕，五道五道地划掉，比任何一双手能划出的都多……他们让他亮了好长好长一段日子，才轮到只剩我一个。我不知道他们去了哪儿，朋友。我只知道，这灯芯不能在我看守的时候熄灭。',
+  'entities.npcs.brother_greenpaw.dialogNode.confide':
+    '……你这份好意难得，我就领它薄薄的一片吧。说实话，我跟你聊，一半是因为瓶子不答话，一半是因为我怕有那么一天，再没人走上这条小路了。所以，谢谢你走上来。要说什么是神圣的，朋友，那就是它了。',
+  'entities.npcs.brother_greenpaw.dialogChoice.kind':
+    '这地方开始有点像个归处了，师兄。我是真心这么觉得。',
+  'entities.npcs.brother_greenpaw.dialogChoice.ask': '瓶子最近都说了些什么？',
+  'entities.npcs.brother_greenpaw.dialogChoice.blunt': '这就是个有看守人的乱葬岗，绿掌。仅此而已。',
+  'entities.npcs.brother_greenpaw.dialogChoice.tribe': '跟我说说从前住在这儿的那个部族吧。',
+  'entities.npcs.brother_greenpaw.dialogChoice.warm_bye': '我就不打扰你陪他了。',
+  'entities.npcs.brother_greenpaw.dialogChoice.vase_more': '你真的相信他在听吗？',
+  'entities.npcs.brother_greenpaw.dialogChoice.vase_bye': '那就好好陪着他吧。我就在附近。',
+  'entities.npcs.brother_greenpaw.dialogChoice.faith_bye': '说得也是，绿掌。',
+  'entities.npcs.brother_greenpaw.dialogChoice.sorry': '那话说得比我本意要刻薄。对不起。',
+  'entities.npcs.brother_greenpaw.dialogChoice.cold_bye': '你爱信什么就信什么吧。',
+  'entities.npcs.brother_greenpaw.dialogChoice.mended_bye': '咱俩两清了。回头见。',
+  'entities.npcs.brother_greenpaw.dialogChoice.confide': '你不必独自扛着这一切，师兄。',
+  'entities.npcs.brother_greenpaw.dialogChoice.tribe_bye': '还有人在照料着它。这总归有点分量。',
+  'entities.npcs.brother_greenpaw.dialogChoice.confide_bye': '我会一直走上这条小路来的，绿掌。',
   'entities.delves.collapsed_reliquary.enterText': '你向下深入坍塌的圣物库。',
   'entities.delves.collapsed_reliquary.leaveText': '你攀回圣物库废墟旁的哈尔文修士身边。',
   'entities.delves.collapsed_reliquary.name': '坍塌的圣物库',

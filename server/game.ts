@@ -183,6 +183,11 @@ type ClientMessage = Record<string, unknown> & {
   name?: string;
   node?: string;
   npc?: number;
+  // Branching-dialogue dispatch (PHAA-562): the speaking NPC's string template id
+  // and the picked choice id. Distinct from the numeric `npc` entity field and
+  // the loot-roll `choice` enum, which carry unrelated values on other commands.
+  npcId?: string;
+  choiceId?: string;
   objectId?: number;
   price?: number;
   q?: string;
@@ -3021,8 +3026,8 @@ export class GameServer {
       // sim re-looks-up the choice in the NPC's tree, re-checks its gate, and
       // applies its disposition/flag effect (never trusting a client-sent value).
       case 'dialogChoose':
-        if (typeof msg.npc === 'string' && typeof msg.choice === 'string') {
-          sim.dialogChoose(msg.npc, msg.choice, pid);
+        if (typeof msg.npcId === 'string' && typeof msg.choiceId === 'string') {
+          sim.dialogChoose(msg.npcId, msg.choiceId, pid);
         }
         break;
       // dev/ops commands, only when ALLOW_DEV_COMMANDS=1 (never in production)

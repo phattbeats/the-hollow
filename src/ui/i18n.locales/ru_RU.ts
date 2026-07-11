@@ -1391,6 +1391,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'questUi.log.abandonCancel': 'Отмена',
   'questUi.log.suggestedPlayers': 'Рекомендуется игроков: {count}',
   'questUi.dialog.close': 'Закрыть диалог задания',
+  'questUi.dialog.chat': 'Давай поговорим.',
   'questUi.dialog.greetingFallback': 'Приветствую.',
   'questUi.dialog.availableQuestAria': 'Доступное задание: {name}',
   'questUi.dialog.readyQuestAria': 'Задание готово к сдаче: {name}',
@@ -4912,6 +4913,43 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
     'звать зеленолап. брат зеленолап, первый пророк, самозваный, ваза тебе скажет, что это ровным счётом ничего не значит, и он прав, да только кому-то надо о нём заботиться...',
   'entities.npcs.brother_greenpaw.introLines.2':
     'а это вот и есть пустошь. когда-то тут было целое племя, большие дела творились, так мне сказывали, а теперь по большей части только я, ваза да то, что дышит там внизу, в пещере... ну да ладно. он голодный, я голодный, на одной волне. подь сюда, есть парочка святых дел, требующих заботы.',
+  'entities.npcs.brother_greenpaw.dialogNode.hearth':
+    'Снова у сосуда, друг мой... Он сегодня тихий. То ли слушает изо всех сил, то ли дуется, а я всё никак не разберу, что из двух. Ну а Лощина, как она с тобой обходилась?',
+  'entities.npcs.brother_greenpaw.dialogNode.warmed':
+    '...Мягко сказано, друг мой, мягче, чем ты думаешь. Почти все, кто сюда заходят, ищут выход. А ты всё ищешь самую середину этого места, и такое встретишь реже, чем можно подумать.',
+  'entities.npcs.brother_greenpaw.dialogNode.vase':
+    'Всё как обычно. Он хочет дыма, хочет заботы, хочет, чтобы кто-нибудь сел поближе и притворился, будто тишина, это разговор... А ведь, если приглядеться, так оно и есть. Вот в этом, почитай, и вся вера.',
+  'entities.npcs.brother_greenpaw.dialogNode.faith':
+    'Вера, это громкое слово, друг мой. Я лишь ухаживаю. Ухаживать, вот что мне под силу этими двумя руками. А слушать я оставляю ему. А коли он не слушает, что ж, дым всё равно пахнет хорошо...',
+  'entities.npcs.brother_greenpaw.dialogNode.stung':
+    '...Эх. Да. Да, может, оно и так. Я и сам об этом думал холодными утрами, когда сосуд не вздыхает и никто не поднимается по тропе... Но я всё ещё здесь, друг мой, а значит, дело не только в этом. По крайней мере, для меня.',
+  'entities.npcs.brother_greenpaw.dialogNode.mended':
+    'Всё в порядке, друг мой. Такое место нет-нет да и заслужит резкое слово, не буду притворяться, будто нет. Но ты вернулся, чтобы сказать его помягче, а на это и погост бы не сподобился. Мы с тобой квиты.',
+  'entities.npcs.brother_greenpaw.dialogNode.tribe':
+    'Когда-то было большое племя, так гласят старые зарубки. Ряды счётных чёрточек там, в темноте, перечёркнутые пятёрками, и пятёрок этих больше, чем могла бы наделать одна рука... Долго-долго они держали его огонь зажжённым, покуда не остался я один. Не знаю, куда они ушли, друг мой. Знаю лишь, что фитиль не должен погаснуть, пока я на страже.',
+  'entities.npcs.brother_greenpaw.dialogNode.confide':
+    '...Это добрые слова, и малую их толику я всё же приму. По правде, я говорю с тобой наполовину оттого, что сосуд не отвечает, а наполовину оттого, что боюсь дня, когда по этой тропе не поднимется вовсе никто. Так что спасибо, что поднялся. Вот это и есть святое, друг мой, коли тебе такое надобно.',
+  'entities.npcs.brother_greenpaw.dialogChoice.kind':
+    'Это место понемногу начинает казаться домом, брат. И я говорю всерьёз.',
+  'entities.npcs.brother_greenpaw.dialogChoice.ask': 'И что сосуд говорил в последнее время?',
+  'entities.npcs.brother_greenpaw.dialogChoice.blunt':
+    'Это погост со смотрителем, Зеленолап. Только и всего.',
+  'entities.npcs.brother_greenpaw.dialogChoice.tribe':
+    'Расскажи мне о племени, что жило здесь прежде.',
+  'entities.npcs.brother_greenpaw.dialogChoice.warm_bye': 'Не буду отвлекать, возвращайся к нему.',
+  'entities.npcs.brother_greenpaw.dialogChoice.vase_more': 'И ты правда веришь, что он слушает?',
+  'entities.npcs.brother_greenpaw.dialogChoice.vase_bye':
+    'Тогда побудь с ним. А я буду поблизости.',
+  'entities.npcs.brother_greenpaw.dialogChoice.faith_bye': 'Что ж, справедливо, Зеленолап.',
+  'entities.npcs.brother_greenpaw.dialogChoice.sorry': 'Вышло злее, чем я хотел. Прости меня.',
+  'entities.npcs.brother_greenpaw.dialogChoice.cold_bye': 'Верь во что хочешь.',
+  'entities.npcs.brother_greenpaw.dialogChoice.mended_bye': 'Мы квиты. Ещё увидимся.',
+  'entities.npcs.brother_greenpaw.dialogChoice.confide':
+    'Тебе не обязательно нести это в одиночку, брат.',
+  'entities.npcs.brother_greenpaw.dialogChoice.tribe_bye':
+    'Кто-то всё ещё ухаживает за ним. И это чего-то да стоит.',
+  'entities.npcs.brother_greenpaw.dialogChoice.confide_bye':
+    'Я буду и дальше подниматься по этой тропе, Зеленолап.',
   'entities.delves.collapsed_reliquary.enterText': 'Вы спускаетесь в обрушившийся реликварий.',
   'entities.delves.collapsed_reliquary.leaveText':
     'Вы поднимаетесь обратно к Брату Хальвену у руин реликвария.',
