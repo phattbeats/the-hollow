@@ -2340,6 +2340,8 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.ironvein_foreman.name': '철맥 감독관',
   'entities.mobs.ironvein_sapper.name': '철맥 폭파병',
   'entities.mobs.heartwood_colossus.name': '심재 거상',
+  'entities.mobs.training_dummy.name': '훈련용 인형',
+  'entities.mobs.boarball_ball.name': '보어볼',
   'entities.mobs.marrowlord_varkas.name': '골수군주 바르카스',
   'entities.mobs.mirejaw_frenzy.name': '마이어죠 광란어',
   'entities.mobs.mirejaw_the_ravenous.name': '굶주린 마이어죠',
@@ -4808,6 +4810,8 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': '동굴 고기 조각',
   'entities.items.emberbulb.name': '불씨구근',
   'entities.items.first_cutting.name': '꺾꽂이',
+  'entities.items.first_cutting.flavorText':
+    '그린포 수사에게서 받은, 젖은 이끼로 감싼 살아있는 초록빛 꺾꽂이. 홈스테드 부지를 편집할 수 있게 되면 가장 먼저 심게 될 것이다.',
   'entities.items.greenpaw_bead.name': '탄띠에서 나온 염주 하나',
   'entities.items.keeper_coal.name': '결코 식지 않는 숯덩이',
   'entities.items.witness_root_cincture.name': '증인뿌리의 허리띠',
@@ -4854,41 +4858,41 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.brother_greenpaw.introLines.2':
     '여기가 바로 공동일세. 한때는 부족 하나가 통째로 있었지, 큰일들도 많았다더군, 뭐 들은 얘기지만. 이제는 대부분 나하고, 저 항아리하고, 저 동굴 밑에서 숨 쉬는 뭔가뿐이야……아무튼. 저 아이도 배고프고, 나도 배고프고, 같은 주파수지. 이리 와 보게, 처리해야 할 신성한 일이 몇 가지 있어.',
   'entities.npcs.brother_greenpaw.dialogNode.hearth':
-    '다시 항아리 곁으로 왔군, 친구여……오늘은 그 녀석이 조용해. 열심히 귀 기울이고 있는 건지, 아니면 삐쳐 있는 건지, 나로선 도무지 알 수가 없다네. 할로우는 자네를 어떻게 대접해 주던가?',
+    '하우디, 친구, 또 항아리 곁으로 왔구먼, 오늘은 그 녀석이 조용해, 진짜 열심히 듣고 있는 건지 아니면 그냥 무시하는 건지, 솔직히 둘 다 존경해, 나도 설정이 그 두 개뿐이거든… 그나저나 할로우는 자네한테 어땠나, 좋았나 나빴나, 간식 좀 있나, 없어? 알았어 그냥 물어본 거야, 친구를 위해 물어보는 거지, 그 친구가 바로 나야…',
   'entities.npcs.brother_greenpaw.dialogNode.warmed':
-    '……그 말은 부드럽게 와닿는군, 친구여. 자네가 아는 것보다 더 부드럽게 말일세. 여길 지나는 대부분은 출구를 찾아 헤매지. 헌데 자네는 이곳의 한가운데를 계속 찾고 있어. 그건 생각보다 훨씬 드문 일이라네.',
+    '…우와, 그거 진짜 좋은 말이네, 친구, 진짜 좋은 말이야, 예상 못 했는데, 대부분은 기회만 되면 바로 문 쪽으로 튀거든… 자네 꽤 괜찮은 사람이야, 알고 있나, 그린포 기준으로 괜찮은 거라고, 이거 아무한테나 그냥 주는 말 아니거든… 주식이란 게 있었으면 자네 주식을 샀을 텐데, 새 친구는 사고 오래된 징조는 팔고, 그게 그냥 경제라는 거지…',
   'entities.npcs.brother_greenpaw.dialogNode.vase':
-    '늘 똑같지. 그 녀석은 연기를 원하고, 보살핌을 원하고, 곁에 앉아 이 고요를 대화인 척 함께해 줄 누군가를 원한다네……뭐, 눈을 가늘게 뜨고 보면 정말 대화이기도 하지. 그게 대충 신앙이란 것의 전부일세.',
+    '늘 똑같지, 그 녀석은 연기를 원하고, 보살핌을 원하고, 곁에 앉아서 이 고요를 대화처럼 느끼게 해줄 누군가를 원해… 어. 그거 대부분의 대화가 그렇잖아. 우와. 그래, 아무튼, 나는 맨날 그 녀석한테 말 걸고 있고 그 녀석은 한 번도 대답 안 했지, 어, 한 번도, 근데 뭐 괜찮아, 대충 그런 거야, 그린포 기준으로 괜찮은 거지… 잠깐, 우리 무슨 얘기 하고 있었지… 아. 맞다. 그 녀석 얘기. 걘 괜찮아. 아마 배고플 거야. 동감.',
   'entities.npcs.brother_greenpaw.dialogNode.faith':
-    '믿음이란 건 무거운 말이야, 친구여. 나는 그저 돌볼 뿐이지. 돌보는 것, 그건 이 두 손으로 할 수 있는 일이니까. 귀 기울이는 건 그 녀석에게 맡겨 두네. 설령 듣고 있지 않다 해도, 뭐, 연기는 어차피 향기롭게 피어오르니……',
+    '믿는다는 건 거창한 말이야, 친구, 난 그냥 돌보는 거야, 돌보는 건 이 두 손으로 할 수 있는 일이니까, 라이터 하나 있고, 이력서에 그게 다야… 그 녀석이 듣고 있는지 아닌지는 나도 몰라, 근데 연기는 향기롭고 나를 판단하지도 않으니까, 귀 달린 것들 대부분보다 낫지, 그러니 파장은 어떻게든 맞춰지는 거지. 그렇고말고.',
   'entities.npcs.brother_greenpaw.dialogNode.stung':
-    '……어휴. 그래. 그래, 어쩌면 그럴지도 모르지. 추운 아침에, 항아리가 한숨도 쉬지 않고 아무도 이 길을 올라오지 않을 때면, 나도 스스로 그런 생각을 한다네……허나 나는 여전히 여기 있어, 친구여. 그러니 그것만은 아니겠지. 적어도 나에겐 말일세.',
+    '…아야, 그래 알았어, 아프네 친구, 이런… 그럴 수도 있지, 나도 모르겠어, 진짜 추운 아침이면 나도 그런 생각 든다고, 아무도 이 길을 안 올라오고 항아리는 한숨도 안 쉴 때 말이야… 근데 나는 여전히 여기 있잖아, 그럼 그게 뭔가 의미가 있는 거 아니겠어? 맞지? 맞아. 아 그건 그렇고 간식 줄까, 나 간식 있어, 화제 전환. F.',
   'entities.npcs.brother_greenpaw.dialogNode.mended':
-    '괜찮네, 친구여. 이런 곳은 이따금 모진 말 한마디쯤은 들을 만하지. 아니라고 시치미 떼진 않겠네. 그래도 자네는 다시 돌아와 부드럽게 말해 주었어. 그건 무덤가라면 해 주지 않았을 일이지. 우리 둘은 이제 셈이 끝난 걸세, 자네와 나 말이야.',
+    '괜찮아, 친구, 다 도박이야, 원래부터 그랬어, 내 안의 카우보이가 하는 말인데, 걔한테 도박이 무슨 뜻이냐고 묻지는 마, 걔도 몰라, 그냥 엄청 자신 있게 말할 뿐이야… 이런 곳은 가끔 모진 말 한마디쯤 나올 만하지, 아니라고는 안 할게… 근데 자네는 돌아와서 미안하다고 했잖아, 그건 뭔가 의미가 있는 거야, 아니면 뭔가 원하는 게 있다는 거고, 어느 쪽이든 우리 이제 셈은 끝났어, 자네랑 나 말이야, 파장도 맞고, 나중에 간식 필요하면 내가 살게.',
   'entities.npcs.brother_greenpaw.dialogNode.tribe':
-    '예전엔 큰 부족이었다지, 오래된 표식들이 그리 말하네. 어둠 속에 줄줄이 새겨진 셈의 눈금들, 다섯씩 그어 지운 자국이, 한 사람의 손으로는 도저히 만들 수 없을 만큼 많았어……그들은 아주 오랫동안 그 녀석의 불을 밝혀 두었지, 마침내 나 혼자만 남을 때까지 말일세. 그들이 어디로 갔는지는 모른다네, 친구여. 다만 내가 지키는 동안에는 이 심지가 꺼지게 둘 수 없다는 것, 그것만은 알지.',
+    '옛날엔 큰 부족이었대, 오래된 표식들이 그렇게 말하더라고, 뭐 나는 글은 잘 못 읽지만 숫자는 셀 줄 알거든, 저 밑에 다섯씩 그은 눈금이 엄청 많이 새겨져 있어, 지운 자국들이, 한 사람 손으로 만들 수 있는 것보다 훨씬 많아, 그 계산은 나도 피할 수가 없다고… 오랫동안 그 녀석 불을 밝혀뒀지, 결국 나 혼자 남을 때까지 말이야. 다들 어디로 갔는지는 몰라, 친구, 진짜 몰라, 가끔 파장으로 뭔가 느껴지긴 하는데, 그 느낌이 자기 말을 끝까지 못 맺어, 그래서 나도 못 맺겠어… 근데 이 심지는 내가 지키는 동안엔 못 꺼져. 그건 확실히 알아.',
   'entities.npcs.brother_greenpaw.dialogNode.confide':
-    '……참으로 고마운 제안일세. 그중 아주 작은 조각만은 기꺼이 받겠네. 솔직히 말하면, 내가 자네에게 이야기하는 건 절반은 항아리가 대답하지 않아서고, 절반은 언젠가 아무도 이 길을 올라오지 않을 그날이 두려워서라네. 그러니, 올라와 줘서 고맙네. 그게 바로 신성한 부분일세, 친구여. 혹시 하나쯤 바랐다면 말이야.',
+    '…그거 참 친절한 말이네, 친구, 진짜 친절해… 있잖아, 내가 자네한테 말하는 건 절반은 항아리가 대답을 안 해서고, 절반은 무섭기 때문이야, 어떤 밤엔, 아무도 다시는 이 길을 안 올라올까 봐, 그럼 나랑 그 녀석이랑 이 고요만 남을까 봐… 그러니까. 올라와 줘서 고마워. 그게 바로 신성한 부분이야, 내가 보기엔 말이지. …아 그건 그렇고. 간식 좀 있나? 항아리 대신 물어보는 거야. 파장도 배고프거든.',
   'entities.npcs.brother_greenpaw.dialogChoice.kind':
-    '이곳이 조금씩 어딘가 정말 머물 곳처럼 느껴지기 시작했어요, 형님. 진심입니다.',
-  'entities.npcs.brother_greenpaw.dialogChoice.ask': '요즘 항아리가 뭐라고 하던가요?',
+    '여기가 점점 마음에 들어요, 그린포. 진짜로, 진짜 진심이에요.',
+  'entities.npcs.brother_greenpaw.dialogChoice.ask': '그래서 요즘 항아리가 뭐라고 하던가요?',
   'entities.npcs.brother_greenpaw.dialogChoice.blunt':
-    '이곳은 관리인이 딸린 무덤가일 뿐이에요, 그린포. 그게 다예요.',
+    '마스코트 딸린 무덤가일 뿐이잖아요, 그린포. 그게 다예요.',
   'entities.npcs.brother_greenpaw.dialogChoice.tribe':
-    '예전에 이곳에 살았다는 그 부족 이야기를 들려주세요.',
-  'entities.npcs.brother_greenpaw.dialogChoice.warm_bye': '그 녀석 곁으로 돌아가시게 두겠습니다.',
+    '그 부족 이야기 좀 들려주세요, 당신 전에 있었다는 그 부족이요.',
+  'entities.npcs.brother_greenpaw.dialogChoice.warm_bye': '그럼 그 녀석 곁으로 돌아가시게 둘게요.',
   'entities.npcs.brother_greenpaw.dialogChoice.vase_more':
-    '그래서, 그가 정말 듣고 있다고 믿으세요?',
-  'entities.npcs.brother_greenpaw.dialogChoice.vase_bye':
-    '그럼 그 녀석 곁을 지켜 주세요. 저는 근처에 있을게요.',
+    '그래서 진짜로 그가 듣고 있다고 믿으세요?',
+  'entities.npcs.brother_greenpaw.dialogChoice.vase_bye': '그럼 그 녀석 곁을 지켜 주세요.',
   'entities.npcs.brother_greenpaw.dialogChoice.faith_bye': '그럴 만하네요, 그린포.',
-  'entities.npcs.brother_greenpaw.dialogChoice.sorry': '본심보다 심하게 나와 버렸네요. 죄송합니다.',
+  'entities.npcs.brother_greenpaw.dialogChoice.sorry':
+    '본심보다 심하게 말이 나왔어요. 미안해요, 그린포.',
   'entities.npcs.brother_greenpaw.dialogChoice.cold_bye': '믿고 싶은 대로 믿으세요.',
-  'entities.npcs.brother_greenpaw.dialogChoice.mended_bye': '우리 셈은 끝났어요. 또 봬요.',
+  'entities.npcs.brother_greenpaw.dialogChoice.mended_bye': '우리 셈은 끝났어요. 또 봬요, 그린포.',
   'entities.npcs.brother_greenpaw.dialogChoice.confide': '그걸 혼자 짊어질 필요는 없어요, 형님.',
-  'entities.npcs.brother_greenpaw.dialogChoice.tribe_bye':
-    '아직 누군가 그걸 돌보고 있잖아요. 그것도 뜻있는 일이죠.',
-  'entities.npcs.brother_greenpaw.dialogChoice.confide_bye': '앞으로도 이 길을 올라올게요, 그린포.',
+  'entities.npcs.brother_greenpaw.dialogChoice.tribe_bye': '그래도 아직 누군가 돌보고 있잖아요.',
+  'entities.npcs.brother_greenpaw.dialogChoice.confide_bye':
+    '앞으로도 이 길을 계속 올라올게요, 그린포.',
   'entities.delves.collapsed_reliquary.enterText': '무너진 성물실로 내려갑니다.',
   'entities.delves.collapsed_reliquary.leaveText':
     '성물실 폐허의 브라더 할벤에게로 다시 올라갑니다.',
