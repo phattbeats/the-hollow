@@ -6,6 +6,7 @@
 // caller's account, a caller-owned character, or an admin caller imports the
 // matching function from here instead of re-deriving the check inline.
 import type http from 'node:http';
+import { attackSignalSink } from './attack_signals';
 import {
   accountAndScopeForToken,
   accountForToken,
@@ -110,9 +111,14 @@ export async function requireOwnedCharacter(
   accountId: number,
   characterId: number,
   notFoundMessage = 'character not found',
+  route = '(unlabeled)',
 ): Promise<CharacterRow | null> {
   const character = await getCharacter(accountId, characterId);
   if (!character) {
+    // Attack signal (PHAA-527): count the denial by route TEMPLATE (the caller
+    // passes its ':id' template, never the concrete path) so a resource
+    // enumeration sweep shows up on /metrics without adding label cardinality.
+    attackSignalSink().bolaDenied(route);
     json(res, 404, { error: notFoundMessage });
     return null;
   }

@@ -6,9 +6,13 @@
 // one command at a time, so there is no interleaving to race).
 
 import { beforeEach, describe, expect, it } from 'vitest';
-import { MOBS } from '../src/sim/data';
+import { GATHER_NODES, MOBS } from '../src/sim/data';
 import { createMob } from '../src/sim/entity';
-import { HARVEST_COMPONENT_ITEMS, isHarvestableCorpse } from '../src/sim/gathering';
+import {
+  HARVEST_COMPONENT_ITEMS,
+  isHarvestableCorpse,
+  NODE_HARVEST_TABLE,
+} from '../src/sim/gathering';
 import { Sim } from '../src/sim/sim';
 import type { Entity } from '../src/sim/types';
 
@@ -125,5 +129,158 @@ describe('Sim.gathering.harvestItemFor', () => {
   it('returns the sole mapped item when there is exactly one candidate', () => {
     const sim = new Sim({ seed: 5, playerClass: 'warrior', noPlayer: true });
     expect(sim.gathering.harvestItemFor(['hide'])).toBe('boar_hide');
+  });
+});
+
+describe('gather node harvest (PHAA-505): per-player, everyone gets their own', () => {
+  const NODE_ID = GATHER_NODES[0].id;
+  const NODE_TYPE = GATHER_NODES[0].type;
+  const ENTRY = NODE_HARVEST_TABLE[NODE_TYPE];
+
+  let sim: Sim;
+  let pid: number;
+
+  beforeEach(() => {
+    sim = new Sim({ seed: 42, playerClass: 'warrior', noPlayer: true });
+    pid = sim.addPlayer('warrior', 'Miner');
+    const e = sim.entities.get(pid)!;
+    e.pos = { x: GATHER_NODES[0].pos.x, y: 0, z: GATHER_NODES[0].pos.z };
+    e.prevPos = { ...e.pos };
+  });
+
+  it('a player near a node receives the material item and their own respawn timer', () => {
+    const before = sim.countItem(ENTRY.itemId, pid);
+    sim.harvestNode(NODE_ID, pid);
+    expect(sim.countItem(ENTRY.itemId, pid)).toBe(before + 1);
+    expect(sim.nodeHarvestableByMeFor(NODE_ID, pid)).toBe(false);
+  });
+
+  it('denies harvest when the player is too far from the node', () => {
+    const e = sim.entities.get(pid)!;
+    e.pos = { x: -9999, y: 0, z: -9999 };
+    e.prevPos = { ...e.pos };
+    const before = sim.countItem(ENTRY.itemId, pid);
+    sim.harvestNode(NODE_ID, pid);
+    expect(sim.countItem(ENTRY.itemId, pid)).toBe(before);
+  });
+
+  it("two players harvesting the same node each get their own respawn timer: A's harvest never blocks B", () => {
+    const pidB = sim.addPlayer('warrior', 'Bravo');
+    const eB = sim.entities.get(pidB)!;
+    eB.pos = { x: GATHER_NODES[0].pos.x, y: 0, z: GATHER_NODES[0].pos.z };
+    eB.prevPos = { ...eB.pos };
+
+    sim.harvestNode(NODE_ID, pid);
+    expect(sim.countItem(ENTRY.itemId, pid)).toBe(1);
+    expect(sim.nodeHarvestableByMeFor(NODE_ID, pid)).toBe(false);
+    // B never harvested yet, so B can still harvest the SAME node: A's harvest
+    // never touched B's timer.
+    expect(sim.nodeHarvestableByMeFor(NODE_ID, pidB)).toBe(true);
+    sim.harvestNode(NODE_ID, pidB);
+    expect(sim.countItem(ENTRY.itemId, pidB)).toBe(1);
+    expect(sim.nodeHarvestableByMeFor(NODE_ID, pidB)).toBe(false);
+    expect(sim.nodeHarvestableByMeFor(NODE_ID, pid)).toBe(false);
+  });
+
+  it('denies a second harvest by the SAME player before their own timer elapses, allows it after', () => {
+    sim.harvestNode(NODE_ID, pid);
+    expect(sim.countItem(ENTRY.itemId, pid)).toBe(1);
+
+    sim.harvestNode(NODE_ID, pid);
+    expect(sim.countItem(ENTRY.itemId, pid)).toBe(1);
+
+    sim.time += ENTRY.respawnSeconds + 1;
+    expect(sim.nodeHarvestableByMeFor(NODE_ID, pid)).toBe(true);
+    sim.harvestNode(NODE_ID, pid);
+    expect(sim.countItem(ENTRY.itemId, pid)).toBe(2);
+  });
+
+  it('an unknown node id is denied without throwing', () => {
+    expect(() => sim.harvestNode('not_a_real_node', pid)).not.toThrow();
+    expect(sim.nodeHarvestableByMeFor('not_a_real_node', pid)).toBe(false);
+  });
+
+  it('a harvest grants the matching node type one point of gathering proficiency', () => {
+    const before = sim.gatheringProficiencyFor(pid)[NODE_TYPE];
+    sim.harvestNode(NODE_ID, pid);
+    expect(sim.gatheringProficiencyFor(pid)[NODE_TYPE]).toBe(before + 1);
+  });
+
+  it('denies harvest for a dead player without granting the item or the timer', () => {
+    const p = sim.entities.get(pid)!;
+    p.dead = true;
+    const before = sim.countItem(ENTRY.itemId, pid);
+    sim.harvestNode(NODE_ID, pid);
+    expect(sim.countItem(ENTRY.itemId, pid)).toBe(before);
+    expect(sim.nodeHarvestableByMeFor(NODE_ID, pid)).toBe(true);
+  });
+
+  it('determinism: the same seed and same sequence of harvests yields the same result', () => {
+    const run = () => {
+      const s = new Sim({ seed: 42, playerClass: 'warrior', noPlayer: true });
+      const p = s.addPlayer('warrior', 'Det');
+      const e = s.entities.get(p)!;
+      e.pos = { x: GATHER_NODES[0].pos.x, y: 0, z: GATHER_NODES[0].pos.z };
+      e.prevPos = { ...e.pos };
+      s.harvestNode(NODE_ID, p);
+      s.time += ENTRY.respawnSeconds - 1;
+      const notYetReady = s.nodeHarvestableByMeFor(NODE_ID, p);
+      s.time += 2;
+      const nowReady = s.nodeHarvestableByMeFor(NODE_ID, p);
+      return {
+        count: s.countItem(ENTRY.itemId, p),
+        notYetReady,
+        nowReady,
+        proficiency: s.gatheringProficiencyFor(p)[NODE_TYPE],
+      };
+    };
+    expect(run()).toEqual(run());
+  });
+
+  it('spends exactly one rng draw on a granted harvest and none on any denial path (PHAA-506)', () => {
+    // The rarity roll pulls from the SHARED sim rng, so a draw on a denial
+    // would advance the whole sim's stream and desync every downstream roll.
+    // harvestNode dispatches synchronously and nothing ticks inside this
+    // bracket, so every counted draw belongs to the harvest path.
+    let draws = 0;
+    (sim as unknown as { rng: { setObserver(fn: () => void): void } }).rng.setObserver(() => {
+      draws++;
+    });
+
+    sim.harvestNode(NODE_ID, pid); // granted: exactly the one rarity draw
+    expect(draws).toBe(1);
+
+    draws = 0;
+    sim.harvestNode(NODE_ID, pid); // denied: not respawned for this player yet
+    expect(draws).toBe(0);
+    sim.harvestNode('no_such_node_id', pid); // denied: unknown node
+    expect(draws).toBe(0);
+    const p = sim.entities.get(pid)!;
+    p.pos.x = GATHER_NODES[0].pos.x + 100;
+    p.prevPos = { ...p.pos };
+    sim.harvestNode(NODE_ID, pid); // denied: too far away
+    expect(draws).toBe(0);
+    p.dead = true;
+    sim.harvestNode(NODE_ID, pid); // denied: dead, the first guard in the chain
+    expect(draws).toBe(0);
+  });
+
+  it('a dead player triggers no rarity roll even when their node timer is ready (PHAA-506 ghost gate)', () => {
+    // Upstream regression guard (ghost_dead_gate): the dead check sits before
+    // resolveHarvest, so a dead or released-spirit player can neither harvest
+    // nor advance the shared rng stream, even with a fresh (always-ready)
+    // per-player timer for the node.
+    const p = sim.entities.get(pid)!;
+    p.dead = true;
+    expect(sim.nodeHarvestableByMeFor(NODE_ID, pid)).toBe(true);
+    let draws = 0;
+    (sim as unknown as { rng: { setObserver(fn: () => void): void } }).rng.setObserver(() => {
+      draws++;
+    });
+    const before = sim.countItem(ENTRY.itemId, pid);
+    sim.harvestNode(NODE_ID, pid);
+    expect(sim.countItem(ENTRY.itemId, pid)).toBe(before);
+    expect(sim.nodeHarvestableByMeFor(NODE_ID, pid)).toBe(true);
+    expect(draws).toBe(0);
   });
 });

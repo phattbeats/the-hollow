@@ -52,7 +52,16 @@ function makeTradeCtx() {
       bag(pid!).set(itemId, Math.max(0, (bag(pid!).get(itemId) ?? 0) - count)),
   } as unknown as SimContext;
   function addPlayer(pid: number, name: string, x: number, copper: number) {
-    players.set(pid, { entityId: pid, name, copper });
+    // inventory/bags are unused by this fake's Map-based bag() tracking, but
+    // tradeConfirm's capacity gate (bags.ts) reads meta.inventory/meta.bags
+    // directly, so they must be present with a real (roomy) shape.
+    players.set(pid, {
+      entityId: pid,
+      name,
+      copper,
+      inventory: [],
+      bags: [null, null, null, null],
+    });
     entities.set(pid, { id: pid, pos: { x, y: 0, z: 0 }, dead: false });
   }
   return {

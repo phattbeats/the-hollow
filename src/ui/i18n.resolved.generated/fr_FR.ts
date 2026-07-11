@@ -291,6 +291,9 @@ export const fr_FR: EnTranslations = {
       "lessThanMinute": "<1min",
       "lockedToast": "Vous êtes verrouillé sur {raid}. Déverrouillage dans {time}."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "N",
       "NE": "NE",
@@ -629,6 +632,13 @@ export const fr_FR: EnTranslations = {
       "unassigned": "{item} n a pas ete attribue et devient libre pour tous.",
       "leaderOnly": "Seul le chef de groupe peut changer le mode de butin."
     },
+    "lootRollGroup": {
+      "pending": "Waiting...",
+      "need": "Need",
+      "greed": "Greed",
+      "pass": "Pass",
+      "aria": "Group roll status for {item}"
+    },
     "bags": {
       "filterGroupAria": "Filtrer les sacs par catégorie",
       "filterAll": "Tous",
@@ -643,7 +653,12 @@ export const fr_FR: EnTranslations = {
       "sortName": "Nom",
       "searchPlaceholder": "Rechercher des objets",
       "searchAria": "Rechercher les objets du sac par nom",
-      "noMatch": "Aucun objet ne correspond à vos filtres."
+      "noMatch": "Aucun objet ne correspond à vos filtres.",
+      "capacity": "{used}/{total}",
+      "capacityAria": "Bag slots used: {used} of {total}",
+      "backpack": "Backpack",
+      "socketEmpty": "Empty bag slot",
+      "unequipHint": "Click to remove this bag"
     },
     "raidConvert": {
       "toPartyDone": "Votre raid a été reconverti en groupe.",
@@ -940,6 +955,27 @@ export const fr_FR: EnTranslations = {
     "trainer": {
       "secondaryClassSet": "You have taken up {cls} as your secondary profession."
     }
+  },
+  "mailUi": {
+    "title": "The Ravenpost",
+    "subtitle": "send and collect letters",
+    "close": "Close mail",
+    "inbox": "Inbox",
+    "compose": "Compose",
+    "noPostOffice": "Step up to the Ravenpost to tend your mail.",
+    "emptyInbox": "No letters waiting. A raven will arrive when someone writes to you.",
+    "from": "From {name}",
+    "noSubject": "(no subject)",
+    "take": "Take",
+    "delete": "Delete",
+    "postageNote": "Sending a letter costs {money} postage.",
+    "recipient": "Recipient",
+    "subjectLabel": "Subject",
+    "bodyPlaceholder": "Write your letter...",
+    "send": "Send Letter",
+    "needRecipientOrText": "Name a recipient and write something before sending.",
+    "openButton": "Show me the Ravenpost.",
+    "openButtonAria": "Open the Ravenpost mail window"
   },
   "guide": {
     "brand": "World of ClaudeCraft",
@@ -1853,6 +1889,11 @@ export const fr_FR: EnTranslations = {
       "home": "Retour à l'aperçu"
     }
   },
+  "readableUi": {
+    "prompt": {
+      "read": "Read"
+    }
+  },
   "coldOpen": {
     "title": "The Hollow",
     "wakeBody": "You come to on warm ground, no memory of your name, your people, or how you got here. Green light pools from a great vase ahead, and something about it feels like it has been waiting.",
@@ -2333,6 +2374,21 @@ export const fr_FR: EnTranslations = {
       "readoutMine": "Your homestead: {plotId}. Decor: {decor}.",
       "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <slot>.",
       "helpLine": "Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>."
+    },
+    "bags": {
+      "full": "Your bags are full.",
+      "socketsFull": "All your bag slots are full.",
+      "swapTooManyItems": "You have too many items to swap to that bag.",
+      "removeTooManyItems": "You have too many items to remove that bag.",
+      "tradeSpace": "Trade failed: not enough bag space."
+    },
+    "bank": {
+      "tooFar": "You are too far from the banker.",
+      "noQuestItems": "You cannot store quest items in the bank.",
+      "full": "Your bank is full.",
+      "expansionCapped": "Your bank cannot be expanded further.",
+      "cannotAfford": "You cannot afford that bank expansion.",
+      "purchased": "You purchase additional bank slots."
     },
     "homestead": {
       "outsideArea": "That is outside the homestead ground. Try Fallow Acres, west of the road.",
@@ -3519,6 +3575,7 @@ export const fr_FR: EnTranslations = {
       "offGlobalCooldown": "Hors temps de recharge global",
       "friendlyTarget": "Cible alliée",
       "enemyTarget": "Cible ennemie",
+      "selfOnly": "Self only",
       "damageRange": "{min} à {max}",
       "finisherDamage": "{base} plus {perCombo} par point de combo"
     },
@@ -3683,7 +3740,8 @@ export const fr_FR: EnTranslations = {
       "drink": "Boisson",
       "tool": "Outil",
       "potion": "Potion",
-      "elixir": "Élixir"
+      "elixir": "Élixir",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "Armure",
@@ -3725,7 +3783,8 @@ export const fr_FR: EnTranslations = {
       "useManaPotion": "Utiliser : rend instantanément {amount} mana. Utilisable en combat. Recharge de 1 min.",
       "clickUseInstant": "Cliquer pour utiliser instantanément en combat",
       "clickUse": "Cliquer pour utiliser",
-      "clickBuyback": "Cliquer pour racheter"
+      "clickBuyback": "Cliquer pour racheter",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "Requires level {level} to equip."
@@ -5010,6 +5069,21 @@ export const fr_FR: EnTranslations = {
       "monarch_crown_helm": {
         "name": "Couronne du Monarque"
       },
+      "linen_pouch": {
+        "name": "Bourse en Lin"
+      },
+      "travelers_knapsack": {
+        "name": "Havresac du Voyageur"
+      },
+      "wolfhide_satchel": {
+        "name": "Sacoche en Peau de Loup"
+      },
+      "gravewoven_bag": {
+        "name": "Sac Tissé des Tombes"
+      },
+      "mistcallers_duffel": {
+        "name": "Sac Marin de Mistcaller"
+      },
       "bristleback_maul": {
         "name": "Maillet Bristleback"
       },
@@ -5353,13 +5427,17 @@ export const fr_FR: EnTranslations = {
         "name": "Bulbe-braise"
       },
       "first_cutting": {
-        "name": "Une bouture"
+        "name": "Une bouture",
+        "flavorText": "A slip of living green from Brother Greenpaw, wrapped in damp moss. Once a homestead plot can be edited, this is the first thing you plant."
       },
       "greenpaw_bead": {
         "name": "Une perle du baudrier"
       },
       "keeper_coal": {
-        "name": "A Coal That Never Cooled"
+        "name": "Un Charbon Qui N'a Jamais Refroidi"
+      },
+      "willow_sprig": {
+        "name": "A Willow Sprig"
       },
       "witness_root_cincture": {
         "name": "Ceinturon de la Racine témoin"
@@ -5367,6 +5445,24 @@ export const fr_FR: EnTranslations = {
       "shrine_diary_page": {
         "name": "Page de Journal Déchirée",
         "flavorText": "...j'ai compté quarante jours à la chandelle avant de perdre le fil. L'obscurité d'ici-bas ne L'oublie pas, même s'Il a oublié cet endroit. Si le héron plane bas, dis au Sacristain que la mèche brûle encore..."
+      },
+      "heartwood_splinter": {
+        "name": "Écharde de Duramen",
+        "flavorText": "Chaude au toucher, longtemps après que l'arbre dont elle provient ait cessé de bouger."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Épaulières de la Couronne Fleurie"
+      },
+      "verdantguard_mantle": {
+        "name": "Manteau du Gardien Verdoyant"
+      },
+      "worn_prayer_token": {
+        "name": "Jeton de Prière Usé",
+        "flavorText": "...lisse sur une face par un pouce qui n'est pas le mien, qui a creusé le même sillon peu profond dans cent autres comme celui-ci avant lui, du moins c'est ce que le tas d'ici-bas voudrait faire croire. un seul pouce n'use pas cent jetons. beaucoup de pouces usent un même sillon, par contre..."
+      },
+      "tally_shard": {
+        "name": "Éclat aux Marques de Compte",
+        "flavorText": "...des marques par cinq, gravées profond, barrées chaque fois que le compte revenait. des centaines de cinq avant que les barres ne cessent, et la dernière rangée ne fut jamais finie..."
       },
       "reliquary_plate_chest": {
         "name": "Haubert de la garde du reliquaire"
@@ -5822,6 +5918,9 @@ export const fr_FR: EnTranslations = {
       },
       "the_witness_root": {
         "name": "La Racine témoin"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {
@@ -5829,6 +5928,11 @@ export const fr_FR: EnTranslations = {
         "name": "Le Marchand",
         "title": "Gardien du Marché mondial",
         "greeting": "Bienvenue au Marché mondial, {className}. Achetez aux aventuriers du royaume ou proposez vos propres marchandises."
+      },
+      "the_ravenpost": {
+        "name": "The Ravenpost",
+        "title": "Keeper of the Mail",
+        "greeting": "Post a letter, {className}, and my ravens will find your friend wherever they roam, coin and parcels riding along, safe until claimed."
       },
       "marshal_redbrook": {
         "name": "Maréchal Redbrook",
@@ -5959,6 +6063,25 @@ export const fr_FR: EnTranslations = {
         "name": "Sexton Faddick",
         "title": "The Wandering Keeper",
         "greeting": "Faddick. Sexton, where there is still a shrine to sexton. I do not stay anywhere; I keep. Wolves have circled the flock at Fallow Acres every night, and a thing that circles long enough learns the shape of what it circles. Best it stays a flock."
+      },
+      "shade": {
+        "name": "Shade",
+        "title": "A Traveler",
+        "greeting": "Oh, it's you. Sit if you like, the water's not going anywhere. Have you eaten today? You should eat.",
+        "introLines": {
+          "0": "You caught me at my chores. Don't mind the can, it's only water. There's always something somewhere that wants a little water.",
+          "1": "Me? Nobody much. Shade. I walk, I lend a hand where hands are short. You look worn through. Sit a moment, if you like."
+        }
+      },
+      "gate_bard": {
+        "name": "Halden the Bard",
+        "title": "Player at the Gate",
+        "greeting": "A copper for a song? No? That's all right, most days it's no. I play for the gate, and the gate's never once reached for its purse."
+      },
+      "goodwife_orla": {
+        "name": "Orla",
+        "title": "Once of Root Hollow",
+        "greeting": "You can sit. Most walk on. The Verger crossed my name off his register a long while back, and a crossed name learns to keep quiet so nobody has to be reminded it's still here."
       }
     },
     "quests": {
@@ -6851,7 +6974,7 @@ export const fr_FR: EnTranslations = {
       "q_root_hollow_boars_ii": {
         "title": "Root Hollow's Reckoning",
         "text": "I will admit what the office discourages admitting: five was optimistic. The lower dens keep pushing up more. Eight further, and I can close the season without amending the record a third time. The record resents amendment. So do I.",
-        "completion": "Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me.",
+        "completion": "Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me. The register itself is older than that arrangement, bound in a hand I have never met, keeping a count I choose not to add. Someone was thorough here, once. I only try to keep pace.",
         "objectives": {
           "0": {
             "label": "Wild Boar slain"
@@ -6875,6 +6998,26 @@ export const fr_FR: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Forest Wolf slain"
+          }
+        }
+      },
+      "q_have_you_eaten": {
+        "title": "Have You Eaten?",
+        "text": "There's a bard at the gate who plays for coppers and eats when the coppers come, which isn't often. I've got a bowl warm and one to spare. Carry it down to him, would you? And don't tell him it was pity. Tell him it was extra.",
+        "completion": "You're back. Did he eat? Good. That's good. And did you? ... You didn't, I can see it. Sit, then. You don't have to be great to be something good. Greatness isn't kindness. Eat.",
+        "objectives": {
+          "0": {
+            "label": "Warm meal carried to the bard"
+          }
+        }
+      },
+      "q_someone_your_own_size": {
+        "title": "Someone Your Own Size",
+        "text": "There's a woman near Root Hollow the world has been unkind to. Her name was struck from the register, and people treat a struck name like it can't hear. Go and sit with her a while. You don't have to fix anything. Just be someone her own size.",
+        "completion": "You stayed. She won't say it mattered, but it did, I promise you it did. Here, this is for you. A sprig off a willow I'm fond of. It does nothing at all. It only remembers that you were kind when nothing made you.",
+        "objectives": {
+          "0": {
+            "label": "Sat a while with Orla"
           }
         }
       }
@@ -7097,6 +7240,24 @@ export const fr_FR: EnTranslations = {
         "name": "Tenue d’Ombre-drake",
         "bonus2": "Augmente la puissance d'attaque de 40.",
         "bonus3": "Augmente l’agilité de 15 et les chances de critique de 2%."
+      }
+    },
+    "readables": {
+      "torn_ledger_page": {
+        "title": "A Torn Ledger",
+        "pages": {
+          "0": "Root Hollow, entered to rest. Fallow Acres, entered to rest. The lake at Mossbank, which rests whether we enter it or not. Signed and dated, as the register wants.",
+          "1": "Tally of the season so far: three seedlings up through the road stones, which is not on any calendar of mine. I have stopped scratching them out. They come back faster than the ink dries, and the ink was not cheap.",
+          "2": "A note to whoever keeps this after me. Count the boars, count the wolves, count the days. Do not count the green. It counts back, and it does not stop where you do."
+        }
+      },
+      "keepers_marginalia": {
+        "title": "A Keeper's Marginalia",
+        "pages": {
+          "0": "Left in the margin of a hymnbook with the hymns worn out of it. The hand is quick, the way a hand is quick when it writes while walking.",
+          "1": "The wolves circle Fallow Acres from the tree line, always the same ring, always sunwise. A thing that circles long enough learns the shape of what it circles. So do I. So, I think, does the ground.",
+          "2": "If you are reading this you have stopped walking, which is the one thing I never learned to do. Rest a moment. The Reaches will still be here. That is rather the whole trouble with it."
+        }
       }
     }
   },

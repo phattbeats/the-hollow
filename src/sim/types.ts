@@ -283,7 +283,8 @@ type ItemKind =
   | 'drink'
   | 'tool'
   | 'potion'
-  | 'elixir';
+  | 'elixir'
+  | 'bag';
 
 interface BaseItemDef {
   id: string;
@@ -319,6 +320,12 @@ interface BaseItemDef {
   // `duration` the buff length in seconds. Folds through the normal aura/stat path.
   elixir?: { aura: string; kind: AuraKind; value: number; duration: number };
   quality?: 'poor' | 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary'; // gray/white/green/blue/purple/orange name colors
+  // bags (kind:'bag'): extra inventory slots granted while equipped in one of
+  // the 4 bag sockets (see src/sim/bags.ts; the 16-slot backpack is implicit).
+  bagSlots?: number;
+  // Max copies per inventory slot. When omitted the default is derived from
+  // `kind` (weapon/armor/bag/tool: 1, everything else: 20); see stackSizeOf.
+  stackSize?: number;
   requiredClass?: PlayerClass[];
   /** Minimum character level required to equip this item; enforced server-side in equipItem. */
   requiredLevel?: number;
@@ -412,6 +419,28 @@ export interface LootRollPrompt {
   expiresAt: number;
 }
 
+// One candidate's live vote on an open need-greed roll, as the whole group sees
+// it: the choice only. The 1-100 roll number stays server-side until resolution,
+// when every roll is broadcast as loot chat lines.
+export interface LootRollStatusEntry {
+  pid: number;
+  name: string;
+  choice: LootRollChoice | null;
+}
+
+// Group-visible mirror of an open need-greed roll: every party member (candidate
+// or not) sees who has answered and how while the window runs, so the HUD can
+// keep the roll frame up with a per-player choice strip until the server
+// resolves the roll.
+export interface LootRollGroupStatus {
+  rollId: number;
+  itemId: string;
+  itemName: string;
+  quality: ItemDef['quality'];
+  expiresAt: number;
+  entries: LootRollStatusEntry[];
+}
+
 // Master loot intercepts roll-worthy drops at/above a quality threshold and hands
 // the assignment decision to a single designated looter (the leader, or 0 = leader).
 export type MasterLootThreshold = 'uncommon' | 'rare' | 'epic';
@@ -485,6 +514,12 @@ export interface MobTemplate {
   componentTags?: string[];
   boss?: boolean;
   rare?: boolean;
+  // World boss (PHAA-494): a server-wide elite that spawns on a fixed cadence (not
+  // from a CAMP), announces itself when it rises, and drops PERSONAL loot to every
+  // player who damaged it (gated to a per-player loot lockout). The spawn schedule +
+  // location live in src/sim/world_boss.ts; the loot roll runs through
+  // ctx.rollWorldBossLoot.
+  worldBoss?: boolean;
   // Elite scaling, vanilla-style: ~2.3x health, ~1.5x damage, double XP.
   elite?: boolean;
   // Rare/miniboss controls.
@@ -611,6 +646,45 @@ export interface MobTemplate {
     name: string;
     school?: Aura['school'];
   };
+  // Boss mechanic (PHAA-494, "Grasping Roots"): the ANTI-KITE snare. A periodic,
+  // room-wide AoE that slows every player within `radius` to `mult` of run speed
+  // (moveSpeedMult already honors the `slow` aura, so 0.2 = 20% speed) for
+  // `duration`s. Unlike the aoePulse/stomp/bigCast pulses, which gate on the boss
+  // being in melee range, this one ALSO fires while the boss is chasing a fleeing
+  // target: that is the whole point, a ranged kiter can otherwise hold a
+  // sub-run-speed boss out of melee forever and none of the other pulses ever land.
+  // Deals no damage and draws no rng (fixed radius/mult/duration). Telegraphed like
+  // the sibling pulses (the first snare lands one full `every` after engage).
+  aoeSlow?: {
+    radius: number;
+    mult: number;
+    duration: number;
+    every: number;
+    name: string;
+    school?: Aura['school'];
+  };
+  // Boss mechanic (PHAA-494): a periodic telegraphed HARDCAST. Unlike the instant
+  // aoePulse, the mob shows a real cast bar (the entity casting fields carry
+  // castId) for `castTime` seconds, then the spell lands as an AoE nova on every
+  // living player within `radius`. The mob keeps meleeing while it casts (the bar
+  // is the telegraph healers react to, not a channel). `yell` is barked at cast
+  // start.
+  bigCast?: {
+    castId: string;
+    name: string;
+    castTime: number;
+    every: number;
+    radius: number;
+    min: number;
+    max: number;
+    school?: string;
+    yell?: string;
+  };
+  // Boss flavor (PHAA-494, "loud"): a booming voice. `range` widens how far a bark
+  // from this mob carries, and `lines` are battle cries it bellows every `every`s
+  // while in combat (cycled in order, no rng). Chat-channel text, so it ships
+  // English under the boss-yell precedent (see mob/yells.ts).
+  battleYells?: { lines: string[]; every: number; range: number };
   // Melee mechanic: each landed swing also splashes onto other players near the
   // primary target for `mult` of the (pre-armor) hit. Classic-WoW Cleave.
   cleave?: { radius: number; mult: number; name?: string };
@@ -1135,6 +1209,18 @@ export interface NpcDef {
   // hearth" gossip option (feedGreenpaw in world_api/greenpaw_hearth.ts),
   // replacing the old /feed chat command (PHAA-482).
   hearth?: boolean;
+  // The Ravenpost (PHAA-495): talking to this NPC opens the mail window
+  // (mailInfo/mailSend/mailTake in world_api/mail.ts), mirroring the Merchant's
+  // `market` flag.
+  ravenpost?: boolean;
+  // Branching player-picked dialogue (PHAA-553): an optional conversation tree
+  // this NPC offers as a "Talk" gossip option. The player walks NPC lines and
+  // picks a toned response at each node; the tree navigation is deterministic
+  // static content walked client-side (like offerDialog's stage machine), while
+  // any choice EFFECT (a per-NPC disposition nudge, a persistent flag) resolves
+  // server-side through the dialogChoose command (world_api/dialog.ts). Omit for
+  // an NPC with no branching conversation.
+  dialogTree?: NpcDialogTree;
   greeting: string;
   // Optional ordered intro lines the player clicks through once, before the
   // gossip/quest hook, on first meeting this NPC (presentation-only; the UI
@@ -1178,6 +1264,52 @@ export interface GatherNodeDef {
   zoneId: string;
   type: GatherNodeType;
   pos: { x: number; z: number };
+}
+
+// World-placed readable props (WoW-style journals/books lying around, PHAA-552).
+// Static, unowned world dressing with a client-only reveal: reading one mutates
+// no game state, so (unlike a gather node's harvest) there is no server command,
+// wire field, or sim tick logic, only a proximity prompt and a paginated reader.
+// `pages` and `title` are the canonical ENGLISH content; the client resolves the
+// displayed text through the `readable` entity-i18n kind (src/ui/entity_i18n.ts),
+// the sim stays language-agnostic. Placement mirrors GatherNodeDef: world-space
+// x/z in an overworld zone, plus a `facing` yaw for the rendered prop.
+//
+// Which physical object it draws as (PHAA-552 follow-up): the board asked for
+// "random journals or books you find lying around", so a readable is a loose
+// item resting on the ground, not a tome on a pedestal. `page` is a single loose
+// sheet (a dropped note); `journal` is a small open field notebook; `ledger` is
+// a bound, thick account book with a torn-back cover and loose leaves jutting
+// out (the "actual torn ledger" the board asked for). All three sit low on their
+// support so they clear the grass ring without reading as a monument. Render:
+// src/render/readables.ts.
+export type ReadableProp = 'page' | 'journal' | 'ledger';
+
+// What the loose page/journal rests on or against (PHAA-552 board follow-up:
+// "we need other variations, like it up against a tree, or on a chest, or a
+// table, that way we can put them in many places"). Orthogonal to ReadableProp:
+// any page/journal can sit on any support, so the world can dress a readable to
+// fit wherever it is dropped instead of every one looking like the same rock.
+//   `stone`  a low natural fieldstone in the grass (the original, dropped-note look)
+//   `table`  lying flat on a small rough field table
+//   `chest`  lying flat on the lid of a closed banded chest
+//   `tree`   propped upright, leaning against the base of a tree trunk
+// Render: src/render/readables.ts. Adding a support kind is render-only; it has
+// no sim state, so it never touches i18n, the wire, or server commands.
+// Authoring note: `tree` leans the paper upright, so pair it with `page` (a note
+// propped against the bark). A `journal` (an OPEN notebook) reads wrong standing
+// on end; keep journals on the flat supports (stone/table/chest).
+export type ReadableSupport = 'stone' | 'table' | 'chest' | 'tree';
+
+export interface ReadableDef {
+  id: string;
+  zoneId: string;
+  pos: { x: number; z: number };
+  facing: number; // radians, yaw applied to the rendered prop
+  prop: ReadableProp; // which loose object it is drawn as (see ReadableProp)
+  support?: ReadableSupport; // what it rests on/against (default 'stone'); see ReadableSupport
+  title: string; // canonical English title shown in the reader window
+  pages: string[]; // canonical English pages, one per reader page turn
 }
 
 export interface DungeonSpawn {
@@ -1322,6 +1454,89 @@ export interface QuestOfferDialog {
   complainReply: string;
   refuse: string;
   refuseReply: string;
+}
+
+// ---------------------------------------------------------------------------
+// Branching NPC dialogue trees (PHAA-553). Declarative content on NpcDef; the
+// player walks NPC lines and picks a toned response at each node. Two layers:
+//   - Navigation (which node shows, which choices are visible) is DETERMINISTIC
+//     static content, walked client-side by the pure core (npc_dialog_tree_view),
+//     exactly like offerDialog's stage machine. Every player-visible string
+//     (`npcLine`, choice `label`) is an English source localized client-side via
+//     tEntity, never emitted from the sim.
+//   - Consequence (a choice's `effect`) is SERVER-AUTHORITATIVE: it resolves in
+//     the sim (dialog_commands.dialogChoose) over the wire, never on the client.
+//     v1 consequence is per-NPC disposition plus persistent conversation flags;
+//     `requires` gates a choice on that same persisted state. Rewards / quest
+//     gating are deliberately out of v1 (the hooks exist for later depth).
+// ---------------------------------------------------------------------------
+
+export type DialogTone = 'positive' | 'neutral' | 'negative';
+
+// The persisted consequence a choice applies, resolved server-side. Both fields
+// are optional so a pure-flavor choice carries no effect at all.
+export interface DialogEffect {
+  // Nudge the speaking NPC's disposition toward this player by this signed
+  // delta (clamped by the engine). Negative choices can lower it.
+  disposition?: number;
+  // Set a persistent per-player conversation flag (namespaced by the author,
+  // e.g. 'greenpaw.promised_fuel'), readable later by a `requires` gate.
+  setFlag?: string;
+}
+
+// A gate on whether a choice is offered, evaluated against the player's
+// persisted dialog state for the speaking NPC. All conditions present must hold.
+export interface DialogGate {
+  minDisposition?: number; // disposition toward this NPC must be >= this
+  maxDisposition?: number; // ...and <= this (a "you have been unkind" branch)
+  hasFlag?: string; // this conversation flag must be set
+  lacksFlag?: string; // ...and this one must NOT be set
+}
+
+export interface DialogChoiceDef {
+  id: string; // unique within the tree; the wire token dialogChoose carries it
+  tone: DialogTone; // tags the choice for the UI accent (never color-only; label carries meaning)
+  label: string; // the player's spoken line (English source; localized client-side)
+  next?: string; // node id to advance to; omitted ends the conversation
+  effect?: DialogEffect; // optional server-resolved consequence
+  requires?: DialogGate; // optional gate on the player's persisted dialog state
+}
+
+export interface DialogNodeDef {
+  npcLine: string; // the NPC's line at this node (English source; localized client-side)
+  choices: DialogChoiceDef[]; // empty = terminal node (the UI adds a "Farewell" close)
+}
+
+export interface NpcDialogTree {
+  root: string; // entry node id; must key into `nodes`
+  nodes: Record<string, DialogNodeDef>;
+}
+
+// Persisted + wire shape of a player's dialog state (PHAA-553): disposition
+// toward each NPC (by npc id; absent = 0, never talked to) and the persistent
+// conversation flags accumulated across all NPCs. Rides CharacterState JSONB
+// additively, so pre-PHAA-553 saves load with an empty default.
+export interface DialogStateSave {
+  disposition: Record<string, number>;
+  flags: string[];
+}
+
+// The single source of truth for whether a choice's gate is satisfied, shared by
+// the client walker (npc_dialog_tree_view) and the server resolver
+// (dialog_commands). Sharing it is the anti-cheat property: the server accepts
+// exactly the choices the client offers, evaluated one way, never two. Checked
+// against the player's disposition toward the SPEAKING npc and their flags.
+export function dialogGatePasses(
+  gate: DialogGate | undefined,
+  disposition: number,
+  flags: ReadonlySet<string>,
+): boolean {
+  if (!gate) return true;
+  if (gate.minDisposition !== undefined && disposition < gate.minDisposition) return false;
+  if (gate.maxDisposition !== undefined && disposition > gate.maxDisposition) return false;
+  if (gate.hasFlag !== undefined && !flags.has(gate.hasFlag)) return false;
+  if (gate.lacksFlag !== undefined && flags.has(gate.lacksFlag)) return false;
+  return true;
 }
 
 export interface QuestDef {
@@ -1494,6 +1709,10 @@ export interface Entity {
   stompTimer: number; // boss War Stomp stun-pulse countdown
   stoneskinTimer: number; // periodic self-absorb barrier countdown
   terrifyTimer: number; // Banshee's Wail fear-pulse countdown
+  bigCastTimer: number; // boss telegraphed-hardcast (bigCast) cadence countdown
+  aoeSlowTimer: number; // anti-kite snare-pulse countdown (aoeSlow)
+  loudYellTimer: number; // battle-cry (loud boss) bark countdown
+  loudYellIndex: number; // next battle-cry line to bark (cycles through battleYells.lines)
   detonateTimer: number; // Death Throes fuse on a volatile corpse; Infinity = no pending detonation
   mendTimer: number; // mendAlly support-heal cast countdown
   wardTimer: number; // wardAllies support-shield cast countdown
@@ -1893,6 +2112,11 @@ export interface SimConfig {
   noPlayer?: boolean; // multiplayer server: start with an empty world and addPlayer() later
   devCommands?: boolean; // local dev: /dev level|tp|give chat cheats
   lockoutNowMs?: () => number; // host wall-clock for persisted raid lockouts
+  // Live server (PHAA-494): schedule the first world-boss rise at boot instead of
+  // one interval out, so a freshly (re)started realm has the Heartwood Colossus up
+  // immediately. Offline worlds, tests, and the RL env keep the default (first rise
+  // after one interval), so this never fires inside a short deterministic scenario.
+  worldBossAtBoot?: boolean;
   // The Hollow spawn policy (PHAA-404): players join inside the Hollow hub
   // instance (new characters at the vase), never the inherited base overworld.
   // The real hosts (offline client, online server) set this; tests and the RL

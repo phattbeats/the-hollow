@@ -291,6 +291,9 @@ export const ja_JP: EnTranslations = {
       "lessThanMinute": "1分未満",
       "lockedToast": "{raid}にロックされています。解除まで{time}。"
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "北",
       "NE": "北東",
@@ -629,6 +632,13 @@ export const ja_JP: EnTranslations = {
       "unassigned": "{item}は分配されず、誰でも入手できます。",
       "leaderOnly": "分配方式を変更できるのはパーティリーダーだけです。"
     },
+    "lootRollGroup": {
+      "pending": "待機中...",
+      "need": "ニード",
+      "greed": "グリード",
+      "pass": "パス",
+      "aria": "{item} のグループロール状況"
+    },
     "bags": {
       "filterGroupAria": "バッグをカテゴリーで絞り込む",
       "filterAll": "すべて",
@@ -643,7 +653,12 @@ export const ja_JP: EnTranslations = {
       "sortName": "名前",
       "searchPlaceholder": "アイテムを検索",
       "searchAria": "名前でバッグのアイテムを検索",
-      "noMatch": "条件に一致するアイテムはありません。"
+      "noMatch": "条件に一致するアイテムはありません。",
+      "capacity": "{used}/{total}",
+      "capacityAria": "バッグスロット使用数：{total}中{used}",
+      "backpack": "バックパック",
+      "socketEmpty": "空のバッグスロット",
+      "unequipHint": "クリックしてこのバッグを外す"
     },
     "raidConvert": {
       "toPartyDone": "レイドがパーティに戻りました。",
@@ -940,6 +955,27 @@ export const ja_JP: EnTranslations = {
     "trainer": {
       "secondaryClassSet": "副職業として{cls}を習得しました。"
     }
+  },
+  "mailUi": {
+    "title": "レイヴンポスト",
+    "subtitle": "手紙の送受信",
+    "close": "郵便を閉じる",
+    "inbox": "受信箱",
+    "compose": "手紙を書く",
+    "noPostOffice": "郵便を利用するにはレイヴンポストに近づいてください。",
+    "emptyInbox": "届いている手紙はありません。誰かが手紙を書くとカラスが届けてくれます。",
+    "from": "{name} より",
+    "noSubject": "(件名なし)",
+    "take": "受け取る",
+    "delete": "削除",
+    "postageNote": "手紙の送付には{money}の郵便料金がかかります。",
+    "recipient": "宛先",
+    "subjectLabel": "件名",
+    "bodyPlaceholder": "手紙を書いてください...",
+    "send": "手紙を送る",
+    "needRecipientOrText": "送信する前に宛先を指定し、本文を入力してください。",
+    "openButton": "レイヴンポストへ案内してください。",
+    "openButtonAria": "レイヴンポストの郵便ウィンドウを開く"
   },
   "guide": {
     "brand": "World of ClaudeCraft",
@@ -1853,6 +1889,11 @@ export const ja_JP: EnTranslations = {
       "home": "概要に戻る"
     }
   },
+  "readableUi": {
+    "prompt": {
+      "read": "Read"
+    }
+  },
   "coldOpen": {
     "title": "空洞",
     "wakeBody": "温かい地面の上で、あなたは目を覚ます。自分の名も、一族のことも、どうやってここへ来たのかも思い出せない。前方の大きな壺から緑の光がにじみ出ており、その光はまるでずっとあなたを待っていたかのようだ。",
@@ -2334,21 +2375,36 @@ export const ja_JP: EnTranslations = {
       "readoutUsage": "/house place <1-{count}> <{kinds}>、/house remove <スロット>。",
       "helpLine": "住居：/house、/house claim、/house place <スロット> <種類>、/house remove <スロット>。"
     },
+    "bags": {
+      "full": "バッグがいっぱいです。",
+      "socketsFull": "バッグスロットはすべて使用中です。",
+      "swapTooManyItems": "アイテムが多すぎてそのバッグに交換できません。",
+      "removeTooManyItems": "アイテムが多すぎてそのバッグを外せません。",
+      "tradeSpace": "取引失敗：バッグの空きが足りません。"
+    },
+    "bank": {
+      "tooFar": "銀行員から離れすぎている。",
+      "noQuestItems": "クエストアイテムは銀行に預けられない。",
+      "full": "銀行の保管庫がいっぱいだ。",
+      "expansionCapped": "これ以上銀行を拡張できない。",
+      "cannotAfford": "その銀行拡張の代金が足りない。",
+      "purchased": "追加の銀行スロットを購入した。"
+    },
     "homestead": {
-      "outsideArea": "That is outside the homestead ground. Try Fallow Acres, west of the road.",
-      "tooCloseGate": "Too close to the gate. Move further out.",
-      "tooCloseWater": "Too close to the water.",
-      "tooCloseGraveyard": "Too close to the graveyard.",
-      "tooCloseWildlife": "Too close to the wildlife. Clear the area or move further off.",
-      "tooCloseRoad": "Too close to the road.",
-      "tooCloseOther": "Too close to another homestead.",
-      "questGate": "Brother Greenpaw hasn't sent you off yet. Finish his errands first.",
-      "alreadyOwn": "You already own a homestead.",
-      "claimed": "The ground is yours. This homestead is claimed.",
-      "readoutMine": "Your homestead sits at ({x}, {z}).",
-      "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
-      "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
-      "helpLine": "Homestead: /homestead, /homestead claim."
+      "outsideArea": "そこは開拓地の外だ。道を西に進んだFallow Acresを試してみるといい。",
+      "tooCloseGate": "門に近すぎる。もっと離れろ。",
+      "tooCloseWater": "水場に近すぎる。",
+      "tooCloseGraveyard": "墓地に近すぎる。",
+      "tooCloseWildlife": "野生動物に近すぎる。周りを片付けるか、もっと離れろ。",
+      "tooCloseRoad": "道に近すぎる。",
+      "tooCloseOther": "他人の開拓地に近すぎる。",
+      "questGate": "緑掌修道士はまだお前を送り出していない。まずは彼の用事を済ませろ。",
+      "alreadyOwn": "お前はすでに開拓地を持っている。",
+      "claimed": "この土地はお前のものだ。開拓地の権利が確定した。",
+      "readoutMine": "お前の開拓地は ({x}, {z}) にある。",
+      "readoutNoHomesteadQuest": "お前は開拓地を持っていない。緑掌修道士の用事をすべて終えれば手に入る。",
+      "readoutNoHomesteadHint": "お前は開拓地を持っていない。ホロウ低地の適した場所に立ち、/homestead claim と入力しろ。",
+      "helpLine": "開拓地：/homestead、/homestead claim。"
     }
   },
   "lockpickUi": {
@@ -3519,6 +3575,7 @@ export const ja_JP: EnTranslations = {
       "offGlobalCooldown": "グローバルクールダウン外",
       "friendlyTarget": "味方対象",
       "enemyTarget": "敵対象",
+      "selfOnly": "自分のみ",
       "damageRange": "{min}から{max}",
       "finisherDamage": "{base}にコンボポイントごと{perCombo}"
     },
@@ -3683,7 +3740,8 @@ export const ja_JP: EnTranslations = {
       "drink": "飲み物",
       "tool": "道具",
       "potion": "ポーション",
-      "elixir": "エリクサー"
+      "elixir": "エリクサー",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "防御力",
@@ -3725,7 +3783,8 @@ export const ja_JP: EnTranslations = {
       "useManaPotion": "使用: 即座にマナを{amount}回復します。戦闘中に使用可能。クールダウン1分。",
       "clickUseInstant": "クリックして戦闘中に即使用",
       "clickUse": "クリックして使用",
-      "clickBuyback": "クリックして買い戻す"
+      "clickBuyback": "クリックして買い戻す",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "装備するにはレベル{level}が必要です。"
@@ -5010,6 +5069,21 @@ export const ja_JP: EnTranslations = {
       "monarch_crown_helm": {
         "name": "君主の王冠"
       },
+      "linen_pouch": {
+        "name": "リネンの小袋"
+      },
+      "travelers_knapsack": {
+        "name": "旅人のナップサック"
+      },
+      "wolfhide_satchel": {
+        "name": "狼皮のサッチェル"
+      },
+      "gravewoven_bag": {
+        "name": "墓織りの鞄"
+      },
+      "mistcallers_duffel": {
+        "name": "ミストコーラーのダッフルバッグ"
+      },
       "bristleback_maul": {
         "name": "ブリストルバックの大槌"
       },
@@ -5353,7 +5427,8 @@ export const ja_JP: EnTranslations = {
         "name": "残り火の球根"
       },
       "first_cutting": {
-        "name": "挿し木"
+        "name": "挿し木",
+        "flavorText": "A slip of living green from Brother Greenpaw, wrapped in damp moss. Once a homestead plot can be edited, this is the first thing you plant."
       },
       "greenpaw_bead": {
         "name": "弾帯の数珠玉"
@@ -5361,12 +5436,33 @@ export const ja_JP: EnTranslations = {
       "keeper_coal": {
         "name": "冷めることのない炭"
       },
+      "willow_sprig": {
+        "name": "柳の小枝一本"
+      },
       "witness_root_cincture": {
         "name": "証しの根の帯紐"
       },
       "shrine_diary_page": {
         "name": "破れた日記のページ",
         "flavorText": "……蝋燭で四十日を数えたところで、数えるのをやめた。ここの闇は今もあの方を忘れない、あの方がこの場所を忘れてしまっても。鷺が低く舞うのを見たら、灯守りに芯はまだ燃えていると伝えてくれ……"
+      },
+      "heartwood_splinter": {
+        "name": "心材の破片",
+        "flavorText": "触れると温かい、それが生まれた木が動かなくなってからずっと。"
+      },
+      "bloomcrown_pauldrons": {
+        "name": "花冠の肩当て"
+      },
+      "verdantguard_mantle": {
+        "name": "常磐の守護者のマント"
+      },
+      "worn_prayer_token": {
+        "name": "すり減った祈りの証",
+        "flavorText": "……片面が、自分のものではない親指に磨かれて滑らかになっている。ここに積まれた他の百枚近くと、同じ浅い溝が刻まれている、少なくともこの山はそう語っている。一本の親指で百枚も磨り減らせはしない。だが、大勢の親指がひとつの溝を磨くことなら、できる……"
+      },
+      "tally_shard": {
+        "name": "刻み跡の欠片",
+        "flavorText": "……五本ひと組で深く刻まれ、数え終えるたびに線で消されている。消された五本組が幾百とあり、それが途絶える、最後の一列だけは最後まで消されずに終わっている……"
       },
       "reliquary_plate_chest": {
         "name": "聖遺物庫衛兵のホーバーク"
@@ -5822,6 +5918,9 @@ export const ja_JP: EnTranslations = {
       },
       "the_witness_root": {
         "name": "証しの根"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {
@@ -5829,6 +5928,11 @@ export const ja_JP: EnTranslations = {
         "name": "商人",
         "title": "世界市場の守り手",
         "greeting": "世界市場へようこそ、{className}。王国中の冒険者から買うことも、自分の品を売ることもできます。"
+      },
+      "the_ravenpost": {
+        "name": "レイヴンポスト",
+        "title": "郵便の守り手",
+        "greeting": "手紙を出してください、{className}。私のカラスが、どこを旅していようとあなたの友を見つけ出します。同封の金貨も小包も、受け取られるまで安全に届けられます。"
       },
       "marshal_redbrook": {
         "name": "レッドブルック元帥",
@@ -5959,6 +6063,25 @@ export const ja_JP: EnTranslations = {
         "name": "墓守のファディック",
         "title": "放浪の番人",
         "greeting": "ファディックだ。まだ守るべき祠があるうちは、墓守を務める。俺はどこにも留まらん、ただ守るだけだ。毎晩、狼が休閑地の群れの周りを回っておる。長く回れば、回っている相手の形を覚えるものだ。あれはただの群れのままでいてもらいたい。"
+      },
+      "shade": {
+        "name": "シェイド",
+        "title": "旅の者",
+        "greeting": "ああ、あなたね。よければ座って、水は逃げやしないから。今日はもう食べた？食べなきゃだめよ。",
+        "introLines": {
+          "0": "雑用の最中を見られてしまったわね。この如雨露は気にしないで、ただの水よ。少し水をやりたいものは、いつだってあるものだから。",
+          "1": "私？名乗るほどの者じゃないわ。シェイド。歩いて、手の足りないところで手を貸すだけ。ずいぶん疲れて見えるわね。よければ、少し座っていって。"
+        }
+      },
+      "gate_bard": {
+        "name": "吟遊詩人ハルデン",
+        "title": "門前の弾き手",
+        "greeting": "一曲、銅貨一枚でどう？いらない？いいのよ、たいていの日はいらないと言われる。私はこの門のために弾くけれど、門は一度も財布に手を伸ばしてくれたことがない。"
+      },
+      "goodwife_orla": {
+        "name": "オルラ",
+        "title": "かつて根の空洞の者",
+        "greeting": "座っていいのよ。たいていの人は通り過ぎる。堂守はずっと前に私の名を台帳から消したの。消された名は、静かにしていることを覚える。まだここにいると、誰にも思い出させないように。"
       }
     },
     "quests": {
@@ -6851,7 +6974,7 @@ export const ja_JP: EnTranslations = {
       "q_root_hollow_boars_ii": {
         "title": "根の空洞の清算",
         "text": "この職では認めるべきでないことを認めよう。五頭は楽観が過ぎた。下の巣からまだ湧いてくる。あと八頭で、記録を三度目に書き直さずに季を閉じられる。記録は書き直しを嫌う。俺もだ。",
-        "completion": "閉じた。署名した。綴じた。これで季は予定どおり進められる、暦を守る者が再び現れたのだからな。おまえは極めて小さな会衆を大いに助けた。念のため言っておくが、その会衆とは俺のことだ。",
+        "completion": "閉じた。署名した。綴じた。これで季は予定どおり進められる、暦を守る者が再び現れたのだからな。おまえは極めて小さな会衆を大いに助けた。念のため言っておくが、その会衆とは俺のことだ。この台帳自体は、この取り決めよりもさらに古い。会ったこともない手によって綴じられ、俺が数え上げるつもりのない数を記している。かつて、ここには実に几帳面な者がいたのだろう。俺はただ、その歩調に追いつこうとしているだけだ。",
         "objectives": {
           "0": {
             "label": "野生の猪を討伐"
@@ -6875,6 +6998,26 @@ export const ja_JP: EnTranslations = {
         "objectives": {
           "0": {
             "label": "森の狼を討伐"
+          }
+        }
+      },
+      "q_have_you_eaten": {
+        "title": "もう食べた？",
+        "text": "門のところに、銅貨で暮らす吟遊詩人がいてね、銅貨が入ったときにだけ食べる。そしてそれは、めったに入らない。温かいものが一杯、余分にあるの。彼のところへ届けてくれる？同情だなんて言わないで。余ったものだ、と言って。",
+        "completion": "おかえり。彼は食べた？よかった。それでいいの。あなたは？……食べていないわね、見ればわかる。なら、座って。善いものであるのに、偉くある必要はないの。偉さは優しさではないのだから。さあ、食べて。",
+        "objectives": {
+          "0": {
+            "label": "温かい食事を吟遊詩人へ届けた"
+          }
+        }
+      },
+      "q_someone_your_own_size": {
+        "title": "身の丈に合う相手を",
+        "text": "根の空洞の近くに、世に冷たくされてきた女がいるの。彼女の名は台帳から消され、人は消された名を、まるで聞こえないもののように扱う。しばらく、そばに座ってあげて。何かを直す必要はないの。ただ、彼女と同じ身の丈でいてあげて。",
+        "completion": "いてくれたのね。彼女は大したことじゃないと言うでしょう。でも大したことだった、本当よ。さあ、これをあなたに。私が好きな柳の小枝。何の役にも立たないわ。ただ、誰にも強いられていないのに優しくしてくれたことを、覚えているだけ。",
+        "objectives": {
+          "0": {
+            "label": "オルラのそばに少し座った"
           }
         }
       }
@@ -7097,6 +7240,24 @@ export const ja_JP: EnTranslations = {
         "name": "竜影の装束",
         "bonus2": "攻撃力が40上昇します。",
         "bonus3": "敏捷性が15、クリティカル率が2%上昇します。"
+      }
+    },
+    "readables": {
+      "torn_ledger_page": {
+        "title": "破れた台帳",
+        "pages": {
+          "0": "根の空洞、休ませると記帳。休閑地、休ませると記帳。モスバンクの湖、こちらが記そうと記すまいと、勝手に休んでおる。台帳の求めるまま、署名し日付を入れた。",
+          "1": "今季ここまでの集計。道の敷石を突き破って芽が三本、俺のどの暦にも載っておらん。抜いて消すのはやめた。インクが乾くより早う戻ってくるし、そのインクは安くなかった。",
+          "2": "俺の後にこれを継ぐ者への覚書。猪を数えよ、狼を数えよ、日を数えよ。緑だけは数えるな。あれは数え返してくる。そして、こちらが止まったところでは止まらん。"
+        }
+      },
+      "keepers_marginalia": {
+        "title": "守り手の欄外書き",
+        "pages": {
+          "0": "賛美歌のすり切れた聖歌集の余白に残されていた。その筆跡は速い、歩きながら書く手が速いのと同じように。",
+          "1": "狼どもは木立の際から休閑地を回る。いつも同じ輪、いつも右回り。長く回れば、回っている相手の形を覚える。俺もそうだ。そして大地も、そうなのだと思う。",
+          "2": "これを読んでいるなら、あんたは歩みを止めたわけだ。俺がついぞ覚えられなかった、たった一つのことをな。少し休め。外域は逃げやせん。それがまあ、外域の厄介なところなんだが。"
+        }
       }
     }
   },

@@ -12,9 +12,21 @@ const hollowEntitiesEn = {
   items: {
     cave_morsel: { name: 'Cave Morsel' },
     emberbulb: { name: 'Emberbulb' },
-    first_cutting: { name: 'A Cutting' },
+    first_cutting: {
+      name: 'A Cutting',
+      // PHAA-474: the item carries no in-bag 'use' action yet (click still routes
+      // to the destroy prompt by the quest-kind branch in src/ui/bags_view.ts).
+      // The intended mechanic is a Homestead v0 planting once the world-editing
+      // follow-up to PHAA-417 lands; until then, this tooltip line is the player's
+      // breadcrumb that the cutting has purpose and is not junk.
+      flavorText:
+        'A slip of living green from Brother Greenpaw, wrapped in damp moss. Once ' +
+        'a homestead plot can be edited, this is the first thing you plant.',
+    },
     greenpaw_bead: { name: 'A Bead From the Bandolier' },
     keeper_coal: { name: 'A Coal That Never Cooled' },
+    // PHAA-558: kept identical to the sim record in src/sim/content/hollow.ts.
+    willow_sprig: { name: 'A Willow Sprig' },
     witness_root_cincture: { name: "The Witness-Root's Cincture" },
     shrine_diary_page: {
       name: 'Torn Diary Page',
@@ -23,11 +35,35 @@ const hollowEntitiesEn = {
         'here does not forget Him, even if He has forgotten this place. If the ' +
         'heron circles low, tell the Verger the wick still burns...',
     },
+    heartwood_splinter: {
+      name: 'Heartwood Splinter',
+      flavorText: 'Warm to the touch, long after the tree it came from stopped moving.',
+    },
+    bloomcrown_pauldrons: { name: 'Bloomcrown Pauldrons' },
+    verdantguard_mantle: { name: 'Verdantguard Mantle' },
+    // PHAA-560 (tribe-mystery breadcrumb): kept identical to the sim record in
+    // src/sim/content/hollow.ts; non-Latin fills live in src/ui/i18n.locales/.
+    worn_prayer_token: {
+      name: 'Worn Prayer Token',
+      flavorText:
+        "...smooth on one face from a thumb that isn't mine, worn the same shallow " +
+        'groove into a hundred more like it before this one, or so the pile down ' +
+        "here would have you believe. one thumb doesn't wear a hundred tokens. a " +
+        'lot of thumbs wear one groove, though...',
+    },
+    tally_shard: {
+      name: 'Tally-Marked Shard',
+      flavorText:
+        '...marks in fives, scratched deep, crossed each time the count came round. ' +
+        'hundreds of fives before the crossing stops, and the last row was never ' +
+        'finished...',
+    },
   },
   mobs: {
     palefeeder: { name: 'Palefeeder' },
     rootmaw: { name: 'Rootmaw' },
     the_witness_root: { name: 'The Witness-Root' },
+    heartwood_colossus: { name: 'Heartwood Colossus' },
   },
   npcs: {
     brother_greenpaw: {
@@ -62,6 +98,30 @@ const hollowEntitiesEn = {
       title: 'The Wandering Keeper',
       greeting:
         'Faddick. Sexton, where there is still a shrine to sexton. I do not stay anywhere; I keep. Wolves have circled the flock at Fallow Acres every night, and a thing that circles long enough learns the shape of what it circles. Best it stays a flock.',
+    },
+    // PHAA-558: kept identical to the sim records in src/sim/content/hollow_zone.ts;
+    // non-Latin fills live in src/ui/i18n.locales/<lang>.ts (maintainer-refined).
+    shade: {
+      name: 'Shade',
+      title: 'A Traveler',
+      greeting:
+        "Oh, it's you. Sit if you like, the water's not going anywhere. Have you eaten today? You should eat.",
+      introLines: {
+        0: "You caught me at my chores. Don't mind the can, it's only water. There's always something somewhere that wants a little water.",
+        1: 'Me? Nobody much. Shade. I walk, I lend a hand where hands are short. You look worn through. Sit a moment, if you like.',
+      },
+    },
+    gate_bard: {
+      name: 'Halden the Bard',
+      title: 'Player at the Gate',
+      greeting:
+        "A copper for a song? No? That's all right, most days it's no. I play for the gate, and the gate's never once reached for its purse.",
+    },
+    goodwife_orla: {
+      name: 'Orla',
+      title: 'Once of Root Hollow',
+      greeting:
+        "You can sit. Most walk on. The Verger crossed my name off his register a long while back, and a crossed name learns to keep quiet so nobody has to be reminded it's still here.",
     },
   },
   quests: {
@@ -134,11 +194,14 @@ const hollowEntitiesEn = {
         'Five. Counted, dated, and entered in the register. Root Hollow is now only a fortnight behind its own season, which in this office we call a triumph. My thanks, on behalf of an order that is, at present, me.',
       objectives: { 0: { label: 'Wild Boar slain' } },
     },
+    // PHAA-560: the closing aside about the register is new (a tribe-mystery
+    // breadcrumb); kept identical to the sim record in
+    // src/sim/content/hollow_zone.ts, non-Latin fills live in src/ui/i18n.locales/.
     q_root_hollow_boars_ii: {
       title: "Root Hollow's Reckoning",
       text: 'I will admit what the office discourages admitting: five was optimistic. The lower dens keep pushing up more. Eight further, and I can close the season without amending the record a third time. The record resents amendment. So do I.',
       completion:
-        'Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me.',
+        'Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me. The register itself is older than that arrangement, bound in a hand I have never met, keeping a count I choose not to add. Someone was thorough here, once. I only try to keep pace.',
       objectives: { 0: { label: 'Wild Boar slain' } },
     },
     q_fallow_acres_wolves: {
@@ -155,6 +218,22 @@ const hollowEntitiesEn = {
         'There. A quiet night, and perhaps a hundred behind it. Build well. And if you ever dig deep enough to hear something down there keeping slow time, do not answer it. That part is mine to keep; I carry the key for it. Go on, now.',
       objectives: { 0: { label: 'Forest Wolf slain' } },
     },
+    // PHAA-558: kept identical to the sim records in src/sim/content/hollow_zone.ts;
+    // non-Latin fills live in src/ui/i18n.locales/<lang>.ts (maintainer-refined).
+    q_have_you_eaten: {
+      title: 'Have You Eaten?',
+      text: "There's a bard at the gate who plays for coppers and eats when the coppers come, which isn't often. I've got a bowl warm and one to spare. Carry it down to him, would you? And don't tell him it was pity. Tell him it was extra.",
+      completion:
+        "You're back. Did he eat? Good. That's good. And did you? ... You didn't, I can see it. Sit, then. You don't have to be great to be something good. Greatness isn't kindness. Eat.",
+      objectives: { 0: { label: 'Warm meal carried to the bard' } },
+    },
+    q_someone_your_own_size: {
+      title: 'Someone Your Own Size',
+      text: "There's a woman near Root Hollow the world has been unkind to. Her name was struck from the register, and people treat a struck name like it can't hear. Go and sit with her a while. You don't have to fix anything. Just be someone her own size.",
+      completion:
+        "You stayed. She won't say it mattered, but it did, I promise you it did. Here, this is for you. A sprig off a willow I'm fond of. It does nothing at all. It only remembers that you were kind when nothing made you.",
+      objectives: { 0: { label: 'Sat a while with Orla' } },
+    },
   },
   dungeons: {
     the_hollow: {
@@ -168,6 +247,28 @@ const hollowEntitiesEn = {
       name: 'The Under-Shrine',
       enterText: 'You descend below the shrine into cool, still dark.',
       leaveText: 'You climb back up into the warm air above.',
+    },
+  },
+  // World-placed readable books (PHAA-552). The resolver reads this English
+  // source (the reader UI calls tEntity via the `readable` kind); it is kept
+  // byte-identical to the sim record in src/sim/content/readables.ts, and the
+  // non-Latin fills live in src/ui/i18n.locales/<lang>.ts.
+  readables: {
+    torn_ledger_page: {
+      title: 'A Torn Ledger',
+      pages: {
+        0: 'Root Hollow, entered to rest. Fallow Acres, entered to rest. The lake at Mossbank, which rests whether we enter it or not. Signed and dated, as the register wants.',
+        1: 'Tally of the season so far: three seedlings up through the road stones, which is not on any calendar of mine. I have stopped scratching them out. They come back faster than the ink dries, and the ink was not cheap.',
+        2: 'A note to whoever keeps this after me. Count the boars, count the wolves, count the days. Do not count the green. It counts back, and it does not stop where you do.',
+      },
+    },
+    keepers_marginalia: {
+      title: "A Keeper's Marginalia",
+      pages: {
+        0: 'Left in the margin of a hymnbook with the hymns worn out of it. The hand is quick, the way a hand is quick when it writes while walking.',
+        1: 'The wolves circle Fallow Acres from the tree line, always the same ring, always sunwise. A thing that circles long enough learns the shape of what it circles. So do I. So, I think, does the ground.',
+        2: 'If you are reading this you have stopped walking, which is the one thing I never learned to do. Rest a moment. The Reaches will still be here. That is rather the whole trouble with it.',
+      },
     },
   },
 };
