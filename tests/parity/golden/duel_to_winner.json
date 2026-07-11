@@ -29,7 +29,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 404,
-      "state": "24a6f482",
+      "state": "6bda8aa0",
       "events": "d565cc79",
       "rng": {
         "draws": 0,
@@ -40,7 +40,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 404,
-      "state": "05a9f83e",
+      "state": "76de6d38",
       "events": "f5fe7c92",
       "rng": {
         "draws": 0,
@@ -51,7 +51,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 404,
-      "state": "e7ae80fa",
+      "state": "0765d23c",
       "events": "d191ff6c",
       "rng": {
         "draws": 78,
@@ -62,7 +62,7 @@
       "tick": 61,
       "time": 3.05,
       "nextId": 404,
-      "state": "7d9b3c64",
+      "state": "569e4766",
       "events": "ff98fcb9",
       "rng": {
         "draws": 84,
@@ -75,12 +75,19 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
+          "dialogState": {},
           "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
@@ -88,7 +95,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -99,12 +105,19 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
+          "dialogState": {},
           "entityId": 403,
           "equipment": {
             "chest": "apprentice_robe",
@@ -112,7 +125,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -146,7 +158,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -196,7 +207,6 @@
           "potionCooldownUntil": -1,
           "resource": 195,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -224,7 +234,7 @@
       "tick": 61,
       "time": 3.05,
       "nextId": 404,
-      "state": "a338d3a2",
+      "state": "6619adaa",
       "events": "0901cf8c",
       "rng": {
         "draws": 84,
@@ -237,12 +247,19 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
+          "dialogState": {},
           "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
@@ -250,7 +267,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -261,12 +277,19 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
+          "dialogState": {},
           "entityId": 403,
           "equipment": {
             "chest": "apprentice_robe",
@@ -274,7 +297,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -308,7 +330,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -358,7 +379,6 @@
           "potionCooldownUntil": -1,
           "resource": 195,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -386,7 +406,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 404,
-      "state": "b74a2592",
+      "state": "ad6aa82e",
       "events": "741638a5",
       "rng": {
         "draws": 160,
@@ -397,7 +417,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 404,
-      "state": "0e0c5e8e",
+      "state": "3bca97a2",
       "events": "741638a5",
       "rng": {
         "draws": 286,
@@ -408,7 +428,7 @@
       "tick": 101,
       "time": 5.05,
       "nextId": 404,
-      "state": "e1017908",
+      "state": "242e5cc8",
       "events": "741638a5",
       "rng": {
         "draws": 288,
@@ -421,12 +441,19 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
+          "dialogState": {},
           "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
@@ -434,7 +461,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -445,12 +471,19 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
+          "dialogState": {},
           "entityId": 403,
           "equipment": {
             "chest": "apprentice_robe",
@@ -458,7 +491,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -492,7 +524,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -542,7 +573,6 @@
           "potionCooldownUntil": -1,
           "resource": 195,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,

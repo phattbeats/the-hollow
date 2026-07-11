@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "324da19e",
+      "state": "a3ebd0c8",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -29,12 +29,19 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
+          "dialogState": {},
           "entityId": 402,
           "equipment": {
             "chest": "apprentice_robe",
@@ -42,7 +49,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -78,7 +84,6 @@
           "potionCooldownUntil": -1,
           "resource": 155,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -106,7 +111,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 403,
-      "state": "6d837c9e",
+      "state": "ba9efc2a",
       "events": "fb1b34b8",
       "rng": {
         "draws": 0,
@@ -117,7 +122,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 403,
-      "state": "6c63372c",
+      "state": "486c5ee8",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -128,7 +133,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 403,
-      "state": "45be9ecb",
+      "state": "a15e5aa3",
       "events": "741638a5",
       "rng": {
         "draws": 105,
@@ -139,7 +144,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 403,
-      "state": "fc5efbb6",
+      "state": "bf6b9e22",
       "events": "741638a5",
       "rng": {
         "draws": 187,
@@ -150,7 +155,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 404,
-      "state": "620e7406",
+      "state": "f5f2e932",
       "events": "ddd3233d",
       "rng": {
         "draws": 275,
@@ -161,7 +166,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 405,
-      "state": "c31cf712",
+      "state": "c532115c",
       "events": "d55caea5",
       "rng": {
         "draws": 376,
@@ -172,7 +177,7 @@
       "tick": 140,
       "time": 7,
       "nextId": 405,
-      "state": "c1fcb1f1",
+      "state": "7dba178f",
       "events": "029a1ff0",
       "rng": {
         "draws": 516,
@@ -183,7 +188,7 @@
       "tick": 160,
       "time": 8,
       "nextId": 405,
-      "state": "32eb6626",
+      "state": "60aa23e2",
       "events": "80860ea8",
       "rng": {
         "draws": 654,
@@ -194,7 +199,7 @@
       "tick": 180,
       "time": 9,
       "nextId": 405,
-      "state": "a0bae940",
+      "state": "1da5bd28",
       "events": "9694e1ef",
       "rng": {
         "draws": 800,
@@ -205,7 +210,7 @@
       "tick": 200,
       "time": 10,
       "nextId": 405,
-      "state": "b3497e89",
+      "state": "08f7ff01",
       "events": "556d59d5",
       "rng": {
         "draws": 942,
@@ -216,7 +221,7 @@
       "tick": 220,
       "time": 11,
       "nextId": 405,
-      "state": "313b3f11",
+      "state": "803dffb5",
       "events": "9694e1ef",
       "rng": {
         "draws": 1041,
@@ -227,7 +232,7 @@
       "tick": 220,
       "time": 11,
       "nextId": 405,
-      "state": "df25023f",
+      "state": "3e04e7c9",
       "events": "741638a5",
       "rng": {
         "draws": 1041,
@@ -240,6 +245,12 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warlock",
           "companionUpgrades": {},
@@ -248,6 +259,7 @@
           },
           "delveClears": {},
           "delveDaily": {},
+          "dialogState": {},
           "entityId": 402,
           "equipment": {
             "chest": "apprentice_robe",
@@ -256,7 +268,6 @@
           "gatheringProficiency": {},
           "lifetimeXp": 44000,
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -295,7 +306,6 @@
           "potionCooldownUntil": -1,
           "resource": 845,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -348,7 +358,6 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 4,
             "y": 1.5,
@@ -399,7 +408,6 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 7,
             "y": 1.5,
@@ -434,7 +442,7 @@
       "tick": 224,
       "time": 11.2,
       "nextId": 405,
-      "state": "fc814fa2",
+      "state": "796027dc",
       "events": "b9c4eb1e",
       "rng": {
         "draws": 1057,
@@ -447,6 +455,12 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warlock",
           "companionUpgrades": {},
@@ -455,6 +469,7 @@
           },
           "delveClears": {},
           "delveDaily": {},
+          "dialogState": {},
           "entityId": 402,
           "equipment": {
             "chest": "apprentice_robe",
@@ -463,7 +478,6 @@
           "gatheringProficiency": {},
           "lifetimeXp": 44000,
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -502,7 +516,6 @@
           "potionCooldownUntil": -1,
           "resource": 845,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -556,7 +569,6 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 4,
             "y": 1.5,
@@ -608,7 +620,6 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 7,
             "y": 1.5,

@@ -291,6 +291,9 @@ export const fr_FR: EnTranslations = {
       "lessThanMinute": "<1min",
       "lockedToast": "Vous êtes verrouillé sur {raid}. Déverrouillage dans {time}."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "N",
       "NE": "NE",
@@ -629,6 +632,13 @@ export const fr_FR: EnTranslations = {
       "unassigned": "{item} n a pas ete attribue et devient libre pour tous.",
       "leaderOnly": "Seul le chef de groupe peut changer le mode de butin."
     },
+    "lootRollGroup": {
+      "pending": "Waiting...",
+      "need": "Need",
+      "greed": "Greed",
+      "pass": "Pass",
+      "aria": "Group roll status for {item}"
+    },
     "bags": {
       "filterGroupAria": "Filtrer les sacs par catégorie",
       "filterAll": "Tous",
@@ -643,7 +653,12 @@ export const fr_FR: EnTranslations = {
       "sortName": "Nom",
       "searchPlaceholder": "Rechercher des objets",
       "searchAria": "Rechercher les objets du sac par nom",
-      "noMatch": "Aucun objet ne correspond à vos filtres."
+      "noMatch": "Aucun objet ne correspond à vos filtres.",
+      "capacity": "{used}/{total}",
+      "capacityAria": "Bag slots used: {used} of {total}",
+      "backpack": "Backpack",
+      "socketEmpty": "Empty bag slot",
+      "unequipHint": "Click to remove this bag"
     },
     "raidConvert": {
       "toPartyDone": "Votre raid a été reconverti en groupe.",
@@ -2355,6 +2370,13 @@ export const fr_FR: EnTranslations = {
       "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <slot>.",
       "helpLine": "Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>."
     },
+    "bags": {
+      "full": "Your bags are full.",
+      "socketsFull": "All your bag slots are full.",
+      "swapTooManyItems": "You have too many items to swap to that bag.",
+      "removeTooManyItems": "You have too many items to remove that bag.",
+      "tradeSpace": "Trade failed: not enough bag space."
+    },
     "bank": {
       "tooFar": "You are too far from the banker.",
       "noQuestItems": "You cannot store quest items in the bank.",
@@ -3713,7 +3735,8 @@ export const fr_FR: EnTranslations = {
       "drink": "Boisson",
       "tool": "Outil",
       "potion": "Potion",
-      "elixir": "Élixir"
+      "elixir": "Élixir",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "Armure",
@@ -3755,7 +3778,8 @@ export const fr_FR: EnTranslations = {
       "useManaPotion": "Utiliser : rend instantanément {amount} mana. Utilisable en combat. Recharge de 1 min.",
       "clickUseInstant": "Cliquer pour utiliser instantanément en combat",
       "clickUse": "Cliquer pour utiliser",
-      "clickBuyback": "Cliquer pour racheter"
+      "clickBuyback": "Cliquer pour racheter",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "Requires level {level} to equip."
@@ -5040,6 +5064,21 @@ export const fr_FR: EnTranslations = {
       "monarch_crown_helm": {
         "name": "Couronne du Monarque"
       },
+      "linen_pouch": {
+        "name": "Bourse en Lin"
+      },
+      "travelers_knapsack": {
+        "name": "Havresac du Voyageur"
+      },
+      "wolfhide_satchel": {
+        "name": "Sacoche en Peau de Loup"
+      },
+      "gravewoven_bag": {
+        "name": "Sac Tissé des Tombes"
+      },
+      "mistcallers_duffel": {
+        "name": "Sac Marin de Mistcaller"
+      },
       "bristleback_maul": {
         "name": "Maillet Bristleback"
       },
@@ -5397,6 +5436,16 @@ export const fr_FR: EnTranslations = {
       "shrine_diary_page": {
         "name": "Page de Journal Déchirée",
         "flavorText": "...j'ai compté quarante jours à la chandelle avant de perdre le fil. L'obscurité d'ici-bas ne L'oublie pas, même s'Il a oublié cet endroit. Si le héron plane bas, dis au Sacristain que la mèche brûle encore..."
+      },
+      "heartwood_splinter": {
+        "name": "Écharde de Duramen",
+        "flavorText": "Chaude au toucher, longtemps après que l'arbre dont elle provient ait cessé de bouger."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Épaulières de la Couronne Fleurie"
+      },
+      "verdantguard_mantle": {
+        "name": "Manteau du Gardien Verdoyant"
       },
       "worn_prayer_token": {
         "name": "Worn Prayer Token",
@@ -5860,6 +5909,9 @@ export const fr_FR: EnTranslations = {
       },
       "the_witness_root": {
         "name": "La Racine témoin"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {

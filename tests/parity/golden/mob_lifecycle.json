@@ -10,8 +10,8 @@
     "corpse-tick -> respawnMob: a slain wild mob respawns at spawnPos (rng.range(2,8) wanderTimer) and despawnSummonedAdds drops its summoned add",
     "corpse-tick gate: a dungeon mob (spawnPos.x > DUNGEON_X_THRESHOLD) stays dead, no respawn"
   ],
-  "draws": 17,
-  "drawDigest": "842e046e",
+  "draws": 20,
+  "drawDigest": "1208d7e8",
   "frames": [
     {
       "tick": 0,
@@ -31,11 +31,11 @@
       "tick": 0,
       "time": 0,
       "nextId": 407,
-      "state": "81e26545",
+      "state": "d6819173",
       "events": "0b7b6cc8",
       "rng": {
-        "draws": 4,
-        "digest": "52d75c7a"
+        "draws": 5,
+        "digest": "787c6302"
       },
       "label": "pack-frenzy",
       "players": [
@@ -43,6 +43,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -53,6 +59,7 @@
           },
           "delveClears": {},
           "delveDaily": {},
+          "dialogState": {},
           "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
@@ -61,7 +68,6 @@
           "gatheringProficiency": {},
           "lifetimeXp": 84,
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -97,7 +103,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -158,7 +163,6 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 25,
-          "sex": "m",
           "spawnPos": {
             "x": 5,
             "y": 1.5,
@@ -219,7 +223,6 @@
             "z": 1
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 7,
             "y": 1.5,
@@ -285,7 +288,6 @@
             "z": 1
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 9,
             "y": 1.5,
@@ -332,7 +334,6 @@
             "z": 2
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 6,
             "y": 1.5,
@@ -354,11 +355,11 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "91f57786",
+      "state": "fa8de180",
       "events": "eecd019e",
       "rng": {
-        "draws": 7,
-        "digest": "9e9de02a"
+        "draws": 8,
+        "digest": "47072ea8"
       },
       "label": "throes-arm",
       "players": [
@@ -366,6 +367,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -376,6 +383,7 @@
           },
           "delveClears": {},
           "delveDaily": {},
+          "dialogState": {},
           "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
@@ -384,7 +392,6 @@
           "gatheringProficiency": {},
           "lifetimeXp": 198,
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -420,7 +427,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -481,7 +487,6 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 25,
-          "sex": "m",
           "spawnPos": {
             "x": 5,
             "y": 1.5,
@@ -542,7 +547,6 @@
             "z": 1
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 7,
             "y": 1.5,
@@ -608,7 +612,6 @@
             "z": 1
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 9,
             "y": 1.5,
@@ -655,7 +658,6 @@
             "z": 2
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 6,
             "y": 1.5,
@@ -690,7 +692,7 @@
           },
           "level": 10,
           "loot": {
-            "copper": 54,
+            "copper": 31,
             "items": [
               {
                 "count": 1,
@@ -714,7 +716,6 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 25,
-          "sex": "m",
           "spawnPos": {
             "x": 4,
             "y": 1.5
@@ -736,11 +737,11 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "c658387a",
-      "events": "77fa92d1",
+      "state": "650c11c8",
+      "events": "4bf74722",
       "rng": {
-        "draws": 8,
-        "digest": "47072ea8"
+        "draws": 9,
+        "digest": "e7b7e07b"
       },
       "label": "throes-detonate",
       "players": [
@@ -748,17 +749,24 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
             "damageDealt": 2281,
-            "damageTaken": 15,
+            "damageTaken": 21,
             "kills": 2,
             "xpGained": 198
           },
           "delveClears": {},
           "delveDaily": {},
+          "dialogState": {},
           "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
@@ -767,7 +775,6 @@
           "gatheringProficiency": {},
           "lifetimeXp": 198,
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -784,7 +791,7 @@
           "dodgeChance": 0.06,
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
-          "hp": 999985,
+          "hp": 999979,
           "id": 402,
           "inCombat": true,
           "kind": "player",
@@ -802,9 +809,8 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
-          "resource": 1,
+          "resource": 1.4,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -865,7 +871,6 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 25,
-          "sex": "m",
           "spawnPos": {
             "x": 5,
             "y": 1.5,
@@ -926,7 +931,6 @@
             "z": 1
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 7,
             "y": 1.5,
@@ -992,7 +996,6 @@
             "z": 1
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 9,
             "y": 1.5,
@@ -1039,7 +1042,6 @@
             "z": 2
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 6,
             "y": 1.5,
@@ -1074,7 +1076,7 @@
           },
           "level": 10,
           "loot": {
-            "copper": 54,
+            "copper": 31,
             "items": [
               {
                 "count": 1,
@@ -1098,7 +1100,6 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 23.45,
-          "sex": "m",
           "spawnPos": {
             "x": 4,
             "y": 1.5
@@ -1120,11 +1121,11 @@
       "tick": 0,
       "time": 0,
       "nextId": 410,
-      "state": "9a480d3b",
+      "state": "22aed8c3",
       "events": "858ca89a",
       "rng": {
-        "draws": 13,
-        "digest": "5b776694"
+        "draws": 15,
+        "digest": "5ea2badb"
       },
       "label": "respawn",
       "players": [
@@ -1132,17 +1133,24 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
             "damageDealt": 3365,
-            "damageTaken": 15,
+            "damageTaken": 21,
             "kills": 3,
             "xpGained": 282
           },
           "delveClears": {},
           "delveDaily": {},
+          "dialogState": {},
           "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1151,7 +1159,6 @@
           "gatheringProficiency": {},
           "lifetimeXp": 282,
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1168,7 +1175,7 @@
           "dodgeChance": 0.06,
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
-          "hp": 999985,
+          "hp": 999979,
           "id": 402,
           "inCombat": true,
           "kind": "player",
@@ -1186,9 +1193,8 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
-          "resource": 1,
+          "resource": 1.4,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1249,7 +1255,6 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 25,
-          "sex": "m",
           "spawnPos": {
             "x": 5,
             "y": 1.5,
@@ -1310,7 +1315,6 @@
             "z": 1
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 7,
             "y": 1.5,
@@ -1376,7 +1380,6 @@
             "z": 1
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 9,
             "y": 1.5,
@@ -1423,7 +1426,6 @@
             "z": 2
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 6,
             "y": 1.5,
@@ -1458,7 +1460,7 @@
           },
           "level": 10,
           "loot": {
-            "copper": 54,
+            "copper": 31,
             "items": [
               {
                 "count": 1,
@@ -1482,7 +1484,6 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 23.45,
-          "sex": "m",
           "spawnPos": {
             "x": 4,
             "y": 1.5
@@ -1524,7 +1525,6 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": -0.05,
-          "sex": "m",
           "spawnPos": {
             "x": 300,
             "y": 40.856461,
@@ -1534,7 +1534,7 @@
             "armor": 40
           },
           "templateId": "forest_wolf",
-          "wanderTimer": 3.009523,
+          "wanderTimer": 6.967904,
           "weapon": {
             "max": 12,
             "min": 8,
@@ -1547,11 +1547,11 @@
       "tick": 0,
       "time": 0,
       "nextId": 411,
-      "state": "a95acc42",
+      "state": "7d44bd77",
       "events": "b23115ac",
       "rng": {
-        "draws": 17,
-        "digest": "842e046e"
+        "draws": 20,
+        "digest": "1208d7e8"
       },
       "label": "dungeon-stays-dead",
       "players": [
@@ -1559,17 +1559,24 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
             "damageDealt": 4449,
-            "damageTaken": 15,
+            "damageTaken": 21,
             "kills": 4,
             "xpGained": 366
           },
           "delveClears": {},
           "delveDaily": {},
+          "dialogState": {},
           "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1578,7 +1585,6 @@
           "gatheringProficiency": {},
           "lifetimeXp": 366,
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1595,7 +1601,7 @@
           "dodgeChance": 0.06,
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
-          "hp": 999985,
+          "hp": 999979,
           "id": 402,
           "inCombat": true,
           "kind": "player",
@@ -1613,9 +1619,8 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
-          "resource": 1,
+          "resource": 1.4,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1676,7 +1681,6 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 25,
-          "sex": "m",
           "spawnPos": {
             "x": 5,
             "y": 1.5,
@@ -1737,7 +1741,6 @@
             "z": 1
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 7,
             "y": 1.5,
@@ -1803,7 +1806,6 @@
             "z": 1
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 9,
             "y": 1.5,
@@ -1850,7 +1852,6 @@
             "z": 2
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 6,
             "y": 1.5,
@@ -1885,7 +1886,7 @@
           },
           "level": 10,
           "loot": {
-            "copper": 54,
+            "copper": 31,
             "items": [
               {
                 "count": 1,
@@ -1909,7 +1910,6 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 23.45,
-          "sex": "m",
           "spawnPos": {
             "x": 4,
             "y": 1.5
@@ -1951,7 +1951,6 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": -0.05,
-          "sex": "m",
           "spawnPos": {
             "x": 300,
             "y": 40.856461,
@@ -1961,7 +1960,7 @@
             "armor": 40
           },
           "templateId": "forest_wolf",
-          "wanderTimer": 3.009523,
+          "wanderTimer": 6.967904,
           "weapon": {
             "max": 12,
             "min": 8,
@@ -1988,7 +1987,7 @@
           },
           "level": 5,
           "loot": {
-            "copper": 11
+            "copper": 8
           },
           "lootFfaTimer": 59.95,
           "lootRecipientIds": [
@@ -2006,7 +2005,6 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": -0.05,
-          "sex": "m",
           "spawnPos": {
             "x": 700,
             "y": 37.271268,
@@ -2029,11 +2027,11 @@
       "tick": 0,
       "time": 0,
       "nextId": 411,
-      "state": "a95acc42",
+      "state": "7d44bd77",
       "events": "741638a5",
       "rng": {
-        "draws": 17,
-        "digest": "842e046e"
+        "draws": 20,
+        "digest": "1208d7e8"
       },
       "label": "final",
       "players": [
@@ -2041,17 +2039,24 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
             "damageDealt": 4449,
-            "damageTaken": 15,
+            "damageTaken": 21,
             "kills": 4,
             "xpGained": 366
           },
           "delveClears": {},
           "delveDaily": {},
+          "dialogState": {},
           "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
@@ -2060,7 +2065,6 @@
           "gatheringProficiency": {},
           "lifetimeXp": 366,
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2077,7 +2081,7 @@
           "dodgeChance": 0.06,
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
-          "hp": 999985,
+          "hp": 999979,
           "id": 402,
           "inCombat": true,
           "kind": "player",
@@ -2095,9 +2099,8 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
-          "resource": 1,
+          "resource": 1.4,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -2158,7 +2161,6 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 25,
-          "sex": "m",
           "spawnPos": {
             "x": 5,
             "y": 1.5,
@@ -2219,7 +2221,6 @@
             "z": 1
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 7,
             "y": 1.5,
@@ -2285,7 +2286,6 @@
             "z": 1
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 9,
             "y": 1.5,
@@ -2332,7 +2332,6 @@
             "z": 2
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 6,
             "y": 1.5,
@@ -2367,7 +2366,7 @@
           },
           "level": 10,
           "loot": {
-            "copper": 54,
+            "copper": 31,
             "items": [
               {
                 "count": 1,
@@ -2391,7 +2390,6 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 23.45,
-          "sex": "m",
           "spawnPos": {
             "x": 4,
             "y": 1.5
@@ -2433,7 +2431,6 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": -0.05,
-          "sex": "m",
           "spawnPos": {
             "x": 300,
             "y": 40.856461,
@@ -2443,7 +2440,7 @@
             "armor": 40
           },
           "templateId": "forest_wolf",
-          "wanderTimer": 3.009523,
+          "wanderTimer": 6.967904,
           "weapon": {
             "max": 12,
             "min": 8,
@@ -2470,7 +2467,7 @@
           },
           "level": 5,
           "loot": {
-            "copper": 11
+            "copper": 8
           },
           "lootFfaTimer": 59.95,
           "lootRecipientIds": [
@@ -2488,7 +2485,6 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": -0.05,
-          "sex": "m",
           "spawnPos": {
             "x": 700,
             "y": 37.271268,

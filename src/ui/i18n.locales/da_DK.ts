@@ -904,6 +904,11 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': 'Iturevet Dagbogsside',
   'entities.items.shrine_diary_page.flavorText':
     '...talte fyrre dage ved stearinlys, før jeg mistede tråden. Mørket hernede glemmer Ham ikke, selvom Han har glemt dette sted. Hvis hejren kredser lavt, så sig til Degnen at vægen stadig brænder...',
+  'entities.items.linen_pouch.name': 'Lærredspose',
+  'entities.items.travelers_knapsack.name': 'Rejsendes Rygsæk',
+  'entities.items.wolfhide_satchel.name': 'Ulveskinds Taske',
+  'entities.items.gravewoven_bag.name': 'Gravvævet Taske',
+  'entities.items.mistcallers_duffel.name': 'Mistcallers Sømandssæk',
   'entities.items.footpad_jerkin.name': 'Stratenrøvers Vams',
   'entities.items.forest_pink_armor_plate.name': 'Skovgrøn Lyserød',
   'entities.items.frayed_prayer_beads.name': 'Flossede Bønneperler',
@@ -1200,6 +1205,11 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.old_cragmaw.name': 'Gamle Klippekæft',
   'entities.mobs.old_greyjaw.name': 'Gamle Gråkæft',
   'entities.mobs.pale_choir_acolyte.name': 'Akolyt af Det Blege Kor',
+  'entities.items.heartwood_splinter.name': 'Kærnetræsplint',
+  'entities.items.heartwood_splinter.flavorText':
+    'Varm at røre ved, længe efter at træet, den kom fra, holdt op med at bevæge sig.',
+  'entities.items.bloomcrown_pauldrons.name': 'Blomsterkronede Skulderplader',
+  'entities.items.verdantguard_mantle.name': 'Frodig Vogterkappe',
   'entities.mobs.palefeeder.name': 'Blegæder',
   'entities.mobs.pearlguard_sentinel.name': 'Perlevogter-Skildvagt',
   'entities.mobs.raised_bonewalker.name': 'Genopvakt Benvandrer',

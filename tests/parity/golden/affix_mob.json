@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "bde832dc",
+      "state": "de745ac6",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -29,12 +29,19 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
+          "dialogState": {},
           "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
@@ -42,7 +49,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -77,7 +83,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -105,7 +110,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 405,
-      "state": "5ee5910b",
+      "state": "fa0efd4d",
       "events": "b903a20b",
       "rng": {
         "draws": 15,
@@ -116,7 +121,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 405,
-      "state": "8be79216",
+      "state": "0f9ba7ba",
       "events": "26ce9e97",
       "rng": {
         "draws": 32,
@@ -127,7 +132,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 405,
-      "state": "b4e9cd47",
+      "state": "494df465",
       "events": "3701c274",
       "rng": {
         "draws": 63,
@@ -140,6 +145,12 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -149,6 +160,7 @@
           },
           "delveClears": {},
           "delveDaily": {},
+          "dialogState": {},
           "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
@@ -157,7 +169,6 @@
           "gatheringProficiency": {},
           "lifetimeXp": 54100,
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -213,7 +224,6 @@
           "potionCooldownUntil": -1,
           "resource": 14.076923,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -282,7 +292,6 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 4,
             "y": 1.5,
@@ -334,7 +343,6 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "y": 1.5,
             "z": -2
@@ -357,7 +365,7 @@
       "tick": 54,
       "time": 2.7,
       "nextId": 405,
-      "state": "ec18a0a6",
+      "state": "eee1b4a8",
       "events": "741638a5",
       "rng": {
         "draws": 77,
@@ -370,6 +378,12 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -379,6 +393,7 @@
           },
           "delveClears": {},
           "delveDaily": {},
+          "dialogState": {},
           "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
@@ -387,7 +402,6 @@
           "gatheringProficiency": {},
           "lifetimeXp": 54100,
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -444,7 +458,6 @@
           "potionCooldownUntil": -1,
           "resource": 14.076923,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -514,7 +527,6 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 4,
             "y": 1.5,
@@ -566,7 +578,6 @@
             "z": -2
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "y": 1.5,
             "z": -2

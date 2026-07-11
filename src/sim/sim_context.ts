@@ -237,6 +237,10 @@ export interface SimContextCallbacks {
   fiestaTakedown(match: ArenaMatch, killerPid: number, victim: Entity): void;
   fiestaDown(match: ArenaMatch, victim: Entity, killerPid: number | null): void;
   rollLoot(mob: Entity, meta: PlayerMeta, eligible?: PlayerMeta[]): void;
+  // World-boss personal loot (PHAA-494): an independent roll per contributor,
+  // gated by that player's world-boss lockout. Bound to world_boss.ts's
+  // rollWorldBossLoot via a thin Sim delegate, mirroring rollLoot above.
+  rollWorldBossLoot(mob: Entity, contributors: PlayerMeta[]): void;
 
   // C2/C3/C4b heal, aura, knockback, and crowd-control surface.
   applyHeal(source: Entity, target: Entity, amount: number, ability: string): void;
@@ -581,6 +585,10 @@ export interface SimContextCallbacks {
   // component tag's item a multi-tag corpse yields) routes through the seam
   // to the Gathering instance on Sim. Append-only, late-bound to Sim.
   gatherHarvestItemFor(componentTags: readonly string[]): string | null;
+  // Bags (src/sim/bags.ts): the capacity pre-check every blocking command path
+  // calls before granting (buy/loot/pickup/fish/conjure/collect/trade/turn-in).
+  // Stays on Sim next to the addItem/removeItem/countItem inventory hub.
+  canAddItem(itemId: string, count: number, pid?: number): boolean;
 }
 
 // The seam consumed by extracted modules.
@@ -772,6 +780,7 @@ export function createSimContext(host: SimContextHost): SimContext {
     fiestaTakedown: host.fiestaTakedown,
     fiestaDown: host.fiestaDown,
     rollLoot: host.rollLoot,
+    rollWorldBossLoot: host.rollWorldBossLoot,
     applyHeal: host.applyHeal,
     spellCrit: host.spellCrit,
     applyAura: host.applyAura,
@@ -923,5 +932,7 @@ export function createSimContext(host: SimContextHost): SimContext {
     homesteadChat: host.homesteadChat,
     // Gathering v0 (PHAA-504): the corpse-harvest item-selection rng draw.
     gatherHarvestItemFor: host.gatherHarvestItemFor,
+    // Bags capacity pre-check (stays on Sim next to the inventory hub).
+    canAddItem: host.canAddItem,
   };
 }

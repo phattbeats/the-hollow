@@ -16,6 +16,11 @@ import type { TranslationKey } from '../i18n.catalog';
 export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.spectate.banner': 'Наблюдение за {name}',
   'hudChrome.loot.chestTitle': 'Сундук',
+  'hudChrome.lootRollGroup.pending': 'Ожидание...',
+  'hudChrome.lootRollGroup.need': 'Нужда',
+  'hudChrome.lootRollGroup.greed': 'Жадность',
+  'hudChrome.lootRollGroup.pass': 'Пропуск',
+  'hudChrome.lootRollGroup.aria': 'Статус группового броска: {item}',
   'hudChrome.spellbook.addToBarAria': 'Добавить {name} на панель действий',
   'hudChrome.spellbook.removeFromBarAria': 'Убрать {name} с панели действий',
   'hudChrome.nameplate.mob': '[{level}] {name}',
@@ -3623,6 +3628,10 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.bags.searchPlaceholder': 'Поиск предметов',
   'hudChrome.bags.searchAria': 'Поиск предметов в сумках по названию',
   'hudChrome.bags.noMatch': 'Нет предметов, соответствующих фильтрам.',
+  'hudChrome.bags.capacityAria': 'Занято ячеек сумок: {used} из {total}',
+  'hudChrome.bags.backpack': 'Рюкзак',
+  'hudChrome.bags.socketEmpty': 'Пустая ячейка для сумки',
+  'hudChrome.bags.unequipHint': 'Нажмите, чтобы снять эту сумку',
   // Guide (/guide) localization.
   'guide.brand': 'World of ClaudeCraft',
   'guide.brandShort': 'ClaudeCraft',
@@ -4761,6 +4770,11 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': 'Обрывок страницы дневника',
   'entities.items.shrine_diary_page.flavorText':
     '...считал сорок дней при свече, пока не сбился со счёта. Тьма здесь, внизу, не забывает Его, даже если Он забыл это место. Если цапля пролетит низко, скажи пономарю, что фитиль всё ещё горит...',
+  'entities.items.linen_pouch.name': 'Льняная Сумка',
+  'entities.items.travelers_knapsack.name': 'Рюкзак Путника',
+  'entities.items.wolfhide_satchel.name': 'Сумка из Волчьей Шкуры',
+  'entities.items.gravewoven_bag.name': 'Могильная Сумка',
+  'entities.items.mistcallers_duffel.name': 'Баул Мистколлера',
   'entities.items.worn_prayer_token.name': 'Потёртый молитвенный жетон',
   'entities.items.worn_prayer_token.flavorText':
     '...с одной стороны отполирован не моим большим пальцем, та же неглубокая бороздка, что и на добрых сотне таких же в этой груде, если верить самой груде. один палец не сотрёт сотню жетонов. а вот множество пальцев одну бороздку, вполне могут...',
@@ -4774,6 +4788,11 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_gravecall_acolyte.name': 'Аколит могильного зова',
   'entities.mobs.reliquary_ledger_wraith.name': 'Книжный призрак',
   'entities.mobs.reliquary_saintless_effigy.name': 'Изваяние без святого',
+  'entities.items.heartwood_splinter.name': 'Щепка сердцевины',
+  'entities.items.heartwood_splinter.flavorText':
+    'Тёплая на ощупь, долго после того, как дерево, из которого она взята, перестало двигаться.',
+  'entities.items.bloomcrown_pauldrons.name': 'Наплечники Цветущей Короны',
+  'entities.items.verdantguard_mantle.name': 'Мантия Зелёного Стража',
   'entities.mobs.palefeeder.name': 'Бледнопитающийся',
   'entities.mobs.rootmaw.name': 'Корнепасть',
   'entities.mobs.the_witness_root.name': 'Корень-Свидетель',
@@ -4892,6 +4911,11 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'delveUi.tracker.module': 'Секция {current} из {total}',
   'delveUi.tracker.objective': 'Задача',
   'delveUi.tracker.title': 'Вылазка',
+  'sim.bags.full': 'Ваши сумки полны.',
+  'sim.bags.socketsFull': 'Все ячейки для сумок заняты.',
+  'sim.bags.swapTooManyItems': 'У вас слишком много предметов, чтобы сменить эту сумку.',
+  'sim.bags.removeTooManyItems': 'У вас слишком много предметов, чтобы снять эту сумку.',
+  'sim.bags.tradeSpace': 'Обмен не удался: недостаточно места в сумках.',
   'sim.bank.cannotAfford': 'Вам не хватает средств на это расширение банка.',
   'sim.bank.expansionCapped': 'Ваш банк больше нельзя расширить.',
   'sim.bank.full': 'Ваш банк переполнен.',
@@ -4959,6 +4983,25 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'sim.hearth.noItems2':
     'На тебе одни добрые намерения, а? …добрыми намерениями печь не растопишь.',
   'sim.hearth.tooFar': 'Чтобы покормить брата Зеленолапа, нужно быть рядом с ним.',
+  'sim.homestead.alreadyOwn': 'У вас уже есть хутор.',
+  'sim.homestead.claimed': 'Эта земля ваша. Хутор застолблен.',
+  'sim.homestead.helpLine': 'Хутор: /homestead, /homestead claim.',
+  'sim.homestead.outsideArea':
+    'Это не хуторская земля. Попробуйте Fallow Acres, к западу от дороги.',
+  'sim.homestead.questGate':
+    'Брат Зеленолап еще не отправил вас в путь. Сперва закончите его поручения.',
+  'sim.homestead.readoutMine': 'Ваш хутор находится в точке ({x}, {z}).',
+  'sim.homestead.readoutNoHomesteadHint':
+    'У вас нет хутора. Встаньте на подходящем месте в Лощинных Плёсах и введите /homestead claim.',
+  'sim.homestead.readoutNoHomesteadQuest':
+    'У вас нет хутора. Закончите всю цепочку поручений брата Зеленолапа, чтобы получить его.',
+  'sim.homestead.tooCloseGate': 'Слишком близко к воротам. Отойдите дальше.',
+  'sim.homestead.tooCloseGraveyard': 'Слишком близко к кладбищу.',
+  'sim.homestead.tooCloseOther': 'Слишком близко к чужому хутору.',
+  'sim.homestead.tooCloseRoad': 'Слишком близко к дороге.',
+  'sim.homestead.tooCloseWater': 'Слишком близко к воде.',
+  'sim.homestead.tooCloseWildlife':
+    'Слишком близко к дикой живности. Расчистите округу или отойдите дальше.',
   'sim.house.alreadyOwn': 'У вас уже есть свой дом в Пустоши.',
   'sim.house.claimed': 'Этот дом теперь ваш. Украсьте его командой /house place <слот> <вид>.',
   'sim.house.cleared': 'Слот {slot} очищен.',

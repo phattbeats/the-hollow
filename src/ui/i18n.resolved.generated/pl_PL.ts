@@ -291,6 +291,9 @@ export const pl_PL: EnTranslations = {
       "lessThanMinute": "<1m",
       "lockedToast": "Jesteś przypisany do rajdu {raid}. Odblokowanie za {time}."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "Pn",
       "NE": "PnW",
@@ -629,6 +632,13 @@ export const pl_PL: EnTranslations = {
       "unassigned": "{item} nie zostal przydzielony i jest wolny dla wszystkich.",
       "leaderOnly": "Tylko przywodca grupy moze zmienic metode lupow."
     },
+    "lootRollGroup": {
+      "pending": "Waiting...",
+      "need": "Need",
+      "greed": "Greed",
+      "pass": "Pass",
+      "aria": "Group roll status for {item}"
+    },
     "bags": {
       "filterGroupAria": "Filtruj torby według kategorii",
       "filterAll": "Wszystko",
@@ -643,7 +653,12 @@ export const pl_PL: EnTranslations = {
       "sortName": "Nazwa",
       "searchPlaceholder": "Szukaj przedmiotów",
       "searchAria": "Szukaj przedmiotów w torbie według nazwy",
-      "noMatch": "Żaden przedmiot nie pasuje do filtrów."
+      "noMatch": "Żaden przedmiot nie pasuje do filtrów.",
+      "capacity": "{used}/{total}",
+      "capacityAria": "Bag slots used: {used} of {total}",
+      "backpack": "Backpack",
+      "socketEmpty": "Empty bag slot",
+      "unequipHint": "Click to remove this bag"
     },
     "raidConvert": {
       "toPartyDone": "Twój rajd został z powrotem przekształcony w drużynę.",
@@ -2355,6 +2370,13 @@ export const pl_PL: EnTranslations = {
       "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <slot>.",
       "helpLine": "Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>."
     },
+    "bags": {
+      "full": "Your bags are full.",
+      "socketsFull": "All your bag slots are full.",
+      "swapTooManyItems": "You have too many items to swap to that bag.",
+      "removeTooManyItems": "You have too many items to remove that bag.",
+      "tradeSpace": "Trade failed: not enough bag space."
+    },
     "bank": {
       "tooFar": "You are too far from the banker.",
       "noQuestItems": "You cannot store quest items in the bank.",
@@ -3713,7 +3735,8 @@ export const pl_PL: EnTranslations = {
       "drink": "Napój",
       "tool": "Narzędzie",
       "potion": "Mikstura",
-      "elixir": "Eliksir"
+      "elixir": "Eliksir",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "Pancerz",
@@ -3755,7 +3778,8 @@ export const pl_PL: EnTranslations = {
       "useManaPotion": "Użycie: Natychmiast przywraca {amount} many. Można użyć w walce. Czas odnowienia 1 min.",
       "clickUseInstant": "Kliknij, aby użyć natychmiast w walce",
       "clickUse": "Kliknij, aby użyć",
-      "clickBuyback": "Kliknij, aby odkupić"
+      "clickBuyback": "Kliknij, aby odkupić",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "Requires level {level} to equip."
@@ -5040,6 +5064,21 @@ export const pl_PL: EnTranslations = {
       "monarch_crown_helm": {
         "name": "Korona monarchy"
       },
+      "linen_pouch": {
+        "name": "Lniana Sakiewka"
+      },
+      "travelers_knapsack": {
+        "name": "Plecak Wędrowca"
+      },
+      "wolfhide_satchel": {
+        "name": "Torba z Wilczej Skóry"
+      },
+      "gravewoven_bag": {
+        "name": "Torba Utkana z Grobu"
+      },
+      "mistcallers_duffel": {
+        "name": "Worek Podróżny Mistcallera"
+      },
       "bristleback_maul": {
         "name": "Tłuk szczeciniastych"
       },
@@ -5397,6 +5436,16 @@ export const pl_PL: EnTranslations = {
       "shrine_diary_page": {
         "name": "Wydarta Strona z Dziennika",
         "flavorText": "...liczyłem czterdzieści dni przy świecy, zanim zgubiłem rachubę. Mrok tu, w dole, nie zapomina o Nim, choć On zapomniał o tym miejscu. Jeśli czapla zatoczy niski krąg, powiedz Zakrystianowi, że knot wciąż płonie..."
+      },
+      "heartwood_splinter": {
+        "name": "Drzazga Twardzieli",
+        "flavorText": "Ciepła w dotyku, długo po tym, jak drzewo, z którego pochodzi, przestało się poruszać."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Naramienniki Kwietnej Korony"
+      },
+      "verdantguard_mantle": {
+        "name": "Płaszcz Zielonego Strażnika"
       },
       "worn_prayer_token": {
         "name": "Worn Prayer Token",
@@ -5860,6 +5909,9 @@ export const pl_PL: EnTranslations = {
       },
       "the_witness_root": {
         "name": "Korzeń Świadek"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {

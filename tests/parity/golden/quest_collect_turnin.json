@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "67803c1f",
+      "state": "7cea99bb",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -28,12 +28,19 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
+          "dialogState": {},
           "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
@@ -41,7 +48,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -76,7 +82,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -104,7 +109,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "9f031c53",
+      "state": "669ecc79",
       "events": "39358c87",
       "rng": {
         "draws": 0,
@@ -116,12 +121,19 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
+          "dialogState": {},
           "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
@@ -141,7 +153,6 @@
               }
             ]
           ],
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -176,7 +187,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -204,7 +214,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "951cdace",
+      "state": "210d20cc",
       "events": "8b90544e",
       "rng": {
         "draws": 0,
@@ -216,6 +226,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -224,6 +240,7 @@
           },
           "delveClears": {},
           "delveDaily": {},
+          "dialogState": {},
           "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
@@ -249,7 +266,6 @@
               }
             ]
           ],
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -284,7 +300,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -312,7 +327,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "2576b9ab",
+      "state": "9ab00d77",
       "events": "2b3d24a9",
       "rng": {
         "draws": 0,
@@ -324,6 +339,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -332,6 +353,7 @@
           },
           "delveClears": {},
           "delveDaily": {},
+          "dialogState": {},
           "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
@@ -357,7 +379,6 @@
               }
             ]
           ],
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -392,7 +413,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -420,7 +440,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "46524d2d",
+      "state": "48828b41",
       "events": "685f0b8e",
       "rng": {
         "draws": 0,
@@ -432,6 +452,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -440,6 +466,7 @@
           },
           "delveClears": {},
           "delveDaily": {},
+          "dialogState": {},
           "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
@@ -465,7 +492,6 @@
               }
             ]
           ],
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -500,7 +526,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -528,7 +553,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "b9b5db88",
+      "state": "f632a998",
       "events": "da6adf62",
       "rng": {
         "draws": 0,
@@ -540,6 +565,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -551,6 +582,7 @@
           },
           "delveClears": {},
           "delveDaily": {},
+          "dialogState": {},
           "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
@@ -562,7 +594,6 @@
           "questsDone": [
             "q_boars"
           ],
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -598,7 +629,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -626,7 +656,7 @@
       "tick": 2,
       "time": 0.1,
       "nextId": 403,
-      "state": "acd24176",
+      "state": "8066c2be",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -638,6 +668,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -649,6 +685,7 @@
           },
           "delveClears": {},
           "delveDaily": {},
+          "dialogState": {},
           "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
@@ -660,7 +697,6 @@
           "questsDone": [
             "q_boars"
           ],
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -696,7 +732,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,

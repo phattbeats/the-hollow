@@ -291,6 +291,9 @@ export const it_IT: EnTranslations = {
       "lessThanMinute": "<1m",
       "lockedToast": "Sei bloccato in {raid}. Si sblocca tra {time}."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "N",
       "NE": "NE",
@@ -629,6 +632,13 @@ export const it_IT: EnTranslations = {
       "unassigned": "{item} non e stato assegnato ed e libero per tutti.",
       "leaderOnly": "Solo il capogruppo puo cambiare il metodo bottino."
     },
+    "lootRollGroup": {
+      "pending": "Waiting...",
+      "need": "Need",
+      "greed": "Greed",
+      "pass": "Pass",
+      "aria": "Group roll status for {item}"
+    },
     "bags": {
       "filterGroupAria": "Filtra le borse per categoria",
       "filterAll": "Tutti",
@@ -643,7 +653,12 @@ export const it_IT: EnTranslations = {
       "sortName": "Nome",
       "searchPlaceholder": "Cerca oggetti",
       "searchAria": "Cerca gli oggetti della borsa per nome",
-      "noMatch": "Nessun oggetto corrisponde ai tuoi filtri."
+      "noMatch": "Nessun oggetto corrisponde ai tuoi filtri.",
+      "capacity": "{used}/{total}",
+      "capacityAria": "Bag slots used: {used} of {total}",
+      "backpack": "Backpack",
+      "socketEmpty": "Empty bag slot",
+      "unequipHint": "Click to remove this bag"
     },
     "raidConvert": {
       "toPartyDone": "La tua incursione è tornata a essere un gruppo.",
@@ -2355,6 +2370,13 @@ export const it_IT: EnTranslations = {
       "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <slot>.",
       "helpLine": "Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>."
     },
+    "bags": {
+      "full": "Your bags are full.",
+      "socketsFull": "All your bag slots are full.",
+      "swapTooManyItems": "You have too many items to swap to that bag.",
+      "removeTooManyItems": "You have too many items to remove that bag.",
+      "tradeSpace": "Trade failed: not enough bag space."
+    },
     "bank": {
       "tooFar": "You are too far from the banker.",
       "noQuestItems": "You cannot store quest items in the bank.",
@@ -3713,7 +3735,8 @@ export const it_IT: EnTranslations = {
       "drink": "Bevanda",
       "tool": "Strumento",
       "potion": "Pozione",
-      "elixir": "Elisir"
+      "elixir": "Elisir",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "Armatura",
@@ -3755,7 +3778,8 @@ export const it_IT: EnTranslations = {
       "useManaPotion": "Uso: ripristina istantaneamente {amount} mana. Usabile in combattimento. Recupero 1 min.",
       "clickUseInstant": "Clicca per usare subito in combattimento",
       "clickUse": "Clicca per usare",
-      "clickBuyback": "Clicca per ricomprare"
+      "clickBuyback": "Clicca per ricomprare",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "Requires level {level} to equip."
@@ -5040,6 +5064,21 @@ export const it_IT: EnTranslations = {
       "monarch_crown_helm": {
         "name": "Corona del Monarca"
       },
+      "linen_pouch": {
+        "name": "Sacca di Lino"
+      },
+      "travelers_knapsack": {
+        "name": "Zaino del Viandante"
+      },
+      "wolfhide_satchel": {
+        "name": "Bisaccia in Pelle di Lupo"
+      },
+      "gravewoven_bag": {
+        "name": "Sacca Tessuta della Tomba"
+      },
+      "mistcallers_duffel": {
+        "name": "Sacca da Marinaio di Mistcaller"
+      },
       "bristleback_maul": {
         "name": "Maglio Bristleback"
       },
@@ -5397,6 +5436,16 @@ export const it_IT: EnTranslations = {
       "shrine_diary_page": {
         "name": "Pagina di Diario Strappata",
         "flavorText": "...ho contato quaranta giorni a lume di candela prima di perdere il filo. Il buio quaggiù non Lo dimentica, anche se Lui ha dimenticato questo luogo. Se l'airone vola basso, di' al Sagrestano che lo stoppino brucia ancora..."
+      },
+      "heartwood_splinter": {
+        "name": "Scheggia di Durame",
+        "flavorText": "Calda al tatto, molto tempo dopo che l'albero da cui proviene ha smesso di muoversi."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Spallacci della Corona in Fiore"
+      },
+      "verdantguard_mantle": {
+        "name": "Manto del Guardiano Verdeggiante"
       },
       "worn_prayer_token": {
         "name": "Worn Prayer Token",
@@ -5860,6 +5909,9 @@ export const it_IT: EnTranslations = {
       },
       "the_witness_root": {
         "name": "La Radice Testimone"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {

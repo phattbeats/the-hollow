@@ -15,7 +15,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "955540a3",
+      "state": "e1b400d7",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -28,12 +28,19 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "paladin",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
+          "dialogState": {},
           "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
@@ -41,7 +48,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -77,7 +83,6 @@
           "potionCooldownUntil": -1,
           "resource": 93,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -105,7 +110,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 404,
-      "state": "e8f8072a",
+      "state": "4f1a2e99",
       "events": "4ea738a0",
       "rng": {
         "draws": 6,
@@ -116,7 +121,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 404,
-      "state": "0d753a07",
+      "state": "5928f204",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -127,7 +132,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 404,
-      "state": "f12c639b",
+      "state": "06552396",
       "events": "8a314887",
       "rng": {
         "draws": 88,
@@ -138,7 +143,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 404,
-      "state": "80354054",
+      "state": "b0da00b9",
       "events": "741638a5",
       "rng": {
         "draws": 178,
@@ -149,7 +154,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 404,
-      "state": "cba1b2ba",
+      "state": "02233549",
       "events": "4df5c873",
       "rng": {
         "draws": 287,
@@ -160,7 +165,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 404,
-      "state": "e5337213",
+      "state": "2fc65908",
       "events": "741638a5",
       "rng": {
         "draws": 405,
@@ -171,7 +176,7 @@
       "tick": 140,
       "time": 7,
       "nextId": 404,
-      "state": "72dd0e8e",
+      "state": "e24df96d",
       "events": "978654a1",
       "rng": {
         "draws": 520,
@@ -182,7 +187,7 @@
       "tick": 160,
       "time": 8,
       "nextId": 404,
-      "state": "0f2a4114",
+      "state": "eb0e5e07",
       "events": "741638a5",
       "rng": {
         "draws": 645,
@@ -193,7 +198,7 @@
       "tick": 180,
       "time": 9,
       "nextId": 404,
-      "state": "f608ab41",
+      "state": "324215f2",
       "events": "852219a6",
       "rng": {
         "draws": 794,
@@ -204,7 +209,7 @@
       "tick": 200,
       "time": 10,
       "nextId": 404,
-      "state": "1237fe86",
+      "state": "56a9b4c9",
       "events": "741638a5",
       "rng": {
         "draws": 934,
@@ -215,7 +220,7 @@
       "tick": 201,
       "time": 10.05,
       "nextId": 404,
-      "state": "281fa42a",
+      "state": "f7b4de77",
       "events": "741638a5",
       "rng": {
         "draws": 935,
@@ -228,6 +233,12 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "paladin",
           "companionUpgrades": {},
@@ -237,6 +248,7 @@
           },
           "delveClears": {},
           "delveDaily": {},
+          "dialogState": {},
           "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
@@ -245,7 +257,6 @@
           "gatheringProficiency": {},
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -282,7 +293,6 @@
           "potionCooldownUntil": -1,
           "resource": 657,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -338,7 +348,6 @@
             "z": 1.015171
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,

@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "ec6fa92f",
+      "state": "e59ac6f7",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -29,12 +29,19 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
+          "dialogState": {},
           "entityId": 402,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -42,7 +49,6 @@
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -78,7 +84,6 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "energy",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -107,7 +112,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 417,
-      "state": "0a9dd0d4",
+      "state": "e75ec75f",
       "events": "d1850c43",
       "rng": {
         "draws": 3,
@@ -118,7 +123,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 417,
-      "state": "05104704",
+      "state": "93c1446f",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -129,7 +134,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 417,
-      "state": "3dc72e5e",
+      "state": "14f79fe9",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -140,7 +145,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 417,
-      "state": "71917ef8",
+      "state": "715f7cc3",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -151,7 +156,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 417,
-      "state": "519a0636",
+      "state": "ca616941",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -162,7 +167,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 417,
-      "state": "40334ad4",
+      "state": "c846c15f",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -173,7 +178,7 @@
       "tick": 69,
       "time": 3.45,
       "nextId": 418,
-      "state": "8b78ffde",
+      "state": "9400d169",
       "events": "7e4d23a3",
       "rng": {
         "draws": 3,
@@ -186,6 +191,12 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
@@ -196,6 +207,7 @@
           },
           "delveClears": {},
           "delveDaily": {},
+          "dialogState": {},
           "entityId": 402,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -204,7 +216,6 @@
           "gatheringProficiency": {},
           "lifetimeXp": 11398,
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -240,7 +251,6 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "energy",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -288,7 +298,6 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": -0.05,
-          "sex": "m",
           "spawnPos": {
             "x": 6000,
             "z": -1176
@@ -307,7 +316,7 @@
       "tick": 70,
       "time": 3.5,
       "nextId": 418,
-      "state": "4213e49a",
+      "state": "6a01e985",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -318,7 +327,7 @@
       "tick": 71,
       "time": 3.55,
       "nextId": 418,
-      "state": "9fba3aae",
+      "state": "0fb62999",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -331,6 +340,12 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
@@ -341,6 +356,7 @@
           },
           "delveClears": {},
           "delveDaily": {},
+          "dialogState": {},
           "entityId": 402,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -349,7 +365,6 @@
           "gatheringProficiency": {},
           "lifetimeXp": 11398,
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -385,7 +400,6 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "energy",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -433,7 +447,6 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": -0.05,
-          "sex": "m",
           "spawnPos": {
             "x": 6000,
             "z": -1176

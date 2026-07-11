@@ -95,6 +95,8 @@ const baseEnTable = {
   'log.partyLeft': '{name} has left the party.',
   'log.partyRemoved': '{name} has been removed from the party.',
   'loot.rollWin': '{winner} wins {item} ({roll})',
+  'loot.rollNeed': 'Need Roll - {roll} for {item} by {name}',
+  'loot.rollGreed': 'Greed Roll - {roll} for {item} by {name}',
   'loot.marketSellerBought':
     '{buyer} bought your {item} for {price} - collect {proceeds} from the Merchant.',
   'log.learnedAbility': 'You have learned a new ability: {name}.',
@@ -186,6 +188,11 @@ const baseEnTable = {
   'aura.offBalance': 'Off-Balance',
   'aura.numbingChill': 'Numbing Chill',
   'aura.demoralized': 'Demoralized',
+  'mechanic.rootSlam': 'Root Slam',
+  'mechanic.barkshell': 'Barkshell',
+  'mechanic.timberfallHeave': 'Timberfall Heave',
+  'mechanic.heartwoodEruption': 'Heartwood Eruption',
+  'aura.graspingRoots': 'Grasping Roots',
 } as const;
 
 const petEnTable = {
@@ -310,6 +317,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'log.partyLeft': '{name} has left the party.',
     'log.partyRemoved': '{name} has been removed from the party.',
     'loot.rollWin': '{winner} wins {item} ({roll})',
+    'loot.rollNeed': 'Need Roll - {roll} for {item} by {name}',
+    'loot.rollGreed': 'Greed Roll - {roll} for {item} by {name}',
     'loot.marketSellerBought':
       '{buyer} bought your {item} for {price} - collect {proceeds} from the Merchant.',
     'log.learnedAbility': 'You have learned a new ability: {name}.',
@@ -400,6 +409,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.offBalance': 'Off-Balance',
     'aura.numbingChill': 'Numbing Chill',
     'aura.demoralized': 'Demoralized',
+    'mechanic.rootSlam': 'Root Slam',
+    'mechanic.barkshell': 'Barkshell',
+    'mechanic.timberfallHeave': 'Timberfall Heave',
+    'mechanic.heartwoodEruption': 'Heartwood Eruption',
+    'aura.graspingRoots': 'Grasping Roots',
   },
   es: {
     'log.learnedAbility': 'Has aprendido una nueva habilidad: {name}.',
@@ -488,6 +502,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.offBalance': 'Desequilibrado',
     'aura.numbingChill': 'Frío entumecedor',
     'aura.demoralized': 'Desmoralizado',
+    'mechanic.rootSlam': 'Root Slam',
+    'mechanic.barkshell': 'Barkshell',
+    'mechanic.timberfallHeave': 'Timberfall Heave',
+    'mechanic.heartwoodEruption': 'Heartwood Eruption',
+    'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': 'Sin línea de visión.',
     'error.specLevel': 'Puedes elegir una especialización al nivel {level}.',
     'error.invalidBuild': 'Configuración de talentos no válida.',
@@ -557,6 +576,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'log.partyLeft': '{name} ha abandonado el grupo.',
     'log.partyRemoved': '{name} ha sido expulsado del grupo.',
     'loot.rollWin': '{winner} gana {item} ({roll})',
+    'loot.rollNeed': 'Tirada de Necesidad - {roll} para {item} de {name}',
+    'loot.rollGreed': 'Tirada de Codicia - {roll} para {item} de {name}',
     'loot.marketSellerBought':
       '{buyer} compró tu {item} por {price}; cobra {proceeds} del Mercader.',
     'aura.tamed': 'Domado',
@@ -650,6 +671,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.offBalance': 'Desequilibrado',
     'aura.numbingChill': 'Frío entumecedor',
     'aura.demoralized': 'Desmoralizado',
+    'mechanic.rootSlam': 'Root Slam',
+    'mechanic.barkshell': 'Barkshell',
+    'mechanic.timberfallHeave': 'Timberfall Heave',
+    'mechanic.heartwoodEruption': 'Heartwood Eruption',
+    'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': 'Sin línea de visión.',
     'error.specLevel': 'Podrás elegir una especialización en el nivel {level}.',
     'error.invalidBuild': 'Configuración de talentos no válida.',
@@ -720,6 +746,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'log.partyLeft': '{name} ha abandonado el grupo.',
     'log.partyRemoved': '{name} ha sido expulsado del grupo.',
     'loot.rollWin': '{winner} gana {item} ({roll})',
+    'loot.rollNeed': 'Tirada de Necesidad - {roll} para {item} de {name}',
+    'loot.rollGreed': 'Tirada de Codicia - {roll} para {item} de {name}',
     'loot.marketSellerBought':
       '{buyer} compró tu {item} por {price}; cobra {proceeds} del Mercader.',
     'aura.tamed': 'Domado',
@@ -818,6 +846,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.offBalance': 'Déséquilibré',
     'aura.numbingChill': 'Froid engourdissant',
     'aura.demoralized': 'Démoralisé',
+    'mechanic.rootSlam': 'Root Slam',
+    'mechanic.barkshell': 'Barkshell',
+    'mechanic.timberfallHeave': 'Timberfall Heave',
+    'mechanic.heartwoodEruption': 'Heartwood Eruption',
+    'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': 'Pas de ligne de vue.',
     'error.specLevel': 'Vous pourrez choisir une spécialisation au niveau {level}.',
     'error.invalidBuild': 'Distribution de talents invalide.',
@@ -889,6 +922,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'log.partyLeft': '{name} a quitté le groupe.',
     'log.partyRemoved': '{name} a été retiré du groupe.',
     'loot.rollWin': '{winner} remporte {item} ({roll})',
+    'loot.rollNeed': 'Jet de Besoin - {roll} pour {item} par {name}',
+    'loot.rollGreed': 'Jet de Cupidité - {roll} pour {item} par {name}',
     'loot.marketSellerBought':
       '{buyer} a acheté votre {item} pour {price}; récupérez {proceeds} auprès du marchand.',
     'aura.tamed': 'Apprivoisé',
@@ -987,6 +1022,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.offBalance': 'Déséquilibré',
     'aura.numbingChill': 'Froid engourdissant',
     'aura.demoralized': 'Démoralisé',
+    'mechanic.rootSlam': 'Root Slam',
+    'mechanic.barkshell': 'Barkshell',
+    'mechanic.timberfallHeave': 'Timberfall Heave',
+    'mechanic.heartwoodEruption': 'Heartwood Eruption',
+    'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': 'Pas de ligne de vue.',
     'error.specLevel': 'Vous pourrez choisir une spécialisation au niveau {level}.',
     'error.invalidBuild': 'Spécialisation invalide.',
@@ -1059,6 +1099,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'log.partyLeft': '{name} a quitté le groupe.',
     'log.partyRemoved': '{name} a été retiré du groupe.',
     'loot.rollWin': '{winner} remporte {item} ({roll})',
+    'loot.rollNeed': 'Jet de Besoin - {roll} pour {item} par {name}',
+    'loot.rollGreed': 'Jet de Cupidité - {roll} pour {item} par {name}',
     'loot.marketSellerBought':
       '{buyer} a acheté votre {item} pour {price}; récupérez {proceeds} auprès du marchand.',
     'aura.tamed': 'Apprivoisé',
@@ -1151,6 +1193,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.offBalance': 'Off-Balance',
     'aura.numbingChill': 'Numbing Chill',
     'aura.demoralized': 'Demoralized',
+    'mechanic.rootSlam': 'Root Slam',
+    'mechanic.barkshell': 'Barkshell',
+    'mechanic.timberfallHeave': 'Timberfall Heave',
+    'mechanic.heartwoodEruption': 'Heartwood Eruption',
+    'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': 'Line of sight.',
     'error.specLevel': 'You may choose a specialization at level {level}.',
     'error.invalidBuild': 'Invalid talent build.',
@@ -1220,6 +1267,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'log.partyLeft': '{name} has left the party.',
     'log.partyRemoved': '{name} has been removed from the party.',
     'loot.rollWin': '{winner} wins {item} ({roll})',
+    'loot.rollNeed': 'Need Roll - {roll} for {item} by {name}',
+    'loot.rollGreed': 'Greed Roll - {roll} for {item} by {name}',
     'loot.marketSellerBought':
       '{buyer} bought your {item} for {price} - collect {proceeds} from the Merchant.',
     'aura.tamed': 'Tamed',
@@ -1313,6 +1362,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.offBalance': 'Sbilanciato',
     'aura.numbingChill': 'Gelo Intorpidente',
     'aura.demoralized': 'Demoralizzato',
+    'mechanic.rootSlam': 'Root Slam',
+    'mechanic.barkshell': 'Barkshell',
+    'mechanic.timberfallHeave': 'Timberfall Heave',
+    'mechanic.heartwoodEruption': 'Heartwood Eruption',
+    'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': 'Nessuna linea di vista.',
     'error.specLevel': 'Puoi scegliere una specializzazione al livello {level}.',
     'error.invalidBuild': 'Build dei talenti non valida.',
@@ -1383,6 +1437,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'log.partyLeft': '{name} ha abbandonato il gruppo.',
     'log.partyRemoved': '{name} è stato rimosso dal gruppo.',
     'loot.rollWin': '{winner} vince {item} ({roll})',
+    'loot.rollNeed': 'Tiro Bisogno - {roll} per {item} di {name}',
+    'loot.rollGreed': 'Tiro Avidità - {roll} per {item} di {name}',
     'loot.marketSellerBought':
       '{buyer} ha comprato il tuo {item} per {price}; ritira {proceeds} dal mercante.',
     'aura.tamed': 'Addomesticato',
@@ -1476,6 +1532,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.offBalance': 'Aus dem Gleichgewicht',
     'aura.numbingChill': 'Betäubende Kälte',
     'aura.demoralized': 'Demoralisiert',
+    'mechanic.rootSlam': 'Root Slam',
+    'mechanic.barkshell': 'Barkshell',
+    'mechanic.timberfallHeave': 'Timberfall Heave',
+    'mechanic.heartwoodEruption': 'Heartwood Eruption',
+    'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': 'Kein Sichtkontakt.',
     'error.specLevel': 'Ihr könnt auf Stufe {level} eine Spezialisierung wählen.',
     'error.invalidBuild': 'Ungültige Talentverteilung.',
@@ -1547,6 +1608,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'log.partyLeft': '{name} hat die Gruppe verlassen.',
     'log.partyRemoved': '{name} wurde aus der Gruppe entfernt.',
     'loot.rollWin': '{winner} gewinnt {item} ({roll})',
+    'loot.rollNeed': 'Bedarf-Wurf - {roll} für {item} von {name}',
+    'loot.rollGreed': 'Gier-Wurf - {roll} für {item} von {name}',
     'loot.marketSellerBought':
       '{buyer} hat dein {item} für {price} gekauft; hol {proceeds} beim Händler ab.',
     'aura.tamed': 'Gezähmt',
@@ -1639,6 +1702,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.offBalance': '失衡',
     'aura.numbingChill': '麻痹寒意',
     'aura.demoralized': '士气低落',
+    'mechanic.rootSlam': 'Root Slam',
+    'mechanic.barkshell': 'Barkshell',
+    'mechanic.timberfallHeave': 'Timberfall Heave',
+    'mechanic.heartwoodEruption': 'Heartwood Eruption',
+    'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': '目标不在视线内。',
     'error.specLevel': '你将在{level}级时选择专精。',
     'error.invalidBuild': '无效的天赋配置。',
@@ -1708,6 +1776,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'log.partyLeft': '{name}已离开队伍。',
     'log.partyRemoved': '{name}已被移出队伍。',
     'loot.rollWin': '{winner}赢得了{item}（{roll}）',
+    'loot.rollNeed': '需求掷骰 - {name} 对 {item} 掷出 {roll}',
+    'loot.rollGreed': '贪婪掷骰 - {name} 对 {item} 掷出 {roll}',
     'loot.marketSellerBought': '{buyer}以{price}购买了你的{item}；向商人领取{proceeds}。',
     'aura.tamed': '已驯服',
     'aura.causticSpores': '腐蚀孢子',
@@ -1799,6 +1869,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.offBalance': '失去平衡',
     'aura.numbingChill': '麻痺寒意',
     'aura.demoralized': '士氣低落',
+    'mechanic.rootSlam': 'Root Slam',
+    'mechanic.barkshell': 'Barkshell',
+    'mechanic.timberfallHeave': 'Timberfall Heave',
+    'mechanic.heartwoodEruption': 'Heartwood Eruption',
+    'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': '目標不在視線內。',
     'error.specLevel': '你必須達到等級 {level} 才能選擇專精。',
     'error.invalidBuild': '無效的天賦配置。',
@@ -1868,6 +1943,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'log.partyLeft': '{name} 已離開隊伍。',
     'log.partyRemoved': '{name} 已被移出隊伍。',
     'loot.rollWin': '{winner} 擲骰獲得 {item}（{roll}）',
+    'loot.rollNeed': '需求擲骰 - {name} 對 {item} 擲出 {roll}',
+    'loot.rollGreed': '貪婪擲骰 - {name} 對 {item} 擲出 {roll}',
     'loot.marketSellerBought': '{buyer}以{price}購買了你的{item}；向商人領取{proceeds}。',
     'aura.tamed': '馴服',
     'aura.causticSpores': '腐蝕孢子',
@@ -1960,6 +2037,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.offBalance': '균형 상실',
     'aura.numbingChill': '마비의 냉기',
     'aura.demoralized': '사기 저하',
+    'mechanic.rootSlam': 'Root Slam',
+    'mechanic.barkshell': 'Barkshell',
+    'mechanic.timberfallHeave': 'Timberfall Heave',
+    'mechanic.heartwoodEruption': 'Heartwood Eruption',
+    'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': '시야가 막혀 있습니다.',
     'error.specLevel': '{level}레벨에 전문화를 선택할 수 있습니다.',
     'error.invalidBuild': '잘못된 특성 구성입니다.',
@@ -2029,6 +2111,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'log.partyLeft': '{name}님이 파티를 떠났습니다.',
     'log.partyRemoved': '{name}님이 파티에서 제외되었습니다.',
     'loot.rollWin': '{winner}님이 {item}을(를) 획득했습니다 ({roll})',
+    'loot.rollNeed': '니드 굴림 - {name}님이 {item}에 {roll}',
+    'loot.rollGreed': '그리드 굴림 - {name}님이 {item}에 {roll}',
     'loot.marketSellerBought':
       '{buyer}님이 당신의 {item}을(를) {price}에 샀습니다. 상인에게서 {proceeds}을(를) 수령하세요.',
     'aura.tamed': '길들여짐',
@@ -2124,6 +2208,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.offBalance': '体勢崩し',
     'aura.numbingChill': '痺れる悪寒',
     'aura.demoralized': '意気消沈',
+    'mechanic.rootSlam': 'Root Slam',
+    'mechanic.barkshell': 'Barkshell',
+    'mechanic.timberfallHeave': 'Timberfall Heave',
+    'mechanic.heartwoodEruption': 'Heartwood Eruption',
+    'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': '視線が通っていません。',
     'error.specLevel': '専門化はレベル{level}で選択できます。',
     'error.invalidBuild': '無効なタレントビルドです。',
@@ -2194,6 +2283,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'log.partyLeft': '{name}がパーティーを離れました。',
     'log.partyRemoved': '{name}がパーティーから除外されました。',
     'loot.rollWin': '{winner}が{item}を獲得しました（{roll}）',
+    'loot.rollNeed': 'ニードロール - {name}が{item}に{roll}',
+    'loot.rollGreed': 'グリードロール - {name}が{item}に{roll}',
     'loot.marketSellerBought':
       '{buyer}があなたの{item}を{price}で購入しました。商人から{proceeds}を受け取ってください。',
     'aura.tamed': 'テイム',
@@ -2288,6 +2379,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.offBalance': 'Desequilibrado',
     'aura.numbingChill': 'Frio Entorpecente',
     'aura.demoralized': 'Desmoralizado',
+    'mechanic.rootSlam': 'Root Slam',
+    'mechanic.barkshell': 'Barkshell',
+    'mechanic.timberfallHeave': 'Timberfall Heave',
+    'mechanic.heartwoodEruption': 'Heartwood Eruption',
+    'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': 'Sem linha de visão.',
     'error.specLevel': 'Você pode escolher uma especialização no nível {level}.',
     'error.invalidBuild': 'Estrutura de talentos inválida.',
@@ -2358,6 +2454,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'log.partyLeft': '{name} saiu do grupo.',
     'log.partyRemoved': '{name} foi removido do grupo.',
     'loot.rollWin': '{winner} vence {item} ({roll})',
+    'loot.rollNeed': 'Rolagem de Necessidade - {roll} por {item} de {name}',
+    'loot.rollGreed': 'Rolagem de Ganância - {roll} por {item} de {name}',
     'loot.marketSellerBought':
       '{buyer} comprou seu {item} por {price}; colete {proceeds} com o comerciante.',
     'aura.tamed': 'Domado',
@@ -2453,6 +2551,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.offBalance': 'Потеря равновесия',
     'aura.numbingChill': 'Сковывающий холод',
     'aura.demoralized': 'Деморализация',
+    'mechanic.rootSlam': 'Root Slam',
+    'mechanic.barkshell': 'Barkshell',
+    'mechanic.timberfallHeave': 'Timberfall Heave',
+    'mechanic.heartwoodEruption': 'Heartwood Eruption',
+    'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': 'Нет прямой видимости.',
     'error.specLevel': 'Выбрать специализацию можно на {level} уровне.',
     'error.invalidBuild': 'Недопустимая сборка талантов.',
@@ -2523,6 +2626,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'log.partyLeft': '{name} покинул(а) группу.',
     'log.partyRemoved': '{name} исключён(а) из группы.',
     'loot.rollWin': '{winner} выигрывает {item} ({roll})',
+    'loot.rollNeed': 'Бросок Нужды - {roll} за {item} от {name}',
+    'loot.rollGreed': 'Бросок Жадности - {roll} за {item} от {name}',
     'loot.marketSellerBought':
       '{buyer} купил ваш предмет {item} за {price}; заберите {proceeds} у торговца.',
     'aura.tamed': 'Приручён',
@@ -3125,6 +3230,14 @@ const AURA_NAME_KEY: Record<string, SimMessageKey> = {
   "Banshee's Wail": 'mechanic.bansheesWail',
   'Crushing Sweep': 'mechanic.crushingSweep',
   'Rallying Banner': 'mechanic.rallyingBanner',
+  // Heartwood Colossus (the_hollow_reaches world boss, PHAA-494): Plant World reskin
+  // of the Thunzharr-style raid-tier world-boss kit (aoePulse/stomp/aoeSlow/knockback/
+  // stoneskin/bigCast), translated to roots/bark/spores.
+  'Root Slam': 'mechanic.rootSlam',
+  Barkshell: 'mechanic.barkshell',
+  'Timberfall Heave': 'mechanic.timberfallHeave',
+  'Heartwood Eruption': 'mechanic.heartwoodEruption',
+  'Grasping Roots': 'aura.graspingRoots',
   // On-hit / DoT / debuff flavor auras applied to players (would otherwise leak raw English
   // in the buff/debuff frame and combat log). Data-driven from src/sim/content/zone*.ts.
   'Spider Venom': 'aura.spiderVenom',
@@ -4415,6 +4528,18 @@ const RULES: Rule[] = [
   { re: /^Equipped (?!\()(.+)\.$/, build: (m) => tSim('log.equipped', { item: locItem(m[1]) }) },
   { re: /^Unequipped (.+)\.$/, build: (m) => tSim('log.unequipped', { item: locItem(m[1]) }) },
   { re: /^You quaff (.+)\.$/, build: (m) => tSim('log.quaff', { item: locItem(m[1]) }) },
+  // Group-visible per-roller reveal at resolution (PHAA-568, upstream #1599). The
+  // {name} is a player, spliced verbatim; {item} localizes via the entity dict; the
+  // 1-100 {roll} passes through. Distinct "Need Roll -" / "Greed Roll -" prefixes so
+  // ordering against the win rule is irrelevant.
+  {
+    re: /^Need Roll - (\d+) for (.+) by (.+)$/,
+    build: (m) => tSim('loot.rollNeed', { roll: m[1], item: locItem(m[2]), name: m[3] }),
+  },
+  {
+    re: /^Greed Roll - (\d+) for (.+) by (.+)$/,
+    build: (m) => tSim('loot.rollGreed', { roll: m[1], item: locItem(m[2]), name: m[3] }),
+  },
   {
     re: /^(.+) wins (.+) \((\d+)\)$/,
     build: (m) => tSim('loot.rollWin', { winner: m[1], item: locItem(m[2]), roll: m[3] }),
@@ -4884,6 +5009,35 @@ const RULES: Rule[] = [
   {
     re: /^Homesteads: \/house, \/house claim, \/house place <slot> <kind>, \/house remove <slot>\.$/,
     build: () => t('sim.house.helpLine'),
+  },
+  // World-boss spawn announcement (src/sim/sim.ts spawnWorldBoss, PHAA-494): an
+  // anchorless server-wide broadcast when the Heartwood Colossus rises over Root
+  // Hollow. Routed straight to the hudChrome catalog (English-only, sparse-overlay
+  // pending), matching the existing precedent of several RULES below (sim.house.*,
+  // sim.delve.*) that call t() directly instead of tSim.
+  {
+    re: /^(.+) rises over Root Hollow!$/,
+    build: (m) => t('hudChrome.worldBoss.spawn', { name: locMob(m[1]) }),
+  },
+  // Bags capacity (PHAA-491): the pooled-inventory error toasts, emitted from
+  // src/sim/bags.ts and reused verbatim by market.ts, quests/quest_commands.ts,
+  // social/trade.ts, and combat/casting_lifecycle.ts wherever bags are full.
+  // Exact lines, no interpolation. ("Equipped {item}."/"Unequipped {item}."
+  // for equipBag/unequipBag reuse the existing log.equipped/log.unequipped
+  // rules above, since bags.ts emits the identical format.)
+  { re: /^Your bags are full\.$/, build: () => t('sim.bags.full') },
+  { re: /^All your bag slots are full\.$/, build: () => t('sim.bags.socketsFull') },
+  {
+    re: /^You have too many items to swap to that bag\.$/,
+    build: () => t('sim.bags.swapTooManyItems'),
+  },
+  {
+    re: /^You have too many items to remove that bag\.$/,
+    build: () => t('sim.bags.removeTooManyItems'),
+  },
+  {
+    re: /^Trade failed: not enough bag space\.$/,
+    build: () => t('sim.bags.tradeSpace'),
   },
   // Homestead v0 (PHAA-533): the open-world Hollow Reaches tier, distinct from
   // Housing v0's Sanctum plots (src/sim/homestead.ts). Player-facing /homestead

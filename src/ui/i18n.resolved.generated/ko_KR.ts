@@ -291,6 +291,9 @@ export const ko_KR: EnTranslations = {
       "lessThanMinute": "1분 미만",
       "lockedToast": "{raid}에 잠겨 있습니다. {time} 후 해제됩니다."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "북",
       "NE": "북동",
@@ -629,6 +632,13 @@ export const ko_KR: EnTranslations = {
       "unassigned": "{item}이(가) 분배되지 않아 모두가 획득할 수 있습니다.",
       "leaderOnly": "파티장만 전리품 방식을 변경할 수 있습니다."
     },
+    "lootRollGroup": {
+      "pending": "대기 중...",
+      "need": "니드",
+      "greed": "그리드",
+      "pass": "포기",
+      "aria": "{item} 그룹 굴림 상태"
+    },
     "bags": {
       "filterGroupAria": "가방을 분류별로 필터링",
       "filterAll": "전체",
@@ -643,7 +653,12 @@ export const ko_KR: EnTranslations = {
       "sortName": "이름",
       "searchPlaceholder": "아이템 검색",
       "searchAria": "이름으로 가방 아이템 검색",
-      "noMatch": "필터와 일치하는 아이템이 없습니다."
+      "noMatch": "필터와 일치하는 아이템이 없습니다.",
+      "capacity": "{used}/{total}",
+      "capacityAria": "사용 중인 가방 칸: {total}중 {used}",
+      "backpack": "배낭",
+      "socketEmpty": "빈 가방 칸",
+      "unequipHint": "클릭하여 이 가방을 제거"
     },
     "raidConvert": {
       "toPartyDone": "공격대가 파티로 다시 전환되었습니다.",
@@ -2355,6 +2370,13 @@ export const ko_KR: EnTranslations = {
       "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <슬롯>.",
       "helpLine": "주택: /house, /house claim, /house place <슬롯> <종류>, /house remove <슬롯>."
     },
+    "bags": {
+      "full": "가방이 가득 찼습니다.",
+      "socketsFull": "모든 가방 칸이 사용 중입니다.",
+      "swapTooManyItems": "소지품이 너무 많아 그 가방으로 교체할 수 없습니다.",
+      "removeTooManyItems": "소지품이 너무 많아 그 가방을 해제할 수 없습니다.",
+      "tradeSpace": "거래 실패: 가방 공간이 부족합니다."
+    },
     "bank": {
       "tooFar": "은행원과 너무 멀리 떨어져 있습니다.",
       "noQuestItems": "퀘스트 아이템은 은행에 보관할 수 없습니다.",
@@ -2364,20 +2386,20 @@ export const ko_KR: EnTranslations = {
       "purchased": "추가 은행 슬롯을 구매했습니다."
     },
     "homestead": {
-      "outsideArea": "That is outside the homestead ground. Try Fallow Acres, west of the road.",
-      "tooCloseGate": "Too close to the gate. Move further out.",
-      "tooCloseWater": "Too close to the water.",
-      "tooCloseGraveyard": "Too close to the graveyard.",
-      "tooCloseWildlife": "Too close to the wildlife. Clear the area or move further off.",
-      "tooCloseRoad": "Too close to the road.",
-      "tooCloseOther": "Too close to another homestead.",
-      "questGate": "Brother Greenpaw hasn't sent you off yet. Finish his errands first.",
-      "alreadyOwn": "You already own a homestead.",
-      "claimed": "The ground is yours. This homestead is claimed.",
-      "readoutMine": "Your homestead sits at ({x}, {z}).",
-      "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
-      "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
-      "helpLine": "Homestead: /homestead, /homestead claim."
+      "outsideArea": "그곳은 정착지 부지가 아니다. 길 서쪽의 Fallow Acres를 시도해 보라.",
+      "tooCloseGate": "문에 너무 가깝다. 더 멀리 이동하라.",
+      "tooCloseWater": "물가에 너무 가깝다.",
+      "tooCloseGraveyard": "묘지에 너무 가깝다.",
+      "tooCloseWildlife": "야생동물에 너무 가깝다. 주변을 정리하거나 더 멀리 이동하라.",
+      "tooCloseRoad": "길에 너무 가깝다.",
+      "tooCloseOther": "다른 이의 정착지에 너무 가깝다.",
+      "questGate": "브라더 초록발이 아직 당신을 보내지 않았다. 먼저 그의 용무를 마쳐라.",
+      "alreadyOwn": "당신은 이미 정착지를 소유하고 있다.",
+      "claimed": "이 땅은 당신의 것이다. 정착지가 확정되었다.",
+      "readoutMine": "당신의 정착지는 ({x}, {z})에 있다.",
+      "readoutNoHomesteadQuest": "당신은 정착지가 없다. 브라더 초록발의 용무를 모두 마쳐야 하나를 얻을 수 있다.",
+      "readoutNoHomesteadHint": "당신은 정착지가 없다. 우묵골 지대의 적당한 곳에 서서 /homestead claim이라고 입력하라.",
+      "helpLine": "정착지: /homestead, /homestead claim."
     }
   },
   "lockpickUi": {
@@ -3713,7 +3735,8 @@ export const ko_KR: EnTranslations = {
       "drink": "음료",
       "tool": "도구",
       "potion": "물약",
-      "elixir": "비약"
+      "elixir": "비약",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "방어도",
@@ -3755,7 +3778,8 @@ export const ko_KR: EnTranslations = {
       "useManaPotion": "사용: 즉시 마나를 {amount} 회복합니다. 전투 중 사용 가능. 재사용 대기시간 1분.",
       "clickUseInstant": "클릭하여 전투 중 즉시 사용",
       "clickUse": "클릭하여 사용",
-      "clickBuyback": "클릭하여 되사기"
+      "clickBuyback": "클릭하여 되사기",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "장착하려면 레벨 {level}이 필요합니다."
@@ -5040,6 +5064,21 @@ export const ko_KR: EnTranslations = {
       "monarch_crown_helm": {
         "name": "군주의 왕관"
       },
+      "linen_pouch": {
+        "name": "리넨 주머니"
+      },
+      "travelers_knapsack": {
+        "name": "여행자의 배낭"
+      },
+      "wolfhide_satchel": {
+        "name": "늑대가죽 가방"
+      },
+      "gravewoven_bag": {
+        "name": "무덤을 엮은 가방"
+      },
+      "mistcallers_duffel": {
+        "name": "미스트콜러의 더플백"
+      },
       "bristleback_maul": {
         "name": "뻣센등뼈 철퇴"
       },
@@ -5397,6 +5436,16 @@ export const ko_KR: EnTranslations = {
       "shrine_diary_page": {
         "name": "찢어진 일기장 페이지",
         "flavorText": "...촛불로 마흔 날을 세다가 결국 놓쳐버렸다. 이 아래의 어둠은 그분을 잊지 않는다, 그분이 이곳을 잊으셨어도. 왜가리가 낮게 돌면, 등지기에게 심지가 아직 타고 있다고 전해라..."
+      },
+      "heartwood_splinter": {
+        "name": "심재 조각",
+        "flavorText": "그것이 자라난 나무가 움직임을 멈춘 지 오래되었어도, 만지면 따뜻하다."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "만개한 왕관 견갑"
+      },
+      "verdantguard_mantle": {
+        "name": "상록 수호자의 망토"
       },
       "worn_prayer_token": {
         "name": "닳은 기도패",
@@ -5860,6 +5909,9 @@ export const ko_KR: EnTranslations = {
       },
       "the_witness_root": {
         "name": "증언의 뿌리"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {

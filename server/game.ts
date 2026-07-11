@@ -4,6 +4,7 @@ import { verifyChallenge } from '../src/sim/client_challenge';
 import { MECH_CHROMAS, mechChromaItemId, mechChromaSkinIndex } from '../src/sim/content/skins';
 import type { TalentAllocation } from '../src/sim/content/talents';
 import { DELVES, DUNGEONS, zoneAt } from '../src/sim/data';
+import { serializeDialogState } from '../src/sim/dialog/dialog_commands';
 import { parseRelayCommand } from '../src/sim/discord_relay';
 import type { PickAction } from '../src/sim/lockpick';
 import { parseMoveInputFrame } from '../src/sim/move_input';
@@ -252,6 +253,8 @@ const HEAVY_SELF_REFRESH_TICKS = 40; // ~2 s backstop; staggered per session so 
 const HEAVY_SELF_CMDS = new Set<string>([
   'equip',
   'unequip_item',
+  'equip_bag',
+  'unequip_bag',
   'use',
   'discard',
   'buy',
@@ -2493,6 +2496,18 @@ export class GameServer {
           sim.unequipItem(msg.slot as EquipSlot, pid);
         }
         break;
+      case 'equip_bag':
+        if (typeof msg.item === 'string') {
+          const socket =
+            typeof msg.socket === 'number' && Number.isInteger(msg.socket) ? msg.socket : undefined;
+          sim.equipBag(msg.item, socket, pid);
+        }
+        break;
+      case 'unequip_bag':
+        if (typeof msg.socket === 'number' && Number.isInteger(msg.socket)) {
+          sim.unequipBag(msg.socket, pid);
+        }
+        break;
       case 'use':
         if (typeof msg.item === 'string') {
           const result = sim.useItem(msg.item, pid);
@@ -2963,6 +2978,14 @@ export class GameServer {
       case 'feedGreenpaw':
         sim.feedGreenpaw(pid);
         break;
+      // Branching dialogue (PHAA-553): resolve a picked choice server-side. The
+      // sim re-looks-up the choice in the NPC's tree, re-checks its gate, and
+      // applies its disposition/flag effect (never trusting a client-sent value).
+      case 'dialogChoose':
+        if (typeof msg.npc === 'string' && typeof msg.choice === 'string') {
+          sim.dialogChoose(msg.npc, msg.choice, pid);
+        }
+        break;
       // dev/ops commands, only when ALLOW_DEV_COMMANDS=1 (never in production)
       case 'dev_level': {
         if (process.env.ALLOW_DEV_COMMANDS === '1' && typeof msg.level === 'number') {
@@ -3374,6 +3397,10 @@ export class GameServer {
     // missed the transient lootRoll event re-shows the prompt from state. Stays
     // per-tick (it's interactive state that appears from others' actions).
     maybe('lroll', this.sim.activeLootRolls(anchorSession.pid));
+    // group-visible choices on those rolls (who has answered need/greed/pass),
+    // so every party member's roll frame shows the live vote strip and stays up
+    // after they answer. Per-tick for the same reason as lroll.
+    maybe('lrollg', this.sim.lootRollGroupStatus(anchorSession.pid));
     maybe('drun', this.sim.delveRunWire(anchorSession.pid));
     maybe('dcompanion', this.sim.delveCompanionWire(anchorSession.pid));
     maybe('dmarks', this.sim.delveMarksFor(anchorSession.pid));
@@ -3402,11 +3429,15 @@ export class GameServer {
       session.selfHeavyDirty = false;
       session.lastWireRev = meta.wireRev;
       maybe('inv', meta.inventory);
+      maybe('bags', meta.bags);
       maybe('buyback', meta.vendorBuyback);
       maybe('equip', meta.equipment);
       maybe('cosmetics', anchorSession.accountCosmetics);
       maybe('qlog', [...meta.questLog.values()]);
       maybe('qdone', [...meta.questsDone]);
+      // PHAA-553: per-player dialogue disposition + flags, so the client walker
+      // can evaluate `requires` gates. Small; maybe() only re-sends on change.
+      maybe('dstate', serializeDialogState(meta.dialogState));
       maybe('milestones', [...meta.unlockedMilestones]);
       // talents/spec/loadouts/secondaryCls: the client recomputes its known
       // abilities from this (secondaryCls merges a second class's kit in).

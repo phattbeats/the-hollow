@@ -23,6 +23,12 @@ const hollowEntitiesEn = {
         'here does not forget Him, even if He has forgotten this place. If the ' +
         'heron circles low, tell the Verger the wick still burns...',
     },
+    heartwood_splinter: {
+      name: 'Heartwood Splinter',
+      flavorText: 'Warm to the touch, long after the tree it came from stopped moving.',
+    },
+    bloomcrown_pauldrons: { name: 'Bloomcrown Pauldrons' },
+    verdantguard_mantle: { name: 'Verdantguard Mantle' },
     // PHAA-560 (tribe-mystery breadcrumb): kept identical to the sim record in
     // src/sim/content/hollow.ts; non-Latin fills live in src/ui/i18n.locales/.
     worn_prayer_token: {
@@ -45,6 +51,7 @@ const hollowEntitiesEn = {
     palefeeder: { name: 'Palefeeder' },
     rootmaw: { name: 'Rootmaw' },
     the_witness_root: { name: 'The Witness-Root' },
+    heartwood_colossus: { name: 'Heartwood Colossus' },
   },
   npcs: {
     brother_greenpaw: {

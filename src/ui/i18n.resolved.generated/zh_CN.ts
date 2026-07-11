@@ -291,6 +291,9 @@ export const zh_CN: EnTranslations = {
       "lessThanMinute": "<1分",
       "lockedToast": "你已锁定到{raid}。{time}后解锁。"
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "北",
       "NE": "东北",
@@ -629,6 +632,13 @@ export const zh_CN: EnTranslations = {
       "unassigned": "{item}未被分配，现可自由拾取。",
       "leaderOnly": "只有队长才能更改拾取方式。"
     },
+    "lootRollGroup": {
+      "pending": "等待中...",
+      "need": "需求",
+      "greed": "贪婪",
+      "pass": "放弃",
+      "aria": "{item} 的团队掷骰状态"
+    },
     "bags": {
       "filterGroupAria": "按类别筛选背包",
       "filterAll": "全部",
@@ -643,7 +653,12 @@ export const zh_CN: EnTranslations = {
       "sortName": "名称",
       "searchPlaceholder": "搜索物品",
       "searchAria": "按名称搜索背包物品",
-      "noMatch": "没有符合筛选条件的物品。"
+      "noMatch": "没有符合筛选条件的物品。",
+      "capacity": "{used}/{total}",
+      "capacityAria": "背包已用槽位：{used}/{total}",
+      "backpack": "背包",
+      "socketEmpty": "空背包栏位",
+      "unequipHint": "点击移除此背包"
     },
     "raidConvert": {
       "toPartyDone": "你的团队已转换回队伍。",
@@ -2355,6 +2370,13 @@ export const zh_CN: EnTranslations = {
       "readoutUsage": "/house place <1-{count}> <{kinds}>，/house remove <槽位>。",
       "helpLine": "宅邸：/house、/house claim、/house place <槽位> <种类>、/house remove <槽位>。"
     },
+    "bags": {
+      "full": "你的背包已满。",
+      "socketsFull": "你的所有背包栏位都已占用。",
+      "swapTooManyItems": "物品太多，无法换成那个背包。",
+      "removeTooManyItems": "物品太多，无法移除那个背包。",
+      "tradeSpace": "交易失败：背包空间不足。"
+    },
     "bank": {
       "tooFar": "你离银行职员太远了。",
       "noQuestItems": "你不能把任务物品存入银行。",
@@ -2364,20 +2386,20 @@ export const zh_CN: EnTranslations = {
       "purchased": "你购买了额外的银行槽位。"
     },
     "homestead": {
-      "outsideArea": "That is outside the homestead ground. Try Fallow Acres, west of the road.",
-      "tooCloseGate": "Too close to the gate. Move further out.",
-      "tooCloseWater": "Too close to the water.",
-      "tooCloseGraveyard": "Too close to the graveyard.",
-      "tooCloseWildlife": "Too close to the wildlife. Clear the area or move further off.",
-      "tooCloseRoad": "Too close to the road.",
-      "tooCloseOther": "Too close to another homestead.",
-      "questGate": "Brother Greenpaw hasn't sent you off yet. Finish his errands first.",
-      "alreadyOwn": "You already own a homestead.",
-      "claimed": "The ground is yours. This homestead is claimed.",
-      "readoutMine": "Your homestead sits at ({x}, {z}).",
-      "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
-      "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
-      "helpLine": "Homestead: /homestead, /homestead claim."
+      "outsideArea": "这里不属于家园用地。去路西边的 Fallow Acres 试试。",
+      "tooCloseGate": "离大门太近了。再往外挪一挪。",
+      "tooCloseWater": "离水域太近了。",
+      "tooCloseGraveyard": "离墓地太近了。",
+      "tooCloseWildlife": "离野生动物太近了。清空这片区域，或者再挪远一些。",
+      "tooCloseRoad": "离大路太近了。",
+      "tooCloseOther": "离别人的家园太近了。",
+      "questGate": "绿掌修士还没让你出发呢。先把他的差事做完。",
+      "alreadyOwn": "你已经拥有一处家园了。",
+      "claimed": "这片土地归你了。家园认领成功。",
+      "readoutMine": "你的家园坐落在 ({x}, {z})。",
+      "readoutNoHomesteadQuest": "你还没有家园。先完成绿掌修士的全部差事才能解锁。",
+      "readoutNoHomesteadHint": "你还没有家园。站在空谷地里合适的位置，输入 /homestead claim。",
+      "helpLine": "家园：/homestead，/homestead claim。"
     }
   },
   "lockpickUi": {
@@ -3713,7 +3735,8 @@ export const zh_CN: EnTranslations = {
       "drink": "饮料",
       "tool": "工具",
       "potion": "药水",
-      "elixir": "药剂"
+      "elixir": "药剂",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "护甲",
@@ -3755,7 +3778,8 @@ export const zh_CN: EnTranslations = {
       "useManaPotion": "使用：立即恢复 {amount} 点法力值。战斗中可用。1 分钟冷却。",
       "clickUseInstant": "点击在战斗中立即使用",
       "clickUse": "点击使用",
-      "clickBuyback": "点击回购"
+      "clickBuyback": "点击回购",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "需要等级 {level} 才能装备。"
@@ -5040,6 +5064,21 @@ export const zh_CN: EnTranslations = {
       "monarch_crown_helm": {
         "name": "君主之冠"
       },
+      "linen_pouch": {
+        "name": "亚麻小袋"
+      },
+      "travelers_knapsack": {
+        "name": "旅行者背包"
+      },
+      "wolfhide_satchel": {
+        "name": "狼皮挎包"
+      },
+      "gravewoven_bag": {
+        "name": "墓织袋"
+      },
+      "mistcallers_duffel": {
+        "name": "唤雾者的行囊"
+      },
       "bristleback_maul": {
         "name": "硬鬃重槌"
       },
@@ -5397,6 +5436,16 @@ export const zh_CN: EnTranslations = {
       "shrine_diary_page": {
         "name": "撕碎的日记页",
         "flavorText": "……我数着烛光过了四十天，后来便断了数。这底下的黑暗从未忘记祂，尽管祂已经忘了这个地方。若鹭鸟低飞掠过，告诉守灯人，烛芯还燃着……"
+      },
+      "heartwood_splinter": {
+        "name": "心材碎片",
+        "flavorText": "触摸时依然温暖,尽管孕育它的树早已停止生长。"
+      },
+      "bloomcrown_pauldrons": {
+        "name": "繁花王冠护肩"
+      },
+      "verdantguard_mantle": {
+        "name": "常青守卫者披风"
       },
       "worn_prayer_token": {
         "name": "磨损的祷牌",
@@ -5860,6 +5909,9 @@ export const zh_CN: EnTranslations = {
       },
       "the_witness_root": {
         "name": "见证之根"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {

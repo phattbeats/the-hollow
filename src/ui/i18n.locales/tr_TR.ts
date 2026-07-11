@@ -911,6 +911,11 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': 'Yırtık Günlük Sayfası',
   'entities.items.shrine_diary_page.flavorText':
     "...ipin ucunu kaçırana dek mum ışığında kırk gün saydım. Buradaki karanlık O'nu unutmuyor, O bu yeri unutmuş olsa bile. Balıkçıl alçaktan süzülürse, Bekçi'ye söyle, fitil hâlâ yanıyor...",
+  'entities.items.linen_pouch.name': 'Keten Kese',
+  'entities.items.travelers_knapsack.name': 'Gezginin Sırt Çantası',
+  'entities.items.wolfhide_satchel.name': 'Kurt Derisi Heybe',
+  'entities.items.gravewoven_bag.name': 'Mezar Dokuması Çanta',
+  'entities.items.mistcallers_duffel.name': "Mistcaller'ın Denizci Çantası",
   'entities.items.footpad_jerkin.name': 'Yol Kesici Yeleği',
   'entities.items.forest_pink_armor_plate.name': 'Orman Pembesi',
   'entities.items.frayed_prayer_beads.name': 'Yıpranmış Dua Boncukları',
@@ -1207,6 +1212,11 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.old_cragmaw.name': 'İhtiyar Cragmaw',
   'entities.mobs.old_greyjaw.name': 'İhtiyar Greyjaw',
   'entities.mobs.pale_choir_acolyte.name': 'Solgun Koro Çömezi',
+  'entities.items.heartwood_splinter.name': 'Öz Odun Kıymığı',
+  'entities.items.heartwood_splinter.flavorText':
+    'Geldiği ağaç hareket etmeyi bıraktıktan çok sonra bile dokunulduğunda sıcacık.',
+  'entities.items.bloomcrown_pauldrons.name': 'Çiçek Taçlı Omuzluklar',
+  'entities.items.verdantguard_mantle.name': 'Yeşil Bekçinin Pelerini',
   'entities.mobs.palefeeder.name': 'Solgunbeslen',
   'entities.mobs.pearlguard_sentinel.name': 'İncimuhafız Nöbetçisi',
   'entities.mobs.raised_bonewalker.name': 'Diriltilmiş Kemikyürüyen',

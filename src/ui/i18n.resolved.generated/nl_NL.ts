@@ -291,6 +291,9 @@ export const nl_NL: EnTranslations = {
       "lessThanMinute": "<1m",
       "lockedToast": "Je bent vergrendeld voor {raid}. Ontgrendelt over {time}."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "N",
       "NE": "NO",
@@ -629,6 +632,13 @@ export const nl_NL: EnTranslations = {
       "unassigned": "{item} is niet toegewezen en is vrij voor iedereen.",
       "leaderOnly": "Alleen de groepsleider kan de buitmethode wijzigen."
     },
+    "lootRollGroup": {
+      "pending": "Waiting...",
+      "need": "Need",
+      "greed": "Greed",
+      "pass": "Pass",
+      "aria": "Group roll status for {item}"
+    },
     "bags": {
       "filterGroupAria": "Tassen filteren op categorie",
       "filterAll": "Alle",
@@ -643,7 +653,12 @@ export const nl_NL: EnTranslations = {
       "sortName": "Naam",
       "searchPlaceholder": "Items zoeken",
       "searchAria": "Tasitems zoeken op naam",
-      "noMatch": "Geen items komen overeen met je filters."
+      "noMatch": "Geen items komen overeen met je filters.",
+      "capacity": "{used}/{total}",
+      "capacityAria": "Bag slots used: {used} of {total}",
+      "backpack": "Backpack",
+      "socketEmpty": "Empty bag slot",
+      "unequipHint": "Click to remove this bag"
     },
     "raidConvert": {
       "toPartyDone": "Je raid is terug omgezet naar een groep.",
@@ -2355,6 +2370,13 @@ export const nl_NL: EnTranslations = {
       "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <slot>.",
       "helpLine": "Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>."
     },
+    "bags": {
+      "full": "Your bags are full.",
+      "socketsFull": "All your bag slots are full.",
+      "swapTooManyItems": "You have too many items to swap to that bag.",
+      "removeTooManyItems": "You have too many items to remove that bag.",
+      "tradeSpace": "Trade failed: not enough bag space."
+    },
     "bank": {
       "tooFar": "You are too far from the banker.",
       "noQuestItems": "You cannot store quest items in the bank.",
@@ -3713,7 +3735,8 @@ export const nl_NL: EnTranslations = {
       "drink": "Drank",
       "tool": "Gereedschap",
       "potion": "Toverdrank",
-      "elixir": "Elixer"
+      "elixir": "Elixer",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "Pantser",
@@ -3755,7 +3778,8 @@ export const nl_NL: EnTranslations = {
       "useManaPotion": "Gebruik: Herstelt direct {amount} mana. Bruikbaar in gevecht. 1 min afkoeltijd.",
       "clickUseInstant": "Klik om direct te gebruiken in gevecht",
       "clickUse": "Klik om te gebruiken",
-      "clickBuyback": "Klik om terug te kopen"
+      "clickBuyback": "Klik om terug te kopen",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "Requires level {level} to equip."
@@ -5040,6 +5064,21 @@ export const nl_NL: EnTranslations = {
       "monarch_crown_helm": {
         "name": "Monarchenkroon"
       },
+      "linen_pouch": {
+        "name": "Linnen Buidel"
+      },
+      "travelers_knapsack": {
+        "name": "Reizigersrugzak"
+      },
+      "wolfhide_satchel": {
+        "name": "Wolvenhuid Schoudertas"
+      },
+      "gravewoven_bag": {
+        "name": "Grafgeweven Tas"
+      },
+      "mistcallers_duffel": {
+        "name": "Plunjezak van Mistcaller"
+      },
       "bristleback_maul": {
         "name": "Borstelrug-Strijdhamer"
       },
@@ -5397,6 +5436,16 @@ export const nl_NL: EnTranslations = {
       "shrine_diary_page": {
         "name": "Gescheurde Dagboekpagina",
         "flavorText": "...telde veertig dagen bij kaarslicht voor ik de draad kwijtraakte. Het duister hier beneden vergeet Hem niet, ook al is Hij deze plek vergeten. Als de reiger laag cirkelt, zeg de Koster dat de pit nog brandt..."
+      },
+      "heartwood_splinter": {
+        "name": "Kernhoutsplinter",
+        "flavorText": "Warm om aan te raken, lang nadat de boom waar het vandaan kwam ophield te bewegen."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Bloesemkroon Schouderstukken"
+      },
+      "verdantguard_mantle": {
+        "name": "Mantel van de Groene Wachter"
       },
       "worn_prayer_token": {
         "name": "Worn Prayer Token",
@@ -5860,6 +5909,9 @@ export const nl_NL: EnTranslations = {
       },
       "the_witness_root": {
         "name": "De Getuigenwortel"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {

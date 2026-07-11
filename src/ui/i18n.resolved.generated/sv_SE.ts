@@ -291,6 +291,9 @@ export const sv_SE: EnTranslations = {
       "lessThanMinute": "<1m",
       "lockedToast": "Du är låst till {raid}. Låses upp om {time}."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "N",
       "NE": "NÖ",
@@ -629,6 +632,13 @@ export const sv_SE: EnTranslations = {
       "unassigned": "{item} tilldelades inte och ar fritt for alla.",
       "leaderOnly": "Endast gruppledaren kan andra lootmetoden."
     },
+    "lootRollGroup": {
+      "pending": "Waiting...",
+      "need": "Need",
+      "greed": "Greed",
+      "pass": "Pass",
+      "aria": "Group roll status for {item}"
+    },
     "bags": {
       "filterGroupAria": "Filtrera väskor efter kategori",
       "filterAll": "Alla",
@@ -643,7 +653,12 @@ export const sv_SE: EnTranslations = {
       "sortName": "Namn",
       "searchPlaceholder": "Sök föremål",
       "searchAria": "Sök väskföremål efter namn",
-      "noMatch": "Inga föremål matchar dina filter."
+      "noMatch": "Inga föremål matchar dina filter.",
+      "capacity": "{used}/{total}",
+      "capacityAria": "Bag slots used: {used} of {total}",
+      "backpack": "Backpack",
+      "socketEmpty": "Empty bag slot",
+      "unequipHint": "Click to remove this bag"
     },
     "raidConvert": {
       "toPartyDone": "Din raid har omvandlats tillbaka till en grupp.",
@@ -2355,6 +2370,13 @@ export const sv_SE: EnTranslations = {
       "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <slot>.",
       "helpLine": "Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>."
     },
+    "bags": {
+      "full": "Your bags are full.",
+      "socketsFull": "All your bag slots are full.",
+      "swapTooManyItems": "You have too many items to swap to that bag.",
+      "removeTooManyItems": "You have too many items to remove that bag.",
+      "tradeSpace": "Trade failed: not enough bag space."
+    },
     "bank": {
       "tooFar": "You are too far from the banker.",
       "noQuestItems": "You cannot store quest items in the bank.",
@@ -3713,7 +3735,8 @@ export const sv_SE: EnTranslations = {
       "drink": "Dryck",
       "tool": "Verktyg",
       "potion": "Trolldryck",
-      "elixir": "Elixir"
+      "elixir": "Elixir",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "Rustning",
@@ -3755,7 +3778,8 @@ export const sv_SE: EnTranslations = {
       "useManaPotion": "Använd: Återställer omedelbart {amount} mana. Användbar i strid. 1 min nedkylning.",
       "clickUseInstant": "Klicka för att använda omedelbart i strid",
       "clickUse": "Klicka för att använda",
-      "clickBuyback": "Klicka för att köpa tillbaka"
+      "clickBuyback": "Klicka för att köpa tillbaka",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "Requires level {level} to equip."
@@ -5040,6 +5064,21 @@ export const sv_SE: EnTranslations = {
       "monarch_crown_helm": {
         "name": "Monarkens krona"
       },
+      "linen_pouch": {
+        "name": "Linnepåse"
+      },
+      "travelers_knapsack": {
+        "name": "Vandrarens Ryggsäck"
+      },
+      "wolfhide_satchel": {
+        "name": "Vargskinnsväska"
+      },
+      "gravewoven_bag": {
+        "name": "Gravvävd Väska"
+      },
+      "mistcallers_duffel": {
+        "name": "Mistcallers Sjösäck"
+      },
       "bristleback_maul": {
         "name": "Borstryggens klubba"
       },
@@ -5397,6 +5436,16 @@ export const sv_SE: EnTranslations = {
       "shrine_diary_page": {
         "name": "Sönderriven Dagbokssida",
         "flavorText": "...räknade fyrtio dagar vid ljusets sken innan jag tappade tråden. Mörkret här nere glömmer Honom inte, även om Han har glömt denna plats. Om hägern cirklar lågt, säg till Klockaren att veken fortfarande brinner..."
+      },
+      "heartwood_splinter": {
+        "name": "Kärnvedsplitta",
+        "flavorText": "Varm att röra vid, långt efter att trädet den kom från slutat röra sig."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Blomkronans Axelskydd"
+      },
+      "verdantguard_mantle": {
+        "name": "Den Gröna Väktarens Mantel"
       },
       "worn_prayer_token": {
         "name": "Worn Prayer Token",
@@ -5860,6 +5909,9 @@ export const sv_SE: EnTranslations = {
       },
       "the_witness_root": {
         "name": "Vittnesroten"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {

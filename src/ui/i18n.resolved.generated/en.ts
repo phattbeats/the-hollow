@@ -291,6 +291,9 @@ export const en: EnTranslations = {
       "lessThanMinute": "<1m",
       "lockedToast": "You are locked to {raid}. Unlocks in {time}."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "N",
       "NE": "NE",
@@ -629,6 +632,13 @@ export const en: EnTranslations = {
       "unassigned": "{item} was not assigned and is free for all.",
       "leaderOnly": "Only the party leader can change the loot method."
     },
+    "lootRollGroup": {
+      "pending": "Waiting...",
+      "need": "Need",
+      "greed": "Greed",
+      "pass": "Pass",
+      "aria": "Group roll status for {item}"
+    },
     "bags": {
       "filterGroupAria": "Filter bags by category",
       "filterAll": "All",
@@ -643,7 +653,12 @@ export const en: EnTranslations = {
       "sortName": "Name",
       "searchPlaceholder": "Search items",
       "searchAria": "Search bag items by name",
-      "noMatch": "No items match your filters."
+      "noMatch": "No items match your filters.",
+      "capacity": "{used}/{total}",
+      "capacityAria": "Bag slots used: {used} of {total}",
+      "backpack": "Backpack",
+      "socketEmpty": "Empty bag slot",
+      "unequipHint": "Click to remove this bag"
     },
     "raidConvert": {
       "toPartyDone": "Your raid has converted back to a party.",
@@ -2355,6 +2370,13 @@ export const en: EnTranslations = {
       "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <slot>.",
       "helpLine": "Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>."
     },
+    "bags": {
+      "full": "Your bags are full.",
+      "socketsFull": "All your bag slots are full.",
+      "swapTooManyItems": "You have too many items to swap to that bag.",
+      "removeTooManyItems": "You have too many items to remove that bag.",
+      "tradeSpace": "Trade failed: not enough bag space."
+    },
     "bank": {
       "tooFar": "You are too far from the banker.",
       "noQuestItems": "You cannot store quest items in the bank.",
@@ -3713,7 +3735,8 @@ export const en: EnTranslations = {
       "drink": "Drink",
       "tool": "Tool",
       "potion": "Potion",
-      "elixir": "Elixir"
+      "elixir": "Elixir",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "Armor",
@@ -3755,7 +3778,8 @@ export const en: EnTranslations = {
       "useManaPotion": "Use: Instantly restores {amount} mana. Usable in combat. 2 min cooldown.",
       "clickUseInstant": "Click to use instantly in combat",
       "clickUse": "Click to use",
-      "clickBuyback": "Click to buy back"
+      "clickBuyback": "Click to buy back",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "Requires level {level} to equip."
@@ -5040,6 +5064,21 @@ export const en: EnTranslations = {
       "monarch_crown_helm": {
         "name": "Monarch's Crown"
       },
+      "linen_pouch": {
+        "name": "Linen Pouch"
+      },
+      "travelers_knapsack": {
+        "name": "Traveler's Knapsack"
+      },
+      "wolfhide_satchel": {
+        "name": "Wolfhide Satchel"
+      },
+      "gravewoven_bag": {
+        "name": "Gravewoven Bag"
+      },
+      "mistcallers_duffel": {
+        "name": "Mistcaller's Duffel"
+      },
       "bristleback_maul": {
         "name": "Bristleback Maul"
       },
@@ -5397,6 +5436,16 @@ export const en: EnTranslations = {
       "shrine_diary_page": {
         "name": "Torn Diary Page",
         "flavorText": "...counted forty days by candle before I lost the thread. The dark down here does not forget Him, even if He has forgotten this place. If the heron circles low, tell the Verger the wick still burns..."
+      },
+      "heartwood_splinter": {
+        "name": "Heartwood Splinter",
+        "flavorText": "Warm to the touch, long after the tree it came from stopped moving."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Bloomcrown Pauldrons"
+      },
+      "verdantguard_mantle": {
+        "name": "Verdantguard Mantle"
       },
       "worn_prayer_token": {
         "name": "Worn Prayer Token",
@@ -5860,6 +5909,9 @@ export const en: EnTranslations = {
       },
       "the_witness_root": {
         "name": "The Witness-Root"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {

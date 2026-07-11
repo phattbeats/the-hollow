@@ -150,6 +150,7 @@ function makeCtx() {
     fiestaTakedown: vi.fn(),
     fiestaDown: vi.fn(),
     rollLoot: vi.fn(),
+    rollWorldBossLoot: vi.fn(),
     applyHeal: vi.fn(),
     spellCrit: vi.fn(() => 0.05),
     applyAura: vi.fn(),
@@ -167,6 +168,7 @@ function makeCtx() {
     // elsewhere in this host - deduped).
     spendResource: vi.fn(),
     removeItem: vi.fn(),
+    canAddItem: vi.fn(() => true),
     partyOf: vi.fn(() => null),
     removeFromParty: vi.fn(),
     dropPartyMarkers: vi.fn(),
