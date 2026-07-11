@@ -452,7 +452,8 @@ export const HOLLOW_OBJECTS: GroundObjectDef[] = [];
 // deliberately excluded from the overworld PROPS merge and the collider grid
 // (see sim/data.ts), so nothing here may imply cover or blocking.
 // Kept clear of the landmarks: the vase (0,0), Greenpaw (3,4), the cold
-// firepit (-4,2), the cave mouth (0,28), the gate (0,-40), the sanctum
+// firepit (-4,2), the cave mouth (0,28), the shrine gate on the exit line
+// (0,-16, the walk-out trigger; see entry/exitOffset below), the sanctum
 // pillars (|x|=14 at z 80/95/110), the dais (0,116, r 10.5), and the eight
 // house plots (x=+-9, z=74/84/94/104). The room itself spans TEMPLE_LAYOUT
 // (|x|<23, z -19..132).
