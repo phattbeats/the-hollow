@@ -292,7 +292,7 @@ export const ja_JP: EnTranslations = {
       "lockedToast": "{raid}にロックされています。解除まで{time}。"
     },
     "worldBoss": {
-      "spawn": "{name} rises over Root Hollow!"
+      "spawn": "{name}がルート・ホロウに現れた！"
     },
     "compass": {
       "N": "北",
@@ -5919,7 +5919,7 @@ export const ja_JP: EnTranslations = {
         "name": "証しの根"
       },
       "heartwood_colossus": {
-        "name": "Heartwood Colossus"
+        "name": "心木の巨像"
       }
     },
     "npcs": {

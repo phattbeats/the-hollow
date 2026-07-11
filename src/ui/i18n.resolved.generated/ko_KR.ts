@@ -292,7 +292,7 @@ export const ko_KR: EnTranslations = {
       "lockedToast": "{raid}에 잠겨 있습니다. {time} 후 해제됩니다."
     },
     "worldBoss": {
-      "spawn": "{name} rises over Root Hollow!"
+      "spawn": "{name}이(가) 뿌리 골짜기에 출현했다!"
     },
     "compass": {
       "N": "북",
@@ -5919,7 +5919,7 @@ export const ko_KR: EnTranslations = {
         "name": "증언의 뿌리"
       },
       "heartwood_colossus": {
-        "name": "Heartwood Colossus"
+        "name": "심재 거상"
       }
     },
     "npcs": {

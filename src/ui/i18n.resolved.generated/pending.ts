@@ -2093,37 +2093,29 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind"
   ],
   "zh_CN": [
-    "entities.mobs.heartwood_colossus.name",
     "entities.quests.q_keep_him_lit.title",
     "hudChrome.bags.capacity",
-    "hudChrome.worldBoss.spawn",
     "itemUi.kind.bag",
     "itemUi.tooltip.bagSlots",
     "readableUi.prompt.read"
   ],
   "zh_TW": [
-    "entities.mobs.heartwood_colossus.name",
     "entities.quests.q_keep_him_lit.title",
     "hudChrome.bags.capacity",
-    "hudChrome.worldBoss.spawn",
     "itemUi.kind.bag",
     "itemUi.tooltip.bagSlots",
     "readableUi.prompt.read"
   ],
   "ko_KR": [
-    "entities.mobs.heartwood_colossus.name",
     "entities.quests.q_keep_him_lit.title",
     "hudChrome.bags.capacity",
-    "hudChrome.worldBoss.spawn",
     "itemUi.kind.bag",
     "itemUi.tooltip.bagSlots",
     "readableUi.prompt.read"
   ],
   "ja_JP": [
-    "entities.mobs.heartwood_colossus.name",
     "entities.quests.q_keep_him_lit.title",
     "hudChrome.bags.capacity",
-    "hudChrome.worldBoss.spawn",
     "itemUi.kind.bag",
     "itemUi.tooltip.bagSlots",
     "readableUi.prompt.read"
@@ -2476,10 +2468,8 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.unknownKind"
   ],
   "ru_RU": [
-    "entities.mobs.heartwood_colossus.name",
     "entities.quests.q_keep_him_lit.title",
     "hudChrome.bags.capacity",
-    "hudChrome.worldBoss.spawn",
     "itemUi.kind.bag",
     "itemUi.tooltip.bagSlots",
     "readableUi.prompt.read"

@@ -292,7 +292,7 @@ export const zh_CN: EnTranslations = {
       "lockedToast": "你已锁定到{raid}。{time}后解锁。"
     },
     "worldBoss": {
-      "spawn": "{name} rises over Root Hollow!"
+      "spawn": "{name}在根心谷上空苏醒！"
     },
     "compass": {
       "N": "北",
@@ -5919,7 +5919,7 @@ export const zh_CN: EnTranslations = {
         "name": "见证之根"
       },
       "heartwood_colossus": {
-        "name": "Heartwood Colossus"
+        "name": "心木巨像"
       }
     },
     "npcs": {
