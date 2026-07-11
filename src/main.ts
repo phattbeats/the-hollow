@@ -329,6 +329,8 @@ function userFacingApiError(err: unknown): string {
     return t('errors.api.notAuthenticated');
   if (normalized === 'this account has been banned.') return t('errors.api.accountBanned');
   if (normalized === 'character already in world') return t('errors.api.alreadyInWorld');
+  if (normalized === 'too many characters on this account are already in the world')
+    return t('errors.api.tooManyOnline');
   if (normalized === 'character taken over') return t('errors.api.takenOver');
   if (normalized === 'this character must be renamed before entering the world.')
     return t('errors.api.renameBeforeEntering');

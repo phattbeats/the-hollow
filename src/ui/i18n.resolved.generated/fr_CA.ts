@@ -2866,6 +2866,7 @@ export const fr_CA: EnTranslations = {
       "crossSiteRejected": "Cross-site request rejected.",
       "accountSuspended": "Ce compte est suspendu jusqu'au {date}.",
       "alreadyInWorld": "Le personnage est déjà dans le monde.",
+      "tooManyOnline": "Only one of your characters may be in the world at a time.",
       "takenOver": "Votre personnage a été pris en main par une autre session.",
       "renameBeforeEntering": "Ce personnage doit être renommé avant d'entrer dans le monde.",
       "renameNotPermitted": "Le changement de nom de ce personnage n'est pas autorisé."
