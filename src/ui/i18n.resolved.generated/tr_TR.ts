@@ -2624,6 +2624,21 @@ export const tr_TR: EnTranslations = {
       "flavor": "Ölüler ayırabildiklerini teslim etti."
     }
   },
+  "boarball": {
+    "queue": {
+      "join": "You join the boarball queue. Stand by for three more players…",
+      "leave": "You leave the boarball queue."
+    },
+    "log": {
+      "welcome": "Welcome to boarball! Shoot, pass, and outscore the other team.",
+      "kickoff": "Kickoff!",
+      "over": "Full time! Returning to the world…"
+    },
+    "error": {
+      "tooFar": "You're not close enough to the ball.",
+      "noTeammate": "No teammate targeted."
+    }
+  },
   "fiesta": {
     "bracket": "Fiesta",
     "enterQueue": "Fiesta'ya Katıl!",
@@ -5829,6 +5844,9 @@ export const tr_TR: EnTranslations = {
       },
       "acolyte_tessa": {
         "name": "Çömez Tessa"
+      },
+      "boarball_ball": {
+        "name": "Boarball"
       },
       "ironvein_foreman": {
         "name": "Demirdamar Ustabaşı"
