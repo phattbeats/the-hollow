@@ -157,11 +157,10 @@ async function extract(meshNames, outPath) {
         if (!newTex) {
           const imgBytes = base.getImage();
           const mime = base.getMimeType() || 'image/webp';
-          const size = base.getSize();
+          // Size is implied by the Uint8Array's byteLength at write time;
+          // @gltf-transform's Texture has no setSize() in this version.
           newTex = out.createTexture().setName(base.getName() || 'knight_texture');
           newTex.setImage(imgBytes).setMimeType(mime);
-          // size is read from the Uint8Array's byteLength at write time;
-          // no explicit setSize on Texture in this version of @gltf-transform.
           texMap.set(base, newTex);
         }
         m.setBaseColorTexture(newTex);
@@ -229,9 +228,7 @@ async function extract(meshNames, outPath) {
     // attach under the bone that owns this mesh in the original rig
     // (Rig_Medium groups every skinned mesh as a child of the rig root
     // bone, not under the joint they deform against, so we mirror that).
-    const rootBone = nodeMap.get(
-      skin && skin.listJoints()[0], // first joint = rig root in this pack
-    );
+    const rootBone = nodeMap.get(skin?.listJoints()[0]); // first joint = rig root in this pack
     if (rootBone) rootBone.addChild(outNode);
     else {
       // fallback: hang under any joint to keep it in the scene graph
