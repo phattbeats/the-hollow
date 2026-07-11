@@ -5428,7 +5428,7 @@ export const vi_VN: EnTranslations = {
         "name": "Một Hạt Cườm Từ Dây Đạn"
       },
       "keeper_coal": {
-        "name": "A Coal That Never Cooled"
+        "name": "Hòn Than Không Bao Giờ Nguội"
       },
       "witness_root_cincture": {
         "name": "Đai Lưng Của Rễ Chứng Nhân"
@@ -5448,12 +5448,12 @@ export const vi_VN: EnTranslations = {
         "name": "Áo Choàng Của Vệ Binh Xanh Tươi"
       },
       "worn_prayer_token": {
-        "name": "Worn Prayer Token",
-        "flavorText": "...smooth on one face from a thumb that isn't mine, worn the same shallow groove into a hundred more like it before this one, or so the pile down here would have you believe. one thumb doesn't wear a hundred tokens. a lot of thumbs wear one groove, though..."
+        "name": "Thẻ Cầu Nguyện Mòn Vẹt",
+        "flavorText": "...một mặt nhẵn bóng vì một ngón cái không phải của ta, đã mài cùng một rãnh nông ấy lên cả trăm chiếc như thế này trước chiếc này, hay ít ra đống thẻ dưới này muốn ngươi tin vậy. một ngón cái không mài mòn nổi trăm chiếc thẻ. nhưng nhiều ngón cái thì mài mòn được một rãnh..."
       },
       "tally_shard": {
-        "name": "Tally-Marked Shard",
-        "flavorText": "...marks in fives, scratched deep, crossed each time the count came round. hundreds of fives before the crossing stops, and the last row was never finished..."
+        "name": "Mảnh Vỡ Khắc Vạch Đếm",
+        "flavorText": "...vạch khắc theo từng nhóm năm, khía sâu, gạch chéo mỗi lần đếm đủ vòng. hàng trăm nhóm năm trước khi những nét gạch dừng lại, và hàng cuối cùng chưa bao giờ được khắc xong..."
       },
       "reliquary_plate_chest": {
         "name": "Áo Giáp Vệ Binh Thánh Tích"

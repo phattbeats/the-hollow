@@ -935,6 +935,13 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': 'Halaman Buku Harian yang Robek',
   'entities.items.shrine_diary_page.flavorText':
     '...menghitung empat puluh hari dengan cahaya lilin sebelum kehilangan hitungan. Kegelapan di bawah sini tak melupakan-Nya, meski Dia telah melupakan tempat ini. Jika bangau terbang rendah, katakan pada Sang Penjaga sumbunya masih menyala...',
+  'entities.items.keeper_coal.name': 'Arang yang Tak Pernah Dingin',
+  'entities.items.worn_prayer_token.name': 'Token Doa Usang',
+  'entities.items.worn_prayer_token.flavorText':
+    '...halus di satu sisi oleh ibu jari yang bukan milikku, yang mengikis alur dangkal yang sama pada seratus token lain seperti ini sebelum yang ini, atau begitulah tumpukan di bawah sini ingin kaupercaya. satu ibu jari tidak mengikis seratus token. tapi banyak ibu jari mengikis satu alur yang sama...',
+  'entities.items.tally_shard.name': 'Pecahan Bertanda Hitungan',
+  'entities.items.tally_shard.flavorText':
+    '...tanda dalam kelompok lima, digores dalam, dicoret tiap kali hitungan genap. ratusan kelompok lima sebelum coretan berhenti, dan baris terakhir tak pernah selesai...',
   'entities.items.linen_pouch.name': 'Kantong Linen',
   'entities.items.travelers_knapsack.name': 'Ransel Pengembara',
   'entities.items.wolfhide_satchel.name': 'Tas Kulit Serigala',

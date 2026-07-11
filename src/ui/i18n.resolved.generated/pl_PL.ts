@@ -5428,7 +5428,7 @@ export const pl_PL: EnTranslations = {
         "name": "Paciorek Z Bandolieru"
       },
       "keeper_coal": {
-        "name": "A Coal That Never Cooled"
+        "name": "Węgiel, Który Nigdy Nie Ostygł"
       },
       "witness_root_cincture": {
         "name": "Pas Korzenia Świadka"
@@ -5448,12 +5448,12 @@ export const pl_PL: EnTranslations = {
         "name": "Płaszcz Zielonego Strażnika"
       },
       "worn_prayer_token": {
-        "name": "Worn Prayer Token",
-        "flavorText": "...smooth on one face from a thumb that isn't mine, worn the same shallow groove into a hundred more like it before this one, or so the pile down here would have you believe. one thumb doesn't wear a hundred tokens. a lot of thumbs wear one groove, though..."
+        "name": "Wytarty Żeton Modlitewny",
+        "flavorText": "...gładki z jednej strony od kciuka, który nie jest mój, i który wytarł ten sam płytki rowek w stu innych takich jak ten, zanim trafił na ten, a przynajmniej w to chciałby, żebyś uwierzył ten stos tutaj na dole. jeden kciuk nie wytrze stu żetonów. wiele kciuków wytrze za to jeden rowek..."
       },
       "tally_shard": {
-        "name": "Tally-Marked Shard",
-        "flavorText": "...marks in fives, scratched deep, crossed each time the count came round. hundreds of fives before the crossing stops, and the last row was never finished..."
+        "name": "Odłamek z Karbami",
+        "flavorText": "...karby piątkami, ryte głęboko, przekreślane za każdym razem, gdy rachunek się domykał. setki piątek, nim przekreślenia ustają, a ostatni rząd nigdy nie został dokończony..."
       },
       "reliquary_plate_chest": {
         "name": "Kolczuga strażnika relikwiarza"
