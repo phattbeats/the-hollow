@@ -1,10 +1,11 @@
 # Sister Shade: the player-facing questline (PHAA-558)
 
 Canon sources: PHAA-544 brief `shade-brief` rev 1e9abd48 (Board-accepted), and the
-lorebook v2 section "Sister Shade, player-facing arc" (attachment on PHAA-429).
-This doc is the writing home for the whole four-quest arc. Quests 1 and 3 ship as
-sim content now (`src/sim/content/hollow_zone.ts`); quests 2 and 4 are written here
-and land as sim content only when their gates clear.
+lorebook v2.1 section "Sister Shade, player-facing arc" (attachment on PHAA-429).
+This doc is the writing home for the whole four-quest arc. All four quests are now
+sim content (`src/sim/content/hollow_zone.ts` for 1 to 3, plus the finale's
+`buried_root` turn-in target in `src/sim/content/hollow.ts`'s under_shrine dungeon;
+PHAA-558 shipped 1 and 3, PHAA-614 shipped 2 and 4 once their gates cleared).
 
 ## The character, in one sentence
 
@@ -45,19 +46,23 @@ and her greeting asks if the player has eaten. She never asks about destiny.
   kindness. Eat."
 - Reward: small xp/copper, no item. `minLevel: 2`.
 
-### Quest 2: "The Long Way Around" (WRITTEN, GATED on PHAA-559)
+### Quest 2: "The Long Way Around" (SHIPPED, PHAA-614)
 
-- Design: deliver water to a dried planting the tribe left, reachable only by her
-  "willow path", the first jumping puzzle (branches, roots, mushroom shelves, lily
-  pads climbing to a quiet spot). She says she could not make the climb herself. She
-  is lying, gently; the player cannot know that yet.
-- Gate: willow-path traversal is jump platforming under a deterministic 20 Hz
-  server-authoritative sim. The netcode spike PHAA-559 must report GO before any
-  willow path is built. Do NOT build jump platforming before that spike reports, and
-  do NOT ship this quest as a flat-ground fetch (that would erase the willow-path
-  design). It lands as sim content only after the spike, using whatever traversal
-  mechanic the spike blesses.
-- Draft dialogue (adjust to the final mechanic):
+- Design: deliver water to a dried planting the tribe left, up her "willow path"
+  from Mossbank. She says she could not make the climb herself. She is lying,
+  gently; the player cannot know that yet.
+- Gate: the PHAA-559 spike reported GO-WITH-CONSTRAINTS: the netcode is not the
+  blocker, but the engine has no landable elevated surfaces (colliders push out in
+  XZ only, vertical landing snaps to ground height), so a jumping puzzle with
+  standable branch/lily-pad platforms needs a new standable-surface system that
+  does not exist yet (its own, design-gated ticket). PHAA-614 shipped the quest
+  within that constraint: terrain-sculpted placement (`withered_planting`, further
+  up the shore from Shade), zero new sim mechanic. Not a flat fetch either: the
+  narration keeps the willow-path framing (branches, honesty), only the standable-
+  platform version is deferred until the surface system lands.
+- Giver / turn-in: Shade. Requires quest 1 (same gate as quest 3, so both open
+  together). `minLevel: 2`. Objective: `interact` with `withered_planting`.
+- Dialogue (shipped, `src/sim/content/hollow_zone.ts`):
   - Offer: "There's a planting the tribe left half-finished up the old willow, and
     it's dying for want of one good pour. I can't make that climb anymore, but you've
     got the legs for it. Take the can. Mind the branches; they hold if you're honest
@@ -76,18 +81,23 @@ and her greeting asks if the player has eaten. She never asks about destiny.
 - Reward: small xp/copper plus `willow_sprig`, the end of the currently-shippable
   arc. `minLevel: 3`. When the finale (quest 4) lands, the charm can move to it.
 
-### Quest 4: "The Watering Can" (WRITTEN, GATED on PHAA-543)
+### Quest 4: "The Watering Can" (SHIPPED, PHAA-614)
 
 - Design (post-reveal): she finally asks something real, carry her can to the
   Under-Shrine and water what is buried there. Here the first-meeting image resolves:
   the water she was collecting the day the player met her was always for the plant, a
   promise she never mentioned and never missed. The one time her kindness points at
   the main plot.
-- Gate: this beat rides the PHAA-543 main-quest spine (the Plant's reckoning and the
-  Tree of Life ending), still pending Board confirmation. Shade is the emotional key
-  to that ending (she tells the Plant it can leave the vase, love without illusion).
-  Write last, keep adjustable; if PHAA-543 changes, this beat moves with it.
-- Draft dialogue (adjustable):
+- Gate: rides the PHAA-543 main-quest spine, canon in lorebook v2.1 (the Plant's
+  reckoning, the Tree of Life ending). PHAA-614 scoped the finale beat narrowly:
+  the turn-in target is `buried_root`, a stub NPC placed at the under_shrine
+  entrance (`src/sim/content/hollow.ts`), not a build-out of the full main-quest
+  reckoning/ending sequence, which stays its own (still-pending) work. Kept
+  adjustable per the brief: if the main-quest spine's staging changes, this beat's
+  target/placement can move with it without touching quests 1 to 3.
+- Giver / turn-in: Shade. Requires quest 3 (the full arc). `minLevel: 4`. Objective:
+  `interact` with `buried_root`.
+- Dialogue (shipped, `src/sim/content/hollow_zone.ts`):
   - Offer: "I've asked you for small things, and you've done them all without once
     asking why. Here's the last one, and it isn't small, though it'll look it. Take
     my can down under the shrine, to the thing that's buried there, and give it
@@ -96,7 +106,7 @@ and her greeting asks if the player has eaten. She never asks about destiny.
   - Completion: "You did it. Of course you did. That was the water, you understand.
     All of it, all the way back to the day you found me at the lake and thought
     nothing of it. The same pour, the same promise, kept one more time. Thank you.
-    Now go and be gentle with the world. It's the only thing that ever changed it."
+    Now go and be gentle with the world. It is the only thing that ever changed it."
 
 ## Deferred, engine-dependent beats (NOT built here)
 

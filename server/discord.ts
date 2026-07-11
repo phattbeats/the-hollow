@@ -51,6 +51,7 @@ import {
   parseTokenResponse,
   pkceChallengeFromVerifier,
 } from './discord_oauth';
+import { sendProblem } from './http_errors';
 import { isUniqueViolation, json } from './http_util';
 import {
   authThrottled,
@@ -159,7 +160,7 @@ export async function handleDiscordStart(
   if (!cfg) return json(res, 503, { error: 'Discord integration is not configured' });
   if (discordRateLimited(req, opts.accountId ?? 0)) {
     note('discord.start.rate_limited');
-    return json(res, 429, { error: 'rate limited' });
+    return sendProblem(res, 429, 'RATE_LIMITED', 'rate limited', { policy: 'discord' });
   }
   const state = newToken();
   const codeVerifier = newToken();
@@ -352,11 +353,13 @@ export async function handleDiscordLoginNew(
   res: http.ServerResponse,
   isIpBlocked: (ip: string) => boolean,
 ): Promise<void> {
-  if (discordRateLimited(req, 0)) return json(res, 429, { error: 'rate limited' });
+  if (discordRateLimited(req, 0))
+    return sendProblem(res, 429, 'RATE_LIMITED', 'rate limited', { policy: 'discord' });
   // A blocked IP must not mint a fresh account + session through Discord, exactly as
   // /api/register and /api/login refuse one. Reuse the rate-limit response so the block
   // stays invisible (matches the throttle bucket above; the client already localizes it).
-  if (isIpBlocked(requestIp(req))) return json(res, 429, { error: 'rate limited' });
+  if (isIpBlocked(requestIp(req)))
+    return sendProblem(res, 429, 'RATE_LIMITED', 'rate limited', { policy: 'discord' });
   const body = await readJsonBody(req);
   const linkToken = typeof body.linkToken === 'string' ? body.linkToken : '';
   const pending = await consumeDiscordPendingLogin(pool, linkToken);
@@ -424,10 +427,12 @@ export async function handleDiscordLoginLink(
   res: http.ServerResponse,
   isIpBlocked: (ip: string) => boolean,
 ): Promise<void> {
-  if (discordRateLimited(req, 0)) return json(res, 429, { error: 'rate limited' });
+  if (discordRateLimited(req, 0))
+    return sendProblem(res, 429, 'RATE_LIMITED', 'rate limited', { policy: 'discord' });
   // A blocked IP must not log into (and link Discord onto) an account through this
   // unauthenticated path either, mirroring the /api/login IP gate. Same opaque 429.
-  if (isIpBlocked(requestIp(req))) return json(res, 429, { error: 'rate limited' });
+  if (isIpBlocked(requestIp(req)))
+    return sendProblem(res, 429, 'RATE_LIMITED', 'rate limited', { policy: 'discord' });
   const body = await readJsonBody(req);
   const linkToken = typeof body.linkToken === 'string' ? body.linkToken : '';
   const pending = await peekDiscordPendingLogin(pool, linkToken);

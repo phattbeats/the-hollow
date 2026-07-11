@@ -316,25 +316,25 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
       nodes: {
         hearth: {
           npcLine:
-            "back at the vase, friend... he's quiet today, which either means he's listenin' hard or he's sulkin', and i never can tell which one. how's the hollow been treatin' you?",
+            "howdy, friend, back at the vase huh, he's quiet today which means he's either listenin' real hard or straight up ignorin' me, and honestly i respect both, those are my only two settings too... anyway how's the hollow been treatin' you, good, bad, you got a snack on you, no? okay just checkin', askin' for a friend, the friend is me...",
           choices: [
             {
               id: 'kind',
               tone: 'positive',
-              label: "it's startin' to feel like somewhere, brother. i mean that.",
+              label: "it's growin' on me, greenpaw. like, for real, for real.",
               effect: { disposition: 2 },
               next: 'warmed',
             },
             {
               id: 'ask',
               tone: 'neutral',
-              label: "what's the vase been sayin' lately?",
+              label: "so what's the vase been sayin', these days?",
               next: 'vase',
             },
             {
               id: 'blunt',
               tone: 'negative',
-              label: "it's a boneyard with a caretaker, greenpaw. that's all it is.",
+              label: "it's a graveyard with a mascot, greenpaw. that's it.",
               effect: { disposition: -2 },
               next: 'stung',
             },
@@ -342,42 +342,42 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
         },
         warmed: {
           npcLine:
-            "...that lands soft, friend, softer than you know. most folks come through lookin' for the exit. you keep lookin' for the middle of the thing, and that's rarer than you'd think.",
+            "...whoa, okay, that's real nice of you to say, friend, real nice, didn't expect it, most folks just b-line for the gate soon as they can... you're alright, you know that, you're alright to a greenpaw degree even, and i don't hand that out for free... i'd buy stock in ya if stock was a thing i had, buy the new friends, sell the old omens, that's just economics...",
           choices: [
             {
               id: 'tribe',
               tone: 'positive',
-              label: 'tell me about the tribe that was here before.',
+              label: 'tell me about the tribe, the one before you.',
               effect: { setFlag: 'greenpaw.asked_tribe' },
               next: 'tribe',
             },
             {
               id: 'warm_bye',
               tone: 'neutral',
-              label: "i'll let you get back to him.",
+              label: "i'll let you get on with it then.",
             },
           ],
         },
         vase: {
           npcLine:
-            "same as ever. he wants smoke, he wants tendin', he wants somebody to sit close and pretend the quiet is a conversation... which, hey, it is, if you squint at it right. that is the whole faith, more or less.",
+            "same ol' same ol', he wants smoke, wants tendin', wants somebody sittin' close so it feels like a conversation even when it ain't one, which... huh. that's most conversations, ain't it. whoa. okay, anyway, i talk at him plenty and he ain't said a word back in, uh, ever, but that's fine, that's the whole deal really, to a greenpaw degree... wait, what were we talkin' about... oh. right. him. he's fine. probably hungry. same.",
           choices: [
             {
               id: 'vase_more',
               tone: 'neutral',
-              label: "and you believe he's really listenin'?",
+              label: "and you actually think he's listenin'?",
               next: 'faith',
             },
             {
               id: 'vase_bye',
               tone: 'neutral',
-              label: "keep him company, then. i'll be around.",
+              label: 'well, keep him company then.',
             },
           ],
         },
         faith: {
           npcLine:
-            "belief's a strong word, friend. i tend. tendin' is the part i can do with these two hands. the listenin' i leave to him, and if he ain't, well, the smoke smells good either way...",
+            "believe's a big word, friend, i just tend, tendin' i can do, got two hands and a lighter and that's about the whole résumé... whether he's listenin' or not i couldn't tell ya, but the smoke smells good and it don't judge me neither, which puts it ahead of most things with ears, so, wavelength's covered either way. indeed.",
           choices: [
             {
               id: 'faith_bye',
@@ -388,12 +388,12 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
         },
         stung: {
           npcLine:
-            "...oof. yeah. yeah, maybe it is. i've thought it myself, on the cold mornings, when the vase don't sigh and nobody comes up the path... but i'm still here, friend, so it ain't only that. not to me it ain't.",
+            "...oof, yeah okay, ouch friend, dang... i mean maybe, i dunno, i've had them thoughts too, on the real cold mornings when nobody's comin' up the path and the vase won't even sigh at me... but i'm still here so, that's gotta count for somethin', right? right. anyway you want a snack, i got a snack, changin' the subject. F.",
           choices: [
             {
               id: 'sorry',
               tone: 'positive',
-              label: "that came out meaner than i meant it. i'm sorry.",
+              label: 'that came out meaner than i meant. sorry, greenpaw.',
               effect: { disposition: 1 },
               next: 'mended',
             },
@@ -406,18 +406,18 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
         },
         mended: {
           npcLine:
-            "s'alright, friend. a place like this earns a hard word now and then, i won't pretend otherwise. you came back to say it soft, though, and that's more than the boneyard would'a done. we're square, you and me.",
+            "s'all good, friend, it's all gambit, always has been, that's the cowboy in me talkin', don't ask him what gambit means, he don't know neither, he just says it real confident... place like this earns a hard word now'n then, i ain't gonna pretend it don't... you came back and said sorry though, and that means somethin', or it means you want somethin', either way we're square, you and me, same wavelength, snack's on me later if you want one.",
           choices: [
             {
               id: 'mended_bye',
               tone: 'neutral',
-              label: "we're square. i'll see you around.",
+              label: "we're square. see you around, greenpaw.",
             },
           ],
         },
         tribe: {
           npcLine:
-            "big tribe once, so the old marks say. rows of tally-scratches down in the dark, fives crossed out, more fives than any one hand could'a made... they kept him lit a long, long while before it got down to just me. i don't know where they went, friend. i just know the wick can't go out on my watch.",
+            "big tribe, way back, so the old marks say anyway, i can't read good but i can count and there's a whole lotta fives scratched down there, crossed out, more fives than one hand shoulda made, that's math i can't get around... kept him lit a long time before it got down to just me, i don't know where everybody went, friend, i really don't, i get a feelin' about it sometimes, on the wavelength, but the feelin' won't finish its own sentence so, neither will i i guess... wick can't go out on my watch though. that part i know for sure.",
           choices: [
             {
               id: 'confide',
@@ -429,18 +429,18 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
             {
               id: 'tribe_bye',
               tone: 'neutral',
-              label: "somebody's still tendin' it. that counts for somethin'.",
+              label: "well, somebody's still tendin' it.",
             },
           ],
         },
         confide: {
           npcLine:
-            "...that's a kind thing to offer, and i'll hold you to a sliver of it. truth is i talk to you half 'cause the vase don't answer and half 'cause i'm scared of the day nobody comes up that path at all. so. thanks for comin' up it. that's the sacred part, friend, if you ever wanted one.",
+            "...that's kind of you to say, friend, real kind... look, i talk at you half 'cause the vase don't answer and half 'cause i get scared, some nights, that nobody's gonna come up that path ever again and it'll just be me and him and the quiet... so. thanks for comin' up it. that's the sacred part, if you ask me. ...anyway. you got a snack on you? askin' for the vase. wavelength's hungry too.",
           choices: [
             {
               id: 'confide_bye',
               tone: 'positive',
-              label: "i'll keep comin' up the path, greenpaw.",
+              label: "i'll keep comin' up that path, greenpaw.",
             },
           ],
         },
@@ -464,6 +464,23 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
     questIds: ['q_the_wavelength'],
     trainer: { professions: ALL_CLASSES },
     greeting: 'Every build starts as a question. Which second calling speaks to you?',
+  },
+  // PHAA-614: the turn-in target for Sister Shade's finale quest,
+  // q_the_watering_can (content/hollow_zone.ts). A stub NPC exactly like
+  // gate_bard/goodwife_orla (empty questIds), standing in for the buried
+  // thing the shrine's whole line of quests has been leading to. Placed just
+  // past the under_shrine entry (entry is {x:0,z:4}), ahead of the first
+  // spawn on UNDER_SHRINE_SPAWNS (z:12), so the walk down stays combat-light.
+  buried_root: {
+    id: 'buried_root',
+    name: 'A Buried Root',
+    title: 'Under the Shrine',
+    pos: { x: 0, z: 6 },
+    dynamic: true,
+    facing: 0,
+    color: 0x3a2f22,
+    questIds: [],
+    greeting: 'Dry. Dry as anything down here ever gets.',
   },
 };
 
@@ -1068,6 +1085,10 @@ export const HOLLOW_DUNGEON_DEFS: Record<string, DungeonDef> = {
       // at z 16) and clear of the pillars (which start at z 10).
       { itemId: 'worn_prayer_token', name: 'Worn Prayer Token', x: 17, z: 9 },
     ],
+    // PHAA-614: buried_root, the turn-in target for Shade's finale quest.
+    // Placed at entry (0,4) + 2u so it is reachable straight off the door,
+    // clear of the first spawn on UNDER_SHRINE_SPAWNS (z:12).
+    npcs: [{ npcId: 'buried_root', x: 0, z: 6 }],
     // Deliberate: the 'crypt' interior builder is the Hollow Crypt's own
     // skeleton (sealed doors, keystones, the buried-and-walled grammar) reused
     // per the constitution (§4, the Hollow Crypt reuse) and rethemed root-cold

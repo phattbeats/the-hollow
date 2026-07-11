@@ -569,7 +569,7 @@ export function assembleModel(
     // an attach entry that is already a hand prop.
     let att: AttachDef = attachments[i];
     if (isWeaponSwap && !isArmorSwap) att = swapAttachDef(att, weaponItemId);
-    else if (isArmorSwap) {
+    else if (isArmorSwap && !isWeaponSwap) {
       const slot = def.armorByAttachIndex?.[i];
       const itemId = slot ? (armorByItemId?.[slot] ?? null) : null;
       att = swapArmorAttachDef(att, itemId);
@@ -583,7 +583,7 @@ export function assembleModel(
     // race the same holder); weapon wins, armor stays unmarked.
     const tags: string[] = [];
     if (isWeaponSwap && !isArmorSwap) tags.push(SWAP_WEAPON_TAG);
-    if (isArmorSwap) tags.push(SWAP_ARMOR_TAG);
+    if (isArmorSwap && !isWeaponSwap) tags.push(SWAP_ARMOR_TAG);
     attachProp(root, bone, att, tags);
   }
   // Re-orient mis-baked built-in weapon nodes (e.g. the golem axe) in place.

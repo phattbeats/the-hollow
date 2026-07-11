@@ -338,7 +338,9 @@ describe('account portal rate limiting (429)', () => {
         'tokA',
       );
     }
-    expect(parse(last).status).toBe(429);
+    // The problem+json envelope (PHAA-528): a stable RATE_LIMITED code alongside
+    // the legacy `error` string.
+    expect(parse(last)).toMatchObject({ status: 429, data: { code: 'RATE_LIMITED' } });
     // The 21st call short-circuited before the password UPDATE for that request.
     expect(
       writes.filter((w) => w.sql.includes('UPDATE accounts SET password_hash')).length,

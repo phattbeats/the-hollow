@@ -1936,6 +1936,13 @@ export const ja_JP: EnTranslations = {
     "begin": "はじめる",
     "skip": "スキップ"
   },
+  "apiError": {
+    "crossSiteRejected": "クロスサイトリクエストは拒否されました。",
+    "notAuthenticated": "認証されていません。",
+    "readOnlyToken": "このトークンは読み取り専用です。",
+    "characterNotFound": "キャラクターが見つかりません。",
+    "rateLimited": "試行回数が多すぎます。1分待ってから再試行してください。"
+  },
   "skinEvent": {
     "title": "装いの宝箱",
     "subtitle": "{rank}の報酬を解除しました — それ以下のスキンを自由に選べます。",
@@ -5479,7 +5486,7 @@ export const ja_JP: EnTranslations = {
       },
       "first_cutting": {
         "name": "挿し木",
-        "flavorText": "A slip of living green from Brother Greenpaw, wrapped in damp moss. Once a homestead plot can be edited, this is the first thing you plant."
+        "flavorText": "グリーンポー修道士から譲り受けた、生きた緑の挿し木で、湿った苔にくるまれている。ホームステッドの区画を編集できるようになったら、最初に植えるのはこれだ。"
       },
       "greenpaw_bead": {
         "name": "弾帯の数珠玉"
@@ -5752,7 +5759,7 @@ export const ja_JP: EnTranslations = {
         "name": "助祭ヴォス"
       },
       "training_dummy": {
-        "name": "Training Dummy"
+        "name": "訓練用ダミー"
       },
       "ridge_stalker": {
         "name": "尾根の追跡者"
@@ -5884,7 +5891,7 @@ export const ja_JP: EnTranslations = {
         "name": "侍祭テッサ"
       },
       "boarball_ball": {
-        "name": "Boarball"
+        "name": "ボアボール"
       },
       "ironvein_foreman": {
         "name": "鉄脈の現場監督"
@@ -6138,30 +6145,30 @@ export const ja_JP: EnTranslations = {
           "2": "ここが空洞さ。昔は一つの部族まるごとあってな、大した賑わいだったと、まあ聞いた話だが、今じゃほとんど俺と、この壺と、あの洞穴の底で息してる何かだけだ……ともかくだ。壺は腹を空かせてる、俺も腹が減ってる、同じ波長ってわけだ。こっち来いよ、片付けなきゃならん神聖な用事が二つばかりある。"
         },
         "dialogNode": {
-          "hearth": "また壺のところに戻ってきたな、友よ……あいつは今日は静かでな、じっと聴き入ってるのか、それともすねてるのか、どっちなのかわしにはさっぱりわからん。ホロウの暮らしはどうだった？",
-          "warmed": "……その言葉は優しく染みるな、友よ。お前が思う以上にな。ここを通る大抵の連中は、出口を探しておる。だがお前は、この場所の真ん中を探し続けておる。それは思うよりずっと珍しいことだ。",
-          "vase": "いつもどおりさ。あいつは煙を欲しがり、世話を欲しがり、そばに座って、この静けさを会話のふりして付き合ってくれる誰かを欲しがる……まあ、見方を変えれば、そりゃ立派な会話さ。それがだいたい信仰ってやつの全部だよ。",
-          "faith": "信じる、なんて大げさな言葉だよ、友よ。わしはただ世話をする。世話をすることは、この二本の手でできることだからな。聴くのはあいつに任せておる。もし聴いておらんでも、まあ、煙はどのみちいい匂いがするからな……",
-          "stung": "……ううむ。ああ。ああ、そうかもしれんな。寒い朝に、壺がため息もつかず、誰も小道を上ってこん時、わし自身もそう思ったことがある……だがわしはまだここにおる、友よ。だからそれだけじゃないのさ。少なくともわしにとってはな。",
-          "mended": "いいんだよ、友よ。こんな場所だ、たまにきつい言葉のひとつも言われて当然さ。それは否定せんよ。だがお前はわざわざ戻ってきて、優しく言い直してくれた。それは墓場がしてくれる以上のことだ。わしとお前は、これでおあいこだ。",
-          "tribe": "昔は大きな部族だったそうだ、古い刻み跡がそう言っておる。暗がりに勘定の刻み目がずらりと並び、五つずつ消されて、そのどれもが一人の手じゃとても刻めん数だ……連中は長い長い間あいつの灯を絶やさずにおった、やがてわし一人になるまでな。連中がどこへ行ったかはわからん、友よ。ただ、わしが見張っている間はこの灯芯を消させはせん、それだけはわかっておる。",
-          "confide": "……ありがたい申し出だ。そのほんのひとかけらだけ、遠慮なくもらうとしよう。正直に言うとな、わしがお前に話すのは、半分は壺が答えてくれんからで、半分は、いつか誰もこの小道を上ってこなくなる日が怖いからさ。だから、上ってきてくれてありがとうな。それこそが神聖ってやつだよ、友よ。もし探しておるならな。"
+          "hearth": "ハウディ、友よ、また壺のとこに戻ってきたか、あいつ今日は静かでな、めっちゃ真剣に聴いてるのか、それとも完全に無視されてるのか、正直どっちも尊敬するぜ、わしの設定もその二つしかないからな……そんでホロウの暮らしはどうだ、良かったか悪かったか、なんか食い物持ってないか、ないのか？まあいいさ、ただ聞いてみただけ、友のために聞いてる、その友ってのはわしなんだけどな……",
+          "warmed": "……うおっ、おお、それは言ってくれて嬉しいぜ、友よ、マジで嬉しい、予想外だったな、大抵の奴はさっさと門に向かうもんだからな……お前、なかなかやるじゃないか、知ってたか、グリーンポー基準でなかなかってやつだ、これはそう簡単にくれてやらんぞ……株ってもんを持ってたらお前の株を買うんだがな、新しい友を買って古い凶兆を売る、ただの経済ってやつさ……",
+          "vase": "いつもどおりさ、あいつは煙が欲しい、世話が欲しい、そばに座って静けさを会話みたいに付き合ってくれる誰かが欲しい、ってことでな……ん。それってだいたいの会話がそうじゃないか。うおっ。まあいい、とにかく、わしはいつもあいつに話しかけてるし、あいつは一言も返してこないけどな、えーと、一回も、まあでもそれでいいのさ、だいたいそういうもんだ、グリーンポー基準でな……待て、何の話だったか……ああ。そうだ。あいつのことだ。あいつは元気さ。たぶん腹減ってる。同じく。",
+          "faith": "信じるってのは大げさな言葉だぜ、友よ、わしはただ世話するだけさ、世話ならこの両手でできる、あとライターも一個、それがわしの経歴の全部だ……あいつが聴いてるかどうかなんてわしにゃわからんが、煙はいい匂いがするし、わしを裁いたりもせん、耳の付いてる連中の大半より上等ってことさ、だから波長は保ててるってことにしとこう。まったくだ。",
+          "stung": "……うっ、ああ、いてえな友よ、まったく……いや、まあそうかもな、わからんけど、寒い朝には自分でもそう思ったことあるさ、誰も小道を上ってこなくて、壺もため息すらつかん朝にな……でもわしはまだここにいるし、それって何かの証にはなるだろ？だろ。だな。ところで食い物いるか、わしは持ってるぞ、話題変えるぞ。F。",
+          "mended": "いいんだよ、友よ、全部は賭けさ、昔からずっとな、これはわしの中のカウボーイが言ってるんだが、賭けの意味はあいつに聞くなよ、あいつも知らん、ただ自信満々に言うだけだからな……こういう場所じゃたまにきつい言葉も飛ぶもんさ、それは否定せんよ……でもお前は戻ってきて謝ってくれた、それは何かの意味があるさ、それか何か欲しいものがあるかだな、どっちにしろこれでおあいこだ、お前とわし、波長も合ってるし、今度食い物欲しけりゃ奢るぜ。",
+          "tribe": "昔はでっかい部族だったのさ、古い刻み跡がそう言ってる、まあわし字はあんまり読めんけど数は数えられるからな、あそこにゃ五つ刻みの跡がめっちゃたくさんあってな、消された跡が、片手で刻めるより絶対多いんだよ、この計算は無視できねえ……あいつの灯りを長いこと保ってたのさ、最後にはわし一人になるまでな。みんなどこ行ったかは知らん、友よ、マジで知らんのだ、波長で時々なんか感じることはあるけど、その感じが自分の話を最後まで言い終わらんのよ、だからわしも言い終わらん……でもこの灯芯はわしの見張り中は消えさせん。それだけは確かだぜ。",
+          "confide": "……それは優しいこと言ってくれるな、友よ、マジで優しい……なあ、わしがお前に話すのは半分は壺が答えてくれんからで、もう半分は、怖いからさ、いつかこの小道を誰も上ってこなくなる夜が来るんじゃないかってな、そしたらわしとあいつと、この静けさだけになっちまう……だから。上ってきてくれてありがとうな。それが神聖ってやつさ、わしに言わせりゃな。……ところで。食い物持ってないか？壺のために聞いてるんだぜ。波長も腹減ってるからな。"
         },
         "dialogChoice": {
-          "kind": "だんだん、居場所らしくなってきたよ、兄者。本気でそう思ってる。",
-          "ask": "壺は最近、何て言ってるんだ？",
-          "blunt": "ここは番人のいる墓場さ、緑掌。それだけのことだ。",
-          "tribe": "その昔ここにいたっていう部族の話を聞かせてくれ。",
-          "warm_bye": "あいつのそばに戻ってやってくれ。",
-          "vase_more": "で、あいつが本当に聴いてると信じてるのか？",
-          "vase_bye": "じゃあ、あいつに付き合ってやってくれ。わしはこの辺にいるよ。",
+          "kind": "だんだん気に入ってきたよ、緑掌。マジで、マジでそう思う。",
+          "ask": "で、壺は最近何て言ってるんだ？",
+          "blunt": "番人つきの墓場ってだけさ、緑掌。それだけだ。",
+          "tribe": "その部族の話を聞かせてくれ、お前より前にいたっていう。",
+          "warm_bye": "じゃあ、あいつのとこに戻ってやってくれ。",
+          "vase_more": "で、マジであいつが聴いてると思ってるのか？",
+          "vase_bye": "じゃあ、あいつに付き合ってやってくれ。",
           "faith_bye": "なるほどな、緑掌。",
-          "sorry": "思ってたよりきつい言い方になっちまった。すまない。",
+          "sorry": "思ってたよりきつい言い方になっちまった。ごめん、緑掌。",
           "cold_bye": "好きに信じてればいいさ。",
-          "mended_bye": "これでおあいこだ。またな。",
+          "mended_bye": "これでおあいこだ。またな、緑掌。",
           "confide": "それを一人で背負う必要はないんだよ、兄者。",
-          "tribe_bye": "まだ誰かが世話をしてる。それにも意味はあるさ。",
-          "confide_bye": "これからもこの小道を上ってくるよ、緑掌。"
+          "tribe_bye": "まあ、まだ誰かが世話してるからな。",
+          "confide_bye": "これからもこの道を上ってくるよ、緑掌。"
         }
       },
       "verger_zebediah": {
@@ -6212,6 +6219,16 @@ export const ja_JP: EnTranslations = {
         "name": "オルラ",
         "title": "かつて根の空洞の者",
         "greeting": "座っていいのよ。たいていの人は通り過ぎる。堂守はずっと前に私の名を台帳から消したの。消された名は、静かにしていることを覚える。まだここにいると、誰にも思い出させないように。"
+      },
+      "withered_planting": {
+        "name": "The Withered Planting",
+        "title": "The Tribe's Old Willow",
+        "greeting": "Dry roots, dry leaves. Whatever this was meant to grow into, it hasn't yet, and it's been a long while waiting."
+      },
+      "buried_root": {
+        "name": "A Buried Root",
+        "title": "Under the Shrine",
+        "greeting": "Dry. Dry as anything down here ever gets."
       }
     },
     "quests": {
@@ -7148,6 +7165,26 @@ export const ja_JP: EnTranslations = {
         "objectives": {
           "0": {
             "label": "オルラのそばに少し座った"
+          }
+        }
+      },
+      "q_the_long_way_around": {
+        "title": "The Long Way Around",
+        "text": "There's a planting the tribe left half-finished up the old willow, and it's dying for want of one good pour. I can't make that climb anymore, but you've got the legs for it. Take the can. Mind the branches; they hold if you're honest with them.",
+        "completion": "It'll live now. You wouldn't think one climb and one pour was much, against everything else out there. It isn't much. It's only everything to the one thing you poured it on.",
+        "objectives": {
+          "0": {
+            "label": "Water carried up the willow path"
+          }
+        }
+      },
+      "q_the_watering_can": {
+        "title": "The Watering Can",
+        "text": "I've asked you for small things, and you've done them all without once asking why. Here's the last one, and it isn't small, though it'll look it. Take my can down under the shrine, to the thing that's buried there, and give it water. It's been waiting a long time to be given something instead of asked for something.",
+        "completion": "You did it. Of course you did. That was the water, you understand. All of it, all the way back to the day you found me at the lake and thought nothing of it. The same pour, the same promise, kept one more time. Thank you. Now go and be gentle with the world. It is the only thing that ever changed it.",
+        "objectives": {
+          "0": {
+            "label": "Water given to the buried root"
           }
         }
       }

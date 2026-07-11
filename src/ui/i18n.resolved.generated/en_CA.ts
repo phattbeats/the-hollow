@@ -1936,6 +1936,13 @@ export const en_CA: EnTranslations = {
     "begin": "Begin",
     "skip": "Skip"
   },
+  "apiError": {
+    "crossSiteRejected": "Cross-site request rejected.",
+    "notAuthenticated": "Not authenticated.",
+    "readOnlyToken": "This token is read-only.",
+    "characterNotFound": "Character not found.",
+    "rateLimited": "Too many attempts. Wait a minute and try again."
+  },
   "skinEvent": {
     "title": "Cosmetic Cache",
     "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",
@@ -6138,30 +6145,30 @@ export const en_CA: EnTranslations = {
           "2": "this here's the hollow. was a whole tribe once, big doings, so they tell me, and now it's mostly me, the vase, and whatever's breathin' down in that cave... anyway. he's hungry, i'm hungry, same wavelength. c'mere, got a couple sacred matters need tendin'."
         },
         "dialogNode": {
-          "hearth": "back at the vase, friend... he's quiet today, which either means he's listenin' hard or he's sulkin', and i never can tell which one. how's the hollow been treatin' you?",
-          "warmed": "...that lands soft, friend, softer than you know. most folks come through lookin' for the exit. you keep lookin' for the middle of the thing, and that's rarer than you'd think.",
-          "vase": "same as ever. he wants smoke, he wants tendin', he wants somebody to sit close and pretend the quiet is a conversation... which, hey, it is, if you squint at it right. that is the whole faith, more or less.",
-          "faith": "belief's a strong word, friend. i tend. tendin' is the part i can do with these two hands. the listenin' i leave to him, and if he ain't, well, the smoke smells good either way...",
-          "stung": "...oof. yeah. yeah, maybe it is. i've thought it myself, on the cold mornings, when the vase don't sigh and nobody comes up the path... but i'm still here, friend, so it ain't only that. not to me it ain't.",
-          "mended": "s'alright, friend. a place like this earns a hard word now and then, i won't pretend otherwise. you came back to say it soft, though, and that's more than the boneyard would'a done. we're square, you and me.",
-          "tribe": "big tribe once, so the old marks say. rows of tally-scratches down in the dark, fives crossed out, more fives than any one hand could'a made... they kept him lit a long, long while before it got down to just me. i don't know where they went, friend. i just know the wick can't go out on my watch.",
-          "confide": "...that's a kind thing to offer, and i'll hold you to a sliver of it. truth is i talk to you half 'cause the vase don't answer and half 'cause i'm scared of the day nobody comes up that path at all. so. thanks for comin' up it. that's the sacred part, friend, if you ever wanted one."
+          "hearth": "howdy, friend, back at the vase huh, he's quiet today which means he's either listenin' real hard or straight up ignorin' me, and honestly i respect both, those are my only two settings too... anyway how's the hollow been treatin' you, good, bad, you got a snack on you, no? okay just checkin', askin' for a friend, the friend is me...",
+          "warmed": "...whoa, okay, that's real nice of you to say, friend, real nice, didn't expect it, most folks just b-line for the gate soon as they can... you're alright, you know that, you're alright to a greenpaw degree even, and i don't hand that out for free... i'd buy stock in ya if stock was a thing i had, buy the new friends, sell the old omens, that's just economics...",
+          "vase": "same ol' same ol', he wants smoke, wants tendin', wants somebody sittin' close so it feels like a conversation even when it ain't one, which... huh. that's most conversations, ain't it. whoa. okay, anyway, i talk at him plenty and he ain't said a word back in, uh, ever, but that's fine, that's the whole deal really, to a greenpaw degree... wait, what were we talkin' about... oh. right. him. he's fine. probably hungry. same.",
+          "faith": "believe's a big word, friend, i just tend, tendin' i can do, got two hands and a lighter and that's about the whole résumé... whether he's listenin' or not i couldn't tell ya, but the smoke smells good and it don't judge me neither, which puts it ahead of most things with ears, so, wavelength's covered either way. indeed.",
+          "stung": "...oof, yeah okay, ouch friend, dang... i mean maybe, i dunno, i've had them thoughts too, on the real cold mornings when nobody's comin' up the path and the vase won't even sigh at me... but i'm still here so, that's gotta count for somethin', right? right. anyway you want a snack, i got a snack, changin' the subject. F.",
+          "mended": "s'all good, friend, it's all gambit, always has been, that's the cowboy in me talkin', don't ask him what gambit means, he don't know neither, he just says it real confident... place like this earns a hard word now'n then, i ain't gonna pretend it don't... you came back and said sorry though, and that means somethin', or it means you want somethin', either way we're square, you and me, same wavelength, snack's on me later if you want one.",
+          "tribe": "big tribe, way back, so the old marks say anyway, i can't read good but i can count and there's a whole lotta fives scratched down there, crossed out, more fives than one hand shoulda made, that's math i can't get around... kept him lit a long time before it got down to just me, i don't know where everybody went, friend, i really don't, i get a feelin' about it sometimes, on the wavelength, but the feelin' won't finish its own sentence so, neither will i i guess... wick can't go out on my watch though. that part i know for sure.",
+          "confide": "...that's kind of you to say, friend, real kind... look, i talk at you half 'cause the vase don't answer and half 'cause i get scared, some nights, that nobody's gonna come up that path ever again and it'll just be me and him and the quiet... so. thanks for comin' up it. that's the sacred part, if you ask me. ...anyway. you got a snack on you? askin' for the vase. wavelength's hungry too."
         },
         "dialogChoice": {
-          "kind": "it's startin' to feel like somewhere, brother. i mean that.",
-          "ask": "what's the vase been sayin' lately?",
-          "blunt": "it's a boneyard with a caretaker, greenpaw. that's all it is.",
-          "tribe": "tell me about the tribe that was here before.",
-          "warm_bye": "i'll let you get back to him.",
-          "vase_more": "and you believe he's really listenin'?",
-          "vase_bye": "keep him company, then. i'll be around.",
+          "kind": "it's growin' on me, greenpaw. like, for real, for real.",
+          "ask": "so what's the vase been sayin', these days?",
+          "blunt": "it's a graveyard with a mascot, greenpaw. that's it.",
+          "tribe": "tell me about the tribe, the one before you.",
+          "warm_bye": "i'll let you get on with it then.",
+          "vase_more": "and you actually think he's listenin'?",
+          "vase_bye": "well, keep him company then.",
           "faith_bye": "fair enough, greenpaw.",
-          "sorry": "that came out meaner than i meant it. i'm sorry.",
+          "sorry": "that came out meaner than i meant. sorry, greenpaw.",
           "cold_bye": "believe whatever you want.",
-          "mended_bye": "we're square. i'll see you around.",
+          "mended_bye": "we're square. see you around, greenpaw.",
           "confide": "you don't have to carry that alone, brother.",
-          "tribe_bye": "somebody's still tendin' it. that counts for somethin'.",
-          "confide_bye": "i'll keep comin' up the path, greenpaw."
+          "tribe_bye": "well, somebody's still tendin' it.",
+          "confide_bye": "i'll keep comin' up that path, greenpaw."
         }
       },
       "verger_zebediah": {
@@ -6212,6 +6219,16 @@ export const en_CA: EnTranslations = {
         "name": "Orla",
         "title": "Once of Root Hollow",
         "greeting": "You can sit. Most walk on. The Verger crossed my name off his register a long while back, and a crossed name learns to keep quiet so nobody has to be reminded it's still here."
+      },
+      "withered_planting": {
+        "name": "The Withered Planting",
+        "title": "The Tribe's Old Willow",
+        "greeting": "Dry roots, dry leaves. Whatever this was meant to grow into, it hasn't yet, and it's been a long while waiting."
+      },
+      "buried_root": {
+        "name": "A Buried Root",
+        "title": "Under the Shrine",
+        "greeting": "Dry. Dry as anything down here ever gets."
       }
     },
     "quests": {
@@ -7148,6 +7165,26 @@ export const en_CA: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Sat a while with Orla"
+          }
+        }
+      },
+      "q_the_long_way_around": {
+        "title": "The Long Way Around",
+        "text": "There's a planting the tribe left half-finished up the old willow, and it's dying for want of one good pour. I can't make that climb anymore, but you've got the legs for it. Take the can. Mind the branches; they hold if you're honest with them.",
+        "completion": "It'll live now. You wouldn't think one climb and one pour was much, against everything else out there. It isn't much. It's only everything to the one thing you poured it on.",
+        "objectives": {
+          "0": {
+            "label": "Water carried up the willow path"
+          }
+        }
+      },
+      "q_the_watering_can": {
+        "title": "The Watering Can",
+        "text": "I've asked you for small things, and you've done them all without once asking why. Here's the last one, and it isn't small, though it'll look it. Take my can down under the shrine, to the thing that's buried there, and give it water. It's been waiting a long time to be given something instead of asked for something.",
+        "completion": "You did it. Of course you did. That was the water, you understand. All of it, all the way back to the day you found me at the lake and thought nothing of it. The same pour, the same promise, kept one more time. Thank you. Now go and be gentle with the world. It is the only thing that ever changed it.",
+        "objectives": {
+          "0": {
+            "label": "Water given to the buried root"
           }
         }
       }
