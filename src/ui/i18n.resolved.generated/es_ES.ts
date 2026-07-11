@@ -291,6 +291,9 @@ export const es_ES: EnTranslations = {
       "lessThanMinute": "<1min",
       "lockedToast": "Estás bloqueado en {raid}. Se desbloquea en {time}."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "N",
       "NE": "NE",
@@ -5413,6 +5416,16 @@ export const es_ES: EnTranslations = {
         "name": "Página de Diario Rasgada",
         "flavorText": "...conté cuarenta días con velas antes de perder la cuenta. La oscuridad de aquí abajo no Lo olvida, aunque Él haya olvidado este lugar. Si la garza vuela bajo, dile al Sacristán que la mecha aún arde..."
       },
+      "heartwood_splinter": {
+        "name": "Astilla de Duramen",
+        "flavorText": "Cálida al tacto, mucho después de que el árbol del que proviene dejara de moverse."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Hombreras de la Corona Florida"
+      },
+      "verdantguard_mantle": {
+        "name": "Manto del Guardián Verde"
+      },
       "worn_prayer_token": {
         "name": "Worn Prayer Token",
         "flavorText": "...smooth on one face from a thumb that isn't mine, worn the same shallow groove into a hundred more like it before this one, or so the pile down here would have you believe. one thumb doesn't wear a hundred tokens. a lot of thumbs wear one groove, though..."
@@ -5875,6 +5888,9 @@ export const es_ES: EnTranslations = {
       },
       "the_witness_root": {
         "name": "La Raíz Testigo"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {

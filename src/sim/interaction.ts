@@ -39,6 +39,7 @@ import {
 } from './loot/loot_roll';
 import type { SimContext } from './sim_context';
 import { dist2d, type Entity, INTERACT_RANGE, OBJECT_RESPAWN } from './types';
+import { markWorldBossLooted } from './world_boss';
 
 export function lootCorpse(ctx: SimContext, mobId: number, pid?: number): void {
   const r = ctx.resolve(pid);
@@ -86,6 +87,15 @@ export function lootCorpse(ctx: SimContext, mobId: number, pid?: number): void {
       }
       ctx.addItem(s.itemId, 1, meta.entityId);
       s.personalFor = s.personalFor.filter((id) => id !== meta.entityId);
+      // World-boss personal loot (PHAA-494): the loot lockout is consumed here, at
+      // the actual TAKE, not at the kill/roll (see world_boss.ts's rollWorldBossLoot
+      // comment) so a contributor who dies or never reaches the corpse keeps their
+      // lockout-free status. A world-boss corpse's personalFor slots are otherwise
+      // indistinguishable from a quest-gated personalFor slot at this generic site,
+      // so gate on the mob template rather than the slot shape.
+      if (MOBS[mob.templateId]?.worldBoss) {
+        markWorldBossLooted(meta, mob.templateId, ctx.lockoutNowMs());
+      }
       continue;
     }
     if (!hasSharedLootRights) continue;

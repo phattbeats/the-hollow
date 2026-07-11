@@ -4696,6 +4696,11 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_gravecall_acolyte.name': '무덤부름 수련사제',
   'entities.mobs.reliquary_ledger_wraith.name': '명부의 망령',
   'entities.mobs.reliquary_saintless_effigy.name': '성인 잃은 조상',
+  'entities.items.heartwood_splinter.name': '심재 조각',
+  'entities.items.heartwood_splinter.flavorText':
+    '그것이 자라난 나무가 움직임을 멈춘 지 오래되었어도, 만지면 따뜻하다.',
+  'entities.items.bloomcrown_pauldrons.name': '만개한 왕관 견갑',
+  'entities.items.verdantguard_mantle.name': '상록 수호자의 망토',
   'entities.mobs.palefeeder.name': '창백포식자',
   'entities.mobs.rootmaw.name': '뿌리아가리',
   'entities.mobs.the_witness_root.name': '증언의 뿌리',

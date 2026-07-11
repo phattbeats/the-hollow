@@ -212,6 +212,12 @@ import { persistedResource } from './serialize_resource';
 import { createSimContext, type SimContext, type SimContextHost } from './sim_context';
 import * as chatMod from './social/chat';
 import * as tradeMod from './social/trade';
+import {
+  rollWorldBossLoot as rollWorldBossLootImpl,
+  scaleWorldBossHp,
+  WORLD_BOSSES,
+  type WorldBossDef,
+} from './world_boss';
 
 // Re-export so server/db.ts's `import type { MarketSave } from '../src/sim/sim'`
 // stays valid now that the type lives in market.ts.
@@ -1016,6 +1022,13 @@ export class Sim {
   readonly devCommands: boolean;
   private pendingMobRespawns: PendingMobRespawn[] = [];
   private groundAoEs: GroundAoE[] = [];
+  // World-boss scheduler (PHAA-494), one slot per WORLD_BOSSES entry. `worldBossNextAt`
+  // is the next sim-time (seconds) a boss is due to rise; `worldBossEntityIds` is the
+  // live boss entity (null once none is alive). Driven by updateWorldBosses() in the
+  // tick prologue. Sim-time scheduling keeps it deterministic (no wall clock); on the
+  // live server the sim runs at 20 Hz wall speed, so the interval is real hours.
+  private worldBossNextAt: number[] = WORLD_BOSSES.map((b) => b.intervalSeconds);
+  private worldBossEntityIds: (number | null)[] = WORLD_BOSSES.map(() => null);
 
   constructor(cfg: SimConfig) {
     this.devCommands = cfg.devCommands ?? false;
@@ -1028,7 +1041,13 @@ export class Sim {
       devCommands: this.devCommands,
       lockoutNowMs: cfg.lockoutNowMs ?? (() => Math.floor(this.time * 1000)),
       hollowStart: cfg.hollowStart ?? false,
+      worldBossAtBoot: cfg.worldBossAtBoot ?? false,
     };
+    // Live server opt-in (worldBossAtBoot): the first world-boss rise is due
+    // immediately instead of one interval out, so a freshly (re)started realm has
+    // the Heartwood Colossus up. Draws no rng here; the spawn itself fires on the
+    // first tick through the normal updateWorldBosses path.
+    if (cfg.worldBossAtBoot) this.worldBossNextAt = WORLD_BOSSES.map(() => 0);
     this.rng = new Rng(cfg.seed);
     // S0b seam: the shared SimContext every extracted slice routes through. Built
     // once here (the rng now exists); a live view + bound callbacks, it draws no rng
@@ -1234,6 +1253,70 @@ export class Sim {
       }
       this.pendingMobRespawns.splice(i, 1);
     }
+  }
+
+  // World-boss scheduler (PHAA-494). Per WORLD_BOSSES slot: when the live boss is
+  // gone, clear the slot (and once its lootable corpse window has elapsed, remove
+  // the corpse + any adds it left). When the interval comes due, advance it and, if
+  // no boss is currently up, spawn a fresh one. Draws no rng and allocates no ids
+  // until a spawn actually fires (which never happens inside the short parity
+  // scenarios), so existing determinism traces are unaffected.
+  private updateWorldBosses(): void {
+    for (let i = 0; i < WORLD_BOSSES.length; i++) {
+      const def = WORLD_BOSSES[i];
+      const liveId = this.worldBossEntityIds[i];
+      if (liveId !== null) {
+        const boss = this.entities.get(liveId);
+        if (!boss) {
+          this.worldBossEntityIds[i] = null;
+        } else if (!boss.dead) {
+          // Grow the HP pool with the raid size (retail-style, up to the cap).
+          scaleWorldBossHp(this.ctx, boss, def);
+        }
+        if (boss?.dead) {
+          // Lootable corpse lingers WORLD_BOSS_CORPSE_SECONDS for contributors to
+          // loot, then is removed; respawnTimer is Infinity (handleDeath) so the
+          // normal in-place respawn never fires; only this scheduler respawns it.
+          if (boss.corpseTimer <= 0) {
+            for (const addId of boss.summonedIds) this.dropEntity(addId);
+            this.dropEntity(liveId);
+            this.worldBossEntityIds[i] = null;
+          }
+        }
+      }
+      if (this.time >= this.worldBossNextAt[i]) {
+        this.worldBossNextAt[i] += def.intervalSeconds;
+        if (this.worldBossEntityIds[i] === null) {
+          this.worldBossEntityIds[i] = this.spawnWorldBoss(def);
+        }
+      }
+    }
+  }
+
+  // Spawn a world boss at its fixed point and announce it server-wide. Returns the
+  // new entity id, or null if the template is missing. Uses no rng (fixed level +
+  // facing) so the spawn does not perturb the shared draw stream.
+  private spawnWorldBoss(def: WorldBossDef): number | null {
+    const template = MOBS[def.templateId];
+    if (!template) return null;
+    const pos = this.groundPos(def.pos.x, def.pos.z);
+    const mob = createMob(this.nextId++, template, template.maxLevel, pos);
+    mob.facing = 0;
+    mob.prevFacing = 0;
+    // World bosses use participant HP scaling (see scaleWorldBossHp), so their pool
+    // starts at the def base rather than the template's level-formula HP.
+    mob.maxHp = def.hpScale.base;
+    mob.hp = def.hpScale.base;
+    this.addEntity(mob);
+    // Anchorless log (no pid, no entityId) => routeEvents broadcasts to every
+    // connected player as a system notice. Localized by sim_i18n's worldBossSpawn
+    // RULE (matched on this exact literal shape).
+    this.emit({
+      type: 'log',
+      text: `${template.name} rises over Root Hollow!`,
+      color: '#ffd100',
+    });
+    return mob.id;
   }
 
   // -------------------------------------------------------------------------
@@ -2193,6 +2276,7 @@ export class Sim {
       arenaIsDown: sim.arenaIsDown.bind(sim),
       arenaAllPids: sim.arenaAllPids.bind(sim),
       rollLoot: sim.rollLoot.bind(sim),
+      rollWorldBossLoot: sim.rollWorldBossLoot.bind(sim),
       applyHeal: sim.applyHeal.bind(sim),
       // Lazy arrow, not a ctor-time .bind: applyHeal/effect_dispatch/casting_lifecycle
       // read ctx.spellCrit long after buildSimContext runs, and unit tests override
@@ -2629,6 +2713,7 @@ export class Sim {
     this.time += DT;
     this.tickCount++;
     this.updatePendingMobRespawns();
+    this.updateWorldBosses();
     tickGroundAoEs(this.ctx);
 
     runDespawnDecay(this.ctx);
@@ -3746,6 +3831,10 @@ export class Sim {
   // (lootCorpse) moved to interaction.ts (W3), which now imports them directly.
   private rollLoot(mob: Entity, meta: PlayerMeta, eligible: PlayerMeta[] = [meta]): void {
     rollLootImpl(this.ctx, mob, meta, eligible);
+  }
+
+  private rollWorldBossLoot(mob: Entity, contributors: PlayerMeta[]): void {
+    rollWorldBossLootImpl(this.ctx, mob, contributors);
   }
 
   activeLootRolls(pid = this.playerId): LootRollPrompt[] {

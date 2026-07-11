@@ -93,6 +93,7 @@ import {
   virtualLevel,
   xpUntilNextPrestige,
 } from '../sim/types';
+import { worldBossIdFromLockout } from '../sim/world_boss';
 import {
   type DelveRunInfo,
   type IWorld,
@@ -204,9 +205,9 @@ import { LeaderboardWindow } from './leaderboard_window';
 import { ReannounceMarker } from './live_region_reannounce';
 import { PICK_ACTION_HOTKEYS } from './lockpick_panel';
 import { LockpickWindow } from './lockpick_window';
-import { reconcileLootRolls as computeLootRollReconcile } from './loot_roll_reconcile';
-import { lootRollGroupView as computeLootRollGroupView } from './loot_roll_group_view';
 import { LootRollGroupPainter } from './loot_roll_group_painter';
+import { lootRollGroupView as computeLootRollGroupView } from './loot_roll_group_view';
+import { reconcileLootRolls as computeLootRollReconcile } from './loot_roll_reconcile';
 import { lowHealthVignette } from './low_health';
 import { lowResourceView } from './low_resource';
 import { type MapRegion, mapCanvasHeight, paintTerrainRows } from './map_terrain';
@@ -4787,7 +4788,10 @@ export class Hud {
     const i18n: RaidLockoutI18n = {
       title: t('hudChrome.raidLockout.title'),
       allReady: t('hudChrome.raidLockout.allReady'),
-      raidName: (id) => dungeonDisplayName(id),
+      raidName: (id) => {
+        const bossId = worldBossIdFromLockout(id);
+        return bossId ? mobDisplayName(bossId) : dungeonDisplayName(id);
+      },
       duration: (ms) => this.formatLockoutDuration(ms),
     };
     return raidLockoutPanelHtml(this.sim.raidLockouts(), i18n);

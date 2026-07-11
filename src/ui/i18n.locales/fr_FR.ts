@@ -2384,6 +2384,11 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.doomguard.name': "Seigneur de l'effroi",
   'entities.mobs.choirmother_selthe.name': 'Selthe, mère de chœur',
   'entities.mobs.drowned_templeguard.name': 'Garde du temple noyé',
+  'entities.items.heartwood_splinter.name': 'Écharde de Duramen',
+  'entities.items.heartwood_splinter.flavorText':
+    "Chaude au toucher, longtemps après que l'arbre dont elle provient ait cessé de bouger.",
+  'entities.items.bloomcrown_pauldrons.name': 'Épaulières de la Couronne Fleurie',
+  'entities.items.verdantguard_mantle.name': 'Manteau du Gardien Verdoyant',
   'entities.mobs.palefeeder.name': 'Dévoreur blafard',
   'entities.mobs.rootmaw.name': 'Gueule-racine',
   'entities.mobs.the_witness_root.name': 'La Racine témoin',

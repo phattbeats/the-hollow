@@ -514,6 +514,12 @@ export interface MobTemplate {
   componentTags?: string[];
   boss?: boolean;
   rare?: boolean;
+  // World boss (PHAA-494): a server-wide elite that spawns on a fixed cadence (not
+  // from a CAMP), announces itself when it rises, and drops PERSONAL loot to every
+  // player who damaged it (gated to a per-player loot lockout). The spawn schedule +
+  // location live in src/sim/world_boss.ts; the loot roll runs through
+  // ctx.rollWorldBossLoot.
+  worldBoss?: boolean;
   // Elite scaling, vanilla-style: ~2.3x health, ~1.5x damage, double XP.
   elite?: boolean;
   // Rare/miniboss controls.
@@ -640,6 +646,45 @@ export interface MobTemplate {
     name: string;
     school?: Aura['school'];
   };
+  // Boss mechanic (PHAA-494, "Grasping Roots"): the ANTI-KITE snare. A periodic,
+  // room-wide AoE that slows every player within `radius` to `mult` of run speed
+  // (moveSpeedMult already honors the `slow` aura, so 0.2 = 20% speed) for
+  // `duration`s. Unlike the aoePulse/stomp/bigCast pulses, which gate on the boss
+  // being in melee range, this one ALSO fires while the boss is chasing a fleeing
+  // target: that is the whole point, a ranged kiter can otherwise hold a
+  // sub-run-speed boss out of melee forever and none of the other pulses ever land.
+  // Deals no damage and draws no rng (fixed radius/mult/duration). Telegraphed like
+  // the sibling pulses (the first snare lands one full `every` after engage).
+  aoeSlow?: {
+    radius: number;
+    mult: number;
+    duration: number;
+    every: number;
+    name: string;
+    school?: Aura['school'];
+  };
+  // Boss mechanic (PHAA-494): a periodic telegraphed HARDCAST. Unlike the instant
+  // aoePulse, the mob shows a real cast bar (the entity casting fields carry
+  // castId) for `castTime` seconds, then the spell lands as an AoE nova on every
+  // living player within `radius`. The mob keeps meleeing while it casts (the bar
+  // is the telegraph healers react to, not a channel). `yell` is barked at cast
+  // start.
+  bigCast?: {
+    castId: string;
+    name: string;
+    castTime: number;
+    every: number;
+    radius: number;
+    min: number;
+    max: number;
+    school?: string;
+    yell?: string;
+  };
+  // Boss flavor (PHAA-494, "loud"): a booming voice. `range` widens how far a bark
+  // from this mob carries, and `lines` are battle cries it bellows every `every`s
+  // while in combat (cycled in order, no rng). Chat-channel text, so it ships
+  // English under the boss-yell precedent (see mob/yells.ts).
+  battleYells?: { lines: string[]; every: number; range: number };
   // Melee mechanic: each landed swing also splashes onto other players near the
   // primary target for `mult` of the (pre-armor) hit. Classic-WoW Cleave.
   cleave?: { radius: number; mult: number; name?: string };
@@ -1614,6 +1659,10 @@ export interface Entity {
   stompTimer: number; // boss War Stomp stun-pulse countdown
   stoneskinTimer: number; // periodic self-absorb barrier countdown
   terrifyTimer: number; // Banshee's Wail fear-pulse countdown
+  bigCastTimer: number; // boss telegraphed-hardcast (bigCast) cadence countdown
+  aoeSlowTimer: number; // anti-kite snare-pulse countdown (aoeSlow)
+  loudYellTimer: number; // battle-cry (loud boss) bark countdown
+  loudYellIndex: number; // next battle-cry line to bark (cycles through battleYells.lines)
   detonateTimer: number; // Death Throes fuse on a volatile corpse; Infinity = no pending detonation
   mendTimer: number; // mendAlly support-heal cast countdown
   wardTimer: number; // wardAllies support-shield cast countdown
@@ -2013,6 +2062,11 @@ export interface SimConfig {
   noPlayer?: boolean; // multiplayer server: start with an empty world and addPlayer() later
   devCommands?: boolean; // local dev: /dev level|tp|give chat cheats
   lockoutNowMs?: () => number; // host wall-clock for persisted raid lockouts
+  // Live server (PHAA-494): schedule the first world-boss rise at boot instead of
+  // one interval out, so a freshly (re)started realm has the Heartwood Colossus up
+  // immediately. Offline worlds, tests, and the RL env keep the default (first rise
+  // after one interval), so this never fires inside a short deterministic scenario.
+  worldBossAtBoot?: boolean;
   // The Hollow spawn policy (PHAA-404): players join inside the Hollow hub
   // instance (new characters at the vase), never the inherited base overworld.
   // The real hosts (offline client, online server) set this; tests and the RL

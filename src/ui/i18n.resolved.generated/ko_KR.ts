@@ -291,6 +291,9 @@ export const ko_KR: EnTranslations = {
       "lessThanMinute": "1분 미만",
       "lockedToast": "{raid}에 잠겨 있습니다. {time} 후 해제됩니다."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "북",
       "NE": "북동",
@@ -5413,6 +5416,16 @@ export const ko_KR: EnTranslations = {
         "name": "찢어진 일기장 페이지",
         "flavorText": "...촛불로 마흔 날을 세다가 결국 놓쳐버렸다. 이 아래의 어둠은 그분을 잊지 않는다, 그분이 이곳을 잊으셨어도. 왜가리가 낮게 돌면, 등지기에게 심지가 아직 타고 있다고 전해라..."
       },
+      "heartwood_splinter": {
+        "name": "심재 조각",
+        "flavorText": "그것이 자라난 나무가 움직임을 멈춘 지 오래되었어도, 만지면 따뜻하다."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "만개한 왕관 견갑"
+      },
+      "verdantguard_mantle": {
+        "name": "상록 수호자의 망토"
+      },
       "worn_prayer_token": {
         "name": "닳은 기도패",
         "flavorText": "...한쪽 면이 내 것이 아닌 엄지에 매끄럽게 닳아 있다, 여기 쌓인 다른 백여 개와 똑같은 얕은 홈이 패어 있는데, 적어도 이 더미는 그렇게 말하고 있다. 엄지 하나로는 토큰 백 개를 닳게 할 수 없다. 하지만 수많은 엄지가 하나의 홈을 닳게 하는 일은, 가능하다..."
@@ -5875,6 +5888,9 @@ export const ko_KR: EnTranslations = {
       },
       "the_witness_root": {
         "name": "증언의 뿌리"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {

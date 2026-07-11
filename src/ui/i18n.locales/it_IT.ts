@@ -4573,6 +4573,11 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_gravecall_acolyte.name': 'Accolito del Richiamo Sepolcrale',
   'entities.mobs.reliquary_ledger_wraith.name': 'Spettro del Registro',
   'entities.mobs.reliquary_saintless_effigy.name': 'Effigie Senza Santo',
+  'entities.items.heartwood_splinter.name': 'Scheggia di Durame',
+  'entities.items.heartwood_splinter.flavorText':
+    "Calda al tatto, molto tempo dopo che l'albero da cui proviene ha smesso di muoversi.",
+  'entities.items.bloomcrown_pauldrons.name': 'Spallacci della Corona in Fiore',
+  'entities.items.verdantguard_mantle.name': 'Manto del Guardiano Verdeggiante',
   'entities.mobs.palefeeder.name': 'Divoratore Pallido',
   'entities.mobs.rootmaw.name': 'Fauce di Radice',
   'entities.mobs.the_witness_root.name': 'La Radice Testimone',

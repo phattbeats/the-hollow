@@ -4784,6 +4784,11 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_gravecall_acolyte.name': 'Аколит могильного зова',
   'entities.mobs.reliquary_ledger_wraith.name': 'Книжный призрак',
   'entities.mobs.reliquary_saintless_effigy.name': 'Изваяние без святого',
+  'entities.items.heartwood_splinter.name': 'Щепка сердцевины',
+  'entities.items.heartwood_splinter.flavorText':
+    'Тёплая на ощупь, долго после того, как дерево, из которого она взята, перестало двигаться.',
+  'entities.items.bloomcrown_pauldrons.name': 'Наплечники Цветущей Короны',
+  'entities.items.verdantguard_mantle.name': 'Мантия Зелёного Стража',
   'entities.mobs.palefeeder.name': 'Бледнопитающийся',
   'entities.mobs.rootmaw.name': 'Корнепасть',
   'entities.mobs.the_witness_root.name': 'Корень-Свидетель',

@@ -1205,6 +1205,11 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.old_cragmaw.name': 'Gamle Klippekæft',
   'entities.mobs.old_greyjaw.name': 'Gamle Gråkæft',
   'entities.mobs.pale_choir_acolyte.name': 'Akolyt af Det Blege Kor',
+  'entities.items.heartwood_splinter.name': 'Kærnetræsplint',
+  'entities.items.heartwood_splinter.flavorText':
+    'Varm at røre ved, længe efter at træet, den kom fra, holdt op med at bevæge sig.',
+  'entities.items.bloomcrown_pauldrons.name': 'Blomsterkronede Skulderplader',
+  'entities.items.verdantguard_mantle.name': 'Frodig Vogterkappe',
   'entities.mobs.palefeeder.name': 'Blegæder',
   'entities.mobs.pearlguard_sentinel.name': 'Perlevogter-Skildvagt',
   'entities.mobs.raised_bonewalker.name': 'Genopvakt Benvandrer',

@@ -291,6 +291,9 @@ export const da_DK: EnTranslations = {
       "lessThanMinute": "<1m",
       "lockedToast": "Du er låst til {raid}. Låses op om {time}."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "N",
       "NE": "NØ",
@@ -5413,6 +5416,16 @@ export const da_DK: EnTranslations = {
         "name": "Iturevet Dagbogsside",
         "flavorText": "...talte fyrre dage ved stearinlys, før jeg mistede tråden. Mørket hernede glemmer Ham ikke, selvom Han har glemt dette sted. Hvis hejren kredser lavt, så sig til Degnen at vægen stadig brænder..."
       },
+      "heartwood_splinter": {
+        "name": "Kærnetræsplint",
+        "flavorText": "Varm at røre ved, længe efter at træet, den kom fra, holdt op med at bevæge sig."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Blomsterkronede Skulderplader"
+      },
+      "verdantguard_mantle": {
+        "name": "Frodig Vogterkappe"
+      },
       "worn_prayer_token": {
         "name": "Worn Prayer Token",
         "flavorText": "...smooth on one face from a thumb that isn't mine, worn the same shallow groove into a hundred more like it before this one, or so the pile down here would have you believe. one thumb doesn't wear a hundred tokens. a lot of thumbs wear one groove, though..."
@@ -5875,6 +5888,9 @@ export const da_DK: EnTranslations = {
       },
       "the_witness_root": {
         "name": "Vidnerod"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {

@@ -291,6 +291,9 @@ export const vi_VN: EnTranslations = {
       "lessThanMinute": "<1p",
       "lockedToast": "Bạn đang bị khóa với {raid}. Mở khóa sau {time}."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "B",
       "NE": "ĐB",
@@ -5413,6 +5416,16 @@ export const vi_VN: EnTranslations = {
         "name": "Trang Nhật Ký Bị Xé",
         "flavorText": "...đếm bốn mươi ngày bằng ánh nến trước khi mất dấu. Bóng tối dưới đây không quên Người, dù Người đã quên nơi này. Nếu con diệc lượn thấp, hãy nói với Người Giữ Đền rằng bấc đèn vẫn còn cháy..."
       },
+      "heartwood_splinter": {
+        "name": "Mảnh Lõi Gỗ",
+        "flavorText": "Ấm khi chạm vào, rất lâu sau khi cái cây sinh ra nó đã ngừng chuyển động."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Giáp Vai Vương Miện Nở Hoa"
+      },
+      "verdantguard_mantle": {
+        "name": "Áo Choàng Của Vệ Binh Xanh Tươi"
+      },
       "worn_prayer_token": {
         "name": "Worn Prayer Token",
         "flavorText": "...smooth on one face from a thumb that isn't mine, worn the same shallow groove into a hundred more like it before this one, or so the pile down here would have you believe. one thumb doesn't wear a hundred tokens. a lot of thumbs wear one groove, though..."
@@ -5875,6 +5888,9 @@ export const vi_VN: EnTranslations = {
       },
       "the_witness_root": {
         "name": "Rễ Chứng Nhân"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {

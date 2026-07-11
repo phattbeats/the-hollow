@@ -291,6 +291,9 @@ export const id_ID: EnTranslations = {
       "lessThanMinute": "<1mnt",
       "lockedToast": "Anda terkunci pada {raid}. Terbuka dalam {time}."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "U",
       "NE": "TL",
@@ -5413,6 +5416,16 @@ export const id_ID: EnTranslations = {
         "name": "Halaman Buku Harian yang Robek",
         "flavorText": "...menghitung empat puluh hari dengan cahaya lilin sebelum kehilangan hitungan. Kegelapan di bawah sini tak melupakan-Nya, meski Dia telah melupakan tempat ini. Jika bangau terbang rendah, katakan pada Sang Penjaga sumbunya masih menyala..."
       },
+      "heartwood_splinter": {
+        "name": "Serpihan Kayu Teras",
+        "flavorText": "Hangat saat disentuh, lama setelah pohon asalnya berhenti bergerak."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Pelindung Bahu Mahkota Mekar"
+      },
+      "verdantguard_mantle": {
+        "name": "Jubah Penjaga Zamrud"
+      },
       "worn_prayer_token": {
         "name": "Worn Prayer Token",
         "flavorText": "...smooth on one face from a thumb that isn't mine, worn the same shallow groove into a hundred more like it before this one, or so the pile down here would have you believe. one thumb doesn't wear a hundred tokens. a lot of thumbs wear one groove, though..."
@@ -5875,6 +5888,9 @@ export const id_ID: EnTranslations = {
       },
       "the_witness_root": {
         "name": "Sang Akar Saksi"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {

@@ -4563,6 +4563,11 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_gravecall_acolyte.name': 'Acólito do Chamado Sepulcral',
   'entities.mobs.reliquary_ledger_wraith.name': 'Espectro do Registro',
   'entities.mobs.reliquary_saintless_effigy.name': 'Efígie Sem Santo',
+  'entities.items.heartwood_splinter.name': 'Lasca de Cerne',
+  'entities.items.heartwood_splinter.flavorText':
+    'Quente ao toque, muito depois que a árvore da qual veio parou de se mover.',
+  'entities.items.bloomcrown_pauldrons.name': 'Ombreiras da Coroa Florida',
+  'entities.items.verdantguard_mantle.name': 'Manto do Guardião Verdejante',
   'entities.mobs.palefeeder.name': 'Devorapálido',
   'entities.mobs.rootmaw.name': 'Fauce-Raiz',
   'entities.mobs.the_witness_root.name': 'A Raiz Testemunha',

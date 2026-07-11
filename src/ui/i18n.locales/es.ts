@@ -4587,6 +4587,11 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_gravecall_acolyte.name': 'Acólito de la Llamada de Tumba',
   'entities.mobs.reliquary_ledger_wraith.name': 'Espectro del registro',
   'entities.mobs.reliquary_saintless_effigy.name': 'Efigie sin santo',
+  'entities.items.heartwood_splinter.name': 'Astilla de Duramen',
+  'entities.items.heartwood_splinter.flavorText':
+    'Cálida al tacto, mucho después de que el árbol del que proviene dejara de moverse.',
+  'entities.items.bloomcrown_pauldrons.name': 'Hombreras de la Corona Florida',
+  'entities.items.verdantguard_mantle.name': 'Manto del Guardián Verde',
   'entities.mobs.palefeeder.name': 'Devorador Pálido',
   'entities.mobs.rootmaw.name': 'Fauce de Raíz',
   'entities.mobs.the_witness_root.name': 'La Raíz Testigo',

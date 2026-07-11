@@ -227,6 +227,11 @@ export const hudChromeStrings = {
     // ({raid} = the localized raid name, {time} = the formatted countdown).
     lockedToast: 'You are locked to {raid}. Unlocks in {time}.',
   },
+  // World-boss server-wide spawn announcement (PHAA-494, src/sim/world_boss.ts).
+  // {name} is the localized boss mob name.
+  worldBoss: {
+    spawn: '{name} rises over Root Hollow!',
+  },
   // Eight-point compass abbreviations as drawn on the heading strip. Each locale
   // overrides with its own established compass abbreviations (e.g. West = "O" in
   // Spanish, "O" in French/Italian/Portuguese, "З" in Russian).
