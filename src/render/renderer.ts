@@ -3548,10 +3548,12 @@ export class Renderer {
 
   // Outdoor fog presets per biome (high tier eases between them as the
   // player crosses zone bands; low keeps the legacy vale fog everywhere).
+  // peaks near/far trimmed so a zone's own mountain crags fade into haze
+  // instead of standing out crisp when viewed from the zone's hub.
   private static BIOME_FOG: Record<BiomeId, { color: number; near: number; far: number }> = {
     vale: { color: 0xa6c6e0, near: 130, far: 470 },
     marsh: { color: 0xa3b294, near: 80, far: 330 },
-    peaks: { color: 0xbdd3ec, near: 160, far: 560 },
+    peaks: { color: 0xbdd3ec, near: 110, far: 390 },
   };
   private static LOW_FOG = { color: 0xa6c6e0, near: 70, far: 260 };
 
