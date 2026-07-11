@@ -165,24 +165,11 @@ export function chat(ctx: SimContext, text: string, pid?: number): SentChat | nu
     return null;
   }
 
-  // "/house [claim|place|remove|...]" — Housing v0 (the Hollow hub homesteads).
-  // Routed through the seam to the Housing instance; self-only notices, no chat
-  // message, so it works identically offline and online without server wiring.
-  if (/^\/house(?:\s|$)/i.test(raw)) {
-    ctx.housingChat(raw, r.meta.entityId);
-    return null;
-  }
-
-  // "/feed" — Greenpaw's hearth (PHAA-421): resupply Brother Greenpaw with
-  // whatever burns/fills you carry. Takes no arguments, so this matches the
-  // exact same pattern as GreenpawHearth.handleChat's own regex: "/feed foo"
-  // falls through to the unknown-command error below instead of being
-  // silently swallowed. Routed through the seam; self-only notices, no chat
-  // message.
-  if (/^\/feed\s*$/i.test(raw)) {
-    ctx.greenpawFeedChat(raw, r.meta.entityId);
-    return null;
-  }
+  // PHAA-482: Housing v0 and Greenpaw's hearth are menu/interact-driven now
+  // (the housing signpost + interact key, and Greenpaw's dialogue "feed the
+  // hearth" option), not typed chat commands. Neither /house nor /feed is
+  // special-cased here any more; both fall through to the unknown-command
+  // error below like any other unrecognized slash command.
 
   // "/plant [text]", the Plant's deterministic floor (PHAA-422): addressing
   // it at all earns contempt (5.3), so unlike /feed this takes optional free
@@ -191,6 +178,15 @@ export function chat(ctx: SimContext, text: string, pid?: number): SentChat | nu
   // works identically offline and online without server wiring.
   if (/^\/plant\b/i.test(raw)) {
     ctx.plantSpeechChat(raw, r.meta.entityId);
+    return null;
+  }
+
+  // "/homestead [claim]", Homestead v0 (the open-world Hollow Reaches
+  // plots). Routed through the seam to the Homestead instance; self-only
+  // notices, no chat message, so it works identically offline and online
+  // without server wiring.
+  if (/^\/homestead(?:\s|$)/i.test(raw)) {
+    ctx.homesteadChat(raw, r.meta.entityId);
     return null;
   }
 
@@ -953,9 +949,12 @@ export function helpLines(): string[] {
     'World readouts: /where, /zones, /nearby, /pois, /graveyard, /dungeons, /arena, /session, /listings, /buyback.',
     'Combat readouts: /target, /targetbuffs, /range, /attack, /casting, /combat, /threat, /consider, /combo, /overpower.',
     'State readouts: /pet, /pettaunt, /speed, /consumable, /potion, /form, /manaregen, /falling, /queued, /savedmana.',
-    'Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>.',
-    'Greenpaw: /feed (bring what burns or what fills, from near the vase).',
+    // Homesteads (PHAA-405) and Greenpaw's hearth (PHAA-421) moved off chat
+    // commands to menu/interact flows (PHAA-482): the Hollow hub signpost +
+    // interact key for /house, Greenpaw's dialogue for /feed. Neither is
+    // listed here any more; Homestead v0 below is the unrelated open-world tier.
     'The Plant: /plant <anything> (it rarely answers, and never to Greenpaw).',
+    'Homestead: /homestead, /homestead claim.',
   ];
 }
 

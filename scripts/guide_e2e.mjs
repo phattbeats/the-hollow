@@ -45,7 +45,7 @@ try {
   check('html lang set', (await page.$eval('html', (el) => el.lang)).length > 0);
   check('what-it-is pillars (3)', (await page.$$('.guide-pillar')).length === 3);
   check('nine class chips', (await page.$$('.guide-class-chip')).length === 9);
-  check('three zone cards', (await page.$$('.guide-zone-card')).length === 3);
+  check('four zone cards', (await page.$$('.guide-zone-card')).length === 4);
   check('faq disclosures (>=4)', (await page.$$('.guide-faq-item')).length >= 4);
   check('single h1 on the page', (await page.$$('.guide-main h1')).length === 1);
   await page.screenshot({ path: 'tmp/wiki-home.png', fullPage: true });
@@ -123,7 +123,7 @@ try {
 
   await page.goto(`${BASE}/wiki/world`, { waitUntil: 'networkidle0' });
   await page.waitForSelector('.guide-zone-card');
-  check('world shows three zones', (await page.$$('.guide-zone-card')).length === 3);
+  check('world shows four zones', (await page.$$('.guide-zone-card')).length === 4);
 
   await page.goto(`${BASE}/wiki/quests`, { waitUntil: 'networkidle0' });
   await page.waitForSelector('.guide-article h1');

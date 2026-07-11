@@ -20,6 +20,38 @@ function hdr(k: number): number {
   return GFX.composer ? k : 1;
 }
 
+// Per-school projectile colors, cached: a bolt burst used to allocate three
+// THREE.Color per launch. spawn() copies components into the attribute buffers
+// (and update() copies before mutating), never retaining the reference, so the
+// cached instances are effectively immutable. Keyed on GFX.composer so a tier
+// flip rebuilds the HDR-boosted variants.
+const projectileColorCache = new Map<
+  string,
+  { base: THREE.Color; core: THREE.Color; trail: THREE.Color }
+>();
+let projectileColorComposer: boolean | null = null;
+function projectileSchoolColors(school: string): {
+  base: THREE.Color;
+  core: THREE.Color;
+  trail: THREE.Color;
+} {
+  if (projectileColorComposer !== GFX.composer) {
+    projectileColorCache.clear();
+    projectileColorComposer = GFX.composer;
+  }
+  let c = projectileColorCache.get(school);
+  if (!c) {
+    const base = new THREE.Color(SCHOOL_COLORS[school] ?? 0xffffff);
+    c = {
+      base,
+      core: base.clone().multiplyScalar(hdr(2.5)),
+      trail: base.clone().multiplyScalar(hdr(1.4)),
+    };
+    projectileColorCache.set(school, c);
+  }
+  return c;
+}
+
 // ---------------------------------------------------------------------------
 // Sprite atlas: 16 cherry-picked Kenney sprites in a 4x4 grid. Order defines
 // the cell index used by the shader — append only.
@@ -344,14 +376,14 @@ export class Vfx {
   projectile(sourceId: number, targetId: number, school: string): void {
     const from = this.anchor(sourceId, 0.62);
     if (!from) return;
-    const color = new THREE.Color(SCHOOL_COLORS[school] ?? 0xffffff);
+    const colors = projectileSchoolColors(school);
     const sprites = projectileSprites(school);
     this.projectiles.push({
       pos: from.clone(),
       targetId,
-      color,
-      coreColor: color.clone().multiplyScalar(hdr(2.5)),
-      trailColor: color.clone().multiplyScalar(hdr(1.4)),
+      color: colors.base,
+      coreColor: colors.core,
+      trailColor: colors.trail,
       speed: 26,
       ttl: 3,
       coreSprite: sprites.core,

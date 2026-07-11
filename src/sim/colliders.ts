@@ -1,3 +1,4 @@
+import { VASE_POS } from './content/hollow';
 import {
   arenaOriginAt,
   DUNGEON_X_THRESHOLD,
@@ -22,6 +23,7 @@ import {
   UNDER_SHRINE_LAYOUT,
 } from './dungeon_layout';
 import { generateDecorations, groundHeight } from './world';
+import { clampToStarterZoneBounds, isInsideStarterZone } from './zone_bounds';
 
 // Static world collision. Prop placement comes from the per-zone content
 // modules (merged into PROPS by sim/data.ts): the renderer builds its meshes
@@ -222,17 +224,44 @@ const ARENA_COLLIDERS: Collider[] = layoutColliders(ARENA_LAYOUT);
 const NYTHRAXIS_COLLIDERS: Collider[] = layoutColliders(NYTHRAXIS_LAYOUT);
 const UNDER_SHRINE_COLLIDERS: Collider[] = layoutColliders(UNDER_SHRINE_LAYOUT);
 
+// The Hollow hub's vase (PHAA-430) sits at hub-local VASE_POS as pure render
+// dressing (render/hollow_props.ts): the hub reuses the generic TEMPLE_LAYOUT
+// walls, which know nothing about it, so without this it had no collider at
+// all and a mover walked straight through the urn. A circle matching the
+// urn's plinth footprint (see hollow_props.ts buildHearth: "plinth radius up
+// to 1.7"), kept a hair under so it never fights the hearth's ash-bed dressing
+// (radius 2.7, walkable) that surrounds it.
+//
+// The moon-sanctum dais is also render-only in the base temple layout contract
+// (placeDais deliberately omits a collider so boss platforms stay walkable),
+// but the Hollow hub reuses that layout and renders the dais as a raised 0.6u
+// foundation platform at the back of the room. Without a matching collider a
+// mover walks straight through the grey platform (board bug on PHAA-405).
+const HOLLOW_HUB_COLLIDERS: Collider[] = [
+  ...TEMPLE_COLLIDERS,
+  { type: 'circle', x: VASE_POS.x, z: VASE_POS.z, r: 1.5 },
+  {
+    type: 'circle',
+    x: TEMPLE_LAYOUT.dais.x,
+    z: TEMPLE_LAYOUT.dais.z,
+    r: TEMPLE_LAYOUT.dais.r,
+  },
+];
+
 // Interior collider sets keyed by DungeonDef.interior, EXCEPT 'under_shrine'
-// which is keyed by dungeon id (see instanceLocal below): the Under-Shrine
-// shares interior 'crypt' (same render styling as Hollow Crypt/Sunken
-// Bastion) but PHAA-433 gave it its own, larger footprint, so it cannot use
-// the interior-keyed CRYPT_COLLIDERS without also resizing those two.
+// and 'the_hollow' which are keyed by dungeon id (see instanceLocal below):
+// the Under-Shrine shares interior 'crypt' (same render styling as Hollow
+// Crypt/Sunken Bastion) but PHAA-433 gave it its own, larger footprint, and
+// the Hollow hub shares interior 'temple' (Drowned Temple's walls) but needs
+// its own vase collider added on top, so neither can use the interior-keyed
+// set without also affecting the dungeon(s) that interior is shared with.
 const INTERIOR_COLLIDERS: Record<string, Collider[]> = {
   crypt: CRYPT_COLLIDERS,
   sanctum: SANCTUM_COLLIDERS,
   temple: TEMPLE_COLLIDERS,
   nythraxis: NYTHRAXIS_COLLIDERS,
   under_shrine: UNDER_SHRINE_COLLIDERS,
+  the_hollow: HOLLOW_HUB_COLLIDERS,
 };
 
 // ---------------------------------------------------------------------------
@@ -350,10 +379,18 @@ function instanceLocal(x: number, z: number): { ox: number; oz: number; interior
     }
   }
   const o = instanceOrigin(index, best);
-  // The Under-Shrine keys off its own dungeon id, not interior 'crypt' (see
-  // INTERIOR_COLLIDERS above): it needs UNDER_SHRINE_COLLIDERS, not the
-  // smaller CRYPT_COLLIDERS Hollow Crypt/Sunken Bastion share that interior.
-  const interior = dungeon?.id === 'under_shrine' ? 'under_shrine' : (dungeon?.interior ?? 'crypt');
+  // The Under-Shrine and the Hollow hub key off their own dungeon id, not
+  // their shared interior (see INTERIOR_COLLIDERS above): under_shrine needs
+  // UNDER_SHRINE_COLLIDERS instead of the smaller CRYPT_COLLIDERS Hollow
+  // Crypt/Sunken Bastion share that interior, and the_hollow needs its vase
+  // collider added on top of the TEMPLE_COLLIDERS it otherwise shares with
+  // the Drowned Temple.
+  const interior =
+    dungeon?.id === 'under_shrine'
+      ? 'under_shrine'
+      : dungeon?.id === 'the_hollow'
+        ? 'the_hollow'
+        : (dungeon?.interior ?? 'crypt');
   return { ox: o.x, oz: o.z, interior };
 }
 
@@ -389,8 +426,15 @@ export function resolvePosition(
   const grid = gridFor(seed);
   const key = `${Math.floor(x / GRID_CELL)},${Math.floor(z / GRID_CELL)}`;
   const list = grid.cells.get(key);
-  if (!list) return { x, z };
-  return resolveAgainst(list, x, z, r, ignoreFences);
+  const resolved = list ? resolveAgainst(list, x, z, r, ignoreFences) : { x, z };
+  // PHAA-472: keep the player inside the open-world Hollow Reaches while they
+  // wander the starter zone. Calling after collider resolution means the
+  // existing tree/fence slide still applies and the wall only kicks in at the
+  // strip's lateral edge (the screenshot case: x=179 at the world rim).
+  if (isInsideStarterZone(resolved.z)) {
+    return clampToStarterZoneBounds(resolved.x, resolved.z, r);
+  }
+  return resolved;
 }
 
 function crossesFence(fromX: number, fromZ: number, toX: number, toZ: number, r: number): boolean {

@@ -13,7 +13,6 @@
 import type http from 'node:http';
 import {
   accountForSlug,
-  getCharacter,
   getPlayerCardBySlug,
   getPlayerCardMetaBySlug,
   recordReferral,
@@ -21,6 +20,7 @@ import {
   upsertPlayerCard,
 } from './db';
 import { isUniqueViolation, json, parsePngInfo, readBinaryBody } from './http_util';
+import { requireOwnedCharacter } from './ownership';
 import { PLAYERCARD_NEW } from './player_card.newlocales';
 import { recordUsageMetric } from './provider_usage';
 import { REALM_PUBLIC_ORIGIN } from './realm';
@@ -35,11 +35,11 @@ const CARD_PNG_DIMENSIONS = [
 const MAX_CARD_DECODED_BYTES = (2400 * 4 + 1) * 1260;
 const MAX_SLUG_LENGTH = 64;
 const MAX_SLUG_ATTEMPTS = 25;
-const DEFAULT_PRODUCTION_PUBLIC_ORIGIN = 'https://worldofclaudecraft.com';
+const DEFAULT_PRODUCTION_PUBLIC_ORIGIN = 'https://thehollow.world';
 const TRUSTED_PUBLIC_HOST_ORIGINS = new Map([
-  ['worldofclaudecraft.com', DEFAULT_PRODUCTION_PUBLIC_ORIGIN],
-  ['www.worldofclaudecraft.com', DEFAULT_PRODUCTION_PUBLIC_ORIGIN],
-  ['dev.worldofclaudecraft.com', 'https://dev.worldofclaudecraft.com'],
+  ['thehollow.world', DEFAULT_PRODUCTION_PUBLIC_ORIGIN],
+  ['www.thehollow.world', DEFAULT_PRODUCTION_PUBLIC_ORIGIN],
+  ['dev.thehollow.world', 'https://dev.thehollow.world'],
 ]);
 const CARD_NOT_FOUND_HEADERS = {
   'Content-Type': 'text/plain',
@@ -569,10 +569,16 @@ export async function handleCardUpload(
     recordUsageMetric('card.publish.rejected');
     return json(res, 413, { error: 'image too large' });
   }
-  const character = await getCharacter(accountId, characterId);
+  const character = await requireOwnedCharacter(
+    res,
+    accountId,
+    characterId,
+    'character not found',
+    '/api/card',
+  );
   if (!character) {
     recordUsageMetric('card.publish.rejected');
-    return json(res, 404, { error: 'character not found' });
+    return;
   }
 
   let png: Buffer;

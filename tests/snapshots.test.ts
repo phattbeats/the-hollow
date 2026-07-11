@@ -18,6 +18,7 @@ import { saveCharacterState } from '../server/db';
 import { type ClientSession, GameServer, wireEntity } from '../server/game';
 import { ClientWorld } from '../src/net/online';
 import { mechHeldWeaponOverride, visualKeyFor } from '../src/render/characters/manifest';
+import { HOLLOW_QUEST_ORDER } from '../src/sim/content/hollow';
 import { DELVES } from '../src/sim/data';
 import { Sim } from '../src/sim/sim';
 import { type Aura, DT, type PlayerClass } from '../src/sim/types';
@@ -321,7 +322,7 @@ describe('delta snapshots', () => {
     const snap = lastSnap(fc.sent);
     expect(snap).not.toBeNull();
     // a fresh session has an empty lastSent, so EVERY maybe() delta key rides the
-    // first snapshot (even the null-valued ones like party/trade); widened to all 25
+    // first snapshot (even the null-valued ones like party/trade); widened to all 33
     for (const key of ALL_DELTA_KEYS) {
       expect(snap.self, `self.${key} missing from first snapshot`).toHaveProperty(key);
     }
@@ -384,7 +385,7 @@ describe('delta snapshots', () => {
     const snap = lastSnap(fc.sent);
     // This single-tick test stays on the decay-safe subset: cds and the timer-backed
     // keys (delve/arena timers, delveDaily) can re-emit after a real sim.tick(), so the
-    // widened all-25 omission is proven by the no-op re-broadcast test instead.
+    // widened all-33 omission is proven by the no-op re-broadcast test instead.
     for (const key of DELTA_KEYS) {
       expect(snap.self, `self.${key} resent although unchanged`).not.toHaveProperty(key);
     }
@@ -687,7 +688,7 @@ describe('delta snapshots', () => {
     joinServer(server, fc2, 2, 'Testb');
     broadcast(server);
     const snapNew = lastSnap(fc2.sent);
-    // a fresh session always receives the full self state: all 25 delta keys
+    // a fresh session always receives the full self state: all 33 delta keys
     for (const key of ALL_DELTA_KEYS) {
       expect(snapNew.self, `self.${key} missing for fresh session`).toHaveProperty(key);
     }
@@ -1045,7 +1046,9 @@ describe('/who command', () => {
     server.handleMessage(self, JSON.stringify({ t: 'cmd', cmd: 'chat', text: '/who' }));
 
     const text = eventTexts(fc.sent).join('\n');
-    expect(text).toContain('Who: 2 players online on Claudemoon.');
+    expect(text).toContain('Who: 2 players online on The Hollow.');
+    // PHAA-420 moved the cold-open door to the Hollow Reaches gate, so a
+    // fresh character's zone reads as the new starter zone, not Eastbrook.
     expect(text).toContain('Aleph - level 1 warrior - The Hollow Reaches');
     expect(text).toContain('Bet - level 7 mage - The Hollow Reaches');
   });
@@ -1065,7 +1068,8 @@ describe('/who command', () => {
     server.handleMessage(self, JSON.stringify({ t: 'cmd', cmd: 'chat', text: '/who' }));
 
     const text = eventTexts(fc.sent).join('\n');
-    expect(text).toContain('Who: 1 player online on Claudemoon.');
+    expect(text).toContain('Who: 1 player online on The Hollow.');
+    // PHAA-420 moved the cold-open door to the Hollow Reaches gate.
     expect(text).toContain('Aleph - level 1 warrior - The Hollow Reaches');
     expect(text).not.toContain('Bet');
     expect(text).not.toContain('Gimel');
@@ -1097,7 +1101,8 @@ describe('/who command', () => {
     server.handleMessage(self, JSON.stringify({ t: 'cmd', cmd: 'chat', text: '/who' }));
 
     const text = eventTexts(fc.sent).join('\n');
-    expect(text).toContain('Who: 1 player online on Claudemoon.');
+    expect(text).toContain('Who: 1 player online on The Hollow.');
+    // PHAA-420 moved the cold-open door to the Hollow Reaches gate.
     expect(text).toContain('Aleph - level 1 warrior - The Hollow Reaches');
     expect(text).not.toContain('Bet');
   });
@@ -1734,22 +1739,23 @@ describe('lockpick view rebuilds from events on the online client', () => {
 // ---------------------------------------------------------------------------
 // W0a: full self-snapshot delta round-trip gate.
 //
-// `selfWireJson` (server/game.ts) emits 27 heavy "delta" fields through a
+// `selfWireJson` (server/game.ts) emits 33 heavy "delta" fields through a
 // `maybe(key, value)` closure that ships a key only when its serialized form
 // changed since this session last received it; `applySnapshot` (src/net/
 // online.ts) mirrors each with `if (s.X !== undefined)` (or the inline
 // `s.X ?? e.X` form for `stats`/`weapon`). This is the single most fragile codec
-// in the workstream, so we pin: (a) the exact 27-key set against drift, (b) the
+// in the workstream, so we pin: (a) the exact 33-key set against drift, (b) the
 // terse-key -> IWorld-name rename map, (c) that every dirtied value round-trips
-// onto the correct decode target, and (d) that a no-op re-broadcast omits all 27
+// onto the correct decode target, and (d) that a no-op re-broadcast omits all 33
 // while the prior decoded value is preserved.
 // ---------------------------------------------------------------------------
 
-// The pinned set of the 27 `maybe(...)` delta keys, sorted. Cross-checked below
+// The pinned set of the 32 `maybe(...)` delta keys, sorted. Cross-checked below
 // against the live `maybe(...)` calls scraped from server/game.ts source, so a
-// 28th unregistered delta key reddens this gate.
+// 32nd unregistered delta key reddens this gate.
 const ALL_DELTA_KEYS = [
   'arena',
+  'bags',
   'buyback',
   'cds',
   'cosmetics',
@@ -1759,17 +1765,23 @@ const ALL_DELTA_KEYS = [
   'delveDaily',
   'dmarks',
   'drun',
+  'dstate',
   'duel',
   'equip',
+  'gprof',
   'hearth',
+  'homestead',
   'housing',
   'inv',
   'lockouts',
   'lroll',
+  'lrollg',
+  'mail',
   'market',
   'marks',
   'milestones',
   'party',
+  'pcd',
   'qdone',
   'qlog',
   'stats',
@@ -1795,14 +1807,19 @@ const TERSE_TO_IWORLD: Record<string, string> = {
   dcompanion: 'companionState',
   dmarks: 'delveMarks',
   drun: 'delveRun',
+  dstate: 'dialogState',
   duel: 'duelInfo',
   equip: 'equipment',
+  gprof: 'gatheringProficiency',
   hearth: 'hollowHearth',
+  homestead: 'homesteadInfo',
   housing: 'housingInfo',
   inv: 'inventory',
   lockouts: 'selfLockouts',
   lroll: 'lootRollPrompts',
+  lrollg: 'lootRollGroupStatus',
   lxp: 'lifetimeXp',
+  mail: 'mailInfo',
   market: 'marketInfo',
   marks: 'markers',
   milestones: 'unlockedMilestones',
@@ -1820,9 +1837,9 @@ const TERSE_TO_IWORLD: Record<string, string> = {
 // filter without a wall-clock read in test scaffolding.
 const FAR_FUTURE_MS = 8_000_000_000_000;
 
-// Dirty every one of the 25 `maybe()` delta fields with a distinguishable,
+// Dirty every one of the 31 `maybe()` delta fields with a distinguishable,
 // non-default value so the round-trip + no-op-omission assertions are meaningful
-// (a fresh session carries all 25 on snapshot #1 regardless, since lastSent is
+// (a fresh session carries all 31 on snapshot #1 regardless, since lastSent is
 // empty). Most fields are set on their real PlayerMeta/Entity/session source;
 // for the few whose authentic setup is mutually exclusive in one player state we
 // poke the exact source field the encoder reads, per the brief (the gate asserts
@@ -1849,6 +1866,15 @@ function dirtyEveryDeltaField(): {
   const mp = member.pid;
   const meta = sim.meta(lp)!;
 
+  // Homestead (homestead): a real claim, since HomesteadInfo carries no fixed
+  // slot list like housing's 8 plots - it starts empty until someone claims.
+  for (const qid of HOLLOW_QUEST_ORDER) meta.questsDone.add(qid);
+  const homesteadEntity = sim.entities.get(lp)!;
+  homesteadEntity.pos.x = -85;
+  homesteadEntity.pos.z = -234;
+  homesteadEntity.prevPos = { ...homesteadEntity.pos };
+  sim.homesteadClaim(lp);
+
   // Real 2-player party (party) and a real delve run (drun).
   sim.partyInvite(mp, lp);
   sim.partyAccept(mp);
@@ -1869,8 +1895,15 @@ function dirtyEveryDeltaField(): {
   (sim as any).targeting.partyMarkers.set(party.id, new Map([[mp, 3]]));
   const merchant = sim.entities.get(sim.market.merchantId);
   if (merchant) merchant.pos = { ...p.pos };
+  // mail: mailInfoFor is null unless near the Ravenpost, so we relocate it
+  // onto the (in-delve) player too.
+  const ravenpost = sim.entities.get(sim.postOffice.postOfficeId);
+  if (ravenpost) ravenpost.pos = { ...p.pos };
   // hearth: global state, no player positioning needed to dirty it.
   sim.loadGreenpawHearth({ hunger: 50, smoke: 42 });
+  // dstate (PHAA-553): per-player dialogue disposition + a flag, non-default.
+  meta.dialogState.disposition.set('brother_greenpaw', 3);
+  meta.dialogState.flags.add('gp.promised_fuel');
 
   // Direct PlayerMeta fields.
   meta.inventory = [{ itemId: 'baked_bread', count: 3 }];
@@ -1886,6 +1919,7 @@ function dirtyEveryDeltaField(): {
   meta.delveMarks = 7;
   meta.delveClears = { 'collapsed_reliquary:heroic': 1 };
   meta.companionUpgrades = { companion_tessa: 2 };
+  meta.gatheringProficiency = { amber: 3, heartwood: 0, spore: 0 };
   meta.delveDaily = { date: '2099-01-01', firstClearXp: new Set(['x']), markClears: 4 };
   meta.talents = { spec: 'arms', ranks: {}, choices: {} };
   meta.talentMods.spec = 'arms';
@@ -1929,7 +1963,7 @@ function dirtyEveryDeltaField(): {
 }
 
 describe('full self-state snapshot delta fixture', () => {
-  it('carries every one of the 27 dirtied delta keys on the first snapshot', () => {
+  it('carries every one of the 31 dirtied delta keys on the first snapshot', () => {
     const { server, fc } = dirtyEveryDeltaField();
     broadcast(server);
     const snap = lastSnap(fc.sent);
@@ -1975,6 +2009,11 @@ describe('full self-state snapshot delta fixture', () => {
     ]); // qlog -> questLog (Map)
     expect(client.questsDone.has('q_wolves')).toBe(true); // qdone -> questsDone (Set)
     expect(client.unlockedMilestones).toEqual(['milestone_test']); // milestones -> unlockedMilestones
+    // dstate -> dialogState() (private dialogStateMirror), via the IWorld read
+    expect(client.dialogState()).toEqual({
+      disposition: { brother_greenpaw: 3 },
+      flags: ['gp.promised_fuel'],
+    });
     // lockouts -> selfLockouts (private), via the raidLockouts() accessor
     expect(client.raidLockouts().map((l) => l.id)).toEqual(['nythraxis_boss_arena']);
     expect(client.partyInfo).not.toBeNull(); // party -> partyInfo
@@ -1987,11 +2026,15 @@ describe('full self-state snapshot delta fixture', () => {
     expect(client.housingInfo).not.toBeNull(); // housing -> housingInfo
     expect(client.housingInfo?.plots.length).toBeGreaterThan(0);
     expect(client.hollowHearth).toEqual({ smoke: 42, level: 'hazy' }); // hearth -> hollowHearth
+    expect(client.homesteadInfo).not.toBeNull(); // homestead -> homesteadInfo
+    expect(client.homesteadInfo?.plots.length).toBeGreaterThan(0);
     expect(client.activeLootRolls().map((r) => r.rollId)).toEqual([1]); // lroll -> lootRollPrompts
     expect(client.delveRun).not.toBeNull(); // drun -> delveRun
     expect(client.companionState?.companionId).toBe('companion_tessa'); // dcompanion -> companionState
     expect(client.delveMarks).toBe(7); // dmarks -> delveMarks
     expect(client.companionUpgrades).toEqual({ companion_tessa: 2 }); // dcomp -> companionUpgrades
+    // gprof -> gatheringProficiency
+    expect(client.gatheringProficiency).toEqual({ amber: 3, heartwood: 0, spore: 0 });
     expect(client.delveClears).toEqual({ 'collapsed_reliquary:heroic': 1 }); // dclears -> delveClears
     expect(client.delveDaily).toMatchObject({ markClears: 4 }); // delveDaily
     // tal -> talents / talentSpec / loadouts / activeLoadout
@@ -2003,7 +2046,7 @@ describe('full self-state snapshot delta fixture', () => {
     expect(client.activeLoadout).toBe(0);
   });
 
-  it('omits all 27 delta keys on a no-op re-broadcast and preserves the prior mirror', () => {
+  it('omits all 33 delta keys on a no-op re-broadcast and preserves the prior mirror', () => {
     const { server, fc, leader, memberPid } = dirtyEveryDeltaField();
     broadcast(server);
     const client = bareClient(leader.pid);
@@ -2018,7 +2061,7 @@ describe('full self-state snapshot delta fixture', () => {
     const delveRunRef = client.delveRun;
 
     // a second broadcast with NO intervening sim.tick() and no state mutation: the
-    // maybe() closure sees byte-identical JSON for all 25 and omits every one
+    // maybe() closure sees byte-identical JSON for all 31 and omits every one
     fc.sent.length = 0;
     broadcast(server);
     const snap2 = lastSnap(fc.sent);
@@ -2042,9 +2085,9 @@ describe('full self-state snapshot delta fixture', () => {
 });
 
 describe('delta-key contract pins (anti-drift)', () => {
-  it('ALL_DELTA_KEYS contains exactly 27 unique keys in sorted order', () => {
-    expect(ALL_DELTA_KEYS).toHaveLength(27);
-    expect(new Set(ALL_DELTA_KEYS).size).toBe(27);
+  it('ALL_DELTA_KEYS contains exactly 34 unique keys in sorted order', () => {
+    expect(ALL_DELTA_KEYS).toHaveLength(34);
+    expect(new Set(ALL_DELTA_KEYS).size).toBe(34);
     expect([...ALL_DELTA_KEYS]).toEqual([...ALL_DELTA_KEYS].sort());
   });
 
@@ -2056,7 +2099,8 @@ describe('delta-key contract pins (anti-drift)', () => {
     const scraped = new Set<string>();
     for (let m = re.exec(src); m !== null; m = re.exec(src)) scraped.add(m[1]);
     expect(scraped.has('lockouts')).toBe(true); // the multi-line call IS captured
-    expect(scraped.size).toBe(27);
+    expect(scraped.has('lrollg')).toBe(true); // group-visible loot roll strip (PHAA-568)
+    expect(scraped.size).toBe(34);
     expect([...scraped].sort()).toEqual([...ALL_DELTA_KEYS].sort());
   });
 
@@ -2092,16 +2136,16 @@ describe('delta-key contract pins (anti-drift)', () => {
   });
 });
 
-// A negative-value buff_* aura (a stat-sap: an intellect-draining curse on buff_int, an
-// attack-power drain on buff_ap) reads as a DEBUFF via auras_view.isAuraDebuff's
-// `value < 0` branch. That branch can only fire online if the wire carries the value. The
-// serializer sends `value` SPARSELY: only when it is negative (the sole case that flips the
-// classification), so an ordinary buff and the positive absorb shield stay off the wire and
-// decode to 0 exactly as before (no absorb-overlay regression; see target_frame.test.ts).
-// The client decode reads `a.value ?? 0`, so an old server that never sends it still decodes
-// to 0 (backward compatible). This drives a real Sim aura through the real serializer
-// (wireEntity) and the real client decode (ClientWorld.applySnapshot).
-describe('aura value over the wire (stat-sap debuff parity)', () => {
+// The wire carries the aura's real effect magnitude (value/value2/value3/tickInterval/school)
+// for EVERY aura, not just the negative-value buff_* stat-saps that flip auras_view.isAuraDebuff.
+// That keeps the online tooltip's effect descriptor (aura_effect.ts, value/tickInterval/school)
+// reading the same numbers as offline for flat buffs, percent buffs, DoTs/HoTs, and absorbs
+// alike (PHAA-447; upstream PR #1220). `school` is omitted when it's the default 'physical' (a
+// size optimization, not a behavior difference: the client decode falls back to 'physical' too).
+// The client decode reads `a.value ?? 0`, so an old server that never sends it still decodes to
+// 0 (backward compatible). This drives a real Sim aura through the real serializer (wireEntity)
+// and the real client decode (ClientWorld.applySnapshot).
+describe('aura magnitude over the wire (online tooltip parity)', () => {
   function roundTrip(aura: Aura): { wire: Record<string, unknown>; mirror: Aura } {
     const sim = new Sim({ seed: 1, playerClass: 'warrior', noPlayer: true });
     const pid = sim.addPlayer('warrior', 'Sapped');
@@ -2140,25 +2184,23 @@ describe('aura value over the wire (stat-sap debuff parity)', () => {
   it('sends a NEGATIVE buff_* value so the sap classifies as a debuff in BOTH worlds', () => {
     const simSap = sapInt(-30);
     const { wire, mirror } = roundTrip(simSap);
-    // the serializer carried the negative value...
     expect(wireAura(wire, 'enfeeble').value).toBe(-30);
-    // ...and the client decoded it (not the old hardcoded 0).
     expect(mirror.value).toBe(-30);
     // so isAuraDebuff agrees across the wire: a debuff offline AND online.
     expect(isAuraDebuff(simSap)).toBe(true);
     expect(isAuraDebuff(mirror)).toBe(true);
   });
 
-  it('does NOT send a POSITIVE buff value (sparse): a real buff stays a buff in both worlds', () => {
+  it('sends a POSITIVE buff value too, so the online tooltip reads the real amount, not 0', () => {
     const buff: Aura = { ...sapInt(40), id: 'arcane_intellect', name: 'Arcane Intellect' };
     const { wire, mirror } = roundTrip(buff);
-    expect('value' in wireAura(wire, 'arcane_intellect')).toBe(false); // omitted on the wire
-    expect(mirror.value).toBe(0); // decodes to 0 (?? 0)
+    expect(wireAura(wire, 'arcane_intellect').value).toBe(40);
+    expect(mirror.value).toBe(40);
     expect(isAuraDebuff(buff)).toBe(false);
     expect(isAuraDebuff(mirror)).toBe(false);
   });
 
-  it('does NOT send a POSITIVE absorb value: the shield overlay stays offline-only (no regression)', () => {
+  it('sends the absorb amount and school, so the online tooltip/shield overlay matches offline', () => {
     const shield: Aura = {
       id: 'power_word_shield',
       name: 'Power Word: Shield',
@@ -2170,16 +2212,32 @@ describe('aura value over the wire (stat-sap debuff parity)', () => {
       school: 'holy',
     };
     const { wire, mirror } = roundTrip(shield);
-    expect('value' in wireAura(wire, 'power_word_shield')).toBe(false);
-    // online absorb is still 0, so the shield overlay remains offline-only (target_frame parity).
-    expect(mirror.value).toBe(0);
+    expect(wireAura(wire, 'power_word_shield').value).toBe(250);
+    expect(wireAura(wire, 'power_word_shield').school).toBe('holy');
+    expect(mirror.value).toBe(250);
+    expect(mirror.school).toBe('holy');
   });
 
-  it('does NOT send a NEGATIVE value for a non-buff_ aura (kind-gated): fear keeps its kind classification', () => {
-    // The emit mirrors isAuraDebuff's value branch (buff_* only), so a negative-value
-    // non-buff aura -- e.g. an incapacitate (fear) carrying a random facing angle that is
-    // negative about half the time -- never ships its value. It stays a debuff via its KIND,
-    // identically in both worlds, and no inert value rides the wire.
+  it('sends a periodic DoT with its tick value, interval, and school (no more "0 damage" tooltip)', () => {
+    const dot: Aura = {
+      id: 'rend',
+      name: 'Rend',
+      kind: 'dot',
+      remaining: 12,
+      duration: 12,
+      value: 18,
+      tickInterval: 3,
+      sourceId: 0,
+      school: 'physical',
+    };
+    const { wire, mirror } = roundTrip(dot);
+    expect(wireAura(wire, 'rend').value).toBe(18);
+    expect(wireAura(wire, 'rend').tickInterval).toBe(3);
+    expect(mirror.value).toBe(18);
+    expect(mirror.tickInterval).toBe(3);
+  });
+
+  it('omits school on the wire when it is the default "physical" (size optimization)', () => {
     const fear: Aura = {
       id: 'fear',
       name: 'Fear',
@@ -2188,11 +2246,12 @@ describe('aura value over the wire (stat-sap debuff parity)', () => {
       duration: 4,
       value: -1.5,
       sourceId: 0,
-      school: 'shadow',
+      school: 'physical',
     };
     const { wire, mirror } = roundTrip(fear);
-    expect('value' in wireAura(wire, 'fear')).toBe(false); // negative, but not buff_ -> omitted
-    expect(mirror.value).toBe(0);
+    expect('school' in wireAura(wire, 'fear')).toBe(false);
+    expect(mirror.value).toBe(-1.5); // still sent: value now rides the wire unconditionally
+    expect(mirror.school).toBe('physical'); // decode falls back to the default
     expect(isAuraDebuff(fear)).toBe(true); // debuff via kind, in both worlds
     expect(isAuraDebuff(mirror)).toBe(true);
   });
@@ -2219,5 +2278,105 @@ describe('aura value over the wire (stat-sap debuff parity)', () => {
     });
     const mirror = client.entities.get(2)!.auras.find((a) => a.kind === 'buff_int')!;
     expect(mirror.value).toBe(0);
+  });
+});
+
+describe('aura decode reuses records across snapshots (allocation fast path)', () => {
+  function applyWith(client: ClientWorld, auras: any[]): void {
+    (client as any).applySnapshot({
+      ents: [
+        {
+          id: 2,
+          k: 'mob',
+          tid: 'wolf',
+          nm: 'Wolf',
+          lv: 3,
+          x: 0,
+          y: 0,
+          z: 0,
+          f: 0,
+          hp: 40,
+          mhp: 40,
+          auras,
+        },
+      ],
+    });
+  }
+
+  it('keeps the same array and record objects while only fields change', () => {
+    const client = bareClient(1);
+    applyWith(client, [
+      { id: 'corruption', name: 'Corruption', kind: 'dot', rem: 12, dur: 12, value: 15 },
+    ]);
+    const firstArr = client.entities.get(2)!.auras;
+    const firstRec = firstArr[0];
+    expect(firstRec.remaining).toBe(12);
+
+    // same aura set, only `rem` ticked down: the decode must update the SAME
+    // objects in place (no per-snapshot churn) with the new field values
+    applyWith(client, [
+      { id: 'corruption', name: 'Corruption', kind: 'dot', rem: 7.5, dur: 12, value: 15 },
+    ]);
+    const secondArr = client.entities.get(2)!.auras;
+    expect(secondArr).toBe(firstArr);
+    expect(secondArr[0]).toBe(firstRec);
+    expect(firstRec.remaining).toBe(7.5);
+    expect(firstRec.value).toBe(15);
+  });
+
+  it('rebuilds the list when the aura composition changes', () => {
+    const client = bareClient(1);
+    applyWith(client, [
+      { id: 'corruption', name: 'Corruption', kind: 'dot', rem: 12, dur: 12, value: 15 },
+    ]);
+    const firstArr = client.entities.get(2)!.auras;
+
+    applyWith(client, [
+      { id: 'corruption', name: 'Corruption', kind: 'dot', rem: 12, dur: 12, value: 15 },
+      { id: 'venom_bite', name: 'Venom Bite', kind: 'dot', rem: 6, dur: 6, value: 4 },
+    ]);
+    const secondArr = client.entities.get(2)!.auras;
+    expect(secondArr).not.toBe(firstArr); // composition changed: fresh build
+    expect(secondArr.map((a) => a.id)).toEqual(['corruption', 'venom_bite']);
+    expect(secondArr[1].value).toBe(4);
+
+    // and dropping back to one aura rebuilds again (length mismatch path)
+    applyWith(client, [
+      { id: 'corruption', name: 'Corruption', kind: 'dot', rem: 12, dur: 12, value: 15 },
+    ]);
+    expect(client.entities.get(2)!.auras.map((a) => a.id)).toEqual(['corruption']);
+  });
+
+  it('a same-length REORDER rebuilds instead of smearing fields across records', () => {
+    const client = bareClient(1);
+    applyWith(client, [
+      { id: 'corruption', name: 'Corruption', kind: 'dot', rem: 12, dur: 12, value: 15 },
+      { id: 'weakness', name: 'Weakness', kind: 'buff_ap', rem: 9, dur: 9, value: -5 },
+    ]);
+    // swap the two auras: same ids, same length, different order
+    applyWith(client, [
+      { id: 'weakness', name: 'Weakness', kind: 'buff_ap', rem: 9, dur: 9, value: -5 },
+      { id: 'corruption', name: 'Corruption', kind: 'dot', rem: 12, dur: 12, value: 15 },
+    ]);
+    const mirrored = client.entities.get(2)!.auras;
+    expect(mirrored.map((a) => a.id)).toEqual(['weakness', 'corruption']);
+    // each record carries ITS aura's fields, not the other slot's
+    expect(mirrored[0].value).toBe(-5);
+    expect(mirrored[1].value).toBe(15);
+  });
+
+  it('the in-place path clears optional sub-fields the wire stops sending', () => {
+    const client = bareClient(1);
+    applyWith(client, [
+      { id: 'corruption', name: 'Corruption', kind: 'dot', rem: 12, dur: 12, value: 15, stacks: 3 },
+    ]);
+    const rec = client.entities.get(2)!.auras[0];
+    expect(rec.stacks).toBe(3);
+    // same aura set (fast path), but stacks dropped off the wire
+    applyWith(client, [
+      { id: 'corruption', name: 'Corruption', kind: 'dot', rem: 12, dur: 12, value: 15 },
+    ]);
+    expect(client.entities.get(2)!.auras[0]).toBe(rec); // fast path taken
+    expect(rec.stacks).toBeUndefined(); // not a stale 3
   });
 });

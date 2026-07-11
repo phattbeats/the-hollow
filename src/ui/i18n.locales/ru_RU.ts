@@ -16,6 +16,11 @@ import type { TranslationKey } from '../i18n.catalog';
 export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.spectate.banner': 'Наблюдение за {name}',
   'hudChrome.loot.chestTitle': 'Сундук',
+  'hudChrome.lootRollGroup.pending': 'Ожидание...',
+  'hudChrome.lootRollGroup.need': 'Нужда',
+  'hudChrome.lootRollGroup.greed': 'Жадность',
+  'hudChrome.lootRollGroup.pass': 'Пропуск',
+  'hudChrome.lootRollGroup.aria': 'Статус группового броска: {item}',
   'hudChrome.spellbook.addToBarAria': 'Добавить {name} на панель действий',
   'hudChrome.spellbook.removeFromBarAria': 'Убрать {name} с панели действий',
   'hudChrome.nameplate.mob': '[{level}] {name}',
@@ -681,6 +686,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'loading.enterTimeout':
     'Не удалось войти в мир. Время подключения истекло. Запущен ли игровой сервер?',
   'loading.connectionLost': 'Соединение с сервером потеряно.',
+  'loading.reconnecting': 'Соединение потеряно. Повторное подключение...',
   'loading.connectionRejected': 'Сервер закрыл соединение.',
   'errors.nothingInteract': 'Нет объекта для взаимодействия.',
   'errors.noEnemyNearby': 'Рядом нет врагов.',
@@ -705,6 +711,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'errors.api.nameTaken': 'Это имя уже занято.',
   'errors.api.characterNotFound': 'Персонаж не найден.',
   'errors.api.characterOnline': 'Персонаж сейчас в сети.',
+  'errors.api.crossSiteRejected': 'Межсайтовый запрос отклонён.',
   'errors.api.deleteConfirm': 'Введите имя персонажа, чтобы подтвердить удаление.',
   'errors.api.notAuthenticated': 'Нет авторизации.',
   'errors.api.accountBanned': 'Эта учетная запись заблокирована.',
@@ -1355,6 +1362,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'abilityUi.tooltip.offGlobalCooldown': 'Вне глобального восстановления',
   'abilityUi.tooltip.friendlyTarget': 'Дружественная цель',
   'abilityUi.tooltip.enemyTarget': 'Вражеская цель',
+  'abilityUi.tooltip.selfOnly': 'Только на себя',
   'abilityUi.tooltip.damageRange': 'от {min} до {max}',
   'abilityUi.tooltip.finisherDamage': '{base} плюс {perCombo} за прием серии',
   'abilityUi.resources.mana': 'маны',
@@ -1395,6 +1403,13 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'questUi.dialog.continue': 'Продолжить',
   'questUi.dialog.completeQuest': 'Завершить задание',
   'questUi.dialog.done': 'Готово',
+  'questUi.dialog.trainSecondary': 'Обучите меня дополнительной профессии.',
+  'questUi.dialog.trainSecondaryAria': 'Обучиться дополнительной профессии у {name}',
+  'questUi.dialog.trainerTitle': 'Дополнительная профессия',
+  'questUi.dialog.trainerLevelLocked': 'Откроется на уровне {level}.',
+  'questUi.dialog.trainerCurrent': 'Текущая',
+  'questUi.dialog.trainerFree': 'Бесплатно',
+  'questUi.dialog.trainerPickAria': 'Обучиться как дополнительный {cls}: {cost}',
   'questUi.dialog.turnIn': 'Сдать',
   'questUi.dialog.back': 'Назад',
   'questUi.dialog.unavailable': 'Недоступно',
@@ -1479,6 +1494,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'itemUi.tooltip.cannotMarket': 'Нельзя продать на рынке',
   'itemUi.tooltip.cannotVendor': 'Нельзя продать торговцам',
   'itemUi.tooltip.clickDestroy': 'Нажмите, чтобы уничтожить',
+  'itemUi.error.requiresLevelToEquip': 'Чтобы экипировать это, нужен {level} уровень.',
   'itemUi.tooltip.useFishing': 'Использование: ловите рыбу в ближайшей воде.',
   'itemUi.tooltip.useHealingPotion':
     'Использование: мгновенно восстанавливает {amount} здоровья. Можно использовать в бою. Восстановление 1 мин.',
@@ -2391,6 +2407,10 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.the_merchant.title': 'Хранитель мирового рынка',
   'entities.npcs.the_merchant.greeting':
     'Добро пожаловать на Мировой рынок, {className}. Покупайте у искателей приключений всего королевства или выставляйте свои товары.',
+  'entities.npcs.the_ravenpost.name': 'Воронья почта',
+  'entities.npcs.the_ravenpost.title': 'Хранитель почты',
+  'entities.npcs.the_ravenpost.greeting':
+    'Отправьте письмо, {className}, и мои вороны отыщут вашего друга, где бы он ни странствовал, а вложенные монеты и посылки будут в целости, пока их не заберут.',
   'entities.npcs.marshal_redbrook.name': 'Маршал Редбрук',
   'entities.npcs.marshal_redbrook.title': 'Городской маршал',
   'entities.npcs.marshal_redbrook.greeting':
@@ -2925,9 +2945,52 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
     'Врата ведут на открытую местность. Перелоги, к западу от дороги, выглядят пригодными для застройки.',
   'entities.npcs.verger_zebediah.name': 'Пономарь Зеведей',
   'entities.npcs.verger_zebediah.title': 'Страж Корневой Лощины',
+  'entities.readables.torn_ledger_page.title': 'Порванный гроссбух',
+  'entities.readables.torn_ledger_page.pages.0':
+    'Корневая Лощина, помечена на отдых. Перелоги, помечены на отдых. Озеро у Мшистого Берега, что отдыхает, впишем мы его или нет. Подписано и датировано, как того требует журнал.',
+  'entities.readables.torn_ledger_page.pages.1':
+    'Подсчёт за сезон на нынешний день: три ростка пробились сквозь дорожные камни, чего нет ни в одном моём календаре. Я перестал их вычёркивать. Они возвращаются быстрее, чем сохнут чернила, а чернила были недёшевы.',
+  'entities.readables.torn_ledger_page.pages.2':
+    'Записка тому, кто примет это после меня. Считай кабанов, считай волков, считай дни. Зелень не считай. Она считает в ответ и не останавливается там, где остановишься ты.',
+  'entities.readables.keepers_marginalia.title': 'Заметки хранителя на полях',
+  'entities.readables.keepers_marginalia.pages.0':
+    'Оставлено на полях сборника гимнов, в котором сами гимны стёрлись. Рука быстрая, так бывает быстра рука, когда пишет на ходу.',
+  'entities.readables.keepers_marginalia.pages.1':
+    'Волки кружат Перелоги от кромки леса, всегда одним и тем же кольцом, всегда посолонь. Тот, кто кружит достаточно долго, узнаёт очертания того, вокруг чего кружит. Так и я. И земля, думается мне, тоже.',
+  'entities.readables.keepers_marginalia.pages.2':
+    'Если ты это читаешь, значит, ты перестал идти, а это единственное, чему я так и не научился. Передохни. Окраины никуда не денутся. В том-то и вся с ними морока.',
   'entities.npcs.verger_zebediah.greeting':
     'Пономарь Зеведей. Я держу Окраины по календарю, вернее, стараюсь держать. Корневая Лощина была помечена как отдыхающая в этот сезон, да только кабаны объявления не читали. Гляди под ноги, где рыхлая земля, и не трогай журнал.',
   'entities.npcs.sexton_faddick.name': 'Могильщик Фаддик',
+  'entities.items.willow_sprig.name': 'Ивовый прутик',
+  'entities.npcs.shade.name': 'Шейд',
+  'entities.npcs.shade.title': 'Странница',
+  'entities.npcs.shade.greeting':
+    'О, это ты. Садись, если хочешь, вода никуда не денется. Ты сегодня ела? Тебе надо поесть.',
+  'entities.npcs.shade.introLines.0':
+    'Застал меня за хлопотами. Не обращай внимания на лейку, это всего лишь вода. Всегда найдётся что-нибудь, чему не помешает немного воды.',
+  'entities.npcs.shade.introLines.1':
+    'Я? Да не о чем говорить. Шейд. Хожу, помогаю там, где не хватает рук. Ты выглядишь вконец измотанным. Присядь на минутку, если хочешь.',
+  'entities.npcs.gate_bard.name': 'Бард Халден',
+  'entities.npcs.gate_bard.title': 'Певец у ворот',
+  'entities.npcs.gate_bard.greeting':
+    'Медяк за песню? Нет? Ничего, чаще всего нет. Я играю для ворот, а ворота ни разу не потянулись за кошельком.',
+  'entities.npcs.goodwife_orla.name': 'Орла',
+  'entities.npcs.goodwife_orla.title': 'Некогда из Корневой Лощины',
+  'entities.npcs.goodwife_orla.greeting':
+    'Можешь сесть. Почти все проходят мимо. Пономарь давным-давно вычеркнул моё имя из своего журнала, а вычеркнутое имя учится молчать, чтобы никому не пришлось вспоминать, что оно ещё здесь.',
+  'entities.quests.q_have_you_eaten.title': 'Ты ела?',
+  'entities.quests.q_have_you_eaten.text':
+    'У ворот есть бард, что играет за медяки и ест, когда медяки находятся, а находятся они нечасто. У меня есть тёплая миска и ещё одна про запас. Отнеси её ему, ладно? И не говори, что это из жалости. Скажи, что это лишнее.',
+  'entities.quests.q_have_you_eaten.completion':
+    'Ты вернулся. Он поел? Хорошо. Это хорошо. А ты? ... Нет, я же вижу. Тогда садись. Не нужно быть великим, чтобы быть чем-то хорошим. Величие не есть доброта. Ешь.',
+  'entities.quests.q_have_you_eaten.objectives.0.label': 'Тёплая еда отнесена барду',
+  'entities.quests.q_someone_your_own_size.title': 'Кого-нибудь себе под стать',
+  'entities.quests.q_someone_your_own_size.text':
+    'Возле Корневой Лощины есть женщина, с которой мир обошёлся жестоко. Её имя вычеркнули из журнала, а с вычеркнутым именем обходятся так, будто оно не слышит. Пойди и посиди с ней немного. Ничего не нужно исправлять. Просто будь кем-то ей под стать.',
+  'entities.quests.q_someone_your_own_size.completion':
+    'Ты остался. Она не скажет, что это было важно, но это было важно, уверяю тебя. Вот, это тебе. Прутик с ивы, которую я люблю. Он не делает ничего. Он лишь помнит, что ты был добр, когда ничто тебя к этому не принуждало.',
+  'entities.quests.q_someone_your_own_size.objectives.0.label': 'Немного посидел с Орлой',
   'entities.npcs.sexton_faddick.title': 'Странствующий Хранитель',
   'entities.npcs.sexton_faddick.greeting':
     'Фаддик. Могильщик, покуда есть святилище, при котором быть могильщиком. Я нигде не задерживаюсь, я лишь храню. Волки каждую ночь кружат вокруг стада на Перелогах, а тот, кто кружит достаточно долго, узнаёт очертания того, вокруг чего кружит. Пусть уж остаётся просто стадом.',
@@ -2941,7 +3004,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_root_hollow_boars_ii.text':
     'Признаю то, что должность признавать не велит: пять было оптимизмом. Из нижних нор лезут всё новые. Ещё восемь, и я смогу закрыть сезон, не правя запись в третий раз. Запись не терпит правок. Как и я.',
   'entities.quests.q_root_hollow_boars_ii.completion':
-    'Закрыто. Подписано. Подшито. Сезон может идти точно по расписанию, раз снова есть кому вести расписание. Ты весьма помог очень малой пастве. Уточню: паства эта и есть я.',
+    'Закрыто. Подписано. Подшито. Сезон может идти точно по расписанию, раз снова есть кому вести расписание. Ты весьма помог очень малой пастве. Уточню: паства эта и есть я. Сам реестр старше этого порядка, переплетён рукой, которую я никогда не встречал, и хранит счёт, который я предпочитаю не подводить. Кто-то был здесь весьма скрупулёзен, некогда. Я лишь стараюсь поспевать.',
   'entities.quests.q_root_hollow_boars_ii.objectives.0.label': 'Дикий кабан убит',
   'entities.quests.q_fallow_acres_wolves.title': 'Волки прочь с борозд',
   'entities.quests.q_fallow_acres_wolves.text':
@@ -3086,6 +3149,40 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_what_fills.completion':
     'ты святой первого разряда, дружок. или добрый сосед. оно и то же самое, по-зеленолаповски говоря. ...на вот. хотел было себе оставить, да ковбойская душа моя говорит: твое это. не дай завянуть.',
   'entities.quests.q_what_fills.objectives.0.label': 'Собрано пещерных закусок',
+  'entities.quests.q_what_fills.dialog.complain':
+    'Я только что оттуда. Ты же видел, как я вылезаю из этой дыры.',
+  'entities.quests.q_what_fills.dialog.complainReply':
+    'знаю, друг, знаю... ваза календаря не ведёт, и желудок мой тоже. но глянь на свои сапоги и скажи, что в них не осталось ещё одного спуска... не спеши. дыра никуда не денется. в этом, считай, вся её суть...',
+  'entities.quests.q_the_wavelength.title': 'На одной волне',
+  'entities.quests.q_the_wavelength.text':
+    'Черенок теперь твой, дружок, так что поговорим о том, что дальше... два дела, и ни одно не испытание, скорее знакомство. во-первых, перейди через вазу и повидайся со старейшиной Ярроу, она учит второму призванию, совсем другому способу играть во всё это, и каждая душа, что проходит здесь, должна знать: та дверь открыта... во-вторых, вернись и покорми меня чем-нибудь, неважно чем, тлеющей луковицей или пещерной закуской, я вечно на нуле, а ваза вечно жаждет дыма. вот это никогда по-настоящему не кончается, по-зеленолаповски говоря.',
+  'entities.quests.q_the_wavelength.completion':
+    'вот оно... почувствовал, как комната на миг сгустилась? это он, заметил. вот и весь фокус, дружок - ты кормишь меня, я курю, а он чуть ближе склоняется, чтобы послушать. ничего сложного. и никогда не перестанет быть правдой. заходи в любое время, если при тебе лишние луковицы или закуски, у очага календаря нет... и вот ещё что. добро пожаловать в приют. только сейчас понял, что не сказал этого раньше.',
+  'entities.quests.q_the_wavelength.objectives.0.label': 'Повидал старейшину Ярроу',
+  'entities.quests.q_the_wavelength.objectives.1.label': 'Покормил у очага',
+  'entities.quests.q_the_wavelength.dialog.complain':
+    'Опять поручение? Я только что вылез из той дыры.',
+  'entities.quests.q_the_wavelength.dialog.complainReply':
+    'нет-нет, дослушай, это не пещерная работа... это дело лёгкое, просто прогуляться да разок хорошенько покормить. самое лёгкое, о чём я тебя просил, обещаю, вот те крест, по волне и всё такое.',
+  'entities.quests.q_the_wavelength.dialog.refuse': 'Я сам найду себе обучение, спасибо.',
+  'entities.quests.q_the_wavelength.dialog.refuseReply':
+    '...ну и ладно. не заставишь душу учиться, пока она не готова. дверь открыта, когда "ещё не готов" пройдёт... на вот, возьми всё равно, хоть за то, что вообще пришёл.',
+  'entities.quests.q_keep_him_lit.text':
+    'Три раза, дружище, вот и всё число... ничего священного, просто ровно столько, чтобы одолжение превратилось в привычку, а привычки - единственная религия, в которую я и правда верю... возвращайся и покорми очаг три раза, отдельно каждый раз, порядок неважен, неважно чем - тлеющей луковицей или кусочком из пещеры, и я поверю, что ты правда здесь, чтобы остаться, а не просто проходишь мимо по пути к чему-то большему...',
+  'entities.quests.q_keep_him_lit.completion':
+    'Три из трёх... ты уже не просто гость, дружище, ты поддерживаешь что-то живое, и, по-моему, в этом весь смысл, хоть меня никто и не спрашивал... вот. держи это при себе, толку от него никакого, оно просто помнит, как и все мы тут...',
+  'entities.quests.q_keep_him_lit.objectives.0.label': 'Очаг покормлен трижды',
+  'entities.quests.q_keep_him_lit.dialog.complain':
+    'Я уже покормил тебя один раз. Разве этого мало?',
+  'entities.quests.q_keep_him_lit.dialog.complainReply':
+    'Один раз - это одолжение, дружище, три раза - привычка, а меня одолжения уже обжигали... дело не в том, что очагу это нужно, с очагом всё в порядке, я о нём забочусь, дело в том, возвращаешься ли ты сюда сам, по своей воле, а не потому что метка задания велела... три раза. Не торопись со счётом.',
+  'entities.quests.q_keep_him_lit.dialog.refuse':
+    'Я не буду делать это три раза по отдельности. Одного раза достаточно.',
+  'entities.quests.q_keep_him_lit.dialog.refuseReply':
+    '...да. Да, ладно, я тебя слышу, дружище, это тоже честная черта... вот что, держи это в любом случае, заслужил ты его не совсем по правилам, но и почти всё остальное, что я раздаю, тоже не по правилам, а частота эта, если по-честному, не так уж строго ведёт счёт...',
+  'entities.quests.q_what_fills.dialog.refuse': 'Нет. Я туда больше не полезу.',
+  'entities.quests.q_what_fills.dialog.refuseReply':
+    'о... о, ладно. ...ладно. это... да. нет, это честно, друг, это честно... ваза тоже слышала, и, между нами, кажется, она это уважает. вот, возьми черенок всё равно. ты спускался один раз, а это на один раз больше, чем у большинства...',
   'hud.errors.silenced': 'Вы лишены дара речи!',
   'hud.pet.noPetFood': 'У вас нет пищи, чтобы покормить питомца.',
   'hud.pet.petEatsFoodOnly': 'Ваш питомец ест только пищу.',
@@ -3116,6 +3213,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'auth.realm': 'Мир',
   'auth.newCharacter': 'Новый персонаж',
   'auth.appearance': 'Внешность',
+  'auth.sex': 'Пол',
+  'auth.sexMale': 'Мужской',
+  'auth.sexFemale': 'Женский',
   'auth.class': 'Класс',
   'auth.name': 'Имя',
   'auth.chromaOption': 'Расцветка {n}',
@@ -3571,6 +3671,10 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.bags.searchPlaceholder': 'Поиск предметов',
   'hudChrome.bags.searchAria': 'Поиск предметов в сумках по названию',
   'hudChrome.bags.noMatch': 'Нет предметов, соответствующих фильтрам.',
+  'hudChrome.bags.capacityAria': 'Занято ячеек сумок: {used} из {total}',
+  'hudChrome.bags.backpack': 'Рюкзак',
+  'hudChrome.bags.socketEmpty': 'Пустая ячейка для сумки',
+  'hudChrome.bags.unequipHint': 'Нажмите, чтобы снять эту сумку',
   // Guide (/guide) localization.
   'guide.brand': 'World of ClaudeCraft',
   'guide.brandShort': 'ClaudeCraft',
@@ -3624,6 +3728,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'guide.nav.dungeons': 'Подземелья и рейды',
   'guide.nav.reference': 'Справочник',
   'guide.nav.controls': 'Управление',
+  'guide.nav.settings': 'Настройки и производительность',
   'guide.nav.combat': 'Бой',
   'guide.nav.glossary': 'Глоссарий',
   'guide.nav.faq': 'ЧаВо',
@@ -3670,6 +3775,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'guide.home.world.sub': 'Единая земля и три зоны, от тихих долин до ледяных вершин.',
   'guide.home.world.levels': 'Уровни с {min} по {max}',
   'guide.home.world.cta': 'Посмотреть мир',
+  'guide.home.world.hollowReachesName': 'Лощинные Плёсы',
+  'guide.home.world.hollowReachesBlurb':
+    'Тихая земля у ворот святилища, где новички набираются опыта в районе Fallow Acres и Root Hollow.',
   'guide.home.world.valeName': 'Долина Истбрук',
   'guide.home.world.valeBlurb': 'Зелёные холмы и древние леса, где начинается любое приключение.',
   'guide.home.world.marshName': 'Топь Мирфен',
@@ -3771,6 +3879,91 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'guide.controls.mobileHeading': 'На мобильных устройствах',
   'guide.controls.mobileBody':
     'На телефонах и планшетах сенсорное управление появляется автоматически: джойстик передвижения слева, перетаскивание в любой точке справа для обзора и экранные кнопки для способностей и меню.',
+  'guide.settingsPage.heading': 'Настройки и производительность',
+  'guide.settingsPage.intro':
+    'Настройте игру на максимум красоты или на максимум скорости. Три готовых набора настроек, а также объяснение, что на самом деле делает каждый графический параметр.',
+  'guide.settingsPage.wherePath':
+    'Все, о чем рассказывает эта страница, находится прямо в игре: нажмите Esc и загляните в разделы «Графика», «Интерфейс» и «Оверлей производительности».',
+  'guide.settingsPage.fairnessTitle': 'Честность по замыслу',
+  'guide.settingsPage.fairnessBody':
+    'Ни одна настройка здесь не разменивает красоту на игровое преимущество. Низкие уровни убирают только косметический лоск и никогда не отнимают информацию, которой вы сражаетесь: ваши дебаффы, полосы применения заклинаний, здоровье группы и цифры урона одинаковы что на уровне «Низкое», что на «Ультра». Скромная машина никогда не ставит вас в невыгодное положение.',
+  'guide.settingsPage.loadoutsHeading': 'Три готовых набора настроек',
+  'guide.settingsPage.loadoutsIntro':
+    'Начните с набора, который лучше всего описывает вашу машину, а затем меняйте по одной настройке за раз, пока результат вас не устроит.',
+  'guide.settingsPage.recommended': 'Рекомендуем',
+  'guide.settingsPage.whyLabel': 'Почему это работает:',
+  'guide.settingsPage.tagReload': 'после перезагрузки',
+  'guide.settingsPage.fpsTitle': 'Максимум FPS',
+  'guide.settingsPage.fpsTagline': 'Для старых ноутбуков, встроенной графики и игры от батареи.',
+  'guide.settingsPage.fpsWhy':
+    '«Качество графики» служит главным переключателем, а «Качество рендера» остается самым сильным ползунком: при 70% мир отрисовывается примерно вдвое меньшим числом пикселей, а интерфейс сохраняет идеальную четкость.',
+  'guide.settingsPage.balancedTitle': 'Баланс',
+  'guide.settingsPage.balancedTagline':
+    'Золотая середина для большинства машин и наш совет по умолчанию.',
+  'guide.settingsPage.balancedWhy':
+    '«Среднее» включает настоящие тени и полноценные материалы, а «Высокое» добавляет объемное затенение и блум. На уровнях ниже «Ультра» встроенная подстраховка сглаживает внезапные просадки в жарких боях, поэтому «Баланс» остается плавным без лишней возни.',
+  'guide.settingsPage.visualsTitle': 'Лучшая картинка',
+  'guide.settingsPage.visualsTagline': 'Режим скриншотов для мощных настольных машин.',
+  'guide.settingsPage.visualsWhy':
+    '«Ультра» отрисовывает игру в самом высоком разрешении вашего экрана и с самым богатым освещением. Этот уровень также отключает встроенную подстраховку и доступен только на настольных компьютерах: телефоны и приложение ограничены уровнем «Высокое».',
+  'guide.settingsPage.value50to70': 'От 50 до 70%',
+  'guide.settingsPage.value90to100': 'От 90 до 100%',
+  'guide.settingsPage.value100': '100%',
+  'guide.settingsPage.valueHighOrMedium': '«Высокое» на игровом ПК, «Среднее» на ноутбуке',
+  'guide.settingsPage.valueOnOptional': 'Вкл. (по желанию)',
+  'guide.settingsPage.howHeading': 'Как ведут себя настройки',
+  'guide.settingsPage.factDetectTitle': 'Игра сначала настраивается сама',
+  'guide.settingsPage.factDetectBody':
+    'При первом запуске игра оценивает ваше устройство и подбирает разумный уровень: от уровня «Низкое» на скромном телефоне до «Ультра» на мощном настольном компьютере. Но любой ваш собственный выбор всегда важнее автоматики.',
+  'guide.settingsPage.factReloadTitle': 'Два типа настроек',
+  'guide.settingsPage.factReloadBody':
+    '«Качество графики» и параметры пресета «Расширенное» вступают в силу после перезагрузки, и при необходимости панель предложит кнопку «Перезагрузить сейчас». Все остальные настройки применяются в тот же момент, как вы их меняете.',
+  'guide.settingsPage.factGovernorTitle': 'Встроенная подстраховка',
+  'guide.settingsPage.factGovernorBody':
+    'На любом уровне ниже «Ультра» игра при резком скачке нагрузки в большом бою незаметно и ненадолго упрощает траву, эффекты и освещение, а затем возвращает их обратно. Выбирая «Ультра», вы сообщаете ей, что предпочитаете сохранить каждую деталь.',
+  'guide.settingsPage.advancedHeading': 'Пресет «Расширенное»: соберите свое сочетание',
+  'guide.settingsPage.advancedBody':
+    'Пресет «Расширенное» начинается с уровня «Высокое» и открывает четыре дополнительных параметра, чтобы вы тратили кадры там, где действительно замечаете разницу: «Детализация местности», «Плотность растительности», «Эффекты и освещение» и «Качество теней». Как и «Качество графики», они применяются после перезагрузки.',
+  'guide.settingsPage.advancedMixes':
+    'Два любимых сочетания: оставьте «Качество теней» на уровне «Высокое», а «Эффекты и освещение» поставьте на «Низкое», чтобы получить четкую картинку без свечения, которая почти не нагружает машину; или сделайте наоборот, чтобы сохранить блум и смягчить тени.',
+  'guide.settingsPage.tableHeading': 'Все настройки с пояснениями',
+  'guide.settingsPage.colSetting': 'Параметр',
+  'guide.settingsPage.colDoes': 'Что делает',
+  'guide.settingsPage.colImpact': 'Влияние на FPS',
+  'guide.settingsPage.impactNone': 'Нет',
+  'guide.settingsPage.impactLight': 'Слабое',
+  'guide.settingsPage.impactModerate': 'Умеренное',
+  'guide.settingsPage.impactHeavy': 'Сильное',
+  'guide.settingsPage.rowGraphicsQuality':
+    'Главный переключатель. Каждая ступень одновременно меняет разрешение, тени, материалы, растительность и световые эффекты. Самая большая разница, которую можно получить одним действием.',
+  'guide.settingsPage.rowRenderQuality':
+    'Отрисовывает трехмерный мир в пониженном внутреннем разрешении и растягивает картинку; интерфейс остается четким. Самый действенный мгновенный ползунок на слабых машинах и экранах высокого разрешения.',
+  'guide.settingsPage.rowFieldOfView':
+    'Сколько мира помещается на экране: от приближенных 55 до размашистых 100 градусов. Вопрос удобства; широкий обзор нагружает отрисовку чуть сильнее.',
+  'guide.settingsPage.rowBrightness': 'Экспозиция сцены, темнее или светлее. Чистое дело вкуса.',
+  'guide.settingsPage.rowWeather':
+    'Фоновые дождь и снег. Только атмосфера; отключение немного экономит ресурсы в грозу.',
+  'guide.settingsPage.rowBrowserEffects':
+    'Насколько нарядным разрешено быть самому интерфейсу: размытие в стиле стекла, свечение, анимированные меню. Режим «Авто» подстраивается под ваш браузер; трехмерный мир в любом случае не затрагивается.',
+  'guide.settingsPage.rowTerrainDetail':
+    'Богатые, плавно смешанные текстуры земли либо более простой и быстрый вид местности.',
+  'guide.settingsPage.rowFoliageDensity':
+    'Как далеко и как густо растет трава вокруг вашего персонажа.',
+  'guide.settingsPage.rowEffectsQuality':
+    'Блум, объемное затенение и то, сколько факелов и заклинаний отбрасывают настоящий свет. Самая большая экономия среди параметров пресета «Расширенное».',
+  'guide.settingsPage.rowShadowQuality':
+    'Четкость теней. Уровень «Низкое» сохраняет тени, но смягчает их края.',
+  'guide.settingsPage.rowFrostedPanels':
+    'Размытие в стиле матового стекла позади окон. Красиво, и именно такие эффекты первым чувствует слабый браузер; оставьте его выключенным ради классической четкой картинки.',
+  'guide.settingsPage.rowReduceMotion':
+    'Убирает анимацию интерфейса, и окна появляются мгновенно. В первую очередь это настройка специальных возможностей, но она дает и небольшой прирост производительности.',
+  'guide.settingsPage.rowPerfOverlay':
+    'Экранная сводка с FPS, временем кадра и другими показателями. Включите ее, пока подбираете настройки с этой страницы, а затем снова скройте.',
+  'guide.settingsPage.tableFoot':
+    'Ищете ползунок дальности прорисовки или ограничитель FPS? Искать нечего: дальность обзора входит в каждый уровень качества, а темп кадров подстраивается под ваш экран.',
+  'guide.settingsPage.mobileTitle': 'На телефонах и планшетах',
+  'guide.settingsPage.mobileBody':
+    'На мобильных устройствах игра берет больше на себя: сама выбирает уровень, держит разрешение чуть ниже, чтобы беречь батарею и не перегревать устройство, и оставляет самые высокие уровни только настольным компьютерам. Наборы выше по-прежнему применимы, просто телефоны ограничены уровнем «Высокое».',
   'guide.combat.intro':
     'Бой подчиняется привычным правилам классических MMO. Чтобы хорошо играть, изучать их вовсе не обязательно, это лишь общее представление о том, как устроены сражения.',
   'guide.combat.hitTitle': 'Не каждый удар достигает цели',
@@ -3920,6 +4113,8 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'guide.worldPage.intro':
     'World of ClaudeCraft - это единый цельный край, который вы пересекаете пешком, три зоны, протянувшиеся с юга на север. Здесь нет быстрых перемещений, так что дорога - это часть приключения.',
   'guide.worldPage.hub': 'Опорная база',
+  'guide.worldPage.hollowReachesBlurb':
+    'Спокойная земля сразу за воротами святилища, где новички набираются опыта на волках и кабанах в районе Fallow Acres и Root Hollow.',
   'guide.worldPage.valeBlurb':
     'Зеленая стартовая долина, где новые герои набираются опыта на волках и разбойниках вокруг города Восточный Брод.',
   'guide.worldPage.marshBlurb':
@@ -4585,6 +4780,11 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
     'Две сотни лет держится эта стена. На моём посту она не падёт, но стонет.',
   'guide.worldPage.peaksPlaceNotes':
     'Хайвотч держит стену. Хребет Преследователя и Глубокоскальные норы принадлежат горным котам и кобольдам, Огрские предгорья и Военный лагерь Дрогмара, наёмным громилам, Бурехребет трещит от элементалей, а под ним сияет Глиммермир, Шатры Культа Вирма и Поля ревенантов кольцом окружают высоты культа, а на самом их пике, Святилище Могильного Вирма.',
+  'guide.worldPage.hollowReachesGreeter': 'Ризничий Зебедия, Root Hollow',
+  'guide.worldPage.hollowReachesGreeting':
+    'Я веду календарь для этих Плёсов, или хотя бы пытаюсь. Берегитесь рыхлой земли и не трогайте реестр.',
+  'guide.worldPage.hollowReachesPlaceNotes':
+    'Hollow Gate — портал святилища, вновь открывшийся в открытые земли. К западу, в Fallow Acres, пономарь Faddick отгоняет волков от земли, отведённой под застройку; к востоку, в Root Hollow, ризничий Зебедия по календарю следит за участком, кишащим кабанами. Mossbank у озера — тихое место для рыбалки.',
   'guide.worldPage.valeGreeter': 'Маршал Редбрук, Истврук',
   'guide.worldPage.valeGreeting': 'Держите клинок наготове. Долина уже не та, что прежде.',
   'guide.worldPage.valePlaceNotes':
@@ -4607,10 +4807,23 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': 'Пещерная закуска',
   'entities.items.emberbulb.name': 'Тлеющая луковица',
   'entities.items.first_cutting.name': 'Черенок',
+  'entities.items.greenpaw_bead.name': 'Бусина с бандольеры',
+  'entities.items.keeper_coal.name': 'Уголёк, который никогда не остывал',
   'entities.items.witness_root_cincture.name': 'Обвязка Корня-Свидетеля',
   'entities.items.shrine_diary_page.name': 'Обрывок страницы дневника',
   'entities.items.shrine_diary_page.flavorText':
     '...считал сорок дней при свече, пока не сбился со счёта. Тьма здесь, внизу, не забывает Его, даже если Он забыл это место. Если цапля пролетит низко, скажи пономарю, что фитиль всё ещё горит...',
+  'entities.items.linen_pouch.name': 'Льняная Сумка',
+  'entities.items.travelers_knapsack.name': 'Рюкзак Путника',
+  'entities.items.wolfhide_satchel.name': 'Сумка из Волчьей Шкуры',
+  'entities.items.gravewoven_bag.name': 'Могильная Сумка',
+  'entities.items.mistcallers_duffel.name': 'Баул Мистколлера',
+  'entities.items.worn_prayer_token.name': 'Потёртый молитвенный жетон',
+  'entities.items.worn_prayer_token.flavorText':
+    '...с одной стороны отполирован не моим большим пальцем, та же неглубокая бороздка, что и на добрых сотне таких же в этой груде, если верить самой груде. один палец не сотрёт сотню жетонов. а вот множество пальцев одну бороздку, вполне могут...',
+  'entities.items.tally_shard.name': 'Осколок с зарубками',
+  'entities.items.tally_shard.flavorText':
+    '...зарубки по пять, глубокие, каждая вычеркнута по завершении счёта. сотни пятёрок вычеркнуты, прежде чем вычёркивание прекращается, а последний ряд так и остался незавершённым...',
   'entities.mobs.acolyte_tessa.name': 'Послушница Тесса',
   'entities.mobs.deacon_varric.name': 'Дьякон Варрик',
   'entities.mobs.reliquary_bonewalker.name': 'Поднятый костеход',
@@ -4618,6 +4831,11 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_gravecall_acolyte.name': 'Аколит могильного зова',
   'entities.mobs.reliquary_ledger_wraith.name': 'Книжный призрак',
   'entities.mobs.reliquary_saintless_effigy.name': 'Изваяние без святого',
+  'entities.items.heartwood_splinter.name': 'Щепка сердцевины',
+  'entities.items.heartwood_splinter.flavorText':
+    'Тёплая на ощупь, долго после того, как дерево, из которого она взята, перестало двигаться.',
+  'entities.items.bloomcrown_pauldrons.name': 'Наплечники Цветущей Короны',
+  'entities.items.verdantguard_mantle.name': 'Мантия Зелёного Стража',
   'entities.mobs.palefeeder.name': 'Бледнопитающийся',
   'entities.mobs.rootmaw.name': 'Корнепасть',
   'entities.mobs.the_witness_root.name': 'Корень-Свидетель',
@@ -4627,7 +4845,13 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.brother_greenpaw.name': 'Брат Зеленолап',
   'entities.npcs.brother_greenpaw.title': 'Первый Пророк (самопровозглашенный)',
   'entities.npcs.brother_greenpaw.greeting':
-    'здорово, путник. застал вазу нынче в настроении, или это опять я так думаю... подь сюда, есть парочка святых дел, требующих заботы. в основном перекусить. оно и то же самое, по-зеленолаповски говоря.',
+    'вернулся, это благословение... ваза с утра всё вздыхает, есть парочка святых дел на очереди, та же волна, что и в прошлый раз. подь сюда, переведём дух...',
+  'entities.npcs.brother_greenpaw.introLines.0':
+    'э-э... привет. привет. не слыхал, как ты подошёл, я был где-то не здесь, где-то в зелени... у тебя вид только-только проснувшегося, друг. знаю его хорошо, сам ношу почти каждый день...',
+  'entities.npcs.brother_greenpaw.introLines.1':
+    'звать зеленолап. брат зеленолап, первый пророк, самозваный, ваза тебе скажет, что это ровным счётом ничего не значит, и он прав, да только кому-то надо о нём заботиться...',
+  'entities.npcs.brother_greenpaw.introLines.2':
+    'а это вот и есть пустошь. когда-то тут было целое племя, большие дела творились, так мне сказывали, а теперь по большей части только я, ваза да то, что дышит там внизу, в пещере... ну да ладно. он голодный, я голодный, на одной волне. подь сюда, есть парочка святых дел, требующих заботы.',
   'entities.delves.collapsed_reliquary.enterText': 'Вы спускаетесь в обрушившийся реликварий.',
   'entities.delves.collapsed_reliquary.leaveText':
     'Вы поднимаетесь обратно к Брату Хальвену у руин реликвария.',
@@ -4730,6 +4954,17 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'delveUi.tracker.module': 'Секция {current} из {total}',
   'delveUi.tracker.objective': 'Задача',
   'delveUi.tracker.title': 'Вылазка',
+  'sim.bags.full': 'Ваши сумки полны.',
+  'sim.bags.socketsFull': 'Все ячейки для сумок заняты.',
+  'sim.bags.swapTooManyItems': 'У вас слишком много предметов, чтобы сменить эту сумку.',
+  'sim.bags.removeTooManyItems': 'У вас слишком много предметов, чтобы снять эту сумку.',
+  'sim.bags.tradeSpace': 'Обмен не удался: недостаточно места в сумках.',
+  'sim.bank.cannotAfford': 'Вам не хватает средств на это расширение банка.',
+  'sim.bank.expansionCapped': 'Ваш банк больше нельзя расширить.',
+  'sim.bank.full': 'Ваш банк переполнен.',
+  'sim.bank.noQuestItems': 'Квестовые предметы нельзя хранить в банке.',
+  'sim.bank.purchased': 'Вы приобрели дополнительные ячейки банка.',
+  'sim.bank.tooFar': 'Вы слишком далеко от банкира.',
   'sim.delve.alreadyInDelve': 'Вы уже находитесь в вылазке.',
   'sim.delve.bossChest':
     'Босс пал. На возвышении поднимается заговорённый сундук реликвария: взломайте его замок, чтобы забрать добычу.',
@@ -4775,6 +5010,59 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'sim.delve.unknownTier': 'Неизвестная сложность вылазки.',
   'sim.delve.wayOutNotOpen': 'Выход ещё не открыт.',
   'sim.delve.whileTrading': 'Нельзя войти в вылазку во время обмена.',
+  'sim.gathering.alreadyHarvested': 'Этот труп уже разделан.',
+  'sim.gathering.nothingToHarvest': 'С этого трупа нечего собирать.',
+  'sim.hearth.emberbulb1': 'вот это дровишки… гляди, как она задышала, дружище…',
+  'sim.hearth.emberbulb2': 'печь берёт своё медленно и чисто, ей так по нраву…',
+  'sim.hearth.emberbulb3': 'растопили, задымило… уже чую, как открывается волна.',
+  'sim.hearth.helpLine':
+    'Зеленолап: /feed (принеси то, что горит, или то, чем сыт бываешь, от вазы).',
+  'sim.hearth.morsel1': '…ох, благослови тебя, дружище. Благослови и землю, по которой ты ходишь.',
+  'sim.hearth.morsel2': 'живот перестал петь гимны хоть на минутку. премного благодарен…',
+  'sim.hearth.morsel3':
+    'хороший кусок — что хороший друг… редкость, и стоит того, чтобы за ним идти.',
+  'sim.hearth.noItems1':
+    '…у тебя пусто в руках, дружище. Принеси то, что горит, или то, чем сыт бываешь, тогда и поговорим.',
+  'sim.hearth.noItems2':
+    'На тебе одни добрые намерения, а? …добрыми намерениями печь не растопишь.',
+  'sim.hearth.tooFar': 'Чтобы покормить брата Зеленолапа, нужно быть рядом с ним.',
+  'sim.homestead.alreadyOwn': 'У вас уже есть хутор.',
+  'sim.homestead.claimed': 'Эта земля ваша. Хутор застолблен.',
+  'sim.homestead.helpLine': 'Хутор: /homestead, /homestead claim.',
+  'sim.homestead.outsideArea':
+    'Это не хуторская земля. Попробуйте Fallow Acres, к западу от дороги.',
+  'sim.homestead.questGate':
+    'Брат Зеленолап еще не отправил вас в путь. Сперва закончите его поручения.',
+  'sim.homestead.readoutMine': 'Ваш хутор находится в точке ({x}, {z}).',
+  'sim.homestead.readoutNoHomesteadHint':
+    'У вас нет хутора. Встаньте на подходящем месте в Лощинных Плёсах и введите /homestead claim.',
+  'sim.homestead.readoutNoHomesteadQuest':
+    'У вас нет хутора. Закончите всю цепочку поручений брата Зеленолапа, чтобы получить его.',
+  'sim.homestead.tooCloseGate': 'Слишком близко к воротам. Отойдите дальше.',
+  'sim.homestead.tooCloseGraveyard': 'Слишком близко к кладбищу.',
+  'sim.homestead.tooCloseOther': 'Слишком близко к чужому хутору.',
+  'sim.homestead.tooCloseRoad': 'Слишком близко к дороге.',
+  'sim.homestead.tooCloseWater': 'Слишком близко к воде.',
+  'sim.homestead.tooCloseWildlife':
+    'Слишком близко к дикой живности. Расчистите округу или отойдите дальше.',
+  'sim.house.alreadyOwn': 'У вас уже есть свой дом в Пустоши.',
+  'sim.house.claimed': 'Этот дом теперь ваш. Украсьте его командой /house place <слот> <вид>.',
+  'sim.house.cleared': 'Слот {slot} очищен.',
+  'sim.house.helpLine':
+    'Дома: /house, /house claim, /house place <слот> <вид>, /house remove <слот>.',
+  'sim.house.mustBeInHollow': 'Чтобы заниматься своим домом, нужно находиться в Пустоши.',
+  'sim.house.mustStandToClaim': 'Чтобы заявить права на участок, нужно стоять на нём в Пустоши.',
+  'sim.house.noFreePlot': 'Здесь нет свободного участка. Встаньте на него, чтобы заявить права.',
+  'sim.house.noHomestead': 'У вас нет дома. Получите его командой /house claim.',
+  'sim.house.placed': 'В слот {slot} помещено: {kind}.',
+  'sim.house.plotTaken': 'У этого участка уже есть хозяин.',
+  'sim.house.readoutMine': 'Ваш дом: {plotId}. Украшения: {decor}.',
+  'sim.house.readoutNone':
+    'У вас нет дома. Встаньте на свободный участок в Пустоши и введите /house claim.',
+  'sim.house.readoutUsage': '/house place <1-{count}> <{kinds}>, /house remove <слот>.',
+  'sim.house.slotEmpty': 'Этот слот уже пуст.',
+  'sim.house.slotRange': 'Слоты пронумерованы от 1 до {count}.',
+  'sim.house.unknownKind': 'Неизвестный вид украшения. Виды: {kinds}.',
   'sim.lockpick.alreadyInProgress': 'Кто-то уже возится с замком.',
   'sim.lockpick.cannotPickThat': 'Это нельзя взломать.',
   'sim.lockpick.chooseAnte': 'Выберите 1, 2 или 3 отмычки.',
@@ -4918,12 +5206,19 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.auraEffect.school.shadow': 'Тьма',
   'hudChrome.auraEffect.school.holy': 'Свет',
   'hudChrome.auraEffect.school.nature': 'Природа',
+  'entities.itemSets.boundstone_vanguard.name': 'Авангард Скрепленного Камня',
+  'entities.itemSets.boundstone_vanguard.bonus3':
+    'Скорость атаки и произнесения заклинаний повышается на 15%.',
   'entities.itemSets.crownforged.name': 'Боевой доспех Кованой Короны',
   'entities.itemSets.crownforged.bonus2': 'Сила атаки повышается на 40.',
-  'entities.itemSets.crownforged.bonus3': 'Сила повышается на 15, выносливость на 15.',
+  'entities.itemSets.crownforged.bonus3':
+    'Сила повышается на 15, выносливость на 15, скорость атаки и произнесения заклинаний на 15%.',
   'entities.itemSets.deathlord.name': 'Боевой доспех Владыки Смерти',
   'entities.itemSets.deathlord.bonus2': 'Сила атаки повышается на 40.',
   'entities.itemSets.deathlord.bonus3': 'Сила повышается на 15, выносливость на 15.',
+  'entities.itemSets.greyjaw_stalker.name': 'Снаряжение Серочелюстного Ловчего',
+  'entities.itemSets.greyjaw_stalker.bonus3':
+    'Скорость атаки и произнесения заклинаний повышается на 15%.',
   'entities.itemSets.necromancers.name': 'Одеяние некроманта',
   'entities.itemSets.necromancers.bonus2':
     'Задержка произнесения от полученного урона снижена на 50%.',
@@ -4932,16 +5227,23 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.itemSets.nighttalon.name': 'Кожаный доспех Ночного Когтя',
   'entities.itemSets.nighttalon.bonus2': 'Сила атаки повышается на 40.',
   'entities.itemSets.nighttalon.bonus3':
-    'Ловкость повышается на 15, вероятность критического удара на 2%.',
+    'Ловкость повышается на 15, вероятность критического удара на 2%, скорость атаки и ' +
+    'произнесения заклинаний на 15%.',
   'entities.itemSets.soulflame.name': 'Одеяние Пламени Души',
   'entities.itemSets.soulflame.bonus2':
     'Задержка произнесения от полученного урона снижена на 50%.',
-  'entities.itemSets.soulflame.bonus3': 'Полученный урон не задерживает произнесение заклинаний.',
+  'entities.itemSets.soulflame.bonus3':
+    'Полученный урон не задерживает произнесение заклинаний, а скорость атаки и произнесения ' +
+    'заклинаний повышается на 15%.',
   'entities.itemSets.stormcallers.name': 'Одеяние Зовущего Бурю',
   'entities.itemSets.stormcallers.bonus2':
     'Задержка произнесения от полученного урона снижена на 50%.',
   'entities.itemSets.stormcallers.bonus3':
-    'Полученный урон не задерживает произнесение заклинаний.',
+    'Полученный урон не задерживает произнесение заклинаний, а скорость атаки и произнесения ' +
+    'заклинаний повышается на 15%.',
+  'entities.itemSets.vale_arcanist.name': 'Одеяние Дольского чародея',
+  'entities.itemSets.vale_arcanist.bonus3':
+    'Скорость атаки и произнесения заклинаний повышается на 15%.',
   'entities.itemSets.wyrmshadow.name': 'Облачение Тени Дракона',
   'entities.itemSets.wyrmshadow.bonus2': 'Сила атаки повышается на 40.',
   'entities.itemSets.wyrmshadow.bonus3':
@@ -5068,6 +5370,11 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.discord.relay.wts.label': 'Продам',
   'hudChrome.discord.relay.wtb.label': 'Куплю',
   'hudChrome.discord.relay.help.label': 'Нужна помощь',
+  'housingUi.claimedBanner': 'Вы объявили этот участок своим домом.',
+  'housingUi.ownerBanner': 'Это усадьба {name}.',
+  'housingUi.prompt.claim': 'Заявить права на этот участок',
+  'housingUi.prompt.manage': 'Управлять усадьбой',
+  'housingUi.prompt.visit': 'Посетить дом {name}',
   'housingUi.window.title': 'Ваша усадьба',
   'housingUi.window.close': 'Закрыть усадьбу',
   'housingUi.window.slotEmpty': 'Пусто',
@@ -5088,4 +5395,116 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'coldOpen.continue': 'Далее',
   'coldOpen.begin': 'Начать',
   'coldOpen.skip': 'Пропустить',
+  'mailUi.title': 'Воронья почта',
+  'mailUi.subtitle': 'отправка и получение писем',
+  'mailUi.close': 'Закрыть почту',
+  'mailUi.inbox': 'Входящие',
+  'mailUi.compose': 'Написать письмо',
+  'mailUi.noPostOffice': 'Подойдите к Вороньей почте, чтобы разобрать письма.',
+  'mailUi.emptyInbox': 'Писем нет. Ворон принесёт письмо, как только кто-то вам напишет.',
+  'mailUi.from': 'От {name}',
+  'mailUi.noSubject': '(без темы)',
+  'mailUi.take': 'Забрать',
+  'mailUi.delete': 'Удалить',
+  'mailUi.postageNote': 'Отправка письма стоит {money} за пересылку.',
+  'mailUi.recipient': 'Получатель',
+  'mailUi.subjectLabel': 'Тема',
+  'mailUi.bodyPlaceholder': 'Напишите ваше письмо...',
+  'mailUi.send': 'Отправить письмо',
+  'mailUi.needRecipientOrText': 'Укажите получателя и напишите что-нибудь перед отправкой.',
+  'mailUi.openButton': 'Покажите мне Воронью почту.',
+  'mailUi.openButtonAria': 'Открыть окно Вороньей почты',
+  // Event calendar (M16 non-Latin fill)
+  'hudChrome.calendar.title': 'Календарь событий',
+  'hudChrome.calendar.close': 'Закрыть календарь',
+  'hudChrome.calendar.keybindLabel': 'Календарь событий',
+  'hudChrome.calendar.prevMonth': 'Предыдущий месяц',
+  'hudChrome.calendar.nextMonth': 'Следующий месяц',
+  'hudChrome.calendar.dayAria': '{date}: событий: {count}',
+  'hudChrome.calendar.noEvents': 'На этот день ничего не запланировано.',
+  'hudChrome.calendar.allDay': 'Весь день',
+  'hudChrome.calendar.bookedBy': 'Записал(а): {name}',
+  'hudChrome.calendar.deleteAria': 'Убрать событие {title}',
+  'hudChrome.calendar.bookTitle': 'Запланировать событие гильдии',
+  'hudChrome.calendar.titlePlaceholder': 'Название события',
+  'hudChrome.calendar.notePlaceholder': 'Заметка (необязательно)',
+  'hudChrome.calendar.hourLabel': 'Час (UTC)',
+  'hudChrome.calendar.hourAllDay': 'Весь день',
+  'hudChrome.calendar.addButton': 'Записать событие',
+  'hudChrome.calendar.guildOnlyNote': 'Вступите в гильдию, чтобы планировать события вместе.',
+  'hudChrome.calendar.result.created': 'Событие внесено в календарь гильдии.',
+  'hudChrome.calendar.result.removed': 'Событие убрано из календаря.',
+  'hudChrome.calendar.result.notInGuild': 'Вы не состоите в гильдии.',
+  'hudChrome.calendar.result.notOfficer':
+    'Управлять событиями гильдии могут только офицеры и глава гильдии.',
+  'hudChrome.calendar.result.badInput': 'Укажите название события и корректный день.',
+  'hudChrome.calendar.result.calendarFull': 'Календарь гильдии заполнен.',
+  'hudChrome.calendar.result.eventGone': 'Этого события больше нет в календаре.',
+  'hudChrome.calendar.events.raidCall.title': 'Рейдовый сбор',
+  'hudChrome.calendar.events.raidCall.note': 'Стражи трубят в рог: собирайте отряд на рейд.',
+  'hudChrome.calendar.events.marketDay.title': 'Ярмарочный день',
+  'hudChrome.calendar.events.marketDay.note':
+    'Торговец ждёт свежий товар. Отличный день, чтобы заглянуть на Мировой рынок.',
+  'hudChrome.calendar.events.fiestaNight.title': 'Ночь фиесты',
+  'hudChrome.calendar.events.fiestaNight.note':
+    'Сегодня ринг фиесты 2 на 2 собирает самые шумные толпы.',
+  'hudChrome.calendar.events.arenaClash.title': 'Битва на арене',
+  'hudChrome.calendar.events.arenaClash.note':
+    'Дуэлянты стекаются в Пепельный Колизей. Вставайте в очередь и поднимайтесь по лестнице.',
+  'hudChrome.calendar.events.fishingDerby.title': 'Рыбацкое дерби',
+  'hudChrome.calendar.events.fishingDerby.note':
+    'Рыбаки выстраиваются вдоль озёр. Берите удочку и делитесь байками.',
+  'hudChrome.calendar.events.delveDay.title': 'День вылазки',
+  'hudChrome.calendar.events.delveDay.note':
+    'Хороший день, чтобы бросить вызов Обрушенной реликварии вместе со спутником.',
+  'hudChrome.calendar.events.moongateCommunion.title': 'Единение у лунных врат',
+  'hudChrome.calendar.events.moongateCommunion.note':
+    'Паломники собираются у лунного святилища под срединной луной.',
+
+  // PHAA-499: fill the professions/multiclassing (PHAA-465/466/467) M16 gap.
+  'guide.nav.professions': 'Профессии',
+  'guide.classPage.professionsTitle': 'Совместите со второй профессией',
+  'guide.classPage.professionsNote':
+    'Любой класс выше можно также взять как дополнительную профессию: она открывает второе древо талантов, не лишая вас основной роли. Прежде чем выбирать, посмотрите, как работают дополнительные профессии.',
+  'guide.classPage.professionsLink': 'Дополнительные профессии и мультиклассы',
+  'guide.professionsPage.heading': 'Дополнительные профессии и мультиклассы',
+  'guide.professionsPage.intro':
+    'Дополнительная профессия - это второй класс, который вы осваиваете наряду с основным: он открывает второе древо талантов и часть его способностей, не заставляя вас покидать вашу первую роль.',
+  'guide.professionsPage.whatHeading': 'Что такое дополнительная профессия',
+  'guide.professionsPage.whatBody':
+    'Любой класс можно взять как дополнительную профессию любого другого класса. Это добавляет второе древо талантов и позволяет позаимствовать несколько его способностей: воин может немного освоить лечение жреца, а маг - перенять укус разбойника. Ваш основной класс по-прежнему определяет вашу роль, ресурс и личность; дополнительная профессия лишь расширяет билд, не заменяя его.',
+  'guide.professionsPage.howHeading': 'Как её выбрать',
+  'guide.professionsPage.howBody':
+    'Дополнительные профессии открываются на 10 уровне, в тот же момент, когда разблокируется ваше первое древо талантов. Посетите наставника дополнительных профессий в городе, откройте диалог и выберите класс, который хотите взять как дополнительный.',
+  'guide.professionsPage.costBody':
+    'Первый выбор бесплатен. Смена на другой класс позже стоит золота, и плата растёт с каждой сменой, так что раннее решение никогда не наказывается, а более поздние перестановки стоят немного дороже.',
+  'guide.professionsPage.resetTitle': 'Ничего не высечено в камне',
+  'guide.professionsPage.resetNote':
+    'Вы можете вернуть очки в любом из двух древ в любое время вне боя, а также сменить дополнительную профессию у того же наставника за растущую плату золотом. Ранний выбор дополнительной профессии - лишь черновик, а не окончательное решение.',
+  'guide.professionsPage.talentsHeading': 'Как распределяются очки талантов между двумя древами',
+  'guide.professionsPage.talentsBody':
+    'Дополнительная профессия добавляет целое второе древо талантов рядом с основным, но оба древа берут очки из одного и того же запаса. Древо дополнительной профессии может занимать не более половины этого запаса, поэтому ваш основной класс всегда остаётся сердцем билда. Очко, вложенное в древо дополнительной профессии, открывает её способности, а эти способности расходуют ресурс вашего основного класса, а не свой собственный: дополнительная профессия жреца у воина тратит ярость, а не ману.',
+  'guide.professionsPage.trainersHeading': 'Где найти наставника',
+  'guide.professionsPage.trainersBody':
+    'Наставник дополнительных профессий стоит в городе неподалёку от святилища. Любой наставник может обучить вас любому классу как дополнительной профессии (кроме вашего основного), так что достаточно одного визита, чтобы выбрать или сменить вашу дополнительную профессию.',
+  'classDetails.classPairAria': '{primary}, дополнительная профессия {secondary}',
+  'classDetails.classPairLabel': '{primary} / {secondary}',
+  'game.talents.secondaryTab': 'Доп. профессия: {cls}',
+  'game.talents.secondaryCapHint':
+    'Древо доп. профессии: {spent}/{cap} очков (не более половины общего запаса).',
+  'questUi.dialog.feedHearth': 'У меня есть кое-что для очага.',
+  'questUi.dialog.feedHearthAria': 'Покормить очаг',
+  'questUi.dialog.trainerNeedsGold': 'Недостаточно золота',
+  'questUi.dialog.trainerConfirmTitle': 'Подтвердите дополнительную профессию',
+  'questUi.dialog.trainerConfirmBody': 'Обучиться профессии {cls} за {cost}?',
+  'questUi.dialog.trainerConfirmYes': 'Да, обучи меня',
+  'questUi.dialog.trainerConfirmNo': 'Нет, назад',
+  'questUi.dialog.trainerHowTitle': 'Как работают дополнительные профессии?',
+  'questUi.dialog.trainerHowBody':
+    'Дополнительная профессия добавляет к основному классу второе древо талантов и набор способностей начиная с {level} уровня. Основная роль сохраняется; дополнительная профессия делит с основной общий запас талантов и может занимать не более {pct}% от него, а её способности пересчитывают стоимость ресурса в ваш основной ресурс. Первый выбор бесплатен; последующая смена стоит золота.',
+  'entities.npcs.elder_yarrow.name': 'Старейшина Ярроу',
+  'entities.npcs.elder_yarrow.title': 'Наставник дополнительных профессий',
+  'entities.npcs.elder_yarrow.greeting':
+    'Каждый билд начинается с вопроса. Какое ещё призвание зовёт вас?',
+  'hudChrome.trainer.secondaryClassSet': 'Вы выбрали {cls} дополнительной профессией.',
 };

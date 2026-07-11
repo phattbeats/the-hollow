@@ -85,6 +85,8 @@ export const da_DK: EnTranslations = {
       "title": "Talenter",
       "classTab": "Klasse",
       "specTab": "Specialisering",
+      "secondaryTab": "Secondary: {cls}",
+      "secondaryCapHint": "Secondary tree: {spent}/{cap} points (capped at half your shared pool).",
       "available": "Tilgængelig",
       "spent": "Brugt",
       "pointSource": "Optjen 1 talentpoint per niveau fra niveau {first} til {cap}. Stig i niveau for at få flere point.",
@@ -288,6 +290,9 @@ export const da_DK: EnTranslations = {
       "minutes": "{m}m",
       "lessThanMinute": "<1m",
       "lockedToast": "Du er låst til {raid}. Låses op om {time}."
+    },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
     },
     "compass": {
       "N": "N",
@@ -627,6 +632,13 @@ export const da_DK: EnTranslations = {
       "unassigned": "{item} blev ikke tildelt og er frit for alle.",
       "leaderOnly": "Kun gruppelederen kan aendre lootmetoden."
     },
+    "lootRollGroup": {
+      "pending": "Waiting...",
+      "need": "Need",
+      "greed": "Greed",
+      "pass": "Pass",
+      "aria": "Group roll status for {item}"
+    },
     "bags": {
       "filterGroupAria": "Filtrér tasker efter kategori",
       "filterAll": "Alle",
@@ -641,7 +653,12 @@ export const da_DK: EnTranslations = {
       "sortName": "Navn",
       "searchPlaceholder": "Søg genstande",
       "searchAria": "Søg i taskegenstande efter navn",
-      "noMatch": "Ingen genstande matcher dine filtre."
+      "noMatch": "Ingen genstande matcher dine filtre.",
+      "capacity": "{used}/{total}",
+      "capacityAria": "Bag slots used: {used} of {total}",
+      "backpack": "Backpack",
+      "socketEmpty": "Empty bag slot",
+      "unequipHint": "Click to remove this bag"
     },
     "raidConvert": {
       "toPartyDone": "Dit raid er konverteret tilbage til en gruppe.",
@@ -876,7 +893,89 @@ export const da_DK: EnTranslations = {
           "hint": "Bed fællesskabet om hjælp"
         }
       }
+    },
+    "calendar": {
+      "title": "Event Calendar",
+      "close": "Close calendar",
+      "keybindLabel": "Event Calendar",
+      "prevMonth": "Previous month",
+      "nextMonth": "Next month",
+      "dayAria": "{date}: {count} events",
+      "noEvents": "Nothing planned for this day.",
+      "allDay": "All day",
+      "bookedBy": "Booked by {name}",
+      "deleteAria": "Remove the event {title}",
+      "bookTitle": "Book a guild event",
+      "titlePlaceholder": "Event title",
+      "notePlaceholder": "Note (optional)",
+      "hourLabel": "Hour (UTC)",
+      "hourAllDay": "All day",
+      "addButton": "Book event",
+      "guildOnlyNote": "Join a guild to plan events together.",
+      "result": {
+        "created": "The event is on the guild calendar.",
+        "removed": "The event was taken off the calendar.",
+        "notInGuild": "You are not in a guild.",
+        "notOfficer": "Only officers and the Guild Master may manage guild events.",
+        "badInput": "Give the event a title and a valid day.",
+        "calendarFull": "The guild calendar is full.",
+        "eventGone": "That event is no longer on the calendar."
+      },
+      "events": {
+        "raidCall": {
+          "title": "Raid Call",
+          "note": "Wardens sound the horn: gather a party for the raid."
+        },
+        "marketDay": {
+          "title": "Market Day",
+          "note": "The Merchant expects fresh stock. A fine day to browse the World Market."
+        },
+        "fiestaNight": {
+          "title": "Fiesta Night",
+          "note": "The 2v2 Fiesta ring draws its loudest crowds tonight."
+        },
+        "arenaClash": {
+          "title": "Arena Clash",
+          "note": "Duelists flock to the Ashen Coliseum. Queue up and climb the ladder."
+        },
+        "fishingDerby": {
+          "title": "Fishing Derby",
+          "note": "Anglers line Mirror Lake. Bring a pole and swap fishing tales."
+        },
+        "delveDay": {
+          "title": "Delve Day",
+          "note": "A fine day to brave the Collapsed Reliquary with a companion at your side."
+        },
+        "moongateCommunion": {
+          "title": "Moongate Communion",
+          "note": "Pilgrims gather at the moon-sanctum under the mid-month moon."
+        }
+      }
+    },
+    "trainer": {
+      "secondaryClassSet": "You have taken up {cls} as your secondary profession."
     }
+  },
+  "mailUi": {
+    "title": "The Ravenpost",
+    "subtitle": "send and collect letters",
+    "close": "Close mail",
+    "inbox": "Inbox",
+    "compose": "Compose",
+    "noPostOffice": "Step up to the Ravenpost to tend your mail.",
+    "emptyInbox": "No letters waiting. A raven will arrive when someone writes to you.",
+    "from": "From {name}",
+    "noSubject": "(no subject)",
+    "take": "Take",
+    "delete": "Delete",
+    "postageNote": "Sending a letter costs {money} postage.",
+    "recipient": "Recipient",
+    "subjectLabel": "Subject",
+    "bodyPlaceholder": "Write your letter...",
+    "send": "Send Letter",
+    "needRecipientOrText": "Name a recipient and write something before sending.",
+    "openButton": "Show me the Ravenpost.",
+    "openButtonAria": "Open the Ravenpost mail window"
   },
   "guide": {
     "brand": "World of ClaudeCraft",
@@ -903,8 +1002,10 @@ export const da_DK: EnTranslations = {
       "delves": "Delve",
       "reference": "Reference",
       "controls": "Styring",
+      "settings": "Settings & Performance",
       "combat": "Kamp",
       "talents": "Talenter",
+      "professions": "Professions",
       "arena": "Arena & PvP",
       "glossary": "Ordliste",
       "wishIKnew": "Ting jeg ville ønske jeg vidste",
@@ -983,6 +1084,8 @@ export const da_DK: EnTranslations = {
         "sub": "Ét sammenhængende land, tre zoner, fra stille dale til frosne tinder.",
         "levels": "Niveau {min} til {max}",
         "cta": "Se verden",
+        "hollowReachesName": "The Hollow Reaches",
+        "hollowReachesBlurb": "Quiet ground below the shrine gate, where new arrivals cut their teeth around Fallow Acres and Root Hollow.",
         "valeName": "Østbæk Dal",
         "valeBlurb": "Grønne bakker og gamle skove, hvor ethvert eventyr begynder.",
         "marshName": "Mosekær Sump",
@@ -1070,6 +1173,66 @@ export const da_DK: EnTranslations = {
       "mobileBody": "Berøringsstyring vises automatisk på telefoner og tablets: en bevægelsesstik til venstre, træk hvor som helst til højre for at kigge, og knapper på skærmen til dine evner og menuer.",
       "controllerHeading": "På en controller",
       "controllerBody": "Gamepads virker også, og controllerstyring er slået til som standard. Venstre pind bevæger dig, højre pind sigter kameraet, og knapperne foran og på skuldrene dækker dine evner, hop og interaktion. Åbn et hvilket som helst vindue for at få en markør frem på skærmen til menuer. Du kan ombinde knapperne og justere pindens dødzone, kamerahastighed, vibration og omvendt kig fra controllerafsnittet i spillets indstillinger."
+    },
+    "settingsPage": {
+      "heading": "Settings & Performance",
+      "intro": "Make the game look its best or run its fastest. Three ready-made loadouts, plus what every graphics option really does.",
+      "wherePath": "Everything on this page lives in the game: press Esc and look in Graphics, Interface, and the Performance Overlay panel.",
+      "fairnessTitle": "Fair by design",
+      "fairnessBody": "No option here trades beauty for power. Lower settings shed cosmetic polish only, never information you fight with: your own debuffs and crowd control, party and raid member health, the target and boss cast bar, target health, and enemy positions are identical from Low to Ultra. Playing on a modest machine is never a handicap.",
+      "loadoutsHeading": "Three ready-made loadouts",
+      "loadoutsIntro": "Start from the loadout that sounds like your machine, then adjust one option at a time until it feels right.",
+      "recommended": "Recommended",
+      "whyLabel": "Why it works:",
+      "tagReload": "after reload",
+      "fpsTitle": "Best FPS",
+      "fpsTagline": "For older laptops, integrated graphics, and battery play.",
+      "fpsWhy": "Graphics Quality is the master switch, and Render Quality is the strongest slider: at 50 to 70% the world draws roughly half the pixels while the interface stays perfectly sharp.",
+      "balancedTitle": "Balanced",
+      "balancedTagline": "The sweet spot for most machines, and our default advice.",
+      "balancedWhy": "Medium brings real shadows and full materials; High adds ambient occlusion and bloom. Below Ultra a built-in safety net quietly thins effects for a moment when a big fight spikes, then restores them, so Balanced stays smooth without babysitting.",
+      "visualsTitle": "Best Visuals",
+      "visualsTagline": "Screenshot mode for powerful desktop machines.",
+      "visualsWhy": "Ultra renders at the highest resolution your display offers with the richest lighting. It also switches the safety net off, and it is desktop-only: phones and tablets top out at High to keep heat and battery in check.",
+      "value50to70": "50 to 70%",
+      "value90to100": "90 to 100%",
+      "value100": "100%",
+      "valueHighOrMedium": "High on a gaming PC, Medium on a laptop",
+      "valueOnOptional": "On (optional)",
+      "howHeading": "How the options behave",
+      "factDetectTitle": "The game tunes itself first",
+      "factDetectBody": "On your first launch the game reads your device and picks a sensible tier, from Low on a modest phone to Ultra on a strong desktop. Any choice you make yourself always wins.",
+      "factReloadTitle": "Two kinds of options",
+      "factReloadBody": "Graphics Quality and the Advanced pickers take effect after a reload, and the panel offers a Reload Now button when needed. Every other option applies the moment you change it.",
+      "factGovernorTitle": "A built-in safety net",
+      "factGovernorBody": "On every tier below Ultra, the game quietly thins effects for a moment when a big fight spikes, then restores them. Choosing Ultra tells it you would rather keep every detail.",
+      "advancedHeading": "The Advanced preset: mix your own",
+      "advancedBody": "Advanced starts from the High tier and unlocks four extra pickers, so you can spend your frames where you actually notice them: Terrain Detail, Foliage Density, Effects and Lighting, and Shadow Quality. Like Graphics Quality, they apply after a reload.",
+      "advancedMixes": "Two favorite mixes: keep Shadow Quality on High and set Effects and Lighting to Low for a crisp, glow-free look that runs light, or do the reverse to keep the bloom and soften the shadows.",
+      "tableHeading": "Every option, explained",
+      "colSetting": "Setting",
+      "colDoes": "What it does",
+      "colImpact": "FPS impact",
+      "impactNone": "None",
+      "impactLight": "Light",
+      "impactModerate": "Moderate",
+      "impactHeavy": "Heavy",
+      "rowGraphicsQuality": "The master switch. Each step changes resolution, shadows, materials, foliage, and lighting effects together. The biggest single difference you can make.",
+      "rowRenderQuality": "Draws the 3D world at a lower internal resolution and scales it up; the interface stays sharp. The strongest instant slider on weaker machines and high-resolution screens.",
+      "rowFieldOfView": "How much of the world fits on screen, from a zoomed 55 to a sweeping 100 degrees. A comfort choice; wider views draw slightly more.",
+      "rowBrightness": "Scene exposure, darker or brighter. Pure preference.",
+      "rowWeather": "Ambient rain and snow. Atmosphere only, and switching it off saves a little during storms.",
+      "rowBrowserEffects": "How fancy the interface itself is allowed to be: glass blur, glow, animated menus. Auto matches your browser; the 3D world is untouched either way.",
+      "rowTerrainDetail": "Rich, blended ground textures versus a simpler, faster terrain look.",
+      "rowFoliageDensity": "How far and how thick the grass grows around your character.",
+      "rowEffectsQuality": "Bloom, ambient occlusion, and how many torches and spells cast real light. The single biggest saving among the Advanced pickers.",
+      "rowShadowQuality": "Shadow crispness. Low keeps shadows but softens their edges.",
+      "rowFrostedPanels": "A frosted-glass blur behind windows. Pretty, and exactly the kind of effect a weaker browser feels; leave it off for the classic crisp look.",
+      "rowReduceMotion": "Removes interface animations so windows appear instantly. An accessibility option first, with a small performance bonus.",
+      "rowPerfOverlay": "An on-screen readout of FPS, frame time, and more. Turn it on while you tune this page, then hide it again.",
+      "tableFoot": "Looking for a draw-distance slider or an FPS cap? There is nothing to hunt for: view distance is part of each quality tier, and frame pacing follows your display.",
+      "mobileTitle": "On phones and tablets",
+      "mobileBody": "Mobile manages more for you: the game picks the tier, holds resolution a touch lower to protect battery and heat, and keeps the highest tiers desktop-only. The loadouts above still apply; phones simply top out at High."
     },
     "combat": {
       "intro": "Kamp følger velkendte klassiske MMO-regler. Du behøver aldrig at studere noget af det for at spille godt, dette er bare formen på hvordan kampe fungerer.",
@@ -1180,7 +1343,10 @@ export const da_DK: EnTranslations = {
       "fullKitHeading": "Hele udstyret",
       "fullKitNote": "Enhver evne denne klasse kan lære, i den rækkefølge den bliver tilgængelig. Talenter afgør hvilke der bærer din build.",
       "petsHeading": "Dæmoner",
-      "petsNote": "Heksemestre tilkalder dæmoner til at kæmpe ved deres side, hver egnet til en forskellig opgave."
+      "petsNote": "Heksemestre tilkalder dæmoner til at kæmpe ved deres side, hver egnet til en forskellig opgave.",
+      "professionsTitle": "Pair with a second class",
+      "professionsNote": "Any class above can also be taken as a profession, a secondary class that opens a second talent tree without dropping your primary role. See how professions work before you pick.",
+      "professionsLink": "Professions and multiclassing"
     },
     "classHook": {
       "warrior": "En ubønhørlig frontlinjekriger der forvandler hvert slag han tager til brændstof for det næste.",
@@ -1347,15 +1513,19 @@ export const da_DK: EnTranslations = {
       "mapSub": "Tre zoner, fra syd til nord, hver et trin højere i niveau. Følg questsporet, og landet bærer dig fra dalen til tinderne.",
       "places": "Bemærkelsesværdige steder",
       "residents": "Hvem du vil møde",
+      "hollowReachesBlurb": "The calm ground just beyond the shrine gate, where new arrivals cut their teeth on wolves and boars around Fallow Acres and Root Hollow.",
       "valeBlurb": "Den grønne startdal, hvor nye helte prøver kræfter med ulve og banditter omkring byen Eastbrook.",
       "marshBlurb": "Et druknet land af tåge og ruiner. Murlocs vrimler i lavvandet, og noget ældre rører på sig under vandet, holdt under opsyn fra brobyen Fenbridge.",
       "peaksBlurb": "Vindskurede rygge og gamle minegange, der klatrer mod rigets koldeste og højeste farer, holdt af forposten Highwatch.",
+      "hollowReachesGreeting": "I keep the Reaches to a calendar, or I keep trying. Mind the loose dirt, and do not touch the register.",
+      "hollowReachesGreeter": "Verger Zebediah, Root Hollow",
       "valeGreeting": "Hold dit blad nært. Dalen er ikke, hvad den var.",
       "valeGreeter": "Marskal Redbrook, Eastbrook",
       "marshGreeting": "Hold ved porten. Bag de siv klarer mosen drabet for os.",
       "marshGreeter": "Vægter Fenwick, Fenbridge",
       "peaksGreeting": "I to hundrede år har denne mur holdt. Den brister ikke på min vagt, men den knager.",
       "peaksGreeter": "Kaptajn Thessaly, Highwatch",
+      "hollowReachesPlaceNotes": "The Hollow Gate is the shrine portal reopening onto open ground. West at Fallow Acres, Sexton Faddick keeps the wolves off land meant for building; east at Root Hollow, Verger Zebediah keeps a boar-plagued patch to its calendar. Mossbank, by the lake, is a quiet place to fish.",
       "valePlaceNotes": "Eastbrook er din første hjemmebase. Wolf Run og Boar Meadow er milde jagtmarker; Mirror Lake er stille vand at fiske i; Webwood og Copper Dig skjuler edderkopper og malmgriske gravere; en Bandit Camp og Fallen Chapel rummer barskere arbejde; Reliquary Hill falder ned i Collapsed Reliquary, rigets første delve; og Brightwood Glade er en rolig, solbeskinnet lund i nord.",
       "marshPlaceNotes": "Fenbridge bevogter den eneste tørre vej. Prowler Reeds og Deepfen Shallows myldrer med mosebæster og murlocs; Widow Thicket er spundet tæt med spind; Drowned Chapel og Troll Mounds rummer ældre farer; Gravecaller Encampment er kulten gravet ind, og Den Sunkne Bastion er mosens instans-hjerte.",
       "peaksPlaceNotes": "Highwatch holder muren. Stalker Ridge og Deeprock Burrows tilhører ryg-katte og kobolds; Ogre Foothills og Drogmar's War-Camp tilhører lejede bøller; Stormcrag knitrer med elementaler, og Glimmermere gløder nedenfor; Wyrmcult Tents og Revenant Fields omkranser kultens høje grund, med Gravormens Helligdom på dens top.",
@@ -1477,6 +1647,21 @@ export const da_DK: EnTranslations = {
       "resetNote": "Du kan nulstille dine talenter når som helst, du er uden for kamp, så et tidligt valg er aldrig en fælde. Prøv tingene, se hvad du kan lide, og skift mening frit.",
       "specsHeading": "Specialiseringer efter klasse",
       "specsBody": "Hver klasse har en håndfuld specialiseringer, hver med sin egen rolle og sit særkende. Her er formen på dem alle. Åbn en klasse for dens fulde udstyr."
+    },
+    "professionsPage": {
+      "heading": "Professions and multiclassing",
+      "intro": "A profession is a second class you train alongside your primary one, opening a second talent tree and a slice of its ability kit without leaving your first role behind.",
+      "whatHeading": "What a profession is",
+      "whatBody": "Every class can be taken as a profession by any other class. Pairing one adds a second talent tree and lets you borrow a few of its abilities, so a Warrior can dabble in the Priest's healing or a Mage pick up a Rogue's sting. Your primary class still sets your role, your resource, and your identity; the profession bends the build without replacing it.",
+      "howHeading": "How to pick one",
+      "howBody": "Professions open at level 10, the same moment your first talent tree unlocks. Visit a Profession Trainer in the hub town, open their dialog, and pick the class you want as your secondary.",
+      "costBody": "Your first pick is free. Changing to a different class later costs gold, and the fee steps up each time you swap, so an early decision is never punished while later reshuffles carry a small price.",
+      "resetTitle": "Nothing is locked in",
+      "resetNote": "You can refund points in either tree any time you are out of combat, and you can swap your secondary class at the same trainer for an escalating gold fee. An early profession pick is a first draft, not a commitment.",
+      "talentsHeading": "How talents split across the two trees",
+      "talentsBody": "A profession adds a whole second talent tree beside your primary one, but the two draw from the same pool of points. The secondary tree can hold at most half of that pool, so your primary class always stays the heart of the build. A point dropped into the secondary tree unlocks its abilities, and those abilities cast from your primary resource, not theirs: a Priest profession on a Warrior spends rage to heal, not mana.",
+      "trainersHeading": "Finding a trainer",
+      "trainersBody": "A Profession Trainer stands in the hub town near the shrine. Any single trainer can teach you any class as a profession (other than your primary), so one visit is enough to set or change your secondary."
     },
     "arenaPage": {
       "heading": "Arena og PvP",
@@ -1704,6 +1889,11 @@ export const da_DK: EnTranslations = {
       "home": "Tilbage til oversigten"
     }
   },
+  "readableUi": {
+    "prompt": {
+      "read": "Read"
+    }
+  },
   "coldOpen": {
     "title": "The Hollow",
     "wakeBody": "You come to on warm ground, no memory of your name, your people, or how you got here. Green light pools from a great vase ahead, and something about it feels like it has been waiting.",
@@ -1843,6 +2033,9 @@ export const da_DK: EnTranslations = {
     "realm": "Rige",
     "newCharacter": "Ny karakter",
     "appearance": "Udseende",
+    "sex": "Sex",
+    "sexMale": "Male",
+    "sexFemale": "Female",
     "class": "Klasse",
     "name": "Navn",
     "chromaOption": "Kroma {n}",
@@ -2147,6 +2340,71 @@ export const da_DK: EnTranslations = {
       "toolSlips": "Det værktøj glider af denne lås.",
       "lockJammed": "Låsen sidder så fast, at den ikke kan dirkes. Ryd dit delve igen for endnu et forsøg.",
       "lastPickSnaps": "Den sidste dirk knækker. Låsen sætter sig fast. Kisten er tabt, medmindre du rydder dit delve igen."
+    },
+    "gathering": {
+      "nothingToHarvest": "That corpse has nothing to harvest.",
+      "alreadyHarvested": "This corpse has already been harvested."
+    },
+    "hearth": {
+      "tooFar": "You need to be near Brother Greenpaw to feed him.",
+      "noItems1": "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",
+      "noItems2": "nothin' on you but good intentions, huh... intentions don't stoke a furnace.",
+      "emberbulb1": "now THAT'S fuel... watch her breathe, friend...",
+      "emberbulb2": "the furnace takes it slow and clean, just like she likes it...",
+      "emberbulb3": "stoked and smokin'... the wavelength's openin' up already, i can feel it.",
+      "morsel1": "...oh, bless you, friend. bless you and the ground you walk on.",
+      "morsel2": "stomach quits singin' hymns for a minute. much obliged...",
+      "morsel3": "a good morsel, is like a good friend... rare, and worth the walk.",
+      "helpLine": "Greenpaw: /feed (bring what burns or what fills, from near the vase)."
+    },
+    "house": {
+      "mustStandToClaim": "You must stand on a homestead plot in the Hollow to claim.",
+      "alreadyOwn": "You already own a homestead in the Hollow.",
+      "noFreePlot": "There is no free homestead plot here. Stand on one to claim.",
+      "plotTaken": "That homestead already has an owner.",
+      "claimed": "The homestead is yours. Decorate it with /house place <slot> <kind>.",
+      "noHomestead": "You do not own a homestead. Claim one with /house claim.",
+      "mustBeInHollow": "You must be in the Hollow to tend your homestead.",
+      "slotRange": "Slots are numbered 1 to {count}.",
+      "unknownKind": "Unknown decor kind. Kinds: {kinds}.",
+      "placed": "Placed the {kind} on slot {slot}.",
+      "slotEmpty": "That slot is already empty.",
+      "cleared": "Cleared slot {slot}.",
+      "readoutNone": "You own no homestead. Stand on a free plot in the Hollow and type /house claim.",
+      "readoutMine": "Your homestead: {plotId}. Decor: {decor}.",
+      "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <slot>.",
+      "helpLine": "Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>."
+    },
+    "bags": {
+      "full": "Your bags are full.",
+      "socketsFull": "All your bag slots are full.",
+      "swapTooManyItems": "You have too many items to swap to that bag.",
+      "removeTooManyItems": "You have too many items to remove that bag.",
+      "tradeSpace": "Trade failed: not enough bag space."
+    },
+    "bank": {
+      "tooFar": "You are too far from the banker.",
+      "noQuestItems": "You cannot store quest items in the bank.",
+      "full": "Your bank is full.",
+      "expansionCapped": "Your bank cannot be expanded further.",
+      "cannotAfford": "You cannot afford that bank expansion.",
+      "purchased": "You purchase additional bank slots."
+    },
+    "homestead": {
+      "outsideArea": "That is outside the homestead ground. Try Fallow Acres, west of the road.",
+      "tooCloseGate": "Too close to the gate. Move further out.",
+      "tooCloseWater": "Too close to the water.",
+      "tooCloseGraveyard": "Too close to the graveyard.",
+      "tooCloseWildlife": "Too close to the wildlife. Clear the area or move further off.",
+      "tooCloseRoad": "Too close to the road.",
+      "tooCloseOther": "Too close to another homestead.",
+      "questGate": "Brother Greenpaw hasn't sent you off yet. Finish his errands first.",
+      "alreadyOwn": "You already own a homestead.",
+      "claimed": "The ground is yours. This homestead is claimed.",
+      "readoutMine": "Your homestead sits at ({x}, {z}).",
+      "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
+      "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
+      "helpLine": "Homestead: /homestead, /homestead claim."
     }
   },
   "lockpickUi": {
@@ -2535,6 +2793,7 @@ export const da_DK: EnTranslations = {
     "rendererFailed": "Kunne ikke starte gengiveren: prøv at genindlæse. {error}",
     "enterTimeout": "Kunne ikke komme ind i verdenen. Forbindelsen fik timeout. Kører spilserveren?",
     "connectionLost": "Forbindelsen til serveren gik tabt.",
+    "reconnecting": "Connection lost. Reconnecting...",
     "connectionRejected": "Serveren lukkede forbindelsen."
   },
   "errors": {
@@ -2564,6 +2823,7 @@ export const da_DK: EnTranslations = {
       "notAuthenticated": "Ikke godkendt.",
       "accountBanned": "Denne konto er blevet udelukket.",
       "webLoginOnly": "Login er kun tilladt fra spilklienten.",
+      "crossSiteRejected": "Cross-site request rejected.",
       "accountSuspended": "Denne konto er suspenderet indtil {date}.",
       "alreadyInWorld": "Karakteren er allerede i verdenen.",
       "takenOver": "Din karakter blev overtaget af en anden session.",
@@ -2684,7 +2944,9 @@ export const da_DK: EnTranslations = {
       "druid": "Druider kanaliserer naturen, helbreder sår, omslynger fjender og skifter til dyreformer til forsvar eller skade."
     },
     "aria": "Klassedetaljer for {className}: rolle {role}. Startværdier: Styrke {str}, Smidighed {agi}, Udholdenhed {sta}, Intellekt {int}, Ånd {spi}.",
-    "statBarAria": "{stat}: {value} ud af 25"
+    "statBarAria": "{stat}: {value} ud af 25",
+    "classPairLabel": "{primary} / {secondary}",
+    "classPairAria": "{primary}, secondary {secondary}"
   },
   "mobilePreflight": {
     "title": "Spil i liggende fuldskærm",
@@ -3313,6 +3575,7 @@ export const da_DK: EnTranslations = {
       "offGlobalCooldown": "Uden for den globale nedkøling",
       "friendlyTarget": "Venligt mål",
       "enemyTarget": "Fjendtligt mål",
+      "selfOnly": "Self only",
       "damageRange": "{min} til {max}",
       "finisherDamage": "{base} plus {perCombo} per combopoint"
     },
@@ -3365,6 +3628,22 @@ export const da_DK: EnTranslations = {
       "browseGoodsAria": "Gennemse varer fra {name}",
       "worldMarket": "Vis mig World Market.",
       "worldMarketAria": "Åbn World Market",
+      "trainSecondary": "Train me in a secondary profession.",
+      "trainSecondaryAria": "Train a secondary profession with {name}",
+      "feedHearth": "I have something for the hearth.",
+      "feedHearthAria": "Feed the hearth",
+      "trainerTitle": "Secondary Profession",
+      "trainerLevelLocked": "Unlocks at level {level}.",
+      "trainerCurrent": "Current",
+      "trainerFree": "Free",
+      "trainerPickAria": "Train as secondary {cls}: {cost}",
+      "trainerNeedsGold": "Not enough gold",
+      "trainerConfirmTitle": "Confirm secondary class",
+      "trainerConfirmBody": "Train as {cls} for {cost}?",
+      "trainerConfirmYes": "Yes, train me",
+      "trainerConfirmNo": "No, go back",
+      "trainerHowTitle": "How do secondary professions work?",
+      "trainerHowBody": "A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities convert their resource cost to your primary resource. Your first pick is free; changing later costs gold.",
       "accept": "Accepter",
       "decline": "Afslå",
       "continue": "Fortsæt",
@@ -3403,6 +3682,11 @@ export const da_DK: EnTranslations = {
   "housingUi": {
     "claimedBanner": "You claim this plot as your home.",
     "ownerBanner": "This is {name}'s homestead.",
+    "prompt": {
+      "claim": "Claim this plot",
+      "manage": "Manage your homestead",
+      "visit": "Visit {name}'s home"
+    },
     "window": {
       "title": "Your Homestead",
       "close": "Close homestead",
@@ -3456,7 +3740,8 @@ export const da_DK: EnTranslations = {
       "drink": "Drikke",
       "tool": "Værktøj",
       "potion": "Eliksir",
-      "elixir": "Eliksir"
+      "elixir": "Eliksir",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "Rustning",
@@ -3498,7 +3783,11 @@ export const da_DK: EnTranslations = {
       "useManaPotion": "Brug: Genopretter øjeblikkeligt {amount} mana. Brugbar i kamp. 1 min afkøling.",
       "clickUseInstant": "Klik for at bruge øjeblikkeligt i kamp",
       "clickUse": "Klik for at bruge",
-      "clickBuyback": "Klik for at købe tilbage"
+      "clickBuyback": "Klik for at købe tilbage",
+      "bagSlots": "{slots} Slot Bag"
+    },
+    "error": {
+      "requiresLevelToEquip": "Requires level {level} to equip."
     },
     "bags": {
       "title": "Tasker",
@@ -4780,6 +5069,21 @@ export const da_DK: EnTranslations = {
       "monarch_crown_helm": {
         "name": "Monarkens Krone"
       },
+      "linen_pouch": {
+        "name": "Lærredspose"
+      },
+      "travelers_knapsack": {
+        "name": "Rejsendes Rygsæk"
+      },
+      "wolfhide_satchel": {
+        "name": "Ulveskinds Taske"
+      },
+      "gravewoven_bag": {
+        "name": "Gravvævet Taske"
+      },
+      "mistcallers_duffel": {
+        "name": "Mistcallers Sømandssæk"
+      },
       "bristleback_maul": {
         "name": "Børsterygs-Lemlæster"
       },
@@ -5125,12 +5429,39 @@ export const da_DK: EnTranslations = {
       "first_cutting": {
         "name": "En Stikling"
       },
+      "greenpaw_bead": {
+        "name": "En Perle Fra Bandoleret"
+      },
+      "keeper_coal": {
+        "name": "Et Kul Der Aldrig Kølede Af"
+      },
+      "willow_sprig": {
+        "name": "A Willow Sprig"
+      },
       "witness_root_cincture": {
         "name": "Vidnerods Bælte"
       },
       "shrine_diary_page": {
         "name": "Iturevet Dagbogsside",
         "flavorText": "...talte fyrre dage ved stearinlys, før jeg mistede tråden. Mørket hernede glemmer Ham ikke, selvom Han har glemt dette sted. Hvis hejren kredser lavt, så sig til Degnen at vægen stadig brænder..."
+      },
+      "heartwood_splinter": {
+        "name": "Kærnetræsplint",
+        "flavorText": "Varm at røre ved, længe efter at træet, den kom fra, holdt op med at bevæge sig."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Blomsterkronede Skulderplader"
+      },
+      "verdantguard_mantle": {
+        "name": "Frodig Vogterkappe"
+      },
+      "worn_prayer_token": {
+        "name": "Slidt Bedemønt",
+        "flavorText": "...glat på den ene side af en tommelfinger, der ikke er min, som sled den samme lave rille i hundrede andre som denne før den her, eller det vil bunken hernede i hvert fald have dig til at tro. én tommelfinger slider ikke hundrede mønter. mange tommelfingre slider til gengæld én rille..."
+      },
+      "tally_shard": {
+        "name": "Skår med Tællemærker",
+        "flavorText": "...mærker i femmere, ridset dybt, streget over hver gang tællingen nåede rundt. hundredvis af femmere før overstregningerne hører op, og den sidste række blev aldrig gjort færdig..."
       },
       "reliquary_plate_chest": {
         "name": "Relikvievogterens Brynje"
@@ -5586,6 +5917,9 @@ export const da_DK: EnTranslations = {
       },
       "the_witness_root": {
         "name": "Vidnerod"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {
@@ -5593,6 +5927,11 @@ export const da_DK: EnTranslations = {
         "name": "Købmanden",
         "title": "Vogter af Verdensmarkedet",
         "greeting": "Velkommen til Verdensmarkedet, {className}. Køb fra hver eneste eventyrer i riget - eller læg dine egne varer frem og lad mønterne finde dig."
+      },
+      "the_ravenpost": {
+        "name": "The Ravenpost",
+        "title": "Keeper of the Mail",
+        "greeting": "Post a letter, {className}, and my ravens will find your friend wherever they roam, coin and parcels riding along, safe until claimed."
       },
       "marshal_redbrook": {
         "name": "Marskal Redbrook",
@@ -5694,6 +6033,11 @@ export const da_DK: EnTranslations = {
         "title": "Relikvarievogter",
         "greeting": "Relikvariet nedenunder har flyttet sig igen."
       },
+      "elder_yarrow": {
+        "name": "Elder Yarrow",
+        "title": "Profession Trainer",
+        "greeting": "Every build starts as a question. Which second calling speaks to you?"
+      },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
         "title": "Tidevogter",
@@ -5702,7 +6046,12 @@ export const da_DK: EnTranslations = {
       "brother_greenpaw": {
         "name": "Broder Grønpote",
         "title": "Første Profet (selvudnævnt)",
-        "greeting": "hej, rejsende. fangede du vasen i humør i dag, eller er det bare mig igen... kom her, har et par hellige sager der trænger til pleje. mest snacks. samme ting, når man er Grønpote."
+        "greeting": "hej, rejsende. fangede du vasen i humør i dag, eller er det bare mig igen... kom her, har et par hellige sager der trænger til pleje. mest snacks. samme ting, når man er Grønpote.",
+        "introLines": {
+          "0": "uhh... hi. hi. didn't hear you come up, i was someplace else, someplace green... you got the just-woke-up look, friend. i know it well, i wear it most days...",
+          "1": "name's greenpaw. brother greenpaw, first prophet, self-appointed, which the vase'll tell you means exactly nothin', and he's not wrong, but somebody's gotta tend him...",
+          "2": "this here's the hollow. was a whole tribe once, big doings, so they tell me, and now it's mostly me, the vase, and whatever's breathin' down in that cave... anyway. he's hungry, i'm hungry, same wavelength. c'mere, got a couple sacred matters need tendin'."
+        }
       },
       "verger_zebediah": {
         "name": "Verger Zebediah",
@@ -5713,6 +6062,25 @@ export const da_DK: EnTranslations = {
         "name": "Sexton Faddick",
         "title": "The Wandering Keeper",
         "greeting": "Faddick. Sexton, where there is still a shrine to sexton. I do not stay anywhere; I keep. Wolves have circled the flock at Fallow Acres every night, and a thing that circles long enough learns the shape of what it circles. Best it stays a flock."
+      },
+      "shade": {
+        "name": "Shade",
+        "title": "A Traveler",
+        "greeting": "Oh, it's you. Sit if you like, the water's not going anywhere. Have you eaten today? You should eat.",
+        "introLines": {
+          "0": "You caught me at my chores. Don't mind the can, it's only water. There's always something somewhere that wants a little water.",
+          "1": "Me? Nobody much. Shade. I walk, I lend a hand where hands are short. You look worn through. Sit a moment, if you like."
+        }
+      },
+      "gate_bard": {
+        "name": "Halden the Bard",
+        "title": "Player at the Gate",
+        "greeting": "A copper for a song? No? That's all right, most days it's no. I play for the gate, and the gate's never once reached for its purse."
+      },
+      "goodwife_orla": {
+        "name": "Orla",
+        "title": "Once of Root Hollow",
+        "greeting": "You can sit. Most walk on. The Verger crossed my name off his register a long while back, and a crossed name learns to keep quiet so nobody has to be reminded it's still here."
       }
     },
     "quests": {
@@ -6549,6 +6917,47 @@ export const da_DK: EnTranslations = {
           "0": {
             "label": "Grottebid indsamlet"
           }
+        },
+        "dialog": {
+          "complain": "I was just down there. You watched me climb out of the hole.",
+          "complainReply": "i know it, friend, i know... the vase don't keep a calendar and neither does my stomach. but look at them boots and tell me they don't got one more descent in 'em... no rush. the hole ain't goin' anywhere. that's kinda its whole deal...",
+          "refuse": "No. I'm not going back down there.",
+          "refuseReply": "oh... oh, okay. ...okay. that's... yeah. no, that's fair, friend, that's fair... the vase heard it too, and between you and me i think he respects it. here, take the cutting anyway. you went down once, and that's once more than most..."
+        }
+      },
+      "q_the_wavelength": {
+        "title": "On the Wavelength",
+        "text": "the cutting's yours now, friend, so let's talk about what comes after... two things, and neither one's a trial, more like an interduction. first, cross the vase and meet elder yarrow, she teaches a whole second callin', a different way to play this whole thing, and every soul that comes through here oughta know that door's open... second, come on back and feed me somethin', don't matter which, emberbulb or morsel, i'm always runnin' on empty and the vase always wants for smoke. that part never really ends, to a greenpaw degree.",
+        "completion": "there it is... you felt the room go thick for a second, right? that's him, noticin'. that's the whole trick, friend - you feed me, i smoke up the place, he leans in a little closer to payin' attention. ain't complicated. ain't never gonna stop bein' true, neither. c'mere anytime you're carryin' spare bulbs or morsels, the hearth don't keep a calendar... and hey. welcome to the hollow. i realize i never actually said that part.",
+        "objectives": {
+          "0": {
+            "label": "Elder Yarrow met"
+          },
+          "1": {
+            "label": "Fed at the hearth"
+          }
+        },
+        "dialog": {
+          "complain": "Another errand? I just climbed out of that hole.",
+          "complainReply": "no, no, hear me out, this ain't cave work... this one's easy, this one's just walkin' and one good feed. lightest thing i ever asked of you, i promise, on the wavelength and everything.",
+          "refuse": "I'll find my own training, thanks.",
+          "refuseReply": "...fair 'nough. can't make a soul learn somethin' 'fore they're ready. door's open when it ain't 'not yet' no more... here, take this anyway, least i can do for you showin' up at all."
+        }
+      },
+      "q_keep_him_lit": {
+        "title": "Keep Him Lit",
+        "text": "three times, friend, that's the number... not sacred, just enough to turn a favor into a habit, and habits are the only religion i actually trust... c'mon back and feed the hearth three separate times, don't matter the order, don't matter which of the two, emberbulb or morsel, and i'll believe you're really here to stay, not just passin' through on your way to somethin' bigger...",
+        "completion": "three for three... you're not just visitin' anymore, friend, you're keepin' somethin' alive, and that's the whole ballgame if you ask me, which nobody did, but i'm sayin' it anyway... here. hold onto this, it don't do nothin', it just remembers, same as the rest of us down here...",
+        "objectives": {
+          "0": {
+            "label": "Hearth fed"
+          }
+        },
+        "dialog": {
+          "complain": "I already fed you once. Isn't that enough?",
+          "complainReply": "once is a favor, friend, three's a habit, and i been burned by favors before... this ain't about the hearth needin' it, the hearth's fine, i keep it fine, it's about you comin' back on your own two feet 'cause you wanted to, not 'cause some quest marker told you to... three times. no rush on the countin'.",
+          "refuse": "I'm not doing this three separate times. Once was enough.",
+          "refuseReply": "...yeah. yeah, okay, i hear you, friend, that's a fair enough line to draw... tell you what, here, take it anyway, ain't earned in the strictest sense but neither's most of what i hand out, and the wavelength don't really keep score the way i pretend it does..."
         }
       },
       "q_root_hollow_boars": {
@@ -6564,7 +6973,7 @@ export const da_DK: EnTranslations = {
       "q_root_hollow_boars_ii": {
         "title": "Root Hollow's Reckoning",
         "text": "I will admit what the office discourages admitting: five was optimistic. The lower dens keep pushing up more. Eight further, and I can close the season without amending the record a third time. The record resents amendment. So do I.",
-        "completion": "Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me.",
+        "completion": "Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me. The register itself is older than that arrangement, bound in a hand I have never met, keeping a count I choose not to add. Someone was thorough here, once. I only try to keep pace.",
         "objectives": {
           "0": {
             "label": "Wild Boar slain"
@@ -6588,6 +6997,26 @@ export const da_DK: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Forest Wolf slain"
+          }
+        }
+      },
+      "q_have_you_eaten": {
+        "title": "Have You Eaten?",
+        "text": "There's a bard at the gate who plays for coppers and eats when the coppers come, which isn't often. I've got a bowl warm and one to spare. Carry it down to him, would you? And don't tell him it was pity. Tell him it was extra.",
+        "completion": "You're back. Did he eat? Good. That's good. And did you? ... You didn't, I can see it. Sit, then. You don't have to be great to be something good. Greatness isn't kindness. Eat.",
+        "objectives": {
+          "0": {
+            "label": "Warm meal carried to the bard"
+          }
+        }
+      },
+      "q_someone_your_own_size": {
+        "title": "Someone Your Own Size",
+        "text": "There's a woman near Root Hollow the world has been unkind to. Her name was struck from the register, and people treat a struck name like it can't hear. Go and sit with her a while. You don't have to fix anything. Just be someone her own size.",
+        "completion": "You stayed. She won't say it mattered, but it did, I promise you it did. Here, this is for you. A sprig off a willow I'm fond of. It does nothing at all. It only remembers that you were kind when nothing made you.",
+        "objectives": {
+          "0": {
+            "label": "Sat a while with Orla"
           }
         }
       }
@@ -6764,6 +7193,10 @@ export const da_DK: EnTranslations = {
       }
     },
     "itemSets": {
+      "boundstone_vanguard": {
+        "name": "Boundstone Vanguard",
+        "bonus3": "Increases attack and casting speed by 15%."
+      },
       "crownforged": {
         "name": "Kronesmedet kampudstyr",
         "bonus2": "Øger angrebskraft med 40.",
@@ -6773,6 +7206,10 @@ export const da_DK: EnTranslations = {
         "name": "Dødsherrens kampudstyr",
         "bonus2": "Øger angrebskraft med 40.",
         "bonus3": "Øger styrke med 15 og udholdenhed med 15."
+      },
+      "greyjaw_stalker": {
+        "name": "Greyjaw Stalker's Kit",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "necromancers": {
         "name": "Nekromantikerens klæder",
@@ -6794,10 +7231,32 @@ export const da_DK: EnTranslations = {
         "bonus2": "Reducerer kastetilbageslag fra skade med 50%.",
         "bonus3": "Skade forsinker ikke dine besværgelser."
       },
+      "vale_arcanist": {
+        "name": "Vale Arcanist's Regalia",
+        "bonus3": "Increases attack and casting speed by 15%."
+      },
       "wyrmshadow": {
         "name": "Wyrmskygge-udstyr",
         "bonus2": "Øger angrebskraft med 40.",
         "bonus3": "Øger smidighed med 15 og kritisk chance med 2%."
+      }
+    },
+    "readables": {
+      "torn_ledger_page": {
+        "title": "A Torn Ledger",
+        "pages": {
+          "0": "Root Hollow, entered to rest. Fallow Acres, entered to rest. The lake at Mossbank, which rests whether we enter it or not. Signed and dated, as the register wants.",
+          "1": "Tally of the season so far: three seedlings up through the road stones, which is not on any calendar of mine. I have stopped scratching them out. They come back faster than the ink dries, and the ink was not cheap.",
+          "2": "A note to whoever keeps this after me. Count the boars, count the wolves, count the days. Do not count the green. It counts back, and it does not stop where you do."
+        }
+      },
+      "keepers_marginalia": {
+        "title": "A Keeper's Marginalia",
+        "pages": {
+          "0": "Left in the margin of a hymnbook with the hymns worn out of it. The hand is quick, the way a hand is quick when it writes while walking.",
+          "1": "The wolves circle Fallow Acres from the tree line, always the same ring, always sunwise. A thing that circles long enough learns the shape of what it circles. So do I. So, I think, does the ground.",
+          "2": "If you are reading this you have stopped walking, which is the one thing I never learned to do. Rest a moment. The Reaches will still be here. That is rather the whole trouble with it."
+        }
       }
     }
   },

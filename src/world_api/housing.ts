@@ -6,8 +6,8 @@
 // origin, or null when the viewer is not standing inside a hub instance (the
 // renderer draws nothing then). Claiming/placing/removing decor is a direct
 // interact-key command (PHAA-405: walk up to a plot signpost, it glows, press
-// interact), not a typed /house chat command; the /house chat form still
-// works underneath (src/sim/housing.ts handleChat) as a plain-text fallback.
+// interact); the /house chat command was removed (PHAA-482), this is now the
+// only path.
 // ---------------------------------------------------------------------------
 
 export interface HouseObjectView {

@@ -8,13 +8,13 @@
     "updateDuels countdown -> active + duelStart",
     "endDuel on a PvP finishing blow (winner/loser + this.duels cleared)"
   ],
-  "draws": 280,
-  "drawDigest": "83160cb3",
+  "draws": 288,
+  "drawDigest": "9bb2a63d",
   "frames": [
     {
       "tick": 0,
       "time": 0,
-      "nextId": 399,
+      "nextId": 402,
       "state": "5bc471b0",
       "events": "741638a5",
       "rng": {
@@ -28,9 +28,9 @@
     {
       "tick": 20,
       "time": 1,
-      "nextId": 401,
-      "state": "65677f02",
-      "events": "38939aac",
+      "nextId": 404,
+      "state": "6bda8aa0",
+      "events": "d565cc79",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -39,9 +39,9 @@
     {
       "tick": 40,
       "time": 2,
-      "nextId": 401,
-      "state": "51187156",
-      "events": "6b5c3740",
+      "nextId": 404,
+      "state": "76de6d38",
+      "events": "f5fe7c92",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -50,23 +50,23 @@
     {
       "tick": 60,
       "time": 3,
-      "nextId": 401,
-      "state": "594f6b4a",
-      "events": "99a95b6e",
+      "nextId": 404,
+      "state": "0765d23c",
+      "events": "d191ff6c",
       "rng": {
-        "draws": 77,
-        "digest": "5c0211df"
+        "draws": 78,
+        "digest": "ae0a3079"
       }
     },
     {
       "tick": 61,
       "time": 3.05,
-      "nextId": 401,
-      "state": "4a9acae4",
-      "events": "70683791",
+      "nextId": 404,
+      "state": "569e4766",
+      "events": "ff98fcb9",
       "rng": {
-        "draws": 85,
-        "digest": "f47e4292"
+        "draws": 84,
+        "digest": "b8d0f260"
       },
       "label": "duel-active",
       "players": [
@@ -75,16 +75,26 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 399,
+          "dialogState": {},
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -95,16 +105,26 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 400,
+          "dialogState": {},
+          "entityId": 403,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -122,7 +142,7 @@
           "fallStartY": 2.242568,
           "fiveSecondRule": 102.05,
           "hp": 90,
-          "id": 399,
+          "id": 402,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -169,7 +189,7 @@
           "fallStartY": 2.139867,
           "fiveSecondRule": 102.05,
           "hp": 54,
-          "id": 400,
+          "id": 403,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -213,12 +233,12 @@
     {
       "tick": 61,
       "time": 3.05,
-      "nextId": 401,
-      "state": "640890ba",
-      "events": "c93774c2",
+      "nextId": 404,
+      "state": "6619adaa",
+      "events": "0901cf8c",
       "rng": {
-        "draws": 85,
-        "digest": "f47e4292"
+        "draws": 84,
+        "digest": "b8d0f260"
       },
       "label": "duel-ended",
       "players": [
@@ -227,16 +247,26 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 399,
+          "dialogState": {},
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -247,16 +277,26 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 400,
+          "dialogState": {},
+          "entityId": 403,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -274,7 +314,7 @@
           "fallStartY": 2.242568,
           "fiveSecondRule": 102.05,
           "hp": 90,
-          "id": 399,
+          "id": 402,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -321,7 +361,7 @@
           "fallStartY": 2.139867,
           "fiveSecondRule": 102.05,
           "hp": 1,
-          "id": 400,
+          "id": 403,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -365,34 +405,34 @@
     {
       "tick": 80,
       "time": 4,
-      "nextId": 401,
-      "state": "337706ca",
+      "nextId": 404,
+      "state": "ad6aa82e",
       "events": "741638a5",
       "rng": {
-        "draws": 164,
-        "digest": "e764351d"
+        "draws": 160,
+        "digest": "b968eeb0"
       }
     },
     {
       "tick": 100,
       "time": 5,
-      "nextId": 401,
-      "state": "de4c00ee",
+      "nextId": 404,
+      "state": "3bca97a2",
       "events": "741638a5",
       "rng": {
-        "draws": 280,
-        "digest": "83160cb3"
+        "draws": 286,
+        "digest": "cf6af547"
       }
     },
     {
       "tick": 101,
       "time": 5.05,
-      "nextId": 401,
-      "state": "7ed4f778",
+      "nextId": 404,
+      "state": "242e5cc8",
       "events": "741638a5",
       "rng": {
-        "draws": 280,
-        "digest": "83160cb3"
+        "draws": 288,
+        "digest": "9bb2a63d"
       },
       "label": "final",
       "players": [
@@ -401,16 +441,26 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 399,
+          "dialogState": {},
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -421,16 +471,26 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 400,
+          "dialogState": {},
+          "entityId": 403,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -448,7 +508,7 @@
           "fallStartY": 2.242568,
           "fiveSecondRule": 104.05,
           "hp": 90,
-          "id": 399,
+          "id": 402,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -495,7 +555,7 @@
           "fallStartY": 2.139867,
           "fiveSecondRule": 104.05,
           "hp": 7,
-          "id": 400,
+          "id": 403,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",

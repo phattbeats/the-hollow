@@ -37,7 +37,7 @@ function makeReq(opts: { url?: string; body?: unknown } = {}): any {
           },
         });
   req.url = opts.url ?? '/';
-  req.headers = { host: 'worldofclaudecraft.com' };
+  req.headers = { host: 'thehollow.world' };
   req.socket = { remoteAddress: '127.0.0.1' };
   return req;
 }
@@ -84,6 +84,9 @@ function defaultRouter(sql: string) {
     return { rows: linkRow, rowCount: linkRow.length };
   if (s.includes('INSERT INTO discord_links')) return { rows: [], rowCount: 1 };
   if (s.includes('DELETE FROM discord_links WHERE account_id')) return { rows: [], rowCount: 0 };
+  // The race-safe recovery-email backfill: matches only an empty account email.
+  if (s.includes('UPDATE accounts') && s.includes('email_verified_at = CASE'))
+    return { rows: [], rowCount: 1 };
   // accounts table: distinct column lists / clauses disambiguate the helpers.
   if (s.includes('INSERT INTO accounts'))
     return { rows: accountInsertRow, rowCount: accountInsertRow.length };
@@ -411,6 +414,53 @@ describe('GET /api/auth/discord/callback', () => {
     expect(res.body).toContain('"token"');
     expect(res.body).not.toContain('"choose":true');
   });
+
+  it('captures a verified Discord email onto the account and the link on return', async () => {
+    stateRows = [
+      { state: 's', code_verifier: 'v', mode: 'login', account_id: null, redirect_to: null },
+    ];
+    ownerRows = [{ account_id: 1 }]; // already linked
+    accountByIdRows = [{ id: 1, username: 'maxp', password_set: true }];
+    mockDiscordFetch({
+      id: '999999999999999999',
+      username: 'maxp',
+      global_name: 'Maxp',
+      avatar: null,
+      email: 'maxp@example.com',
+      verified: true,
+    });
+    const res = makeRes();
+    await handleDiscordCallback(
+      makeReq({ url: '/api/auth/discord/callback?code=abc&state=s' }),
+      res,
+    );
+    const calls = dbMock.query.mock.calls;
+    const backfill = calls.find(
+      (c) => String(c[0]).includes('UPDATE accounts') && String(c[0]).includes('email_verified_at'),
+    );
+    expect(backfill?.[1]).toEqual([1, 'maxp@example.com', true]);
+    const linkEmail = calls.find((c) =>
+      String(c[0]).includes('UPDATE discord_links SET discord_email'),
+    );
+    expect(linkEmail?.[1]).toEqual([1, 'maxp@example.com']);
+  });
+
+  it('does not touch the recovery email when Discord granted no email scope', async () => {
+    stateRows = [
+      { state: 's', code_verifier: 'v', mode: 'login', account_id: null, redirect_to: null },
+    ];
+    ownerRows = [{ account_id: 1 }];
+    accountByIdRows = [{ id: 1, username: 'maxp', password_set: true }];
+    mockDiscordFetch(); // default fixture carries no email field
+    const res = makeRes();
+    await handleDiscordCallback(
+      makeReq({ url: '/api/auth/discord/callback?code=abc&state=s' }),
+      res,
+    );
+    const calls = dbMock.query.mock.calls.map((c) => String(c[0]));
+    expect(calls.some((c) => c.includes('email_verified_at = CASE'))).toBe(false);
+    expect(calls.some((c) => c.includes('UPDATE discord_links SET discord_email'))).toBe(false);
+  });
 });
 
 describe('POST /api/auth/discord/login/new', () => {
@@ -466,6 +516,31 @@ describe('POST /api/auth/discord/login/new', () => {
     const calls = dbMock.query.mock.calls.map((c) => String(c[0]));
     expect(calls.some((c) => c.includes('DELETE FROM discord_pending_logins'))).toBe(false);
     expect(calls.some((c) => c.includes('INSERT INTO accounts'))).toBe(false);
+  });
+
+  it('seeds the freshly provisioned account recovery email from the parked identity', async () => {
+    pendingRows = [
+      {
+        token: 't',
+        discord_user_id: '999999999999999999',
+        discord_username: 'Maxp',
+        discord_avatar: null,
+        discord_email: 'maxp@example.com',
+        discord_email_verified: true,
+        guild_member: false,
+      },
+    ];
+    ownerRows = [];
+    findAccountRows = [];
+    accountInsertRow = [{ id: 5, username: 'Maxp', password_hash: 'h' }];
+    const res = makeRes();
+    await loginNew(makeReq({ body: { linkToken: 't' } }), res);
+    expect(parse(res).status).toBe(200);
+    const calls = dbMock.query.mock.calls;
+    const backfill = calls.find(
+      (c) => String(c[0]).includes('UPDATE accounts') && String(c[0]).includes('email_verified_at'),
+    );
+    expect(backfill?.[1]).toEqual([5, 'maxp@example.com', true]);
   });
 });
 

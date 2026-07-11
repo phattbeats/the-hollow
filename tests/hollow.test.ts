@@ -8,13 +8,14 @@
 // adds the open-world Hollow Reaches around the gate: see the second
 // describe block below.
 import { describe, expect, it } from 'vitest';
+import { resolveMovement, resolvePosition } from '../src/sim/colliders';
 import {
   HOLLOW_GATE_POS,
   HOLLOW_HUB_DOOR_POS,
   VASE_LANDING_POS,
   VASE_POS,
 } from '../src/sim/content/hollow';
-import { HOLLOW_ZONE_ZONE } from '../src/sim/content/hollow_zone';
+import { HOLLOW_ZONE_GATE_POS, HOLLOW_ZONE_ZONE } from '../src/sim/content/hollow_zone';
 import { ZONE1_ZONE } from '../src/sim/content/zone1';
 import {
   ARENA_X,
@@ -35,6 +36,11 @@ import { TEMPLE_LAYOUT } from '../src/sim/dungeon_layout';
 import { Sim } from '../src/sim/sim';
 import { dist2d, type PlayerClass } from '../src/sim/types';
 import { groundHeight, terrainHeight } from '../src/sim/world';
+import {
+  clampToStarterZoneBounds,
+  isInsideStarterZone,
+  STARTER_ZONE_BOUNDS,
+} from '../src/sim/zone_bounds';
 
 function teleport(sim: Sim, pid: number, x: number, z: number) {
   const e = sim.entities.get(pid)!;
@@ -163,6 +169,23 @@ describe('The Hollow hub', () => {
     ).toBeLessThan(1);
   });
 
+  it('the vase is a physical obstacle: a mover cannot walk through it (board bug on PHAA-405)', () => {
+    const origin = instanceOrigin(6, 0);
+    const resolved = resolvePosition(42, origin.x + VASE_POS.x, origin.z + VASE_POS.z, 0.5);
+    const dx = resolved.x - (origin.x + VASE_POS.x);
+    const dz = resolved.z - (origin.z + VASE_POS.z);
+    expect(Math.hypot(dx, dz)).toBeGreaterThan(0.5);
+  });
+
+  it('the moon-sanctum dais is a physical obstacle: a mover cannot walk through the raised platform (board bug on PHAA-405)', () => {
+    const origin = instanceOrigin(6, 0);
+    const d = TEMPLE_LAYOUT.dais;
+    const resolved = resolvePosition(42, origin.x + d.x, origin.z + d.z, 0.5);
+    const dx = resolved.x - (origin.x + d.x);
+    const dz = resolved.z - (origin.z + d.z);
+    expect(Math.hypot(dx, dz)).toBeGreaterThan(0.5);
+  });
+
   it('the Under-Shrine populates its descent and the Witness-Root waits in the far room', () => {
     const sim = new Sim({ seed: 42, playerClass: 'warrior', noPlayer: true });
     const a = sim.addPlayer('warrior', 'Aleph');
@@ -224,10 +247,255 @@ describe('The Hollow hub', () => {
     expect(sim.countItem('first_cutting')).toBe(1);
   });
 
+  // PHAA-471: his last request can be refused outright. The refusal completes the
+  // quest as normal (full rewards, cutting included) without the second descent.
+  it("refusing Greenpaw's last request completes q_what_fills with its rewards", () => {
+    const cls: PlayerClass = 'druid';
+    const sim = new Sim({ seed: 7, playerClass: cls, playerName: 'Q', autoEquip: false });
+    const meta = (sim as any).primary;
+    const pid = meta.entityId as number;
+    teleport(sim, pid, HOLLOW_HUB_DOOR_POS.x, HOLLOW_HUB_DOOR_POS.z);
+    sim.enterDungeon('the_hollow', pid);
+    const greenpaw = findEntity(
+      sim,
+      (e) => e.kind === 'npc' && e.templateId === 'brother_greenpaw',
+    )!;
+    sim.player.pos = { ...greenpaw.pos };
+
+    // Not refusable before the prerequisite is done (state is unavailable)
+    sim.refuseQuest('q_what_fills');
+    expect(meta.questsDone.has('q_what_fills')).toBe(false);
+
+    // A quest without offerDialog can never be refused
+    expect(QUESTS.q_what_burns.offerDialog).toBeUndefined();
+    sim.refuseQuest('q_what_burns');
+    expect(meta.questsDone.has('q_what_burns')).toBe(false);
+
+    sim.acceptQuest('q_what_burns');
+    sim.addItem('emberbulb', 5);
+    sim.tick();
+    sim.turnInQuest('q_what_burns');
+    expect(meta.questsDone.has('q_what_burns')).toBe(true);
+    sim.drainEvents();
+
+    // Out of range: the refusal is rejected like any other quest verb
+    const atGreenpaw = { ...sim.player.pos };
+    sim.player.pos = { x: atGreenpaw.x + 50, y: atGreenpaw.y, z: atGreenpaw.z };
+    sim.refuseQuest('q_what_fills');
+    expect(meta.questsDone.has('q_what_fills')).toBe(false);
+    sim.player.pos = atGreenpaw;
+
+    const copperBefore = meta.copper as number;
+    const xpBefore = meta.xp as number;
+    sim.refuseQuest('q_what_fills');
+    expect(meta.questsDone.has('q_what_fills')).toBe(true);
+    expect(meta.questLog.has('q_what_fills')).toBe(false);
+    expect(sim.questState('q_what_fills')).toBe('done');
+    expect(sim.countItem('first_cutting')).toBe(1);
+    expect(meta.copper).toBe(copperBefore + QUESTS.q_what_fills.copperReward);
+    expect(meta.xp).toBe(xpBefore + QUESTS.q_what_fills.xpReward);
+    const events = sim.drainEvents();
+    expect(events.some((e: any) => e.type === 'questDone' && e.questId === 'q_what_fills')).toBe(
+      true,
+    );
+
+    // Refusing again is a no-op error path: nothing double-grants
+    sim.refuseQuest('q_what_fills');
+    expect(sim.countItem('first_cutting')).toBe(1);
+  });
+
+  it('q_what_fills carries the full branching offer dialog', () => {
+    const dialog = QUESTS.q_what_fills.offerDialog!;
+    expect(dialog).toBeTruthy();
+    for (const part of ['complain', 'complainReply', 'refuse', 'refuseReply'] as const) {
+      expect(dialog[part].length).toBeGreaterThan(0);
+    }
+  });
+
+  // PHAA-484: the chain's third beat teaches the profession trainer (an
+  // 'interact' objective on elder_yarrow) and the feed/smoke hearth loop
+  // itself (a 'feed' objective, credited by greenpaw_hearth.ts's feed()).
+  it('q_the_wavelength unlocks behind q_what_fills and teaches the trainer + hearth loop', () => {
+    const cls: PlayerClass = 'druid';
+    const sim = new Sim({ seed: 7, playerClass: cls, playerName: 'Q', autoEquip: false });
+    const meta = (sim as any).primary;
+    const pid = meta.entityId as number;
+    teleport(sim, pid, HOLLOW_HUB_DOOR_POS.x, HOLLOW_HUB_DOOR_POS.z);
+    sim.enterDungeon('the_hollow', pid);
+    const greenpaw = findEntity(
+      sim,
+      (e) => e.kind === 'npc' && e.templateId === 'brother_greenpaw',
+    )!;
+    const elderYarrow = findEntity(
+      sim,
+      (e) => e.kind === 'npc' && e.templateId === 'elder_yarrow',
+    )!;
+    sim.player.pos = { ...greenpaw.pos };
+
+    // Not available before q_what_fills is done.
+    expect(sim.questState('q_the_wavelength')).toBe('unavailable');
+    sim.acceptQuest('q_what_burns');
+    sim.addItem('emberbulb', 5);
+    sim.tick();
+    sim.turnInQuest('q_what_burns');
+    sim.acceptQuest('q_what_fills');
+    sim.addItem('cave_morsel', 4);
+    sim.tick();
+    sim.turnInQuest('q_what_fills');
+    sim.drainEvents();
+
+    expect(sim.questState('q_the_wavelength')).toBe('available');
+    sim.acceptQuest('q_the_wavelength');
+    expect(meta.questLog.get('q_the_wavelength')?.state).toBe('active');
+    expect(meta.questLog.get('q_the_wavelength')?.counts).toEqual([0, 0]);
+
+    // Objective 0: talk to Elder Yarrow (any distance; talkToNpc trusts the
+    // client's target selection, same as the aldric/warden precedent tests).
+    sim.talkToNpc(elderYarrow.id, pid);
+    expect(meta.questLog.get('q_the_wavelength')?.counts).toEqual([1, 0]);
+    // Talking again does not over-credit past the objective's count.
+    sim.talkToNpc(elderYarrow.id, pid);
+    expect(meta.questLog.get('q_the_wavelength')?.counts).toEqual([1, 0]);
+
+    // Objective 1: feed Greenpaw at the hearth.
+    sim.player.pos = { ...greenpaw.pos };
+    sim.addItem('emberbulb', 1);
+    sim.feedGreenpaw(pid);
+    expect(meta.questLog.get('q_the_wavelength')?.counts).toEqual([1, 1]);
+    expect(meta.questLog.get('q_the_wavelength')?.state).toBe('ready');
+
+    const reward = questRewardItemId(QUESTS.q_the_wavelength, cls);
+    expect(reward).toBe('greenpaw_bead');
+    sim.turnInQuest('q_the_wavelength');
+    expect(meta.questsDone.has('q_the_wavelength')).toBe(true);
+    expect(sim.countItem('greenpaw_bead')).toBe(1);
+  });
+
+  it('q_the_wavelength carries the full branching offer dialog and can be refused for full rewards', () => {
+    const dialog = QUESTS.q_the_wavelength.offerDialog!;
+    expect(dialog).toBeTruthy();
+    for (const part of ['complain', 'complainReply', 'refuse', 'refuseReply'] as const) {
+      expect(dialog[part].length).toBeGreaterThan(0);
+    }
+
+    const cls: PlayerClass = 'druid';
+    const sim = new Sim({ seed: 7, playerClass: cls, playerName: 'Q', autoEquip: false });
+    const meta = (sim as any).primary;
+    const pid = meta.entityId as number;
+    teleport(sim, pid, HOLLOW_HUB_DOOR_POS.x, HOLLOW_HUB_DOOR_POS.z);
+    sim.enterDungeon('the_hollow', pid);
+    const greenpaw = findEntity(
+      sim,
+      (e) => e.kind === 'npc' && e.templateId === 'brother_greenpaw',
+    )!;
+    sim.player.pos = { ...greenpaw.pos };
+    sim.acceptQuest('q_what_burns');
+    sim.addItem('emberbulb', 5);
+    sim.tick();
+    sim.turnInQuest('q_what_burns');
+    sim.acceptQuest('q_what_fills');
+    sim.addItem('cave_morsel', 4);
+    sim.tick();
+    sim.turnInQuest('q_what_fills');
+    sim.drainEvents();
+
+    expect(sim.questState('q_the_wavelength')).toBe('available');
+    const copperBefore = meta.copper as number;
+    const xpBefore = meta.xp as number;
+    sim.refuseQuest('q_the_wavelength');
+    expect(meta.questsDone.has('q_the_wavelength')).toBe(true);
+    expect(sim.countItem('greenpaw_bead')).toBe(1);
+    expect(meta.copper).toBe(copperBefore + QUESTS.q_the_wavelength.copperReward);
+    expect(meta.xp).toBe(xpBefore + QUESTS.q_the_wavelength.xpReward);
+  });
+
+  // PHAA-484 beat 4: rebuilds the closed PR #134 habit quest on top of the
+  // merged 'feed' objective type: same feed() credit hook as q_the_wavelength,
+  // just a count of 3 instead of 1, plus its own offer dialog and keepsake.
+  it('q_keep_him_lit unlocks behind q_the_wavelength and needs three separate feeds', () => {
+    const cls: PlayerClass = 'druid';
+    const sim = new Sim({ seed: 7, playerClass: cls, playerName: 'Q', autoEquip: false });
+    const meta = (sim as any).primary;
+    const pid = meta.entityId as number;
+    teleport(sim, pid, HOLLOW_HUB_DOOR_POS.x, HOLLOW_HUB_DOOR_POS.z);
+    sim.enterDungeon('the_hollow', pid);
+    const greenpaw = findEntity(
+      sim,
+      (e) => e.kind === 'npc' && e.templateId === 'brother_greenpaw',
+    )!;
+    const elderYarrow = findEntity(
+      sim,
+      (e) => e.kind === 'npc' && e.templateId === 'elder_yarrow',
+    )!;
+    sim.player.pos = { ...greenpaw.pos };
+
+    expect(sim.questState('q_keep_him_lit')).toBe('unavailable');
+    sim.acceptQuest('q_what_burns');
+    sim.addItem('emberbulb', 5);
+    sim.tick();
+    sim.turnInQuest('q_what_burns');
+    sim.acceptQuest('q_what_fills');
+    sim.addItem('cave_morsel', 4);
+    sim.tick();
+    sim.turnInQuest('q_what_fills');
+    sim.acceptQuest('q_the_wavelength');
+    sim.talkToNpc(elderYarrow.id, pid);
+    sim.addItem('emberbulb', 1);
+    sim.feedGreenpaw(pid);
+    sim.turnInQuest('q_the_wavelength');
+    sim.drainEvents();
+
+    expect(sim.questState('q_keep_him_lit')).toBe('available');
+    sim.acceptQuest('q_keep_him_lit');
+    expect(meta.questLog.get('q_keep_him_lit')?.counts).toEqual([0]);
+
+    sim.addItem('emberbulb', 1);
+    sim.feedGreenpaw(pid);
+    expect(meta.questLog.get('q_keep_him_lit')?.counts).toEqual([1]);
+    expect(meta.questLog.get('q_keep_him_lit')?.state).toBe('active');
+
+    sim.addItem('cave_morsel', 1);
+    sim.feedGreenpaw(pid);
+    expect(meta.questLog.get('q_keep_him_lit')?.counts).toEqual([2]);
+
+    sim.addItem('emberbulb', 1);
+    sim.feedGreenpaw(pid);
+    expect(meta.questLog.get('q_keep_him_lit')?.counts).toEqual([3]);
+    expect(meta.questLog.get('q_keep_him_lit')?.state).toBe('ready');
+
+    // A fourth feed does not over-credit past the objective's count.
+    sim.addItem('emberbulb', 1);
+    sim.feedGreenpaw(pid);
+    expect(meta.questLog.get('q_keep_him_lit')?.counts).toEqual([3]);
+
+    const dialog = QUESTS.q_keep_him_lit.offerDialog!;
+    expect(dialog).toBeTruthy();
+    for (const part of ['complain', 'complainReply', 'refuse', 'refuseReply'] as const) {
+      expect(dialog[part].length).toBeGreaterThan(0);
+    }
+
+    const reward = questRewardItemId(QUESTS.q_keep_him_lit, cls);
+    expect(reward).toBe('keeper_coal');
+    sim.turnInQuest('q_keep_him_lit');
+    expect(meta.questsDone.has('q_keep_him_lit')).toBe(true);
+    expect(sim.countItem('keeper_coal')).toBe(1);
+  });
+
   it('the quest loot and rewards resolve to real items on the right mobs', () => {
     expect(QUESTS.q_what_fills.requiresQuest).toBe('q_what_burns');
-    expect(NPCS.brother_greenpaw.questIds).toEqual(['q_what_burns', 'q_what_fills']);
-    for (const id of ['emberbulb', 'cave_morsel', 'first_cutting']) {
+    expect(NPCS.brother_greenpaw.questIds).toEqual([
+      'q_what_burns',
+      'q_what_fills',
+      'q_the_wavelength',
+      'q_keep_him_lit',
+    ]);
+    for (const id of [
+      'emberbulb',
+      'cave_morsel',
+      'first_cutting',
+      'greenpaw_bead',
+      'keeper_coal',
+    ]) {
       expect(ITEMS[id], `item ${id}`).toBeTruthy();
     }
     const bulb = MOBS.palefeeder.loot.find((l) => l.itemId === 'emberbulb');
@@ -416,5 +684,131 @@ describe('The Hollow Reaches (PHAA-420)', () => {
     const openZ = ZONE1_ZONE.zMax;
     expect(terrainHeight(0, openZ, seed)).toBeLessThan(5);
     expect(terrainHeight(100, openZ, seed)).toBeGreaterThan(15);
+  });
+});
+
+describe('Starter zone bounds (PHAA-472)', () => {
+  // Bounds clamp the Hollow Reaches at the TOP of each visible rim, not at
+  // the ramp base. The east/west world rim ramps smoothstep(|x| 150..180)
+  // to a 40-unit cliff; the climb-slope gate blocks grounded walking past
+  // ~x=155, but airborne jumps bypass the gate, so the clamp sits at the
+  // world edge (180) and catches jumpers at the rim top (board follow-up:
+  // "make sure its not too restrictive"). Board screenshot showed BRAPADIN
+  // on the slope at x=179; the relaxed clamp now stops them at x=179.4
+  // instead of teleporting them back to flat ground at x=149.4. The south
+  // rim starts at z=-370; bounds sit a touch further south (-388) so the
+  // player can still reach the southernmost boar camp (center -374,
+  // radius 12, edge -386). The north bound is at the sealed ridge
+  // (zMax = -180); the Hollow Gate portal at (0, -290) is the only
+  // forward route into the vase hub.
+  it('declares the Hollow Reaches bounds at the world edge', () => {
+    // x bounds sit at the world edge (top of the smoothstep rim ramp)
+    expect(STARTER_ZONE_BOUNDS.xMin).toBe(-180);
+    expect(STARTER_ZONE_BOUNDS.xMax).toBe(180);
+    // north bound is the sealed ridge at zMax
+    expect(STARTER_ZONE_BOUNDS.zMax).toBe(HOLLOW_ZONE_ZONE.zMax);
+    expect(STARTER_ZONE_BOUNDS.zMax).toBe(-180);
+    // south bound sits a hair past the southernmost camp content
+    expect(STARTER_ZONE_BOUNDS.zMin).toBe(-388);
+    // all Hollow Reaches content sits inside |x| < 100 (hub at x=0, NPCs at
+    // x in {34, -34}, camps at x in [-64, 56], homestead at xMax=-25)
+    expect(STARTER_ZONE_BOUNDS.xMax).toBeGreaterThan(100);
+  });
+
+  it('isInsideStarterZone fires inside the strip and in the buffer ring around it', () => {
+    // inside the strip
+    expect(isInsideStarterZone(HOLLOW_ZONE_ZONE.zMin)).toBe(true);
+    expect(isInsideStarterZone(-300)).toBe(true);
+    // at the bounds themselves (inclusive)
+    expect(isInsideStarterZone(STARTER_ZONE_BOUNDS.zMax)).toBe(true);
+    expect(isInsideStarterZone(STARTER_ZONE_BOUNDS.zMin)).toBe(true);
+    // inside the 10-unit buffer ring catches jump escapes
+    expect(isInsideStarterZone(HOLLOW_ZONE_ZONE.zMax + 5)).toBe(true); // 5 into zone 1
+    expect(isInsideStarterZone(STARTER_ZONE_BOUNDS.zMin - 5)).toBe(true); // 5 into south rim
+    // outside the buffer ring, the gate is off
+    expect(isInsideStarterZone(0)).toBe(false); // zone 2-ish (far north of buffer)
+    expect(isInsideStarterZone(HOLLOW_ZONE_ZONE.zMax + 20)).toBe(false); // past the 10-unit north buffer
+    // the south gate uses the zone zMin (-400) minus the 10-unit buffer; a
+    // point at -415 (past the buffer ring, in the empty heightfield south
+    // of the world rim) is no longer gated and the gate is off
+    expect(isInsideStarterZone(HOLLOW_ZONE_ZONE.zMin - 15)).toBe(false);
+  });
+
+  it('clampToStarterZoneBounds pads the wall by the body radius', () => {
+    // far past xMax -> pulled in to xMax - r, vertically still inside
+    const out = clampToStarterZoneBounds(500, -300, 0.5);
+    expect(out.x).toBe(STARTER_ZONE_BOUNDS.xMax - 0.5);
+    expect(out.z).toBe(-300);
+    // far past xMin -> pulled in to xMin + r
+    const lo = clampToStarterZoneBounds(-500, -300, 0.5);
+    expect(lo.x).toBe(STARTER_ZONE_BOUNDS.xMin + 0.5);
+    expect(lo.z).toBe(-300);
+    // far past the south wall (target z below zMin) -> pulled to zMin + r
+    const so = clampToStarterZoneBounds(0, -1000, 0.5);
+    expect(so.z).toBe(STARTER_ZONE_BOUNDS.zMin + 0.5);
+    // already inside, untouched
+    const mid = clampToStarterZoneBounds(20, -300, 0.5);
+    expect(mid).toEqual({ x: 20, z: -300 });
+    // inside the buffer ring but past zMax still gets z clamped south
+    const north = clampToStarterZoneBounds(0, -175, 0.5);
+    expect(north.z).toBe(STARTER_ZONE_BOUNDS.zMax - 0.5);
+  });
+
+  it('resolvePosition pulls the board-reported escape (x=179, z=-224) back inside the strip (PHAA-472)', () => {
+    const seed = 42;
+    // the screenshot case: the player was standing at (179, -224), on the
+    // eastern world-rim slope. With xMax pushed to 180 (the world edge,
+    // board follow-up "make sure its not too restrictive"), resolvePosition
+    // now pulls that point back to xMax - r = 179.4, holding the player at
+    // the rim top rather than teleporting them back to the rim base.
+    const still = resolvePosition(seed, 179, -224, 0.6);
+    expect(still.x).toBeLessThanOrEqual(STARTER_ZONE_BOUNDS.xMax - 0.6 + 1e-6);
+    expect(still.x).toBeGreaterThanOrEqual(STARTER_ZONE_BOUNDS.xMin + 0.6 - 1e-6);
+    // a target further east past the world edge also clamps inside
+    const target = resolvePosition(seed, 500, -224, 0.6);
+    expect(target.x).toBeLessThanOrEqual(STARTER_ZONE_BOUNDS.xMax - 0.6 + 1e-6);
+    // and the inverse on the west rim
+    const west = resolvePosition(seed, -179, -340, 0.6);
+    expect(west.x).toBeGreaterThanOrEqual(STARTER_ZONE_BOUNDS.xMin + 0.6 - 1e-6);
+  });
+
+  it('resolveMovement lets a walker reach the rim top before the clamp catches them (PHAA-472 relaxation)', () => {
+    const seed = 42;
+    // board follow-up: "make sure its not too restrictive". With the bounds
+    // pushed to the world edge (180), a walker can now travel most of the
+    // way up the smoothstep ramp before being clamped; the climb-slope
+    // gate still blocks grounded walking past ~x=155 but jumpers land on
+    // the slope and walk to the rim top, where the clamp holds them at
+    // xMax - r = 179.4 instead of teleporting them back to flat ground.
+    const start = { x: 0, z: -290 };
+    const dest = { x: 500, z: -290 };
+    const final = resolveMovement(seed, start.x, start.z, dest.x, dest.z, 0.6);
+    expect(final.x).toBeLessThanOrEqual(STARTER_ZONE_BOUNDS.xMax - 0.6 + 1e-6);
+    expect(final.x).toBeGreaterThan(start.x); // we did walk some
+    // the relaxed clamp lets the player reach the rim top, not the base
+    expect(final.x).toBeGreaterThan(150); // walked past the old 150 base
+    expect(final.z).toBeGreaterThanOrEqual(STARTER_ZONE_BOUNDS.zMin + 0.6 - 1e-6);
+    expect(final.z).toBeLessThanOrEqual(STARTER_ZONE_BOUNDS.zMax - 0.6 + 1e-6);
+  });
+
+  it('content stays reachable: every Hollow Reaches camp, NPC, and POI sits inside the bounds', () => {
+    // bounds must not wall off any placed content; the strip relaxes past
+    // the southernmost camp edge so the boar spawn stays reachable.
+    const points = [
+      HOLLOW_ZONE_GATE_POS, // the gate/hub (overworld)
+      { x: -46, z: -246 }, // Fallow Acres (Faddick)
+      { x: 40, z: -350 }, // Root Hollow (Faddick)
+      { x: 56, z: -374 }, // southernmost boar camp center
+      { x: 42, z: -235 }, // Mossbank lake
+      { x: -95, z: -244 }, // homestead area xMin edge (z mid)
+    ];
+    for (const p of points) {
+      const c = clampToStarterZoneBounds(p.x, p.z, 0.6);
+      expect(c.x, `content at (${p.x}, ${p.z}) x clamped`).toBeCloseTo(p.x, 1);
+      expect(c.z, `content at (${p.x}, ${p.z}) z clamped`).toBeCloseTo(p.z, 1);
+    }
+    // the southernmost camp edge (z = -386) also stays reachable
+    const edge = clampToStarterZoneBounds(56, -386, 0.6);
+    expect(edge.z).toBeCloseTo(-386, 1);
   });
 });

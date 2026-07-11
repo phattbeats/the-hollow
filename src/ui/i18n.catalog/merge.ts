@@ -492,16 +492,23 @@ const mergeStringsEn = {
   },
   itemUi: {
     ...itemNames.en.itemUi,
-    kind: { ...itemNames.en.itemUi.kind, tool: 'Tool', potion: 'Potion', elixir: 'Elixir' },
+    kind: {
+      ...itemNames.en.itemUi.kind,
+      tool: 'Tool',
+      potion: 'Potion',
+      elixir: 'Elixir',
+      bag: 'Bag',
+    },
     tooltip: {
       ...itemNames.en.itemUi.tooltip,
       useFishing: 'Use: Fish in nearby waters.',
       useHealingPotion:
-        'Use: Instantly restores {amount} health. Usable in combat. 1 min cooldown.',
-      useManaPotion: 'Use: Instantly restores {amount} mana. Usable in combat. 1 min cooldown.',
+        'Use: Instantly restores {amount} health. Usable in combat. 2 min cooldown.',
+      useManaPotion: 'Use: Instantly restores {amount} mana. Usable in combat. 2 min cooldown.',
       clickUseInstant: 'Click to use instantly in combat',
       clickUse: 'Click to use',
       clickBuyback: 'Click to buy back',
+      bagSlots: '{slots} Slot Bag',
     },
     vendor: {
       ...itemNames.en.itemUi.vendor,
@@ -660,6 +667,7 @@ export const mergeStrings = {
       ...itemNames.es.itemUi,
       kind: {
         ...itemNames.es.itemUi.kind,
+        bag: 'Bolsa',
         tool: 'Herramienta',
         potion: 'Poción',
         elixir: 'Elixir',
@@ -668,12 +676,13 @@ export const mergeStrings = {
         ...itemNames.es.itemUi.tooltip,
         useFishing: 'Uso: pesca en aguas cercanas.',
         useHealingPotion:
-          'Uso: restaura al instante {amount} de salud. Se puede usar en combate. Reutilización de 1 min.',
+          'Uso: restaura al instante {amount} de salud. Se puede usar en combate. Reutilización de 2 min.',
         useManaPotion:
-          'Uso: restaura al instante {amount} de maná. Se puede usar en combate. Reutilización de 1 min.',
+          'Uso: restaura al instante {amount} de maná. Se puede usar en combate. Reutilización de 2 min.',
         clickUseInstant: 'Haz clic para usar al instante en combate',
         clickUse: 'Haz clic para usar',
         clickBuyback: 'Haz clic para recomprar',
+        bagSlots: 'Bolsa de {slots} espacios',
       },
       vendor: {
         ...itemNames.es.itemUi.vendor,
@@ -820,17 +829,24 @@ export const mergeStrings = {
     },
     itemUi: {
       ...itemNames.fr_FR.itemUi,
-      kind: { ...itemNames.fr_FR.itemUi.kind, tool: 'Outil', potion: 'Potion', elixir: 'Élixir' },
+      kind: {
+        ...itemNames.fr_FR.itemUi.kind,
+        tool: 'Outil',
+        potion: 'Potion',
+        elixir: 'Élixir',
+        bag: 'Sac',
+      },
       tooltip: {
         ...itemNames.fr_FR.itemUi.tooltip,
         useFishing: 'Utiliser : pêcher dans les eaux proches.',
         useHealingPotion:
-          'Utiliser : rend instantanément {amount} points de vie. Utilisable en combat. Recharge de 1 min.',
+          'Utiliser : rend instantanément {amount} points de vie. Utilisable en combat. Recharge de 2 min.',
         useManaPotion:
-          'Utiliser : rend instantanément {amount} mana. Utilisable en combat. Recharge de 1 min.',
+          'Utiliser : rend instantanément {amount} mana. Utilisable en combat. Recharge de 2 min.',
         clickUseInstant: 'Cliquer pour utiliser instantanément en combat',
         clickUse: 'Cliquer pour utiliser',
         clickBuyback: 'Cliquer pour racheter',
+        bagSlots: 'Sac de {slots} emplacements',
       },
       vendor: {
         ...itemNames.fr_FR.itemUi.vendor,
@@ -980,6 +996,7 @@ export const mergeStrings = {
       ...itemNames.it_IT.itemUi,
       kind: {
         ...itemNames.it_IT.itemUi.kind,
+        bag: 'Borsa',
         tool: 'Strumento',
         potion: 'Pozione',
         elixir: 'Elisir',
@@ -988,12 +1005,13 @@ export const mergeStrings = {
         ...itemNames.it_IT.itemUi.tooltip,
         useFishing: 'Uso: pesca nelle acque vicine.',
         useHealingPotion:
-          'Uso: ripristina istantaneamente {amount} salute. Usabile in combattimento. Recupero 1 min.',
+          'Uso: ripristina istantaneamente {amount} salute. Usabile in combattimento. Recupero 2 min.',
         useManaPotion:
-          'Uso: ripristina istantaneamente {amount} mana. Usabile in combattimento. Recupero 1 min.',
+          'Uso: ripristina istantaneamente {amount} mana. Usabile in combattimento. Recupero 2 min.',
         clickUseInstant: 'Clicca per usare subito in combattimento',
         clickUse: 'Clicca per usare',
         clickBuyback: 'Clicca per ricomprare',
+        bagSlots: 'Borsa da {slots} spazi',
       },
       vendor: {
         ...itemNames.it_IT.itemUi.vendor,
@@ -1140,6 +1158,7 @@ export const mergeStrings = {
       ...itemNames.de_DE.itemUi,
       kind: {
         ...itemNames.de_DE.itemUi.kind,
+        bag: 'Tasche',
         tool: 'Werkzeug',
         potion: 'Trank',
         elixir: 'Elixier',
@@ -1148,12 +1167,13 @@ export const mergeStrings = {
         ...itemNames.de_DE.itemUi.tooltip,
         useFishing: 'Benutzen: Angelt in nahen Gewässern.',
         useHealingPotion:
-          'Benutzen: Stellt sofort {amount} Gesundheit wieder her. Im Kampf nutzbar. 1 Min. Abklingzeit.',
+          'Benutzen: Stellt sofort {amount} Gesundheit wieder her. Im Kampf nutzbar. 2 Min. Abklingzeit.',
         useManaPotion:
-          'Benutzen: Stellt sofort {amount} Mana wieder her. Im Kampf nutzbar. 1 Min. Abklingzeit.',
+          'Benutzen: Stellt sofort {amount} Mana wieder her. Im Kampf nutzbar. 2 Min. Abklingzeit.',
         clickUseInstant: 'Zum sofortigen Benutzen im Kampf klicken',
         clickUse: 'Zum Benutzen klicken',
         clickBuyback: 'Zum Rückkaufen klicken',
+        bagSlots: 'Tasche mit {slots} Plätzen',
       },
       vendor: {
         ...itemNames.de_DE.itemUi.vendor,
@@ -1298,15 +1318,22 @@ export const mergeStrings = {
     },
     itemUi: {
       ...itemNames.zh_CN.itemUi,
-      kind: { ...itemNames.zh_CN.itemUi.kind, tool: '工具', potion: '药水', elixir: '药剂' },
+      kind: {
+        ...itemNames.zh_CN.itemUi.kind,
+        tool: '工具',
+        potion: '药水',
+        elixir: '药剂',
+        bag: '背包',
+      },
       tooltip: {
         ...itemNames.zh_CN.itemUi.tooltip,
         useFishing: '使用：在附近水域钓鱼。',
-        useHealingPotion: '使用：立即恢复 {amount} 点生命值。战斗中可用。1 分钟冷却。',
-        useManaPotion: '使用：立即恢复 {amount} 点法力值。战斗中可用。1 分钟冷却。',
+        useHealingPotion: '使用：立即恢复 {amount} 点生命值。战斗中可用。2 分钟冷却。',
+        useManaPotion: '使用：立即恢复 {amount} 点法力值。战斗中可用。2 分钟冷却。',
         clickUseInstant: '点击在战斗中立即使用',
         clickUse: '点击使用',
         clickBuyback: '点击回购',
+        bagSlots: '{slots}格背包',
       },
       vendor: {
         ...itemNames.zh_CN.itemUi.vendor,
@@ -1450,15 +1477,22 @@ export const mergeStrings = {
     },
     itemUi: {
       ...itemNames.zh_TW.itemUi,
-      kind: { ...itemNames.zh_TW.itemUi.kind, tool: '工具', potion: '藥水', elixir: '藥劑' },
+      kind: {
+        ...itemNames.zh_TW.itemUi.kind,
+        tool: '工具',
+        potion: '藥水',
+        elixir: '藥劑',
+        bag: '背包',
+      },
       tooltip: {
         ...itemNames.zh_TW.itemUi.tooltip,
         useFishing: '使用：在附近水域釣魚。',
-        useHealingPotion: '使用：立即恢復 {amount} 點生命值。戰鬥中可用。1 分鐘冷卻。',
-        useManaPotion: '使用：立即恢復 {amount} 點法力值。戰鬥中可用。1 分鐘冷卻。',
+        useHealingPotion: '使用：立即恢復 {amount} 點生命值。戰鬥中可用。2 分鐘冷卻。',
+        useManaPotion: '使用：立即恢復 {amount} 點法力值。戰鬥中可用。2 分鐘冷卻。',
         clickUseInstant: '點擊在戰鬥中立即使用',
         clickUse: '點擊使用',
         clickBuyback: '點擊買回',
+        bagSlots: '{slots}格背包',
       },
       vendor: {
         ...itemNames.zh_TW.itemUi.vendor,
@@ -1602,17 +1636,24 @@ export const mergeStrings = {
     },
     itemUi: {
       ...itemNames.ko_KR.itemUi,
-      kind: { ...itemNames.ko_KR.itemUi.kind, tool: '도구', potion: '물약', elixir: '비약' },
+      kind: {
+        ...itemNames.ko_KR.itemUi.kind,
+        tool: '도구',
+        potion: '물약',
+        elixir: '비약',
+        bag: '가방',
+      },
       tooltip: {
         ...itemNames.ko_KR.itemUi.tooltip,
         useFishing: '사용: 가까운 물가에서 낚시합니다.',
         useHealingPotion:
-          '사용: 즉시 생명력을 {amount} 회복합니다. 전투 중 사용 가능. 재사용 대기시간 1분.',
+          '사용: 즉시 생명력을 {amount} 회복합니다. 전투 중 사용 가능. 재사용 대기시간 2분.',
         useManaPotion:
-          '사용: 즉시 마나를 {amount} 회복합니다. 전투 중 사용 가능. 재사용 대기시간 1분.',
+          '사용: 즉시 마나를 {amount} 회복합니다. 전투 중 사용 가능. 재사용 대기시간 2분.',
         clickUseInstant: '클릭하여 전투 중 즉시 사용',
         clickUse: '클릭하여 사용',
         clickBuyback: '클릭하여 되사기',
+        bagSlots: '{slots}칸 가방',
       },
       vendor: {
         ...itemNames.ko_KR.itemUi.vendor,
@@ -1759,6 +1800,7 @@ export const mergeStrings = {
       ...itemNames.ja_JP.itemUi,
       kind: {
         ...itemNames.ja_JP.itemUi.kind,
+        bag: 'バッグ',
         tool: '道具',
         potion: 'ポーション',
         elixir: 'エリクサー',
@@ -1767,11 +1809,12 @@ export const mergeStrings = {
         ...itemNames.ja_JP.itemUi.tooltip,
         useFishing: '使用: 近くの水辺で釣りをします。',
         useHealingPotion:
-          '使用: 即座に体力を{amount}回復します。戦闘中に使用可能。クールダウン1分。',
-        useManaPotion: '使用: 即座にマナを{amount}回復します。戦闘中に使用可能。クールダウン1分。',
+          '使用: 即座に体力を{amount}回復します。戦闘中に使用可能。クールダウン2分。',
+        useManaPotion: '使用: 即座にマナを{amount}回復します。戦闘中に使用可能。クールダウン2分。',
         clickUseInstant: 'クリックして戦闘中に即使用',
         clickUse: 'クリックして使用',
         clickBuyback: 'クリックして買い戻す',
+        bagSlots: '{slots}スロットのバッグ',
       },
       vendor: {
         ...itemNames.ja_JP.itemUi.vendor,
@@ -1918,6 +1961,7 @@ export const mergeStrings = {
       ...itemNames.pt_BR.itemUi,
       kind: {
         ...itemNames.pt_BR.itemUi.kind,
+        bag: 'Bolsa',
         tool: 'Ferramenta',
         potion: 'Poção',
         elixir: 'Elixir',
@@ -1926,12 +1970,13 @@ export const mergeStrings = {
         ...itemNames.pt_BR.itemUi.tooltip,
         useFishing: 'Uso: pesca em águas próximas.',
         useHealingPotion:
-          'Uso: restaura instantaneamente {amount} de vida. Pode ser usada em combate. Recarga de 1 min.',
+          'Uso: restaura instantaneamente {amount} de vida. Pode ser usada em combate. Recarga de 2 min.',
         useManaPotion:
-          'Uso: restaura instantaneamente {amount} de mana. Pode ser usada em combate. Recarga de 1 min.',
+          'Uso: restaura instantaneamente {amount} de mana. Pode ser usada em combate. Recarga de 2 min.',
         clickUseInstant: 'Clique para usar instantaneamente em combate',
         clickUse: 'Clique para usar',
         clickBuyback: 'Clique para recomprar',
+        bagSlots: 'Bolsa de {slots} espaços',
       },
       vendor: {
         ...itemNames.pt_BR.itemUi.vendor,
@@ -2079,6 +2124,7 @@ export const mergeStrings = {
       ...itemNames.ru_RU.itemUi,
       kind: {
         ...itemNames.ru_RU.itemUi.kind,
+        bag: 'Сумка',
         tool: 'Инструмент',
         potion: 'Зелье',
         elixir: 'Эликсир',
@@ -2087,12 +2133,13 @@ export const mergeStrings = {
         ...itemNames.ru_RU.itemUi.tooltip,
         useFishing: 'Использование: ловите рыбу в ближайшей воде.',
         useHealingPotion:
-          'Использование: мгновенно восстанавливает {amount} здоровья. Можно использовать в бою. Восстановление 1 мин.',
+          'Использование: мгновенно восстанавливает {amount} здоровья. Можно использовать в бою. Восстановление 2 мин.',
         useManaPotion:
-          'Использование: мгновенно восстанавливает {amount} маны. Можно использовать в бою. Восстановление 1 мин.',
+          'Использование: мгновенно восстанавливает {amount} маны. Можно использовать в бою. Восстановление 2 мин.',
         clickUseInstant: 'Нажмите, чтобы мгновенно использовать в бою',
         clickUse: 'Нажмите, чтобы использовать',
         clickBuyback: 'Нажмите, чтобы выкупить',
+        bagSlots: 'Сумка на {slots} слотов',
       },
       vendor: {
         ...itemNames.ru_RU.itemUi.vendor,

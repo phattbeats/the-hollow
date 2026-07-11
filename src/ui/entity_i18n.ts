@@ -8,6 +8,7 @@ import {
   MOBS,
   NPCS,
   QUESTS,
+  READABLES_BY_ID,
   ZONES,
 } from '../sim/data';
 import type { ItemDef, PlayerClass } from '../sim/types';
@@ -28,8 +29,11 @@ export type EntityTranslationKind =
   | 'item'
   | 'mob'
   | 'npc'
+  | 'npcIntro'
+  | 'readable'
   | 'quest'
   | 'questObjective'
+  | 'questDialog'
   | 'zone'
   | 'zonePoi'
   | 'dungeon'
@@ -42,13 +46,20 @@ export type EntityTranslationField =
   | 'text'
   | 'completion'
   | 'greeting'
+  | 'introLine'
+  | 'readablePage'
+  | 'readableTitle'
   | 'label'
   | 'welcome'
   | 'enterText'
   | 'leaveText'
   | 'bonus2'
   | 'bonus3'
-  | 'flavorText';
+  | 'flavorText'
+  | 'complain'
+  | 'complainReply'
+  | 'refuse'
+  | 'refuseReply';
 
 export type EntityTranslationRequest =
   | { kind: 'class'; id: PlayerClass; field: 'name' | 'description'; values?: InterpolationValues }
@@ -63,6 +74,21 @@ export type EntityTranslationRequest =
   | { kind: 'mob'; id: string; field: 'name'; values?: InterpolationValues }
   | { kind: 'npc'; id: string; field: 'name' | 'title' | 'greeting'; values?: InterpolationValues }
   | {
+      kind: 'npcIntro';
+      id: string;
+      lineIndex: number;
+      field: 'introLine';
+      values?: InterpolationValues;
+    }
+  | {
+      kind: 'readable';
+      id: string;
+      pageIndex: number;
+      field: 'readablePage';
+      values?: InterpolationValues;
+    }
+  | { kind: 'readable'; id: string; field: 'readableTitle'; values?: InterpolationValues }
+  | {
       kind: 'quest';
       id: string;
       field: 'title' | 'text' | 'completion';
@@ -73,6 +99,12 @@ export type EntityTranslationRequest =
       questId: string;
       objectiveIndex: number;
       field: 'label';
+      values?: InterpolationValues;
+    }
+  | {
+      kind: 'questDialog';
+      id: string;
+      field: 'complain' | 'complainReply' | 'refuse' | 'refuseReply';
       values?: InterpolationValues;
     }
   | { kind: 'zone'; id: string; field: 'name' | 'welcome'; values?: InterpolationValues }
@@ -208,6 +240,17 @@ function canonicalEntityText(request: EntityTranslationRequest): string {
       if (request.field === 'greeting') return npc.greeting;
       return npc.name;
     }
+    case 'npcIntro':
+      return (
+        NPCS[request.id]?.introLines?.[request.lineIndex] ??
+        `${request.id}.introLines.${request.lineIndex}`
+      );
+    case 'readable': {
+      const readable = READABLES_BY_ID[request.id];
+      if (!readable) return request.id;
+      if (request.field === 'readableTitle') return readable.title;
+      return readable.pages[request.pageIndex] ?? `${request.id}.pages.${request.pageIndex}`;
+    }
     case 'quest': {
       const quest = QUESTS[request.id];
       if (!quest) return request.id;
@@ -219,6 +262,10 @@ function canonicalEntityText(request: EntityTranslationRequest): string {
       return (
         QUESTS[request.questId]?.objectives[request.objectiveIndex]?.label ??
         `${request.questId}.${request.objectiveIndex}`
+      );
+    case 'questDialog':
+      return (
+        QUESTS[request.id]?.offerDialog?.[request.field] ?? `${request.id}.dialog.${request.field}`
       );
     case 'zone': {
       const zone = ZONES.find((candidate) => candidate.id === request.id);
@@ -262,10 +309,18 @@ export function entityTranslationKey(request: EntityTranslationRequest): string 
       return `entities.mobs.${entityPathSegment(request.id)}.name`;
     case 'npc':
       return `entities.npcs.${entityPathSegment(request.id)}.${request.field}`;
+    case 'npcIntro':
+      return `entities.npcs.${entityPathSegment(request.id)}.introLines.${request.lineIndex}`;
+    case 'readable':
+      return request.field === 'readableTitle'
+        ? `entities.readables.${entityPathSegment(request.id)}.title`
+        : `entities.readables.${entityPathSegment(request.id)}.pages.${request.pageIndex}`;
     case 'quest':
       return `entities.quests.${entityPathSegment(request.id)}.${request.field}`;
     case 'questObjective':
       return `entities.quests.${entityPathSegment(request.questId)}.objectives.${request.objectiveIndex}.label`;
+    case 'questDialog':
+      return `entities.quests.${entityPathSegment(request.id)}.dialog.${request.field}`;
     case 'zone':
       return `entities.zones.${entityPathSegment(request.id)}.${request.field}`;
     case 'zonePoi':
@@ -283,7 +338,13 @@ function requestManifestEntry(request: EntityTranslationRequest): EntityTranslat
       ? `${request.questId}.objectives.${request.objectiveIndex}`
       : request.kind === 'zonePoi'
         ? `${request.zoneId}.pois.${request.poiIndex}`
-        : request.id;
+        : request.kind === 'npcIntro'
+          ? `${request.id}.introLines.${request.lineIndex}`
+          : request.kind === 'readable' && request.field === 'readablePage'
+            ? `${request.id}.pages.${request.pageIndex}`
+            : request.kind === 'questDialog'
+              ? `${request.id}.dialog.${request.field}`
+              : request.id;
   const group: EntityTranslationGroup =
     request.kind === 'class' || request.kind === 'ability'
       ? 'classAbility'
@@ -331,6 +392,18 @@ export function itemFlavorText(item: ItemDef): string | undefined {
 // definition instead of redefining it per module.
 export function classDisplayName(cls: PlayerClass): string {
   return tEntity({ kind: 'class', id: cls, field: 'name' });
+}
+
+// A character's build identity label (GW1 multiclass, PHAA-465): the primary
+// class name alone, or "Primary / Secondary" (e.g. "Ranger / Priest") once a
+// secondary profession is bound. Both names localize through classDisplayName;
+// the " / " is an enumeration separator (like the requiredClass list join), not
+// a translated sentence, so no new t() key is needed. The single shared home so
+// the character sheet, talents window, spellbook, player card, and charselect
+// render the pair identically.
+export function classPairLabel(primary: PlayerClass, secondary: PlayerClass | null): string {
+  const primaryName = classDisplayName(primary);
+  return secondary ? `${primaryName} / ${classDisplayName(secondary)}` : primaryName;
 }
 
 export function zoneDisplayName(zoneId: string): string {
@@ -416,7 +489,11 @@ export function entityTranslationManifest(): EntityTranslationManifestEntry[] {
     }
   }
   for (const set of Object.values(ITEM_SETS).sort(compareById)) {
-    const fields: ('name' | 'bonus2' | 'bonus3')[] = ['name', 'bonus2', 'bonus3'];
+    // Only tiers the set actually has: the leveling haste kits carry a single
+    // 3-piece tier, so registering a bonus2 row would emit an id-fallback string.
+    const fields: ('name' | 'bonus2' | 'bonus3')[] = ['name'];
+    if (set.bonuses.some((b) => b.pieces === 2)) fields.push('bonus2');
+    if (set.bonuses.some((b) => b.pieces === 3)) fields.push('bonus3');
     for (const field of fields) {
       entries.push(
         entry(
@@ -473,6 +550,47 @@ export function entityTranslationManifest(): EntityTranslationManifestEntry[] {
         entityTranslationKey({ kind: 'npc', id: npc.id, field: 'greeting' }),
       ),
     );
+    (npc.introLines ?? []).forEach((line, lineIndex) => {
+      entries.push(
+        entry(
+          'npcIntro',
+          `${npc.id}.introLines.${lineIndex}`,
+          'introLine',
+          line,
+          'world',
+          entityTranslationKey({ kind: 'npcIntro', id: npc.id, lineIndex, field: 'introLine' }),
+        ),
+      );
+    });
+  }
+  for (const readable of Object.values(READABLES_BY_ID).sort(compareById)) {
+    entries.push(
+      entry(
+        'readable',
+        readable.id,
+        'readableTitle',
+        readable.title,
+        'world',
+        entityTranslationKey({ kind: 'readable', id: readable.id, field: 'readableTitle' }),
+      ),
+    );
+    readable.pages.forEach((page, pageIndex) => {
+      entries.push(
+        entry(
+          'readable',
+          `${readable.id}.pages.${pageIndex}`,
+          'readablePage',
+          page,
+          'world',
+          entityTranslationKey({
+            kind: 'readable',
+            id: readable.id,
+            pageIndex,
+            field: 'readablePage',
+          }),
+        ),
+      );
+    });
   }
   for (const quest of Object.values(QUESTS).sort(compareById)) {
     entries.push(
@@ -522,6 +640,20 @@ export function entityTranslationManifest(): EntityTranslationManifestEntry[] {
         ),
       );
     });
+    if (quest.offerDialog) {
+      for (const part of ['complain', 'complainReply', 'refuse', 'refuseReply'] as const) {
+        entries.push(
+          entry(
+            'questDialog',
+            `${quest.id}.dialog.${part}`,
+            part,
+            quest.offerDialog[part],
+            'world',
+            entityTranslationKey({ kind: 'questDialog', id: quest.id, field: part }),
+          ),
+        );
+      }
+    }
   }
   for (const zone of [...ZONES].sort(compareById)) {
     entries.push(

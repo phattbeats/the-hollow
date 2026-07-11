@@ -210,6 +210,7 @@ const HOT_PAINTERS: ReadonlyArray<{
   reflowAllow: Partial<Record<string, number>>;
 }> = [
   { file: 'xp_bar_painter.ts', allow: {}, reflowAllow: {} },
+  { file: 'housing_prompt_painter.ts', allow: {}, reflowAllow: {} },
   { file: 'swing_timer_painter.ts', allow: {}, reflowAllow: {} },
   { file: 'cast_bar_painter.ts', allow: {}, reflowAllow: {} },
   { file: 'unit_frame_painter.ts', allow: {}, reflowAllow: {} },
@@ -220,6 +221,16 @@ const HOT_PAINTERS: ReadonlyArray<{
     file: 'fct_painter.ts',
     allow: { '.className': 1, '.setAttribute': 1 },
     reflowAllow: { '.offsetWidth': 1 },
+  },
+  // loot_roll_group (PHAA-568): pooled strips like auras/fct. Build-time-only raw
+  // writes: createStrip sets the strip class, the constant role attr, and the
+  // pre-append `display: none`, plus the constant data-roll-id / data-pid keys
+  // (2 dataset writes); a new mid-vote chip sets its 3 static classes.
+  // All per-frame writes route through setText/setDisplay/toggleClass/setAttr.
+  {
+    file: 'loot_roll_group_painter.ts',
+    allow: { '.className': 4, '.setAttribute': 1, '.style': 1, '.dataset': 2 },
+    reflowAllow: {},
   },
 ];
 
@@ -538,6 +549,7 @@ function idleWorld(): ActionBarWorldInput {
       dead: false,
       resource: 100,
       cooldowns: new Map(),
+      potionCooldownRemaining: 0,
       gcdRemaining: 0,
       queuedOnSwing: null,
       pos: { x: 0, y: 0, z: 0 },

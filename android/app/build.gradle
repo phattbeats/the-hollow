@@ -7,13 +7,13 @@ def playIntegrityCloudProjectNumber = providers
     .trim()
 
 android {
-    namespace = "com.worldofclaudecraft"
+    namespace = "world.thehollow"
     compileSdk = rootProject.ext.compileSdkVersion
     buildFeatures {
         buildConfig true
     }
     defaultConfig {
-        applicationId "com.worldofclaudecraft"
+        applicationId "world.thehollow"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 6

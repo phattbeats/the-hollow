@@ -85,6 +85,8 @@ export const tr_TR: EnTranslations = {
       "title": "Yetenekler",
       "classTab": "Sınıf",
       "specTab": "Uzmanlık",
+      "secondaryTab": "Secondary: {cls}",
+      "secondaryCapHint": "Secondary tree: {spent}/{cap} points (capped at half your shared pool).",
       "available": "Mevcut",
       "spent": "Harcanan",
       "pointSource": "{first}. seviyeden {cap}. seviyeye kadar her seviyede 1 yetenek puanı kazanırsın. Daha fazla puan için seviye atla.",
@@ -288,6 +290,9 @@ export const tr_TR: EnTranslations = {
       "minutes": "{m}d",
       "lessThanMinute": "<1d",
       "lockedToast": "{raid} akınına kilitlisin. {time} içinde açılır."
+    },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
     },
     "compass": {
       "N": "K",
@@ -627,6 +632,13 @@ export const tr_TR: EnTranslations = {
       "unassigned": "{item} atanmadi ve herkes icin serbest.",
       "leaderOnly": "Ganimet yontemini yalnizca grup lideri degistirebilir."
     },
+    "lootRollGroup": {
+      "pending": "Waiting...",
+      "need": "Need",
+      "greed": "Greed",
+      "pass": "Pass",
+      "aria": "Group roll status for {item}"
+    },
     "bags": {
       "filterGroupAria": "Çantaları kategoriye göre filtrele",
       "filterAll": "Tümü",
@@ -641,7 +653,12 @@ export const tr_TR: EnTranslations = {
       "sortName": "Ad",
       "searchPlaceholder": "Öge ara",
       "searchAria": "Çanta ögelerini ada göre ara",
-      "noMatch": "Filtrelerinizle eşleşen öge yok."
+      "noMatch": "Filtrelerinizle eşleşen öge yok.",
+      "capacity": "{used}/{total}",
+      "capacityAria": "Bag slots used: {used} of {total}",
+      "backpack": "Backpack",
+      "socketEmpty": "Empty bag slot",
+      "unequipHint": "Click to remove this bag"
     },
     "raidConvert": {
       "toPartyDone": "Akının yeniden gruba dönüştü.",
@@ -876,7 +893,89 @@ export const tr_TR: EnTranslations = {
           "hint": "Topluluktan yardım iste"
         }
       }
+    },
+    "calendar": {
+      "title": "Event Calendar",
+      "close": "Close calendar",
+      "keybindLabel": "Event Calendar",
+      "prevMonth": "Previous month",
+      "nextMonth": "Next month",
+      "dayAria": "{date}: {count} events",
+      "noEvents": "Nothing planned for this day.",
+      "allDay": "All day",
+      "bookedBy": "Booked by {name}",
+      "deleteAria": "Remove the event {title}",
+      "bookTitle": "Book a guild event",
+      "titlePlaceholder": "Event title",
+      "notePlaceholder": "Note (optional)",
+      "hourLabel": "Hour (UTC)",
+      "hourAllDay": "All day",
+      "addButton": "Book event",
+      "guildOnlyNote": "Join a guild to plan events together.",
+      "result": {
+        "created": "The event is on the guild calendar.",
+        "removed": "The event was taken off the calendar.",
+        "notInGuild": "You are not in a guild.",
+        "notOfficer": "Only officers and the Guild Master may manage guild events.",
+        "badInput": "Give the event a title and a valid day.",
+        "calendarFull": "The guild calendar is full.",
+        "eventGone": "That event is no longer on the calendar."
+      },
+      "events": {
+        "raidCall": {
+          "title": "Raid Call",
+          "note": "Wardens sound the horn: gather a party for the raid."
+        },
+        "marketDay": {
+          "title": "Market Day",
+          "note": "The Merchant expects fresh stock. A fine day to browse the World Market."
+        },
+        "fiestaNight": {
+          "title": "Fiesta Night",
+          "note": "The 2v2 Fiesta ring draws its loudest crowds tonight."
+        },
+        "arenaClash": {
+          "title": "Arena Clash",
+          "note": "Duelists flock to the Ashen Coliseum. Queue up and climb the ladder."
+        },
+        "fishingDerby": {
+          "title": "Fishing Derby",
+          "note": "Anglers line Mirror Lake. Bring a pole and swap fishing tales."
+        },
+        "delveDay": {
+          "title": "Delve Day",
+          "note": "A fine day to brave the Collapsed Reliquary with a companion at your side."
+        },
+        "moongateCommunion": {
+          "title": "Moongate Communion",
+          "note": "Pilgrims gather at the moon-sanctum under the mid-month moon."
+        }
+      }
+    },
+    "trainer": {
+      "secondaryClassSet": "You have taken up {cls} as your secondary profession."
     }
+  },
+  "mailUi": {
+    "title": "The Ravenpost",
+    "subtitle": "send and collect letters",
+    "close": "Close mail",
+    "inbox": "Inbox",
+    "compose": "Compose",
+    "noPostOffice": "Step up to the Ravenpost to tend your mail.",
+    "emptyInbox": "No letters waiting. A raven will arrive when someone writes to you.",
+    "from": "From {name}",
+    "noSubject": "(no subject)",
+    "take": "Take",
+    "delete": "Delete",
+    "postageNote": "Sending a letter costs {money} postage.",
+    "recipient": "Recipient",
+    "subjectLabel": "Subject",
+    "bodyPlaceholder": "Write your letter...",
+    "send": "Send Letter",
+    "needRecipientOrText": "Name a recipient and write something before sending.",
+    "openButton": "Show me the Ravenpost.",
+    "openButtonAria": "Open the Ravenpost mail window"
   },
   "guide": {
     "brand": "World of ClaudeCraft",
@@ -903,8 +1002,10 @@ export const tr_TR: EnTranslations = {
       "delves": "Mağara Seferleri",
       "reference": "Başvuru",
       "controls": "Denetimler",
+      "settings": "Settings & Performance",
       "combat": "Savaş",
       "talents": "Yetenekler",
+      "professions": "Professions",
       "arena": "Arena ve PvP",
       "glossary": "Sözlük",
       "wishIKnew": "Keşke Bilseydim Dediklerim",
@@ -983,6 +1084,8 @@ export const tr_TR: EnTranslations = {
         "sub": "Tek bir kesintisiz toprak, üç bölge; sakin vadilerden donmuş zirvelere.",
         "levels": "Seviye {min} - {max}",
         "cta": "Dünyayı gör",
+        "hollowReachesName": "The Hollow Reaches",
+        "hollowReachesBlurb": "Quiet ground below the shrine gate, where new arrivals cut their teeth around Fallow Acres and Root Hollow.",
         "valeName": "Doğudere Vadisi",
         "valeBlurb": "Her maceranın başladığı yeşil tepeler ve eski ormanlar.",
         "marshName": "Mirefen Bataklığı",
@@ -1070,6 +1173,66 @@ export const tr_TR: EnTranslations = {
       "mobileBody": "Dokunmatik kontroller telefonlarda ve tabletlerde otomatik olarak belirir: solda bir hareket çubuğu, etrafa bakmak için sağda herhangi bir yere sürükleme ve yetenekleriniz ile menüleriniz için ekran üstü düğmeler.",
       "controllerHeading": "Oyun kumandasıyla",
       "controllerBody": "Oyun kumandaları da çalışır ve kumanda desteği varsayılan olarak açıktır. Sol çubuk hareket ettirir, sağ çubuk kamerayı yöneltir, yüz ve omuz düğmeleri ise yeteneklerinizi, zıplamayı ve etkileşimi karşılar. Menüler için ekran üstü bir işaretçi çağırmak üzere herhangi bir pencere açın. Düğmeleri yeniden atayabilir ve çubuk ölü bölgesini, kamera hızını, titreşimi ve ters bakışı seçeneklerdeki kumanda ayarlarından düzenleyebilirsiniz."
+    },
+    "settingsPage": {
+      "heading": "Settings & Performance",
+      "intro": "Make the game look its best or run its fastest. Three ready-made loadouts, plus what every graphics option really does.",
+      "wherePath": "Everything on this page lives in the game: press Esc and look in Graphics, Interface, and the Performance Overlay panel.",
+      "fairnessTitle": "Fair by design",
+      "fairnessBody": "No option here trades beauty for power. Lower settings shed cosmetic polish only, never information you fight with: your own debuffs and crowd control, party and raid member health, the target and boss cast bar, target health, and enemy positions are identical from Low to Ultra. Playing on a modest machine is never a handicap.",
+      "loadoutsHeading": "Three ready-made loadouts",
+      "loadoutsIntro": "Start from the loadout that sounds like your machine, then adjust one option at a time until it feels right.",
+      "recommended": "Recommended",
+      "whyLabel": "Why it works:",
+      "tagReload": "after reload",
+      "fpsTitle": "Best FPS",
+      "fpsTagline": "For older laptops, integrated graphics, and battery play.",
+      "fpsWhy": "Graphics Quality is the master switch, and Render Quality is the strongest slider: at 50 to 70% the world draws roughly half the pixels while the interface stays perfectly sharp.",
+      "balancedTitle": "Balanced",
+      "balancedTagline": "The sweet spot for most machines, and our default advice.",
+      "balancedWhy": "Medium brings real shadows and full materials; High adds ambient occlusion and bloom. Below Ultra a built-in safety net quietly thins effects for a moment when a big fight spikes, then restores them, so Balanced stays smooth without babysitting.",
+      "visualsTitle": "Best Visuals",
+      "visualsTagline": "Screenshot mode for powerful desktop machines.",
+      "visualsWhy": "Ultra renders at the highest resolution your display offers with the richest lighting. It also switches the safety net off, and it is desktop-only: phones and tablets top out at High to keep heat and battery in check.",
+      "value50to70": "50 to 70%",
+      "value90to100": "90 to 100%",
+      "value100": "100%",
+      "valueHighOrMedium": "High on a gaming PC, Medium on a laptop",
+      "valueOnOptional": "On (optional)",
+      "howHeading": "How the options behave",
+      "factDetectTitle": "The game tunes itself first",
+      "factDetectBody": "On your first launch the game reads your device and picks a sensible tier, from Low on a modest phone to Ultra on a strong desktop. Any choice you make yourself always wins.",
+      "factReloadTitle": "Two kinds of options",
+      "factReloadBody": "Graphics Quality and the Advanced pickers take effect after a reload, and the panel offers a Reload Now button when needed. Every other option applies the moment you change it.",
+      "factGovernorTitle": "A built-in safety net",
+      "factGovernorBody": "On every tier below Ultra, the game quietly thins effects for a moment when a big fight spikes, then restores them. Choosing Ultra tells it you would rather keep every detail.",
+      "advancedHeading": "The Advanced preset: mix your own",
+      "advancedBody": "Advanced starts from the High tier and unlocks four extra pickers, so you can spend your frames where you actually notice them: Terrain Detail, Foliage Density, Effects and Lighting, and Shadow Quality. Like Graphics Quality, they apply after a reload.",
+      "advancedMixes": "Two favorite mixes: keep Shadow Quality on High and set Effects and Lighting to Low for a crisp, glow-free look that runs light, or do the reverse to keep the bloom and soften the shadows.",
+      "tableHeading": "Every option, explained",
+      "colSetting": "Setting",
+      "colDoes": "What it does",
+      "colImpact": "FPS impact",
+      "impactNone": "None",
+      "impactLight": "Light",
+      "impactModerate": "Moderate",
+      "impactHeavy": "Heavy",
+      "rowGraphicsQuality": "The master switch. Each step changes resolution, shadows, materials, foliage, and lighting effects together. The biggest single difference you can make.",
+      "rowRenderQuality": "Draws the 3D world at a lower internal resolution and scales it up; the interface stays sharp. The strongest instant slider on weaker machines and high-resolution screens.",
+      "rowFieldOfView": "How much of the world fits on screen, from a zoomed 55 to a sweeping 100 degrees. A comfort choice; wider views draw slightly more.",
+      "rowBrightness": "Scene exposure, darker or brighter. Pure preference.",
+      "rowWeather": "Ambient rain and snow. Atmosphere only, and switching it off saves a little during storms.",
+      "rowBrowserEffects": "How fancy the interface itself is allowed to be: glass blur, glow, animated menus. Auto matches your browser; the 3D world is untouched either way.",
+      "rowTerrainDetail": "Rich, blended ground textures versus a simpler, faster terrain look.",
+      "rowFoliageDensity": "How far and how thick the grass grows around your character.",
+      "rowEffectsQuality": "Bloom, ambient occlusion, and how many torches and spells cast real light. The single biggest saving among the Advanced pickers.",
+      "rowShadowQuality": "Shadow crispness. Low keeps shadows but softens their edges.",
+      "rowFrostedPanels": "A frosted-glass blur behind windows. Pretty, and exactly the kind of effect a weaker browser feels; leave it off for the classic crisp look.",
+      "rowReduceMotion": "Removes interface animations so windows appear instantly. An accessibility option first, with a small performance bonus.",
+      "rowPerfOverlay": "An on-screen readout of FPS, frame time, and more. Turn it on while you tune this page, then hide it again.",
+      "tableFoot": "Looking for a draw-distance slider or an FPS cap? There is nothing to hunt for: view distance is part of each quality tier, and frame pacing follows your display.",
+      "mobileTitle": "On phones and tablets",
+      "mobileBody": "Mobile manages more for you: the game picks the tier, holds resolution a touch lower to protect battery and heat, and keeps the highest tiers desktop-only. The loadouts above still apply; phones simply top out at High."
     },
     "combat": {
       "intro": "Dövüş, tanıdık klasik MMO kurallarını izler. İyi oynamak için bunların hiçbirini incelemen gerekmez, bu yalnızca dövüşlerin nasıl işlediğinin şeklidir.",
@@ -1180,7 +1343,10 @@ export const tr_TR: EnTranslations = {
       "fullKitHeading": "Tam kit",
       "fullKitNote": "Bu sınıfın öğrenebileceği her yetenek, açıldığı sırayla. Hangilerinin kurgunu taşıyacağına yetenekler karar verir.",
       "petsHeading": "İblisler",
-      "petsNote": "Karabüyücüler yanlarında dövüşmek için iblisler çağırır, her biri farklı bir işe uygundur."
+      "petsNote": "Karabüyücüler yanlarında dövüşmek için iblisler çağırır, her biri farklı bir işe uygundur.",
+      "professionsTitle": "Pair with a second class",
+      "professionsNote": "Any class above can also be taken as a profession, a secondary class that opens a second talent tree without dropping your primary role. See how professions work before you pick.",
+      "professionsLink": "Professions and multiclassing"
     },
     "classHook": {
       "warrior": "Aldığı her darbeyi bir sonrakine yakıt çeviren, yılmaz bir ön saf dövüşçüsü.",
@@ -1347,15 +1513,19 @@ export const tr_TR: EnTranslations = {
       "mapSub": "Güneyden kuzeye üç bölge, her biri seviye olarak bir basamak daha yüksek. Görev izini takip edin, diyar sizi vadiden zirvelere taşır.",
       "places": "Görülmeye değer yerler",
       "residents": "Karşılaşacağınız kişiler",
+      "hollowReachesBlurb": "The calm ground just beyond the shrine gate, where new arrivals cut their teeth on wolves and boars around Fallow Acres and Root Hollow.",
       "valeBlurb": "Yeni kahramanların Eastbrook kasabası çevresinde kurtlar ve haydutlarla dişlerini biledikleri yemyeşil başlangıç vadisi.",
       "marshBlurb": "Sis ve harabelerle dolu, suya gömülmüş bir ülke. Murloclar sığlıkları sarar ve suyun altında daha eski bir şey kıpırdanır, köprü-kasabası Fenbridge'den izlenir.",
       "peaksBlurb": "Rüzgarın aşındırdığı sırtlar ve eski maden ocakları, diyarın en soğuk, en yüksek tehlikelerine doğru tırmanır; ileri karakol Highwatch tarafından tutulur.",
+      "hollowReachesGreeting": "I keep the Reaches to a calendar, or I keep trying. Mind the loose dirt, and do not touch the register.",
+      "hollowReachesGreeter": "Verger Zebediah, Root Hollow",
       "valeGreeting": "Kılıcını yakın tut. Vadi eski Vadi değil.",
       "valeGreeter": "Mareşal Redbrook, Eastbrook",
       "marshGreeting": "Kapıda durun. Şu sazların ötesinde, öldürme işini bizim yerimize bataklık görür.",
       "marshGreeter": "Muhafız Fenwick, Fenbridge",
       "peaksGreeting": "İki yüz yıldır bu sur dayandı. Benim nöbetimde yıkılmayacak, ama inliyor.",
       "peaksGreeter": "Yüzbaşı Thessaly, Highwatch",
+      "hollowReachesPlaceNotes": "The Hollow Gate is the shrine portal reopening onto open ground. West at Fallow Acres, Sexton Faddick keeps the wolves off land meant for building; east at Root Hollow, Verger Zebediah keeps a boar-plagued patch to its calendar. Mossbank, by the lake, is a quiet place to fish.",
       "valePlaceNotes": "Eastbrook ilk ana üssünüzdür. Wolf Run ve Boar Meadow yumuşak av sahalarıdır; Mirror Lake balık tutulacak sakin sulardır; Webwood ve Copper Dig örümcekleri ve cevhere aç kazıcıları saklar; bir Bandit Camp ve Fallen Chapel daha çetin işler barındırır; Reliquary Hill, diyarın ilk delvesi olan Collapsed Reliquary'ye iner; ve Brightwood Glade kuzeydeki sakin, güneşli bir korudur.",
       "marshPlaceNotes": "Fenbridge tek kuru yolu korur. Sinsi Sazlıklar ve Derinbataklık Sığlıkları bataklık canavarları ve murloclarla kaynar; Dul Çalılığı sımsıkı ağlarla örülüdür; Boğulmuş Şapel ve Trol Höyükleri daha eski tehlikeleri barındırır; Mezarçağıran Kampı tarikatın siper kazdığı yerdir ve Batık Kale bataklığın örneklenmiş kalbidir.",
       "peaksPlaceNotes": "Highwatch suru tutar. Sinsi Sırt ve Derinkaya Oyukları sırt kedileri ve kobolderindir; Dev Etekleri ve Drogmar Savaş Kampı kiralık zorbalarındır; Fırtınakaya elementallerle çıtırdar ve altında Pırıltıgöl ışıldar; Solucanküt Çadırları ve Hortlak Tarlaları tarikatın yüksek mevzisini kuşatır, zirvesinde Mezarejderi Mabedi yer alır.",
@@ -1477,6 +1647,21 @@ export const tr_TR: EnTranslations = {
       "resetNote": "Yeteneklerinizi dövüş dışında olduğunuz her an sıfırlayabilirsiniz, bu yüzden erken bir seçim asla bir tuzak değildir. Bir şeyler deneyin, neyi sevdiğinizi görün ve fikrinizi serbestçe değiştirin.",
       "specsHeading": "Sınıfa göre uzmanlıklar",
       "specsBody": "Her sınıfın, her biri kendi rolüne ve kendine özgü bir odağına sahip birkaç uzmanlığı vardır. İşte hepsinin genel görünümü. Tam donanımı için bir sınıfı açın."
+    },
+    "professionsPage": {
+      "heading": "Professions and multiclassing",
+      "intro": "A profession is a second class you train alongside your primary one, opening a second talent tree and a slice of its ability kit without leaving your first role behind.",
+      "whatHeading": "What a profession is",
+      "whatBody": "Every class can be taken as a profession by any other class. Pairing one adds a second talent tree and lets you borrow a few of its abilities, so a Warrior can dabble in the Priest's healing or a Mage pick up a Rogue's sting. Your primary class still sets your role, your resource, and your identity; the profession bends the build without replacing it.",
+      "howHeading": "How to pick one",
+      "howBody": "Professions open at level 10, the same moment your first talent tree unlocks. Visit a Profession Trainer in the hub town, open their dialog, and pick the class you want as your secondary.",
+      "costBody": "Your first pick is free. Changing to a different class later costs gold, and the fee steps up each time you swap, so an early decision is never punished while later reshuffles carry a small price.",
+      "resetTitle": "Nothing is locked in",
+      "resetNote": "You can refund points in either tree any time you are out of combat, and you can swap your secondary class at the same trainer for an escalating gold fee. An early profession pick is a first draft, not a commitment.",
+      "talentsHeading": "How talents split across the two trees",
+      "talentsBody": "A profession adds a whole second talent tree beside your primary one, but the two draw from the same pool of points. The secondary tree can hold at most half of that pool, so your primary class always stays the heart of the build. A point dropped into the secondary tree unlocks its abilities, and those abilities cast from your primary resource, not theirs: a Priest profession on a Warrior spends rage to heal, not mana.",
+      "trainersHeading": "Finding a trainer",
+      "trainersBody": "A Profession Trainer stands in the hub town near the shrine. Any single trainer can teach you any class as a profession (other than your primary), so one visit is enough to set or change your secondary."
     },
     "arenaPage": {
       "heading": "Arena ve PvP",
@@ -1704,6 +1889,11 @@ export const tr_TR: EnTranslations = {
       "home": "Genel bakışa dön"
     }
   },
+  "readableUi": {
+    "prompt": {
+      "read": "Read"
+    }
+  },
   "coldOpen": {
     "title": "The Hollow",
     "wakeBody": "You come to on warm ground, no memory of your name, your people, or how you got here. Green light pools from a great vase ahead, and something about it feels like it has been waiting.",
@@ -1843,6 +2033,9 @@ export const tr_TR: EnTranslations = {
     "realm": "Diyar",
     "newCharacter": "Yeni Karakter",
     "appearance": "Görünüm",
+    "sex": "Sex",
+    "sexMale": "Male",
+    "sexFemale": "Female",
     "class": "Sınıf",
     "name": "Ad",
     "chromaOption": "Renk {n}",
@@ -2147,6 +2340,71 @@ export const tr_TR: EnTranslations = {
       "toolSlips": "O alet bu kilitten kayıp gider.",
       "lockJammed": "Kilit, açılamayacak kadar sıkıştı. Başka bir deneme için delveyi tekrar temizle.",
       "lastPickSnaps": "Son maymuncuk kırılır. Kilit sıkışır. Delveyi tekrar temizlemezsen sandık kaybolur."
+    },
+    "gathering": {
+      "nothingToHarvest": "That corpse has nothing to harvest.",
+      "alreadyHarvested": "This corpse has already been harvested."
+    },
+    "hearth": {
+      "tooFar": "You need to be near Brother Greenpaw to feed him.",
+      "noItems1": "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",
+      "noItems2": "nothin' on you but good intentions, huh... intentions don't stoke a furnace.",
+      "emberbulb1": "now THAT'S fuel... watch her breathe, friend...",
+      "emberbulb2": "the furnace takes it slow and clean, just like she likes it...",
+      "emberbulb3": "stoked and smokin'... the wavelength's openin' up already, i can feel it.",
+      "morsel1": "...oh, bless you, friend. bless you and the ground you walk on.",
+      "morsel2": "stomach quits singin' hymns for a minute. much obliged...",
+      "morsel3": "a good morsel, is like a good friend... rare, and worth the walk.",
+      "helpLine": "Greenpaw: /feed (bring what burns or what fills, from near the vase)."
+    },
+    "house": {
+      "mustStandToClaim": "You must stand on a homestead plot in the Hollow to claim.",
+      "alreadyOwn": "You already own a homestead in the Hollow.",
+      "noFreePlot": "There is no free homestead plot here. Stand on one to claim.",
+      "plotTaken": "That homestead already has an owner.",
+      "claimed": "The homestead is yours. Decorate it with /house place <slot> <kind>.",
+      "noHomestead": "You do not own a homestead. Claim one with /house claim.",
+      "mustBeInHollow": "You must be in the Hollow to tend your homestead.",
+      "slotRange": "Slots are numbered 1 to {count}.",
+      "unknownKind": "Unknown decor kind. Kinds: {kinds}.",
+      "placed": "Placed the {kind} on slot {slot}.",
+      "slotEmpty": "That slot is already empty.",
+      "cleared": "Cleared slot {slot}.",
+      "readoutNone": "You own no homestead. Stand on a free plot in the Hollow and type /house claim.",
+      "readoutMine": "Your homestead: {plotId}. Decor: {decor}.",
+      "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <slot>.",
+      "helpLine": "Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>."
+    },
+    "bags": {
+      "full": "Your bags are full.",
+      "socketsFull": "All your bag slots are full.",
+      "swapTooManyItems": "You have too many items to swap to that bag.",
+      "removeTooManyItems": "You have too many items to remove that bag.",
+      "tradeSpace": "Trade failed: not enough bag space."
+    },
+    "bank": {
+      "tooFar": "You are too far from the banker.",
+      "noQuestItems": "You cannot store quest items in the bank.",
+      "full": "Your bank is full.",
+      "expansionCapped": "Your bank cannot be expanded further.",
+      "cannotAfford": "You cannot afford that bank expansion.",
+      "purchased": "You purchase additional bank slots."
+    },
+    "homestead": {
+      "outsideArea": "That is outside the homestead ground. Try Fallow Acres, west of the road.",
+      "tooCloseGate": "Too close to the gate. Move further out.",
+      "tooCloseWater": "Too close to the water.",
+      "tooCloseGraveyard": "Too close to the graveyard.",
+      "tooCloseWildlife": "Too close to the wildlife. Clear the area or move further off.",
+      "tooCloseRoad": "Too close to the road.",
+      "tooCloseOther": "Too close to another homestead.",
+      "questGate": "Brother Greenpaw hasn't sent you off yet. Finish his errands first.",
+      "alreadyOwn": "You already own a homestead.",
+      "claimed": "The ground is yours. This homestead is claimed.",
+      "readoutMine": "Your homestead sits at ({x}, {z}).",
+      "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
+      "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
+      "helpLine": "Homestead: /homestead, /homestead claim."
     }
   },
   "lockpickUi": {
@@ -2535,6 +2793,7 @@ export const tr_TR: EnTranslations = {
     "rendererFailed": "Görüntüleyici başlatılamadı: yeniden yüklemeyi deneyin. {error}",
     "enterTimeout": "Dünyaya girilemedi. Bağlantı zaman aşımına uğradı. Oyun sunucusu çalışıyor mu?",
     "connectionLost": "Sunucuyla bağlantı koptu.",
+    "reconnecting": "Connection lost. Reconnecting...",
     "connectionRejected": "Sunucu bağlantıyı kapattı."
   },
   "errors": {
@@ -2564,6 +2823,7 @@ export const tr_TR: EnTranslations = {
       "notAuthenticated": "Kimlik doğrulanmadı.",
       "accountBanned": "Bu hesap yasaklandı.",
       "webLoginOnly": "Girişlere yalnızca oyun istemcisinden izin verilir.",
+      "crossSiteRejected": "Cross-site request rejected.",
       "accountSuspended": "Bu hesap {date} tarihine kadar askıya alındı.",
       "alreadyInWorld": "Karakter zaten dünyada.",
       "takenOver": "Karakteriniz başka bir oturum tarafından devralındı.",
@@ -2684,7 +2944,9 @@ export const tr_TR: EnTranslations = {
       "druid": "Druidler doğayı yönlendirir; yaraları iyileştirir, düşmanları kıskaca alır ve savunma ya da hasar için hayvan formlarına bürünür."
     },
     "aria": "{className} sınıf ayrıntıları: rol {role}. Başlangıç nitelikleri: Kuvvet {str}, Çeviklik {agi}, Dayanıklılık {sta}, Zeka {int}, Ruh {spi}.",
-    "statBarAria": "{stat}: 25 üzerinden {value}"
+    "statBarAria": "{stat}: 25 üzerinden {value}",
+    "classPairLabel": "{primary} / {secondary}",
+    "classPairAria": "{primary}, secondary {secondary}"
   },
   "mobilePreflight": {
     "title": "Yatay Tam Ekranda Oyna",
@@ -3313,6 +3575,7 @@ export const tr_TR: EnTranslations = {
       "offGlobalCooldown": "Genel bekleme süresinden bağımsız",
       "friendlyTarget": "Dost hedef",
       "enemyTarget": "Düşman hedef",
+      "selfOnly": "Self only",
       "damageRange": "{min} ila {max}",
       "finisherDamage": "{base} artı her kombo puanı için {perCombo}"
     },
@@ -3365,6 +3628,22 @@ export const tr_TR: EnTranslations = {
       "browseGoodsAria": "{name} kişisinin mallarına göz at",
       "worldMarket": "Bana Dünya Pazarı'nı göster.",
       "worldMarketAria": "Dünya Pazarı'nı aç",
+      "trainSecondary": "Train me in a secondary profession.",
+      "trainSecondaryAria": "Train a secondary profession with {name}",
+      "feedHearth": "I have something for the hearth.",
+      "feedHearthAria": "Feed the hearth",
+      "trainerTitle": "Secondary Profession",
+      "trainerLevelLocked": "Unlocks at level {level}.",
+      "trainerCurrent": "Current",
+      "trainerFree": "Free",
+      "trainerPickAria": "Train as secondary {cls}: {cost}",
+      "trainerNeedsGold": "Not enough gold",
+      "trainerConfirmTitle": "Confirm secondary class",
+      "trainerConfirmBody": "Train as {cls} for {cost}?",
+      "trainerConfirmYes": "Yes, train me",
+      "trainerConfirmNo": "No, go back",
+      "trainerHowTitle": "How do secondary professions work?",
+      "trainerHowBody": "A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities convert their resource cost to your primary resource. Your first pick is free; changing later costs gold.",
       "accept": "Kabul Et",
       "decline": "Reddet",
       "continue": "Devam Et",
@@ -3403,6 +3682,11 @@ export const tr_TR: EnTranslations = {
   "housingUi": {
     "claimedBanner": "You claim this plot as your home.",
     "ownerBanner": "This is {name}'s homestead.",
+    "prompt": {
+      "claim": "Claim this plot",
+      "manage": "Manage your homestead",
+      "visit": "Visit {name}'s home"
+    },
     "window": {
       "title": "Your Homestead",
       "close": "Close homestead",
@@ -3456,7 +3740,8 @@ export const tr_TR: EnTranslations = {
       "drink": "İçecek",
       "tool": "Alet",
       "potion": "Şifa İksiri",
-      "elixir": "İksir"
+      "elixir": "İksir",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "Zırh",
@@ -3498,7 +3783,11 @@ export const tr_TR: EnTranslations = {
       "useManaPotion": "Kullanım: Anında {amount} mana yeniler. Savaşta kullanılabilir. 1 dk bekleme süresi.",
       "clickUseInstant": "Savaşta anında kullanmak için tıkla",
       "clickUse": "Kullanmak için tıkla",
-      "clickBuyback": "Geri satın almak için tıkla"
+      "clickBuyback": "Geri satın almak için tıkla",
+      "bagSlots": "{slots} Slot Bag"
+    },
+    "error": {
+      "requiresLevelToEquip": "Requires level {level} to equip."
     },
     "bags": {
       "title": "Çantalar",
@@ -4780,6 +5069,21 @@ export const tr_TR: EnTranslations = {
       "monarch_crown_helm": {
         "name": "Hükümdar'ın Tacı"
       },
+      "linen_pouch": {
+        "name": "Keten Kese"
+      },
+      "travelers_knapsack": {
+        "name": "Gezginin Sırt Çantası"
+      },
+      "wolfhide_satchel": {
+        "name": "Kurt Derisi Heybe"
+      },
+      "gravewoven_bag": {
+        "name": "Mezar Dokuması Çanta"
+      },
+      "mistcallers_duffel": {
+        "name": "Mistcaller'ın Denizci Çantası"
+      },
       "bristleback_maul": {
         "name": "Dikensırt Balyozu"
       },
@@ -5125,12 +5429,39 @@ export const tr_TR: EnTranslations = {
       "first_cutting": {
         "name": "Bir Filiz"
       },
+      "greenpaw_bead": {
+        "name": "Fişeklikten Bir Boncuk"
+      },
+      "keeper_coal": {
+        "name": "Hiç Soğumayan Bir Kor"
+      },
+      "willow_sprig": {
+        "name": "A Willow Sprig"
+      },
       "witness_root_cincture": {
         "name": "Tanık Kök'ün Kemeri"
       },
       "shrine_diary_page": {
         "name": "Yırtık Günlük Sayfası",
         "flavorText": "...ipin ucunu kaçırana dek mum ışığında kırk gün saydım. Buradaki karanlık O'nu unutmuyor, O bu yeri unutmuş olsa bile. Balıkçıl alçaktan süzülürse, Bekçi'ye söyle, fitil hâlâ yanıyor..."
+      },
+      "heartwood_splinter": {
+        "name": "Öz Odun Kıymığı",
+        "flavorText": "Geldiği ağaç hareket etmeyi bıraktıktan çok sonra bile dokunulduğunda sıcacık."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Çiçek Taçlı Omuzluklar"
+      },
+      "verdantguard_mantle": {
+        "name": "Yeşil Bekçinin Pelerini"
+      },
+      "worn_prayer_token": {
+        "name": "Yıpranmış Dua Nişanı",
+        "flavorText": "...bir yüzü benim olmayan bir başparmakla düzleşmiş, bundan önce bunun gibi yüz tanesine aynı sığ oluğu açmış, ya da aşağıdaki yığın öyle inanmanı istiyor. tek başparmak yüz nişanı aşındırmaz. ama çok sayıda başparmak tek bir oluğu aşındırır..."
+      },
+      "tally_shard": {
+        "name": "Çetele İşaretli Parça",
+        "flavorText": "...beşerli işaretler, derin kazınmış, sayım her döndüğünde üstü çizilmiş. çizmeler durmadan önce yüzlerce beşli, ve son sıra hiç bitirilmemiş..."
       },
       "reliquary_plate_chest": {
         "name": "Emanetlik Muhafızı Zırhı"
@@ -5586,6 +5917,9 @@ export const tr_TR: EnTranslations = {
       },
       "the_witness_root": {
         "name": "Tanık Kök"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {
@@ -5593,6 +5927,11 @@ export const tr_TR: EnTranslations = {
         "name": "Tüccar",
         "title": "Dünya Pazarı'nın Bekçisi",
         "greeting": "Dünya Pazarı'na hoş geldin, {className}. Diyardaki her maceracıdan alışveriş yap, ya da kendi mallarını sergile ve bırak altın seni bulsun."
+      },
+      "the_ravenpost": {
+        "name": "The Ravenpost",
+        "title": "Keeper of the Mail",
+        "greeting": "Post a letter, {className}, and my ravens will find your friend wherever they roam, coin and parcels riding along, safe until claimed."
       },
       "marshal_redbrook": {
         "name": "Mareşal Redbrook",
@@ -5694,6 +6033,11 @@ export const tr_TR: EnTranslations = {
         "title": "Emanetlik Bekçisi",
         "greeting": "Aşağıdaki kutsal emanetlik yine yer değiştirdi."
       },
+      "elder_yarrow": {
+        "name": "Elder Yarrow",
+        "title": "Profession Trainer",
+        "greeting": "Every build starts as a question. Which second calling speaks to you?"
+      },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
         "title": "Gelgit Gözcüsü",
@@ -5702,7 +6046,12 @@ export const tr_TR: EnTranslations = {
       "brother_greenpaw": {
         "name": "Birader Greenpaw",
         "title": "İlk Peygamber (kendi kendini atadı)",
-        "greeting": "selam sana, gezgin. put bugün keyifsiz mi yoksa yine ben mi öyle görüyorum... gel bakalım buraya, birkaç kutsal iş var görülecek. çoğu atıştırmalık aslında. greenpaw ölçeğinde ikisi de aynı kapıya çıkar."
+        "greeting": "selam sana, gezgin. put bugün keyifsiz mi yoksa yine ben mi öyle görüyorum... gel bakalım buraya, birkaç kutsal iş var görülecek. çoğu atıştırmalık aslında. greenpaw ölçeğinde ikisi de aynı kapıya çıkar.",
+        "introLines": {
+          "0": "uhh... hi. hi. didn't hear you come up, i was someplace else, someplace green... you got the just-woke-up look, friend. i know it well, i wear it most days...",
+          "1": "name's greenpaw. brother greenpaw, first prophet, self-appointed, which the vase'll tell you means exactly nothin', and he's not wrong, but somebody's gotta tend him...",
+          "2": "this here's the hollow. was a whole tribe once, big doings, so they tell me, and now it's mostly me, the vase, and whatever's breathin' down in that cave... anyway. he's hungry, i'm hungry, same wavelength. c'mere, got a couple sacred matters need tendin'."
+        }
       },
       "verger_zebediah": {
         "name": "Verger Zebediah",
@@ -5713,6 +6062,25 @@ export const tr_TR: EnTranslations = {
         "name": "Sexton Faddick",
         "title": "The Wandering Keeper",
         "greeting": "Faddick. Sexton, where there is still a shrine to sexton. I do not stay anywhere; I keep. Wolves have circled the flock at Fallow Acres every night, and a thing that circles long enough learns the shape of what it circles. Best it stays a flock."
+      },
+      "shade": {
+        "name": "Shade",
+        "title": "A Traveler",
+        "greeting": "Oh, it's you. Sit if you like, the water's not going anywhere. Have you eaten today? You should eat.",
+        "introLines": {
+          "0": "You caught me at my chores. Don't mind the can, it's only water. There's always something somewhere that wants a little water.",
+          "1": "Me? Nobody much. Shade. I walk, I lend a hand where hands are short. You look worn through. Sit a moment, if you like."
+        }
+      },
+      "gate_bard": {
+        "name": "Halden the Bard",
+        "title": "Player at the Gate",
+        "greeting": "A copper for a song? No? That's all right, most days it's no. I play for the gate, and the gate's never once reached for its purse."
+      },
+      "goodwife_orla": {
+        "name": "Orla",
+        "title": "Once of Root Hollow",
+        "greeting": "You can sit. Most walk on. The Verger crossed my name off his register a long while back, and a crossed name learns to keep quiet so nobody has to be reminded it's still here."
       }
     },
     "quests": {
@@ -6549,6 +6917,47 @@ export const tr_TR: EnTranslations = {
           "0": {
             "label": "Mağara lokması toplandı"
           }
+        },
+        "dialog": {
+          "complain": "I was just down there. You watched me climb out of the hole.",
+          "complainReply": "i know it, friend, i know... the vase don't keep a calendar and neither does my stomach. but look at them boots and tell me they don't got one more descent in 'em... no rush. the hole ain't goin' anywhere. that's kinda its whole deal...",
+          "refuse": "No. I'm not going back down there.",
+          "refuseReply": "oh... oh, okay. ...okay. that's... yeah. no, that's fair, friend, that's fair... the vase heard it too, and between you and me i think he respects it. here, take the cutting anyway. you went down once, and that's once more than most..."
+        }
+      },
+      "q_the_wavelength": {
+        "title": "On the Wavelength",
+        "text": "the cutting's yours now, friend, so let's talk about what comes after... two things, and neither one's a trial, more like an interduction. first, cross the vase and meet elder yarrow, she teaches a whole second callin', a different way to play this whole thing, and every soul that comes through here oughta know that door's open... second, come on back and feed me somethin', don't matter which, emberbulb or morsel, i'm always runnin' on empty and the vase always wants for smoke. that part never really ends, to a greenpaw degree.",
+        "completion": "there it is... you felt the room go thick for a second, right? that's him, noticin'. that's the whole trick, friend - you feed me, i smoke up the place, he leans in a little closer to payin' attention. ain't complicated. ain't never gonna stop bein' true, neither. c'mere anytime you're carryin' spare bulbs or morsels, the hearth don't keep a calendar... and hey. welcome to the hollow. i realize i never actually said that part.",
+        "objectives": {
+          "0": {
+            "label": "Elder Yarrow met"
+          },
+          "1": {
+            "label": "Fed at the hearth"
+          }
+        },
+        "dialog": {
+          "complain": "Another errand? I just climbed out of that hole.",
+          "complainReply": "no, no, hear me out, this ain't cave work... this one's easy, this one's just walkin' and one good feed. lightest thing i ever asked of you, i promise, on the wavelength and everything.",
+          "refuse": "I'll find my own training, thanks.",
+          "refuseReply": "...fair 'nough. can't make a soul learn somethin' 'fore they're ready. door's open when it ain't 'not yet' no more... here, take this anyway, least i can do for you showin' up at all."
+        }
+      },
+      "q_keep_him_lit": {
+        "title": "Keep Him Lit",
+        "text": "three times, friend, that's the number... not sacred, just enough to turn a favor into a habit, and habits are the only religion i actually trust... c'mon back and feed the hearth three separate times, don't matter the order, don't matter which of the two, emberbulb or morsel, and i'll believe you're really here to stay, not just passin' through on your way to somethin' bigger...",
+        "completion": "three for three... you're not just visitin' anymore, friend, you're keepin' somethin' alive, and that's the whole ballgame if you ask me, which nobody did, but i'm sayin' it anyway... here. hold onto this, it don't do nothin', it just remembers, same as the rest of us down here...",
+        "objectives": {
+          "0": {
+            "label": "Hearth fed"
+          }
+        },
+        "dialog": {
+          "complain": "I already fed you once. Isn't that enough?",
+          "complainReply": "once is a favor, friend, three's a habit, and i been burned by favors before... this ain't about the hearth needin' it, the hearth's fine, i keep it fine, it's about you comin' back on your own two feet 'cause you wanted to, not 'cause some quest marker told you to... three times. no rush on the countin'.",
+          "refuse": "I'm not doing this three separate times. Once was enough.",
+          "refuseReply": "...yeah. yeah, okay, i hear you, friend, that's a fair enough line to draw... tell you what, here, take it anyway, ain't earned in the strictest sense but neither's most of what i hand out, and the wavelength don't really keep score the way i pretend it does..."
         }
       },
       "q_root_hollow_boars": {
@@ -6564,7 +6973,7 @@ export const tr_TR: EnTranslations = {
       "q_root_hollow_boars_ii": {
         "title": "Root Hollow's Reckoning",
         "text": "I will admit what the office discourages admitting: five was optimistic. The lower dens keep pushing up more. Eight further, and I can close the season without amending the record a third time. The record resents amendment. So do I.",
-        "completion": "Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me.",
+        "completion": "Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me. The register itself is older than that arrangement, bound in a hand I have never met, keeping a count I choose not to add. Someone was thorough here, once. I only try to keep pace.",
         "objectives": {
           "0": {
             "label": "Wild Boar slain"
@@ -6588,6 +6997,26 @@ export const tr_TR: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Forest Wolf slain"
+          }
+        }
+      },
+      "q_have_you_eaten": {
+        "title": "Have You Eaten?",
+        "text": "There's a bard at the gate who plays for coppers and eats when the coppers come, which isn't often. I've got a bowl warm and one to spare. Carry it down to him, would you? And don't tell him it was pity. Tell him it was extra.",
+        "completion": "You're back. Did he eat? Good. That's good. And did you? ... You didn't, I can see it. Sit, then. You don't have to be great to be something good. Greatness isn't kindness. Eat.",
+        "objectives": {
+          "0": {
+            "label": "Warm meal carried to the bard"
+          }
+        }
+      },
+      "q_someone_your_own_size": {
+        "title": "Someone Your Own Size",
+        "text": "There's a woman near Root Hollow the world has been unkind to. Her name was struck from the register, and people treat a struck name like it can't hear. Go and sit with her a while. You don't have to fix anything. Just be someone her own size.",
+        "completion": "You stayed. She won't say it mattered, but it did, I promise you it did. Here, this is for you. A sprig off a willow I'm fond of. It does nothing at all. It only remembers that you were kind when nothing made you.",
+        "objectives": {
+          "0": {
+            "label": "Sat a while with Orla"
           }
         }
       }
@@ -6764,6 +7193,10 @@ export const tr_TR: EnTranslations = {
       }
     },
     "itemSets": {
+      "boundstone_vanguard": {
+        "name": "Boundstone Vanguard",
+        "bonus3": "Increases attack and casting speed by 15%."
+      },
       "crownforged": {
         "name": "Taçdövme savaş takımı",
         "bonus2": "Saldırı gücünü 40 artırır.",
@@ -6773,6 +7206,10 @@ export const tr_TR: EnTranslations = {
         "name": "Ölüm Lordu savaş takımı",
         "bonus2": "Saldırı gücünü 40 artırır.",
         "bonus3": "Gücü 15 ve dayanıklılığı 15 artırır."
+      },
+      "greyjaw_stalker": {
+        "name": "Greyjaw Stalker's Kit",
+        "bonus3": "Increases attack and casting speed by 15%."
       },
       "necromancers": {
         "name": "Nekromansır giysileri",
@@ -6794,10 +7231,32 @@ export const tr_TR: EnTranslations = {
         "bonus2": "Hasarın neden olduğu büyü geri itmesini %50 azaltır.",
         "bonus3": "Alınan hasar büyü yapmanı geciktirmez."
       },
+      "vale_arcanist": {
+        "name": "Vale Arcanist's Regalia",
+        "bonus3": "Increases attack and casting speed by 15%."
+      },
       "wyrmshadow": {
         "name": "Wyrm Gölgesi takımı",
         "bonus2": "Saldırı gücünü 40 artırır.",
         "bonus3": "Çevikliği 15 ve kritik şansını %2 artırır."
+      }
+    },
+    "readables": {
+      "torn_ledger_page": {
+        "title": "A Torn Ledger",
+        "pages": {
+          "0": "Root Hollow, entered to rest. Fallow Acres, entered to rest. The lake at Mossbank, which rests whether we enter it or not. Signed and dated, as the register wants.",
+          "1": "Tally of the season so far: three seedlings up through the road stones, which is not on any calendar of mine. I have stopped scratching them out. They come back faster than the ink dries, and the ink was not cheap.",
+          "2": "A note to whoever keeps this after me. Count the boars, count the wolves, count the days. Do not count the green. It counts back, and it does not stop where you do."
+        }
+      },
+      "keepers_marginalia": {
+        "title": "A Keeper's Marginalia",
+        "pages": {
+          "0": "Left in the margin of a hymnbook with the hymns worn out of it. The hand is quick, the way a hand is quick when it writes while walking.",
+          "1": "The wolves circle Fallow Acres from the tree line, always the same ring, always sunwise. A thing that circles long enough learns the shape of what it circles. So do I. So, I think, does the ground.",
+          "2": "If you are reading this you have stopped walking, which is the one thing I never learned to do. Rest a moment. The Reaches will still be here. That is rather the whole trouble with it."
+        }
       }
     }
   },

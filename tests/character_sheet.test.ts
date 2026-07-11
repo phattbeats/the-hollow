@@ -45,8 +45,8 @@ function input(over: Partial<CharacterSheetInput> = {}): CharacterSheetInput {
   return {
     row: makeRow('shaman', 20, makeState()),
     visibility: 'owner',
-    realm: 'Claudemoon',
-    origin: 'https://worldofclaudecraft.com',
+    realm: 'The Hollow',
+    origin: 'https://thehollow.world',
     guild: 'Echoes of Claude',
     rank: { scope: 'realm', rank: 27, total: 4012 },
     updatedAt: '2026-06-23T00:00:00.000Z',
@@ -66,7 +66,7 @@ describe('characterSheet — shared fields', () => {
   it('derives classLabel, zone, virtualLevel, prestige, spec, avatar + profile urls', () => {
     const sheet = characterSheet(input());
     expect(sheet.name).toBe('Thrallish');
-    expect(sheet.realm).toBe('Claudemoon');
+    expect(sheet.realm).toBe('The Hollow');
     expect(sheet.class).toBe('shaman');
     expect(sheet.classLabel).toBe('Shaman');
     expect(sheet.level).toBe(20);
@@ -75,8 +75,8 @@ describe('characterSheet — shared fields', () => {
     expect(sheet.zone).toBe(zoneAt(0).name);
     expect(sheet.guild).toBe('Echoes of Claude');
     expect(sheet.rank).toEqual({ scope: 'realm', rank: 27, total: 4012 });
-    expect(sheet.avatarUrl).toBe('https://worldofclaudecraft.com/avatar/shaman/0.png');
-    expect(sheet.profileUrl).toBe('https://worldofclaudecraft.com/c/Thrallish');
+    expect(sheet.avatarUrl).toBe('https://thehollow.world/avatar/shaman/0.png');
+    expect(sheet.profileUrl).toBe('https://thehollow.world/c/Thrallish');
     expect(sheet.arena['1v1']).toEqual({ rating: 1600, wins: 10, losses: 4 });
   });
 

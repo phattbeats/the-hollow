@@ -96,7 +96,7 @@ describe('relay (in-game "!" community posts)', () => {
     characterName: 'Aldric',
     level: 12,
     className: 'Hunter',
-    realm: 'Claudemoon',
+    realm: 'The Hollow',
     zone: 'Eastbrook Vale',
     message: 'need a healer for Cragmaw Crypt',
     profileUrl: 'https://woc.test/c/Aldric',
@@ -139,7 +139,7 @@ describe('relay (in-game "!" community posts)', () => {
     expect(embed.description).toBe('need a healer for Cragmaw Crypt');
     expect(embed.fields).toEqual([
       { name: 'Character', value: 'Aldric - Level 12 Hunter', inline: true },
-      { name: 'Location', value: 'Eastbrook Vale (Claudemoon)', inline: true },
+      { name: 'Location', value: 'Eastbrook Vale (The Hollow)', inline: true },
     ]);
     const button = msg.components[0].components[0];
     expect(button.style).toBe(5); // link button
@@ -170,7 +170,7 @@ describe('significant-activity cards', () => {
   it('level-20 card pings the subject and shows the cap', () => {
     const msg = buildActivityMessage({
       kind: 'levelup',
-      realm: 'Claudemoon',
+      realm: 'The Hollow',
       profileUrl: 'https://woc.test/c/Aldric',
       level: 20,
       participants: [linked('Aldric', '111')],
@@ -189,7 +189,7 @@ describe('significant-activity cards', () => {
   it('rare-loot card uses the quality color and names the item', () => {
     const msg = buildActivityMessage({
       kind: 'rareloot',
-      realm: 'Claudemoon',
+      realm: 'The Hollow',
       profileUrl: null,
       itemName: 'Ember Greatsword',
       quality: 'legendary',
@@ -203,7 +203,7 @@ describe('significant-activity cards', () => {
   it('duel card mentions both linked players and names the winner', () => {
     const msg = buildActivityMessage({
       kind: 'duel',
-      realm: 'Claudemoon',
+      realm: 'The Hollow',
       profileUrl: null,
       winnerName: 'Aldric',
       loserName: 'Mira',
@@ -222,7 +222,7 @@ describe('significant-activity cards', () => {
   it('arena card shows the signed rating delta', () => {
     const msg = buildActivityMessage({
       kind: 'arena',
-      realm: 'Claudemoon',
+      realm: 'The Hollow',
       profileUrl: null,
       ratingDelta: 24,
       participants: [linked('Aldric', '111')],
@@ -233,7 +233,7 @@ describe('significant-activity cards', () => {
   it('renders a plain name (no ping) for an unlinked participant', () => {
     const msg = buildActivityMessage({
       kind: 'duel',
-      realm: 'Claudemoon',
+      realm: 'The Hollow',
       profileUrl: null,
       winnerName: 'Aldric',
       loserName: 'Ghost',

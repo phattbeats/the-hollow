@@ -9,9 +9,12 @@
 // `src/sim`-pure: no DOM/Three/render-ui-game-net imports, no Math.random /
 // Date.now (enforced by tests/architecture.test.ts). Housing draws NO rng.
 //
-// Player-facing /house command text is deliberately English here, like the
-// v0.7 slash-command readouts (a documented backstop pending a dedicated
-// localization pass); the sim core stays language-agnostic.
+// Player-facing housing command text emits in English here (the sim core
+// stays language-agnostic); the client re-localizes it through
+// src/ui/sim_i18n.ts's RULES against the sim.house.* catalog keys (PHAA-428).
+// Claiming/placing/removing is an interact-key command (PHAA-405: walk up to
+// a plot signpost, it glows, press interact), not a typed /house chat command
+// (that chat form was removed by PHAA-482).
 
 import {
   HOLLOW_HOUSE_OBJECT_KINDS,
@@ -192,49 +195,6 @@ export class Housing {
       color: '#8f8',
       pid: meta.entityId,
     });
-  }
-
-  // "/house ..." chat routing (called from social/chat.ts). Returns true when
-  // the message was a /house command (handled, even if it errored).
-  handleChat(raw: string, pid: number): boolean {
-    const m = /^\/house(?:\s+(\S+))?(?:\s+(\S+))?(?:\s+(\S+))?\s*$/i.exec(raw);
-    if (!m) return false;
-    const sub = (m[1] ?? '').toLowerCase();
-    if (sub === 'claim') {
-      this.housingClaim(pid);
-      return true;
-    }
-    if (sub === 'place') {
-      const slot = parseInt(m[2] ?? '', 10) - 1;
-      this.housingPlace(Number.isFinite(slot) ? slot : -1, (m[3] ?? '').toLowerCase(), pid);
-      return true;
-    }
-    if (sub === 'remove') {
-      const slot = parseInt(m[2] ?? '', 10) - 1;
-      this.housingRemove(Number.isFinite(slot) ? slot : -1, pid);
-      return true;
-    }
-    // "/house" (or anything else): a self-only readout of your homestead.
-    const meta = this.ctx.players.get(pid);
-    if (!meta) return true;
-    const plot = this.plotOwnedBy(this.ownerKeyFor(meta));
-    if (!plot) {
-      this.ctx.error(
-        pid,
-        'You own no homestead. Stand on a free plot in the Hollow and type /house claim.',
-      );
-    } else {
-      const decor =
-        plot.objects.length > 0
-          ? plot.objects.map((o) => `${o.slot + 1}: ${o.kind}`).join(', ')
-          : 'none';
-      this.ctx.error(pid, `Your homestead: ${plot.plotId}. Decor: ${decor}.`);
-      this.ctx.error(
-        pid,
-        `/house place <1-${HOUSE_SLOT_COUNT}> <${HOLLOW_HOUSE_OBJECT_KINDS.join('|')}>, /house remove <slot>.`,
-      );
-    }
-    return true;
   }
 
   housingInfoFor(pid: number): import('../world_api/housing').HousingInfo | null {

@@ -26,11 +26,16 @@ command calls**. DOM/WebAudio-only; runs in `main.ts`.
 - **Never mutate sim state directly.** `input.ts` only records intent and fires
   callbacks; only `interactions.ts` touches the world, and only through the
   `IWorld`-shaped interfaces passed to it. Do not import `Sim`/`ClientWorld` here.
-- **`audio.ts`/`music.ts` synthesize everything**, every procedural SFX and music
-  note is built in code via WebAudio, with nothing to load. **`sfx.ts`/`voice.ts`
-  are the exception:** they play pre-rendered clips under `public/audio/` (spatial
-  effects + NPC voice) keyed off their `*_manifest.generated.ts`; a missing clip is
-  a silent no-op (the dialogue/combat text stays the source of truth).
+- **`audio.ts` synthesizes everything**, every procedural SFX is built in code via
+  WebAudio, with nothing to load. **`music.ts` is mostly the same** (every zone/
+  combat theme is composed and synthesized), but carries two narrow recorded-file
+  exceptions that duck the procedural score while active: the boss-fight loop
+  (`ensureBossElement`/`ensureBossBuffer`) and the hub ambient cycler
+  (`hub_ambient_playlist.ts`'s `HUB_AMBIENT_TRACKS`, empty until real tracks land,
+  see PHAA-435). **`sfx.ts`/`voice.ts` are the broader exception:** they play
+  pre-rendered clips under `public/audio/` (spatial effects + NPC voice) keyed off
+  their `*_manifest.generated.ts`; a missing clip is a silent no-op (the dialogue/
+  combat text stays the source of truth).
 - **`AudioContext` needs a user gesture**: `audio.init()`/`music.init()`/`sfx.init()`
   are called from `enterWorld` in `main.ts`, not at module load. `setVolume` is safe
   before init. (`voice.ts` uses a plain `Audio` element, so it has no gated init.)

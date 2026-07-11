@@ -728,7 +728,10 @@ describe('delve reward chest + surface exit flow', () => {
 
   it('the Bountiful roll is deterministic for a given seed', () => {
     // Read the raw roll via enterReliquary (enterFinale pins it false). Same seed
-    // ⇒ same outcome; seed 203 is known to roll Bountiful (drives the fixtures above).
+    // ⇒ same outcome; seed 24 is known to roll Bountiful under the current
+    // world-gen RNG draw order (re-derive with a brute-force seed search if
+    // upstream sim changes shift that order again; the other Bountiful-path
+    // tests in this file force `run.bountiful` directly and don't depend on it).
     const rollFor = (seed: number) => {
       const s = makeSim('warrior', seed);
       s.setPlayerLevel(DELVES.collapsed_reliquary.minLevel);
@@ -736,7 +739,7 @@ describe('delve reward chest + surface exit flow', () => {
       return s.delveRunForPlayer(s.playerId)?.bountiful;
     };
     expect(rollFor(1234)).toBe(rollFor(1234));
-    expect(rollFor(203)).toBe(true);
+    expect(rollFor(24)).toBe(true);
   });
 
   it('a Bountiful Coffer refuses the lower antes and only opens at Hard-tier + Premium ante', () => {

@@ -10,13 +10,13 @@
     "companionUpgrade rank bump + refreshDelveDaily day rollover"
   ],
   "draws": 3,
-  "drawDigest": "611d1a77",
+  "drawDigest": "391d1f61",
   "frames": [
     {
       "tick": 0,
       "time": 0,
-      "nextId": 400,
-      "state": "8df53963",
+      "nextId": 403,
+      "state": "de745ac6",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -29,16 +29,26 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 399,
+          "dialogState": {},
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -56,7 +66,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 90,
-          "id": 399,
+          "id": 402,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -99,23 +109,23 @@
     {
       "tick": 5,
       "time": 0.25,
-      "nextId": 417,
-      "state": "39d4f8b1",
-      "events": "b4025831",
+      "nextId": 420,
+      "state": "0259143a",
+      "events": "3fc146f4",
       "rng": {
         "draws": 1,
-        "digest": "cedffb90"
+        "digest": "e763f88a"
       }
     },
     {
       "tick": 7,
       "time": 0.35,
-      "nextId": 417,
-      "state": "6560b8bb",
+      "nextId": 420,
+      "state": "2c9986f0",
       "events": "741638a5",
       "rng": {
         "draws": 3,
-        "digest": "611d1a77"
+        "digest": "391d1f61"
       },
       "label": "advanced-to-finale",
       "players": [
@@ -124,17 +134,27 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 399,
+          "dialogState": {},
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 11200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -151,7 +171,7 @@
           "dodgeChance": 0.063,
           "fiveSecondRule": 99.35,
           "hp": 50000,
-          "id": 399,
+          "id": 402,
           "kind": "player",
           "level": 7,
           "lootFfaTimer": "Infinity",
@@ -193,12 +213,12 @@
     {
       "tick": 7,
       "time": 0.35,
-      "nextId": 417,
-      "state": "2637c64f",
-      "events": "02dc9841",
+      "nextId": 420,
+      "state": "a1ca2d3a",
+      "events": "60be9013",
       "rng": {
         "draws": 3,
-        "digest": "611d1a77"
+        "digest": "391d1f61"
       },
       "label": "shop-daily",
       "players": [
@@ -207,6 +227,13 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {
             "companion_tessa": 2
@@ -218,13 +245,16 @@
             "date": "2099-06-25"
           },
           "delveMarks": 89,
-          "entityId": 399,
+          "dialogState": {},
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "legs": "reliquary_legs",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 11200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -241,7 +271,7 @@
           "dodgeChance": 0.063,
           "fiveSecondRule": 99.35,
           "hp": 338,
-          "id": 399,
+          "id": 402,
           "kind": "player",
           "level": 7,
           "lootFfaTimer": "Infinity",
@@ -283,12 +313,12 @@
     {
       "tick": 9,
       "time": 0.45,
-      "nextId": 417,
-      "state": "5ed9adbd",
+      "nextId": 420,
+      "state": "60d8d544",
       "events": "741638a5",
       "rng": {
         "draws": 3,
-        "digest": "611d1a77"
+        "digest": "391d1f61"
       },
       "label": "final",
       "players": [
@@ -297,6 +327,13 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {
             "companion_tessa": 2
@@ -308,13 +345,16 @@
             "date": "2099-06-25"
           },
           "delveMarks": 89,
-          "entityId": 399,
+          "dialogState": {},
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "legs": "reliquary_legs",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 11200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -331,7 +371,7 @@
           "dodgeChance": 0.063,
           "fiveSecondRule": 99.45,
           "hp": 338,
-          "id": 399,
+          "id": 402,
           "kind": "player",
           "level": 7,
           "lootFfaTimer": "Infinity",
