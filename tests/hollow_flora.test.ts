@@ -19,8 +19,9 @@ describe('hollowFloraLayout', () => {
   it('produces some flora but a bounded amount', () => {
     const flora = hollowFloraLayout(SEED);
     expect(flora.length).toBeGreaterThan(0);
-    // 6 anchors (4 camps + 2 NPCs) capped at 5 each.
-    expect(flora.length).toBeLessThanOrEqual(30);
+    // 9 anchors (4 camps + 5 NPCs, grown from 2 since this test was authored
+    // as PHAA-439/552/etc. posted more NPCs) capped at 5 each.
+    expect(flora.length).toBeLessThanOrEqual(45);
   });
 
   it('stays inside the starter zone (back to normal past its north edge)', () => {
