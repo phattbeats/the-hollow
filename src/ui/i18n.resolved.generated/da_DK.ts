@@ -1936,6 +1936,13 @@ export const da_DK: EnTranslations = {
     "begin": "Begin",
     "skip": "Skip"
   },
+  "apiError": {
+    "crossSiteRejected": "Cross-site request rejected.",
+    "notAuthenticated": "Not authenticated.",
+    "readOnlyToken": "This token is read-only.",
+    "characterNotFound": "Character not found.",
+    "rateLimited": "Too many attempts. Wait a minute and try again."
+  },
   "skinEvent": {
     "title": "Kosmetisk Cache",
     "subtitle": "Du låste en {rank}-belønning op — vælg en hvilken som helst skin på eller under den.",

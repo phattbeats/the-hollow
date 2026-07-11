@@ -1,5 +1,6 @@
 import { timingSafeEqual } from 'node:crypto';
 import type * as http from 'node:http';
+import type { ApiErrorCode } from '../src/net/api_error_codes';
 import { specialRoleByKey } from '../src/sim/discord_roles';
 import { pool } from './db';
 import { discordFlexForAccount, setDiscordPresenceCache } from './discord';
@@ -18,8 +19,19 @@ function ok(res: http.ServerResponse, data: unknown): void {
   json(res, 200, { success: true, data, error: null });
 }
 
-function fail(res: http.ServerResponse, status: number, error: string, data: unknown = null): void {
-  json(res, status, { success: false, data, error });
+// `code` is optional: this server<->bot channel keeps its own `{success,data,error}`
+// envelope (not the RFC 9457 problem+json shape server/http_errors.ts writes for
+// browser-facing routes), but a secret-mismatch denial still gets the same stable
+// NOT_AUTHENTICATED code (PHAA-528, primitive 4/6's internal-secret gate) so it
+// classifies consistently with every other "not authenticated" denial.
+function fail(
+  res: http.ServerResponse,
+  status: number,
+  error: string,
+  data: unknown = null,
+  code?: ApiErrorCode,
+): void {
+  json(res, status, { success: false, data, error, ...(code ? { code } : {}) });
 }
 
 function secretsMatch(actual: string, expected: string): boolean {
@@ -42,7 +54,8 @@ export async function handleInternalApi(
     const expected = process.env.RESTART_COUNTDOWN_SECRET ?? '';
     if (!expected) return fail(res, 404, 'unknown endpoint');
     const actual = String(req.headers['x-woc-deploy-secret'] ?? '');
-    if (!secretsMatch(actual, expected)) return fail(res, 401, 'not authenticated');
+    if (!secretsMatch(actual, expected))
+      return fail(res, 401, 'not authenticated', null, 'NOT_AUTHENTICATED');
     const status = game.startRestartCountdown();
     if (!status.started) return fail(res, 409, 'restart countdown already active', status);
     return ok(res, status);
@@ -67,7 +80,8 @@ async function handleDiscordInternal(
   const expected = process.env.DISCORD_BOT_SECRET ?? '';
   if (!expected) return fail(res, 404, 'unknown endpoint'); // feature off
   const actual = String(req.headers['x-woc-discord-secret'] ?? '');
-  if (!secretsMatch(actual, expected)) return fail(res, 401, 'not authenticated');
+  if (!secretsMatch(actual, expected))
+    return fail(res, 401, 'not authenticated', null, 'NOT_AUTHENTICATED');
 
   // GET /internal/discord/flex?discord_user_id=... -> top character + status.
   if (req.method === 'GET' && url.pathname === '/internal/discord/flex') {
