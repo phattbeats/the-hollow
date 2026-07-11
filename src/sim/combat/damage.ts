@@ -499,6 +499,7 @@ export function handleDeath(ctx: SimContext, e: Entity, killer: Entity | null): 
     if (meta) meta.counters.deaths++;
     e.autoAttack = false;
     e.queuedOnSwing = null;
+    e.queuedCastAbility = null;
     e.comboPoints = 0;
     e.eating = null;
     e.drinking = null;
