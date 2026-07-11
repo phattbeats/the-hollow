@@ -926,6 +926,7 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.flavorText':
     '...telde veertig dagen bij kaarslicht voor ik de draad kwijtraakte. Het duister hier beneden vergeet Hem niet, ook al is Hij deze plek vergeten. Als de reiger laag cirkelt, zeg de Koster dat de pit nog brandt...',
   'entities.items.keeper_coal.name': 'Een Kool Die Nooit Afkoelde',
+  'entities.items.willow_sprig.name': 'Een Wilgentakje',
   'entities.items.worn_prayer_token.name': 'Versleten Gebedspenning',
   'entities.items.worn_prayer_token.flavorText':
     '...glad aan één kant door een duim die niet de mijne is, die dezelfde ondiepe groef in honderd andere zoals deze sleet voor deze, althans dat wil de stapel hier beneden je doen geloven. één duim slijt geen honderd penningen. veel duimen slijten wel één groef...',

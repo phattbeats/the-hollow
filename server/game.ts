@@ -127,7 +127,10 @@ const CHAT_RATE_ERROR_COOLDOWN_SECONDS = 4;
 const CHAT_COOLDOWN_SECONDS = 20;
 const CHAT_RATE_VIOLATIONS_FOR_COOLDOWN = 3;
 const WHO_RESULT_LIMIT = 50;
-const MAX_ACTIVE_SESSIONS_PER_ACCOUNT = 2;
+// One live session per account: Ravenpost mail moves coin and goods between
+// an account's characters, so the old allowance of a second online character
+// (self-trade by dual-boxing) is no longer needed. GMs are exempt.
+const MAX_ACTIVE_SESSIONS_PER_ACCOUNT = 1;
 // WS protocol-level ping cadence; see the keepalive interval in start().
 const WS_KEEPALIVE_PING_MS = 30_000;
 const RESTART_COUNTDOWN_TOTAL_SECONDS = 600;
@@ -183,6 +186,11 @@ type ClientMessage = Record<string, unknown> & {
   name?: string;
   node?: string;
   npc?: number;
+  // Branching-dialogue dispatch (PHAA-562): the speaking NPC's string template id
+  // and the picked choice id. Distinct from the numeric `npc` entity field and
+  // the loot-roll `choice` enum, which carry unrelated values on other commands.
+  npcId?: string;
+  choiceId?: string;
   objectId?: number;
   price?: number;
   q?: string;
@@ -3021,8 +3029,8 @@ export class GameServer {
       // sim re-looks-up the choice in the NPC's tree, re-checks its gate, and
       // applies its disposition/flag effect (never trusting a client-sent value).
       case 'dialogChoose':
-        if (typeof msg.npc === 'string' && typeof msg.choice === 'string') {
-          sim.dialogChoose(msg.npc, msg.choice, pid);
+        if (typeof msg.npcId === 'string' && typeof msg.choiceId === 'string') {
+          sim.dialogChoose(msg.npcId, msg.choiceId, pid);
         }
         break;
       // dev/ops commands, only when ALLOW_DEV_COMMANDS=1 (never in production)

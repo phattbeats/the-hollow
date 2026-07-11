@@ -246,15 +246,13 @@ describe('linkdead grace lifecycle', () => {
     const a = expectJoined(server.join(ws, 11, 101, 'Linka', 'warrior', null));
     dropSocket(server, a, ws);
 
-    // two fresh live characters now join over the top of the linkdead one,
-    // filling the fork's cap of 2 live sessions per account
+    // a fresh live character now joins over the top of the linkdead one,
+    // filling the fork's cap of 1 live session per account
     const b = expectJoined(server.join(fakeWs(), 11, 102, 'Liveb', 'mage', null));
-    const c = expectJoined(server.join(fakeWs(), 11, 103, 'Livec', 'rogue', null));
-    expect(server.join(fakeWs(), 11, 104, 'Lived', 'priest', null)).toEqual({
+    expect(server.join(fakeWs(), 11, 103, 'Livec', 'rogue', null)).toEqual({
       error: 'too many characters on this account are already in the world',
     });
     expect(b.characterId).toBe(102);
-    expect(c.characterId).toBe(103);
   });
 
   it('rejects a linkdead character for a different account, but takeover still works', async () => {

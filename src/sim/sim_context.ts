@@ -22,6 +22,7 @@ import type { Rng } from './rng';
 import type {
   ArenaMatch,
   ArenaQueueUnit,
+  BoarballState,
   DuelState,
   FiestaState,
   InstanceSlot,
@@ -120,6 +121,8 @@ export interface SimContextPrimitives {
   arenaQueue1v1: number[];
   arenaQueue2v2: ArenaQueueUnit[];
   arenaQueueFiesta: ArenaQueueUnit[];
+  // Boarball (PHAA-572): a flat FIFO queue of solo pids (unranked, no premades).
+  arenaQueueBoarball: number[];
   readonly arenaBusySlots: Set<number>;
   nextArenaMatchId: number;
   // I2a delve runs: the live run pool (seeded in the Sim ctor, never reassigned) and
@@ -229,6 +232,17 @@ export interface SimContextCallbacks {
   updateFiestaActive(match: ArenaMatch): void;
   fiestaRestoreChar(meta: PlayerMeta, e: Entity): void;
   clearFiestaAugments(meta: PlayerMeta, e: Entity): void;
+  // Boarball (PHAA-572), the arena.ts/fiesta.ts mold: createBoarballState mirrors
+  // createFiestaState (a no-arg placeholder, startArenaMatch calls it inline
+  // before `match` exists); boarballKickoff does the actual ball spawn/placement
+  // once `match` exists (called once at match start, then again after every goal).
+  createBoarballState(): BoarballState;
+  boarballKickoff(match: ArenaMatch, concedingTeam: 'A' | 'B' | null): void;
+  updateBoarballActive(match: ArenaMatch): void;
+  boarballStandardize(meta: PlayerMeta, e: Entity): void;
+  boarballRestoreChar(meta: PlayerMeta, e: Entity): void;
+  boarballShoot(p: Entity, power: number, loft: number): void;
+  boarballPass(p: Entity, target: Entity, power: number): void;
   readyArenaFighter(e: Entity, opts: { clearPrep: boolean }): void;
   resetForArena(e: Entity): void;
   isArenaTeamWiped(match: ArenaMatch, team: 'A' | 'B'): boolean;
@@ -700,6 +714,12 @@ export function createSimContext(host: SimContextHost): SimContext {
     set arenaQueueFiesta(v) {
       host.arenaQueueFiesta = v;
     },
+    get arenaQueueBoarball() {
+      return host.arenaQueueBoarball;
+    },
+    set arenaQueueBoarball(v) {
+      host.arenaQueueBoarball = v;
+    },
     get arenaBusySlots() {
       return host.arenaBusySlots;
     },
@@ -772,6 +792,13 @@ export function createSimContext(host: SimContextHost): SimContext {
     updateFiestaActive: host.updateFiestaActive,
     fiestaRestoreChar: host.fiestaRestoreChar,
     clearFiestaAugments: host.clearFiestaAugments,
+    createBoarballState: host.createBoarballState,
+    boarballKickoff: host.boarballKickoff,
+    updateBoarballActive: host.updateBoarballActive,
+    boarballStandardize: host.boarballStandardize,
+    boarballRestoreChar: host.boarballRestoreChar,
+    boarballShoot: host.boarballShoot,
+    boarballPass: host.boarballPass,
     readyArenaFighter: host.readyArenaFighter,
     resetForArena: host.resetForArena,
     isArenaTeamWiped: host.isArenaTeamWiped,

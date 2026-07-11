@@ -260,6 +260,8 @@ import * as duelMod from './social/duel';
 // public path `import { Sim, eloDelta } from './sim'` (tests/arena.test.ts) holds.
 export { eloDelta } from './social/arena';
 
+import type { BbBallKinematics } from './boarball_ball';
+import * as boarballMod from './social/boarball';
 import * as fiestaMod from './social/fiesta';
 // A3: Fiesta tuning consts moved to social/fiesta.ts; these five are read back here
 // by the fiestaMatchInfo presentation accessor (which STAYS on Sim).
@@ -546,6 +548,7 @@ export interface ArenaMatch {
   ratingB: number;
   defeated: Set<number>;
   fiesta?: FiestaState; // present only for format === 'fiesta'
+  boarball?: BoarballState; // present only for format === 'boarball'
 }
 
 // Everything that makes a Fiesta bout a fiesta. Lives on the ArenaMatch so it is
@@ -586,6 +589,20 @@ export interface FiestaPowerup {
   z: number;
   state: 'spawning' | 'ready';
   timer: number; // spawning: countdown to ready; ready: countdown to despawn
+}
+
+// Boarball (PHAA-572): the unranked 2v2 sport minigame. Lives on the ArenaMatch
+// so it is torn down with the match, same shape/lifecycle role as FiestaState.
+// Zero rng draws (ball physics/matchmaking are pure functions of sim state), so
+// the tick-path parity goldens are untouched.
+export interface BoarballState {
+  scoreA: number;
+  scoreB: number;
+  // Ball kinematics, INSTANCE-LOCAL (relative to arenaOrigin(match.slot); the
+  // match driver converts to/from the ball entity's world pos.pos each tick).
+  ball: BbBallKinematics;
+  ballEntityId: number; // -1 until the first kickoff spawns it
+  kickoffTeam: 'A' | 'B'; // the team that restarts play (the side conceded on)
 }
 
 // A2: eloDelta (with ARENA_K_FACTOR) moved to social/arena.ts; re-exported from the
@@ -751,6 +768,10 @@ export interface PlayerMeta {
   // fiestaStandardize); restored on bout exit and used by serializeCharacter so
   // the temporary level-20 build is never persisted.
   fiestaRestore: { level: number; xp: number; talents: TalentAllocation } | null;
+  // Boarball (PHAA-572, session-only, never persisted): the player's real
+  // `known` abilities while swapped to the sport kit for a bout; restored on
+  // exit (see social/boarball.ts boarballStandardize/boarballRestoreChar).
+  boarballRestore: ResolvedAbility[] | null;
   loadouts: SavedLoadout[];
   activeLoadout: number; // index into loadouts, or -1 for none
   raidLockouts: Map<string, number>; // dungeon id -> epoch ms expiry
@@ -978,6 +999,7 @@ export class Sim {
   arenaQueue1v1: number[] = [];
   arenaQueue2v2: ArenaQueueUnit[] = [];
   arenaQueueFiesta: ArenaQueueUnit[] = []; // 2v2 Fiesta (party mode) queue
+  arenaQueueBoarball: number[] = []; // unranked 2v2 boarball FIFO queue (PHAA-572)
   arenaMatches = new Map<number, ArenaMatch>(); // pid -> shared match (both pids)
   private arenaBusySlots = new Set<number>();
   private nextArenaMatchId = 1;
@@ -1118,6 +1140,22 @@ export class Sim {
       // still spawns on dry land even though combat movement can enter water.
       const minHeight = this.mobCanSpawnInWater(template) ? WATER_LEVEL - 0.5 : WATER_LEVEL + 0.4;
       for (let i = 0; i < camp.count; i++) {
+        if (template.dummy) {
+          // A practice dummy is a fixed, deterministic prop (no scatter, fixed level,
+          // never wanders): spawn it WITHOUT drawing any RNG so adding one never
+          // perturbs the world's seed-stable spawns and rolls.
+          const safe = this.findSafePos(camp.center.x, camp.center.z, minHeight);
+          const mob = createMob(
+            this.nextId++,
+            template,
+            template.maxLevel,
+            this.groundPos(safe.x, safe.z),
+          );
+          mob.facing = 0;
+          mob.prevFacing = 0;
+          this.addEntity(mob);
+          continue;
+        }
         const ang = this.rng.range(0, Math.PI * 2);
         const r = Math.sqrt(this.rng.next()) * camp.radius;
         const safe = this.findSafePos(
@@ -1432,6 +1470,7 @@ export class Sim {
       fiestaMods: null,
       fiestaSpecial: {},
       fiestaRestore: null,
+      boarballRestore: null,
       loadouts: [],
       activeLoadout: -1,
       raidLockouts: new Map(),
@@ -2198,6 +2237,12 @@ export class Sim {
       set arenaQueueFiesta(v) {
         sim.arenaQueueFiesta = v;
       },
+      get arenaQueueBoarball() {
+        return sim.arenaQueueBoarball;
+      },
+      set arenaQueueBoarball(v) {
+        sim.arenaQueueBoarball = v;
+      },
       get arenaBusySlots() {
         return sim.arenaBusySlots;
       },
@@ -2287,6 +2332,13 @@ export class Sim {
       updateFiestaActive: sim.updateFiestaActive.bind(sim),
       fiestaRestoreChar: sim.fiestaRestoreChar.bind(sim),
       clearFiestaAugments: sim.clearFiestaAugments.bind(sim),
+      createBoarballState: sim.createBoarballState.bind(sim),
+      boarballKickoff: sim.boarballKickoff.bind(sim),
+      updateBoarballActive: sim.updateBoarballActive.bind(sim),
+      boarballStandardize: sim.boarballStandardize.bind(sim),
+      boarballRestoreChar: sim.boarballRestoreChar.bind(sim),
+      boarballShoot: sim.boarballShoot.bind(sim),
+      boarballPass: sim.boarballPass.bind(sim),
       readyArenaFighter: sim.readyArenaFighter.bind(sim),
       resetForArena: sim.resetForArena.bind(sim),
       isArenaTeamWiped: sim.isArenaTeamWiped.bind(sim),
@@ -2805,7 +2857,7 @@ export class Sim {
     this.market.update();
     this.postOffice.update();
     this.greenpawHearth.update(DT);
-    this.plantSpeech.update(this.greenpawHearth.smokeValue);
+    this.plantSpeech.update(this.greenpawHearth.smokeValue, this.greenpawHearth.lastFeederName);
     updateNpcWander(this.ctx);
     drainDelayedEvents(this.ctx);
 
@@ -3655,7 +3707,14 @@ export class Sim {
     b.inCombat = true;
     // players and their pets pull wild mobs; pets never run wild-mob AI
     const aAttacker = a.kind === 'player' || (a.kind === 'mob' && a.ownerId !== null);
-    if (b.kind === 'mob' && b.ownerId === null && !b.dead && aAttacker && b.aiState !== 'evade') {
+    if (
+      b.kind === 'mob' &&
+      b.ownerId === null &&
+      !b.dead &&
+      aAttacker &&
+      b.aiState !== 'evade' &&
+      !MOBS[b.templateId]?.dummy // a training dummy never retaliates
+    ) {
       if (b.aiState === 'idle') this.aggroMob(b, a, true);
       else if (b.aggroTargetId === null) b.aggroTargetId = a.id;
     }
@@ -3664,7 +3723,8 @@ export class Sim {
       a.ownerId === null &&
       !a.dead &&
       b.kind === 'player' &&
-      a.aiState === 'idle'
+      a.aiState === 'idle' &&
+      !MOBS[a.templateId]?.dummy // a training dummy never aggros
     ) {
       this.aggroMob(a, b, false);
     }
@@ -5237,6 +5297,52 @@ export class Sim {
   }
 
   // -------------------------------------------------------------------------
+  // Boarball (PHAA-572), the unranked 2v2 sport minigame. Queue + matchmaking
+  // stay on arena.ts (every format's queue lives there); the live-match
+  // mechanics (ball physics, kit swap, kickoff/goal lifecycle) live in
+  // social/boarball.ts and are reached only through these seam-bound delegates
+  // (arena.ts's startArenaMatch/endArenaMatch/returnFromArena call them via ctx,
+  // never importing social/boarball.ts directly, the same one-way dependency
+  // fiesta.ts has onto arena.ts, kept the other way round here).
+  // -------------------------------------------------------------------------
+
+  boarballQueueJoin(pid?: number): void {
+    arenaMod.arenaQueueJoin(this.ctx, pid, 'boarball');
+  }
+
+  boarballQueueLeave(pid?: number): void {
+    arenaMod.arenaQueueLeave(this.ctx, pid);
+  }
+
+  private createBoarballState(): BoarballState {
+    return boarballMod.createBoarballState();
+  }
+
+  private boarballKickoff(match: ArenaMatch, concedingTeam: 'A' | 'B' | null): void {
+    boarballMod.boarballKickoff(this.ctx, match, concedingTeam);
+  }
+
+  private updateBoarballActive(match: ArenaMatch): void {
+    boarballMod.updateBoarballActive(this.ctx, match);
+  }
+
+  private boarballStandardize(meta: PlayerMeta, e: Entity): void {
+    boarballMod.boarballStandardize(meta, e);
+  }
+
+  private boarballRestoreChar(meta: PlayerMeta, e: Entity): void {
+    boarballMod.boarballRestoreChar(meta, e);
+  }
+
+  private boarballShoot(p: Entity, power: number, loft: number): void {
+    boarballMod.boarballShoot(this.ctx, p, power, loft);
+  }
+
+  private boarballPass(p: Entity, target: Entity, power: number): void {
+    boarballMod.boarballPass(this.ctx, p, target, power);
+  }
+
+  // -------------------------------------------------------------------------
   // 2v2 Fiesta: OFFLINE/DEV practice vs bots. The harness (spawn + queue + steer
   // three AI player bots) MOVED to social/fiesta_bots.ts (A3). It is offline-only
   // and reaches deep into Sim (casting, auto-attack, movement, add/remove player),
@@ -5375,14 +5481,17 @@ export class Sim {
     const standings: Record<ArenaFormat, ArenaStanding> = {
       '1v1': this.arenaStanding(meta, '1v1'),
       '2v2': this.arenaStanding(meta, '2v2'),
-      // Fiesta is unranked party play and it keeps no standing of its own; mirror
-      // 2v2 just to satisfy the bracket record (the Fiesta UI never reads it).
+      // Fiesta and boarball are unranked play, neither keeps a standing of its
+      // own; mirror 2v2 just to satisfy the bracket record (their UIs never
+      // read it).
       fiesta: this.arenaStanding(meta, '2v2'),
+      boarball: this.arenaStanding(meta, '2v2'),
     };
     const ladders: Record<ArenaFormat, import('../world_api').ArenaLadderEntry[]> = {
       '1v1': this.arenaLadder('1v1'),
       '2v2': this.arenaLadder('2v2'),
       fiesta: [],
+      boarball: [],
     };
     const format = match?.format ?? queuedFmt;
     const readoutFormat = format ?? '1v1';

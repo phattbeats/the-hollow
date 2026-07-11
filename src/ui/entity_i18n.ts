@@ -30,6 +30,8 @@ export type EntityTranslationKind =
   | 'mob'
   | 'npc'
   | 'npcIntro'
+  | 'npcJournal'
+  | 'npcDialog'
   | 'readable'
   | 'quest'
   | 'questObjective'
@@ -47,6 +49,9 @@ export type EntityTranslationField =
   | 'completion'
   | 'greeting'
   | 'introLine'
+  | 'journalLine'
+  | 'npcLine'
+  | 'choiceLabel'
   | 'readablePage'
   | 'readableTitle'
   | 'label'
@@ -78,6 +83,27 @@ export type EntityTranslationRequest =
       id: string;
       lineIndex: number;
       field: 'introLine';
+      values?: InterpolationValues;
+    }
+  | {
+      kind: 'npcJournal';
+      id: string;
+      lineIndex: number;
+      field: 'journalLine';
+      values?: InterpolationValues;
+    }
+  | {
+      kind: 'npcDialog';
+      npcId: string;
+      node: string;
+      field: 'npcLine';
+      values?: InterpolationValues;
+    }
+  | {
+      kind: 'npcDialog';
+      npcId: string;
+      choice: string;
+      field: 'choiceLabel';
       values?: InterpolationValues;
     }
   | {
@@ -245,6 +271,23 @@ function canonicalEntityText(request: EntityTranslationRequest): string {
         NPCS[request.id]?.introLines?.[request.lineIndex] ??
         `${request.id}.introLines.${request.lineIndex}`
       );
+    case 'npcJournal':
+      return (
+        NPCS[request.id]?.journalLines?.[request.lineIndex] ??
+        `${request.id}.journalLines.${request.lineIndex}`
+      );
+    case 'npcDialog': {
+      const tree = NPCS[request.npcId]?.dialogTree;
+      if (!tree) return request.npcId;
+      if (request.field === 'npcLine') {
+        return tree.nodes[request.node]?.npcLine ?? `${request.npcId}.dialog.nodes.${request.node}`;
+      }
+      for (const node of Object.values(tree.nodes)) {
+        const choice = node.choices.find((c) => c.id === request.choice);
+        if (choice) return choice.label;
+      }
+      return `${request.npcId}.dialog.choices.${request.choice}`;
+    }
     case 'readable': {
       const readable = READABLES_BY_ID[request.id];
       if (!readable) return request.id;
@@ -311,6 +354,14 @@ export function entityTranslationKey(request: EntityTranslationRequest): string 
       return `entities.npcs.${entityPathSegment(request.id)}.${request.field}`;
     case 'npcIntro':
       return `entities.npcs.${entityPathSegment(request.id)}.introLines.${request.lineIndex}`;
+    case 'npcJournal':
+      return `entities.npcs.${entityPathSegment(request.id)}.journalLines.${request.lineIndex}`;
+    case 'npcDialog':
+      // Kept to depth 5 (the catalog's TranslationKey template bottoms out at
+      // depth 6): node lines under dialogNode, player choices under dialogChoice.
+      return request.field === 'npcLine'
+        ? `entities.npcs.${entityPathSegment(request.npcId)}.dialogNode.${entityPathSegment(request.node)}`
+        : `entities.npcs.${entityPathSegment(request.npcId)}.dialogChoice.${entityPathSegment(request.choice)}`;
     case 'readable':
       return request.field === 'readableTitle'
         ? `entities.readables.${entityPathSegment(request.id)}.title`
@@ -340,11 +391,17 @@ function requestManifestEntry(request: EntityTranslationRequest): EntityTranslat
         ? `${request.zoneId}.pois.${request.poiIndex}`
         : request.kind === 'npcIntro'
           ? `${request.id}.introLines.${request.lineIndex}`
-          : request.kind === 'readable' && request.field === 'readablePage'
-            ? `${request.id}.pages.${request.pageIndex}`
-            : request.kind === 'questDialog'
-              ? `${request.id}.dialog.${request.field}`
-              : request.id;
+          : request.kind === 'npcJournal'
+            ? `${request.id}.journalLines.${request.lineIndex}`
+            : request.kind === 'npcDialog'
+              ? request.field === 'npcLine'
+                ? `${request.npcId}.dialogNode.${request.node}`
+                : `${request.npcId}.dialogChoice.${request.choice}`
+              : request.kind === 'readable' && request.field === 'readablePage'
+                ? `${request.id}.pages.${request.pageIndex}`
+                : request.kind === 'questDialog'
+                  ? `${request.id}.dialog.${request.field}`
+                  : request.id;
   const group: EntityTranslationGroup =
     request.kind === 'class' || request.kind === 'ability'
       ? 'classAbility'
@@ -562,6 +619,54 @@ export function entityTranslationManifest(): EntityTranslationManifestEntry[] {
         ),
       );
     });
+    (npc.journalLines ?? []).forEach((line, lineIndex) => {
+      entries.push(
+        entry(
+          'npcJournal',
+          `${npc.id}.journalLines.${lineIndex}`,
+          'journalLine',
+          line,
+          'world',
+          entityTranslationKey({ kind: 'npcJournal', id: npc.id, lineIndex, field: 'journalLine' }),
+        ),
+      );
+    });
+    if (npc.dialogTree) {
+      for (const [nodeId, node] of Object.entries(npc.dialogTree.nodes)) {
+        entries.push(
+          entry(
+            'npcDialog',
+            `${npc.id}.dialogNode.${nodeId}`,
+            'npcLine',
+            node.npcLine,
+            'world',
+            entityTranslationKey({
+              kind: 'npcDialog',
+              npcId: npc.id,
+              node: nodeId,
+              field: 'npcLine',
+            }),
+          ),
+        );
+        for (const choice of node.choices) {
+          entries.push(
+            entry(
+              'npcDialog',
+              `${npc.id}.dialogChoice.${choice.id}`,
+              'choiceLabel',
+              choice.label,
+              'world',
+              entityTranslationKey({
+                kind: 'npcDialog',
+                npcId: npc.id,
+                choice: choice.id,
+                field: 'choiceLabel',
+              }),
+            ),
+          );
+        }
+      }
+    }
   }
   for (const readable of Object.values(READABLES_BY_ID).sort(compareById)) {
     entries.push(
