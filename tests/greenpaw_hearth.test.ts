@@ -188,6 +188,24 @@ describe("Greenpaw's hearth: hunger/feed/decay", () => {
     expect(fresh.hollowHearth.smoke).toBe(sim.hollowHearth.smoke);
   });
 
+  it('remembers the keeper: the last feeder round-trips, and an old save without one is fine', () => {
+    standAtGreenpaw(sim, pid);
+    sim.addItem('emberbulb', 1);
+    sim.feedGreenpaw(pid);
+    const save = sim.serializeGreenpawHearth();
+    expect(typeof save.lastFeeder).toBe('string');
+    expect((save.lastFeeder as string).length).toBeGreaterThan(0);
+
+    const fresh = new Sim({ seed: 1, playerClass: 'mage', noPlayer: true });
+    fresh.loadGreenpawHearth(save);
+    expect(fresh.serializeGreenpawHearth().lastFeeder).toBe(save.lastFeeder);
+
+    // A pre-PHAA-484 save has no lastFeeder key at all: load() must tolerate it.
+    const legacy = new Sim({ seed: 1, playerClass: 'mage', noPlayer: true });
+    legacy.loadGreenpawHearth({ hunger: 10, smoke: 10 });
+    expect(legacy.serializeGreenpawHearth().lastFeeder).toBe(null);
+  });
+
   it('loadGreenpawHearth(null) is a safe no-op', () => {
     expect(() => sim.loadGreenpawHearth(null)).not.toThrow();
     expect(() => sim.loadGreenpawHearth(undefined)).not.toThrow();

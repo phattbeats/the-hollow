@@ -2911,12 +2911,73 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     '門を抜けると、開けた大地が広がっています。道の西側にある休閑地は、家を建てるのに良さそうです。',
   'entities.npcs.verger_zebediah.name': '堂守のゼベダイア',
   'entities.npcs.verger_zebediah.title': '根の空洞の衛士',
+  'entities.readables.torn_ledger_page.title': '破れた台帳',
+  'entities.readables.torn_ledger_page.pages.0':
+    '根の空洞、休ませると記帳。休閑地、休ませると記帳。モスバンクの湖、こちらが記そうと記すまいと、勝手に休んでおる。台帳の求めるまま、署名し日付を入れた。',
+  'entities.readables.torn_ledger_page.pages.1':
+    '今季ここまでの集計。道の敷石を突き破って芽が三本、俺のどの暦にも載っておらん。抜いて消すのはやめた。インクが乾くより早う戻ってくるし、そのインクは安くなかった。',
+  'entities.readables.torn_ledger_page.pages.2':
+    '俺の後にこれを継ぐ者への覚書。猪を数えよ、狼を数えよ、日を数えよ。緑だけは数えるな。あれは数え返してくる。そして、こちらが止まったところでは止まらん。',
+  'entities.readables.keepers_marginalia.title': '守り手の欄外書き',
+  'entities.readables.keepers_marginalia.pages.0':
+    '賛美歌のすり切れた聖歌集の余白に残されていた。その筆跡は速い、歩きながら書く手が速いのと同じように。',
+  'entities.readables.keepers_marginalia.pages.1':
+    '狼どもは木立の際から休閑地を回る。いつも同じ輪、いつも右回り。長く回れば、回っている相手の形を覚える。俺もそうだ。そして大地も、そうなのだと思う。',
+  'entities.readables.keepers_marginalia.pages.2':
+    'これを読んでいるなら、あんたは歩みを止めたわけだ。俺がついぞ覚えられなかった、たった一つのことをな。少し休め。外域は逃げやせん。それがまあ、外域の厄介なところなんだが。',
   'entities.npcs.verger_zebediah.greeting':
     '堂守のゼベダイアだ。この外域を暦に沿って管理しておる、少なくとも努めてはおる。根の空洞は今季、休ませると記しておいた。だが猪どもは告示を読まん。緩んだ土に気をつけ、台帳には触れるな。',
+  // First-meeting click-through intro (PHAA-439). Voice matched to the
+  // existing Japanese register (formal, ecclesiastical, です/ます), keeping
+  // the "sole surviving keeper of a register" throughline.
+  'entities.npcs.verger_zebediah.introLines.0':
+    '堂守のゼベダイア。根の空洞の衛士、ただ今のところその職は私一人でございます。ほとんどの日はここにおります。それ以外の日は、私がここにいるように感じております。外域には定足数は要りません、要るのは記録だけでございます。',
+  'entities.npcs.verger_zebediah.introLines.1':
+    '私が暦を継いでおります。暦は私を継いではくれませんが、季節の折に触れて試みてまいります。根の空洞は今季、休むと記されておりますが、下の巣にはその通達が届いておりません。鷺ももう驚いたふりをやめてしまいました。これが現状です。苦情ではございません、苦情には証人が要りますので。',
+  'entities.npcs.verger_zebediah.introLines.2':
+    '祠の中には台帳がございます。触れぬよう。足元には猪の掘り返した緩い土が広がっております。両方にお気をつけを。もしも御用がお務めについてのことでございましたら、二つの仕事をご用意できます。どちらも小さくはございません、そのうち一つは三度目の書き直しを避けたい次第で。これが、そもそも何故あなた様にお声を掛けておるかの次第でございます。',
   'entities.npcs.sexton_faddick.name': '墓守のファディック',
+  'entities.items.willow_sprig.name': '柳の小枝一本',
+  'entities.npcs.shade.name': 'シェイド',
+  'entities.npcs.shade.title': '旅の者',
+  'entities.npcs.shade.greeting':
+    'ああ、あなたね。よければ座って、水は逃げやしないから。今日はもう食べた？食べなきゃだめよ。',
+  'entities.npcs.shade.introLines.0':
+    '雑用の最中を見られてしまったわね。この如雨露は気にしないで、ただの水よ。少し水をやりたいものは、いつだってあるものだから。',
+  'entities.npcs.shade.introLines.1':
+    '私？名乗るほどの者じゃないわ。シェイド。歩いて、手の足りないところで手を貸すだけ。ずいぶん疲れて見えるわね。よければ、少し座っていって。',
+  'entities.npcs.gate_bard.name': '吟遊詩人ハルデン',
+  'entities.npcs.gate_bard.title': '門前の弾き手',
+  'entities.npcs.gate_bard.greeting':
+    '一曲、銅貨一枚でどう？いらない？いいのよ、たいていの日はいらないと言われる。私はこの門のために弾くけれど、門は一度も財布に手を伸ばしてくれたことがない。',
+  'entities.npcs.goodwife_orla.name': 'オルラ',
+  'entities.npcs.goodwife_orla.title': 'かつて根の空洞の者',
+  'entities.npcs.goodwife_orla.greeting':
+    '座っていいのよ。たいていの人は通り過ぎる。堂守はずっと前に私の名を台帳から消したの。消された名は、静かにしていることを覚える。まだここにいると、誰にも思い出させないように。',
+  'entities.quests.q_have_you_eaten.title': 'もう食べた？',
+  'entities.quests.q_have_you_eaten.text':
+    '門のところに、銅貨で暮らす吟遊詩人がいてね、銅貨が入ったときにだけ食べる。そしてそれは、めったに入らない。温かいものが一杯、余分にあるの。彼のところへ届けてくれる？同情だなんて言わないで。余ったものだ、と言って。',
+  'entities.quests.q_have_you_eaten.completion':
+    'おかえり。彼は食べた？よかった。それでいいの。あなたは？……食べていないわね、見ればわかる。なら、座って。善いものであるのに、偉くある必要はないの。偉さは優しさではないのだから。さあ、食べて。',
+  'entities.quests.q_have_you_eaten.objectives.0.label': '温かい食事を吟遊詩人へ届けた',
+  'entities.quests.q_someone_your_own_size.title': '身の丈に合う相手を',
+  'entities.quests.q_someone_your_own_size.text':
+    '根の空洞の近くに、世に冷たくされてきた女がいるの。彼女の名は台帳から消され、人は消された名を、まるで聞こえないもののように扱う。しばらく、そばに座ってあげて。何かを直す必要はないの。ただ、彼女と同じ身の丈でいてあげて。',
+  'entities.quests.q_someone_your_own_size.completion':
+    'いてくれたのね。彼女は大したことじゃないと言うでしょう。でも大したことだった、本当よ。さあ、これをあなたに。私が好きな柳の小枝。何の役にも立たないわ。ただ、誰にも強いられていないのに優しくしてくれたことを、覚えているだけ。',
+  'entities.quests.q_someone_your_own_size.objectives.0.label': 'オルラのそばに少し座った',
   'entities.npcs.sexton_faddick.title': '放浪の番人',
   'entities.npcs.sexton_faddick.greeting':
     'ファディックだ。まだ守るべき祠があるうちは、墓守を務める。俺はどこにも留まらん、ただ守るだけだ。毎晩、狼が休閑地の群れの周りを回っておる。長く回れば、回っている相手の形を覚えるものだ。あれはただの群れのままでいてもらいたい。',
+  // First-meeting click-through intro (PHAA-439). Wandering-keeper voice,
+  // aphoristic, longer arc. Keeps the "I do not stay anywhere; I keep"
+  // throughline.
+  'entities.npcs.sexton_faddick.introLines.0':
+    'ファディックだ。まだ墓守を務めるべき祠があるうちは、墓守を務める。そうした祠は、以前より少なくなったがの。俺はどこにも留まらん、ただ守るだけだ。守ること、それが今でも俺のほぼ全てでござる。',
+  'entities.npcs.sexton_faddick.introLines.1':
+    '長く回れば、回っている相手の形を覚えるものだ。休閑地の狼どもは、私が通りかかるずっと前から、毎晩群れの周りを回っておった。群れの形はまだ覚えておらぬ、それが何と言うか。群れの方こそ、彼らを覚えておる、それ以上のことでござる。',
+  'entities.npcs.sexton_faddick.introLines.2':
+    'お茶でもお出ししたいところだが、薬罐は私が昨日いたどこかにございます。湖のほとりには、建物が建つのを待っておる静かな土地が広がっておる。闇で狼が働く土地には、何も根を下ろせぬ。さて、二つの仕事がある、一つは一人でやりたくない仕事だ。歩きながら話しませうぞ。',
   'entities.quests.q_root_hollow_boars.title': '根の空洞の猪',
   'entities.quests.q_root_hollow_boars.text':
     '暦によれば、根の空洞は今季休むはずだった。だが猪どもには通達しておらん。虫を追ってこの地を半分も掘り返し、もう鷺が羽ばたいても逃げん。これは俺個人として腹に据えかねる。五頭狩れば、この季を記録どおりに記せる。',
@@ -3203,6 +3264,13 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hud.options.npcVoices': 'NPCボイス',
   'hud.options.voiceVolume': 'ボイス音量',
   'entities.zones.eastbrook_vale.pois.8.label': 'ブライトウッドの林間',
+  'boarball.queue.join': 'ボアボールのキューに参加しました。あと3人のプレイヤーを待っています…',
+  'boarball.queue.leave': 'ボアボールのキューから離脱しました。',
+  'boarball.log.welcome': 'ボアボールへようこそ！シュートとパスで相手チームを上回れ。',
+  'boarball.log.kickoff': 'キックオフ！',
+  'boarball.log.over': '試合終了！ワールドに戻ります…',
+  'boarball.error.tooFar': 'ボールに近づいていません。',
+  'boarball.error.noTeammate': '味方がターゲットされていません。',
   'fiesta.augment.aug_apex_predator.desc':
     '物理ダメージ+40%、クリティカル+15%、与えたダメージの12%を回復。',
   'fiesta.augment.aug_apex_predator.name': '頂点捕食者',
@@ -4002,9 +4070,39 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     '古き深淵に棲む、鱗に覆われた蛇のような存在。希少で誇り高く、見た目よりもはるかに強大です。',
   'guide.family.dragonkin.name': 'ドラゴンキン',
   'guide.family.elemental.desc': '嵐や岩が命を得た存在。元素の力が強く渦巻く荒野に縛られています。',
+  'guide.hollowPage.intro':
+    '聖堂の門をくぐると花瓶のある広場に出る。すべての新たな英雄が目覚め、そして必ず戻ってくる場所だ。大陸全体で共有される一つの拠点であり、最初に出会う顔ぶれも、最初の依頼も、そして本当に必要な唯一の我が家もここにある。',
+  'guide.hollowPage.greeting':
+    '戻ってきたか、それは何よりだ……いくつか神聖な用事が溜まっている、前と同じ波長でな。ちょっとこっちへ……',
+  'guide.hollowPage.greeter': 'グリーンポー修道士、花瓶のそばで',
+  'guide.hollowPage.vaseHeading': '花瓶',
+  'guide.hollowPage.vaseBody':
+    '誰もが花瓶から始まる。ホロウが築かれた中心にある、古く耳を傾ける存在だ。エンバーバルブを一つ燃やす、洞窟モーセルを一つ与える、そんな小さな捧げ物を求め、受け取ると気づいているようだ。花瓶の下手には洞窟の入り口があり、地下聖堂へと続いている。両脇には自分だけの我が家を築ける区画が並ぶ。',
+  'guide.hollowPage.figuresHeading': '誰が世話をしているか',
+  'guide.hollowPage.figuresBody':
+    '花瓶を維持している二人がいて、最初の数分でどちらにも出会うことになる。',
+  'guide.hollowPage.greenpawBody':
+    '花瓶の唯一の世話役であり、最初の依頼を渡してくる人物。自称の肩書きであることを本人が真っ先に認めており、ホロウにおける案内役に一番近い存在だ。',
+  'guide.hollowPage.yarrowBody':
+    '第二の天職の指南役。どのクラスも彼女から副業を学ぶことができ、花瓶を挟んでグリーンポーの向かいに立っている。',
+  'guide.hollowPage.questsHeading': '最初の依頼',
+  'guide.hollowPage.questsBody':
+    'グリーンポー自身の依頼の連なりが最初にやることだ。花瓶のリズムを教えてくれる四つの短い用事をこなしてから、より広いホロウへと送り出される。',
+  'guide.hollowPage.questBurnsBody': '花瓶が光のために燃やす、洞窟育ちの球根をひとつかみ集める。',
+  'guide.hollowPage.questFillsBody':
+    'もっと静かな空腹を満たす、洞窟で育つモーセルを同じように集める。',
+  'guide.hollowPage.questWavelengthBody':
+    '花瓶の第二の天職への案内と、自分の手で餌をやることを教わる。',
+  'guide.hollowPage.questKeepLitBody': '一度きりの頼みを、三回続けて習慣に変える。',
+  'guide.hollowPage.housingHeading': '自分だけの我が家',
+  'guide.hollowPage.housingBody':
+    '花瓶の周りには{n}区画の宅地が並び、あなただけのホロウの片隅として、手に入れて飾り付けるのを待っている。',
+  'guide.hollowPage.shrineHeading': '地下聖堂',
+  'guide.hollowPage.shrineBody':
+    '花瓶のそばの洞窟の入り口は地下聖堂へと続く。ホロウ自身のインスタンスダンジョンであり、新たな英雄が初めてパーティで臨む本当の試練だ。',
   'guide.worldPage.heading': '世界',
   'guide.worldPage.intro':
-    'World of ClaudeCraftは、自らの足で歩いて渡る一続きの大地です。南から北へと3つのゾーンが連なっています。ファストトラベルはなく、その旅路こそが冒険の一部です。',
+    '花瓶から聖堂の門を出ると、ホロウの奥地に出る。新たな来訪者が屋外で最初の一歩を踏み出す静かな土地だ。さらに北へ3つのゾーンが南から北へと連なっているが、そこへの道はまだ開かれていない。とはいえそれらは実在し、待っている。',
   'guide.worldPage.hub': '拠点',
   'guide.worldPage.hollowReachesBlurb':
     '聖堂の門をすぐ越えた先の穏やかな土地で、新参者はFallow AcresとRoot Hollow周辺の狼や猪を相手に腕を磨く。',
@@ -4031,9 +4129,11 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     '近くにいるパーティメンバーは、討伐や目標の達成判定を共有します。だから一緒にクエストを進めれば、遅くなることはなく、むしろ速くなります。クエストをグループと共有することもできます。/share コマンドでクリックできるリンクとしてチャットに投稿すれば、条件を満たす近くのメンバーは誰でも、ワンクリックで同じクエストを受けられます。',
   'guide.questsPage.storyTitle': 'すべてを貫く一本の糸',
   'guide.questsPage.storyBody':
-    'イーストブルックでの最初のおつかいの頃から、死者に異変が起きています。あるカルトが暗躍しており、その足取りは北へ、すべてのゾーンを貫いて続いています。それを追えば、背後に誰がいるのかがわかるでしょう。',
+    '最初の糸口は花瓶のすぐそばにある、グリーンポー修道士自身の短い依頼の連なりだ。その先にはホロウの奥地の静かな用事があり、さらにその先には谷から山頂まで進軍する死のカルトを巡る、より長い物語がある。それは本物で完結した内容だが、新たな英雄がまだ歩ける道ではない。花瓶自身の依頼はホロウのページで、残りは来るべきものとして以下に記す。',
   'guide.questsPage.soloNote':
     'メインストーリーは各章のフィナーレまで完全にソロで進められます。そのフィナーレは五人用のダンジョンです。',
+  'guide.questsPage.sagaGateNote':
+    'この物語は本物で、完結した内容だ。北への道が再び開いた時に開放される、同じ道筋である。新たな英雄が今日歩き出す場所ではない。その場所は花瓶、ホロウの中にある。',
   'guide.dungeonsPage.heading': 'ダンジョンとレイド',
   'guide.dungeonsPage.intro':
     'オープンワールドだけでは物足りなくなったら、パーティを組んでインスタンスへ踏み込みましょう。インスタンスとは、あなたのグループだけのために用意されたダンジョンの専用コピーです。',

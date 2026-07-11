@@ -59,6 +59,23 @@ All read-only, all in `.claude/agents/`:
 - **`release-malware-audit`** - the release gate for deliberately planted malicious code
   (triages `scripts/malware_scan.mjs`).
 
+## Hosted CI is OFF: the local pr-gate is the merge gate
+
+Board decision (2026-07-11): the studio does not pay for GitHub Actions. Actions is
+disabled on this repo (and all phattbeats project repos); do not re-enable it, do not
+wait for, request, or expect green checks on GitHub, and do not treat missing checks as
+a blocker or a pass. The merge gate is now local and mandatory:
+
+1. Merge latest `main` into the PR branch (or check out the merged tree).
+2. Run `bash scripts/pr_gate_local.sh`. It mirrors the old `pr-gate` CI job exactly
+   (i18n artifact freshness, malicious-code gate, `npm test`, `tsc --noEmit`, the three
+   builds) and must end with `PR GATE: GREEN`.
+3. Paste the tail of the gate output in a PR comment as evidence, then merge.
+
+A "built clean" claim without gate output is not evidence. Pre-existing failures on
+`main` are baselined the same way as before: run the gate on `main` first if in doubt,
+and only new failures block the PR.
+
 ## Keeping the gate current
 
 The reviewer agents encode facts about the codebase (seams, file roles, invariants, the gates

@@ -452,7 +452,8 @@ export const HOLLOW_OBJECTS: GroundObjectDef[] = [];
 // deliberately excluded from the overworld PROPS merge and the collider grid
 // (see sim/data.ts), so nothing here may imply cover or blocking.
 // Kept clear of the landmarks: the vase (0,0), Greenpaw (3,4), the cold
-// firepit (-4,2), the cave mouth (0,28), the gate (0,-40), the sanctum
+// firepit (-4,2), the cave mouth (0,28), the shrine gate on the exit line
+// (0,-16, the walk-out trigger; see entry/exitOffset below), the sanctum
 // pillars (|x|=14 at z 80/95/110), the dais (0,116, r 10.5), and the eight
 // house plots (x=+-9, z=74/84/94/104). The room itself spans TEMPLE_LAYOUT
 // (|x|<23, z -19..132).
@@ -687,6 +688,20 @@ export const HOLLOW_ITEMS: Record<string, ItemDef> = {
     kind: 'quest',
     sellValue: 0,
     questId: 'q_keep_him_lit',
+  },
+  // PHAA-558: the end-of-line keepsake for Sister Shade's player-facing arc
+  // (src/sim/content/hollow_zone.ts). Reward-INVERTED by design: no stats, ever,
+  // on Shade's line (Board-accepted brief, doc shade-brief rev 1e9abd48). Same
+  // "it does nothing, it only remembers" keepsake convention as greenpaw_bead /
+  // keeper_coal above. Granted at the end of the currently-shippable arc (the
+  // q_someone_your_own_size turn-in); when the gated finale q_the_watering_can
+  // lands behind PHAA-543, the charm can move to that turn-in (kept adjustable).
+  willow_sprig: {
+    id: 'willow_sprig',
+    name: 'A Willow Sprig',
+    kind: 'quest',
+    sellValue: 0,
+    questId: 'q_someone_your_own_size',
   },
   // PHAA-433: the Witness-Root's rare-chance drop. Class-neutral single-stat
   // budget, same convention as the other class-neutral pieces (cf. items.ts's

@@ -2786,12 +2786,73 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
     '大門外是一片開闊之地，道路以西的閒田莊看起來很適合安家。',
   'entities.npcs.verger_zebediah.name': '司事澤比迪亞',
   'entities.npcs.verger_zebediah.title': '根穴守衛',
+  'entities.readables.torn_ledger_page.title': '撕破的登記簿',
+  'entities.readables.torn_ledger_page.pages.0':
+    '根穴，記為休養。閒田莊，記為休養。莫斯岸的那片湖，無論我們記與不記，它自顧自地歇著。按登記簿的規矩，簽了名，注了日期。',
+  'entities.readables.torn_ledger_page.pages.1':
+    '本季至今的清點：路石縫裡冒出三株幼苗，我的任何一本曆書上都沒有這一條。我已經不再劃掉它們了。墨跡未乾它們就長回來，而那墨水可不便宜。',
+  'entities.readables.torn_ledger_page.pages.2':
+    '給我之後接手此簿的人留一句。數野豬，數狼，數日子。別去數那片綠。它會數回來，而且不會停在你停下的地方。',
+  'entities.readables.keepers_marginalia.title': '守護者的旁批',
+  'entities.readables.keepers_marginalia.pages.0':
+    '夾在一本聖歌都磨沒了的聖歌集頁邊留下的。那筆跡很快，就像一隻邊走邊寫的手那樣快。',
+  'entities.readables.keepers_marginalia.pages.1':
+    '狼群從林線繞著閒田莊打轉，永遠是同一個圈，永遠順著日頭轉。繞得夠久的東西，會摸清它所繞之物的形狀。我如此。我想，這片土地也如此。',
+  'entities.readables.keepers_marginalia.pages.2':
+    '你若讀到這裡，說明你停下了腳步，那正是我這輩子唯一沒學會的事。歇一會兒吧。外域還會在這兒。而這，恰恰就是它最麻煩的地方。',
   'entities.npcs.verger_zebediah.greeting':
     '司事澤比迪亞。我為外域記著一本曆書，至少一直在努力記。根穴這一季本該休養，可野豬沒讀那張告示。留神腳下的浮土，還有，別碰我的登記簿。',
+  // First-meeting click-through intro (PHAA-439). Voice matched to the
+  // existing Traditional Chinese register (literary classical, ecclesiastical),
+  // keeping the "sole surviving keeper of a register" throughline.
+  'entities.npcs.verger_zebediah.introLines.0':
+    '司事澤比迪亞。根穴守衛，依一紙任命而來，那紙任命眼下也就是我本人。大多數日子你在這裡便能尋到我；其餘的日子，我也在這裡尋到自己。外域不需法定人數，只需一本登記簿。',
+  'entities.npcs.verger_zebediah.introLines.1':
+    '我替這本曆書做主，曆書卻並不替我做主，不過某些季裡它也試著來過。根穴這一輪本記作休養，底下的獸穴卻未收到那張告示，蒼鷺也早不再裝作吃驚。這便是現況。這並非抱怨，抱怨是要有旁人的。',
+  'entities.npcs.verger_zebediah.introLines.2':
+    '神龕之內有一本登記簿，切莫去碰。腳下是野豬拱過的浮土，二者皆請留神。若是為守土之事而來，我可託付兩樁差事，都不算小，其中一樁我實在不願再改第三回。這便是我為何同你搭話的緣由。',
   'entities.npcs.sexton_faddick.name': '守墓人法迪克',
+  'entities.items.willow_sprig.name': '一段柳枝',
+  'entities.npcs.shade.name': '莎德',
+  'entities.npcs.shade.title': '一位旅人',
+  'entities.npcs.shade.greeting':
+    '哦，是你啊。想坐就坐吧，水又不會跑。今天吃過了嗎？你該吃點東西。',
+  'entities.npcs.shade.introLines.0':
+    '你撞見我做雜活了。別在意這桶，不過是水而已。總有些東西需要澆上一點水。',
+  'entities.npcs.shade.introLines.1':
+    '我？沒什麼好說的。叫我莎德。我四處走走，哪裡缺人手就搭把手。你看著累壞了。想的話，就坐一會兒吧。',
+  'entities.npcs.gate_bard.name': '吟遊詩人哈爾登',
+  'entities.npcs.gate_bard.title': '門前的賣藝人',
+  'entities.npcs.gate_bard.greeting':
+    '一枚銅板換一首歌？不要？沒關係，多數日子都是不要。我為這道門彈唱，可這門從沒掏過一次腰包。',
+  'entities.npcs.goodwife_orla.name': '奧拉',
+  'entities.npcs.goodwife_orla.title': '曾屬根穴',
+  'entities.npcs.goodwife_orla.greeting':
+    '你可以坐下。大多數人只是走過去。司事早就把我的名字從冊子上劃掉了，一個被劃掉的名字，學會了安靜，好讓誰都不必想起它還在這兒。',
+  'entities.quests.q_have_you_eaten.title': '你吃過了嗎？',
+  'entities.quests.q_have_you_eaten.text':
+    '門口有個吟遊詩人，靠銅板過活，銅板來了才有飯吃，而銅板難得來。我這兒有一碗熱的，還多出一份。替我給他送去，好嗎？別告訴他這是可憐他。就說這是多出來的。',
+  'entities.quests.q_have_you_eaten.completion':
+    '你回來了。他吃了嗎？很好。那就好。那你呢？……你沒吃，我看得出來。那就坐下吧。要成為一個好人，不必偉大。偉大不是善良。吃吧。',
+  'entities.quests.q_have_you_eaten.objectives.0.label': '把熱飯送給吟遊詩人',
+  'entities.quests.q_someone_your_own_size.title': '找個和你一般大的',
+  'entities.quests.q_someone_your_own_size.text':
+    '根穴附近有個女人，這世道待她不公。她的名字被從冊子上劃掉了，人們對待一個被劃掉的名字，就當它聽不見。去陪她坐一會兒吧。你不必去修補什麼。只要做一個和她一般大的人就好。',
+  'entities.quests.q_someone_your_own_size.completion':
+    '你留下來了。她不會說這有什麼要緊，可它要緊，我向你保證它要緊。來，這個給你。一段柳枝，取自我很喜歡的一棵柳樹。它什麼用也沒有。它只記得，在沒人逼你的時候，你依然選擇了善良。',
+  'entities.quests.q_someone_your_own_size.objectives.0.label': '陪奧拉坐了一會兒',
   'entities.npcs.sexton_faddick.title': '流浪的守護者',
   'entities.npcs.sexton_faddick.greeting':
     '法迪克。哪裡還有神龕需要守墓人，我就在哪兒守。我從不在一處久留，只管看顧。狼群夜夜繞著閒田莊的羊群打轉，繞得久了，便摸清了所繞之物的形狀。最好讓牠一直只是群羊。',
+  // First-meeting click-through intro (PHAA-439). Wandering-keeper voice,
+  // aphoristic, longer arc. Keeps the "I do not stay anywhere; I keep"
+  // throughline.
+  'entities.npcs.sexton_faddick.introLines.0':
+    '法迪克。哪裡還有神龕要我來做守墓人，我便做守墓人，只是這樣的神龕已比從前少了。我從不在一處久留，只管看顧。看顧這一樁，便是我如今所剩的幾乎全部。',
+  'entities.npcs.sexton_faddick.introLines.1':
+    '繞得久了，便摸清了所繞之物的形狀。閒田莊的狼群在我路過之前便夜夜繞著羊群打轉，至今仍未摸清羊群的形狀，這也算是一樁事。倒是羊群已把牠們摸清，那便是更大的事。',
+  'entities.npcs.sexton_faddick.introLines.2':
+    '本想請你喝杯茶，可茶壺留在我昨日待過的地方了。湖邊有一片安靜的地，等著人起屋；狼群在暗中出沒之地，什麼都紮不下根來。喏，兩樁差事，其中一樁我不想獨個兒去辦。邊走邊說罷。',
   'entities.quests.q_root_hollow_boars.title': '根穴野豬',
   'entities.quests.q_root_hollow_boars.text':
     '按曆書，根穴這一季本該休養。可沒人通知野豬。牠們追著蟲子把這裡拱翻了一半，如今連蒼鷺撲翅都嚇不走，這一點我很往心裡去。殺五頭，我才好把這一季照實記下。',
@@ -2931,7 +2992,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_what_burns.text':
     '通靈淡了，朋友……我乾得跟骨頭一樣，頻率就快斷了。神龕下面有種球莖，燒得又慢又乾淨，餘燼球莖，長在光照不到的地方，這洞穴自己跟自己開的玩笑……給我帶五顆回來。留意那些蒼白的傢伙，牠們衝著你的燈籠來，不是衝著你。大概吧。',
   'entities.quests.q_what_burns.completion':
-    '這才是上等的煙啊……你感覺到了嗎？屋裡越來越濃了。她隨時都要探過身來了，我在頻率上都能感覺到……的確如此。',
+    '這才是上等的煙啊……你感覺到了嗎？屋裡越來越濃了。他隨時都要探過身來了，我在頻率上都能感覺到……的確如此。',
   'entities.quests.q_what_burns.objectives.0.label': '已採集餘燼球莖',
   'entities.quests.q_what_fills.title': '飽腹之物',
   'entities.quests.q_what_fills.text':
@@ -3068,6 +3129,13 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hud.options.npcVoices': 'NPC語音',
   'hud.options.voiceVolume': '語音音量',
   'entities.zones.eastbrook_vale.pois.8.label': '明木林地',
+  'boarball.queue.join': '你加入了野豬球隊列。等待另外三名玩家…',
+  'boarball.queue.leave': '你離開了野豬球隊列。',
+  'boarball.log.welcome': '歡迎來到野豬球！射門、傳球，比分超越對方球隊。',
+  'boarball.log.kickoff': '開球！',
+  'boarball.log.over': '比賽結束！正在返回世界…',
+  'boarball.error.tooFar': '你離球不夠近。',
+  'boarball.error.noTeammate': '未選定隊友目標。',
   'fiesta.augment.aug_apex_predator.desc': '+40%物理傷害，+15%暴擊，並回復所造成傷害的12%生命值。',
   'fiesta.augment.aug_apex_predator.name': '頂級掠食者',
   'fiesta.augment.aug_arcane_surge.desc': '+25%法術傷害以及+10%暴擊。把他們點燃吧。',
@@ -3814,9 +3882,35 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
     '來自遠古深淵、覆鱗如蛇的生物。稀少、高傲，且遠比外表看來更為強大。',
   'guide.family.dragonkin.name': '龍類',
   'guide.family.elemental.desc': '活生生的風暴與岩石，束縛於元素之力強盛的荒野之地。',
+  'guide.hollowPage.intro':
+    '穿過神殿之門便是花瓶所在的空地：每位新英雄甦醒之處，也是你始終會回來的地方。這裡是共享之地，整片大陸共用的一個據點，也是你初見的面孔、初次的任務，唯一真正需要的家。',
+  'guide.hollowPage.greeting':
+    '你回來了，那可真是件幸事……有幾樁神聖的差事在等你呢，跟上次同一個頻道。過來一下……',
+  'guide.hollowPage.greeter': '格林保修士，於花瓶旁',
+  'guide.hollowPage.vaseHeading': '花瓶',
+  'guide.hollowPage.vaseBody':
+    '所有人都從花瓶開始：這個古老而有靈性的存在，正是幽谷得以建立的核心。它渴求些微小的供奉，燃一顆餘燼球，或餵一份洞穴嫩肉，似乎都能有所察覺。花瓶下坡處，一處洞口通向地窟深處；兩側則留有地塊，供你建造屬於自己的家。',
+  'guide.hollowPage.figuresHeading': '誰在照看它',
+  'guide.hollowPage.figuresBody': '有兩個人維繫著花瓶的運作，你在最初的幾分鐘內便會與他們相遇。',
+  'guide.hollowPage.greenpawBody':
+    '花瓶唯一的照看者，也是最早派發差事的人。他自封頭銜，也是第一個承認這點的人，算是幽谷裡最接近嚮導的存在。',
+  'guide.hollowPage.yarrowBody':
+    '第二職業的傳授者：每個職業都能向她學習一門副業，她的位置正好與格林保隔瓶相望。',
+  'guide.hollowPage.questsHeading': '你最初的差事',
+  'guide.hollowPage.questsBody':
+    '格林保自己的任務鏈是你要做的第一件事：四樁短小的差事，教會你花瓶的節奏，然後送你踏入更廣闊的幽谷。',
+  'guide.hollowPage.questBurnsBody': '花瓶焚燒以取光的洞穴產球莖，一次採集一把。',
+  'guide.hollowPage.questFillsBody': '能填飽另一種更安靜飢餓的洞穴嫩肉，採集方式相同。',
+  'guide.hollowPage.questWavelengthBody': '引薦花瓶的第二職業，並教你親手餵養它。',
+  'guide.hollowPage.questKeepLitBody': '把一次的恩惠變成一種固定的習慣，連續三次。',
+  'guide.hollowPage.housingHeading': '屬於你自己的家',
+  'guide.hollowPage.housingBody': '{n}塊宅地環繞著花瓶，等待被認領，裝點成你在幽谷中私有的一角。',
+  'guide.hollowPage.shrineHeading': '地窟深處',
+  'guide.hollowPage.shrineBody':
+    '花瓶旁的一處洞口通向地窟深處，那是幽谷自身的副本地城，也是每位新英雄組隊面對的第一場真正考驗。',
   'guide.worldPage.heading': '世界',
   'guide.worldPage.intro':
-    'World of ClaudeCraft 是一片你需徒步橫越的連綿大地，三大區域由南向北排列。沒有快速旅行，所以旅程本身就是冒險的一部分。',
+    '穿過花瓶的神殿之門，你便置身幽谷腹地：新人踏出戶外第一步的寧靜之地。再往北還有三個區域，由南向北依次鋪展；通往那裡的道路尚未開啟，但它們是真實存在、靜候你到來的。',
   'guide.worldPage.hub': '主據點',
   'guide.worldPage.hollowReachesBlurb':
     '緊鄰神殿門外的平靜之地，新人在Fallow Acres與Root Hollow一帶與野狼、野豬交手磨練身手。',
@@ -3841,9 +3935,11 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
     '附近的隊伍成員會共享擊殺與目標進度，所以一起接任務只會更快，絕不會更慢。你也可以與隊伍分享任務：用 /share 指令將它以可點擊的連結貼到聊天中，任何符合條件的附近成員都能一鍵接取同一項任務。',
   'guide.questsPage.storyTitle': '一條主線貫穿其中',
   'guide.questsPage.storyBody':
-    '從你在東溪鎮的第一批跑腿差事開始，亡者出了問題。一個邪教正在運作，線索向北穿過每個區域。循線追查，便能查出幕後主使是誰。',
+    '你最初的線索，是格林保修士自己那條短短的任務鏈，就在花瓶旁。往外則是幽谷腹地裡那些安靜的差事；再往外，還有一段更長的故事：一個邪教從山谷一路作亂到山巔，真實且已完成，只是新英雄眼下還走不到那條路。花瓶自己的任務見幽谷頁面，其餘的則列在下方，作為即將到來的內容。',
   'guide.questsPage.soloNote':
     '主線劇情一路到每個篇章的結局都可以單人完成，而那結局是一座五人地城。',
+  'guide.questsPage.sagaGateNote':
+    '這段傳奇是真實、已完成的內容，正是道路重新北通之後開啟的同一條線索。它並非新英雄如今的起點；起點是花瓶，在幽谷之中。',
   'guide.dungeonsPage.heading': '地城與團隊副本',
   'guide.dungeonsPage.intro':
     '當開放世界不夠盡興時，召集一支隊伍踏入副本：一份專為你的隊伍打造的地城私人副本。',

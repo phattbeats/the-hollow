@@ -8,6 +8,7 @@ import type { Entity, EquipSlot, PlayerClass } from '../../sim/types';
 import { ITEM_ARMOR_VARIANTS } from '../../ui/armor_variants';
 import { ITEM_WEAPON_VARIANTS } from '../../ui/weapon_variants';
 import type { OverheadEmoteId } from '../../world_api';
+import { chibiSkinCount } from './chibi_skin_variants';
 
 export interface EmoteClipSpec {
   clips: readonly string[];
@@ -369,9 +370,13 @@ export const SKIN_EMISSIVE: Record<string, (string | null)[]> = {
   player_mech: MECH_CHROMAS.map(mechEmissiveUrl),
 };
 
-/** Number of skins (including the default) available for a visual key; min 1. */
+/** Number of skins (including the default) available for a visual key; min 1.
+ *  Falls back to the chibi per-material tint variant count (chibi_skin_variants.ts)
+ *  when the key has no atlas-swap SKINS entry, e.g. the female roster. */
 export function skinCount(key: string): number {
-  return SKINS[key]?.length ?? 1;
+  if (SKINS[key]) return SKINS[key].length;
+  const chibi = chibiSkinCount(key);
+  return chibi > 0 ? chibi : 1;
 }
 
 /** Texture url to preview a skin option (default index 0 → the model's base.png). */
@@ -502,9 +507,11 @@ export const VISUALS: Record<string, VisualDef> = {
   // roster pipeline: CharacterVisual sets castShadow/receiveShadow on every
   // mesh and applyMaterials swaps in the tier-correct lit materials, fixing
   // the shadowless, lighting-ignoring read from the raw scene.add harness in
-  // PHAA-550. Own rig and clip set (not KayKit Rig_Medium), so no attach or
-  // weaponSlots yet; per-class female wiring is PHAA-539's scope. Lazy: no
-  // entity resolves to this key yet, so it must not bloat every client's boot.
+  // PHAA-550. Own rig and clip set (not KayKit Rig_Medium). Kept registered
+  // standalone (the roster_compare_harness + PHAA-557 evidence reference it)
+  // even though every player-facing female class below points at the same
+  // outfit GLBs directly, not at this key. Lazy: no entity resolves to this
+  // key, so it must not bloat every client's boot.
   chibi_female_base: {
     url: `${PLAYERS}/chibi_female.glb`,
     height: 2.29,
@@ -517,6 +524,143 @@ export const VISUALS: Record<string, VisualDef> = {
       jump: 'anim_jump',
     },
     lazyPreload: true,
+  },
+
+  // -- female player classes (PHAA-587) ------------------------------------
+  // 9 classes served from the 6 styloo chibi outfits (PHAA-585), the same
+  // one-GLB-serves-several-classes trick the male roster uses (see the
+  // per-class tint comment on player_priest above). All six outfits share
+  // the identical 78-joint Rigify rig, 11 normalized locomotion clips, and
+  // DEF-hand.R/DEF-hand.L hand bones (verified on PHAA-583). No attack/cast/
+  // hit clips exist yet: `attack` reuses anim_push (a shove) as a stopgap
+  // until the PHAA-586 animation pass lands; cast has no clip so it falls
+  // back to idle same as every other clipless case in visual.ts.
+  //
+  // No held-weapon attach: the grip system (assets.ts isHandslotBone /
+  // KAYKIT_HAND_GRIPS / VARIANT_GRIPS) resolves grips by pattern-matching
+  // the KayKit `handslot.r`/`handslot.l` bone names specifically; the chibi
+  // rig's `DEF-hand.R`/`DEF-hand.L` bones match none of that data, so an
+  // attach here would render a weapon at its raw unaligned transform in her
+  // hand. Shipping without visible held weapons is the accepted v1 fallback
+  // (per PHAA-587); a Blender-authored chibi grip table is follow-up work,
+  // flagged on PHAA-583.
+  player_warrior_f: {
+    url: `${PLAYERS}/chibi_female_knight.glb`,
+    height: 2.29,
+    clips: {
+      idle: 'anim_iddle',
+      walk: 'anim_walk',
+      run: 'anim_run',
+      attack: ['anim_push'],
+      death: 'anim_dying',
+      jump: 'anim_jump',
+    },
+  },
+  player_paladin_f: {
+    url: `${PLAYERS}/chibi_female_knight.glb`,
+    height: 2.29,
+    clips: {
+      idle: 'anim_iddle',
+      walk: 'anim_walk',
+      run: 'anim_run',
+      attack: ['anim_push'],
+      death: 'anim_dying',
+      jump: 'anim_jump',
+    },
+    tint: 0xe8c468, // gold/white
+    tintStrength: 0.4,
+  },
+  player_hunter_f: {
+    url: `${PLAYERS}/chibi_female_archer.glb`,
+    height: 2.29,
+    clips: {
+      idle: 'anim_iddle',
+      walk: 'anim_walk',
+      run: 'anim_run',
+      attack: ['anim_push'],
+      death: 'anim_dying',
+      jump: 'anim_jump',
+    },
+  },
+  player_druid_f: {
+    url: `${PLAYERS}/chibi_female_archer.glb`,
+    height: 2.29,
+    clips: {
+      idle: 'anim_iddle',
+      walk: 'anim_walk',
+      run: 'anim_run',
+      attack: ['anim_push'],
+      death: 'anim_dying',
+      jump: 'anim_jump',
+    },
+    tint: 0x6b7d3f, // moss/earth
+    tintStrength: 0.4,
+  },
+  player_rogue_f: {
+    url: `${PLAYERS}/chibi_female_ninja.glb`,
+    height: 2.29,
+    clips: {
+      idle: 'anim_iddle',
+      walk: 'anim_walk',
+      run: 'anim_run',
+      attack: ['anim_push'],
+      death: 'anim_dying',
+      jump: 'anim_jump',
+    },
+  },
+  player_mage_f: {
+    url: `${PLAYERS}/chibi_female.glb`,
+    height: 2.29,
+    clips: {
+      idle: 'anim_iddle',
+      walk: 'anim_walk',
+      run: 'anim_run',
+      attack: ['anim_push'],
+      death: 'anim_dying',
+      jump: 'anim_jump',
+    },
+  },
+  player_priest_f: {
+    url: `${PLAYERS}/chibi_female.glb`,
+    height: 2.29,
+    clips: {
+      idle: 'anim_iddle',
+      walk: 'anim_walk',
+      run: 'anim_run',
+      attack: ['anim_push'],
+      death: 'anim_dying',
+      jump: 'anim_jump',
+    },
+    tint: 0xf0e9d6,
+    tintStrength: 0.5,
+  },
+  player_warlock_f: {
+    url: `${PLAYERS}/chibi_female_merchant.glb`,
+    height: 2.29,
+    clips: {
+      idle: 'anim_iddle',
+      walk: 'anim_walk',
+      run: 'anim_run',
+      attack: ['anim_push'],
+      death: 'anim_dying',
+      jump: 'anim_jump',
+    },
+    tint: 0x8d5fd3,
+    tintStrength: 0.45,
+  },
+  player_shaman_f: {
+    url: `${PLAYERS}/chibi_female_basemesh.glb`,
+    height: 2.29,
+    clips: {
+      idle: 'anim_iddle',
+      walk: 'anim_walk',
+      run: 'anim_run',
+      attack: ['anim_push'],
+      death: 'anim_dying',
+      jump: 'anim_jump',
+    },
+    tint: 0x6f8fc9,
+    tintStrength: 0.4,
   },
 
   // -- forms ---------------------------------------------------------------
@@ -1023,9 +1167,9 @@ export function visualKeyFor(e: Entity): string {
   if (e.kind === 'player') {
     if (e.skinCatalog === 'mech') return 'player_mech';
     // PHAA-501: female characters prefer the `player_<cls>_f` variant when the
-    // manifest ships one (today: none; future PHAA-539). Until then the female
-    // branch falls back to the male model; visually identical until the asset
-    // PR lands, but the wire/creation/persistence plumbing is forward-compatible.
+    // manifest ships one; all 9 classes register one as of PHAA-587. The
+    // fallback to the male key only matters for a class that somehow loses
+    // its `_f` def (or a future new class added without one yet).
     const base = `player_${e.templateId}`;
     if (e.sex === 'f' && VISUALS[`${base}_f`]) return `${base}_f`;
     return VISUALS[base] ? base : 'player_warrior';

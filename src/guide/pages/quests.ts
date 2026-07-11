@@ -6,7 +6,7 @@ import { esc } from '../../ui/esc';
 import { t } from '../../ui/i18n';
 import { hrefFor } from '../routes';
 import type { GuidePage } from './types';
-import { lead, loreBeat, related } from './ui';
+import { callout, lead, loreBeat, related } from './ui';
 
 const STEPS = [
   ['guide.questsPage.acceptTitle', 'guide.questsPage.acceptBody'],
@@ -69,6 +69,7 @@ export const quests: GuidePage = {
         <section class="guide-block">
           <h2>${esc(t('guide.questsPage.sagaTitle'))}</h2>
           <p>${esc(t('guide.questsPage.sagaBody'))}</p>
+          ${callout(`<p>${esc(t('guide.questsPage.sagaGateNote'))}</p>`, { variant: 'note' })}
           <div class="guide-beat-grid">${saga}</div>
         </section>
 
@@ -78,6 +79,7 @@ export const quests: GuidePage = {
         </section>
 
         ${related([
+          { href: hrefFor('hollow'), key: 'guide.nav.hollow' },
           { href: hrefFor('world'), key: 'guide.nav.world' },
           { href: hrefFor('dungeons'), key: 'guide.nav.dungeons' },
           { href: hrefFor('how-to-play'), key: 'guide.nav.howToPlay' },
