@@ -307,7 +307,7 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
       nodes: {
         hearth: {
           npcLine:
-            "hey now, friend, back at the vase huh, he's quiet today which means he's either listenin' real hard or straight up ignorin' me, can never tell with him, honestly... anyway how's the hollow been treatin' you, good, bad, you got a snack on you, no? okay just checkin', askin' for a friend, the friend is me...",
+            "howdy, friend, back at the vase huh, he's quiet today which means he's either listenin' real hard or straight up ignorin' me, can never tell with him, honestly... anyway how's the hollow been treatin' you, good, bad, you got a snack on you, no? okay just checkin', askin' for a friend, the friend is me...",
           choices: [
             {
               id: 'kind',
@@ -333,7 +333,7 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
         },
         warmed: {
           npcLine:
-            "...whoa, okay, that's real nice of you to say, friend, real nice, didn't expect it, most folks just b-line for the gate soon as they can... you're alright, you know that, you're alright to a greenpaw degree even, and i don't hand that out for free...",
+            "...whoa, okay, that's real nice of you to say, friend, real nice, didn't expect it, most folks just b-line for the gate soon as they can... you're alright, you know that, you're alright to a greenpaw degree even, and i don't hand that out for free... i'd buy stock in ya if stock was a thing i had, buy the new friends, sell the old omens, that's just economics...",
           choices: [
             {
               id: 'tribe',
@@ -351,7 +351,7 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
         },
         vase: {
           npcLine:
-            "same ol' same ol', he wants smoke, wants tendin', wants somebody sittin' close so it feels like a conversation even when it ain't one, which, hey, works for me, i talk at him plenty and he ain't said a word back in, uh, ever, but that's fine, that's the whole deal really, to a greenpaw degree...",
+            "same ol' same ol', he wants smoke, wants tendin', wants somebody sittin' close so it feels like a conversation even when it ain't one, which, hey, works for me, i talk at him plenty and he ain't said a word back in, uh, ever, but that's fine, that's the whole deal really, to a greenpaw degree... wait, what were we talkin' about... oh. right. him. he's fine. probably hungry. same.",
           choices: [
             {
               id: 'vase_more',
@@ -397,7 +397,7 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
         },
         mended: {
           npcLine:
-            "s'all good, friend, honestly, place like this earns a hard word now'n then, i ain't gonna pretend it don't... you came back and said sorry though, and that means somethin', or it means you want somethin', either way we're square, you and me, same wavelength, snack's on me later if you want one.",
+            "s'all good, friend, it's all gambit, always has been, that's the cowboy in me talkin'... place like this earns a hard word now'n then, i ain't gonna pretend it don't... you came back and said sorry though, and that means somethin', or it means you want somethin', either way we're square, you and me, same wavelength, snack's on me later if you want one.",
           choices: [
             {
               id: 'mended_bye',
