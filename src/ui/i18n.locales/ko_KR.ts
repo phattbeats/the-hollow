@@ -2908,6 +2908,20 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
     '문을 나서면 탁 트인 대지가 펼쳐집니다. 길 서쪽의 묵정밭은 집을 짓기에 좋아 보입니다.',
   'entities.npcs.verger_zebediah.name': '성당지기 제베디아',
   'entities.npcs.verger_zebediah.title': '뿌리굴의 파수꾼',
+  'entities.readables.torn_ledger_page.title': '찢어진 장부',
+  'entities.readables.torn_ledger_page.pages.0':
+    '뿌리굴, 쉬게 함으로 기재. 묵정밭, 쉬게 함으로 기재. 모스뱅크의 호수는 우리가 기재하든 말든 알아서 쉰다. 장부가 원하는 대로 서명하고 날짜를 적었다.',
+  'entities.readables.torn_ledger_page.pages.1':
+    '이번 철 지금까지의 집계. 길바닥 돌 사이로 새싹 셋이 올라왔는데, 내 어느 달력에도 없는 일이다. 지워 긁어내는 건 그만뒀다. 잉크가 마르기도 전에 다시 돋아나고, 그 잉크는 싸지도 않았다.',
+  'entities.readables.torn_ledger_page.pages.2':
+    '내 뒤에 이것을 맡을 이에게 남기는 글. 멧돼지를 세라, 늑대를 세라, 날을 세라. 초록만은 세지 마라. 그것은 도로 세어 온다. 그리고 네가 멈춘 자리에서 멈추지 않는다.',
+  'entities.readables.keepers_marginalia.title': '지킴이의 난외 기록',
+  'entities.readables.keepers_marginalia.pages.0':
+    '찬송이 다 닳아 없어진 성가집 여백에 남겨져 있었다. 필체가 빠르다, 걸으면서 쓰는 손이 빠른 그 방식으로.',
+  'entities.readables.keepers_marginalia.pages.1':
+    '늑대들은 나무 경계에서 묵정밭을 맴돈다, 언제나 같은 원, 언제나 해 도는 방향으로. 오래 맴도는 것은 제가 맴도는 것의 모양을 익힌다. 나도 그렇다. 그리고 땅도, 아마 그럴 것이다.',
+  'entities.readables.keepers_marginalia.pages.2':
+    '이 글을 읽고 있다면 당신은 걸음을 멈춘 것이다, 내가 끝내 배우지 못한 그 한 가지를. 잠시 쉬어라. 외곽은 그대로 여기 있을 테니. 그게 바로 이곳의 골칫거리이긴 하다만.',
   'entities.npcs.verger_zebediah.greeting':
     '성당지기 제베디아요. 나는 이 외곽을 달력에 맞춰 관리하오, 적어도 그러려고 애는 쓰지. 뿌리굴은 이번 철엔 쉬게 한다고 적어 뒀는데, 멧돼지들은 그 고시를 읽지 않았소. 무른 흙을 조심하고, 장부엔 손대지 마시오.',
   'entities.npcs.sexton_faddick.name': '무덤지기 패딕',

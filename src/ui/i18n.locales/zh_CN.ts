@@ -2784,6 +2784,20 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
     '大门外是一片开阔之地，道路以西的闲田庄看起来很适合安家。',
   'entities.npcs.verger_zebediah.name': '司事泽比迪亚',
   'entities.npcs.verger_zebediah.title': '根穴守卫',
+  'entities.readables.torn_ledger_page.title': '撕破的登记簿',
+  'entities.readables.torn_ledger_page.pages.0':
+    '根穴，记为休养。闲田庄，记为休养。莫斯岸的那片湖，无论我们记与不记，它自顾自地歇着。按登记簿的规矩，签了名，注了日期。',
+  'entities.readables.torn_ledger_page.pages.1':
+    '本季至今的清点：路石缝里冒出三株幼苗，我的任何一本历书上都没有这一条。我已经不再划掉它们了。墨迹未干它们就长回来，而那墨水可不便宜。',
+  'entities.readables.torn_ledger_page.pages.2':
+    '给我之后接手此簿的人留一句。数野猪，数狼，数日子。别去数那片绿。它会数回来，而且不会停在你停下的地方。',
+  'entities.readables.keepers_marginalia.title': '守护者的旁批',
+  'entities.readables.keepers_marginalia.pages.0':
+    '夹在一本圣歌都磨没了的圣歌集页边留下的。那笔迹很快，就像一只边走边写的手那样快。',
+  'entities.readables.keepers_marginalia.pages.1':
+    '狼群从林线绕着闲田庄打转，永远是同一个圈，永远顺着日头转。绕得够久的东西，会摸清它所绕之物的形状。我如此。我想，这片土地也如此。',
+  'entities.readables.keepers_marginalia.pages.2':
+    '你若读到这里，说明你停下了脚步，那正是我这辈子唯一没学会的事。歇一会儿吧。外域还会在这儿。而这，恰恰就是它最麻烦的地方。',
   'entities.npcs.verger_zebediah.greeting':
     '司事泽比迪亚。我给外域记着一本历书，至少一直在努力记。根穴这一季本该休养，可野猪没读那张告示。留神脚下的浮土，还有，别碰我的登记簿。',
   'entities.npcs.sexton_faddick.name': '守墓人法迪克',

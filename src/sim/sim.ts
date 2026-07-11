@@ -207,6 +207,7 @@ import {
 } from './progression/trainer';
 import { prestige as prestigeImpl, updateRested } from './progression/xp';
 import { advancePendingProjectiles, type PendingProjectile } from './projectile_travel';
+import { readablePropsAt } from './readables_query';
 import { sanitizeRemovedZone1Content } from './removed_zone1_content';
 import { Rng } from './rng';
 import { persistedResource } from './serialize_resource';
@@ -5764,6 +5765,14 @@ export class Sim {
 
   get homesteadInfo(): import('../world_api/homestead').HomesteadInfo | null {
     return this.primaryId === -1 ? null : this.homesteadInfoFor(this.primaryId);
+  }
+
+  // World-placed readables (PHAA-552): static content scoped to the viewer's
+  // current overworld zone. ClientWorld computes this identically from the same
+  // table + position, so the two IWorld impls never drift.
+  get readableProps(): import('../world_api/readables').ReadablePropView[] {
+    const p = this.primaryId === -1 ? null : this.entities.get(this.primaryId);
+    return p ? readablePropsAt(p.pos.x, p.pos.z) : [];
   }
 
   instanceSlotAt(pos: Vec3): number | null {

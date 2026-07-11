@@ -99,6 +99,8 @@ import { buildComposer, type PostPipeline } from './post';
 import { buildPropMaterialPrewarmGroup, buildProps } from './props';
 import { buildGroundQuestObject } from './quest_objects';
 import { isOwnedPetHostile } from './reaction';
+import { type NearbyReadable, nearestReadable } from './readable_proximity';
+import { buildReadables } from './readables';
 import { RenderBudgetGovernor, type RenderBudgetState } from './render_budget';
 import { downscaleDims } from './screenshot';
 import { drapeRingLocalY } from './selection_ring';
@@ -872,6 +874,10 @@ export class Renderer {
   // recomputed alongside housingView each frame. main.ts's interact-key handler
   // reads this instead of re-deriving the same distance check.
   nearHousingPlot: NearbyHousingPlot | null = null;
+  // PHAA-552: the world-placed readable book the player is currently in read
+  // range of (if any), recomputed each frame. main.ts's interact-key handler and
+  // the HUD "Read" prompt both read this rather than re-deriving the check.
+  nearReadable: NearbyReadable | null = null;
   // Homestead v0: open-world plots drawn from IWorld.homesteadInfo. Lazy like
   // `housingView` (nothing to draw before the primary entity resolves).
   private homesteadView: HomesteadView | null = null;
@@ -1246,6 +1252,13 @@ export class Renderer {
     this.scene.add(gatherNodes.group);
     // Baked into world space at build with no per-frame update(), same as props.
     freezeStaticMatrices(gatherNodes.group);
+
+    // PHAA-552: world-placed readable books, same static-fixture treatment as
+    // gather nodes above (baked into world space, no per-frame transform).
+    const readables = buildReadables(this.sim.cfg.seed);
+    setRenderCategory(readables.group, 'props');
+    this.scene.add(readables.group);
+    freezeStaticMatrices(readables.group);
 
     // selection ring — a classic target reticle: a base ring plus four
     // inward-pointing ticks. The base ring is draped over the terrain each
@@ -4490,6 +4503,12 @@ export class Renderer {
         this.nearHousingPlot = null;
       }
     }
+    // PHAA-552: nearest world-placed readable book in read range, mirroring the
+    // housing proximity check above so the "Read" prompt and main.ts's
+    // interact-key handler share one answer. readableProps is already scoped to
+    // the viewer's overworld zone (empty inside instances), so this is a short
+    // list every frame.
+    this.nearReadable = nearestReadable(p.pos.x, p.pos.z, this.sim.readableProps);
     // Homestead v0: open-world Hollow Reaches plots, always world-space (no
     // hub-origin gate, unlike Housing v0 above); the JSON change key inside
     // update() makes the per-frame cost negligible.
