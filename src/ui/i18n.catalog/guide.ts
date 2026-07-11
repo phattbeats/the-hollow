@@ -738,6 +738,13 @@ export const guideStrings = {
     shrineHeading: 'The Under-Shrine',
     shrineBody:
       "A cave mouth beside the vase opens onto the Under-Shrine, the Hollow's own instanced descent and every new hero's first real test of a party.",
+
+    // PHAA-451: world-perception lore layer (Brandon's PHAA-406 comment, 2026-07-04).
+    // Background only, no faction writeup: most of the world barely knows the vase's
+    // congregation exists, and the little that leaks out is unflattering.
+    outsiderHeading: 'How the rest of the world sees it',
+    outsiderBody:
+      'Beyond the shrine gate, most folk have never heard of the vase at all. The few who have tend to write off its keepers as hippies, freaks, or worse, ordinary undesirables who talk to a jar. What little else gets around comes from stranger sightings still: a follower who wandered too far from the clearing, or one of its small green creatures turning up somewhere it plainly should not have.',
   },
 
   // World / zones.
