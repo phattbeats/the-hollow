@@ -9,8 +9,8 @@
 //    resolves at render time.
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { describe, expect, it } from 'vitest';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { describe, expect, it } from 'vitest';
 
 // GLTFLoader's browser-style parser reaches for `self.URL` (image loading)
 // and `self.cache` (KHR_lights); both blow up in plain Node. Stub the bare
@@ -56,7 +56,9 @@ describe('PHAA-609 armor GLB smoke test', () => {
       const jsonTextures: any[] = g.parser.json?.textures ?? [];
       expect(jsonTextures.length, 'GLB should declare at least one texture').toBeGreaterThan(0);
       const jsonMaterials: any[] = g.parser.json?.materials ?? [];
-      const matWithMap = jsonMaterials.filter((m: any) => m?.pbrMetallicRoughness?.baseColorTexture);
+      const matWithMap = jsonMaterials.filter(
+        (m: any) => m?.pbrMetallicRoughness?.baseColorTexture,
+      );
       expect(
         matWithMap.length,
         'GLB should declare at least one material with a baseColor texture binding',
@@ -90,9 +92,10 @@ describe('PHAA-609 armor GLB smoke test', () => {
       // the sanitized form.
       expect(boneNames.has('head'), 'should carry the head bone').toBe(true);
       expect(boneNames.has('chest'), 'should carry the chest bone').toBe(true);
-      expect(boneNames.has('upperlegr'), 'should carry the upperlegr bone (sanitized from upperleg.r)').toBe(true);
+      expect(
+        boneNames.has('upperlegr'),
+        'should carry the upperlegr bone (sanitized from upperleg.r)',
+      ).toBe(true);
     });
   }
 });
-
-

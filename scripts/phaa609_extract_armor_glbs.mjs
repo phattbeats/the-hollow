@@ -120,10 +120,7 @@ async function extract(meshNames, outPath) {
     const t = joint.getTranslation();
     const r = joint.getRotation();
     const s = joint.getScale();
-    const n = out.createNode(name)
-      .setTranslation(t)
-      .setRotation(r)
-      .setScale(s);
+    const n = out.createNode(name).setTranslation(t).setRotation(r).setScale(s);
     nodeMap.set(joint, n);
   }
   // rebuild joint hierarchy from the source skin joints
@@ -144,7 +141,8 @@ async function extract(meshNames, outPath) {
     for (const prim of mesh.listPrimitives()) {
       const srcMat = prim.getMaterial();
       if (!srcMat || matMap.has(srcMat)) continue;
-      const m = out.createMaterial(srcMat.getName() || 'knight')
+      const m = out
+        .createMaterial(srcMat.getName() || 'knight')
         .setDoubleSided(srcMat.getDoubleSided());
       if (srcMat.getBaseColorFactor()) {
         m.setBaseColorFactor(srcMat.getBaseColorFactor());
@@ -218,7 +216,8 @@ async function extract(meshNames, outPath) {
 
   // duplicate the skinned-mesh nodes (parented to the corresponding bone)
   for (const node of keepMeshNodes) {
-    const outNode = out.createNode(node.getName() || 'skinned')
+    const outNode = out
+      .createNode(node.getName() || 'skinned')
       .setTranslation(node.getTranslation() || [0, 0, 0])
       .setRotation(node.getRotation() || [0, 0, 0, 1])
       .setScale(node.getScale() || [1, 1, 1]);
