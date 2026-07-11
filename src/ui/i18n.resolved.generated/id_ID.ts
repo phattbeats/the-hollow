@@ -1544,7 +1544,9 @@ export const id_ID: EnTranslations = {
       "housingHeading": "A home of your own",
       "housingBody": "{n} house plots ring the vase, waiting to be claimed and furnished as your own private corner of the Hollow.",
       "shrineHeading": "The Under-Shrine",
-      "shrineBody": "A cave mouth beside the vase opens onto the Under-Shrine, the Hollow's own instanced descent and every new hero's first real test of a party."
+      "shrineBody": "A cave mouth beside the vase opens onto the Under-Shrine, the Hollow's own instanced descent and every new hero's first real test of a party.",
+      "outsiderHeading": "How the rest of the world sees it",
+      "outsiderBody": "Beyond the shrine gate, most folk have never heard of the vase at all. The few who have tend to write off its keepers as hippies, freaks, or worse, ordinary undesirables who talk to a jar. What little else gets around comes from stranger sightings still: a follower who wandered too far from the clearing, or one of its small green creatures turning up somewhere it plainly should not have."
     },
     "worldPage": {
       "heading": "Dunia",
@@ -6191,7 +6193,8 @@ export const id_ID: EnTranslations = {
         "journalLines": {
           "0": "The register goes back further than the heron does. I did not write the first entry, and I will not write the last; that is the comfort of an office no one is waiting to inherit. The Reaches were a thoroughfare once. People came up the lake path with salt and left with something they did not name, and neither did I, because it was not mine to ask. The register records the comings and the goings and one long gap where neither happened. I keep the gap too.",
           "1": "The heron is older than the register, which the register resents. It does not say so. It does not have to. I have watched it stand on one leg through a season that killed the pear trees and not blink, which I take to be a position on something, though I have never been briefed on what. There is a room under the shrine I do not enter. The heron goes in. I do not ask it what it does in there; it does not ask me what I do up here. This arrangement has held longer than either of us.",
-          "2": "If you have read this far you are either curious or avoiding the boars, and I respect both. The short version of the long record: this place remembers something it was, and something it means to be again, and the difference is the work. Mine is the remembering. I do not know whose the being again is. I file it under pending and go to bed. The register allows pending. It does not allow forgetting."
+          "2": "If you have read this far you are either curious or avoiding the boars, and I respect both. The short version of the long record: this place remembers something it was, and something it means to be again, and the difference is the work. Mine is the remembering. I do not know whose the being again is. I file it under pending and go to bed. The register allows pending. It does not allow forgetting.",
+          "3": "Travelers who come up the lake path and hear about the vase tend to arrive at one of two conclusions, neither of them flattering. Some call the congregation hippies, or freaks, and leave laughing. Others call them worse and do not stay to laugh. Most never hear of the vase at all, which I have come to think is the arrangement working as intended. A quiet thing survives longer than a famous one."
         }
       },
       "sexton_faddick": {
@@ -6221,7 +6224,7 @@ export const id_ID: EnTranslations = {
       "gate_bard": {
         "name": "Halden the Bard",
         "title": "Player at the Gate",
-        "greeting": "A copper for a song? No? That's all right, most days it's no. I play for the gate, and the gate's never once reached for its purse."
+        "greeting": "A copper for a song? No? That's all right, most days it's no. I play for the gate, and the gate's never once reached for its purse. Folk passing through call this place a hippie camp, or worse, and mostly they're just passing through, so I let them."
       },
       "goodwife_orla": {
         "name": "Orla",

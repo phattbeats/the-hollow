@@ -147,6 +147,9 @@ export const HOLLOW_ZONE_NPCS: Record<string, NpcDef> = {
       'The register goes back further than the heron does. I did not write the first entry, and I will not write the last; that is the comfort of an office no one is waiting to inherit. The Reaches were a thoroughfare once. People came up the lake path with salt and left with something they did not name, and neither did I, because it was not mine to ask. The register records the comings and the goings and one long gap where neither happened. I keep the gap too.',
       'The heron is older than the register, which the register resents. It does not say so. It does not have to. I have watched it stand on one leg through a season that killed the pear trees and not blink, which I take to be a position on something, though I have never been briefed on what. There is a room under the shrine I do not enter. The heron goes in. I do not ask it what it does in there; it does not ask me what I do up here. This arrangement has held longer than either of us.',
       'If you have read this far you are either curious or avoiding the boars, and I respect both. The short version of the long record: this place remembers something it was, and something it means to be again, and the difference is the work. Mine is the remembering. I do not know whose the being again is. I file it under pending and go to bed. The register allows pending. It does not allow forgetting.',
+      // PHAA-451: outsider-stigma/obscurity lore layer (Brandon's PHAA-406 comment). The
+      // register's own dry observation on how the wider world regards the vase's people.
+      'Travelers who come up the lake path and hear about the vase tend to arrive at one of two conclusions, neither of them flattering. Some call the congregation hippies, or freaks, and leave laughing. Others call them worse and do not stay to laugh. Most never hear of the vase at all, which I have come to think is the arrangement working as intended. A quiet thing survives longer than a famous one.',
     ],
     // Ambient idle walk (board follow-up on PHAA-420: "some walking around"),
     // see src/sim/npc_wander.ts. Small radius on purpose: he stays findable at
@@ -234,8 +237,11 @@ export const HOLLOW_ZONE_NPCS: Record<string, NpcDef> = {
     facing: 0.4,
     color: 0x7a6a4a,
     questIds: [],
+    // PHAA-451: the outsider-stigma beat, voiced by the one NPC posted at the literal
+    // threshold: he hears what passers-through say about the vase's people, and repeats it
+    // without much rancor.
     greeting:
-      "A copper for a song? No? That's all right, most days it's no. I play for the gate, and the gate's never once reached for its purse.",
+      "A copper for a song? No? That's all right, most days it's no. I play for the gate, and the gate's never once reached for its purse. Folk passing through call this place a hippie camp, or worse, and mostly they're just passing through, so I let them.",
   },
   // PHAA-558: the target of "Someone Your Own Size" (quest 3). A struck-through
   // name from the Verger's rolls, someone the world has been cruel to, whom the
