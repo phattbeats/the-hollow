@@ -202,7 +202,12 @@ export const HOLLOW_ZONE_NPCS: Record<string, NpcDef> = {
     pos: { x: 28, z: -244 },
     facing: -2.4,
     color: 0x6b7f6a,
-    questIds: ['q_have_you_eaten', 'q_someone_your_own_size'],
+    questIds: [
+      'q_have_you_eaten',
+      'q_the_long_way_around',
+      'q_someone_your_own_size',
+      'q_the_watering_can',
+    ],
     // She paces the short walk between the water and whatever she is tending, so
     // she reads as busy with small chores rather than posted like a quest-giver.
     wanderRadius: 3,
@@ -247,6 +252,25 @@ export const HOLLOW_ZONE_NPCS: Record<string, NpcDef> = {
     questIds: [],
     greeting:
       "You can sit. Most walk on. The Verger crossed my name off his register a long while back, and a crossed name learns to keep quiet so nobody has to be reminded it's still here.",
+  },
+  // PHAA-614: the turn-in target for "The Long Way Around" (quest 2). A stub
+  // NPC exactly like gate_bard/goodwife_orla (empty questIds, exists only to
+  // be interacted with), standing in for the withered planting up the willow
+  // path from Mossbank (the lake at 42,-235). Per the PHAA-559 spike verdict
+  // (GO-WITH-CONSTRAINTS: terrain-sculpted paths ship now with zero sim
+  // change, no elevated platforms), the willow path is placement + narration,
+  // not a new traversal mechanic: the planting sits further up the shore,
+  // reachable on foot over the existing terrain.
+  withered_planting: {
+    id: 'withered_planting',
+    name: 'The Withered Planting',
+    title: "The Tribe's Old Willow",
+    pos: { x: 58, z: -252 },
+    facing: 2.6,
+    color: 0x8a7a4a,
+    questIds: [],
+    greeting:
+      "Dry roots, dry leaves. Whatever this was meant to grow into, it hasn't yet, and it's been a long while waiting.",
   },
 };
 
@@ -353,6 +377,33 @@ export const HOLLOW_ZONE_QUESTS: Record<string, QuestDef> = {
     // simply finds her collecting water, and only later does the kindness open.
     minLevel: 2,
   },
+  // PHAA-614: quest 2, "The Long Way Around" (gated on the PHAA-559 spike,
+  // which reported GO-WITH-CONSTRAINTS; see the withered_planting NPC comment
+  // above for how the willow path is built within that gate). Runs alongside
+  // quest 3 off the same requiresQuest (both open once quest 1 is done); still
+  // dialog-only, no combat, no stats.
+  q_the_long_way_around: {
+    id: 'q_the_long_way_around',
+    name: 'The Long Way Around',
+    giverNpcId: 'shade',
+    turnInNpcId: 'shade',
+    requiresQuest: 'q_have_you_eaten',
+    text: "There's a planting the tribe left half-finished up the old willow, and it's dying for want of one good pour. I can't make that climb anymore, but you've got the legs for it. Take the can. Mind the branches; they hold if you're honest with them.",
+    completionText:
+      "It'll live now. You wouldn't think one climb and one pour was much, against everything else out there. It isn't much. It's only everything to the one thing you poured it on.",
+    objectives: [
+      {
+        type: 'interact',
+        targetNpcId: 'withered_planting',
+        count: 1,
+        label: 'Water carried up the willow path',
+      },
+    ],
+    xpReward: 140,
+    copperReward: 50,
+    itemRewards: {},
+    minLevel: 2,
+  },
   q_someone_your_own_size: {
     id: 'q_someone_your_own_size',
     name: 'Someone Your Own Size',
@@ -368,10 +419,40 @@ export const HOLLOW_ZONE_QUESTS: Record<string, QuestDef> = {
     xpReward: 160,
     copperReward: 60,
     // Reward-inverted end of the shippable arc: no stats, only the keepsake
-    // charm. See willow_sprig in content/hollow.ts (kept adjustable: when the
-    // gated finale lands, this can move to it).
+    // charm. See willow_sprig in content/hollow.ts.
     itemRewards: SPRIG_FOR_ALL,
     minLevel: 3,
+  },
+  // PHAA-614: quest 4, "The Watering Can", the finale beat. Rides the
+  // lorebook v2.1 main-quest spine (PHAA-543): the reveal that the water
+  // Shade was collecting at the first meeting was always for the plant
+  // buried under the shrine. Requires both quests 1 and 3 (the full player-
+  // facing arc); the turn-in NPC (buried_root) lives in content/hollow.ts's
+  // under_shrine dungeon def, close to the entrance so the walk stays
+  // combat-light. The god's one gentle bark near the player post-line (design
+  // doc's "deferred, engine-dependent beats") is NOT built here: it depends
+  // on the Phase-2 live-god ambient system, which does not exist yet.
+  q_the_watering_can: {
+    id: 'q_the_watering_can',
+    name: 'The Watering Can',
+    giverNpcId: 'shade',
+    turnInNpcId: 'shade',
+    requiresQuest: 'q_someone_your_own_size',
+    text: "I've asked you for small things, and you've done them all without once asking why. Here's the last one, and it isn't small, though it'll look it. Take my can down under the shrine, to the thing that's buried there, and give it water. It's been waiting a long time to be given something instead of asked for something.",
+    completionText:
+      'You did it. Of course you did. That was the water, you understand. All of it, all the way back to the day you found me at the lake and thought nothing of it. The same pour, the same promise, kept one more time. Thank you. Now go and be gentle with the world. It is the only thing that ever changed it.',
+    objectives: [
+      {
+        type: 'interact',
+        targetNpcId: 'buried_root',
+        count: 1,
+        label: 'Water given to the buried root',
+      },
+    ],
+    xpReward: 220,
+    copperReward: 80,
+    itemRewards: {},
+    minLevel: 4,
   },
 };
 
@@ -381,7 +462,9 @@ export const HOLLOW_ZONE_QUEST_ORDER: string[] = [
   'q_fallow_acres_wolves',
   'q_fallow_acres_wolves_ii',
   'q_have_you_eaten',
+  'q_the_long_way_around',
   'q_someone_your_own_size',
+  'q_the_watering_can',
 ];
 
 // Hand-placed landmarks (creativity pass, board follow-up on PHAA-420): a

@@ -533,6 +533,13 @@ export interface MobTemplate {
   // Rare/miniboss controls.
   canSwim?: boolean;
   ccImmune?: boolean;
+  // Upstream #1643 (Thunzharr unkitable-movespeed fix): every movement step (chase,
+  // flee, wander, leash return) takes moveToward's ignoreObstacles branch, a straight
+  // line that ignores prop colliders, the waterline, and the steep-wall gate. For a
+  // mountain-sized world boss with a chase speed above player run speed: without this
+  // it can still wedge on camp furniture mid-chase and hand a kiter the gap the raw
+  // speed stat was supposed to deny.
+  phasesThroughObstacles?: boolean;
   respawnMult?: number;
   // Fixed respawn delay in seconds, overriding respawnSeconds*respawnMult; also
   // caps corpse decay so the mob returns on schedule. (Training dummy: 10s.)

@@ -1034,16 +1034,22 @@
   body.mobile-touch #player-card-modal .pc-link-input {
     font-size: 16px;
   }
+  /* Char/talents mobile redo: the user explicitly prefers the character and
+     talents windows covering the ENTIRE mobile screen over the old
+     partial-sheet layout, so both go full-screen landscape-first overlays
+     (inset 0, own scroll) instead of pinning to a corner with a reserved
+     player-frame band. Covering the frame is fine here: the window itself is
+     modal (it already traps focus / blocks world input), so nothing actionable
+     is hidden behind it. */
   body.mobile-touch #char-window {
-    left: 10px;
-    top: 10px;
-    /* Reset the base `.window` centering transform: this rule re-pins the
-       window to the left edge, and a leftover translateX(-50%) would shift it
-       half its own width off-screen (the off-screen-left clipping bug). */
-    right: auto;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
     transform: none;
-    width: min(360px, calc(100vw - 20px));
-    max-height: calc(100vh - 20px);
+    width: auto;
+    max-width: none;
+    max-height: none;
     box-sizing: border-box;
     overflow-y: auto;
   }
@@ -1224,16 +1230,35 @@
   body.mobile-touch .perf-footer .btn {
     min-height: 44px;
   }
+  /* Full-screen landscape-first overlay (issue 1577 char/talents redo, see
+     #char-window above): the old partial sheet left too little height for a
+     full talent tree to read on a real landscape phone even before the
+     fit-to-view scale (talent_tree_fit.ts / fitTreeToMobileViewport in
+     talents_window.ts) kicks in, so #tal-body gets the whole screen to work
+     with instead of a reserved player-frame band. */
   body.mobile-touch #talents-window {
     position: fixed;
-    left: 50%;
-    right: auto;
-    top: 50%;
-    width: min(600px, calc(100vw - 20px));
-    max-width: calc(100vw - 20px);
-    max-height: calc(100vh - 24px);
-    transform: translate(-50%, -50%);
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: auto;
+    max-width: none;
+    max-height: none;
+    transform: none;
     z-index: 95 !important;
+  }
+  body.mobile-touch #talents-window #tal-body {
+    overflow: auto;
+  }
+  /* The class/spec tab switch already exists on desktop (tal-tabs); on mobile
+     it is the mechanism issue 1577's redo leans on to see one tree at a time
+     at a bigger fit-to-view scale, instead of a taller stacked layout. Bigger
+     touch targets for the tab strip itself. */
+  body.mobile-touch #talents-window .tal-tab {
+    min-height: 40px;
+    display: flex;
+    align-items: center;
   }
   body.mobile-touch #spellbook [data-close] {
     min-width: 40px;
