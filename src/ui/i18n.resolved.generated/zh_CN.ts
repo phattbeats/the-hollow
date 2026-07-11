@@ -5486,7 +5486,7 @@ export const zh_CN: EnTranslations = {
       },
       "first_cutting": {
         "name": "插条",
-        "flavorText": "A slip of living green from Brother Greenpaw, wrapped in damp moss. Once a homestead plot can be edited, this is the first thing you plant."
+        "flavorText": "一段来自灰爪修士的鲜活绿枝，用湿苔藓包裹着。等家园地块可以编辑后，这是你要种下的第一样东西。"
       },
       "greenpaw_bead": {
         "name": "弹药带上的一颗念珠"
@@ -5759,7 +5759,7 @@ export const zh_CN: EnTranslations = {
         "name": "执事沃斯"
       },
       "training_dummy": {
-        "name": "Training Dummy"
+        "name": "训练假人"
       },
       "ridge_stalker": {
         "name": "山脊潜猎者"
@@ -5891,7 +5891,7 @@ export const zh_CN: EnTranslations = {
         "name": "侍僧泰莎"
       },
       "boarball_ball": {
-        "name": "Boarball"
+        "name": "野猪球"
       },
       "ironvein_foreman": {
         "name": "铁脉工头"

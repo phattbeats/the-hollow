@@ -5589,31 +5589,31 @@ export const it_IT: EnTranslations = {
         "name": "Scrigno cosmetico misterioso"
       },
       "flint_amber_pick": {
-        "name": "Flint Amber Pick"
+        "name": "Piccone d'ambra di selce"
       },
       "bonewood_amber_pick": {
-        "name": "Bonewood Amber Pick"
+        "name": "Piccone d'ambra di legno d'osso"
       },
       "starleaf_amber_pick": {
-        "name": "Starleaf Amber Pick"
+        "name": "Piccone d'ambra di foglia stellare"
       },
       "flint_bark_axe": {
-        "name": "Flint Bark Axe"
+        "name": "Ascia di corteccia di selce"
       },
       "bonewood_bark_axe": {
-        "name": "Bonewood Bark Axe"
+        "name": "Ascia di corteccia di legno d'osso"
       },
       "starleaf_bark_axe": {
-        "name": "Starleaf Bark Axe"
+        "name": "Ascia di corteccia di foglia stellare"
       },
       "flint_spore_sickle": {
-        "name": "Flint Spore Sickle"
+        "name": "Falce di spore di selce"
       },
       "bonewood_spore_sickle": {
-        "name": "Bonewood Spore Sickle"
+        "name": "Falce di spore di legno d'osso"
       },
       "starleaf_spore_sickle": {
-        "name": "Starleaf Spore Sickle"
+        "name": "Falce di spore di foglia stellare"
       },
       "deathless_heartwood": {
         "name": "Cuorlegno della Corona immortale"

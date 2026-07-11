@@ -2378,6 +2378,8 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.ironvein_foreman.name': 'Прораб Железной жилы',
   'entities.mobs.ironvein_sapper.name': 'Сапер Железной жилы',
   'entities.mobs.heartwood_colossus.name': 'Колосс Сердцевины',
+  'entities.mobs.training_dummy.name': 'Тренировочный манекен',
+  'entities.mobs.boarball_ball.name': 'Боарбол',
   'entities.mobs.marrowlord_varkas.name': 'Владыка костного мозга Варкас',
   'entities.mobs.mirejaw_frenzy.name': 'Бешенство Миреджо',
   'entities.mobs.mirejaw_the_ravenous.name': 'Миреджо Ненасытный',
@@ -4898,6 +4900,8 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': 'Пещерная закуска',
   'entities.items.emberbulb.name': 'Тлеющая луковица',
   'entities.items.first_cutting.name': 'Черенок',
+  'entities.items.first_cutting.flavorText':
+    'Живой зеленый черенок от брата Гринпо, завернутый во влажный мох. Как только надел усадьбы станет доступен для редактирования, это будет первым, что вы посадите.',
   'entities.items.greenpaw_bead.name': 'Бусина с бандольеры',
   'entities.items.keeper_coal.name': 'Уголёк, который никогда не остывал',
   'entities.items.witness_root_cincture.name': 'Обвязка Корня-Свидетеля',
