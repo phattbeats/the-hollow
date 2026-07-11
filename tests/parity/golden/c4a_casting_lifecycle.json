@@ -35,7 +35,7 @@
       "tick": 1,
       "time": 0.05,
       "nextId": 405,
-      "state": "5c53bcdc",
+      "state": "df125ad8",
       "events": "e4e062a0",
       "rng": {
         "draws": 2,
@@ -47,6 +47,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -59,7 +66,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -69,6 +78,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
@@ -79,7 +95,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -89,6 +107,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {},
@@ -99,7 +124,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -323,7 +350,7 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 405,
-      "state": "103b63d1",
+      "state": "b7f8bc59",
       "events": "c21e4a9e",
       "rng": {
         "draws": 5,
@@ -334,7 +361,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 405,
-      "state": "7ffa87c3",
+      "state": "c1d83daf",
       "events": "741638a5",
       "rng": {
         "draws": 5,
@@ -345,7 +372,7 @@
       "tick": 15,
       "time": 0.75,
       "nextId": 405,
-      "state": "d03ee16a",
+      "state": "93ff9b28",
       "events": "741638a5",
       "rng": {
         "draws": 5,
@@ -356,7 +383,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 405,
-      "state": "eb742910",
+      "state": "177f5eca",
       "events": "741638a5",
       "rng": {
         "draws": 5,
@@ -367,7 +394,7 @@
       "tick": 25,
       "time": 1.25,
       "nextId": 405,
-      "state": "a87190d4",
+      "state": "41379de6",
       "events": "741638a5",
       "rng": {
         "draws": 5,
@@ -378,7 +405,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 405,
-      "state": "1c2eacad",
+      "state": "43d7625d",
       "events": "741638a5",
       "rng": {
         "draws": 5,
@@ -389,7 +416,7 @@
       "tick": 35,
       "time": 1.75,
       "nextId": 405,
-      "state": "7153df47",
+      "state": "a3f86f8b",
       "events": "741638a5",
       "rng": {
         "draws": 5,
@@ -400,7 +427,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 405,
-      "state": "b432e9f0",
+      "state": "a54cf72a",
       "events": "741638a5",
       "rng": {
         "draws": 5,
@@ -411,7 +438,7 @@
       "tick": 45,
       "time": 2.25,
       "nextId": 405,
-      "state": "afd0ccfd",
+      "state": "4494f6c9",
       "events": "8b776e55",
       "rng": {
         "draws": 26,
@@ -422,7 +449,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 405,
-      "state": "f302f925",
+      "state": "7bfc8671",
       "events": "741638a5",
       "rng": {
         "draws": 50,
@@ -433,7 +460,7 @@
       "tick": 55,
       "time": 2.75,
       "nextId": 405,
-      "state": "b46b45e8",
+      "state": "53fd98ce",
       "events": "741638a5",
       "rng": {
         "draws": 68,
@@ -444,7 +471,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 405,
-      "state": "6bfc326d",
+      "state": "3548eff9",
       "events": "741638a5",
       "rng": {
         "draws": 86,
@@ -455,7 +482,7 @@
       "tick": 65,
       "time": 3.25,
       "nextId": 405,
-      "state": "686420ee",
+      "state": "45579dc0",
       "events": "741638a5",
       "rng": {
         "draws": 107,
@@ -466,7 +493,7 @@
       "tick": 70,
       "time": 3.5,
       "nextId": 405,
-      "state": "15fde1b4",
+      "state": "2ea9b092",
       "events": "741638a5",
       "rng": {
         "draws": 131,
@@ -477,7 +504,7 @@
       "tick": 75,
       "time": 3.75,
       "nextId": 405,
-      "state": "c2b766df",
+      "state": "a92c8687",
       "events": "741638a5",
       "rng": {
         "draws": 154,
@@ -488,7 +515,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 405,
-      "state": "5aa48019",
+      "state": "39ee296d",
       "events": "b4585e5a",
       "rng": {
         "draws": 163,
@@ -499,7 +526,7 @@
       "tick": 85,
       "time": 4.25,
       "nextId": 405,
-      "state": "c5d4dfe0",
+      "state": "59d9ab1c",
       "events": "c91083a2",
       "rng": {
         "draws": 197,
@@ -510,7 +537,7 @@
       "tick": 90,
       "time": 4.5,
       "nextId": 405,
-      "state": "82378c08",
+      "state": "b460f264",
       "events": "741638a5",
       "rng": {
         "draws": 227,
@@ -521,7 +548,7 @@
       "tick": 95,
       "time": 4.75,
       "nextId": 405,
-      "state": "596f75f2",
+      "state": "b8c58aba",
       "events": "741638a5",
       "rng": {
         "draws": 272,
@@ -532,7 +559,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 405,
-      "state": "11c81837",
+      "state": "9f7b6061",
       "events": "741638a5",
       "rng": {
         "draws": 297,
@@ -543,7 +570,7 @@
       "tick": 105,
       "time": 5.25,
       "nextId": 405,
-      "state": "a1759c18",
+      "state": "46d69274",
       "events": "741638a5",
       "rng": {
         "draws": 313,
@@ -554,7 +581,7 @@
       "tick": 110,
       "time": 5.5,
       "nextId": 405,
-      "state": "fa3c52f2",
+      "state": "ec8629ba",
       "events": "741638a5",
       "rng": {
         "draws": 333,
@@ -565,7 +592,7 @@
       "tick": 115,
       "time": 5.75,
       "nextId": 405,
-      "state": "e91c90b2",
+      "state": "df5b3ffa",
       "events": "741638a5",
       "rng": {
         "draws": 366,
@@ -576,7 +603,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 405,
-      "state": "129a4c3f",
+      "state": "6e637549",
       "events": "741638a5",
       "rng": {
         "draws": 391,
@@ -587,7 +614,7 @@
       "tick": 123,
       "time": 6.15,
       "nextId": 405,
-      "state": "8027a813",
+      "state": "a0b5ce99",
       "events": "538fde62",
       "rng": {
         "draws": 417,
@@ -599,6 +626,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -612,7 +646,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -622,6 +658,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
@@ -632,7 +675,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -642,6 +687,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {},
@@ -652,7 +704,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -902,7 +956,7 @@
       "tick": 125,
       "time": 6.25,
       "nextId": 405,
-      "state": "2ef450a8",
+      "state": "cc81bb84",
       "events": "20dae23b",
       "rng": {
         "draws": 431,
@@ -913,7 +967,7 @@
       "tick": 130,
       "time": 6.5,
       "nextId": 405,
-      "state": "452b62a8",
+      "state": "b514c184",
       "events": "741638a5",
       "rng": {
         "draws": 467,
@@ -924,7 +978,7 @@
       "tick": 135,
       "time": 6.75,
       "nextId": 405,
-      "state": "6abd0963",
+      "state": "989e2329",
       "events": "741638a5",
       "rng": {
         "draws": 509,
@@ -935,7 +989,7 @@
       "tick": 140,
       "time": 7,
       "nextId": 405,
-      "state": "3c6484df",
+      "state": "c3a1b1bd",
       "events": "741638a5",
       "rng": {
         "draws": 539,
@@ -946,7 +1000,7 @@
       "tick": 145,
       "time": 7.25,
       "nextId": 405,
-      "state": "3bd7fc5c",
+      "state": "889a9bd0",
       "events": "4cd05f3b",
       "rng": {
         "draws": 562,
@@ -957,7 +1011,7 @@
       "tick": 145,
       "time": 7.25,
       "nextId": 405,
-      "state": "9081d8d7",
+      "state": "e0a70fc5",
       "events": "323a5fab",
       "rng": {
         "draws": 562,
@@ -969,6 +1023,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -982,7 +1043,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -992,6 +1055,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
@@ -1002,7 +1072,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1012,6 +1084,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {
@@ -1024,7 +1103,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1284,7 +1365,7 @@
       "tick": 150,
       "time": 7.5,
       "nextId": 405,
-      "state": "25c062d6",
+      "state": "7c16b802",
       "events": "d0501d36",
       "rng": {
         "draws": 595,
@@ -1295,7 +1376,7 @@
       "tick": 153,
       "time": 7.65,
       "nextId": 405,
-      "state": "4c8831b0",
+      "state": "db2cf3ec",
       "events": "75e7d497",
       "rng": {
         "draws": 617,
@@ -1307,6 +1388,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -1320,7 +1408,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1330,6 +1420,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
@@ -1340,7 +1437,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1350,6 +1449,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {
@@ -1363,7 +1469,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1622,7 +1730,7 @@
       "tick": 155,
       "time": 7.75,
       "nextId": 405,
-      "state": "2fd548eb",
+      "state": "79c7edf9",
       "events": "741638a5",
       "rng": {
         "draws": 637,
@@ -1633,7 +1741,7 @@
       "tick": 158,
       "time": 7.9,
       "nextId": 405,
-      "state": "4d4cc113",
+      "state": "a5167841",
       "events": "741638a5",
       "rng": {
         "draws": 653,
@@ -1645,6 +1753,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -1658,7 +1773,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1668,6 +1785,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
@@ -1678,7 +1802,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1688,6 +1814,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {
@@ -1701,7 +1834,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}

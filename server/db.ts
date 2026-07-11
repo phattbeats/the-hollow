@@ -6,6 +6,7 @@ import { LEADERBOARD_MAX } from '../src/sim/leaderboard_page';
 import { sanitizeRemovedZone1Content } from '../src/sim/removed_zone1_content';
 import type { CharacterState, MarketSave } from '../src/sim/sim';
 import type { ArenaFormat, PlayerClass } from '../src/sim/types';
+import type { BankBonusFacts } from './bank_entitlements';
 import { seedChatFilterDefaults } from './chat_filter_db';
 import type { ChatLogRow } from './chat_log';
 import { DISCORD_SCHEMA } from './discord_db';
@@ -86,6 +87,29 @@ CREATE INDEX IF NOT EXISTS characters_lifetime_xp
 CREATE INDEX IF NOT EXISTS characters_lifetime_xp_global
   ON characters (${LIFETIME_XP_EXPR} DESC);
 ALTER TABLE accounts ADD COLUMN IF NOT EXISTS is_admin BOOLEAN NOT NULL DEFAULT FALSE;
+-- Fine-grained admin roles. admin_roles is the single SOURCE OF TRUTH for what
+-- an operator may do (staff_db.ts effectiveAdminRoles derives nothing from
+-- is_admin); is_admin stays only the "is staff" flag every existing call-site
+-- reads AND the kill switch: is_admin FALSE means not staff whatever admin_roles
+-- says, so a manual "SET is_admin = FALSE" always revokes. Every role write
+-- keeps is_admin in sync (is_admin = roles non-empty). Derivation flows one way
+-- only: roles -> is_admin, never back.
+--
+-- The column is nullable ON PURPOSE, three-valued: NULL = "roles never defined"
+-- (a pre-permission legacy account, or a brand-new non-staff row), '{}' = an
+-- EXPLICIT empty set (fully revoked). The one-time backfill below keys on NULL,
+-- so it migrates a genuine legacy admin exactly once and then no-ops forever; a
+-- manual half-revoke ("SET admin_roles = '{}'" without touching is_admin) writes
+-- '{}', not NULL, so it can never be resurrected to a role. Legacy admins are
+-- migrated to the admin role (the full toolset MINUS staff.manage), not
+-- superadmin: staff-role management requires a deliberate superadmin grant via
+-- scripts/grant_admin.mjs.
+ALTER TABLE accounts ADD COLUMN IF NOT EXISTS admin_roles TEXT[];
+ALTER TABLE accounts ALTER COLUMN admin_roles DROP NOT NULL;
+UPDATE accounts SET admin_roles = '{admin}' WHERE is_admin AND admin_roles IS NULL;
+-- Staff-page lookup: accounts is the largest table, so give the rare staff
+-- rows a small partial index.
+CREATE INDEX IF NOT EXISTS accounts_staff ON accounts(username) WHERE is_admin;
 ALTER TABLE accounts ADD COLUMN IF NOT EXISTS suspended_until TIMESTAMPTZ;
 ALTER TABLE accounts ADD COLUMN IF NOT EXISTS banned_at TIMESTAMPTZ;
 ALTER TABLE accounts ADD COLUMN IF NOT EXISTS moderation_reason TEXT;
@@ -291,11 +315,44 @@ CREATE TABLE IF NOT EXISTS blocked_ip_actions (
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 CREATE INDEX IF NOT EXISTS blocked_ip_actions_ip ON blocked_ip_actions(ip, created_at DESC);
+-- Audit trail for staff role changes (dashboard staff page; the grant script
+-- writes here too, with admin_account_id NULL).
+CREATE TABLE IF NOT EXISTS admin_role_changes (
+  id BIGSERIAL PRIMARY KEY,
+  account_id INT NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+  admin_account_id INT REFERENCES accounts(id) ON DELETE SET NULL,
+  roles_before TEXT[] NOT NULL,
+  roles_after TEXT[] NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+-- Serves the global history view (ORDER BY created_at DESC, id DESC LIMIT n).
+CREATE INDEX IF NOT EXISTS admin_role_changes_created ON admin_role_changes(created_at DESC, id DESC);
 CREATE TABLE IF NOT EXISTS world_state (
   key TEXT PRIMARY KEY,
   data JSONB NOT NULL,
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+-- Bot-detector runtime config overrides (the admin Bot Detector > Configuration
+-- panel): one JSONB document per realm ({ [fieldId]: value }, validated by the
+-- detector). Applied live on save and re-applied at boot right after the
+-- detector is constructed.
+CREATE TABLE IF NOT EXISTS bot_detector_config (
+  realm TEXT PRIMARY KEY DEFAULT '${REALM_SQL_DEFAULT}',
+  data JSONB NOT NULL DEFAULT '{}'::jsonb,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_by INT REFERENCES accounts(id) ON DELETE SET NULL
+);
+CREATE TABLE IF NOT EXISTS bot_detector_config_changes (
+  id BIGSERIAL PRIMARY KEY,
+  realm TEXT NOT NULL,
+  admin_account_id INT REFERENCES accounts(id) ON DELETE SET NULL,
+  before_data JSONB NOT NULL,
+  after_data JSONB NOT NULL,
+  note TEXT NOT NULL DEFAULT '',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS bot_detector_config_changes_realm
+  ON bot_detector_config_changes(realm, created_at DESC, id DESC);
 -- Chat moderation: per-account timed mute + running strike count for the
 -- hard-word (slur) enforcement ladder. A mute blocks chat only, never login.
 ALTER TABLE accounts ADD COLUMN IF NOT EXISTS chat_muted_until TIMESTAMPTZ;
@@ -441,6 +498,9 @@ export interface AccountRow {
   id: number;
   username: string;
   password_hash: string;
+  // Recovery email (nullable): the login path selects it so the handler can tell
+  // the client whether a pre-existing account still needs to set one.
+  email?: string | null;
   // Present on the login path (findAccount): null/undefined when 2FA is off.
   totp_secret?: string | null;
   totp_enabled_at?: string | null;
@@ -573,7 +633,7 @@ export async function createAccount(
 
 export async function findAccount(username: string): Promise<AccountRow | null> {
   const res = await pool.query(
-    `SELECT id, username, password_hash, totp_secret, totp_enabled_at, totp_last_window
+    `SELECT id, username, password_hash, email, totp_secret, totp_enabled_at, totp_last_window
      FROM accounts WHERE username = $1`,
     [username],
   );
@@ -669,6 +729,33 @@ export async function accountById(accountId: number): Promise<AccountInfoRow | n
     [accountId],
   );
   return res.rows[0] ?? null;
+}
+
+// The account facts that drive the bank bonus-slot registry
+// (server/bank_entitlements.ts), read in ONE round trip at every fresh join. A
+// missing account returns all-false (the FROM accounts row is absent, so
+// res.rows[0] is undefined and the fallback applies).
+//   - emailVerified: the RESOLVED criterion, email_verified_at IS NOT NULL, never
+//     email-present.
+//   - discordLinked: a link ROW is the whole proof. NEVER a balance or any other
+//     account-facing token.
+// ADAPT NOTE (PHAA-571): upstream also read wallet_links + a qualified-referral
+// count here; both are dropped with the wallet-link and referral entitlement
+// sources (see server/bank_entitlements.ts).
+export async function bankBonusFactsForAccount(accountId: number): Promise<BankBonusFacts> {
+  const res = await pool.query(
+    `SELECT
+       (a.email_verified_at IS NOT NULL) AS email_verified,
+       EXISTS(SELECT 1 FROM discord_links dl WHERE dl.account_id = $1) AS discord_linked
+     FROM accounts a
+     WHERE a.id = $1`,
+    [accountId],
+  );
+  const row = res.rows[0];
+  return {
+    emailVerified: row?.email_verified ?? false,
+    discordLinked: row?.discord_linked ?? false,
+  };
 }
 
 // Account-wide character count across every realm. The account portal is an
@@ -778,6 +865,28 @@ export async function revokeCompanionToken(accountId: number, prefix: string): P
 
 export async function setAccountEmail(accountId: number, email: string | null): Promise<void> {
   await pool.query('UPDATE accounts SET email = $2 WHERE id = $1', [accountId, email]);
+}
+
+// Fill the recovery email ONLY when the account has none yet, never overwriting an
+// address the owner already set (that can only change through the verified change
+// flow). Used by the Discord capture path and the self-service set-initial route:
+// a Discord-verified address seeds the recovery email + stamps email_verified_at,
+// but a fresh grant must never clobber an existing one. Idempotent (the WHERE
+// makes a second call a no-op) and race-safe (the guard is in the UPDATE, not a
+// read-then-write). Returns true when a row was actually filled.
+export async function backfillAccountEmailIfEmpty(
+  accountId: number,
+  email: string,
+  verified: boolean,
+): Promise<boolean> {
+  const res = await pool.query(
+    `UPDATE accounts
+       SET email = $2,
+           email_verified_at = CASE WHEN $3 THEN now() ELSE email_verified_at END
+     WHERE id = $1 AND (email IS NULL OR email = '')`,
+    [accountId, email, verified],
+  );
+  return (res.rowCount ?? 0) > 0;
 }
 
 export async function setAccountDeactivated(

@@ -16,6 +16,11 @@ import type { TranslationKey } from '../i18n.catalog';
 export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.spectate.banner': '{name} 관전 중',
   'hudChrome.loot.chestTitle': '상자',
+  'hudChrome.lootRollGroup.pending': '대기 중...',
+  'hudChrome.lootRollGroup.need': '니드',
+  'hudChrome.lootRollGroup.greed': '그리드',
+  'hudChrome.lootRollGroup.pass': '포기',
+  'hudChrome.lootRollGroup.aria': '{item} 그룹 굴림 상태',
   'hudChrome.spellbook.addToBarAria': '{name}을(를) 행동 단축바에 추가',
   'hudChrome.spellbook.removeFromBarAria': '{name}을(를) 행동 단축바에서 제거',
   'hudChrome.nameplate.mob': '[{level}] {name}',
@@ -662,6 +667,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'loading.enterTimeout':
     '세계에 입장할 수 없습니다. 연결 시간이 초과되었습니다. 게임 서버가 실행 중인가요?',
   'loading.connectionLost': '서버와의 연결이 끊어졌습니다.',
+  'loading.reconnecting': '연결이 끊어졌습니다. 다시 연결하는 중...',
   'loading.connectionRejected': '서버가 연결을 종료했습니다.',
   'errors.nothingInteract': '상호작용할 대상이 없습니다.',
   'errors.noEnemyNearby': '근처에 적이 없습니다.',
@@ -685,6 +691,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'errors.api.nameTaken': '이미 사용 중인 이름입니다.',
   'errors.api.characterNotFound': '캐릭터를 찾을 수 없습니다.',
   'errors.api.characterOnline': '캐릭터가 현재 접속 중입니다.',
+  'errors.api.crossSiteRejected': '교차 사이트 요청이 거부되었습니다.',
   'errors.api.deleteConfirm': '삭제를 확인하려면 캐릭터 이름을 입력하세요.',
   'errors.api.notAuthenticated': '인증되지 않았습니다.',
   'errors.api.accountBanned': '이 계정은 이용 정지되었습니다.',
@@ -1322,6 +1329,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'abilityUi.tooltip.offGlobalCooldown': '공용 재사용 대기시간 없음',
   'abilityUi.tooltip.friendlyTarget': '아군 대상',
   'abilityUi.tooltip.enemyTarget': '적 대상',
+  'abilityUi.tooltip.selfOnly': '자신에게만',
   'abilityUi.tooltip.damageRange': '{min}에서 {max}',
   'abilityUi.tooltip.finisherDamage': '기본 {base}, 연계 점수당 {perCombo}',
   'abilityUi.resources.mana': '마나',
@@ -2912,7 +2920,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_root_hollow_boars_ii.text':
     '이 직분에서 인정해선 안 될 것을 인정하리다. 다섯은 너무 낙관했소. 아래 굴에서 계속 밀려 올라오는구려. 여덟만 더 잡으면, 기록을 세 번째로 고치지 않고 이 철을 마감할 수 있소. 기록은 고쳐지길 싫어하지. 나도 그렇소.',
   'entities.quests.q_root_hollow_boars_ii.completion':
-    '마감. 서명. 편철. 이제 이 철은 예정대로 흘러갈 수 있소, 달력을 지킬 자가 다시 생겼으니. 그대는 아주 작은 회중에게 큰 도움을 주었소. 분명히 해두자면, 그 회중이란 바로 나요.',
+    '마감. 서명. 편철. 이제 이 철은 예정대로 흘러갈 수 있소, 달력을 지킬 자가 다시 생겼으니. 그대는 아주 작은 회중에게 큰 도움을 주었소. 분명히 해두자면, 그 회중이란 바로 나요. 이 장부 자체는 이 체제보다도 오래되었소, 만난 적 없는 손으로 철해졌고, 내가 굳이 합산하지 않는 수를 담고 있소. 한때 이곳엔 참으로 꼼꼼한 이가 있었던 모양이오. 나는 그저 그 걸음을 따라가려 할 뿐이오.',
   'entities.quests.q_root_hollow_boars_ii.objectives.0.label': '야생 멧돼지 처치',
   'entities.quests.q_fallow_acres_wolves.title': '이랑에서 몰아낸 늑대',
   'entities.quests.q_fallow_acres_wolves.text':
@@ -3061,6 +3069,32 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_what_fills.dialog.refuse': '싫습니다. 다시는 안 내려가요.',
   'entities.quests.q_what_fills.dialog.refuseReply':
     '오... 오, 그래. ...그래. 그건... 그렇지. 아니, 맞는 말이야, 친구, 맞는 말이지... 항아리도 들었고, 우리끼리 얘기지만 그 녀석도 존중하는 눈치야. 자, 꺾꽂이는 그냥 가져가. 한 번은 내려갔잖아, 그것만으로도 대부분보다 한 번은 더 간 거야...',
+  'entities.quests.q_the_wavelength.title': '파장 위에서',
+  'entities.quests.q_the_wavelength.text':
+    '꺾꽂이는 이제 네 거다, 친구, 그러니 그다음 얘기를 좀 하자고... 두 가지가 있는데, 둘 다 시련은 아니고, 그보다는 소개에 가깝지. 먼저, 항아리를 건너가서 엘더 야로우를 만나봐, 그 사람은 완전히 다른 두 번째 소명을, 이 모든 걸 즐기는 다른 방법을 가르쳐주거든, 여길 지나가는 영혼이라면 누구나 그 문이 열려 있다는 걸 알아야 해... 둘째로, 다시 돌아와서 나한테 뭐라도 좀 먹여줘, 잉걸송이든 동굴 살점이든 상관없어, 난 항상 텅 비어 있고 항아리는 항상 연기를 원하거든. 그 부분은 절대 안 끝나, 그린포 식으로 말하자면.',
+  'entities.quests.q_the_wavelength.completion':
+    '거봐... 방금 방 안이 순간 짙어지는 거 느꼈지? 그분이 알아챈 거야. 그게 요령의 전부야, 친구 - 네가 날 먹이면, 내가 연기를 피우고, 그분이 조금 더 귀를 기울이시지. 복잡할 거 하나 없어. 앞으로도 절대 안 변할 거고. 남는 잉걸송이나 살점 있으면 언제든 와, 화로는 달력 같은 거 안 챙기니까... 아, 그리고. 홀로우에 온 걸 환영해. 그 말을 여태 안 했다는 걸 이제야 깨달았네.',
+  'entities.quests.q_the_wavelength.objectives.0.label': '엘더 야로우를 만남',
+  'entities.quests.q_the_wavelength.objectives.1.label': '화로에서 먹임',
+  'entities.quests.q_the_wavelength.dialog.complain':
+    '또 심부름이야? 방금 그 구멍에서 기어 나왔잖아.',
+  'entities.quests.q_the_wavelength.dialog.complainReply':
+    '아니, 아니, 들어봐, 이건 동굴 일이 아니야... 이번 건 쉬워, 그냥 걷고 한 번 잘 먹이기만 하면 돼. 내가 여태 부탁한 것 중 제일 가벼운 거야, 약속하지, 파장에 걸고.',
+  'entities.quests.q_the_wavelength.dialog.refuse': '내 수련은 내가 알아서 찾을게, 고맙지만.',
+  'entities.quests.q_the_wavelength.dialog.refuseReply':
+    '...뭐, 그럴 수도 있지. 아직 준비 안 된 영혼한테 뭘 배우라고 강요할 순 없으니까. "아직"이 아니게 되면 문은 열려 있어... 자, 이거라도 가져가, 그래도 와줬으니 이 정도는 해야지.',
+  'entities.quests.q_keep_him_lit.text':
+    '세 번이야, 친구, 그게 숫자지... 신성한 건 아니고, 그냥 은혜 하나를 습관으로 바꾸기에 딱 맞는 횟수일 뿐이야, 그리고 습관이야말로 내가 진짜로 믿는 유일한 종교거든... 돌아와서 화로에 세 번, 따로따로 세 번 먹여줘, 순서는 상관없고, 잉걸구근이든 동굴 조각이든 뭐든 상관없어, 그러면 네가 정말로 여기 머물려는 거지, 더 큰 뭔가로 가는 길에 그냥 스쳐 지나가는 게 아니라는 걸 믿을게...',
+  'entities.quests.q_keep_him_lit.completion':
+    '세 번에 세 번... 이제 넌 그냥 방문객이 아니야, 친구, 넌 뭔가를 살려두고 있는 거고, 내가 보기엔 그게 이 판의 전부야, 아무도 물어본 적 없지만 그래도 말해두는 거야... 자. 이거 챙겨둬, 아무 쓸모도 없어, 그냥 기억할 뿐이야, 우리 여기 있는 다른 것들이랑 똑같이...',
+  'entities.quests.q_keep_him_lit.objectives.0.label': '화로에서 세 번 먹임',
+  'entities.quests.q_keep_him_lit.dialog.complain': '이미 한 번 먹였잖아요. 그걸로 부족한가요?',
+  'entities.quests.q_keep_him_lit.dialog.complainReply':
+    '한 번은 호의야, 친구, 세 번은 습관이지, 나는 호의 때문에 데인 적이 있거든... 화로가 필요해서 그런 게 아니야, 화로는 멀쩡해, 내가 잘 돌보고 있어, 이건 네가 자기 발로 다시 돌아오고 싶어서 오는 건지에 관한 거야, 퀘스트 표시가 시켜서가 아니라... 세 번. 서두를 필요 없어.',
+  'entities.quests.q_keep_him_lit.dialog.refuse':
+    '세 번씩 나눠서 하지 않을 거예요. 한 번이면 충분해요.',
+  'entities.quests.q_keep_him_lit.dialog.refuseReply':
+    '...그래. 그래, 알겠어, 친구, 그것도 충분히 공정한 선이지... 그럼 이거라도 가져가, 엄밀히 말하면 네가 번 건 아니지만, 내가 나눠주는 것 대부분도 그렇긴 해, 파장이라는 것도 내가 그런 척하는 것만큼 딱 맞게 점수를 매기진 않거든...',
   'hud.errors.silenced': '침묵 상태입니다!',
   'hud.pet.noPetFood': '소환수에게 먹일 음식이 없습니다.',
   'hud.pet.petEatsFoodOnly': '소환수는 음식만 먹을 수 있습니다.',
@@ -3091,6 +3125,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'auth.realm': '렐름',
   'auth.newCharacter': '새 캐릭터',
   'auth.appearance': '외형',
+  'auth.sex': '성별',
+  'auth.sexMale': '남성',
+  'auth.sexFemale': '여성',
   'auth.class': '직업',
   'auth.name': '이름',
   'auth.chromaOption': '색상 {n}',
@@ -3539,6 +3576,10 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.bags.searchPlaceholder': '아이템 검색',
   'hudChrome.bags.searchAria': '이름으로 가방 아이템 검색',
   'hudChrome.bags.noMatch': '필터와 일치하는 아이템이 없습니다.',
+  'hudChrome.bags.capacityAria': '사용 중인 가방 칸: {total}중 {used}',
+  'hudChrome.bags.backpack': '배낭',
+  'hudChrome.bags.socketEmpty': '빈 가방 칸',
+  'hudChrome.bags.unequipHint': '클릭하여 이 가방을 제거',
   // Guide (/guide) localization.
   'guide.brand': 'World of ClaudeCraft',
   'guide.brandShort': 'ClaudeCraft',
@@ -3592,6 +3633,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.nav.dungeons': '던전과 공격대',
   'guide.nav.reference': '참고 자료',
   'guide.nav.controls': '조작법',
+  'guide.nav.settings': '설정 및 성능',
   'guide.nav.combat': '전투',
   'guide.nav.glossary': '용어집',
   'guide.nav.faq': '자주 묻는 질문',
@@ -3740,6 +3782,92 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.controls.mobileHeading': '모바일에서',
   'guide.controls.mobileBody':
     '휴대전화와 태블릿에서는 터치 조작이 자동으로 나타납니다. 왼쪽에는 이동 스틱, 오른쪽 아무 곳이나 끌면 시점 전환, 그리고 능력과 메뉴를 위한 화면 버튼이 표시됩니다.',
+  'guide.settingsPage.heading': '설정 및 성능',
+  'guide.settingsPage.intro':
+    '화면을 가장 아름답게, 혹은 게임을 가장 빠르게. 바로 쓸 수 있는 세 가지 추천 설정과 함께, 모든 그래픽 옵션이 실제로 하는 일을 정리했습니다.',
+  'guide.settingsPage.wherePath':
+    '이 페이지의 모든 항목은 게임 안에 있습니다. Esc 키를 누르고 그래픽, 인터페이스, 성능 오버레이에서 확인하세요.',
+  'guide.settingsPage.fairnessTitle': '설계부터 공정하게',
+  'guide.settingsPage.fairnessBody':
+    '이곳의 어떤 옵션도 화면과 유불리를 맞바꾸지 않습니다. 설정을 낮추면 겉모습의 화려함만 줄어들 뿐, 전투에 쓰는 정보는 그대로 남습니다. 약화 효과, 시전 막대, 파티원 체력, 피해량 숫자는 낮음부터 울트라까지 완전히 동일합니다. 사양이 낮은 기기로 플레이해도 결코 불리하지 않습니다.',
+  'guide.settingsPage.loadoutsHeading': '바로 쓸 수 있는 세 가지 추천 설정',
+  'guide.settingsPage.loadoutsIntro':
+    '내 기기와 가장 비슷한 추천 설정에서 시작한 뒤, 마음에 들 때까지 옵션을 하나씩 조정해 보세요.',
+  'guide.settingsPage.recommended': '추천',
+  'guide.settingsPage.whyLabel': '추천 이유:',
+  'guide.settingsPage.tagReload': '새로고침 후 적용',
+  'guide.settingsPage.fpsTitle': 'FPS 우선',
+  'guide.settingsPage.fpsTagline':
+    '오래된 노트북, 내장 그래픽, 배터리 사용 환경을 위한 설정입니다.',
+  'guide.settingsPage.fpsWhy':
+    '그래픽 품질은 전체를 좌우하는 메인 스위치이고, 렌더 품질은 효과가 가장 큰 슬라이더입니다. 70%로 두면 인터페이스는 완벽하게 선명한 채로, 세계는 픽셀을 약 절반만 그립니다.',
+  'guide.settingsPage.balancedTitle': '균형',
+  'guide.settingsPage.balancedTagline':
+    '대부분의 기기에 딱 맞는 최적점이자, 기본으로 권하는 설정입니다.',
+  'guide.settingsPage.balancedWhy':
+    '중간에서는 실제 그림자와 온전한 재질이 표현되고, 높음에서는 앰비언트 오클루전과 블룸이 더해집니다. 울트라 아래 등급에서는 내장 안전장치가 격렬한 전투 중의 순간적인 프레임 저하를 흡수해 주므로, 균형 설정은 따로 신경 쓰지 않아도 계속 부드럽게 유지됩니다.',
+  'guide.settingsPage.visualsTitle': '최고 화질',
+  'guide.settingsPage.visualsTagline': '고성능 데스크톱을 위한 스크린샷 모드입니다.',
+  'guide.settingsPage.visualsWhy':
+    '울트라는 디스플레이가 지원하는 가장 높은 해상도와 가장 풍부한 조명으로 세계를 그립니다. 내장 안전장치도 함께 꺼지며, 데스크톱 전용입니다. 휴대폰과 앱에서는 높음이 최고 단계입니다.',
+  'guide.settingsPage.value50to70': '50%에서 70%',
+  'guide.settingsPage.value90to100': '90%에서 100%',
+  'guide.settingsPage.value100': '100%',
+  'guide.settingsPage.valueHighOrMedium': '게이밍 PC에서는 높음, 노트북에서는 중간',
+  'guide.settingsPage.valueOnOptional': '켜짐(선택 사항)',
+  'guide.settingsPage.howHeading': '옵션은 이렇게 동작합니다',
+  'guide.settingsPage.factDetectTitle': '게임이 먼저 스스로 조율합니다',
+  'guide.settingsPage.factDetectBody':
+    '게임을 처음 실행하면 기기 사양을 읽어 알맞은 등급을 자동으로 골라 줍니다. 보급형 휴대폰이라면 낮음, 고성능 데스크톱이라면 울트라까지 선택됩니다. 직접 바꾼 설정이 있다면 언제나 그 선택이 우선합니다.',
+  'guide.settingsPage.factReloadTitle': '두 종류의 옵션',
+  'guide.settingsPage.factReloadBody':
+    '그래픽 품질과 고급 옵션은 새로고침 후에 적용되며, 필요할 때는 패널에 지금 새로고침 버튼이 표시됩니다. 그 밖의 모든 옵션은 바꾸는 즉시 적용됩니다.',
+  'guide.settingsPage.factGovernorTitle': '내장 안전장치',
+  'guide.settingsPage.factGovernorBody':
+    '울트라 아래의 모든 등급에서는 큰 전투로 부하가 치솟는 순간 풀과 효과, 조명을 잠시 줄였다가 곧바로 되돌립니다. 울트라를 선택하면 어떤 순간에도 모든 세부 표현을 그대로 유지하겠다는 뜻이 됩니다.',
+  'guide.settingsPage.advancedHeading': '고급 프리셋: 나만의 조합 만들기',
+  'guide.settingsPage.advancedBody':
+    '고급은 높음 등급에서 시작해 지형 세부 묘사, 초목 밀도, 효과 및 조명, 그림자 품질까지 네 가지 옵션을 추가로 열어 줍니다. 차이가 실제로 느껴지는 곳에만 프레임을 골라 쓸 수 있습니다. 그래픽 품질과 마찬가지로 새로고침 후에 적용됩니다.',
+  'guide.settingsPage.advancedMixes':
+    '즐겨 쓰는 조합 두 가지를 소개합니다. 그림자 품질을 높음으로 두고 효과 및 조명을 낮음으로 내리면 글로우 없이 또렷하고 가벼운 화면이 되고, 반대로 하면 블룸을 살린 채 그림자를 부드럽게 만들 수 있습니다.',
+  'guide.settingsPage.tableHeading': '모든 옵션 자세히 보기',
+  'guide.settingsPage.colSetting': '설정',
+  'guide.settingsPage.colDoes': '기능',
+  'guide.settingsPage.colImpact': 'FPS 영향',
+  'guide.settingsPage.impactNone': '없음',
+  'guide.settingsPage.impactLight': '적음',
+  'guide.settingsPage.impactModerate': '보통',
+  'guide.settingsPage.impactHeavy': '큼',
+  'guide.settingsPage.rowGraphicsQuality':
+    '전체를 좌우하는 메인 스위치입니다. 단계마다 해상도, 그림자, 재질, 초목, 조명 효과가 함께 바뀝니다. 단일 옵션으로는 가장 큰 차이를 만듭니다.',
+  'guide.settingsPage.rowRenderQuality':
+    '3D 세계를 더 낮은 내부 해상도로 그린 뒤 화면에 맞게 키웁니다. 인터페이스는 계속 선명합니다. 저사양 기기와 고해상도 화면에서 즉시 체감되는 가장 강력한 슬라이더입니다.',
+  'guide.settingsPage.rowFieldOfView':
+    '화면에 담기는 세계의 범위를 정합니다. 가깝게 당긴 55도부터 넓게 펼쳐진 100도까지 고를 수 있습니다. 편안함을 위한 선택이며, 시야가 넓을수록 그려야 할 양이 조금 늘어납니다.',
+  'guide.settingsPage.rowBrightness':
+    '장면의 노출을 어둡게 또는 밝게 조절합니다. 순전히 취향의 영역입니다.',
+  'guide.settingsPage.rowWeather':
+    '은은하게 내리는 비와 눈입니다. 분위기 연출일 뿐이며, 꺼 두면 폭풍이 칠 때 성능을 조금 아낄 수 있습니다.',
+  'guide.settingsPage.rowBrowserEffects':
+    '인터페이스 자체를 얼마나 화려하게 꾸밀지 정합니다. 유리 흐림, 글로우, 메뉴 애니메이션이 여기에 해당합니다. 자동은 사용 중인 브라우저에 맞춰 조절하며, 어느 쪽을 골라도 3D 세계에는 영향이 없습니다.',
+  'guide.settingsPage.rowTerrainDetail':
+    '여러 질감이 어우러진 풍부한 지면 표현과 더 단순하고 빠른 지형 표현 사이에서 선택합니다.',
+  'guide.settingsPage.rowFoliageDensity': '캐릭터 주변에 풀이 자라는 거리와 밀도를 정합니다.',
+  'guide.settingsPage.rowEffectsQuality':
+    '블룸과 앰비언트 오클루전, 그리고 실제 빛을 드리우는 횃불과 주문의 수를 결정합니다. 고급 옵션 가운데 성능을 가장 크게 아낄 수 있는 항목입니다.',
+  'guide.settingsPage.rowShadowQuality':
+    '그림자의 또렷함을 정합니다. 낮음에서도 그림자는 사라지지 않고 가장자리만 부드러워집니다.',
+  'guide.settingsPage.rowFrostedPanels':
+    '창 뒤로 젖빛 유리 같은 흐림을 더합니다. 아름답지만 성능이 낮은 브라우저에는 부담이 되기 쉬운 효과이기도 하니, 클래식한 또렷함을 원한다면 꺼 두세요.',
+  'guide.settingsPage.rowReduceMotion':
+    '인터페이스 애니메이션을 없애 창이 즉시 나타나게 합니다. 접근성을 위한 옵션이 우선이지만, 성능에도 약간의 보너스가 있습니다.',
+  'guide.settingsPage.rowPerfOverlay':
+    'FPS, 프레임 시간 등을 화면 위에 실시간으로 보여 줍니다. 이 페이지를 참고해 설정을 조정하는 동안 켜 두었다가 다시 숨기면 됩니다.',
+  'guide.settingsPage.tableFoot':
+    '시야 거리 슬라이더나 FPS 제한을 찾고 계신가요? 따로 찾을 필요가 없습니다. 시야 거리는 각 품질 등급에 포함되어 있고, 프레임은 사용 중인 디스플레이에 맞춰 조절됩니다.',
+  'guide.settingsPage.mobileTitle': '휴대폰과 태블릿에서',
+  'guide.settingsPage.mobileBody':
+    '모바일에서는 게임이 더 많은 것을 대신 관리해 줍니다. 등급을 자동으로 고르고, 배터리와 발열 부담을 줄이기 위해 해상도를 살짝 낮게 유지하며, 최상위 등급은 데스크톱 전용으로 남겨 둡니다. 위의 추천 설정은 그대로 유효하며, 휴대폰에서는 높음이 최고 단계입니다.',
   'guide.combat.intro':
     '전투는 익숙한 클래식 MMO 규칙을 따릅니다. 잘 플레이하기 위해 이를 공부할 필요는 전혀 없으며, 그저 전투가 어떻게 돌아가는지에 대한 개요일 뿐입니다.',
   'guide.combat.hitTitle': '모든 일격이 맞는 것은 아닙니다',
@@ -4544,10 +4672,23 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': '동굴 고기 조각',
   'entities.items.emberbulb.name': '불씨구근',
   'entities.items.first_cutting.name': '꺾꽂이',
+  'entities.items.greenpaw_bead.name': '탄띠에서 나온 염주 하나',
+  'entities.items.keeper_coal.name': '결코 식지 않는 숯덩이',
   'entities.items.witness_root_cincture.name': '증인뿌리의 허리띠',
   'entities.items.shrine_diary_page.name': '찢어진 일기장 페이지',
   'entities.items.shrine_diary_page.flavorText':
     '...촛불로 마흔 날을 세다가 결국 놓쳐버렸다. 이 아래의 어둠은 그분을 잊지 않는다, 그분이 이곳을 잊으셨어도. 왜가리가 낮게 돌면, 등지기에게 심지가 아직 타고 있다고 전해라...',
+  'entities.items.linen_pouch.name': '리넨 주머니',
+  'entities.items.travelers_knapsack.name': '여행자의 배낭',
+  'entities.items.wolfhide_satchel.name': '늑대가죽 가방',
+  'entities.items.gravewoven_bag.name': '무덤을 엮은 가방',
+  'entities.items.mistcallers_duffel.name': '미스트콜러의 더플백',
+  'entities.items.worn_prayer_token.name': '닳은 기도패',
+  'entities.items.worn_prayer_token.flavorText':
+    '...한쪽 면이 내 것이 아닌 엄지에 매끄럽게 닳아 있다, 여기 쌓인 다른 백여 개와 똑같은 얕은 홈이 패어 있는데, 적어도 이 더미는 그렇게 말하고 있다. 엄지 하나로는 토큰 백 개를 닳게 할 수 없다. 하지만 수많은 엄지가 하나의 홈을 닳게 하는 일은, 가능하다...',
+  'entities.items.tally_shard.name': '눈금이 새겨진 파편',
+  'entities.items.tally_shard.flavorText':
+    '...다섯 개씩 한 묶음으로 깊이 새겨져, 셀 때마다 하나씩 그어 지워졌다. 지워진 다섯 묶음이 수백에 이르는데, 그 지움이 멈춘 마지막 줄만은 끝내 채워지지 않았다...',
   'entities.mobs.acolyte_tessa.name': '수련사제 테사',
   'entities.mobs.deacon_varric.name': '부제 바릭',
   'entities.mobs.reliquary_bonewalker.name': '되살아난 해골보행자',
@@ -4569,7 +4710,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.brother_greenpaw.name': '브라더 초록발',
   'entities.npcs.brother_greenpaw.title': '초대 선지자(자칭)',
   'entities.npcs.brother_greenpaw.greeting':
-    '어이, 나그네. 오늘 항아리 기분이 좀 이상해 보이나, 아니면 또 나만 그렇게 느끼는 건가……이리 와 보게, 처리해야 할 신성한 일이 몇 가지 있어. 대부분 간식거리지만. 뭐, 그린포우 식으로 치면 그게 그거지.',
+    '다시 왔네, 그게 신의 축복이지……그 항아리가 아침부터 한숨만 쉬고 있어, 처리해야 할 신성한 일들이 줄을 서 있고, 지난번이랑 같은 주파수야. 잠깐 이리 와 보게……',
   'entities.npcs.brother_greenpaw.introLines.0':
     '어어……안녕. 안녕하신가. 다가오는 걸 못 들었네, 잠깐 딴 데 가 있었거든, 어디 푸르른 곳에……자네 방금 잠에서 깬 얼굴이구먼, 친구. 그 표정 나도 잘 알지, 나야 거의 매일 그 얼굴이니까……',
   'entities.npcs.brother_greenpaw.introLines.1':
@@ -4676,6 +4817,17 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'delveUi.tracker.module': '구역 {current}/{total}',
   'delveUi.tracker.objective': '목표',
   'delveUi.tracker.title': '탐굴',
+  'sim.bags.full': '가방이 가득 찼습니다.',
+  'sim.bags.socketsFull': '모든 가방 칸이 사용 중입니다.',
+  'sim.bags.swapTooManyItems': '소지품이 너무 많아 그 가방으로 교체할 수 없습니다.',
+  'sim.bags.removeTooManyItems': '소지품이 너무 많아 그 가방을 해제할 수 없습니다.',
+  'sim.bags.tradeSpace': '거래 실패: 가방 공간이 부족합니다.',
+  'sim.bank.cannotAfford': '그 은행 확장 비용을 감당할 수 없습니다.',
+  'sim.bank.expansionCapped': '더 이상 은행을 확장할 수 없습니다.',
+  'sim.bank.full': '은행 보관함이 가득 찼습니다.',
+  'sim.bank.noQuestItems': '퀘스트 아이템은 은행에 보관할 수 없습니다.',
+  'sim.bank.purchased': '추가 은행 슬롯을 구매했습니다.',
+  'sim.bank.tooFar': '은행원과 너무 멀리 떨어져 있습니다.',
   'sim.delve.alreadyInDelve': '이미 탐굴 중입니다.',
   'sim.delve.bossChest':
     '우두머리가 쓰러집니다. 봉인된 성물실 상자가 단상 위로 솟아오릅니다. 자물쇠를 따서 전리품을 차지하세요.',
@@ -4720,6 +4872,8 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'sim.delve.unknownTier': '알 수 없는 탐굴 등급입니다.',
   'sim.delve.wayOutNotOpen': '나가는 길이 아직 열리지 않았습니다.',
   'sim.delve.whileTrading': '거래 중에는 탐굴에 진입할 수 없습니다.',
+  'sim.gathering.alreadyHarvested': '이 시체는 이미 채집되었습니다.',
+  'sim.gathering.nothingToHarvest': '그 시체에서는 채집할 것이 없습니다.',
   'sim.hearth.emberbulb1': '이거야말로 제대로 된 땔감이지… 보게, 그녀가 숨 쉬는 걸, 친구…',
   'sim.hearth.emberbulb2': '화로는 천천히, 깨끗하게 태우는 걸 좋아하지, 그녀가 딱 그렇다네…',
   'sim.hearth.emberbulb3': '불을 지피고 연기도 났군… 파장이 벌써 열리기 시작했어, 느껴지는군.',
@@ -4732,6 +4886,22 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'sim.hearth.noItems2':
     '가진 거라곤 좋은 마음뿐이구먼, 응… 마음만으로는 화로에 불을 지필 수 없다네.',
   'sim.hearth.tooFar': '브라더 초록발에게 먹이를 주려면 그의 곁에 있어야 한다.',
+  'sim.homestead.alreadyOwn': '당신은 이미 정착지를 소유하고 있다.',
+  'sim.homestead.claimed': '이 땅은 당신의 것이다. 정착지가 확정되었다.',
+  'sim.homestead.helpLine': '정착지: /homestead, /homestead claim.',
+  'sim.homestead.outsideArea': '그곳은 정착지 부지가 아니다. 길 서쪽의 Fallow Acres를 시도해 보라.',
+  'sim.homestead.questGate': '브라더 초록발이 아직 당신을 보내지 않았다. 먼저 그의 용무를 마쳐라.',
+  'sim.homestead.readoutMine': '당신의 정착지는 ({x}, {z})에 있다.',
+  'sim.homestead.readoutNoHomesteadHint':
+    '당신은 정착지가 없다. 우묵골 지대의 적당한 곳에 서서 /homestead claim이라고 입력하라.',
+  'sim.homestead.readoutNoHomesteadQuest':
+    '당신은 정착지가 없다. 브라더 초록발의 용무를 모두 마쳐야 하나를 얻을 수 있다.',
+  'sim.homestead.tooCloseGate': '문에 너무 가깝다. 더 멀리 이동하라.',
+  'sim.homestead.tooCloseGraveyard': '묘지에 너무 가깝다.',
+  'sim.homestead.tooCloseOther': '다른 이의 정착지에 너무 가깝다.',
+  'sim.homestead.tooCloseRoad': '길에 너무 가깝다.',
+  'sim.homestead.tooCloseWater': '물가에 너무 가깝다.',
+  'sim.homestead.tooCloseWildlife': '야생동물에 너무 가깝다. 주변을 정리하거나 더 멀리 이동하라.',
   'sim.house.alreadyOwn': '당신은 이미 공동에 주택을 소유하고 있다.',
   'sim.house.claimed': '이 주택은 이제 당신 것이다. /house place <슬롯> <종류>로 꾸며 보라.',
   'sim.house.cleared': '슬롯 {slot}을(를) 비웠다.',
@@ -5063,4 +5233,94 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'coldOpen.continue': '계속',
   'coldOpen.begin': '시작',
   'coldOpen.skip': '건너뛰기',
+  // Event calendar (M16 non-Latin fill)
+  'hudChrome.calendar.title': '이벤트 달력',
+  'hudChrome.calendar.close': '달력 닫기',
+  'hudChrome.calendar.keybindLabel': '이벤트 달력',
+  'hudChrome.calendar.prevMonth': '이전 달',
+  'hudChrome.calendar.nextMonth': '다음 달',
+  'hudChrome.calendar.dayAria': '{date}: 이벤트 {count}건',
+  'hudChrome.calendar.noEvents': '이 날에는 일정이 없습니다.',
+  'hudChrome.calendar.allDay': '종일',
+  'hudChrome.calendar.bookedBy': '{name} 등록',
+  'hudChrome.calendar.deleteAria': '이벤트 {title} 삭제',
+  'hudChrome.calendar.bookTitle': '길드 이벤트 등록',
+  'hudChrome.calendar.titlePlaceholder': '이벤트 이름',
+  'hudChrome.calendar.notePlaceholder': '메모 (선택)',
+  'hudChrome.calendar.hourLabel': '시각 (UTC)',
+  'hudChrome.calendar.hourAllDay': '종일',
+  'hudChrome.calendar.addButton': '이벤트 등록',
+  'hudChrome.calendar.guildOnlyNote': '길드에 가입하면 함께 이벤트를 계획할 수 있습니다.',
+  'hudChrome.calendar.result.created': '이벤트가 길드 달력에 등록되었습니다.',
+  'hudChrome.calendar.result.removed': '이벤트가 달력에서 삭제되었습니다.',
+  'hudChrome.calendar.result.notInGuild': '길드에 소속되어 있지 않습니다.',
+  'hudChrome.calendar.result.notOfficer': '길드 이벤트는 임원과 길드 마스터만 관리할 수 있습니다.',
+  'hudChrome.calendar.result.badInput': '이벤트 이름과 올바른 날짜를 입력하세요.',
+  'hudChrome.calendar.result.calendarFull': '길드 달력이 가득 찼습니다.',
+  'hudChrome.calendar.result.eventGone': '그 이벤트는 더 이상 달력에 없습니다.',
+  'hudChrome.calendar.events.raidCall.title': '공격대 소집',
+  'hudChrome.calendar.events.raidCall.note': '수비대가 뿔피리를 붑니다. 파티를 모아 공격대로.',
+  'hudChrome.calendar.events.marketDay.title': '장날',
+  'hudChrome.calendar.events.marketDay.note':
+    '상인이 새 물건을 기다립니다. 월드 마켓을 둘러보기 좋은 날.',
+  'hudChrome.calendar.events.fiestaNight.title': '피에스타의 밤',
+  'hudChrome.calendar.events.fiestaNight.note': '오늘 밤 2대2 피에스타 링이 가장 붐빕니다.',
+  'hudChrome.calendar.events.arenaClash.title': '투기장 격돌',
+  'hudChrome.calendar.events.arenaClash.note':
+    '결투사들이 잿빛 투기장으로 몰려듭니다. 대기열에 올라 순위를 노리세요.',
+  'hudChrome.calendar.events.fishingDerby.title': '낚시 대회',
+  'hudChrome.calendar.events.fishingDerby.note':
+    '낚시꾼들이 호숫가에 늘어섭니다. 낚싯대를 들고 이야기꽃을 피우세요.',
+  'hudChrome.calendar.events.delveDay.title': '탐굴의 날',
+  'hudChrome.calendar.events.delveDay.note': '동료와 함께 무너진 성물고에 도전하기 좋은 날.',
+  'hudChrome.calendar.events.moongateCommunion.title': '달문 집회',
+  'hudChrome.calendar.events.moongateCommunion.note':
+    '보름의 달 아래 순례자들이 달의 성소에 모입니다.',
+
+  // PHAA-499: fill the professions/multiclassing (PHAA-465/466/467) M16 gap.
+  'guide.nav.professions': '보조 직업',
+  'guide.classPage.professionsTitle': '보조 직업 조합하기',
+  'guide.classPage.professionsNote':
+    '위의 어떤 직업이든 보조 직업으로 배울 수 있습니다. 보조 직업은 주 역할을 유지한 채 두 번째 특성 트리를 여는 부 직업입니다. 선택하기 전에 보조 직업의 작동 방식을 확인하세요.',
+  'guide.classPage.professionsLink': '보조 직업과 다중 직업',
+  'guide.professionsPage.heading': '보조 직업과 다중 직업',
+  'guide.professionsPage.intro':
+    '보조 직업은 주 직업과 함께 훈련하는 두 번째 직업으로, 원래의 역할을 유지한 채 두 번째 특성 트리와 그 기술 일부를 열어줍니다.',
+  'guide.professionsPage.whatHeading': '보조 직업이란',
+  'guide.professionsPage.whatBody':
+    '모든 직업은 다른 어떤 직업의 보조 직업으로도 선택할 수 있습니다. 보조 직업을 조합하면 두 번째 특성 트리가 추가되고 그 기술 일부를 빌려 쓸 수 있습니다. 전사가 사제의 치유를 조금 익히거나, 마법사가 도적의 독침을 배울 수 있는 식입니다. 주 직업은 여전히 당신의 역할, 자원, 정체성을 결정합니다. 보조 직업은 그것을 대체하지 않고 빌드를 더 다채롭게 만들어 줄 뿐입니다.',
+  'guide.professionsPage.howHeading': '고르는 방법',
+  'guide.professionsPage.howBody':
+    '보조 직업은 레벨 10에 열리며, 이는 첫 번째 특성 트리가 해제되는 시점과 같습니다. 마을에 있는 보조 직업 훈련사를 찾아가 대화창을 열고 원하는 보조 직업을 선택하세요.',
+  'guide.professionsPage.costBody':
+    '첫 선택은 무료입니다. 나중에 다른 직업으로 바꾸려면 골드가 들며, 바꿀 때마다 비용이 올라갑니다. 그래서 이른 결정에는 불이익이 없고, 이후에 여러 번 바꾸면 약간의 대가가 따릅니다.',
+  'guide.professionsPage.resetTitle': '무엇도 확정되지 않습니다',
+  'guide.professionsPage.resetNote':
+    '전투 중이 아니라면 언제든 두 특성 트리의 포인트를 환불할 수 있고, 같은 훈련사에게서 보조 직업을 바꿀 수도 있습니다 (비용은 점점 늘어납니다). 초반의 보조 직업 선택은 확정이 아니라 초안일 뿐입니다.',
+  'guide.professionsPage.talentsHeading': '두 트리 간 특성 포인트 배분',
+  'guide.professionsPage.talentsBody':
+    '보조 직업은 주 직업 외에 완전한 두 번째 특성 트리를 추가하지만, 두 트리는 같은 포인트 풀을 공유합니다. 보조 트리는 그 풀의 최대 절반까지만 사용할 수 있어, 주 직업이 항상 빌드의 중심으로 남습니다. 보조 트리에 포인트를 투자하면 그 기술이 해제되며, 그 기술은 보조 직업이 아니라 주 직업의 자원을 소모합니다. 전사가 사제를 보조 직업으로 삼으면, 소모되는 것은 마나가 아니라 분노입니다.',
+  'guide.professionsPage.trainersHeading': '훈련사 찾기',
+  'guide.professionsPage.trainersBody':
+    '보조 직업 훈련사는 마을의 사당 근처에 서 있습니다. 훈련사 한 명이 주 직업을 제외한 어떤 직업이든 보조 직업으로 가르칠 수 있어, 한 번만 방문해도 보조 직업을 설정하거나 바꿀 수 있습니다.',
+  'classDetails.classPairAria': '{primary}, 보조 {secondary}',
+  'classDetails.classPairLabel': '{primary} / {secondary}',
+  'game.talents.secondaryTab': '보조 직업: {cls}',
+  'game.talents.secondaryCapHint':
+    '보조 직업 특성 트리: {spent}/{cap} 포인트 (공유 풀의 절반까지만 사용 가능).',
+  'questUi.dialog.feedHearth': '화로에 바칠 것이 있다.',
+  'questUi.dialog.feedHearthAria': '화로에 바치기',
+  'questUi.dialog.trainerNeedsGold': '골드가 부족합니다',
+  'questUi.dialog.trainerConfirmTitle': '보조 직업 확인',
+  'questUi.dialog.trainerConfirmBody': '{cost}(으)로 {cls}(으)로 훈련하시겠습니까?',
+  'questUi.dialog.trainerConfirmYes': '네, 훈련하겠습니다',
+  'questUi.dialog.trainerConfirmNo': '아니요, 돌아가기',
+  'questUi.dialog.trainerHowTitle': '보조 직업은 어떻게 작동하나요?',
+  'questUi.dialog.trainerHowBody':
+    '보조 직업은 {level}레벨부터 주 직업 위에 두 번째 특성 트리와 기술 세트를 추가합니다. 주 역할은 유지되며, 보조 직업은 특성 풀을 공유하고 최대 {pct}%까지만 사용할 수 있습니다. 보조 직업 기술의 자원 소모는 주 자원으로 환산됩니다. 첫 선택은 무료이며, 이후 변경에는 골드가 듭니다.',
+  'entities.npcs.elder_yarrow.name': '원로 야로우',
+  'entities.npcs.elder_yarrow.title': '보조 직업 훈련사',
+  'entities.npcs.elder_yarrow.greeting':
+    '모든 빌드는 질문에서 시작됩니다. 어떤 보조 직업이 당신을 부르고 있나요?',
+  'hudChrome.trainer.secondaryClassSet': '보조 직업으로 {cls}을(를) 선택했습니다.',
 };

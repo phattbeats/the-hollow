@@ -55,7 +55,7 @@ const questStringsEn = {
       trainerConfirmNo: 'No, go back',
       trainerHowTitle: 'How do secondary professions work?',
       trainerHowBody:
-        'A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities translate their resource cost to your primary resource. Your first pick is free; changing later costs gold.',
+        'A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities convert their resource cost to your primary resource. Your first pick is free; changing later costs gold.',
       accept: 'Accept',
       decline: 'Decline',
       continue: 'Continue',

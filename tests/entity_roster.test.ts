@@ -101,6 +101,7 @@ function makeCtx() {
     get players() {
       return players;
     },
+    bankerIds: [],
     get cfg() {
       return cfg;
     },
@@ -167,11 +168,13 @@ function makeCtx() {
     // elsewhere in this host - deduped).
     spendResource: vi.fn(),
     removeItem: vi.fn(),
+    canAddItem: vi.fn(() => true),
     partyOf: vi.fn(() => null),
     removeFromParty: vi.fn(),
     dropPartyMarkers: vi.fn(),
     onMobKilledForQuests: vi.fn(),
     onInventoryChangedForQuests: vi.fn(),
+    onGreenpawFedForQuests: vi.fn(),
     checkQuestReady: vi.fn(),
     countItem: vi.fn(() => 0),
     lockoutNowMs: vi.fn(() => 0),
@@ -301,6 +304,7 @@ function makeCtx() {
     notifyPlantThreshold: vi.fn(),
     plantSpeechAmbientChat: vi.fn(),
     homesteadChat: vi.fn(() => false),
+    gatherHarvestItemFor: vi.fn(() => null),
   };
   const ctx = createSimContext(host);
   return {

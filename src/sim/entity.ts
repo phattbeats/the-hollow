@@ -111,6 +111,7 @@ function baseEntity(id: number, pos: Vec3): Entity {
     respawnTimer: 0,
     corpseTimer: 0,
     lootFfaTimer: Infinity, // no FFA countdown until rollLoot starts it at death
+    harvestClaimedBy: null,
     lootable: false,
     loot: null,
     xpValue: 0,
@@ -123,6 +124,7 @@ function baseEntity(id: number, pos: Vec3): Entity {
     color: 0xffffff,
     skinCatalog: 'class',
     skin: 0,
+    sex: 'm',
     mainhandItemId: null,
     equippedItems: {},
     guild: '',

@@ -11,11 +11,16 @@ vi.hoisted(() => {
 
 import { handleInternalApi } from '../server/internal';
 
-function fakeReq(opts: { method?: string; url?: string; secret?: string } = {}) {
+function fakeReq(
+  opts: { method?: string; url?: string; secret?: string; discordSecret?: string } = {},
+) {
   const req: any = new EventEmitter();
   req.method = opts.method ?? 'POST';
   req.url = opts.url ?? '/internal/restart-countdown';
-  req.headers = opts.secret ? { 'x-woc-deploy-secret': opts.secret } : {};
+  req.headers = {
+    ...(opts.secret ? { 'x-woc-deploy-secret': opts.secret } : {}),
+    ...(opts.discordSecret ? { 'x-woc-discord-secret': opts.discordSecret } : {}),
+  };
   return req;
 }
 
@@ -35,10 +40,13 @@ function fakeRes() {
 
 describe('internal api', () => {
   const previousSecret = process.env.RESTART_COUNTDOWN_SECRET;
+  const previousDiscordSecret = process.env.DISCORD_BOT_SECRET;
 
   afterEach(() => {
     if (previousSecret === undefined) delete process.env.RESTART_COUNTDOWN_SECRET;
     else process.env.RESTART_COUNTDOWN_SECRET = previousSecret;
+    if (previousDiscordSecret === undefined) delete process.env.DISCORD_BOT_SECRET;
+    else process.env.DISCORD_BOT_SECRET = previousDiscordSecret;
     vi.clearAllMocks();
   });
 
@@ -54,11 +62,25 @@ describe('internal api', () => {
     expect(res.body.error).toBe('unknown endpoint');
   });
 
-  it('rejects restart countdown requests with a missing or invalid deploy secret', async () => {
+  it('rejects a deploy secret of a different length from the configured secret', async () => {
     process.env.RESTART_COUNTDOWN_SECRET = 'deploy-secret';
     const res = fakeRes();
 
     await handleInternalApi(fakeReq({ secret: 'wrong' }), res, {
+      startRestartCountdown: vi.fn(),
+    } as any);
+
+    expect(res.statusCode).toBe(401);
+    expect(res.body.error).toBe('not authenticated');
+  });
+
+  it('rejects a deploy secret of the same length as the configured secret', async () => {
+    process.env.RESTART_COUNTDOWN_SECRET = 'deploy-secret';
+    const res = fakeRes();
+
+    // Same length as 'deploy-secret' so the mismatch is caught by timingSafeEqual
+    // itself, not the length short-circuit.
+    await handleInternalApi(fakeReq({ secret: 'deploy-secreT' }), res, {
       startRestartCountdown: vi.fn(),
     } as any);
 
@@ -101,5 +123,63 @@ describe('internal api', () => {
 
     expect(res.statusCode).toBe(409);
     expect(res.body.data.remainingSeconds).toBe(540);
+  });
+
+  it('rejects discord internal requests when the bot secret is not configured', async () => {
+    delete process.env.DISCORD_BOT_SECRET;
+    const res = fakeRes();
+
+    await handleInternalApi(
+      fakeReq({ method: 'GET', url: '/internal/discord/flex', discordSecret: 'bot-secret' }),
+      res,
+      {} as any,
+    );
+
+    expect(res.statusCode).toBe(404);
+    expect(res.body.error).toBe('unknown endpoint');
+  });
+
+  it('rejects a discord bot secret of a different length from the configured secret', async () => {
+    process.env.DISCORD_BOT_SECRET = 'bot-secret';
+    const res = fakeRes();
+
+    await handleInternalApi(
+      fakeReq({ method: 'GET', url: '/internal/discord/flex', discordSecret: 'wrong' }),
+      res,
+      {} as any,
+    );
+
+    expect(res.statusCode).toBe(401);
+    expect(res.body.error).toBe('not authenticated');
+  });
+
+  it('rejects a discord bot secret of the same length as the configured secret', async () => {
+    process.env.DISCORD_BOT_SECRET = 'bot-secret';
+    const res = fakeRes();
+
+    // Same length as 'bot-secret' so the mismatch is caught by timingSafeEqual
+    // itself, not the length short-circuit.
+    await handleInternalApi(
+      fakeReq({ method: 'GET', url: '/internal/discord/flex', discordSecret: 'bot-secreT' }),
+      res,
+      {} as any,
+    );
+
+    expect(res.statusCode).toBe(401);
+    expect(res.body.error).toBe('not authenticated');
+  });
+
+  it('rejects a discord internal request with no secret header at all', async () => {
+    process.env.DISCORD_BOT_SECRET = 'bot-secret';
+    const res = fakeRes();
+
+    await handleInternalApi(
+      fakeReq({ method: 'GET', url: '/internal/discord/flex' }),
+      res,
+      {} as any,
+    );
+
+    expect(res.statusCode).toBe(401);
+    expect(res.body.error).toBe('not authenticated');
   });
 });

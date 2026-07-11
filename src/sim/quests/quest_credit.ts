@@ -66,6 +66,32 @@ export function onInventoryChangedForQuests(ctx: SimContext, meta: PlayerMeta): 
   }
 }
 
+// Greenpaw's hearth (PHAA-421/PHAA-484): one credit per successful feedGreenpaw()
+// call, regardless of which item(s) that call consumed (greenpaw_hearth.ts calls this
+// once per feed(), not once per item type). No target field: there is only the one
+// hearth today, so a bare count is the whole objective.
+export function onFeedForQuests(ctx: SimContext, meta: PlayerMeta): void {
+  for (const qp of meta.questLog.values()) {
+    if (qp.state !== 'active') continue;
+    const quest = QUESTS[qp.questId];
+    let changed = false;
+    quest.objectives.forEach((obj, i) => {
+      if (obj.type === 'feed' && qp.counts[i] < obj.count) {
+        qp.counts[i]++;
+        changed = true;
+        meta.counters.questProgress++;
+        ctx.emit({
+          type: 'questProgress',
+          questId: qp.questId,
+          text: `${obj.label}: ${qp.counts[i]}/${obj.count}`,
+          pid: meta.entityId,
+        });
+      }
+    });
+    if (changed) checkQuestReady(ctx, qp, meta);
+  }
+}
+
 export function checkQuestReady(ctx: SimContext, qp: QuestProgress, meta: PlayerMeta): void {
   const quest = QUESTS[qp.questId];
   const ready = quest.objectives.every((obj, i) => qp.counts[i] >= obj.count);

@@ -221,6 +221,9 @@ export const en = {
     realm: 'Realm',
     newCharacter: 'New Character',
     appearance: 'Appearance',
+    sex: 'Sex',
+    sexMale: 'Male',
+    sexFemale: 'Female',
     class: 'Class',
     name: 'Name',
     chromaOption: 'Chroma {n}',
@@ -495,6 +498,14 @@ export const en = {
       lastPickSnaps:
         'The last pick snaps. The lock jams. The chest is lost unless you clear the delve again.',
     },
+    // Gathering v0 (PHAA-504): corpse-harvest error text (src/sim/interaction.ts's
+    // harvestCorpse). Same fill scope as hearth/house below: PHAA-504 filled the
+    // five non-Latin locales required by the M16 completeness gate, the rest
+    // ship English + pending.
+    gathering: {
+      nothingToHarvest: 'That corpse has nothing to harvest.',
+      alreadyHarvested: 'This corpse has already been harvested.',
+    },
     // Brother Greenpaw's hearth (PHAA-421/PHAA-428): /feed command text and his
     // in-voice feed-response lines. Re-localized through t() against these keys
     // (src/sim/greenpaw_hearth.ts + the /feed helpLines entry in
@@ -535,6 +546,56 @@ export const en = {
       readoutUsage: '/house place <1-{count}> <{kinds}>, /house remove <slot>.',
       helpLine:
         'Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>.',
+    },
+    // Bags capacity (PHAA-491): the pooled-inventory error toasts src/sim/bags.ts
+    // (plus market.ts/quests/quest_commands.ts/social/trade.ts/combat/
+    // casting_lifecycle.ts, which reuse the same literals) emits in English;
+    // sim_i18n.ts re-localizes them through t() against these keys.
+    bags: {
+      full: 'Your bags are full.',
+      socketsFull: 'All your bag slots are full.',
+      swapTooManyItems: 'You have too many items to swap to that bag.',
+      removeTooManyItems: 'You have too many items to remove that bag.',
+      tradeSpace: 'Trade failed: not enough bag space.',
+    },
+    // The bank vault core (PHAA-571): src/sim/bank.ts's deposit/withdraw/buySlots
+    // error + purchase-notice text. Core-only port: no banker NPC exists in zone
+    // content yet, so these strings are not yet player-reachable, but they are
+    // registered here now so the S3 drift guard has a matcher the moment a
+    // follow-up ticket surfaces the bank.
+    bank: {
+      tooFar: 'You are too far from the banker.',
+      noQuestItems: 'You cannot store quest items in the bank.',
+      full: 'Your bank is full.',
+      expansionCapped: 'Your bank cannot be expanded further.',
+      cannotAfford: 'You cannot afford that bank expansion.',
+      purchased: 'You purchase additional bank slots.',
+    },
+    // Homestead v0 (PHAA-533): the open-world Hollow Reaches tier, distinct from
+    // Housing v0's Sanctum plots. Player-facing /homestead command text lives in
+    // src/sim/homestead.ts (the placement rejections, the Greenpaw quest-gate,
+    // the already-own / ground-claimed / sits-at / no-homestead variants) plus the
+    // /homestead /help line in src/sim/social/chat.ts helpLines. Re-localized via
+    // the RULES array in src/ui/sim_i18n.ts (no EXACT entries: the (x, z) readout
+    // is parameterized and the helpLines line goes through the variable-routed
+    // guard below). The (x, z) sit-at position is rounded by the sim.
+    homestead: {
+      outsideArea: 'That is outside the homestead ground. Try Fallow Acres, west of the road.',
+      tooCloseGate: 'Too close to the gate. Move further out.',
+      tooCloseWater: 'Too close to the water.',
+      tooCloseGraveyard: 'Too close to the graveyard.',
+      tooCloseWildlife: 'Too close to the wildlife. Clear the area or move further off.',
+      tooCloseRoad: 'Too close to the road.',
+      tooCloseOther: 'Too close to another homestead.',
+      questGate: "Brother Greenpaw hasn't sent you off yet. Finish his errands first.",
+      alreadyOwn: 'You already own a homestead.',
+      claimed: 'The ground is yours. This homestead is claimed.',
+      readoutMine: 'Your homestead sits at ({x}, {z}).',
+      readoutNoHomesteadQuest:
+        "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
+      readoutNoHomesteadHint:
+        'You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.',
+      helpLine: 'Homestead: /homestead, /homestead claim.',
     },
   },
   // Lockpicking minigame ("Tumbler's Path") panel chrome. Rendered through t()

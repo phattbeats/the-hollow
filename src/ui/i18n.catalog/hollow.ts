@@ -13,6 +13,8 @@ const hollowEntitiesEn = {
     cave_morsel: { name: 'Cave Morsel' },
     emberbulb: { name: 'Emberbulb' },
     first_cutting: { name: 'A Cutting' },
+    greenpaw_bead: { name: 'A Bead From the Bandolier' },
+    keeper_coal: { name: 'A Coal That Never Cooled' },
     witness_root_cincture: { name: "The Witness-Root's Cincture" },
     shrine_diary_page: {
       name: 'Torn Diary Page',
@@ -27,6 +29,23 @@ const hollowEntitiesEn = {
     },
     bloomcrown_pauldrons: { name: 'Bloomcrown Pauldrons' },
     verdantguard_mantle: { name: 'Verdantguard Mantle' },
+    // PHAA-560 (tribe-mystery breadcrumb): kept identical to the sim record in
+    // src/sim/content/hollow.ts; non-Latin fills live in src/ui/i18n.locales/.
+    worn_prayer_token: {
+      name: 'Worn Prayer Token',
+      flavorText:
+        "...smooth on one face from a thumb that isn't mine, worn the same shallow " +
+        'groove into a hundred more like it before this one, or so the pile down ' +
+        "here would have you believe. one thumb doesn't wear a hundred tokens. a " +
+        'lot of thumbs wear one groove, though...',
+    },
+    tally_shard: {
+      name: 'Tally-Marked Shard',
+      flavorText:
+        '...marks in fives, scratched deep, crossed each time the count came round. ' +
+        'hundreds of fives before the crossing stops, and the last row was never ' +
+        'finished...',
+    },
   },
   mobs: {
     palefeeder: { name: 'Palefeeder' },
@@ -38,8 +57,15 @@ const hollowEntitiesEn = {
     brother_greenpaw: {
       name: 'Brother Greenpaw',
       title: 'First Prophet (self-appointed)',
+      // Greeting renders every time the player opens Greenpaw's gossip dialog
+      // after the intro has played, so it must read as already-met voice
+      // rather than first-meeting voice (PHAA-432 follow-up, Brandon feedback
+      // on PR #82). The intro itself carries the meet-and-greet beats; the
+      // greeting assumes shared context and leads straight back to the
+      // errand queue. Kept identical to the sim record in
+      // src/sim/content/hollow.ts.
       greeting:
-        "howdy, traveler. you catch the vase in a mood today, or is that just me again... c'mere, got a couple sacred matters need tendin'. mostly snacks. same thing, to a greenpaw degree.",
+        "you're back, that's a blessin'... the vase has been sighin' all mornin', got a couple sacred matters queued up, same wavelength as last time. c'mere a minute...",
       // First-meeting click-through intro (PHAA-432). Kept identical to the sim
       // record in src/sim/content/hollow.ts; the resolver reads this English
       // source, non-Latin fills live in src/ui/i18n.locales/<lang>.ts.
@@ -88,6 +114,43 @@ const hollowEntitiesEn = {
           "oh... oh, okay. ...okay. that's... yeah. no, that's fair, friend, that's fair... the vase heard it too, and between you and me i think he respects it. here, take the cutting anyway. you went down once, and that's once more than most...",
       },
     },
+    // PHAA-484: kept identical to the sim record in src/sim/content/hollow.ts;
+    // non-Latin fills live in src/ui/i18n.locales/.
+    q_the_wavelength: {
+      title: 'On the Wavelength',
+      text: "the cutting's yours now, friend, so let's talk about what comes after... two things, and neither one's a trial, more like an interduction. first, cross the vase and meet elder yarrow, she teaches a whole second callin', a different way to play this whole thing, and every soul that comes through here oughta know that door's open... second, come on back and feed me somethin', don't matter which, emberbulb or morsel, i'm always runnin' on empty and the vase always wants for smoke. that part never really ends, to a greenpaw degree.",
+      completion:
+        "there it is... you felt the room go thick for a second, right? that's him, noticin'. that's the whole trick, friend - you feed me, i smoke up the place, he leans in a little closer to payin' attention. ain't complicated. ain't never gonna stop bein' true, neither. c'mere anytime you're carryin' spare bulbs or morsels, the hearth don't keep a calendar... and hey. welcome to the hollow. i realize i never actually said that part.",
+      objectives: {
+        0: { label: 'Elder Yarrow met' },
+        1: { label: 'Fed at the hearth' },
+      },
+      dialog: {
+        complain: 'Another errand? I just climbed out of that hole.',
+        complainReply:
+          "no, no, hear me out, this ain't cave work... this one's easy, this one's just walkin' and one good feed. lightest thing i ever asked of you, i promise, on the wavelength and everything.",
+        refuse: "I'll find my own training, thanks.",
+        refuseReply:
+          "...fair 'nough. can't make a soul learn somethin' 'fore they're ready. door's open when it ain't 'not yet' no more... here, take this anyway, least i can do for you showin' up at all.",
+      },
+    },
+    // PHAA-484 beat 4: kept identical to the sim record in
+    // src/sim/content/hollow.ts; non-Latin fills live in src/ui/i18n.locales/.
+    q_keep_him_lit: {
+      title: 'Keep Him Lit',
+      text: "three times, friend, that's the number... not sacred, just enough to turn a favor into a habit, and habits are the only religion i actually trust... c'mon back and feed the hearth three separate times, don't matter the order, don't matter which of the two, emberbulb or morsel, and i'll believe you're really here to stay, not just passin' through on your way to somethin' bigger...",
+      completion:
+        "three for three... you're not just visitin' anymore, friend, you're keepin' somethin' alive, and that's the whole ballgame if you ask me, which nobody did, but i'm sayin' it anyway... here. hold onto this, it don't do nothin', it just remembers, same as the rest of us down here...",
+      objectives: { 0: { label: 'Hearth fed' } },
+      dialog: {
+        complain: "I already fed you once. Isn't that enough?",
+        complainReply:
+          "once is a favor, friend, three's a habit, and i been burned by favors before... this ain't about the hearth needin' it, the hearth's fine, i keep it fine, it's about you comin' back on your own two feet 'cause you wanted to, not 'cause some quest marker told you to... three times. no rush on the countin'.",
+        refuse: "I'm not doing this three separate times. Once was enough.",
+        refuseReply:
+          "...yeah. yeah, okay, i hear you, friend, that's a fair enough line to draw... tell you what, here, take it anyway, ain't earned in the strictest sense but neither's most of what i hand out, and the wavelength don't really keep score the way i pretend it does...",
+      },
+    },
     q_root_hollow_boars: {
       title: "Root Hollow's Boars",
       text: 'By the calendar, Root Hollow rests this season. The boars have not been informed. They have rooted up half of it chasing grubs, and they no longer scatter when a heron flaps at them, which I take personally. Cull five, and I can enter the season as observed.',
@@ -95,11 +158,14 @@ const hollowEntitiesEn = {
         'Five. Counted, dated, and entered in the register. Root Hollow is now only a fortnight behind its own season, which in this office we call a triumph. My thanks, on behalf of an order that is, at present, me.',
       objectives: { 0: { label: 'Wild Boar slain' } },
     },
+    // PHAA-560: the closing aside about the register is new (a tribe-mystery
+    // breadcrumb); kept identical to the sim record in
+    // src/sim/content/hollow_zone.ts, non-Latin fills live in src/ui/i18n.locales/.
     q_root_hollow_boars_ii: {
       title: "Root Hollow's Reckoning",
       text: 'I will admit what the office discourages admitting: five was optimistic. The lower dens keep pushing up more. Eight further, and I can close the season without amending the record a third time. The record resents amendment. So do I.',
       completion:
-        'Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me.',
+        'Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me. The register itself is older than that arrangement, bound in a hand I have never met, keeping a count I choose not to add. Someone was thorough here, once. I only try to keep pace.',
       objectives: { 0: { label: 'Wild Boar slain' } },
     },
     q_fallow_acres_wolves: {

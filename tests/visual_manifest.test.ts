@@ -69,6 +69,20 @@ describe('character visual manifest', () => {
     expect(animationNames.size).toBe(0);
   });
 
+  it('points the chibi female base manifest at animation clips baked into the GLB (PHAA-557)', async () => {
+    const visual = VISUALS.chibi_female_base;
+    expect(visual.lazyPreload).toBe(true);
+    // Not in the boot sweep: no entity resolves to this key yet (PHAA-539 owns
+    // class wiring), so it must not cost every client's load.
+    expect(manifestUrls()).not.toContain(visual.url);
+
+    const animationNames = await glbAnimationNames(`public/${visual.url}`);
+    expect(animationNames.size).toBeGreaterThan(0);
+    expect(
+      [...new Set(expectedClipNames(visual.clips))].filter((name) => !animationNames.has(name)),
+    ).toEqual([]);
+  });
+
   it('keeps held weapons and props available on low graphics', () => {
     const allWeaponUrls = manifestUrls().filter((url) => url.startsWith('models/weapons/'));
     expect(allWeaponUrls.length).toBeGreaterThan(0);

@@ -17,7 +17,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "f04cb373",
+      "state": "0bf33ff1",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -30,6 +30,13 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
@@ -40,6 +47,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -101,7 +110,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 402,
-      "state": "c1776321",
+      "state": "61ce307d",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -112,7 +121,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 402,
-      "state": "5b494625",
+      "state": "d69e23d1",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -123,7 +132,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 402,
-      "state": "4f9f7a47",
+      "state": "5cc636f3",
       "events": "741638a5",
       "rng": {
         "draws": 76,
@@ -134,7 +143,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 402,
-      "state": "4f9f7a47",
+      "state": "5cc636f3",
       "events": "741638a5",
       "rng": {
         "draws": 76,
@@ -147,6 +156,13 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
@@ -157,6 +173,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "restedXp": 0.125,
           "talents": {
             "choices": {},
@@ -219,7 +237,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 402,
-      "state": "4eae75b0",
+      "state": "b438aec6",
       "events": "86e8ff47",
       "rng": {
         "draws": 76,
@@ -232,6 +250,13 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -244,7 +269,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 160,
+          "nodeHarvestReadyAt": {},
           "restedXp": 920,
           "talents": {
             "choices": {},
@@ -308,7 +335,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 402,
-      "state": "211c0791",
+      "state": "bef12d15",
       "events": "459a6d77",
       "rng": {
         "draws": 76,
@@ -321,6 +348,13 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -334,7 +368,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 610,
+          "nodeHarvestReadyAt": {},
           "restedXp": 920,
           "talents": {
             "choices": {},
@@ -398,7 +434,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 402,
-      "state": "07febad7",
+      "state": "7ff22045",
       "events": "e34a40f5",
       "rng": {
         "draws": 76,
@@ -411,6 +447,13 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -424,7 +467,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 190400,
+          "nodeHarvestReadyAt": {},
           "restedXp": 920,
           "talents": {
             "choices": {},
@@ -488,7 +533,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 402,
-      "state": "1b32bfcc",
+      "state": "12a1a086",
       "events": "f513be62",
       "rng": {
         "draws": 76,
@@ -501,6 +546,13 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -514,7 +566,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 190400,
+          "nodeHarvestReadyAt": {},
           "prestigeRank": 1,
           "restedXp": 920,
           "talents": {
@@ -578,7 +632,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 402,
-      "state": "1b32bfcc",
+      "state": "12a1a086",
       "events": "741638a5",
       "rng": {
         "draws": 76,
@@ -591,6 +645,13 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -604,7 +665,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 190400,
+          "nodeHarvestReadyAt": {},
           "prestigeRank": 1,
           "restedXp": 920,
           "talents": {
@@ -668,7 +731,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 402,
-      "state": "1b32bfcc",
+      "state": "12a1a086",
       "events": "741638a5",
       "rng": {
         "draws": 76,
@@ -681,6 +744,13 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -694,7 +764,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 190400,
+          "nodeHarvestReadyAt": {},
           "prestigeRank": 1,
           "restedXp": 920,
           "talents": {
