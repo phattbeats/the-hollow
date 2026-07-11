@@ -2802,6 +2802,15 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
     '你若讀到這裡，說明你停下了腳步，那正是我這輩子唯一沒學會的事。歇一會兒吧。外域還會在這兒。而這，恰恰就是它最麻煩的地方。',
   'entities.npcs.verger_zebediah.greeting':
     '司事澤比迪亞。我為外域記著一本曆書，至少一直在努力記。根穴這一季本該休養，可野豬沒讀那張告示。留神腳下的浮土，還有，別碰我的登記簿。',
+  // First-meeting click-through intro (PHAA-439). Voice matched to the
+  // existing Traditional Chinese register (literary classical, ecclesiastical),
+  // keeping the "sole surviving keeper of a register" throughline.
+  'entities.npcs.verger_zebediah.introLines.0':
+    '司事澤比迪亞。根穴守衛，依一紙任命而來，那紙任命眼下也就是我本人。大多數日子你在這裡便能尋到我；其餘的日子，我也在這裡尋到自己。外域不需法定人數，只需一本登記簿。',
+  'entities.npcs.verger_zebediah.introLines.1':
+    '我替這本曆書做主，曆書卻並不替我做主，不過某些季裡它也試著來過。根穴這一輪本記作休養，底下的獸穴卻未收到那張告示，蒼鷺也早不再裝作吃驚。這便是現況。這並非抱怨，抱怨是要有旁人的。',
+  'entities.npcs.verger_zebediah.introLines.2':
+    '神龕之內有一本登記簿，切莫去碰。腳下是野豬拱過的浮土，二者皆請留神。若是為守土之事而來，我可託付兩樁差事，都不算小，其中一樁我實在不願再改第三回。這便是我為何同你搭話的緣由。',
   'entities.npcs.sexton_faddick.name': '守墓人法迪克',
   'entities.items.willow_sprig.name': '一段柳枝',
   'entities.npcs.shade.name': '莎德',
@@ -2835,6 +2844,15 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.sexton_faddick.title': '流浪的守護者',
   'entities.npcs.sexton_faddick.greeting':
     '法迪克。哪裡還有神龕需要守墓人，我就在哪兒守。我從不在一處久留，只管看顧。狼群夜夜繞著閒田莊的羊群打轉，繞得久了，便摸清了所繞之物的形狀。最好讓牠一直只是群羊。',
+  // First-meeting click-through intro (PHAA-439). Wandering-keeper voice,
+  // aphoristic, longer arc. Keeps the "I do not stay anywhere; I keep"
+  // throughline.
+  'entities.npcs.sexton_faddick.introLines.0':
+    '法迪克。哪裡還有神龕要我來做守墓人，我便做守墓人，只是這樣的神龕已比從前少了。我從不在一處久留，只管看顧。看顧這一樁，便是我如今所剩的幾乎全部。',
+  'entities.npcs.sexton_faddick.introLines.1':
+    '繞得久了，便摸清了所繞之物的形狀。閒田莊的狼群在我路過之前便夜夜繞著羊群打轉，至今仍未摸清羊群的形狀，這也算是一樁事。倒是羊群已把牠們摸清，那便是更大的事。',
+  'entities.npcs.sexton_faddick.introLines.2':
+    '本想請你喝杯茶，可茶壺留在我昨日待過的地方了。湖邊有一片安靜的地，等著人起屋；狼群在暗中出沒之地，什麼都紮不下根來。喏，兩樁差事，其中一樁我不想獨個兒去辦。邊走邊說罷。',
   'entities.quests.q_root_hollow_boars.title': '根穴野豬',
   'entities.quests.q_root_hollow_boars.text':
     '按曆書，根穴這一季本該休養。可沒人通知野豬。牠們追著蟲子把這裡拱翻了一半，如今連蒼鷺撲翅都嚇不走，這一點我很往心裡去。殺五頭，我才好把這一季照實記下。',

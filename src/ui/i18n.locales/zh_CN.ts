@@ -2800,6 +2800,15 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
     '你若读到这里，说明你停下了脚步，那正是我这辈子唯一没学会的事。歇一会儿吧。外域还会在这儿。而这，恰恰就是它最麻烦的地方。',
   'entities.npcs.verger_zebediah.greeting':
     '司事泽比迪亚。我给外域记着一本历书，至少一直在努力记。根穴这一季本该休养，可野猪没读那张告示。留神脚下的浮土，还有，别碰我的登记簿。',
+  // First-meeting click-through intro (PHAA-439). Voice matched to the
+  // existing Simplified Chinese register (literary classical, ecclesiastical),
+  // keeping the "sole surviving keeper of a register" throughline.
+  'entities.npcs.verger_zebediah.introLines.0':
+    '司事泽比迪亚。根穴守卫，依一纸任命而来，那纸任命眼下也就是我本人。大多数日子你在这里便能寻到我；其余的日子，我也在这里寻到自己。外域不需法定人数，只需一本登记簿。',
+  'entities.npcs.verger_zebediah.introLines.1':
+    '我替这本历书做主，历书却并不替我做主，不过某些季里它也试着来过。根穴这一轮本记作休养，底下的兽穴却未收到那张告示，苍鹭也早不再装作吃惊。这便是现状。这并非抱怨，抱怨是要有旁人的。',
+  'entities.npcs.verger_zebediah.introLines.2':
+    '神龛之内有一本登记簿，切莫去碰。脚下是野猪拱过的浮土，二者皆请留神。若是为守土之事而来，我可托付两桩差事，都不算小，其中一桩我实在不愿再改第三回。这便是我为何同你搭话的缘由。',
   'entities.npcs.sexton_faddick.name': '守墓人法迪克',
   'entities.items.willow_sprig.name': '一段柳枝',
   'entities.npcs.shade.name': '莎德',
@@ -2833,6 +2842,15 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.sexton_faddick.title': '流浪的守护者',
   'entities.npcs.sexton_faddick.greeting':
     '法迪克。哪里还有神龛需要守墓人，我就在哪儿守。我从不在一处久留，只管看顾。狼群夜夜绕着闲田庄的羊群打转，绕得久了，便摸清了所绕之物的形状。最好让它一直只是群羊。',
+  // First-meeting click-through intro (PHAA-439). Wandering-keeper voice,
+  // aphoristic, longer arc. Keeps the "I do not stay anywhere; I keep"
+  // throughline.
+  'entities.npcs.sexton_faddick.introLines.0':
+    '法迪克。哪里还有神龛要我来做守墓人，我便做守墓人，只是这样的神龛已比从前少了。我从不在一处久留，只管看顾。看顾这一桩，便是我如今所剩的几乎全部。',
+  'entities.npcs.sexton_faddick.introLines.1':
+    '绕得久了，便摸清了所绕之物的形状。闲田庄的狼群在我路过之前便夜夜绕着羊群打转，至今仍未摸清羊群的形状，这也算是一桩事。倒是羊群已把它们摸清，那便是更大的事。',
+  'entities.npcs.sexton_faddick.introLines.2':
+    '本想请你喝杯茶，可茶壶留在我昨日待过的地方了。湖边有一片安静的地，等着人起屋；狼群在暗中出没之地，什么都扎不下根来。喏，两桩差事，其中一桩我不想独个儿去办。边走边说罢。',
   'entities.quests.q_root_hollow_boars.title': '根穴野猪',
   'entities.quests.q_root_hollow_boars.text':
     '按历书，根穴这一季本该休养。可没人通知野猪。它们追着虫子把这里拱翻了一半，如今连苍鹭扑翅都吓不走，这一点我很往心里去。杀五头，我才好把这一季照实记下。',
