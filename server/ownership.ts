@@ -17,7 +17,7 @@ import {
   scopeAllowsMutation,
   type TokenScope,
 } from './db';
-import { json } from './http_util';
+import { sendProblem } from './http_errors';
 
 const BEARER_TOKEN = /^Bearer ([a-f0-9]{64})$/;
 
@@ -54,16 +54,16 @@ export async function bearerActiveAccount(
 ): Promise<number | null> {
   const info = await bearerScopeAccount(req);
   if (info === null) {
-    json(res, 401, { error: 'not authenticated' });
+    sendProblem(res, 401, 'NOT_AUTHENTICATED', 'not authenticated');
     return null;
   }
   if (!scopeAllowsMutation(info.scope)) {
-    json(res, 403, { error: 'this token is read-only' });
+    sendProblem(res, 403, 'READ_ONLY_TOKEN', 'this token is read-only');
     return null;
   }
   const status = await moderationStatusForAccount(info.accountId);
   if (status.locked) {
-    json(res, 403, { error: status.message });
+    sendProblem(res, 403, 'ACCOUNT_LOCKED', status.message);
     return null;
   }
   return info.accountId;
@@ -77,12 +77,12 @@ export async function bearerReadAccount(
 ): Promise<number | null> {
   const info = await bearerScopeAccount(req);
   if (info === null) {
-    json(res, 401, { error: 'not authenticated' });
+    sendProblem(res, 401, 'NOT_AUTHENTICATED', 'not authenticated');
     return null;
   }
   const status = await moderationStatusForAccount(info.accountId);
   if (status.locked) {
-    json(res, 403, { error: status.message });
+    sendProblem(res, 403, 'ACCOUNT_LOCKED', status.message);
     return null;
   }
   return info.accountId;
@@ -119,7 +119,7 @@ export async function requireOwnedCharacter(
     // passes its ':id' template, never the concrete path) so a resource
     // enumeration sweep shows up on /metrics without adding label cardinality.
     attackSignalSink().bolaDenied(route);
-    json(res, 404, { error: notFoundMessage });
+    sendProblem(res, 404, 'CHARACTER_NOT_FOUND', notFoundMessage);
     return null;
   }
   return character;

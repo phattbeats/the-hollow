@@ -6,6 +6,7 @@
 import { ITEM_SETS } from '../../sim/data';
 import { worldEntityText as worldNames } from '../world_entity_i18n';
 import { abilityStrings, classAbilityNames } from './abilities';
+import { apiErrorStrings } from './api_error';
 import { coldOpenStrings } from './cold_open';
 import { gameStrings } from './game';
 import { guideStrings } from './guide';
@@ -20,6 +21,7 @@ import { questStrings } from './quests';
 import { shellStrings } from './shell';
 
 export { abilityStrings, classAbilityNames } from './abilities';
+export { apiErrorStrings } from './api_error';
 export { coldOpenStrings } from './cold_open';
 export {
   gameStrings,
@@ -93,6 +95,9 @@ export const en = {
   readableUi: { prompt: { read: 'Read' } },
   // One-time cold-open intro (cold_open.ts). Own domain, not hud.*, per PHAA-431.
   coldOpen: coldOpenStrings,
+  // Stable API error codes (api_error.ts), the code-first matcher's target
+  // (src/ui/api_error_i18n.ts). Own domain, not errors.api.*, per PHAA-528.
+  apiError: apiErrorStrings,
   // Cosmetic skin-select event overlay. Rarity names reuse itemUi.quality.*.
   skinEvent: {
     title: 'Cosmetic Cache',
