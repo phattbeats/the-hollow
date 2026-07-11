@@ -569,7 +569,13 @@ export async function handleCardUpload(
     recordUsageMetric('card.publish.rejected');
     return json(res, 413, { error: 'image too large' });
   }
-  const character = await requireOwnedCharacter(res, accountId, characterId);
+  const character = await requireOwnedCharacter(
+    res,
+    accountId,
+    characterId,
+    'character not found',
+    '/api/card',
+  );
   if (!character) {
     recordUsageMetric('card.publish.rejected');
     return;

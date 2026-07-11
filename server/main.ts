@@ -12,6 +12,7 @@ import { Sim } from '../src/sim/sim';
 import type { PlayerClass, Sex } from '../src/sim/types';
 import { virtualLevel } from '../src/sim/types';
 import type { GuildLeaderboardEntry, LeaderboardEntry } from '../src/world_api';
+import { createAccessLogSink } from './access_log';
 import {
   handleAccount2faDisable,
   handleAccount2faEnable,
@@ -33,6 +34,7 @@ import { handleAdminApi } from './admin';
 import { currentSitePresenceUsers, recordSitePresenceSample } from './admin_db';
 import { permissionsForRoles } from './admin_permissions';
 import { loadAntibotConfig } from './antibot_config_db';
+import { attackSignalSink, setAttackSignalSink } from './attack_signals';
 import {
   hashPassword,
   newToken,
@@ -100,6 +102,9 @@ import { isUniqueViolation, json, readBody } from './http_util';
 import { handleInternalApi } from './internal';
 import { isConnectionRefused } from './ip_block';
 import { pruneExpiredBlockedIps } from './ip_block_db';
+import { logger } from './logger';
+import { instrumentRequest, teeMetricSink } from './metric_sink';
+import { createHttpMetrics, handleMetricsRequest } from './metrics';
 import {
   cleanReportReason,
   createPlayerReport,
@@ -259,7 +264,7 @@ async function getLeaderboard(scope: 'realm' | 'global'): Promise<LeaderboardEnt
   try {
     return await refreshLeaderboard(scope);
   } catch (err) {
-    console.error(`leaderboard refresh failed (${scope}):`, err);
+    logger.error({ err, scope }, 'leaderboard refresh failed');
     return cached?.entries ?? [];
   }
 }
@@ -297,7 +302,7 @@ async function getGuildLeaderboard(scope: 'realm' | 'global'): Promise<GuildLead
   try {
     return await refreshGuildLeaderboard(scope);
   } catch (err) {
-    console.error(`guild leaderboard refresh failed (${scope}):`, err);
+    logger.error({ err, scope }, 'guild leaderboard refresh failed');
     return cached?.entries ?? [];
   }
 }
@@ -379,7 +384,7 @@ async function getReleases(): Promise<ReleaseEntry[]> {
     return await refreshReleases();
   } catch (err) {
     recordUsageCacheEvent('github.releases', 'failure');
-    console.error('github releases refresh failed:', err);
+    logger.error({ err }, 'github releases refresh failed');
     return releasesCache?.entries ?? [];
   }
 }
@@ -652,11 +657,11 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
         accountId: account.id,
         username: account.username,
         ...requestMetadata(req),
-      }).catch((err) => console.error('suspicious registration report failed:', err));
+      }).catch((err) => logger.error({ err }, 'suspicious registration report failed'));
       // Capture the referral when this account signed up via a card link
       // (?ref=<slug>). Best-effort: never block or fail registration on it.
       void captureReferral(account.id, body.ref).catch((err) =>
-        console.error('referral capture failed:', err),
+        logger.error({ err }, 'referral capture failed'),
       );
       return json(res, 200, { token, username: account.username, emailMissing: !signupEmail });
     }
@@ -668,6 +673,7 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       // Per-account brute-force throttle (#93). The message is identical to a
       // bad-password response so it never reveals whether the account exists.
       if (username && authThrottled(username)) {
+        attackSignalSink().authFailure('throttled');
         return json(res, 429, {
           error: 'too many failed attempts — wait a few minutes and try again',
         });
@@ -825,7 +831,13 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
     if (req.method === 'GET' && ownerSheetMatch) {
       const accountId = await bearerReadAccount(req, res);
       if (accountId === null) return;
-      const row = await requireOwnedCharacter(res, accountId, Number(ownerSheetMatch[1]));
+      const row = await requireOwnedCharacter(
+        res,
+        accountId,
+        Number(ownerSheetMatch[1]),
+        'character not found',
+        '/api/characters/:id/sheet',
+      );
       if (!row) return;
       const [guild, rank] = await Promise.all([
         guildNameForCharacter(row.id),
@@ -863,7 +875,13 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       if (name === null) return json(res, 400, { error: 'invalid character name (2-16 letters)' });
       if (offensiveName(name)) return json(res, 400, { error: 'character name is not allowed' });
       const characterId = Number(renameMatch[1]);
-      const character = await requireOwnedCharacter(res, accountId, characterId);
+      const character = await requireOwnedCharacter(
+        res,
+        accountId,
+        characterId,
+        'character not found',
+        '/api/characters/:id/rename',
+      );
       if (!character) return;
       // A rename is a moderator-sanctioned action: the character-select UI only
       // shows the rename control when a moderator has set force_rename. The UI is
@@ -921,7 +939,13 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       const accountId = await bearerActiveAccount(req, res);
       if (accountId === null) return;
       const characterId = Number(takeoverMatch[1]);
-      const character = await requireOwnedCharacter(res, accountId, characterId, 'not found');
+      const character = await requireOwnedCharacter(
+        res,
+        accountId,
+        characterId,
+        'not found',
+        '/api/characters/:id/takeover',
+      );
       if (!character) return;
       const result = await game.takeOverCharacter(accountId, characterId);
       return json(res, 200, { ok: true, takenOver: result === 'taken-over' });
@@ -931,7 +955,13 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       if (accountId === null) return;
       const characterId = Number(delMatch[1]);
       const body = await readBody(req);
-      const character = await requireOwnedCharacter(res, accountId, characterId, 'not found');
+      const character = await requireOwnedCharacter(
+        res,
+        accountId,
+        characterId,
+        'not found',
+        '/api/characters/:id',
+      );
       if (!character) return;
       if ([...game.clients.values()].some((s) => s.characterId === characterId)) {
         return json(res, 400, { error: 'character is currently online' });
@@ -971,6 +1001,7 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
         accountId,
         reporterCharacterId,
         'reporting character not found',
+        '/api/reports',
       );
       if (!reporter) return;
       const resolved = await resolveReportTarget(body, {
@@ -1329,10 +1360,18 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
     }
     json(res, 404, { error: 'unknown endpoint' });
   } catch (err: any) {
-    console.error('api error:', err);
+    logger.error({ err }, 'api error');
     json(res, 500, { error: 'internal error' });
   }
 }
+
+// The one process-wide RED metrics exporter (PHAA-527): the /metrics registry,
+// the per-request sink (teed into the structured access log), and the four
+// attack-signal counters, installed process-wide so the emission sites in
+// ratelimit.ts / ownership.ts / the login gate all land on this registry.
+const httpMetrics = createHttpMetrics({ defaultMetrics: true });
+const requestMetricSink = teeMetricSink(httpMetrics.sink, createAccessLogSink(logger));
+setAttackSignalSink(httpMetrics.attackSignals);
 
 // The single top-level entry point for every HTTP response the server emits
 // (not the WS upgrade handshake, which server.on('upgrade') handles
@@ -1345,7 +1384,20 @@ export function routeHttpRequest(req: http.IncomingMessage, res: http.ServerResp
   applySecurityHeaders(res);
   const url = req.url ?? '';
   const path = url.split('?')[0];
+  // Token-gated Prometheus exposition (PHAA-527). Fails closed as a 404, so
+  // without METRICS_TOKEN (or with a wrong bearer) the endpoint is
+  // indistinguishable from not existing.
+  if (path === '/metrics') {
+    void handleMetricsRequest(req, res, httpMetrics);
+    return;
+  }
   const isApi = url.startsWith('/api/') || url.startsWith('/admin/api/');
+  // RED observability (PHAA-527): one MetricEvent per API-surface request
+  // (Prometheus + access log via the tee), recorded when the response
+  // finishes. Static assets and card/profile pages stay uninstrumented.
+  if (isApi || url.startsWith('/internal/') || url.startsWith('/oauth/')) {
+    instrumentRequest(req, res, requestMetricSink, requestIp(req));
+  }
   // Public read surfaces (/api/public/..., /avatar/...) are CORS-open to any
   // origin so browser-origin companion apps can call them client-side; every
   // other /api route keeps the narrow realm/native allowlist.
@@ -1392,7 +1444,7 @@ async function main(): Promise<void> {
       break;
     } catch (err) {
       if (attempt >= 30) throw err;
-      console.log(`waiting for postgres (attempt ${attempt})...`);
+      logger.info({ attempt }, 'waiting for postgres');
       await new Promise((r) => setTimeout(r, 2000));
     }
   }
@@ -1407,17 +1459,18 @@ async function main(): Promise<void> {
       ? (storedAntibotConfig.data as Record<string, unknown>)
       : {};
   for (const error of game.applyAntibotConfig(antibotOverrides).errors) {
-    console.warn(`bot-detector config override skipped: ${error}`);
+    logger.warn({ error }, 'bot-detector config override skipped');
   }
   const orphans = await closeOrphanSessions();
-  if (orphans > 0) console.log(`closed ${orphans} orphaned play session(s) from a previous run`);
+  if (orphans > 0) logger.info({ orphans }, 'closed orphaned play sessions from a previous run');
   const pruned = await pruneChatLogs(CHAT_LOG_RETENTION_DAYS);
   if (pruned > 0)
-    console.log(`pruned ${pruned} chat log row(s) older than ${CHAT_LOG_RETENTION_DAYS} days`);
+    logger.info({ pruned, retentionDays: CHAT_LOG_RETENTION_DAYS }, 'pruned chat log rows');
   const prunedPerfReports = await pruneClientPerfReports(PERF_REPORT_RETENTION_DAYS);
   if (prunedPerfReports > 0)
-    console.log(
-      `pruned ${prunedPerfReports} client perf report row(s) older than ${PERF_REPORT_RETENTION_DAYS} days`,
+    logger.info(
+      { pruned: prunedPerfReports, retentionDays: PERF_REPORT_RETENTION_DAYS },
+      'pruned client perf report rows',
     );
   await game.loadMarket();
   await game.loadMail();
@@ -1429,23 +1482,23 @@ async function main(): Promise<void> {
   void game.recordOnlineSnapshot();
   void currentSitePresenceUsers()
     .then((count) => recordSitePresenceSample(count))
-    .catch((err) => console.error('site presence sample failed:', err));
+    .catch((err) => logger.error({ err }, 'site presence sample failed'));
   setInterval(
     () => {
       void pruneChatLogs(CHAT_LOG_RETENTION_DAYS).catch((err) =>
-        console.error('chat log prune failed:', err),
+        logger.error({ err }, 'chat log prune failed'),
       );
       void pruneClientPerfReports(PERF_REPORT_RETENTION_DAYS).catch((err) =>
-        console.error('perf report prune failed:', err),
+        logger.error({ err }, 'perf report prune failed'),
       );
       void pruneExpiredOAuthGrants(pool).catch((err) =>
-        console.error('oauth grant prune failed:', err),
+        logger.error({ err }, 'oauth grant prune failed'),
       );
       void pruneDiscordOAuthStates(pool).catch((err) =>
-        console.error('discord oauth state prune failed:', err),
+        logger.error({ err }, 'discord oauth state prune failed'),
       );
       void pruneDiscordPendingLogins(pool).catch((err) =>
-        console.error('discord pending login prune failed:', err),
+        logger.error({ err }, 'discord pending login prune failed'),
       );
     },
     24 * 3600 * 1000,
@@ -1454,34 +1507,34 @@ async function main(): Promise<void> {
     void game.recordOnlineSnapshot();
     void currentSitePresenceUsers()
       .then((count) => recordSitePresenceSample(count))
-      .catch((err) => console.error('site presence sample failed:', err));
+      .catch((err) => logger.error({ err }, 'site presence sample failed'));
   }, ADMIN_ONLINE_SAMPLE_MS).unref();
   setInterval(() => {
-    void pruneExpiredBlockedIps().catch((err) => console.error('blocked IP prune failed:', err));
+    void pruneExpiredBlockedIps().catch((err) => logger.error({ err }, 'blocked IP prune failed'));
     void game
       .reloadBlockedIps()
       .then(() => game.disconnectBlockedSessions('Connection to the server was lost.'))
-      .catch((err) => console.error('blocked IP refresh failed:', err));
+      .catch((err) => logger.error({ err }, 'blocked IP refresh failed'));
   }, BLOCKED_IP_REFRESH_MS).unref();
   // keep both leaderboard caches warm so the first viewer never waits on the
   // query and it never recomputes per request (PR-3)
   const warmLeaderboards = () => {
     void refreshLeaderboard('realm').catch((err) =>
-      console.error('leaderboard refresh failed (realm):', err),
+      logger.error({ err, scope: 'realm' }, 'leaderboard refresh failed'),
     );
     void refreshLeaderboard('global').catch((err) =>
-      console.error('leaderboard refresh failed (global):', err),
+      logger.error({ err, scope: 'global' }, 'leaderboard refresh failed'),
     );
     void refreshGuildLeaderboard('realm').catch((err) =>
-      console.error('guild leaderboard refresh failed (realm):', err),
+      logger.error({ err, scope: 'realm' }, 'guild leaderboard refresh failed'),
     );
     void refreshGuildLeaderboard('global').catch((err) =>
-      console.error('guild leaderboard refresh failed (global):', err),
+      logger.error({ err, scope: 'global' }, 'guild leaderboard refresh failed'),
     );
   };
   warmLeaderboards();
   setInterval(warmLeaderboards, LEADERBOARD_TTL_MS).unref();
-  console.log('database ready');
+  logger.info('database ready');
 
   const server = http.createServer(routeHttpRequest);
 
@@ -1595,7 +1648,10 @@ async function main(): Promise<void> {
       return;
     }
     const session = result;
-    console.log(`+ ${character.name} (${character.class}) joined — ${game.clients.size} online`);
+    logger.info(
+      { character: character.name, class: character.class, online: game.clients.size },
+      'character joined',
+    );
     ws.on('message', (data) => {
       game.handleMessage(session, String(data));
     });
@@ -1607,7 +1663,7 @@ async function main(): Promise<void> {
     // game.ts runs the eventual leave().
     ws.on('close', () => {
       if (game.socketClosed(session, ws)) {
-        console.log(`~ ${character.name} linkdead — ${game.clients.size} online`);
+        logger.info({ character: character.name, online: game.clients.size }, 'character linkdead');
       }
     });
     ws.on('error', () => {
@@ -1653,13 +1709,13 @@ async function main(): Promise<void> {
 
   game.start();
   server.listen(PORT, () => {
-    console.log(`World of ClaudeCraft server listening on http://localhost:${PORT}`);
-    console.log(`  REST: /api/register /api/login /api/characters /api/status`);
-    console.log(`  WS:   /ws, then first message {t:"auth",token,character}`);
+    logger.info({ port: PORT }, 'World of ClaudeCraft server listening');
+    logger.info('REST: /api/register /api/login /api/characters /api/status');
+    logger.info('WS: /ws, then first message {t:"auth",token,character}');
   });
 
   const shutdown = async () => {
-    console.log('shutting down: saving characters...');
+    logger.info('shutting down: saving characters');
     game.stop();
     await game.saveAll('shutdown');
     await game.saveMarket();
@@ -1680,10 +1736,10 @@ async function main(): Promise<void> {
   // keep serving — a live world staying up beats a clean crash-loop. Genuinely
   // fatal startup errors are still handled by main().catch() below.
   process.on('uncaughtException', (err) => {
-    console.error('uncaughtException (kept alive):', err);
+    logger.error({ err }, 'uncaughtException (kept alive)');
   });
   process.on('unhandledRejection', (reason) => {
-    console.error('unhandledRejection (kept alive):', reason);
+    logger.error({ err: reason }, 'unhandledRejection (kept alive)');
   });
 }
 
@@ -1695,7 +1751,7 @@ async function main(): Promise<void> {
 // can drive routeHttpRequest directly.
 if (typeof require !== 'undefined' && require.main === module) {
   main().catch((err) => {
-    console.error('fatal:', err);
+    logger.error({ err }, 'fatal');
     process.exit(1);
   });
 }
