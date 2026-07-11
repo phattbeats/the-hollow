@@ -991,6 +991,17 @@ export const en = {
       crypt_ritual_circle: { name: 'Ritual Circle' },
       kings_signet: { name: "King's Signet" },
       event_skin_token: { name: 'Mysterious Cosmetic Cache' },
+      // Crafted gathering tools, PHAA-507 (upstream #1191): non-Latin fills
+      // (zh_CN/zh_TW/ja_JP/ko_KR/ru_RU) live in src/ui/i18n.locales/<lang>.ts.
+      flint_amber_pick: { name: 'Flint Amber Pick' },
+      bonewood_amber_pick: { name: 'Bonewood Amber Pick' },
+      starleaf_amber_pick: { name: 'Starleaf Amber Pick' },
+      flint_bark_axe: { name: 'Flint Bark Axe' },
+      bonewood_bark_axe: { name: 'Bonewood Bark Axe' },
+      starleaf_bark_axe: { name: 'Starleaf Bark Axe' },
+      flint_spore_sickle: { name: 'Flint Spore Sickle' },
+      bonewood_spore_sickle: { name: 'Bonewood Spore Sickle' },
+      starleaf_spore_sickle: { name: 'Starleaf Spore Sickle' },
       deathless_heartwood: { name: 'Heartwood of the Deathless Crown' },
       kingsbane_last_oath: { name: 'Kingsbane, Last Oath of Thornpeak' },
       crownforged_dreadhelm: { name: 'Crownforged Dreadhelm' },

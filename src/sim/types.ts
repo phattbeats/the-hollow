@@ -266,7 +266,13 @@ export type ItemUse =
   | { type: 'mechChroma'; chromaId: string }
   // Opens the client-side event skin-select overlay. The server rolls a rank on
   // use (see Sim.openSkinSelect) and the player locks one in via claimEventSkin.
-  | { type: 'skinSelect'; catalog?: SkinCatalog };
+  | { type: 'skinSelect'; catalog?: SkinCatalog }
+  // A crafted gathering tool (PHAA-507). `tier` gates which gather-node type
+  // AND monster-material tiers it can harvest: see src/sim/gathering_tools.ts
+  // (canGatherTier / canHarvestMonsterMaterial). This item type never carries
+  // a durability field (this repo has no durability mechanic anywhere), so a
+  // gathering tool can never become unusable.
+  | { type: 'gatherTool'; nodeType: GatherNodeType; tier: number };
 
 // Rarity ranks for the cosmetic skin-select event, ordered low → high. A rolled
 // rank unlocks its own tier and every tier below it (epic unlocks rare+uncommon).
