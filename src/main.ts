@@ -6194,13 +6194,19 @@ function wireStartScreens(): void {
     const canvas = $('#char-preview-canvas') as HTMLCanvasElement | null;
     if (container && canvas) {
       characterPreview = new CharacterPreview(container, canvas);
-      const selSelector =
-        activePanelId === '#offline-select'
-          ? '#offline-select .mini-class.sel'
-          : '#charcreate-panel .mini-class.sel';
-      const selEl = document.querySelector(selSelector) as HTMLElement | null;
-      const cls = selEl ? (selEl.dataset.class as PlayerClass) : 'warrior';
-      characterPreview.setClass(cls);
+      // PHAA-613: the constructor stores the container reference but does not
+      // reparent the canvas. Move it now so it actually lives in the right
+      // container for whichever play panel happens to be visible when assets
+      // finish preloading; without this, a user who reaches the offline
+      // character-creation panel before assetsReady resolves sees a blank
+      // (0x0) preview because the canvas stays parented under
+      // #online-preview-container inside the still-hidden #charselect-panel.
+      characterPreview.setContainer(container);
+      // Run the panel-conditional sync (skin picker, sex, layout) so the
+      // preview is fully wired for whichever panel is active at resolve time.
+      if (activePanelId === '#charselect-panel' || activePanelId === '#charcreate-panel' || activePanelId === '#offline-select') {
+        updatePreviewContainer(activePanelId);
+      }
     }
     decorateClassChips();
   });
