@@ -143,6 +143,7 @@ import {
   gatherNodeById,
   harvestNode as harvestNodeImpl,
   isNodeHarvestableBy,
+  nodeCooldownIdsFor,
 } from './gathering';
 import { GreenpawHearth, type GreenpawHearthSave } from './greenpaw_hearth';
 import { Homestead, type HomesteadSave } from './homestead';
@@ -4110,9 +4111,12 @@ export class Sim {
   }
 
   // Step `e` one tick toward `dest`. With `ignoreObstacles`, the mover phases
-  // straight through props and used to free a stuck evader, never for normal
-  // locomotion. Returns true on arrival.
+  // straight through props, used to free a stuck evader, and forced on for
+  // templates flagged `phasesThroughObstacles` (upstream #1643: mountain-sized
+  // world bosses that must never wedge on a collider mid-chase). Returns true on
+  // arrival.
   private moveToward(e: Entity, dest: Vec3, speed: number, ignoreObstacles = false): boolean {
+    if (!ignoreObstacles && MOBS[e.templateId]?.phasesThroughObstacles) ignoreObstacles = true;
     const d = dist2d(e.pos, dest);
     if (d < 0.3) return true;
     const desired = angleTo(e.pos, dest);
@@ -4776,6 +4780,17 @@ export class Sim {
 
   nodeHarvestableByMe(nodeId: string): boolean {
     return this.nodeHarvestableByMeFor(nodeId, this.primaryId);
+  }
+
+  // Server read (PHAA-618): the ids of gather nodes currently on cooldown for
+  // one player, mirrored onto that viewer's self snapshot so the online client
+  // can reconstruct nodeHarvestableByMe (harvestable == not in this set) and
+  // match Sim's per-player state on the minimap gather dots. Empty (no wire
+  // cost) whenever all this player's nodes are ready.
+  nodeCooldownIdsFor(pid: number): string[] {
+    const meta = this.players.get(pid);
+    if (!meta) return [];
+    return nodeCooldownIdsFor(meta, this.time);
   }
 
   gatheringProficiencyFor(pid: number): Record<GatherNodeType, number> {
@@ -5589,16 +5604,16 @@ export class Sim {
     this.market.marketList(itemId, count, price, pid);
   }
 
-  marketBuy(listingId: number, pid?: number): void {
-    this.market.marketBuy(listingId, pid);
+  marketBuy(listingId: number, pid?: number): boolean {
+    return this.market.marketBuy(listingId, pid);
   }
 
   marketCancel(listingId: number, pid?: number): void {
     this.market.marketCancel(listingId, pid);
   }
 
-  marketCollect(pid?: number): void {
-    this.market.marketCollect(pid);
+  marketCollect(pid?: number): boolean {
+    return this.market.marketCollect(pid);
   }
 
   marketInfoFor(pid: number): import('../world_api').MarketInfo | null {
@@ -5647,8 +5662,8 @@ export class Sim {
     this.postOffice.mailSendResolved(recipient, subject, body, copper, items, pid);
   }
 
-  mailTake(mailId: number, pid?: number): void {
-    this.postOffice.mailTake(mailId, pid);
+  mailTake(mailId: number, pid?: number): boolean {
+    return this.postOffice.mailTake(mailId, pid);
   }
 
   mailDelete(mailId: number, pid?: number): void {

@@ -186,6 +186,11 @@ export const HOLLOW_MOBS: Record<string, MobTemplate> = {
   // supplies its stats and mechanic kit. Rises at its fixed point near Root Hollow
   // in the_hollow_reaches (see WORLD_BOSSES). ccImmune + boss, like every other
   // raid-tier fight in this fork (nythraxis_scourge_of_thornpeak, marrowlord_varkas).
+  // PHAA-579: folds in upstream #1643's Thunzharr unkitable-movespeed fix
+  // (phasesThroughObstacles). His moveSpeed (10.5) already outpaces base player run
+  // speed (7, entity.ts) from the original PHAA-494 port, so on open ground he was
+  // never kiteable by raw speed; without phasing through colliders, though, he can
+  // still wedge on Root Hollow's camp furniture mid-chase and hand a kiter the gap.
   heartwood_colossus: {
     id: 'heartwood_colossus',
     name: 'Heartwood Colossus',
@@ -196,6 +201,10 @@ export const HOLLOW_MOBS: Record<string, MobTemplate> = {
     worldBoss: true,
     elite: true,
     ccImmune: true,
+    // The colossus does not path around camp furniture: every chase/flee/wander step
+    // walks the straight line through fences, buildings, and the waterline, so he can
+    // always go directly at his target and never wedges on a collider (upstream #1643).
+    phasesThroughObstacles: true,
     hpBase: 40000,
     hpPerLevel: 0,
     dmgBase: 62,

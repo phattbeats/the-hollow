@@ -80,10 +80,17 @@ describe('npcJournalClampIndex', () => {
 // Faddick each carry three journal/lore lines, and every index pages cleanly
 // through the pure core (no advance-end condition).
 describe('Hollow Reaches journal content (PHAA-480)', () => {
+  // verger_zebediah carries a 4th lore beat as of PHAA-451 (outsider-stigma
+  // secrecy layer); sexton_faddick remains at 3. The pager is length-agnostic,
+  // so this guards each NPC's authored count without hard-coding a single value.
+  const expectedLineCount: Record<string, number> = {
+    verger_zebediah: 4,
+    sexton_faddick: 3,
+  };
   for (const npcId of ['verger_zebediah', 'sexton_faddick'] as const) {
-    it(`${npcId} carries three ordered journal lines the UI can page through`, () => {
+    it(`${npcId} carries its ordered journal lines the UI can page through`, () => {
       const lines = NPCS[npcId]?.journalLines ?? [];
-      expect(lines).toHaveLength(3);
+      expect(lines).toHaveLength(expectedLineCount[npcId]);
       for (const line of lines) expect(line.trim().length).toBeGreaterThan(0);
       // First page opens, middle pages, last page closes with canAdvance off.
       const first = npcJournalPageAt(0, lines.length);

@@ -115,5 +115,7 @@ and her greeting asks if the player has eaten. She never asks about destiny.
   the willow AND near walking Shade (the same behavioral flag), both depend on the
   Phase-2 live-god ambient system, which does not exist yet. They are recorded here
   and land when that system does.
-- The watering-can prop and Shade's walking model are render/art work, not sim
-  content. The sim NPC renders procedurally (a plain color) until the model lands.
+- Shade's walking model landed as a unique chibi female visual (npc_shade in
+  src/render/characters/manifest.ts: the merchant civilian outfit with a
+  willow-sage tint no player class uses). The watering-can prop still needs the
+  chibi grip/attach foundation (PHAA-583 follow-up) and remains future work.

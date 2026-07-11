@@ -19,12 +19,13 @@
 
 import { audio } from '../game/audio';
 import { ITEMS } from '../sim/data';
-import type { EquipSlot } from '../sim/types';
+import type { EquipSlot, GatherNodeType } from '../sim/types';
 import type { IWorld } from '../world_api';
 import { buildPaperdollView, type PaperdollSlot } from './char_view';
 import { markDialogRoot } from './dialog_root';
 import { classPairLabel, itemDisplayName } from './entity_i18n';
 import { esc } from './esc';
+import { buildGatheringProficiencyRows, buildGatheringToolRows } from './gathering_view';
 import { formatNumber, t } from './i18n';
 import { iconDataUrl, QUALITY_COLOR } from './icons';
 import type { PainterHostPresentation } from './painter_host';
@@ -91,6 +92,17 @@ export interface CharWindowDeps extends PainterHostPresentation {
   openPrestige(): void;
 }
 
+// Maps each gather node type to its hud_chrome display-name key (PHAA-508).
+// Mirrors GatherNodeType in src/sim/types.ts (amber/heartwood/spore).
+const GATHER_NODE_LABEL_KEY: Record<
+  GatherNodeType,
+  'hudChrome.gathering.amber' | 'hudChrome.gathering.heartwood' | 'hudChrome.gathering.spore'
+> = {
+  amber: 'hudChrome.gathering.amber',
+  heartwood: 'hudChrome.gathering.heartwood',
+  spore: 'hudChrome.gathering.spore',
+};
+
 const SHARE_GLYPH =
   '<svg class="pc-share-ico" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path fill="currentColor" d="M18 16.1a3 3 0 0 0-2.3 1.1l-6.7-3.9a3 3 0 0 0 0-2.6l6.7-3.9A3 3 0 1 0 15 4l-6.7 3.9a3 3 0 1 0 0 8.2L15 20a3 3 0 1 0 3-3.9z"/></svg>';
 
@@ -147,6 +159,7 @@ export class CharWindow {
     html += `<div class="char-stats">${STAT_GRID.map((stat) => this.deps.statCellHtml(stat)).join('')}</div>`;
     html += this.deps.talentSummaryHtml();
     html += this.deps.progressionHtml(p.level);
+    html += this.gatheringHtml(world);
     html += `<div class="pc-share-row"><button type="button" class="btn pc-share-btn" data-act="share-card">${SHARE_GLYPH}<span>${esc(t('playerCard.shareButton'))}</span></button></div>`;
     el.innerHTML = html;
     hydratePortraits(el);
@@ -174,6 +187,33 @@ export class CharWindow {
     this.deps.renderPreview();
     this.deps.renderSkinPicker();
     el.querySelector('[data-close]')?.addEventListener('click', () => this.close());
+  }
+
+  // The "Gathering" section (PHAA-508): one span per gather node type showing the
+  // viewer's own proficiency counter (IWorldGathering#gatheringProficiency) and,
+  // in parentheses, the best crafted-tool tier they currently own for that type
+  // (the PHAA-507 tool-gating read surface, or "No tool"). Data comes from the
+  // pure gathering_view.ts core; this painter only formats it. Always rendered:
+  // node/proficiency/tool state is own-status the player reacts to, so it is
+  // never gated by a graphics tier (docs/design/graphics-settings-fairness.md).
+  private gatheringHtml(world: IWorld): string {
+    const toolByType = new Map(buildGatheringToolRows(world).map((r) => [r.nodeType, r.tier]));
+    const items = buildGatheringProficiencyRows(world)
+      .map((r) => {
+        const label = esc(t(GATHER_NODE_LABEL_KEY[r.nodeType]));
+        const value = formatNumber(r.value, { maximumFractionDigits: 0 });
+        const tier = toolByType.get(r.nodeType) ?? null;
+        const tool = esc(
+          tier === null
+            ? t('hudChrome.gathering.toolNone')
+            : t('hudChrome.gathering.toolTier', {
+                tier: formatNumber(tier, { maximumFractionDigits: 0 }),
+              }),
+        );
+        return `<span>${label}: <b>${value}</b> (${tool})</span>`;
+      })
+      .join('');
+    return `<div class="char-progression"><div class="cp-title">${esc(t('hudChrome.gathering.title'))}</div><div class="char-stats cp-stats">${items}</div></div>`;
   }
 
   private buildSlotRow(cell: PaperdollSlot): HTMLElement {

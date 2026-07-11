@@ -15,6 +15,10 @@
 // /oauth/-only X-Frame-Options + Cache-Control hardening, and Server/
 // X-Powered-By stripping. PHAA-523 scopes this port to exactly the five
 // unconditional headers below; the rest is out of scope for this change.
+//
+// The one conditional override is the /avatar/* Cross-Origin-Resource-Policy
+// carve-out (PHAA-529), mirroring upstream's own path-specific header
+// overrides (its /oauth/-prefix carve-out above).
 
 import type * as http from 'node:http';
 
@@ -28,6 +32,16 @@ const CONTENT_TYPE_OPTIONS_VALUE = 'nosniff';
 const REFERRER_POLICY_VALUE = 'strict-origin-when-cross-origin';
 const CROSS_ORIGIN_OPENER_POLICY_VALUE = 'same-origin';
 const CROSS_ORIGIN_RESOURCE_POLICY_VALUE = 'same-origin';
+const CROSS_ORIGIN_RESOURCE_POLICY_CROSS_ORIGIN_VALUE = 'cross-origin';
+
+// /avatar/* carve-out (PHAA-529, follow-up from PHAA-523's review): CORP
+// same-origin only gates no-cors-mode loads (a plain cross-origin <img src>);
+// fetch()-mode reads stay governed by CORS regardless, so this does not widen
+// what a page can read. /avatar/* is already CORS-open to any origin
+// (server/realm.ts PUBLIC_CORS_PREFIXES) for companion apps, extensions, and
+// IDE webviews that render the art via a bare <img>, which is exactly the
+// no-cors load CORP same-origin would otherwise block.
+const AVATAR_PATH_PREFIX = '/avatar/';
 
 // The browser features denied to every page, mirroring upstream's list.
 // Fullscreen and Gamepad are deliberately ABSENT: the game client calls the
@@ -64,11 +78,19 @@ const PERMISSIONS_POLICY_VALUE = PERMISSIONS_POLICY_DENY_FEATURES.map(
 
 /**
  * Set the security headers on `res` for every HTTP response the server emits.
+ * Pass the request `path` so the `/avatar/*` Cross-Origin-Resource-Policy
+ * carve-out can apply; omit it (or pass a non-`/avatar/*` path) for the
+ * unconditional same-origin default.
  */
-export function applySecurityHeaders(res: http.ServerResponse): void {
+export function applySecurityHeaders(res: http.ServerResponse, path?: string): void {
   res.setHeader(HEADER_CONTENT_TYPE_OPTIONS, CONTENT_TYPE_OPTIONS_VALUE);
   res.setHeader(HEADER_REFERRER_POLICY, REFERRER_POLICY_VALUE);
   res.setHeader(HEADER_PERMISSIONS_POLICY, PERMISSIONS_POLICY_VALUE);
   res.setHeader(HEADER_CROSS_ORIGIN_OPENER_POLICY, CROSS_ORIGIN_OPENER_POLICY_VALUE);
-  res.setHeader(HEADER_CROSS_ORIGIN_RESOURCE_POLICY, CROSS_ORIGIN_RESOURCE_POLICY_VALUE);
+  res.setHeader(
+    HEADER_CROSS_ORIGIN_RESOURCE_POLICY,
+    path?.startsWith(AVATAR_PATH_PREFIX)
+      ? CROSS_ORIGIN_RESOURCE_POLICY_CROSS_ORIGIN_VALUE
+      : CROSS_ORIGIN_RESOURCE_POLICY_VALUE,
+  );
 }

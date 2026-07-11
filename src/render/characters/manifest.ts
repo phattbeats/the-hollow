@@ -250,10 +250,19 @@ const NPCS = 'models/chars/npcs';
 const ENEMIES = 'models/chars/enemies';
 const CREATURES = 'models/creatures';
 const WEAPONS = 'models/weapons';
-// Armor visual models (PHAA-502 T1 ships zero models here; the directory is
-// reserved for T2a, which authors baked accessory meshes per EquipSlot. Until
-// then `itemArmorModelUrls()` returns an empty list and `itemArmorModelUrl()`
-// returns null for every item id, so the swap path is a safe no-op.)
+// Armor visual models. PHAA-502 T1 ships the plumbing (this resolver +
+// VisualDef.armorSlots), PHAA-502 T2a wires baked-into-class-GLB armor meshes
+// (Knight_Cape, Knight_Helmet etc.) through `bakedArmorSlots`. PHAA-502 T2b
+// authors standalone armor GLBs from license-clean sources and registers them
+// here; the first batch (PHAA-609) lives under `models/armor/` and was
+// extracted from the already-vendored KayKit Knight pack (CC0, see CREDITS.md)
+// via scripts/phaa609_extract_armor_glbs.mjs. The wiring (`ITEM_ARMOR_VARIANTS`
+// entries + `armorSlots`/`armorByAttachIndex` on each consuming VisualDef) is
+// pending a board decision on the chest/legs attach approach documented in
+// `docs/design/armor-per-slot-sourcing.md` (rigid per-bone prop vs baked-mesh
+// visibility swap vs split two-bone leg attach); T2b ships the mesh artifacts
+// + the smoke test now so the next heartbeat can land the wiring against a
+// concrete, validated GLB instead of re-doing the extraction work.
 const ARMOR = 'models/armor';
 
 /** GLB url for an equipped armor item's worn model, or null if the item has no
@@ -1119,6 +1128,26 @@ export const VISUALS: Record<string, VisualDef> = {
       death: 'Idle',
     },
   },
+  // Sister Shade (PHAA-558 touch-up): unique chibi female look on the merchant
+  // outfit (the plainest civilian silhouette in the female roster) with a
+  // willow-sage tint no player class uses, matching her sim color 0x6b7f6a.
+  // She must read as an ordinary woman doing chores, so no show-list gear and
+  // no held prop; the watering can needs the chibi grip/attach foundation
+  // (PHAA-583 follow-up) and stays future work.
+  npc_shade: {
+    url: `${PLAYERS}/chibi_female_merchant.glb`,
+    height: 2.29,
+    clips: {
+      idle: 'anim_iddle',
+      walk: 'anim_walk',
+      run: 'anim_run',
+      attack: ['anim_push'],
+      death: 'anim_dying',
+      jump: 'anim_jump',
+    },
+    tint: 0x7f8f6e,
+    tintStrength: 0.5,
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -1207,6 +1236,7 @@ const NPC_KEYS: Record<string, string> = {
   brother_greenpaw: 'npc_greenpaw',
   verger_zebediah: 'npc_zebediah',
   sexton_faddick: 'npc_faddick',
+  shade: 'npc_shade',
 };
 
 export function visualKeyFor(e: Entity): string {

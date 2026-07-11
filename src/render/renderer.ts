@@ -97,6 +97,7 @@ import {
   isProjectedNameplateAnchorVisible,
   nameplateScreenTransform,
 } from './nameplate_projection';
+import { resolveDirectPickEntityId } from './pick_resolution';
 import { buildComposer, type PostPipeline } from './post';
 import { buildPropMaterialPrewarmGroup, buildProps } from './props';
 import { buildGroundQuestObject } from './quest_objects';
@@ -2797,6 +2798,7 @@ export class Renderer {
       case 'spellfx':
         if (ev.fx === 'projectile') this.vfx.projectile(ev.sourceId, ev.targetId, ev.school);
         else if (ev.fx === 'beam') this.vfx.beam(ev.sourceId, ev.targetId, ev.school);
+        else if (ev.fx === 'lightning') this.vfx.lightningProjectile(ev.sourceId, ev.targetId);
         else if (ev.fx === 'tick') this.vfx.tick(ev.targetId, ev.school);
         else this.vfx.nova(ev.targetId, ev.school);
         break;
@@ -3546,10 +3548,12 @@ export class Renderer {
 
   // Outdoor fog presets per biome (high tier eases between them as the
   // player crosses zone bands; low keeps the legacy vale fog everywhere).
+  // peaks near/far trimmed so a zone's own mountain crags fade into haze
+  // instead of standing out crisp when viewed from the zone's hub.
   private static BIOME_FOG: Record<BiomeId, { color: number; near: number; far: number }> = {
     vale: { color: 0xa6c6e0, near: 130, far: 470 },
     marsh: { color: 0xa3b294, near: 80, far: 330 },
-    peaks: { color: 0xbdd3ec, near: 160, far: 560 },
+    peaks: { color: 0xbdd3ec, near: 110, far: 390 },
   };
   private static LOW_FOG = { color: 0xa6c6e0, near: 70, far: 260 };
 
@@ -5093,6 +5097,7 @@ export class Renderer {
     );
     this.raycaster.setFromCamera(ndc, this.camera);
     const hits = this.raycaster.intersectObjects(this.clickTargets, true);
+    const directHitIds: number[] = [];
     for (const hit of hits) {
       let o: THREE.Object3D | null = hit.object;
       while (o) {
@@ -5103,12 +5108,14 @@ export class Renderer {
           // against it would be a ghost hitbox at the hide-time position
           const hitView = this.views.get(id);
           if (hitView && !hitView.group.visible) break;
-          const e = this.sim.entities.get(id);
-          if (e?.kind === 'object' && !e.lootable) return null;
-          return id;
+          directHitIds.push(id);
+          break;
         }
         o = o.parent;
       }
+    }
+    if (directHitIds.length > 0) {
+      return resolveDirectPickEntityId(directHitIds, this.sim.entities, this.sim.player.targetId);
     }
     // Forgiving assist: nothing under the ray, so snap to the nearest
     // targetable character within a small screen radius — chibi proportions

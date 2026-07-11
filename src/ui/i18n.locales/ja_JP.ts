@@ -5526,4 +5526,10 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.elder_yarrow.greeting':
     'ビルドはすべて、ひとつの問いから始まる。どの副職業があなたを呼んでいる？',
   'hudChrome.trainer.secondaryClassSet': '副職業として{cls}を習得しました。',
+  'hudChrome.gathering.title': '採集',
+  'hudChrome.gathering.amber': '琥珀',
+  'hudChrome.gathering.heartwood': '心材',
+  'hudChrome.gathering.spore': '胞子',
+  'hudChrome.gathering.toolTier': 'ティア{tier}の道具',
+  'hudChrome.gathering.toolNone': '道具なし',
 };

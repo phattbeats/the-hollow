@@ -963,6 +963,14 @@ export const ru_RU: EnTranslations = {
     },
     "trainer": {
       "secondaryClassSet": "Вы выбрали {cls} дополнительной профессией."
+    },
+    "gathering": {
+      "title": "Сбор",
+      "amber": "Янтарь",
+      "heartwood": "Сердцевина",
+      "spore": "Спора",
+      "toolTier": "Инструмент {tier} ур.",
+      "toolNone": "Нет инструмента"
     }
   },
   "mailUi": {

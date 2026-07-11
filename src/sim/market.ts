@@ -282,37 +282,40 @@ export class Market {
 
   // Buy a listing outright. Coin leaves the buyer, goods enter their bags, and
   // the seller's proceeds (less the Merchant's cut) wait in their collection.
-  marketBuy(listingId: number, pid?: number): void {
+  // Returns whether a purchase actually happened, so the caller (the server's
+  // 'market_buy' handler, PHAA-512) knows when to flush an atomic character+
+  // market save rather than doing so on every no-op attempt.
+  marketBuy(listingId: number, pid?: number): boolean {
     const r = this.ctx.resolve(pid);
-    if (!r) return;
+    if (!r) return false;
     const { meta, e: p } = r;
-    if (p.dead) return;
+    if (p.dead) return false;
     if (!this.nearMerchant(p)) {
       this.ctx.error(meta.entityId, 'You are too far from the Merchant.');
-      return;
+      return false;
     }
     const idx = this.marketListings.findIndex((l) => l.id === listingId);
     if (idx < 0) {
       this.ctx.error(meta.entityId, 'That listing is no longer available.');
-      return;
+      return false;
     }
     const listing = this.marketListings[idx];
     const def = ITEMS[listing.itemId];
     if (!def) {
       this.marketListings.splice(idx, 1);
-      return;
+      return false;
     }
     if (this.marketListingBelongsTo(listing, meta)) {
       this.ctx.error(meta.entityId, 'That is your own listing — cancel it to reclaim it.');
-      return;
+      return false;
     }
     if (meta.copper < listing.price) {
       this.ctx.error(meta.entityId, 'You cannot afford that.');
-      return;
+      return false;
     }
     if (!this.ctx.canAddItem(listing.itemId, listing.count, meta.entityId)) {
       this.ctx.error(meta.entityId, 'Your bags are full.');
-      return;
+      return false;
     }
     meta.copper -= listing.price;
     this.ctx.addItem(listing.itemId, listing.count, meta.entityId);
@@ -335,6 +338,7 @@ export class Market {
       text: `Bought ${def.name}${listing.count > 1 ? ' x' + listing.count : ''} for ${formatMoney(listing.price)}.`,
       pid: meta.entityId,
     });
+    return true;
   }
 
   // Reclaim your own listing; the escrowed goods go straight back to your bags.
@@ -369,20 +373,25 @@ export class Market {
   }
 
   // Take everything waiting for you at the Merchant: sale gold and any items
-  // returned from expired listings.
-  marketCollect(pid?: number): void {
+  // returned from expired listings. Returns whether anything was actually
+  // moved into the buyer's bags, so the caller (the server's 'market_collect'
+  // handler, PHAA-512) knows when to flush an atomic character+market save
+  // rather than doing so on every no-op attempt (a partial collect, gold-only
+  // with a full bag, still counts: it moved goods out of the shared blob).
+  marketCollect(pid?: number): boolean {
     const r = this.ctx.resolve(pid);
-    if (!r) return;
+    if (!r) return false;
     const { meta, e: p } = r;
     if (!this.nearMerchant(p)) {
       this.ctx.error(meta.entityId, 'You are too far from the Merchant.');
-      return;
+      return false;
     }
     const col = this.collectionForSeller(meta);
     if (!col || (col.copper <= 0 && col.items.length === 0)) {
       this.ctx.error(meta.entityId, 'You have nothing to collect.');
-      return;
+      return false;
     }
+    let mutated = false;
     if (col.copper > 0) {
       meta.copper += col.copper;
       this.ctx.emit({
@@ -391,6 +400,7 @@ export class Market {
         pid: meta.entityId,
       });
       col.copper = 0;
+      mutated = true;
     }
     // Capacity gate: items that don't fit stay in the collection box (never
     // destroyed); the gold above is always collected.
@@ -398,6 +408,7 @@ export class Market {
     for (const s of col.items) {
       if (this.ctx.canAddItem(s.itemId, s.count, meta.entityId)) {
         this.ctx.addItem(s.itemId, s.count, meta.entityId);
+        mutated = true;
       } else {
         kept.push(s);
       }
@@ -405,9 +416,10 @@ export class Market {
     if (kept.length > 0) {
       col.items = kept;
       this.ctx.error(meta.entityId, 'Your bags are full.');
-      return;
+      return mutated;
     }
     this.marketCollections.delete(this.marketSellerKey(meta));
+    return true;
   }
 
   // Once a second: return expired player listings to their seller's collection.

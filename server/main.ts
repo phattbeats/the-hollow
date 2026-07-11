@@ -1394,9 +1394,9 @@ setAttackSignalSink(httpMetrics.attackSignals);
 // first so it lands on every branch below: CORS, the OPTIONS-204 preflight
 // short-circuit, and every route including static/404.
 export function routeHttpRequest(req: http.IncomingMessage, res: http.ServerResponse): void {
-  applySecurityHeaders(res);
   const url = req.url ?? '';
   const path = url.split('?')[0];
+  applySecurityHeaders(res, path);
   // Token-gated Prometheus exposition (PHAA-527). Fails closed as a 404, so
   // without METRICS_TOKEN (or with a wrong bearer) the endpoint is
   // indistinguishable from not existing.

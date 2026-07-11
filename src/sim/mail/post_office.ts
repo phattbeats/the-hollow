@@ -275,20 +275,24 @@ export class PostOffice {
   }
 
   // Take any coin/item attachments off a delivered letter, mark it read, and
-  // let its expiry clock start.
-  mailTake(mailId: number, pid?: number): void {
+  // let its expiry clock start. Returns whether an attachment was actually
+  // claimed, so the caller (the server's 'mail_take' handler, PHAA-512) knows
+  // when to flush an atomic character+mail save rather than doing so on every
+  // no-op attempt (marking-read-only or an already-empty letter is not a claim).
+  mailTake(mailId: number, pid?: number): boolean {
     const r = this.ctx.resolve(pid);
-    if (!r) return;
+    if (!r) return false;
     const { meta, e: p } = r;
     if (!this.nearPostOffice(p)) {
       this.ctx.error(meta.entityId, 'You must stand at the Ravenpost to check your mail.');
-      return;
+      return false;
     }
     const now = this.ctx.time;
     const m = this.mail.find(
       (x) => x.id === mailId && this.belongsTo(x, meta) && now >= x.deliverAt,
     );
-    if (!m) return;
+    if (!m) return false;
+    if (m.copper <= 0 && m.items.length === 0) return false;
     if (m.copper > 0) {
       meta.copper += m.copper;
       this.ctx.emit({
@@ -302,6 +306,7 @@ export class PostOffice {
     m.items = [];
     m.read = true;
     m.expiresAt = now + MAIL_EXPIRY_SECONDS;
+    return true;
   }
 
   mailMarkRead(mailId: number, pid?: number): void {

@@ -5258,4 +5258,10 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.elder_yarrow.title': '副职业训练师',
   'entities.npcs.elder_yarrow.greeting': '每一套build都始于一个问题：哪个副职业在召唤你？',
   'hudChrome.trainer.secondaryClassSet': '你已选择{cls}作为你的副职业。',
+  'hudChrome.gathering.title': '采集',
+  'hudChrome.gathering.amber': '琥珀',
+  'hudChrome.gathering.heartwood': '心材',
+  'hudChrome.gathering.spore': '孢子',
+  'hudChrome.gathering.toolTier': '{tier}级工具',
+  'hudChrome.gathering.toolNone': '无工具',
 };

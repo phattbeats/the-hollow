@@ -963,6 +963,14 @@ export const zh_CN: EnTranslations = {
     },
     "trainer": {
       "secondaryClassSet": "你已选择{cls}作为你的副职业。"
+    },
+    "gathering": {
+      "title": "采集",
+      "amber": "琥珀",
+      "heartwood": "心材",
+      "spore": "孢子",
+      "toolTier": "{tier}级工具",
+      "toolNone": "无工具"
     }
   },
   "mailUi": {
