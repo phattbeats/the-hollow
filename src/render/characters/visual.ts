@@ -4,6 +4,7 @@
 // mid-distance band. All geometry/materials are shared caches — dispose()
 // only releases mixer bindings.
 import * as THREE from 'three';
+import type { EquipSlot } from '../../sim/types';
 import type { OverheadEmoteId } from '../../world_api';
 import { GFX } from '../gfx';
 import {
@@ -18,6 +19,7 @@ import {
   assembleModel,
   ensureSkinTexture,
   prepareVisual,
+  setEquippedArmor,
   setHeldWeapon,
   skinEmissiveTexture,
   skinTexture,
@@ -62,6 +64,21 @@ let shadowOnlySingleton: THREE.Material | null = null;
 function shadowOnlyMat(): THREE.Material {
   shadowOnlySingleton ??= new THREE.MeshBasicMaterial({ colorWrite: false, depthWrite: false });
   return shadowOnlySingleton;
+}
+
+/** Shallow-equality check for the equipped-armor Partial<Record<EquipSlot, string>>.
+ *  Faster than JSON.stringify on every setArmor call (the map is small but lives
+ *  on the per-frame diff path). Keys in `a` but not in `b` count as differences;
+ *  extra keys in `b` are ignored (the entity's equippedItems can carry slots the
+ *  visual doesn't have). */
+function armorMapEquals(
+  a: Partial<Record<EquipSlot, string>>,
+  b: Partial<Record<EquipSlot, string>>,
+): boolean {
+  for (const k of Object.keys(a) as EquipSlot[]) {
+    if (a[k] !== b[k]) return false;
+  }
+  return true;
 }
 
 export class CharacterVisual {
@@ -111,12 +128,21 @@ export class CharacterVisual {
   private soulRend = false;
   private bobPhase = Math.random() * Math.PI * 2;
 
+  /** Last-rendered equipped armor (mirrored from the entity's `equippedItems`).
+   *  Diffed per setArmor call so a no-op equip skips the re-attach + material
+   *  pass. null means "no armor ever swapped yet" (a fresh visual that hasn't
+   *  seen a setArmor call); an empty Partial means "wearing nothing in any slot".
+   *  Both states are visually identical (no swap-attached props) so setArmor
+   *  treats them the same. */
+  private armorByItemId: Partial<Record<EquipSlot, string>> | null = null;
+
   constructor(
     key: string,
     entityColor: number,
     skinIndex = 0,
     weaponItemId: string | null = null,
     weaponOverride: WeaponLayoutOverride | null = null,
+    armorByItemId: Partial<Record<EquipSlot, string>> | null = null,
   ) {
     const prep = prepareVisual(key);
     // A cosmetic body (the Combat Mech) keeps its model/clips but can adopt the
@@ -130,12 +156,18 @@ export class CharacterVisual {
     this.entityColor = entityColor;
     this.skinIndex = skinIndex;
     this.weaponItemId = weaponItemId;
+    // Equipped armor ships on the FIRST assembled model so the visual is born
+    // already wearing it (no bare-body pop when a peer streams in mid-fight).
+    // The diff in setArmor treats `null` (never set) and the same content as
+    // "unchanged" so this initial value never re-triggers a swap.
+    this.armorByItemId = armorByItemId ?? null;
     this.height = prep.def.height;
 
     // model: yaw/scale/feet normalization wrapper around the skinned clone. The
     // equipped mainhand item (if the class swaps; see VisualDef.weaponSlot) picks
     // the held weapon model, so the visual is born holding the right weapon.
-    this.model = assembleModel(this.def, weaponItemId);
+    // Equipped armor hangs from the rig's helmet/chest/hips bones the same way.
+    this.model = assembleModel(this.def, weaponItemId, armorByItemId);
     applyMaterials(
       this.model,
       this.def,
@@ -479,6 +511,37 @@ export class CharacterVisual {
       skinEmissiveTexture(this.key, this.skinIndex),
     );
     // the model graph changed (weapon meshes added/removed): rebuild the caster
+    // list and re-snapshot originals, then re-apply ghost/stealth overlays.
+    this.originalMaterials.clear();
+    this.rebuildCasters();
+    this.applyVisualMaterials();
+  }
+
+  /** Sibling of setWeapon for armor: swap the worn accessory models at runtime
+   *  (gear equip/unequip). The map mirrors the entity's `equippedItems`: keys are
+   *  the EquipSlots the wearer covers, values are the equipped item ids. No-op if
+   *  unchanged, or if this visual has no `armorSlots` (mobs/NPCs/forms stay fixed
+   *  until T2a authors the per-class defaults). Mirrors setWeapon: re-attach the
+   *  props, re-run the shared material pass, re-snapshot the original-material
+   *  map, then re-apply any active ghost/soul-rend overlay. Cheap (a few prop
+   *  clones) and keeps the mixer/animation state, unlike a full visual rebuild. */
+  setArmor(armorByItemId: Partial<Record<EquipSlot, string>> | null): void {
+    // Treat a "never set" field the same as an empty map; both render the class
+    // default attach with no swap on top.
+    const next = armorByItemId ?? null;
+    if (next === this.armorByItemId) return;
+    if (next && this.armorByItemId && armorMapEquals(next, this.armorByItemId)) return;
+    this.armorByItemId = next;
+    if (!this.def.armorSlots?.length) return;
+    setEquippedArmor(this.model, this.def, next);
+    applyMaterials(
+      this.model,
+      this.def,
+      this.entityColor,
+      skinTexture(this.key, this.skinIndex),
+      skinEmissiveTexture(this.key, this.skinIndex),
+    );
+    // the model graph changed (armor meshes added/removed): rebuild the caster
     // list and re-snapshot originals, then re-apply ghost/stealth overlays.
     this.originalMaterials.clear();
     this.rebuildCasters();
