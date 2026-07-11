@@ -254,3 +254,47 @@ describe('Heartwood Colossus mechanics kit', () => {
     expect(MOBS.heartwood_colossus.battleYells!.lines).toContain(yell.text);
   });
 });
+
+// PHAA-579: folds upstream #1643's Thunzharr unkitable-movespeed fix into the
+// world-boss framework. The colossus's moveSpeed (10.5) already outpaced base
+// player run speed (7) from the original PHAA-494 port, so raw speed alone was
+// never kiteable; the missing piece was phasesThroughObstacles, so a straight
+// chase line through camp furniture can't wedge him and hand a kiter the gap.
+describe('world boss pathing (phases through obstacles, upstream #1643)', () => {
+  it('the template opts in via phasesThroughObstacles', () => {
+    expect(MOBS.heartwood_colossus.phasesThroughObstacles).toBe(true);
+  });
+
+  it('outruns a player on foot: boss move speed exceeds base run speed', () => {
+    const sim = new Sim({ seed: 1, playerClass: 'warrior' });
+    expect(MOBS.heartwood_colossus.moveSpeed).toBeGreaterThan(sim.player.moveSpeed);
+  });
+
+  it('an ordinary (unflagged) template does not phase through obstacles', () => {
+    expect(MOBS.forest_wolf.phasesThroughObstacles).toBeFalsy();
+  });
+
+  it('marches a dead-straight line through a camp prop that deflects an ordinary chaser', () => {
+    // Same tent collider (seed 20061, ~1.95yd radius) tests/sim.test.ts's "chasing
+    // mobs slide around a camp prop" case proves deflects an ordinary mob mid-chase.
+    // With phasesThroughObstacles the colossus ignores it entirely: x never
+    // deviates from the straight-line path, unlike the collide-and-slide branch.
+    const sim = new Sim({ seed: 20061, playerClass: 'warrior' });
+    const template = MOBS.heartwood_colossus;
+    const startX = -3;
+    const boss = createMob((sim as any).nextId++, template, template.maxLevel, {
+      x: startX,
+      y: 0,
+      z: 500,
+    });
+    (sim as any).addEntity(boss);
+    const dest = { x: startX, y: 0, z: 515 }; // straight through the tent at z=505
+    const straightTicks = Math.ceil(15 / (boss.moveSpeed * (1 / 20))) + 2;
+    let arrived = false;
+    for (let i = 0; i < straightTicks && !arrived; i++) {
+      arrived = (sim as any).moveToward(boss, dest, boss.moveSpeed);
+      expect(Math.abs(boss.pos.x - startX)).toBeLessThan(1e-6);
+    }
+    expect(arrived).toBe(true);
+  });
+});

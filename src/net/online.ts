@@ -167,10 +167,17 @@ export interface AccountInfo {
 // Carries the HTTP status alongside the server's error text so callers can
 // distinguish an auth failure (401/403 → clear the stored session) from a
 // transient 5xx/network blip (keep the token; the session may still be valid).
+// `code`, when present, is the stable machine-readable error code the server's
+// problem+json envelope attaches to the primitive 1-5 gated denial paths
+// (Origin checks, BOLA ownership, internal-secret, rate limiting; see
+// server/http_errors.ts, PHAA-528). Not every route sets it: src/ui/
+// api_error_i18n.ts's code-first matcher falls back to the legacy string
+// matcher (src/main.ts's userFacingApiError) when it is absent or unrecognized.
 export class ApiError extends Error {
   constructor(
     message: string,
     readonly status: number,
+    readonly code?: string,
   ) {
     super(message);
     this.name = 'ApiError';
@@ -232,7 +239,8 @@ export class Api {
       body: JSON.stringify(body),
     });
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new ApiError(data.error ?? `request failed (${res.status})`, res.status);
+    if (!res.ok)
+      throw new ApiError(data.error ?? `request failed (${res.status})`, res.status, data.code);
     return data;
   }
 
@@ -241,7 +249,8 @@ export class Api {
       headers: this.token ? { Authorization: `Bearer ${this.token}` } : {},
     });
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new ApiError(data.error ?? `request failed (${res.status})`, res.status);
+    if (!res.ok)
+      throw new ApiError(data.error ?? `request failed (${res.status})`, res.status, data.code);
     return data;
   }
 
@@ -255,7 +264,8 @@ export class Api {
       body: JSON.stringify(body),
     });
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new ApiError(data.error ?? `request failed (${res.status})`, res.status);
+    if (!res.ok)
+      throw new ApiError(data.error ?? `request failed (${res.status})`, res.status, data.code);
     return data;
   }
 
@@ -405,12 +415,15 @@ export class Api {
     const text = await res.text();
     if (!res.ok) {
       let msg = `request failed (${res.status})`;
+      let code: string | undefined;
       try {
-        msg = JSON.parse(text).error ?? msg;
+        const parsed = JSON.parse(text);
+        msg = parsed.error ?? msg;
+        code = parsed.code;
       } catch {
         /* non-JSON error body */
       }
-      throw new ApiError(msg, res.status);
+      throw new ApiError(msg, res.status, code);
     }
     return JSON.parse(text);
   }
@@ -1668,6 +1681,11 @@ export class ClientWorld implements IWorld {
       if (s.dcomp !== undefined) this.companionUpgrades = s.dcomp ?? {};
       if (s.gprof !== undefined)
         this.gatheringProficiency = s.gprof ?? { amber: 0, heartwood: 0, spore: 0 };
+      // Per-viewer gather-node cooldown set (PHAA-618): the ids of nodes NOT
+      // harvestable by us right now, mirrored from the self snapshot so
+      // nodeHarvestableByMe matches the offline Sim. Absent means unchanged; an
+      // explicit empty array clears it (all this player's nodes are ready).
+      if (s.gnodecd !== undefined) this.nodeCooldownSet = new Set(s.gnodecd ?? []);
       if (s.dclears !== undefined) this.delveClears = s.dclears ?? {};
       if (s.delveDaily !== undefined) this.delveDaily = s.delveDaily;
       // camera follows server-side facing changes when not mouselooking
@@ -1833,14 +1851,18 @@ export class ClientWorld implements IWorld {
   harvestCorpse(id: number): void {
     this.cmd({ cmd: 'harvestCorpse', id });
   }
-  // Per-node respawn state is server-authoritative and not mirrored onto the
-  // snapshot, so the client cannot know another player's, or even its own,
-  // real per-node timer. Always reports harvestable; the server re-validates
-  // and denies via a normal error event on an actual attempt, never
-  // predicting the outcome client-side (see src/net/CLAUDE.md). Wiring the
-  // real per-player timer is future work once the snapshot carries it.
-  nodeHarvestableByMe(_nodeId: string): boolean {
-    return true;
+  // Per-viewer gather-node cooldown ids mirrored from the self snapshot
+  // (PHAA-618, server field 'gnodecd'): the nodes NOT harvestable by us right
+  // now. Empty until the first snapshot carrying it (or when all nodes are
+  // ready), so nodeHarvestableByMe defaults to true, matching the pre-618 stub.
+  private nodeCooldownSet: Set<string> = new Set();
+  // A node is harvestable by us unless the server told us it is still cooling
+  // for us specifically. This now matches Sim.nodeHarvestableByMe instead of
+  // the old always-true stub; the server stays authoritative and still
+  // re-validates harvestNode on the real attempt (see src/net/CLAUDE.md), so
+  // the client still predicts no outcome, it only mirrors known state.
+  nodeHarvestableByMe(nodeId: string): boolean {
+    return !this.nodeCooldownSet.has(nodeId);
   }
   harvestNode(nodeId: string): void {
     this.cmd({ cmd: 'harvestNode', node: nodeId });

@@ -102,6 +102,7 @@ import { emailAccountCreated } from './email';
 import { GameServer } from './game';
 import { type GameStateSource, registerGameStateMetrics } from './game_metrics';
 import { gameMetricsCounters, setGameMetricsCounters } from './game_signals';
+import { sendProblem } from './http_errors';
 import { isUniqueViolation, json, readBody } from './http_util';
 import { handleInternalApi } from './internal';
 import { isConnectionRefused } from './ip_block';
@@ -812,7 +813,8 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
     // come before generic /api routes; it never touches a bearer token.
     const publicSheetMatch = /^\/api\/public\/characters\/(.+)\/sheet$/.exec(url);
     if (req.method === 'GET' && publicSheetMatch) {
-      if (publicReadRateLimited(req)) return json(res, 429, { error: 'rate limited' });
+      if (publicReadRateLimited(req))
+        return sendProblem(res, 429, 'RATE_LIMITED', 'rate limited', { policy: 'public_read' });
       const rawName = decodeURIComponent(publicSheetMatch[1]);
       const target = await findCharacterReportTargetByName(rawName);
       if (!target) return json(res, 404, { error: 'character not found' });
@@ -1310,7 +1312,8 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
         accountId = await bearerActiveAccount(req, res);
         if (accountId === null) return;
       }
-      if (discordRateLimited(req, accountId ?? 0)) return json(res, 429, { error: 'rate limited' });
+      if (discordRateLimited(req, accountId ?? 0))
+        return sendProblem(res, 429, 'RATE_LIMITED', 'rate limited', { policy: 'discord' });
       return handleDiscordStart(req, res, { mode, accountId });
     }
     if (req.method === 'GET' && url === '/api/auth/discord/callback') {
@@ -1329,13 +1332,15 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
     if (req.method === 'GET' && url === '/api/discord') {
       const accountId = await bearerActiveAccount(req, res);
       if (accountId === null) return;
-      if (discordRateLimited(req, accountId)) return json(res, 429, { error: 'rate limited' });
+      if (discordRateLimited(req, accountId))
+        return sendProblem(res, 429, 'RATE_LIMITED', 'rate limited', { policy: 'discord' });
       return handleDiscordStatus(req, res, accountId);
     }
     if (req.method === 'DELETE' && url === '/api/discord') {
       const accountId = await bearerActiveAccount(req, res);
       if (accountId === null) return;
-      if (discordRateLimited(req, accountId)) return json(res, 429, { error: 'rate limited' });
+      if (discordRateLimited(req, accountId))
+        return sendProblem(res, 429, 'RATE_LIMITED', 'rate limited', { policy: 'discord' });
       return handleDiscordUnlink(req, res, accountId);
     }
     // Shareable player card: publish (PNG body) + referral stats for the card.
@@ -1351,7 +1356,7 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       if (accountId === null) return;
       if (cardUploadRateLimited(req, accountId)) {
         recordUsageMetric('card.publish.rate_limited');
-        return json(res, 429, { error: 'rate limited' });
+        return sendProblem(res, 429, 'RATE_LIMITED', 'rate limited', { policy: 'card_upload' });
       }
       return handleCardUpload(req, res, accountId, (characterId) =>
         game.liveLevelForCharacter(characterId),
@@ -1418,7 +1423,7 @@ export function routeHttpRequest(req: http.IncomingMessage, res: http.ServerResp
   // (production, or REQUIRE_WEB_LOGIN forced) so dev/e2e origins never audited
   // against the allow-list are not suddenly rejected.
   if (url.startsWith('/api/') && !publicCorsPath && isCrossSiteApiRequest(req)) {
-    json(res, 403, { error: 'cross-site request rejected' });
+    sendProblem(res, 403, 'CROSS_SITE_ORIGIN_REJECTED', 'cross-site request rejected');
     return;
   }
   if (publicCorsPath) publicCors(res);
