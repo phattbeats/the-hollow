@@ -69,6 +69,30 @@ export const ZONE3_ROADS: { x: number; z: number }[][] = [
 // ---------------------------------------------------------------------------
 
 export const ZONE3_MOBS: Record<string, MobTemplate> = {
+  // Highwatch practice target: a near-immortal, stationary dummy for testing damage
+  // rotations and reading the combat meters. Cap-level with zero armor so the damage
+  // it takes is your clean, unmitigated rotation output. Inert (never fights back),
+  // drops nothing (you can never really fell it), and pops back up 10s after a death.
+  training_dummy: {
+    id: 'training_dummy',
+    name: 'Training Dummy',
+    minLevel: 20,
+    maxLevel: 20,
+    family: 'humanoid',
+    hpBase: 999999,
+    hpPerLevel: 0,
+    dmgBase: 0,
+    dmgPerLevel: 0,
+    attackSpeed: 2.0,
+    armorPerLevel: 0,
+    moveSpeed: 0,
+    aggroRadius: 0,
+    loot: [], // a practice target: no drops (you can never really fell it)
+    scale: 1.4,
+    color: 0xb8924a,
+    dummy: true,
+    respawnSeconds: 10,
+  },
   ridge_stalker: {
     id: 'ridge_stalker',
     name: 'Ridge Stalker',
@@ -1558,6 +1582,8 @@ export const ZONE3_QUEST_ORDER = [
 // ---------------------------------------------------------------------------
 
 export const ZONE3_CAMPS: CampDef[] = [
+  // Training dummy: a single fixed practice target on the hill above Highwatch.
+  { mobId: 'training_dummy', center: { x: -40, z: 648 }, radius: 0, count: 1 },
   // Ridge stalkers: the ridge flanking the road from the pass
   { mobId: 'ridge_stalker', center: { x: -50, z: 590 }, radius: 22, count: 7 },
   { mobId: 'ridge_stalker', center: { x: 45, z: 600 }, radius: 20, count: 6 },

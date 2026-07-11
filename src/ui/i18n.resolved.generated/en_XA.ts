@@ -5698,6 +5698,9 @@ export const en_XA: EnTranslations = {
       "deacon_voss": {
         "name": "[Ðéáçóñ Ʋóšš]"
       },
+      "training_dummy": {
+        "name": "[Ţŕáíñíñĝ Ðúɱɱý]"
+      },
       "ridge_stalker": {
         "name": "[Ŕíðĝé Šţáļķéŕ]"
       },

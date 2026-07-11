@@ -5698,6 +5698,9 @@ export const da_DK: EnTranslations = {
       "deacon_voss": {
         "name": "Diakon Voss"
       },
+      "training_dummy": {
+        "name": "Training Dummy"
+      },
       "ridge_stalker": {
         "name": "Bjergkamssniger"
       },
