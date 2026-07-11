@@ -23,11 +23,35 @@ const hollowEntitiesEn = {
         'here does not forget Him, even if He has forgotten this place. If the ' +
         'heron circles low, tell the Verger the wick still burns...',
     },
+    heartwood_splinter: {
+      name: 'Heartwood Splinter',
+      flavorText: 'Warm to the touch, long after the tree it came from stopped moving.',
+    },
+    bloomcrown_pauldrons: { name: 'Bloomcrown Pauldrons' },
+    verdantguard_mantle: { name: 'Verdantguard Mantle' },
+    // PHAA-560 (tribe-mystery breadcrumb): kept identical to the sim record in
+    // src/sim/content/hollow.ts; non-Latin fills live in src/ui/i18n.locales/.
+    worn_prayer_token: {
+      name: 'Worn Prayer Token',
+      flavorText:
+        "...smooth on one face from a thumb that isn't mine, worn the same shallow " +
+        'groove into a hundred more like it before this one, or so the pile down ' +
+        "here would have you believe. one thumb doesn't wear a hundred tokens. a " +
+        'lot of thumbs wear one groove, though...',
+    },
+    tally_shard: {
+      name: 'Tally-Marked Shard',
+      flavorText:
+        '...marks in fives, scratched deep, crossed each time the count came round. ' +
+        'hundreds of fives before the crossing stops, and the last row was never ' +
+        'finished...',
+    },
   },
   mobs: {
     palefeeder: { name: 'Palefeeder' },
     rootmaw: { name: 'Rootmaw' },
     the_witness_root: { name: 'The Witness-Root' },
+    heartwood_colossus: { name: 'Heartwood Colossus' },
   },
   npcs: {
     brother_greenpaw: {
@@ -134,11 +158,14 @@ const hollowEntitiesEn = {
         'Five. Counted, dated, and entered in the register. Root Hollow is now only a fortnight behind its own season, which in this office we call a triumph. My thanks, on behalf of an order that is, at present, me.',
       objectives: { 0: { label: 'Wild Boar slain' } },
     },
+    // PHAA-560: the closing aside about the register is new (a tribe-mystery
+    // breadcrumb); kept identical to the sim record in
+    // src/sim/content/hollow_zone.ts, non-Latin fills live in src/ui/i18n.locales/.
     q_root_hollow_boars_ii: {
       title: "Root Hollow's Reckoning",
       text: 'I will admit what the office discourages admitting: five was optimistic. The lower dens keep pushing up more. Eight further, and I can close the season without amending the record a third time. The record resents amendment. So do I.',
       completion:
-        'Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me.',
+        'Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me. The register itself is older than that arrangement, bound in a hand I have never met, keeping a count I choose not to add. Someone was thorough here, once. I only try to keep pace.',
       objectives: { 0: { label: 'Wild Boar slain' } },
     },
     q_fallow_acres_wolves: {

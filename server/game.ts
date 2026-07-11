@@ -4,6 +4,7 @@ import { verifyChallenge } from '../src/sim/client_challenge';
 import { MECH_CHROMAS, mechChromaItemId, mechChromaSkinIndex } from '../src/sim/content/skins';
 import type { TalentAllocation } from '../src/sim/content/talents';
 import { DELVES, DUNGEONS, zoneAt } from '../src/sim/data';
+import { serializeDialogState } from '../src/sim/dialog/dialog_commands';
 import { parseRelayCommand } from '../src/sim/discord_relay';
 import type { PickAction } from '../src/sim/lockpick';
 import { parseMoveInputFrame } from '../src/sim/move_input';
@@ -69,7 +70,11 @@ import {
   muteAccountChat,
   recordInGameAction,
 } from './moderation_db';
-import { type ModerationHost, ModerationService } from './moderation_service';
+import {
+  canAttemptModerationCommands,
+  type ModerationHost,
+  ModerationService,
+} from './moderation_service';
 import { generatePlantLine, isPlantLlmConfigured } from './plant_llm';
 import { REALM, REALM_PUBLIC_ORIGIN } from './realm';
 import { createSerialWriter } from './serial_writer';
@@ -172,6 +177,7 @@ type ClientMessage = Record<string, unknown> & {
   mode?: string;
   n?: string;
   name?: string;
+  node?: string;
   npc?: number;
   objectId?: number;
   price?: number;
@@ -244,6 +250,8 @@ const HEAVY_SELF_REFRESH_TICKS = 40; // ~2 s backstop; staggered per session so 
 const HEAVY_SELF_CMDS = new Set<string>([
   'equip',
   'unequip_item',
+  'equip_bag',
+  'unequip_bag',
   'use',
   'discard',
   'buy',
@@ -369,6 +377,9 @@ export interface ClientSession {
   // IP address at join time (from requestMetadata); used for per-IP session counting.
   ip: string;
   isAdmin: boolean;
+  // Expanded admin permissions, snapshotted at join like isAdmin (a role change
+  // applies at the next login). Gates the in-game moderation commands.
+  adminPermissions: ReadonlySet<string>;
   // Seed the client sends at auth; signs its challenge answers.
   clientSeed: string;
   // Behavioral bot-detection state. Ephemeral — reset on every join.
@@ -1354,6 +1365,7 @@ export class GameServer {
         accountCosmetics?: AccountCosmetics;
         chatStrikes?: number;
         isAdmin?: boolean;
+        adminPermissions?: readonly string[];
         clientSeed?: string;
       } = {},
   ): ClientSession | { error: string } {
@@ -1447,6 +1459,11 @@ export class GameServer {
       sentEnts: new Map(),
       ip: sessionIp,
       isAdmin: meta.isAdmin ?? false,
+      // Permissions come only from the explicit set main.ts computes from the
+      // account's roles; no is_admin fallback (fail closed, matching
+      // staff_db.effectiveAdminRoles). A staff member with zero permissions has
+      // no in-game moderation commands.
+      adminPermissions: new Set(meta.adminPermissions ?? []),
       clientSeed: meta.clientSeed ?? '',
       botTrackingContext,
       spectating: null,
@@ -1525,6 +1542,7 @@ export class GameServer {
     session.chatMuteReason = meta.reason ?? '';
     session.chatStrikes = meta.chatStrikes ?? session.chatStrikes;
     session.isAdmin = meta.isAdmin ?? false;
+    session.adminPermissions = new Set(meta.adminPermissions ?? []);
     session.lastInputSeq = 0;
     session.lastInputAt = this.sim.time;
     session.lastSent = {};
@@ -2286,7 +2304,8 @@ export class GameServer {
     if (session.spectating) {
       if (msg.cmd !== 'chat' || typeof msg.text !== 'string') return;
       const text = msg.text.trim();
-      if (session.isAdmin && this.moderation.handleChatCommand(session, text)) return;
+      if (canAttemptModerationCommands(session) && this.moderation.handleChatCommand(session, text))
+        return;
       if (this.isSpectateLocalChat(session, text)) {
         this.sendChatNotice(session, 'Local chat is unavailable while spectating.');
         return;
@@ -2350,6 +2369,9 @@ export class GameServer {
       case 'harvestCorpse':
         if (typeof msg.id === 'number') sim.harvestCorpse(msg.id, pid);
         break;
+      case 'harvestNode':
+        if (typeof msg.node === 'string') sim.harvestNode(msg.node, pid);
+        break;
       case 'lootRoll':
         if (
           typeof msg.rollId === 'number' &&
@@ -2402,6 +2424,18 @@ export class GameServer {
       case 'unequip_item':
         if (typeof msg.slot === 'string' && (EQUIP_SLOTS as readonly string[]).includes(msg.slot)) {
           sim.unequipItem(msg.slot as EquipSlot, pid);
+        }
+        break;
+      case 'equip_bag':
+        if (typeof msg.item === 'string') {
+          const socket =
+            typeof msg.socket === 'number' && Number.isInteger(msg.socket) ? msg.socket : undefined;
+          sim.equipBag(msg.item, socket, pid);
+        }
+        break;
+      case 'unequip_bag':
+        if (typeof msg.socket === 'number' && Number.isInteger(msg.socket)) {
+          sim.unequipBag(msg.socket, pid);
         }
         break;
       case 'use':
@@ -2467,7 +2501,11 @@ export class GameServer {
       case 'chat': {
         if (typeof msg.text !== 'string') break;
         const text = msg.text.trim();
-        if (session.isAdmin && this.moderation.handleChatCommand(session, text)) break;
+        if (
+          canAttemptModerationCommands(session) &&
+          this.moderation.handleChatCommand(session, text)
+        )
+          break;
         if (this.isChatMuted(session)) break;
         if (!this.consumeChatToken(session)) break;
         if (/^\/who(?:\s|$)/i.test(text)) {
@@ -2827,6 +2865,14 @@ export class GameServer {
       // re-validates range and item possession server-side.
       case 'feedGreenpaw':
         sim.feedGreenpaw(pid);
+        break;
+      // Branching dialogue (PHAA-553): resolve a picked choice server-side. The
+      // sim re-looks-up the choice in the NPC's tree, re-checks its gate, and
+      // applies its disposition/flag effect (never trusting a client-sent value).
+      case 'dialogChoose':
+        if (typeof msg.npc === 'string' && typeof msg.choice === 'string') {
+          sim.dialogChoose(msg.npc, msg.choice, pid);
+        }
         break;
       // dev/ops commands, only when ALLOW_DEV_COMMANDS=1 (never in production)
       case 'dev_level': {
@@ -3231,10 +3277,15 @@ export class GameServer {
     // missed the transient lootRoll event re-shows the prompt from state. Stays
     // per-tick (it's interactive state that appears from others' actions).
     maybe('lroll', this.sim.activeLootRolls(anchorSession.pid));
+    // group-visible choices on those rolls (who has answered need/greed/pass),
+    // so every party member's roll frame shows the live vote strip and stays up
+    // after they answer. Per-tick for the same reason as lroll.
+    maybe('lrollg', this.sim.lootRollGroupStatus(anchorSession.pid));
     maybe('drun', this.sim.delveRunWire(anchorSession.pid));
     maybe('dcompanion', this.sim.delveCompanionWire(anchorSession.pid));
     maybe('dmarks', this.sim.delveMarksFor(anchorSession.pid));
     maybe('dcomp', this.sim.companionUpgradesFor(anchorSession.pid));
+    maybe('gprof', this.sim.gatheringProficiencyFor(anchorSession.pid));
     maybe('dclears', this.sim.delveClearsFor(anchorSession.pid));
     maybe('delveDaily', this.sim.delveDailyWire(anchorSession.pid));
     // stats + weapon stay per-tick: recalcPlayerStats re-derives them on every
@@ -3258,11 +3309,15 @@ export class GameServer {
       session.selfHeavyDirty = false;
       session.lastWireRev = meta.wireRev;
       maybe('inv', meta.inventory);
+      maybe('bags', meta.bags);
       maybe('buyback', meta.vendorBuyback);
       maybe('equip', meta.equipment);
       maybe('cosmetics', anchorSession.accountCosmetics);
       maybe('qlog', [...meta.questLog.values()]);
       maybe('qdone', [...meta.questsDone]);
+      // PHAA-553: per-player dialogue disposition + flags, so the client walker
+      // can evaluate `requires` gates. Small; maybe() only re-sends on change.
+      maybe('dstate', serializeDialogState(meta.dialogState));
       maybe('milestones', [...meta.unlockedMilestones]);
       // talents/spec/loadouts/secondaryCls: the client recomputes its known
       // abilities from this (secondaryCls merges a second class's kit in).

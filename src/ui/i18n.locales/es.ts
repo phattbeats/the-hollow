@@ -4575,6 +4575,11 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': 'Página de Diario Rasgada',
   'entities.items.shrine_diary_page.flavorText':
     '...conté cuarenta días con velas antes de perder la cuenta. La oscuridad de aquí abajo no Lo olvida, aunque Él haya olvidado este lugar. Si la garza vuela bajo, dile al Sacristán que la mecha aún arde...',
+  'entities.items.linen_pouch.name': 'Bolsa de Lino',
+  'entities.items.travelers_knapsack.name': 'Mochila del Viajero',
+  'entities.items.wolfhide_satchel.name': 'Morral de Piel de Lobo',
+  'entities.items.gravewoven_bag.name': 'Bolsa Tejida de Tumba',
+  'entities.items.mistcallers_duffel.name': 'Petate de Mistcaller',
   'entities.mobs.acolyte_tessa.name': 'Acólita Tessa',
   'entities.mobs.deacon_varric.name': 'Diácono Varric',
   'entities.mobs.reliquary_bonewalker.name': 'Andahuesos alzado',
@@ -4582,6 +4587,11 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_gravecall_acolyte.name': 'Acólito de la Llamada de Tumba',
   'entities.mobs.reliquary_ledger_wraith.name': 'Espectro del registro',
   'entities.mobs.reliquary_saintless_effigy.name': 'Efigie sin santo',
+  'entities.items.heartwood_splinter.name': 'Astilla de Duramen',
+  'entities.items.heartwood_splinter.flavorText':
+    'Cálida al tacto, mucho después de que el árbol del que proviene dejara de moverse.',
+  'entities.items.bloomcrown_pauldrons.name': 'Hombreras de la Corona Florida',
+  'entities.items.verdantguard_mantle.name': 'Manto del Guardián Verde',
   'entities.mobs.palefeeder.name': 'Devorador Pálido',
   'entities.mobs.rootmaw.name': 'Fauce de Raíz',
   'entities.mobs.the_witness_root.name': 'La Raíz Testigo',

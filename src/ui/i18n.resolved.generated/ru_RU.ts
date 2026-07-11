@@ -291,6 +291,9 @@ export const ru_RU: EnTranslations = {
       "lessThanMinute": "<1м",
       "lockedToast": "Вы привязаны к {raid}. Разблокировка через {time}."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "С",
       "NE": "СВ",
@@ -629,6 +632,13 @@ export const ru_RU: EnTranslations = {
       "unassigned": "Предмет {item} не был назначен и доступен всем.",
       "leaderOnly": "Только лидер группы может менять способ добычи."
     },
+    "lootRollGroup": {
+      "pending": "Ожидание...",
+      "need": "Нужда",
+      "greed": "Жадность",
+      "pass": "Пропуск",
+      "aria": "Статус группового броска: {item}"
+    },
     "bags": {
       "filterGroupAria": "Фильтровать сумки по категории",
       "filterAll": "Все",
@@ -643,7 +653,12 @@ export const ru_RU: EnTranslations = {
       "sortName": "Название",
       "searchPlaceholder": "Поиск предметов",
       "searchAria": "Поиск предметов в сумках по названию",
-      "noMatch": "Нет предметов, соответствующих фильтрам."
+      "noMatch": "Нет предметов, соответствующих фильтрам.",
+      "capacity": "{used}/{total}",
+      "capacityAria": "Занято ячеек сумок: {used} из {total}",
+      "backpack": "Рюкзак",
+      "socketEmpty": "Пустая ячейка для сумки",
+      "unequipHint": "Нажмите, чтобы снять эту сумку"
     },
     "raidConvert": {
       "toPartyDone": "Ваш рейд снова преобразован в группу.",
@@ -2334,21 +2349,36 @@ export const ru_RU: EnTranslations = {
       "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <слот>.",
       "helpLine": "Дома: /house, /house claim, /house place <слот> <вид>, /house remove <слот>."
     },
+    "bags": {
+      "full": "Ваши сумки полны.",
+      "socketsFull": "Все ячейки для сумок заняты.",
+      "swapTooManyItems": "У вас слишком много предметов, чтобы сменить эту сумку.",
+      "removeTooManyItems": "У вас слишком много предметов, чтобы снять эту сумку.",
+      "tradeSpace": "Обмен не удался: недостаточно места в сумках."
+    },
+    "bank": {
+      "tooFar": "Вы слишком далеко от банкира.",
+      "noQuestItems": "Квестовые предметы нельзя хранить в банке.",
+      "full": "Ваш банк переполнен.",
+      "expansionCapped": "Ваш банк больше нельзя расширить.",
+      "cannotAfford": "Вам не хватает средств на это расширение банка.",
+      "purchased": "Вы приобрели дополнительные ячейки банка."
+    },
     "homestead": {
-      "outsideArea": "That is outside the homestead ground. Try Fallow Acres, west of the road.",
-      "tooCloseGate": "Too close to the gate. Move further out.",
-      "tooCloseWater": "Too close to the water.",
-      "tooCloseGraveyard": "Too close to the graveyard.",
-      "tooCloseWildlife": "Too close to the wildlife. Clear the area or move further off.",
-      "tooCloseRoad": "Too close to the road.",
-      "tooCloseOther": "Too close to another homestead.",
-      "questGate": "Brother Greenpaw hasn't sent you off yet. Finish his errands first.",
-      "alreadyOwn": "You already own a homestead.",
-      "claimed": "The ground is yours. This homestead is claimed.",
-      "readoutMine": "Your homestead sits at ({x}, {z}).",
-      "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
-      "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
-      "helpLine": "Homestead: /homestead, /homestead claim."
+      "outsideArea": "Это не хуторская земля. Попробуйте Fallow Acres, к западу от дороги.",
+      "tooCloseGate": "Слишком близко к воротам. Отойдите дальше.",
+      "tooCloseWater": "Слишком близко к воде.",
+      "tooCloseGraveyard": "Слишком близко к кладбищу.",
+      "tooCloseWildlife": "Слишком близко к дикой живности. Расчистите округу или отойдите дальше.",
+      "tooCloseRoad": "Слишком близко к дороге.",
+      "tooCloseOther": "Слишком близко к чужому хутору.",
+      "questGate": "Брат Зеленолап еще не отправил вас в путь. Сперва закончите его поручения.",
+      "alreadyOwn": "У вас уже есть хутор.",
+      "claimed": "Эта земля ваша. Хутор застолблен.",
+      "readoutMine": "Ваш хутор находится в точке ({x}, {z}).",
+      "readoutNoHomesteadQuest": "У вас нет хутора. Закончите всю цепочку поручений брата Зеленолапа, чтобы получить его.",
+      "readoutNoHomesteadHint": "У вас нет хутора. Встаньте на подходящем месте в Лощинных Плёсах и введите /homestead claim.",
+      "helpLine": "Хутор: /homestead, /homestead claim."
     }
   },
   "lockpickUi": {
@@ -3519,6 +3549,7 @@ export const ru_RU: EnTranslations = {
       "offGlobalCooldown": "Вне глобального восстановления",
       "friendlyTarget": "Дружественная цель",
       "enemyTarget": "Вражеская цель",
+      "selfOnly": "Только на себя",
       "damageRange": "от {min} до {max}",
       "finisherDamage": "{base} плюс {perCombo} за прием серии"
     },
@@ -3683,7 +3714,8 @@ export const ru_RU: EnTranslations = {
       "drink": "Напиток",
       "tool": "Инструмент",
       "potion": "Зелье",
-      "elixir": "Эликсир"
+      "elixir": "Эликсир",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "Броня",
@@ -3725,7 +3757,8 @@ export const ru_RU: EnTranslations = {
       "useManaPotion": "Использование: мгновенно восстанавливает {amount} маны. Можно использовать в бою. Восстановление 1 мин.",
       "clickUseInstant": "Нажмите, чтобы мгновенно использовать в бою",
       "clickUse": "Нажмите, чтобы использовать",
-      "clickBuyback": "Нажмите, чтобы выкупить"
+      "clickBuyback": "Нажмите, чтобы выкупить",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "Чтобы экипировать это, нужен {level} уровень."
@@ -5010,6 +5043,21 @@ export const ru_RU: EnTranslations = {
       "monarch_crown_helm": {
         "name": "Корона Монарха"
       },
+      "linen_pouch": {
+        "name": "Льняная Сумка"
+      },
+      "travelers_knapsack": {
+        "name": "Рюкзак Путника"
+      },
+      "wolfhide_satchel": {
+        "name": "Сумка из Волчьей Шкуры"
+      },
+      "gravewoven_bag": {
+        "name": "Могильная Сумка"
+      },
+      "mistcallers_duffel": {
+        "name": "Баул Мистколлера"
+      },
       "bristleback_maul": {
         "name": "Кувалда Щетиноспина"
       },
@@ -5367,6 +5415,24 @@ export const ru_RU: EnTranslations = {
       "shrine_diary_page": {
         "name": "Обрывок страницы дневника",
         "flavorText": "...считал сорок дней при свече, пока не сбился со счёта. Тьма здесь, внизу, не забывает Его, даже если Он забыл это место. Если цапля пролетит низко, скажи пономарю, что фитиль всё ещё горит..."
+      },
+      "heartwood_splinter": {
+        "name": "Щепка сердцевины",
+        "flavorText": "Тёплая на ощупь, долго после того, как дерево, из которого она взята, перестало двигаться."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Наплечники Цветущей Короны"
+      },
+      "verdantguard_mantle": {
+        "name": "Мантия Зелёного Стража"
+      },
+      "worn_prayer_token": {
+        "name": "Потёртый молитвенный жетон",
+        "flavorText": "...с одной стороны отполирован не моим большим пальцем, та же неглубокая бороздка, что и на добрых сотне таких же в этой груде, если верить самой груде. один палец не сотрёт сотню жетонов. а вот множество пальцев одну бороздку, вполне могут..."
+      },
+      "tally_shard": {
+        "name": "Осколок с зарубками",
+        "flavorText": "...зарубки по пять, глубокие, каждая вычеркнута по завершении счёта. сотни пятёрок вычеркнуты, прежде чем вычёркивание прекращается, а последний ряд так и остался незавершённым..."
       },
       "reliquary_plate_chest": {
         "name": "Хауберк стражи реликвария"
@@ -5822,6 +5888,9 @@ export const ru_RU: EnTranslations = {
       },
       "the_witness_root": {
         "name": "Корень-Свидетель"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {
@@ -6851,7 +6920,7 @@ export const ru_RU: EnTranslations = {
       "q_root_hollow_boars_ii": {
         "title": "Расплата Корневой Лощины",
         "text": "Признаю то, что должность признавать не велит: пять было оптимизмом. Из нижних нор лезут всё новые. Ещё восемь, и я смогу закрыть сезон, не правя запись в третий раз. Запись не терпит правок. Как и я.",
-        "completion": "Закрыто. Подписано. Подшито. Сезон может идти точно по расписанию, раз снова есть кому вести расписание. Ты весьма помог очень малой пастве. Уточню: паства эта и есть я.",
+        "completion": "Закрыто. Подписано. Подшито. Сезон может идти точно по расписанию, раз снова есть кому вести расписание. Ты весьма помог очень малой пастве. Уточню: паства эта и есть я. Сам реестр старше этого порядка, переплетён рукой, которую я никогда не встречал, и хранит счёт, который я предпочитаю не подводить. Кто-то был здесь весьма скрупулёзен, некогда. Я лишь стараюсь поспевать.",
         "objectives": {
           "0": {
             "label": "Дикий кабан убит"

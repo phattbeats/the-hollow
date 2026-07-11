@@ -45,7 +45,7 @@ describe('buildAuthorizeUrl', () => {
     expect(url.searchParams.get('redirect_uri')).toBe(
       'https://thehollow.world/api/auth/discord/callback',
     );
-    expect(url.searchParams.get('scope')).toBe('identify guilds');
+    expect(url.searchParams.get('scope')).toBe('identify email guilds');
     expect(url.searchParams.get('state')).toBe('nonce-abc');
     expect(url.searchParams.get('code_challenge')).toBe('chal');
     expect(url.searchParams.get('code_challenge_method')).toBe('S256');
@@ -92,9 +92,47 @@ describe('response parsers', () => {
         global_name: 'Nelly',
         avatar: 'abc',
       }),
-    ).toEqual({ id: '80351110224678912', username: 'nelly', globalName: 'Nelly', avatar: 'abc' });
+    ).toEqual({
+      id: '80351110224678912',
+      username: 'nelly',
+      globalName: 'Nelly',
+      avatar: 'abc',
+      email: null,
+      emailVerified: false,
+    });
     expect(parseDiscordUser({ id: 'not-a-snowflake', username: 'x' })).toBeNull();
     expect(parseDiscordUser({})).toBeNull();
+  });
+
+  it('captures a verified email only when the email scope granted a well-shaped address', () => {
+    expect(
+      parseDiscordUser({
+        id: '80351110224678912',
+        username: 'nelly',
+        email: 'nelly@example.com',
+        verified: true,
+      }),
+    ).toMatchObject({ email: 'nelly@example.com', emailVerified: true });
+    // Discord's own `verified` flag is false: the address is captured but not trusted.
+    expect(
+      parseDiscordUser({
+        id: '80351110224678912',
+        username: 'nelly',
+        email: 'nelly@example.com',
+        verified: false,
+      }),
+    ).toMatchObject({ email: 'nelly@example.com', emailVerified: false });
+    // Malformed or over-length addresses are dropped, not passed through.
+    expect(
+      parseDiscordUser({ id: '80351110224678912', username: 'nelly', email: 'not-an-email' }),
+    ).toMatchObject({ email: null, emailVerified: false });
+    expect(
+      parseDiscordUser({
+        id: '80351110224678912',
+        username: 'nelly',
+        email: `${'a'.repeat(250)}@example.com`,
+      }),
+    ).toMatchObject({ email: null, emailVerified: false });
   });
 
   it('prefers the global display name over the legacy username', () => {

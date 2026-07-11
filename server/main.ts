@@ -24,17 +24,20 @@ import {
   handleAccountLogout,
   handleAccountMarketing,
   handleAccountSetEmail,
+  handleAccountSetInitialEmail,
   handleAccountWhoami,
   handleEmailUnsubscribe,
   verifyLoginTwoFactor,
 } from './account';
 import { handleAdminApi } from './admin';
 import { currentSitePresenceUsers, recordSitePresenceSample } from './admin_db';
+import { permissionsForRoles } from './admin_permissions';
 import { loadAntibotConfig } from './antibot_config_db';
 import {
   hashPassword,
   newToken,
   normalizeCharName,
+  normalizeEmail,
   offensiveName,
   validPassword,
   validUsernameShape,
@@ -141,6 +144,7 @@ import {
 import { resolveReportTarget } from './report_target';
 import { applySecurityHeaders } from './security_headers';
 import { handleSitePresenceHeartbeat } from './site_presence';
+import { adminRolesForAccount } from './staff_db';
 import { cacheControlFor, etagFor, isNotModified } from './static_cache';
 import { verifyTurnstile } from './turnstile';
 import {
@@ -630,20 +634,16 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       const token = newToken();
       await saveToken(token, account.id);
       // Optional email at signup: if a valid address is supplied, store it and
-      // send the welcome mail. Kept optional so existing clients that register
-      // without an email are unaffected (the email is otherwise set later via
-      // the account portal).
-      const signupEmailRaw = typeof body.email === 'string' ? body.email.trim() : '';
-      if (
-        signupEmailRaw &&
-        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(signupEmailRaw) &&
-        signupEmailRaw.length <= 254
-      ) {
-        await setAccountEmail(account.id, signupEmailRaw);
+      // send the welcome mail. Kept optional (the client has no signup email field
+      // yet, so a hard requirement here would break every registration); this is
+      // the same capture point the account portal and Discord login also feed.
+      const signupEmail = normalizeEmail(body.email);
+      if (signupEmail) {
+        await setAccountEmail(account.id, signupEmail);
         emailAccountCreated({
           id: account.id,
           username: account.username,
-          email: signupEmailRaw,
+          email: signupEmail,
           locale: null,
           marketing_opt_in: false,
         });
@@ -658,7 +658,7 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       void captureReferral(account.id, body.ref).catch((err) =>
         console.error('referral capture failed:', err),
       );
-      return json(res, 200, { token, username: account.username });
+      return json(res, 200, { token, username: account.username, emailMissing: !signupEmail });
     }
     if (req.method === 'POST' && url === '/api/login') {
       const body = await readBody(req);
@@ -704,7 +704,10 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       await touchLogin(account.id, requestMetadata(req));
       const token = newToken();
       await saveToken(token, account.id);
-      return json(res, 200, { token, username: account.username });
+      // Tell the client whether this (possibly pre-email) account still needs a
+      // recovery address, so it can force the mandatory-email prompt on sign-in.
+      const emailMissing = !(account.email && account.email.trim());
+      return json(res, 200, { token, username: account.username, emailMissing });
     }
     // Read-scoped "my characters" list: lets a companion holding a character:read
     // token (OAuth or a pasted companion token) discover its character ids so it
@@ -1163,6 +1166,14 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       if (accountId === null) return;
       return handleAccountSetEmail(req, res, accountId);
     }
+    // Set the recovery email on an account that has none yet (the mandatory-email
+    // backfill the client forces on sign-in). Bearer-scoped; rejects once an
+    // address already exists (that must go through the verified change flow).
+    if (req.method === 'POST' && url === '/api/account/email/set-initial') {
+      const accountId = await bearerActiveAccount(req, res);
+      if (accountId === null) return;
+      return handleAccountSetInitialEmail(req, res, accountId);
+    }
     if (req.method === 'POST' && url === '/api/account/deactivate') {
       const accountId = await bearerActiveAccount(req, res);
       if (accountId === null) return;
@@ -1540,7 +1551,9 @@ async function main(): Promise<void> {
     // is handled inside game.join(); this guard blocks egregious bot farms before
     // they consume a session slot.
     const ip = requestMetadata(req).ip;
-    const isAdmin = await isAdminAccount(accountId);
+    const staff = await adminRolesForAccount(accountId);
+    const isAdmin = staff !== null;
+    const adminPermissions = staff ? [...permissionsForRoles(staff.roles)] : [];
     if (
       isConnectionRefused({
         blocked: game.isIpBlocked(ip),
@@ -1568,6 +1581,7 @@ async function main(): Promise<void> {
         chatStrikes: status.chatStrikes,
         accountCosmetics,
         isAdmin,
+        adminPermissions,
         clientSeed,
       },
     );

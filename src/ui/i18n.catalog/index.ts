@@ -547,6 +547,30 @@ export const en = {
       helpLine:
         'Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>.',
     },
+    // Bags capacity (PHAA-491): the pooled-inventory error toasts src/sim/bags.ts
+    // (plus market.ts/quests/quest_commands.ts/social/trade.ts/combat/
+    // casting_lifecycle.ts, which reuse the same literals) emits in English;
+    // sim_i18n.ts re-localizes them through t() against these keys.
+    bags: {
+      full: 'Your bags are full.',
+      socketsFull: 'All your bag slots are full.',
+      swapTooManyItems: 'You have too many items to swap to that bag.',
+      removeTooManyItems: 'You have too many items to remove that bag.',
+      tradeSpace: 'Trade failed: not enough bag space.',
+    },
+    // The bank vault core (PHAA-571): src/sim/bank.ts's deposit/withdraw/buySlots
+    // error + purchase-notice text. Core-only port: no banker NPC exists in zone
+    // content yet, so these strings are not yet player-reachable, but they are
+    // registered here now so the S3 drift guard has a matcher the moment a
+    // follow-up ticket surfaces the bank.
+    bank: {
+      tooFar: 'You are too far from the banker.',
+      noQuestItems: 'You cannot store quest items in the bank.',
+      full: 'Your bank is full.',
+      expansionCapped: 'Your bank cannot be expanded further.',
+      cannotAfford: 'You cannot afford that bank expansion.',
+      purchased: 'You purchase additional bank slots.',
+    },
     // Homestead v0 (PHAA-533): the open-world Hollow Reaches tier, distinct from
     // Housing v0's Sanctum plots. Player-facing /homestead command text lives in
     // src/sim/homestead.ts (the placement rejections, the Greenpaw quest-gate,

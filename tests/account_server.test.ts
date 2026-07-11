@@ -27,6 +27,7 @@ import {
   handleAccountLogout,
   handleAccountMarketing,
   handleAccountSetEmail,
+  handleAccountSetInitialEmail,
   handleAccountWhoami,
   handleEmailUnsubscribe,
 } from '../server/account';
@@ -73,6 +74,10 @@ let charCount: number;
 let writes: { sql: string; params: any[] }[];
 // Pending email-change row the consume UPDATE returns (null = invalid/expired).
 let pendingChange: any;
+// Whether the race-safe backfillAccountEmailIfEmpty UPDATE claims a row (its
+// WHERE only matches an empty email; a test simulates the lost-race case by
+// setting this to 0 even though accountRow.email is still empty).
+let backfillRowCount: number;
 
 function routeQuery(sql: string, params: any[]) {
   writes.push({ sql, params });
@@ -83,6 +88,8 @@ function routeQuery(sql: string, params: any[]) {
     return { rows: accountRow ? [{ id: accountRow.id }] : [] };
   if (sql.includes('unsubscribe_token'))
     return { rows: [{ unsubscribe_token: params[1] ?? 'unsub-token' }] };
+  if (sql.includes('UPDATE accounts') && sql.includes('email_verified_at = CASE'))
+    return { rows: [], rowCount: backfillRowCount };
   if (sql.includes('FROM accounts WHERE id')) return { rows: accountRow ? [accountRow] : [] };
   if (sql.includes('COUNT(*)')) return { rows: [{ count: charCount }] };
   if (sql.includes('FROM characters WHERE account_id') || sql.includes('FROM characters c')) {
@@ -109,6 +116,7 @@ beforeEach(async () => {
   characters = [{ id: 10 }, { id: 11 }];
   charCount = 2;
   pendingChange = { account_id: 1, new_email: 'new@example.com' };
+  backfillRowCount = 1;
   writes = [];
   dbMock.query.mockReset();
   dbMock.query.mockImplementation((sql: string, params: any[]) => routeQuery(sql, params));
@@ -129,6 +137,18 @@ describe('handleAccountWhoami', () => {
     const res = makeRes();
     await handleAccountWhoami(res, 1);
     expect(parse(res).status).toBe(404);
+  });
+  it('reports emailMissing:true for a pre-email account', async () => {
+    accountRow.email = null;
+    const res = makeRes();
+    await handleAccountWhoami(res, 1);
+    expect(parse(res).data.emailMissing).toBe(true);
+  });
+  it('reports emailMissing:false once a recovery address is on file', async () => {
+    accountRow.email = 'aelwyn@example.com';
+    const res = makeRes();
+    await handleAccountWhoami(res, 1);
+    expect(parse(res).data.emailMissing).toBe(false);
   });
 });
 
@@ -203,6 +223,46 @@ describe('handleAccountSetEmail', () => {
     expect(status).toBe(410);
     expect(data.error).toBe('use verified email change');
     expect(writes.some((w) => w.sql.includes('UPDATE accounts SET email'))).toBe(false);
+  });
+});
+
+describe('handleAccountSetInitialEmail', () => {
+  it('rejects an account that already has a recovery address (409)', async () => {
+    accountRow.email = 'existing@example.com';
+    const res = makeRes();
+    await handleAccountSetInitialEmail(makeReq({ email: 'new@example.com' }), res, 1);
+    const { status, data } = parse(res);
+    expect(status).toBe(409);
+    expect(data.error).toBe('use verified email change');
+  });
+  it('rejects a malformed address (400)', async () => {
+    accountRow.email = null;
+    const res = makeRes();
+    await handleAccountSetInitialEmail(makeReq({ email: 'not-an-email' }), res, 1);
+    expect(parse(res).status).toBe(400);
+  });
+  it('fills the empty recovery email atomically', async () => {
+    accountRow.email = null;
+    const res = makeRes();
+    await handleAccountSetInitialEmail(makeReq({ email: ' Player@example.com ' }), res, 1);
+    const { status, data } = parse(res);
+    expect(status).toBe(200);
+    expect(data.email).toBe('Player@example.com');
+    const fill = writes.find(
+      (w) => w.sql.includes('UPDATE accounts') && w.sql.includes('email_verified_at = CASE'),
+    );
+    expect(fill).toBeTruthy();
+    // [accountId, email, verified]: self-asserted, so never pre-verified.
+    expect(fill!.params).toEqual([1, 'Player@example.com', false]);
+  });
+  it('returns 409 when a concurrent writer wins the race (guard in the UPDATE)', async () => {
+    accountRow.email = null;
+    backfillRowCount = 0; // the WHERE (email IS NULL OR '') matched nothing
+    const res = makeRes();
+    await handleAccountSetInitialEmail(makeReq({ email: 'new@example.com' }), res, 1);
+    const { status, data } = parse(res);
+    expect(status).toBe(409);
+    expect(data.error).toBe('use verified email change');
   });
 });
 

@@ -925,6 +925,11 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': 'Gescheurde Dagboekpagina',
   'entities.items.shrine_diary_page.flavorText':
     '...telde veertig dagen bij kaarslicht voor ik de draad kwijtraakte. Het duister hier beneden vergeet Hem niet, ook al is Hij deze plek vergeten. Als de reiger laag cirkelt, zeg de Koster dat de pit nog brandt...',
+  'entities.items.linen_pouch.name': 'Linnen Buidel',
+  'entities.items.travelers_knapsack.name': 'Reizigersrugzak',
+  'entities.items.wolfhide_satchel.name': 'Wolvenhuid Schoudertas',
+  'entities.items.gravewoven_bag.name': 'Grafgeweven Tas',
+  'entities.items.mistcallers_duffel.name': 'Plunjezak van Mistcaller',
   'entities.items.footpad_jerkin.name': 'Struikrovers-Wambuis',
   'entities.items.forest_pink_armor_plate.name': 'Bosroze',
   'entities.items.frayed_prayer_beads.name': 'Gerafelde Bidkralen',
@@ -1221,6 +1226,11 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.old_cragmaw.name': 'Oude Cragmaw',
   'entities.mobs.old_greyjaw.name': 'Oude Grijskaak',
   'entities.mobs.pale_choir_acolyte.name': 'Bleke Koor-Acoliet',
+  'entities.items.heartwood_splinter.name': 'Kernhoutsplinter',
+  'entities.items.heartwood_splinter.flavorText':
+    'Warm om aan te raken, lang nadat de boom waar het vandaan kwam ophield te bewegen.',
+  'entities.items.bloomcrown_pauldrons.name': 'Bloesemkroon Schouderstukken',
+  'entities.items.verdantguard_mantle.name': 'Mantel van de Groene Wachter',
   'entities.mobs.palefeeder.name': 'Bleekvreter',
   'entities.mobs.pearlguard_sentinel.name': 'Parelwacht-Schildwacht',
   'entities.mobs.raised_bonewalker.name': 'Verrezen Botloper',

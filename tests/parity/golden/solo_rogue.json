@@ -15,7 +15,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "25d1ee04",
+      "state": "798cfd90",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -28,6 +28,13 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {},
@@ -38,6 +45,8 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -101,7 +110,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 403,
-      "state": "248c7a5d",
+      "state": "150c250f",
       "events": "c02b647d",
       "rng": {
         "draws": 7,
@@ -112,7 +121,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 403,
-      "state": "3b149d32",
+      "state": "94a3d654",
       "events": "be266894",
       "rng": {
         "draws": 13,
@@ -123,7 +132,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 403,
-      "state": "b0f6a2bc",
+      "state": "3f238e12",
       "events": "0058395e",
       "rng": {
         "draws": 96,
@@ -134,7 +143,7 @@
       "tick": 72,
       "time": 3.6,
       "nextId": 403,
-      "state": "151a91b2",
+      "state": "455fea8c",
       "events": "741638a5",
       "rng": {
         "draws": 153,
@@ -147,6 +156,13 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {
@@ -160,7 +176,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 27600,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
