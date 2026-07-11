@@ -15,7 +15,7 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 402,
+      "nextId": 406,
       "state": "5bc471b0",
       "events": "741638a5",
       "rng": {
@@ -29,9 +29,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 406,
-      "state": "4cd2dd7b",
-      "events": "58fffe84",
+      "nextId": 410,
+      "state": "31784ced",
+      "events": "e2a688a0",
       "rng": {
         "draws": 1,
         "digest": "980a002b"
@@ -42,6 +42,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 34,
@@ -50,18 +57,20 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
               "itemId": "worn_sword"
             }
           ],
-          "sex": "m",
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -71,6 +80,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "copper": 33,
@@ -79,12 +95,14 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 403,
+          "dialogState": {},
+          "entityId": 407,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
-          "sex": "m",
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -94,6 +112,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "copper": 33,
@@ -102,12 +127,14 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 404,
+          "dialogState": {},
+          "entityId": 408,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
-          "sex": "m",
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -125,7 +152,7 @@
           "fallStartY": 1.49341,
           "fiveSecondRule": 99,
           "hp": 90,
-          "id": 402,
+          "id": 406,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -142,7 +169,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -174,7 +200,7 @@
           "fallStartY": 1.335617,
           "fiveSecondRule": 99,
           "hp": 54,
-          "id": 403,
+          "id": 407,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -192,7 +218,6 @@
           "potionCooldownUntil": -1,
           "resource": 195,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -224,7 +249,7 @@
           "fallStartY": 1.133292,
           "fiveSecondRule": 99,
           "hp": 62,
-          "id": 404,
+          "id": 408,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -242,7 +267,6 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "energy",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -277,7 +301,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 42,
-          "id": 405,
+          "id": 409,
           "kind": "mob",
           "level": 2,
           "loot": {
@@ -286,16 +310,16 @@
                 "count": 1,
                 "itemId": "gnarled_staff",
                 "personalFor": [
-                  403
+                  407
                 ]
               }
             ]
           },
           "lootFfaTimer": "Infinity",
           "lootRecipientIds": [
-            402,
-            403,
-            404
+            406,
+            407,
+            408
           ],
           "lootable": true,
           "maxHp": 42,
@@ -309,7 +333,6 @@
             "z": 22
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 20,
             "y": 1.603905,
@@ -318,7 +341,7 @@
           "stats": {
             "armor": 10
           },
-          "tappedById": 402,
+          "tappedById": 406,
           "templateId": "forest_wolf",
           "weapon": {
             "max": 6,
@@ -331,9 +354,9 @@
     {
       "tick": 1,
       "time": 0.05,
-      "nextId": 406,
-      "state": "af822861",
-      "events": "485082e5",
+      "nextId": 410,
+      "state": "ce3906b9",
+      "events": "d384f206",
       "rng": {
         "draws": 3,
         "digest": "034ba248"
@@ -344,6 +367,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 34,
@@ -352,11 +382,13 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -367,7 +399,7 @@
               "itemId": "greyjaw_hide_boots"
             }
           ],
-          "sex": "m",
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -377,6 +409,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "copper": 33,
@@ -385,12 +424,14 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 403,
+          "dialogState": {},
+          "entityId": 407,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
-          "sex": "m",
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -400,6 +441,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "copper": 33,
@@ -408,12 +456,14 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 404,
+          "dialogState": {},
+          "entityId": 408,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
-          "sex": "m",
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -431,7 +481,7 @@
           "fallStartY": 1.49341,
           "fiveSecondRule": 99.05,
           "hp": 90,
-          "id": 402,
+          "id": 406,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -448,7 +498,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -480,7 +529,7 @@
           "fallStartY": 1.335617,
           "fiveSecondRule": 99.05,
           "hp": 54,
-          "id": 403,
+          "id": 407,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -498,7 +547,6 @@
           "potionCooldownUntil": -1,
           "resource": 195,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -530,7 +578,7 @@
           "fallStartY": 1.133292,
           "fiveSecondRule": 99.05,
           "hp": 62,
-          "id": 404,
+          "id": 408,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -548,7 +596,6 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "energy",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -583,7 +630,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 42,
-          "id": 405,
+          "id": 409,
           "kind": "mob",
           "level": 2,
           "loot": {
@@ -592,7 +639,7 @@
                 "count": 1,
                 "itemId": "gnarled_staff",
                 "personalFor": [
-                  403
+                  407
                 ]
               },
               {
@@ -604,9 +651,9 @@
           },
           "lootFfaTimer": "Infinity",
           "lootRecipientIds": [
-            402,
-            403,
-            404
+            406,
+            407,
+            408
           ],
           "lootable": true,
           "maxHp": 42,
@@ -621,7 +668,6 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": -0.05,
-          "sex": "m",
           "spawnPos": {
             "x": 20,
             "y": 1.603905,
@@ -630,7 +676,7 @@
           "stats": {
             "armor": 10
           },
-          "tappedById": 402,
+          "tappedById": 406,
           "templateId": "forest_wolf",
           "weapon": {
             "max": 6,
@@ -643,9 +689,9 @@
     {
       "tick": 1,
       "time": 0.05,
-      "nextId": 406,
-      "state": "d05f8d3e",
-      "events": "2a45f9d8",
+      "nextId": 410,
+      "state": "0886b908",
+      "events": "0453f3a8",
       "rng": {
         "draws": 3,
         "digest": "034ba248"
@@ -656,6 +702,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 34,
@@ -664,11 +717,13 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -679,7 +734,7 @@
               "itemId": "greyjaw_hide_boots"
             }
           ],
-          "sex": "m",
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -689,6 +744,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "copper": 33,
@@ -697,11 +759,13 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 403,
+          "dialogState": {},
+          "entityId": 407,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -712,7 +776,7 @@
               "itemId": "greyjaw_hide_boots"
             }
           ],
-          "sex": "m",
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -722,6 +786,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "copper": 33,
@@ -730,12 +801,14 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 404,
+          "dialogState": {},
+          "entityId": 408,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
-          "sex": "m",
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -753,7 +826,7 @@
           "fallStartY": 1.49341,
           "fiveSecondRule": 99.05,
           "hp": 90,
-          "id": 402,
+          "id": 406,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -770,7 +843,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -802,7 +874,7 @@
           "fallStartY": 1.335617,
           "fiveSecondRule": 99.05,
           "hp": 54,
-          "id": 403,
+          "id": 407,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -820,7 +892,6 @@
           "potionCooldownUntil": -1,
           "resource": 195,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -852,7 +923,7 @@
           "fallStartY": 1.133292,
           "fiveSecondRule": 99.05,
           "hp": 62,
-          "id": 404,
+          "id": 408,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -870,7 +941,6 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "energy",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -905,14 +975,14 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 42,
-          "id": 405,
+          "id": 409,
           "kind": "mob",
           "level": 2,
           "lootFfaTimer": "Infinity",
           "lootRecipientIds": [
-            402,
-            403,
-            404
+            406,
+            407,
+            408
           ],
           "maxHp": 42,
           "moveSpeed": 8,
@@ -926,7 +996,6 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": -0.05,
-          "sex": "m",
           "spawnPos": {
             "x": 20,
             "y": 1.603905,
@@ -935,7 +1004,7 @@
           "stats": {
             "armor": 10
           },
-          "tappedById": 402,
+          "tappedById": 406,
           "templateId": "forest_wolf",
           "weapon": {
             "max": 6,
@@ -948,8 +1017,8 @@
     {
       "tick": 3,
       "time": 0.15,
-      "nextId": 406,
-      "state": "169e1ba5",
+      "nextId": 410,
+      "state": "c2e3a3eb",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -961,6 +1030,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 34,
@@ -969,11 +1045,13 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -984,7 +1062,7 @@
               "itemId": "greyjaw_hide_boots"
             }
           ],
-          "sex": "m",
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -994,6 +1072,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "copper": 33,
@@ -1002,11 +1087,13 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 403,
+          "dialogState": {},
+          "entityId": 407,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -1017,7 +1104,7 @@
               "itemId": "greyjaw_hide_boots"
             }
           ],
-          "sex": "m",
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1027,6 +1114,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "copper": 33,
@@ -1035,12 +1129,14 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 404,
+          "dialogState": {},
+          "entityId": 408,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
-          "sex": "m",
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1058,7 +1154,7 @@
           "fallStartY": 1.49341,
           "fiveSecondRule": 99.15,
           "hp": 90,
-          "id": 402,
+          "id": 406,
           "inCombat": true,
           "kind": "player",
           "level": 1,
@@ -1076,7 +1172,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1108,7 +1203,7 @@
           "fallStartY": 1.335617,
           "fiveSecondRule": 99.15,
           "hp": 54,
-          "id": 403,
+          "id": 407,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -1126,7 +1221,6 @@
           "potionCooldownUntil": -1,
           "resource": 195,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1158,7 +1252,7 @@
           "fallStartY": 1.133292,
           "fiveSecondRule": 99.15,
           "hp": 62,
-          "id": 404,
+          "id": 408,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -1176,7 +1270,6 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "energy",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1200,7 +1293,7 @@
           }
         },
         {
-          "aggroTargetId": 402,
+          "aggroTargetId": 406,
           "aiState": "chase",
           "combatTimer": 99.05,
           "corpseTimer": 3.95,
@@ -1211,7 +1304,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 42,
-          "id": 405,
+          "id": 409,
           "inCombat": true,
           "kind": "mob",
           "leashAnchor": {
@@ -1233,7 +1326,6 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": -0.1,
-          "sex": "m",
           "spawnPos": {
             "x": 20,
             "y": 1.603905,
@@ -1245,7 +1337,7 @@
           "templateId": "forest_wolf",
           "threat": [
             [
-              402,
+              406,
               1
             ]
           ],

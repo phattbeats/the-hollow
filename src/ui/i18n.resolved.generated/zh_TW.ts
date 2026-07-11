@@ -291,6 +291,9 @@ export const zh_TW: EnTranslations = {
       "lessThanMinute": "<1分",
       "lockedToast": "你已鎖定到{raid}。{time}後解鎖。"
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "北",
       "NE": "東北",
@@ -629,6 +632,13 @@ export const zh_TW: EnTranslations = {
       "unassigned": "{item}未被分配，現可自由拾取。",
       "leaderOnly": "只有隊長才能更改拾取方式。"
     },
+    "lootRollGroup": {
+      "pending": "等待中...",
+      "need": "需求",
+      "greed": "貪婪",
+      "pass": "放棄",
+      "aria": "{item} 的團隊擲骰狀態"
+    },
     "bags": {
       "filterGroupAria": "依類別篩選背包",
       "filterAll": "全部",
@@ -643,7 +653,12 @@ export const zh_TW: EnTranslations = {
       "sortName": "名稱",
       "searchPlaceholder": "搜尋物品",
       "searchAria": "依名稱搜尋背包物品",
-      "noMatch": "沒有符合篩選條件的物品。"
+      "noMatch": "沒有符合篩選條件的物品。",
+      "capacity": "{used}/{total}",
+      "capacityAria": "背包已用欄位：{used}/{total}",
+      "backpack": "背包",
+      "socketEmpty": "空背包欄位",
+      "unequipHint": "點擊移除此背包"
     },
     "raidConvert": {
       "toPartyDone": "你的團隊已轉換回隊伍。",
@@ -941,6 +956,27 @@ export const zh_TW: EnTranslations = {
       "secondaryClassSet": "你已選擇{cls}作為你的副職業。"
     }
   },
+  "mailUi": {
+    "title": "渡鴉驛站",
+    "subtitle": "寄送與領取信件",
+    "close": "關閉郵件",
+    "inbox": "收件匣",
+    "compose": "寫信",
+    "noPostOffice": "請前往渡鴉驛站處理郵件。",
+    "emptyInbox": "目前沒有信件。有人寫信給你時渡鴉便會送達。",
+    "from": "來自 {name}",
+    "noSubject": "(無主旨)",
+    "take": "領取",
+    "delete": "刪除",
+    "postageNote": "寄送一封信需要 {money} 郵資。",
+    "recipient": "收件人",
+    "subjectLabel": "主旨",
+    "bodyPlaceholder": "寫下你的信件……",
+    "send": "寄出信件",
+    "needRecipientOrText": "請先填寫收件人並寫點內容再寄送。",
+    "openButton": "帶我去渡鴉驛站。",
+    "openButtonAria": "開啟渡鴉驛站郵件視窗"
+  },
   "guide": {
     "brand": "World of ClaudeCraft",
     "brandShort": "ClaudeCraft",
@@ -960,6 +996,7 @@ export const zh_TW: EnTranslations = {
       "social": "社交與組隊",
       "stats": "角色與屬性",
       "progression": "升級與進程",
+      "hollow": "The Hollow",
       "world": "世界",
       "quests": "任務",
       "dungeons": "地城與團隊副本",
@@ -1469,9 +1506,32 @@ export const zh_TW: EnTranslations = {
         "desc": "來自遠古深淵、覆鱗如蛇的生物。稀少、高傲，且遠比外表看來更為強大。"
       }
     },
+    "hollowPage": {
+      "heading": "The Hollow",
+      "intro": "穿過神殿之門便是花瓶所在的空地：每位新英雄甦醒之處，也是你始終會回來的地方。這裡是共享之地，整片大陸共用的一個據點，也是你初見的面孔、初次的任務，唯一真正需要的家。",
+      "greeting": "你回來了，那可真是件幸事……有幾樁神聖的差事在等你呢，跟上次同一個頻道。過來一下……",
+      "greeter": "格林保修士，於花瓶旁",
+      "vaseHeading": "花瓶",
+      "vaseBody": "所有人都從花瓶開始：這個古老而有靈性的存在，正是幽谷得以建立的核心。它渴求些微小的供奉，燃一顆餘燼球，或餵一份洞穴嫩肉，似乎都能有所察覺。花瓶下坡處，一處洞口通向地窟深處；兩側則留有地塊，供你建造屬於自己的家。",
+      "figuresHeading": "誰在照看它",
+      "figuresBody": "有兩個人維繫著花瓶的運作，你在最初的幾分鐘內便會與他們相遇。",
+      "npcFmt": "{name}, {title}",
+      "greenpawBody": "花瓶唯一的照看者，也是最早派發差事的人。他自封頭銜，也是第一個承認這點的人，算是幽谷裡最接近嚮導的存在。",
+      "yarrowBody": "第二職業的傳授者：每個職業都能向她學習一門副業，她的位置正好與格林保隔瓶相望。",
+      "questsHeading": "你最初的差事",
+      "questsBody": "格林保自己的任務鏈是你要做的第一件事：四樁短小的差事，教會你花瓶的節奏，然後送你踏入更廣闊的幽谷。",
+      "questBurnsBody": "花瓶焚燒以取光的洞穴產球莖，一次採集一把。",
+      "questFillsBody": "能填飽另一種更安靜飢餓的洞穴嫩肉，採集方式相同。",
+      "questWavelengthBody": "引薦花瓶的第二職業，並教你親手餵養它。",
+      "questKeepLitBody": "把一次的恩惠變成一種固定的習慣，連續三次。",
+      "housingHeading": "屬於你自己的家",
+      "housingBody": "{n}塊宅地環繞著花瓶，等待被認領，裝點成你在幽谷中私有的一角。",
+      "shrineHeading": "地窟深處",
+      "shrineBody": "花瓶旁的一處洞口通向地窟深處，那是幽谷自身的副本地城，也是每位新英雄組隊面對的第一場真正考驗。"
+    },
     "worldPage": {
       "heading": "世界",
-      "intro": "World of ClaudeCraft 是一片你需徒步橫越的連綿大地，三大區域由南向北排列。沒有快速旅行，所以旅程本身就是冒險的一部分。",
+      "intro": "穿過花瓶的神殿之門，你便置身幽谷腹地：新人踏出戶外第一步的寧靜之地。再往北還有三個區域，由南向北依次鋪展；通往那裡的道路尚未開啟，但它們是真實存在、靜候你到來的。",
       "hub": "主據點",
       "mapHeading": "北行之路",
       "mapSub": "三個地區由南而北，等級層層遞增。跟著任務的軌跡走，這片土地會帶你從谷地一路前往群峰。",
@@ -1508,8 +1568,9 @@ export const zh_TW: EnTranslations = {
       "partyTitle": "組隊接任務",
       "partyBody": "附近的隊伍成員會共享擊殺與目標進度，所以一起接任務只會更快，絕不會更慢。你也可以與隊伍分享任務：用 /share 指令將它以可點擊的連結貼到聊天中，任何符合條件的附近成員都能一鍵接取同一項任務。",
       "storyTitle": "一條主線貫穿其中",
-      "storyBody": "從你在東溪鎮的第一批跑腿差事開始，亡者出了問題。一個邪教正在運作，線索向北穿過每個區域。循線追查，便能查出幕後主使是誰。",
+      "storyBody": "你最初的線索，是格林保修士自己那條短短的任務鏈，就在花瓶旁。往外則是幽谷腹地裡那些安靜的差事；再往外，還有一段更長的故事：一個邪教從山谷一路作亂到山巔，真實且已完成，只是新英雄眼下還走不到那條路。花瓶自己的任務見幽谷頁面，其餘的則列在下方，作為即將到來的內容。",
       "soloNote": "主線劇情一路到每個篇章的結局都可以單人完成，而那結局是一座五人地城。",
+      "sagaGateNote": "這段傳奇是真實、已完成的內容，正是道路重新北通之後開啟的同一條線索。它並非新英雄如今的起點；起點是花瓶，在幽谷之中。",
       "typesTitle": "你會見到的任務種類",
       "typesBody": "大多數任務都屬於幾種熟悉的形式之一。畫面上的追蹤器會明確指出每一個任務的要求，讓你絕不會無所適從。",
       "typeSlayTitle": "擊殺",
@@ -1851,6 +1912,11 @@ export const zh_TW: EnTranslations = {
       "title": "我們找不到該頁面",
       "body": "你尋找的頁面不存在，或可能已被移動。",
       "home": "返回總覽"
+    }
+  },
+  "readableUi": {
+    "prompt": {
+      "read": "Read"
     }
   },
   "coldOpen": {
@@ -2334,21 +2400,36 @@ export const zh_TW: EnTranslations = {
       "readoutUsage": "/house place <1-{count}> <{kinds}>，/house remove <槽位>。",
       "helpLine": "宅邸：/house、/house claim、/house place <槽位> <種類>、/house remove <槽位>。"
     },
+    "bags": {
+      "full": "你的背包已滿。",
+      "socketsFull": "你的所有背包欄位都已佔用。",
+      "swapTooManyItems": "物品太多，無法換成那個背包。",
+      "removeTooManyItems": "物品太多，無法移除那個背包。",
+      "tradeSpace": "交易失敗：背包空間不足。"
+    },
+    "bank": {
+      "tooFar": "你離銀行職員太遠了。",
+      "noQuestItems": "你不能把任務物品存入銀行。",
+      "full": "你的銀行已滿。",
+      "expansionCapped": "你的銀行無法再擴容了。",
+      "cannotAfford": "你負擔不起這次銀行擴容。",
+      "purchased": "你購買了額外的銀行槽位。"
+    },
     "homestead": {
-      "outsideArea": "That is outside the homestead ground. Try Fallow Acres, west of the road.",
-      "tooCloseGate": "Too close to the gate. Move further out.",
-      "tooCloseWater": "Too close to the water.",
-      "tooCloseGraveyard": "Too close to the graveyard.",
-      "tooCloseWildlife": "Too close to the wildlife. Clear the area or move further off.",
-      "tooCloseRoad": "Too close to the road.",
-      "tooCloseOther": "Too close to another homestead.",
-      "questGate": "Brother Greenpaw hasn't sent you off yet. Finish his errands first.",
-      "alreadyOwn": "You already own a homestead.",
-      "claimed": "The ground is yours. This homestead is claimed.",
-      "readoutMine": "Your homestead sits at ({x}, {z}).",
-      "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
-      "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
-      "helpLine": "Homestead: /homestead, /homestead claim."
+      "outsideArea": "這裡不屬於家園用地。去路西邊的 Fallow Acres 試試。",
+      "tooCloseGate": "離大門太近了。再往外挪一挪。",
+      "tooCloseWater": "離水域太近了。",
+      "tooCloseGraveyard": "離墓地太近了。",
+      "tooCloseWildlife": "離野生動物太近了。清空這片區域，或者再挪遠一些。",
+      "tooCloseRoad": "離大路太近了。",
+      "tooCloseOther": "離別人的家園太近了。",
+      "questGate": "綠掌修士還沒讓你出發呢。先把他的差事做完。",
+      "alreadyOwn": "你已經擁有一處家園了。",
+      "claimed": "這片土地歸你了。家園認領成功。",
+      "readoutMine": "你的家園坐落在 ({x}, {z})。",
+      "readoutNoHomesteadQuest": "你還沒有家園。先完成綠掌修士的全部差事才能解鎖。",
+      "readoutNoHomesteadHint": "你還沒有家園。站在空谷地裡合適的位置，輸入 /homestead claim。",
+      "helpLine": "家園：/homestead，/homestead claim。"
     }
   },
   "lockpickUi": {
@@ -3519,6 +3600,7 @@ export const zh_TW: EnTranslations = {
       "offGlobalCooldown": "不觸發公共冷卻",
       "friendlyTarget": "友方目標",
       "enemyTarget": "敵方目標",
+      "selfOnly": "僅對自己",
       "damageRange": "{min} 到 {max}",
       "finisherDamage": "{base} 加每個連擊點 {perCombo}"
     },
@@ -3683,7 +3765,8 @@ export const zh_TW: EnTranslations = {
       "drink": "飲料",
       "tool": "工具",
       "potion": "藥水",
-      "elixir": "藥劑"
+      "elixir": "藥劑",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "護甲",
@@ -3725,7 +3808,8 @@ export const zh_TW: EnTranslations = {
       "useManaPotion": "使用：立即恢復 {amount} 點法力值。戰鬥中可用。1 分鐘冷卻。",
       "clickUseInstant": "點擊在戰鬥中立即使用",
       "clickUse": "點擊使用",
-      "clickBuyback": "點擊買回"
+      "clickBuyback": "點擊買回",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "需要等級 {level} 才能裝備。"
@@ -5010,6 +5094,21 @@ export const zh_TW: EnTranslations = {
       "monarch_crown_helm": {
         "name": "君主之冠"
       },
+      "linen_pouch": {
+        "name": "亞麻小袋"
+      },
+      "travelers_knapsack": {
+        "name": "旅行者背包"
+      },
+      "wolfhide_satchel": {
+        "name": "狼皮挎包"
+      },
+      "gravewoven_bag": {
+        "name": "墓織袋"
+      },
+      "mistcallers_duffel": {
+        "name": "喚霧者的行囊"
+      },
       "bristleback_maul": {
         "name": "硬鬃重槌"
       },
@@ -5353,7 +5452,8 @@ export const zh_TW: EnTranslations = {
         "name": "餘燼球莖"
       },
       "first_cutting": {
-        "name": "插條"
+        "name": "插條",
+        "flavorText": "A slip of living green from Brother Greenpaw, wrapped in damp moss. Once a homestead plot can be edited, this is the first thing you plant."
       },
       "greenpaw_bead": {
         "name": "彈藥帶上的一顆唸珠"
@@ -5361,12 +5461,33 @@ export const zh_TW: EnTranslations = {
       "keeper_coal": {
         "name": "一塊永不冷卻的炭"
       },
+      "willow_sprig": {
+        "name": "一段柳枝"
+      },
       "witness_root_cincture": {
         "name": "見證根的束帶"
       },
       "shrine_diary_page": {
         "name": "撕碎的日記頁",
         "flavorText": "……我數著燭光過了四十天，後來便斷了數。這底下的黑暗從未忘記祂，儘管祂已經忘了這個地方。若鷺鳥低飛掠過，告訴守燈人，燭芯還燃著……"
+      },
+      "heartwood_splinter": {
+        "name": "心材碎片",
+        "flavorText": "觸摸時依然溫暖,儘管孕育它的樹早已停止生長。"
+      },
+      "bloomcrown_pauldrons": {
+        "name": "繁花王冠護肩"
+      },
+      "verdantguard_mantle": {
+        "name": "常青守衛者披風"
+      },
+      "worn_prayer_token": {
+        "name": "磨損的禱牌",
+        "flavorText": "……一面被一根不是我的拇指磨得光滑，磨出的淺溝和這堆裡另外上百枚一模一樣，至少這堆東西是這麼告訴我的。一根拇指磨不出一百枚令牌的痕跡。可一百根拇指，倒是能磨出同一道淺溝……"
+      },
+      "tally_shard": {
+        "name": "刻痕碎片",
+        "flavorText": "……以五為一組刻得極深，每數完一輪便劃去一道。劃去的五連一組，累計上百組，最後一行卻始終沒有劃完……"
       },
       "reliquary_plate_chest": {
         "name": "聖物庫守衛鎖甲"
@@ -5825,6 +5946,9 @@ export const zh_TW: EnTranslations = {
       },
       "the_witness_root": {
         "name": "見證之根"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {
@@ -5832,6 +5956,11 @@ export const zh_TW: EnTranslations = {
         "name": "商人",
         "title": "世界市場守護者",
         "greeting": "歡迎來到世界市場，{className}。向王國各地的冒險者購買，或出售你自己的貨物。"
+      },
+      "the_ravenpost": {
+        "name": "渡鴉驛站",
+        "title": "郵務守護者",
+        "greeting": "寄一封信吧，{className}，我的渡鴉會找到你的朋友，無論他們漂泊何方，隨信附上的錢幣和包裹也會安然相隨，直到被領取。"
       },
       "marshal_redbrook": {
         "name": "雷德布魯克元帥",
@@ -5962,6 +6091,25 @@ export const zh_TW: EnTranslations = {
         "name": "守墓人法迪克",
         "title": "流浪的守護者",
         "greeting": "法迪克。哪裡還有神龕需要守墓人，我就在哪兒守。我從不在一處久留，只管看顧。狼群夜夜繞著閒田莊的羊群打轉，繞得久了，便摸清了所繞之物的形狀。最好讓牠一直只是群羊。"
+      },
+      "shade": {
+        "name": "莎德",
+        "title": "一位旅人",
+        "greeting": "哦，是你啊。想坐就坐吧，水又不會跑。今天吃過了嗎？你該吃點東西。",
+        "introLines": {
+          "0": "你撞見我做雜活了。別在意這桶，不過是水而已。總有些東西需要澆上一點水。",
+          "1": "我？沒什麼好說的。叫我莎德。我四處走走，哪裡缺人手就搭把手。你看著累壞了。想的話，就坐一會兒吧。"
+        }
+      },
+      "gate_bard": {
+        "name": "吟遊詩人哈爾登",
+        "title": "門前的賣藝人",
+        "greeting": "一枚銅板換一首歌？不要？沒關係，多數日子都是不要。我為這道門彈唱，可這門從沒掏過一次腰包。"
+      },
+      "goodwife_orla": {
+        "name": "奧拉",
+        "title": "曾屬根穴",
+        "greeting": "你可以坐下。大多數人只是走過去。司事早就把我的名字從冊子上劃掉了，一個被劃掉的名字，學會了安靜，好讓誰都不必想起它還在這兒。"
       }
     },
     "quests": {
@@ -6783,7 +6931,7 @@ export const zh_TW: EnTranslations = {
       "q_what_burns": {
         "title": "燃燒之物",
         "text": "通靈淡了，朋友……我乾得跟骨頭一樣，頻率就快斷了。神龕下面有種球莖，燒得又慢又乾淨，餘燼球莖，長在光照不到的地方，這洞穴自己跟自己開的玩笑……給我帶五顆回來。留意那些蒼白的傢伙，牠們衝著你的燈籠來，不是衝著你。大概吧。",
-        "completion": "這才是上等的煙啊……你感覺到了嗎？屋裡越來越濃了。她隨時都要探過身來了，我在頻率上都能感覺到……的確如此。",
+        "completion": "這才是上等的煙啊……你感覺到了嗎？屋裡越來越濃了。他隨時都要探過身來了，我在頻率上都能感覺到……的確如此。",
         "objectives": {
           "0": {
             "label": "已採集餘燼球莖"
@@ -6854,7 +7002,7 @@ export const zh_TW: EnTranslations = {
       "q_root_hollow_boars_ii": {
         "title": "根穴的清算",
         "text": "我就說句本職上不該說的實話：五頭，是我樂觀了。底下的窩還在不斷往外拱。再殺八頭，我便能結清這一季，不必第三回去改記錄。記錄不喜被改。我也不喜。",
-        "completion": "結案。簽字。歸檔。這一季總算能照原定的曆程走了，畢竟又有人來看著這本曆書。你幫了一個極小的會眾一個大忙。我得澄清一句：這會眾，就是我。",
+        "completion": "結案。簽字。歸檔。這一季總算能照原定的曆程走了，畢竟又有人來看著這本曆書。你幫了一個極小的會眾一個大忙。我得澄清一句：這會眾，就是我。這本曆書本身比這安排還要古老，裝訂出自一雙我從未謀面的手，記著一個我不願去加總的數目。曾經有人在此極為用心。我不過是盡力跟上罷了。",
         "objectives": {
           "0": {
             "label": "野豬已殺"
@@ -6878,6 +7026,26 @@ export const zh_TW: EnTranslations = {
         "objectives": {
           "0": {
             "label": "森林狼已殺"
+          }
+        }
+      },
+      "q_have_you_eaten": {
+        "title": "你吃過了嗎？",
+        "text": "門口有個吟遊詩人，靠銅板過活，銅板來了才有飯吃，而銅板難得來。我這兒有一碗熱的，還多出一份。替我給他送去，好嗎？別告訴他這是可憐他。就說這是多出來的。",
+        "completion": "你回來了。他吃了嗎？很好。那就好。那你呢？……你沒吃，我看得出來。那就坐下吧。要成為一個好人，不必偉大。偉大不是善良。吃吧。",
+        "objectives": {
+          "0": {
+            "label": "把熱飯送給吟遊詩人"
+          }
+        }
+      },
+      "q_someone_your_own_size": {
+        "title": "找個和你一般大的",
+        "text": "根穴附近有個女人，這世道待她不公。她的名字被從冊子上劃掉了，人們對待一個被劃掉的名字，就當它聽不見。去陪她坐一會兒吧。你不必去修補什麼。只要做一個和她一般大的人就好。",
+        "completion": "你留下來了。她不會說這有什麼要緊，可它要緊，我向你保證它要緊。來，這個給你。一段柳枝，取自我很喜歡的一棵柳樹。它什麼用也沒有。它只記得，在沒人逼你的時候，你依然選擇了善良。",
+        "objectives": {
+          "0": {
+            "label": "陪奧拉坐了一會兒"
           }
         }
       }
@@ -7100,6 +7268,24 @@ export const zh_TW: EnTranslations = {
         "name": "龍影外衣",
         "bonus2": "攻擊強度提高 40 點。",
         "bonus3": "敏捷提高 15 點，致命一擊機率提高 2%。"
+      }
+    },
+    "readables": {
+      "torn_ledger_page": {
+        "title": "撕破的登記簿",
+        "pages": {
+          "0": "根穴，記為休養。閒田莊，記為休養。莫斯岸的那片湖，無論我們記與不記，它自顧自地歇著。按登記簿的規矩，簽了名，注了日期。",
+          "1": "本季至今的清點：路石縫裡冒出三株幼苗，我的任何一本曆書上都沒有這一條。我已經不再劃掉它們了。墨跡未乾它們就長回來，而那墨水可不便宜。",
+          "2": "給我之後接手此簿的人留一句。數野豬，數狼，數日子。別去數那片綠。它會數回來，而且不會停在你停下的地方。"
+        }
+      },
+      "keepers_marginalia": {
+        "title": "守護者的旁批",
+        "pages": {
+          "0": "夾在一本聖歌都磨沒了的聖歌集頁邊留下的。那筆跡很快，就像一隻邊走邊寫的手那樣快。",
+          "1": "狼群從林線繞著閒田莊打轉，永遠是同一個圈，永遠順著日頭轉。繞得夠久的東西，會摸清它所繞之物的形狀。我如此。我想，這片土地也如此。",
+          "2": "你若讀到這裡，說明你停下了腳步，那正是我這輩子唯一沒學會的事。歇一會兒吧。外域還會在這兒。而這，恰恰就是它最麻煩的地方。"
+        }
       }
     }
   },

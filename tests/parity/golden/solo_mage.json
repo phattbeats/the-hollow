@@ -14,8 +14,8 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 403,
-      "state": "ef88d193",
+      "nextId": 407,
+      "state": "a6da5f9c",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -28,17 +28,26 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
-          "sex": "m",
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -56,7 +65,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 54,
-          "id": 402,
+          "id": 406,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -74,7 +83,6 @@
           "potionCooldownUntil": -1,
           "resource": 195,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -101,9 +109,9 @@
     {
       "tick": 20,
       "time": 1,
-      "nextId": 404,
-      "state": "d62b698f",
-      "events": "b9ff88bc",
+      "nextId": 408,
+      "state": "dbd78cdd",
+      "events": "d77d0bf8",
       "rng": {
         "draws": 2,
         "digest": "e313f022"
@@ -112,9 +120,9 @@
     {
       "tick": 40,
       "time": 2,
-      "nextId": 404,
-      "state": "503b70fb",
-      "events": "7a86a3b1",
+      "nextId": 408,
+      "state": "eed104b5",
+      "events": "90a066cd",
       "rng": {
         "draws": 2,
         "digest": "e313f022"
@@ -123,9 +131,9 @@
     {
       "tick": 60,
       "time": 3,
-      "nextId": 404,
-      "state": "812b2e0b",
-      "events": "b00949d9",
+      "nextId": 408,
+      "state": "803f7885",
+      "events": "b4806541",
       "rng": {
         "draws": 75,
         "digest": "032f8fd0"
@@ -134,8 +142,8 @@
     {
       "tick": 80,
       "time": 4,
-      "nextId": 404,
-      "state": "5cdbeaee",
+      "nextId": 408,
+      "state": "04ced0d4",
       "events": "741638a5",
       "rng": {
         "draws": 164,
@@ -145,9 +153,9 @@
     {
       "tick": 100,
       "time": 5,
-      "nextId": 404,
-      "state": "2e345e77",
-      "events": "a38e9096",
+      "nextId": 408,
+      "state": "fd254465",
+      "events": "ee0d216a",
       "rng": {
         "draws": 280,
         "digest": "d8899923"
@@ -156,9 +164,9 @@
     {
       "tick": 120,
       "time": 6,
-      "nextId": 404,
-      "state": "90e1100e",
-      "events": "6bedd8ed",
+      "nextId": 408,
+      "state": "0c200d3e",
+      "events": "f503827d",
       "rng": {
         "draws": 390,
         "digest": "8950862e"
@@ -167,8 +175,8 @@
     {
       "tick": 128,
       "time": 6.4,
-      "nextId": 404,
-      "state": "865593b6",
+      "nextId": 408,
+      "state": "94a045bc",
       "events": "741638a5",
       "rng": {
         "draws": 438,
@@ -181,6 +189,13 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -189,13 +204,15 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 27600,
-          "sex": "m",
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -217,7 +234,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 2.05,
           "hp": 49982,
-          "id": 402,
+          "id": 406,
           "inCombat": true,
           "kind": "player",
           "level": 10,
@@ -236,7 +253,6 @@
           "potionCooldownUntil": -1,
           "resource": 816,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -251,7 +267,7 @@
             "sta": 23,
             "str": 10
           },
-          "targetId": 403,
+          "targetId": 407,
           "templateId": "mage",
           "weapon": {
             "max": 6,
@@ -260,7 +276,7 @@
           }
         },
         {
-          "aggroTargetId": 402,
+          "aggroTargetId": 406,
           "aiState": "attack",
           "auras": [
             {
@@ -270,7 +286,7 @@
               "name": "Fireball",
               "remaining": 2.55,
               "school": "fire",
-              "sourceId": 402,
+              "sourceId": 406,
               "tickInterval": 2,
               "tickTimer": 0.55,
               "value": 1
@@ -282,7 +298,7 @@
               "name": "Frostbolt",
               "remaining": 4.4,
               "school": "frost",
-              "sourceId": 402,
+              "sourceId": 406,
               "value": 0.6
             }
           ],
@@ -295,7 +311,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 8913,
-          "id": 403,
+          "id": 407,
           "inCombat": true,
           "kind": "mob",
           "leashAnchor": {
@@ -316,7 +332,6 @@
             "z": 2.756284
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -326,11 +341,11 @@
             "armor": 40
           },
           "swingTimer": 1.55,
-          "tappedById": 402,
+          "tappedById": 406,
           "templateId": "forest_wolf",
           "threat": [
             [
-              402,
+              406,
               88
             ]
           ],

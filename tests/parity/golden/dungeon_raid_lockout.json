@@ -13,7 +13,7 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 402,
+      "nextId": 406,
       "state": "5bc471b0",
       "events": "741638a5",
       "rng": {
@@ -27,9 +27,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 407,
-      "state": "a9de1a91",
-      "events": "f89934a5",
+      "nextId": 411,
+      "state": "6b6ffaa6",
+      "events": "36d29be0",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -40,16 +40,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_nythraxis_bound_guardian"
           ],
@@ -59,7 +69,6 @@
               999999999
             ]
           ],
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -69,17 +78,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 403,
+          "dialogState": {},
+          "entityId": 407,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
-          "sex": "m",
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -89,17 +107,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 404,
+          "dialogState": {},
+          "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
-          "sex": "m",
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -109,17 +136,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 405,
+          "dialogState": {},
+          "entityId": 409,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
-          "sex": "m",
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -129,17 +165,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 406,
+          "dialogState": {},
+          "entityId": 410,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
-          "sex": "m",
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -157,7 +202,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 90,
-          "id": 402,
+          "id": 406,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -174,7 +219,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -206,7 +250,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 51,
-          "id": 403,
+          "id": 407,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -224,7 +268,6 @@
           "potionCooldownUntil": -1,
           "resource": 175,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -256,7 +299,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 51,
-          "id": 404,
+          "id": 408,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -274,7 +317,6 @@
           "potionCooldownUntil": -1,
           "resource": 175,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -306,7 +348,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 51,
-          "id": 405,
+          "id": 409,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -324,7 +366,6 @@
           "potionCooldownUntil": -1,
           "resource": 175,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -356,7 +397,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 51,
-          "id": 406,
+          "id": 410,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -374,7 +415,6 @@
           "potionCooldownUntil": -1,
           "resource": 175,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -401,9 +441,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 407,
-      "state": "a9de1a91",
-      "events": "040a69cc",
+      "nextId": 411,
+      "state": "6b6ffaa6",
+      "events": "36bf9f40",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -414,16 +454,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_nythraxis_bound_guardian"
           ],
@@ -433,7 +483,6 @@
               999999999
             ]
           ],
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -443,17 +492,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 403,
+          "dialogState": {},
+          "entityId": 407,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
-          "sex": "m",
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -463,17 +521,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 404,
+          "dialogState": {},
+          "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
-          "sex": "m",
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -483,17 +550,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 405,
+          "dialogState": {},
+          "entityId": 409,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
-          "sex": "m",
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -503,17 +579,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 406,
+          "dialogState": {},
+          "entityId": 410,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
-          "sex": "m",
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -531,7 +616,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 90,
-          "id": 402,
+          "id": 406,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -548,7 +633,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -580,7 +664,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 51,
-          "id": 403,
+          "id": 407,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -598,7 +682,6 @@
           "potionCooldownUntil": -1,
           "resource": 175,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -630,7 +713,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 51,
-          "id": 404,
+          "id": 408,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -648,7 +731,6 @@
           "potionCooldownUntil": -1,
           "resource": 175,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -680,7 +762,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 51,
-          "id": 405,
+          "id": 409,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -698,7 +780,6 @@
           "potionCooldownUntil": -1,
           "resource": 175,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -730,7 +811,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 51,
-          "id": 406,
+          "id": 410,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -748,7 +829,6 @@
           "potionCooldownUntil": -1,
           "resource": 175,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -775,8 +855,8 @@
     {
       "tick": 1,
       "time": 0.05,
-      "nextId": 407,
-      "state": "70187b3d",
+      "nextId": 411,
+      "state": "c80a3c7a",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -788,16 +868,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_nythraxis_bound_guardian"
           ],
@@ -807,7 +897,6 @@
               999999999
             ]
           ],
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -817,17 +906,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 403,
+          "dialogState": {},
+          "entityId": 407,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
-          "sex": "m",
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -837,17 +935,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 404,
+          "dialogState": {},
+          "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
-          "sex": "m",
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -857,17 +964,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 405,
+          "dialogState": {},
+          "entityId": 409,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
-          "sex": "m",
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -877,17 +993,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 406,
+          "dialogState": {},
+          "entityId": 410,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
-          "sex": "m",
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -905,7 +1030,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99.05,
           "hp": 90,
-          "id": 402,
+          "id": 406,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -922,7 +1047,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -954,7 +1078,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99.05,
           "hp": 51,
-          "id": 403,
+          "id": 407,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -972,7 +1096,6 @@
           "potionCooldownUntil": -1,
           "resource": 175,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1004,7 +1127,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99.05,
           "hp": 51,
-          "id": 404,
+          "id": 408,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -1022,7 +1145,6 @@
           "potionCooldownUntil": -1,
           "resource": 175,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1054,7 +1176,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99.05,
           "hp": 51,
-          "id": 405,
+          "id": 409,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -1072,7 +1194,6 @@
           "potionCooldownUntil": -1,
           "resource": 175,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1104,7 +1225,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99.05,
           "hp": 51,
-          "id": 406,
+          "id": 410,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -1122,7 +1243,6 @@
           "potionCooldownUntil": -1,
           "resource": 175,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,

@@ -16,6 +16,11 @@ import type { TranslationKey } from '../i18n.catalog';
 export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.spectate.banner': 'Наблюдение за {name}',
   'hudChrome.loot.chestTitle': 'Сундук',
+  'hudChrome.lootRollGroup.pending': 'Ожидание...',
+  'hudChrome.lootRollGroup.need': 'Нужда',
+  'hudChrome.lootRollGroup.greed': 'Жадность',
+  'hudChrome.lootRollGroup.pass': 'Пропуск',
+  'hudChrome.lootRollGroup.aria': 'Статус группового броска: {item}',
   'hudChrome.spellbook.addToBarAria': 'Добавить {name} на панель действий',
   'hudChrome.spellbook.removeFromBarAria': 'Убрать {name} с панели действий',
   'hudChrome.nameplate.mob': '[{level}] {name}',
@@ -1357,6 +1362,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'abilityUi.tooltip.offGlobalCooldown': 'Вне глобального восстановления',
   'abilityUi.tooltip.friendlyTarget': 'Дружественная цель',
   'abilityUi.tooltip.enemyTarget': 'Вражеская цель',
+  'abilityUi.tooltip.selfOnly': 'Только на себя',
   'abilityUi.tooltip.damageRange': 'от {min} до {max}',
   'abilityUi.tooltip.finisherDamage': '{base} плюс {perCombo} за прием серии',
   'abilityUi.resources.mana': 'маны',
@@ -2401,6 +2407,10 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.the_merchant.title': 'Хранитель мирового рынка',
   'entities.npcs.the_merchant.greeting':
     'Добро пожаловать на Мировой рынок, {className}. Покупайте у искателей приключений всего королевства или выставляйте свои товары.',
+  'entities.npcs.the_ravenpost.name': 'Воронья почта',
+  'entities.npcs.the_ravenpost.title': 'Хранитель почты',
+  'entities.npcs.the_ravenpost.greeting':
+    'Отправьте письмо, {className}, и мои вороны отыщут вашего друга, где бы он ни странствовал, а вложенные монеты и посылки будут в целости, пока их не заберут.',
   'entities.npcs.marshal_redbrook.name': 'Маршал Редбрук',
   'entities.npcs.marshal_redbrook.title': 'Городской маршал',
   'entities.npcs.marshal_redbrook.greeting':
@@ -2935,9 +2945,52 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
     'Врата ведут на открытую местность. Перелоги, к западу от дороги, выглядят пригодными для застройки.',
   'entities.npcs.verger_zebediah.name': 'Пономарь Зеведей',
   'entities.npcs.verger_zebediah.title': 'Страж Корневой Лощины',
+  'entities.readables.torn_ledger_page.title': 'Порванный гроссбух',
+  'entities.readables.torn_ledger_page.pages.0':
+    'Корневая Лощина, помечена на отдых. Перелоги, помечены на отдых. Озеро у Мшистого Берега, что отдыхает, впишем мы его или нет. Подписано и датировано, как того требует журнал.',
+  'entities.readables.torn_ledger_page.pages.1':
+    'Подсчёт за сезон на нынешний день: три ростка пробились сквозь дорожные камни, чего нет ни в одном моём календаре. Я перестал их вычёркивать. Они возвращаются быстрее, чем сохнут чернила, а чернила были недёшевы.',
+  'entities.readables.torn_ledger_page.pages.2':
+    'Записка тому, кто примет это после меня. Считай кабанов, считай волков, считай дни. Зелень не считай. Она считает в ответ и не останавливается там, где остановишься ты.',
+  'entities.readables.keepers_marginalia.title': 'Заметки хранителя на полях',
+  'entities.readables.keepers_marginalia.pages.0':
+    'Оставлено на полях сборника гимнов, в котором сами гимны стёрлись. Рука быстрая, так бывает быстра рука, когда пишет на ходу.',
+  'entities.readables.keepers_marginalia.pages.1':
+    'Волки кружат Перелоги от кромки леса, всегда одним и тем же кольцом, всегда посолонь. Тот, кто кружит достаточно долго, узнаёт очертания того, вокруг чего кружит. Так и я. И земля, думается мне, тоже.',
+  'entities.readables.keepers_marginalia.pages.2':
+    'Если ты это читаешь, значит, ты перестал идти, а это единственное, чему я так и не научился. Передохни. Окраины никуда не денутся. В том-то и вся с ними морока.',
   'entities.npcs.verger_zebediah.greeting':
     'Пономарь Зеведей. Я держу Окраины по календарю, вернее, стараюсь держать. Корневая Лощина была помечена как отдыхающая в этот сезон, да только кабаны объявления не читали. Гляди под ноги, где рыхлая земля, и не трогай журнал.',
   'entities.npcs.sexton_faddick.name': 'Могильщик Фаддик',
+  'entities.items.willow_sprig.name': 'Ивовый прутик',
+  'entities.npcs.shade.name': 'Шейд',
+  'entities.npcs.shade.title': 'Странница',
+  'entities.npcs.shade.greeting':
+    'О, это ты. Садись, если хочешь, вода никуда не денется. Ты сегодня ела? Тебе надо поесть.',
+  'entities.npcs.shade.introLines.0':
+    'Застал меня за хлопотами. Не обращай внимания на лейку, это всего лишь вода. Всегда найдётся что-нибудь, чему не помешает немного воды.',
+  'entities.npcs.shade.introLines.1':
+    'Я? Да не о чем говорить. Шейд. Хожу, помогаю там, где не хватает рук. Ты выглядишь вконец измотанным. Присядь на минутку, если хочешь.',
+  'entities.npcs.gate_bard.name': 'Бард Халден',
+  'entities.npcs.gate_bard.title': 'Певец у ворот',
+  'entities.npcs.gate_bard.greeting':
+    'Медяк за песню? Нет? Ничего, чаще всего нет. Я играю для ворот, а ворота ни разу не потянулись за кошельком.',
+  'entities.npcs.goodwife_orla.name': 'Орла',
+  'entities.npcs.goodwife_orla.title': 'Некогда из Корневой Лощины',
+  'entities.npcs.goodwife_orla.greeting':
+    'Можешь сесть. Почти все проходят мимо. Пономарь давным-давно вычеркнул моё имя из своего журнала, а вычеркнутое имя учится молчать, чтобы никому не пришлось вспоминать, что оно ещё здесь.',
+  'entities.quests.q_have_you_eaten.title': 'Ты ела?',
+  'entities.quests.q_have_you_eaten.text':
+    'У ворот есть бард, что играет за медяки и ест, когда медяки находятся, а находятся они нечасто. У меня есть тёплая миска и ещё одна про запас. Отнеси её ему, ладно? И не говори, что это из жалости. Скажи, что это лишнее.',
+  'entities.quests.q_have_you_eaten.completion':
+    'Ты вернулся. Он поел? Хорошо. Это хорошо. А ты? ... Нет, я же вижу. Тогда садись. Не нужно быть великим, чтобы быть чем-то хорошим. Величие не есть доброта. Ешь.',
+  'entities.quests.q_have_you_eaten.objectives.0.label': 'Тёплая еда отнесена барду',
+  'entities.quests.q_someone_your_own_size.title': 'Кого-нибудь себе под стать',
+  'entities.quests.q_someone_your_own_size.text':
+    'Возле Корневой Лощины есть женщина, с которой мир обошёлся жестоко. Её имя вычеркнули из журнала, а с вычеркнутым именем обходятся так, будто оно не слышит. Пойди и посиди с ней немного. Ничего не нужно исправлять. Просто будь кем-то ей под стать.',
+  'entities.quests.q_someone_your_own_size.completion':
+    'Ты остался. Она не скажет, что это было важно, но это было важно, уверяю тебя. Вот, это тебе. Прутик с ивы, которую я люблю. Он не делает ничего. Он лишь помнит, что ты был добр, когда ничто тебя к этому не принуждало.',
+  'entities.quests.q_someone_your_own_size.objectives.0.label': 'Немного посидел с Орлой',
   'entities.npcs.sexton_faddick.title': 'Странствующий Хранитель',
   'entities.npcs.sexton_faddick.greeting':
     'Фаддик. Могильщик, покуда есть святилище, при котором быть могильщиком. Я нигде не задерживаюсь, я лишь храню. Волки каждую ночь кружат вокруг стада на Перелогах, а тот, кто кружит достаточно долго, узнаёт очертания того, вокруг чего кружит. Пусть уж остаётся просто стадом.',
@@ -2951,7 +3004,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_root_hollow_boars_ii.text':
     'Признаю то, что должность признавать не велит: пять было оптимизмом. Из нижних нор лезут всё новые. Ещё восемь, и я смогу закрыть сезон, не правя запись в третий раз. Запись не терпит правок. Как и я.',
   'entities.quests.q_root_hollow_boars_ii.completion':
-    'Закрыто. Подписано. Подшито. Сезон может идти точно по расписанию, раз снова есть кому вести расписание. Ты весьма помог очень малой пастве. Уточню: паства эта и есть я.',
+    'Закрыто. Подписано. Подшито. Сезон может идти точно по расписанию, раз снова есть кому вести расписание. Ты весьма помог очень малой пастве. Уточню: паства эта и есть я. Сам реестр старше этого порядка, переплетён рукой, которую я никогда не встречал, и хранит счёт, который я предпочитаю не подводить. Кто-то был здесь весьма скрупулёзен, некогда. Я лишь стараюсь поспевать.',
   'entities.quests.q_root_hollow_boars_ii.objectives.0.label': 'Дикий кабан убит',
   'entities.quests.q_fallow_acres_wolves.title': 'Волки прочь с борозд',
   'entities.quests.q_fallow_acres_wolves.text':
@@ -3088,7 +3141,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_what_burns.text':
     'причастие-то у нас исхудало, дружок... я сухой как пыль, и волна вот-вот закроется. там, под святилищем, растет луковица, что горит медленно и чисто, тлеющая луковица, растет там, куда свет не добирается, вот вам и шутка, которую пещера сама над собой откалывает... принеси мне пять штук. бледных остерегайся. они на твой фонарь идут, не на тебя самого. в основном.',
   'entities.quests.q_what_burns.completion':
-    'вот ЭТО я понимаю, добрый дымок... чуешь? комната прям гуще становится. она вот-вот наклонится ближе, чую это на волне... точно вам говорю.',
+    'вот ЭТО я понимаю, добрый дымок... чуешь? комната прям гуще становится. он вот-вот наклонится ближе, чую это на волне... точно вам говорю.',
   'entities.quests.q_what_burns.objectives.0.label': 'Собрано тлеющих луковиц',
   'entities.quests.q_what_fills.title': 'То, что насыщает',
   'entities.quests.q_what_fills.text':
@@ -3618,6 +3671,10 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.bags.searchPlaceholder': 'Поиск предметов',
   'hudChrome.bags.searchAria': 'Поиск предметов в сумках по названию',
   'hudChrome.bags.noMatch': 'Нет предметов, соответствующих фильтрам.',
+  'hudChrome.bags.capacityAria': 'Занято ячеек сумок: {used} из {total}',
+  'hudChrome.bags.backpack': 'Рюкзак',
+  'hudChrome.bags.socketEmpty': 'Пустая ячейка для сумки',
+  'hudChrome.bags.unequipHint': 'Нажмите, чтобы снять эту сумку',
   // Guide (/guide) localization.
   'guide.brand': 'World of ClaudeCraft',
   'guide.brandShort': 'ClaudeCraft',
@@ -4052,9 +4109,41 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'guide.family.dragonkin.name': 'Дракониды',
   'guide.family.elemental.desc':
     'Живая буря и камень, привязанные к диким местам, где стихии особенно сильны.',
+  'guide.hollowPage.intro':
+    'За воротами святилища лежит поляна с вазой: место, где пробуждается каждый новый герой и куда он всегда возвращается. Это общая земля, единый узел на весь край, дом для первых лиц, первых заданий и единственный настоящий дом, который вам нужен.',
+  'guide.hollowPage.greeting':
+    'ты вернулся, вот это благословение... накопилось пару священных дел, всё на той же волне, что и в прошлый раз. подойди-ка на минутку...',
+  'guide.hollowPage.greeter': 'Брат Гринпо, у вазы',
+  'guide.hollowPage.vaseHeading': 'Ваза',
+  'guide.hollowPage.vaseBody':
+    'Все начинают у вазы, древнего, внимающего присутствия, вокруг которого построена Лощина. Она просит малого: сжечь уголек-стручок или скормить пещерный кусочек, и, кажется, замечает, когда это получает. Ниже по склону от нее - вход в пещеру, ведущий в Подземное Святилище, а по обе стороны лежат участки, где можно возвести собственный дом.',
+  'guide.hollowPage.figuresHeading': 'Кто за ней присматривает',
+  'guide.hollowPage.figuresBody':
+    'Двое поддерживают жизнь вазы, и вы встретите обоих в первые же минуты.',
+  'guide.hollowPage.greenpawBody':
+    'Единственный хранитель вазы и тот, кто раздает ее самые ранние поручения. Самозваный титул он и сам первым признает, и все же он ближе всего к проводнику, какой есть в Лощине.',
+  'guide.hollowPage.yarrowBody':
+    'Хранительница второго призвания: любой класс может выучить у нее профессию, она стоит напротив Гринпо, через вазу.',
+  'guide.hollowPage.questsHeading': 'Ваши первые поручения',
+  'guide.hollowPage.questsBody':
+    'Собственная цепочка заданий Гринпо - это самое первое, что вы делаете: четыре коротких поручения, которые учат ритму вазы, прежде чем отправить вас дальше, в более широкую Лощину.',
+  'guide.hollowPage.questBurnsBody':
+    'Пещерный клубень, который ваза сжигает ради света, собирается по горстке за раз.',
+  'guide.hollowPage.questFillsBody':
+    'Пещерный кусочек, утоляющий более тихий голод, собирается так же.',
+  'guide.hollowPage.questWavelengthBody':
+    'Знакомство со вторым призванием вазы и с тем, как кормить ее самому.',
+  'guide.hollowPage.questKeepLitBody':
+    'Превращение разовой услуги в постоянную привычку, трижды подряд.',
+  'guide.hollowPage.housingHeading': 'Собственный дом',
+  'guide.hollowPage.housingBody':
+    '{n} усадебных участков окружают вазу, ожидая, когда их займут и обустроят как ваш личный уголок Лощины.',
+  'guide.hollowPage.shrineHeading': 'Подземное Святилище',
+  'guide.hollowPage.shrineBody':
+    'Вход в пещеру рядом с вазой ведет в Подземное Святилище, собственное инстансовое подземелье Лощины и первое настоящее испытание группой для каждого нового героя.',
   'guide.worldPage.heading': 'Мир',
   'guide.worldPage.intro':
-    'World of ClaudeCraft - это единый цельный край, который вы пересекаете пешком, три зоны, протянувшиеся с юга на север. Здесь нет быстрых перемещений, так что дорога - это часть приключения.',
+    'Выйдя через ворота святилища из вазы, вы окажетесь в Лощинных Пределах, тихой земле под открытым небом, где каждый новый пришелец делает свои первые шаги. Еще три зоны лежат к северу, выстроенные с юга на север; дорога к ним пока не открыта, но они реальны и ждут своего часа.',
   'guide.worldPage.hub': 'Опорная база',
   'guide.worldPage.hollowReachesBlurb':
     'Спокойная земля сразу за воротами святилища, где новички набираются опыта на волках и кабанах в районе Fallow Acres и Root Hollow.',
@@ -4081,9 +4170,11 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
     'Участники группы поблизости делят зачёт за убийства и цели, так что выполнять задания вместе быстрее, а не медленнее. Вы также можете поделиться заданием с группой: отправьте его в чат кликабельной ссылкой командой /share, и любой участник поблизости, кому оно подходит, возьмёт то же задание в один клик.',
   'guide.questsPage.storyTitle': 'Через все это проходит единая нить',
   'guide.questsPage.storyBody':
-    'С самых первых поручений в Восточном Броде с мертвыми творится что-то неладное. За работой культ, и след ведет на север через каждую зону. Идите по нему, чтобы узнать, кто за этим стоит.',
+    'Самая первая ваша нить - собственная короткая цепочка Брата Гринпо, прямо у вазы. За ней лежат тихие поручения Лощинных Пределов, а еще дальше - более длинная история о культе смерти, идущем от долины к вершине, реальная и завершенная, но пока не тот путь, которым идет новый герой. Собственные задания вазы смотрите на странице Лощины, а остальное изложено ниже как то, что еще впереди.',
   'guide.questsPage.soloNote':
     'Основной сюжет проходим в одиночку вплоть до финала каждой главы, который представляет собой подземелье на пять игроков.',
+  'guide.questsPage.sagaGateNote':
+    'Эта сага - реальный, завершенный контент, тот же путь, что открывается, когда снова открывается дорога на север. Это не то, откуда новый герой начинает сегодня; начало - у вазы, в Лощине.',
   'guide.dungeonsPage.heading': 'Подземелья и рейды',
   'guide.dungeonsPage.intro':
     'Когда открытого мира мало, соберите группу и войдите в инстанс - отдельную копию подземелья, созданную только для вашей группы.',
@@ -4756,6 +4847,17 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': 'Обрывок страницы дневника',
   'entities.items.shrine_diary_page.flavorText':
     '...считал сорок дней при свече, пока не сбился со счёта. Тьма здесь, внизу, не забывает Его, даже если Он забыл это место. Если цапля пролетит низко, скажи пономарю, что фитиль всё ещё горит...',
+  'entities.items.linen_pouch.name': 'Льняная Сумка',
+  'entities.items.travelers_knapsack.name': 'Рюкзак Путника',
+  'entities.items.wolfhide_satchel.name': 'Сумка из Волчьей Шкуры',
+  'entities.items.gravewoven_bag.name': 'Могильная Сумка',
+  'entities.items.mistcallers_duffel.name': 'Баул Мистколлера',
+  'entities.items.worn_prayer_token.name': 'Потёртый молитвенный жетон',
+  'entities.items.worn_prayer_token.flavorText':
+    '...с одной стороны отполирован не моим большим пальцем, та же неглубокая бороздка, что и на добрых сотне таких же в этой груде, если верить самой груде. один палец не сотрёт сотню жетонов. а вот множество пальцев одну бороздку, вполне могут...',
+  'entities.items.tally_shard.name': 'Осколок с зарубками',
+  'entities.items.tally_shard.flavorText':
+    '...зарубки по пять, глубокие, каждая вычеркнута по завершении счёта. сотни пятёрок вычеркнуты, прежде чем вычёркивание прекращается, а последний ряд так и остался незавершённым...',
   'entities.mobs.acolyte_tessa.name': 'Послушница Тесса',
   'entities.mobs.deacon_varric.name': 'Дьякон Варрик',
   'entities.mobs.reliquary_bonewalker.name': 'Поднятый костеход',
@@ -4763,6 +4865,11 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_gravecall_acolyte.name': 'Аколит могильного зова',
   'entities.mobs.reliquary_ledger_wraith.name': 'Книжный призрак',
   'entities.mobs.reliquary_saintless_effigy.name': 'Изваяние без святого',
+  'entities.items.heartwood_splinter.name': 'Щепка сердцевины',
+  'entities.items.heartwood_splinter.flavorText':
+    'Тёплая на ощупь, долго после того, как дерево, из которого она взята, перестало двигаться.',
+  'entities.items.bloomcrown_pauldrons.name': 'Наплечники Цветущей Короны',
+  'entities.items.verdantguard_mantle.name': 'Мантия Зелёного Стража',
   'entities.mobs.palefeeder.name': 'Бледнопитающийся',
   'entities.mobs.rootmaw.name': 'Корнепасть',
   'entities.mobs.the_witness_root.name': 'Корень-Свидетель',
@@ -4881,6 +4988,17 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'delveUi.tracker.module': 'Секция {current} из {total}',
   'delveUi.tracker.objective': 'Задача',
   'delveUi.tracker.title': 'Вылазка',
+  'sim.bags.full': 'Ваши сумки полны.',
+  'sim.bags.socketsFull': 'Все ячейки для сумок заняты.',
+  'sim.bags.swapTooManyItems': 'У вас слишком много предметов, чтобы сменить эту сумку.',
+  'sim.bags.removeTooManyItems': 'У вас слишком много предметов, чтобы снять эту сумку.',
+  'sim.bags.tradeSpace': 'Обмен не удался: недостаточно места в сумках.',
+  'sim.bank.cannotAfford': 'Вам не хватает средств на это расширение банка.',
+  'sim.bank.expansionCapped': 'Ваш банк больше нельзя расширить.',
+  'sim.bank.full': 'Ваш банк переполнен.',
+  'sim.bank.noQuestItems': 'Квестовые предметы нельзя хранить в банке.',
+  'sim.bank.purchased': 'Вы приобрели дополнительные ячейки банка.',
+  'sim.bank.tooFar': 'Вы слишком далеко от банкира.',
   'sim.delve.alreadyInDelve': 'Вы уже находитесь в вылазке.',
   'sim.delve.bossChest':
     'Босс пал. На возвышении поднимается заговорённый сундук реликвария: взломайте его замок, чтобы забрать добычу.',
@@ -4942,6 +5060,25 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'sim.hearth.noItems2':
     'На тебе одни добрые намерения, а? …добрыми намерениями печь не растопишь.',
   'sim.hearth.tooFar': 'Чтобы покормить брата Зеленолапа, нужно быть рядом с ним.',
+  'sim.homestead.alreadyOwn': 'У вас уже есть хутор.',
+  'sim.homestead.claimed': 'Эта земля ваша. Хутор застолблен.',
+  'sim.homestead.helpLine': 'Хутор: /homestead, /homestead claim.',
+  'sim.homestead.outsideArea':
+    'Это не хуторская земля. Попробуйте Fallow Acres, к западу от дороги.',
+  'sim.homestead.questGate':
+    'Брат Зеленолап еще не отправил вас в путь. Сперва закончите его поручения.',
+  'sim.homestead.readoutMine': 'Ваш хутор находится в точке ({x}, {z}).',
+  'sim.homestead.readoutNoHomesteadHint':
+    'У вас нет хутора. Встаньте на подходящем месте в Лощинных Плёсах и введите /homestead claim.',
+  'sim.homestead.readoutNoHomesteadQuest':
+    'У вас нет хутора. Закончите всю цепочку поручений брата Зеленолапа, чтобы получить его.',
+  'sim.homestead.tooCloseGate': 'Слишком близко к воротам. Отойдите дальше.',
+  'sim.homestead.tooCloseGraveyard': 'Слишком близко к кладбищу.',
+  'sim.homestead.tooCloseOther': 'Слишком близко к чужому хутору.',
+  'sim.homestead.tooCloseRoad': 'Слишком близко к дороге.',
+  'sim.homestead.tooCloseWater': 'Слишком близко к воде.',
+  'sim.homestead.tooCloseWildlife':
+    'Слишком близко к дикой живности. Расчистите округу или отойдите дальше.',
   'sim.house.alreadyOwn': 'У вас уже есть свой дом в Пустоши.',
   'sim.house.claimed': 'Этот дом теперь ваш. Украсьте его командой /house place <слот> <вид>.',
   'sim.house.cleared': 'Слот {slot} очищен.',
@@ -5292,6 +5429,25 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'coldOpen.continue': 'Далее',
   'coldOpen.begin': 'Начать',
   'coldOpen.skip': 'Пропустить',
+  'mailUi.title': 'Воронья почта',
+  'mailUi.subtitle': 'отправка и получение писем',
+  'mailUi.close': 'Закрыть почту',
+  'mailUi.inbox': 'Входящие',
+  'mailUi.compose': 'Написать письмо',
+  'mailUi.noPostOffice': 'Подойдите к Вороньей почте, чтобы разобрать письма.',
+  'mailUi.emptyInbox': 'Писем нет. Ворон принесёт письмо, как только кто-то вам напишет.',
+  'mailUi.from': 'От {name}',
+  'mailUi.noSubject': '(без темы)',
+  'mailUi.take': 'Забрать',
+  'mailUi.delete': 'Удалить',
+  'mailUi.postageNote': 'Отправка письма стоит {money} за пересылку.',
+  'mailUi.recipient': 'Получатель',
+  'mailUi.subjectLabel': 'Тема',
+  'mailUi.bodyPlaceholder': 'Напишите ваше письмо...',
+  'mailUi.send': 'Отправить письмо',
+  'mailUi.needRecipientOrText': 'Укажите получателя и напишите что-нибудь перед отправкой.',
+  'mailUi.openButton': 'Покажите мне Воронью почту.',
+  'mailUi.openButtonAria': 'Открыть окно Вороньей почты',
   // Event calendar (M16 non-Latin fill)
   'hudChrome.calendar.title': 'Календарь событий',
   'hudChrome.calendar.close': 'Закрыть календарь',

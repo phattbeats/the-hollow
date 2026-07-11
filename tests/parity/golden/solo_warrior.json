@@ -10,14 +10,14 @@
     "base mobSwing (mob swings the player)",
     "rollLoot via mob death (L1, ~5876/6036)"
   ],
-  "draws": 172,
-  "drawDigest": "302698c0",
+  "draws": 173,
+  "drawDigest": "d3f30de1",
   "frames": [
     {
       "tick": 0,
       "time": 0,
-      "nextId": 403,
-      "state": "2ecfd0b5",
+      "nextId": 407,
+      "state": "39460566",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -30,17 +30,26 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
-          "sex": "m",
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -58,7 +67,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 90,
-          "id": 402,
+          "id": 406,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -75,7 +84,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -102,9 +110,9 @@
     {
       "tick": 20,
       "time": 1,
-      "nextId": 404,
-      "state": "45dccb3e",
-      "events": "77e0a33b",
+      "nextId": 408,
+      "state": "99e736bc",
+      "events": "a5432913",
       "rng": {
         "draws": 6,
         "digest": "2344d084"
@@ -113,8 +121,8 @@
     {
       "tick": 40,
       "time": 2,
-      "nextId": 404,
-      "state": "7c1e5edf",
+      "nextId": 408,
+      "state": "1b84aa1d",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -124,9 +132,9 @@
     {
       "tick": 60,
       "time": 3,
-      "nextId": 404,
-      "state": "3fb947cb",
-      "events": "e621ead1",
+      "nextId": 408,
+      "state": "9e6f00f1",
+      "events": "1c0d5cb9",
       "rng": {
         "draws": 98,
         "digest": "90cf949f"
@@ -135,12 +143,12 @@
     {
       "tick": 72,
       "time": 3.6,
-      "nextId": 404,
-      "state": "c1833313",
-      "events": "8df48553",
+      "nextId": 408,
+      "state": "e53134d1",
+      "events": "476f1edb",
       "rng": {
-        "draws": 154,
-        "digest": "468c6073"
+        "draws": 155,
+        "digest": "1ad3720f"
       },
       "label": "kill",
       "players": [
@@ -149,6 +157,13 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -158,13 +173,15 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 27600,
-          "sex": "m",
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -182,7 +199,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 102.6,
           "hp": 49996,
-          "id": 402,
+          "id": 406,
           "inCombat": true,
           "kind": "player",
           "level": 10,
@@ -201,7 +218,6 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -217,7 +233,7 @@
             "str": 41
           },
           "swingTimer": 0.45,
-          "targetId": 403,
+          "targetId": 407,
           "templateId": "warrior",
           "weapon": {
             "max": 5,
@@ -236,7 +252,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hostile": true,
-          "id": 403,
+          "id": 407,
           "inCombat": true,
           "kind": "mob",
           "leashAnchor": {
@@ -256,7 +272,7 @@
           },
           "lootFfaTimer": 60,
           "lootRecipientIds": [
-            402
+            406
           ],
           "lootable": true,
           "maxHp": 6000,
@@ -271,7 +287,6 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 25,
-          "sex": "m",
           "spawnPos": {
             "x": 4,
             "y": 1.5,
@@ -281,8 +296,8 @@
             "armor": 10
           },
           "swingTimer": 0.45,
-          "tappedById": 402,
-          "targetId": 402,
+          "tappedById": 406,
+          "targetId": 406,
           "templateId": "forest_wolf",
           "weapon": {
             "max": 6,
@@ -295,12 +310,12 @@
     {
       "tick": 76,
       "time": 3.8,
-      "nextId": 404,
-      "state": "78dd2c0f",
+      "nextId": 408,
+      "state": "703b4565",
       "events": "741638a5",
       "rng": {
-        "draws": 172,
-        "digest": "302698c0"
+        "draws": 173,
+        "digest": "d3f30de1"
       },
       "label": "final",
       "players": [
@@ -309,6 +324,13 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -318,13 +340,15 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 27600,
-          "sex": "m",
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -343,7 +367,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 102.8,
           "hp": 49996,
-          "id": 402,
+          "id": 406,
           "inCombat": true,
           "kind": "player",
           "level": 10,
@@ -362,7 +386,6 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -378,7 +401,7 @@
             "str": 41
           },
           "swingTimer": 0.25,
-          "targetId": 403,
+          "targetId": 407,
           "templateId": "warrior",
           "weapon": {
             "max": 5,
@@ -397,7 +420,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hostile": true,
-          "id": 403,
+          "id": 407,
           "inCombat": true,
           "kind": "mob",
           "leashAnchor": {
@@ -417,7 +440,7 @@
           },
           "lootFfaTimer": 59.8,
           "lootRecipientIds": [
-            402
+            406
           ],
           "lootable": true,
           "maxHp": 6000,
@@ -432,7 +455,6 @@
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 24.8,
-          "sex": "m",
           "spawnPos": {
             "x": 4,
             "y": 1.5,
@@ -442,8 +464,8 @@
             "armor": 10
           },
           "swingTimer": 0.45,
-          "tappedById": 402,
-          "targetId": 402,
+          "tappedById": 406,
+          "targetId": 406,
           "templateId": "forest_wolf",
           "weapon": {
             "max": 6,

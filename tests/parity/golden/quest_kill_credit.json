@@ -9,14 +9,14 @@
     "acceptQuest -> finalizeQuestAccept -> onInventoryChangedForQuests",
     "turnInQuest (xp + copper reward)"
   ],
-  "draws": 32,
-  "drawDigest": "2878f988",
+  "draws": 40,
+  "drawDigest": "ffc79f51",
   "frames": [
     {
       "tick": 0,
       "time": 0,
-      "nextId": 403,
-      "state": "2ecfd0b5",
+      "nextId": 407,
+      "state": "39460566",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -29,17 +29,26 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
-          "sex": "m",
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -57,7 +66,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 90,
-          "id": 402,
+          "id": 406,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -74,7 +83,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -101,9 +109,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 403,
-      "state": "245f128c",
-      "events": "5d0063df",
+      "nextId": 407,
+      "state": "0ecb98ed",
+      "events": "bdaf3d87",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -115,17 +123,27 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 27600,
+          "nodeHarvestReadyAt": {},
           "questLog": [
             [
               "q_wolves",
@@ -138,7 +156,6 @@
               }
             ]
           ],
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -156,7 +173,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 50000,
-          "id": 402,
+          "id": 406,
           "kind": "player",
           "level": 10,
           "lootFfaTimer": "Infinity",
@@ -173,7 +190,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -200,12 +216,12 @@
     {
       "tick": 8,
       "time": 0.4,
-      "nextId": 411,
-      "state": "a8b22bf2",
-      "events": "6ecf4136",
+      "nextId": 415,
+      "state": "9e118cdd",
+      "events": "8a7a797a",
       "rng": {
-        "draws": 32,
-        "digest": "2878f988"
+        "draws": 40,
+        "digest": "ffc79f51"
       },
       "label": "quest-ready",
       "players": [
@@ -214,6 +230,13 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -223,12 +246,15 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 27600,
+          "nodeHarvestReadyAt": {},
           "questLog": [
             [
               "q_wolves",
@@ -241,7 +267,6 @@
               }
             ]
           ],
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -259,7 +284,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99.4,
           "hp": 50000,
-          "id": 402,
+          "id": 406,
           "inCombat": true,
           "kind": "player",
           "level": 10,
@@ -277,7 +302,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -304,12 +328,12 @@
     {
       "tick": 8,
       "time": 0.4,
-      "nextId": 411,
-      "state": "65fcacb5",
-      "events": "5d0d5637",
+      "nextId": 415,
+      "state": "6ba9ff0a",
+      "events": "b2670ff7",
       "rng": {
-        "draws": 32,
-        "digest": "2878f988"
+        "draws": 40,
+        "digest": "ffc79f51"
       },
       "label": "quest-turned-in",
       "players": [
@@ -318,6 +342,13 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 75,
@@ -330,16 +361,18 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 27850,
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_wolves"
           ],
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -358,7 +391,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99.4,
           "hp": 50000,
-          "id": 402,
+          "id": 406,
           "inCombat": true,
           "kind": "player",
           "level": 10,
@@ -376,7 +409,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -403,12 +435,12 @@
     {
       "tick": 10,
       "time": 0.5,
-      "nextId": 411,
-      "state": "66176571",
+      "nextId": 415,
+      "state": "bc5f989e",
       "events": "741638a5",
       "rng": {
-        "draws": 32,
-        "digest": "2878f988"
+        "draws": 40,
+        "digest": "ffc79f51"
       },
       "label": "final",
       "players": [
@@ -417,6 +449,13 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 75,
@@ -429,16 +468,18 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 27850,
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_wolves"
           ],
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -457,7 +498,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99.5,
           "hp": 50000,
-          "id": 402,
+          "id": 406,
           "inCombat": true,
           "kind": "player",
           "level": 10,
@@ -475,7 +516,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,

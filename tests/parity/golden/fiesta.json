@@ -15,7 +15,7 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 402,
+      "nextId": 406,
       "state": "5bc471b0",
       "events": "741638a5",
       "rng": {
@@ -29,9 +29,9 @@
     {
       "tick": 25,
       "time": 1.25,
-      "nextId": 406,
-      "state": "9059b301",
-      "events": "8c719e2b",
+      "nextId": 410,
+      "state": "6e23d6cb",
+      "events": "2ced7723",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -40,9 +40,9 @@
     {
       "tick": 50,
       "time": 2.5,
-      "nextId": 406,
-      "state": "b82801bf",
-      "events": "4b4213b5",
+      "nextId": 410,
+      "state": "7d3ccea9",
+      "events": "c375b755",
       "rng": {
         "draws": 36,
         "digest": "dd5d6905"
@@ -51,9 +51,9 @@
     {
       "tick": 75,
       "time": 3.75,
-      "nextId": 406,
-      "state": "54ad2881",
-      "events": "2ef940a5",
+      "nextId": 410,
+      "state": "c299d74b",
+      "events": "8710c185",
       "rng": {
         "draws": 126,
         "digest": "8969b29d"
@@ -62,9 +62,9 @@
     {
       "tick": 100,
       "time": 5,
-      "nextId": 406,
-      "state": "6a627913",
-      "events": "6d44da7d",
+      "nextId": 410,
+      "state": "58b44db9",
+      "events": "8052505d",
       "rng": {
         "draws": 245,
         "digest": "bde3d15a"
@@ -73,9 +73,9 @@
     {
       "tick": 125,
       "time": 6.25,
-      "nextId": 406,
-      "state": "081da573",
-      "events": "88754222",
+      "nextId": 410,
+      "state": "c599ee97",
+      "events": "cd61a676",
       "rng": {
         "draws": 402,
         "digest": "020ca4d5"
@@ -84,8 +84,8 @@
     {
       "tick": 150,
       "time": 7.5,
-      "nextId": 406,
-      "state": "731a85e3",
+      "nextId": 410,
+      "state": "9bc388cb",
       "events": "741638a5",
       "rng": {
         "draws": 556,
@@ -95,9 +95,9 @@
     {
       "tick": 163,
       "time": 8.15,
-      "nextId": 406,
-      "state": "bf799554",
-      "events": "45d8f020",
+      "nextId": 410,
+      "state": "5e4fdcf0",
+      "events": "e1268c28",
       "rng": {
         "draws": 638,
         "digest": "e2d83820"
@@ -108,6 +108,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -115,7 +122,8 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
@@ -127,7 +135,8 @@
               "ranks": {}
             }
           },
-          "sex": "m",
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {
@@ -144,12 +153,20 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 403,
+          "dialogState": {},
+          "entityId": 407,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
@@ -161,7 +178,8 @@
               "ranks": {}
             }
           },
-          "sex": "m",
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {
@@ -178,6 +196,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {
@@ -185,7 +210,8 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 404,
+          "dialogState": {},
+          "entityId": 408,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
@@ -200,7 +226,8 @@
               "ranks": {}
             }
           },
-          "sex": "m",
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {
@@ -217,12 +244,20 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 405,
+          "dialogState": {},
+          "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
@@ -234,7 +269,8 @@
               "ranks": {}
             }
           },
-          "sex": "m",
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {
@@ -258,7 +294,7 @@
           "dodgeChance": 0.0795,
           "fiveSecondRule": 107.15,
           "hp": 812,
-          "id": 402,
+          "id": 406,
           "kind": "player",
           "level": 20,
           "lootFfaTimer": "Infinity",
@@ -274,7 +310,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -305,7 +340,7 @@
           "dodgeChance": 0.056,
           "fiveSecondRule": 107.15,
           "hp": 418,
-          "id": 403,
+          "id": 407,
           "kind": "player",
           "level": 20,
           "lootFfaTimer": "Infinity",
@@ -322,7 +357,6 @@
           "potionCooldownUntil": -1,
           "resource": 1671,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -354,7 +388,7 @@
           "facing": 3.141593,
           "fiveSecondRule": 107.15,
           "hp": 510,
-          "id": 404,
+          "id": 408,
           "kind": "player",
           "level": 20,
           "lootFfaTimer": "Infinity",
@@ -371,7 +405,6 @@
           "potionCooldownUntil": -1,
           "resource": 100,
           "resourceType": "energy",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -404,7 +437,7 @@
           "facing": 3.141593,
           "fiveSecondRule": 107.15,
           "hp": 848,
-          "id": 405,
+          "id": 409,
           "kind": "player",
           "level": 20,
           "lootFfaTimer": "Infinity",
@@ -422,7 +455,6 @@
           "rangedPower": 194,
           "resource": 622,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,

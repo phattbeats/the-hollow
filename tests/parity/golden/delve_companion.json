@@ -15,8 +15,8 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 403,
-      "state": "2ecfd0b5",
+      "nextId": 407,
+      "state": "39460566",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -29,17 +29,26 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
-          "sex": "m",
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -57,7 +66,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 90,
-          "id": 402,
+          "id": 406,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -74,7 +83,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -101,9 +109,9 @@
     {
       "tick": 5,
       "time": 0.25,
-      "nextId": 412,
-      "state": "934d7dfe",
-      "events": "6159e89a",
+      "nextId": 416,
+      "state": "f47a6168",
+      "events": "97088b04",
       "rng": {
         "draws": 4,
         "digest": "017ed9b3"
@@ -112,8 +120,8 @@
     {
       "tick": 10,
       "time": 0.5,
-      "nextId": 412,
-      "state": "ff4eb0ff",
+      "nextId": 416,
+      "state": "dfb8d59f",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -123,8 +131,8 @@
     {
       "tick": 15,
       "time": 0.75,
-      "nextId": 412,
-      "state": "84ae96c4",
+      "nextId": 416,
+      "state": "ad97a454",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -134,8 +142,8 @@
     {
       "tick": 20,
       "time": 1,
-      "nextId": 412,
-      "state": "81e723cf",
+      "nextId": 416,
+      "state": "0543c10f",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -145,8 +153,8 @@
     {
       "tick": 25,
       "time": 1.25,
-      "nextId": 412,
-      "state": "5cc681d7",
+      "nextId": 416,
+      "state": "8fabd7f9",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -156,8 +164,8 @@
     {
       "tick": 30,
       "time": 1.5,
-      "nextId": 412,
-      "state": "cc5b4fff",
+      "nextId": 416,
+      "state": "a590342d",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -167,8 +175,8 @@
     {
       "tick": 35,
       "time": 1.75,
-      "nextId": 412,
-      "state": "5cde6847",
+      "nextId": 416,
+      "state": "95deb467",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -178,8 +186,8 @@
     {
       "tick": 40,
       "time": 2,
-      "nextId": 412,
-      "state": "223e5d0c",
+      "nextId": 416,
+      "state": "bec51982",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -189,8 +197,8 @@
     {
       "tick": 40,
       "time": 2,
-      "nextId": 412,
-      "state": "223e5d0c",
+      "nextId": 416,
+      "state": "bec51982",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -203,6 +211,13 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {
             "companion_tessa": 2
@@ -210,13 +225,15 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 11200,
-          "sex": "m",
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -233,7 +250,7 @@
           "dodgeChance": 0.063,
           "fiveSecondRule": 101,
           "hp": 50000,
-          "id": 402,
+          "id": 406,
           "kind": "player",
           "level": 7,
           "lootFfaTimer": "Infinity",
@@ -249,7 +266,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -264,7 +280,7 @@
             "sta": 34,
             "str": 35
           },
-          "targetId": 408,
+          "targetId": 412,
           "templateId": "warrior",
           "weapon": {
             "max": 5,
@@ -281,7 +297,7 @@
           "facing": -1.825631,
           "fiveSecondRule": 99,
           "hp": 119,
-          "id": 407,
+          "id": 411,
           "inCombat": true,
           "kind": "mob",
           "level": 5,
@@ -290,14 +306,13 @@
           "moveSpeed": 7,
           "onGround": true,
           "overpowerUntil": -1,
-          "ownerId": 402,
+          "ownerId": 406,
           "petMode": "defensive",
           "pos": {
             "x": 6001.724356,
             "z": -1172.862581
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 6001.5,
             "z": -1253
@@ -323,7 +338,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 40000,
-          "id": 408,
+          "id": 412,
           "kind": "mob",
           "level": 9,
           "lootFfaTimer": "Infinity",
@@ -337,7 +352,6 @@
             "z": -1174.09691
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 6000,
             "z": -1170
@@ -363,9 +377,9 @@
     {
       "tick": 41,
       "time": 2.05,
-      "nextId": 412,
-      "state": "2dd0786c",
-      "events": "d03ee93e",
+      "nextId": 416,
+      "state": "c8c333e6",
+      "events": "734c7641",
       "rng": {
         "draws": 6,
         "digest": "5cc83279"
@@ -377,6 +391,13 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {
             "companion_tessa": 2
@@ -384,13 +405,15 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 11200,
-          "sex": "m",
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -408,7 +431,7 @@
           "fallStartY": 43.330036,
           "fiveSecondRule": 101.05,
           "hp": 29000,
-          "id": 402,
+          "id": 406,
           "inCombat": true,
           "kind": "player",
           "level": 7,
@@ -425,7 +448,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -440,7 +462,7 @@
             "sta": 34,
             "str": 35
           },
-          "targetId": 408,
+          "targetId": 412,
           "templateId": "warrior",
           "weapon": {
             "max": 5,
@@ -457,7 +479,7 @@
           "facing": -1.843567,
           "fiveSecondRule": 99,
           "hp": 119,
-          "id": 407,
+          "id": 411,
           "inCombat": true,
           "kind": "mob",
           "level": 5,
@@ -466,14 +488,13 @@
           "moveSpeed": 7,
           "onGround": true,
           "overpowerUntil": -1,
-          "ownerId": 402,
+          "ownerId": 406,
           "petMode": "defensive",
           "pos": {
             "x": 6001.387296,
             "z": -1172.956872
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 6001.5,
             "z": -1253
@@ -490,7 +511,7 @@
           }
         },
         {
-          "aggroTargetId": 402,
+          "aggroTargetId": 406,
           "aiState": "chase",
           "combatTimer": 101.05,
           "critChance": 0.05,
@@ -500,7 +521,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 40000,
-          "id": 408,
+          "id": 412,
           "inCombat": true,
           "kind": "mob",
           "leashAnchor": {
@@ -519,7 +540,6 @@
             "z": -1174.09691
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 6000,
             "z": -1170
@@ -531,7 +551,7 @@
           "templateId": "deacon_varric",
           "threat": [
             [
-              402,
+              406,
               1
             ]
           ],
@@ -551,8 +571,8 @@
     {
       "tick": 45,
       "time": 2.25,
-      "nextId": 412,
-      "state": "8cd74ef8",
+      "nextId": 416,
+      "state": "72f269db",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -562,8 +582,8 @@
     {
       "tick": 49,
       "time": 2.45,
-      "nextId": 412,
-      "state": "d1dfcec0",
+      "nextId": 416,
+      "state": "d350e6b3",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -576,6 +596,13 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {
             "companion_tessa": 2
@@ -583,13 +610,15 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 11200,
-          "sex": "m",
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -607,7 +636,7 @@
           "fallStartY": 41.815138,
           "fiveSecondRule": 101.45,
           "hp": 29000,
-          "id": 402,
+          "id": 406,
           "kind": "player",
           "level": 7,
           "lootFfaTimer": "Infinity",
@@ -623,7 +652,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -654,7 +682,7 @@
           "facing": 1.570796,
           "fiveSecondRule": 99,
           "hp": 119,
-          "id": 407,
+          "id": 411,
           "kind": "mob",
           "level": 5,
           "lootFfaTimer": "Infinity",
@@ -662,14 +690,13 @@
           "moveSpeed": 7,
           "onGround": true,
           "overpowerUntil": -1,
-          "ownerId": 402,
+          "ownerId": 406,
           "petMode": "defensive",
           "pos": {
             "x": 6004.187296,
             "z": -1172.956872
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 6001.5,
             "z": -1253
@@ -690,8 +717,8 @@
     {
       "tick": 50,
       "time": 2.5,
-      "nextId": 412,
-      "state": "d0f81b5a",
+      "nextId": 416,
+      "state": "144cb01d",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -701,8 +728,8 @@
     {
       "tick": 51,
       "time": 2.55,
-      "nextId": 412,
-      "state": "09218413",
+      "nextId": 416,
+      "state": "97620884",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -715,6 +742,13 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {
             "companion_tessa": 2
@@ -722,13 +756,15 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 11200,
-          "sex": "m",
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -746,7 +782,7 @@
           "fallStartY": 39.936048,
           "fiveSecondRule": 101.55,
           "hp": 29000,
-          "id": 402,
+          "id": 406,
           "kind": "player",
           "level": 7,
           "lootFfaTimer": "Infinity",
@@ -762,7 +798,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -793,7 +828,7 @@
           "facing": 1.570796,
           "fiveSecondRule": 99,
           "hp": 119,
-          "id": 407,
+          "id": 411,
           "kind": "mob",
           "level": 5,
           "lootFfaTimer": "Infinity",
@@ -801,7 +836,7 @@
           "moveSpeed": 7,
           "onGround": true,
           "overpowerUntil": -1,
-          "ownerId": 402,
+          "ownerId": 406,
           "petMode": "defensive",
           "pos": {
             "x": 6084.187296,
@@ -809,7 +844,6 @@
             "z": -1172.956872
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 6001.5,
             "z": -1253
@@ -830,8 +864,8 @@
     {
       "tick": 51,
       "time": 2.55,
-      "nextId": 412,
-      "state": "09218413",
+      "nextId": 416,
+      "state": "97620884",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -844,6 +878,13 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {
             "companion_tessa": 2
@@ -851,13 +892,15 @@
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 11200,
-          "sex": "m",
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -875,7 +918,7 @@
           "fallStartY": 39.936048,
           "fiveSecondRule": 101.55,
           "hp": 29000,
-          "id": 402,
+          "id": 406,
           "kind": "player",
           "level": 7,
           "lootFfaTimer": "Infinity",
@@ -891,7 +934,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -922,7 +964,7 @@
           "facing": 1.570796,
           "fiveSecondRule": 99,
           "hp": 119,
-          "id": 407,
+          "id": 411,
           "kind": "mob",
           "level": 5,
           "lootFfaTimer": "Infinity",
@@ -930,7 +972,7 @@
           "moveSpeed": 7,
           "onGround": true,
           "overpowerUntil": -1,
-          "ownerId": 402,
+          "ownerId": 406,
           "petMode": "defensive",
           "pos": {
             "x": 6084.187296,
@@ -938,7 +980,6 @@
             "z": -1172.956872
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 6001.5,
             "z": -1253

@@ -86,6 +86,7 @@ const MOB_IDS = [
 
 const NPC_IDS = [
   'the_merchant',
+  'the_ravenpost', // Ravenpost in-game mail keeper (PHAA-495), hub town square
   'marshal_redbrook',
   'trader_wilkes',
   'apothecary_lin',

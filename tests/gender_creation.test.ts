@@ -23,7 +23,7 @@ import { wireEntity } from '../server/game';
 import { Api, ClientWorld } from '../src/net/online';
 import { VISUALS, visualKeyFor } from '../src/render/characters/manifest';
 import { Sim } from '../src/sim/sim';
-import type { Sex } from '../src/sim/types';
+import type { PlayerClass, Sex } from '../src/sim/types';
 
 // A ClientWorld without the WebSocket plumbing, so we can drive applySnapshot
 // directly. Same harness shape as tests/snapshots.test.ts so the decode path
@@ -146,28 +146,44 @@ describe('PHAA-501 sex field', () => {
       expect(visualKeyFor(sim.player)).toBe('player_warrior');
     });
 
-    it('female falls back to player_<cls> when no _f variant exists (today)', () => {
-      // Today no VisualDef carries the `_f` suffix; the dispatch MUST still
-      // resolve to the male model so the live world is unchanged. The instant
-      // PHAA-539 adds a `player_warrior_f` entry, this case flips to that key.
-      const sim = new Sim({ seed: 42, playerClass: 'warrior', playerName: 'F' });
-      sim.setPlayerSex(sim.playerId, 'f');
-      expect(sim.player.sex).toBe<Sex>('f');
-      expect(visualKeyFor(sim.player)).toBe('player_warrior');
+    const NINE_CLASSES: PlayerClass[] = [
+      'warrior',
+      'paladin',
+      'hunter',
+      'rogue',
+      'priest',
+      'shaman',
+      'mage',
+      'warlock',
+      'druid',
+    ];
+
+    it('female resolves to the registered player_<cls>_f chibi variant for every class (PHAA-587)', () => {
+      for (const cls of NINE_CLASSES) {
+        const sim = new Sim({ seed: 42, playerClass: cls, playerName: 'F' });
+        sim.setPlayerSex(sim.playerId, 'f');
+        expect(sim.player.sex).toBe<Sex>('f');
+        expect(visualKeyFor(sim.player)).toBe(`player_${cls}_f`);
+        expect(VISUALS[`player_${cls}_f`]).toBeDefined();
+      }
     });
 
-    it('female respects _f variant when one is registered (forward-compat)', () => {
+    it('male dispatch for every class is unaffected by the female roster landing', () => {
+      for (const cls of NINE_CLASSES) {
+        const sim = new Sim({ seed: 42, playerClass: cls, playerName: 'M' });
+        expect(visualKeyFor(sim.player)).toBe(`player_${cls}`);
+      }
+    });
+
+    it('falls back to the male model when a class loses its _f variant (defensive)', () => {
       const sim = new Sim({ seed: 42, playerClass: 'rogue', playerName: 'F' });
       sim.setPlayerSex(sim.playerId, 'f');
-      // Inject a synthetic variant the way PHAA-539 will , the lookup MUST
-      // pick it up with no further code change.
       const original = VISUALS.player_rogue_f;
-      VISUALS.player_rogue_f = VISUALS.player_rogue;
+      delete VISUALS.player_rogue_f;
       try {
-        expect(visualKeyFor(sim.player)).toBe('player_rogue_f');
+        expect(visualKeyFor(sim.player)).toBe('player_rogue');
       } finally {
-        if (original) VISUALS.player_rogue_f = original;
-        else delete VISUALS.player_rogue_f;
+        VISUALS.player_rogue_f = original;
       }
     });
 
