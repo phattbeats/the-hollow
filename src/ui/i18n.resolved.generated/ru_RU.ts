@@ -5427,7 +5427,8 @@ export const ru_RU: EnTranslations = {
         "name": "Тлеющая луковица"
       },
       "first_cutting": {
-        "name": "Черенок"
+        "name": "Черенок",
+        "flavorText": "A slip of living green from Brother Greenpaw, wrapped in damp moss. Once a homestead plot can be edited, this is the first thing you plant."
       },
       "greenpaw_bead": {
         "name": "Бусина с бандольеры"

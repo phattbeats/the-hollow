@@ -5427,7 +5427,8 @@ export const en_CA: EnTranslations = {
         "name": "Emberbulb"
       },
       "first_cutting": {
-        "name": "A Cutting"
+        "name": "A Cutting",
+        "flavorText": "A slip of living green from Brother Greenpaw, wrapped in damp moss. Once a homestead plot can be edited, this is the first thing you plant."
       },
       "greenpaw_bead": {
         "name": "A Bead From the Bandolier"

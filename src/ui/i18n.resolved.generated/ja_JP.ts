@@ -5427,7 +5427,8 @@ export const ja_JP: EnTranslations = {
         "name": "残り火の球根"
       },
       "first_cutting": {
-        "name": "挿し木"
+        "name": "挿し木",
+        "flavorText": "A slip of living green from Brother Greenpaw, wrapped in damp moss. Once a homestead plot can be edited, this is the first thing you plant."
       },
       "greenpaw_bead": {
         "name": "弾帯の数珠玉"

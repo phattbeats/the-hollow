@@ -5427,7 +5427,8 @@ export const id_ID: EnTranslations = {
         "name": "Umbi Bara"
       },
       "first_cutting": {
-        "name": "Sebuah Stek"
+        "name": "Sebuah Stek",
+        "flavorText": "A slip of living green from Brother Greenpaw, wrapped in damp moss. Once a homestead plot can be edited, this is the first thing you plant."
       },
       "greenpaw_bead": {
         "name": "Sebuah Manik Dari Bandolier"

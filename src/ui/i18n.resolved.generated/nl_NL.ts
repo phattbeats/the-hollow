@@ -5427,7 +5427,8 @@ export const nl_NL: EnTranslations = {
         "name": "Sintelknol"
       },
       "first_cutting": {
-        "name": "Een Stek"
+        "name": "Een Stek",
+        "flavorText": "A slip of living green from Brother Greenpaw, wrapped in damp moss. Once a homestead plot can be edited, this is the first thing you plant."
       },
       "greenpaw_bead": {
         "name": "Een Kraal Van De Bandelier"

@@ -5427,7 +5427,8 @@ export const fr_CA: EnTranslations = {
         "name": "Bulbe-braise"
       },
       "first_cutting": {
-        "name": "Une bouture"
+        "name": "Une bouture",
+        "flavorText": "A slip of living green from Brother Greenpaw, wrapped in damp moss. Once a homestead plot can be edited, this is the first thing you plant."
       },
       "greenpaw_bead": {
         "name": "Une perle du baudrier"

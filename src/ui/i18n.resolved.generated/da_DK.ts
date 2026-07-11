@@ -5427,7 +5427,8 @@ export const da_DK: EnTranslations = {
         "name": "Glødeknold"
       },
       "first_cutting": {
-        "name": "En Stikling"
+        "name": "En Stikling",
+        "flavorText": "A slip of living green from Brother Greenpaw, wrapped in damp moss. Once a homestead plot can be edited, this is the first thing you plant."
       },
       "greenpaw_bead": {
         "name": "En Perle Fra Bandoleret"

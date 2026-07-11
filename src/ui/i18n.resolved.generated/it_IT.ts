@@ -5427,7 +5427,8 @@ export const it_IT: EnTranslations = {
         "name": "Bulbo di Brace"
       },
       "first_cutting": {
-        "name": "Una Talea"
+        "name": "Una Talea",
+        "flavorText": "A slip of living green from Brother Greenpaw, wrapped in damp moss. Once a homestead plot can be edited, this is the first thing you plant."
       },
       "greenpaw_bead": {
         "name": "Una Perlina Dalla Bandoliera"

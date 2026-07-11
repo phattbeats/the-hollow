@@ -5427,7 +5427,8 @@ export const de_DE: EnTranslations = {
         "name": "Glutknolle"
       },
       "first_cutting": {
-        "name": "Ein Ableger"
+        "name": "Ein Ableger",
+        "flavorText": "A slip of living green from Brother Greenpaw, wrapped in damp moss. Once a homestead plot can be edited, this is the first thing you plant."
       },
       "greenpaw_bead": {
         "name": "Eine Perle vom Bandolier"

@@ -5427,7 +5427,8 @@ export const zh_TW: EnTranslations = {
         "name": "餘燼球莖"
       },
       "first_cutting": {
-        "name": "插條"
+        "name": "插條",
+        "flavorText": "A slip of living green from Brother Greenpaw, wrapped in damp moss. Once a homestead plot can be edited, this is the first thing you plant."
       },
       "greenpaw_bead": {
         "name": "彈藥帶上的一顆唸珠"

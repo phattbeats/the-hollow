@@ -5427,7 +5427,8 @@ export const pt_BR: EnTranslations = {
         "name": "Bulbo de Brasa"
       },
       "first_cutting": {
-        "name": "Uma Muda"
+        "name": "Uma Muda",
+        "flavorText": "A slip of living green from Brother Greenpaw, wrapped in damp moss. Once a homestead plot can be edited, this is the first thing you plant."
       },
       "greenpaw_bead": {
         "name": "Uma Conta Da Bandoleira"
