@@ -16,6 +16,11 @@ import type { TranslationKey } from '../i18n.catalog';
 export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.spectate.banner': '正在觀察 {name}',
   'hudChrome.loot.chestTitle': '寶箱',
+  'hudChrome.lootRollGroup.pending': '等待中...',
+  'hudChrome.lootRollGroup.need': '需求',
+  'hudChrome.lootRollGroup.greed': '貪婪',
+  'hudChrome.lootRollGroup.pass': '放棄',
+  'hudChrome.lootRollGroup.aria': '{item} 的團隊擲骰狀態',
   'hudChrome.spellbook.addToBarAria': '將 {name} 加入動作列',
   'hudChrome.spellbook.removeFromBarAria': '將 {name} 從動作列移除',
   'hudChrome.nameplate.mob': '[{level}] {name}',
@@ -1272,6 +1277,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'abilityUi.tooltip.offGlobalCooldown': '不觸發公共冷卻',
   'abilityUi.tooltip.friendlyTarget': '友方目標',
   'abilityUi.tooltip.enemyTarget': '敵方目標',
+  'abilityUi.tooltip.selfOnly': '僅對自己',
   'abilityUi.tooltip.damageRange': '{min} 到 {max}',
   'abilityUi.tooltip.finisherDamage': '{base} 加每個連擊點 {perCombo}',
   'abilityUi.resources.mana': '法力',
@@ -2271,6 +2277,10 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.the_merchant.title': '世界市場守護者',
   'entities.npcs.the_merchant.greeting':
     '歡迎來到世界市場，{className}。向王國各地的冒險者購買，或出售你自己的貨物。',
+  'entities.npcs.the_ravenpost.name': '渡鴉驛站',
+  'entities.npcs.the_ravenpost.title': '郵務守護者',
+  'entities.npcs.the_ravenpost.greeting':
+    '寄一封信吧，{className}，我的渡鴉會找到你的朋友，無論他們漂泊何方，隨信附上的錢幣和包裹也會安然相隨，直到被領取。',
   'entities.npcs.marshal_redbrook.name': '雷德布魯克元帥',
   'entities.npcs.marshal_redbrook.title': '城鎮元帥',
   'entities.npcs.marshal_redbrook.greeting': '刀別離手，{className}。山谷已經不是從前的山谷了。',
@@ -2776,12 +2786,73 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
     '大門外是一片開闊之地，道路以西的閒田莊看起來很適合安家。',
   'entities.npcs.verger_zebediah.name': '司事澤比迪亞',
   'entities.npcs.verger_zebediah.title': '根穴守衛',
+  'entities.readables.torn_ledger_page.title': '撕破的登記簿',
+  'entities.readables.torn_ledger_page.pages.0':
+    '根穴，記為休養。閒田莊，記為休養。莫斯岸的那片湖，無論我們記與不記，它自顧自地歇著。按登記簿的規矩，簽了名，注了日期。',
+  'entities.readables.torn_ledger_page.pages.1':
+    '本季至今的清點：路石縫裡冒出三株幼苗，我的任何一本曆書上都沒有這一條。我已經不再劃掉它們了。墨跡未乾它們就長回來，而那墨水可不便宜。',
+  'entities.readables.torn_ledger_page.pages.2':
+    '給我之後接手此簿的人留一句。數野豬，數狼，數日子。別去數那片綠。它會數回來，而且不會停在你停下的地方。',
+  'entities.readables.keepers_marginalia.title': '守護者的旁批',
+  'entities.readables.keepers_marginalia.pages.0':
+    '夾在一本聖歌都磨沒了的聖歌集頁邊留下的。那筆跡很快，就像一隻邊走邊寫的手那樣快。',
+  'entities.readables.keepers_marginalia.pages.1':
+    '狼群從林線繞著閒田莊打轉，永遠是同一個圈，永遠順著日頭轉。繞得夠久的東西，會摸清它所繞之物的形狀。我如此。我想，這片土地也如此。',
+  'entities.readables.keepers_marginalia.pages.2':
+    '你若讀到這裡，說明你停下了腳步，那正是我這輩子唯一沒學會的事。歇一會兒吧。外域還會在這兒。而這，恰恰就是它最麻煩的地方。',
   'entities.npcs.verger_zebediah.greeting':
     '司事澤比迪亞。我為外域記著一本曆書，至少一直在努力記。根穴這一季本該休養，可野豬沒讀那張告示。留神腳下的浮土，還有，別碰我的登記簿。',
+  // First-meeting click-through intro (PHAA-439). Voice matched to the
+  // existing Traditional Chinese register (literary classical, ecclesiastical),
+  // keeping the "sole surviving keeper of a register" throughline.
+  'entities.npcs.verger_zebediah.introLines.0':
+    '司事澤比迪亞。根穴守衛，依一紙任命而來，那紙任命眼下也就是我本人。大多數日子你在這裡便能尋到我；其餘的日子，我也在這裡尋到自己。外域不需法定人數，只需一本登記簿。',
+  'entities.npcs.verger_zebediah.introLines.1':
+    '我替這本曆書做主，曆書卻並不替我做主，不過某些季裡它也試著來過。根穴這一輪本記作休養，底下的獸穴卻未收到那張告示，蒼鷺也早不再裝作吃驚。這便是現況。這並非抱怨，抱怨是要有旁人的。',
+  'entities.npcs.verger_zebediah.introLines.2':
+    '神龕之內有一本登記簿，切莫去碰。腳下是野豬拱過的浮土，二者皆請留神。若是為守土之事而來，我可託付兩樁差事，都不算小，其中一樁我實在不願再改第三回。這便是我為何同你搭話的緣由。',
   'entities.npcs.sexton_faddick.name': '守墓人法迪克',
+  'entities.items.willow_sprig.name': '一段柳枝',
+  'entities.npcs.shade.name': '莎德',
+  'entities.npcs.shade.title': '一位旅人',
+  'entities.npcs.shade.greeting':
+    '哦，是你啊。想坐就坐吧，水又不會跑。今天吃過了嗎？你該吃點東西。',
+  'entities.npcs.shade.introLines.0':
+    '你撞見我做雜活了。別在意這桶，不過是水而已。總有些東西需要澆上一點水。',
+  'entities.npcs.shade.introLines.1':
+    '我？沒什麼好說的。叫我莎德。我四處走走，哪裡缺人手就搭把手。你看著累壞了。想的話，就坐一會兒吧。',
+  'entities.npcs.gate_bard.name': '吟遊詩人哈爾登',
+  'entities.npcs.gate_bard.title': '門前的賣藝人',
+  'entities.npcs.gate_bard.greeting':
+    '一枚銅板換一首歌？不要？沒關係，多數日子都是不要。我為這道門彈唱，可這門從沒掏過一次腰包。',
+  'entities.npcs.goodwife_orla.name': '奧拉',
+  'entities.npcs.goodwife_orla.title': '曾屬根穴',
+  'entities.npcs.goodwife_orla.greeting':
+    '你可以坐下。大多數人只是走過去。司事早就把我的名字從冊子上劃掉了，一個被劃掉的名字，學會了安靜，好讓誰都不必想起它還在這兒。',
+  'entities.quests.q_have_you_eaten.title': '你吃過了嗎？',
+  'entities.quests.q_have_you_eaten.text':
+    '門口有個吟遊詩人，靠銅板過活，銅板來了才有飯吃，而銅板難得來。我這兒有一碗熱的，還多出一份。替我給他送去，好嗎？別告訴他這是可憐他。就說這是多出來的。',
+  'entities.quests.q_have_you_eaten.completion':
+    '你回來了。他吃了嗎？很好。那就好。那你呢？……你沒吃，我看得出來。那就坐下吧。要成為一個好人，不必偉大。偉大不是善良。吃吧。',
+  'entities.quests.q_have_you_eaten.objectives.0.label': '把熱飯送給吟遊詩人',
+  'entities.quests.q_someone_your_own_size.title': '找個和你一般大的',
+  'entities.quests.q_someone_your_own_size.text':
+    '根穴附近有個女人，這世道待她不公。她的名字被從冊子上劃掉了，人們對待一個被劃掉的名字，就當它聽不見。去陪她坐一會兒吧。你不必去修補什麼。只要做一個和她一般大的人就好。',
+  'entities.quests.q_someone_your_own_size.completion':
+    '你留下來了。她不會說這有什麼要緊，可它要緊，我向你保證它要緊。來，這個給你。一段柳枝，取自我很喜歡的一棵柳樹。它什麼用也沒有。它只記得，在沒人逼你的時候，你依然選擇了善良。',
+  'entities.quests.q_someone_your_own_size.objectives.0.label': '陪奧拉坐了一會兒',
   'entities.npcs.sexton_faddick.title': '流浪的守護者',
   'entities.npcs.sexton_faddick.greeting':
     '法迪克。哪裡還有神龕需要守墓人，我就在哪兒守。我從不在一處久留，只管看顧。狼群夜夜繞著閒田莊的羊群打轉，繞得久了，便摸清了所繞之物的形狀。最好讓牠一直只是群羊。',
+  // First-meeting click-through intro (PHAA-439). Wandering-keeper voice,
+  // aphoristic, longer arc. Keeps the "I do not stay anywhere; I keep"
+  // throughline.
+  'entities.npcs.sexton_faddick.introLines.0':
+    '法迪克。哪裡還有神龕要我來做守墓人，我便做守墓人，只是這樣的神龕已比從前少了。我從不在一處久留，只管看顧。看顧這一樁，便是我如今所剩的幾乎全部。',
+  'entities.npcs.sexton_faddick.introLines.1':
+    '繞得久了，便摸清了所繞之物的形狀。閒田莊的狼群在我路過之前便夜夜繞著羊群打轉，至今仍未摸清羊群的形狀，這也算是一樁事。倒是羊群已把牠們摸清，那便是更大的事。',
+  'entities.npcs.sexton_faddick.introLines.2':
+    '本想請你喝杯茶，可茶壺留在我昨日待過的地方了。湖邊有一片安靜的地，等著人起屋；狼群在暗中出沒之地，什麼都紮不下根來。喏，兩樁差事，其中一樁我不想獨個兒去辦。邊走邊說罷。',
   'entities.quests.q_root_hollow_boars.title': '根穴野豬',
   'entities.quests.q_root_hollow_boars.text':
     '按曆書，根穴這一季本該休養。可沒人通知野豬。牠們追著蟲子把這裡拱翻了一半，如今連蒼鷺撲翅都嚇不走，這一點我很往心裡去。殺五頭，我才好把這一季照實記下。',
@@ -2792,7 +2863,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_root_hollow_boars_ii.text':
     '我就說句本職上不該說的實話：五頭，是我樂觀了。底下的窩還在不斷往外拱。再殺八頭，我便能結清這一季，不必第三回去改記錄。記錄不喜被改。我也不喜。',
   'entities.quests.q_root_hollow_boars_ii.completion':
-    '結案。簽字。歸檔。這一季總算能照原定的曆程走了，畢竟又有人來看著這本曆書。你幫了一個極小的會眾一個大忙。我得澄清一句：這會眾，就是我。',
+    '結案。簽字。歸檔。這一季總算能照原定的曆程走了，畢竟又有人來看著這本曆書。你幫了一個極小的會眾一個大忙。我得澄清一句：這會眾，就是我。這本曆書本身比這安排還要古老，裝訂出自一雙我從未謀面的手，記著一個我不願去加總的數目。曾經有人在此極為用心。我不過是盡力跟上罷了。',
   'entities.quests.q_root_hollow_boars_ii.objectives.0.label': '野豬已殺',
   'entities.quests.q_fallow_acres_wolves.title': '趕走田壟上的狼',
   'entities.quests.q_fallow_acres_wolves.text':
@@ -2921,7 +2992,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_what_burns.text':
     '通靈淡了，朋友……我乾得跟骨頭一樣，頻率就快斷了。神龕下面有種球莖，燒得又慢又乾淨，餘燼球莖，長在光照不到的地方，這洞穴自己跟自己開的玩笑……給我帶五顆回來。留意那些蒼白的傢伙，牠們衝著你的燈籠來，不是衝著你。大概吧。',
   'entities.quests.q_what_burns.completion':
-    '這才是上等的煙啊……你感覺到了嗎？屋裡越來越濃了。她隨時都要探過身來了，我在頻率上都能感覺到……的確如此。',
+    '這才是上等的煙啊……你感覺到了嗎？屋裡越來越濃了。他隨時都要探過身來了，我在頻率上都能感覺到……的確如此。',
   'entities.quests.q_what_burns.objectives.0.label': '已採集餘燼球莖',
   'entities.quests.q_what_fills.title': '飽腹之物',
   'entities.quests.q_what_fills.text':
@@ -2935,6 +3006,30 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_what_fills.dialog.refuse': '不。我不會再下去了。',
   'entities.quests.q_what_fills.dialog.refuseReply':
     '哦……哦，好吧。……好吧。這……是啊。不，這很公道，朋友，很公道……瓶子也聽見了，偷偷跟你說，我覺得他還挺敬佩你的。來，這根插枝你還是拿著。你下去過一次，就已經比大多數人多一次了……',
+  'entities.quests.q_the_wavelength.title': '同一頻率上',
+  'entities.quests.q_the_wavelength.text':
+    '挖來的插條現在是你的了，朋友，那接下來該聊聊後面的事了……兩件事，都不算考驗，更像是引見。第一，穿過瓶子那邊，去見見耶羅長老，她教的是第二天職，一種完全不同的玩法，凡是路過這兒的靈魂都該知道那扇門是開著的……第二，回來餵我點什麼，不管是哪樣，殘火球莖也好，洞穴肉粒也好，我永遠處於飢餓狀態，瓶子也永遠想要煙。這部分是不會真正結束的，對綠掌來說就是這樣。',
+  'entities.quests.q_the_wavelength.completion':
+    '看吧……你感覺到了吧，房間一下子變濃了？那是他，注意到了。這就是全部的竅門，朋友——你餵我，我就冒煙，他就多湊近一點聽著。沒什麼複雜的。以後也永遠不會變。手頭有多餘的殘火球莖或洞穴肉粒，隨時過來，爐子不看日曆……哦對了。歡迎來到聖所。我這才意識到之前一直沒說過這句。',
+  'entities.quests.q_the_wavelength.objectives.0.label': '已拜見耶羅長老',
+  'entities.quests.q_the_wavelength.objectives.1.label': '已在爐邊餵食',
+  'entities.quests.q_the_wavelength.dialog.complain': '又要跑腿？我才剛從那洞裡爬出來。',
+  'entities.quests.q_the_wavelength.dialog.complainReply':
+    '不不，聽我說完，這次不是洞裡的活兒……這次簡單，就是走一趟，好好餵我一次。這是我求過你最輕鬆的一件事了，我保證，同頻共振，絕不騙你。',
+  'entities.quests.q_the_wavelength.dialog.refuse': '我自己去找我的訓練，謝了。',
+  'entities.quests.q_the_wavelength.dialog.refuseReply':
+    '……那也行吧。一個靈魂還沒準備好之前，是沒法強求學東西的。等哪天不是「還沒準備好」了，門就一直開著……給，這個還是拿著吧，好歹你來了一趟。',
+  'entities.quests.q_keep_him_lit.text':
+    '三次，朋友，就是這個數……不是什麼神聖的數字，就是剛好能把一個人情變成一個習慣，習慣才是我真正信的那種信仰……回來餵爐子三次，分開的三次，先後順序不重要，殘火球莖還是洞穴肉粒也不重要，只要你做到了，我就信你是真的打算留下來，不是路過順道辦完事就走……',
+  'entities.quests.q_keep_him_lit.completion':
+    '三次都到了……你不再只是個訪客了，朋友，你是在守著一樣活著的東西，這就是全部的意義，雖然沒人問過我，但我還是要說……給，拿著這個吧，它什麼用也沒有，只是個念想，跟咱們這兒的人一樣……',
+  'entities.quests.q_keep_him_lit.objectives.0.label': '已在爐邊餵食三次',
+  'entities.quests.q_keep_him_lit.dialog.complain': '我不是已經餵過你一次了嗎？這還不夠？',
+  'entities.quests.q_keep_him_lit.dialog.complainReply':
+    '一次是個人情，朋友，三次才是習慣，人情我吃過虧……這不是爐子需不需要，爐子好得很，我照顧得來，這是關於你願不願意自己走回來，不是因為任務標記逼你來的……三次。不急著數。',
+  'entities.quests.q_keep_him_lit.dialog.refuse': '我不會分三次來做這件事。一次就夠了。',
+  'entities.quests.q_keep_him_lit.dialog.refuseReply':
+    '……好吧。好吧，我懂你的意思，朋友，這條線劃得也算公道……這樣吧，還是拿著，嚴格說不算你掙來的，但我給出去的大半也不算，頻率這東西，其實沒真的在計較。',
   'hud.errors.silenced': '你已被沉默！',
   'hud.pet.noPetFood': '你沒有可餵食寵物的食物。',
   'hud.pet.petEatsFoodOnly': '你的寵物只能吃食物。',
@@ -3034,6 +3129,13 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hud.options.npcVoices': 'NPC語音',
   'hud.options.voiceVolume': '語音音量',
   'entities.zones.eastbrook_vale.pois.8.label': '明木林地',
+  'boarball.queue.join': '你加入了野豬球隊列。等待另外三名玩家…',
+  'boarball.queue.leave': '你離開了野豬球隊列。',
+  'boarball.log.welcome': '歡迎來到野豬球！射門、傳球，比分超越對方球隊。',
+  'boarball.log.kickoff': '開球！',
+  'boarball.log.over': '比賽結束！正在返回世界…',
+  'boarball.error.tooFar': '你離球不夠近。',
+  'boarball.error.noTeammate': '未選定隊友目標。',
   'fiesta.augment.aug_apex_predator.desc': '+40%物理傷害，+15%暴擊，並回復所造成傷害的12%生命值。',
   'fiesta.augment.aug_apex_predator.name': '頂級掠食者',
   'fiesta.augment.aug_arcane_surge.desc': '+25%法術傷害以及+10%暴擊。把他們點燃吧。',
@@ -3391,6 +3493,10 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.bags.searchPlaceholder': '搜尋物品',
   'hudChrome.bags.searchAria': '依名稱搜尋背包物品',
   'hudChrome.bags.noMatch': '沒有符合篩選條件的物品。',
+  'hudChrome.bags.capacityAria': '背包已用欄位：{used}/{total}',
+  'hudChrome.bags.backpack': '背包',
+  'hudChrome.bags.socketEmpty': '空背包欄位',
+  'hudChrome.bags.unequipHint': '點擊移除此背包',
   // Guide (/guide) localization.
   'guide.brand': 'World of ClaudeCraft',
   'guide.brandShort': 'ClaudeCraft',
@@ -3776,9 +3882,35 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
     '來自遠古深淵、覆鱗如蛇的生物。稀少、高傲，且遠比外表看來更為強大。',
   'guide.family.dragonkin.name': '龍類',
   'guide.family.elemental.desc': '活生生的風暴與岩石，束縛於元素之力強盛的荒野之地。',
+  'guide.hollowPage.intro':
+    '穿過神殿之門便是花瓶所在的空地：每位新英雄甦醒之處，也是你始終會回來的地方。這裡是共享之地，整片大陸共用的一個據點，也是你初見的面孔、初次的任務，唯一真正需要的家。',
+  'guide.hollowPage.greeting':
+    '你回來了，那可真是件幸事……有幾樁神聖的差事在等你呢，跟上次同一個頻道。過來一下……',
+  'guide.hollowPage.greeter': '格林保修士，於花瓶旁',
+  'guide.hollowPage.vaseHeading': '花瓶',
+  'guide.hollowPage.vaseBody':
+    '所有人都從花瓶開始：這個古老而有靈性的存在，正是幽谷得以建立的核心。它渴求些微小的供奉，燃一顆餘燼球，或餵一份洞穴嫩肉，似乎都能有所察覺。花瓶下坡處，一處洞口通向地窟深處；兩側則留有地塊，供你建造屬於自己的家。',
+  'guide.hollowPage.figuresHeading': '誰在照看它',
+  'guide.hollowPage.figuresBody': '有兩個人維繫著花瓶的運作，你在最初的幾分鐘內便會與他們相遇。',
+  'guide.hollowPage.greenpawBody':
+    '花瓶唯一的照看者，也是最早派發差事的人。他自封頭銜，也是第一個承認這點的人，算是幽谷裡最接近嚮導的存在。',
+  'guide.hollowPage.yarrowBody':
+    '第二職業的傳授者：每個職業都能向她學習一門副業，她的位置正好與格林保隔瓶相望。',
+  'guide.hollowPage.questsHeading': '你最初的差事',
+  'guide.hollowPage.questsBody':
+    '格林保自己的任務鏈是你要做的第一件事：四樁短小的差事，教會你花瓶的節奏，然後送你踏入更廣闊的幽谷。',
+  'guide.hollowPage.questBurnsBody': '花瓶焚燒以取光的洞穴產球莖，一次採集一把。',
+  'guide.hollowPage.questFillsBody': '能填飽另一種更安靜飢餓的洞穴嫩肉，採集方式相同。',
+  'guide.hollowPage.questWavelengthBody': '引薦花瓶的第二職業，並教你親手餵養它。',
+  'guide.hollowPage.questKeepLitBody': '把一次的恩惠變成一種固定的習慣，連續三次。',
+  'guide.hollowPage.housingHeading': '屬於你自己的家',
+  'guide.hollowPage.housingBody': '{n}塊宅地環繞著花瓶，等待被認領，裝點成你在幽谷中私有的一角。',
+  'guide.hollowPage.shrineHeading': '地窟深處',
+  'guide.hollowPage.shrineBody':
+    '花瓶旁的一處洞口通向地窟深處，那是幽谷自身的副本地城，也是每位新英雄組隊面對的第一場真正考驗。',
   'guide.worldPage.heading': '世界',
   'guide.worldPage.intro':
-    'World of ClaudeCraft 是一片你需徒步橫越的連綿大地，三大區域由南向北排列。沒有快速旅行，所以旅程本身就是冒險的一部分。',
+    '穿過花瓶的神殿之門，你便置身幽谷腹地：新人踏出戶外第一步的寧靜之地。再往北還有三個區域，由南向北依次鋪展；通往那裡的道路尚未開啟，但它們是真實存在、靜候你到來的。',
   'guide.worldPage.hub': '主據點',
   'guide.worldPage.hollowReachesBlurb':
     '緊鄰神殿門外的平靜之地，新人在Fallow Acres與Root Hollow一帶與野狼、野豬交手磨練身手。',
@@ -3803,9 +3935,11 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
     '附近的隊伍成員會共享擊殺與目標進度，所以一起接任務只會更快，絕不會更慢。你也可以與隊伍分享任務：用 /share 指令將它以可點擊的連結貼到聊天中，任何符合條件的附近成員都能一鍵接取同一項任務。',
   'guide.questsPage.storyTitle': '一條主線貫穿其中',
   'guide.questsPage.storyBody':
-    '從你在東溪鎮的第一批跑腿差事開始，亡者出了問題。一個邪教正在運作，線索向北穿過每個區域。循線追查，便能查出幕後主使是誰。',
+    '你最初的線索，是格林保修士自己那條短短的任務鏈，就在花瓶旁。往外則是幽谷腹地裡那些安靜的差事；再往外，還有一段更長的故事：一個邪教從山谷一路作亂到山巔，真實且已完成，只是新英雄眼下還走不到那條路。花瓶自己的任務見幽谷頁面，其餘的則列在下方，作為即將到來的內容。',
   'guide.questsPage.soloNote':
     '主線劇情一路到每個篇章的結局都可以單人完成，而那結局是一座五人地城。',
+  'guide.questsPage.sagaGateNote':
+    '這段傳奇是真實、已完成的內容，正是道路重新北通之後開啟的同一條線索。它並非新英雄如今的起點；起點是花瓶，在幽谷之中。',
   'guide.dungeonsPage.heading': '地城與團隊副本',
   'guide.dungeonsPage.intro':
     '當開放世界不夠盡興時，召集一支隊伍踏入副本：一份專為你的隊伍打造的地城私人副本。',
@@ -4395,10 +4529,23 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': '洞穴肉粒',
   'entities.items.emberbulb.name': '餘燼球莖',
   'entities.items.first_cutting.name': '插條',
+  'entities.items.greenpaw_bead.name': '彈藥帶上的一顆唸珠',
+  'entities.items.keeper_coal.name': '一塊永不冷卻的炭',
   'entities.items.witness_root_cincture.name': '見證根的束帶',
   'entities.items.shrine_diary_page.name': '撕碎的日記頁',
   'entities.items.shrine_diary_page.flavorText':
     '……我數著燭光過了四十天，後來便斷了數。這底下的黑暗從未忘記祂，儘管祂已經忘了這個地方。若鷺鳥低飛掠過，告訴守燈人，燭芯還燃著……',
+  'entities.items.linen_pouch.name': '亞麻小袋',
+  'entities.items.travelers_knapsack.name': '旅行者背包',
+  'entities.items.wolfhide_satchel.name': '狼皮挎包',
+  'entities.items.gravewoven_bag.name': '墓織袋',
+  'entities.items.mistcallers_duffel.name': '喚霧者的行囊',
+  'entities.items.worn_prayer_token.name': '磨損的禱牌',
+  'entities.items.worn_prayer_token.flavorText':
+    '……一面被一根不是我的拇指磨得光滑，磨出的淺溝和這堆裡另外上百枚一模一樣，至少這堆東西是這麼告訴我的。一根拇指磨不出一百枚令牌的痕跡。可一百根拇指，倒是能磨出同一道淺溝……',
+  'entities.items.tally_shard.name': '刻痕碎片',
+  'entities.items.tally_shard.flavorText':
+    '……以五為一組刻得極深，每數完一輪便劃去一道。劃去的五連一組，累計上百組，最後一行卻始終沒有劃完……',
   'entities.mobs.acolyte_tessa.name': '侍僧泰莎',
   'entities.mobs.deacon_varric.name': '執事瓦瑞克',
   'entities.mobs.reliquary_bonewalker.name': '復起的骨行者',
@@ -4406,6 +4553,10 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_gravecall_acolyte.name': '喚墓侍僧',
   'entities.mobs.reliquary_ledger_wraith.name': '名冊幽靈',
   'entities.mobs.reliquary_saintless_effigy.name': '無聖肖像',
+  'entities.items.heartwood_splinter.name': '心材碎片',
+  'entities.items.heartwood_splinter.flavorText': '觸摸時依然溫暖,儘管孕育它的樹早已停止生長。',
+  'entities.items.bloomcrown_pauldrons.name': '繁花王冠護肩',
+  'entities.items.verdantguard_mantle.name': '常青守衛者披風',
   'entities.mobs.palefeeder.name': '蒼白噬光者',
   'entities.mobs.rootmaw.name': '根顎獸',
   'entities.mobs.the_witness_root.name': '見證之根',
@@ -4415,7 +4566,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.brother_greenpaw.name': '綠掌修士',
   'entities.npcs.brother_greenpaw.title': '首席先知（自封）',
   'entities.npcs.brother_greenpaw.greeting':
-    '喲，旅人，你來啦。你說這甕今兒個心情不錯，還是只有我這麼覺得……過來吧，有幾件神聖的事兒要辦。基本上就是弄點吃的。反正對綠掌來說是一回事兒。',
+    '你又來啦，真是福氣……這甕一早上唉聲嘆氣的，幾件神聖的事兒又排上了，跟上回一個路子。過來坐一會兒……',
   'entities.npcs.brother_greenpaw.introLines.0':
     '呃……你好。你好啊。沒聽見你過來，我剛才神遊去了，去了個綠油油的地方……你這一臉剛睡醒的樣子，朋友。我太熟這表情了，我自己十天有九天掛著它……',
   'entities.npcs.brother_greenpaw.introLines.1':
@@ -4515,6 +4666,17 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'delveUi.tracker.module': '第 {current} 區，共 {total} 區',
   'delveUi.tracker.objective': '目標',
   'delveUi.tracker.title': '秘探',
+  'sim.bags.full': '你的背包已滿。',
+  'sim.bags.socketsFull': '你的所有背包欄位都已佔用。',
+  'sim.bags.swapTooManyItems': '物品太多，無法換成那個背包。',
+  'sim.bags.removeTooManyItems': '物品太多，無法移除那個背包。',
+  'sim.bags.tradeSpace': '交易失敗：背包空間不足。',
+  'sim.bank.cannotAfford': '你負擔不起這次銀行擴容。',
+  'sim.bank.expansionCapped': '你的銀行無法再擴容了。',
+  'sim.bank.full': '你的銀行已滿。',
+  'sim.bank.noQuestItems': '你不能把任務物品存入銀行。',
+  'sim.bank.purchased': '你購買了額外的銀行槽位。',
+  'sim.bank.tooFar': '你離銀行職員太遠了。',
   'sim.delve.alreadyInDelve': '你已經身處一場秘探之中。',
   'sim.delve.bossChest':
     '首領倒下了。一只受守護的聖物庫寶箱自祭壇升起，撬開它的鎖以取得你的戰利品。',
@@ -4570,6 +4732,21 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'sim.hearth.noItems1': '……夥計，你兩手空空啊。帶點能燒的或能填飽肚子的東西來，我們再聊。',
   'sim.hearth.noItems2': '身上啥也沒有，就剩一片好心，是吧……好心可點不著爐子。',
   'sim.hearth.tooFar': '你得靠近綠掌修士才能餵他。',
+  'sim.homestead.alreadyOwn': '你已經擁有一處家園了。',
+  'sim.homestead.claimed': '這片土地歸你了。家園認領成功。',
+  'sim.homestead.helpLine': '家園：/homestead，/homestead claim。',
+  'sim.homestead.outsideArea': '這裡不屬於家園用地。去路西邊的 Fallow Acres 試試。',
+  'sim.homestead.questGate': '綠掌修士還沒讓你出發呢。先把他的差事做完。',
+  'sim.homestead.readoutMine': '你的家園坐落在 ({x}, {z})。',
+  'sim.homestead.readoutNoHomesteadHint':
+    '你還沒有家園。站在空谷地裡合適的位置，輸入 /homestead claim。',
+  'sim.homestead.readoutNoHomesteadQuest': '你還沒有家園。先完成綠掌修士的全部差事才能解鎖。',
+  'sim.homestead.tooCloseGate': '離大門太近了。再往外挪一挪。',
+  'sim.homestead.tooCloseGraveyard': '離墓地太近了。',
+  'sim.homestead.tooCloseOther': '離別人的家園太近了。',
+  'sim.homestead.tooCloseRoad': '離大路太近了。',
+  'sim.homestead.tooCloseWater': '離水域太近了。',
+  'sim.homestead.tooCloseWildlife': '離野生動物太近了。清空這片區域，或者再挪遠一些。',
   'sim.house.alreadyOwn': '你在空穴已經擁有一處宅邸了。',
   'sim.house.claimed': '這處宅邸歸你了。用 /house place <槽位> <種類> 來裝飾它。',
   'sim.house.cleared': '清空了槽位 {slot}。',
@@ -4895,6 +5072,25 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'coldOpen.continue': '繼續',
   'coldOpen.begin': '開始',
   'coldOpen.skip': '跳過',
+  'mailUi.title': '渡鴉驛站',
+  'mailUi.subtitle': '寄送與領取信件',
+  'mailUi.close': '關閉郵件',
+  'mailUi.inbox': '收件匣',
+  'mailUi.compose': '寫信',
+  'mailUi.noPostOffice': '請前往渡鴉驛站處理郵件。',
+  'mailUi.emptyInbox': '目前沒有信件。有人寫信給你時渡鴉便會送達。',
+  'mailUi.from': '來自 {name}',
+  'mailUi.noSubject': '(無主旨)',
+  'mailUi.take': '領取',
+  'mailUi.delete': '刪除',
+  'mailUi.postageNote': '寄送一封信需要 {money} 郵資。',
+  'mailUi.recipient': '收件人',
+  'mailUi.subjectLabel': '主旨',
+  'mailUi.bodyPlaceholder': '寫下你的信件……',
+  'mailUi.send': '寄出信件',
+  'mailUi.needRecipientOrText': '請先填寫收件人並寫點內容再寄送。',
+  'mailUi.openButton': '帶我去渡鴉驛站。',
+  'mailUi.openButtonAria': '開啟渡鴉驛站郵件視窗',
   // Event calendar (M16 non-Latin fill)
   'hudChrome.calendar.title': '活動日曆',
   'hudChrome.calendar.close': '關閉日曆',

@@ -21,6 +21,13 @@ export const PLANT_ARCHETYPES: readonly PlantArchetype[] = [
   'witness_root',
 ];
 
+/** Under-Shrine mob template id -> archetype (PHAA-531 live-spawn wiring). */
+export const PLANT_MOB_ARCHETYPES: Readonly<Record<string, PlantArchetype>> = {
+  palefeeder: 'palefeeder',
+  rootmaw: 'rootmaw',
+  the_witness_root: 'witness_root',
+};
+
 export type HeadKind = 'bulb' | 'maw' | 'crown';
 export type BaseKind = 'roots' | 'pot';
 

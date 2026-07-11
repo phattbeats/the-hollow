@@ -179,6 +179,12 @@ heuristics and the bug-fix workflow live in the `extract-and-test` skill
   never skipped: a `Stop` hook (`.claude/hooks/qa-stop.sh`) blocks instantly on an em/en dash,
   emoji, stray `.only(`, or `debugger`; the `.githooks/pre-push` floor runs `tsc`, the guard
   tests, biome, and the copy scan at push time. See `docs/qa-gate.md` and `.claude/hooks/README.md`.
+- **Hosted CI is OFF (board decision, 2026-07-11: the studio does not pay for GitHub
+  Actions).** Actions is disabled on this repo; never wait for, request, or expect GitHub
+  checks, and never treat missing checks as a pass. The merge gate is
+  `bash scripts/pr_gate_local.sh` run on the merged tree (it mirrors the old pr-gate CI
+  job); merge only on `PR GATE: GREEN`, with the gate tail pasted in a PR comment as
+  evidence. See `docs/qa-gate.md`.
 - **Biome / formatting / CI.** Biome 2.5.0 (`biome.json`: 2-space, lineWidth 100, single quotes,
   trailing commas). CI and the pre-push floor gate CHANGED FILES ONLY (`npm run ci:changed` =
   `biome ci --changed`) and fail on errors and format diffs, NOT on lint warnings. Whole-repo

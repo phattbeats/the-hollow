@@ -188,6 +188,24 @@ describe("Greenpaw's hearth: hunger/feed/decay", () => {
     expect(fresh.hollowHearth.smoke).toBe(sim.hollowHearth.smoke);
   });
 
+  it('remembers the keeper: the last feeder round-trips, and an old save without one is fine', () => {
+    standAtGreenpaw(sim, pid);
+    sim.addItem('emberbulb', 1);
+    sim.feedGreenpaw(pid);
+    const save = sim.serializeGreenpawHearth();
+    expect(typeof save.lastFeeder).toBe('string');
+    expect((save.lastFeeder as string).length).toBeGreaterThan(0);
+
+    const fresh = new Sim({ seed: 1, playerClass: 'mage', noPlayer: true });
+    fresh.loadGreenpawHearth(save);
+    expect(fresh.serializeGreenpawHearth().lastFeeder).toBe(save.lastFeeder);
+
+    // A pre-PHAA-484 save has no lastFeeder key at all: load() must tolerate it.
+    const legacy = new Sim({ seed: 1, playerClass: 'mage', noPlayer: true });
+    legacy.loadGreenpawHearth({ hunger: 10, smoke: 10 });
+    expect(legacy.serializeGreenpawHearth().lastFeeder).toBe(null);
+  });
+
   it('loadGreenpawHearth(null) is a safe no-op', () => {
     expect(() => sim.loadGreenpawHearth(null)).not.toThrow();
     expect(() => sim.loadGreenpawHearth(undefined)).not.toThrow();
@@ -197,6 +215,30 @@ describe("Greenpaw's hearth: hunger/feed/decay", () => {
   it('rejects a garbage save instead of NaN-ing the hearth', () => {
     sim.loadGreenpawHearth({ hunger: Number.NaN, smoke: 'nope' as unknown as number });
     expect(Number.isFinite(sim.hollowHearth.smoke)).toBe(true);
+  });
+
+  it('a successful feed credits an active feed-type quest objective once per call (PHAA-484)', () => {
+    standAtGreenpaw(sim, pid);
+    sim.acceptQuest('q_what_burns');
+    sim.addItem('emberbulb', 5);
+    sim.tick();
+    sim.turnInQuest('q_what_burns');
+    sim.acceptQuest('q_what_fills');
+    sim.addItem('cave_morsel', 4);
+    sim.tick();
+    sim.turnInQuest('q_what_fills');
+    sim.acceptQuest('q_the_wavelength');
+    const meta = (sim as any).primary;
+
+    // Feeding both item types in one call still credits the objective once.
+    sim.addItem('emberbulb', 1);
+    sim.addItem('cave_morsel', 1);
+    sim.feedGreenpaw(pid);
+    expect(meta.questLog.get('q_the_wavelength')?.counts[1]).toBe(1);
+
+    // An empty-handed feed (nothing consumed) does not credit it further.
+    sim.feedGreenpaw(pid);
+    expect(meta.questLog.get('q_the_wavelength')?.counts[1]).toBe(1);
   });
 
   it('/feed is no longer a chat command (PHAA-482): it falls through to the unknown-command error', () => {

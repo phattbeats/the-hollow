@@ -143,7 +143,9 @@ const UI_PURE_CORES = [
   'src/ui/vendor_view.ts',
   'src/ui/housing_view.ts',
   'src/ui/housing_prompt_view.ts',
+  'src/ui/readable_prompt_view.ts',
   'src/ui/market_view.ts',
+  'src/ui/mail_view.ts',
   'src/ui/char_view.ts',
   'src/ui/map_window_view.ts',
   'src/ui/arena_window_view.ts',
@@ -155,6 +157,8 @@ const UI_PURE_CORES = [
   'src/ui/trainer_view.ts',
   'src/ui/npc_intro_view.ts',
   'src/ui/quest_offer_view.ts',
+  'src/ui/loot_roll_group_view.ts',
+  'src/ui/npc_dialog_tree_view.ts',
   'src/ui/swing_timer.ts',
   'src/ui/unit_frame.ts',
   'src/ui/action_bar_view.ts',
@@ -182,6 +186,11 @@ const RENDER_PURE_CORES = [
   // clip-less motion envelopes). Three-free and deterministic; the Three
   // consumer is plant_creature.ts.
   'src/render/plant_creature_core.ts',
+  // PHAA-581: pure placement half of the starter-zone otherworldly flora
+  // scatter (seed -> clustered plant-creature placements around the Hollow
+  // Reaches camps). Three-free and deterministic; the Three consumer is
+  // hollow_flora.ts.
+  'src/render/hollow_flora_core.ts',
 ].map((rel) => join(repoRoot, rel));
 
 // Bare-named pure cores: registered cores (from UI_PURE_CORES + RENDER_PURE_CORES)

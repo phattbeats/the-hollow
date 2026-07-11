@@ -35,6 +35,7 @@ import type {
   ItemLootStrategy,
   LootEntry,
   LootRollChoice,
+  LootRollGroupStatus,
   LootRollPrompt,
   LootSlot,
   LootStrategies,
@@ -284,14 +285,21 @@ function startMasterLootRoll(ctx: SimContext, itemId: string, mob: Entity): bool
   return true;
 }
 
+// Returns true when the item was consumed off the corpse (a roll started, or
+// it landed in the looter's bags); false when the direct-grant path found the
+// looter's bags full, so the caller leaves it on the corpse. Roll paths are
+// not capacity-gated: a roll win force-adds (items are never destroyed).
 export function awardSharedLootItem(
   ctx: SimContext,
   itemId: string,
   mob: Entity,
   looter: PlayerMeta,
-): void {
-  if (startMasterLootRoll(ctx, itemId, mob)) return;
-  if (!startNeedGreedRoll(ctx, itemId, mob)) ctx.addItem(itemId, 1, looter.entityId);
+): boolean {
+  if (startMasterLootRoll(ctx, itemId, mob)) return true;
+  if (startNeedGreedRoll(ctx, itemId, mob)) return true;
+  if (!ctx.canAddItem(itemId, 1, looter.entityId)) return false;
+  ctx.addItem(itemId, 1, looter.entityId);
+  return true;
 }
 
 // Open need-greed rolls the given player may still answer. Mirrors the
@@ -312,6 +320,34 @@ export function activeLootRolls(ctx: SimContext, pid: number): LootRollPrompt[] 
       itemName: roll.itemName,
       quality: roll.quality,
       expiresAt: roll.expiresAt,
+    });
+  }
+  return out;
+}
+
+// Group-visible status of every open need-greed roll the given player's party
+// is voting on: who has answered and how (choice only, never the roll number,
+// which stays hidden until resolveLootRoll broadcasts it). Read from the same
+// authoritative state as activeLootRolls, so the HUD's per-player choice strip
+// survives reconnects and missed events the same way the prompt does. Master
+// rolls in their curate phase are excluded for the same reason they are in
+// activeLootRolls: nobody is voting yet.
+export function lootRollGroupStatus(ctx: SimContext, pid: number): LootRollGroupStatus[] {
+  const out: LootRollGroupStatus[] = [];
+  for (const roll of ctx.pendingLootRolls.values()) {
+    if (roll.masterLooter !== undefined) continue;
+    if (!partyMembersForRoll(roll).includes(pid)) continue;
+    out.push({
+      rollId: roll.id,
+      itemId: roll.itemId,
+      itemName: roll.itemName,
+      quality: roll.quality,
+      expiresAt: roll.expiresAt,
+      entries: roll.candidates.map((candidate) => ({
+        pid: candidate,
+        name: ctx.players.get(candidate)?.name ?? 'Unknown',
+        choice: roll.choices.get(candidate)?.choice ?? null,
+      })),
     });
   }
   return out;
@@ -457,9 +493,25 @@ export function resolveLootRoll(ctx: SimContext, roll: PendingLootRoll): void {
     needers.length > 0 ? needers : entries.filter((entry) => entry.result.choice === 'greed');
   if (contenders.length === 0) {
     returnLootRollItemToCorpse(ctx, roll);
-    for (const pid of roll.candidates)
+    for (const pid of partyMembersForRoll(roll))
       ctx.emit({ type: 'loot', text: `Everyone passed on ${roll.itemName}.`, pid });
     return;
+  }
+  // Reveal every roll, classic-style: one loot line per need/greed roller so the
+  // whole group can audit the outcome (passes were already visible live via
+  // lootRollGroupStatus and have no number to reveal).
+  for (const entry of entries) {
+    const rollerName = ctx.players.get(entry.pid)?.name ?? 'Unknown';
+    for (const pid of partyMembersForRoll(roll)) {
+      ctx.emit({
+        type: 'loot',
+        text:
+          entry.result.choice === 'need'
+            ? `Need Roll - ${entry.result.roll ?? 0} for ${roll.itemName} by ${rollerName}`
+            : `Greed Roll - ${entry.result.roll ?? 0} for ${roll.itemName} by ${rollerName}`,
+        pid,
+      });
+    }
   }
   const highestRoll = Math.max(...contenders.map((contender) => contender.result.roll ?? 0));
   const tiedWinners = contenders.filter((contender) => contender.result.roll === highestRoll);
@@ -467,7 +519,7 @@ export function resolveLootRoll(ctx: SimContext, roll: PendingLootRoll): void {
     tiedWinners.length === 1 ? tiedWinners[0] : tiedWinners[ctx.rng.int(0, tiedWinners.length - 1)];
   const winnerMeta = ctx.players.get(winner.pid);
   const winnerName = winnerMeta?.name ?? 'Unknown';
-  for (const pid of roll.candidates) {
+  for (const pid of partyMembersForRoll(roll)) {
     ctx.emit({
       type: 'loot',
       text: `${winnerName} wins ${roll.itemName} (${winner.result.roll ?? 0})`,
@@ -495,6 +547,16 @@ export function lootSlotVisibleTo(slot: LootSlot, pid: number): boolean {
 
 function hasPendingLootRollForMob(ctx: SimContext, mobId: number): boolean {
   return [...ctx.pendingLootRolls.values()].some((roll) => roll.mobId === mobId);
+}
+
+// Everyone in the party who should see the group's roll progression: the
+// candidates themselves plus the master looter when one is curating (they
+// were never a candidate but still need to see the votes resolve). Used as
+// the recipient set for the per-roller reveal at resolution time and to
+// decide who can see a roll's status mid-vote.
+function partyMembersForRoll(roll: PendingLootRoll): number[] {
+  if (roll.masterLooter === undefined) return [...roll.candidates];
+  return [...new Set([...roll.candidates, roll.masterLooter])];
 }
 
 export function pruneCorpseLoot(ctx: SimContext, mob: Entity): void {

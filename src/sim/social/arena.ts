@@ -45,6 +45,11 @@ export const ARENA_BASE_RATING = 1500; // every character starts here, unranked
 const ARENA_MIN_RATING = 100; // a rating floor so a losing streak can't go absurd
 const ARENA_K_FACTOR = 32; // Elo sensitivity per match
 const FIESTA_COUNTDOWN = 5;
+// Boarball (PHAA-572): the only two consts the ranked match-start / lifecycle
+// path needs (duplicated in social/boarball.ts, the FIESTA_COUNTDOWN precedent,
+// so this module never imports boarball.ts and stays a one-way dependency).
+const BOARBALL_COUNTDOWN = 3;
+const BOARBALL_SCORE_CAP = 3;
 
 // Standard Elo. Returns the points the winner gains (and the loser loses) for
 // an outright result; a draw moves each toward its expected score by half.
@@ -120,6 +125,26 @@ export function arenaQueueJoin(
       type: 'log',
       text: 'You join the Ashen Coliseum queue. Stand by for a worthy opponent…',
       color: '#ffa040',
+      pid: id,
+    });
+    return;
+  }
+
+  // Boarball (PHAA-572): a flat FIFO solo queue, unranked, no premades (a
+  // deliberate scope cut from upstream's brackets/bot-backfill, see the
+  // ticket). matchmakeBoarball fills two teams of two off the front.
+  if (fmt === 'boarball') {
+    ctx.arenaQueueBoarball.push(id);
+    ctx.emit({
+      type: 'arenaQueued',
+      position: ctx.arenaQueueBoarball.length,
+      format: 'boarball',
+      pid: id,
+    });
+    ctx.emit({
+      type: 'log',
+      text: 'You join the boarball queue. Stand by for three more players…',
+      color: '#3fa9f5',
       pid: id,
     });
     return;
@@ -209,7 +234,9 @@ export function arenaQueueLeave(ctx: SimContext, pid?: number): void {
         ? 'You leave the 2v2 Fiesta queue.'
         : fmt === '2v2'
           ? 'You leave the Ashen Coliseum 2v2 queue.'
-          : 'You leave the Ashen Coliseum queue.';
+          : fmt === 'boarball'
+            ? 'You leave the boarball queue.'
+            : 'You leave the Ashen Coliseum queue.';
     ctx.emit({ type: 'log', text: leaveText, color: '#ffa040', pid: id });
     if (unit) {
       const teamLeaveText =
@@ -229,7 +256,8 @@ export function isArenaQueued(ctx: SimContext, pid: number): boolean {
   return (
     ctx.arenaQueue1v1.includes(pid) ||
     ctx.arenaQueue2v2.some((u) => u.pids.includes(pid)) ||
-    ctx.arenaQueueFiesta.some((u) => u.pids.includes(pid))
+    ctx.arenaQueueFiesta.some((u) => u.pids.includes(pid)) ||
+    ctx.arenaQueueBoarball.includes(pid)
   );
 }
 
@@ -237,11 +265,13 @@ export function arenaQueuedFormat(ctx: SimContext, pid: number): ArenaFormat | n
   if (ctx.arenaQueue1v1.includes(pid)) return '1v1';
   if (ctx.arenaQueue2v2.some((u) => u.pids.includes(pid))) return '2v2';
   if (ctx.arenaQueueFiesta.some((u) => u.pids.includes(pid))) return 'fiesta';
+  if (ctx.arenaQueueBoarball.includes(pid)) return 'boarball';
   return null;
 }
 
 export function arenaQueuePosition(ctx: SimContext, pid: number, format: ArenaFormat): number {
   if (format === '1v1') return ctx.arenaQueue1v1.indexOf(pid) + 1;
+  if (format === 'boarball') return ctx.arenaQueueBoarball.indexOf(pid) + 1;
   const queue = format === 'fiesta' ? ctx.arenaQueueFiesta : ctx.arenaQueue2v2;
   let pos = 0;
   for (const unit of queue) {
@@ -265,6 +295,11 @@ export function arenaDequeue(ctx: SimContext, pid: number): boolean {
   const fi = ctx.arenaQueueFiesta.findIndex((u) => u.pids.includes(pid));
   if (fi >= 0) {
     ctx.arenaQueueFiesta.splice(fi, 1);
+    return true;
+  }
+  const bi = ctx.arenaQueueBoarball.indexOf(pid);
+  if (bi >= 0) {
+    ctx.arenaQueueBoarball.splice(bi, 1);
     return true;
   }
   return false;
@@ -377,6 +412,7 @@ export function arenaCombatants(ctx: SimContext, pids: number[]): ArenaCombatant
 export function updateArena(ctx: SimContext): void {
   matchmakeArena1v1(ctx);
   matchmakeArena2v2(ctx);
+  matchmakeBoarball(ctx);
   const seen = new Set<ArenaMatch>();
   for (const match of ctx.arenaMatches.values()) {
     if (seen.has(match)) continue;
@@ -416,7 +452,7 @@ export function updateArena(ctx: SimContext): void {
         for (const mPid of arenaAllPids(match)) {
           ctx.emit({
             type: 'log',
-            text: match.fiesta ? 'FIESTA — GO!' : 'Fight!',
+            text: match.fiesta ? 'FIESTA, GO!' : match.boarball ? 'Kickoff!' : 'Fight!',
             color: '#ff5a3c',
             pid: mPid,
           });
@@ -433,6 +469,17 @@ export function updateArena(ctx: SimContext): void {
               pid: mPid,
             });
           }
+        } else if (match.boarball) {
+          for (const mPid of arenaAllPids(match)) {
+            ctx.emit({
+              type: 'boarballScore',
+              a: 0,
+              b: 0,
+              limit: BOARBALL_SCORE_CAP,
+              team: arenaTeamOf(ctx, match, mPid)!,
+              pid: mPid,
+            });
+          }
         }
       }
       continue;
@@ -440,6 +487,10 @@ export function updateArena(ctx: SimContext): void {
     match.timer += DT;
     if (match.fiesta) {
       ctx.updateFiestaActive(match);
+      continue;
+    }
+    if (match.boarball) {
+      ctx.updateBoarballActive(match);
       continue;
     }
     if (match.timer >= ARENA_MAX_DURATION) {
@@ -475,6 +526,24 @@ export function matchmakeArena1v1(ctx: SimContext): void {
     arenaDequeue(ctx, aPid);
     arenaDequeue(ctx, bPid);
     startArenaMatch(ctx, '1v1', [aPid], [bPid]);
+  }
+}
+
+// Boarball (PHAA-572): flat FIFO fill, no rating (unranked). First two queued
+// become team A, next two team B. No bot backfill (the online server never
+// spawns bot players for any format; see fiesta_bots.ts, offline-only).
+export function matchmakeBoarball(ctx: SimContext): void {
+  let guard = ARENA_SLOT_COUNT + 1;
+  while (guard-- > 0) {
+    ctx.arenaQueueBoarball = ctx.arenaQueueBoarball.filter((id) => {
+      const e = ctx.entities.get(id);
+      return !!e && !e.dead && !ctx.arenaMatches.has(id);
+    });
+    if (ctx.arenaQueueBoarball.length < 4 || freeArenaSlot(ctx) === null) return;
+    const teamA = ctx.arenaQueueBoarball.slice(0, 2);
+    const teamB = ctx.arenaQueueBoarball.slice(2, 4);
+    for (const pid of [...teamA, ...teamB]) arenaDequeue(ctx, pid);
+    startArenaMatch(ctx, 'boarball', teamA, teamB);
   }
 }
 
@@ -596,6 +665,11 @@ export function startArenaMatch(
       for (const pid of allPids) {
         if (ctx.entities.get(pid) && !ctx.arenaMatches.has(pid)) ctx.arenaQueue1v1.unshift(pid);
       }
+    } else if (format === 'boarball') {
+      for (const pid of allPids) {
+        if (ctx.entities.get(pid) && !ctx.arenaMatches.has(pid))
+          ctx.arenaQueueBoarball.unshift(pid);
+      }
     } else {
       const requeue = format === 'fiesta' ? ctx.arenaQueueFiesta : ctx.arenaQueue2v2;
       const okA = teamA.every((pid) => ctx.entities.get(pid) && !ctx.arenaMatches.has(pid));
@@ -612,7 +686,8 @@ export function startArenaMatch(
     returns.set(allPids[i], { x: e.pos.x, z: e.pos.z, facing: e.facing });
   }
   const isFiesta = format === 'fiesta';
-  const countdown = isFiesta ? FIESTA_COUNTDOWN : ARENA_COUNTDOWN;
+  const isBoarball = format === 'boarball';
+  const countdown = isFiesta ? FIESTA_COUNTDOWN : isBoarball ? BOARBALL_COUNTDOWN : ARENA_COUNTDOWN;
   const match: ArenaMatch = {
     id: ctx.nextArenaMatchId++,
     format,
@@ -626,6 +701,7 @@ export function startArenaMatch(
     ratingB: arenaTeamRating(ctx, teamB, format),
     defeated: new Set(),
     fiesta: isFiesta ? ctx.createFiestaState() : undefined,
+    boarball: isBoarball ? ctx.createBoarballState() : undefined,
   };
   for (const pid of allPids) ctx.arenaMatches.set(pid, match);
   const origin = arenaOrigin(slot);
@@ -645,11 +721,24 @@ export function startArenaMatch(
       if (m && e) ctx.fiestaStandardize(m, e);
     }
   }
+  // Boarball: swap the action bar to the sport kit, then spawn/kick off the ball
+  // (match.boarball already exists on the object above; boarballKickoff does the
+  // entity spawn since createBoarballState above is a no-arg placeholder).
+  if (isBoarball) {
+    for (let i = 0; i < allPids.length; i++) {
+      const m = metas[i];
+      const e = entities[i];
+      if (m && e) ctx.boarballStandardize(m, e);
+    }
+    ctx.boarballKickoff(match, null);
+  }
   for (const e of entities) resetForArena(ctx, e!);
   emitArenaFound(ctx, match);
   const stepText = isFiesta
     ? 'Welcome to the 2v2 FIESTA! Score takedowns, grab augments, survive the ring!'
-    : 'You step onto the sands of the Ashen Coliseum.';
+    : isBoarball
+      ? 'Welcome to boarball! Shoot, pass, and outscore the other team.'
+      : 'You step onto the sands of the Ashen Coliseum.';
   for (const mPid of allPids) {
     ctx.emit({ type: 'arenaCountdown', seconds: countdown, pid: mPid });
     ctx.emit({
@@ -756,8 +845,8 @@ export function endArenaMatch(
 ): void {
   const ratingA0 = match.ratingA;
   const ratingB0 = match.ratingB;
-  // Fiesta is unranked party play — it never moves the Elo ladder.
-  const ranked = !match.fiesta;
+  // Fiesta and boarball are unranked play, neither moves the Elo ladder.
+  const ranked = !match.fiesta && !match.boarball;
   let deltaA: number;
   if (!ranked) {
     deltaA = 0;
@@ -832,12 +921,14 @@ export function endArenaMatch(
   match.timer = ARENA_RETURN_DELAY;
   const overText = match.fiesta
     ? 'FIESTA OVER! What a party. Returning to the world…'
-    : 'The bout is decided. Returning to the world…';
+    : match.boarball
+      ? 'Full time! Returning to the world…'
+      : 'The bout is decided. Returning to the world…';
   for (const mPid of arenaAllPids(match)) {
     ctx.emit({
       type: 'log',
       text: overText,
-      color: match.fiesta ? '#ff3df0' : '#ffa040',
+      color: match.fiesta ? '#ff3df0' : match.boarball ? '#3fa9f5' : '#ffa040',
       pid: mPid,
     });
   }
@@ -848,6 +939,12 @@ export function endArenaMatch(
 export function returnFromArena(ctx: SimContext, match: ArenaMatch): void {
   for (const pid of arenaAllPids(match)) ctx.arenaMatches.delete(pid);
   ctx.arenaBusySlots.delete(match.slot);
+  // Boarball's ball is a spawned entity with no other owner; it never outlives
+  // its match (checked before the busy slot frees so a re-match into the same
+  // slot never sees a stray ball).
+  if (match.boarball && match.boarball.ballEntityId >= 0) {
+    ctx.dropEntity(match.boarball.ballEntityId);
+  }
   for (const pid of arenaAllPids(match)) {
     const e = ctx.entities.get(pid);
     const ret = match.returns.get(pid);
@@ -860,6 +957,12 @@ export function returnFromArena(ctx: SimContext, match: ArenaMatch): void {
         ctx.fiestaRestoreChar(meta, e);
         ctx.clearFiestaAugments(meta, e);
       }
+    }
+    // Boarball's sport-kit swap is bout-only too, restore the real kit before
+    // resetForArena recomputes stats/abilities off it.
+    if (match.boarball) {
+      const meta = ctx.players.get(pid);
+      if (meta) ctx.boarballRestoreChar(meta, e);
     }
     resetForArena(ctx, e);
     e.pos = ctx.groundPos(ret.x, ret.z);

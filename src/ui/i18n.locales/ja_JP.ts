@@ -16,6 +16,11 @@ import type { TranslationKey } from '../i18n.catalog';
 export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.spectate.banner': '{name}を観戦中',
   'hudChrome.loot.chestTitle': '宝箱',
+  'hudChrome.lootRollGroup.pending': '待機中...',
+  'hudChrome.lootRollGroup.need': 'ニード',
+  'hudChrome.lootRollGroup.greed': 'グリード',
+  'hudChrome.lootRollGroup.pass': 'パス',
+  'hudChrome.lootRollGroup.aria': '{item} のグループロール状況',
   'hudChrome.spellbook.addToBarAria': '{name}をアクションバーに追加',
   'hudChrome.spellbook.removeFromBarAria': '{name}をアクションバーから削除',
   'hudChrome.nameplate.mob': '[{level}] {name}',
@@ -1334,6 +1339,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'abilityUi.tooltip.offGlobalCooldown': 'グローバルクールダウン外',
   'abilityUi.tooltip.friendlyTarget': '味方対象',
   'abilityUi.tooltip.enemyTarget': '敵対象',
+  'abilityUi.tooltip.selfOnly': '自分のみ',
   'abilityUi.tooltip.damageRange': '{min}から{max}',
   'abilityUi.tooltip.finisherDamage': '{base}にコンボポイントごと{perCombo}',
   'abilityUi.resources.mana': 'マナ',
@@ -2368,6 +2374,10 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.the_merchant.title': '世界市場の守り手',
   'entities.npcs.the_merchant.greeting':
     '世界市場へようこそ、{className}。王国中の冒険者から買うことも、自分の品を売ることもできます。',
+  'entities.npcs.the_ravenpost.name': 'レイヴンポスト',
+  'entities.npcs.the_ravenpost.title': '郵便の守り手',
+  'entities.npcs.the_ravenpost.greeting':
+    '手紙を出してください、{className}。私のカラスが、どこを旅していようとあなたの友を見つけ出します。同封の金貨も小包も、受け取られるまで安全に届けられます。',
   'entities.npcs.marshal_redbrook.name': 'レッドブルック元帥',
   'entities.npcs.marshal_redbrook.title': '町の元帥',
   'entities.npcs.marshal_redbrook.greeting':
@@ -2901,12 +2911,73 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     '門を抜けると、開けた大地が広がっています。道の西側にある休閑地は、家を建てるのに良さそうです。',
   'entities.npcs.verger_zebediah.name': '堂守のゼベダイア',
   'entities.npcs.verger_zebediah.title': '根の空洞の衛士',
+  'entities.readables.torn_ledger_page.title': '破れた台帳',
+  'entities.readables.torn_ledger_page.pages.0':
+    '根の空洞、休ませると記帳。休閑地、休ませると記帳。モスバンクの湖、こちらが記そうと記すまいと、勝手に休んでおる。台帳の求めるまま、署名し日付を入れた。',
+  'entities.readables.torn_ledger_page.pages.1':
+    '今季ここまでの集計。道の敷石を突き破って芽が三本、俺のどの暦にも載っておらん。抜いて消すのはやめた。インクが乾くより早う戻ってくるし、そのインクは安くなかった。',
+  'entities.readables.torn_ledger_page.pages.2':
+    '俺の後にこれを継ぐ者への覚書。猪を数えよ、狼を数えよ、日を数えよ。緑だけは数えるな。あれは数え返してくる。そして、こちらが止まったところでは止まらん。',
+  'entities.readables.keepers_marginalia.title': '守り手の欄外書き',
+  'entities.readables.keepers_marginalia.pages.0':
+    '賛美歌のすり切れた聖歌集の余白に残されていた。その筆跡は速い、歩きながら書く手が速いのと同じように。',
+  'entities.readables.keepers_marginalia.pages.1':
+    '狼どもは木立の際から休閑地を回る。いつも同じ輪、いつも右回り。長く回れば、回っている相手の形を覚える。俺もそうだ。そして大地も、そうなのだと思う。',
+  'entities.readables.keepers_marginalia.pages.2':
+    'これを読んでいるなら、あんたは歩みを止めたわけだ。俺がついぞ覚えられなかった、たった一つのことをな。少し休め。外域は逃げやせん。それがまあ、外域の厄介なところなんだが。',
   'entities.npcs.verger_zebediah.greeting':
     '堂守のゼベダイアだ。この外域を暦に沿って管理しておる、少なくとも努めてはおる。根の空洞は今季、休ませると記しておいた。だが猪どもは告示を読まん。緩んだ土に気をつけ、台帳には触れるな。',
+  // First-meeting click-through intro (PHAA-439). Voice matched to the
+  // existing Japanese register (formal, ecclesiastical, です/ます), keeping
+  // the "sole surviving keeper of a register" throughline.
+  'entities.npcs.verger_zebediah.introLines.0':
+    '堂守のゼベダイア。根の空洞の衛士、ただ今のところその職は私一人でございます。ほとんどの日はここにおります。それ以外の日は、私がここにいるように感じております。外域には定足数は要りません、要るのは記録だけでございます。',
+  'entities.npcs.verger_zebediah.introLines.1':
+    '私が暦を継いでおります。暦は私を継いではくれませんが、季節の折に触れて試みてまいります。根の空洞は今季、休むと記されておりますが、下の巣にはその通達が届いておりません。鷺ももう驚いたふりをやめてしまいました。これが現状です。苦情ではございません、苦情には証人が要りますので。',
+  'entities.npcs.verger_zebediah.introLines.2':
+    '祠の中には台帳がございます。触れぬよう。足元には猪の掘り返した緩い土が広がっております。両方にお気をつけを。もしも御用がお務めについてのことでございましたら、二つの仕事をご用意できます。どちらも小さくはございません、そのうち一つは三度目の書き直しを避けたい次第で。これが、そもそも何故あなた様にお声を掛けておるかの次第でございます。',
   'entities.npcs.sexton_faddick.name': '墓守のファディック',
+  'entities.items.willow_sprig.name': '柳の小枝一本',
+  'entities.npcs.shade.name': 'シェイド',
+  'entities.npcs.shade.title': '旅の者',
+  'entities.npcs.shade.greeting':
+    'ああ、あなたね。よければ座って、水は逃げやしないから。今日はもう食べた？食べなきゃだめよ。',
+  'entities.npcs.shade.introLines.0':
+    '雑用の最中を見られてしまったわね。この如雨露は気にしないで、ただの水よ。少し水をやりたいものは、いつだってあるものだから。',
+  'entities.npcs.shade.introLines.1':
+    '私？名乗るほどの者じゃないわ。シェイド。歩いて、手の足りないところで手を貸すだけ。ずいぶん疲れて見えるわね。よければ、少し座っていって。',
+  'entities.npcs.gate_bard.name': '吟遊詩人ハルデン',
+  'entities.npcs.gate_bard.title': '門前の弾き手',
+  'entities.npcs.gate_bard.greeting':
+    '一曲、銅貨一枚でどう？いらない？いいのよ、たいていの日はいらないと言われる。私はこの門のために弾くけれど、門は一度も財布に手を伸ばしてくれたことがない。',
+  'entities.npcs.goodwife_orla.name': 'オルラ',
+  'entities.npcs.goodwife_orla.title': 'かつて根の空洞の者',
+  'entities.npcs.goodwife_orla.greeting':
+    '座っていいのよ。たいていの人は通り過ぎる。堂守はずっと前に私の名を台帳から消したの。消された名は、静かにしていることを覚える。まだここにいると、誰にも思い出させないように。',
+  'entities.quests.q_have_you_eaten.title': 'もう食べた？',
+  'entities.quests.q_have_you_eaten.text':
+    '門のところに、銅貨で暮らす吟遊詩人がいてね、銅貨が入ったときにだけ食べる。そしてそれは、めったに入らない。温かいものが一杯、余分にあるの。彼のところへ届けてくれる？同情だなんて言わないで。余ったものだ、と言って。',
+  'entities.quests.q_have_you_eaten.completion':
+    'おかえり。彼は食べた？よかった。それでいいの。あなたは？……食べていないわね、見ればわかる。なら、座って。善いものであるのに、偉くある必要はないの。偉さは優しさではないのだから。さあ、食べて。',
+  'entities.quests.q_have_you_eaten.objectives.0.label': '温かい食事を吟遊詩人へ届けた',
+  'entities.quests.q_someone_your_own_size.title': '身の丈に合う相手を',
+  'entities.quests.q_someone_your_own_size.text':
+    '根の空洞の近くに、世に冷たくされてきた女がいるの。彼女の名は台帳から消され、人は消された名を、まるで聞こえないもののように扱う。しばらく、そばに座ってあげて。何かを直す必要はないの。ただ、彼女と同じ身の丈でいてあげて。',
+  'entities.quests.q_someone_your_own_size.completion':
+    'いてくれたのね。彼女は大したことじゃないと言うでしょう。でも大したことだった、本当よ。さあ、これをあなたに。私が好きな柳の小枝。何の役にも立たないわ。ただ、誰にも強いられていないのに優しくしてくれたことを、覚えているだけ。',
+  'entities.quests.q_someone_your_own_size.objectives.0.label': 'オルラのそばに少し座った',
   'entities.npcs.sexton_faddick.title': '放浪の番人',
   'entities.npcs.sexton_faddick.greeting':
     'ファディックだ。まだ守るべき祠があるうちは、墓守を務める。俺はどこにも留まらん、ただ守るだけだ。毎晩、狼が休閑地の群れの周りを回っておる。長く回れば、回っている相手の形を覚えるものだ。あれはただの群れのままでいてもらいたい。',
+  // First-meeting click-through intro (PHAA-439). Wandering-keeper voice,
+  // aphoristic, longer arc. Keeps the "I do not stay anywhere; I keep"
+  // throughline.
+  'entities.npcs.sexton_faddick.introLines.0':
+    'ファディックだ。まだ墓守を務めるべき祠があるうちは、墓守を務める。そうした祠は、以前より少なくなったがの。俺はどこにも留まらん、ただ守るだけだ。守ること、それが今でも俺のほぼ全てでござる。',
+  'entities.npcs.sexton_faddick.introLines.1':
+    '長く回れば、回っている相手の形を覚えるものだ。休閑地の狼どもは、私が通りかかるずっと前から、毎晩群れの周りを回っておった。群れの形はまだ覚えておらぬ、それが何と言うか。群れの方こそ、彼らを覚えておる、それ以上のことでござる。',
+  'entities.npcs.sexton_faddick.introLines.2':
+    'お茶でもお出ししたいところだが、薬罐は私が昨日いたどこかにございます。湖のほとりには、建物が建つのを待っておる静かな土地が広がっておる。闇で狼が働く土地には、何も根を下ろせぬ。さて、二つの仕事がある、一つは一人でやりたくない仕事だ。歩きながら話しませうぞ。',
   'entities.quests.q_root_hollow_boars.title': '根の空洞の猪',
   'entities.quests.q_root_hollow_boars.text':
     '暦によれば、根の空洞は今季休むはずだった。だが猪どもには通達しておらん。虫を追ってこの地を半分も掘り返し、もう鷺が羽ばたいても逃げん。これは俺個人として腹に据えかねる。五頭狩れば、この季を記録どおりに記せる。',
@@ -2917,7 +2988,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_root_hollow_boars_ii.text':
     'この職では認めるべきでないことを認めよう。五頭は楽観が過ぎた。下の巣からまだ湧いてくる。あと八頭で、記録を三度目に書き直さずに季を閉じられる。記録は書き直しを嫌う。俺もだ。',
   'entities.quests.q_root_hollow_boars_ii.completion':
-    '閉じた。署名した。綴じた。これで季は予定どおり進められる、暦を守る者が再び現れたのだからな。おまえは極めて小さな会衆を大いに助けた。念のため言っておくが、その会衆とは俺のことだ。',
+    '閉じた。署名した。綴じた。これで季は予定どおり進められる、暦を守る者が再び現れたのだからな。おまえは極めて小さな会衆を大いに助けた。念のため言っておくが、その会衆とは俺のことだ。この台帳自体は、この取り決めよりもさらに古い。会ったこともない手によって綴じられ、俺が数え上げるつもりのない数を記している。かつて、ここには実に几帳面な者がいたのだろう。俺はただ、その歩調に追いつこうとしているだけだ。',
   'entities.quests.q_root_hollow_boars_ii.objectives.0.label': '野生の猪を討伐',
   'entities.quests.q_fallow_acres_wolves.title': '畝を追われる狼たち',
   'entities.quests.q_fallow_acres_wolves.text':
@@ -3064,6 +3135,33 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_what_fills.dialog.refuse': 'いやだ。もう二度とあそこには下りない。',
   'entities.quests.q_what_fills.dialog.refuseReply':
     'ああ……あ、ああ、わかった。……わかったよ。それは……そうか。いや、もっともだ、友よ、もっともだ……壺も聞いてたし、ここだけの話、あいつも一目置いてると思うぜ。ほら、挿し木はとにかく持っていけ。一度は下りたんだ、それだけで大抵のやつより一回多い……',
+  'entities.quests.q_the_wavelength.title': '波長に乗って',
+  'entities.quests.q_the_wavelength.text':
+    '挿し木はもうお前のもんだ、友よ、だからその先の話をしようや……二つあるが、どっちも試練ってほどじゃない、どっちかって言うと紹介だな。まず、壺を越えてエルダー・ヤロウに会ってこい、あの人はもう一つの生き方、まったく違う遊び方を教えてくれる、ここを通る魂は誰だって、その扉が開いてるって知っとくべきだ……それから、戻ってきて何か食わせてくれ、残り火の球根でも肉片でもどっちでもいい、俺はいつだって空っぽで、壺はいつだって煙を欲しがってる。そこだけは、終わることがないんだよ、緑掌的に言えばな。',
+  'entities.quests.q_the_wavelength.completion':
+    'そら……一瞬、部屋が濃くなったの感じただろ？あの方が気づいたんだ。それが全部のからくりだよ、友よ――お前が俺に食わせて、俺が煙を焚いて、あの方がちょっとだけこっちに耳を傾ける。難しいことなんて何もない。これから先もずっと変わらんよ。残り火の球根でも肉片でも、余分に持ってたらいつでも来い、炉は暦なんて持っちゃいない……あとな。ホロウへようこそ。そこ、ちゃんと言ってなかったなって、今気づいた。',
+  'entities.quests.q_the_wavelength.objectives.0.label': 'エルダー・ヤロウに会った',
+  'entities.quests.q_the_wavelength.objectives.1.label': '炉で餌をやった',
+  'entities.quests.q_the_wavelength.dialog.complain':
+    'また使いっ走りか？穴から這い出たばっかりだぞ。',
+  'entities.quests.q_the_wavelength.dialog.complainReply':
+    'いやいや、聞いてくれ、これは洞窟仕事じゃない……今度のは楽な話で、歩いて、一回ちゃんと食わせるだけだ。俺が今まで頼んだ中で一番軽い頼みごとだよ、約束する、波長にかけてもな。',
+  'entities.quests.q_the_wavelength.dialog.refuse':
+    '自分の修業くらい自分で見つけるさ、ありがとよ。',
+  'entities.quests.q_the_wavelength.dialog.refuseReply':
+    '……そうか、まあいい。準備がまだの魂に、無理に学ばせることはできんからな。「まだ」じゃなくなったら、扉は開いてる……ほら、これは持ってけ、せめて顔を出してくれたお礼だ。',
+  'entities.quests.q_keep_him_lit.text':
+    '三回だ、友よ、それが数字だ……神聖な意味はない、ただ一つの恩を習慣に変えるにはちょうどいい数ってだけさ、習慣こそ俺が本当に信じてる宗教ってわけだ……戻ってきて、炉に三回、別々に餌をやってくれ、順番はどうでもいい、燠火球根でも洞窟の欠片でもどっちでもいい、そうすりゃお前が本当にここに留まるつもりなんだって信じられる、もっと大きな何かに向かう途中で立ち寄っただけじゃなくてな……',
+  'entities.quests.q_keep_him_lit.completion':
+    '三回で三回……お前はもう訪問者じゃない、友よ、お前は何かを生かし続けてるんだ、それが全部だと俺は思う、誰にも聞かれちゃいないがな……ほら。持っといてくれ、何の役にも立たない、ただ覚えてるだけさ、俺たちみんなと同じでな……',
+  'entities.quests.q_keep_him_lit.objectives.0.label': '炉で三回餌をやった',
+  'entities.quests.q_keep_him_lit.dialog.complain':
+    'もう一度餌をやったじゃないか。それじゃ足りないのか？',
+  'entities.quests.q_keep_him_lit.dialog.complainReply':
+    '一回は恩、友よ、三回は習慣だ、俺は恩ってやつに痛い目を見てきた……炉が必要としてるって話じゃない、炉は元気だ、俺がちゃんと世話してる、これはお前が自分の意志で戻ってくるかどうかって話だ、クエストの印に言われたからじゃなくてな……三回。急いで数えなくていい。',
+  'entities.quests.q_keep_him_lit.dialog.refuse': '三回に分けてなんてやらない。一回で十分だ。',
+  'entities.quests.q_keep_him_lit.dialog.refuseReply':
+    '……ああ。ああ、わかった、友よ、それも十分公平な線引きだ……なら、これでもとにかく持っといてくれ、厳密には稼いだもんじゃないが、俺が渡すもののほとんどもそうだしな、波長ってやつは、俺が装ってるほど几帳面に数えちゃいないんだ……',
   'hud.errors.silenced': '沈黙状態です！',
   'hud.pet.noPetFood': 'ペットに与える食べ物がありません。',
   'hud.pet.petEatsFoodOnly': 'ペットは食べ物しか食べられません。',
@@ -3166,6 +3264,13 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hud.options.npcVoices': 'NPCボイス',
   'hud.options.voiceVolume': 'ボイス音量',
   'entities.zones.eastbrook_vale.pois.8.label': 'ブライトウッドの林間',
+  'boarball.queue.join': 'ボアボールのキューに参加しました。あと3人のプレイヤーを待っています…',
+  'boarball.queue.leave': 'ボアボールのキューから離脱しました。',
+  'boarball.log.welcome': 'ボアボールへようこそ！シュートとパスで相手チームを上回れ。',
+  'boarball.log.kickoff': 'キックオフ！',
+  'boarball.log.over': '試合終了！ワールドに戻ります…',
+  'boarball.error.tooFar': 'ボールに近づいていません。',
+  'boarball.error.noTeammate': '味方がターゲットされていません。',
   'fiesta.augment.aug_apex_predator.desc':
     '物理ダメージ+40%、クリティカル+15%、与えたダメージの12%を回復。',
   'fiesta.augment.aug_apex_predator.name': '頂点捕食者',
@@ -3539,6 +3644,10 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.bags.searchPlaceholder': 'アイテムを検索',
   'hudChrome.bags.searchAria': '名前でバッグのアイテムを検索',
   'hudChrome.bags.noMatch': '条件に一致するアイテムはありません。',
+  'hudChrome.bags.capacityAria': 'バッグスロット使用数：{total}中{used}',
+  'hudChrome.bags.backpack': 'バックパック',
+  'hudChrome.bags.socketEmpty': '空のバッグスロット',
+  'hudChrome.bags.unequipHint': 'クリックしてこのバッグを外す',
   // Guide (/guide) localization.
   'guide.brand': 'World of ClaudeCraft',
   'guide.brandShort': 'ClaudeCraft',
@@ -3961,9 +4070,39 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     '古き深淵に棲む、鱗に覆われた蛇のような存在。希少で誇り高く、見た目よりもはるかに強大です。',
   'guide.family.dragonkin.name': 'ドラゴンキン',
   'guide.family.elemental.desc': '嵐や岩が命を得た存在。元素の力が強く渦巻く荒野に縛られています。',
+  'guide.hollowPage.intro':
+    '聖堂の門をくぐると花瓶のある広場に出る。すべての新たな英雄が目覚め、そして必ず戻ってくる場所だ。大陸全体で共有される一つの拠点であり、最初に出会う顔ぶれも、最初の依頼も、そして本当に必要な唯一の我が家もここにある。',
+  'guide.hollowPage.greeting':
+    '戻ってきたか、それは何よりだ……いくつか神聖な用事が溜まっている、前と同じ波長でな。ちょっとこっちへ……',
+  'guide.hollowPage.greeter': 'グリーンポー修道士、花瓶のそばで',
+  'guide.hollowPage.vaseHeading': '花瓶',
+  'guide.hollowPage.vaseBody':
+    '誰もが花瓶から始まる。ホロウが築かれた中心にある、古く耳を傾ける存在だ。エンバーバルブを一つ燃やす、洞窟モーセルを一つ与える、そんな小さな捧げ物を求め、受け取ると気づいているようだ。花瓶の下手には洞窟の入り口があり、地下聖堂へと続いている。両脇には自分だけの我が家を築ける区画が並ぶ。',
+  'guide.hollowPage.figuresHeading': '誰が世話をしているか',
+  'guide.hollowPage.figuresBody':
+    '花瓶を維持している二人がいて、最初の数分でどちらにも出会うことになる。',
+  'guide.hollowPage.greenpawBody':
+    '花瓶の唯一の世話役であり、最初の依頼を渡してくる人物。自称の肩書きであることを本人が真っ先に認めており、ホロウにおける案内役に一番近い存在だ。',
+  'guide.hollowPage.yarrowBody':
+    '第二の天職の指南役。どのクラスも彼女から副業を学ぶことができ、花瓶を挟んでグリーンポーの向かいに立っている。',
+  'guide.hollowPage.questsHeading': '最初の依頼',
+  'guide.hollowPage.questsBody':
+    'グリーンポー自身の依頼の連なりが最初にやることだ。花瓶のリズムを教えてくれる四つの短い用事をこなしてから、より広いホロウへと送り出される。',
+  'guide.hollowPage.questBurnsBody': '花瓶が光のために燃やす、洞窟育ちの球根をひとつかみ集める。',
+  'guide.hollowPage.questFillsBody':
+    'もっと静かな空腹を満たす、洞窟で育つモーセルを同じように集める。',
+  'guide.hollowPage.questWavelengthBody':
+    '花瓶の第二の天職への案内と、自分の手で餌をやることを教わる。',
+  'guide.hollowPage.questKeepLitBody': '一度きりの頼みを、三回続けて習慣に変える。',
+  'guide.hollowPage.housingHeading': '自分だけの我が家',
+  'guide.hollowPage.housingBody':
+    '花瓶の周りには{n}区画の宅地が並び、あなただけのホロウの片隅として、手に入れて飾り付けるのを待っている。',
+  'guide.hollowPage.shrineHeading': '地下聖堂',
+  'guide.hollowPage.shrineBody':
+    '花瓶のそばの洞窟の入り口は地下聖堂へと続く。ホロウ自身のインスタンスダンジョンであり、新たな英雄が初めてパーティで臨む本当の試練だ。',
   'guide.worldPage.heading': '世界',
   'guide.worldPage.intro':
-    'World of ClaudeCraftは、自らの足で歩いて渡る一続きの大地です。南から北へと3つのゾーンが連なっています。ファストトラベルはなく、その旅路こそが冒険の一部です。',
+    '花瓶から聖堂の門を出ると、ホロウの奥地に出る。新たな来訪者が屋外で最初の一歩を踏み出す静かな土地だ。さらに北へ3つのゾーンが南から北へと連なっているが、そこへの道はまだ開かれていない。とはいえそれらは実在し、待っている。',
   'guide.worldPage.hub': '拠点',
   'guide.worldPage.hollowReachesBlurb':
     '聖堂の門をすぐ越えた先の穏やかな土地で、新参者はFallow AcresとRoot Hollow周辺の狼や猪を相手に腕を磨く。',
@@ -3990,9 +4129,11 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     '近くにいるパーティメンバーは、討伐や目標の達成判定を共有します。だから一緒にクエストを進めれば、遅くなることはなく、むしろ速くなります。クエストをグループと共有することもできます。/share コマンドでクリックできるリンクとしてチャットに投稿すれば、条件を満たす近くのメンバーは誰でも、ワンクリックで同じクエストを受けられます。',
   'guide.questsPage.storyTitle': 'すべてを貫く一本の糸',
   'guide.questsPage.storyBody':
-    'イーストブルックでの最初のおつかいの頃から、死者に異変が起きています。あるカルトが暗躍しており、その足取りは北へ、すべてのゾーンを貫いて続いています。それを追えば、背後に誰がいるのかがわかるでしょう。',
+    '最初の糸口は花瓶のすぐそばにある、グリーンポー修道士自身の短い依頼の連なりだ。その先にはホロウの奥地の静かな用事があり、さらにその先には谷から山頂まで進軍する死のカルトを巡る、より長い物語がある。それは本物で完結した内容だが、新たな英雄がまだ歩ける道ではない。花瓶自身の依頼はホロウのページで、残りは来るべきものとして以下に記す。',
   'guide.questsPage.soloNote':
     'メインストーリーは各章のフィナーレまで完全にソロで進められます。そのフィナーレは五人用のダンジョンです。',
+  'guide.questsPage.sagaGateNote':
+    'この物語は本物で、完結した内容だ。北への道が再び開いた時に開放される、同じ道筋である。新たな英雄が今日歩き出す場所ではない。その場所は花瓶、ホロウの中にある。',
   'guide.dungeonsPage.heading': 'ダンジョンとレイド',
   'guide.dungeonsPage.intro':
     'オープンワールドだけでは物足りなくなったら、パーティを組んでインスタンスへ踏み込みましょう。インスタンスとは、あなたのグループだけのために用意されたダンジョンの専用コピーです。',
@@ -4624,10 +4765,23 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': '洞窟の肉片',
   'entities.items.emberbulb.name': '残り火の球根',
   'entities.items.first_cutting.name': '挿し木',
+  'entities.items.greenpaw_bead.name': '弾帯の数珠玉',
+  'entities.items.keeper_coal.name': '冷めることのない炭',
   'entities.items.witness_root_cincture.name': '証しの根の帯紐',
   'entities.items.shrine_diary_page.name': '破れた日記のページ',
   'entities.items.shrine_diary_page.flavorText':
     '……蝋燭で四十日を数えたところで、数えるのをやめた。ここの闇は今もあの方を忘れない、あの方がこの場所を忘れてしまっても。鷺が低く舞うのを見たら、灯守りに芯はまだ燃えていると伝えてくれ……',
+  'entities.items.linen_pouch.name': 'リネンの小袋',
+  'entities.items.travelers_knapsack.name': '旅人のナップサック',
+  'entities.items.wolfhide_satchel.name': '狼皮のサッチェル',
+  'entities.items.gravewoven_bag.name': '墓織りの鞄',
+  'entities.items.mistcallers_duffel.name': 'ミストコーラーのダッフルバッグ',
+  'entities.items.worn_prayer_token.name': 'すり減った祈りの証',
+  'entities.items.worn_prayer_token.flavorText':
+    '……片面が、自分のものではない親指に磨かれて滑らかになっている。ここに積まれた他の百枚近くと、同じ浅い溝が刻まれている、少なくともこの山はそう語っている。一本の親指で百枚も磨り減らせはしない。だが、大勢の親指がひとつの溝を磨くことなら、できる……',
+  'entities.items.tally_shard.name': '刻み跡の欠片',
+  'entities.items.tally_shard.flavorText':
+    '……五本ひと組で深く刻まれ、数え終えるたびに線で消されている。消された五本組が幾百とあり、それが途絶える、最後の一列だけは最後まで消されずに終わっている……',
   'entities.mobs.acolyte_tessa.name': '侍祭テッサ',
   'entities.mobs.deacon_varric.name': '助祭ヴァリック',
   'entities.mobs.reliquary_bonewalker.name': '蘇りし骨歩き',
@@ -4635,6 +4789,11 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_gravecall_acolyte.name': '墓呼びの侍祭',
   'entities.mobs.reliquary_ledger_wraith.name': '台帳の亡霊',
   'entities.mobs.reliquary_saintless_effigy.name': '聖人なき偶像',
+  'entities.items.heartwood_splinter.name': '心材の破片',
+  'entities.items.heartwood_splinter.flavorText':
+    '触れると温かい、それが生まれた木が動かなくなってからずっと。',
+  'entities.items.bloomcrown_pauldrons.name': '花冠の肩当て',
+  'entities.items.verdantguard_mantle.name': '常磐の守護者のマント',
   'entities.mobs.palefeeder.name': '蒼白喰らい',
   'entities.mobs.rootmaw.name': '根顎獣',
   'entities.mobs.the_witness_root.name': '証しの根',
@@ -4644,7 +4803,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.brother_greenpaw.name': '緑掌修道士',
   'entities.npcs.brother_greenpaw.title': '初代預言者（自称）',
   'entities.npcs.brother_greenpaw.greeting':
-    'よお、旅人。今日の壺はご機嫌かい、それとも俺の気のせいか……まあ来いよ、片付けなきゃならん神聖な用事が二つばかりある。ほとんど食い物のことだけどな。緑掌的にはそれも同じようなもんだ。',
+    'また来たか、助かるよ……壺が一晩中ため息ばかりついてるんだ、神聖な用事がいくつか溜まっててな、前回と同じ波長だ。ちょいと来い……',
   'entities.npcs.brother_greenpaw.introLines.0':
     'うっ……よお。よお。来たのに気づかんかった、俺はどっか別の場所にいてな、緑いっぱいのとこに……あんた、寝起きみたいな顔してるな、友よ。その顔ならよく知ってる、俺なんざ大抵の日はその顔だ……',
   'entities.npcs.brother_greenpaw.introLines.1':
@@ -4750,6 +4909,17 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'delveUi.tracker.module': 'モジュール {current}/{total}',
   'delveUi.tracker.objective': '目標',
   'delveUi.tracker.title': 'デルヴ',
+  'sim.bags.full': 'バッグがいっぱいです。',
+  'sim.bags.socketsFull': 'バッグスロットはすべて使用中です。',
+  'sim.bags.swapTooManyItems': 'アイテムが多すぎてそのバッグに交換できません。',
+  'sim.bags.removeTooManyItems': 'アイテムが多すぎてそのバッグを外せません。',
+  'sim.bags.tradeSpace': '取引失敗：バッグの空きが足りません。',
+  'sim.bank.cannotAfford': 'その銀行拡張の代金が足りない。',
+  'sim.bank.expansionCapped': 'これ以上銀行を拡張できない。',
+  'sim.bank.full': '銀行の保管庫がいっぱいだ。',
+  'sim.bank.noQuestItems': 'クエストアイテムは銀行に預けられない。',
+  'sim.bank.purchased': '追加の銀行スロットを購入した。',
+  'sim.bank.tooFar': '銀行員から離れすぎている。',
   'sim.delve.alreadyInDelve': 'あなたはすでにデルヴの中にいる。',
   'sim.delve.bossChest':
     'ボスが倒れる。守りの聖遺物庫の宝箱が祭壇にせり上がる。錠を開けて戦利品を手に入れろ。',
@@ -4807,6 +4977,22 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     '……手ぶらじゃな、お前さん。燃えるもんか、腹の足しになるもんを持ってきな、話はそれからだ。',
   'sim.hearth.noItems2': '持ってるのは良い心がけだけか……気持ちだけじゃ炉は焚けんのう。',
   'sim.hearth.tooFar': '緑掌修道士のそばに行かねば、彼に餌をやれんぞ。',
+  'sim.homestead.alreadyOwn': 'お前はすでに開拓地を持っている。',
+  'sim.homestead.claimed': 'この土地はお前のものだ。開拓地の権利が確定した。',
+  'sim.homestead.helpLine': '開拓地：/homestead、/homestead claim。',
+  'sim.homestead.outsideArea': 'そこは開拓地の外だ。道を西に進んだFallow Acresを試してみるといい。',
+  'sim.homestead.questGate': '緑掌修道士はまだお前を送り出していない。まずは彼の用事を済ませろ。',
+  'sim.homestead.readoutMine': 'お前の開拓地は ({x}, {z}) にある。',
+  'sim.homestead.readoutNoHomesteadHint':
+    'お前は開拓地を持っていない。ホロウ低地の適した場所に立ち、/homestead claim と入力しろ。',
+  'sim.homestead.readoutNoHomesteadQuest':
+    'お前は開拓地を持っていない。緑掌修道士の用事をすべて終えれば手に入る。',
+  'sim.homestead.tooCloseGate': '門に近すぎる。もっと離れろ。',
+  'sim.homestead.tooCloseGraveyard': '墓地に近すぎる。',
+  'sim.homestead.tooCloseOther': '他人の開拓地に近すぎる。',
+  'sim.homestead.tooCloseRoad': '道に近すぎる。',
+  'sim.homestead.tooCloseWater': '水場に近すぎる。',
+  'sim.homestead.tooCloseWildlife': '野生動物に近すぎる。周りを片付けるか、もっと離れろ。',
   'sim.house.alreadyOwn': 'あなたは既に空洞に住居を持っている。',
   'sim.house.claimed': 'この住居はあなたのものだ。/house place <スロット> <種類> で飾り付けよう。',
   'sim.house.cleared': 'スロット{slot}を空にした。',
@@ -5142,6 +5328,25 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'coldOpen.continue': 'つづける',
   'coldOpen.begin': 'はじめる',
   'coldOpen.skip': 'スキップ',
+  'mailUi.title': 'レイヴンポスト',
+  'mailUi.subtitle': '手紙の送受信',
+  'mailUi.close': '郵便を閉じる',
+  'mailUi.inbox': '受信箱',
+  'mailUi.compose': '手紙を書く',
+  'mailUi.noPostOffice': '郵便を利用するにはレイヴンポストに近づいてください。',
+  'mailUi.emptyInbox': '届いている手紙はありません。誰かが手紙を書くとカラスが届けてくれます。',
+  'mailUi.from': '{name} より',
+  'mailUi.noSubject': '(件名なし)',
+  'mailUi.take': '受け取る',
+  'mailUi.delete': '削除',
+  'mailUi.postageNote': '手紙の送付には{money}の郵便料金がかかります。',
+  'mailUi.recipient': '宛先',
+  'mailUi.subjectLabel': '件名',
+  'mailUi.bodyPlaceholder': '手紙を書いてください...',
+  'mailUi.send': '手紙を送る',
+  'mailUi.needRecipientOrText': '送信する前に宛先を指定し、本文を入力してください。',
+  'mailUi.openButton': 'レイヴンポストへ案内してください。',
+  'mailUi.openButtonAria': 'レイヴンポストの郵便ウィンドウを開く',
   // Event calendar (M16 non-Latin fill)
   'hudChrome.calendar.title': 'イベントカレンダー',
   'hudChrome.calendar.close': 'カレンダーを閉じる',
