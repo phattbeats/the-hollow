@@ -545,6 +545,11 @@ export function assembleModel(
       }
     });
   }
+  // PHAA-502 T2a: gate the built-in (baked) accessory meshes kept above by the
+  // wearer's equipped slots (helm mesh only while a helmet is worn, etc.). Runs
+  // after the `show` keep-filter so the toggle owns the final visibility of any
+  // node it names.
+  setBakedArmorVisibility(root, def, armorByItemId);
   // Weapons and held props are gameplay-readable silhouettes, not decoration.
   // Low tier still downgrades body/material cost, but keeps attachments visible.
   const attachments = visibleAttachmentsForGraphics(def);
@@ -646,6 +651,29 @@ export function setEquippedArmor(
     const bone = resolveBone(root, att.bone);
     if (!bone) continue;
     attachProp(root, bone, att, SWAP_ARMOR_TAG);
+  }
+}
+
+/** PHAA-502 T2a quick win: toggle the built-in (baked) accessory meshes on a model
+ *  by equipped slot. A node named in `def.bakedArmorSlots` is visible only while its
+ *  gating `EquipSlot` carries an equipped item, so equipping a helm reveals the
+ *  KayKit knight's baked Knight_Helmet mesh and unequipping hides it, with zero new
+ *  assets. Pure visibility flip on meshes already in the graph (kept via `show`): no
+ *  re-attach, no material pass, no caster rebuild, so it is cheap enough to run on
+ *  the per-frame equip diff. No-op for defs without `bakedArmorSlots` (every
+ *  non-player visual). A named node the GLB does not contain is skipped (the model
+ *  simply ships without the toggle), mirroring the missing-bone tolerance elsewhere. */
+export function setBakedArmorVisibility(
+  root: THREE.Object3D,
+  def: VisualDef,
+  armorByItemId: Partial<Record<EquipSlot, string>> | null | undefined,
+): void {
+  const map = def.bakedArmorSlots;
+  if (!map) return;
+  for (const [node, slot] of Object.entries(map)) {
+    const obj = resolveBone(root, node);
+    if (!obj) continue; // GLB renamed or dropped the node: no toggle, no crash
+    obj.visible = armorByItemId?.[slot] != null;
   }
 }
 

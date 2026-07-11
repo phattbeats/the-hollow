@@ -82,6 +82,16 @@ export interface VisualDef {
    *  `armorSlots` is non-empty: a missing entry silently skips that slot (safe but
    *  never swaps). Defs without armor slots keep this undefined. */
   armorByAttachIndex?: Record<number, EquipSlot>;
+  /** Baked (built-in) accessory node names, each gated by an `EquipSlot`: the node
+   *  is visible only while that slot carries an equipped item. Drives the male
+   *  KayKit roster's `show`-list meshes (Knight_Helmet, Knight_Cape) straight off
+   *  the wearer's `equippedItems` with ZERO new assets (PHAA-502 T2a), the quick
+   *  win ahead of the `armorSlots` attach-GLB path above. Each node MUST also be in
+   *  `show` so the assembler keeps it in the graph; this map only flips its
+   *  visibility (a pure `.visible` toggle, no re-attach or material pass). Players
+   *  only; undefined everywhere else (mobs/NPCs/forms have no equip state, so their
+   *  built-in accessories stay as authored). */
+  bakedArmorSlots?: Record<string, EquipSlot>;
   /** material tint: explicit color, 'entity' (use e.color), or none */
   tint?: number | 'entity';
   /** lerp amount toward the tint (default 0.4) */
@@ -393,7 +403,22 @@ export const VISUALS: Record<string, VisualDef> = {
     url: `${PLAYERS}/knight.glb`,
     height: HUMANOID_H,
     clips: kaykit(['1H_Melee_Attack_Chop', '1H_Melee_Attack_Slice_Diagonal']),
-    show: ['Knight_Helmet', 'Knight_Cape'], // v2 knight dropped the built-in Badge_Shield mesh
+    // v2 knight dropped the built-in Badge_Shield mesh. The helmet is TWO skinned
+    // meshes (dome + visor) and the cape is one; listed here so they are explicit
+    // even though skinned meshes are kept past the show-filter regardless (the
+    // filter only culls non-skinned nodes).
+    show: ['Knight_Helmet', 'Knight_HelmetVisor', 'Knight_Cape'],
+    // PHAA-502 T2a: the built-in accessories are now driven by the wearer's gear
+    // instead of being always-on. The helmet slot reveals BOTH helmet meshes
+    // (dome + visor); leave Knight_Head so a bare head still shows under it. The
+    // cape reads off the chest piece since EQUIP_SLOTS has no back/cloak slot
+    // (src/sim/types.ts), so an armored warrior gets the cloak and a bare one
+    // loses it.
+    bakedArmorSlots: {
+      Knight_Helmet: 'helmet',
+      Knight_HelmetVisor: 'helmet',
+      Knight_Cape: 'chest',
+    },
     attach: [{ url: `${WEAPONS}/sword_1handed.glb`, bone: 'handslot.r' }],
     weaponSlots: [0],
   },

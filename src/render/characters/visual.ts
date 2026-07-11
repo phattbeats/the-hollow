@@ -19,6 +19,7 @@ import {
   assembleModel,
   ensureSkinTexture,
   prepareVisual,
+  setBakedArmorVisibility,
   setEquippedArmor,
   setHeldWeapon,
   skinEmissiveTexture,
@@ -68,14 +69,17 @@ function shadowOnlyMat(): THREE.Material {
 
 /** Shallow-equality check for the equipped-armor Partial<Record<EquipSlot, string>>.
  *  Faster than JSON.stringify on every setArmor call (the map is small but lives
- *  on the per-frame diff path). Keys in `a` but not in `b` count as differences;
- *  extra keys in `b` are ignored (the entity's equippedItems can carry slots the
- *  visual doesn't have). */
+ *  on the per-frame diff path). SYMMETRIC: a slot present in one map and absent in
+ *  the other (an unequip) counts as a difference, so the length check comes first;
+ *  without it, going from `{chest: x}` to `{}` (unequip the chest) would read as
+ *  equal and skip the re-render that hides the baked cape (PHAA-502 T2a). */
 function armorMapEquals(
   a: Partial<Record<EquipSlot, string>>,
   b: Partial<Record<EquipSlot, string>>,
 ): boolean {
-  for (const k of Object.keys(a) as EquipSlot[]) {
+  const ak = Object.keys(a) as EquipSlot[];
+  if (ak.length !== Object.keys(b).length) return false;
+  for (const k of ak) {
     if (a[k] !== b[k]) return false;
   }
   return true;
@@ -517,14 +521,18 @@ export class CharacterVisual {
     this.applyVisualMaterials();
   }
 
-  /** Sibling of setWeapon for armor: swap the worn accessory models at runtime
-   *  (gear equip/unequip). The map mirrors the entity's `equippedItems`: keys are
-   *  the EquipSlots the wearer covers, values are the equipped item ids. No-op if
-   *  unchanged, or if this visual has no `armorSlots` (mobs/NPCs/forms stay fixed
-   *  until T2a authors the per-class defaults). Mirrors setWeapon: re-attach the
-   *  props, re-run the shared material pass, re-snapshot the original-material
-   *  map, then re-apply any active ghost/soul-rend overlay. Cheap (a few prop
-   *  clones) and keeps the mixer/animation state, unlike a full visual rebuild. */
+  /** Sibling of setWeapon for armor: reflect the wearer's `equippedItems` on the
+   *  model at runtime (gear equip/unequip). Two independent paths, either or both
+   *  active per class:
+   *   - baked toggle (PHAA-502 T2a): flip the visibility of built-in accessory
+   *     meshes gated by `bakedArmorSlots` (Knight_Helmet, Knight_Cape). A pure
+   *     `.visible` flip on meshes already in the graph, so no re-attach, material
+   *     pass, or caster rebuild is needed.
+   *   - attach swap (`armorSlots`, T1): re-attach the per-slot armor GLBs, then
+   *     re-run the shared material pass, re-snapshot the original-material map, and
+   *     re-apply any active ghost/soul-rend overlay (the model graph changed).
+   *  No-op if unchanged, or if the visual has neither path (mobs/NPCs/forms).
+   *  Cheap and keeps the mixer/animation state, unlike a full visual rebuild. */
   setArmor(armorByItemId: Partial<Record<EquipSlot, string>> | null): void {
     // Treat a "never set" field the same as an empty map; both render the class
     // default attach with no swap on top.
@@ -532,6 +540,9 @@ export class CharacterVisual {
     if (next === this.armorByItemId) return;
     if (next && this.armorByItemId && armorMapEquals(next, this.armorByItemId)) return;
     this.armorByItemId = next;
+    // Baked-mesh path: independent of the attach swap below and free of any
+    // material/caster work, so it runs for every def that gates built-in meshes.
+    if (this.def.bakedArmorSlots) setBakedArmorVisibility(this.model, this.def, next);
     if (!this.def.armorSlots?.length) return;
     setEquippedArmor(this.model, this.def, next);
     applyMaterials(
