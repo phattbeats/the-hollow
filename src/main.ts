@@ -141,6 +141,7 @@ import {
 } from './ui/i18n';
 import { defaultIconPrewarmEntries, prewarmIconCache } from './ui/icon_prewarm';
 import { iconDataUrl } from './ui/icons';
+import { applyNativeDeviceLanguage } from './ui/native_language';
 import { createMetricsSampler } from './ui/perf_metrics_sampler';
 import { PerfOverlay } from './ui/perf_overlay';
 import { type PerfOverlayConfig, PerfOverlayConfigStore } from './ui/perf_overlay_config';
@@ -211,6 +212,23 @@ function isNativeRuntime(): boolean {
   const cap = (window as unknown as { Capacitor?: { isNativePlatform?: () => boolean } }).Capacitor;
   return cap?.isNativePlatform?.() === true;
 }
+
+function localStorageOrNull(): Storage | null {
+  try {
+    return window.localStorage;
+  } catch {
+    return null;
+  }
+}
+
+// On native builds with no explicit locale choice, auto-select the device language once.
+applyNativeDeviceLanguage({
+  native: isNativeRuntime(),
+  locationSearch: window.location.search,
+  storage: localStorageOrNull(),
+  languages: navigator.languages,
+  language: navigator.language,
+});
 
 const SITE_URL = 'https://thehollow.world/';
 
@@ -311,6 +329,8 @@ function userFacingApiError(err: unknown): string {
     return t('errors.api.notAuthenticated');
   if (normalized === 'this account has been banned.') return t('errors.api.accountBanned');
   if (normalized === 'character already in world') return t('errors.api.alreadyInWorld');
+  if (normalized === 'too many characters on this account are already in the world')
+    return t('errors.api.tooManyOnline');
   if (normalized === 'character taken over') return t('errors.api.takenOver');
   if (normalized === 'this character must be renamed before entering the world.')
     return t('errors.api.renameBeforeEntering');

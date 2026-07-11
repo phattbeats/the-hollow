@@ -621,6 +621,20 @@
     outline: 3px solid var(--color-border-focus);
     outline-offset: 2px;
   }
+  /* Branching-dialogue choice buttons (PHAA-562): a qd-list-item with a tone
+     accent on the left edge. The accent is decorative only; the choice's own
+     spoken line carries the meaning, so tone is never color-only. */
+  .qd-choice {
+    border-left: 3px solid var(--gold-dim);
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  .qd-choice-positive {
+    border-left-color: var(--color-text-success);
+  }
+  .qd-choice-negative {
+    border-left-color: var(--color-text-error);
+  }
   .btn {
     background: linear-gradient(#8a3326, #5a1d12 55%, #471409);
     color: #ffd9a0;

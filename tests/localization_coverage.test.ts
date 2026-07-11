@@ -513,6 +513,10 @@ describe('i18n Localization Key Coverage', () => {
       const { ownerId, index } = parseIndexedEntry(entry.id, 'introLines');
       return { kind: 'npcIntro', id: ownerId, lineIndex: index, field: 'introLine' };
     }
+    if (entry.kind === 'npcJournal') {
+      const { ownerId, index } = parseIndexedEntry(entry.id, 'journalLines');
+      return { kind: 'npcJournal', id: ownerId, lineIndex: index, field: 'journalLine' };
+    }
     if (entry.kind === 'quest') {
       return {
         kind: 'quest',
@@ -560,6 +564,16 @@ describe('i18n Localization Key Coverage', () => {
       }
       const { ownerId, index } = parseIndexedEntry(entry.id, 'pages');
       return { kind: 'readable', id: ownerId, pageIndex: index, field: 'readablePage' };
+    }
+    if (entry.kind === 'npcDialog') {
+      const marker = entry.field === 'npcLine' ? '.dialogNode.' : '.dialogChoice.';
+      const markerIndex = entry.id.lastIndexOf(marker);
+      if (markerIndex < 0) throw new Error(`Malformed dialog entity id: ${entry.id}`);
+      const npcId = entry.id.slice(0, markerIndex);
+      const key = entry.id.slice(markerIndex + marker.length);
+      return entry.field === 'npcLine'
+        ? { kind: 'npcDialog', npcId, node: key, field: 'npcLine' }
+        : { kind: 'npcDialog', npcId, choice: key, field: 'choiceLabel' };
     }
     throw new Error(`Unexpected entity kind: ${entry.kind}`);
   }
@@ -964,6 +978,7 @@ describe('i18n Localization Key Coverage', () => {
       Object.keys(MOBS).length +
       Object.keys(NPCS).length * 3 +
       Object.values(NPCS).reduce((sum, npc) => sum + (npc.introLines?.length ?? 0), 0) +
+      Object.values(NPCS).reduce((sum, npc) => sum + (npc.journalLines?.length ?? 0), 0) +
       Object.keys(QUESTS).length * 3 +
       Object.values(QUESTS).reduce((sum, quest) => sum + quest.objectives.length, 0) +
       Object.values(QUESTS).reduce((sum, quest) => sum + (quest.offerDialog ? 4 : 0), 0) +
@@ -973,7 +988,15 @@ describe('i18n Localization Key Coverage', () => {
       Object.keys(DELVES).length * 3 +
       // Readables (PHAA-552): one title + one entry per page, each readable.
       Object.keys(READABLES_BY_ID).length +
-      Object.values(READABLES_BY_ID).reduce((sum, r) => sum + r.pages.length, 0);
+      Object.values(READABLES_BY_ID).reduce((sum, r) => sum + r.pages.length, 0) +
+      // Branching NPC dialogue (PHAA-562): one npcLine per node, one
+      // choiceLabel per choice across every node, for each NPC with a tree.
+      Object.values(NPCS).reduce((sum, npc) => {
+        const tree = npc.dialogTree;
+        if (!tree) return sum;
+        const nodes = Object.values(tree.nodes);
+        return sum + nodes.length + nodes.reduce((n, node) => n + node.choices.length, 0);
+      }, 0);
     expect(worldEntries).toHaveLength(expectedWorldCount);
 
     for (const lang of supportedLanguages) {

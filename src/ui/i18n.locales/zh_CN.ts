@@ -663,6 +663,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'errors.api.accountBanned': '此账号已被封禁。',
   'errors.api.accountSuspended': '此账号被停用至 {date}。',
   'errors.api.alreadyInWorld': '角色已在世界中。',
+  'errors.api.tooManyOnline': '同一时间只能有一个角色在世界中。',
   'errors.api.takenOver': '你的角色已被另一个会话接管。',
   'errors.api.renameBeforeEntering': '此角色必须先改名才能进入世界。',
   'errors.api.renameNotPermitted': '不允许为此角色改名。',
@@ -1304,6 +1305,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'questUi.log.abandonCancel': '取消',
   'questUi.log.suggestedPlayers': '建议玩家数：{count}',
   'questUi.dialog.close': '关闭任务对话',
+  'questUi.dialog.chat': '聊一会儿吧。',
   'questUi.dialog.greetingFallback': '你好。',
   'questUi.dialog.availableQuestAria': '可接任务：{name}',
   'questUi.dialog.readyQuestAria': '可交付任务：{name}',
@@ -2801,6 +2803,24 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
     '你若读到这里，说明你停下了脚步，那正是我这辈子唯一没学会的事。歇一会儿吧。外域还会在这儿。而这，恰恰就是它最麻烦的地方。',
   'entities.npcs.verger_zebediah.greeting':
     '司事泽比迪亚。我给外域记着一本历书，至少一直在努力记。根穴这一季本该休养，可野猪没读那张告示。留神脚下的浮土，还有，别碰我的登记簿。',
+  // First-meeting click-through intro (PHAA-439). Voice matched to the
+  // existing Simplified Chinese register (literary classical, ecclesiastical),
+  // keeping the "sole surviving keeper of a register" throughline.
+  'entities.npcs.verger_zebediah.introLines.0':
+    '司事泽比迪亚。根穴守卫，依一纸任命而来，那纸任命眼下也就是我本人。大多数日子你在这里便能寻到我；其余的日子，我也在这里寻到自己。外域不需法定人数，只需一本登记簿。',
+  'entities.npcs.verger_zebediah.introLines.1':
+    '我替这本历书做主，历书却并不替我做主，不过某些季里它也试着来过。根穴这一轮本记作休养，底下的兽穴却未收到那张告示，苍鹭也早不再装作吃惊。这便是现状。这并非抱怨，抱怨是要有旁人的。',
+  'entities.npcs.verger_zebediah.introLines.2':
+    '神龛之内有一本登记簿，切莫去碰。脚下是野猪拱过的浮土，二者皆请留神。若是为守土之事而来，我可托付两桩差事，都不算小，其中一桩我实在不愿再改第三回。这便是我为何同你搭话的缘由。',
+  // Persistent journal/lore (PHAA-480). Same literary classical register as
+  // the intro, longer arc: the "簿记得住行人所忘" throughline plus the heron
+  // and the room beneath the shrine.
+  'entities.npcs.verger_zebediah.journalLines.0':
+    '这本登记簿比苍鹭更老。第一笔并非我所书，最后一笔也并非我所能书；这便是一桩无人等候承继的职务，所能给我的慰藉。外域曾是一条通衢。有人沿湖道携盐而上，归时携一桩无以名状之物而去，我既不便过问，便也未曾过问。簿中记其来、记其去，亦记一段长久无人来往的空白。那段空白，我也一并看顾。',
+  'entities.npcs.verger_zebediah.journalLines.1':
+    '苍鹭比簿更老，簿对这点心有不悦。它不说出口。也不必说。我曾见它单足而立，熬过那一季，梨树尽枯，它连眼也不曾眨一眨，我便将此看作它对某事的一种态度，虽从未被告知究竟是哪一桩。神龛底下有一间我不入内的房。苍鹭入内。它做些什么，我不问；我在上头做些什么，它也不问。这一桩彼此的默契，比你我任何一人都更长久。',
+  'entities.npcs.verger_zebediah.journalLines.2':
+    '读到此处之人，非好奇即避难，二者我皆敬重。长篇记录的简短版是：此地记得它曾是什么，亦记得它将成什么，二者之间的差，便是这桩差事。记，是我的分内之事。将成什么、其主是谁，我无从得知。我书以「待定」二字，便去歇了。簿允许待定，不允许遗忘。',
   'entities.npcs.sexton_faddick.name': '守墓人法迪克',
   'entities.items.willow_sprig.name': '一段柳枝',
   'entities.npcs.shade.name': '莎德',
@@ -2834,6 +2854,24 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.sexton_faddick.title': '流浪的守护者',
   'entities.npcs.sexton_faddick.greeting':
     '法迪克。哪里还有神龛需要守墓人，我就在哪儿守。我从不在一处久留，只管看顾。狼群夜夜绕着闲田庄的羊群打转，绕得久了，便摸清了所绕之物的形状。最好让它一直只是群羊。',
+  // First-meeting click-through intro (PHAA-439). Wandering-keeper voice,
+  // aphoristic, longer arc. Keeps the "I do not stay anywhere; I keep"
+  // throughline.
+  'entities.npcs.sexton_faddick.introLines.0':
+    '法迪克。哪里还有神龛要我来做守墓人，我便做守墓人，只是这样的神龛已比从前少了。我从不在一处久留，只管看顾。看顾这一桩，便是我如今所剩的几乎全部。',
+  'entities.npcs.sexton_faddick.introLines.1':
+    '绕得久了，便摸清了所绕之物的形状。闲田庄的狼群在我路过之前便夜夜绕着羊群打转，至今仍未摸清羊群的形状，这也算是一桩事。倒是羊群已把它们摸清，那便是更大的事。',
+  'entities.npcs.sexton_faddick.introLines.2':
+    '本想请你喝杯茶，可茶壶留在我昨日待过的地方了。湖边有一片安静的地，等着人起屋；狼群在暗中出没之地，什么都扎不下根来。喏，两桩差事，其中一桩我不想独个儿去办。边走边说罢。',
+  // Persistent journal/lore (PHAA-480). Wandering-keeper voice, aphoristic,
+  // longer arc. The "地比我们记得更牢" throughline and the slow time under
+  // the stones.
+  'entities.npcs.sexton_faddick.journalLines.0':
+    '我所看顾的地方，记在脑中便好，因纸易主比地易主来得快。神龛居多，皆是已无人奉祀之神龛。闲田庄在册。湖东那无名池塘亦在册。还有一柱立石，风花了一百年才把它磨圆。册子不长，在要紧处，册子便是全部。一地之留存，不在久留，而在仍是那个记得它曾在此的人。',
+  'entities.npcs.sexton_faddick.journalLines.1':
+    '地比我们记得更牢。这便是全部的交换。地上之人走不过两代，便忘了自己本来的名，又起个新的，照旧叫它；地下之物一无所忘，只管等。石头底下有一种慢时辰。我听过一次，没答，因为一答，那慢东西便寻到了门。我携着不答的钥匙，非金属之钥，是习惯，习比重一些。',
+  'entities.npcs.sexton_faddick.journalLines.2':
+    '狼并非问题，狼只是症候；问题在于那桩使地静到狼都以为是自己的事。这样的事我见过，一处之地朝错的方向静下去，修法向来只有一种：以对的噪声再把它弄响，而这噪声便是人，这便是为何有人去建。你或要问，我何德何能，担得这些。我是那仍走着的人，这便是全部的资格。够也不够，够与不够之间的那段空隙，我已同它讲和。',
   'entities.quests.q_root_hollow_boars.title': '根穴野猪',
   'entities.quests.q_root_hollow_boars.text':
     '按历书，根穴这一季本该休养。可没人通知野猪。它们追着虫子把这里拱翻了一半，如今连苍鹭扑翅都吓不走，这一点我很往心里去。杀五头，我才好把这一季照实记下。',
@@ -2920,6 +2958,15 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.items.crypt_ritual_circle.name': '仪式法阵',
   'entities.items.kings_signet.name': '国王印戒',
   'entities.items.event_skin_token.name': '神秘外观宝箱',
+  'entities.items.flint_amber_pick.name': '燧石琥珀镐',
+  'entities.items.bonewood_amber_pick.name': '骨木琥珀镐',
+  'entities.items.starleaf_amber_pick.name': '星叶琥珀镐',
+  'entities.items.flint_bark_axe.name': '燧石树皮斧',
+  'entities.items.bonewood_bark_axe.name': '骨木树皮斧',
+  'entities.items.starleaf_bark_axe.name': '星叶树皮斧',
+  'entities.items.flint_spore_sickle.name': '燧石孢子镰刀',
+  'entities.items.bonewood_spore_sickle.name': '骨木孢子镰刀',
+  'entities.items.starleaf_spore_sickle.name': '星叶孢子镰刀',
   'entities.mobs.fallen_captain_aldren.name': '堕落队长奥德伦',
   'entities.mobs.corrupted_priest_malric.name': '腐化祭司马尔里克',
   'entities.mobs.deathstalker_voss.name': '死亡潜猎者沃斯',
@@ -2973,7 +3020,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_what_burns.text':
     '通灵淡了，朋友……我干得跟骨头一样，频率就快断了。神龛下面有种球茎，烧得又慢又干净，余烬球茎，长在光照不到的地方，这洞穴自己跟自己开的玩笑……给我带五颗回来。留意那些苍白的家伙，它们冲着你的灯笼来，不是冲着你。大概吧。',
   'entities.quests.q_what_burns.completion':
-    '这才是上等的烟啊……你感觉到了吗？屋里越来越浓了。她随时都要探过身来了，我在频率上都能感觉到……的确如此。',
+    '这才是上等的烟啊……你感觉到了吗？屋里越来越浓了。他随时都要探过身来了，我在频率上都能感觉到……的确如此。',
   'entities.quests.q_what_burns.objectives.0.label': '已采集余烬球茎',
   'entities.quests.q_what_fills.title': '饱腹之物',
   'entities.quests.q_what_fills.text':
@@ -3111,6 +3158,13 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hud.options.npcVoices': 'NPC语音',
   'hud.options.voiceVolume': '语音音量',
   'entities.zones.eastbrook_vale.pois.8.label': '明木林地',
+  'boarball.queue.join': '你加入了野猪球队列。等待另外三名玩家…',
+  'boarball.queue.leave': '你离开了野猪球队列。',
+  'boarball.log.welcome': '欢迎来到野猪球！射门、传球，比分超越对方球队。',
+  'boarball.log.kickoff': '开球！',
+  'boarball.log.over': '比赛结束！正在返回世界…',
+  'boarball.error.tooFar': '你离球不够近。',
+  'boarball.error.noTeammate': '未选定队友目标。',
   'fiesta.augment.aug_apex_predator.desc': '+40%物理伤害，+15%暴击，并将造成伤害的12%转化为治疗。',
   'fiesta.augment.aug_apex_predator.name': '顶级掠食者',
   'fiesta.augment.aug_arcane_surge.desc': '+25%法术伤害和+10%暴击。把他们点燃。',
@@ -3859,9 +3913,35 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
     '源自远古深渊、披着鳞甲、形似巨蛇的造物。它们罕见、骄傲，远比看上去更强大。',
   'guide.family.dragonkin.name': '龙类',
   'guide.family.elemental.desc': '由风暴与岩石化成的活物，被束缚于元素之力旺盛的荒野之地。',
+  'guide.hollowPage.intro':
+    '穿过神殿之门便是花瓶所在的空地：每位新英雄苏醒之处，也是你始终会回来的地方。这里是共享之地，整个大陆共用的一个据点，也是你初见的面孔、初次的任务，唯一真正需要的家。',
+  'guide.hollowPage.greeting':
+    '你回来了，那可真是件幸事……有几桩神圣的差事在等你呢，跟上次一个频道。过来一下……',
+  'guide.hollowPage.greeter': '格林保修士，于花瓶旁',
+  'guide.hollowPage.vaseHeading': '花瓶',
+  'guide.hollowPage.vaseBody':
+    '所有人都从花瓶开始：这个古老而有灵性的存在，正是幽谷得以建立的核心。它渴求些微小的供奉，燃一颗余烬球，或喂一份洞穴嫩肉，似乎都能有所察觉。花瓶下坡处，一处洞口通向地窟深处；两侧则留着地块，供你建造属于自己的家。',
+  'guide.hollowPage.figuresHeading': '谁在照看它',
+  'guide.hollowPage.figuresBody': '有两个人维系着花瓶的运转，你在最初的几分钟内便会与他们相遇。',
+  'guide.hollowPage.greenpawBody':
+    '花瓶唯一的照看者，也是最早派发差事的人。他自封头衔，也是第一个承认这一点的人，算是幽谷里最接近向导的存在。',
+  'guide.hollowPage.yarrowBody':
+    '第二职业的传授者：每个职业都能向她学习一门副业，她的位置正好与格林保隔瓶相望。',
+  'guide.hollowPage.questsHeading': '你最初的差事',
+  'guide.hollowPage.questsBody':
+    '格林保自己的任务链是你要做的第一件事：四桩短小的差事，教会你花瓶的节奏，然后送你踏入更广阔的幽谷。',
+  'guide.hollowPage.questBurnsBody': '花瓶焚烧以取光的洞穴产球茎，一次采集一把。',
+  'guide.hollowPage.questFillsBody': '能填饱另一种更安静饥饿的洞穴嫩肉，采集方式相同。',
+  'guide.hollowPage.questWavelengthBody': '引荐花瓶的第二职业，并教你亲手喂养它。',
+  'guide.hollowPage.questKeepLitBody': '把一次的恩惠变成一种固定的习惯，连续三次。',
+  'guide.hollowPage.housingHeading': '属于你自己的家',
+  'guide.hollowPage.housingBody': '{n}块宅地环绕着花瓶，等待被认领，装点成你在幽谷中私有的一角。',
+  'guide.hollowPage.shrineHeading': '地窟深处',
+  'guide.hollowPage.shrineBody':
+    '花瓶旁的一处洞口通向地窟深处，那是幽谷自身的副本地下城，也是每位新英雄组队面对的第一场真正考验。',
   'guide.worldPage.heading': '世界',
   'guide.worldPage.intro':
-    'World of ClaudeCraft 是一片连绵不绝、需你徒步穿越的大陆，三大区域由南向北依次铺展。这里没有快速旅行，因此旅途本身便是冒险的一部分。',
+    '穿过花瓶的神殿之门，你便置身幽谷腹地：新人踏出户外第一步的宁静之地。再往北还有三个区域，由南向北依次铺展；通往那里的道路尚未开启，但它们是真实存在、静候你的到来的。',
   'guide.worldPage.hub': '大本营',
   'guide.worldPage.hollowReachesBlurb':
     '紧邻神殿门外的平静之地，新人在Fallow Acres与Root Hollow一带与野狼、野猪交手磨练身手。',
@@ -3886,9 +3966,11 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
     '附近的队员会共享击杀和目标进度，因此组队做任务只会更快，绝不会更慢。你还可以与你的小队分享任务：用 /share 命令把它作为可点击的链接发到聊天中，任何符合条件的附近队员都能一键接取同一个任务。',
   'guide.questsPage.storyTitle': '一条主线贯穿始终',
   'guide.questsPage.storyBody':
-    '从你在东溪镇的第一批差事起，死者便有了异样。一个邪教正在暗中行动，线索向北贯穿每一个区域。循迹而行，揭开幕后黑手的真面目。',
+    '你最初的线索，是格林保修士自己那条短短的任务链，就在花瓶旁。往外则是幽谷腹地里那些安静的差事，再往外，还有一段更长的故事：一个邪教从山谷一路作乱到山巅，真实且已完成，只是新英雄眼下还走不到那条路。花瓶自己的任务见幽谷页面，其余的则列在下方，作为即将到来的内容。',
   'guide.questsPage.soloNote':
     '主线剧情一直到每个章节的高潮之前都可单人完成，而那场高潮是一座五人地下城。',
+  'guide.questsPage.sagaGateNote':
+    '这段传奇是真实、已完成的内容，正是道路重新北通之后开启的同一条线索。它并非新英雄如今的起点；起点是花瓶，在幽谷之中。',
   'guide.dungeonsPage.heading': '地下城与团队副本',
   'guide.dungeonsPage.intro':
     '当开放世界已不能满足你时，召集一支队伍，踏入副本：一份专为你的队伍生成的地下城私有副本。',
@@ -4522,6 +4604,37 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
     '我叫绿掌。绿掌修士，初代先知，自封的，这瓮会告诉你这头衔一文不值，他说得没错，可总得有人照看他不是……',
   'entities.npcs.brother_greenpaw.introLines.2':
     '这地方就是空穴。从前是一整个部族，热闹得很，听他们说的，如今嘛，多半就剩我、这瓮，还有那洞里头喘气的那些玩意儿……罢了。他饿了，我也饿了，同一个频道。过来吧，有几件神圣的事儿得办。',
+  'entities.npcs.brother_greenpaw.dialogNode.hearth':
+    '又回到瓶子这儿了，朋友……他今天很安静，要么是听得入神，要么是在闹别扭，我从来分不清是哪一种。空谷这阵子待你可还好？',
+  'entities.npcs.brother_greenpaw.dialogNode.warmed':
+    '……这话落得轻柔，朋友，比你想的还要轻柔。大多数人打这儿路过，都在找出口。可你却总在寻这地方的中间，那可比你以为的要难得多。',
+  'entities.npcs.brother_greenpaw.dialogNode.vase':
+    '跟往常一样。他想要香烟，想要人照料，想要有人坐得近近的，把这份寂静当成一场交谈来陪着他……嘿，要是你换个眼光去看，那还真就是一场交谈。这差不多就是全部的信仰了。',
+  'entities.npcs.brother_greenpaw.dialogNode.faith':
+    '信仰这词儿太重了，朋友。我只是照料。照料是我这双手能做的事。倾听我留给他，就算他没在听，嗯，那香烟闻着终归还是香的……',
+  'entities.npcs.brother_greenpaw.dialogNode.stung':
+    '……唉。是啊。是啊，也许就是这样。在那些冷清的早晨，瓶子不叹气，也没人走上这条小路的时候，我自己也这么想过……可我还在这儿呢，朋友，所以它不只是这样。至少对我来说不是。',
+  'entities.npcs.brother_greenpaw.dialogNode.mended':
+    '没事的，朋友。这样的地方，时不时招来一句重话也是应该的，我不装作不是这样。可你还是回来把话说软了，这比乱葬岗肯做的要多得多。咱俩两清了，你和我。',
+  'entities.npcs.brother_greenpaw.dialogNode.tribe':
+    '从前是个大部族，那些古老的刻痕是这么说的。黑暗里刻着一排排计数的划痕，五道五道地划掉，比任何一双手能划出的都多……他们让他亮了好长好长一段日子，才轮到只剩我一个。我不知道他们去了哪儿，朋友。我只知道，这灯芯不能在我看守的时候熄灭。',
+  'entities.npcs.brother_greenpaw.dialogNode.confide':
+    '……你这份好意难得，我就领它薄薄的一片吧。说实话，我跟你聊，一半是因为瓶子不答话，一半是因为我怕有那么一天，再没人走上这条小路了。所以，谢谢你走上来。要说什么是神圣的，朋友，那就是它了。',
+  'entities.npcs.brother_greenpaw.dialogChoice.kind':
+    '这地方开始有点像个归处了，师兄。我是真心这么觉得。',
+  'entities.npcs.brother_greenpaw.dialogChoice.ask': '瓶子最近都说了些什么？',
+  'entities.npcs.brother_greenpaw.dialogChoice.blunt': '这就是个有看守人的乱葬岗，绿掌。仅此而已。',
+  'entities.npcs.brother_greenpaw.dialogChoice.tribe': '跟我说说从前住在这儿的那个部族吧。',
+  'entities.npcs.brother_greenpaw.dialogChoice.warm_bye': '我就不打扰你陪他了。',
+  'entities.npcs.brother_greenpaw.dialogChoice.vase_more': '你真的相信他在听吗？',
+  'entities.npcs.brother_greenpaw.dialogChoice.vase_bye': '那就好好陪着他吧。我就在附近。',
+  'entities.npcs.brother_greenpaw.dialogChoice.faith_bye': '说得也是，绿掌。',
+  'entities.npcs.brother_greenpaw.dialogChoice.sorry': '那话说得比我本意要刻薄。对不起。',
+  'entities.npcs.brother_greenpaw.dialogChoice.cold_bye': '你爱信什么就信什么吧。',
+  'entities.npcs.brother_greenpaw.dialogChoice.mended_bye': '咱俩两清了。回头见。',
+  'entities.npcs.brother_greenpaw.dialogChoice.confide': '你不必独自扛着这一切，师兄。',
+  'entities.npcs.brother_greenpaw.dialogChoice.tribe_bye': '还有人在照料着它。这总归有点分量。',
+  'entities.npcs.brother_greenpaw.dialogChoice.confide_bye': '我会一直走上这条小路来的，绿掌。',
   'entities.delves.collapsed_reliquary.enterText': '你向下深入坍塌的圣物库。',
   'entities.delves.collapsed_reliquary.leaveText': '你攀回圣物库废墟旁的哈尔文修士身边。',
   'entities.delves.collapsed_reliquary.name': '坍塌的圣物库',
@@ -4996,6 +5109,14 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.discord.relay.wts.label': '出售',
   'hudChrome.discord.relay.wtb.label': '收购',
   'hudChrome.discord.relay.help.label': '求助',
+  // Persistent NPC journal/lore gossip-menu option (PHAA-480). M16 fill only;
+  // English is the source of truth in src/ui/i18n.catalog/hud_chrome.ts.
+  'hudChrome.npcJournal.readLabel': '跟我说说你的日记吧。',
+  'hudChrome.npcJournal.readAria': '阅读{name}的日记',
+  'hudChrome.npcJournal.back': '上一页',
+  'hudChrome.npcJournal.next': '下一页',
+  'hudChrome.npcJournal.close': '关闭日记',
+  'hudChrome.npcJournal.title': '{name}的日记',
   'housingUi.claimedBanner': '你将这块地认领为家园。',
   'housingUi.ownerBanner': '这是{name}的家园。',
   'housingUi.prompt.claim': '认领这块地',

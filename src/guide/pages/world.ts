@@ -126,6 +126,7 @@ export const world: GuidePage = {
         </section>
 
         ${related([
+          { href: hrefFor('hollow'), key: 'guide.nav.hollow' },
           { href: hrefFor('bestiary'), key: 'guide.nav.bestiary' },
           { href: hrefFor('quests'), key: 'guide.nav.quests' },
           { href: hrefFor('dungeons'), key: 'guide.nav.dungeons' },

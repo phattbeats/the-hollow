@@ -84,8 +84,10 @@ export function isPetClass(cls: PlayerClass): boolean {
 }
 // '1v1'/'2v2' are the ranked Ashen Coliseum ladders; 'fiesta' is the
 // dopamine-maxxed 2v2 party mode (score-based, respawns, augments, a shrinking
-// ring) — see docs/design and the Fiesta region of sim.ts.
-export type ArenaFormat = '1v1' | '2v2' | 'fiesta';
+// ring), see docs/design and the Fiesta region of sim.ts. 'boarball' is the
+// unranked 2v2 sport minigame (PHAA-572, adapted from upstream's Vale Cup)
+// played on the same arena pit; see social/boarball.ts.
+export type ArenaFormat = '1v1' | '2v2' | 'fiesta' | 'boarball';
 
 export interface ArenaStanding {
   rating: number;
@@ -266,7 +268,13 @@ export type ItemUse =
   | { type: 'mechChroma'; chromaId: string }
   // Opens the client-side event skin-select overlay. The server rolls a rank on
   // use (see Sim.openSkinSelect) and the player locks one in via claimEventSkin.
-  | { type: 'skinSelect'; catalog?: SkinCatalog };
+  | { type: 'skinSelect'; catalog?: SkinCatalog }
+  // A crafted gathering tool (PHAA-507). `tier` gates which gather-node type
+  // AND monster-material tiers it can harvest: see src/sim/gathering_tools.ts
+  // (canGatherTier / canHarvestMonsterMaterial). This item type never carries
+  // a durability field (this repo has no durability mechanic anywhere), so a
+  // gathering tool can never become unusable.
+  | { type: 'gatherTool'; nodeType: GatherNodeType; tier: number };
 
 // Rarity ranks for the cosmetic skin-select event, ordered low → high. A rolled
 // rank unlocks its own tier and every tier below it (epic unlocks rare+uncommon).
@@ -526,6 +534,14 @@ export interface MobTemplate {
   canSwim?: boolean;
   ccImmune?: boolean;
   respawnMult?: number;
+  // Fixed respawn delay in seconds, overriding respawnSeconds*respawnMult; also
+  // caps corpse decay so the mob returns on schedule. (Training dummy: 10s.)
+  respawnSeconds?: number;
+  // Training dummy: a stationary practice target, attackable (so it counts for
+  // damage and the combat meters) but never moves, aggros, or retaliates; drops
+  // combat and heals to full a few seconds after the last hit. Guarded in
+  // enterCombat (sim.ts) and updateMob (mob/locomotion.ts).
+  dummy?: boolean;
   // Boss mechanic: periodic AoE pulse around the mob while in combat.
   aoePulse?: {
     min: number;
@@ -1131,7 +1147,12 @@ export type AbilityEffect =
   | { type: 'tamePet' } // hunter tame beast: the targeted mob becomes the caster's pet
   | { type: 'dismissPet' } // release the caster's pet back to the wild
   | { type: 'summonPet'; templateId: string } // warlock demon summon: creates/replaces a controlled pet
-  | { type: 'summonDemon'; mobId: string }; // warlock: summon a demon pet (imp/voidwalker)
+  | { type: 'summonDemon'; mobId: string } // warlock: summon a demon pet (imp/voidwalker)
+  // Boarball sport moves (PHAA-572): school 'physical', cost 0, class-agnostic.
+  // power is the full-power ground speed (yd/s), loft the initial vertical speed;
+  // both are consumed by src/sim/social/boarball.ts, never by the normal damage path.
+  | { type: 'ballShoot'; power: number; loft: number } // auto-aimed at the enemy goal
+  | { type: 'ballPass'; power: number; loft: number }; // rolled to the targeted teammate
 
 export interface AbilityRank {
   rank: number;
@@ -1227,6 +1248,13 @@ export interface NpcDef {
   // pages them and remembers completion client-side). In-voice character
   // flavor, not gameplay: an NPC with no introLines opens straight to gossip.
   introLines?: string[];
+  // Optional ordered journal/lore lines a curious player can re-read at any
+  // time via the gossip-menu "read the journal" affordance (PHAA-480). Deeper
+  // lore than the quest text and NOT first-meeting-only like introLines: the
+  // journal is always available and re-readable, no shown-once gate. Declarative
+  // data only; the UI owns the view (src/ui/npc_journal_view.ts). Order matters
+  // (the player reads top-down). Flavors, not gameplay.
+  journalLines?: string[];
   // Registered but not surface-placed at world init. The owning system spawns
   // the entity on demand (e.g. the Nythraxis encounter walks Brother Aldric in
   // mid-fight). Keeping the def in NPCS lets the online client reconstruct its
@@ -1846,7 +1874,13 @@ export type PlantThresholdKind = 'house_claimed';
 
 export type PlantMood = 'clear' | 'hazy';
 
-export type PlantTrigger = 'whim' | 'full_smoke' | 'threshold' | 'address' | 'ambient';
+export type PlantTrigger =
+  | 'whim'
+  | 'full_smoke'
+  | 'sustained_smoke'
+  | 'threshold'
+  | 'address'
+  | 'ambient';
 
 export type PlantSoreSpot = 'smokey' | 'buried';
 
@@ -1862,6 +1896,9 @@ export interface PlantUtteranceMeta {
   addressedByName?: string;
   addressedText?: string;
   soreSpot?: PlantSoreSpot;
+  // sustained_smoke only: the player who most recently fed the hearth, when
+  // known - the keeper the lean-in line lands on.
+  keeperName?: string;
 }
 
 // Guild calendar command outcomes (mirrors server/social.ts CalendarResultCode;
@@ -2016,6 +2053,13 @@ export type SimEvent = { pid?: number } & (
   // A fighter grabbed a ring power-up (world event so everyone sees the glow).
   // Whether it's "mine" is decided client-side (entityId === local player).
   | { type: 'fiestaPowerup'; entityId: number; defId: string; glow: number; duration: number }
+  // Boarball (PHAA-572): the unranked 2v2 sport minigame. All carry pid.
+  // `boarballScore`: the running tally changed (after a goal). `boarballGoal`:
+  // the scoring team just netted one (the client fires the goal banner/FX).
+  // `boarballKickoff`: play is live again after the whistle.
+  | { type: 'boarballScore'; a: number; b: number; limit: number; team: 'A' | 'B' }
+  | { type: 'boarballGoal'; team: 'A' | 'B'; scorerName: string }
+  | { type: 'boarballKickoff'; team: 'A' | 'B' }
   | {
       type: 'heal2';
       sourceId: number;
