@@ -10,6 +10,7 @@ import {
   MOBS,
   NPCS,
   QUESTS,
+  READABLES_BY_ID,
   ZONES,
 } from '../src/sim/data';
 import type { PlayerClass } from '../src/sim/types';
@@ -553,6 +554,23 @@ describe('i18n Localization Key Coverage', () => {
         field: entry.field as 'name' | 'enterText' | 'leaveText',
       };
     }
+    if (entry.kind === 'readable') {
+      if (entry.field === 'readableTitle') {
+        return { kind: 'readable', id: entry.id, field: 'readableTitle' };
+      }
+      const { ownerId, index } = parseIndexedEntry(entry.id, 'pages');
+      return { kind: 'readable', id: ownerId, pageIndex: index, field: 'readablePage' };
+    }
+    if (entry.kind === 'npcDialog') {
+      const marker = entry.field === 'npcLine' ? '.dialogNode.' : '.dialogChoice.';
+      const markerIndex = entry.id.lastIndexOf(marker);
+      if (markerIndex < 0) throw new Error(`Malformed dialog entity id: ${entry.id}`);
+      const npcId = entry.id.slice(0, markerIndex);
+      const key = entry.id.slice(markerIndex + marker.length);
+      return entry.field === 'npcLine'
+        ? { kind: 'npcDialog', npcId, node: key, field: 'npcLine' }
+        : { kind: 'npcDialog', npcId, choice: key, field: 'choiceLabel' };
+    }
     throw new Error(`Unexpected entity kind: ${entry.kind}`);
   }
 
@@ -962,7 +980,18 @@ describe('i18n Localization Key Coverage', () => {
       ZONES.length * 2 +
       ZONES.reduce((sum, zone) => sum + zone.pois.length, 0) +
       Object.keys(DUNGEONS).length * 3 +
-      Object.keys(DELVES).length * 3;
+      Object.keys(DELVES).length * 3 +
+      // Readables (PHAA-552): one title + one entry per page, each readable.
+      Object.keys(READABLES_BY_ID).length +
+      Object.values(READABLES_BY_ID).reduce((sum, r) => sum + r.pages.length, 0) +
+      // Branching NPC dialogue (PHAA-562): one npcLine per node, one
+      // choiceLabel per choice across every node, for each NPC with a tree.
+      Object.values(NPCS).reduce((sum, npc) => {
+        const tree = npc.dialogTree;
+        if (!tree) return sum;
+        const nodes = Object.values(tree.nodes);
+        return sum + nodes.length + nodes.reduce((n, node) => n + node.choices.length, 0);
+      }, 0);
     expect(worldEntries).toHaveLength(expectedWorldCount);
 
     for (const lang of supportedLanguages) {

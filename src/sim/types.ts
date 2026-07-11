@@ -84,8 +84,10 @@ export function isPetClass(cls: PlayerClass): boolean {
 }
 // '1v1'/'2v2' are the ranked Ashen Coliseum ladders; 'fiesta' is the
 // dopamine-maxxed 2v2 party mode (score-based, respawns, augments, a shrinking
-// ring) — see docs/design and the Fiesta region of sim.ts.
-export type ArenaFormat = '1v1' | '2v2' | 'fiesta';
+// ring), see docs/design and the Fiesta region of sim.ts. 'boarball' is the
+// unranked 2v2 sport minigame (PHAA-572, adapted from upstream's Vale Cup)
+// played on the same arena pit; see social/boarball.ts.
+export type ArenaFormat = '1v1' | '2v2' | 'fiesta' | 'boarball';
 
 export interface ArenaStanding {
   rating: number;
@@ -532,6 +534,14 @@ export interface MobTemplate {
   canSwim?: boolean;
   ccImmune?: boolean;
   respawnMult?: number;
+  // Fixed respawn delay in seconds, overriding respawnSeconds*respawnMult; also
+  // caps corpse decay so the mob returns on schedule. (Training dummy: 10s.)
+  respawnSeconds?: number;
+  // Training dummy: a stationary practice target, attackable (so it counts for
+  // damage and the combat meters) but never moves, aggros, or retaliates; drops
+  // combat and heals to full a few seconds after the last hit. Guarded in
+  // enterCombat (sim.ts) and updateMob (mob/locomotion.ts).
+  dummy?: boolean;
   // Boss mechanic: periodic AoE pulse around the mob while in combat.
   aoePulse?: {
     min: number;
@@ -1137,7 +1147,12 @@ export type AbilityEffect =
   | { type: 'tamePet' } // hunter tame beast: the targeted mob becomes the caster's pet
   | { type: 'dismissPet' } // release the caster's pet back to the wild
   | { type: 'summonPet'; templateId: string } // warlock demon summon: creates/replaces a controlled pet
-  | { type: 'summonDemon'; mobId: string }; // warlock: summon a demon pet (imp/voidwalker)
+  | { type: 'summonDemon'; mobId: string } // warlock: summon a demon pet (imp/voidwalker)
+  // Boarball sport moves (PHAA-572): school 'physical', cost 0, class-agnostic.
+  // power is the full-power ground speed (yd/s), loft the initial vertical speed;
+  // both are consumed by src/sim/social/boarball.ts, never by the normal damage path.
+  | { type: 'ballShoot'; power: number; loft: number } // auto-aimed at the enemy goal
+  | { type: 'ballPass'; power: number; loft: number }; // rolled to the targeted teammate
 
 export interface AbilityRank {
   rank: number;
@@ -1270,6 +1285,52 @@ export interface GatherNodeDef {
   zoneId: string;
   type: GatherNodeType;
   pos: { x: number; z: number };
+}
+
+// World-placed readable props (WoW-style journals/books lying around, PHAA-552).
+// Static, unowned world dressing with a client-only reveal: reading one mutates
+// no game state, so (unlike a gather node's harvest) there is no server command,
+// wire field, or sim tick logic, only a proximity prompt and a paginated reader.
+// `pages` and `title` are the canonical ENGLISH content; the client resolves the
+// displayed text through the `readable` entity-i18n kind (src/ui/entity_i18n.ts),
+// the sim stays language-agnostic. Placement mirrors GatherNodeDef: world-space
+// x/z in an overworld zone, plus a `facing` yaw for the rendered prop.
+//
+// Which physical object it draws as (PHAA-552 follow-up): the board asked for
+// "random journals or books you find lying around", so a readable is a loose
+// item resting on the ground, not a tome on a pedestal. `page` is a single loose
+// sheet (a dropped note); `journal` is a small open field notebook; `ledger` is
+// a bound, thick account book with a torn-back cover and loose leaves jutting
+// out (the "actual torn ledger" the board asked for). All three sit low on their
+// support so they clear the grass ring without reading as a monument. Render:
+// src/render/readables.ts.
+export type ReadableProp = 'page' | 'journal' | 'ledger';
+
+// What the loose page/journal rests on or against (PHAA-552 board follow-up:
+// "we need other variations, like it up against a tree, or on a chest, or a
+// table, that way we can put them in many places"). Orthogonal to ReadableProp:
+// any page/journal can sit on any support, so the world can dress a readable to
+// fit wherever it is dropped instead of every one looking like the same rock.
+//   `stone`  a low natural fieldstone in the grass (the original, dropped-note look)
+//   `table`  lying flat on a small rough field table
+//   `chest`  lying flat on the lid of a closed banded chest
+//   `tree`   propped upright, leaning against the base of a tree trunk
+// Render: src/render/readables.ts. Adding a support kind is render-only; it has
+// no sim state, so it never touches i18n, the wire, or server commands.
+// Authoring note: `tree` leans the paper upright, so pair it with `page` (a note
+// propped against the bark). A `journal` (an OPEN notebook) reads wrong standing
+// on end; keep journals on the flat supports (stone/table/chest).
+export type ReadableSupport = 'stone' | 'table' | 'chest' | 'tree';
+
+export interface ReadableDef {
+  id: string;
+  zoneId: string;
+  pos: { x: number; z: number };
+  facing: number; // radians, yaw applied to the rendered prop
+  prop: ReadableProp; // which loose object it is drawn as (see ReadableProp)
+  support?: ReadableSupport; // what it rests on/against (default 'stone'); see ReadableSupport
+  title: string; // canonical English title shown in the reader window
+  pages: string[]; // canonical English pages, one per reader page turn
 }
 
 export interface DungeonSpawn {
@@ -1806,7 +1867,13 @@ export type PlantThresholdKind = 'house_claimed';
 
 export type PlantMood = 'clear' | 'hazy';
 
-export type PlantTrigger = 'whim' | 'full_smoke' | 'threshold' | 'address' | 'ambient';
+export type PlantTrigger =
+  | 'whim'
+  | 'full_smoke'
+  | 'sustained_smoke'
+  | 'threshold'
+  | 'address'
+  | 'ambient';
 
 export type PlantSoreSpot = 'smokey' | 'buried';
 
@@ -1822,6 +1889,9 @@ export interface PlantUtteranceMeta {
   addressedByName?: string;
   addressedText?: string;
   soreSpot?: PlantSoreSpot;
+  // sustained_smoke only: the player who most recently fed the hearth, when
+  // known - the keeper the lean-in line lands on.
+  keeperName?: string;
 }
 
 // Guild calendar command outcomes (mirrors server/social.ts CalendarResultCode;
@@ -1976,6 +2046,13 @@ export type SimEvent = { pid?: number } & (
   // A fighter grabbed a ring power-up (world event so everyone sees the glow).
   // Whether it's "mine" is decided client-side (entityId === local player).
   | { type: 'fiestaPowerup'; entityId: number; defId: string; glow: number; duration: number }
+  // Boarball (PHAA-572): the unranked 2v2 sport minigame. All carry pid.
+  // `boarballScore`: the running tally changed (after a goal). `boarballGoal`:
+  // the scoring team just netted one (the client fires the goal banner/FX).
+  // `boarballKickoff`: play is live again after the whistle.
+  | { type: 'boarballScore'; a: number; b: number; limit: number; team: 'A' | 'B' }
+  | { type: 'boarballGoal'; team: 'A' | 'B'; scorerName: string }
+  | { type: 'boarballKickoff'; team: 'A' | 'B' }
   | {
       type: 'heal2';
       sourceId: number;
