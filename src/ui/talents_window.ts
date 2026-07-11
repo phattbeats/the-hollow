@@ -41,6 +41,7 @@ import type { PainterHostPresentation } from './painter_host';
 import { rovingTarget } from './roving_index';
 import { roleLabel, tTalent } from './talent_i18n';
 import { talentChoiceIconDataUrl, talentNodeIconDataUrl } from './talent_icons';
+import { talentTreeFitScale } from './talent_tree_fit';
 import { buildTalentsView, type TalentsView, type TalentTreeVM } from './talents_view';
 import { svgIcon } from './ui_icons';
 
@@ -412,6 +413,29 @@ export class TalentsWindow {
       });
       host.appendChild(div);
     }
+    this.fitTreeToMobileViewport(host, treeVM.width, treeVM.height);
+  }
+
+  // Char/talents mobile landscape redo (issue 1577 follow-up): the tree is a
+  // fixed pixel grid (host.style.width/height above), so on a mobile-touch
+  // landscape phone we scale the whole grid down to whatever room #tal-body
+  // actually has, via the pure talentTreeFitScale, so a full tree reads in one
+  // view instead of needing an internal scroll to see it. Desktop is untouched
+  // (early-return keeps host at its native, unscaled size there).
+  private fitTreeToMobileViewport(host: HTMLElement, width: number, height: number): void {
+    if (!document.body.classList.contains('mobile-touch')) return;
+    const body = host.parentElement;
+    if (!body) return;
+    const available = body.getBoundingClientRect();
+    if (available.width <= 0 || available.height <= 0) return;
+    const scale = talentTreeFitScale(width, height, available.width, available.height);
+    host.style.transformOrigin = 'top left';
+    host.style.transform = scale < 1 ? `scale(${scale})` : '';
+    // Collapse the now-empty margin box back to the scaled visual size, so the
+    // window doesn't reserve the tree's full unscaled footprint and force a
+    // scrollbar anyway (transform never changes the layout box it applies to).
+    host.style.marginRight = scale < 1 ? `${-(width * (1 - scale))}px` : '';
+    host.style.marginBottom = scale < 1 ? `${-(height * (1 - scale))}px` : '';
   }
 
   private setSpec(stage: TalentAllocation, specId: string): void {
