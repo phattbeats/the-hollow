@@ -4,6 +4,7 @@ import type {
   DelveRunInfo,
   LockpickView,
 } from '../world_api';
+import * as bankMod from './bank';
 import { lineOfSightClear, resolveMovement, resolvePosition } from './colliders';
 import { needsCostTranslation, translateAbilityCost } from './combat/ability_cost';
 import { auraAffectsStats, removeCancelableAura } from './combat/aura_cancel';
@@ -134,7 +135,13 @@ import {
 import { canEquipItem } from './equipment_rules';
 import { fleeSpeed } from './flee_speed';
 import { formatMoney } from './format_money';
-import { Gathering } from './gathering';
+import {
+  emptyGatheringProficiency,
+  Gathering,
+  gatherNodeById,
+  harvestNode as harvestNodeImpl,
+  isNodeHarvestableBy,
+} from './gathering';
 import { GreenpawHearth, type GreenpawHearthSave } from './greenpaw_hearth';
 import { Homestead, type HomesteadSave } from './homestead';
 import { Housing, type HousingSave } from './housing';
@@ -154,6 +161,7 @@ import type { Ante, PickAction } from './lockpick';
 import {
   activeLootRolls as activeLootRollsImpl,
   assignMasterLoot as assignMasterLootImpl,
+  lootRollGroupStatus as lootRollGroupStatusImpl,
   type PendingLootRoll,
   partyLootCandidatesForMob as partyLootCandidatesForMobImpl,
   resolveLootRoll as resolveLootRollImpl,
@@ -289,6 +297,7 @@ import {
   emptyMoveInput,
   FISHING_CAST_ID,
   FISHING_CAST_TIME,
+  type GatherNodeType,
   GCD,
   type InvSlot,
   isConsuming,
@@ -296,6 +305,7 @@ import {
   isQuestTurnInNpc,
   LEASH_DISTANCE,
   type LootRollChoice,
+  type LootRollGroupStatus,
   type LootRollPrompt,
   type LootStrategies,
   MAX_LEVEL,
@@ -663,6 +673,11 @@ export interface PlayerMeta {
   inventory: InvSlot[];
   vendorBuyback: InvSlot[];
   copper: number;
+  // The personal bank vault (PHAA-571: core only, not yet player-reachable; see
+  // src/sim/bank.ts). bankBonusSources is the server-stamped per-source breakdown
+  // behind bank.bonusSlots, recomputed at join (empty offline).
+  bank: bankMod.BankState;
+  bankBonusSources: bankMod.BankBonusSource[];
   equipment: PlayerEquipment;
   xp: number;
   // Post-cap progression (Max-Level XP Overflow). `lifetimeXp` is the monotonic
@@ -737,6 +752,17 @@ export interface PlayerMeta {
   companionUpgrades: Record<string, number>;
   delveLoreUnlocked: Set<string>;
   delveDaily: { date: string; firstClearXp: Set<string>; markClears: number };
+  // Per-player, per-node gather-node respawn readiness (PHAA-505): nodeId ->
+  // sim.time (seconds) at or after which THIS player may harvest that node
+  // again. Absent means never harvested (always ready). Session-only, never
+  // persisted, and never shared across players: see src/sim/gathering.ts
+  // (isNodeHarvestableBy/resolveHarvest).
+  nodeHarvestReadyAt: Record<string, number>;
+  // Per-player gather-node proficiency (PHAA-505): one counter per node type,
+  // incremented on every successful harvest of that type. Persisted
+  // (CharacterState.gatheringProficiency); feeds a future proficiency-scaled
+  // rarity roll.
+  gatheringProficiency: Record<GatherNodeType, number>;
 }
 
 // Away-from-keyboard / do-not-disturb presence. `afk` still delivers whispers
@@ -780,6 +806,11 @@ export interface CharacterState {
   equipment: PlayerEquipment;
   inventory: InvSlot[];
   vendorBuyback?: InvSlot[];
+  // The personal bank vault. Optional so pre-bank saves load cleanly (defaults to
+  // empty/0/0 via sanitizeBankState). bonusSlots is re-stamped from the account
+  // entitlement registry at every online join; a persisted value only matters
+  // offline (RL env / local play with no server).
+  bank?: { inventory: InvSlot[]; purchasedSlots: number; bonusSlots: number };
   questLog: { questId: string; counts: number[]; state: 'active' | 'ready' | 'done' }[];
   questsDone: string[];
   // Branching-dialogue state (PHAA-553; JSONB, no schema migration). Optional so
@@ -821,6 +852,9 @@ export interface CharacterState {
   companionUpgrades?: Record<string, number>;
   delveLoreUnlocked?: string[];
   delveDaily?: { date: string; firstClearXp: string[]; markClears: number };
+  // Optional so characters saved before per-node gathering proficiency
+  // existed load cleanly (addPlayer backfills to all-zero).
+  gatheringProficiency?: Partial<Record<GatherNodeType, number>>;
 }
 
 export interface PetState {
@@ -1260,6 +1294,8 @@ export class Sim {
       inventory: [],
       vendorBuyback: [],
       copper: 0,
+      bank: { inventory: [], purchasedSlots: 0, bonusSlots: 0 },
+      bankBonusSources: [],
       equipment: { mainhand: classDef.startWeapon, chest: classDef.startChest },
       xp: 0,
       lifetimeXp: 0,
@@ -1296,6 +1332,8 @@ export class Sim {
       companionUpgrades: {},
       delveLoreUnlocked: new Set(),
       delveDaily: { date: '', firstClearXp: new Set(), markClears: 0 },
+      nodeHarvestReadyAt: {},
+      gatheringProficiency: emptyGatheringProficiency(),
     };
     this.players.set(player.id, meta);
     player.skinCatalog = meta.skinCatalog;
@@ -1321,6 +1359,7 @@ export class Sim {
       meta.equipment = { ...s.equipment };
       meta.inventory = s.inventory.map((i) => ({ ...i }));
       meta.vendorBuyback = (s.vendorBuyback ?? []).map((i) => ({ ...i }));
+      meta.bank = bankMod.sanitizeBankState(s.bank);
       for (const q of s.questLog) {
         if (q.state !== 'done')
           meta.questLog.set(q.questId, {
@@ -1373,6 +1412,9 @@ export class Sim {
       meta.delveMarks = s.delveMarks ?? 0;
       meta.delveClears = { ...(s.delveClears ?? {}) };
       meta.companionUpgrades = { ...(s.companionUpgrades ?? {}) };
+      if (s.gatheringProficiency) {
+        meta.gatheringProficiency = { ...emptyGatheringProficiency(), ...s.gatheringProficiency };
+      }
       if (s.delveLoreUnlocked) for (const id of s.delveLoreUnlocked) meta.delveLoreUnlocked.add(id);
       if (s.delveDaily) {
         meta.delveDaily = {
@@ -1540,6 +1582,11 @@ export class Sim {
       equipment: { ...meta.equipment },
       inventory: meta.inventory.map((i) => ({ ...i })),
       vendorBuyback: meta.vendorBuyback.map((i) => ({ ...i })),
+      bank: {
+        inventory: meta.bank.inventory.map((i) => ({ ...i })),
+        purchasedSlots: meta.bank.purchasedSlots,
+        bonusSlots: meta.bank.bonusSlots,
+      },
       questLog: [...meta.questLog.values()].map((q) => ({
         questId: q.questId,
         counts: [...q.counts],
@@ -1577,6 +1624,7 @@ export class Sim {
       delveMarks: meta.delveMarks,
       delveClears: { ...meta.delveClears },
       companionUpgrades: { ...meta.companionUpgrades },
+      gatheringProficiency: { ...meta.gatheringProficiency },
       delveLoreUnlocked: [...meta.delveLoreUnlocked],
       delveDaily: {
         date: meta.delveDaily.date,
@@ -1945,6 +1993,9 @@ export class Sim {
       },
       get players() {
         return sim.players;
+      },
+      get bankerIds() {
+        return sim.bankerIds;
       },
       get primaryId() {
         return sim.primaryId;
@@ -3675,6 +3726,10 @@ export class Sim {
     return activeLootRollsImpl(this.ctx, pid);
   }
 
+  lootRollGroupStatus(pid = this.playerId): LootRollGroupStatus[] {
+    return lootRollGroupStatusImpl(this.ctx, pid);
+  }
+
   submitLootRoll(rollId: number, choice: LootRollChoice, pid?: number): void {
     submitLootRollImpl(this.ctx, rollId, choice, pid);
   }
@@ -4453,6 +4508,32 @@ export class Sim {
     return items.unequipItem(this.ctx, slot, pid);
   }
 
+  // The personal bank vault (PHAA-571: core only, see src/sim/bank.ts). Thin
+  // delegates so tests and any future foreign caller resolve these on the Sim
+  // facade; nearBanker always refuses today since bankerIds is empty until a
+  // follow-up ticket places banker NPCs in zone content.
+  bankDeposit(slotIndex: number, count?: number, pid?: number): void {
+    bankMod.bankDeposit(this.ctx, slotIndex, count, pid);
+  }
+
+  bankWithdraw(slotIndex: number, count?: number, pid?: number): void {
+    bankMod.bankWithdraw(this.ctx, slotIndex, count, pid);
+  }
+
+  bankBuySlots(pid?: number): void {
+    bankMod.bankBuySlots(this.ctx, pid);
+  }
+
+  bankInfoFor(pid: number): bankMod.BankInfo | null {
+    return bankMod.bankInfoFor(this.ctx, pid);
+  }
+
+  // Banker NPC anchors bank.ts's nearBanker gate reads through ctx.bankerIds.
+  // Always empty until a follow-up ticket places banker NPCs in zone content
+  // (mirrors Market's merchantId seeding, plural since a banker belongs in every
+  // hub town). Sim-owned; exposed as a live SimContext view.
+  private bankerIds: number[] = [];
+
   private hasFishableWaterAhead(p: Entity): boolean {
     const sin = Math.sin(p.facing);
     const cos = Math.cos(p.facing);
@@ -4602,6 +4683,37 @@ export class Sim {
   // lives on Gathering via the ctx seam (see gatherHarvestItemFor).
   harvestCorpse(mobId: number, pid?: number): void {
     interaction.harvestCorpse(this.ctx, mobId, pid);
+  }
+
+  // Gathering v1 (PHAA-505): per-player world-node harvest, a thin delegate
+  // onto src/sim/gathering.ts, resolved on the deterministic tick the command
+  // arrives on, same as harvestCorpse above.
+  harvestNode(nodeId: string, pid?: number): void {
+    harvestNodeImpl(this.ctx, nodeId, pid);
+  }
+
+  // IWorld read surface (IWorldGathering): whether the given node is
+  // harvestable right now BY THIS PLAYER specifically (per-player respawn
+  // timer). Never reflects another player's cooldown for the same node.
+  // Takes an explicit pid (mirrors gatheringProficiencyFor) so both the
+  // local-viewer getter below and tests can check any player's own timer.
+  nodeHarvestableByMeFor(nodeId: string, pid: number): boolean {
+    const meta = this.players.get(pid);
+    if (!meta) return false;
+    if (!gatherNodeById(nodeId)) return false;
+    return isNodeHarvestableBy(meta, nodeId, this.time);
+  }
+
+  nodeHarvestableByMe(nodeId: string): boolean {
+    return this.nodeHarvestableByMeFor(nodeId, this.primaryId);
+  }
+
+  gatheringProficiencyFor(pid: number): Record<GatherNodeType, number> {
+    return this.players.get(pid)?.gatheringProficiency ?? emptyGatheringProficiency();
+  }
+
+  get gatheringProficiency(): Record<GatherNodeType, number> {
+    return this.gatheringProficiencyFor(this.primaryId);
   }
 
   pickUpObject(objId: number, pid?: number): void {

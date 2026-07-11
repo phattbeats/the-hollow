@@ -16,6 +16,11 @@ import type { TranslationKey } from '../i18n.catalog';
 export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.spectate.banner': '{name} 관전 중',
   'hudChrome.loot.chestTitle': '상자',
+  'hudChrome.lootRollGroup.pending': '대기 중...',
+  'hudChrome.lootRollGroup.need': '니드',
+  'hudChrome.lootRollGroup.greed': '그리드',
+  'hudChrome.lootRollGroup.pass': '포기',
+  'hudChrome.lootRollGroup.aria': '{item} 그룹 굴림 상태',
   'hudChrome.spellbook.addToBarAria': '{name}을(를) 행동 단축바에 추가',
   'hudChrome.spellbook.removeFromBarAria': '{name}을(를) 행동 단축바에서 제거',
   'hudChrome.nameplate.mob': '[{level}] {name}',
@@ -1324,6 +1329,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'abilityUi.tooltip.offGlobalCooldown': '공용 재사용 대기시간 없음',
   'abilityUi.tooltip.friendlyTarget': '아군 대상',
   'abilityUi.tooltip.enemyTarget': '적 대상',
+  'abilityUi.tooltip.selfOnly': '자신에게만',
   'abilityUi.tooltip.damageRange': '{min}에서 {max}',
   'abilityUi.tooltip.finisherDamage': '기본 {base}, 연계 점수당 {perCombo}',
   'abilityUi.resources.mana': '마나',
@@ -2914,7 +2920,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_root_hollow_boars_ii.text':
     '이 직분에서 인정해선 안 될 것을 인정하리다. 다섯은 너무 낙관했소. 아래 굴에서 계속 밀려 올라오는구려. 여덟만 더 잡으면, 기록을 세 번째로 고치지 않고 이 철을 마감할 수 있소. 기록은 고쳐지길 싫어하지. 나도 그렇소.',
   'entities.quests.q_root_hollow_boars_ii.completion':
-    '마감. 서명. 편철. 이제 이 철은 예정대로 흘러갈 수 있소, 달력을 지킬 자가 다시 생겼으니. 그대는 아주 작은 회중에게 큰 도움을 주었소. 분명히 해두자면, 그 회중이란 바로 나요.',
+    '마감. 서명. 편철. 이제 이 철은 예정대로 흘러갈 수 있소, 달력을 지킬 자가 다시 생겼으니. 그대는 아주 작은 회중에게 큰 도움을 주었소. 분명히 해두자면, 그 회중이란 바로 나요. 이 장부 자체는 이 체제보다도 오래되었소, 만난 적 없는 손으로 철해졌고, 내가 굳이 합산하지 않는 수를 담고 있소. 한때 이곳엔 참으로 꼼꼼한 이가 있었던 모양이오. 나는 그저 그 걸음을 따라가려 할 뿐이오.',
   'entities.quests.q_root_hollow_boars_ii.objectives.0.label': '야생 멧돼지 처치',
   'entities.quests.q_fallow_acres_wolves.title': '이랑에서 몰아낸 늑대',
   'entities.quests.q_fallow_acres_wolves.text':
@@ -4668,6 +4674,12 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': '찢어진 일기장 페이지',
   'entities.items.shrine_diary_page.flavorText':
     '...촛불로 마흔 날을 세다가 결국 놓쳐버렸다. 이 아래의 어둠은 그분을 잊지 않는다, 그분이 이곳을 잊으셨어도. 왜가리가 낮게 돌면, 등지기에게 심지가 아직 타고 있다고 전해라...',
+  'entities.items.worn_prayer_token.name': '닳은 기도패',
+  'entities.items.worn_prayer_token.flavorText':
+    '...한쪽 면이 내 것이 아닌 엄지에 매끄럽게 닳아 있다, 여기 쌓인 다른 백여 개와 똑같은 얕은 홈이 패어 있는데, 적어도 이 더미는 그렇게 말하고 있다. 엄지 하나로는 토큰 백 개를 닳게 할 수 없다. 하지만 수많은 엄지가 하나의 홈을 닳게 하는 일은, 가능하다...',
+  'entities.items.tally_shard.name': '눈금이 새겨진 파편',
+  'entities.items.tally_shard.flavorText':
+    '...다섯 개씩 한 묶음으로 깊이 새겨져, 셀 때마다 하나씩 그어 지워졌다. 지워진 다섯 묶음이 수백에 이르는데, 그 지움이 멈춘 마지막 줄만은 끝내 채워지지 않았다...',
   'entities.mobs.acolyte_tessa.name': '수련사제 테사',
   'entities.mobs.deacon_varric.name': '부제 바릭',
   'entities.mobs.reliquary_bonewalker.name': '되살아난 해골보행자',
@@ -4791,6 +4803,12 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'delveUi.tracker.module': '구역 {current}/{total}',
   'delveUi.tracker.objective': '목표',
   'delveUi.tracker.title': '탐굴',
+  'sim.bank.cannotAfford': '그 은행 확장 비용을 감당할 수 없습니다.',
+  'sim.bank.expansionCapped': '더 이상 은행을 확장할 수 없습니다.',
+  'sim.bank.full': '은행 보관함이 가득 찼습니다.',
+  'sim.bank.noQuestItems': '퀘스트 아이템은 은행에 보관할 수 없습니다.',
+  'sim.bank.purchased': '추가 은행 슬롯을 구매했습니다.',
+  'sim.bank.tooFar': '은행원과 너무 멀리 떨어져 있습니다.',
   'sim.delve.alreadyInDelve': '이미 탐굴 중입니다.',
   'sim.delve.bossChest':
     '우두머리가 쓰러집니다. 봉인된 성물실 상자가 단상 위로 솟아오릅니다. 자물쇠를 따서 전리품을 차지하세요.',
@@ -4849,6 +4867,22 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'sim.hearth.noItems2':
     '가진 거라곤 좋은 마음뿐이구먼, 응… 마음만으로는 화로에 불을 지필 수 없다네.',
   'sim.hearth.tooFar': '브라더 초록발에게 먹이를 주려면 그의 곁에 있어야 한다.',
+  'sim.homestead.alreadyOwn': '당신은 이미 정착지를 소유하고 있다.',
+  'sim.homestead.claimed': '이 땅은 당신의 것이다. 정착지가 확정되었다.',
+  'sim.homestead.helpLine': '정착지: /homestead, /homestead claim.',
+  'sim.homestead.outsideArea': '그곳은 정착지 부지가 아니다. 길 서쪽의 Fallow Acres를 시도해 보라.',
+  'sim.homestead.questGate': '브라더 초록발이 아직 당신을 보내지 않았다. 먼저 그의 용무를 마쳐라.',
+  'sim.homestead.readoutMine': '당신의 정착지는 ({x}, {z})에 있다.',
+  'sim.homestead.readoutNoHomesteadHint':
+    '당신은 정착지가 없다. 우묵골 지대의 적당한 곳에 서서 /homestead claim이라고 입력하라.',
+  'sim.homestead.readoutNoHomesteadQuest':
+    '당신은 정착지가 없다. 브라더 초록발의 용무를 모두 마쳐야 하나를 얻을 수 있다.',
+  'sim.homestead.tooCloseGate': '문에 너무 가깝다. 더 멀리 이동하라.',
+  'sim.homestead.tooCloseGraveyard': '묘지에 너무 가깝다.',
+  'sim.homestead.tooCloseOther': '다른 이의 정착지에 너무 가깝다.',
+  'sim.homestead.tooCloseRoad': '길에 너무 가깝다.',
+  'sim.homestead.tooCloseWater': '물가에 너무 가깝다.',
+  'sim.homestead.tooCloseWildlife': '야생동물에 너무 가깝다. 주변을 정리하거나 더 멀리 이동하라.',
   'sim.house.alreadyOwn': '당신은 이미 공동에 주택을 소유하고 있다.',
   'sim.house.claimed': '이 주택은 이제 당신 것이다. /house place <슬롯> <종류>로 꾸며 보라.',
   'sim.house.cleared': '슬롯 {slot}을(를) 비웠다.',

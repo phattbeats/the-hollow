@@ -16,6 +16,11 @@ import type { TranslationKey } from '../i18n.catalog';
 export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.spectate.banner': '正在观察 {name}',
   'hudChrome.loot.chestTitle': '宝箱',
+  'hudChrome.lootRollGroup.pending': '等待中...',
+  'hudChrome.lootRollGroup.need': '需求',
+  'hudChrome.lootRollGroup.greed': '贪婪',
+  'hudChrome.lootRollGroup.pass': '放弃',
+  'hudChrome.lootRollGroup.aria': '{item} 的团队掷骰状态',
   'hudChrome.spellbook.addToBarAria': '将{name}添加到动作条',
   'hudChrome.spellbook.removeFromBarAria': '从动作条移除{name}',
   'hudChrome.nameplate.mob': '[{level}] {name}',
@@ -1270,6 +1275,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'abilityUi.tooltip.offGlobalCooldown': '不触发公共冷却',
   'abilityUi.tooltip.friendlyTarget': '友方目标',
   'abilityUi.tooltip.enemyTarget': '敌方目标',
+  'abilityUi.tooltip.selfOnly': '仅对自己',
   'abilityUi.tooltip.damageRange': '{min} 到 {max}',
   'abilityUi.tooltip.finisherDamage': '{base} 加每个连击点 {perCombo}',
   'abilityUi.resources.mana': '法力',
@@ -2790,7 +2796,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_root_hollow_boars_ii.text':
     '我就说句本职上不该说的实话：五头，是我乐观了。底下的窝还在不断往外拱。再杀八头，我便能结清这一季，不必第三回去改记录。记录不喜被改。我也不喜。',
   'entities.quests.q_root_hollow_boars_ii.completion':
-    '结案。签字。归档。这一季总算能照原定的历程走了，毕竟又有人来看着这本历书。你帮了一个极小的会众一个大忙。我得澄清一句：这会众，就是我。',
+    '结案。签字。归档。这一季总算能照原定的历程走了，毕竟又有人来看着这本历书。你帮了一个极小的会众一个大忙。我得澄清一句：这会众，就是我。这本历书本身比这安排还要古老，装订出自一双我从未谋面的手，记着一个我不愿去加总的数目。曾经有人在此极为用心。我不过是尽力跟上罢了。',
   'entities.quests.q_root_hollow_boars_ii.objectives.0.label': '野猪已杀',
   'entities.quests.q_fallow_acres_wolves.title': '赶走田垄上的狼',
   'entities.quests.q_fallow_acres_wolves.text':
@@ -4425,6 +4431,12 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': '撕碎的日记页',
   'entities.items.shrine_diary_page.flavorText':
     '……我数着烛光过了四十天，后来便断了数。这底下的黑暗从未忘记祂，尽管祂已经忘了这个地方。若鹭鸟低飞掠过，告诉守灯人，烛芯还燃着……',
+  'entities.items.worn_prayer_token.name': '磨损的祷牌',
+  'entities.items.worn_prayer_token.flavorText':
+    '……一面被一根不是我的拇指磨得光滑，磨出的浅沟和这堆里另外上百枚一模一样，至少这堆东西是这么告诉我的。一根拇指磨不出一百枚令牌的痕迹。可一百根拇指，倒是能磨出同一道浅沟……',
+  'entities.items.tally_shard.name': '刻痕碎片',
+  'entities.items.tally_shard.flavorText':
+    '……以五为一组刻得极深，每数完一轮便划去一道。划去的五连一组，累计上百组，最后一行却始终没有划完……',
   'entities.mobs.acolyte_tessa.name': '侍僧泰莎',
   'entities.mobs.deacon_varric.name': '执事瓦里克',
   'entities.mobs.reliquary_bonewalker.name': '复生的骨行者',
@@ -4540,6 +4552,12 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'delveUi.tracker.module': '第 {current} / {total} 区',
   'delveUi.tracker.objective': '目标',
   'delveUi.tracker.title': '探秘',
+  'sim.bank.cannotAfford': '你负担不起这次银行扩容。',
+  'sim.bank.expansionCapped': '你的银行无法再扩容了。',
+  'sim.bank.full': '你的银行已满。',
+  'sim.bank.noQuestItems': '你不能把任务物品存入银行。',
+  'sim.bank.purchased': '你购买了额外的银行槽位。',
+  'sim.bank.tooFar': '你离银行职员太远了。',
   'sim.delve.alreadyInDelve': '你已经身处一场探秘之中。',
   'sim.delve.bossChest':
     '首领倒下了。一只设有结界的圣物库宝箱在祭坛上升起，撬开它的锁来取得你的战利品。',
@@ -4595,6 +4613,21 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'sim.hearth.noItems1': '……伙计，你两手空空啊。带点能烧的或能填饱肚子的东西来，我们再唠。',
   'sim.hearth.noItems2': '身上啥也没有，就剩一片好心，是吧……好心可点不着炉子。',
   'sim.hearth.tooFar': '你得靠近绿掌修士才能喂他。',
+  'sim.homestead.alreadyOwn': '你已经拥有一处家园了。',
+  'sim.homestead.claimed': '这片土地归你了。家园认领成功。',
+  'sim.homestead.helpLine': '家园：/homestead，/homestead claim。',
+  'sim.homestead.outsideArea': '这里不属于家园用地。去路西边的 Fallow Acres 试试。',
+  'sim.homestead.questGate': '绿掌修士还没让你出发呢。先把他的差事做完。',
+  'sim.homestead.readoutMine': '你的家园坐落在 ({x}, {z})。',
+  'sim.homestead.readoutNoHomesteadHint':
+    '你还没有家园。站在空谷地里合适的位置，输入 /homestead claim。',
+  'sim.homestead.readoutNoHomesteadQuest': '你还没有家园。先完成绿掌修士的全部差事才能解锁。',
+  'sim.homestead.tooCloseGate': '离大门太近了。再往外挪一挪。',
+  'sim.homestead.tooCloseGraveyard': '离墓地太近了。',
+  'sim.homestead.tooCloseOther': '离别人的家园太近了。',
+  'sim.homestead.tooCloseRoad': '离大路太近了。',
+  'sim.homestead.tooCloseWater': '离水域太近了。',
+  'sim.homestead.tooCloseWildlife': '离野生动物太近了。清空这片区域，或者再挪远一些。',
   'sim.house.alreadyOwn': '你在空穴已经拥有一处宅邸了。',
   'sim.house.claimed': '这处宅邸归你了。用 /house place <槽位> <种类> 来装饰它。',
   'sim.house.cleared': '清空了槽位 {slot}。',

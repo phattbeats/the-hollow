@@ -661,6 +661,25 @@ export const hudChromeStrings = {
     unassigned: '{item} was not assigned and is free for all.',
     leaderOnly: 'Only the party leader can change the loot method.',
   },
+  // Group-visible need/greed vote strip painted under each loot-roll frame's
+  // action buttons. Shows every party candidate's current choice (the
+  // classic "Need Roll - 84 for Greataxe by Player" sequence is broadcast to
+  // the whole party when the roll resolves; this strip is the LIVE one,
+  // showing who has answered and how while the window is open). The PR-tier
+  // English-only exception for chrome (see src/ui/CLAUDE.md) lets a new
+  // English key land without rewriting the per-locale overlays in the same
+  // commit; the need/greed/pass labels match the action-button labels so
+  // the strip and the buttons read consistently.
+  lootRollGroup: {
+    pending: 'Waiting...',
+    need: 'Need',
+    greed: 'Greed',
+    pass: 'Pass',
+    // Screen-reader label for the whole vote strip. {item} is the rolled item
+    // name; localized in loot_roll_group_view.ts and set on the strip via the
+    // painter's setAttr writer (never a raw setAttribute literal).
+    aria: 'Group roll status for {item}',
+  },
   // Modular bag filtering controls: the category chips, sort dropdown, and live
   // search above the bag grid, plus the "no items match" empty state.
   bags: {

@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "f04cb373",
+      "state": "9690533a",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -29,6 +29,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
@@ -39,6 +40,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -100,7 +103,7 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 411,
-      "state": "b05658c6",
+      "state": "91b765bb",
       "events": "687dc097",
       "rng": {
         "draws": 4,
@@ -111,7 +114,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 411,
-      "state": "261767e3",
+      "state": "aa08328e",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -122,7 +125,7 @@
       "tick": 15,
       "time": 0.75,
       "nextId": 411,
-      "state": "30d73a8a",
+      "state": "faba1fff",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -133,7 +136,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 411,
-      "state": "b83407a5",
+      "state": "1ed74b8c",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -144,7 +147,7 @@
       "tick": 25,
       "time": 1.25,
       "nextId": 411,
-      "state": "86c547bd",
+      "state": "834c0324",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -155,7 +158,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 411,
-      "state": "0f8f9c5f",
+      "state": "a880304a",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -166,7 +169,7 @@
       "tick": 35,
       "time": 1.75,
       "nextId": 411,
-      "state": "8f3f8ec1",
+      "state": "9ec66e88",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -177,7 +180,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 411,
-      "state": "1c40fc08",
+      "state": "a6912de1",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -188,7 +191,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 411,
-      "state": "1c40fc08",
+      "state": "a6912de1",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -201,6 +204,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {
             "companion_tessa": 2
@@ -213,7 +217,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 11200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -358,7 +364,7 @@
       "tick": 41,
       "time": 2.05,
       "nextId": 411,
-      "state": "4e1d2818",
+      "state": "63243211",
       "events": "d54c4ac2",
       "rng": {
         "draws": 6,
@@ -371,6 +377,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {
             "companion_tessa": 2
@@ -383,7 +390,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 11200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -542,7 +551,7 @@
       "tick": 45,
       "time": 2.25,
       "nextId": 411,
-      "state": "8f2e21bf",
+      "state": "c79220aa",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -553,7 +562,7 @@
       "tick": 49,
       "time": 2.45,
       "nextId": 411,
-      "state": "e22bf4af",
+      "state": "372b35fa",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -566,6 +575,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {
             "companion_tessa": 2
@@ -578,7 +588,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 11200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -678,7 +690,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 411,
-      "state": "45be9ac3",
+      "state": "a86547ee",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -689,7 +701,7 @@
       "tick": 51,
       "time": 2.55,
       "nextId": 411,
-      "state": "ad89cfcc",
+      "state": "708e90e5",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -702,6 +714,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {
             "companion_tessa": 2
@@ -714,7 +727,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 11200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -815,7 +830,7 @@
       "tick": 51,
       "time": 2.55,
       "nextId": 411,
-      "state": "ad89cfcc",
+      "state": "708e90e5",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -828,6 +843,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {
             "companion_tessa": 2
@@ -840,7 +856,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 11200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}

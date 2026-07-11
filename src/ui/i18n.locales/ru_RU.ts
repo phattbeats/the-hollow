@@ -16,6 +16,11 @@ import type { TranslationKey } from '../i18n.catalog';
 export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.spectate.banner': 'Наблюдение за {name}',
   'hudChrome.loot.chestTitle': 'Сундук',
+  'hudChrome.lootRollGroup.pending': 'Ожидание...',
+  'hudChrome.lootRollGroup.need': 'Нужда',
+  'hudChrome.lootRollGroup.greed': 'Жадность',
+  'hudChrome.lootRollGroup.pass': 'Пропуск',
+  'hudChrome.lootRollGroup.aria': 'Статус группового броска: {item}',
   'hudChrome.spellbook.addToBarAria': 'Добавить {name} на панель действий',
   'hudChrome.spellbook.removeFromBarAria': 'Убрать {name} с панели действий',
   'hudChrome.nameplate.mob': '[{level}] {name}',
@@ -1357,6 +1362,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'abilityUi.tooltip.offGlobalCooldown': 'Вне глобального восстановления',
   'abilityUi.tooltip.friendlyTarget': 'Дружественная цель',
   'abilityUi.tooltip.enemyTarget': 'Вражеская цель',
+  'abilityUi.tooltip.selfOnly': 'Только на себя',
   'abilityUi.tooltip.damageRange': 'от {min} до {max}',
   'abilityUi.tooltip.finisherDamage': '{base} плюс {perCombo} за прием серии',
   'abilityUi.resources.mana': 'маны',
@@ -2951,7 +2957,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_root_hollow_boars_ii.text':
     'Признаю то, что должность признавать не велит: пять было оптимизмом. Из нижних нор лезут всё новые. Ещё восемь, и я смогу закрыть сезон, не правя запись в третий раз. Запись не терпит правок. Как и я.',
   'entities.quests.q_root_hollow_boars_ii.completion':
-    'Закрыто. Подписано. Подшито. Сезон может идти точно по расписанию, раз снова есть кому вести расписание. Ты весьма помог очень малой пастве. Уточню: паства эта и есть я.',
+    'Закрыто. Подписано. Подшито. Сезон может идти точно по расписанию, раз снова есть кому вести расписание. Ты весьма помог очень малой пастве. Уточню: паства эта и есть я. Сам реестр старше этого порядка, переплетён рукой, которую я никогда не встречал, и хранит счёт, который я предпочитаю не подводить. Кто-то был здесь весьма скрупулёзен, некогда. Я лишь стараюсь поспевать.',
   'entities.quests.q_root_hollow_boars_ii.objectives.0.label': 'Дикий кабан убит',
   'entities.quests.q_fallow_acres_wolves.title': 'Волки прочь с борозд',
   'entities.quests.q_fallow_acres_wolves.text':
@@ -4756,6 +4762,12 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': 'Обрывок страницы дневника',
   'entities.items.shrine_diary_page.flavorText':
     '...считал сорок дней при свече, пока не сбился со счёта. Тьма здесь, внизу, не забывает Его, даже если Он забыл это место. Если цапля пролетит низко, скажи пономарю, что фитиль всё ещё горит...',
+  'entities.items.worn_prayer_token.name': 'Потёртый молитвенный жетон',
+  'entities.items.worn_prayer_token.flavorText':
+    '...с одной стороны отполирован не моим большим пальцем, та же неглубокая бороздка, что и на добрых сотне таких же в этой груде, если верить самой груде. один палец не сотрёт сотню жетонов. а вот множество пальцев одну бороздку, вполне могут...',
+  'entities.items.tally_shard.name': 'Осколок с зарубками',
+  'entities.items.tally_shard.flavorText':
+    '...зарубки по пять, глубокие, каждая вычеркнута по завершении счёта. сотни пятёрок вычеркнуты, прежде чем вычёркивание прекращается, а последний ряд так и остался незавершённым...',
   'entities.mobs.acolyte_tessa.name': 'Послушница Тесса',
   'entities.mobs.deacon_varric.name': 'Дьякон Варрик',
   'entities.mobs.reliquary_bonewalker.name': 'Поднятый костеход',
@@ -4881,6 +4893,12 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'delveUi.tracker.module': 'Секция {current} из {total}',
   'delveUi.tracker.objective': 'Задача',
   'delveUi.tracker.title': 'Вылазка',
+  'sim.bank.cannotAfford': 'Вам не хватает средств на это расширение банка.',
+  'sim.bank.expansionCapped': 'Ваш банк больше нельзя расширить.',
+  'sim.bank.full': 'Ваш банк переполнен.',
+  'sim.bank.noQuestItems': 'Квестовые предметы нельзя хранить в банке.',
+  'sim.bank.purchased': 'Вы приобрели дополнительные ячейки банка.',
+  'sim.bank.tooFar': 'Вы слишком далеко от банкира.',
   'sim.delve.alreadyInDelve': 'Вы уже находитесь в вылазке.',
   'sim.delve.bossChest':
     'Босс пал. На возвышении поднимается заговорённый сундук реликвария: взломайте его замок, чтобы забрать добычу.',
@@ -4942,6 +4960,25 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'sim.hearth.noItems2':
     'На тебе одни добрые намерения, а? …добрыми намерениями печь не растопишь.',
   'sim.hearth.tooFar': 'Чтобы покормить брата Зеленолапа, нужно быть рядом с ним.',
+  'sim.homestead.alreadyOwn': 'У вас уже есть хутор.',
+  'sim.homestead.claimed': 'Эта земля ваша. Хутор застолблен.',
+  'sim.homestead.helpLine': 'Хутор: /homestead, /homestead claim.',
+  'sim.homestead.outsideArea':
+    'Это не хуторская земля. Попробуйте Fallow Acres, к западу от дороги.',
+  'sim.homestead.questGate':
+    'Брат Зеленолап еще не отправил вас в путь. Сперва закончите его поручения.',
+  'sim.homestead.readoutMine': 'Ваш хутор находится в точке ({x}, {z}).',
+  'sim.homestead.readoutNoHomesteadHint':
+    'У вас нет хутора. Встаньте на подходящем месте в Лощинных Плёсах и введите /homestead claim.',
+  'sim.homestead.readoutNoHomesteadQuest':
+    'У вас нет хутора. Закончите всю цепочку поручений брата Зеленолапа, чтобы получить его.',
+  'sim.homestead.tooCloseGate': 'Слишком близко к воротам. Отойдите дальше.',
+  'sim.homestead.tooCloseGraveyard': 'Слишком близко к кладбищу.',
+  'sim.homestead.tooCloseOther': 'Слишком близко к чужому хутору.',
+  'sim.homestead.tooCloseRoad': 'Слишком близко к дороге.',
+  'sim.homestead.tooCloseWater': 'Слишком близко к воде.',
+  'sim.homestead.tooCloseWildlife':
+    'Слишком близко к дикой живности. Расчистите округу или отойдите дальше.',
   'sim.house.alreadyOwn': 'У вас уже есть свой дом в Пустоши.',
   'sim.house.claimed': 'Этот дом теперь ваш. Украсьте его командой /house place <слот> <вид>.',
   'sim.house.cleared': 'Слот {slot} очищен.',

@@ -168,6 +168,11 @@ describe('i18n status registry: states', () => {
     expect([t, p, b]).toEqual([translated, pending, blocked]);
   });
 
+  // The freshness sweep is a per-row expect loop over the whole registry, so its
+  // wall-clock cost scales with `keys * non-en-locales`. Today it lands at
+  // 3.9-4.9s on a loaded dev box, brushing the 5s default and intermittently
+  // failing as a timeout. Give it explicit headroom so the gate stays green
+  // as the universe grows; a future batched rewrite can drop the timeout.
   it('every translated row is fresh (srcHash === enHash) and attributed (by human|agent)', () => {
     for (const [, entry] of keyEntries())
       for (const row of Object.values<any>(entry.locales)) {
@@ -175,7 +180,7 @@ describe('i18n status registry: states', () => {
         expect(row.srcHash).toBe(entry.enHash);
         expect(['human', 'agent']).toContain(row.by);
       }
-  });
+  }, 30000);
 });
 
 describe('i18n status registry: blocked rows are load-bearing (no over-allow)', () => {

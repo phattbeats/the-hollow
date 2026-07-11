@@ -778,6 +778,63 @@
     cursor: default;
     filter: none;
   }
+  /* Group-visible need/greed vote strip painted under the action buttons.
+     The strip wraps one chip per party candidate, color-coded by their
+     current choice (or a dim pending while they have not answered yet).
+     The local player's chip is bolded so they can find their own row at a
+     glance. PHAA-568 (port of upstream #1599, group-visible loot rolls). */
+  .loot-roll-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 4px;
+    font-size: 11px;
+  }
+  .loot-roll-chip {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 4px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 1px solid #3b2e19;
+    background: rgba(0, 0, 0, 0.35);
+    color: #d5c19a;
+  }
+  .loot-roll-chip-name {
+    font-weight: 400;
+  }
+  .loot-roll-chip-label {
+    font-size: 10px;
+    opacity: 0.85;
+  }
+  .loot-roll-chip.pending {
+    border-style: dashed;
+    color: #8f8265;
+  }
+  .loot-roll-chip.need {
+    border-color: #339449;
+    color: #c9ffd0;
+  }
+  .loot-roll-chip.greed {
+    border-color: #b18a32;
+    color: #ffe3a5;
+  }
+  .loot-roll-chip.pass {
+    border-color: #8f3a3a;
+    color: #ffc6c6;
+  }
+  .loot-roll-chip.viewer {
+    font-weight: 700;
+    outline: 1px solid #d5c19a;
+  }
+  .loot-roll-group-empty {
+    font-size: 11px;
+    color: #8f8265;
+    font-style: italic;
+  }
+  /* Live-region politeness: the strip is a sibling of the roll row, so an
+     AT that reads the roll row's aria-live=polite announcement also gets
+     the chip updates; no separate aria-live on the strip is needed. */
   .master-loot-picks {
     display: flex;
     flex-direction: column;

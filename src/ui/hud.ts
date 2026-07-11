@@ -102,6 +102,7 @@ import {
   type PartyInfo,
 } from '../world_api';
 import { type AbilityScaling, abilityDamageBonus } from './ability_damage';
+import { isSelfOnlyAbility } from './ability_self_only';
 import { ActionBarPainter } from './action_bar_painter';
 import {
   ABILITY_ICON_PREFIX,
@@ -204,6 +205,8 @@ import { ReannounceMarker } from './live_region_reannounce';
 import { PICK_ACTION_HOTKEYS } from './lockpick_panel';
 import { LockpickWindow } from './lockpick_window';
 import { reconcileLootRolls as computeLootRollReconcile } from './loot_roll_reconcile';
+import { lootRollGroupView as computeLootRollGroupView } from './loot_roll_group_view';
+import { LootRollGroupPainter } from './loot_roll_group_painter';
 import { lowHealthVignette } from './low_health';
 import { lowResourceView } from './low_resource';
 import { type MapRegion, mapCanvasHeight, paintTerrainRows } from './map_terrain';
@@ -2371,6 +2374,14 @@ export class Hud {
     this.swingFillEl,
     this.swingLabelEl,
   );
+  // Group-visible loot-roll vote strip (PHAA-568, port of upstream #1599).
+  // Owns the keyed pool of one strip element per open need-greed roll the
+  // local player's party is voting on. The host element (#loot-roll-groups)
+  // is created lazily inside the loot-rolls container the first time paint
+  // is called; the painter's pool survives across `renderLootRolls()`
+  // rebuilds so a fresh answer from a party member flips a single chip's
+  // text without rebuilding any of the roll row HTML.
+  private readonly lootRollGroupPainter = new LootRollGroupPainter(this.writerFacet);
   // Housing signpost interact prompt (PHAA-405 follow-up): purely proximity-driven
   // (renderer.nearHousingPlot), so it shares the xp/swing bars' per-frame facet.
   private readonly housingPromptPainter = new HousingPromptPainter(
@@ -7998,6 +8009,31 @@ export class Hud {
     return root;
   }
 
+  // Stable host element for the group-visible vote strip (PHAA-568). Lives
+  // inside #loot-rolls and is NEVER cleared by renderLootRolls (which wipes
+  // the roll row children on every reconcile); the LootRollGroupPainter keeps
+  // a keyed pool of strip nodes that survive across roll-row rebuilds, so a
+  // vote-strip update from a party member can flip a single chip's text
+  // without rebuilding the roll row above it. Created lazily alongside
+  // #loot-rolls on first paint.
+  private lootRollGroupHost(): HTMLElement {
+    const root = this.lootRollRoot();
+    let host = document.getElementById('loot-roll-groups') as HTMLElement | null;
+    if (!host) {
+      host = document.createElement('div');
+      host.id = 'loot-roll-groups';
+      host.setAttribute('aria-live', 'polite');
+      // Sibling of the roll rows; the roll rows themselves are added by
+      // renderLootRolls as direct children of #loot-rolls. A flex column
+      // keeps the rows on top and the group strips stacked underneath.
+      host.style.display = 'flex';
+      host.style.flexDirection = 'column';
+      host.style.gap = '4px';
+    }
+    if (host.parentElement !== root) root.appendChild(host);
+    return host;
+  }
+
   private showLootRoll(ev: Extract<SimEvent, { type: 'lootRoll' }>): void {
     // A master-loot prompt that converts to a need/greed roll reuses the same rollId;
     // drop the superseded master panel so the looter sees only the need/greed panel.
@@ -8129,6 +8165,14 @@ export class Hud {
     if (this.activeLootRolls.size === 0 && this.activeMasterRolls.size === 0) {
       root.style.display = 'none';
       root.innerHTML = '';
+      // Also prune the group strip pool; an empty view makes the painter
+      // hide every pooled strip and drop them from the pool.
+      const groupHost = this.lootRollGroupHost();
+      this.lootRollGroupPainter.paint(
+        computeLootRollGroupView(this.sim, this.sim.playerId),
+        groupHost,
+        null,
+      );
       return;
     }
     root.style.display = 'flex';
@@ -8169,6 +8213,14 @@ export class Hud {
       });
       root.appendChild(row);
     }
+
+    // Group-visible vote strip (PHAA-568): drive the painter with the
+    // current group-status view. The host element is a stable sibling of
+    // the roll rows inside #loot-rolls, created lazily; it survives
+    // renderLootRolls rebuilds so the painter's keyed pool is not churned.
+    const groupHost = this.lootRollGroupHost();
+    const view = computeLootRollGroupView(this.sim, this.sim.playerId);
+    this.lootRollGroupPainter.paint(view, groupHost, null);
   }
 
   private renderMasterLootRow(
@@ -11037,7 +11089,7 @@ function abilityCastLine(known: ResolvedAbility, spellHaste = 0): string {
   return t('abilityUi.tooltip.instant');
 }
 
-function abilityRequirementLines(def: AbilityDef): string[] {
+export function abilityRequirementLines(def: AbilityDef): string[] {
   const lines: string[] = [];
   if (def.requiresForm)
     lines.push(t('abilityUi.tooltip.requiresForm', { form: t(FORM_LABEL_KEYS[def.requiresForm]) }));
@@ -11056,6 +11108,7 @@ function abilityRequirementLines(def: AbilityDef): string[] {
   if (def.offGcd) lines.push(t('abilityUi.tooltip.offGlobalCooldown'));
   if (def.targetType === 'friendly') lines.push(t('abilityUi.tooltip.friendlyTarget'));
   else if (def.requiresTarget) lines.push(t('abilityUi.tooltip.enemyTarget'));
+  else if (isSelfOnlyAbility(def)) lines.push(t('abilityUi.tooltip.selfOnly'));
   return lines;
 }
 

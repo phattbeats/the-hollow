@@ -15,7 +15,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "922bf058",
+      "state": "a1045fe1",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -28,6 +28,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
@@ -38,6 +39,8 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -101,7 +104,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 405,
-      "state": "a485792a",
+      "state": "744949bb",
       "events": "f204331a",
       "rng": {
         "draws": 6,
@@ -112,7 +115,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 405,
-      "state": "0f95963e",
+      "state": "a00ea64f",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -123,7 +126,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 405,
-      "state": "3462b768",
+      "state": "a049153d",
       "events": "cd05d551",
       "rng": {
         "draws": 100,
@@ -134,7 +137,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 405,
-      "state": "71b1f6d8",
+      "state": "d12f5bcd",
       "events": "741638a5",
       "rng": {
         "draws": 203,
@@ -145,7 +148,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 405,
-      "state": "e571639f",
+      "state": "effe8a8a",
       "events": "96cd5722",
       "rng": {
         "draws": 305,
@@ -156,7 +159,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 405,
-      "state": "3db9589f",
+      "state": "0f2e2f8a",
       "events": "741638a5",
       "rng": {
         "draws": 413,
@@ -167,7 +170,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 405,
-      "state": "3db9589f",
+      "state": "0f2e2f8a",
       "events": "741638a5",
       "rng": {
         "draws": 413,
@@ -180,6 +183,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {
@@ -192,7 +196,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}

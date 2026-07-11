@@ -16,6 +16,11 @@ import type { TranslationKey } from '../i18n.catalog';
 export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.spectate.banner': '{name}を観戦中',
   'hudChrome.loot.chestTitle': '宝箱',
+  'hudChrome.lootRollGroup.pending': '待機中...',
+  'hudChrome.lootRollGroup.need': 'ニード',
+  'hudChrome.lootRollGroup.greed': 'グリード',
+  'hudChrome.lootRollGroup.pass': 'パス',
+  'hudChrome.lootRollGroup.aria': '{item} のグループロール状況',
   'hudChrome.spellbook.addToBarAria': '{name}をアクションバーに追加',
   'hudChrome.spellbook.removeFromBarAria': '{name}をアクションバーから削除',
   'hudChrome.nameplate.mob': '[{level}] {name}',
@@ -1334,6 +1339,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'abilityUi.tooltip.offGlobalCooldown': 'グローバルクールダウン外',
   'abilityUi.tooltip.friendlyTarget': '味方対象',
   'abilityUi.tooltip.enemyTarget': '敵対象',
+  'abilityUi.tooltip.selfOnly': '自分のみ',
   'abilityUi.tooltip.damageRange': '{min}から{max}',
   'abilityUi.tooltip.finisherDamage': '{base}にコンボポイントごと{perCombo}',
   'abilityUi.resources.mana': 'マナ',
@@ -2917,7 +2923,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_root_hollow_boars_ii.text':
     'この職では認めるべきでないことを認めよう。五頭は楽観が過ぎた。下の巣からまだ湧いてくる。あと八頭で、記録を三度目に書き直さずに季を閉じられる。記録は書き直しを嫌う。俺もだ。',
   'entities.quests.q_root_hollow_boars_ii.completion':
-    '閉じた。署名した。綴じた。これで季は予定どおり進められる、暦を守る者が再び現れたのだからな。おまえは極めて小さな会衆を大いに助けた。念のため言っておくが、その会衆とは俺のことだ。',
+    '閉じた。署名した。綴じた。これで季は予定どおり進められる、暦を守る者が再び現れたのだからな。おまえは極めて小さな会衆を大いに助けた。念のため言っておくが、その会衆とは俺のことだ。この台帳自体は、この取り決めよりもさらに古い。会ったこともない手によって綴じられ、俺が数え上げるつもりのない数を記している。かつて、ここには実に几帳面な者がいたのだろう。俺はただ、その歩調に追いつこうとしているだけだ。',
   'entities.quests.q_root_hollow_boars_ii.objectives.0.label': '野生の猪を討伐',
   'entities.quests.q_fallow_acres_wolves.title': '畝を追われる狼たち',
   'entities.quests.q_fallow_acres_wolves.text':
@@ -4657,6 +4663,12 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': '破れた日記のページ',
   'entities.items.shrine_diary_page.flavorText':
     '……蝋燭で四十日を数えたところで、数えるのをやめた。ここの闇は今もあの方を忘れない、あの方がこの場所を忘れてしまっても。鷺が低く舞うのを見たら、灯守りに芯はまだ燃えていると伝えてくれ……',
+  'entities.items.worn_prayer_token.name': 'すり減った祈りの証',
+  'entities.items.worn_prayer_token.flavorText':
+    '……片面が、自分のものではない親指に磨かれて滑らかになっている。ここに積まれた他の百枚近くと、同じ浅い溝が刻まれている、少なくともこの山はそう語っている。一本の親指で百枚も磨り減らせはしない。だが、大勢の親指がひとつの溝を磨くことなら、できる……',
+  'entities.items.tally_shard.name': '刻み跡の欠片',
+  'entities.items.tally_shard.flavorText':
+    '……五本ひと組で深く刻まれ、数え終えるたびに線で消されている。消された五本組が幾百とあり、それが途絶える、最後の一列だけは最後まで消されずに終わっている……',
   'entities.mobs.acolyte_tessa.name': '侍祭テッサ',
   'entities.mobs.deacon_varric.name': '助祭ヴァリック',
   'entities.mobs.reliquary_bonewalker.name': '蘇りし骨歩き',
@@ -4779,6 +4791,12 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'delveUi.tracker.module': 'モジュール {current}/{total}',
   'delveUi.tracker.objective': '目標',
   'delveUi.tracker.title': 'デルヴ',
+  'sim.bank.cannotAfford': 'その銀行拡張の代金が足りない。',
+  'sim.bank.expansionCapped': 'これ以上銀行を拡張できない。',
+  'sim.bank.full': '銀行の保管庫がいっぱいだ。',
+  'sim.bank.noQuestItems': 'クエストアイテムは銀行に預けられない。',
+  'sim.bank.purchased': '追加の銀行スロットを購入した。',
+  'sim.bank.tooFar': '銀行員から離れすぎている。',
   'sim.delve.alreadyInDelve': 'あなたはすでにデルヴの中にいる。',
   'sim.delve.bossChest':
     'ボスが倒れる。守りの聖遺物庫の宝箱が祭壇にせり上がる。錠を開けて戦利品を手に入れろ。',
@@ -4836,6 +4854,22 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     '……手ぶらじゃな、お前さん。燃えるもんか、腹の足しになるもんを持ってきな、話はそれからだ。',
   'sim.hearth.noItems2': '持ってるのは良い心がけだけか……気持ちだけじゃ炉は焚けんのう。',
   'sim.hearth.tooFar': '緑掌修道士のそばに行かねば、彼に餌をやれんぞ。',
+  'sim.homestead.alreadyOwn': 'お前はすでに開拓地を持っている。',
+  'sim.homestead.claimed': 'この土地はお前のものだ。開拓地の権利が確定した。',
+  'sim.homestead.helpLine': '開拓地：/homestead、/homestead claim。',
+  'sim.homestead.outsideArea': 'そこは開拓地の外だ。道を西に進んだFallow Acresを試してみるといい。',
+  'sim.homestead.questGate': '緑掌修道士はまだお前を送り出していない。まずは彼の用事を済ませろ。',
+  'sim.homestead.readoutMine': 'お前の開拓地は ({x}, {z}) にある。',
+  'sim.homestead.readoutNoHomesteadHint':
+    'お前は開拓地を持っていない。ホロウ低地の適した場所に立ち、/homestead claim と入力しろ。',
+  'sim.homestead.readoutNoHomesteadQuest':
+    'お前は開拓地を持っていない。緑掌修道士の用事をすべて終えれば手に入る。',
+  'sim.homestead.tooCloseGate': '門に近すぎる。もっと離れろ。',
+  'sim.homestead.tooCloseGraveyard': '墓地に近すぎる。',
+  'sim.homestead.tooCloseOther': '他人の開拓地に近すぎる。',
+  'sim.homestead.tooCloseRoad': '道に近すぎる。',
+  'sim.homestead.tooCloseWater': '水場に近すぎる。',
+  'sim.homestead.tooCloseWildlife': '野生動物に近すぎる。周りを片付けるか、もっと離れろ。',
   'sim.house.alreadyOwn': 'あなたは既に空洞に住居を持っている。',
   'sim.house.claimed': 'この住居はあなたのものだ。/house place <スロット> <種類> で飾り付けよう。',
   'sim.house.cleared': 'スロット{slot}を空にした。',

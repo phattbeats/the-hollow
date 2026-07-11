@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "25d1ee04",
+      "state": "95729859",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -29,6 +29,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {},
@@ -39,6 +40,8 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -102,7 +105,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 416,
-      "state": "40973969",
+      "state": "f9137262",
       "events": "2e13ada4",
       "rng": {
         "draws": 3,
@@ -113,7 +116,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 416,
-      "state": "26631c19",
+      "state": "cb9dd432",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -124,7 +127,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 416,
-      "state": "e95598fb",
+      "state": "3e69a180",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -135,7 +138,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 416,
-      "state": "250b67b5",
+      "state": "5b8fd13e",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -146,7 +149,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 416,
-      "state": "21c73273",
+      "state": "b3e69198",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -157,7 +160,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 416,
-      "state": "d659e369",
+      "state": "ffb97c62",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -168,7 +171,7 @@
       "tick": 69,
       "time": 3.45,
       "nextId": 417,
-      "state": "72fa9e7b",
+      "state": "8b0acf00",
       "events": "97d53ce6",
       "rng": {
         "draws": 3,
@@ -181,6 +184,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {
@@ -195,7 +199,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 11398,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -296,7 +302,7 @@
       "tick": 70,
       "time": 3.5,
       "nextId": 417,
-      "state": "6b5aa3bf",
+      "state": "91c9c094",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -307,7 +313,7 @@
       "tick": 71,
       "time": 3.55,
       "nextId": 417,
-      "state": "80cb288b",
+      "state": "ca58b2b0",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -320,6 +326,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {
@@ -334,7 +341,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 11398,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
