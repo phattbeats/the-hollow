@@ -22,6 +22,7 @@ describe('server-sent message localization', () => {
     '...and 5 more.',
     'Select a player to moderate first.',
     "You can't moderate that player.",
+    "You don't have permission to do that.",
     'Usage: /mute <minutes> <reason>',
     'Usage: /suspend <minutes> <reason>',
     'Usage: /spectate <name>',
