@@ -180,6 +180,81 @@ export const HOLLOW_MOBS: Record<string, MobTemplate> = {
     scale: 1.6,
     color: 0x39412f,
   },
+  // Heartwood Colossus (PHAA-494): the fork's Plant World reskin of upstream's
+  // Thunzharr world boss. Raid-tier (level 20, the fork's MAX_LEVEL), spawned and
+  // scheduled entirely by src/sim/world_boss.ts, not a CampDef; this record only
+  // supplies its stats and mechanic kit. Rises at its fixed point near Root Hollow
+  // in the_hollow_reaches (see WORLD_BOSSES). ccImmune + boss, like every other
+  // raid-tier fight in this fork (nythraxis_scourge_of_thornpeak, marrowlord_varkas).
+  heartwood_colossus: {
+    id: 'heartwood_colossus',
+    name: 'Heartwood Colossus',
+    minLevel: 20,
+    maxLevel: 20,
+    family: 'elemental',
+    boss: true,
+    worldBoss: true,
+    elite: true,
+    ccImmune: true,
+    hpBase: 40000,
+    hpPerLevel: 0,
+    dmgBase: 62,
+    dmgPerLevel: 0,
+    attackSpeed: 2.6,
+    armorPerLevel: 46,
+    moveSpeed: 10.5,
+    aggroRadius: 26,
+    // Root Slam: a room-wide melee AoE pulse (the aoePulse family every raid boss
+    // in this fork uses), physical to match its bulk rather than a spell school.
+    aoePulse: { min: 42, max: 58, radius: 12, every: 9, name: 'Root Slam', school: 'physical' },
+    // Timberfall Heave: a heavy knockback so melee cannot simply stand and trade.
+    knockback: { chance: 0.3, distance: 8, name: 'Timberfall Heave' },
+    // Barkshell: a periodic self-absorb, like Marrowlord Varkas's Bone Carapace.
+    stoneskin: { amount: 500, every: 16, duration: 8, name: 'Barkshell', school: 'nature' },
+    // Grasping Roots (PHAA-494 anti-kite snare): fires even mid-chase, closing the
+    // gap a ranged kiter would otherwise hold forever against a sub-run-speed boss.
+    aoeSlow: {
+      radius: 14,
+      mult: 0.2,
+      duration: 5,
+      every: 15,
+      name: 'Grasping Roots',
+      school: 'nature',
+    },
+    // Heartwood Eruption: the telegraphed hardcast, a real cast bar healers react to.
+    bigCast: {
+      castId: 'heartwood_eruption',
+      name: 'Heartwood Eruption',
+      castTime: 3,
+      every: 22,
+      radius: 16,
+      min: 90,
+      max: 130,
+      school: 'nature',
+      yell: 'The heartwood splits!',
+    },
+    // A loud boss: battle cries carry across Root Hollow, not just melee range.
+    battleYells: {
+      lines: [
+        'The grove remembers every root that was ever cut.',
+        'Still. The Hollow keeps its own time.',
+        'Blood feeds the deep roots faster than rain ever did.',
+      ],
+      every: 20,
+      range: 60,
+    },
+    // No copper/questId entries here: rollWorldBossLoot (world_boss.ts) only
+    // supports itemId/rollGroup for a world-boss table (personal loot has no
+    // shared-corpse concept for currency, and quest gating would hand a quest
+    // item to every contributor ungated).
+    loot: [
+      { itemId: 'heartwood_splinter', chance: 1 },
+      { itemId: 'bloomcrown_pauldrons', chance: 0.18, rollGroup: 'heartwood_drop' },
+      { itemId: 'verdantguard_mantle', chance: 0.18, rollGroup: 'heartwood_drop' },
+    ],
+    scale: 3.4,
+    color: 0x2f4a2a,
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -377,7 +452,8 @@ export const HOLLOW_OBJECTS: GroundObjectDef[] = [];
 // deliberately excluded from the overworld PROPS merge and the collider grid
 // (see sim/data.ts), so nothing here may imply cover or blocking.
 // Kept clear of the landmarks: the vase (0,0), Greenpaw (3,4), the cold
-// firepit (-4,2), the cave mouth (0,28), the gate (0,-40), the sanctum
+// firepit (-4,2), the cave mouth (0,28), the shrine gate on the exit line
+// (0,-16, the walk-out trigger; see entry/exitOffset below), the sanctum
 // pillars (|x|=14 at z 80/95/110), the dais (0,116, r 10.5), and the eight
 // house plots (x=+-9, z=74/84/94/104). The room itself spans TEMPLE_LAYOUT
 // (|x|<23, z -19..132).
@@ -613,6 +689,20 @@ export const HOLLOW_ITEMS: Record<string, ItemDef> = {
     sellValue: 0,
     questId: 'q_keep_him_lit',
   },
+  // PHAA-558: the end-of-line keepsake for Sister Shade's player-facing arc
+  // (src/sim/content/hollow_zone.ts). Reward-INVERTED by design: no stats, ever,
+  // on Shade's line (Board-accepted brief, doc shade-brief rev 1e9abd48). Same
+  // "it does nothing, it only remembers" keepsake convention as greenpaw_bead /
+  // keeper_coal above. Granted at the end of the currently-shippable arc (the
+  // q_someone_your_own_size turn-in); when the gated finale q_the_watering_can
+  // lands behind PHAA-543, the charm can move to that turn-in (kept adjustable).
+  willow_sprig: {
+    id: 'willow_sprig',
+    name: 'A Willow Sprig',
+    kind: 'quest',
+    sellValue: 0,
+    questId: 'q_someone_your_own_size',
+  },
   // PHAA-433: the Witness-Root's rare-chance drop. Class-neutral single-stat
   // budget, same convention as the other class-neutral pieces (cf. items.ts's
   // cryptbone_helm). Item level derives automatically from the boss's own
@@ -639,6 +729,42 @@ export const HOLLOW_ITEMS: Record<string, ItemDef> = {
       '...counted forty days by candle before I lost the thread. The dark down ' +
       'here does not forget Him, even if He has forgotten this place. If the ' +
       'heron circles low, tell the Verger the wick still burns...',
+  },
+  // Heartwood Colossus loot (PHAA-494). heartwood_splinter is the guaranteed
+  // trophy; the pauldron pair is a shared rollGroup so a kill awards at most one
+  // of the two (mail for the fork's plate-adjacent wearers, leather for the rest),
+  // matching the rollGroup convention Nythraxis's chase items use (dungeons/zone3.ts).
+  heartwood_splinter: {
+    id: 'heartwood_splinter',
+    name: 'Heartwood Splinter',
+    kind: 'junk',
+    sellValue: 500,
+    flavorText: 'Warm to the touch, long after the tree it came from stopped moving.',
+  },
+  bloomcrown_pauldrons: {
+    id: 'bloomcrown_pauldrons',
+    name: 'Bloomcrown Pauldrons',
+    kind: 'armor',
+    armorType: 'mail',
+    slot: 'shoulder',
+    quality: 'epic',
+    // Stat total (str+sta) must equal expectedStatBudget(item) exactly
+    // (tests/item_level.test.ts): ilvl 26 (level 20 + epic +6) x epic mult 1.0 x
+    // shoulder mult 0.75 x 0.7 per ilvl = 14.
+    stats: { armor: 340, str: 8, sta: 6 },
+    sellValue: 14000,
+  },
+  verdantguard_mantle: {
+    id: 'verdantguard_mantle',
+    name: 'Verdantguard Mantle',
+    kind: 'armor',
+    armorType: 'leather',
+    slot: 'shoulder',
+    quality: 'epic',
+    // Same ilvl/quality/slot as bloomcrown_pauldrons, so it must share its budget
+    // (14): see tests/item_level.test.ts's "share one budget" check.
+    stats: { armor: 180, agi: 8, sta: 6 },
+    sellValue: 13000,
   },
   // PHAA-560 (tribe-mystery breadcrumb, one of 2-3, docs/plan-the-hollow.md's
   // PROTECTED OPEN QUESTION stays unresolved): a second Under-Shrine found

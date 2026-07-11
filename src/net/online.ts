@@ -1,5 +1,6 @@
 // Online play: REST auth client + WebSocket world mirror.
 
+import { bagCapacity } from '../sim/bags';
 import { signChallenge } from '../sim/client_challenge';
 import { mechChromaItemId, mechChromaSkinIndex } from '../sim/content/skins';
 import {
@@ -19,6 +20,7 @@ import { LEADERBOARD_PAGE_SIZE } from '../sim/leaderboard_page';
 import type { Ante, PickAction } from '../sim/lockpick';
 import { normalizeMoveFacing, sanitizeMoveInput } from '../sim/move_input';
 import { secondaryClassCostFor } from '../sim/progression/trainer';
+import { readablePropsAt } from '../sim/readables_query';
 import { computeQuestState, type ResolvedAbility } from '../sim/sim';
 import {
   type Aura,
@@ -28,6 +30,7 @@ import {
   type GatherNodeType,
   type InvSlot,
   type LootRollChoice,
+  type LootRollGroupStatus,
   type LootRollPrompt,
   type MasterLootThreshold,
   type MoveInput,
@@ -45,6 +48,7 @@ import {
   type DelveDailyInfo,
   type DelveRunInfo,
   type DelveShopOfferView,
+  type DialogStateView,
   type DuelInfo,
   type FriendInfo,
   type GreenpawHearthInfo,
@@ -56,11 +60,13 @@ import {
   type LeaderboardEntry,
   type LeaderboardPage,
   type LockpickView,
+  type MailInfo,
   type MarketInfo,
   type OverheadEmoteId,
   type PartyInfo,
   type PresenceStatus,
   type RaidLockout,
+  type ReadablePropView,
   type SocialInfo,
   type TradeInfo,
 } from '../world_api';
@@ -738,6 +744,10 @@ function blankEntity(id: number): Entity {
     stompTimer: 0,
     stoneskinTimer: 0,
     terrifyTimer: 0,
+    bigCastTimer: 0,
+    aoeSlowTimer: 0,
+    loudYellTimer: 0,
+    loudYellIndex: 0,
     detonateTimer: Infinity,
     firedSummons: 0,
     summonedIds: [],
@@ -798,6 +808,9 @@ export class ClientWorld implements IWorld {
   known: ResolvedAbility[] = [];
   realm = '';
   inventory: InvSlot[] = [];
+  // Equipped bag sockets, mirrored from snapshot self ('bags'); capacity is
+  // derived locally from the shared item data (same math as the sim's bags.ts).
+  bags: (string | null)[] = [null, null, null, null];
   vendorBuyback: InvSlot[] = [];
   equipment: Partial<Record<EquipSlot, string>> = {};
   copper = 0;
@@ -849,6 +862,12 @@ export class ClientWorld implements IWorld {
   // --- IWorldMarket: World Market view, mirrored from the snapshot self
   // (`s.market`, delta-omitted). ---
   marketInfo: MarketInfo | null = null;
+  // --- IWorldMail: Ravenpost mail view, mirrored from the snapshot self
+  // (`s.mail`, delta-omitted; non-null only while standing at the Ravenpost).
+  // mailUnread rides `s.mailU`, a cheap always-present scalar (the HUD envelope
+  // indicator, readable anywhere, not just at the Ravenpost). ---
+  mailInfo: MailInfo | null = null;
+  mailUnread = 0;
   // --- IWorldHousing: Hollow hub homestead view, mirrored from the snapshot
   // self (`s.housing`, delta-omitted). ---
   housingInfo: HousingInfo | null = null;
@@ -857,6 +876,10 @@ export class ClientWorld implements IWorld {
   // present (global world state, not per-viewer), so the default is a real
   // value, not null, matching a freshly-fed-nothing hearth. ---
   hollowHearth: GreenpawHearthInfo = { smoke: 0, level: 'clear' };
+  // PHAA-553: per-player dialogue disposition + flags, mirrored from the self
+  // snapshot's `dstate`. dialogState() reads this so the client walker can
+  // evaluate `requires` gates; effects themselves resolve server-side.
+  private dialogStateMirror: DialogStateView = { disposition: {}, flags: [] };
   // --- IWorldHomestead: Hollow Reaches open-world plot view, mirrored from
   // the snapshot self (`s.homestead`, delta-omitted). ---
   homesteadInfo: HomesteadInfo | null = null;
@@ -879,6 +902,8 @@ export class ClientWorld implements IWorld {
   // reads it, no send). ---
   markers: Record<number, number> = {}; // entityId -> markerId, mirrored from the self-wire
   private lootRollPrompts: LootRollPrompt[] = []; // open need-greed rolls, mirrored from the self-wire
+  // group-visible choices on the open rolls (the vote strip), mirrored from the self-wire
+  private lootRollGroup: LootRollGroupStatus[] = [];
   // bumped whenever a fresh social snapshot lands, so an open panel re-renders
   private socialDirty = false;
   // snapshot interpolation
@@ -998,6 +1023,15 @@ export class ClientWorld implements IWorld {
 
   get player(): Entity {
     return this.entities.get(this.playerId) ?? blankEntity(-1);
+  }
+
+  // IWorldReadables (PHAA-552): world-placed readables are static content, so
+  // they are NOT snapshot-mirrored; ClientWorld computes them from the same
+  // shared table + local player position as the offline Sim, through the one
+  // readablePropsAt helper, keeping the two IWorld impls byte-identical.
+  get readableProps(): ReadablePropView[] {
+    const p = this.entities.get(this.playerId);
+    return p ? readablePropsAt(p.pos.x, p.pos.z) : [];
   }
 
   drainEvents(): SimEvent[] {
@@ -1558,12 +1592,20 @@ export class ClientWorld implements IWorld {
       // Terse keys (inv/buyback/equip/copper) and the per-field guards are unchanged by
       // the move; the offline counterpart is src/sim/items.ts.
       this.copper = s.copper ?? 0;
+      // IWorldMail.mailUnread rides every self-frame (?? 0), same as copper: it is
+      // cheap and must update from another player's action (someone mailing you)
+      // without depending on this session's own dirty flag.
+      this.mailUnread = s.mailU ?? 0;
       if (s.inv !== undefined) {
         this.inventory = s.inv;
         this.invChanged = true;
       }
       if (s.buyback !== undefined) {
         this.vendorBuyback = s.buyback;
+        this.invChanged = true;
+      }
+      if (s.bags !== undefined) {
+        this.bags = s.bags;
         this.invChanged = true;
       }
       if (s.equip !== undefined) this.equipment = s.equip;
@@ -1613,10 +1655,13 @@ export class ClientWorld implements IWorld {
       if (s.duel !== undefined) this.duelInfo = s.duel;
       if (s.arena !== undefined) this.arenaInfo = s.arena;
       if (s.market !== undefined) this.marketInfo = s.market;
+      if (s.mail !== undefined) this.mailInfo = s.mail;
       if (s.housing !== undefined) this.housingInfo = s.housing;
       if (s.hearth !== undefined) this.hollowHearth = s.hearth;
+      if (s.dstate !== undefined) this.dialogStateMirror = s.dstate;
       if (s.homestead !== undefined) this.homesteadInfo = s.homestead;
       if (s.lroll !== undefined) this.lootRollPrompts = s.lroll ?? [];
+      if (s.lrollg !== undefined) this.lootRollGroup = s.lrollg ?? [];
       if (s.drun !== undefined) this.delveRun = s.drun;
       if (s.dcompanion !== undefined) this.companionState = s.dcompanion;
       if (s.dmarks !== undefined) this.delveMarks = s.dmarks ?? 0;
@@ -1808,6 +1853,9 @@ export class ClientWorld implements IWorld {
   activeLootRolls(): LootRollPrompt[] {
     return this.lootRollPrompts;
   }
+  lootRollGroupStatus(): LootRollGroupStatus[] {
+    return this.lootRollGroup;
+  }
   pickUpObject(id: number): void {
     this.cmd({ cmd: 'pickup', id });
   }
@@ -1843,6 +1891,15 @@ export class ClientWorld implements IWorld {
   }
   unequipItem(slot: EquipSlot): void {
     this.cmd({ cmd: 'unequip_item', slot });
+  }
+  get bagCapacity(): number {
+    return bagCapacity(this.bags);
+  }
+  equipBag(itemId: string, socket?: number): void {
+    this.cmd({ cmd: 'equip_bag', item: itemId, socket });
+  }
+  unequipBag(socket: number): void {
+    this.cmd({ cmd: 'unequip_bag', socket });
   }
   useItem(itemId: string): void {
     this.cmd({ cmd: 'use', item: itemId });
@@ -2113,6 +2170,20 @@ export class ClientWorld implements IWorld {
   marketCollect(): void {
     this.cmd({ cmd: 'market_collect' });
   }
+  // --- IWorldMail: Ravenpost send/take/delete/read command sends (snake_case
+  // wire strings). mailInfo/mailUnread are snapshot reads (mirror fields above). ---
+  mailSend(to: string, subject: string, body: string, copper: number, items: InvSlot[]): void {
+    this.cmd({ cmd: 'mail_send', to, subject, body, copper, items });
+  }
+  mailTake(mailId: number): void {
+    this.cmd({ cmd: 'mail_take', id: mailId });
+  }
+  mailDelete(mailId: number): void {
+    this.cmd({ cmd: 'mail_delete', id: mailId });
+  }
+  mailMarkRead(mailId: number): void {
+    this.cmd({ cmd: 'mail_markread', id: mailId });
+  }
   // --- IWorldHousing: claim/place/remove command sends (housingInfo is a snapshot
   // read, mirror field above). PHAA-405: an interact-key command, not chat text. ---
   housingClaim(): void {
@@ -2129,6 +2200,14 @@ export class ClientWorld implements IWorld {
   // dialogue menu, not chat text. ---
   feedGreenpaw(): void {
     this.cmd({ cmd: 'feedGreenpaw' });
+  }
+  // --- IWorldDialog (PHAA-553): send a picked branching-dialogue choice; the
+  // effect resolves server-side. dialogState is a snapshot read (dstate mirror). ---
+  dialogChoose(npcId: string, choiceId: string): void {
+    this.cmd({ cmd: 'dialogChoose', npc: npcId, choice: choiceId });
+  }
+  dialogState(): DialogStateView {
+    return this.dialogStateMirror;
   }
   // --- IWorldDungeons: dungeon enter/leave sends + the raid-lockout countdown read.
   // selfLockouts mirrors the snapshot `s.lockouts`; raidLockouts derives the live

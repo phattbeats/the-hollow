@@ -8,6 +8,7 @@ import {
   MOBS,
   NPCS,
   QUESTS,
+  READABLES_BY_ID,
   ZONES,
 } from '../sim/data';
 import type { ItemDef, PlayerClass } from '../sim/types';
@@ -29,6 +30,7 @@ export type EntityTranslationKind =
   | 'mob'
   | 'npc'
   | 'npcIntro'
+  | 'readable'
   | 'quest'
   | 'questObjective'
   | 'questDialog'
@@ -45,6 +47,8 @@ export type EntityTranslationField =
   | 'completion'
   | 'greeting'
   | 'introLine'
+  | 'readablePage'
+  | 'readableTitle'
   | 'label'
   | 'welcome'
   | 'enterText'
@@ -76,6 +80,14 @@ export type EntityTranslationRequest =
       field: 'introLine';
       values?: InterpolationValues;
     }
+  | {
+      kind: 'readable';
+      id: string;
+      pageIndex: number;
+      field: 'readablePage';
+      values?: InterpolationValues;
+    }
+  | { kind: 'readable'; id: string; field: 'readableTitle'; values?: InterpolationValues }
   | {
       kind: 'quest';
       id: string;
@@ -233,6 +245,12 @@ function canonicalEntityText(request: EntityTranslationRequest): string {
         NPCS[request.id]?.introLines?.[request.lineIndex] ??
         `${request.id}.introLines.${request.lineIndex}`
       );
+    case 'readable': {
+      const readable = READABLES_BY_ID[request.id];
+      if (!readable) return request.id;
+      if (request.field === 'readableTitle') return readable.title;
+      return readable.pages[request.pageIndex] ?? `${request.id}.pages.${request.pageIndex}`;
+    }
     case 'quest': {
       const quest = QUESTS[request.id];
       if (!quest) return request.id;
@@ -293,6 +311,10 @@ export function entityTranslationKey(request: EntityTranslationRequest): string 
       return `entities.npcs.${entityPathSegment(request.id)}.${request.field}`;
     case 'npcIntro':
       return `entities.npcs.${entityPathSegment(request.id)}.introLines.${request.lineIndex}`;
+    case 'readable':
+      return request.field === 'readableTitle'
+        ? `entities.readables.${entityPathSegment(request.id)}.title`
+        : `entities.readables.${entityPathSegment(request.id)}.pages.${request.pageIndex}`;
     case 'quest':
       return `entities.quests.${entityPathSegment(request.id)}.${request.field}`;
     case 'questObjective':
@@ -318,9 +340,11 @@ function requestManifestEntry(request: EntityTranslationRequest): EntityTranslat
         ? `${request.zoneId}.pois.${request.poiIndex}`
         : request.kind === 'npcIntro'
           ? `${request.id}.introLines.${request.lineIndex}`
-          : request.kind === 'questDialog'
-            ? `${request.id}.dialog.${request.field}`
-            : request.id;
+          : request.kind === 'readable' && request.field === 'readablePage'
+            ? `${request.id}.pages.${request.pageIndex}`
+            : request.kind === 'questDialog'
+              ? `${request.id}.dialog.${request.field}`
+              : request.id;
   const group: EntityTranslationGroup =
     request.kind === 'class' || request.kind === 'ability'
       ? 'classAbility'
@@ -535,6 +559,35 @@ export function entityTranslationManifest(): EntityTranslationManifestEntry[] {
           line,
           'world',
           entityTranslationKey({ kind: 'npcIntro', id: npc.id, lineIndex, field: 'introLine' }),
+        ),
+      );
+    });
+  }
+  for (const readable of Object.values(READABLES_BY_ID).sort(compareById)) {
+    entries.push(
+      entry(
+        'readable',
+        readable.id,
+        'readableTitle',
+        readable.title,
+        'world',
+        entityTranslationKey({ kind: 'readable', id: readable.id, field: 'readableTitle' }),
+      ),
+    );
+    readable.pages.forEach((page, pageIndex) => {
+      entries.push(
+        entry(
+          'readable',
+          `${readable.id}.pages.${pageIndex}`,
+          'readablePage',
+          page,
+          'world',
+          entityTranslationKey({
+            kind: 'readable',
+            id: readable.id,
+            pageIndex,
+            field: 'readablePage',
+          }),
         ),
       );
     });

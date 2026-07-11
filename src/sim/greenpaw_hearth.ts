@@ -90,6 +90,8 @@ export interface GreenpawHearthInfo {
 export interface GreenpawHearthSave {
   hunger: number;
   smoke: number;
+  // Optional (added PHAA-484): absent in older saves, load() tolerates that.
+  lastFeeder?: string | null;
 }
 
 function clamp(v: number, lo: number, hi: number): number {
@@ -107,6 +109,9 @@ export class GreenpawHearth {
   // character's first minute in the hub, not need twenty minutes to matter.
   private hunger = HUNGER_MAX * 0.6;
   private smoke = 0;
+  // The player who most recently fed him (PHAA-484): PlantSpeech's sustained-
+  // smoke lean-in names the keeper who earned the room its haze.
+  private lastFeeder: string | null = null;
 
   constructor(private readonly ctx: SimContext) {}
 
@@ -122,6 +127,10 @@ export class GreenpawHearth {
 
   get smokeValue(): number {
     return this.smoke;
+  }
+
+  get lastFeederName(): string | null {
+    return this.lastFeeder;
   }
 
   info(): GreenpawHearthInfo {
@@ -167,6 +176,7 @@ export class GreenpawHearth {
       });
     }
     if (fed) {
+      this.lastFeeder = meta.name;
       // PHAA-484: credits a 'feed' quest objective (q_the_wavelength), one
       // credit per successful feed() call regardless of how many item types
       // it consumed.
@@ -182,7 +192,7 @@ export class GreenpawHearth {
   }
 
   serialize(): GreenpawHearthSave {
-    return { hunger: this.hunger, smoke: this.smoke };
+    return { hunger: this.hunger, smoke: this.smoke, lastFeeder: this.lastFeeder };
   }
 
   load(save: GreenpawHearthSave | null | undefined): void {
@@ -192,6 +202,9 @@ export class GreenpawHearth {
     }
     if (typeof save.smoke === 'number' && Number.isFinite(save.smoke)) {
       this.smoke = clamp(save.smoke, 0, SMOKE_MAX);
+    }
+    if (typeof save.lastFeeder === 'string' && save.lastFeeder.length > 0) {
+      this.lastFeeder = save.lastFeeder;
     }
   }
 }

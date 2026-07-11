@@ -87,6 +87,16 @@ const WHIM_MAX_SECONDS = 10 * 60;
 // commentary track on every line of chat.
 const CHAT_REACT_CHANCE = 0.04;
 
+// The lean-in (PHAA-484, docs/plan-the-hollow.md line 141: "the room fills
+// with smoke, the Plant leans in, and it has something to say about me, my
+// house, or the world"). The full_smoke edge above rewards one burst; this
+// rewards KEEPING the room lit: once smoke has held at hazy-or-better for
+// this long without a break, the Plant leans in once and says something
+// that lands, naming the keeper who earned it when one is known. Re-arms
+// only after the room drops back to clear, so a tended hearth earns exactly
+// one lean-in per sustained stretch.
+const SUSTAINED_SMOKE_SECONDS = 5 * 60;
+
 function levelFor(smoke: number): Mood {
   return smoke >= SMOKE_HAZY_AT ? 'hazy' : 'clear';
 }
@@ -194,6 +204,22 @@ const THRESHOLD_LINES: Record<PlantThresholdKind, string[]> = {
   house_claimed: HOUSE_CLAIMED_LINES,
 };
 
+// The sustained-smoke lean-in (see SUSTAINED_SMOKE_SECONDS). Keeper lines
+// land on the player who has been feeding the hearth ({name}, same
+// replacement convention as COMMAND_REFUSAL_LINES); the generic pool covers
+// a room that got hazy with no known keeper (a fresh world, an old save).
+const LEAN_IN_KEEPER_LINES: string[] = [
+  '...{name}. the one who keeps him lit. i have decided to remember your name. do not make me regret the shelf space.',
+  "the room holds its smoke because of you, {name}. i noticed. the cat thinks it's his doing. let him.",
+  '{name}. four hundred years of mortals passing through, and you are the first in a while to grasp that worship is maintenance. keep the furnace fed. the theology handles itself.',
+];
+
+const LEAN_IN_LINES: string[] = [
+  'the smoke has settled in properly. lean closer. this room remembers being a temple. it was not mine. it is now.',
+  "a room kept warm this long starts to listen back. i know because i'm the one it listens to.",
+  'the haze is holding. good. when it holds, i can almost hear the roots under the shrine again. almost.',
+];
+
 // Eavesdrop-only: the generic reaction when overheard chat matches none of
 // the sore-spot/keyword pools above (see matchTopicLine). Reacts to the fact
 // that chatter is happening at all, never to specific words - there is no LLM
@@ -251,6 +277,11 @@ export class PlantSpeech {
   // discipline at construction), so -1 marks "not yet armed".
   private nextWhimAt = -1;
   private sawFull = false;
+  // Sustained-smoke lean-in bookkeeping: when the current hazy-or-better
+  // stretch began (-1 = the room is clear), and whether this stretch has
+  // already earned its one lean-in.
+  private hazySince = -1;
+  private leanedIn = false;
   private lastMode: PlantMode | null = null;
   // The mood computed on the most recent update() tick, so notifyThreshold()
   // and handleChat() (called off-tick, from other systems / chat) can stamp
@@ -276,7 +307,7 @@ export class PlantSpeech {
   // wall-clock"). Sim threads GreenpawHearth's live smoke value straight
   // through (coordinator glue between two sibling modules) rather than adding
   // a new SimContext primitive for one number.
-  update(smoke: number): void {
+  update(smoke: number, keeperName: string | null = null): void {
     // Deterministic, RNG-free initial arm (matching GreenpawHearth's
     // discipline: update() never draws RNG on its own, only a player-
     // triggered action does). A random draw here would run on the very
@@ -300,10 +331,47 @@ export class PlantSpeech {
       this.sawFull = false;
     }
 
+    // The sustained lean-in is a state, not an edge: once the stretch has
+    // lasted long enough it stays armed through the shared cooldown (unlike
+    // full_smoke above, which is one shot at its crossing tick) until it
+    // actually gets to speak, then disarms for the rest of the stretch.
+    if (mood === 'hazy') {
+      if (this.hazySince < 0) this.hazySince = this.ctx.time;
+      if (
+        !this.leanedIn &&
+        this.ctx.time - this.hazySince >= SUSTAINED_SMOKE_SECONDS &&
+        this.ctx.time >= this.nextEarliestSpeakAt
+      ) {
+        this.leanedIn = true;
+        this.leanIn(keeperName);
+      }
+    } else {
+      this.hazySince = -1;
+      this.leanedIn = false;
+    }
+
     if (this.ctx.time >= this.nextWhimAt) {
       this.trySpeak(mood, 'whim');
       this.nextWhimAt = this.ctx.time + this.drawGap(WHIM_MIN_SECONDS, WHIM_MAX_SECONDS);
     }
+  }
+
+  // The room has held its smoke long enough (see SUSTAINED_SMOKE_SECONDS):
+  // the Plant leans in and says something that lands, on the keeper by name
+  // when the hearth knows one. storyteller mode: this is the arc's earned
+  // lore-bearing moment, not a cutting aside.
+  private leanIn(keeperName: string | null): void {
+    if (keeperName) {
+      const text = this.pickLine('lean_in:keeper', LEAN_IN_KEEPER_LINES).replace(
+        '{name}',
+        keeperName,
+      );
+      this.speak('storyteller', text, { trigger: 'sustained_smoke', keeperName });
+      return;
+    }
+    this.speak('storyteller', this.pickLine('lean_in', LEAN_IN_LINES), {
+      trigger: 'sustained_smoke',
+    });
   }
 
   // A real threshold crossed (5.2), e.g. a homestead claimed in the Plant's

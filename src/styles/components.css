@@ -778,6 +778,63 @@
     cursor: default;
     filter: none;
   }
+  /* Group-visible need/greed vote strip painted under the action buttons.
+     The strip wraps one chip per party candidate, color-coded by their
+     current choice (or a dim pending while they have not answered yet).
+     The local player's chip is bolded so they can find their own row at a
+     glance. PHAA-568 (port of upstream #1599, group-visible loot rolls). */
+  .loot-roll-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 4px;
+    font-size: 11px;
+  }
+  .loot-roll-chip {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 4px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 1px solid #3b2e19;
+    background: rgba(0, 0, 0, 0.35);
+    color: #d5c19a;
+  }
+  .loot-roll-chip-name {
+    font-weight: 400;
+  }
+  .loot-roll-chip-label {
+    font-size: 10px;
+    opacity: 0.85;
+  }
+  .loot-roll-chip.pending {
+    border-style: dashed;
+    color: #8f8265;
+  }
+  .loot-roll-chip.need {
+    border-color: #339449;
+    color: #c9ffd0;
+  }
+  .loot-roll-chip.greed {
+    border-color: #b18a32;
+    color: #ffe3a5;
+  }
+  .loot-roll-chip.pass {
+    border-color: #8f3a3a;
+    color: #ffc6c6;
+  }
+  .loot-roll-chip.viewer {
+    font-weight: 700;
+    outline: 1px solid #d5c19a;
+  }
+  .loot-roll-group-empty {
+    font-size: 11px;
+    color: #8f8265;
+    font-style: italic;
+  }
+  /* Live-region politeness: the strip is a sibling of the roll row, so an
+     AT that reads the roll row's aria-live=polite announcement also gets
+     the chip updates; no separate aria-live on the strip is needed. */
   .master-loot-picks {
     display: flex;
     flex-direction: column;
@@ -827,6 +884,10 @@
   .q-epic {
     border-color: #a335ee !important;
     box-shadow: 0 0 6px #a335ee66;
+  }
+  .q-legendary {
+    border-color: #ff8000 !important;
+    box-shadow: 0 0 6px #ff800066;
   }
 
   /* ---------- character window ---------- */
@@ -2545,37 +2606,131 @@
     background: radial-gradient(circle at 35% 30%, #c9a3ff, #6b3fa0);
     box-shadow: 0 0 4px rgba(150, 90, 230, 0.5);
   }
+  /* WoW-style slot grid: square cells, the item icon fills the cell, quality
+     drives the cell border (the .q-* classes below), the stack count sits as a
+     badge in the bottom-right corner, and free capacity paints as empty sockets. */
   .bag-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(42px, 1fr));
+    gap: 4px;
+    padding: 2px;
+    align-content: start;
   }
   .bag-item {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    width: 100%;
-    font-size: 12px;
-    padding: 3px 4px;
-    /* SC 2.5.8 (target size, minimum): the 12px font + 3px padding lands ~20px tall on
-       desktop, under the 24px floor. The mobile touch override (body.mobile-touch
-       .bag-item { min-height: 40px } in hud.mobile.css) is more specific and still wins,
-       so the stronger 40x40 mobile floor is not weakened. */
-    min-height: 24px;
-    border: 0;
-    border-radius: 3px;
+    position: relative;
+    aspect-ratio: 1;
+    /* SC 2.5.8: the 42px column floor keeps every cell >= 40x40 on touch too. */
+    min-width: 0;
+    min-height: 40px;
+    padding: 0;
+    border: 1px solid #4a3d26;
+    border-radius: 5px;
     cursor: var(--cursor-point);
-    background: transparent;
+    background: linear-gradient(160deg, #17130c, #0c0a07);
+    box-shadow: inset 0 1px 4px #000c;
     color: inherit;
     font-family: var(--ui-font);
-    text-align: left;
   }
   .bag-item:hover {
-    background: #ffffff12;
+    filter: brightness(1.25);
+  }
+  .bag-item .item-icon {
+    /* a replaced element keeps its intrinsic size under width:auto even when
+       inset-pinned, so size it explicitly to fill the slot */
+    position: absolute;
+    inset: 2px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    border: 0;
+    border-radius: 4px;
+  }
+  /* the cell owns the quality border; a soft outer glow from the same quality
+     color (set by the painter from the shared QUALITY_COLOR map) lifts rare+ */
+  .bag-item[class*=" q-"] {
+    box-shadow:
+      inset 0 1px 4px #000c,
+      0 0 5px color-mix(in srgb, var(--bag-slot-quality, transparent) 45%, transparent);
+  }
+  /* classic look: poor/common cells keep the neutral socket border (a colored
+     border on every white item reads as noise); uncommon+ pop by contrast */
+  .bag-item.q-poor,
+  .bag-item.q-common {
+    border-color: #4a3d26 !important;
+    box-shadow: inset 0 1px 4px #000c;
   }
   .bag-item .bi-count {
+    position: absolute;
+    right: 2px;
+    bottom: 1px;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-shadow:
+      0 1px 2px #000,
+      0 0 3px #000;
+    pointer-events: none;
+  }
+  .bag-item.empty {
+    cursor: default;
+    background: #0b0906;
+    border-color: #2f281a;
+    box-shadow: inset 0 2px 6px #000d;
+  }
+  /* The bag bar: backpack + the 4 equip sockets + the used/total counter. */
+  .bag-bar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin: 4px 0 2px;
+  }
+  .bag-socket {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    flex: none;
+    padding: 0;
+    border: 1px solid #4a3d26;
+    border-radius: 5px;
+    background: linear-gradient(160deg, #17130c, #0c0a07);
+    box-shadow: inset 0 1px 4px #000c;
+    cursor: var(--cursor-point);
+  }
+  .bag-socket .item-icon {
+    position: absolute;
+    inset: 2px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    border: 0;
+    border-radius: 4px;
+  }
+  .bag-socket.backpack {
+    cursor: default;
+  }
+  .bag-socket.empty {
+    cursor: default;
+    border-style: dashed;
+    border-color: #3a3020;
+    background: #0b0906;
+  }
+  .bag-socket:hover:not(.empty):not(.backpack) {
+    filter: brightness(1.25);
+  }
+  .bag-socket:focus-visible,
+  .bag-item:focus-visible {
+    outline: 2px solid var(--color-border-focus);
+    outline-offset: 1px;
+  }
+  .bag-capacity {
     margin-left: auto;
-    color: #ccc;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gold-dim, #8a6f3a);
+    white-space: nowrap;
+    padding-right: 2px;
+  }
+  .bag-capacity.over {
+    color: var(--color-text-error);
   }
   .bag-empty {
     font-size: 12px;
@@ -3691,6 +3846,72 @@
     display: flex;
     gap: 8px;
     align-items: center;
+  }
+  /* Ravenpost mail (PHAA-495): each letter is a stacked card (sender/subject/
+     body/attachments/action), unlike the market's icon-name-price grid row, so
+     it gets its own layout instead of reusing .mkt-row. */
+  .mail-row {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 8px;
+    border-radius: 4px;
+    background: #ffffff0a;
+    margin-bottom: 8px;
+    font-size: 12px;
+  }
+  .mail-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .mail-from {
+    font-family: var(--title-font);
+    color: var(--gold-dim);
+    font-size: 12.5px;
+  }
+  .mail-unread-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-accent);
+  }
+  .mail-subject {
+    color: var(--color-text-light);
+    font-size: 12.5px;
+  }
+  .mail-body {
+    color: var(--color-text-muted);
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .mail-copper {
+    color: var(--color-accent);
+    font-size: 11.5px;
+  }
+  .mail-attach {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11.5px;
+    color: var(--color-text-muted);
+    margin-right: 6px;
+  }
+  .mail-actions {
+    margin-top: 4px;
+  }
+  .mail-body-input {
+    width: 100%;
+    min-height: 70px;
+    resize: vertical;
+    background: #120d07;
+    border: 1px solid #5a4a2a;
+    color: #ffe6a8;
+    border-radius: 4px;
+    padding: 6px 8px;
+    font-family: var(--ui-font, inherit);
+    font-size: 12px;
+    margin: 6px 0;
   }
   #map-canvas {
     border: 2px solid var(--border);

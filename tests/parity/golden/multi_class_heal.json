@@ -19,7 +19,7 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 401,
+      "nextId": 406,
       "state": "5bc471b0",
       "events": "741638a5",
       "rng": {
@@ -33,9 +33,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 410,
-      "state": "4c04536d",
-      "events": "26ef19d8",
+      "nextId": 415,
+      "state": "e86fb03c",
+      "events": "b10fa61d",
       "rng": {
         "draws": 6,
         "digest": "2f3f3f90"
@@ -46,19 +46,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -68,19 +75,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "paladin",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "training_mace"
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -90,19 +104,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "druid",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 403,
+          "dialogState": {},
+          "entityId": 408,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -112,19 +133,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "shaman",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 404,
+          "dialogState": {},
+          "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "training_mace"
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -134,19 +162,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 405,
+          "dialogState": {},
+          "entityId": 410,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -164,7 +199,7 @@
           "fallStartY": 2.338163,
           "fiveSecondRule": 99,
           "hp": 51,
-          "id": 401,
+          "id": 406,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -181,7 +216,6 @@
           "potionCooldownUntil": -1,
           "resource": 175,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -213,7 +247,7 @@
           "fallStartY": 2.403234,
           "fiveSecondRule": 99,
           "hp": 95,
-          "id": 402,
+          "id": 407,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -231,7 +265,6 @@
           "potionCooldownUntil": -1,
           "resource": 93,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -264,7 +297,7 @@
               "name": "Weakening Hex",
               "remaining": 60,
               "school": "physical",
-              "sourceId": 407,
+              "sourceId": 412,
               "value": 0.3
             }
           ],
@@ -275,7 +308,7 @@
           "fallStartY": 2.479635,
           "fiveSecondRule": 99,
           "hp": 62,
-          "id": 403,
+          "id": 408,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -293,7 +326,6 @@
           "potionCooldownUntil": -1,
           "resource": 115,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -325,7 +357,7 @@
           "fallStartY": 2.354059,
           "fiveSecondRule": 99,
           "hp": 68,
-          "id": 404,
+          "id": 409,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -343,7 +375,6 @@
           "potionCooldownUntil": -1,
           "resource": 108,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -376,7 +407,7 @@
               "name": "Necrotic",
               "remaining": 60,
               "school": "physical",
-              "sourceId": 407,
+              "sourceId": 412,
               "value": 3700
             }
           ],
@@ -387,7 +418,7 @@
           "fallStartY": -1.48336,
           "fiveSecondRule": 99,
           "hp": 10000,
-          "id": 405,
+          "id": 410,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -404,7 +435,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -435,7 +465,7 @@
           "fallStartY": -1.48336,
           "fiveSecondRule": 99,
           "hp": 84,
-          "id": 406,
+          "id": 411,
           "kind": "mob",
           "level": 5,
           "lootFfaTimer": "Infinity",
@@ -443,7 +473,7 @@
           "moveSpeed": 8,
           "onGround": true,
           "overpowerUntil": -1,
-          "ownerId": 405,
+          "ownerId": 410,
           "petMode": "defensive",
           "pos": {
             "x": 80,
@@ -451,7 +481,6 @@
             "z": 80
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 80,
             "y": -1.48336,
@@ -477,7 +506,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 50000,
-          "id": 407,
+          "id": 412,
           "inCombat": true,
           "kind": "mob",
           "level": 5,
@@ -493,7 +522,6 @@
             "z": 90
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 90,
             "y": -1.48336,
@@ -504,140 +532,138 @@
           },
           "templateId": "forest_wolf",
           "threat": [
-            [
-              401,
-              115.666667
-            ],
-            [
-              402,
-              200
-            ],
-            [
-              403,
-              87.5
-            ],
-            [
-              405,
-              10
-            ]
-          ],
-          "weapon": {
-            "max": 12,
-            "min": 8,
-            "speed": 2
-          }
-        },
-        {
-          "aiState": "idle",
-          "combatTimer": 99,
-          "critChance": 0.05,
-          "detonateTimer": "Infinity",
-          "dodgeChance": 0.05,
-          "fallStartY": -1.48336,
-          "fiveSecondRule": 99,
-          "hostile": true,
-          "hp": 50000,
-          "id": 408,
-          "inCombat": true,
-          "kind": "mob",
-          "level": 5,
-          "lootFfaTimer": "Infinity",
-          "maxHp": 50000,
-          "moveSpeed": 8,
-          "onGround": true,
-          "overpowerUntil": -1,
-          "petMode": "defensive",
-          "pos": {
-            "x": -90,
-            "y": -1.48336,
-            "z": 90
-          },
-          "potionCooldownUntil": -1,
-          "sex": "m",
-          "spawnPos": {
-            "x": -90,
-            "y": -1.48336,
-            "z": 90
-          },
-          "stats": {
-            "armor": 40
-          },
-          "templateId": "forest_wolf",
-          "threat": [
-            [
-              401,
-              115.666667
-            ],
-            [
-              402,
-              200
-            ],
-            [
-              403,
-              87.5
-            ],
-            [
-              405,
-              10
-            ]
-          ],
-          "weapon": {
-            "max": 12,
-            "min": 8,
-            "speed": 2
-          }
-        },
-        {
-          "aiState": "idle",
-          "combatTimer": 99,
-          "critChance": 0.05,
-          "detonateTimer": "Infinity",
-          "dodgeChance": 0.05,
-          "fallStartY": -1.48336,
-          "fiveSecondRule": 99,
-          "hostile": true,
-          "hp": 50000,
-          "id": 409,
-          "inCombat": true,
-          "kind": "mob",
-          "level": 5,
-          "lootFfaTimer": "Infinity",
-          "maxHp": 50000,
-          "moveSpeed": 8,
-          "onGround": true,
-          "overpowerUntil": -1,
-          "petMode": "defensive",
-          "pos": {
-            "x": 90,
-            "y": -1.48336,
-            "z": -90
-          },
-          "potionCooldownUntil": -1,
-          "sex": "m",
-          "spawnPos": {
-            "x": 90,
-            "y": -1.48336,
-            "z": -90
-          },
-          "stats": {
-            "armor": 40
-          },
-          "templateId": "forest_wolf",
-          "threat": [
-            [
-              401,
-              115.666667
-            ],
-            [
-              402,
-              200
-            ],
-            [
-              403,
-              87.5
-            ],
             [
               406,
+              115.666667
+            ],
+            [
+              407,
+              200
+            ],
+            [
+              408,
+              87.5
+            ],
+            [
+              410,
+              10
+            ]
+          ],
+          "weapon": {
+            "max": 12,
+            "min": 8,
+            "speed": 2
+          }
+        },
+        {
+          "aiState": "idle",
+          "combatTimer": 99,
+          "critChance": 0.05,
+          "detonateTimer": "Infinity",
+          "dodgeChance": 0.05,
+          "fallStartY": -1.48336,
+          "fiveSecondRule": 99,
+          "hostile": true,
+          "hp": 50000,
+          "id": 413,
+          "inCombat": true,
+          "kind": "mob",
+          "level": 5,
+          "lootFfaTimer": "Infinity",
+          "maxHp": 50000,
+          "moveSpeed": 8,
+          "onGround": true,
+          "overpowerUntil": -1,
+          "petMode": "defensive",
+          "pos": {
+            "x": -90,
+            "y": -1.48336,
+            "z": 90
+          },
+          "potionCooldownUntil": -1,
+          "spawnPos": {
+            "x": -90,
+            "y": -1.48336,
+            "z": 90
+          },
+          "stats": {
+            "armor": 40
+          },
+          "templateId": "forest_wolf",
+          "threat": [
+            [
+              406,
+              115.666667
+            ],
+            [
+              407,
+              200
+            ],
+            [
+              408,
+              87.5
+            ],
+            [
+              410,
+              10
+            ]
+          ],
+          "weapon": {
+            "max": 12,
+            "min": 8,
+            "speed": 2
+          }
+        },
+        {
+          "aiState": "idle",
+          "combatTimer": 99,
+          "critChance": 0.05,
+          "detonateTimer": "Infinity",
+          "dodgeChance": 0.05,
+          "fallStartY": -1.48336,
+          "fiveSecondRule": 99,
+          "hostile": true,
+          "hp": 50000,
+          "id": 414,
+          "inCombat": true,
+          "kind": "mob",
+          "level": 5,
+          "lootFfaTimer": "Infinity",
+          "maxHp": 50000,
+          "moveSpeed": 8,
+          "onGround": true,
+          "overpowerUntil": -1,
+          "petMode": "defensive",
+          "pos": {
+            "x": 90,
+            "y": -1.48336,
+            "z": -90
+          },
+          "potionCooldownUntil": -1,
+          "spawnPos": {
+            "x": 90,
+            "y": -1.48336,
+            "z": -90
+          },
+          "stats": {
+            "armor": 40
+          },
+          "templateId": "forest_wolf",
+          "threat": [
+            [
+              406,
+              115.666667
+            ],
+            [
+              407,
+              200
+            ],
+            [
+              408,
+              87.5
+            ],
+            [
+              411,
               10
             ]
           ],
@@ -652,9 +678,9 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 410,
-      "state": "359c5f89",
-      "events": "a054ebe2",
+      "nextId": 415,
+      "state": "e58d9151",
+      "events": "37afd157",
       "rng": {
         "draws": 6,
         "digest": "2f3f3f90"
@@ -665,19 +691,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -687,19 +720,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "paladin",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "training_mace"
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -709,6 +749,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "druid",
           "companionUpgrades": {},
           "counters": {
@@ -716,14 +763,14 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 403,
+          "dialogState": {},
+          "entityId": 408,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -733,19 +780,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "shaman",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 404,
+          "dialogState": {},
+          "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "training_mace"
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -755,19 +809,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 405,
+          "dialogState": {},
+          "entityId": 410,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -785,7 +846,7 @@
           "fallStartY": 2.338163,
           "fiveSecondRule": 99,
           "hp": 51,
-          "id": 401,
+          "id": 406,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -802,7 +863,6 @@
           "potionCooldownUntil": -1,
           "resource": 175,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -834,7 +894,7 @@
           "fallStartY": 2.403234,
           "fiveSecondRule": 99,
           "hp": 95,
-          "id": 402,
+          "id": 407,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -852,7 +912,6 @@
           "potionCooldownUntil": -1,
           "resource": 93,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -885,7 +944,7 @@
               "name": "Weakening Hex",
               "remaining": 60,
               "school": "physical",
-              "sourceId": 407,
+              "sourceId": 412,
               "value": 0.3
             }
           ],
@@ -895,7 +954,7 @@
           "fallStartY": 2.479635,
           "fiveSecondRule": 99,
           "hp": 62,
-          "id": 403,
+          "id": 408,
           "inCombat": true,
           "kind": "player",
           "level": 1,
@@ -914,7 +973,6 @@
           "potionCooldownUntil": -1,
           "resource": 115,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -946,7 +1004,7 @@
           "fallStartY": 2.354059,
           "fiveSecondRule": 99,
           "hp": 68,
-          "id": 404,
+          "id": 409,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -964,7 +1022,6 @@
           "potionCooldownUntil": -1,
           "resource": 108,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -997,7 +1054,7 @@
               "name": "Necrotic",
               "remaining": 60,
               "school": "physical",
-              "sourceId": 407,
+              "sourceId": 412,
               "value": 3700
             }
           ],
@@ -1008,7 +1065,7 @@
           "fallStartY": -1.48336,
           "fiveSecondRule": 99,
           "hp": 10000,
-          "id": 405,
+          "id": 410,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -1025,7 +1082,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1056,7 +1112,7 @@
           "fallStartY": -1.48336,
           "fiveSecondRule": 99,
           "hp": 84,
-          "id": 406,
+          "id": 411,
           "kind": "mob",
           "level": 5,
           "lootFfaTimer": "Infinity",
@@ -1064,7 +1120,7 @@
           "moveSpeed": 8,
           "onGround": true,
           "overpowerUntil": -1,
-          "ownerId": 405,
+          "ownerId": 410,
           "petMode": "defensive",
           "pos": {
             "x": 80,
@@ -1072,7 +1128,6 @@
             "z": 80
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 80,
             "y": -1.48336,
@@ -1089,7 +1144,7 @@
           }
         },
         {
-          "aggroTargetId": 403,
+          "aggroTargetId": 408,
           "aiState": "chase",
           "auras": [
             {
@@ -1099,7 +1154,7 @@
               "name": "Find Weakness",
               "remaining": 60,
               "school": "physical",
-              "sourceId": 403,
+              "sourceId": 408,
               "value": 0.5
             }
           ],
@@ -1110,7 +1165,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 49895,
-          "id": 407,
+          "id": 412,
           "inCombat": true,
           "kind": "mob",
           "leashAnchor": {
@@ -1131,7 +1186,6 @@
             "z": 90
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 90,
             "y": -1.48336,
@@ -1140,23 +1194,23 @@
           "stats": {
             "armor": 40
           },
-          "tappedById": 403,
+          "tappedById": 408,
           "templateId": "forest_wolf",
           "threat": [
             [
-              401,
+              406,
               115.666667
             ],
             [
-              402,
+              407,
               200
             ],
             [
-              403,
+              408,
               193.5
             ],
             [
-              405,
+              410,
               10
             ]
           ],
@@ -1176,7 +1230,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 50000,
-          "id": 408,
+          "id": 413,
           "inCombat": true,
           "kind": "mob",
           "level": 5,
@@ -1192,7 +1246,6 @@
             "z": 90
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": -90,
             "y": -1.48336,
@@ -1203,80 +1256,79 @@
           },
           "templateId": "forest_wolf",
           "threat": [
-            [
-              401,
-              115.666667
-            ],
-            [
-              402,
-              200
-            ],
-            [
-              403,
-              87.5
-            ],
-            [
-              405,
-              10
-            ]
-          ],
-          "weapon": {
-            "max": 12,
-            "min": 8,
-            "speed": 2
-          }
-        },
-        {
-          "aiState": "idle",
-          "combatTimer": 99,
-          "critChance": 0.05,
-          "detonateTimer": "Infinity",
-          "dodgeChance": 0.05,
-          "fallStartY": -1.48336,
-          "fiveSecondRule": 99,
-          "hostile": true,
-          "hp": 50000,
-          "id": 409,
-          "inCombat": true,
-          "kind": "mob",
-          "level": 5,
-          "lootFfaTimer": "Infinity",
-          "maxHp": 50000,
-          "moveSpeed": 8,
-          "onGround": true,
-          "overpowerUntil": -1,
-          "petMode": "defensive",
-          "pos": {
-            "x": 90,
-            "y": -1.48336,
-            "z": -90
-          },
-          "potionCooldownUntil": -1,
-          "sex": "m",
-          "spawnPos": {
-            "x": 90,
-            "y": -1.48336,
-            "z": -90
-          },
-          "stats": {
-            "armor": 40
-          },
-          "templateId": "forest_wolf",
-          "threat": [
-            [
-              401,
-              115.666667
-            ],
-            [
-              402,
-              200
-            ],
-            [
-              403,
-              87.5
-            ],
             [
               406,
+              115.666667
+            ],
+            [
+              407,
+              200
+            ],
+            [
+              408,
+              87.5
+            ],
+            [
+              410,
+              10
+            ]
+          ],
+          "weapon": {
+            "max": 12,
+            "min": 8,
+            "speed": 2
+          }
+        },
+        {
+          "aiState": "idle",
+          "combatTimer": 99,
+          "critChance": 0.05,
+          "detonateTimer": "Infinity",
+          "dodgeChance": 0.05,
+          "fallStartY": -1.48336,
+          "fiveSecondRule": 99,
+          "hostile": true,
+          "hp": 50000,
+          "id": 414,
+          "inCombat": true,
+          "kind": "mob",
+          "level": 5,
+          "lootFfaTimer": "Infinity",
+          "maxHp": 50000,
+          "moveSpeed": 8,
+          "onGround": true,
+          "overpowerUntil": -1,
+          "petMode": "defensive",
+          "pos": {
+            "x": 90,
+            "y": -1.48336,
+            "z": -90
+          },
+          "potionCooldownUntil": -1,
+          "spawnPos": {
+            "x": 90,
+            "y": -1.48336,
+            "z": -90
+          },
+          "stats": {
+            "armor": 40
+          },
+          "templateId": "forest_wolf",
+          "threat": [
+            [
+              406,
+              115.666667
+            ],
+            [
+              407,
+              200
+            ],
+            [
+              408,
+              87.5
+            ],
+            [
+              411,
               10
             ]
           ],
@@ -1291,9 +1343,9 @@
     {
       "tick": 5,
       "time": 0.25,
-      "nextId": 410,
-      "state": "5587d193",
-      "events": "491d4405",
+      "nextId": 415,
+      "state": "16a86dfa",
+      "events": "89825fc5",
       "rng": {
         "draws": 10,
         "digest": "f8306977"
@@ -1302,9 +1354,9 @@
     {
       "tick": 8,
       "time": 0.4,
-      "nextId": 410,
-      "state": "e8984c02",
-      "events": "491d4405",
+      "nextId": 415,
+      "state": "863f7f8f",
+      "events": "89825fc5",
       "rng": {
         "draws": 10,
         "digest": "f8306977"
@@ -1315,19 +1367,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1337,19 +1396,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "paladin",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "training_mace"
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1359,6 +1425,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "druid",
           "companionUpgrades": {},
           "counters": {
@@ -1366,14 +1439,14 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 403,
+          "dialogState": {},
+          "entityId": 408,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1383,19 +1456,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "shaman",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 404,
+          "dialogState": {},
+          "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "training_mace"
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1405,19 +1485,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 405,
+          "dialogState": {},
+          "entityId": 410,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1435,7 +1522,7 @@
           "fallStartY": 2.338163,
           "fiveSecondRule": 99.4,
           "hp": 51,
-          "id": 401,
+          "id": 406,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -1452,7 +1539,6 @@
           "potionCooldownUntil": -1,
           "resource": 175,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1484,7 +1570,7 @@
           "fallStartY": 2.403234,
           "fiveSecondRule": 99.4,
           "hp": 95,
-          "id": 402,
+          "id": 407,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -1502,7 +1588,6 @@
           "potionCooldownUntil": -1,
           "resource": 93,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1535,7 +1620,7 @@
               "name": "Weakening Hex",
               "remaining": 59.6,
               "school": "physical",
-              "sourceId": 407,
+              "sourceId": 412,
               "value": 0.3
             }
           ],
@@ -1546,7 +1631,7 @@
           "fallStartY": 2.479635,
           "fiveSecondRule": 99.4,
           "hp": 62,
-          "id": 403,
+          "id": 408,
           "inCombat": true,
           "kind": "player",
           "level": 1,
@@ -1565,7 +1650,6 @@
           "potionCooldownUntil": -1,
           "resource": 115,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1597,7 +1681,7 @@
           "fallStartY": 2.354059,
           "fiveSecondRule": 99.4,
           "hp": 68,
-          "id": 404,
+          "id": 409,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -1615,7 +1699,6 @@
           "potionCooldownUntil": -1,
           "resource": 108,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1648,7 +1731,7 @@
               "name": "Necrotic",
               "remaining": 59.6,
               "school": "physical",
-              "sourceId": 407,
+              "sourceId": 412,
               "value": 3700
             },
             {
@@ -1658,7 +1741,7 @@
               "name": "Rejuvenation",
               "remaining": 2.6,
               "school": "physical",
-              "sourceId": 403,
+              "sourceId": 408,
               "tickInterval": 0.1,
               "tickTimer": 0.1,
               "value": 300
@@ -1671,7 +1754,7 @@
           "fallStartY": -1.48336,
           "fiveSecondRule": 99.4,
           "hp": 3200,
-          "id": 405,
+          "id": 410,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -1688,7 +1771,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1719,7 +1801,7 @@
           "fallStartY": -1.48336,
           "fiveSecondRule": 99,
           "hp": 84,
-          "id": 406,
+          "id": 411,
           "kind": "mob",
           "level": 5,
           "lootFfaTimer": "Infinity",
@@ -1727,7 +1809,7 @@
           "moveSpeed": 8,
           "onGround": true,
           "overpowerUntil": -1,
-          "ownerId": 405,
+          "ownerId": 410,
           "petMode": "defensive",
           "petPathCooldown": 0.15,
           "pos": {
@@ -1736,7 +1818,6 @@
             "z": -30
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 80,
             "y": -1.48336,
@@ -1753,7 +1834,7 @@
           }
         },
         {
-          "aggroTargetId": 403,
+          "aggroTargetId": 408,
           "aiState": "chase",
           "auras": [
             {
@@ -1763,7 +1844,7 @@
               "name": "Find Weakness",
               "remaining": 59.6,
               "school": "physical",
-              "sourceId": 403,
+              "sourceId": 408,
               "value": 0.5
             }
           ],
@@ -1776,7 +1857,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 49895,
-          "id": 407,
+          "id": 412,
           "inCombat": true,
           "kind": "mob",
           "leashAnchor": {
@@ -1797,7 +1878,6 @@
             "z": 87.378458
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 90,
             "y": -1.48336,
@@ -1806,23 +1886,23 @@
           "stats": {
             "armor": 40
           },
-          "tappedById": 403,
+          "tappedById": 408,
           "templateId": "forest_wolf",
           "threat": [
             [
-              401,
+              406,
               115.666667
             ],
             [
-              402,
+              407,
               200
             ],
             [
-              403,
+              408,
               393.5
             ],
             [
-              405,
+              410,
               10
             ]
           ],
@@ -1843,7 +1923,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 50000,
-          "id": 408,
+          "id": 413,
           "inCombat": true,
           "kind": "mob",
           "level": 5,
@@ -1859,7 +1939,6 @@
             "z": 88.924189
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": -90,
             "y": -1.48336,
@@ -1871,19 +1950,19 @@
           "templateId": "forest_wolf",
           "threat": [
             [
-              401,
+              406,
               115.666667
             ],
             [
-              402,
+              407,
               200
             ],
             [
-              403,
+              408,
               287.5
             ],
             [
-              405,
+              410,
               10
             ]
           ],
@@ -1910,7 +1989,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 50000,
-          "id": 409,
+          "id": 414,
           "inCombat": true,
           "kind": "mob",
           "level": 5,
@@ -1926,7 +2005,6 @@
             "z": -88.838301
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 90,
             "y": -1.48336,
@@ -1938,19 +2016,19 @@
           "templateId": "forest_wolf",
           "threat": [
             [
-              401,
+              406,
               115.666667
             ],
             [
-              402,
+              407,
               200
             ],
             [
-              403,
+              408,
               287.5
             ],
             [
-              406,
+              411,
               10
             ]
           ],

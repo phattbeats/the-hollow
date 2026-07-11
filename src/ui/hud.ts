@@ -50,6 +50,7 @@ import {
   NPCS,
   QUESTS,
   questRewardItem,
+  READABLES_BY_ID,
   WORLD_MAX_X,
   WORLD_MAX_Z,
   WORLD_MIN_X,
@@ -93,6 +94,7 @@ import {
   virtualLevel,
   xpUntilNextPrestige,
 } from '../sim/types';
+import { worldBossIdFromLockout } from '../sim/world_boss';
 import {
   type DelveRunInfo,
   type IWorld,
@@ -204,9 +206,12 @@ import { LeaderboardWindow } from './leaderboard_window';
 import { ReannounceMarker } from './live_region_reannounce';
 import { PICK_ACTION_HOTKEYS } from './lockpick_panel';
 import { LockpickWindow } from './lockpick_window';
+import { LootRollGroupPainter } from './loot_roll_group_painter';
+import { lootRollGroupView as computeLootRollGroupView } from './loot_roll_group_view';
 import { reconcileLootRolls as computeLootRollReconcile } from './loot_roll_reconcile';
 import { lowHealthVignette } from './low_health';
 import { lowResourceView } from './low_resource';
+import { MailWindow } from './mail_window';
 import { type MapRegion, mapCanvasHeight, paintTerrainRows } from './map_terrain';
 import { MapWindowPainter } from './map_window_painter';
 import { MAP_MAX_ZOOM, mapWindowMode } from './map_window_view';
@@ -253,6 +258,8 @@ import { type QuestTrackerView, questTrackerView, type TrackedQuest } from './qu
 import { QuestLogWindow } from './questlog_window';
 import { lockoutParts, lockoutShape } from './raid_lockout';
 import { type RaidLockoutI18n, raidLockoutPanelHtml } from './raid_lockout_view';
+import { ReadablePromptPainter } from './readable_prompt_painter';
+import { readablePromptView } from './readable_prompt_view';
 import { restView } from './rest_indicator';
 import { localizeServerText } from './server_i18n';
 import { localizeSimAuraName, localizeSimText } from './sim_i18n';
@@ -454,6 +461,7 @@ const ITEM_KIND_LABEL_KEYS: Record<ItemDef['kind'], TranslationKey> = {
   tool: 'itemUi.kind.tool',
   potion: 'itemUi.kind.potion',
   elixir: 'itemUi.kind.elixir',
+  bag: 'itemUi.kind.bag',
 };
 const ITEM_STAT_LABEL_KEYS: Partial<Record<keyof Stats, TranslationKey>> = {
   armor: 'itemUi.stats.armor',
@@ -752,6 +760,7 @@ export class Hud {
   private targetCastbarTimerEl = this.targetCastbarEl.querySelector('.timer') as HTMLElement;
   private actionbarEl = $('#actionbar');
   private housingPromptEl = $('#housing-prompt');
+  private readablePromptEl = $('#readable-prompt');
   private xpFillEl = $('#xpbar .fill');
   private xpLabelEl = $('#xpbar .label');
   // XP + swing bar element refs cached once for their painters (the #xpbar /
@@ -1588,6 +1597,10 @@ export class Hud {
       case 'market-window':
         this.closeMarket();
         break;
+      case 'mail-window':
+        // Route through the painter so focus returns to the opener (WCAG 2.2 AA).
+        this.mailWindow.close();
+        break;
       case 'arena-window':
         // Route through the painter so focus returns to the opener (WCAG 2.2 AA),
         // consistent with the toggle / X close path.
@@ -2372,11 +2385,25 @@ export class Hud {
     this.swingFillEl,
     this.swingLabelEl,
   );
+  // Group-visible loot-roll vote strip (PHAA-568, port of upstream #1599).
+  // Owns the keyed pool of one strip element per open need-greed roll the
+  // local player's party is voting on. The host element (#loot-roll-groups)
+  // is created lazily inside the loot-rolls container the first time paint
+  // is called; the painter's pool survives across `renderLootRolls()`
+  // rebuilds so a fresh answer from a party member flips a single chip's
+  // text without rebuilding any of the roll row HTML.
+  private readonly lootRollGroupPainter = new LootRollGroupPainter(this.writerFacet);
   // Housing signpost interact prompt (PHAA-405 follow-up): purely proximity-driven
   // (renderer.nearHousingPlot), so it shares the xp/swing bars' per-frame facet.
   private readonly housingPromptPainter = new HousingPromptPainter(
     this.writerFacet,
     this.housingPromptEl,
+  );
+  // World-readable "Read" prompt (PHAA-552): same proximity-driven per-frame
+  // facet as the housing prompt, fed by renderer.nearReadable.
+  private readonly readablePromptPainter = new ReadablePromptPainter(
+    this.writerFacet,
+    this.readablePromptEl,
   );
   // The per-frame FCT painter: the pooled-div ring that replaced the per-event
   // createElement + setTimeout fct() below. handleEvents + showSelfNote feed spawn(), which
@@ -2683,6 +2710,19 @@ export class Hud {
         this.renderBags();
       }
     },
+  });
+  // Ravenpost mail window painter (mail_view.ts core + mail_window.ts painter,
+  // PHAA-495). It composes the shared presentation bag and owns the window's
+  // view-state (tab, compose fields). No bags cross-sync: the compose form
+  // sends coin attachments only for now (item attachments are a follow-up).
+  private readonly mailWindow = new MailWindow({
+    ...this.presentationBag,
+    root: () => $('#mail-window'),
+    world: () => this.sim,
+    closeOthers: () => this.closeOtherWindows('#mail-window'),
+    hideTooltip: () => this.hideTooltip(),
+    ...this.windowFocus('#mail-window'),
+    showError: (text) => this.showError(text),
   });
   // Ashen Coliseum window painter (arena_window_view.ts offline/live model +
   // arena_window.ts painter). It owns the selected bracket, the all-time-ladder
@@ -3064,6 +3104,8 @@ export class Hud {
       html += `<div class="tt-desc">${esc(t('itemUi.tooltip.useManaPotion', { amount: itemNumber(item.potionMana) }))}</div>`;
     if (item.kind === 'quest')
       html += `<div class="tt-desc">${esc(t('itemUi.tooltip.questItem'))}</div>`;
+    if (item.kind === 'bag' && item.bagSlots)
+      html += `<div class="tt-stat">${esc(t('itemUi.tooltip.bagSlots', { slots: itemNumber(item.bagSlots) }))}</div>`;
     if (item.requiredClass && !armorTypeForItem(item) && !weaponArchetypeForItem(item)) {
       html += `<div class="tt-sub">${esc(t('itemUi.tooltip.classes', { classes: item.requiredClass.map(classDisplayName).join(', ') }))}</div>`;
     }
@@ -4556,6 +4598,9 @@ export class Hud {
     this.housingPromptPainter.paint(
       housingPromptView(this.renderer.nearHousingPlot, sim.housingInfo),
     );
+    // World-readable "Read" prompt (PHAA-552): tracks renderer.nearReadable the
+    // same way, so the prompt appears exactly when the book is in read range.
+    this.readablePromptPainter.paint(readablePromptView(this.renderer.nearReadable));
 
     // FCT painter: drive the pooled floating-combat-text ring on the every-frame
     // tier (folded into the existing `hud` perf bucket, not a second rAF).
@@ -4722,6 +4767,10 @@ export class Hud {
     // Social repaints only on the slow divider, behind the painter's struct/content
     // diff-gate; a content tick swaps the body innerHTML without re-wiring rows.
     if (slowHud) this.socialWindow.refreshIfChanged();
+    if (slowHud && this.mailWindow.isOpen) {
+      if (!this.nearbyRavenpostNpc()) this.mailWindow.close();
+      else this.mailWindow.refreshIfChanged();
+    }
     if (slowHud && this.calendarWindow.isOpen) this.calendarWindow.refreshIfChanged();
     if (slowHud && this.marketWindow.isOpen) {
       if (!this.nearbyMarketNpc()) this.marketWindow.close();
@@ -4774,7 +4823,10 @@ export class Hud {
     const i18n: RaidLockoutI18n = {
       title: t('hudChrome.raidLockout.title'),
       allReady: t('hudChrome.raidLockout.allReady'),
-      raidName: (id) => dungeonDisplayName(id),
+      raidName: (id) => {
+        const bossId = worldBossIdFromLockout(id);
+        return bossId ? mobDisplayName(bossId) : dungeonDisplayName(id);
+      },
       duration: (ms) => this.formatLockoutDuration(ms),
     };
     return raidLockoutPanelHtml(this.sim.raidLockouts(), i18n);
@@ -7625,6 +7677,55 @@ export class Hud {
     this.questDialogTrap?.focusFirst();
   }
 
+  // Open a world-placed readable book (PHAA-552) in the shared quest dialog and
+  // page through its content with the SAME pure paginator the NPC intro uses
+  // (npc_intro_view), so there is no second reader. Reading is client-only: no
+  // world command is sent, the text is looked up by id through the `readable`
+  // entity-i18n kind. Called by main.ts's interact-key handler when the player
+  // stands on a book (renderer.nearReadable).
+  openReadable(id: string): void {
+    if (!READABLES_BY_ID[id]) return;
+    this.closeOtherWindows('#quest-dialog');
+    if ($('#quest-dialog').style.display !== 'block')
+      this.questDialogTrap = this.focusManager.open({ root: () => $('#quest-dialog') });
+    this.renderReadablePage(id, 0);
+  }
+
+  private renderReadablePage(id: string, index: number): void {
+    const readable = READABLES_BY_ID[id];
+    const pageCount = readable?.pages.length ?? 0;
+    const page = npcIntroPageAt(index, pageCount);
+    if (!readable || !page) {
+      this.closeQuestDialog();
+      return;
+    }
+    // A readable is not an NPC conversation: clear gossip/quest ownership so the
+    // [X]/Escape path (closeQuestDialog) does not try to re-render a gossip menu.
+    this.openGossipNpcId = null;
+    this.openQuestDetailId = null;
+    const el = $('#quest-dialog');
+    markDialogRoot(el, { labelledBy: 'quest-dialog-title' });
+    const title = tEntity({ kind: 'readable', id, field: 'readableTitle' });
+    const pageText = tEntity({ kind: 'readable', id, pageIndex: index, field: 'readablePage' });
+    let html = `<div class="panel-title"><span id="quest-dialog-title">${esc(title)}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('questUi.dialog.close'))}">${svgIcon('close')}</button></div>`;
+    html += `<div class="qd-text">${esc(pageText)}</div>`;
+    el.innerHTML = html;
+    const btn = document.createElement('button');
+    btn.className = 'btn';
+    btn.type = 'button';
+    // "Continue" turns the page; the last page closes the book.
+    btn.textContent = t('questUi.dialog.continue');
+    btn.addEventListener('click', () => {
+      const next = npcIntroAdvance(index, pageCount);
+      if (next === null) this.closeQuestDialog();
+      else this.renderReadablePage(id, next);
+    });
+    el.appendChild(btn);
+    el.querySelector('[data-close]')?.addEventListener('click', () => this.closeQuestDialog());
+    el.style.display = 'block';
+    this.questDialogTrap?.focusFirst();
+  }
+
   private renderGossip(npc: Entity): void {
     this.openGossipNpcId = npc.id;
     this.openQuestDetailId = null;
@@ -7680,6 +7781,9 @@ export class Hud {
     if (def?.market) {
       html += `<button type="button" class="qd-list-item" data-market="1" aria-label="${esc(t('questUi.dialog.worldMarketAria'))}"><span class="gold">${svgIcon('market')}</span> ${esc(t('questUi.dialog.worldMarket'))}</button>`;
     }
+    if (def?.ravenpost) {
+      html += `<button type="button" class="qd-list-item" data-mail="1" aria-label="${esc(t('mailUi.openButtonAria'))}"><span class="gold">${svgIcon('whisper')}</span> ${esc(t('mailUi.openButton'))}</button>`;
+    }
     if (def?.trainer) {
       html += `<button type="button" class="qd-list-item" data-trainer="1" aria-label="${esc(t('questUi.dialog.trainSecondaryAria', { name: npcName }))}"><span class="quest-complete">+</span> ${esc(t('questUi.dialog.trainSecondary'))}</button>`;
     }
@@ -7709,6 +7813,10 @@ export class Hud {
     el.querySelector('[data-market]')?.addEventListener('click', () => {
       this.closeQuestDialog(false);
       this.openMarket();
+    });
+    el.querySelector('[data-mail]')?.addEventListener('click', () => {
+      this.closeQuestDialog(false);
+      this.openMail();
     });
     el.querySelector('[data-feed-hearth]')?.addEventListener('click', () => {
       this.sim.feedGreenpaw();
@@ -7999,6 +8107,31 @@ export class Hud {
     return root;
   }
 
+  // Stable host element for the group-visible vote strip (PHAA-568). Lives
+  // inside #loot-rolls and is NEVER cleared by renderLootRolls (which wipes
+  // the roll row children on every reconcile); the LootRollGroupPainter keeps
+  // a keyed pool of strip nodes that survive across roll-row rebuilds, so a
+  // vote-strip update from a party member can flip a single chip's text
+  // without rebuilding the roll row above it. Created lazily alongside
+  // #loot-rolls on first paint.
+  private lootRollGroupHost(): HTMLElement {
+    const root = this.lootRollRoot();
+    let host = document.getElementById('loot-roll-groups') as HTMLElement | null;
+    if (!host) {
+      host = document.createElement('div');
+      host.id = 'loot-roll-groups';
+      host.setAttribute('aria-live', 'polite');
+      // Sibling of the roll rows; the roll rows themselves are added by
+      // renderLootRolls as direct children of #loot-rolls. A flex column
+      // keeps the rows on top and the group strips stacked underneath.
+      host.style.display = 'flex';
+      host.style.flexDirection = 'column';
+      host.style.gap = '4px';
+    }
+    if (host.parentElement !== root) root.appendChild(host);
+    return host;
+  }
+
   private showLootRoll(ev: Extract<SimEvent, { type: 'lootRoll' }>): void {
     // A master-loot prompt that converts to a need/greed roll reuses the same rollId;
     // drop the superseded master panel so the looter sees only the need/greed panel.
@@ -8130,6 +8263,14 @@ export class Hud {
     if (this.activeLootRolls.size === 0 && this.activeMasterRolls.size === 0) {
       root.style.display = 'none';
       root.innerHTML = '';
+      // Also prune the group strip pool; an empty view makes the painter
+      // hide every pooled strip and drop them from the pool.
+      const groupHost = this.lootRollGroupHost();
+      this.lootRollGroupPainter.paint(
+        computeLootRollGroupView(this.sim, this.sim.playerId),
+        groupHost,
+        null,
+      );
       return;
     }
     root.style.display = 'flex';
@@ -8170,6 +8311,14 @@ export class Hud {
       });
       root.appendChild(row);
     }
+
+    // Group-visible vote strip (PHAA-568): drive the painter with the
+    // current group-status view. The host element is a stable sibling of
+    // the roll rows inside #loot-rolls, created lazily; it survives
+    // renderLootRolls rebuilds so the painter's keyed pool is not churned.
+    const groupHost = this.lootRollGroupHost();
+    const view = computeLootRollGroupView(this.sim, this.sim.playerId);
+    this.lootRollGroupPainter.paint(view, groupHost, null);
   }
 
   private renderMasterLootRow(
@@ -8427,6 +8576,30 @@ export class Hud {
     const p = this.sim.player;
     for (const e of this.sim.entities.values()) {
       if (e.kind === 'npc' && NPCS[e.templateId]?.market && dist2d(p.pos, e.pos) <= 8) return e;
+    }
+    return null;
+  }
+
+  // -------------------------------------------------------------------------
+  // The Ravenpost: in-game mail (PHAA-495)
+  // -------------------------------------------------------------------------
+
+  openMail(): void {
+    this.mailWindow.open();
+  }
+
+  closeMail(): void {
+    this.mailWindow.close();
+  }
+
+  get mailWindowOpen(): boolean {
+    return this.mailWindow.isOpen;
+  }
+
+  private nearbyRavenpostNpc(): Entity | null {
+    const p = this.sim.player;
+    for (const e of this.sim.entities.values()) {
+      if (e.kind === 'npc' && NPCS[e.templateId]?.ravenpost && dist2d(p.pos, e.pos) <= 8) return e;
     }
     return null;
   }

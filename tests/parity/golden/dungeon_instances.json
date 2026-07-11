@@ -16,7 +16,7 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 401,
+      "nextId": 406,
       "state": "5bc471b0",
       "events": "741638a5",
       "rng": {
@@ -30,9 +30,9 @@
     {
       "tick": 2,
       "time": 0.1,
-      "nextId": 417,
-      "state": "4c4a3d66",
-      "events": "ff144c7f",
+      "nextId": 422,
+      "state": "cea5fd6d",
+      "events": "923602aa",
       "rng": {
         "draws": 35,
         "digest": "506a80a5"
@@ -43,19 +43,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -65,19 +72,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 407,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -94,7 +108,7 @@
           "dodgeChance": 0.06,
           "fiveSecondRule": 99.1,
           "hp": 50000,
-          "id": 401,
+          "id": 406,
           "inCombat": true,
           "kind": "player",
           "level": 1,
@@ -111,7 +125,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -143,7 +156,7 @@
           "fallStartY": -1.613579,
           "fiveSecondRule": 99.1,
           "hp": 50000,
-          "id": 402,
+          "id": 407,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -160,7 +173,6 @@
           "potionCooldownUntil": -1,
           "resource": 195,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -183,7 +195,7 @@
           }
         },
         {
-          "aggroTargetId": 401,
+          "aggroTargetId": 406,
           "aiState": "chase",
           "combatTimer": 99.1,
           "critChance": 0.05,
@@ -193,7 +205,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 437,
-          "id": 403,
+          "id": 408,
           "inCombat": true,
           "kind": "mob",
           "leashAnchor": {
@@ -212,7 +224,6 @@
             "z": -1232.317786
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 897,
             "z": -1232
@@ -223,7 +234,7 @@
           "templateId": "crypt_shambler",
           "threat": [
             [
-              401,
+              406,
               1
             ]
           ],
@@ -234,7 +245,7 @@
           }
         },
         {
-          "aggroTargetId": 401,
+          "aggroTargetId": 406,
           "aiState": "chase",
           "combatTimer": 99.1,
           "critChance": 0.05,
@@ -244,7 +255,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 391,
-          "id": 404,
+          "id": 409,
           "inCombat": true,
           "kind": "mob",
           "leashAnchor": {
@@ -263,7 +274,6 @@
             "z": -1231.318689
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 903,
             "z": -1231
@@ -274,7 +284,7 @@
           "templateId": "crypt_shambler",
           "threat": [
             [
-              401,
+              406,
               1
             ]
           ],
@@ -294,7 +304,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 391,
-          "id": 405,
+          "id": 410,
           "kind": "mob",
           "level": 7,
           "lootFfaTimer": "Infinity",
@@ -308,7 +318,6 @@
             "z": -1211.838939
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 891,
             "z": -1212
@@ -338,7 +347,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 391,
-          "id": 406,
+          "id": 411,
           "kind": "mob",
           "level": 8,
           "lootFfaTimer": "Infinity",
@@ -352,7 +361,6 @@
             "z": -1211.134583
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 895,
             "z": -1211
@@ -382,7 +390,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 391,
-          "id": 407,
+          "id": 412,
           "kind": "mob",
           "level": 7,
           "lootFfaTimer": "Infinity",
@@ -396,7 +404,6 @@
             "z": -1195.926068
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 909,
             "z": -1196
@@ -426,7 +433,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 391,
-          "id": 408,
+          "id": 413,
           "kind": "mob",
           "level": 8,
           "lootFfaTimer": "Infinity",
@@ -440,7 +447,6 @@
             "z": -1194.945598
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 905,
             "z": -1195
@@ -470,7 +476,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 416,
-          "id": 409,
+          "id": 414,
           "kind": "mob",
           "level": 8,
           "lootFfaTimer": "Infinity",
@@ -484,7 +490,6 @@
             "z": -1182.002962
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 895,
             "z": -1182
@@ -514,7 +519,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 460,
-          "id": 410,
+          "id": 415,
           "kind": "mob",
           "level": 9,
           "lootFfaTimer": "Infinity",
@@ -528,7 +533,6 @@
             "z": -1179.941945
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 899,
             "z": -1180
@@ -558,7 +562,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 695,
-          "id": 411,
+          "id": 416,
           "kind": "mob",
           "level": 9,
           "lootFfaTimer": "Infinity",
@@ -572,7 +576,6 @@
             "z": -1168.022824
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 896,
             "z": -1168
@@ -602,7 +605,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 391,
-          "id": 412,
+          "id": 417,
           "kind": "mob",
           "level": 8,
           "lootFfaTimer": "Infinity",
@@ -616,7 +619,6 @@
             "z": -1167.081508
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 901,
             "z": -1167
@@ -646,7 +648,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 1191,
-          "id": 413,
+          "id": 418,
           "kind": "mob",
           "level": 10,
           "lootFfaTimer": "Infinity",
@@ -660,7 +662,6 @@
             "z": -1151.902041
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 900,
             "z": -1152
@@ -690,7 +691,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 391,
-          "id": 414,
+          "id": 419,
           "kind": "mob",
           "level": 7,
           "lootFfaTimer": "Infinity",
@@ -704,7 +705,6 @@
             "z": -1153.971293
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 896,
             "z": -1154
@@ -734,7 +734,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 391,
-          "id": 415,
+          "id": 420,
           "kind": "mob",
           "level": 7,
           "lootFfaTimer": "Infinity",
@@ -748,7 +748,6 @@
             "z": -1153.799904
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 904,
             "z": -1154
@@ -777,7 +776,7 @@
           "dungeonId": "hollow_crypt",
           "fiveSecondRule": 99,
           "hp": 1,
-          "id": 416,
+          "id": 421,
           "kind": "object",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -792,7 +791,6 @@
             "z": -1256
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 900,
             "z": -1256
@@ -810,9 +808,9 @@
     {
       "tick": 4,
       "time": 0.2,
-      "nextId": 417,
-      "state": "ea4f8ae3",
-      "events": "249a2b55",
+      "nextId": 422,
+      "state": "30a7bb84",
+      "events": "7e649962",
       "rng": {
         "draws": 49,
         "digest": "ab85e79b"
@@ -823,6 +821,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -831,14 +836,14 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -848,19 +853,26 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 407,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -878,7 +890,7 @@
           "dodgeChance": 0.06,
           "fallStartY": -1.484002,
           "fiveSecondRule": 99.2,
-          "id": 401,
+          "id": 406,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -895,7 +907,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -927,7 +938,7 @@
           "fallStartY": 44.672849,
           "fiveSecondRule": 99.2,
           "hp": 50000,
-          "id": 402,
+          "id": 407,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -944,7 +955,6 @@
           "potionCooldownUntil": -1,
           "resource": 195,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -976,7 +986,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 437,
-          "id": 403,
+          "id": 408,
           "kind": "mob",
           "level": 8,
           "lootFfaTimer": "Infinity",
@@ -990,7 +1000,6 @@
             "z": -1232.04154
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 897,
             "z": -1232
@@ -1016,7 +1025,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 391,
-          "id": 404,
+          "id": 409,
           "kind": "mob",
           "level": 7,
           "lootFfaTimer": "Infinity",
@@ -1030,7 +1039,6 @@
             "z": -1231.043053
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 903,
             "z": -1231
@@ -1056,7 +1064,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 391,
-          "id": 405,
+          "id": 410,
           "kind": "mob",
           "level": 7,
           "lootFfaTimer": "Infinity",
@@ -1070,7 +1078,6 @@
             "z": -1211.677877
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 891,
             "z": -1212
@@ -1100,7 +1107,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 391,
-          "id": 406,
+          "id": 411,
           "kind": "mob",
           "level": 8,
           "lootFfaTimer": "Infinity",
@@ -1114,7 +1121,6 @@
             "z": -1211.269166
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 895,
             "z": -1211
@@ -1144,7 +1150,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 391,
-          "id": 407,
+          "id": 412,
           "kind": "mob",
           "level": 7,
           "lootFfaTimer": "Infinity",
@@ -1158,7 +1164,6 @@
             "z": -1195.852137
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 909,
             "z": -1196
@@ -1188,7 +1193,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 391,
-          "id": 408,
+          "id": 413,
           "kind": "mob",
           "level": 8,
           "lootFfaTimer": "Infinity",
@@ -1202,7 +1207,6 @@
             "z": -1194.891197
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 905,
             "z": -1195
@@ -1232,7 +1236,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 416,
-          "id": 409,
+          "id": 414,
           "kind": "mob",
           "level": 8,
           "lootFfaTimer": "Infinity",
@@ -1246,7 +1250,6 @@
             "z": -1182.005923
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 895,
             "z": -1182
@@ -1276,7 +1279,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 460,
-          "id": 410,
+          "id": 415,
           "kind": "mob",
           "level": 9,
           "lootFfaTimer": "Infinity",
@@ -1290,7 +1293,6 @@
             "z": -1179.883889
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 899,
             "z": -1180
@@ -1320,7 +1322,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 695,
-          "id": 411,
+          "id": 416,
           "kind": "mob",
           "level": 9,
           "lootFfaTimer": "Infinity",
@@ -1334,7 +1336,6 @@
             "z": -1168.045649
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 896,
             "z": -1168
@@ -1364,7 +1365,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 391,
-          "id": 412,
+          "id": 417,
           "kind": "mob",
           "level": 8,
           "lootFfaTimer": "Infinity",
@@ -1378,7 +1379,6 @@
             "z": -1167.163017
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 901,
             "z": -1167
@@ -1408,7 +1408,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 1191,
-          "id": 413,
+          "id": 418,
           "kind": "mob",
           "level": 10,
           "lootFfaTimer": "Infinity",
@@ -1422,7 +1422,6 @@
             "z": -1151.804082
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 900,
             "z": -1152
@@ -1452,7 +1451,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 391,
-          "id": 414,
+          "id": 419,
           "kind": "mob",
           "level": 7,
           "lootFfaTimer": "Infinity",
@@ -1466,7 +1465,6 @@
             "z": -1153.942586
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 896,
             "z": -1154
@@ -1496,7 +1494,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 391,
-          "id": 415,
+          "id": 420,
           "kind": "mob",
           "level": 7,
           "lootFfaTimer": "Infinity",
@@ -1510,7 +1508,6 @@
             "z": -1153.599809
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 904,
             "z": -1154
@@ -1539,7 +1536,7 @@
           "dungeonId": "hollow_crypt",
           "fiveSecondRule": 99,
           "hp": 1,
-          "id": 416,
+          "id": 421,
           "kind": "object",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -1554,7 +1551,6 @@
             "z": -1256
           },
           "potionCooldownUntil": -1,
-          "sex": "m",
           "spawnPos": {
             "x": 900,
             "z": -1256
@@ -1572,9 +1568,9 @@
     {
       "tick": 5,
       "time": 0.25,
-      "nextId": 417,
-      "state": "c61eb671",
-      "events": "3e6ef7a9",
+      "nextId": 422,
+      "state": "265064e0",
+      "events": "581f4c4e",
       "rng": {
         "draws": 49,
         "digest": "ab85e79b"
@@ -1583,8 +1579,8 @@
     {
       "tick": 10,
       "time": 0.5,
-      "nextId": 417,
-      "state": "9c3dd12b",
+      "nextId": 422,
+      "state": "1cccee82",
       "events": "741638a5",
       "rng": {
         "draws": 49,
@@ -1594,8 +1590,8 @@
     {
       "tick": 15,
       "time": 0.75,
-      "nextId": 417,
-      "state": "706f1197",
+      "nextId": 422,
+      "state": "c6e931aa",
       "events": "741638a5",
       "rng": {
         "draws": 50,
@@ -1605,8 +1601,8 @@
     {
       "tick": 20,
       "time": 1,
-      "nextId": 417,
-      "state": "c2adb666",
+      "nextId": 422,
+      "state": "d94e2744",
       "events": "741638a5",
       "rng": {
         "draws": 50,
@@ -1616,8 +1612,8 @@
     {
       "tick": 24,
       "time": 1.2,
-      "nextId": 417,
-      "state": "c0bc9ce6",
+      "nextId": 422,
+      "state": "dda603c4",
       "events": "741638a5",
       "rng": {
         "draws": 50,
@@ -1629,6 +1625,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -1637,14 +1640,14 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1654,6 +1657,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -1662,14 +1672,14 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 407,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1687,7 +1697,7 @@
           "dodgeChance": 0.06,
           "fallStartY": -1.484002,
           "fiveSecondRule": 100.2,
-          "id": 401,
+          "id": 406,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -1704,7 +1714,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1736,7 +1745,7 @@
           "dodgeChance": 0.056,
           "fallStartY": -1.484002,
           "fiveSecondRule": 100.2,
-          "id": 402,
+          "id": 407,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -1754,7 +1763,6 @@
           "potionCooldownUntil": -1,
           "resource": 195,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1781,8 +1789,8 @@
     {
       "tick": 24,
       "time": 1.2,
-      "nextId": 417,
-      "state": "c0bc9ce6",
+      "nextId": 422,
+      "state": "dda603c4",
       "events": "741638a5",
       "rng": {
         "draws": 50,
@@ -1794,6 +1802,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -1802,14 +1817,14 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "dialogState": {},
+          "entityId": 406,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1819,6 +1834,13 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -1827,14 +1849,14 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 402,
+          "dialogState": {},
+          "entityId": 407,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
           "nodeHarvestReadyAt": {},
-          "sex": "m",
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1852,7 +1874,7 @@
           "dodgeChance": 0.06,
           "fallStartY": -1.484002,
           "fiveSecondRule": 100.2,
-          "id": 401,
+          "id": 406,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -1869,7 +1891,6 @@
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
@@ -1901,7 +1922,7 @@
           "dodgeChance": 0.056,
           "fallStartY": -1.484002,
           "fiveSecondRule": 100.2,
-          "id": 402,
+          "id": 407,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -1919,7 +1940,6 @@
           "potionCooldownUntil": -1,
           "resource": 195,
           "resourceType": "mana",
-          "sex": "m",
           "spawnPos": {
             "x": 2,
             "y": 1.5,

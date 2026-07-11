@@ -2,10 +2,12 @@ import { NodeIO } from '@gltf-transform/core';
 import { ALL_EXTENSIONS } from '@gltf-transform/extensions';
 import { MeshoptDecoder } from 'meshoptimizer';
 import { describe, expect, it } from 'vitest';
+import { chibiSkinCount } from '../src/render/characters/chibi_skin_variants';
 import {
   type ClipMap,
   manifestUrls,
   manifestUrlsForGraphics,
+  skinCount,
   VISUALS,
   visibleAttachmentsForGraphics,
 } from '../src/render/characters/manifest';
@@ -71,16 +73,64 @@ describe('character visual manifest', () => {
 
   it('points the chibi female base manifest at animation clips baked into the GLB (PHAA-557)', async () => {
     const visual = VISUALS.chibi_female_base;
+    // chibi_female_base itself stays lazy: no entity resolves to this exact
+    // key. Its GLB (the student outfit) IS in the boot sweep regardless,
+    // because player_mage_f/player_priest_f (PHAA-587) share the same url
+    // and are not lazy.
     expect(visual.lazyPreload).toBe(true);
-    // Not in the boot sweep: no entity resolves to this key yet (PHAA-539 owns
-    // class wiring), so it must not cost every client's load.
-    expect(manifestUrls()).not.toContain(visual.url);
+    expect(manifestUrls()).toContain(visual.url);
 
     const animationNames = await glbAnimationNames(`public/${visual.url}`);
     expect(animationNames.size).toBeGreaterThan(0);
     expect(
       [...new Set(expectedClipNames(visual.clips))].filter((name) => !animationNames.has(name)),
     ).toEqual([]);
+  });
+
+  it('points every female player class at clips baked into its chibi outfit GLB (PHAA-587)', async () => {
+    const femaleKeys = [
+      'player_warrior_f',
+      'player_paladin_f',
+      'player_hunter_f',
+      'player_druid_f',
+      'player_rogue_f',
+      'player_mage_f',
+      'player_priest_f',
+      'player_warlock_f',
+      'player_shaman_f',
+    ] as const;
+    for (const key of femaleKeys) {
+      const visual = VISUALS[key];
+      expect(visual, key).toBeDefined();
+      expect(visual.height).toBeCloseTo(2.29, 2);
+      expect(visual.lazyPreload).toBeUndefined(); // boot sweep must preload the roster
+      expect(manifestUrls()).toContain(visual.url);
+
+      const animationNames = await glbAnimationNames(`public/${visual.url}`);
+      expect(animationNames.size).toBeGreaterThan(0);
+      expect(
+        [...new Set(expectedClipNames(visual.clips))].filter((name) => !animationNames.has(name)),
+      ).toEqual([]);
+    }
+  });
+
+  it('gives every female player class 2-3 chibi color variants (PHAA-587)', () => {
+    const femaleKeys = [
+      'player_warrior_f',
+      'player_paladin_f',
+      'player_hunter_f',
+      'player_druid_f',
+      'player_rogue_f',
+      'player_mage_f',
+      'player_priest_f',
+      'player_warlock_f',
+      'player_shaman_f',
+    ];
+    for (const key of femaleKeys) {
+      expect(chibiSkinCount(key), key).toBeGreaterThanOrEqual(2);
+      expect(chibiSkinCount(key), key).toBeLessThanOrEqual(3);
+      expect(skinCount(key)).toBe(chibiSkinCount(key));
+    }
   });
 
   it('keeps held weapons and props available on low graphics', () => {

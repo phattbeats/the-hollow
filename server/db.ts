@@ -4,8 +4,9 @@ import type { HomesteadSave } from '../src/sim/homestead';
 import type { HousingSave } from '../src/sim/housing';
 import { LEADERBOARD_MAX } from '../src/sim/leaderboard_page';
 import { sanitizeRemovedZone1Content } from '../src/sim/removed_zone1_content';
-import type { CharacterState, MarketSave } from '../src/sim/sim';
+import type { CharacterState, MailSave, MarketSave } from '../src/sim/sim';
 import type { ArenaFormat, PlayerClass } from '../src/sim/types';
+import type { BankBonusFacts } from './bank_entitlements';
 import { seedChatFilterDefaults } from './chat_filter_db';
 import type { ChatLogRow } from './chat_log';
 import { DISCORD_SCHEMA } from './discord_db';
@@ -497,6 +498,9 @@ export interface AccountRow {
   id: number;
   username: string;
   password_hash: string;
+  // Recovery email (nullable): the login path selects it so the handler can tell
+  // the client whether a pre-existing account still needs to set one.
+  email?: string | null;
   // Present on the login path (findAccount): null/undefined when 2FA is off.
   totp_secret?: string | null;
   totp_enabled_at?: string | null;
@@ -629,7 +633,7 @@ export async function createAccount(
 
 export async function findAccount(username: string): Promise<AccountRow | null> {
   const res = await pool.query(
-    `SELECT id, username, password_hash, totp_secret, totp_enabled_at, totp_last_window
+    `SELECT id, username, password_hash, email, totp_secret, totp_enabled_at, totp_last_window
      FROM accounts WHERE username = $1`,
     [username],
   );
@@ -725,6 +729,33 @@ export async function accountById(accountId: number): Promise<AccountInfoRow | n
     [accountId],
   );
   return res.rows[0] ?? null;
+}
+
+// The account facts that drive the bank bonus-slot registry
+// (server/bank_entitlements.ts), read in ONE round trip at every fresh join. A
+// missing account returns all-false (the FROM accounts row is absent, so
+// res.rows[0] is undefined and the fallback applies).
+//   - emailVerified: the RESOLVED criterion, email_verified_at IS NOT NULL, never
+//     email-present.
+//   - discordLinked: a link ROW is the whole proof. NEVER a balance or any other
+//     account-facing token.
+// ADAPT NOTE (PHAA-571): upstream also read wallet_links + a qualified-referral
+// count here; both are dropped with the wallet-link and referral entitlement
+// sources (see server/bank_entitlements.ts).
+export async function bankBonusFactsForAccount(accountId: number): Promise<BankBonusFacts> {
+  const res = await pool.query(
+    `SELECT
+       (a.email_verified_at IS NOT NULL) AS email_verified,
+       EXISTS(SELECT 1 FROM discord_links dl WHERE dl.account_id = $1) AS discord_linked
+     FROM accounts a
+     WHERE a.id = $1`,
+    [accountId],
+  );
+  const row = res.rows[0];
+  return {
+    emailVerified: row?.email_verified ?? false,
+    discordLinked: row?.discord_linked ?? false,
+  };
 }
 
 // Account-wide character count across every realm. The account portal is an
@@ -834,6 +865,28 @@ export async function revokeCompanionToken(accountId: number, prefix: string): P
 
 export async function setAccountEmail(accountId: number, email: string | null): Promise<void> {
   await pool.query('UPDATE accounts SET email = $2 WHERE id = $1', [accountId, email]);
+}
+
+// Fill the recovery email ONLY when the account has none yet, never overwriting an
+// address the owner already set (that can only change through the verified change
+// flow). Used by the Discord capture path and the self-service set-initial route:
+// a Discord-verified address seeds the recovery email + stamps email_verified_at,
+// but a fresh grant must never clobber an existing one. Idempotent (the WHERE
+// makes a second call a no-op) and race-safe (the guard is in the UPDATE, not a
+// read-then-write). Returns true when a row was actually filled.
+export async function backfillAccountEmailIfEmpty(
+  accountId: number,
+  email: string,
+  verified: boolean,
+): Promise<boolean> {
+  const res = await pool.query(
+    `UPDATE accounts
+       SET email = $2,
+           email_verified_at = CASE WHEN $3 THEN now() ELSE email_verified_at END
+     WHERE id = $1 AND (email IS NULL OR email = '')`,
+    [accountId, email, verified],
+  );
+  return (res.rowCount ?? 0) > 0;
 }
 
 export async function setAccountDeactivated(
@@ -2043,6 +2096,17 @@ export async function loadMarketState(): Promise<MarketSave | null> {
 
 export async function saveMarketState(save: MarketSave): Promise<void> {
   await saveWorldState('market', save);
+}
+
+// The Ravenpost (PHAA-495, in-game mail): shared global state like the
+// market, one JSONB blob under the 'mail' key. Additive: no new tables or
+// columns (world_state already exists for exactly this shape).
+export async function loadMailState(): Promise<MailSave | null> {
+  return loadWorldState<MailSave>('mail');
+}
+
+export async function saveMailState(save: MailSave): Promise<void> {
+  await saveWorldState('mail', save);
 }
 
 // Housing v0 (the Hollow hub homesteads): shared global state like the market,
