@@ -2624,6 +2624,21 @@ export const zh_CN: EnTranslations = {
       "flavor": "亡者交出了他们尚能割舍之物。"
     }
   },
+  "boarball": {
+    "queue": {
+      "join": "你加入了野猪球队列。等待另外三名玩家…",
+      "leave": "你离开了野猪球队列。"
+    },
+    "log": {
+      "welcome": "欢迎来到野猪球！射门、传球，比分超越对方球队。",
+      "kickoff": "开球！",
+      "over": "比赛结束！正在返回世界…"
+    },
+    "error": {
+      "tooFar": "你离球不够近。",
+      "noTeammate": "未选定队友目标。"
+    }
+  },
   "fiesta": {
     "bracket": "Fiesta",
     "enterQueue": "加入Fiesta！",
@@ -5829,6 +5844,9 @@ export const zh_CN: EnTranslations = {
       },
       "acolyte_tessa": {
         "name": "侍僧泰莎"
+      },
+      "boarball_ball": {
+        "name": "Boarball"
       },
       "ironvein_foreman": {
         "name": "铁脉工头"

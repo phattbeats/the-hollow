@@ -2624,6 +2624,21 @@ export const ru_RU: EnTranslations = {
       "flavor": "Мёртвые отдали то, без чего могут обойтись."
     }
   },
+  "boarball": {
+    "queue": {
+      "join": "Вы вступаете в очередь на боарбол. Ожидайте ещё троих игроков…",
+      "leave": "Вы покидаете очередь на боарбол."
+    },
+    "log": {
+      "welcome": "Добро пожаловать в боарбол! Бейте по воротам, делайте передачи и обыграйте соперника по счёту.",
+      "kickoff": "Начало матча!",
+      "over": "Матч окончен! Возвращение в мир…"
+    },
+    "error": {
+      "tooFar": "Вы недостаточно близко к мячу.",
+      "noTeammate": "Союзник не выбран."
+    }
+  },
   "fiesta": {
     "bracket": "Fiesta",
     "enterQueue": "Присоединиться к Fiesta!",
@@ -5829,6 +5844,9 @@ export const ru_RU: EnTranslations = {
       },
       "acolyte_tessa": {
         "name": "Послушница Тесса"
+      },
+      "boarball_ball": {
+        "name": "Boarball"
       },
       "ironvein_foreman": {
         "name": "Прораб Железной жилы"

@@ -84,8 +84,10 @@ export function isPetClass(cls: PlayerClass): boolean {
 }
 // '1v1'/'2v2' are the ranked Ashen Coliseum ladders; 'fiesta' is the
 // dopamine-maxxed 2v2 party mode (score-based, respawns, augments, a shrinking
-// ring) — see docs/design and the Fiesta region of sim.ts.
-export type ArenaFormat = '1v1' | '2v2' | 'fiesta';
+// ring), see docs/design and the Fiesta region of sim.ts. 'boarball' is the
+// unranked 2v2 sport minigame (PHAA-572, adapted from upstream's Vale Cup)
+// played on the same arena pit; see social/boarball.ts.
+export type ArenaFormat = '1v1' | '2v2' | 'fiesta' | 'boarball';
 
 export interface ArenaStanding {
   rating: number;
@@ -1139,7 +1141,12 @@ export type AbilityEffect =
   | { type: 'tamePet' } // hunter tame beast: the targeted mob becomes the caster's pet
   | { type: 'dismissPet' } // release the caster's pet back to the wild
   | { type: 'summonPet'; templateId: string } // warlock demon summon: creates/replaces a controlled pet
-  | { type: 'summonDemon'; mobId: string }; // warlock: summon a demon pet (imp/voidwalker)
+  | { type: 'summonDemon'; mobId: string } // warlock: summon a demon pet (imp/voidwalker)
+  // Boarball sport moves (PHAA-572): school 'physical', cost 0, class-agnostic.
+  // power is the full-power ground speed (yd/s), loft the initial vertical speed;
+  // both are consumed by src/sim/social/boarball.ts, never by the normal damage path.
+  | { type: 'ballShoot'; power: number; loft: number } // auto-aimed at the enemy goal
+  | { type: 'ballPass'; power: number; loft: number }; // rolled to the targeted teammate
 
 export interface AbilityRank {
   rank: number;
@@ -1854,7 +1861,13 @@ export type PlantThresholdKind = 'house_claimed';
 
 export type PlantMood = 'clear' | 'hazy';
 
-export type PlantTrigger = 'whim' | 'full_smoke' | 'threshold' | 'address' | 'ambient';
+export type PlantTrigger =
+  | 'whim'
+  | 'full_smoke'
+  | 'sustained_smoke'
+  | 'threshold'
+  | 'address'
+  | 'ambient';
 
 export type PlantSoreSpot = 'smokey' | 'buried';
 
@@ -1870,6 +1883,9 @@ export interface PlantUtteranceMeta {
   addressedByName?: string;
   addressedText?: string;
   soreSpot?: PlantSoreSpot;
+  // sustained_smoke only: the player who most recently fed the hearth, when
+  // known - the keeper the lean-in line lands on.
+  keeperName?: string;
 }
 
 // Guild calendar command outcomes (mirrors server/social.ts CalendarResultCode;
@@ -2024,6 +2040,13 @@ export type SimEvent = { pid?: number } & (
   // A fighter grabbed a ring power-up (world event so everyone sees the glow).
   // Whether it's "mine" is decided client-side (entityId === local player).
   | { type: 'fiestaPowerup'; entityId: number; defId: string; glow: number; duration: number }
+  // Boarball (PHAA-572): the unranked 2v2 sport minigame. All carry pid.
+  // `boarballScore`: the running tally changed (after a goal). `boarballGoal`:
+  // the scoring team just netted one (the client fires the goal banner/FX).
+  // `boarballKickoff`: play is live again after the whistle.
+  | { type: 'boarballScore'; a: number; b: number; limit: number; team: 'A' | 'B' }
+  | { type: 'boarballGoal'; team: 'A' | 'B'; scorerName: string }
+  | { type: 'boarballKickoff'; team: 'A' | 'B' }
   | {
       type: 'heal2';
       sourceId: number;

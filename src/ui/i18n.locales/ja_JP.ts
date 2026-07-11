@@ -3264,6 +3264,13 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hud.options.npcVoices': 'NPCボイス',
   'hud.options.voiceVolume': 'ボイス音量',
   'entities.zones.eastbrook_vale.pois.8.label': 'ブライトウッドの林間',
+  'boarball.queue.join': 'ボアボールのキューに参加しました。あと3人のプレイヤーを待っています…',
+  'boarball.queue.leave': 'ボアボールのキューから離脱しました。',
+  'boarball.log.welcome': 'ボアボールへようこそ！シュートとパスで相手チームを上回れ。',
+  'boarball.log.kickoff': 'キックオフ！',
+  'boarball.log.over': '試合終了！ワールドに戻ります…',
+  'boarball.error.tooFar': 'ボールに近づいていません。',
+  'boarball.error.noTeammate': '味方がターゲットされていません。',
   'fiesta.augment.aug_apex_predator.desc':
     '物理ダメージ+40%、クリティカル+15%、与えたダメージの12%を回復。',
   'fiesta.augment.aug_apex_predator.name': '頂点捕食者',

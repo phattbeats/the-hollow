@@ -2624,6 +2624,21 @@ export const id_ID: EnTranslations = {
       "flavor": "Para mati telah menyerahkan apa yang bisa mereka relakan."
     }
   },
+  "boarball": {
+    "queue": {
+      "join": "You join the boarball queue. Stand by for three more players…",
+      "leave": "You leave the boarball queue."
+    },
+    "log": {
+      "welcome": "Welcome to boarball! Shoot, pass, and outscore the other team.",
+      "kickoff": "Kickoff!",
+      "over": "Full time! Returning to the world…"
+    },
+    "error": {
+      "tooFar": "You're not close enough to the ball.",
+      "noTeammate": "No teammate targeted."
+    }
+  },
   "fiesta": {
     "bracket": "Fiesta",
     "enterQueue": "Gabung Fiesta!",
@@ -5829,6 +5844,9 @@ export const id_ID: EnTranslations = {
       },
       "acolyte_tessa": {
         "name": "Akolit Tessa"
+      },
+      "boarball_ball": {
+        "name": "Boarball"
       },
       "ironvein_foreman": {
         "name": "Mandor Ironvein"

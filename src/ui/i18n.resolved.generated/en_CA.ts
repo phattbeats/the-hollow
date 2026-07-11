@@ -2624,6 +2624,21 @@ export const en_CA: EnTranslations = {
       "flavor": "The dead have surrendered what they can spare."
     }
   },
+  "boarball": {
+    "queue": {
+      "join": "You join the boarball queue. Stand by for three more players…",
+      "leave": "You leave the boarball queue."
+    },
+    "log": {
+      "welcome": "Welcome to boarball! Shoot, pass, and outscore the other team.",
+      "kickoff": "Kickoff!",
+      "over": "Full time! Returning to the world…"
+    },
+    "error": {
+      "tooFar": "You're not close enough to the ball.",
+      "noTeammate": "No teammate targeted."
+    }
+  },
   "fiesta": {
     "bracket": "Fiesta",
     "enterQueue": "Join the Fiesta!",
@@ -2638,7 +2653,7 @@ export const en_CA: EnTranslations = {
       "augmentGained": "You gain the {name} augment!",
       "allyAugment": "{player} chose the {name} augment.",
       "welcome": "Welcome to the 2v2 FIESTA! Score takedowns, grab augments, survive the ring!",
-      "go": "FIESTA — GO!",
+      "go": "FIESTA, GO!",
       "over": "FIESTA OVER! What a party. Returning to the world…",
       "powerup": "{player} grabbed {name}!"
     },
@@ -5829,6 +5844,9 @@ export const en_CA: EnTranslations = {
       },
       "acolyte_tessa": {
         "name": "Acolyte Tessa"
+      },
+      "boarball_ball": {
+        "name": "Boarball"
       },
       "ironvein_foreman": {
         "name": "Ironvein Foreman"

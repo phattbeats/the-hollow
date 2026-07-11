@@ -23,6 +23,7 @@
 // sibling targeting module are imported directly (already pure); everything that
 // touches not-yet-extracted Sim state routes through the seam.
 
+import { BOARBALL_MOB_TEMPLATE_ID } from '../content/boarball';
 import { DUNGEON_X_THRESHOLD, MOBS } from '../data';
 import { PLAYER_BODY_RADIUS, PLAYER_SWIM_DEPTH } from '../pathfind';
 import type { SimContext } from '../sim_context';
@@ -103,7 +104,7 @@ export function updateMob(ctx: SimContext, mob: Entity): void {
     return;
   }
 
-  if (mob.templateId.startsWith('vision_')) {
+  if (mob.templateId.startsWith('vision_') || mob.templateId === BOARBALL_MOB_TEMPLATE_ID) {
     mob.hostile = false;
     mob.aiState = 'idle';
     mob.inCombat = false;
