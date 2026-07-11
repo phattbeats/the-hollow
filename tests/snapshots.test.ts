@@ -1776,6 +1776,7 @@ const ALL_DELTA_KEYS = [
   'lockouts',
   'lroll',
   'lrollg',
+  'mail',
   'market',
   'marks',
   'milestones',
@@ -1818,6 +1819,7 @@ const TERSE_TO_IWORLD: Record<string, string> = {
   lroll: 'lootRollPrompts',
   lrollg: 'lootRollGroupStatus',
   lxp: 'lifetimeXp',
+  mail: 'mailInfo',
   market: 'marketInfo',
   marks: 'markers',
   milestones: 'unlockedMilestones',
@@ -1893,6 +1895,10 @@ function dirtyEveryDeltaField(): {
   (sim as any).targeting.partyMarkers.set(party.id, new Map([[mp, 3]]));
   const merchant = sim.entities.get(sim.market.merchantId);
   if (merchant) merchant.pos = { ...p.pos };
+  // mail: mailInfoFor is null unless near the Ravenpost, so we relocate it
+  // onto the (in-delve) player too.
+  const ravenpost = sim.entities.get(sim.postOffice.postOfficeId);
+  if (ravenpost) ravenpost.pos = { ...p.pos };
   // hearth: global state, no player positioning needed to dirty it.
   sim.loadGreenpawHearth({ hunger: 50, smoke: 42 });
   // dstate (PHAA-553): per-player dialogue disposition + a flag, non-default.
@@ -2079,9 +2085,9 @@ describe('full self-state snapshot delta fixture', () => {
 });
 
 describe('delta-key contract pins (anti-drift)', () => {
-  it('ALL_DELTA_KEYS contains exactly 33 unique keys in sorted order', () => {
-    expect(ALL_DELTA_KEYS).toHaveLength(33);
-    expect(new Set(ALL_DELTA_KEYS).size).toBe(33);
+  it('ALL_DELTA_KEYS contains exactly 34 unique keys in sorted order', () => {
+    expect(ALL_DELTA_KEYS).toHaveLength(34);
+    expect(new Set(ALL_DELTA_KEYS).size).toBe(34);
     expect([...ALL_DELTA_KEYS]).toEqual([...ALL_DELTA_KEYS].sort());
   });
 
@@ -2094,7 +2100,7 @@ describe('delta-key contract pins (anti-drift)', () => {
     for (let m = re.exec(src); m !== null; m = re.exec(src)) scraped.add(m[1]);
     expect(scraped.has('lockouts')).toBe(true); // the multi-line call IS captured
     expect(scraped.has('lrollg')).toBe(true); // group-visible loot roll strip (PHAA-568)
-    expect(scraped.size).toBe(33);
+    expect(scraped.size).toBe(34);
     expect([...scraped].sort()).toEqual([...ALL_DELTA_KEYS].sort());
   });
 

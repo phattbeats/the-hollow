@@ -59,6 +59,7 @@ import {
   type LeaderboardEntry,
   type LeaderboardPage,
   type LockpickView,
+  type MailInfo,
   type MarketInfo,
   type OverheadEmoteId,
   type PartyInfo,
@@ -859,6 +860,12 @@ export class ClientWorld implements IWorld {
   // --- IWorldMarket: World Market view, mirrored from the snapshot self
   // (`s.market`, delta-omitted). ---
   marketInfo: MarketInfo | null = null;
+  // --- IWorldMail: Ravenpost mail view, mirrored from the snapshot self
+  // (`s.mail`, delta-omitted; non-null only while standing at the Ravenpost).
+  // mailUnread rides `s.mailU`, a cheap always-present scalar (the HUD envelope
+  // indicator, readable anywhere, not just at the Ravenpost). ---
+  mailInfo: MailInfo | null = null;
+  mailUnread = 0;
   // --- IWorldHousing: Hollow hub homestead view, mirrored from the snapshot
   // self (`s.housing`, delta-omitted). ---
   housingInfo: HousingInfo | null = null;
@@ -1574,6 +1581,10 @@ export class ClientWorld implements IWorld {
       // Terse keys (inv/buyback/equip/copper) and the per-field guards are unchanged by
       // the move; the offline counterpart is src/sim/items.ts.
       this.copper = s.copper ?? 0;
+      // IWorldMail.mailUnread rides every self-frame (?? 0), same as copper: it is
+      // cheap and must update from another player's action (someone mailing you)
+      // without depending on this session's own dirty flag.
+      this.mailUnread = s.mailU ?? 0;
       if (s.inv !== undefined) {
         this.inventory = s.inv;
         this.invChanged = true;
@@ -1633,6 +1644,7 @@ export class ClientWorld implements IWorld {
       if (s.duel !== undefined) this.duelInfo = s.duel;
       if (s.arena !== undefined) this.arenaInfo = s.arena;
       if (s.market !== undefined) this.marketInfo = s.market;
+      if (s.mail !== undefined) this.mailInfo = s.mail;
       if (s.housing !== undefined) this.housingInfo = s.housing;
       if (s.hearth !== undefined) this.hollowHearth = s.hearth;
       if (s.dstate !== undefined) this.dialogStateMirror = s.dstate;
@@ -2146,6 +2158,20 @@ export class ClientWorld implements IWorld {
   }
   marketCollect(): void {
     this.cmd({ cmd: 'market_collect' });
+  }
+  // --- IWorldMail: Ravenpost send/take/delete/read command sends (snake_case
+  // wire strings). mailInfo/mailUnread are snapshot reads (mirror fields above). ---
+  mailSend(to: string, subject: string, body: string, copper: number, items: InvSlot[]): void {
+    this.cmd({ cmd: 'mail_send', to, subject, body, copper, items });
+  }
+  mailTake(mailId: number): void {
+    this.cmd({ cmd: 'mail_take', id: mailId });
+  }
+  mailDelete(mailId: number): void {
+    this.cmd({ cmd: 'mail_delete', id: mailId });
+  }
+  mailMarkRead(mailId: number): void {
+    this.cmd({ cmd: 'mail_markread', id: mailId });
   }
   // --- IWorldHousing: claim/place/remove command sends (housingInfo is a snapshot
   // read, mirror field above). PHAA-405: an interact-key command, not chat text. ---

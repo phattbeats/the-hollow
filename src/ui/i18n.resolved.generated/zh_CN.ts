@@ -956,6 +956,27 @@ export const zh_CN: EnTranslations = {
       "secondaryClassSet": "你已选择{cls}作为你的副职业。"
     }
   },
+  "mailUi": {
+    "title": "渡鸦驿站",
+    "subtitle": "寄送与领取信件",
+    "close": "关闭邮件",
+    "inbox": "收件箱",
+    "compose": "写信",
+    "noPostOffice": "请前往渡鸦驿站处理邮件。",
+    "emptyInbox": "暂无信件。有人写信给你时渡鸦便会送达。",
+    "from": "来自 {name}",
+    "noSubject": "(无主题)",
+    "take": "领取",
+    "delete": "删除",
+    "postageNote": "寄送一封信需要 {money} 邮费。",
+    "recipient": "收件人",
+    "subjectLabel": "主题",
+    "bodyPlaceholder": "写下你的信件……",
+    "send": "寄出信件",
+    "needRecipientOrText": "请先填写收件人并写点内容再寄送。",
+    "openButton": "带我去渡鸦驿站。",
+    "openButtonAria": "打开渡鸦驿站邮件窗口"
+  },
   "guide": {
     "brand": "World of ClaudeCraft",
     "brandShort": "ClaudeCraft",
@@ -5898,6 +5919,11 @@ export const zh_CN: EnTranslations = {
         "name": "商人",
         "title": "世界市场守护者",
         "greeting": "欢迎来到世界市场，{className}。从王国各地的冒险者手中购买，或出售你自己的货物。"
+      },
+      "the_ravenpost": {
+        "name": "渡鸦驿站",
+        "title": "邮务守护者",
+        "greeting": "寄一封信吧，{className}，我的渡鸦会找到你的朋友，无论他们漂泊何方，随信附上的钱币和包裹也会安然相随，直到被认领。"
       },
       "marshal_redbrook": {
         "name": "雷德布鲁克元帅",

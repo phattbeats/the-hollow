@@ -1209,6 +1209,10 @@ export interface NpcDef {
   // hearth" gossip option (feedGreenpaw in world_api/greenpaw_hearth.ts),
   // replacing the old /feed chat command (PHAA-482).
   hearth?: boolean;
+  // The Ravenpost (PHAA-495): talking to this NPC opens the mail window
+  // (mailInfo/mailSend/mailTake in world_api/mail.ts), mirroring the Merchant's
+  // `market` flag.
+  ravenpost?: boolean;
   // Branching player-picked dialogue (PHAA-553): an optional conversation tree
   // this NPC offers as a "Talk" gossip option. The player walks NPC lines and
   // picks a toned response at each node; the tree navigation is deterministic

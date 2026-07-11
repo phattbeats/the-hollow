@@ -956,6 +956,27 @@ export const zh_TW: EnTranslations = {
       "secondaryClassSet": "你已選擇{cls}作為你的副職業。"
     }
   },
+  "mailUi": {
+    "title": "渡鴉驛站",
+    "subtitle": "寄送與領取信件",
+    "close": "關閉郵件",
+    "inbox": "收件匣",
+    "compose": "寫信",
+    "noPostOffice": "請前往渡鴉驛站處理郵件。",
+    "emptyInbox": "目前沒有信件。有人寫信給你時渡鴉便會送達。",
+    "from": "來自 {name}",
+    "noSubject": "(無主旨)",
+    "take": "領取",
+    "delete": "刪除",
+    "postageNote": "寄送一封信需要 {money} 郵資。",
+    "recipient": "收件人",
+    "subjectLabel": "主旨",
+    "bodyPlaceholder": "寫下你的信件……",
+    "send": "寄出信件",
+    "needRecipientOrText": "請先填寫收件人並寫點內容再寄送。",
+    "openButton": "帶我去渡鴉驛站。",
+    "openButtonAria": "開啟渡鴉驛站郵件視窗"
+  },
   "guide": {
     "brand": "World of ClaudeCraft",
     "brandShort": "ClaudeCraft",
@@ -5898,6 +5919,11 @@ export const zh_TW: EnTranslations = {
         "name": "商人",
         "title": "世界市場守護者",
         "greeting": "歡迎來到世界市場，{className}。向王國各地的冒險者購買，或出售你自己的貨物。"
+      },
+      "the_ravenpost": {
+        "name": "渡鴉驛站",
+        "title": "郵務守護者",
+        "greeting": "寄一封信吧，{className}，我的渡鴉會找到你的朋友，無論他們漂泊何方，隨信附上的錢幣和包裹也會安然相隨，直到被領取。"
       },
       "marshal_redbrook": {
         "name": "雷德布魯克元帥",

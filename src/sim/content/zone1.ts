@@ -624,6 +624,21 @@ export const ZONE1_NPCS: Record<string, NpcDef> = {
     questIds: ['q_mine'],
     greeting: "Whole dig's crawling with those candle-headed vermin!",
   },
+  // Appended last so adding the Ravenpost does not renumber the other zone1
+  // NPCs' entity ids (the parity-golden convention; new NPCs go append-last).
+  the_ravenpost: {
+    id: 'the_ravenpost',
+    name: 'The Ravenpost',
+    title: 'Keeper of the Mail',
+    // opposite the well from the Marshal, a few strides from the World Market
+    pos: { x: -4, z: 6 },
+    facing: Math.PI,
+    color: 0x2c3e50,
+    questIds: [],
+    ravenpost: true,
+    greeting:
+      'Post a letter, $C, and my ravens will find your friend wherever they roam, coin and parcels riding along, safe until claimed.',
+  },
 };
 
 // ---------------------------------------------------------------------------

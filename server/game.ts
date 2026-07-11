@@ -18,6 +18,7 @@ import {
   EQUIP_SLOTS,
   type EquipSlot,
   emptyMoveInput,
+  type InvSlot,
   MAX_LEVEL,
   RUN_SPEED,
   type SimEvent,
@@ -44,6 +45,7 @@ import {
   loadGreenpawHearthState,
   loadHomesteadState,
   loadHousingState,
+  loadMailState,
   loadMarketState,
   markAccountQuestComplete,
   openPlaySession,
@@ -54,6 +56,7 @@ import {
   saveGreenpawHearthState,
   saveHomesteadState,
   saveHousingState,
+  saveMailState,
   saveMarketState,
 } from './db';
 import { enqueueActivity } from './discord_activity';
@@ -710,6 +713,7 @@ export class GameServer {
   // older snapshot over a newer one. Snapshots are captured inside the queued
   // thunk, so commit order equals capture order equals freshness order.
   private readonly enqueueMarketWrite = createSerialWriter();
+  private readonly enqueueMailWrite = createSerialWriter();
   // Serializes writes of the single global Housing blob (same freshness-order
   // rationale as the market writer above).
   private readonly enqueueHousingWrite = createSerialWriter();
@@ -1035,6 +1039,7 @@ export class GameServer {
         this.saveTimer = 0;
         void this.saveAll('autosave');
         void this.saveMarket();
+        void this.saveMail();
         void this.saveGreenpawHearth();
       }
       // Housing persists on change (claims are rare and the blob is tiny).
@@ -1792,6 +1797,67 @@ export class GameServer {
     }
   }
 
+  // The Ravenpost (PHAA-495) is shared global state like the market: one JSONB
+  // blob under the world_state 'mail' key, loaded at boot and saved on a timer.
+  async loadMail(): Promise<void> {
+    try {
+      this.sim.loadMail(await loadMailState());
+    } catch (err) {
+      console.error('failed to load Ravenpost mail:', err);
+    }
+  }
+
+  async saveMail(): Promise<void> {
+    try {
+      await this.enqueueMailWrite(() => saveMailState(this.sim.serializeMail()));
+    } catch (err) {
+      console.error('failed to save Ravenpost mail:', err);
+    }
+  }
+
+  // Resolve a mail recipient against the character database (realm-scoped, online
+  // OR offline) and enforce their persisted block list, then hand the resolved
+  // identity to the sim. The sim's own mailSend only sees live players, so this
+  // is the authoritative send path for the server: it is the one place that can
+  // deliver to an offline character and honour a block the recipient set while
+  // logged out (or under a case-insensitive name collision sessionByName misses).
+  private async sendMail(
+    session: ClientSession,
+    to: string,
+    subject: string,
+    body: string,
+    copper: number,
+    items: InvSlot[],
+  ): Promise<void> {
+    const recipient = await this.socialDb.findCharacterByName(to.trim());
+    if (!recipient) {
+      this.send(session, {
+        t: 'events',
+        list: [{ type: 'error', text: 'No adventurer by that name is known.' }],
+      });
+      return;
+    }
+    // The recipient's block list is authoritative in the DB. Query it directly so
+    // the check holds whether the recipient is online or offline; the live
+    // session cache (blockedIds) only exists while they are logged in.
+    const blocked = await this.socialDb.blockedIds(recipient.id);
+    if (blocked.includes(session.characterId)) {
+      this.send(session, {
+        t: 'events',
+        list: [{ type: 'error', text: 'That adventurer is not accepting mail from you.' }],
+      });
+      return;
+    }
+    this.sim.mailSendResolved(
+      { key: String(recipient.id), name: recipient.name },
+      subject,
+      body,
+      copper,
+      items,
+      session.pid,
+    );
+  }
+
   // Housing v0 is shared global state like the market: one JSONB blob under the
   // world_state 'housing' key, loaded at boot and saved on change.
   async loadHousing(): Promise<void> {
@@ -1854,6 +1920,10 @@ export class GameServer {
 
   rekeyMarketSeller(characterId: number, oldName: string, newName: string): boolean {
     return this.sim.rekeyMarketSeller(characterId, oldName, newName);
+  }
+
+  rekeyMailRecipient(characterId: number, oldName: string, newName: string): boolean {
+    return this.sim.rekeyMailRecipient(characterId, oldName, newName);
   }
 
   // Close every open play_sessions row; called on graceful shutdown so the
@@ -2846,6 +2916,48 @@ export class GameServer {
       case 'market_collect':
         sim.marketCollect(pid);
         break;
+      // The Ravenpost (in-game mail, PHAA-495). The recipient is resolved against
+      // the character database (online OR offline) and their persisted block list
+      // is consulted, so async mail reaches an offline character and a block is
+      // enforced whether or not the recipient is logged in. The reject happens
+      // before the sim escrows anything, the same "before any escrow" rule
+      // mail_block.test.ts covers for the market/whisper path (Finding 3 upstream).
+      // The DB round-trip makes this async, so it is fire-and-forget (the social
+      // command pattern); the sim command lands on whatever tick resolves it.
+      case 'mail_send':
+        if (
+          typeof msg.to === 'string' &&
+          typeof msg.subject === 'string' &&
+          typeof msg.body === 'string' &&
+          typeof msg.copper === 'number' &&
+          Number.isFinite(msg.copper) &&
+          Array.isArray(msg.items)
+        ) {
+          const items = msg.items
+            .filter(
+              (s): s is InvSlot =>
+                !!s &&
+                typeof s.itemId === 'string' &&
+                typeof s.count === 'number' &&
+                Number.isFinite(s.count) &&
+                s.count > 0,
+            )
+            .map((s) => ({ ...s, count: Math.floor(s.count) }))
+            .filter((s) => s.count > 0);
+          void this.sendMail(session, msg.to, msg.subject, msg.body, msg.copper, items).catch(
+            (err) => console.error('mail send failed:', err),
+          );
+        }
+        break;
+      case 'mail_take':
+        if (typeof msg.id === 'number') sim.mailTake(msg.id, pid);
+        break;
+      case 'mail_delete':
+        if (typeof msg.id === 'number') sim.mailDelete(msg.id, pid);
+        break;
+      case 'mail_markread':
+        if (typeof msg.id === 'number') sim.mailMarkRead(msg.id, pid);
+        break;
       // Housing v0 (PHAA-405): interact-key commands, the only flow since the
       // /house chat command was removed (PHAA-482). sim.housingClaim/Place/Remove
       // re-validate range and ownership server-side.
@@ -3203,6 +3315,10 @@ export class GameServer {
       rxp: Math.round(meta.restedXp),
       prk: meta.prestigeRank,
       copper: meta.copper,
+      // Ravenpost unread letter count (PHAA-495): rides every self-frame like
+      // copper, so the HUD envelope indicator updates from another player's
+      // mail-send action without depending on this session's own dirty flag.
+      mailU: this.sim.mailUnreadFor(anchorSession.pid),
       gcd: round2(p.gcdRemaining),
       swing: round2(p.swingTimer),
       combo: p.comboPoints,
@@ -3262,6 +3378,10 @@ export class GameServer {
     // market info is null unless the player is standing at the Merchant, so it
     // only rides the wire for players actually browsing the World Market
     maybe('market', this.sim.marketInfoFor(anchorSession.pid));
+    // mail info is null unless the player is standing at the Ravenpost, so it
+    // only rides the wire for players actually checking their mail (mailU above
+    // is the always-on unread count).
+    maybe('mail', this.sim.mailInfoFor(anchorSession.pid));
     // housing is tiny (8 plots) and rarely changes, so the per-tick diff is
     // negligible; it must ride per-tick because another player's claim changes
     // it without marking this session dirty

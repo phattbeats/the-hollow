@@ -956,6 +956,27 @@ export const ko_KR: EnTranslations = {
       "secondaryClassSet": "보조 직업으로 {cls}을(를) 선택했습니다."
     }
   },
+  "mailUi": {
+    "title": "레이븐포스트",
+    "subtitle": "편지를 보내고 받기",
+    "close": "우편 닫기",
+    "inbox": "받은 편지함",
+    "compose": "편지 쓰기",
+    "noPostOffice": "우편물을 확인하려면 레이븐포스트로 가세요.",
+    "emptyInbox": "도착한 편지가 없습니다. 누군가 편지를 쓰면 까마귀가 배달해 줄 거예요.",
+    "from": "{name} 님으로부터",
+    "noSubject": "(제목 없음)",
+    "take": "받기",
+    "delete": "삭제",
+    "postageNote": "편지를 보내려면 우편 요금 {money}이(가) 듭니다.",
+    "recipient": "받는 사람",
+    "subjectLabel": "제목",
+    "bodyPlaceholder": "편지를 작성하세요...",
+    "send": "편지 보내기",
+    "needRecipientOrText": "보내기 전에 받는 사람을 지정하고 내용을 입력하세요.",
+    "openButton": "레이븐포스트로 안내해 주세요.",
+    "openButtonAria": "레이븐포스트 우편 창 열기"
+  },
   "guide": {
     "brand": "World of ClaudeCraft",
     "brandShort": "ClaudeCraft",
@@ -5898,6 +5919,11 @@ export const ko_KR: EnTranslations = {
         "name": "상인",
         "title": "세계 시장 관리자",
         "greeting": "세계 시장에 오신 것을 환영합니다, {className}. 왕국의 모험가들에게서 물건을 사거나 자신의 물건을 내놓으십시오."
+      },
+      "the_ravenpost": {
+        "name": "레이븐포스트",
+        "title": "우편 관리자",
+        "greeting": "편지를 보내세요, {className}. 제 까마귀들이 어디를 떠돌든 당신의 친구를 찾아낼 것입니다. 함께 부친 금화와 소포도 찾아갈 때까지 안전하게 전해집니다."
       },
       "marshal_redbrook": {
         "name": "레드브룩 원수",

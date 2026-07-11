@@ -14,6 +14,7 @@ import { housingStrings } from './housing';
 import { hudStrings } from './hud';
 import { hudChromeStrings } from './hud_chrome';
 import { itemNames, itemStrings } from './items';
+import { mailStrings } from './mail';
 import { mergeEntities, mergeExtra, mergeStrings } from './merge';
 import { questStrings } from './quests';
 import { shellStrings } from './shell';
@@ -41,6 +42,7 @@ export { housingStrings } from './housing';
 export { hudStrings } from './hud';
 export { hudChromeStrings } from './hud_chrome';
 export { itemNames, itemStrings } from './items';
+export { mailStrings } from './mail';
 export { mergeEntities, mergeExtra, mergeStrings } from './merge';
 export { questStrings } from './quests';
 // Re-export the catalog public surface (every name the old i18n.en.ts exported).
@@ -81,6 +83,7 @@ export const en = {
   realmTypes: { normal: 'Normal', pvp: 'PvP', rp: 'RP', rpPvp: 'RP-PvP' },
   game: gameStrings,
   hudChrome: hudChromeStrings,
+  mailUi: mailStrings,
   guide: guideStrings,
   // One-time cold-open intro (cold_open.ts). Own domain, not hud.*, per PHAA-431.
   coldOpen: coldOpenStrings,

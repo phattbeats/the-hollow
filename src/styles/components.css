@@ -3847,6 +3847,72 @@
     gap: 8px;
     align-items: center;
   }
+  /* Ravenpost mail (PHAA-495): each letter is a stacked card (sender/subject/
+     body/attachments/action), unlike the market's icon-name-price grid row, so
+     it gets its own layout instead of reusing .mkt-row. */
+  .mail-row {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 8px;
+    border-radius: 4px;
+    background: #ffffff0a;
+    margin-bottom: 8px;
+    font-size: 12px;
+  }
+  .mail-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .mail-from {
+    font-family: var(--title-font);
+    color: var(--gold-dim);
+    font-size: 12.5px;
+  }
+  .mail-unread-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-accent);
+  }
+  .mail-subject {
+    color: var(--color-text-light);
+    font-size: 12.5px;
+  }
+  .mail-body {
+    color: var(--color-text-muted);
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .mail-copper {
+    color: var(--color-accent);
+    font-size: 11.5px;
+  }
+  .mail-attach {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11.5px;
+    color: var(--color-text-muted);
+    margin-right: 6px;
+  }
+  .mail-actions {
+    margin-top: 4px;
+  }
+  .mail-body-input {
+    width: 100%;
+    min-height: 70px;
+    resize: vertical;
+    background: #120d07;
+    border: 1px solid #5a4a2a;
+    color: #ffe6a8;
+    border-radius: 4px;
+    padding: 6px 8px;
+    font-family: var(--ui-font, inherit);
+    font-size: 12px;
+    margin: 6px 0;
+  }
   #map-canvas {
     border: 2px solid var(--border);
     outline: 1px solid #000;

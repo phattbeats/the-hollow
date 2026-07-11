@@ -171,6 +171,7 @@ import {
   setPartyLootMaster as setPartyLootMasterImpl,
   submitLootRoll as submitLootRollImpl,
 } from './loot/loot_roll';
+import { type MailSave, PostOffice } from './mail/post_office';
 import { Market, type MarketListing, type MarketSave } from './market';
 import * as lifecycle from './mob/lifecycle';
 import { resetEvadingMob as resetEvadingMobFn, updateMob as updateMobFn } from './mob/locomotion';
@@ -219,6 +220,7 @@ import {
   type WorldBossDef,
 } from './world_boss';
 
+export type { MailSave } from './mail/post_office';
 // Re-export so server/db.ts's `import type { MarketSave } from '../src/sim/sim'`
 // stays valid now that the type lives in market.ts.
 export type { MarketSave } from './market';
@@ -994,6 +996,11 @@ export class Sim {
   // keeps thin delegates + the `marketListings` getter below so server/IWorld/the
   // /listings readout call sites resolve unchanged.
   market!: Market;
+  // The Ravenpost (in-game mail, PHAA-495): the PostOffice instance owns the
+  // shared letter book and the mail-id counter. Constructed in the ctor after
+  // the SimContext (it consumes the seam); Sim keeps thin delegates below so
+  // server/IWorld call sites resolve unchanged.
+  postOffice!: PostOffice;
   // Housing v0 (the Hollow hub homesteads): the Housing instance owns the plot
   // ownership book. Constructed in the ctor after the SimContext (it consumes
   // the seam); Sim keeps thin delegates below, mirroring the market pattern.
@@ -1065,6 +1072,9 @@ export class Sim {
     // World Market (L2): owns its state; consumes the seam, so it is built right
     // after the SimContext. The NPC loop below sets its merchantId, then seed().
     this.market = new Market(this.ctx);
+    // The Ravenpost (PHAA-495): owns the mail book; consumes the seam. The NPC
+    // loop below sets its postOfficeId. Draws no rng at construction (or ever).
+    this.postOffice = new PostOffice(this.ctx);
     // Housing v0: owns the hub homestead plot book; consumes the seam. Draws no
     // rng at construction (or ever), so the draws below are unperturbed.
     this.housing = new Housing(this.ctx);
@@ -1091,6 +1101,7 @@ export class Sim {
       const npc = createNpc(this.nextId++, npcDef, this.groundPos(safe.x, safe.z));
       this.addEntity(npc);
       if (npcDef.market) this.market.merchantId = npc.id; // the World Market is anchored here
+      if (npcDef.ravenpost) this.postOffice.postOfficeId = npc.id; // the Ravenpost is anchored here
     }
     this.market.seed();
 
@@ -2786,6 +2797,7 @@ export class Sim {
     this.updateInstances();
     this.updateDelveRuns();
     this.market.update();
+    this.postOffice.update();
     this.greenpawHearth.update(DT);
     this.plantSpeech.update(this.greenpawHearth.smokeValue);
     updateNpcWander(this.ctx);
@@ -5633,6 +5645,76 @@ export class Sim {
 
   loadMarket(save: MarketSave | null | undefined): void {
     this.market.loadMarket(save);
+  }
+
+  // -------------------------------------------------------------------------
+  // The Ravenpost (in-game mail, PHAA-495): thin delegates to this.postOffice
+  // -------------------------------------------------------------------------
+
+  rekeyMailRecipient(characterId: number, oldName: string, newName: string): boolean {
+    return this.postOffice.rekeyMailRecipient(characterId, oldName, newName);
+  }
+
+  mailSend(
+    to: string,
+    subject: string,
+    body: string,
+    copper: number,
+    items: InvSlot[],
+    pid?: number,
+  ): void {
+    this.postOffice.mailSend(to, subject, body, copper, items, pid);
+  }
+
+  // Authoritative send with a pre-resolved recipient identity. The server calls
+  // this after resolving the recipient against the character DB (online OR
+  // offline) and consulting their persisted block list; it is not on IWorld
+  // (the offline browser world resolves live players through mailSend instead).
+  mailSendResolved(
+    recipient: { key: string; name: string },
+    subject: string,
+    body: string,
+    copper: number,
+    items: InvSlot[],
+    pid?: number,
+  ): void {
+    this.postOffice.mailSendResolved(recipient, subject, body, copper, items, pid);
+  }
+
+  mailTake(mailId: number, pid?: number): void {
+    this.postOffice.mailTake(mailId, pid);
+  }
+
+  mailDelete(mailId: number, pid?: number): void {
+    this.postOffice.mailDelete(mailId, pid);
+  }
+
+  mailMarkRead(mailId: number, pid?: number): void {
+    this.postOffice.mailMarkRead(mailId, pid);
+  }
+
+  mailUnreadFor(pid: number): number {
+    return this.postOffice.mailUnreadFor(pid);
+  }
+
+  mailInfoFor(pid: number): import('../world_api').MailInfo | null {
+    return this.postOffice.mailInfoFor(pid);
+  }
+
+  get mailInfo(): import('../world_api').MailInfo | null {
+    return this.primaryId === -1 ? null : this.mailInfoFor(this.primaryId);
+  }
+
+  get mailUnread(): number {
+    return this.primaryId === -1 ? 0 : this.mailUnreadFor(this.primaryId);
+  }
+
+  serializeMail(): MailSave {
+    return this.postOffice.serializeMail();
+  }
+
+  loadMail(save: MailSave | null | undefined): void {
+    this.postOffice.loadMail(save);
   }
 
   // -------------------------------------------------------------------------
