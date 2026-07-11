@@ -2955,6 +2955,11 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': 'Zerrissene Tagebuchseite',
   'entities.items.shrine_diary_page.flavorText':
     '...zählte vierzig Tage bei Kerzenlicht, bevor ich den Faden verlor. Das Dunkel hier unten vergisst Ihn nicht, auch wenn Er diesen Ort vergessen hat. Wenn der Reiher tief kreist, sag dem Küster, der Docht brennt noch...',
+  'entities.items.linen_pouch.name': 'Leinenbeutel',
+  'entities.items.travelers_knapsack.name': 'Rucksack des Reisenden',
+  'entities.items.wolfhide_satchel.name': 'Wolfsfelltasche',
+  'entities.items.gravewoven_bag.name': 'Grabgewebte Tasche',
+  'entities.items.mistcallers_duffel.name': 'Seesack von Mistcaller',
   'entities.mobs.palefeeder.name': 'Bleichfresser',
   'entities.mobs.rootmaw.name': 'Wurzelmaul',
   'entities.mobs.the_witness_root.name': 'Die Zeugenwurzel',

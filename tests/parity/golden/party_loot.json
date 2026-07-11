@@ -28,7 +28,7 @@
       "tick": 3,
       "time": 0.15,
       "nextId": 404,
-      "state": "5042acd0",
+      "state": "38e23c64",
       "events": "8fb4544d",
       "rng": {
         "draws": 2,
@@ -40,6 +40,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -62,6 +68,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "mage",
           "companionUpgrades": {},

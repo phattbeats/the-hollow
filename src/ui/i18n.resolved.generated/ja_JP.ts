@@ -650,7 +650,12 @@ export const ja_JP: EnTranslations = {
       "sortName": "名前",
       "searchPlaceholder": "アイテムを検索",
       "searchAria": "名前でバッグのアイテムを検索",
-      "noMatch": "条件に一致するアイテムはありません。"
+      "noMatch": "条件に一致するアイテムはありません。",
+      "capacity": "{used}/{total}",
+      "capacityAria": "バッグスロット使用数：{total}中{used}",
+      "backpack": "バックパック",
+      "socketEmpty": "空のバッグスロット",
+      "unequipHint": "クリックしてこのバッグを外す"
     },
     "raidConvert": {
       "toPartyDone": "レイドがパーティに戻りました。",
@@ -2341,6 +2346,13 @@ export const ja_JP: EnTranslations = {
       "readoutUsage": "/house place <1-{count}> <{kinds}>、/house remove <スロット>。",
       "helpLine": "住居：/house、/house claim、/house place <スロット> <種類>、/house remove <スロット>。"
     },
+    "bags": {
+      "full": "バッグがいっぱいです。",
+      "socketsFull": "バッグスロットはすべて使用中です。",
+      "swapTooManyItems": "アイテムが多すぎてそのバッグに交換できません。",
+      "removeTooManyItems": "アイテムが多すぎてそのバッグを外せません。",
+      "tradeSpace": "取引失敗：バッグの空きが足りません。"
+    },
     "bank": {
       "tooFar": "銀行員から離れすぎている。",
       "noQuestItems": "クエストアイテムは銀行に預けられない。",
@@ -3699,7 +3711,8 @@ export const ja_JP: EnTranslations = {
       "drink": "飲み物",
       "tool": "道具",
       "potion": "ポーション",
-      "elixir": "エリクサー"
+      "elixir": "エリクサー",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "防御力",
@@ -3741,7 +3754,8 @@ export const ja_JP: EnTranslations = {
       "useManaPotion": "使用: 即座にマナを{amount}回復します。戦闘中に使用可能。クールダウン1分。",
       "clickUseInstant": "クリックして戦闘中に即使用",
       "clickUse": "クリックして使用",
-      "clickBuyback": "クリックして買い戻す"
+      "clickBuyback": "クリックして買い戻す",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "装備するにはレベル{level}が必要です。"
@@ -5025,6 +5039,21 @@ export const ja_JP: EnTranslations = {
       },
       "monarch_crown_helm": {
         "name": "君主の王冠"
+      },
+      "linen_pouch": {
+        "name": "リネンの小袋"
+      },
+      "travelers_knapsack": {
+        "name": "旅人のナップサック"
+      },
+      "wolfhide_satchel": {
+        "name": "狼皮のサッチェル"
+      },
+      "gravewoven_bag": {
+        "name": "墓織りの鞄"
+      },
+      "mistcallers_duffel": {
+        "name": "ミストコーラーのダッフルバッグ"
       },
       "bristleback_maul": {
         "name": "ブリストルバックの大槌"

@@ -907,6 +907,11 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': 'Sönderriven Dagbokssida',
   'entities.items.shrine_diary_page.flavorText':
     '...räknade fyrtio dagar vid ljusets sken innan jag tappade tråden. Mörkret här nere glömmer Honom inte, även om Han har glömt denna plats. Om hägern cirklar lågt, säg till Klockaren att veken fortfarande brinner...',
+  'entities.items.linen_pouch.name': 'Linnepåse',
+  'entities.items.travelers_knapsack.name': 'Vandrarens Ryggsäck',
+  'entities.items.wolfhide_satchel.name': 'Vargskinnsväska',
+  'entities.items.gravewoven_bag.name': 'Gravvävd Väska',
+  'entities.items.mistcallers_duffel.name': 'Mistcallers Sjösäck',
   'entities.items.footpad_jerkin.name': 'Stråtrövarväst',
   'entities.items.forest_pink_armor_plate.name': 'Skogsrosa',
   'entities.items.frayed_prayer_beads.name': 'Slitna böneradband',

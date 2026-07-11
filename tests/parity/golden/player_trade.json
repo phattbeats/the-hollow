@@ -30,7 +30,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "9fbdb155",
+      "state": "d9679207",
       "events": "34eabb16",
       "rng": {
         "draws": 0,
@@ -42,6 +42,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -71,6 +77,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
@@ -200,7 +212,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "0883812b",
+      "state": "61ef2f7f",
       "events": "9b065c69",
       "rng": {
         "draws": 0,
@@ -212,6 +224,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -245,6 +263,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
@@ -378,7 +402,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "0883812b",
+      "state": "61ef2f7f",
       "events": "b94cbe0a",
       "rng": {
         "draws": 0,
@@ -390,6 +414,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -423,6 +453,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
@@ -556,7 +592,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "0883812b",
+      "state": "61ef2f7f",
       "events": "aadbd6e5",
       "rng": {
         "draws": 0,
@@ -568,6 +604,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -601,6 +643,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
@@ -734,7 +782,7 @@
       "tick": 1,
       "time": 0.05,
       "nextId": 403,
-      "state": "1f98af5c",
+      "state": "9a441e1c",
       "events": "4bc2f582",
       "rng": {
         "draws": 0,
@@ -746,6 +794,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -779,6 +833,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
@@ -912,7 +972,7 @@
       "tick": 1,
       "time": 0.05,
       "nextId": 403,
-      "state": "1f98af5c",
+      "state": "9a441e1c",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -924,6 +984,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -957,6 +1023,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "mage",
           "companionUpgrades": {},

@@ -9,14 +9,14 @@
     "acceptQuest -> finalizeQuestAccept -> onInventoryChangedForQuests",
     "turnInQuest (xp + copper reward)"
   ],
-  "draws": 32,
-  "drawDigest": "2878f988",
+  "draws": 40,
+  "drawDigest": "ffc79f51",
   "frames": [
     {
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "9690533a",
+      "state": "0bf33ff1",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -29,6 +29,12 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -103,7 +109,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "0c947e3b",
+      "state": "64e3db72",
       "events": "3d6acfe5",
       "rng": {
         "draws": 0,
@@ -116,6 +122,12 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -203,11 +215,11 @@
       "tick": 8,
       "time": 0.4,
       "nextId": 410,
-      "state": "47c62d4d",
+      "state": "be8a01ce",
       "events": "80930594",
       "rng": {
-        "draws": 32,
-        "digest": "2878f988"
+        "draws": 40,
+        "digest": "ffc79f51"
       },
       "label": "quest-ready",
       "players": [
@@ -216,6 +228,12 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -308,11 +326,11 @@
       "tick": 8,
       "time": 0.4,
       "nextId": 410,
-      "state": "bc4321c4",
+      "state": "611e7a67",
       "events": "ace7f38f",
       "rng": {
-        "draws": 32,
-        "digest": "2878f988"
+        "draws": 40,
+        "digest": "ffc79f51"
       },
       "label": "quest-turned-in",
       "players": [
@@ -321,6 +339,12 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -408,11 +432,11 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 410,
-      "state": "96959f00",
+      "state": "e9fa522b",
       "events": "741638a5",
       "rng": {
-        "draws": 32,
-        "digest": "2878f988"
+        "draws": 40,
+        "digest": "ffc79f51"
       },
       "label": "final",
       "players": [
@@ -421,6 +445,12 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},

@@ -1750,11 +1750,12 @@ describe('lockpick view rebuilds from events on the online client', () => {
 // while the prior decoded value is preserved.
 // ---------------------------------------------------------------------------
 
-// The pinned set of the 31 `maybe(...)` delta keys, sorted. Cross-checked below
+// The pinned set of the 32 `maybe(...)` delta keys, sorted. Cross-checked below
 // against the live `maybe(...)` calls scraped from server/game.ts source, so a
 // 32nd unregistered delta key reddens this gate.
 const ALL_DELTA_KEYS = [
   'arena',
+  'bags',
   'buyback',
   'cds',
   'cosmetics',

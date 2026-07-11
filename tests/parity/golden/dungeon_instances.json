@@ -31,7 +31,7 @@
       "tick": 2,
       "time": 0.1,
       "nextId": 417,
-      "state": "095137ce",
+      "state": "16c16a42",
       "events": "ff144c7f",
       "rng": {
         "draws": 35,
@@ -43,6 +43,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -65,6 +71,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
@@ -795,7 +807,7 @@
       "tick": 4,
       "time": 0.2,
       "nextId": 417,
-      "state": "237e87cd",
+      "state": "4724b80d",
       "events": "249a2b55",
       "rng": {
         "draws": 49,
@@ -807,6 +819,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -832,6 +850,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
@@ -1541,7 +1565,7 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 417,
-      "state": "cf94c609",
+      "state": "c9bb0acd",
       "events": "3e6ef7a9",
       "rng": {
         "draws": 49,
@@ -1552,7 +1576,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 417,
-      "state": "4dfc68b7",
+      "state": "23863f13",
       "events": "741638a5",
       "rng": {
         "draws": 49,
@@ -1563,7 +1587,7 @@
       "tick": 15,
       "time": 0.75,
       "nextId": 417,
-      "state": "a2c403c3",
+      "state": "ed21500f",
       "events": "741638a5",
       "rng": {
         "draws": 50,
@@ -1574,7 +1598,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 417,
-      "state": "b9c0be70",
+      "state": "8d1e1ca0",
       "events": "741638a5",
       "rng": {
         "draws": 50,
@@ -1585,7 +1609,7 @@
       "tick": 24,
       "time": 1.2,
       "nextId": 417,
-      "state": "8e2f6868",
+      "state": "e713f1d8",
       "events": "741638a5",
       "rng": {
         "draws": 50,
@@ -1597,6 +1621,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -1622,6 +1652,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
@@ -1748,7 +1784,7 @@
       "tick": 24,
       "time": 1.2,
       "nextId": 417,
-      "state": "8e2f6868",
+      "state": "e713f1d8",
       "events": "741638a5",
       "rng": {
         "draws": 50,
@@ -1760,6 +1796,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -1785,6 +1827,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "mage",
           "companionUpgrades": {},

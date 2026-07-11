@@ -697,6 +697,12 @@ export const hudChromeStrings = {
     searchPlaceholder: 'Search items',
     searchAria: 'Search bag items by name',
     noMatch: 'No items match your filters.',
+    // The bag bar (backpack + 4 equip sockets) and the used/capacity counter.
+    capacity: '{used}/{total}',
+    capacityAria: 'Bag slots used: {used} of {total}',
+    backpack: 'Backpack',
+    socketEmpty: 'Empty bag slot',
+    unequipHint: 'Click to remove this bag',
   },
   // Raid -> party demotion (Social panel raid tab). The sim emits these in English;
   // src/ui/sim_i18n.ts re-localizes them through these keys. Mirrors the existing
