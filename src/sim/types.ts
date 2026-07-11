@@ -533,6 +533,13 @@ export interface MobTemplate {
   // Rare/miniboss controls.
   canSwim?: boolean;
   ccImmune?: boolean;
+  // Upstream #1643 (Thunzharr unkitable-movespeed fix): every movement step (chase,
+  // flee, wander, leash return) takes moveToward's ignoreObstacles branch, a straight
+  // line that ignores prop colliders, the waterline, and the steep-wall gate. For a
+  // mountain-sized world boss with a chase speed above player run speed: without this
+  // it can still wedge on camp furniture mid-chase and hand a kiter the gap the raw
+  // speed stat was supposed to deny.
+  phasesThroughObstacles?: boolean;
   respawnMult?: number;
   // Fixed respawn delay in seconds, overriding respawnSeconds*respawnMult; also
   // caps corpse decay so the mob returns on schedule. (Training dummy: 10s.)
@@ -1174,6 +1181,10 @@ export interface AbilityDef {
   range: number; // yards; 0 = melee range
   minRange?: number;
   school: 'physical' | 'fire' | 'frost' | 'arcane' | 'shadow' | 'holy' | 'nature';
+  // Overrides the flying-projectile VISUAL for this spell (the mechanic is
+  // unchanged): 'lightning' draws a jagged electric bolt from caster to target
+  // instead of the default glowing bolt. Renderer-only; the sim just forwards it.
+  projectileFx?: 'lightning';
   // Damage scaling source for the flat directDamage / DoT / AoE riders. Default:
   // non-physical damage scales with Spell Power; physical damage scales with melee
   // Attack Power (on top of the weapon/finisher paths, which already carry AP).
@@ -2074,7 +2085,7 @@ export type SimEvent = { pid?: number } & (
       sourceId: number;
       targetId: number;
       school: string;
-      fx: 'projectile' | 'beam' | 'tick' | 'nova';
+      fx: 'projectile' | 'beam' | 'tick' | 'nova' | 'lightning';
     }
   // entityId (when set) anchors the log to that entity so the server only
   // delivers it to nearby players; anchorless logs broadcast server-wide.

@@ -1936,6 +1936,13 @@ export const zh_TW: EnTranslations = {
     "begin": "開始",
     "skip": "跳過"
   },
+  "apiError": {
+    "crossSiteRejected": "跨站請求已被拒絕。",
+    "notAuthenticated": "尚未驗證。",
+    "readOnlyToken": "此權杖為唯讀。",
+    "characterNotFound": "找不到角色。",
+    "rateLimited": "嘗試次數過多。請等待一分鐘後再試。"
+  },
   "skinEvent": {
     "title": "外觀寶箱",
     "subtitle": "你解鎖了一份{rank}級獎勵 — 可任選不高於該等級的造型。",
@@ -5479,7 +5486,7 @@ export const zh_TW: EnTranslations = {
       },
       "first_cutting": {
         "name": "插條",
-        "flavorText": "A slip of living green from Brother Greenpaw, wrapped in damp moss. Once a homestead plot can be edited, this is the first thing you plant."
+        "flavorText": "一段來自灰爪修士的鮮活綠枝，用濕苔蘚包裹著。等家園地塊可以編輯後，這是你要種下的第一樣東西。"
       },
       "greenpaw_bead": {
         "name": "彈藥帶上的一顆唸珠"
@@ -5752,7 +5759,7 @@ export const zh_TW: EnTranslations = {
         "name": "執事沃斯"
       },
       "training_dummy": {
-        "name": "Training Dummy"
+        "name": "訓練假人"
       },
       "ridge_stalker": {
         "name": "山脊潛獵者"
@@ -5884,7 +5891,7 @@ export const zh_TW: EnTranslations = {
         "name": "侍僧泰莎"
       },
       "boarball_ball": {
-        "name": "Boarball"
+        "name": "野豬球"
       },
       "ironvein_foreman": {
         "name": "鐵脈工頭"
@@ -6138,30 +6145,30 @@ export const zh_TW: EnTranslations = {
           "2": "這地方就是空穴。從前是一整個部族，熱鬧得很，聽他們說的，如今嘛，多半就剩我、這甕，還有那洞裡頭喘氣的那些玩意兒……罷了。他餓了，我也餓了，同一個頻道。過來吧，有幾件神聖的事兒得辦。"
         },
         "dialogNode": {
-          "hearth": "又回到瓶子這兒了，朋友……他今天很安靜，要麼是聽得入神，要麼是在鬧彆扭，我從來分不清是哪一種。空谷這陣子待你可還好？",
-          "warmed": "……這話落得輕柔，朋友，比你想的還要輕柔。大多數人打這兒路過，都在找出口。可你卻總在尋這地方的中間，那可比你以為的要難得多。",
-          "vase": "跟往常一樣。他想要香煙，想要人照料，想要有人坐得近近的，把這份寂靜當成一場交談來陪著他……嘿，要是你換個眼光去看，那還真就是一場交談。這差不多就是全部的信仰了。",
-          "faith": "信仰這詞兒太重了，朋友。我只是照料。照料是我這雙手能做的事。傾聽我留給他，就算他沒在聽，嗯，那香煙聞著終歸還是香的……",
-          "stung": "……唉。是啊。是啊，也許就是這樣。在那些冷清的早晨，瓶子不嘆氣，也沒人走上這條小路的時候，我自己也這麼想過……可我還在這兒呢，朋友，所以它不只是這樣。至少對我來說不是。",
-          "mended": "沒事的，朋友。這樣的地方，時不時招來一句重話也是應該的，我不裝作不是這樣。可你還是回來把話說軟了，這比亂葬崗肯做的要多得多。咱倆兩清了，你和我。",
-          "tribe": "從前是個大部族，那些古老的刻痕是這麼說的。黑暗裡刻著一排排計數的劃痕，五道五道地劃掉，比任何一雙手能劃出的都多……他們讓他亮了好長好長一段日子，才輪到只剩我一個。我不知道他們去了哪兒，朋友。我只知道，這燈芯不能在我看守的時候熄滅。",
-          "confide": "……你這份好意難得，我就領它薄薄的一片吧。說實話，我跟你聊，一半是因為瓶子不答話，一半是因為我怕有那麼一天，再沒人走上這條小路了。所以，謝謝你走上來。要說什麼是神聖的，朋友，那就是它了。"
+          "hearth": "好迪，朋友，又回瓶子這兒了啊，他今天挺安靜的，要嘛是聽得特別入神，要嘛就是乾脆不理我了，說真的這兩樣我都佩服，因為我也就這兩個檔……對了空谷這陣子待你怎樣，好還是不好，你帶零食了沒，沒有？行吧就隨口一問，替朋友問問，那朋友就是我……",
+          "warmed": "……哇喔，好吧，你這麼說真的挺好聽的，朋友，是真挺好聽，沒想到耶，大多數人一有機會就直奔大門口了……你還挺不錯的，知道嗎，綠掌級別的不錯，這稱號我可不是隨便給的……要是我手裡有股票，我就買你的股，買進新朋友，賣出舊兆頭，這就叫經濟……",
+          "vase": "老樣子啦，他要煙，要人照顧，要有人坐得近近的，讓這份安靜看起來像聊天……欸。這不就是大多數聊天嘛。哇喔。行吧，反正，我天天跟他唸叨，他一句都沒回過，呃，從來沒有，不過沒事，反正就這麼回事，綠掌級別的沒事……等等，咱們剛才聊到哪兒了……喔。對。說他呢。他挺好的。大概是餓了。同感。",
+          "faith": "信不信是個大詞兒，朋友，我就是照顧照顧，照顧這事我這兩隻手能幹，還帶個打火機，履歷表上就這麼點東西……他到底聽沒聽我說不準，不過煙聞著挺香，還不會對我評頭論足，比大多數長耳朵的強多了，所以波長這塊算是穩了。的確如此。",
+          "stung": "……哎喲，好吧，疼啊朋友，我的天……我是說也許吧，我也說不準，那種大冷天的早上我自己也這麼想過，沒人上這條路來，瓶子連嘆口氣都懶得嘆……不過我還在這兒呢，所以，這總該算點什麼吧？對吧。對。對了你要不要零食，我有零食，換個話題。F。",
+          "mended": "沒事沒事，朋友，全都是賭局，從來都是，這是我心裡那個牛仔在說話，別問他賭局什麼意思，他也不知道，就是說得特別有底氣……這種地方三不五時挨句重話也正常，我不裝作沒這回事……不過你回來道歉了，這就說明點什麼，或者說明你想要點什麼，反正咱倆兩清了，你我，波長一致，改天你想要零食我請。",
+          "tribe": "以前是個大部族，反正老刻痕是這麼說的，我認字不太行，不過我會數數，那底下刻了老多老多的五道槓，劃掉的，比一隻手能劃出來的都多，這數學我繞不過去……讓他亮了老長老長一段時間，才輪到只剩我一個。我不知道大夥都去哪兒了，朋友，是真不知道，我有時候在波長上能感覺到點什麼，可那感覺自己都說不完一句話，所以我也說不完……不過這燈芯不能在我看著的時候滅了。這個我是真知道。",
+          "confide": "……你這麼說真挺好的，朋友，是真挺好……聽著，我跟你唸叨一半是因為瓶子不搭理我，一半是因為我怕，有那麼些晚上，我怕再也沒人上這條路來了，就剩我跟他，還有這份安靜……所以。謝謝你上來了。要說啥算神聖，朋友，那就是這個。……對了。你帶零食了沒？替瓶子問的。波長也餓了。"
         },
         "dialogChoice": {
-          "kind": "這地方開始有點像個歸處了，師兄。我是真心這麼覺得。",
-          "ask": "瓶子最近都說了些什麼？",
-          "blunt": "這就是個有看守人的亂葬崗，綠掌。僅此而已。",
-          "tribe": "跟我說說從前住在這兒的那個部族吧。",
-          "warm_bye": "我就不打擾你陪他了。",
-          "vase_more": "你真的相信他在聽嗎？",
-          "vase_bye": "那就好好陪著他吧。我就在附近。",
+          "kind": "越來越喜歡這兒了，綠掌。是真的，真的。",
+          "ask": "那瓶子這幾天都說了啥？",
+          "blunt": "就是個帶吉祥物的亂葬崗，綠掌。僅此而已。",
+          "tribe": "跟我說說那個部族吧，你之前那個。",
+          "warm_bye": "那我不打擾你陪他了。",
+          "vase_more": "你是真覺得他在聽？",
+          "vase_bye": "那好，陪著他吧。",
           "faith_bye": "說得也是，綠掌。",
-          "sorry": "那話說得比我本意要刻薄。對不起。",
+          "sorry": "那話說重了，不是故意的。對不起，綠掌。",
           "cold_bye": "你愛信什麼就信什麼吧。",
-          "mended_bye": "咱倆兩清了。回頭見。",
+          "mended_bye": "咱倆兩清了。回頭見，綠掌。",
           "confide": "你不必獨自扛著這一切，師兄。",
-          "tribe_bye": "還有人在照料著它。這總歸有點分量。",
-          "confide_bye": "我會一直走上這條小路來的，綠掌。"
+          "tribe_bye": "反正還有人照料著呢。",
+          "confide_bye": "我會一直上這條路來的，綠掌。"
         }
       },
       "verger_zebediah": {
@@ -6212,6 +6219,16 @@ export const zh_TW: EnTranslations = {
         "name": "奧拉",
         "title": "曾屬根穴",
         "greeting": "你可以坐下。大多數人只是走過去。司事早就把我的名字從冊子上劃掉了，一個被劃掉的名字，學會了安靜，好讓誰都不必想起它還在這兒。"
+      },
+      "withered_planting": {
+        "name": "The Withered Planting",
+        "title": "The Tribe's Old Willow",
+        "greeting": "Dry roots, dry leaves. Whatever this was meant to grow into, it hasn't yet, and it's been a long while waiting."
+      },
+      "buried_root": {
+        "name": "A Buried Root",
+        "title": "Under the Shrine",
+        "greeting": "Dry. Dry as anything down here ever gets."
       }
     },
     "quests": {
@@ -7148,6 +7165,26 @@ export const zh_TW: EnTranslations = {
         "objectives": {
           "0": {
             "label": "陪奧拉坐了一會兒"
+          }
+        }
+      },
+      "q_the_long_way_around": {
+        "title": "The Long Way Around",
+        "text": "There's a planting the tribe left half-finished up the old willow, and it's dying for want of one good pour. I can't make that climb anymore, but you've got the legs for it. Take the can. Mind the branches; they hold if you're honest with them.",
+        "completion": "It'll live now. You wouldn't think one climb and one pour was much, against everything else out there. It isn't much. It's only everything to the one thing you poured it on.",
+        "objectives": {
+          "0": {
+            "label": "Water carried up the willow path"
+          }
+        }
+      },
+      "q_the_watering_can": {
+        "title": "The Watering Can",
+        "text": "I've asked you for small things, and you've done them all without once asking why. Here's the last one, and it isn't small, though it'll look it. Take my can down under the shrine, to the thing that's buried there, and give it water. It's been waiting a long time to be given something instead of asked for something.",
+        "completion": "You did it. Of course you did. That was the water, you understand. All of it, all the way back to the day you found me at the lake and thought nothing of it. The same pour, the same promise, kept one more time. Thank you. Now go and be gentle with the world. It is the only thing that ever changed it.",
+        "objectives": {
+          "0": {
+            "label": "Water given to the buried root"
           }
         }
       }

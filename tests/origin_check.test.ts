@@ -108,7 +108,12 @@ describe('routeHttpRequest cross-site Origin gate (PHAA-524)', () => {
       headers: { origin: 'https://evil.example.com', host: 'play.example.com' },
     });
     expect(res.statusCode).toBe(403);
-    expect(JSON.parse(res.body)).toEqual({ error: 'cross-site request rejected' });
+    // The problem+json envelope (PHAA-528): `error` stays for back-compat
+    // string matchers, `code` is the new stable, machine-readable member.
+    expect(JSON.parse(res.body)).toMatchObject({
+      error: 'cross-site request rejected',
+      code: 'CROSS_SITE_ORIGIN_REJECTED',
+    });
   });
 
   it('rejects a mismatched Origin on a state-changing DELETE', async () => {

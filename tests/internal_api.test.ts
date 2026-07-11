@@ -72,6 +72,9 @@ describe('internal api', () => {
 
     expect(res.statusCode).toBe(401);
     expect(res.body.error).toBe('not authenticated');
+    // The stable NOT_AUTHENTICATED code (PHAA-528), consistent with every other
+    // "not authenticated" denial (server/ownership.ts).
+    expect(res.body.code).toBe('NOT_AUTHENTICATED');
   });
 
   it('rejects a deploy secret of the same length as the configured secret', async () => {
@@ -86,6 +89,9 @@ describe('internal api', () => {
 
     expect(res.statusCode).toBe(401);
     expect(res.body.error).toBe('not authenticated');
+    // The stable NOT_AUTHENTICATED code (PHAA-528), consistent with every other
+    // "not authenticated" denial (server/ownership.ts).
+    expect(res.body.code).toBe('NOT_AUTHENTICATED');
   });
 
   it('starts the restart countdown with a valid deploy secret', async () => {
@@ -151,6 +157,9 @@ describe('internal api', () => {
 
     expect(res.statusCode).toBe(401);
     expect(res.body.error).toBe('not authenticated');
+    // The stable NOT_AUTHENTICATED code (PHAA-528), consistent with every other
+    // "not authenticated" denial (server/ownership.ts).
+    expect(res.body.code).toBe('NOT_AUTHENTICATED');
   });
 
   it('rejects a discord bot secret of the same length as the configured secret', async () => {
@@ -167,6 +176,9 @@ describe('internal api', () => {
 
     expect(res.statusCode).toBe(401);
     expect(res.body.error).toBe('not authenticated');
+    // The stable NOT_AUTHENTICATED code (PHAA-528), consistent with every other
+    // "not authenticated" denial (server/ownership.ts).
+    expect(res.body.code).toBe('NOT_AUTHENTICATED');
   });
 
   it('rejects a discord internal request with no secret header at all', async () => {
@@ -181,5 +193,8 @@ describe('internal api', () => {
 
     expect(res.statusCode).toBe(401);
     expect(res.body.error).toBe('not authenticated');
+    // The stable NOT_AUTHENTICATED code (PHAA-528), consistent with every other
+    // "not authenticated" denial (server/ownership.ts).
+    expect(res.body.code).toBe('NOT_AUTHENTICATED');
   });
 });

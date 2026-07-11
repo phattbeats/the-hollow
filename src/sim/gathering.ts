@@ -184,6 +184,22 @@ export function isNodeHarvestableBy(meta: PlayerMeta, nodeId: string, now: numbe
   return readyAt === undefined || now >= readyAt;
 }
 
+// The ids of every gather node currently NOT harvestable by this player (its
+// per-player respawn timer has not elapsed). This is the inverse of
+// `isNodeHarvestableBy` over the fixed node set: the server mirrors it onto the
+// per-viewer self snapshot (PHAA-618) so the online client can report the same
+// per-node ready/cooldown state the offline Sim does, instead of the old
+// always-harvestable stub. Point-in-time (recomputed per snapshot), so a node
+// drops out of the set the tick its timer elapses. Empty when every node is
+// ready, which is the common case, keeping the wire cost near zero.
+export function nodeCooldownIdsFor(meta: PlayerMeta, now: number): string[] {
+  const ids: string[] = [];
+  for (const node of GATHER_NODES) {
+    if (!isNodeHarvestableBy(meta, node.id, now)) ids.push(node.id);
+  }
+  return ids;
+}
+
 export interface HarvestResolution {
   granted: boolean;
   itemId?: string;

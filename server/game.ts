@@ -3523,6 +3523,15 @@ export class GameServer {
     maybe('dmarks', this.sim.delveMarksFor(anchorSession.pid));
     maybe('dcomp', this.sim.companionUpgradesFor(anchorSession.pid));
     maybe('gprof', this.sim.gatheringProficiencyFor(anchorSession.pid));
+    // Per-viewer gather-node cooldown ids (PHAA-618): the nodes NOT harvestable
+    // by this player right now, so the online client's nodeHarvestableByMe (and
+    // the minimap gather dots it drives) match the offline Sim instead of the
+    // old always-ready stub. Point-in-time and normally empty, so the diff only
+    // ships bytes when a node this player harvested is still cooling. Per-tick
+    // (not heavy-gated) so a node re-enters "ready" promptly when its timer
+    // elapses without waiting on a heavy-field refresh; the server stays
+    // authoritative (harvestNode is still re-validated on the real attempt).
+    maybe('gnodecd', this.sim.nodeCooldownIdsFor(anchorSession.pid));
     maybe('dclears', this.sim.delveClearsFor(anchorSession.pid));
     maybe('delveDaily', this.sim.delveDailyWire(anchorSession.pid));
     // stats + weapon stay per-tick: recalcPlayerStats re-derives them on every
