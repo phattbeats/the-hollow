@@ -77,6 +77,7 @@ import type { IWorldParty } from './world_api/party';
 import type { IWorldPet } from './world_api/pet';
 import type { IWorldProgressionXp } from './world_api/progression_xp';
 import type { IWorldQuests } from './world_api/quests';
+import type { IWorldReadables } from './world_api/readables';
 import type { IWorldSocialGraph } from './world_api/social_graph';
 import type { IWorldTalents } from './world_api/talents';
 import type { IWorldTargeting } from './world_api/targeting';
@@ -116,6 +117,7 @@ export type { MailInfo, MailMessageView } from './world_api/mail';
 export type { MarketInfo, MarketListingView } from './world_api/market';
 export type { PartyInfo, PartyMemberInfo } from './world_api/party';
 export type { GuildLeaderboardEntry, LeaderboardEntry } from './world_api/progression_xp';
+export type { ReadablePropView } from './world_api/readables';
 export type {
   CharacterSearchResult,
   FriendInfo,
@@ -157,6 +159,7 @@ export interface IWorld
     IWorldGreenpawHearth,
     IWorldHomestead,
     IWorldGathering,
+    IWorldReadables,
     IWorldDialog,
     IWorldTelemetry {}
 

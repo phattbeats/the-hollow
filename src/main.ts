@@ -141,6 +141,7 @@ import {
 } from './ui/i18n';
 import { defaultIconPrewarmEntries, prewarmIconCache } from './ui/icon_prewarm';
 import { iconDataUrl } from './ui/icons';
+import { applyNativeDeviceLanguage } from './ui/native_language';
 import { createMetricsSampler } from './ui/perf_metrics_sampler';
 import { PerfOverlay } from './ui/perf_overlay';
 import { type PerfOverlayConfig, PerfOverlayConfigStore } from './ui/perf_overlay_config';
@@ -211,6 +212,23 @@ function isNativeRuntime(): boolean {
   const cap = (window as unknown as { Capacitor?: { isNativePlatform?: () => boolean } }).Capacitor;
   return cap?.isNativePlatform?.() === true;
 }
+
+function localStorageOrNull(): Storage | null {
+  try {
+    return window.localStorage;
+  } catch {
+    return null;
+  }
+}
+
+// On native builds with no explicit locale choice, auto-select the device language once.
+applyNativeDeviceLanguage({
+  native: isNativeRuntime(),
+  locationSearch: window.location.search,
+  storage: localStorageOrNull(),
+  languages: navigator.languages,
+  language: navigator.language,
+});
 
 const SITE_URL = 'https://thehollow.world/';
 
@@ -311,6 +329,8 @@ function userFacingApiError(err: unknown): string {
     return t('errors.api.notAuthenticated');
   if (normalized === 'this account has been banned.') return t('errors.api.accountBanned');
   if (normalized === 'character already in world') return t('errors.api.alreadyInWorld');
+  if (normalized === 'too many characters on this account are already in the world')
+    return t('errors.api.tooManyOnline');
   if (normalized === 'character taken over') return t('errors.api.takenOver');
   if (normalized === 'this character must be renamed before entering the world.')
     return t('errors.api.renameBeforeEntering');
@@ -1670,6 +1690,15 @@ async function startGame(
       const npc = world.entities.get(bestNpc);
       if (npc?.kind === 'npc' && npc.templateId === 'brother_halven') hud.openDelveBoard(bestNpc);
       else hud.openQuestDialog(bestNpc);
+      return;
+    }
+    // World-placed readable books (PHAA-552): like housing plots, these are not
+    // entities, so they sit outside the entity loop above. renderer.nearReadable
+    // mirrors the same read-range check the HUD "Read" prompt uses; opening the
+    // book is a client-only reveal, no world command is sent.
+    const nearReadable = renderer.nearReadable;
+    if (nearReadable) {
+      hud.openReadable(nearReadable.id);
       return;
     }
     // Housing v0 (PHAA-405): homestead plots are not entities, so they sit
@@ -6185,13 +6214,19 @@ function wireStartScreens(): void {
     const canvas = $('#char-preview-canvas') as HTMLCanvasElement | null;
     if (container && canvas) {
       characterPreview = new CharacterPreview(container, canvas);
-      const selSelector =
-        activePanelId === '#offline-select'
-          ? '#offline-select .mini-class.sel'
-          : '#charcreate-panel .mini-class.sel';
-      const selEl = document.querySelector(selSelector) as HTMLElement | null;
-      const cls = selEl ? (selEl.dataset.class as PlayerClass) : 'warrior';
-      characterPreview.setClass(cls);
+      // PHAA-613: the constructor stores the container reference but does not
+      // reparent the canvas. Move it now so it actually lives in the right
+      // container for whichever play panel happens to be visible when assets
+      // finish preloading; without this, a user who reaches the offline
+      // character-creation panel before assetsReady resolves sees a blank
+      // (0x0) preview because the canvas stays parented under
+      // #online-preview-container inside the still-hidden #charselect-panel.
+      characterPreview.setContainer(container);
+      // Run the panel-conditional sync (skin picker, sex, layout) so the
+      // preview is fully wired for whichever panel is active at resolve time.
+      if (activePanelId === '#charselect-panel' || activePanelId === '#charcreate-panel' || activePanelId === '#offline-select') {
+        updatePreviewContainer(activePanelId);
+      }
     }
     decorateClassChips();
   });

@@ -50,6 +50,7 @@ import {
   NPCS,
   QUESTS,
   questRewardItem,
+  READABLES_BY_ID,
   WORLD_MAX_X,
   WORLD_MAX_Z,
   WORLD_MIN_X,
@@ -226,7 +227,10 @@ import {
   minimapZoomValue,
   nextMinimapZoom,
 } from './minimap_zoom';
+import { renderNpcDialogTreePanel } from './npc_dialog_tree_panel';
+import { type DialogViewState, dialogAdvance } from './npc_dialog_tree_view';
 import { npcIntroAdvance, npcIntroPageAt } from './npc_intro_view';
+import { npcJournalPageAt } from './npc_journal_view';
 import { OptionsWindow } from './options_window';
 import { makeWriterFacet, type PainterHostPresentation } from './painter_host';
 import { partyFrameSignature, selectPartyFrameMembers } from './party_frames';
@@ -257,6 +261,8 @@ import { type QuestTrackerView, questTrackerView, type TrackedQuest } from './qu
 import { QuestLogWindow } from './questlog_window';
 import { lockoutParts, lockoutShape } from './raid_lockout';
 import { type RaidLockoutI18n, raidLockoutPanelHtml } from './raid_lockout_view';
+import { ReadablePromptPainter } from './readable_prompt_painter';
+import { readablePromptView } from './readable_prompt_view';
 import { restView } from './rest_indicator';
 import { localizeServerText } from './server_i18n';
 import { localizeSimAuraName, localizeSimText } from './sim_i18n';
@@ -757,6 +763,7 @@ export class Hud {
   private targetCastbarTimerEl = this.targetCastbarEl.querySelector('.timer') as HTMLElement;
   private actionbarEl = $('#actionbar');
   private housingPromptEl = $('#housing-prompt');
+  private readablePromptEl = $('#readable-prompt');
   private xpFillEl = $('#xpbar .fill');
   private xpLabelEl = $('#xpbar .label');
   // XP + swing bar element refs cached once for their painters (the #xpbar /
@@ -2394,6 +2401,12 @@ export class Hud {
   private readonly housingPromptPainter = new HousingPromptPainter(
     this.writerFacet,
     this.housingPromptEl,
+  );
+  // World-readable "Read" prompt (PHAA-552): same proximity-driven per-frame
+  // facet as the housing prompt, fed by renderer.nearReadable.
+  private readonly readablePromptPainter = new ReadablePromptPainter(
+    this.writerFacet,
+    this.readablePromptEl,
   );
   // The per-frame FCT painter: the pooled-div ring that replaced the per-event
   // createElement + setTimeout fct() below. handleEvents + showSelfNote feed spawn(), which
@@ -4588,6 +4601,9 @@ export class Hud {
     this.housingPromptPainter.paint(
       housingPromptView(this.renderer.nearHousingPlot, sim.housingInfo),
     );
+    // World-readable "Read" prompt (PHAA-552): tracks renderer.nearReadable the
+    // same way, so the prompt appears exactly when the book is in read range.
+    this.readablePromptPainter.paint(readablePromptView(this.renderer.nearReadable));
 
     // FCT painter: drive the pooled floating-combat-text ring on the every-frame
     // tier (folded into the existing `hud` perf bucket, not a second rAF).
@@ -7664,6 +7680,98 @@ export class Hud {
     this.questDialogTrap?.focusFirst();
   }
 
+  // Walk one node of an NPC's branching dialogue tree (PHAA-562). The pure
+  // npc_dialog_tree_view core decides which choices are offered and where each
+  // leads; this thin consumer resolves the text through tEntity, sends a picked
+  // choice's consequence over the IWorldDialog seam (dialogChoose, effect-only),
+  // and re-renders the next node or returns to the gossip menu. DOM lives in the
+  // sibling npc_dialog_tree_panel module, so this never grows hud.ts's DOM banks.
+  private renderDialogTree(npc: Entity, nodeId: string): void {
+    const def = NPCS[npc.templateId];
+    const tree = def?.dialogTree;
+    if (!def || !tree) return;
+    this.openGossipNpcId = npc.id;
+    this.openQuestDetailId = null;
+    const npcId = npc.templateId;
+    const ds = this.sim.dialogState();
+    const state: DialogViewState = {
+      disposition: ds.disposition[npcId] ?? 0,
+      flags: new Set(ds.flags),
+    };
+    renderNpcDialogTreePanel({
+      el: $('#quest-dialog'),
+      npcName: npcDisplayName(npcId),
+      npcTitle: npcDisplayTitle(def.id),
+      tree,
+      nodeId,
+      state,
+      resolveNpcLine: (n) => tEntity({ kind: 'npcDialog', npcId, node: n, field: 'npcLine' }),
+      resolveChoiceLabel: (c) =>
+        tEntity({ kind: 'npcDialog', npcId, choice: c, field: 'choiceLabel' }),
+      closeAria: t('questUi.dialog.close'),
+      continueLabel: t('questUi.dialog.continue'),
+      onChoose: (choice) => {
+        // Only a consequential choice crosses the seam; navigation is client-side.
+        if (choice.effect) this.sim.dialogChoose(npcId, choice.id);
+        const next = dialogAdvance(choice);
+        if (next) this.renderDialogTree(npc, next);
+        else this.renderGossip(npc);
+      },
+      onContinue: () => this.renderGossip(npc),
+      onClose: () => this.closeQuestDialog(),
+      focusFirst: () => this.questDialogTrap?.focusFirst(),
+    });
+  }
+
+  // Open a world-placed readable book (PHAA-552) in the shared quest dialog and
+  // page through its content with the SAME pure paginator the NPC intro uses
+  // (npc_intro_view), so there is no second reader. Reading is client-only: no
+  // world command is sent, the text is looked up by id through the `readable`
+  // entity-i18n kind. Called by main.ts's interact-key handler when the player
+  // stands on a book (renderer.nearReadable).
+  openReadable(id: string): void {
+    if (!READABLES_BY_ID[id]) return;
+    this.closeOtherWindows('#quest-dialog');
+    if ($('#quest-dialog').style.display !== 'block')
+      this.questDialogTrap = this.focusManager.open({ root: () => $('#quest-dialog') });
+    this.renderReadablePage(id, 0);
+  }
+
+  private renderReadablePage(id: string, index: number): void {
+    const readable = READABLES_BY_ID[id];
+    const pageCount = readable?.pages.length ?? 0;
+    const page = npcIntroPageAt(index, pageCount);
+    if (!readable || !page) {
+      this.closeQuestDialog();
+      return;
+    }
+    // A readable is not an NPC conversation: clear gossip/quest ownership so the
+    // [X]/Escape path (closeQuestDialog) does not try to re-render a gossip menu.
+    this.openGossipNpcId = null;
+    this.openQuestDetailId = null;
+    const el = $('#quest-dialog');
+    markDialogRoot(el, { labelledBy: 'quest-dialog-title' });
+    const title = tEntity({ kind: 'readable', id, field: 'readableTitle' });
+    const pageText = tEntity({ kind: 'readable', id, pageIndex: index, field: 'readablePage' });
+    let html = `<div class="panel-title"><span id="quest-dialog-title">${esc(title)}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('questUi.dialog.close'))}">${svgIcon('close')}</button></div>`;
+    html += `<div class="qd-text">${esc(pageText)}</div>`;
+    el.innerHTML = html;
+    const btn = document.createElement('button');
+    btn.className = 'btn';
+    btn.type = 'button';
+    // "Continue" turns the page; the last page closes the book.
+    btn.textContent = t('questUi.dialog.continue');
+    btn.addEventListener('click', () => {
+      const next = npcIntroAdvance(index, pageCount);
+      if (next === null) this.closeQuestDialog();
+      else this.renderReadablePage(id, next);
+    });
+    el.appendChild(btn);
+    el.querySelector('[data-close]')?.addEventListener('click', () => this.closeQuestDialog());
+    el.style.display = 'block';
+    this.questDialogTrap?.focusFirst();
+  }
+
   private renderGossip(npc: Entity): void {
     this.openGossipNpcId = npc.id;
     this.openQuestDetailId = null;
@@ -7728,8 +7836,18 @@ export class Hud {
     if (def?.hearth) {
       html += `<button type="button" class="qd-list-item" data-feed-hearth="1" aria-label="${esc(t('questUi.dialog.feedHearthAria'))}"><span class="gold">+</span> ${esc(t('questUi.dialog.feedHearth'))}</button>`;
     }
+    // Branching heart-to-heart (PHAA-562): opens the NPC's dialogTree walker.
+    if (def?.dialogTree) {
+      html += `<button type="button" class="qd-list-item" data-dialog="1" aria-label="${esc(t('questUi.dialog.chat'))}"><span class="gold">${svgIcon('whisper')}</span> ${esc(t('questUi.dialog.chat'))}</button>`;
+    }
     if (Object.values(DELVES).some((d) => d.boardNpcId === npc.templateId)) {
       html += `<button type="button" class="qd-list-item" data-delve-board="1" aria-label="${esc(t('delveUi.board.openDelveAria', { name: npcName }))}"><span class="gold">${svgIcon('skull')}</span> ${esc(t('delveUi.board.openDelve'))}</button>`;
+    }
+    // Persistent journal/lore option (PHAA-480): unlike introLines, this is
+    // never gated by the shown-once localStorage check and stays offered on
+    // every visit.
+    if (def?.journalLines && def.journalLines.length > 0) {
+      html += `<button type="button" class="qd-list-item" data-journal="1" aria-label="${esc(t('hudChrome.npcJournal.readAria', { name: npcName }))}"><span class="gold">${svgIcon('spellbook')}</span> ${esc(t('hudChrome.npcJournal.readLabel'))}</button>`;
     }
     el.innerHTML = html;
     el.querySelectorAll('[data-quest]').forEach((item) => {
@@ -7762,10 +7880,66 @@ export class Hud {
     el.querySelector('[data-trainer]')?.addEventListener('click', () => {
       this.trainerPanel.open(npc.id, npc.templateId);
     });
+    el.querySelector('[data-dialog]')?.addEventListener('click', () => {
+      if (def?.dialogTree) this.renderDialogTree(npc, def.dialogTree.root);
+    });
     el.querySelector('[data-delve-board]')?.addEventListener('click', () => {
       this.closeQuestDialog(false);
       this.openDelveBoard(npc.id);
     });
+    if (def?.journalLines && def.journalLines.length > 0) {
+      el.querySelector('[data-journal]')?.addEventListener('click', () => {
+        this.renderNpcJournal(npc, def, 0);
+      });
+    }
+    el.querySelector('[data-close]')?.addEventListener('click', () => this.closeQuestDialog());
+    el.style.display = 'block';
+    this.questDialogTrap?.focusFirst();
+  }
+
+  // Render one page of an NPC's persistent journal/lore sequence (PHAA-480).
+  // Distinct from renderNpcIntro: no shown-once gate, freely re-readable in
+  // either direction, and a Close button always returns to the gossip menu
+  // rather than handing off to another dialog. The line ordering lives in the
+  // pure npc_journal_view core; this method is the thin DOM consumer.
+  private renderNpcJournal(npc: Entity, def: NpcDef, index: number): void {
+    const lines = def.journalLines ?? [];
+    const page = npcJournalPageAt(index, lines.length);
+    if (!page) {
+      this.renderGossip(npc);
+      return;
+    }
+    this.openGossipNpcId = npc.id;
+    this.openQuestDetailId = null;
+    const el = $('#quest-dialog');
+    markDialogRoot(el, { labelledBy: 'quest-dialog-title' });
+    const npcName = npcDisplayName(npc.templateId);
+    let html = `<div class="panel-title"><span id="quest-dialog-title">${esc(t('hudChrome.npcJournal.title', { name: npcName }))}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('questUi.dialog.close'))}">${svgIcon('close')}</button></div>`;
+    html += `<div class="qd-text">"${esc(npcJournalLine(def.id, index))}"</div>`;
+    html += `<div class="qd-req">${esc(t('hudChrome.npcJournal.pageOf', { index: this.questNumber(index + 1), total: this.questNumber(lines.length) }))}</div>`;
+    el.innerHTML = html;
+    if (page.canRetreat) {
+      const back = document.createElement('button');
+      back.className = 'btn';
+      back.type = 'button';
+      back.textContent = t('hudChrome.npcJournal.back');
+      back.addEventListener('click', () => this.renderNpcJournal(npc, def, index - 1));
+      el.appendChild(back);
+    }
+    if (page.canAdvance) {
+      const next = document.createElement('button');
+      next.className = 'btn';
+      next.type = 'button';
+      next.textContent = t('hudChrome.npcJournal.next');
+      next.addEventListener('click', () => this.renderNpcJournal(npc, def, index + 1));
+      el.appendChild(next);
+    }
+    const close = document.createElement('button');
+    close.className = 'btn';
+    close.type = 'button';
+    close.textContent = t('hudChrome.npcJournal.close');
+    close.addEventListener('click', () => this.renderGossip(npc));
+    el.appendChild(close);
     el.querySelector('[data-close]')?.addEventListener('click', () => this.closeQuestDialog());
     el.style.display = 'block';
     this.questDialogTrap?.focusFirst();
@@ -10978,6 +11152,10 @@ function npcGreeting(npcId: string, playerClass: PlayerClass, playerName: string
 
 function npcIntroLine(npcId: string, lineIndex: number): string {
   return tEntity({ kind: 'npcIntro', id: npcId, lineIndex, field: 'introLine' });
+}
+
+function npcJournalLine(npcId: string, lineIndex: number): string {
+  return tEntity({ kind: 'npcJournal', id: npcId, lineIndex, field: 'journalLine' });
 }
 
 // Client-side shown-once gate for an NPC's first-meeting intro lines. Purely

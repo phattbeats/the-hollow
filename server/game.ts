@@ -63,6 +63,7 @@ import { enqueueActivity } from './discord_activity';
 import { discordFlairForAccount } from './discord_db';
 import { enqueueRelay } from './discord_relay';
 import { formatDuration } from './duration';
+import { gameMetricsCounters } from './game_signals';
 import { IpBlockList } from './ip_block';
 import { loadActiveBlockedIps } from './ip_block_db';
 import { LINKDEAD_GRACE_MS, planJoin } from './linkdead';
@@ -126,7 +127,10 @@ const CHAT_RATE_ERROR_COOLDOWN_SECONDS = 4;
 const CHAT_COOLDOWN_SECONDS = 20;
 const CHAT_RATE_VIOLATIONS_FOR_COOLDOWN = 3;
 const WHO_RESULT_LIMIT = 50;
-const MAX_ACTIVE_SESSIONS_PER_ACCOUNT = 2;
+// One live session per account: Ravenpost mail moves coin and goods between
+// an account's characters, so the old allowance of a second online character
+// (self-trade by dual-boxing) is no longer needed. GMs are exempt.
+const MAX_ACTIVE_SESSIONS_PER_ACCOUNT = 1;
 // WS protocol-level ping cadence; see the keepalive interval in start().
 const WS_KEEPALIVE_PING_MS = 30_000;
 const RESTART_COUNTDOWN_TOTAL_SECONDS = 600;
@@ -182,6 +186,11 @@ type ClientMessage = Record<string, unknown> & {
   name?: string;
   node?: string;
   npc?: number;
+  // Branching-dialogue dispatch (PHAA-562): the speaking NPC's string template id
+  // and the picked choice id. Distinct from the numeric `npc` entity field and
+  // the loot-roll `choice` enum, which carry unrelated values on other commands.
+  npcId?: string;
+  choiceId?: string;
   objectId?: number;
   price?: number;
   q?: string;
@@ -734,6 +743,13 @@ export class GameServer {
   private readonly startedAt = Date.now();
   private peakOnline = 0;
   private tickMsAvg = 0;
+  // Achieved sim-tick rate meter for the /metrics exporter (woc_sim_tick_hz):
+  // counts committed sim ticks against wall-clock over a ~1s window. Stays null
+  // for the first window (uptime warmup); the exporter maps that null to 0. This
+  // is server-side wall-clock only (Date.now), never read by the deterministic sim.
+  private simTickRateCount = 0;
+  private simTickRateWindowStartMs = 0;
+  private simTickHzValue: number | null = null;
   // Rolling per-phase loop timing, localizes a stutter to a phase. Always-on
   // (the hot path allocates nothing); read via perfProfile() for admin/ops.
   private readonly tickProfiler = new TickProfiler([
@@ -986,6 +1002,7 @@ export class GameServer {
   start(): void {
     let last = process.hrtime.bigint();
     let acc = 0;
+    this.simTickRateWindowStartMs = Date.now();
     this.interval = setInterval(() => {
       const now = process.hrtime.bigint();
       let dt = Number(now - last) / 1e9;
@@ -1010,6 +1027,7 @@ export class GameServer {
         this.clearStaleInputs();
         lap('stale');
         const events = this.sim.tick();
+        this.simTickRateCount++;
         lap('tick');
         this.routeEvents(this.interceptPlantUtterances(events));
         this.detectActivity(events);
@@ -1032,6 +1050,15 @@ export class GameServer {
       const tickMs = Number(process.hrtime.bigint() - now) / 1e6;
       this.tickProfiler.commit(tickMs);
       this.maybeLogTickPerf(tickMs);
+      // Close the achieved-Hz window once ~1s of wall-clock has elapsed: sim ticks
+      // per real second, for woc_sim_tick_hz. Cheap (one Date.now per loop pass).
+      const rateNowMs = Date.now();
+      const rateElapsedMs = rateNowMs - this.simTickRateWindowStartMs;
+      if (rateElapsedMs >= 1000) {
+        this.simTickHzValue = round2((this.simTickRateCount * 1000) / rateElapsedMs);
+        this.simTickRateCount = 0;
+        this.simTickRateWindowStartMs = rateNowMs;
+      }
       this.tickMsAvg =
         this.tickMsAvg === 0 ? tickMs : this.tickMsAvg + TICK_EMA_ALPHA * (tickMs - this.tickMsAvg);
       this.saveTimer += dt;
@@ -1955,6 +1982,24 @@ export class GameServer {
     };
   }
 
+  // Achieved sim Hz for the /metrics exporter (server/game_metrics.ts), or null
+  // while the rate meter is still warming up (its first second of uptime).
+  simTickHz(): number | null {
+    return this.simTickHzValue;
+  }
+
+  // Per-phase loop timing (p95 + max, in MILLISECONDS) for the /metrics exporter,
+  // keyed by phase name. The exporter converts to seconds and surfaces only its
+  // fixed WOC_TICK_PHASES subset, so the exported label set stays bounded.
+  tickPhaseMillis(): Record<string, { p95: number; max: number }> {
+    const { phases } = this.tickProfiler.profile();
+    const out: Record<string, { p95: number; max: number }> = {};
+    for (const [name, stats] of Object.entries(phases)) {
+      out[name] = { p95: stats.p95, max: stats.max };
+    }
+    return out;
+  }
+
   // Rolling per-phase loop timing for the admin/ops perf view + load harness.
   perfProfile(): { online: number; simEntities: number } & ReturnType<TickProfiler['profile']> {
     return {
@@ -2296,6 +2341,7 @@ export class GameServer {
   // -------------------------------------------------------------------------
 
   handleMessage(session: ClientSession, raw: string): void {
+    gameMetricsCounters().wsMessage('in');
     const receivedAtMs = Date.now();
     let msg: unknown;
     try {
@@ -2606,6 +2652,7 @@ export class GameServer {
           void route
             .then((sent) => {
               if (sent) {
+                gameMetricsCounters().chatMessage();
                 this.chatLog.log({
                   accountId: session.accountId,
                   characterId: session.characterId,
@@ -2982,8 +3029,8 @@ export class GameServer {
       // sim re-looks-up the choice in the NPC's tree, re-checks its gate, and
       // applies its disposition/flag effect (never trusting a client-sent value).
       case 'dialogChoose':
-        if (typeof msg.npc === 'string' && typeof msg.choice === 'string') {
-          sim.dialogChoose(msg.npc, msg.choice, pid);
+        if (typeof msg.npcId === 'string' && typeof msg.choiceId === 'string') {
+          sim.dialogChoose(msg.npcId, msg.choiceId, pid);
         }
         break;
       // dev/ops commands, only when ALLOW_DEV_COMMANDS=1 (never in production)
@@ -3741,6 +3788,7 @@ export class GameServer {
           void route
             .then((sent) => {
               if (sent) {
+                gameMetricsCounters().chatMessage();
                 this.chatLog.log({
                   accountId: session.accountId,
                   characterId: session.characterId,
@@ -3783,6 +3831,7 @@ export class GameServer {
 
   private logChat(session: ClientSession, sent: import('../src/sim/sim').SentChat | null): void {
     if (!sent) return;
+    gameMetricsCounters().chatMessage();
     this.chatLog.log({
       accountId: session.accountId,
       characterId: session.characterId,
@@ -4077,6 +4126,7 @@ export class GameServer {
 
   private sendRaw(session: ClientSession, payload: string): void {
     if (session.ws.readyState === 1) {
+      gameMetricsCounters().wsMessage('out');
       session.ws.send(payload);
     }
   }

@@ -894,6 +894,15 @@ export const en_CA: EnTranslations = {
         }
       }
     },
+    "npcJournal": {
+      "readLabel": "Tell me about the journal.",
+      "readAria": "Read the journal of {name}",
+      "pageOf": "Page {index} of {total}",
+      "back": "Previous page",
+      "next": "Next page",
+      "close": "Close journal",
+      "title": "{name}'s Journal"
+    },
     "calendar": {
       "title": "Event Calendar",
       "close": "Close calendar",
@@ -996,6 +1005,7 @@ export const en_CA: EnTranslations = {
       "social": "Social & Groups",
       "stats": "Character & Stats",
       "progression": "Leveling & Progression",
+      "hollow": "The Hollow",
       "world": "World",
       "quests": "Quests",
       "dungeons": "Dungeons & Raids",
@@ -1505,9 +1515,32 @@ export const en_CA: EnTranslations = {
         "desc": "Scaled, serpentine things of the old depths. Rare, proud, and far stronger than they look."
       }
     },
+    "hollowPage": {
+      "heading": "The Hollow",
+      "intro": "Past the shrine gate lies the vase: the clearing every new hero wakes into, and always returns to. It is shared ground, one hub for the whole realm, home to your first faces, your first quests, and your first home.",
+      "greeting": "you're back, that's a blessin'... got a couple sacred matters queued up, same wavelength as last time. c'mere a minute...",
+      "greeter": "Brother Greenpaw, at the vase",
+      "vaseHeading": "The vase",
+      "vaseBody": "Everyone begins at the vase, an old, listening presence the Hollow is built around. It asks for small things, an emberbulb burned or a cave morsel fed, and seems to notice when it gets them. Downhill of it, a cave mouth opens onto the Under-Shrine, and to either side lie plots where you can raise a home of your own.",
+      "figuresHeading": "Who tends it",
+      "figuresBody": "Two people keep the vase running, and you will meet them both in your first minutes.",
+      "npcFmt": "{name}, {title}",
+      "greenpawBody": "The vase's sole caretaker and the one who hands out its earliest errands. Self-appointed and the first to admit it, he is the closest thing the Hollow has to a guide.",
+      "yarrowBody": "Keeper of the second calling: every class can learn a profession from her, mirrored across the vase from Greenpaw.",
+      "questsHeading": "Your first errands",
+      "questsBody": "Greenpaw's own chain of quests comes first: four short errands that teach the vase's rhythm before sending you on into the wider Hollow.",
+      "questBurnsBody": "A cave-grown bulb the vase burns for light, gathered a handful at a time.",
+      "questFillsBody": "A cave-fed morsel that answers a quieter hunger, gathered the same way.",
+      "questWavelengthBody": "An introduction to the vase's second calling, and to feeding it yourself.",
+      "questKeepLitBody": "Turning a single favor into a standing habit, three times over.",
+      "housingHeading": "A home of your own",
+      "housingBody": "{n} house plots ring the vase, waiting to be claimed and furnished as your own private corner of the Hollow.",
+      "shrineHeading": "The Under-Shrine",
+      "shrineBody": "A cave mouth beside the vase opens onto the Under-Shrine, the Hollow's own instanced descent and every new hero's first real test of a party."
+    },
     "worldPage": {
       "heading": "The world",
-      "intro": "The Hollow Reaches is where every new arrival takes their first steps, quiet ground just beyond the shrine gate. Three more zones lie north of it, laid out south to north; the road to them is not open yet, but they are real and waiting.",
+      "intro": "Step out through the shrine gate from the vase and you are in the Hollow Reaches, the quiet outdoor ground where every new arrival takes their first steps. Three more zones lie north of it, laid out south to north; the road to them is not open yet, but they are real and waiting.",
       "hub": "Home base",
       "mapHeading": "The road north",
       "mapSub": "Four zones, south to north, each a step higher in level. The Hollow Reaches is open now; the road beyond will open in time.",
@@ -1544,8 +1577,9 @@ export const en_CA: EnTranslations = {
       "partyTitle": "Questing in a group",
       "partyBody": "Party members nearby share kill and objective credit, so questing together is faster, never slower. You can also share a quest with your group: post it to chat as a clickable link with the /share command, and any nearby member who qualifies can pick up the same quest in one click.",
       "storyTitle": "A thread runs through it all",
-      "storyBody": "Your first errands are quiet ones around the Hollow Reaches. Further along the road, something is wrong with the dead: a cult is at work, and the trail leads north through every zone beyond. Follow it to learn who stands behind it.",
+      "storyBody": "Your first thread is Brother Greenpaw's own short chain, right at the vase; see it laid out on the Hollow page. Beyond it lie the quiet errands of the Hollow Reaches, and further out still, a longer tale of a death-cult marching from valley to peak, laid out below as what is coming.",
       "soloNote": "The main story is soloable right up to each chapter's finale, which is a five-player dungeon.",
+      "sagaGateNote": "This saga is real, completed content, the same trail that opens once the road north does. It is not where a new hero starts today; that is the vase, in the Hollow.",
       "typesTitle": "The kinds of quest you will see",
       "typesBody": "Most quests are one of a few familiar shapes. The on-screen tracker spells out exactly what each one wants, so you are never left guessing.",
       "typeSlayTitle": "Slay",
@@ -1887,6 +1921,11 @@ export const en_CA: EnTranslations = {
       "title": "We could not find that page",
       "body": "The page you were looking for does not exist or may have moved.",
       "home": "Back to the overview"
+    }
+  },
+  "readableUi": {
+    "prompt": {
+      "read": "Read"
     }
   },
   "coldOpen": {
@@ -2594,6 +2633,21 @@ export const en_CA: EnTranslations = {
       "flavor": "The dead have surrendered what they can spare."
     }
   },
+  "boarball": {
+    "queue": {
+      "join": "You join the boarball queue. Stand by for three more players…",
+      "leave": "You leave the boarball queue."
+    },
+    "log": {
+      "welcome": "Welcome to boarball! Shoot, pass, and outscore the other team.",
+      "kickoff": "Kickoff!",
+      "over": "Full time! Returning to the world…"
+    },
+    "error": {
+      "tooFar": "You're not close enough to the ball.",
+      "noTeammate": "No teammate targeted."
+    }
+  },
   "fiesta": {
     "bracket": "Fiesta",
     "enterQueue": "Join the Fiesta!",
@@ -2608,7 +2662,7 @@ export const en_CA: EnTranslations = {
       "augmentGained": "You gain the {name} augment!",
       "allyAugment": "{player} chose the {name} augment.",
       "welcome": "Welcome to the 2v2 FIESTA! Score takedowns, grab augments, survive the ring!",
-      "go": "FIESTA — GO!",
+      "go": "FIESTA, GO!",
       "over": "FIESTA OVER! What a party. Returning to the world…",
       "powerup": "{player} grabbed {name}!"
     },
@@ -2821,6 +2875,7 @@ export const en_CA: EnTranslations = {
       "crossSiteRejected": "Cross-site request rejected.",
       "accountSuspended": "This account is suspended until {date}.",
       "alreadyInWorld": "Character is already in world.",
+      "tooManyOnline": "Only one of your characters may be in the world at a time.",
       "takenOver": "Your character was taken over by another session.",
       "renameBeforeEntering": "This character must be renamed before entering the world.",
       "renameNotPermitted": "Renaming this character is not allowed."
@@ -3614,6 +3669,7 @@ export const en_CA: EnTranslations = {
     "dialog": {
       "close": "Close quest dialogue",
       "greetingFallback": "Greetings.",
+      "chat": "Let's talk a while.",
       "availableQuestAria": "Available quest: {name}",
       "readyQuestAria": "Quest ready to turn in: {name}",
       "discussQuest": "Discuss {name}.",
@@ -5422,13 +5478,17 @@ export const en_CA: EnTranslations = {
         "name": "Emberbulb"
       },
       "first_cutting": {
-        "name": "A Cutting"
+        "name": "A Cutting",
+        "flavorText": "A slip of living green from Brother Greenpaw, wrapped in damp moss. Once a homestead plot can be edited, this is the first thing you plant."
       },
       "greenpaw_bead": {
         "name": "A Bead From the Bandolier"
       },
       "keeper_coal": {
         "name": "A Coal That Never Cooled"
+      },
+      "willow_sprig": {
+        "name": "A Willow Sprig"
       },
       "witness_root_cincture": {
         "name": "The Witness-Root's Cincture"
@@ -5520,6 +5580,33 @@ export const en_CA: EnTranslations = {
       },
       "event_skin_token": {
         "name": "Mysterious Cosmetic Cache"
+      },
+      "flint_amber_pick": {
+        "name": "Flint Amber Pick"
+      },
+      "bonewood_amber_pick": {
+        "name": "Bonewood Amber Pick"
+      },
+      "starleaf_amber_pick": {
+        "name": "Starleaf Amber Pick"
+      },
+      "flint_bark_axe": {
+        "name": "Flint Bark Axe"
+      },
+      "bonewood_bark_axe": {
+        "name": "Bonewood Bark Axe"
+      },
+      "starleaf_bark_axe": {
+        "name": "Starleaf Bark Axe"
+      },
+      "flint_spore_sickle": {
+        "name": "Flint Spore Sickle"
+      },
+      "bonewood_spore_sickle": {
+        "name": "Bonewood Spore Sickle"
+      },
+      "starleaf_spore_sickle": {
+        "name": "Starleaf Spore Sickle"
       },
       "deathless_heartwood": {
         "name": "Heartwood of the Deathless Crown"
@@ -5664,6 +5751,9 @@ export const en_CA: EnTranslations = {
       "deacon_voss": {
         "name": "Deacon Voss"
       },
+      "training_dummy": {
+        "name": "Training Dummy"
+      },
       "ridge_stalker": {
         "name": "Ridge Stalker"
       },
@@ -5792,6 +5882,9 @@ export const en_CA: EnTranslations = {
       },
       "acolyte_tessa": {
         "name": "Acolyte Tessa"
+      },
+      "boarball_ball": {
+        "name": "Boarball"
       },
       "ironvein_foreman": {
         "name": "Ironvein Foreman"
@@ -6043,17 +6136,82 @@ export const en_CA: EnTranslations = {
           "0": "uhh... hi. hi. didn't hear you come up, i was someplace else, someplace green... you got the just-woke-up look, friend. i know it well, i wear it most days...",
           "1": "name's greenpaw. brother greenpaw, first prophet, self-appointed, which the vase'll tell you means exactly nothin', and he's not wrong, but somebody's gotta tend him...",
           "2": "this here's the hollow. was a whole tribe once, big doings, so they tell me, and now it's mostly me, the vase, and whatever's breathin' down in that cave... anyway. he's hungry, i'm hungry, same wavelength. c'mere, got a couple sacred matters need tendin'."
+        },
+        "dialogNode": {
+          "hearth": "back at the vase, friend... he's quiet today, which either means he's listenin' hard or he's sulkin', and i never can tell which one. how's the hollow been treatin' you?",
+          "warmed": "...that lands soft, friend, softer than you know. most folks come through lookin' for the exit. you keep lookin' for the middle of the thing, and that's rarer than you'd think.",
+          "vase": "same as ever. he wants smoke, he wants tendin', he wants somebody to sit close and pretend the quiet is a conversation... which, hey, it is, if you squint at it right. that is the whole faith, more or less.",
+          "faith": "belief's a strong word, friend. i tend. tendin' is the part i can do with these two hands. the listenin' i leave to him, and if he ain't, well, the smoke smells good either way...",
+          "stung": "...oof. yeah. yeah, maybe it is. i've thought it myself, on the cold mornings, when the vase don't sigh and nobody comes up the path... but i'm still here, friend, so it ain't only that. not to me it ain't.",
+          "mended": "s'alright, friend. a place like this earns a hard word now and then, i won't pretend otherwise. you came back to say it soft, though, and that's more than the boneyard would'a done. we're square, you and me.",
+          "tribe": "big tribe once, so the old marks say. rows of tally-scratches down in the dark, fives crossed out, more fives than any one hand could'a made... they kept him lit a long, long while before it got down to just me. i don't know where they went, friend. i just know the wick can't go out on my watch.",
+          "confide": "...that's a kind thing to offer, and i'll hold you to a sliver of it. truth is i talk to you half 'cause the vase don't answer and half 'cause i'm scared of the day nobody comes up that path at all. so. thanks for comin' up it. that's the sacred part, friend, if you ever wanted one."
+        },
+        "dialogChoice": {
+          "kind": "it's startin' to feel like somewhere, brother. i mean that.",
+          "ask": "what's the vase been sayin' lately?",
+          "blunt": "it's a boneyard with a caretaker, greenpaw. that's all it is.",
+          "tribe": "tell me about the tribe that was here before.",
+          "warm_bye": "i'll let you get back to him.",
+          "vase_more": "and you believe he's really listenin'?",
+          "vase_bye": "keep him company, then. i'll be around.",
+          "faith_bye": "fair enough, greenpaw.",
+          "sorry": "that came out meaner than i meant it. i'm sorry.",
+          "cold_bye": "believe whatever you want.",
+          "mended_bye": "we're square. i'll see you around.",
+          "confide": "you don't have to carry that alone, brother.",
+          "tribe_bye": "somebody's still tendin' it. that counts for somethin'.",
+          "confide_bye": "i'll keep comin' up the path, greenpaw."
         }
       },
       "verger_zebediah": {
         "name": "Verger Zebediah",
         "title": "Warden of Root Hollow",
-        "greeting": "Verger Zebediah. I keep the Reaches to a calendar, or I keep trying. Root Hollow was marked to rest this season, and the boars did not read the notice. Mind the loose dirt, and do not touch the register."
+        "greeting": "Verger Zebediah. I keep the Reaches to a calendar, or I keep trying. Root Hollow was marked to rest this season, and the boars did not read the notice. Mind the loose dirt, and do not touch the register.",
+        "introLines": {
+          "0": "Verger Zebediah. Warden of Root Hollow, by appointment of an office that is, presently, also me. You will find me here on most days; I find myself here on the others. The Reaches do not require a quorum, only a record.",
+          "1": "I keep the calendar. The calendar is not keeping me, though some seasons it tries. Root Hollow is marked to rest this turn, the lower dens have not received the notice, and the heron has stopped pretending to be surprised. This is the situation. It is not a complaint; complaints require witnesses.",
+          "2": "There is a register inside the shrine. Do not touch it. There is loose dirt underfoot where the boars have been. Mind both. If you have come about the ward, I can offer two errands, neither of them small, and one of them I would rather not amend a third time. Which brings us to why I am talking to you at all."
+        },
+        "journalLines": {
+          "0": "The register goes back further than the heron does. I did not write the first entry, and I will not write the last; that is the comfort of an office no one is waiting to inherit. The Reaches were a thoroughfare once. People came up the lake path with salt and left with something they did not name, and neither did I, because it was not mine to ask. The register records the comings and the goings and one long gap where neither happened. I keep the gap too.",
+          "1": "The heron is older than the register, which the register resents. It does not say so. It does not have to. I have watched it stand on one leg through a season that killed the pear trees and not blink, which I take to be a position on something, though I have never been briefed on what. There is a room under the shrine I do not enter. The heron goes in. I do not ask it what it does in there; it does not ask me what I do up here. This arrangement has held longer than either of us.",
+          "2": "If you have read this far you are either curious or avoiding the boars, and I respect both. The short version of the long record: this place remembers something it was, and something it means to be again, and the difference is the work. Mine is the remembering. I do not know whose the being again is. I file it under pending and go to bed. The register allows pending. It does not allow forgetting."
+        }
       },
       "sexton_faddick": {
         "name": "Sexton Faddick",
         "title": "The Wandering Keeper",
-        "greeting": "Faddick. Sexton, where there is still a shrine to sexton. I do not stay anywhere; I keep. Wolves have circled the flock at Fallow Acres every night, and a thing that circles long enough learns the shape of what it circles. Best it stays a flock."
+        "greeting": "Faddick. Sexton, where there is still a shrine to sexton. I do not stay anywhere; I keep. Wolves have circled the flock at Fallow Acres every night, and a thing that circles long enough learns the shape of what it circles. Best it stays a flock.",
+        "introLines": {
+          "0": "Faddick. Sexton, where there is still a shrine to sexton, which is fewer shrines than there used to be. I do not stay anywhere; I keep. The keeping is most of what I am still for.",
+          "1": "A thing that circles long enough learns the shape of what it circles. The wolves at Fallow Acres have been circling the flock every night since before I came through, and they have not yet learned the flock, which is something. The flock has learned them, which is more.",
+          "2": "I would offer you tea, but the kettle is somewhere I was yesterday. There is a quiet stretch of ground by the lake that means to be built on; nothing settles on ground with wolves working the dark. Two errands, then, and one of them I would rather not do alone. Best we walk while we talk."
+        },
+        "journalLines": {
+          "0": "I keep a list of the places I have kept, in my head, because the paper changes hands faster than the ground does. Shrines, mostly, the ones with no one left to tend them. Fallow Acres is on the list. So is a pond east of the lake whose name I never learned and a standing stone the wind has been rounding down for a hundred years. The list is not long. The list is, in the way that matters, the whole point. You do not keep a place by staying. You keep it by being the one who still knows it was there.",
+          "1": "The ground keeps better than we do. That is the whole of the trade. What walks above forgets its own name inside two generations and invents a new one and calls it the same; what sits below forgets nothing and waits. There is a slow time down under the stones. I have heard it, once, and I did not answer, because answering is how the slow thing finds the door. I carry the key for the not answering. It is not a metal key. It is a habit, which is heavier.",
+          "2": "The wolves are not the problem. The wolves are the symptom; the problem is whatever made the ground quiet enough that wolves thought it was theirs. I have seen this before, a place going quiet in the wrong direction, and the fix is always the same: make it loud again with the right kind of noise, which is people, which is why someone builds. You could ask who I am to carry any of this. I am the one still walking. That is the whole qualification. It is enough and it is not, and I have made my peace with the gap between those."
+        }
+      },
+      "shade": {
+        "name": "Shade",
+        "title": "A Traveler",
+        "greeting": "Oh, it's you. Sit if you like, the water's not going anywhere. Have you eaten today? You should eat.",
+        "introLines": {
+          "0": "You caught me at my chores. Don't mind the can, it's only water. There's always something somewhere that wants a little water.",
+          "1": "Me? Nobody much. Shade. I walk, I lend a hand where hands are short. You look worn through. Sit a moment, if you like."
+        }
+      },
+      "gate_bard": {
+        "name": "Halden the Bard",
+        "title": "Player at the Gate",
+        "greeting": "A copper for a song? No? That's all right, most days it's no. I play for the gate, and the gate's never once reached for its purse."
+      },
+      "goodwife_orla": {
+        "name": "Orla",
+        "title": "Once of Root Hollow",
+        "greeting": "You can sit. Most walk on. The Verger crossed my name off his register a long while back, and a crossed name learns to keep quiet so nobody has to be reminded it's still here."
       }
     },
     "quests": {
@@ -6972,6 +7130,26 @@ export const en_CA: EnTranslations = {
             "label": "Forest Wolf slain"
           }
         }
+      },
+      "q_have_you_eaten": {
+        "title": "Have You Eaten?",
+        "text": "There's a bard at the gate who plays for coppers and eats when the coppers come, which isn't often. I've got a bowl warm and one to spare. Carry it down to him, would you? And don't tell him it was pity. Tell him it was extra.",
+        "completion": "You're back. Did he eat? Good. That's good. And did you? ... You didn't, I can see it. Sit, then. You don't have to be great to be something good. Greatness isn't kindness. Eat.",
+        "objectives": {
+          "0": {
+            "label": "Warm meal carried to the bard"
+          }
+        }
+      },
+      "q_someone_your_own_size": {
+        "title": "Someone Your Own Size",
+        "text": "There's a woman near Root Hollow the world has been unkind to. Her name was struck from the register, and people treat a struck name like it can't hear. Go and sit with her a while. You don't have to fix anything. Just be someone her own size.",
+        "completion": "You stayed. She won't say it mattered, but it did, I promise you it did. Here, this is for you. A sprig off a willow I'm fond of. It does nothing at all. It only remembers that you were kind when nothing made you.",
+        "objectives": {
+          "0": {
+            "label": "Sat a while with Orla"
+          }
+        }
       }
     },
     "zones": {
@@ -7192,6 +7370,24 @@ export const en_CA: EnTranslations = {
         "name": "Wyrmshadow Vestments",
         "bonus2": "Increases attack power by 40.",
         "bonus3": "Increases Agility by 15 and critical strike chance by 2%."
+      }
+    },
+    "readables": {
+      "torn_ledger_page": {
+        "title": "A Torn Ledger",
+        "pages": {
+          "0": "Root Hollow, entered to rest. Fallow Acres, entered to rest. The lake at Mossbank, which rests whether we enter it or not. Signed and dated, as the register wants.",
+          "1": "Tally of the season so far: three seedlings up through the road stones, which is not on any calendar of mine. I have stopped scratching them out. They come back faster than the ink dries, and the ink was not cheap.",
+          "2": "A note to whoever keeps this after me. Count the boars, count the wolves, count the days. Do not count the green. It counts back, and it does not stop where you do."
+        }
+      },
+      "keepers_marginalia": {
+        "title": "A Keeper's Marginalia",
+        "pages": {
+          "0": "Left in the margin of a hymnbook with the hymns worn out of it. The hand is quick, the way a hand is quick when it writes while walking.",
+          "1": "The wolves circle Fallow Acres from the tree line, always the same ring, always sunwise. A thing that circles long enough learns the shape of what it circles. So do I. So, I think, does the ground.",
+          "2": "If you are reading this you have stopped walking, which is the one thing I never learned to do. Rest a moment. The Reaches will still be here. That is rather the whole trouble with it."
+        }
       }
     }
   },

@@ -23,6 +23,8 @@ Postgres and serves the built client from `dist/`.
 | `turnstile.ts`, `web_login_guard.ts` | Cloudflare Turnstile siteverify / auth-endpoint Origin guard (anti-bot) |
 | `realm.ts` | `REALM`, `REALM_DIRECTORY`, `REALM_ORIGINS` from `REALM_NAME`/`REALMS` env |
 | `ratelimit.ts` | per-IP sliding-window limiter + `X-Forwarded-For` resolution |
+| `logger.ts`/`log_redact.ts` | structured JSON logger (one object per line, secret/PII-redacting). New server code logs via `logger`, never `console.*` |
+| `metrics.ts`/`metric_sink.ts`/`access_log.ts`/`attack_signals.ts` | RED Prometheus exporter (`prom-client`, server-only), the token-gated `/metrics` endpoint (404 without `METRICS_TOKEN` bearer), per-request recording at `routeHttpRequest`, and the process-wide attack-signal counter seam (rate-limit hits, auth failures, BOLA denials). Metric labels must stay BOUNDED: route templates only, never a concrete path/ip/id |
 | `internal.ts` | secret-gated `/internal/*` ops endpoints (e.g. restart-countdown trigger) |
 | `ws_buffer.ts` | buffers in-flight WS frames during the async auth handshake, then replays them |
 | `woc_balance.ts` | the sole Solana RPC reader: holder-tier flair and connected-wallet balance, cached |
