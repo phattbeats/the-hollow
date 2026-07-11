@@ -2898,7 +2898,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
     '문을 나서면 탁 트인 대지가 펼쳐집니다. 길 서쪽의 묵정밭은 집을 짓기에 좋아 보입니다.',
   'entities.npcs.verger_zebediah.name': '성당지기 제베디아',
   'entities.npcs.verger_zebediah.title': '뿌리굴의 파수꾼',
-  'entities.readables.torn_ledger_page.title': '찢어진 장부 한 장',
+  'entities.readables.torn_ledger_page.title': '찢어진 장부',
   'entities.readables.torn_ledger_page.pages.0':
     '뿌리굴, 쉬게 함으로 기재. 묵정밭, 쉬게 함으로 기재. 모스뱅크의 호수는 우리가 기재하든 말든 알아서 쉰다. 장부가 원하는 대로 서명하고 날짜를 적었다.',
   'entities.readables.torn_ledger_page.pages.1':

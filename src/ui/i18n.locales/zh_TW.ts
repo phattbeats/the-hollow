@@ -2776,7 +2776,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
     '大門外是一片開闊之地，道路以西的閒田莊看起來很適合安家。',
   'entities.npcs.verger_zebediah.name': '司事澤比迪亞',
   'entities.npcs.verger_zebediah.title': '根穴守衛',
-  'entities.readables.torn_ledger_page.title': '一頁撕破的登記簿',
+  'entities.readables.torn_ledger_page.title': '撕破的登記簿',
   'entities.readables.torn_ledger_page.pages.0':
     '根穴，記為休養。閒田莊，記為休養。莫斯岸的那片湖，無論我們記與不記，它自顧自地歇著。按登記簿的規矩，簽了名，注了日期。',
   'entities.readables.torn_ledger_page.pages.1':

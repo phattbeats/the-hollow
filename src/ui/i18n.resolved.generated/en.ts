@@ -7106,7 +7106,7 @@ export const en: EnTranslations = {
     },
     "readables": {
       "torn_ledger_page": {
-        "title": "A Torn Ledger Page",
+        "title": "A Torn Ledger",
         "pages": {
           "0": "Root Hollow, entered to rest. Fallow Acres, entered to rest. The lake at Mossbank, which rests whether we enter it or not. Signed and dated, as the register wants.",
           "1": "Tally of the season so far: three seedlings up through the road stones, which is not on any calendar of mine. I have stopped scratching them out. They come back faster than the ink dries, and the ink was not cheap.",

@@ -9,7 +9,7 @@ import type { ReadableProp, ReadableSupport } from '../src/sim/types';
 // support mesh plus a paper group that sits above the ground, and that the tree
 // support tilts the paper upright (leaning) while the flat supports do not.
 
-const PROPS: ReadableProp[] = ['page', 'journal'];
+const PROPS: ReadableProp[] = ['page', 'journal', 'ledger'];
 const SUPPORTS: ReadableSupport[] = ['stone', 'table', 'chest', 'tree'];
 
 describe('buildReadable (PHAA-552 support variety)', () => {

@@ -2935,7 +2935,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
     'Врата ведут на открытую местность. Перелоги, к западу от дороги, выглядят пригодными для застройки.',
   'entities.npcs.verger_zebediah.name': 'Пономарь Зеведей',
   'entities.npcs.verger_zebediah.title': 'Страж Корневой Лощины',
-  'entities.readables.torn_ledger_page.title': 'Вырванная страница журнала',
+  'entities.readables.torn_ledger_page.title': 'Порванный гроссбух',
   'entities.readables.torn_ledger_page.pages.0':
     'Корневая Лощина, помечена на отдых. Перелоги, помечены на отдых. Озеро у Мшистого Берега, что отдыхает, впишем мы его или нет. Подписано и датировано, как того требует журнал.',
   'entities.readables.torn_ledger_page.pages.1':

@@ -32,11 +32,12 @@ export const READABLES: ReadableDef[] = [
     zoneId: 'the_hollow_reaches',
     pos: { x: 6, z: -262 },
     facing: 2.4,
-    // A single sheet the warden tore loose and dropped, not a bound book.
-    prop: 'page',
-    // Dropped on a fieldstone in the grass, the look the board signed off on.
+    // A bound account ledger, its cover torn back off one corner with loose
+    // leaves worked free (PHAA-552 board note: "need an actual torn ledger").
+    prop: 'ledger',
+    // Abandoned on a fieldstone in the grass where the warden set it down.
     support: 'stone',
-    title: 'A Torn Ledger Page',
+    title: 'A Torn Ledger',
     pages: [
       'Root Hollow, entered to rest. Fallow Acres, entered to rest. The lake at Mossbank, which rests whether we enter it or not. Signed and dated, as the register wants.',
       'Tally of the season so far: three seedlings up through the road stones, which is not on any calendar of mine. I have stopped scratching them out. They come back faster than the ink dries, and the ink was not cheap.',

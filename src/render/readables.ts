@@ -13,9 +13,11 @@ import { surfaceMat } from './gfx';
 //
 // PHAA-552 follow-up (board note): the first pass drew every readable as an open
 // tome on a tall stone lectern, which read as a monument on a pedestal rather
-// than something "lying around", and made a torn LEDGER PAGE look like a bound
-// book. So a readable is a loose object: a single curled `page` (a dropped
-// sheet) or a small open `journal` (a field notebook).
+// than something "lying around". So a readable is a loose object: a single
+// curled `page` (a dropped sheet), a small open `journal` (a field notebook), or
+// a bound `ledger` (a thick account book, its cover torn back off one corner and
+// a couple of loose leaves jutting out; the "actual torn ledger" the board asked
+// for). None sits on a plinth: each rests low on its support.
 //
 // PHAA-552 second follow-up (board asked for variety: "we need other variations,
 // like it up against a tree, or on a chest, or a table, that way we can put them
@@ -32,6 +34,9 @@ import { surfaceMat } from './gfx';
 const PAGE_COLOR = 0xece0c4; // aged cream paper
 const PAGE_EMISSIVE = 0xe8dcae; // the faint "come read me" glow on the paper
 const COVER_COLOR = 0x7a5a34; // worn tan field-notebook board, not a grand tome
+const LEDGER_COVER = 0x4a3324; // dark worn leather ledger board (reads heavier than the notebook)
+const LEDGER_SPINE = 0x342115; // shadowed bound spine edge of the ledger
+const LEDGER_EDGE = 0xcabb92; // grimy fore-edge of the ledger's stacked page block
 const PEBBLE_COLOR = 0x5b5348; // dark weight-stone on the loose page
 const STONE_COLOR = 0x7f7d68; // weathered, faintly mossy fieldstone
 const WOOD_COLOR = 0x6b4f31; // rough field-carpentry timber (table, chest body)
@@ -130,8 +135,86 @@ function buildJournalBook(): THREE.Group {
   return open;
 }
 
+// A bound, thick account ledger lying closed on its support, its front cover
+// torn back off the head corner so a wedge of the aged page block shows through
+// (the read cue glows there), with a couple of loose leaves that have worked
+// free jutting out past the fore-edge. Heavier and darker than the field
+// notebook: this reads as an actual ledger someone abandoned, not a keepsake.
+function buildLedgerBook(): THREE.Group {
+  const book = new THREE.Group();
+  book.rotation.y = 0.34; // dropped a little off-square
+
+  const coverMat = surfaceMat({ color: LEDGER_COVER, roughness: 0.82 });
+  const spineMat = surfaceMat({ color: LEDGER_SPINE, roughness: 0.85, flatShading: true });
+  const edgeMat = surfaceMat({ color: LEDGER_EDGE, roughness: 0.92, flatShading: true });
+  const pageMat = paperMat();
+
+  const W = 0.58; // spine-to-fore-edge width
+  const D = 0.8; // head-to-tail height (a tall register, not a square notebook)
+  const coverT = 0.035;
+  const blockT = 0.13; // a fat stack of pages
+
+  // Bottom cover board.
+  const bottom = new THREE.Mesh(new THREE.BoxGeometry(W, coverT, D), coverMat);
+  bottom.position.y = coverT / 2;
+  bottom.castShadow = true;
+  bottom.receiveShadow = true;
+  book.add(bottom);
+
+  // The stacked page block (seen as grimy fore-edges on the sides).
+  const block = new THREE.Mesh(new THREE.BoxGeometry(W - 0.05, blockT, D - 0.05), edgeMat);
+  block.position.y = coverT + blockT / 2;
+  block.castShadow = true;
+  book.add(block);
+
+  // The clean top leaf of the block, faintly glowing: this is what shows through
+  // the torn-back corner as the "come read me" cue.
+  const topLeaf = new THREE.Mesh(new THREE.BoxGeometry(W - 0.06, 0.012, D - 0.06), pageMat);
+  topLeaf.position.y = coverT + blockT + 0.006;
+  book.add(topLeaf);
+
+  // Front cover: shrunk toward the tail and the spine so the head/fore-edge
+  // corner of the page block is left bare, reading as a cover torn back.
+  const topW = W - 0.14;
+  const topD = D - 0.2;
+  const top = new THREE.Mesh(new THREE.BoxGeometry(topW, coverT, topD), coverMat);
+  top.position.set(-0.07, coverT + blockT + coverT / 2 + 0.012, -0.1);
+  top.castShadow = true;
+  top.receiveShadow = true;
+  book.add(top);
+
+  // The torn flap: a broad ragged wedge of cover half-peeled off that bare
+  // corner, lifted at a shallow angle so it reads as curled-back board, not a
+  // blade standing on end.
+  const flap = new THREE.Mesh(new THREE.BoxGeometry(0.26, coverT, 0.28), coverMat);
+  flap.position.set(0.14, coverT + blockT + 0.05, 0.22);
+  flap.rotation.set(-0.45, 0.32, 0.1);
+  flap.castShadow = true;
+  book.add(flap);
+
+  // The bound spine down the -X edge (over cover boards and block).
+  const spine = new THREE.Mesh(new THREE.BoxGeometry(0.05, 2 * coverT + blockT, D), spineMat);
+  spine.position.set(-W / 2 + 0.005, coverT + blockT / 2, 0);
+  spine.castShadow = true;
+  book.add(spine);
+
+  // A couple of loose leaves worked free of the block, jutting out past the
+  // fore-edge at slight fan angles.
+  for (const [i, sz] of [0.16, -0.14].entries()) {
+    const leaf = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.01, 0.42), pageMat);
+    leaf.position.set(W / 2 - 0.02, coverT + blockT * (0.4 + i * 0.35), sz);
+    leaf.rotation.set(0, 0.2 - i * 0.35, 0.04);
+    leaf.castShadow = true;
+    book.add(leaf);
+  }
+
+  return book;
+}
+
 function buildPaper(prop: ReadableProp, leaning = false): THREE.Group {
-  return prop === 'journal' ? buildJournalBook() : buildPageSheet(leaning);
+  if (prop === 'journal') return buildJournalBook();
+  if (prop === 'ledger') return buildLedgerBook();
+  return buildPageSheet(leaning);
 }
 
 // ----- the supports ---------------------------------------------------------

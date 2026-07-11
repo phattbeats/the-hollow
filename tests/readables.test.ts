@@ -21,13 +21,18 @@ describe('READABLES content', () => {
 
   it('declares a known loose-object prop kind (PHAA-552 follow-up)', () => {
     // The board rejected the "book on a pedestal" look: a readable must render as
-    // a loose item (a single page or an open field notebook), so `prop` gates the
-    // render in src/render/readables.ts and only these two kinds are drawn.
+    // a loose item (a dropped page, an open field notebook, or a bound but
+    // torn-back ledger), so `prop` gates the render in src/render/readables.ts
+    // and only these kinds are drawn.
     for (const r of READABLES) {
-      expect(['page', 'journal'], `readable ${r.id} has unknown prop ${r.prop}`).toContain(r.prop);
+      expect(
+        ['page', 'journal', 'ledger'],
+        `readable ${r.id} has unknown prop ${r.prop}`,
+      ).toContain(r.prop);
     }
-    // A torn ledger page must be the loose sheet, not a bound book.
-    expect(READABLES_BY_ID.torn_ledger_page.prop).toBe('page');
+    // The torn ledger renders as an actual bound-but-torn ledger (PHAA-552 board
+    // follow-up "need an actual torn ledger"), not a loose sheet.
+    expect(READABLES_BY_ID.torn_ledger_page.prop).toBe('ledger');
   });
 
   it('declares a known support kind when one is set (PHAA-552 variety follow-up)', () => {

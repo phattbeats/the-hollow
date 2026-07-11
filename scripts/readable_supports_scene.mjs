@@ -8,8 +8,13 @@
 import * as THREE from 'three';
 import { buildReadable } from '../src/render/readables.ts';
 
-const SUPPORTS = ['stone', 'table', 'chest', 'tree'];
-const prop = location.hash.replace('#', '') === 'journal' ? 'journal' : 'page';
+const hash = location.hash.replace('#', '');
+const prop = hash === 'journal' || hash === 'ledger' ? hash : 'page';
+// The `ledger` is a bound account book, so it only sits on the flat supports (a
+// heavy book does not lean upright against a tree, see the authoring note in
+// src/sim/types.ts); page/journal exercise all four.
+const SUPPORTS =
+  prop === 'ledger' ? ['stone', 'table', 'chest'] : ['stone', 'table', 'chest', 'tree'];
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x9fb9c9); // soft overcast Reaches sky

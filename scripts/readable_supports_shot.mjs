@@ -41,6 +41,7 @@ try {
   for (const [hash, file] of [
     ['page', '10_supports_page.png'],
     ['journal', '11_supports_journal.png'],
+    ['ledger', '12_supports_ledger.png'],
   ]) {
     const page = await browser.newPage();
     const errors = [];

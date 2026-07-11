@@ -2901,7 +2901,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     '門を抜けると、開けた大地が広がっています。道の西側にある休閑地は、家を建てるのに良さそうです。',
   'entities.npcs.verger_zebediah.name': '堂守のゼベダイア',
   'entities.npcs.verger_zebediah.title': '根の空洞の衛士',
-  'entities.readables.torn_ledger_page.title': '破れた台帳の一葉',
+  'entities.readables.torn_ledger_page.title': '破れた台帳',
   'entities.readables.torn_ledger_page.pages.0':
     '根の空洞、休ませると記帳。休閑地、休ませると記帳。モスバンクの湖、こちらが記そうと記すまいと、勝手に休んでおる。台帳の求めるまま、署名し日付を入れた。',
   'entities.readables.torn_ledger_page.pages.1':

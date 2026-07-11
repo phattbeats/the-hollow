@@ -1192,10 +1192,12 @@ export interface GatherNodeDef {
 // Which physical object it draws as (PHAA-552 follow-up): the board asked for
 // "random journals or books you find lying around", so a readable is a loose
 // item resting on the ground, not a tome on a pedestal. `page` is a single loose
-// sheet (a torn ledger page, a dropped note); `journal` is a small open field
-// notebook. Both lie on a low natural fieldstone so they clear the grass ring
-// without reading as a monument. Render: src/render/readables.ts.
-export type ReadableProp = 'page' | 'journal';
+// sheet (a dropped note); `journal` is a small open field notebook; `ledger` is
+// a bound, thick account book with a torn-back cover and loose leaves jutting
+// out (the "actual torn ledger" the board asked for). All three sit low on their
+// support so they clear the grass ring without reading as a monument. Render:
+// src/render/readables.ts.
+export type ReadableProp = 'page' | 'journal' | 'ledger';
 
 // What the loose page/journal rests on or against (PHAA-552 board follow-up:
 // "we need other variations, like it up against a tree, or on a chest, or a
