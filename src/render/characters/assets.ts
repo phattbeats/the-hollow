@@ -14,6 +14,11 @@ import { loadGltf, loadTexture } from '../assets/loader';
 import { registerPreload } from '../assets/preload';
 import { addRimGlow, GFX } from '../gfx';
 import {
+  CHIBI_VARIANT_TINT_STRENGTH,
+  chibiMaterialTint,
+  chibiSkinCount,
+} from './chibi_skin_variants';
+import {
   type AttachDef,
   characterPreloadUrls,
   itemWeaponModelUrl,
@@ -616,8 +621,9 @@ export function tintedMaterial(
   skinTex: THREE.Texture | null = null,
   emisTex: THREE.Texture | null = null,
   role: MaterialRole = 'body',
+  variantTint: number | null = null,
 ): THREE.Material {
-  const key = `${src.uuid}|${tint ?? 'n'}|${tint === null ? 0 : strength}|${GFX.standardMaterials ? 's' : 'l'}|${skinTex ? skinTex.uuid : 'n'}|${emisTex ? emisTex.uuid : 'n'}|${role}`;
+  const key = `${src.uuid}|${tint ?? 'n'}|${tint === null ? 0 : strength}|${GFX.standardMaterials ? 's' : 'l'}|${skinTex ? skinTex.uuid : 'n'}|${emisTex ? emisTex.uuid : 'n'}|${role}|${variantTint ?? 'n'}`;
   const cached = matCache.get(key);
   if (cached) return cached;
 
@@ -645,6 +651,12 @@ export function tintedMaterial(
     // hand-painted textures muddy
     mat.color.lerp(tintScratch.set(tint), strength);
   }
+  if (variantTint !== null) {
+    // per-material chibi skin variant (hair/outfit accent color, see
+    // chibi_skin_variants.ts): a separate, stronger pull layered on top of
+    // any class-level tint above.
+    mat.color.lerp(tintScratch.set(variantTint), CHIBI_VARIANT_TINT_STRENGTH);
+  }
   if (skinTex) mat.map = skinTex; // alternate body atlas, same UVs as the default
   // Emissive glow map (mech epics): standard tier only - Lambert/Basic don't
   // glow, and adding a map where none existed needs a shader recompile.
@@ -667,16 +679,23 @@ function tintFor(def: VisualDef, entityColor: number): number | null {
 }
 
 /** Swap every mesh material in an assembled clone for the shared tinted
- *  (and tier-appropriate) variant. Returns nothing — mutates the clone. */
+ *  (and tier-appropriate) variant. Returns nothing: mutates the clone.
+ *  `visualKey`/`skinIndex` are optional: pass them to also layer the chibi
+ *  per-material skin-variant tint (chibi_skin_variants.ts) for keys that
+ *  have one; every other caller (mobs, NPCs, forms) omits them and gets the
+ *  same behavior as before. */
 export function applyMaterials(
   root: THREE.Object3D,
   def: VisualDef,
   entityColor: number,
   skinTex: THREE.Texture | null = null,
   emisTex: THREE.Texture | null = null,
+  visualKey: string | null = null,
+  skinIndex = 0,
 ): void {
   const tint = tintFor(def, entityColor);
   const strength = def.tintStrength ?? DEFAULT_TINT_STRENGTH;
+  const hasChibiVariants = visualKey !== null && chibiSkinCount(visualKey) > 0;
   root.traverse((o) => {
     const mesh = o as THREE.Mesh;
     if (!mesh.isMesh) return;
@@ -685,12 +704,24 @@ export function applyMaterials(
     // skin/emissive override only touches the character's own atlas meshes, not weapons
     const sk = skinTex && mesh.userData.bodyMesh ? skinTex : null;
     const em = emisTex && mesh.userData.bodyMesh ? emisTex : null;
+    const variantTint = (m: THREE.Material): number | null =>
+      hasChibiVariants && role === 'body'
+        ? chibiMaterialTint(visualKey as string, skinIndex, m.name)
+        : null;
     if (Array.isArray(mesh.material)) {
       mesh.material = mesh.material.map((m) =>
-        tintedMaterial(m, materialTint, strength, sk, em, role),
+        tintedMaterial(m, materialTint, strength, sk, em, role, variantTint(m)),
       );
     } else {
-      mesh.material = tintedMaterial(mesh.material, materialTint, strength, sk, em, role);
+      mesh.material = tintedMaterial(
+        mesh.material,
+        materialTint,
+        strength,
+        sk,
+        em,
+        role,
+        variantTint(mesh.material),
+      );
     }
   });
 }

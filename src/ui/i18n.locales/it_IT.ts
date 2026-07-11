@@ -4561,6 +4561,18 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': 'Pagina di Diario Strappata',
   'entities.items.shrine_diary_page.flavorText':
     "...ho contato quaranta giorni a lume di candela prima di perdere il filo. Il buio quaggiù non Lo dimentica, anche se Lui ha dimenticato questo luogo. Se l'airone vola basso, di' al Sagrestano che lo stoppino brucia ancora...",
+  'entities.items.keeper_coal.name': 'Un Carbone Mai Raffreddato',
+  'entities.items.worn_prayer_token.name': 'Gettone di Preghiera Consumato',
+  'entities.items.worn_prayer_token.flavorText':
+    '...liscio su una faccia per un pollice che non è il mio, che ha scavato lo stesso solco poco profondo in altri cento come questo prima di questo, o così vorrebbe farti credere il mucchio quaggiù. un solo pollice non consuma cento gettoni. molti pollici consumano però un solo solco...',
+  'entities.items.tally_shard.name': 'Scheggia con Tacche di Conteggio',
+  'entities.items.tally_shard.flavorText':
+    "...tacche a gruppi di cinque, incise a fondo, sbarrate ogni volta che il conto tornava. centinaia di cinque prima che le sbarrature si fermino, e l'ultima fila non fu mai finita...",
+  'entities.items.linen_pouch.name': 'Sacca di Lino',
+  'entities.items.travelers_knapsack.name': 'Zaino del Viandante',
+  'entities.items.wolfhide_satchel.name': 'Bisaccia in Pelle di Lupo',
+  'entities.items.gravewoven_bag.name': 'Sacca Tessuta della Tomba',
+  'entities.items.mistcallers_duffel.name': 'Sacca da Marinaio di Mistcaller',
   'entities.mobs.acolyte_tessa.name': 'Accolita Tessa',
   'entities.mobs.deacon_varric.name': 'Diacono Varric',
   'entities.mobs.reliquary_bonewalker.name': 'Camminaossa Risorto',
@@ -4568,6 +4580,11 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_gravecall_acolyte.name': 'Accolito del Richiamo Sepolcrale',
   'entities.mobs.reliquary_ledger_wraith.name': 'Spettro del Registro',
   'entities.mobs.reliquary_saintless_effigy.name': 'Effigie Senza Santo',
+  'entities.items.heartwood_splinter.name': 'Scheggia di Durame',
+  'entities.items.heartwood_splinter.flavorText':
+    "Calda al tatto, molto tempo dopo che l'albero da cui proviene ha smesso di muoversi.",
+  'entities.items.bloomcrown_pauldrons.name': 'Spallacci della Corona in Fiore',
+  'entities.items.verdantguard_mantle.name': 'Manto del Guardiano Verdeggiante',
   'entities.mobs.palefeeder.name': 'Divoratore Pallido',
   'entities.mobs.rootmaw.name': 'Fauce di Radice',
   'entities.mobs.the_witness_root.name': 'La Radice Testimone',

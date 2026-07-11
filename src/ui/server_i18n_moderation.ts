@@ -3,6 +3,7 @@ type Messages = Record<string, string>;
 const en: Messages = {
   'moderation.noTarget': 'Select a player to moderate first.',
   'moderation.invalidTarget': "You can't moderate that player.",
+  'moderation.noPermission': "You don't have permission to do that.",
   'moderation.kicked': 'Kicked {name}.',
   'moderation.killConfirm': 'Killed {name}.',
   'moderation.renameConfirm': 'Required {name} to rename.',
@@ -24,6 +25,7 @@ const en: Messages = {
 const es: Messages = {
   'moderation.noTarget': 'Selecciona primero a un jugador para moderar.',
   'moderation.invalidTarget': 'No puedes moderar a ese jugador.',
+  'moderation.noPermission': 'No tienes permiso para hacer eso.',
   'moderation.kicked': 'Has expulsado a {name}.',
   'moderation.killConfirm': 'Has matado a {name}.',
   'moderation.renameConfirm': 'Has obligado a {name} a renombrarse.',
@@ -45,6 +47,7 @@ const es: Messages = {
 const fr: Messages = {
   'moderation.noTarget': "Sélectionnez d'abord un joueur à modérer.",
   'moderation.invalidTarget': 'Vous ne pouvez pas modérer ce joueur.',
+  'moderation.noPermission': "Vous n'avez pas la permission de faire cela.",
   'moderation.kicked': '{name} a été expulsé.',
   'moderation.killConfirm': '{name} a été tué.',
   'moderation.renameConfirm': '{name} doit se renommer.',
@@ -67,6 +70,7 @@ const fr: Messages = {
 const it: Messages = {
   'moderation.noTarget': 'Seleziona prima un giocatore da moderare.',
   'moderation.invalidTarget': 'Non puoi moderare quel giocatore.',
+  'moderation.noPermission': 'Non hai il permesso di farlo.',
   'moderation.kicked': '{name} è stato espulso.',
   'moderation.killConfirm': '{name} è stato ucciso.',
   'moderation.renameConfirm': '{name} deve rinominarsi.',
@@ -89,6 +93,7 @@ const it: Messages = {
 const de: Messages = {
   'moderation.noTarget': 'Wählt zuerst einen Spieler zum Moderieren aus.',
   'moderation.invalidTarget': 'Diesen Spieler könnt ihr nicht moderieren.',
+  'moderation.noPermission': 'Dazu habt ihr keine Berechtigung.',
   'moderation.kicked': '{name} wurde entfernt.',
   'moderation.killConfirm': '{name} wurde getötet.',
   'moderation.renameConfirm': '{name} muss sich umbenennen.',
@@ -111,6 +116,7 @@ const de: Messages = {
 const zhCN: Messages = {
   'moderation.noTarget': '请先选择要管理的玩家。',
   'moderation.invalidTarget': '你不能管理该玩家。',
+  'moderation.noPermission': '你没有权限执行该操作。',
   'moderation.kicked': '已踢出 {name}。',
   'moderation.killConfirm': '已击杀 {name}。',
   'moderation.renameConfirm': '已要求 {name} 改名。',
@@ -132,6 +138,7 @@ const zhCN: Messages = {
 const zhTW: Messages = {
   'moderation.noTarget': '請先選擇要管理的玩家。',
   'moderation.invalidTarget': '你不能管理該玩家。',
+  'moderation.noPermission': '你沒有權限執行該操作。',
   'moderation.kicked': '已踢出 {name}。',
   'moderation.killConfirm': '已擊殺 {name}。',
   'moderation.renameConfirm': '已要求 {name} 改名。',
@@ -153,6 +160,7 @@ const zhTW: Messages = {
 const ko: Messages = {
   'moderation.noTarget': '먼저 관리할 플레이어를 선택하십시오.',
   'moderation.invalidTarget': '해당 플레이어를 관리할 수 없습니다.',
+  'moderation.noPermission': '그렇게 할 권한이 없습니다.',
   'moderation.kicked': '{name}님을 추방했습니다.',
   'moderation.killConfirm': '{name}님을 처치했습니다.',
   'moderation.renameConfirm': '{name}님에게 이름 변경을 요구했습니다.',
@@ -174,6 +182,7 @@ const ko: Messages = {
 const ja: Messages = {
   'moderation.noTarget': '先にモデレートするプレイヤーを選択してください。',
   'moderation.invalidTarget': 'そのプレイヤーをモデレートできません。',
+  'moderation.noPermission': 'それを行う権限がありません。',
   'moderation.kicked': '{name} をキックしました。',
   'moderation.killConfirm': '{name} を倒しました。',
   'moderation.renameConfirm': '{name} に改名を要求しました。',
@@ -195,6 +204,7 @@ const ja: Messages = {
 const pt: Messages = {
   'moderation.noTarget': 'Selecione primeiro um jogador para moderar.',
   'moderation.invalidTarget': 'Você não pode moderar esse jogador.',
+  'moderation.noPermission': 'Você não tem permissão para fazer isso.',
   'moderation.kicked': '{name} foi expulso.',
   'moderation.killConfirm': '{name} foi morto.',
   'moderation.renameConfirm': '{name} deve renomear-se.',
@@ -217,6 +227,7 @@ const pt: Messages = {
 const ru: Messages = {
   'moderation.noTarget': 'Сначала выберите игрока для модерации.',
   'moderation.invalidTarget': 'Вы не можете модерировать этого игрока.',
+  'moderation.noPermission': 'У вас нет прав на это действие.',
   'moderation.kicked': '{name} исключён.',
   'moderation.killConfirm': '{name} убит.',
   'moderation.renameConfirm': '{name} должен сменить имя.',
@@ -238,6 +249,7 @@ const ru: Messages = {
 const da: Messages = {
   'moderation.noTarget': 'Vælg først en spiller, der skal modereres.',
   'moderation.invalidTarget': 'Du kan ikke moderere denne spiller.',
+  'moderation.noPermission': 'Du har ikke tilladelse til at gøre det.',
   'moderation.kicked': '{name} blev smidt ud.',
   'moderation.killConfirm': '{name} blev dræbt.',
   'moderation.renameConfirm': '{name} skal skifte navn.',
@@ -259,6 +271,7 @@ const da: Messages = {
 const id: Messages = {
   'moderation.noTarget': 'Pilih pemain yang akan dimoderasi terlebih dahulu.',
   'moderation.invalidTarget': 'Anda tidak dapat memoderasi pemain itu.',
+  'moderation.noPermission': 'Anda tidak memiliki izin untuk melakukan itu.',
   'moderation.kicked': '{name} telah dikeluarkan.',
   'moderation.killConfirm': '{name} telah dibunuh.',
   'moderation.renameConfirm': '{name} diwajibkan mengganti nama.',
@@ -280,6 +293,7 @@ const id: Messages = {
 const nl: Messages = {
   'moderation.noTarget': 'Selecteer eerst een speler om te modereren.',
   'moderation.invalidTarget': 'Je kunt die speler niet modereren.',
+  'moderation.noPermission': 'Je hebt geen toestemming om dat te doen.',
   'moderation.kicked': '{name} is verwijderd.',
   'moderation.killConfirm': '{name} is gedood.',
   'moderation.renameConfirm': '{name} moet de naam wijzigen.',
@@ -302,6 +316,7 @@ const nl: Messages = {
 const pl: Messages = {
   'moderation.noTarget': 'Najpierw wybierz gracza do moderacji.',
   'moderation.invalidTarget': 'Nie możesz moderować tego gracza.',
+  'moderation.noPermission': 'Nie masz uprawnień, aby to zrobić.',
   'moderation.kicked': 'Gracz {name} został wyrzucony.',
   'moderation.killConfirm': 'Gracz {name} został zabity.',
   'moderation.renameConfirm': 'Gracz {name} musi zmienić nazwę.',
@@ -323,6 +338,7 @@ const pl: Messages = {
 const sv: Messages = {
   'moderation.noTarget': 'Välj först en spelare att moderera.',
   'moderation.invalidTarget': 'Du kan inte moderera den spelaren.',
+  'moderation.noPermission': 'Du har inte behörighet att göra det.',
   'moderation.kicked': '{name} har sparkats ut.',
   'moderation.killConfirm': '{name} har dödats.',
   'moderation.renameConfirm': '{name} måste byta namn.',
@@ -344,6 +360,7 @@ const sv: Messages = {
 const tr: Messages = {
   'moderation.noTarget': 'Önce denetlenecek bir oyuncu seçin.',
   'moderation.invalidTarget': 'Bu oyuncuyu denetleyemezsiniz.',
+  'moderation.noPermission': 'Bunu yapma izniniz yok.',
   'moderation.kicked': '{name} oyundan atıldı.',
   'moderation.killConfirm': '{name} öldürüldü.',
   'moderation.renameConfirm': '{name} adını değiştirmek zorunda.',
@@ -365,6 +382,7 @@ const tr: Messages = {
 const vi: Messages = {
   'moderation.noTarget': 'Hãy chọn người chơi cần kiểm duyệt trước.',
   'moderation.invalidTarget': 'Bạn không thể kiểm duyệt người chơi đó.',
+  'moderation.noPermission': 'Bạn không có quyền làm điều đó.',
   'moderation.kicked': '{name} đã bị đuổi.',
   'moderation.killConfirm': '{name} đã bị hạ.',
   'moderation.renameConfirm': '{name} phải đổi tên.',
