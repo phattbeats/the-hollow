@@ -4,6 +4,7 @@
 // merges those records into the flat tables the rest of the engine consumes,
 // and owns the world-layout constants.
 
+import { BOARBALL_MOBS } from './content/boarball';
 import { BASE_ITEMS, FISHING_RARE_ID, FISHING_TABLES } from './content/items';
 import type {
   CampDef,
@@ -18,6 +19,7 @@ import type {
   PlayerClass,
   QuestDef,
   QuestState,
+  ReadableDef,
   ZoneDef,
   ZonePropsDef,
 } from './types';
@@ -53,6 +55,10 @@ import {
   HOLLOW_ZONE_ROADS,
   HOLLOW_ZONE_ZONE,
 } from './content/hollow_zone';
+import {
+  READ_RADIUS as READ_RADIUS_CONTENT,
+  READABLES as READABLES_CONTENT,
+} from './content/readables';
 import {
   TEMPLE_CAMPS,
   TEMPLE_DUNGEON_DEFS,
@@ -177,6 +183,7 @@ export const MOBS: Record<string, MobTemplate> = {
   ...TEMPLE_DUNGEON_MOBS,
   ...HOLLOW_MOBS,
   ...DELVE_MOBS,
+  ...BOARBALL_MOBS,
 };
 
 export const NPCS: Record<string, NpcDef> = {
@@ -232,6 +239,15 @@ export const GROUND_OBJECTS: GroundObjectDef[] = [
 ];
 
 export const GATHER_NODES: GatherNodeDef[] = [...GATHER_NODES_CONTENT];
+
+// World-placed readable books (PHAA-552). Static content; both the offline Sim
+// and the online ClientWorld expose them through IWorldReadables by reading this
+// same table, so no server snapshot or wire field is involved.
+export const READABLES: ReadableDef[] = [...READABLES_CONTENT];
+export const READABLES_BY_ID: Record<string, ReadableDef> = Object.fromEntries(
+  READABLES.map((r) => [r.id, r]),
+);
+export const READ_RADIUS = READ_RADIUS_CONTENT;
 
 export const ROADS: { x: number; z: number }[][] = [
   ...ZONE1_ROADS,

@@ -15,6 +15,7 @@ import { economy } from './economy';
 import { faq } from './faq';
 import { gear } from './gear';
 import { glossary } from './glossary';
+import { hollow } from './hollow';
 import { home } from './home';
 import { howToPlay } from './how_to_play';
 import { models } from './models';
@@ -39,6 +40,7 @@ const PAGES: Record<string, GuidePage> = {
   classes,
   bestiary,
   models,
+  hollow,
   world,
   gear,
   economy,

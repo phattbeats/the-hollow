@@ -825,6 +825,8 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/delves/runs.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/delves/lockpick_controller.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/market.ts'), 'utf8'),
+    // PHAA-495: the Ravenpost (in-game mail) module's error/log/loot emits.
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/mail/post_office.ts'), 'utf8'),
     // W2: the inventory/vendor command bodies (equip/use/discard + buy/sell/buyback).
     // The "Discarded"/"Equipped"/"Unequipped"/"You sit down to eat|drink"/"You quaff"/
     // "Sold ... for"/"Bought back ... for" emit literals are byte-identical after the
@@ -850,6 +852,26 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
     // the dedicated "Greenpaw hearth and /house helpLines" describe block.
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/housing.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/greenpaw_hearth.ts'), 'utf8'),
+    // PHAA-542: src/sim/interaction.ts (lootCorpse / harvestCorpse / pickUpObject / interact).
+    // Same gap PHAA-533 closed for homestead.ts: the W3 extraction of the corpse/object
+    // interact surface lands here, and it emits player-facing ctx.error(...) literals
+    // (loot permission + range + harvest guard + quest pickup) that the client re-localizes
+    // via the sim_i18n RULES array and simDICT. Without this entry the S3 guard cannot see
+    // a broken/missing matcher for any of these strings, identical to the previous blind spot.
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/interaction.ts'), 'utf8'),
+    // PHAA-491: the bags capacity module (equipBag/unequipBag + the shared
+    // "Your bags are full."/socket/swap/remove error literals). Its own emit
+    // literals are scanned here; the same literals reused by market.ts,
+    // quests/quest_commands.ts, interaction.ts, and social/trade.ts (the
+    // latter under socialSrc below) are already covered by the sim.bags.*
+    // RULES in sim_i18n.ts, whether or not those call sites are scanned.
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/bags.ts'), 'utf8'),
+    // PHAA-571: the bank vault core's error/notice literals (too-far, quest-item
+    // refusal, bank-full, expansion cap/afford, purchase confirmation).
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/bank.ts'), 'utf8'),
+    // PHAA-505: per-player node harvest command denials (dead gate, unknown
+    // node, range, respawn timer).
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/gathering.ts'), 'utf8'),
     socialSrc,
   ].join('\n');
   // Hardened S3: also scan the authoritative server's player-facing emits. The

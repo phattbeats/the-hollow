@@ -915,6 +915,18 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': 'Wydarta Strona z Dziennika',
   'entities.items.shrine_diary_page.flavorText':
     '...liczyłem czterdzieści dni przy świecy, zanim zgubiłem rachubę. Mrok tu, w dole, nie zapomina o Nim, choć On zapomniał o tym miejscu. Jeśli czapla zatoczy niski krąg, powiedz Zakrystianowi, że knot wciąż płonie...',
+  'entities.items.keeper_coal.name': 'Węgiel, Który Nigdy Nie Ostygł',
+  'entities.items.worn_prayer_token.name': 'Wytarty Żeton Modlitewny',
+  'entities.items.worn_prayer_token.flavorText':
+    '...gładki z jednej strony od kciuka, który nie jest mój, i który wytarł ten sam płytki rowek w stu innych takich jak ten, zanim trafił na ten, a przynajmniej w to chciałby, żebyś uwierzył ten stos tutaj na dole. jeden kciuk nie wytrze stu żetonów. wiele kciuków wytrze za to jeden rowek...',
+  'entities.items.tally_shard.name': 'Odłamek z Karbami',
+  'entities.items.tally_shard.flavorText':
+    '...karby piątkami, ryte głęboko, przekreślane za każdym razem, gdy rachunek się domykał. setki piątek, nim przekreślenia ustają, a ostatni rząd nigdy nie został dokończony...',
+  'entities.items.linen_pouch.name': 'Lniana Sakiewka',
+  'entities.items.travelers_knapsack.name': 'Plecak Wędrowca',
+  'entities.items.wolfhide_satchel.name': 'Torba z Wilczej Skóry',
+  'entities.items.gravewoven_bag.name': 'Torba Utkana z Grobu',
+  'entities.items.mistcallers_duffel.name': 'Worek Podróżny Mistcallera',
   'entities.items.footpad_jerkin.name': 'Kaftan rzezimieszka',
   'entities.items.forest_pink_armor_plate.name': 'Leśny róż',
   'entities.items.frayed_prayer_beads.name': 'Wystrzępione paciorki modlitewne',
@@ -1211,6 +1223,11 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.old_cragmaw.name': 'Stary Skalogryz',
   'entities.mobs.old_greyjaw.name': 'Stary Szaropaszczy',
   'entities.mobs.pale_choir_acolyte.name': 'Akolita Bladego Chóru',
+  'entities.items.heartwood_splinter.name': 'Drzazga Twardzieli',
+  'entities.items.heartwood_splinter.flavorText':
+    'Ciepła w dotyku, długo po tym, jak drzewo, z którego pochodzi, przestało się poruszać.',
+  'entities.items.bloomcrown_pauldrons.name': 'Naramienniki Kwietnej Korony',
+  'entities.items.verdantguard_mantle.name': 'Płaszcz Zielonego Strażnika',
   'entities.mobs.palefeeder.name': 'Bladożerca',
   'entities.mobs.pearlguard_sentinel.name': 'Perłostrażny Wartownik',
   'entities.mobs.raised_bonewalker.name': 'Wskrzeszony Kościochód',

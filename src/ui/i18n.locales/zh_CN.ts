@@ -16,6 +16,11 @@ import type { TranslationKey } from '../i18n.catalog';
 export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.spectate.banner': '正在观察 {name}',
   'hudChrome.loot.chestTitle': '宝箱',
+  'hudChrome.lootRollGroup.pending': '等待中...',
+  'hudChrome.lootRollGroup.need': '需求',
+  'hudChrome.lootRollGroup.greed': '贪婪',
+  'hudChrome.lootRollGroup.pass': '放弃',
+  'hudChrome.lootRollGroup.aria': '{item} 的团队掷骰状态',
   'hudChrome.spellbook.addToBarAria': '将{name}添加到动作条',
   'hudChrome.spellbook.removeFromBarAria': '从动作条移除{name}',
   'hudChrome.nameplate.mob': '[{level}] {name}',
@@ -1270,6 +1275,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'abilityUi.tooltip.offGlobalCooldown': '不触发公共冷却',
   'abilityUi.tooltip.friendlyTarget': '友方目标',
   'abilityUi.tooltip.enemyTarget': '敌方目标',
+  'abilityUi.tooltip.selfOnly': '仅对自己',
   'abilityUi.tooltip.damageRange': '{min} 到 {max}',
   'abilityUi.tooltip.finisherDamage': '{base} 加每个连击点 {perCombo}',
   'abilityUi.resources.mana': '法力',
@@ -2269,6 +2275,10 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.the_merchant.title': '世界市场守护者',
   'entities.npcs.the_merchant.greeting':
     '欢迎来到世界市场，{className}。从王国各地的冒险者手中购买，或出售你自己的货物。',
+  'entities.npcs.the_ravenpost.name': '渡鸦驿站',
+  'entities.npcs.the_ravenpost.title': '邮务守护者',
+  'entities.npcs.the_ravenpost.greeting':
+    '寄一封信吧，{className}，我的渡鸦会找到你的朋友，无论他们漂泊何方，随信附上的钱币和包裹也会安然相随，直到被认领。',
   'entities.npcs.marshal_redbrook.name': '雷德布鲁克元帅',
   'entities.npcs.marshal_redbrook.title': '城镇元帅',
   'entities.npcs.marshal_redbrook.greeting': '刀别离手，{className}。山谷已经不是从前的山谷了。',
@@ -2774,9 +2784,52 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
     '大门外是一片开阔之地，道路以西的闲田庄看起来很适合安家。',
   'entities.npcs.verger_zebediah.name': '司事泽比迪亚',
   'entities.npcs.verger_zebediah.title': '根穴守卫',
+  'entities.readables.torn_ledger_page.title': '撕破的登记簿',
+  'entities.readables.torn_ledger_page.pages.0':
+    '根穴，记为休养。闲田庄，记为休养。莫斯岸的那片湖，无论我们记与不记，它自顾自地歇着。按登记簿的规矩，签了名，注了日期。',
+  'entities.readables.torn_ledger_page.pages.1':
+    '本季至今的清点：路石缝里冒出三株幼苗，我的任何一本历书上都没有这一条。我已经不再划掉它们了。墨迹未干它们就长回来，而那墨水可不便宜。',
+  'entities.readables.torn_ledger_page.pages.2':
+    '给我之后接手此簿的人留一句。数野猪，数狼，数日子。别去数那片绿。它会数回来，而且不会停在你停下的地方。',
+  'entities.readables.keepers_marginalia.title': '守护者的旁批',
+  'entities.readables.keepers_marginalia.pages.0':
+    '夹在一本圣歌都磨没了的圣歌集页边留下的。那笔迹很快，就像一只边走边写的手那样快。',
+  'entities.readables.keepers_marginalia.pages.1':
+    '狼群从林线绕着闲田庄打转，永远是同一个圈，永远顺着日头转。绕得够久的东西，会摸清它所绕之物的形状。我如此。我想，这片土地也如此。',
+  'entities.readables.keepers_marginalia.pages.2':
+    '你若读到这里，说明你停下了脚步，那正是我这辈子唯一没学会的事。歇一会儿吧。外域还会在这儿。而这，恰恰就是它最麻烦的地方。',
   'entities.npcs.verger_zebediah.greeting':
     '司事泽比迪亚。我给外域记着一本历书，至少一直在努力记。根穴这一季本该休养，可野猪没读那张告示。留神脚下的浮土，还有，别碰我的登记簿。',
   'entities.npcs.sexton_faddick.name': '守墓人法迪克',
+  'entities.items.willow_sprig.name': '一段柳枝',
+  'entities.npcs.shade.name': '莎德',
+  'entities.npcs.shade.title': '一位旅人',
+  'entities.npcs.shade.greeting':
+    '哦，是你啊。想坐就坐吧，水又不会跑。今天吃过了吗？你该吃点东西。',
+  'entities.npcs.shade.introLines.0':
+    '你撞见我做杂活了。别在意这桶，不过是水而已。总有些东西需要浇上一点水。',
+  'entities.npcs.shade.introLines.1':
+    '我？没什么好说的。叫我莎德。我四处走走，哪里缺人手就搭把手。你看着累坏了。想的话，就坐一会儿吧。',
+  'entities.npcs.gate_bard.name': '吟游诗人哈尔登',
+  'entities.npcs.gate_bard.title': '门前的卖艺人',
+  'entities.npcs.gate_bard.greeting':
+    '一枚铜板换一首歌？不要？没关系，多数日子都是不要。我为这道门弹唱，可这门从没掏过一次腰包。',
+  'entities.npcs.goodwife_orla.name': '奥拉',
+  'entities.npcs.goodwife_orla.title': '曾属根穴',
+  'entities.npcs.goodwife_orla.greeting':
+    '你可以坐下。大多数人只是走过去。司事早就把我的名字从册子上划掉了，一个被划掉的名字，学会了安静，好让谁都不必想起它还在这儿。',
+  'entities.quests.q_have_you_eaten.title': '你吃过了吗？',
+  'entities.quests.q_have_you_eaten.text':
+    '门口有个吟游诗人，靠铜板过活，铜板来了才有饭吃，而铜板难得来。我这儿有一碗热的，还多出一份。替我给他送去，好吗？别告诉他这是可怜他。就说这是多出来的。',
+  'entities.quests.q_have_you_eaten.completion':
+    '你回来了。他吃了吗？很好。那就好。那你呢？……你没吃，我看得出来。那就坐下吧。要成为一个好人，不必伟大。伟大不是善良。吃吧。',
+  'entities.quests.q_have_you_eaten.objectives.0.label': '把热饭送给吟游诗人',
+  'entities.quests.q_someone_your_own_size.title': '找个和你一般大的',
+  'entities.quests.q_someone_your_own_size.text':
+    '根穴附近有个女人，这世道待她不公。她的名字被从册子上划掉了，人们对待一个被划掉的名字，就当它听不见。去陪她坐一会儿吧。你不必去修补什么。只要做一个和她一般大的人就好。',
+  'entities.quests.q_someone_your_own_size.completion':
+    '你留下来了。她不会说这有什么要紧，可它要紧，我向你保证它要紧。来，这个给你。一段柳枝，取自我很喜欢的一棵柳树。它什么用也没有。它只记得，在没人逼你的时候，你依然选择了善良。',
+  'entities.quests.q_someone_your_own_size.objectives.0.label': '陪奥拉坐了一会儿',
   'entities.npcs.sexton_faddick.title': '流浪的守护者',
   'entities.npcs.sexton_faddick.greeting':
     '法迪克。哪里还有神龛需要守墓人，我就在哪儿守。我从不在一处久留，只管看顾。狼群夜夜绕着闲田庄的羊群打转，绕得久了，便摸清了所绕之物的形状。最好让它一直只是群羊。',
@@ -2790,7 +2843,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_root_hollow_boars_ii.text':
     '我就说句本职上不该说的实话：五头，是我乐观了。底下的窝还在不断往外拱。再杀八头，我便能结清这一季，不必第三回去改记录。记录不喜被改。我也不喜。',
   'entities.quests.q_root_hollow_boars_ii.completion':
-    '结案。签字。归档。这一季总算能照原定的历程走了，毕竟又有人来看着这本历书。你帮了一个极小的会众一个大忙。我得澄清一句：这会众，就是我。',
+    '结案。签字。归档。这一季总算能照原定的历程走了，毕竟又有人来看着这本历书。你帮了一个极小的会众一个大忙。我得澄清一句：这会众，就是我。这本历书本身比这安排还要古老，装订出自一双我从未谋面的手，记着一个我不愿去加总的数目。曾经有人在此极为用心。我不过是尽力跟上罢了。',
   'entities.quests.q_root_hollow_boars_ii.objectives.0.label': '野猪已杀',
   'entities.quests.q_fallow_acres_wolves.title': '赶走田垄上的狼',
   'entities.quests.q_fallow_acres_wolves.text':
@@ -2919,7 +2972,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_what_burns.text':
     '通灵淡了，朋友……我干得跟骨头一样，频率就快断了。神龛下面有种球茎，烧得又慢又干净，余烬球茎，长在光照不到的地方，这洞穴自己跟自己开的玩笑……给我带五颗回来。留意那些苍白的家伙，它们冲着你的灯笼来，不是冲着你。大概吧。',
   'entities.quests.q_what_burns.completion':
-    '这才是上等的烟啊……你感觉到了吗？屋里越来越浓了。她随时都要探过身来了，我在频率上都能感觉到……的确如此。',
+    '这才是上等的烟啊……你感觉到了吗？屋里越来越浓了。他随时都要探过身来了，我在频率上都能感觉到……的确如此。',
   'entities.quests.q_what_burns.objectives.0.label': '已采集余烬球茎',
   'entities.quests.q_what_fills.title': '饱腹之物',
   'entities.quests.q_what_fills.text':
@@ -3057,6 +3110,13 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hud.options.npcVoices': 'NPC语音',
   'hud.options.voiceVolume': '语音音量',
   'entities.zones.eastbrook_vale.pois.8.label': '明木林地',
+  'boarball.queue.join': '你加入了野猪球队列。等待另外三名玩家…',
+  'boarball.queue.leave': '你离开了野猪球队列。',
+  'boarball.log.welcome': '欢迎来到野猪球！射门、传球，比分超越对方球队。',
+  'boarball.log.kickoff': '开球！',
+  'boarball.log.over': '比赛结束！正在返回世界…',
+  'boarball.error.tooFar': '你离球不够近。',
+  'boarball.error.noTeammate': '未选定队友目标。',
   'fiesta.augment.aug_apex_predator.desc': '+40%物理伤害，+15%暴击，并将造成伤害的12%转化为治疗。',
   'fiesta.augment.aug_apex_predator.name': '顶级掠食者',
   'fiesta.augment.aug_arcane_surge.desc': '+25%法术伤害和+10%暴击。把他们点燃。',
@@ -3414,6 +3474,10 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.bags.searchPlaceholder': '搜索物品',
   'hudChrome.bags.searchAria': '按名称搜索背包物品',
   'hudChrome.bags.noMatch': '没有符合筛选条件的物品。',
+  'hudChrome.bags.capacityAria': '背包已用槽位：{used}/{total}',
+  'hudChrome.bags.backpack': '背包',
+  'hudChrome.bags.socketEmpty': '空背包栏位',
+  'hudChrome.bags.unequipHint': '点击移除此背包',
   // Guide (/guide) localization.
   'guide.brand': 'World of ClaudeCraft',
   'guide.brandShort': 'ClaudeCraft',
@@ -3800,9 +3864,35 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
     '源自远古深渊、披着鳞甲、形似巨蛇的造物。它们罕见、骄傲，远比看上去更强大。',
   'guide.family.dragonkin.name': '龙类',
   'guide.family.elemental.desc': '由风暴与岩石化成的活物，被束缚于元素之力旺盛的荒野之地。',
+  'guide.hollowPage.intro':
+    '穿过神殿之门便是花瓶所在的空地：每位新英雄苏醒之处，也是你始终会回来的地方。这里是共享之地，整个大陆共用的一个据点，也是你初见的面孔、初次的任务，唯一真正需要的家。',
+  'guide.hollowPage.greeting':
+    '你回来了，那可真是件幸事……有几桩神圣的差事在等你呢，跟上次一个频道。过来一下……',
+  'guide.hollowPage.greeter': '格林保修士，于花瓶旁',
+  'guide.hollowPage.vaseHeading': '花瓶',
+  'guide.hollowPage.vaseBody':
+    '所有人都从花瓶开始：这个古老而有灵性的存在，正是幽谷得以建立的核心。它渴求些微小的供奉，燃一颗余烬球，或喂一份洞穴嫩肉，似乎都能有所察觉。花瓶下坡处，一处洞口通向地窟深处；两侧则留着地块，供你建造属于自己的家。',
+  'guide.hollowPage.figuresHeading': '谁在照看它',
+  'guide.hollowPage.figuresBody': '有两个人维系着花瓶的运转，你在最初的几分钟内便会与他们相遇。',
+  'guide.hollowPage.greenpawBody':
+    '花瓶唯一的照看者，也是最早派发差事的人。他自封头衔，也是第一个承认这一点的人，算是幽谷里最接近向导的存在。',
+  'guide.hollowPage.yarrowBody':
+    '第二职业的传授者：每个职业都能向她学习一门副业，她的位置正好与格林保隔瓶相望。',
+  'guide.hollowPage.questsHeading': '你最初的差事',
+  'guide.hollowPage.questsBody':
+    '格林保自己的任务链是你要做的第一件事：四桩短小的差事，教会你花瓶的节奏，然后送你踏入更广阔的幽谷。',
+  'guide.hollowPage.questBurnsBody': '花瓶焚烧以取光的洞穴产球茎，一次采集一把。',
+  'guide.hollowPage.questFillsBody': '能填饱另一种更安静饥饿的洞穴嫩肉，采集方式相同。',
+  'guide.hollowPage.questWavelengthBody': '引荐花瓶的第二职业，并教你亲手喂养它。',
+  'guide.hollowPage.questKeepLitBody': '把一次的恩惠变成一种固定的习惯，连续三次。',
+  'guide.hollowPage.housingHeading': '属于你自己的家',
+  'guide.hollowPage.housingBody': '{n}块宅地环绕着花瓶，等待被认领，装点成你在幽谷中私有的一角。',
+  'guide.hollowPage.shrineHeading': '地窟深处',
+  'guide.hollowPage.shrineBody':
+    '花瓶旁的一处洞口通向地窟深处，那是幽谷自身的副本地下城，也是每位新英雄组队面对的第一场真正考验。',
   'guide.worldPage.heading': '世界',
   'guide.worldPage.intro':
-    'World of ClaudeCraft 是一片连绵不绝、需你徒步穿越的大陆，三大区域由南向北依次铺展。这里没有快速旅行，因此旅途本身便是冒险的一部分。',
+    '穿过花瓶的神殿之门，你便置身幽谷腹地：新人踏出户外第一步的宁静之地。再往北还有三个区域，由南向北依次铺展；通往那里的道路尚未开启，但它们是真实存在、静候你的到来的。',
   'guide.worldPage.hub': '大本营',
   'guide.worldPage.hollowReachesBlurb':
     '紧邻神殿门外的平静之地，新人在Fallow Acres与Root Hollow一带与野狼、野猪交手磨练身手。',
@@ -3827,9 +3917,11 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
     '附近的队员会共享击杀和目标进度，因此组队做任务只会更快，绝不会更慢。你还可以与你的小队分享任务：用 /share 命令把它作为可点击的链接发到聊天中，任何符合条件的附近队员都能一键接取同一个任务。',
   'guide.questsPage.storyTitle': '一条主线贯穿始终',
   'guide.questsPage.storyBody':
-    '从你在东溪镇的第一批差事起，死者便有了异样。一个邪教正在暗中行动，线索向北贯穿每一个区域。循迹而行，揭开幕后黑手的真面目。',
+    '你最初的线索，是格林保修士自己那条短短的任务链，就在花瓶旁。往外则是幽谷腹地里那些安静的差事，再往外，还有一段更长的故事：一个邪教从山谷一路作乱到山巅，真实且已完成，只是新英雄眼下还走不到那条路。花瓶自己的任务见幽谷页面，其余的则列在下方，作为即将到来的内容。',
   'guide.questsPage.soloNote':
     '主线剧情一直到每个章节的高潮之前都可单人完成，而那场高潮是一座五人地下城。',
+  'guide.questsPage.sagaGateNote':
+    '这段传奇是真实、已完成的内容，正是道路重新北通之后开启的同一条线索。它并非新英雄如今的起点；起点是花瓶，在幽谷之中。',
   'guide.dungeonsPage.heading': '地下城与团队副本',
   'guide.dungeonsPage.intro':
     '当开放世界已不能满足你时，召集一支队伍，踏入副本：一份专为你的队伍生成的地下城私有副本。',
@@ -4425,6 +4517,17 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': '撕碎的日记页',
   'entities.items.shrine_diary_page.flavorText':
     '……我数着烛光过了四十天，后来便断了数。这底下的黑暗从未忘记祂，尽管祂已经忘了这个地方。若鹭鸟低飞掠过，告诉守灯人，烛芯还燃着……',
+  'entities.items.linen_pouch.name': '亚麻小袋',
+  'entities.items.travelers_knapsack.name': '旅行者背包',
+  'entities.items.wolfhide_satchel.name': '狼皮挎包',
+  'entities.items.gravewoven_bag.name': '墓织袋',
+  'entities.items.mistcallers_duffel.name': '唤雾者的行囊',
+  'entities.items.worn_prayer_token.name': '磨损的祷牌',
+  'entities.items.worn_prayer_token.flavorText':
+    '……一面被一根不是我的拇指磨得光滑，磨出的浅沟和这堆里另外上百枚一模一样，至少这堆东西是这么告诉我的。一根拇指磨不出一百枚令牌的痕迹。可一百根拇指，倒是能磨出同一道浅沟……',
+  'entities.items.tally_shard.name': '刻痕碎片',
+  'entities.items.tally_shard.flavorText':
+    '……以五为一组刻得极深，每数完一轮便划去一道。划去的五连一组，累计上百组，最后一行却始终没有划完……',
   'entities.mobs.acolyte_tessa.name': '侍僧泰莎',
   'entities.mobs.deacon_varric.name': '执事瓦里克',
   'entities.mobs.reliquary_bonewalker.name': '复生的骨行者',
@@ -4432,6 +4535,10 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_gravecall_acolyte.name': '唤墓侍僧',
   'entities.mobs.reliquary_ledger_wraith.name': '名册幽魂',
   'entities.mobs.reliquary_saintless_effigy.name': '无圣徒像',
+  'entities.items.heartwood_splinter.name': '心材碎片',
+  'entities.items.heartwood_splinter.flavorText': '触摸时依然温暖,尽管孕育它的树早已停止生长。',
+  'entities.items.bloomcrown_pauldrons.name': '繁花王冠护肩',
+  'entities.items.verdantguard_mantle.name': '常青守卫者披风',
   'entities.mobs.palefeeder.name': '苍白噬光者',
   'entities.mobs.rootmaw.name': '根颚兽',
   'entities.mobs.the_witness_root.name': '见证之根',
@@ -4540,6 +4647,17 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'delveUi.tracker.module': '第 {current} / {total} 区',
   'delveUi.tracker.objective': '目标',
   'delveUi.tracker.title': '探秘',
+  'sim.bags.full': '你的背包已满。',
+  'sim.bags.socketsFull': '你的所有背包栏位都已占用。',
+  'sim.bags.swapTooManyItems': '物品太多，无法换成那个背包。',
+  'sim.bags.removeTooManyItems': '物品太多，无法移除那个背包。',
+  'sim.bags.tradeSpace': '交易失败：背包空间不足。',
+  'sim.bank.cannotAfford': '你负担不起这次银行扩容。',
+  'sim.bank.expansionCapped': '你的银行无法再扩容了。',
+  'sim.bank.full': '你的银行已满。',
+  'sim.bank.noQuestItems': '你不能把任务物品存入银行。',
+  'sim.bank.purchased': '你购买了额外的银行槽位。',
+  'sim.bank.tooFar': '你离银行职员太远了。',
   'sim.delve.alreadyInDelve': '你已经身处一场探秘之中。',
   'sim.delve.bossChest':
     '首领倒下了。一只设有结界的圣物库宝箱在祭坛上升起，撬开它的锁来取得你的战利品。',
@@ -4595,6 +4713,21 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'sim.hearth.noItems1': '……伙计，你两手空空啊。带点能烧的或能填饱肚子的东西来，我们再唠。',
   'sim.hearth.noItems2': '身上啥也没有，就剩一片好心，是吧……好心可点不着炉子。',
   'sim.hearth.tooFar': '你得靠近绿掌修士才能喂他。',
+  'sim.homestead.alreadyOwn': '你已经拥有一处家园了。',
+  'sim.homestead.claimed': '这片土地归你了。家园认领成功。',
+  'sim.homestead.helpLine': '家园：/homestead，/homestead claim。',
+  'sim.homestead.outsideArea': '这里不属于家园用地。去路西边的 Fallow Acres 试试。',
+  'sim.homestead.questGate': '绿掌修士还没让你出发呢。先把他的差事做完。',
+  'sim.homestead.readoutMine': '你的家园坐落在 ({x}, {z})。',
+  'sim.homestead.readoutNoHomesteadHint':
+    '你还没有家园。站在空谷地里合适的位置，输入 /homestead claim。',
+  'sim.homestead.readoutNoHomesteadQuest': '你还没有家园。先完成绿掌修士的全部差事才能解锁。',
+  'sim.homestead.tooCloseGate': '离大门太近了。再往外挪一挪。',
+  'sim.homestead.tooCloseGraveyard': '离墓地太近了。',
+  'sim.homestead.tooCloseOther': '离别人的家园太近了。',
+  'sim.homestead.tooCloseRoad': '离大路太近了。',
+  'sim.homestead.tooCloseWater': '离水域太近了。',
+  'sim.homestead.tooCloseWildlife': '离野生动物太近了。清空这片区域，或者再挪远一些。',
   'sim.house.alreadyOwn': '你在空穴已经拥有一处宅邸了。',
   'sim.house.claimed': '这处宅邸归你了。用 /house place <槽位> <种类> 来装饰它。',
   'sim.house.cleared': '清空了槽位 {slot}。',
@@ -4921,6 +5054,25 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'coldOpen.continue': '继续',
   'coldOpen.begin': '开始',
   'coldOpen.skip': '跳过',
+  'mailUi.title': '渡鸦驿站',
+  'mailUi.subtitle': '寄送与领取信件',
+  'mailUi.close': '关闭邮件',
+  'mailUi.inbox': '收件箱',
+  'mailUi.compose': '写信',
+  'mailUi.noPostOffice': '请前往渡鸦驿站处理邮件。',
+  'mailUi.emptyInbox': '暂无信件。有人写信给你时渡鸦便会送达。',
+  'mailUi.from': '来自 {name}',
+  'mailUi.noSubject': '(无主题)',
+  'mailUi.take': '领取',
+  'mailUi.delete': '删除',
+  'mailUi.postageNote': '寄送一封信需要 {money} 邮费。',
+  'mailUi.recipient': '收件人',
+  'mailUi.subjectLabel': '主题',
+  'mailUi.bodyPlaceholder': '写下你的信件……',
+  'mailUi.send': '寄出信件',
+  'mailUi.needRecipientOrText': '请先填写收件人并写点内容再寄送。',
+  'mailUi.openButton': '带我去渡鸦驿站。',
+  'mailUi.openButtonAria': '打开渡鸦驿站邮件窗口',
   // Event calendar (M16 non-Latin fill)
   'hudChrome.calendar.title': '活动日历',
   'hudChrome.calendar.close': '关闭日历',

@@ -16,12 +16,15 @@ Postgres and serves the built client from `dist/`.
 | `auth.ts` | scrypt hashing, `newToken`, name/password validators (`obscenity` profanity) |
 | `social.ts`/`social_db.ts` | friends/guilds/blocks/presence, logic / SQL |
 | `admin.ts`/`admin_db.ts`, `moderation_db.ts` | admin API + dashboard reads / moderation writes |
+| `admin_permissions.ts`/`admin_routes.ts`/`staff_db.ts` | fine-grained admin authz: permission vocabulary + role bundles / declarative route-to-permission map (fail-closed, guarded by `tests/admin_routes.test.ts`) / `accounts.admin_roles` SQL + `admin_role_changes` audit |
 | `chat_filter.ts`/`chat_filter_db.ts` | host-agnostic profanity/slur filter (soft cosmetic + hard server-enforced tiers) / admin word-list SQL |
 | `bot_detector/contract.ts` / `stub.ts` | `BotDetector` seam (`#bot-detector`): the contract interface / the no-op stub used when the private clone is absent |
 | `antibot_config_db.ts` | per-realm JSONB state plus append-only audit history for the bot-detector runtime config (the admin Bot Detector > Configuration panel); validation and live apply happen inside the detector (`BotDetector.applyConfig`), replayed at boot in `main()` right after `new GameServer()` |
 | `turnstile.ts`, `web_login_guard.ts` | Cloudflare Turnstile siteverify / auth-endpoint Origin guard (anti-bot) |
 | `realm.ts` | `REALM`, `REALM_DIRECTORY`, `REALM_ORIGINS` from `REALM_NAME`/`REALMS` env |
 | `ratelimit.ts` | per-IP sliding-window limiter + `X-Forwarded-For` resolution |
+| `logger.ts`/`log_redact.ts` | structured JSON logger (one object per line, secret/PII-redacting). New server code logs via `logger`, never `console.*` |
+| `metrics.ts`/`metric_sink.ts`/`access_log.ts`/`attack_signals.ts` | RED Prometheus exporter (`prom-client`, server-only), the token-gated `/metrics` endpoint (404 without `METRICS_TOKEN` bearer), per-request recording at `routeHttpRequest`, and the process-wide attack-signal counter seam (rate-limit hits, auth failures, BOLA denials). Metric labels must stay BOUNDED: route templates only, never a concrete path/ip/id |
 | `internal.ts` | secret-gated `/internal/*` ops endpoints (e.g. restart-countdown trigger) |
 | `ws_buffer.ts` | buffers in-flight WS frames during the async auth handshake, then replays them |
 | `woc_balance.ts` | the sole Solana RPC reader: holder-tier flair and connected-wallet balance, cached |

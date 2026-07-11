@@ -4,6 +4,7 @@ import { verifyChallenge } from '../src/sim/client_challenge';
 import { MECH_CHROMAS, mechChromaItemId, mechChromaSkinIndex } from '../src/sim/content/skins';
 import type { TalentAllocation } from '../src/sim/content/talents';
 import { DELVES, DUNGEONS, zoneAt } from '../src/sim/data';
+import { serializeDialogState } from '../src/sim/dialog/dialog_commands';
 import { parseRelayCommand } from '../src/sim/discord_relay';
 import type { PickAction } from '../src/sim/lockpick';
 import { parseMoveInputFrame } from '../src/sim/move_input';
@@ -17,6 +18,7 @@ import {
   EQUIP_SLOTS,
   type EquipSlot,
   emptyMoveInput,
+  type InvSlot,
   MAX_LEVEL,
   RUN_SPEED,
   type SimEvent,
@@ -43,6 +45,7 @@ import {
   loadGreenpawHearthState,
   loadHomesteadState,
   loadHousingState,
+  loadMailState,
   loadMarketState,
   markAccountQuestComplete,
   openPlaySession,
@@ -53,12 +56,14 @@ import {
   saveGreenpawHearthState,
   saveHomesteadState,
   saveHousingState,
+  saveMailState,
   saveMarketState,
 } from './db';
 import { enqueueActivity } from './discord_activity';
 import { discordFlairForAccount } from './discord_db';
 import { enqueueRelay } from './discord_relay';
 import { formatDuration } from './duration';
+import { gameMetricsCounters } from './game_signals';
 import { IpBlockList } from './ip_block';
 import { loadActiveBlockedIps } from './ip_block_db';
 import { LINKDEAD_GRACE_MS, planJoin } from './linkdead';
@@ -69,7 +74,11 @@ import {
   muteAccountChat,
   recordInGameAction,
 } from './moderation_db';
-import { type ModerationHost, ModerationService } from './moderation_service';
+import {
+  canAttemptModerationCommands,
+  type ModerationHost,
+  ModerationService,
+} from './moderation_service';
 import { generatePlantLine, isPlantLlmConfigured } from './plant_llm';
 import { REALM, REALM_PUBLIC_ORIGIN } from './realm';
 import { createSerialWriter } from './serial_writer';
@@ -172,6 +181,7 @@ type ClientMessage = Record<string, unknown> & {
   mode?: string;
   n?: string;
   name?: string;
+  node?: string;
   npc?: number;
   objectId?: number;
   price?: number;
@@ -244,6 +254,8 @@ const HEAVY_SELF_REFRESH_TICKS = 40; // ~2 s backstop; staggered per session so 
 const HEAVY_SELF_CMDS = new Set<string>([
   'equip',
   'unequip_item',
+  'equip_bag',
+  'unequip_bag',
   'use',
   'discard',
   'buy',
@@ -369,6 +381,9 @@ export interface ClientSession {
   // IP address at join time (from requestMetadata); used for per-IP session counting.
   ip: string;
   isAdmin: boolean;
+  // Expanded admin permissions, snapshotted at join like isAdmin (a role change
+  // applies at the next login). Gates the in-game moderation commands.
+  adminPermissions: ReadonlySet<string>;
   // Seed the client sends at auth; signs its challenge answers.
   clientSeed: string;
   // Behavioral bot-detection state. Ephemeral — reset on every join.
@@ -699,6 +714,7 @@ export class GameServer {
   // older snapshot over a newer one. Snapshots are captured inside the queued
   // thunk, so commit order equals capture order equals freshness order.
   private readonly enqueueMarketWrite = createSerialWriter();
+  private readonly enqueueMailWrite = createSerialWriter();
   // Serializes writes of the single global Housing blob (same freshness-order
   // rationale as the market writer above).
   private readonly enqueueHousingWrite = createSerialWriter();
@@ -719,6 +735,13 @@ export class GameServer {
   private readonly startedAt = Date.now();
   private peakOnline = 0;
   private tickMsAvg = 0;
+  // Achieved sim-tick rate meter for the /metrics exporter (woc_sim_tick_hz):
+  // counts committed sim ticks against wall-clock over a ~1s window. Stays null
+  // for the first window (uptime warmup); the exporter maps that null to 0. This
+  // is server-side wall-clock only (Date.now), never read by the deterministic sim.
+  private simTickRateCount = 0;
+  private simTickRateWindowStartMs = 0;
+  private simTickHzValue: number | null = null;
   // Rolling per-phase loop timing, localizes a stutter to a phase. Always-on
   // (the hot path allocates nothing); read via perfProfile() for admin/ops.
   private readonly tickProfiler = new TickProfiler([
@@ -971,6 +994,7 @@ export class GameServer {
   start(): void {
     let last = process.hrtime.bigint();
     let acc = 0;
+    this.simTickRateWindowStartMs = Date.now();
     this.interval = setInterval(() => {
       const now = process.hrtime.bigint();
       let dt = Number(now - last) / 1e9;
@@ -995,6 +1019,7 @@ export class GameServer {
         this.clearStaleInputs();
         lap('stale');
         const events = this.sim.tick();
+        this.simTickRateCount++;
         lap('tick');
         this.routeEvents(this.interceptPlantUtterances(events));
         this.detectActivity(events);
@@ -1017,6 +1042,15 @@ export class GameServer {
       const tickMs = Number(process.hrtime.bigint() - now) / 1e6;
       this.tickProfiler.commit(tickMs);
       this.maybeLogTickPerf(tickMs);
+      // Close the achieved-Hz window once ~1s of wall-clock has elapsed: sim ticks
+      // per real second, for woc_sim_tick_hz. Cheap (one Date.now per loop pass).
+      const rateNowMs = Date.now();
+      const rateElapsedMs = rateNowMs - this.simTickRateWindowStartMs;
+      if (rateElapsedMs >= 1000) {
+        this.simTickHzValue = round2((this.simTickRateCount * 1000) / rateElapsedMs);
+        this.simTickRateCount = 0;
+        this.simTickRateWindowStartMs = rateNowMs;
+      }
       this.tickMsAvg =
         this.tickMsAvg === 0 ? tickMs : this.tickMsAvg + TICK_EMA_ALPHA * (tickMs - this.tickMsAvg);
       this.saveTimer += dt;
@@ -1024,6 +1058,7 @@ export class GameServer {
         this.saveTimer = 0;
         void this.saveAll('autosave');
         void this.saveMarket();
+        void this.saveMail();
         void this.saveGreenpawHearth();
       }
       // Housing persists on change (claims are rare and the blob is tiny).
@@ -1354,6 +1389,7 @@ export class GameServer {
         accountCosmetics?: AccountCosmetics;
         chatStrikes?: number;
         isAdmin?: boolean;
+        adminPermissions?: readonly string[];
         clientSeed?: string;
       } = {},
   ): ClientSession | { error: string } {
@@ -1447,6 +1483,11 @@ export class GameServer {
       sentEnts: new Map(),
       ip: sessionIp,
       isAdmin: meta.isAdmin ?? false,
+      // Permissions come only from the explicit set main.ts computes from the
+      // account's roles; no is_admin fallback (fail closed, matching
+      // staff_db.effectiveAdminRoles). A staff member with zero permissions has
+      // no in-game moderation commands.
+      adminPermissions: new Set(meta.adminPermissions ?? []),
       clientSeed: meta.clientSeed ?? '',
       botTrackingContext,
       spectating: null,
@@ -1525,6 +1566,7 @@ export class GameServer {
     session.chatMuteReason = meta.reason ?? '';
     session.chatStrikes = meta.chatStrikes ?? session.chatStrikes;
     session.isAdmin = meta.isAdmin ?? false;
+    session.adminPermissions = new Set(meta.adminPermissions ?? []);
     session.lastInputSeq = 0;
     session.lastInputAt = this.sim.time;
     session.lastSent = {};
@@ -1774,6 +1816,67 @@ export class GameServer {
     }
   }
 
+  // The Ravenpost (PHAA-495) is shared global state like the market: one JSONB
+  // blob under the world_state 'mail' key, loaded at boot and saved on a timer.
+  async loadMail(): Promise<void> {
+    try {
+      this.sim.loadMail(await loadMailState());
+    } catch (err) {
+      console.error('failed to load Ravenpost mail:', err);
+    }
+  }
+
+  async saveMail(): Promise<void> {
+    try {
+      await this.enqueueMailWrite(() => saveMailState(this.sim.serializeMail()));
+    } catch (err) {
+      console.error('failed to save Ravenpost mail:', err);
+    }
+  }
+
+  // Resolve a mail recipient against the character database (realm-scoped, online
+  // OR offline) and enforce their persisted block list, then hand the resolved
+  // identity to the sim. The sim's own mailSend only sees live players, so this
+  // is the authoritative send path for the server: it is the one place that can
+  // deliver to an offline character and honour a block the recipient set while
+  // logged out (or under a case-insensitive name collision sessionByName misses).
+  private async sendMail(
+    session: ClientSession,
+    to: string,
+    subject: string,
+    body: string,
+    copper: number,
+    items: InvSlot[],
+  ): Promise<void> {
+    const recipient = await this.socialDb.findCharacterByName(to.trim());
+    if (!recipient) {
+      this.send(session, {
+        t: 'events',
+        list: [{ type: 'error', text: 'No adventurer by that name is known.' }],
+      });
+      return;
+    }
+    // The recipient's block list is authoritative in the DB. Query it directly so
+    // the check holds whether the recipient is online or offline; the live
+    // session cache (blockedIds) only exists while they are logged in.
+    const blocked = await this.socialDb.blockedIds(recipient.id);
+    if (blocked.includes(session.characterId)) {
+      this.send(session, {
+        t: 'events',
+        list: [{ type: 'error', text: 'That adventurer is not accepting mail from you.' }],
+      });
+      return;
+    }
+    this.sim.mailSendResolved(
+      { key: String(recipient.id), name: recipient.name },
+      subject,
+      body,
+      copper,
+      items,
+      session.pid,
+    );
+  }
+
   // Housing v0 is shared global state like the market: one JSONB blob under the
   // world_state 'housing' key, loaded at boot and saved on change.
   async loadHousing(): Promise<void> {
@@ -1838,6 +1941,10 @@ export class GameServer {
     return this.sim.rekeyMarketSeller(characterId, oldName, newName);
   }
 
+  rekeyMailRecipient(characterId: number, oldName: string, newName: string): boolean {
+    return this.sim.rekeyMailRecipient(characterId, oldName, newName);
+  }
+
   // Close every open play_sessions row; called on graceful shutdown so the
   // sessions of currently-online players keep their real duration.
   async endAllPlaySessions(): Promise<void> {
@@ -1865,6 +1972,24 @@ export class GameServer {
       rssBytes: mem.rss,
       heapUsedBytes: mem.heapUsed,
     };
+  }
+
+  // Achieved sim Hz for the /metrics exporter (server/game_metrics.ts), or null
+  // while the rate meter is still warming up (its first second of uptime).
+  simTickHz(): number | null {
+    return this.simTickHzValue;
+  }
+
+  // Per-phase loop timing (p95 + max, in MILLISECONDS) for the /metrics exporter,
+  // keyed by phase name. The exporter converts to seconds and surfaces only its
+  // fixed WOC_TICK_PHASES subset, so the exported label set stays bounded.
+  tickPhaseMillis(): Record<string, { p95: number; max: number }> {
+    const { phases } = this.tickProfiler.profile();
+    const out: Record<string, { p95: number; max: number }> = {};
+    for (const [name, stats] of Object.entries(phases)) {
+      out[name] = { p95: stats.p95, max: stats.max };
+    }
+    return out;
   }
 
   // Rolling per-phase loop timing for the admin/ops perf view + load harness.
@@ -2208,6 +2333,7 @@ export class GameServer {
   // -------------------------------------------------------------------------
 
   handleMessage(session: ClientSession, raw: string): void {
+    gameMetricsCounters().wsMessage('in');
     const receivedAtMs = Date.now();
     let msg: unknown;
     try {
@@ -2286,7 +2412,8 @@ export class GameServer {
     if (session.spectating) {
       if (msg.cmd !== 'chat' || typeof msg.text !== 'string') return;
       const text = msg.text.trim();
-      if (session.isAdmin && this.moderation.handleChatCommand(session, text)) return;
+      if (canAttemptModerationCommands(session) && this.moderation.handleChatCommand(session, text))
+        return;
       if (this.isSpectateLocalChat(session, text)) {
         this.sendChatNotice(session, 'Local chat is unavailable while spectating.');
         return;
@@ -2350,6 +2477,9 @@ export class GameServer {
       case 'harvestCorpse':
         if (typeof msg.id === 'number') sim.harvestCorpse(msg.id, pid);
         break;
+      case 'harvestNode':
+        if (typeof msg.node === 'string') sim.harvestNode(msg.node, pid);
+        break;
       case 'lootRoll':
         if (
           typeof msg.rollId === 'number' &&
@@ -2402,6 +2532,18 @@ export class GameServer {
       case 'unequip_item':
         if (typeof msg.slot === 'string' && (EQUIP_SLOTS as readonly string[]).includes(msg.slot)) {
           sim.unequipItem(msg.slot as EquipSlot, pid);
+        }
+        break;
+      case 'equip_bag':
+        if (typeof msg.item === 'string') {
+          const socket =
+            typeof msg.socket === 'number' && Number.isInteger(msg.socket) ? msg.socket : undefined;
+          sim.equipBag(msg.item, socket, pid);
+        }
+        break;
+      case 'unequip_bag':
+        if (typeof msg.socket === 'number' && Number.isInteger(msg.socket)) {
+          sim.unequipBag(msg.socket, pid);
         }
         break;
       case 'use':
@@ -2467,7 +2609,11 @@ export class GameServer {
       case 'chat': {
         if (typeof msg.text !== 'string') break;
         const text = msg.text.trim();
-        if (session.isAdmin && this.moderation.handleChatCommand(session, text)) break;
+        if (
+          canAttemptModerationCommands(session) &&
+          this.moderation.handleChatCommand(session, text)
+        )
+          break;
         if (this.isChatMuted(session)) break;
         if (!this.consumeChatToken(session)) break;
         if (/^\/who(?:\s|$)/i.test(text)) {
@@ -2498,6 +2644,7 @@ export class GameServer {
           void route
             .then((sent) => {
               if (sent) {
+                gameMetricsCounters().chatMessage();
                 this.chatLog.log({
                   accountId: session.accountId,
                   characterId: session.characterId,
@@ -2808,6 +2955,48 @@ export class GameServer {
       case 'market_collect':
         sim.marketCollect(pid);
         break;
+      // The Ravenpost (in-game mail, PHAA-495). The recipient is resolved against
+      // the character database (online OR offline) and their persisted block list
+      // is consulted, so async mail reaches an offline character and a block is
+      // enforced whether or not the recipient is logged in. The reject happens
+      // before the sim escrows anything, the same "before any escrow" rule
+      // mail_block.test.ts covers for the market/whisper path (Finding 3 upstream).
+      // The DB round-trip makes this async, so it is fire-and-forget (the social
+      // command pattern); the sim command lands on whatever tick resolves it.
+      case 'mail_send':
+        if (
+          typeof msg.to === 'string' &&
+          typeof msg.subject === 'string' &&
+          typeof msg.body === 'string' &&
+          typeof msg.copper === 'number' &&
+          Number.isFinite(msg.copper) &&
+          Array.isArray(msg.items)
+        ) {
+          const items = msg.items
+            .filter(
+              (s): s is InvSlot =>
+                !!s &&
+                typeof s.itemId === 'string' &&
+                typeof s.count === 'number' &&
+                Number.isFinite(s.count) &&
+                s.count > 0,
+            )
+            .map((s) => ({ ...s, count: Math.floor(s.count) }))
+            .filter((s) => s.count > 0);
+          void this.sendMail(session, msg.to, msg.subject, msg.body, msg.copper, items).catch(
+            (err) => console.error('mail send failed:', err),
+          );
+        }
+        break;
+      case 'mail_take':
+        if (typeof msg.id === 'number') sim.mailTake(msg.id, pid);
+        break;
+      case 'mail_delete':
+        if (typeof msg.id === 'number') sim.mailDelete(msg.id, pid);
+        break;
+      case 'mail_markread':
+        if (typeof msg.id === 'number') sim.mailMarkRead(msg.id, pid);
+        break;
       // Housing v0 (PHAA-405): interact-key commands, the only flow since the
       // /house chat command was removed (PHAA-482). sim.housingClaim/Place/Remove
       // re-validate range and ownership server-side.
@@ -2827,6 +3016,14 @@ export class GameServer {
       // re-validates range and item possession server-side.
       case 'feedGreenpaw':
         sim.feedGreenpaw(pid);
+        break;
+      // Branching dialogue (PHAA-553): resolve a picked choice server-side. The
+      // sim re-looks-up the choice in the NPC's tree, re-checks its gate, and
+      // applies its disposition/flag effect (never trusting a client-sent value).
+      case 'dialogChoose':
+        if (typeof msg.npc === 'string' && typeof msg.choice === 'string') {
+          sim.dialogChoose(msg.npc, msg.choice, pid);
+        }
         break;
       // dev/ops commands, only when ALLOW_DEV_COMMANDS=1 (never in production)
       case 'dev_level': {
@@ -3157,6 +3354,10 @@ export class GameServer {
       rxp: Math.round(meta.restedXp),
       prk: meta.prestigeRank,
       copper: meta.copper,
+      // Ravenpost unread letter count (PHAA-495): rides every self-frame like
+      // copper, so the HUD envelope indicator updates from another player's
+      // mail-send action without depending on this session's own dirty flag.
+      mailU: this.sim.mailUnreadFor(anchorSession.pid),
       gcd: round2(p.gcdRemaining),
       swing: round2(p.swingTimer),
       combo: p.comboPoints,
@@ -3216,6 +3417,10 @@ export class GameServer {
     // market info is null unless the player is standing at the Merchant, so it
     // only rides the wire for players actually browsing the World Market
     maybe('market', this.sim.marketInfoFor(anchorSession.pid));
+    // mail info is null unless the player is standing at the Ravenpost, so it
+    // only rides the wire for players actually checking their mail (mailU above
+    // is the always-on unread count).
+    maybe('mail', this.sim.mailInfoFor(anchorSession.pid));
     // housing is tiny (8 plots) and rarely changes, so the per-tick diff is
     // negligible; it must ride per-tick because another player's claim changes
     // it without marking this session dirty
@@ -3231,10 +3436,15 @@ export class GameServer {
     // missed the transient lootRoll event re-shows the prompt from state. Stays
     // per-tick (it's interactive state that appears from others' actions).
     maybe('lroll', this.sim.activeLootRolls(anchorSession.pid));
+    // group-visible choices on those rolls (who has answered need/greed/pass),
+    // so every party member's roll frame shows the live vote strip and stays up
+    // after they answer. Per-tick for the same reason as lroll.
+    maybe('lrollg', this.sim.lootRollGroupStatus(anchorSession.pid));
     maybe('drun', this.sim.delveRunWire(anchorSession.pid));
     maybe('dcompanion', this.sim.delveCompanionWire(anchorSession.pid));
     maybe('dmarks', this.sim.delveMarksFor(anchorSession.pid));
     maybe('dcomp', this.sim.companionUpgradesFor(anchorSession.pid));
+    maybe('gprof', this.sim.gatheringProficiencyFor(anchorSession.pid));
     maybe('dclears', this.sim.delveClearsFor(anchorSession.pid));
     maybe('delveDaily', this.sim.delveDailyWire(anchorSession.pid));
     // stats + weapon stay per-tick: recalcPlayerStats re-derives them on every
@@ -3258,11 +3468,15 @@ export class GameServer {
       session.selfHeavyDirty = false;
       session.lastWireRev = meta.wireRev;
       maybe('inv', meta.inventory);
+      maybe('bags', meta.bags);
       maybe('buyback', meta.vendorBuyback);
       maybe('equip', meta.equipment);
       maybe('cosmetics', anchorSession.accountCosmetics);
       maybe('qlog', [...meta.questLog.values()]);
       maybe('qdone', [...meta.questsDone]);
+      // PHAA-553: per-player dialogue disposition + flags, so the client walker
+      // can evaluate `requires` gates. Small; maybe() only re-sends on change.
+      maybe('dstate', serializeDialogState(meta.dialogState));
       maybe('milestones', [...meta.unlockedMilestones]);
       // talents/spec/loadouts/secondaryCls: the client recomputes its known
       // abilities from this (secondaryCls merges a second class's kit in).
@@ -3566,6 +3780,7 @@ export class GameServer {
           void route
             .then((sent) => {
               if (sent) {
+                gameMetricsCounters().chatMessage();
                 this.chatLog.log({
                   accountId: session.accountId,
                   characterId: session.characterId,
@@ -3608,6 +3823,7 @@ export class GameServer {
 
   private logChat(session: ClientSession, sent: import('../src/sim/sim').SentChat | null): void {
     if (!sent) return;
+    gameMetricsCounters().chatMessage();
     this.chatLog.log({
       accountId: session.accountId,
       characterId: session.characterId,
@@ -3902,6 +4118,7 @@ export class GameServer {
 
   private sendRaw(session: ClientSession, payload: string): void {
     if (session.ws.readyState === 1) {
+      gameMetricsCounters().wsMessage('out');
       session.ws.send(payload);
     }
   }

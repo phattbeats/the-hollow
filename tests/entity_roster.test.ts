@@ -101,6 +101,7 @@ function makeCtx() {
     get players() {
       return players;
     },
+    bankerIds: [],
     get cfg() {
       return cfg;
     },
@@ -108,6 +109,7 @@ function makeCtx() {
     arenaQueue1v1: [],
     arenaQueue2v2: [],
     arenaQueueFiesta: [],
+    arenaQueueBoarball: [],
     arenaBusySlots: new Set(),
     nextArenaMatchId: 1,
     delveRuns: [],
@@ -141,6 +143,13 @@ function makeCtx() {
     updateFiestaActive: vi.fn(),
     fiestaRestoreChar: vi.fn(),
     clearFiestaAugments: vi.fn(),
+    createBoarballState: vi.fn(),
+    boarballKickoff: vi.fn(),
+    updateBoarballActive: vi.fn(),
+    boarballStandardize: vi.fn(),
+    boarballRestoreChar: vi.fn(),
+    boarballShoot: vi.fn(),
+    boarballPass: vi.fn(),
     readyArenaFighter: vi.fn(),
     resetForArena: vi.fn(),
     isArenaTeamWiped: vi.fn(() => false),
@@ -149,6 +158,7 @@ function makeCtx() {
     fiestaTakedown: vi.fn(),
     fiestaDown: vi.fn(),
     rollLoot: vi.fn(),
+    rollWorldBossLoot: vi.fn(),
     applyHeal: vi.fn(),
     spellCrit: vi.fn(() => 0.05),
     applyAura: vi.fn(),
@@ -166,6 +176,7 @@ function makeCtx() {
     // elsewhere in this host - deduped).
     spendResource: vi.fn(),
     removeItem: vi.fn(),
+    canAddItem: vi.fn(() => true),
     partyOf: vi.fn(() => null),
     removeFromParty: vi.fn(),
     dropPartyMarkers: vi.fn(),

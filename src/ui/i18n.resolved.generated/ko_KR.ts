@@ -291,6 +291,9 @@ export const ko_KR: EnTranslations = {
       "lessThanMinute": "1분 미만",
       "lockedToast": "{raid}에 잠겨 있습니다. {time} 후 해제됩니다."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "북",
       "NE": "북동",
@@ -629,6 +632,13 @@ export const ko_KR: EnTranslations = {
       "unassigned": "{item}이(가) 분배되지 않아 모두가 획득할 수 있습니다.",
       "leaderOnly": "파티장만 전리품 방식을 변경할 수 있습니다."
     },
+    "lootRollGroup": {
+      "pending": "대기 중...",
+      "need": "니드",
+      "greed": "그리드",
+      "pass": "포기",
+      "aria": "{item} 그룹 굴림 상태"
+    },
     "bags": {
       "filterGroupAria": "가방을 분류별로 필터링",
       "filterAll": "전체",
@@ -643,7 +653,12 @@ export const ko_KR: EnTranslations = {
       "sortName": "이름",
       "searchPlaceholder": "아이템 검색",
       "searchAria": "이름으로 가방 아이템 검색",
-      "noMatch": "필터와 일치하는 아이템이 없습니다."
+      "noMatch": "필터와 일치하는 아이템이 없습니다.",
+      "capacity": "{used}/{total}",
+      "capacityAria": "사용 중인 가방 칸: {total}중 {used}",
+      "backpack": "배낭",
+      "socketEmpty": "빈 가방 칸",
+      "unequipHint": "클릭하여 이 가방을 제거"
     },
     "raidConvert": {
       "toPartyDone": "공격대가 파티로 다시 전환되었습니다.",
@@ -941,6 +956,27 @@ export const ko_KR: EnTranslations = {
       "secondaryClassSet": "보조 직업으로 {cls}을(를) 선택했습니다."
     }
   },
+  "mailUi": {
+    "title": "레이븐포스트",
+    "subtitle": "편지를 보내고 받기",
+    "close": "우편 닫기",
+    "inbox": "받은 편지함",
+    "compose": "편지 쓰기",
+    "noPostOffice": "우편물을 확인하려면 레이븐포스트로 가세요.",
+    "emptyInbox": "도착한 편지가 없습니다. 누군가 편지를 쓰면 까마귀가 배달해 줄 거예요.",
+    "from": "{name} 님으로부터",
+    "noSubject": "(제목 없음)",
+    "take": "받기",
+    "delete": "삭제",
+    "postageNote": "편지를 보내려면 우편 요금 {money}이(가) 듭니다.",
+    "recipient": "받는 사람",
+    "subjectLabel": "제목",
+    "bodyPlaceholder": "편지를 작성하세요...",
+    "send": "편지 보내기",
+    "needRecipientOrText": "보내기 전에 받는 사람을 지정하고 내용을 입력하세요.",
+    "openButton": "레이븐포스트로 안내해 주세요.",
+    "openButtonAria": "레이븐포스트 우편 창 열기"
+  },
   "guide": {
     "brand": "World of ClaudeCraft",
     "brandShort": "ClaudeCraft",
@@ -960,6 +996,7 @@ export const ko_KR: EnTranslations = {
       "social": "사교와 파티",
       "stats": "캐릭터와 능력치",
       "progression": "레벨과 성장",
+      "hollow": "The Hollow",
       "world": "세계",
       "quests": "퀘스트",
       "dungeons": "던전과 공격대",
@@ -1469,9 +1506,32 @@ export const ko_KR: EnTranslations = {
         "desc": "비늘로 뒤덮인 뱀 같은 옛 심연의 존재들. 보기 드물고 오만하며, 겉보기보다 훨씬 강합니다."
       }
     },
+    "hollowPage": {
+      "heading": "The Hollow",
+      "intro": "성소 문을 지나면 화병이 있는 공터가 나온다. 모든 새 영웅이 눈을 뜨는 곳이자, 언제나 돌아오게 되는 곳. 대륙 전체가 공유하는 하나의 거점으로, 처음 마주치는 얼굴들과 첫 임무, 그리고 정말로 필요한 유일한 집이 이곳에 있다.",
+      "greeting": "돌아왔구먼, 그거 참 축복이지... 신성한 일거리가 몇 개 밀려 있소, 지난번과 같은 파장으로. 이리 좀 와보시게...",
+      "greeter": "그린포 수사, 화병 곁에서",
+      "vaseHeading": "화병",
+      "vaseBody": "모두가 화병에서 시작한다. 우묵골이 세워진 중심에 자리한, 오래되고 귀 기울이는 존재다. 엠버벌브를 태우거나 동굴 모르셀을 먹이는 등 작은 공물을 바라며, 받으면 알아채는 듯하다. 화병 아래쪽에는 지하 성소로 이어지는 동굴 입구가 있고, 양옆에는 자신만의 집을 지을 수 있는 부지가 놓여 있다.",
+      "figuresHeading": "누가 돌보는가",
+      "figuresBody": "화병을 지키는 두 사람이 있으며, 처음 몇 분 안에 둘 다 만나게 된다.",
+      "npcFmt": "{name}, {title}",
+      "greenpawBody": "화병의 유일한 관리자이자 가장 첫 임무를 내주는 이. 자칭한 직함임을 본인이 가장 먼저 인정하며, 우묵골에서 안내자에 가장 가까운 존재다.",
+      "yarrowBody": "두 번째 소명을 가르치는 이. 어떤 직업이든 그녀에게서 부전공을 배울 수 있으며, 화병을 사이에 두고 그린포와 마주해 있다.",
+      "questsHeading": "첫 심부름",
+      "questsBody": "그린포 자신의 임무 사슬이 가장 먼저 해야 할 일이다. 화병의 리듬을 가르쳐 주는 네 개의 짧은 심부름을 마치면 더 넓은 우묵골로 나서게 된다.",
+      "questBurnsBody": "화병이 빛을 위해 태우는 동굴산 구근을 한 움큼씩 모은다.",
+      "questFillsBody": "더 조용한 허기를 달래주는 동굴 모르셀을 같은 방식으로 모은다.",
+      "questWavelengthBody": "화병의 두 번째 소명을 소개받고, 직접 먹이는 법을 배운다.",
+      "questKeepLitBody": "한 번의 호의를 세 번 연달아 반복해 습관으로 바꾼다.",
+      "housingHeading": "나만의 집",
+      "housingBody": "화병 주위로 {n}개의 집터가 둘러싸고 있으며, 우묵골 속 당신만의 사적인 한 구석으로 꾸며지길 기다린다.",
+      "shrineHeading": "지하 성소",
+      "shrineBody": "화병 옆 동굴 입구는 지하 성소로 이어진다. 우묵골 자체의 인스턴스 던전이며, 새 영웅이 처음으로 파티와 함께 맞이하는 진짜 시험이다."
+    },
     "worldPage": {
       "heading": "세계",
-      "intro": "World of ClaudeCraft는 두 발로 가로지르는 하나로 이어진 대지이며, 남에서 북으로 펼쳐진 세 개의 지역으로 이루어져 있습니다. 빠른 이동이 없으니, 여정 자체가 모험의 일부입니다.",
+      "intro": "화병에서 성소 문을 나서면 우묵골에 들어선다. 새로 온 이가 야외에서 첫걸음을 내딛는 고요한 땅이다. 그 너머 북쪽으로 세 개의 지역이 남에서 북으로 이어져 있으며, 그곳으로 가는 길은 아직 열리지 않았지만 실재하며 기다리고 있다.",
       "hub": "본거지",
       "mapHeading": "북쪽으로 가는 길",
       "mapSub": "남쪽에서 북쪽으로 이어지는 세 지역은 각각 레벨이 한 단계씩 높아집니다. 퀘스트 길을 따라가면 땅이 당신을 골짜기에서 봉우리까지 이끌어 줍니다.",
@@ -1508,8 +1568,9 @@ export const ko_KR: EnTranslations = {
       "partyTitle": "파티로 퀘스트하기",
       "partyBody": "가까이 있는 파티원은 처치와 목표 공로를 나누므로, 함께하는 퀘스트는 더 빠르면 빨랐지 결코 느리지 않습니다. 퀘스트를 파티와 공유할 수도 있습니다. /share 명령으로 클릭할 수 있는 링크를 채팅에 올리면, 가까이 있는 자격을 갖춘 파티원 누구나 클릭 한 번으로 같은 퀘스트를 받을 수 있습니다.",
       "storyTitle": "하나의 실타래가 모든 것을 꿰뚫습니다",
-      "storyBody": "동개울에서의 첫 심부름부터, 죽은 자들에게 무언가 잘못되어 갑니다. 한 교단이 암약하고 있으며, 그 자취는 모든 지역을 거쳐 북쪽으로 이어집니다. 자취를 좇아 그 배후가 누구인지 밝혀내세요.",
+      "storyBody": "당신의 가장 첫 실마리는 바로 화병 곁, 그린포 수사 자신의 짧은 임무 사슬이다. 그 너머에는 우묵골 안쪽의 조용한 심부름들이 있고, 더 멀리에는 골짜기에서 봉우리까지 진군하는 죽음의 교단을 둘러싼 더 긴 이야기가 있다. 실제로 존재하는 완결된 콘텐츠지만, 아직 새 영웅이 걸어갈 길은 아니다. 화병 자체의 임무는 우묵골 페이지에서, 나머지는 앞으로 다가올 내용으로 아래에 정리되어 있다.",
       "soloNote": "메인 스토리는 각 장의 대단원까지 완전히 혼자서 진행할 수 있으며, 그 대단원은 5인 던전입니다.",
+      "sagaGateNote": "이 이야기는 실제로 존재하는, 완결된 콘텐츠로, 북쪽 길이 다시 열릴 때 열리는 바로 그 여정이다. 새 영웅이 오늘 시작하는 곳은 아니다. 그 시작점은 우묵골 속 화병이다.",
       "typesTitle": "만나게 될 퀘스트의 종류",
       "typesBody": "대부분의 퀘스트는 익숙한 몇 가지 형태 중 하나입니다. 화면의 추적 창이 각각 무엇을 원하는지 정확히 일러 주므로, 헤맬 일이 없습니다.",
       "typeSlayTitle": "처치",
@@ -1851,6 +1912,11 @@ export const ko_KR: EnTranslations = {
       "title": "해당 페이지를 찾을 수 없습니다",
       "body": "찾으시는 페이지가 존재하지 않거나 이동되었을 수 있습니다.",
       "home": "개요로 돌아가기"
+    }
+  },
+  "readableUi": {
+    "prompt": {
+      "read": "Read"
     }
   },
   "coldOpen": {
@@ -2334,21 +2400,36 @@ export const ko_KR: EnTranslations = {
       "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <슬롯>.",
       "helpLine": "주택: /house, /house claim, /house place <슬롯> <종류>, /house remove <슬롯>."
     },
+    "bags": {
+      "full": "가방이 가득 찼습니다.",
+      "socketsFull": "모든 가방 칸이 사용 중입니다.",
+      "swapTooManyItems": "소지품이 너무 많아 그 가방으로 교체할 수 없습니다.",
+      "removeTooManyItems": "소지품이 너무 많아 그 가방을 해제할 수 없습니다.",
+      "tradeSpace": "거래 실패: 가방 공간이 부족합니다."
+    },
+    "bank": {
+      "tooFar": "은행원과 너무 멀리 떨어져 있습니다.",
+      "noQuestItems": "퀘스트 아이템은 은행에 보관할 수 없습니다.",
+      "full": "은행 보관함이 가득 찼습니다.",
+      "expansionCapped": "더 이상 은행을 확장할 수 없습니다.",
+      "cannotAfford": "그 은행 확장 비용을 감당할 수 없습니다.",
+      "purchased": "추가 은행 슬롯을 구매했습니다."
+    },
     "homestead": {
-      "outsideArea": "That is outside the homestead ground. Try Fallow Acres, west of the road.",
-      "tooCloseGate": "Too close to the gate. Move further out.",
-      "tooCloseWater": "Too close to the water.",
-      "tooCloseGraveyard": "Too close to the graveyard.",
-      "tooCloseWildlife": "Too close to the wildlife. Clear the area or move further off.",
-      "tooCloseRoad": "Too close to the road.",
-      "tooCloseOther": "Too close to another homestead.",
-      "questGate": "Brother Greenpaw hasn't sent you off yet. Finish his errands first.",
-      "alreadyOwn": "You already own a homestead.",
-      "claimed": "The ground is yours. This homestead is claimed.",
-      "readoutMine": "Your homestead sits at ({x}, {z}).",
-      "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
-      "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
-      "helpLine": "Homestead: /homestead, /homestead claim."
+      "outsideArea": "그곳은 정착지 부지가 아니다. 길 서쪽의 Fallow Acres를 시도해 보라.",
+      "tooCloseGate": "문에 너무 가깝다. 더 멀리 이동하라.",
+      "tooCloseWater": "물가에 너무 가깝다.",
+      "tooCloseGraveyard": "묘지에 너무 가깝다.",
+      "tooCloseWildlife": "야생동물에 너무 가깝다. 주변을 정리하거나 더 멀리 이동하라.",
+      "tooCloseRoad": "길에 너무 가깝다.",
+      "tooCloseOther": "다른 이의 정착지에 너무 가깝다.",
+      "questGate": "브라더 초록발이 아직 당신을 보내지 않았다. 먼저 그의 용무를 마쳐라.",
+      "alreadyOwn": "당신은 이미 정착지를 소유하고 있다.",
+      "claimed": "이 땅은 당신의 것이다. 정착지가 확정되었다.",
+      "readoutMine": "당신의 정착지는 ({x}, {z})에 있다.",
+      "readoutNoHomesteadQuest": "당신은 정착지가 없다. 브라더 초록발의 용무를 모두 마쳐야 하나를 얻을 수 있다.",
+      "readoutNoHomesteadHint": "당신은 정착지가 없다. 우묵골 지대의 적당한 곳에 서서 /homestead claim이라고 입력하라.",
+      "helpLine": "정착지: /homestead, /homestead claim."
     }
   },
   "lockpickUi": {
@@ -2541,6 +2622,21 @@ export const ko_KR: EnTranslations = {
     },
     "chest": {
       "flavor": "죽은 자들이 내어줄 수 있는 것을 내놓았습니다."
+    }
+  },
+  "boarball": {
+    "queue": {
+      "join": "보어볼 대기열에 참가했습니다. 다른 플레이어 세 명을 기다리는 중…",
+      "leave": "보어볼 대기열에서 나갑니다."
+    },
+    "log": {
+      "welcome": "보어볼에 오신 것을 환영합니다! 슛하고 패스해서 상대 팀보다 많은 점수를 내세요.",
+      "kickoff": "킥오프!",
+      "over": "경기 종료! 월드로 돌아갑니다…"
+    },
+    "error": {
+      "tooFar": "공에 충분히 가까이 있지 않습니다.",
+      "noTeammate": "지정된 아군이 없습니다."
     }
   },
   "fiesta": {
@@ -3519,6 +3615,7 @@ export const ko_KR: EnTranslations = {
       "offGlobalCooldown": "공용 재사용 대기시간 없음",
       "friendlyTarget": "아군 대상",
       "enemyTarget": "적 대상",
+      "selfOnly": "자신에게만",
       "damageRange": "{min}에서 {max}",
       "finisherDamage": "기본 {base}, 연계 점수당 {perCombo}"
     },
@@ -3683,7 +3780,8 @@ export const ko_KR: EnTranslations = {
       "drink": "음료",
       "tool": "도구",
       "potion": "물약",
-      "elixir": "비약"
+      "elixir": "비약",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "방어도",
@@ -3725,7 +3823,8 @@ export const ko_KR: EnTranslations = {
       "useManaPotion": "사용: 즉시 마나를 {amount} 회복합니다. 전투 중 사용 가능. 재사용 대기시간 1분.",
       "clickUseInstant": "클릭하여 전투 중 즉시 사용",
       "clickUse": "클릭하여 사용",
-      "clickBuyback": "클릭하여 되사기"
+      "clickBuyback": "클릭하여 되사기",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "장착하려면 레벨 {level}이 필요합니다."
@@ -5010,6 +5109,21 @@ export const ko_KR: EnTranslations = {
       "monarch_crown_helm": {
         "name": "군주의 왕관"
       },
+      "linen_pouch": {
+        "name": "리넨 주머니"
+      },
+      "travelers_knapsack": {
+        "name": "여행자의 배낭"
+      },
+      "wolfhide_satchel": {
+        "name": "늑대가죽 가방"
+      },
+      "gravewoven_bag": {
+        "name": "무덤을 엮은 가방"
+      },
+      "mistcallers_duffel": {
+        "name": "미스트콜러의 더플백"
+      },
       "bristleback_maul": {
         "name": "뻣센등뼈 철퇴"
       },
@@ -5353,7 +5467,8 @@ export const ko_KR: EnTranslations = {
         "name": "불씨구근"
       },
       "first_cutting": {
-        "name": "꺾꽂이"
+        "name": "꺾꽂이",
+        "flavorText": "A slip of living green from Brother Greenpaw, wrapped in damp moss. Once a homestead plot can be edited, this is the first thing you plant."
       },
       "greenpaw_bead": {
         "name": "탄띠에서 나온 염주 하나"
@@ -5361,12 +5476,33 @@ export const ko_KR: EnTranslations = {
       "keeper_coal": {
         "name": "결코 식지 않는 숯덩이"
       },
+      "willow_sprig": {
+        "name": "버드나무 잔가지 하나"
+      },
       "witness_root_cincture": {
         "name": "증인뿌리의 허리띠"
       },
       "shrine_diary_page": {
         "name": "찢어진 일기장 페이지",
         "flavorText": "...촛불로 마흔 날을 세다가 결국 놓쳐버렸다. 이 아래의 어둠은 그분을 잊지 않는다, 그분이 이곳을 잊으셨어도. 왜가리가 낮게 돌면, 등지기에게 심지가 아직 타고 있다고 전해라..."
+      },
+      "heartwood_splinter": {
+        "name": "심재 조각",
+        "flavorText": "그것이 자라난 나무가 움직임을 멈춘 지 오래되었어도, 만지면 따뜻하다."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "만개한 왕관 견갑"
+      },
+      "verdantguard_mantle": {
+        "name": "상록 수호자의 망토"
+      },
+      "worn_prayer_token": {
+        "name": "닳은 기도패",
+        "flavorText": "...한쪽 면이 내 것이 아닌 엄지에 매끄럽게 닳아 있다, 여기 쌓인 다른 백여 개와 똑같은 얕은 홈이 패어 있는데, 적어도 이 더미는 그렇게 말하고 있다. 엄지 하나로는 토큰 백 개를 닳게 할 수 없다. 하지만 수많은 엄지가 하나의 홈을 닳게 하는 일은, 가능하다..."
+      },
+      "tally_shard": {
+        "name": "눈금이 새겨진 파편",
+        "flavorText": "...다섯 개씩 한 묶음으로 깊이 새겨져, 셀 때마다 하나씩 그어 지워졌다. 지워진 다섯 묶음이 수백에 이르는데, 그 지움이 멈춘 마지막 줄만은 끝내 채워지지 않았다..."
       },
       "reliquary_plate_chest": {
         "name": "성물실 수호 갑옷"
@@ -5577,6 +5713,9 @@ export const ko_KR: EnTranslations = {
       "deacon_voss": {
         "name": "부제 보스"
       },
+      "training_dummy": {
+        "name": "Training Dummy"
+      },
       "ridge_stalker": {
         "name": "산등성이 추적자"
       },
@@ -5706,6 +5845,9 @@ export const ko_KR: EnTranslations = {
       "acolyte_tessa": {
         "name": "수련사제 테사"
       },
+      "boarball_ball": {
+        "name": "Boarball"
+      },
       "ironvein_foreman": {
         "name": "철맥 감독관"
       },
@@ -5822,6 +5964,9 @@ export const ko_KR: EnTranslations = {
       },
       "the_witness_root": {
         "name": "증언의 뿌리"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {
@@ -5829,6 +5974,11 @@ export const ko_KR: EnTranslations = {
         "name": "상인",
         "title": "세계 시장 관리자",
         "greeting": "세계 시장에 오신 것을 환영합니다, {className}. 왕국의 모험가들에게서 물건을 사거나 자신의 물건을 내놓으십시오."
+      },
+      "the_ravenpost": {
+        "name": "레이븐포스트",
+        "title": "우편 관리자",
+        "greeting": "편지를 보내세요, {className}. 제 까마귀들이 어디를 떠돌든 당신의 친구를 찾아낼 것입니다. 함께 부친 금화와 소포도 찾아갈 때까지 안전하게 전해집니다."
       },
       "marshal_redbrook": {
         "name": "레드브룩 원수",
@@ -5959,6 +6109,25 @@ export const ko_KR: EnTranslations = {
         "name": "무덤지기 패딕",
         "title": "떠도는 관리인",
         "greeting": "패딕이오. 아직 지켜야 할 사당이 있는 한, 무덤지기 노릇을 하지. 나는 어디에도 머물지 않소, 그저 지킬 뿐이오. 밤마다 늑대가 묵정밭의 가축 떼 주위를 맴도는데, 오래 맴돌다 보면 제가 맴도는 것의 모양을 익히게 되는 법이오. 그저 가축 떼로 남는 편이 낫겠지."
+      },
+      "shade": {
+        "name": "셰이드",
+        "title": "떠도는 이",
+        "greeting": "아, 당신이군요. 원하면 앉아요, 물은 어디 가지 않으니까. 오늘 뭐 좀 먹었어요? 먹어야 해요.",
+        "introLines": {
+          "0": "허드렛일 하는 걸 들켰네요. 이 물뿌리개는 신경 쓰지 마요, 그냥 물이에요. 물 조금이 아쉬운 건 언제나 있는 법이니까.",
+          "1": "나요? 내세울 것 없는 사람이에요. 셰이드. 걷다가 일손이 모자란 데서 손을 보태죠. 많이 지쳐 보이네요. 원하면 잠깐 앉았다 가요."
+        }
+      },
+      "gate_bard": {
+        "name": "음유시인 할덴",
+        "title": "문앞의 악사",
+        "greeting": "노래 한 곡에 동전 한 닢? 싫다고요? 괜찮아요, 대개는 싫다고들 하죠. 나는 이 문을 위해 연주하지만, 문은 단 한 번도 지갑에 손을 댄 적이 없어요."
+      },
+      "goodwife_orla": {
+        "name": "오를라",
+        "title": "한때 뿌리굴의 사람",
+        "greeting": "앉아도 돼요. 다들 그냥 지나가죠. 성당지기가 오래전에 내 이름을 장부에서 지워 버렸어요. 지워진 이름은 조용히 있는 법을 배우죠, 아직 여기 있다는 걸 아무도 떠올리지 않도록."
       }
     },
     "quests": {
@@ -6851,7 +7020,7 @@ export const ko_KR: EnTranslations = {
       "q_root_hollow_boars_ii": {
         "title": "뿌리굴의 결산",
         "text": "이 직분에서 인정해선 안 될 것을 인정하리다. 다섯은 너무 낙관했소. 아래 굴에서 계속 밀려 올라오는구려. 여덟만 더 잡으면, 기록을 세 번째로 고치지 않고 이 철을 마감할 수 있소. 기록은 고쳐지길 싫어하지. 나도 그렇소.",
-        "completion": "마감. 서명. 편철. 이제 이 철은 예정대로 흘러갈 수 있소, 달력을 지킬 자가 다시 생겼으니. 그대는 아주 작은 회중에게 큰 도움을 주었소. 분명히 해두자면, 그 회중이란 바로 나요.",
+        "completion": "마감. 서명. 편철. 이제 이 철은 예정대로 흘러갈 수 있소, 달력을 지킬 자가 다시 생겼으니. 그대는 아주 작은 회중에게 큰 도움을 주었소. 분명히 해두자면, 그 회중이란 바로 나요. 이 장부 자체는 이 체제보다도 오래되었소, 만난 적 없는 손으로 철해졌고, 내가 굳이 합산하지 않는 수를 담고 있소. 한때 이곳엔 참으로 꼼꼼한 이가 있었던 모양이오. 나는 그저 그 걸음을 따라가려 할 뿐이오.",
         "objectives": {
           "0": {
             "label": "야생 멧돼지 처치"
@@ -6875,6 +7044,26 @@ export const ko_KR: EnTranslations = {
         "objectives": {
           "0": {
             "label": "숲늑대 처치"
+          }
+        }
+      },
+      "q_have_you_eaten": {
+        "title": "밥은 먹었어요?",
+        "text": "문앞에 동전으로 먹고사는 음유시인이 있어요. 동전이 들어올 때만 먹는데, 그게 흔치 않죠. 따뜻한 국 한 그릇이 남아요. 그에게 가져다줄래요? 동정이라고는 말하지 말아요. 그냥 남은 거라고 해요.",
+        "completion": "돌아왔군요. 그는 먹었어요? 잘됐네요. 다행이에요. 당신은요? …… 안 먹었군요, 보면 알아요. 그럼 앉아요. 좋은 사람이 되는 데 위대할 필요는 없어요. 위대함은 친절이 아니니까. 어서 먹어요.",
+        "objectives": {
+          "0": {
+            "label": "따뜻한 식사를 음유시인에게 전함"
+          }
+        }
+      },
+      "q_someone_your_own_size": {
+        "title": "당신 몸집에 맞는 상대를",
+        "text": "뿌리굴 근처에 세상이 모질게 대한 여인이 있어요. 그녀의 이름은 장부에서 지워졌고, 사람들은 지워진 이름을 못 듣는 것처럼 대하죠. 가서 잠시 곁에 앉아 줘요. 뭘 고칠 필요는 없어요. 그저 그녀와 같은 몸집인 사람이 되어 줘요.",
+        "completion": "있어 줬군요. 그녀는 별거 아니었다고 하겠지만, 별거였어요, 정말이에요. 자, 이건 당신 거예요. 내가 아끼는 버드나무에서 딴 잔가지. 아무 쓸모도 없어요. 그저 아무도 시키지 않았는데도 당신이 친절했다는 걸 기억할 뿐이죠.",
+        "objectives": {
+          "0": {
+            "label": "오를라 곁에 잠시 앉음"
           }
         }
       }
@@ -7097,6 +7286,24 @@ export const ko_KR: EnTranslations = {
         "name": "고룡그림자 의복",
         "bonus2": "전투력이 40만큼 증가합니다.",
         "bonus3": "민첩이 15, 치명타 확률이 2% 증가합니다."
+      }
+    },
+    "readables": {
+      "torn_ledger_page": {
+        "title": "찢어진 장부",
+        "pages": {
+          "0": "뿌리굴, 쉬게 함으로 기재. 묵정밭, 쉬게 함으로 기재. 모스뱅크의 호수는 우리가 기재하든 말든 알아서 쉰다. 장부가 원하는 대로 서명하고 날짜를 적었다.",
+          "1": "이번 철 지금까지의 집계. 길바닥 돌 사이로 새싹 셋이 올라왔는데, 내 어느 달력에도 없는 일이다. 지워 긁어내는 건 그만뒀다. 잉크가 마르기도 전에 다시 돋아나고, 그 잉크는 싸지도 않았다.",
+          "2": "내 뒤에 이것을 맡을 이에게 남기는 글. 멧돼지를 세라, 늑대를 세라, 날을 세라. 초록만은 세지 마라. 그것은 도로 세어 온다. 그리고 네가 멈춘 자리에서 멈추지 않는다."
+        }
+      },
+      "keepers_marginalia": {
+        "title": "지킴이의 난외 기록",
+        "pages": {
+          "0": "찬송이 다 닳아 없어진 성가집 여백에 남겨져 있었다. 필체가 빠르다, 걸으면서 쓰는 손이 빠른 그 방식으로.",
+          "1": "늑대들은 나무 경계에서 묵정밭을 맴돈다, 언제나 같은 원, 언제나 해 도는 방향으로. 오래 맴도는 것은 제가 맴도는 것의 모양을 익힌다. 나도 그렇다. 그리고 땅도, 아마 그럴 것이다.",
+          "2": "이 글을 읽고 있다면 당신은 걸음을 멈춘 것이다, 내가 끝내 배우지 못한 그 한 가지를. 잠시 쉬어라. 외곽은 그대로 여기 있을 테니. 그게 바로 이곳의 골칫거리이긴 하다만."
+        }
       }
     }
   },

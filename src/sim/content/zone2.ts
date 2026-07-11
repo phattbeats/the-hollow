@@ -1227,7 +1227,9 @@ export const ZONE2_OBJECTS: GroundObjectDef[] = [
 // Archetype groups for class-locked rewards (REWARD_ARCHETYPE hands warrior
 // rewards to paladins/shamans etc., so the lock must admit the whole group).
 const WAR: PlayerClass[] = ['warrior', 'paladin', 'shaman'];
+const WEAPON_WAR: PlayerClass[] = ['warrior', 'rogue', 'hunter', 'shaman', 'paladin'];
 const MAG: PlayerClass[] = ['mage', 'priest', 'warlock', 'druid'];
+const WEAPON_MAG: PlayerClass[] = ['mage', 'priest', 'warlock', 'shaman', 'paladin', 'druid'];
 const ROG: PlayerClass[] = ['rogue', 'hunter'];
 
 export const ZONE2_ITEMS: Record<string, ItemDef> = {
@@ -1503,7 +1505,7 @@ export const ZONE2_ITEMS: Record<string, ItemDef> = {
     weapon: { min: 11, max: 18, speed: 2.4 },
     stats: { str: 4 },
     sellValue: 300,
-    requiredClass: WAR,
+    requiredClass: WEAPON_WAR,
   },
   staff_of_drowned_prayers: {
     id: 'staff_of_drowned_prayers',
@@ -1514,7 +1516,7 @@ export const ZONE2_ITEMS: Record<string, ItemDef> = {
     weapon: { min: 12, max: 20, speed: 3.0 },
     stats: { int: 5, spi: 2 },
     sellValue: 300,
-    requiredClass: MAG,
+    requiredClass: WEAPON_MAG,
   },
   mistbinder_kris: {
     id: 'mistbinder_kris',
@@ -1600,7 +1602,7 @@ export const ZONE2_ITEMS: Record<string, ItemDef> = {
     weapon: { min: 12, max: 20, speed: 2.6 },
     stats: { int: 3, spi: 2 },
     sellValue: 420,
-    requiredClass: MAG,
+    requiredClass: WEAPON_MAG,
   },
   mirejaw_biteblade: {
     id: 'mirejaw_biteblade',
@@ -1634,7 +1636,7 @@ export const ZONE2_ITEMS: Record<string, ItemDef> = {
     weapon: { min: 17, max: 28, speed: 2.5 },
     stats: { str: 5, sta: 4 },
     sellValue: 1400,
-    requiredClass: WAR,
+    requiredClass: WEAPON_WAR,
   },
   sloomtooth_tidefang: {
     id: 'sloomtooth_tidefang',
@@ -1656,7 +1658,7 @@ export const ZONE2_ITEMS: Record<string, ItemDef> = {
     weapon: { min: 16, max: 28, speed: 3.0 },
     stats: { int: 6, spi: 3 },
     sellValue: 1400,
-    requiredClass: MAG,
+    requiredClass: WEAPON_MAG,
   },
   nhalias_funeral_wraps: {
     id: 'nhalias_funeral_wraps',
@@ -1678,7 +1680,7 @@ export const ZONE2_ITEMS: Record<string, ItemDef> = {
     weapon: { min: 16, max: 26, speed: 2.4 },
     stats: { str: 5, sta: 3 },
     sellValue: 1400,
-    requiredClass: WAR,
+    requiredClass: WEAPON_WAR,
   },
   nhalias_dirgeblade: {
     id: 'nhalias_dirgeblade',
@@ -1700,7 +1702,7 @@ export const ZONE2_ITEMS: Record<string, ItemDef> = {
     weapon: { min: 16, max: 27, speed: 3.0 },
     stats: { int: 6, spi: 3 },
     sellValue: 1400,
-    requiredClass: MAG,
+    requiredClass: WEAPON_MAG,
   },
   // --- Sunken Bastion blues (rare) ---
   mistcallers_edge: {
@@ -1712,7 +1714,7 @@ export const ZONE2_ITEMS: Record<string, ItemDef> = {
     weapon: { min: 14, max: 23, speed: 2.3 },
     stats: { str: 4, sta: 3 },
     sellValue: 1200,
-    requiredClass: WAR,
+    requiredClass: WEAPON_WAR,
   },
   vaels_mist_staff: {
     id: 'vaels_mist_staff',
@@ -1723,7 +1725,7 @@ export const ZONE2_ITEMS: Record<string, ItemDef> = {
     weapon: { min: 15, max: 26, speed: 3.0 },
     stats: { int: 6, spi: 3 },
     sellValue: 1200,
-    requiredClass: MAG,
+    requiredClass: WEAPON_MAG,
   },
   riptide_dirk: {
     id: 'riptide_dirk',

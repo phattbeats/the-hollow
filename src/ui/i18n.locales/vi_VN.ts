@@ -920,6 +920,18 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': 'Trang Nhật Ký Bị Xé',
   'entities.items.shrine_diary_page.flavorText':
     '...đếm bốn mươi ngày bằng ánh nến trước khi mất dấu. Bóng tối dưới đây không quên Người, dù Người đã quên nơi này. Nếu con diệc lượn thấp, hãy nói với Người Giữ Đền rằng bấc đèn vẫn còn cháy...',
+  'entities.items.keeper_coal.name': 'Hòn Than Không Bao Giờ Nguội',
+  'entities.items.worn_prayer_token.name': 'Thẻ Cầu Nguyện Mòn Vẹt',
+  'entities.items.worn_prayer_token.flavorText':
+    '...một mặt nhẵn bóng vì một ngón cái không phải của ta, đã mài cùng một rãnh nông ấy lên cả trăm chiếc như thế này trước chiếc này, hay ít ra đống thẻ dưới này muốn ngươi tin vậy. một ngón cái không mài mòn nổi trăm chiếc thẻ. nhưng nhiều ngón cái thì mài mòn được một rãnh...',
+  'entities.items.tally_shard.name': 'Mảnh Vỡ Khắc Vạch Đếm',
+  'entities.items.tally_shard.flavorText':
+    '...vạch khắc theo từng nhóm năm, khía sâu, gạch chéo mỗi lần đếm đủ vòng. hàng trăm nhóm năm trước khi những nét gạch dừng lại, và hàng cuối cùng chưa bao giờ được khắc xong...',
+  'entities.items.linen_pouch.name': 'Túi Vải Lanh',
+  'entities.items.travelers_knapsack.name': 'Balô Lữ Khách',
+  'entities.items.wolfhide_satchel.name': 'Túi Da Sói',
+  'entities.items.gravewoven_bag.name': 'Túi Dệt Từ Mộ',
+  'entities.items.mistcallers_duffel.name': 'Túi Du Lịch Của Mistcaller',
   'entities.items.footpad_jerkin.name': 'Áo Da Của Kẻ Cướp Đường',
   'entities.items.forest_pink_armor_plate.name': 'Hồng Rừng Xanh',
   'entities.items.frayed_prayer_beads.name': 'Tràng Hạt Cầu Nguyện Sờn Rách',
@@ -1216,6 +1228,11 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.old_cragmaw.name': 'Lão Cragmaw',
   'entities.mobs.old_greyjaw.name': 'Lão Greyjaw',
   'entities.mobs.pale_choir_acolyte.name': 'Tu Đồ Hợp Ca Nhợt Nhạt',
+  'entities.items.heartwood_splinter.name': 'Mảnh Lõi Gỗ',
+  'entities.items.heartwood_splinter.flavorText':
+    'Ấm khi chạm vào, rất lâu sau khi cái cây sinh ra nó đã ngừng chuyển động.',
+  'entities.items.bloomcrown_pauldrons.name': 'Giáp Vai Vương Miện Nở Hoa',
+  'entities.items.verdantguard_mantle.name': 'Áo Choàng Của Vệ Binh Xanh Tươi',
   'entities.mobs.palefeeder.name': 'Kẻ Ăn Nhợt Nhạt',
   'entities.mobs.pearlguard_sentinel.name': 'Vệ Binh Ngọc Trai',
   'entities.mobs.raised_bonewalker.name': 'Xác Xương Hồi Sinh',
