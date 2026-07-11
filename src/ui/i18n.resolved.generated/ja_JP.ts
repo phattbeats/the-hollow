@@ -1936,6 +1936,13 @@ export const ja_JP: EnTranslations = {
     "begin": "はじめる",
     "skip": "スキップ"
   },
+  "apiError": {
+    "crossSiteRejected": "クロスサイトリクエストは拒否されました。",
+    "notAuthenticated": "認証されていません。",
+    "readOnlyToken": "このトークンは読み取り専用です。",
+    "characterNotFound": "キャラクターが見つかりません。",
+    "rateLimited": "試行回数が多すぎます。1分待ってから再試行してください。"
+  },
   "skinEvent": {
     "title": "装いの宝箱",
     "subtitle": "{rank}の報酬を解除しました — それ以下のスキンを自由に選べます。",
