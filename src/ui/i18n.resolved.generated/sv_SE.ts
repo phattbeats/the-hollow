@@ -5407,7 +5407,7 @@ export const sv_SE: EnTranslations = {
         "name": "En pärla från bandoleret"
       },
       "keeper_coal": {
-        "name": "A Coal That Never Cooled"
+        "name": "Ett Kol Som Aldrig Svalnade"
       },
       "witness_root_cincture": {
         "name": "Vittnesrotens gördel"
@@ -5427,12 +5427,12 @@ export const sv_SE: EnTranslations = {
         "name": "Den Gröna Väktarens Mantel"
       },
       "worn_prayer_token": {
-        "name": "Worn Prayer Token",
-        "flavorText": "...smooth on one face from a thumb that isn't mine, worn the same shallow groove into a hundred more like it before this one, or so the pile down here would have you believe. one thumb doesn't wear a hundred tokens. a lot of thumbs wear one groove, though..."
+        "name": "Nött Bönepollett",
+        "flavorText": "...slät på ena sidan av en tumme som inte är min, som nött samma grunda fåra i hundra andra som denna före den här, eller så vill högen här nere få dig att tro. en tumme nöter inte hundra polletter. många tummar nöter dock en och samma fåra..."
       },
       "tally_shard": {
-        "name": "Tally-Marked Shard",
-        "flavorText": "...marks in fives, scratched deep, crossed each time the count came round. hundreds of fives before the crossing stops, and the last row was never finished..."
+        "name": "Skärva med Räknemärken",
+        "flavorText": "...märken i femtal, djupt ristade, överstrukna varje gång räkningen gick runt. hundratals femtal innan överstrykningarna upphör, och den sista raden blev aldrig färdig..."
       },
       "reliquary_plate_chest": {
         "name": "Relikvarievaktens ringbrynja"

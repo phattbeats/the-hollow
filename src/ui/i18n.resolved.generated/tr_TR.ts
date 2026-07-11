@@ -5407,7 +5407,7 @@ export const tr_TR: EnTranslations = {
         "name": "Fişeklikten Bir Boncuk"
       },
       "keeper_coal": {
-        "name": "A Coal That Never Cooled"
+        "name": "Hiç Soğumayan Bir Kor"
       },
       "witness_root_cincture": {
         "name": "Tanık Kök'ün Kemeri"
@@ -5427,12 +5427,12 @@ export const tr_TR: EnTranslations = {
         "name": "Yeşil Bekçinin Pelerini"
       },
       "worn_prayer_token": {
-        "name": "Worn Prayer Token",
-        "flavorText": "...smooth on one face from a thumb that isn't mine, worn the same shallow groove into a hundred more like it before this one, or so the pile down here would have you believe. one thumb doesn't wear a hundred tokens. a lot of thumbs wear one groove, though..."
+        "name": "Yıpranmış Dua Nişanı",
+        "flavorText": "...bir yüzü benim olmayan bir başparmakla düzleşmiş, bundan önce bunun gibi yüz tanesine aynı sığ oluğu açmış, ya da aşağıdaki yığın öyle inanmanı istiyor. tek başparmak yüz nişanı aşındırmaz. ama çok sayıda başparmak tek bir oluğu aşındırır..."
       },
       "tally_shard": {
-        "name": "Tally-Marked Shard",
-        "flavorText": "...marks in fives, scratched deep, crossed each time the count came round. hundreds of fives before the crossing stops, and the last row was never finished..."
+        "name": "Çetele İşaretli Parça",
+        "flavorText": "...beşerli işaretler, derin kazınmış, sayım her döndüğünde üstü çizilmiş. çizmeler durmadan önce yüzlerce beşli, ve son sıra hiç bitirilmemiş..."
       },
       "reliquary_plate_chest": {
         "name": "Emanetlik Muhafızı Zırhı"

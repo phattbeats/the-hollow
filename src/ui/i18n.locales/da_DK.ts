@@ -904,6 +904,13 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': 'Iturevet Dagbogsside',
   'entities.items.shrine_diary_page.flavorText':
     '...talte fyrre dage ved stearinlys, før jeg mistede tråden. Mørket hernede glemmer Ham ikke, selvom Han har glemt dette sted. Hvis hejren kredser lavt, så sig til Degnen at vægen stadig brænder...',
+  'entities.items.keeper_coal.name': 'Et Kul Der Aldrig Kølede Af',
+  'entities.items.worn_prayer_token.name': 'Slidt Bedemønt',
+  'entities.items.worn_prayer_token.flavorText':
+    '...glat på den ene side af en tommelfinger, der ikke er min, som sled den samme lave rille i hundrede andre som denne før den her, eller det vil bunken hernede i hvert fald have dig til at tro. én tommelfinger slider ikke hundrede mønter. mange tommelfingre slider til gengæld én rille...',
+  'entities.items.tally_shard.name': 'Skår med Tællemærker',
+  'entities.items.tally_shard.flavorText':
+    '...mærker i femmere, ridset dybt, streget over hver gang tællingen nåede rundt. hundredvis af femmere før overstregningerne hører op, og den sidste række blev aldrig gjort færdig...',
   'entities.items.linen_pouch.name': 'Lærredspose',
   'entities.items.travelers_knapsack.name': 'Rejsendes Rygsæk',
   'entities.items.wolfhide_satchel.name': 'Ulveskinds Taske',

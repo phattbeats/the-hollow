@@ -920,6 +920,13 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': 'Trang Nhật Ký Bị Xé',
   'entities.items.shrine_diary_page.flavorText':
     '...đếm bốn mươi ngày bằng ánh nến trước khi mất dấu. Bóng tối dưới đây không quên Người, dù Người đã quên nơi này. Nếu con diệc lượn thấp, hãy nói với Người Giữ Đền rằng bấc đèn vẫn còn cháy...',
+  'entities.items.keeper_coal.name': 'Hòn Than Không Bao Giờ Nguội',
+  'entities.items.worn_prayer_token.name': 'Thẻ Cầu Nguyện Mòn Vẹt',
+  'entities.items.worn_prayer_token.flavorText':
+    '...một mặt nhẵn bóng vì một ngón cái không phải của ta, đã mài cùng một rãnh nông ấy lên cả trăm chiếc như thế này trước chiếc này, hay ít ra đống thẻ dưới này muốn ngươi tin vậy. một ngón cái không mài mòn nổi trăm chiếc thẻ. nhưng nhiều ngón cái thì mài mòn được một rãnh...',
+  'entities.items.tally_shard.name': 'Mảnh Vỡ Khắc Vạch Đếm',
+  'entities.items.tally_shard.flavorText':
+    '...vạch khắc theo từng nhóm năm, khía sâu, gạch chéo mỗi lần đếm đủ vòng. hàng trăm nhóm năm trước khi những nét gạch dừng lại, và hàng cuối cùng chưa bao giờ được khắc xong...',
   'entities.items.linen_pouch.name': 'Túi Vải Lanh',
   'entities.items.travelers_knapsack.name': 'Balô Lữ Khách',
   'entities.items.wolfhide_satchel.name': 'Túi Da Sói',

@@ -5407,7 +5407,7 @@ export const da_DK: EnTranslations = {
         "name": "En Perle Fra Bandoleret"
       },
       "keeper_coal": {
-        "name": "A Coal That Never Cooled"
+        "name": "Et Kul Der Aldrig Kølede Af"
       },
       "witness_root_cincture": {
         "name": "Vidnerods Bælte"
@@ -5427,12 +5427,12 @@ export const da_DK: EnTranslations = {
         "name": "Frodig Vogterkappe"
       },
       "worn_prayer_token": {
-        "name": "Worn Prayer Token",
-        "flavorText": "...smooth on one face from a thumb that isn't mine, worn the same shallow groove into a hundred more like it before this one, or so the pile down here would have you believe. one thumb doesn't wear a hundred tokens. a lot of thumbs wear one groove, though..."
+        "name": "Slidt Bedemønt",
+        "flavorText": "...glat på den ene side af en tommelfinger, der ikke er min, som sled den samme lave rille i hundrede andre som denne før den her, eller det vil bunken hernede i hvert fald have dig til at tro. én tommelfinger slider ikke hundrede mønter. mange tommelfingre slider til gengæld én rille..."
       },
       "tally_shard": {
-        "name": "Tally-Marked Shard",
-        "flavorText": "...marks in fives, scratched deep, crossed each time the count came round. hundreds of fives before the crossing stops, and the last row was never finished..."
+        "name": "Skår med Tællemærker",
+        "flavorText": "...mærker i femmere, ridset dybt, streget over hver gang tællingen nåede rundt. hundredvis af femmere før overstregningerne hører op, og den sidste række blev aldrig gjort færdig..."
       },
       "reliquary_plate_chest": {
         "name": "Relikvievogterens Brynje"

@@ -5407,7 +5407,7 @@ export const id_ID: EnTranslations = {
         "name": "Sebuah Manik Dari Bandolier"
       },
       "keeper_coal": {
-        "name": "A Coal That Never Cooled"
+        "name": "Arang yang Tak Pernah Dingin"
       },
       "witness_root_cincture": {
         "name": "Sabuk Akar Saksi"
@@ -5427,12 +5427,12 @@ export const id_ID: EnTranslations = {
         "name": "Jubah Penjaga Zamrud"
       },
       "worn_prayer_token": {
-        "name": "Worn Prayer Token",
-        "flavorText": "...smooth on one face from a thumb that isn't mine, worn the same shallow groove into a hundred more like it before this one, or so the pile down here would have you believe. one thumb doesn't wear a hundred tokens. a lot of thumbs wear one groove, though..."
+        "name": "Token Doa Usang",
+        "flavorText": "...halus di satu sisi oleh ibu jari yang bukan milikku, yang mengikis alur dangkal yang sama pada seratus token lain seperti ini sebelum yang ini, atau begitulah tumpukan di bawah sini ingin kaupercaya. satu ibu jari tidak mengikis seratus token. tapi banyak ibu jari mengikis satu alur yang sama..."
       },
       "tally_shard": {
-        "name": "Tally-Marked Shard",
-        "flavorText": "...marks in fives, scratched deep, crossed each time the count came round. hundreds of fives before the crossing stops, and the last row was never finished..."
+        "name": "Pecahan Bertanda Hitungan",
+        "flavorText": "...tanda dalam kelompok lima, digores dalam, dicoret tiap kali hitungan genap. ratusan kelompok lima sebelum coretan berhenti, dan baris terakhir tak pernah selesai..."
       },
       "reliquary_plate_chest": {
         "name": "Baju Zirah Penjaga Relikuari"
