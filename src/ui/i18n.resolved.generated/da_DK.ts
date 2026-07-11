@@ -5589,31 +5589,31 @@ export const da_DK: EnTranslations = {
         "name": "Mystisk Kosmetisk Skrin"
       },
       "flint_amber_pick": {
-        "name": "Flint Amber Pick"
+        "name": "Flint Ravhakke"
       },
       "bonewood_amber_pick": {
-        "name": "Bonewood Amber Pick"
+        "name": "Beentræ Ravhakke"
       },
       "starleaf_amber_pick": {
-        "name": "Starleaf Amber Pick"
+        "name": "Stjerneblad Ravhakke"
       },
       "flint_bark_axe": {
-        "name": "Flint Bark Axe"
+        "name": "Flint Barkøkse"
       },
       "bonewood_bark_axe": {
-        "name": "Bonewood Bark Axe"
+        "name": "Beentræ Barkøkse"
       },
       "starleaf_bark_axe": {
-        "name": "Starleaf Bark Axe"
+        "name": "Stjerneblad Barkøkse"
       },
       "flint_spore_sickle": {
-        "name": "Flint Spore Sickle"
+        "name": "Flint Sporesegl"
       },
       "bonewood_spore_sickle": {
-        "name": "Bonewood Spore Sickle"
+        "name": "Beentræ Sporesegl"
       },
       "starleaf_spore_sickle": {
-        "name": "Starleaf Spore Sickle"
+        "name": "Stjerneblad Sporesegl"
       },
       "deathless_heartwood": {
         "name": "Kerneved fra Den Udødelige Krone"

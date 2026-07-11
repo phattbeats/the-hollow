@@ -5486,7 +5486,7 @@ export const ja_JP: EnTranslations = {
       },
       "first_cutting": {
         "name": "挿し木",
-        "flavorText": "A slip of living green from Brother Greenpaw, wrapped in damp moss. Once a homestead plot can be edited, this is the first thing you plant."
+        "flavorText": "グリーンポー修道士から譲り受けた、生きた緑の挿し木で、湿った苔にくるまれている。ホームステッドの区画を編集できるようになったら、最初に植えるのはこれだ。"
       },
       "greenpaw_bead": {
         "name": "弾帯の数珠玉"
@@ -5759,7 +5759,7 @@ export const ja_JP: EnTranslations = {
         "name": "助祭ヴォス"
       },
       "training_dummy": {
-        "name": "Training Dummy"
+        "name": "訓練用ダミー"
       },
       "ridge_stalker": {
         "name": "尾根の追跡者"
@@ -5891,7 +5891,7 @@ export const ja_JP: EnTranslations = {
         "name": "侍祭テッサ"
       },
       "boarball_ball": {
-        "name": "Boarball"
+        "name": "ボアボール"
       },
       "ironvein_foreman": {
         "name": "鉄脈の現場監督"

@@ -5589,31 +5589,31 @@ export const nl_NL: EnTranslations = {
         "name": "Mysterieuze Cosmetische Buidel"
       },
       "flint_amber_pick": {
-        "name": "Flint Amber Pick"
+        "name": "Vuurstenen Amberhouweel"
       },
       "bonewood_amber_pick": {
-        "name": "Bonewood Amber Pick"
+        "name": "Beenhouten Amberhouweel"
       },
       "starleaf_amber_pick": {
-        "name": "Starleaf Amber Pick"
+        "name": "Sterrenbladen Amberhouweel"
       },
       "flint_bark_axe": {
-        "name": "Flint Bark Axe"
+        "name": "Vuurstenen Schorsbijl"
       },
       "bonewood_bark_axe": {
-        "name": "Bonewood Bark Axe"
+        "name": "Beenhouten Schorsbijl"
       },
       "starleaf_bark_axe": {
-        "name": "Starleaf Bark Axe"
+        "name": "Sterrenbladen Schorsbijl"
       },
       "flint_spore_sickle": {
-        "name": "Flint Spore Sickle"
+        "name": "Vuurstenen Sporensikkel"
       },
       "bonewood_spore_sickle": {
-        "name": "Bonewood Spore Sickle"
+        "name": "Beenhouten Sporensikkel"
       },
       "starleaf_spore_sickle": {
-        "name": "Starleaf Spore Sickle"
+        "name": "Sterrenbladen Sporensikkel"
       },
       "deathless_heartwood": {
         "name": "Kernhout van de Dodeloze Kroon"

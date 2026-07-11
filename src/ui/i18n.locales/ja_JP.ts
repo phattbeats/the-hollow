@@ -2345,6 +2345,8 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.ironvein_foreman.name': '鉄脈の現場監督',
   'entities.mobs.ironvein_sapper.name': '鉄脈の爆破兵',
   'entities.mobs.heartwood_colossus.name': '心材の巨像',
+  'entities.mobs.training_dummy.name': '訓練用ダミー',
+  'entities.mobs.boarball_ball.name': 'ボアボール',
   'entities.mobs.marrowlord_varkas.name': '髄王ヴァーカス',
   'entities.mobs.mirejaw_frenzy.name': 'マイアジョーの狂魚',
   'entities.mobs.mirejaw_the_ravenous.name': '貪るマイアジョー',
@@ -4796,6 +4798,8 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': '洞窟の肉片',
   'entities.items.emberbulb.name': '残り火の球根',
   'entities.items.first_cutting.name': '挿し木',
+  'entities.items.first_cutting.flavorText':
+    'グリーンポー修道士から譲り受けた、生きた緑の挿し木で、湿った苔にくるまれている。ホームステッドの区画を編集できるようになったら、最初に植えるのはこれだ。',
   'entities.items.greenpaw_bead.name': '弾帯の数珠玉',
   'entities.items.keeper_coal.name': '冷めることのない炭',
   'entities.items.witness_root_cincture.name': '証しの根の帯紐',

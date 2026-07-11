@@ -5589,31 +5589,31 @@ export const pl_PL: EnTranslations = {
         "name": "Tajemnicza skrytka kosmetyczna"
       },
       "flint_amber_pick": {
-        "name": "Flint Amber Pick"
+        "name": "Krzemienny kilof do bursztynu"
       },
       "bonewood_amber_pick": {
-        "name": "Bonewood Amber Pick"
+        "name": "Kościodrzewny kilof do bursztynu"
       },
       "starleaf_amber_pick": {
-        "name": "Starleaf Amber Pick"
+        "name": "Gwiezdnolistny kilof do bursztynu"
       },
       "flint_bark_axe": {
-        "name": "Flint Bark Axe"
+        "name": "Krzemienna siekiera do kory"
       },
       "bonewood_bark_axe": {
-        "name": "Bonewood Bark Axe"
+        "name": "Kościodrzewna siekiera do kory"
       },
       "starleaf_bark_axe": {
-        "name": "Starleaf Bark Axe"
+        "name": "Gwiezdnolistna siekiera do kory"
       },
       "flint_spore_sickle": {
-        "name": "Flint Spore Sickle"
+        "name": "Krzemienny sierp do zarodników"
       },
       "bonewood_spore_sickle": {
-        "name": "Bonewood Spore Sickle"
+        "name": "Kościodrzewny sierp do zarodników"
       },
       "starleaf_spore_sickle": {
-        "name": "Starleaf Spore Sickle"
+        "name": "Gwiezdnolistny sierp do zarodników"
       },
       "deathless_heartwood": {
         "name": "Twardziel Nieśmiertelnej Korony"

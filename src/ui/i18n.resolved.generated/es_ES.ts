@@ -5589,31 +5589,31 @@ export const es_ES: EnTranslations = {
         "name": "Alijo cosmético misterioso"
       },
       "flint_amber_pick": {
-        "name": "Flint Amber Pick"
+        "name": "Pico de ámbar de pedernal"
       },
       "bonewood_amber_pick": {
-        "name": "Bonewood Amber Pick"
+        "name": "Pico de ámbar de madera de hueso"
       },
       "starleaf_amber_pick": {
-        "name": "Starleaf Amber Pick"
+        "name": "Pico de ámbar de hoja estelar"
       },
       "flint_bark_axe": {
-        "name": "Flint Bark Axe"
+        "name": "Hacha de corteza de pedernal"
       },
       "bonewood_bark_axe": {
-        "name": "Bonewood Bark Axe"
+        "name": "Hacha de corteza de madera de hueso"
       },
       "starleaf_bark_axe": {
-        "name": "Starleaf Bark Axe"
+        "name": "Hacha de corteza de hoja estelar"
       },
       "flint_spore_sickle": {
-        "name": "Flint Spore Sickle"
+        "name": "Hoz de esporas de pedernal"
       },
       "bonewood_spore_sickle": {
-        "name": "Bonewood Spore Sickle"
+        "name": "Hoz de esporas de madera de hueso"
       },
       "starleaf_spore_sickle": {
-        "name": "Starleaf Spore Sickle"
+        "name": "Hoz de esporas de hoja estelar"
       },
       "deathless_heartwood": {
         "name": "Duramen de la Corona Inmortal"

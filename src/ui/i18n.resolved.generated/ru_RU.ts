@@ -5486,7 +5486,7 @@ export const ru_RU: EnTranslations = {
       },
       "first_cutting": {
         "name": "Черенок",
-        "flavorText": "A slip of living green from Brother Greenpaw, wrapped in damp moss. Once a homestead plot can be edited, this is the first thing you plant."
+        "flavorText": "Живой зеленый черенок от брата Гринпо, завернутый во влажный мох. Как только надел усадьбы станет доступен для редактирования, это будет первым, что вы посадите."
       },
       "greenpaw_bead": {
         "name": "Бусина с бандольеры"
@@ -5759,7 +5759,7 @@ export const ru_RU: EnTranslations = {
         "name": "Дьякон Восс"
       },
       "training_dummy": {
-        "name": "Training Dummy"
+        "name": "Тренировочный манекен"
       },
       "ridge_stalker": {
         "name": "Хребтовый охотник"
@@ -5891,7 +5891,7 @@ export const ru_RU: EnTranslations = {
         "name": "Послушница Тесса"
       },
       "boarball_ball": {
-        "name": "Boarball"
+        "name": "Боарбол"
       },
       "ironvein_foreman": {
         "name": "Прораб Железной жилы"

@@ -2248,6 +2248,8 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.ironvein_foreman.name': '鐵脈工頭',
   'entities.mobs.ironvein_sapper.name': '鐵脈爆破手',
   'entities.mobs.heartwood_colossus.name': '心材巨像',
+  'entities.mobs.training_dummy.name': '訓練假人',
+  'entities.mobs.boarball_ball.name': '野豬球',
   'entities.mobs.marrowlord_varkas.name': '髓王瓦爾卡斯',
   'entities.mobs.mirejaw_frenzy.name': '泥顎狂魚',
   'entities.mobs.mirejaw_the_ravenous.name': '貪食者泥顎',
@@ -4560,6 +4562,8 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': '洞穴肉粒',
   'entities.items.emberbulb.name': '餘燼球莖',
   'entities.items.first_cutting.name': '插條',
+  'entities.items.first_cutting.flavorText':
+    '一段來自灰爪修士的鮮活綠枝，用濕苔蘚包裹著。等家園地塊可以編輯後，這是你要種下的第一樣東西。',
   'entities.items.greenpaw_bead.name': '彈藥帶上的一顆唸珠',
   'entities.items.keeper_coal.name': '一塊永不冷卻的炭',
   'entities.items.witness_root_cincture.name': '見證根的束帶',

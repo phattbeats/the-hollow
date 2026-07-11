@@ -2340,6 +2340,8 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.ironvein_foreman.name': '철맥 감독관',
   'entities.mobs.ironvein_sapper.name': '철맥 폭파병',
   'entities.mobs.heartwood_colossus.name': '심재 거상',
+  'entities.mobs.training_dummy.name': '훈련용 인형',
+  'entities.mobs.boarball_ball.name': '보어볼',
   'entities.mobs.marrowlord_varkas.name': '골수군주 바르카스',
   'entities.mobs.mirejaw_frenzy.name': '마이어죠 광란어',
   'entities.mobs.mirejaw_the_ravenous.name': '굶주린 마이어죠',
@@ -4808,6 +4810,8 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': '동굴 고기 조각',
   'entities.items.emberbulb.name': '불씨구근',
   'entities.items.first_cutting.name': '꺾꽂이',
+  'entities.items.first_cutting.flavorText':
+    '그린포 수사에게서 받은, 젖은 이끼로 감싼 살아있는 초록빛 꺾꽂이. 홈스테드 부지를 편집할 수 있게 되면 가장 먼저 심게 될 것이다.',
   'entities.items.greenpaw_bead.name': '탄띠에서 나온 염주 하나',
   'entities.items.keeper_coal.name': '결코 식지 않는 숯덩이',
   'entities.items.witness_root_cincture.name': '증인뿌리의 허리띠',
