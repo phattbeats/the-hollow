@@ -236,4 +236,51 @@ describe('gather node harvest (PHAA-505): per-player, everyone gets their own', 
     };
     expect(run()).toEqual(run());
   });
+
+  it('spends exactly one rng draw on a granted harvest and none on any denial path (PHAA-506)', () => {
+    // The rarity roll pulls from the SHARED sim rng, so a draw on a denial
+    // would advance the whole sim's stream and desync every downstream roll.
+    // harvestNode dispatches synchronously and nothing ticks inside this
+    // bracket, so every counted draw belongs to the harvest path.
+    let draws = 0;
+    (sim as unknown as { rng: { setObserver(fn: () => void): void } }).rng.setObserver(() => {
+      draws++;
+    });
+
+    sim.harvestNode(NODE_ID, pid); // granted: exactly the one rarity draw
+    expect(draws).toBe(1);
+
+    draws = 0;
+    sim.harvestNode(NODE_ID, pid); // denied: not respawned for this player yet
+    expect(draws).toBe(0);
+    sim.harvestNode('no_such_node_id', pid); // denied: unknown node
+    expect(draws).toBe(0);
+    const p = sim.entities.get(pid)!;
+    p.pos.x = GATHER_NODES[0].pos.x + 100;
+    p.prevPos = { ...p.pos };
+    sim.harvestNode(NODE_ID, pid); // denied: too far away
+    expect(draws).toBe(0);
+    p.dead = true;
+    sim.harvestNode(NODE_ID, pid); // denied: dead, the first guard in the chain
+    expect(draws).toBe(0);
+  });
+
+  it('a dead player triggers no rarity roll even when their node timer is ready (PHAA-506 ghost gate)', () => {
+    // Upstream regression guard (ghost_dead_gate): the dead check sits before
+    // resolveHarvest, so a dead or released-spirit player can neither harvest
+    // nor advance the shared rng stream, even with a fresh (always-ready)
+    // per-player timer for the node.
+    const p = sim.entities.get(pid)!;
+    p.dead = true;
+    expect(sim.nodeHarvestableByMeFor(NODE_ID, pid)).toBe(true);
+    let draws = 0;
+    (sim as unknown as { rng: { setObserver(fn: () => void): void } }).rng.setObserver(() => {
+      draws++;
+    });
+    const before = sim.countItem(ENTRY.itemId, pid);
+    sim.harvestNode(NODE_ID, pid);
+    expect(sim.countItem(ENTRY.itemId, pid)).toBe(before);
+    expect(sim.nodeHarvestableByMeFor(NODE_ID, pid)).toBe(true);
+    expect(draws).toBe(0);
+  });
 });
