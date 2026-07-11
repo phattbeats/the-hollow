@@ -1472,7 +1472,7 @@ export const pl_PL: EnTranslations = {
     },
     "hollowPage": {
       "heading": "The Hollow",
-      "intro": "Past the shrine gate lies the vase: the clearing every new hero wakes into, and always returns to. It is shared ground, one hub for the whole realm, home to your first faces, your first quests, and the only home you truly need.",
+      "intro": "Past the shrine gate lies the vase: the clearing every new hero wakes into, and always returns to. It is shared ground, one hub for the whole realm, home to your first faces, your first quests, and your first home.",
       "greeting": "you're back, that's a blessin'... got a couple sacred matters queued up, same wavelength as last time. c'mere a minute...",
       "greeter": "Brother Greenpaw, at the vase",
       "vaseHeading": "The vase",
@@ -1483,7 +1483,7 @@ export const pl_PL: EnTranslations = {
       "greenpawBody": "The vase's sole caretaker and the one who hands out its earliest errands. Self-appointed and the first to admit it, he is the closest thing the Hollow has to a guide.",
       "yarrowBody": "Keeper of the second calling: every class can learn a profession from her, mirrored across the vase from Greenpaw.",
       "questsHeading": "Your first errands",
-      "questsBody": "Greenpaw's own chain of quests is the very first thing you do: four short errands that teach the vase's rhythm before sending you on into the wider Hollow.",
+      "questsBody": "Greenpaw's own chain of quests comes first: four short errands that teach the vase's rhythm before sending you on into the wider Hollow.",
       "questBurnsBody": "A cave-grown bulb the vase burns for light, gathered a handful at a time.",
       "questFillsBody": "A cave-fed morsel that answers a quieter hunger, gathered the same way.",
       "questWavelengthBody": "An introduction to the vase's second calling, and to feeding it yourself.",

@@ -702,7 +702,7 @@ export const guideStrings = {
   hollowPage: {
     heading: 'The Hollow',
     intro:
-      'Past the shrine gate lies the vase: the clearing every new hero wakes into, and always returns to. It is shared ground, one hub for the whole realm, home to your first faces, your first quests, and the only home you truly need.',
+      'Past the shrine gate lies the vase: the clearing every new hero wakes into, and always returns to. It is shared ground, one hub for the whole realm, home to your first faces, your first quests, and your first home.',
     greeting:
       "you're back, that's a blessin'... got a couple sacred matters queued up, same wavelength as last time. c'mere a minute...",
     greeter: 'Brother Greenpaw, at the vase',
@@ -724,7 +724,7 @@ export const guideStrings = {
 
     questsHeading: 'Your first errands',
     questsBody:
-      "Greenpaw's own chain of quests is the very first thing you do: four short errands that teach the vase's rhythm before sending you on into the wider Hollow.",
+      "Greenpaw's own chain of quests comes first: four short errands that teach the vase's rhythm before sending you on into the wider Hollow.",
     questBurnsBody: 'A cave-grown bulb the vase burns for light, gathered a handful at a time.',
     questFillsBody: 'A cave-fed morsel that answers a quieter hunger, gathered the same way.',
     questWavelengthBody:
@@ -812,7 +812,7 @@ export const guideStrings = {
       'Party members nearby share kill and objective credit, so questing together is faster, never slower. You can also share a quest with your group: post it to chat as a clickable link with the /share command, and any nearby member who qualifies can pick up the same quest in one click.',
     storyTitle: 'A thread runs through it all',
     storyBody:
-      "Your very first thread is Brother Greenpaw's own short chain, right at the vase. Beyond it lie the quiet errands of the Hollow Reaches, and further out still, a longer tale of a death-cult marching from valley to peak, real and finished, but not the road a new hero walks yet. See the vase's own quests on the Hollow page, and the rest laid out below as what is coming.",
+      "Your first thread is Brother Greenpaw's own short chain, right at the vase; see it laid out on the Hollow page. Beyond it lie the quiet errands of the Hollow Reaches, and further out still, a longer tale of a death-cult marching from valley to peak, laid out below as what is coming.",
     soloNote:
       "The main story is soloable right up to each chapter's finale, which is a five-player dungeon.",
     sagaGateNote:
