@@ -225,6 +225,19 @@ describe('casting_lifecycle: spell queue', () => {
     expect(p.queuedCastAbility).toBeNull();
     expect(p.castingAbility).toBeNull();
   });
+
+  it('starting to fish drops a held queued press (fishing never fires the queue, so it must not strand)', () => {
+    const { sim, p, meta } = makeSim('mage', 12);
+    // Park a queued press by hand, as a GCD-held slot would (castingAbility null,
+    // slot truthy). Fishing re-parks castingAbility without going through
+    // fireQueuedCast, so without the startFishing clear this would misfire later.
+    p.queuedCastAbility = 'fireball';
+    p.castingAbility = null;
+    (sim as any).hasFishableWaterAhead = () => true; // satisfy the water guard for the unit test
+    (sim as any).startFishing(p, meta);
+    expect(p.castingAbility).toBe('fishing');
+    expect(p.queuedCastAbility).toBeNull(); // dropped, not stranded onto the next real cast
+  });
 });
 
 describe('casting_lifecycle: determinism', () => {
