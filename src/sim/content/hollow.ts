@@ -688,6 +688,20 @@ export const HOLLOW_ITEMS: Record<string, ItemDef> = {
     sellValue: 0,
     questId: 'q_keep_him_lit',
   },
+  // PHAA-558: the end-of-line keepsake for Sister Shade's player-facing arc
+  // (src/sim/content/hollow_zone.ts). Reward-INVERTED by design: no stats, ever,
+  // on Shade's line (Board-accepted brief, doc shade-brief rev 1e9abd48). Same
+  // "it does nothing, it only remembers" keepsake convention as greenpaw_bead /
+  // keeper_coal above. Granted at the end of the currently-shippable arc (the
+  // q_someone_your_own_size turn-in); when the gated finale q_the_watering_can
+  // lands behind PHAA-543, the charm can move to that turn-in (kept adjustable).
+  willow_sprig: {
+    id: 'willow_sprig',
+    name: 'A Willow Sprig',
+    kind: 'quest',
+    sellValue: 0,
+    questId: 'q_someone_your_own_size',
+  },
   // PHAA-433: the Witness-Root's rare-chance drop. Class-neutral single-stat
   // budget, same convention as the other class-neutral pieces (cf. items.ts's
   // cryptbone_helm). Item level derives automatically from the boss's own

@@ -2789,6 +2789,35 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.verger_zebediah.greeting':
     '司事澤比迪亞。我為外域記著一本曆書，至少一直在努力記。根穴這一季本該休養，可野豬沒讀那張告示。留神腳下的浮土，還有，別碰我的登記簿。',
   'entities.npcs.sexton_faddick.name': '守墓人法迪克',
+  'entities.items.willow_sprig.name': '一段柳枝',
+  'entities.npcs.shade.name': '莎德',
+  'entities.npcs.shade.title': '一位旅人',
+  'entities.npcs.shade.greeting':
+    '哦，是你啊。想坐就坐吧，水又不會跑。今天吃過了嗎？你該吃點東西。',
+  'entities.npcs.shade.introLines.0':
+    '你撞見我做雜活了。別在意這桶，不過是水而已。總有些東西需要澆上一點水。',
+  'entities.npcs.shade.introLines.1':
+    '我？沒什麼好說的。叫我莎德。我四處走走，哪裡缺人手就搭把手。你看著累壞了。想的話，就坐一會兒吧。',
+  'entities.npcs.gate_bard.name': '吟遊詩人哈爾登',
+  'entities.npcs.gate_bard.title': '門前的賣藝人',
+  'entities.npcs.gate_bard.greeting':
+    '一枚銅板換一首歌？不要？沒關係，多數日子都是不要。我為這道門彈唱，可這門從沒掏過一次腰包。',
+  'entities.npcs.goodwife_orla.name': '奧拉',
+  'entities.npcs.goodwife_orla.title': '曾屬根穴',
+  'entities.npcs.goodwife_orla.greeting':
+    '你可以坐下。大多數人只是走過去。司事早就把我的名字從冊子上劃掉了，一個被劃掉的名字，學會了安靜，好讓誰都不必想起它還在這兒。',
+  'entities.quests.q_have_you_eaten.title': '你吃過了嗎？',
+  'entities.quests.q_have_you_eaten.text':
+    '門口有個吟遊詩人，靠銅板過活，銅板來了才有飯吃，而銅板難得來。我這兒有一碗熱的，還多出一份。替我給他送去，好嗎？別告訴他這是可憐他。就說這是多出來的。',
+  'entities.quests.q_have_you_eaten.completion':
+    '你回來了。他吃了嗎？很好。那就好。那你呢？……你沒吃，我看得出來。那就坐下吧。要成為一個好人，不必偉大。偉大不是善良。吃吧。',
+  'entities.quests.q_have_you_eaten.objectives.0.label': '把熱飯送給吟遊詩人',
+  'entities.quests.q_someone_your_own_size.title': '找個和你一般大的',
+  'entities.quests.q_someone_your_own_size.text':
+    '根穴附近有個女人，這世道待她不公。她的名字被從冊子上劃掉了，人們對待一個被劃掉的名字，就當它聽不見。去陪她坐一會兒吧。你不必去修補什麼。只要做一個和她一般大的人就好。',
+  'entities.quests.q_someone_your_own_size.completion':
+    '你留下來了。她不會說這有什麼要緊，可它要緊，我向你保證它要緊。來，這個給你。一段柳枝，取自我很喜歡的一棵柳樹。它什麼用也沒有。它只記得，在沒人逼你的時候，你依然選擇了善良。',
+  'entities.quests.q_someone_your_own_size.objectives.0.label': '陪奧拉坐了一會兒',
   'entities.npcs.sexton_faddick.title': '流浪的守護者',
   'entities.npcs.sexton_faddick.greeting':
     '法迪克。哪裡還有神龕需要守墓人，我就在哪兒守。我從不在一處久留，只管看顧。狼群夜夜繞著閒田莊的羊群打轉，繞得久了，便摸清了所繞之物的形狀。最好讓牠一直只是群羊。',

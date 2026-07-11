@@ -2914,6 +2914,35 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.verger_zebediah.greeting':
     '堂守のゼベダイアだ。この外域を暦に沿って管理しておる、少なくとも努めてはおる。根の空洞は今季、休ませると記しておいた。だが猪どもは告示を読まん。緩んだ土に気をつけ、台帳には触れるな。',
   'entities.npcs.sexton_faddick.name': '墓守のファディック',
+  'entities.items.willow_sprig.name': '柳の小枝一本',
+  'entities.npcs.shade.name': 'シェイド',
+  'entities.npcs.shade.title': '旅の者',
+  'entities.npcs.shade.greeting':
+    'ああ、あなたね。よければ座って、水は逃げやしないから。今日はもう食べた？食べなきゃだめよ。',
+  'entities.npcs.shade.introLines.0':
+    '雑用の最中を見られてしまったわね。この如雨露は気にしないで、ただの水よ。少し水をやりたいものは、いつだってあるものだから。',
+  'entities.npcs.shade.introLines.1':
+    '私？名乗るほどの者じゃないわ。シェイド。歩いて、手の足りないところで手を貸すだけ。ずいぶん疲れて見えるわね。よければ、少し座っていって。',
+  'entities.npcs.gate_bard.name': '吟遊詩人ハルデン',
+  'entities.npcs.gate_bard.title': '門前の弾き手',
+  'entities.npcs.gate_bard.greeting':
+    '一曲、銅貨一枚でどう？いらない？いいのよ、たいていの日はいらないと言われる。私はこの門のために弾くけれど、門は一度も財布に手を伸ばしてくれたことがない。',
+  'entities.npcs.goodwife_orla.name': 'オルラ',
+  'entities.npcs.goodwife_orla.title': 'かつて根の空洞の者',
+  'entities.npcs.goodwife_orla.greeting':
+    '座っていいのよ。たいていの人は通り過ぎる。堂守はずっと前に私の名を台帳から消したの。消された名は、静かにしていることを覚える。まだここにいると、誰にも思い出させないように。',
+  'entities.quests.q_have_you_eaten.title': 'もう食べた？',
+  'entities.quests.q_have_you_eaten.text':
+    '門のところに、銅貨で暮らす吟遊詩人がいてね、銅貨が入ったときにだけ食べる。そしてそれは、めったに入らない。温かいものが一杯、余分にあるの。彼のところへ届けてくれる？同情だなんて言わないで。余ったものだ、と言って。',
+  'entities.quests.q_have_you_eaten.completion':
+    'おかえり。彼は食べた？よかった。それでいいの。あなたは？……食べていないわね、見ればわかる。なら、座って。善いものであるのに、偉くある必要はないの。偉さは優しさではないのだから。さあ、食べて。',
+  'entities.quests.q_have_you_eaten.objectives.0.label': '温かい食事を吟遊詩人へ届けた',
+  'entities.quests.q_someone_your_own_size.title': '身の丈に合う相手を',
+  'entities.quests.q_someone_your_own_size.text':
+    '根の空洞の近くに、世に冷たくされてきた女がいるの。彼女の名は台帳から消され、人は消された名を、まるで聞こえないもののように扱う。しばらく、そばに座ってあげて。何かを直す必要はないの。ただ、彼女と同じ身の丈でいてあげて。',
+  'entities.quests.q_someone_your_own_size.completion':
+    'いてくれたのね。彼女は大したことじゃないと言うでしょう。でも大したことだった、本当よ。さあ、これをあなたに。私が好きな柳の小枝。何の役にも立たないわ。ただ、誰にも強いられていないのに優しくしてくれたことを、覚えているだけ。',
+  'entities.quests.q_someone_your_own_size.objectives.0.label': 'オルラのそばに少し座った',
   'entities.npcs.sexton_faddick.title': '放浪の番人',
   'entities.npcs.sexton_faddick.greeting':
     'ファディックだ。まだ守るべき祠があるうちは、墓守を務める。俺はどこにも留まらん、ただ守るだけだ。毎晩、狼が休閑地の群れの周りを回っておる。長く回れば、回っている相手の形を覚えるものだ。あれはただの群れのままでいてもらいたい。',

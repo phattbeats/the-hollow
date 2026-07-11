@@ -5430,6 +5430,9 @@ export const da_DK: EnTranslations = {
       "keeper_coal": {
         "name": "Et Kul Der Aldrig Kølede Af"
       },
+      "willow_sprig": {
+        "name": "A Willow Sprig"
+      },
       "witness_root_cincture": {
         "name": "Vidnerods Bælte"
       },
@@ -6054,6 +6057,25 @@ export const da_DK: EnTranslations = {
         "name": "Sexton Faddick",
         "title": "The Wandering Keeper",
         "greeting": "Faddick. Sexton, where there is still a shrine to sexton. I do not stay anywhere; I keep. Wolves have circled the flock at Fallow Acres every night, and a thing that circles long enough learns the shape of what it circles. Best it stays a flock."
+      },
+      "shade": {
+        "name": "Shade",
+        "title": "A Traveler",
+        "greeting": "Oh, it's you. Sit if you like, the water's not going anywhere. Have you eaten today? You should eat.",
+        "introLines": {
+          "0": "You caught me at my chores. Don't mind the can, it's only water. There's always something somewhere that wants a little water.",
+          "1": "Me? Nobody much. Shade. I walk, I lend a hand where hands are short. You look worn through. Sit a moment, if you like."
+        }
+      },
+      "gate_bard": {
+        "name": "Halden the Bard",
+        "title": "Player at the Gate",
+        "greeting": "A copper for a song? No? That's all right, most days it's no. I play for the gate, and the gate's never once reached for its purse."
+      },
+      "goodwife_orla": {
+        "name": "Orla",
+        "title": "Once of Root Hollow",
+        "greeting": "You can sit. Most walk on. The Verger crossed my name off his register a long while back, and a crossed name learns to keep quiet so nobody has to be reminded it's still here."
       }
     },
     "quests": {
@@ -6970,6 +6992,26 @@ export const da_DK: EnTranslations = {
         "objectives": {
           "0": {
             "label": "Forest Wolf slain"
+          }
+        }
+      },
+      "q_have_you_eaten": {
+        "title": "Have You Eaten?",
+        "text": "There's a bard at the gate who plays for coppers and eats when the coppers come, which isn't often. I've got a bowl warm and one to spare. Carry it down to him, would you? And don't tell him it was pity. Tell him it was extra.",
+        "completion": "You're back. Did he eat? Good. That's good. And did you? ... You didn't, I can see it. Sit, then. You don't have to be great to be something good. Greatness isn't kindness. Eat.",
+        "objectives": {
+          "0": {
+            "label": "Warm meal carried to the bard"
+          }
+        }
+      },
+      "q_someone_your_own_size": {
+        "title": "Someone Your Own Size",
+        "text": "There's a woman near Root Hollow the world has been unkind to. Her name was struck from the register, and people treat a struck name like it can't hear. Go and sit with her a while. You don't have to fix anything. Just be someone her own size.",
+        "completion": "You stayed. She won't say it mattered, but it did, I promise you it did. Here, this is for you. A sprig off a willow I'm fond of. It does nothing at all. It only remembers that you were kind when nothing made you.",
+        "objectives": {
+          "0": {
+            "label": "Sat a while with Orla"
           }
         }
       }
