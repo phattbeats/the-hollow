@@ -963,6 +963,14 @@ export const ko_KR: EnTranslations = {
     },
     "trainer": {
       "secondaryClassSet": "보조 직업으로 {cls}을(를) 선택했습니다."
+    },
+    "gathering": {
+      "title": "채집",
+      "amber": "호박",
+      "heartwood": "심재",
+      "spore": "포자",
+      "toolTier": "{tier}단계 도구",
+      "toolNone": "도구 없음"
     }
   },
   "mailUi": {

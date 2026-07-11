@@ -963,6 +963,14 @@ export const en_XA: EnTranslations = {
     },
     "trainer": {
       "secondaryClassSet": "[Ýóú ĥáʋé ţáķéñ úþ {cls} áš ýóúŕ šéçóñðáŕý þŕóƒéššíóñ.]"
+    },
+    "gathering": {
+      "title": "[Ĝáţĥéŕíñĝ]",
+      "amber": "[Áɱƀéŕ]",
+      "heartwood": "[Ĥéáŕţŵóóð]",
+      "spore": "[Šþóŕé]",
+      "toolTier": "[Ţíéŕ {tier} ţóóļ]",
+      "toolNone": "[Ñó ţóóļ]"
     }
   },
   "mailUi": {

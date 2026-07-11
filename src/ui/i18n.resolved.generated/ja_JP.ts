@@ -963,6 +963,14 @@ export const ja_JP: EnTranslations = {
     },
     "trainer": {
       "secondaryClassSet": "副職業として{cls}を習得しました。"
+    },
+    "gathering": {
+      "title": "採集",
+      "amber": "琥珀",
+      "heartwood": "心材",
+      "spore": "胞子",
+      "toolTier": "ティア{tier}の道具",
+      "toolNone": "道具なし"
     }
   },
   "mailUi": {

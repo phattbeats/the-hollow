@@ -1033,4 +1033,16 @@ export const hudChromeStrings = {
   trainer: {
     secondaryClassSet: 'You have taken up {cls} as your secondary profession.',
   },
+  // Gathering proficiency + tool-gating section on the character sheet
+  // (PHAA-508). Node-type display names mirror src/sim/types.ts GatherNodeType
+  // (amber/heartwood/spore); the tool line shows the best crafted-tool tier the
+  // viewer owns for that node type (PHAA-507 gating), or "No tool".
+  gathering: {
+    title: 'Gathering',
+    amber: 'Amber',
+    heartwood: 'Heartwood',
+    spore: 'Spore',
+    toolTier: 'Tier {tier} tool',
+    toolNone: 'No tool',
+  },
 };
