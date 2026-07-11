@@ -661,6 +661,25 @@ export const hudChromeStrings = {
     unassigned: '{item} was not assigned and is free for all.',
     leaderOnly: 'Only the party leader can change the loot method.',
   },
+  // Group-visible need/greed vote strip painted under each loot-roll frame's
+  // action buttons. Shows every party candidate's current choice (the
+  // classic "Need Roll - 84 for Greataxe by Player" sequence is broadcast to
+  // the whole party when the roll resolves; this strip is the LIVE one,
+  // showing who has answered and how while the window is open). The PR-tier
+  // English-only exception for chrome (see src/ui/CLAUDE.md) lets a new
+  // English key land without rewriting the per-locale overlays in the same
+  // commit; the need/greed/pass labels match the action-button labels so
+  // the strip and the buttons read consistently.
+  lootRollGroup: {
+    pending: 'Waiting...',
+    need: 'Need',
+    greed: 'Greed',
+    pass: 'Pass',
+    // Screen-reader label for the whole vote strip. {item} is the rolled item
+    // name; localized in loot_roll_group_view.ts and set on the strip via the
+    // painter's setAttr writer (never a raw setAttribute literal).
+    aria: 'Group roll status for {item}',
+  },
   // Modular bag filtering controls: the category chips, sort dropdown, and live
   // search above the bag grid, plus the "no items match" empty state.
   bags: {
@@ -916,7 +935,7 @@ export const hudChromeStrings = {
       titleDiscordian: 'Title: Discordian',
       titleSquire: 'Title: Squire of the Realm',
       chromaBlurple: 'Blurple Mech Chroma',
-      titleChampion: 'Title: Champion of Claudemoon',
+      titleChampion: 'Title: Champion of The Hollow',
       swagStickers: 'Sticker Pack (shipped)',
       swagTee: 'T-Shirt (shipped)',
     },
@@ -931,5 +950,68 @@ export const hudChromeStrings = {
       event: { label: 'Event / Raid', hint: 'Announce a raid, meetup or event' },
       help: { label: 'Need Help', hint: 'Ask the community for help' },
     },
+  },
+  // The event calendar window: recurring system events plus the guild lane
+  // (booked by officers and the Guild Master, mirrored via socialInfo).
+  calendar: {
+    title: 'Event Calendar',
+    close: 'Close calendar',
+    keybindLabel: 'Event Calendar',
+    prevMonth: 'Previous month',
+    nextMonth: 'Next month',
+    dayAria: '{date}: {count} events',
+    noEvents: 'Nothing planned for this day.',
+    allDay: 'All day',
+    bookedBy: 'Booked by {name}',
+    deleteAria: 'Remove the event {title}',
+    bookTitle: 'Book a guild event',
+    titlePlaceholder: 'Event title',
+    notePlaceholder: 'Note (optional)',
+    hourLabel: 'Hour (UTC)',
+    hourAllDay: 'All day',
+    addButton: 'Book event',
+    guildOnlyNote: 'Join a guild to plan events together.',
+    result: {
+      created: 'The event is on the guild calendar.',
+      removed: 'The event was taken off the calendar.',
+      notInGuild: 'You are not in a guild.',
+      notOfficer: 'Only officers and the Guild Master may manage guild events.',
+      badInput: 'Give the event a title and a valid day.',
+      calendarFull: 'The guild calendar is full.',
+      eventGone: 'That event is no longer on the calendar.',
+    },
+    events: {
+      raidCall: {
+        title: 'Raid Call',
+        note: 'Wardens sound the horn: gather a party for the raid.',
+      },
+      marketDay: {
+        title: 'Market Day',
+        note: 'The Merchant expects fresh stock. A fine day to browse the World Market.',
+      },
+      fiestaNight: {
+        title: 'Fiesta Night',
+        note: 'The 2v2 Fiesta ring draws its loudest crowds tonight.',
+      },
+      arenaClash: {
+        title: 'Arena Clash',
+        note: 'Duelists flock to the Ashen Coliseum. Queue up and climb the ladder.',
+      },
+      fishingDerby: {
+        title: 'Fishing Derby',
+        note: 'Anglers line Mirror Lake. Bring a pole and swap fishing tales.',
+      },
+      delveDay: {
+        title: 'Delve Day',
+        note: 'A fine day to brave the Collapsed Reliquary with a companion at your side.',
+      },
+      moongateCommunion: {
+        title: 'Moongate Communion',
+        note: 'Pilgrims gather at the moon-sanctum under the mid-month moon.',
+      },
+    },
+  },
+  trainer: {
+    secondaryClassSet: 'You have taken up {cls} as your secondary profession.',
   },
 };

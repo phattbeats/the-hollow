@@ -930,6 +930,7 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'entities.items.fenreed_staff.name': 'Tongkat Buluh Rawa',
   'entities.items.fenwalker_boots.name': 'Bot Penjelajah Rawa',
   'entities.items.first_cutting.name': 'Sebuah Stek',
+  'entities.items.greenpaw_bead.name': 'Sebuah Manik Dari Bandolier',
   'entities.items.witness_root_cincture.name': 'Sabuk Akar Saksi',
   'entities.items.shrine_diary_page.name': 'Halaman Buku Harian yang Robek',
   'entities.items.shrine_diary_page.flavorText':

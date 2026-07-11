@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "d8a5d17d",
+      "state": "12842d30",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -34,6 +34,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
@@ -44,6 +45,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -105,7 +108,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "baa63b5b",
+      "state": "2a14c250",
       "events": "b10defc3",
       "rng": {
         "draws": 0,
@@ -123,6 +126,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
@@ -133,6 +137,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "questLog": [
             [
               "q_boars",
@@ -206,7 +212,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "ba097fc2",
+      "state": "63afd253",
       "events": "630600a6",
       "rng": {
         "draws": 0,
@@ -224,6 +230,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -236,12 +243,14 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 5,
               "itemId": "boar_hide"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "questLog": [
             [
               "q_boars",
@@ -315,7 +324,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "af869989",
+      "state": "32d6c38e",
       "events": "2c0f0efe",
       "rng": {
         "draws": 0,
@@ -333,6 +342,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -345,12 +355,14 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 4,
               "itemId": "boar_hide"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "questLog": [
             [
               "q_boars",
@@ -424,7 +436,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "38f90565",
+      "state": "9bc3a774",
       "events": "4c489652",
       "rng": {
         "draws": 0,
@@ -442,6 +454,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -454,12 +467,14 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 5,
               "itemId": "boar_hide"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "questLog": [
             [
               "q_boars",
@@ -533,7 +548,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "9e79298e",
+      "state": "75ff7b6b",
       "events": "28f243cf",
       "rng": {
         "draws": 0,
@@ -551,6 +566,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 120,
@@ -566,7 +582,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 350,
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_boars"
           ],
@@ -632,7 +650,7 @@
       "tick": 2,
       "time": 0.1,
       "nextId": 402,
-      "state": "f3d524b8",
+      "state": "c0186df9",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -650,6 +668,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 120,
@@ -665,7 +684,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 350,
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_boars"
           ],

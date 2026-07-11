@@ -31,7 +31,7 @@
       "tick": 2,
       "time": 0.1,
       "nextId": 417,
-      "state": "7cd07162",
+      "state": "16c16a42",
       "events": "ff144c7f",
       "rng": {
         "draws": 35,
@@ -49,6 +49,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
@@ -59,6 +60,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -74,6 +77,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -84,6 +88,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -801,8 +807,8 @@
       "tick": 4,
       "time": 0.2,
       "nextId": 417,
-      "state": "f5e415cb",
-      "events": "e531bc56",
+      "state": "4724b80d",
+      "events": "249a2b55",
       "rng": {
         "draws": 49,
         "digest": "ab85e79b"
@@ -819,10 +825,11 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
-            "damageTaken": 110624,
+            "damageTaken": 119549,
             "deaths": 1
           },
           "delveClears": {},
@@ -832,6 +839,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -847,6 +856,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -857,6 +867,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -919,7 +931,7 @@
           "critChance": 0.056,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.056,
-          "fallStartY": 42.122741,
+          "fallStartY": 44.672849,
           "fiveSecondRule": 99.2,
           "hp": 50000,
           "id": 402,
@@ -1553,8 +1565,8 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 417,
-      "state": "fdff0e17",
-      "events": "814e8dc4",
+      "state": "c9bb0acd",
+      "events": "3e6ef7a9",
       "rng": {
         "draws": 49,
         "digest": "ab85e79b"
@@ -1564,7 +1576,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 417,
-      "state": "a1a02f15",
+      "state": "23863f13",
       "events": "741638a5",
       "rng": {
         "draws": 49,
@@ -1575,7 +1587,7 @@
       "tick": 15,
       "time": 0.75,
       "nextId": 417,
-      "state": "be4a3461",
+      "state": "ed21500f",
       "events": "741638a5",
       "rng": {
         "draws": 50,
@@ -1586,7 +1598,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 417,
-      "state": "fd6cb5b2",
+      "state": "8d1e1ca0",
       "events": "741638a5",
       "rng": {
         "draws": 50,
@@ -1597,7 +1609,7 @@
       "tick": 24,
       "time": 1.2,
       "nextId": 417,
-      "state": "4fabc88a",
+      "state": "e713f1d8",
       "events": "741638a5",
       "rng": {
         "draws": 50,
@@ -1615,10 +1627,11 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
-            "damageTaken": 110624,
+            "damageTaken": 119549,
             "deaths": 1
           },
           "delveClears": {},
@@ -1628,6 +1641,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1643,10 +1658,11 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
-            "damageTaken": 110624,
+            "damageTaken": 119549,
             "deaths": 1
           },
           "delveClears": {},
@@ -1656,6 +1672,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1766,7 +1784,7 @@
       "tick": 24,
       "time": 1.2,
       "nextId": 417,
-      "state": "4fabc88a",
+      "state": "e713f1d8",
       "events": "741638a5",
       "rng": {
         "draws": 50,
@@ -1784,10 +1802,11 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
-            "damageTaken": 110624,
+            "damageTaken": 119549,
             "deaths": 1
           },
           "delveClears": {},
@@ -1797,6 +1816,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1812,10 +1833,11 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
-            "damageTaken": 110624,
+            "damageTaken": 119549,
             "deaths": 1
           },
           "delveClears": {},
@@ -1825,6 +1847,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}

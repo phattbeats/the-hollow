@@ -15,7 +15,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "eb646bf9",
+      "state": "798cfd90",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -34,6 +34,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {},
@@ -44,6 +45,8 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -107,7 +110,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 411,
-      "state": "9b60f2d6",
+      "state": "6cc8a6a3",
       "events": "c26c6e2a",
       "rng": {
         "draws": 1,
@@ -126,6 +129,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {},
@@ -136,7 +140,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 11200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -199,7 +205,7 @@
       "tick": 2,
       "time": 0.1,
       "nextId": 411,
-      "state": "aa778bd5",
+      "state": "287a90c4",
       "events": "9207ac32",
       "rng": {
         "draws": 1,
@@ -218,6 +224,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {},
@@ -228,7 +235,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 11200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -292,7 +301,7 @@
       "tick": 2,
       "time": 0.1,
       "nextId": 411,
-      "state": "aa778bd5",
+      "state": "287a90c4",
       "events": "741638a5",
       "rng": {
         "draws": 1,
@@ -311,6 +320,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {},
@@ -321,7 +331,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 11200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}

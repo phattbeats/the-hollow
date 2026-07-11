@@ -30,7 +30,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "16c44939",
+      "state": "d9679207",
       "events": "34eabb16",
       "rng": {
         "draws": 0,
@@ -48,6 +48,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 100,
@@ -59,12 +60,14 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 3,
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -80,6 +83,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "copper": 50,
@@ -91,12 +95,14 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 2,
               "itemId": "baked_bread"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -206,7 +212,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "9f8dcc67",
+      "state": "61ef2f7f",
       "events": "9b065c69",
       "rng": {
         "draws": 0,
@@ -224,6 +230,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 80,
@@ -235,6 +242,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -245,6 +253,7 @@
               "itemId": "baked_bread"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -260,6 +269,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "copper": 70,
@@ -271,6 +281,7 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -281,6 +292,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -390,7 +402,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "9f8dcc67",
+      "state": "61ef2f7f",
       "events": "b94cbe0a",
       "rng": {
         "draws": 0,
@@ -408,6 +420,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 80,
@@ -419,6 +432,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -429,6 +443,7 @@
               "itemId": "baked_bread"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -444,6 +459,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "copper": 70,
@@ -455,6 +471,7 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -465,6 +482,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -574,7 +592,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 403,
-      "state": "9f8dcc67",
+      "state": "61ef2f7f",
       "events": "aadbd6e5",
       "rng": {
         "draws": 0,
@@ -592,6 +610,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 80,
@@ -603,6 +622,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -613,6 +633,7 @@
               "itemId": "baked_bread"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -628,6 +649,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "copper": 70,
@@ -639,6 +661,7 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -649,6 +672,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -758,7 +782,7 @@
       "tick": 1,
       "time": 0.05,
       "nextId": 403,
-      "state": "b7607214",
+      "state": "9a441e1c",
       "events": "4bc2f582",
       "rng": {
         "draws": 0,
@@ -776,6 +800,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 80,
@@ -787,6 +812,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -797,6 +823,7 @@
               "itemId": "baked_bread"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -812,6 +839,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "copper": 70,
@@ -823,6 +851,7 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -833,6 +862,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -942,7 +972,7 @@
       "tick": 1,
       "time": 0.05,
       "nextId": 403,
-      "state": "b7607214",
+      "state": "9a441e1c",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -960,6 +990,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 80,
@@ -971,6 +1002,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -981,6 +1013,7 @@
               "itemId": "baked_bread"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -996,6 +1029,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "copper": 70,
@@ -1007,6 +1041,7 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -1017,6 +1052,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}

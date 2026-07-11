@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "d40ee3cc",
+      "state": "0bf33ff1",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -35,6 +35,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
@@ -45,6 +46,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -106,7 +109,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "52c3b739",
+      "state": "64e3db72",
       "events": "3d6acfe5",
       "rng": {
         "draws": 0,
@@ -125,6 +128,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
@@ -135,7 +139,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 27600,
+          "nodeHarvestReadyAt": {},
           "questLog": [
             [
               "q_wolves",
@@ -209,7 +215,7 @@
       "tick": 8,
       "time": 0.4,
       "nextId": 410,
-      "state": "93b1a6a7",
+      "state": "be8a01ce",
       "events": "80930594",
       "rng": {
         "draws": 40,
@@ -228,6 +234,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -242,7 +249,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 27600,
+          "nodeHarvestReadyAt": {},
           "questLog": [
             [
               "q_wolves",
@@ -317,7 +326,7 @@
       "tick": 8,
       "time": 0.4,
       "nextId": 410,
-      "state": "7a39915c",
+      "state": "611e7a67",
       "events": "ace7f38f",
       "rng": {
         "draws": 40,
@@ -336,6 +345,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 75,
@@ -353,7 +363,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 27850,
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_wolves"
           ],
@@ -420,7 +432,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 410,
-      "state": "f5de9000",
+      "state": "e9fa522b",
       "events": "741638a5",
       "rng": {
         "draws": 40,
@@ -439,6 +451,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 75,
@@ -456,7 +469,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 27850,
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_wolves"
           ],

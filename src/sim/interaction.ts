@@ -23,12 +23,13 @@
 // `src/sim`-pure: no DOM/Three/render-ui-game-net imports, no Math.random/Date.now
 // (enforced by tests/architecture.test.ts).
 
-import { ITEMS, QUESTS } from './data';
+import { ITEMS, MOBS, QUESTS } from './data';
 import {
   activateNythraxisRelic,
   interactObjectForQuests,
   tryStartNythraxisWardChannel,
 } from './encounters/nythraxis';
+import { isHarvestableCorpse } from './gathering';
 import { hasSharedLootRights as computeSharedLootRights, lootHasGoneFfa } from './loot/loot_ffa';
 import {
   awardSharedLootItem,
@@ -96,6 +97,35 @@ export function lootCorpse(ctx: SimContext, mobId: number, pid?: number): void {
   if (bagsFull) ctx.error(meta.entityId, 'Your bags are full.');
   pruneCorpseLoot(ctx, mob);
   if (p.targetId === mobId) p.targetId = null;
+}
+
+/**
+ * Profession harvest (PHAA-504): single-use, first-come salvage of a dead
+ * mob's corpse, independent of the loot table above. See src/sim/gathering.ts
+ * for the race-freedom argument and the component-tag -> item mapping.
+ */
+export function harvestCorpse(ctx: SimContext, mobId: number, pid?: number): void {
+  const r = ctx.resolve(pid);
+  if (!r) return;
+  const { meta, e: p } = r;
+  const mob = ctx.entities.get(mobId);
+  if (!mob || mob.kind !== 'mob' || !mob.dead) return;
+  const componentTags = MOBS[mob.templateId]?.componentTags;
+  if (!isHarvestableCorpse(componentTags)) {
+    ctx.error(meta.entityId, 'That corpse has nothing to harvest.');
+    return;
+  }
+  if (dist2d(p.pos, mob.pos) > INTERACT_RANGE) {
+    ctx.error(meta.entityId, 'Too far away.');
+    return;
+  }
+  if (mob.harvestClaimedBy !== null) {
+    ctx.error(meta.entityId, 'This corpse has already been harvested.');
+    return;
+  }
+  mob.harvestClaimedBy = meta.entityId;
+  const itemId = ctx.gatherHarvestItemFor(componentTags);
+  if (itemId) ctx.addItem(itemId, 1, meta.entityId);
 }
 
 export function pickUpObject(ctx: SimContext, objId: number, pid?: number): void {

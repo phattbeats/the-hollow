@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "d40ee3cc",
+      "state": "0bf33ff1",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -35,6 +35,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
@@ -45,6 +46,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -106,7 +109,7 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 411,
-      "state": "ef15d4af",
+      "state": "361715fa",
       "events": "687dc097",
       "rng": {
         "draws": 4,
@@ -117,7 +120,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 411,
-      "state": "7f5a0608",
+      "state": "bf4797e1",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -128,7 +131,7 @@
       "tick": 15,
       "time": 0.75,
       "nextId": 411,
-      "state": "78439e2b",
+      "state": "5f963c56",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -139,7 +142,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 411,
-      "state": "13b93be2",
+      "state": "29ba0db7",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -150,7 +153,7 @@
       "tick": 25,
       "time": 1.25,
       "nextId": 411,
-      "state": "1815cbfa",
+      "state": "f5da080f",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -161,7 +164,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 411,
-      "state": "1238f32c",
+      "state": "b5be9c45",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -172,7 +175,7 @@
       "tick": 35,
       "time": 1.75,
       "nextId": 411,
-      "state": "6b59d396",
+      "state": "72a6f02b",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -183,7 +186,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 411,
-      "state": "c63717d1",
+      "state": "8f80f378",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -194,7 +197,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 411,
-      "state": "c63717d1",
+      "state": "8f80f378",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -213,6 +216,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {
             "companion_tessa": 2
@@ -225,7 +229,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 11200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -370,7 +376,7 @@
       "tick": 41,
       "time": 2.05,
       "nextId": 411,
-      "state": "d4459107",
+      "state": "cf2839c8",
       "events": "d54c4ac2",
       "rng": {
         "draws": 6,
@@ -389,6 +395,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {
             "companion_tessa": 2
@@ -401,7 +408,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 11200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -416,7 +425,7 @@
           "critChance": 0.063,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.063,
-          "fallStartY": 40.71103,
+          "fallStartY": 43.330036,
           "fiveSecondRule": 101.05,
           "hp": 29000,
           "id": 401,
@@ -431,7 +440,7 @@
           "petMode": "defensive",
           "pos": {
             "x": 6004.724356,
-            "y": 40.71103,
+            "y": 43.330036,
             "z": -1172.862581
           },
           "potionCooldownUntil": -1,
@@ -560,7 +569,7 @@
       "tick": 45,
       "time": 2.25,
       "nextId": 411,
-      "state": "d0e61bc3",
+      "state": "895adba5",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -571,7 +580,7 @@
       "tick": 49,
       "time": 2.45,
       "nextId": 411,
-      "state": "37a49067",
+      "state": "39dc6215",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -590,6 +599,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {
             "companion_tessa": 2
@@ -602,7 +612,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 11200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -617,7 +629,7 @@
           "critChance": 0.063,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.063,
-          "fallStartY": 39.597209,
+          "fallStartY": 41.815138,
           "fiveSecondRule": 101.45,
           "hp": 29000,
           "id": 401,
@@ -631,7 +643,7 @@
           "petMode": "defensive",
           "pos": {
             "x": 6013.387296,
-            "y": 38.477209,
+            "y": 40.695138,
             "z": -1172.956872
           },
           "potionCooldownUntil": -1,
@@ -702,7 +714,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 411,
-      "state": "7240f7d3",
+      "state": "eebc72c1",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -713,7 +725,7 @@
       "tick": 51,
       "time": 2.55,
       "nextId": 411,
-      "state": "9cf5c451",
+      "state": "6644a854",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -732,6 +744,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {
             "companion_tessa": 2
@@ -744,7 +757,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 11200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -759,7 +774,7 @@
           "critChance": 0.063,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.063,
-          "fallStartY": 36.778479,
+          "fallStartY": 39.936048,
           "fiveSecondRule": 101.55,
           "hp": 29000,
           "id": 401,
@@ -773,7 +788,7 @@
           "petMode": "defensive",
           "pos": {
             "x": 6084.187296,
-            "y": 36.738479,
+            "y": 39.896048,
             "z": -1172.956872
           },
           "potionCooldownUntil": -1,
@@ -820,7 +835,7 @@
           "petMode": "defensive",
           "pos": {
             "x": 6084.187296,
-            "y": 36.778479,
+            "y": 39.936048,
             "z": -1172.956872
           },
           "potionCooldownUntil": -1,
@@ -845,7 +860,7 @@
       "tick": 51,
       "time": 2.55,
       "nextId": 411,
-      "state": "9cf5c451",
+      "state": "6644a854",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -864,6 +879,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {
             "companion_tessa": 2
@@ -876,7 +892,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 11200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -891,7 +909,7 @@
           "critChance": 0.063,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.063,
-          "fallStartY": 36.778479,
+          "fallStartY": 39.936048,
           "fiveSecondRule": 101.55,
           "hp": 29000,
           "id": 401,
@@ -905,7 +923,7 @@
           "petMode": "defensive",
           "pos": {
             "x": 6084.187296,
-            "y": 36.738479,
+            "y": 39.896048,
             "z": -1172.956872
           },
           "potionCooldownUntil": -1,
@@ -952,7 +970,7 @@
           "petMode": "defensive",
           "pos": {
             "x": 6084.187296,
-            "y": 36.778479,
+            "y": 39.936048,
             "z": -1172.956872
           },
           "potionCooldownUntil": -1,

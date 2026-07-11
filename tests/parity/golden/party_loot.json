@@ -28,8 +28,8 @@
       "tick": 3,
       "time": 0.15,
       "nextId": 404,
-      "state": "20cfb520",
-      "events": "a191a45b",
+      "state": "38e23c64",
+      "events": "8fb4544d",
       "rng": {
         "draws": 2,
         "digest": "c02d8868"
@@ -46,6 +46,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
@@ -56,6 +57,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -71,6 +74,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -81,12 +85,14 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
               "itemId": "greyjaw_hide_boots"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}

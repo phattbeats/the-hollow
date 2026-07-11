@@ -34,7 +34,7 @@
       "tick": 1,
       "time": 0.05,
       "nextId": 411,
-      "state": "39ef75be",
+      "state": "8536377b",
       "events": "04fa9102",
       "rng": {
         "draws": 4,
@@ -52,6 +52,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -64,7 +65,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_nythraxis_bound_guardian"
           ],
@@ -83,6 +86,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -93,7 +97,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -109,6 +115,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -119,7 +126,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -135,6 +144,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -145,7 +155,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -161,6 +173,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -171,7 +184,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -476,7 +491,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 411,
-      "state": "82de6a9f",
+      "state": "a8501d8e",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -487,7 +502,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 411,
-      "state": "29572084",
+      "state": "0b35ee65",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -498,7 +513,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 411,
-      "state": "09ae89fa",
+      "state": "36567663",
       "events": "b06542c9",
       "rng": {
         "draws": 5,
@@ -509,7 +524,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 411,
-      "state": "c9da5c66",
+      "state": "43a27f3f",
       "events": "741638a5",
       "rng": {
         "draws": 5,
@@ -520,7 +535,7 @@
       "tick": 42,
       "time": 2.1,
       "nextId": 413,
-      "state": "fa86dc52",
+      "state": "fc2e453b",
       "events": "46fd4ea7",
       "rng": {
         "draws": 11,
@@ -538,6 +553,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -550,7 +566,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_nythraxis_bound_guardian"
           ],
@@ -569,6 +587,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -579,7 +598,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -595,6 +616,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -605,7 +627,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -621,6 +645,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -631,7 +656,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -647,6 +674,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -657,7 +685,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1069,7 +1099,7 @@
       "tick": 43,
       "time": 2.15,
       "nextId": 414,
-      "state": "1eb60d70",
+      "state": "72e551f5",
       "events": "c6264378",
       "rng": {
         "draws": 15,
@@ -1087,6 +1117,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -1099,7 +1130,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_nythraxis_bound_guardian"
           ],
@@ -1118,6 +1151,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -1128,7 +1162,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1144,6 +1180,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -1154,7 +1191,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1170,6 +1209,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -1180,7 +1220,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1196,6 +1238,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -1206,7 +1249,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1889,7 +1934,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 414,
-      "state": "fa563a9a",
+      "state": "e7bce683",
       "events": "741638a5",
       "rng": {
         "draws": 37,
@@ -1900,7 +1945,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 414,
-      "state": "a7db3b01",
+      "state": "c03bc208",
       "events": "741638a5",
       "rng": {
         "draws": 77,
@@ -1911,7 +1956,7 @@
       "tick": 70,
       "time": 3.5,
       "nextId": 414,
-      "state": "d68bd0fc",
+      "state": "51e17a81",
       "events": "741638a5",
       "rng": {
         "draws": 120,
@@ -1922,7 +1967,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 414,
-      "state": "2f62d135",
+      "state": "6c755ed0",
       "events": "9759b96e",
       "rng": {
         "draws": 179,
@@ -1933,7 +1978,7 @@
       "tick": 90,
       "time": 4.5,
       "nextId": 414,
-      "state": "5e6a3991",
+      "state": "2b8a97f8",
       "events": "1b9ed8d2",
       "rng": {
         "draws": 238,
@@ -1944,7 +1989,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 414,
-      "state": "c98cd392",
+      "state": "e0beb04f",
       "events": "741638a5",
       "rng": {
         "draws": 296,
@@ -1955,7 +2000,7 @@
       "tick": 110,
       "time": 5.5,
       "nextId": 414,
-      "state": "ab7a8062",
+      "state": "46f93bbf",
       "events": "741638a5",
       "rng": {
         "draws": 353,
@@ -1966,7 +2011,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 414,
-      "state": "577c3045",
+      "state": "5af3c69c",
       "events": "741638a5",
       "rng": {
         "draws": 408,
@@ -1977,7 +2022,7 @@
       "tick": 130,
       "time": 6.5,
       "nextId": 414,
-      "state": "ecca4b7c",
+      "state": "17eeae9d",
       "events": "a2b09976",
       "rng": {
         "draws": 478,
@@ -1988,7 +2033,7 @@
       "tick": 140,
       "time": 7,
       "nextId": 414,
-      "state": "38acf749",
+      "state": "30eb5764",
       "events": "65d34aa6",
       "rng": {
         "draws": 543,
@@ -1999,7 +2044,7 @@
       "tick": 150,
       "time": 7.5,
       "nextId": 414,
-      "state": "f937f4bb",
+      "state": "e525301a",
       "events": "741638a5",
       "rng": {
         "draws": 582,
@@ -2010,7 +2055,7 @@
       "tick": 160,
       "time": 8,
       "nextId": 414,
-      "state": "850f9484",
+      "state": "a08b2541",
       "events": "741638a5",
       "rng": {
         "draws": 631,
@@ -2021,7 +2066,7 @@
       "tick": 170,
       "time": 8.5,
       "nextId": 414,
-      "state": "f7fe5f72",
+      "state": "e90fec33",
       "events": "b8163833",
       "rng": {
         "draws": 704,
@@ -2032,7 +2077,7 @@
       "tick": 180,
       "time": 9,
       "nextId": 414,
-      "state": "9ff2a91c",
+      "state": "47983745",
       "events": "ee0d4c14",
       "rng": {
         "draws": 792,
@@ -2043,7 +2088,7 @@
       "tick": 190,
       "time": 9.5,
       "nextId": 414,
-      "state": "b3ccfc13",
+      "state": "830750ca",
       "events": "82a08be2",
       "rng": {
         "draws": 872,
@@ -2054,7 +2099,7 @@
       "tick": 200,
       "time": 10,
       "nextId": 414,
-      "state": "25d11a58",
+      "state": "3f8873d5",
       "events": "741638a5",
       "rng": {
         "draws": 939,
@@ -2065,7 +2110,7 @@
       "tick": 203,
       "time": 10.15,
       "nextId": 414,
-      "state": "5661a637",
+      "state": "9c6b363e",
       "events": "741638a5",
       "rng": {
         "draws": 955,
@@ -2083,6 +2128,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -2095,7 +2141,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_nythraxis_bound_guardian"
           ],
@@ -2114,6 +2162,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -2124,7 +2173,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2140,6 +2191,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -2150,7 +2202,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2166,6 +2220,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -2176,7 +2231,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2192,6 +2249,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -2202,7 +2260,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2846,7 +2906,7 @@
       "tick": 204,
       "time": 10.2,
       "nextId": 414,
-      "state": "373a42a9",
+      "state": "e875119c",
       "events": "b21c6ddf",
       "rng": {
         "draws": 965,
@@ -2864,6 +2924,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -2876,7 +2937,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_nythraxis_bound_guardian"
           ],
@@ -2895,6 +2958,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -2905,7 +2969,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2921,6 +2987,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -2931,7 +2998,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2947,6 +3016,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -2957,7 +3027,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2973,6 +3045,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -2983,7 +3056,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -3638,7 +3713,7 @@
       "tick": 210,
       "time": 10.5,
       "nextId": 414,
-      "state": "e5baee05",
+      "state": "c288daa8",
       "events": "741638a5",
       "rng": {
         "draws": 979,
@@ -3649,7 +3724,7 @@
       "tick": 220,
       "time": 11,
       "nextId": 414,
-      "state": "71d16d35",
+      "state": "2c154c54",
       "events": "55bcc1a6",
       "rng": {
         "draws": 1026,
@@ -3660,7 +3735,7 @@
       "tick": 230,
       "time": 11.5,
       "nextId": 414,
-      "state": "c0a3d885",
+      "state": "ea9619c4",
       "events": "741638a5",
       "rng": {
         "draws": 1057,
@@ -3671,7 +3746,7 @@
       "tick": 240,
       "time": 12,
       "nextId": 414,
-      "state": "23cca6dd",
+      "state": "dc294f9c",
       "events": "7b7da7f6",
       "rng": {
         "draws": 1102,
@@ -3682,7 +3757,7 @@
       "tick": 250,
       "time": 12.5,
       "nextId": 414,
-      "state": "6a96ba75",
+      "state": "0e4e9e94",
       "events": "741638a5",
       "rng": {
         "draws": 1162,
@@ -3693,7 +3768,7 @@
       "tick": 260,
       "time": 13,
       "nextId": 414,
-      "state": "7033f717",
+      "state": "931459ca",
       "events": "741638a5",
       "rng": {
         "draws": 1215,
@@ -3704,7 +3779,7 @@
       "tick": 270,
       "time": 13.5,
       "nextId": 414,
-      "state": "d8ecf28c",
+      "state": "43d4f1c9",
       "events": "93b12f06",
       "rng": {
         "draws": 1279,
@@ -3715,7 +3790,7 @@
       "tick": 280,
       "time": 14,
       "nextId": 414,
-      "state": "ed5abc8b",
+      "state": "b6a7c85a",
       "events": "741638a5",
       "rng": {
         "draws": 1317,
@@ -3726,7 +3801,7 @@
       "tick": 290,
       "time": 14.5,
       "nextId": 414,
-      "state": "8a93773c",
+      "state": "ae0f88e9",
       "events": "1717c889",
       "rng": {
         "draws": 1370,
@@ -3737,7 +3812,7 @@
       "tick": 300,
       "time": 15,
       "nextId": 414,
-      "state": "59311bb4",
+      "state": "9b5d4ac1",
       "events": "741638a5",
       "rng": {
         "draws": 1424,
@@ -3748,7 +3823,7 @@
       "tick": 310,
       "time": 15.5,
       "nextId": 414,
-      "state": "96688158",
+      "state": "5825ef35",
       "events": "cb692c3d",
       "rng": {
         "draws": 1471,
@@ -3759,7 +3834,7 @@
       "tick": 320,
       "time": 16,
       "nextId": 414,
-      "state": "e335a8f6",
+      "state": "d11dc07f",
       "events": "741638a5",
       "rng": {
         "draws": 1515,
@@ -3770,7 +3845,7 @@
       "tick": 330,
       "time": 16.5,
       "nextId": 414,
-      "state": "2016fd2e",
+      "state": "e4a636b7",
       "events": "c357424c",
       "rng": {
         "draws": 1572,
@@ -3781,7 +3856,7 @@
       "tick": 340,
       "time": 17,
       "nextId": 414,
-      "state": "0ce39316",
+      "state": "2ca4967f",
       "events": "1c645ae9",
       "rng": {
         "draws": 1633,
@@ -3792,7 +3867,7 @@
       "tick": 350,
       "time": 17.5,
       "nextId": 414,
-      "state": "51a32cee",
+      "state": "6408abb7",
       "events": "741638a5",
       "rng": {
         "draws": 1692,
@@ -3803,7 +3878,7 @@
       "tick": 360,
       "time": 18,
       "nextId": 414,
-      "state": "c682782b",
+      "state": "4204a122",
       "events": "80d91f42",
       "rng": {
         "draws": 1751,
@@ -3814,7 +3889,7 @@
       "tick": 370,
       "time": 18.5,
       "nextId": 414,
-      "state": "4cf42b9f",
+      "state": "0d4056b4",
       "events": "2ad2fd5c",
       "rng": {
         "draws": 1808,
@@ -3825,7 +3900,7 @@
       "tick": 380,
       "time": 19,
       "nextId": 414,
-      "state": "66169af0",
+      "state": "b3b6802f",
       "events": "741638a5",
       "rng": {
         "draws": 1860,
@@ -3836,7 +3911,7 @@
       "tick": 386,
       "time": 19.3,
       "nextId": 414,
-      "state": "78b5e8f1",
+      "state": "6b7d15ac",
       "events": "e5e14c09",
       "rng": {
         "draws": 1881,
@@ -3854,6 +3929,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -3869,7 +3945,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167366,
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_nythraxis_bound_guardian"
           ],
@@ -3888,6 +3966,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -3901,7 +3980,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167366,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -3917,6 +3998,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -3930,7 +4012,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167366,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -3946,6 +4030,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -3958,7 +4043,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167366,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -3974,6 +4061,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -3987,7 +4075,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167366,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -4610,7 +4700,7 @@
       "tick": 390,
       "time": 19.5,
       "nextId": 414,
-      "state": "2de8ae95",
+      "state": "df4e8240",
       "events": "51fe6414",
       "rng": {
         "draws": 1896,
@@ -4621,7 +4711,7 @@
       "tick": 400,
       "time": 20,
       "nextId": 414,
-      "state": "f7528d42",
+      "state": "127c4f83",
       "events": "f6ded1ef",
       "rng": {
         "draws": 1952,
@@ -4632,7 +4722,7 @@
       "tick": 410,
       "time": 20.5,
       "nextId": 414,
-      "state": "d76146f0",
+      "state": "2db18d6d",
       "events": "f6ded1ef",
       "rng": {
         "draws": 1996,
@@ -4643,7 +4733,7 @@
       "tick": 420,
       "time": 21,
       "nextId": 414,
-      "state": "09c09bcb",
+      "state": "3d3f585a",
       "events": "f6ded1ef",
       "rng": {
         "draws": 2056,
@@ -4654,7 +4744,7 @@
       "tick": 430,
       "time": 21.5,
       "nextId": 414,
-      "state": "24551157",
+      "state": "55197dd6",
       "events": "f6ded1ef",
       "rng": {
         "draws": 2118,
@@ -4665,7 +4755,7 @@
       "tick": 440,
       "time": 22,
       "nextId": 414,
-      "state": "67ac2ee4",
+      "state": "5dd03ee1",
       "events": "f6ded1ef",
       "rng": {
         "draws": 2160,
@@ -4676,7 +4766,7 @@
       "tick": 450,
       "time": 22.5,
       "nextId": 414,
-      "state": "3af36d82",
+      "state": "dad5e9c3",
       "events": "f6ded1ef",
       "rng": {
         "draws": 2201,
@@ -4687,7 +4777,7 @@
       "tick": 460,
       "time": 23,
       "nextId": 414,
-      "state": "0febbd21",
+      "state": "34d5877c",
       "events": "f6ded1ef",
       "rng": {
         "draws": 2236,
@@ -4698,7 +4788,7 @@
       "tick": 470,
       "time": 23.5,
       "nextId": 414,
-      "state": "1d012944",
+      "state": "aba928c1",
       "events": "f6ded1ef",
       "rng": {
         "draws": 2288,
@@ -4709,7 +4799,7 @@
       "tick": 480,
       "time": 24,
       "nextId": 414,
-      "state": "9984c203",
+      "state": "fa21a632",
       "events": "f6ded1ef",
       "rng": {
         "draws": 2338,
@@ -4720,7 +4810,7 @@
       "tick": 490,
       "time": 24.5,
       "nextId": 414,
-      "state": "d9a98ab0",
+      "state": "8793bf2d",
       "events": "7e72552e",
       "rng": {
         "draws": 2392,
@@ -4731,7 +4821,7 @@
       "tick": 500,
       "time": 25,
       "nextId": 414,
-      "state": "0adb7cd8",
+      "state": "37122075",
       "events": "741638a5",
       "rng": {
         "draws": 2442,
@@ -4742,7 +4832,7 @@
       "tick": 506,
       "time": 25.3,
       "nextId": 414,
-      "state": "06bb8301",
+      "state": "369f0edc",
       "events": "741638a5",
       "rng": {
         "draws": 2478,
@@ -4760,6 +4850,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -4775,7 +4866,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167366,
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_nythraxis_bound_guardian"
           ],
@@ -4794,6 +4887,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -4807,7 +4901,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167366,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -4823,6 +4919,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -4836,7 +4933,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167366,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -4852,6 +4951,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -4864,7 +4964,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167366,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -4880,6 +4982,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -4893,7 +4996,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167366,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -5527,7 +5632,7 @@
       "tick": 510,
       "time": 25.5,
       "nextId": 414,
-      "state": "434dca82",
+      "state": "031036c3",
       "events": "741638a5",
       "rng": {
         "draws": 2504,
@@ -5538,7 +5643,7 @@
       "tick": 520,
       "time": 26,
       "nextId": 414,
-      "state": "7684f4d2",
+      "state": "9f703333",
       "events": "741638a5",
       "rng": {
         "draws": 2536,
@@ -5549,7 +5654,7 @@
       "tick": 530,
       "time": 26.5,
       "nextId": 414,
-      "state": "8b305994",
+      "state": "f85ce6b1",
       "events": "741638a5",
       "rng": {
         "draws": 2588,
@@ -5560,7 +5665,7 @@
       "tick": 540,
       "time": 27,
       "nextId": 414,
-      "state": "ff9aeb5c",
+      "state": "17d19d19",
       "events": "741638a5",
       "rng": {
         "draws": 2631,
@@ -5571,7 +5676,7 @@
       "tick": 550,
       "time": 27.5,
       "nextId": 414,
-      "state": "43b27f32",
+      "state": "7de6f393",
       "events": "741638a5",
       "rng": {
         "draws": 2677,
@@ -5582,7 +5687,7 @@
       "tick": 560,
       "time": 28,
       "nextId": 414,
-      "state": "b845b402",
+      "state": "2398a843",
       "events": "741638a5",
       "rng": {
         "draws": 2720,
@@ -5593,7 +5698,7 @@
       "tick": 570,
       "time": 28.5,
       "nextId": 414,
-      "state": "24c1a01c",
+      "state": "d2a41bd9",
       "events": "741638a5",
       "rng": {
         "draws": 2781,
@@ -5604,7 +5709,7 @@
       "tick": 580,
       "time": 29,
       "nextId": 414,
-      "state": "845d5c52",
+      "state": "39afc2b3",
       "events": "741638a5",
       "rng": {
         "draws": 2832,
@@ -5615,7 +5720,7 @@
       "tick": 590,
       "time": 29.5,
       "nextId": 414,
-      "state": "b15f13ce",
+      "state": "84c6407f",
       "events": "2156e604",
       "rng": {
         "draws": 2883,
@@ -5626,7 +5731,7 @@
       "tick": 600,
       "time": 30,
       "nextId": 414,
-      "state": "4d42a394",
+      "state": "d68210b1",
       "events": "7b7da7f6",
       "rng": {
         "draws": 2941,
@@ -5637,7 +5742,7 @@
       "tick": 610,
       "time": 30.5,
       "nextId": 414,
-      "state": "e29e8c42",
+      "state": "75479e83",
       "events": "741638a5",
       "rng": {
         "draws": 2993,
@@ -5648,7 +5753,7 @@
       "tick": 620,
       "time": 31,
       "nextId": 414,
-      "state": "af3d832e",
+      "state": "be2a6edf",
       "events": "741638a5",
       "rng": {
         "draws": 3037,
@@ -5659,7 +5764,7 @@
       "tick": 627,
       "time": 31.35,
       "nextId": 414,
-      "state": "af667555",
+      "state": "c9153900",
       "events": "016ee8ae",
       "rng": {
         "draws": 3070,
@@ -5677,6 +5782,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -5692,7 +5798,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167366,
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_nythraxis_bound_guardian"
           ],
@@ -5711,6 +5819,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -5724,7 +5833,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167366,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -5740,6 +5851,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -5753,7 +5865,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167366,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -5769,6 +5883,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -5781,7 +5896,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167366,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -5797,6 +5914,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -5810,7 +5928,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167366,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -6446,7 +6566,7 @@
       "tick": 628,
       "time": 31.4,
       "nextId": 414,
-      "state": "e1a11e54",
+      "state": "4a9bb8eb",
       "events": "994f4336",
       "rng": {
         "draws": 3083,
@@ -6464,6 +6584,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -6479,7 +6600,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167449,
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_nythraxis_bound_guardian"
           ],
@@ -6504,6 +6627,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -6517,7 +6641,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167449,
+          "nodeHarvestReadyAt": {},
           "raidLockouts": [
             [
               "nythraxis_boss_arena",
@@ -6539,6 +6665,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -6552,7 +6679,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167449,
+          "nodeHarvestReadyAt": {},
           "raidLockouts": [
             [
               "nythraxis_boss_arena",
@@ -6574,6 +6703,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -6586,7 +6716,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167449,
+          "nodeHarvestReadyAt": {},
           "raidLockouts": [
             [
               "nythraxis_boss_arena",
@@ -6608,6 +6740,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -6621,7 +6754,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167449,
+          "nodeHarvestReadyAt": {},
           "raidLockouts": [
             [
               "nythraxis_boss_arena",
@@ -7280,7 +7415,7 @@
       "tick": 630,
       "time": 31.5,
       "nextId": 414,
-      "state": "014f1b79",
+      "state": "19212a86",
       "events": "741638a5",
       "rng": {
         "draws": 3089,
@@ -7291,7 +7426,7 @@
       "tick": 640,
       "time": 32,
       "nextId": 414,
-      "state": "a70c0efe",
+      "state": "37f7e1d9",
       "events": "741638a5",
       "rng": {
         "draws": 3139,
@@ -7302,7 +7437,7 @@
       "tick": 650,
       "time": 32.5,
       "nextId": 414,
-      "state": "416a6c62",
+      "state": "039621dd",
       "events": "741638a5",
       "rng": {
         "draws": 3194,
@@ -7313,7 +7448,7 @@
       "tick": 660,
       "time": 33,
       "nextId": 414,
-      "state": "a6dc7649",
+      "state": "54a64fb6",
       "events": "741638a5",
       "rng": {
         "draws": 3228,
@@ -7324,7 +7459,7 @@
       "tick": 670,
       "time": 33.5,
       "nextId": 414,
-      "state": "4d9e5217",
+      "state": "28efd240",
       "events": "741638a5",
       "rng": {
         "draws": 3290,
@@ -7335,7 +7470,7 @@
       "tick": 680,
       "time": 34,
       "nextId": 414,
-      "state": "c7b038c4",
+      "state": "19d91efb",
       "events": "741638a5",
       "rng": {
         "draws": 3347,
@@ -7346,7 +7481,7 @@
       "tick": 688,
       "time": 34.4,
       "nextId": 414,
-      "state": "569b50ed",
+      "state": "beb49e3a",
       "events": "e554452e",
       "rng": {
         "draws": 3377,
@@ -7364,6 +7499,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -7379,7 +7515,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167449,
+          "nodeHarvestReadyAt": {},
           "questsDone": [
             "q_nythraxis_bound_guardian"
           ],
@@ -7404,6 +7542,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -7417,7 +7556,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167449,
+          "nodeHarvestReadyAt": {},
           "raidLockouts": [
             [
               "nythraxis_boss_arena",
@@ -7439,6 +7580,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -7452,7 +7594,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167449,
+          "nodeHarvestReadyAt": {},
           "raidLockouts": [
             [
               "nythraxis_boss_arena",
@@ -7474,6 +7618,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -7486,7 +7631,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167449,
+          "nodeHarvestReadyAt": {},
           "raidLockouts": [
             [
               "nythraxis_boss_arena",
@@ -7508,6 +7655,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -7521,7 +7669,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 167449,
+          "nodeHarvestReadyAt": {},
           "raidLockouts": [
             [
               "nythraxis_boss_arena",

@@ -199,6 +199,30 @@ describe("Greenpaw's hearth: hunger/feed/decay", () => {
     expect(Number.isFinite(sim.hollowHearth.smoke)).toBe(true);
   });
 
+  it('a successful feed credits an active feed-type quest objective once per call (PHAA-484)', () => {
+    standAtGreenpaw(sim, pid);
+    sim.acceptQuest('q_what_burns');
+    sim.addItem('emberbulb', 5);
+    sim.tick();
+    sim.turnInQuest('q_what_burns');
+    sim.acceptQuest('q_what_fills');
+    sim.addItem('cave_morsel', 4);
+    sim.tick();
+    sim.turnInQuest('q_what_fills');
+    sim.acceptQuest('q_the_wavelength');
+    const meta = (sim as any).primary;
+
+    // Feeding both item types in one call still credits the objective once.
+    sim.addItem('emberbulb', 1);
+    sim.addItem('cave_morsel', 1);
+    sim.feedGreenpaw(pid);
+    expect(meta.questLog.get('q_the_wavelength')?.counts[1]).toBe(1);
+
+    // An empty-handed feed (nothing consumed) does not credit it further.
+    sim.feedGreenpaw(pid);
+    expect(meta.questLog.get('q_the_wavelength')?.counts[1]).toBe(1);
+  });
+
   it('/feed is no longer a chat command (PHAA-482): it falls through to the unknown-command error', () => {
     standAtGreenpaw(sim, pid);
     sim.addItem('emberbulb', 1);

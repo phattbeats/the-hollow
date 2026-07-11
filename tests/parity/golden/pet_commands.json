@@ -23,7 +23,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "b5f1eb83",
+      "state": "761abd62",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -42,6 +42,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
@@ -52,6 +53,8 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -115,7 +118,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 404,
-      "state": "1966fc8c",
+      "state": "fe7b4121",
       "events": "4be65fd8",
       "rng": {
         "draws": 0,
@@ -134,6 +137,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
@@ -144,7 +148,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -248,7 +254,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 404,
-      "state": "f39ac21a",
+      "state": "6ead380b",
       "events": "0d9575e5",
       "rng": {
         "draws": 0,
@@ -267,6 +273,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
@@ -277,7 +284,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -395,7 +404,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 404,
-      "state": "250560c1",
+      "state": "63e1aca4",
       "events": "acacfa45",
       "rng": {
         "draws": 0,
@@ -406,7 +415,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 404,
-      "state": "87c36abe",
+      "state": "4930b2cf",
       "events": "acacfa45",
       "rng": {
         "draws": 0,
@@ -417,7 +426,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 405,
-      "state": "dd6d8931",
+      "state": "3f0e0634",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -436,6 +445,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
@@ -446,7 +456,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -625,7 +637,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 405,
-      "state": "49ba3b76",
+      "state": "6686a967",
       "events": "2046c55d",
       "rng": {
         "draws": 0,
@@ -644,6 +656,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
@@ -654,7 +667,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -773,7 +788,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 407,
-      "state": "d958bc4e",
+      "state": "008b6abf",
       "events": "4d95e958",
       "rng": {
         "draws": 0,
@@ -792,6 +807,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
@@ -802,7 +818,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -961,7 +979,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 407,
-      "state": "4256238e",
+      "state": "2af29cff",
       "events": "e25dfabf",
       "rng": {
         "draws": 0,
@@ -980,6 +998,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
@@ -990,7 +1009,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1149,7 +1170,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 407,
-      "state": "49ba3b76",
+      "state": "6686a967",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -1168,6 +1189,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
@@ -1178,7 +1200,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1297,7 +1321,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 408,
-      "state": "49ba3b76",
+      "state": "6686a967",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -1316,6 +1340,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
@@ -1326,7 +1351,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1445,7 +1472,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 410,
-      "state": "0d7e8115",
+      "state": "d5cddc5d",
       "events": "1cee9fc9",
       "rng": {
         "draws": 0,
@@ -1464,6 +1491,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
@@ -1474,7 +1502,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1490,6 +1520,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {},
@@ -1500,7 +1531,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1714,7 +1747,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 410,
-      "state": "06f62a5f",
+      "state": "5fe68827",
       "events": "f0e6e4ab",
       "rng": {
         "draws": 84,
@@ -1725,7 +1758,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 410,
-      "state": "f9760dbd",
+      "state": "6882c8bd",
       "events": "a7921fb2",
       "rng": {
         "draws": 164,
@@ -1736,7 +1769,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 410,
-      "state": "f9760dbd",
+      "state": "6882c8bd",
       "events": "741638a5",
       "rng": {
         "draws": 164,
@@ -1755,6 +1788,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {
@@ -1767,7 +1801,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1783,6 +1819,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {},
@@ -1793,7 +1830,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2016,7 +2055,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 411,
-      "state": "74dd6fd2",
+      "state": "d6d2a27a",
       "events": "d8909161",
       "rng": {
         "draws": 164,
@@ -2035,6 +2074,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {
@@ -2047,7 +2087,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2063,6 +2105,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {},
@@ -2073,7 +2116,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2256,7 +2301,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 413,
-      "state": "3b31ef1b",
+      "state": "6967cd33",
       "events": "cfe10c08",
       "rng": {
         "draws": 164,
@@ -2275,6 +2320,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {
@@ -2287,7 +2333,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2303,6 +2351,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {},
@@ -2313,7 +2362,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2545,7 +2596,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 413,
-      "state": "3b31ef1b",
+      "state": "6967cd33",
       "events": "741638a5",
       "rng": {
         "draws": 164,
@@ -2564,6 +2615,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {
@@ -2576,7 +2628,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -2592,6 +2646,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {},
@@ -2602,7 +2657,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}

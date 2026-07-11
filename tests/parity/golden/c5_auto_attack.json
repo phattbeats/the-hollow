@@ -35,7 +35,7 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 411,
-      "state": "33bb2b31",
+      "state": "3c6caa70",
       "events": "5f694f72",
       "rng": {
         "draws": 14,
@@ -46,7 +46,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 411,
-      "state": "70bd7e2c",
+      "state": "de03502d",
       "events": "e5c62c81",
       "rng": {
         "draws": 17,
@@ -57,7 +57,7 @@
       "tick": 15,
       "time": 0.75,
       "nextId": 411,
-      "state": "0b2235a8",
+      "state": "cac72809",
       "events": "b5f7c7d7",
       "rng": {
         "draws": 17,
@@ -68,7 +68,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 411,
-      "state": "b76f1fe3",
+      "state": "6a04e4ae",
       "events": "1e47a20c",
       "rng": {
         "draws": 20,
@@ -79,7 +79,7 @@
       "tick": 25,
       "time": 1.25,
       "nextId": 411,
-      "state": "296771eb",
+      "state": "97767d16",
       "events": "b5f7c7d7",
       "rng": {
         "draws": 20,
@@ -90,7 +90,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 411,
-      "state": "87baade8",
+      "state": "431df5d5",
       "events": "741638a5",
       "rng": {
         "draws": 20,
@@ -101,7 +101,7 @@
       "tick": 35,
       "time": 1.75,
       "nextId": 411,
-      "state": "4b1b2c5e",
+      "state": "9b1366ef",
       "events": "b5f7c7d7",
       "rng": {
         "draws": 20,
@@ -112,7 +112,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 411,
-      "state": "b7c89101",
+      "state": "0f241840",
       "events": "27b28e33",
       "rng": {
         "draws": 23,
@@ -123,7 +123,7 @@
       "tick": 45,
       "time": 2.25,
       "nextId": 411,
-      "state": "04fd9060",
+      "state": "8067e8c3",
       "events": "2ad4406b",
       "rng": {
         "draws": 66,
@@ -134,7 +134,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 411,
-      "state": "18da5bee",
+      "state": "2fbc1b55",
       "events": "aaece714",
       "rng": {
         "draws": 91,
@@ -145,7 +145,7 @@
       "tick": 55,
       "time": 2.75,
       "nextId": 411,
-      "state": "a435e4b4",
+      "state": "f20c3d07",
       "events": "b5f7c7d7",
       "rng": {
         "draws": 103,
@@ -156,7 +156,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 411,
-      "state": "1282619d",
+      "state": "67c665aa",
       "events": "29534abe",
       "rng": {
         "draws": 128,
@@ -167,7 +167,7 @@
       "tick": 65,
       "time": 3.25,
       "nextId": 411,
-      "state": "f60f404f",
+      "state": "145209d8",
       "events": "b5f7c7d7",
       "rng": {
         "draws": 151,
@@ -178,7 +178,7 @@
       "tick": 70,
       "time": 3.5,
       "nextId": 411,
-      "state": "b8d8e50f",
+      "state": "11bae098",
       "events": "741638a5",
       "rng": {
         "draws": 171,
@@ -189,7 +189,7 @@
       "tick": 75,
       "time": 3.75,
       "nextId": 411,
-      "state": "445053dc",
+      "state": "d6f8fa07",
       "events": "e5855c38",
       "rng": {
         "draws": 198,
@@ -200,7 +200,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 411,
-      "state": "3c3d65fd",
+      "state": "8a68de32",
       "events": "741638a5",
       "rng": {
         "draws": 219,
@@ -211,7 +211,7 @@
       "tick": 85,
       "time": 4.25,
       "nextId": 411,
-      "state": "45f5cb56",
+      "state": "ab49d5d9",
       "events": "7b062da7",
       "rng": {
         "draws": 259,
@@ -222,7 +222,7 @@
       "tick": 90,
       "time": 4.5,
       "nextId": 411,
-      "state": "6e7c81f0",
+      "state": "656dcb4f",
       "events": "7984430c",
       "rng": {
         "draws": 285,
@@ -233,7 +233,7 @@
       "tick": 95,
       "time": 4.75,
       "nextId": 411,
-      "state": "90ff9de8",
+      "state": "f0b8bcc7",
       "events": "06ea5c54",
       "rng": {
         "draws": 317,
@@ -244,7 +244,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 411,
-      "state": "8a70d9b2",
+      "state": "8baddaf5",
       "events": "741638a5",
       "rng": {
         "draws": 343,
@@ -255,7 +255,7 @@
       "tick": 105,
       "time": 5.25,
       "nextId": 411,
-      "state": "9ae390e2",
+      "state": "1f932a05",
       "events": "b5f7c7d7",
       "rng": {
         "draws": 382,
@@ -266,7 +266,7 @@
       "tick": 110,
       "time": 5.5,
       "nextId": 411,
-      "state": "d6a7c95a",
+      "state": "3f576ec9",
       "events": "a505c0ef",
       "rng": {
         "draws": 408,
@@ -277,7 +277,7 @@
       "tick": 115,
       "time": 5.75,
       "nextId": 411,
-      "state": "f364d222",
+      "state": "29e74991",
       "events": "b5f7c7d7",
       "rng": {
         "draws": 436,
@@ -288,7 +288,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 411,
-      "state": "7d8de2c5",
+      "state": "cab4dde6",
       "events": "277ec5f9",
       "rng": {
         "draws": 491,
@@ -299,7 +299,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 411,
-      "state": "7d8de2c5",
+      "state": "cab4dde6",
       "events": "741638a5",
       "rng": {
         "draws": 491,
@@ -317,6 +317,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -330,7 +331,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 78400,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -346,6 +349,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {
@@ -359,7 +363,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 78400,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -375,6 +381,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {
@@ -388,7 +395,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 78400,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -404,6 +413,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {
@@ -416,7 +426,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 78400,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -432,6 +444,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -444,7 +457,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 78400,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1007,7 +1022,7 @@
       "tick": 125,
       "time": 6.25,
       "nextId": 411,
-      "state": "8d57f5ff",
+      "state": "b4c67d2c",
       "events": "b7cdbafb",
       "rng": {
         "draws": 533,
@@ -1018,7 +1033,7 @@
       "tick": 126,
       "time": 6.3,
       "nextId": 411,
-      "state": "a17c4f89",
+      "state": "c68252c2",
       "events": "741638a5",
       "rng": {
         "draws": 540,
@@ -1036,6 +1051,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -1049,7 +1065,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 78400,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1065,6 +1083,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {
@@ -1078,7 +1097,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 78400,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1094,6 +1115,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {
@@ -1107,7 +1129,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 78400,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1123,6 +1147,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {
@@ -1135,7 +1160,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 78400,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1151,6 +1178,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -1163,7 +1191,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 78400,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1718,7 +1748,7 @@
       "tick": 126,
       "time": 6.3,
       "nextId": 411,
-      "state": "a17c4f89",
+      "state": "c68252c2",
       "events": "741638a5",
       "rng": {
         "draws": 540,
@@ -1736,6 +1766,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -1749,7 +1780,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 78400,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1765,6 +1798,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {
@@ -1778,7 +1812,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 78400,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1794,6 +1830,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {
@@ -1807,7 +1844,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 78400,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1823,6 +1862,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {
@@ -1835,7 +1875,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 78400,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1851,6 +1893,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -1863,7 +1906,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 78400,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}

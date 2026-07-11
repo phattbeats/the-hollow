@@ -70,6 +70,13 @@ export type PlayerClass =
   | 'warlock'
   | 'druid';
 
+// Player character sex. Drives which visual variant the renderer places: when
+// a `player_<class>_f` entry exists in the manifest, female characters resolve
+// to it; otherwise they fall back to the default (male) model for the class.
+// Persisted in CharacterState and carried in the entity wire identity fields.
+// Optional in saved state so pre-PHAA-501 characters load as 'm'.
+export type Sex = 'm' | 'f';
+
 // Classes that command a persistent pet (hunter beast, warlock demon). Pure
 // predicate, here so the pet-command slice imports it without a sim.ts cycle.
 export function isPetClass(cls: PlayerClass): boolean {
@@ -339,6 +346,10 @@ export interface SetBonusEffect {
   spi?: number;
   ap?: number; // flat attack power
   crit?: number; // flat crit chance, 0..1
+  // Haste fraction (0.15 = 15% faster). ONE stat: it speeds melee and ranged
+  // auto-attack swings AND shortens spell cast/channel time, all together
+  // (folded into Entity.meleeHaste/rangedHaste/spellHaste in recalcPlayerStats).
+  haste?: number;
   castPushbackReduction?: number; // 0..1: fraction of damage cast-pushback removed (1 = immune)
 }
 
@@ -408,6 +419,28 @@ export interface LootRollPrompt {
   expiresAt: number;
 }
 
+// One candidate's live vote on an open need-greed roll, as the whole group sees
+// it: the choice only. The 1-100 roll number stays server-side until resolution,
+// when every roll is broadcast as loot chat lines.
+export interface LootRollStatusEntry {
+  pid: number;
+  name: string;
+  choice: LootRollChoice | null;
+}
+
+// Group-visible mirror of an open need-greed roll: every party member (candidate
+// or not) sees who has answered and how while the window runs, so the HUD can
+// keep the roll frame up with a per-player choice strip until the server
+// resolves the roll.
+export interface LootRollGroupStatus {
+  rollId: number;
+  itemId: string;
+  itemName: string;
+  quality: ItemDef['quality'];
+  expiresAt: number;
+  entries: LootRollStatusEntry[];
+}
+
 // Master loot intercepts roll-worthy drops at/above a quality threshold and hands
 // the assignment decision to a single designated looter (the leader, or 0 = leader).
 export type MasterLootThreshold = 'uncommon' | 'rare' | 'epic';
@@ -474,6 +507,11 @@ export interface MobTemplate {
   loot: LootEntry[];
   scale: number; // render hint
   color: number; // render hint
+  // Profession harvesting (PHAA-504): the skinning/salvage component types this
+  // mob's corpse can yield (e.g. 'hide', 'fang', 'silk'). Data-as-code; consumed
+  // by src/sim/gathering.ts. A tag with no entry in HARVEST_COMPONENT_ITEMS still
+  // makes the corpse single-use claimable, it just yields no item yet.
+  componentTags?: string[];
   boss?: boolean;
   rare?: boolean;
   // Elite scaling, vanilla-style: ~2.3x health, ~1.5x damage, double XP.
@@ -1159,6 +1197,18 @@ export interface GroundObjectDef {
   positions: { x: number; z: number }[];
 }
 
+// Gatherable world nodes (amber/heartwood/spore). Permanent, unowned
+// fixtures: this issue is content plus visibility only, no harvest logic
+// (see PHAA-504).
+export type GatherNodeType = 'amber' | 'heartwood' | 'spore';
+
+export interface GatherNodeDef {
+  id: string;
+  zoneId: string;
+  type: GatherNodeType;
+  pos: { x: number; z: number };
+}
+
 export interface DungeonSpawn {
   mobId: string;
   x: number; // relative to instance origin
@@ -1281,12 +1331,12 @@ export function emptyZoneProps(): ZonePropsDef {
 }
 
 export interface QuestObjective {
-  type: 'kill' | 'collect' | 'interact';
+  type: 'kill' | 'collect' | 'interact' | 'feed';
   targetMobId?: string; // for kill
   itemId?: string; // for collect
   targetObjectItemId?: string; // for interactable ground objects
   targetNpcId?: string; // for interactable NPC objectives
-  count: number;
+  count: number; // for 'feed', the number of successful feedGreenpaw() calls
   label: string;
 }
 
@@ -1402,6 +1452,11 @@ export interface Entity {
   attackPower: number;
   rangedPower: number; // hunters: ranged attack power
   spellPower: number; // casters: added to spell damage via per-spell coefficients
+  // Haste fractions from item-set bonuses (0 = none). Melee/ranged haste speed up
+  // the respective auto-attack swing; spell haste shortens cast and channel time.
+  meleeHaste: number;
+  rangedHaste: number;
+  spellHaste: number;
   critChance: number; // 0..1
   dodgeChance: number;
   castPushbackReduction: number; // 0..1: damage cast-pushback removed by item-set bonuses (1 = immune)
@@ -1493,6 +1548,11 @@ export interface Entity {
   respawnTimer: number;
   corpseTimer: number;
   lootFfaTimer: number; // seconds of owner-lock left before tap loot opens to all (FFA); Infinity until rollLoot starts it
+  // Profession harvest (PHAA-504): single-use, first-come claim on this corpse's
+  // componentTags yield. null = unharvested; once set to a player's entity id,
+  // every later attempt (same tick or later) is denied. Reset on respawn
+  // (src/sim/mob/lifecycle.ts). The opposite of a world gathering node (per-player).
+  harvestClaimedBy: number | null;
   despawnTimer?: number;
   damageIdleDespawnTimer?: number;
   lootable: boolean;
@@ -1511,6 +1571,11 @@ export interface Entity {
   color: number;
   skinCatalog: SkinCatalog; // player appearance catalog: class texture set or cosmetic body.
   skin: number; // player appearance: index into SKINS[visualKey]; 0 = default. synced in identity fields.
+  // Player character sex. Drives the female visual variant when a
+  // `player_<class>_f` VisualDef exists; otherwise the default model is used.
+  // Persisted in CharacterState, mirrored from PlayerMeta in addPlayer, and
+  // synced in identity fields (terse `sx`). Defaults to 'm' for back-compat.
+  sex: Sex;
   // Equipped mainhand item id (players only; null otherwise). Render-only: the
   // client maps it to a held weapon model. Recomputed in recalcPlayerStats and
   // synced in identity fields (terse `mh`). The sim never reads it for gameplay.
@@ -1609,6 +1674,17 @@ export interface PlantUtteranceMeta {
   soreSpot?: PlantSoreSpot;
 }
 
+// Guild calendar command outcomes (mirrors server/social.ts CalendarResultCode;
+// `created`/`removed` are successes, the rest refusals).
+export type CalendarResultCode =
+  | 'created'
+  | 'removed'
+  | 'notInGuild'
+  | 'notOfficer'
+  | 'badInput'
+  | 'calendarFull'
+  | 'eventGone';
+
 // `pid` (when present) marks a personal event that should only be delivered to
 // that player entity's owner; events without pid are world-visible.
 export type SimEvent = { pid?: number } & (
@@ -1696,6 +1772,10 @@ export type SimEvent = { pid?: number } & (
   // a guild invitation from an online guild officer/leader; resolved by name
   // server-side so it carries no pid
   | { type: 'guildInvite'; fromName: string; guildName: string }
+  // Guild calendar outcome. Emitted only by the server's SocialService (the
+  // sim never books guild events); declared here so the one client event
+  // switch stays exhaustively typed.
+  | { type: 'calendarResult'; code: CalendarResultCode }
   | { type: 'tradeRequest'; fromPid: number; fromName: string }
   | { type: 'tradeDone' }
   | { type: 'duelRequest'; fromPid: number; fromName: string }

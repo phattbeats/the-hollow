@@ -170,6 +170,7 @@ export const ENTITY_EXCLUDE: ReadonlySet<string> = new Set([
   'color',
   'skin', // appearance
   'skinCatalog',
+  'sex', // appearance (visual variant dispatch); sim never reads it for gameplay
   'mainhandItemId', // render-only; "the sim never reads it for gameplay"
   'equippedItems', // render-only mirror for inspect; sim never reads it for gameplay
   'stealthed', // derived cache of auras.some(a => a.kind === 'stealth'); auras is sampled
@@ -184,6 +185,7 @@ export const META_EXCLUDE: ReadonlySet<string> = new Set([
   'name', // identity
   'skin', // appearance
   'skinCatalog',
+  'sex', // appearance (visual variant dispatch); sim never reads it for gameplay
   'pendingSkinRank', // cosmetic skin-select (pending*)
   'pendingSkinCatalog',
   'pendingSkinItemId',

@@ -906,6 +906,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'entities.items.fenreed_staff.name': 'Bataklık Sazı Asası',
   'entities.items.fenwalker_boots.name': 'Bataklıkyürüyen Çizmeleri',
   'entities.items.first_cutting.name': 'Bir Filiz',
+  'entities.items.greenpaw_bead.name': 'Fişeklikten Bir Boncuk',
   'entities.items.witness_root_cincture.name': "Tanık Kök'ün Kemeri",
   'entities.items.shrine_diary_page.name': 'Yırtık Günlük Sayfası',
   'entities.items.shrine_diary_page.flavorText':

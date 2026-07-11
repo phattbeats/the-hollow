@@ -29,7 +29,7 @@
       "tick": 25,
       "time": 1.25,
       "nextId": 405,
-      "state": "8aab297f",
+      "state": "d2112843",
       "events": "f2abef45",
       "rng": {
         "draws": 0,
@@ -40,7 +40,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 405,
-      "state": "8cf863f9",
+      "state": "04bcb19d",
       "events": "7fc93399",
       "rng": {
         "draws": 56,
@@ -51,7 +51,7 @@
       "tick": 75,
       "time": 3.75,
       "nextId": 405,
-      "state": "1608ae97",
+      "state": "433021bb",
       "events": "59acab11",
       "rng": {
         "draws": 158,
@@ -62,7 +62,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 405,
-      "state": "be40d88b",
+      "state": "f9aee70f",
       "events": "72fdf341",
       "rng": {
         "draws": 275,
@@ -73,7 +73,7 @@
       "tick": 101,
       "time": 5.05,
       "nextId": 405,
-      "state": "b96a7a83",
+      "state": "d3516427",
       "events": "af9f6c5d",
       "rng": {
         "draws": 282,
@@ -91,6 +91,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
@@ -101,6 +102,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -116,6 +119,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -126,6 +130,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -141,6 +147,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {},
@@ -151,6 +158,8 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -166,6 +175,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
@@ -176,6 +186,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -379,7 +391,7 @@
       "tick": 102,
       "time": 5.1,
       "nextId": 405,
-      "state": "0313e74b",
+      "state": "3186214f",
       "events": "de77307b",
       "rng": {
         "draws": 283,
@@ -397,6 +409,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
@@ -407,6 +420,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -422,6 +437,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -432,6 +448,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -447,6 +465,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {
@@ -459,6 +478,8 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -474,6 +495,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
@@ -484,6 +506,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -687,7 +711,7 @@
       "tick": 103,
       "time": 5.15,
       "nextId": 405,
-      "state": "d38cfd93",
+      "state": "f673f38b",
       "events": "1c7e0b6a",
       "rng": {
         "draws": 287,
@@ -706,6 +730,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
@@ -716,6 +741,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -732,6 +759,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -742,6 +770,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -758,6 +788,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {
@@ -770,6 +801,8 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -786,6 +819,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {
@@ -798,6 +832,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1001,7 +1037,7 @@
       "tick": 125,
       "time": 6.25,
       "nextId": 405,
-      "state": "6c4ad111",
+      "state": "b9cd1361",
       "events": "741638a5",
       "rng": {
         "draws": 410,
@@ -1012,7 +1048,7 @@
       "tick": 150,
       "time": 7.5,
       "nextId": 405,
-      "state": "6a24aeb3",
+      "state": "7ac7c82b",
       "events": "741638a5",
       "rng": {
         "draws": 554,
@@ -1023,7 +1059,7 @@
       "tick": 175,
       "time": 8.75,
       "nextId": 405,
-      "state": "1f8a23c1",
+      "state": "41117f51",
       "events": "741638a5",
       "rng": {
         "draws": 727,
@@ -1034,7 +1070,7 @@
       "tick": 200,
       "time": 10,
       "nextId": 405,
-      "state": "b8643ed3",
+      "state": "543d43cb",
       "events": "741638a5",
       "rng": {
         "draws": 929,
@@ -1045,7 +1081,7 @@
       "tick": 225,
       "time": 11.25,
       "nextId": 405,
-      "state": "7aa2142d",
+      "state": "f04fe4dd",
       "events": "d1989f59",
       "rng": {
         "draws": 1038,
@@ -1056,7 +1092,7 @@
       "tick": 243,
       "time": 12.15,
       "nextId": 405,
-      "state": "0818e991",
+      "state": "38de0be1",
       "events": "741638a5",
       "rng": {
         "draws": 1108,
@@ -1075,6 +1111,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
@@ -1085,6 +1122,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1101,6 +1140,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -1111,6 +1151,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1127,6 +1169,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {
@@ -1139,6 +1182,8 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1155,6 +1200,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {
@@ -1167,6 +1213,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1375,7 +1423,7 @@
       "tick": 243,
       "time": 12.15,
       "nextId": 405,
-      "state": "0818e991",
+      "state": "38de0be1",
       "events": "741638a5",
       "rng": {
         "draws": 1108,
@@ -1394,6 +1442,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
@@ -1404,6 +1453,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1420,6 +1471,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -1430,6 +1482,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1446,6 +1500,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {
@@ -1458,6 +1513,8 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1474,6 +1531,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {
@@ -1486,6 +1544,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}

@@ -336,6 +336,7 @@ describe('i18n Localization Key Coverage', () => {
     channel: 'World',
     classes: 'Warrior, Mage',
     className: 'Mage',
+    cls: 'Priest',
     command: '/dance',
     completed: 12,
     count: 5,
@@ -367,6 +368,7 @@ describe('i18n Localization Key Coverage', () => {
     money: '12 copper',
     name: 'Aki',
     needed: 400,
+    pct: 50,
     perCombo: 7,
     percent: 30,
     position: 3,
@@ -891,7 +893,9 @@ describe('i18n Localization Key Coverage', () => {
 
   it('should track item-set names and bonus text in the entity catalog', async () => {
     const itemSetEntries = entityTranslationManifest().filter((entry) => entry.group === 'itemSet');
-    expect(itemSetEntries).toHaveLength(7 * 3);
+    // 7 raid/dungeon families with name+bonus2+bonus3, plus 3 leveling haste
+    // kits carrying a single 3-piece tier (name+bonus3 only)
+    expect(itemSetEntries).toHaveLength(7 * 3 + 3 * 2);
     expect(missingEntityTranslationsForGroups(['itemSet'])).toHaveLength(0);
 
     for (const lang of ['zh_CN', 'zh_TW', 'ja_JP', 'ko_KR', 'ru_RU'] as const) {

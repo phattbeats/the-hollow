@@ -30,7 +30,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 405,
-      "state": "530e5553",
+      "state": "5930302c",
       "events": "169fe877",
       "rng": {
         "draws": 1,
@@ -48,6 +48,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 34,
@@ -61,12 +62,14 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
               "itemId": "worn_sword"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -82,6 +85,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "copper": 33,
@@ -95,6 +99,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -110,6 +116,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "copper": 33,
@@ -123,6 +130,8 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -343,8 +352,8 @@
       "tick": 1,
       "time": 0.05,
       "nextId": 405,
-      "state": "c8905a57",
-      "events": "d3019350",
+      "state": "459d9f38",
+      "events": "fc4df0a9",
       "rng": {
         "draws": 3,
         "digest": "034ba248"
@@ -361,6 +370,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 34,
@@ -374,6 +384,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -384,6 +395,7 @@
               "itemId": "greyjaw_hide_boots"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -399,6 +411,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "copper": 33,
@@ -412,6 +425,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -427,6 +442,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "copper": 33,
@@ -440,6 +456,8 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -666,7 +684,7 @@
       "tick": 1,
       "time": 0.05,
       "nextId": 405,
-      "state": "66cd0cef",
+      "state": "9367b856",
       "events": "f481bd02",
       "rng": {
         "draws": 3,
@@ -684,6 +702,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 34,
@@ -697,6 +716,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -707,6 +727,7 @@
               "itemId": "greyjaw_hide_boots"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -722,6 +743,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "copper": 33,
@@ -735,6 +757,7 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -745,6 +768,7 @@
               "itemId": "greyjaw_hide_boots"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -760,6 +784,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "copper": 33,
@@ -773,6 +798,8 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -982,7 +1009,7 @@
       "tick": 3,
       "time": 0.15,
       "nextId": 405,
-      "state": "eddc64e6",
+      "state": "d210c13b",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -1000,6 +1027,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 34,
@@ -1013,6 +1041,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -1023,6 +1052,7 @@
               "itemId": "greyjaw_hide_boots"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1038,6 +1068,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "copper": 33,
@@ -1051,6 +1082,7 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -1061,6 +1093,7 @@
               "itemId": "greyjaw_hide_boots"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1076,6 +1109,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "copper": 33,
@@ -1089,6 +1123,8 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}

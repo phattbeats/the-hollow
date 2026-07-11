@@ -15,7 +15,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "c702aab6",
+      "state": "49b972f3",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -34,6 +34,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -44,6 +45,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -106,7 +109,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 403,
-      "state": "a32f94c9",
+      "state": "8668e938",
       "events": "5e63c649",
       "rng": {
         "draws": 2,
@@ -117,7 +120,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 403,
-      "state": "cfe16225",
+      "state": "0099d564",
       "events": "ac946b88",
       "rng": {
         "draws": 2,
@@ -128,7 +131,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 403,
-      "state": "dea2f711",
+      "state": "94c23a3c",
       "events": "d40cfcdb",
       "rng": {
         "draws": 75,
@@ -139,7 +142,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 403,
-      "state": "50f6428a",
+      "state": "3160a7ff",
       "events": "741638a5",
       "rng": {
         "draws": 164,
@@ -150,7 +153,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 403,
-      "state": "773aed8e",
+      "state": "16bb91ab",
       "events": "05ddd8dd",
       "rng": {
         "draws": 280,
@@ -161,7 +164,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 403,
-      "state": "686dd5cb",
+      "state": "70a5200e",
       "events": "d951e0f5",
       "rng": {
         "draws": 390,
@@ -172,7 +175,7 @@
       "tick": 128,
       "time": 6.4,
       "nextId": 403,
-      "state": "d49e6ad7",
+      "state": "c7eef63a",
       "events": "741638a5",
       "rng": {
         "draws": 438,
@@ -191,6 +194,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -204,7 +208,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 27600,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}

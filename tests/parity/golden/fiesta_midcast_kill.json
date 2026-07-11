@@ -31,7 +31,7 @@
       "tick": 25,
       "time": 1.25,
       "nextId": 405,
-      "state": "8dff4bfd",
+      "state": "a096a68b",
       "events": "a12f69cf",
       "rng": {
         "draws": 0,
@@ -42,7 +42,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 405,
-      "state": "a91cf22f",
+      "state": "c93bdccd",
       "events": "7fc93399",
       "rng": {
         "draws": 28,
@@ -53,7 +53,7 @@
       "tick": 75,
       "time": 3.75,
       "nextId": 405,
-      "state": "880e5e55",
+      "state": "70b52163",
       "events": "59acab11",
       "rng": {
         "draws": 143,
@@ -64,7 +64,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 405,
-      "state": "51b6fd2b",
+      "state": "34dfb2f9",
       "events": "72fdf341",
       "rng": {
         "draws": 304,
@@ -75,7 +75,7 @@
       "tick": 101,
       "time": 5.05,
       "nextId": 405,
-      "state": "58dc9b3e",
+      "state": "42275ffc",
       "events": "9e6a5a8d",
       "rng": {
         "draws": 310,
@@ -93,6 +93,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -112,6 +113,8 @@
               "ranks": {}
             }
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {
@@ -134,6 +137,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -151,6 +155,8 @@
               "ranks": {}
             }
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {
@@ -173,6 +179,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {
@@ -192,6 +199,8 @@
               "ranks": {}
             }
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {
@@ -214,6 +223,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
@@ -231,6 +241,8 @@
               "ranks": {}
             }
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {
@@ -446,7 +458,7 @@
       "tick": 101,
       "time": 5.05,
       "nextId": 405,
-      "state": "0f52ac62",
+      "state": "45331a68",
       "events": "cf9ec829",
       "rng": {
         "draws": 310,
@@ -464,6 +476,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -483,6 +496,8 @@
               "ranks": {}
             }
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {
@@ -505,6 +520,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -522,6 +538,8 @@
               "ranks": {}
             }
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {
@@ -544,6 +562,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {
@@ -563,6 +582,8 @@
               "ranks": {}
             }
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {
@@ -585,6 +606,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
@@ -602,6 +624,8 @@
               "ranks": {}
             }
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {
@@ -815,7 +839,7 @@
       "tick": 101,
       "time": 5.05,
       "nextId": 405,
-      "state": "bfb0b470",
+      "state": "0b66e956",
       "events": "6e8891dd",
       "rng": {
         "draws": 310,
@@ -833,6 +857,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -853,6 +878,8 @@
               "ranks": {}
             }
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {
@@ -875,6 +902,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -892,6 +920,8 @@
               "ranks": {}
             }
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {
@@ -914,6 +944,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {
@@ -934,6 +965,8 @@
               "ranks": {}
             }
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {
@@ -956,6 +989,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
@@ -973,6 +1007,8 @@
               "ranks": {}
             }
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {
@@ -1186,7 +1222,7 @@
       "tick": 125,
       "time": 6.25,
       "nextId": 405,
-      "state": "d60fac32",
+      "state": "8643aa68",
       "events": "741638a5",
       "rng": {
         "draws": 434,
@@ -1197,7 +1233,7 @@
       "tick": 142,
       "time": 7.1,
       "nextId": 405,
-      "state": "e6ade6fa",
+      "state": "e670a370",
       "events": "741638a5",
       "rng": {
         "draws": 528,
@@ -1215,6 +1251,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -1235,6 +1272,8 @@
               "ranks": {}
             }
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {
@@ -1257,6 +1296,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
@@ -1274,6 +1314,8 @@
               "ranks": {}
             }
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {
@@ -1296,6 +1338,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {
@@ -1316,6 +1359,8 @@
               "ranks": {}
             }
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {
@@ -1338,6 +1383,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
@@ -1355,6 +1401,8 @@
               "ranks": {}
             }
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {

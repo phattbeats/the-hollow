@@ -43,6 +43,10 @@ const baseEnTable = {
   'error.noMerchant': 'There is no merchant nearby.',
   'error.noSellQuest': 'You cannot sell quest items.',
   'error.noBuyback': 'That item is not available for buyback.',
+  'error.trainerUnavailable': 'That trainer is not available.',
+  'error.trainerWrongProfession': 'That trainer does not teach that profession.',
+  'error.secondaryClassMinLevel': 'You must be level 10 to choose a secondary profession.',
+  'error.illegalSecondaryProfession': 'That is not a legal secondary profession.',
   'error.nailedShut': 'It is nailed shut.',
   'error.enoughOfThose': 'You have enough of those.',
   'error.whoOnline': 'The /who roster is available in online play.',
@@ -62,6 +66,8 @@ const baseEnTable = {
   'error.tameDungeon': 'You cannot tame dungeon creatures.',
   'error.alreadyHavePet': 'You already have a pet.',
   'error.noLootPermission': "You don't have permission to loot that.",
+  'error.gatherNodeMissing': 'That resource node does not exist.',
+  'error.gatherNodeNotRespawned': 'This resource node has not respawned for you yet.',
   'log.talentsUpdated': 'Talents updated.',
   'log.talentsReset': 'Talents reset.',
   'log.savedBuild': 'Saved build “{name}”.',
@@ -89,6 +95,8 @@ const baseEnTable = {
   'log.partyLeft': '{name} has left the party.',
   'log.partyRemoved': '{name} has been removed from the party.',
   'loot.rollWin': '{winner} wins {item} ({roll})',
+  'loot.rollNeed': 'Need Roll - {roll} for {item} by {name}',
+  'loot.rollGreed': 'Greed Roll - {roll} for {item} by {name}',
   'loot.marketSellerBought':
     '{buyer} bought your {item} for {price} - collect {proceeds} from the Merchant.',
   'log.learnedAbility': 'You have learned a new ability: {name}.',
@@ -235,6 +243,10 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.noMerchant': 'There is no merchant nearby.',
     'error.noSellQuest': 'You cannot sell quest items.',
     'error.noBuyback': 'That item is not available for buyback.',
+    'error.trainerUnavailable': 'That trainer is not available.',
+    'error.trainerWrongProfession': 'That trainer does not teach that profession.',
+    'error.secondaryClassMinLevel': 'You must be level 10 to choose a secondary profession.',
+    'error.illegalSecondaryProfession': 'That is not a legal secondary profession.',
     'error.nailedShut': 'It is nailed shut.',
     'error.enoughOfThose': 'You have enough of those.',
     'error.whoOnline': 'The /who roster is available in online play.',
@@ -254,6 +266,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.tameDungeon': 'You cannot tame dungeon creatures.',
     'error.alreadyHavePet': 'You already have a pet.',
     'error.noLootPermission': "You don't have permission to loot that.",
+    'error.gatherNodeMissing': 'That resource node does not exist.',
+    'error.gatherNodeNotRespawned': 'This resource node has not respawned for you yet.',
     'log.talentsUpdated': 'Talents updated.',
     'log.talentsReset': 'Talents reset.',
     'log.savedBuild': 'Saved build “{name}”.',
@@ -281,6 +295,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'log.partyLeft': '{name} has left the party.',
     'log.partyRemoved': '{name} has been removed from the party.',
     'loot.rollWin': '{winner} wins {item} ({roll})',
+    'loot.rollNeed': 'Need Roll - {roll} for {item} by {name}',
+    'loot.rollGreed': 'Greed Roll - {roll} for {item} by {name}',
     'loot.marketSellerBought':
       '{buyer} bought your {item} for {price} - collect {proceeds} from the Merchant.',
     'log.learnedAbility': 'You have learned a new ability: {name}.',
@@ -444,6 +460,10 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.noMerchant': 'No hay ningún vendedor cerca.',
     'error.noSellQuest': 'No puedes vender objetos de misión.',
     'error.noBuyback': 'Ese objeto no está disponible para recompra.',
+    'error.trainerUnavailable': 'Ese entrenador no está disponible.',
+    'error.trainerWrongProfession': 'Ese entrenador no enseña esa profesión.',
+    'error.secondaryClassMinLevel': 'Debes tener nivel 10 para elegir una profesión secundaria.',
+    'error.illegalSecondaryProfession': 'Esa no es una profesión secundaria válida.',
     'error.nailedShut': 'Está clavado y no se puede abrir.',
     'error.enoughOfThose': 'Ya tienes suficientes de esos.',
     'error.whoOnline': 'La lista de /who está disponible en el juego en línea.',
@@ -463,6 +483,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.tameDungeon': 'No puedes domesticar criaturas de mazmorra.',
     'error.alreadyHavePet': 'Ya tienes una mascota.',
     'error.noLootPermission': 'No tienes permiso para saquear eso.',
+    'error.gatherNodeMissing': 'Ese nodo de recursos no existe.',
+    'error.gatherNodeNotRespawned': 'Este nodo de recursos aún no ha reaparecido para ti.',
     'log.talentsUpdated': 'Talentos actualizados.',
     'log.talentsReset': 'Talentos restablecidos.',
     'log.savedBuild': 'Configuración “{name}” guardada.',
@@ -490,6 +512,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'log.partyLeft': '{name} ha abandonado el grupo.',
     'log.partyRemoved': '{name} ha sido expulsado del grupo.',
     'loot.rollWin': '{winner} gana {item} ({roll})',
+    'loot.rollNeed': 'Tirada de Necesidad - {roll} para {item} de {name}',
+    'loot.rollGreed': 'Tirada de Codicia - {roll} para {item} de {name}',
     'loot.marketSellerBought':
       '{buyer} compró tu {item} por {price}; cobra {proceeds} del Mercader.',
     'aura.tamed': 'Domado',
@@ -584,6 +608,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.noMerchant': 'No hay ningún mercader cerca.',
     'error.noSellQuest': 'No puedes vender objetos de misión.',
     'error.noBuyback': 'Ese objeto no está disponible para recompra.',
+    'error.trainerUnavailable': 'Ese instructor no está disponible.',
+    'error.trainerWrongProfession': 'Ese instructor no enseña esa profesión.',
+    'error.secondaryClassMinLevel':
+      'Debes alcanzar el nivel 10 para elegir una profesión secundaria.',
+    'error.illegalSecondaryProfession': 'Esa no es una profesión secundaria válida.',
     'error.nailedShut': 'Está clavado.',
     'error.enoughOfThose': 'Ya tienes suficientes de esos.',
     'error.whoOnline': 'La lista de /who está disponible en el juego en línea.',
@@ -603,6 +632,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.tameDungeon': 'No puedes domar criaturas de mazmorra.',
     'error.alreadyHavePet': 'Ya tienes una mascota.',
     'error.noLootPermission': 'No tienes permiso para saquear eso.',
+    'error.gatherNodeMissing': 'Ese nodo de recursos no existe.',
+    'error.gatherNodeNotRespawned': 'Este nodo de recursos aún no ha reaparecido para ti.',
     'log.talentsUpdated': 'Talentos actualizados.',
     'log.talentsReset': 'Talentos restablecidos.',
     'log.savedBuild': 'Configuración “{name}” guardada.',
@@ -630,6 +661,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'log.partyLeft': '{name} ha abandonado el grupo.',
     'log.partyRemoved': '{name} ha sido expulsado del grupo.',
     'loot.rollWin': '{winner} gana {item} ({roll})',
+    'loot.rollNeed': 'Tirada de Necesidad - {roll} para {item} de {name}',
+    'loot.rollGreed': 'Tirada de Codicia - {roll} para {item} de {name}',
     'loot.marketSellerBought':
       '{buyer} compró tu {item} por {price}; cobra {proceeds} del Mercader.',
     'aura.tamed': 'Domado',
@@ -725,6 +758,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.noMerchant': "Il n'y a aucun marchand à proximité.",
     'error.noSellQuest': "Vous ne pouvez pas vendre d'objets de quête.",
     'error.noBuyback': "Cet objet n'est pas disponible au rachat.",
+    'error.trainerUnavailable': "Ce formateur n'est pas disponible.",
+    'error.trainerWrongProfession': "Ce formateur n'enseigne pas cette profession.",
+    'error.secondaryClassMinLevel':
+      'Vous devez être niveau 10 pour choisir une profession secondaire.',
+    'error.illegalSecondaryProfession': "Ce n'est pas une profession secondaire valide.",
     'error.nailedShut': "C'est condamné par des clous.",
     'error.enoughOfThose': 'Vous en avez assez.',
     'error.whoOnline': 'La liste /who est disponible en jeu en ligne.',
@@ -745,6 +783,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.tameDungeon': 'Vous ne pouvez pas apprivoiser les créatures de donjon.',
     'error.alreadyHavePet': 'Vous avez déjà un familier.',
     'error.noLootPermission': "Vous n'avez pas la permission de ramasser cela.",
+    'error.gatherNodeMissing': "Ce nœud de ressources n'existe pas.",
+    'error.gatherNodeNotRespawned': "Ce nœud de ressources n'est pas encore réapparu pour vous.",
     'log.talentsUpdated': 'Talents mis à jour.',
     'log.talentsReset': 'Talents réinitialisés.',
     'log.savedBuild': 'Distribution « {name} » enregistrée.',
@@ -772,6 +812,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'log.partyLeft': '{name} a quitté le groupe.',
     'log.partyRemoved': '{name} a été retiré du groupe.',
     'loot.rollWin': '{winner} remporte {item} ({roll})',
+    'loot.rollNeed': 'Jet de Besoin - {roll} pour {item} par {name}',
+    'loot.rollGreed': 'Jet de Cupidité - {roll} pour {item} par {name}',
     'loot.marketSellerBought':
       '{buyer} a acheté votre {item} pour {price}; récupérez {proceeds} auprès du marchand.',
     'aura.tamed': 'Apprivoisé',
@@ -867,6 +909,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.noMerchant': "Il n'y a aucun marchand à proximité.",
     'error.noSellQuest': "Vous ne pouvez pas vendre d'objets de quête.",
     'error.noBuyback': "Cet objet n'est pas disponible au rachat.",
+    'error.trainerUnavailable': "Ce formateur n'est pas disponible.",
+    'error.trainerWrongProfession': "Ce formateur n'enseigne pas cette profession.",
+    'error.secondaryClassMinLevel':
+      'Vous devez être niveau 10 pour choisir une profession secondaire.',
+    'error.illegalSecondaryProfession': "Ce n'est pas une profession secondaire valide.",
     'error.nailedShut': "C'est cloué.",
     'error.enoughOfThose': 'Vous en avez assez.',
     'error.whoOnline': 'La liste /who est disponible en jeu en ligne.',
@@ -888,6 +935,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.tameDungeon': 'Vous ne pouvez pas apprivoiser les créatures de donjon.',
     'error.alreadyHavePet': 'Vous avez déjà un familier.',
     'error.noLootPermission': "Vous n'avez pas la permission de ramasser cela.",
+    'error.gatherNodeMissing': "Ce nœud de ressources n'existe pas.",
+    'error.gatherNodeNotRespawned': "Ce nœud de ressources n'est pas encore réapparu pour vous.",
     'log.talentsUpdated': 'Talents mis à jour.',
     'log.talentsReset': 'Talents réinitialisés.',
     'log.savedBuild': 'Spécialisation “{name}” enregistrée.',
@@ -915,6 +964,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'log.partyLeft': '{name} a quitté le groupe.',
     'log.partyRemoved': '{name} a été retiré du groupe.',
     'loot.rollWin': '{winner} remporte {item} ({roll})',
+    'loot.rollNeed': 'Jet de Besoin - {roll} pour {item} par {name}',
+    'loot.rollGreed': 'Jet de Cupidité - {roll} pour {item} par {name}',
     'loot.marketSellerBought':
       '{buyer} a acheté votre {item} pour {price}; récupérez {proceeds} auprès du marchand.',
     'aura.tamed': 'Apprivoisé',
@@ -1008,6 +1059,10 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.noMerchant': 'There is no merchant nearby.',
     'error.noSellQuest': 'You cannot sell quest items.',
     'error.noBuyback': 'That item is not available for buyback.',
+    'error.trainerUnavailable': 'That trainer is not available.',
+    'error.trainerWrongProfession': 'That trainer does not teach that profession.',
+    'error.secondaryClassMinLevel': 'You must be level 10 to choose a secondary profession.',
+    'error.illegalSecondaryProfession': 'That is not a legal secondary profession.',
     'error.nailedShut': 'It is nailed shut.',
     'error.enoughOfThose': 'You have enough of those.',
     'error.whoOnline': 'The /who roster is available in online play.',
@@ -1027,6 +1082,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.tameDungeon': 'You cannot tame dungeon creatures.',
     'error.alreadyHavePet': 'You already have a pet.',
     'error.noLootPermission': "You don't have permission to loot that.",
+    'error.gatherNodeMissing': 'That resource node does not exist.',
+    'error.gatherNodeNotRespawned': 'This resource node has not respawned for you yet.',
     'log.talentsUpdated': 'Talents updated.',
     'log.talentsReset': 'Talents reset.',
     'log.savedBuild': 'Saved build “{name}”.',
@@ -1054,6 +1111,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'log.partyLeft': '{name} has left the party.',
     'log.partyRemoved': '{name} has been removed from the party.',
     'loot.rollWin': '{winner} wins {item} ({roll})',
+    'loot.rollNeed': 'Need Roll - {roll} for {item} by {name}',
+    'loot.rollGreed': 'Greed Roll - {roll} for {item} by {name}',
     'loot.marketSellerBought':
       '{buyer} bought your {item} for {price} - collect {proceeds} from the Merchant.',
     'aura.tamed': 'Tamed',
@@ -1148,6 +1207,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.noMerchant': "Non c'è nessun mercante nelle vicinanze.",
     'error.noSellQuest': 'Non puoi vendere oggetti delle missioni.',
     'error.noBuyback': "Quell'oggetto non è disponibile per il riacquisto.",
+    'error.trainerUnavailable': "Quell'istruttore non è disponibile.",
+    'error.trainerWrongProfession': "Quell'istruttore non insegna quella professione.",
+    'error.secondaryClassMinLevel':
+      'Devi essere di livello 10 per scegliere una professione secondaria.',
+    'error.illegalSecondaryProfession': 'Non è una professione secondaria valida.',
     'error.nailedShut': 'È inchiodato.',
     'error.enoughOfThose': 'Ne hai già abbastanza.',
     'error.whoOnline': "L'elenco /who è disponibile nel gioco online.",
@@ -1167,6 +1231,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.tameDungeon': 'Non puoi addomesticare le creature dei dungeon.',
     'error.alreadyHavePet': 'Hai già un compagno.',
     'error.noLootPermission': 'Non hai il permesso di saccheggiare quello.',
+    'error.gatherNodeMissing': 'Quel nodo di risorse non esiste.',
+    'error.gatherNodeNotRespawned': 'Questo nodo di risorse non è ancora ricomparso per te.',
     'log.talentsUpdated': 'Talenti aggiornati.',
     'log.talentsReset': 'Talenti azzerati.',
     'log.savedBuild': 'Build “{name}” salvata.',
@@ -1194,6 +1260,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'log.partyLeft': '{name} ha abbandonato il gruppo.',
     'log.partyRemoved': '{name} è stato rimosso dal gruppo.',
     'loot.rollWin': '{winner} vince {item} ({roll})',
+    'loot.rollNeed': 'Tiro Bisogno - {roll} per {item} di {name}',
+    'loot.rollGreed': 'Tiro Avidità - {roll} per {item} di {name}',
     'loot.marketSellerBought':
       '{buyer} ha comprato il tuo {item} per {price}; ritira {proceeds} dal mercante.',
     'aura.tamed': 'Addomesticato',
@@ -1288,6 +1356,10 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.noMerchant': 'Es ist kein Händler in der Nähe.',
     'error.noSellQuest': 'Ihr könnt keine Questgegenstände verkaufen.',
     'error.noBuyback': 'Dieser Gegenstand ist nicht zum Rückkauf verfügbar.',
+    'error.trainerUnavailable': 'Dieser Lehrmeister ist nicht verfügbar.',
+    'error.trainerWrongProfession': 'Dieser Lehrmeister unterrichtet diesen Beruf nicht.',
+    'error.secondaryClassMinLevel': 'Ihr müsst Stufe 10 erreichen, um einen Zweitberuf zu wählen.',
+    'error.illegalSecondaryProfession': 'Das ist kein gültiger Zweitberuf.',
     'error.nailedShut': 'Es ist vernagelt.',
     'error.enoughOfThose': 'Davon habt Ihr genug.',
     'error.whoOnline': 'Die /who-Liste ist im Onlinespiel verfügbar.',
@@ -1308,6 +1380,9 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.tameDungeon': 'Dungeonkreaturen könnt Ihr nicht zähmen.',
     'error.alreadyHavePet': 'Ihr habt bereits einen Begleiter.',
     'error.noLootPermission': 'Ihr habt keine Erlaubnis, das zu plündern.',
+    'error.gatherNodeMissing': 'Dieses Ressourcenvorkommen existiert nicht.',
+    'error.gatherNodeNotRespawned':
+      'Dieses Ressourcenvorkommen ist für Euch noch nicht erneut erschienen.',
     'log.talentsUpdated': 'Talente aktualisiert.',
     'log.talentsReset': 'Talente zurückgesetzt.',
     'log.savedBuild': 'Skillung „{name}“ gespeichert.',
@@ -1335,6 +1410,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'log.partyLeft': '{name} hat die Gruppe verlassen.',
     'log.partyRemoved': '{name} wurde aus der Gruppe entfernt.',
     'loot.rollWin': '{winner} gewinnt {item} ({roll})',
+    'loot.rollNeed': 'Bedarf-Wurf - {roll} für {item} von {name}',
+    'loot.rollGreed': 'Gier-Wurf - {roll} für {item} von {name}',
     'loot.marketSellerBought':
       '{buyer} hat dein {item} für {price} gekauft; hol {proceeds} beim Händler ab.',
     'aura.tamed': 'Gezähmt',
@@ -1428,6 +1505,10 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.noMerchant': '附近没有商人。',
     'error.noSellQuest': '你无法出售任务物品。',
     'error.noBuyback': '该物品无法回购。',
+    'error.trainerUnavailable': '该训练师无法提供服务。',
+    'error.trainerWrongProfession': '该训练师不教授那个职业。',
+    'error.secondaryClassMinLevel': '你必须达到10级才能选择副职业。',
+    'error.illegalSecondaryProfession': '这不是合法的副职业。',
     'error.nailedShut': '它被钉死了。',
     'error.enoughOfThose': '你已经有足够多的这种物品了。',
     'error.whoOnline': '/who 名册仅在联机游戏中可用。',
@@ -1447,6 +1528,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.tameDungeon': '你无法驯服副本生物。',
     'error.alreadyHavePet': '你已经有一只宠物了。',
     'error.noLootPermission': '你没有拾取它的权限。',
+    'error.gatherNodeMissing': '那个资源点不存在。',
+    'error.gatherNodeNotRespawned': '这个资源点尚未为你刷新。',
     'log.talentsUpdated': '天赋已更新。',
     'log.talentsReset': '天赋已重置。',
     'log.savedBuild': '已保存配置“{name}”。',
@@ -1474,6 +1557,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'log.partyLeft': '{name}已离开队伍。',
     'log.partyRemoved': '{name}已被移出队伍。',
     'loot.rollWin': '{winner}赢得了{item}（{roll}）',
+    'loot.rollNeed': '需求掷骰 - {name} 对 {item} 掷出 {roll}',
+    'loot.rollGreed': '贪婪掷骰 - {name} 对 {item} 掷出 {roll}',
     'loot.marketSellerBought': '{buyer}以{price}购买了你的{item}；向商人领取{proceeds}。',
     'aura.tamed': '已驯服',
     'aura.causticSpores': '腐蚀孢子',
@@ -1566,6 +1651,10 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.noMerchant': '附近沒有商人。',
     'error.noSellQuest': '你無法出售任務物品。',
     'error.noBuyback': '那件物品無法購回。',
+    'error.trainerUnavailable': '那名訓練師無法使用。',
+    'error.trainerWrongProfession': '那名訓練師不教授那個職業。',
+    'error.secondaryClassMinLevel': '你必須達到等級 10 才能選擇副職業。',
+    'error.illegalSecondaryProfession': '那不是合法的副職業。',
     'error.nailedShut': '它被釘死了。',
     'error.enoughOfThose': '你已經有足夠的那種物品了。',
     'error.whoOnline': '/who 名單僅在線上遊玩時可使用。',
@@ -1585,6 +1674,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.tameDungeon': '你無法馴服副本生物。',
     'error.alreadyHavePet': '你已經有一隻寵物了。',
     'error.noLootPermission': '你沒有拾取它的權限。',
+    'error.gatherNodeMissing': '那個資源點不存在。',
+    'error.gatherNodeNotRespawned': '這個資源點尚未為你重新出現。',
     'log.talentsUpdated': '天賦已更新。',
     'log.talentsReset': '天賦已重置。',
     'log.savedBuild': '已儲存配置「{name}」。',
@@ -1612,6 +1703,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'log.partyLeft': '{name} 已離開隊伍。',
     'log.partyRemoved': '{name} 已被移出隊伍。',
     'loot.rollWin': '{winner} 擲骰獲得 {item}（{roll}）',
+    'loot.rollNeed': '需求擲骰 - {name} 對 {item} 擲出 {roll}',
+    'loot.rollGreed': '貪婪擲骰 - {name} 對 {item} 擲出 {roll}',
     'loot.marketSellerBought': '{buyer}以{price}購買了你的{item}；向商人領取{proceeds}。',
     'aura.tamed': '馴服',
     'aura.causticSpores': '腐蝕孢子',
@@ -1705,6 +1798,10 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.noMerchant': '근처에 상인이 없습니다.',
     'error.noSellQuest': '퀘스트 아이템은 판매할 수 없습니다.',
     'error.noBuyback': '그 아이템은 되살 수 없습니다.',
+    'error.trainerUnavailable': '그 훈련사는 지금 이용할 수 없습니다.',
+    'error.trainerWrongProfession': '그 훈련사는 그 직업을 가르치지 않습니다.',
+    'error.secondaryClassMinLevel': '보조 직업을 선택하려면 레벨 10이어야 합니다.',
+    'error.illegalSecondaryProfession': '그것은 유효한 보조 직업이 아닙니다.',
     'error.nailedShut': '못으로 단단히 박혀 있습니다.',
     'error.enoughOfThose': '그것을 이미 충분히 가지고 있습니다.',
     'error.whoOnline': '/who 명단은 온라인 플레이에서만 사용할 수 있습니다.',
@@ -1724,6 +1821,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.tameDungeon': '던전의 생명체는 길들일 수 없습니다.',
     'error.alreadyHavePet': '이미 소환수가 있습니다.',
     'error.noLootPermission': '그 대상의 전리품을 획득할 권한이 없습니다.',
+    'error.gatherNodeMissing': '그 자원 지점은 존재하지 않습니다.',
+    'error.gatherNodeNotRespawned': '이 자원 지점은 아직 당신에게 다시 생성되지 않았습니다.',
     'log.talentsUpdated': '특성이 갱신되었습니다.',
     'log.talentsReset': '특성이 초기화되었습니다.',
     'log.savedBuild': '구성 “{name}”을(를) 저장했습니다.',
@@ -1751,6 +1850,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'log.partyLeft': '{name}님이 파티를 떠났습니다.',
     'log.partyRemoved': '{name}님이 파티에서 제외되었습니다.',
     'loot.rollWin': '{winner}님이 {item}을(를) 획득했습니다 ({roll})',
+    'loot.rollNeed': '니드 굴림 - {name}님이 {item}에 {roll}',
+    'loot.rollGreed': '그리드 굴림 - {name}님이 {item}에 {roll}',
     'loot.marketSellerBought':
       '{buyer}님이 당신의 {item}을(를) {price}에 샀습니다. 상인에게서 {proceeds}을(를) 수령하세요.',
     'aura.tamed': '길들여짐',
@@ -1847,6 +1948,10 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.noMerchant': '近くに商人がいません。',
     'error.noSellQuest': 'クエストアイテムは売却できません。',
     'error.noBuyback': 'そのアイテムは買い戻しできません。',
+    'error.trainerUnavailable': 'そのトレーナーは利用できません。',
+    'error.trainerWrongProfession': 'そのトレーナーはその職業を教えていません。',
+    'error.secondaryClassMinLevel': '副職業を選ぶにはレベル10が必要です。',
+    'error.illegalSecondaryProfession': 'それは有効な副職業ではありません。',
     'error.nailedShut': '釘で打ち付けられています。',
     'error.enoughOfThose': 'それはもう十分に持っています。',
     'error.whoOnline': '/whoの名簿はオンラインプレイでのみ利用できます。',
@@ -1867,6 +1972,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.tameDungeon': 'ダンジョンのクリーチャーは仲間にできません。',
     'error.alreadyHavePet': 'すでにペットがいます。',
     'error.noLootPermission': 'その戦利品を入手する権限がありません。',
+    'error.gatherNodeMissing': 'その資源ポイントは存在しません。',
+    'error.gatherNodeNotRespawned': 'この資源ポイントは、あなたにはまだ再出現していません。',
     'log.talentsUpdated': 'タレントを更新しました。',
     'log.talentsReset': 'タレントをリセットしました。',
     'log.savedBuild': 'ビルド「{name}」を保存しました。',
@@ -1894,6 +2001,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'log.partyLeft': '{name}がパーティーを離れました。',
     'log.partyRemoved': '{name}がパーティーから除外されました。',
     'loot.rollWin': '{winner}が{item}を獲得しました（{roll}）',
+    'loot.rollNeed': 'ニードロール - {name}が{item}に{roll}',
+    'loot.rollGreed': 'グリードロール - {name}が{item}に{roll}',
     'loot.marketSellerBought':
       '{buyer}があなたの{item}を{price}で購入しました。商人から{proceeds}を受け取ってください。',
     'aura.tamed': 'テイム',
@@ -1987,6 +2096,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.noMerchant': 'Não há nenhum comerciante por perto.',
     'error.noSellQuest': 'Você não pode vender itens de missão.',
     'error.noBuyback': 'Esse item não está disponível para recompra.',
+    'error.trainerUnavailable': 'Esse instrutor não está disponível.',
+    'error.trainerWrongProfession': 'Esse instrutor não ensina essa profissão.',
+    'error.secondaryClassMinLevel':
+      'Você precisa ser nível 10 para escolher uma profissão secundária.',
+    'error.illegalSecondaryProfession': 'Essa não é uma profissão secundária válida.',
     'error.nailedShut': 'Está pregado e não abre.',
     'error.enoughOfThose': 'Você já tem o bastante desses.',
     'error.whoOnline': 'A lista do /who está disponível no jogo online.',
@@ -2006,6 +2120,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.tameDungeon': 'Você não pode domar criaturas de masmorra.',
     'error.alreadyHavePet': 'Você já tem um ajudante.',
     'error.noLootPermission': 'Você não tem permissão para saquear isso.',
+    'error.gatherNodeMissing': 'Esse ponto de recursos não existe.',
+    'error.gatherNodeNotRespawned': 'Este ponto de recursos ainda não ressurgiu para você.',
     'log.talentsUpdated': 'Talentos atualizados.',
     'log.talentsReset': 'Talentos redefinidos.',
     'log.savedBuild': 'Estrutura “{name}” salva.',
@@ -2033,6 +2149,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'log.partyLeft': '{name} saiu do grupo.',
     'log.partyRemoved': '{name} foi removido do grupo.',
     'loot.rollWin': '{winner} vence {item} ({roll})',
+    'loot.rollNeed': 'Rolagem de Necessidade - {roll} por {item} de {name}',
+    'loot.rollGreed': 'Rolagem de Ganância - {roll} por {item} de {name}',
     'loot.marketSellerBought':
       '{buyer} comprou seu {item} por {price}; colete {proceeds} com o comerciante.',
     'aura.tamed': 'Domado',
@@ -2129,6 +2247,11 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.noMerchant': 'Поблизости нет торговца.',
     'error.noSellQuest': 'Вы не можете продавать предметы заданий.',
     'error.noBuyback': 'Этот предмет недоступен для выкупа.',
+    'error.trainerUnavailable': 'Этот наставник недоступен.',
+    'error.trainerWrongProfession': 'Этот наставник не обучает этой профессии.',
+    'error.secondaryClassMinLevel':
+      'Вы должны достичь 10 уровня, чтобы выбрать дополнительную профессию.',
+    'error.illegalSecondaryProfession': 'Это недопустимая дополнительная профессия.',
     'error.nailedShut': 'Заколочено наглухо.',
     'error.enoughOfThose': 'У вас достаточно таких предметов.',
     'error.whoOnline': 'Список /who доступен в сетевой игре.',
@@ -2148,6 +2271,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.tameDungeon': 'Нельзя приручать существ из подземелий.',
     'error.alreadyHavePet': 'У вас уже есть питомец.',
     'error.noLootPermission': 'У вас нет разрешения на добычу этого.',
+    'error.gatherNodeMissing': 'Этого источника ресурсов не существует.',
+    'error.gatherNodeNotRespawned': 'Этот источник ресурсов ещё не восстановился для вас.',
     'log.talentsUpdated': 'Таланты обновлены.',
     'log.talentsReset': 'Таланты сброшены.',
     'log.savedBuild': 'Сборка «{name}» сохранена.',
@@ -2175,6 +2300,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'log.partyLeft': '{name} покинул(а) группу.',
     'log.partyRemoved': '{name} исключён(а) из группы.',
     'loot.rollWin': '{winner} выигрывает {item} ({roll})',
+    'loot.rollNeed': 'Бросок Нужды - {roll} за {item} от {name}',
+    'loot.rollGreed': 'Бросок Жадности - {roll} за {item} от {name}',
     'loot.marketSellerBought':
       '{buyer} купил ваш предмет {item} за {price}; заберите {proceeds} у торговца.',
     'aura.tamed': 'Приручён',
@@ -4053,6 +4180,18 @@ const RULES: Rule[] = [
   { re: /^Equipped (?!\()(.+)\.$/, build: (m) => tSim('log.equipped', { item: locItem(m[1]) }) },
   { re: /^Unequipped (.+)\.$/, build: (m) => tSim('log.unequipped', { item: locItem(m[1]) }) },
   { re: /^You quaff (.+)\.$/, build: (m) => tSim('log.quaff', { item: locItem(m[1]) }) },
+  // Group-visible per-roller reveal at resolution (PHAA-568, upstream #1599). The
+  // {name} is a player, spliced verbatim; {item} localizes via the entity dict; the
+  // 1-100 {roll} passes through. Distinct "Need Roll -" / "Greed Roll -" prefixes so
+  // ordering against the win rule is irrelevant.
+  {
+    re: /^Need Roll - (\d+) for (.+) by (.+)$/,
+    build: (m) => tSim('loot.rollNeed', { roll: m[1], item: locItem(m[2]), name: m[3] }),
+  },
+  {
+    re: /^Greed Roll - (\d+) for (.+) by (.+)$/,
+    build: (m) => tSim('loot.rollGreed', { roll: m[1], item: locItem(m[2]), name: m[3] }),
+  },
   {
     re: /^(.+) wins (.+) \((\d+)\)$/,
     build: (m) => tSim('loot.rollWin', { winner: m[1], item: locItem(m[2]), roll: m[3] }),
@@ -4439,6 +4578,33 @@ const RULES: Rule[] = [
     re: /^Greenpaw: \/feed \(bring what burns or what fills, from near the vase\)\.$/,
     build: () => t('sim.hearth.helpLine'),
   },
+  // Gathering v0 (PHAA-504): corpse-harvest error text (src/sim/interaction.ts's
+  // harvestCorpse). Its range-check error reuses the literal "Too far away."
+  // that lootCorpse/pickUpObject already emit (same pre-existing gap, not
+  // widened by this addition).
+  // The bank vault core (PHAA-571): src/sim/bank.ts's deposit/withdraw/buySlots
+  // error + purchase-notice text. Core-only port, not yet player-reachable (no
+  // banker NPC placed), registered now so the S3 guard has a matcher ready.
+  { re: /^You are too far from the banker\.$/, build: () => t('sim.bank.tooFar') },
+  {
+    re: /^You cannot store quest items in the bank\.$/,
+    build: () => t('sim.bank.noQuestItems'),
+  },
+  { re: /^Your bank is full\.$/, build: () => t('sim.bank.full') },
+  {
+    re: /^Your bank cannot be expanded further\.$/,
+    build: () => t('sim.bank.expansionCapped'),
+  },
+  { re: /^You cannot afford that bank expansion\.$/, build: () => t('sim.bank.cannotAfford') },
+  { re: /^You purchase additional bank slots\.$/, build: () => t('sim.bank.purchased') },
+  {
+    re: /^That corpse has nothing to harvest\.$/,
+    build: () => t('sim.gathering.nothingToHarvest'),
+  },
+  {
+    re: /^This corpse has already been harvested\.$/,
+    build: () => t('sim.gathering.alreadyHarvested'),
+  },
   // Housing v0 (PHAA-428): the /house command text (src/sim/housing.ts), plus the
   // /house helpLines entry (src/sim/social/chat.ts).
   {
@@ -4515,6 +4681,63 @@ const RULES: Rule[] = [
   {
     re: /^Trade failed: not enough bag space\.$/,
     build: () => t('sim.bags.tradeSpace'),
+  },
+  // Homestead v0 (PHAA-533): the open-world Hollow Reaches tier, distinct from
+  // Housing v0's Sanctum plots (src/sim/homestead.ts). Player-facing /homestead
+  // command text: the seven placement-rejection errors returned by
+  // placementIssue() (also literal-emitted from inside homesteadClaim via the
+  // returned string), the Greenpaw quest-gate, the already-own / ground-claimed /
+  // sits-at / no-homestead variants, plus the /homestead helpLines entry in
+  // src/sim/social/chat.ts (recognized through the variable-routed describe
+  // guard below; its rule here also serves runtime lookups).
+  {
+    re: /^That is outside the homestead ground\. Try Fallow Acres, west of the road\.$/,
+    build: () => t('sim.homestead.outsideArea'),
+  },
+  {
+    re: /^Too close to the gate\. Move further out\.$/,
+    build: () => t('sim.homestead.tooCloseGate'),
+  },
+  { re: /^Too close to the water\.$/, build: () => t('sim.homestead.tooCloseWater') },
+  {
+    re: /^Too close to the graveyard\.$/,
+    build: () => t('sim.homestead.tooCloseGraveyard'),
+  },
+  {
+    re: /^Too close to the wildlife\. Clear the area or move further off\.$/,
+    build: () => t('sim.homestead.tooCloseWildlife'),
+  },
+  { re: /^Too close to the road\.$/, build: () => t('sim.homestead.tooCloseRoad') },
+  {
+    re: /^Too close to another homestead\.$/,
+    build: () => t('sim.homestead.tooCloseOther'),
+  },
+  {
+    re: /^Brother Greenpaw hasn't sent you off yet\. Finish his errands first\.$/,
+    build: () => t('sim.homestead.questGate'),
+  },
+  { re: /^You already own a homestead\.$/, build: () => t('sim.homestead.alreadyOwn') },
+  {
+    re: /^The ground is yours\. This homestead is claimed\.$/,
+    build: () => t('sim.homestead.claimed'),
+  },
+  {
+    // Math.round(plot.x/z) on the sim side -> digits, possibly negative; the
+    // RULES pattern captures them as {x}/{z} for the t() placeholder.
+    re: /^Your homestead sits at \((-?\d+), (-?\d+)\)\.$/,
+    build: (m) => t('sim.homestead.readoutMine', { x: m[1], z: m[2] }),
+  },
+  {
+    re: /^You own no homestead\. Finish Brother Greenpaw's full errand chain to unlock one\.$/,
+    build: () => t('sim.homestead.readoutNoHomesteadQuest'),
+  },
+  {
+    re: /^You own no homestead\. Stand somewhere viable in the Hollow Reaches and type \/homestead claim\.$/,
+    build: () => t('sim.homestead.readoutNoHomesteadHint'),
+  },
+  {
+    re: /^Homestead: \/homestead, \/homestead claim\.$/,
+    build: () => t('sim.homestead.helpLine'),
   },
   // Boss/mob mechanic broadcast. Broad (two open captures), so it MUST stay last -
   // after every more-specific "{X} {verb}!" rule above (awakens, enraged, calls for aid).

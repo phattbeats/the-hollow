@@ -2950,6 +2950,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': 'Höhlenhappen',
   'entities.items.emberbulb.name': 'Glutknolle',
   'entities.items.first_cutting.name': 'Ein Ableger',
+  'entities.items.greenpaw_bead.name': 'Eine Perle vom Bandolier',
   'entities.items.witness_root_cincture.name': 'Zeugenwurzels Gürtel',
   'entities.items.shrine_diary_page.name': 'Zerrissene Tagebuchseite',
   'entities.items.shrine_diary_page.flavorText':

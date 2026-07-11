@@ -16,6 +16,11 @@ import type { TranslationKey } from '../i18n.catalog';
 export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.spectate.banner': '正在观察 {name}',
   'hudChrome.loot.chestTitle': '宝箱',
+  'hudChrome.lootRollGroup.pending': '等待中...',
+  'hudChrome.lootRollGroup.need': '需求',
+  'hudChrome.lootRollGroup.greed': '贪婪',
+  'hudChrome.lootRollGroup.pass': '放弃',
+  'hudChrome.lootRollGroup.aria': '{item} 的团队掷骰状态',
   'hudChrome.spellbook.addToBarAria': '将{name}添加到动作条',
   'hudChrome.spellbook.removeFromBarAria': '从动作条移除{name}',
   'hudChrome.nameplate.mob': '[{level}] {name}',
@@ -628,6 +633,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'loading.rendererFailed': '无法启动渲染器：请尝试刷新。{error}',
   'loading.enterTimeout': '无法进入世界。连接已超时。游戏服务器是否正在运行？',
   'loading.connectionLost': '与服务器的连接已断开。',
+  'loading.reconnecting': '连接已断开。正在重新连接...',
   'loading.connectionRejected': '服务器关闭了连接。',
   'errors.nothingInteract': '附近没有可互动目标。',
   'errors.noEnemyNearby': '附近没有敌人。',
@@ -651,6 +657,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'errors.api.nameTaken': '该名称已被占用。',
   'errors.api.characterNotFound': '未找到角色。',
   'errors.api.characterOnline': '角色当前在线。',
+  'errors.api.crossSiteRejected': '跨站请求被拒绝。',
   'errors.api.deleteConfirm': '输入角色名称以确认删除。',
   'errors.api.notAuthenticated': '尚未认证。',
   'errors.api.accountBanned': '此账号已被封禁。',
@@ -1268,6 +1275,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'abilityUi.tooltip.offGlobalCooldown': '不触发公共冷却',
   'abilityUi.tooltip.friendlyTarget': '友方目标',
   'abilityUi.tooltip.enemyTarget': '敌方目标',
+  'abilityUi.tooltip.selfOnly': '仅对自己',
   'abilityUi.tooltip.damageRange': '{min} 到 {max}',
   'abilityUi.tooltip.finisherDamage': '{base} 加每个连击点 {perCombo}',
   'abilityUi.resources.mana': '法力',
@@ -2788,7 +2796,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_root_hollow_boars_ii.text':
     '我就说句本职上不该说的实话：五头，是我乐观了。底下的窝还在不断往外拱。再杀八头，我便能结清这一季，不必第三回去改记录。记录不喜被改。我也不喜。',
   'entities.quests.q_root_hollow_boars_ii.completion':
-    '结案。签字。归档。这一季总算能照原定的历程走了，毕竟又有人来看着这本历书。你帮了一个极小的会众一个大忙。我得澄清一句：这会众，就是我。',
+    '结案。签字。归档。这一季总算能照原定的历程走了，毕竟又有人来看着这本历书。你帮了一个极小的会众一个大忙。我得澄清一句：这会众，就是我。这本历书本身比这安排还要古老，装订出自一双我从未谋面的手，记着一个我不愿去加总的数目。曾经有人在此极为用心。我不过是尽力跟上罢了。',
   'entities.quests.q_root_hollow_boars_ii.objectives.0.label': '野猪已杀',
   'entities.quests.q_fallow_acres_wolves.title': '赶走田垄上的狼',
   'entities.quests.q_fallow_acres_wolves.text':
@@ -2931,6 +2939,30 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_what_fills.dialog.refuse': '不。我不会再下去了。',
   'entities.quests.q_what_fills.dialog.refuseReply':
     '哦……哦，好吧。……好吧。这……是啊。不，这很公道，朋友，很公道……瓶子也听见了，偷偷跟你说，我觉得他还挺敬佩你的。来，这根插枝你还是拿着。你下去过一次，就已经比大多数人多一次了……',
+  'entities.quests.q_the_wavelength.title': '同一频率上',
+  'entities.quests.q_the_wavelength.text':
+    '挖来的插条现在是你的了，朋友，那接下来该聊聊后面的事了……两件事，都不算考验，更像是引见。第一，穿过瓶子那边，去见见耶罗长老，她教的是第二天职，一种完全不同的玩法，凡是路过这儿的灵魂都该知道那扇门是开着的……第二，回来喂我点什么，不管是哪样，残火球茎也好，洞穴肉粒也好，我永远处于饥饿状态，瓶子也永远想要烟。这部分是不会真正结束的，对绿掌来说就是这样。',
+  'entities.quests.q_the_wavelength.completion':
+    '看吧……你感觉到了吧，房间一下子变浓了？那是他，注意到了。这就是全部的窍门，朋友——你喂我，我就冒烟，他就多凑近一点听着。没什么复杂的。以后也永远不会变。手头有多余的残火球茎或洞穴肉粒，随时过来，炉子不看日历……哦对了。欢迎来到圣所。我这才意识到之前一直没说过这句。',
+  'entities.quests.q_the_wavelength.objectives.0.label': '已拜见耶罗长老',
+  'entities.quests.q_the_wavelength.objectives.1.label': '已在炉边喂食',
+  'entities.quests.q_the_wavelength.dialog.complain': '又要跑腿？我才刚从那洞里爬出来。',
+  'entities.quests.q_the_wavelength.dialog.complainReply':
+    '不不，听我说完，这次不是洞里的活儿……这次简单，就是走一趟，好好喂我一次。这是我求过你最轻松的一件事了，我保证，同频共振，绝不骗你。',
+  'entities.quests.q_the_wavelength.dialog.refuse': '我自己去找我的训练，谢了。',
+  'entities.quests.q_the_wavelength.dialog.refuseReply':
+    '……那也行吧。一个灵魂还没准备好之前，是没法强求学东西的。等哪天不是"还没准备好"了，门就一直开着……给，这个还是拿着吧，好歹你来了一趟。',
+  'entities.quests.q_keep_him_lit.text':
+    '三次，朋友，就是这个数……不是什么神圣的数字，就是刚好能把一个人情变成一个习惯，习惯才是我真正信的那种信仰……回来喂炉子三次，分开的三次，先后顺序不重要，残火球茎还是洞穴肉粒也不重要，只要你做到了，我就信你是真的打算留下来，不是路过顺道办完事就走……',
+  'entities.quests.q_keep_him_lit.completion':
+    '三次都到了……你不再只是个访客了，朋友，你是在守着一样活着的东西，这就是全部的意义，虽然没人问过我，但我还是要说……给，拿着这个吧，它什么用也没有，只是个念想，跟咱们这儿的人一样……',
+  'entities.quests.q_keep_him_lit.objectives.0.label': '已在炉边喂食三次',
+  'entities.quests.q_keep_him_lit.dialog.complain': '我不是已经喂过你一次了吗？这还不够？',
+  'entities.quests.q_keep_him_lit.dialog.complainReply':
+    '一次是个人情，朋友，三次才是习惯，人情我吃过亏……这不是炉子需不需要，炉子好得很，我照顾得来，这是关于你愿不愿意自己走回来，不是因为任务标记逼你来的……三次。不急着数。',
+  'entities.quests.q_keep_him_lit.dialog.refuse': '我不会分三次来做这件事。一次就够了。',
+  'entities.quests.q_keep_him_lit.dialog.refuseReply':
+    '……好吧。好吧，我懂你的意思，朋友，这条线划得也算公道……这样吧，还是拿着，严格说不算你挣来的，但我给出去的大半也不算，频率这东西，其实没真的在计较。',
   'hud.errors.silenced': '你已被沉默！',
   'hud.pet.noPetFood': '你没有可以喂给宠物的食物。',
   'hud.pet.petEatsFoodOnly': '你的宠物只能吃食物。',
@@ -2961,6 +2993,9 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'auth.realm': '服务器',
   'auth.newCharacter': '新建角色',
   'auth.appearance': '外观',
+  'auth.sex': '性别',
+  'auth.sexMale': '男性',
+  'auth.sexFemale': '女性',
   'auth.class': '职业',
   'auth.name': '名称',
   'auth.chromaOption': '配色 {n}',
@@ -3442,6 +3477,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'guide.nav.dungeons': '地下城与团队副本',
   'guide.nav.reference': '参考',
   'guide.nav.controls': '操作键',
+  'guide.nav.settings': '设置和性能',
   'guide.nav.combat': '战斗',
   'guide.nav.glossary': '术语表',
   'guide.nav.faq': '常见问题',
@@ -3576,6 +3612,86 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'guide.controls.mobileHeading': '移动端操作',
   'guide.controls.mobileBody':
     '在手机和平板上会自动出现触控操作:左侧是移动摇杆,在右侧任意位置拖动即可环顾四周,屏幕上还有用于使用技能和打开菜单的按钮。',
+  'guide.settingsPage.heading': '设置和性能',
+  'guide.settingsPage.intro':
+    '把画面调到最美，或把帧数拉到最高。三套现成方案，外加每个图形选项的真实作用。',
+  'guide.settingsPage.wherePath': '本页的一切都在游戏里：按 Esc，到图形、界面和性能监视器中查看。',
+  'guide.settingsPage.fairnessTitle': '公平源自设计',
+  'guide.settingsPage.fairnessBody':
+    '这里没有任何选项会拿画面换战力。调低设置只会舍弃视觉上的修饰，绝不会砍掉你作战所需的信息：从“低”到“超高”，你的减益效果、施法条、队伍血量和伤害数字完全一致。用配置一般的机器游玩，绝不会吃亏。',
+  'guide.settingsPage.loadoutsHeading': '三套现成方案',
+  'guide.settingsPage.loadoutsIntro':
+    '先从最像你设备的那套方案开始，然后每次只调一个选项，直到感觉合适为止。',
+  'guide.settingsPage.recommended': '推荐',
+  'guide.settingsPage.whyLabel': '推荐理由：',
+  'guide.settingsPage.tagReload': '需重新加载',
+  'guide.settingsPage.fpsTitle': '帧数优先',
+  'guide.settingsPage.fpsTagline': '适合较老的笔记本、核显设备，以及用电池游玩的场合。',
+  'guide.settingsPage.fpsWhy':
+    '图形质量是总开关，渲染质量则是效果最猛的滑块：调到 70% 时，世界只需绘制大约一半的像素，而界面依旧清晰锐利。',
+  'guide.settingsPage.balancedTitle': '均衡',
+  'guide.settingsPage.balancedTagline': '大多数设备的最佳平衡点，也是我们的默认建议。',
+  'guide.settingsPage.balancedWhy':
+    '“中”档就有真实的阴影和完整的材质，“高”档再加上环境光遮蔽和泛光。只要低于“超高”，内置保护机制就会在激烈战斗掉帧时自动兜底，所以均衡方案不必时刻盯着，也能一直流畅。',
+  'guide.settingsPage.visualsTitle': '极致画质',
+  'guide.settingsPage.visualsTagline': '为高性能台式机准备的截图模式。',
+  'guide.settingsPage.visualsWhy':
+    '“超高”会以显示器支持的最高分辨率渲染，并启用最丰富的光照。它还会关闭内置保护机制，而且仅限桌面端：手机和应用端最高到“高”为止。',
+  'guide.settingsPage.value50to70': '50% 到 70%',
+  'guide.settingsPage.value90to100': '90% 到 100%',
+  'guide.settingsPage.value100': '100%',
+  'guide.settingsPage.valueHighOrMedium': '游戏 PC 选“高”，笔记本选“中”',
+  'guide.settingsPage.valueOnOptional': '开启（可选）',
+  'guide.settingsPage.howHeading': '这些选项如何生效',
+  'guide.settingsPage.factDetectTitle': '游戏会先自动调校',
+  'guide.settingsPage.factDetectBody':
+    '首次启动时，游戏会检测你的设备并选好合适的档位：性能一般的手机是“低”，强力台式机则是“超高”。你自己做出的任何选择永远优先。',
+  'guide.settingsPage.factReloadTitle': '两类选项',
+  'guide.settingsPage.factReloadBody':
+    '图形质量和“高级”下的各个选项要在重新加载后才会生效，需要时面板会提供“立即重新加载”按钮。其余选项在你改动的那一刻立即生效。',
+  'guide.settingsPage.factGovernorTitle': '内置保护机制',
+  'guide.settingsPage.factGovernorBody':
+    '在“超高”以下的所有档位，大型战斗骤然吃紧时，游戏会悄悄暂时精简草地、特效和光照，随后再恢复原样。选择“超高”，就等于告诉游戏你宁可保留每一处细节。',
+  'guide.settingsPage.advancedHeading': '“高级”预设：自由搭配',
+  'guide.settingsPage.advancedBody':
+    '“高级”以“高”档位为起点，额外解锁四个独立选项，让你把帧数花在真正看得出差别的地方：地形细节、植被密度、特效和光照，以及阴影质量。这些选项和图形质量一样，重新加载后才会生效。',
+  'guide.settingsPage.advancedMixes':
+    '两套人气搭配：把阴影质量保持在“高”、特效和光照调到“低”，画面干净利落、没有泛光，跑起来也轻快；或者反过来，保留泛光，让阴影更柔和。',
+  'guide.settingsPage.tableHeading': '每个选项，逐一说明',
+  'guide.settingsPage.colSetting': '选项',
+  'guide.settingsPage.colDoes': '作用',
+  'guide.settingsPage.colImpact': 'FPS 影响',
+  'guide.settingsPage.impactNone': '无',
+  'guide.settingsPage.impactLight': '小',
+  'guide.settingsPage.impactModerate': '中等',
+  'guide.settingsPage.impactHeavy': '大',
+  'guide.settingsPage.rowGraphicsQuality':
+    '总开关。每调一档，分辨率、阴影、材质、植被和光照特效都会一起变化。这是单项改动里差别最大的一个。',
+  'guide.settingsPage.rowRenderQuality':
+    '以更低的内部分辨率绘制 3D 世界再放大呈现，界面保持锐利。对较弱的设备和高分辨率屏幕而言，这是见效最快、最猛的滑块。',
+  'guide.settingsPage.rowFieldOfView':
+    '决定屏幕能装下多大的世界：从拉近的 55 度到开阔的 100 度。纯属舒适度选择；视野越宽，绘制量略微增加。',
+  'guide.settingsPage.rowBrightness': '调整场景曝光，偏暗或偏亮，纯看个人喜好。',
+  'guide.settingsPage.rowWeather': '环境雨雪。纯氛围效果，关闭后在暴风雨天能省下一点性能。',
+  'guide.settingsPage.rowBrowserEffects':
+    '决定界面本身可以多华丽：玻璃模糊、辉光、菜单动画。“自动”会根据你的浏览器自行匹配；无论怎么选，3D 世界都不受影响。',
+  'guide.settingsPage.rowTerrainDetail':
+    '细腻混合的地表纹理，或更简洁、更省性能的地形外观，二选一。',
+  'guide.settingsPage.rowFoliageDensity': '决定角色周围的草地长多远、长多密。',
+  'guide.settingsPage.rowEffectsQuality':
+    '控制泛光、环境光遮蔽，以及有多少火把和法术能投射真实光照。在“高级”各选项中，这一项省下的性能最多。',
+  'guide.settingsPage.rowShadowQuality': '决定阴影的锐利程度。“低”仍保留阴影，只是边缘更柔和。',
+  'guide.settingsPage.rowFrostedPanels':
+    '在窗口背后加一层毛玻璃模糊。效果漂亮，但也正是性能较弱的浏览器最吃力的那类特效；想要经典的清爽外观就保持关闭。',
+  'guide.settingsPage.rowReduceMotion':
+    '移除界面动画，让窗口即刻显示。它首先是一项无障碍选项，顺带还有一点性能收益。',
+  'guide.settingsPage.rowPerfOverlay':
+    '在屏幕上实时显示 FPS、帧时间等数据。调校本页选项时先打开它，调完再隐藏。',
+  'guide.settingsPage.tableFoot':
+    '在找视距滑块或 FPS 上限？不用找了：可视距离已包含在各画质档位里，帧率则与你的显示器保持同步。',
+  'guide.settingsPage.mobileTitle': '手机与平板',
+  'guide.settingsPage.mobileBody':
+    '移动端会替你多打理一些：游戏自动选择档位，把分辨率稍微压低以兼顾电量和发热，最高的几个档位也仅在桌面端开放。上面的方案依然适用，只是手机最高到“高”为止。',
   'guide.combat.intro':
     '战斗遵循经典 MMO 中熟悉的规则。你完全不必钻研这些就能玩得很好,这里只是介绍一下战斗大致的运作方式。',
   'guide.combat.hitTitle': '并非每次攻击都能命中',
@@ -4313,6 +4429,8 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': '洞穴肉粒',
   'entities.items.emberbulb.name': '余烬球茎',
   'entities.items.first_cutting.name': '插条',
+  'entities.items.greenpaw_bead.name': '弹药带上的一颗念珠',
+  'entities.items.keeper_coal.name': '一块永不冷却的炭',
   'entities.items.witness_root_cincture.name': '见证根的束带',
   'entities.items.shrine_diary_page.name': '撕碎的日记页',
   'entities.items.shrine_diary_page.flavorText':
@@ -4322,6 +4440,12 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.items.wolfhide_satchel.name': '狼皮挎包',
   'entities.items.gravewoven_bag.name': '墓织袋',
   'entities.items.mistcallers_duffel.name': '唤雾者的行囊',
+  'entities.items.worn_prayer_token.name': '磨损的祷牌',
+  'entities.items.worn_prayer_token.flavorText':
+    '……一面被一根不是我的拇指磨得光滑，磨出的浅沟和这堆里另外上百枚一模一样，至少这堆东西是这么告诉我的。一根拇指磨不出一百枚令牌的痕迹。可一百根拇指，倒是能磨出同一道浅沟……',
+  'entities.items.tally_shard.name': '刻痕碎片',
+  'entities.items.tally_shard.flavorText':
+    '……以五为一组刻得极深，每数完一轮便划去一道。划去的五连一组，累计上百组，最后一行却始终没有划完……',
   'entities.mobs.acolyte_tessa.name': '侍僧泰莎',
   'entities.mobs.deacon_varric.name': '执事瓦里克',
   'entities.mobs.reliquary_bonewalker.name': '复生的骨行者',
@@ -4338,7 +4462,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.brother_greenpaw.name': '绿掌修士',
   'entities.npcs.brother_greenpaw.title': '首席先知（自封）',
   'entities.npcs.brother_greenpaw.greeting':
-    '哟，旅人，你来啦。你说这瓮今儿个心情不错，还是只有我这么觉得……过来吧，有几件神圣的事儿要办。基本上就是弄点吃的。反正对绿掌来说是一回事儿。',
+    '你又来啦，真是福气……这瓮一早上唉声叹气的，几件神圣的事儿又排上了，跟上回一个路子。过来坐一会儿……',
   'entities.npcs.brother_greenpaw.introLines.0':
     '呃……你好。你好啊。没听见你过来，我刚才神游去了，去了个绿油油的地方……你这一脸刚睡醒的样子，朋友。我太熟这表情了，我自己十天有九天挂着它……',
   'entities.npcs.brother_greenpaw.introLines.1':
@@ -4442,6 +4566,12 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'sim.bags.swapTooManyItems': '物品太多，无法换成那个背包。',
   'sim.bags.removeTooManyItems': '物品太多，无法移除那个背包。',
   'sim.bags.tradeSpace': '交易失败：背包空间不足。',
+  'sim.bank.cannotAfford': '你负担不起这次银行扩容。',
+  'sim.bank.expansionCapped': '你的银行无法再扩容了。',
+  'sim.bank.full': '你的银行已满。',
+  'sim.bank.noQuestItems': '你不能把任务物品存入银行。',
+  'sim.bank.purchased': '你购买了额外的银行槽位。',
+  'sim.bank.tooFar': '你离银行职员太远了。',
   'sim.delve.alreadyInDelve': '你已经身处一场探秘之中。',
   'sim.delve.bossChest':
     '首领倒下了。一只设有结界的圣物库宝箱在祭坛上升起，撬开它的锁来取得你的战利品。',
@@ -4485,6 +4615,8 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'sim.delve.unknownTier': '未知的探秘难度。',
   'sim.delve.wayOutNotOpen': '出路尚未开启。',
   'sim.delve.whileTrading': '交易期间无法进入探秘。',
+  'sim.gathering.alreadyHarvested': '这具尸体已经被采集过了。',
+  'sim.gathering.nothingToHarvest': '这具尸体没有什么可以采集的。',
   'sim.hearth.emberbulb1': '这才叫柴火……瞧瞧她喘气的样子，伙计……',
   'sim.hearth.emberbulb2': '炉子慢慢地、干干净净地吃下去，她就爱这样……',
   'sim.hearth.emberbulb3': '添了柴，冒了烟……那个波长已经开始松动了，我能感觉到。',
@@ -4495,6 +4627,21 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'sim.hearth.noItems1': '……伙计，你两手空空啊。带点能烧的或能填饱肚子的东西来，我们再唠。',
   'sim.hearth.noItems2': '身上啥也没有，就剩一片好心，是吧……好心可点不着炉子。',
   'sim.hearth.tooFar': '你得靠近绿掌修士才能喂他。',
+  'sim.homestead.alreadyOwn': '你已经拥有一处家园了。',
+  'sim.homestead.claimed': '这片土地归你了。家园认领成功。',
+  'sim.homestead.helpLine': '家园：/homestead，/homestead claim。',
+  'sim.homestead.outsideArea': '这里不属于家园用地。去路西边的 Fallow Acres 试试。',
+  'sim.homestead.questGate': '绿掌修士还没让你出发呢。先把他的差事做完。',
+  'sim.homestead.readoutMine': '你的家园坐落在 ({x}, {z})。',
+  'sim.homestead.readoutNoHomesteadHint':
+    '你还没有家园。站在空谷地里合适的位置，输入 /homestead claim。',
+  'sim.homestead.readoutNoHomesteadQuest': '你还没有家园。先完成绿掌修士的全部差事才能解锁。',
+  'sim.homestead.tooCloseGate': '离大门太近了。再往外挪一挪。',
+  'sim.homestead.tooCloseGraveyard': '离墓地太近了。',
+  'sim.homestead.tooCloseOther': '离别人的家园太近了。',
+  'sim.homestead.tooCloseRoad': '离大路太近了。',
+  'sim.homestead.tooCloseWater': '离水域太近了。',
+  'sim.homestead.tooCloseWildlife': '离野生动物太近了。清空这片区域，或者再挪远一些。',
   'sim.house.alreadyOwn': '你在空穴已经拥有一处宅邸了。',
   'sim.house.claimed': '这处宅邸归你了。用 /house place <槽位> <种类> 来装饰它。',
   'sim.house.cleared': '清空了槽位 {slot}。',
@@ -4648,24 +4795,33 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.auraEffect.school.shadow': '暗影',
   'hudChrome.auraEffect.school.holy': '神圣',
   'hudChrome.auraEffect.school.nature': '自然',
+  'entities.itemSets.boundstone_vanguard.name': '缚石先锋铠',
+  'entities.itemSets.boundstone_vanguard.bonus3': '攻击与施法速度提高 15%。',
   'entities.itemSets.crownforged.name': '铸冠战装',
   'entities.itemSets.crownforged.bonus2': '攻击强度提高 40 点。',
-  'entities.itemSets.crownforged.bonus3': '力量提高 15 点，耐力提高 15 点。',
+  'entities.itemSets.crownforged.bonus3':
+    '力量提高 15 点，耐力提高 15 点，攻击与施法速度提高 15%。',
   'entities.itemSets.deathlord.name': '死王战甲',
   'entities.itemSets.deathlord.bonus2': '攻击强度提高 40 点。',
   'entities.itemSets.deathlord.bonus3': '力量提高 15 点，耐力提高 15 点。',
+  'entities.itemSets.greyjaw_stalker.name': '灰颚潜行者装备',
+  'entities.itemSets.greyjaw_stalker.bonus3': '攻击与施法速度提高 15%。',
   'entities.itemSets.necromancers.name': '死灵法师法衣',
   'entities.itemSets.necromancers.bonus2': '受到伤害造成的施法延退降低 50%。',
   'entities.itemSets.necromancers.bonus3': '施法时不会因受到伤害而被延退。',
   'entities.itemSets.nighttalon.name': '夜爪皮甲',
   'entities.itemSets.nighttalon.bonus2': '攻击强度提高 40 点。',
-  'entities.itemSets.nighttalon.bonus3': '敏捷提高 15 点，致命一击几率提高 2%。',
+  'entities.itemSets.nighttalon.bonus3':
+    '敏捷提高 15 点，致命一击几率提高 2%，攻击与施法速度提高 15%。',
   'entities.itemSets.soulflame.name': '魂焰法衣',
   'entities.itemSets.soulflame.bonus2': '受到伤害造成的施法延退降低 50%。',
-  'entities.itemSets.soulflame.bonus3': '施法时不会因受到伤害而被延退。',
+  'entities.itemSets.soulflame.bonus3': '施法时不会因受到伤害而被延退，且攻击与施法速度提高 15%。',
   'entities.itemSets.stormcallers.name': '唤雷者法衣',
   'entities.itemSets.stormcallers.bonus2': '受到伤害造成的施法延退降低 50%。',
-  'entities.itemSets.stormcallers.bonus3': '施法时不会因受到伤害而被延退。',
+  'entities.itemSets.stormcallers.bonus3':
+    '施法时不会因受到伤害而被延退，且攻击与施法速度提高 15%。',
+  'entities.itemSets.vale_arcanist.name': '山谷秘法师法衣',
+  'entities.itemSets.vale_arcanist.bonus3': '攻击与施法速度提高 15%。',
   'entities.itemSets.wyrmshadow.name': '龙影外衣',
   'entities.itemSets.wyrmshadow.bonus2': '攻击强度提高 40 点。',
   'entities.itemSets.wyrmshadow.bonus3': '敏捷提高 15 点，致命一击几率提高 2%。',
@@ -4812,4 +4968,88 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'coldOpen.continue': '继续',
   'coldOpen.begin': '开始',
   'coldOpen.skip': '跳过',
+  // Event calendar (M16 non-Latin fill)
+  'hudChrome.calendar.title': '活动日历',
+  'hudChrome.calendar.close': '关闭日历',
+  'hudChrome.calendar.keybindLabel': '活动日历',
+  'hudChrome.calendar.prevMonth': '上个月',
+  'hudChrome.calendar.nextMonth': '下个月',
+  'hudChrome.calendar.dayAria': '{date}：{count} 个活动',
+  'hudChrome.calendar.noEvents': '这一天没有安排。',
+  'hudChrome.calendar.allDay': '全天',
+  'hudChrome.calendar.bookedBy': '由 {name} 安排',
+  'hudChrome.calendar.deleteAria': '移除活动 {title}',
+  'hudChrome.calendar.bookTitle': '安排公会活动',
+  'hudChrome.calendar.titlePlaceholder': '活动名称',
+  'hudChrome.calendar.notePlaceholder': '备注（可选）',
+  'hudChrome.calendar.hourLabel': '小时（UTC）',
+  'hudChrome.calendar.hourAllDay': '全天',
+  'hudChrome.calendar.addButton': '安排活动',
+  'hudChrome.calendar.guildOnlyNote': '加入公会即可一起计划活动。',
+  'hudChrome.calendar.result.created': '活动已列入公会日历。',
+  'hudChrome.calendar.result.removed': '活动已从日历中移除。',
+  'hudChrome.calendar.result.notInGuild': '你不在公会中。',
+  'hudChrome.calendar.result.notOfficer': '只有官员和会长可以管理公会活动。',
+  'hudChrome.calendar.result.badInput': '请为活动填写名称和有效日期。',
+  'hudChrome.calendar.result.calendarFull': '公会日历已满。',
+  'hudChrome.calendar.result.eventGone': '该活动已不在日历上。',
+  'hudChrome.calendar.events.raidCall.title': '团队集结',
+  'hudChrome.calendar.events.raidCall.note': '守卫吹响号角：组队前往团队副本。',
+  'hudChrome.calendar.events.marketDay.title': '集市日',
+  'hudChrome.calendar.events.marketDay.note': '商人正等着新货。今天很适合逛逛世界市场。',
+  'hudChrome.calendar.events.fiestaNight.title': '狂欢之夜',
+  'hudChrome.calendar.events.fiestaNight.note': '今晚 2v2 狂欢擂台的人气最旺。',
+  'hudChrome.calendar.events.arenaClash.title': '竞技场之战',
+  'hudChrome.calendar.events.arenaClash.note': '决斗者涌向灰烬斗兽场。排队开打，向天梯进发。',
+  'hudChrome.calendar.events.fishingDerby.title': '钓鱼大赛',
+  'hudChrome.calendar.events.fishingDerby.note': '钓手们在湖边排开。带上鱼竿，交流钓鱼趣闻。',
+  'hudChrome.calendar.events.delveDay.title': '探窟日',
+  'hudChrome.calendar.events.delveDay.note': '与同伴一起挑战坍塌圣物窖的好日子。',
+  'hudChrome.calendar.events.moongateCommunion.title': '月门共祷',
+  'hudChrome.calendar.events.moongateCommunion.note': '朝圣者在月中之月下聚于月之圣所。',
+
+  // PHAA-499: fill the professions/multiclassing (PHAA-465/466/467) M16 gap.
+  'guide.nav.professions': '副职业',
+  'guide.classPage.professionsTitle': '搭配副职业',
+  'guide.classPage.professionsNote':
+    '以上任意职业都可以作为副职业来学习：这是一种能开启第二棵天赋树的副职业，且不会影响你的主职业定位。选择前，请先了解副职业的运作方式。',
+  'guide.classPage.professionsLink': '副职业与多职业',
+  'guide.professionsPage.heading': '副职业与多职业',
+  'guide.professionsPage.intro':
+    '副职业是你在主职业之外训练的第二个职业，它会开启第二棵天赋树，并让你学到其部分技能，而不会让你离开原本的定位。',
+  'guide.professionsPage.whatHeading': '什么是副职业',
+  'guide.professionsPage.whatBody':
+    '任何职业都可以被其他职业选为副职业。搭配副职业会新增一棵天赋树，并让你借用其部分技能：比如战士可以涉猎牧师的治疗，法师也能学到盗贼的毒刺。你的主职业依旧决定你的定位、资源和身份；副职业只是让build更灵活，而不会取代它。',
+  'guide.professionsPage.howHeading': '如何选择副职业',
+  'guide.professionsPage.howBody':
+    '副职业在10级开放，与你的第一棵天赋树同时解锁。前往主城拜访副职业训练师，打开对话框，选择你想要的副职业。',
+  'guide.professionsPage.costBody':
+    '第一次选择是免费的。之后更换副职业需要花费金币，且每次更换的费用都会提高，因此尽早做决定不会受到惩罚，而之后反复更改则要付出一点代价。',
+  'guide.professionsPage.resetTitle': '一切都可以重来',
+  'guide.professionsPage.resetNote':
+    '只要不在战斗中，你随时都可以重置两棵天赋树的天赋点，也可以在同一位训练师那里更换副职业（费用会递增）。尽早选定的副职业只是初稿，而非最终定案。',
+  'guide.professionsPage.talentsHeading': '天赋点如何在两棵树之间分配',
+  'guide.professionsPage.talentsBody':
+    '副职业会在主职业之外新增一整棵天赋树，但两棵树共用同一份天赋点。副职业天赋树最多只能占用这份点数的一半，因此你的主职业始终是build的核心。投入副职业天赋树的点数会解锁其技能，而这些技能消耗的是你主职业的资源，而非副职业本身的资源：战士学习牧师副职业后，技能消耗的是怒气，而不是法力。',
+  'guide.professionsPage.trainersHeading': '寻找训练师',
+  'guide.professionsPage.trainersBody':
+    '副职业训练师就站在主城神龛附近。任意一位训练师都能教你除主职业外的任何职业作为副职业，因此只需拜访一次即可设置或更换你的副职业。',
+  'classDetails.classPairAria': '{primary}，副职业 {secondary}',
+  'classDetails.classPairLabel': '{primary} / {secondary}',
+  'game.talents.secondaryTab': '副职业：{cls}',
+  'game.talents.secondaryCapHint': '副职业天赋树：{spent}/{cap}点（上限为共享天赋池的一半）。',
+  'questUi.dialog.feedHearth': '我这儿有点东西要添进炉子。',
+  'questUi.dialog.feedHearthAria': '给炉子添东西',
+  'questUi.dialog.trainerNeedsGold': '金币不足',
+  'questUi.dialog.trainerConfirmTitle': '确认副职业',
+  'questUi.dialog.trainerConfirmBody': '花费{cost}训练为{cls}？',
+  'questUi.dialog.trainerConfirmYes': '是，训练我',
+  'questUi.dialog.trainerConfirmNo': '否，返回',
+  'questUi.dialog.trainerHowTitle': '副职业是如何运作的？',
+  'questUi.dialog.trainerHowBody':
+    '副职业会在你的主职业之上增加第二棵天赋树和一套技能，从{level}级开始解锁。你保留主职业的定位；副职业与主职业共享天赋池，最多占用其中的{pct}%，其技能的资源消耗会换算为你的主资源。首次选择免费；之后更换需要花费金币。',
+  'entities.npcs.elder_yarrow.name': '长老亚罗',
+  'entities.npcs.elder_yarrow.title': '副职业训练师',
+  'entities.npcs.elder_yarrow.greeting': '每一套build都始于一个问题：哪个副职业在召唤你？',
+  'hudChrome.trainer.secondaryClassSet': '你已选择{cls}作为你的副职业。',
 };

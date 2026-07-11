@@ -4556,6 +4556,7 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': 'Boccone di Caverna',
   'entities.items.emberbulb.name': 'Bulbo di Brace',
   'entities.items.first_cutting.name': 'Una Talea',
+  'entities.items.greenpaw_bead.name': 'Una Perlina Dalla Bandoliera',
   'entities.items.witness_root_cincture.name': 'Cintura della Radice Testimone',
   'entities.items.shrine_diary_page.name': 'Pagina di Diario Strappata',
   'entities.items.shrine_diary_page.flavorText':

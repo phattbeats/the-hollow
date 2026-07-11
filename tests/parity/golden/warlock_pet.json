@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "7eb9aa36",
+      "state": "a351e3eb",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -35,6 +35,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {},
@@ -45,6 +46,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -107,7 +110,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 402,
-      "state": "d98e8040",
+      "state": "6b774e5d",
       "events": "6cc54099",
       "rng": {
         "draws": 0,
@@ -118,7 +121,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 402,
-      "state": "130098fa",
+      "state": "075c12a3",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -129,7 +132,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 402,
-      "state": "b514f4d7",
+      "state": "8641f8b6",
       "events": "741638a5",
       "rng": {
         "draws": 105,
@@ -140,7 +143,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 402,
-      "state": "51e40538",
+      "state": "fea536f5",
       "events": "741638a5",
       "rng": {
         "draws": 187,
@@ -151,7 +154,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 403,
-      "state": "86efe18c",
+      "state": "fca796c9",
       "events": "8374b804",
       "rng": {
         "draws": 275,
@@ -162,7 +165,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 404,
-      "state": "4c686e35",
+      "state": "7b70a114",
       "events": "f0780335",
       "rng": {
         "draws": 376,
@@ -173,7 +176,7 @@
       "tick": 140,
       "time": 7,
       "nextId": 404,
-      "state": "28f631d8",
+      "state": "6b86880d",
       "events": "df72a392",
       "rng": {
         "draws": 516,
@@ -184,7 +187,7 @@
       "tick": 160,
       "time": 8,
       "nextId": 404,
-      "state": "f4124fff",
+      "state": "090ef1fa",
       "events": "bd71d9f2",
       "rng": {
         "draws": 654,
@@ -195,7 +198,7 @@
       "tick": 180,
       "time": 9,
       "nextId": 404,
-      "state": "96619b82",
+      "state": "add28047",
       "events": "7550b897",
       "rng": {
         "draws": 800,
@@ -206,33 +209,33 @@
       "tick": 200,
       "time": 10,
       "nextId": 404,
-      "state": "dfd9e6ed",
+      "state": "188440ac",
       "events": "dd853ce1",
       "rng": {
-        "draws": 943,
-        "digest": "d204585d"
+        "draws": 942,
+        "digest": "94a3109b"
       }
     },
     {
       "tick": 220,
       "time": 11,
       "nextId": 404,
-      "state": "d9adf2c2",
-      "events": "69ce591c",
+      "state": "cb6876b4",
+      "events": "7550b897",
       "rng": {
-        "draws": 1042,
-        "digest": "f8ddd615"
+        "draws": 1041,
+        "digest": "86b2fc30"
       }
     },
     {
       "tick": 220,
       "time": 11,
       "nextId": 404,
-      "state": "abd04c99",
+      "state": "a854b987",
       "events": "741638a5",
       "rng": {
-        "draws": 1042,
-        "digest": "f8ddd615"
+        "draws": 1041,
+        "digest": "86b2fc30"
       },
       "label": "pet-taunt",
       "players": [
@@ -247,10 +250,11 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {
-            "damageDealt": 15
+            "damageDealt": 14
           },
           "delveClears": {},
           "delveDaily": {},
@@ -259,7 +263,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -378,7 +384,7 @@
           "forcedTargetId": 402,
           "forcedTargetTimer": 3,
           "hostile": true,
-          "hp": 49948,
+          "hp": 49949,
           "id": 403,
           "inCombat": true,
           "kind": "mob",
@@ -415,7 +421,7 @@
           "threat": [
             [
               401,
-              16
+              15
             ],
             [
               402,
@@ -434,7 +440,7 @@
       "tick": 224,
       "time": 11.2,
       "nextId": 404,
-      "state": "6a43e3c6",
+      "state": "8f7dd8b4",
       "events": "ba785ca6",
       "rng": {
         "draws": 1057,
@@ -453,10 +459,11 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {
-            "damageDealt": 15
+            "damageDealt": 14
           },
           "delveClears": {},
           "delveDaily": {},
@@ -465,7 +472,9 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -586,7 +595,7 @@
           "forcedTargetId": 402,
           "forcedTargetTimer": 2.8,
           "hostile": true,
-          "hp": 49948,
+          "hp": 49949,
           "id": 403,
           "inCombat": true,
           "kind": "mob",
@@ -623,7 +632,7 @@
           "threat": [
             [
               401,
-              16
+              15
             ],
             [
               402,

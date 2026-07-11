@@ -4546,6 +4546,7 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': 'Petisco da Caverna',
   'entities.items.emberbulb.name': 'Bulbo de Brasa',
   'entities.items.first_cutting.name': 'Uma Muda',
+  'entities.items.greenpaw_bead.name': 'Uma Conta Da Bandoleira',
   'entities.items.witness_root_cincture.name': 'Cinturão da Raiz Testemunha',
   'entities.items.shrine_diary_page.name': 'Página de Diário Rasgada',
   'entities.items.shrine_diary_page.flavorText':

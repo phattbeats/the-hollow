@@ -15,7 +15,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "b5f1eb83",
+      "state": "761abd62",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -34,6 +34,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
@@ -44,6 +45,8 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -107,7 +110,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 405,
-      "state": "1fe3f289",
+      "state": "5ca7b0cc",
       "events": "f204331a",
       "rng": {
         "draws": 6,
@@ -118,7 +121,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 405,
-      "state": "e8963165",
+      "state": "861f8e48",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -129,7 +132,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 405,
-      "state": "12cddd6f",
+      "state": "e985c036",
       "events": "cd05d551",
       "rng": {
         "draws": 100,
@@ -140,7 +143,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 405,
-      "state": "2733c4bf",
+      "state": "c4abad66",
       "events": "741638a5",
       "rng": {
         "draws": 203,
@@ -151,7 +154,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 405,
-      "state": "5a4b1630",
+      "state": "edc345a1",
       "events": "96cd5722",
       "rng": {
         "draws": 305,
@@ -162,7 +165,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 405,
-      "state": "8ac05530",
+      "state": "c03994a1",
       "events": "741638a5",
       "rng": {
         "draws": 413,
@@ -173,7 +176,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 405,
-      "state": "8ac05530",
+      "state": "c03994a1",
       "events": "741638a5",
       "rng": {
         "draws": 413,
@@ -192,6 +195,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {
@@ -204,7 +208,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}

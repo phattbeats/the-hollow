@@ -1,223 +1,233 @@
 # Sound effect credits
 
-Every clip under `public/audio/sfx/` is real recorded/Foley or musician-produced audio
-from the packs below (out of scope: procedural UI blips in `src/game/audio.ts`, music,
-`voice/`, `hub_ambient/`). Clips were trimmed, loudness-normalized (~-16 LUFS), and for
-the 10 `amb_*` + 6 `cast_*` loops, seam-crossfaded for a click-free loop. Some clips are
-layered (two source recordings mixed) or pitch/filter-shifted from the same source to
-cover multiple related keys (e.g. one magic recording, several schools); the `Source file(s)`
-column lists everything actually sampled for that key.
+Every clip under `public/audio/sfx/` is recorded/Foley or musician-produced audio from the
+packs below (out of scope: procedural UI blips in `src/game/audio.ts`, music, `voice/`,
+`hub_ambient/`). This is the v2 pass (PHAA-488): every one of the 93 keys was re-sourced
+against the per-key character spec in `scripts/sfx/sfx_v2_spec.md` and built with
+`scripts/sfx/build_from_mapping.mjs` (trim, pitch, layering, loudness-normalize: one-shots
+about -16 LUFS, ambience beds -22 LUFS; the 10 amb_ and 6 cast_ loops are seam-crossfaded).
+The full machine-readable mapping (exact offsets, pitches, gains) lives in
+`scripts/sfx/sfx_v2_mapping.json`.
 
-## RPG Audio
-Author: Kenney Vleugels (kenney.nl)  
-License: CC0  
-Source: https://kenney.nl/assets/rpg-audio
+Derived stems: a few short sources were pre-extended by looping before processing; they are
+credited under their original pack.
 
-| key | source file(s) |
-|---|---|
-| `foot_stone` | footstep02.ogg |
-| `move_jump` | cloth2.ogg |
-| `move_land` | clothBelt.ogg |
-
-## Impact Sounds
-Author: Kenney Vleugels (kenney.nl)  
-License: CC0  
-Source: https://kenney.nl/assets/impact-sounds
-
-| key | source file(s) |
-|---|---|
-| `combat_block` | impactPlate_heavy_002.ogg |
-| `combat_crit` | impactPlate_heavy_000.ogg, impactBell_heavy_004.ogg |
-| `foot_grass` | footstep_grass_003.ogg |
-| `foot_snow` | footstep_snow_002.ogg |
-| `foot_wood` | footstep_wood_002.ogg |
-| `impact_bone` | impactGlass_light_001.ogg |
-| `impact_flesh` | impactPunch_medium_002.ogg |
-| `impact_leather` | impactSoft_medium_002.ogg |
-| `impact_metal` | impactMetal_heavy_001.ogg |
-| `spell_nova` | impactBell_heavy_000.ogg, impactPlate_heavy_004.ogg |
-
-## 80 CC0 creature SFX
-Author: Chasersgaming  
-License: CC0  
-Source: https://opengameart.org/content/80-cc0-creature-sfx
-
-| key | source file(s) |
-|---|---|
-| `mob_beast_aggro` | howl.ogg |
-| `mob_beast_attack` | barking_02.ogg |
-| `mob_beast_death` | hurt_02.ogg |
-| `mob_boar_aggro` | grunt_01.ogg |
-| `mob_boar_attack` | grunt_03.ogg |
-| `mob_demon_aggro` | scream_01.ogg |
-| `mob_demon_death` | scream_02.ogg |
-| `mob_dragonkin_death` | monster_04.ogg |
-| `mob_kobold_aggro` | cute_01.ogg |
-| `mob_kobold_attack` | cute_04.ogg |
-| `mob_kobold_death` | cute_07.ogg |
-| `mob_murloc_aggro` | burble_01.ogg |
-| `mob_murloc_attack` | burp_01.ogg |
-| `mob_murloc_death` | burble_02.ogg |
-| `mob_ogre_aggro` | roar_02.ogg |
-| `mob_spider_death` | bug_03.ogg |
-| `mob_troll_aggro` | troll_01.ogg |
-| `mob_troll_attack` | troll_02.ogg |
-| `mob_troll_death` | troll_03.ogg |
-
-## 80 CC0 creature SFX 2
-Author: Dread Knight  
-License: CC0  
-Source: https://opengameart.org/content/80-cc0-creture-sfx-2
-
-| key | source file(s) |
-|---|---|
-| `mob_boar_death` | die_03.ogg |
-| `mob_demon_attack` | alien_08.ogg |
-| `mob_dragonkin_aggro` | roar_05.ogg |
-| `mob_dragonkin_attack` | roar_06.ogg |
-| `mob_humanoid_aggro` | human_01.ogg |
-| `mob_humanoid_attack` | human_02.ogg |
-| `mob_humanoid_death` | human_03.ogg |
-| `mob_ogre_attack` | grunt_07.ogg |
-| `mob_ogre_death` | roar_04.ogg |
-| `mob_spider_aggro` | bug_08.ogg |
-| `mob_spider_attack` | bug_11.ogg |
-| `player_hurt` | human_04.ogg |
-
-## 80 CC0 RPG SFX
-Author: NoirPhantom89  
-License: CC0  
-Source: https://opengameart.org/content/80-cc0-rpg-sfx
-
-| key | source file(s) |
-|---|---|
-| `cast_fire` | spell_fire_03.ogg |
-| `combat_parry` | metal_02.ogg |
-| `impact_fire` | spell_fire_01.ogg |
-| `mob_undead_aggro` | chain_01.ogg, weird_01.ogg (creature-sfx pack) |
-| `mob_undead_attack` | chain_02.ogg, weird_02.ogg (creature-sfx pack) |
-| `mob_undead_death` | chain_03.ogg |
-| `player_death` | creature_die_01.ogg |
-| `proj_fire` | spell_fire_07.ogg |
-
-## Magic Spell SFX
-Author: Arcanorum  
-License: CC0  
-Source: https://opengameart.org/content/magic-spell-sfx
-
-| key | source file(s) |
-|---|---|
-| `buff_apply` | magical_1.ogg |
-| `cast_arcane` | magical_1.ogg |
-| `cast_holy` | magical_4.ogg |
-| `cast_nature` | magical_5.ogg |
-| `cast_shadow` | magical_2.ogg |
-| `debuff_apply` | magical_2.ogg |
-| `heal_impact` | magical_5.ogg |
-| `impact_arcane` | magical_2.ogg |
-| `impact_holy` | magical_4.ogg |
-| `impact_shadow` | magical_2.ogg |
-| `mob_elemental_aggro` | magical_3.ogg, weird_04.ogg (creature-sfx pack) |
-| `mob_elemental_attack` | magical_1.ogg, weird_07.ogg (creature-sfx-2 pack) |
-| `mob_elemental_death` | magical_2.ogg |
-
-## Swishes Sound Pack
-Author: qubodup  
-License: CC0  
-Source: https://opengameart.org/content/swishes-sound-pack
-
-| key | source file(s) |
-|---|---|
-| `combat_dodge` | swish-4.wav |
-| `melee_swing_blade` | swish-9.wav |
-| `melee_swing_heavy` | swish-7.wav |
-| `melee_swing_light` | swish-12.wav |
-| `melee_unarmed` | swish-13.wav |
-| `proj_holy` | swish-3.wav |
-| `proj_nature` | swish-5.wav, bubble_02.ogg (water-splash pack) |
-| `proj_shadow` | swish-8.wav |
-
-## Fireplace Sound Loop
-Author: StarNinjas  
-License: CC0  
-Source: https://opengameart.org/content/fireplace-sound-loop
-
-| key | source file(s) |
-|---|---|
-| `amb_campfire` | fireplace.wav (Fireplace Sound Loop) |
-| `amb_forge` | fireplace.wav (Fireplace Sound Loop), impactMetal_heavy_002/003/004.ogg (Kenney Impact Sounds, CC0) |
-
-## 40 CC0 Water Splash & Slime SFX
-Author: rockseller  
+## 40 CC0 water / splash / slime SFX
+Author: rubberduck  
 License: CC0  
 Source: https://opengameart.org/content/40-cc0-water-splash-slime-sfx
 
-| key | source file(s) |
-|---|---|
-| `amb_dungeon` | loop_bubbles_1.ogg |
-| `amb_rain` | loop_rain.ogg |
-| `amb_water` | loop_water_02.ogg |
-| `foot_water` | splash_10.ogg |
-| `impact_nature` | slime_06.ogg, slime_02.ogg (creature-sfx-2 pack) |
-| `move_splash` | splash_01.ogg |
-| `move_swim` | bubble_01.ogg |
+| key | source file(s) | notes |
+|---|---|---|
+| `amb_dungeon` | loop_water_01.ogg | layered |
+| `amb_water` | loop_water_02.ogg | pre-extended loop stem |
+| `mob_boar_death` | splash_01.ogg | layered |
+| `mob_murloc_aggro` | bubble_01.ogg | layered |
+| `mob_murloc_death` | loop_bubbles_1.ogg | layered |
+| `mob_spider_aggro` | splash_04.ogg | layered |
+| `mob_spider_death` | splash_11.ogg | layered |
+| `move_splash` | splash_04.ogg |  |
+| `move_swim` | loop_water_01.ogg |  |
 
-## 25 CC0 Mud SFX
-Author: Bonsaiheldin  
+## 80 CC0 creature SFX
+Author: rubberduck  
 License: CC0  
-Source: https://opengameart.org/content/25-cc0-mud-sfx
+Source: https://opengameart.org/content/80-cc0-creature-sfx
 
-| key | source file(s) |
-|---|---|
-| `foot_dirt` | mud_05.ogg |
+| key | source file(s) | notes |
+|---|---|---|
+| `mob_boar_aggro` | grunt_01.ogg | pitch-shifted |
+| `mob_boar_attack` | grunt_02.ogg | pitch-shifted |
+| `mob_demon_aggro` | scream_01.ogg, monster_04.ogg | pitch-shifted, layered |
+| `mob_demon_attack` | monster_05.ogg | pitch-shifted |
+| `mob_demon_death` | scream_02.ogg, weird_05.ogg | pitch-shifted, layered |
+| `mob_murloc_aggro` | burble_01.ogg | pitch-shifted, layered |
+| `mob_murloc_attack` | burble_02.ogg |  |
+| `mob_murloc_death` | spit_01.ogg | pitch-shifted, layered |
+| `mob_ogre_aggro` | roar_02.ogg | pitch-shifted, layered |
+| `mob_ogre_death` | monster_07.ogg | pitch-shifted, layered |
+| `mob_spider_aggro` | bug_02.ogg | pitch-shifted, layered |
+| `mob_spider_attack` | bug_03.ogg | pitch-shifted |
+| `mob_troll_aggro` | troll_02.ogg, monster_04.ogg | pitch-shifted, layered |
+| `mob_troll_attack` | troll_01.ogg | pitch-shifted |
+| `mob_troll_death` | troll_03.ogg, monster_06.ogg | pitch-shifted, layered |
+| `move_jump` | breath.ogg | layered |
+| `player_death` | hurt_01.ogg | pitch-shifted, layered |
+| `player_hurt` | grunt_02.ogg |  |
 
-## Nature Sounds Pack
-Author: MedicineStorm  
-License: CC-BY 4.0  
-Source: https://opengameart.org/content/nature-sounds-pack
+## 80 CC0 creture SFX #2
+Author: rubberduck  
+License: CC0  
+Source: https://opengameart.org/content/80-cc0-creture-sfx-2
 
-| key | source file(s) |
-|---|---|
-| `amb_birds` | jc-nature-ambient.mp3 (JC Sounds Nature Ambient Pack Vol 1) |
-| `amb_snow` | nature-ambient.mp3 |
-| `amb_wind_marsh` | jc-nature-ambient.mp3 (JC Sounds Nature Ambient Pack Vol 1) |
-| `amb_wind_peaks` | jc-nature-ambient.mp3 (JC Sounds Nature Ambient Pack Vol 1) |
-| `amb_wind_vale` | nature-ambient.mp3 |
+| key | source file(s) | notes |
+|---|---|---|
+| `mob_boar_death` | die_04.ogg | pitch-shifted, layered |
+| `mob_dragonkin_death` | monster_19.ogg | pitch-shifted, layered |
+| `mob_humanoid_aggro` | human_02.ogg, attack_04.ogg | layered |
+| `mob_humanoid_attack` | human_01.ogg |  |
+| `mob_humanoid_death` | die_04.ogg, monster_17.ogg | pitch-shifted, layered |
+| `mob_spider_death` | bug_08.ogg | pitch-shifted, layered |
 
-## Bow Arrow Shot
-Author: ripple182  
-License: CC-BY-SA 3.0  
-Source: https://opengameart.org/content/bow-arrow-shot
+## Ambience / weather / creature singles (wind, rain, fire, crickets, birds, insect scream, arrow shot)
+Author: various: AntumDeluge (wind-loop, CC-BY 3.0); SketchMan3 (wind-whoosh-loop, CC0); Sharm (breeze, CC-BY 3.0); Kresiek The Furry (amb-rain-loop-1, CC0); PagDev (fireplace-sound-loop, CC0); Wolfgang_ (crickets-ambient-noise-loopable, CC0); qubodup (insect-or-alien-scream, CC0); isaiah658 (ambient-bird-sounds, CC0); Mobeyee Sounds (dark-forest-bird, CC-BY 4.0); dorkster (bow-arrow-shot, CC-BY-SA 3.0)  
+License: mixed: CC0 / CC-BY 3.0 / CC-BY 4.0 / CC-BY-SA 3.0 (see per-file attribution in author field; each file individually CC0/CC-BY/CC-BY-SA)  
+Source: https://opengameart.org/content/wind-loop ; https://opengameart.org/content/wind-whoosh-loop ; https://opengameart.org/content/breeze ; https://opengameart.org/content/amb-rain-loop-1 ; https://opengameart.org/content/fireplace-sound-loop ; https://opengameart.org/content/crickets-ambient-noise-loopable ; https://opengameart.org/content/insect-or-alien-scream ; https://opengameart.org/content/ambient-bird-sounds ; https://opengameart.org/content/dark-forest-bird ; https://opengameart.org/content/bow-arrow-shot
 
-| key | source file(s) |
-|---|---|
-| `melee_bow` | bow-shoot.ogg |
+| key | source file(s) | notes |
+|---|---|---|
+| `amb_birds` | ambient-bird-sounds_birds-isaiah658_0.ogg |  |
+| `amb_campfire` | fireplace-sound-loop_fire.wav |  |
+| `amb_forge` | fireplace-sound-loop_fire.wav | layered |
+| `amb_rain` | amb-rain-loop-1_amb_rain_loop_1.ogg |  |
+| `amb_snow` | wind-loop_wind-01_0.ogg | pitch-shifted |
+| `amb_wind_marsh` | wind-whoosh-loop_wind woosh loop.ogg, crickets-ambient-noise-loopable_crickets_1.mp3 | pre-extended stems, pitch-shifted, layered |
+| `amb_wind_peaks` | wind-loop_wind-01_0.ogg |  |
+| `amb_wind_vale` | breeze_wind_0.ogg | pre-extended stem, pitch-shifted |
+| `melee_bow` | bow-arrow-shot_shoot.ogg |  |
 
-## Ice / Electricity Magic
-Author: Julius  
+## Bones Rattle
+Author: congusbongus  
+License: CC0  
+Source: https://opengameart.org/content/bones-rattle
+
+| key | source file(s) | notes |
+|---|---|---|
+| `impact_bone` | 2.ogg | layered |
+| `mob_undead_aggro` | 6.ogg | layered |
+| `mob_undead_attack` | 2.ogg | layered |
+| `mob_undead_death` | 8.ogg | layered |
+
+## Fantasy Sound Effects Library
+Author: Little Robot Sound Factory  
 License: CC-BY 3.0  
-Source: https://opengameart.org/content/ice-electricity-magic
+Source: https://opengameart.org/content/fantasy-sound-effects-library
 
-| key | source file(s) |
-|---|---|
-| `cast_frost` | ice-electricity-montage.ogg |
-| `impact_frost` | ice-electricity-montage.ogg |
-| `proj_arcane` | ice-electricity-montage.ogg |
-| `proj_frost` | ice-electricity-montage.ogg |
+| key | source file(s) | notes |
+|---|---|---|
+| `amb_dungeon` | Ambience_Cave_00.wav | layered |
+| `foot_dirt` | Footstep_Dirt_03.wav |  |
+| `foot_water` | Footstep_Water_00.wav |  |
+| `mob_dragonkin_aggro` | Dragon_Growl_00.mp3 | pitch-shifted |
+| `mob_dragonkin_attack` | Dragon_Growl_01.mp3 | pitch-shifted |
+| `mob_dragonkin_death` | Dragon_Growl_00.mp3 | pitch-shifted, layered |
+| `spell_nova` | Spell_03.wav | layered |
 
-## Known gaps / best-effort substitutions
-- `mob_undead_*` and `mob_elemental_*` have no literal skeleton/elemental recordings in any
-  CC0 pack found; they are layered from a chain rattle (undead) or a magic-hum recording
-  (elemental) plus a pitched creature-SFX accent. Best-effort per the ticket, not a 1:1 match.
-- `amb_wind_marsh`, `amb_wind_peaks`, `amb_birds`, `amb_snow` are drawn from the same two
-  general nature-ambience field recordings (different time offsets), differentiated with
-  EQ (highpass/lowpass) and pitch rather than four distinct location recordings, since no
-  free pack had four separate biome-specific wind beds.
-- `amb_forge` layers spaced Kenney metal-impact one-shots over a fire-crackle bed to build
-  the "rhythmic hammer on anvil" texture; no CC0 forge/anvil ambience loop was found.
-- Real Foley whooshes (`melee_swing_*`, `proj_*`, `combat_dodge`) are naturally shorter
-  (0.07-0.3s) than the old synthesized versions' target durations; time-stretching a whoosh
-  recording sounds worse than using it at its native length, so durations shrank slightly.
-- CC-BY / CC-BY-SA sources (`Nature Sounds Pack`, `JC Sounds Nature Ambient Pack Vol 1`,
-  `Bow Arrow Shot`, `Ice / Electricity Magic`) are used per their license; attribution is
-  recorded above. Everything else is CC0 (no attribution required, credited anyway).
+## Goblin Speech (MP3 files for gaming)
+Author: maclaird  
+License: CC-BY-SA 3.0  
+Source: https://opengameart.org/content/goblin-speech-mp3-files-for-gaming
+
+| key | source file(s) | notes |
+|---|---|---|
+| `mob_kobold_aggro` | you have tresspassed on our land now you shall pay.mp3 | pitch-shifted |
+| `mob_kobold_attack` | die human die!.mp3 | pitch-shifted |
+| `mob_kobold_death` | I am dying.mp3 | pitch-shifted |
+
+## Impact Sounds (Kenney)
+Author: Kenney  
+License: CC0  
+Source: https://kenney.nl/assets/impact-sounds
+
+| key | source file(s) | notes |
+|---|---|---|
+| `combat_block` | impactPlate_heavy_003.ogg |  |
+| `combat_crit` | impactPlate_heavy_004.ogg, impactSoft_heavy_001.ogg | pitch-shifted, layered |
+| `combat_parry` | impactMetal_light_001.ogg | layered |
+| `foot_grass` | footstep_grass_001.ogg |  |
+| `foot_snow` | footstep_snow_002.ogg |  |
+| `foot_wood` | footstep_wood_000.ogg |  |
+| `impact_bone` | impactWood_medium_000.ogg | layered |
+| `impact_flesh` | impactPunch_medium_002.ogg |  |
+| `impact_leather` | impactSoft_heavy_001.ogg |  |
+| `impact_metal` | impactMetal_heavy_001.ogg |  |
+| `melee_unarmed` | impactPunch_medium_004.ogg | layered |
+| `move_land` | impactSoft_heavy_004.ogg | layered |
+| `player_death` | impactSoft_heavy_002.ogg | layered |
+
+## RPG Audio (Kenney)
+Author: Kenney  
+License: CC0  
+Source: https://kenney.nl/assets/rpg-audio
+
+| key | source file(s) | notes |
+|---|---|---|
+| `amb_forge` | metalPot1.ogg | layered |
+| `cast_nature` | creak1.ogg | pitch-shifted, layered |
+| `foot_stone` | footstep02.ogg |  |
+| `impact_nature` | creak2.ogg | pitch-shifted, layered |
+| `move_jump` | cloth1.ogg | layered |
+| `move_land` | handleCoins2.ogg | layered |
+
+## Magic SFX Sample
+Author: ViRiX  
+License: CC-BY 3.0  
+Source: https://opengameart.org/content/magic-sfx-sample
+
+| key | source file(s) | notes |
+|---|---|---|
+| `impact_fire` | Fire impact 1.wav |  |
+| `impact_frost` | Ice attack 2.wav |  |
+| `proj_fire` | Fire impact 1.wav | pitch-shifted |
+
+## RPG Sound Pack
+Author: artisticdude  
+License: CC0  
+Source: https://opengameart.org/content/rpg-sound-pack
+
+| key | source file(s) | notes |
+|---|---|---|
+| `combat_parry` | metal-ringing.wav | layered |
+| `melee_swing_blade` | swing.wav, metal-ringing.wav | layered |
+| `melee_swing_heavy` | swing2.wav | pitch-shifted |
+| `mob_beast_aggro` | mnstr14.wav | pitch-shifted |
+| `mob_beast_attack` | wolfman.wav | pitch-shifted |
+| `mob_beast_death` | mnstr5.wav | pitch-shifted |
+| `mob_ogre_aggro` | ogre2.wav | pitch-shifted, layered |
+| `mob_ogre_attack` | ogre1.wav | pitch-shifted |
+| `mob_ogre_death` | ogre3.wav | pitch-shifted, layered |
+| `mob_undead_aggro` | shade8.wav | pitch-shifted, layered |
+| `mob_undead_attack` | shade3.wav | pitch-shifted, layered |
+| `mob_undead_death` | shade9.wav | pitch-shifted, layered |
+
+## Spell Sounds Starter Pack
+Author: p0ss  
+License: CC-BY-SA 3.0  
+Source: https://opengameart.org/content/spell-sounds-starter-pack
+
+| key | source file(s) | notes |
+|---|---|---|
+| `buff_apply` | enchant.ogg |  |
+| `cast_arcane` | transmision.ogg |  |
+| `cast_fire` | flamethrower.ogg |  |
+| `cast_frost` | freeze.ogg |  |
+| `cast_holy` | blessing.ogg |  |
+| `cast_nature` | wind.ogg | layered |
+| `cast_shadow` | pestilence.ogg |  |
+| `debuff_apply` | magicfail.ogg | pitch-shifted |
+| `heal_impact` | heal.ogg |  |
+| `impact_arcane` | zap2.ogg |  |
+| `impact_holy` | blessing2.ogg |  |
+| `impact_nature` | insect.ogg | layered |
+| `impact_shadow` | curse.ogg | pitch-shifted |
+| `mob_elemental_aggro` | forcepulse.ogg |  |
+| `mob_elemental_attack` | zap2e.ogg | pitch-shifted |
+| `mob_elemental_death` | explode4.ogg, steam.ogg | pitch-shifted, layered |
+| `proj_arcane` | zap10.ogg | pitch-shifted |
+| `proj_frost` | freeze2.ogg | pitch-shifted |
+| `proj_holy` | blessing3.ogg | pitch-shifted |
+| `proj_nature` | wind.ogg | pitch-shifted |
+| `proj_shadow` | curse3.ogg | pitch-shifted |
+| `spell_nova` | explode1.ogg | layered |
+
+## Swishes Sound Pack
+Author: artisticdude  
+License: CC0  
+Source: https://opengameart.org/content/swishes-sound-pack
+
+| key | source file(s) | notes |
+|---|---|---|
+| `combat_dodge` | swish-7.wav |  |
+| `melee_swing_light` | swish-9.wav |  |
+| `melee_unarmed` | swish-1.wav | layered |
+

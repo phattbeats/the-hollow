@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "d40ee3cc",
+      "state": "0bf33ff1",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -35,6 +35,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
@@ -45,6 +46,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -106,7 +109,7 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 419,
-      "state": "2b4615d6",
+      "state": "d15b942f",
       "events": "0e86288d",
       "rng": {
         "draws": 1,
@@ -117,7 +120,7 @@
       "tick": 7,
       "time": 0.35,
       "nextId": 419,
-      "state": "8724b278",
+      "state": "436b3ef5",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -136,6 +139,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
@@ -146,7 +150,9 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 11200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -206,7 +212,7 @@
       "tick": 7,
       "time": 0.35,
       "nextId": 419,
-      "state": "f36b87e8",
+      "state": "b4e8b8e1",
       "events": "62e6ce51",
       "rng": {
         "draws": 3,
@@ -225,6 +231,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {
             "companion_tessa": 2
@@ -242,7 +249,9 @@
             "legs": "reliquary_legs",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 11200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -302,7 +311,7 @@
       "tick": 9,
       "time": 0.45,
       "nextId": 419,
-      "state": "fba66c96",
+      "state": "fcd55213",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -321,6 +330,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {
             "companion_tessa": 2
@@ -338,7 +348,9 @@
             "legs": "reliquary_legs",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 11200,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}

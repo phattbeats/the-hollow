@@ -35,7 +35,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "79f3e0df",
+      "state": "8fd5377a",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -53,6 +53,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 1000,
@@ -64,6 +65,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -125,7 +128,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "ea958d3d",
+      "state": "1e83c4e0",
       "events": "ddca878e",
       "rng": {
         "draws": 0,
@@ -143,6 +146,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 910,
@@ -154,6 +158,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -168,6 +173,7 @@
               "itemId": "minor_healing_potion"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -229,7 +235,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "abb32d45",
+      "state": "1843ffd0",
       "events": "17132d76",
       "rng": {
         "draws": 0,
@@ -247,6 +253,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 910,
@@ -259,6 +266,7 @@
             "helmet": "cryptbone_helm",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -277,6 +285,7 @@
               "itemId": "roadwardens_helm"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -338,7 +347,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "fd20d689",
+      "state": "02c55cdc",
       "events": "76309110",
       "rng": {
         "draws": 0,
@@ -356,6 +365,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 910,
@@ -368,6 +378,7 @@
             "helmet": "roadwardens_helm",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -386,6 +397,7 @@
               "itemId": "cryptbone_helm"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -447,7 +459,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "dfd51b13",
+      "state": "1a837ace",
       "events": "8dc8fb89",
       "rng": {
         "draws": 0,
@@ -465,6 +477,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 910,
@@ -476,6 +489,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -498,6 +512,7 @@
               "itemId": "roadwardens_helm"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -559,7 +574,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "15906ab5",
+      "state": "fdc31300",
       "events": "58967549",
       "rng": {
         "draws": 0,
@@ -577,6 +592,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 910,
@@ -588,6 +604,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -602,6 +619,7 @@
               "itemId": "roadwardens_helm"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -676,7 +694,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "bab6a199",
+      "state": "d49b0204",
       "events": "6078006e",
       "rng": {
         "draws": 0,
@@ -694,6 +712,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 910,
@@ -705,6 +724,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -715,6 +735,7 @@
               "itemId": "roadwardens_helm"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -790,7 +811,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "14fbd3c1",
+      "state": "08d6060c",
       "events": "6ceb7f37",
       "rng": {
         "draws": 0,
@@ -808,6 +829,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 910,
@@ -819,6 +841,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -829,6 +852,7 @@
               "itemId": "roadwardens_helm"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -916,7 +940,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "c33e8365",
+      "state": "ad1f1fd0",
       "events": "2e03fa4e",
       "rng": {
         "draws": 0,
@@ -934,6 +958,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 910,
@@ -945,6 +970,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -959,6 +985,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1046,7 +1073,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "5531434c",
+      "state": "50ec4daf",
       "events": "4e4f7728",
       "rng": {
         "draws": 0,
@@ -1064,6 +1091,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 914,
@@ -1075,6 +1103,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -1089,6 +1118,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1182,7 +1212,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "490f76a9",
+      "state": "ef8d223a",
       "events": "35ff864a",
       "rng": {
         "draws": 0,
@@ -1200,6 +1230,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 924,
@@ -1211,6 +1242,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -1221,6 +1253,7 @@
               "itemId": "roadwardens_helm"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1318,7 +1351,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "01ea2a21",
+      "state": "41e25b2a",
       "events": "9d63bb3d",
       "rng": {
         "draws": 0,
@@ -1336,6 +1369,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 920,
@@ -1347,6 +1381,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -1361,6 +1396,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -1458,7 +1494,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "01ea2a21",
+      "state": "41e25b2a",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -1476,6 +1512,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "copper": 920,
@@ -1487,6 +1524,7 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "inventory": [
             {
               "count": 1,
@@ -1501,6 +1539,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}

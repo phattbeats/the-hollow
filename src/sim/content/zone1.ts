@@ -111,6 +111,7 @@ export const ZONE1_MOBS: Record<string, MobTemplate> = {
     scale: 0.9,
     color: 0x7f8c8d,
     packFrenzy: { radius: 12, hasteMult: 1.3, duration: 8 },
+    componentTags: ['hide', 'fang'],
   },
   old_greyjaw: {
     id: 'old_greyjaw',
@@ -163,6 +164,7 @@ export const ZONE1_MOBS: Record<string, MobTemplate> = {
     ],
     scale: 0.85,
     color: 0x935116,
+    componentTags: ['hide'],
   },
   webwood_spider: {
     id: 'webwood_spider',
@@ -194,6 +196,7 @@ export const ZONE1_MOBS: Record<string, MobTemplate> = {
     ],
     scale: 0.9,
     color: 0x4a235a,
+    componentTags: ['silk'],
   },
   mogger: {
     id: 'mogger',

@@ -29,7 +29,7 @@
       "tick": 25,
       "time": 1.25,
       "nextId": 403,
-      "state": "6b5f677d",
+      "state": "f7ee5e55",
       "events": "2b655403",
       "rng": {
         "draws": 0,
@@ -40,7 +40,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 403,
-      "state": "0783d165",
+      "state": "4630bdfd",
       "events": "2806c2e4",
       "rng": {
         "draws": 36,
@@ -51,7 +51,7 @@
       "tick": 75,
       "time": 3.75,
       "nextId": 403,
-      "state": "6aae1055",
+      "state": "cad6f86d",
       "events": "aa847cdc",
       "rng": {
         "draws": 136,
@@ -62,7 +62,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 403,
-      "state": "1612bf75",
+      "state": "8f583c8d",
       "events": "b8851e04",
       "rng": {
         "draws": 266,
@@ -73,7 +73,7 @@
       "tick": 125,
       "time": 6.25,
       "nextId": 403,
-      "state": "0b932e06",
+      "state": "d5fe71f2",
       "events": "c791cb6b",
       "rng": {
         "draws": 398,
@@ -84,7 +84,7 @@
       "tick": 142,
       "time": 7.1,
       "nextId": 403,
-      "state": "59fa7622",
+      "state": "74600aee",
       "events": "741638a5",
       "rng": {
         "draws": 506,
@@ -103,6 +103,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
@@ -113,6 +114,8 @@
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -129,6 +132,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
@@ -141,6 +145,8 @@
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}

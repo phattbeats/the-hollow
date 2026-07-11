@@ -17,7 +17,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "b5f1eb83",
+      "state": "761abd62",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -36,6 +36,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
@@ -46,6 +47,8 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -109,7 +112,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 406,
-      "state": "bb1094e3",
+      "state": "5f37750a",
       "events": "89e9aead",
       "rng": {
         "draws": 14,
@@ -120,7 +123,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 406,
-      "state": "540eaa28",
+      "state": "4c4c084d",
       "events": "741638a5",
       "rng": {
         "draws": 14,
@@ -131,7 +134,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 406,
-      "state": "0adefc8c",
+      "state": "b2087501",
       "events": "cc064b1a",
       "rng": {
         "draws": 109,
@@ -142,7 +145,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 406,
-      "state": "610da9fe",
+      "state": "32101097",
       "events": "741638a5",
       "rng": {
         "draws": 197,
@@ -153,7 +156,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 406,
-      "state": "a84ad72f",
+      "state": "6b120cb6",
       "events": "42fa6932",
       "rng": {
         "draws": 310,
@@ -164,7 +167,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 406,
-      "state": "f184da98",
+      "state": "29bcff5d",
       "events": "741638a5",
       "rng": {
         "draws": 422,
@@ -175,7 +178,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 406,
-      "state": "b1631d0e",
+      "state": "6c0eaebb",
       "events": "741638a5",
       "rng": {
         "draws": 422,
@@ -194,6 +197,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {
@@ -206,7 +210,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -318,7 +324,7 @@
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
           "facing": -1.713162,
-          "fallStartY": 37.026485,
+          "fallStartY": 39.095025,
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 49932,
@@ -339,7 +345,7 @@
           "petMode": "defensive",
           "pos": {
             "x": 202,
-            "y": 37.026485,
+            "y": 39.095025,
             "z": -2
           },
           "potionCooldownUntil": -1,
@@ -424,7 +430,7 @@
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
           "facing": 1.570796,
-          "fallStartY": 39.397438,
+          "fallStartY": 38.197855,
           "fiveSecondRule": 99,
           "forcedTargetTimer": -0.05,
           "hostile": true,
@@ -446,7 +452,7 @@
           "petMode": "defensive",
           "pos": {
             "x": 202,
-            "y": 39.397438,
+            "y": 38.197855,
             "z": 18
           },
           "potionCooldownUntil": -1,
@@ -484,7 +490,7 @@
       "tick": 140,
       "time": 7,
       "nextId": 406,
-      "state": "85065aa2",
+      "state": "4ac3678e",
       "events": "741638a5",
       "rng": {
         "draws": 525,
@@ -495,7 +501,7 @@
       "tick": 160,
       "time": 8,
       "nextId": 406,
-      "state": "84ef21b4",
+      "state": "38f3f41d",
       "events": "741638a5",
       "rng": {
         "draws": 656,
@@ -506,7 +512,7 @@
       "tick": 180,
       "time": 9,
       "nextId": 406,
-      "state": "967a4098",
+      "state": "3344d405",
       "events": "741638a5",
       "rng": {
         "draws": 806,
@@ -517,7 +523,7 @@
       "tick": 180,
       "time": 9,
       "nextId": 406,
-      "state": "967a4098",
+      "state": "3344d405",
       "events": "741638a5",
       "rng": {
         "draws": 806,
@@ -536,6 +542,7 @@
             null,
             null
           ],
+          "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {
@@ -548,7 +555,9 @@
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 44000,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -656,7 +665,7 @@
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
           "facing": -1.570796,
-          "fallStartY": 37.026485,
+          "fallStartY": 39.095025,
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 49932,
@@ -672,7 +681,7 @@
           "petMode": "defensive",
           "pos": {
             "x": 164.88,
-            "y": 22.296471,
+            "y": 23.826692,
             "z": -2
           },
           "potionCooldownUntil": -1,
@@ -754,7 +763,7 @@
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
           "facing": -1.665748,
-          "fallStartY": 39.397438,
+          "fallStartY": 38.197855,
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 49939,
@@ -770,7 +779,7 @@
           "petMode": "defensive",
           "pos": {
             "x": 165.047208,
-            "y": 22.379664,
+            "y": 22.086657,
             "z": 14.480686
           },
           "potionCooldownUntil": -1,
