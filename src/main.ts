@@ -64,6 +64,7 @@ import {
 import { createNativeAttestationProof } from './net/native_attestation';
 import {
   Api,
+  ApiError,
   type CharacterSummary,
   ClientWorld,
   isAuthError,
@@ -95,6 +96,7 @@ import {
   validateEmailShape,
   validatePasswordChange,
 } from './ui/account_portal';
+import { apiErrorCodeText } from './ui/api_error_i18n';
 import {
   handleKeyboardActivation,
   syncInputAriaState,
@@ -296,6 +298,15 @@ function saveHomepageMusicMuted(muted: boolean): void {
 }
 
 function userFacingApiError(err: unknown): string {
+  // Code-first match (PHAA-528): the primitive 1-5 gated denials (Origin check,
+  // BOLA ownership, internal-secret, rate limiting) carry a stable `code` the
+  // server's problem+json envelope attaches. Try that before the string-shape
+  // matcher below, which stays the fallback for every route this primitive
+  // doesn't cover.
+  if (err instanceof ApiError) {
+    const byCode = apiErrorCodeText(err.code);
+    if (byCode !== null) return byCode;
+  }
   const text = technicalErrorMessage(err);
   const suspended = text.match(/^This account is suspended until (.+)\.$/);
   if (suspended) return t('errors.api.accountSuspended', { date: suspended[1] });
@@ -6224,7 +6235,11 @@ function wireStartScreens(): void {
       characterPreview.setContainer(container);
       // Run the panel-conditional sync (skin picker, sex, layout) so the
       // preview is fully wired for whichever panel is active at resolve time.
-      if (activePanelId === '#charselect-panel' || activePanelId === '#charcreate-panel' || activePanelId === '#offline-select') {
+      if (
+        activePanelId === '#charselect-panel' ||
+        activePanelId === '#charcreate-panel' ||
+        activePanelId === '#offline-select'
+      ) {
         updatePreviewContainer(activePanelId);
       }
     }

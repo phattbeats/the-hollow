@@ -19,7 +19,7 @@ import { type ClientSession, GameServer, wireEntity } from '../server/game';
 import { ClientWorld } from '../src/net/online';
 import { mechHeldWeaponOverride, visualKeyFor } from '../src/render/characters/manifest';
 import { HOLLOW_QUEST_ORDER } from '../src/sim/content/hollow';
-import { DELVES } from '../src/sim/data';
+import { DELVES, GATHER_NODES } from '../src/sim/data';
 import { Sim } from '../src/sim/sim';
 import { type Aura, DT, type PlayerClass } from '../src/sim/types';
 import { terrainHeight } from '../src/sim/world';
@@ -1800,6 +1800,7 @@ const ALL_DELTA_KEYS = [
   'dstate',
   'duel',
   'equip',
+  'gnodecd',
   'gprof',
   'hearth',
   'homestead',
@@ -1952,6 +1953,9 @@ function dirtyEveryDeltaField(): {
   meta.delveClears = { 'collapsed_reliquary:heroic': 1 };
   meta.companionUpgrades = { companion_tessa: 2 };
   meta.gatheringProficiency = { amber: 3, heartwood: 0, spore: 0 };
+  // gnodecd (PHAA-618): put one gather node on cooldown for this player so the
+  // per-viewer cooldown-id list rides the wire as a non-default value.
+  meta.nodeHarvestReadyAt[GATHER_NODES[0].id] = sim.time + 120;
   meta.delveDaily = { date: '2099-01-01', firstClearXp: new Set(['x']), markClears: 4 };
   meta.talents = { spec: 'arms', ranks: {}, choices: {} };
   meta.talentMods.spec = 'arms';
@@ -1995,7 +1999,7 @@ function dirtyEveryDeltaField(): {
 }
 
 describe('full self-state snapshot delta fixture', () => {
-  it('carries every one of the 31 dirtied delta keys on the first snapshot', () => {
+  it('carries every one of the 32 dirtied delta keys on the first snapshot', () => {
     const { server, fc } = dirtyEveryDeltaField();
     broadcast(server);
     const snap = lastSnap(fc.sent);
@@ -2067,6 +2071,9 @@ describe('full self-state snapshot delta fixture', () => {
     expect(client.companionUpgrades).toEqual({ companion_tessa: 2 }); // dcomp -> companionUpgrades
     // gprof -> gatheringProficiency
     expect(client.gatheringProficiency).toEqual({ amber: 3, heartwood: 0, spore: 0 });
+    // gnodecd -> nodeHarvestableByMe (the seeded node reads cooling, another ready)
+    expect(client.nodeHarvestableByMe(GATHER_NODES[0].id)).toBe(false);
+    expect(client.nodeHarvestableByMe(GATHER_NODES[1].id)).toBe(true);
     expect(client.delveClears).toEqual({ 'collapsed_reliquary:heroic': 1 }); // dclears -> delveClears
     expect(client.delveDaily).toMatchObject({ markClears: 4 }); // delveDaily
     // tal -> talents / talentSpec / loadouts / activeLoadout
@@ -2078,7 +2085,7 @@ describe('full self-state snapshot delta fixture', () => {
     expect(client.activeLoadout).toBe(0);
   });
 
-  it('omits all 33 delta keys on a no-op re-broadcast and preserves the prior mirror', () => {
+  it('omits all 34 delta keys on a no-op re-broadcast and preserves the prior mirror', () => {
     const { server, fc, leader, memberPid } = dirtyEveryDeltaField();
     broadcast(server);
     const client = bareClient(leader.pid);
@@ -2117,9 +2124,9 @@ describe('full self-state snapshot delta fixture', () => {
 });
 
 describe('delta-key contract pins (anti-drift)', () => {
-  it('ALL_DELTA_KEYS contains exactly 34 unique keys in sorted order', () => {
-    expect(ALL_DELTA_KEYS).toHaveLength(34);
-    expect(new Set(ALL_DELTA_KEYS).size).toBe(34);
+  it('ALL_DELTA_KEYS contains exactly 35 unique keys in sorted order', () => {
+    expect(ALL_DELTA_KEYS).toHaveLength(35);
+    expect(new Set(ALL_DELTA_KEYS).size).toBe(35);
     expect([...ALL_DELTA_KEYS]).toEqual([...ALL_DELTA_KEYS].sort());
   });
 
@@ -2132,7 +2139,7 @@ describe('delta-key contract pins (anti-drift)', () => {
     for (let m = re.exec(src); m !== null; m = re.exec(src)) scraped.add(m[1]);
     expect(scraped.has('lockouts')).toBe(true); // the multi-line call IS captured
     expect(scraped.has('lrollg')).toBe(true); // group-visible loot roll strip (PHAA-568)
-    expect(scraped.size).toBe(34);
+    expect(scraped.size).toBe(35);
     expect([...scraped].sort()).toEqual([...ALL_DELTA_KEYS].sort());
   });
 
