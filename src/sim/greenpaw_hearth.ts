@@ -166,7 +166,12 @@ export class GreenpawHearth {
         pid: meta.entityId,
       });
     }
-    if (!fed) {
+    if (fed) {
+      // PHAA-484: credits a 'feed' quest objective (q_the_wavelength), one
+      // credit per successful feed() call regardless of how many item types
+      // it consumed.
+      this.ctx.onGreenpawFedForQuests(meta);
+    } else {
       this.ctx.emit({
         type: 'log',
         text: this.ctx.rng.pick(NO_ITEMS_LINES),

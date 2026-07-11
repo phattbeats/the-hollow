@@ -11,9 +11,14 @@ export const DISCORD_TOKEN_URL = 'https://discord.com/api/oauth2/token';
 export const DISCORD_API_BASE = 'https://discord.com/api/v10';
 export const DISCORD_CDN_BASE = 'https://cdn.discordapp.com';
 
-// `identify` gives us the user id + name; `guilds` lets us verify membership of
+// `identify` gives us the user id + name; `email` gives us the verified account
+// email we capture as a recovery address; `guilds` lets us verify membership of
 // the official server (for the member reward) without any privileged intent.
-export const DEFAULT_DISCORD_SCOPES = ['identify', 'guilds'] as const;
+// `email` and `identify` are standard OAuth2 scopes (no Developer Portal toggle
+// or app verification needed). Adding `email` here means every existing linked
+// user re-consents on their next Discord sign-in, because the authorize call
+// always sends prompt=consent and the new scope was not previously granted.
+export const DEFAULT_DISCORD_SCOPES = ['identify', 'email', 'guilds'] as const;
 
 /** Discord ids are 64-bit snowflakes serialized as decimal strings. */
 export function isDiscordSnowflake(value: unknown): value is string {
@@ -95,6 +100,11 @@ export interface DiscordUser {
   username: string;
   globalName: string | null;
   avatar: string | null;
+  // Present only when the `email` scope was granted. `email` is Discord's account
+  // email; `emailVerified` is Discord's own `verified` flag for that address, so a
+  // captured address is only treated as a VERIFIED recovery email when both hold.
+  email: string | null;
+  emailVerified: boolean;
 }
 
 /** Validate a GET /users/@me response. Returns null when the id is not a snowflake. */
@@ -102,11 +112,21 @@ export function parseDiscordUser(value: unknown): DiscordUser | null {
   if (!value || typeof value !== 'object') return null;
   const v = value as Record<string, unknown>;
   if (!isDiscordSnowflake(v.id)) return null;
+  // Only accept a well-shaped, length-bounded address; Discord sends null when the
+  // email scope was not granted. Mirrors the account email validator (shape + the
+  // 254-char RFC 5321 cap) without importing it into this pure module.
+  const rawEmail = typeof v.email === 'string' ? v.email.trim() : '';
+  const email =
+    rawEmail && rawEmail.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(rawEmail)
+      ? rawEmail
+      : null;
   return {
     id: v.id,
     username: typeof v.username === 'string' ? v.username : '',
     globalName: typeof v.global_name === 'string' ? v.global_name : null,
     avatar: typeof v.avatar === 'string' ? v.avatar : null,
+    email,
+    emailVerified: email !== null && v.verified === true,
   };
 }
 

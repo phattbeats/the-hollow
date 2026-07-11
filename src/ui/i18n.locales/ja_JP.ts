@@ -16,6 +16,11 @@ import type { TranslationKey } from '../i18n.catalog';
 export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.spectate.banner': '{name}を観戦中',
   'hudChrome.loot.chestTitle': '宝箱',
+  'hudChrome.lootRollGroup.pending': '待機中...',
+  'hudChrome.lootRollGroup.need': 'ニード',
+  'hudChrome.lootRollGroup.greed': 'グリード',
+  'hudChrome.lootRollGroup.pass': 'パス',
+  'hudChrome.lootRollGroup.aria': '{item} のグループロール状況',
   'hudChrome.spellbook.addToBarAria': '{name}をアクションバーに追加',
   'hudChrome.spellbook.removeFromBarAria': '{name}をアクションバーから削除',
   'hudChrome.nameplate.mob': '[{level}] {name}',
@@ -1334,6 +1339,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'abilityUi.tooltip.offGlobalCooldown': 'グローバルクールダウン外',
   'abilityUi.tooltip.friendlyTarget': '味方対象',
   'abilityUi.tooltip.enemyTarget': '敵対象',
+  'abilityUi.tooltip.selfOnly': '自分のみ',
   'abilityUi.tooltip.damageRange': '{min}から{max}',
   'abilityUi.tooltip.finisherDamage': '{base}にコンボポイントごと{perCombo}',
   'abilityUi.resources.mana': 'マナ',
@@ -2368,6 +2374,10 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.the_merchant.title': '世界市場の守り手',
   'entities.npcs.the_merchant.greeting':
     '世界市場へようこそ、{className}。王国中の冒険者から買うことも、自分の品を売ることもできます。',
+  'entities.npcs.the_ravenpost.name': 'レイヴンポスト',
+  'entities.npcs.the_ravenpost.title': '郵便の守り手',
+  'entities.npcs.the_ravenpost.greeting':
+    '手紙を出してください、{className}。私のカラスが、どこを旅していようとあなたの友を見つけ出します。同封の金貨も小包も、受け取られるまで安全に届けられます。',
   'entities.npcs.marshal_redbrook.name': 'レッドブルック元帥',
   'entities.npcs.marshal_redbrook.title': '町の元帥',
   'entities.npcs.marshal_redbrook.greeting':
@@ -2901,9 +2911,52 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     '門を抜けると、開けた大地が広がっています。道の西側にある休閑地は、家を建てるのに良さそうです。',
   'entities.npcs.verger_zebediah.name': '堂守のゼベダイア',
   'entities.npcs.verger_zebediah.title': '根の空洞の衛士',
+  'entities.readables.torn_ledger_page.title': '破れた台帳',
+  'entities.readables.torn_ledger_page.pages.0':
+    '根の空洞、休ませると記帳。休閑地、休ませると記帳。モスバンクの湖、こちらが記そうと記すまいと、勝手に休んでおる。台帳の求めるまま、署名し日付を入れた。',
+  'entities.readables.torn_ledger_page.pages.1':
+    '今季ここまでの集計。道の敷石を突き破って芽が三本、俺のどの暦にも載っておらん。抜いて消すのはやめた。インクが乾くより早う戻ってくるし、そのインクは安くなかった。',
+  'entities.readables.torn_ledger_page.pages.2':
+    '俺の後にこれを継ぐ者への覚書。猪を数えよ、狼を数えよ、日を数えよ。緑だけは数えるな。あれは数え返してくる。そして、こちらが止まったところでは止まらん。',
+  'entities.readables.keepers_marginalia.title': '守り手の欄外書き',
+  'entities.readables.keepers_marginalia.pages.0':
+    '賛美歌のすり切れた聖歌集の余白に残されていた。その筆跡は速い、歩きながら書く手が速いのと同じように。',
+  'entities.readables.keepers_marginalia.pages.1':
+    '狼どもは木立の際から休閑地を回る。いつも同じ輪、いつも右回り。長く回れば、回っている相手の形を覚える。俺もそうだ。そして大地も、そうなのだと思う。',
+  'entities.readables.keepers_marginalia.pages.2':
+    'これを読んでいるなら、あんたは歩みを止めたわけだ。俺がついぞ覚えられなかった、たった一つのことをな。少し休め。外域は逃げやせん。それがまあ、外域の厄介なところなんだが。',
   'entities.npcs.verger_zebediah.greeting':
     '堂守のゼベダイアだ。この外域を暦に沿って管理しておる、少なくとも努めてはおる。根の空洞は今季、休ませると記しておいた。だが猪どもは告示を読まん。緩んだ土に気をつけ、台帳には触れるな。',
   'entities.npcs.sexton_faddick.name': '墓守のファディック',
+  'entities.items.willow_sprig.name': '柳の小枝一本',
+  'entities.npcs.shade.name': 'シェイド',
+  'entities.npcs.shade.title': '旅の者',
+  'entities.npcs.shade.greeting':
+    'ああ、あなたね。よければ座って、水は逃げやしないから。今日はもう食べた？食べなきゃだめよ。',
+  'entities.npcs.shade.introLines.0':
+    '雑用の最中を見られてしまったわね。この如雨露は気にしないで、ただの水よ。少し水をやりたいものは、いつだってあるものだから。',
+  'entities.npcs.shade.introLines.1':
+    '私？名乗るほどの者じゃないわ。シェイド。歩いて、手の足りないところで手を貸すだけ。ずいぶん疲れて見えるわね。よければ、少し座っていって。',
+  'entities.npcs.gate_bard.name': '吟遊詩人ハルデン',
+  'entities.npcs.gate_bard.title': '門前の弾き手',
+  'entities.npcs.gate_bard.greeting':
+    '一曲、銅貨一枚でどう？いらない？いいのよ、たいていの日はいらないと言われる。私はこの門のために弾くけれど、門は一度も財布に手を伸ばしてくれたことがない。',
+  'entities.npcs.goodwife_orla.name': 'オルラ',
+  'entities.npcs.goodwife_orla.title': 'かつて根の空洞の者',
+  'entities.npcs.goodwife_orla.greeting':
+    '座っていいのよ。たいていの人は通り過ぎる。堂守はずっと前に私の名を台帳から消したの。消された名は、静かにしていることを覚える。まだここにいると、誰にも思い出させないように。',
+  'entities.quests.q_have_you_eaten.title': 'もう食べた？',
+  'entities.quests.q_have_you_eaten.text':
+    '門のところに、銅貨で暮らす吟遊詩人がいてね、銅貨が入ったときにだけ食べる。そしてそれは、めったに入らない。温かいものが一杯、余分にあるの。彼のところへ届けてくれる？同情だなんて言わないで。余ったものだ、と言って。',
+  'entities.quests.q_have_you_eaten.completion':
+    'おかえり。彼は食べた？よかった。それでいいの。あなたは？……食べていないわね、見ればわかる。なら、座って。善いものであるのに、偉くある必要はないの。偉さは優しさではないのだから。さあ、食べて。',
+  'entities.quests.q_have_you_eaten.objectives.0.label': '温かい食事を吟遊詩人へ届けた',
+  'entities.quests.q_someone_your_own_size.title': '身の丈に合う相手を',
+  'entities.quests.q_someone_your_own_size.text':
+    '根の空洞の近くに、世に冷たくされてきた女がいるの。彼女の名は台帳から消され、人は消された名を、まるで聞こえないもののように扱う。しばらく、そばに座ってあげて。何かを直す必要はないの。ただ、彼女と同じ身の丈でいてあげて。',
+  'entities.quests.q_someone_your_own_size.completion':
+    'いてくれたのね。彼女は大したことじゃないと言うでしょう。でも大したことだった、本当よ。さあ、これをあなたに。私が好きな柳の小枝。何の役にも立たないわ。ただ、誰にも強いられていないのに優しくしてくれたことを、覚えているだけ。',
+  'entities.quests.q_someone_your_own_size.objectives.0.label': 'オルラのそばに少し座った',
   'entities.npcs.sexton_faddick.title': '放浪の番人',
   'entities.npcs.sexton_faddick.greeting':
     'ファディックだ。まだ守るべき祠があるうちは、墓守を務める。俺はどこにも留まらん、ただ守るだけだ。毎晩、狼が休閑地の群れの周りを回っておる。長く回れば、回っている相手の形を覚えるものだ。あれはただの群れのままでいてもらいたい。',
@@ -2917,7 +2970,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_root_hollow_boars_ii.text':
     'この職では認めるべきでないことを認めよう。五頭は楽観が過ぎた。下の巣からまだ湧いてくる。あと八頭で、記録を三度目に書き直さずに季を閉じられる。記録は書き直しを嫌う。俺もだ。',
   'entities.quests.q_root_hollow_boars_ii.completion':
-    '閉じた。署名した。綴じた。これで季は予定どおり進められる、暦を守る者が再び現れたのだからな。おまえは極めて小さな会衆を大いに助けた。念のため言っておくが、その会衆とは俺のことだ。',
+    '閉じた。署名した。綴じた。これで季は予定どおり進められる、暦を守る者が再び現れたのだからな。おまえは極めて小さな会衆を大いに助けた。念のため言っておくが、その会衆とは俺のことだ。この台帳自体は、この取り決めよりもさらに古い。会ったこともない手によって綴じられ、俺が数え上げるつもりのない数を記している。かつて、ここには実に几帳面な者がいたのだろう。俺はただ、その歩調に追いつこうとしているだけだ。',
   'entities.quests.q_root_hollow_boars_ii.objectives.0.label': '野生の猪を討伐',
   'entities.quests.q_fallow_acres_wolves.title': '畝を追われる狼たち',
   'entities.quests.q_fallow_acres_wolves.text':
@@ -3064,6 +3117,33 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_what_fills.dialog.refuse': 'いやだ。もう二度とあそこには下りない。',
   'entities.quests.q_what_fills.dialog.refuseReply':
     'ああ……あ、ああ、わかった。……わかったよ。それは……そうか。いや、もっともだ、友よ、もっともだ……壺も聞いてたし、ここだけの話、あいつも一目置いてると思うぜ。ほら、挿し木はとにかく持っていけ。一度は下りたんだ、それだけで大抵のやつより一回多い……',
+  'entities.quests.q_the_wavelength.title': '波長に乗って',
+  'entities.quests.q_the_wavelength.text':
+    '挿し木はもうお前のもんだ、友よ、だからその先の話をしようや……二つあるが、どっちも試練ってほどじゃない、どっちかって言うと紹介だな。まず、壺を越えてエルダー・ヤロウに会ってこい、あの人はもう一つの生き方、まったく違う遊び方を教えてくれる、ここを通る魂は誰だって、その扉が開いてるって知っとくべきだ……それから、戻ってきて何か食わせてくれ、残り火の球根でも肉片でもどっちでもいい、俺はいつだって空っぽで、壺はいつだって煙を欲しがってる。そこだけは、終わることがないんだよ、緑掌的に言えばな。',
+  'entities.quests.q_the_wavelength.completion':
+    'そら……一瞬、部屋が濃くなったの感じただろ？あの方が気づいたんだ。それが全部のからくりだよ、友よ――お前が俺に食わせて、俺が煙を焚いて、あの方がちょっとだけこっちに耳を傾ける。難しいことなんて何もない。これから先もずっと変わらんよ。残り火の球根でも肉片でも、余分に持ってたらいつでも来い、炉は暦なんて持っちゃいない……あとな。ホロウへようこそ。そこ、ちゃんと言ってなかったなって、今気づいた。',
+  'entities.quests.q_the_wavelength.objectives.0.label': 'エルダー・ヤロウに会った',
+  'entities.quests.q_the_wavelength.objectives.1.label': '炉で餌をやった',
+  'entities.quests.q_the_wavelength.dialog.complain':
+    'また使いっ走りか？穴から這い出たばっかりだぞ。',
+  'entities.quests.q_the_wavelength.dialog.complainReply':
+    'いやいや、聞いてくれ、これは洞窟仕事じゃない……今度のは楽な話で、歩いて、一回ちゃんと食わせるだけだ。俺が今まで頼んだ中で一番軽い頼みごとだよ、約束する、波長にかけてもな。',
+  'entities.quests.q_the_wavelength.dialog.refuse':
+    '自分の修業くらい自分で見つけるさ、ありがとよ。',
+  'entities.quests.q_the_wavelength.dialog.refuseReply':
+    '……そうか、まあいい。準備がまだの魂に、無理に学ばせることはできんからな。「まだ」じゃなくなったら、扉は開いてる……ほら、これは持ってけ、せめて顔を出してくれたお礼だ。',
+  'entities.quests.q_keep_him_lit.text':
+    '三回だ、友よ、それが数字だ……神聖な意味はない、ただ一つの恩を習慣に変えるにはちょうどいい数ってだけさ、習慣こそ俺が本当に信じてる宗教ってわけだ……戻ってきて、炉に三回、別々に餌をやってくれ、順番はどうでもいい、燠火球根でも洞窟の欠片でもどっちでもいい、そうすりゃお前が本当にここに留まるつもりなんだって信じられる、もっと大きな何かに向かう途中で立ち寄っただけじゃなくてな……',
+  'entities.quests.q_keep_him_lit.completion':
+    '三回で三回……お前はもう訪問者じゃない、友よ、お前は何かを生かし続けてるんだ、それが全部だと俺は思う、誰にも聞かれちゃいないがな……ほら。持っといてくれ、何の役にも立たない、ただ覚えてるだけさ、俺たちみんなと同じでな……',
+  'entities.quests.q_keep_him_lit.objectives.0.label': '炉で三回餌をやった',
+  'entities.quests.q_keep_him_lit.dialog.complain':
+    'もう一度餌をやったじゃないか。それじゃ足りないのか？',
+  'entities.quests.q_keep_him_lit.dialog.complainReply':
+    '一回は恩、友よ、三回は習慣だ、俺は恩ってやつに痛い目を見てきた……炉が必要としてるって話じゃない、炉は元気だ、俺がちゃんと世話してる、これはお前が自分の意志で戻ってくるかどうかって話だ、クエストの印に言われたからじゃなくてな……三回。急いで数えなくていい。',
+  'entities.quests.q_keep_him_lit.dialog.refuse': '三回に分けてなんてやらない。一回で十分だ。',
+  'entities.quests.q_keep_him_lit.dialog.refuseReply':
+    '……ああ。ああ、わかった、友よ、それも十分公平な線引きだ……なら、これでもとにかく持っといてくれ、厳密には稼いだもんじゃないが、俺が渡すもののほとんどもそうだしな、波長ってやつは、俺が装ってるほど几帳面に数えちゃいないんだ……',
   'hud.errors.silenced': '沈黙状態です！',
   'hud.pet.noPetFood': 'ペットに与える食べ物がありません。',
   'hud.pet.petEatsFoodOnly': 'ペットは食べ物しか食べられません。',
@@ -3094,6 +3174,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'auth.realm': 'レルム',
   'auth.newCharacter': '新規キャラクター',
   'auth.appearance': '外見',
+  'auth.sex': '性別',
+  'auth.sexMale': '男性',
+  'auth.sexFemale': '女性',
   'auth.class': 'クラス',
   'auth.name': '名前',
   'auth.chromaOption': 'カラー {n}',
@@ -3536,6 +3619,10 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.bags.searchPlaceholder': 'アイテムを検索',
   'hudChrome.bags.searchAria': '名前でバッグのアイテムを検索',
   'hudChrome.bags.noMatch': '条件に一致するアイテムはありません。',
+  'hudChrome.bags.capacityAria': 'バッグスロット使用数：{total}中{used}',
+  'hudChrome.bags.backpack': 'バックパック',
+  'hudChrome.bags.socketEmpty': '空のバッグスロット',
+  'hudChrome.bags.unequipHint': 'クリックしてこのバッグを外す',
   // Guide (/guide) localization.
   'guide.brand': 'World of ClaudeCraft',
   'guide.brandShort': 'ClaudeCraft',
@@ -3589,6 +3676,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.nav.dungeons': 'ダンジョンとレイド',
   'guide.nav.reference': 'リファレンス',
   'guide.nav.controls': '操作方法',
+  'guide.nav.settings': '設定とパフォーマンス',
   'guide.nav.combat': '戦闘',
   'guide.nav.glossary': '用語集',
   'guide.nav.faq': 'FAQ',
@@ -3740,6 +3828,91 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.controls.mobileHeading': 'モバイルでは',
   'guide.controls.mobileBody':
     'スマートフォンやタブレットでは、タッチ操作が自動で表示されます。左側に移動用スティック、右側はどこでもドラッグして視点操作、そしてアビリティやメニュー用の画面上ボタンが現れます。',
+  'guide.settingsPage.heading': '設定とパフォーマンス',
+  'guide.settingsPage.intro':
+    '見た目を最高にするのも、動作を最速にするのも自由自在。すぐに使える3つの構成と、各グラフィックオプションの本当の働きを紹介します。',
+  'guide.settingsPage.wherePath':
+    'このページの内容はすべてゲーム内にあります。Escキーを押して、グラフィック、インターフェース、パフォーマンスオーバーレイの各項目を確認してください。',
+  'guide.settingsPage.fairnessTitle': '公平さは設計から',
+  'guide.settingsPage.fairnessBody':
+    'ここにあるオプションは、見た目と引き換えに強さを得るものではありません。設定を下げて削られるのは装飾的な美しさだけで、戦いに使う情報は決して失われません。デバフ、詠唱バー、パーティの体力、ダメージ数値は「低」から「ウルトラ」まで完全に同一です。控えめなマシンでのプレイが不利になることはありません。',
+  'guide.settingsPage.loadoutsHeading': 'すぐに使える3つの構成',
+  'guide.settingsPage.loadoutsIntro':
+    'お使いのマシンに近そうな構成から始めて、しっくりくるまでオプションを1つずつ調整していきましょう。',
+  'guide.settingsPage.recommended': 'おすすめ',
+  'guide.settingsPage.whyLabel': 'なぜ効くのか：',
+  'guide.settingsPage.tagReload': '再読み込み後',
+  'guide.settingsPage.fpsTitle': 'FPS優先',
+  'guide.settingsPage.fpsTagline': '古めのノートPC、内蔵グラフィック、バッテリー駆動でのプレイに。',
+  'guide.settingsPage.fpsWhy':
+    'グラフィック品質が全体を束ねるマスタースイッチで、描画品質は最も効き目の大きいスライダーです。70%にするとワールドの描画ピクセル数はおよそ半分になりますが、インターフェースは完全にくっきりしたままです。',
+  'guide.settingsPage.balancedTitle': 'バランス',
+  'guide.settingsPage.balancedTagline':
+    'ほとんどの環境にちょうどいい、まずおすすめしたい構成です。',
+  'guide.settingsPage.balancedWhy':
+    '「中」では本格的な影とフルマテリアルが有効になり、「高」ではアンビエントオクルージョンとブルームが加わります。ウルトラ未満のティアでは内蔵のセーフティネットが激しい戦闘での急な負荷を吸収してくれるため、バランス構成は手をかけなくても滑らかに動き続けます。',
+  'guide.settingsPage.visualsTitle': '最高画質',
+  'guide.settingsPage.visualsTagline': '強力なデスクトップマシンのためのスクリーンショットモード。',
+  'guide.settingsPage.visualsWhy':
+    'ウルトラは、ディスプレイが対応する最高解像度と最も豊かな照明で描画します。セーフティネットもオフになり、デスクトップ専用です。スマートフォンとアプリ版では上限が「高」になります。',
+  'guide.settingsPage.value50to70': '50%から70%',
+  'guide.settingsPage.value90to100': '90%から100%',
+  'guide.settingsPage.value100': '100%',
+  'guide.settingsPage.valueHighOrMedium': 'ゲーミングPCなら「高」、ノートPCなら「中」',
+  'guide.settingsPage.valueOnOptional': 'オン（お好みで）',
+  'guide.settingsPage.howHeading': 'オプションの仕組み',
+  'guide.settingsPage.factDetectTitle': 'まずはゲームが自動調整',
+  'guide.settingsPage.factDetectBody':
+    '初回起動時にゲームがお使いの端末を読み取り、控えめなスマートフォンなら「低」、強力なデスクトップなら「ウルトラ」まで、無理のないティアを自動で選びます。自分で選んだ設定は常にそれより優先されます。',
+  'guide.settingsPage.factReloadTitle': 'オプションは2種類',
+  'guide.settingsPage.factReloadBody':
+    'グラフィック品質と「詳細」の各設定は再読み込み後に反映され、必要なときはパネルに「今すぐ再読み込み」ボタンが表示されます。それ以外のオプションは、変更した瞬間に適用されます。',
+  'guide.settingsPage.factGovernorTitle': '内蔵のセーフティネット',
+  'guide.settingsPage.factGovernorBody':
+    'ウルトラ未満のすべてのティアでは、大規模な戦闘で負荷が跳ね上がった瞬間、ゲームが草やエフェクト、照明をさりげなく一時的に間引き、収まればすぐ元に戻します。ウルトラを選ぶことは、細部をひとつも削らないでほしいという意思表示になります。',
+  'guide.settingsPage.advancedHeading': '「詳細」プリセット：自分だけの組み合わせ',
+  'guide.settingsPage.advancedBody':
+    '「詳細」プリセットは「高」ティアを出発点に、地形の詳細、草木の密度、エフェクトと照明、影の品質という4つの追加設定を開放します。本当に違いを実感できるところへフレームを振り分けられるようになります。グラフィック品質と同じく、変更は再読み込み後に適用されます。',
+  'guide.settingsPage.advancedMixes':
+    'おすすめの組み合わせを2つ。影の品質を「高」に保ちつつエフェクトと照明を「低」にすると、光の演出を抑えたくっきり軽快な画面になります。逆にすれば、ブルームの輝きを残したまま影を柔らかくできます。',
+  'guide.settingsPage.tableHeading': '全オプション解説',
+  'guide.settingsPage.colSetting': '設定項目',
+  'guide.settingsPage.colDoes': '効果',
+  'guide.settingsPage.colImpact': 'FPSへの影響',
+  'guide.settingsPage.impactNone': 'なし',
+  'guide.settingsPage.impactLight': '小',
+  'guide.settingsPage.impactModerate': '中',
+  'guide.settingsPage.impactHeavy': '大',
+  'guide.settingsPage.rowGraphicsQuality':
+    '全体を束ねるマスタースイッチです。段階を変えるたびに、解像度、影、マテリアル、草木、照明エフェクトがまとめて切り替わります。単独では最も大きな違いを生む項目です。',
+  'guide.settingsPage.rowRenderQuality':
+    '3Dワールドを低めの内部解像度で描画してから拡大します。インターフェースはくっきりしたままです。非力なマシンや高解像度の画面では、即座に効く最強のスライダーです。',
+  'guide.settingsPage.rowFieldOfView':
+    '画面に収まる世界の広さを、ズームの効いた55度から見渡すような100度まで調整できます。快適さで選ぶ項目ですが、視野を広げるほど描画量はわずかに増えます。',
+  'guide.settingsPage.rowBrightness':
+    '画面全体の露出を暗くも明るくも調整できます。純粋に好みの問題です。',
+  'guide.settingsPage.rowWeather':
+    '環境演出としての雨と雪です。雰囲気づくりだけの要素なので、オフにすると嵐の間の負荷が少し軽くなります。',
+  'guide.settingsPage.rowBrowserEffects':
+    'インターフェース自体の演出の豪華さを決めます。ガラスのぼかし、発光、メニューのアニメーションなどです。「自動」ならお使いのブラウザに合わせて調整され、どちらにしても3Dワールドには影響しません。',
+  'guide.settingsPage.rowTerrainDetail':
+    '豊かにブレンドされた地面のテクスチャにするか、シンプルで軽快な地形表示にするかを選びます。',
+  'guide.settingsPage.rowFoliageDensity': 'キャラクターの周囲に生える草の範囲と密度を調整します。',
+  'guide.settingsPage.rowEffectsQuality':
+    'ブルーム、アンビエントオクルージョン、そして実際に光を放つ松明や呪文の数を制御します。「詳細」の設定の中では、単独で最も大きく負荷を減らせる項目です。',
+  'guide.settingsPage.rowShadowQuality':
+    '影のくっきり具合を調整します。「低」でも影は残り、輪郭が柔らかくなるだけです。',
+  'guide.settingsPage.rowFrostedPanels':
+    'ウィンドウの背後にすりガラスのぼかしをかけます。美しい反面、非力なブラウザにはまさに応える種類のエフェクトです。昔ながらのくっきりした表示が好みなら、オフのままにしておきましょう。',
+  'guide.settingsPage.rowReduceMotion':
+    'インターフェースのアニメーションをなくし、ウィンドウを即座に表示します。第一にはアクセシビリティのためのオプションですが、パフォーマンスもわずかに向上します。',
+  'guide.settingsPage.rowPerfOverlay':
+    'FPSやフレームタイムなどを画面上に表示します。このページの設定を調整する間だけオンにして、終わったらまた非表示に戻しましょう。',
+  'guide.settingsPage.tableFoot':
+    '描画距離のスライダーやFPS上限をお探しですか。探す必要はありません。視界距離は各品質ティアに組み込まれており、フレームペーシングはお使いのディスプレイに従います。',
+  'guide.settingsPage.mobileTitle': 'スマートフォンとタブレットでは',
+  'guide.settingsPage.mobileBody':
+    'モバイルではゲームがより多くを自動で管理します。ティアの選択はゲーム側が行い、バッテリーの消耗と発熱を抑えるために解像度をわずかに低めに保ち、最上位ティアはデスクトップ専用のままにします。上記の構成はそのまま役立ちますが、スマートフォンでは上限が「高」になります。',
   'guide.combat.intro':
     '戦闘はおなじみのクラシックMMOのルールに沿っています。うまく遊ぶために細かく学ぶ必要はまったくありません。これは戦いの仕組みの概要にすぎません。',
   'guide.combat.hitTitle': 'すべての一撃が命中するわけではない',
@@ -4535,10 +4708,23 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': '洞窟の肉片',
   'entities.items.emberbulb.name': '残り火の球根',
   'entities.items.first_cutting.name': '挿し木',
+  'entities.items.greenpaw_bead.name': '弾帯の数珠玉',
+  'entities.items.keeper_coal.name': '冷めることのない炭',
   'entities.items.witness_root_cincture.name': '証しの根の帯紐',
   'entities.items.shrine_diary_page.name': '破れた日記のページ',
   'entities.items.shrine_diary_page.flavorText':
     '……蝋燭で四十日を数えたところで、数えるのをやめた。ここの闇は今もあの方を忘れない、あの方がこの場所を忘れてしまっても。鷺が低く舞うのを見たら、灯守りに芯はまだ燃えていると伝えてくれ……',
+  'entities.items.linen_pouch.name': 'リネンの小袋',
+  'entities.items.travelers_knapsack.name': '旅人のナップサック',
+  'entities.items.wolfhide_satchel.name': '狼皮のサッチェル',
+  'entities.items.gravewoven_bag.name': '墓織りの鞄',
+  'entities.items.mistcallers_duffel.name': 'ミストコーラーのダッフルバッグ',
+  'entities.items.worn_prayer_token.name': 'すり減った祈りの証',
+  'entities.items.worn_prayer_token.flavorText':
+    '……片面が、自分のものではない親指に磨かれて滑らかになっている。ここに積まれた他の百枚近くと、同じ浅い溝が刻まれている、少なくともこの山はそう語っている。一本の親指で百枚も磨り減らせはしない。だが、大勢の親指がひとつの溝を磨くことなら、できる……',
+  'entities.items.tally_shard.name': '刻み跡の欠片',
+  'entities.items.tally_shard.flavorText':
+    '……五本ひと組で深く刻まれ、数え終えるたびに線で消されている。消された五本組が幾百とあり、それが途絶える、最後の一列だけは最後まで消されずに終わっている……',
   'entities.mobs.acolyte_tessa.name': '侍祭テッサ',
   'entities.mobs.deacon_varric.name': '助祭ヴァリック',
   'entities.mobs.reliquary_bonewalker.name': '蘇りし骨歩き',
@@ -4546,6 +4732,11 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_gravecall_acolyte.name': '墓呼びの侍祭',
   'entities.mobs.reliquary_ledger_wraith.name': '台帳の亡霊',
   'entities.mobs.reliquary_saintless_effigy.name': '聖人なき偶像',
+  'entities.items.heartwood_splinter.name': '心材の破片',
+  'entities.items.heartwood_splinter.flavorText':
+    '触れると温かい、それが生まれた木が動かなくなってからずっと。',
+  'entities.items.bloomcrown_pauldrons.name': '花冠の肩当て',
+  'entities.items.verdantguard_mantle.name': '常磐の守護者のマント',
   'entities.mobs.palefeeder.name': '蒼白喰らい',
   'entities.mobs.rootmaw.name': '根顎獣',
   'entities.mobs.the_witness_root.name': '証しの根',
@@ -4555,7 +4746,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.brother_greenpaw.name': '緑掌修道士',
   'entities.npcs.brother_greenpaw.title': '初代預言者（自称）',
   'entities.npcs.brother_greenpaw.greeting':
-    'よお、旅人。今日の壺はご機嫌かい、それとも俺の気のせいか……まあ来いよ、片付けなきゃならん神聖な用事が二つばかりある。ほとんど食い物のことだけどな。緑掌的にはそれも同じようなもんだ。',
+    'また来たか、助かるよ……壺が一晩中ため息ばかりついてるんだ、神聖な用事がいくつか溜まっててな、前回と同じ波長だ。ちょいと来い……',
   'entities.npcs.brother_greenpaw.introLines.0':
     'うっ……よお。よお。来たのに気づかんかった、俺はどっか別の場所にいてな、緑いっぱいのとこに……あんた、寝起きみたいな顔してるな、友よ。その顔ならよく知ってる、俺なんざ大抵の日はその顔だ……',
   'entities.npcs.brother_greenpaw.introLines.1':
@@ -4661,6 +4852,17 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'delveUi.tracker.module': 'モジュール {current}/{total}',
   'delveUi.tracker.objective': '目標',
   'delveUi.tracker.title': 'デルヴ',
+  'sim.bags.full': 'バッグがいっぱいです。',
+  'sim.bags.socketsFull': 'バッグスロットはすべて使用中です。',
+  'sim.bags.swapTooManyItems': 'アイテムが多すぎてそのバッグに交換できません。',
+  'sim.bags.removeTooManyItems': 'アイテムが多すぎてそのバッグを外せません。',
+  'sim.bags.tradeSpace': '取引失敗：バッグの空きが足りません。',
+  'sim.bank.cannotAfford': 'その銀行拡張の代金が足りない。',
+  'sim.bank.expansionCapped': 'これ以上銀行を拡張できない。',
+  'sim.bank.full': '銀行の保管庫がいっぱいだ。',
+  'sim.bank.noQuestItems': 'クエストアイテムは銀行に預けられない。',
+  'sim.bank.purchased': '追加の銀行スロットを購入した。',
+  'sim.bank.tooFar': '銀行員から離れすぎている。',
   'sim.delve.alreadyInDelve': 'あなたはすでにデルヴの中にいる。',
   'sim.delve.bossChest':
     'ボスが倒れる。守りの聖遺物庫の宝箱が祭壇にせり上がる。錠を開けて戦利品を手に入れろ。',
@@ -4718,6 +4920,22 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     '……手ぶらじゃな、お前さん。燃えるもんか、腹の足しになるもんを持ってきな、話はそれからだ。',
   'sim.hearth.noItems2': '持ってるのは良い心がけだけか……気持ちだけじゃ炉は焚けんのう。',
   'sim.hearth.tooFar': '緑掌修道士のそばに行かねば、彼に餌をやれんぞ。',
+  'sim.homestead.alreadyOwn': 'お前はすでに開拓地を持っている。',
+  'sim.homestead.claimed': 'この土地はお前のものだ。開拓地の権利が確定した。',
+  'sim.homestead.helpLine': '開拓地：/homestead、/homestead claim。',
+  'sim.homestead.outsideArea': 'そこは開拓地の外だ。道を西に進んだFallow Acresを試してみるといい。',
+  'sim.homestead.questGate': '緑掌修道士はまだお前を送り出していない。まずは彼の用事を済ませろ。',
+  'sim.homestead.readoutMine': 'お前の開拓地は ({x}, {z}) にある。',
+  'sim.homestead.readoutNoHomesteadHint':
+    'お前は開拓地を持っていない。ホロウ低地の適した場所に立ち、/homestead claim と入力しろ。',
+  'sim.homestead.readoutNoHomesteadQuest':
+    'お前は開拓地を持っていない。緑掌修道士の用事をすべて終えれば手に入る。',
+  'sim.homestead.tooCloseGate': '門に近すぎる。もっと離れろ。',
+  'sim.homestead.tooCloseGraveyard': '墓地に近すぎる。',
+  'sim.homestead.tooCloseOther': '他人の開拓地に近すぎる。',
+  'sim.homestead.tooCloseRoad': '道に近すぎる。',
+  'sim.homestead.tooCloseWater': '水場に近すぎる。',
+  'sim.homestead.tooCloseWildlife': '野生動物に近すぎる。周りを片付けるか、もっと離れろ。',
   'sim.house.alreadyOwn': 'あなたは既に空洞に住居を持っている。',
   'sim.house.claimed': 'この住居はあなたのものだ。/house place <スロット> <種類> で飾り付けよう。',
   'sim.house.cleared': 'スロット{slot}を空にした。',
@@ -5053,6 +5271,25 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'coldOpen.continue': 'つづける',
   'coldOpen.begin': 'はじめる',
   'coldOpen.skip': 'スキップ',
+  'mailUi.title': 'レイヴンポスト',
+  'mailUi.subtitle': '手紙の送受信',
+  'mailUi.close': '郵便を閉じる',
+  'mailUi.inbox': '受信箱',
+  'mailUi.compose': '手紙を書く',
+  'mailUi.noPostOffice': '郵便を利用するにはレイヴンポストに近づいてください。',
+  'mailUi.emptyInbox': '届いている手紙はありません。誰かが手紙を書くとカラスが届けてくれます。',
+  'mailUi.from': '{name} より',
+  'mailUi.noSubject': '(件名なし)',
+  'mailUi.take': '受け取る',
+  'mailUi.delete': '削除',
+  'mailUi.postageNote': '手紙の送付には{money}の郵便料金がかかります。',
+  'mailUi.recipient': '宛先',
+  'mailUi.subjectLabel': '件名',
+  'mailUi.bodyPlaceholder': '手紙を書いてください...',
+  'mailUi.send': '手紙を送る',
+  'mailUi.needRecipientOrText': '送信する前に宛先を指定し、本文を入力してください。',
+  'mailUi.openButton': 'レイヴンポストへ案内してください。',
+  'mailUi.openButtonAria': 'レイヴンポストの郵便ウィンドウを開く',
   // Event calendar (M16 non-Latin fill)
   'hudChrome.calendar.title': 'イベントカレンダー',
   'hudChrome.calendar.close': 'カレンダーを閉じる',

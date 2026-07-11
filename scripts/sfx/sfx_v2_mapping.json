@@ -1,0 +1,1286 @@
+[
+  {
+    "key": "cast_fire",
+    "loop": true,
+    "loopCrossfadeSec": 0.6,
+    "packSlug": "spell-sounds-starter-pack",
+    "sources": [
+      {
+        "path": "spell-sounds-starter-pack/flamethrower.ogg",
+        "offsetSec": 0.3,
+        "durationSec": 3.1
+      }
+    ]
+  },
+  {
+    "key": "impact_fire",
+    "fadeOutSec": 0.05,
+    "packSlug": "magic-sfx-sample",
+    "sources": [
+      {
+        "path": "magic-sfx-sample/Fire impact 1.wav",
+        "offsetSec": 0.3,
+        "durationSec": 0.7
+      }
+    ]
+  },
+  {
+    "key": "proj_fire",
+    "fadeOutSec": 0.05,
+    "packSlug": "magic-sfx-sample",
+    "sources": [
+      {
+        "path": "magic-sfx-sample/Fire impact 1.wav",
+        "offsetSec": 2.5,
+        "durationSec": 0.7,
+        "pitch": 1.15,
+        "gainDb": -2
+      }
+    ]
+  },
+  {
+    "key": "cast_frost",
+    "loop": true,
+    "loopCrossfadeSec": 0.6,
+    "packSlug": "spell-sounds-starter-pack",
+    "sources": [
+      {
+        "path": "spell-sounds-starter-pack/freeze.ogg",
+        "offsetSec": 2,
+        "durationSec": 3.1
+      }
+    ]
+  },
+  {
+    "key": "impact_frost",
+    "fadeOutSec": 0.05,
+    "packSlug": "magic-sfx-sample",
+    "sources": [
+      {
+        "path": "magic-sfx-sample/Ice attack 2.wav",
+        "offsetSec": 0.2,
+        "durationSec": 0.7
+      }
+    ]
+  },
+  {
+    "key": "proj_frost",
+    "fadeOutSec": 0.05,
+    "packSlug": "spell-sounds-starter-pack",
+    "sources": [
+      {
+        "path": "spell-sounds-starter-pack/freeze2.ogg",
+        "offsetSec": 0.5,
+        "durationSec": 0.7,
+        "pitch": 1.15
+      }
+    ]
+  },
+  {
+    "key": "cast_arcane",
+    "loop": true,
+    "loopCrossfadeSec": 0.6,
+    "packSlug": "spell-sounds-starter-pack",
+    "sources": [
+      {
+        "path": "spell-sounds-starter-pack/transmision.ogg",
+        "offsetSec": 1,
+        "durationSec": 3.1
+      }
+    ]
+  },
+  {
+    "key": "impact_arcane",
+    "fadeOutSec": 0.04,
+    "packSlug": "spell-sounds-starter-pack",
+    "sources": [
+      {
+        "path": "spell-sounds-starter-pack/zap2.ogg",
+        "offsetSec": 0.2,
+        "durationSec": 0.6
+      }
+    ]
+  },
+  {
+    "key": "proj_arcane",
+    "fadeOutSec": 0.04,
+    "packSlug": "spell-sounds-starter-pack",
+    "sources": [
+      {
+        "path": "spell-sounds-starter-pack/zap10.ogg",
+        "offsetSec": 0.2,
+        "durationSec": 0.6,
+        "pitch": 1.1
+      }
+    ]
+  },
+  {
+    "key": "cast_holy",
+    "loop": true,
+    "loopCrossfadeSec": 0.6,
+    "packSlug": "spell-sounds-starter-pack",
+    "sources": [
+      {
+        "path": "spell-sounds-starter-pack/blessing.ogg",
+        "offsetSec": 0.2,
+        "durationSec": 2.3
+      }
+    ]
+  },
+  {
+    "key": "impact_holy",
+    "fadeOutSec": 0.05,
+    "packSlug": "spell-sounds-starter-pack",
+    "sources": [
+      {
+        "path": "spell-sounds-starter-pack/blessing2.ogg",
+        "offsetSec": 0.2,
+        "durationSec": 0.7
+      }
+    ]
+  },
+  {
+    "key": "proj_holy",
+    "fadeOutSec": 0.05,
+    "packSlug": "spell-sounds-starter-pack",
+    "sources": [
+      {
+        "path": "spell-sounds-starter-pack/blessing3.ogg",
+        "offsetSec": 0.5,
+        "durationSec": 0.6,
+        "pitch": 1.1
+      }
+    ]
+  },
+  {
+    "key": "cast_nature",
+    "loop": true,
+    "loopCrossfadeSec": 0.6,
+    "packSlug": ["spell-sounds-starter-pack", "kenney-rpg-audio"],
+    "sources": [
+      {
+        "path": "spell-sounds-starter-pack/wind.ogg",
+        "offsetSec": 1.5,
+        "durationSec": 3.1
+      },
+      {
+        "path": "kenney-rpg-audio/Audio/creak1.ogg",
+        "offsetSec": 0.05,
+        "durationSec": 3.1,
+        "pitch": 0.8,
+        "gainDb": -8
+      }
+    ]
+  },
+  {
+    "key": "impact_nature",
+    "fadeOutSec": 0.05,
+    "packSlug": ["spell-sounds-starter-pack", "kenney-rpg-audio"],
+    "sources": [
+      {
+        "path": "spell-sounds-starter-pack/insect.ogg",
+        "offsetSec": 0,
+        "durationSec": 0.6
+      },
+      {
+        "path": "kenney-rpg-audio/Audio/creak2.ogg",
+        "offsetSec": 0,
+        "durationSec": 0.6,
+        "pitch": 0.9,
+        "gainDb": -6
+      }
+    ]
+  },
+  {
+    "key": "proj_nature",
+    "fadeOutSec": 0.05,
+    "packSlug": "spell-sounds-starter-pack",
+    "sources": [
+      {
+        "path": "spell-sounds-starter-pack/wind.ogg",
+        "offsetSec": 3,
+        "durationSec": 0.6,
+        "pitch": 1.2
+      }
+    ]
+  },
+  {
+    "key": "cast_shadow",
+    "loop": true,
+    "loopCrossfadeSec": 0.6,
+    "packSlug": "spell-sounds-starter-pack",
+    "sources": [
+      {
+        "path": "spell-sounds-starter-pack/pestilence.ogg",
+        "offsetSec": 1,
+        "durationSec": 3.1
+      }
+    ]
+  },
+  {
+    "key": "impact_shadow",
+    "fadeOutSec": 0.05,
+    "packSlug": "spell-sounds-starter-pack",
+    "sources": [
+      {
+        "path": "spell-sounds-starter-pack/curse.ogg",
+        "offsetSec": 0.3,
+        "durationSec": 0.7,
+        "pitch": 0.85
+      }
+    ]
+  },
+  {
+    "key": "proj_shadow",
+    "fadeOutSec": 0.05,
+    "packSlug": "spell-sounds-starter-pack",
+    "sources": [
+      {
+        "path": "spell-sounds-starter-pack/curse3.ogg",
+        "offsetSec": 0,
+        "durationSec": 0.5,
+        "pitch": 0.9
+      }
+    ]
+  },
+  {
+    "key": "spell_nova",
+    "fadeOutSec": 0.08,
+    "packSlug": ["spell-sounds-starter-pack", "fantasy-sound-effects-library"],
+    "sources": [
+      {
+        "path": "spell-sounds-starter-pack/explode1.ogg",
+        "offsetSec": 0.2,
+        "durationSec": 1.5
+      },
+      {
+        "path": "fantasy-sound-effects-library/Fantasy Sound Library/Wav/Spell_03.wav",
+        "offsetSec": 0.5,
+        "durationSec": 1.5,
+        "gainDb": -3
+      }
+    ]
+  },
+  {
+    "key": "buff_apply",
+    "fadeOutSec": 0.05,
+    "packSlug": "spell-sounds-starter-pack",
+    "sources": [
+      {
+        "path": "spell-sounds-starter-pack/enchant.ogg",
+        "offsetSec": 0.1,
+        "durationSec": 0.7
+      }
+    ]
+  },
+  {
+    "key": "debuff_apply",
+    "fadeOutSec": 0.05,
+    "packSlug": "spell-sounds-starter-pack",
+    "sources": [
+      {
+        "path": "spell-sounds-starter-pack/magicfail.ogg",
+        "offsetSec": 0,
+        "durationSec": 0.5,
+        "pitch": 0.9
+      }
+    ]
+  },
+  {
+    "key": "heal_impact",
+    "fadeOutSec": 0.05,
+    "packSlug": "spell-sounds-starter-pack",
+    "sources": [
+      {
+        "path": "spell-sounds-starter-pack/heal.ogg",
+        "offsetSec": 0.3,
+        "durationSec": 0.8
+      }
+    ]
+  },
+  {
+    "key": "mob_beast_aggro",
+    "packSlug": "rpg-sound-pack",
+    "sources": [
+      {
+        "path": "rpg-sound-pack/RPG Sound Pack/NPC/gutteral beast/mnstr14.wav",
+        "pitch": 1.15
+      }
+    ],
+    "fadeOutSec": 0.05
+  },
+  {
+    "key": "mob_beast_attack",
+    "packSlug": "rpg-sound-pack",
+    "sources": [
+      {
+        "path": "rpg-sound-pack/RPG Sound Pack/NPC/misc/wolfman.wav",
+        "pitch": 1.15
+      }
+    ],
+    "fadeOutSec": 0.05
+  },
+  {
+    "key": "mob_beast_death",
+    "packSlug": "rpg-sound-pack",
+    "sources": [
+      {
+        "path": "rpg-sound-pack/RPG Sound Pack/NPC/gutteral beast/mnstr5.wav",
+        "pitch": 1.1
+      }
+    ],
+    "fadeOutSec": 0.08
+  },
+  {
+    "key": "mob_boar_aggro",
+    "packSlug": "80-cc0-creature-sfx",
+    "sources": [
+      {
+        "path": "80-cc0-creature-sfx/grunt_01.ogg",
+        "pitch": 0.8
+      }
+    ],
+    "fadeOutSec": 0.05
+  },
+  {
+    "key": "mob_boar_attack",
+    "packSlug": "80-cc0-creature-sfx",
+    "sources": [
+      {
+        "path": "80-cc0-creature-sfx/grunt_02.ogg",
+        "pitch": 0.8
+      }
+    ],
+    "fadeOutSec": 0.05
+  },
+  {
+    "key": "mob_boar_death",
+    "packSlug": "80-cc0-creture-sfx-2 + 40-cc0-water-splash-slime-sfx",
+    "sources": [
+      {
+        "path": "80-cc0-creture-sfx-2/die_04.ogg",
+        "pitch": 1.1
+      },
+      {
+        "path": "40-cc0-water-splash-slime-sfx/splash_01.ogg",
+        "durationSec": 0.9,
+        "pitch": 1,
+        "gainDb": -16
+      }
+    ],
+    "fadeOutSec": 0.08
+  },
+  {
+    "key": "mob_spider_aggro",
+    "packSlug": "80-cc0-creature-sfx + 40-cc0-water-splash-slime-sfx (compromise, no true insect-scream source)",
+    "sources": [
+      {
+        "path": "80-cc0-creature-sfx/bug_02.ogg",
+        "pitch": 1.2
+      },
+      {
+        "path": "40-cc0-water-splash-slime-sfx/splash_04.ogg",
+        "durationSec": 1,
+        "pitch": 1,
+        "gainDb": -14
+      }
+    ],
+    "fadeOutSec": 0.05
+  },
+  {
+    "key": "mob_spider_attack",
+    "packSlug": "80-cc0-creature-sfx (compromise)",
+    "sources": [
+      {
+        "path": "80-cc0-creature-sfx/bug_03.ogg",
+        "pitch": 1.3
+      }
+    ],
+    "fadeOutSec": 0.05
+  },
+  {
+    "key": "mob_spider_death",
+    "packSlug": "80-cc0-creture-sfx-2 + 40-cc0-water-splash-slime-sfx (compromise)",
+    "sources": [
+      {
+        "path": "80-cc0-creture-sfx-2/bug_08.ogg",
+        "pitch": 1.1
+      },
+      {
+        "path": "40-cc0-water-splash-slime-sfx/splash_11.ogg",
+        "durationSec": 0.9,
+        "pitch": 1,
+        "gainDb": -12
+      }
+    ],
+    "fadeOutSec": 0.06
+  },
+  {
+    "key": "mob_kobold_aggro",
+    "packSlug": "goblin-speech",
+    "sources": [
+      {
+        "path": "goblin-speech/Goblin Voices MP3/you have tresspassed on our land now you shall pay.mp3",
+        "offsetSec": 0,
+        "durationSec": 2,
+        "pitch": 1.3
+      }
+    ],
+    "fadeOutSec": 0.08
+  },
+  {
+    "key": "mob_kobold_attack",
+    "packSlug": "goblin-speech",
+    "sources": [
+      {
+        "path": "goblin-speech/Goblin Voices MP3/die human die!.mp3",
+        "offsetSec": 0,
+        "durationSec": 0.7,
+        "pitch": 1.35
+      }
+    ],
+    "fadeOutSec": 0.05
+  },
+  {
+    "key": "mob_kobold_death",
+    "packSlug": "goblin-speech",
+    "sources": [
+      {
+        "path": "goblin-speech/Goblin Voices MP3/I am dying.mp3",
+        "offsetSec": 0,
+        "durationSec": 2.6,
+        "pitch": 1.25
+      }
+    ],
+    "fadeOutSec": 0.08
+  },
+  {
+    "key": "mob_murloc_aggro",
+    "packSlug": "80-cc0-creature-sfx + 40-cc0-water-splash-slime-sfx",
+    "sources": [
+      {
+        "path": "80-cc0-creature-sfx/burble_01.ogg",
+        "pitch": 0.9
+      },
+      {
+        "path": "40-cc0-water-splash-slime-sfx/bubble_01.ogg",
+        "pitch": 1,
+        "gainDb": -10
+      }
+    ],
+    "fadeOutSec": 0.05
+  },
+  {
+    "key": "mob_murloc_attack",
+    "packSlug": "80-cc0-creature-sfx",
+    "sources": [
+      {
+        "path": "80-cc0-creature-sfx/burble_02.ogg",
+        "durationSec": 0.6,
+        "pitch": 1
+      }
+    ],
+    "fadeOutSec": 0.05
+  },
+  {
+    "key": "mob_murloc_death",
+    "packSlug": "80-cc0-creature-sfx + 40-cc0-water-splash-slime-sfx",
+    "sources": [
+      {
+        "path": "80-cc0-creature-sfx/spit_01.ogg",
+        "pitch": 0.85
+      },
+      {
+        "path": "40-cc0-water-splash-slime-sfx/loop_bubbles_1.ogg",
+        "durationSec": 1,
+        "pitch": 1,
+        "gainDb": -16
+      }
+    ],
+    "fadeOutSec": 0.08
+  },
+  {
+    "key": "mob_troll_aggro",
+    "packSlug": "80-cc0-creature-sfx",
+    "sources": [
+      {
+        "path": "80-cc0-creature-sfx/troll_02.ogg",
+        "pitch": 0.85
+      },
+      {
+        "path": "80-cc0-creature-sfx/monster_04.ogg",
+        "durationSec": 1,
+        "pitch": 0.75,
+        "gainDb": -14
+      }
+    ],
+    "fadeOutSec": 0.05
+  },
+  {
+    "key": "mob_troll_attack",
+    "packSlug": "80-cc0-creature-sfx",
+    "sources": [
+      {
+        "path": "80-cc0-creature-sfx/troll_01.ogg",
+        "pitch": 0.85
+      }
+    ],
+    "fadeOutSec": 0.05
+  },
+  {
+    "key": "mob_troll_death",
+    "packSlug": "80-cc0-creature-sfx",
+    "sources": [
+      {
+        "path": "80-cc0-creature-sfx/troll_03.ogg",
+        "pitch": 0.75
+      },
+      {
+        "path": "80-cc0-creature-sfx/monster_06.ogg",
+        "pitch": 0.8,
+        "gainDb": -10
+      }
+    ],
+    "fadeOutSec": 0.08
+  },
+  {
+    "key": "mob_ogre_aggro",
+    "packSlug": "rpg-sound-pack + 80-cc0-creature-sfx",
+    "sources": [
+      {
+        "path": "rpg-sound-pack/RPG Sound Pack/NPC/ogre/ogre2.wav",
+        "pitch": 0.65
+      },
+      {
+        "path": "80-cc0-creature-sfx/roar_02.ogg",
+        "pitch": 0.7,
+        "gainDb": -9
+      }
+    ],
+    "fadeOutSec": 0.05
+  },
+  {
+    "key": "mob_ogre_attack",
+    "packSlug": "rpg-sound-pack",
+    "sources": [
+      {
+        "path": "rpg-sound-pack/RPG Sound Pack/NPC/ogre/ogre1.wav",
+        "pitch": 0.7
+      }
+    ],
+    "fadeOutSec": 0.05
+  },
+  {
+    "key": "mob_ogre_death",
+    "packSlug": "rpg-sound-pack + 80-cc0-creature-sfx",
+    "sources": [
+      {
+        "path": "rpg-sound-pack/RPG Sound Pack/NPC/ogre/ogre3.wav",
+        "pitch": 0.6
+      },
+      {
+        "path": "80-cc0-creature-sfx/monster_07.ogg",
+        "durationSec": 1,
+        "pitch": 0.65,
+        "gainDb": -10
+      }
+    ],
+    "fadeOutSec": 0.1
+  },
+  {
+    "key": "mob_humanoid_aggro",
+    "packSlug": "80-cc0-creture-sfx-2",
+    "sources": [
+      {
+        "path": "80-cc0-creture-sfx-2/human_02.ogg",
+        "pitch": 1
+      },
+      {
+        "path": "80-cc0-creture-sfx-2/attack_04.ogg",
+        "durationSec": 0.9,
+        "pitch": 1,
+        "gainDb": -8
+      }
+    ],
+    "fadeOutSec": 0.05
+  },
+  {
+    "key": "mob_humanoid_attack",
+    "packSlug": "80-cc0-creture-sfx-2",
+    "sources": [
+      {
+        "path": "80-cc0-creture-sfx-2/human_01.ogg",
+        "pitch": 1
+      }
+    ],
+    "fadeOutSec": 0.05
+  },
+  {
+    "key": "mob_humanoid_death",
+    "packSlug": "80-cc0-creture-sfx-2",
+    "sources": [
+      {
+        "path": "80-cc0-creture-sfx-2/die_04.ogg",
+        "pitch": 0.9
+      },
+      {
+        "path": "80-cc0-creture-sfx-2/monster_17.ogg",
+        "pitch": 0.85,
+        "gainDb": -10
+      }
+    ],
+    "fadeOutSec": 0.08
+  },
+  {
+    "key": "mob_undead_aggro",
+    "packSlug": "rpg-sound-pack + bones-rattle",
+    "sources": [
+      {
+        "path": "rpg-sound-pack/RPG Sound Pack/NPC/shade/shade8.wav",
+        "durationSec": 1.6,
+        "pitch": 0.85
+      },
+      {
+        "path": "bones-rattle/6.ogg",
+        "pitch": 1,
+        "gainDb": -5
+      }
+    ],
+    "fadeOutSec": 0.06
+  },
+  {
+    "key": "mob_undead_attack",
+    "packSlug": "rpg-sound-pack + bones-rattle",
+    "sources": [
+      {
+        "path": "rpg-sound-pack/RPG Sound Pack/NPC/shade/shade3.wav",
+        "pitch": 0.9
+      },
+      {
+        "path": "bones-rattle/2.ogg",
+        "pitch": 1,
+        "gainDb": -4
+      }
+    ],
+    "fadeOutSec": 0.05
+  },
+  {
+    "key": "mob_undead_death",
+    "packSlug": "rpg-sound-pack + bones-rattle",
+    "sources": [
+      {
+        "path": "rpg-sound-pack/RPG Sound Pack/NPC/shade/shade9.wav",
+        "pitch": 0.8
+      },
+      {
+        "path": "bones-rattle/8.ogg",
+        "pitch": 1,
+        "gainDb": -4
+      }
+    ],
+    "fadeOutSec": 0.1
+  },
+  {
+    "key": "mob_demon_aggro",
+    "packSlug": "80-cc0-creature-sfx",
+    "sources": [
+      {
+        "path": "80-cc0-creature-sfx/scream_01.ogg",
+        "pitch": 0.75
+      },
+      {
+        "path": "80-cc0-creature-sfx/monster_04.ogg",
+        "durationSec": 1.2,
+        "pitch": 1,
+        "gainDb": -8
+      }
+    ],
+    "fadeOutSec": 0.06
+  },
+  {
+    "key": "mob_demon_attack",
+    "packSlug": "80-cc0-creature-sfx",
+    "sources": [
+      {
+        "path": "80-cc0-creature-sfx/monster_05.ogg",
+        "pitch": 0.7
+      }
+    ],
+    "fadeOutSec": 0.05
+  },
+  {
+    "key": "mob_demon_death",
+    "packSlug": "80-cc0-creature-sfx",
+    "sources": [
+      {
+        "path": "80-cc0-creature-sfx/scream_02.ogg",
+        "pitch": 0.65
+      },
+      {
+        "path": "80-cc0-creature-sfx/weird_05.ogg",
+        "pitch": 0.75,
+        "gainDb": -8
+      }
+    ],
+    "fadeOutSec": 0.1
+  },
+  {
+    "key": "mob_elemental_aggro",
+    "packSlug": "spell-sounds-starter-pack",
+    "sources": [
+      {
+        "path": "spell-sounds-starter-pack/forcepulse.ogg",
+        "offsetSec": 0,
+        "durationSec": 1.5,
+        "pitch": 1
+      }
+    ],
+    "fadeOutSec": 0.1
+  },
+  {
+    "key": "mob_elemental_attack",
+    "packSlug": "spell-sounds-starter-pack",
+    "sources": [
+      {
+        "path": "spell-sounds-starter-pack/zap2e.ogg",
+        "offsetSec": 0,
+        "durationSec": 0.6,
+        "pitch": 1.1
+      }
+    ],
+    "fadeOutSec": 0.05
+  },
+  {
+    "key": "mob_elemental_death",
+    "packSlug": "spell-sounds-starter-pack",
+    "sources": [
+      {
+        "path": "spell-sounds-starter-pack/explode4.ogg",
+        "offsetSec": 0,
+        "durationSec": 1.8,
+        "pitch": 0.9
+      },
+      {
+        "path": "spell-sounds-starter-pack/steam.ogg",
+        "offsetSec": 0,
+        "durationSec": 1,
+        "pitch": 1,
+        "gainDb": -10
+      }
+    ],
+    "fadeOutSec": 0.15
+  },
+  {
+    "key": "mob_dragonkin_aggro",
+    "packSlug": "fantasy-sound-effects-library",
+    "sources": [
+      {
+        "path": "fantasy-sound-effects-library/Fantasy Sound Library/Mp3/Dragon_Growl_00.mp3",
+        "offsetSec": 0,
+        "durationSec": 1.9,
+        "pitch": 0.8
+      }
+    ],
+    "fadeOutSec": 0.1
+  },
+  {
+    "key": "mob_dragonkin_attack",
+    "packSlug": "fantasy-sound-effects-library",
+    "sources": [
+      {
+        "path": "fantasy-sound-effects-library/Fantasy Sound Library/Mp3/Dragon_Growl_01.mp3",
+        "offsetSec": 0.3,
+        "durationSec": 0.9,
+        "pitch": 1.3
+      }
+    ],
+    "fadeOutSec": 0.05
+  },
+  {
+    "key": "mob_dragonkin_death",
+    "packSlug": "fantasy-sound-effects-library + 80-cc0-creture-sfx-2",
+    "sources": [
+      {
+        "path": "fantasy-sound-effects-library/Fantasy Sound Library/Mp3/Dragon_Growl_00.mp3",
+        "offsetSec": 1,
+        "durationSec": 1.3,
+        "pitch": 0.65
+      },
+      {
+        "path": "80-cc0-creture-sfx-2/monster_19.ogg",
+        "durationSec": 1,
+        "pitch": 0.9,
+        "gainDb": -10
+      }
+    ],
+    "fadeOutSec": 0.15
+  },
+  {
+    "key": "impact_flesh",
+    "packSlug": "kenney-impact-sounds",
+    "sources": [
+      {
+        "path": "kenney-impact-sounds/Audio/impactPunch_medium_002.ogg"
+      }
+    ],
+    "fadeOutSec": 0.04
+  },
+  {
+    "key": "impact_bone",
+    "packSlug": "kenney-impact-sounds+bones-rattle",
+    "sources": [
+      {
+        "path": "kenney-impact-sounds/Audio/impactWood_medium_000.ogg",
+        "gainDb": -1
+      },
+      {
+        "path": "bones-rattle/2.ogg",
+        "gainDb": -4
+      }
+    ],
+    "fadeOutSec": 0.03
+  },
+  {
+    "key": "impact_leather",
+    "packSlug": "kenney-impact-sounds",
+    "sources": [
+      {
+        "path": "kenney-impact-sounds/Audio/impactSoft_heavy_001.ogg"
+      }
+    ],
+    "fadeOutSec": 0.04
+  },
+  {
+    "key": "impact_metal",
+    "packSlug": "kenney-impact-sounds",
+    "sources": [
+      {
+        "path": "kenney-impact-sounds/Audio/impactMetal_heavy_001.ogg"
+      }
+    ],
+    "fadeOutSec": 0.04
+  },
+  {
+    "key": "melee_swing_light",
+    "packSlug": "swishes-sound-pack",
+    "sources": [
+      {
+        "path": "swishes-sound-pack/swishes/swish-9.wav"
+      }
+    ],
+    "fadeOutSec": 0.03
+  },
+  {
+    "key": "melee_swing_blade",
+    "packSlug": "rpg-sound-pack",
+    "sources": [
+      {
+        "path": "rpg-sound-pack/RPG Sound Pack/battle/swing.wav"
+      },
+      {
+        "path": "rpg-sound-pack/RPG Sound Pack/inventory/metal-ringing.wav",
+        "durationSec": 0.25,
+        "gainDb": -7
+      }
+    ],
+    "fadeOutSec": 0.04
+  },
+  {
+    "key": "melee_swing_heavy",
+    "packSlug": "rpg-sound-pack",
+    "sources": [
+      {
+        "path": "rpg-sound-pack/RPG Sound Pack/battle/swing2.wav",
+        "pitch": 0.55
+      }
+    ],
+    "fadeOutSec": 0.04
+  },
+  {
+    "key": "melee_unarmed",
+    "packSlug": "swishes-sound-pack+kenney-impact-sounds",
+    "sources": [
+      {
+        "path": "swishes-sound-pack/swishes/swish-1.wav",
+        "gainDb": -2
+      },
+      {
+        "path": "kenney-impact-sounds/Audio/impactPunch_medium_004.ogg"
+      }
+    ],
+    "fadeOutSec": 0.04
+  },
+  {
+    "key": "melee_bow",
+    "packSlug": "ambience-misc",
+    "sources": [
+      {
+        "path": "ambience-misc/bow-arrow-shot_shoot.ogg"
+      }
+    ],
+    "fadeOutSec": 0.04
+  },
+  {
+    "key": "combat_block",
+    "packSlug": "kenney-impact-sounds",
+    "sources": [
+      {
+        "path": "kenney-impact-sounds/Audio/impactPlate_heavy_003.ogg"
+      }
+    ],
+    "fadeOutSec": 0.04
+  },
+  {
+    "key": "combat_parry",
+    "packSlug": "kenney-impact-sounds+rpg-sound-pack",
+    "sources": [
+      {
+        "path": "kenney-impact-sounds/Audio/impactMetal_light_001.ogg"
+      },
+      {
+        "path": "rpg-sound-pack/RPG Sound Pack/inventory/metal-ringing.wav",
+        "durationSec": 0.3,
+        "gainDb": -4
+      }
+    ],
+    "fadeOutSec": 0.04
+  },
+  {
+    "key": "combat_dodge",
+    "packSlug": "swishes-sound-pack",
+    "sources": [
+      {
+        "path": "swishes-sound-pack/swishes/swish-7.wav"
+      }
+    ],
+    "fadeOutSec": 0.03
+  },
+  {
+    "key": "combat_crit",
+    "packSlug": "kenney-impact-sounds",
+    "sources": [
+      {
+        "path": "kenney-impact-sounds/Audio/impactPlate_heavy_004.ogg"
+      },
+      {
+        "path": "kenney-impact-sounds/Audio/impactSoft_heavy_001.ogg",
+        "pitch": 0.85,
+        "gainDb": -2
+      }
+    ],
+    "fadeOutSec": 0.05
+  },
+  {
+    "key": "player_hurt",
+    "packSlug": "80-cc0-creature-sfx",
+    "sources": [
+      {
+        "path": "80-cc0-creature-sfx/grunt_02.ogg"
+      }
+    ],
+    "fadeOutSec": 0.04
+  },
+  {
+    "key": "player_death",
+    "packSlug": "80-cc0-creature-sfx+kenney-impact-sounds",
+    "sources": [
+      {
+        "path": "80-cc0-creature-sfx/hurt_01.ogg",
+        "pitch": 0.35
+      },
+      {
+        "path": "kenney-impact-sounds/Audio/impactSoft_heavy_002.ogg",
+        "gainDb": -3
+      }
+    ],
+    "fadeOutSec": 0.08
+  },
+  {
+    "key": "foot_grass",
+    "packSlug": "kenney-impact-sounds",
+    "sources": [
+      {
+        "path": "kenney-impact-sounds/Audio/footstep_grass_001.ogg",
+        "durationSec": 0.4
+      }
+    ],
+    "fadeOutSec": 0.03
+  },
+  {
+    "key": "foot_dirt",
+    "packSlug": "fantasy-sound-effects-library",
+    "sources": [
+      {
+        "path": "fantasy-sound-effects-library/Fantasy Sound Library/Wav/Footsteps/Footstep_Dirt_03.wav"
+      }
+    ],
+    "fadeOutSec": 0.03
+  },
+  {
+    "key": "foot_stone",
+    "packSlug": "kenney-rpg-audio",
+    "sources": [
+      {
+        "path": "kenney-rpg-audio/Audio/footstep02.ogg"
+      }
+    ],
+    "fadeOutSec": 0.03
+  },
+  {
+    "key": "foot_wood",
+    "packSlug": "kenney-impact-sounds",
+    "sources": [
+      {
+        "path": "kenney-impact-sounds/Audio/footstep_wood_000.ogg"
+      }
+    ],
+    "fadeOutSec": 0.03
+  },
+  {
+    "key": "foot_snow",
+    "packSlug": "kenney-impact-sounds",
+    "sources": [
+      {
+        "path": "kenney-impact-sounds/Audio/footstep_snow_002.ogg"
+      }
+    ],
+    "fadeOutSec": 0.03
+  },
+  {
+    "key": "foot_water",
+    "packSlug": "fantasy-sound-effects-library",
+    "sources": [
+      {
+        "path": "fantasy-sound-effects-library/Fantasy Sound Library/Wav/Footsteps/Footstep_Water_00.wav",
+        "durationSec": 0.4
+      }
+    ],
+    "fadeOutSec": 0.03
+  },
+  {
+    "key": "move_jump",
+    "packSlug": "80-cc0-creature-sfx+kenney-rpg-audio",
+    "sources": [
+      {
+        "path": "80-cc0-creature-sfx/breath.ogg",
+        "durationSec": 0.35,
+        "gainDb": -2
+      },
+      {
+        "path": "kenney-rpg-audio/Audio/cloth1.ogg",
+        "durationSec": 0.35,
+        "gainDb": -4
+      }
+    ],
+    "fadeOutSec": 0.04
+  },
+  {
+    "key": "move_land",
+    "packSlug": "kenney-impact-sounds+kenney-rpg-audio",
+    "sources": [
+      {
+        "path": "kenney-impact-sounds/Audio/impactSoft_heavy_004.ogg"
+      },
+      {
+        "path": "kenney-rpg-audio/Audio/handleCoins2.ogg",
+        "durationSec": 0.3,
+        "gainDb": -6
+      }
+    ],
+    "fadeOutSec": 0.04
+  },
+  {
+    "key": "move_splash",
+    "packSlug": "40-cc0-water-splash-slime-sfx",
+    "sources": [
+      {
+        "path": "40-cc0-water-splash-slime-sfx/splash_04.ogg"
+      }
+    ],
+    "fadeOutSec": 0.05
+  },
+  {
+    "key": "move_swim",
+    "packSlug": "40-cc0-water-splash-slime-sfx",
+    "sources": [
+      {
+        "path": "40-cc0-water-splash-slime-sfx/loop_water_01.ogg",
+        "offsetSec": 0.4,
+        "durationSec": 1.2
+      }
+    ],
+    "fadeOutSec": 0.06
+  },
+  {
+    "key": "amb_birds",
+    "packSlug": "ambience-misc",
+    "loop": true,
+    "stereo": true,
+    "targetLufs": -22,
+    "loopCrossfadeSec": 3,
+    "sources": [
+      {
+        "path": "ambience-misc/ambient-bird-sounds_birds-isaiah658_0.ogg",
+        "offsetSec": 6.5,
+        "durationSec": 23.5
+      }
+    ]
+  },
+  {
+    "key": "amb_campfire",
+    "packSlug": "ambience-misc",
+    "loop": true,
+    "stereo": true,
+    "targetLufs": -22,
+    "loopCrossfadeSec": 3,
+    "sources": [
+      {
+        "path": "ambience-misc/fireplace-sound-loop_fire.wav",
+        "offsetSec": 0,
+        "durationSec": 27
+      }
+    ]
+  },
+  {
+    "key": "amb_forge",
+    "packSlug": "ambience-misc + kenney-rpg-audio",
+    "loop": true,
+    "stereo": true,
+    "targetLufs": -22,
+    "loopCrossfadeSec": 3,
+    "sources": [
+      {
+        "path": "ambience-misc/fireplace-sound-loop_fire.wav",
+        "offsetSec": 2,
+        "durationSec": 29
+      },
+      {
+        "path": "kenney-rpg-audio/Audio/metalPot1.ogg",
+        "offsetSec": 0,
+        "durationSec": 1.46,
+        "gainDb": -12
+      }
+    ]
+  },
+  {
+    "key": "amb_dungeon",
+    "packSlug": "fantasy-sound-effects-library + 40-cc0-water-splash-slime-sfx",
+    "loop": true,
+    "stereo": true,
+    "targetLufs": -22,
+    "loopCrossfadeSec": 4,
+    "sources": [
+      {
+        "path": "fantasy-sound-effects-library/Fantasy Sound Library/Wav/Ambience_Cave_00.wav",
+        "offsetSec": 9,
+        "durationSec": 31
+      },
+      {
+        "path": "40-cc0-water-splash-slime-sfx/loop_water_01.ogg",
+        "offsetSec": 0,
+        "durationSec": 3.38,
+        "gainDb": -14
+      }
+    ]
+  },
+  {
+    "key": "amb_rain",
+    "packSlug": "ambience-misc",
+    "loop": true,
+    "stereo": true,
+    "targetLufs": -22,
+    "loopCrossfadeSec": 3,
+    "sources": [
+      {
+        "path": "ambience-misc/amb-rain-loop-1_amb_rain_loop_1.ogg",
+        "offsetSec": 10,
+        "durationSec": 33
+      }
+    ]
+  },
+  {
+    "key": "amb_snow",
+    "packSlug": "ambience-misc (reuse of peaks wind, compromise)",
+    "loop": true,
+    "stereo": true,
+    "targetLufs": -22,
+    "loopCrossfadeSec": 3,
+    "sources": [
+      {
+        "path": "ambience-misc/wind-loop_wind-01_0.ogg",
+        "offsetSec": 20,
+        "durationSec": 25,
+        "pitch": 1.2,
+        "gainDb": -3
+      }
+    ]
+  },
+  {
+    "key": "amb_water",
+    "packSlug": "40-cc0-water-splash-slime-sfx (pre-looped derived source)",
+    "loop": true,
+    "stereo": true,
+    "targetLufs": -22,
+    "loopCrossfadeSec": 3,
+    "sources": [
+      {
+        "path": "_derived/water_ext.wav",
+        "offsetSec": 2,
+        "durationSec": 28
+      }
+    ]
+  },
+  {
+    "key": "amb_wind_marsh",
+    "packSlug": "ambience-misc (pre-looped derived source) + crickets layer",
+    "loop": true,
+    "stereo": true,
+    "targetLufs": -22,
+    "loopCrossfadeSec": 4,
+    "sources": [
+      {
+        "path": "_derived/wind_marsh_ext.wav",
+        "offsetSec": 1,
+        "durationSec": 27,
+        "pitch": 0.92
+      },
+      {
+        "path": "_derived/crickets_ext.wav",
+        "offsetSec": 1,
+        "durationSec": 27,
+        "gainDb": -10
+      }
+    ]
+  },
+  {
+    "key": "amb_wind_peaks",
+    "packSlug": "ambience-misc",
+    "loop": true,
+    "stereo": true,
+    "targetLufs": -22,
+    "loopCrossfadeSec": 4,
+    "sources": [
+      {
+        "path": "ambience-misc/wind-loop_wind-01_0.ogg",
+        "offsetSec": 5,
+        "durationSec": 33
+      }
+    ]
+  },
+  {
+    "key": "amb_wind_vale",
+    "packSlug": "ambience-misc (pre-looped derived source)",
+    "loop": true,
+    "stereo": true,
+    "targetLufs": -22,
+    "loopCrossfadeSec": 3,
+    "sources": [
+      {
+        "path": "_derived/wind_vale_ext.wav",
+        "offsetSec": 1,
+        "durationSec": 27,
+        "pitch": 1.05
+      }
+    ]
+  }
+]

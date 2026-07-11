@@ -39,6 +39,7 @@ import {
 } from './loot/loot_roll';
 import type { SimContext } from './sim_context';
 import { dist2d, type Entity, INTERACT_RANGE, OBJECT_RESPAWN } from './types';
+import { markWorldBossLooted } from './world_boss';
 
 export function lootCorpse(ctx: SimContext, mobId: number, pid?: number): void {
   const r = ctx.resolve(pid);
@@ -66,24 +67,44 @@ export function lootCorpse(ctx: SimContext, mobId: number, pid?: number): void {
     return;
   }
   if (hasSharedLootRights) distributeLootCopper(ctx, mob, meta);
+  // Capacity gate: an item that doesn't fit the looter's bags STAYS on the
+  // corpse (classic behavior), with one "bags are full" toast per loot action.
+  let bagsFull = false;
   for (const s of [...mob.loot.items]) {
     if (!lootSlotVisibleTo(s, meta.entityId)) continue;
     if (s.openToAll) {
-      for (let i = 0; i < s.count; i++) ctx.addItem(s.itemId, 1, meta.entityId);
-      s.count = 0;
+      while (s.count > 0 && ctx.canAddItem(s.itemId, 1, meta.entityId)) {
+        ctx.addItem(s.itemId, 1, meta.entityId);
+        s.count--;
+      }
+      if (s.count > 0) bagsFull = true;
       continue;
     }
     if (s.personalFor) {
+      if (!ctx.canAddItem(s.itemId, 1, meta.entityId)) {
+        bagsFull = true;
+        continue;
+      }
       ctx.addItem(s.itemId, 1, meta.entityId);
       s.personalFor = s.personalFor.filter((id) => id !== meta.entityId);
+      // World-boss personal loot (PHAA-494): the loot lockout is consumed here, at
+      // the actual TAKE, not at the kill/roll (see world_boss.ts's rollWorldBossLoot
+      // comment) so a contributor who dies or never reaches the corpse keeps their
+      // lockout-free status. A world-boss corpse's personalFor slots are otherwise
+      // indistinguishable from a quest-gated personalFor slot at this generic site,
+      // so gate on the mob template rather than the slot shape.
+      if (MOBS[mob.templateId]?.worldBoss) {
+        markWorldBossLooted(meta, mob.templateId, ctx.lockoutNowMs());
+      }
       continue;
     }
     if (!hasSharedLootRights) continue;
-    for (let i = 0; i < s.count; i++) {
-      awardSharedLootItem(ctx, s.itemId, mob, meta);
+    while (s.count > 0 && awardSharedLootItem(ctx, s.itemId, mob, meta)) {
+      s.count--;
     }
-    s.count = 0;
+    if (s.count > 0) bagsFull = true;
   }
+  if (bagsFull) ctx.error(meta.entityId, 'Your bags are full.');
   pruneCorpseLoot(ctx, mob);
   if (p.targetId === mobId) p.targetId = null;
 }
@@ -152,6 +173,10 @@ export function pickUpObject(ctx: SimContext, objId: number, pid?: number): void
       ctx.error(meta.entityId, def.pickupEnough ?? 'You have enough of those.');
       return;
     }
+  }
+  if (!ctx.canAddItem(obj.objectItemId, 1, meta.entityId)) {
+    ctx.error(meta.entityId, 'Your bags are full.');
+    return;
   }
   ctx.addItem(obj.objectItemId, 1, meta.entityId);
   obj.lootable = false;

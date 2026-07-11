@@ -14,6 +14,7 @@ import { housingStrings } from './housing';
 import { hudStrings } from './hud';
 import { hudChromeStrings } from './hud_chrome';
 import { itemNames, itemStrings } from './items';
+import { mailStrings } from './mail';
 import { mergeEntities, mergeExtra, mergeStrings } from './merge';
 import { questStrings } from './quests';
 import { shellStrings } from './shell';
@@ -41,6 +42,7 @@ export { housingStrings } from './housing';
 export { hudStrings } from './hud';
 export { hudChromeStrings } from './hud_chrome';
 export { itemNames, itemStrings } from './items';
+export { mailStrings } from './mail';
 export { mergeEntities, mergeExtra, mergeStrings } from './merge';
 export { questStrings } from './quests';
 // Re-export the catalog public surface (every name the old i18n.en.ts exported).
@@ -81,7 +83,14 @@ export const en = {
   realmTypes: { normal: 'Normal', pvp: 'PvP', rp: 'RP', rpPvp: 'RP-PvP' },
   game: gameStrings,
   hudChrome: hudChromeStrings,
+  mailUi: mailStrings,
   guide: guideStrings,
+  // World-placed readable book "Read" prompt (PHAA-552). One word, not "wordy"
+  // by the M16 rule, so English-only at PR tier; the build English-fills the
+  // other locales. The book title and page text are entities, not chrome (see
+  // entities.readables + src/ui/entity_i18n.ts). The reader window reuses the
+  // existing questUi.dialog.continue / .close chrome, so no new keys there.
+  readableUi: { prompt: { read: 'Read' } },
   // One-time cold-open intro (cold_open.ts). Own domain, not hud.*, per PHAA-431.
   coldOpen: coldOpenStrings,
   // Cosmetic skin-select event overlay. Rarity names reuse itemUi.quality.*.
@@ -221,6 +230,9 @@ export const en = {
     realm: 'Realm',
     newCharacter: 'New Character',
     appearance: 'Appearance',
+    sex: 'Sex',
+    sexMale: 'Male',
+    sexFemale: 'Female',
     class: 'Class',
     name: 'Name',
     chromaOption: 'Chroma {n}',
@@ -543,6 +555,56 @@ export const en = {
       readoutUsage: '/house place <1-{count}> <{kinds}>, /house remove <slot>.',
       helpLine:
         'Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>.',
+    },
+    // Bags capacity (PHAA-491): the pooled-inventory error toasts src/sim/bags.ts
+    // (plus market.ts/quests/quest_commands.ts/social/trade.ts/combat/
+    // casting_lifecycle.ts, which reuse the same literals) emits in English;
+    // sim_i18n.ts re-localizes them through t() against these keys.
+    bags: {
+      full: 'Your bags are full.',
+      socketsFull: 'All your bag slots are full.',
+      swapTooManyItems: 'You have too many items to swap to that bag.',
+      removeTooManyItems: 'You have too many items to remove that bag.',
+      tradeSpace: 'Trade failed: not enough bag space.',
+    },
+    // The bank vault core (PHAA-571): src/sim/bank.ts's deposit/withdraw/buySlots
+    // error + purchase-notice text. Core-only port: no banker NPC exists in zone
+    // content yet, so these strings are not yet player-reachable, but they are
+    // registered here now so the S3 drift guard has a matcher the moment a
+    // follow-up ticket surfaces the bank.
+    bank: {
+      tooFar: 'You are too far from the banker.',
+      noQuestItems: 'You cannot store quest items in the bank.',
+      full: 'Your bank is full.',
+      expansionCapped: 'Your bank cannot be expanded further.',
+      cannotAfford: 'You cannot afford that bank expansion.',
+      purchased: 'You purchase additional bank slots.',
+    },
+    // Homestead v0 (PHAA-533): the open-world Hollow Reaches tier, distinct from
+    // Housing v0's Sanctum plots. Player-facing /homestead command text lives in
+    // src/sim/homestead.ts (the placement rejections, the Greenpaw quest-gate,
+    // the already-own / ground-claimed / sits-at / no-homestead variants) plus the
+    // /homestead /help line in src/sim/social/chat.ts helpLines. Re-localized via
+    // the RULES array in src/ui/sim_i18n.ts (no EXACT entries: the (x, z) readout
+    // is parameterized and the helpLines line goes through the variable-routed
+    // guard below). The (x, z) sit-at position is rounded by the sim.
+    homestead: {
+      outsideArea: 'That is outside the homestead ground. Try Fallow Acres, west of the road.',
+      tooCloseGate: 'Too close to the gate. Move further out.',
+      tooCloseWater: 'Too close to the water.',
+      tooCloseGraveyard: 'Too close to the graveyard.',
+      tooCloseWildlife: 'Too close to the wildlife. Clear the area or move further off.',
+      tooCloseRoad: 'Too close to the road.',
+      tooCloseOther: 'Too close to another homestead.',
+      questGate: "Brother Greenpaw hasn't sent you off yet. Finish his errands first.",
+      alreadyOwn: 'You already own a homestead.',
+      claimed: 'The ground is yours. This homestead is claimed.',
+      readoutMine: 'Your homestead sits at ({x}, {z}).',
+      readoutNoHomesteadQuest:
+        "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
+      readoutNoHomesteadHint:
+        'You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.',
+      helpLine: 'Homestead: /homestead, /homestead claim.',
     },
   },
   // Lockpicking minigame ("Tumbler's Path") panel chrome. Rendered through t()
@@ -987,6 +1049,7 @@ export const en = {
       ...hollowEntities.en.dungeons,
     },
     delves: { ...worldNames.en.entities.delves },
+    readables: { ...hollowEntities.en.readables },
   },
 };
 

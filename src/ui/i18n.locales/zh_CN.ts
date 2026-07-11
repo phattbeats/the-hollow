@@ -16,6 +16,11 @@ import type { TranslationKey } from '../i18n.catalog';
 export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.spectate.banner': '正在观察 {name}',
   'hudChrome.loot.chestTitle': '宝箱',
+  'hudChrome.lootRollGroup.pending': '等待中...',
+  'hudChrome.lootRollGroup.need': '需求',
+  'hudChrome.lootRollGroup.greed': '贪婪',
+  'hudChrome.lootRollGroup.pass': '放弃',
+  'hudChrome.lootRollGroup.aria': '{item} 的团队掷骰状态',
   'hudChrome.spellbook.addToBarAria': '将{name}添加到动作条',
   'hudChrome.spellbook.removeFromBarAria': '从动作条移除{name}',
   'hudChrome.nameplate.mob': '[{level}] {name}',
@@ -1270,6 +1275,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'abilityUi.tooltip.offGlobalCooldown': '不触发公共冷却',
   'abilityUi.tooltip.friendlyTarget': '友方目标',
   'abilityUi.tooltip.enemyTarget': '敌方目标',
+  'abilityUi.tooltip.selfOnly': '仅对自己',
   'abilityUi.tooltip.damageRange': '{min} 到 {max}',
   'abilityUi.tooltip.finisherDamage': '{base} 加每个连击点 {perCombo}',
   'abilityUi.resources.mana': '法力',
@@ -2269,6 +2275,10 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.the_merchant.title': '世界市场守护者',
   'entities.npcs.the_merchant.greeting':
     '欢迎来到世界市场，{className}。从王国各地的冒险者手中购买，或出售你自己的货物。',
+  'entities.npcs.the_ravenpost.name': '渡鸦驿站',
+  'entities.npcs.the_ravenpost.title': '邮务守护者',
+  'entities.npcs.the_ravenpost.greeting':
+    '寄一封信吧，{className}，我的渡鸦会找到你的朋友，无论他们漂泊何方，随信附上的钱币和包裹也会安然相随，直到被认领。',
   'entities.npcs.marshal_redbrook.name': '雷德布鲁克元帅',
   'entities.npcs.marshal_redbrook.title': '城镇元帅',
   'entities.npcs.marshal_redbrook.greeting': '刀别离手，{className}。山谷已经不是从前的山谷了。',
@@ -2774,9 +2784,52 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
     '大门外是一片开阔之地，道路以西的闲田庄看起来很适合安家。',
   'entities.npcs.verger_zebediah.name': '司事泽比迪亚',
   'entities.npcs.verger_zebediah.title': '根穴守卫',
+  'entities.readables.torn_ledger_page.title': '撕破的登记簿',
+  'entities.readables.torn_ledger_page.pages.0':
+    '根穴，记为休养。闲田庄，记为休养。莫斯岸的那片湖，无论我们记与不记，它自顾自地歇着。按登记簿的规矩，签了名，注了日期。',
+  'entities.readables.torn_ledger_page.pages.1':
+    '本季至今的清点：路石缝里冒出三株幼苗，我的任何一本历书上都没有这一条。我已经不再划掉它们了。墨迹未干它们就长回来，而那墨水可不便宜。',
+  'entities.readables.torn_ledger_page.pages.2':
+    '给我之后接手此簿的人留一句。数野猪，数狼，数日子。别去数那片绿。它会数回来，而且不会停在你停下的地方。',
+  'entities.readables.keepers_marginalia.title': '守护者的旁批',
+  'entities.readables.keepers_marginalia.pages.0':
+    '夹在一本圣歌都磨没了的圣歌集页边留下的。那笔迹很快，就像一只边走边写的手那样快。',
+  'entities.readables.keepers_marginalia.pages.1':
+    '狼群从林线绕着闲田庄打转，永远是同一个圈，永远顺着日头转。绕得够久的东西，会摸清它所绕之物的形状。我如此。我想，这片土地也如此。',
+  'entities.readables.keepers_marginalia.pages.2':
+    '你若读到这里，说明你停下了脚步，那正是我这辈子唯一没学会的事。歇一会儿吧。外域还会在这儿。而这，恰恰就是它最麻烦的地方。',
   'entities.npcs.verger_zebediah.greeting':
     '司事泽比迪亚。我给外域记着一本历书，至少一直在努力记。根穴这一季本该休养，可野猪没读那张告示。留神脚下的浮土，还有，别碰我的登记簿。',
   'entities.npcs.sexton_faddick.name': '守墓人法迪克',
+  'entities.items.willow_sprig.name': '一段柳枝',
+  'entities.npcs.shade.name': '莎德',
+  'entities.npcs.shade.title': '一位旅人',
+  'entities.npcs.shade.greeting':
+    '哦，是你啊。想坐就坐吧，水又不会跑。今天吃过了吗？你该吃点东西。',
+  'entities.npcs.shade.introLines.0':
+    '你撞见我做杂活了。别在意这桶，不过是水而已。总有些东西需要浇上一点水。',
+  'entities.npcs.shade.introLines.1':
+    '我？没什么好说的。叫我莎德。我四处走走，哪里缺人手就搭把手。你看着累坏了。想的话，就坐一会儿吧。',
+  'entities.npcs.gate_bard.name': '吟游诗人哈尔登',
+  'entities.npcs.gate_bard.title': '门前的卖艺人',
+  'entities.npcs.gate_bard.greeting':
+    '一枚铜板换一首歌？不要？没关系，多数日子都是不要。我为这道门弹唱，可这门从没掏过一次腰包。',
+  'entities.npcs.goodwife_orla.name': '奥拉',
+  'entities.npcs.goodwife_orla.title': '曾属根穴',
+  'entities.npcs.goodwife_orla.greeting':
+    '你可以坐下。大多数人只是走过去。司事早就把我的名字从册子上划掉了，一个被划掉的名字，学会了安静，好让谁都不必想起它还在这儿。',
+  'entities.quests.q_have_you_eaten.title': '你吃过了吗？',
+  'entities.quests.q_have_you_eaten.text':
+    '门口有个吟游诗人，靠铜板过活，铜板来了才有饭吃，而铜板难得来。我这儿有一碗热的，还多出一份。替我给他送去，好吗？别告诉他这是可怜他。就说这是多出来的。',
+  'entities.quests.q_have_you_eaten.completion':
+    '你回来了。他吃了吗？很好。那就好。那你呢？……你没吃，我看得出来。那就坐下吧。要成为一个好人，不必伟大。伟大不是善良。吃吧。',
+  'entities.quests.q_have_you_eaten.objectives.0.label': '把热饭送给吟游诗人',
+  'entities.quests.q_someone_your_own_size.title': '找个和你一般大的',
+  'entities.quests.q_someone_your_own_size.text':
+    '根穴附近有个女人，这世道待她不公。她的名字被从册子上划掉了，人们对待一个被划掉的名字，就当它听不见。去陪她坐一会儿吧。你不必去修补什么。只要做一个和她一般大的人就好。',
+  'entities.quests.q_someone_your_own_size.completion':
+    '你留下来了。她不会说这有什么要紧，可它要紧，我向你保证它要紧。来，这个给你。一段柳枝，取自我很喜欢的一棵柳树。它什么用也没有。它只记得，在没人逼你的时候，你依然选择了善良。',
+  'entities.quests.q_someone_your_own_size.objectives.0.label': '陪奥拉坐了一会儿',
   'entities.npcs.sexton_faddick.title': '流浪的守护者',
   'entities.npcs.sexton_faddick.greeting':
     '法迪克。哪里还有神龛需要守墓人，我就在哪儿守。我从不在一处久留，只管看顾。狼群夜夜绕着闲田庄的羊群打转，绕得久了，便摸清了所绕之物的形状。最好让它一直只是群羊。',
@@ -2790,7 +2843,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_root_hollow_boars_ii.text':
     '我就说句本职上不该说的实话：五头，是我乐观了。底下的窝还在不断往外拱。再杀八头，我便能结清这一季，不必第三回去改记录。记录不喜被改。我也不喜。',
   'entities.quests.q_root_hollow_boars_ii.completion':
-    '结案。签字。归档。这一季总算能照原定的历程走了，毕竟又有人来看着这本历书。你帮了一个极小的会众一个大忙。我得澄清一句：这会众，就是我。',
+    '结案。签字。归档。这一季总算能照原定的历程走了，毕竟又有人来看着这本历书。你帮了一个极小的会众一个大忙。我得澄清一句：这会众，就是我。这本历书本身比这安排还要古老，装订出自一双我从未谋面的手，记着一个我不愿去加总的数目。曾经有人在此极为用心。我不过是尽力跟上罢了。',
   'entities.quests.q_root_hollow_boars_ii.objectives.0.label': '野猪已杀',
   'entities.quests.q_fallow_acres_wolves.title': '赶走田垄上的狼',
   'entities.quests.q_fallow_acres_wolves.text':
@@ -2919,7 +2972,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_what_burns.text':
     '通灵淡了，朋友……我干得跟骨头一样，频率就快断了。神龛下面有种球茎，烧得又慢又干净，余烬球茎，长在光照不到的地方，这洞穴自己跟自己开的玩笑……给我带五颗回来。留意那些苍白的家伙，它们冲着你的灯笼来，不是冲着你。大概吧。',
   'entities.quests.q_what_burns.completion':
-    '这才是上等的烟啊……你感觉到了吗？屋里越来越浓了。她随时都要探过身来了，我在频率上都能感觉到……的确如此。',
+    '这才是上等的烟啊……你感觉到了吗？屋里越来越浓了。他随时都要探过身来了，我在频率上都能感觉到……的确如此。',
   'entities.quests.q_what_burns.objectives.0.label': '已采集余烬球茎',
   'entities.quests.q_what_fills.title': '饱腹之物',
   'entities.quests.q_what_fills.text':
@@ -2933,6 +2986,30 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_what_fills.dialog.refuse': '不。我不会再下去了。',
   'entities.quests.q_what_fills.dialog.refuseReply':
     '哦……哦，好吧。……好吧。这……是啊。不，这很公道，朋友，很公道……瓶子也听见了，偷偷跟你说，我觉得他还挺敬佩你的。来，这根插枝你还是拿着。你下去过一次，就已经比大多数人多一次了……',
+  'entities.quests.q_the_wavelength.title': '同一频率上',
+  'entities.quests.q_the_wavelength.text':
+    '挖来的插条现在是你的了，朋友，那接下来该聊聊后面的事了……两件事，都不算考验，更像是引见。第一，穿过瓶子那边，去见见耶罗长老，她教的是第二天职，一种完全不同的玩法，凡是路过这儿的灵魂都该知道那扇门是开着的……第二，回来喂我点什么，不管是哪样，残火球茎也好，洞穴肉粒也好，我永远处于饥饿状态，瓶子也永远想要烟。这部分是不会真正结束的，对绿掌来说就是这样。',
+  'entities.quests.q_the_wavelength.completion':
+    '看吧……你感觉到了吧，房间一下子变浓了？那是他，注意到了。这就是全部的窍门，朋友——你喂我，我就冒烟，他就多凑近一点听着。没什么复杂的。以后也永远不会变。手头有多余的残火球茎或洞穴肉粒，随时过来，炉子不看日历……哦对了。欢迎来到圣所。我这才意识到之前一直没说过这句。',
+  'entities.quests.q_the_wavelength.objectives.0.label': '已拜见耶罗长老',
+  'entities.quests.q_the_wavelength.objectives.1.label': '已在炉边喂食',
+  'entities.quests.q_the_wavelength.dialog.complain': '又要跑腿？我才刚从那洞里爬出来。',
+  'entities.quests.q_the_wavelength.dialog.complainReply':
+    '不不，听我说完，这次不是洞里的活儿……这次简单，就是走一趟，好好喂我一次。这是我求过你最轻松的一件事了，我保证，同频共振，绝不骗你。',
+  'entities.quests.q_the_wavelength.dialog.refuse': '我自己去找我的训练，谢了。',
+  'entities.quests.q_the_wavelength.dialog.refuseReply':
+    '……那也行吧。一个灵魂还没准备好之前，是没法强求学东西的。等哪天不是"还没准备好"了，门就一直开着……给，这个还是拿着吧，好歹你来了一趟。',
+  'entities.quests.q_keep_him_lit.text':
+    '三次，朋友，就是这个数……不是什么神圣的数字，就是刚好能把一个人情变成一个习惯，习惯才是我真正信的那种信仰……回来喂炉子三次，分开的三次，先后顺序不重要，残火球茎还是洞穴肉粒也不重要，只要你做到了，我就信你是真的打算留下来，不是路过顺道办完事就走……',
+  'entities.quests.q_keep_him_lit.completion':
+    '三次都到了……你不再只是个访客了，朋友，你是在守着一样活着的东西，这就是全部的意义，虽然没人问过我，但我还是要说……给，拿着这个吧，它什么用也没有，只是个念想，跟咱们这儿的人一样……',
+  'entities.quests.q_keep_him_lit.objectives.0.label': '已在炉边喂食三次',
+  'entities.quests.q_keep_him_lit.dialog.complain': '我不是已经喂过你一次了吗？这还不够？',
+  'entities.quests.q_keep_him_lit.dialog.complainReply':
+    '一次是个人情，朋友，三次才是习惯，人情我吃过亏……这不是炉子需不需要，炉子好得很，我照顾得来，这是关于你愿不愿意自己走回来，不是因为任务标记逼你来的……三次。不急着数。',
+  'entities.quests.q_keep_him_lit.dialog.refuse': '我不会分三次来做这件事。一次就够了。',
+  'entities.quests.q_keep_him_lit.dialog.refuseReply':
+    '……好吧。好吧，我懂你的意思，朋友，这条线划得也算公道……这样吧，还是拿着，严格说不算你挣来的，但我给出去的大半也不算，频率这东西，其实没真的在计较。',
   'hud.errors.silenced': '你已被沉默！',
   'hud.pet.noPetFood': '你没有可以喂给宠物的食物。',
   'hud.pet.petEatsFoodOnly': '你的宠物只能吃食物。',
@@ -2963,6 +3040,9 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'auth.realm': '服务器',
   'auth.newCharacter': '新建角色',
   'auth.appearance': '外观',
+  'auth.sex': '性别',
+  'auth.sexMale': '男性',
+  'auth.sexFemale': '女性',
   'auth.class': '职业',
   'auth.name': '名称',
   'auth.chromaOption': '配色 {n}',
@@ -3387,6 +3467,10 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.bags.searchPlaceholder': '搜索物品',
   'hudChrome.bags.searchAria': '按名称搜索背包物品',
   'hudChrome.bags.noMatch': '没有符合筛选条件的物品。',
+  'hudChrome.bags.capacityAria': '背包已用槽位：{used}/{total}',
+  'hudChrome.bags.backpack': '背包',
+  'hudChrome.bags.socketEmpty': '空背包栏位',
+  'hudChrome.bags.unequipHint': '点击移除此背包',
   // Guide (/guide) localization.
   'guide.brand': 'World of ClaudeCraft',
   'guide.brandShort': 'ClaudeCraft',
@@ -3440,6 +3524,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'guide.nav.dungeons': '地下城与团队副本',
   'guide.nav.reference': '参考',
   'guide.nav.controls': '操作键',
+  'guide.nav.settings': '设置和性能',
   'guide.nav.combat': '战斗',
   'guide.nav.glossary': '术语表',
   'guide.nav.faq': '常见问题',
@@ -3574,6 +3659,86 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'guide.controls.mobileHeading': '移动端操作',
   'guide.controls.mobileBody':
     '在手机和平板上会自动出现触控操作:左侧是移动摇杆,在右侧任意位置拖动即可环顾四周,屏幕上还有用于使用技能和打开菜单的按钮。',
+  'guide.settingsPage.heading': '设置和性能',
+  'guide.settingsPage.intro':
+    '把画面调到最美，或把帧数拉到最高。三套现成方案，外加每个图形选项的真实作用。',
+  'guide.settingsPage.wherePath': '本页的一切都在游戏里：按 Esc，到图形、界面和性能监视器中查看。',
+  'guide.settingsPage.fairnessTitle': '公平源自设计',
+  'guide.settingsPage.fairnessBody':
+    '这里没有任何选项会拿画面换战力。调低设置只会舍弃视觉上的修饰，绝不会砍掉你作战所需的信息：从“低”到“超高”，你的减益效果、施法条、队伍血量和伤害数字完全一致。用配置一般的机器游玩，绝不会吃亏。',
+  'guide.settingsPage.loadoutsHeading': '三套现成方案',
+  'guide.settingsPage.loadoutsIntro':
+    '先从最像你设备的那套方案开始，然后每次只调一个选项，直到感觉合适为止。',
+  'guide.settingsPage.recommended': '推荐',
+  'guide.settingsPage.whyLabel': '推荐理由：',
+  'guide.settingsPage.tagReload': '需重新加载',
+  'guide.settingsPage.fpsTitle': '帧数优先',
+  'guide.settingsPage.fpsTagline': '适合较老的笔记本、核显设备，以及用电池游玩的场合。',
+  'guide.settingsPage.fpsWhy':
+    '图形质量是总开关，渲染质量则是效果最猛的滑块：调到 70% 时，世界只需绘制大约一半的像素，而界面依旧清晰锐利。',
+  'guide.settingsPage.balancedTitle': '均衡',
+  'guide.settingsPage.balancedTagline': '大多数设备的最佳平衡点，也是我们的默认建议。',
+  'guide.settingsPage.balancedWhy':
+    '“中”档就有真实的阴影和完整的材质，“高”档再加上环境光遮蔽和泛光。只要低于“超高”，内置保护机制就会在激烈战斗掉帧时自动兜底，所以均衡方案不必时刻盯着，也能一直流畅。',
+  'guide.settingsPage.visualsTitle': '极致画质',
+  'guide.settingsPage.visualsTagline': '为高性能台式机准备的截图模式。',
+  'guide.settingsPage.visualsWhy':
+    '“超高”会以显示器支持的最高分辨率渲染，并启用最丰富的光照。它还会关闭内置保护机制，而且仅限桌面端：手机和应用端最高到“高”为止。',
+  'guide.settingsPage.value50to70': '50% 到 70%',
+  'guide.settingsPage.value90to100': '90% 到 100%',
+  'guide.settingsPage.value100': '100%',
+  'guide.settingsPage.valueHighOrMedium': '游戏 PC 选“高”，笔记本选“中”',
+  'guide.settingsPage.valueOnOptional': '开启（可选）',
+  'guide.settingsPage.howHeading': '这些选项如何生效',
+  'guide.settingsPage.factDetectTitle': '游戏会先自动调校',
+  'guide.settingsPage.factDetectBody':
+    '首次启动时，游戏会检测你的设备并选好合适的档位：性能一般的手机是“低”，强力台式机则是“超高”。你自己做出的任何选择永远优先。',
+  'guide.settingsPage.factReloadTitle': '两类选项',
+  'guide.settingsPage.factReloadBody':
+    '图形质量和“高级”下的各个选项要在重新加载后才会生效，需要时面板会提供“立即重新加载”按钮。其余选项在你改动的那一刻立即生效。',
+  'guide.settingsPage.factGovernorTitle': '内置保护机制',
+  'guide.settingsPage.factGovernorBody':
+    '在“超高”以下的所有档位，大型战斗骤然吃紧时，游戏会悄悄暂时精简草地、特效和光照，随后再恢复原样。选择“超高”，就等于告诉游戏你宁可保留每一处细节。',
+  'guide.settingsPage.advancedHeading': '“高级”预设：自由搭配',
+  'guide.settingsPage.advancedBody':
+    '“高级”以“高”档位为起点，额外解锁四个独立选项，让你把帧数花在真正看得出差别的地方：地形细节、植被密度、特效和光照，以及阴影质量。这些选项和图形质量一样，重新加载后才会生效。',
+  'guide.settingsPage.advancedMixes':
+    '两套人气搭配：把阴影质量保持在“高”、特效和光照调到“低”，画面干净利落、没有泛光，跑起来也轻快；或者反过来，保留泛光，让阴影更柔和。',
+  'guide.settingsPage.tableHeading': '每个选项，逐一说明',
+  'guide.settingsPage.colSetting': '选项',
+  'guide.settingsPage.colDoes': '作用',
+  'guide.settingsPage.colImpact': 'FPS 影响',
+  'guide.settingsPage.impactNone': '无',
+  'guide.settingsPage.impactLight': '小',
+  'guide.settingsPage.impactModerate': '中等',
+  'guide.settingsPage.impactHeavy': '大',
+  'guide.settingsPage.rowGraphicsQuality':
+    '总开关。每调一档，分辨率、阴影、材质、植被和光照特效都会一起变化。这是单项改动里差别最大的一个。',
+  'guide.settingsPage.rowRenderQuality':
+    '以更低的内部分辨率绘制 3D 世界再放大呈现，界面保持锐利。对较弱的设备和高分辨率屏幕而言，这是见效最快、最猛的滑块。',
+  'guide.settingsPage.rowFieldOfView':
+    '决定屏幕能装下多大的世界：从拉近的 55 度到开阔的 100 度。纯属舒适度选择；视野越宽，绘制量略微增加。',
+  'guide.settingsPage.rowBrightness': '调整场景曝光，偏暗或偏亮，纯看个人喜好。',
+  'guide.settingsPage.rowWeather': '环境雨雪。纯氛围效果，关闭后在暴风雨天能省下一点性能。',
+  'guide.settingsPage.rowBrowserEffects':
+    '决定界面本身可以多华丽：玻璃模糊、辉光、菜单动画。“自动”会根据你的浏览器自行匹配；无论怎么选，3D 世界都不受影响。',
+  'guide.settingsPage.rowTerrainDetail':
+    '细腻混合的地表纹理，或更简洁、更省性能的地形外观，二选一。',
+  'guide.settingsPage.rowFoliageDensity': '决定角色周围的草地长多远、长多密。',
+  'guide.settingsPage.rowEffectsQuality':
+    '控制泛光、环境光遮蔽，以及有多少火把和法术能投射真实光照。在“高级”各选项中，这一项省下的性能最多。',
+  'guide.settingsPage.rowShadowQuality': '决定阴影的锐利程度。“低”仍保留阴影，只是边缘更柔和。',
+  'guide.settingsPage.rowFrostedPanels':
+    '在窗口背后加一层毛玻璃模糊。效果漂亮，但也正是性能较弱的浏览器最吃力的那类特效；想要经典的清爽外观就保持关闭。',
+  'guide.settingsPage.rowReduceMotion':
+    '移除界面动画，让窗口即刻显示。它首先是一项无障碍选项，顺带还有一点性能收益。',
+  'guide.settingsPage.rowPerfOverlay':
+    '在屏幕上实时显示 FPS、帧时间等数据。调校本页选项时先打开它，调完再隐藏。',
+  'guide.settingsPage.tableFoot':
+    '在找视距滑块或 FPS 上限？不用找了：可视距离已包含在各画质档位里，帧率则与你的显示器保持同步。',
+  'guide.settingsPage.mobileTitle': '手机与平板',
+  'guide.settingsPage.mobileBody':
+    '移动端会替你多打理一些：游戏自动选择档位，把分辨率稍微压低以兼顾电量和发热，最高的几个档位也仅在桌面端开放。上面的方案依然适用，只是手机最高到“高”为止。',
   'guide.combat.intro':
     '战斗遵循经典 MMO 中熟悉的规则。你完全不必钻研这些就能玩得很好,这里只是介绍一下战斗大致的运作方式。',
   'guide.combat.hitTitle': '并非每次攻击都能命中',
@@ -4311,10 +4476,23 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': '洞穴肉粒',
   'entities.items.emberbulb.name': '余烬球茎',
   'entities.items.first_cutting.name': '插条',
+  'entities.items.greenpaw_bead.name': '弹药带上的一颗念珠',
+  'entities.items.keeper_coal.name': '一块永不冷却的炭',
   'entities.items.witness_root_cincture.name': '见证根的束带',
   'entities.items.shrine_diary_page.name': '撕碎的日记页',
   'entities.items.shrine_diary_page.flavorText':
     '……我数着烛光过了四十天，后来便断了数。这底下的黑暗从未忘记祂，尽管祂已经忘了这个地方。若鹭鸟低飞掠过，告诉守灯人，烛芯还燃着……',
+  'entities.items.linen_pouch.name': '亚麻小袋',
+  'entities.items.travelers_knapsack.name': '旅行者背包',
+  'entities.items.wolfhide_satchel.name': '狼皮挎包',
+  'entities.items.gravewoven_bag.name': '墓织袋',
+  'entities.items.mistcallers_duffel.name': '唤雾者的行囊',
+  'entities.items.worn_prayer_token.name': '磨损的祷牌',
+  'entities.items.worn_prayer_token.flavorText':
+    '……一面被一根不是我的拇指磨得光滑，磨出的浅沟和这堆里另外上百枚一模一样，至少这堆东西是这么告诉我的。一根拇指磨不出一百枚令牌的痕迹。可一百根拇指，倒是能磨出同一道浅沟……',
+  'entities.items.tally_shard.name': '刻痕碎片',
+  'entities.items.tally_shard.flavorText':
+    '……以五为一组刻得极深，每数完一轮便划去一道。划去的五连一组，累计上百组，最后一行却始终没有划完……',
   'entities.mobs.acolyte_tessa.name': '侍僧泰莎',
   'entities.mobs.deacon_varric.name': '执事瓦里克',
   'entities.mobs.reliquary_bonewalker.name': '复生的骨行者',
@@ -4322,6 +4500,10 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_gravecall_acolyte.name': '唤墓侍僧',
   'entities.mobs.reliquary_ledger_wraith.name': '名册幽魂',
   'entities.mobs.reliquary_saintless_effigy.name': '无圣徒像',
+  'entities.items.heartwood_splinter.name': '心材碎片',
+  'entities.items.heartwood_splinter.flavorText': '触摸时依然温暖,尽管孕育它的树早已停止生长。',
+  'entities.items.bloomcrown_pauldrons.name': '繁花王冠护肩',
+  'entities.items.verdantguard_mantle.name': '常青守卫者披风',
   'entities.mobs.palefeeder.name': '苍白噬光者',
   'entities.mobs.rootmaw.name': '根颚兽',
   'entities.mobs.the_witness_root.name': '见证之根',
@@ -4331,7 +4513,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.brother_greenpaw.name': '绿掌修士',
   'entities.npcs.brother_greenpaw.title': '首席先知（自封）',
   'entities.npcs.brother_greenpaw.greeting':
-    '哟，旅人，你来啦。你说这瓮今儿个心情不错，还是只有我这么觉得……过来吧，有几件神圣的事儿要办。基本上就是弄点吃的。反正对绿掌来说是一回事儿。',
+    '你又来啦，真是福气……这瓮一早上唉声叹气的，几件神圣的事儿又排上了，跟上回一个路子。过来坐一会儿……',
   'entities.npcs.brother_greenpaw.introLines.0':
     '呃……你好。你好啊。没听见你过来，我刚才神游去了，去了个绿油油的地方……你这一脸刚睡醒的样子，朋友。我太熟这表情了，我自己十天有九天挂着它……',
   'entities.npcs.brother_greenpaw.introLines.1':
@@ -4430,6 +4612,17 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'delveUi.tracker.module': '第 {current} / {total} 区',
   'delveUi.tracker.objective': '目标',
   'delveUi.tracker.title': '探秘',
+  'sim.bags.full': '你的背包已满。',
+  'sim.bags.socketsFull': '你的所有背包栏位都已占用。',
+  'sim.bags.swapTooManyItems': '物品太多，无法换成那个背包。',
+  'sim.bags.removeTooManyItems': '物品太多，无法移除那个背包。',
+  'sim.bags.tradeSpace': '交易失败：背包空间不足。',
+  'sim.bank.cannotAfford': '你负担不起这次银行扩容。',
+  'sim.bank.expansionCapped': '你的银行无法再扩容了。',
+  'sim.bank.full': '你的银行已满。',
+  'sim.bank.noQuestItems': '你不能把任务物品存入银行。',
+  'sim.bank.purchased': '你购买了额外的银行槽位。',
+  'sim.bank.tooFar': '你离银行职员太远了。',
   'sim.delve.alreadyInDelve': '你已经身处一场探秘之中。',
   'sim.delve.bossChest':
     '首领倒下了。一只设有结界的圣物库宝箱在祭坛上升起，撬开它的锁来取得你的战利品。',
@@ -4485,6 +4678,21 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'sim.hearth.noItems1': '……伙计，你两手空空啊。带点能烧的或能填饱肚子的东西来，我们再唠。',
   'sim.hearth.noItems2': '身上啥也没有，就剩一片好心，是吧……好心可点不着炉子。',
   'sim.hearth.tooFar': '你得靠近绿掌修士才能喂他。',
+  'sim.homestead.alreadyOwn': '你已经拥有一处家园了。',
+  'sim.homestead.claimed': '这片土地归你了。家园认领成功。',
+  'sim.homestead.helpLine': '家园：/homestead，/homestead claim。',
+  'sim.homestead.outsideArea': '这里不属于家园用地。去路西边的 Fallow Acres 试试。',
+  'sim.homestead.questGate': '绿掌修士还没让你出发呢。先把他的差事做完。',
+  'sim.homestead.readoutMine': '你的家园坐落在 ({x}, {z})。',
+  'sim.homestead.readoutNoHomesteadHint':
+    '你还没有家园。站在空谷地里合适的位置，输入 /homestead claim。',
+  'sim.homestead.readoutNoHomesteadQuest': '你还没有家园。先完成绿掌修士的全部差事才能解锁。',
+  'sim.homestead.tooCloseGate': '离大门太近了。再往外挪一挪。',
+  'sim.homestead.tooCloseGraveyard': '离墓地太近了。',
+  'sim.homestead.tooCloseOther': '离别人的家园太近了。',
+  'sim.homestead.tooCloseRoad': '离大路太近了。',
+  'sim.homestead.tooCloseWater': '离水域太近了。',
+  'sim.homestead.tooCloseWildlife': '离野生动物太近了。清空这片区域，或者再挪远一些。',
   'sim.house.alreadyOwn': '你在空穴已经拥有一处宅邸了。',
   'sim.house.claimed': '这处宅邸归你了。用 /house place <槽位> <种类> 来装饰它。',
   'sim.house.cleared': '清空了槽位 {slot}。',
@@ -4811,6 +5019,25 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'coldOpen.continue': '继续',
   'coldOpen.begin': '开始',
   'coldOpen.skip': '跳过',
+  'mailUi.title': '渡鸦驿站',
+  'mailUi.subtitle': '寄送与领取信件',
+  'mailUi.close': '关闭邮件',
+  'mailUi.inbox': '收件箱',
+  'mailUi.compose': '写信',
+  'mailUi.noPostOffice': '请前往渡鸦驿站处理邮件。',
+  'mailUi.emptyInbox': '暂无信件。有人写信给你时渡鸦便会送达。',
+  'mailUi.from': '来自 {name}',
+  'mailUi.noSubject': '(无主题)',
+  'mailUi.take': '领取',
+  'mailUi.delete': '删除',
+  'mailUi.postageNote': '寄送一封信需要 {money} 邮费。',
+  'mailUi.recipient': '收件人',
+  'mailUi.subjectLabel': '主题',
+  'mailUi.bodyPlaceholder': '写下你的信件……',
+  'mailUi.send': '寄出信件',
+  'mailUi.needRecipientOrText': '请先填写收件人并写点内容再寄送。',
+  'mailUi.openButton': '带我去渡鸦驿站。',
+  'mailUi.openButtonAria': '打开渡鸦驿站邮件窗口',
   // Event calendar (M16 non-Latin fill)
   'hudChrome.calendar.title': '活动日历',
   'hudChrome.calendar.close': '关闭日历',

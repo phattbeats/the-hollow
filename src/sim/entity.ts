@@ -78,6 +78,10 @@ function baseEntity(id: number, pos: Vec3): Entity {
     stompTimer: 0,
     stoneskinTimer: 0,
     terrifyTimer: 0,
+    bigCastTimer: 0,
+    aoeSlowTimer: 0,
+    loudYellTimer: 0,
+    loudYellIndex: 0,
     detonateTimer: Infinity,
     mendTimer: 0,
     wardTimer: 0,
@@ -120,6 +124,7 @@ function baseEntity(id: number, pos: Vec3): Entity {
     color: 0xffffff,
     skinCatalog: 'class',
     skin: 0,
+    sex: 'm',
     mainhandItemId: null,
     equippedItems: {},
     guild: '',
@@ -426,6 +431,12 @@ export function createMob(id: number, template: MobTemplate, level: number, pos:
   if (template.rally) e.rallyTimer = template.rally.every;
   // Telegraph the first War Cadence the same way: one full interval after engage.
   if (template.warcry) e.warcryTimer = template.warcry.every;
+  // Telegraph the first anti-kite snare the same way: one full interval after engage.
+  if (template.aoeSlow) e.aoeSlowTimer = template.aoeSlow.every;
+  // Telegraph the first battle-cry bark the same way: one full interval after engage.
+  if (template.battleYells) e.loudYellTimer = template.battleYells.every;
+  // Telegraph the first telegraphed hardcast the same way: one full interval after engage.
+  if (template.bigCast) e.bigCastTimer = template.bigCast.every;
   return e;
 }
 
