@@ -1128,6 +1128,26 @@ export const VISUALS: Record<string, VisualDef> = {
       death: 'Idle',
     },
   },
+  // Sister Shade (PHAA-558 touch-up): unique chibi female look on the merchant
+  // outfit (the plainest civilian silhouette in the female roster) with a
+  // willow-sage tint no player class uses, matching her sim color 0x6b7f6a.
+  // She must read as an ordinary woman doing chores, so no show-list gear and
+  // no held prop; the watering can needs the chibi grip/attach foundation
+  // (PHAA-583 follow-up) and stays future work.
+  npc_shade: {
+    url: `${PLAYERS}/chibi_female_merchant.glb`,
+    height: 2.29,
+    clips: {
+      idle: 'anim_iddle',
+      walk: 'anim_walk',
+      run: 'anim_run',
+      attack: ['anim_push'],
+      death: 'anim_dying',
+      jump: 'anim_jump',
+    },
+    tint: 0x7f8f6e,
+    tintStrength: 0.5,
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -1216,6 +1236,7 @@ const NPC_KEYS: Record<string, string> = {
   brother_greenpaw: 'npc_greenpaw',
   verger_zebediah: 'npc_zebediah',
   sexton_faddick: 'npc_faddick',
+  shade: 'npc_shade',
 };
 
 export function visualKeyFor(e: Entity): string {
