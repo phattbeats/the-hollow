@@ -2857,7 +2857,7 @@ export class Sim {
     this.market.update();
     this.postOffice.update();
     this.greenpawHearth.update(DT);
-    this.plantSpeech.update(this.greenpawHearth.smokeValue);
+    this.plantSpeech.update(this.greenpawHearth.smokeValue, this.greenpawHearth.lastFeederName);
     updateNpcWander(this.ctx);
     drainDelayedEvents(this.ctx);
 

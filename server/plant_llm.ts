@@ -100,6 +100,8 @@ const TRIGGER_INSTRUCTIONS: Record<PlantUtteranceMeta['trigger'], string> = {
   whim: 'You are speaking unprompted, on your own whim. No one addressed you.',
   full_smoke:
     'The room has just filled with smoke. You are looser, more willing to drop real lore.',
+  sustained_smoke:
+    'The room has held its smoke for a long stretch because someone has been keeping the hearth fed. You lean in, once, and say something that actually lands: real lore about yourself, the shrine, or the keeper. Still in your voice, never sentimental.',
   threshold:
     'A mortal has just built a home in your shade. You noticed, and you are choosing not to elaborate much.',
   address:
@@ -167,6 +169,11 @@ function buildUserContent(meta: PlantUtteranceMeta): string {
     TRIGGER_INSTRUCTIONS[meta.trigger],
   ];
   if (meta.soreSpot) lines.push(SORE_SPOT_INSTRUCTIONS[meta.soreSpot]);
+  if (meta.trigger === 'sustained_smoke' && meta.keeperName) {
+    lines.push(
+      `The keeper who has been feeding the hearth is named ${neutralizeDelimiters(meta.keeperName)}. Address them by name.`,
+    );
+  }
   if (meta.trigger === 'address') {
     const name = neutralizeDelimiters(meta.addressedByName ?? 'a mortal');
     const said =
