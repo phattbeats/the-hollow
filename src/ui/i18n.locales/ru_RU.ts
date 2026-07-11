@@ -2377,6 +2377,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.korzul_the_gravewyrm.name': 'Корзул Могильный Вирм',
   'entities.mobs.ironvein_foreman.name': 'Прораб Железной жилы',
   'entities.mobs.ironvein_sapper.name': 'Сапер Железной жилы',
+  'entities.mobs.heartwood_colossus.name': 'Колосс Сердцевины',
   'entities.mobs.marrowlord_varkas.name': 'Владыка костного мозга Варкас',
   'entities.mobs.mirejaw_frenzy.name': 'Бешенство Миреджо',
   'entities.mobs.mirejaw_the_ravenous.name': 'Миреджо Ненасытный',
@@ -3487,6 +3488,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.chatWindow.resetAction': 'Сбросить',
   'hudChrome.chatWindow.note':
     'Перетащите полосу вкладок чата, чтобы переместить окно, или угловой маркер, чтобы изменить размер. Сброс возвращает окно в положение и размер по умолчанию.',
+  'hudChrome.worldBoss.spawn': '{name} восстаёт над Корневой Лощиной!',
   'hudChrome.compass.E': 'В',
   'hudChrome.compass.N': 'С',
   'hudChrome.compass.NE': 'СВ',

@@ -2245,6 +2245,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.korzul_the_gravewyrm.name': '墓龙科祖尔',
   'entities.mobs.ironvein_foreman.name': '铁脉工头',
   'entities.mobs.ironvein_sapper.name': '铁脉爆破手',
+  'entities.mobs.heartwood_colossus.name': '心材巨像',
   'entities.mobs.marrowlord_varkas.name': '髓王瓦尔卡斯',
   'entities.mobs.mirejaw_frenzy.name': '泥颚狂鱼',
   'entities.mobs.mirejaw_the_ravenous.name': '贪食者泥颚',
@@ -3298,6 +3299,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.chatWindow.resetAction': '重置',
   'hudChrome.chatWindow.note':
     '拖动聊天标签栏可移动窗口，拖动右下角手柄可调整大小。重置可恢复到默认位置和大小。',
+  'hudChrome.worldBoss.spawn': '{name}崛起于根穴上空！',
   'hudChrome.compass.E': '东',
   'hudChrome.compass.N': '北',
   'hudChrome.compass.NE': '东北',

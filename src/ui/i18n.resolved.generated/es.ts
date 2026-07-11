@@ -5488,7 +5488,7 @@ export const es: EnTranslations = {
         "name": "Un Carbón Que Nunca Se Enfrió"
       },
       "willow_sprig": {
-        "name": "A Willow Sprig"
+        "name": "Una Ramita De Sauce"
       },
       "witness_root_cincture": {
         "name": "Cinturón de la Raíz Testigo"

@@ -2344,6 +2344,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.korzul_the_gravewyrm.name': '墓ワームのコルズル',
   'entities.mobs.ironvein_foreman.name': '鉄脈の現場監督',
   'entities.mobs.ironvein_sapper.name': '鉄脈の爆破兵',
+  'entities.mobs.heartwood_colossus.name': '心材の巨像',
   'entities.mobs.marrowlord_varkas.name': '髄王ヴァーカス',
   'entities.mobs.mirejaw_frenzy.name': 'マイアジョーの狂魚',
   'entities.mobs.mirejaw_the_ravenous.name': '貪るマイアジョー',
@@ -3438,6 +3439,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.chatWindow.resetAction': 'リセット',
   'hudChrome.chatWindow.note':
     'チャットのタブ列をドラッグするとウィンドウを移動でき、右下のグリップをドラッグするとサイズを変更できます。リセットすると既定の位置とサイズに戻ります。',
+  'hudChrome.worldBoss.spawn': '{name}が根の空洞の上空に立ち上る!',
   'hudChrome.compass.E': '東',
   'hudChrome.compass.N': '北',
   'hudChrome.compass.NE': '北東',

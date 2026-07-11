@@ -5488,7 +5488,7 @@ export const de_DE: EnTranslations = {
         "name": "Eine Kohle, die nie erkaltete"
       },
       "willow_sprig": {
-        "name": "A Willow Sprig"
+        "name": "Ein Weidenzweig"
       },
       "witness_root_cincture": {
         "name": "Zeugenwurzels Gürtel"

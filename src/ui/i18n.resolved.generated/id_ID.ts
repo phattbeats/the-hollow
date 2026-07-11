@@ -5488,7 +5488,7 @@ export const id_ID: EnTranslations = {
         "name": "Arang yang Tak Pernah Dingin"
       },
       "willow_sprig": {
-        "name": "A Willow Sprig"
+        "name": "Sebuah Ranting Willow"
       },
       "witness_root_cincture": {
         "name": "Sabuk Akar Saksi"

@@ -5488,7 +5488,7 @@ export const it_IT: EnTranslations = {
         "name": "Un Carbone Mai Raffreddato"
       },
       "willow_sprig": {
-        "name": "A Willow Sprig"
+        "name": "Un Ramoscello Di Salice"
       },
       "witness_root_cincture": {
         "name": "Cintura della Radice Testimone"

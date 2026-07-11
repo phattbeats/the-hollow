@@ -292,7 +292,7 @@ export const ru_RU: EnTranslations = {
       "lockedToast": "Вы привязаны к {raid}. Разблокировка через {time}."
     },
     "worldBoss": {
-      "spawn": "{name} rises over Root Hollow!"
+      "spawn": "{name} восстаёт над Корневой Лощиной!"
     },
     "compass": {
       "N": "С",
@@ -6004,7 +6004,7 @@ export const ru_RU: EnTranslations = {
         "name": "Корень-Свидетель"
       },
       "heartwood_colossus": {
-        "name": "Heartwood Colossus"
+        "name": "Колосс Сердцевины"
       }
     },
     "npcs": {
