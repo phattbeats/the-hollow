@@ -521,6 +521,12 @@ export interface EntityView {
   nameplateTransform: string;
   nameplateSig: string;
   nameplateHpWidth: string;
+  /** distance scale from the last plan, reapplied by the declutter re-anchor pass */
+  nameplateScale: number;
+  /** static plate opacity (stealth etc.); the distance fade multiplies it */
+  nameplateBaseOpacity: string;
+  /** last-written style.opacity, to diff cheaply (the fade writer owns the property) */
+  nameplateOpacity: string;
   comboSig: string; // cheap-diff for the combo pip row
   discordEl: HTMLImageElement; // linked-Discord PFP next to the name (other players)
   discordAvatarSig: string; // last-applied discord avatar URL, to diff cheaply
@@ -3373,6 +3379,9 @@ export class Renderer {
       nameplateTransform: '',
       nameplateSig: '',
       nameplateHpWidth: '',
+      nameplateScale: 1,
+      nameplateBaseOpacity: '1',
+      nameplateOpacity: '',
       comboSig: '',
       discordAvatarSig: '',
       objectCasters,
@@ -5072,7 +5081,8 @@ export class Renderer {
       b.el.style.display = '';
       const sx = (this.tmpV.x * 0.5 + 0.5) * w;
       const sy = (-this.tmpV.y * 0.5 + 0.5) * h;
-      b.el.style.transform = nameplateScreenTransform(sx, sy);
+      // chat bubbles share the anchor transform but never distance-scale
+      b.el.style.transform = nameplateScreenTransform(sx, sy, 1);
     }
   }
 
