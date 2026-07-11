@@ -6219,6 +6219,16 @@ export const ko_KR: EnTranslations = {
         "name": "오를라",
         "title": "한때 뿌리굴의 사람",
         "greeting": "앉아도 돼요. 다들 그냥 지나가죠. 성당지기가 오래전에 내 이름을 장부에서 지워 버렸어요. 지워진 이름은 조용히 있는 법을 배우죠, 아직 여기 있다는 걸 아무도 떠올리지 않도록."
+      },
+      "withered_planting": {
+        "name": "The Withered Planting",
+        "title": "The Tribe's Old Willow",
+        "greeting": "Dry roots, dry leaves. Whatever this was meant to grow into, it hasn't yet, and it's been a long while waiting."
+      },
+      "buried_root": {
+        "name": "A Buried Root",
+        "title": "Under the Shrine",
+        "greeting": "Dry. Dry as anything down here ever gets."
       }
     },
     "quests": {
@@ -7155,6 +7165,26 @@ export const ko_KR: EnTranslations = {
         "objectives": {
           "0": {
             "label": "오를라 곁에 잠시 앉음"
+          }
+        }
+      },
+      "q_the_long_way_around": {
+        "title": "The Long Way Around",
+        "text": "There's a planting the tribe left half-finished up the old willow, and it's dying for want of one good pour. I can't make that climb anymore, but you've got the legs for it. Take the can. Mind the branches; they hold if you're honest with them.",
+        "completion": "It'll live now. You wouldn't think one climb and one pour was much, against everything else out there. It isn't much. It's only everything to the one thing you poured it on.",
+        "objectives": {
+          "0": {
+            "label": "Water carried up the willow path"
+          }
+        }
+      },
+      "q_the_watering_can": {
+        "title": "The Watering Can",
+        "text": "I've asked you for small things, and you've done them all without once asking why. Here's the last one, and it isn't small, though it'll look it. Take my can down under the shrine, to the thing that's buried there, and give it water. It's been waiting a long time to be given something instead of asked for something.",
+        "completion": "You did it. Of course you did. That was the water, you understand. All of it, all the way back to the day you found me at the lake and thought nothing of it. The same pour, the same promise, kept one more time. Thank you. Now go and be gentle with the world. It is the only thing that ever changed it.",
+        "objectives": {
+          "0": {
+            "label": "Water given to the buried root"
           }
         }
       }

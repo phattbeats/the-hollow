@@ -186,6 +186,12 @@ export const HOLLOW_MOBS: Record<string, MobTemplate> = {
   // supplies its stats and mechanic kit. Rises at its fixed point near Root Hollow
   // in the_hollow_reaches (see WORLD_BOSSES). ccImmune + boss, like every other
   // raid-tier fight in this fork (nythraxis_scourge_of_thornpeak, marrowlord_varkas).
+  // PHAA-517: folds in upstream #1502/#1503's post-launch Thunzharr rebalance:
+  // slowImmune (a raid boss also shrugs off player-applied snares, not just hard
+  // CC), the Grasping Roots mult retune below, and the world-boss HP-step retune
+  // in world_boss.ts's WORLD_BOSSES entry. #1503's cc-immune-mobs-cannot-be-
+  // polymorphed fix lives at the general cast-validation site in
+  // combat/casting_lifecycle.ts, not here (it isn't boss-specific upstream either).
   heartwood_colossus: {
     id: 'heartwood_colossus',
     name: 'Heartwood Colossus',
@@ -196,6 +202,7 @@ export const HOLLOW_MOBS: Record<string, MobTemplate> = {
     worldBoss: true,
     elite: true,
     ccImmune: true,
+    slowImmune: true,
     hpBase: 40000,
     hpPerLevel: 0,
     dmgBase: 62,
@@ -213,9 +220,12 @@ export const HOLLOW_MOBS: Record<string, MobTemplate> = {
     stoneskin: { amount: 500, every: 16, duration: 8, name: 'Barkshell', school: 'nature' },
     // Grasping Roots (PHAA-494 anti-kite snare): fires even mid-chase, closing the
     // gap a ranged kiter would otherwise hold forever against a sub-run-speed boss.
+    // mult retuned 0.2 to 0.7 (PHAA-517, upstream #1502's Howling Gale rebalance):
+    // an 80% slow effectively rooted the raid in place; 0.7 (a 30% slow) still
+    // denies a permanent kite without that.
     aoeSlow: {
       radius: 14,
-      mult: 0.2,
+      mult: 0.7,
       duration: 5,
       every: 15,
       name: 'Grasping Roots',
@@ -455,6 +465,23 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
     questIds: ['q_the_wavelength'],
     trainer: { professions: ALL_CLASSES },
     greeting: 'Every build starts as a question. Which second calling speaks to you?',
+  },
+  // PHAA-614: the turn-in target for Sister Shade's finale quest,
+  // q_the_watering_can (content/hollow_zone.ts). A stub NPC exactly like
+  // gate_bard/goodwife_orla (empty questIds), standing in for the buried
+  // thing the shrine's whole line of quests has been leading to. Placed just
+  // past the under_shrine entry (entry is {x:0,z:4}), ahead of the first
+  // spawn on UNDER_SHRINE_SPAWNS (z:12), so the walk down stays combat-light.
+  buried_root: {
+    id: 'buried_root',
+    name: 'A Buried Root',
+    title: 'Under the Shrine',
+    pos: { x: 0, z: 6 },
+    dynamic: true,
+    facing: 0,
+    color: 0x3a2f22,
+    questIds: [],
+    greeting: 'Dry. Dry as anything down here ever gets.',
   },
 };
 
@@ -1059,6 +1086,10 @@ export const HOLLOW_DUNGEON_DEFS: Record<string, DungeonDef> = {
       // at z 16) and clear of the pillars (which start at z 10).
       { itemId: 'worn_prayer_token', name: 'Worn Prayer Token', x: 17, z: 9 },
     ],
+    // PHAA-614: buried_root, the turn-in target for Shade's finale quest.
+    // Placed at entry (0,4) + 2u so it is reachable straight off the door,
+    // clear of the first spawn on UNDER_SHRINE_SPAWNS (z:12).
+    npcs: [{ npcId: 'buried_root', x: 0, z: 6 }],
     // Deliberate: the 'crypt' interior builder is the Hollow Crypt's own
     // skeleton (sealed doors, keystones, the buried-and-walled grammar) reused
     // per the constitution (§4, the Hollow Crypt reuse) and rethemed root-cold
