@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { itemArmorModelUrl, itemArmorModelUrls, VISUALS } from '../src/render/characters/manifest';
 import { ITEM_ARMOR_VARIANTS } from '../src/ui/armor_variants';
@@ -96,5 +97,24 @@ describe('armor render plumbing (PHAA-502 T1)', () => {
         `${key} unexpectedly pre-declares armorByAttachIndex in T1`,
       ).toBeUndefined();
     }
+  });
+});
+
+// assembleModel/attachProp cannot be runtime-imported here (module load fires
+// the GLB preload sweep, which has no server to fetch from under vitest; see
+// the note in tests/baked_armor_visibility.test.ts). Pin the tie-break by
+// source so a future edit cannot silently flip which side wins.
+describe('armor render plumbing (PHAA-502 T1) - weapon/armor slot tie-break', () => {
+  const assetsSrc = readFileSync(
+    new URL('../src/render/characters/assets.ts', import.meta.url),
+    'utf8',
+  );
+
+  it('an attach index listed in both weaponSlots and armorSlots resolves weapon, never armor', () => {
+    // Both the attach-def selection and the swap-tag selection must gate the
+    // armor branch on `!isWeaponSwap`, matching the documented contract
+    // (a manifest bug that double-lists an index resolves to the weapon).
+    expect(assetsSrc).toContain('else if (isArmorSwap && !isWeaponSwap) {');
+    expect(assetsSrc).toContain('if (isArmorSwap && !isWeaponSwap) tags.push(SWAP_ARMOR_TAG);');
   });
 });
