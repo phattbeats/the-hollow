@@ -141,11 +141,11 @@ and becomes the standing way to earn the Plant's attention.
 
 - **The Homestead-unlock finale (arc beat 3).** `docs/plan-the-hollow.md`
   Decision 23 gates Homestead v0 plot-claiming behind completing the full
-  Greenpaw arc, but `src/sim/housing.ts`'s `claimPlot` has no such check
+  Greenpaw arc, but `src/sim/housing.ts`'s `housingClaim` has no such check
   today: it is open to anyone regardless of quest progress. The pitched
   fix (not yet built) is a short capstone quest, `q_your_own_hearth`,
   chained after `q_the_wavelength`, whose completion sets the flag
-  `claimPlot` needs, plus one or two lines foreshadowing the Gardener /
+  `housingClaim` needs, plus one or two lines foreshadowing the Gardener /
   First-Gardener theme (PHAA-543 canon) without requiring any of that
   endgame content to exist yet. Waiting on a creative-direction nod before
   it gets written.
