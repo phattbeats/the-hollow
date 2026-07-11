@@ -96,6 +96,21 @@ describe('applySecurityHeaders (unit)', () => {
     expect(res.getHeader('Strict-Transport-Security')).toBeUndefined();
   });
 
+  it('carves out Cross-Origin-Resource-Policy: cross-origin for /avatar/* (PHAA-529)', () => {
+    const res = new FakeRes();
+    applySecurityHeaders(res as unknown as http.ServerResponse, '/avatar/warrior/1.png');
+    expect(res.getHeader('Cross-Origin-Resource-Policy')).toBe('cross-origin');
+    // Every other header on the /avatar/* branch stays the unconditional default.
+    expect(res.getHeader('X-Content-Type-Options')).toBe(EXPECT.contentTypeOptions);
+    expect(res.getHeader('Cross-Origin-Opener-Policy')).toBe(EXPECT.crossOriginOpenerPolicy);
+  });
+
+  it('keeps Cross-Origin-Resource-Policy: same-origin for a non-/avatar/* path', () => {
+    const res = new FakeRes();
+    applySecurityHeaders(res as unknown as http.ServerResponse, '/api/public/something');
+    expect(res.getHeader('Cross-Origin-Resource-Policy')).toBe(EXPECT.crossOriginResourcePolicy);
+  });
+
   it('excludes the gameplay features from the Permissions-Policy and denies the sensors', () => {
     const value = run().getHeader('Permissions-Policy') as string;
     // Fullscreen (mobile landscape lock, src/main.ts) and Gamepad
@@ -181,5 +196,14 @@ describe('routeHttpRequest security headers (integration)', () => {
     });
     expect(res.statusCode).toBe(204);
     expectCoreHeaders(res);
+  });
+
+  it('carves out Cross-Origin-Resource-Policy: cross-origin on the real /avatar/* route (PHAA-529)', async () => {
+    // handleAvatar 404s synchronously on an invalid class/skin, never touching
+    // the pool, so this stays a deterministic db-free branch.
+    const res = await drive({ url: '/avatar/not-a-class/1.png' });
+    expect(res.statusCode).toBe(404);
+    expect(res.getHeader('X-Content-Type-Options')).toBe(EXPECT.contentTypeOptions);
+    expect(res.getHeader('Cross-Origin-Resource-Policy')).toBe('cross-origin');
   });
 });
