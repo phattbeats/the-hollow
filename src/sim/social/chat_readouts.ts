@@ -257,15 +257,18 @@ export function speedReadout(ctx: SimContext, e: Entity): string {
 // Self-only readout for /attack: reads only live Entity auto-attack state
 // (autoAttack/swingTimer/targetId). The displayed swing interval reuses the
 // exact expression the engine resets the timer with (weapon.speed *
-// swingIntervalMult), so it reflects any active haste/slow auras.
+// swingIntervalMult / (1 + haste)), so it reflects any active haste/slow
+// auras as well as the melee/ranged item-set haste stat.
 export function attackReadout(ctx: SimContext, p: Entity, meta: PlayerMeta): string {
   if (!p.autoAttack) return 'Auto-attack is off.';
   const t = p.targetId !== null ? ctx.entities.get(p.targetId) : null;
   if (!t || t.dead) return 'Auto-attack is on, but you have no valid target.';
   // ranged classes (hunter auto shot, caster wands) swing at their ranged
   // speed; everyone else uses the equipped weapon's speed
-  const base = CLASSES[meta.cls].ranged?.speed ?? p.weapon.speed;
-  const interval = base * ctx.swingIntervalMult(p);
+  const ranged = CLASSES[meta.cls].ranged;
+  const base = ranged?.speed ?? p.weapon.speed;
+  const haste = ranged ? p.rangedHaste : p.meleeHaste;
+  const interval = (base * ctx.swingIntervalMult(p)) / (1 + haste);
   const next = p.swingTimer <= 0 ? 'now' : `in ${p.swingTimer.toFixed(1)}s`;
   return `Auto-attack is on against ${t.name} — next swing ${next} (${interval.toFixed(1)}s swing).`;
 }

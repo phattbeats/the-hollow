@@ -10,6 +10,7 @@ import type {
   DelveDef,
   DelveModuleDef,
   DungeonDef,
+  GatherNodeDef,
   GroundObjectDef,
   ItemDef,
   MobTemplate,
@@ -17,6 +18,7 @@ import type {
   PlayerClass,
   QuestDef,
   QuestState,
+  ReadableDef,
   ZoneDef,
   ZonePropsDef,
 } from './types';
@@ -31,6 +33,7 @@ import {
   DELVE_MOBS,
 } from './content/delves';
 import { DUNGEON_DEFS, DUNGEON_MOBS } from './content/dungeons';
+import { GATHER_NODES as GATHER_NODES_CONTENT } from './content/gather_nodes';
 import { GROUND_PICKUP_LINES } from './content/ground_pickup_lines';
 import {
   HOLLOW_CAMPS,
@@ -51,6 +54,10 @@ import {
   HOLLOW_ZONE_ROADS,
   HOLLOW_ZONE_ZONE,
 } from './content/hollow_zone';
+import {
+  READ_RADIUS as READ_RADIUS_CONTENT,
+  READABLES as READABLES_CONTENT,
+} from './content/readables';
 import {
   TEMPLE_CAMPS,
   TEMPLE_DUNGEON_DEFS,
@@ -133,6 +140,7 @@ function mergeItems(...parts: Record<string, ItemDef>[]): Record<string, ItemDef
 
 export type { ClassDef } from './content/classes';
 export { ABILITIES, abilitiesKnownAt, CLASSES } from './content/classes';
+export { GATHER_NODE_TYPES } from './content/gather_nodes';
 // Re-export content shapes so existing `from './data'` imports keep working.
 export type {
   BiomeId,
@@ -140,6 +148,8 @@ export type {
   DelveDef,
   DungeonDef,
   DungeonSpawn,
+  GatherNodeDef,
+  GatherNodeType,
   GroundObjectDef,
   NpcDef,
   ZoneDef,
@@ -225,6 +235,17 @@ export const GROUND_OBJECTS: GroundObjectDef[] = [
   ...TEMPLE_OBJECTS,
   ...HOLLOW_OBJECTS,
 ];
+
+export const GATHER_NODES: GatherNodeDef[] = [...GATHER_NODES_CONTENT];
+
+// World-placed readable books (PHAA-552). Static content; both the offline Sim
+// and the online ClientWorld expose them through IWorldReadables by reading this
+// same table, so no server snapshot or wire field is involved.
+export const READABLES: ReadableDef[] = [...READABLES_CONTENT];
+export const READABLES_BY_ID: Record<string, ReadableDef> = Object.fromEntries(
+  READABLES.map((r) => [r.id, r]),
+);
+export const READ_RADIUS = READ_RADIUS_CONTENT;
 
 export const ROADS: { x: number; z: number }[][] = [
   ...ZONE1_ROADS,

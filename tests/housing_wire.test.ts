@@ -122,10 +122,10 @@ describe('housing over the wire', () => {
     const b = joinServer(server, fcB, 2, 'Bea', 'mage');
 
     standOnPlot(server, a.pid, 0);
-    server.sim.chat('/house claim', a.pid);
-    server.sim.chat('/house place 1 lantern', a.pid);
+    server.sim.housingClaim(a.pid);
+    server.sim.housingPlace(0, 'lantern', a.pid);
     standOnPlot(server, b.pid, 5);
-    server.sim.chat('/house claim', b.pid);
+    server.sim.housingClaim(b.pid);
 
     broadcast(server);
     for (const [fc, session, own, other] of [
@@ -152,7 +152,7 @@ describe('housing over the wire', () => {
     const fc = fakeWs();
     const s = joinServer(server, fc, 7, 'Keep');
     standOnPlot(server, s.pid, 2);
-    server.sim.chat('/house claim', s.pid);
+    server.sim.housingClaim(s.pid);
     const blob = JSON.parse(JSON.stringify(server.sim.serializeHousing()));
 
     const server2 = new GameServer();

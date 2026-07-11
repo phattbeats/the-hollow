@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { CLASSES } from '../../sim/data';
 import type { PlayerClass } from '../../sim/types';
 import { trackWebGLContext } from '../context_release';
-import type { WeaponLayoutOverride } from './manifest';
+import { VISUALS, type WeaponLayoutOverride } from './manifest';
 import { CharacterVisual } from './visual';
 
 const PREVIEW_ANIM_STATE = {
@@ -24,6 +24,7 @@ export class CharacterPreview {
   private camera: THREE.PerspectiveCamera;
   private characterGroup: THREE.Group;
   private currentVisual: CharacterVisual | null = null;
+  private currentVisualKey = ''; // PHAA-501: tracked here so setSex() can re-resolve without exposing CharacterVisual.key
   private currentSkin = 0;
   private clock = new THREE.Clock();
   private animationFrameId: number | null = null;
@@ -101,8 +102,23 @@ export class CharacterPreview {
     this.setVisualKey(`player_${cls}`, weapon);
   }
 
+  /** PHAA-501: swap the previewed sex without changing class or skin. Re-resolves
+   *  the visual key through the same `player_<cls>[_f]` dispatch the live world uses
+   *  (see `manifest.visualKeyFor`). The current skin index is preserved across the
+   *  re-resolve; if the new variant does not exist yet (today: it never does , the
+   *  fall-back path renders the male model), the active key is unchanged. */
+  setSex(sex: 'm' | 'f'): void {
+    if (this.destroyed) return;
+    if (!this.currentVisual) return;
+    const clsKey = this.currentVisualKey.replace(/_f$/, '').replace(/^player_/, '');
+    const base = `player_${clsKey}`;
+    const desired = sex === 'f' && VISUALS[`${base}_f`] ? `${base}_f` : base;
+    if (desired === this.currentVisualKey) return;
+    this.setVisualKey(desired);
+  }
+
   /** Set the active model by raw visual key (e.g. `player_mech` for the cosmetic
-   *  turntable). The asset must already be loaded — callers preload first.
+   *  turntable). The asset must already be loaded , callers preload first.
    *  `weaponOverride` lets a cosmetic body adopt a class hand layout (rogue mech
    *  dual-wields), matching the in-world render. */
   setVisualKey(
@@ -117,6 +133,7 @@ export class CharacterPreview {
       // CharacterVisual dispose only releases mixer listeners
       this.currentVisual = null;
     }
+    this.currentVisualKey = visualKey; // PHAA-501: track for setSex() re-resolve
 
     try {
       this.currentVisual = new CharacterVisual(

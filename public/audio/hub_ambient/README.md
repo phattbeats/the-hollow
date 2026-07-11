@@ -6,6 +6,29 @@ Drop the ambient mixes here to wire up the Hollow Reaches hub music cycler
 becomes the active bed for the hub (the shrine-gate clearing) and rotates
 through them with anti-repeat selection and a short crossfade.
 
+## Status: LIVE (PHAA-435)
+
+Eight of Brandon's ambient beds are wired (see `HUB_AMBIENT_TRACKS` in
+`src/game/hub_ambient_playlist.ts`): `ambient-1-world` through `ambient-7-world`
+plus `the-hollow-ambient-1`. Sources are on Nextcloud under
+`/PHATT-STUDIO/the-hollow/music`. Two notes from that drop:
+
+- `the-hollow-ambient-2.wav` was a byte-identical duplicate of `ambient-2-world.wav`
+  (same md5), so it was not shipped as a second track.
+- `the-hollow-login-main-theme.wav` is the login/main theme, a separate seam
+  (`public/audio/main-theme.mp3`), not a hub-cycler track. It was left out of the
+  cycler on purpose.
+
+### Transcode note (deviations from the Format spec below)
+
+The masters arrived as 48 kHz / 16-bit stereo PCM WAV. They were encoded to MP3 at
+160 kbps CBR joint-stereo, kept at the native **48 kHz** (not resampled to 44.1 kHz)
+to avoid a lossy resample; MP3 and every target browser support 48 kHz. Loudness was
+left at the authored master level (no re-normalization); the cycler applies its own
+gain. The QA box had no ffmpeg, so the transcode used a pure-Node pipeline
+(`@breezystack/lamejs`, reading the WAV `data` chunk directly). Output duration was
+verified frame-by-frame against each source WAV (matched to 0.1 s).
+
 ## Naming
 
 Use lowercase, hyphenated filenames that read as a label, not a number:

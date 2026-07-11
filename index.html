@@ -143,7 +143,9 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-<link rel="preload" as="image" href="/loading-screen.jpg" />
+<!-- The loading screen renders its own abstract backdrop (gradient + drifting motes),
+     not the previously-preloaded /loading-screen.jpg, which is still served for the
+     static marketing pages (server-unavailable, privacy, etc.). -->
 <link rel="preload" as="image" href="./ui/cursors/gauntlet.png" />
 <link rel="preload" as="image" href="./ui/cursors/arrow.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -350,7 +352,9 @@
     </div>
     <div id="arena-window" class="window panel"></div>
     <div id="leaderboard-window" class="window panel"></div>
+    <div id="calendar-window" class="window panel"></div>
     <div id="market-window" class="window panel"></div>
+    <div id="mail-window" class="window panel"></div>
     <div id="arena-status"></div>
     <div id="options-menu" class="window panel"></div>
     <div id="emote-editor" class="window panel"></div>
@@ -377,6 +381,7 @@
     <div id="low-health-vignette"></div>
     <div id="subzone-banner"></div>
     <div id="housing-prompt"></div>
+    <div id="readable-prompt"></div>
 
     <div id="death-overlay">
       <h2 data-i18n="hud.core.deathTitle">You have died.</h2>
@@ -1110,10 +1115,28 @@
   </div>
 
   <div id="loading-screen">
+    <div class="ls-backdrop" aria-hidden="true">
+      <div class="ls-bloom"></div>
+      <div class="ls-motes">
+        <span class="ls-mote"></span><span class="ls-mote"></span><span class="ls-mote"></span>
+        <span class="ls-mote"></span><span class="ls-mote"></span><span class="ls-mote"></span>
+        <span class="ls-mote"></span><span class="ls-mote"></span><span class="ls-mote"></span>
+        <span class="ls-mote"></span><span class="ls-mote"></span><span class="ls-mote"></span>
+        <span class="ls-mote"></span><span class="ls-mote"></span><span class="ls-mote"></span>
+        <span class="ls-mote"></span><span class="ls-mote"></span><span class="ls-mote"></span>
+        <span class="ls-mote"></span><span class="ls-mote"></span><span class="ls-mote"></span>
+        <span class="ls-mote"></span><span class="ls-mote"></span><span class="ls-mote"></span>
+        <span class="ls-mote"></span><span class="ls-mote"></span><span class="ls-mote"></span>
+        <span class="ls-mote"></span><span class="ls-mote"></span><span class="ls-mote"></span>
+      </div>
+    </div>
     <img class="ls-logo" src="/the-hollow-logo.png" data-i18n-alt="serverUnavailable.logoAlt" alt="The Hollow" />
     <div class="ls-progress">
       <div class="ls-bar"><div id="ls-fill"></div></div>
-      <div id="ls-status" data-i18n="loading.enteringWorld">Entering the world...</div>
+      <div class="ls-meta">
+        <div id="ls-status" data-i18n="loading.enteringWorld">Entering the world...</div>
+        <div id="ls-percent" aria-hidden="true">0%</div>
+      </div>
     </div>
   </div>
 

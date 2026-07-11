@@ -2950,10 +2950,28 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.items.cave_morsel.name': 'Höhlenhappen',
   'entities.items.emberbulb.name': 'Glutknolle',
   'entities.items.first_cutting.name': 'Ein Ableger',
+  'entities.items.greenpaw_bead.name': 'Eine Perle vom Bandolier',
   'entities.items.witness_root_cincture.name': 'Zeugenwurzels Gürtel',
   'entities.items.shrine_diary_page.name': 'Zerrissene Tagebuchseite',
   'entities.items.shrine_diary_page.flavorText':
     '...zählte vierzig Tage bei Kerzenlicht, bevor ich den Faden verlor. Das Dunkel hier unten vergisst Ihn nicht, auch wenn Er diesen Ort vergessen hat. Wenn der Reiher tief kreist, sag dem Küster, der Docht brennt noch...',
+  'entities.items.keeper_coal.name': 'Eine Kohle, die nie erkaltete',
+  'entities.items.worn_prayer_token.name': 'Abgegriffene Gebetsmarke',
+  'entities.items.worn_prayer_token.flavorText':
+    '...auf einer Seite glatt von einem Daumen, der nicht meiner ist, der dieselbe flache Rille in hundert weitere wie diese gerieben hat, bevor diese kam, so will es einem der Haufen hier unten weismachen. ein Daumen wetzt keine hundert Marken ab. viele Daumen wetzen aber eine Rille...',
+  'entities.items.tally_shard.name': 'Scherbe mit Zählkerben',
+  'entities.items.tally_shard.flavorText':
+    '...Kerben in Fünfergruppen, tief geritzt, durchgestrichen, sooft die Zählung herumkam. hunderte Fünfer, bevor das Durchstreichen aufhört, und die letzte Reihe wurde nie vollendet...',
+  'entities.items.heartwood_splinter.name': 'Herzholzsplitter',
+  'entities.items.heartwood_splinter.flavorText':
+    'Warm anzufassen, lange nachdem der Baum, aus dem es stammt, aufgehört hat, sich zu bewegen.',
+  'entities.items.bloomcrown_pauldrons.name': 'Blütenkronen-Schulterplatten',
+  'entities.items.verdantguard_mantle.name': 'Mantel des Grünhüters',
+  'entities.items.linen_pouch.name': 'Leinenbeutel',
+  'entities.items.travelers_knapsack.name': 'Rucksack des Reisenden',
+  'entities.items.wolfhide_satchel.name': 'Wolfsfelltasche',
+  'entities.items.gravewoven_bag.name': 'Grabgewebte Tasche',
+  'entities.items.mistcallers_duffel.name': 'Seesack von Mistcaller',
   'entities.mobs.palefeeder.name': 'Bleichfresser',
   'entities.mobs.rootmaw.name': 'Wurzelmaul',
   'entities.mobs.the_witness_root.name': 'Die Zeugenwurzel',
