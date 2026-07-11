@@ -1174,6 +1174,10 @@ export interface AbilityDef {
   range: number; // yards; 0 = melee range
   minRange?: number;
   school: 'physical' | 'fire' | 'frost' | 'arcane' | 'shadow' | 'holy' | 'nature';
+  // Overrides the flying-projectile VISUAL for this spell (the mechanic is
+  // unchanged): 'lightning' draws a jagged electric bolt from caster to target
+  // instead of the default glowing bolt. Renderer-only; the sim just forwards it.
+  projectileFx?: 'lightning';
   // Damage scaling source for the flat directDamage / DoT / AoE riders. Default:
   // non-physical damage scales with Spell Power; physical damage scales with melee
   // Attack Power (on top of the weapon/finisher paths, which already carry AP).
@@ -2074,7 +2078,7 @@ export type SimEvent = { pid?: number } & (
       sourceId: number;
       targetId: number;
       school: string;
-      fx: 'projectile' | 'beam' | 'tick' | 'nova';
+      fx: 'projectile' | 'beam' | 'tick' | 'nova' | 'lightning';
     }
   // entityId (when set) anchors the log to that entity so the server only
   // delivers it to nearby players; anchorless logs broadcast server-wide.
