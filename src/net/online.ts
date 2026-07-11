@@ -2193,7 +2193,7 @@ export class ClientWorld implements IWorld {
   // --- IWorldDialog (PHAA-553): send a picked branching-dialogue choice; the
   // effect resolves server-side. dialogState is a snapshot read (dstate mirror). ---
   dialogChoose(npcId: string, choiceId: string): void {
-    this.cmd({ cmd: 'dialogChoose', npc: npcId, choice: choiceId });
+    this.cmd({ cmd: 'dialogChoose', npcId, choiceId });
   }
   dialogState(): DialogStateView {
     return this.dialogStateMirror;

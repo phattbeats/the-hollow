@@ -294,6 +294,149 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
       "name's greenpaw. brother greenpaw, first prophet, self-appointed, which the vase'll tell you means exactly nothin', and he's not wrong, but somebody's gotta tend him...",
       "this here's the hollow. was a whole tribe once, big doings, so they tell me, and now it's mostly me, the vase, and whatever's breathin' down in that cave... anyway. he's hungry, i'm hungry, same wavelength. c'mere, got a couple sacred matters need tendin'.",
     ],
+    // Branching heart-to-heart (PHAA-562), the first player-picked dialogue tree.
+    // Opened from the gossip menu, walked client-side by npc_dialog_tree_view; a
+    // choice's `effect` (a disposition nudge, the greenpaw.asked_tribe flag) is
+    // the only thing resolved server-side (dialog_commands.dialogChoose). The
+    // `confide` branch is gated on minDisposition 4, so it only opens after the
+    // player has warmed to him across visits (disposition persists on dstate).
+    // Kept identical to the English catalog in src/ui/i18n.catalog/hollow.ts; the
+    // sim record stays language-agnostic (text localizes client-side via tEntity).
+    dialogTree: {
+      root: 'hearth',
+      nodes: {
+        hearth: {
+          npcLine:
+            "back at the vase, friend... he's quiet today, which either means he's listenin' hard or he's sulkin', and i never can tell which one. how's the hollow been treatin' you?",
+          choices: [
+            {
+              id: 'kind',
+              tone: 'positive',
+              label: "it's startin' to feel like somewhere, brother. i mean that.",
+              effect: { disposition: 2 },
+              next: 'warmed',
+            },
+            {
+              id: 'ask',
+              tone: 'neutral',
+              label: "what's the vase been sayin' lately?",
+              next: 'vase',
+            },
+            {
+              id: 'blunt',
+              tone: 'negative',
+              label: "it's a boneyard with a caretaker, greenpaw. that's all it is.",
+              effect: { disposition: -2 },
+              next: 'stung',
+            },
+          ],
+        },
+        warmed: {
+          npcLine:
+            "...that lands soft, friend, softer than you know. most folks come through lookin' for the exit. you keep lookin' for the middle of the thing, and that's rarer than you'd think.",
+          choices: [
+            {
+              id: 'tribe',
+              tone: 'positive',
+              label: 'tell me about the tribe that was here before.',
+              effect: { setFlag: 'greenpaw.asked_tribe' },
+              next: 'tribe',
+            },
+            {
+              id: 'warm_bye',
+              tone: 'neutral',
+              label: "i'll let you get back to him.",
+            },
+          ],
+        },
+        vase: {
+          npcLine:
+            "same as ever. he wants smoke, he wants tendin', he wants somebody to sit close and pretend the quiet is a conversation... which, hey, it is, if you squint at it right. that is the whole faith, more or less.",
+          choices: [
+            {
+              id: 'vase_more',
+              tone: 'neutral',
+              label: "and you believe he's really listenin'?",
+              next: 'faith',
+            },
+            {
+              id: 'vase_bye',
+              tone: 'neutral',
+              label: "keep him company, then. i'll be around.",
+            },
+          ],
+        },
+        faith: {
+          npcLine:
+            "belief's a strong word, friend. i tend. tendin' is the part i can do with these two hands. the listenin' i leave to him, and if he ain't, well, the smoke smells good either way...",
+          choices: [
+            {
+              id: 'faith_bye',
+              tone: 'neutral',
+              label: 'fair enough, greenpaw.',
+            },
+          ],
+        },
+        stung: {
+          npcLine:
+            "...oof. yeah. yeah, maybe it is. i've thought it myself, on the cold mornings, when the vase don't sigh and nobody comes up the path... but i'm still here, friend, so it ain't only that. not to me it ain't.",
+          choices: [
+            {
+              id: 'sorry',
+              tone: 'positive',
+              label: "that came out meaner than i meant it. i'm sorry.",
+              effect: { disposition: 1 },
+              next: 'mended',
+            },
+            {
+              id: 'cold_bye',
+              tone: 'negative',
+              label: 'believe whatever you want.',
+            },
+          ],
+        },
+        mended: {
+          npcLine:
+            "s'alright, friend. a place like this earns a hard word now and then, i won't pretend otherwise. you came back to say it soft, though, and that's more than the boneyard would'a done. we're square, you and me.",
+          choices: [
+            {
+              id: 'mended_bye',
+              tone: 'neutral',
+              label: "we're square. i'll see you around.",
+            },
+          ],
+        },
+        tribe: {
+          npcLine:
+            "big tribe once, so the old marks say. rows of tally-scratches down in the dark, fives crossed out, more fives than any one hand could'a made... they kept him lit a long, long while before it got down to just me. i don't know where they went, friend. i just know the wick can't go out on my watch.",
+          choices: [
+            {
+              id: 'confide',
+              tone: 'positive',
+              label: "you don't have to carry that alone, brother.",
+              requires: { minDisposition: 4 },
+              next: 'confide',
+            },
+            {
+              id: 'tribe_bye',
+              tone: 'neutral',
+              label: "somebody's still tendin' it. that counts for somethin'.",
+            },
+          ],
+        },
+        confide: {
+          npcLine:
+            "...that's a kind thing to offer, and i'll hold you to a sliver of it. truth is i talk to you half 'cause the vase don't answer and half 'cause i'm scared of the day nobody comes up that path at all. so. thanks for comin' up it. that's the sacred part, friend, if you ever wanted one.",
+          choices: [
+            {
+              id: 'confide_bye',
+              tone: 'positive',
+              label: "i'll keep comin' up the path, greenpaw.",
+            },
+          ],
+        },
+      },
+    },
   },
   // GW1 build system multiclassing (Phase 3, PHAA-464): teaches every profession
   // as a secondary class. Hub-local, mirrored across the vase from Greenpaw;

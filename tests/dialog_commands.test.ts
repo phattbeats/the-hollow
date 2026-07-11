@@ -151,3 +151,68 @@ describe('dialog state persists through the real Sim save/load', () => {
     expect(sim2.dialogState(pid2)).toEqual({ disposition: {}, flags: [] });
   });
 });
+
+// The ctx-level dialogChoose entry over a real Sim + Greenpaw entity: it resolves
+// the choice from the authoritative NPC tree, range-checks against the speaking
+// entity, and applies the effect. The pure applyDialogChoice / persistence are
+// covered above; these exercise the thin ctx wrapper's rejection paths.
+function findGreenpaw(sim: Sim) {
+  return [...sim.entities.values()].find(
+    (e) => e.kind === 'npc' && e.templateId === 'brother_greenpaw',
+  )!;
+}
+
+function standAtGreenpaw(sim: Sim, pid: number): void {
+  sim.enterDungeon('the_hollow', pid);
+  const greenpaw = findGreenpaw(sim);
+  const e = sim.entities.get(pid)!;
+  e.pos = { ...greenpaw.pos };
+  e.prevPos = { ...e.pos };
+}
+
+describe('dialogChoose: ctx entry over a real Sim', () => {
+  it("applies a real choice's effect when the player is in range", () => {
+    const sim = new Sim({ seed: 1, playerClass: 'warrior', autoEquip: false });
+    const pid = sim.playerId;
+    standAtGreenpaw(sim, pid);
+    // 'kind' at the root carries a +2 disposition nudge.
+    sim.dialogChoose('brother_greenpaw', 'kind', pid);
+    expect(sim.dialogState(pid).disposition.brother_greenpaw).toBe(2);
+  });
+
+  it('sets a real flag choice', () => {
+    const sim = new Sim({ seed: 1, playerClass: 'warrior', autoEquip: false });
+    const pid = sim.playerId;
+    standAtGreenpaw(sim, pid);
+    // 'tribe' (in the warmed node) sets greenpaw.asked_tribe.
+    sim.dialogChoose('brother_greenpaw', 'tribe', pid);
+    expect(sim.dialogState(pid).flags).toContain('greenpaw.asked_tribe');
+  });
+
+  it('rejects a choice when the player is out of range', () => {
+    const sim = new Sim({ seed: 1, playerClass: 'warrior', autoEquip: false });
+    const pid = sim.playerId;
+    standAtGreenpaw(sim, pid);
+    const e = sim.entities.get(pid)!;
+    e.pos = { x: e.pos.x + 100, y: e.pos.y, z: e.pos.z };
+    sim.dialogChoose('brother_greenpaw', 'kind', pid);
+    expect(sim.dialogState(pid).disposition.brother_greenpaw).toBeUndefined();
+  });
+
+  it('no-ops (no throw) on an unknown npc id', () => {
+    const sim = new Sim({ seed: 1, playerClass: 'warrior', autoEquip: false });
+    const pid = sim.playerId;
+    standAtGreenpaw(sim, pid);
+    expect(() => sim.dialogChoose('nobody_here', 'kind', pid)).not.toThrow();
+    expect(sim.dialogState(pid).disposition).toEqual({});
+  });
+
+  it('no-ops on an unknown choice id', () => {
+    const sim = new Sim({ seed: 1, playerClass: 'warrior', autoEquip: false });
+    const pid = sim.playerId;
+    standAtGreenpaw(sim, pid);
+    sim.dialogChoose('brother_greenpaw', 'no_such_choice', pid);
+    expect(sim.dialogState(pid).disposition).toEqual({});
+    expect(sim.dialogState(pid).flags).toEqual([]);
+  });
+});
