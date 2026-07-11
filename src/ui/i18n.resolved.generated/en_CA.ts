@@ -1936,6 +1936,13 @@ export const en_CA: EnTranslations = {
     "begin": "Begin",
     "skip": "Skip"
   },
+  "apiError": {
+    "crossSiteRejected": "Cross-site request rejected.",
+    "notAuthenticated": "Not authenticated.",
+    "readOnlyToken": "This token is read-only.",
+    "characterNotFound": "Character not found.",
+    "rateLimited": "Too many attempts. Wait a minute and try again."
+  },
   "skinEvent": {
     "title": "Cosmetic Cache",
     "subtitle": "You unlocked a {rank} reward — choose any skin at or below it.",

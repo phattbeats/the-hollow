@@ -111,19 +111,24 @@ describe('bearerActiveAccount', () => {
   it('401s when unauthenticated', async () => {
     const res = makeRes();
     expect(await bearerActiveAccount(makeReq(null), res)).toBeNull();
-    expect(parse(res)).toMatchObject({ status: 401 });
+    // The problem+json envelope (PHAA-528): a stable, machine-readable `code`
+    // alongside the legacy `error` string, so existing string matchers see no change.
+    expect(parse(res)).toMatchObject({
+      status: 401,
+      data: { error: 'not authenticated', code: 'NOT_AUTHENTICATED' },
+    });
   });
   it('403s a read-only token, so a companion/OAuth token can never mutate', async () => {
     tokenRow = { account_id: 1, scope: 'read' };
     const res = makeRes();
     expect(await bearerActiveAccount(makeReq(TOKEN), res)).toBeNull();
-    expect(parse(res)).toMatchObject({ status: 403 });
+    expect(parse(res)).toMatchObject({ status: 403, data: { code: 'READ_ONLY_TOKEN' } });
   });
   it('403s a banned account', async () => {
     accountRow = { banned_at: '2026-01-01', suspended_until: null, deactivated_at: null };
     const res = makeRes();
     expect(await bearerActiveAccount(makeReq(TOKEN), res)).toBeNull();
-    expect(parse(res).status).toBe(403);
+    expect(parse(res)).toMatchObject({ status: 403, data: { code: 'ACCOUNT_LOCKED' } });
   });
 });
 
@@ -136,7 +141,7 @@ describe('bearerReadAccount', () => {
   it('401s when unauthenticated', async () => {
     const res = makeRes();
     expect(await bearerReadAccount(makeReq(null), res)).toBeNull();
-    expect(parse(res).status).toBe(401);
+    expect(parse(res)).toMatchObject({ status: 401, data: { code: 'NOT_AUTHENTICATED' } });
   });
 });
 
@@ -174,7 +179,10 @@ describe('requireOwnedCharacter', () => {
     const res = makeRes();
     const character = await requireOwnedCharacter(res, 999, 42);
     expect(character).toBeNull();
-    expect(parse(res)).toMatchObject({ status: 404, data: { error: 'character not found' } });
+    expect(parse(res)).toMatchObject({
+      status: 404,
+      data: { error: 'character not found', code: 'CHARACTER_NOT_FOUND' },
+    });
   });
   it('404s the same way for a genuinely nonexistent character id', async () => {
     characterRow = null;

@@ -1936,6 +1936,13 @@ export const sv_SE: EnTranslations = {
     "begin": "Begin",
     "skip": "Skip"
   },
+  "apiError": {
+    "crossSiteRejected": "Cross-site request rejected.",
+    "notAuthenticated": "Not authenticated.",
+    "readOnlyToken": "This token is read-only.",
+    "characterNotFound": "Character not found.",
+    "rateLimited": "Too many attempts. Wait a minute and try again."
+  },
   "skinEvent": {
     "title": "Kosmetisk förvaring",
     "subtitle": "Du låste upp en {rank}-belöning, välj valfri skin på den nivån eller lägre.",

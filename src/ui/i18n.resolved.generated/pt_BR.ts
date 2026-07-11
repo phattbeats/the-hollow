@@ -1936,6 +1936,13 @@ export const pt_BR: EnTranslations = {
     "begin": "Begin",
     "skip": "Skip"
   },
+  "apiError": {
+    "crossSiteRejected": "Cross-site request rejected.",
+    "notAuthenticated": "Not authenticated.",
+    "readOnlyToken": "This token is read-only.",
+    "characterNotFound": "Character not found.",
+    "rateLimited": "Too many attempts. Wait a minute and try again."
+  },
   "skinEvent": {
     "title": "Cache Cosmético",
     "subtitle": "Você desbloqueou uma recompensa {rank} — escolha qualquer visual igual ou inferior a ela.",

@@ -1936,6 +1936,13 @@ export const en_XA: EnTranslations = {
     "begin": "[Ɓéĝíñ]",
     "skip": "[Šķíþ]"
   },
+  "apiError": {
+    "crossSiteRejected": "[Çŕóšš-šíţé ŕéɋúéšţ ŕéĵéçţéð.]",
+    "notAuthenticated": "[Ñóţ áúţĥéñţíçáţéð.]",
+    "readOnlyToken": "[Ţĥíš ţóķéñ íš ŕéáð-óñļý.]",
+    "characterNotFound": "[Çĥáŕáçţéŕ ñóţ ƒóúñð.]",
+    "rateLimited": "[Ţóó ɱáñý áţţéɱþţš. Ŵáíţ á ɱíñúţé áñð ţŕý áĝáíñ.]"
+  },
   "skinEvent": {
     "title": "[Çóšɱéţíç Çáçĥé]",
     "subtitle": "[Ýóú úñļóçķéð á {rank} ŕéŵáŕð — çĥóóšé áñý šķíñ áţ óŕ ƀéļóŵ íţ.]",

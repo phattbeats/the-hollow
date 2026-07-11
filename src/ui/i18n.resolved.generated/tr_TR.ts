@@ -1936,6 +1936,13 @@ export const tr_TR: EnTranslations = {
     "begin": "Begin",
     "skip": "Skip"
   },
+  "apiError": {
+    "crossSiteRejected": "Cross-site request rejected.",
+    "notAuthenticated": "Not authenticated.",
+    "readOnlyToken": "This token is read-only.",
+    "characterNotFound": "Character not found.",
+    "rateLimited": "Too many attempts. Wait a minute and try again."
+  },
   "skinEvent": {
     "title": "Kozmetik Zula",
     "subtitle": "Bir {rank} ödülün kilidini açtın — onunla aynı veya daha düşük seviyedeki herhangi bir görünümü seç.",
