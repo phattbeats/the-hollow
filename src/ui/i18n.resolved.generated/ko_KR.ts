@@ -5572,6 +5572,33 @@ export const ko_KR: EnTranslations = {
       "event_skin_token": {
         "name": "신비한 외형 상자"
       },
+      "flint_amber_pick": {
+        "name": "부싯돌 호박 곡괭이"
+      },
+      "bonewood_amber_pick": {
+        "name": "뼈나무 호박 곡괭이"
+      },
+      "starleaf_amber_pick": {
+        "name": "별잎 호박 곡괭이"
+      },
+      "flint_bark_axe": {
+        "name": "부싯돌 나무껍질 도끼"
+      },
+      "bonewood_bark_axe": {
+        "name": "뼈나무 나무껍질 도끼"
+      },
+      "starleaf_bark_axe": {
+        "name": "별잎 나무껍질 도끼"
+      },
+      "flint_spore_sickle": {
+        "name": "부싯돌 포자 낫"
+      },
+      "bonewood_spore_sickle": {
+        "name": "뼈나무 포자 낫"
+      },
+      "starleaf_spore_sickle": {
+        "name": "별잎 포자 낫"
+      },
       "deathless_heartwood": {
         "name": "죽지 않는 왕관의 심재"
       },

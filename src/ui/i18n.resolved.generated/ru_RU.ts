@@ -5572,6 +5572,33 @@ export const ru_RU: EnTranslations = {
       "event_skin_token": {
         "name": "Загадочный косметический тайник"
       },
+      "flint_amber_pick": {
+        "name": "Кремнёвая кирка янтаря"
+      },
+      "bonewood_amber_pick": {
+        "name": "Костяная кирка янтаря"
+      },
+      "starleaf_amber_pick": {
+        "name": "Звёздная кирка янтаря"
+      },
+      "flint_bark_axe": {
+        "name": "Кремнёвый топор коры"
+      },
+      "bonewood_bark_axe": {
+        "name": "Костяной топор коры"
+      },
+      "starleaf_bark_axe": {
+        "name": "Звёздный топор коры"
+      },
+      "flint_spore_sickle": {
+        "name": "Кремнёвый серп спор"
+      },
+      "bonewood_spore_sickle": {
+        "name": "Костяной серп спор"
+      },
+      "starleaf_spore_sickle": {
+        "name": "Звёздный серп спор"
+      },
       "deathless_heartwood": {
         "name": "Сердцевина бессмертной короны"
       },

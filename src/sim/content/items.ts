@@ -462,6 +462,85 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     sellValue: 4,
     buyValue: 20,
   },
+  // Crafted gathering tools, tiers 1-3 (PHAA-507, upstream #1191). One tool
+  // family per gather node type (amber/heartwood/spore); `use.tier` gates
+  // node AND monster-material tier access (see src/sim/gathering_tools.ts).
+  // Player-crafted, not vendor-sold: no `buyValue`, and deliberately absent
+  // from every NPC `vendorItems` list. `quality` (rarity) is independent of
+  // `use.tier` and never affects gating: only the tool's `use.tier` value is
+  // read by the gate.
+  flint_amber_pick: {
+    id: 'flint_amber_pick',
+    name: 'Flint Amber Pick',
+    kind: 'tool',
+    quality: 'common',
+    use: { type: 'gatherTool', nodeType: 'amber', tier: 1 },
+    sellValue: 15,
+  },
+  bonewood_amber_pick: {
+    id: 'bonewood_amber_pick',
+    name: 'Bonewood Amber Pick',
+    kind: 'tool',
+    quality: 'uncommon',
+    use: { type: 'gatherTool', nodeType: 'amber', tier: 2 },
+    sellValue: 45,
+  },
+  starleaf_amber_pick: {
+    id: 'starleaf_amber_pick',
+    name: 'Starleaf Amber Pick',
+    kind: 'tool',
+    quality: 'rare',
+    use: { type: 'gatherTool', nodeType: 'amber', tier: 3 },
+    sellValue: 120,
+  },
+  flint_bark_axe: {
+    id: 'flint_bark_axe',
+    name: 'Flint Bark Axe',
+    kind: 'tool',
+    quality: 'common',
+    use: { type: 'gatherTool', nodeType: 'heartwood', tier: 1 },
+    sellValue: 15,
+  },
+  bonewood_bark_axe: {
+    id: 'bonewood_bark_axe',
+    name: 'Bonewood Bark Axe',
+    kind: 'tool',
+    quality: 'uncommon',
+    use: { type: 'gatherTool', nodeType: 'heartwood', tier: 2 },
+    sellValue: 45,
+  },
+  starleaf_bark_axe: {
+    id: 'starleaf_bark_axe',
+    name: 'Starleaf Bark Axe',
+    kind: 'tool',
+    quality: 'rare',
+    use: { type: 'gatherTool', nodeType: 'heartwood', tier: 3 },
+    sellValue: 120,
+  },
+  flint_spore_sickle: {
+    id: 'flint_spore_sickle',
+    name: 'Flint Spore Sickle',
+    kind: 'tool',
+    quality: 'common',
+    use: { type: 'gatherTool', nodeType: 'spore', tier: 1 },
+    sellValue: 15,
+  },
+  bonewood_spore_sickle: {
+    id: 'bonewood_spore_sickle',
+    name: 'Bonewood Spore Sickle',
+    kind: 'tool',
+    quality: 'uncommon',
+    use: { type: 'gatherTool', nodeType: 'spore', tier: 2 },
+    sellValue: 45,
+  },
+  starleaf_spore_sickle: {
+    id: 'starleaf_spore_sickle',
+    name: 'Starleaf Spore Sickle',
+    kind: 'tool',
+    quality: 'rare',
+    use: { type: 'gatherTool', nodeType: 'spore', tier: 3 },
+    sellValue: 120,
+  },
   // Cosmetic event reward: using it rolls a rarity rank (server-side) and opens
   // the skin-select overlay. See src/sim/content/skins.ts. Dev-grant for now.
   event_skin_token: {

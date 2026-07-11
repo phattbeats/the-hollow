@@ -5572,6 +5572,33 @@ export const zh_CN: EnTranslations = {
       "event_skin_token": {
         "name": "神秘外观宝箱"
       },
+      "flint_amber_pick": {
+        "name": "燧石琥珀镐"
+      },
+      "bonewood_amber_pick": {
+        "name": "骨木琥珀镐"
+      },
+      "starleaf_amber_pick": {
+        "name": "星叶琥珀镐"
+      },
+      "flint_bark_axe": {
+        "name": "燧石树皮斧"
+      },
+      "bonewood_bark_axe": {
+        "name": "骨木树皮斧"
+      },
+      "starleaf_bark_axe": {
+        "name": "星叶树皮斧"
+      },
+      "flint_spore_sickle": {
+        "name": "燧石孢子镰刀"
+      },
+      "bonewood_spore_sickle": {
+        "name": "骨木孢子镰刀"
+      },
+      "starleaf_spore_sickle": {
+        "name": "星叶孢子镰刀"
+      },
       "deathless_heartwood": {
         "name": "不朽王冠之心木"
       },

@@ -5572,6 +5572,33 @@ export const en_XA: EnTranslations = {
       "event_skin_token": {
         "name": "[Ɱýšţéŕíóúš Çóšɱéţíç Çáçĥé]"
       },
+      "flint_amber_pick": {
+        "name": "[Ƒļíñţ Áɱƀéŕ Þíçķ]"
+      },
+      "bonewood_amber_pick": {
+        "name": "[Ɓóñéŵóóð Áɱƀéŕ Þíçķ]"
+      },
+      "starleaf_amber_pick": {
+        "name": "[Šţáŕļéáƒ Áɱƀéŕ Þíçķ]"
+      },
+      "flint_bark_axe": {
+        "name": "[Ƒļíñţ Ɓáŕķ Áẋé]"
+      },
+      "bonewood_bark_axe": {
+        "name": "[Ɓóñéŵóóð Ɓáŕķ Áẋé]"
+      },
+      "starleaf_bark_axe": {
+        "name": "[Šţáŕļéáƒ Ɓáŕķ Áẋé]"
+      },
+      "flint_spore_sickle": {
+        "name": "[Ƒļíñţ Šþóŕé Šíçķļé]"
+      },
+      "bonewood_spore_sickle": {
+        "name": "[Ɓóñéŵóóð Šþóŕé Šíçķļé]"
+      },
+      "starleaf_spore_sickle": {
+        "name": "[Šţáŕļéáƒ Šþóŕé Šíçķļé]"
+      },
       "deathless_heartwood": {
         "name": "[Ĥéáŕţŵóóð óƒ ţĥé Ðéáţĥļéšš Çŕóŵñ]"
       },

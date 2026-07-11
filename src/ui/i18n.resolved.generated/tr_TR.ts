@@ -5572,6 +5572,33 @@ export const tr_TR: EnTranslations = {
       "event_skin_token": {
         "name": "Gizemli Kozmetik Sandığı"
       },
+      "flint_amber_pick": {
+        "name": "Flint Amber Pick"
+      },
+      "bonewood_amber_pick": {
+        "name": "Bonewood Amber Pick"
+      },
+      "starleaf_amber_pick": {
+        "name": "Starleaf Amber Pick"
+      },
+      "flint_bark_axe": {
+        "name": "Flint Bark Axe"
+      },
+      "bonewood_bark_axe": {
+        "name": "Bonewood Bark Axe"
+      },
+      "starleaf_bark_axe": {
+        "name": "Starleaf Bark Axe"
+      },
+      "flint_spore_sickle": {
+        "name": "Flint Spore Sickle"
+      },
+      "bonewood_spore_sickle": {
+        "name": "Bonewood Spore Sickle"
+      },
+      "starleaf_spore_sickle": {
+        "name": "Starleaf Spore Sickle"
+      },
       "deathless_heartwood": {
         "name": "Ölümsüz Taç'ın Öz Odunu"
       },

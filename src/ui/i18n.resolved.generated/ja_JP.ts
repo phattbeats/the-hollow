@@ -5572,6 +5572,33 @@ export const ja_JP: EnTranslations = {
       "event_skin_token": {
         "name": "謎めいた装いの宝箱"
       },
+      "flint_amber_pick": {
+        "name": "フリントの琥珀つるはし"
+      },
+      "bonewood_amber_pick": {
+        "name": "ボーンウッドの琥珀つるはし"
+      },
+      "starleaf_amber_pick": {
+        "name": "スターリーフの琥珀つるはし"
+      },
+      "flint_bark_axe": {
+        "name": "フリントの樹皮斧"
+      },
+      "bonewood_bark_axe": {
+        "name": "ボーンウッドの樹皮斧"
+      },
+      "starleaf_bark_axe": {
+        "name": "スターリーフの樹皮斧"
+      },
+      "flint_spore_sickle": {
+        "name": "フリントの胞子鎌"
+      },
+      "bonewood_spore_sickle": {
+        "name": "ボーンウッドの胞子鎌"
+      },
+      "starleaf_spore_sickle": {
+        "name": "スターリーフの胞子鎌"
+      },
       "deathless_heartwood": {
         "name": "不死王冠の心材"
       },
