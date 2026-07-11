@@ -76,6 +76,7 @@ import {
 import { buildHollowCanopy } from './hollow_canopy';
 import {
   buildHollowProps,
+  buildShrineGateDoor,
   hollowSmokeIntensity,
   hollowVaseWorldPos,
   isHollowHubOrigin,
@@ -3017,7 +3018,7 @@ export class Renderer {
   private buildDoorBody(
     entering: boolean,
     dungeonId?: string | null,
-  ): { body: THREE.Group; portal?: THREE.Mesh } {
+  ): { body: THREE.Group; portal?: THREE.Mesh; height?: number } {
     const body = new THREE.Group();
     if (entering && dungeonId === 'nythraxis_crypt') {
       const clickBox = new THREE.Mesh(
@@ -3027,6 +3028,36 @@ export class Renderer {
       clickBox.position.y = 2.1;
       body.add(clickBox);
       return { body };
+    }
+
+    // Hollow-family transitions read as the shrine gate, not the generic
+    // stone arch (PHAA-589 follow-up): the overworld shrine gate into the
+    // hub, the hub's cave mouth into the Under-Shrine, and the Under-Shrine
+    // exit. The hub's own walk-out (the_hollow exit) keeps the stone arch:
+    // hollow_props.ts already stands the static shrine gate on that exact
+    // line, and doubling the mesh would z-fight. Falls through to the arch
+    // if the GLB is unavailable (preload failure).
+    if (dungeonId === 'under_shrine' || (dungeonId === 'the_hollow' && entering)) {
+      // Cloned kit meshes share geometry with the loader cache; mark them so
+      // the object-view dispose path (which frees unshared geometries on
+      // interest churn) leaves the cache intact.
+      const gate = buildShrineGateDoor((o) =>
+        o.traverse((c) => {
+          const mesh = c as THREE.Mesh;
+          if (mesh.isMesh) markSharedGeometry(mesh.geometry);
+        }),
+      );
+      if (gate) {
+        body.add(gate);
+        const portal = new THREE.Mesh(this.doorPortalGeometry(), this.doorPortalMaterial(entering));
+        // centred in the gate's arch opening (frame ~7.6 x 7.9 at the kit's
+        // 1.8x scale), a touch larger than the stone-arch swirl to fill it
+        portal.position.y = 2.6;
+        portal.scale.set(1.25, 1.6, 1);
+        body.add(portal);
+        // nameplate above the ~7.9-unit gate frame, not inside it
+        return { body, portal, height: 8.2 };
+      }
     }
 
     const stone = this.doorStoneMaterial();
@@ -3085,7 +3116,7 @@ export class Renderer {
       const built = this.buildDoorBody(entering, e.dungeonId);
       body = built.body;
       portal = built.portal;
-      height = 4.6;
+      height = built.height ?? 4.6;
       objectMesh = body!;
     } else if (e.kind === 'object' && e.templateId?.startsWith('delve_')) {
       // Delve interactables: skip the object pool (each is unique/stateful) and

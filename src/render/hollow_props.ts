@@ -13,6 +13,7 @@ import { DUNGEONS, INSTANCE_SLOT_COUNT, instanceOrigin } from '../sim/data';
 import { DUNGEON_WALL_HEIGHT } from '../sim/dungeon_layout';
 import { hash2 } from '../sim/rng';
 import { loadGltf } from './assets/loader';
+import { registerPreload } from './assets/preload';
 
 const HOLLOW_INDEX = (): number => DUNGEONS.the_hollow?.index ?? 6;
 
@@ -277,6 +278,35 @@ function buildShrineGate(gltf: GLTF): THREE.Object3D {
   const right = gate.getObjectByName('arch_gate_right');
   if (left) left.rotation.y = OPEN;
   if (right) right.rotation.y = -OPEN;
+  return gate;
+}
+
+// Parsed arch_gate held for the synchronous door-entity path below. loadGltf
+// caches one parse per URL, so this shares the buildHollowProps load; the
+// registerPreload gates game start on it so buildShrineGateDoor never races
+// the first door view.
+let gateGltf: GLTF | null = null;
+registerPreload(
+  loadGltf(KIT.archGate).then((g) => {
+    gateGltf = g;
+  }),
+);
+
+/**
+ * Gate-framed body for the Hollow family's transition doors (PHAA-589
+ * follow-up): the same shrine gate, built synchronously for the renderer's
+ * dungeon_door / dungeon_exit view path so the overworld shrine gate, the
+ * hub's cave mouth into the Under-Shrine, and the Under-Shrine exit all read
+ * as a real gate you walk through instead of the generic stone arch. Cloned
+ * geometry stays owned by the loader cache: every mesh is marked via the
+ * caller-provided markShared so interest-churn disposal never frees it.
+ */
+export function buildShrineGateDoor(
+  markShared: (o: THREE.Object3D) => void,
+): THREE.Object3D | null {
+  if (!gateGltf) return null;
+  const gate = buildShrineGate(gateGltf);
+  markShared(gate);
   return gate;
 }
 
