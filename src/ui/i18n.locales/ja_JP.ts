@@ -2344,6 +2344,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.korzul_the_gravewyrm.name': '墓ワームのコルズル',
   'entities.mobs.ironvein_foreman.name': '鉄脈の現場監督',
   'entities.mobs.ironvein_sapper.name': '鉄脈の爆破兵',
+  'entities.mobs.heartwood_colossus.name': '心材の巨像',
   'entities.mobs.marrowlord_varkas.name': '髄王ヴァーカス',
   'entities.mobs.mirejaw_frenzy.name': 'マイアジョーの狂魚',
   'entities.mobs.mirejaw_the_ravenous.name': '貪るマイアジョー',
@@ -2938,6 +2939,15 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     '私が暦を継いでおります。暦は私を継いではくれませんが、季節の折に触れて試みてまいります。根の空洞は今季、休むと記されておりますが、下の巣にはその通達が届いておりません。鷺ももう驚いたふりをやめてしまいました。これが現状です。苦情ではございません、苦情には証人が要りますので。',
   'entities.npcs.verger_zebediah.introLines.2':
     '祠の中には台帳がございます。触れぬよう。足元には猪の掘り返した緩い土が広がっております。両方にお気をつけを。もしも御用がお務めについてのことでございましたら、二つの仕事をご用意できます。どちらも小さくはございません、そのうち一つは三度目の書き直しを避けたい次第で。これが、そもそも何故あなた様にお声を掛けておるかの次第でございます。',
+  // Persistent journal/lore (PHAA-480). Same ecclesiastical です/ます register
+  // as the intro, longer arc, slightly more interior: the "register remembers
+  // what walks forgets" throughline plus the heron and the room beneath.
+  'entities.npcs.verger_zebediah.journalLines.0':
+    '台帳は鷺よりも古い。私が始まりの頁を書いたわけではないし、私が最後の頁を書くわけでもない。継ぐ者をお待ちにならない務め、それがこの職の慰めでございます。外域はかつては往来の通路でございました。塩を抱えた方々が湖の道を通って上り、名を持たぬ何かを持って下りてこられた。尋ねてはならぬと申されておりましたので、私も尋ねませんでした。台帳は往き来と、その長い空白の一区を記しております。空白も私が継いでおります。',
+  'entities.npcs.verger_zebediah.journalLines.1':
+    '鷺は台帳より古く、台帳はそれを快く思っておりませぬ。口には出しませぬ。出す必要もございませぬ。梨の木を枯らした季節を片足で立ち過ごして瞬き一つなさらぬのを見てまいりましたので、それは何かについての御立場と受け止めておりますが、伺ったことはございませぬ。祠の地下に、私が足を踏み入れぬ部屋がございます。鷺は入ってまいります。何をなさるか伺わず、鷺も私が上で何をするか伺いません。この取り決めは、互いの齢より永く続いてまいりました。',
+  'entities.npcs.verger_zebediah.journalLines.2':
+    'ここまで読まれた方は、物好きか、猪を避けているかのどちらかでございまして、どちらにも敬意を表します。長い記録の短い版を申し上げますと、この場所はかつて何であったかと、再び何であろうとしているかとを覚えておりますが、その差こそが仕事でございます。覚えるのは私の勤めでございます。再び何になるか、その主が誰かは存ぜぬ。保留と申し添えて床に就きます。台帳は保留を許します。忘却は許しません。',
   'entities.npcs.sexton_faddick.name': '墓守のファディック',
   'entities.items.willow_sprig.name': '柳の小枝一本',
   'entities.npcs.shade.name': 'シェイド',
@@ -2980,6 +2990,15 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     '長く回れば、回っている相手の形を覚えるものだ。休閑地の狼どもは、私が通りかかるずっと前から、毎晩群れの周りを回っておった。群れの形はまだ覚えておらぬ、それが何と言うか。群れの方こそ、彼らを覚えておる、それ以上のことでござる。',
   'entities.npcs.sexton_faddick.introLines.2':
     'お茶でもお出ししたいところだが、薬罐は私が昨日いたどこかにございます。湖のほとりには、建物が建つのを待っておる静かな土地が広がっておる。闇で狼が働く土地には、何も根を下ろせぬ。さて、二つの仕事がある、一つは一人でやりたくない仕事だ。歩きながら話しませうぞ。',
+  // Persistent journal/lore (PHAA-480). Wandering-keeper voice, aphoristic,
+  // longer arc. The "ground keeps better than we do" throughline and the
+  // slow time under the stones.
+  'entities.npcs.sexton_faddick.journalLines.0':
+    '継いできた場所の覚えを、頭にだけ置いておく。紙の方が土地より早く持ち主を変えるので。祠がほとんどだ、もう誰も祀らぬ祠。休閑地もその一つだ。湖の東の、名の知らぬ池もそうだし、百年の風で丸まった立石もそうだ。覚えは長くない。覚えが肝のところでは、覚えが、つまりは全部だ。場所に留まることで場所は継がれぬ。かつてそこにあったと知る者でい続けば、それが継ぎ方だ。',
+  'entities.npcs.sexton_faddick.journalLines.1':
+    '土地の方が我々よりよく覚えておる。それが取引の全てだ。地上を歩く者は、二代で己の名を忘れ、新しい名を作って同じと呼ぶ。地下に留まる者は、何も忘れず、待つ。石の下の遅い時間がある。一度だけ、それを聞いたが、答えなかった。答えるのが、あれに扉のありかを知らせることになるからだ。答えぬことの鍵は私が持っている。金属の鍵ではない。習慣だ、重い。',
+  'entities.npcs.sexton_faddick.journalLines.2':
+    '狼が問題ではない。狼は兆しだ。問題は、土地を静まり返らせて、狼どもが己のものと思うほどにした何かなのだ。そういうのは見たことがある。誤った方角に静かになる土地で、療法はいつも同じだ:正しい騒音で再び騒がしくする。騒音とは人だ。人が建てる理由がそれだ。誰だとお思いかもしれぬが、歩く者でいる私、それが要件の全てだ。足りぬようで足りており、その間にある隔たりには折り合いをつけてきた。',
   'entities.quests.q_root_hollow_boars.title': '根の空洞の猪',
   'entities.quests.q_root_hollow_boars.text':
     '暦によれば、根の空洞は今季休むはずだった。だが猪どもには通達しておらん。虫を追ってこの地を半分も掘り返し、もう鷺が羽ばたいても逃げん。これは俺個人として腹に据えかねる。五頭狩れば、この季を記録どおりに記せる。',
@@ -3420,6 +3439,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.chatWindow.resetAction': 'リセット',
   'hudChrome.chatWindow.note':
     'チャットのタブ列をドラッグするとウィンドウを移動でき、右下のグリップをドラッグするとサイズを変更できます。リセットすると既定の位置とサイズに戻ります。',
+  'hudChrome.worldBoss.spawn': '{name}が根の空洞の上空に立ち上る!',
   'hudChrome.compass.E': '東',
   'hudChrome.compass.N': '北',
   'hudChrome.compass.NE': '北東',
@@ -5353,6 +5373,14 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.discord.relay.wts.label': '売却希望',
   'hudChrome.discord.relay.wtb.label': '購入希望',
   'hudChrome.discord.relay.help.label': 'ヘルプが必要',
+  // Persistent NPC journal/lore gossip-menu option (PHAA-480). M16 fill only;
+  // English is the source of truth in src/ui/i18n.catalog/hud_chrome.ts.
+  'hudChrome.npcJournal.readLabel': '日記について聞かせてください。',
+  'hudChrome.npcJournal.readAria': '{name}の日記を読む',
+  'hudChrome.npcJournal.back': '前のページ',
+  'hudChrome.npcJournal.next': '次のページ',
+  'hudChrome.npcJournal.close': '日記を閉じる',
+  'hudChrome.npcJournal.title': '{name}の日記',
   'housingUi.claimedBanner': 'あなたはこの区画を住居として登録した。',
   'housingUi.ownerBanner': 'ここは{name}の住居です。',
   'housingUi.prompt.claim': 'この区画を登録する',

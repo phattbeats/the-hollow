@@ -513,6 +513,10 @@ describe('i18n Localization Key Coverage', () => {
       const { ownerId, index } = parseIndexedEntry(entry.id, 'introLines');
       return { kind: 'npcIntro', id: ownerId, lineIndex: index, field: 'introLine' };
     }
+    if (entry.kind === 'npcJournal') {
+      const { ownerId, index } = parseIndexedEntry(entry.id, 'journalLines');
+      return { kind: 'npcJournal', id: ownerId, lineIndex: index, field: 'journalLine' };
+    }
     if (entry.kind === 'quest') {
       return {
         kind: 'quest',
@@ -974,6 +978,7 @@ describe('i18n Localization Key Coverage', () => {
       Object.keys(MOBS).length +
       Object.keys(NPCS).length * 3 +
       Object.values(NPCS).reduce((sum, npc) => sum + (npc.introLines?.length ?? 0), 0) +
+      Object.values(NPCS).reduce((sum, npc) => sum + (npc.journalLines?.length ?? 0), 0) +
       Object.keys(QUESTS).length * 3 +
       Object.values(QUESTS).reduce((sum, quest) => sum + quest.objectives.length, 0) +
       Object.values(QUESTS).reduce((sum, quest) => sum + (quest.offerDialog ? 4 : 0), 0) +

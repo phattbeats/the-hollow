@@ -2956,6 +2956,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.flavorText':
     '...zählte vierzig Tage bei Kerzenlicht, bevor ich den Faden verlor. Das Dunkel hier unten vergisst Ihn nicht, auch wenn Er diesen Ort vergessen hat. Wenn der Reiher tief kreist, sag dem Küster, der Docht brennt noch...',
   'entities.items.keeper_coal.name': 'Eine Kohle, die nie erkaltete',
+  'entities.items.willow_sprig.name': 'Ein Weidenzweig',
   'entities.items.worn_prayer_token.name': 'Abgegriffene Gebetsmarke',
   'entities.items.worn_prayer_token.flavorText':
     '...auf einer Seite glatt von einem Daumen, der nicht meiner ist, der dieselbe flache Rille in hundert weitere wie diese gerieben hat, bevor diese kam, so will es einem der Haufen hier unten weismachen. ein Daumen wetzt keine hundert Marken ab. viele Daumen wetzen aber eine Rille...',

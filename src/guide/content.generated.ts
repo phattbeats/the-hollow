@@ -1831,6 +1831,7 @@ export const GUIDE_MODELS: Record<string, GuideModelSpec> = {
     "height": 2.6,
     "show": [
       "Knight_Helmet",
+      "Knight_HelmetVisor",
       "Knight_Cape"
     ],
     "attach": [

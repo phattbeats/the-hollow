@@ -912,6 +912,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.flavorText':
     "...ipin ucunu kaçırana dek mum ışığında kırk gün saydım. Buradaki karanlık O'nu unutmuyor, O bu yeri unutmuş olsa bile. Balıkçıl alçaktan süzülürse, Bekçi'ye söyle, fitil hâlâ yanıyor...",
   'entities.items.keeper_coal.name': 'Hiç Soğumayan Bir Kor',
+  'entities.items.willow_sprig.name': 'Bir Söğüt Dalı',
   'entities.items.worn_prayer_token.name': 'Yıpranmış Dua Nişanı',
   'entities.items.worn_prayer_token.flavorText':
     '...bir yüzü benim olmayan bir başparmakla düzleşmiş, bundan önce bunun gibi yüz tanesine aynı sığ oluğu açmış, ya da aşağıdaki yığın öyle inanmanı istiyor. tek başparmak yüz nişanı aşındırmaz. ama çok sayıda başparmak tek bir oluğu aşındırır...',

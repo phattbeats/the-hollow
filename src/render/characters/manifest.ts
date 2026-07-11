@@ -83,6 +83,16 @@ export interface VisualDef {
    *  `armorSlots` is non-empty: a missing entry silently skips that slot (safe but
    *  never swaps). Defs without armor slots keep this undefined. */
   armorByAttachIndex?: Record<number, EquipSlot>;
+  /** Baked (built-in) accessory node names, each gated by an `EquipSlot`: the node
+   *  is visible only while that slot carries an equipped item. Drives the male
+   *  KayKit roster's `show`-list meshes (Knight_Helmet, Knight_Cape) straight off
+   *  the wearer's `equippedItems` with ZERO new assets (PHAA-502 T2a), the quick
+   *  win ahead of the `armorSlots` attach-GLB path above. Each node MUST also be in
+   *  `show` so the assembler keeps it in the graph; this map only flips its
+   *  visibility (a pure `.visible` toggle, no re-attach or material pass). Players
+   *  only; undefined everywhere else (mobs/NPCs/forms have no equip state, so their
+   *  built-in accessories stay as authored). */
+  bakedArmorSlots?: Record<string, EquipSlot>;
   /** material tint: explicit color, 'entity' (use e.color), or none */
   tint?: number | 'entity';
   /** lerp amount toward the tint (default 0.4) */
@@ -398,7 +408,22 @@ export const VISUALS: Record<string, VisualDef> = {
     url: `${PLAYERS}/knight.glb`,
     height: HUMANOID_H,
     clips: kaykit(['1H_Melee_Attack_Chop', '1H_Melee_Attack_Slice_Diagonal']),
-    show: ['Knight_Helmet', 'Knight_Cape'], // v2 knight dropped the built-in Badge_Shield mesh
+    // v2 knight dropped the built-in Badge_Shield mesh. The helmet is TWO skinned
+    // meshes (dome + visor) and the cape is one; listed here so they are explicit
+    // even though skinned meshes are kept past the show-filter regardless (the
+    // filter only culls non-skinned nodes).
+    show: ['Knight_Helmet', 'Knight_HelmetVisor', 'Knight_Cape'],
+    // PHAA-502 T2a: the built-in accessories are now driven by the wearer's gear
+    // instead of being always-on. The helmet slot reveals BOTH helmet meshes
+    // (dome + visor); leave Knight_Head so a bare head still shows under it. The
+    // cape reads off the chest piece since EQUIP_SLOTS has no back/cloak slot
+    // (src/sim/types.ts), so an armored warrior gets the cloak and a bare one
+    // loses it.
+    bakedArmorSlots: {
+      Knight_Helmet: 'helmet',
+      Knight_HelmetVisor: 'helmet',
+      Knight_Cape: 'chest',
+    },
     attach: [{ url: `${WEAPONS}/sword_1handed.glb`, bone: 'handslot.r' }],
     weaponSlots: [0],
   },
@@ -519,7 +544,9 @@ export const VISUALS: Record<string, VisualDef> = {
       idle: 'anim_iddle',
       walk: 'anim_walk',
       run: 'anim_run',
-      attack: ['anim_push'],
+      attack: ['anim_attack_chop', 'anim_attack_slash'],
+      cast: 'anim_cast',
+      hit: ['anim_hit'],
       death: 'anim_dying',
       jump: 'anim_jump',
     },
@@ -531,10 +558,11 @@ export const VISUALS: Record<string, VisualDef> = {
   // one-GLB-serves-several-classes trick the male roster uses (see the
   // per-class tint comment on player_priest above). All six outfits share
   // the identical 78-joint Rigify rig, 11 normalized locomotion clips, and
-  // DEF-hand.R/DEF-hand.L hand bones (verified on PHAA-583). No attack/cast/
-  // hit clips exist yet: `attack` reuses anim_push (a shove) as a stopgap
-  // until the PHAA-586 animation pass lands; cast has no clip so it falls
-  // back to idle same as every other clipless case in visual.ts.
+  // DEF-hand.R/DEF-hand.L hand bones (verified on PHAA-583). Combat clips
+  // (anim_cast loop, anim_castshoot, anim_attack_chop, anim_attack_slash,
+  // anim_shoot, anim_hit) are authored onto the shared rig by the PHAA-586
+  // pass (scripts/phaa586_author_chibi_combat_clips.py) and baked into every
+  // outfit GLB; the attack list varies per class for swing flavor.
   //
   // No held-weapon attach: the grip system (assets.ts isHandslotBone /
   // KAYKIT_HAND_GRIPS / VARIANT_GRIPS) resolves grips by pattern-matching
@@ -551,7 +579,9 @@ export const VISUALS: Record<string, VisualDef> = {
       idle: 'anim_iddle',
       walk: 'anim_walk',
       run: 'anim_run',
-      attack: ['anim_push'],
+      attack: ['anim_attack_chop', 'anim_attack_slash'],
+      cast: 'anim_cast',
+      hit: ['anim_hit'],
       death: 'anim_dying',
       jump: 'anim_jump',
     },
@@ -563,7 +593,9 @@ export const VISUALS: Record<string, VisualDef> = {
       idle: 'anim_iddle',
       walk: 'anim_walk',
       run: 'anim_run',
-      attack: ['anim_push'],
+      attack: ['anim_attack_chop', 'anim_attack_slash'],
+      cast: 'anim_cast',
+      hit: ['anim_hit'],
       death: 'anim_dying',
       jump: 'anim_jump',
     },
@@ -577,7 +609,9 @@ export const VISUALS: Record<string, VisualDef> = {
       idle: 'anim_iddle',
       walk: 'anim_walk',
       run: 'anim_run',
-      attack: ['anim_push'],
+      attack: ['anim_shoot'],
+      cast: 'anim_cast',
+      hit: ['anim_hit'],
       death: 'anim_dying',
       jump: 'anim_jump',
     },
@@ -589,7 +623,9 @@ export const VISUALS: Record<string, VisualDef> = {
       idle: 'anim_iddle',
       walk: 'anim_walk',
       run: 'anim_run',
-      attack: ['anim_push'],
+      attack: ['anim_attack_chop'],
+      cast: 'anim_cast',
+      hit: ['anim_hit'],
       death: 'anim_dying',
       jump: 'anim_jump',
     },
@@ -603,7 +639,9 @@ export const VISUALS: Record<string, VisualDef> = {
       idle: 'anim_iddle',
       walk: 'anim_walk',
       run: 'anim_run',
-      attack: ['anim_push'],
+      attack: ['anim_attack_slash', 'anim_attack_chop'],
+      cast: 'anim_cast',
+      hit: ['anim_hit'],
       death: 'anim_dying',
       jump: 'anim_jump',
     },
@@ -615,7 +653,9 @@ export const VISUALS: Record<string, VisualDef> = {
       idle: 'anim_iddle',
       walk: 'anim_walk',
       run: 'anim_run',
-      attack: ['anim_push'],
+      attack: ['anim_castshoot'],
+      cast: 'anim_cast',
+      hit: ['anim_hit'],
       death: 'anim_dying',
       jump: 'anim_jump',
     },
@@ -627,7 +667,9 @@ export const VISUALS: Record<string, VisualDef> = {
       idle: 'anim_iddle',
       walk: 'anim_walk',
       run: 'anim_run',
-      attack: ['anim_push'],
+      attack: ['anim_castshoot'],
+      cast: 'anim_cast',
+      hit: ['anim_hit'],
       death: 'anim_dying',
       jump: 'anim_jump',
     },
@@ -641,7 +683,9 @@ export const VISUALS: Record<string, VisualDef> = {
       idle: 'anim_iddle',
       walk: 'anim_walk',
       run: 'anim_run',
-      attack: ['anim_push'],
+      attack: ['anim_castshoot'],
+      cast: 'anim_cast',
+      hit: ['anim_hit'],
       death: 'anim_dying',
       jump: 'anim_jump',
     },
@@ -655,7 +699,9 @@ export const VISUALS: Record<string, VisualDef> = {
       idle: 'anim_iddle',
       walk: 'anim_walk',
       run: 'anim_run',
-      attack: ['anim_push'],
+      attack: ['anim_attack_chop'],
+      cast: 'anim_cast',
+      hit: ['anim_hit'],
       death: 'anim_dying',
       jump: 'anim_jump',
     },

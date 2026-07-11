@@ -908,6 +908,7 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.flavorText':
     '...räknade fyrtio dagar vid ljusets sken innan jag tappade tråden. Mörkret här nere glömmer Honom inte, även om Han har glömt denna plats. Om hägern cirklar lågt, säg till Klockaren att veken fortfarande brinner...',
   'entities.items.keeper_coal.name': 'Ett Kol Som Aldrig Svalnade',
+  'entities.items.willow_sprig.name': 'En videkvist',
   'entities.items.worn_prayer_token.name': 'Nött Bönepollett',
   'entities.items.worn_prayer_token.flavorText':
     '...slät på ena sidan av en tumme som inte är min, som nött samma grunda fåra i hundra andra som denna före den här, eller så vill högen här nere få dig att tro. en tumme nöter inte hundra polletter. många tummar nöter dock en och samma fåra...',
