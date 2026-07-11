@@ -2835,6 +2835,8 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
     '蒼鷺比簿更老，簿對這點心有不悅。它不說出口。也不必說。我曾見牠單足而立，熬過那一季，梨樹盡枯，牠連眼也不曾眨一眨，我便將此看作牠對某事的一種態度，雖從未被告知究竟是哪一樁。神龕底下有一間我不入內的房。蒼鷺入內。牠做些什麼，我不問；我在上頭做些什麼，牠也不問。這一樁彼此的默契，比你我任何一人都更長久。',
   'entities.npcs.verger_zebediah.journalLines.2':
     '讀到此處之人，非好奇即避難，二者我皆敬重。長篇記錄的簡短版是：此地記得它曾是什麼，亦記得它將成什麼，二者之間的差，便是這樁差事。記，是我的分內之事。將成什麼、其主是誰，我無從得知。我書以「待定」二字，便去歇了。簿允許待定，不允許遺忘。',
+  'entities.npcs.verger_zebediah.journalLines.3':
+    '沿湖道而上、聽聞花瓶之事的旅人，多半會得出兩種結論，哪一種都不算好聽。有人稱這一群信眾是嬉皮士，是怪人，笑罷便走。也有人罵得更難聽，且不願多留片刻。多數人則壓根不曾聽聞花瓶之事，而我漸漸以為，這正是這份安排本該有的樣子。默默無聞之物，總比聲名遠揚之物活得長久。',
   'entities.npcs.sexton_faddick.name': '守墓人法迪克',
   'entities.items.willow_sprig.name': '一段柳枝',
   'entities.npcs.shade.name': '莎德',
@@ -2848,7 +2850,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.gate_bard.name': '吟遊詩人哈爾登',
   'entities.npcs.gate_bard.title': '門前的賣藝人',
   'entities.npcs.gate_bard.greeting':
-    '一枚銅板換一首歌？不要？沒關係，多數日子都是不要。我為這道門彈唱，可這門從沒掏過一次腰包。',
+    '一枚銅板換一首歌？不要？沒關係，多數日子都是不要。我為這道門彈唱，可這門從沒掏過一次腰包。路過的人管這兒叫嬉皮士營地，甚至更難聽，反正他們多半只是路過，我也就隨他們說去。',
   'entities.npcs.goodwife_orla.name': '奧拉',
   'entities.npcs.goodwife_orla.title': '曾屬根穴',
   'entities.npcs.goodwife_orla.greeting':
@@ -3951,6 +3953,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.hollowPage.shrineHeading': '地窟深處',
   'guide.hollowPage.shrineBody':
     '花瓶旁的一處洞口通向地窟深處，那是幽谷自身的副本地城，也是每位新英雄組隊面對的第一場真正考驗。',
+  'guide.hollowPage.outsiderHeading': '外界如何看待此地',
+  'guide.hollowPage.outsiderBody':
+    '在聖所大門之外，大多數人從未聽說過花瓶的存在。少數聽說過的人，往往把它的守護者當成嬉皮士、怪人，或者更難聽地說，是些對著罐子說話的怪胎。剩下流傳出去的，多半來自更離奇的目擊：一個信徒走得離空地太遠，又或者某隻小小的綠色生物出現在了它本不該出現的地方。',
   'guide.worldPage.heading': '世界',
   'guide.worldPage.intro':
     '穿過花瓶的神殿之門，你便置身幽谷腹地：新人踏出戶外第一步的寧靜之地。再往北還有三個區域，由南向北依次鋪展；通往那裡的道路尚未開啟，但它們是真實存在、靜候你到來的。',

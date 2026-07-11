@@ -61,6 +61,8 @@ export const hollow: GuidePage = {
 
         ${section('guide.hollowPage.vaseHeading', p('guide.hollowPage.vaseBody'))}
 
+        ${section('guide.hollowPage.outsiderHeading', p('guide.hollowPage.outsiderBody'))}
+
         <section class="guide-block">
           <h2>${esc(t('guide.hollowPage.figuresHeading'))}</h2>
           <p>${esc(t('guide.hollowPage.figuresBody'))}</p>
