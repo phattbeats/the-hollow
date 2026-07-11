@@ -14,6 +14,7 @@ import { housingStrings } from './housing';
 import { hudStrings } from './hud';
 import { hudChromeStrings } from './hud_chrome';
 import { itemNames, itemStrings } from './items';
+import { mailStrings } from './mail';
 import { mergeEntities, mergeExtra, mergeStrings } from './merge';
 import { questStrings } from './quests';
 import { shellStrings } from './shell';
@@ -41,6 +42,7 @@ export { housingStrings } from './housing';
 export { hudStrings } from './hud';
 export { hudChromeStrings } from './hud_chrome';
 export { itemNames, itemStrings } from './items';
+export { mailStrings } from './mail';
 export { mergeEntities, mergeExtra, mergeStrings } from './merge';
 export { questStrings } from './quests';
 // Re-export the catalog public surface (every name the old i18n.en.ts exported).
@@ -81,6 +83,7 @@ export const en = {
   realmTypes: { normal: 'Normal', pvp: 'PvP', rp: 'RP', rpPvp: 'RP-PvP' },
   game: gameStrings,
   hudChrome: hudChromeStrings,
+  mailUi: mailStrings,
   guide: guideStrings,
   // World-placed readable book "Read" prompt (PHAA-552). One word, not "wordy"
   // by the M16 rule, so English-only at PR tier; the build English-fills the
@@ -552,6 +555,30 @@ export const en = {
       readoutUsage: '/house place <1-{count}> <{kinds}>, /house remove <slot>.',
       helpLine:
         'Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>.',
+    },
+    // Bags capacity (PHAA-491): the pooled-inventory error toasts src/sim/bags.ts
+    // (plus market.ts/quests/quest_commands.ts/social/trade.ts/combat/
+    // casting_lifecycle.ts, which reuse the same literals) emits in English;
+    // sim_i18n.ts re-localizes them through t() against these keys.
+    bags: {
+      full: 'Your bags are full.',
+      socketsFull: 'All your bag slots are full.',
+      swapTooManyItems: 'You have too many items to swap to that bag.',
+      removeTooManyItems: 'You have too many items to remove that bag.',
+      tradeSpace: 'Trade failed: not enough bag space.',
+    },
+    // The bank vault core (PHAA-571): src/sim/bank.ts's deposit/withdraw/buySlots
+    // error + purchase-notice text. Core-only port: no banker NPC exists in zone
+    // content yet, so these strings are not yet player-reachable, but they are
+    // registered here now so the S3 drift guard has a matcher the moment a
+    // follow-up ticket surfaces the bank.
+    bank: {
+      tooFar: 'You are too far from the banker.',
+      noQuestItems: 'You cannot store quest items in the bank.',
+      full: 'Your bank is full.',
+      expansionCapped: 'Your bank cannot be expanded further.',
+      cannotAfford: 'You cannot afford that bank expansion.',
+      purchased: 'You purchase additional bank slots.',
     },
     // Homestead v0 (PHAA-533): the open-world Hollow Reaches tier, distinct from
     // Housing v0's Sanctum plots. Player-facing /homestead command text lives in

@@ -142,6 +142,8 @@ export class CharacterVisual {
       entityColor,
       skinTexture(key, skinIndex),
       skinEmissiveTexture(key, skinIndex),
+      key,
+      skinIndex,
     );
     this.model.traverse((o) => {
       const mesh = o as THREE.Mesh;
@@ -450,6 +452,8 @@ export class CharacterVisual {
       this.entityColor,
       skinTexture(this.key, skinIndex),
       skinEmissiveTexture(this.key, skinIndex),
+      this.key,
+      skinIndex,
     );
     // re-snapshot the material map ghost/restore relies on, then re-ghost if stealthed
     this.originalMaterials.clear();
@@ -477,6 +481,8 @@ export class CharacterVisual {
       this.entityColor,
       skinTexture(this.key, this.skinIndex),
       skinEmissiveTexture(this.key, this.skinIndex),
+      this.key,
+      this.skinIndex,
     );
     // the model graph changed (weapon meshes added/removed): rebuild the caster
     // list and re-snapshot originals, then re-apply ghost/stealth overlays.

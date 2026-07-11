@@ -15,8 +15,8 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 402,
-      "state": "f04cb373",
+      "nextId": 403,
+      "state": "de745ac6",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -29,16 +29,26 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "dialogState": {},
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -56,7 +66,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
           "hp": 90,
-          "id": 401,
+          "id": 402,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -99,9 +109,9 @@
     {
       "tick": 20,
       "time": 1,
-      "nextId": 404,
-      "state": "75f1bb54",
-      "events": "38d95b08",
+      "nextId": 405,
+      "state": "fa0efd4d",
+      "events": "b903a20b",
       "rng": {
         "draws": 15,
         "digest": "404401c0"
@@ -110,9 +120,9 @@
     {
       "tick": 40,
       "time": 2,
-      "nextId": 404,
-      "state": "a40cd5fb",
-      "events": "5494d5da",
+      "nextId": 405,
+      "state": "0f9ba7ba",
+      "events": "26ce9e97",
       "rng": {
         "draws": 32,
         "digest": "26994a45"
@@ -121,9 +131,9 @@
     {
       "tick": 50,
       "time": 2.5,
-      "nextId": 404,
-      "state": "21fef62c",
-      "events": "f98defef",
+      "nextId": 405,
+      "state": "494df465",
+      "events": "3701c274",
       "rng": {
         "draws": 63,
         "digest": "f0a3735b"
@@ -135,6 +145,13 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -143,12 +160,15 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "dialogState": {},
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 54100,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -167,7 +187,7 @@
               "name": "Rending Claws",
               "remaining": 8.5,
               "school": "physical",
-              "sourceId": 403,
+              "sourceId": 404,
               "tickInterval": 3,
               "tickTimer": 2.5,
               "value": 5
@@ -185,7 +205,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 101.5,
           "hp": 330,
-          "id": 401,
+          "id": 402,
           "inCombat": true,
           "kind": "player",
           "level": 13,
@@ -218,7 +238,7 @@
             "sta": 46,
             "str": 47
           },
-          "targetId": 402,
+          "targetId": 403,
           "templateId": "warrior",
           "weapon": {
             "max": 5,
@@ -227,7 +247,7 @@
           }
         },
         {
-          "aggroTargetId": 401,
+          "aggroTargetId": 402,
           "aiState": "attack",
           "auras": [
             {
@@ -237,7 +257,7 @@
               "name": "Blood Frenzy",
               "remaining": 7.5,
               "school": "physical",
-              "sourceId": 402,
+              "sourceId": 403,
               "value": 1.3
             }
           ],
@@ -247,11 +267,11 @@
           "facing": -1.570796,
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
-          "forcedTargetId": 401,
+          "forcedTargetId": 402,
           "forcedTargetTimer": 3,
           "hostile": true,
           "hp": 59800,
-          "id": 402,
+          "id": 403,
           "inCombat": true,
           "kind": "mob",
           "leashAnchor": {
@@ -281,12 +301,12 @@
             "armor": 48
           },
           "swingTimer": 0.334615,
-          "tappedById": 401,
-          "targetId": 401,
+          "tappedById": 402,
+          "targetId": 402,
           "templateId": "old_greyjaw",
           "threat": [
             [
-              401,
+              402,
               200
             ]
           ],
@@ -297,7 +317,7 @@
           }
         },
         {
-          "aggroTargetId": 401,
+          "aggroTargetId": 402,
           "aiState": "attack",
           "combatTimer": 0.5,
           "critChance": 0.05,
@@ -308,7 +328,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 60000,
-          "id": 403,
+          "id": 404,
           "inCombat": true,
           "kind": "mob",
           "level": 13,
@@ -331,7 +351,7 @@
             "armor": 168
           },
           "swingTimer": 1.35,
-          "targetId": 401,
+          "targetId": 402,
           "templateId": "ridge_stalker",
           "weapon": {
             "max": 50,
@@ -344,8 +364,8 @@
     {
       "tick": 54,
       "time": 2.7,
-      "nextId": 404,
-      "state": "c58d2793",
+      "nextId": 405,
+      "state": "eee1b4a8",
       "events": "741638a5",
       "rng": {
         "draws": 77,
@@ -358,6 +378,13 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
@@ -366,12 +393,15 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 401,
+          "dialogState": {},
+          "entityId": 402,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
+          "gatheringProficiency": {},
           "lifetimeXp": 54100,
+          "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
             "ranks": {}
@@ -390,7 +420,7 @@
               "name": "Rending Claws",
               "remaining": 8.3,
               "school": "physical",
-              "sourceId": 403,
+              "sourceId": 404,
               "tickInterval": 3,
               "tickTimer": 2.3,
               "value": 5
@@ -409,7 +439,7 @@
           "fallStartY": 1.5,
           "fiveSecondRule": 101.7,
           "hp": 330,
-          "id": 401,
+          "id": 402,
           "inCombat": true,
           "kind": "player",
           "level": 13,
@@ -442,7 +472,7 @@
             "sta": 46,
             "str": 47
           },
-          "targetId": 402,
+          "targetId": 403,
           "templateId": "warrior",
           "weapon": {
             "max": 5,
@@ -451,7 +481,7 @@
           }
         },
         {
-          "aggroTargetId": 401,
+          "aggroTargetId": 402,
           "aiState": "attack",
           "auras": [
             {
@@ -461,7 +491,7 @@
               "name": "Blood Frenzy",
               "remaining": 7.3,
               "school": "physical",
-              "sourceId": 402,
+              "sourceId": 403,
               "value": 1.3
             }
           ],
@@ -472,11 +502,11 @@
           "facing": -1.570796,
           "fallStartY": 1.5,
           "fiveSecondRule": 99,
-          "forcedTargetId": 401,
+          "forcedTargetId": 402,
           "forcedTargetTimer": 2.8,
           "hostile": true,
           "hp": 59800,
-          "id": 402,
+          "id": 403,
           "inCombat": true,
           "kind": "mob",
           "leashAnchor": {
@@ -506,12 +536,12 @@
             "armor": 48
           },
           "swingTimer": 0.134615,
-          "tappedById": 401,
-          "targetId": 401,
+          "tappedById": 402,
+          "targetId": 402,
           "templateId": "old_greyjaw",
           "threat": [
             [
-              401,
+              402,
               200
             ]
           ],
@@ -522,7 +552,7 @@
           }
         },
         {
-          "aggroTargetId": 401,
+          "aggroTargetId": 402,
           "aiState": "attack",
           "combatTimer": 0.7,
           "critChance": 0.05,
@@ -533,7 +563,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 60000,
-          "id": 403,
+          "id": 404,
           "inCombat": true,
           "kind": "mob",
           "level": 13,
@@ -556,7 +586,7 @@
             "armor": 168
           },
           "swingTimer": 1.15,
-          "targetId": 401,
+          "targetId": 402,
           "templateId": "ridge_stalker",
           "weapon": {
             "max": 50,

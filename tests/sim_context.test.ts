@@ -64,6 +64,7 @@ const CALLBACK_KEYS = [
   // elsewhere - deduped, not re-added).
   'spendResource',
   'removeItem',
+  'canAddItem',
   'clearEntityMarker',
   'partyOf',
   'removeFromParty',
@@ -232,6 +233,7 @@ function makeFakeHost() {
       return entities;
     },
     players: new Map(),
+    bankerIds: [],
     primaryId: -1,
     tradeInvites: new Map(),
     duelInvites: new Map(),
@@ -293,6 +295,7 @@ function makeFakeHost() {
     fiestaTakedown: vi.fn(),
     fiestaDown: vi.fn(),
     rollLoot: vi.fn(),
+    rollWorldBossLoot: vi.fn(),
     applyHeal: vi.fn(),
     spellCrit: vi.fn(() => 0.05),
     applyAura: vi.fn(),
@@ -310,6 +313,7 @@ function makeFakeHost() {
     // elsewhere in this host - deduped).
     spendResource: vi.fn(),
     removeItem: vi.fn(),
+    canAddItem: vi.fn(() => true),
     clearEntityMarker: vi.fn(),
     partyOf: vi.fn(() => null),
     removeFromParty: vi.fn(),
