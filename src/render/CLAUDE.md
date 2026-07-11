@@ -27,6 +27,7 @@ renderer:
 | `dungeon.ts` | instanced KayKit interiors from `sim/dungeon_layout.ts` |
 | `post.ts` | post chain (see below) |
 | `gfx.ts`, `textures.ts`, `render_budget.ts`, `locomotion.ts`, `stealth.ts` | shared helpers (below) |
+| `self_motion.ts` | pure, Node-tested display-only self layer: bounded intent-driven pose extrapolation online (runs `sim/player_motion.ts`; never touches world state, see `src/net/CLAUDE.md`) |
 
 ## gfx.ts: the shared core (read this before touching any subsystem)
 - **`GFX` quality tiers** (`low`/`medium`/`high`/`ultra`). Every tier-dependent knob lives

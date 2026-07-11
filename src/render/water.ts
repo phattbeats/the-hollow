@@ -1,15 +1,16 @@
 import * as THREE from 'three';
-import { WORLD_MAX_Z, WORLD_MIN_Z, WORLD_SIZE, ZONES } from '../sim/data';
-import { terrainHeight, WATER_LEVEL } from '../sim/world';
+import { WORLD_MAX_Z, WORLD_MIN_Z, WORLD_SIZE } from '../sim/data';
+import { terrainHeight, WATER_LEVEL, waterBodies } from '../sim/world';
 import { loadTexture } from './assets/loader';
 import { registerPreload } from './assets/preload';
-import { GFX, sharedUniforms, SUN_DIR } from './gfx';
+import { GFX, SUN_DIR, sharedUniforms } from './gfx';
 import { waterNormalish, waterNormalMaps } from './textures';
 
-// Water for the whole zone strip.
+// Water per lake footprint.
 //
-// High tier: one ShaderMaterial plane per zone (so off-screen zones frustum
-// cull away) with a CPU-precomputed per-vertex shore depth. Dual scrolling
+// High tier: one ShaderMaterial plane per declared lake (so off-screen lakes
+// frustum cull away and dry craters outside every lake never read as
+// flooded) with a CPU-precomputed per-vertex shore depth. Dual scrolling
 // real normal maps (three.js r165 water set, MIT) + a broad ocean-swell map
 // at range, fresnel sky tint, HDR sun glints (>1 so bloom catches them), a
 // shoreline foam band and a subtle wave displacement.
@@ -17,18 +18,22 @@ import { waterNormalish, waterNormalMaps } from './textures';
 // Low tier keeps the legacy scrolling Phong plane, upgraded with the real
 // swell normal map for textured speculars.
 
-const SEGMENTS_PER_ZONE = 180; // ~2u vertex spacing — enough for the foam band
+const VERTEX_SPACING = 2; // ~2u vertex spacing, enough for the foam band
+const MIN_SEGMENTS = 8;
+const MAX_SEGMENTS = 180;
 
 // Real water normal maps, fetched at module import and gated by the boot
 // preload only for the shader tier. Low/mobile uses generated canvas water
 // so it does not pay network/decode/upload cost for water detail.
 const WATER_TEX: Record<string, THREE.Texture> = {};
 function kickWaterTex(key: string, file: string): void {
-  registerPreload(loadTexture(`/textures/water/${file}`, { repeat: true }).then((tex) => {
-    tex.anisotropy = 4;
-    WATER_TEX[key] = tex;
-    return tex;
-  }));
+  registerPreload(
+    loadTexture(`/textures/water/${file}`, { repeat: true }).then((tex) => {
+      tex.anisotropy = 4;
+      WATER_TEX[key] = tex;
+      return tex;
+    }),
+  );
 }
 if (GFX.standardMaterials) {
   kickWaterTex('n1', 'water_1_normal.jpg');
@@ -150,11 +155,17 @@ function buildShaderWater(seed: number): WaterView {
   });
 
   const meshes: THREE.Mesh[] = [];
-  for (const zone of ZONES) {
-    const depth = zone.zMax - zone.zMin;
-    const geo = new THREE.PlaneGeometry(WORLD_SIZE, depth, SEGMENTS_PER_ZONE, SEGMENTS_PER_ZONE)
-      .rotateX(-Math.PI / 2);
-    geo.translate(0, 0, (zone.zMin + zone.zMax) / 2);
+  // one plane per declared lake footprint; waterBodies() radii already
+  // include the basin blend margin (LAKE_BLEND_RADIUS_MULT), so the plane
+  // spans the full blended shore and the foam band lands on real terrain
+  for (const lake of waterBodies()) {
+    const size = lake.radius * 2;
+    const segments = Math.min(
+      MAX_SEGMENTS,
+      Math.max(MIN_SEGMENTS, Math.ceil(size / VERTEX_SPACING)),
+    );
+    const geo = new THREE.PlaneGeometry(size, size, segments, segments).rotateX(-Math.PI / 2);
+    geo.translate(lake.x, 0, lake.z);
     const pos = geo.attributes.position as THREE.BufferAttribute;
     const shoreDepth = new Float32Array(pos.count);
     for (let i = 0; i < pos.count; i++) {
@@ -176,8 +187,13 @@ function buildPhongWater(): WaterView {
   const [norm] = waterNormalMaps();
   norm.repeat.set(26, 78);
   const mat = new THREE.MeshPhongMaterial({
-    color: 0x2a6a96, transparent: true, opacity: 0.8, shininess: 140,
-    specular: 0xd8ecff, map: tex, normalMap: norm,
+    color: 0x2a6a96,
+    transparent: true,
+    opacity: 0.8,
+    shininess: 140,
+    specular: 0xd8ecff,
+    map: tex,
+    normalMap: norm,
     normalScale: new THREE.Vector2(0.8, 0.8),
   });
   const worldDepth = WORLD_MAX_Z - WORLD_MIN_Z;
@@ -198,5 +214,7 @@ function buildPhongWater(): WaterView {
 }
 
 export function buildWater(seed: number): WaterView {
-  return GFX.standardMaterials && hasWaterShaderAssets() ? buildShaderWater(seed) : buildPhongWater();
+  return GFX.standardMaterials && hasWaterShaderAssets()
+    ? buildShaderWater(seed)
+    : buildPhongWater();
 }

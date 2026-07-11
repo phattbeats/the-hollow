@@ -1,8 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import {
-  MOVE_HOLD_TIME, newLocoTrack, updateLocomotion,
-} from '../src/render/locomotion';
-import { desiredBaseState, locomotionTimeScale, type AnimState } from '../src/render/characters/anim_state';
+  type AnimState,
+  desiredBaseState,
+  locomotionTimeScale,
+  noClipMoveFadeTarget,
+} from '../src/render/characters/anim_state';
+import { MOVE_HOLD_TIME, newLocoTrack, updateLocomotion } from '../src/render/locomotion';
 
 const FPS = 1 / 60;
 const BASE_ANIM_STATE: AnimState = {
@@ -98,8 +101,25 @@ describe('locomotion animation state', () => {
   });
 
   it('reverses forward locomotion for Ghost Wolf-style backpedal', () => {
-    const state = { ...BASE_ANIM_STATE, moving: true, backwards: true, reverseBackpedal: true, speed: 7 };
+    const state = {
+      ...BASE_ANIM_STATE,
+      moving: true,
+      backwards: true,
+      reverseBackpedal: true,
+      speed: 7,
+    };
     expect(desiredBaseState(state, true)).toBe('run');
     expect(locomotionTimeScale('run', state)).toBeLessThan(0);
+  });
+});
+
+describe('clip-less rig slide-fade fallback', () => {
+  it('targets full opacity at rest and faded while moving', () => {
+    expect(noClipMoveFadeTarget({ moving: false, dead: false })).toBe(1);
+    expect(noClipMoveFadeTarget({ moving: true, dead: false })).toBeLessThan(1);
+  });
+
+  it('never fades a dead entity even if still reporting motion', () => {
+    expect(noClipMoveFadeTarget({ moving: true, dead: true })).toBe(1);
   });
 });

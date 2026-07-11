@@ -20,6 +20,18 @@ const RUN_SPEED_THRESHOLD = 4.5; // u/s — sim walk/wander sits well below
 const DEFAULT_WALK_REF = 2.2;
 const DEFAULT_RUN_REF = 7;
 
+// Opacity target for a clip-less rig (a fully procedural build with no armature
+// yet, see manifest.ts's npc_greenpaw/npc_zebediah/npc_faddick entries) while it
+// is moving. With no walk cycle to switch to, a fully opaque static pose
+// translating across the ground reads as ice-skating; fading it toward
+// translucent in transit and back to solid at rest reads as a deliberate glide
+// instead. Fallback for a rig with no baked animation, not a fake walk cycle.
+export const NO_CLIP_MOVE_FADE_OPACITY = 0.5;
+
+export function noClipMoveFadeTarget(s: Pick<AnimState, 'moving' | 'dead'>): number {
+  return s.moving && !s.dead ? NO_CLIP_MOVE_FADE_OPACITY : 1;
+}
+
 export function desiredBaseState(s: AnimState, hasWalkBackClip: boolean): BaseState {
   // Swimming uses the Lie_Idle clip (horizontal/prone), which reads as a sleeping
   // pose when the entity is stationary in water rather than a swimmer. Only pick

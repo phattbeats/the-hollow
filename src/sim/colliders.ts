@@ -23,6 +23,7 @@ import {
   UNDER_SHRINE_LAYOUT,
 } from './dungeon_layout';
 import { generateDecorations, groundHeight } from './world';
+import { clampToStarterZoneBounds, isInsideStarterZone } from './zone_bounds';
 
 // Static world collision. Prop placement comes from the per-zone content
 // modules (merged into PROPS by sim/data.ts): the renderer builds its meshes
@@ -425,8 +426,15 @@ export function resolvePosition(
   const grid = gridFor(seed);
   const key = `${Math.floor(x / GRID_CELL)},${Math.floor(z / GRID_CELL)}`;
   const list = grid.cells.get(key);
-  if (!list) return { x, z };
-  return resolveAgainst(list, x, z, r, ignoreFences);
+  const resolved = list ? resolveAgainst(list, x, z, r, ignoreFences) : { x, z };
+  // PHAA-472: keep the player inside the open-world Hollow Reaches while they
+  // wander the starter zone. Calling after collider resolution means the
+  // existing tree/fence slide still applies and the wall only kicks in at the
+  // strip's lateral edge (the screenshot case: x=179 at the world rim).
+  if (isInsideStarterZone(resolved.z)) {
+    return clampToStarterZoneBounds(resolved.x, resolved.z, r);
+  }
+  return resolved;
 }
 
 function crossesFence(fromX: number, fromZ: number, toX: number, toZ: number, r: number): boolean {

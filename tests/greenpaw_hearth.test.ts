@@ -1,7 +1,8 @@
 // Greenpaw's hunger loop and smoke-as-mood (PHAA-421): the hunger/feed/decay
-// state machine, its IWorld read surface, the /feed chat command, and the
-// serialize/load round trip, mirroring the housing.test.ts / market.test.ts
-// persistence pattern.
+// state machine, its IWorld read surface, and the serialize/load round trip,
+// mirroring the housing.test.ts / market.test.ts persistence pattern. The
+// /feed chat command was removed (PHAA-482); feeding is now feedGreenpaw()
+// only (called from Greenpaw's dialogue menu online).
 
 import { beforeEach, describe, expect, it } from 'vitest';
 import { Sim } from '../src/sim/sim';
@@ -198,29 +199,37 @@ describe("Greenpaw's hearth: hunger/feed/decay", () => {
     expect(Number.isFinite(sim.hollowHearth.smoke)).toBe(true);
   });
 
-  it('/feed routes through chat exactly like feedGreenpaw()', () => {
+  it('a successful feed credits an active feed-type quest objective once per call (PHAA-484)', () => {
+    standAtGreenpaw(sim, pid);
+    sim.acceptQuest('q_what_burns');
+    sim.addItem('emberbulb', 5);
+    sim.tick();
+    sim.turnInQuest('q_what_burns');
+    sim.acceptQuest('q_what_fills');
+    sim.addItem('cave_morsel', 4);
+    sim.tick();
+    sim.turnInQuest('q_what_fills');
+    sim.acceptQuest('q_the_wavelength');
+    const meta = (sim as any).primary;
+
+    // Feeding both item types in one call still credits the objective once.
+    sim.addItem('emberbulb', 1);
+    sim.addItem('cave_morsel', 1);
+    sim.feedGreenpaw(pid);
+    expect(meta.questLog.get('q_the_wavelength')?.counts[1]).toBe(1);
+
+    // An empty-handed feed (nothing consumed) does not credit it further.
+    sim.feedGreenpaw(pid);
+    expect(meta.questLog.get('q_the_wavelength')?.counts[1]).toBe(1);
+  });
+
+  it('/feed is no longer a chat command (PHAA-482): it falls through to the unknown-command error', () => {
     standAtGreenpaw(sim, pid);
     sim.addItem('emberbulb', 1);
     sim.chat('/feed', pid);
-    sim.tick();
-    expect(sim.countItem('emberbulb')).toBe(0);
-    expect(sim.hollowHearth.smoke).toBeGreaterThan(0);
-  });
-
-  it('an unrelated /command is not swallowed by the /feed router', () => {
-    standAtGreenpaw(sim, pid);
-    sim.chat('/who', pid);
-    const events = sim.tick();
-    expect(errorTexts(events).some((t) => /online play/i.test(t))).toBe(true);
-  });
-
-  it('/feed with trailing garbage falls through to the unknown-command error instead of being swallowed', () => {
-    standAtGreenpaw(sim, pid);
-    sim.addItem('emberbulb', 1);
-    sim.chat('/feed something', pid);
     const events = sim.tick();
     expect(errorTexts(events).some((t) => /unknown command: \/feed/i.test(t))).toBe(true);
-    // nothing consumed: the malformed command never reached feedGreenpaw()
+    // nothing consumed: chat never reaches feedGreenpaw() any more
     expect(sim.countItem('emberbulb')).toBe(1);
     expect(sim.hollowHearth.smoke).toBe(0);
   });

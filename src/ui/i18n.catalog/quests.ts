@@ -41,6 +41,8 @@ const questStringsEn = {
       worldMarketAria: 'Open the World Market',
       trainSecondary: 'Train me in a secondary profession.',
       trainSecondaryAria: 'Train a secondary profession with {name}',
+      feedHearth: 'I have something for the hearth.',
+      feedHearthAria: 'Feed the hearth',
       trainerTitle: 'Secondary Profession',
       trainerLevelLocked: 'Unlocks at level {level}.',
       trainerCurrent: 'Current',
@@ -53,7 +55,7 @@ const questStringsEn = {
       trainerConfirmNo: 'No, go back',
       trainerHowTitle: 'How do secondary professions work?',
       trainerHowBody:
-        'A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities translate their resource cost to your primary resource. Your first pick is free; changing later costs gold.',
+        'A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities convert their resource cost to your primary resource. Your first pick is free; changing later costs gold.',
       accept: 'Accept',
       decline: 'Decline',
       continue: 'Continue',
@@ -132,6 +134,9 @@ export const questStrings = {
         worldMarketAria: 'Abrir el Mercado Mundial',
         trainSecondary: 'Entréname en una profesión secundaria.',
         trainSecondaryAria: 'Entrena una profesión secundaria con {name}',
+        // PHAA-482: pending translation (see CLAUDE.md, English ships until a fuller pass).
+        feedHearth: 'I have something for the hearth.',
+        feedHearthAria: 'Feed the hearth',
         trainerTitle: 'Profesión secundaria',
         trainerLevelLocked: 'Se desbloquea en el nivel {level}.',
         trainerCurrent: 'Actual',
@@ -221,6 +226,9 @@ export const questStrings = {
         worldMarketAria: 'Ouvrir le marché mondial',
         trainSecondary: 'Entraîne-moi dans une profession secondaire.',
         trainSecondaryAria: 'Former une profession secondaire avec {name}',
+        // PHAA-482: pending translation (see CLAUDE.md, English ships until a fuller pass).
+        feedHearth: 'I have something for the hearth.',
+        feedHearthAria: 'Feed the hearth',
         trainerTitle: 'Profession secondaire',
         trainerLevelLocked: 'Débloqué au niveau {level}.',
         trainerCurrent: 'Actuel',
