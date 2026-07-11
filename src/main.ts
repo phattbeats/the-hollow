@@ -141,6 +141,7 @@ import {
 } from './ui/i18n';
 import { defaultIconPrewarmEntries, prewarmIconCache } from './ui/icon_prewarm';
 import { iconDataUrl } from './ui/icons';
+import { applyNativeDeviceLanguage } from './ui/native_language';
 import { createMetricsSampler } from './ui/perf_metrics_sampler';
 import { PerfOverlay } from './ui/perf_overlay';
 import { type PerfOverlayConfig, PerfOverlayConfigStore } from './ui/perf_overlay_config';
@@ -211,6 +212,23 @@ function isNativeRuntime(): boolean {
   const cap = (window as unknown as { Capacitor?: { isNativePlatform?: () => boolean } }).Capacitor;
   return cap?.isNativePlatform?.() === true;
 }
+
+function localStorageOrNull(): Storage | null {
+  try {
+    return window.localStorage;
+  } catch {
+    return null;
+  }
+}
+
+// On native builds with no explicit locale choice, auto-select the device language once.
+applyNativeDeviceLanguage({
+  native: isNativeRuntime(),
+  locationSearch: window.location.search,
+  storage: localStorageOrNull(),
+  languages: navigator.languages,
+  language: navigator.language,
+});
 
 const SITE_URL = 'https://thehollow.world/';
 
