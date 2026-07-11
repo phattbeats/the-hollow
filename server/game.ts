@@ -127,7 +127,10 @@ const CHAT_RATE_ERROR_COOLDOWN_SECONDS = 4;
 const CHAT_COOLDOWN_SECONDS = 20;
 const CHAT_RATE_VIOLATIONS_FOR_COOLDOWN = 3;
 const WHO_RESULT_LIMIT = 50;
-const MAX_ACTIVE_SESSIONS_PER_ACCOUNT = 2;
+// One live session per account: Ravenpost mail moves coin and goods between
+// an account's characters, so the old allowance of a second online character
+// (self-trade by dual-boxing) is no longer needed. GMs are exempt.
+const MAX_ACTIVE_SESSIONS_PER_ACCOUNT = 1;
 // WS protocol-level ping cadence; see the keepalive interval in start().
 const WS_KEEPALIVE_PING_MS = 30_000;
 const RESTART_COUNTDOWN_TOTAL_SECONDS = 600;

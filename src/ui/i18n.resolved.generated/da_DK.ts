@@ -2821,6 +2821,7 @@ export const da_DK: EnTranslations = {
       "crossSiteRejected": "Cross-site request rejected.",
       "accountSuspended": "Denne konto er suspenderet indtil {date}.",
       "alreadyInWorld": "Karakteren er allerede i verdenen.",
+      "tooManyOnline": "Only one of your characters may be in the world at a time.",
       "takenOver": "Din karakter blev overtaget af en anden session.",
       "renameBeforeEntering": "Denne karakter skal omdøbes, før den kan komme ind i verdenen.",
       "renameNotPermitted": "Det er ikke tilladt at omdøbe denne karakter."

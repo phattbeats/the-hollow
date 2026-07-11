@@ -2821,6 +2821,7 @@ export const ru_RU: EnTranslations = {
       "crossSiteRejected": "Межсайтовый запрос отклонён.",
       "accountSuspended": "Эта учетная запись заблокирована до {date}.",
       "alreadyInWorld": "Персонаж уже находится в мире.",
+      "tooManyOnline": "Только один персонаж может находиться в мире одновременно.",
       "takenOver": "Вашего персонажа перехватила другая сессия.",
       "renameBeforeEntering": "Перед входом в мир этому персонажу нужно сменить имя.",
       "renameNotPermitted": "Переименование этого персонажа не разрешено."

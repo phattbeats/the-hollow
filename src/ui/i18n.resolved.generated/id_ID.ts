@@ -2821,6 +2821,7 @@ export const id_ID: EnTranslations = {
       "crossSiteRejected": "Cross-site request rejected.",
       "accountSuspended": "Akun ini ditangguhkan hingga {date}.",
       "alreadyInWorld": "Karakter sudah berada di dalam dunia.",
+      "tooManyOnline": "Only one of your characters may be in the world at a time.",
       "takenOver": "Karakter Anda telah diambil alih oleh sesi lain.",
       "renameBeforeEntering": "Karakter ini harus diganti namanya sebelum memasuki dunia.",
       "renameNotPermitted": "Mengganti nama karakter ini tidak diperbolehkan."
