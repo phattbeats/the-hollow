@@ -30,7 +30,7 @@
       "tick": 25,
       "time": 1.25,
       "nextId": 405,
-      "state": "4e28dfc9",
+      "state": "a096a68b",
       "events": "230b829b",
       "rng": {
         "draws": 0,
@@ -41,7 +41,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 405,
-      "state": "76e242db",
+      "state": "c93bdccd",
       "events": "7fc93399",
       "rng": {
         "draws": 36,
@@ -52,7 +52,7 @@
       "tick": 75,
       "time": 3.75,
       "nextId": 405,
-      "state": "ef8b36c1",
+      "state": "70b52163",
       "events": "59acab11",
       "rng": {
         "draws": 126,
@@ -63,7 +63,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 405,
-      "state": "563dda87",
+      "state": "34dfb2f9",
       "events": "72fdf341",
       "rng": {
         "draws": 245,
@@ -74,7 +74,7 @@
       "tick": 125,
       "time": 6.25,
       "nextId": 405,
-      "state": "817748a9",
+      "state": "8e6fb807",
       "events": "b6688c79",
       "rng": {
         "draws": 402,
@@ -85,7 +85,7 @@
       "tick": 150,
       "time": 7.5,
       "nextId": 405,
-      "state": "d34a8f5d",
+      "state": "9328a3ab",
       "events": "741638a5",
       "rng": {
         "draws": 556,
@@ -96,7 +96,7 @@
       "tick": 163,
       "time": 8.15,
       "nextId": 405,
-      "state": "4759e04e",
+      "state": "0320cddc",
       "events": "5ba07080",
       "rng": {
         "draws": 638,
@@ -108,6 +108,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -146,6 +152,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "mage",
           "companionUpgrades": {},
@@ -182,6 +194,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "rogue",
           "companionUpgrades": {},
@@ -223,6 +241,12 @@
           "activeLoadout": -1,
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "hunter",
           "companionUpgrades": {},

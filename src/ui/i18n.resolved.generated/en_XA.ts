@@ -291,6 +291,9 @@ export const en_XA: EnTranslations = {
       "lessThanMinute": "[<1ɱ]",
       "lockedToast": "[Ýóú áŕé ļóçķéð ţó {raid}. Úñļóçķš íñ {time}.]"
     },
+    "worldBoss": {
+      "spawn": "[{name} ŕíšéš óʋéŕ Ŕóóţ Ĥóļļóŵ!]"
+    },
     "compass": {
       "N": "[Ñ]",
       "NE": "[ÑÉ]",
@@ -650,7 +653,12 @@ export const en_XA: EnTranslations = {
       "sortName": "[Ñáɱé]",
       "searchPlaceholder": "[Šéáŕçĥ íţéɱš]",
       "searchAria": "[Šéáŕçĥ ƀáĝ íţéɱš ƀý ñáɱé]",
-      "noMatch": "[Ñó íţéɱš ɱáţçĥ ýóúŕ ƒíļţéŕš.]"
+      "noMatch": "[Ñó íţéɱš ɱáţçĥ ýóúŕ ƒíļţéŕš.]",
+      "capacity": "[{used}/{total}]",
+      "capacityAria": "[Ɓáĝ šļóţš úšéð: {used} óƒ {total}]",
+      "backpack": "[Ɓáçķþáçķ]",
+      "socketEmpty": "[Éɱþţý ƀáĝ šļóţ]",
+      "unequipHint": "[Çļíçķ ţó ŕéɱóʋé ţĥíš ƀáĝ]"
     },
     "raidConvert": {
       "toPartyDone": "[Ýóúŕ ŕáíð ĥáš çóñʋéŕţéð ƀáçķ ţó á þáŕţý.]",
@@ -2341,6 +2349,13 @@ export const en_XA: EnTranslations = {
       "readoutUsage": "[/ĥóúšé þļáçé <1-{count}> <{kinds}>, /ĥóúšé ŕéɱóʋé <šļóţ>.]",
       "helpLine": "[Ĥóɱéšţéáðš: /ĥóúšé, /ĥóúšé çļáíɱ, /ĥóúšé þļáçé <šļóţ> <ķíñð>, /ĥóúšé ŕéɱóʋé <šļóţ>.]"
     },
+    "bags": {
+      "full": "[Ýóúŕ ƀáĝš áŕé ƒúļļ.]",
+      "socketsFull": "[Áļļ ýóúŕ ƀáĝ šļóţš áŕé ƒúļļ.]",
+      "swapTooManyItems": "[Ýóú ĥáʋé ţóó ɱáñý íţéɱš ţó šŵáþ ţó ţĥáţ ƀáĝ.]",
+      "removeTooManyItems": "[Ýóú ĥáʋé ţóó ɱáñý íţéɱš ţó ŕéɱóʋé ţĥáţ ƀáĝ.]",
+      "tradeSpace": "[Ţŕáðé ƒáíļéð: ñóţ éñóúĝĥ ƀáĝ šþáçé.]"
+    },
     "bank": {
       "tooFar": "[Ýóú áŕé ţóó ƒáŕ ƒŕóɱ ţĥé ƀáñķéŕ.]",
       "noQuestItems": "[Ýóú çáññóţ šţóŕé ɋúéšţ íţéɱš íñ ţĥé ƀáñķ.]",
@@ -3699,7 +3714,8 @@ export const en_XA: EnTranslations = {
       "drink": "[Ðŕíñķ]",
       "tool": "[Ţóóļ]",
       "potion": "[Þóţíóñ]",
-      "elixir": "[Éļíẋíŕ]"
+      "elixir": "[Éļíẋíŕ]",
+      "bag": "[Ɓáĝ]"
     },
     "stats": {
       "armor": "[Áŕɱóŕ]",
@@ -3741,7 +3757,8 @@ export const en_XA: EnTranslations = {
       "useManaPotion": "[Úšé: Íñšţáñţļý ŕéšţóŕéš {amount} ɱáñá. Úšáƀļé íñ çóɱƀáţ. 2 ɱíñ çóóļðóŵñ.]",
       "clickUseInstant": "[Çļíçķ ţó úšé íñšţáñţļý íñ çóɱƀáţ]",
       "clickUse": "[Çļíçķ ţó úšé]",
-      "clickBuyback": "[Çļíçķ ţó ƀúý ƀáçķ]"
+      "clickBuyback": "[Çļíçķ ţó ƀúý ƀáçķ]",
+      "bagSlots": "[{slots} Šļóţ Ɓáĝ]"
     },
     "error": {
       "requiresLevelToEquip": "[Ŕéɋúíŕéš ļéʋéļ {level} ţó éɋúíþ.]"
@@ -5026,6 +5043,21 @@ export const en_XA: EnTranslations = {
       "monarch_crown_helm": {
         "name": "[Ɱóñáŕçĥ'š Çŕóŵñ]"
       },
+      "linen_pouch": {
+        "name": "[Ļíñéñ Þóúçĥ]"
+      },
+      "travelers_knapsack": {
+        "name": "[Ţŕáʋéļéŕ'š Ķñáþšáçķ]"
+      },
+      "wolfhide_satchel": {
+        "name": "[Ŵóļƒĥíðé Šáţçĥéļ]"
+      },
+      "gravewoven_bag": {
+        "name": "[Ĝŕáʋéŵóʋéñ Ɓáĝ]"
+      },
+      "mistcallers_duffel": {
+        "name": "[Ɱíšţçáļļéŕ'š Ðúƒƒéļ]"
+      },
       "bristleback_maul": {
         "name": "[Ɓŕíšţļéƀáçķ Ɱáúļ]"
       },
@@ -5383,6 +5415,16 @@ export const en_XA: EnTranslations = {
       "shrine_diary_page": {
         "name": "[Ţóŕñ Ðíáŕý Þáĝé]",
         "flavorText": "[...çóúñţéð ƒóŕţý ðáýš ƀý çáñðļé ƀéƒóŕé Í ļóšţ ţĥé ţĥŕéáð. Ţĥé ðáŕķ ðóŵñ ĥéŕé ðóéš ñóţ ƒóŕĝéţ Ĥíɱ, éʋéñ íƒ Ĥé ĥáš ƒóŕĝóţţéñ ţĥíš þļáçé. Íƒ ţĥé ĥéŕóñ çíŕçļéš ļóŵ, ţéļļ ţĥé Ʋéŕĝéŕ ţĥé ŵíçķ šţíļļ ƀúŕñš...]"
+      },
+      "heartwood_splinter": {
+        "name": "[Ĥéáŕţŵóóð Šþļíñţéŕ]",
+        "flavorText": "[Ŵáŕɱ ţó ţĥé ţóúçĥ, ļóñĝ áƒţéŕ ţĥé ţŕéé íţ çáɱé ƒŕóɱ šţóþþéð ɱóʋíñĝ.]"
+      },
+      "bloomcrown_pauldrons": {
+        "name": "[Ɓļóóɱçŕóŵñ Þáúļðŕóñš]"
+      },
+      "verdantguard_mantle": {
+        "name": "[Ʋéŕðáñţĝúáŕð Ɱáñţļé]"
       },
       "worn_prayer_token": {
         "name": "[Ŵóŕñ Þŕáýéŕ Ţóķéñ]",
@@ -5846,6 +5888,9 @@ export const en_XA: EnTranslations = {
       },
       "the_witness_root": {
         "name": "[Ţĥé Ŵíţñéšš-Ŕóóţ]"
+      },
+      "heartwood_colossus": {
+        "name": "[Ĥéáŕţŵóóð Çóļóššúš]"
       }
     },
     "npcs": {

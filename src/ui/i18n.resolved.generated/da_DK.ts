@@ -291,6 +291,9 @@ export const da_DK: EnTranslations = {
       "lessThanMinute": "<1m",
       "lockedToast": "Du er låst til {raid}. Låses op om {time}."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "N",
       "NE": "NØ",
@@ -650,7 +653,12 @@ export const da_DK: EnTranslations = {
       "sortName": "Navn",
       "searchPlaceholder": "Søg genstande",
       "searchAria": "Søg i taskegenstande efter navn",
-      "noMatch": "Ingen genstande matcher dine filtre."
+      "noMatch": "Ingen genstande matcher dine filtre.",
+      "capacity": "{used}/{total}",
+      "capacityAria": "Bag slots used: {used} of {total}",
+      "backpack": "Backpack",
+      "socketEmpty": "Empty bag slot",
+      "unequipHint": "Click to remove this bag"
     },
     "raidConvert": {
       "toPartyDone": "Dit raid er konverteret tilbage til en gruppe.",
@@ -2341,6 +2349,13 @@ export const da_DK: EnTranslations = {
       "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <slot>.",
       "helpLine": "Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>."
     },
+    "bags": {
+      "full": "Your bags are full.",
+      "socketsFull": "All your bag slots are full.",
+      "swapTooManyItems": "You have too many items to swap to that bag.",
+      "removeTooManyItems": "You have too many items to remove that bag.",
+      "tradeSpace": "Trade failed: not enough bag space."
+    },
     "bank": {
       "tooFar": "You are too far from the banker.",
       "noQuestItems": "You cannot store quest items in the bank.",
@@ -3699,7 +3714,8 @@ export const da_DK: EnTranslations = {
       "drink": "Drikke",
       "tool": "Værktøj",
       "potion": "Eliksir",
-      "elixir": "Eliksir"
+      "elixir": "Eliksir",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "Rustning",
@@ -3741,7 +3757,8 @@ export const da_DK: EnTranslations = {
       "useManaPotion": "Brug: Genopretter øjeblikkeligt {amount} mana. Brugbar i kamp. 1 min afkøling.",
       "clickUseInstant": "Klik for at bruge øjeblikkeligt i kamp",
       "clickUse": "Klik for at bruge",
-      "clickBuyback": "Klik for at købe tilbage"
+      "clickBuyback": "Klik for at købe tilbage",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "Requires level {level} to equip."
@@ -5026,6 +5043,21 @@ export const da_DK: EnTranslations = {
       "monarch_crown_helm": {
         "name": "Monarkens Krone"
       },
+      "linen_pouch": {
+        "name": "Lærredspose"
+      },
+      "travelers_knapsack": {
+        "name": "Rejsendes Rygsæk"
+      },
+      "wolfhide_satchel": {
+        "name": "Ulveskinds Taske"
+      },
+      "gravewoven_bag": {
+        "name": "Gravvævet Taske"
+      },
+      "mistcallers_duffel": {
+        "name": "Mistcallers Sømandssæk"
+      },
       "bristleback_maul": {
         "name": "Børsterygs-Lemlæster"
       },
@@ -5383,6 +5415,16 @@ export const da_DK: EnTranslations = {
       "shrine_diary_page": {
         "name": "Iturevet Dagbogsside",
         "flavorText": "...talte fyrre dage ved stearinlys, før jeg mistede tråden. Mørket hernede glemmer Ham ikke, selvom Han har glemt dette sted. Hvis hejren kredser lavt, så sig til Degnen at vægen stadig brænder..."
+      },
+      "heartwood_splinter": {
+        "name": "Kærnetræsplint",
+        "flavorText": "Varm at røre ved, længe efter at træet, den kom fra, holdt op med at bevæge sig."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Blomsterkronede Skulderplader"
+      },
+      "verdantguard_mantle": {
+        "name": "Frodig Vogterkappe"
       },
       "worn_prayer_token": {
         "name": "Slidt Bedemønt",
@@ -5846,6 +5888,9 @@ export const da_DK: EnTranslations = {
       },
       "the_witness_root": {
         "name": "Vidnerod"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {

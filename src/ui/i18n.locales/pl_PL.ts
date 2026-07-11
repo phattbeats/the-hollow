@@ -922,6 +922,11 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': 'Odłamek z Karbami',
   'entities.items.tally_shard.flavorText':
     '...karby piątkami, ryte głęboko, przekreślane za każdym razem, gdy rachunek się domykał. setki piątek, nim przekreślenia ustają, a ostatni rząd nigdy nie został dokończony...',
+  'entities.items.linen_pouch.name': 'Lniana Sakiewka',
+  'entities.items.travelers_knapsack.name': 'Plecak Wędrowca',
+  'entities.items.wolfhide_satchel.name': 'Torba z Wilczej Skóry',
+  'entities.items.gravewoven_bag.name': 'Torba Utkana z Grobu',
+  'entities.items.mistcallers_duffel.name': 'Worek Podróżny Mistcallera',
   'entities.items.footpad_jerkin.name': 'Kaftan rzezimieszka',
   'entities.items.forest_pink_armor_plate.name': 'Leśny róż',
   'entities.items.frayed_prayer_beads.name': 'Wystrzępione paciorki modlitewne',
@@ -1218,6 +1223,11 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.old_cragmaw.name': 'Stary Skalogryz',
   'entities.mobs.old_greyjaw.name': 'Stary Szaropaszczy',
   'entities.mobs.pale_choir_acolyte.name': 'Akolita Bladego Chóru',
+  'entities.items.heartwood_splinter.name': 'Drzazga Twardzieli',
+  'entities.items.heartwood_splinter.flavorText':
+    'Ciepła w dotyku, długo po tym, jak drzewo, z którego pochodzi, przestało się poruszać.',
+  'entities.items.bloomcrown_pauldrons.name': 'Naramienniki Kwietnej Korony',
+  'entities.items.verdantguard_mantle.name': 'Płaszcz Zielonego Strażnika',
   'entities.mobs.palefeeder.name': 'Bladożerca',
   'entities.mobs.pearlguard_sentinel.name': 'Perłostrażny Wartownik',
   'entities.mobs.raised_bonewalker.name': 'Wskrzeszony Kościochód',

@@ -291,6 +291,9 @@ export const vi_VN: EnTranslations = {
       "lessThanMinute": "<1p",
       "lockedToast": "Bạn đang bị khóa với {raid}. Mở khóa sau {time}."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "B",
       "NE": "ĐB",
@@ -650,7 +653,12 @@ export const vi_VN: EnTranslations = {
       "sortName": "Tên",
       "searchPlaceholder": "Tìm vật phẩm",
       "searchAria": "Tìm vật phẩm trong túi theo tên",
-      "noMatch": "Không có vật phẩm nào khớp với bộ lọc của bạn."
+      "noMatch": "Không có vật phẩm nào khớp với bộ lọc của bạn.",
+      "capacity": "{used}/{total}",
+      "capacityAria": "Bag slots used: {used} of {total}",
+      "backpack": "Backpack",
+      "socketEmpty": "Empty bag slot",
+      "unequipHint": "Click to remove this bag"
     },
     "raidConvert": {
       "toPartyDone": "Raid của bạn đã chuyển trở lại thành tổ đội.",
@@ -2341,6 +2349,13 @@ export const vi_VN: EnTranslations = {
       "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <slot>.",
       "helpLine": "Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>."
     },
+    "bags": {
+      "full": "Your bags are full.",
+      "socketsFull": "All your bag slots are full.",
+      "swapTooManyItems": "You have too many items to swap to that bag.",
+      "removeTooManyItems": "You have too many items to remove that bag.",
+      "tradeSpace": "Trade failed: not enough bag space."
+    },
     "bank": {
       "tooFar": "You are too far from the banker.",
       "noQuestItems": "You cannot store quest items in the bank.",
@@ -3699,7 +3714,8 @@ export const vi_VN: EnTranslations = {
       "drink": "Đồ Uống",
       "tool": "Dụng Cụ",
       "potion": "Thuốc",
-      "elixir": "Tiên Dược"
+      "elixir": "Tiên Dược",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "Giáp",
@@ -3741,7 +3757,8 @@ export const vi_VN: EnTranslations = {
       "useManaPotion": "Dùng: Hồi tức thời {amount} mana. Dùng được trong chiến đấu. Hồi chiêu 1 phút.",
       "clickUseInstant": "Nhấp để dùng tức thời trong chiến đấu",
       "clickUse": "Nhấp để sử dụng",
-      "clickBuyback": "Nhấp để mua lại"
+      "clickBuyback": "Nhấp để mua lại",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "Requires level {level} to equip."
@@ -5026,6 +5043,21 @@ export const vi_VN: EnTranslations = {
       "monarch_crown_helm": {
         "name": "Vương Miện Quân Vương"
       },
+      "linen_pouch": {
+        "name": "Túi Vải Lanh"
+      },
+      "travelers_knapsack": {
+        "name": "Balô Lữ Khách"
+      },
+      "wolfhide_satchel": {
+        "name": "Túi Da Sói"
+      },
+      "gravewoven_bag": {
+        "name": "Túi Dệt Từ Mộ"
+      },
+      "mistcallers_duffel": {
+        "name": "Túi Du Lịch Của Mistcaller"
+      },
       "bristleback_maul": {
         "name": "Vồ Lưng Gai"
       },
@@ -5383,6 +5415,16 @@ export const vi_VN: EnTranslations = {
       "shrine_diary_page": {
         "name": "Trang Nhật Ký Bị Xé",
         "flavorText": "...đếm bốn mươi ngày bằng ánh nến trước khi mất dấu. Bóng tối dưới đây không quên Người, dù Người đã quên nơi này. Nếu con diệc lượn thấp, hãy nói với Người Giữ Đền rằng bấc đèn vẫn còn cháy..."
+      },
+      "heartwood_splinter": {
+        "name": "Mảnh Lõi Gỗ",
+        "flavorText": "Ấm khi chạm vào, rất lâu sau khi cái cây sinh ra nó đã ngừng chuyển động."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Giáp Vai Vương Miện Nở Hoa"
+      },
+      "verdantguard_mantle": {
+        "name": "Áo Choàng Của Vệ Binh Xanh Tươi"
       },
       "worn_prayer_token": {
         "name": "Thẻ Cầu Nguyện Mòn Vẹt",
@@ -5846,6 +5888,9 @@ export const vi_VN: EnTranslations = {
       },
       "the_witness_root": {
         "name": "Rễ Chứng Nhân"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {

@@ -227,6 +227,11 @@ export const hudChromeStrings = {
     // ({raid} = the localized raid name, {time} = the formatted countdown).
     lockedToast: 'You are locked to {raid}. Unlocks in {time}.',
   },
+  // World-boss server-wide spawn announcement (PHAA-494, src/sim/world_boss.ts).
+  // {name} is the localized boss mob name.
+  worldBoss: {
+    spawn: '{name} rises over Root Hollow!',
+  },
   // Eight-point compass abbreviations as drawn on the heading strip. Each locale
   // overrides with its own established compass abbreviations (e.g. West = "O" in
   // Spanish, "O" in French/Italian/Portuguese, "З" in Russian).
@@ -697,6 +702,12 @@ export const hudChromeStrings = {
     searchPlaceholder: 'Search items',
     searchAria: 'Search bag items by name',
     noMatch: 'No items match your filters.',
+    // The bag bar (backpack + 4 equip sockets) and the used/capacity counter.
+    capacity: '{used}/{total}',
+    capacityAria: 'Bag slots used: {used} of {total}',
+    backpack: 'Backpack',
+    socketEmpty: 'Empty bag slot',
+    unequipHint: 'Click to remove this bag',
   },
   // Raid -> party demotion (Social panel raid tab). The sim emits these in English;
   // src/ui/sim_i18n.ts re-localizes them through these keys. Mirrors the existing

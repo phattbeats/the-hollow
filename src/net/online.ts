@@ -1,5 +1,6 @@
 // Online play: REST auth client + WebSocket world mirror.
 
+import { bagCapacity } from '../sim/bags';
 import { signChallenge } from '../sim/client_challenge';
 import { mechChromaItemId, mechChromaSkinIndex } from '../sim/content/skins';
 import {
@@ -46,6 +47,7 @@ import {
   type DelveDailyInfo,
   type DelveRunInfo,
   type DelveShopOfferView,
+  type DialogStateView,
   type DuelInfo,
   type FriendInfo,
   type GreenpawHearthInfo,
@@ -739,6 +741,10 @@ function blankEntity(id: number): Entity {
     stompTimer: 0,
     stoneskinTimer: 0,
     terrifyTimer: 0,
+    bigCastTimer: 0,
+    aoeSlowTimer: 0,
+    loudYellTimer: 0,
+    loudYellIndex: 0,
     detonateTimer: Infinity,
     firedSummons: 0,
     summonedIds: [],
@@ -799,6 +805,9 @@ export class ClientWorld implements IWorld {
   known: ResolvedAbility[] = [];
   realm = '';
   inventory: InvSlot[] = [];
+  // Equipped bag sockets, mirrored from snapshot self ('bags'); capacity is
+  // derived locally from the shared item data (same math as the sim's bags.ts).
+  bags: (string | null)[] = [null, null, null, null];
   vendorBuyback: InvSlot[] = [];
   equipment: Partial<Record<EquipSlot, string>> = {};
   copper = 0;
@@ -858,6 +867,10 @@ export class ClientWorld implements IWorld {
   // present (global world state, not per-viewer), so the default is a real
   // value, not null, matching a freshly-fed-nothing hearth. ---
   hollowHearth: GreenpawHearthInfo = { smoke: 0, level: 'clear' };
+  // PHAA-553: per-player dialogue disposition + flags, mirrored from the self
+  // snapshot's `dstate`. dialogState() reads this so the client walker can
+  // evaluate `requires` gates; effects themselves resolve server-side.
+  private dialogStateMirror: DialogStateView = { disposition: {}, flags: [] };
   // --- IWorldHomestead: Hollow Reaches open-world plot view, mirrored from
   // the snapshot self (`s.homestead`, delta-omitted). ---
   homesteadInfo: HomesteadInfo | null = null;
@@ -1569,6 +1582,10 @@ export class ClientWorld implements IWorld {
         this.vendorBuyback = s.buyback;
         this.invChanged = true;
       }
+      if (s.bags !== undefined) {
+        this.bags = s.bags;
+        this.invChanged = true;
+      }
       if (s.equip !== undefined) this.equipment = s.equip;
       // IWorldCosmetics facet (W7) self-decode: cosmetics is delta-guarded (a
       // missing field keeps the prior mirror); normalizeAccountCosmetics rebuilds it.
@@ -1618,6 +1635,7 @@ export class ClientWorld implements IWorld {
       if (s.market !== undefined) this.marketInfo = s.market;
       if (s.housing !== undefined) this.housingInfo = s.housing;
       if (s.hearth !== undefined) this.hollowHearth = s.hearth;
+      if (s.dstate !== undefined) this.dialogStateMirror = s.dstate;
       if (s.homestead !== undefined) this.homesteadInfo = s.homestead;
       if (s.lroll !== undefined) this.lootRollPrompts = s.lroll ?? [];
       if (s.lrollg !== undefined) this.lootRollGroup = s.lrollg ?? [];
@@ -1850,6 +1868,15 @@ export class ClientWorld implements IWorld {
   }
   unequipItem(slot: EquipSlot): void {
     this.cmd({ cmd: 'unequip_item', slot });
+  }
+  get bagCapacity(): number {
+    return bagCapacity(this.bags);
+  }
+  equipBag(itemId: string, socket?: number): void {
+    this.cmd({ cmd: 'equip_bag', item: itemId, socket });
+  }
+  unequipBag(socket: number): void {
+    this.cmd({ cmd: 'unequip_bag', socket });
   }
   useItem(itemId: string): void {
     this.cmd({ cmd: 'use', item: itemId });
@@ -2136,6 +2163,14 @@ export class ClientWorld implements IWorld {
   // dialogue menu, not chat text. ---
   feedGreenpaw(): void {
     this.cmd({ cmd: 'feedGreenpaw' });
+  }
+  // --- IWorldDialog (PHAA-553): send a picked branching-dialogue choice; the
+  // effect resolves server-side. dialogState is a snapshot read (dstate mirror). ---
+  dialogChoose(npcId: string, choiceId: string): void {
+    this.cmd({ cmd: 'dialogChoose', npc: npcId, choice: choiceId });
+  }
+  dialogState(): DialogStateView {
+    return this.dialogStateMirror;
   }
   // --- IWorldDungeons: dungeon enter/leave sends + the raid-lockout countdown read.
   // selfLockouts mirrors the snapshot `s.lockouts`; raidLockouts derives the live

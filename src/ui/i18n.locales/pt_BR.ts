@@ -4558,6 +4558,11 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': 'Caco com Marcas de Contagem',
   'entities.items.tally_shard.flavorText':
     '...marcas de cinco em cinco, riscadas fundo, cortadas cada vez que a conta fechava. centenas de cincos antes de os cortes pararem, e a última fileira nunca foi terminada...',
+  'entities.items.linen_pouch.name': 'Bolsa de Linho',
+  'entities.items.travelers_knapsack.name': 'Mochila do Viajante',
+  'entities.items.wolfhide_satchel.name': 'Bolsa de Pele de Lobo',
+  'entities.items.gravewoven_bag.name': 'Bolsa Tecida da Tumba',
+  'entities.items.mistcallers_duffel.name': 'Mala de Viagem de Mistcaller',
   'entities.mobs.acolyte_tessa.name': 'Acólita Tessa',
   'entities.mobs.deacon_varric.name': 'Diácono Varric',
   'entities.mobs.reliquary_bonewalker.name': 'Caminhante de Ossos Erguido',
@@ -4565,6 +4570,11 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.reliquary_gravecall_acolyte.name': 'Acólito do Chamado Sepulcral',
   'entities.mobs.reliquary_ledger_wraith.name': 'Espectro do Registro',
   'entities.mobs.reliquary_saintless_effigy.name': 'Efígie Sem Santo',
+  'entities.items.heartwood_splinter.name': 'Lasca de Cerne',
+  'entities.items.heartwood_splinter.flavorText':
+    'Quente ao toque, muito depois que a árvore da qual veio parou de se mover.',
+  'entities.items.bloomcrown_pauldrons.name': 'Ombreiras da Coroa Florida',
+  'entities.items.verdantguard_mantle.name': 'Manto do Guardião Verdejante',
   'entities.mobs.palefeeder.name': 'Devorapálido',
   'entities.mobs.rootmaw.name': 'Fauce-Raiz',
   'entities.mobs.the_witness_root.name': 'A Raiz Testemunha',

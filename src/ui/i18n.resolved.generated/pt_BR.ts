@@ -291,6 +291,9 @@ export const pt_BR: EnTranslations = {
       "lessThanMinute": "<1min",
       "lockedToast": "Você está bloqueado em {raid}. Desbloqueia em {time}."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "N",
       "NE": "NE",
@@ -650,7 +653,12 @@ export const pt_BR: EnTranslations = {
       "sortName": "Nome",
       "searchPlaceholder": "Pesquisar itens",
       "searchAria": "Pesquisar itens da bolsa por nome",
-      "noMatch": "Nenhum item corresponde aos seus filtros."
+      "noMatch": "Nenhum item corresponde aos seus filtros.",
+      "capacity": "{used}/{total}",
+      "capacityAria": "Bag slots used: {used} of {total}",
+      "backpack": "Backpack",
+      "socketEmpty": "Empty bag slot",
+      "unequipHint": "Click to remove this bag"
     },
     "raidConvert": {
       "toPartyDone": "Sua raide foi convertida de volta em um grupo.",
@@ -2341,6 +2349,13 @@ export const pt_BR: EnTranslations = {
       "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <slot>.",
       "helpLine": "Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>."
     },
+    "bags": {
+      "full": "Your bags are full.",
+      "socketsFull": "All your bag slots are full.",
+      "swapTooManyItems": "You have too many items to swap to that bag.",
+      "removeTooManyItems": "You have too many items to remove that bag.",
+      "tradeSpace": "Trade failed: not enough bag space."
+    },
     "bank": {
       "tooFar": "You are too far from the banker.",
       "noQuestItems": "You cannot store quest items in the bank.",
@@ -3699,7 +3714,8 @@ export const pt_BR: EnTranslations = {
       "drink": "Bebida",
       "tool": "Ferramenta",
       "potion": "Poção",
-      "elixir": "Elixir"
+      "elixir": "Elixir",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "Armadura",
@@ -3741,7 +3757,8 @@ export const pt_BR: EnTranslations = {
       "useManaPotion": "Uso: restaura instantaneamente {amount} de mana. Pode ser usada em combate. Recarga de 1 min.",
       "clickUseInstant": "Clique para usar instantaneamente em combate",
       "clickUse": "Clique para usar",
-      "clickBuyback": "Clique para recomprar"
+      "clickBuyback": "Clique para recomprar",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "Requires level {level} to equip."
@@ -5026,6 +5043,21 @@ export const pt_BR: EnTranslations = {
       "monarch_crown_helm": {
         "name": "Coroa do Monarca"
       },
+      "linen_pouch": {
+        "name": "Bolsa de Linho"
+      },
+      "travelers_knapsack": {
+        "name": "Mochila do Viajante"
+      },
+      "wolfhide_satchel": {
+        "name": "Bolsa de Pele de Lobo"
+      },
+      "gravewoven_bag": {
+        "name": "Bolsa Tecida da Tumba"
+      },
+      "mistcallers_duffel": {
+        "name": "Mala de Viagem de Mistcaller"
+      },
       "bristleback_maul": {
         "name": "Malho Bristleback"
       },
@@ -5383,6 +5415,16 @@ export const pt_BR: EnTranslations = {
       "shrine_diary_page": {
         "name": "Página de Diário Rasgada",
         "flavorText": "...contei quarenta dias à luz de vela antes de perder a conta. A escuridão aqui embaixo não O esquece, mesmo que Ele tenha esquecido este lugar. Se a garça voar baixo, diga ao Sacristão que o pavio ainda arde..."
+      },
+      "heartwood_splinter": {
+        "name": "Lasca de Cerne",
+        "flavorText": "Quente ao toque, muito depois que a árvore da qual veio parou de se mover."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Ombreiras da Coroa Florida"
+      },
+      "verdantguard_mantle": {
+        "name": "Manto do Guardião Verdejante"
       },
       "worn_prayer_token": {
         "name": "Ficha de Oração Gasta",
@@ -5846,6 +5888,9 @@ export const pt_BR: EnTranslations = {
       },
       "the_witness_root": {
         "name": "A Raiz Testemunha"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {

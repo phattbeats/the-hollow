@@ -2110,6 +2110,11 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': 'Éclat aux Marques de Compte',
   'entities.items.tally_shard.flavorText':
     '...des marques par cinq, gravées profond, barrées chaque fois que le compte revenait. des centaines de cinq avant que les barres ne cessent, et la dernière rangée ne fut jamais finie...',
+  'entities.items.linen_pouch.name': 'Bourse en Lin',
+  'entities.items.travelers_knapsack.name': 'Havresac du Voyageur',
+  'entities.items.wolfhide_satchel.name': 'Sacoche en Peau de Loup',
+  'entities.items.gravewoven_bag.name': 'Sac Tissé des Tombes',
+  'entities.items.mistcallers_duffel.name': 'Sac Marin de Mistcaller',
   'entities.items.gravecaller_blade.name': 'Grande lame de Gravecaller',
   'entities.items.widowfang_dirk.name': 'Dague Croc-de-veuve',
   'entities.items.gravecaller_staff.name': 'Bâton du Creux',
@@ -2386,6 +2391,11 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.doomguard.name': "Seigneur de l'effroi",
   'entities.mobs.choirmother_selthe.name': 'Selthe, mère de chœur',
   'entities.mobs.drowned_templeguard.name': 'Garde du temple noyé',
+  'entities.items.heartwood_splinter.name': 'Écharde de Duramen',
+  'entities.items.heartwood_splinter.flavorText':
+    "Chaude au toucher, longtemps après que l'arbre dont elle provient ait cessé de bouger.",
+  'entities.items.bloomcrown_pauldrons.name': 'Épaulières de la Couronne Fleurie',
+  'entities.items.verdantguard_mantle.name': 'Manteau du Gardien Verdoyant',
   'entities.mobs.palefeeder.name': 'Dévoreur blafard',
   'entities.mobs.rootmaw.name': 'Gueule-racine',
   'entities.mobs.the_witness_root.name': 'La Racine témoin',

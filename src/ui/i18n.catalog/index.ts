@@ -547,6 +547,17 @@ export const en = {
       helpLine:
         'Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>.',
     },
+    // Bags capacity (PHAA-491): the pooled-inventory error toasts src/sim/bags.ts
+    // (plus market.ts/quests/quest_commands.ts/social/trade.ts/combat/
+    // casting_lifecycle.ts, which reuse the same literals) emits in English;
+    // sim_i18n.ts re-localizes them through t() against these keys.
+    bags: {
+      full: 'Your bags are full.',
+      socketsFull: 'All your bag slots are full.',
+      swapTooManyItems: 'You have too many items to swap to that bag.',
+      removeTooManyItems: 'You have too many items to remove that bag.',
+      tradeSpace: 'Trade failed: not enough bag space.',
+    },
     // The bank vault core (PHAA-571): src/sim/bank.ts's deposit/withdraw/buySlots
     // error + purchase-notice text. Core-only port: no banker NPC exists in zone
     // content yet, so these strings are not yet player-reachable, but they are

@@ -291,6 +291,9 @@ export const ru_RU: EnTranslations = {
       "lessThanMinute": "<1м",
       "lockedToast": "Вы привязаны к {raid}. Разблокировка через {time}."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "С",
       "NE": "СВ",
@@ -650,7 +653,12 @@ export const ru_RU: EnTranslations = {
       "sortName": "Название",
       "searchPlaceholder": "Поиск предметов",
       "searchAria": "Поиск предметов в сумках по названию",
-      "noMatch": "Нет предметов, соответствующих фильтрам."
+      "noMatch": "Нет предметов, соответствующих фильтрам.",
+      "capacity": "{used}/{total}",
+      "capacityAria": "Занято ячеек сумок: {used} из {total}",
+      "backpack": "Рюкзак",
+      "socketEmpty": "Пустая ячейка для сумки",
+      "unequipHint": "Нажмите, чтобы снять эту сумку"
     },
     "raidConvert": {
       "toPartyDone": "Ваш рейд снова преобразован в группу.",
@@ -2341,6 +2349,13 @@ export const ru_RU: EnTranslations = {
       "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <слот>.",
       "helpLine": "Дома: /house, /house claim, /house place <слот> <вид>, /house remove <слот>."
     },
+    "bags": {
+      "full": "Ваши сумки полны.",
+      "socketsFull": "Все ячейки для сумок заняты.",
+      "swapTooManyItems": "У вас слишком много предметов, чтобы сменить эту сумку.",
+      "removeTooManyItems": "У вас слишком много предметов, чтобы снять эту сумку.",
+      "tradeSpace": "Обмен не удался: недостаточно места в сумках."
+    },
     "bank": {
       "tooFar": "Вы слишком далеко от банкира.",
       "noQuestItems": "Квестовые предметы нельзя хранить в банке.",
@@ -3699,7 +3714,8 @@ export const ru_RU: EnTranslations = {
       "drink": "Напиток",
       "tool": "Инструмент",
       "potion": "Зелье",
-      "elixir": "Эликсир"
+      "elixir": "Эликсир",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "Броня",
@@ -3741,7 +3757,8 @@ export const ru_RU: EnTranslations = {
       "useManaPotion": "Использование: мгновенно восстанавливает {amount} маны. Можно использовать в бою. Восстановление 1 мин.",
       "clickUseInstant": "Нажмите, чтобы мгновенно использовать в бою",
       "clickUse": "Нажмите, чтобы использовать",
-      "clickBuyback": "Нажмите, чтобы выкупить"
+      "clickBuyback": "Нажмите, чтобы выкупить",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "Чтобы экипировать это, нужен {level} уровень."
@@ -5026,6 +5043,21 @@ export const ru_RU: EnTranslations = {
       "monarch_crown_helm": {
         "name": "Корона Монарха"
       },
+      "linen_pouch": {
+        "name": "Льняная Сумка"
+      },
+      "travelers_knapsack": {
+        "name": "Рюкзак Путника"
+      },
+      "wolfhide_satchel": {
+        "name": "Сумка из Волчьей Шкуры"
+      },
+      "gravewoven_bag": {
+        "name": "Могильная Сумка"
+      },
+      "mistcallers_duffel": {
+        "name": "Баул Мистколлера"
+      },
       "bristleback_maul": {
         "name": "Кувалда Щетиноспина"
       },
@@ -5383,6 +5415,16 @@ export const ru_RU: EnTranslations = {
       "shrine_diary_page": {
         "name": "Обрывок страницы дневника",
         "flavorText": "...считал сорок дней при свече, пока не сбился со счёта. Тьма здесь, внизу, не забывает Его, даже если Он забыл это место. Если цапля пролетит низко, скажи пономарю, что фитиль всё ещё горит..."
+      },
+      "heartwood_splinter": {
+        "name": "Щепка сердцевины",
+        "flavorText": "Тёплая на ощупь, долго после того, как дерево, из которого она взята, перестало двигаться."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Наплечники Цветущей Короны"
+      },
+      "verdantguard_mantle": {
+        "name": "Мантия Зелёного Стража"
       },
       "worn_prayer_token": {
         "name": "Потёртый молитвенный жетон",
@@ -5846,6 +5888,9 @@ export const ru_RU: EnTranslations = {
       },
       "the_witness_root": {
         "name": "Корень-Свидетель"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {

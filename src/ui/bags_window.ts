@@ -18,6 +18,7 @@
 // (not a literal white hex).
 
 import { audio } from '../game/audio';
+import { BACKPACK_SLOTS, bagSlotsOf } from '../sim/bags';
 import { ITEMS } from '../sim/data';
 import type { InvSlot } from '../sim/types';
 import type { IWorld } from '../world_api';
@@ -36,6 +37,7 @@ import {
   bagItemAction,
   bagQualityKey,
   bagTooltipHintKey,
+  buildBagBar,
   buildBagGrid,
 } from './bags_view';
 import { itemDisplayName } from './entity_i18n';
@@ -43,7 +45,7 @@ import { esc } from './esc';
 import { FOCUSABLE_SELECTOR } from './focus_manager';
 import { encodeHotbarAction, HOTBAR_ACTION_MIME } from './hotbar';
 import { formatNumber, type TranslationKey, t } from './i18n';
-import { QUALITY_COLOR } from './icons';
+import { iconDataUrl, QUALITY_COLOR } from './icons';
 import type { PainterHostPresentation } from './painter_host';
 import { svgIcon } from './ui_icons';
 
@@ -179,8 +181,9 @@ export class BagsWindow {
     // otherwise using an item (e.g. a potion) snaps the list back to the top.
     const prevScrollTop = el.querySelector('.bag-grid')?.scrollTop ?? 0;
     el.innerHTML = `<div class="panel-title"><span>${esc(t('itemUi.bags.title'))}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('itemUi.bags.close'))}">${svgIcon('close')}</button></div>`;
+    el.appendChild(this.buildBagBar());
     // Skip the chip/search row entirely when the bag is empty: a full filter bar
-    // above a single "(empty)" line is just noise.
+    // above a grid of empty squares is just noise.
     if (world.inventory.length > 0) el.appendChild(this.buildFilterBar());
     const grid = document.createElement('div');
     grid.className = 'bag-grid';
@@ -198,6 +201,82 @@ export class BagsWindow {
       }
       this.close();
     });
+  }
+
+  // The classic bag bar: the implicit backpack, the 4 equip sockets, and the
+  // used/capacity counter. Clicking an equipped bag returns it to the inventory
+  // (the sim refuses when the shrunk budget cannot hold the items); a bag ITEM
+  // in the grid is equipped by clicking it (bagItemAction 'equipBag').
+  private buildBagBar(): HTMLElement {
+    const world = this.deps.world();
+    const model = buildBagBar(
+      world.bags,
+      world.inventory.length,
+      world.bagCapacity,
+      BACKPACK_SLOTS,
+      (itemId) => bagSlotsOf(ITEMS[itemId]),
+    );
+    const bar = document.createElement('div');
+    bar.className = 'bag-bar';
+    const backpack = document.createElement('div');
+    backpack.className = 'bag-socket backpack';
+    backpack.innerHTML = `<img class="item-icon q-common" src="${iconDataUrl('item', 'backpack')}" alt="" draggable="false">`;
+    backpack.setAttribute(
+      'aria-label',
+      `${t('hudChrome.bags.backpack')}, ${t('itemUi.tooltip.bagSlots', { slots: formatNumber(model.backpackSlots, { maximumFractionDigits: 0 }) })}`,
+    );
+    this.deps.attachTooltip(
+      backpack,
+      () =>
+        `<div class="tt-title">${esc(t('hudChrome.bags.backpack'))}</div><div class="tt-sub">${esc(t('itemUi.tooltip.bagSlots', { slots: formatNumber(model.backpackSlots, { maximumFractionDigits: 0 }) }))}</div>`,
+    );
+    bar.appendChild(backpack);
+    for (const socket of model.sockets) {
+      const item = socket.itemId ? ITEMS[socket.itemId] : undefined;
+      if (item) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `bag-socket q-${bagQualityKey(item)}`;
+        btn.innerHTML = this.deps.itemIcon(item);
+        btn.setAttribute(
+          'aria-label',
+          `${itemDisplayName(item)}, ${t('itemUi.tooltip.bagSlots', { slots: formatNumber(socket.slots, { maximumFractionDigits: 0 }) })}`,
+        );
+        btn.addEventListener('click', () => {
+          this.deps.world().unequipBag(socket.socket);
+          this.deps.hideTooltip();
+          this.render();
+        });
+        this.deps.attachTooltip(
+          btn,
+          () =>
+            `${this.deps.itemTooltip(item)}<div class="tt-sub">${esc(t('hudChrome.bags.unequipHint'))}</div>`,
+        );
+        bar.appendChild(btn);
+      } else {
+        const emptySocket = document.createElement('div');
+        emptySocket.className = 'bag-socket empty';
+        emptySocket.setAttribute('aria-label', t('hudChrome.bags.socketEmpty'));
+        this.deps.attachTooltip(
+          emptySocket,
+          () => `<div class="tt-sub">${esc(t('hudChrome.bags.socketEmpty'))}</div>`,
+        );
+        bar.appendChild(emptySocket);
+      }
+    }
+    const counter = document.createElement('span');
+    counter.className = `bag-capacity${model.used > model.capacity ? ' over' : ''}`;
+    const fmt = (n: number): string => formatNumber(n, { maximumFractionDigits: 0 });
+    counter.textContent = t('hudChrome.bags.capacity', {
+      used: fmt(model.used),
+      total: fmt(model.capacity),
+    });
+    counter.setAttribute(
+      'aria-label',
+      t('hudChrome.bags.capacityAria', { used: fmt(model.used), total: fmt(model.capacity) }),
+    );
+    bar.appendChild(counter);
+    return bar;
   }
 
   private persistFilter(): void {
@@ -279,7 +358,7 @@ export class BagsWindow {
   // without rebuilding the filter bar and stealing input focus.
   private fillGrid(grid: HTMLElement): void {
     const world = this.deps.world();
-    const model = buildBagGrid(world.inventory, (id) => ITEMS[id], this.filter);
+    const model = buildBagGrid(world.inventory, (id) => ITEMS[id], this.filter, world.bagCapacity);
     if (model.state === 'empty') {
       grid.innerHTML = `<div class="bag-empty">${esc(t('itemUi.bags.empty'))}</div>`;
       return;
@@ -293,9 +372,10 @@ export class BagsWindow {
       if (!item) continue;
       const row = document.createElement('button');
       row.type = 'button';
-      row.className = 'bag-item';
+      row.className = `bag-item q-${bagQualityKey(item)}`;
       const qColor = QUALITY_COLOR[bagQualityKey(item)] ?? QUALITY_DEFAULT_COLOR;
       const itemName = itemDisplayName(item);
+      row.style.setProperty('--bag-slot-quality', qColor);
       row.setAttribute(
         'aria-label',
         t('itemUi.bags.itemAria', {
@@ -303,7 +383,7 @@ export class BagsWindow {
           count: formatNumber(s.count, { maximumFractionDigits: 0 }),
         }),
       );
-      row.innerHTML = `${this.deps.itemIcon(item)}<span style="color:${qColor}">${esc(itemName)}</span><span class="bi-count">${s.count > 1 ? esc(t('itemUi.bags.stackCount', { count: formatNumber(s.count, { maximumFractionDigits: 0 }) })) : ''}</span>`;
+      row.innerHTML = `${this.deps.itemIcon(item)}<span class="bi-count">${s.count > 1 ? esc(t('itemUi.bags.stackCount', { count: formatNumber(s.count, { maximumFractionDigits: 0 }) })) : ''}</span>`;
       row.addEventListener('click', (ev) => {
         const action = bagItemAction(item, this.bagMode());
         switch (action) {
@@ -333,6 +413,11 @@ export class BagsWindow {
             break;
           case 'discardQuest':
             this.showDiscardItemPrompt(s.itemId, Math.max(1, Math.floor(s.count)));
+            break;
+          case 'equipBag':
+            this.deps.world().equipBag(s.itemId);
+            this.deps.hideTooltip();
+            this.render();
             break;
           case 'use':
             this.deps.world().useItem(s.itemId);
@@ -366,6 +451,14 @@ export class BagsWindow {
         return this.deps.itemTooltip(item) + extra;
       });
       grid.appendChild(row);
+    }
+    // Free-slot squares (unfiltered view only): the classic empty sockets that
+    // make the remaining capacity visible at a glance. Decorative, not focusable.
+    for (let i = 0; i < model.emptyCells; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'bag-item empty';
+      cell.setAttribute('aria-hidden', 'true');
+      grid.appendChild(cell);
     }
   }
 

@@ -2962,6 +2962,16 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': 'Scherbe mit Zählkerben',
   'entities.items.tally_shard.flavorText':
     '...Kerben in Fünfergruppen, tief geritzt, durchgestrichen, sooft die Zählung herumkam. hunderte Fünfer, bevor das Durchstreichen aufhört, und die letzte Reihe wurde nie vollendet...',
+  'entities.items.heartwood_splinter.name': 'Herzholzsplitter',
+  'entities.items.heartwood_splinter.flavorText':
+    'Warm anzufassen, lange nachdem der Baum, aus dem es stammt, aufgehört hat, sich zu bewegen.',
+  'entities.items.bloomcrown_pauldrons.name': 'Blütenkronen-Schulterplatten',
+  'entities.items.verdantguard_mantle.name': 'Mantel des Grünhüters',
+  'entities.items.linen_pouch.name': 'Leinenbeutel',
+  'entities.items.travelers_knapsack.name': 'Rucksack des Reisenden',
+  'entities.items.wolfhide_satchel.name': 'Wolfsfelltasche',
+  'entities.items.gravewoven_bag.name': 'Grabgewebte Tasche',
+  'entities.items.mistcallers_duffel.name': 'Seesack von Mistcaller',
   'entities.mobs.palefeeder.name': 'Bleichfresser',
   'entities.mobs.rootmaw.name': 'Wurzelmaul',
   'entities.mobs.the_witness_root.name': 'Die Zeugenwurzel',

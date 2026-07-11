@@ -322,7 +322,7 @@ describe('delta snapshots', () => {
     const snap = lastSnap(fc.sent);
     expect(snap).not.toBeNull();
     // a fresh session has an empty lastSent, so EVERY maybe() delta key rides the
-    // first snapshot (even the null-valued ones like party/trade); widened to all 31
+    // first snapshot (even the null-valued ones like party/trade); widened to all 33
     for (const key of ALL_DELTA_KEYS) {
       expect(snap.self, `self.${key} missing from first snapshot`).toHaveProperty(key);
     }
@@ -385,7 +385,7 @@ describe('delta snapshots', () => {
     const snap = lastSnap(fc.sent);
     // This single-tick test stays on the decay-safe subset: cds and the timer-backed
     // keys (delve/arena timers, delveDaily) can re-emit after a real sim.tick(), so the
-    // widened all-31 omission is proven by the no-op re-broadcast test instead.
+    // widened all-33 omission is proven by the no-op re-broadcast test instead.
     for (const key of DELTA_KEYS) {
       expect(snap.self, `self.${key} resent although unchanged`).not.toHaveProperty(key);
     }
@@ -688,7 +688,7 @@ describe('delta snapshots', () => {
     joinServer(server, fc2, 2, 'Testb');
     broadcast(server);
     const snapNew = lastSnap(fc2.sent);
-    // a fresh session always receives the full self state: all 31 delta keys
+    // a fresh session always receives the full self state: all 33 delta keys
     for (const key of ALL_DELTA_KEYS) {
       expect(snapNew.self, `self.${key} missing for fresh session`).toHaveProperty(key);
     }
@@ -1739,22 +1739,23 @@ describe('lockpick view rebuilds from events on the online client', () => {
 // ---------------------------------------------------------------------------
 // W0a: full self-snapshot delta round-trip gate.
 //
-// `selfWireJson` (server/game.ts) emits 31 heavy "delta" fields through a
+// `selfWireJson` (server/game.ts) emits 33 heavy "delta" fields through a
 // `maybe(key, value)` closure that ships a key only when its serialized form
 // changed since this session last received it; `applySnapshot` (src/net/
 // online.ts) mirrors each with `if (s.X !== undefined)` (or the inline
 // `s.X ?? e.X` form for `stats`/`weapon`). This is the single most fragile codec
-// in the workstream, so we pin: (a) the exact 31-key set against drift, (b) the
+// in the workstream, so we pin: (a) the exact 33-key set against drift, (b) the
 // terse-key -> IWorld-name rename map, (c) that every dirtied value round-trips
-// onto the correct decode target, and (d) that a no-op re-broadcast omits all 31
+// onto the correct decode target, and (d) that a no-op re-broadcast omits all 33
 // while the prior decoded value is preserved.
 // ---------------------------------------------------------------------------
 
-// The pinned set of the 31 `maybe(...)` delta keys, sorted. Cross-checked below
+// The pinned set of the 32 `maybe(...)` delta keys, sorted. Cross-checked below
 // against the live `maybe(...)` calls scraped from server/game.ts source, so a
 // 32nd unregistered delta key reddens this gate.
 const ALL_DELTA_KEYS = [
   'arena',
+  'bags',
   'buyback',
   'cds',
   'cosmetics',
@@ -1764,6 +1765,7 @@ const ALL_DELTA_KEYS = [
   'delveDaily',
   'dmarks',
   'drun',
+  'dstate',
   'duel',
   'equip',
   'gprof',
@@ -1804,6 +1806,7 @@ const TERSE_TO_IWORLD: Record<string, string> = {
   dcompanion: 'companionState',
   dmarks: 'delveMarks',
   drun: 'delveRun',
+  dstate: 'dialogState',
   duel: 'duelInfo',
   equip: 'equipment',
   gprof: 'gatheringProficiency',
@@ -1892,6 +1895,9 @@ function dirtyEveryDeltaField(): {
   if (merchant) merchant.pos = { ...p.pos };
   // hearth: global state, no player positioning needed to dirty it.
   sim.loadGreenpawHearth({ hunger: 50, smoke: 42 });
+  // dstate (PHAA-553): per-player dialogue disposition + a flag, non-default.
+  meta.dialogState.disposition.set('brother_greenpaw', 3);
+  meta.dialogState.flags.add('gp.promised_fuel');
 
   // Direct PlayerMeta fields.
   meta.inventory = [{ itemId: 'baked_bread', count: 3 }];
@@ -1997,6 +2003,11 @@ describe('full self-state snapshot delta fixture', () => {
     ]); // qlog -> questLog (Map)
     expect(client.questsDone.has('q_wolves')).toBe(true); // qdone -> questsDone (Set)
     expect(client.unlockedMilestones).toEqual(['milestone_test']); // milestones -> unlockedMilestones
+    // dstate -> dialogState() (private dialogStateMirror), via the IWorld read
+    expect(client.dialogState()).toEqual({
+      disposition: { brother_greenpaw: 3 },
+      flags: ['gp.promised_fuel'],
+    });
     // lockouts -> selfLockouts (private), via the raidLockouts() accessor
     expect(client.raidLockouts().map((l) => l.id)).toEqual(['nythraxis_boss_arena']);
     expect(client.partyInfo).not.toBeNull(); // party -> partyInfo
@@ -2029,7 +2040,7 @@ describe('full self-state snapshot delta fixture', () => {
     expect(client.activeLoadout).toBe(0);
   });
 
-  it('omits all 31 delta keys on a no-op re-broadcast and preserves the prior mirror', () => {
+  it('omits all 33 delta keys on a no-op re-broadcast and preserves the prior mirror', () => {
     const { server, fc, leader, memberPid } = dirtyEveryDeltaField();
     broadcast(server);
     const client = bareClient(leader.pid);
@@ -2068,9 +2079,9 @@ describe('full self-state snapshot delta fixture', () => {
 });
 
 describe('delta-key contract pins (anti-drift)', () => {
-  it('ALL_DELTA_KEYS contains exactly 31 unique keys in sorted order', () => {
-    expect(ALL_DELTA_KEYS).toHaveLength(31);
-    expect(new Set(ALL_DELTA_KEYS).size).toBe(31);
+  it('ALL_DELTA_KEYS contains exactly 33 unique keys in sorted order', () => {
+    expect(ALL_DELTA_KEYS).toHaveLength(33);
+    expect(new Set(ALL_DELTA_KEYS).size).toBe(33);
     expect([...ALL_DELTA_KEYS]).toEqual([...ALL_DELTA_KEYS].sort());
   });
 
@@ -2083,7 +2094,7 @@ describe('delta-key contract pins (anti-drift)', () => {
     for (let m = re.exec(src); m !== null; m = re.exec(src)) scraped.add(m[1]);
     expect(scraped.has('lockouts')).toBe(true); // the multi-line call IS captured
     expect(scraped.has('lrollg')).toBe(true); // group-visible loot roll strip (PHAA-568)
-    expect(scraped.size).toBe(31);
+    expect(scraped.size).toBe(33);
     expect([...scraped].sort()).toEqual([...ALL_DELTA_KEYS].sort());
   });
 

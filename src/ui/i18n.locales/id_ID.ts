@@ -942,6 +942,11 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': 'Pecahan Bertanda Hitungan',
   'entities.items.tally_shard.flavorText':
     '...tanda dalam kelompok lima, digores dalam, dicoret tiap kali hitungan genap. ratusan kelompok lima sebelum coretan berhenti, dan baris terakhir tak pernah selesai...',
+  'entities.items.linen_pouch.name': 'Kantong Linen',
+  'entities.items.travelers_knapsack.name': 'Ransel Pengembara',
+  'entities.items.wolfhide_satchel.name': 'Tas Kulit Serigala',
+  'entities.items.gravewoven_bag.name': 'Tas Anyaman Kubur',
+  'entities.items.mistcallers_duffel.name': 'Tas Duffel Mistcaller',
   'entities.items.footpad_jerkin.name': 'Jaket Perampok',
   'entities.items.forest_pink_armor_plate.name': 'Merah Muda Hutan',
   'entities.items.frayed_prayer_beads.name': 'Tasbih Doa Usang',
@@ -1238,6 +1243,11 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.old_cragmaw.name': 'Cragmaw Tua',
   'entities.mobs.old_greyjaw.name': 'Greyjaw Tua',
   'entities.mobs.pale_choir_acolyte.name': 'Akolit Paduan Pucat',
+  'entities.items.heartwood_splinter.name': 'Serpihan Kayu Teras',
+  'entities.items.heartwood_splinter.flavorText':
+    'Hangat saat disentuh, lama setelah pohon asalnya berhenti bergerak.',
+  'entities.items.bloomcrown_pauldrons.name': 'Pelindung Bahu Mahkota Mekar',
+  'entities.items.verdantguard_mantle.name': 'Jubah Penjaga Zamrud',
   'entities.mobs.palefeeder.name': 'Pemakan Pucat',
   'entities.mobs.pearlguard_sentinel.name': 'Sentinel Pengawal Mutiara',
   'entities.mobs.raised_bonewalker.name': 'Pejalan Tulang Bangkit',

@@ -914,6 +914,11 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': 'Skärva med Räknemärken',
   'entities.items.tally_shard.flavorText':
     '...märken i femtal, djupt ristade, överstrukna varje gång räkningen gick runt. hundratals femtal innan överstrykningarna upphör, och den sista raden blev aldrig färdig...',
+  'entities.items.linen_pouch.name': 'Linnepåse',
+  'entities.items.travelers_knapsack.name': 'Vandrarens Ryggsäck',
+  'entities.items.wolfhide_satchel.name': 'Vargskinnsväska',
+  'entities.items.gravewoven_bag.name': 'Gravvävd Väska',
+  'entities.items.mistcallers_duffel.name': 'Mistcallers Sjösäck',
   'entities.items.footpad_jerkin.name': 'Stråtrövarväst',
   'entities.items.forest_pink_armor_plate.name': 'Skogsrosa',
   'entities.items.frayed_prayer_beads.name': 'Slitna böneradband',
@@ -1210,6 +1215,11 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.old_cragmaw.name': 'Gamle Klippkäft',
   'entities.mobs.old_greyjaw.name': 'Gamle Gråkäft',
   'entities.mobs.pale_choir_acolyte.name': 'Blek körakolyt',
+  'entities.items.heartwood_splinter.name': 'Kärnvedsplitta',
+  'entities.items.heartwood_splinter.flavorText':
+    'Varm att röra vid, långt efter att trädet den kom från slutat röra sig.',
+  'entities.items.bloomcrown_pauldrons.name': 'Blomkronans Axelskydd',
+  'entities.items.verdantguard_mantle.name': 'Den Gröna Väktarens Mantel',
   'entities.mobs.palefeeder.name': 'Blekätaren',
   'entities.mobs.pearlguard_sentinel.name': 'Pärlvaktsväktare',
   'entities.mobs.raised_bonewalker.name': 'Uppstånden benvandrare',
