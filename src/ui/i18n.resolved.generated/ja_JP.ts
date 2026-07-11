@@ -85,8 +85,8 @@ export const ja_JP: EnTranslations = {
       "title": "タレント",
       "classTab": "クラス",
       "specTab": "専門化",
-      "secondaryTab": "Secondary: {cls}",
-      "secondaryCapHint": "Secondary tree: {spent}/{cap} points (capped at half your shared pool).",
+      "secondaryTab": "副職業: {cls}",
+      "secondaryCapHint": "副職業ツリー: {spent}/{cap}ポイント（共有プールの半分まで）。",
       "available": "使用可能",
       "spent": "使用済み",
       "pointSource": "レベル{first}から{cap}まで、レベルごとにタレントポイントを1獲得します。さらにポイントを得るにはレベルを上げてください。",
@@ -290,6 +290,9 @@ export const ja_JP: EnTranslations = {
       "minutes": "{m}分",
       "lessThanMinute": "1分未満",
       "lockedToast": "{raid}にロックされています。解除まで{time}。"
+    },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
     },
     "compass": {
       "N": "北",
@@ -629,6 +632,13 @@ export const ja_JP: EnTranslations = {
       "unassigned": "{item}は分配されず、誰でも入手できます。",
       "leaderOnly": "分配方式を変更できるのはパーティリーダーだけです。"
     },
+    "lootRollGroup": {
+      "pending": "待機中...",
+      "need": "ニード",
+      "greed": "グリード",
+      "pass": "パス",
+      "aria": "{item} のグループロール状況"
+    },
     "bags": {
       "filterGroupAria": "バッグをカテゴリーで絞り込む",
       "filterAll": "すべて",
@@ -643,7 +653,12 @@ export const ja_JP: EnTranslations = {
       "sortName": "名前",
       "searchPlaceholder": "アイテムを検索",
       "searchAria": "名前でバッグのアイテムを検索",
-      "noMatch": "条件に一致するアイテムはありません。"
+      "noMatch": "条件に一致するアイテムはありません。",
+      "capacity": "{used}/{total}",
+      "capacityAria": "バッグスロット使用数：{total}中{used}",
+      "backpack": "バックパック",
+      "socketEmpty": "空のバッグスロット",
+      "unequipHint": "クリックしてこのバッグを外す"
     },
     "raidConvert": {
       "toPartyDone": "レイドがパーティに戻りました。",
@@ -878,7 +893,89 @@ export const ja_JP: EnTranslations = {
           "hint": "コミュニティに助けを求める"
         }
       }
+    },
+    "calendar": {
+      "title": "イベントカレンダー",
+      "close": "カレンダーを閉じる",
+      "keybindLabel": "イベントカレンダー",
+      "prevMonth": "前の月",
+      "nextMonth": "次の月",
+      "dayAria": "{date}：イベント{count}件",
+      "noEvents": "この日に予定はありません。",
+      "allDay": "終日",
+      "bookedBy": "{name}が登録",
+      "deleteAria": "イベント「{title}」を削除",
+      "bookTitle": "ギルドイベントを登録",
+      "titlePlaceholder": "イベント名",
+      "notePlaceholder": "メモ（任意）",
+      "hourLabel": "時刻（UTC）",
+      "hourAllDay": "終日",
+      "addButton": "イベント登録",
+      "guildOnlyNote": "ギルドに加入すると一緒にイベントを計画できます。",
+      "result": {
+        "created": "イベントをギルドカレンダーに登録しました。",
+        "removed": "イベントをカレンダーから外しました。",
+        "notInGuild": "ギルドに所属していません。",
+        "notOfficer": "ギルドイベントを管理できるのは幹部とギルドマスターだけです。",
+        "badInput": "イベント名と有効な日付を入力してください。",
+        "calendarFull": "ギルドカレンダーは満杯です。",
+        "eventGone": "そのイベントはもうカレンダーにありません。"
+      },
+      "events": {
+        "raidCall": {
+          "title": "レイド招集",
+          "note": "守人が角笛を鳴らす。パーティーを集め、レイドへ。"
+        },
+        "marketDay": {
+          "title": "市の日",
+          "note": "商人が新しい品を待っている。ワールドマーケットを見て回るのに良い日。"
+        },
+        "fiestaNight": {
+          "title": "フィエスタナイト",
+          "note": "今夜の2v2フィエスタのリングは大賑わい。"
+        },
+        "arenaClash": {
+          "title": "アリーナ激突",
+          "note": "決闘者たちが灰燼の闘技場へ。キューに並んでラダーを駆け上がろう。"
+        },
+        "fishingDerby": {
+          "title": "フィッシングダービー",
+          "note": "釣り人が湖に並ぶ。竿を持って釣り話を交わそう。"
+        },
+        "delveDay": {
+          "title": "デルヴの日",
+          "note": "仲間を連れて、崩落した聖遺物庫に挑む好日。"
+        },
+        "moongateCommunion": {
+          "title": "月門の集い",
+          "note": "月半ばの月の下、巡礼者が月の聖域に集う。"
+        }
+      }
+    },
+    "trainer": {
+      "secondaryClassSet": "副職業として{cls}を習得しました。"
     }
+  },
+  "mailUi": {
+    "title": "レイヴンポスト",
+    "subtitle": "手紙の送受信",
+    "close": "郵便を閉じる",
+    "inbox": "受信箱",
+    "compose": "手紙を書く",
+    "noPostOffice": "郵便を利用するにはレイヴンポストに近づいてください。",
+    "emptyInbox": "届いている手紙はありません。誰かが手紙を書くとカラスが届けてくれます。",
+    "from": "{name} より",
+    "noSubject": "(件名なし)",
+    "take": "受け取る",
+    "delete": "削除",
+    "postageNote": "手紙の送付には{money}の郵便料金がかかります。",
+    "recipient": "宛先",
+    "subjectLabel": "件名",
+    "bodyPlaceholder": "手紙を書いてください...",
+    "send": "手紙を送る",
+    "needRecipientOrText": "送信する前に宛先を指定し、本文を入力してください。",
+    "openButton": "レイヴンポストへ案内してください。",
+    "openButtonAria": "レイヴンポストの郵便ウィンドウを開く"
   },
   "guide": {
     "brand": "World of ClaudeCraft",
@@ -905,9 +1002,10 @@ export const ja_JP: EnTranslations = {
       "delves": "デルヴ",
       "reference": "リファレンス",
       "controls": "操作方法",
+      "settings": "設定とパフォーマンス",
       "combat": "戦闘",
       "talents": "タレント",
-      "professions": "Professions",
+      "professions": "副職業",
       "arena": "アリーナとPvP",
       "glossary": "用語集",
       "wishIKnew": "知っておきたかったこと",
@@ -1076,6 +1174,66 @@ export const ja_JP: EnTranslations = {
       "controllerHeading": "コントローラーでは",
       "controllerBody": "ゲームパッドにも対応しており、コントローラーのサポートは初期設定で有効になっています。左スティックで移動し、右スティックでカメラを操作します。フェイスボタンとショルダーボタンで、アビリティ、ジャンプ、対話を行います。いずれかのウィンドウを開くと、メニュー操作用のオンスクリーンポインターが表示されます。ボタンの割り当て変更や、スティックのデッドゾーン、カメラ速度、振動、視点反転の調整は、オプションのコントローラー設定から行えます。"
     },
+    "settingsPage": {
+      "heading": "設定とパフォーマンス",
+      "intro": "見た目を最高にするのも、動作を最速にするのも自由自在。すぐに使える3つの構成と、各グラフィックオプションの本当の働きを紹介します。",
+      "wherePath": "このページの内容はすべてゲーム内にあります。Escキーを押して、グラフィック、インターフェース、パフォーマンスオーバーレイの各項目を確認してください。",
+      "fairnessTitle": "公平さは設計から",
+      "fairnessBody": "ここにあるオプションは、見た目と引き換えに強さを得るものではありません。設定を下げて削られるのは装飾的な美しさだけで、戦いに使う情報は決して失われません。デバフ、詠唱バー、パーティの体力、ダメージ数値は「低」から「ウルトラ」まで完全に同一です。控えめなマシンでのプレイが不利になることはありません。",
+      "loadoutsHeading": "すぐに使える3つの構成",
+      "loadoutsIntro": "お使いのマシンに近そうな構成から始めて、しっくりくるまでオプションを1つずつ調整していきましょう。",
+      "recommended": "おすすめ",
+      "whyLabel": "なぜ効くのか：",
+      "tagReload": "再読み込み後",
+      "fpsTitle": "FPS優先",
+      "fpsTagline": "古めのノートPC、内蔵グラフィック、バッテリー駆動でのプレイに。",
+      "fpsWhy": "グラフィック品質が全体を束ねるマスタースイッチで、描画品質は最も効き目の大きいスライダーです。70%にするとワールドの描画ピクセル数はおよそ半分になりますが、インターフェースは完全にくっきりしたままです。",
+      "balancedTitle": "バランス",
+      "balancedTagline": "ほとんどの環境にちょうどいい、まずおすすめしたい構成です。",
+      "balancedWhy": "「中」では本格的な影とフルマテリアルが有効になり、「高」ではアンビエントオクルージョンとブルームが加わります。ウルトラ未満のティアでは内蔵のセーフティネットが激しい戦闘での急な負荷を吸収してくれるため、バランス構成は手をかけなくても滑らかに動き続けます。",
+      "visualsTitle": "最高画質",
+      "visualsTagline": "強力なデスクトップマシンのためのスクリーンショットモード。",
+      "visualsWhy": "ウルトラは、ディスプレイが対応する最高解像度と最も豊かな照明で描画します。セーフティネットもオフになり、デスクトップ専用です。スマートフォンとアプリ版では上限が「高」になります。",
+      "value50to70": "50%から70%",
+      "value90to100": "90%から100%",
+      "value100": "100%",
+      "valueHighOrMedium": "ゲーミングPCなら「高」、ノートPCなら「中」",
+      "valueOnOptional": "オン（お好みで）",
+      "howHeading": "オプションの仕組み",
+      "factDetectTitle": "まずはゲームが自動調整",
+      "factDetectBody": "初回起動時にゲームがお使いの端末を読み取り、控えめなスマートフォンなら「低」、強力なデスクトップなら「ウルトラ」まで、無理のないティアを自動で選びます。自分で選んだ設定は常にそれより優先されます。",
+      "factReloadTitle": "オプションは2種類",
+      "factReloadBody": "グラフィック品質と「詳細」の各設定は再読み込み後に反映され、必要なときはパネルに「今すぐ再読み込み」ボタンが表示されます。それ以外のオプションは、変更した瞬間に適用されます。",
+      "factGovernorTitle": "内蔵のセーフティネット",
+      "factGovernorBody": "ウルトラ未満のすべてのティアでは、大規模な戦闘で負荷が跳ね上がった瞬間、ゲームが草やエフェクト、照明をさりげなく一時的に間引き、収まればすぐ元に戻します。ウルトラを選ぶことは、細部をひとつも削らないでほしいという意思表示になります。",
+      "advancedHeading": "「詳細」プリセット：自分だけの組み合わせ",
+      "advancedBody": "「詳細」プリセットは「高」ティアを出発点に、地形の詳細、草木の密度、エフェクトと照明、影の品質という4つの追加設定を開放します。本当に違いを実感できるところへフレームを振り分けられるようになります。グラフィック品質と同じく、変更は再読み込み後に適用されます。",
+      "advancedMixes": "おすすめの組み合わせを2つ。影の品質を「高」に保ちつつエフェクトと照明を「低」にすると、光の演出を抑えたくっきり軽快な画面になります。逆にすれば、ブルームの輝きを残したまま影を柔らかくできます。",
+      "tableHeading": "全オプション解説",
+      "colSetting": "設定項目",
+      "colDoes": "効果",
+      "colImpact": "FPSへの影響",
+      "impactNone": "なし",
+      "impactLight": "小",
+      "impactModerate": "中",
+      "impactHeavy": "大",
+      "rowGraphicsQuality": "全体を束ねるマスタースイッチです。段階を変えるたびに、解像度、影、マテリアル、草木、照明エフェクトがまとめて切り替わります。単独では最も大きな違いを生む項目です。",
+      "rowRenderQuality": "3Dワールドを低めの内部解像度で描画してから拡大します。インターフェースはくっきりしたままです。非力なマシンや高解像度の画面では、即座に効く最強のスライダーです。",
+      "rowFieldOfView": "画面に収まる世界の広さを、ズームの効いた55度から見渡すような100度まで調整できます。快適さで選ぶ項目ですが、視野を広げるほど描画量はわずかに増えます。",
+      "rowBrightness": "画面全体の露出を暗くも明るくも調整できます。純粋に好みの問題です。",
+      "rowWeather": "環境演出としての雨と雪です。雰囲気づくりだけの要素なので、オフにすると嵐の間の負荷が少し軽くなります。",
+      "rowBrowserEffects": "インターフェース自体の演出の豪華さを決めます。ガラスのぼかし、発光、メニューのアニメーションなどです。「自動」ならお使いのブラウザに合わせて調整され、どちらにしても3Dワールドには影響しません。",
+      "rowTerrainDetail": "豊かにブレンドされた地面のテクスチャにするか、シンプルで軽快な地形表示にするかを選びます。",
+      "rowFoliageDensity": "キャラクターの周囲に生える草の範囲と密度を調整します。",
+      "rowEffectsQuality": "ブルーム、アンビエントオクルージョン、そして実際に光を放つ松明や呪文の数を制御します。「詳細」の設定の中では、単独で最も大きく負荷を減らせる項目です。",
+      "rowShadowQuality": "影のくっきり具合を調整します。「低」でも影は残り、輪郭が柔らかくなるだけです。",
+      "rowFrostedPanels": "ウィンドウの背後にすりガラスのぼかしをかけます。美しい反面、非力なブラウザにはまさに応える種類のエフェクトです。昔ながらのくっきりした表示が好みなら、オフのままにしておきましょう。",
+      "rowReduceMotion": "インターフェースのアニメーションをなくし、ウィンドウを即座に表示します。第一にはアクセシビリティのためのオプションですが、パフォーマンスもわずかに向上します。",
+      "rowPerfOverlay": "FPSやフレームタイムなどを画面上に表示します。このページの設定を調整する間だけオンにして、終わったらまた非表示に戻しましょう。",
+      "tableFoot": "描画距離のスライダーやFPS上限をお探しですか。探す必要はありません。視界距離は各品質ティアに組み込まれており、フレームペーシングはお使いのディスプレイに従います。",
+      "mobileTitle": "スマートフォンとタブレットでは",
+      "mobileBody": "モバイルではゲームがより多くを自動で管理します。ティアの選択はゲーム側が行い、バッテリーの消耗と発熱を抑えるために解像度をわずかに低めに保ち、最上位ティアはデスクトップ専用のままにします。上記の構成はそのまま役立ちますが、スマートフォンでは上限が「高」になります。"
+    },
     "combat": {
       "intro": "戦闘はおなじみのクラシックMMOのルールに沿っています。うまく遊ぶために細かく学ぶ必要はまったくありません。これは戦いの仕組みの概要にすぎません。",
       "hitTitle": "すべての一撃が命中するわけではない",
@@ -1186,9 +1344,9 @@ export const ja_JP: EnTranslations = {
       "fullKitNote": "このクラスが習得できるすべてのアビリティを、使えるようになる順に並べています。どれがビルドの軸になるかはタレントが決めます。",
       "petsHeading": "デーモン",
       "petsNote": "ウォーロックはデーモンを召喚して共に戦わせます。それぞれ得意な役割が異なります。",
-      "professionsTitle": "Pair with a second class",
-      "professionsNote": "Any class above can also be taken as a profession, a secondary class that opens a second talent tree without dropping your primary role. See how professions work before you pick.",
-      "professionsLink": "Professions and multiclassing"
+      "professionsTitle": "副職業を組み合わせる",
+      "professionsNote": "上記のどのクラスも副職業として学べます。副職業は、メインの役割を保ったまま2つ目のタレントツリーを開く仕組みです。選ぶ前に副職業の仕組みを確認しましょう。",
+      "professionsLink": "副職業とマルチクラス"
     },
     "classHook": {
       "warrior": "受けた一撃すべてを次の一撃の糧に変える、執拗な前線の戦士。",
@@ -1491,19 +1649,19 @@ export const ja_JP: EnTranslations = {
       "specsBody": "どのクラスにもいくつかのスペシャライゼーションがあり、それぞれに固有のロールと特徴的な軸があります。ここではそのすべての概要を示します。全アビリティはクラスを開いて確認してください。"
     },
     "professionsPage": {
-      "heading": "Professions and multiclassing",
-      "intro": "A profession is a second class you train alongside your primary one, opening a second talent tree and a slice of its ability kit without leaving your first role behind.",
-      "whatHeading": "What a profession is",
-      "whatBody": "Every class can be taken as a profession by any other class. Pairing one adds a second talent tree and lets you borrow a few of its abilities, so a Warrior can dabble in the Priest's healing or a Mage pick up a Rogue's sting. Your primary class still sets your role, your resource, and your identity; the profession bends the build without replacing it.",
-      "howHeading": "How to pick one",
-      "howBody": "Professions open at level 10, the same moment your first talent tree unlocks. Visit a Profession Trainer in the hub town, open their dialog, and pick the class you want as your secondary.",
-      "costBody": "Your first pick is free. Changing to a different class later costs gold, and the fee steps up each time you swap, so an early decision is never punished while later reshuffles carry a small price.",
-      "resetTitle": "Nothing is locked in",
-      "resetNote": "You can refund points in either tree any time you are out of combat, and you can swap your secondary class at the same trainer for an escalating gold fee. An early profession pick is a first draft, not a commitment.",
-      "talentsHeading": "How talents split across the two trees",
-      "talentsBody": "A profession adds a whole second talent tree beside your primary one, but the two draw from the same pool of points. The secondary tree can hold at most half of that pool, so your primary class always stays the heart of the build. A point dropped into the secondary tree unlocks its abilities, and those abilities cast from your primary resource, not theirs: a Priest profession on a Warrior spends rage to heal, not mana.",
-      "trainersHeading": "Finding a trainer",
-      "trainersBody": "A Profession Trainer stands in the hub town near the shrine. Any single trainer can teach you any class as a profession (other than your primary), so one visit is enough to set or change your secondary."
+      "heading": "副職業とマルチクラス",
+      "intro": "副職業とは、メインクラスと並行して鍛える2つ目のクラスです。メインの役割を保ったまま、2つ目のタレントツリーとその一部のアビリティが使えるようになります。",
+      "whatHeading": "副職業とは何か",
+      "whatBody": "どのクラスも、他のどのクラスからでも副職業として選べます。副職業を組み合わせると2つ目のタレントツリーが増え、そのアビリティの一部を借りられます。戦士が僧侶の治療をかじったり、魔術師が盗賊の毒針を覚えたりできるのです。メインクラスはあなたの役割、リソース、そしてアイデンティティを決め続けます。副職業はビルドに幅を持たせるだけで、それを置き換えることはありません。",
+      "howHeading": "選び方",
+      "howBody": "副職業はレベル10で解放され、最初のタレントツリーが開くのと同じタイミングです。街の副職業トレーナーを訪ね、会話を開いて副職業にしたいクラスを選びましょう。",
+      "costBody": "最初の選択は無料です。後で別のクラスに変更するにはゴールドがかかり、変更するたびに手数料が上がっていきます。そのため早い決断が損になることはなく、後からの入れ替えには少しの代償が伴います。",
+      "resetTitle": "何も固定されない",
+      "resetNote": "戦闘外であればいつでも、どちらのツリーのタレントポイントも払い戻せます。また同じトレーナーのもとで副職業を変更することもでき、その手数料は徐々に上がっていきます。早い段階での副職業選びは、あくまで下書きであり、確定した決定ではありません。",
+      "talentsHeading": "2つのツリーへのタレント配分",
+      "talentsBody": "副職業はメインクラスの他にまるごと2つ目のタレントツリーを追加しますが、両者は同じポイントプールを共有します。副職業のツリーはそのプールの最大半分までしか使えないため、メインクラスは常にビルドの核であり続けます。副職業ツリーに振ったポイントはそのアビリティを解放しますが、そのアビリティが消費するのはメインクラスのリソースです。副職業のリソースではありません。ウォリアーが僧侶を副職業にした場合、消費するのはマナではなく怒りです。",
+      "trainersHeading": "トレーナーを見つける",
+      "trainersBody": "副職業トレーナーは、街の祠の近くに立っています。1人のトレーナーで、メインクラス以外のどのクラスも副職業として教えられるため、一度訪れるだけで副職業の設定や変更ができます。"
     },
     "arenaPage": {
       "heading": "アリーナとPvP",
@@ -1731,6 +1889,11 @@ export const ja_JP: EnTranslations = {
       "home": "概要に戻る"
     }
   },
+  "readableUi": {
+    "prompt": {
+      "read": "Read"
+    }
+  },
   "coldOpen": {
     "title": "空洞",
     "wakeBody": "温かい地面の上で、あなたは目を覚ます。自分の名も、一族のことも、どうやってここへ来たのかも思い出せない。前方の大きな壺から緑の光がにじみ出ており、その光はまるでずっとあなたを待っていたかのようだ。",
@@ -1870,6 +2033,9 @@ export const ja_JP: EnTranslations = {
     "realm": "レルム",
     "newCharacter": "新規キャラクター",
     "appearance": "外見",
+    "sex": "性別",
+    "sexMale": "男性",
+    "sexFemale": "女性",
     "class": "クラス",
     "name": "名前",
     "chromaOption": "カラー {n}",
@@ -2175,6 +2341,10 @@ export const ja_JP: EnTranslations = {
       "lockJammed": "錠は開けられないほど固まっている。もう一度デルヴを踏破すれば再挑戦できる。",
       "lastPickSnaps": "最後のピックが折れる。錠が固まった。もう一度デルヴを踏破しない限り、この宝箱は失われる。"
     },
+    "gathering": {
+      "nothingToHarvest": "その死骸には採集できるものが何もない。",
+      "alreadyHarvested": "この死骸はすでに採集済みだ。"
+    },
     "hearth": {
       "tooFar": "緑掌修道士のそばに行かねば、彼に餌をやれんぞ。",
       "noItems1": "……手ぶらじゃな、お前さん。燃えるもんか、腹の足しになるもんを持ってきな、話はそれからだ。",
@@ -2204,6 +2374,37 @@ export const ja_JP: EnTranslations = {
       "readoutMine": "あなたの住居：{plotId}。装飾：{decor}。",
       "readoutUsage": "/house place <1-{count}> <{kinds}>、/house remove <スロット>。",
       "helpLine": "住居：/house、/house claim、/house place <スロット> <種類>、/house remove <スロット>。"
+    },
+    "bags": {
+      "full": "バッグがいっぱいです。",
+      "socketsFull": "バッグスロットはすべて使用中です。",
+      "swapTooManyItems": "アイテムが多すぎてそのバッグに交換できません。",
+      "removeTooManyItems": "アイテムが多すぎてそのバッグを外せません。",
+      "tradeSpace": "取引失敗：バッグの空きが足りません。"
+    },
+    "bank": {
+      "tooFar": "銀行員から離れすぎている。",
+      "noQuestItems": "クエストアイテムは銀行に預けられない。",
+      "full": "銀行の保管庫がいっぱいだ。",
+      "expansionCapped": "これ以上銀行を拡張できない。",
+      "cannotAfford": "その銀行拡張の代金が足りない。",
+      "purchased": "追加の銀行スロットを購入した。"
+    },
+    "homestead": {
+      "outsideArea": "そこは開拓地の外だ。道を西に進んだFallow Acresを試してみるといい。",
+      "tooCloseGate": "門に近すぎる。もっと離れろ。",
+      "tooCloseWater": "水場に近すぎる。",
+      "tooCloseGraveyard": "墓地に近すぎる。",
+      "tooCloseWildlife": "野生動物に近すぎる。周りを片付けるか、もっと離れろ。",
+      "tooCloseRoad": "道に近すぎる。",
+      "tooCloseOther": "他人の開拓地に近すぎる。",
+      "questGate": "緑掌修道士はまだお前を送り出していない。まずは彼の用事を済ませろ。",
+      "alreadyOwn": "お前はすでに開拓地を持っている。",
+      "claimed": "この土地はお前のものだ。開拓地の権利が確定した。",
+      "readoutMine": "お前の開拓地は ({x}, {z}) にある。",
+      "readoutNoHomesteadQuest": "お前は開拓地を持っていない。緑掌修道士の用事をすべて終えれば手に入る。",
+      "readoutNoHomesteadHint": "お前は開拓地を持っていない。ホロウ低地の適した場所に立ち、/homestead claim と入力しろ。",
+      "helpLine": "開拓地：/homestead、/homestead claim。"
     }
   },
   "lockpickUi": {
@@ -2592,6 +2793,7 @@ export const ja_JP: EnTranslations = {
     "rendererFailed": "レンダラーを開始できません。再読み込みしてください。{error}",
     "enterTimeout": "世界に入れませんでした。接続がタイムアウトしました。ゲームサーバーは動作していますか？",
     "connectionLost": "サーバーとの接続が切断されました。",
+    "reconnecting": "サーバーとの接続が切断されました。再接続しています...",
     "connectionRejected": "サーバーが接続を閉じました。"
   },
   "errors": {
@@ -2621,6 +2823,7 @@ export const ja_JP: EnTranslations = {
       "notAuthenticated": "認証されていません。",
       "accountBanned": "このアカウントは利用停止されています。",
       "webLoginOnly": "ログインはゲームクライアントからのみ可能です。",
+      "crossSiteRejected": "クロスサイトリクエストは拒否されました。",
       "accountSuspended": "このアカウントは {date} まで停止されています。",
       "alreadyInWorld": "キャラクターは既に世界にいます。",
       "takenOver": "あなたのキャラクターは別のセッションに引き継がれました。",
@@ -2743,7 +2946,7 @@ export const ja_JP: EnTranslations = {
     "aria": "{className}のクラス詳細: 役割 {role}。開始ステータス: 筋力 {str}、敏捷性 {agi}、スタミナ {sta}、知力 {int}、精神力 {spi}。",
     "statBarAria": "{stat}: {value}/25",
     "classPairLabel": "{primary} / {secondary}",
-    "classPairAria": "{primary}, secondary {secondary}"
+    "classPairAria": "{primary}、副職業 {secondary}"
   },
   "mobilePreflight": {
     "title": "横向き全画面でプレイ",
@@ -3372,6 +3575,7 @@ export const ja_JP: EnTranslations = {
       "offGlobalCooldown": "グローバルクールダウン外",
       "friendlyTarget": "味方対象",
       "enemyTarget": "敵対象",
+      "selfOnly": "自分のみ",
       "damageRange": "{min}から{max}",
       "finisherDamage": "{base}にコンボポイントごと{perCombo}"
     },
@@ -3426,20 +3630,20 @@ export const ja_JP: EnTranslations = {
       "worldMarketAria": "ワールドマーケットを開く",
       "trainSecondary": "二手の職業を教えてください。",
       "trainSecondaryAria": "{name} に二手の職業を学ぶ",
-      "feedHearth": "I have something for the hearth.",
-      "feedHearthAria": "Feed the hearth",
+      "feedHearth": "炉にくべる物がある。",
+      "feedHearthAria": "炉にくべる",
       "trainerTitle": "副次職業",
       "trainerLevelLocked": "レベル {level} で解放されます。",
       "trainerCurrent": "現在",
       "trainerFree": "無料",
       "trainerPickAria": "{cls} を副次に訓練する: {cost}",
-      "trainerNeedsGold": "Not enough gold",
-      "trainerConfirmTitle": "Confirm secondary class",
-      "trainerConfirmBody": "Train as {cls} for {cost}?",
-      "trainerConfirmYes": "Yes, train me",
-      "trainerConfirmNo": "No, go back",
-      "trainerHowTitle": "How do secondary professions work?",
-      "trainerHowBody": "A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities translate their resource cost to your primary resource. Your first pick is free; changing later costs gold.",
+      "trainerNeedsGold": "ゴールドが足りません",
+      "trainerConfirmTitle": "副職業の確認",
+      "trainerConfirmBody": "{cost}で{cls}を習得しますか？",
+      "trainerConfirmYes": "はい、習得します",
+      "trainerConfirmNo": "いいえ、戻る",
+      "trainerHowTitle": "副職業の仕組みは？",
+      "trainerHowBody": "副職業はレベル{level}から、メインクラスに2つ目のタレントツリーとアビリティ一式を追加します。メインの役割はそのままで、副職業はタレントプールを共有し、最大{pct}%まで使用できます。副職業のアビリティは、リソースコストをメインのリソースに換算して消費します。最初の選択は無料で、以降の変更にはゴールドがかかります。",
       "accept": "受諾",
       "decline": "辞退",
       "continue": "続ける",
@@ -3536,7 +3740,8 @@ export const ja_JP: EnTranslations = {
       "drink": "飲み物",
       "tool": "道具",
       "potion": "ポーション",
-      "elixir": "エリクサー"
+      "elixir": "エリクサー",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "防御力",
@@ -3578,7 +3783,8 @@ export const ja_JP: EnTranslations = {
       "useManaPotion": "使用: 即座にマナを{amount}回復します。戦闘中に使用可能。クールダウン1分。",
       "clickUseInstant": "クリックして戦闘中に即使用",
       "clickUse": "クリックして使用",
-      "clickBuyback": "クリックして買い戻す"
+      "clickBuyback": "クリックして買い戻す",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "装備するにはレベル{level}が必要です。"
@@ -4863,6 +5069,21 @@ export const ja_JP: EnTranslations = {
       "monarch_crown_helm": {
         "name": "君主の王冠"
       },
+      "linen_pouch": {
+        "name": "リネンの小袋"
+      },
+      "travelers_knapsack": {
+        "name": "旅人のナップサック"
+      },
+      "wolfhide_satchel": {
+        "name": "狼皮のサッチェル"
+      },
+      "gravewoven_bag": {
+        "name": "墓織りの鞄"
+      },
+      "mistcallers_duffel": {
+        "name": "ミストコーラーのダッフルバッグ"
+      },
       "bristleback_maul": {
         "name": "ブリストルバックの大槌"
       },
@@ -5206,7 +5427,17 @@ export const ja_JP: EnTranslations = {
         "name": "残り火の球根"
       },
       "first_cutting": {
-        "name": "挿し木"
+        "name": "挿し木",
+        "flavorText": "A slip of living green from Brother Greenpaw, wrapped in damp moss. Once a homestead plot can be edited, this is the first thing you plant."
+      },
+      "greenpaw_bead": {
+        "name": "弾帯の数珠玉"
+      },
+      "keeper_coal": {
+        "name": "冷めることのない炭"
+      },
+      "willow_sprig": {
+        "name": "柳の小枝一本"
       },
       "witness_root_cincture": {
         "name": "証しの根の帯紐"
@@ -5214,6 +5445,24 @@ export const ja_JP: EnTranslations = {
       "shrine_diary_page": {
         "name": "破れた日記のページ",
         "flavorText": "……蝋燭で四十日を数えたところで、数えるのをやめた。ここの闇は今もあの方を忘れない、あの方がこの場所を忘れてしまっても。鷺が低く舞うのを見たら、灯守りに芯はまだ燃えていると伝えてくれ……"
+      },
+      "heartwood_splinter": {
+        "name": "心材の破片",
+        "flavorText": "触れると温かい、それが生まれた木が動かなくなってからずっと。"
+      },
+      "bloomcrown_pauldrons": {
+        "name": "花冠の肩当て"
+      },
+      "verdantguard_mantle": {
+        "name": "常磐の守護者のマント"
+      },
+      "worn_prayer_token": {
+        "name": "すり減った祈りの証",
+        "flavorText": "……片面が、自分のものではない親指に磨かれて滑らかになっている。ここに積まれた他の百枚近くと、同じ浅い溝が刻まれている、少なくともこの山はそう語っている。一本の親指で百枚も磨り減らせはしない。だが、大勢の親指がひとつの溝を磨くことなら、できる……"
+      },
+      "tally_shard": {
+        "name": "刻み跡の欠片",
+        "flavorText": "……五本ひと組で深く刻まれ、数え終えるたびに線で消されている。消された五本組が幾百とあり、それが途絶える、最後の一列だけは最後まで消されずに終わっている……"
       },
       "reliquary_plate_chest": {
         "name": "聖遺物庫衛兵のホーバーク"
@@ -5669,6 +5918,9 @@ export const ja_JP: EnTranslations = {
       },
       "the_witness_root": {
         "name": "証しの根"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {
@@ -5676,6 +5928,11 @@ export const ja_JP: EnTranslations = {
         "name": "商人",
         "title": "世界市場の守り手",
         "greeting": "世界市場へようこそ、{className}。王国中の冒険者から買うことも、自分の品を売ることもできます。"
+      },
+      "the_ravenpost": {
+        "name": "レイヴンポスト",
+        "title": "郵便の守り手",
+        "greeting": "手紙を出してください、{className}。私のカラスが、どこを旅していようとあなたの友を見つけ出します。同封の金貨も小包も、受け取られるまで安全に届けられます。"
       },
       "marshal_redbrook": {
         "name": "レッドブルック元帥",
@@ -5777,6 +6034,11 @@ export const ja_JP: EnTranslations = {
         "title": "聖遺物庫の番人",
         "greeting": "下の聖遺物庫がまた動いた。"
       },
+      "elder_yarrow": {
+        "name": "ヤロウ長老",
+        "title": "副職業トレーナー",
+        "greeting": "ビルドはすべて、ひとつの問いから始まる。どの副職業があなたを呼んでいる？"
+      },
       "tidewatcher_ondrel": {
         "name": "オンドレル・ヴェイン",
         "title": "潮見の番人",
@@ -5785,7 +6047,7 @@ export const ja_JP: EnTranslations = {
       "brother_greenpaw": {
         "name": "緑掌修道士",
         "title": "初代預言者（自称）",
-        "greeting": "よお、旅人。今日の壺はご機嫌かい、それとも俺の気のせいか……まあ来いよ、片付けなきゃならん神聖な用事が二つばかりある。ほとんど食い物のことだけどな。緑掌的にはそれも同じようなもんだ。",
+        "greeting": "また来たか、助かるよ……壺が一晩中ため息ばかりついてるんだ、神聖な用事がいくつか溜まっててな、前回と同じ波長だ。ちょいと来い……",
         "introLines": {
           "0": "うっ……よお。よお。来たのに気づかんかった、俺はどっか別の場所にいてな、緑いっぱいのとこに……あんた、寝起きみたいな顔してるな、友よ。その顔ならよく知ってる、俺なんざ大抵の日はその顔だ……",
           "1": "名は緑掌。緑掌修道士、初代預言者、自称のな、この壺に言わせりゃそんな肩書きは何の意味もねえ、で、壺の言う通りなんだが、それでも誰かが世話してやらんとな……",
@@ -5801,6 +6063,25 @@ export const ja_JP: EnTranslations = {
         "name": "墓守のファディック",
         "title": "放浪の番人",
         "greeting": "ファディックだ。まだ守るべき祠があるうちは、墓守を務める。俺はどこにも留まらん、ただ守るだけだ。毎晩、狼が休閑地の群れの周りを回っておる。長く回れば、回っている相手の形を覚えるものだ。あれはただの群れのままでいてもらいたい。"
+      },
+      "shade": {
+        "name": "シェイド",
+        "title": "旅の者",
+        "greeting": "ああ、あなたね。よければ座って、水は逃げやしないから。今日はもう食べた？食べなきゃだめよ。",
+        "introLines": {
+          "0": "雑用の最中を見られてしまったわね。この如雨露は気にしないで、ただの水よ。少し水をやりたいものは、いつだってあるものだから。",
+          "1": "私？名乗るほどの者じゃないわ。シェイド。歩いて、手の足りないところで手を貸すだけ。ずいぶん疲れて見えるわね。よければ、少し座っていって。"
+        }
+      },
+      "gate_bard": {
+        "name": "吟遊詩人ハルデン",
+        "title": "門前の弾き手",
+        "greeting": "一曲、銅貨一枚でどう？いらない？いいのよ、たいていの日はいらないと言われる。私はこの門のために弾くけれど、門は一度も財布に手を伸ばしてくれたことがない。"
+      },
+      "goodwife_orla": {
+        "name": "オルラ",
+        "title": "かつて根の空洞の者",
+        "greeting": "座っていいのよ。たいていの人は通り過ぎる。堂守はずっと前に私の名を台帳から消したの。消された名は、静かにしていることを覚える。まだここにいると、誰にも思い出させないように。"
       }
     },
     "quests": {
@@ -6637,6 +6918,47 @@ export const ja_JP: EnTranslations = {
           "0": {
             "label": "洞窟の肉片を収集"
           }
+        },
+        "dialog": {
+          "complain": "ついさっき下りてきたところだ。俺が穴から這い出るのを見ていただろう。",
+          "complainReply": "わかってる、友よ、わかってるんだ……壺は暦なんて持っちゃいないし、俺の腹もそうだ。だがそのブーツを見てみろ、もう一回くらい下りられるって顔してるだろう……急がなくていい。穴はどこにも行きゃしない。それがあいつの持ち味ってやつだ……",
+          "refuse": "いやだ。もう二度とあそこには下りない。",
+          "refuseReply": "ああ……あ、ああ、わかった。……わかったよ。それは……そうか。いや、もっともだ、友よ、もっともだ……壺も聞いてたし、ここだけの話、あいつも一目置いてると思うぜ。ほら、挿し木はとにかく持っていけ。一度は下りたんだ、それだけで大抵のやつより一回多い……"
+        }
+      },
+      "q_the_wavelength": {
+        "title": "波長に乗って",
+        "text": "挿し木はもうお前のもんだ、友よ、だからその先の話をしようや……二つあるが、どっちも試練ってほどじゃない、どっちかって言うと紹介だな。まず、壺を越えてエルダー・ヤロウに会ってこい、あの人はもう一つの生き方、まったく違う遊び方を教えてくれる、ここを通る魂は誰だって、その扉が開いてるって知っとくべきだ……それから、戻ってきて何か食わせてくれ、残り火の球根でも肉片でもどっちでもいい、俺はいつだって空っぽで、壺はいつだって煙を欲しがってる。そこだけは、終わることがないんだよ、緑掌的に言えばな。",
+        "completion": "そら……一瞬、部屋が濃くなったの感じただろ？あの方が気づいたんだ。それが全部のからくりだよ、友よ――お前が俺に食わせて、俺が煙を焚いて、あの方がちょっとだけこっちに耳を傾ける。難しいことなんて何もない。これから先もずっと変わらんよ。残り火の球根でも肉片でも、余分に持ってたらいつでも来い、炉は暦なんて持っちゃいない……あとな。ホロウへようこそ。そこ、ちゃんと言ってなかったなって、今気づいた。",
+        "objectives": {
+          "0": {
+            "label": "エルダー・ヤロウに会った"
+          },
+          "1": {
+            "label": "炉で餌をやった"
+          }
+        },
+        "dialog": {
+          "complain": "また使いっ走りか？穴から這い出たばっかりだぞ。",
+          "complainReply": "いやいや、聞いてくれ、これは洞窟仕事じゃない……今度のは楽な話で、歩いて、一回ちゃんと食わせるだけだ。俺が今まで頼んだ中で一番軽い頼みごとだよ、約束する、波長にかけてもな。",
+          "refuse": "自分の修業くらい自分で見つけるさ、ありがとよ。",
+          "refuseReply": "……そうか、まあいい。準備がまだの魂に、無理に学ばせることはできんからな。「まだ」じゃなくなったら、扉は開いてる……ほら、これは持ってけ、せめて顔を出してくれたお礼だ。"
+        }
+      },
+      "q_keep_him_lit": {
+        "title": "Keep Him Lit",
+        "text": "三回だ、友よ、それが数字だ……神聖な意味はない、ただ一つの恩を習慣に変えるにはちょうどいい数ってだけさ、習慣こそ俺が本当に信じてる宗教ってわけだ……戻ってきて、炉に三回、別々に餌をやってくれ、順番はどうでもいい、燠火球根でも洞窟の欠片でもどっちでもいい、そうすりゃお前が本当にここに留まるつもりなんだって信じられる、もっと大きな何かに向かう途中で立ち寄っただけじゃなくてな……",
+        "completion": "三回で三回……お前はもう訪問者じゃない、友よ、お前は何かを生かし続けてるんだ、それが全部だと俺は思う、誰にも聞かれちゃいないがな……ほら。持っといてくれ、何の役にも立たない、ただ覚えてるだけさ、俺たちみんなと同じでな……",
+        "objectives": {
+          "0": {
+            "label": "炉で三回餌をやった"
+          }
+        },
+        "dialog": {
+          "complain": "もう一度餌をやったじゃないか。それじゃ足りないのか？",
+          "complainReply": "一回は恩、友よ、三回は習慣だ、俺は恩ってやつに痛い目を見てきた……炉が必要としてるって話じゃない、炉は元気だ、俺がちゃんと世話してる、これはお前が自分の意志で戻ってくるかどうかって話だ、クエストの印に言われたからじゃなくてな……三回。急いで数えなくていい。",
+          "refuse": "三回に分けてなんてやらない。一回で十分だ。",
+          "refuseReply": "……ああ。ああ、わかった、友よ、それも十分公平な線引きだ……なら、これでもとにかく持っといてくれ、厳密には稼いだもんじゃないが、俺が渡すもののほとんどもそうだしな、波長ってやつは、俺が装ってるほど几帳面に数えちゃいないんだ……"
         }
       },
       "q_root_hollow_boars": {
@@ -6652,7 +6974,7 @@ export const ja_JP: EnTranslations = {
       "q_root_hollow_boars_ii": {
         "title": "根の空洞の清算",
         "text": "この職では認めるべきでないことを認めよう。五頭は楽観が過ぎた。下の巣からまだ湧いてくる。あと八頭で、記録を三度目に書き直さずに季を閉じられる。記録は書き直しを嫌う。俺もだ。",
-        "completion": "閉じた。署名した。綴じた。これで季は予定どおり進められる、暦を守る者が再び現れたのだからな。おまえは極めて小さな会衆を大いに助けた。念のため言っておくが、その会衆とは俺のことだ。",
+        "completion": "閉じた。署名した。綴じた。これで季は予定どおり進められる、暦を守る者が再び現れたのだからな。おまえは極めて小さな会衆を大いに助けた。念のため言っておくが、その会衆とは俺のことだ。この台帳自体は、この取り決めよりもさらに古い。会ったこともない手によって綴じられ、俺が数え上げるつもりのない数を記している。かつて、ここには実に几帳面な者がいたのだろう。俺はただ、その歩調に追いつこうとしているだけだ。",
         "objectives": {
           "0": {
             "label": "野生の猪を討伐"
@@ -6676,6 +6998,26 @@ export const ja_JP: EnTranslations = {
         "objectives": {
           "0": {
             "label": "森の狼を討伐"
+          }
+        }
+      },
+      "q_have_you_eaten": {
+        "title": "もう食べた？",
+        "text": "門のところに、銅貨で暮らす吟遊詩人がいてね、銅貨が入ったときにだけ食べる。そしてそれは、めったに入らない。温かいものが一杯、余分にあるの。彼のところへ届けてくれる？同情だなんて言わないで。余ったものだ、と言って。",
+        "completion": "おかえり。彼は食べた？よかった。それでいいの。あなたは？……食べていないわね、見ればわかる。なら、座って。善いものであるのに、偉くある必要はないの。偉さは優しさではないのだから。さあ、食べて。",
+        "objectives": {
+          "0": {
+            "label": "温かい食事を吟遊詩人へ届けた"
+          }
+        }
+      },
+      "q_someone_your_own_size": {
+        "title": "身の丈に合う相手を",
+        "text": "根の空洞の近くに、世に冷たくされてきた女がいるの。彼女の名は台帳から消され、人は消された名を、まるで聞こえないもののように扱う。しばらく、そばに座ってあげて。何かを直す必要はないの。ただ、彼女と同じ身の丈でいてあげて。",
+        "completion": "いてくれたのね。彼女は大したことじゃないと言うでしょう。でも大したことだった、本当よ。さあ、これをあなたに。私が好きな柳の小枝。何の役にも立たないわ。ただ、誰にも強いられていないのに優しくしてくれたことを、覚えているだけ。",
+        "objectives": {
+          "0": {
+            "label": "オルラのそばに少し座った"
           }
         }
       }
@@ -6852,15 +7194,23 @@ export const ja_JP: EnTranslations = {
       }
     },
     "itemSets": {
+      "boundstone_vanguard": {
+        "name": "バウンドストーン先鋒隊",
+        "bonus3": "攻撃と詠唱速度が15%上昇します。"
+      },
       "crownforged": {
         "name": "冠鋳の戦装束",
         "bonus2": "攻撃力が40上昇します。",
-        "bonus3": "筋力が15、スタミナが15上昇します。"
+        "bonus3": "筋力が15、スタミナが15、攻撃と詠唱速度が15%上昇します。"
       },
       "deathlord": {
         "name": "死王の戦装束",
         "bonus2": "攻撃力が40上昇します。",
         "bonus3": "筋力が15、スタミナが15上昇します。"
+      },
+      "greyjaw_stalker": {
+        "name": "グレイジョウ・ストーカーの装備",
+        "bonus3": "攻撃と詠唱速度が15%上昇します。"
       },
       "necromancers": {
         "name": "死霊術師の法衣",
@@ -6870,22 +7220,44 @@ export const ja_JP: EnTranslations = {
       "nighttalon": {
         "name": "夜爪の革装束",
         "bonus2": "攻撃力が40上昇します。",
-        "bonus3": "敏捷性が15、クリティカル率が2%上昇します。"
+        "bonus3": "敏捷性が15、クリティカル率が2%、攻撃と詠唱速度が15%上昇します。"
       },
       "soulflame": {
         "name": "魂炎の法衣",
         "bonus2": "ダメージによる詠唱押し戻しを50%軽減します。",
-        "bonus3": "詠唱中にダメージを受けても押し戻されません。"
+        "bonus3": "詠唱中にダメージを受けても押し戻されず、攻撃と詠唱速度が15%上昇します。"
       },
       "stormcallers": {
         "name": "嵐呼びの法衣",
         "bonus2": "ダメージによる詠唱押し戻しを50%軽減します。",
-        "bonus3": "詠唱中にダメージを受けても押し戻されません。"
+        "bonus3": "詠唱中にダメージを受けても押し戻されず、攻撃と詠唱速度が15%上昇します。"
+      },
+      "vale_arcanist": {
+        "name": "ヴェイル秘術師の法衣",
+        "bonus3": "攻撃と詠唱速度が15%上昇します。"
       },
       "wyrmshadow": {
         "name": "竜影の装束",
         "bonus2": "攻撃力が40上昇します。",
         "bonus3": "敏捷性が15、クリティカル率が2%上昇します。"
+      }
+    },
+    "readables": {
+      "torn_ledger_page": {
+        "title": "破れた台帳",
+        "pages": {
+          "0": "根の空洞、休ませると記帳。休閑地、休ませると記帳。モスバンクの湖、こちらが記そうと記すまいと、勝手に休んでおる。台帳の求めるまま、署名し日付を入れた。",
+          "1": "今季ここまでの集計。道の敷石を突き破って芽が三本、俺のどの暦にも載っておらん。抜いて消すのはやめた。インクが乾くより早う戻ってくるし、そのインクは安くなかった。",
+          "2": "俺の後にこれを継ぐ者への覚書。猪を数えよ、狼を数えよ、日を数えよ。緑だけは数えるな。あれは数え返してくる。そして、こちらが止まったところでは止まらん。"
+        }
+      },
+      "keepers_marginalia": {
+        "title": "守り手の欄外書き",
+        "pages": {
+          "0": "賛美歌のすり切れた聖歌集の余白に残されていた。その筆跡は速い、歩きながら書く手が速いのと同じように。",
+          "1": "狼どもは木立の際から休閑地を回る。いつも同じ輪、いつも右回り。長く回れば、回っている相手の形を覚える。俺もそうだ。そして大地も、そうなのだと思う。",
+          "2": "これを読んでいるなら、あんたは歩みを止めたわけだ。俺がついぞ覚えられなかった、たった一つのことをな。少し休め。外域は逃げやせん。それがまあ、外域の厄介なところなんだが。"
+        }
       }
     }
   },

@@ -62,3 +62,18 @@ design input for the ability-resolution ticket that actually pays costs at
 cast time (child of PHAA-461, GW1 build system). Flagging here per the
 ticket's ask to "propose and document the resource-translation rule" before
 that ticket's implementation starts.
+
+## Implementation (PHAA-467, merged via PR #73, commit f01d192)
+
+Implemented in `src/sim/combat/ability_cost.ts` and wired into
+`Sim.resolvedAbility` (the single choke point every cost check/spend reads),
+so affordability and the spend stay in lockstep. Stat-neutral
+`nativeMaxResource(cls, level)` lives in `src/sim/entity.ts`; it uses the
+secondary class's own `baseMana + manaPerLevel * (level - 1)` (no live
+intellect term), so the SAME secondary ability costs the same fraction of
+the bar regardless of the primary class's stats. The translation clamps
+`translatedCost` to `[1, player.maxResource]` and guards divide-by-zero on
+a degenerate `nativeMax`. Druid form toggles stay exempt (they swap the
+bar, not spend from it). Tests: `tests/ability_cost_translation.test.ts`
+(15 tests, cross-type translation in both directions, same-type no-op,
+stat-neutral nativeMax, clamp/floor edge cases, druid-form exemption).

@@ -36,10 +36,12 @@ vi.mock('../../src/admin/api', () => ({
 
 import { t } from '../../src/admin/i18n';
 import ChatFilter from '../../src/admin/pages/ChatFilter.svelte';
+import { grantPermissions } from './_grant';
 
 beforeEach(() => {
   apiPost.mockReset();
   apiPost.mockResolvedValue({});
+  grantPermissions();
 });
 
 describe('ChatFilter', () => {

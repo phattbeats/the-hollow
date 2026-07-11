@@ -4,6 +4,7 @@ import { verifyChallenge } from '../src/sim/client_challenge';
 import { MECH_CHROMAS, mechChromaItemId, mechChromaSkinIndex } from '../src/sim/content/skins';
 import type { TalentAllocation } from '../src/sim/content/talents';
 import { DELVES, DUNGEONS, zoneAt } from '../src/sim/data';
+import { serializeDialogState } from '../src/sim/dialog/dialog_commands';
 import { parseRelayCommand } from '../src/sim/discord_relay';
 import type { PickAction } from '../src/sim/lockpick';
 import { parseMoveInputFrame } from '../src/sim/move_input';
@@ -17,6 +18,7 @@ import {
   EQUIP_SLOTS,
   type EquipSlot,
   emptyMoveInput,
+  type InvSlot,
   MAX_LEVEL,
   RUN_SPEED,
   type SimEvent,
@@ -27,6 +29,8 @@ import { offensiveName } from './auth';
 import type {
   BotDetector,
   BotTrackingContext,
+  ConfigApplyResult,
+  ConfigField,
   SessionRuntimeSnapshot,
   SuspiciousPlayer,
 } from './bot_detector/contract';
@@ -41,6 +45,7 @@ import {
   loadGreenpawHearthState,
   loadHomesteadState,
   loadHousingState,
+  loadMailState,
   loadMarketState,
   markAccountQuestComplete,
   openPlaySession,
@@ -51,14 +56,17 @@ import {
   saveGreenpawHearthState,
   saveHomesteadState,
   saveHousingState,
+  saveMailState,
   saveMarketState,
 } from './db';
 import { enqueueActivity } from './discord_activity';
 import { discordFlairForAccount } from './discord_db';
 import { enqueueRelay } from './discord_relay';
 import { formatDuration } from './duration';
+import { gameMetricsCounters } from './game_signals';
 import { IpBlockList } from './ip_block';
 import { loadActiveBlockedIps } from './ip_block_db';
+import { LINKDEAD_GRACE_MS, planJoin } from './linkdead';
 import { type LiveSharedIp, sharedIpsFromLiveSessions } from './live_shared_ips';
 import {
   forceCharacterRename,
@@ -66,7 +74,11 @@ import {
   muteAccountChat,
   recordInGameAction,
 } from './moderation_db';
-import { type ModerationHost, ModerationService } from './moderation_service';
+import {
+  canAttemptModerationCommands,
+  type ModerationHost,
+  ModerationService,
+} from './moderation_service';
 import { generatePlantLine, isPlantLlmConfigured } from './plant_llm';
 import { REALM, REALM_PUBLIC_ORIGIN } from './realm';
 import { createSerialWriter } from './serial_writer';
@@ -116,6 +128,8 @@ const CHAT_COOLDOWN_SECONDS = 20;
 const CHAT_RATE_VIOLATIONS_FOR_COOLDOWN = 3;
 const WHO_RESULT_LIMIT = 50;
 const MAX_ACTIVE_SESSIONS_PER_ACCOUNT = 2;
+// WS protocol-level ping cadence; see the keepalive interval in start().
+const WS_KEEPALIVE_PING_MS = 30_000;
 const RESTART_COUNTDOWN_TOTAL_SECONDS = 600;
 const RESTART_COUNTDOWN_STEPS = [
   { atSeconds: 0, text: 'Server restart in 10 minutes.' },
@@ -126,7 +140,6 @@ const RESTART_COUNTDOWN_STEPS = [
   { atSeconds: 590, text: 'Server restart in 10 seconds.' },
   { atSeconds: 600, text: 'Server restarting now.' },
 ] as const;
-const ANTIBOT_ENFORCE = process.env.ANTIBOT_ENFORCE === '1';
 // Clients stream movement intent every 50ms. If that stream goes silent while
 // the last packet held a key down, stop applying it instead of turning/running
 // forever. 750ms leaves room for normal jitter and short browser stalls.
@@ -168,6 +181,7 @@ type ClientMessage = Record<string, unknown> & {
   mode?: string;
   n?: string;
   name?: string;
+  node?: string;
   npc?: number;
   objectId?: number;
   price?: number;
@@ -240,12 +254,15 @@ const HEAVY_SELF_REFRESH_TICKS = 40; // ~2 s backstop; staggered per session so 
 const HEAVY_SELF_CMDS = new Set<string>([
   'equip',
   'unequip_item',
+  'equip_bag',
+  'unequip_bag',
   'use',
   'discard',
   'buy',
   'sell',
   'buyback',
   'loot',
+  'harvestCorpse',
   'pickup',
   'interact',
   'accept',
@@ -308,6 +325,15 @@ export interface ClientSession {
   joinedAt: number;
   dbSessionId: number | null; // play_sessions row, set once the insert lands
   left: boolean; // set in leave(); guards against the open-session insert landing after disconnect
+  // linkdead grace: true while the socket has dropped but the character is
+  // held in-world awaiting a reconnect. graceUntil is the epoch-ms deadline
+  // at which the held session is fully torn down via leave().
+  linkdead: boolean;
+  graceUntil: number;
+  // true while a keepalive ping is outstanding; the pong handler (attached
+  // next to the close/error handlers in main.ts) clears it. Still set at the
+  // next sweep means the socket is black-holed: terminate into the grace.
+  awaitingPong: boolean;
   chatTokens: number;
   chatLastRefill: number;
   chatLastRateError: number;
@@ -355,6 +381,9 @@ export interface ClientSession {
   // IP address at join time (from requestMetadata); used for per-IP session counting.
   ip: string;
   isAdmin: boolean;
+  // Expanded admin permissions, snapshotted at join like isAdmin (a role change
+  // applies at the next login). Gates the in-game moderation commands.
+  adminPermissions: ReadonlySet<string>;
   // Seed the client sends at auth; signs its challenge answers.
   clientSeed: string;
   // Behavioral bot-detection state. Ephemeral — reset on every join.
@@ -487,6 +516,7 @@ function identityFields(e: Entity): Record<string, unknown> {
   const out: Record<string, unknown> = { k: e.kind, tid: e.templateId, nm: e.name, lv: e.level };
   if (e.skinCatalog === 'mech') out.cat = 'mech';
   if (e.skin) out.sk = e.skin;
+  if (e.sex === 'f') out.sx = 'f'; // PHAA-501: absent for 'm' (the default) to keep the wire lean
   if (e.mainhandItemId) out.mh = e.mainhandItemId; // equipped mainhand → held weapon model (render-only)
   // Full worn set, for the inspect-another-player window. Players only and only
   // when something is equipped; rides the identity record (first appearance +
@@ -670,6 +700,7 @@ export class GameServer {
   private wireCache = new Map<number, EntityWireCache>();
   private lastWireSweepTick = 0;
   private interval: NodeJS.Timeout | null = null;
+  private keepaliveInterval: NodeJS.Timeout | null = null;
   private discordFlairInterval: NodeJS.Timeout | null = null;
   private discordFlairRefreshing = false; // overlap guard for the refresh cycle
   private relayCooldown = new Map<number, number>(); // accountId -> last "!" relay post (ms)
@@ -683,6 +714,7 @@ export class GameServer {
   // older snapshot over a newer one. Snapshots are captured inside the queued
   // thunk, so commit order equals capture order equals freshness order.
   private readonly enqueueMarketWrite = createSerialWriter();
+  private readonly enqueueMailWrite = createSerialWriter();
   // Serializes writes of the single global Housing blob (same freshness-order
   // rationale as the market writer above).
   private readonly enqueueHousingWrite = createSerialWriter();
@@ -703,6 +735,13 @@ export class GameServer {
   private readonly startedAt = Date.now();
   private peakOnline = 0;
   private tickMsAvg = 0;
+  // Achieved sim-tick rate meter for the /metrics exporter (woc_sim_tick_hz):
+  // counts committed sim ticks against wall-clock over a ~1s window. Stays null
+  // for the first window (uptime warmup); the exporter maps that null to 0. This
+  // is server-side wall-clock only (Date.now), never read by the deterministic sim.
+  private simTickRateCount = 0;
+  private simTickRateWindowStartMs = 0;
+  private simTickHzValue: number | null = null;
   // Rolling per-phase loop timing, localizes a stutter to a phase. Always-on
   // (the hot path allocates nothing); read via perfProfile() for admin/ops.
   private readonly tickProfiler = new TickProfiler([
@@ -955,6 +994,7 @@ export class GameServer {
   start(): void {
     let last = process.hrtime.bigint();
     let acc = 0;
+    this.simTickRateWindowStartMs = Date.now();
     this.interval = setInterval(() => {
       const now = process.hrtime.bigint();
       let dt = Number(now - last) / 1e9;
@@ -979,6 +1019,7 @@ export class GameServer {
         this.clearStaleInputs();
         lap('stale');
         const events = this.sim.tick();
+        this.simTickRateCount++;
         lap('tick');
         this.routeEvents(this.interceptPlantUtterances(events));
         this.detectActivity(events);
@@ -987,6 +1028,7 @@ export class GameServer {
         lap('antibot');
         acc -= DT;
       }
+      this.expireLinkdeadSessions();
       this.broadcastSnapshots();
       lap('broadcast');
       this.tickProfiler.add('bcastGrid', Number(this.bcastGridNs) / 1e6);
@@ -1000,6 +1042,15 @@ export class GameServer {
       const tickMs = Number(process.hrtime.bigint() - now) / 1e6;
       this.tickProfiler.commit(tickMs);
       this.maybeLogTickPerf(tickMs);
+      // Close the achieved-Hz window once ~1s of wall-clock has elapsed: sim ticks
+      // per real second, for woc_sim_tick_hz. Cheap (one Date.now per loop pass).
+      const rateNowMs = Date.now();
+      const rateElapsedMs = rateNowMs - this.simTickRateWindowStartMs;
+      if (rateElapsedMs >= 1000) {
+        this.simTickHzValue = round2((this.simTickRateCount * 1000) / rateElapsedMs);
+        this.simTickRateCount = 0;
+        this.simTickRateWindowStartMs = rateNowMs;
+      }
       this.tickMsAvg =
         this.tickMsAvg === 0 ? tickMs : this.tickMsAvg + TICK_EMA_ALPHA * (tickMs - this.tickMsAvg);
       this.saveTimer += dt;
@@ -1007,6 +1058,7 @@ export class GameServer {
         this.saveTimer = 0;
         void this.saveAll('autosave');
         void this.saveMarket();
+        void this.saveMail();
         void this.saveGreenpawHearth();
       }
       // Housing persists on change (claims are rare and the blob is tiny).
@@ -1025,11 +1077,48 @@ export class GameServer {
     this.discordFlairInterval = setInterval(() => {
       void this.refreshAllDiscordFlair();
     }, DISCORD_FLAIR_REFRESH_MS);
+    this.keepaliveInterval = setInterval(() => {
+      this.pingLiveSessions();
+    }, WS_KEEPALIVE_PING_MS);
+  }
+
+  // Protocol-level WS liveness sweep, every WS_KEEPALIVE_PING_MS. Two jobs:
+  // the pings keep NAT/proxy idle timers from silently dropping a quiet
+  // connection (an AFK player's client sends no input frames, the classic
+  // "kicked while AFK" report), and a peer that missed a whole ping interval
+  // (no pong; browsers answer automatically) is a black-holed socket (no
+  // FIN/RST ever arrives, e.g. a mobile WiFi-to-cellular handoff), so it is
+  // terminated into the linkdead grace. Without the pong check, a re-auth for
+  // the same character keeps hitting 'character already in world' until TCP
+  // gives up on the dead socket, which can take minutes; with it, the
+  // client's reconnect backoff resumes within a ping interval or two (the
+  // client tolerates that rejection mid-reconnect, src/net/reconnect_policy.ts).
+  pingLiveSessions(): void {
+    for (const session of this.clients.values()) {
+      if (session.linkdead || session.ws.readyState !== 1) continue;
+      if (session.awaitingPong) {
+        const ws = session.ws;
+        try {
+          ws.terminate();
+        } catch {
+          /* socket already torn down */
+        }
+        this.socketClosed(session, ws);
+        continue;
+      }
+      session.awaitingPong = true;
+      try {
+        session.ws.ping();
+      } catch {
+        /* socket torn down mid-iteration */
+      }
+    }
   }
 
   stop(): void {
     if (this.interval) clearInterval(this.interval);
     if (this.discordFlairInterval) clearInterval(this.discordFlairInterval);
+    if (this.keepaliveInterval) clearInterval(this.keepaliveInterval);
   }
 
   // Refresh one player's linked-Discord flair (status tier + PFP + nickname +
@@ -1120,10 +1209,13 @@ export class GameServer {
   private runAntibotTick(): void {
     const now = Date.now();
     for (const session of this.clients.values()) {
+      // Enforcement gating lives in the detector's own runtime config (which
+      // defaults to the ANTIBOT_ENFORCE env var and is operator-tunable live),
+      // so the host-side kill-switch parameter is always granted here.
       const action = this.botDetector.handleTick(
         session.botTrackingContext,
         now,
-        ANTIBOT_ENFORCE,
+        true,
         this.captureBotDetectionSnapshot(session, now),
       );
       if (action === 'kick') {
@@ -1297,21 +1389,40 @@ export class GameServer {
         accountCosmetics?: AccountCosmetics;
         chatStrikes?: number;
         isAdmin?: boolean;
+        adminPermissions?: readonly string[];
         clientSeed?: string;
       } = {},
   ): ClientSession | { error: string } {
-    if (this.sessionsByCharacterId.has(characterId)) return { error: 'character already in world' };
     // Anti-bot: cap simultaneous online characters per account. Accounts can
     // still own up to 10 characters; this only limits live sessions. GMs are
-    // exempt for supervision.
-    if (!isGm) {
-      let activeForAccount = 0;
-      for (const s of this.clients.values()) {
-        if (s.accountId === accountId) activeForAccount++;
-      }
-      if (activeForAccount >= MAX_ACTIVE_SESSIONS_PER_ACCOUNT) {
-        return { error: 'too many characters on this account are already in the world' };
-      }
+    // exempt for supervision. Linkdead sessions are special-cased (planJoin):
+    // the same character resumes its held session, and a different character
+    // on the account displaces them instead of being blocked by them.
+    const sameCharacter = this.sessionsByCharacterId.get(characterId) ?? null;
+    let liveOtherSessions = 0;
+    const linkdeadOthers: ClientSession[] = [];
+    for (const s of this.clients.values()) {
+      if (s.accountId !== accountId || s === sameCharacter) continue;
+      if (s.linkdead) linkdeadOthers.push(s);
+      else liveOtherSessions++;
+    }
+    const plan = planJoin({
+      accountId,
+      isGm,
+      sameCharacter,
+      liveOtherSessions,
+      maxPerAccount: MAX_ACTIVE_SESSIONS_PER_ACCOUNT,
+    });
+    if (plan.action === 'reject') return { error: plan.error };
+    if (plan.action === 'resume' && sameCharacter) {
+      return this.resumeSession(sameCharacter, ws, cls, meta);
+    }
+    // Logging in on a different character ends the account's linkdead grace
+    // now instead of at the end of its window: the player has moved on, so
+    // the held character logs out. leave() removes it from `clients`
+    // synchronously, so the new session's slot accounting stays correct.
+    for (const s of linkdeadOthers) {
+      void this.leave(s, 'replaced by a new character login');
     }
     const pid = this.sim.addPlayer(cls, name, {
       state: state ?? undefined,
@@ -1348,6 +1459,9 @@ export class GameServer {
       joinedAt: Date.now(),
       dbSessionId: null,
       left: false,
+      linkdead: false,
+      graceUntil: 0,
+      awaitingPong: false,
       chatTokens: CHAT_RATE_BURST,
       chatLastRefill: Date.now() / 1000,
       chatLastRateError: 0,
@@ -1369,6 +1483,11 @@ export class GameServer {
       sentEnts: new Map(),
       ip: sessionIp,
       isAdmin: meta.isAdmin ?? false,
+      // Permissions come only from the explicit set main.ts computes from the
+      // account's roles; no is_admin fallback (fail closed, matching
+      // staff_db.effectiveAdminRoles). A staff member with zero permissions has
+      // no in-game moderation commands.
+      adminPermissions: new Set(meta.adminPermissions ?? []),
       clientSeed: meta.clientSeed ?? '',
       botTrackingContext,
       spectating: null,
@@ -1419,6 +1538,105 @@ export class GameServer {
     return session;
   }
 
+  // Rebind a linkdead session to a fresh socket. The character never left the
+  // world, so this only swaps the transport, refreshes the per-login account
+  // metadata, and resets the per-connection wire/input state so the new client
+  // receives a full snapshot (its input sequence also restarts at 1). The play
+  // session row stays open (the player was online the whole time) and no
+  // presence announce fires (friends never saw them leave).
+  private resumeSession(
+    session: ClientSession,
+    ws: WebSocket,
+    cls: import('../src/sim/types').PlayerClass,
+    meta: Parameters<GameServer['join']>[7] = {},
+  ): ClientSession {
+    session.ws = ws;
+    session.linkdead = false;
+    session.graceUntil = 0;
+    session.awaitingPong = false;
+    const sessionIp = meta.ip ?? '';
+    if (sessionIp !== session.ip) {
+      this.releaseIpSession(session.ip);
+      session.ip = sessionIp;
+      this.ipSessionCounts.set(sessionIp, (this.ipSessionCounts.get(sessionIp) ?? 0) + 1);
+    }
+    session.clientSeed = meta.clientSeed ?? '';
+    // per-login account state, freshly loaded by the auth path like any join
+    session.chatMutedUntil = meta.mutedUntil ? new Date(meta.mutedUntil).getTime() : null;
+    session.chatMuteReason = meta.reason ?? '';
+    session.chatStrikes = meta.chatStrikes ?? session.chatStrikes;
+    session.isAdmin = meta.isAdmin ?? false;
+    session.adminPermissions = new Set(meta.adminPermissions ?? []);
+    session.lastInputSeq = 0;
+    session.lastInputAt = this.sim.time;
+    session.lastSent = {};
+    session.sentEnts = new Map();
+    session.selfHeavyDirty = true;
+    session.lastWireRev = -1;
+    session.lastArenaWireTick = -ARENA_WIRE_INTERVAL_TICKS;
+    this.send(session, {
+      t: 'hello',
+      pid: session.pid,
+      seed: this.sim.cfg.seed,
+      name: session.name,
+      cls,
+      realm: REALM,
+      softWords: this.chatFilter.softWords(),
+      chatMutedUntil: session.chatMutedUntil ?? null,
+    });
+    // No self "entered the world" notice here: on a seamless reconnect the
+    // player never saw themselves leave (and friends never got a presence
+    // flap), so the fresh join notice would read as a glitch.
+    void this.sendSocialSnapshot(session.characterId);
+    return session;
+  }
+
+  // Entry point for a dropped socket (the ws 'close'/'error' handlers in
+  // main.ts, plus any future backpressure terminate). Instead of logging the
+  // character out, hold the session linkdead for LINKDEAD_GRACE_MS so an
+  // accidental disconnect can resume seamlessly; the character stays in the
+  // sim and stays online for friends, analytics, and the play session row.
+  // Returns true when grace began (false: the session was already torn down,
+  // already linkdead, or the event came from a stale pre-resume socket).
+  socketClosed(session: ClientSession, ws: WebSocket): boolean {
+    // A late close/error from a socket that a resume already replaced must
+    // not tear down the live session riding the new socket.
+    if (session.ws !== ws) return false;
+    if (session.left || session.linkdead || !this.clients.has(session.pid)) return false;
+    if (session.spectating) this.exitSpectate(session, false);
+    session.linkdead = true;
+    session.graceUntil = Date.now() + LINKDEAD_GRACE_MS;
+    // Stop any held movement now; the sim keeps ticking this entity (it can
+    // still be attacked, healed, or die while linkdead, like any player).
+    const meta = this.sim.meta(session.pid);
+    if (meta) Object.assign(meta.moveInput, emptyMoveInput());
+    // Safety flush so a process crash during the grace window loses nothing.
+    void this.saveCharacter(session, { withMarket: true }).catch((err) =>
+      console.error(`linkdead save failed for ${session.name}:`, err),
+    );
+    return true;
+  }
+
+  // Tick-driven teardown of linkdead sessions whose grace window ran out.
+  private expireLinkdeadSessions(): void {
+    if (this.clients.size === 0) return;
+    const now = Date.now();
+    for (const session of this.clients.values()) {
+      if (!session.linkdead || now < session.graceUntil) continue;
+      console.log(
+        `- ${session.name} left (linkdead grace expired), ${this.clients.size - 1} online`,
+      );
+      void this.leave(session, 'linkdead grace expired');
+    }
+  }
+
+  private releaseIpSession(ip: string): void {
+    if (!ip) return;
+    const prev = this.ipSessionCounts.get(ip) ?? 1;
+    if (prev <= 1) this.ipSessionCounts.delete(ip);
+    else this.ipSessionCounts.set(ip, prev - 1);
+  }
+
   // Load the player's block list, send their friends/ignore/guild panel, and
   // let friends + guildmates know they've come online.
   private async initSocial(session: ClientSession): Promise<void> {
@@ -1462,11 +1680,7 @@ export class GameServer {
     session.left = true;
     this.clients.delete(session.pid);
     this.botDetector.releaseTrackingContext(session.botTrackingContext);
-    if (session.ip) {
-      const prev = this.ipSessionCounts.get(session.ip) ?? 1;
-      if (prev <= 1) this.ipSessionCounts.delete(session.ip);
-      else this.ipSessionCounts.set(session.ip, prev - 1);
-    }
+    this.releaseIpSession(session.ip);
     void this.recordOnlineSnapshot();
     this.social.forget(session.characterId);
     // delete from clients first so friends see them as offline in the notice
@@ -1602,6 +1816,67 @@ export class GameServer {
     }
   }
 
+  // The Ravenpost (PHAA-495) is shared global state like the market: one JSONB
+  // blob under the world_state 'mail' key, loaded at boot and saved on a timer.
+  async loadMail(): Promise<void> {
+    try {
+      this.sim.loadMail(await loadMailState());
+    } catch (err) {
+      console.error('failed to load Ravenpost mail:', err);
+    }
+  }
+
+  async saveMail(): Promise<void> {
+    try {
+      await this.enqueueMailWrite(() => saveMailState(this.sim.serializeMail()));
+    } catch (err) {
+      console.error('failed to save Ravenpost mail:', err);
+    }
+  }
+
+  // Resolve a mail recipient against the character database (realm-scoped, online
+  // OR offline) and enforce their persisted block list, then hand the resolved
+  // identity to the sim. The sim's own mailSend only sees live players, so this
+  // is the authoritative send path for the server: it is the one place that can
+  // deliver to an offline character and honour a block the recipient set while
+  // logged out (or under a case-insensitive name collision sessionByName misses).
+  private async sendMail(
+    session: ClientSession,
+    to: string,
+    subject: string,
+    body: string,
+    copper: number,
+    items: InvSlot[],
+  ): Promise<void> {
+    const recipient = await this.socialDb.findCharacterByName(to.trim());
+    if (!recipient) {
+      this.send(session, {
+        t: 'events',
+        list: [{ type: 'error', text: 'No adventurer by that name is known.' }],
+      });
+      return;
+    }
+    // The recipient's block list is authoritative in the DB. Query it directly so
+    // the check holds whether the recipient is online or offline; the live
+    // session cache (blockedIds) only exists while they are logged in.
+    const blocked = await this.socialDb.blockedIds(recipient.id);
+    if (blocked.includes(session.characterId)) {
+      this.send(session, {
+        t: 'events',
+        list: [{ type: 'error', text: 'That adventurer is not accepting mail from you.' }],
+      });
+      return;
+    }
+    this.sim.mailSendResolved(
+      { key: String(recipient.id), name: recipient.name },
+      subject,
+      body,
+      copper,
+      items,
+      session.pid,
+    );
+  }
+
   // Housing v0 is shared global state like the market: one JSONB blob under the
   // world_state 'housing' key, loaded at boot and saved on change.
   async loadHousing(): Promise<void> {
@@ -1666,6 +1941,10 @@ export class GameServer {
     return this.sim.rekeyMarketSeller(characterId, oldName, newName);
   }
 
+  rekeyMailRecipient(characterId: number, oldName: string, newName: string): boolean {
+    return this.sim.rekeyMailRecipient(characterId, oldName, newName);
+  }
+
   // Close every open play_sessions row; called on graceful shutdown so the
   // sessions of currently-online players keep their real duration.
   async endAllPlaySessions(): Promise<void> {
@@ -1693,6 +1972,24 @@ export class GameServer {
       rssBytes: mem.rss,
       heapUsedBytes: mem.heapUsed,
     };
+  }
+
+  // Achieved sim Hz for the /metrics exporter (server/game_metrics.ts), or null
+  // while the rate meter is still warming up (its first second of uptime).
+  simTickHz(): number | null {
+    return this.simTickHzValue;
+  }
+
+  // Per-phase loop timing (p95 + max, in MILLISECONDS) for the /metrics exporter,
+  // keyed by phase name. The exporter converts to seconds and surfaces only its
+  // fixed WOC_TICK_PHASES subset, so the exported label set stays bounded.
+  tickPhaseMillis(): Record<string, { p95: number; max: number }> {
+    const { phases } = this.tickProfiler.profile();
+    const out: Record<string, { p95: number; max: number }> = {};
+    for (const [name, stats] of Object.entries(phases)) {
+      out[name] = { p95: stats.p95, max: stats.max };
+    }
+    return out;
   }
 
   // Rolling per-phase loop timing for the admin/ops perf view + load harness.
@@ -1725,6 +2022,16 @@ export class GameServer {
 
   suspiciousPlayers(): SuspiciousPlayer[] {
     return this.botDetector.listSuspiciousPlayers();
+  }
+
+  antibotConfigFields(): ConfigField[] {
+    return this.botDetector.describeConfig();
+  }
+
+  // Validates and applies live (invalid entries are skipped and reported; the
+  // admin save path rejects on any error and re-applies its previous document).
+  applyAntibotConfig(overrides: Record<string, unknown>): ConfigApplyResult {
+    return this.botDetector.applyConfig(overrides);
   }
 
   private liveLocationFor(e: Entity): AdminLiveLocation {
@@ -2026,6 +2333,7 @@ export class GameServer {
   // -------------------------------------------------------------------------
 
   handleMessage(session: ClientSession, raw: string): void {
+    gameMetricsCounters().wsMessage('in');
     const receivedAtMs = Date.now();
     let msg: unknown;
     try {
@@ -2104,7 +2412,8 @@ export class GameServer {
     if (session.spectating) {
       if (msg.cmd !== 'chat' || typeof msg.text !== 'string') return;
       const text = msg.text.trim();
-      if (session.isAdmin && this.moderation.handleChatCommand(session, text)) return;
+      if (canAttemptModerationCommands(session) && this.moderation.handleChatCommand(session, text))
+        return;
       if (this.isSpectateLocalChat(session, text)) {
         this.sendChatNotice(session, 'Local chat is unavailable while spectating.');
         return;
@@ -2165,6 +2474,12 @@ export class GameServer {
       case 'loot':
         if (typeof msg.id === 'number') sim.lootCorpse(msg.id, pid);
         break;
+      case 'harvestCorpse':
+        if (typeof msg.id === 'number') sim.harvestCorpse(msg.id, pid);
+        break;
+      case 'harvestNode':
+        if (typeof msg.node === 'string') sim.harvestNode(msg.node, pid);
+        break;
       case 'lootRoll':
         if (
           typeof msg.rollId === 'number' &&
@@ -2199,6 +2514,12 @@ export class GameServer {
           this.resyncQuests(session);
         }
         break;
+      case 'refuse':
+        if (typeof msg.quest === 'string') {
+          sim.refuseQuest(msg.quest, pid);
+          this.resyncQuests(session);
+        }
+        break;
       case 'qlinkaccept':
         if (typeof msg.quest === 'string' && typeof msg.from === 'number') {
           sim.acceptLinkedQuest(msg.quest, msg.from, pid);
@@ -2211,6 +2532,18 @@ export class GameServer {
       case 'unequip_item':
         if (typeof msg.slot === 'string' && (EQUIP_SLOTS as readonly string[]).includes(msg.slot)) {
           sim.unequipItem(msg.slot as EquipSlot, pid);
+        }
+        break;
+      case 'equip_bag':
+        if (typeof msg.item === 'string') {
+          const socket =
+            typeof msg.socket === 'number' && Number.isInteger(msg.socket) ? msg.socket : undefined;
+          sim.equipBag(msg.item, socket, pid);
+        }
+        break;
+      case 'unequip_bag':
+        if (typeof msg.socket === 'number' && Number.isInteger(msg.socket)) {
+          sim.unequipBag(msg.socket, pid);
         }
         break;
       case 'use':
@@ -2276,7 +2609,11 @@ export class GameServer {
       case 'chat': {
         if (typeof msg.text !== 'string') break;
         const text = msg.text.trim();
-        if (session.isAdmin && this.moderation.handleChatCommand(session, text)) break;
+        if (
+          canAttemptModerationCommands(session) &&
+          this.moderation.handleChatCommand(session, text)
+        )
+          break;
         if (this.isChatMuted(session)) break;
         if (!this.consumeChatToken(session)) break;
         if (/^\/who(?:\s|$)/i.test(text)) {
@@ -2307,6 +2644,7 @@ export class GameServer {
           void route
             .then((sent) => {
               if (sent) {
+                gameMetricsCounters().chatMessage();
                 this.chatLog.log({
                   accountId: session.accountId,
                   characterId: session.characterId,
@@ -2514,6 +2852,33 @@ export class GameServer {
       case 'guild_disband':
         void this.social.guildDisband(this.actorFor(session)).catch(logSocialErr);
         break;
+      case 'guild_event_create':
+        // Guild calendar booking: title/note are player text, so they flow
+        // through the same mute + rate + hard-word gates as chat before the
+        // service applies its own officer/date/cap validation.
+        if (
+          typeof msg.day === 'string' &&
+          typeof msg.title === 'string' &&
+          typeof msg.note === 'string' &&
+          (msg.hour === null || typeof msg.hour === 'number')
+        ) {
+          if (this.isChatMuted(session)) break;
+          if (!this.consumeChatToken(session)) break;
+          if (this.enforceChatPolicy(session, `${msg.title}\n${msg.note}`)) break;
+          void this.social
+            .guildEventCreate(this.actorFor(session), {
+              day: msg.day,
+              hour: msg.hour === null ? null : msg.hour,
+              title: msg.title,
+              note: msg.note,
+            })
+            .catch(logSocialErr);
+        }
+        break;
+      case 'guild_event_remove':
+        if (typeof msg.id === 'number')
+          void this.social.guildEventRemove(this.actorFor(session), msg.id).catch(logSocialErr);
+        break;
       // arena (Ashen Coliseum queue)
       case 'arena_queue': {
         const fmt = msg.format === '2v2' ? '2v2' : msg.format === 'fiesta' ? 'fiesta' : '1v1';
@@ -2590,6 +2955,48 @@ export class GameServer {
       case 'market_collect':
         sim.marketCollect(pid);
         break;
+      // The Ravenpost (in-game mail, PHAA-495). The recipient is resolved against
+      // the character database (online OR offline) and their persisted block list
+      // is consulted, so async mail reaches an offline character and a block is
+      // enforced whether or not the recipient is logged in. The reject happens
+      // before the sim escrows anything, the same "before any escrow" rule
+      // mail_block.test.ts covers for the market/whisper path (Finding 3 upstream).
+      // The DB round-trip makes this async, so it is fire-and-forget (the social
+      // command pattern); the sim command lands on whatever tick resolves it.
+      case 'mail_send':
+        if (
+          typeof msg.to === 'string' &&
+          typeof msg.subject === 'string' &&
+          typeof msg.body === 'string' &&
+          typeof msg.copper === 'number' &&
+          Number.isFinite(msg.copper) &&
+          Array.isArray(msg.items)
+        ) {
+          const items = msg.items
+            .filter(
+              (s): s is InvSlot =>
+                !!s &&
+                typeof s.itemId === 'string' &&
+                typeof s.count === 'number' &&
+                Number.isFinite(s.count) &&
+                s.count > 0,
+            )
+            .map((s) => ({ ...s, count: Math.floor(s.count) }))
+            .filter((s) => s.count > 0);
+          void this.sendMail(session, msg.to, msg.subject, msg.body, msg.copper, items).catch(
+            (err) => console.error('mail send failed:', err),
+          );
+        }
+        break;
+      case 'mail_take':
+        if (typeof msg.id === 'number') sim.mailTake(msg.id, pid);
+        break;
+      case 'mail_delete':
+        if (typeof msg.id === 'number') sim.mailDelete(msg.id, pid);
+        break;
+      case 'mail_markread':
+        if (typeof msg.id === 'number') sim.mailMarkRead(msg.id, pid);
+        break;
       // Housing v0 (PHAA-405): interact-key commands, the only flow since the
       // /house chat command was removed (PHAA-482). sim.housingClaim/Place/Remove
       // re-validate range and ownership server-side.
@@ -2609,6 +3016,14 @@ export class GameServer {
       // re-validates range and item possession server-side.
       case 'feedGreenpaw':
         sim.feedGreenpaw(pid);
+        break;
+      // Branching dialogue (PHAA-553): resolve a picked choice server-side. The
+      // sim re-looks-up the choice in the NPC's tree, re-checks its gate, and
+      // applies its disposition/flag effect (never trusting a client-sent value).
+      case 'dialogChoose':
+        if (typeof msg.npc === 'string' && typeof msg.choice === 'string') {
+          sim.dialogChoose(msg.npc, msg.choice, pid);
+        }
         break;
       // dev/ops commands, only when ALLOW_DEV_COMMANDS=1 (never in production)
       case 'dev_level': {
@@ -2763,6 +3178,9 @@ export class GameServer {
     const tick = this.sim.tickCount;
     const head = `{"t":"snap","tick":${tick},"time":${round2(this.sim.time)}`;
     for (const session of this.clients.values()) {
+      // no transport while linkdead; the resume path resets sentEnts/lastSent
+      // so the fresh socket starts from a full snapshot anyway
+      if (session.linkdead) continue;
       const p = this.sim.entities.get(session.pid);
       const meta = this.sim.meta(session.pid);
       if (!p || !meta) continue;
@@ -2936,6 +3354,10 @@ export class GameServer {
       rxp: Math.round(meta.restedXp),
       prk: meta.prestigeRank,
       copper: meta.copper,
+      // Ravenpost unread letter count (PHAA-495): rides every self-frame like
+      // copper, so the HUD envelope indicator updates from another player's
+      // mail-send action without depending on this session's own dirty flag.
+      mailU: this.sim.mailUnreadFor(anchorSession.pid),
       gcd: round2(p.gcdRemaining),
       swing: round2(p.swingTimer),
       combo: p.comboPoints,
@@ -2945,6 +3367,7 @@ export class GameServer {
       queued: p.queuedOnSwing,
       ap: p.attackPower,
       sp: p.spellPower,
+      sh: p.spellHaste,
       crit: p.critChance,
       dodge: p.dodgeChance,
       eat: p.eating ? { remaining: round2(p.eating.remaining) } : null,
@@ -2994,6 +3417,10 @@ export class GameServer {
     // market info is null unless the player is standing at the Merchant, so it
     // only rides the wire for players actually browsing the World Market
     maybe('market', this.sim.marketInfoFor(anchorSession.pid));
+    // mail info is null unless the player is standing at the Ravenpost, so it
+    // only rides the wire for players actually checking their mail (mailU above
+    // is the always-on unread count).
+    maybe('mail', this.sim.mailInfoFor(anchorSession.pid));
     // housing is tiny (8 plots) and rarely changes, so the per-tick diff is
     // negligible; it must ride per-tick because another player's claim changes
     // it without marking this session dirty
@@ -3009,10 +3436,15 @@ export class GameServer {
     // missed the transient lootRoll event re-shows the prompt from state. Stays
     // per-tick (it's interactive state that appears from others' actions).
     maybe('lroll', this.sim.activeLootRolls(anchorSession.pid));
+    // group-visible choices on those rolls (who has answered need/greed/pass),
+    // so every party member's roll frame shows the live vote strip and stays up
+    // after they answer. Per-tick for the same reason as lroll.
+    maybe('lrollg', this.sim.lootRollGroupStatus(anchorSession.pid));
     maybe('drun', this.sim.delveRunWire(anchorSession.pid));
     maybe('dcompanion', this.sim.delveCompanionWire(anchorSession.pid));
     maybe('dmarks', this.sim.delveMarksFor(anchorSession.pid));
     maybe('dcomp', this.sim.companionUpgradesFor(anchorSession.pid));
+    maybe('gprof', this.sim.gatheringProficiencyFor(anchorSession.pid));
     maybe('dclears', this.sim.delveClearsFor(anchorSession.pid));
     maybe('delveDaily', this.sim.delveDailyWire(anchorSession.pid));
     // stats + weapon stay per-tick: recalcPlayerStats re-derives them on every
@@ -3036,11 +3468,15 @@ export class GameServer {
       session.selfHeavyDirty = false;
       session.lastWireRev = meta.wireRev;
       maybe('inv', meta.inventory);
+      maybe('bags', meta.bags);
       maybe('buyback', meta.vendorBuyback);
       maybe('equip', meta.equipment);
       maybe('cosmetics', anchorSession.accountCosmetics);
       maybe('qlog', [...meta.questLog.values()]);
       maybe('qdone', [...meta.questsDone]);
+      // PHAA-553: per-player dialogue disposition + flags, so the client walker
+      // can evaluate `requires` gates. Small; maybe() only re-sends on change.
+      maybe('dstate', serializeDialogState(meta.dialogState));
       maybe('milestones', [...meta.unlockedMilestones]);
       // talents/spec/loadouts/secondaryCls: the client recomputes its known
       // abilities from this (secondaryCls merges a second class's kit in).
@@ -3344,6 +3780,7 @@ export class GameServer {
           void route
             .then((sent) => {
               if (sent) {
+                gameMetricsCounters().chatMessage();
                 this.chatLog.log({
                   accountId: session.accountId,
                   characterId: session.characterId,
@@ -3386,6 +3823,7 @@ export class GameServer {
 
   private logChat(session: ClientSession, sent: import('../src/sim/sim').SentChat | null): void {
     if (!sent) return;
+    gameMetricsCounters().chatMessage();
     this.chatLog.log({
       accountId: session.accountId,
       characterId: session.characterId,
@@ -3680,6 +4118,7 @@ export class GameServer {
 
   private sendRaw(session: ClientSession, payload: string): void {
     if (session.ws.readyState === 1) {
+      gameMetricsCounters().wsMessage('out');
       session.ws.send(payload);
     }
   }

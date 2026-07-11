@@ -64,13 +64,16 @@ const CALLBACK_KEYS = [
   // elsewhere - deduped, not re-added).
   'spendResource',
   'removeItem',
+  'canAddItem',
   'clearEntityMarker',
   'partyOf',
   'removeFromParty',
   'dropPartyMarkers',
-  // Q1 quest-credit trio + the countItem it consumes.
+  // Q1 quest-credit trio + the countItem it consumes; onGreenpawFedForQuests
+  // (PHAA-484) is the hearth's own feed-credit callback.
   'onMobKilledForQuests',
   'onInventoryChangedForQuests',
+  'onGreenpawFedForQuests',
   'checkQuestReady',
   'countItem',
   // E1 entity-roster surface.
@@ -206,6 +209,8 @@ const CALLBACK_KEYS = [
   'plantSpeechAmbientChat',
   // Homestead v0: the /homestead chat-command branch.
   'homesteadChat',
+  // Gathering v0 (PHAA-504): the corpse-harvest item-selection rng draw.
+  'gatherHarvestItemFor',
 ] as const;
 
 // A fully-spied fake host. `clock` is mutable so a test can prove the context reads
@@ -228,6 +233,7 @@ function makeFakeHost() {
       return entities;
     },
     players: new Map(),
+    bankerIds: [],
     primaryId: -1,
     tradeInvites: new Map(),
     duelInvites: new Map(),
@@ -289,6 +295,7 @@ function makeFakeHost() {
     fiestaTakedown: vi.fn(),
     fiestaDown: vi.fn(),
     rollLoot: vi.fn(),
+    rollWorldBossLoot: vi.fn(),
     applyHeal: vi.fn(),
     spellCrit: vi.fn(() => 0.05),
     applyAura: vi.fn(),
@@ -306,12 +313,14 @@ function makeFakeHost() {
     // elsewhere in this host - deduped).
     spendResource: vi.fn(),
     removeItem: vi.fn(),
+    canAddItem: vi.fn(() => true),
     clearEntityMarker: vi.fn(),
     partyOf: vi.fn(() => null),
     removeFromParty: vi.fn(),
     dropPartyMarkers: vi.fn(),
     onMobKilledForQuests: vi.fn(),
     onInventoryChangedForQuests: vi.fn(),
+    onGreenpawFedForQuests: vi.fn(),
     checkQuestReady: vi.fn(),
     countItem: vi.fn(() => 0),
     lockoutNowMs: vi.fn(() => 0),
@@ -437,6 +446,7 @@ function makeFakeHost() {
     notifyPlantThreshold: vi.fn(),
     plantSpeechAmbientChat: vi.fn(),
     homesteadChat: vi.fn(() => false),
+    gatherHarvestItemFor: vi.fn(() => null),
   };
   return { host, rng, entities, clock };
 }
