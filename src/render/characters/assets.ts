@@ -555,7 +555,7 @@ export function assembleModel(
     // every other attachment is fixed (the warlock's spellbook offhand). The
     // rogue lists both hand slots so a dagger shows in both; a chest piece
     // lists its attach index so it hangs on the right bone. A swap index in
-    // BOTH lists would be a manifest bug — weapon wins, armor never fires for
+    // BOTH lists would be a manifest bug: weapon wins, armor never fires for
     // an attach entry that is already a hand prop.
     let att: AttachDef = attachments[i];
     if (isWeaponSwap && !isArmorSwap) att = swapAttachDef(att, weaponItemId);
