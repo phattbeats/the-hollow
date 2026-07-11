@@ -484,7 +484,9 @@ export const VISUALS: Record<string, VisualDef> = {
       idle: 'anim_iddle',
       walk: 'anim_walk',
       run: 'anim_run',
-      attack: ['anim_push'],
+      attack: ['anim_attack_chop', 'anim_attack_slash'],
+      cast: 'anim_cast',
+      hit: ['anim_hit'],
       death: 'anim_dying',
       jump: 'anim_jump',
     },
@@ -496,10 +498,11 @@ export const VISUALS: Record<string, VisualDef> = {
   // one-GLB-serves-several-classes trick the male roster uses (see the
   // per-class tint comment on player_priest above). All six outfits share
   // the identical 78-joint Rigify rig, 11 normalized locomotion clips, and
-  // DEF-hand.R/DEF-hand.L hand bones (verified on PHAA-583). No attack/cast/
-  // hit clips exist yet: `attack` reuses anim_push (a shove) as a stopgap
-  // until the PHAA-586 animation pass lands; cast has no clip so it falls
-  // back to idle same as every other clipless case in visual.ts.
+  // DEF-hand.R/DEF-hand.L hand bones (verified on PHAA-583). Combat clips
+  // (anim_cast loop, anim_castshoot, anim_attack_chop, anim_attack_slash,
+  // anim_shoot, anim_hit) are authored onto the shared rig by the PHAA-586
+  // pass (scripts/phaa586_author_chibi_combat_clips.py) and baked into every
+  // outfit GLB; the attack list varies per class for swing flavor.
   //
   // No held-weapon attach: the grip system (assets.ts isHandslotBone /
   // KAYKIT_HAND_GRIPS / VARIANT_GRIPS) resolves grips by pattern-matching
@@ -516,7 +519,9 @@ export const VISUALS: Record<string, VisualDef> = {
       idle: 'anim_iddle',
       walk: 'anim_walk',
       run: 'anim_run',
-      attack: ['anim_push'],
+      attack: ['anim_attack_chop', 'anim_attack_slash'],
+      cast: 'anim_cast',
+      hit: ['anim_hit'],
       death: 'anim_dying',
       jump: 'anim_jump',
     },
@@ -528,7 +533,9 @@ export const VISUALS: Record<string, VisualDef> = {
       idle: 'anim_iddle',
       walk: 'anim_walk',
       run: 'anim_run',
-      attack: ['anim_push'],
+      attack: ['anim_attack_chop', 'anim_attack_slash'],
+      cast: 'anim_cast',
+      hit: ['anim_hit'],
       death: 'anim_dying',
       jump: 'anim_jump',
     },
@@ -542,7 +549,9 @@ export const VISUALS: Record<string, VisualDef> = {
       idle: 'anim_iddle',
       walk: 'anim_walk',
       run: 'anim_run',
-      attack: ['anim_push'],
+      attack: ['anim_shoot'],
+      cast: 'anim_cast',
+      hit: ['anim_hit'],
       death: 'anim_dying',
       jump: 'anim_jump',
     },
@@ -554,7 +563,9 @@ export const VISUALS: Record<string, VisualDef> = {
       idle: 'anim_iddle',
       walk: 'anim_walk',
       run: 'anim_run',
-      attack: ['anim_push'],
+      attack: ['anim_attack_chop'],
+      cast: 'anim_cast',
+      hit: ['anim_hit'],
       death: 'anim_dying',
       jump: 'anim_jump',
     },
@@ -568,7 +579,9 @@ export const VISUALS: Record<string, VisualDef> = {
       idle: 'anim_iddle',
       walk: 'anim_walk',
       run: 'anim_run',
-      attack: ['anim_push'],
+      attack: ['anim_attack_slash', 'anim_attack_chop'],
+      cast: 'anim_cast',
+      hit: ['anim_hit'],
       death: 'anim_dying',
       jump: 'anim_jump',
     },
@@ -580,7 +593,9 @@ export const VISUALS: Record<string, VisualDef> = {
       idle: 'anim_iddle',
       walk: 'anim_walk',
       run: 'anim_run',
-      attack: ['anim_push'],
+      attack: ['anim_castshoot'],
+      cast: 'anim_cast',
+      hit: ['anim_hit'],
       death: 'anim_dying',
       jump: 'anim_jump',
     },
@@ -592,7 +607,9 @@ export const VISUALS: Record<string, VisualDef> = {
       idle: 'anim_iddle',
       walk: 'anim_walk',
       run: 'anim_run',
-      attack: ['anim_push'],
+      attack: ['anim_castshoot'],
+      cast: 'anim_cast',
+      hit: ['anim_hit'],
       death: 'anim_dying',
       jump: 'anim_jump',
     },
@@ -606,7 +623,9 @@ export const VISUALS: Record<string, VisualDef> = {
       idle: 'anim_iddle',
       walk: 'anim_walk',
       run: 'anim_run',
-      attack: ['anim_push'],
+      attack: ['anim_castshoot'],
+      cast: 'anim_cast',
+      hit: ['anim_hit'],
       death: 'anim_dying',
       jump: 'anim_jump',
     },
@@ -620,7 +639,9 @@ export const VISUALS: Record<string, VisualDef> = {
       idle: 'anim_iddle',
       walk: 'anim_walk',
       run: 'anim_run',
-      attack: ['anim_push'],
+      attack: ['anim_attack_chop'],
+      cast: 'anim_cast',
+      hit: ['anim_hit'],
       death: 'anim_dying',
       jump: 'anim_jump',
     },
