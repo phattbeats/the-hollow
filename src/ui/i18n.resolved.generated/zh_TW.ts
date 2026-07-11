@@ -1936,6 +1936,13 @@ export const zh_TW: EnTranslations = {
     "begin": "開始",
     "skip": "跳過"
   },
+  "apiError": {
+    "crossSiteRejected": "跨站請求已被拒絕。",
+    "notAuthenticated": "尚未驗證。",
+    "readOnlyToken": "此權杖為唯讀。",
+    "characterNotFound": "找不到角色。",
+    "rateLimited": "嘗試次數過多。請等待一分鐘後再試。"
+  },
   "skinEvent": {
     "title": "外觀寶箱",
     "subtitle": "你解鎖了一份{rank}級獎勵 — 可任選不高於該等級的造型。",

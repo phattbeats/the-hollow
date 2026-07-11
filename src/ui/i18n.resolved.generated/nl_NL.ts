@@ -1936,6 +1936,13 @@ export const nl_NL: EnTranslations = {
     "begin": "Begin",
     "skip": "Skip"
   },
+  "apiError": {
+    "crossSiteRejected": "Cross-site request rejected.",
+    "notAuthenticated": "Not authenticated.",
+    "readOnlyToken": "This token is read-only.",
+    "characterNotFound": "Character not found.",
+    "rateLimited": "Too many attempts. Wait a minute and try again."
+  },
   "skinEvent": {
     "title": "Cosmetische Cache",
     "subtitle": "Je hebt een beloning van {rank} ontgrendeld — kies een skin op dat niveau of lager.",

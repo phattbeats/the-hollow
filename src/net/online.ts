@@ -167,10 +167,17 @@ export interface AccountInfo {
 // Carries the HTTP status alongside the server's error text so callers can
 // distinguish an auth failure (401/403 → clear the stored session) from a
 // transient 5xx/network blip (keep the token; the session may still be valid).
+// `code`, when present, is the stable machine-readable error code the server's
+// problem+json envelope attaches to the primitive 1-5 gated denial paths
+// (Origin checks, BOLA ownership, internal-secret, rate limiting; see
+// server/http_errors.ts, PHAA-528). Not every route sets it: src/ui/
+// api_error_i18n.ts's code-first matcher falls back to the legacy string
+// matcher (src/main.ts's userFacingApiError) when it is absent or unrecognized.
 export class ApiError extends Error {
   constructor(
     message: string,
     readonly status: number,
+    readonly code?: string,
   ) {
     super(message);
     this.name = 'ApiError';
@@ -232,7 +239,8 @@ export class Api {
       body: JSON.stringify(body),
     });
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new ApiError(data.error ?? `request failed (${res.status})`, res.status);
+    if (!res.ok)
+      throw new ApiError(data.error ?? `request failed (${res.status})`, res.status, data.code);
     return data;
   }
 
@@ -241,7 +249,8 @@ export class Api {
       headers: this.token ? { Authorization: `Bearer ${this.token}` } : {},
     });
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new ApiError(data.error ?? `request failed (${res.status})`, res.status);
+    if (!res.ok)
+      throw new ApiError(data.error ?? `request failed (${res.status})`, res.status, data.code);
     return data;
   }
 
@@ -255,7 +264,8 @@ export class Api {
       body: JSON.stringify(body),
     });
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new ApiError(data.error ?? `request failed (${res.status})`, res.status);
+    if (!res.ok)
+      throw new ApiError(data.error ?? `request failed (${res.status})`, res.status, data.code);
     return data;
   }
 
@@ -405,12 +415,15 @@ export class Api {
     const text = await res.text();
     if (!res.ok) {
       let msg = `request failed (${res.status})`;
+      let code: string | undefined;
       try {
-        msg = JSON.parse(text).error ?? msg;
+        const parsed = JSON.parse(text);
+        msg = parsed.error ?? msg;
+        code = parsed.code;
       } catch {
         /* non-JSON error body */
       }
-      throw new ApiError(msg, res.status);
+      throw new ApiError(msg, res.status, code);
     }
     return JSON.parse(text);
   }

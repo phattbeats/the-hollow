@@ -1936,6 +1936,13 @@ export const pl_PL: EnTranslations = {
     "begin": "Begin",
     "skip": "Skip"
   },
+  "apiError": {
+    "crossSiteRejected": "Cross-site request rejected.",
+    "notAuthenticated": "Not authenticated.",
+    "readOnlyToken": "This token is read-only.",
+    "characterNotFound": "Character not found.",
+    "rateLimited": "Too many attempts. Wait a minute and try again."
+  },
   "skinEvent": {
     "title": "Skrytka kosmetyczna",
     "subtitle": "Odblokowałeś nagrodę rangi {rank} — wybierz dowolną skórkę o tej randze lub niższej.",

@@ -1936,6 +1936,13 @@ export const zh_CN: EnTranslations = {
     "begin": "开始",
     "skip": "跳过"
   },
+  "apiError": {
+    "crossSiteRejected": "跨站请求被拒绝。",
+    "notAuthenticated": "尚未认证。",
+    "readOnlyToken": "此令牌为只读。",
+    "characterNotFound": "未找到角色。",
+    "rateLimited": "尝试次数过多。请等待一分钟后重试。"
+  },
   "skinEvent": {
     "title": "外观宝箱",
     "subtitle": "你解锁了一份{rank}级奖励——可选择不高于该等级的任意皮肤。",

@@ -1936,6 +1936,13 @@ export const de_DE: EnTranslations = {
     "begin": "Begin",
     "skip": "Skip"
   },
+  "apiError": {
+    "crossSiteRejected": "Cross-site request rejected.",
+    "notAuthenticated": "Not authenticated.",
+    "readOnlyToken": "This token is read-only.",
+    "characterNotFound": "Character not found.",
+    "rateLimited": "Too many attempts. Wait a minute and try again."
+  },
   "skinEvent": {
     "title": "Kosmetik-Hort",
     "subtitle": "Ihr habt eine {rank}-Belohnung freigeschaltet — wählt einen beliebigen Skin auf dieser Stufe oder darunter.",

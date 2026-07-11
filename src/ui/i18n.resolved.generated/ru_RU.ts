@@ -1936,6 +1936,13 @@ export const ru_RU: EnTranslations = {
     "begin": "Начать",
     "skip": "Пропустить"
   },
+  "apiError": {
+    "crossSiteRejected": "Межсайтовый запрос отклонён.",
+    "notAuthenticated": "Нет авторизации.",
+    "readOnlyToken": "Этот токен доступен только для чтения.",
+    "characterNotFound": "Персонаж не найден.",
+    "rateLimited": "Слишком много попыток. Подождите минуту и попробуйте снова."
+  },
   "skinEvent": {
     "title": "Косметический тайник",
     "subtitle": "Вы открыли награду уровня {rank} — выберите любой облик этого уровня или ниже.",

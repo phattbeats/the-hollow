@@ -1936,6 +1936,13 @@ export const vi_VN: EnTranslations = {
     "begin": "Begin",
     "skip": "Skip"
   },
+  "apiError": {
+    "crossSiteRejected": "Cross-site request rejected.",
+    "notAuthenticated": "Not authenticated.",
+    "readOnlyToken": "This token is read-only.",
+    "characterNotFound": "Character not found.",
+    "rateLimited": "Too many attempts. Wait a minute and try again."
+  },
   "skinEvent": {
     "title": "Hòm Trang Phục",
     "subtitle": "Bạn đã mở khóa phần thưởng {rank} — hãy chọn bất kỳ mẫu da nào bằng hoặc thấp hơn hạng đó.",

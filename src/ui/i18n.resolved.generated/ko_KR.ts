@@ -1936,6 +1936,13 @@ export const ko_KR: EnTranslations = {
     "begin": "시작",
     "skip": "건너뛰기"
   },
+  "apiError": {
+    "crossSiteRejected": "교차 사이트 요청이 거부되었습니다.",
+    "notAuthenticated": "인증되지 않았습니다.",
+    "readOnlyToken": "이 토큰은 읽기 전용입니다.",
+    "characterNotFound": "캐릭터를 찾을 수 없습니다.",
+    "rateLimited": "시도가 너무 많습니다. 1분 후 다시 시도하세요."
+  },
   "skinEvent": {
     "title": "장식 상자",
     "subtitle": "{rank} 등급 보상을 잠금 해제했습니다 — 그 이하의 스킨을 자유롭게 고르세요.",
