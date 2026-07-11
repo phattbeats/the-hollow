@@ -700,6 +700,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'errors.api.accountBanned': 'このアカウントは利用停止されています。',
   'errors.api.accountSuspended': 'このアカウントは {date} まで停止されています。',
   'errors.api.alreadyInWorld': 'キャラクターは既に世界にいます。',
+  'errors.api.tooManyOnline': '一度に世界にいられるキャラクターは1人だけです。',
   'errors.api.takenOver': 'あなたのキャラクターは別のセッションに引き継がれました。',
   'errors.api.renameBeforeEntering': 'このキャラクターは世界に入る前に名前変更が必要です。',
   'errors.api.renameNotPermitted': 'このキャラクターの名前変更は許可されていません。',
@@ -1368,6 +1369,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'questUi.log.abandonCancel': 'キャンセル',
   'questUi.log.suggestedPlayers': '推奨プレイヤー数: {count}',
   'questUi.dialog.close': 'クエスト会話を閉じる',
+  'questUi.dialog.chat': '少し話そう。',
   'questUi.dialog.greetingFallback': 'こんにちは。',
   'questUi.dialog.availableQuestAria': '受諾可能なクエスト: {name}',
   'questUi.dialog.readyQuestAria': '報告可能なクエスト: {name}',
@@ -2911,8 +2913,40 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     '門を抜けると、開けた大地が広がっています。道の西側にある休閑地は、家を建てるのに良さそうです。',
   'entities.npcs.verger_zebediah.name': '堂守のゼベダイア',
   'entities.npcs.verger_zebediah.title': '根の空洞の衛士',
+  'entities.readables.torn_ledger_page.title': '破れた台帳',
+  'entities.readables.torn_ledger_page.pages.0':
+    '根の空洞、休ませると記帳。休閑地、休ませると記帳。モスバンクの湖、こちらが記そうと記すまいと、勝手に休んでおる。台帳の求めるまま、署名し日付を入れた。',
+  'entities.readables.torn_ledger_page.pages.1':
+    '今季ここまでの集計。道の敷石を突き破って芽が三本、俺のどの暦にも載っておらん。抜いて消すのはやめた。インクが乾くより早う戻ってくるし、そのインクは安くなかった。',
+  'entities.readables.torn_ledger_page.pages.2':
+    '俺の後にこれを継ぐ者への覚書。猪を数えよ、狼を数えよ、日を数えよ。緑だけは数えるな。あれは数え返してくる。そして、こちらが止まったところでは止まらん。',
+  'entities.readables.keepers_marginalia.title': '守り手の欄外書き',
+  'entities.readables.keepers_marginalia.pages.0':
+    '賛美歌のすり切れた聖歌集の余白に残されていた。その筆跡は速い、歩きながら書く手が速いのと同じように。',
+  'entities.readables.keepers_marginalia.pages.1':
+    '狼どもは木立の際から休閑地を回る。いつも同じ輪、いつも右回り。長く回れば、回っている相手の形を覚える。俺もそうだ。そして大地も、そうなのだと思う。',
+  'entities.readables.keepers_marginalia.pages.2':
+    'これを読んでいるなら、あんたは歩みを止めたわけだ。俺がついぞ覚えられなかった、たった一つのことをな。少し休め。外域は逃げやせん。それがまあ、外域の厄介なところなんだが。',
   'entities.npcs.verger_zebediah.greeting':
     '堂守のゼベダイアだ。この外域を暦に沿って管理しておる、少なくとも努めてはおる。根の空洞は今季、休ませると記しておいた。だが猪どもは告示を読まん。緩んだ土に気をつけ、台帳には触れるな。',
+  // First-meeting click-through intro (PHAA-439). Voice matched to the
+  // existing Japanese register (formal, ecclesiastical, です/ます), keeping
+  // the "sole surviving keeper of a register" throughline.
+  'entities.npcs.verger_zebediah.introLines.0':
+    '堂守のゼベダイア。根の空洞の衛士、ただ今のところその職は私一人でございます。ほとんどの日はここにおります。それ以外の日は、私がここにいるように感じております。外域には定足数は要りません、要るのは記録だけでございます。',
+  'entities.npcs.verger_zebediah.introLines.1':
+    '私が暦を継いでおります。暦は私を継いではくれませんが、季節の折に触れて試みてまいります。根の空洞は今季、休むと記されておりますが、下の巣にはその通達が届いておりません。鷺ももう驚いたふりをやめてしまいました。これが現状です。苦情ではございません、苦情には証人が要りますので。',
+  'entities.npcs.verger_zebediah.introLines.2':
+    '祠の中には台帳がございます。触れぬよう。足元には猪の掘り返した緩い土が広がっております。両方にお気をつけを。もしも御用がお務めについてのことでございましたら、二つの仕事をご用意できます。どちらも小さくはございません、そのうち一つは三度目の書き直しを避けたい次第で。これが、そもそも何故あなた様にお声を掛けておるかの次第でございます。',
+  // Persistent journal/lore (PHAA-480). Same ecclesiastical です/ます register
+  // as the intro, longer arc, slightly more interior: the "register remembers
+  // what walks forgets" throughline plus the heron and the room beneath.
+  'entities.npcs.verger_zebediah.journalLines.0':
+    '台帳は鷺よりも古い。私が始まりの頁を書いたわけではないし、私が最後の頁を書くわけでもない。継ぐ者をお待ちにならない務め、それがこの職の慰めでございます。外域はかつては往来の通路でございました。塩を抱えた方々が湖の道を通って上り、名を持たぬ何かを持って下りてこられた。尋ねてはならぬと申されておりましたので、私も尋ねませんでした。台帳は往き来と、その長い空白の一区を記しております。空白も私が継いでおります。',
+  'entities.npcs.verger_zebediah.journalLines.1':
+    '鷺は台帳より古く、台帳はそれを快く思っておりませぬ。口には出しませぬ。出す必要もございませぬ。梨の木を枯らした季節を片足で立ち過ごして瞬き一つなさらぬのを見てまいりましたので、それは何かについての御立場と受け止めておりますが、伺ったことはございませぬ。祠の地下に、私が足を踏み入れぬ部屋がございます。鷺は入ってまいります。何をなさるか伺わず、鷺も私が上で何をするか伺いません。この取り決めは、互いの齢より永く続いてまいりました。',
+  'entities.npcs.verger_zebediah.journalLines.2':
+    'ここまで読まれた方は、物好きか、猪を避けているかのどちらかでございまして、どちらにも敬意を表します。長い記録の短い版を申し上げますと、この場所はかつて何であったかと、再び何であろうとしているかとを覚えておりますが、その差こそが仕事でございます。覚えるのは私の勤めでございます。再び何になるか、その主が誰かは存ぜぬ。保留と申し添えて床に就きます。台帳は保留を許します。忘却は許しません。',
   'entities.npcs.sexton_faddick.name': '墓守のファディック',
   'entities.items.willow_sprig.name': '柳の小枝一本',
   'entities.npcs.shade.name': 'シェイド',
@@ -2946,6 +2980,24 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.sexton_faddick.title': '放浪の番人',
   'entities.npcs.sexton_faddick.greeting':
     'ファディックだ。まだ守るべき祠があるうちは、墓守を務める。俺はどこにも留まらん、ただ守るだけだ。毎晩、狼が休閑地の群れの周りを回っておる。長く回れば、回っている相手の形を覚えるものだ。あれはただの群れのままでいてもらいたい。',
+  // First-meeting click-through intro (PHAA-439). Wandering-keeper voice,
+  // aphoristic, longer arc. Keeps the "I do not stay anywhere; I keep"
+  // throughline.
+  'entities.npcs.sexton_faddick.introLines.0':
+    'ファディックだ。まだ墓守を務めるべき祠があるうちは、墓守を務める。そうした祠は、以前より少なくなったがの。俺はどこにも留まらん、ただ守るだけだ。守ること、それが今でも俺のほぼ全てでござる。',
+  'entities.npcs.sexton_faddick.introLines.1':
+    '長く回れば、回っている相手の形を覚えるものだ。休閑地の狼どもは、私が通りかかるずっと前から、毎晩群れの周りを回っておった。群れの形はまだ覚えておらぬ、それが何と言うか。群れの方こそ、彼らを覚えておる、それ以上のことでござる。',
+  'entities.npcs.sexton_faddick.introLines.2':
+    'お茶でもお出ししたいところだが、薬罐は私が昨日いたどこかにございます。湖のほとりには、建物が建つのを待っておる静かな土地が広がっておる。闇で狼が働く土地には、何も根を下ろせぬ。さて、二つの仕事がある、一つは一人でやりたくない仕事だ。歩きながら話しませうぞ。',
+  // Persistent journal/lore (PHAA-480). Wandering-keeper voice, aphoristic,
+  // longer arc. The "ground keeps better than we do" throughline and the
+  // slow time under the stones.
+  'entities.npcs.sexton_faddick.journalLines.0':
+    '継いできた場所の覚えを、頭にだけ置いておく。紙の方が土地より早く持ち主を変えるので。祠がほとんどだ、もう誰も祀らぬ祠。休閑地もその一つだ。湖の東の、名の知らぬ池もそうだし、百年の風で丸まった立石もそうだ。覚えは長くない。覚えが肝のところでは、覚えが、つまりは全部だ。場所に留まることで場所は継がれぬ。かつてそこにあったと知る者でい続けば、それが継ぎ方だ。',
+  'entities.npcs.sexton_faddick.journalLines.1':
+    '土地の方が我々よりよく覚えておる。それが取引の全てだ。地上を歩く者は、二代で己の名を忘れ、新しい名を作って同じと呼ぶ。地下に留まる者は、何も忘れず、待つ。石の下の遅い時間がある。一度だけ、それを聞いたが、答えなかった。答えるのが、あれに扉のありかを知らせることになるからだ。答えぬことの鍵は私が持っている。金属の鍵ではない。習慣だ、重い。',
+  'entities.npcs.sexton_faddick.journalLines.2':
+    '狼が問題ではない。狼は兆しだ。問題は、土地を静まり返らせて、狼どもが己のものと思うほどにした何かなのだ。そういうのは見たことがある。誤った方角に静かになる土地で、療法はいつも同じだ:正しい騒音で再び騒がしくする。騒音とは人だ。人が建てる理由がそれだ。誰だとお思いかもしれぬが、歩く者でいる私、それが要件の全てだ。足りぬようで足りており、その間にある隔たりには折り合いをつけてきた。',
   'entities.quests.q_root_hollow_boars.title': '根の空洞の猪',
   'entities.quests.q_root_hollow_boars.text':
     '暦によれば、根の空洞は今季休むはずだった。だが猪どもには通達しておらん。虫を追ってこの地を半分も掘り返し、もう鷺が羽ばたいても逃げん。これは俺個人として腹に据えかねる。五頭狩れば、この季を記録どおりに記せる。',
@@ -3035,6 +3087,15 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.items.crypt_ritual_circle.name': '儀式の円',
   'entities.items.kings_signet.name': '王の印章指輪',
   'entities.items.event_skin_token.name': '謎めいた装いの宝箱',
+  'entities.items.flint_amber_pick.name': 'フリントの琥珀つるはし',
+  'entities.items.bonewood_amber_pick.name': 'ボーンウッドの琥珀つるはし',
+  'entities.items.starleaf_amber_pick.name': 'スターリーフの琥珀つるはし',
+  'entities.items.flint_bark_axe.name': 'フリントの樹皮斧',
+  'entities.items.bonewood_bark_axe.name': 'ボーンウッドの樹皮斧',
+  'entities.items.starleaf_bark_axe.name': 'スターリーフの樹皮斧',
+  'entities.items.flint_spore_sickle.name': 'フリントの胞子鎌',
+  'entities.items.bonewood_spore_sickle.name': 'ボーンウッドの胞子鎌',
+  'entities.items.starleaf_spore_sickle.name': 'スターリーフの胞子鎌',
   'entities.mobs.fallen_captain_aldren.name': '堕ちた隊長オルドレン',
   'entities.mobs.corrupted_priest_malric.name': '腐敗した司祭マルリック',
   'entities.mobs.deathstalker_voss.name': 'デスストーカー・ヴォス',
@@ -3232,6 +3293,13 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hud.options.npcVoices': 'NPCボイス',
   'hud.options.voiceVolume': 'ボイス音量',
   'entities.zones.eastbrook_vale.pois.8.label': 'ブライトウッドの林間',
+  'boarball.queue.join': 'ボアボールのキューに参加しました。あと3人のプレイヤーを待っています…',
+  'boarball.queue.leave': 'ボアボールのキューから離脱しました。',
+  'boarball.log.welcome': 'ボアボールへようこそ！シュートとパスで相手チームを上回れ。',
+  'boarball.log.kickoff': 'キックオフ！',
+  'boarball.log.over': '試合終了！ワールドに戻ります…',
+  'boarball.error.tooFar': 'ボールに近づいていません。',
+  'boarball.error.noTeammate': '味方がターゲットされていません。',
   'fiesta.augment.aug_apex_predator.desc':
     '物理ダメージ+40%、クリティカル+15%、与えたダメージの12%を回復。',
   'fiesta.augment.aug_apex_predator.name': '頂点捕食者',
@@ -4031,9 +4099,39 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     '古き深淵に棲む、鱗に覆われた蛇のような存在。希少で誇り高く、見た目よりもはるかに強大です。',
   'guide.family.dragonkin.name': 'ドラゴンキン',
   'guide.family.elemental.desc': '嵐や岩が命を得た存在。元素の力が強く渦巻く荒野に縛られています。',
+  'guide.hollowPage.intro':
+    '聖堂の門をくぐると花瓶のある広場に出る。すべての新たな英雄が目覚め、そして必ず戻ってくる場所だ。大陸全体で共有される一つの拠点であり、最初に出会う顔ぶれも、最初の依頼も、そして本当に必要な唯一の我が家もここにある。',
+  'guide.hollowPage.greeting':
+    '戻ってきたか、それは何よりだ……いくつか神聖な用事が溜まっている、前と同じ波長でな。ちょっとこっちへ……',
+  'guide.hollowPage.greeter': 'グリーンポー修道士、花瓶のそばで',
+  'guide.hollowPage.vaseHeading': '花瓶',
+  'guide.hollowPage.vaseBody':
+    '誰もが花瓶から始まる。ホロウが築かれた中心にある、古く耳を傾ける存在だ。エンバーバルブを一つ燃やす、洞窟モーセルを一つ与える、そんな小さな捧げ物を求め、受け取ると気づいているようだ。花瓶の下手には洞窟の入り口があり、地下聖堂へと続いている。両脇には自分だけの我が家を築ける区画が並ぶ。',
+  'guide.hollowPage.figuresHeading': '誰が世話をしているか',
+  'guide.hollowPage.figuresBody':
+    '花瓶を維持している二人がいて、最初の数分でどちらにも出会うことになる。',
+  'guide.hollowPage.greenpawBody':
+    '花瓶の唯一の世話役であり、最初の依頼を渡してくる人物。自称の肩書きであることを本人が真っ先に認めており、ホロウにおける案内役に一番近い存在だ。',
+  'guide.hollowPage.yarrowBody':
+    '第二の天職の指南役。どのクラスも彼女から副業を学ぶことができ、花瓶を挟んでグリーンポーの向かいに立っている。',
+  'guide.hollowPage.questsHeading': '最初の依頼',
+  'guide.hollowPage.questsBody':
+    'グリーンポー自身の依頼の連なりが最初にやることだ。花瓶のリズムを教えてくれる四つの短い用事をこなしてから、より広いホロウへと送り出される。',
+  'guide.hollowPage.questBurnsBody': '花瓶が光のために燃やす、洞窟育ちの球根をひとつかみ集める。',
+  'guide.hollowPage.questFillsBody':
+    'もっと静かな空腹を満たす、洞窟で育つモーセルを同じように集める。',
+  'guide.hollowPage.questWavelengthBody':
+    '花瓶の第二の天職への案内と、自分の手で餌をやることを教わる。',
+  'guide.hollowPage.questKeepLitBody': '一度きりの頼みを、三回続けて習慣に変える。',
+  'guide.hollowPage.housingHeading': '自分だけの我が家',
+  'guide.hollowPage.housingBody':
+    '花瓶の周りには{n}区画の宅地が並び、あなただけのホロウの片隅として、手に入れて飾り付けるのを待っている。',
+  'guide.hollowPage.shrineHeading': '地下聖堂',
+  'guide.hollowPage.shrineBody':
+    '花瓶のそばの洞窟の入り口は地下聖堂へと続く。ホロウ自身のインスタンスダンジョンであり、新たな英雄が初めてパーティで臨む本当の試練だ。',
   'guide.worldPage.heading': '世界',
   'guide.worldPage.intro':
-    'World of ClaudeCraftは、自らの足で歩いて渡る一続きの大地です。南から北へと3つのゾーンが連なっています。ファストトラベルはなく、その旅路こそが冒険の一部です。',
+    '花瓶から聖堂の門を出ると、ホロウの奥地に出る。新たな来訪者が屋外で最初の一歩を踏み出す静かな土地だ。さらに北へ3つのゾーンが南から北へと連なっているが、そこへの道はまだ開かれていない。とはいえそれらは実在し、待っている。',
   'guide.worldPage.hub': '拠点',
   'guide.worldPage.hollowReachesBlurb':
     '聖堂の門をすぐ越えた先の穏やかな土地で、新参者はFallow AcresとRoot Hollow周辺の狼や猪を相手に腕を磨く。',
@@ -4060,9 +4158,11 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     '近くにいるパーティメンバーは、討伐や目標の達成判定を共有します。だから一緒にクエストを進めれば、遅くなることはなく、むしろ速くなります。クエストをグループと共有することもできます。/share コマンドでクリックできるリンクとしてチャットに投稿すれば、条件を満たす近くのメンバーは誰でも、ワンクリックで同じクエストを受けられます。',
   'guide.questsPage.storyTitle': 'すべてを貫く一本の糸',
   'guide.questsPage.storyBody':
-    'イーストブルックでの最初のおつかいの頃から、死者に異変が起きています。あるカルトが暗躍しており、その足取りは北へ、すべてのゾーンを貫いて続いています。それを追えば、背後に誰がいるのかがわかるでしょう。',
+    '最初の糸口は花瓶のすぐそばにある、グリーンポー修道士自身の短い依頼の連なりだ。その先にはホロウの奥地の静かな用事があり、さらにその先には谷から山頂まで進軍する死のカルトを巡る、より長い物語がある。それは本物で完結した内容だが、新たな英雄がまだ歩ける道ではない。花瓶自身の依頼はホロウのページで、残りは来るべきものとして以下に記す。',
   'guide.questsPage.soloNote':
     'メインストーリーは各章のフィナーレまで完全にソロで進められます。そのフィナーレは五人用のダンジョンです。',
+  'guide.questsPage.sagaGateNote':
+    'この物語は本物で、完結した内容だ。北への道が再び開いた時に開放される、同じ道筋である。新たな英雄が今日歩き出す場所ではない。その場所は花瓶、ホロウの中にある。',
   'guide.dungeonsPage.heading': 'ダンジョンとレイド',
   'guide.dungeonsPage.intro':
     'オープンワールドだけでは物足りなくなったら、パーティを組んでインスタンスへ踏み込みましょう。インスタンスとは、あなたのグループだけのために用意されたダンジョンの専用コピーです。',
@@ -4739,6 +4839,45 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     '名は緑掌。緑掌修道士、初代預言者、自称のな、この壺に言わせりゃそんな肩書きは何の意味もねえ、で、壺の言う通りなんだが、それでも誰かが世話してやらんとな……',
   'entities.npcs.brother_greenpaw.introLines.2':
     'ここが空洞さ。昔は一つの部族まるごとあってな、大した賑わいだったと、まあ聞いた話だが、今じゃほとんど俺と、この壺と、あの洞穴の底で息してる何かだけだ……ともかくだ。壺は腹を空かせてる、俺も腹が減ってる、同じ波長ってわけだ。こっち来いよ、片付けなきゃならん神聖な用事が二つばかりある。',
+  'entities.npcs.brother_greenpaw.dialogNode.hearth':
+    'また壺のところに戻ってきたな、友よ……あいつは今日は静かでな、じっと聴き入ってるのか、それともすねてるのか、どっちなのかわしにはさっぱりわからん。ホロウの暮らしはどうだった？',
+  'entities.npcs.brother_greenpaw.dialogNode.warmed':
+    '……その言葉は優しく染みるな、友よ。お前が思う以上にな。ここを通る大抵の連中は、出口を探しておる。だがお前は、この場所の真ん中を探し続けておる。それは思うよりずっと珍しいことだ。',
+  'entities.npcs.brother_greenpaw.dialogNode.vase':
+    'いつもどおりさ。あいつは煙を欲しがり、世話を欲しがり、そばに座って、この静けさを会話のふりして付き合ってくれる誰かを欲しがる……まあ、見方を変えれば、そりゃ立派な会話さ。それがだいたい信仰ってやつの全部だよ。',
+  'entities.npcs.brother_greenpaw.dialogNode.faith':
+    '信じる、なんて大げさな言葉だよ、友よ。わしはただ世話をする。世話をすることは、この二本の手でできることだからな。聴くのはあいつに任せておる。もし聴いておらんでも、まあ、煙はどのみちいい匂いがするからな……',
+  'entities.npcs.brother_greenpaw.dialogNode.stung':
+    '……ううむ。ああ。ああ、そうかもしれんな。寒い朝に、壺がため息もつかず、誰も小道を上ってこん時、わし自身もそう思ったことがある……だがわしはまだここにおる、友よ。だからそれだけじゃないのさ。少なくともわしにとってはな。',
+  'entities.npcs.brother_greenpaw.dialogNode.mended':
+    'いいんだよ、友よ。こんな場所だ、たまにきつい言葉のひとつも言われて当然さ。それは否定せんよ。だがお前はわざわざ戻ってきて、優しく言い直してくれた。それは墓場がしてくれる以上のことだ。わしとお前は、これでおあいこだ。',
+  'entities.npcs.brother_greenpaw.dialogNode.tribe':
+    '昔は大きな部族だったそうだ、古い刻み跡がそう言っておる。暗がりに勘定の刻み目がずらりと並び、五つずつ消されて、そのどれもが一人の手じゃとても刻めん数だ……連中は長い長い間あいつの灯を絶やさずにおった、やがてわし一人になるまでな。連中がどこへ行ったかはわからん、友よ。ただ、わしが見張っている間はこの灯芯を消させはせん、それだけはわかっておる。',
+  'entities.npcs.brother_greenpaw.dialogNode.confide':
+    '……ありがたい申し出だ。そのほんのひとかけらだけ、遠慮なくもらうとしよう。正直に言うとな、わしがお前に話すのは、半分は壺が答えてくれんからで、半分は、いつか誰もこの小道を上ってこなくなる日が怖いからさ。だから、上ってきてくれてありがとうな。それこそが神聖ってやつだよ、友よ。もし探しておるならな。',
+  'entities.npcs.brother_greenpaw.dialogChoice.kind':
+    'だんだん、居場所らしくなってきたよ、兄者。本気でそう思ってる。',
+  'entities.npcs.brother_greenpaw.dialogChoice.ask': '壺は最近、何て言ってるんだ？',
+  'entities.npcs.brother_greenpaw.dialogChoice.blunt':
+    'ここは番人のいる墓場さ、緑掌。それだけのことだ。',
+  'entities.npcs.brother_greenpaw.dialogChoice.tribe':
+    'その昔ここにいたっていう部族の話を聞かせてくれ。',
+  'entities.npcs.brother_greenpaw.dialogChoice.warm_bye': 'あいつのそばに戻ってやってくれ。',
+  'entities.npcs.brother_greenpaw.dialogChoice.vase_more':
+    'で、あいつが本当に聴いてると信じてるのか？',
+  'entities.npcs.brother_greenpaw.dialogChoice.vase_bye':
+    'じゃあ、あいつに付き合ってやってくれ。わしはこの辺にいるよ。',
+  'entities.npcs.brother_greenpaw.dialogChoice.faith_bye': 'なるほどな、緑掌。',
+  'entities.npcs.brother_greenpaw.dialogChoice.sorry':
+    '思ってたよりきつい言い方になっちまった。すまない。',
+  'entities.npcs.brother_greenpaw.dialogChoice.cold_bye': '好きに信じてればいいさ。',
+  'entities.npcs.brother_greenpaw.dialogChoice.mended_bye': 'これでおあいこだ。またな。',
+  'entities.npcs.brother_greenpaw.dialogChoice.confide':
+    'それを一人で背負う必要はないんだよ、兄者。',
+  'entities.npcs.brother_greenpaw.dialogChoice.tribe_bye':
+    'まだ誰かが世話をしてる。それにも意味はあるさ。',
+  'entities.npcs.brother_greenpaw.dialogChoice.confide_bye':
+    'これからもこの小道を上ってくるよ、緑掌。',
   'entities.delves.collapsed_reliquary.enterText': 'あなたは崩れた聖遺物庫へと降りていく。',
   'entities.delves.collapsed_reliquary.leaveText':
     'あなたは聖遺物庫の廃墟にいるハルヴェン修道士のもとへ登り戻る。',
@@ -5232,6 +5371,14 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.discord.relay.wts.label': '売却希望',
   'hudChrome.discord.relay.wtb.label': '購入希望',
   'hudChrome.discord.relay.help.label': 'ヘルプが必要',
+  // Persistent NPC journal/lore gossip-menu option (PHAA-480). M16 fill only;
+  // English is the source of truth in src/ui/i18n.catalog/hud_chrome.ts.
+  'hudChrome.npcJournal.readLabel': '日記について聞かせてください。',
+  'hudChrome.npcJournal.readAria': '{name}の日記を読む',
+  'hudChrome.npcJournal.back': '前のページ',
+  'hudChrome.npcJournal.next': '次のページ',
+  'hudChrome.npcJournal.close': '日記を閉じる',
+  'hudChrome.npcJournal.title': '{name}の日記',
   'housingUi.claimedBanner': 'あなたはこの区画を住居として登録した。',
   'housingUi.ownerBanner': 'ここは{name}の住居です。',
   'housingUi.prompt.claim': 'この区画を登録する',

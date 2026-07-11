@@ -3287,6 +3287,26 @@
     white-space: nowrap;
   }
 
+  /* World-placed readable "Read" prompt (PHAA-552): same treatment as the
+     housing signpost prompt, nudged up a little so the two never overlap. */
+  #readable-prompt {
+    display: none;
+    position: absolute;
+    left: 50%;
+    bottom: 26%;
+    transform: translateX(-50%);
+    color: var(--gold);
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow:
+      0 0 10px #00000088,
+      1px 1px 3px #000;
+    pointer-events: none;
+    font-family: var(--title-font);
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+
   /* ---------- low-health screen vignette ---------- */
   /* Pulsing red edge glow that fades in as the player nears death. Opacity and
      pulse cadence are driven from JS via the --lhv-* custom properties; the

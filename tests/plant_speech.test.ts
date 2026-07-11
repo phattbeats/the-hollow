@@ -233,6 +233,79 @@ describe('the Plant: rationed, mood-driven canned-line floor (unit)', () => {
     expect(plantLines(t.events).length).toBe(before); // still rationed: no ambient line leaked through
   });
 
+  it('leans in once after smoke holds at hazy-or-better for the sustained window', () => {
+    const t = makeCtx();
+    const plant = new PlantSpeech(t.ctx);
+    plant.update(40); // hazy, stretch begins at t=0
+    t.clock.time += 200;
+    plant.update(40); // 200s in: under the 300s window, must stay silent
+    expect(plantLines(t.events).length).toBe(0);
+    t.clock.time += 120;
+    plant.update(40); // 320s in: lean-in fires
+    t.clock.time += 700; // clear every cooldown/whim gate
+    plant.update(40); // same stretch: must not lean in again (whim may fire)
+    const leanIns = t.events.filter(
+      (e) =>
+        e.type === 'log' &&
+        (e as { plant?: { trigger?: string } }).plant?.trigger === 'sustained_smoke',
+    );
+    expect(leanIns.length).toBe(1);
+  });
+
+  it('the lean-in names the keeper who has been feeding the hearth', () => {
+    const t = makeCtx();
+    const plant = new PlantSpeech(t.ctx);
+    plant.update(40, 'Hosta');
+    t.clock.time += 400;
+    plant.update(40, 'Hosta');
+    const line = plantLines(t.events)[0];
+    expect(line.text).toContain('Hosta');
+    expect((line as { plant?: { keeperName?: string } }).plant?.keeperName).toBe('Hosta');
+  });
+
+  it('a stretch that dips back to clear re-arms the lean-in and restarts its clock', () => {
+    const t = makeCtx();
+    const plant = new PlantSpeech(t.ctx);
+    const leanIns = () =>
+      t.events.filter(
+        (e) =>
+          e.type === 'log' &&
+          (e as { plant?: { trigger?: string } }).plant?.trigger === 'sustained_smoke',
+      ).length;
+    plant.update(40); // hazy stretch begins
+    t.clock.time += 250;
+    plant.update(10); // dips to clear before the window: resets
+    t.clock.time += 700;
+    plant.update(40); // new stretch begins here (whim may fire; ignored below)
+    t.clock.time += 250;
+    plant.update(40); // only 250s into the NEW stretch: no lean-in yet
+    expect(leanIns()).toBe(0);
+    t.clock.time += 300; // 550s in, past the window and any cooldown
+    plant.update(40);
+    expect(leanIns()).toBe(1);
+  });
+
+  it('the lean-in stays armed through the shared cooldown instead of being lost to it', () => {
+    const t = makeCtx();
+    const plant = new PlantSpeech(t.ctx);
+    const pid = t.addPlayer(1, 'Aleph');
+    plant.update(40); // hazy stretch begins at t=0
+    t.clock.time += 290;
+    plant.handleChat('/plant hi', pid); // speaks at t=290, arms the cooldown (60-180s)
+    const before = plantLines(t.events).length;
+    t.clock.time += 20;
+    plant.update(40); // t=310: window elapsed but rationed silent - must stay armed
+    expect(plantLines(t.events).length).toBe(before);
+    t.clock.time += 200; // past the maximum possible cooldown gap
+    plant.update(40); // still the same stretch: the armed lean-in now fires
+    const leanIns = t.events.filter(
+      (e) =>
+        e.type === 'log' &&
+        (e as { plant?: { trigger?: string } }).plant?.trigger === 'sustained_smoke',
+    );
+    expect(leanIns.length).toBe(1);
+  });
+
   it('eventually speaks on its own whim with no trigger at all', () => {
     const t = makeCtx();
     const plant = new PlantSpeech(t.ctx);

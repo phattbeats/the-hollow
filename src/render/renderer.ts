@@ -28,7 +28,7 @@ import {
 } from '../sim/data';
 import type { DelveModuleId } from '../sim/delve_layout';
 import { type DungeonLayout, UNDER_SHRINE_LAYOUT } from '../sim/dungeon_layout';
-import type { BiomeId } from '../sim/types';
+import type { BiomeId, EquipSlot } from '../sim/types';
 import { ALL_CLASSES, type Entity, type SimEvent } from '../sim/types';
 import { groundHeight, WATER_LEVEL, zoneBiomeAt } from '../sim/world';
 import { tEntity } from '../ui/entity_i18n';
@@ -74,8 +74,10 @@ import {
   urlForcedTier,
 } from './gfx';
 import { buildHollowCanopy } from './hollow_canopy';
+import { buildHollowFlora, type HollowFloraView } from './hollow_flora';
 import {
   buildHollowProps,
+  buildShrineGateDoor,
   hollowSmokeIntensity,
   hollowVaseWorldPos,
   isHollowHubOrigin,
@@ -99,6 +101,8 @@ import { buildComposer, type PostPipeline } from './post';
 import { buildPropMaterialPrewarmGroup, buildProps } from './props';
 import { buildGroundQuestObject } from './quest_objects';
 import { isOwnedPetHostile } from './reaction';
+import { type NearbyReadable, nearestReadable } from './readable_proximity';
+import { buildReadables } from './readables';
 import { RenderBudgetGovernor, type RenderBudgetState } from './render_budget';
 import { downscaleDims } from './screenshot';
 import { drapeRingLocalY } from './selection_ring';
@@ -486,6 +490,11 @@ export interface EntityView {
   travelVisual: CharacterVisual | null; // druid travel form (chicken-cow), built lazily
   skin: number; // last-rendered appearance skin — diffed each frame for live swaps
   mainhandItemId: string | null; // last-rendered equipped weapon — diffed for live held-weapon swaps
+  /** Last-rendered equipped armor (mirrors the entity's `equippedItems`). Diffed
+   *  each frame for live armor equips: the renderer calls v.visual.setArmor(...)
+   *  only when the keys/values change, the same write-elision discipline as the
+   *  skin + mainhand diffs just below. Null before the first setArmor call. */
+  armorByItemId: Partial<Record<EquipSlot, string>> | null;
   /** unscaled height — nameplate/vfx anchor reads height * e.scale */
   height: number;
   /** last-applied entity scale (group.scale); diffed each frame for live size buffs */
@@ -831,6 +840,7 @@ export class Renderer {
   private waterView: WaterView;
   private terrainView: TerrainView;
   private foliage: FoliageView;
+  private hollowFlora: HollowFloraView;
   private fish: FishView;
   private critters: CritterField;
   private motes: MotesView;
@@ -872,6 +882,10 @@ export class Renderer {
   // recomputed alongside housingView each frame. main.ts's interact-key handler
   // reads this instead of re-deriving the same distance check.
   nearHousingPlot: NearbyHousingPlot | null = null;
+  // PHAA-552: the world-placed readable book the player is currently in read
+  // range of (if any), recomputed each frame. main.ts's interact-key handler and
+  // the HUD "Read" prompt both read this rather than re-deriving the check.
+  nearReadable: NearbyReadable | null = null;
   // Homestead v0: open-world plots drawn from IWorld.homesteadInfo. Lazy like
   // `housingView` (nothing to draw before the primary entity resolves).
   private homesteadView: HomesteadView | null = null;
@@ -1211,6 +1225,11 @@ export class Renderer {
     this.foliage = buildFoliage(this.sim.cfg.seed);
     setRenderCategory(this.foliage.group, 'foliage');
     this.scene.add(this.foliage.group);
+    // Otherworldly starter-zone garden flora clustered around the Hollow
+    // Reaches camps (PHAA-581): static plant-creature decor, walk-through.
+    this.hollowFlora = buildHollowFlora(this.sim.cfg.seed);
+    setRenderCategory(this.hollowFlora.group, 'foliage');
+    this.scene.add(this.hollowFlora.group);
     this.fish = buildFish(this.sim.cfg.seed);
     setRenderCategory(this.fish.group, 'fish');
     this.scene.add(this.fish.group);
@@ -1246,6 +1265,13 @@ export class Renderer {
     this.scene.add(gatherNodes.group);
     // Baked into world space at build with no per-frame update(), same as props.
     freezeStaticMatrices(gatherNodes.group);
+
+    // PHAA-552: world-placed readable books, same static-fixture treatment as
+    // gather nodes above (baked into world space, no per-frame transform).
+    const readables = buildReadables(this.sim.cfg.seed);
+    setRenderCategory(readables.group, 'props');
+    this.scene.add(readables.group);
+    freezeStaticMatrices(readables.group);
 
     // selection ring — a classic target reticle: a base ring plus four
     // inward-pointing ticks. The base ring is draped over the terrain each
@@ -3026,7 +3052,7 @@ export class Renderer {
   private buildDoorBody(
     entering: boolean,
     dungeonId?: string | null,
-  ): { body: THREE.Group; portal?: THREE.Mesh } {
+  ): { body: THREE.Group; portal?: THREE.Mesh; height?: number } {
     const body = new THREE.Group();
     if (entering && dungeonId === 'nythraxis_crypt') {
       const clickBox = new THREE.Mesh(
@@ -3036,6 +3062,36 @@ export class Renderer {
       clickBox.position.y = 2.1;
       body.add(clickBox);
       return { body };
+    }
+
+    // Hollow-family transitions read as the shrine gate, not the generic
+    // stone arch (PHAA-589 follow-up): the overworld shrine gate into the
+    // hub, the hub's cave mouth into the Under-Shrine, and the Under-Shrine
+    // exit. The hub's own walk-out (the_hollow exit) keeps the stone arch:
+    // hollow_props.ts already stands the static shrine gate on that exact
+    // line, and doubling the mesh would z-fight. Falls through to the arch
+    // if the GLB is unavailable (preload failure).
+    if (dungeonId === 'under_shrine' || (dungeonId === 'the_hollow' && entering)) {
+      // Cloned kit meshes share geometry with the loader cache; mark them so
+      // the object-view dispose path (which frees unshared geometries on
+      // interest churn) leaves the cache intact.
+      const gate = buildShrineGateDoor((o) =>
+        o.traverse((c) => {
+          const mesh = c as THREE.Mesh;
+          if (mesh.isMesh) markSharedGeometry(mesh.geometry);
+        }),
+      );
+      if (gate) {
+        body.add(gate);
+        const portal = new THREE.Mesh(this.doorPortalGeometry(), this.doorPortalMaterial(entering));
+        // centred in the gate's arch opening (frame ~7.6 x 7.9 at the kit's
+        // 1.8x scale), a touch larger than the stone-arch swirl to fill it
+        portal.position.y = 2.6;
+        portal.scale.set(1.25, 1.6, 1);
+        body.add(portal);
+        // nameplate above the ~7.9-unit gate frame, not inside it
+        return { body, portal, height: 8.2 };
+      }
     }
 
     const stone = this.doorStoneMaterial();
@@ -3094,7 +3150,7 @@ export class Renderer {
       const built = this.buildDoorBody(entering, e.dungeonId);
       body = built.body;
       portal = built.portal;
-      height = 4.6;
+      height = built.height ?? 4.6;
       objectMesh = body!;
     } else if (e.kind === 'object' && e.templateId?.startsWith('delve_')) {
       // Delve interactables: skip the object pool (each is unique/stateful) and
@@ -3327,6 +3383,12 @@ export class Renderer {
       lastZ: e.pos.z,
       skin: e.skin,
       mainhandItemId: e.mainhandItemId,
+      // First-render snapshot of the entity's full worn set, so the per-frame
+      // diff just below treats the initial paint as already applied (no swap
+      // pop when a peer streams in mid-fight wearing armor). Forms (sheep/bear/
+      // cat/travel) never carry armor: their `equippedItems` is empty on every
+      // host, so the map here is always `{}` for them.
+      armorByItemId: e.equippedItems ?? null,
       liveScale: e.scale,
       loco: newLocoTrack(),
       stepAccum: 0,
@@ -4119,6 +4181,19 @@ export class Renderer {
         v.visual.setWeapon(e.mainhandItemId);
       }
 
+      // live worn-armor swap. Full equippedItems set changed (self equip or a
+      // peer's gear update). The diff is shallow: same reference means same
+      // worn set (the OnlineClient keeps the entity's object stable across
+      // ticks; the offline Sim mutates in place). setArmor does its own deep
+      // equality check on the keys/values it actually renders, so a no-op equip
+      // (e.g. swap to the same item id) still skips the re-attach + material
+      // pass. setArmor also no-ops on visuals without `armorSlots` (mobs/NPCs/
+      // forms never carry gear, so the diff is always a cheap walk past them).
+      if (e.equippedItems !== v.armorByItemId) {
+        v.armorByItemId = e.equippedItems;
+        v.visual.setArmor(e.equippedItems ?? null);
+      }
+
       // live body-size buffs (Fiesta power-ups): scale the whole group so the
       // rig, click proxy, and any form visual grow/shrink together.
       if (e.scale !== v.liveScale) {
@@ -4490,6 +4565,12 @@ export class Renderer {
         this.nearHousingPlot = null;
       }
     }
+    // PHAA-552: nearest world-placed readable book in read range, mirroring the
+    // housing proximity check above so the "Read" prompt and main.ts's
+    // interact-key handler share one answer. readableProps is already scoped to
+    // the viewer's overworld zone (empty inside instances), so this is a short
+    // list every frame.
+    this.nearReadable = nearestReadable(p.pos.x, p.pos.z, this.sim.readableProps);
     // Homestead v0: open-world Hollow Reaches plots, always world-space (no
     // hub-origin gate, unlike Housing v0 above); the JSON change key inside
     // update() makes the per-frame cost negligible.

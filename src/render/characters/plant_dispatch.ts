@@ -153,6 +153,12 @@ export class PlantCreatureVisual {
     // mobs never carry an equippable weapon model
   }
 
+  setArmor(_armorByItemId: Partial<Record<string, string>> | null): void {
+    // mobs (the three Under-Shrine plant creatures on this dispatch) never
+    // wear armor; the renderer's per-frame diff still calls this for the type
+    // union, so the no-op keeps MobVisual.setArmor safe.
+  }
+
   dispose(): void {
     this.creature.dispose();
   }
