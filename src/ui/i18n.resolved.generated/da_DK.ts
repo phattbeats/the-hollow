@@ -963,6 +963,14 @@ export const da_DK: EnTranslations = {
     },
     "trainer": {
       "secondaryClassSet": "You have taken up {cls} as your secondary profession."
+    },
+    "gathering": {
+      "title": "Gathering",
+      "amber": "Amber",
+      "heartwood": "Heartwood",
+      "spore": "Spore",
+      "toolTier": "Tier {tier} tool",
+      "toolNone": "No tool"
     }
   },
   "mailUi": {

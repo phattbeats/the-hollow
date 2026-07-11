@@ -5643,4 +5643,10 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.elder_yarrow.greeting':
     'Каждый билд начинается с вопроса. Какое ещё призвание зовёт вас?',
   'hudChrome.trainer.secondaryClassSet': 'Вы выбрали {cls} дополнительной профессией.',
+  'hudChrome.gathering.title': 'Сбор',
+  'hudChrome.gathering.amber': 'Янтарь',
+  'hudChrome.gathering.heartwood': 'Сердцевина',
+  'hudChrome.gathering.spore': 'Спора',
+  'hudChrome.gathering.toolTier': 'Инструмент {tier} ур.',
+  'hudChrome.gathering.toolNone': 'Нет инструмента',
 };
