@@ -291,6 +291,9 @@ export const en: EnTranslations = {
       "lessThanMinute": "<1m",
       "lockedToast": "You are locked to {raid}. Unlocks in {time}."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "N",
       "NE": "NE",
@@ -629,6 +632,13 @@ export const en: EnTranslations = {
       "unassigned": "{item} was not assigned and is free for all.",
       "leaderOnly": "Only the party leader can change the loot method."
     },
+    "lootRollGroup": {
+      "pending": "Waiting...",
+      "need": "Need",
+      "greed": "Greed",
+      "pass": "Pass",
+      "aria": "Group roll status for {item}"
+    },
     "bags": {
       "filterGroupAria": "Filter bags by category",
       "filterAll": "All",
@@ -643,7 +653,12 @@ export const en: EnTranslations = {
       "sortName": "Name",
       "searchPlaceholder": "Search items",
       "searchAria": "Search bag items by name",
-      "noMatch": "No items match your filters."
+      "noMatch": "No items match your filters.",
+      "capacity": "{used}/{total}",
+      "capacityAria": "Bag slots used: {used} of {total}",
+      "backpack": "Backpack",
+      "socketEmpty": "Empty bag slot",
+      "unequipHint": "Click to remove this bag"
     },
     "raidConvert": {
       "toPartyDone": "Your raid has converted back to a party.",
@@ -940,6 +955,27 @@ export const en: EnTranslations = {
     "trainer": {
       "secondaryClassSet": "You have taken up {cls} as your secondary profession."
     }
+  },
+  "mailUi": {
+    "title": "The Ravenpost",
+    "subtitle": "send and collect letters",
+    "close": "Close mail",
+    "inbox": "Inbox",
+    "compose": "Compose",
+    "noPostOffice": "Step up to the Ravenpost to tend your mail.",
+    "emptyInbox": "No letters waiting. A raven will arrive when someone writes to you.",
+    "from": "From {name}",
+    "noSubject": "(no subject)",
+    "take": "Take",
+    "delete": "Delete",
+    "postageNote": "Sending a letter costs {money} postage.",
+    "recipient": "Recipient",
+    "subjectLabel": "Subject",
+    "bodyPlaceholder": "Write your letter...",
+    "send": "Send Letter",
+    "needRecipientOrText": "Name a recipient and write something before sending.",
+    "openButton": "Show me the Ravenpost.",
+    "openButtonAria": "Open the Ravenpost mail window"
   },
   "guide": {
     "brand": "The Hollow",
@@ -2334,6 +2370,21 @@ export const en: EnTranslations = {
       "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <slot>.",
       "helpLine": "Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>."
     },
+    "bags": {
+      "full": "Your bags are full.",
+      "socketsFull": "All your bag slots are full.",
+      "swapTooManyItems": "You have too many items to swap to that bag.",
+      "removeTooManyItems": "You have too many items to remove that bag.",
+      "tradeSpace": "Trade failed: not enough bag space."
+    },
+    "bank": {
+      "tooFar": "You are too far from the banker.",
+      "noQuestItems": "You cannot store quest items in the bank.",
+      "full": "Your bank is full.",
+      "expansionCapped": "Your bank cannot be expanded further.",
+      "cannotAfford": "You cannot afford that bank expansion.",
+      "purchased": "You purchase additional bank slots."
+    },
     "homestead": {
       "outsideArea": "That is outside the homestead ground. Try Fallow Acres, west of the road.",
       "tooCloseGate": "Too close to the gate. Move further out.",
@@ -3519,6 +3570,7 @@ export const en: EnTranslations = {
       "offGlobalCooldown": "Off the global cooldown",
       "friendlyTarget": "Friendly target",
       "enemyTarget": "Enemy target",
+      "selfOnly": "Self only",
       "damageRange": "{min} to {max}",
       "finisherDamage": "{base} plus {perCombo} per combo point"
     },
@@ -3683,7 +3735,8 @@ export const en: EnTranslations = {
       "drink": "Drink",
       "tool": "Tool",
       "potion": "Potion",
-      "elixir": "Elixir"
+      "elixir": "Elixir",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "Armor",
@@ -3725,7 +3778,8 @@ export const en: EnTranslations = {
       "useManaPotion": "Use: Instantly restores {amount} mana. Usable in combat. 2 min cooldown.",
       "clickUseInstant": "Click to use instantly in combat",
       "clickUse": "Click to use",
-      "clickBuyback": "Click to buy back"
+      "clickBuyback": "Click to buy back",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "Requires level {level} to equip."
@@ -5010,6 +5064,21 @@ export const en: EnTranslations = {
       "monarch_crown_helm": {
         "name": "Monarch's Crown"
       },
+      "linen_pouch": {
+        "name": "Linen Pouch"
+      },
+      "travelers_knapsack": {
+        "name": "Traveler's Knapsack"
+      },
+      "wolfhide_satchel": {
+        "name": "Wolfhide Satchel"
+      },
+      "gravewoven_bag": {
+        "name": "Gravewoven Bag"
+      },
+      "mistcallers_duffel": {
+        "name": "Mistcaller's Duffel"
+      },
       "bristleback_maul": {
         "name": "Bristleback Maul"
       },
@@ -5370,6 +5439,24 @@ export const en: EnTranslations = {
       "shrine_diary_page": {
         "name": "Torn Diary Page",
         "flavorText": "...counted forty days by candle before I lost the thread. The dark down here does not forget Him, even if He has forgotten this place. If the heron circles low, tell the Verger the wick still burns..."
+      },
+      "heartwood_splinter": {
+        "name": "Heartwood Splinter",
+        "flavorText": "Warm to the touch, long after the tree it came from stopped moving."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Bloomcrown Pauldrons"
+      },
+      "verdantguard_mantle": {
+        "name": "Verdantguard Mantle"
+      },
+      "worn_prayer_token": {
+        "name": "Worn Prayer Token",
+        "flavorText": "...smooth on one face from a thumb that isn't mine, worn the same shallow groove into a hundred more like it before this one, or so the pile down here would have you believe. one thumb doesn't wear a hundred tokens. a lot of thumbs wear one groove, though..."
+      },
+      "tally_shard": {
+        "name": "Tally-Marked Shard",
+        "flavorText": "...marks in fives, scratched deep, crossed each time the count came round. hundreds of fives before the crossing stops, and the last row was never finished..."
       },
       "reliquary_plate_chest": {
         "name": "Reliquary Guard Hauberk"
@@ -5825,6 +5912,9 @@ export const en: EnTranslations = {
       },
       "the_witness_root": {
         "name": "The Witness-Root"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {
@@ -5832,6 +5922,11 @@ export const en: EnTranslations = {
         "name": "The Merchant",
         "title": "Keeper of the World Market",
         "greeting": "Welcome to the World Market, {className}. Buy from every adventurer in the realm - or set out your own wares and let coin find you."
+      },
+      "the_ravenpost": {
+        "name": "The Ravenpost",
+        "title": "Keeper of the Mail",
+        "greeting": "Post a letter, {className}, and my ravens will find your friend wherever they roam, coin and parcels riding along, safe until claimed."
       },
       "marshal_redbrook": {
         "name": "Marshal Redbrook",
@@ -6873,7 +6968,7 @@ export const en: EnTranslations = {
       "q_root_hollow_boars_ii": {
         "title": "Root Hollow's Reckoning",
         "text": "I will admit what the office discourages admitting: five was optimistic. The lower dens keep pushing up more. Eight further, and I can close the season without amending the record a third time. The record resents amendment. So do I.",
-        "completion": "Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me.",
+        "completion": "Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me. The register itself is older than that arrangement, bound in a hand I have never met, keeping a count I choose not to add. Someone was thorough here, once. I only try to keep pace.",
         "objectives": {
           "0": {
             "label": "Wild Boar slain"

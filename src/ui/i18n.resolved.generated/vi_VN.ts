@@ -291,6 +291,9 @@ export const vi_VN: EnTranslations = {
       "lessThanMinute": "<1p",
       "lockedToast": "Bạn đang bị khóa với {raid}. Mở khóa sau {time}."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "B",
       "NE": "ĐB",
@@ -629,6 +632,13 @@ export const vi_VN: EnTranslations = {
       "unassigned": "{item} chua duoc gan va moi nguoi deu co the nhat.",
       "leaderOnly": "Chi truong nhom co the doi phuong thuc chien loi pham."
     },
+    "lootRollGroup": {
+      "pending": "Waiting...",
+      "need": "Need",
+      "greed": "Greed",
+      "pass": "Pass",
+      "aria": "Group roll status for {item}"
+    },
     "bags": {
       "filterGroupAria": "Lọc túi đồ theo danh mục",
       "filterAll": "Tất cả",
@@ -643,7 +653,12 @@ export const vi_VN: EnTranslations = {
       "sortName": "Tên",
       "searchPlaceholder": "Tìm vật phẩm",
       "searchAria": "Tìm vật phẩm trong túi theo tên",
-      "noMatch": "Không có vật phẩm nào khớp với bộ lọc của bạn."
+      "noMatch": "Không có vật phẩm nào khớp với bộ lọc của bạn.",
+      "capacity": "{used}/{total}",
+      "capacityAria": "Bag slots used: {used} of {total}",
+      "backpack": "Backpack",
+      "socketEmpty": "Empty bag slot",
+      "unequipHint": "Click to remove this bag"
     },
     "raidConvert": {
       "toPartyDone": "Raid của bạn đã chuyển trở lại thành tổ đội.",
@@ -940,6 +955,27 @@ export const vi_VN: EnTranslations = {
     "trainer": {
       "secondaryClassSet": "You have taken up {cls} as your secondary profession."
     }
+  },
+  "mailUi": {
+    "title": "The Ravenpost",
+    "subtitle": "send and collect letters",
+    "close": "Close mail",
+    "inbox": "Inbox",
+    "compose": "Compose",
+    "noPostOffice": "Step up to the Ravenpost to tend your mail.",
+    "emptyInbox": "No letters waiting. A raven will arrive when someone writes to you.",
+    "from": "From {name}",
+    "noSubject": "(no subject)",
+    "take": "Take",
+    "delete": "Delete",
+    "postageNote": "Sending a letter costs {money} postage.",
+    "recipient": "Recipient",
+    "subjectLabel": "Subject",
+    "bodyPlaceholder": "Write your letter...",
+    "send": "Send Letter",
+    "needRecipientOrText": "Name a recipient and write something before sending.",
+    "openButton": "Show me the Ravenpost.",
+    "openButtonAria": "Open the Ravenpost mail window"
   },
   "guide": {
     "brand": "World of ClaudeCraft",
@@ -2334,6 +2370,21 @@ export const vi_VN: EnTranslations = {
       "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <slot>.",
       "helpLine": "Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>."
     },
+    "bags": {
+      "full": "Your bags are full.",
+      "socketsFull": "All your bag slots are full.",
+      "swapTooManyItems": "You have too many items to swap to that bag.",
+      "removeTooManyItems": "You have too many items to remove that bag.",
+      "tradeSpace": "Trade failed: not enough bag space."
+    },
+    "bank": {
+      "tooFar": "You are too far from the banker.",
+      "noQuestItems": "You cannot store quest items in the bank.",
+      "full": "Your bank is full.",
+      "expansionCapped": "Your bank cannot be expanded further.",
+      "cannotAfford": "You cannot afford that bank expansion.",
+      "purchased": "You purchase additional bank slots."
+    },
     "homestead": {
       "outsideArea": "That is outside the homestead ground. Try Fallow Acres, west of the road.",
       "tooCloseGate": "Too close to the gate. Move further out.",
@@ -3519,6 +3570,7 @@ export const vi_VN: EnTranslations = {
       "offGlobalCooldown": "Không tính vào hồi chiêu toàn cục",
       "friendlyTarget": "Mục tiêu đồng minh",
       "enemyTarget": "Mục tiêu địch",
+      "selfOnly": "Self only",
       "damageRange": "{min} đến {max}",
       "finisherDamage": "{base} cộng {perCombo} mỗi điểm combo"
     },
@@ -3683,7 +3735,8 @@ export const vi_VN: EnTranslations = {
       "drink": "Đồ Uống",
       "tool": "Dụng Cụ",
       "potion": "Thuốc",
-      "elixir": "Tiên Dược"
+      "elixir": "Tiên Dược",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "Giáp",
@@ -3725,7 +3778,8 @@ export const vi_VN: EnTranslations = {
       "useManaPotion": "Dùng: Hồi tức thời {amount} mana. Dùng được trong chiến đấu. Hồi chiêu 1 phút.",
       "clickUseInstant": "Nhấp để dùng tức thời trong chiến đấu",
       "clickUse": "Nhấp để sử dụng",
-      "clickBuyback": "Nhấp để mua lại"
+      "clickBuyback": "Nhấp để mua lại",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "Requires level {level} to equip."
@@ -5010,6 +5064,21 @@ export const vi_VN: EnTranslations = {
       "monarch_crown_helm": {
         "name": "Vương Miện Quân Vương"
       },
+      "linen_pouch": {
+        "name": "Túi Vải Lanh"
+      },
+      "travelers_knapsack": {
+        "name": "Balô Lữ Khách"
+      },
+      "wolfhide_satchel": {
+        "name": "Túi Da Sói"
+      },
+      "gravewoven_bag": {
+        "name": "Túi Dệt Từ Mộ"
+      },
+      "mistcallers_duffel": {
+        "name": "Túi Du Lịch Của Mistcaller"
+      },
       "bristleback_maul": {
         "name": "Vồ Lưng Gai"
       },
@@ -5359,7 +5428,7 @@ export const vi_VN: EnTranslations = {
         "name": "Một Hạt Cườm Từ Dây Đạn"
       },
       "keeper_coal": {
-        "name": "A Coal That Never Cooled"
+        "name": "Hòn Than Không Bao Giờ Nguội"
       },
       "willow_sprig": {
         "name": "A Willow Sprig"
@@ -5370,6 +5439,24 @@ export const vi_VN: EnTranslations = {
       "shrine_diary_page": {
         "name": "Trang Nhật Ký Bị Xé",
         "flavorText": "...đếm bốn mươi ngày bằng ánh nến trước khi mất dấu. Bóng tối dưới đây không quên Người, dù Người đã quên nơi này. Nếu con diệc lượn thấp, hãy nói với Người Giữ Đền rằng bấc đèn vẫn còn cháy..."
+      },
+      "heartwood_splinter": {
+        "name": "Mảnh Lõi Gỗ",
+        "flavorText": "Ấm khi chạm vào, rất lâu sau khi cái cây sinh ra nó đã ngừng chuyển động."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Giáp Vai Vương Miện Nở Hoa"
+      },
+      "verdantguard_mantle": {
+        "name": "Áo Choàng Của Vệ Binh Xanh Tươi"
+      },
+      "worn_prayer_token": {
+        "name": "Thẻ Cầu Nguyện Mòn Vẹt",
+        "flavorText": "...một mặt nhẵn bóng vì một ngón cái không phải của ta, đã mài cùng một rãnh nông ấy lên cả trăm chiếc như thế này trước chiếc này, hay ít ra đống thẻ dưới này muốn ngươi tin vậy. một ngón cái không mài mòn nổi trăm chiếc thẻ. nhưng nhiều ngón cái thì mài mòn được một rãnh..."
+      },
+      "tally_shard": {
+        "name": "Mảnh Vỡ Khắc Vạch Đếm",
+        "flavorText": "...vạch khắc theo từng nhóm năm, khía sâu, gạch chéo mỗi lần đếm đủ vòng. hàng trăm nhóm năm trước khi những nét gạch dừng lại, và hàng cuối cùng chưa bao giờ được khắc xong..."
       },
       "reliquary_plate_chest": {
         "name": "Áo Giáp Vệ Binh Thánh Tích"
@@ -5825,6 +5912,9 @@ export const vi_VN: EnTranslations = {
       },
       "the_witness_root": {
         "name": "Rễ Chứng Nhân"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {
@@ -5832,6 +5922,11 @@ export const vi_VN: EnTranslations = {
         "name": "Thương Nhân",
         "title": "Người Giữ Chợ Thế Giới",
         "greeting": "Chào mừng đến Chợ Thế Giới, {className}. Hãy mua hàng từ mọi nhà thám hiểm trong vương quốc, hoặc bày bán hàng của riêng ngươi và để vàng tự tìm đến."
+      },
+      "the_ravenpost": {
+        "name": "The Ravenpost",
+        "title": "Keeper of the Mail",
+        "greeting": "Post a letter, {className}, and my ravens will find your friend wherever they roam, coin and parcels riding along, safe until claimed."
       },
       "marshal_redbrook": {
         "name": "Cảnh Trưởng Redbrook",
@@ -6873,7 +6968,7 @@ export const vi_VN: EnTranslations = {
       "q_root_hollow_boars_ii": {
         "title": "Root Hollow's Reckoning",
         "text": "I will admit what the office discourages admitting: five was optimistic. The lower dens keep pushing up more. Eight further, and I can close the season without amending the record a third time. The record resents amendment. So do I.",
-        "completion": "Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me.",
+        "completion": "Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me. The register itself is older than that arrangement, bound in a hand I have never met, keeping a count I choose not to add. Someone was thorough here, once. I only try to keep pace.",
         "objectives": {
           "0": {
             "label": "Wild Boar slain"

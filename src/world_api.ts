@@ -9,13 +9,14 @@
 // keep resolving to THIS file, never the sibling directory.
 //
 // ---------------------------------------------------------------------------
-// FACET MAP: the 25 domain facets (each IWorld member assigned exactly once; 162
+// FACET MAP: the 26 domain facets (each IWorld member assigned exactly once; 176
 // total; this count was previously stale at 23/155, corrected alongside the
 // PHAA-482 feedGreenpaw command addition, again at 24/161 with the PHAA-511
-// guild-calendar-events addition, and again here for PHAA-504's gathering.ts
-// facet). One interface per file under
-// ./world_api/; aux types travel with their facet. The authoritative
-// member-per-facet split is the W0c parity test.
+// guild-calendar-events addition, again at 25/162 with PHAA-504's gathering.ts
+// facet, again with PHAA-505's per-player node harvest + proficiency, and again
+// here at 26/171 with the PHAA-495 Ravenpost mail facet (6 members). One
+// interface per file under ./world_api/; aux types travel with their facet. The
+// authoritative member-per-facet split is the W0c parity test.
 //
 //   entity_roster.ts    IWorldEntityRoster   cfg/entities/player/moveInput/realm reads
 //   combat.ts           IWorldCombat         ability casts, auto-attack, spirit release
@@ -35,28 +36,31 @@
 //   duel_arena.ts       IWorldDuelArena      duels + ranked arena + 2v2 fiesta
 //   social_graph.ts     IWorldSocialGraph    friends/blocks/guild (online-only frames)
 //   market.ts           IWorldMarket         World Market browse/list/buy
+//   mail.ts             IWorldMail           Ravenpost mail: send/take/delete/read
 //   dungeons.ts         IWorldDungeons       dungeon enter/leave + raid lockouts
 //   delves.ts           IWorldDelves         delve runs, lockpick, companion
 //   housing.ts          IWorldHousing        Hollow hub homestead plots (read + claim/place/remove)
 //   greenpaw_hearth.ts  IWorldGreenpawHearth Hollow hub smoke/mood state (read)
 //   homestead.ts        IWorldHomestead      Hollow Reaches open-world plots (read)
-//   gathering.ts        IWorldGathering      profession harvest (PHAA-504: corpse harvest)
+//   gathering.ts        IWorldGathering      profession harvest (PHAA-504 corpse harvest;
+//                                            PHAA-505 per-player node harvest + proficiency)
 //   telemetry.ts        IWorldTelemetry      fire-and-forget metrics sink
 //
 // THREE GATES pin this seam (run before any facet edit):
 //   tests/snapshots.test.ts        (W0a)  selfWireJson <-> applySnapshot round-trip;
-//                                          ALL_DELTA_KEYS (27) + TERSE_TO_IWORLD mapping.
+//                                          ALL_DELTA_KEYS (30) + TERSE_TO_IWORLD mapping.
 //   tests/command_schema.test.ts   (W0b)  COMMAND_NAMES universe; ClientWorld send-set
 //                                          subset-of dispatch-set; DISPATCH_ONLY (7).
-//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (162) present + same-kind on
+//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (176) present + same-kind on
 //                                          Sim + ClientWorld; aggregate == disjoint
-//                                          union of the 25 facets.
+//                                          union of the 26 facets.
 // ---------------------------------------------------------------------------
 
 import type { IWorldChat } from './world_api/chat';
 import type { IWorldCombat } from './world_api/combat';
 import type { IWorldCosmetics } from './world_api/cosmetics';
 import type { IWorldDelves } from './world_api/delves';
+import type { IWorldDialog } from './world_api/dialog';
 import type { IWorldDuelArena } from './world_api/duel_arena';
 import type { IWorldDungeons } from './world_api/dungeons';
 import type { IWorldEntityRoster } from './world_api/entity_roster';
@@ -67,6 +71,7 @@ import type { IWorldHousing } from './world_api/housing';
 import type { IWorldInteraction } from './world_api/interaction';
 import type { IWorldInventory } from './world_api/inventory';
 import type { IWorldLoot } from './world_api/loot';
+import type { IWorldMail } from './world_api/mail';
 import type { IWorldMarket } from './world_api/market';
 import type { IWorldParty } from './world_api/party';
 import type { IWorldPet } from './world_api/pet';
@@ -93,6 +98,7 @@ export type {
   DelveShopOfferView,
   LockpickView,
 } from './world_api/delves';
+export type { DialogStateView } from './world_api/dialog';
 export type {
   ArenaInfo,
   ArenaLadderEntry,
@@ -106,6 +112,7 @@ export type { RaidLockout } from './world_api/dungeons';
 export type { GreenpawHearthInfo, SmokeLevel } from './world_api/greenpaw_hearth';
 export type { HomesteadInfo, HomesteadPlotView } from './world_api/homestead';
 export type { HouseObjectView, HousingInfo, HousingPlotView } from './world_api/housing';
+export type { MailInfo, MailMessageView } from './world_api/mail';
 export type { MarketInfo, MarketListingView } from './world_api/market';
 export type { PartyInfo, PartyMemberInfo } from './world_api/party';
 export type { GuildLeaderboardEntry, LeaderboardEntry } from './world_api/progression_xp';
@@ -143,12 +150,14 @@ export interface IWorld
     IWorldDuelArena,
     IWorldSocialGraph,
     IWorldMarket,
+    IWorldMail,
     IWorldDungeons,
     IWorldDelves,
     IWorldHousing,
     IWorldGreenpawHearth,
     IWorldHomestead,
     IWorldGathering,
+    IWorldDialog,
     IWorldTelemetry {}
 
 // ---------------------------------------------------------------------------
@@ -191,6 +200,8 @@ export const COMMAND_NAMES = [
   'qlinkaccept',
   'equip',
   'unequip_item',
+  'equip_bag',
+  'unequip_bag',
   'use',
   'discard',
   'buy',
@@ -266,6 +277,10 @@ export const COMMAND_NAMES = [
   'market_buy',
   'market_cancel',
   'market_collect',
+  'mail_send',
+  'mail_take',
+  'mail_delete',
+  'mail_markread',
   'dev_level',
   'dev_teleport',
   'dev_give',
@@ -288,6 +303,8 @@ export const COMMAND_NAMES = [
   'housingRemove',
   'feedGreenpaw',
   'harvestCorpse',
+  'harvestNode',
+  'dialogChoose',
 ] as const;
 
 // The union both the send path (`online.ts`) and the dispatch switch
@@ -346,12 +363,14 @@ export type WorldFacet =
   | 'IWorldDuelArena'
   | 'IWorldSocialGraph'
   | 'IWorldMarket'
+  | 'IWorldMail'
   | 'IWorldDungeons'
   | 'IWorldDelves'
   | 'IWorldHousing'
   | 'IWorldGreenpawHearth'
   | 'IWorldHomestead'
   | 'IWorldGathering'
+  | 'IWorldDialog'
   | 'IWorldTelemetry';
 
 export const COMMAND_FACETS = {
@@ -459,6 +478,12 @@ export const COMMAND_FACETS = {
   market_buy: 'IWorldMarket',
   market_cancel: 'IWorldMarket',
   market_collect: 'IWorldMarket',
+  // IWorldMail: Ravenpost mail send/take/delete/read (snake_case wire strings,
+  // by design). mailInfo/mailUnread are snapshot reads (no send, untagged).
+  mail_send: 'IWorldMail',
+  mail_take: 'IWorldMail',
+  mail_delete: 'IWorldMail',
+  mail_markread: 'IWorldMail',
   // IWorldDungeons: dungeon enter/leave. raidLockouts is a snapshot-derived read
   // (no send, untagged). enter_crypt/leave_crypt are legacy dispatch-only aliases
   // (untagged; on the DISPATCH_ONLY_COMMANDS allowlist), NOT IWorldDungeons.
@@ -487,6 +512,11 @@ export const COMMAND_FACETS = {
   // IWorldGreenpawHearth: feed the hearth from Greenpaw's dialogue menu
   // (PHAA-482: an interact-key command, replacing the old /feed chat text).
   feedGreenpaw: 'IWorldGreenpawHearth',
-  // IWorldGathering: single-use, first-come corpse harvest (PHAA-504).
+  // IWorldGathering: single-use, first-come corpse harvest (PHAA-504); the
+  // per-player world-node harvest (PHAA-505).
   harvestCorpse: 'IWorldGathering',
+  harvestNode: 'IWorldGathering',
+  // IWorldDialog: resolve a picked branching-dialogue choice (PHAA-553); the
+  // dialogState read carries no wire command (it rides the self-snapshot).
+  dialogChoose: 'IWorldDialog',
 } as const satisfies Partial<Record<ClientCommand, WorldFacet>>;

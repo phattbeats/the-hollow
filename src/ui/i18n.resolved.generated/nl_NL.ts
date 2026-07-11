@@ -291,6 +291,9 @@ export const nl_NL: EnTranslations = {
       "lessThanMinute": "<1m",
       "lockedToast": "Je bent vergrendeld voor {raid}. Ontgrendelt over {time}."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "N",
       "NE": "NO",
@@ -629,6 +632,13 @@ export const nl_NL: EnTranslations = {
       "unassigned": "{item} is niet toegewezen en is vrij voor iedereen.",
       "leaderOnly": "Alleen de groepsleider kan de buitmethode wijzigen."
     },
+    "lootRollGroup": {
+      "pending": "Waiting...",
+      "need": "Need",
+      "greed": "Greed",
+      "pass": "Pass",
+      "aria": "Group roll status for {item}"
+    },
     "bags": {
       "filterGroupAria": "Tassen filteren op categorie",
       "filterAll": "Alle",
@@ -643,7 +653,12 @@ export const nl_NL: EnTranslations = {
       "sortName": "Naam",
       "searchPlaceholder": "Items zoeken",
       "searchAria": "Tasitems zoeken op naam",
-      "noMatch": "Geen items komen overeen met je filters."
+      "noMatch": "Geen items komen overeen met je filters.",
+      "capacity": "{used}/{total}",
+      "capacityAria": "Bag slots used: {used} of {total}",
+      "backpack": "Backpack",
+      "socketEmpty": "Empty bag slot",
+      "unequipHint": "Click to remove this bag"
     },
     "raidConvert": {
       "toPartyDone": "Je raid is terug omgezet naar een groep.",
@@ -940,6 +955,27 @@ export const nl_NL: EnTranslations = {
     "trainer": {
       "secondaryClassSet": "You have taken up {cls} as your secondary profession."
     }
+  },
+  "mailUi": {
+    "title": "The Ravenpost",
+    "subtitle": "send and collect letters",
+    "close": "Close mail",
+    "inbox": "Inbox",
+    "compose": "Compose",
+    "noPostOffice": "Step up to the Ravenpost to tend your mail.",
+    "emptyInbox": "No letters waiting. A raven will arrive when someone writes to you.",
+    "from": "From {name}",
+    "noSubject": "(no subject)",
+    "take": "Take",
+    "delete": "Delete",
+    "postageNote": "Sending a letter costs {money} postage.",
+    "recipient": "Recipient",
+    "subjectLabel": "Subject",
+    "bodyPlaceholder": "Write your letter...",
+    "send": "Send Letter",
+    "needRecipientOrText": "Name a recipient and write something before sending.",
+    "openButton": "Show me the Ravenpost.",
+    "openButtonAria": "Open the Ravenpost mail window"
   },
   "guide": {
     "brand": "World of ClaudeCraft",
@@ -2334,6 +2370,21 @@ export const nl_NL: EnTranslations = {
       "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <slot>.",
       "helpLine": "Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>."
     },
+    "bags": {
+      "full": "Your bags are full.",
+      "socketsFull": "All your bag slots are full.",
+      "swapTooManyItems": "You have too many items to swap to that bag.",
+      "removeTooManyItems": "You have too many items to remove that bag.",
+      "tradeSpace": "Trade failed: not enough bag space."
+    },
+    "bank": {
+      "tooFar": "You are too far from the banker.",
+      "noQuestItems": "You cannot store quest items in the bank.",
+      "full": "Your bank is full.",
+      "expansionCapped": "Your bank cannot be expanded further.",
+      "cannotAfford": "You cannot afford that bank expansion.",
+      "purchased": "You purchase additional bank slots."
+    },
     "homestead": {
       "outsideArea": "That is outside the homestead ground. Try Fallow Acres, west of the road.",
       "tooCloseGate": "Too close to the gate. Move further out.",
@@ -3519,6 +3570,7 @@ export const nl_NL: EnTranslations = {
       "offGlobalCooldown": "Buiten de globale afkoeltijd",
       "friendlyTarget": "Vriendelijk doelwit",
       "enemyTarget": "Vijandig doelwit",
+      "selfOnly": "Self only",
       "damageRange": "{min} tot {max}",
       "finisherDamage": "{base} plus {perCombo} per combopunt"
     },
@@ -3683,7 +3735,8 @@ export const nl_NL: EnTranslations = {
       "drink": "Drank",
       "tool": "Gereedschap",
       "potion": "Toverdrank",
-      "elixir": "Elixer"
+      "elixir": "Elixer",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "Pantser",
@@ -3725,7 +3778,8 @@ export const nl_NL: EnTranslations = {
       "useManaPotion": "Gebruik: Herstelt direct {amount} mana. Bruikbaar in gevecht. 1 min afkoeltijd.",
       "clickUseInstant": "Klik om direct te gebruiken in gevecht",
       "clickUse": "Klik om te gebruiken",
-      "clickBuyback": "Klik om terug te kopen"
+      "clickBuyback": "Klik om terug te kopen",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "Requires level {level} to equip."
@@ -5010,6 +5064,21 @@ export const nl_NL: EnTranslations = {
       "monarch_crown_helm": {
         "name": "Monarchenkroon"
       },
+      "linen_pouch": {
+        "name": "Linnen Buidel"
+      },
+      "travelers_knapsack": {
+        "name": "Reizigersrugzak"
+      },
+      "wolfhide_satchel": {
+        "name": "Wolvenhuid Schoudertas"
+      },
+      "gravewoven_bag": {
+        "name": "Grafgeweven Tas"
+      },
+      "mistcallers_duffel": {
+        "name": "Plunjezak van Mistcaller"
+      },
       "bristleback_maul": {
         "name": "Borstelrug-Strijdhamer"
       },
@@ -5359,7 +5428,7 @@ export const nl_NL: EnTranslations = {
         "name": "Een Kraal Van De Bandelier"
       },
       "keeper_coal": {
-        "name": "A Coal That Never Cooled"
+        "name": "Een Kool Die Nooit Afkoelde"
       },
       "willow_sprig": {
         "name": "A Willow Sprig"
@@ -5370,6 +5439,24 @@ export const nl_NL: EnTranslations = {
       "shrine_diary_page": {
         "name": "Gescheurde Dagboekpagina",
         "flavorText": "...telde veertig dagen bij kaarslicht voor ik de draad kwijtraakte. Het duister hier beneden vergeet Hem niet, ook al is Hij deze plek vergeten. Als de reiger laag cirkelt, zeg de Koster dat de pit nog brandt..."
+      },
+      "heartwood_splinter": {
+        "name": "Kernhoutsplinter",
+        "flavorText": "Warm om aan te raken, lang nadat de boom waar het vandaan kwam ophield te bewegen."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Bloesemkroon Schouderstukken"
+      },
+      "verdantguard_mantle": {
+        "name": "Mantel van de Groene Wachter"
+      },
+      "worn_prayer_token": {
+        "name": "Versleten Gebedspenning",
+        "flavorText": "...glad aan één kant door een duim die niet de mijne is, die dezelfde ondiepe groef in honderd andere zoals deze sleet voor deze, althans dat wil de stapel hier beneden je doen geloven. één duim slijt geen honderd penningen. veel duimen slijten wel één groef..."
+      },
+      "tally_shard": {
+        "name": "Scherf met Telkerven",
+        "flavorText": "...kerven in vijven, diep gekrast, doorgestreept telkens als de telling rondkwam. honderden vijven voor het doorstrepen stopt, en de laatste rij is nooit afgemaakt..."
       },
       "reliquary_plate_chest": {
         "name": "Reliekwacht-Maliënkolder"
@@ -5825,6 +5912,9 @@ export const nl_NL: EnTranslations = {
       },
       "the_witness_root": {
         "name": "De Getuigenwortel"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {
@@ -5832,6 +5922,11 @@ export const nl_NL: EnTranslations = {
         "name": "De Koopman",
         "title": "Hoeder van de Wereldmarkt",
         "greeting": "Welkom op de Wereldmarkt, {className}. Koop van elke avonturier in het rijk, of leg je eigen waren uit en laat het goud jou vinden."
+      },
+      "the_ravenpost": {
+        "name": "The Ravenpost",
+        "title": "Keeper of the Mail",
+        "greeting": "Post a letter, {className}, and my ravens will find your friend wherever they roam, coin and parcels riding along, safe until claimed."
       },
       "marshal_redbrook": {
         "name": "Maarschalk Redbrook",
@@ -6873,7 +6968,7 @@ export const nl_NL: EnTranslations = {
       "q_root_hollow_boars_ii": {
         "title": "Root Hollow's Reckoning",
         "text": "I will admit what the office discourages admitting: five was optimistic. The lower dens keep pushing up more. Eight further, and I can close the season without amending the record a third time. The record resents amendment. So do I.",
-        "completion": "Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me.",
+        "completion": "Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me. The register itself is older than that arrangement, bound in a hand I have never met, keeping a count I choose not to add. Someone was thorough here, once. I only try to keep pace.",
         "objectives": {
           "0": {
             "label": "Wild Boar slain"

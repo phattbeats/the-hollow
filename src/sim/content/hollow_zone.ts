@@ -15,25 +15,22 @@
 // own gate reopens (content/hollow.ts, PHAA-404 partially reversed).
 
 import type { CampDef, NpcDef, PlayerClass, QuestDef, ZoneDef, ZonePropsDef } from '../types';
+import { ALL_CLASSES } from '../types';
+
+// PHAA-560: the tribe-mystery breadcrumb q_root_hollow_boars hands out
+// (content/hollow.ts's tally_shard), same degenerate per-class reward
+// pattern as content/hollow.ts's own keepsake FOR_ALL constants.
+const TALLY_SHARD_FOR_ALL = Object.fromEntries(
+  ALL_CLASSES.map((c) => [c, 'tally_shard']),
+) as Partial<Record<PlayerClass, string>>;
 
 // PHAA-558: Sister Shade's line is reward-INVERTED, no stats ever. Her one
 // keepsake (willow_sprig, defined in content/hollow.ts) is handed to every
 // class the same way, so the per-class reward archetype is used degenerately
 // here exactly as content/hollow.ts's CUTTING_FOR_ALL / BEAD_FOR_ALL do.
-const SHADE_LINE_CLASSES: PlayerClass[] = [
-  'warrior',
-  'paladin',
-  'hunter',
-  'rogue',
-  'priest',
-  'shaman',
-  'mage',
-  'warlock',
-  'druid',
-];
-const SPRIG_FOR_ALL = Object.fromEntries(
-  SHADE_LINE_CLASSES.map((c) => [c, 'willow_sprig']),
-) as Partial<Record<PlayerClass, string>>;
+const SPRIG_FOR_ALL = Object.fromEntries(ALL_CLASSES.map((c) => [c, 'willow_sprig'])) as Partial<
+  Record<PlayerClass, string>
+>;
 
 // The overworld side of the shrine gate now lives here instead of inside
 // Eastbrook (see content/hollow.ts HOLLOW_HUB_DOOR_POS). It doubles as this
@@ -227,7 +224,9 @@ export const HOLLOW_ZONE_QUESTS: Record<string, QuestDef> = {
     objectives: [{ type: 'kill', targetMobId: 'wild_boar', count: 5, label: 'Wild Boar slain' }],
     xpReward: 150,
     copperReward: 50,
-    itemRewards: {},
+    // PHAA-560: tally_shard, found where the boars rooted up half of Root
+    // Hollow (this quest's own text). See content/hollow.ts for the item.
+    itemRewards: TALLY_SHARD_FOR_ALL,
     minLevel: 1,
   },
   q_root_hollow_boars_ii: {
@@ -237,8 +236,13 @@ export const HOLLOW_ZONE_QUESTS: Record<string, QuestDef> = {
     turnInNpcId: 'verger_zebediah',
     requiresQuest: 'q_root_hollow_boars',
     text: 'I will admit what the office discourages admitting: five was optimistic. The lower dens keep pushing up more. Eight further, and I can close the season without amending the record a third time. The record resents amendment. So do I.',
+    // PHAA-560 (tribe-mystery breadcrumb, docs/plan-the-hollow.md's PROTECTED
+    // OPEN QUESTION stays unresolved): the closing aside about the register
+    // is new; the rest of the completion is unchanged. Indirect: a keeper
+    // predating Zebediah's own order, a headcount he won't total, no claim
+    // about who that was or what became of them.
     completionText:
-      'Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me.',
+      'Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me. The register itself is older than that arrangement, bound in a hand I have never met, keeping a count I choose not to add. Someone was thorough here, once. I only try to keep pace.',
     objectives: [{ type: 'kill', targetMobId: 'wild_boar', count: 8, label: 'Wild Boar slain' }],
     xpReward: 300,
     copperReward: 100,

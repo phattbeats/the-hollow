@@ -291,6 +291,9 @@ export const tr_TR: EnTranslations = {
       "lessThanMinute": "<1d",
       "lockedToast": "{raid} akınına kilitlisin. {time} içinde açılır."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "K",
       "NE": "KD",
@@ -629,6 +632,13 @@ export const tr_TR: EnTranslations = {
       "unassigned": "{item} atanmadi ve herkes icin serbest.",
       "leaderOnly": "Ganimet yontemini yalnizca grup lideri degistirebilir."
     },
+    "lootRollGroup": {
+      "pending": "Waiting...",
+      "need": "Need",
+      "greed": "Greed",
+      "pass": "Pass",
+      "aria": "Group roll status for {item}"
+    },
     "bags": {
       "filterGroupAria": "Çantaları kategoriye göre filtrele",
       "filterAll": "Tümü",
@@ -643,7 +653,12 @@ export const tr_TR: EnTranslations = {
       "sortName": "Ad",
       "searchPlaceholder": "Öge ara",
       "searchAria": "Çanta ögelerini ada göre ara",
-      "noMatch": "Filtrelerinizle eşleşen öge yok."
+      "noMatch": "Filtrelerinizle eşleşen öge yok.",
+      "capacity": "{used}/{total}",
+      "capacityAria": "Bag slots used: {used} of {total}",
+      "backpack": "Backpack",
+      "socketEmpty": "Empty bag slot",
+      "unequipHint": "Click to remove this bag"
     },
     "raidConvert": {
       "toPartyDone": "Akının yeniden gruba dönüştü.",
@@ -940,6 +955,27 @@ export const tr_TR: EnTranslations = {
     "trainer": {
       "secondaryClassSet": "You have taken up {cls} as your secondary profession."
     }
+  },
+  "mailUi": {
+    "title": "The Ravenpost",
+    "subtitle": "send and collect letters",
+    "close": "Close mail",
+    "inbox": "Inbox",
+    "compose": "Compose",
+    "noPostOffice": "Step up to the Ravenpost to tend your mail.",
+    "emptyInbox": "No letters waiting. A raven will arrive when someone writes to you.",
+    "from": "From {name}",
+    "noSubject": "(no subject)",
+    "take": "Take",
+    "delete": "Delete",
+    "postageNote": "Sending a letter costs {money} postage.",
+    "recipient": "Recipient",
+    "subjectLabel": "Subject",
+    "bodyPlaceholder": "Write your letter...",
+    "send": "Send Letter",
+    "needRecipientOrText": "Name a recipient and write something before sending.",
+    "openButton": "Show me the Ravenpost.",
+    "openButtonAria": "Open the Ravenpost mail window"
   },
   "guide": {
     "brand": "World of ClaudeCraft",
@@ -2334,6 +2370,21 @@ export const tr_TR: EnTranslations = {
       "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <slot>.",
       "helpLine": "Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>."
     },
+    "bags": {
+      "full": "Your bags are full.",
+      "socketsFull": "All your bag slots are full.",
+      "swapTooManyItems": "You have too many items to swap to that bag.",
+      "removeTooManyItems": "You have too many items to remove that bag.",
+      "tradeSpace": "Trade failed: not enough bag space."
+    },
+    "bank": {
+      "tooFar": "You are too far from the banker.",
+      "noQuestItems": "You cannot store quest items in the bank.",
+      "full": "Your bank is full.",
+      "expansionCapped": "Your bank cannot be expanded further.",
+      "cannotAfford": "You cannot afford that bank expansion.",
+      "purchased": "You purchase additional bank slots."
+    },
     "homestead": {
       "outsideArea": "That is outside the homestead ground. Try Fallow Acres, west of the road.",
       "tooCloseGate": "Too close to the gate. Move further out.",
@@ -3519,6 +3570,7 @@ export const tr_TR: EnTranslations = {
       "offGlobalCooldown": "Genel bekleme süresinden bağımsız",
       "friendlyTarget": "Dost hedef",
       "enemyTarget": "Düşman hedef",
+      "selfOnly": "Self only",
       "damageRange": "{min} ila {max}",
       "finisherDamage": "{base} artı her kombo puanı için {perCombo}"
     },
@@ -3683,7 +3735,8 @@ export const tr_TR: EnTranslations = {
       "drink": "İçecek",
       "tool": "Alet",
       "potion": "Şifa İksiri",
-      "elixir": "İksir"
+      "elixir": "İksir",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "Zırh",
@@ -3725,7 +3778,8 @@ export const tr_TR: EnTranslations = {
       "useManaPotion": "Kullanım: Anında {amount} mana yeniler. Savaşta kullanılabilir. 1 dk bekleme süresi.",
       "clickUseInstant": "Savaşta anında kullanmak için tıkla",
       "clickUse": "Kullanmak için tıkla",
-      "clickBuyback": "Geri satın almak için tıkla"
+      "clickBuyback": "Geri satın almak için tıkla",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "Requires level {level} to equip."
@@ -5010,6 +5064,21 @@ export const tr_TR: EnTranslations = {
       "monarch_crown_helm": {
         "name": "Hükümdar'ın Tacı"
       },
+      "linen_pouch": {
+        "name": "Keten Kese"
+      },
+      "travelers_knapsack": {
+        "name": "Gezginin Sırt Çantası"
+      },
+      "wolfhide_satchel": {
+        "name": "Kurt Derisi Heybe"
+      },
+      "gravewoven_bag": {
+        "name": "Mezar Dokuması Çanta"
+      },
+      "mistcallers_duffel": {
+        "name": "Mistcaller'ın Denizci Çantası"
+      },
       "bristleback_maul": {
         "name": "Dikensırt Balyozu"
       },
@@ -5359,7 +5428,7 @@ export const tr_TR: EnTranslations = {
         "name": "Fişeklikten Bir Boncuk"
       },
       "keeper_coal": {
-        "name": "A Coal That Never Cooled"
+        "name": "Hiç Soğumayan Bir Kor"
       },
       "willow_sprig": {
         "name": "A Willow Sprig"
@@ -5370,6 +5439,24 @@ export const tr_TR: EnTranslations = {
       "shrine_diary_page": {
         "name": "Yırtık Günlük Sayfası",
         "flavorText": "...ipin ucunu kaçırana dek mum ışığında kırk gün saydım. Buradaki karanlık O'nu unutmuyor, O bu yeri unutmuş olsa bile. Balıkçıl alçaktan süzülürse, Bekçi'ye söyle, fitil hâlâ yanıyor..."
+      },
+      "heartwood_splinter": {
+        "name": "Öz Odun Kıymığı",
+        "flavorText": "Geldiği ağaç hareket etmeyi bıraktıktan çok sonra bile dokunulduğunda sıcacık."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Çiçek Taçlı Omuzluklar"
+      },
+      "verdantguard_mantle": {
+        "name": "Yeşil Bekçinin Pelerini"
+      },
+      "worn_prayer_token": {
+        "name": "Yıpranmış Dua Nişanı",
+        "flavorText": "...bir yüzü benim olmayan bir başparmakla düzleşmiş, bundan önce bunun gibi yüz tanesine aynı sığ oluğu açmış, ya da aşağıdaki yığın öyle inanmanı istiyor. tek başparmak yüz nişanı aşındırmaz. ama çok sayıda başparmak tek bir oluğu aşındırır..."
+      },
+      "tally_shard": {
+        "name": "Çetele İşaretli Parça",
+        "flavorText": "...beşerli işaretler, derin kazınmış, sayım her döndüğünde üstü çizilmiş. çizmeler durmadan önce yüzlerce beşli, ve son sıra hiç bitirilmemiş..."
       },
       "reliquary_plate_chest": {
         "name": "Emanetlik Muhafızı Zırhı"
@@ -5825,6 +5912,9 @@ export const tr_TR: EnTranslations = {
       },
       "the_witness_root": {
         "name": "Tanık Kök"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {
@@ -5832,6 +5922,11 @@ export const tr_TR: EnTranslations = {
         "name": "Tüccar",
         "title": "Dünya Pazarı'nın Bekçisi",
         "greeting": "Dünya Pazarı'na hoş geldin, {className}. Diyardaki her maceracıdan alışveriş yap, ya da kendi mallarını sergile ve bırak altın seni bulsun."
+      },
+      "the_ravenpost": {
+        "name": "The Ravenpost",
+        "title": "Keeper of the Mail",
+        "greeting": "Post a letter, {className}, and my ravens will find your friend wherever they roam, coin and parcels riding along, safe until claimed."
       },
       "marshal_redbrook": {
         "name": "Mareşal Redbrook",
@@ -6873,7 +6968,7 @@ export const tr_TR: EnTranslations = {
       "q_root_hollow_boars_ii": {
         "title": "Root Hollow's Reckoning",
         "text": "I will admit what the office discourages admitting: five was optimistic. The lower dens keep pushing up more. Eight further, and I can close the season without amending the record a third time. The record resents amendment. So do I.",
-        "completion": "Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me.",
+        "completion": "Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me. The register itself is older than that arrangement, bound in a hand I have never met, keeping a count I choose not to add. Someone was thorough here, once. I only try to keep pace.",
         "objectives": {
           "0": {
             "label": "Wild Boar slain"

@@ -291,6 +291,9 @@ export const zh_CN: EnTranslations = {
       "lessThanMinute": "<1分",
       "lockedToast": "你已锁定到{raid}。{time}后解锁。"
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "北",
       "NE": "东北",
@@ -629,6 +632,13 @@ export const zh_CN: EnTranslations = {
       "unassigned": "{item}未被分配，现可自由拾取。",
       "leaderOnly": "只有队长才能更改拾取方式。"
     },
+    "lootRollGroup": {
+      "pending": "等待中...",
+      "need": "需求",
+      "greed": "贪婪",
+      "pass": "放弃",
+      "aria": "{item} 的团队掷骰状态"
+    },
     "bags": {
       "filterGroupAria": "按类别筛选背包",
       "filterAll": "全部",
@@ -643,7 +653,12 @@ export const zh_CN: EnTranslations = {
       "sortName": "名称",
       "searchPlaceholder": "搜索物品",
       "searchAria": "按名称搜索背包物品",
-      "noMatch": "没有符合筛选条件的物品。"
+      "noMatch": "没有符合筛选条件的物品。",
+      "capacity": "{used}/{total}",
+      "capacityAria": "背包已用槽位：{used}/{total}",
+      "backpack": "背包",
+      "socketEmpty": "空背包栏位",
+      "unequipHint": "点击移除此背包"
     },
     "raidConvert": {
       "toPartyDone": "你的团队已转换回队伍。",
@@ -940,6 +955,27 @@ export const zh_CN: EnTranslations = {
     "trainer": {
       "secondaryClassSet": "你已选择{cls}作为你的副职业。"
     }
+  },
+  "mailUi": {
+    "title": "渡鸦驿站",
+    "subtitle": "寄送与领取信件",
+    "close": "关闭邮件",
+    "inbox": "收件箱",
+    "compose": "写信",
+    "noPostOffice": "请前往渡鸦驿站处理邮件。",
+    "emptyInbox": "暂无信件。有人写信给你时渡鸦便会送达。",
+    "from": "来自 {name}",
+    "noSubject": "(无主题)",
+    "take": "领取",
+    "delete": "删除",
+    "postageNote": "寄送一封信需要 {money} 邮费。",
+    "recipient": "收件人",
+    "subjectLabel": "主题",
+    "bodyPlaceholder": "写下你的信件……",
+    "send": "寄出信件",
+    "needRecipientOrText": "请先填写收件人并写点内容再寄送。",
+    "openButton": "带我去渡鸦驿站。",
+    "openButtonAria": "打开渡鸦驿站邮件窗口"
   },
   "guide": {
     "brand": "World of ClaudeCraft",
@@ -2334,21 +2370,36 @@ export const zh_CN: EnTranslations = {
       "readoutUsage": "/house place <1-{count}> <{kinds}>，/house remove <槽位>。",
       "helpLine": "宅邸：/house、/house claim、/house place <槽位> <种类>、/house remove <槽位>。"
     },
+    "bags": {
+      "full": "你的背包已满。",
+      "socketsFull": "你的所有背包栏位都已占用。",
+      "swapTooManyItems": "物品太多，无法换成那个背包。",
+      "removeTooManyItems": "物品太多，无法移除那个背包。",
+      "tradeSpace": "交易失败：背包空间不足。"
+    },
+    "bank": {
+      "tooFar": "你离银行职员太远了。",
+      "noQuestItems": "你不能把任务物品存入银行。",
+      "full": "你的银行已满。",
+      "expansionCapped": "你的银行无法再扩容了。",
+      "cannotAfford": "你负担不起这次银行扩容。",
+      "purchased": "你购买了额外的银行槽位。"
+    },
     "homestead": {
-      "outsideArea": "That is outside the homestead ground. Try Fallow Acres, west of the road.",
-      "tooCloseGate": "Too close to the gate. Move further out.",
-      "tooCloseWater": "Too close to the water.",
-      "tooCloseGraveyard": "Too close to the graveyard.",
-      "tooCloseWildlife": "Too close to the wildlife. Clear the area or move further off.",
-      "tooCloseRoad": "Too close to the road.",
-      "tooCloseOther": "Too close to another homestead.",
-      "questGate": "Brother Greenpaw hasn't sent you off yet. Finish his errands first.",
-      "alreadyOwn": "You already own a homestead.",
-      "claimed": "The ground is yours. This homestead is claimed.",
-      "readoutMine": "Your homestead sits at ({x}, {z}).",
-      "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
-      "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
-      "helpLine": "Homestead: /homestead, /homestead claim."
+      "outsideArea": "这里不属于家园用地。去路西边的 Fallow Acres 试试。",
+      "tooCloseGate": "离大门太近了。再往外挪一挪。",
+      "tooCloseWater": "离水域太近了。",
+      "tooCloseGraveyard": "离墓地太近了。",
+      "tooCloseWildlife": "离野生动物太近了。清空这片区域，或者再挪远一些。",
+      "tooCloseRoad": "离大路太近了。",
+      "tooCloseOther": "离别人的家园太近了。",
+      "questGate": "绿掌修士还没让你出发呢。先把他的差事做完。",
+      "alreadyOwn": "你已经拥有一处家园了。",
+      "claimed": "这片土地归你了。家园认领成功。",
+      "readoutMine": "你的家园坐落在 ({x}, {z})。",
+      "readoutNoHomesteadQuest": "你还没有家园。先完成绿掌修士的全部差事才能解锁。",
+      "readoutNoHomesteadHint": "你还没有家园。站在空谷地里合适的位置，输入 /homestead claim。",
+      "helpLine": "家园：/homestead，/homestead claim。"
     }
   },
   "lockpickUi": {
@@ -3519,6 +3570,7 @@ export const zh_CN: EnTranslations = {
       "offGlobalCooldown": "不触发公共冷却",
       "friendlyTarget": "友方目标",
       "enemyTarget": "敌方目标",
+      "selfOnly": "仅对自己",
       "damageRange": "{min} 到 {max}",
       "finisherDamage": "{base} 加每个连击点 {perCombo}"
     },
@@ -3683,7 +3735,8 @@ export const zh_CN: EnTranslations = {
       "drink": "饮料",
       "tool": "工具",
       "potion": "药水",
-      "elixir": "药剂"
+      "elixir": "药剂",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "护甲",
@@ -3725,7 +3778,8 @@ export const zh_CN: EnTranslations = {
       "useManaPotion": "使用：立即恢复 {amount} 点法力值。战斗中可用。1 分钟冷却。",
       "clickUseInstant": "点击在战斗中立即使用",
       "clickUse": "点击使用",
-      "clickBuyback": "点击回购"
+      "clickBuyback": "点击回购",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "需要等级 {level} 才能装备。"
@@ -5010,6 +5064,21 @@ export const zh_CN: EnTranslations = {
       "monarch_crown_helm": {
         "name": "君主之冠"
       },
+      "linen_pouch": {
+        "name": "亚麻小袋"
+      },
+      "travelers_knapsack": {
+        "name": "旅行者背包"
+      },
+      "wolfhide_satchel": {
+        "name": "狼皮挎包"
+      },
+      "gravewoven_bag": {
+        "name": "墓织袋"
+      },
+      "mistcallers_duffel": {
+        "name": "唤雾者的行囊"
+      },
       "bristleback_maul": {
         "name": "硬鬃重槌"
       },
@@ -5370,6 +5439,24 @@ export const zh_CN: EnTranslations = {
       "shrine_diary_page": {
         "name": "撕碎的日记页",
         "flavorText": "……我数着烛光过了四十天，后来便断了数。这底下的黑暗从未忘记祂，尽管祂已经忘了这个地方。若鹭鸟低飞掠过，告诉守灯人，烛芯还燃着……"
+      },
+      "heartwood_splinter": {
+        "name": "心材碎片",
+        "flavorText": "触摸时依然温暖,尽管孕育它的树早已停止生长。"
+      },
+      "bloomcrown_pauldrons": {
+        "name": "繁花王冠护肩"
+      },
+      "verdantguard_mantle": {
+        "name": "常青守卫者披风"
+      },
+      "worn_prayer_token": {
+        "name": "磨损的祷牌",
+        "flavorText": "……一面被一根不是我的拇指磨得光滑，磨出的浅沟和这堆里另外上百枚一模一样，至少这堆东西是这么告诉我的。一根拇指磨不出一百枚令牌的痕迹。可一百根拇指，倒是能磨出同一道浅沟……"
+      },
+      "tally_shard": {
+        "name": "刻痕碎片",
+        "flavorText": "……以五为一组刻得极深，每数完一轮便划去一道。划去的五连一组，累计上百组，最后一行却始终没有划完……"
       },
       "reliquary_plate_chest": {
         "name": "圣物库守卫锁甲"
@@ -5825,6 +5912,9 @@ export const zh_CN: EnTranslations = {
       },
       "the_witness_root": {
         "name": "见证之根"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {
@@ -5832,6 +5922,11 @@ export const zh_CN: EnTranslations = {
         "name": "商人",
         "title": "世界市场守护者",
         "greeting": "欢迎来到世界市场，{className}。从王国各地的冒险者手中购买，或出售你自己的货物。"
+      },
+      "the_ravenpost": {
+        "name": "渡鸦驿站",
+        "title": "邮务守护者",
+        "greeting": "寄一封信吧，{className}，我的渡鸦会找到你的朋友，无论他们漂泊何方，随信附上的钱币和包裹也会安然相随，直到被认领。"
       },
       "marshal_redbrook": {
         "name": "雷德布鲁克元帅",
@@ -6873,7 +6968,7 @@ export const zh_CN: EnTranslations = {
       "q_root_hollow_boars_ii": {
         "title": "根穴的清算",
         "text": "我就说句本职上不该说的实话：五头，是我乐观了。底下的窝还在不断往外拱。再杀八头，我便能结清这一季，不必第三回去改记录。记录不喜被改。我也不喜。",
-        "completion": "结案。签字。归档。这一季总算能照原定的历程走了，毕竟又有人来看着这本历书。你帮了一个极小的会众一个大忙。我得澄清一句：这会众，就是我。",
+        "completion": "结案。签字。归档。这一季总算能照原定的历程走了，毕竟又有人来看着这本历书。你帮了一个极小的会众一个大忙。我得澄清一句：这会众，就是我。这本历书本身比这安排还要古老，装订出自一双我从未谋面的手，记着一个我不愿去加总的数目。曾经有人在此极为用心。我不过是尽力跟上罢了。",
         "objectives": {
           "0": {
             "label": "野猪已杀"

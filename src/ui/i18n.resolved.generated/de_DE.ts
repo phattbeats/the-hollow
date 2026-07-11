@@ -291,6 +291,9 @@ export const de_DE: EnTranslations = {
       "lessThanMinute": "<1Min",
       "lockedToast": "Du bist für {raid} gesperrt. Freischaltung in {time}."
     },
+    "worldBoss": {
+      "spawn": "{name} rises over Root Hollow!"
+    },
     "compass": {
       "N": "N",
       "NE": "NO",
@@ -629,6 +632,13 @@ export const de_DE: EnTranslations = {
       "unassigned": "{item} wurde nicht zugewiesen und ist fuer alle frei.",
       "leaderOnly": "Nur der Gruppenleiter kann die Beutemethode aendern."
     },
+    "lootRollGroup": {
+      "pending": "Waiting...",
+      "need": "Need",
+      "greed": "Greed",
+      "pass": "Pass",
+      "aria": "Group roll status for {item}"
+    },
     "bags": {
       "filterGroupAria": "Taschen nach Kategorie filtern",
       "filterAll": "Alle",
@@ -643,7 +653,12 @@ export const de_DE: EnTranslations = {
       "sortName": "Name",
       "searchPlaceholder": "Gegenstände durchsuchen",
       "searchAria": "Taschengegenstände nach Namen durchsuchen",
-      "noMatch": "Keine Gegenstände entsprechen Euren Filtern."
+      "noMatch": "Keine Gegenstände entsprechen Euren Filtern.",
+      "capacity": "{used}/{total}",
+      "capacityAria": "Bag slots used: {used} of {total}",
+      "backpack": "Backpack",
+      "socketEmpty": "Empty bag slot",
+      "unequipHint": "Click to remove this bag"
     },
     "raidConvert": {
       "toPartyDone": "Euer Schlachtzug wurde wieder in eine Gruppe umgewandelt.",
@@ -940,6 +955,27 @@ export const de_DE: EnTranslations = {
     "trainer": {
       "secondaryClassSet": "You have taken up {cls} as your secondary profession."
     }
+  },
+  "mailUi": {
+    "title": "The Ravenpost",
+    "subtitle": "send and collect letters",
+    "close": "Close mail",
+    "inbox": "Inbox",
+    "compose": "Compose",
+    "noPostOffice": "Step up to the Ravenpost to tend your mail.",
+    "emptyInbox": "No letters waiting. A raven will arrive when someone writes to you.",
+    "from": "From {name}",
+    "noSubject": "(no subject)",
+    "take": "Take",
+    "delete": "Delete",
+    "postageNote": "Sending a letter costs {money} postage.",
+    "recipient": "Recipient",
+    "subjectLabel": "Subject",
+    "bodyPlaceholder": "Write your letter...",
+    "send": "Send Letter",
+    "needRecipientOrText": "Name a recipient and write something before sending.",
+    "openButton": "Show me the Ravenpost.",
+    "openButtonAria": "Open the Ravenpost mail window"
   },
   "guide": {
     "brand": "World of ClaudeCraft",
@@ -2334,6 +2370,21 @@ export const de_DE: EnTranslations = {
       "readoutUsage": "/house place <1-{count}> <{kinds}>, /house remove <slot>.",
       "helpLine": "Homesteads: /house, /house claim, /house place <slot> <kind>, /house remove <slot>."
     },
+    "bags": {
+      "full": "Your bags are full.",
+      "socketsFull": "All your bag slots are full.",
+      "swapTooManyItems": "You have too many items to swap to that bag.",
+      "removeTooManyItems": "You have too many items to remove that bag.",
+      "tradeSpace": "Trade failed: not enough bag space."
+    },
+    "bank": {
+      "tooFar": "You are too far from the banker.",
+      "noQuestItems": "You cannot store quest items in the bank.",
+      "full": "Your bank is full.",
+      "expansionCapped": "Your bank cannot be expanded further.",
+      "cannotAfford": "You cannot afford that bank expansion.",
+      "purchased": "You purchase additional bank slots."
+    },
     "homestead": {
       "outsideArea": "That is outside the homestead ground. Try Fallow Acres, west of the road.",
       "tooCloseGate": "Too close to the gate. Move further out.",
@@ -3519,6 +3570,7 @@ export const de_DE: EnTranslations = {
       "offGlobalCooldown": "Außerhalb der globalen Abklingzeit",
       "friendlyTarget": "Freundliches Ziel",
       "enemyTarget": "Feindliches Ziel",
+      "selfOnly": "Self only",
       "damageRange": "{min} bis {max}",
       "finisherDamage": "{base} plus {perCombo} pro Combopunkt"
     },
@@ -3683,7 +3735,8 @@ export const de_DE: EnTranslations = {
       "drink": "Getränk",
       "tool": "Werkzeug",
       "potion": "Trank",
-      "elixir": "Elixier"
+      "elixir": "Elixier",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "Rüstung",
@@ -3725,7 +3778,8 @@ export const de_DE: EnTranslations = {
       "useManaPotion": "Benutzen: Stellt sofort {amount} Mana wieder her. Im Kampf nutzbar. 1 Min. Abklingzeit.",
       "clickUseInstant": "Zum sofortigen Benutzen im Kampf klicken",
       "clickUse": "Zum Benutzen klicken",
-      "clickBuyback": "Zum Rückkaufen klicken"
+      "clickBuyback": "Zum Rückkaufen klicken",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "Requires level {level} to equip."
@@ -5010,6 +5064,21 @@ export const de_DE: EnTranslations = {
       "monarch_crown_helm": {
         "name": "Krone des Monarchen"
       },
+      "linen_pouch": {
+        "name": "Leinenbeutel"
+      },
+      "travelers_knapsack": {
+        "name": "Rucksack des Reisenden"
+      },
+      "wolfhide_satchel": {
+        "name": "Wolfsfelltasche"
+      },
+      "gravewoven_bag": {
+        "name": "Grabgewebte Tasche"
+      },
+      "mistcallers_duffel": {
+        "name": "Seesack von Mistcaller"
+      },
       "bristleback_maul": {
         "name": "Bristleback-Schlägel"
       },
@@ -5359,7 +5428,7 @@ export const de_DE: EnTranslations = {
         "name": "Eine Perle vom Bandolier"
       },
       "keeper_coal": {
-        "name": "A Coal That Never Cooled"
+        "name": "Eine Kohle, die nie erkaltete"
       },
       "willow_sprig": {
         "name": "A Willow Sprig"
@@ -5370,6 +5439,24 @@ export const de_DE: EnTranslations = {
       "shrine_diary_page": {
         "name": "Zerrissene Tagebuchseite",
         "flavorText": "...zählte vierzig Tage bei Kerzenlicht, bevor ich den Faden verlor. Das Dunkel hier unten vergisst Ihn nicht, auch wenn Er diesen Ort vergessen hat. Wenn der Reiher tief kreist, sag dem Küster, der Docht brennt noch..."
+      },
+      "heartwood_splinter": {
+        "name": "Herzholzsplitter",
+        "flavorText": "Warm anzufassen, lange nachdem der Baum, aus dem es stammt, aufgehört hat, sich zu bewegen."
+      },
+      "bloomcrown_pauldrons": {
+        "name": "Blütenkronen-Schulterplatten"
+      },
+      "verdantguard_mantle": {
+        "name": "Mantel des Grünhüters"
+      },
+      "worn_prayer_token": {
+        "name": "Abgegriffene Gebetsmarke",
+        "flavorText": "...auf einer Seite glatt von einem Daumen, der nicht meiner ist, der dieselbe flache Rille in hundert weitere wie diese gerieben hat, bevor diese kam, so will es einem der Haufen hier unten weismachen. ein Daumen wetzt keine hundert Marken ab. viele Daumen wetzen aber eine Rille..."
+      },
+      "tally_shard": {
+        "name": "Scherbe mit Zählkerben",
+        "flavorText": "...Kerben in Fünfergruppen, tief geritzt, durchgestrichen, sooft die Zählung herumkam. hunderte Fünfer, bevor das Durchstreichen aufhört, und die letzte Reihe wurde nie vollendet..."
       },
       "reliquary_plate_chest": {
         "name": "Halsberge der Reliquiarwache"
@@ -5825,6 +5912,9 @@ export const de_DE: EnTranslations = {
       },
       "the_witness_root": {
         "name": "Die Zeugenwurzel"
+      },
+      "heartwood_colossus": {
+        "name": "Heartwood Colossus"
       }
     },
     "npcs": {
@@ -5832,6 +5922,11 @@ export const de_DE: EnTranslations = {
         "name": "Der Händler",
         "title": "Hüter des Weltmarkts",
         "greeting": "Willkommen auf dem Weltmarkt, {className}. Kaufe von Abenteurern aus dem ganzen Reich oder biete deine eigenen Waren an."
+      },
+      "the_ravenpost": {
+        "name": "The Ravenpost",
+        "title": "Keeper of the Mail",
+        "greeting": "Post a letter, {className}, and my ravens will find your friend wherever they roam, coin and parcels riding along, safe until claimed."
       },
       "marshal_redbrook": {
         "name": "Marschall Redbrook",
@@ -6873,7 +6968,7 @@ export const de_DE: EnTranslations = {
       "q_root_hollow_boars_ii": {
         "title": "Root Hollow's Reckoning",
         "text": "I will admit what the office discourages admitting: five was optimistic. The lower dens keep pushing up more. Eight further, and I can close the season without amending the record a third time. The record resents amendment. So do I.",
-        "completion": "Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me.",
+        "completion": "Closed. Signed. Filed. The season may proceed exactly as scheduled, now that there is once more someone to keep the schedule. You have been a great help to a very small congregation. The congregation, I should clarify, is me. The register itself is older than that arrangement, bound in a hand I have never met, keeping a count I choose not to add. Someone was thorough here, once. I only try to keep pace.",
         "objectives": {
           "0": {
             "label": "Wild Boar slain"
