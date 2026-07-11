@@ -2927,6 +2927,15 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     'これを読んでいるなら、あんたは歩みを止めたわけだ。俺がついぞ覚えられなかった、たった一つのことをな。少し休め。外域は逃げやせん。それがまあ、外域の厄介なところなんだが。',
   'entities.npcs.verger_zebediah.greeting':
     '堂守のゼベダイアだ。この外域を暦に沿って管理しておる、少なくとも努めてはおる。根の空洞は今季、休ませると記しておいた。だが猪どもは告示を読まん。緩んだ土に気をつけ、台帳には触れるな。',
+  // First-meeting click-through intro (PHAA-439). Voice matched to the
+  // existing Japanese register (formal, ecclesiastical, です/ます), keeping
+  // the "sole surviving keeper of a register" throughline.
+  'entities.npcs.verger_zebediah.introLines.0':
+    '堂守のゼベダイア。根の空洞の衛士、ただ今のところその職は私一人でございます。ほとんどの日はここにおります。それ以外の日は、私がここにいるように感じております。外域には定足数は要りません、要るのは記録だけでございます。',
+  'entities.npcs.verger_zebediah.introLines.1':
+    '私が暦を継いでおります。暦は私を継いではくれませんが、季節の折に触れて試みてまいります。根の空洞は今季、休むと記されておりますが、下の巣にはその通達が届いておりません。鷺ももう驚いたふりをやめてしまいました。これが現状です。苦情ではございません、苦情には証人が要りますので。',
+  'entities.npcs.verger_zebediah.introLines.2':
+    '祠の中には台帳がございます。触れぬよう。足元には猪の掘り返した緩い土が広がっております。両方にお気をつけを。もしも御用がお務めについてのことでございましたら、二つの仕事をご用意できます。どちらも小さくはございません、そのうち一つは三度目の書き直しを避けたい次第で。これが、そもそも何故あなた様にお声を掛けておるかの次第でございます。',
   'entities.npcs.sexton_faddick.name': '墓守のファディック',
   'entities.items.willow_sprig.name': '柳の小枝一本',
   'entities.npcs.shade.name': 'シェイド',
@@ -2960,6 +2969,15 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.sexton_faddick.title': '放浪の番人',
   'entities.npcs.sexton_faddick.greeting':
     'ファディックだ。まだ守るべき祠があるうちは、墓守を務める。俺はどこにも留まらん、ただ守るだけだ。毎晩、狼が休閑地の群れの周りを回っておる。長く回れば、回っている相手の形を覚えるものだ。あれはただの群れのままでいてもらいたい。',
+  // First-meeting click-through intro (PHAA-439). Wandering-keeper voice,
+  // aphoristic, longer arc. Keeps the "I do not stay anywhere; I keep"
+  // throughline.
+  'entities.npcs.sexton_faddick.introLines.0':
+    'ファディックだ。まだ墓守を務めるべき祠があるうちは、墓守を務める。そうした祠は、以前より少なくなったがの。俺はどこにも留まらん、ただ守るだけだ。守ること、それが今でも俺のほぼ全てでござる。',
+  'entities.npcs.sexton_faddick.introLines.1':
+    '長く回れば、回っている相手の形を覚えるものだ。休閑地の狼どもは、私が通りかかるずっと前から、毎晩群れの周りを回っておった。群れの形はまだ覚えておらぬ、それが何と言うか。群れの方こそ、彼らを覚えておる、それ以上のことでござる。',
+  'entities.npcs.sexton_faddick.introLines.2':
+    'お茶でもお出ししたいところだが、薬罐は私が昨日いたどこかにございます。湖のほとりには、建物が建つのを待っておる静かな土地が広がっておる。闇で狼が働く土地には、何も根を下ろせぬ。さて、二つの仕事がある、一つは一人でやりたくない仕事だ。歩きながら話しませうぞ。',
   'entities.quests.q_root_hollow_boars.title': '根の空洞の猪',
   'entities.quests.q_root_hollow_boars.text':
     '暦によれば、根の空洞は今季休むはずだった。だが猪どもには通達しておらん。虫を追ってこの地を半分も掘り返し、もう鷺が羽ばたいても逃げん。これは俺個人として腹に据えかねる。五頭狩れば、この季を記録どおりに記せる。',
