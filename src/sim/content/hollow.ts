@@ -186,12 +186,6 @@ export const HOLLOW_MOBS: Record<string, MobTemplate> = {
   // supplies its stats and mechanic kit. Rises at its fixed point near Root Hollow
   // in the_hollow_reaches (see WORLD_BOSSES). ccImmune + boss, like every other
   // raid-tier fight in this fork (nythraxis_scourge_of_thornpeak, marrowlord_varkas).
-  // PHAA-517: folds in upstream #1502/#1503's post-launch Thunzharr rebalance:
-  // slowImmune (a raid boss also shrugs off player-applied snares, not just hard
-  // CC), the Grasping Roots mult retune below, and the world-boss HP-step retune
-  // in world_boss.ts's WORLD_BOSSES entry. #1503's cc-immune-mobs-cannot-be-
-  // polymorphed fix lives at the general cast-validation site in
-  // combat/casting_lifecycle.ts, not here (it isn't boss-specific upstream either).
   heartwood_colossus: {
     id: 'heartwood_colossus',
     name: 'Heartwood Colossus',
@@ -202,7 +196,6 @@ export const HOLLOW_MOBS: Record<string, MobTemplate> = {
     worldBoss: true,
     elite: true,
     ccImmune: true,
-    slowImmune: true,
     hpBase: 40000,
     hpPerLevel: 0,
     dmgBase: 62,
@@ -220,12 +213,9 @@ export const HOLLOW_MOBS: Record<string, MobTemplate> = {
     stoneskin: { amount: 500, every: 16, duration: 8, name: 'Barkshell', school: 'nature' },
     // Grasping Roots (PHAA-494 anti-kite snare): fires even mid-chase, closing the
     // gap a ranged kiter would otherwise hold forever against a sub-run-speed boss.
-    // mult retuned 0.2 to 0.7 (PHAA-517, upstream #1502's Howling Gale rebalance):
-    // an 80% slow effectively rooted the raid in place; 0.7 (a 30% slow) still
-    // denies a permanent kite without that.
     aoeSlow: {
       radius: 14,
-      mult: 0.7,
+      mult: 0.2,
       duration: 5,
       every: 15,
       name: 'Grasping Roots',
