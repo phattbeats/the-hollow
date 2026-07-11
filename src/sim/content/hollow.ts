@@ -456,6 +456,23 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
     trainer: { professions: ALL_CLASSES },
     greeting: 'Every build starts as a question. Which second calling speaks to you?',
   },
+  // PHAA-614: the turn-in target for Sister Shade's finale quest,
+  // q_the_watering_can (content/hollow_zone.ts). A stub NPC exactly like
+  // gate_bard/goodwife_orla (empty questIds), standing in for the buried
+  // thing the shrine's whole line of quests has been leading to. Placed just
+  // past the under_shrine entry (entry is {x:0,z:4}), ahead of the first
+  // spawn on UNDER_SHRINE_SPAWNS (z:12), so the walk down stays combat-light.
+  buried_root: {
+    id: 'buried_root',
+    name: 'A Buried Root',
+    title: 'Under the Shrine',
+    pos: { x: 0, z: 6 },
+    dynamic: true,
+    facing: 0,
+    color: 0x3a2f22,
+    questIds: [],
+    greeting: 'Dry. Dry as anything down here ever gets.',
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -1059,6 +1076,10 @@ export const HOLLOW_DUNGEON_DEFS: Record<string, DungeonDef> = {
       // at z 16) and clear of the pillars (which start at z 10).
       { itemId: 'worn_prayer_token', name: 'Worn Prayer Token', x: 17, z: 9 },
     ],
+    // PHAA-614: buried_root, the turn-in target for Shade's finale quest.
+    // Placed at entry (0,4) + 2u so it is reachable straight off the door,
+    // clear of the first spawn on UNDER_SHRINE_SPAWNS (z:12).
+    npcs: [{ npcId: 'buried_root', x: 0, z: 6 }],
     // Deliberate: the 'crypt' interior builder is the Hollow Crypt's own
     // skeleton (sealed doors, keystones, the buried-and-walled grammar) reused
     // per the constitution (§4, the Hollow Crypt reuse) and rethemed root-cold
