@@ -17,7 +17,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "9690533a",
+      "state": "0bf33ff1",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -30,6 +30,12 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -104,7 +110,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 408,
-      "state": "6d8bdd04",
+      "state": "7224262f",
       "events": "0bb66e36",
       "rng": {
         "draws": 55,
@@ -115,7 +121,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 408,
-      "state": "5ac1ed77",
+      "state": "4e4f2cc0",
       "events": "ff321a09",
       "rng": {
         "draws": 102,
@@ -126,7 +132,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 408,
-      "state": "5373292f",
+      "state": "b4b1fea6",
       "events": "461d80f2",
       "rng": {
         "draws": 241,
@@ -137,7 +143,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 408,
-      "state": "e0d29ba9",
+      "state": "c6cbe318",
       "events": "741638a5",
       "rng": {
         "draws": 241,
@@ -150,6 +156,12 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -572,7 +584,7 @@
       "tick": 64,
       "time": 3.2,
       "nextId": 408,
-      "state": "8519c15d",
+      "state": "c2c8f354",
       "events": "741638a5",
       "rng": {
         "draws": 263,
@@ -585,6 +597,12 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},

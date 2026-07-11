@@ -4561,6 +4561,11 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': 'Pagina di Diario Strappata',
   'entities.items.shrine_diary_page.flavorText':
     "...ho contato quaranta giorni a lume di candela prima di perdere il filo. Il buio quaggiù non Lo dimentica, anche se Lui ha dimenticato questo luogo. Se l'airone vola basso, di' al Sagrestano che lo stoppino brucia ancora...",
+  'entities.items.linen_pouch.name': 'Sacca di Lino',
+  'entities.items.travelers_knapsack.name': 'Zaino del Viandante',
+  'entities.items.wolfhide_satchel.name': 'Bisaccia in Pelle di Lupo',
+  'entities.items.gravewoven_bag.name': 'Sacca Tessuta della Tomba',
+  'entities.items.mistcallers_duffel.name': 'Sacca da Marinaio di Mistcaller',
   'entities.mobs.acolyte_tessa.name': 'Accolita Tessa',
   'entities.mobs.deacon_varric.name': 'Diacono Varric',
   'entities.mobs.reliquary_bonewalker.name': 'Camminaossa Risorto',

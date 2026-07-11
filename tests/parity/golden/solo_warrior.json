@@ -10,14 +10,14 @@
     "base mobSwing (mob swings the player)",
     "rollLoot via mob death (L1, ~5876/6036)"
   ],
-  "draws": 172,
-  "drawDigest": "302698c0",
+  "draws": 173,
+  "drawDigest": "d3f30de1",
   "frames": [
     {
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "9690533a",
+      "state": "0bf33ff1",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -30,6 +30,12 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -104,7 +110,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 403,
-      "state": "a4f73a7e",
+      "state": "79b28cc7",
       "events": "14304087",
       "rng": {
         "draws": 6,
@@ -115,7 +121,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 403,
-      "state": "5b3cc613",
+      "state": "752b8458",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -126,7 +132,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 403,
-      "state": "e3bd9c15",
+      "state": "12476da4",
       "events": "22751cf5",
       "rng": {
         "draws": 98,
@@ -137,11 +143,11 @@
       "tick": 72,
       "time": 3.6,
       "nextId": 403,
-      "state": "289b6700",
+      "state": "177a7965",
       "events": "596c3d7f",
       "rng": {
-        "draws": 154,
-        "digest": "468c6073"
+        "draws": 155,
+        "digest": "1ad3720f"
       },
       "label": "kill",
       "players": [
@@ -150,6 +156,12 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -297,11 +309,11 @@
       "tick": 76,
       "time": 3.8,
       "nextId": 403,
-      "state": "e99bb08c",
+      "state": "cf854279",
       "events": "741638a5",
       "rng": {
-        "draws": 172,
-        "digest": "302698c0"
+        "draws": 173,
+        "digest": "d3f30de1"
       },
       "label": "final",
       "players": [
@@ -310,6 +322,12 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},

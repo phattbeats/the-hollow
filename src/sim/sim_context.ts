@@ -581,6 +581,10 @@ export interface SimContextCallbacks {
   // component tag's item a multi-tag corpse yields) routes through the seam
   // to the Gathering instance on Sim. Append-only, late-bound to Sim.
   gatherHarvestItemFor(componentTags: readonly string[]): string | null;
+  // Bags (src/sim/bags.ts): the capacity pre-check every blocking command path
+  // calls before granting (buy/loot/pickup/fish/conjure/collect/trade/turn-in).
+  // Stays on Sim next to the addItem/removeItem/countItem inventory hub.
+  canAddItem(itemId: string, count: number, pid?: number): boolean;
 }
 
 // The seam consumed by extracted modules.
@@ -923,5 +927,7 @@ export function createSimContext(host: SimContextHost): SimContext {
     homesteadChat: host.homesteadChat,
     // Gathering v0 (PHAA-504): the corpse-harvest item-selection rng draw.
     gatherHarvestItemFor: host.gatherHarvestItemFor,
+    // Bags capacity pre-check (stays on Sim next to the inventory hub).
+    canAddItem: host.canAddItem,
   };
 }

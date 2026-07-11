@@ -9,7 +9,7 @@
 // keep resolving to THIS file, never the sibling directory.
 //
 // ---------------------------------------------------------------------------
-// FACET MAP: the 25 domain facets (each IWorld member assigned exactly once; 165
+// FACET MAP: the 25 domain facets (each IWorld member assigned exactly once; 170
 // total; this count was previously stale at 23/155, corrected alongside the
 // PHAA-482 feedGreenpaw command addition, again at 24/161 with the PHAA-511
 // guild-calendar-events addition, again at 25/162 with PHAA-504's gathering.ts
@@ -50,7 +50,7 @@
 //                                          ALL_DELTA_KEYS (30) + TERSE_TO_IWORLD mapping.
 //   tests/command_schema.test.ts   (W0b)  COMMAND_NAMES universe; ClientWorld send-set
 //                                          subset-of dispatch-set; DISPATCH_ONLY (7).
-//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (165) present + same-kind on
+//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (170) present + same-kind on
 //                                          Sim + ClientWorld; aggregate == disjoint
 //                                          union of the 25 facets.
 // ---------------------------------------------------------------------------
@@ -193,6 +193,8 @@ export const COMMAND_NAMES = [
   'qlinkaccept',
   'equip',
   'unequip_item',
+  'equip_bag',
+  'unequip_bag',
   'use',
   'discard',
   'buy',

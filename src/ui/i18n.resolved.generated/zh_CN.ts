@@ -650,7 +650,12 @@ export const zh_CN: EnTranslations = {
       "sortName": "名称",
       "searchPlaceholder": "搜索物品",
       "searchAria": "按名称搜索背包物品",
-      "noMatch": "没有符合筛选条件的物品。"
+      "noMatch": "没有符合筛选条件的物品。",
+      "capacity": "{used}/{total}",
+      "capacityAria": "背包已用槽位：{used}/{total}",
+      "backpack": "背包",
+      "socketEmpty": "空背包栏位",
+      "unequipHint": "点击移除此背包"
     },
     "raidConvert": {
       "toPartyDone": "你的团队已转换回队伍。",
@@ -2341,6 +2346,13 @@ export const zh_CN: EnTranslations = {
       "readoutUsage": "/house place <1-{count}> <{kinds}>，/house remove <槽位>。",
       "helpLine": "宅邸：/house、/house claim、/house place <槽位> <种类>、/house remove <槽位>。"
     },
+    "bags": {
+      "full": "你的背包已满。",
+      "socketsFull": "你的所有背包栏位都已占用。",
+      "swapTooManyItems": "物品太多，无法换成那个背包。",
+      "removeTooManyItems": "物品太多，无法移除那个背包。",
+      "tradeSpace": "交易失败：背包空间不足。"
+    },
     "bank": {
       "tooFar": "你离银行职员太远了。",
       "noQuestItems": "你不能把任务物品存入银行。",
@@ -3699,7 +3711,8 @@ export const zh_CN: EnTranslations = {
       "drink": "饮料",
       "tool": "工具",
       "potion": "药水",
-      "elixir": "药剂"
+      "elixir": "药剂",
+      "bag": "Bag"
     },
     "stats": {
       "armor": "护甲",
@@ -3741,7 +3754,8 @@ export const zh_CN: EnTranslations = {
       "useManaPotion": "使用：立即恢复 {amount} 点法力值。战斗中可用。1 分钟冷却。",
       "clickUseInstant": "点击在战斗中立即使用",
       "clickUse": "点击使用",
-      "clickBuyback": "点击回购"
+      "clickBuyback": "点击回购",
+      "bagSlots": "{slots} Slot Bag"
     },
     "error": {
       "requiresLevelToEquip": "需要等级 {level} 才能装备。"
@@ -5025,6 +5039,21 @@ export const zh_CN: EnTranslations = {
       },
       "monarch_crown_helm": {
         "name": "君主之冠"
+      },
+      "linen_pouch": {
+        "name": "亚麻小袋"
+      },
+      "travelers_knapsack": {
+        "name": "旅行者背包"
+      },
+      "wolfhide_satchel": {
+        "name": "狼皮挎包"
+      },
+      "gravewoven_bag": {
+        "name": "墓织袋"
+      },
+      "mistcallers_duffel": {
+        "name": "唤雾者的行囊"
       },
       "bristleback_maul": {
         "name": "硬鬃重槌"

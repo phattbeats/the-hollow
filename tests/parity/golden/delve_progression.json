@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 402,
-      "state": "9690533a",
+      "state": "0bf33ff1",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -29,6 +29,12 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -103,7 +109,7 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 419,
-      "state": "4f530f48",
+      "state": "d15b942f",
       "events": "0e86288d",
       "rng": {
         "draws": 1,
@@ -114,7 +120,7 @@
       "tick": 7,
       "time": 0.35,
       "nextId": 419,
-      "state": "317384a6",
+      "state": "436b3ef5",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -127,6 +133,12 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {},
@@ -200,7 +212,7 @@
       "tick": 7,
       "time": 0.35,
       "nextId": 419,
-      "state": "0d0a7e3e",
+      "state": "b4e8b8e1",
       "events": "62e6ce51",
       "rng": {
         "draws": 3,
@@ -213,6 +225,12 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {
@@ -293,7 +311,7 @@
       "tick": 9,
       "time": 0.45,
       "nextId": 419,
-      "state": "9d3f1030",
+      "state": "fcd55213",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -306,6 +324,12 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "autoEquip": true,
+          "bags": [
+            null,
+            null,
+            null,
+            null
+          ],
           "bank": {},
           "cls": "warrior",
           "companionUpgrades": {

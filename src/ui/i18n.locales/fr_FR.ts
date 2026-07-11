@@ -2103,6 +2103,11 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.name': 'Page de Journal Déchirée',
   'entities.items.shrine_diary_page.flavorText':
     "...j'ai compté quarante jours à la chandelle avant de perdre le fil. L'obscurité d'ici-bas ne L'oublie pas, même s'Il a oublié cet endroit. Si le héron plane bas, dis au Sacristain que la mèche brûle encore...",
+  'entities.items.linen_pouch.name': 'Bourse en Lin',
+  'entities.items.travelers_knapsack.name': 'Havresac du Voyageur',
+  'entities.items.wolfhide_satchel.name': 'Sacoche en Peau de Loup',
+  'entities.items.gravewoven_bag.name': 'Sac Tissé des Tombes',
+  'entities.items.mistcallers_duffel.name': 'Sac Marin de Mistcaller',
   'entities.items.gravecaller_blade.name': 'Grande lame de Gravecaller',
   'entities.items.widowfang_dirk.name': 'Dague Croc-de-veuve',
   'entities.items.gravecaller_staff.name': 'Bâton du Creux',
