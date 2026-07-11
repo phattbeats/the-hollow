@@ -217,6 +217,8 @@ import * as tradeMod from './social/trade';
 // stays valid now that the type lives in market.ts.
 export type { MarketSave } from './market';
 
+import type { DialogRuntimeState } from './dialog/dialog_commands';
+import * as dialogCommands from './dialog/dialog_commands';
 import {
   enterCrypt as enterCryptImpl,
   enterDungeon as enterDungeonImpl,
@@ -287,6 +289,7 @@ import {
   type DelveDef,
   type DelveModuleDef,
   type DelveRun,
+  type DialogStateSave,
   DT,
   DUNGEON_LEASH_DISTANCE,
   dist2d,
@@ -515,7 +518,7 @@ export interface ArenaQueueUnit {
 // A live arena bout. Combatants are teleported into a private arena instance
 // slot; `returns` remembers where each was standing so the match can put them
 // back when it ends. Ratings are snapshotted at the start purely for the
-// result message — the authoritative values live on each PlayerMeta.
+// result message and the authoritative values live on each PlayerMeta.
 export interface ArenaMatch {
   id: number;
   format: ArenaFormat;
@@ -541,7 +544,7 @@ export interface FiestaState {
   scoreLimit: number;
   wave: number; // 0 before the first wave opens, then 1..FIESTA_TOTAL_WAVES
   nextWaveAt: number; // active-timer value (s) at which the next wave opens
-  // Pending augment offers, by pid — the three cards a fighter has yet to pick.
+  // Pending augment offers, by pid and the three cards a fighter has yet to pick.
   offers: Map<number, { tier: AugmentTier; wave: number; choices: string[] }>;
   ringRadius: number; // current hazard-ring radius (instance-local)
   ringTarget: number; // radius it is easing toward
@@ -683,7 +686,7 @@ export interface PlayerMeta {
   equipment: PlayerEquipment;
   xp: number;
   // Post-cap progression (Max-Level XP Overflow). `lifetimeXp` is the monotonic
-  // 64-bit-safe total of all XP ever earned — it keeps growing at the cap and is
+  // 64-bit-safe total of all XP ever earned and it keeps growing at the cap and is
   // the leaderboard sort key + virtual-level source. `prestigeRank` and
   // `unlockedMilestones` are cosmetic-only. All persisted in CharacterState.
   lifetimeXp: number;
@@ -695,6 +698,10 @@ export interface PlayerMeta {
   known: ResolvedAbility[];
   questLog: Map<string, QuestProgress>;
   questsDone: Set<string>;
+  // Branching-dialogue state (PHAA-553): disposition toward each NPC + persistent
+  // conversation flags. Nudged by dialogChoose, gates dialogue branches, persisted
+  // in CharacterState (see dialog/dialog_commands.ts).
+  dialogState: DialogRuntimeState;
   counters: RewardCounters;
   autoEquip: boolean;
   // sim.time when this character entered the world; powers /played. Session-only
@@ -714,7 +721,7 @@ export interface PlayerMeta {
   arena2v2Wins: number;
   arena2v2Losses: number;
   // Talents & Specializations. `talents` is the active allocation; `talentMods`
-  // is its precomputed flat struct — resolved only on allocation/respec/loadout
+  // is its precomputed flat struct and resolved only on allocation/respec/loadout
   // change (recomputeTalents), never walked on the combat or stat hot path.
   talents: TalentAllocation;
   talentMods: TalentModifiers;
@@ -734,15 +741,15 @@ export interface PlayerMeta {
   activeLoadout: number; // index into loadouts, or -1 for none
   raidLockouts: Map<string, number>; // dungeon id -> epoch ms expiry
   // Transient presence status. Set by /afk and /dnd, cleared when the player
-  // chats again. Session-only — never persisted, so it resets on login.
+  // chats again. Session-only and never persisted, so it resets on login.
   away: AwayStatus | null;
   // Session-only: name of the last player who whispered us, for "/r" replies.
-  // Never persisted — a fresh login starts with no reply target.
+  // Never persisted and a fresh login starts with no reply target.
   lastWhisperFrom?: string;
   // Session-only World Market browse filter. The market is capped at
   // MARKET_WIRE_LIMIT listings per snapshot to bound wire cost, so this
   // server-side substring filter (matched against item names) is how a player
-  // reaches goods past the cap. Never persisted — resets on login.
+  // reaches goods past the cap. Never persisted and resets on login.
   marketFilter: string;
   // Delve meta progression (persisted in CharacterState).
   delveMarks: number;
@@ -771,8 +778,8 @@ export interface AwayStatus {
 }
 
 // ---------------------------------------------------------------------------
-// The World Market — a single shared, server-authoritative auction house run by
-// the Merchant NPC — moved to market.ts (L2). Its types (MarketListing,
+// The World Market and a single shared, server-authoritative auction house run by
+// the Merchant NPC and moved to market.ts (L2). Its types (MarketListing,
 // MarketCollection, MarketSave) and the MARKET_* consts live there now; MarketSave
 // is re-exported from this module (above) for server/db.ts.
 // ---------------------------------------------------------------------------
@@ -815,6 +822,9 @@ export interface CharacterState {
   bank?: { inventory: InvSlot[]; purchasedSlots: number; bonusSlots: number };
   questLog: { questId: string; counts: number[]; state: 'active' | 'ready' | 'done' }[];
   questsDone: string[];
+  // Branching-dialogue state (PHAA-553; JSONB, no schema migration). Optional so
+  // characters saved before dialogue trees existed load cleanly (empty default).
+  dialogState?: DialogStateSave;
   // Legacy arenaRating/Wins/Losses are treated as 1v1 data. The explicit
   // 1v1 fields are written by new saves, while old saves fall back cleanly.
   arenaRating?: number;
@@ -1055,7 +1065,7 @@ export class Sim {
     // rng at construction (or ever), so the draws below are unperturbed.
     this.homestead = new Homestead(this.ctx);
 
-    // NPCs — nudged out of buildings and deep water if their data position is bad
+    // NPCs and nudged out of buildings and deep water if their data position is bad
     for (const npcDef of Object.values(NPCS)) {
       if (npcDef.dynamic) continue; // spawned on demand by its owning system, not surface-placed
       const safe = this.findSafePos(npcDef.pos.x, npcDef.pos.z, WATER_LEVEL + 0.6);
@@ -1243,7 +1253,7 @@ export class Sim {
     },
   ): number {
     const savedState = opts?.state ? sanitizeRemovedZone1Content(opts.state).state : undefined;
-    // Characters saved inside a dungeon instance rejoin at its entrance —
+    // Characters saved inside a dungeon instance rejoin at its entrance:
     // their old instance is gone (or belongs to someone else) by now.
     let savedPos = savedState?.pos ?? null;
     // Delve must be checked BEFORE the dungeon branch: dungeonAt() returns null
@@ -1305,6 +1315,7 @@ export class Sim {
       known: [],
       questLog: new Map(),
       questsDone: new Set(),
+      dialogState: dialogCommands.freshDialogState(),
       counters: freshCounters(),
       autoEquip: opts?.autoEquip ?? false,
       joinedAt: this.time,
@@ -1375,6 +1386,8 @@ export class Sim {
           });
       }
       for (const q of s.questsDone) meta.questsDone.add(q);
+      // PHAA-553: absent in pre-dialogue saves, loads to an empty default.
+      meta.dialogState = dialogCommands.loadDialogState(s.dialogState);
       if (s.talents)
         // Revalidate the persisted build against the current rules + level budget
         // before it is baked into the flat mods below. A stored allocation replays
@@ -1598,6 +1611,7 @@ export class Sim {
         state: q.state,
       })),
       questsDone: [...meta.questsDone],
+      dialogState: dialogCommands.serializeDialogState(meta.dialogState),
       arenaRating: meta.arenaRating,
       arenaWins: meta.arenaWins,
       arenaLosses: meta.arenaLosses,
@@ -1683,7 +1697,7 @@ export class Sim {
 
   /** Cosmetic skin-select event: rolls a rarity rank (once) and emits the
    *  personal `skinEvent` cue that opens the client overlay. Re-using the token
-   *  re-shows the already-rolled rank — no reroll — so a player can't spam-roll.
+   *  re-shows the already-rolled rank and no reroll ,  so a player can't spam-roll.
    *  The token is consumed on claim (claimEventSkin), not here. */
   private openSkinSelect(meta: PlayerMeta, catalog: SkinCatalog, itemId: string): void {
     if (meta.pendingSkinRank === null) {
@@ -2472,7 +2486,7 @@ export class Sim {
     }
   }
 
-  // Mark a player as a GM: invulnerable (see dealDamage). Server-side only —
+  // Mark a player as a GM: invulnerable (see dealDamage). Server-side only,
   // set at join time from the characters.is_gm column.
   setGm(pid?: number, enabled = true): void {
     const r = this.resolve(pid);
@@ -2486,7 +2500,7 @@ export class Sim {
     r.e.level = Math.max(1, Math.min(MAX_LEVEL, level));
     // Keep lifetimeXp consistent with the level so post-cap progression starts
     // from a sane baseline (virtualLevel never falls below the real level). Only
-    // ever raises it — lifetimeXp is monotonic.
+    // ever raises it and lifetimeXp is monotonic.
     r.meta.lifetimeXp = Math.max(r.meta.lifetimeXp, xpToReachLevel(r.e.level));
     recalcPlayerStats(r.e, r.meta.cls, r.meta.equipment, this.playerMods(r.meta));
     r.e.hp = r.e.maxHp;
@@ -2556,7 +2570,7 @@ export class Sim {
   }
 
   // Threat modifier including the tank-role talent bonus (e.g. Protection's
-  // Vengeance Mastery). Reads the precomputed flat threatPct — no tree walk.
+  // Vengeance Mastery). Reads the precomputed flat threatPct and no tree walk.
   private threatMod(source: Entity, school: string): number {
     let m = threatModifier(source, school);
     if (source.kind === 'player') {
@@ -2656,7 +2670,7 @@ export class Sim {
     this.engagedPids.clear();
     for (const e of this.entities.values()) {
       if (e.kind !== 'mob' || e.dead) continue;
-      // a wild mob actively engaged keeps its target in combat — and if that
+      // a wild mob actively engaged keeps its target in combat and and if that
       // target is someone's pet, the pet's owner stays in combat too, so a
       // hunter/warlock can't regen, eat/drink, or use out-of-combat abilities
       // while their pet tanks
@@ -3060,7 +3074,7 @@ export class Sim {
           }
         }
       }
-      // Slide along buildings, trees, crypt walls — but while airborne from a
+      // Slide along buildings, trees, crypt walls and but while airborne from a
       // jump, pass through fences for the whole arc. Keying off the jump itself
       // (not a height threshold) makes this independent of slope: an uphill
       // approach no longer flickers the clearance off right at the rail.
@@ -3143,7 +3157,7 @@ export class Sim {
       const run = Math.hypot(p.pos.x - p.prevPos.x, p.pos.z - p.prevPos.z);
       const maxStepDown = 0.4 + run * MAX_CLIMB_SLOPE;
       if (ground < p.pos.y - maxStepDown) {
-        // walked off a ledge — not a jump, so fences still block
+        // walked off a ledge and not a jump, so fences still block
         p.onGround = false;
         p.jumping = false;
         p.vx = 0;
@@ -3379,7 +3393,7 @@ export class Sim {
 
   // On-hit knockback: hurl `target` up to `distance` yards straight away from
   // `source`. Instantaneous displacement (no aura) walked in small steps so it can
-  // be terrain-clamped exactly like a warrior charge — the shove stops at the last
+  // be terrain-clamped exactly like a warrior charge and the shove stops at the last
   // safe footing before deep water or a cliff rather than stranding the victim off
   // the world. Returns the yards actually moved (0 if blocked immediately).
   private applyKnockback(source: Entity, target: Entity, distance: number): number {
@@ -3715,7 +3729,7 @@ export class Sim {
   // Opt-in cosmetic prestige: only at the cap. Resets the level XP
   // bar, bumps the prestige rank for a badge by the name + on the leaderboard,
   // and deliberately leaves lifetimeXp, level, gear, talents, and learned
-  // abilities untouched — strictly cosmetic, zero power change (FR-6.1/6.3).
+  // abilities untouched and strictly cosmetic, zero power change (FR-6.1/6.3).
   prestige(pid?: number): boolean {
     return prestigeImpl(this.ctx, pid);
   }
@@ -3800,7 +3814,7 @@ export class Sim {
   }
 
   // Effective melee reach. Large creatures measure range from their centre, which
-  // sits deep inside an oversized body — so a giant (e.g. Nythraxis at scale 3.1)
+  // sits deep inside an oversized body and so a giant (e.g. Nythraxis at scale 3.1)
   // can never close to the flat MELEE_RANGE and barely swings. Scale reach with
   // size so big mobs connect from where the player actually stands (their feet).
   private mobMeleeRange(mob: Entity): number {
@@ -4011,7 +4025,7 @@ export class Sim {
     if (crit) dmg *= 2;
     const enrage = MOBS[mob.templateId]?.enrage;
     if (mob.enraged && enrage) dmg *= enrage.dmgMult;
-    const rawDmg = dmg; // pre-armor, post-crit/enrage — basis for cleave splash
+    const rawDmg = dmg; // pre-armor, post-crit/enrage and basis for cleave splash
     dmg *= 1 - armorReduction(this.effectiveArmor(target), mob.level);
     const dealt = Math.max(1, Math.round(dmg));
     this.dealDamage(mob, target, dealt, crit, 'physical', null, 'hit');
@@ -4078,7 +4092,7 @@ export class Sim {
   }
 
   // Step `e` one tick toward `dest`. With `ignoreObstacles`, the mover phases
-  // straight through props — used to free a stuck evader, never for normal
+  // straight through props and used to free a stuck evader, never for normal
   // locomotion. Returns true on arrival.
   private moveToward(e: Entity, dest: Vec3, speed: number, ignoreObstacles = false): boolean {
     const d = dist2d(e.pos, dest);
@@ -4246,7 +4260,7 @@ export class Sim {
     }
     // Support "Ward": the defensive twin of Mend. Periodically wrap every living
     // friendly mob in range (including the caster) in an absorb shield. Unlike
-    // Mend it targets healthy allies too — a barrier pre-empts the next blows.
+    // Mend it targets healthy allies too and a barrier pre-empts the next blows.
     // Refreshes each interval, replacing any partially-soaked ward (same aura id).
     if (tmpl.wardAllies) {
       mob.wardTimer -= DT;
@@ -4286,7 +4300,7 @@ export class Sim {
 
     // Commander "Rally": periodically empower every friendly mob in range
     // (including the caster) with a refreshing attack-power buff. The offensive
-    // twin of mendAlly — same telegraphed timer, same same-faction ally scan —
+    // twin of mendAlly and same telegraphed timer, same same-faction ally scan,
     // but it grants buff_ap (folded by effectiveAttackPower) instead of healing.
     if (tmpl.rally) {
       mob.rallyTimer -= DT;
@@ -4629,7 +4643,7 @@ export class Sim {
       this.addItem(THE_CODFATHER_ITEM_ID, 1, meta.entityId);
       return;
     }
-    // The catch depends on which zone's water you're fishing — each has its own
+    // The catch depends on which zone's water you're fishing and each has its own
     // weighted table (src/sim/content/items.ts). Fall back to the Vale table for
     // any spot without its own (e.g. fishable water inside a dungeon zone).
     const table = FISHING_TABLES[zoneAt(p.pos.z).id] ?? FISHING_TABLES.eastbrook_vale;
@@ -4853,6 +4867,15 @@ export class Sim {
 
   refuseQuest(questId: string, pid?: number): void {
     questCommands.refuseQuest(this.ctx, questId, pid);
+  }
+
+  // Branching dialogue (PHAA-553): thin delegates to dialog/dialog_commands.
+  dialogChoose(npcId: string, choiceId: string, pid?: number): void {
+    dialogCommands.dialogChoose(this.ctx, npcId, choiceId, pid);
+  }
+
+  dialogState(pid?: number): DialogStateSave {
+    return dialogCommands.dialogStateView(this.ctx, pid);
   }
 
   // No-op in offline mode
@@ -5098,7 +5121,7 @@ export class Sim {
   }
 
   // -------------------------------------------------------------------------
-  // The Ashen Coliseum — ranked arena (1v1 + 2v2 queue, matchmaking, Elo)
+  // The Ashen Coliseum and ranked arena (1v1 + 2v2 queue, matchmaking, Elo)
   // -------------------------------------------------------------------------
 
   arenaQueueJoin(pidOrFormat?: number | ArenaFormat, format: ArenaFormat = '1v1'): void {
@@ -5193,7 +5216,7 @@ export class Sim {
   }
 
   // -------------------------------------------------------------------------
-  // 2v2 Fiesta — the dopamine-maxxed party mode. Score-based respawning bouts
+  // 2v2 Fiesta and the dopamine-maxxed party mode. Score-based respawning bouts
   // with augment waves and a closing hazard ring. The match lifecycle reuses the
   // arena's countdown/aftermath; everything below drives the active phase.
   // -------------------------------------------------------------------------
@@ -5394,7 +5417,7 @@ export class Sim {
     const standings: Record<ArenaFormat, ArenaStanding> = {
       '1v1': this.arenaStanding(meta, '1v1'),
       '2v2': this.arenaStanding(meta, '2v2'),
-      // Fiesta is unranked party play — it keeps no standing of its own; mirror
+      // Fiesta is unranked party play and it keeps no standing of its own; mirror
       // 2v2 just to satisfy the bracket record (the Fiesta UI never reads it).
       fiesta: this.arenaStanding(meta, '2v2'),
     };
@@ -5472,7 +5495,7 @@ export class Sim {
   }
 
   // -------------------------------------------------------------------------
-  // The World Market — the Merchant's auction house
+  // The World Market and the Merchant's auction house
   // -------------------------------------------------------------------------
 
   // These are thin delegates to the Market instance (this.market), which owns the
@@ -5524,7 +5547,7 @@ export class Sim {
   }
 
   // -------------------------------------------------------------------------
-  // Housing v0 — the Hollow hub homesteads (thin delegates to this.housing)
+  // Housing v0 and the Hollow hub homesteads (thin delegates to this.housing)
   // -------------------------------------------------------------------------
 
   housingClaim(pid?: number): void {
@@ -5557,7 +5580,7 @@ export class Sim {
   }
 
   // -------------------------------------------------------------------------
-  // Greenpaw's hearth (PHAA-421) — thin delegates to this.greenpawHearth
+  // Greenpaw's hearth (PHAA-421) and thin delegates to this.greenpawHearth
   // -------------------------------------------------------------------------
 
   feedGreenpaw(pid?: number): void {

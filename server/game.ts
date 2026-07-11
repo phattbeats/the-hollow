@@ -4,6 +4,7 @@ import { verifyChallenge } from '../src/sim/client_challenge';
 import { MECH_CHROMAS, mechChromaItemId, mechChromaSkinIndex } from '../src/sim/content/skins';
 import type { TalentAllocation } from '../src/sim/content/talents';
 import { DELVES, DUNGEONS, zoneAt } from '../src/sim/data';
+import { serializeDialogState } from '../src/sim/dialog/dialog_commands';
 import { parseRelayCommand } from '../src/sim/discord_relay';
 import type { PickAction } from '../src/sim/lockpick';
 import { parseMoveInputFrame } from '../src/sim/move_input';
@@ -2865,6 +2866,14 @@ export class GameServer {
       case 'feedGreenpaw':
         sim.feedGreenpaw(pid);
         break;
+      // Branching dialogue (PHAA-553): resolve a picked choice server-side. The
+      // sim re-looks-up the choice in the NPC's tree, re-checks its gate, and
+      // applies its disposition/flag effect (never trusting a client-sent value).
+      case 'dialogChoose':
+        if (typeof msg.npc === 'string' && typeof msg.choice === 'string') {
+          sim.dialogChoose(msg.npc, msg.choice, pid);
+        }
+        break;
       // dev/ops commands, only when ALLOW_DEV_COMMANDS=1 (never in production)
       case 'dev_level': {
         if (process.env.ALLOW_DEV_COMMANDS === '1' && typeof msg.level === 'number') {
@@ -3306,6 +3315,9 @@ export class GameServer {
       maybe('cosmetics', anchorSession.accountCosmetics);
       maybe('qlog', [...meta.questLog.values()]);
       maybe('qdone', [...meta.questsDone]);
+      // PHAA-553: per-player dialogue disposition + flags, so the client walker
+      // can evaluate `requires` gates. Small; maybe() only re-sends on change.
+      maybe('dstate', serializeDialogState(meta.dialogState));
       maybe('milestones', [...meta.unlockedMilestones]);
       // talents/spec/loadouts/secondaryCls: the client recomputes its known
       // abilities from this (secondaryCls merges a second class's kit in).

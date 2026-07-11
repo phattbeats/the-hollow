@@ -1164,6 +1164,14 @@ export interface NpcDef {
   // hearth" gossip option (feedGreenpaw in world_api/greenpaw_hearth.ts),
   // replacing the old /feed chat command (PHAA-482).
   hearth?: boolean;
+  // Branching player-picked dialogue (PHAA-553): an optional conversation tree
+  // this NPC offers as a "Talk" gossip option. The player walks NPC lines and
+  // picks a toned response at each node; the tree navigation is deterministic
+  // static content walked client-side (like offerDialog's stage machine), while
+  // any choice EFFECT (a per-NPC disposition nudge, a persistent flag) resolves
+  // server-side through the dialogChoose command (world_api/dialog.ts). Omit for
+  // an NPC with no branching conversation.
+  dialogTree?: NpcDialogTree;
   greeting: string;
   // Optional ordered intro lines the player clicks through once, before the
   // gossip/quest hook, on first meeting this NPC (presentation-only; the UI
@@ -1351,6 +1359,89 @@ export interface QuestOfferDialog {
   complainReply: string;
   refuse: string;
   refuseReply: string;
+}
+
+// ---------------------------------------------------------------------------
+// Branching NPC dialogue trees (PHAA-553). Declarative content on NpcDef; the
+// player walks NPC lines and picks a toned response at each node. Two layers:
+//   - Navigation (which node shows, which choices are visible) is DETERMINISTIC
+//     static content, walked client-side by the pure core (npc_dialog_tree_view),
+//     exactly like offerDialog's stage machine. Every player-visible string
+//     (`npcLine`, choice `label`) is an English source localized client-side via
+//     tEntity, never emitted from the sim.
+//   - Consequence (a choice's `effect`) is SERVER-AUTHORITATIVE: it resolves in
+//     the sim (dialog_commands.dialogChoose) over the wire, never on the client.
+//     v1 consequence is per-NPC disposition plus persistent conversation flags;
+//     `requires` gates a choice on that same persisted state. Rewards / quest
+//     gating are deliberately out of v1 (the hooks exist for later depth).
+// ---------------------------------------------------------------------------
+
+export type DialogTone = 'positive' | 'neutral' | 'negative';
+
+// The persisted consequence a choice applies, resolved server-side. Both fields
+// are optional so a pure-flavor choice carries no effect at all.
+export interface DialogEffect {
+  // Nudge the speaking NPC's disposition toward this player by this signed
+  // delta (clamped by the engine). Negative choices can lower it.
+  disposition?: number;
+  // Set a persistent per-player conversation flag (namespaced by the author,
+  // e.g. 'greenpaw.promised_fuel'), readable later by a `requires` gate.
+  setFlag?: string;
+}
+
+// A gate on whether a choice is offered, evaluated against the player's
+// persisted dialog state for the speaking NPC. All conditions present must hold.
+export interface DialogGate {
+  minDisposition?: number; // disposition toward this NPC must be >= this
+  maxDisposition?: number; // ...and <= this (a "you have been unkind" branch)
+  hasFlag?: string; // this conversation flag must be set
+  lacksFlag?: string; // ...and this one must NOT be set
+}
+
+export interface DialogChoiceDef {
+  id: string; // unique within the tree; the wire token dialogChoose carries it
+  tone: DialogTone; // tags the choice for the UI accent (never color-only; label carries meaning)
+  label: string; // the player's spoken line (English source; localized client-side)
+  next?: string; // node id to advance to; omitted ends the conversation
+  effect?: DialogEffect; // optional server-resolved consequence
+  requires?: DialogGate; // optional gate on the player's persisted dialog state
+}
+
+export interface DialogNodeDef {
+  npcLine: string; // the NPC's line at this node (English source; localized client-side)
+  choices: DialogChoiceDef[]; // empty = terminal node (the UI adds a "Farewell" close)
+}
+
+export interface NpcDialogTree {
+  root: string; // entry node id; must key into `nodes`
+  nodes: Record<string, DialogNodeDef>;
+}
+
+// Persisted + wire shape of a player's dialog state (PHAA-553): disposition
+// toward each NPC (by npc id; absent = 0, never talked to) and the persistent
+// conversation flags accumulated across all NPCs. Rides CharacterState JSONB
+// additively, so pre-PHAA-553 saves load with an empty default.
+export interface DialogStateSave {
+  disposition: Record<string, number>;
+  flags: string[];
+}
+
+// The single source of truth for whether a choice's gate is satisfied, shared by
+// the client walker (npc_dialog_tree_view) and the server resolver
+// (dialog_commands). Sharing it is the anti-cheat property: the server accepts
+// exactly the choices the client offers, evaluated one way, never two. Checked
+// against the player's disposition toward the SPEAKING npc and their flags.
+export function dialogGatePasses(
+  gate: DialogGate | undefined,
+  disposition: number,
+  flags: ReadonlySet<string>,
+): boolean {
+  if (!gate) return true;
+  if (gate.minDisposition !== undefined && disposition < gate.minDisposition) return false;
+  if (gate.maxDisposition !== undefined && disposition > gate.maxDisposition) return false;
+  if (gate.hasFlag !== undefined && !flags.has(gate.hasFlag)) return false;
+  if (gate.lacksFlag !== undefined && flags.has(gate.lacksFlag)) return false;
+  return true;
 }
 
 export interface QuestDef {

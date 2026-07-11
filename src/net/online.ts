@@ -47,6 +47,7 @@ import {
   type DelveDailyInfo,
   type DelveRunInfo,
   type DelveShopOfferView,
+  type DialogStateView,
   type DuelInfo,
   type FriendInfo,
   type GreenpawHearthInfo,
@@ -862,6 +863,10 @@ export class ClientWorld implements IWorld {
   // present (global world state, not per-viewer), so the default is a real
   // value, not null, matching a freshly-fed-nothing hearth. ---
   hollowHearth: GreenpawHearthInfo = { smoke: 0, level: 'clear' };
+  // PHAA-553: per-player dialogue disposition + flags, mirrored from the self
+  // snapshot's `dstate`. dialogState() reads this so the client walker can
+  // evaluate `requires` gates; effects themselves resolve server-side.
+  private dialogStateMirror: DialogStateView = { disposition: {}, flags: [] };
   // --- IWorldHomestead: Hollow Reaches open-world plot view, mirrored from
   // the snapshot self (`s.homestead`, delta-omitted). ---
   homesteadInfo: HomesteadInfo | null = null;
@@ -1626,6 +1631,7 @@ export class ClientWorld implements IWorld {
       if (s.market !== undefined) this.marketInfo = s.market;
       if (s.housing !== undefined) this.housingInfo = s.housing;
       if (s.hearth !== undefined) this.hollowHearth = s.hearth;
+      if (s.dstate !== undefined) this.dialogStateMirror = s.dstate;
       if (s.homestead !== undefined) this.homesteadInfo = s.homestead;
       if (s.lroll !== undefined) this.lootRollPrompts = s.lroll ?? [];
       if (s.lrollg !== undefined) this.lootRollGroup = s.lrollg ?? [];
@@ -2153,6 +2159,14 @@ export class ClientWorld implements IWorld {
   // dialogue menu, not chat text. ---
   feedGreenpaw(): void {
     this.cmd({ cmd: 'feedGreenpaw' });
+  }
+  // --- IWorldDialog (PHAA-553): send a picked branching-dialogue choice; the
+  // effect resolves server-side. dialogState is a snapshot read (dstate mirror). ---
+  dialogChoose(npcId: string, choiceId: string): void {
+    this.cmd({ cmd: 'dialogChoose', npc: npcId, choice: choiceId });
+  }
+  dialogState(): DialogStateView {
+    return this.dialogStateMirror;
   }
   // --- IWorldDungeons: dungeon enter/leave sends + the raid-lockout countdown read.
   // selfLockouts mirrors the snapshot `s.lockouts`; raidLockouts derives the live
