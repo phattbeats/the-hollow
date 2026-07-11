@@ -23,8 +23,9 @@ const entrySource = `
   export { CLASSES, ABILITIES } from './src/sim/content/classes.ts';
   export { TALENTS } from './src/sim/content/talents.ts';
   export { ALL_CLASSES } from './src/sim/types.ts';
-  export { ZONES, DUNGEONS, MOBS, CAMPS, DELVE_LIST, NPCS } from './src/sim/data.ts';
+  export { ZONES, DUNGEONS, MOBS, CAMPS, DELVE_LIST, NPCS, QUESTS } from './src/sim/data.ts';
   export { WARLOCK_PET_MOBS } from './src/sim/content/warlock_pets.ts';
+  export { HOLLOW_QUEST_ORDER, HOLLOW_HOUSE_PLOTS } from './src/sim/content/hollow.ts';
   export { ZONE1_MOBS } from './src/sim/content/zone1.ts';
   export { ZONE2_MOBS } from './src/sim/content/zone2.ts';
   export { ZONE3_MOBS } from './src/sim/content/zone3.ts';
@@ -63,6 +64,9 @@ const {
   TEMPLE_MOBS,
   DELVE_LIST,
   NPCS,
+  QUESTS,
+  HOLLOW_QUEST_ORDER,
+  HOLLOW_HOUSE_PLOTS,
   DELVE_COMPANIONS,
   DELVE_AFFIXES,
   VISUALS,
@@ -194,6 +198,28 @@ const dungeons = Object.values(DUNGEONS)
     };
   })
   .sort((a, b) => (a.min ?? 99) - (b.min ?? 99) || a.suggestedPlayers - b.suggestedPlayers);
+
+// The Hollow hub: the sealed starting instance every new arrival lands in (the vase,
+// Greenpaw, the profession trainer, housing). Structurally a DungeonDef (a shared,
+// portal-instanced space, `content/hollow.ts`), not a ZoneDef, so it earns its own
+// generator section rather than folding into GUIDE_ZONES or GUIDE_DUNGEONS: it is a
+// social hub players live in, not a group encounter to queue for. Only the linked
+// Under-Shrine descent (also `content/hollow.ts`) is a real group dungeon; its boss is
+// left unnamed here, same convention as every other dungeon card.
+const HOLLOW_HUB_NPC_IDS = ['brother_greenpaw', 'elder_yarrow'];
+const hollowHub = {
+  npcs: HOLLOW_HUB_NPC_IDS.map((id) => {
+    const n = NPCS[id];
+    return { id, name: n.name, title: n.title ?? '' };
+  }),
+  quests: HOLLOW_QUEST_ORDER.map((id) => ({ id, name: QUESTS[id].name })),
+  housePlots: HOLLOW_HOUSE_PLOTS.length,
+  underShrine: (() => {
+    const d = DUNGEONS.under_shrine;
+    const band = dungeonBand(d);
+    return { name: d.name, suggestedPlayers: d.suggestedPlayers, min: band.min, max: band.max };
+  })(),
+};
 
 // Warlock demons, in summon order. Names only; role flavor is authored guide copy.
 const warlockPets = Object.values(WARLOCK_PET_MOBS).map((p) => {
@@ -361,6 +387,23 @@ export interface GuideWarlockPet { id: string; name: string; model: string; tint
 export interface GuideCreature { name: string; min: number; max: number; rare: boolean; templateId: string; model: string; tint?: string; still?: string; }
 export interface GuideFamily { family: string; creatures: GuideCreature[]; }
 
+// The Hollow hub: the sealed starting instance (the vase, Greenpaw, housing, the
+// Under-Shrine descent). Names and roles only, no coordinates or balance numbers.
+export interface GuideHollowNpc { id: string; name: string; title: string; }
+export interface GuideHollowQuest { id: string; name: string; }
+export interface GuideHollowUnderShrine {
+  name: string;
+  suggestedPlayers: number;
+  min: number | null;
+  max: number | null;
+}
+export interface GuideHollowHub {
+  npcs: GuideHollowNpc[];
+  quests: GuideHollowQuest[];
+  housePlots: number;
+  underShrine: GuideHollowUnderShrine;
+}
+
 export interface GuideDelveKeeper { name: string; title: string; }
 export interface GuideDelveCompanion { name: string; role: string; }
 export interface GuideDelve {
@@ -383,6 +426,7 @@ writeFileSync(
     `\nexport const GUIDE_CLASSES: GuideClassInfo[] = ${JSON.stringify(classes, null, 2)};\n`,
     `\nexport const GUIDE_ZONES: GuideZoneInfo[] = ${JSON.stringify(zones, null, 2)};\n`,
     `\nexport const GUIDE_DUNGEONS: GuideDungeon[] = ${JSON.stringify(dungeons, null, 2)};\n`,
+    `\nexport const GUIDE_HOLLOW_HUB: GuideHollowHub = ${JSON.stringify(hollowHub, null, 2)};\n`,
     `\nexport const GUIDE_WARLOCK_PETS: GuideWarlockPet[] = ${JSON.stringify(warlockPets, null, 2)};\n`,
     `\nexport const GUIDE_FAMILIES: GuideFamily[] = ${JSON.stringify(families, null, 2)};\n`,
     `\nexport const GUIDE_DELVES: GuideDelve[] = ${JSON.stringify(delves, null, 2)};\n`,
@@ -391,5 +435,5 @@ writeFileSync(
 );
 // eslint-disable-next-line no-console
 console.log(
-  `generated src/guide/content.generated.ts (${classes.length} classes, ${zones.length} zones, ${dungeons.length} dungeons, ${warlockPets.length} warlock pets, ${families.length} families, ${delves.length} delves, ${Object.keys(MODELS).length} models)`,
+  `generated src/guide/content.generated.ts (${classes.length} classes, ${zones.length} zones, ${dungeons.length} dungeons, ${warlockPets.length} warlock pets, ${families.length} families, ${delves.length} delves, ${hollowHub.npcs.length} hollow hub npcs, ${Object.keys(MODELS).length} models)`,
 );

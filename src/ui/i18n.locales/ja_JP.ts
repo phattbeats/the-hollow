@@ -4045,9 +4045,39 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     '古き深淵に棲む、鱗に覆われた蛇のような存在。希少で誇り高く、見た目よりもはるかに強大です。',
   'guide.family.dragonkin.name': 'ドラゴンキン',
   'guide.family.elemental.desc': '嵐や岩が命を得た存在。元素の力が強く渦巻く荒野に縛られています。',
+  'guide.hollowPage.intro':
+    '聖堂の門をくぐると花瓶のある広場に出る。すべての新たな英雄が目覚め、そして必ず戻ってくる場所だ。大陸全体で共有される一つの拠点であり、最初に出会う顔ぶれも、最初の依頼も、そして本当に必要な唯一の我が家もここにある。',
+  'guide.hollowPage.greeting':
+    '戻ってきたか、それは何よりだ……いくつか神聖な用事が溜まっている、前と同じ波長でな。ちょっとこっちへ……',
+  'guide.hollowPage.greeter': 'グリーンポー修道士、花瓶のそばで',
+  'guide.hollowPage.vaseHeading': '花瓶',
+  'guide.hollowPage.vaseBody':
+    '誰もが花瓶から始まる。ホロウが築かれた中心にある、古く耳を傾ける存在だ。エンバーバルブを一つ燃やす、洞窟モーセルを一つ与える、そんな小さな捧げ物を求め、受け取ると気づいているようだ。花瓶の下手には洞窟の入り口があり、地下聖堂へと続いている。両脇には自分だけの我が家を築ける区画が並ぶ。',
+  'guide.hollowPage.figuresHeading': '誰が世話をしているか',
+  'guide.hollowPage.figuresBody':
+    '花瓶を維持している二人がいて、最初の数分でどちらにも出会うことになる。',
+  'guide.hollowPage.greenpawBody':
+    '花瓶の唯一の世話役であり、最初の依頼を渡してくる人物。自称の肩書きであることを本人が真っ先に認めており、ホロウにおける案内役に一番近い存在だ。',
+  'guide.hollowPage.yarrowBody':
+    '第二の天職の指南役。どのクラスも彼女から副業を学ぶことができ、花瓶を挟んでグリーンポーの向かいに立っている。',
+  'guide.hollowPage.questsHeading': '最初の依頼',
+  'guide.hollowPage.questsBody':
+    'グリーンポー自身の依頼の連なりが最初にやることだ。花瓶のリズムを教えてくれる四つの短い用事をこなしてから、より広いホロウへと送り出される。',
+  'guide.hollowPage.questBurnsBody': '花瓶が光のために燃やす、洞窟育ちの球根をひとつかみ集める。',
+  'guide.hollowPage.questFillsBody':
+    'もっと静かな空腹を満たす、洞窟で育つモーセルを同じように集める。',
+  'guide.hollowPage.questWavelengthBody':
+    '花瓶の第二の天職への案内と、自分の手で餌をやることを教わる。',
+  'guide.hollowPage.questKeepLitBody': '一度きりの頼みを、三回続けて習慣に変える。',
+  'guide.hollowPage.housingHeading': '自分だけの我が家',
+  'guide.hollowPage.housingBody':
+    '花瓶の周りには{n}区画の宅地が並び、あなただけのホロウの片隅として、手に入れて飾り付けるのを待っている。',
+  'guide.hollowPage.shrineHeading': '地下聖堂',
+  'guide.hollowPage.shrineBody':
+    '花瓶のそばの洞窟の入り口は地下聖堂へと続く。ホロウ自身のインスタンスダンジョンであり、新たな英雄が初めてパーティで臨む本当の試練だ。',
   'guide.worldPage.heading': '世界',
   'guide.worldPage.intro':
-    'World of ClaudeCraftは、自らの足で歩いて渡る一続きの大地です。南から北へと3つのゾーンが連なっています。ファストトラベルはなく、その旅路こそが冒険の一部です。',
+    '花瓶から聖堂の門を出ると、ホロウの奥地に出る。新たな来訪者が屋外で最初の一歩を踏み出す静かな土地だ。さらに北へ3つのゾーンが南から北へと連なっているが、そこへの道はまだ開かれていない。とはいえそれらは実在し、待っている。',
   'guide.worldPage.hub': '拠点',
   'guide.worldPage.hollowReachesBlurb':
     '聖堂の門をすぐ越えた先の穏やかな土地で、新参者はFallow AcresとRoot Hollow周辺の狼や猪を相手に腕を磨く。',
@@ -4074,9 +4104,11 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     '近くにいるパーティメンバーは、討伐や目標の達成判定を共有します。だから一緒にクエストを進めれば、遅くなることはなく、むしろ速くなります。クエストをグループと共有することもできます。/share コマンドでクリックできるリンクとしてチャットに投稿すれば、条件を満たす近くのメンバーは誰でも、ワンクリックで同じクエストを受けられます。',
   'guide.questsPage.storyTitle': 'すべてを貫く一本の糸',
   'guide.questsPage.storyBody':
-    'イーストブルックでの最初のおつかいの頃から、死者に異変が起きています。あるカルトが暗躍しており、その足取りは北へ、すべてのゾーンを貫いて続いています。それを追えば、背後に誰がいるのかがわかるでしょう。',
+    '最初の糸口は花瓶のすぐそばにある、グリーンポー修道士自身の短い依頼の連なりだ。その先にはホロウの奥地の静かな用事があり、さらにその先には谷から山頂まで進軍する死のカルトを巡る、より長い物語がある。それは本物で完結した内容だが、新たな英雄がまだ歩ける道ではない。花瓶自身の依頼はホロウのページで、残りは来るべきものとして以下に記す。',
   'guide.questsPage.soloNote':
     'メインストーリーは各章のフィナーレまで完全にソロで進められます。そのフィナーレは五人用のダンジョンです。',
+  'guide.questsPage.sagaGateNote':
+    'この物語は本物で、完結した内容だ。北への道が再び開いた時に開放される、同じ道筋である。新たな英雄が今日歩き出す場所ではない。その場所は花瓶、ホロウの中にある。',
   'guide.dungeonsPage.heading': 'ダンジョンとレイド',
   'guide.dungeonsPage.intro':
     'オープンワールドだけでは物足りなくなったら、パーティを組んでインスタンスへ踏み込みましょう。インスタンスとは、あなたのグループだけのために用意されたダンジョンの専用コピーです。',

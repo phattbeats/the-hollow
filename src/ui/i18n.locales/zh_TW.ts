@@ -3857,9 +3857,35 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
     '來自遠古深淵、覆鱗如蛇的生物。稀少、高傲，且遠比外表看來更為強大。',
   'guide.family.dragonkin.name': '龍類',
   'guide.family.elemental.desc': '活生生的風暴與岩石，束縛於元素之力強盛的荒野之地。',
+  'guide.hollowPage.intro':
+    '穿過神殿之門便是花瓶所在的空地：每位新英雄甦醒之處，也是你始終會回來的地方。這裡是共享之地，整片大陸共用的一個據點，也是你初見的面孔、初次的任務，唯一真正需要的家。',
+  'guide.hollowPage.greeting':
+    '你回來了，那可真是件幸事……有幾樁神聖的差事在等你呢，跟上次同一個頻道。過來一下……',
+  'guide.hollowPage.greeter': '格林保修士，於花瓶旁',
+  'guide.hollowPage.vaseHeading': '花瓶',
+  'guide.hollowPage.vaseBody':
+    '所有人都從花瓶開始：這個古老而有靈性的存在，正是幽谷得以建立的核心。它渴求些微小的供奉，燃一顆餘燼球，或餵一份洞穴嫩肉，似乎都能有所察覺。花瓶下坡處，一處洞口通向地窟深處；兩側則留有地塊，供你建造屬於自己的家。',
+  'guide.hollowPage.figuresHeading': '誰在照看它',
+  'guide.hollowPage.figuresBody': '有兩個人維繫著花瓶的運作，你在最初的幾分鐘內便會與他們相遇。',
+  'guide.hollowPage.greenpawBody':
+    '花瓶唯一的照看者，也是最早派發差事的人。他自封頭銜，也是第一個承認這點的人，算是幽谷裡最接近嚮導的存在。',
+  'guide.hollowPage.yarrowBody':
+    '第二職業的傳授者：每個職業都能向她學習一門副業，她的位置正好與格林保隔瓶相望。',
+  'guide.hollowPage.questsHeading': '你最初的差事',
+  'guide.hollowPage.questsBody':
+    '格林保自己的任務鏈是你要做的第一件事：四樁短小的差事，教會你花瓶的節奏，然後送你踏入更廣闊的幽谷。',
+  'guide.hollowPage.questBurnsBody': '花瓶焚燒以取光的洞穴產球莖，一次採集一把。',
+  'guide.hollowPage.questFillsBody': '能填飽另一種更安靜飢餓的洞穴嫩肉，採集方式相同。',
+  'guide.hollowPage.questWavelengthBody': '引薦花瓶的第二職業，並教你親手餵養它。',
+  'guide.hollowPage.questKeepLitBody': '把一次的恩惠變成一種固定的習慣，連續三次。',
+  'guide.hollowPage.housingHeading': '屬於你自己的家',
+  'guide.hollowPage.housingBody': '{n}塊宅地環繞著花瓶，等待被認領，裝點成你在幽谷中私有的一角。',
+  'guide.hollowPage.shrineHeading': '地窟深處',
+  'guide.hollowPage.shrineBody':
+    '花瓶旁的一處洞口通向地窟深處，那是幽谷自身的副本地城，也是每位新英雄組隊面對的第一場真正考驗。',
   'guide.worldPage.heading': '世界',
   'guide.worldPage.intro':
-    'World of ClaudeCraft 是一片你需徒步橫越的連綿大地，三大區域由南向北排列。沒有快速旅行，所以旅程本身就是冒險的一部分。',
+    '穿過花瓶的神殿之門，你便置身幽谷腹地：新人踏出戶外第一步的寧靜之地。再往北還有三個區域，由南向北依次鋪展；通往那裡的道路尚未開啟，但它們是真實存在、靜候你到來的。',
   'guide.worldPage.hub': '主據點',
   'guide.worldPage.hollowReachesBlurb':
     '緊鄰神殿門外的平靜之地，新人在Fallow Acres與Root Hollow一帶與野狼、野豬交手磨練身手。',
@@ -3884,9 +3910,11 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
     '附近的隊伍成員會共享擊殺與目標進度，所以一起接任務只會更快，絕不會更慢。你也可以與隊伍分享任務：用 /share 指令將它以可點擊的連結貼到聊天中，任何符合條件的附近成員都能一鍵接取同一項任務。',
   'guide.questsPage.storyTitle': '一條主線貫穿其中',
   'guide.questsPage.storyBody':
-    '從你在東溪鎮的第一批跑腿差事開始，亡者出了問題。一個邪教正在運作，線索向北穿過每個區域。循線追查，便能查出幕後主使是誰。',
+    '你最初的線索，是格林保修士自己那條短短的任務鏈，就在花瓶旁。往外則是幽谷腹地裡那些安靜的差事；再往外，還有一段更長的故事：一個邪教從山谷一路作亂到山巔，真實且已完成，只是新英雄眼下還走不到那條路。花瓶自己的任務見幽谷頁面，其餘的則列在下方，作為即將到來的內容。',
   'guide.questsPage.soloNote':
     '主線劇情一路到每個篇章的結局都可以單人完成，而那結局是一座五人地城。',
+  'guide.questsPage.sagaGateNote':
+    '這段傳奇是真實、已完成的內容，正是道路重新北通之後開啟的同一條線索。它並非新英雄如今的起點；起點是花瓶，在幽谷之中。',
   'guide.dungeonsPage.heading': '地城與團隊副本',
   'guide.dungeonsPage.intro':
     '當開放世界不夠盡興時，召集一支隊伍踏入副本：一份專為你的隊伍打造的地城私人副本。',
