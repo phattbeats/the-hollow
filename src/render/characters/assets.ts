@@ -10,12 +10,19 @@ import * as THREE from 'three';
 import type { GLTF } from 'three/addons/loaders/GLTFLoader.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { clone as cloneSkinned } from 'three/addons/utils/SkeletonUtils.js';
+import type { EquipSlot } from '../../sim/types';
 import { loadGltf, loadTexture } from '../assets/loader';
 import { registerPreload } from '../assets/preload';
 import { addRimGlow, GFX } from '../gfx';
 import {
+  CHIBI_VARIANT_TINT_STRENGTH,
+  chibiMaterialTint,
+  chibiSkinCount,
+} from './chibi_skin_variants';
+import {
   type AttachDef,
   characterPreloadUrls,
+  itemArmorModelUrl,
   itemWeaponModelUrl,
   SKIN_EMISSIVE,
   SKINS,
@@ -223,6 +230,12 @@ function flattenWeaponScene(src: THREE.Object3D): THREE.Object3D {
 // touching fixed offhands (rogue's second dagger, the warlock spellbook).
 const SWAP_WEAPON_TAG = 'swapWeaponHolder';
 
+// Sibling marker for the equipped-armor attachment(s). Distinct tag so a model's
+// weapon prop and armor prop can both be unique-anchored when the visual has both.
+// PHAA-502 T1: zero armor attach entries ship until T2a; the tag is here so the
+// swap path is wired and ready the moment an attach index is flagged.
+const SWAP_ARMOR_TAG = 'swapArmorHolder';
+
 // Grip for a variant-pack weapon. Its origin is authored AT the grip, so we attach
 // at the origin (no recenter) and only clamp an oversized model so its blade does
 // not drag. `lift` nudges along the hand bone; the side picks the 180-degree flip.
@@ -245,13 +258,16 @@ function attachProp(
   root: THREE.Object3D,
   bone: THREE.Object3D,
   att: AttachDef,
-  markSwap = false,
+  markTags: string | readonly string[] | false = false,
 ): void {
   const payload = flattenWeaponScene(cloneSkinned(resolvedGltf(att.url).scene));
   payload.traverse((o) => {
     if ((o as THREE.Mesh).isMesh) o.userData.weaponMesh = true;
   });
-  if (markSwap) payload.userData[SWAP_WEAPON_TAG] = true;
+  if (markTags) {
+    const tags = Array.isArray(markTags) ? markTags : [markTags];
+    for (const t of tags) payload.userData[t] = true;
+  }
   const variantGrip = isHandslotBone(att.bone) ? variantGripFor(att.url) : null;
   if (variantGrip) {
     applyVariantGrip(payload, att.bone, variantGrip);
@@ -273,6 +289,16 @@ function attachProp(
 // rotationY/gripRef override is dropped for the substituted model.
 function swapAttachDef(base: AttachDef, weaponItemId: string | null | undefined): AttachDef {
   const url = itemWeaponModelUrl(weaponItemId);
+  return url ? { url, bone: base.bone } : base;
+}
+
+// Sibling helper for armor slots: substitute the equipped item's model when one
+// is mapped (via ITEM_ARMOR_VARIANTS), else keep the class default attach. Differs
+// from the weapon path in that the swap URL is keyed off the item's armor visual
+// key (no weapon grip family concerns, no handslot side flip). Armor GLBs hang
+// at their authored origin under a body bone and are grip-agnostic.
+function swapArmorAttachDef(base: AttachDef, armorItemId: string | null | undefined): AttachDef {
+  const url = itemArmorModelUrl(armorItemId);
   return url ? { url, bone: base.bone } : base;
 }
 
@@ -384,6 +410,24 @@ export function preloadMechAssets(): Promise<void> {
   return mechAssetsPromise;
 }
 
+// Lazy fetch for a single lazyPreload visual (e.g. chibi_female_base, which no
+// entity resolves to yet): loads the def's GLB into the same registry the boot
+// sweep fills, so assembleModel/prepareVisual work for keys the sweep skipped.
+// Memoized per key. The mech keeps its own richer loader (chromas + emissives).
+const visualPreloadPromises = new Map<string, Promise<void>>();
+export function preloadVisual(key: string): Promise<void> {
+  const hit = visualPreloadPromises.get(key);
+  if (hit) return hit;
+  const def = VISUALS[key];
+  if (!def) return Promise.reject(new Error(`preloadVisual: unknown visual key ${key}`));
+  const url = assetUrl(def.url);
+  const p = loadGltf(url).then((g) => {
+    gltfByUrl.set(url, g);
+  });
+  visualPreloadPromises.set(key, p);
+  return p;
+}
+
 export function mechAssetsReady(): boolean {
   const def = VISUALS.player_mech;
   if (!def || !gltfByUrl.has(assetUrl(def.url))) return false;
@@ -485,7 +529,11 @@ function mergeSkinnedParts(root: THREE.Object3D): void {
 
 /** Fresh SkeletonUtils clone of a manifest entry with its kit applied.
  *  Pure model space — normalization (scale/yaw/feet offset) happens upstream. */
-export function assembleModel(def: VisualDef, weaponItemId?: string | null): THREE.Object3D {
+export function assembleModel(
+  def: VisualDef,
+  weaponItemId?: string | null,
+  armorByItemId?: Partial<Record<EquipSlot, string>> | null,
+): THREE.Object3D {
   const root = cloneSkinned(optimizedScene(def.url));
   // tag the character's own meshes (body + accessories share one texture atlas)
   // so a skin override hits them but not the separate weapons attached below
@@ -506,16 +554,32 @@ export function assembleModel(def: VisualDef, weaponItemId?: string | null): THR
   // Low tier still downgrades body/material cost, but keeps attachments visible.
   const attachments = visibleAttachmentsForGraphics(def);
   for (let i = 0; i < attachments.length; i++) {
-    const isSwap = def.weaponSlots?.includes(i) ?? false;
-    // Swappable slots take the equipped item's model (when given); every other
-    // attachment is fixed (the warlock's spellbook offhand). The rogue lists both
-    // hand slots so a dagger shows in both.
-    const att = isSwap ? swapAttachDef(attachments[i], weaponItemId) : attachments[i];
+    const isWeaponSwap = def.weaponSlots?.includes(i) ?? false;
+    const isArmorSwap = def.armorSlots?.includes(i) ?? false;
+    // Each swap slot takes the equipped item's model (when given and mapped);
+    // every other attachment is fixed (the warlock's spellbook offhand). The
+    // rogue lists both hand slots so a dagger shows in both; a chest piece
+    // lists its attach index so it hangs on the right bone. A swap index in
+    // BOTH lists would be a manifest bug: weapon wins, armor never fires for
+    // an attach entry that is already a hand prop.
+    let att: AttachDef = attachments[i];
+    if (isWeaponSwap && !isArmorSwap) att = swapAttachDef(att, weaponItemId);
+    else if (isArmorSwap) {
+      const slot = def.armorByAttachIndex?.[i];
+      const itemId = slot ? (armorByItemId?.[slot] ?? null) : null;
+      att = swapArmorAttachDef(att, itemId);
+    }
     // GLTFLoader sanitizes node names (PropertyBinding strips [].:/ chars),
     // so the authored "handslot.r" arrives as "handslotr" — try both
     const bone = resolveBone(root, att.bone);
     if (!bone) continue; // manifest/bone mismatch — ship without the prop
-    attachProp(root, bone, att, isSwap);
+    // Mark the props the runtime swap paths will replace. A swap index in BOTH
+    // weaponSlots and armorSlots is a manifest bug (different swap tags would
+    // race the same holder); weapon wins, armor stays unmarked.
+    const tags: string[] = [];
+    if (isWeaponSwap && !isArmorSwap) tags.push(SWAP_WEAPON_TAG);
+    if (isArmorSwap) tags.push(SWAP_ARMOR_TAG);
+    attachProp(root, bone, att, tags);
   }
   // Re-orient mis-baked built-in weapon nodes (e.g. the golem axe) in place.
   for (const fix of def.weaponFix ?? []) {
@@ -552,7 +616,41 @@ export function setHeldWeapon(
     const att = swapAttachDef(base, weaponItemId);
     const bone = resolveBone(root, att.bone);
     if (!bone) continue;
-    attachProp(root, bone, att, true);
+    attachProp(root, bone, att, SWAP_WEAPON_TAG);
+  }
+}
+
+/** Sibling of setHeldWeapon for armor: replace the equipped-armor attachment(s) on
+ *  an already-assembled model in place. The map keys are the EquipSlots the
+ *  entity currently wears (helmet / chest / legs / …); values are the equipped
+ *  item ids, which the swap path resolves to a model URL via ITEM_ARMOR_VARIANTS.
+ *  No-op for visuals without `armorSlots` (mobs/NPCs/forms are fixed) or when
+ *  every slot resolves to its class default attach (no mapped GLB). The caller
+ *  must re-apply materials and re-snapshot the original-material map afterwards
+ *  (see CharacterVisual.setArmor), since the new meshes start on the source
+ *  GLB's raw materials. A swap index missing from `armorByAttachIndex` is
+ *  silently skipped (safe but never replaces). */
+export function setEquippedArmor(
+  root: THREE.Object3D,
+  def: VisualDef,
+  armorByItemId: Partial<Record<EquipSlot, string>> | null | undefined,
+): void {
+  if (!def.armorSlots?.length) return;
+  const stale: THREE.Object3D[] = [];
+  root.traverse((o) => {
+    if (o.userData[SWAP_ARMOR_TAG]) stale.push(o);
+  });
+  for (const o of stale) o.removeFromParent();
+  for (const i of def.armorSlots) {
+    const base = def.attach?.[i];
+    if (!base) continue;
+    const slot = def.armorByAttachIndex?.[i];
+    if (!slot) continue; // manifest defines the attach but not which slot it serves
+    const itemId = armorByItemId?.[slot] ?? null;
+    const att = swapArmorAttachDef(base, itemId);
+    const bone = resolveBone(root, att.bone);
+    if (!bone) continue;
+    attachProp(root, bone, att, SWAP_ARMOR_TAG);
   }
 }
 
@@ -598,8 +696,9 @@ export function tintedMaterial(
   skinTex: THREE.Texture | null = null,
   emisTex: THREE.Texture | null = null,
   role: MaterialRole = 'body',
+  variantTint: number | null = null,
 ): THREE.Material {
-  const key = `${src.uuid}|${tint ?? 'n'}|${tint === null ? 0 : strength}|${GFX.standardMaterials ? 's' : 'l'}|${skinTex ? skinTex.uuid : 'n'}|${emisTex ? emisTex.uuid : 'n'}|${role}`;
+  const key = `${src.uuid}|${tint ?? 'n'}|${tint === null ? 0 : strength}|${GFX.standardMaterials ? 's' : 'l'}|${skinTex ? skinTex.uuid : 'n'}|${emisTex ? emisTex.uuid : 'n'}|${role}|${variantTint ?? 'n'}`;
   const cached = matCache.get(key);
   if (cached) return cached;
 
@@ -627,6 +726,12 @@ export function tintedMaterial(
     // hand-painted textures muddy
     mat.color.lerp(tintScratch.set(tint), strength);
   }
+  if (variantTint !== null) {
+    // per-material chibi skin variant (hair/outfit accent color, see
+    // chibi_skin_variants.ts): a separate, stronger pull layered on top of
+    // any class-level tint above.
+    mat.color.lerp(tintScratch.set(variantTint), CHIBI_VARIANT_TINT_STRENGTH);
+  }
   if (skinTex) mat.map = skinTex; // alternate body atlas, same UVs as the default
   // Emissive glow map (mech epics): standard tier only - Lambert/Basic don't
   // glow, and adding a map where none existed needs a shader recompile.
@@ -649,16 +754,23 @@ function tintFor(def: VisualDef, entityColor: number): number | null {
 }
 
 /** Swap every mesh material in an assembled clone for the shared tinted
- *  (and tier-appropriate) variant. Returns nothing — mutates the clone. */
+ *  (and tier-appropriate) variant. Returns nothing: mutates the clone.
+ *  `visualKey`/`skinIndex` are optional: pass them to also layer the chibi
+ *  per-material skin-variant tint (chibi_skin_variants.ts) for keys that
+ *  have one; every other caller (mobs, NPCs, forms) omits them and gets the
+ *  same behavior as before. */
 export function applyMaterials(
   root: THREE.Object3D,
   def: VisualDef,
   entityColor: number,
   skinTex: THREE.Texture | null = null,
   emisTex: THREE.Texture | null = null,
+  visualKey: string | null = null,
+  skinIndex = 0,
 ): void {
   const tint = tintFor(def, entityColor);
   const strength = def.tintStrength ?? DEFAULT_TINT_STRENGTH;
+  const hasChibiVariants = visualKey !== null && chibiSkinCount(visualKey) > 0;
   root.traverse((o) => {
     const mesh = o as THREE.Mesh;
     if (!mesh.isMesh) return;
@@ -667,12 +779,24 @@ export function applyMaterials(
     // skin/emissive override only touches the character's own atlas meshes, not weapons
     const sk = skinTex && mesh.userData.bodyMesh ? skinTex : null;
     const em = emisTex && mesh.userData.bodyMesh ? emisTex : null;
+    const variantTint = (m: THREE.Material): number | null =>
+      hasChibiVariants && role === 'body'
+        ? chibiMaterialTint(visualKey as string, skinIndex, m.name)
+        : null;
     if (Array.isArray(mesh.material)) {
       mesh.material = mesh.material.map((m) =>
-        tintedMaterial(m, materialTint, strength, sk, em, role),
+        tintedMaterial(m, materialTint, strength, sk, em, role, variantTint(m)),
       );
     } else {
-      mesh.material = tintedMaterial(mesh.material, materialTint, strength, sk, em, role);
+      mesh.material = tintedMaterial(
+        mesh.material,
+        materialTint,
+        strength,
+        sk,
+        em,
+        role,
+        variantTint(mesh.material),
+      );
     }
   });
 }

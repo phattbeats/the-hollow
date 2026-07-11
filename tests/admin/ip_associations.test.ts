@@ -70,11 +70,13 @@ vi.mock('../../src/admin/api', () => ({
 import { fmtDate } from '../../src/admin/format';
 import { t } from '../../src/admin/i18n';
 import IpAssociations from '../../src/admin/pages/IpAssociations.svelte';
+import { grantPermissions } from './_grant';
 
 beforeEach(() => {
   currentData = data;
   apiPost.mockReset();
   apiPost.mockResolvedValue({});
+  grantPermissions();
 });
 
 describe('IP associations', () => {

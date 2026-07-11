@@ -33,12 +33,14 @@ export const guideStrings = {
     social: 'Social & Groups',
     stats: 'Character & Stats',
     progression: 'Leveling & Progression',
+    hollow: 'The Hollow',
     world: 'World',
     quests: 'Quests',
     dungeons: 'Dungeons & Raids',
     delves: 'Delves',
     reference: 'Reference',
     controls: 'Controls',
+    settings: 'Settings & Performance',
     combat: 'Combat',
     talents: 'Talents',
     professions: 'Professions',
@@ -263,6 +265,96 @@ export const guideStrings = {
     controllerHeading: 'On a controller',
     controllerBody:
       'Gamepads work too, and controller support is on by default. The left stick moves, the right stick aims the camera, and the face and shoulder buttons cover your abilities, jumping, and interacting. Open any window to bring up an on-screen pointer for menus. You can remap the buttons and adjust stick deadzone, camera speed, vibration, and inverted look from the controller settings in the options.',
+  },
+
+  // Settings & Performance reference. Option and value NAMES reuse the game's own
+  // hud.options.* / hudChrome.* / game.settings.* keys (already localized); only
+  // the surrounding prose lives here. The fairness callout maps verbatim to
+  // docs/design/graphics-settings-fairness.md (the actionable-info list: own
+  // debuffs, party/raid HP, target/boss cast bar, target HP, enemy/aggro
+  // positions) so every claim on this page is gameplay-neutral.
+  settingsPage: {
+    heading: 'Settings & Performance',
+    intro:
+      'Make the game look its best or run its fastest. Three ready-made loadouts, plus what every graphics option really does.',
+    wherePath:
+      'Everything on this page lives in the game: press Esc and look in Graphics, Interface, and the Performance Overlay panel.',
+    fairnessTitle: 'Fair by design',
+    fairnessBody:
+      'No option here trades beauty for power. Lower settings shed cosmetic polish only, never information you fight with: your own debuffs and crowd control, party and raid member health, the target and boss cast bar, target health, and enemy positions are identical from Low to Ultra. Playing on a modest machine is never a handicap.',
+    loadoutsHeading: 'Three ready-made loadouts',
+    loadoutsIntro:
+      'Start from the loadout that sounds like your machine, then adjust one option at a time until it feels right.',
+    recommended: 'Recommended',
+    whyLabel: 'Why it works:',
+    tagReload: 'after reload',
+    fpsTitle: 'Best FPS',
+    fpsTagline: 'For older laptops, integrated graphics, and battery play.',
+    fpsWhy:
+      'Graphics Quality is the master switch, and Render Quality is the strongest slider: at 50 to 70% the world draws roughly half the pixels while the interface stays perfectly sharp.',
+    balancedTitle: 'Balanced',
+    balancedTagline: 'The sweet spot for most machines, and our default advice.',
+    balancedWhy:
+      'Medium brings real shadows and full materials; High adds ambient occlusion and bloom. Below Ultra a built-in safety net quietly thins effects for a moment when a big fight spikes, then restores them, so Balanced stays smooth without babysitting.',
+    visualsTitle: 'Best Visuals',
+    visualsTagline: 'Screenshot mode for powerful desktop machines.',
+    visualsWhy:
+      'Ultra renders at the highest resolution your display offers with the richest lighting. It also switches the safety net off, and it is desktop-only: phones and tablets top out at High to keep heat and battery in check.',
+    value50to70: '50 to 70%',
+    value90to100: '90 to 100%',
+    value100: '100%',
+    valueHighOrMedium: 'High on a gaming PC, Medium on a laptop',
+    valueOnOptional: 'On (optional)',
+    howHeading: 'How the options behave',
+    factDetectTitle: 'The game tunes itself first',
+    factDetectBody:
+      'On your first launch the game reads your device and picks a sensible tier, from Low on a modest phone to Ultra on a strong desktop. Any choice you make yourself always wins.',
+    factReloadTitle: 'Two kinds of options',
+    factReloadBody:
+      'Graphics Quality and the Advanced pickers take effect after a reload, and the panel offers a Reload Now button when needed. Every other option applies the moment you change it.',
+    factGovernorTitle: 'A built-in safety net',
+    factGovernorBody:
+      'On every tier below Ultra, the game quietly thins effects for a moment when a big fight spikes, then restores them. Choosing Ultra tells it you would rather keep every detail.',
+    advancedHeading: 'The Advanced preset: mix your own',
+    advancedBody:
+      'Advanced starts from the High tier and unlocks four extra pickers, so you can spend your frames where you actually notice them: Terrain Detail, Foliage Density, Effects and Lighting, and Shadow Quality. Like Graphics Quality, they apply after a reload.',
+    advancedMixes:
+      'Two favorite mixes: keep Shadow Quality on High and set Effects and Lighting to Low for a crisp, glow-free look that runs light, or do the reverse to keep the bloom and soften the shadows.',
+    tableHeading: 'Every option, explained',
+    colSetting: 'Setting',
+    colDoes: 'What it does',
+    colImpact: 'FPS impact',
+    impactNone: 'None',
+    impactLight: 'Light',
+    impactModerate: 'Moderate',
+    impactHeavy: 'Heavy',
+    rowGraphicsQuality:
+      'The master switch. Each step changes resolution, shadows, materials, foliage, and lighting effects together. The biggest single difference you can make.',
+    rowRenderQuality:
+      'Draws the 3D world at a lower internal resolution and scales it up; the interface stays sharp. The strongest instant slider on weaker machines and high-resolution screens.',
+    rowFieldOfView:
+      'How much of the world fits on screen, from a zoomed 55 to a sweeping 100 degrees. A comfort choice; wider views draw slightly more.',
+    rowBrightness: 'Scene exposure, darker or brighter. Pure preference.',
+    rowWeather:
+      'Ambient rain and snow. Atmosphere only, and switching it off saves a little during storms.',
+    rowBrowserEffects:
+      'How fancy the interface itself is allowed to be: glass blur, glow, animated menus. Auto matches your browser; the 3D world is untouched either way.',
+    rowTerrainDetail: 'Rich, blended ground textures versus a simpler, faster terrain look.',
+    rowFoliageDensity: 'How far and how thick the grass grows around your character.',
+    rowEffectsQuality:
+      'Bloom, ambient occlusion, and how many torches and spells cast real light. The single biggest saving among the Advanced pickers.',
+    rowShadowQuality: 'Shadow crispness. Low keeps shadows but softens their edges.',
+    rowFrostedPanels:
+      'A frosted-glass blur behind windows. Pretty, and exactly the kind of effect a weaker browser feels; leave it off for the classic crisp look.',
+    rowReduceMotion:
+      'Removes interface animations so windows appear instantly. An accessibility option first, with a small performance bonus.',
+    rowPerfOverlay:
+      'An on-screen readout of FPS, frame time, and more. Turn it on while you tune this page, then hide it again.',
+    tableFoot:
+      'Looking for a draw-distance slider or an FPS cap? There is nothing to hunt for: view distance is part of each quality tier, and frame pacing follows your display.',
+    mobileTitle: 'On phones and tablets',
+    mobileBody:
+      'Mobile manages more for you: the game picks the tier, holds resolution a touch lower to protect battery and heat, and keeps the highest tiers desktop-only. The loadouts above still apply; phones simply top out at High.',
   },
 
   // Combat overview. Deliberately high level: concepts, not formulas or numbers, so
@@ -603,11 +695,56 @@ export const guideStrings = {
     },
   },
 
+  // The Hollow hub: the sealed starting instance every new arrival lands in (the vase,
+  // the two hub NPCs, the first quest chain, housing, the Under-Shrine). NPC titles and
+  // quest names surface via the Guide's own npcFmt/questFmt format keys, same convention
+  // as delvesPage's keeperFmt/companionFmt.
+  hollowPage: {
+    heading: 'The Hollow',
+    intro:
+      'Past the shrine gate lies the vase: the clearing every new hero wakes into, and always returns to. It is shared ground, one hub for the whole realm, home to your first faces, your first quests, and your first home.',
+    greeting:
+      "you're back, that's a blessin'... got a couple sacred matters queued up, same wavelength as last time. c'mere a minute...",
+    greeter: 'Brother Greenpaw, at the vase',
+
+    vaseHeading: 'The vase',
+    vaseBody:
+      'Everyone begins at the vase, an old, listening presence the Hollow is built around. It asks for small things, an emberbulb burned or a cave morsel fed, and seems to notice when it gets them. Downhill of it, a cave mouth opens onto the Under-Shrine, and to either side lie plots where you can raise a home of your own.',
+
+    figuresHeading: 'Who tends it',
+    figuresBody:
+      'Two people keep the vase running, and you will meet them both in your first minutes.',
+    // Format string joining an NPC's name to their title; translator-controlled
+    // punctuation, not a hardcoded ", " (matches delvesPage's keeperFmt).
+    npcFmt: '{name}, {title}',
+    greenpawBody:
+      "The vase's sole caretaker and the one who hands out its earliest errands. Self-appointed and the first to admit it, he is the closest thing the Hollow has to a guide.",
+    yarrowBody:
+      'Keeper of the second calling: every class can learn a profession from her, mirrored across the vase from Greenpaw.',
+
+    questsHeading: 'Your first errands',
+    questsBody:
+      "Greenpaw's own chain of quests comes first: four short errands that teach the vase's rhythm before sending you on into the wider Hollow.",
+    questBurnsBody: 'A cave-grown bulb the vase burns for light, gathered a handful at a time.',
+    questFillsBody: 'A cave-fed morsel that answers a quieter hunger, gathered the same way.',
+    questWavelengthBody:
+      "An introduction to the vase's second calling, and to feeding it yourself.",
+    questKeepLitBody: 'Turning a single favor into a standing habit, three times over.',
+
+    housingHeading: 'A home of your own',
+    housingBody:
+      '{n} house plots ring the vase, waiting to be claimed and furnished as your own private corner of the Hollow.',
+
+    shrineHeading: 'The Under-Shrine',
+    shrineBody:
+      "A cave mouth beside the vase opens onto the Under-Shrine, the Hollow's own instanced descent and every new hero's first real test of a party.",
+  },
+
   // World / zones.
   worldPage: {
     heading: 'The world',
     intro:
-      'The Hollow Reaches is where every new arrival takes their first steps, quiet ground just beyond the shrine gate. Three more zones lie north of it, laid out south to north; the road to them is not open yet, but they are real and waiting.',
+      'Step out through the shrine gate from the vase and you are in the Hollow Reaches, the quiet outdoor ground where every new arrival takes their first steps. Three more zones lie north of it, laid out south to north; the road to them is not open yet, but they are real and waiting.',
     hub: 'Home base',
     mapHeading: 'The road north',
     mapSub:
@@ -675,9 +812,11 @@ export const guideStrings = {
       'Party members nearby share kill and objective credit, so questing together is faster, never slower. You can also share a quest with your group: post it to chat as a clickable link with the /share command, and any nearby member who qualifies can pick up the same quest in one click.',
     storyTitle: 'A thread runs through it all',
     storyBody:
-      'Your first errands are quiet ones around the Hollow Reaches. Further along the road, something is wrong with the dead: a cult is at work, and the trail leads north through every zone beyond. Follow it to learn who stands behind it.',
+      "Your first thread is Brother Greenpaw's own short chain, right at the vase; see it laid out on the Hollow page. Beyond it lie the quiet errands of the Hollow Reaches, and further out still, a longer tale of a death-cult marching from valley to peak, laid out below as what is coming.",
     soloNote:
       "The main story is soloable right up to each chapter's finale, which is a five-player dungeon.",
+    sagaGateNote:
+      'This saga is real, completed content, the same trail that opens once the road north does. It is not where a new hero starts today; that is the vase, in the Hollow.',
 
     // Quest types section: the shapes an objective can take.
     typesTitle: 'The kinds of quest you will see',

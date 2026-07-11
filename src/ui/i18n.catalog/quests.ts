@@ -29,6 +29,7 @@ const questStringsEn = {
     dialog: {
       close: 'Close quest dialogue',
       greetingFallback: 'Greetings.',
+      chat: "Let's talk a while.",
       availableQuestAria: 'Available quest: {name}',
       readyQuestAria: 'Quest ready to turn in: {name}',
       discussQuest: 'Discuss {name}.',
@@ -41,6 +42,8 @@ const questStringsEn = {
       worldMarketAria: 'Open the World Market',
       trainSecondary: 'Train me in a secondary profession.',
       trainSecondaryAria: 'Train a secondary profession with {name}',
+      feedHearth: 'I have something for the hearth.',
+      feedHearthAria: 'Feed the hearth',
       trainerTitle: 'Secondary Profession',
       trainerLevelLocked: 'Unlocks at level {level}.',
       trainerCurrent: 'Current',
@@ -53,7 +56,7 @@ const questStringsEn = {
       trainerConfirmNo: 'No, go back',
       trainerHowTitle: 'How do secondary professions work?',
       trainerHowBody:
-        'A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities translate their resource cost to your primary resource. Your first pick is free; changing later costs gold.',
+        'A secondary class adds a second talent tree and ability kit on top of your primary class, starting at level {level}. You keep your primary role; the secondary shares your talent pool and can hold at most {pct}% of it, and its abilities convert their resource cost to your primary resource. Your first pick is free; changing later costs gold.',
       accept: 'Accept',
       decline: 'Decline',
       continue: 'Continue',
@@ -120,6 +123,7 @@ export const questStrings = {
       dialog: {
         close: 'Cerrar diálogo de misión',
         greetingFallback: 'Saludos.',
+        chat: 'Hablemos un rato.',
         availableQuestAria: 'Misión disponible: {name}',
         readyQuestAria: 'Misión lista para entregar: {name}',
         discussQuest: 'Hablar sobre {name}.',
@@ -132,6 +136,9 @@ export const questStrings = {
         worldMarketAria: 'Abrir el Mercado Mundial',
         trainSecondary: 'Entréname en una profesión secundaria.',
         trainSecondaryAria: 'Entrena una profesión secundaria con {name}',
+        // PHAA-482: pending translation (see CLAUDE.md, English ships until a fuller pass).
+        feedHearth: 'I have something for the hearth.',
+        feedHearthAria: 'Feed the hearth',
         trainerTitle: 'Profesión secundaria',
         trainerLevelLocked: 'Se desbloquea en el nivel {level}.',
         trainerCurrent: 'Actual',
@@ -209,6 +216,7 @@ export const questStrings = {
       dialog: {
         close: 'Fermer le dialogue de quête',
         greetingFallback: 'Salutations.',
+        chat: 'Discutons un moment.',
         availableQuestAria: 'Quête disponible : {name}',
         readyQuestAria: 'Quête prête à rendre : {name}',
         discussQuest: 'Discuter de {name}.',
@@ -221,6 +229,9 @@ export const questStrings = {
         worldMarketAria: 'Ouvrir le marché mondial',
         trainSecondary: 'Entraîne-moi dans une profession secondaire.',
         trainSecondaryAria: 'Former une profession secondaire avec {name}',
+        // PHAA-482: pending translation (see CLAUDE.md, English ships until a fuller pass).
+        feedHearth: 'I have something for the hearth.',
+        feedHearthAria: 'Feed the hearth',
         trainerTitle: 'Profession secondaire',
         trainerLevelLocked: 'Débloqué au niveau {level}.',
         trainerCurrent: 'Actuel',
@@ -299,6 +310,7 @@ export const questStrings = {
       dialog: {
         close: 'Chiudi dialogo missione',
         greetingFallback: 'Salute.',
+        chat: "Parliamo un po'.",
         availableQuestAria: 'Missione disponibile: {name}',
         readyQuestAria: 'Missione pronta da consegnare: {name}',
         discussQuest: 'Discuti {name}.',
@@ -387,6 +399,7 @@ export const questStrings = {
       dialog: {
         close: 'Questdialog schließen',
         greetingFallback: 'Seid gegrüßt.',
+        chat: 'Lass uns eine Weile reden.',
         availableQuestAria: 'Verfügbare Quest: {name}',
         readyQuestAria: 'Quest bereit zur Abgabe: {name}',
         discussQuest: '{name} besprechen.',
@@ -475,6 +488,7 @@ export const questStrings = {
       dialog: {
         close: '关闭任务对话',
         greetingFallback: '你好。',
+        chat: '聊一会儿吧。',
         availableQuestAria: '可接任务：{name}',
         readyQuestAria: '可交付任务：{name}',
         discussQuest: '讨论{name}。',
@@ -563,6 +577,7 @@ export const questStrings = {
       dialog: {
         close: '關閉任務對話',
         greetingFallback: '你好。',
+        chat: '聊一會兒吧。',
         availableQuestAria: '可接任務：{name}',
         readyQuestAria: '可交付任務：{name}',
         discussQuest: '討論{name}。',
@@ -651,6 +666,7 @@ export const questStrings = {
       dialog: {
         close: '퀘스트 대화 닫기',
         greetingFallback: '안녕하세요.',
+        chat: '잠깐 이야기 좀 하죠.',
         availableQuestAria: '받을 수 있는 퀘스트: {name}',
         readyQuestAria: '완료 보고 가능한 퀘스트: {name}',
         discussQuest: '{name}에 대해 이야기하기.',
@@ -739,6 +755,7 @@ export const questStrings = {
       dialog: {
         close: 'クエスト会話を閉じる',
         greetingFallback: 'こんにちは。',
+        chat: '少し話そう。',
         availableQuestAria: '受諾可能なクエスト: {name}',
         readyQuestAria: '報告可能なクエスト: {name}',
         discussQuest: '{name}について話す。',
@@ -827,6 +844,7 @@ export const questStrings = {
       dialog: {
         close: 'Fechar diálogo de missão',
         greetingFallback: 'Saudações.',
+        chat: 'Vamos conversar um pouco.',
         availableQuestAria: 'Missão disponível: {name}',
         readyQuestAria: 'Missão pronta para entrega: {name}',
         discussQuest: 'Discutir {name}.',
@@ -915,6 +933,7 @@ export const questStrings = {
       dialog: {
         close: 'Закрыть диалог задания',
         greetingFallback: 'Приветствую.',
+        chat: 'Давай поговорим.',
         availableQuestAria: 'Доступное задание: {name}',
         readyQuestAria: 'Задание готово к сдаче: {name}',
         discussQuest: 'Обсудить {name}.',

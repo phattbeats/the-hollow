@@ -222,6 +222,16 @@ const HOT_PAINTERS: ReadonlyArray<{
     allow: { '.className': 1, '.setAttribute': 1 },
     reflowAllow: { '.offsetWidth': 1 },
   },
+  // loot_roll_group (PHAA-568): pooled strips like auras/fct. Build-time-only raw
+  // writes: createStrip sets the strip class, the constant role attr, and the
+  // pre-append `display: none`, plus the constant data-roll-id / data-pid keys
+  // (2 dataset writes); a new mid-vote chip sets its 3 static classes.
+  // All per-frame writes route through setText/setDisplay/toggleClass/setAttr.
+  {
+    file: 'loot_roll_group_painter.ts',
+    allow: { '.className': 4, '.setAttribute': 1, '.style': 1, '.dataset': 2 },
+    reflowAllow: {},
+  },
 ];
 
 // The OTHER src/ui/*_painter.ts modules, NOT facet-routed, so deliberately not in the

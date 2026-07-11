@@ -98,6 +98,14 @@ export const GUIDE_ROUTES: GuideRoute[] = [
     descKey: 'guide.models.intro',
   },
   {
+    id: 'hollow',
+    sub: 'hollow',
+    navKey: 'guide.nav.hollow',
+    group: 'compendium',
+    topbar: true,
+    descKey: 'guide.hollowPage.intro',
+  },
+  {
     id: 'world',
     sub: 'world',
     navKey: 'guide.nav.world',
@@ -153,6 +161,13 @@ export const GUIDE_ROUTES: GuideRoute[] = [
     navKey: 'guide.nav.controls',
     group: 'reference',
     descKey: 'guide.controls.intro',
+  },
+  {
+    id: 'settings',
+    sub: 'reference/settings',
+    navKey: 'guide.nav.settings',
+    group: 'reference',
+    descKey: 'guide.settingsPage.intro',
   },
   {
     id: 'combat',

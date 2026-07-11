@@ -1,12 +1,14 @@
 // Visual manifest: maps every sim identity (player class, mob template/family,
 // NPC id, druid/polymorph form) onto a rigged glTF asset + clip names + kit.
-// Pure data + dispatch — no three.js imports, no loading.
+// Pure data + dispatch; no three.js imports, no loading.
 
 import { MECH_CHROMAS, type MechChroma } from '../../sim/content/skins';
 import { MOBS } from '../../sim/data';
-import type { Entity, PlayerClass } from '../../sim/types';
+import type { Entity, EquipSlot, PlayerClass } from '../../sim/types';
+import { ITEM_ARMOR_VARIANTS } from '../../ui/armor_variants';
 import { ITEM_WEAPON_VARIANTS } from '../../ui/weapon_variants';
 import type { OverheadEmoteId } from '../../world_api';
+import { chibiSkinCount } from './chibi_skin_variants';
 
 export interface EmoteClipSpec {
   clips: readonly string[];
@@ -21,7 +23,7 @@ export interface ClipMap {
   /** one-shot swing clips, rotated per attack */
   attack: string[];
   death: string;
-  /** hit-react one-shots (optional — spider/raptor rigs have none) */
+  /** hit-react one-shots (optional; spider/raptor rigs have none) */
   hit?: string[];
   /** looping cast channel */
   cast?: string;
@@ -68,6 +70,19 @@ export interface VisualDef {
    *  (the mainhand); the rogue lists [0, 1] so a dagger shows in BOTH hands. A fixed
    *  offhand left off this list stays as authored (the warlock spellbook). */
   weaponSlots?: number[];
+  /** Indices into `attach` whose model is replaced by the entity's equipped armor
+   *  (mapped via ITEM_ARMOR_VARIANTS by `EquipSlot`). Mirrors `weaponSlots`: only
+   *  the listed attach entries swap with gear; the others stay as authored. Always
+   *  paired with `armorByAttachIndex`, which tells the swap path which `EquipSlot`
+   *  each listed index corresponds to. Rig-agnostic: works with zero actual armor
+   *  GLBs (T1 ships the wiring; T2a authors the meshes). Players only; mobs/NPCs/
+   *  forms stay undefined. */
+  armorSlots?: number[];
+  /** Map from each `armorSlots` attach index to its `EquipSlot`, so the swap path
+   *  can look up the right equipped item for each attach. Required when
+   *  `armorSlots` is non-empty: a missing entry silently skips that slot (safe but
+   *  never swaps). Defs without armor slots keep this undefined. */
+  armorByAttachIndex?: Record<number, EquipSlot>;
   /** material tint: explicit color, 'entity' (use e.color), or none */
   tint?: number | 'entity';
   /** lerp amount toward the tint (default 0.4) */
@@ -78,7 +93,7 @@ export interface VisualDef {
   attackTimeScale?: number;
   deathTimeScale?: number;
   /** Skip the boot preload sweep (manifestUrls); the asset is fetched on demand
-   *  instead — e.g. the cosmetic-only Combat Mech, loaded via preloadMechAssets()
+   *  instead; e.g. the cosmetic-only Combat Mech, loaded via preloadMechAssets()
    *  when the skin-select preview opens, so it never bloats every client's boot. */
   lazyPreload?: boolean;
   /** Post-load orientation fixups for weapon/prop nodes baked INTO a creature
@@ -187,7 +202,7 @@ const ENEMY7: ClipMap = {
   death: 'Death',
 };
 
-// floating/flying rigs (goleling/dragon) — hover instead of walking
+// floating/flying rigs (goleling/dragon); hover instead of walking
 const FLOATING: ClipMap = {
   idle: 'Flying_Idle',
   walk: 'Fast_Flying',
@@ -205,7 +220,7 @@ const SPIDER: ClipMap = {
   death: 'Spider_Death', // no hit-react in asset
 };
 
-// Chicken-cow rig (chicken_cow.glb, procedurally authored — see
+// Chicken-cow rig (chicken_cow.glb, procedurally authored; see
 // scripts/gen_chicken_cow.mjs). Node-transform animations, no hit-react.
 const CHICKEN_COW: ClipMap = {
   idle: 'Idle',
@@ -225,6 +240,27 @@ const NPCS = 'models/chars/npcs';
 const ENEMIES = 'models/chars/enemies';
 const CREATURES = 'models/creatures';
 const WEAPONS = 'models/weapons';
+// Armor visual models (PHAA-502 T1 ships zero models here; the directory is
+// reserved for T2a, which authors baked accessory meshes per EquipSlot. Until
+// then `itemArmorModelUrls()` returns an empty list and `itemArmorModelUrl()`
+// returns null for every item id, so the swap path is a safe no-op.)
+const ARMOR = 'models/armor';
+
+/** GLB url for an equipped armor item's worn model, or null if the item has no
+ *  mapped armor visual (then the class default attach is kept). Mirrors the bag
+ *  icon via the shared ITEM_ARMOR_VARIANTS map, so worn armor == inventory icon. */
+export function itemArmorModelUrl(itemId: string | null | undefined): string | null {
+  if (!itemId) return null;
+  const key = ITEM_ARMOR_VARIANTS[itemId];
+  return key ? `${ARMOR}/${key}.glb` : null;
+}
+
+/** Distinct armor-visual GLB urls (one per variant), for the boot preload sweep so
+ *  setArmor can attach any equipped armor synchronously (resolvedGltf throws on
+ *  an un-preloaded url). Empty until PHAA-502 T2a authors the first models. */
+export function itemArmorModelUrls(): string[] {
+  return [...new Set(Object.values(ITEM_ARMOR_VARIANTS).map((key) => `${ARMOR}/${key}.glb`))];
+}
 
 /** GLB url for an equipped mainhand item's held weapon model, or null if the item
  *  has no mapped model (then the class default attach is kept). Mirrors the bag
@@ -251,11 +287,11 @@ const HUMANOID_H = 2.6;
 const SKINS_DIR = 'textures/skins';
 
 // ---------------------------------------------------------------------------
-// Combat Mech — a class-agnostic cosmetic body. Unlike the per-class skins
+// Combat Mech; a class-agnostic cosmetic body. Unlike the per-class skins
 // below (which swap a body atlas onto an existing class rig), the mech is a
 // SEPARATE model with its own visual key (`player_mech`) and a set of chroma
 // textures grouped across the three skin-event rarity tiers. Epics additionally
-// ship an emissive glow map. Cosmetic preview only for now — lazy-loaded via
+// ship an emissive glow map. Cosmetic preview only for now; lazy-loaded via
 // preloadMechAssets() so it never bloats every client's boot.
 // ---------------------------------------------------------------------------
 const MECH_DIR = `${PLAYERS}/Mech/textures`;
@@ -272,7 +308,7 @@ function mechEmissiveUrl(c: MechChroma): string | null {
 // Per-class alternate body textures ("skins"). Index 0 = null = the model's
 // embedded default texture (no swap). Index >0 = a full-atlas alternate applied
 // to the body material's .map (same UVs). Classes sharing a model share its skin
-// set. Players only — mobs/npcs keep their default look. See public/textures/skins/.
+// set. Players only; mobs/npcs keep their default look. See public/textures/skins/.
 export const SKINS: Record<string, (string | null)[]> = {
   player_warrior: [
     null,
@@ -323,7 +359,7 @@ export const SKINS: Record<string, (string | null)[]> = {
     `${SKINS_DIR}/druid/alt_b.png`,
     `${SKINS_DIR}/druid/alt_c.png`,
   ],
-  // Combat Mech chromas — every index is a real full-model texture (no null
+  // Combat Mech chromas; every index is a real full-model texture (no null
   // default; the embedded base texture is not one of the rewards).
   player_mech: MECH_CHROMAS.map(mechChromaUrl),
 };
@@ -334,9 +370,13 @@ export const SKIN_EMISSIVE: Record<string, (string | null)[]> = {
   player_mech: MECH_CHROMAS.map(mechEmissiveUrl),
 };
 
-/** Number of skins (including the default) available for a visual key — min 1. */
+/** Number of skins (including the default) available for a visual key; min 1.
+ *  Falls back to the chibi per-material tint variant count (chibi_skin_variants.ts)
+ *  when the key has no atlas-swap SKINS entry, e.g. the female roster. */
 export function skinCount(key: string): number {
-  return SKINS[key]?.length ?? 1;
+  if (SKINS[key]) return SKINS[key].length;
+  const chibi = chibiSkinCount(key);
+  return chibi > 0 ? chibi : 1;
 }
 
 /** Texture url to preview a skin option (default index 0 → the model's base.png). */
@@ -366,7 +406,7 @@ export const VISUALS: Record<string, VisualDef> = {
     url: `${PLAYERS}/paladin.glb`,
     height: HUMANOID_H,
     clips: kaykit(['1H_Melee_Attack_Chop', '1H_Melee_Attack_Slice_Diagonal']),
-    // dedicated paladin model (helmeted variant) — ships its own Cape + Helmet
+    // dedicated paladin model (helmeted variant); ships its own Cape + Helmet
     // meshes and texture, so no show-list/tint. Shield + paladin hammer arrive
     // in the weapons pass; the gripped axe holds the slot until then.
     attach: [{ url: `${WEAPONS}/axe_1handed.glb`, bone: 'handslot.r' }],
@@ -376,7 +416,7 @@ export const VISUALS: Record<string, VisualDef> = {
     url: `${PLAYERS}/ranger.glb`,
     height: HUMANOID_H,
     clips: kaykit(['2H_Ranged_Shoot']),
-    // dedicated ranger model — the quiver is a built-in mesh, so it's no longer
+    // dedicated ranger model; the quiver is a built-in mesh, so it's no longer
     // a separate chest attachment
     attach: [{ url: `${WEAPONS}/crossbow_1handed.glb`, bone: 'handslot.r' }],
   },
@@ -416,7 +456,7 @@ export const VISUALS: Record<string, VisualDef> = {
     height: HUMANOID_H,
     clips: kaykit(['2H_Melee_Attack_Chop']),
     // no Mage_Hat on players: the brim hides the whole body from the default
-    // chase-camera pitch (NPC mages keep theirs — they're seen from the side)
+    // chase-camera pitch (NPC mages keep theirs; they're seen from the side)
     show: ['Mage_Cape'],
     attach: [{ url: `${WEAPONS}/staff.glb`, bone: 'handslot.r' }],
     weaponSlots: [0],
@@ -450,7 +490,7 @@ export const VISUALS: Record<string, VisualDef> = {
     height: HUMANOID_H,
     // The mech is rigged to the same KayKit Rig_Medium skeleton as every other
     // player class; its GLB shipped with no clips, so the full KayKit set is
-    // baked in from knight.glb (scripts/bake_mech_anims.mjs) — these names now
+    // baked in from knight.glb (scripts/bake_mech_anims.mjs); these names now
     // resolve like any other class. Lazy-loaded; see preloadMechAssets().
     clips: kaykit(['1H_Melee_Attack_Chop']),
     // Class-agnostic cosmetic body, but it still holds the wearer's equipped
@@ -460,6 +500,167 @@ export const VISUALS: Record<string, VisualDef> = {
     attach: [{ url: `${WEAPONS}/sword_1handed.glb`, bone: 'handslot.r' }],
     weaponSlots: [0],
     lazyPreload: true,
+  },
+
+  // -- female base body (PHAA-557; ship-mixed decision on PHAA-545) ---------
+  // The styloo chibi female base model, registered so it loads through the
+  // roster pipeline: CharacterVisual sets castShadow/receiveShadow on every
+  // mesh and applyMaterials swaps in the tier-correct lit materials, fixing
+  // the shadowless, lighting-ignoring read from the raw scene.add harness in
+  // PHAA-550. Own rig and clip set (not KayKit Rig_Medium). Kept registered
+  // standalone (the roster_compare_harness + PHAA-557 evidence reference it)
+  // even though every player-facing female class below points at the same
+  // outfit GLBs directly, not at this key. Lazy: no entity resolves to this
+  // key, so it must not bloat every client's boot.
+  chibi_female_base: {
+    url: `${PLAYERS}/chibi_female.glb`,
+    height: 2.29,
+    clips: {
+      idle: 'anim_iddle',
+      walk: 'anim_walk',
+      run: 'anim_run',
+      attack: ['anim_push'],
+      death: 'anim_dying',
+      jump: 'anim_jump',
+    },
+    lazyPreload: true,
+  },
+
+  // -- female player classes (PHAA-587) ------------------------------------
+  // 9 classes served from the 6 styloo chibi outfits (PHAA-585), the same
+  // one-GLB-serves-several-classes trick the male roster uses (see the
+  // per-class tint comment on player_priest above). All six outfits share
+  // the identical 78-joint Rigify rig, 11 normalized locomotion clips, and
+  // DEF-hand.R/DEF-hand.L hand bones (verified on PHAA-583). No attack/cast/
+  // hit clips exist yet: `attack` reuses anim_push (a shove) as a stopgap
+  // until the PHAA-586 animation pass lands; cast has no clip so it falls
+  // back to idle same as every other clipless case in visual.ts.
+  //
+  // No held-weapon attach: the grip system (assets.ts isHandslotBone /
+  // KAYKIT_HAND_GRIPS / VARIANT_GRIPS) resolves grips by pattern-matching
+  // the KayKit `handslot.r`/`handslot.l` bone names specifically; the chibi
+  // rig's `DEF-hand.R`/`DEF-hand.L` bones match none of that data, so an
+  // attach here would render a weapon at its raw unaligned transform in her
+  // hand. Shipping without visible held weapons is the accepted v1 fallback
+  // (per PHAA-587); a Blender-authored chibi grip table is follow-up work,
+  // flagged on PHAA-583.
+  player_warrior_f: {
+    url: `${PLAYERS}/chibi_female_knight.glb`,
+    height: 2.29,
+    clips: {
+      idle: 'anim_iddle',
+      walk: 'anim_walk',
+      run: 'anim_run',
+      attack: ['anim_push'],
+      death: 'anim_dying',
+      jump: 'anim_jump',
+    },
+  },
+  player_paladin_f: {
+    url: `${PLAYERS}/chibi_female_knight.glb`,
+    height: 2.29,
+    clips: {
+      idle: 'anim_iddle',
+      walk: 'anim_walk',
+      run: 'anim_run',
+      attack: ['anim_push'],
+      death: 'anim_dying',
+      jump: 'anim_jump',
+    },
+    tint: 0xe8c468, // gold/white
+    tintStrength: 0.4,
+  },
+  player_hunter_f: {
+    url: `${PLAYERS}/chibi_female_archer.glb`,
+    height: 2.29,
+    clips: {
+      idle: 'anim_iddle',
+      walk: 'anim_walk',
+      run: 'anim_run',
+      attack: ['anim_push'],
+      death: 'anim_dying',
+      jump: 'anim_jump',
+    },
+  },
+  player_druid_f: {
+    url: `${PLAYERS}/chibi_female_archer.glb`,
+    height: 2.29,
+    clips: {
+      idle: 'anim_iddle',
+      walk: 'anim_walk',
+      run: 'anim_run',
+      attack: ['anim_push'],
+      death: 'anim_dying',
+      jump: 'anim_jump',
+    },
+    tint: 0x6b7d3f, // moss/earth
+    tintStrength: 0.4,
+  },
+  player_rogue_f: {
+    url: `${PLAYERS}/chibi_female_ninja.glb`,
+    height: 2.29,
+    clips: {
+      idle: 'anim_iddle',
+      walk: 'anim_walk',
+      run: 'anim_run',
+      attack: ['anim_push'],
+      death: 'anim_dying',
+      jump: 'anim_jump',
+    },
+  },
+  player_mage_f: {
+    url: `${PLAYERS}/chibi_female.glb`,
+    height: 2.29,
+    clips: {
+      idle: 'anim_iddle',
+      walk: 'anim_walk',
+      run: 'anim_run',
+      attack: ['anim_push'],
+      death: 'anim_dying',
+      jump: 'anim_jump',
+    },
+  },
+  player_priest_f: {
+    url: `${PLAYERS}/chibi_female.glb`,
+    height: 2.29,
+    clips: {
+      idle: 'anim_iddle',
+      walk: 'anim_walk',
+      run: 'anim_run',
+      attack: ['anim_push'],
+      death: 'anim_dying',
+      jump: 'anim_jump',
+    },
+    tint: 0xf0e9d6,
+    tintStrength: 0.5,
+  },
+  player_warlock_f: {
+    url: `${PLAYERS}/chibi_female_merchant.glb`,
+    height: 2.29,
+    clips: {
+      idle: 'anim_iddle',
+      walk: 'anim_walk',
+      run: 'anim_run',
+      attack: ['anim_push'],
+      death: 'anim_dying',
+      jump: 'anim_jump',
+    },
+    tint: 0x8d5fd3,
+    tintStrength: 0.45,
+  },
+  player_shaman_f: {
+    url: `${PLAYERS}/chibi_female_basemesh.glb`,
+    height: 2.29,
+    clips: {
+      idle: 'anim_iddle',
+      walk: 'anim_walk',
+      run: 'anim_run',
+      attack: ['anim_push'],
+      death: 'anim_dying',
+      jump: 'anim_jump',
+    },
+    tint: 0x6f8fc9,
+    tintStrength: 0.4,
   },
 
   // -- forms ---------------------------------------------------------------
@@ -482,7 +683,7 @@ export const VISUALS: Record<string, VisualDef> = {
     tint: 0xd08b45,
     tintStrength: 0.35,
   },
-  // Druid Travel Form: a daft chicken-cow hybrid (custom GLB). No tint — its
+  // Druid Travel Form: a daft chicken-cow hybrid (custom GLB). No tint; its
   // authored cow-spots/comb/beak colours carry the look.
   form_travel: {
     url: `${CREATURES}/chicken_cow.glb`,
@@ -505,7 +706,7 @@ export const VISUALS: Record<string, VisualDef> = {
     tint: 'entity',
     tintStrength: 0.4,
   },
-  // Quaternius animal rig (shares clip names with wolf) — fox/deer/critters that
+  // Quaternius animal rig (shares clip names with wolf); fox/deer/critters that
   // would otherwise fall back to mob_wolf via FAMILY_KEYS['beast'].
   mob_fox: {
     url: `${CREATURES}/fox.glb`,
@@ -562,7 +763,7 @@ export const VISUALS: Record<string, VisualDef> = {
   mob_troll: {
     url: `${CREATURES}/orc.glb`,
     height: 2.4,
-    // faint wash only — 0.35 flooded every material with the template green
+    // faint wash only; 0.35 flooded every material with the template green
     clips: BIPED14,
     tint: 'entity',
     tintStrength: 0.12,
@@ -586,13 +787,13 @@ export const VISUALS: Record<string, VisualDef> = {
     url: `${CREATURES}/dragonevolved.glb`,
     height: 2.4,
     hover: 0.25,
-    // light tint only — heavy washes crush the wyrm to black under the green
+    // light tint only; heavy washes crush the wyrm to black under the green
     // sanctum torchlight
     clips: FLOATING,
     tint: 'entity',
     tintStrength: 0.2,
   },
-  // warlock demon pets (imp/voidwalker) — one biped rig, the entity colour and
+  // warlock demon pets (imp/voidwalker); one biped rig, the entity colour and
   // the mob template's scale tell the little orange imp from the bulky voidwalker
   mob_demon: {
     url: `${CREATURES}/demonalt.glb`,
@@ -734,7 +935,7 @@ export const VISUALS: Record<string, VisualDef> = {
       { url: `${WEAPONS}/dagger.glb`, bone: 'handslot.r' },
       { url: `${WEAPONS}/dagger.glb`, bone: 'handslot.l' },
     ],
-    // fixed outlaw leather — entity tints (faction greens) read as friendly
+    // fixed outlaw leather; entity tints (faction greens) read as friendly
     // villagers; the dark red-brown keeps the hooded silhouette hostile
     tint: 0x6b3a32,
     tintStrength: 0.3,
@@ -776,7 +977,7 @@ export const VISUALS: Record<string, VisualDef> = {
     tintStrength: 0.3, // brown-robed brothers of the chapel
   },
   // Brother Aldric keeps his pre-v0.7 model (the old chars/mage.glb, restored as
-  // mage_classic.glb with the staff built into the mesh). Aldric-only — every
+  // mage_classic.glb with the staff built into the mesh). Aldric-only; every
   // other npc_mage uses the new KayKit full-pack model from #396.
   npc_aldric: {
     url: `${PLAYERS}/mage_classic.glb`,
@@ -848,9 +1049,11 @@ export const VISUALS: Record<string, VisualDef> = {
   // Verger Zebediah and Sexton Faddick: textured hero models from the PHAA-413/414
   // prophet-cast pass. Placed as sim NPCs in the Hollow Reaches starter zone
   // (src/sim/content/hollow_zone.ts, PHAA-420); see the NPC_KEYS entries below.
+  // Zebediah's height bumped 25% (Board follow-up, PHAA-483): the base build read
+  // tiny next to a player; 2.56 lands just under HUMANOID_H (2.6) for parity.
   npc_zebediah: {
     url: `${NPCS}/zebediah.glb`,
-    height: 2.05,
+    height: 2.56,
     clips: {
       idle: 'Idle',
       walk: 'Idle',
@@ -963,7 +1166,13 @@ const NPC_KEYS: Record<string, string> = {
 export function visualKeyFor(e: Entity): string {
   if (e.kind === 'player') {
     if (e.skinCatalog === 'mech') return 'player_mech';
-    return VISUALS[`player_${e.templateId}`] ? `player_${e.templateId}` : 'player_warrior';
+    // PHAA-501: female characters prefer the `player_<cls>_f` variant when the
+    // manifest ships one; all 9 classes register one as of PHAA-587. The
+    // fallback to the male key only matters for a class that somehow loses
+    // its `_f` def (or a future new class added without one yet).
+    const base = `player_${e.templateId}`;
+    if (e.sex === 'f' && VISUALS[`${base}_f`]) return `${base}_f`;
+    return VISUALS[base] ? base : 'player_warrior';
   }
   if (e.kind === 'mob') {
     const override = MOB_KEYS[e.templateId];
@@ -971,7 +1180,7 @@ export function visualKeyFor(e: Entity): string {
     const family = MOBS[e.templateId]?.family;
     return (family && FAMILY_KEYS[family]) || 'mob_bandit';
   }
-  // npcs — Brother Aldric recurs in every hub under suffixed ids
+  // npcs; Brother Aldric recurs in every hub under suffixed ids
   if (e.templateId.startsWith('brother_aldric')) return 'npc_aldric';
   return NPC_KEYS[e.templateId] ?? 'npc_villager';
 }
@@ -1000,6 +1209,9 @@ export function manifestUrls(): string[] {
   // Equipped-weapon models a player may swap to at runtime (any nearby player's
   // gear), so they are resolved-and-ready when setWeapon attaches them.
   for (const url of itemWeaponModelUrls()) urls.add(url);
+  // Equipped-armor models a player may swap to at runtime (PHAA-502 T2a authors
+  // these; T1 ships the preloader so the resolution path is identical to weapons).
+  for (const url of itemArmorModelUrls()) urls.add(url);
   return [...urls];
 }
 

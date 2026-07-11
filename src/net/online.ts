@@ -1,5 +1,6 @@
 // Online play: REST auth client + WebSocket world mirror.
 
+import { bagCapacity } from '../sim/bags';
 import { signChallenge } from '../sim/client_challenge';
 import { mechChromaItemId, mechChromaSkinIndex } from '../sim/content/skins';
 import {
@@ -19,14 +20,17 @@ import { LEADERBOARD_PAGE_SIZE } from '../sim/leaderboard_page';
 import type { Ante, PickAction } from '../sim/lockpick';
 import { normalizeMoveFacing, sanitizeMoveInput } from '../sim/move_input';
 import { secondaryClassCostFor } from '../sim/progression/trainer';
+import { readablePropsAt } from '../sim/readables_query';
 import { computeQuestState, type ResolvedAbility } from '../sim/sim';
 import {
   type Aura,
   type Entity,
   type EquipSlot,
   emptyMoveInput,
+  type GatherNodeType,
   type InvSlot,
   type LootRollChoice,
+  type LootRollGroupStatus,
   type LootRollPrompt,
   type MasterLootThreshold,
   type MoveInput,
@@ -44,6 +48,7 @@ import {
   type DelveDailyInfo,
   type DelveRunInfo,
   type DelveShopOfferView,
+  type DialogStateView,
   type DuelInfo,
   type FriendInfo,
   type GreenpawHearthInfo,
@@ -55,14 +60,17 @@ import {
   type LeaderboardEntry,
   type LeaderboardPage,
   type LockpickView,
+  type MailInfo,
   type MarketInfo,
   type OverheadEmoteId,
   type PartyInfo,
   type PresenceStatus,
   type RaidLockout,
+  type ReadablePropView,
   type SocialInfo,
   type TradeInfo,
 } from '../world_api';
+import { isTransientReconnectRejection } from './reconnect_policy';
 
 // ---------------------------------------------------------------------------
 // REST
@@ -413,8 +421,15 @@ export class Api {
     return data.characters;
   }
 
-  async createCharacter(name: string, cls: PlayerClass, skin = 0): Promise<void> {
-    await this.post('/api/characters', { name, class: cls, skin });
+  async createCharacter(
+    name: string,
+    cls: PlayerClass,
+    skin = 0,
+    sex: 'm' | 'f' = 'm',
+  ): Promise<void> {
+    const body: Record<string, unknown> = { name, class: cls, skin };
+    if (sex === 'f') body.sex = 'f'; // omit when 'm' so older servers stay compatible
+    await this.post('/api/characters', body);
   }
 
   async renameCharacter(characterId: number, name: string): Promise<void> {
@@ -631,6 +646,15 @@ const TELEPORT_SNAP_DIST_SQ = 40 * 40;
 // entity map; hold it at its last pose for this window instead. Kept short so a
 // genuine leaver (logout, corpse cleanup) lingers only momentarily.
 const DESPAWN_GRACE_MS = 600;
+
+// Auto-reconnect backoff for an unexpectedly dropped game socket. The server
+// holds the character in-world (linkdead) for five minutes; the retry window
+// is deliberately longer, since past the grace a successful auth simply
+// performs a fresh join from the last save. 1s, 2s, 4s, 8s, then 15s apart:
+// 40 attempts spans roughly nine minutes before giving up for good.
+const RECONNECT_BASE_DELAY_MS = 1_000;
+const RECONNECT_MAX_DELAY_MS = 15_000;
+const RECONNECT_MAX_ATTEMPTS = 40;
 // ...but only for entities last seen near/beyond the interest boundary, where
 // that churn happens. A close-range disappearance is intentional (an enemy going
 // stealth) and must hide at once, so anything nearer than this drops immediately.
@@ -676,6 +700,9 @@ function blankEntity(id: number): Entity {
     attackPower: 0,
     rangedPower: 0,
     spellPower: 0,
+    meleeHaste: 0,
+    rangedHaste: 0,
+    spellHaste: 0,
     critChance: 0.05,
     dodgeChance: 0.05,
     moveSpeed: 7,
@@ -717,6 +744,10 @@ function blankEntity(id: number): Entity {
     stompTimer: 0,
     stoneskinTimer: 0,
     terrifyTimer: 0,
+    bigCastTimer: 0,
+    aoeSlowTimer: 0,
+    loudYellTimer: 0,
+    loudYellIndex: 0,
     detonateTimer: Infinity,
     firedSummons: 0,
     summonedIds: [],
@@ -742,6 +773,7 @@ function blankEntity(id: number): Entity {
     respawnTimer: 0,
     corpseTimer: 0,
     lootFfaTimer: Infinity,
+    harvestClaimedBy: null,
     lootable: false,
     loot: null,
     xpValue: 0,
@@ -754,6 +786,7 @@ function blankEntity(id: number): Entity {
     color: 0xffffff,
     skinCatalog: 'class',
     skin: 0,
+    sex: 'm',
     mainhandItemId: null,
     equippedItems: {},
     guild: '',
@@ -775,6 +808,9 @@ export class ClientWorld implements IWorld {
   known: ResolvedAbility[] = [];
   realm = '';
   inventory: InvSlot[] = [];
+  // Equipped bag sockets, mirrored from snapshot self ('bags'); capacity is
+  // derived locally from the shared item data (same math as the sim's bags.ts).
+  bags: (string | null)[] = [null, null, null, null];
   vendorBuyback: InvSlot[] = [];
   equipment: Partial<Record<EquipSlot, string>> = {};
   copper = 0;
@@ -826,6 +862,12 @@ export class ClientWorld implements IWorld {
   // --- IWorldMarket: World Market view, mirrored from the snapshot self
   // (`s.market`, delta-omitted). ---
   marketInfo: MarketInfo | null = null;
+  // --- IWorldMail: Ravenpost mail view, mirrored from the snapshot self
+  // (`s.mail`, delta-omitted; non-null only while standing at the Ravenpost).
+  // mailUnread rides `s.mailU`, a cheap always-present scalar (the HUD envelope
+  // indicator, readable anywhere, not just at the Ravenpost). ---
+  mailInfo: MailInfo | null = null;
+  mailUnread = 0;
   // --- IWorldHousing: Hollow hub homestead view, mirrored from the snapshot
   // self (`s.housing`, delta-omitted). ---
   housingInfo: HousingInfo | null = null;
@@ -834,6 +876,10 @@ export class ClientWorld implements IWorld {
   // present (global world state, not per-viewer), so the default is a real
   // value, not null, matching a freshly-fed-nothing hearth. ---
   hollowHearth: GreenpawHearthInfo = { smoke: 0, level: 'clear' };
+  // PHAA-553: per-player dialogue disposition + flags, mirrored from the self
+  // snapshot's `dstate`. dialogState() reads this so the client walker can
+  // evaluate `requires` gates; effects themselves resolve server-side.
+  private dialogStateMirror: DialogStateView = { disposition: {}, flags: [] };
   // --- IWorldHomestead: Hollow Reaches open-world plot view, mirrored from
   // the snapshot self (`s.homestead`, delta-omitted). ---
   homesteadInfo: HomesteadInfo | null = null;
@@ -856,6 +902,8 @@ export class ClientWorld implements IWorld {
   // reads it, no send). ---
   markers: Record<number, number> = {}; // entityId -> markerId, mirrored from the self-wire
   private lootRollPrompts: LootRollPrompt[] = []; // open need-greed rolls, mirrored from the self-wire
+  // group-visible choices on the open rolls (the vote strip), mirrored from the self-wire
+  private lootRollGroup: LootRollGroupStatus[] = [];
   // bumped whenever a fresh social snapshot lands, so an open panel re-renders
   private socialDirty = false;
   // snapshot interpolation
@@ -871,9 +919,22 @@ export class ClientWorld implements IWorld {
   pendingFacingDelta = 0;
   connected = false;
   onDisconnect: ((reason: string) => void) | null = null;
+  // fired on each unexpected socket drop while auto-reconnect is pending, and
+  // once the world is live again; main.ts shows/hides the reconnect overlay
+  onConnectionLost: (() => void) | null = null;
+  onReconnected: (() => void) | null = null;
+  private reconnectAttempts = 0;
+  // consecutive 'character already in world' rejections during a reconnect;
+  // see src/net/reconnect_policy.ts for why these are tolerated (bounded)
+  private conflictRejections = 0;
+  private reconnectTimer: number | undefined;
+  // set by close() and by a server 'error' frame: the session is over for
+  // good, so a subsequent socket close must not schedule a reconnect
+  private sessionEnded = false;
   readonly characterId: number;
 
-  private ws: WebSocket;
+  // assigned by openSocket() from the ctor, and reassigned on every reconnect
+  private ws!: WebSocket;
   private readonly token: string;
   private readonly base: string;
   private readonly clientSeed: string;
@@ -887,7 +948,7 @@ export class ClientWorld implements IWorld {
   // chat locally when the player's filter is on. Hard words never arrive here.
   profanityWords: string[] = [];
   private profanityDirty = false;
-  private pendingQuestCommands = new Map<string, 'accept' | 'turnin'>();
+  private pendingQuestCommands = new Map<string, 'accept' | 'turnin' | 'refuse'>();
   private mouselookFacing: number | null = null;
   private sendTimer: number | undefined;
   private lastInputSentAt = 0;
@@ -906,6 +967,12 @@ export class ClientWorld implements IWorld {
     this.clientSeed = clientSeed;
     this.ownPlayerClass = cls;
     this.cfg = { seed: 20061, playerClass: cls };
+    this.openSocket();
+    // input stream at sim rate
+    this.sendTimer = window.setInterval(() => this.sendInput(), 50);
+  }
+
+  private openSocket(): void {
     // when a realm was picked, connect to that realm's origin; otherwise the
     // page's own host
     const wsUrl = this.base
@@ -913,26 +980,58 @@ export class ClientWorld implements IWorld {
       : buildWebSocketUrl(location.protocol, location.host);
     this.ws = new WebSocket(wsUrl);
     this.ws.onopen = () => {
-      this.ws.send(JSON.stringify(buildWebSocketAuthMessage(token, characterId, this.clientSeed)));
+      this.ws.send(
+        JSON.stringify(buildWebSocketAuthMessage(this.token, this.characterId, this.clientSeed)),
+      );
     };
     this.ws.onmessage = (ev) => this.onMessage(String(ev.data));
-    this.ws.onclose = () => {
-      this.connected = false;
+    this.ws.onclose = () => this.socketClosed();
+  }
+
+  // A dropped socket schedules a reconnect with exponential backoff: the
+  // server holds the character in-world (linkdead) for five minutes, and a
+  // re-auth on the same character resumes that session seamlessly. Past the
+  // server grace a successful auth is simply a fresh join from the last save,
+  // so retrying stays correct at any point. onDisconnect fires only when the
+  // retries are exhausted or the server rejected the session outright (an
+  // 'error' frame, handled in onMessage, which sets sessionEnded).
+  private socketClosed(): void {
+    this.connected = false;
+    if (this.sessionEnded) return;
+    if (this.reconnectAttempts >= RECONNECT_MAX_ATTEMPTS) {
+      this.sessionEnded = true;
       clearInterval(this.sendTimer);
       this.onDisconnect?.('Connection to the server was lost.');
-    };
-    // input stream at sim rate
-    this.sendTimer = window.setInterval(() => this.sendInput(), 50);
+      return;
+    }
+    this.reconnectAttempts++;
+    this.onConnectionLost?.();
+    const delayMs = Math.min(
+      RECONNECT_MAX_DELAY_MS,
+      RECONNECT_BASE_DELAY_MS * 2 ** (this.reconnectAttempts - 1),
+    );
+    this.reconnectTimer = window.setTimeout(() => this.openSocket(), delayMs);
   }
 
   close(): void {
+    this.sessionEnded = true;
     clearInterval(this.sendTimer);
+    if (this.reconnectTimer !== undefined) clearTimeout(this.reconnectTimer);
     this.ws.onclose = null;
     this.ws.close();
   }
 
   get player(): Entity {
     return this.entities.get(this.playerId) ?? blankEntity(-1);
+  }
+
+  // IWorldReadables (PHAA-552): world-placed readables are static content, so
+  // they are NOT snapshot-mirrored; ClientWorld computes them from the same
+  // shared table + local player position as the offline Sim, through the one
+  // readablePropsAt helper, keeping the two IWorld impls byte-identical.
+  get readableProps(): ReadablePropView[] {
+    const p = this.entities.get(this.playerId);
+    return p ? readablePropsAt(p.pos.x, p.pos.z) : [];
   }
 
   drainEvents(): SimEvent[] {
@@ -1069,6 +1168,28 @@ export class ClientWorld implements IWorld {
         );
         this.profanityDirty = true;
       }
+      if (this.reconnectAttempts > 0) {
+        // fresh transport after an auto-reconnect: the server restarts input
+        // acking at 0 and resends the world from an empty interest set, and
+        // any stale mirrored entities fall out via the snapshot prune
+        this.reconnectAttempts = 0;
+        this.conflictRejections = 0;
+        this.inputSeq = 0;
+        this.lastInputSig = '';
+        this.lastInputSentAt = 0;
+        this.pendingInputSeqSentAt.clear();
+        this.ackedInputSeq = 0;
+        this.inputEchoSamples = [];
+        this.missingSince.clear();
+        this.lastSnapAt = 0;
+        // the server exits spectate at grace start, so undo the whole client
+        // spectate swap too (playerId is already restored from this hello)
+        this.spectating = null;
+        this.cfg.playerClass = this.ownPlayerClass;
+        this.spectateFacingPending = false;
+        this.pendingSpectateFacing = null;
+        this.onReconnected?.();
+      }
       this.connected = true;
       return;
     }
@@ -1096,6 +1217,23 @@ export class ClientWorld implements IWorld {
     }
     if (msg.t === 'error') {
       this.connected = false;
+      // Mid-reconnect, 'character already in world' is the transient window
+      // where the server has not yet noticed the old socket died (a
+      // black-holed drop sends no FIN/RST): keep backing off, the server's
+      // keepalive sweep flips the held session linkdead within a ping
+      // interval or two and the next retry resumes. Bounded, so a character
+      // genuinely held by another device's live socket still ends fatal.
+      if (
+        isTransientReconnectRejection(msg.error, this.reconnectAttempts, this.conflictRejections)
+      ) {
+        this.conflictRejections++;
+        return; // the server closes this socket; onclose schedules the retry
+      }
+      // any other server rejection (kick, moderation, takeover, failed auth)
+      // ends the session for good: no auto-reconnect
+      this.sessionEnded = true;
+      clearInterval(this.sendTimer);
+      if (this.reconnectTimer !== undefined) clearTimeout(this.reconnectTimer);
       this.onDisconnect?.(msg.error ?? 'rejected by server');
       return;
     }
@@ -1216,6 +1354,7 @@ export class ClientWorld implements IWorld {
         e.name = w.nm;
         e.level = w.lv;
         e.skin = w.sk ?? 0;
+        e.sex = w.sx === 'f' ? 'f' : 'm'; // PHAA-501: defaults to 'm' on absence
         e.mainhandItemId = w.mh ?? null; // equipped mainhand → held weapon model (render-only)
         e.equippedItems = w.eq ?? {}; // full worn set (render-only), for the inspect window
         e.skinCatalog = w.cat === 'mech' ? 'mech' : 'class';
@@ -1427,6 +1566,9 @@ export class ClientWorld implements IWorld {
       e.attackPower = s.ap ?? 0;
       e.rangedPower = s.rp ?? 0;
       e.spellPower = s.sp ?? 0;
+      // Spell haste feeds the hasted-cast-time tooltip; melee/ranged haste need
+      // no wiring (the swing timers already ride the snapshot).
+      e.spellHaste = s.sh ?? 0;
       e.critChance = s.crit ?? 0.05;
       e.dodgeChance = s.dodge ?? 0.05;
       e.weapon = s.weapon ?? e.weapon;
@@ -1450,12 +1592,20 @@ export class ClientWorld implements IWorld {
       // Terse keys (inv/buyback/equip/copper) and the per-field guards are unchanged by
       // the move; the offline counterpart is src/sim/items.ts.
       this.copper = s.copper ?? 0;
+      // IWorldMail.mailUnread rides every self-frame (?? 0), same as copper: it is
+      // cheap and must update from another player's action (someone mailing you)
+      // without depending on this session's own dirty flag.
+      this.mailUnread = s.mailU ?? 0;
       if (s.inv !== undefined) {
         this.inventory = s.inv;
         this.invChanged = true;
       }
       if (s.buyback !== undefined) {
         this.vendorBuyback = s.buyback;
+        this.invChanged = true;
+      }
+      if (s.bags !== undefined) {
+        this.bags = s.bags;
         this.invChanged = true;
       }
       if (s.equip !== undefined) this.equipment = s.equip;
@@ -1505,14 +1655,19 @@ export class ClientWorld implements IWorld {
       if (s.duel !== undefined) this.duelInfo = s.duel;
       if (s.arena !== undefined) this.arenaInfo = s.arena;
       if (s.market !== undefined) this.marketInfo = s.market;
+      if (s.mail !== undefined) this.mailInfo = s.mail;
       if (s.housing !== undefined) this.housingInfo = s.housing;
       if (s.hearth !== undefined) this.hollowHearth = s.hearth;
+      if (s.dstate !== undefined) this.dialogStateMirror = s.dstate;
       if (s.homestead !== undefined) this.homesteadInfo = s.homestead;
       if (s.lroll !== undefined) this.lootRollPrompts = s.lroll ?? [];
+      if (s.lrollg !== undefined) this.lootRollGroup = s.lrollg ?? [];
       if (s.drun !== undefined) this.delveRun = s.drun;
       if (s.dcompanion !== undefined) this.companionState = s.dcompanion;
       if (s.dmarks !== undefined) this.delveMarks = s.dmarks ?? 0;
       if (s.dcomp !== undefined) this.companionUpgrades = s.dcomp ?? {};
+      if (s.gprof !== undefined)
+        this.gatheringProficiency = s.gprof ?? { amber: 0, heartwood: 0, spore: 0 };
       if (s.dclears !== undefined) this.delveClears = s.dclears ?? {};
       if (s.delveDaily !== undefined) this.delveDaily = s.delveDaily;
       // camera follows server-side facing changes when not mouselooking
@@ -1577,6 +1732,9 @@ export class ClientWorld implements IWorld {
     ) {
       return 'active';
     }
+    // A refusal completes the quest server-side (PHAA-471); project 'done' until the
+    // next quest resync confirms it so the offer never flashes available again.
+    if (pending === 'refuse' && state === 'available') return 'done';
     return state;
   }
 
@@ -1670,12 +1828,33 @@ export class ClientWorld implements IWorld {
   lootCorpse(id: number): void {
     this.cmd({ cmd: 'loot', id });
   }
+  // --- IWorldGathering: single-use, first-come corpse harvest (PHAA-504); the
+  // per-player world-node harvest + proficiency (PHAA-505) ---
+  harvestCorpse(id: number): void {
+    this.cmd({ cmd: 'harvestCorpse', id });
+  }
+  // Per-node respawn state is server-authoritative and not mirrored onto the
+  // snapshot, so the client cannot know another player's, or even its own,
+  // real per-node timer. Always reports harvestable; the server re-validates
+  // and denies via a normal error event on an actual attempt, never
+  // predicting the outcome client-side (see src/net/CLAUDE.md). Wiring the
+  // real per-player timer is future work once the snapshot carries it.
+  nodeHarvestableByMe(_nodeId: string): boolean {
+    return true;
+  }
+  harvestNode(nodeId: string): void {
+    this.cmd({ cmd: 'harvestNode', node: nodeId });
+  }
+  gatheringProficiency: Record<GatherNodeType, number> = { amber: 0, heartwood: 0, spore: 0 };
   // --- IWorldLoot: need-greed roll submit + HUD reconcile read ---
   submitLootRoll(rollId: number, choice: LootRollChoice): void {
     this.cmd({ cmd: 'lootRoll', rollId, choice });
   }
   activeLootRolls(): LootRollPrompt[] {
     return this.lootRollPrompts;
+  }
+  lootRollGroupStatus(): LootRollGroupStatus[] {
+    return this.lootRollGroup;
   }
   pickUpObject(id: number): void {
     this.cmd({ cmd: 'pickup', id });
@@ -1696,6 +1875,11 @@ export class ClientWorld implements IWorld {
     this.pendingQuestCommands.delete(questId);
     this.cmd({ cmd: 'abandon', quest: questId });
   }
+  refuseQuest(questId: string): void {
+    if (!this.canSendCommand()) return;
+    this.pendingQuestCommands.set(questId, 'refuse');
+    this.cmd({ cmd: 'refuse', quest: questId });
+  }
   acceptLinkedQuest(questId: string, fromPid: number): void {
     this.cmd({ cmd: 'qlinkaccept', quest: questId, from: fromPid });
   }
@@ -1707,6 +1891,15 @@ export class ClientWorld implements IWorld {
   }
   unequipItem(slot: EquipSlot): void {
     this.cmd({ cmd: 'unequip_item', slot });
+  }
+  get bagCapacity(): number {
+    return bagCapacity(this.bags);
+  }
+  equipBag(itemId: string, socket?: number): void {
+    this.cmd({ cmd: 'equip_bag', item: itemId, socket });
+  }
+  unequipBag(socket: number): void {
+    this.cmd({ cmd: 'unequip_bag', socket });
   }
   useItem(itemId: string): void {
     this.cmd({ cmd: 'use', item: itemId });
@@ -1941,6 +2134,12 @@ export class ClientWorld implements IWorld {
   guildDisband(): void {
     this.cmd({ cmd: 'guild_disband' });
   }
+  guildEventCreate(day: string, hour: number | null, title: string, note: string): void {
+    this.cmd({ cmd: 'guild_event_create', day, hour, title, note });
+  }
+  guildEventRemove(eventId: number): void {
+    this.cmd({ cmd: 'guild_event_remove', id: eventId });
+  }
   async searchCharacters(query: string): Promise<CharacterSearchResult[]> {
     const q = query.trim();
     if (!q) return [];
@@ -1971,6 +2170,20 @@ export class ClientWorld implements IWorld {
   marketCollect(): void {
     this.cmd({ cmd: 'market_collect' });
   }
+  // --- IWorldMail: Ravenpost send/take/delete/read command sends (snake_case
+  // wire strings). mailInfo/mailUnread are snapshot reads (mirror fields above). ---
+  mailSend(to: string, subject: string, body: string, copper: number, items: InvSlot[]): void {
+    this.cmd({ cmd: 'mail_send', to, subject, body, copper, items });
+  }
+  mailTake(mailId: number): void {
+    this.cmd({ cmd: 'mail_take', id: mailId });
+  }
+  mailDelete(mailId: number): void {
+    this.cmd({ cmd: 'mail_delete', id: mailId });
+  }
+  mailMarkRead(mailId: number): void {
+    this.cmd({ cmd: 'mail_markread', id: mailId });
+  }
   // --- IWorldHousing: claim/place/remove command sends (housingInfo is a snapshot
   // read, mirror field above). PHAA-405: an interact-key command, not chat text. ---
   housingClaim(): void {
@@ -1981,6 +2194,20 @@ export class ClientWorld implements IWorld {
   }
   housingRemove(slot: number): void {
     this.cmd({ cmd: 'housingRemove', slot });
+  }
+  // --- IWorldGreenpawHearth: feed command send (hollowHearth is a snapshot read,
+  // mirror field above). PHAA-482: an interact-key command from Greenpaw's
+  // dialogue menu, not chat text. ---
+  feedGreenpaw(): void {
+    this.cmd({ cmd: 'feedGreenpaw' });
+  }
+  // --- IWorldDialog (PHAA-553): send a picked branching-dialogue choice; the
+  // effect resolves server-side. dialogState is a snapshot read (dstate mirror). ---
+  dialogChoose(npcId: string, choiceId: string): void {
+    this.cmd({ cmd: 'dialogChoose', npcId, choiceId });
+  }
+  dialogState(): DialogStateView {
+    return this.dialogStateMirror;
   }
   // --- IWorldDungeons: dungeon enter/leave sends + the raid-lockout countdown read.
   // selfLockouts mirrors the snapshot `s.lockouts`; raidLockouts derives the live

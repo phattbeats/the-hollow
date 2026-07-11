@@ -1,10 +1,12 @@
 # Asset Credits
 
 Bundled third-party art assets are CC0 (public domain dedication) except the
-three.js water normal maps (MIT) and the CraftPix skill-icon packs. The CraftPix
-icon packs were **purchased by the Levy Street account (callum@levystreet.com)**
-and are used under the CraftPix premium royalty-free license. Attribution is
-provided as a courtesy.
+three.js water normal maps (MIT), the CraftPix skill-icon packs, and the styloo
+chibi character pack. The CraftPix icon packs were **purchased by the Levy Street
+account (callum@levystreet.com)** and are used under the CraftPix premium
+royalty-free license. The styloo chibi pack is a purchased royalty-free pack;
+redistribution inside the game build was confirmed by the board (Brandon Kelly,
+PHATT Studios) on PHAA-585, 2026-07-11. Attribution is provided as a courtesy.
 
 | Assets | Author | Source | License |
 |---|---|---|---|
@@ -17,11 +19,13 @@ provided as a courtesy.
 | Stylized Nature MegaKit (trees, rocks, bushes, mushrooms, grass) | Quaternius | https://quaternius.itch.io/stylized-nature-megakit | CC0 1.0 |
 | Medieval Village Pack (houses, inn, blacksmith, well, market, cart) | Quaternius | https://quaternius.com/packs/medievalvillage.html | CC0 1.0 |
 | Fantasy Props MegaKit (barrels, crates, lanterns, furniture, smithy) | Quaternius | https://quaternius.itch.io/fantasy-props-megakit | CC0 1.0 |
+| Chibi female character models + shared 78-joint rig and 11 locomotion clips (`public/models/chars/players/chibi_female*.glb`: student, knight, archer, ninja, merchant, basemesh outfits) | styloo | Purchased pack (studio copy on Nextcloud /PHATT-STUDIO/the-hollow/assets/quaternius/ChibiCharacters/, folder misnamed, contents are the styloo set) | styloo royalty-free (purchased; board-confirmed for in-build redistribution, PHAA-585) |
 | Nature Kit (modular cliffs), Graveyard Kit, Pirate Kit (docks/boats), Fantasy Town Kit, Castle Kit, Particle Pack (VFX sprites) | Kenney | https://kenney.nl | CC0 1.0 |
 | Terrain PBR textures (Grass001, Ground048, Rock051, Ground071, Ground080, PavingStones046, Snow010A) | ambientCG | https://ambientcg.com | CC0 1.0 |
 | HDRI environment maps (kloofendal_48d_partly_cloudy_puresky, belfast_open_field, kiara_1_dawn, dikhololo_night) | Poly Haven | https://polyhaven.com | CC0 1.0 |
 | Water normal maps (waternormals.jpg, Water_1/2_M_Normal.jpg) | three.js authors | https://github.com/mrdoob/three.js (r165, examples/textures) | MIT |
 | Biome backdrop panoramas (vale_backdrop.webp, marsh_backdrop.webp, peaks_backdrop.webp and 4K variants) | World of ClaudeCraft | Project-generated procedural painterly sky panorama art | Project asset |
+| Hub ambient music beds (`public/audio/hub_ambient/*.mp3`, the Hollow Reaches hub cycler, PHAA-435; transcoded from the author's 48 kHz stereo WAV masters) | Brandon Kelly (PHATT Studios) | Original composition | Project asset (all rights reserved) |
 | Class ability icons (`public/ui/skills/<class>/*.webp`, re-encoded from the source-pack PNGs to WebP via `scripts/convert_skill_icons_webp.mjs`; all 9 classes: paladin, hunter, priest, warlock, rogue, warrior, mage, druid, shaman; source packs paladin/archer/priest/warlock/thief/warrior/berserker/demon/druid/pyromancer/cryomancer/aeromancer/lightning-mage/earth-magician/100-rpg-skill-icons/100-skill-icons-pack-for-rpg + per-ability fill sets; all 152 abilities across the 9 classes covered) | CraftPix | https://craftpix.net | CraftPix premium (royalty-free commercial), purchased by Levy Street account (callum@levystreet.com) |
 
 Assets were optimized for shipping (animation clip pruning, meshopt compression,

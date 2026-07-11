@@ -37,6 +37,7 @@ const MOB_IDS = [
   'gravecaller_summoner',
   'gravecaller_mender',
   'deacon_voss',
+  'training_dummy',
   'ridge_stalker',
   'deeprock_kobold',
   'thornpeak_ogre',
@@ -81,10 +82,12 @@ const MOB_IDS = [
   'reliquary_saintless_effigy',
   'deacon_varric',
   'acolyte_tessa',
+  'boarball_ball', // PHAA-572: the inert ball entity driving the boarball minigame
 ] as const;
 
 const NPC_IDS = [
   'the_merchant',
+  'the_ravenpost', // Ravenpost in-game mail keeper (PHAA-495), hub town square
   'marshal_redbrook',
   'trader_wilkes',
   'apothecary_lin',
@@ -105,6 +108,7 @@ const NPC_IDS = [
   'loremaster_caddis',
   'brother_aldric_raid', // dynamically-spawned raid turn-in NPC (Crypt of Nythraxis)
   'brother_halven', // Collapsed Reliquary delve board NPC
+  'elder_yarrow', // GW1 build system multiclassing (Phase 3, PHAA-464) profession trainer
 ] as const;
 
 const QUEST_IDS = [

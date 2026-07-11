@@ -21,6 +21,7 @@
 // render/ui/game/net/DOM/Three, no Math.random/Date.now), so it runs unchanged in
 // Node, the browser, and the headless RL env.
 
+import { bagCapacity, bagsFullError, countFit, removeStacked } from '../bags';
 import { QUESTS, questRewardItemId } from '../data';
 import { formatMoney } from '../format_money';
 import { questFallbackGrants } from '../quest_fallback';
@@ -192,12 +193,32 @@ export function turnInQuest(ctx: SimContext, questId: string, pid?: number): voi
     ctx.error(meta.entityId, nearby.tooFar ? 'Too far away.' : 'That quest turn-in is not nearby.');
     return;
   }
+  // Capacity gate (classic): the reward must fit AFTER the collect items are
+  // handed in, so simulate the hand-in on a scratch copy before committing.
+  const rewardItem = questRewardItemId(quest, meta.cls);
+  if (rewardItem) {
+    const scratch = meta.inventory.map((s) => ({ ...s }));
+    for (const obj of quest.objectives) {
+      if (obj.type === 'collect' && obj.itemId) removeStacked(scratch, obj.itemId, obj.count);
+    }
+    if (countFit(scratch, bagCapacity(meta.bags), rewardItem, 1) < 1) {
+      bagsFullError(ctx, meta.entityId);
+      return;
+    }
+  }
 
   for (const obj of quest.objectives) {
     if (obj.type === 'collect' && obj.itemId) ctx.removeItem(obj.itemId, obj.count, meta.entityId);
   }
   qp.state = 'done';
   meta.questLog.delete(questId);
+  completeQuest(ctx, questId, quest, meta);
+}
+
+// Shared completion core for the turn-in and refusal paths: marks the quest done and
+// grants the full reward set (copper, class reward item, XP) with the completion
+// announcements. Both callers go through here so the two paths cannot drift.
+function completeQuest(ctx: SimContext, questId: string, quest: QuestDef, meta: PlayerMeta): void {
   meta.questsDone.add(questId);
   meta.counters.questsCompleted++;
   if (quest.copperReward > 0) {
@@ -218,4 +239,31 @@ export function turnInQuest(ctx: SimContext, questId: string, pid?: number): voi
     color: '#ff0',
     pid: meta.entityId,
   });
+}
+
+// Refusing a refusable offer (PHAA-471): the one dialog choice with gameplay effect.
+// The quest completes as normal (same reward core as turnInQuest) but the objectives
+// never run and no collect items are removed. Server-authoritative: gated on the def
+// carrying offerDialog, the quest being available to this player, and the giver NPC
+// being in range; error strings reuse the existing quest-command vocabulary so the
+// client i18n matcher already covers them.
+export function refuseQuest(ctx: SimContext, questId: string, pid?: number): void {
+  const r = ctx.resolve(pid);
+  if (!r) return;
+  const quest = QUESTS[questId];
+  const { meta, e: p } = r;
+  if (!quest || !quest.offerDialog) {
+    ctx.error(meta.entityId, 'That quest is not available.');
+    return;
+  }
+  if (questState(ctx, questId, meta.entityId) !== 'available') {
+    ctx.error(meta.entityId, 'That quest is not available.');
+    return;
+  }
+  const nearby = questNpcFor(ctx, questId, 'giver', p);
+  if (!nearby.npc) {
+    ctx.error(meta.entityId, nearby.tooFar ? 'Too far away.' : 'That quest giver is not nearby.');
+    return;
+  }
+  completeQuest(ctx, questId, quest, meta);
 }

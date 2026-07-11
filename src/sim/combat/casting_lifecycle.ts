@@ -361,25 +361,31 @@ export function castAbility(ctx: SimContext, abilityId: string, pid?: number): v
   if (ability.channel) {
     spendResource(p, res.cost);
     armAbilityCooldown(p, ability.id, res.cooldown);
+    // Spell haste (item-set bonus) shortens the whole channel and so each tick.
+    const channelDuration = ability.channel.duration / (1 + p.spellHaste);
     p.castingAbility = ability.id;
-    p.castTotal = ability.channel.duration;
-    p.castRemaining = ability.channel.duration;
+    p.castTotal = channelDuration;
+    p.castRemaining = channelDuration;
     p.channeling = true;
-    p.channelTickEvery = ability.channel.duration / ability.channel.ticks;
+    p.channelTickEvery = channelDuration / ability.channel.ticks;
     p.channelTickTimer = p.channelTickEvery;
     p.gcdRemaining = Math.max(p.gcdRemaining, gcd);
     ctx.emit({
       type: 'castStart',
       entityId: p.id,
       ability: ability.id,
-      time: ability.channel.duration,
+      time: channelDuration,
     });
     return;
   }
 
   if (res.castTime > 0 && !togglingOff) {
-    // Curse of Tongues stretches the resolved (already haste-adjusted) cast time.
-    const castTime = res.castTime * tonguesMult(p);
+    // Spell haste (item-set bonus) shortens the cast; Curse of Tongues stretches it.
+    // Physical-school casts ride spellHaste too: set-bonus haste is ONE stat, so
+    // meleeHaste always equals spellHaste and the classic melee-haste scaling falls
+    // out identically. If the haste channels ever split, give physical casts
+    // p.meleeHaste here (and mirror it over the wire for the tooltip).
+    const castTime = (res.castTime * tonguesMult(p)) / (1 + p.spellHaste);
     p.castingAbility = ability.id;
     p.castTotal = castTime;
     p.castRemaining = castTime;
@@ -495,17 +501,27 @@ function applyAbility(ctx: SimContext, p: Entity, meta: PlayerMeta, res: Resolve
   const ability = res.def;
   const togglingOff = isToggleBuff(ability) && p.auras.some((a) => a.id === ability.id);
   if (ability.id === 'conjure_water') {
-    spendResource(p, res.cost);
     // higher ranks conjure better water (falls back if the item isn't defined)
     const tiered = `conjured_water${res.rank}`;
-    ctx.addItem(res.rank > 1 && ITEMS[tiered] ? tiered : 'conjured_water', 2, p.id);
+    const waterId = res.rank > 1 && ITEMS[tiered] ? tiered : 'conjured_water';
+    if (!ctx.canAddItem(waterId, 2, p.id)) {
+      ctx.error(p.id, 'Your bags are full.');
+      return;
+    }
+    spendResource(p, res.cost);
+    ctx.addItem(waterId, 2, p.id);
     return;
   }
   if (ability.id === 'conjure_food') {
-    spendResource(p, res.cost);
     // higher ranks conjure heartier fare (falls back if the item isn't defined)
     const tiered = `conjured_bread${res.rank}`;
-    ctx.addItem(res.rank > 1 && ITEMS[tiered] ? tiered : 'conjured_bread', 2, p.id);
+    const foodId = res.rank > 1 && ITEMS[tiered] ? tiered : 'conjured_bread';
+    if (!ctx.canAddItem(foodId, 2, p.id)) {
+      ctx.error(p.id, 'Your bags are full.');
+      return;
+    }
+    spendResource(p, res.cost);
+    ctx.addItem(foodId, 2, p.id);
     return;
   }
   if (ability.id === 'revive_pet') {

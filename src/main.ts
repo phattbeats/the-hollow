@@ -77,10 +77,11 @@ import { playerPortraitDataUrl } from './render/characters/portrait';
 import { installWebGLContextRelease } from './render/context_release';
 import { firstRunGraphicsPreset, GFX, graphicsPresetLabel } from './render/gfx';
 import { Renderer } from './render/renderer';
+import type { SelfMotionFrame } from './render/self_motion';
 import { navigatorSaveData } from './render/sky';
 import { pathCrossesFence } from './sim/colliders';
 import { ABILITIES, CLASSES } from './sim/content/classes';
-import { ITEMS } from './sim/data';
+import { ITEMS, isDelvePos } from './sim/data';
 import { canEquipItem } from './sim/equipment_rules';
 import { findPlayerPath, resolvePlayerDestination } from './sim/pathfind';
 import { Sim } from './sim/sim';
@@ -140,6 +141,7 @@ import {
 } from './ui/i18n';
 import { defaultIconPrewarmEntries, prewarmIconCache } from './ui/icon_prewarm';
 import { iconDataUrl } from './ui/icons';
+import { applyNativeDeviceLanguage } from './ui/native_language';
 import { createMetricsSampler } from './ui/perf_metrics_sampler';
 import { PerfOverlay } from './ui/perf_overlay';
 import { type PerfOverlayConfig, PerfOverlayConfigStore } from './ui/perf_overlay_config';
@@ -151,6 +153,7 @@ import {
   setStandingProvider,
 } from './ui/player_card_share';
 import { hydratePortraits, portraitChipHtml } from './ui/portrait_chip';
+import { hideReconnectOverlay, showReconnectOverlay } from './ui/reconnect_overlay';
 import { tServer } from './ui/server_i18n';
 import { createSpectateBadge } from './ui/spectate_badge';
 import { type PresetId, type ThemeKnob, ThemeStore } from './ui/theme';
@@ -182,6 +185,9 @@ const ATTACK_MOVE_ACQUIRE_RANGE = 12; // yards; an attack-move toward open groun
 // while one of these is up, click-to-move can't make progress, so the destination
 // marker shows a "held" state instead of looking like a stuck game.
 const IMMOBILE_AURA_KINDS = new Set(['stun', 'root', 'incapacitate', 'polymorph']);
+// Live-ops escape hatch for the online display-only self extrapolation
+// (src/render/self_motion.ts): ?nopredict restores the pre-prediction behavior.
+const SELF_MOTION_DISABLED = new URLSearchParams(location.search).has('nopredict');
 const IMMOBILE_NOTE_THROTTLE_MS = 1200; // min gap between "Can't move!" floats while held
 const HOMEPAGE_MUSIC_MUTED_KEY = 'woc_homepage_music_muted';
 const HOMEPAGE_MUSIC_VOLUME = 0.225;
@@ -206,6 +212,23 @@ function isNativeRuntime(): boolean {
   const cap = (window as unknown as { Capacitor?: { isNativePlatform?: () => boolean } }).Capacitor;
   return cap?.isNativePlatform?.() === true;
 }
+
+function localStorageOrNull(): Storage | null {
+  try {
+    return window.localStorage;
+  } catch {
+    return null;
+  }
+}
+
+// On native builds with no explicit locale choice, auto-select the device language once.
+applyNativeDeviceLanguage({
+  native: isNativeRuntime(),
+  locationSearch: window.location.search,
+  storage: localStorageOrNull(),
+  languages: navigator.languages,
+  language: navigator.language,
+});
 
 const SITE_URL = 'https://thehollow.world/';
 
@@ -306,11 +329,14 @@ function userFacingApiError(err: unknown): string {
     return t('errors.api.notAuthenticated');
   if (normalized === 'this account has been banned.') return t('errors.api.accountBanned');
   if (normalized === 'character already in world') return t('errors.api.alreadyInWorld');
+  if (normalized === 'too many characters on this account are already in the world')
+    return t('errors.api.tooManyOnline');
   if (normalized === 'character taken over') return t('errors.api.takenOver');
   if (normalized === 'this character must be renamed before entering the world.')
     return t('errors.api.renameBeforeEntering');
   if (normalized === 'logins are only allowed from the game client')
     return t('errors.api.webLoginOnly');
+  if (normalized === 'cross-site request rejected') return t('errors.api.crossSiteRejected');
   // Account portal REST errors (server/main.ts /api/account/*). English-source,
   // re-localized here onto the English-only hudChrome.account.* keys.
   if (normalized === 'current password is incorrect')
@@ -347,7 +373,7 @@ function userFacingApiError(err: unknown): string {
   if (normalized === 'connection to the server was lost.') return t('loading.connectionLost');
   if (normalized === 'rejected by server') return t('loading.connectionRejected');
   // NOTE: protocol/transport diagnostics ('bad auth message', 'authentication timed out',
-  // etc.) are intentionally NOT translated — they are developer/diagnostic errors and must
+  // etc.) are intentionally NOT translated; they are developer/diagnostic errors and must
   // stay English so browser logs and support reports match the server source.
   // Moderation kicks and the login brute-force throttle (server/admin.ts, server/main.ts).
   if (normalized === 'this account is suspended.') return tServer('moderation.suspended');
@@ -362,7 +388,7 @@ function userFacingApiError(err: unknown): string {
 // --- Cloudflare Turnstile (bot gate on the login/register form) ---------------
 // The site key is injected at build time; when it is empty (local/offline dev or
 // a build without the env var) the widget never renders and the token is '', so
-// the server — which also skips verification without its secret — lets requests
+// the server, which also skips verification without its secret, lets requests
 // through unchanged. The api.js <script> is in index.html.
 const TURNSTILE_SITEKEY = String(import.meta.env.VITE_TURNSTILE_SITEKEY ?? '');
 
@@ -753,7 +779,11 @@ function setLoadingStatus(text: string): void {
 }
 
 function setLoadingProgress(done: number, total: number): void {
-  $('#ls-fill').style.width = total > 0 ? `${Math.round((done / total) * 100)}%` : '0%';
+  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+  const fill = $('#ls-fill');
+  const percent = $('#ls-percent');
+  if (fill) fill.style.width = `${pct}%`;
+  if (percent) percent.textContent = `${pct}%`;
   setLoadingStatus(t('loading.worldProgress', { done, total }));
 }
 
@@ -771,7 +801,7 @@ function hideLoadingScreen(): void {
 // (new Renderer/new Hud) runs fully synchronously and blocks the main thread,
 // so without a real paint first the loading screen never shows on warm loads
 // (cached assets ⇒ assetsReady resolves on a microtask) and entry looks frozen.
-// Two rAFs guarantee a paint happened between them — same idiom used to cut to
+// Two rAFs guarantee a paint happened between them; same idiom used to cut to
 // the game on the first rendered frame below.
 function nextPaint(): Promise<void> {
   return new Promise((resolve) => {
@@ -843,7 +873,7 @@ async function startGame(
   if (document.activeElement instanceof HTMLElement) {
     document.activeElement.blur();
   }
-  // Paint the loading screen before anything can block — assetsReady may resolve
+  // Paint the loading screen before anything can block; assetsReady may resolve
   // immediately when assets are already cached, and the scene build is synchronous.
   await nextPaint();
   // Lazy locale flip: fetch the active locale's chunk and make it resident before the HUD
@@ -1076,7 +1106,7 @@ async function startGame(
       onTab: () => world.tabTarget(),
       onTargetFriendly: () => world.targetNearestFriendly(),
       onCycleFriendly: () => world.friendlyTabTarget(),
-      // slot 0 (key 1) is Attack for every class — auto-attack without needing
+      // slot 0 (key 1) is Attack for every class; auto-attack without needing
       // right-click; keys and clicks share the Hud's remappable slot layout
       onAbility: (slot) => hud.castSlot(slot),
       onInputIntent: (kind) => perf.markInputIntent(kind),
@@ -1117,6 +1147,9 @@ async function startGame(
             break;
           case 'leaderboard':
             hud.toggleLeaderboard();
+            break;
+          case 'calendar':
+            hud.toggleCalendar();
             break;
           case 'chat':
             openChat();
@@ -1233,6 +1266,9 @@ async function startGame(
         break;
       case 'leaderboard':
         hud.toggleLeaderboard();
+        break;
+      case 'calendar':
+        hud.toggleCalendar();
         break;
       case 'chat':
         openChat();
@@ -1656,6 +1692,15 @@ async function startGame(
       else hud.openQuestDialog(bestNpc);
       return;
     }
+    // World-placed readable books (PHAA-552): like housing plots, these are not
+    // entities, so they sit outside the entity loop above. renderer.nearReadable
+    // mirrors the same read-range check the HUD "Read" prompt uses; opening the
+    // book is a client-only reveal, no world command is sent.
+    const nearReadable = renderer.nearReadable;
+    if (nearReadable) {
+      hud.openReadable(nearReadable.id);
+      return;
+    }
     // Housing v0 (PHAA-405): homestead plots are not entities, so they sit
     // outside the loop above. renderer.nearHousingPlot mirrors the same
     // interact-range check the server enforces on claim (housing_proximity.ts).
@@ -1702,7 +1747,7 @@ async function startGame(
 
   function clickMovePathTo(target: { x: number; z: number }): { x: number; z: number }[] {
     // ignoreFences: the player can hop fences, so route straight over them
-    // instead of around — resolveMove fires the jump as we reach the rail.
+    // instead of around; resolveMove fires the jump as we reach the rail.
     // swim: the player can swim, so let the route cross/enter water.
     return findPlayerPath(world.cfg.seed, world.player.pos, target, undefined, true, true);
   }
@@ -1847,7 +1892,7 @@ async function startGame(
   }
 
   // The player can't move toward a click-to-move destination while rooted/stunned
-  // — surface that on the marker so the freeze reads as crowd control, not a bug.
+  // Surface that on the marker so the freeze reads as crowd control, not a bug.
   function playerImmobilized(): boolean {
     return world.player.auras.some((a) => IMMOBILE_AURA_KINDS.has(a.kind));
   }
@@ -1970,7 +2015,7 @@ async function startGame(
       orbiting: input.leftDown && input.isCameraDragActive(),
     });
     input.camYaw = next.camYaw;
-    lastInterpFacing = next.lastInterpFacing; // track through mouselook too — no snap on release
+    lastInterpFacing = next.lastInterpFacing; // track through mouselook too; no snap on release
   }
 
   // Resolve this step's movement input, folding in click-to-move (#95). Returns
@@ -2046,7 +2091,7 @@ async function startGame(
           // can turn at close range.
           mi.forward = clickMoveShouldWalk(smoothFacing, step.facing);
           // The path can route over fences (the player jumps them), so hop when
-          // one is just ahead along our heading — the sim only jumps while
+          // one is just ahead along our heading; the sim only jumps while
           // grounded, so setting this every frame near a fence is safe. Once we
           // give up on jumping and reroute around, stop auto-hopping.
           if (mi.forward && !clickMoveReroutedAround) {
@@ -2336,6 +2381,28 @@ async function startGame(
     renderer.camYaw = input.camYaw;
     renderer.camPitch = input.camPitch;
     renderer.camDist = input.camDist;
+    // Display-only self extrapolation (src/render/self_motion.ts). Off while
+    // spectating, corpse-frozen (dead), or CC'd (playerImmobilized covers stun/
+    // root/incapacitate/polymorph, and fear is a fear_incap incapacitate aura;
+    // the fear steer and the charge/follow modes run server-side only), and
+    // inside a delve (the portcullis door clamps are not mirrored client-side).
+    const interpSelfFacing =
+      pe.prevFacing + wrapAngle(pe.facing - pe.prevFacing) * Math.min(1, alpha);
+    const selfMotion: SelfMotionFrame | null = SELF_MOTION_DISABLED
+      ? null
+      : {
+          enabled:
+            net.spectating === null &&
+            !world.player.dead &&
+            !playerImmobilized() &&
+            !isDelvePos(pe.pos.x),
+          moveInput: resolved.mi,
+          displayFacing: netFacing ?? interpSelfFacing,
+          echoMs: onlineInputEchoMs,
+          jitterMs: onlineJitterMs,
+          alpha,
+          frameDt,
+        };
     perf.time('renderer', () =>
       perf.trace(
         'renderer.sync',
@@ -2345,6 +2412,7 @@ async function startGame(
             frameDt,
             net.spectating === null ? movementFacing : null,
             ONLINE_SELF_RENDER_ALPHA_LEAD,
+            selfMotion,
           ),
         {
           mode: 'online',
@@ -2439,7 +2507,12 @@ function sanitizeOfflineName(raw: string): string {
   return /^[A-Za-z][A-Za-z' -]{1,15}$/.test(stripped) ? stripped : 'Adventurer';
 }
 
-async function startOffline(playerClass: PlayerClass, name: string, skin = 0): Promise<void> {
+async function startOffline(
+  playerClass: PlayerClass,
+  name: string,
+  skin = 0,
+  sex: 'm' | 'f' = 'm',
+): Promise<void> {
   if (!(await prepareWorldEntry())) return;
   enterLoadingState(t('loading.world'));
   const sim = new Sim({
@@ -2450,6 +2523,10 @@ async function startOffline(playerClass: PlayerClass, name: string, skin = 0): P
     hollowStart: true,
   });
   sim.setPlayerSkin(sim.playerId, skin);
+  // PHAA-501: honour the chosen sex so the offline character matches the
+  // preview / the persistent-state shape. Default 'm' keeps every other
+  // call site (older hot-reloads, scripted boots) byte-identical.
+  sim.setPlayerSex(sim.playerId, sex);
   // Dev convenience: ?mech drops an offline session straight into the Combat Mech
   // cosmetic body holding a spread of class-usable weapons, to eyeball the held
   // weapon model on the mech (swap them in the bag to see each one). DEV builds
@@ -2513,6 +2590,12 @@ let characterPreview: CharacterPreview | null = null;
 let authModeApply: ((mode: 'login' | 'register') => void) | null = null;
 let offlineSkin = 0; // chosen appearance skin for the offline quick-start character
 let onlineSkin = 0; // chosen appearance skin for new online characters
+// PHAA-501: chosen sex for the offline quick-start + new online characters.
+// Defaults to 'm' so every existing flow keeps working; flip to 'f' once the
+// Quaternius UBC variant GLBs land (PHAA-539); the model falls back to the
+// male GLB until then, but the wire / persistence / preview plumbing is live.
+let offlineSex: 'm' | 'f' = 'm';
+let onlineSex: 'm' | 'f' = 'm';
 
 function releaseStartScreenPreview(): void {
   if (!characterPreview) return;
@@ -2534,7 +2617,7 @@ function renderSkinPicker(
   const count = skinCount(`player_${cls}`);
   const picker = row.closest('.skin-picker') as HTMLElement | null;
   if (count <= 1) {
-    // only the default exists — nothing to pick
+    // only the default exists; nothing to pick
     if (picker) picker.style.display = 'none';
     return;
   }
@@ -2607,10 +2690,46 @@ function selectedSkin(rowId: string, fallback: number): number {
   return Number.isFinite(parsed) ? parsed : fallback;
 }
 
+/** PHAA-501: read the selected sex from a `.<scope>.sex-toggle` row. Falls back
+ *  to 'm' when nothing is selected (older DOM / defensive read). */
+function selectedSex(panelSelector: string, fallback: 'm' | 'f'): 'm' | 'f' {
+  const selected = document.querySelector(
+    `${panelSelector} .sex-toggle .sex-opt.sel`,
+  ) as HTMLElement | null;
+  const raw = selected?.dataset.sex;
+  return raw === 'f' ? 'f' : raw === 'm' ? 'm' : fallback;
+}
+
+/** PHAA-501: bind the segmented `.<scope>.sex-toggle` radio group. Each option
+ *  flips the `.sel` class and `aria-checked`, persists the choice into the
+ *  matching module-level state (`onlineSex` / `offlineSex`), and pushes the
+ *  change into the live character preview so the turntable reflects it. */
+function bindSexToggle(panelSelector: string, stateAssign: (sex: 'm' | 'f') => void): void {
+  const row = document.querySelector(`${panelSelector} .sex-toggle`);
+  if (!row) return;
+  row.querySelectorAll<HTMLElement>('.sex-opt').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const sex = btn.dataset.sex === 'f' ? 'f' : 'm';
+      row.querySelectorAll<HTMLElement>('.sex-opt').forEach((b) => {
+        const isSel = b === btn;
+        b.classList.toggle('sel', isSel);
+        b.setAttribute('aria-checked', isSel ? 'true' : 'false');
+      });
+      stateAssign(sex);
+      characterPreview?.setSex(sex);
+    });
+  });
+}
+
 /** Reset to the default skin and (re)render the offline picker for a class. */
 function refreshOfflineSkins(cls: PlayerClass): void {
   offlineSkin = 0;
   characterPreview?.setSkin(0);
+  // PHAA-501: keep the user's sex choice across class switches. The preview
+  // already resolved a `player_<cls>` or `player_<cls>_f` key on the last
+  // setClass; re-applying the sex here keeps it consistent if the variant
+  // exists for the new class.
+  characterPreview?.setSex(offlineSex);
   renderSkinPicker('#offline-skin-row', cls, 0, (i) => {
     offlineSkin = i;
     characterPreview?.setSkin(i);
@@ -2621,6 +2740,7 @@ function refreshOfflineSkins(cls: PlayerClass): void {
 function refreshOnlineSkins(cls: PlayerClass): void {
   onlineSkin = 0;
   characterPreview?.setSkin(0);
+  characterPreview?.setSex(onlineSex); // PHAA-501: preserve the chosen sex on class switch
   renderSkinPicker('#online-skin-row', cls, 0, (i) => {
     onlineSkin = i;
     characterPreview?.setSkin(i);
@@ -3603,7 +3723,7 @@ async function refreshCharacters(): Promise<void> {
     if (api.realm) $('#charselect-realm').textContent = api.realm;
     listEl.innerHTML = '';
     if (chars.length === 0) {
-      // No characters on this realm — drop straight into the create screen.
+      // No characters on this realm; drop straight into the create screen.
       listEl.innerHTML = `<li class="char-list-message">${escapeHtml(t('character.noneYet'))}</li>`;
       show('#charcreate-panel');
       return;
@@ -3787,6 +3907,7 @@ async function enterWorld(c: CharacterSummary, button?: HTMLButtonElement): Prom
       clearInterval(poll);
       world.close();
       clearCardProviders();
+      hideReconnectOverlay();
       fatalOverlay(t('loading.enterTimeout'));
     }
   }, 50);
@@ -3795,8 +3916,14 @@ async function enterWorld(c: CharacterSummary, button?: HTMLButtonElement): Prom
   world.onDisconnect = (reason) => {
     clearInterval(poll);
     clearCardProviders();
+    hideReconnectOverlay();
     fatalOverlay(userFacingApiError(reason));
   };
+  // an unexpected drop is not fatal: the server holds the character in-world
+  // (linkdead) while ClientWorld auto-reconnects, so just veil the game until
+  // the world resumes; onDisconnect above fires if the retries run out
+  world.onConnectionLost = () => showReconnectOverlay();
+  world.onReconnected = () => hideReconnectOverlay();
 }
 
 // CLASS_DETAILS / SIGNATURE_ABILITIES live in a pure module so a Vitest guard
@@ -4306,7 +4433,7 @@ async function loadProjectStats(): Promise<void> {
     if (cached) {
       setAll(onlineEls, String(cached.players_online));
     } else {
-      setAll(onlineEls, '–');
+      setAll(onlineEls, '-');
     }
   }
 }
@@ -4372,14 +4499,14 @@ async function loadHighscores(): Promise<void> {
 
 // Minimal, safe Markdown → HTML for GitHub release notes. The input is escaped
 // FIRST, so every regex below operates on inert text; the only markup we emit is
-// our own whitelisted tags. Deliberately tiny (no tables/images/blockquotes) —
+// our own whitelisted tags. Deliberately tiny (no tables/images/blockquotes) ,
 // enough to make patch notes readable without pulling in a markdown dependency.
 function renderReleaseBody(md: string): string {
   const esc = (s: string): string =>
     s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
   const inline = (s: string): string =>
     esc(s)
-      // [text](url) — only http(s) links survive; anything else renders as text.
+      // [text](url); only http(s) links survive; anything else renders as text.
       .replace(
         /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
         (_m, text, url) => `<a href="${url}" target="_blank" rel="noopener noreferrer">${text}</a>`,
@@ -4984,7 +5111,12 @@ function wireStartScreens(): void {
     music.init();
     sfx.init();
     const name = sanitizeOfflineName(rawName);
-    void startOffline(cls, name, selectedSkin('#offline-skin-row', offlineSkin));
+    void startOffline(
+      cls,
+      name,
+      selectedSkin('#offline-skin-row', offlineSkin),
+      selectedSex('#offline-select', offlineSex),
+    );
   };
 
   const handleOfflineSelect = () => {
@@ -5322,7 +5454,7 @@ function wireStartScreens(): void {
       resetTurnstile();
       return;
     }
-    // Auth succeeded — a later realm-entry error is NOT a verification failure,
+    // Auth succeeded; a later realm-entry error is NOT a verification failure,
     // so don't reset the widget or let the user re-submit the (now duplicate) auth.
     try {
       $('#charselect-user').textContent = api.username ?? '';
@@ -5641,6 +5773,7 @@ function wireStartScreens(): void {
         name,
         clsEl.dataset.class as PlayerClass,
         selectedSkin('#online-skin-row', onlineSkin),
+        selectedSex('#charcreate-panel', onlineSex),
       );
       newCharNameInput.value = '';
       charselectError.textContent = '';
@@ -5652,6 +5785,16 @@ function wireStartScreens(): void {
     }
   });
   $('#btn-charselect-back').addEventListener('click', () => show('#login-panel'));
+
+  // PHAA-501: wire the m/f segmented control on each creation surface so the
+  // choice flows into the live preview and into the matching module-level state
+  // that the create / offline handlers read.
+  bindSexToggle('#charcreate-panel', (sex) => {
+    onlineSex = sex;
+  });
+  bindSexToggle('#offline-select', (sex) => {
+    offlineSex = sex;
+  });
 
   // Main Navigation View Switching
   const navBtnPlay = $('#nav-btn-play');
@@ -6138,7 +6281,7 @@ function fadeOutHomepageMusic(durationMs = 1600): void {
     for (const name of Object.keys(vars))
       document.documentElement.style.setProperty(name, vars[name]);
   } catch {
-    /* localStorage/DOM unavailable — fall back to index.html defaults */
+    /* localStorage/DOM unavailable; fall back to index.html defaults */
   }
 })();
 
