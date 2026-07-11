@@ -51,6 +51,7 @@ import {
   openPlaySession,
   pool,
   revokeAccountMechChroma,
+  saveCharacterAndMailState,
   saveCharacterAndMarketState,
   saveCharacterState,
   saveGreenpawHearthState,
@@ -1745,7 +1746,10 @@ export class GameServer {
     }
   }
 
-  async saveCharacter(session: ClientSession, opts: { withMarket?: boolean } = {}): Promise<void> {
+  async saveCharacter(
+    session: ClientSession,
+    opts: { withMarket?: boolean; withMail?: boolean } = {},
+  ): Promise<void> {
     const previous = this.characterSaveQueues.get(session.characterId);
     const run = (previous ? previous.catch(() => {}) : Promise.resolve()).then(async () => {
       const state = this.sim.serializeCharacter(session.pid);
@@ -1762,16 +1766,31 @@ export class GameServer {
         // is temporarily 20, but serializeCharacter reports the real level — so the
         // character-list/leaderboard `level` column never reflects the temp state.
         if (opts.withMarket) {
-          // Atomic on the leave path so a logout bag-flush can never tear away
-          // from the global Market escrow (see saveCharacterAndMarketState). Run
-          // through the market queue and capture the market snapshot at write
-          // time so this commit can't clobber a newer one.
+          // Atomic on the leave path (and a market claim, PHAA-512) so a bag
+          // flush can never tear away from the global Market escrow (see
+          // saveCharacterAndMarketState). Run through the market queue and
+          // capture the market snapshot at write time so this commit can't
+          // clobber a newer one.
           await this.enqueueMarketWrite(() =>
             saveCharacterAndMarketState(
               session.characterId,
               state.level,
               state,
               this.sim.serializeMarket(),
+            ),
+          );
+        } else if (opts.withMail) {
+          // Atomic on a mail claim (PHAA-512): mirrors withMarket above so
+          // mailTake's bag credit and its letter-clear commit or fail together,
+          // instead of landing in two independent autosave writes a crash can
+          // split (a double claim on reboot). Same queue-and-capture-at-write
+          // pattern as the market case.
+          await this.enqueueMailWrite(() =>
+            saveCharacterAndMailState(
+              session.characterId,
+              state.level,
+              state,
+              this.sim.serializeMail(),
             ),
           );
         } else {
@@ -2967,14 +2986,32 @@ export class GameServer {
           sim.marketList(msg.item, msg.count, msg.price, pid);
         }
         break;
+      // market_buy and market_collect move goods out of the shared Market blob
+      // and into this character's bags in the same Sim action (a claim, like
+      // mail_take below), so a successful one is followed by an immediate
+      // atomic flush (PHAA-512) rather than waiting on the next periodic
+      // autosave: without it, a crash between the two independent autosave
+      // writes can leave the OLD listing/collection (goods still present)
+      // next to the NEW character (goods already banked), letting the buyer/
+      // seller claim twice on reboot. marketBuy/marketCollect report whether
+      // they actually moved anything, so a no-op attempt (too far, nothing to
+      // collect, bags full) skips the extra DB round trip.
       case 'market_buy':
-        if (typeof msg.id === 'number') sim.marketBuy(msg.id, pid);
+        if (typeof msg.id === 'number' && sim.marketBuy(msg.id, pid)) {
+          void this.saveCharacter(session, { withMarket: true }).catch((err) =>
+            console.error(`market buy claim save failed for ${session.name}:`, err),
+          );
+        }
         break;
       case 'market_cancel':
         if (typeof msg.id === 'number') sim.marketCancel(msg.id, pid);
         break;
       case 'market_collect':
-        sim.marketCollect(pid);
+        if (sim.marketCollect(pid)) {
+          void this.saveCharacter(session, { withMarket: true }).catch((err) =>
+            console.error(`market collect claim save failed for ${session.name}:`, err),
+          );
+        }
         break;
       // The Ravenpost (in-game mail, PHAA-495). The recipient is resolved against
       // the character database (online OR offline) and their persisted block list
@@ -3009,8 +3046,21 @@ export class GameServer {
           );
         }
         break;
+      // mail_take moves an attachment out of the shared mail book and into
+      // this character's bags in the same Sim action, so a successful claim is
+      // followed by an immediate atomic flush (PHAA-512) rather than waiting
+      // on the next periodic autosave: without it, a crash between the two
+      // independent autosave writes can leave the OLD letter (attachment
+      // still present) next to the NEW character (item already banked),
+      // letting the recipient claim it again on reboot. mailTake reports
+      // whether it actually claimed anything, so marking-read or an
+      // already-empty letter skips the extra DB round trip.
       case 'mail_take':
-        if (typeof msg.id === 'number') sim.mailTake(msg.id, pid);
+        if (typeof msg.id === 'number' && sim.mailTake(msg.id, pid)) {
+          void this.saveCharacter(session, { withMail: true }).catch((err) =>
+            console.error(`mail claim save failed for ${session.name}:`, err),
+          );
+        }
         break;
       case 'mail_delete':
         if (typeof msg.id === 'number') sim.mailDelete(msg.id, pid);

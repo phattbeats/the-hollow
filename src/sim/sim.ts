@@ -5604,16 +5604,16 @@ export class Sim {
     this.market.marketList(itemId, count, price, pid);
   }
 
-  marketBuy(listingId: number, pid?: number): void {
-    this.market.marketBuy(listingId, pid);
+  marketBuy(listingId: number, pid?: number): boolean {
+    return this.market.marketBuy(listingId, pid);
   }
 
   marketCancel(listingId: number, pid?: number): void {
     this.market.marketCancel(listingId, pid);
   }
 
-  marketCollect(pid?: number): void {
-    this.market.marketCollect(pid);
+  marketCollect(pid?: number): boolean {
+    return this.market.marketCollect(pid);
   }
 
   marketInfoFor(pid: number): import('../world_api').MarketInfo | null {
@@ -5662,8 +5662,8 @@ export class Sim {
     this.postOffice.mailSendResolved(recipient, subject, body, copper, items, pid);
   }
 
-  mailTake(mailId: number, pid?: number): void {
-    this.postOffice.mailTake(mailId, pid);
+  mailTake(mailId: number, pid?: number): boolean {
+    return this.postOffice.mailTake(mailId, pid);
   }
 
   mailDelete(mailId: number, pid?: number): void {
