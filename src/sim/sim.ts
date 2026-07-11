@@ -1244,7 +1244,7 @@ export class Sim {
     },
   ): number {
     const savedState = opts?.state ? sanitizeRemovedZone1Content(opts.state).state : undefined;
-    // Characters saved inside a dungeon instance rejoin at its entrance , 
+    // Characters saved inside a dungeon instance rejoin at its entrance:
     // their old instance is gone (or belongs to someone else) by now.
     let savedPos = savedState?.pos ?? null;
     // Delve must be checked BEFORE the dungeon branch: dungeonAt() returns null
@@ -2460,7 +2460,7 @@ export class Sim {
     }
   }
 
-  // Mark a player as a GM: invulnerable (see dealDamage). Server-side only , 
+  // Mark a player as a GM: invulnerable (see dealDamage). Server-side only,
   // set at join time from the characters.is_gm column.
   setGm(pid?: number, enabled = true): void {
     const r = this.resolve(pid);
@@ -4274,7 +4274,7 @@ export class Sim {
 
     // Commander "Rally": periodically empower every friendly mob in range
     // (including the caster) with a refreshing attack-power buff. The offensive
-    // twin of mendAlly and same telegraphed timer, same same-faction ally scan , 
+    // twin of mendAlly and same telegraphed timer, same same-faction ally scan,
     // but it grants buff_ap (folded by effectiveAttackPower) instead of healing.
     if (tmpl.rally) {
       mob.rallyTimer -= DT;
