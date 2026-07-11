@@ -1681,6 +1681,11 @@ export class ClientWorld implements IWorld {
       if (s.dcomp !== undefined) this.companionUpgrades = s.dcomp ?? {};
       if (s.gprof !== undefined)
         this.gatheringProficiency = s.gprof ?? { amber: 0, heartwood: 0, spore: 0 };
+      // Per-viewer gather-node cooldown set (PHAA-618): the ids of nodes NOT
+      // harvestable by us right now, mirrored from the self snapshot so
+      // nodeHarvestableByMe matches the offline Sim. Absent means unchanged; an
+      // explicit empty array clears it (all this player's nodes are ready).
+      if (s.gnodecd !== undefined) this.nodeCooldownSet = new Set(s.gnodecd ?? []);
       if (s.dclears !== undefined) this.delveClears = s.dclears ?? {};
       if (s.delveDaily !== undefined) this.delveDaily = s.delveDaily;
       // camera follows server-side facing changes when not mouselooking
@@ -1846,14 +1851,18 @@ export class ClientWorld implements IWorld {
   harvestCorpse(id: number): void {
     this.cmd({ cmd: 'harvestCorpse', id });
   }
-  // Per-node respawn state is server-authoritative and not mirrored onto the
-  // snapshot, so the client cannot know another player's, or even its own,
-  // real per-node timer. Always reports harvestable; the server re-validates
-  // and denies via a normal error event on an actual attempt, never
-  // predicting the outcome client-side (see src/net/CLAUDE.md). Wiring the
-  // real per-player timer is future work once the snapshot carries it.
-  nodeHarvestableByMe(_nodeId: string): boolean {
-    return true;
+  // Per-viewer gather-node cooldown ids mirrored from the self snapshot
+  // (PHAA-618, server field 'gnodecd'): the nodes NOT harvestable by us right
+  // now. Empty until the first snapshot carrying it (or when all nodes are
+  // ready), so nodeHarvestableByMe defaults to true, matching the pre-618 stub.
+  private nodeCooldownSet: Set<string> = new Set();
+  // A node is harvestable by us unless the server told us it is still cooling
+  // for us specifically. This now matches Sim.nodeHarvestableByMe instead of
+  // the old always-true stub; the server stays authoritative and still
+  // re-validates harvestNode on the real attempt (see src/net/CLAUDE.md), so
+  // the client still predicts no outcome, it only mirrors known state.
+  nodeHarvestableByMe(nodeId: string): boolean {
+    return !this.nodeCooldownSet.has(nodeId);
   }
   harvestNode(nodeId: string): void {
     this.cmd({ cmd: 'harvestNode', node: nodeId });

@@ -143,6 +143,7 @@ import {
   gatherNodeById,
   harvestNode as harvestNodeImpl,
   isNodeHarvestableBy,
+  nodeCooldownIdsFor,
 } from './gathering';
 import { GreenpawHearth, type GreenpawHearthSave } from './greenpaw_hearth';
 import { Homestead, type HomesteadSave } from './homestead';
@@ -4776,6 +4777,17 @@ export class Sim {
 
   nodeHarvestableByMe(nodeId: string): boolean {
     return this.nodeHarvestableByMeFor(nodeId, this.primaryId);
+  }
+
+  // Server read (PHAA-618): the ids of gather nodes currently on cooldown for
+  // one player, mirrored onto that viewer's self snapshot so the online client
+  // can reconstruct nodeHarvestableByMe (harvestable == not in this set) and
+  // match Sim's per-player state on the minimap gather dots. Empty (no wire
+  // cost) whenever all this player's nodes are ready.
+  nodeCooldownIdsFor(pid: number): string[] {
+    const meta = this.players.get(pid);
+    if (!meta) return [];
+    return nodeCooldownIdsFor(meta, this.time);
   }
 
   gatheringProficiencyFor(pid: number): Record<GatherNodeType, number> {
