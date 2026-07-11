@@ -49,5 +49,9 @@ export function createCharacterVisual(
     formKey ? 0 : (e.skin ?? 0),
     formKey ? null : e.mainhandItemId,
     weaponOverride,
+    // Forms (sheep/bear/cat/travel) never wear armor: their `equippedItems` is
+    // always `{}` on every host, but passing null here is clearer and lets the
+    // ctor skip the deep-equal walk on construction.
+    formKey ? null : (e.equippedItems ?? null),
   );
 }

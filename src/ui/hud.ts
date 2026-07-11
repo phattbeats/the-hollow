@@ -50,6 +50,7 @@ import {
   NPCS,
   QUESTS,
   questRewardItem,
+  READABLES_BY_ID,
   WORLD_MAX_X,
   WORLD_MAX_Z,
   WORLD_MIN_X,
@@ -259,6 +260,8 @@ import { type QuestTrackerView, questTrackerView, type TrackedQuest } from './qu
 import { QuestLogWindow } from './questlog_window';
 import { lockoutParts, lockoutShape } from './raid_lockout';
 import { type RaidLockoutI18n, raidLockoutPanelHtml } from './raid_lockout_view';
+import { ReadablePromptPainter } from './readable_prompt_painter';
+import { readablePromptView } from './readable_prompt_view';
 import { restView } from './rest_indicator';
 import { localizeServerText } from './server_i18n';
 import { localizeSimAuraName, localizeSimText } from './sim_i18n';
@@ -759,6 +762,7 @@ export class Hud {
   private targetCastbarTimerEl = this.targetCastbarEl.querySelector('.timer') as HTMLElement;
   private actionbarEl = $('#actionbar');
   private housingPromptEl = $('#housing-prompt');
+  private readablePromptEl = $('#readable-prompt');
   private xpFillEl = $('#xpbar .fill');
   private xpLabelEl = $('#xpbar .label');
   // XP + swing bar element refs cached once for their painters (the #xpbar /
@@ -2396,6 +2400,12 @@ export class Hud {
   private readonly housingPromptPainter = new HousingPromptPainter(
     this.writerFacet,
     this.housingPromptEl,
+  );
+  // World-readable "Read" prompt (PHAA-552): same proximity-driven per-frame
+  // facet as the housing prompt, fed by renderer.nearReadable.
+  private readonly readablePromptPainter = new ReadablePromptPainter(
+    this.writerFacet,
+    this.readablePromptEl,
   );
   // The per-frame FCT painter: the pooled-div ring that replaced the per-event
   // createElement + setTimeout fct() below. handleEvents + showSelfNote feed spawn(), which
@@ -4590,6 +4600,9 @@ export class Hud {
     this.housingPromptPainter.paint(
       housingPromptView(this.renderer.nearHousingPlot, sim.housingInfo),
     );
+    // World-readable "Read" prompt (PHAA-552): tracks renderer.nearReadable the
+    // same way, so the prompt appears exactly when the book is in read range.
+    this.readablePromptPainter.paint(readablePromptView(this.renderer.nearReadable));
 
     // FCT painter: drive the pooled floating-combat-text ring on the every-frame
     // tier (folded into the existing `hud` perf bucket, not a second rAF).
@@ -7707,6 +7720,55 @@ export class Hud {
       onClose: () => this.closeQuestDialog(),
       focusFirst: () => this.questDialogTrap?.focusFirst(),
     });
+  }
+
+  // Open a world-placed readable book (PHAA-552) in the shared quest dialog and
+  // page through its content with the SAME pure paginator the NPC intro uses
+  // (npc_intro_view), so there is no second reader. Reading is client-only: no
+  // world command is sent, the text is looked up by id through the `readable`
+  // entity-i18n kind. Called by main.ts's interact-key handler when the player
+  // stands on a book (renderer.nearReadable).
+  openReadable(id: string): void {
+    if (!READABLES_BY_ID[id]) return;
+    this.closeOtherWindows('#quest-dialog');
+    if ($('#quest-dialog').style.display !== 'block')
+      this.questDialogTrap = this.focusManager.open({ root: () => $('#quest-dialog') });
+    this.renderReadablePage(id, 0);
+  }
+
+  private renderReadablePage(id: string, index: number): void {
+    const readable = READABLES_BY_ID[id];
+    const pageCount = readable?.pages.length ?? 0;
+    const page = npcIntroPageAt(index, pageCount);
+    if (!readable || !page) {
+      this.closeQuestDialog();
+      return;
+    }
+    // A readable is not an NPC conversation: clear gossip/quest ownership so the
+    // [X]/Escape path (closeQuestDialog) does not try to re-render a gossip menu.
+    this.openGossipNpcId = null;
+    this.openQuestDetailId = null;
+    const el = $('#quest-dialog');
+    markDialogRoot(el, { labelledBy: 'quest-dialog-title' });
+    const title = tEntity({ kind: 'readable', id, field: 'readableTitle' });
+    const pageText = tEntity({ kind: 'readable', id, pageIndex: index, field: 'readablePage' });
+    let html = `<div class="panel-title"><span id="quest-dialog-title">${esc(title)}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('questUi.dialog.close'))}">${svgIcon('close')}</button></div>`;
+    html += `<div class="qd-text">${esc(pageText)}</div>`;
+    el.innerHTML = html;
+    const btn = document.createElement('button');
+    btn.className = 'btn';
+    btn.type = 'button';
+    // "Continue" turns the page; the last page closes the book.
+    btn.textContent = t('questUi.dialog.continue');
+    btn.addEventListener('click', () => {
+      const next = npcIntroAdvance(index, pageCount);
+      if (next === null) this.closeQuestDialog();
+      else this.renderReadablePage(id, next);
+    });
+    el.appendChild(btn);
+    el.querySelector('[data-close]')?.addEventListener('click', () => this.closeQuestDialog());
+    el.style.display = 'block';
+    this.questDialogTrap?.focusFirst();
   }
 
   private renderGossip(npc: Entity): void {

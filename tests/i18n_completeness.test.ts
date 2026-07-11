@@ -158,6 +158,8 @@ describe('i18n whole-catalog completeness', () => {
       'guide.brandShort', // "ClaudeCraft" - brand (Guide)
       'guide.home.title', // "World of ClaudeCraft" - brand (Guide hero)
       'guide.footer.rights', // "World of ClaudeCraft" - brand (Guide footer)
+      'guide.nav.hollow', // "The Hollow" - brand/setting name, same string as guide.brand
+      'guide.hollowPage.heading', // "The Hollow" - brand/setting name, same string as guide.brand
       'hudChrome.discord.title', // "Discord" - brand
       'hudChrome.discord.open', // "Discord" - brand
       'hudChrome.discord.panelTitle', // "World of ClaudeCraft" - brand
