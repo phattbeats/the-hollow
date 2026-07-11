@@ -11,6 +11,7 @@ import {
   type BaseState,
   desiredBaseState,
   locomotionTimeScale,
+  noClipMoveFadeTarget,
 } from './anim_state';
 import {
   applyMaterials,
@@ -36,6 +37,7 @@ const SWIM_PITCH_PROCEDURAL = 1.18;
 const SWIM_RISE = 0.95; // body must break the surface or only the hat floats
 const MIXER_DT_CAP = 0.3; // throttled entities never integrate a huge step
 const GHOST_OPACITY = 0.34;
+const NO_CLIP_FADE_LERP = 5; // ease rate (1/s) toward noClipMoveFadeTarget
 const SOUL_REND_OPACITY = 0.58;
 const SOUL_REND_TINT = new THREE.Color(0x4f0505);
 
@@ -89,6 +91,8 @@ export class CharacterVisual {
   private originalMaterials = new Map<THREE.Mesh, THREE.Material | THREE.Material[]>();
   private ghostMaterials = new Map<THREE.Material, THREE.Material>();
   private soulRendMaterials = new Map<THREE.Material, THREE.Material>();
+  private noClipFadeMaterials = new Map<THREE.Material, THREE.Material>();
+  private noClipFadeOpacity = 1;
 
   private baseState: BaseState = 'idle';
   private current: THREE.AnimationAction | null = null;
@@ -138,6 +142,8 @@ export class CharacterVisual {
       entityColor,
       skinTexture(key, skinIndex),
       skinEmissiveTexture(key, skinIndex),
+      key,
+      skinIndex,
     );
     this.model.traverse((o) => {
       const mesh = o as THREE.Mesh;
@@ -197,6 +203,10 @@ export class CharacterVisual {
     if (idle) {
       idle.play();
       this.current = idle;
+    } else if (this.actions.size === 0) {
+      // No baked animation at all: route materials through the no-clip fade
+      // clone up front so update() has something to mutate opacity on.
+      this.applyVisualMaterials();
     }
   }
 
@@ -247,6 +257,16 @@ export class CharacterVisual {
       s.swimming && !s.dead
         ? SWIM_RISE + Math.sin(performance.now() / 500 + this.bobPhase) * 0.08
         : 0;
+
+    // slide-fade-on-move fallback for clip-less rigs (no walk cycle to play,
+    // see noClipMoveFadeTarget): ease opacity toward the target and mutate the
+    // cached fade clones directly, no material swap needed.
+    if (this.actions.size === 0) {
+      const target = noClipMoveFadeTarget(s);
+      this.noClipFadeOpacity +=
+        (target - this.noClipFadeOpacity) * Math.min(1, dt * NO_CLIP_FADE_LERP);
+      for (const mat of this.noClipFadeMaterials.values()) mat.opacity = this.noClipFadeOpacity;
+    }
 
     // distant corpses show the static idle far mesh — tip it over
     if (this.farMesh && this.farMesh.visible) {
@@ -432,6 +452,8 @@ export class CharacterVisual {
       this.entityColor,
       skinTexture(this.key, skinIndex),
       skinEmissiveTexture(this.key, skinIndex),
+      this.key,
+      skinIndex,
     );
     // re-snapshot the material map ghost/restore relies on, then re-ghost if stealthed
     this.originalMaterials.clear();
@@ -459,6 +481,8 @@ export class CharacterVisual {
       this.entityColor,
       skinTexture(this.key, this.skinIndex),
       skinEmissiveTexture(this.key, this.skinIndex),
+      this.key,
+      this.skinIndex,
     );
     // the model graph changed (weapon meshes added/removed): rebuild the caster
     // list and re-snapshot originals, then re-apply ghost/stealth overlays.
@@ -513,9 +537,11 @@ export class CharacterVisual {
   }
 
   private effectSingleMaterial(material: THREE.Material): THREE.Material {
-    if (this.soulRend) return this.soulRendMaterial(material);
-    if (this.ghosted) return this.ghostMaterial(material);
-    return material;
+    let m = material;
+    if (this.soulRend) m = this.soulRendMaterial(m);
+    else if (this.ghosted) m = this.ghostMaterial(m);
+    if (this.actions.size === 0) m = this.noClipFadeMaterial(m);
+    return m;
   }
 
   private ghostMaterial(material: THREE.Material): THREE.Material {
@@ -548,6 +574,16 @@ export class CharacterVisual {
     }
     this.soulRendMaterials.set(material, marked);
     return marked;
+  }
+
+  private noClipFadeMaterial(material: THREE.Material): THREE.Material {
+    const cached = this.noClipFadeMaterials.get(material);
+    if (cached) return cached;
+    const faded = material.clone();
+    faded.transparent = true;
+    faded.opacity = this.noClipFadeOpacity;
+    this.noClipFadeMaterials.set(material, faded);
+    return faded;
   }
 
   private action(name: string | undefined): THREE.AnimationAction | null {

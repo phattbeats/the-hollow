@@ -5,9 +5,11 @@
 # src/render/characters/: rigged character & creature visuals
 
 Per-entity glTF (GLB) visuals: a `SkeletonUtils` clone of a manifest asset with
-its own `AnimationMixer` and a clip-driven state machine. **Everything is
-GLB-loaded** (`models/chars`, `models/creatures`, `models/weapons`), there is
-no procedural-rig path here anymore. Reads the world; never mutates the sim.
+its own `AnimationMixer` and a clip-driven state machine. **Almost everything is
+GLB-loaded** (`models/chars`, `models/creatures`, `models/weapons`); the one
+exception is the three Under-Shrine plant mobs (PHAA-531), which route to the
+seeded procedural generator in `../plant_creature.ts` instead (see
+`plant_dispatch.ts` below). Reads the world; never mutates the sim.
 
 ## Files
 - `manifest.ts`: pure data + dispatch. `VISUALS: Record<key, VisualDef>`, the
@@ -20,12 +22,19 @@ no procedural-rig path here anymore. Reads the world; never mutates the sim.
   clips, click-capsule radius, and a baked idle-pose geo (far-LOD/shadow proxy).
 - `visual.ts`: `CharacterVisual`, the mixer + `BaseState` machine, LOD/shadow/ghost
   plumbing, one-shot triggers, death/revive edge logic.
+- `plant_dispatch.ts`: `plantArchetypeFor(templateId)` + `PlantCreatureVisual`,
+  a `../plant_creature.ts` `PlantCreature` wrapped behind the exact same
+  update/trigger/LOD/dispose surface as `CharacterVisual` (see `MobVisual` in
+  `index.ts`), so `renderer.ts`'s per-entity loop never branches on which kind
+  of visual an entity has. Never pooled (each entity's shape is seeded off its
+  own id) and never far-LOD-swapped (a handful of low-poly cave mobs).
 - `preview.ts`: `CharacterPreview`, the character-creation turntable (own scene/
   camera/loop), driven from `src/main.ts`.
 - `portrait.ts`: offscreen-WebGL headshot factory: renders a (class/visual-key, skin)
   head-and-shoulders PNG from the real model, caches the data URL. Consumed by
   `src/main.ts`, `src/ui/unit_portrait_painter.ts`, `src/ui/hud.ts`, `portrait_chip.ts`.
-- `index.ts`: public exports + `createCharacterVisual(e, formKey?)` factory.
+- `index.ts`: public exports + `createCharacterVisual(e, formKey?)` factory (the
+  `MobVisual = CharacterVisual | PlantCreatureVisual` union `renderer.ts` consumes).
 
 ## Families & keys
 ~12 creature families plus 9 player classes, forms, skeletons, humanoid mobs,
@@ -35,6 +44,10 @@ and NPCs, all in `VISUALS`. Dispatch precedence in `visualKeyFor`: players to
 (beast/humanoid/murloc/spider/kobold/undead/troll/ogre/elemental/dragonkin/demon),
 falling back to `mob_bandit`; NPCs to `NPC_KEYS` (default `npc_villager`). Forms
 (`form_sheep`/`form_bear`/`form_cat`/`form_travel`) are passed explicitly by the renderer.
+`createCharacterVisual` checks `plantArchetypeFor(e.templateId)` first for bare
+(non-form) mob entities and short-circuits to a `PlantCreatureVisual` before any
+of the above runs; `visualKeyFor` itself is untouched (still returns the GLB
+family key for those three mobs, e.g. for prewarm shader-compile dedup).
 
 ## Animation
 - `AnimState` (the renderer-derived input) and `BaseState`

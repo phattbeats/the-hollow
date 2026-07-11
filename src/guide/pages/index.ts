@@ -18,8 +18,10 @@ import { glossary } from './glossary';
 import { home } from './home';
 import { howToPlay } from './how_to_play';
 import { models } from './models';
+import { professions } from './professions';
 import { progression } from './progression';
 import { quests } from './quests';
+import { settings } from './settings';
 import { social } from './social';
 import { stats } from './stats';
 import { talents } from './talents';
@@ -48,7 +50,9 @@ const PAGES: Record<string, GuidePage> = {
   stats,
   progression,
   controls,
+  settings,
   talents,
+  professions,
   glossary,
   faq,
 };

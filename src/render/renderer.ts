@@ -38,7 +38,13 @@ import type { SpatialAudioSink, Surface } from './audio_sink';
 import { type BirdsView, buildBirds } from './birds';
 import { type CameraOcclusionState, stepCameraOcclusion } from './camera_collision';
 import { characterSoulRendActive } from './character_effects';
-import { type AnimState, type CharacterVisual, createCharacterVisual } from './characters';
+import {
+  type AnimState,
+  type CharacterVisual,
+  createCharacterVisual,
+  type MobVisual,
+  plantArchetypeFor,
+} from './characters';
 import { mechAssetsReady, preloadMechAssets } from './characters/assets';
 import { skinCount, visualKeyFor } from './characters/manifest';
 import { CLICK_MARKER_LIFETIME, clickMarkerAnim, clickMarkerColor } from './click_marker';
@@ -56,6 +62,7 @@ import {
   type FoliagePerfStats,
   type FoliageView,
 } from './foliage';
+import { buildGatherNodes } from './gather_nodes';
 import {
   GFX,
   type GfxBucketBands,
@@ -69,6 +76,7 @@ import {
 import { buildHollowCanopy } from './hollow_canopy';
 import {
   buildHollowProps,
+  buildShrineGateDoor,
   hollowSmokeIntensity,
   hollowVaseWorldPos,
   isHollowHubOrigin,
@@ -92,9 +100,12 @@ import { buildComposer, type PostPipeline } from './post';
 import { buildPropMaterialPrewarmGroup, buildProps } from './props';
 import { buildGroundQuestObject } from './quest_objects';
 import { isOwnedPetHostile } from './reaction';
+import { type NearbyReadable, nearestReadable } from './readable_proximity';
+import { buildReadables } from './readables';
 import { RenderBudgetGovernor, type RenderBudgetState } from './render_budget';
 import { downscaleDims } from './screenshot';
 import { drapeRingLocalY } from './selection_ring';
+import { type SelfMotionFrame, SelfMotionPredictor } from './self_motion';
 import { buildClouds, buildSky, type SkyView } from './sky';
 import { nearestSloppyPickId, type SloppyPickCandidate } from './sloppy_pick';
 import { freezeStaticMatrices } from './static_matrix';
@@ -207,6 +218,9 @@ const CAMERA_BASE_FOV = 60;
 const CAMERA_MAX_COMP_FOV = 98;
 const SELF_RENDER_SMOOTH_RATE = 30;
 const SELF_RENDER_SNAP_DIST_SQ = 6 * 6;
+// Decay rate of the one-time offset captured when the self-motion predictor
+// takes over from the lead-smoothing path (gone in ~0.3 s, no camera step).
+const SELF_MOTION_HANDOFF_RATE = 15;
 const SUN_HALO_OPACITY = 0.35; // bloom now supplies most of the halo
 // lighting rig (high/ultra) — IBL supplies ambient, sun carries the key
 const HEMI_INTENSITY = 0.45;
@@ -464,8 +478,9 @@ function selfSnapshotAlpha(alpha: number, lead: number): number {
 
 export interface EntityView {
   group: THREE.Group;
-  /** rigged glTF visual for characters; null for object views (doors/crates) */
-  visual: CharacterVisual | null;
+  /** rigged glTF visual, or (PHAA-531) a seeded plant creature; null for object
+   *  views (doors/crates) */
+  visual: MobVisual | null;
   visualKey: string | null;
   visualPoolKey: string | null;
   sheepVisual: CharacterVisual | null; // polymorph form, built lazily
@@ -794,6 +809,11 @@ export class Renderer {
   };
   private selfRenderPosition = new THREE.Vector3();
   private selfRenderPositionReady = false;
+  // Online display-only self extrapolation (see src/render/self_motion.ts).
+  // Lazy: offline never passes a SelfMotionFrame, so it is never constructed.
+  private selfMotionPredictor: SelfMotionPredictor | null = null;
+  private selfMotionActive = false;
+  private selfMotionOffset = new THREE.Vector3();
   private lastSelfId: number | null = null;
   // Last yaw applied to the local player while the camera was driving its facing
   // (mouselook / mouse-camera). Null when the override is disengaged, so the next
@@ -855,6 +875,10 @@ export class Renderer {
   // recomputed alongside housingView each frame. main.ts's interact-key handler
   // reads this instead of re-deriving the same distance check.
   nearHousingPlot: NearbyHousingPlot | null = null;
+  // PHAA-552: the world-placed readable book the player is currently in read
+  // range of (if any), recomputed each frame. main.ts's interact-key handler and
+  // the HUD "Read" prompt both read this rather than re-deriving the check.
+  nearReadable: NearbyReadable | null = null;
   // Homestead v0: open-world plots drawn from IWorld.homesteadInfo. Lazy like
   // `housingView` (nothing to draw before the primary entity resolves).
   private homesteadView: HomesteadView | null = null;
@@ -927,7 +951,7 @@ export class Renderer {
   private renderDiagnosticsLastTextures = 0;
   private appliedBudgetLevels: RenderBudgetState['levels'] | null = null;
   private lastQualityChange: Omit<RendererQualityChangeStats, 'ageMs'> | null = null;
-  private visualPool = new Map<string, CharacterVisual[]>();
+  private visualPool = new Map<string, MobVisual[]>();
   private objectPool = new Map<string, PooledObjectView[]>();
 
   constructor(
@@ -1223,6 +1247,19 @@ export class Renderer {
     // numPointLights -> materials never recompile for a light-count change).
     this.fireLights.push(this.impactSite.light);
     this.propsView = props;
+
+    const gatherNodes = buildGatherNodes(this.sim.cfg.seed);
+    setRenderCategory(gatherNodes.group, 'props');
+    this.scene.add(gatherNodes.group);
+    // Baked into world space at build with no per-frame update(), same as props.
+    freezeStaticMatrices(gatherNodes.group);
+
+    // PHAA-552: world-placed readable books, same static-fixture treatment as
+    // gather nodes above (baked into world space, no per-frame transform).
+    const readables = buildReadables(this.sim.cfg.seed);
+    setRenderCategory(readables.group, 'props');
+    this.scene.add(readables.group);
+    freezeStaticMatrices(readables.group);
 
     // selection ring — a classic target reticle: a base ring plus four
     // inward-pointing ticks. The base ring is draped over the terrain each
@@ -2051,7 +2088,12 @@ export class Renderer {
   }
 
   private visualPoolKeyFor(e: Entity): string | null {
-    if (e.kind === 'mob') return `mob:${e.templateId}:${e.color}:${e.scale}`;
+    if (e.kind === 'mob') {
+      // seeded per-entity-id (PHAA-531): recycling one entity's build for
+      // another would show the wrong creature, so these are never pooled
+      if (plantArchetypeFor(e.templateId)) return null;
+      return `mob:${e.templateId}:${e.color}:${e.scale}`;
+    }
     // NPCs are skinned characters too: pool them like mobs so their Skeleton (and its
     // bone-matrix DataTexture) survives interest churn instead of being disposed and
     // re-uploaded every time one streams out and back into view - that dispose +
@@ -2061,7 +2103,7 @@ export class Renderer {
     return null;
   }
 
-  private takePooledVisual(key: string): CharacterVisual | null {
+  private takePooledVisual(key: string): MobVisual | null {
     const pool = this.visualPool.get(key);
     const visual = pool?.pop() ?? null;
     if (!visual) return null;
@@ -2075,7 +2117,7 @@ export class Renderer {
     return visual;
   }
 
-  private storePooledVisual(key: string, visual: CharacterVisual): void {
+  private storePooledVisual(key: string, visual: MobVisual): void {
     visual.root.removeFromParent();
     visual.root.visible = false;
     visual.root.position.set(0, 0, 0);
@@ -2998,7 +3040,7 @@ export class Renderer {
   private buildDoorBody(
     entering: boolean,
     dungeonId?: string | null,
-  ): { body: THREE.Group; portal?: THREE.Mesh } {
+  ): { body: THREE.Group; portal?: THREE.Mesh; height?: number } {
     const body = new THREE.Group();
     if (entering && dungeonId === 'nythraxis_crypt') {
       const clickBox = new THREE.Mesh(
@@ -3008,6 +3050,36 @@ export class Renderer {
       clickBox.position.y = 2.1;
       body.add(clickBox);
       return { body };
+    }
+
+    // Hollow-family transitions read as the shrine gate, not the generic
+    // stone arch (PHAA-589 follow-up): the overworld shrine gate into the
+    // hub, the hub's cave mouth into the Under-Shrine, and the Under-Shrine
+    // exit. The hub's own walk-out (the_hollow exit) keeps the stone arch:
+    // hollow_props.ts already stands the static shrine gate on that exact
+    // line, and doubling the mesh would z-fight. Falls through to the arch
+    // if the GLB is unavailable (preload failure).
+    if (dungeonId === 'under_shrine' || (dungeonId === 'the_hollow' && entering)) {
+      // Cloned kit meshes share geometry with the loader cache; mark them so
+      // the object-view dispose path (which frees unshared geometries on
+      // interest churn) leaves the cache intact.
+      const gate = buildShrineGateDoor((o) =>
+        o.traverse((c) => {
+          const mesh = c as THREE.Mesh;
+          if (mesh.isMesh) markSharedGeometry(mesh.geometry);
+        }),
+      );
+      if (gate) {
+        body.add(gate);
+        const portal = new THREE.Mesh(this.doorPortalGeometry(), this.doorPortalMaterial(entering));
+        // centred in the gate's arch opening (frame ~7.6 x 7.9 at the kit's
+        // 1.8x scale), a touch larger than the stone-arch swirl to fill it
+        portal.position.y = 2.6;
+        portal.scale.set(1.25, 1.6, 1);
+        body.add(portal);
+        // nameplate above the ~7.9-unit gate frame, not inside it
+        return { body, portal, height: 8.2 };
+      }
     }
 
     const stone = this.doorStoneMaterial();
@@ -3048,7 +3120,7 @@ export class Renderer {
   private createView(e: Entity): void {
     const group = new THREE.Group();
     setRenderCategory(group, `entity:${e.kind}`);
-    let visual: CharacterVisual | null = null;
+    let visual: MobVisual | null = null;
     let body: THREE.Group | null = null; // object views build meshes into this
     let height = 1.2;
     let sparkle: THREE.Sprite | undefined;
@@ -3066,7 +3138,7 @@ export class Renderer {
       const built = this.buildDoorBody(entering, e.dungeonId);
       body = built.body;
       portal = built.portal;
-      height = 4.6;
+      height = built.height ?? 4.6;
       objectMesh = body!;
     } else if (e.kind === 'object' && e.templateId?.startsWith('delve_')) {
       // Delve interactables: skip the object pool (each is unique/stateful) and
@@ -3340,7 +3412,7 @@ export class Renderer {
   }
 
   /** The visual the player currently sees (form swaps hide the base rig). */
-  private activeVisual(v: EntityView): CharacterVisual | null {
+  private activeVisual(v: EntityView): MobVisual | null {
     if (v.sheepVisual?.root.visible) return v.sheepVisual;
     if (v.bearVisual?.root.visible) return v.bearVisual;
     if (v.catVisual?.root.visible) return v.catVisual;
@@ -3830,7 +3902,13 @@ export class Renderer {
     this.targetCone = { group, pos, localXZ: fan.localXZ, worldXYZ, ringPos, ringXZ, ringWorldXYZ };
   }
 
-  sync(alpha: number, dt: number, renderFacingOverride: number | null, selfAlphaLead = 0): void {
+  sync(
+    alpha: number,
+    dt: number,
+    renderFacingOverride: number | null,
+    selfAlphaLead = 0,
+    selfMotion: SelfMotionFrame | null = null,
+  ): void {
     const totalStart = performance.now();
     let phaseStart = totalStart;
     const framePhaseMs = emptyFramePhaseMs();
@@ -3871,7 +3949,7 @@ export class Renderer {
       this.selfFacingOverride = null;
     }
     const now = performance.now();
-    const selfPos = this.updateSelfRenderPosition(alpha, dt, selfAlphaLead);
+    const selfPos = this.updateSelfRenderPosition(alpha, dt, selfAlphaLead, selfMotion);
     markPhase('setup');
 
     // dynamic worlds: create nearby views lazily and drop views for leavers or
@@ -4456,6 +4534,12 @@ export class Renderer {
         this.nearHousingPlot = null;
       }
     }
+    // PHAA-552: nearest world-placed readable book in read range, mirroring the
+    // housing proximity check above so the "Read" prompt and main.ts's
+    // interact-key handler share one answer. readableProps is already scoped to
+    // the viewer's overworld zone (empty inside instances), so this is a short
+    // list every frame.
+    this.nearReadable = nearestReadable(p.pos.x, p.pos.z, this.sim.readableProps);
     // Homestead v0: open-world Hollow Reaches plots, always world-space (no
     // hub-origin gate, unlike Housing v0 above); the JSON change key inside
     // update() makes the per-frame cost negligible.
@@ -4750,8 +4834,43 @@ export class Renderer {
     alpha: number,
     dt: number,
     selfAlphaLead: number,
+    selfMotion: SelfMotionFrame | null = null,
   ): THREE.Vector3 {
     const p = this.sim.player;
+    // Online intent-driven extrapolation: when active it owns the position and
+    // the lead-smoothing path below becomes the fallback (both write the same
+    // selfRenderPosition, so enable/disable hands off without a pop, absorbed
+    // by the snap/smooth rules on the next frame).
+    if (selfMotion) {
+      if (!this.selfMotionPredictor) {
+        this.selfMotionPredictor = new SelfMotionPredictor(this.sim.cfg.seed);
+      }
+      const predicted = this.selfMotionPredictor.step(p, selfMotion);
+      if (predicted) {
+        // Follow the predictor output exactly (it is already continuous;
+        // smoothing it again would re-add the display lag this exists to
+        // remove). The only discontinuity is the handoff frame from the
+        // lead-smoothing path below: capture that gap once as an offset and
+        // decay it, so the camera glides instead of stepping.
+        if (this.selfRenderPositionReady && !this.selfMotionActive) {
+          this.selfMotionOffset.set(
+            this.selfRenderPosition.x - predicted.x,
+            this.selfRenderPosition.y - predicted.y,
+            this.selfRenderPosition.z - predicted.z,
+          );
+        }
+        this.selfMotionOffset.multiplyScalar(Math.exp(-SELF_MOTION_HANDOFF_RATE * Math.max(0, dt)));
+        this.selfRenderPosition.set(
+          predicted.x + this.selfMotionOffset.x,
+          predicted.y + this.selfMotionOffset.y,
+          predicted.z + this.selfMotionOffset.z,
+        );
+        this.selfRenderPositionReady = true;
+        this.selfMotionActive = true;
+        return this.selfRenderPosition;
+      }
+    }
+    this.selfMotionActive = false;
     const playerAlpha = selfSnapshotAlpha(alpha, selfAlphaLead);
     const px = p.prevPos.x + (p.pos.x - p.prevPos.x) * playerAlpha;
     const py = p.prevPos.y + (p.pos.y - p.prevPos.y) * playerAlpha;

@@ -1052,6 +1052,53 @@ const PRIMITIVES = {
     ctx.quadraticCurveTo(-12, -2, -10, 8);
     ctx.stroke();
   },
+  // Drawstring bag/pouch: a rounded sack body cinched at the neck with a tie,
+  // for the bag items (Linen Pouch ... Mistcaller's Duffel) and the backpack.
+  sack(ctx, pal) {
+    ctx.beginPath();
+    ctx.moveTo(-5, -19);
+    ctx.quadraticCurveTo(-19, -12, -19, 4);
+    ctx.quadraticCurveTo(-19, 21, 0, 22);
+    ctx.quadraticCurveTo(19, 21, 19, 4);
+    ctx.quadraticCurveTo(19, -12, 5, -19);
+    ctx.closePath();
+    ctx.fillStyle = lin(ctx, -14, -16, 14, 20, [
+      [0, pal.light],
+      [0.5, pal.base],
+      [1, pal.dark],
+    ]);
+    ctx.fill();
+    edge(ctx, pal.dark, 1.6);
+    // cinched neck
+    ctx.fillStyle = pal.base;
+    rrPath(ctx, -7, -24, 14, 8, 3);
+    ctx.fill();
+    edge(ctx, pal.dark, 1.2);
+    // drawstring tie
+    noShadow(ctx);
+    ctx.strokeStyle = pal.dark;
+    ctx.lineWidth = 2.4;
+    ctx.beginPath();
+    ctx.moveTo(-9, -19);
+    ctx.quadraticCurveTo(0, -14, 9, -19);
+    ctx.stroke();
+    // gathered-cloth folds falling from the neck
+    ctx.strokeStyle = withAlpha(pal.dark, 0.5);
+    ctx.lineWidth = 1.3;
+    for (const x of [-8, -2.5, 3, 8.5]) {
+      ctx.beginPath();
+      ctx.moveTo(x * 0.6, -15);
+      ctx.quadraticCurveTo(x, 2, x * 0.9, 16);
+      ctx.stroke();
+    }
+    // top-left sheen
+    ctx.strokeStyle = withAlpha(pal.light, 0.5);
+    ctx.lineWidth = 1.6;
+    ctx.beginPath();
+    ctx.moveTo(-13, -8);
+    ctx.quadraticCurveTo(-16, 2, -12, 12);
+    ctx.stroke();
+  },
   droplet(ctx, pal) {
     ctx.beginPath();
     ctx.moveTo(0, -20);
@@ -2290,6 +2337,25 @@ const ABILITY_RECIPES: Record<string, IconRecipe> = {
 };
 
 const ITEM_RECIPES: Record<string, IconRecipe> = {
+  // Bags (+ the implicit backpack the bag bar shows). Palettes step up with
+  // the quality tier so the bag reads richer as it grows.
+  backpack: r('leather', 'earthBrown', [{ p: 'sack', pal: 'earthBrown' }]),
+  linen_pouch: r('cloth', 'cloth', [{ p: 'sack', pal: 'cloth' }]),
+  travelers_knapsack: r('leather', 'leather', [{ p: 'sack', pal: 'leather' }]),
+  wolfhide_satchel: r('leather', 'earthBrown', [
+    { p: 'sack', pal: 'earthBrown' },
+    { p: 'paw', ...BR },
+  ]),
+  gravewoven_bag: r('shadow', 'shadowPurple', [{ p: 'sack', pal: 'shadowPurple' }], ['glow']),
+  mistcallers_duffel: r(
+    'arcane',
+    'sky',
+    [
+      { p: 'sack', pal: 'sky' },
+      { p: 'gem', ...TR },
+    ],
+    ['sparkle'],
+  ),
   worn_sword: r('steel', 'steel', ['sword']),
   gnarled_staff: r('wood', 'earthBrown', [{ p: 'staff', pal: 'earthBrown' }]),
   rusty_dagger: r('steel', 'earthBrown', [{ p: 'dagger', pal: 'earthBrown' }]),
@@ -2680,6 +2746,10 @@ function itemFallback(id: string): IconRecipe | null {
   if (it.kind === 'tool') {
     const prim: PrimitiveName = has(name, ['pole', 'rod', 'staff']) ? 'staff' : 'mace';
     return r('wood', 'earthBrown', [prim], fx);
+  }
+  if (it.kind === 'bag') {
+    const isCloth = has(name, ['linen', 'silk', 'woven', 'cloth', 'wool']);
+    return r(isCloth ? 'cloth' : 'leather', isCloth ? 'cloth' : 'leather', ['sack'], fx);
   }
   const t = trinketPrimitive(name);
   return r(it.kind === 'quest' ? 'parchment' : 'junk', t.pal, [{ p: t.p, pal: t.pal }], fx);
