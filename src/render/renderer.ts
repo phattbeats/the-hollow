@@ -28,7 +28,7 @@ import {
 } from '../sim/data';
 import type { DelveModuleId } from '../sim/delve_layout';
 import { type DungeonLayout, UNDER_SHRINE_LAYOUT } from '../sim/dungeon_layout';
-import type { BiomeId } from '../sim/types';
+import type { BiomeId, EquipSlot } from '../sim/types';
 import { ALL_CLASSES, type Entity, type SimEvent } from '../sim/types';
 import { groundHeight, WATER_LEVEL, zoneBiomeAt } from '../sim/world';
 import { tEntity } from '../ui/entity_i18n';
@@ -490,6 +490,11 @@ export interface EntityView {
   travelVisual: CharacterVisual | null; // druid travel form (chicken-cow), built lazily
   skin: number; // last-rendered appearance skin — diffed each frame for live swaps
   mainhandItemId: string | null; // last-rendered equipped weapon — diffed for live held-weapon swaps
+  /** Last-rendered equipped armor (mirrors the entity's `equippedItems`). Diffed
+   *  each frame for live armor equips: the renderer calls v.visual.setArmor(...)
+   *  only when the keys/values change, the same write-elision discipline as the
+   *  skin + mainhand diffs just below. Null before the first setArmor call. */
+  armorByItemId: Partial<Record<EquipSlot, string>> | null;
   /** unscaled height — nameplate/vfx anchor reads height * e.scale */
   height: number;
   /** last-applied entity scale (group.scale); diffed each frame for live size buffs */
@@ -3378,6 +3383,12 @@ export class Renderer {
       lastZ: e.pos.z,
       skin: e.skin,
       mainhandItemId: e.mainhandItemId,
+      // First-render snapshot of the entity's full worn set, so the per-frame
+      // diff just below treats the initial paint as already applied (no swap
+      // pop when a peer streams in mid-fight wearing armor). Forms (sheep/bear/
+      // cat/travel) never carry armor: their `equippedItems` is empty on every
+      // host, so the map here is always `{}` for them.
+      armorByItemId: e.equippedItems ?? null,
       liveScale: e.scale,
       loco: newLocoTrack(),
       stepAccum: 0,
@@ -4168,6 +4179,19 @@ export class Renderer {
       if (e.mainhandItemId !== v.mainhandItemId) {
         v.mainhandItemId = e.mainhandItemId;
         v.visual.setWeapon(e.mainhandItemId);
+      }
+
+      // live worn-armor swap. Full equippedItems set changed (self equip or a
+      // peer's gear update). The diff is shallow: same reference means same
+      // worn set (the OnlineClient keeps the entity's object stable across
+      // ticks; the offline Sim mutates in place). setArmor does its own deep
+      // equality check on the keys/values it actually renders, so a no-op equip
+      // (e.g. swap to the same item id) still skips the re-attach + material
+      // pass. setArmor also no-ops on visuals without `armorSlots` (mobs/NPCs/
+      // forms never carry gear, so the diff is always a cheap walk past them).
+      if (e.equippedItems !== v.armorByItemId) {
+        v.armorByItemId = e.equippedItems;
+        v.visual.setArmor(e.equippedItems ?? null);
       }
 
       // live body-size buffs (Fiesta power-ups): scale the whole group so the

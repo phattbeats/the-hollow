@@ -4,7 +4,8 @@
 
 import { MECH_CHROMAS, type MechChroma } from '../../sim/content/skins';
 import { MOBS } from '../../sim/data';
-import type { Entity, PlayerClass } from '../../sim/types';
+import type { Entity, EquipSlot, PlayerClass } from '../../sim/types';
+import { ITEM_ARMOR_VARIANTS } from '../../ui/armor_variants';
 import { ITEM_WEAPON_VARIANTS } from '../../ui/weapon_variants';
 import type { OverheadEmoteId } from '../../world_api';
 import { chibiSkinCount } from './chibi_skin_variants';
@@ -69,6 +70,19 @@ export interface VisualDef {
    *  (the mainhand); the rogue lists [0, 1] so a dagger shows in BOTH hands. A fixed
    *  offhand left off this list stays as authored (the warlock spellbook). */
   weaponSlots?: number[];
+  /** Indices into `attach` whose model is replaced by the entity's equipped armor
+   *  (mapped via ITEM_ARMOR_VARIANTS by `EquipSlot`). Mirrors `weaponSlots`: only
+   *  the listed attach entries swap with gear; the others stay as authored. Always
+   *  paired with `armorByAttachIndex`, which tells the swap path which `EquipSlot`
+   *  each listed index corresponds to. Rig-agnostic: works with zero actual armor
+   *  GLBs (T1 ships the wiring; T2a authors the meshes). Players only; mobs/NPCs/
+   *  forms stay undefined. */
+  armorSlots?: number[];
+  /** Map from each `armorSlots` attach index to its `EquipSlot`, so the swap path
+   *  can look up the right equipped item for each attach. Required when
+   *  `armorSlots` is non-empty: a missing entry silently skips that slot (safe but
+   *  never swaps). Defs without armor slots keep this undefined. */
+  armorByAttachIndex?: Record<number, EquipSlot>;
   /** material tint: explicit color, 'entity' (use e.color), or none */
   tint?: number | 'entity';
   /** lerp amount toward the tint (default 0.4) */
@@ -226,6 +240,27 @@ const NPCS = 'models/chars/npcs';
 const ENEMIES = 'models/chars/enemies';
 const CREATURES = 'models/creatures';
 const WEAPONS = 'models/weapons';
+// Armor visual models (PHAA-502 T1 ships zero models here; the directory is
+// reserved for T2a, which authors baked accessory meshes per EquipSlot. Until
+// then `itemArmorModelUrls()` returns an empty list and `itemArmorModelUrl()`
+// returns null for every item id, so the swap path is a safe no-op.)
+const ARMOR = 'models/armor';
+
+/** GLB url for an equipped armor item's worn model, or null if the item has no
+ *  mapped armor visual (then the class default attach is kept). Mirrors the bag
+ *  icon via the shared ITEM_ARMOR_VARIANTS map, so worn armor == inventory icon. */
+export function itemArmorModelUrl(itemId: string | null | undefined): string | null {
+  if (!itemId) return null;
+  const key = ITEM_ARMOR_VARIANTS[itemId];
+  return key ? `${ARMOR}/${key}.glb` : null;
+}
+
+/** Distinct armor-visual GLB urls (one per variant), for the boot preload sweep so
+ *  setArmor can attach any equipped armor synchronously (resolvedGltf throws on
+ *  an un-preloaded url). Empty until PHAA-502 T2a authors the first models. */
+export function itemArmorModelUrls(): string[] {
+  return [...new Set(Object.values(ITEM_ARMOR_VARIANTS).map((key) => `${ARMOR}/${key}.glb`))];
+}
 
 /** GLB url for an equipped mainhand item's held weapon model, or null if the item
  *  has no mapped model (then the class default attach is kept). Mirrors the bag
@@ -1174,6 +1209,9 @@ export function manifestUrls(): string[] {
   // Equipped-weapon models a player may swap to at runtime (any nearby player's
   // gear), so they are resolved-and-ready when setWeapon attaches them.
   for (const url of itemWeaponModelUrls()) urls.add(url);
+  // Equipped-armor models a player may swap to at runtime (PHAA-502 T2a authors
+  // these; T1 ships the preloader so the resolution path is identical to weapons).
+  for (const url of itemArmorModelUrls()) urls.add(url);
   return [...urls];
 }
 
