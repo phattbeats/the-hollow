@@ -313,7 +313,13 @@ export const vi_VN: EnTranslations = {
     "keybinds": {
       "emoteWheel": "Vòng Biểu Cảm",
       "targetFriendly": "Chọn Đồng Minh Gần Nhất",
-      "targetFriendlyNext": "Luân Phiên Mục Tiêu Đồng Minh"
+      "targetFriendlyNext": "Luân Phiên Mục Tiêu Đồng Minh",
+      "categoryPet": "Pet",
+      "petAttack": "Pet: Attack",
+      "petStop": "Pet: Stop",
+      "petTaunt": "Pet: Taunt",
+      "petDefensive": "Pet: Defensive",
+      "petAggressive": "Pet: Aggressive"
     },
     "options": {
       "clickMoveLeft": "Nhấp Trái",

@@ -313,7 +313,13 @@ export const ru_RU: EnTranslations = {
     "keybinds": {
       "emoteWheel": "Колесо эмоций",
       "targetFriendly": "Ближайший союзник",
-      "targetFriendlyNext": "Следующий союзник"
+      "targetFriendlyNext": "Следующий союзник",
+      "categoryPet": "Питомец",
+      "petAttack": "Питомец: атака",
+      "petStop": "Питомец: стоп",
+      "petTaunt": "Питомец: провокация",
+      "petDefensive": "Питомец: защита",
+      "petAggressive": "Питомец: агрессия"
     },
     "options": {
       "clickMoveLeft": "Левая кнопка",

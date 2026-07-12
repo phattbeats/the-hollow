@@ -313,7 +313,13 @@ export const ko_KR: EnTranslations = {
     "keybinds": {
       "emoteWheel": "감정 표현 휠",
       "targetFriendly": "가장 가까운 아군 대상 지정",
-      "targetFriendlyNext": "아군 대상 순환"
+      "targetFriendlyNext": "아군 대상 순환",
+      "categoryPet": "펫",
+      "petAttack": "펫: 공격",
+      "petStop": "펫: 정지",
+      "petTaunt": "펫: 도발",
+      "petDefensive": "펫: 방어",
+      "petAggressive": "펫: 공격적"
     },
     "options": {
       "clickMoveLeft": "왼쪽 클릭",

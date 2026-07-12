@@ -313,7 +313,13 @@ export const sv_SE: EnTranslations = {
     "keybinds": {
       "emoteWheel": "Gesthjul",
       "targetFriendly": "Måltavla närmaste vänlig",
-      "targetFriendlyNext": "Växla vänligt mål"
+      "targetFriendlyNext": "Växla vänligt mål",
+      "categoryPet": "Pet",
+      "petAttack": "Pet: Attack",
+      "petStop": "Pet: Stop",
+      "petTaunt": "Pet: Taunt",
+      "petDefensive": "Pet: Defensive",
+      "petAggressive": "Pet: Aggressive"
     },
     "options": {
       "clickMoveLeft": "Vänsterklick",

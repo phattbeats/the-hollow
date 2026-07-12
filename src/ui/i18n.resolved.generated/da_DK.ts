@@ -313,7 +313,13 @@ export const da_DK: EnTranslations = {
     "keybinds": {
       "emoteWheel": "Følelseshjul",
       "targetFriendly": "Sigt mod nærmeste allierede",
-      "targetFriendlyNext": "Skift allieret mål"
+      "targetFriendlyNext": "Skift allieret mål",
+      "categoryPet": "Pet",
+      "petAttack": "Pet: Attack",
+      "petStop": "Pet: Stop",
+      "petTaunt": "Pet: Taunt",
+      "petDefensive": "Pet: Defensive",
+      "petAggressive": "Pet: Aggressive"
     },
     "options": {
       "clickMoveLeft": "Venstreklik",

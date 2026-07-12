@@ -313,7 +313,13 @@ export const id_ID: EnTranslations = {
     "keybinds": {
       "emoteWheel": "Roda Emote",
       "targetFriendly": "Bidik Sekutu Terdekat",
-      "targetFriendlyNext": "Putar Bidikan Sekutu"
+      "targetFriendlyNext": "Putar Bidikan Sekutu",
+      "categoryPet": "Pet",
+      "petAttack": "Pet: Attack",
+      "petStop": "Pet: Stop",
+      "petTaunt": "Pet: Taunt",
+      "petDefensive": "Pet: Defensive",
+      "petAggressive": "Pet: Aggressive"
     },
     "options": {
       "clickMoveLeft": "Klik Kiri",

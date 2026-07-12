@@ -313,7 +313,13 @@ export const en_XA: EnTranslations = {
     "keybinds": {
       "emoteWheel": "[Éɱóţé Ŵĥééļ]",
       "targetFriendly": "[Ţáŕĝéţ Ñéáŕéšţ Ƒŕíéñðļý]",
-      "targetFriendlyNext": "[Çýçļé Ƒŕíéñðļý Ţáŕĝéţ]"
+      "targetFriendlyNext": "[Çýçļé Ƒŕíéñðļý Ţáŕĝéţ]",
+      "categoryPet": "[Þéţ]",
+      "petAttack": "[Þéţ: Áţţáçķ]",
+      "petStop": "[Þéţ: Šţóþ]",
+      "petTaunt": "[Þéţ: Ţáúñţ]",
+      "petDefensive": "[Þéţ: Ðéƒéñšíʋé]",
+      "petAggressive": "[Þéţ: Áĝĝŕéššíʋé]"
     },
     "options": {
       "clickMoveLeft": "[Ļéƒţ Çļíçķ]",

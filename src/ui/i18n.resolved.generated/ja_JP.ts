@@ -313,7 +313,13 @@ export const ja_JP: EnTranslations = {
     "keybinds": {
       "emoteWheel": "エモートホイール",
       "targetFriendly": "最も近い味方をターゲット",
-      "targetFriendlyNext": "味方ターゲットを順に切り替え"
+      "targetFriendlyNext": "味方ターゲットを順に切り替え",
+      "categoryPet": "ペット",
+      "petAttack": "ペット：攻撃",
+      "petStop": "ペット：停止",
+      "petTaunt": "ペット：挑発",
+      "petDefensive": "ペット：防御",
+      "petAggressive": "ペット：攻撃的"
     },
     "options": {
       "clickMoveLeft": "左クリック",

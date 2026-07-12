@@ -313,7 +313,13 @@ export const zh_TW: EnTranslations = {
     "keybinds": {
       "emoteWheel": "表情輪盤",
       "targetFriendly": "選取最近友方",
-      "targetFriendlyNext": "切換友方目標"
+      "targetFriendlyNext": "切換友方目標",
+      "categoryPet": "寵物",
+      "petAttack": "寵物：攻擊",
+      "petStop": "寵物：停止",
+      "petTaunt": "寵物：嘲諷",
+      "petDefensive": "寵物：防禦",
+      "petAggressive": "寵物：攻擊性"
     },
     "options": {
       "clickMoveLeft": "左鍵",

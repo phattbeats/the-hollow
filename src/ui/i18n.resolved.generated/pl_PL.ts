@@ -313,7 +313,13 @@ export const pl_PL: EnTranslations = {
     "keybinds": {
       "emoteWheel": "Koło emotek",
       "targetFriendly": "Obierz najbliższego sojusznika",
-      "targetFriendlyNext": "Przełączaj przyjazny cel"
+      "targetFriendlyNext": "Przełączaj przyjazny cel",
+      "categoryPet": "Pet",
+      "petAttack": "Pet: Attack",
+      "petStop": "Pet: Stop",
+      "petTaunt": "Pet: Taunt",
+      "petDefensive": "Pet: Defensive",
+      "petAggressive": "Pet: Aggressive"
     },
     "options": {
       "clickMoveLeft": "Lewy przycisk",

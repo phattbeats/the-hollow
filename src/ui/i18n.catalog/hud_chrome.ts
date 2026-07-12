@@ -260,6 +260,12 @@ export const hudChromeStrings = {
     emoteWheel: 'Emote Wheel',
     targetFriendly: 'Target Nearest Friendly',
     targetFriendlyNext: 'Cycle Friendly Target',
+    categoryPet: 'Pet',
+    petAttack: 'Pet: Attack',
+    petStop: 'Pet: Stop',
+    petTaunt: 'Pet: Taunt',
+    petDefensive: 'Pet: Defensive',
+    petAggressive: 'Pet: Aggressive',
   },
   // Click-to-move mouse-button toggle labels (Key Bindings panel). The button id
   // 0/2 maps to these at the HUD render boundary.

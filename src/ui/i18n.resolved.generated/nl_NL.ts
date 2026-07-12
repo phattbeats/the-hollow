@@ -313,7 +313,13 @@ export const nl_NL: EnTranslations = {
     "keybinds": {
       "emoteWheel": "Emotewiel",
       "targetFriendly": "Dichtstbijzijnde Bondgenoot Aanwijzen",
-      "targetFriendlyNext": "Door Bondgenoten Bladeren"
+      "targetFriendlyNext": "Door Bondgenoten Bladeren",
+      "categoryPet": "Pet",
+      "petAttack": "Pet: Attack",
+      "petStop": "Pet: Stop",
+      "petTaunt": "Pet: Taunt",
+      "petDefensive": "Pet: Defensive",
+      "petAggressive": "Pet: Aggressive"
     },
     "options": {
       "clickMoveLeft": "Linkermuisklik",

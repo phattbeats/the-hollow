@@ -313,7 +313,13 @@ export const tr_TR: EnTranslations = {
     "keybinds": {
       "emoteWheel": "İfade Çarkı",
       "targetFriendly": "En Yakın Dostu Hedefle",
-      "targetFriendlyNext": "Dost Hedefler Arasında Geç"
+      "targetFriendlyNext": "Dost Hedefler Arasında Geç",
+      "categoryPet": "Pet",
+      "petAttack": "Pet: Attack",
+      "petStop": "Pet: Stop",
+      "petTaunt": "Pet: Taunt",
+      "petDefensive": "Pet: Defensive",
+      "petAggressive": "Pet: Aggressive"
     },
     "options": {
       "clickMoveLeft": "Sol Tık",
