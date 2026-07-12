@@ -59,6 +59,7 @@
 import type { IWorldChat } from './world_api/chat';
 import type { IWorldCombat } from './world_api/combat';
 import type { IWorldCosmetics } from './world_api/cosmetics';
+import type { IWorldDailyRewards } from './world_api/daily_rewards';
 import type { IWorldDelves } from './world_api/delves';
 import type { IWorldDialog } from './world_api/dialog';
 import type { IWorldDuelArena } from './world_api/duel_arena';
@@ -92,6 +93,7 @@ export type { ArenaCombatant, ArenaFormat, ArenaStanding, OverheadEmoteId } from
 // --- facet aux-type + value re-exports (each travels with its facet file) ---
 export { isOverheadEmoteId, OVERHEAD_EMOTES } from './world_api/chat';
 export type { AccountCosmetics } from './world_api/cosmetics';
+export type { DailyRewardsInfo } from './world_api/daily_rewards';
 export type {
   DelveCompanionInfo,
   DelveDailyInfo,
@@ -141,6 +143,7 @@ export interface IWorld
     IWorldLoot,
     IWorldInventory,
     IWorldCosmetics,
+    IWorldDailyRewards,
     IWorldQuests,
     IWorldProgressionXp,
     IWorldTalents,
@@ -308,6 +311,7 @@ export const COMMAND_NAMES = [
   'harvestCorpse',
   'harvestNode',
   'dialogChoose',
+  'daily_rewards_claim',
 ] as const;
 
 // The union both the send path (`online.ts`) and the dispatch switch
@@ -355,6 +359,7 @@ export type WorldFacet =
   | 'IWorldLoot'
   | 'IWorldInventory'
   | 'IWorldCosmetics'
+  | 'IWorldDailyRewards'
   | 'IWorldQuests'
   | 'IWorldProgressionXp'
   | 'IWorldTalents'
@@ -522,4 +527,7 @@ export const COMMAND_FACETS = {
   // IWorldDialog: resolve a picked branching-dialogue choice (PHAA-553); the
   // dialogState read carries no wire command (it rides the self-snapshot).
   dialogChoose: 'IWorldDialog',
+  // IWorldDailyRewards: claim today's cycle slot (PHAA-660); the dailyRewards
+  // read carries no wire command (it rides the self-snapshot like cosmetics).
+  daily_rewards_claim: 'IWorldDailyRewards',
 } as const satisfies Partial<Record<ClientCommand, WorldFacet>>;

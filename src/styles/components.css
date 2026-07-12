@@ -2554,6 +2554,60 @@
     padding-top: 6px;
   }
 
+  /* ---------- daily rewards (PHAA-660) ---------- */
+  #daily-rewards-window {
+    width: 380px;
+  }
+  .daily-rewards-strip {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+  .daily-rewards-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 4px 2px;
+    border: 1px solid #463a1c;
+    border-radius: 4px;
+    background: #ffffff08;
+    text-align: center;
+  }
+  .daily-rewards-cell.is-next {
+    border-color: var(--gold);
+    background: #ffd97022;
+  }
+  .drc-today {
+    font-size: 9px;
+    color: var(--gold);
+    font-family: var(--title-font);
+  }
+  .drc-money {
+    font-size: 10px;
+  }
+  .drc-item {
+    font-size: 9px;
+    color: #c8b888;
+  }
+  .daily-rewards-status {
+    margin-top: 8px;
+    font-size: 11px;
+    color: #c8b888;
+    text-align: center;
+  }
+  .daily-rewards-claim {
+    width: 100%;
+    margin-top: 8px;
+  }
+  .daily-rewards-hint {
+    font-size: 11px;
+    color: #887c5c;
+    margin-top: 8px;
+    border-top: 1px solid #463a1c;
+    padding-top: 6px;
+  }
+
   /* ---------- bags ---------- */
   /* bags, centred in the bottom gap between the action cluster and micro-menu */
   #bags {

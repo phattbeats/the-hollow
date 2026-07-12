@@ -88,6 +88,16 @@ export const ADMIN_ROUTE_PERMISSIONS: readonly AdminRouteRule[] = [
   },
   {
     method: 'POST',
+    pattern: /^\/admin\/api\/moderation\/accounts\/(\d+)\/daily-rewards-lock$/,
+    permission: 'moderation.act',
+  },
+  {
+    method: 'POST',
+    pattern: /^\/admin\/api\/moderation\/accounts\/(\d+)\/daily-rewards-unlock$/,
+    permission: 'moderation.act',
+  },
+  {
+    method: 'POST',
     pattern: /^\/admin\/api\/moderation\/accounts\/(\d+)\/reset-strikes$/,
     permission: 'moderation.act',
   },

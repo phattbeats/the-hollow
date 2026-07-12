@@ -2396,6 +2396,9 @@ export const ko_KR: EnTranslations = {
       "nothingToHarvest": "그 시체에서는 채집할 것이 없습니다.",
       "alreadyHarvested": "이 시체는 이미 채집되었습니다."
     },
+    "dailyRewards": {
+      "claimed": "일일 보상을 받았습니다."
+    },
     "hearth": {
       "tooFar": "브라더 초록발에게 먹이를 주려면 그의 곁에 있어야 한다.",
       "noItems1": "……친구, 빈손이구먼. 태울 것이든 배 채울 것이든 좀 가져오게, 그럼 얘기해보세.",
@@ -3770,6 +3773,22 @@ export const ko_KR: EnTranslations = {
       "crate": "상자",
       "bench": "벤치",
       "stool": "스툴"
+    }
+  },
+  "dailyRewardsUi": {
+    "menuButton": "일일 보상",
+    "window": {
+      "title": "일일 보상",
+      "close": "일일 보상 닫기",
+      "claim": "받기",
+      "claimAria": "오늘의 보상 받기",
+      "claimed": "받았습니다. 내일 다시 오세요.",
+      "locked": "현재 이 계정에서는 일일 보상을 사용할 수 없습니다.",
+      "hint": "하루에 한 번 받을 수 있습니다. 하루를 놓쳐도 손해는 없습니다."
+    },
+    "cell": {
+      "today": "오늘",
+      "itemCount": "{count}x {item}"
     }
   },
   "itemUi": {

@@ -44,6 +44,7 @@ import {
   type ArenaInfo,
   type CharacterSearchResult,
   type ClientCommand,
+  type DailyRewardsInfo,
   type DelveCompanionInfo,
   type DelveDailyInfo,
   type DelveRunInfo,
@@ -101,6 +102,19 @@ function normalizeAccountCosmetics(value: unknown): AccountCosmetics {
   return {
     completedQuestIds: stringList(src.completedQuestIds),
     mechChromaIds: stringList(src.mechChromaIds),
+  };
+}
+
+// PHAA-660: mirrors server/db.ts's normalizeAccountDailyRewards. Duplicated rather
+// than imported, same reason as normalizeAccountCosmetics above: server/ (pg,
+// Node-only) can never be imported into this browser-bundled client module.
+function normalizeDailyRewards(value: unknown): DailyRewardsInfo {
+  const src = value && typeof value === 'object' ? (value as Record<string, unknown>) : {};
+  const cycleIndex = Number(src.cycleIndex);
+  return {
+    cycleIndex: Number.isInteger(cycleIndex) && cycleIndex >= 0 ? cycleIndex : 0,
+    lastClaimUtcDay: typeof src.lastClaimUtcDay === 'string' ? src.lastClaimUtcDay : '',
+    locked: src.locked === true,
   };
 }
 
@@ -830,6 +844,9 @@ export class ClientWorld implements IWorld {
   // --- IWorldCosmetics: account cosmetics (completed-quest + mech-chroma ids),
   // mirrored from snapshot self. ---
   accountCosmetics: AccountCosmetics = { completedQuestIds: [], mechChromaIds: [] };
+  // --- IWorldDailyRewards: account claim-cycle state, mirrored from snapshot
+  // self (PHAA-660). ---
+  dailyRewards: DailyRewardsInfo = { cycleIndex: 0, lastClaimUtcDay: '', locked: false };
   // --- IWorldProgressionXp: XP + post-cap progression scalars + unlocked
   // milestones, mirrored from snapshot self. ---
   xp = 0;
@@ -1628,6 +1645,11 @@ export class ClientWorld implements IWorld {
         this.accountCosmetics = normalizeAccountCosmetics(s.cosmetics);
         this.cosmeticsChanged = true;
       }
+      // IWorldDailyRewards facet (PHAA-660) self-decode: same delta-guard shape
+      // as cosmetics above.
+      if (s.dailyRewards !== undefined) {
+        this.dailyRewards = normalizeDailyRewards(s.dailyRewards);
+      }
       if (s.qlog !== undefined)
         this.questLog = new Map((s.qlog as QuestProgress[]).map((q) => [q.questId, q]));
       if (s.qdone !== undefined) this.questsDone = new Set(s.qdone);
@@ -2222,6 +2244,11 @@ export class ClientWorld implements IWorld {
   // dialogue menu, not chat text. ---
   feedGreenpaw(): void {
     this.cmd({ cmd: 'feedGreenpaw' });
+  }
+  // --- IWorldDailyRewards (PHAA-660): send the claim command; dailyRewards is a
+  // snapshot read (mirror field above), server re-checks eligibility. ---
+  claimDailyReward(): void {
+    this.cmd({ cmd: 'daily_rewards_claim' });
   }
   // --- IWorldDialog (PHAA-553): send a picked branching-dialogue choice; the
   // effect resolves server-side. dialogState is a snapshot read (dstate mirror). ---

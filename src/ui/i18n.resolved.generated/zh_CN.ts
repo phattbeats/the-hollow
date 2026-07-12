@@ -2396,6 +2396,9 @@ export const zh_CN: EnTranslations = {
       "nothingToHarvest": "这具尸体没有什么可以采集的。",
       "alreadyHarvested": "这具尸体已经被采集过了。"
     },
+    "dailyRewards": {
+      "claimed": "你领取了每日奖励。"
+    },
     "hearth": {
       "tooFar": "你得靠近绿掌修士才能喂他。",
       "noItems1": "……伙计，你两手空空啊。带点能烧的或能填饱肚子的东西来，我们再唠。",
@@ -3770,6 +3773,22 @@ export const zh_CN: EnTranslations = {
       "crate": "板条箱",
       "bench": "长椅",
       "stool": "凳子"
+    }
+  },
+  "dailyRewardsUi": {
+    "menuButton": "每日奖励",
+    "window": {
+      "title": "每日奖励",
+      "close": "关闭每日奖励",
+      "claim": "领取",
+      "claimAria": "领取今日奖励",
+      "claimed": "已领取，明天再来。",
+      "locked": "此账号暂时无法领取每日奖励。",
+      "hint": "每天可领取一次。错过一天不会有任何损失。"
+    },
+    "cell": {
+      "today": "今天",
+      "itemCount": "{count}x {item}"
     }
   },
   "itemUi": {

@@ -54,6 +54,7 @@ import { isSpellResisted } from './combat/spell_resist';
 // moved to social/fiesta.ts with that logic; sim.ts keeps only the type used by
 // the PlayerMeta interface + the power-up catalog the fiestaMatchInfo accessor reads.
 import { type AugmentSpecial, type AugmentTier, POWERUPS_BY_ID } from './content/augments';
+import { DAILY_REWARD_CYCLE } from './content/daily_rewards';
 import { VASE_LANDING_POS } from './content/hollow';
 import {
   classHasSkin,
@@ -78,6 +79,7 @@ import {
   talentPointsAtLevel,
 } from './content/talents';
 import { applyCooldowns, type SavedCooldowns, serializeCooldowns } from './cooldown_persist';
+import * as dailyRewardsMod from './daily_rewards';
 import type { DelveShopGate, DelveShopOffer } from './data';
 import {
   abilitiesKnownAt,
@@ -4539,6 +4541,41 @@ export class Sim {
     if (!r) return false;
     const { meta } = r;
     return canAddItem(meta.inventory, bagCapacity(meta.bags), itemId, count);
+  }
+
+  // PHAA-660 (docs/design/daily-rewards.md): server-authoritative online play never
+  // calls this IWorld member on the authoritative Sim (a single online Sim hosts
+  // many accounts, so a single `dailyRewards` field can't represent all of them;
+  // server/game.ts instead does its own Postgres-backed, account-scoped eligibility
+  // and calls grantDailyRewardCycleSlot below directly). This method is what makes
+  // OFFLINE solo play work: there is no separate account/server layer offline, so
+  // the Sim owns its own eligibility check the same way the delve daily lockout
+  // does (this.utcDay, injected by the host, never read from the wall clock here).
+  dailyRewards: import('../world_api').DailyRewardsInfo = {
+    cycleIndex: 0,
+    lastClaimUtcDay: '',
+    locked: false,
+  };
+
+  claimDailyReward(pid?: number): void {
+    const r = this.resolve(pid);
+    if (!r) return;
+    if (this.dailyRewards.locked) return;
+    if (this.utcDay && this.dailyRewards.lastClaimUtcDay === this.utcDay) return;
+    const cycleIndex = this.dailyRewards.cycleIndex;
+    dailyRewardsMod.claimDailyReward(this.ctx, cycleIndex, r.meta.entityId);
+    this.dailyRewards = {
+      ...this.dailyRewards,
+      cycleIndex: (cycleIndex + 1) % DAILY_REWARD_CYCLE.length,
+      lastClaimUtcDay: this.utcDay,
+    };
+  }
+
+  // The online-only grant primitive: server/game.ts calls this directly (never
+  // through the claimDailyReward() IWorld member above) after its own
+  // Postgres-backed eligibility check (claimAccountDailyReward, server/db.ts).
+  grantDailyRewardCycleSlot(cycleIndex: number, pid?: number): boolean {
+    return dailyRewardsMod.claimDailyReward(this.ctx, cycleIndex, pid ?? this.primaryId);
   }
 
   equipBag(itemId: string, socket?: number, pid?: number): void {

@@ -26,6 +26,8 @@ export const MODERATION_ACTIONS = [
   'chat_unmute',
   'note',
   'force_rename',
+  'daily_rewards_lock',
+  'daily_rewards_unlock',
 ] as const;
 export type ModerationActionKind = (typeof MODERATION_ACTIONS)[number];
 
@@ -523,6 +525,69 @@ export async function liftAccountChatMute(input: {
       throw new Error('account is not chat muted');
     }
     await recordModerationAction(client, 'chat_unmute', {
+      accountId: input.accountId,
+      adminAccountId: input.adminAccountId,
+      reason,
+    });
+    await client.query('COMMIT');
+  } catch (err) {
+    await client.query('ROLLBACK').catch(() => {});
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
+// PHAA-660: a narrower lock than ban/suspend above, scoped only to the daily
+// rewards claim (docs/design/daily-rewards.md's #1773 adapt). A locked account
+// keeps playing/chatting/trading normally; only claimDailyReward's server-side
+// eligibility check (server/game.ts) reads daily_rewards_locked_at.
+export async function lockAccountDailyRewards(input: {
+  accountId: number;
+  adminAccountId: number;
+  reason: unknown;
+}): Promise<void> {
+  const reason = cleanText(input.reason, ACTION_REASON_MAX);
+  if (!reason) throw new Error('moderation reason is required');
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    await client.query('UPDATE accounts SET daily_rewards_locked_at = now() WHERE id = $1', [
+      input.accountId,
+    ]);
+    await recordModerationAction(client, 'daily_rewards_lock', {
+      accountId: input.accountId,
+      adminAccountId: input.adminAccountId,
+      reason,
+    });
+    await client.query('COMMIT');
+  } catch (err) {
+    await client.query('ROLLBACK').catch(() => {});
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
+export async function unlockAccountDailyRewards(input: {
+  accountId: number;
+  adminAccountId: number;
+  reason: unknown;
+}): Promise<void> {
+  const reason = cleanText(input.reason, ACTION_REASON_MAX);
+  if (!reason) throw new Error('moderation reason is required');
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    const updated = await client.query(
+      `UPDATE accounts SET daily_rewards_locked_at = NULL
+       WHERE id = $1 AND daily_rewards_locked_at IS NOT NULL`,
+      [input.accountId],
+    );
+    if ((updated.rowCount ?? 0) === 0) {
+      throw new Error('account is not daily-rewards locked');
+    }
+    await recordModerationAction(client, 'daily_rewards_unlock', {
       accountId: input.accountId,
       adminAccountId: input.adminAccountId,
       reason,

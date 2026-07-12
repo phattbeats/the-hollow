@@ -2396,6 +2396,9 @@ export const fr_CA: EnTranslations = {
       "nothingToHarvest": "That corpse has nothing to harvest.",
       "alreadyHarvested": "This corpse has already been harvested."
     },
+    "dailyRewards": {
+      "claimed": "You claim your daily reward."
+    },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
       "noItems1": "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",
@@ -3770,6 +3773,22 @@ export const fr_CA: EnTranslations = {
       "crate": "Crate",
       "bench": "Bench",
       "stool": "Stool"
+    }
+  },
+  "dailyRewardsUi": {
+    "menuButton": "Daily Rewards",
+    "window": {
+      "title": "Daily Rewards",
+      "close": "Close daily rewards",
+      "claim": "Claim",
+      "claimAria": "Claim today's reward",
+      "claimed": "Claimed. Come back tomorrow.",
+      "locked": "Daily rewards are unavailable on this account right now.",
+      "hint": "One reward per day. Missing a day never costs you anything."
+    },
+    "cell": {
+      "today": "Today",
+      "itemCount": "{count}x {item}"
     }
   },
   "itemUi": {

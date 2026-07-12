@@ -1,6 +1,7 @@
 import type { WebSocket } from 'ws';
 import { createBotDetector } from '#bot-detector';
 import { verifyChallenge } from '../src/sim/client_challenge';
+import { DAILY_REWARD_CYCLE } from '../src/sim/content/daily_rewards';
 import { MECH_CHROMAS, mechChromaItemId, mechChromaSkinIndex } from '../src/sim/content/skins';
 import type { TalentAllocation } from '../src/sim/content/talents';
 import { DELVES, DUNGEONS, zoneAt } from '../src/sim/data';
@@ -37,8 +38,14 @@ import type {
 import { ChatFilter } from './chat_filter';
 import { applyChatStrike, loadChatFilterState, recordChatViolation } from './chat_filter_db';
 import { ChatLogger } from './chat_log';
-import type { AccountChatMuteStatus, AccountCosmetics, RequestMetadata } from './db';
+import type {
+  AccountChatMuteStatus,
+  AccountCosmetics,
+  AccountDailyRewardsInfo,
+  RequestMetadata,
+} from './db';
 import {
+  claimAccountDailyReward,
   closePlaySession,
   grantAccountMechChroma,
   insertChatLogs,
@@ -328,6 +335,7 @@ export interface ClientSession {
   ws: WebSocket;
   accountId: number;
   accountCosmetics: AccountCosmetics;
+  accountDailyRewards: AccountDailyRewardsInfo;
   characterId: number;
   pid: number; // player entity id in the sim
   name: string;
@@ -1409,6 +1417,7 @@ export class GameServer {
     meta: RequestMetadata &
       Partial<AccountChatMuteStatus> & {
         accountCosmetics?: AccountCosmetics;
+        accountDailyRewards?: AccountDailyRewardsInfo;
         chatStrikes?: number;
         isAdmin?: boolean;
         adminPermissions?: readonly string[];
@@ -1473,6 +1482,11 @@ export class GameServer {
       ws,
       accountId,
       accountCosmetics,
+      accountDailyRewards: meta.accountDailyRewards ?? {
+        cycleIndex: 0,
+        lastClaimUtcDay: '',
+        locked: false,
+      },
       characterId,
       pid,
       name,
@@ -3068,6 +3082,24 @@ export class GameServer {
       case 'mail_markread':
         if (typeof msg.id === 'number') sim.mailMarkRead(msg.id, pid);
         break;
+      // PHAA-660 (docs/design/daily-rewards.md): account-scoped eligibility lives
+      // in Postgres, not the sim (see grantDailyRewardCycleSlot's comment on Sim);
+      // the two guard reads here are a cheap in-memory pre-check, the real
+      // atomicity guarantee is claimAccountDailyReward's WHERE clause.
+      case 'daily_rewards_claim': {
+        if (session.accountDailyRewards.locked) break;
+        const today = this.sim.utcDay;
+        if (!today || session.accountDailyRewards.lastClaimUtcDay === today) break;
+        void claimAccountDailyReward(session.accountId, today, DAILY_REWARD_CYCLE.length)
+          .then((result) => {
+            if (!result) return;
+            sim.grantDailyRewardCycleSlot(result.grantedCycleIndex, pid);
+            session.accountDailyRewards = { ...result.next, locked: false };
+            session.selfHeavyDirty = true;
+          })
+          .catch((err) => console.error(`daily reward claim failed for ${session.name}:`, err));
+        break;
+      }
       // Housing v0 (PHAA-405): interact-key commands, the only flow since the
       // /house chat command was removed (PHAA-482). sim.housingClaim/Place/Remove
       // re-validate range and ownership server-side.
@@ -3559,6 +3591,7 @@ export class GameServer {
       maybe('buyback', meta.vendorBuyback);
       maybe('equip', meta.equipment);
       maybe('cosmetics', anchorSession.accountCosmetics);
+      maybe('dailyRewards', anchorSession.accountDailyRewards);
       maybe('qlog', [...meta.questLog.values()]);
       maybe('qdone', [...meta.questsDone]);
       // PHAA-553: per-player dialogue disposition + flags, so the client walker

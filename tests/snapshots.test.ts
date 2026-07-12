@@ -1791,6 +1791,7 @@ const ALL_DELTA_KEYS = [
   'buyback',
   'cds',
   'cosmetics',
+  'dailyRewards',
   'dclears',
   'dcomp',
   'dcompanion',
@@ -2124,9 +2125,9 @@ describe('full self-state snapshot delta fixture', () => {
 });
 
 describe('delta-key contract pins (anti-drift)', () => {
-  it('ALL_DELTA_KEYS contains exactly 35 unique keys in sorted order', () => {
-    expect(ALL_DELTA_KEYS).toHaveLength(35);
-    expect(new Set(ALL_DELTA_KEYS).size).toBe(35);
+  it('ALL_DELTA_KEYS contains exactly 36 unique keys in sorted order', () => {
+    expect(ALL_DELTA_KEYS).toHaveLength(36);
+    expect(new Set(ALL_DELTA_KEYS).size).toBe(36);
     expect([...ALL_DELTA_KEYS]).toEqual([...ALL_DELTA_KEYS].sort());
   });
 
@@ -2139,7 +2140,7 @@ describe('delta-key contract pins (anti-drift)', () => {
     for (let m = re.exec(src); m !== null; m = re.exec(src)) scraped.add(m[1]);
     expect(scraped.has('lockouts')).toBe(true); // the multi-line call IS captured
     expect(scraped.has('lrollg')).toBe(true); // group-visible loot roll strip (PHAA-568)
-    expect(scraped.size).toBe(35);
+    expect(scraped.size).toBe(36);
     expect([...scraped].sort()).toEqual([...ALL_DELTA_KEYS].sort());
   });
 

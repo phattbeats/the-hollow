@@ -57,10 +57,12 @@ import {
   forceCharacterRename,
   ignoreReport,
   liftAccountChatMute,
+  lockAccountDailyRewards,
   moderateAccount,
   moderationQueue,
   moderationReportsForAccount,
   muteAccountChat,
+  unlockAccountDailyRewards,
 } from './moderation_db';
 import { bearerAccount } from './ownership';
 import { providerUsageSnapshot } from './provider_usage';
@@ -466,6 +468,41 @@ export async function handleAdminApi(
         return ok(res, { ok: true });
       } catch (err) {
         return fail(res, 400, err instanceof Error ? err.message : 'chat unmute failed');
+      }
+    }
+    // PHAA-660: daily-rewards participation lock/unlock (docs/design/daily-rewards.md's
+    // #1773 adapt). Narrower than ban/suspend: play/chat/trade are unaffected, only the
+    // claim command checks this. No live disconnect/kick needed, unlike ban/mute above.
+    const dailyRewardsLockMatch =
+      /^\/admin\/api\/moderation\/accounts\/(\d+)\/daily-rewards-lock$/.exec(path);
+    if (req.method === 'POST' && dailyRewardsLockMatch) {
+      const id = Number(dailyRewardsLockMatch[1]);
+      const body = await readBody(req);
+      try {
+        await lockAccountDailyRewards({
+          accountId: id,
+          adminAccountId: accountId,
+          reason: body.reason,
+        });
+        return ok(res, { ok: true });
+      } catch (err) {
+        return fail(res, 400, err instanceof Error ? err.message : 'daily rewards lock failed');
+      }
+    }
+    const dailyRewardsUnlockMatch =
+      /^\/admin\/api\/moderation\/accounts\/(\d+)\/daily-rewards-unlock$/.exec(path);
+    if (req.method === 'POST' && dailyRewardsUnlockMatch) {
+      const id = Number(dailyRewardsUnlockMatch[1]);
+      const body = await readBody(req);
+      try {
+        await unlockAccountDailyRewards({
+          accountId: id,
+          adminAccountId: accountId,
+          reason: body.reason,
+        });
+        return ok(res, { ok: true });
+      } catch (err) {
+        return fail(res, 400, err instanceof Error ? err.message : 'daily rewards unlock failed');
       }
     }
     // Append a free-form moderator note to the account's audit log. Non-punitive:

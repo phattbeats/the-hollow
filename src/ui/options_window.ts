@@ -182,6 +182,8 @@ export interface OptionsWindowDeps {
   slotActionName(slot: number): string | null;
   /** Re-sync the action-bar keycaps after a rebind/reset. */
   refreshKeybindLabels(): void;
+  /** Open the Daily Rewards window (PHAA-660), closing the options menu first. */
+  openDailyRewards(): void;
   /** The shared gold-themed dropdown (carries the listbox ARIA + keyboard nav). */
   buildDropdown(
     options: { value: string; label: string }[],
@@ -339,6 +341,9 @@ export class OptionsWindow {
           this.render();
         } else if (a.kind === 'logout') {
           this.deps.options()?.logout();
+        } else if (a.kind === 'dailyRewards') {
+          this.close();
+          this.deps.openDailyRewards();
         } else {
           this.close();
         }
