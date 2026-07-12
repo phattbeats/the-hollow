@@ -454,11 +454,26 @@ function resolvedGltf(url: string): GLTF {
 
 const optimizedSceneCache = new Map<string, THREE.Object3D>();
 
-function optimizedScene(url: string): THREE.Object3D {
+function optimizedScene(url: string, skinnedMeshFix?: VisualDef['skinnedMeshFix']): THREE.Object3D {
   const hit = optimizedSceneCache.get(url);
   if (hit) return hit;
   const root = cloneSkinned(resolvedGltf(url).scene);
   mergeSkinnedParts(root);
+  // Bake corrective scale/position into the geometry ONCE here, not per
+  // instance: this cached root is the shared template every character clone
+  // (cloneSkinned) draws its geometry buffers from, and a SkinnedMesh's own
+  // transform can't fix a bad bind (see VisualDef.skinnedMeshFix).
+  for (const fix of skinnedMeshFix ?? []) {
+    const node = root.getObjectByName(fix.node) as THREE.SkinnedMesh | undefined;
+    if (!node?.isSkinnedMesh) continue;
+    const s = fix.scale ?? 1;
+    const m = new THREE.Matrix4().compose(
+      new THREE.Vector3(...(fix.position ?? [0, 0, 0])),
+      new THREE.Quaternion(),
+      new THREE.Vector3(s, s, s),
+    );
+    node.geometry.applyMatrix4(m);
+  }
   optimizedSceneCache.set(url, root);
   return root;
 }
@@ -534,7 +549,7 @@ export function assembleModel(
   weaponItemId?: string | null,
   armorByItemId?: Partial<Record<EquipSlot, string>> | null,
 ): THREE.Object3D {
-  const root = cloneSkinned(optimizedScene(def.url));
+  const root = cloneSkinned(optimizedScene(def.url, def.skinnedMeshFix));
   // tag the character's own meshes (body + accessories share one texture atlas)
   // so a skin override hits them but not the separate weapons attached below
   root.traverse((o) => {
