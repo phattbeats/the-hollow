@@ -1,6 +1,6 @@
 // W0c: the IWorld structural-parity gate.
 //
-// `IWorld` (src/world_api.ts, 176 members) is the ONE seam render/ui depend
+// `IWorld` (src/world_api.ts, 177 members) is the ONE seam render/ui depend
 // on. `tsc` already proves both the offline `Sim` and the online `ClientWorld` satisfy
 // it structurally, but the interface is erased at build: there is NO runtime member
 // list, so nothing catches a present-but-throws stub or a kind flip (method vs read).
@@ -9,7 +9,7 @@
 // IWORLD_MEMBERS below is the hand-maintained member list, the W0c analog of the
 // append-only CALLBACK_KEYS in tests/sim_context.test.ts. It is APPEND-ONLY WITH THE
 // INTERFACE: whenever a future slice adds (or removes/renames) a member on `IWorld`,
-// it lands the matching edit here in the SAME commit. The count pins (176 / 47 / 129)
+// it lands the matching edit here in the SAME commit. The count pins (177 / 47 / 130)
 // plus the sorted-name `toEqual` snapshots (modeled on the anti-loosening exclude-set
 // pin in tests/parity/harness.test.ts:131-162) are what force that: a dropped or
 // renamed member reddens deliberately, never silently.
@@ -70,8 +70,8 @@ interface IWorldMember {
   readonly kind: IWorldMemberKind;
 }
 
-// The 176 members of `interface IWorld`, in interface order (world_api.ts).
-// Partition: 47 `data` + 129 `method` (read-returning + command-void + 3 async).
+// The 177 members of `interface IWorld`, in interface order (world_api.ts).
+// Partition: 47 `data` + 130 `method` (read-returning + command-void + 3 async).
 // biome-ignore lint/suspicious/noExportsInTest: IWORLD_MEMBERS is the W0c pinned structural-parity contract (the authoritative IWorld member list)
 export const IWORLD_MEMBERS = [
   // --- core world / player roster + economy reads (data) ---
@@ -180,6 +180,9 @@ export const IWORLD_MEMBERS = [
   { name: 'markerFor', kind: 'method' }, // read-returning (3/6)
   { name: 'setMarker', kind: 'method' },
   { name: 'clearMarker', kind: 'method' },
+  // PHAA-641: the readyrespond command (a UI button click, not chat text); the
+  // ready check itself starts via the "/ready" chat command, needing no member.
+  { name: 'readyCheckRespond', kind: 'method' },
   { name: 'tradeRequest', kind: 'method' },
   { name: 'tradeAccept', kind: 'method' },
   { name: 'tradeSetOffer', kind: 'method' },
@@ -367,9 +370,9 @@ beforeAll(() => {
 
 describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => {
   it('pins total / data / method counts', () => {
-    expect(IWORLD_MEMBERS.length).toBe(176);
+    expect(IWORLD_MEMBERS.length).toBe(177);
     expect(DATA_MEMBERS.length).toBe(47);
-    expect(METHOD_MEMBERS.length).toBe(129);
+    expect(METHOD_MEMBERS.length).toBe(130);
   });
 
   it('has no duplicate member names', () => {
@@ -379,7 +382,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
 
   // Sorted-name `toEqual` snapshots: a dropped, renamed, or kind-flipped member reddens
   // these deliberately, forcing a reviewed edit. NOT length-only.
-  it('the full sorted member set is exactly the pinned 176', () => {
+  it('the full sorted member set is exactly the pinned 177', () => {
     expect(IWORLD_MEMBERS.map((m) => m.name).sort()).toEqual([
       'abandonPet',
       'abandonQuest',
@@ -510,6 +513,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'questState',
       'questsDone',
       'raidLockouts',
+      'readyCheckRespond',
       'realm',
       'refuseQuest',
       'releaseSpirit',
@@ -612,7 +616,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
     ]);
   });
 
-  it('the sorted method-kind set is exactly the pinned 129', () => {
+  it('the sorted method-kind set is exactly the pinned 130', () => {
     expect(METHOD_MEMBERS.map((m) => m.name).sort()).toEqual([
       'abandonPet',
       'abandonQuest',
@@ -708,6 +712,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'prestige',
       'questState',
       'raidLockouts',
+      'readyCheckRespond',
       'refuseQuest',
       'releaseSpirit',
       'renamePet',
@@ -788,7 +793,7 @@ describe('membership, not equality: world extras do not fail the gate', () => {
 //       a MISSING name (if the array omits a key, Exclude<> is a non-never union and tsc
 //       fails) -- (1)+(2) together make each array EXACTLY its facet key-set;
 //   (3) the 26 arrays are pairwise DISJOINT (a member filed in two facets reddens);
-//   (4) their union, sorted, equals the pinned 176-name IWORLD_MEMBERS set (a member
+//   (4) their union, sorted, equals the pinned 177-name IWORLD_MEMBERS set (a member
 //       dropped from the split reddens).
 // This is the rigorous form, NOT the tautological `keyof IWorld === keyof (A & B & ...)`
 // (IWorld extends them, so that self-equality proves nothing): it asserts against the
@@ -959,6 +964,7 @@ const FACET_PARTY = [
   'markerFor',
   'setMarker',
   'clearMarker',
+  'readyCheckRespond',
 ] as const satisfies readonly (keyof IWorldParty)[];
 type _ExhaustParty = AssertNever<Exclude<keyof IWorldParty, (typeof FACET_PARTY)[number]>>;
 
@@ -1154,10 +1160,10 @@ describe('W1: aggregate IWorld member set equals the disjoint union of the 26 fa
     expect(overlaps, `members filed in more than one facet:\n${overlaps.join('\n')}`).toEqual([]);
   });
 
-  it('the union of the 26 facets equals the pinned 176-member IWORLD_MEMBERS set', () => {
+  it('the union of the 26 facets equals the pinned 177-member IWORLD_MEMBERS set', () => {
     const union = Object.values(FACET_MEMBER_ARRAYS).flatMap((arr) => [...arr]);
-    expect(union.length, 'union size before dedup (catches a duplicated member)').toBe(176);
-    expect(new Set(union).size, 'union size after dedup (catches a duplicated member)').toBe(176);
+    expect(union.length, 'union size before dedup (catches a duplicated member)').toBe(177);
+    expect(new Set(union).size, 'union size after dedup (catches a duplicated member)').toBe(177);
     const sortedUnion = [...union].sort();
     const pinned = IWORLD_MEMBERS.map((m) => m.name).sort();
     expect(sortedUnion).toEqual(pinned);

@@ -6470,6 +6470,15 @@ export class Hud {
             () => this.sim.duelDecline(),
           );
           break;
+        case 'readyCheckStart':
+          audio.click();
+          this.showPrompt(
+            t('hud.prompts.readyCheckStart', { name: `<b>${esc(ev.fromName)}</b>` }),
+            t('hud.prompts.markReady'),
+            () => this.sim.readyCheckRespond(true),
+            () => this.sim.readyCheckRespond(false),
+          );
+          break;
         case 'duelCountdown':
           this.showBanner(t('hud.system.duelCountdown', { seconds: ev.seconds }));
           audio.duelCountdownTick();

@@ -9,12 +9,13 @@
 // keep resolving to THIS file, never the sibling directory.
 //
 // ---------------------------------------------------------------------------
-// FACET MAP: the 26 domain facets (each IWorld member assigned exactly once; 176
+// FACET MAP: the 26 domain facets (each IWorld member assigned exactly once; 177
 // total; this count was previously stale at 23/155, corrected alongside the
 // PHAA-482 feedGreenpaw command addition, again at 24/161 with the PHAA-511
 // guild-calendar-events addition, again at 25/162 with PHAA-504's gathering.ts
-// facet, again with PHAA-505's per-player node harvest + proficiency, and again
-// here at 26/171 with the PHAA-495 Ravenpost mail facet (6 members). One
+// facet, again with PHAA-505's per-player node harvest + proficiency, again at
+// 26/171 with the PHAA-495 Ravenpost mail facet (6 members), and again here at
+// 26/177 with the PHAA-641 readyCheckRespond addition to IWorldParty. One
 // interface per file under ./world_api/; aux types travel with their facet. The
 // authoritative member-per-facet split is the W0c parity test.
 //
@@ -51,7 +52,7 @@
 //                                          ALL_DELTA_KEYS (30) + TERSE_TO_IWORLD mapping.
 //   tests/command_schema.test.ts   (W0b)  COMMAND_NAMES universe; ClientWorld send-set
 //                                          subset-of dispatch-set; DISPATCH_ONLY (7).
-//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (176) present + same-kind on
+//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (177) present + same-kind on
 //                                          Sim + ClientWorld; aggregate == disjoint
 //                                          union of the 26 facets.
 // ---------------------------------------------------------------------------
@@ -308,6 +309,7 @@ export const COMMAND_NAMES = [
   'harvestCorpse',
   'harvestNode',
   'dialogChoose',
+  'readyRespond',
 ] as const;
 
 // The union both the send path (`online.ts`) and the dispatch switch
@@ -437,6 +439,7 @@ export const COMMAND_FACETS = {
   masterAssign: 'IWorldParty',
   setMarker: 'IWorldParty',
   clearMarker: 'IWorldParty',
+  readyRespond: 'IWorldParty',
   // IWorldTrade: peer-to-peer trade-window commands (tradeInfo is a snapshot read,
   // no send).
   trade_req: 'IWorldTrade',

@@ -2075,6 +2075,11 @@ export class ClientWorld implements IWorld {
   clearMarker(entityId: number): void {
     this.cmd({ cmd: 'clearMarker', id: entityId });
   }
+  // PHAA-641: the readyrespond command (a UI button click, not chat text); the ready
+  // check itself starts via the "/ready" chat command, which already routes online.
+  readyCheckRespond(ready: boolean): void {
+    this.cmd({ cmd: 'readyRespond', ready });
+  }
   // --- IWorldTrade: trade-window command sends (tradeInfo is a snapshot read). ---
   tradeRequest(targetPid: number): void {
     this.cmd({ cmd: 'trade_req', id: targetPid });

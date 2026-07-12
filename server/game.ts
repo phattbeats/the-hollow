@@ -2768,6 +2768,9 @@ export class GameServer {
       case 'clearMarker':
         if (typeof msg.id === 'number') sim.clearMarker(msg.id, pid);
         break;
+      case 'readyRespond':
+        if (typeof msg.ready === 'boolean') sim.readyCheckRespond(msg.ready, pid);
+        break;
       // hunter pets
       case 'pet_abandon':
         sim.abandonPet(pid);

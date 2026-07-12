@@ -2456,6 +2456,11 @@ export const zh_TW: EnTranslations = {
       "readoutNoHomesteadQuest": "你還沒有家園。先完成綠掌修士的全部差事才能解鎖。",
       "readoutNoHomesteadHint": "你還沒有家園。站在空谷地裡合適的位置，輸入 /homestead claim。",
       "helpLine": "家園：/homestead，/homestead claim。"
+    },
+    "readyCheck": {
+      "mustBeInParty": "你必須在隊伍中才能發起準備檢查。",
+      "alreadyInProgress": "準備檢查已在進行中。",
+      "summary": "準備檢查：{ready} 人已準備，{notReady} 人未準備，{noResponse} 人無回應。"
     }
   },
   "lockpickUi": {
@@ -3297,6 +3302,8 @@ export const zh_TW: EnTranslations = {
       "openTrade": "開啟交易",
       "duelRequest": "{name} 向你發起了決鬥挑戰！",
       "acceptDuel": "接受決鬥",
+      "readyCheckStart": "{name} 發起了準備檢查。",
+      "markReady": "準備",
       "decline": "拒絕"
     },
     "combat": {

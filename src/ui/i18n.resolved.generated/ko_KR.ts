@@ -2456,6 +2456,11 @@ export const ko_KR: EnTranslations = {
       "readoutNoHomesteadQuest": "당신은 정착지가 없다. 브라더 초록발의 용무를 모두 마쳐야 하나를 얻을 수 있다.",
       "readoutNoHomesteadHint": "당신은 정착지가 없다. 우묵골 지대의 적당한 곳에 서서 /homestead claim이라고 입력하라.",
       "helpLine": "정착지: /homestead, /homestead claim."
+    },
+    "readyCheck": {
+      "mustBeInParty": "준비 확인을 시작하려면 파티에 있어야 합니다.",
+      "alreadyInProgress": "이미 준비 확인이 진행 중입니다.",
+      "summary": "준비 확인: 준비 완료 {ready}명, 미준비 {notReady}명, 무응답 {noResponse}명."
     }
   },
   "lockpickUi": {
@@ -3297,6 +3302,8 @@ export const ko_KR: EnTranslations = {
       "openTrade": "거래 열기",
       "duelRequest": "{name}님이 결투를 신청했습니다!",
       "acceptDuel": "결투 수락",
+      "readyCheckStart": "{name}님이 준비 확인을 시작했습니다.",
+      "markReady": "준비 완료",
       "decline": "거절"
     },
     "combat": {

@@ -275,6 +275,7 @@ import {
 } from './social/fiesta';
 import * as fiestaBotsMod from './social/fiesta_bots';
 import { PartyMachine } from './social/party';
+import * as readyCheckMod from './social/ready_check';
 import { SpatialGrid } from './spatial';
 import { isStunDrCategory } from './stun_dr';
 import { Targeting } from './targeting';
@@ -333,6 +334,7 @@ import {
   type PlayerClass,
   type QuestProgress,
   type QuestState,
+  type ReadyCheck,
   RUN_SPEED,
   type Sex,
   type SimConfig,
@@ -963,6 +965,10 @@ export class Sim {
   // behind SimContext. Built in the ctor after `ctx`. Sim keeps thin delegates
   // (partyOf + the eight command methods) so IWorld + foreign call sites resolve.
   private party!: PartyMachine;
+  // Active party/raid ready checks, keyed by party id (social/ready_check.ts).
+  // Swept in the end-of-tick block by updateReadyChecks. Exposed to the seam
+  // as ctx.readyChecks.
+  readyChecks = new Map<number, ReadyCheck>();
   // Player target selection + the party-scoped raid-marker store (T1): owns
   // partyMarkers and the tab/nearest/friendly selectors, moved off Sim behind
   // SimContext. Built in the ctor after `ctx`. Sim keeps thin delegates (the nine
@@ -2271,6 +2277,9 @@ export class Sim {
       get partyInvites() {
         return sim.party.partyInvites;
       },
+      get readyChecks() {
+        return sim.readyChecks;
+      },
       get chatTokens() {
         return sim.chatTokens;
       },
@@ -2379,6 +2388,10 @@ export class Sim {
       canAddItem: sim.canAddItem.bind(sim),
       partyOf: sim.partyOf.bind(sim),
       removeFromParty: (pid: number, verb: string) => sim.party.removeFromParty(pid, verb),
+      // /ready chat command routes through the seam to social/ready_check.ts (the
+      // leader-gated start; readyCheckRespond is a direct Sim delegate below, not on
+      // the seam, since nothing inside sim internals calls it).
+      readyCheckStart: (pid?: number) => readyCheckMod.readyCheckStart(sim.ctx, pid),
       // dropPartyMarkers flips to the T1 marker store (targeting); lazy arrow since
       // sim.targeting is built after ctx. The T1 selectors consume isHostileTo/
       // isFriendlyTo/pvpController/stopFollow, which are already bound above (C4a/C1) and
@@ -2852,6 +2865,7 @@ export class Sim {
     this.updateDuels();
     this.updateArena();
     this.updateTradesAndInvites();
+    readyCheckMod.updateReadyChecks(this.ctx);
     this.updateLootRolls();
     this.updateInstances();
     this.updateDelveRuns();
@@ -5035,6 +5049,13 @@ export class Sim {
 
   partyDecline(pid?: number): void {
     this.party.partyDecline(pid);
+  }
+
+  // The readyrespond command (a UI button click, not chat text): a party/raid
+  // member's yes/no answer to an in-flight ready check (social/ready_check.ts).
+  // Not on the SimContext seam (nothing inside sim internals calls it).
+  readyCheckRespond(ready: boolean, pid?: number): void {
+    readyCheckMod.readyCheckRespond(this.ctx, ready, pid);
   }
 
   partyLeave(pid?: number): void {

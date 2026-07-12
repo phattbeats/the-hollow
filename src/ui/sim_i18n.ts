@@ -5113,6 +5113,22 @@ const RULES: Rule[] = [
     re: /^Homestead: \/homestead, \/homestead claim\.$/,
     build: () => t('sim.homestead.helpLine'),
   },
+  // Ready checks (PHAA-641, src/sim/social/ready_check.ts): the leader-gated /ready
+  // start guards, plus the counts-only finalize summary sent to every participant.
+  // "You are not the party leader." reuses the existing error.notPartyLeader EXACT
+  // match verbatim (no new entry needed).
+  {
+    re: /^You must be in a party to start a ready check\.$/,
+    build: () => t('sim.readyCheck.mustBeInParty'),
+  },
+  {
+    re: /^A ready check is already in progress\.$/,
+    build: () => t('sim.readyCheck.alreadyInProgress'),
+  },
+  {
+    re: /^Ready check: (\d+) ready, (\d+) not ready, (\d+) no response\.$/,
+    build: (m) => t('sim.readyCheck.summary', { ready: m[1], notReady: m[2], noResponse: m[3] }),
+  },
   // Boss/mob mechanic broadcast. Broad (two open captures), so it MUST stay last -
   // after every more-specific "{X} {verb}!" rule above (awakens, enraged, calls for aid).
   {

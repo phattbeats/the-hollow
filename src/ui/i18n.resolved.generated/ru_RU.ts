@@ -2456,6 +2456,11 @@ export const ru_RU: EnTranslations = {
       "readoutNoHomesteadQuest": "У вас нет хутора. Закончите всю цепочку поручений брата Зеленолапа, чтобы получить его.",
       "readoutNoHomesteadHint": "У вас нет хутора. Встаньте на подходящем месте в Лощинных Плёсах и введите /homestead claim.",
       "helpLine": "Хутор: /homestead, /homestead claim."
+    },
+    "readyCheck": {
+      "mustBeInParty": "Чтобы начать проверку готовности, вы должны состоять в группе.",
+      "alreadyInProgress": "Проверка готовности уже идет.",
+      "summary": "Проверка готовности: готовы {ready}, не готовы {notReady}, без ответа {noResponse}."
     }
   },
   "lockpickUi": {
@@ -3297,6 +3302,8 @@ export const ru_RU: EnTranslations = {
       "openTrade": "Открыть обмен",
       "duelRequest": "{name} вызвал вас на дуэль!",
       "acceptDuel": "Принять дуэль",
+      "readyCheckStart": "{name} начал проверку готовности.",
+      "markReady": "Готов",
       "decline": "Отклонить"
     },
     "combat": {
