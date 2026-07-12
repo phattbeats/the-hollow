@@ -2804,15 +2804,9 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'guide.language.label': 'Język',
   'guide.language.select': 'Wybierz język',
   'guide.loading': 'Ładowanie...',
-  'guide.lore.aldricBody':
-    'Skromny wiejski kapłan, który jako pierwszy nazywa kult nad zbezczeszczonym grobem we Wschodnim Strumieniu, a potem osobiście podąża jego śladem przez bagna aż pod mur w Wysokiej Straży. To niewzruszone serce całej kampanii.',
-  'guide.lore.aldricRole': 'Kapłan Doliny',
   'guide.lore.figuresBody':
     'Garstka osób przemierza z tobą całą drogę. Wypatruj tych imion od doliny po szczyty.',
   'guide.lore.figuresTitle': 'Twarze, które poznasz',
-  'guide.lore.marenBody':
-    'Cicho mówiąca tropicielka, którą spotykasz w trzcinach Mokrzawia, sama cisza stóp i krótkie ostrze. Ona również podąża tropem na północ, a to jej ucho wyłapuje słowa, które wysyłają cię na szczyty.',
-  'guide.lore.marenRole': 'Zwiadowczyni Marszałka',
   'guide.models.count': 'Modele: {count}',
   'guide.models.groupClasses': 'Klasy',
   'guide.models.groupCreatures': 'Stworzenia',
