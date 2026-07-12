@@ -282,13 +282,14 @@ const WEAPONS = 'models/weapons';
 // authors standalone armor GLBs from license-clean sources and registers them
 // here; the first batch (PHAA-609) lives under `models/armor/` and was
 // extracted from the already-vendored KayKit Knight pack (CC0, see CREDITS.md)
-// via scripts/phaa609_extract_armor_glbs.mjs. The wiring (`ITEM_ARMOR_VARIANTS`
-// entries + `armorSlots`/`armorByAttachIndex` on each consuming VisualDef) is
-// pending a board decision on the chest/legs attach approach documented in
-// `docs/design/armor-per-slot-sourcing.md` (rigid per-bone prop vs baked-mesh
-// visibility swap vs split two-bone leg attach); T2b ships the mesh artifacts
-// + the smoke test now so the next heartbeat can land the wiring against a
-// concrete, validated GLB instead of re-doing the extraction work.
+// via scripts/phaa609_extract_armor_glbs.mjs. Attach approach is resolved
+// (see `docs/design/armor-per-slot-sourcing.md`): rigid single-bone attach for
+// helm/chest only (proven safe), a short hip-to-thigh guard for legs (avoids
+// the run-cycle knee clip a full greave gets on a rigid attach), never on a
+// class that already has `bakedArmorSlots` for the same slot (double-render).
+// `ITEM_ARMOR_VARIANTS` wiring for these three GLBs is still pending a
+// content call on which classes should read as plate-armored (flagged for
+// Brandon in the design doc) rather than an engineering blocker.
 const ARMOR = 'models/armor';
 
 /** GLB url for an equipped armor item's worn model, or null if the item has no
@@ -433,6 +434,37 @@ export function skinThumbUrl(key: string, index: number): string | null {
   return firstAlt ? firstAlt.replace(/\/[^/]+$/, '/base.png') : null;
 }
 
+// chibi_female_knight.glb's baked armor mesh nodes, shared by player_warrior_f
+// and player_paladin_f (both wear the same outfit GLB). Node names come from
+// the source file (a few carry an upstream "amor"/typo spelling); mapped to
+// EquipSlot by armor-piece anatomy: helmet -> helmet, plastron (chest plate)
+// -> chest, shoulder pauldrons + arm guards -> shoulder, the hip/thigh skirt
+// pieces -> waist, the knee/shin/thigh plates -> legs, the shoe plates -> feet.
+const CHIBI_FEMALE_KNIGHT_ARMOR_NODES = [
+  'armorhelmet',
+  'amorplastron',
+  'amorshoulders',
+  'amorarm',
+  'armorceinturethighs',
+  'armorskirt',
+  'armorknees',
+  'armorlegs',
+  'armorthights',
+  'armorshoe',
+];
+const CHIBI_FEMALE_KNIGHT_BAKED_ARMOR_SLOTS: Record<string, EquipSlot> = {
+  armorhelmet: 'helmet',
+  amorplastron: 'chest',
+  amorshoulders: 'shoulder',
+  amorarm: 'shoulder',
+  armorceinturethighs: 'waist',
+  armorskirt: 'waist',
+  armorknees: 'legs',
+  armorlegs: 'legs',
+  armorthights: 'legs',
+  armorshoe: 'feet',
+};
+
 // ---------------------------------------------------------------------------
 // The manifest
 // ---------------------------------------------------------------------------
@@ -469,6 +501,15 @@ export const VISUALS: Record<string, VisualDef> = {
     // dedicated paladin model (helmeted variant); ships its own Cape + Helmet
     // meshes and texture, so no show-list/tint. Shield + paladin hammer arrive
     // in the weapons pass; the gripped axe holds the slot until then.
+    // PHAA-609 bespoke-mesh batch 1: same T2a baked-toggle pattern as
+    // player_warrior (Paladin_Helmet/Paladin_Cape were always-on before this;
+    // Paladin_Cape is the model's only non-skinned mesh, so it must be listed
+    // in `show` or the keep-filter would cull it).
+    show: ['Paladin_Helmet', 'Paladin_Cape'],
+    bakedArmorSlots: {
+      Paladin_Helmet: 'helmet',
+      Paladin_Cape: 'chest',
+    },
     attach: [{ url: `${WEAPONS}/axe_1handed.glb`, bone: 'handslot.r' }],
     weaponSlots: [0],
   },
@@ -608,6 +649,17 @@ export const VISUALS: Record<string, VisualDef> = {
   // render rig. Layout mirrors the male roster exactly: hunter keeps its crossbow
   // (attach, no weaponSlots), the rogue dual-wields ([0, 1]), the warlock keeps a
   // fixed offhand spellbook while the wand mainhand swaps.
+  //
+  // Baked armor (PHAA-609 bespoke-mesh batch 1): chibi_female_knight.glb
+  // already ships every armor piece as its own skinned mesh node (a plate
+  // set: helmet, chest plastron, shoulder pauldrons + arm guards, a
+  // waist/thigh skirt, and separate knee/shin/thigh leg plates), the same
+  // T2a baked-toggle shape as the male knight's Knight_Helmet/Knight_Cape.
+  // No new assets; this just wires the same `bakedArmorSlots` pattern to an
+  // outfit that already had the meshes sitting unused. Every node is a
+  // skinned mesh (verified via the GLB's node.skin field), so `show` is a
+  // no-op for the keep-filter (it only culls non-skinned meshes) and is
+  // listed purely so the baked_armor_visibility contract test passes.
   player_warrior_f: {
     url: `${PLAYERS}/chibi_female_knight.glb`,
     height: 2.29,
@@ -621,6 +673,8 @@ export const VISUALS: Record<string, VisualDef> = {
       death: 'anim_dying',
       jump: 'anim_jump',
     },
+    show: CHIBI_FEMALE_KNIGHT_ARMOR_NODES,
+    bakedArmorSlots: CHIBI_FEMALE_KNIGHT_BAKED_ARMOR_SLOTS,
     attach: [{ url: `${WEAPONS}/sword_1handed.glb`, bone: 'DEF-hand.R' }],
     weaponSlots: [0],
   },
@@ -637,6 +691,8 @@ export const VISUALS: Record<string, VisualDef> = {
       death: 'anim_dying',
       jump: 'anim_jump',
     },
+    show: CHIBI_FEMALE_KNIGHT_ARMOR_NODES,
+    bakedArmorSlots: CHIBI_FEMALE_KNIGHT_BAKED_ARMOR_SLOTS,
     tint: 0xe8c468, // gold/white
     tintStrength: 0.4,
     attach: [{ url: `${WEAPONS}/axe_1handed.glb`, bone: 'DEF-hand.R' }],
