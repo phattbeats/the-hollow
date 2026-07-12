@@ -4386,14 +4386,14 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.gear.upgradeBody':
     '用一件全新的升級品換下舊裝備，對你的助益遠勝於穿著早已過時的裝備打得再完美。當有更好的東西掉落，或任務提供升級時，就收下吧。別把你的好物品留到以後。',
   'guide.gear.upgradeTitle': '保持裝備更新',
-  'guide.lore.aldricBody':
-    '一位謙卑的鄉村牧師，他最先在東溪一座被玷污的墳前指出邪教的名號，隨後親自循著線索穿過沼澤，一路向上來到高守哨站的城牆。他是整場戰役中堅定不移的核心。',
-  'guide.lore.aldricRole': '谷地的牧師',
+  'guide.lore.faddickBody':
+    '他手持長柄工具，比起劍更熟悉鏟子。他掃除從林中滲入的陰翳，安葬亡者，記著自己照管的每一塊地。當線索離開神龛之時，往往是他來指出前路。',
+  'guide.lore.faddickRole': '法洛畦場的掘墓人',
   'guide.lore.figuresBody': '有少數幾個人會與你一同走過這整條路。從谷地到群峰，請記住這些名字。',
   'guide.lore.figuresTitle': '你將會熟識的面孔',
-  'guide.lore.marenBody':
-    '你在泥沼的蘆葦叢中遇見的一位寡言追蹤者，腳步輕巧無聲，配著一把短刃。她也一路向北追查線索，正是她的耳朵捕捉到了那幾句話，把你送往群峰。',
-  'guide.lore.marenRole': '元帥的斥候',
+  'guide.lore.zebediahBody':
+    '他是一位耐心的教堂管事，用這本曆法守護著這片原野，雙手常半埋在土裡。他注視著瓶中的燈火，按月令安排耕種，是初來乍到者最先聽到的聲音。',
+  'guide.lore.zebediahRole': '根谷的教堂管事',
   'guide.models.count': '{count} 個模型',
   'guide.models.groupClasses': '職業',
   'guide.models.groupCreatures': '生物',
@@ -4439,6 +4439,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
     '在 Thornpeak，整場圖謀變得清晰。自 Vale 以來被竊取的每一個靈魂，都是傾注於那個邪教在山脈心臟地帶之陰森勾當的貢品。始於一座禮拜堂庭院的線索，終結於此：一場五人的深入探索，去面對這一切背後的黑手。至於在最深處等候的是誰，就留給你自己去揭曉了。',
   'guide.questsPage.sagaPeaksTitle': '群峰：貢品所為何來',
   'guide.questsPage.sagaTitle': '循線北行',
+  'guide.questsPage.sagaReachesBody':
+    '在霍洛沃原野，布雷澤·綠爪以火絨燈守護著神龛之瓶，而教堂管事與掘墓人則按月令安排耕種。第一條線索很小：守好燈火，清除野狼，摸熟這片土地。等到前路開啟，你自會知道那盞燈正握在誰的手中。',
+  'guide.questsPage.sagaReachesTitle': '原野：一盞燈與一本曆法',
   'guide.questsPage.sagaValeBody':
     '在東溪，亡者不得安息，而其背後的印記屬於一個早被認為消亡已久的教派。將它追溯到一名在禮拜堂地穴中作祟的喚墓者身上，而他自己的文件又把你指向北方的沼澤。',
   'guide.questsPage.sagaValeTitle': '谷地：印記上的一個名字',

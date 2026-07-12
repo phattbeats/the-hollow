@@ -4347,15 +4347,9 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'guide.gear.upgradeBody':
     'Ein altes Stück durch eine frische Verbesserung zu ersetzen, bringt dir mehr, als in Ausrüstung, der du entwachsen bist, perfekt zu spielen. Wenn etwas Besseres fällt oder eine Quest es anbietet, nimm es. Spare deine guten Gegenstände nicht für später auf.',
   'guide.gear.upgradeTitle': 'Halte deine Ausrüstung aktuell',
-  'guide.lore.aldricBody':
-    'Ein bescheidener Dorfpriester, der den Kult zuerst über einem geschändeten Grab in Eastbrook beim Namen nennt und dann seiner Spur höchstpersönlich durch das Moor und hinauf zur Mauer von Highwatch folgt. Er ist das ruhige Herz des ganzen Feldzugs.',
-  'guide.lore.aldricRole': 'Priester des Tals',
   'guide.lore.figuresBody':
     'Eine Handvoll Leute gehen den ganzen Weg mit dir. Halte vom Tal bis zu den Gipfeln nach diesen Namen Ausschau.',
   'guide.lore.figuresTitle': 'Gesichter, die du kennenlernen wirst',
-  'guide.lore.marenBody':
-    'Eine wortkarge Fährtenleserin, der du im Schilf von Mirefen begegnest, lauter leise Füße und eine kurze Klinge. Auch sie folgt der Spur nach Norden, und es ist ihr Ohr, das die Worte auffängt, die dich zu den Gipfeln schicken.',
-  'guide.lore.marenRole': 'Die Späherin des Marschalls',
   'guide.models.count': '{count} Modelle',
   'guide.models.groupClasses': 'Klassen',
   'guide.models.groupCreatures': 'Kreaturen',

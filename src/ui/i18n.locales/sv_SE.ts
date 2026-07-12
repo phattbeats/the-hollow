@@ -2828,15 +2828,9 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'guide.language.label': 'Språk',
   'guide.language.select': 'Välj ett språk',
   'guide.loading': 'Laddar...',
-  'guide.lore.aldricBody':
-    'En ödmjuk bypräst som först namnger kulten över en skändad grav i Östbäcken, sedan följer dess spår personligen genom träsket och upp till muren vid Högvakten. Han är det stadiga hjärtat i hela kampanjen.',
-  'guide.lore.aldricRole': 'Präst i Dalen',
   'guide.lore.figuresBody':
     'En handfull människor går hela vägen med dig. Håll utkik efter dessa namn från dalen till topparna.',
   'guide.lore.figuresTitle': 'Ansikten du kommer att lära känna',
-  'guide.lore.marenBody':
-    'En tystlåten spårare du möter i vassen i Dykärret, helt tysta fötter och ett kort blad. Hon följer också spåret norrut, och det är hennes öra som fångar orden som skickar dig till topparna.',
-  'guide.lore.marenRole': 'Marskalkens spejare',
   'guide.models.count': '{count} modeller',
   'guide.models.groupClasses': 'Klasser',
   'guide.models.groupCreatures': 'Varelser',

@@ -4624,15 +4624,15 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'guide.gear.upgradeBody':
     '낡은 부위를 새 업그레이드로 바꾸는 것이, 이미 자라난 몸에 맞지 않는 장비로 완벽하게 플레이하는 것보다 당신에게 더 큰 도움이 됩니다. 더 좋은 것이 떨어지거나 퀘스트가 내어 줄 때 받으세요. 좋은 물건을 나중을 위해 아껴 두지 마세요.',
   'guide.gear.upgradeTitle': '장비를 늘 최신으로',
-  'guide.lore.aldricBody':
-    '동부개울에서 더럽혀진 무덤 앞에 서서 교단의 이름을 처음 밝혀낸 다음, 직접 그 자취를 좇아 습지를 지나 하이워치의 성벽까지 오르는 소박한 마을 사제. 온 원정의 굳건한 심장입니다.',
-  'guide.lore.aldricRole': '골짜기의 사제',
+  'guide.lore.faddickBody':
+    '긴 자루의 도구를 들고, 칼보다 호미에 더 익숙한 조용한 섹스턴입니다. 숲에서 기어드는 것을 치우고, 죽은 자를 묻어 주며, 자기 땅의 모든 구획을 기억합니다. 자취가 성역을 떠날 때, 길을 알려 주는 것은 종종 그입니다.',
+  'guide.lore.faddickRole': '팰로 에이커스의 섹스턴',
   'guide.lore.figuresBody':
     '몇몇 사람들은 당신과 함께 이 길을 끝까지 걷습니다. 골짜기에서 봉우리까지, 이 이름들을 눈여겨보세요.',
   'guide.lore.figuresTitle': '차차 알게 될 얼굴들',
-  'guide.lore.marenBody':
-    '마이어펜의 갈대밭에서 만나는, 말수 적은 추적자. 조용한 발걸음과 짧은 칼이 전부입니다. 그녀 역시 북쪽으로 자취를 좇으며, 당신을 봉우리로 보내는 그 말을 알아챈 것도 바로 그녀의 귀입니다.',
-  'guide.lore.marenRole': '원수의 정찰병',
+  'guide.lore.zebediahBody':
+    '리치즈를 달력에 맞춰 지키는, 인내심 강한 버저이며, 손은 늘 반쯤 흙에 묻혀 있습니다. 화분의 등불을 살피고, 달을 따라 파종을 정하며, 새로 온 이에게 길이 가장 먼저 들려주는 목소리입니다.',
+  'guide.lore.zebediahRole': '루트 홀로우의 버저',
   'guide.models.count': '모델 {count}개',
   'guide.models.groupClasses': '직업',
   'guide.models.groupCreatures': '생명체',
@@ -4681,6 +4681,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
     '쏜피크에서 모든 계략이 환히 드러납니다. 골짜기 이래로 빼앗긴 영혼 하나하나가 산속 깊은 곳에서 벌어지는 교단의 음산한 작업에 부어진 십일조였습니다. 예배당 뜰에서 시작된 자취가 여기, 다섯 명이 함께 내려가 그 모든 일의 배후를 마주하는 곳에서 끝납니다. 그 밑바닥에 누가 기다리는지는 당신이 직접 알아내도록 남겨 두겠습니다.',
   'guide.questsPage.sagaPeaksTitle': '봉우리: 십일조가 향한 곳',
   'guide.questsPage.sagaTitle': '북쪽으로 자취를 좇으세요',
+  'guide.questsPage.sagaReachesBody':
+    '호울로 리치즈에서 브라더 그린포우가 잉버벌브로 성역의 화분을 살려 두고, 버저와 섹스턴이 달을 따라 파종을 정합니다. 첫 실마리는 작은 것입니다. 등불을 꺼뜨리지 말고, 이리저기 쫓기는 늑대를 물리치며, 이 땅을 익히십시오. 길이 트일 무렵이면 등불이 누구의 손에 있는지, 당신은 이미 알고 있을 것입니다.',
+  'guide.questsPage.sagaReachesTitle': '리치즈: 등불과 달력',
   'guide.questsPage.sagaValeBody':
     '동부개울에서는 죽은 자가 쉬지 못하고, 그 배후의 표식은 사라진 지 오래라 여겨지던 종파의 것입니다. 자취를 좇으면 예배당 묘실에서 일하는 무덤부름에 닿고, 그의 문서가 당신을 북쪽 습지로 가리킵니다.',
   'guide.questsPage.sagaValeTitle': '골짜기: 인장에 새겨진 이름',

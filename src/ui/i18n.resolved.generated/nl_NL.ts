@@ -1143,7 +1143,7 @@ export const nl_NL: EnTranslations = {
         "levels": "Niveau {min} tot {max}",
         "cta": "Bekijk de wereld",
         "hollowReachesName": "The Hollow Reaches",
-        "hollowReachesBlurb": "Quiet ground below the shrine gate, where new arrivals cut their teeth around Fallow Acres and Root Hollow.",
+        "hollowReachesBlurb": "Open ground and old farm plots at the threshold of a sealed shrine. The Plant keeps the lamp lit; the road waits beyond the gate.",
         "valeName": "Oostbeekdal",
         "valeBlurb": "Groene heuvels en oude bossen waar elk avontuur begint.",
         "marshName": "Slijkveenmoeras",
@@ -1644,6 +1644,8 @@ export const nl_NL: EnTranslations = {
       "typeGroupBody": "Elk hoofdstuk van het hoofdverhaal eindigt bij een dungeondeur. De aanloop is solo te doen, maar de genadeslag tegen de schurk van een hoofdstuk is bedoeld voor een groep van vijf.",
       "sagaTitle": "Volg het spoor naar het noorden",
       "sagaBody": "Het hoofdverhaal is één lange jacht. Een dodencultus is bezig met de graven van het rijk, en elk hoofdstuk dat je afsluit wijst één gebied verder langs de weg. Je bestrijdt nooit het hele complot ineens; je trekt aan één draad en die leidt naar de volgende hand die hem vasthoudt.",
+      "sagaReachesTitle": "The Reaches: a lamp and a calendar",
+      "sagaReachesBody": "In the Hollow Reaches, Brother Greenpaw keeps the shrine vase alive with emberbulbs, and the verger and the sexton set the planting by the moon. The first thread is a small one: keep the lamp lit, clear the wolves, learn the ground. By the time the road opens, you will know whose hand the lamp is in.",
       "sagaValeTitle": "Oostbeekdal: een naam op een zegel",
       "sagaValeBody": "In Oostbeekdal vinden de doden geen rust, en het teken erachter behoort toe aan een sekte die men allang verdwenen waande. Volg het tot een Grafroeper die de kapelcrypte bewerkt, en zijn eigen papieren wijzen je naar het veen in het noorden.",
       "sagaMarshTitle": "Het moeras: een tiende aan zielen",
@@ -1661,10 +1663,10 @@ export const nl_NL: EnTranslations = {
     "lore": {
       "figuresTitle": "Gezichten die je zult leren kennen",
       "figuresBody": "Een handvol mensen lopen de hele weg met je mee. Let op deze namen, van de vallei tot de toppen.",
-      "aldricRole": "Priester van het Dal",
-      "aldricBody": "Een nederige dorpspriester die de cultus voor het eerst benoemt bij een geschonden graf in Oostbeekdal, dan zelf het spoor volgt door het moeras en omhoog naar de muur bij Hooguitkijk. Hij is het standvastige hart van de hele veldtocht.",
-      "marenRole": "De Verkenner van de Maarschalk",
-      "marenBody": "Een zachtsprekende spoorzoeker die je ontmoet in het riet van Slijkveen, en al stille voeten en een kort lemmet. Ook zij volgt het spoor naar het noorden, en het is haar oor dat de woorden opvangt die je naar de toppen sturen."
+      "zebediahRole": "Verger of Root Hollow",
+      "zebediahBody": "A patient verger who keeps the Reaches to a calendar, his hands always half in the soil. He watches the lamp at the vase, sets the planting by the moon, and is the first voice the road speaks to a new arrival.",
+      "faddickRole": "Sexton of Fallow Acres",
+      "faddickBody": "A quiet sexton with a long-handled tool, more at home with a spade than a sword. He clears what creeps in from the wood, lays the dead to rest, and remembers every plot on his ground. When the trail leaves the shrine, it is often him who points the way."
     },
     "dungeonsPage": {
       "heading": "Kerkers en Raids",

@@ -2819,15 +2819,9 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'guide.language.label': 'Sprog',
   'guide.language.select': 'Vælg et sprog',
   'guide.loading': 'Indlæser...',
-  'guide.lore.aldricBody':
-    'En ydmyg landsbypræst, der først navngiver kulten over en vanhelliget grav i Østbæk, og derefter følger dens spor personligt gennem sumpen og op til muren ved Højvagt. Han er det stødige hjerte i hele felttoget.',
-  'guide.lore.aldricRole': 'Dalens Præst',
   'guide.lore.figuresBody':
     'En håndfuld mennesker går hele vejen sammen med dig. Hold øje med disse navne fra dalen til tinderne.',
   'guide.lore.figuresTitle': 'Ansigter, du vil komme til at kende',
-  'guide.lore.marenBody':
-    'En lavmælt sporer, du møder i sivene i Mosekær, kun stille fødder og en kort klinge. Hun følger også sporet mod nord, og det er hendes øre, der opfanger de ord, der sender dig til tinderne.',
-  'guide.lore.marenRole': 'Marskalens Spejder',
   'guide.models.count': '{count} modeller',
   'guide.models.groupClasses': 'Klasser',
   'guide.models.groupCreatures': 'Skabninger',

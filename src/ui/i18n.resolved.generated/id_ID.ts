@@ -1143,7 +1143,7 @@ export const id_ID: EnTranslations = {
         "levels": "Level {min} hingga {max}",
         "cta": "Lihat dunianya",
         "hollowReachesName": "The Hollow Reaches",
-        "hollowReachesBlurb": "Quiet ground below the shrine gate, where new arrivals cut their teeth around Fallow Acres and Root Hollow.",
+        "hollowReachesBlurb": "Open ground and old farm plots at the threshold of a sealed shrine. The Plant keeps the lamp lit; the road waits beyond the gate.",
         "valeName": "Lembah Eastbrook",
         "valeBlurb": "Bukit hijau dan hutan tua tempat setiap petualangan bermula.",
         "marshName": "Rawa Mirefen",
@@ -1644,6 +1644,8 @@ export const id_ID: EnTranslations = {
       "typeGroupBody": "Setiap babak kisah utama berakhir di pintu dungeon. Bagian pengantarnya bisa dimainkan sendirian, tetapi pukulan akhir terhadap penjahat sebuah babak ditujukan bagi party beranggota lima.",
       "sagaTitle": "Ikuti jejak ke utara",
       "sagaBody": "Kisah utama adalah satu perburuan panjang. Sekte kematian sedang bekerja di makam-makam dunia ini, dan setiap babak yang kamu tutup menunjukkan satu zona lebih jauh di sepanjang jalan. Kamu tak pernah melawan seluruh persekongkolan sekaligus; kamu menarik satu benang, dan ia menuntun ke tangan berikutnya yang memegangnya.",
+      "sagaReachesTitle": "The Reaches: a lamp and a calendar",
+      "sagaReachesBody": "In the Hollow Reaches, Brother Greenpaw keeps the shrine vase alive with emberbulbs, and the verger and the sexton set the planting by the moon. The first thread is a small one: keep the lamp lit, clear the wolves, learn the ground. By the time the road opens, you will know whose hand the lamp is in.",
       "sagaValeTitle": "Lembah: sebuah nama di atas lambang",
       "sagaValeBody": "Di Eastbrook orang mati tak mau beristirahat, dan tanda di baliknya milik sebuah sekte yang sudah lama dikira lenyap. Lacak hingga ke seorang Gravecaller yang bekerja di kripta kapel, dan surat-suratnya sendiri mengarahkanmu menuju rawa di utara.",
       "sagaMarshTitle": "Rawa: persembahan jiwa",
@@ -1661,10 +1663,10 @@ export const id_ID: EnTranslations = {
     "lore": {
       "figuresTitle": "Wajah-wajah yang akan kamu kenali",
       "figuresBody": "Segelintir orang menempuh seluruh perjalanan bersamamu. Perhatikan nama-nama ini dari lembah hingga puncak.",
-      "aldricRole": "Pendeta Lembah",
-      "aldricBody": "Seorang pendeta desa yang rendah hati, yang pertama menyebut nama kultus itu di atas kuburan yang dinodai di Eastbrook, lalu mengikuti jejaknya secara langsung melewati rawa hingga ke tembok di Highwatch. Dia adalah jantung yang teguh dari seluruh kampanye ini.",
-      "marenRole": "Pengintai sang Marshal",
-      "marenBody": "Seorang pelacak bersuara pelan yang kamu temui di antara alang-alang Mirefen, dengan langkah senyap dan bilah pendek. Dia juga mengikuti jejak ke utara, dan telinganyalah yang menangkap kata-kata yang mengantarmu ke puncak."
+      "zebediahRole": "Verger of Root Hollow",
+      "zebediahBody": "A patient verger who keeps the Reaches to a calendar, his hands always half in the soil. He watches the lamp at the vase, sets the planting by the moon, and is the first voice the road speaks to a new arrival.",
+      "faddickRole": "Sexton of Fallow Acres",
+      "faddickBody": "A quiet sexton with a long-handled tool, more at home with a spade than a sword. He clears what creeps in from the wood, lays the dead to rest, and remembers every plot on his ground. When the trail leaves the shrine, it is often him who points the way."
     },
     "dungeonsPage": {
       "heading": "Ruang Bawah Tanah dan Raid",
