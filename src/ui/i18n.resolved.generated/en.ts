@@ -246,7 +246,6 @@ export const en: EnTranslations = {
       "chat": "Skip to Chat"
     },
     "mobile": {
-      "autorun": "Autorun",
       "jump": "Jump",
       "leaderboard": "Ranks",
       "nameplates": "Names",

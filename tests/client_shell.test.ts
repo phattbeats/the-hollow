@@ -1200,28 +1200,32 @@ describe('client HTML shell', () => {
     expect(marketWindowTs).not.toContain('<select data-market-filter=');
   });
 
-  it('keeps the mobile More and Autorun buttons in the combat row', () => {
+  it('keeps the mobile More button in the combat row; Autorun is the move-joystick lock target', () => {
     const combatControls = html.slice(
       html.indexOf('<div id="mobile-combat-controls">'),
       html.indexOf('<div id="mobile-extra-controls"'),
     );
     const primaryButtons = [...combatControls.matchAll(/<button class="mobile-btn"/g)];
     const attack = combatControls.indexOf('id="mobile-attack-nearest"');
-    const autorun = combatControls.indexOf('id="mobile-autorun"');
     const jump = combatControls.indexOf('id="mobile-jump"');
 
-    expect(primaryButtons).toHaveLength(7);
+    expect(primaryButtons).toHaveLength(6);
+    expect(combatControls).not.toContain('id="mobile-autorun"');
     expect(attack).toBeGreaterThanOrEqual(0);
-    expect(autorun).toBeGreaterThan(attack);
-    expect(jump).toBeGreaterThan(autorun);
-    expect(hudMobileCss).toContain('grid-template-columns: 124px repeat(6, 58px);');
-    expect(hudMobileCss).toContain('grid-template-columns: 115px repeat(6, 54px);');
-    expect(hudMobileCss).toContain('grid-template-columns: 96px repeat(6, 42px);');
+    expect(jump).toBeGreaterThan(attack);
+    const moveJoystick = html.slice(
+      html.indexOf('id="mobile-move-joystick"'),
+      html.indexOf('id="mobile-camera-joystick"'),
+    );
+    expect(moveJoystick).toContain('id="mobile-autorun-target"');
+    expect(hudMobileCss).toContain('grid-template-columns: 124px repeat(5, 58px);');
+    expect(hudMobileCss).toContain('grid-template-columns: 115px repeat(5, 54px);');
+    expect(hudMobileCss).toContain('grid-template-columns: 96px repeat(5, 42px);');
     expect(hudMobileCss).toContain(
       'position: absolute;\n    left: 50%;\n    bottom: calc(3px + env(safe-area-inset-bottom));',
     );
     expect(hudMobileCss).toContain(
-      'bottom: calc(2px + env(safe-area-inset-bottom));\n      grid-template-columns: 115px repeat(6, 54px);',
+      'bottom: calc(2px + env(safe-area-inset-bottom));\n      grid-template-columns: 115px repeat(5, 54px);',
     );
     expect(hudMobileCss).toContain(
       'pointer-events: auto;\n    align-items: end;\n    z-index: 30;',

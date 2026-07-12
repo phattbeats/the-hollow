@@ -96,6 +96,16 @@ describe('Input autorun', () => {
     expect(input.readMoveInput().forward).toBe(false);
   });
 
+  it('setAutorun sets the state directly (idempotent, unlike toggle)', () => {
+    const { input } = makeInput();
+    expect(input.setAutorun(true)).toBe(true);
+    expect(input.autorun).toBe(true);
+    expect(input.setAutorun(true)).toBe(true);
+    expect(input.autorun).toBe(true);
+    expect(input.setAutorun(false)).toBe(false);
+    expect(input.autorun).toBe(false);
+  });
+
   it('a forward touch-move cancels autorun (classic tap-to-stop)', () => {
     const { input } = makeInput();
     input.toggleAutorun();
