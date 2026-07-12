@@ -3196,6 +3196,20 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_keep_him_lit.dialog.refuse': '三回に分けてなんてやらない。一回で十分だ。',
   'entities.quests.q_keep_him_lit.dialog.refuseReply':
     '……ああ。ああ、わかった、友よ、それも十分公平な線引きだ……なら、これでもとにかく持っといてくれ、厳密には稼いだもんじゃないが、俺が渡すもののほとんどもそうだしな、波長ってやつは、俺が装ってるほど几帳面に数えちゃいないんだ……',
+  'entities.quests.q_your_own_hearth.title': '自分だけの炉',
+  'entities.quests.q_your_own_hearth.text':
+    'これで最後だ、友よ、これは頼み事っていうより、ちょっとした後押しってやつさ……道の向こうに土地がある、フォロウ・エーカーズ、静かに誰かに望まれるのを待ってる。セクストン・ファディックが、狼の見回りと、彼が守ってる場所のリストの合間に、そこにも半分目を配ってる——挨拶しに行って、お前がここに留まる質だってことを知らせてやってくれ……そのあとは、いつでも好きな時に、その土地はお前のものだ。',
+  'entities.quests.q_your_own_hearth.completion':
+    'そういうことだ……お前はもうその顔をしてる、友よ、もう通り過ぎるだけの奴じゃないって顔だ。行けよ、あっちのどこかに足を下ろしてこい。俺は今まで通り炉を灯し続けるし、壺もちゃんとお前の居場所を分かってるさ……',
+  'entities.quests.q_your_own_hearth.objectives.0.label': 'セクストン・ファディックと会った',
+  'entities.quests.q_your_own_hearth.dialog.complain':
+    '土地？俺はただお前の植物に挨拶したかっただけだ。',
+  'entities.quests.q_your_own_hearth.dialog.complainReply':
+    'それはいつでもできる、あいつはどこにも行かないからな……だが魂ってのは祠を訪ねるだけじゃ足りないんだ、友よ、自分の足で立つ場所が要る。そう長くはかからん。ファディックは話し方はのろいが、お前の午後を無駄にはしない。',
+  'entities.quests.q_your_own_hearth.dialog.refuse':
+    '俺にホームステッドは要らない。ただ訪ねるだけで十分満足だ。',
+  'entities.quests.q_your_own_hearth.dialog.refuseReply':
+    '……わかった、わかった、無理強いする気はない、友よ、土地はファディックが守ってる通り、そのまま待ってる、待つのに金はかからないしな……ほら、これでも持っといてくれ、こんなに長く留まってくれた分だ。それもある意味、ホームってやつなんだろうな。',
   'hud.errors.silenced': '沈黙状態です！',
   'hud.pet.noPetFood': 'ペットに与える食べ物がありません。',
   'hud.pet.petEatsFoodOnly': 'ペットは食べ物しか食べられません。',
@@ -4807,6 +4821,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     'グリーンポー修道士から譲り受けた、生きた緑の挿し木で、湿った苔にくるまれている。ホームステッドの区画を編集できるようになったら、最初に植えるのはこれだ。',
   'entities.items.greenpaw_bead.name': '弾帯の数珠玉',
   'entities.items.keeper_coal.name': '冷めることのない炭',
+  'entities.items.hearth_stone.name': '彼の炉からまだ温かい石',
   'entities.items.witness_root_cincture.name': '証しの根の帯紐',
   'entities.items.shrine_diary_page.name': '破れた日記のページ',
   'entities.items.shrine_diary_page.flavorText':

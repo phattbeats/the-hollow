@@ -921,6 +921,7 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.flavorText':
     '...đếm bốn mươi ngày bằng ánh nến trước khi mất dấu. Bóng tối dưới đây không quên Người, dù Người đã quên nơi này. Nếu con diệc lượn thấp, hãy nói với Người Giữ Đền rằng bấc đèn vẫn còn cháy...',
   'entities.items.keeper_coal.name': 'Hòn Than Không Bao Giờ Nguội',
+  'entities.items.hearth_stone.name': 'Một Viên Đá Vẫn Còn Ấm Từ Lò Sưởi Của Anh Ấy',
   'entities.items.willow_sprig.name': 'Một Cành Liễu',
   'entities.items.worn_prayer_token.name': 'Thẻ Cầu Nguyện Mòn Vẹt',
   'entities.items.worn_prayer_token.flavorText':

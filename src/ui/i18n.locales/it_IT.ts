@@ -4571,6 +4571,7 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.flavorText':
     "...ho contato quaranta giorni a lume di candela prima di perdere il filo. Il buio quaggiù non Lo dimentica, anche se Lui ha dimenticato questo luogo. Se l'airone vola basso, di' al Sagrestano che lo stoppino brucia ancora...",
   'entities.items.keeper_coal.name': 'Un Carbone Mai Raffreddato',
+  'entities.items.hearth_stone.name': 'Una Pietra Ancora Calda Dal Suo Focolare',
   'entities.items.willow_sprig.name': 'Un Ramoscello Di Salice',
   'entities.items.worn_prayer_token.name': 'Gettone di Preghiera Consumato',
   'entities.items.worn_prayer_token.flavorText':
