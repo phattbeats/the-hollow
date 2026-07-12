@@ -3200,7 +3200,8 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_your_own_hearth.completion':
     '그거야... 이제 그 표정을 지었어, 친구, 더 이상 그냥 지나가는 사람이 아니란 표정 말이야. 가서 저 밖 어딘가에 발을 디뎌봐. 나는 늘 그랬듯이 화로를 밝혀놓을 거고, 항아리도 널 어디서 찾을지 정확히 알 거야...',
   'entities.quests.q_your_own_hearth.objectives.0.label': '섹스턴 패딕을 만났다',
-  'entities.quests.q_your_own_hearth.dialog.complain': '땅? 난 그냥 네 식물한테 인사하고 싶었을 뿐이야.',
+  'entities.quests.q_your_own_hearth.dialog.complain':
+    '땅? 난 그냥 네 식물한테 인사하고 싶었을 뿐이야.',
   'entities.quests.q_your_own_hearth.dialog.complainReply':
     '그건 언제든 할 수 있어, 그는 어디도 안 가니까... 하지만 영혼이란 건 사당을 방문하는 것만으로는 부족해, 친구, 자기 두 발로 설 곳이 필요하지. 오래 안 걸려. 패딕은 말은 느려도 네 오후를 낭비하진 않아.',
   'entities.quests.q_your_own_hearth.dialog.refuse':
