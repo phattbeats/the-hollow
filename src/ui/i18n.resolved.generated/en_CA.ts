@@ -5532,6 +5532,18 @@ export const en_CA: EnTranslations = {
         "name": "Tally-Marked Shard",
         "flavorText": "...marks in fives, scratched deep, crossed each time the count came round. hundreds of fives before the crossing stops, and the last row was never finished..."
       },
+      "root_token_unbinding": {
+        "name": "Loosened Root-Knot",
+        "flavorText": "...worn smooth where a thumb pressed and pressed, like loosening a knot tied around nothing you could see. someone believed letting go was a kindness. someone was wrong, or early, or both..."
+      },
+      "root_token_offering": {
+        "name": "Small Feeding Stone",
+        "flavorText": "...a shallow bowl scratched into stone no bigger than a coin, the kind you'd leave a crumb in for something that couldn't ask. whatever ate here didn't stop being hungry. it just stopped being seen..."
+      },
+      "root_token_verdict": {
+        "name": "Judgment-Scored Stone",
+        "flavorText": "...a tally scored in threes, not fives, judged and rejudged, pressed so hard the third pass split the stone. somebody kept changing their mind about the same question, over and over, in the dark..."
+      },
       "reliquary_plate_chest": {
         "name": "Reliquary Guard Hauberk"
       },

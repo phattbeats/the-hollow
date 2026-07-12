@@ -5532,6 +5532,18 @@ export const fr_FR: EnTranslations = {
         "name": "Éclat aux Marques de Compte",
         "flavorText": "...des marques par cinq, gravées profond, barrées chaque fois que le compte revenait. des centaines de cinq avant que les barres ne cessent, et la dernière rangée ne fut jamais finie..."
       },
+      "root_token_unbinding": {
+        "name": "Loosened Root-Knot",
+        "flavorText": "...worn smooth where a thumb pressed and pressed, like loosening a knot tied around nothing you could see. someone believed letting go was a kindness. someone was wrong, or early, or both..."
+      },
+      "root_token_offering": {
+        "name": "Small Feeding Stone",
+        "flavorText": "...a shallow bowl scratched into stone no bigger than a coin, the kind you'd leave a crumb in for something that couldn't ask. whatever ate here didn't stop being hungry. it just stopped being seen..."
+      },
+      "root_token_verdict": {
+        "name": "Judgment-Scored Stone",
+        "flavorText": "...a tally scored in threes, not fives, judged and rejudged, pressed so hard the third pass split the stone. somebody kept changing their mind about the same question, over and over, in the dark..."
+      },
       "reliquary_plate_chest": {
         "name": "Haubert de la garde du reliquaire"
       },

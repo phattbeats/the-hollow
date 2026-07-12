@@ -58,6 +58,29 @@ const hollowEntitiesEn = {
         'hundreds of fives before the crossing stops, and the last row was never ' +
         'finished...',
     },
+    // PHAA-599 (Under-Shrine v2): kept identical to the sim records in
+    // src/sim/content/hollow.ts; non-Latin fills live in src/ui/i18n.locales/.
+    root_token_unbinding: {
+      name: 'Loosened Root-Knot',
+      flavorText:
+        '...worn smooth where a thumb pressed and pressed, like loosening a knot ' +
+        'tied around nothing you could see. someone believed letting go was a ' +
+        'kindness. someone was wrong, or early, or both...',
+    },
+    root_token_offering: {
+      name: 'Small Feeding Stone',
+      flavorText:
+        '...a shallow bowl scratched into stone no bigger than a coin, the kind ' +
+        "you'd leave a crumb in for something that couldn't ask. whatever ate " +
+        "here didn't stop being hungry. it just stopped being seen...",
+    },
+    root_token_verdict: {
+      name: 'Judgment-Scored Stone',
+      flavorText:
+        '...a tally scored in threes, not fives, judged and rejudged, pressed so ' +
+        'hard the third pass split the stone. somebody kept changing their mind ' +
+        'about the same question, over and over, in the dark...',
+    },
   },
   mobs: {
     palefeeder: { name: 'Palefeeder' },

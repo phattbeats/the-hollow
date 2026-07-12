@@ -4822,6 +4822,15 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': '刻み跡の欠片',
   'entities.items.tally_shard.flavorText':
     '……五本ひと組で深く刻まれ、数え終えるたびに線で消されている。消された五本組が幾百とあり、それが途絶える、最後の一列だけは最後まで消されずに終わっている……',
+  'entities.items.root_token_unbinding.name': '緩んだ根の結び目',
+  'entities.items.root_token_unbinding.flavorText':
+    '……親指で何度も擦られて滑らかになっている。見えない何かに結ばれた結び目を緩めるかのように。誰かは手放すことが優しさだと信じていた。その人は間違っていたか、早すぎたか、その両方だったのだろう……',
+  'entities.items.root_token_offering.name': '小さな給餌石',
+  'entities.items.root_token_offering.flavorText':
+    '……硬貨よりも小さな、浅い窪みが石に刻まれている。求めることさえできない何かに、ひとかけらを残すためのものだったのだろう。ここで食べていた何かは、飢えをやめたわけではない。ただ、見られなくなっただけだ……',
+  'entities.items.root_token_verdict.name': '裁きの刻み石',
+  'entities.items.root_token_verdict.flavorText':
+    '……刻み目は五つでなく三つひと組で刻まれ、裁かれては覆され、三度目には石が割れるほど強く押し付けられている。誰かが暗闇の中で、同じ問いについて何度も何度も心を変え続けていたかのようだ……',
   'entities.mobs.acolyte_tessa.name': '侍祭テッサ',
   'entities.mobs.deacon_varric.name': '助祭ヴァリック',
   'entities.mobs.reliquary_bonewalker.name': '蘇りし骨歩き',
