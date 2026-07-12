@@ -1,4 +1,4 @@
-// The Bramble Hold — a moderation jail hidden deep in unclaimed wilds, far
+// The Bramble Hold: a moderation jail hidden deep in unclaimed wilds, far
 // west and south of the Hollow's zone strip. Not a dungeon instance: no door,
 // no party, one shared cage for the whole realm. A moderator's /jail command
 // teleports the target here directly (server/moderation_service.ts +
