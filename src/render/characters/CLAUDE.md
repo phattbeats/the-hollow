@@ -82,5 +82,12 @@ family key for those three mobs, e.g. for prewarm shader-compile dedup).
 - Geometries/materials are **shared per-asset caches and never disposed**;
   `dispose()` only releases this clone's mixer + Skeletons. YOU MUST call it on
   despawn (online interest churn strands GPU bone textures otherwise).
+- A `SkinnedMesh`'s own `position`/`scale`/`rotation` is a no-op in the default
+  'attached' bind mode: three.js recomputes `bindMatrixInverse` from the node's
+  own `matrixWorld` on every `updateMatrixWorld()`, which silently cancels any
+  transform you apply to the node. A mis-authored skinned accessory (PHAA-633:
+  a purchased outfit's hat mesh) needs its correction baked into `geometry` via
+  `VisualDef.skinnedMeshFix`, not a node-level fixup like `weaponFix` (which
+  only works because it targets non-skinned prop nodes).
 - Never `Math.random` in *sim*, but here it's fine, this is presentation
   (bob phase, hit-clip pick). Never reach past `IWorld` into a concrete world.
