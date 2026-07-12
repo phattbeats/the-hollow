@@ -200,6 +200,34 @@ export function releasePlayerSpirit(ctx: SimContext, pid?: number): void {
   ctx.emit({ type: 'respawn', pid: meta.entityId });
 }
 
+// Revive a player at an explicit position, bypassing the normal graveyard/
+// home-respawn routing above. Used by the jail enforcement (server/game.ts):
+// a prisoner who dies respawns instantly in the cage, never at a real zone's
+// graveyard (releasePlayerSpirit's zoneAt/dungeonAt routing would escape the
+// jail entirely for a remote position). A no-op if the player is not dead.
+export function revivePlayerAt(ctx: SimContext, pid: number, pos: Vec3): void {
+  const r = ctx.resolve(pid);
+  if (!r) return;
+  const { meta, e: p } = r;
+  if (!p.dead) return;
+  p.dead = false;
+  p.pos = pos;
+  p.prevPos = { ...p.pos };
+  rebucketEntity(ctx, p);
+  p.facing = 0;
+  p.auras = [];
+  p.ccDr.clear();
+  recalcPlayerStats(p, meta.cls, meta.equipment, ctx.playerMods(meta));
+  p.hp = p.maxHp;
+  p.resource = p.resourceType === 'mana' ? p.maxResource : p.resourceType === 'energy' ? 100 : 0;
+  p.targetId = null;
+  p.autoAttack = false;
+  p.queuedOnSwing = null;
+  p.combatTimer = 99;
+  p.inCombat = false;
+  ctx.emit({ type: 'respawn', pid: meta.entityId });
+}
+
 export function releaseSpiritInDelve(ctx: SimContext, pid: number): void {
   const r = ctx.resolve(pid);
   if (!r?.e.dead) return;

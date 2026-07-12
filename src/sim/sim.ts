@@ -55,6 +55,7 @@ import { isSpellResisted } from './combat/spell_resist';
 // the PlayerMeta interface + the power-up catalog the fiestaMatchInfo accessor reads.
 import { type AugmentSpecial, type AugmentTier, POWERUPS_BY_ID } from './content/augments';
 import { VASE_LANDING_POS } from './content/hollow';
+import type { JailState } from './content/jail';
 import {
   classHasSkin,
   EVENT_SKIN_TOKEN_ID,
@@ -131,6 +132,7 @@ import {
   rebucketEntity,
   releasePlayerSpirit,
   releaseSpiritInDelve as releaseSpiritInDelveImpl,
+  revivePlayerAt as revivePlayerAtImpl,
   runDespawnDecay,
   tickGroundAoEs,
 } from './entity_roster';
@@ -900,6 +902,9 @@ export interface CharacterState {
   // Optional so characters saved before per-node gathering proficiency
   // existed load cleanly (addPlayer backfills to all-zero).
   gatheringProficiency?: Partial<Record<GatherNodeType, number>>;
+  // A live jail sentence (PHAA-657). Persisted so it keeps running across a
+  // reconnect and the character reloads still jailed. Absent = not jailed.
+  jail?: JailState;
 }
 
 export interface PetState {
@@ -2645,6 +2650,14 @@ export class Sim {
   setGm(pid?: number, enabled = true): void {
     const r = this.resolve(pid);
     if (r) r.e.gm = enabled;
+  }
+
+  // Mark a player as moderation-jailed: prisoners are mutually hostile (the
+  // jail brawl arm in isHostileTo). Server-side only: set on /jail, /unjail,
+  // and join restore.
+  setJailed(enabled: boolean, pid?: number): void {
+    const r = this.resolve(pid);
+    if (r) r.e.jailed = enabled;
   }
 
   // Dev/test convenience: jump a player to a level (learns abilities, recalcs stats).
@@ -4931,6 +4944,10 @@ export class Sim {
     releasePlayerSpirit(this.ctx, pid);
   }
 
+  revivePlayerAt(pid: number, pos: Vec3): void {
+    revivePlayerAtImpl(this.ctx, pid, pos);
+  }
+
   // chatAllowed / handleDevChat / whisperMessageForName / resolveWhisperTarget
   // moved to social/chat.ts (G2). The chat() router below dispatches to them via
   // chatMod.*(this.ctx, ...); they had no callers outside chat().
@@ -4984,6 +5001,11 @@ export class Sim {
           (duel.b === attackerPlayer.id && duel.a === target.id))
       )
         return true;
+      // The jail brawl: prisoners are hostile to each other, always (pets
+      // resolve to their owner via pvpController above, so a prisoner's pet
+      // fights too). isFriendlyTo below mirrors this, so prisoners cannot
+      // cross-heal.
+      if (attackerPlayer.jailed && target.jailed) return true;
       const match = this.arenaMatches.get(attackerPlayer.id);
       return (
         !!match &&
