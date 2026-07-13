@@ -2865,6 +2865,25 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_someone_your_own_size.completion':
     '你留下来了。她不会说这有什么要紧，可它要紧，我向你保证它要紧。来，这个给你。一段柳枝，取自我很喜欢的一棵柳树。它什么用也没有。它只记得，在没人逼你的时候，你依然选择了善良。',
   'entities.quests.q_someone_your_own_size.objectives.0.label': '陪奥拉坐了一会儿',
+  'entities.npcs.withered_planting.name': '枯萎的苗木',
+  'entities.npcs.withered_planting.title': '部落的老柳树',
+  'entities.npcs.withered_planting.greeting':
+    '干枯的根，干枯的叶。不管这本该长成什么样子，它还没长成，而它已经等了很久了。',
+  'entities.npcs.buried_root.name': '埋藏的根',
+  'entities.npcs.buried_root.title': '神龛之下',
+  'entities.npcs.buried_root.greeting': '干。这里的一切干得能有多干，就有多干。',
+  'entities.quests.q_the_long_way_around.title': '绕远的路',
+  'entities.quests.q_the_long_way_around.text':
+    '部落在老柳树那边留下了一株没种完的苗，它渴望一次好好的浇灌，快要枯死了。我爬不动那段路了，可你的腿脚还行。带上这个水罐。小心那些枝条——只要你待它诚实，它们就会撑住你。',
+  'entities.quests.q_the_long_way_around.completion':
+    '它现在能活下去了。你大概想不到，一次攀爬、一次浇灌能有多大意义，比起外面那些事来说。其实不算什么。可对被浇灌的那株苗来说，这就是全部。',
+  'entities.quests.q_the_long_way_around.objectives.0.label': '把水送上柳树小径',
+  'entities.quests.q_the_watering_can.title': '那只水罐',
+  'entities.quests.q_the_watering_can.text':
+    '我求你办过不少小事，你都办了，从没问过为什么。这是最后一件，看着不起眼，其实不小。带上我的水罐，下到神龛底下，去见那埋在那里的东西，给它浇水。它已经等了很久，等着有人给予它什么，而不是向它索求什么。',
+  'entities.quests.q_the_watering_can.completion':
+    '你做到了。我就知道你会。那就是水，你明白吗。所有的一切，一路回溯到你第一次在湖边遇见我、不以为意的那天。同一场浇灌，同一个承诺，又一次履行。谢谢你。去吧，善待这个世界。这是唯一能真正改变它的事。',
+  'entities.quests.q_the_watering_can.objectives.0.label': '把水浇给了埋藏的根',
   'entities.npcs.sexton_faddick.title': '流浪的守护者',
   'entities.npcs.sexton_faddick.greeting':
     '法迪克。哪里还有神龛需要守墓人，我就在哪儿守。我从不在一处久留，只管看顾。狼群夜夜绕着闲田庄的羊群打转，绕得久了，便摸清了所绕之物的形状。最好让它一直只是群羊。',

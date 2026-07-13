@@ -6248,14 +6248,14 @@ export const zh_CN: EnTranslations = {
         "greeting": "你可以坐下。大多数人只是走过去。司事早就把我的名字从册子上划掉了，一个被划掉的名字，学会了安静，好让谁都不必想起它还在这儿。"
       },
       "withered_planting": {
-        "name": "The Withered Planting",
-        "title": "The Tribe's Old Willow",
-        "greeting": "Dry roots, dry leaves. Whatever this was meant to grow into, it hasn't yet, and it's been a long while waiting."
+        "name": "枯萎的苗木",
+        "title": "部落的老柳树",
+        "greeting": "干枯的根，干枯的叶。不管这本该长成什么样子，它还没长成，而它已经等了很久了。"
       },
       "buried_root": {
-        "name": "A Buried Root",
-        "title": "Under the Shrine",
-        "greeting": "Dry. Dry as anything down here ever gets."
+        "name": "埋藏的根",
+        "title": "神龛之下",
+        "greeting": "干。这里的一切干得能有多干，就有多干。"
       }
     },
     "quests": {
@@ -7212,22 +7212,22 @@ export const zh_CN: EnTranslations = {
         }
       },
       "q_the_long_way_around": {
-        "title": "The Long Way Around",
-        "text": "There's a planting the tribe left half-finished up the old willow, and it's dying for want of one good pour. I can't make that climb anymore, but you've got the legs for it. Take the can. Mind the branches; they hold if you're honest with them.",
-        "completion": "It'll live now. You wouldn't think one climb and one pour was much, against everything else out there. It isn't much. It's only everything to the one thing you poured it on.",
+        "title": "绕远的路",
+        "text": "部落在老柳树那边留下了一株没种完的苗，它渴望一次好好的浇灌，快要枯死了。我爬不动那段路了，可你的腿脚还行。带上这个水罐。小心那些枝条——只要你待它诚实，它们就会撑住你。",
+        "completion": "它现在能活下去了。你大概想不到，一次攀爬、一次浇灌能有多大意义，比起外面那些事来说。其实不算什么。可对被浇灌的那株苗来说，这就是全部。",
         "objectives": {
           "0": {
-            "label": "Water carried up the willow path"
+            "label": "把水送上柳树小径"
           }
         }
       },
       "q_the_watering_can": {
-        "title": "The Watering Can",
-        "text": "I've asked you for small things, and you've done them all without once asking why. Here's the last one, and it isn't small, though it'll look it. Take my can down under the shrine, to the thing that's buried there, and give it water. It's been waiting a long time to be given something instead of asked for something.",
-        "completion": "You did it. Of course you did. That was the water, you understand. All of it, all the way back to the day you found me at the lake and thought nothing of it. The same pour, the same promise, kept one more time. Thank you. Now go and be gentle with the world. It is the only thing that ever changed it.",
+        "title": "那只水罐",
+        "text": "我求你办过不少小事，你都办了，从没问过为什么。这是最后一件，看着不起眼，其实不小。带上我的水罐，下到神龛底下，去见那埋在那里的东西，给它浇水。它已经等了很久，等着有人给予它什么，而不是向它索求什么。",
+        "completion": "你做到了。我就知道你会。那就是水，你明白吗。所有的一切，一路回溯到你第一次在湖边遇见我、不以为意的那天。同一场浇灌，同一个承诺，又一次履行。谢谢你。去吧，善待这个世界。这是唯一能真正改变它的事。",
         "objectives": {
           "0": {
-            "label": "Water given to the buried root"
+            "label": "把水浇给了埋藏的根"
           }
         }
       }

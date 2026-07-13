@@ -2992,6 +2992,25 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_someone_your_own_size.completion':
     'いてくれたのね。彼女は大したことじゃないと言うでしょう。でも大したことだった、本当よ。さあ、これをあなたに。私が好きな柳の小枝。何の役にも立たないわ。ただ、誰にも強いられていないのに優しくしてくれたことを、覚えているだけ。',
   'entities.quests.q_someone_your_own_size.objectives.0.label': 'オルラのそばに少し座った',
+  'entities.npcs.withered_planting.name': '枯れかけた苗木',
+  'entities.npcs.withered_planting.title': '部族の古い柳',
+  'entities.npcs.withered_planting.greeting':
+    '乾いた根、乾いた葉。これが何になるはずだったにせよ、まだそうはなっていない。ずっと待たされたままだ。',
+  'entities.npcs.buried_root.name': '埋もれた根',
+  'entities.npcs.buried_root.title': '祠の下',
+  'entities.npcs.buried_root.greeting': '乾いてる。ここの何もかもと同じくらい、とことん乾いてる。',
+  'entities.quests.q_the_long_way_around.title': '遠回りの道',
+  'entities.quests.q_the_long_way_around.text':
+    '部族が古い柳のところに途中までしか植えなかった苗があってね、あと一度たっぷり水をやらないと枯れてしまう。あそこまでもう登れないんだ、でもあんたなら脚がある。この水差しを持っていっておくれ。枝には気をつけて——素直に扱えば、ちゃんと支えてくれるから。',
+  'entities.quests.q_the_long_way_around.completion':
+    'これでもう大丈夫、生きていける。一度登って、一度水をやっただけで、そう大したことじゃないと思うかもしれない。世の中の他のことに比べたらね。大したことじゃない。でも水をやられたその一本にとっては、それがすべてなんだよ。',
+  'entities.quests.q_the_long_way_around.objectives.0.label': '柳の小道へ水を届けた',
+  'entities.quests.q_the_watering_can.title': 'あの水差し',
+  'entities.quests.q_the_watering_can.text':
+    '今まで小さな頼み事ばかりしてきたのに、あんたは理由も聞かずに全部やってくれた。これが最後の頼みだ、見た目は小さそうだけど、実はそうじゃない。私の水差しを持って祠の下まで下りて、そこに埋まっているものに水をあげておくれ。ずっと待っていたんだよ、何かを求められることじゃなく、何かを与えられることをね。',
+  'entities.quests.q_the_watering_can.completion':
+    'やってくれたね。もちろんそうすると思ってた。それが水だったんだよ、わかるかい。あの湖のほとりで私に出会って、何とも思わなかったあの日まで、ずっと全部つながっていた。同じ水やり、同じ約束を、もう一度果たしただけ。ありがとう。さあ、行きなさい。世界に優しくしておくれ。それだけが、世界を本当に変えてきたものなんだから。',
+  'entities.quests.q_the_watering_can.objectives.0.label': '埋もれた根に水を与えた',
   'entities.npcs.sexton_faddick.title': '放浪の番人',
   'entities.npcs.sexton_faddick.greeting':
     'ファディックだ。まだ守るべき祠があるうちは、墓守を務める。俺はどこにも留まらん、ただ守るだけだ。毎晩、狼が休閑地の群れの周りを回っておる。長く回れば、回っている相手の形を覚えるものだ。あれはただの群れのままでいてもらいたい。',

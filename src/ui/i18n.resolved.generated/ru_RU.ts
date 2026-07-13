@@ -6248,14 +6248,14 @@ export const ru_RU: EnTranslations = {
         "greeting": "Можешь сесть. Почти все проходят мимо. Пономарь давным-давно вычеркнул моё имя из своего журнала, а вычеркнутое имя учится молчать, чтобы никому не пришлось вспоминать, что оно ещё здесь."
       },
       "withered_planting": {
-        "name": "The Withered Planting",
-        "title": "The Tribe's Old Willow",
-        "greeting": "Dry roots, dry leaves. Whatever this was meant to grow into, it hasn't yet, and it's been a long while waiting."
+        "name": "Засохший саженец",
+        "title": "Старая ива племени",
+        "greeting": "Сухие корни, сухие листья. Чем бы это ни должно было стать, оно ещё не стало этим, и ждёт уже очень долго."
       },
       "buried_root": {
-        "name": "A Buried Root",
-        "title": "Under the Shrine",
-        "greeting": "Dry. Dry as anything down here ever gets."
+        "name": "Погребённый корень",
+        "title": "Под святилищем",
+        "greeting": "Сухо. Суше, чем что-либо здесь, внизу, вообще бывает."
       }
     },
     "quests": {
@@ -7212,22 +7212,22 @@ export const ru_RU: EnTranslations = {
         }
       },
       "q_the_long_way_around": {
-        "title": "The Long Way Around",
-        "text": "There's a planting the tribe left half-finished up the old willow, and it's dying for want of one good pour. I can't make that climb anymore, but you've got the legs for it. Take the can. Mind the branches; they hold if you're honest with them.",
-        "completion": "It'll live now. You wouldn't think one climb and one pour was much, against everything else out there. It isn't much. It's only everything to the one thing you poured it on.",
+        "title": "Долгий обходной путь",
+        "text": "Там, у старой ивы, племя оставило саженец, недосаженный до конца, и он погибает - ему нужен всего один хороший полив. Мне туда больше не взобраться, а вот у тебя ноги ещё крепкие. Возьми лейку. Осторожнее с ветками - они выдержат, если быть с ними честным.",
+        "completion": "Теперь он будет жить. Не скажешь, что один подъём и один полив значат много - на фоне всего остального, что творится вокруг. Это и правда немного. Но для того единственного, что ты полил, это - всё.",
         "objectives": {
           "0": {
-            "label": "Water carried up the willow path"
+            "label": "Вода принесена на тропу к иве"
           }
         }
       },
       "q_the_watering_can": {
-        "title": "The Watering Can",
-        "text": "I've asked you for small things, and you've done them all without once asking why. Here's the last one, and it isn't small, though it'll look it. Take my can down under the shrine, to the thing that's buried there, and give it water. It's been waiting a long time to be given something instead of asked for something.",
-        "completion": "You did it. Of course you did. That was the water, you understand. All of it, all the way back to the day you found me at the lake and thought nothing of it. The same pour, the same promise, kept one more time. Thank you. Now go and be gentle with the world. It is the only thing that ever changed it.",
+        "title": "Та самая лейка",
+        "text": "Я просила тебя о мелочах, и ты делал их все, ни разу не спросив зачем. Вот последняя просьба, и она вовсе не мелкая, хоть и выглядит так. Возьми мою лейку, спустись под святилище, к тому, что там погребено, и дай ему воды. Оно долго ждало, чтобы ему что-то дали, а не что-то у него просили.",
+        "completion": "Ты сделал это. Конечно сделал. Это была та самая вода, понимаешь. Вся она, до самого того дня, когда ты нашёл меня у озера и не придал этому значения. Тот же полив, то же обещание, исполненное ещё раз. Спасибо. Теперь иди и будь мягок с этим миром. Это единственное, что когда-либо по-настоящему его меняло.",
         "objectives": {
           "0": {
-            "label": "Water given to the buried root"
+            "label": "Вода дана погребённому корню"
           }
         }
       }
