@@ -27,6 +27,8 @@ import type {
 export type { FishingEntry } from './content/items';
 export { FISHING_RARE_ID, FISHING_TABLES };
 
+import type { CollectibleDef } from './content/collectibles';
+import { COLLECTIBLES as COLLECTIBLES_CONTENT } from './content/collectibles';
 import {
   BROTHER_HALVEN,
   COLLAPSED_RELIQUARY_DELVE,
@@ -55,8 +57,6 @@ import {
   HOLLOW_ZONE_ROADS,
   HOLLOW_ZONE_ZONE,
 } from './content/hollow_zone';
-import { COLLECTIBLES as COLLECTIBLES_CONTENT } from './content/collectibles';
-import type { CollectibleDef } from './content/collectibles';
 import {
   READ_RADIUS as READ_RADIUS_CONTENT,
   READABLES as READABLES_CONTENT,

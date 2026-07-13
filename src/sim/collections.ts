@@ -14,7 +14,7 @@
 //
 // `src/sim`-pure: no DOM/Three/render/ui/game/net imports (tests/architecture.test.ts).
 
-import { COLLECTIBLES_BY_ID, READABLES_BY_ID, READ_RADIUS } from './data';
+import { COLLECTIBLES_BY_ID, READ_RADIUS, READABLES_BY_ID } from './data';
 import type { SimContext } from './sim_context';
 
 function distTo(pos: { x: number; z: number }, target: { x: number; z: number }): number {

@@ -7,6 +7,7 @@ import type {
 import * as bagsMod from './bags';
 import { addStacked, BAG_SOCKETS, bagCapacity, canAddItem } from './bags';
 import * as bankMod from './bank';
+import { readCollectible as readCollectibleImpl } from './collections';
 import { lineOfSightClear, resolveMovement, resolvePosition } from './colliders';
 import { needsCostTranslation, translateAbilityCost } from './combat/ability_cost';
 import { auraAffectsStats, removeCancelableAura } from './combat/aura_cancel';
@@ -145,7 +146,6 @@ import {
   isNodeHarvestableBy,
   nodeCooldownIdsFor,
 } from './gathering';
-import { readCollectible as readCollectibleImpl } from './collections';
 import { GreenpawHearth, type GreenpawHearthSave } from './greenpaw_hearth';
 import { Homestead, type HomesteadSave } from './homestead';
 import { Housing, type HousingSave } from './housing';
