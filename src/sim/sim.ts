@@ -145,6 +145,7 @@ import {
   isNodeHarvestableBy,
   nodeCooldownIdsFor,
 } from './gathering';
+import { readCollectible as readCollectibleImpl } from './collections';
 import { GreenpawHearth, type GreenpawHearthSave } from './greenpaw_hearth';
 import { Homestead, type HomesteadSave } from './homestead';
 import { Housing, type HousingSave } from './housing';
@@ -804,6 +805,10 @@ export interface PlayerMeta {
   // (CharacterState.gatheringProficiency); feeds a future proficiency-scaled
   // rarity roll.
   gatheringProficiency: Record<GatherNodeType, number>;
+  // Collection tracking core (PHAA-626): the set of collectible ids (world
+  // readables today; future kinds later) this player has ever found. Grows
+  // only, never shrinks. Persisted (CharacterState.collectedIds).
+  collectedIds: Set<string>;
 }
 
 // Away-from-keyboard / do-not-disturb presence. `afk` still delivers whispers
@@ -900,6 +905,10 @@ export interface CharacterState {
   // Optional so characters saved before per-node gathering proficiency
   // existed load cleanly (addPlayer backfills to all-zero).
   gatheringProficiency?: Partial<Record<GatherNodeType, number>>;
+  // Collection tracking core (PHAA-626). Optional/additive so characters saved
+  // before the collections system existed load cleanly (empty default); no
+  // schema migration needed (JSONB, server/db.ts).
+  collectedIds?: string[];
 }
 
 export interface PetState {
@@ -1484,6 +1493,7 @@ export class Sim {
       delveDaily: { date: '', firstClearXp: new Set(), markClears: 0 },
       nodeHarvestReadyAt: {},
       gatheringProficiency: emptyGatheringProficiency(),
+      collectedIds: new Set(),
     };
     this.players.set(player.id, meta);
     player.skinCatalog = meta.skinCatalog;
@@ -1573,6 +1583,7 @@ export class Sim {
         meta.gatheringProficiency = { ...emptyGatheringProficiency(), ...s.gatheringProficiency };
       }
       if (s.delveLoreUnlocked) for (const id of s.delveLoreUnlocked) meta.delveLoreUnlocked.add(id);
+      if (s.collectedIds) for (const id of s.collectedIds) meta.collectedIds.add(id);
       if (s.delveDaily) {
         meta.delveDaily = {
           date: s.delveDaily.date,
@@ -1784,6 +1795,7 @@ export class Sim {
       companionUpgrades: { ...meta.companionUpgrades },
       gatheringProficiency: { ...meta.gatheringProficiency },
       delveLoreUnlocked: [...meta.delveLoreUnlocked],
+      collectedIds: [...meta.collectedIds],
       delveDaily: {
         date: meta.delveDaily.date,
         firstClearXp: [...meta.delveDaily.firstClearXp],
@@ -4799,6 +4811,21 @@ export class Sim {
 
   get gatheringProficiency(): Record<GatherNodeType, number> {
     return this.gatheringProficiencyFor(this.primaryId);
+  }
+
+  // Collection tracking core (PHAA-626): read-as-command entry point, a thin
+  // delegate onto src/sim/collections.ts, resolved on the deterministic tick
+  // the command arrives on, same shape as harvestNode above.
+  readCollectible(id: string, pid?: number): void {
+    readCollectibleImpl(this.ctx, id, pid);
+  }
+
+  collectedIdsFor(pid: number): string[] {
+    return [...(this.players.get(pid)?.collectedIds ?? [])];
+  }
+
+  get collectedIds(): string[] {
+    return this.collectedIdsFor(this.primaryId);
   }
 
   pickUpObject(objId: number, pid?: number): void {
