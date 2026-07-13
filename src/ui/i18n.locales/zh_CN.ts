@@ -3068,6 +3068,18 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_keep_him_lit.dialog.refuse': '我不会分三次来做这件事。一次就够了。',
   'entities.quests.q_keep_him_lit.dialog.refuseReply':
     '……好吧。好吧，我懂你的意思，朋友，这条线划得也算公道……这样吧，还是拿着，严格说不算你挣来的，但我给出去的大半也不算，频率这东西，其实没真的在计较。',
+  'entities.quests.q_your_own_hearth.title': '属于你自己的炉火',
+  'entities.quests.q_your_own_hearth.text':
+    '这是最后一件事了，朋友，与其说是差事，不如说是个提醒……路那边有块地，法洛牧场，静静地等着有人想要它。塞克斯顿·法迪克在照看他的狼群和他守护的那些地方之余，也顺带留意着那儿——去打个招呼，让他知道你是会留下来的那种人……之后，那块地就是你的了，什么时候准备好都行。',
+  'entities.quests.q_your_own_hearth.completion':
+    '就是这样……你现在有那种眼神了，朋友，那种不再只是路过的眼神。去吧，在那外面找个地方站稳脚跟。我会一如既往地守着这炉火，瓶子也会清楚该去哪儿找你……',
+  'entities.quests.q_your_own_hearth.objectives.0.label': '已见过塞克斯顿·法迪克',
+  'entities.quests.q_your_own_hearth.dialog.complain': '地？我只是想跟你的植物打个招呼而已。',
+  'entities.quests.q_your_own_hearth.dialog.complainReply':
+    '你随时都可以，它哪儿也不会去……但一个灵魂光靠拜访神龛是不够的，朋友，它需要个能站稳双脚的地方。用不了多久。法迪克说话慢，但不会浪费你的下午。',
+  'entities.quests.q_your_own_hearth.dialog.refuse': '我不需要家园。我这样光是拜访就很满足了。',
+  'entities.quests.q_your_own_hearth.dialog.refuseReply':
+    '……好吧，好吧，不勉强，朋友，那块地会一直在，就像法迪克一直守着它一样，等待又不花钱……给，这个还是拿着吧，谢谢你留了这么久。我想那也算是一种家了。',
   'hud.errors.silenced': '你已被沉默！',
   'hud.pet.noPetFood': '你没有可以喂给宠物的食物。',
   'hud.pet.petEatsFoodOnly': '你的宠物只能吃食物。',
@@ -4577,6 +4589,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
     '一段来自灰爪修士的鲜活绿枝，用湿苔藓包裹着。等家园地块可以编辑后，这是你要种下的第一样东西。',
   'entities.items.greenpaw_bead.name': '弹药带上的一颗念珠',
   'entities.items.keeper_coal.name': '一块永不冷却的炭',
+  'entities.items.hearth_stone.name': '一块仍带着他炉火余温的石头',
   'entities.items.witness_root_cincture.name': '见证根的束带',
   'entities.items.shrine_diary_page.name': '撕碎的日记页',
   'entities.items.shrine_diary_page.flavorText':

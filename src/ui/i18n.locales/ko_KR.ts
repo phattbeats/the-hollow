@@ -3200,6 +3200,20 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
     '세 번씩 나눠서 하지 않을 거예요. 한 번이면 충분해요.',
   'entities.quests.q_keep_him_lit.dialog.refuseReply':
     '...그래. 그래, 알겠어, 친구, 그것도 충분히 공정한 선이지... 그럼 이거라도 가져가, 엄밀히 말하면 네가 번 건 아니지만, 내가 나눠주는 것 대부분도 그렇긴 해, 파장이라는 것도 내가 그런 척하는 것만큼 딱 맞게 점수를 매기진 않거든...',
+  'entities.quests.q_your_own_hearth.title': '너만의 화로',
+  'entities.quests.q_your_own_hearth.text':
+    '이게 마지막이야, 친구, 사실 심부름이라기보다는 살짝 등 떠밀어주는 거지... 길 너머에 땅이 있어, 팰로우 에이커스, 조용히 누군가 원해주길 기다리고 있지. 섹스턴 패딕이 늑대들 상대하는 틈틈이, 자기가 지키는 곳들 목록 사이에 그 땅도 반쯤 눈여겨보고 있어 - 가서 인사하고, 네가 눌러앉을 놈이란 걸 알려줘... 그다음엔 언제든 준비되면 그 땅은 네 거야.',
+  'entities.quests.q_your_own_hearth.completion':
+    '그거야... 이제 그 표정을 지었어, 친구, 더 이상 그냥 지나가는 사람이 아니란 표정 말이야. 가서 저 밖 어딘가에 발을 디뎌봐. 나는 늘 그랬듯이 화로를 밝혀놓을 거고, 항아리도 널 어디서 찾을지 정확히 알 거야...',
+  'entities.quests.q_your_own_hearth.objectives.0.label': '섹스턴 패딕을 만났다',
+  'entities.quests.q_your_own_hearth.dialog.complain':
+    '땅? 난 그냥 네 식물한테 인사하고 싶었을 뿐이야.',
+  'entities.quests.q_your_own_hearth.dialog.complainReply':
+    '그건 언제든 할 수 있어, 그는 어디도 안 가니까... 하지만 영혼이란 건 사당을 방문하는 것만으로는 부족해, 친구, 자기 두 발로 설 곳이 필요하지. 오래 안 걸려. 패딕은 말은 느려도 네 오후를 낭비하진 않아.',
+  'entities.quests.q_your_own_hearth.dialog.refuse':
+    '난 홈스테드 필요 없어. 그냥 방문하는 걸로 만족해.',
+  'entities.quests.q_your_own_hearth.dialog.refuseReply':
+    '...알았어, 알았어, 강요할 생각은 없어, 친구, 땅은 패딕이 지키는 그대로 남아 있을 거야, 기다리는 데 돈 드는 것도 아니고... 자, 그래도 이거 가져가, 이렇게 오래 머물러준 값으로. 그것도 나름의 집이겠지, 아마도.',
   'hud.errors.silenced': '침묵 상태입니다!',
   'hud.pet.noPetFood': '소환수에게 먹일 음식이 없습니다.',
   'hud.pet.petEatsFoodOnly': '소환수는 음식만 먹을 수 있습니다.',
@@ -4825,6 +4839,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
     '그린포 수사에게서 받은, 젖은 이끼로 감싼 살아있는 초록빛 꺾꽂이. 홈스테드 부지를 편집할 수 있게 되면 가장 먼저 심게 될 것이다.',
   'entities.items.greenpaw_bead.name': '탄띠에서 나온 염주 하나',
   'entities.items.keeper_coal.name': '결코 식지 않는 숯덩이',
+  'entities.items.hearth_stone.name': '그의 화로에서 아직 따뜻한 돌',
   'entities.items.witness_root_cincture.name': '증인뿌리의 허리띠',
   'entities.items.shrine_diary_page.name': '찢어진 일기장 페이지',
   'entities.items.shrine_diary_page.flavorText':
