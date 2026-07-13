@@ -5453,6 +5453,11 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'mailUi.needRecipientOrText': '送信する前に宛先を指定し、本文を入力してください。',
   'mailUi.openButton': 'レイヴンポストへ案内してください。',
   'mailUi.openButtonAria': 'レイヴンポストの郵便ウィンドウを開く',
+  // Mail item-attachment staging (PHAA-688, M16 non-Latin fill)
+  'mailUi.attachments': '添付物（最大{max}個）',
+  'mailUi.removeAttachment': 'この手紙から{item}を外す',
+  'mailUi.tooltipAttach': 'クリックしてこの手紙に添付',
+  'mailUi.tooltipCannotAttach': '渡り烏はクエストアイテムを運びません',
   // Event calendar (M16 non-Latin fill)
   'hudChrome.calendar.title': 'イベントカレンダー',
   'hudChrome.calendar.close': 'カレンダーを閉じる',
