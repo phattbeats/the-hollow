@@ -589,8 +589,15 @@ function dynamicFields(e: Entity): Record<string, unknown> {
   // top hate-table entries so the party threat meter shows real numbers
   if (e.kind === 'mob' && !e.dead && e.threat.size > 0) out.thr = threatEntries(e, 8);
   if (e.auras.length > 0) {
-    out.auras = e.auras.map(
-      (a): WireAura => ({
+    // PHAA-644: built with a plain loop and direct property assignment rather than
+    // e.auras.map(...) + a spread per optional field. The old spread form allocated a
+    // throwaway {} merge object for every absent optional field on every aura, every
+    // tick; this form allocates exactly one WireAura per aura. Field order (and thus the
+    // wire bytes) is unchanged: each field is still assigned in the same sequence.
+    const auras: WireAura[] = new Array(e.auras.length);
+    for (let i = 0; i < e.auras.length; i++) {
+      const a = e.auras[i];
+      const w: WireAura = {
         id: a.id,
         name: a.name,
         kind: a.kind,
@@ -602,16 +609,18 @@ function dynamicFields(e: Entity): Record<string, unknown> {
         // magnitude for every aura, not just the debuff-classifying ones, so this now
         // rides the wire unconditionally (previously sent only for negative buff_* auras).
         value: a.value,
-        ...(a.value2 !== undefined ? { value2: a.value2 } : {}),
-        ...(a.value3 !== undefined ? { value3: a.value3 } : {}),
-        ...(a.tickInterval !== undefined ? { tickInterval: a.tickInterval } : {}),
-        ...(a.school !== 'physical' ? { school: a.school } : {}),
-        ...(a.stacks && a.stacks > 1 ? { stacks: a.stacks } : {}),
-        // Carry the remaining charges only for a charge-limited aura (Lightning Shield), so the
-        // buff icon can badge the count online exactly as offline; undefined for every other aura.
-        ...(a.charges !== undefined ? { charges: a.charges } : {}),
-      }),
-    );
+      };
+      if (a.value2 !== undefined) w.value2 = a.value2;
+      if (a.value3 !== undefined) w.value3 = a.value3;
+      if (a.tickInterval !== undefined) w.tickInterval = a.tickInterval;
+      if (a.school !== 'physical') w.school = a.school;
+      if (a.stacks && a.stacks > 1) w.stacks = a.stacks;
+      // Carry the remaining charges only for a charge-limited aura (Lightning Shield), so the
+      // buff icon can badge the count online exactly as offline; undefined for every other aura.
+      if (a.charges !== undefined) w.charges = a.charges;
+      auras[i] = w;
+    }
+    out.auras = auras;
   }
   if (e.kind === 'mob' && e.lootable && e.loot) {
     out.lootList = { copper: e.loot.copper, items: e.loot.items };
