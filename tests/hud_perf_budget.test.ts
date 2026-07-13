@@ -211,6 +211,7 @@ const HOT_PAINTERS: ReadonlyArray<{
 }> = [
   { file: 'xp_bar_painter.ts', allow: {}, reflowAllow: {} },
   { file: 'housing_prompt_painter.ts', allow: {}, reflowAllow: {} },
+  { file: 'readable_prompt_painter.ts', allow: {}, reflowAllow: {} },
   { file: 'swing_timer_painter.ts', allow: {}, reflowAllow: {} },
   { file: 'cast_bar_painter.ts', allow: {}, reflowAllow: {} },
   { file: 'unit_frame_painter.ts', allow: {}, reflowAllow: {} },
