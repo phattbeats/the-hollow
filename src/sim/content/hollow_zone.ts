@@ -354,16 +354,18 @@ export const HOLLOW_ZONE_QUESTS: Record<string, QuestDef> = {
     itemRewards: {},
     minLevel: 1,
   },
-  // PHAA-558: Sister Shade's player-facing line, quests 1 and 3 (the fully
-  // unblocked pair). Deliberately DIALOG-heavy, NO combat, and reward-INVERTED:
-  // the tasks are tiny and pointedly unheroic, the writing carries them, and the
-  // payoff is meaning, not gear. Both use `interact` objectives (talk to someone),
-  // never `kill`. Her voice is plain, warm, and terse, the counter-melody to
-  // Greenpaw's run-ons. Quest 2 ("The Long Way Around", willow-path traversal) is
-  // gated on the netcode spike PHAA-559 and quest 4 ("The Watering Can") rides the
-  // PHAA-543 finale; both are WRITTEN in docs/design/shade-questline.md and land
-  // as sim content only once their gates clear (a partial-wired quest would fail
-  // tests/progression.test.ts's giver/order coverage, so they stay out until then).
+  // PHAA-558 / PHAA-614: Sister Shade's player-facing line, now all four quests.
+  // Deliberately DIALOG-heavy, NO combat, and reward-INVERTED: the tasks are tiny
+  // and pointedly unheroic, the writing carries them, and the payoff is meaning,
+  // not gear. Every quest uses `interact` objectives (talk to someone), never
+  // `kill`. Her voice is plain, warm, and terse, the counter-melody to Greenpaw's
+  // run-ons. Quests 1 and 3 shipped first (the unblocked pair); PHAA-614 / PR #199
+  // landed quest 2 ("The Long Way Around", willow-path traversal, gate PHAA-559
+  // cleared GO-WITH-CONSTRAINTS) and quest 4 ("The Watering Can", the PHAA-543
+  // finale beat) once their gates cleared. All four are WRITTEN in
+  // docs/design/shade-questline.md and are now fully wired sim content
+  // (tests/progression.test.ts giver/order coverage passes, and both new targets,
+  // withered_planting and buried_root, exist).
   q_have_you_eaten: {
     id: 'q_have_you_eaten',
     name: 'Have You Eaten?',

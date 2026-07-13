@@ -76,6 +76,69 @@ A "built clean" claim without gate output is not evidence. Pre-existing failures
 `main` are baselined the same way as before: run the gate on `main` first if in doubt,
 and only new failures block the PR.
 
+**Run the gate in a NON-production shell, or you get a cascade of FALSE reds.** A
+`NODE_ENV=production` environment (some CI/QA containers export it) corrupts the gate two
+ways, and both look like a code break but are not:
+- `npm ci` defaults `omit=dev`, so it installs only runtime deps (a suspiciously small
+  "added N packages") and skips every devDependency. The gate then dies at the first stage
+  needing one with a misleading `ERR_MODULE_NOT_FOUND` (e.g. `esbuild` from
+  `scripts/i18n_build.mjs`). Fix: `NODE_ENV=development npm ci --include=dev`, and if the
+  `esbuild`/`sharp` postinstalls were held for script approval, run
+  `node node_modules/esbuild/install.js` so the native binary is fetched.
+- `NODE_ENV=production` also flips RUNTIME behavior under Vitest: `import.meta.env.PROD`
+  becomes true, so `isReleaseBuild()` turns on (release-tier i18n hard-fails every `pending`
+  row, reddening `i18n_t_behavior` / `i18n_pseudo_locale` / `i18n_admin_catalog` /
+  `localization_coverage`), and `publicOriginFromRequest` (`server/realm.ts`) returns the
+  hardcoded production origin instead of deriving from the request host, reddening
+  `player_card_server`. None of these are real: they all go green under `NODE_ENV=test`.
+  Always run the suite with `NODE_ENV=test` (or unset) when triaging a red `main`, and
+  attribute any red that clears under `test` to the environment, not the tree.
+
+### When `main` itself is RED (the gate blocks the whole queue)
+
+If `main` is red on the gate, no PR can merge GREEN, so a red `main` is a P1 that
+gates every other Hollow merge. The recurring cause here is the CI lockout: with the
+pr-gate not enforced by hosted CI, a PR admin-merged during the lockout can land a
+content/data change WITHOUT its paired test update, and the red only surfaces when the
+next contributor runs the gate. Fixing it is a test-vs-data reconcile: decide which
+side is the source of truth before touching either.
+
+- **Test is stale, content is sound -> update the test.** Confirm the content is
+  actually, fully wired before trusting it: run the coverage guards (e.g.
+  `tests/progression.test.ts` for quest giver/order), check that every referenced id
+  (NPC, item, target) resolves, and check the shape invariants the changed test
+  encodes still hold. Only then rewrite the assertion to the shipped reality, and
+  extend the invariants to the new data rather than just widening the expected value.
+- **Content is wrong / half-wired -> the test caught a real bug.** Do NOT weaken the
+  assertion to go green: that turns the guard off and encodes the defect as expected.
+  If the fix is out of scope for unblocking the queue (art/render work, a missing
+  system), scope the passing invariant to the unaffected cases, mark the gap with a
+  loud `it.todo(...)` referencing a filed bug ticket, and file that ticket with
+  evidence. The todo becomes a real assertion when the fix lands.
+
+Baselined incidents (fixed, kept as precedent):
+- **PHAA-694** (2026-07): the ticket opened citing two content-test reds, but a full
+  `NODE_ENV=test` sweep of bare `origin/main` found FOUR env-independent reds (the first
+  triage undercounted by running only the two static-data assertions). Lesson: when `main`
+  is red, run the WHOLE suite in a non-production shell before scoping the fix; a targeted
+  two-test look misses siblings from the same admin-merge. The four, all from lockout
+  admin-merges:
+  1. `shade_questline.test.ts` STALE (PR #199 shipped Shade quests 2 and 4, soundly wired;
+     test still asserted the 2-quest pair) -> updated the test to the 4-quest line.
+  2. `i18n_completeness.test.ts` REAL (same PR #199: the wordy quest-2/4 prose,
+     `q_the_long_way_around` / `q_the_watering_can` / `withered_planting` / `buried_root`,
+     14 keys, shipped English-only and leaked byte-identical into the five non-Latin
+     locales, violating the M16 PR-tier rule) -> needs the five non-Latin fills (maintainer
+     localization work, not a QA test-reconcile).
+  3. `held_weapon_models.test.ts` REAL (the female `_f` chibi bodies from PR #169 render no
+     held weapon) -> scoped the invariant to the KayKit bodies, `it.todo` for the `_f` gap,
+     defect filed as PHAA-697.
+  4. `hud_perf_budget.test.ts` REAL-but-trivial (the new `readable_prompt_painter.ts` landed
+     unclassified) -> it is facet-routed (writes only through the elided writers, mirrors
+     `housing_prompt_painter.ts`), so registered in `HOT_PAINTERS`.
+  The container also threw ~10 FALSE reds from `NODE_ENV=production` (see the gotcha above)
+  and 4 nondeterministic timing flakes (`social`/`fixes`/`threat`/`fiesta`, green on re-run).
+
 ## Keeping the gate current
 
 The reviewer agents encode facts about the codebase (seams, file roles, invariants, the gates
