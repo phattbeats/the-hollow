@@ -2104,6 +2104,7 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.flavorText':
     "...j'ai compté quarante jours à la chandelle avant de perdre le fil. L'obscurité d'ici-bas ne L'oublie pas, même s'Il a oublié cet endroit. Si le héron plane bas, dis au Sacristain que la mèche brûle encore...",
   'entities.items.keeper_coal.name': "Un Charbon Qui N'a Jamais Refroidi",
+  'entities.items.hearth_stone.name': 'Une Pierre Encore Chaude De Son Âtre',
   'entities.items.willow_sprig.name': 'Une brindille de saule',
   'entities.items.worn_prayer_token.name': 'Jeton de Prière Usé',
   'entities.items.worn_prayer_token.flavorText':

@@ -163,7 +163,11 @@ export const HOLLOW_ZONE_NPCS: Record<string, NpcDef> = {
     pos: { x: -34, z: -238 },
     facing: -1.0,
     color: 0x5b4636,
-    questIds: ['q_fallow_acres_wolves', 'q_fallow_acres_wolves_ii'],
+    // PHAA-484 finale: q_your_own_hearth (content/hollow.ts, given by Brother
+    // Greenpaw) sends the player here to meet Faddick; his own questIds gets
+    // it too so its 'talk to Faddick' objective surfaces the in-progress
+    // quest in his gossip window, same convention as elder_yarrow (hollow.ts).
+    questIds: ['q_fallow_acres_wolves', 'q_fallow_acres_wolves_ii', 'q_your_own_hearth'],
     greeting:
       'Faddick. Sexton, where there is still a shrine to sexton. I do not stay anywhere; I keep. Wolves have circled the flock at Fallow Acres every night, and a thing that circles long enough learns the shape of what it circles. Best it stays a flock.',
     // First-meeting click-through intro (PHAA-439): three beats in voice

@@ -90,11 +90,11 @@ delimiter-neutralized before it enters the prompt.
     server-side (`dialog_commands.dialogChoose`); the tree itself is walked
     client-side by `npc_dialog_tree_view`.
 
-## The four-quest chain (all giver + turn-in: Brother Greenpaw)
+## The five-quest chain (all giver + turn-in: Brother Greenpaw)
 
 Source: `HOLLOW_QUESTS` in `src/sim/content/hollow.ts`,
 `HOLLOW_QUEST_ORDER = [q_what_burns, q_what_fills, q_the_wavelength,
-q_keep_him_lit]`.
+q_keep_him_lit, q_your_own_hearth]`.
 
 **1. The Thing That Burns (`q_what_burns`)**
 Tutorial descent. Collect 5 Emberbulb from the Under-Shrine (kills
@@ -123,7 +123,15 @@ loops every in-progress quest's objectives, so a count of 3 required no
 engine change. Reward: 150 XP, 100c, keepsake `keeper_coal` ("A Coal That
 Never Cooled"). Same complain/refuse convention.
 
-All four keepsakes are cosmetic (no stats), matching the reward-inverted
+**5. A Hearth of Your Own (`q_your_own_hearth`, requires #4)**
+The arc's capstone (the "Homestead-unlock finale," board-approved 2026-07-11).
+A single `interact` objective sends the player to Sexton Faddick at Fallow
+Acres (`src/sim/content/hollow_zone.ts`), reusing his existing "ground that
+means to be built on" flavor lines rather than adding a new marker or object.
+Reward: 200 XP, 150c, keepsake `hearth_stone` ("A Stone Still Warm From His
+Hearth"). Same complain/refuse convention.
+
+All five keepsakes are cosmetic (no stats), matching the reward-inverted
 convention this repo also uses for the Shade line (see
 `docs/design/shade-questline.md`).
 
@@ -132,26 +140,32 @@ convention this repo also uses for the Shade line (see
 `q_what_burns` / `q_what_fills` supply the tutorial descent and the first
 cutting. `q_the_wavelength` teaches the feed action as a tracked objective
 and introduces the profession trainer. `q_keep_him_lit` makes feeding a 3x
-habit. Once the quest chain ends, the sustained lean-in (above) pays that
+habit. `q_your_own_hearth` sends the player out to Fallow Acres, the arc's
+send-off. Once the quest chain ends, the sustained lean-in (above) pays that
 habit off for good: keep the hearth lit for five real minutes and the Plant
 leans in and says the keeper's name. Feeding stops being a one-time chore
 and becomes the standing way to earn the Plant's attention.
 
-## What is NOT built yet
+## The Homestead-unlock gate
 
-- **The Homestead-unlock finale (arc beat 3).** `docs/plan-the-hollow.md`
-  Decision 23 gates Homestead v0 plot-claiming behind completing the full
-  Greenpaw arc, but `src/sim/housing.ts`'s `housingClaim` has no such check
-  today: it is open to anyone regardless of quest progress. The pitched
-  fix (not yet built) is a short capstone quest, `q_your_own_hearth`,
-  chained after `q_the_wavelength`, whose completion sets the flag
-  `housingClaim` needs, plus one or two lines foreshadowing the Gardener /
-  First-Gardener theme (PHAA-543 canon) without requiring any of that
-  endgame content to exist yet. Waiting on a creative-direction nod before
-  it gets written.
-- A possible World Market quest via Greenpaw's "everything-as-stocks" bit,
-  and a possible Verger Zebediah crossover, are still just unbuilt pitches,
-  not committed scope.
+`docs/plan-the-hollow.md` Decision 23 gates Homestead v0 plot-claiming
+behind completing the full Greenpaw arc. The gate mechanism itself is
+older than this arc: `src/sim/homestead.ts`'s `hasFullGreenpawArc` (added
+with the Homestead v0 reland, PR #85, 2026-07-04) already checks
+`HOLLOW_QUEST_ORDER.every((qid) => meta.questsDone.has(qid))` before
+`homesteadClaim` will let a player claim a plot, and its doc comment notes
+`HOLLOW_QUEST_ORDER` is append-only "as the arc grows" for exactly this
+reason. Two earlier passes over this doc and its QA companion stated the
+gate did not exist yet (checking a `claimPlot`/`housing.ts` symbol that was
+never the real one); that was a research miss, not a design gap. With
+`q_your_own_hearth` now appended to `HOLLOW_QUEST_ORDER`, the arc is
+complete end to end: a player cannot claim a homestead without finishing
+every Greenpaw quest, including the send-off.
+
+## Not committed scope
+
+A possible World Market quest via Greenpaw's "everything-as-stocks" bit, and
+a possible Verger Zebediah crossover, are still just unbuilt pitches.
 
 ## Determinism and i18n notes
 

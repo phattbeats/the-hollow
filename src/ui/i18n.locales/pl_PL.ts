@@ -916,6 +916,7 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.flavorText':
     '...liczyłem czterdzieści dni przy świecy, zanim zgubiłem rachubę. Mrok tu, w dole, nie zapomina o Nim, choć On zapomniał o tym miejscu. Jeśli czapla zatoczy niski krąg, powiedz Zakrystianowi, że knot wciąż płonie...',
   'entities.items.keeper_coal.name': 'Węgiel, Który Nigdy Nie Ostygł',
+  'entities.items.hearth_stone.name': 'Kamień Wciąż Ciepły Od Jego Paleniska',
   'entities.items.willow_sprig.name': 'Gałązka Wierzby',
   'entities.items.worn_prayer_token.name': 'Wytarty Żeton Modlitewny',
   'entities.items.worn_prayer_token.flavorText':
