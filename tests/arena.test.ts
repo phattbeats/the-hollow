@@ -672,3 +672,44 @@ describe('arena: class ability target filters', () => {
     expect(target.hp).toBeLessThan(startHp);
   });
 });
+
+// PHAA-689 (same bug class as upstream #1723): returnFromArena revives a fighter and
+// teleports them home, but never cleared meta.moveInput, so a movement key held at the
+// moment of the killing blow made the revived body ghost-walk from the return point
+// with no input held. readyArenaFighter now clears it (covering both the return path
+// via resetForArena and the match-start "Fight!" reset).
+describe('arena: stale movement intent (PHAA-689)', () => {
+  it('a fighter defeated while holding a key sits still after returning home', () => {
+    const { sim, b } = queueDuo();
+    startBout(sim);
+    const match = sim.arenaMatchFor(b)!;
+    expect(match.state).toBe('active');
+
+    const eb = sim.entities.get(b)!;
+    const metaB = sim.meta(b)!;
+    metaB.moveInput.forward = true; // key held when the blow lands
+    eb.dead = true;
+    (sim as any).endArenaMatch(match, 'A', 'defeat');
+
+    // Ride out the aftermath hold until the loser is sent home.
+    for (let i = 0; i < 20 * 30; i++) {
+      sim.tick();
+      if (!sim.arenaMatchFor(b)) break;
+    }
+    expect(sim.arenaMatchFor(b)).toBeNull();
+    expect(eb.dead).toBe(false);
+    expect(metaB.moveInput.forward).toBe(false); // cleared, no ghost-walk
+
+    const homePos = { ...eb.pos };
+    for (let i = 0; i < 20; i++) sim.tick();
+    expect(Math.hypot(eb.pos.x - homePos.x, eb.pos.z - homePos.z)).toBeLessThan(0.01);
+  });
+
+  it('the match-start reset also drops a key held through the countdown', () => {
+    const { sim, a } = queueDuo();
+    sim.meta(a)!.moveInput.forward = true;
+    startBout(sim);
+    expect(sim.arenaMatchFor(a)!.state).toBe('active');
+    expect(sim.meta(a)!.moveInput.forward).toBe(false);
+  });
+});

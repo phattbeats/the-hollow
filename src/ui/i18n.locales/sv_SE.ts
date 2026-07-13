@@ -908,6 +908,7 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.flavorText':
     '...räknade fyrtio dagar vid ljusets sken innan jag tappade tråden. Mörkret här nere glömmer Honom inte, även om Han har glömt denna plats. Om hägern cirklar lågt, säg till Klockaren att veken fortfarande brinner...',
   'entities.items.keeper_coal.name': 'Ett Kol Som Aldrig Svalnade',
+  'entities.items.hearth_stone.name': 'En Sten Fortfarande Varm Från Hans Härd',
   'entities.items.willow_sprig.name': 'En videkvist',
   'entities.items.worn_prayer_token.name': 'Nött Bönepollett',
   'entities.items.worn_prayer_token.flavorText':
