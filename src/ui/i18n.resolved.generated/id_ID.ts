@@ -3825,6 +3825,7 @@ export const id_ID: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "Sedang dipakai",
       "ifYouEquip": "Jika kamu memakai ini",
       "damageSpeed": "{min} - {max} Kerusakan Kecepatan {speed}",
@@ -5555,6 +5556,10 @@ export const id_ID: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "Sarung Tangan Penjaga Tulang"
+      },
+      "delve_heroic_mark": {
+        "name": "Tanda Relikuari Heroik",
+        "flavorText": "Segel cap yang dikeluarkan oleh para penjaga Relikuari. Tukarkan di Kepala Perbekalan Heroik untuk perlengkapan bermutu relikuari."
       },
       "deacon_reliquary_helm": {
         "name": "Helm Relik Diakon"

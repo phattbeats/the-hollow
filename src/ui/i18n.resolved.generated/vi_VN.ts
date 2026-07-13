@@ -3825,6 +3825,7 @@ export const vi_VN: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "Đang trang bị",
       "ifYouEquip": "Nếu bạn trang bị món này",
       "damageSpeed": "{min} - {max} Sát Thương Tốc Độ {speed}",
@@ -5555,6 +5556,10 @@ export const vi_VN: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "Bao Tay Hộ Cốt"
+      },
+      "delve_heroic_mark": {
+        "name": "Huy Hiệu Hộp Thánh Tích Anh Hùng",
+        "flavorText": "Một con dấu được đóng bởi những người canh giữ Hộp Thánh Tích. Đổi nó tại Quân Nhu Trưởng Anh Hùng để lấy trang bị hạng thánh tích."
       },
       "deacon_reliquary_helm": {
         "name": "Mũ Thánh Tích Của Phó Tế"

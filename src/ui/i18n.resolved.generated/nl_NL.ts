@@ -3825,6 +3825,7 @@ export const nl_NL: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "Momenteel uitgerust",
       "ifYouEquip": "Als je dit uitrust",
       "damageSpeed": "{min} - {max} Schade Snelheid {speed}",
@@ -5555,6 +5556,10 @@ export const nl_NL: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "Botwachter-Grepen"
+      },
+      "delve_heroic_mark": {
+        "name": "Heroïsch Reliekschrijn-Teken",
+        "flavorText": "Een gestempeld zegel, uitgegeven door de wachters van de Reliekschrijn. Wissel het in bij de Heroïsche Kwartiermeester voor uitrusting van reliekschrijn-kwaliteit."
       },
       "deacon_reliquary_helm": {
         "name": "Diakens Relikwiehelm"

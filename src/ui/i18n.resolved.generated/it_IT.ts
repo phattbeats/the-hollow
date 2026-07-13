@@ -3825,6 +3825,7 @@ export const it_IT: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{kind} {quality}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "Attualmente equipaggiato",
       "ifYouEquip": "Se equipaggi questo",
       "damageSpeed": "{min} - {max} danni Velocità {speed}",
@@ -5555,6 +5556,10 @@ export const it_IT: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "Manopole del guardiano delle ossa"
+      },
+      "delve_heroic_mark": {
+        "name": "Sigillo Eroico del Reliquiario",
+        "flavorText": "Un sigillo impresso rilasciato dai custodi del Reliquiario. Riscattalo presso il Quartiermastro Eroico per equipaggiamento di qualità del reliquiario."
       },
       "deacon_reliquary_helm": {
         "name": "Elmo del reliquiario del diacono"

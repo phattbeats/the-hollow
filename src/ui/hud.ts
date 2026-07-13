@@ -3034,7 +3034,7 @@ export class Hud {
     const qColor = QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff';
     let html = `<div class="tt-title" style="color:${qColor}">${esc(itemDisplayName(item))}</div>`;
     html += `<div class="tt-sub">${esc(
-      t('itemUi.tooltip.qualityKind', {
+      t(item.heroicOf ? 'itemUi.tooltip.qualityKindHeroic' : 'itemUi.tooltip.qualityKind', {
         quality: itemQualityLabel(item.quality),
         kind: itemKindLabel(item.kind),
       }),

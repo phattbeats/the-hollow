@@ -46,7 +46,7 @@ export function discardItem(ctx: SimContext, itemId: string, count = 1, pid?: nu
     ctx.error(meta.entityId, "You don't have that item.");
     return;
   }
-  if (def.noDiscard) return;
+  if (def.noDiscard || def.soulbound) return;
   const discardCount = Number.isFinite(count) ? Math.min(Math.floor(count), available) : 0;
   if (discardCount <= 0) return;
   ctx.removeItem(itemId, discardCount, meta.entityId);

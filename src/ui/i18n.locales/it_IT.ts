@@ -4560,6 +4560,9 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'entities.items.reliquary_helm.name': "Elmo della guardia dell'ossario",
   'entities.items.reliquary_shoulder.name': 'Spallacci sgretolati',
   'entities.items.reliquary_gloves_rog.name': 'Manopole del guardiano delle ossa',
+  'entities.items.delve_heroic_mark.name': 'Sigillo Eroico del Reliquiario',
+  'entities.items.delve_heroic_mark.flavorText':
+    'Un sigillo impresso rilasciato dai custodi del Reliquiario. Riscattalo presso il Quartiermastro Eroico per equipaggiamento di qualità del reliquiario.',
   'entities.items.deacon_reliquary_helm.name': 'Elmo del reliquiario del diacono',
   'entities.items.varric_shadow_cowl.name': "Cappuccio d'ombra di Varric",
   'entities.items.cave_morsel.name': 'Boccone di Caverna',

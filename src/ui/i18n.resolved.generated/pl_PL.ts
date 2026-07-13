@@ -3825,6 +3825,7 @@ export const pl_PL: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "Aktualnie założone",
       "ifYouEquip": "Jeśli to założysz",
       "damageSpeed": "{min} - {max} obrażeń Szybkość {speed}",
@@ -5555,6 +5556,10 @@ export const pl_PL: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "Chwyty kostnego strażnika"
+      },
+      "delve_heroic_mark": {
+        "name": "Heroiczny Znak Relikwiarium",
+        "flavorText": "Wytłoczona pieczęć wydana przez strażników Relikwiarium. Wymień ją u Heroicznego Kwatermistrza na ekwipunek klasy relikwiarium."
       },
       "deacon_reliquary_helm": {
         "name": "Relikwiarzowy hełm diakona"

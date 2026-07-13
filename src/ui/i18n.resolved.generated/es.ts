@@ -3825,6 +3825,7 @@ export const es: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{kind} {quality}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "Equipado actualmente",
       "ifYouEquip": "Si equipas esto",
       "damageSpeed": "{min} - {max} de daño Velocidad {speed}",
@@ -5555,6 +5556,10 @@ export const es: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "Manoplas del Guardián de Huesos"
+      },
+      "delve_heroic_mark": {
+        "name": "Marca Heroica del Relicario",
+        "flavorText": "Un sello estampado emitido por los guardianes del Relicario. Canjéalo con el Intendente Heroico por equipo de calidad de relicario."
       },
       "deacon_reliquary_helm": {
         "name": "Yelmo del Relicario del Diácono"

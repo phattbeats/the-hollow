@@ -23,8 +23,11 @@
 // `src/sim`-pure: no DOM/Three/render/ui/game/net imports, no Math.random/Date.now
 // (enforced by tests/architecture.test.ts).
 
+import { HEROIC_DELVE_BOSS_LOOT } from '../content/heroic_loot';
+import { heroicVariantId } from '../content/heroic_variants';
 import { ITEMS, MOBS, QUESTS } from '../data';
 import { formatMoney } from '../format_money';
+import { itemLevel } from '../item_level';
 import { effectiveMasterLooter, meetsMasterThreshold } from '../loot_master';
 import type { PlayerMeta } from '../sim';
 import type { SimContext } from '../sim_context';
@@ -129,6 +132,22 @@ export function rollLoot(
   let copper = 0;
   const items: LootSlot[] = [];
   const rolledGroups = new Set<string>();
+  // A Heroic DELVE claim upgrades the mob's normal epic/rare drops to their
+  // "Heroic" variant in place (content/heroic_variants.ts). Resolved once and
+  // reused by the heroic-only append below. No rng is drawn here, so normal-run
+  // draw order and the parity goldens are untouched. The fork's heroic detection
+  // rides the delve run: the run owning the mob (if any) with tierId 'heroic'.
+  const heroicClaim = ctx.delveRunForMob(mob.id)?.tierId === 'heroic';
+  // Swap a base drop for its Heroic variant when the run is heroic AND the swap
+  // is an upgrade (raid epics, already item level 29, are left as-is; the only
+  // such items in the fork are the Heroic set pieces, which the heroic-boss
+  // loot table appends separately rather than via the swap).
+  const heroicItem = (id: string): string => {
+    if (!heroicClaim) return id;
+    const variant = ITEMS[heroicVariantId(id)];
+    if (!variant) return id;
+    return (itemLevel(variant) ?? 0) > (itemLevel(ITEMS[id]) ?? 0) ? variant.id : id;
+  };
   for (const entry of template.loot) {
     // Exclusive groups: a single rng draw is partitioned by the group
     // entries' chances, so at most one matching entry drops.
@@ -142,7 +161,7 @@ export function rollLoot(
       for (const g of group) {
         cumulative += g.chance;
         if (roll < cumulative) {
-          if (g.itemId) items.push({ itemId: g.itemId, count: 1 });
+          if (g.itemId) items.push({ itemId: heroicItem(g.itemId), count: 1 });
           break;
         }
       }
@@ -154,7 +173,7 @@ export function rollLoot(
       if (!ctx.rng.chance(entry.chance)) continue;
       if (!entry.itemId) continue;
       items.push({
-        itemId: entry.itemId,
+        itemId: heroicItem(entry.itemId),
         count: 1,
         personalFor: questRecipients.map((m) => m.entityId),
       });
@@ -163,7 +182,52 @@ export function rollLoot(
     if (!ctx.rng.chance(entry.chance)) continue;
     if (entry.copper)
       copper += ctx.rng.int(Math.ceil(entry.copper * 0.6), Math.ceil(entry.copper * 1.4));
-    if (entry.itemId) items.push({ itemId: entry.itemId, count: 1 });
+    if (entry.itemId) items.push({ itemId: heroicItem(entry.itemId), count: 1 });
+  }
+  // Heroic-only drops: when the mob's claim is heroic and it has a heroic drop
+  // table (the delve finale bosses), roll those entries into the SAME items
+  // list. Each heroic entry that lands is appended with sharedPersonal +
+  // personalFor so any earner looting the corpse grants every earner their
+  // copy in one click. Shares `rolledGroups` with the table above so a
+  // rollGroup name never collides between the two tables.
+  if (heroicClaim) {
+    const heroicEntries = HEROIC_DELVE_BOSS_LOOT[mob.templateId];
+    if (heroicEntries) {
+      const pids = eligible.map((m) => m.entityId);
+      for (const entry of heroicEntries) {
+        if (entry.rollGroup) {
+          if (rolledGroups.has(entry.rollGroup)) continue;
+          rolledGroups.add(entry.rollGroup);
+          const group = heroicEntries.filter((l) => l.rollGroup === entry.rollGroup);
+          const roll = ctx.rng.next();
+          let cumulative = 0;
+          for (const g of group) {
+            cumulative += g.chance;
+            if (roll < cumulative) {
+              if (g.itemId) {
+                items.push({
+                  itemId: g.itemId,
+                  count: 1,
+                  personalFor: pids,
+                  sharedPersonal: g.sharedPersonal ?? entry.sharedPersonal ?? false,
+                });
+              }
+              break;
+            }
+          }
+          continue;
+        }
+        if (!ctx.rng.chance(entry.chance)) continue;
+        if (entry.itemId) {
+          items.push({
+            itemId: entry.itemId,
+            count: 1,
+            personalFor: pids,
+            sharedPersonal: entry.sharedPersonal ?? false,
+          });
+        }
+      }
+    }
   }
   if (copper > 0 || items.length > 0) {
     mob.loot = { copper, items };

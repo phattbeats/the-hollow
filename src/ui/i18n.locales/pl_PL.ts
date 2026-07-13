@@ -1062,6 +1062,9 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'entities.items.reinforced_pauldrons.name': 'Wzmocnione naramienniki',
   'entities.items.reliquary_cloth_chest.name': 'Całun relikwiarza',
   'entities.items.reliquary_gloves_rog.name': 'Chwyty kostnego strażnika',
+  'entities.items.delve_heroic_mark.name': 'Heroiczny Znak Relikwiarium',
+  'entities.items.delve_heroic_mark.flavorText':
+    'Wytłoczona pieczęć wydana przez strażników Relikwiarium. Wymień ją u Heroicznego Kwatermistrza na ekwipunek klasy relikwiarium.',
   'entities.items.reliquary_helm.name': 'Hełm straży kostnicy',
   'entities.items.reliquary_leather_chest.name': 'Kaftan strażnika prochu',
   'entities.items.reliquary_legs.name': 'Owijki nogawic skarbca',

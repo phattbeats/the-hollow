@@ -4574,6 +4574,9 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'entities.items.reliquary_helm.name': 'Yelmo de la Guardia del Osario',
   'entities.items.reliquary_shoulder.name': 'Hombreras desmoronadas',
   'entities.items.reliquary_gloves_rog.name': 'Manoplas del Guardián de Huesos',
+  'entities.items.delve_heroic_mark.name': 'Marca Heroica del Relicario',
+  'entities.items.delve_heroic_mark.flavorText':
+    'Un sello estampado emitido por los guardianes del Relicario. Canjéalo con el Intendente Heroico por equipo de calidad de relicario.',
   'entities.items.deacon_reliquary_helm.name': 'Yelmo del Relicario del Diácono',
   'entities.items.varric_shadow_cowl.name': 'Capucha sombría de Varric',
   'entities.items.cave_morsel.name': 'Bocado de Cueva',

@@ -3825,6 +3825,7 @@ export const tr_TR: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "Şu anda kuşanılmış",
       "ifYouEquip": "Bunu kuşanırsan",
       "damageSpeed": "{min} - {max} Hasar Hız {speed}",
@@ -5555,6 +5556,10 @@ export const tr_TR: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "Kemikbekçisi Eldivenleri"
+      },
+      "delve_heroic_mark": {
+        "name": "Kahramanca Kutsal Mahzen Nişanı",
+        "flavorText": "Kutsal Mahzen'in bekçileri tarafından verilen damgalı bir mühür. Kutsal Mahzen kalitesinde teçhizat için Kahramanca Donatım Subayı'na takas edin."
       },
       "deacon_reliquary_helm": {
         "name": "Diyakoz'un Kutsal Emanet Miğferi"

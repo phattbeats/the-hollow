@@ -3825,6 +3825,7 @@ export const zh_CN: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality}{kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "当前装备",
       "ifYouEquip": "装备后",
       "damageSpeed": "{min} - {max} 伤害 速度 {speed}",
@@ -5555,6 +5556,10 @@ export const zh_CN: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "护骨者护手"
+      },
+      "delve_heroic_mark": {
+        "name": "英雄圣物库印记",
+        "flavorText": "由圣物库守护者颁发的钤印。在英雄军需官处兑换圣物库级装备。"
       },
       "deacon_reliquary_helm": {
         "name": "执事的圣物库头盔"

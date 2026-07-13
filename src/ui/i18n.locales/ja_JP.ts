@@ -4812,6 +4812,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.items.reliquary_helm.name': '納骨堂の見張りの兜',
   'entities.items.reliquary_shoulder.name': '崩れた肩当て',
   'entities.items.reliquary_gloves_rog.name': '骨守りの手甲',
+  'entities.items.delve_heroic_mark.name': 'ヒロイック聖遺物庫の刻印',
+  'entities.items.delve_heroic_mark.flavorText':
+    '聖遺物庫の守人が発行した刻印。ヒロイック需品係と交換すれば、聖遺物庫級の装備が手に入る。',
   'entities.items.deacon_reliquary_helm.name': '助祭の聖遺物庫の兜',
   'entities.items.varric_shadow_cowl.name': 'ヴァリックの影のフード',
   'entities.items.cave_morsel.name': '洞窟の肉片',
