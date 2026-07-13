@@ -33,6 +33,7 @@ import {
   type ArenaStanding,
   DT,
   type Entity,
+  emptyMoveInput,
 } from '../types';
 
 // Ashen Coliseum 1v1 arena tuning consts (moved with the slice). FIESTA_COUNTDOWN
@@ -811,7 +812,13 @@ export function readyArenaFighter(ctx: SimContext, e: Entity, opts: { clearPrep:
     e.ccDr.clear();
   }
   const meta = ctx.players.get(e.id);
-  if (meta) recalcPlayerStats(e, meta.cls, meta.equipment, ctx.playerMods(meta));
+  if (meta) {
+    recalcPlayerStats(e, meta.cls, meta.equipment, ctx.playerMods(meta));
+    // A movement key held when the fighter died (or when the bout started) must not
+    // carry over into the reset body, or it ghost-walks with no input held (upstream
+    // #1723, same class as the death/respawn sites; in-place to keep the reference).
+    Object.assign(meta.moveInput, emptyMoveInput());
+  }
   e.hp = e.maxHp;
   e.resource = e.resourceType === 'mana' ? e.maxResource : e.resourceType === 'energy' ? 100 : 0;
   e.targetId = null;
