@@ -313,7 +313,13 @@ export const en_CA: EnTranslations = {
     "keybinds": {
       "emoteWheel": "Emote Wheel",
       "targetFriendly": "Target Nearest Friendly",
-      "targetFriendlyNext": "Cycle Friendly Target"
+      "targetFriendlyNext": "Cycle Friendly Target",
+      "categoryPet": "Pet",
+      "petAttack": "Pet: Attack",
+      "petStop": "Pet: Stop",
+      "petTaunt": "Pet: Taunt",
+      "petDefensive": "Pet: Defensive",
+      "petAggressive": "Pet: Aggressive"
     },
     "options": {
       "clickMoveLeft": "Left Click",
@@ -1006,6 +1012,8 @@ export const en_CA: EnTranslations = {
     "removeAttachment": "Remove {item} from this letter",
     "tooltipAttach": "Click to attach to this letter",
     "tooltipCannotAttach": "The raven will not carry quest items",
+    "parcelQtyDecreaseAria": "Send one fewer {item}",
+    "parcelQtyIncreaseAria": "Send one more {item}",
     "send": "Send Letter",
     "needRecipientOrText": "Name a recipient and write something before sending.",
     "openButton": "Show me the Ravenpost.",

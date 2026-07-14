@@ -313,7 +313,13 @@ export const tr_TR: EnTranslations = {
     "keybinds": {
       "emoteWheel": "İfade Çarkı",
       "targetFriendly": "En Yakın Dostu Hedefle",
-      "targetFriendlyNext": "Dost Hedefler Arasında Geç"
+      "targetFriendlyNext": "Dost Hedefler Arasında Geç",
+      "categoryPet": "Pet",
+      "petAttack": "Pet: Attack",
+      "petStop": "Pet: Stop",
+      "petTaunt": "Pet: Taunt",
+      "petDefensive": "Pet: Defensive",
+      "petAggressive": "Pet: Aggressive"
     },
     "options": {
       "clickMoveLeft": "Sol Tık",
@@ -1006,6 +1012,8 @@ export const tr_TR: EnTranslations = {
     "removeAttachment": "Remove {item} from this letter",
     "tooltipAttach": "Click to attach to this letter",
     "tooltipCannotAttach": "The raven will not carry quest items",
+    "parcelQtyDecreaseAria": "Send one fewer {item}",
+    "parcelQtyIncreaseAria": "Send one more {item}",
     "send": "Send Letter",
     "needRecipientOrText": "Name a recipient and write something before sending.",
     "openButton": "Show me the Ravenpost.",

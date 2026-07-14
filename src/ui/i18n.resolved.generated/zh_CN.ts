@@ -313,7 +313,13 @@ export const zh_CN: EnTranslations = {
     "keybinds": {
       "emoteWheel": "表情轮盘",
       "targetFriendly": "选中最近友方",
-      "targetFriendlyNext": "切换友方目标"
+      "targetFriendlyNext": "切换友方目标",
+      "categoryPet": "宠物",
+      "petAttack": "宠物：攻击",
+      "petStop": "宠物：停止",
+      "petTaunt": "宠物：嘲讽",
+      "petDefensive": "宠物：防御",
+      "petAggressive": "宠物：攻击性"
     },
     "options": {
       "clickMoveLeft": "左键",
@@ -1006,6 +1012,8 @@ export const zh_CN: EnTranslations = {
     "removeAttachment": "从这封信中移除{item}",
     "tooltipAttach": "点击附加到这封信",
     "tooltipCannotAttach": "渡鸦不会携带任务物品",
+    "parcelQtyDecreaseAria": "少寄一个{item}",
+    "parcelQtyIncreaseAria": "多寄一个{item}",
     "send": "寄出信件",
     "needRecipientOrText": "请先填写收件人并写点内容再寄送。",
     "openButton": "带我去渡鸦驿站。",
