@@ -298,3 +298,153 @@ describe('world boss pathing (phases through obstacles, upstream #1643)', () => 
     expect(arrived).toBe(true);
   });
 });
+
+// PHAA-517: folds upstream #1502/#1503's Thunzharr cc-immunity + tuning into the
+// world-boss framework. ccImmune already blocked stun/root/etc (PHAA-494); this adds
+// the separate slowImmune flag (player snares do not stick, unlike most elites) and
+// closes the polymorph hole where the sheep full-heal ran before the ccImmune aura
+// gate dropped the aura, healing the boss to full without sheeping it.
+describe('world boss cc-immunity and slow-immunity (upstream #1502/#1503)', () => {
+  function spawnEngagedBoss(sim: Sim): Entity {
+    const template = MOBS.heartwood_colossus;
+    const boss = createMob((sim as any).nextId++, template, template.maxLevel, {
+      x: 10,
+      y: 0,
+      z: 0,
+    });
+    (sim as any).addEntity(boss);
+    boss.aiState = 'chase';
+    boss.aggroTargetId = sim.player.id;
+    return boss;
+  }
+
+  it('the template opts into both ccImmune and slowImmune', () => {
+    expect(MOBS.heartwood_colossus.ccImmune).toBe(true);
+    expect(MOBS.heartwood_colossus.slowImmune).toBe(true);
+  });
+
+  it('shrugs off a player-applied snare but still takes a self-applied (scripted) slow', () => {
+    const sim = new Sim({ seed: 1, playerClass: 'warrior' });
+    const boss = spawnEngagedBoss(sim);
+    const p = sim.player;
+
+    // A Frostbolt/Hamstring-style snare from a player does not stick to the raid boss.
+    (sim as any).applyAura(boss, {
+      id: 'frostbolt_slow',
+      name: 'Frostbolt',
+      kind: 'slow',
+      remaining: 5,
+      duration: 5,
+      value: 0.4,
+      sourceId: p.id,
+      school: 'frost',
+    });
+    expect(boss.auras.some((a: { kind: string }) => a.kind === 'slow')).toBe(false);
+
+    // But a self-sourced slow (a scripted mechanic on itself, e.g. Grasping Roots'
+    // own bookkeeping) is exempt from the immunity.
+    (sim as any).applyAura(boss, {
+      id: 'self_slow',
+      name: 'Rooted Stance',
+      kind: 'slow',
+      remaining: 5,
+      duration: 5,
+      value: 0.5,
+      sourceId: boss.id,
+      school: 'nature',
+    });
+    expect(boss.auras.some((a: { kind: string; id: string }) => a.id === 'self_slow')).toBe(true);
+  });
+
+  it('an ordinary (unflagged) mob is not slow-immune: a player snare lands normally', () => {
+    const sim = new Sim({ seed: 1, playerClass: 'warrior' });
+    const wolf = createMob((sim as any).nextId++, MOBS.forest_wolf, 1, { x: 5, y: 0, z: 0 });
+    (sim as any).addEntity(wolf);
+    (sim as any).applyAura(wolf, {
+      id: 'frostbolt_slow',
+      name: 'Frostbolt',
+      kind: 'slow',
+      remaining: 5,
+      duration: 5,
+      value: 0.4,
+      sourceId: sim.player.id,
+      school: 'frost',
+    });
+    expect(wolf.auras.some((a: { kind: string }) => a.kind === 'slow')).toBe(true);
+  });
+
+  it('rejects Polymorph on the boss, so it is never sheeped or full-healed mid-fight', () => {
+    const sim = new Sim({ seed: 1, playerClass: 'mage' });
+    sim.setPlayerLevel(20); // knows Polymorph
+    const boss = spawnEngagedBoss(sim);
+    boss.hp = Math.floor(boss.maxHp * 0.4); // hurt mid-fight
+
+    const p = sim.player;
+    p.facing = Math.atan2(boss.pos.x - p.pos.x, boss.pos.z - p.pos.z);
+    sim.targetEntity(boss.id);
+    sim.castAbility('polymorph');
+    const events = sim.tick();
+
+    // The cast is rejected outright, so the polymorph effect (and its sheep full-heal
+    // side effect, the "he just reset to full" bug) never runs.
+    expect(
+      events.some(
+        (e) => e.type === 'error' && /cannot be polymorphed/i.test((e as { text: string }).text),
+      ),
+    ).toBe(true);
+    expect(boss.auras.some((a) => a.kind === 'polymorph')).toBe(false);
+    // Its HP was not snapped to full; one tick of idle regen cannot reach maxHp from 40%.
+    expect(boss.hp).toBeLessThan(boss.maxHp);
+  });
+
+  it('also rejects Polymorph on an ordinary ccImmune mob, not just the world boss', () => {
+    // The guard widening (fam === 'undead' || gorrak || MOBS[...].ccImmune) closes the
+    // full-heal hole for every ccImmune template, not only heartwood_colossus: confirm
+    // it on a plain rare elite (mogger, zone1) so the broad scope is pinned by a test.
+    expect(MOBS.mogger.ccImmune).toBe(true);
+    expect(MOBS.mogger.worldBoss).toBeUndefined();
+
+    const sim = new Sim({ seed: 1, playerClass: 'mage' });
+    sim.setPlayerLevel(20);
+    const mogger = createMob((sim as any).nextId++, MOBS.mogger, MOBS.mogger.maxLevel, {
+      x: 10,
+      y: 0,
+      z: 0,
+    });
+    (sim as any).addEntity(mogger);
+    mogger.hp = Math.floor(mogger.maxHp * 0.4);
+
+    const p = sim.player;
+    p.facing = Math.atan2(mogger.pos.x - p.pos.x, mogger.pos.z - p.pos.z);
+    sim.targetEntity(mogger.id);
+    sim.castAbility('polymorph');
+    const events = sim.tick();
+
+    expect(
+      events.some(
+        (e) => e.type === 'error' && /cannot be polymorphed/i.test((e as { text: string }).text),
+      ),
+    ).toBe(true);
+    expect(mogger.auras.some((a) => a.kind === 'polymorph')).toBe(false);
+    expect(mogger.hp).toBeLessThan(mogger.maxHp);
+  });
+
+  it('still sheeps a normal, non-immune mob (polymorph is otherwise unchanged)', () => {
+    const sim = new Sim({ seed: 1, playerClass: 'mage' });
+    sim.setPlayerLevel(20);
+    const wolf = createMob((sim as any).nextId++, MOBS.forest_wolf, 5, { x: 10, y: 0, z: 5 });
+    (sim as any).addEntity(wolf);
+    const p = sim.player;
+    p.facing = Math.atan2(wolf.pos.x - p.pos.x, wolf.pos.z - p.pos.z);
+    sim.targetEntity(wolf.id);
+    sim.castAbility('polymorph');
+    for (let i = 0; i < 20 * 2; i++) sim.tick();
+    expect(wolf.auras.some((a) => a.kind === 'polymorph')).toBe(true);
+  });
+});
+
+describe('world boss hp scaling per-player step (upstream #1502)', () => {
+  it('steps the pool gently (5k/head), not steeply, per extra participant', () => {
+    expect(WORLD_BOSSES[0].hpScale.perPlayer).toBe(5_000);
+  });
+});
