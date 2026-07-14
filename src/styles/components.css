@@ -3911,6 +3911,29 @@
     color: var(--color-text-muted);
     margin-right: 6px;
   }
+  /* Staged parcel chips (PHAA-688): the Compose tab's readonly .mail-attach
+     span becomes a clickable button that removes the parcel, so it needs the
+     button reset plus a hover/focus affordance the inbox's readonly rows don't. */
+  .mail-attach-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 4px 0 10px;
+  }
+  .mail-attach.removable {
+    appearance: none;
+    background: #ffffff0a;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    padding: 3px 7px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .mail-attach.removable:hover,
+  .mail-attach.removable:focus-visible {
+    border-color: var(--gold-dim);
+    background: #ffffff14;
+  }
   .mail-actions {
     margin-top: 4px;
   }

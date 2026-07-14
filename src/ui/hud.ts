@@ -2681,10 +2681,12 @@ export class Hud {
     vendorOpen: () => this.vendorOpen,
     tradeOpen: () => this.tradeOpen,
     isMarketSell: () => this.marketWindow.isSellTab,
+    isMailCompose: () => this.mailWindow.isComposeTab,
     pendingPetFeed: () => this.pendingPetFeed,
     closeVendor: () => this.closeVendor(),
     addItemToTrade: (itemId) => this.addItemToTrade(itemId),
     stageMarketSell: (itemId) => this.marketWindow.stageSell(itemId),
+    stageMailAttach: (itemId) => this.mailWindow.stageAttach(itemId),
     showError: (text) => this.showError(text),
     setPendingPetFeed: (active) => {
       this.pendingPetFeed = active;
@@ -2723,8 +2725,9 @@ export class Hud {
   });
   // Ravenpost mail window painter (mail_view.ts core + mail_window.ts painter,
   // PHAA-495). It composes the shared presentation bag and owns the window's
-  // view-state (tab, compose fields). No bags cross-sync: the compose form
-  // sends coin attachments only for now (item attachments are a follow-up).
+  // view-state (tab, compose fields, staged attachments). The bags window rides
+  // alongside the Compose tab (like the market's Sell tab, PHAA-688) so the
+  // cross-window bag sync routes back through these lazy closures.
   private readonly mailWindow = new MailWindow({
     ...this.presentationBag,
     root: () => $('#mail-window'),
@@ -2733,6 +2736,14 @@ export class Hud {
     hideTooltip: () => this.hideTooltip(),
     ...this.windowFocus('#mail-window'),
     showError: (text) => this.showError(text),
+    syncBags: (open) => {
+      if (open) {
+        this.renderBags();
+        $('#bags').style.display = 'flex';
+      } else if ($('#bags').style.display !== 'none') {
+        this.renderBags();
+      }
+    },
   });
   // Ashen Coliseum window painter (arena_window_view.ts offline/live model +
   // arena_window.ts painter). It owns the selected bracket, the all-time-ladder
