@@ -348,12 +348,40 @@ export function dealDamage(
     }
   }
 
+  // Protect Yumi! (PHAA-573) takedowns bench the victim for the flat respawn
+  // timer instead of permanently eliminating them (the fiesta primitive); the
+  // bout ends on the enemy cat's death, never a team wipe.
+  if (
+    match?.yumi &&
+    match.state === 'active' &&
+    sourcePlayer &&
+    ctx.isArenaCrossTeam(match, sourcePlayer.id, target.id)
+  ) {
+    if (target.hp - amount <= 0) {
+      amount = Math.max(0, target.hp);
+      target.hp = 0;
+      ctx.emit({
+        type: 'damage',
+        sourceId: source?.id ?? -1,
+        targetId: target.id,
+        amount,
+        crit,
+        school,
+        ability,
+        kind,
+      });
+      ctx.yumiPlayerDown(match, target, sourcePlayer.id);
+      return;
+    }
+  }
+
   // Ranked arena eliminations use normal death state so clients and combat
   // logic see a real 0 HP defeat. The return timer revives everyone after.
   if (
     guardianWardRestore === 0 &&
     match &&
     !match.fiesta &&
+    !match.yumi &&
     match.state === 'active' &&
     sourcePlayer &&
     ctx.isArenaCrossTeam(match, sourcePlayer.id, target.id)
@@ -380,6 +408,17 @@ export function dealDamage(
       }
       return;
     }
+  }
+
+  // Protect Yumi! (PHAA-573): the cat is a shared objective, not a normal mob.
+  // Route it through the yumi damage hub, which owns the sudden-death taken
+  // multiplier, tiebreak bookkeeping, the damage emit, and win detection.
+  // (Absorb shields / amps already resolved above; hostility gating already
+  // barred own-team abilities at targeting.)
+  if (target.kind === 'mob' && ctx.yumiCatMatches.has(target.id)) {
+    const catMatch = ctx.yumiCatMatches.get(target.id)!;
+    ctx.yumiCatDamaged(catMatch, source, target, amount, crit, school, ability, kind);
+    return;
   }
 
   // Guardian Ward: if the enemy hit was denied, target.hp lands at the
@@ -503,6 +542,10 @@ export function dealDamage(
     const fmatch = target.kind === 'player' ? ctx.arenaMatches.get(target.id) : undefined;
     if (fmatch?.fiesta && fmatch.state === 'active' && !ctx.arenaIsDown(fmatch, target.id)) {
       ctx.fiestaDown(fmatch, target, null);
+    } else if (fmatch?.yumi && fmatch.state === 'active' && !ctx.arenaIsDown(fmatch, target.id)) {
+      // Same guarantee for Protect Yumi (PHAA-573): a non-takedown bottom-out
+      // (friendly DoT tail, self-damage) benches, never a permanent death.
+      ctx.yumiPlayerDown(fmatch, target, null);
     } else {
       handleDeath(ctx, target, source);
     }

@@ -24,7 +24,6 @@ export const YUMI_MOBS: Record<string, MobTemplate> = {
     moveSpeed: 0,
     aggroRadius: 0,
     loot: [],
-    xpMult: 0,
     ccImmune: true,
     slowImmune: true,
     scale: 1,

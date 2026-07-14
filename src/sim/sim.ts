@@ -312,6 +312,7 @@ import {
 import * as fiestaBotsMod from './social/fiesta_bots';
 import { PartyMachine } from './social/party';
 import * as readyCheckMod from './social/ready_check';
+import * as yumiMod from './social/yumi';
 import { SpatialGrid } from './spatial';
 import { isStunDrCategory } from './stun_dr';
 import { Targeting } from './targeting';
@@ -617,6 +618,27 @@ export interface ArenaMatch {
   honorTeamBKey?: string;
   fiesta?: FiestaState; // present only for format === 'fiesta'
   boarball?: BoarballState; // present only for format === 'boarball'
+  yumi?: YumiState; // present only for format === 'yumi3' | 'yumi5'
+}
+
+// Protect Yumi! (PHAA-573): everything that makes a bout a yumi match. Lives on
+// the ArenaMatch so it is torn down with the match, same shape/lifecycle role
+// as FiestaState/BoarballState. Its `rng` is a PER-MATCH stream (fiesta's
+// two-stream rule): teleport picks + the last-resort tiebreak draw from it, so
+// nothing here touches the shared sim stream and the tick-path goldens hold.
+export interface YumiState {
+  teamSize: 3 | 5;
+  yumiA: number; // team A's cat entity id
+  yumiB: number; // team B's cat entity id
+  nextTeleportAt: number; // active-timer value (s) of the next simultaneous relocation
+  suddenDeath: boolean; // latched once at YUMI_SUDDEN_AT
+  respawn: Map<number, number>; // pid -> seconds until revive (absent = alive; Infinity = disconnected)
+  deaths: Map<number, number>; // pid -> times downed (scoreboard)
+  kills: Map<number, number>; // pid -> takedowns this bout (scoreboard)
+  dmgToYumiA: number; // total damage dealt to cat A (drives the tiebreak)
+  dmgToYumiB: number; // total damage dealt to cat B
+  lastStatusSecond: number; // last whole-second the HUD heartbeat fired (-1 = never)
+  rng: Rng;
 }
 
 // Everything that makes a Fiesta bout a fiesta. Lives on the ArenaMatch so it is
@@ -1160,6 +1182,14 @@ export class Sim {
   arenaQueue2v2: ArenaQueueUnit[] = [];
   arenaQueueFiesta: ArenaQueueUnit[] = []; // 2v2 Fiesta (party mode) queue
   arenaQueueBoarball: number[] = []; // unranked 2v2 boarball FIFO queue (PHAA-572)
+  // Protect Yumi! (PHAA-573): premade-unit FIFO queues per bracket, the enemy-cat
+  // -> live-match index (drives the two hostility arms), and the maze-band slot
+  // pool (separate from arenaBusySlots: yumi bouts run in the far-east maze band,
+  // yumiMazeOrigin, not the Coliseum pit).
+  arenaQueueYumi3: ArenaQueueUnit[] = [];
+  arenaQueueYumi5: ArenaQueueUnit[] = [];
+  yumiCatMatches = new Map<number, ArenaMatch>(); // cat entity id -> shared match
+  yumiBusySlots = new Set<number>();
   arenaMatches = new Map<number, ArenaMatch>(); // pid -> shared match (both pids)
   private arenaBusySlots = new Set<number>();
   private nextArenaMatchId = 1;
@@ -2567,6 +2597,24 @@ export class Sim {
       set arenaQueueBoarball(v) {
         sim.arenaQueueBoarball = v;
       },
+      get arenaQueueYumi3() {
+        return sim.arenaQueueYumi3;
+      },
+      set arenaQueueYumi3(v) {
+        sim.arenaQueueYumi3 = v;
+      },
+      get arenaQueueYumi5() {
+        return sim.arenaQueueYumi5;
+      },
+      set arenaQueueYumi5(v) {
+        sim.arenaQueueYumi5 = v;
+      },
+      get yumiCatMatches() {
+        return sim.yumiCatMatches;
+      },
+      get yumiBusySlots() {
+        return sim.yumiBusySlots;
+      },
       get arenaBusySlots() {
         return sim.arenaBusySlots;
       },
@@ -2666,6 +2714,11 @@ export class Sim {
       boarballRestoreChar: sim.boarballRestoreChar.bind(sim),
       boarballShoot: sim.boarballShoot.bind(sim),
       boarballPass: sim.boarballPass.bind(sim),
+      matchmakeYumi: sim.matchmakeYumi.bind(sim),
+      updateYumiActive: sim.updateYumiActive.bind(sim),
+      yumiPlayerDown: sim.yumiPlayerDown.bind(sim),
+      yumiCatDamaged: sim.yumiCatDamaged.bind(sim),
+      cleanupYumiMatch: sim.cleanupYumiMatch.bind(sim),
       readyArenaFighter: sim.readyArenaFighter.bind(sim),
       resetForArena: sim.resetForArena.bind(sim),
       isArenaTeamWiped: sim.isArenaTeamWiped.bind(sim),
@@ -5590,6 +5643,11 @@ export class Sim {
   isHostileTo(attacker: Entity, target: Entity): boolean {
     if (target.kind === 'mob') {
       if (target.templateId.startsWith('vision_')) return false;
+      // Protect Yumi! (PHAA-573): the cat is a valid hostile target only for the
+      // opposite team of its live match (never its `hostile` flag, kept false).
+      if (this.yumiCatMatches.has(target.id)) {
+        return yumiMod.yumiCatHostileTo(this.ctx, attacker, target);
+      }
       if (target.ownerId !== null) {
         const owner = this.entities.get(target.ownerId);
         return !!owner && owner.kind === 'player' && this.isHostileTo(attacker, owner);
@@ -5627,6 +5685,10 @@ export class Sim {
 
   private isFriendlyTo(caster: Entity, target: Entity): boolean {
     if (target.kind === 'player') return !this.isHostileTo(caster, target);
+    // Protect Yumi! (PHAA-573): heal/shield the cat only if it is your team's.
+    if (target.kind === 'mob' && this.yumiCatMatches.has(target.id)) {
+      return yumiMod.yumiCatFriendlyTo(this.ctx, caster, target);
+    }
     if (target.kind === 'mob' && target.ownerId !== null) {
       const owner = this.entities.get(target.ownerId);
       return !!owner && owner.kind === 'player' && !this.isHostileTo(caster, owner);
@@ -6010,6 +6072,44 @@ export class Sim {
   }
 
   // -------------------------------------------------------------------------
+  // Protect Yumi! (PHAA-573), the 3v3/5v5 maze objective mode. Queue + slot pool
+  // + the enemy-cat index stay on Sim as live SimContext views; the whole live
+  // match (matchmaking, teleports, sudden death, the two cat-hostility arms, the
+  // damage hub, revives, presentation, teardown) lives in social/yumi.ts and is
+  // reached only through these seam-bound delegates, the boarball precedent.
+  // arena.ts / combat call them via ctx and never import social/yumi.ts.
+  // -------------------------------------------------------------------------
+
+  private matchmakeYumi(): void {
+    yumiMod.matchmakeYumi(this.ctx);
+  }
+
+  private updateYumiActive(match: ArenaMatch): void {
+    yumiMod.updateYumiActive(this.ctx, match);
+  }
+
+  private yumiPlayerDown(match: ArenaMatch, victim: Entity, killerPid: number | null): void {
+    yumiMod.yumiPlayerDown(this.ctx, match, victim, killerPid);
+  }
+
+  private yumiCatDamaged(
+    match: ArenaMatch,
+    source: Entity | null,
+    cat: Entity,
+    amount: number,
+    crit: boolean,
+    school: string,
+    ability: string | null,
+    kind: 'hit' | 'miss' | 'dodge',
+  ): void {
+    yumiMod.yumiCatDamaged(this.ctx, match, source, cat, amount, crit, school, ability, kind);
+  }
+
+  private cleanupYumiMatch(match: ArenaMatch): void {
+    yumiMod.cleanupYumiMatch(this.ctx, match);
+  }
+
+  // -------------------------------------------------------------------------
   // 2v2 Fiesta: OFFLINE/DEV practice vs bots. The harness (spawn + queue + steer
   // three AI player bots) MOVED to social/fiesta_bots.ts (A3). It is offline-only
   // and reaches deep into Sim (casting, auto-attack, movement, add/remove player),
@@ -6153,12 +6253,17 @@ export class Sim {
       // read it).
       fiesta: this.arenaStanding(meta, '2v2'),
       boarball: this.arenaStanding(meta, '2v2'),
+      // Protect Yumi (PHAA-573) is unranked too; mirror 2v2 for the record shape.
+      yumi3: this.arenaStanding(meta, '2v2'),
+      yumi5: this.arenaStanding(meta, '2v2'),
     };
     const ladders: Record<ArenaFormat, import('../world_api').ArenaLadderEntry[]> = {
       '1v1': this.arenaLadder('1v1'),
       '2v2': this.arenaLadder('2v2'),
       fiesta: [],
       boarball: [],
+      yumi3: [],
+      yumi5: [],
     };
     const format = match?.format ?? queuedFmt;
     const readoutFormat = format ?? '1v1';

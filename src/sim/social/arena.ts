@@ -173,6 +173,76 @@ export function arenaQueueJoin(
     return;
   }
 
+  // Protect Yumi! (PHAA-573): premade units of any size 1..teamSize pool FIFO
+  // first-fit in join order (matchmakeYumi packs two teams). A solo or a party
+  // up to the bracket size may queue; the party leader queues the whole party.
+  if (fmt === 'yumi3' || fmt === 'yumi5') {
+    const teamSize = fmt === 'yumi3' ? 3 : 5;
+    const party = ctx.partyOf(id);
+    let yUnitPids: number[];
+    if (!party || party.members.length === 1) {
+      yUnitPids = [id];
+    } else if (party.members.length <= teamSize) {
+      if (party.leader !== id) {
+        ctx.error(id, `Only the party leader may queue your team for Protect Yumi.`);
+        return;
+      }
+      yUnitPids = [...party.members];
+    } else {
+      ctx.error(
+        id,
+        `Protect Yumi ${teamSize}v${teamSize} premade requires a party of ${teamSize} or fewer.`,
+      );
+      return;
+    }
+    for (const mPid of yUnitPids) {
+      if (mPid === id) continue;
+      const e = ctx.entities.get(mPid);
+      const mMeta = ctx.players.get(mPid);
+      if (!e || !mMeta) {
+        ctx.error(id, 'A party member is unavailable.');
+        return;
+      }
+      if (e.dead) {
+        ctx.error(id, `${mMeta.name} cannot queue while dead.`);
+        return;
+      }
+      if (ctx.arenaMatches.has(mPid)) {
+        ctx.error(id, `${mMeta.name} is already in an arena match.`);
+        return;
+      }
+      if (isArenaQueued(ctx, mPid)) {
+        ctx.error(id, `${mMeta.name} is already in the arena queue.`);
+        return;
+      }
+      if (ctx.duels.has(mPid)) {
+        ctx.error(id, `${mMeta.name} cannot queue while dueling.`);
+        return;
+      }
+      if (ctx.trades.has(mPid)) {
+        ctx.error(id, `${mMeta.name} must finish trading before queueing.`);
+        return;
+      }
+      if (e.pos.x > DUNGEON_X_THRESHOLD) {
+        ctx.error(id, `${mMeta.name} cannot queue from inside an instance.`);
+        return;
+      }
+    }
+    const yQueue = fmt === 'yumi3' ? ctx.arenaQueueYumi3 : ctx.arenaQueueYumi5;
+    yQueue.push({ pids: yUnitPids, rating: arenaTeamRating(ctx, yUnitPids, '2v2') });
+    const yPos = yQueue.reduce((n, u) => n + u.pids.length, 0);
+    for (const mPid of yUnitPids) {
+      ctx.emit({ type: 'arenaQueued', position: yPos, format: fmt, pid: mPid });
+      ctx.emit({
+        type: 'log',
+        text: 'You join the Protect Yumi queue. Defend your familiar and hunt theirs…',
+        color: '#7fd7ff',
+        pid: mPid,
+      });
+    }
+    return;
+  }
+
   // 2v2 and Fiesta share the same team-formation + queueing path; only the
   // destination queue and the flavour text differ.
   const isFiesta = fmt === 'fiesta';
@@ -248,7 +318,15 @@ export function arenaQueueLeave(ctx: SimContext, pid?: number): void {
   const id = r.meta.entityId;
   const fmt = arenaQueuedFormat(ctx, id);
   const teamQueue =
-    fmt === '2v2' ? ctx.arenaQueue2v2 : fmt === 'fiesta' ? ctx.arenaQueueFiesta : null;
+    fmt === '2v2'
+      ? ctx.arenaQueue2v2
+      : fmt === 'fiesta'
+        ? ctx.arenaQueueFiesta
+        : fmt === 'yumi3'
+          ? ctx.arenaQueueYumi3
+          : fmt === 'yumi5'
+            ? ctx.arenaQueueYumi5
+            : null;
   const unit = teamQueue ? teamQueue.find((u) => u.pids.includes(id)) : null;
   if (arenaDequeue(ctx, id)) {
     ctx.emit({ type: 'arenaUnqueued', pid: id });
@@ -259,13 +337,17 @@ export function arenaQueueLeave(ctx: SimContext, pid?: number): void {
           ? 'You leave the Ashen Coliseum 2v2 queue.'
           : fmt === 'boarball'
             ? 'You leave the boarball queue.'
-            : 'You leave the Ashen Coliseum queue.';
+            : fmt === 'yumi3' || fmt === 'yumi5'
+              ? 'You leave the Protect Yumi queue.'
+              : 'You leave the Ashen Coliseum queue.';
     ctx.emit({ type: 'log', text: leaveText, color: '#ffa040', pid: id });
     if (unit) {
       const teamLeaveText =
         fmt === 'fiesta'
           ? 'Your team leaves the 2v2 Fiesta queue.'
-          : 'Your team leaves the Ashen Coliseum 2v2 queue.';
+          : fmt === 'yumi3' || fmt === 'yumi5'
+            ? 'Your team leaves the Protect Yumi queue.'
+            : 'Your team leaves the Ashen Coliseum 2v2 queue.';
       for (const mPid of unit.pids) {
         if (mPid === id) continue;
         ctx.emit({ type: 'arenaUnqueued', pid: mPid });
@@ -280,7 +362,9 @@ export function isArenaQueued(ctx: SimContext, pid: number): boolean {
     ctx.arenaQueue1v1.includes(pid) ||
     ctx.arenaQueue2v2.some((u) => u.pids.includes(pid)) ||
     ctx.arenaQueueFiesta.some((u) => u.pids.includes(pid)) ||
-    ctx.arenaQueueBoarball.includes(pid)
+    ctx.arenaQueueBoarball.includes(pid) ||
+    ctx.arenaQueueYumi3.some((u) => u.pids.includes(pid)) ||
+    ctx.arenaQueueYumi5.some((u) => u.pids.includes(pid))
   );
 }
 
@@ -289,13 +373,22 @@ export function arenaQueuedFormat(ctx: SimContext, pid: number): ArenaFormat | n
   if (ctx.arenaQueue2v2.some((u) => u.pids.includes(pid))) return '2v2';
   if (ctx.arenaQueueFiesta.some((u) => u.pids.includes(pid))) return 'fiesta';
   if (ctx.arenaQueueBoarball.includes(pid)) return 'boarball';
+  if (ctx.arenaQueueYumi3.some((u) => u.pids.includes(pid))) return 'yumi3';
+  if (ctx.arenaQueueYumi5.some((u) => u.pids.includes(pid))) return 'yumi5';
   return null;
 }
 
 export function arenaQueuePosition(ctx: SimContext, pid: number, format: ArenaFormat): number {
   if (format === '1v1') return ctx.arenaQueue1v1.indexOf(pid) + 1;
   if (format === 'boarball') return ctx.arenaQueueBoarball.indexOf(pid) + 1;
-  const queue = format === 'fiesta' ? ctx.arenaQueueFiesta : ctx.arenaQueue2v2;
+  const queue =
+    format === 'fiesta'
+      ? ctx.arenaQueueFiesta
+      : format === 'yumi3'
+        ? ctx.arenaQueueYumi3
+        : format === 'yumi5'
+          ? ctx.arenaQueueYumi5
+          : ctx.arenaQueue2v2;
   let pos = 0;
   for (const unit of queue) {
     if (unit.pids.includes(pid)) return pos + 1;
@@ -323,6 +416,16 @@ export function arenaDequeue(ctx: SimContext, pid: number): boolean {
   const bi = ctx.arenaQueueBoarball.indexOf(pid);
   if (bi >= 0) {
     ctx.arenaQueueBoarball.splice(bi, 1);
+    return true;
+  }
+  const y3 = ctx.arenaQueueYumi3.findIndex((u) => u.pids.includes(pid));
+  if (y3 >= 0) {
+    ctx.arenaQueueYumi3.splice(y3, 1);
+    return true;
+  }
+  const y5 = ctx.arenaQueueYumi5.findIndex((u) => u.pids.includes(pid));
+  if (y5 >= 0) {
+    ctx.arenaQueueYumi5.splice(y5, 1);
     return true;
   }
   return false;
@@ -400,6 +503,9 @@ export function isArenaCrossTeam(
 // (`defeated`); Fiesta only benches you until your respawn timer elapses.
 export function arenaIsDown(match: ArenaMatch, pid: number): boolean {
   if (match.fiesta) return match.fiesta.respawn.has(pid);
+  // Protect Yumi! (PHAA-573): benched until the flat respawn timer elapses,
+  // like Fiesta (never permanent elimination; the win is the enemy cat's death).
+  if (match.yumi) return match.yumi.respawn.has(pid);
   return match.defeated.has(pid);
 }
 
@@ -436,12 +542,20 @@ export function updateArena(ctx: SimContext): void {
   matchmakeArena1v1(ctx);
   matchmakeArena2v2(ctx);
   matchmakeBoarball(ctx);
+  ctx.matchmakeYumi();
   const seen = new Set<ArenaMatch>();
   for (const match of ctx.arenaMatches.values()) {
     if (seen.has(match)) continue;
     seen.add(match);
-    const missingA = match.teamA.some((pid) => !ctx.entities.get(pid));
-    const missingB = match.teamB.some((pid) => !ctx.entities.get(pid));
+    // Protect Yumi! (PHAA-573): a single disconnect benches indefinitely
+    // (updateYumiActive), so only a WHOLE team vanishing forfeits; both gone at
+    // once is the mode's one remaining draw (winner null, nobody left to see it).
+    const missingA = match.yumi
+      ? match.teamA.every((pid) => !ctx.entities.get(pid))
+      : match.teamA.some((pid) => !ctx.entities.get(pid));
+    const missingB = match.yumi
+      ? match.teamB.every((pid) => !ctx.entities.get(pid))
+      : match.teamB.some((pid) => !ctx.entities.get(pid));
     if (missingA || missingB) {
       if (match.state === 'over') returnFromArena(ctx, match);
       else {
@@ -475,7 +589,13 @@ export function updateArena(ctx: SimContext): void {
         for (const mPid of arenaAllPids(match)) {
           ctx.emit({
             type: 'log',
-            text: match.fiesta ? 'FIESTA, GO!' : match.boarball ? 'Kickoff!' : 'Fight!',
+            text: match.fiesta
+              ? 'FIESTA, GO!'
+              : match.boarball
+                ? 'Kickoff!'
+                : match.yumi
+                  ? 'Protect Yumi!'
+                  : 'Fight!',
             color: '#ff5a3c',
             pid: mPid,
           });
@@ -514,6 +634,10 @@ export function updateArena(ctx: SimContext): void {
     }
     if (match.boarball) {
       ctx.updateBoarballActive(match);
+      continue;
+    }
+    if (match.yumi) {
+      ctx.updateYumiActive(match);
       continue;
     }
     if (match.timer >= ARENA_MAX_DURATION) {
@@ -903,7 +1027,7 @@ export function endArenaMatch(
   const ratingA0 = match.ratingA;
   const ratingB0 = match.ratingB;
   // Fiesta and boarball are unranked play, neither moves the Elo ladder.
-  const ranked = !match.fiesta && !match.boarball;
+  const ranked = !match.fiesta && !match.boarball && !match.yumi;
   let deltaA: number;
   if (!ranked) {
     deltaA = 0;
@@ -989,7 +1113,9 @@ export function endArenaMatch(
     ? 'FIESTA OVER! What a party. Returning to the world…'
     : match.boarball
       ? 'Full time! Returning to the world…'
-      : 'The bout is decided. Returning to the world…';
+      : match.yumi
+        ? 'The maze falls quiet. Returning to the world…'
+        : 'The bout is decided. Returning to the world…';
   for (const mPid of arenaAllPids(match)) {
     ctx.emit({
       type: 'log',
@@ -1004,7 +1130,15 @@ export function endArenaMatch(
 // release the instance slot.
 export function returnFromArena(ctx: SimContext, match: ArenaMatch): void {
   for (const pid of arenaAllPids(match)) ctx.arenaMatches.delete(pid);
-  ctx.arenaBusySlots.delete(match.slot);
+  // Protect Yumi! (PHAA-573) runs in its own far-east maze-band slot pool, not
+  // the Coliseum pit; free the right pool and drop both cat entities (which have
+  // no other owner) before the slot frees so a re-match never sees a stray cat.
+  if (match.yumi) {
+    ctx.yumiBusySlots.delete(match.slot);
+    ctx.cleanupYumiMatch(match);
+  } else {
+    ctx.arenaBusySlots.delete(match.slot);
+  }
   // Boarball's ball is a spawned entity with no other owner; it never outlives
   // its match (checked before the busy slot frees so a re-match into the same
   // slot never sees a stray ball).
