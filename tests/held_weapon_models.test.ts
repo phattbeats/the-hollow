@@ -57,23 +57,70 @@ describe('held weapon models', () => {
   });
 
   // Every player class swaps its held mainhand to the equipped weapon, EXCEPT the
-  // hunter, which keeps its crossbow regardless of the melee weapon equipped. The
-  // cosmetic Combat Mech (player_mech) is class-agnostic but is included: it still
-  // shows the wearer's equipped mainhand, like every other body.
-  it('all player classes swap the mainhand except the hunter', () => {
+  // hunters (player_hunter and its chibi player_hunter_f), which keep the crossbow
+  // regardless of the melee weapon equipped. The cosmetic Combat Mech (player_mech)
+  // is class-agnostic but is included: it still shows the wearer's equipped
+  // mainhand, like every other body. Both the KayKit male bodies and the chibi
+  // female (_f) bodies are covered (PHAA-697).
+  it('all player classes swap the mainhand except the hunters', () => {
     const players = Object.keys(VISUALS).filter((k) => k.startsWith('player_'));
     expect(players).toContain('player_hunter');
+    expect(players).toContain('player_hunter_f');
     expect(players).toContain('player_mech');
     for (const key of players) {
       const def = VISUALS[key];
-      if (key === 'player_hunter') {
-        expect(def.weaponSlots, 'hunter must keep its crossbow').toBeUndefined();
+      if (key === 'player_hunter' || key === 'player_hunter_f') {
+        expect(def.weaponSlots, `${key} must keep its crossbow`).toBeUndefined();
+        expect(def.attach?.length, `${key} still holds a fixed crossbow`).toBe(1);
       } else {
         expect(def.weaponSlots?.includes(0), `${key} should swap its mainhand`).toBe(true);
       }
     }
-    // the rogue dual-wields: both hand slots swap so a dagger shows in BOTH hands
+    // both rogues dual-wield: both hand slots swap so a dagger shows in BOTH hands
     expect(VISUALS.player_rogue.weaponSlots).toEqual([0, 1]);
+    expect(VISUALS.player_rogue_f.weaponSlots).toEqual([0, 1]);
+  });
+
+  // PHAA-697: every female (chibi-rig) body holds its class weapon, mounted on the
+  // chibi DEF-hand bones, mirroring its KayKit male sibling's layout. Before this
+  // fix the nine player_<cls>_f defs shipped no attach/weaponSlots and rendered an
+  // empty hand for every female character (a female warrior swung an invisible
+  // sword). This was the it.todo placeholder tracked on PHAA-697; it is now a real
+  // assertion over the _f family.
+  const MALE_SIBLING: Record<string, string> = {
+    player_warrior_f: 'player_warrior',
+    player_paladin_f: 'player_paladin',
+    player_hunter_f: 'player_hunter',
+    player_rogue_f: 'player_rogue',
+    player_druid_f: 'player_druid',
+    player_mage_f: 'player_mage',
+    player_priest_f: 'player_priest',
+    player_warlock_f: 'player_warlock',
+    player_shaman_f: 'player_shaman',
+  };
+  it('every female _f body holds its class weapon on a chibi DEF-hand bone', () => {
+    const females = Object.keys(VISUALS).filter((k) => k.startsWith('player_') && k.endsWith('_f'));
+    expect(females.length).toBe(9);
+    for (const key of females) {
+      const def = VISUALS[key];
+      expect(def.attach?.length, `${key} must attach at least one weapon`).toBeGreaterThan(0);
+      // the chibi rig grips on DEF-hand.R / DEF-hand.L, never the KayKit handslot bones
+      for (const a of def.attach ?? []) {
+        expect(
+          /^DEF-hand\.[RL]$/.test(a.bone),
+          `${key} attach bone ${a.bone} must be a chibi hand bone`,
+        ).toBe(true);
+      }
+    }
+    // layout mirrors the male sibling exactly: same swap slots, same mainhand model
+    for (const [f, m] of Object.entries(MALE_SIBLING)) {
+      expect(VISUALS[f].weaponSlots, `${f} weaponSlots must mirror ${m}`).toEqual(
+        VISUALS[m].weaponSlots,
+      );
+      expect(VISUALS[f].attach?.[0].url, `${f} mainhand model must match ${m}`).toBe(
+        VISUALS[m].attach?.[0].url,
+      );
+    }
   });
 
   // The class-agnostic Combat Mech adopts the WEARER class's hand layout, so a

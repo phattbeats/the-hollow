@@ -165,6 +165,68 @@ function handSide(bone: string): 'r' | 'l' {
   return bone.replace(/[[\].:/]/g, '').endsWith('l') ? 'l' : 'r';
 }
 
+// PHAA-697: the female player bodies (player_<cls>_f) use the styloo chibi rig,
+// which grips weapons on `DEF-hand.R`/`DEF-hand.L` bones and ships NO KayKit
+// `handslot.r/.l` nodes and no in-model grip reference nodes (verified against
+// every chibi_female*.glb). The KayKit grips above are authored for a different
+// hand frame, so the chibi bones route to this parallel table. The bone frame is
+// near-identity (a small wrist tilt) with local +Y running out along the hand,
+// and the rig normalizes at ~1.0 (native mesh height ~= def.height 2.29), so the
+// values start from the KayKit grips and are tuned against the offscreen render
+// rig for the smaller chibi hand. Keyed by the same KAYKIT_WEAPON_ACCESSORY
+// family so a swapped-in equipped weapon (setHeldWeapon) resolves identically.
+const CHIBI_HAND_GRIPS: Record<string, { r: HandGrip; l?: HandGrip }> = {
+  '1H_Sword': {
+    r: { position: [0, 0.16, 0.02], quaternion: [0, 1, 0, 0], scale: 0.95 },
+    l: { position: [0, 0.16, 0.02], quaternion: [0, 0, 0, 1], scale: 0.95 },
+  },
+  '1H_Axe': {
+    r: { position: [0.02, 0.14, 0.02], quaternion: [0, 1, 0, 0], scale: 0.72 },
+    l: { position: [-0.02, 0.14, 0.02], quaternion: [0, 0, 0, 1], scale: 0.72 },
+  },
+  '1H_Crossbow': {
+    r: { position: [0.04, 0.12, 0.02], quaternion: [0, 0.7071068, 0, 0.7071067], scale: 0.7 },
+  },
+  '2H_Staff': {
+    r: { position: [-0.01, 0.18, 0.02], quaternion: [0, 1, 0, 0], scale: 1.12 },
+  },
+  Knife: {
+    r: { position: [0, 0.13, 0.02], quaternion: [0, 1, 0, 0], scale: 0.66 },
+    l: { position: [0, 0.13, 0.02], quaternion: [0, 0, 0, 1], scale: 0.66 },
+  },
+  '1H_Wand': {
+    r: { position: [0, 0.12, 0.02], quaternion: [0, 1, 0, 0], scale: 0.55 },
+  },
+};
+
+// Chibi sibling of VARIANT_GRIPS (origin-at-grip item-variant weapons): same
+// bbox-clamp convention, chibi-tuned clamp heights so an equipped variant weapon
+// (ITEM_WEAPON_VARIANTS) mounts at a sensible size on the smaller chibi hand.
+const CHIBI_VARIANT_GRIPS: Record<string, VariantGrip> = {
+  VAR_SWORD: { lift: 0.05, maxHeight: 2.1 },
+  VAR_DAGGER: { lift: 0.05, maxHeight: 1.4 },
+  VAR_STAFF: { lift: 0.2, maxHeight: 2.5 },
+  VAR_AXE: { lift: 0.05, maxHeight: 1.6 },
+  VAR_POLEARM: { lift: 0.2, maxHeight: 2.6 },
+  VAR_WAND: { lift: 0.05, maxHeight: 1.2 },
+};
+
+function isChibiHandBone(name: string): boolean {
+  const n = name.replace(/[[\].:/]/g, '').toLowerCase();
+  return n === 'def-handr' || n === 'def-handl';
+}
+
+// The chibi bones are `DEF-hand.R`/`DEF-hand.L` (uppercase side), so handSide's
+// lowercase `endsWith('l')` never matches L: resolve the side case-insensitively.
+function chibiHandSide(bone: string): 'r' | 'l' {
+  return bone
+    .replace(/[[\].:/]/g, '')
+    .toLowerCase()
+    .endsWith('l')
+    ? 'l'
+    : 'r';
+}
+
 function kaykitAccessoryFor(url: string): string | null {
   const base =
     url
@@ -244,14 +306,32 @@ function variantGripFor(url: string): VariantGrip | null {
   const accessory = kaykitAccessoryFor(url);
   return accessory ? (VARIANT_GRIPS[accessory] ?? null) : null;
 }
-function applyVariantGrip(payload: THREE.Object3D, bone: string, grip: VariantGrip): void {
+function chibiVariantGripFor(url: string): VariantGrip | null {
+  const accessory = kaykitAccessoryFor(url);
+  return accessory ? (CHIBI_VARIANT_GRIPS[accessory] ?? null) : null;
+}
+function applyVariantGrip(payload: THREE.Object3D, side: 'r' | 'l', grip: VariantGrip): void {
   variantBox.setFromObject(payload);
   const height = variantBox.max.y - variantBox.min.y;
   const scale = height > 1e-3 ? Math.min(1, grip.maxHeight / height) : 1;
-  const left = handSide(bone) === 'l';
+  const left = side === 'l';
   payload.position.set(0, grip.lift, 0);
   payload.quaternion.set(0, left ? 0 : 1, 0, left ? 1 : 0);
   payload.scale.setScalar(scale);
+}
+
+// PHAA-697: chibi sibling of applyHandGrip. No in-model grip ref nodes exist on
+// the chibi rig, so this always uses the CHIBI_HAND_GRIPS fallback table.
+function applyChibiHandGrip(payload: THREE.Object3D, bone: string, url: string): void {
+  const accessory = kaykitAccessoryFor(url);
+  if (!accessory) return;
+  const side = chibiHandSide(bone);
+  const grips = CHIBI_HAND_GRIPS[accessory];
+  if (!grips) return;
+  const grip = side === 'l' ? (grips.l ?? grips.r) : grips.r;
+  payload.position.set(...grip.position);
+  payload.quaternion.set(...grip.quaternion);
+  payload.scale.setScalar(grip.scale);
 }
 
 function attachProp(
@@ -268,9 +348,12 @@ function attachProp(
     const tags = Array.isArray(markTags) ? markTags : [markTags];
     for (const t of tags) payload.userData[t] = true;
   }
-  const variantGrip = isHandslotBone(att.bone) ? variantGripFor(att.url) : null;
-  if (variantGrip) {
-    applyVariantGrip(payload, att.bone, variantGrip);
+  const handslotVariant = isHandslotBone(att.bone) ? variantGripFor(att.url) : null;
+  const chibiVariant = isChibiHandBone(att.bone) ? chibiVariantGripFor(att.url) : null;
+  if (handslotVariant) {
+    applyVariantGrip(payload, handSide(att.bone), handslotVariant);
+  } else if (chibiVariant) {
+    applyVariantGrip(payload, chibiHandSide(att.bone), chibiVariant);
   } else if (att.position || att.rotationY !== undefined) {
     if (att.position) payload.position.set(...att.position);
     if (att.rotationY !== undefined) payload.rotation.y = att.rotationY;
@@ -279,6 +362,8 @@ function attachProp(
     if (ref) copyAccessoryTransform(payload, ref);
   } else if (isHandslotBone(att.bone)) {
     applyHandGrip(payload, root, att.bone, att.url);
+  } else if (isChibiHandBone(att.bone)) {
+    applyChibiHandGrip(payload, att.bone, att.url);
   }
   bone.add(payload);
 }
