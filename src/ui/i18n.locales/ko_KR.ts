@@ -5482,6 +5482,8 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'mailUi.removeAttachment': '이 편지에서 {item} 제거',
   'mailUi.tooltipAttach': '클릭하여 이 편지에 첨부',
   'mailUi.tooltipCannotAttach': '까마귀는 퀘스트 아이템을 운반하지 않습니다',
+  'mailUi.parcelQtyDecreaseAria': '{item} 한 개 적게 보내기',
+  'mailUi.parcelQtyIncreaseAria': '{item} 한 개 더 보내기',
   // Event calendar (M16 non-Latin fill)
   'hudChrome.calendar.title': '이벤트 달력',
   'hudChrome.calendar.close': '달력 닫기',

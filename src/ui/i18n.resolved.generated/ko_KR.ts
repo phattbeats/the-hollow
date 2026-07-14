@@ -1012,6 +1012,8 @@ export const ko_KR: EnTranslations = {
     "removeAttachment": "이 편지에서 {item} 제거",
     "tooltipAttach": "클릭하여 이 편지에 첨부",
     "tooltipCannotAttach": "까마귀는 퀘스트 아이템을 운반하지 않습니다",
+    "parcelQtyDecreaseAria": "{item} 한 개 적게 보내기",
+    "parcelQtyIncreaseAria": "{item} 한 개 더 보내기",
     "send": "편지 보내기",
     "needRecipientOrText": "보내기 전에 받는 사람을 지정하고 내용을 입력하세요.",
     "openButton": "레이븐포스트로 안내해 주세요.",

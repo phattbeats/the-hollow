@@ -1012,6 +1012,8 @@ export const zh_TW: EnTranslations = {
     "removeAttachment": "從這封信中移除{item}",
     "tooltipAttach": "點擊附加到這封信",
     "tooltipCannotAttach": "渡鴉不會攜帶任務物品",
+    "parcelQtyDecreaseAria": "少寄一個{item}",
+    "parcelQtyIncreaseAria": "多寄一個{item}",
     "send": "寄出信件",
     "needRecipientOrText": "請先填寫收件人並寫點內容再寄送。",
     "openButton": "帶我去渡鴉驛站。",

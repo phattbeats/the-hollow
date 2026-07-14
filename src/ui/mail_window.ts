@@ -13,11 +13,11 @@
 // 'mailAttach' branch in bags_view.ts, wired through stageMailAttach below).
 // The sim/server/wire layer already accepted an `items` array end to end
 // since PHAA-495; this closes the gap on the compose UI. A staged parcel
-// carries the sender's full current stack of that item (no partial-quantity
-// picker yet -- that is PHAA-645's follow-on quantity stepper port, upstream
-// #1695). Attachments render into their own #mail-attachments container so
-// staging/removing a parcel never rebuilds (and loses focus/typed values in)
-// the recipient/subject/body fields.
+// starts at the sender's full current stack of that item; a +/- quantity
+// stepper (PHAA-645, upstream #1695) then trims it down to any amount from 1
+// to what the bags hold. Attachments render into their own #mail-attachments
+// container so staging/removing/adjusting a parcel never rebuilds (and loses
+// focus/typed values in) the recipient/subject/body fields.
 
 import { ITEMS } from '../sim/data';
 import type { InvSlot } from '../sim/types';
@@ -25,7 +25,7 @@ import type { IWorld } from '../world_api';
 import { markDialogRoot } from './dialog_root';
 import { esc } from './esc';
 import { formatMoney as formatLocalizedMoney, formatNumber, t } from './i18n';
-import { buildMailInboxBody, canSendMail } from './mail_view';
+import { buildMailInboxBody, canSendMail, clampParcelQty } from './mail_view';
 import type { PainterHostPresentation } from './painter_host';
 import { tSim } from './sim_i18n';
 import { svgIcon } from './ui_icons';
@@ -110,6 +110,19 @@ export class MailWindow {
 
   private removeAttach(itemId: string): void {
     this.attachments = this.attachments.filter((a) => a.itemId !== itemId);
+    this.renderAttachmentChips();
+  }
+
+  /** Nudge a staged parcel's quantity from the +/- stepper (PHAA-645, upstream
+   *  #1695). The ceiling is the sender's live bag count (the same value
+   *  stageAttach seeds the parcel with), so the stepper can never stage more
+   *  than is owned; clampParcelQty keeps it in [1, owned]. */
+  private adjustParcelQty(itemId: string, delta: number): void {
+    const slot = this.attachments.find((a) => a.itemId === itemId);
+    if (!slot) return;
+    const next = clampParcelQty(slot.count, delta, this.bagCount(itemId));
+    if (next === slot.count) return;
+    slot.count = next;
     this.renderAttachmentChips();
   }
 
@@ -279,23 +292,94 @@ export class MailWindow {
     });
   }
 
-  // Split out from renderCompose so staging/removing a parcel only touches the
-  // attachment chips, never the recipient/subject/body inputs (a full
-  // renderCompose rebuild would clobber whatever the player has typed).
+  // Split out from renderCompose so staging/removing/adjusting a parcel only
+  // touches the attachment chips, never the recipient/subject/body inputs (a
+  // full renderCompose rebuild would clobber whatever the player has typed).
+  // Each chip carries the item, a +/- quantity stepper (shown only when the
+  // sender owns more than one so a single-stack parcel stays uncluttered), and
+  // a remove button.
   private renderAttachmentChips(): void {
     const container = this.deps.root().querySelector<HTMLElement>('#mail-attachments');
     if (!container) return;
+    // A +/- click rebuilds this whole container, which would otherwise drop
+    // keyboard focus to <body>; remember which control (by item + role) held it
+    // so the rebuilt equivalent can reclaim it below.
+    const active = document.activeElement as HTMLElement | null;
+    const focusKey =
+      active && container.contains(active) ? (active.dataset.focusKey ?? null) : null;
     container.innerHTML = '';
+    const controlsByItem = new Map<
+      string,
+      { minus?: HTMLButtonElement; plus?: HTMLButtonElement; remove: HTMLButtonElement }
+    >();
     for (const a of this.attachments) {
       const item = ITEMS[a.itemId];
       if (!item) continue;
-      const chip = document.createElement('button');
-      chip.type = 'button';
-      chip.className = 'mail-attach removable';
-      chip.innerHTML = `${this.deps.itemIcon(item)}${esc(item.name)}${a.count > 1 ? ` x${a.count}` : ''}`;
-      chip.setAttribute('aria-label', t('mailUi.removeAttachment', { item: item.name }));
-      chip.addEventListener('click', () => this.removeAttach(a.itemId));
+      const chip = document.createElement('span');
+      chip.className = 'mail-attach parcel';
+      const name = document.createElement('span');
+      name.className = 'mail-parcel-name';
+      name.innerHTML = `${this.deps.itemIcon(item)}${esc(item.name)}`;
+      chip.appendChild(name);
+      const owned = this.bagCount(a.itemId);
+      let minus: HTMLButtonElement | undefined;
+      let plus: HTMLButtonElement | undefined;
+      if (owned > 1) {
+        const step = document.createElement('span');
+        step.className = 'mail-parcel-qty';
+        minus = document.createElement('button');
+        minus.type = 'button';
+        minus.className = 'mail-parcel-step';
+        minus.textContent = '−'; // U+2212 minus sign, not a hyphen
+        minus.disabled = a.count <= 1;
+        minus.dataset.focusKey = `${a.itemId}:minus`;
+        minus.setAttribute('aria-label', t('mailUi.parcelQtyDecreaseAria', { item: item.name }));
+        minus.addEventListener('click', () => this.adjustParcelQty(a.itemId, -1));
+        const qty = document.createElement('span');
+        qty.className = 'mail-parcel-qty-value';
+        qty.setAttribute('aria-live', 'polite');
+        qty.textContent = t('itemUi.bags.stackCount', {
+          count: formatNumber(a.count, { maximumFractionDigits: 0 }),
+        });
+        plus = document.createElement('button');
+        plus.type = 'button';
+        plus.className = 'mail-parcel-step';
+        plus.textContent = '+';
+        plus.disabled = a.count >= owned;
+        plus.dataset.focusKey = `${a.itemId}:plus`;
+        plus.setAttribute('aria-label', t('mailUi.parcelQtyIncreaseAria', { item: item.name }));
+        plus.addEventListener('click', () => this.adjustParcelQty(a.itemId, 1));
+        step.append(minus, qty, plus);
+        chip.appendChild(step);
+      }
+      const remove = document.createElement('button');
+      remove.type = 'button';
+      remove.className = 'mail-parcel-remove-btn';
+      remove.innerHTML = svgIcon('close');
+      remove.dataset.focusKey = `${a.itemId}:remove`;
+      remove.setAttribute('aria-label', t('mailUi.removeAttachment', { item: item.name }));
+      remove.addEventListener('click', () => this.removeAttach(a.itemId));
+      chip.appendChild(remove);
+      controlsByItem.set(a.itemId, { minus, plus, remove });
       container.appendChild(chip);
     }
+    if (!focusKey) return;
+    const [itemId, role] = focusKey.split(':');
+    const controls = controlsByItem.get(itemId);
+    if (!controls) return;
+    const preferred =
+      role === 'minus' ? controls.minus : role === 'plus' ? controls.plus : controls.remove;
+    // The just-clicked control can vanish or disable on rebuild (it hit a
+    // bound, or the whole stepper dropped once owned fell to 1): fall back to
+    // the nearest still-focusable control for the same parcel.
+    const target =
+      preferred && !preferred.disabled
+        ? preferred
+        : controls.minus && !controls.minus.disabled
+          ? controls.minus
+          : controls.plus && !controls.plus.disabled
+            ? controls.plus
+            : controls.remove;
+    target?.focus();
   }
 }

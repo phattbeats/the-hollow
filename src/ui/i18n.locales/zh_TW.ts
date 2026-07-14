@@ -5208,6 +5208,8 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'mailUi.removeAttachment': '從這封信中移除{item}',
   'mailUi.tooltipAttach': '點擊附加到這封信',
   'mailUi.tooltipCannotAttach': '渡鴉不會攜帶任務物品',
+  'mailUi.parcelQtyDecreaseAria': '少寄一個{item}',
+  'mailUi.parcelQtyIncreaseAria': '多寄一個{item}',
   // Event calendar (M16 non-Latin fill)
   'hudChrome.calendar.title': '活動日曆',
   'hudChrome.calendar.close': '關閉日曆',

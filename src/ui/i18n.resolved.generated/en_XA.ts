@@ -1012,6 +1012,8 @@ export const en_XA: EnTranslations = {
     "removeAttachment": "[Ŕéɱóʋé {item} ƒŕóɱ ţĥíš ļéţţéŕ]",
     "tooltipAttach": "[Çļíçķ ţó áţţáçĥ ţó ţĥíš ļéţţéŕ]",
     "tooltipCannotAttach": "[Ţĥé ŕáʋéñ ŵíļļ ñóţ çáŕŕý ɋúéšţ íţéɱš]",
+    "parcelQtyDecreaseAria": "[Šéñð óñé ƒéŵéŕ {item}]",
+    "parcelQtyIncreaseAria": "[Šéñð óñé ɱóŕé {item}]",
     "send": "[Šéñð Ļéţţéŕ]",
     "needRecipientOrText": "[Ñáɱé á ŕéçíþíéñţ áñð ŵŕíţé šóɱéţĥíñĝ ƀéƒóŕé šéñðíñĝ.]",
     "openButton": "[Šĥóŵ ɱé ţĥé Ŕáʋéñþóšţ.]",

@@ -1012,6 +1012,8 @@ export const zh_CN: EnTranslations = {
     "removeAttachment": "从这封信中移除{item}",
     "tooltipAttach": "点击附加到这封信",
     "tooltipCannotAttach": "渡鸦不会携带任务物品",
+    "parcelQtyDecreaseAria": "少寄一个{item}",
+    "parcelQtyIncreaseAria": "多寄一个{item}",
     "send": "寄出信件",
     "needRecipientOrText": "请先填写收件人并写点内容再寄送。",
     "openButton": "带我去渡鸦驿站。",

@@ -3911,27 +3911,79 @@
     color: var(--color-text-muted);
     margin-right: 6px;
   }
-  /* Staged parcel chips (PHAA-688): the Compose tab's readonly .mail-attach
-     span becomes a clickable button that removes the parcel, so it needs the
-     button reset plus a hover/focus affordance the inbox's readonly rows don't. */
+  /* Staged parcel chips (PHAA-688 + PHAA-645 quantity stepper): each Compose-tab
+     parcel is a chip carrying the item name, an optional +/- quantity stepper
+     (shown only when the sender owns more than one), and a remove button. Inbox
+     rows keep the plain readonly .mail-attach span above. */
   .mail-attach-row {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
     margin: 4px 0 10px;
   }
-  .mail-attach.removable {
-    appearance: none;
+  .mail-attach.parcel {
     background: #ffffff0a;
+    border: 1px solid var(--gold-dim);
+    border-radius: 3px;
+    padding: 2px 4px 2px 7px;
+    gap: 6px;
+  }
+  .mail-parcel-name {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .mail-parcel-qty {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .mail-parcel-step {
+    appearance: none;
+    background: #ffffff14;
     border: 1px solid transparent;
     border-radius: 3px;
-    padding: 3px 7px;
+    color: var(--color-text);
     cursor: pointer;
     font-family: inherit;
+    font-size: 12px;
+    line-height: 1;
+    min-width: 18px;
+    padding: 2px 0;
+    text-align: center;
   }
-  .mail-attach.removable:hover,
-  .mail-attach.removable:focus-visible {
+  .mail-parcel-step:hover:not(:disabled),
+  .mail-parcel-step:focus-visible {
     border-color: var(--gold-dim);
+    background: #ffffff24;
+  }
+  .mail-parcel-step:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+  .mail-parcel-qty-value {
+    min-width: 28px;
+    text-align: center;
+    color: var(--color-text);
+  }
+  .mail-parcel-remove-btn {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    background: transparent;
+    border: none;
+    border-radius: 3px;
+    padding: 2px;
+    color: var(--color-text-muted);
+    cursor: pointer;
+  }
+  .mail-parcel-remove-btn svg {
+    width: 12px;
+    height: 12px;
+  }
+  .mail-parcel-remove-btn:hover,
+  .mail-parcel-remove-btn:focus-visible {
+    color: var(--color-text);
     background: #ffffff14;
   }
   .mail-actions {

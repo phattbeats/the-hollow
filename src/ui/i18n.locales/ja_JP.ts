@@ -5474,6 +5474,8 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'mailUi.removeAttachment': 'この手紙から{item}を外す',
   'mailUi.tooltipAttach': 'クリックしてこの手紙に添付',
   'mailUi.tooltipCannotAttach': '渡り烏はクエストアイテムを運びません',
+  'mailUi.parcelQtyDecreaseAria': '{item}を1つ減らして送る',
+  'mailUi.parcelQtyIncreaseAria': '{item}を1つ増やして送る',
   // Event calendar (M16 non-Latin fill)
   'hudChrome.calendar.title': 'イベントカレンダー',
   'hudChrome.calendar.close': 'カレンダーを閉じる',

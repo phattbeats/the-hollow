@@ -5601,6 +5601,8 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'mailUi.removeAttachment': 'Убрать {item} из этого письма',
   'mailUi.tooltipAttach': 'Нажмите, чтобы приложить к этому письму',
   'mailUi.tooltipCannotAttach': 'Ворон не станет нести квестовые предметы',
+  'mailUi.parcelQtyDecreaseAria': 'Отправить на один {item} меньше',
+  'mailUi.parcelQtyIncreaseAria': 'Отправить на один {item} больше',
   // Event calendar (M16 non-Latin fill)
   'hudChrome.calendar.title': 'Календарь событий',
   'hudChrome.calendar.close': 'Закрыть календарь',

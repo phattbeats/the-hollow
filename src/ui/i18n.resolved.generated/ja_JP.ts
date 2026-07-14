@@ -1012,6 +1012,8 @@ export const ja_JP: EnTranslations = {
     "removeAttachment": "この手紙から{item}を外す",
     "tooltipAttach": "クリックしてこの手紙に添付",
     "tooltipCannotAttach": "渡り烏はクエストアイテムを運びません",
+    "parcelQtyDecreaseAria": "{item}を1つ減らして送る",
+    "parcelQtyIncreaseAria": "{item}を1つ増やして送る",
     "send": "手紙を送る",
     "needRecipientOrText": "送信する前に宛先を指定し、本文を入力してください。",
     "openButton": "レイヴンポストへ案内してください。",

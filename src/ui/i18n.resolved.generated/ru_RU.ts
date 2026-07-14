@@ -1012,6 +1012,8 @@ export const ru_RU: EnTranslations = {
     "removeAttachment": "Убрать {item} из этого письма",
     "tooltipAttach": "Нажмите, чтобы приложить к этому письму",
     "tooltipCannotAttach": "Ворон не станет нести квестовые предметы",
+    "parcelQtyDecreaseAria": "Отправить на один {item} меньше",
+    "parcelQtyIncreaseAria": "Отправить на один {item} больше",
     "send": "Отправить письмо",
     "needRecipientOrText": "Укажите получателя и напишите что-нибудь перед отправкой.",
     "openButton": "Покажите мне Воронью почту.",

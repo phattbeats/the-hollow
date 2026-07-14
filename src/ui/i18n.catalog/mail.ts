@@ -31,6 +31,10 @@ export const mailStrings = {
   removeAttachment: 'Remove {item} from this letter',
   tooltipAttach: 'Click to attach to this letter',
   tooltipCannotAttach: 'The raven will not carry quest items',
+  // Quantity stepper (PHAA-645, upstream #1695): the +/- controls on a staged
+  // parcel chip, shown only when the sender owns more than one of the item.
+  parcelQtyDecreaseAria: 'Send one fewer {item}',
+  parcelQtyIncreaseAria: 'Send one more {item}',
   send: 'Send Letter',
   needRecipientOrText: 'Name a recipient and write something before sending.',
   openButton: 'Show me the Ravenpost.',
