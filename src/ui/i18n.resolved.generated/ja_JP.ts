@@ -2763,6 +2763,14 @@ export const ja_JP: EnTranslations = {
       "noTeammate": "味方がターゲットされていません。"
     }
   },
+  "yumi": {
+    "queue": {
+      "join": "プロテクト・ユミのキューに参加しました。使い魔を守り、敵の使い魔を狩れ…"
+    },
+    "log": {
+      "welcome": "プロテクト・ユミ！使い魔を守り、敵の使い魔を狩れ。"
+    }
+  },
   "fiesta": {
     "bracket": "Fiesta",
     "enterQueue": "Fiestaに参加！",

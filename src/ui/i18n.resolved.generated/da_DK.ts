@@ -2763,6 +2763,14 @@ export const da_DK: EnTranslations = {
       "noTeammate": "No teammate targeted."
     }
   },
+  "yumi": {
+    "queue": {
+      "join": "You join the Protect Yumi queue. Defend your familiar and hunt theirs…"
+    },
+    "log": {
+      "welcome": "Protect Yumi! Defend your familiar and hunt theirs."
+    }
+  },
   "fiesta": {
     "bracket": "Fiesta",
     "enterQueue": "Deltag i Fiestaen!",

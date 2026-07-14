@@ -3321,6 +3321,8 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'boarball.log.over': '比赛结束！正在返回世界…',
   'boarball.error.tooFar': '你离球不够近。',
   'boarball.error.noTeammate': '未选定队友目标。',
+  'yumi.queue.join': '你加入了保卫Yumi的队列。守护你的使魔，猎杀敌方的使魔…',
+  'yumi.log.welcome': '保卫Yumi！守护你的使魔，猎杀敌方的使魔。',
   'fiesta.augment.aug_apex_predator.desc': '+40%物理伤害，+15%暴击，并将造成伤害的12%转化为治疗。',
   'fiesta.augment.aug_apex_predator.name': '顶级掠食者',
   'fiesta.augment.aug_arcane_surge.desc': '+25%法术伤害和+10%暴击。把他们点燃。',

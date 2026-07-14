@@ -2763,6 +2763,14 @@ export const ko_KR: EnTranslations = {
       "noTeammate": "지정된 아군이 없습니다."
     }
   },
+  "yumi": {
+    "queue": {
+      "join": "프로텍트 유미 대기열에 참가했습니다. 당신의 사역마를 지키고 적의 사역마를 사냥하세요…"
+    },
+    "log": {
+      "welcome": "프로텍트 유미! 당신의 사역마를 지키고 적의 사역마를 사냥하세요."
+    }
+  },
   "fiesta": {
     "bracket": "Fiesta",
     "enterQueue": "Fiesta에 참가하세요!",

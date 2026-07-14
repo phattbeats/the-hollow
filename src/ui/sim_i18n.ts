@@ -5122,6 +5122,15 @@ const RULES: Rule[] = [
     re: /^Full time! Returning to the world[.…]{1,3}$/,
     build: () => t('boarball.log.over'),
   },
+  // Protect Yumi (PHAA-573): the 3v3/5v5 objective arena mode.
+  {
+    re: /^You join the Protect Yumi queue\. Defend your familiar and hunt theirs[.…]{1,3}$/,
+    build: () => t('yumi.queue.join'),
+  },
+  {
+    re: /^Protect Yumi! Defend your familiar and hunt theirs\.$/,
+    build: () => t('yumi.log.welcome'),
+  },
   { re: /^You're not close enough to the ball\.$/, build: () => t('boarball.error.tooFar') },
   { re: /^No teammate targeted\.$/, build: () => t('boarball.error.noTeammate') },
   // Brother Greenpaw's hearth (PHAA-421/PHAA-428): TOO_FAR_LINE, NO_ITEMS_LINES,

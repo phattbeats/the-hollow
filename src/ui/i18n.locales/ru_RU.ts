@@ -3512,6 +3512,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'boarball.log.over': 'Матч окончен! Возвращение в мир…',
   'boarball.error.tooFar': 'Вы недостаточно близко к мячу.',
   'boarball.error.noTeammate': 'Союзник не выбран.',
+  'yumi.queue.join':
+    'Вы вступаете в очередь режима «Защити Юми». Защищайте своего фамильяра и охотьтесь на вражеского…',
+  'yumi.log.welcome': 'Защити Юми! Защищайте своего фамильяра и охотьтесь на вражеского.',
   'fiesta.augment.aug_apex_predator.desc':
     '+40% к физическому урону, +15% к крит. удару, исцеление на 12% от нанесённого урона.',
   'fiesta.augment.aug_apex_predator.name': 'Высший хищник',
