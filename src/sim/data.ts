@@ -5,8 +5,8 @@
 // and owns the world-layout constants.
 
 import { BOARBALL_MOBS } from './content/boarball';
-import { YUMI_MOBS } from './content/yumi';
 import { BASE_ITEMS, FISHING_RARE_ID, FISHING_TABLES } from './content/items';
+import { YUMI_MOBS } from './content/yumi';
 import type {
   CampDef,
   DeedDef,

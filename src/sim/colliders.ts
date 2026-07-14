@@ -16,7 +16,6 @@ import {
   yumiMazeOriginAt,
 } from './data';
 import { type DelveModuleId, delveModuleColliders } from './delve_layout';
-import { yumiMazeColliders } from './yumi_maze_layout';
 import {
   ARENA_LAYOUT,
   CRYPT_LAYOUT,
@@ -28,6 +27,7 @@ import {
 } from './dungeon_layout';
 import type { WorldContent } from './types';
 import { generateDecorations, groundHeight } from './world';
+import { yumiMazeColliders } from './yumi_maze_layout';
 import { clampToStarterZoneBounds, isInsideStarterZone } from './zone_bounds';
 
 // Static world collision. Prop placement comes from the per-zone content
