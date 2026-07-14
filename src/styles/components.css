@@ -3940,6 +3940,9 @@
   }
   .mail-parcel-step {
     appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     background: #ffffff14;
     border: 1px solid transparent;
     border-radius: 3px;
@@ -3948,8 +3951,10 @@
     font-family: inherit;
     font-size: 12px;
     line-height: 1;
-    min-width: 18px;
-    padding: 2px 0;
+    /* 24px touch-target floor so the +/- controls stay tappable on mobile. */
+    min-width: 24px;
+    min-height: 24px;
+    padding: 0 4px;
     text-align: center;
   }
   .mail-parcel-step:hover:not(:disabled),
@@ -3970,6 +3975,10 @@
     appearance: none;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
+    /* 24px touch-target floor, matching the +/- steppers. */
+    min-width: 24px;
+    min-height: 24px;
     background: transparent;
     border: none;
     border-radius: 3px;
