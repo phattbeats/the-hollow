@@ -133,6 +133,9 @@ export type {
   FiestaMatchInfo,
   FiestaPowerupView,
   FiestaScoreboardPlayer,
+  YumiCatView,
+  YumiMatchInfo,
+  YumiScoreboardPlayer,
 } from './world_api/duel_arena';
 export type { RaidLockout } from './world_api/dungeons';
 export type { GreenpawHearthInfo, SmokeLevel } from './world_api/greenpaw_hearth';

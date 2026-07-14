@@ -6,16 +6,20 @@
 import { describe, expect, it } from 'vitest';
 import { Rng } from '../src/sim/rng';
 import type { ArenaQueueUnit } from '../src/sim/sim';
+import { Sim } from '../src/sim/sim';
 import {
   packYumiTeams,
   pickYumiCells,
   resolveYumiTiebreak,
+  YUMI_HP,
   YUMI_SUDDEN_AT,
   YUMI_SUDDEN_RAMP,
   YUMI_SUDDEN_STEP,
   yumiTakenMult,
   yumiTeamSize,
 } from '../src/sim/social/yumi';
+import type { PlayerClass } from '../src/sim/types';
+import { groundHeight } from '../src/sim/world';
 
 describe('yumiTeamSize', () => {
   it('maps the two brackets', () => {
@@ -106,5 +110,78 @@ describe('packYumiTeams', () => {
     const b = res!.b.flatMap((u) => u.pids);
     expect(a.sort()).toEqual([1, 2, 3]);
     expect(b.sort()).toEqual([4, 5, 6]);
+  });
+});
+
+// The HUD/renderer presentation edge (slice 3): once a bout is live, the
+// arenaInfo.match.yumi snapshot must surface with the structure the IWorld
+// YumiMatchInfo type promises, so the offline HUD and the online arena wire
+// (which carries this object wholesale) both have real state to draw.
+function teleport(sim: Sim, pid: number, x: number, z: number) {
+  const e = sim.entities.get(pid)!;
+  e.pos.x = x;
+  e.pos.z = z;
+  e.pos.y = groundHeight(x, z, sim.cfg.seed);
+  e.prevPos = { ...e.pos };
+  (sim as any).rebucket(e);
+}
+
+// Seat a live 3v3 Protect Yumi bout from six solo queuers and run the countdown
+// out. Returns the sim, the match, and the six pids (teamA first three by seat).
+function startYumi3() {
+  const sim = new Sim({ seed: 42, playerClass: 'warrior', noPlayer: true });
+  const classes: PlayerClass[] = ['warrior', 'mage', 'rogue', 'priest', 'hunter', 'shaman'];
+  const pids = classes.map((c, i) => sim.addPlayer(c, `P${i}`));
+  pids.forEach((p, i) => {
+    teleport(sim, p, i * 4, -40);
+  });
+  pids.forEach((p) => {
+    sim.arenaQueueJoin(p, 'yumi3');
+  });
+  sim.tick(); // matchmake
+  for (let i = 0; i < 20 * 8; i++) {
+    sim.tick();
+    const m = sim.arenaMatchFor(pids[0]);
+    if (m && m.state === 'active') break;
+  }
+  const match = sim.arenaMatchFor(pids[0])!;
+  return { sim, match, pids };
+}
+
+describe('yumi: arenaInfo presentation snapshot', () => {
+  it('seats six solo queuers into one 3v3 yumi match', () => {
+    const { match, pids } = startYumi3();
+    expect(match).toBeTruthy();
+    expect(match.format).toBe('yumi3');
+    expect(match.yumi).toBeTruthy();
+    expect(new Set([...match.teamA, ...match.teamB])).toEqual(new Set(pids));
+    expect(match.teamA.length).toBe(3);
+    expect(match.teamB.length).toBe(3);
+  });
+
+  it('surfaces arenaInfo.match.yumi with both cats and full scoreboards', () => {
+    const { sim, match, pids } = startYumi3();
+    const info = sim.arenaInfoFor(pids[0]);
+    expect(info).toBeTruthy();
+    const y = info!.match?.yumi;
+    expect(y).toBeTruthy();
+    expect(y!.size).toBe(3);
+    expect(y!.team === 'A' || y!.team === 'B').toBe(true);
+    // Both protected cats are alive at full health at the opening bell.
+    expect(y!.yumiA.maxHp).toBe(YUMI_HP);
+    expect(y!.yumiB.maxHp).toBe(YUMI_HP);
+    expect(y!.yumiA.alive).toBe(true);
+    expect(y!.yumiB.alive).toBe(true);
+    expect(y!.yumiA.entityId).not.toBe(y!.yumiB.entityId);
+    // Scoreboards cover every combatant; exactly one line is flagged "me".
+    expect(y!.teamA.length).toBe(3);
+    expect(y!.teamB.length).toBe(3);
+    const allLines = [...y!.teamA, ...y!.teamB];
+    expect(allLines.filter((p) => p.me).length).toBe(1);
+    expect(allLines.find((p) => p.me)!.pid).toBe(pids[0]);
+    expect(y!.damageTakenMult).toBe(1);
+    // The match info is scoped to the reader: the "me" flag follows the pid.
+    const other = sim.arenaInfoFor(pids[3])!.match!.yumi!;
+    expect([...other.teamA, ...other.teamB].find((p) => p.me)!.pid).toBe(pids[3]);
   });
 });

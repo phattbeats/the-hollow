@@ -63,6 +63,45 @@ export interface FiestaMatchInfo {
   powerups: FiestaPowerupView[];
 }
 
+// Protect Yumi (PHAA-573): live objective-mode state for the local player,
+// polled by the HUD each frame. Structure rides arenaInfo.match.yumi on the
+// rate-limited arena snapshot; the live per-second numbers also ride the
+// yumiStatus/yumiDown/yumiTeleport/yumiSuddenDeath events for smoothness.
+// One protected cat as the renderer/HUD sees it (world coords for the marker).
+export interface YumiCatView {
+  entityId: number;
+  hp: number;
+  maxHp: number;
+  x: number;
+  z: number;
+  alive: boolean;
+}
+// One combatant's line on the Protect Yumi scoreboard.
+export interface YumiScoreboardPlayer {
+  pid: number;
+  name: string;
+  cls: PlayerClass;
+  kills: number;
+  deaths: number;
+  down: boolean; // currently benched, awaiting respawn
+  me: boolean;
+}
+export interface YumiMatchInfo {
+  team: 'A' | 'B';
+  size: 3 | 5;
+  phase: 'countdown' | 'active' | 'sudden' | 'over';
+  matchElapsed: number; // whole seconds of active play
+  teleportIn: number; // whole seconds until the next simultaneous relocation
+  suddenDeathIn: number; // whole seconds until sudden death latches (0 once active)
+  damageTakenMult: number; // current cat damage-taken multiplier (sudden-death ramp)
+  down: boolean; // am I currently benched, awaiting respawn
+  respawnIn: number; // whole seconds until I revive (0 if alive)
+  yumiA: YumiCatView; // team A's protected cat
+  yumiB: YumiCatView; // team B's protected cat
+  teamA: YumiScoreboardPlayer[];
+  teamB: YumiScoreboardPlayer[];
+}
+
 export interface ArenaInfo {
   // Backwards-compatible view of the currently selected/queued/matched bracket.
   rating: number;
@@ -85,6 +124,8 @@ export interface ArenaInfo {
     returnIn?: number; // whole seconds left in the post-bout aftermath ('over')
     // present only for the 2v2 Fiesta party mode
     fiesta?: FiestaMatchInfo;
+    // present only for Protect Yumi (3v3 / 5v5 objective mode)
+    yumi?: YumiMatchInfo;
   } | null;
   // Backwards-compatible live ladder for the currently selected bracket.
   ladder: ArenaLadderEntry[];
