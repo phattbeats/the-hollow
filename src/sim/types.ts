@@ -1305,6 +1305,29 @@ export interface GatherNodeDef {
   pos: { x: number; z: number };
 }
 
+// Crafting (PHAA-574): the fixed set of crafts a recipe belongs to. Common-tier
+// only for this slice (professions-depth batch, framework + reskin); a later
+// slice adds skill-tier gating, the archetype ceiling, and recipe acquisition.
+export type CraftType =
+  | 'weaponcrafting'
+  | 'armorcrafting'
+  | 'tailoring'
+  | 'leatherworking'
+  | 'cooking'
+  | 'alchemy';
+
+// One craftable recipe: consume `reagents` (existing gathered-material items),
+// grant `resultCount` of `resultItemId`. Every recipe is craftable by any
+// player with the materials (no per-recipe skill/known gate this slice); see
+// src/sim/crafting.ts for resolution.
+export interface RecipeDef {
+  id: string;
+  craft: CraftType;
+  reagents: { itemId: string; count: number }[];
+  resultItemId: string;
+  resultCount: number;
+}
+
 // World-placed readable props (WoW-style journals/books lying around, PHAA-552).
 // Static, unowned world dressing with a client-only reveal: reading one mutates
 // no game state, so (unlike a gather node's harvest) there is no server command,

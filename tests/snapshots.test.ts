@@ -1791,6 +1791,7 @@ const ALL_DELTA_KEYS = [
   'buyback',
   'cds',
   'cosmetics',
+  'cprof',
   'dclears',
   'dcomp',
   'dcompanion',
@@ -1835,6 +1836,7 @@ const TERSE_TO_IWORLD: Record<string, string> = {
   buyback: 'vendorBuyback',
   cds: 'cooldowns',
   cosmetics: 'accountCosmetics',
+  cprof: 'craftProficiency',
   dclears: 'delveClears',
   dcomp: 'companionUpgrades',
   dcompanion: 'companionState',
@@ -1953,6 +1955,14 @@ function dirtyEveryDeltaField(): {
   meta.delveClears = { 'collapsed_reliquary:heroic': 1 };
   meta.companionUpgrades = { companion_tessa: 2 };
   meta.gatheringProficiency = { amber: 3, heartwood: 0, spore: 0 };
+  meta.craftProficiency = {
+    weaponcrafting: 2,
+    armorcrafting: 0,
+    tailoring: 0,
+    leatherworking: 0,
+    cooking: 0,
+    alchemy: 0,
+  };
   // gnodecd (PHAA-618): put one gather node on cooldown for this player so the
   // per-viewer cooldown-id list rides the wire as a non-default value.
   meta.nodeHarvestReadyAt[GATHER_NODES[0].id] = sim.time + 120;
@@ -2071,6 +2081,15 @@ describe('full self-state snapshot delta fixture', () => {
     expect(client.companionUpgrades).toEqual({ companion_tessa: 2 }); // dcomp -> companionUpgrades
     // gprof -> gatheringProficiency
     expect(client.gatheringProficiency).toEqual({ amber: 3, heartwood: 0, spore: 0 });
+    // cprof -> craftProficiency
+    expect(client.craftProficiency).toEqual({
+      weaponcrafting: 2,
+      armorcrafting: 0,
+      tailoring: 0,
+      leatherworking: 0,
+      cooking: 0,
+      alchemy: 0,
+    });
     // gnodecd -> nodeHarvestableByMe (the seeded node reads cooling, another ready)
     expect(client.nodeHarvestableByMe(GATHER_NODES[0].id)).toBe(false);
     expect(client.nodeHarvestableByMe(GATHER_NODES[1].id)).toBe(true);
@@ -2124,9 +2143,9 @@ describe('full self-state snapshot delta fixture', () => {
 });
 
 describe('delta-key contract pins (anti-drift)', () => {
-  it('ALL_DELTA_KEYS contains exactly 35 unique keys in sorted order', () => {
-    expect(ALL_DELTA_KEYS).toHaveLength(35);
-    expect(new Set(ALL_DELTA_KEYS).size).toBe(35);
+  it('ALL_DELTA_KEYS contains exactly 36 unique keys in sorted order', () => {
+    expect(ALL_DELTA_KEYS).toHaveLength(36);
+    expect(new Set(ALL_DELTA_KEYS).size).toBe(36);
     expect([...ALL_DELTA_KEYS]).toEqual([...ALL_DELTA_KEYS].sort());
   });
 
@@ -2139,7 +2158,7 @@ describe('delta-key contract pins (anti-drift)', () => {
     for (let m = re.exec(src); m !== null; m = re.exec(src)) scraped.add(m[1]);
     expect(scraped.has('lockouts')).toBe(true); // the multi-line call IS captured
     expect(scraped.has('lrollg')).toBe(true); // group-visible loot roll strip (PHAA-568)
-    expect(scraped.size).toBe(35);
+    expect(scraped.size).toBe(36);
     expect([...scraped].sort()).toEqual([...ALL_DELTA_KEYS].sort());
   });
 
