@@ -926,6 +926,7 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.flavorText':
     '...telde veertig dagen bij kaarslicht voor ik de draad kwijtraakte. Het duister hier beneden vergeet Hem niet, ook al is Hij deze plek vergeten. Als de reiger laag cirkelt, zeg de Koster dat de pit nog brandt...',
   'entities.items.keeper_coal.name': 'Een Kool Die Nooit Afkoelde',
+  'entities.items.hearth_stone.name': 'Een Steen Nog Warm Van Zijn Haard',
   'entities.items.willow_sprig.name': 'Een Wilgentakje',
   'entities.items.worn_prayer_token.name': 'Versleten Gebedspenning',
   'entities.items.worn_prayer_token.flavorText':

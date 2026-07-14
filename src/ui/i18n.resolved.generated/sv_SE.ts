@@ -313,7 +313,13 @@ export const sv_SE: EnTranslations = {
     "keybinds": {
       "emoteWheel": "Gesthjul",
       "targetFriendly": "Måltavla närmaste vänlig",
-      "targetFriendlyNext": "Växla vänligt mål"
+      "targetFriendlyNext": "Växla vänligt mål",
+      "categoryPet": "Pet",
+      "petAttack": "Pet: Attack",
+      "petStop": "Pet: Stop",
+      "petTaunt": "Pet: Taunt",
+      "petDefensive": "Pet: Defensive",
+      "petAggressive": "Pet: Aggressive"
     },
     "options": {
       "clickMoveLeft": "Vänsterklick",
@@ -434,6 +440,9 @@ export const sv_SE: EnTranslations = {
     },
     "statInfo": {
       "fromYour": "Från dina {value} {stat}:",
+      "names": {
+        "spellPower": "Spell Power"
+      },
       "desc": {
         "str": "Ökar din attackstyrka, så att dina vapenslag landar hårdare.",
         "agi": "Skärper dina reflexer och din sikte, vilket förbättrar flera av dina stridsattribut.",
@@ -442,6 +451,7 @@ export const sv_SE: EnTranslations = {
         "spi": "Snabbar på hur fort en besvärjares mana återkommer under vila, utanför strid.",
         "armor": "Mildrar inkommande fysiska slag. Minskningen är större mot anfallare på lägre nivå och har ett tak på 75 %.",
         "attackPower": "Driver dina vapenattacker. Var 14:e attackstyrka ger 1 skada per sekund.",
+        "spellPower": "Increases the damage of your spells and the strength of your heals. Each point of Intellect grants a little Spell Power, on top of any from gear or buffs.",
         "dps": "Din uppskattade vapenskada per sekund, som kombinerar ditt vapens skada och hastighet med din attackstyrka.",
         "critChance": "Din chans att en attack träffar kritiskt och orsakar dubbel skada.",
         "dodge": "Din chans att helt undvika en inkommande närstridsattack utan att ta skada."
@@ -464,6 +474,15 @@ export const sv_SE: EnTranslations = {
         "minorForClass": "Till föga nytta för din klass.",
         "baseChance": "Inkluderar en grundchans på 5 % som delas av alla äventyrare.",
         "dpsApprox": "En uppskattning, den utesluter kritiska träffar och förmågeskada."
+      },
+      "sources": {
+        "header": "Made up of:",
+        "base": "Base: {value}",
+        "attributes": "From your attributes: {value}",
+        "fromAttribute": "From {stat}: {value}",
+        "gear": "Equipped gear: {value}",
+        "buff": "{name}: {value}",
+        "talents": "Talents and effects: {value}"
       }
     },
     "talents": {
@@ -989,6 +1008,12 @@ export const sv_SE: EnTranslations = {
     "recipient": "Recipient",
     "subjectLabel": "Subject",
     "bodyPlaceholder": "Write your letter...",
+    "attachments": "Attachments (up to {max})",
+    "removeAttachment": "Remove {item} from this letter",
+    "tooltipAttach": "Click to attach to this letter",
+    "tooltipCannotAttach": "The raven will not carry quest items",
+    "parcelQtyDecreaseAria": "Send one fewer {item}",
+    "parcelQtyIncreaseAria": "Send one more {item}",
     "send": "Send Letter",
     "needRecipientOrText": "Name a recipient and write something before sending.",
     "openButton": "Show me the Ravenpost.",
@@ -5504,6 +5529,9 @@ export const sv_SE: EnTranslations = {
       "keeper_coal": {
         "name": "Ett Kol Som Aldrig Svalnade"
       },
+      "hearth_stone": {
+        "name": "En Sten Fortfarande Varm Från Hans Härd"
+      },
       "willow_sprig": {
         "name": "En videkvist"
       },
@@ -7117,6 +7145,22 @@ export const sv_SE: EnTranslations = {
           "complainReply": "once is a favor, friend, three's a habit, and i been burned by favors before... this ain't about the hearth needin' it, the hearth's fine, i keep it fine, it's about you comin' back on your own two feet 'cause you wanted to, not 'cause some quest marker told you to... three times. no rush on the countin'.",
           "refuse": "I'm not doing this three separate times. Once was enough.",
           "refuseReply": "...yeah. yeah, okay, i hear you, friend, that's a fair enough line to draw... tell you what, here, take it anyway, ain't earned in the strictest sense but neither's most of what i hand out, and the wavelength don't really keep score the way i pretend it does..."
+        }
+      },
+      "q_your_own_hearth": {
+        "title": "A Hearth of Your Own",
+        "text": "here's the last of it, friend, and it ain't really an errand so much as a nudge... there's ground out past the road, fallow acres, sittin' quiet and waitin' on somebody to want it. sexton faddick keeps half an eye on it between his wolves and his list of kept places - go say hello, let him know you're the kind that stays... after that the ground's yours to claim, whenever you're ready for it.",
+        "completion": "there it is... you got the look now, friend, the one that says you ain't just passin' through no more. go on, plant your feet somewhere out there. i'll keep the hearth lit same as always, and the vase'll know right where to find you...",
+        "objectives": {
+          "0": {
+            "label": "Sexton Faddick met"
+          }
+        },
+        "dialog": {
+          "complain": "Ground? I just wanted to say hi to your plant.",
+          "complainReply": "and you can, anytime, he ain't goin' anywhere... but a soul needs more than a shrine to visit, friend, it needs somewhere to plant its own two feet. won't take long. faddick talks slow but he don't waste your afternoon.",
+          "refuse": "I don't need a homestead. I'm happy just visiting.",
+          "refuseReply": "...alright, alright, no pressure in it, friend, the ground'll keep same as faddick keeps it, waitin' don't cost it nothin'... here, take this anyway, for stickin' around this long. that's its own kind of home, i guess."
         }
       },
       "q_root_hollow_boars": {

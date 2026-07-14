@@ -109,6 +109,16 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
     '自动会根据你的设备选择桌面或触控操作。选择桌面可强制使用键盘和鼠标（适合带键盘的平板），选择触控则使用屏幕上的操作控件。',
   // Character-sheet stat tooltips (hudChrome.statInfo.*).
   'hudChrome.statInfo.fromYour': '来自你的 {value} 点{stat}：',
+  'hudChrome.statInfo.names.spellPower': '法术强度',
+  'hudChrome.statInfo.desc.spellPower':
+    '提高你法术造成的伤害和治疗的强度。每点智力都会提供少量法术强度，此外还有来自装备和增益的加成。',
+  'hudChrome.statInfo.sources.header': '构成：',
+  'hudChrome.statInfo.sources.base': '基础：{value}',
+  'hudChrome.statInfo.sources.attributes': '来自属性：{value}',
+  'hudChrome.statInfo.sources.fromAttribute': '来自{stat}：{value}',
+  'hudChrome.statInfo.sources.gear': '装备：{value}',
+  'hudChrome.statInfo.sources.buff': '{name}：{value}',
+  'hudChrome.statInfo.sources.talents': '天赋与效果：{value}',
   'hudChrome.statInfo.desc.str': '提高你的攻击强度，使你的武器攻击造成更高的伤害。',
   'hudChrome.statInfo.desc.agi': '提高你的反应和准度，强化你的多项战斗属性。',
   'hudChrome.statInfo.desc.sta': '强健你的体魄，提高你的最大生命值以及休息时恢复生命值的速度。',
@@ -213,6 +223,12 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.keybinds.emoteWheel': '表情轮盘',
   'hudChrome.keybinds.targetFriendly': '选中最近友方',
   'hudChrome.keybinds.targetFriendlyNext': '切换友方目标',
+  'hudChrome.keybinds.categoryPet': '宠物',
+  'hudChrome.keybinds.petAttack': '宠物：攻击',
+  'hudChrome.keybinds.petStop': '宠物：停止',
+  'hudChrome.keybinds.petTaunt': '宠物：嘲讽',
+  'hudChrome.keybinds.petDefensive': '宠物：防御',
+  'hudChrome.keybinds.petAggressive': '宠物：攻击性',
   'hudChrome.options.clickMoveLeft': '左键',
   'hudChrome.options.clickMoveRight': '右键',
   'hudChrome.options.browserEffects': '浏览器特效',
@@ -3062,6 +3078,18 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_keep_him_lit.dialog.refuse': '我不会分三次来做这件事。一次就够了。',
   'entities.quests.q_keep_him_lit.dialog.refuseReply':
     '……好吧。好吧，我懂你的意思，朋友，这条线划得也算公道……这样吧，还是拿着，严格说不算你挣来的，但我给出去的大半也不算，频率这东西，其实没真的在计较。',
+  'entities.quests.q_your_own_hearth.title': '属于你自己的炉火',
+  'entities.quests.q_your_own_hearth.text':
+    '这是最后一件事了，朋友，与其说是差事，不如说是个提醒……路那边有块地，法洛牧场，静静地等着有人想要它。塞克斯顿·法迪克在照看他的狼群和他守护的那些地方之余，也顺带留意着那儿——去打个招呼，让他知道你是会留下来的那种人……之后，那块地就是你的了，什么时候准备好都行。',
+  'entities.quests.q_your_own_hearth.completion':
+    '就是这样……你现在有那种眼神了，朋友，那种不再只是路过的眼神。去吧，在那外面找个地方站稳脚跟。我会一如既往地守着这炉火，瓶子也会清楚该去哪儿找你……',
+  'entities.quests.q_your_own_hearth.objectives.0.label': '已见过塞克斯顿·法迪克',
+  'entities.quests.q_your_own_hearth.dialog.complain': '地？我只是想跟你的植物打个招呼而已。',
+  'entities.quests.q_your_own_hearth.dialog.complainReply':
+    '你随时都可以，它哪儿也不会去……但一个灵魂光靠拜访神龛是不够的，朋友，它需要个能站稳双脚的地方。用不了多久。法迪克说话慢，但不会浪费你的下午。',
+  'entities.quests.q_your_own_hearth.dialog.refuse': '我不需要家园。我这样光是拜访就很满足了。',
+  'entities.quests.q_your_own_hearth.dialog.refuseReply':
+    '……好吧，好吧，不勉强，朋友，那块地会一直在，就像法迪克一直守着它一样，等待又不花钱……给，这个还是拿着吧，谢谢你留了这么久。我想那也算是一种家了。',
   'hud.errors.silenced': '你已被沉默！',
   'hud.pet.noPetFood': '你没有可以喂给宠物的食物。',
   'hud.pet.petEatsFoodOnly': '你的宠物只能吃食物。',
@@ -4571,6 +4599,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
     '一段来自灰爪修士的鲜活绿枝，用湿苔藓包裹着。等家园地块可以编辑后，这是你要种下的第一样东西。',
   'entities.items.greenpaw_bead.name': '弹药带上的一颗念珠',
   'entities.items.keeper_coal.name': '一块永不冷却的炭',
+  'entities.items.hearth_stone.name': '一块仍带着他炉火余温的石头',
   'entities.items.witness_root_cincture.name': '见证根的束带',
   'entities.items.shrine_diary_page.name': '撕碎的日记页',
   'entities.items.shrine_diary_page.flavorText':
@@ -5174,6 +5203,13 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'mailUi.needRecipientOrText': '请先填写收件人并写点内容再寄送。',
   'mailUi.openButton': '带我去渡鸦驿站。',
   'mailUi.openButtonAria': '打开渡鸦驿站邮件窗口',
+  // Mail item-attachment staging (PHAA-688, M16 non-Latin fill)
+  'mailUi.attachments': '附件（最多 {max} 件）',
+  'mailUi.removeAttachment': '从这封信中移除{item}',
+  'mailUi.tooltipAttach': '点击附加到这封信',
+  'mailUi.tooltipCannotAttach': '渡鸦不会携带任务物品',
+  'mailUi.parcelQtyDecreaseAria': '少寄一个{item}',
+  'mailUi.parcelQtyIncreaseAria': '多寄一个{item}',
   // Event calendar (M16 non-Latin fill)
   'hudChrome.calendar.title': '活动日历',
   'hudChrome.calendar.close': '关闭日历',

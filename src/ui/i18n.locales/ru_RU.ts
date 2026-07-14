@@ -115,6 +115,16 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
     'В режиме «Авто» управление для компьютера или сенсорное выбирается по вашему устройству. Выберите «Компьютер», чтобы включить клавиатуру и мышь (удобно на планшете с клавиатурой), или «Сенсорный» для экранного управления.',
   // Character-sheet stat tooltips (hudChrome.statInfo.*).
   'hudChrome.statInfo.fromYour': 'От вашей характеристики ({value} {stat}):',
+  'hudChrome.statInfo.names.spellPower': 'Сила заклинаний',
+  'hudChrome.statInfo.desc.spellPower':
+    'Увеличивает урон ваших заклинаний и силу исцелений. Каждая единица интеллекта дает немного силы заклинаний, вдобавок к получаемой от снаряжения и усилений.',
+  'hudChrome.statInfo.sources.header': 'Складывается из:',
+  'hudChrome.statInfo.sources.base': 'База: {value}',
+  'hudChrome.statInfo.sources.attributes': 'От характеристик: {value}',
+  'hudChrome.statInfo.sources.fromAttribute': 'От характеристики {stat}: {value}',
+  'hudChrome.statInfo.sources.gear': 'Снаряжение: {value}',
+  'hudChrome.statInfo.sources.buff': '{name}: {value}',
+  'hudChrome.statInfo.sources.talents': 'Таланты и эффекты: {value}',
   'hudChrome.statInfo.desc.str':
     'Увеличивает силу атаки, благодаря чему удары вашим оружием бьют сильнее.',
   'hudChrome.statInfo.desc.agi':
@@ -237,6 +247,12 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.keybinds.emoteWheel': 'Колесо эмоций',
   'hudChrome.keybinds.targetFriendly': 'Ближайший союзник',
   'hudChrome.keybinds.targetFriendlyNext': 'Следующий союзник',
+  'hudChrome.keybinds.categoryPet': 'Питомец',
+  'hudChrome.keybinds.petAttack': 'Питомец: атака',
+  'hudChrome.keybinds.petStop': 'Питомец: стоп',
+  'hudChrome.keybinds.petTaunt': 'Питомец: провокация',
+  'hudChrome.keybinds.petDefensive': 'Питомец: защита',
+  'hudChrome.keybinds.petAggressive': 'Питомец: агрессия',
   'hudChrome.options.clickMoveLeft': 'Левая кнопка',
   'hudChrome.options.clickMoveRight': 'Правая кнопка',
   'hudChrome.options.browserEffects': 'Эффекты браузера',
@@ -3232,6 +3248,20 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
     'Я не буду делать это три раза по отдельности. Одного раза достаточно.',
   'entities.quests.q_keep_him_lit.dialog.refuseReply':
     '...да. Да, ладно, я тебя слышу, дружище, это тоже честная черта... вот что, держи это в любом случае, заслужил ты его не совсем по правилам, но и почти всё остальное, что я раздаю, тоже не по правилам, а частота эта, если по-честному, не так уж строго ведёт счёт...',
+  'entities.quests.q_your_own_hearth.title': 'Свой очаг',
+  'entities.quests.q_your_own_hearth.text':
+    'вот и последнее, друг, и это скорее не поручение, а лёгкий толчок... там, за дорогой, есть земля, Фаллоу-Эйкерс, тихо лежит и ждёт, чтобы кто-то её захотел. Секстон Фаддик приглядывает за ней вполглаза, между своими волками и списком мест, которые он бережёт - сходи поздоровайся, дай ему знать, что ты из тех, кто остаётся... а после этого земля твоя, забирай, когда будешь готов.',
+  'entities.quests.q_your_own_hearth.completion':
+    'вот оно... теперь у тебя такой взгляд, друг, тот самый, что говорит - ты больше не просто мимо проходишь. иди, поставь ноги где-нибудь там. я буду держать очаг горящим, как всегда, а ваза точно будет знать, где тебя искать...',
+  'entities.quests.q_your_own_hearth.objectives.0.label': 'Встретился с Секстоном Фаддиком',
+  'entities.quests.q_your_own_hearth.dialog.complain':
+    'Земля? Я просто хотел поздороваться с твоим растением.',
+  'entities.quests.q_your_own_hearth.dialog.complainReply':
+    'и можешь, в любое время, он никуда не денется... но душе мало одного святилища для посещений, друг, ей нужно место, куда поставить обе ноги. это ненадолго. Фаддик говорит медленно, но не тратит твой день впустую.',
+  'entities.quests.q_your_own_hearth.dialog.refuse':
+    'Мне не нужна усадьба. Мне и так хорошо, просто в гостях.',
+  'entities.quests.q_your_own_hearth.dialog.refuseReply':
+    '...ладно, ладно, никакого давления, друг, земля подождёт, как и держит её Фаддик, ожидание ничего не стоит... вот, возьми это всё равно, за то, что задержался так надолго. это тоже своего рода дом, наверное.',
   'entities.quests.q_what_fills.dialog.refuse': 'Нет. Я туда больше не полезу.',
   'entities.quests.q_what_fills.dialog.refuseReply':
     'о... о, ладно. ...ладно. это... да. нет, это честно, друг, это честно... ваза тоже слышала, и, между нами, кажется, она это уважает. вот, возьми черенок всё равно. ты спускался один раз, а это на один раз больше, чем у большинства...',
@@ -4909,6 +4939,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
     'Живой зеленый черенок от брата Гринпо, завернутый во влажный мох. Как только надел усадьбы станет доступен для редактирования, это будет первым, что вы посадите.',
   'entities.items.greenpaw_bead.name': 'Бусина с бандольеры',
   'entities.items.keeper_coal.name': 'Уголёк, который никогда не остывал',
+  'entities.items.hearth_stone.name': 'Камень, всё ещё тёплый от его очага',
   'entities.items.witness_root_cincture.name': 'Обвязка Корня-Свидетеля',
   'entities.items.shrine_diary_page.name': 'Обрывок страницы дневника',
   'entities.items.shrine_diary_page.flavorText':
@@ -5565,6 +5596,13 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'mailUi.needRecipientOrText': 'Укажите получателя и напишите что-нибудь перед отправкой.',
   'mailUi.openButton': 'Покажите мне Воронью почту.',
   'mailUi.openButtonAria': 'Открыть окно Вороньей почты',
+  // Mail item-attachment staging (PHAA-688, M16 non-Latin fill)
+  'mailUi.attachments': 'Вложения (до {max})',
+  'mailUi.removeAttachment': 'Убрать {item} из этого письма',
+  'mailUi.tooltipAttach': 'Нажмите, чтобы приложить к этому письму',
+  'mailUi.tooltipCannotAttach': 'Ворон не станет нести квестовые предметы',
+  'mailUi.parcelQtyDecreaseAria': 'Отправить на один {item} меньше',
+  'mailUi.parcelQtyIncreaseAria': 'Отправить на один {item} больше',
   // Event calendar (M16 non-Latin fill)
   'hudChrome.calendar.title': 'Календарь событий',
   'hudChrome.calendar.close': 'Закрыть календарь',

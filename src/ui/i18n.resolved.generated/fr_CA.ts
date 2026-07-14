@@ -313,7 +313,13 @@ export const fr_CA: EnTranslations = {
     "keybinds": {
       "emoteWheel": "Roue des emotes",
       "targetFriendly": "Cibler l'allié le plus proche",
-      "targetFriendlyNext": "Changer de cible alliée"
+      "targetFriendlyNext": "Changer de cible alliée",
+      "categoryPet": "Pet",
+      "petAttack": "Pet: Attack",
+      "petStop": "Pet: Stop",
+      "petTaunt": "Pet: Taunt",
+      "petDefensive": "Pet: Defensive",
+      "petAggressive": "Pet: Aggressive"
     },
     "options": {
       "clickMoveLeft": "Clic gauche",
@@ -434,6 +440,9 @@ export const fr_CA: EnTranslations = {
     },
     "statInfo": {
       "fromYour": "Grâce à vos {value} en {stat} :",
+      "names": {
+        "spellPower": "Spell Power"
+      },
       "desc": {
         "str": "Augmente votre puissance d'attaque, vos coups d'arme frappent donc plus fort.",
         "agi": "Aiguise vos réflexes et votre précision, ce qui améliore plusieurs de vos statistiques de combat.",
@@ -442,6 +451,7 @@ export const fr_CA: EnTranslations = {
         "spi": "Accélère la vitesse à laquelle le mana d'un lanceur de sorts se régénère au repos, hors combat.",
         "armor": "Atténue les coups physiques reçus. La réduction est plus importante contre les attaquants de niveau inférieur et est plafonnée à 75 %.",
         "attackPower": "Renforce vos attaques d'arme. Chaque tranche de 14 de puissance d'attaque ajoute 1 dégât par seconde.",
+        "spellPower": "Increases the damage of your spells and the strength of your heals. Each point of Intellect grants a little Spell Power, on top of any from gear or buffs.",
         "dps": "Vos dégâts par seconde estimés à l'arme, combinant les dégâts et la vitesse de votre arme avec votre puissance d'attaque.",
         "critChance": "Vos chances de porter un coup critique avec une attaque, infligeant le double des dégâts.",
         "dodge": "Vos chances d'éviter complètement une attaque de mêlée, sans subir aucun dégât."
@@ -464,6 +474,15 @@ export const fr_CA: EnTranslations = {
         "minorForClass": "De peu d'utilité pour votre classe.",
         "baseChance": "Inclut 5 % de chances de base communes à tous les aventuriers.",
         "dpsApprox": "Une estimation, elle exclut les coups critiques et les dégâts des capacités."
+      },
+      "sources": {
+        "header": "Made up of:",
+        "base": "Base: {value}",
+        "attributes": "From your attributes: {value}",
+        "fromAttribute": "From {stat}: {value}",
+        "gear": "Equipped gear: {value}",
+        "buff": "{name}: {value}",
+        "talents": "Talents and effects: {value}"
       }
     },
     "talents": {
@@ -989,6 +1008,12 @@ export const fr_CA: EnTranslations = {
     "recipient": "Recipient",
     "subjectLabel": "Subject",
     "bodyPlaceholder": "Write your letter...",
+    "attachments": "Attachments (up to {max})",
+    "removeAttachment": "Remove {item} from this letter",
+    "tooltipAttach": "Click to attach to this letter",
+    "tooltipCannotAttach": "The raven will not carry quest items",
+    "parcelQtyDecreaseAria": "Send one fewer {item}",
+    "parcelQtyIncreaseAria": "Send one more {item}",
     "send": "Send Letter",
     "needRecipientOrText": "Name a recipient and write something before sending.",
     "openButton": "Show me the Ravenpost.",
@@ -5504,6 +5529,9 @@ export const fr_CA: EnTranslations = {
       "keeper_coal": {
         "name": "Un Charbon Qui N'a Jamais Refroidi"
       },
+      "hearth_stone": {
+        "name": "Une Pierre Encore Chaude De Son Âtre"
+      },
       "willow_sprig": {
         "name": "Une brindille de saule"
       },
@@ -7117,6 +7145,22 @@ export const fr_CA: EnTranslations = {
           "complainReply": "once is a favor, friend, three's a habit, and i been burned by favors before... this ain't about the hearth needin' it, the hearth's fine, i keep it fine, it's about you comin' back on your own two feet 'cause you wanted to, not 'cause some quest marker told you to... three times. no rush on the countin'.",
           "refuse": "I'm not doing this three separate times. Once was enough.",
           "refuseReply": "...yeah. yeah, okay, i hear you, friend, that's a fair enough line to draw... tell you what, here, take it anyway, ain't earned in the strictest sense but neither's most of what i hand out, and the wavelength don't really keep score the way i pretend it does..."
+        }
+      },
+      "q_your_own_hearth": {
+        "title": "A Hearth of Your Own",
+        "text": "here's the last of it, friend, and it ain't really an errand so much as a nudge... there's ground out past the road, fallow acres, sittin' quiet and waitin' on somebody to want it. sexton faddick keeps half an eye on it between his wolves and his list of kept places - go say hello, let him know you're the kind that stays... after that the ground's yours to claim, whenever you're ready for it.",
+        "completion": "there it is... you got the look now, friend, the one that says you ain't just passin' through no more. go on, plant your feet somewhere out there. i'll keep the hearth lit same as always, and the vase'll know right where to find you...",
+        "objectives": {
+          "0": {
+            "label": "Sexton Faddick met"
+          }
+        },
+        "dialog": {
+          "complain": "Ground? I just wanted to say hi to your plant.",
+          "complainReply": "and you can, anytime, he ain't goin' anywhere... but a soul needs more than a shrine to visit, friend, it needs somewhere to plant its own two feet. won't take long. faddick talks slow but he don't waste your afternoon.",
+          "refuse": "I don't need a homestead. I'm happy just visiting.",
+          "refuseReply": "...alright, alright, no pressure in it, friend, the ground'll keep same as faddick keeps it, waitin' don't cost it nothin'... here, take this anyway, for stickin' around this long. that's its own kind of home, i guess."
         }
       },
       "q_root_hollow_boars": {
