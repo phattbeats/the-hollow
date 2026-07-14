@@ -315,7 +315,16 @@ export function castAbility(ctx: SimContext, abilityId: string, pid?: number): v
       if (eff.type === 'polymorph') {
         if (target.kind === 'mob') {
           const fam = MOBS[target.templateId]?.family;
-          if (fam === 'undead' || target.templateId === 'gorrak') {
+          // Undead/gorrak are lore-exempt; every ccImmune mob (not just raid bosses) rejects
+          // it here so the cast never reaches the effect's sheep full-heal side effect
+          // (upstream #1503: polymorph ran the heal before the aura was applied, then the
+          // aura was dropped by the ccImmune gate, so casting it on any ccImmune mob healed
+          // it to full unsheeped).
+          if (
+            fam === 'undead' ||
+            target.templateId === 'gorrak' ||
+            MOBS[target.templateId]?.ccImmune
+          ) {
             ctx.error(p.id, 'This creature cannot be polymorphed.');
             return;
           }
