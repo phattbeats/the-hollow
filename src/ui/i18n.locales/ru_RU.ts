@@ -5596,6 +5596,11 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'mailUi.needRecipientOrText': 'Укажите получателя и напишите что-нибудь перед отправкой.',
   'mailUi.openButton': 'Покажите мне Воронью почту.',
   'mailUi.openButtonAria': 'Открыть окно Вороньей почты',
+  // Mail item-attachment staging (PHAA-688, M16 non-Latin fill)
+  'mailUi.attachments': 'Вложения (до {max})',
+  'mailUi.removeAttachment': 'Убрать {item} из этого письма',
+  'mailUi.tooltipAttach': 'Нажмите, чтобы приложить к этому письму',
+  'mailUi.tooltipCannotAttach': 'Ворон не станет нести квестовые предметы',
   // Event calendar (M16 non-Latin fill)
   'hudChrome.calendar.title': 'Календарь событий',
   'hudChrome.calendar.close': 'Закрыть календарь',

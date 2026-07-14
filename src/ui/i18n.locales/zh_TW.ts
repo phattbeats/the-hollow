@@ -5203,6 +5203,11 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'mailUi.needRecipientOrText': '請先填寫收件人並寫點內容再寄送。',
   'mailUi.openButton': '帶我去渡鴉驛站。',
   'mailUi.openButtonAria': '開啟渡鴉驛站郵件視窗',
+  // Mail item-attachment staging (PHAA-688, M16 non-Latin fill)
+  'mailUi.attachments': '附件（最多 {max} 件）',
+  'mailUi.removeAttachment': '從這封信中移除{item}',
+  'mailUi.tooltipAttach': '點擊附加到這封信',
+  'mailUi.tooltipCannotAttach': '渡鴉不會攜帶任務物品',
   // Event calendar (M16 non-Latin fill)
   'hudChrome.calendar.title': '活動日曆',
   'hudChrome.calendar.close': '關閉日曆',

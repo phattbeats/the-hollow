@@ -5477,6 +5477,11 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'mailUi.needRecipientOrText': '보내기 전에 받는 사람을 지정하고 내용을 입력하세요.',
   'mailUi.openButton': '레이븐포스트로 안내해 주세요.',
   'mailUi.openButtonAria': '레이븐포스트 우편 창 열기',
+  // Mail item-attachment staging (PHAA-688, M16 non-Latin fill)
+  'mailUi.attachments': '첨부물 (최대 {max}개)',
+  'mailUi.removeAttachment': '이 편지에서 {item} 제거',
+  'mailUi.tooltipAttach': '클릭하여 이 편지에 첨부',
+  'mailUi.tooltipCannotAttach': '까마귀는 퀘스트 아이템을 운반하지 않습니다',
   // Event calendar (M16 non-Latin fill)
   'hudChrome.calendar.title': '이벤트 달력',
   'hudChrome.calendar.close': '달력 닫기',
