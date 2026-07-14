@@ -10,9 +10,12 @@ import {
   instanceOrigin,
   isArenaPos,
   isDelvePos,
+  isYumiMazePos,
   PROPS,
+  yumiMazeOriginAt,
 } from './data';
 import { type DelveModuleId, delveModuleColliders } from './delve_layout';
+import { yumiMazeColliders } from './yumi_maze_layout';
 import {
   ARENA_LAYOUT,
   CRYPT_LAYOUT,
@@ -417,6 +420,11 @@ export function resolvePosition(
     const local = resolveAgainst(ARENA_COLLIDERS, x - o.x, z - o.z, r, ignoreFences);
     return { x: local.x + o.x, z: local.z + o.z };
   }
+  if (isYumiMazePos(x)) {
+    const o = yumiMazeOriginAt(z);
+    const local = resolveAgainst(yumiMazeColliders(), x - o.x, z - o.z, r);
+    return { x: local.x + o.x, z: local.z + o.z };
+  }
   if (x > DUNGEON_X_THRESHOLD) {
     const { ox, oz, interior } = instanceLocal(x, z);
     const colliders = INTERIOR_COLLIDERS[interior] ?? CRYPT_COLLIDERS;
@@ -675,6 +683,20 @@ export function cameraOcclusion(
     const o = arenaOriginAt(az);
     return sweepColliders(
       ARENA_COLLIDERS,
+      ax - o.x,
+      ay,
+      az - o.z,
+      bx - o.x,
+      by,
+      bz - o.z,
+      pad,
+      true,
+    );
+  }
+  if (isYumiMazePos(ax)) {
+    const o = yumiMazeOriginAt(az);
+    return sweepColliders(
+      yumiMazeColliders(),
       ax - o.x,
       ay,
       az - o.z,
