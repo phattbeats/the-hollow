@@ -5,6 +5,7 @@
 // and owns the world-layout constants.
 
 import { BOARBALL_MOBS } from './content/boarball';
+import { YUMI_MOBS } from './content/yumi';
 import { BASE_ITEMS, FISHING_RARE_ID, FISHING_TABLES } from './content/items';
 import type {
   CampDef,
@@ -187,6 +188,7 @@ export const MOBS: Record<string, MobTemplate> = {
   ...HOLLOW_MOBS,
   ...DELVE_MOBS,
   ...BOARBALL_MOBS,
+  ...YUMI_MOBS,
 };
 
 export const ITEMS: Record<string, ItemDef> = mergeItems(
@@ -550,6 +552,44 @@ export function arenaOriginAt(z: number): { x: number; z: number; slot: number }
   return { x: o.x, z: o.z, slot: best };
 }
 
+// ---------------------------------------------------------------------------
+// Protect Yumi! maze instances (PHAA-573), the easternmost band. Each match
+// runs in a fixed competitive maze whose instance-local collider set comes from
+// sim/yumi_maze_layout.ts via sim/colliders.ts (the ARENA_COLLIDERS pattern).
+// The band sits clear east of the delve band (delves start at 6000, index*600;
+// only index 0 exists today, so 8000 leaves ample margin) and caps isDelvePos.
+// ---------------------------------------------------------------------------
+export const YUMI_BAND_X_MIN = 8000; // x at/after this = a yumi maze instance
+export const YUMI_BAND_X_MAX = 12000;
+export const YUMI_MAZE_X = 8400; // maze instances share this x; slots stack along z
+export const YUMI_MAZE_SLOT_COUNT = 4; // concurrent Protect Yumi matches
+const YUMI_MAZE_Z0 = -1250;
+const YUMI_MAZE_SLOT_SPACING = 200; // > the ~90u maze footprint so slots never overlap
+
+export function yumiMazeOrigin(slot: number): { x: number; z: number } {
+  return { x: YUMI_MAZE_X, z: YUMI_MAZE_Z0 + slot * YUMI_MAZE_SLOT_SPACING };
+}
+
+export function isYumiMazePos(x: number): boolean {
+  return x >= YUMI_BAND_X_MIN && x < YUMI_BAND_X_MAX;
+}
+
+// Nearest yumi maze instance origin to a far-off position, matched by z-band
+// (x is shared across slots), mirroring arenaOriginAt / the delve resolver.
+export function yumiMazeOriginAt(z: number): { x: number; z: number; slot: number } {
+  let best = 0,
+    bestD = Infinity;
+  for (let i = 0; i < YUMI_MAZE_SLOT_COUNT; i++) {
+    const d = Math.abs(z - yumiMazeOrigin(i).z);
+    if (d < bestD) {
+      bestD = d;
+      best = i;
+    }
+  }
+  const o = yumiMazeOrigin(best);
+  return { x: o.x, z: o.z, slot: best };
+}
+
 // Legacy aliases for the Hollow Crypt (tests + scripts reference these).
 export const CRYPT_DOOR_POS = DUNGEONS.hollow_crypt.doorPos;
 export const CRYPT_ENTRY = DUNGEONS.hollow_crypt.entry;
@@ -588,7 +628,9 @@ export function delveOrigin(delveIndex: number, slot: number): { x: number; z: n
 }
 
 export function isDelvePos(x: number): boolean {
-  return x >= DELVE_BAND_X_MIN;
+  // Capped east by the Protect Yumi maze band (PHAA-573), the same move the
+  // delve band made against the arena band to its west.
+  return x >= DELVE_BAND_X_MIN && x < YUMI_BAND_X_MIN;
 }
 
 export function delveAt(x: number): DelveDef | null {
