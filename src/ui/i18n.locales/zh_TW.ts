@@ -109,6 +109,16 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
     '自動會根據你的裝置選擇桌面或觸控操作。選擇桌面可強制使用鍵盤與滑鼠（適合有鍵盤的平板），選擇觸控則使用螢幕上的操作控制項。',
   // Character-sheet stat tooltips (hudChrome.statInfo.*).
   'hudChrome.statInfo.fromYour': '來自你的 {value} 點{stat}：',
+  'hudChrome.statInfo.names.spellPower': '法術強度',
+  'hudChrome.statInfo.desc.spellPower':
+    '提高你法術造成的傷害與治療的強度。每點智力都會提供少量法術強度，此外還有來自裝備與增益的加成。',
+  'hudChrome.statInfo.sources.header': '構成：',
+  'hudChrome.statInfo.sources.base': '基礎：{value}',
+  'hudChrome.statInfo.sources.attributes': '來自屬性：{value}',
+  'hudChrome.statInfo.sources.fromAttribute': '來自{stat}：{value}',
+  'hudChrome.statInfo.sources.gear': '裝備：{value}',
+  'hudChrome.statInfo.sources.buff': '{name}：{value}',
+  'hudChrome.statInfo.sources.talents': '天賦與效果：{value}',
   'hudChrome.statInfo.desc.str': '提升你的攻擊強度，使你的武器攻擊更具威力。',
   'hudChrome.statInfo.desc.agi': '磨練你的反應與準度，提升多項戰鬥屬性。',
   'hudChrome.statInfo.desc.sta':
@@ -214,6 +224,12 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.keybinds.emoteWheel': '表情輪盤',
   'hudChrome.keybinds.targetFriendly': '選取最近友方',
   'hudChrome.keybinds.targetFriendlyNext': '切換友方目標',
+  'hudChrome.keybinds.categoryPet': '寵物',
+  'hudChrome.keybinds.petAttack': '寵物：攻擊',
+  'hudChrome.keybinds.petStop': '寵物：停止',
+  'hudChrome.keybinds.petTaunt': '寵物：嘲諷',
+  'hudChrome.keybinds.petDefensive': '寵物：防禦',
+  'hudChrome.keybinds.petAggressive': '寵物：攻擊性',
   'hudChrome.options.clickMoveLeft': '左鍵',
   'hudChrome.options.clickMoveRight': '右鍵',
   'hudChrome.options.browserEffects': '瀏覽器特效',
@@ -5190,6 +5206,13 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'mailUi.needRecipientOrText': '請先填寫收件人並寫點內容再寄送。',
   'mailUi.openButton': '帶我去渡鴉驛站。',
   'mailUi.openButtonAria': '開啟渡鴉驛站郵件視窗',
+  // Mail item-attachment staging (PHAA-688, M16 non-Latin fill)
+  'mailUi.attachments': '附件（最多 {max} 件）',
+  'mailUi.removeAttachment': '從這封信中移除{item}',
+  'mailUi.tooltipAttach': '點擊附加到這封信',
+  'mailUi.tooltipCannotAttach': '渡鴉不會攜帶任務物品',
+  'mailUi.parcelQtyDecreaseAria': '少寄一個{item}',
+  'mailUi.parcelQtyIncreaseAria': '多寄一個{item}',
   // Event calendar (M16 non-Latin fill)
   'hudChrome.calendar.title': '活動日曆',
   'hudChrome.calendar.close': '關閉日曆',

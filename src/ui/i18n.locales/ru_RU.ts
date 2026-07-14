@@ -115,6 +115,16 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
     'В режиме «Авто» управление для компьютера или сенсорное выбирается по вашему устройству. Выберите «Компьютер», чтобы включить клавиатуру и мышь (удобно на планшете с клавиатурой), или «Сенсорный» для экранного управления.',
   // Character-sheet stat tooltips (hudChrome.statInfo.*).
   'hudChrome.statInfo.fromYour': 'От вашей характеристики ({value} {stat}):',
+  'hudChrome.statInfo.names.spellPower': 'Сила заклинаний',
+  'hudChrome.statInfo.desc.spellPower':
+    'Увеличивает урон ваших заклинаний и силу исцелений. Каждая единица интеллекта дает немного силы заклинаний, вдобавок к получаемой от снаряжения и усилений.',
+  'hudChrome.statInfo.sources.header': 'Складывается из:',
+  'hudChrome.statInfo.sources.base': 'База: {value}',
+  'hudChrome.statInfo.sources.attributes': 'От характеристик: {value}',
+  'hudChrome.statInfo.sources.fromAttribute': 'От характеристики {stat}: {value}',
+  'hudChrome.statInfo.sources.gear': 'Снаряжение: {value}',
+  'hudChrome.statInfo.sources.buff': '{name}: {value}',
+  'hudChrome.statInfo.sources.talents': 'Таланты и эффекты: {value}',
   'hudChrome.statInfo.desc.str':
     'Увеличивает силу атаки, благодаря чему удары вашим оружием бьют сильнее.',
   'hudChrome.statInfo.desc.agi':
@@ -237,6 +247,12 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.keybinds.emoteWheel': 'Колесо эмоций',
   'hudChrome.keybinds.targetFriendly': 'Ближайший союзник',
   'hudChrome.keybinds.targetFriendlyNext': 'Следующий союзник',
+  'hudChrome.keybinds.categoryPet': 'Питомец',
+  'hudChrome.keybinds.petAttack': 'Питомец: атака',
+  'hudChrome.keybinds.petStop': 'Питомец: стоп',
+  'hudChrome.keybinds.petTaunt': 'Питомец: провокация',
+  'hudChrome.keybinds.petDefensive': 'Питомец: защита',
+  'hudChrome.keybinds.petAggressive': 'Питомец: агрессия',
   'hudChrome.options.clickMoveLeft': 'Левая кнопка',
   'hudChrome.options.clickMoveRight': 'Правая кнопка',
   'hudChrome.options.browserEffects': 'Эффекты браузера',
@@ -5583,6 +5599,13 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'mailUi.needRecipientOrText': 'Укажите получателя и напишите что-нибудь перед отправкой.',
   'mailUi.openButton': 'Покажите мне Воронью почту.',
   'mailUi.openButtonAria': 'Открыть окно Вороньей почты',
+  // Mail item-attachment staging (PHAA-688, M16 non-Latin fill)
+  'mailUi.attachments': 'Вложения (до {max})',
+  'mailUi.removeAttachment': 'Убрать {item} из этого письма',
+  'mailUi.tooltipAttach': 'Нажмите, чтобы приложить к этому письму',
+  'mailUi.tooltipCannotAttach': 'Ворон не станет нести квестовые предметы',
+  'mailUi.parcelQtyDecreaseAria': 'Отправить на один {item} меньше',
+  'mailUi.parcelQtyIncreaseAria': 'Отправить на один {item} больше',
   // Event calendar (M16 non-Latin fill)
   'hudChrome.calendar.title': 'Календарь событий',
   'hudChrome.calendar.close': 'Закрыть календарь',

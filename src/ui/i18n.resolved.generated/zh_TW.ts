@@ -313,7 +313,13 @@ export const zh_TW: EnTranslations = {
     "keybinds": {
       "emoteWheel": "表情輪盤",
       "targetFriendly": "選取最近友方",
-      "targetFriendlyNext": "切換友方目標"
+      "targetFriendlyNext": "切換友方目標",
+      "categoryPet": "寵物",
+      "petAttack": "寵物：攻擊",
+      "petStop": "寵物：停止",
+      "petTaunt": "寵物：嘲諷",
+      "petDefensive": "寵物：防禦",
+      "petAggressive": "寵物：攻擊性"
     },
     "options": {
       "clickMoveLeft": "左鍵",
@@ -434,6 +440,9 @@ export const zh_TW: EnTranslations = {
     },
     "statInfo": {
       "fromYour": "來自你的 {value} 點{stat}：",
+      "names": {
+        "spellPower": "法術強度"
+      },
       "desc": {
         "str": "提升你的攻擊強度，使你的武器攻擊更具威力。",
         "agi": "磨練你的反應與準度，提升多項戰鬥屬性。",
@@ -442,6 +451,7 @@ export const zh_TW: EnTranslations = {
         "spi": "加快施法者在脫離戰鬥休息時的法力恢復速度。",
         "armor": "減緩受到的物理打擊。對等級較低的攻擊者減免效果更佳，上限為 75%。",
         "attackPower": "強化你的武器攻擊。每 14 點攻擊強度可增加 1 點每秒傷害。",
+        "spellPower": "提高你法術造成的傷害與治療的強度。每點智力都會提供少量法術強度，此外還有來自裝備與增益的加成。",
         "dps": "你的預估武器每秒傷害，由武器的傷害與速度結合你的攻擊強度計算而來。",
         "critChance": "你的攻擊造成暴擊並施加雙倍傷害的機率。",
         "dodge": "你完全閃躲受到的近戰攻擊、不受任何傷害的機率。"
@@ -464,6 +474,15 @@ export const zh_TW: EnTranslations = {
         "minorForClass": "對你的職業助益甚微。",
         "baseChance": "包含所有冒險者共享的 5% 基礎機率。",
         "dpsApprox": "此為估計值，不計入暴擊與技能傷害。"
+      },
+      "sources": {
+        "header": "構成：",
+        "base": "基礎：{value}",
+        "attributes": "來自屬性：{value}",
+        "fromAttribute": "來自{stat}：{value}",
+        "gear": "裝備：{value}",
+        "buff": "{name}：{value}",
+        "talents": "天賦與效果：{value}"
       }
     },
     "talents": {
@@ -989,6 +1008,12 @@ export const zh_TW: EnTranslations = {
     "recipient": "收件人",
     "subjectLabel": "主旨",
     "bodyPlaceholder": "寫下你的信件……",
+    "attachments": "附件（最多 {max} 件）",
+    "removeAttachment": "從這封信中移除{item}",
+    "tooltipAttach": "點擊附加到這封信",
+    "tooltipCannotAttach": "渡鴉不會攜帶任務物品",
+    "parcelQtyDecreaseAria": "少寄一個{item}",
+    "parcelQtyIncreaseAria": "多寄一個{item}",
     "send": "寄出信件",
     "needRecipientOrText": "請先填寫收件人並寫點內容再寄送。",
     "openButton": "帶我去渡鴉驛站。",
