@@ -313,7 +313,13 @@ export const ja_JP: EnTranslations = {
     "keybinds": {
       "emoteWheel": "エモートホイール",
       "targetFriendly": "最も近い味方をターゲット",
-      "targetFriendlyNext": "味方ターゲットを順に切り替え"
+      "targetFriendlyNext": "味方ターゲットを順に切り替え",
+      "categoryPet": "ペット",
+      "petAttack": "ペット：攻撃",
+      "petStop": "ペット：停止",
+      "petTaunt": "ペット：挑発",
+      "petDefensive": "ペット：防御",
+      "petAggressive": "ペット：攻撃的"
     },
     "options": {
       "clickMoveLeft": "左クリック",
@@ -1002,6 +1008,12 @@ export const ja_JP: EnTranslations = {
     "recipient": "宛先",
     "subjectLabel": "件名",
     "bodyPlaceholder": "手紙を書いてください...",
+    "attachments": "添付物（最大{max}個）",
+    "removeAttachment": "この手紙から{item}を外す",
+    "tooltipAttach": "クリックしてこの手紙に添付",
+    "tooltipCannotAttach": "渡り烏はクエストアイテムを運びません",
+    "parcelQtyDecreaseAria": "{item}を1つ減らして送る",
+    "parcelQtyIncreaseAria": "{item}を1つ増やして送る",
     "send": "手紙を送る",
     "needRecipientOrText": "送信する前に宛先を指定し、本文を入力してください。",
     "openButton": "レイヴンポストへ案内してください。",

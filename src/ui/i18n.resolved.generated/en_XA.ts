@@ -313,7 +313,13 @@ export const en_XA: EnTranslations = {
     "keybinds": {
       "emoteWheel": "[Éɱóţé Ŵĥééļ]",
       "targetFriendly": "[Ţáŕĝéţ Ñéáŕéšţ Ƒŕíéñðļý]",
-      "targetFriendlyNext": "[Çýçļé Ƒŕíéñðļý Ţáŕĝéţ]"
+      "targetFriendlyNext": "[Çýçļé Ƒŕíéñðļý Ţáŕĝéţ]",
+      "categoryPet": "[Þéţ]",
+      "petAttack": "[Þéţ: Áţţáçķ]",
+      "petStop": "[Þéţ: Šţóþ]",
+      "petTaunt": "[Þéţ: Ţáúñţ]",
+      "petDefensive": "[Þéţ: Ðéƒéñšíʋé]",
+      "petAggressive": "[Þéţ: Áĝĝŕéššíʋé]"
     },
     "options": {
       "clickMoveLeft": "[Ļéƒţ Çļíçķ]",
@@ -1002,6 +1008,12 @@ export const en_XA: EnTranslations = {
     "recipient": "[Ŕéçíþíéñţ]",
     "subjectLabel": "[Šúƀĵéçţ]",
     "bodyPlaceholder": "[Ŵŕíţé ýóúŕ ļéţţéŕ...]",
+    "attachments": "[Áţţáçĥɱéñţš (úþ ţó {max})]",
+    "removeAttachment": "[Ŕéɱóʋé {item} ƒŕóɱ ţĥíš ļéţţéŕ]",
+    "tooltipAttach": "[Çļíçķ ţó áţţáçĥ ţó ţĥíš ļéţţéŕ]",
+    "tooltipCannotAttach": "[Ţĥé ŕáʋéñ ŵíļļ ñóţ çáŕŕý ɋúéšţ íţéɱš]",
+    "parcelQtyDecreaseAria": "[Šéñð óñé ƒéŵéŕ {item}]",
+    "parcelQtyIncreaseAria": "[Šéñð óñé ɱóŕé {item}]",
     "send": "[Šéñð Ļéţţéŕ]",
     "needRecipientOrText": "[Ñáɱé á ŕéçíþíéñţ áñð ŵŕíţé šóɱéţĥíñĝ ƀéƒóŕé šéñðíñĝ.]",
     "openButton": "[Šĥóŵ ɱé ţĥé Ŕáʋéñþóšţ.]",

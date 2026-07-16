@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { ITEMS } from '../src/sim/data';
-import { buildMailInboxBody, canSendMail } from '../src/ui/mail_view';
+import { buildMailInboxBody, canSendMail, clampParcelQty } from '../src/ui/mail_view';
 import type { MailInfo, MailMessageView } from '../src/world_api';
 
 function message(over: Partial<MailMessageView> = {}): MailMessageView {
@@ -67,5 +67,31 @@ describe('mail_view: canSendMail', () => {
     expect(canSendMail('Recipient', 'Subject', '')).toBe(true);
     expect(canSendMail('Recipient', '', 'Body text')).toBe(true);
     expect(canSendMail('  ', 'Subject', '')).toBe(false);
+  });
+});
+
+describe('mail_view: clampParcelQty', () => {
+  it('increments and decrements by the delta within [1, owned]', () => {
+    expect(clampParcelQty(3, 1, 5)).toBe(4);
+    expect(clampParcelQty(3, -1, 5)).toBe(2);
+  });
+
+  it('never drops below 1 (the remove control drops a parcel entirely)', () => {
+    expect(clampParcelQty(1, -1, 5)).toBe(1);
+    expect(clampParcelQty(2, -5, 5)).toBe(1);
+  });
+
+  it('never rises above what the sender owns', () => {
+    expect(clampParcelQty(5, 1, 5)).toBe(5);
+    expect(clampParcelQty(4, 10, 5)).toBe(5);
+  });
+
+  it('floor wins over ceiling when the bags have emptied to 0', () => {
+    expect(clampParcelQty(3, 1, 0)).toBe(1);
+    expect(clampParcelQty(3, -1, 0)).toBe(1);
+  });
+
+  it('floors fractional inputs before clamping', () => {
+    expect(clampParcelQty(2.9, 1, 5.9)).toBe(3);
   });
 });
