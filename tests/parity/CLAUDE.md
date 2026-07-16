@@ -111,3 +111,34 @@ du -sh tests/parity/golden                   # confirm ~100 KB, NOT MB
 A red trace means behavior changed. **Fix the extraction, never the harness.** Do
 not widen `round6`, delete sampled fields, or regenerate goldens to "make it pass."
 Regenerate only via `UPDATE_PARITY=1` as a deliberate, separate, reviewed commit.
+
+## Telling a stale golden from real drift (the regen decision)
+
+A regen is only legitimate when the sim's BEHAVIOR is unchanged and the golden is
+merely stale bookkeeping. Before running `UPDATE_PARITY=1`, diff the failing
+goldens and classify every changed line:
+
+- **Benign (safe to regen):** the ONLY changed JSON keys are id-family fields
+  (`id`, `nextId`, `entityId`, `sourceId`, `targetId`, `ownerId`, `playerId`,
+  `objectId`, `*TargetId`, `tappedById`) and their derived `state` / `events`
+  hashes, AND the per-frame `rng` draw counts and digests are UNCHANGED. That is a
+  world that made byte-identical random decisions and only renumbered entities:
+  something now allocates one more entity at world init, shifting every later id by
+  a constant. Confirm the shift is a deliberate feature (bisect: the parent commit
+  should be green against the same goldens).
+- **Drift (do NOT regen, fix the code):** any change to an `rng` draw count or
+  digest, or to `hp` / `pos` / resources / equipment / outcomes / event ORDER. A
+  changed rng stream means the world forked; a regen would bake the regression in.
+
+Worked example (PHAA-704, 2026-07): PHAA-517 folded a world boss into the
+world-boss framework, allocating its entity at init. That shifted every entity id
+`+1` across all 94 scenarios and staled 47 goldens. The diff was id-family +
+`state`/`events` only, rng draw counts/digests unchanged, and the pre-PHAA-517
+parent was 94/94 green, so the regen was correct. Sanity one-liner:
+
+```
+git diff <base> -- tests/parity/golden/ | grep '^[-+]' | grep -oE '"[a-zA-Z_]+":' | sort -u
+```
+
+If that key set is anything beyond the id-family + `state`/`events`, investigate
+before you regen.
