@@ -313,7 +313,13 @@ export const vi_VN: EnTranslations = {
     "keybinds": {
       "emoteWheel": "Vòng Biểu Cảm",
       "targetFriendly": "Chọn Đồng Minh Gần Nhất",
-      "targetFriendlyNext": "Luân Phiên Mục Tiêu Đồng Minh"
+      "targetFriendlyNext": "Luân Phiên Mục Tiêu Đồng Minh",
+      "categoryPet": "Pet",
+      "petAttack": "Pet: Attack",
+      "petStop": "Pet: Stop",
+      "petTaunt": "Pet: Taunt",
+      "petDefensive": "Pet: Defensive",
+      "petAggressive": "Pet: Aggressive"
     },
     "options": {
       "clickMoveLeft": "Nhấp Trái",
@@ -1006,6 +1012,8 @@ export const vi_VN: EnTranslations = {
     "removeAttachment": "Remove {item} from this letter",
     "tooltipAttach": "Click to attach to this letter",
     "tooltipCannotAttach": "The raven will not carry quest items",
+    "parcelQtyDecreaseAria": "Send one fewer {item}",
+    "parcelQtyIncreaseAria": "Send one more {item}",
     "send": "Send Letter",
     "needRecipientOrText": "Name a recipient and write something before sending.",
     "openButton": "Show me the Ravenpost.",

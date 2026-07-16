@@ -204,6 +204,12 @@ export const HOLLOW_MOBS: Record<string, MobTemplate> = {
     worldBoss: true,
     elite: true,
     ccImmune: true,
+    // Upstream #1502: a raid boss opts into both cc and slow immunity. ccImmune already
+    // blocks the hard control auras (stun/root/etc); slowImmune (separate) means player
+    // snares (Frostbolt/Hamstring) do not stick either, so a raid cannot perma-kite him
+    // with a wall of slows even though his own moveSpeed (10.5) already outpaces player
+    // run speed (7) on open ground.
+    slowImmune: true,
     // The colossus does not path around camp furniture: every chase/flee/wander step
     // walks the straight line through fences, buildings, and the waterline, so he can
     // always go directly at his target and never wedges on a collider (upstream #1643).

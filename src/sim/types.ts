@@ -533,6 +533,11 @@ export interface MobTemplate {
   // Rare/miniboss controls.
   canSwim?: boolean;
   ccImmune?: boolean;
+  // Immune to movement-speed slow auras (kind 'slow'). Distinct from ccImmune, which
+  // blocks the hard control auras (stun/root/incapacitate/polymorph) but intentionally
+  // leaves snares landing so most elites can still be kited; a raid boss sets both
+  // (upstream #1502).
+  slowImmune?: boolean;
   // Upstream #1643 (Thunzharr unkitable-movespeed fix): every movement step (chase,
   // flee, wander, leash return) takes moveToward's ignoreObstacles branch, a straight
   // line that ignores prop colliders, the waterline, and the steep-wall gate. For a
