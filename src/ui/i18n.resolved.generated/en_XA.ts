@@ -4051,7 +4051,8 @@ export const en_XA: EnTranslations = {
       "needAria": "[Ñééð ƒóŕ {item}]",
       "greedAria": "[Ĝŕééð ƒóŕ {item}]",
       "passAria": "[Þášš óñ {item}]",
-      "everyonePassed": "[Éʋéŕýóñé þáššéð óñ {item}.]"
+      "everyonePassed": "[Éʋéŕýóñé þáššéð óñ {item}.]",
+      "winnerOffline": "[Ţĥé ŵíññéŕ óƒ {item} ŵáš óƒƒļíñé; íţ ŵáš ŕéţúŕñéð ţó ţĥé çóŕþšé.]"
     }
   },
   "entities": {

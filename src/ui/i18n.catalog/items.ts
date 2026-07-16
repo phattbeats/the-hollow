@@ -2043,6 +2043,7 @@ const itemNamesEn = {
       greedAria: 'Greed for {item}',
       passAria: 'Pass on {item}',
       everyonePassed: 'Everyone passed on {item}.',
+      winnerOffline: 'The winner of {item} was offline; it was returned to the corpse.',
     },
   },
   entities: {
@@ -2280,6 +2281,7 @@ export const itemNames = {
         greedAria: 'Codicia por {item}',
         passAria: 'Pasar por {item}',
         everyonePassed: 'Todos pasaron por {item}.',
+        winnerOffline: 'El ganador de {item} estaba desconectado; se devolvió al cadáver.',
       },
     },
     entities: {
@@ -2515,6 +2517,7 @@ export const itemNames = {
         greedAria: 'Cupidité pour {item}',
         passAria: 'Passer pour {item}',
         everyonePassed: 'Tout le monde a passé pour {item}.',
+        winnerOffline: 'Le gagnant de {item} était hors ligne ; il a été rendu au corps.',
       },
     },
     entities: {
@@ -2751,6 +2754,7 @@ export const itemNames = {
         greedAria: 'Brama per {item}',
         passAria: 'Passa su {item}',
         everyonePassed: 'Tutti hanno passato su {item}.',
+        winnerOffline: 'Il vincitore di {item} era offline; è stato restituito al cadavere.',
       },
     },
     entities: {
@@ -2985,6 +2989,7 @@ export const itemNames = {
         greedAria: 'Gier für {item}',
         passAria: 'Bei {item} passen',
         everyonePassed: 'Alle passen bei {item}.',
+        winnerOffline: 'Der Gewinner von {item} war offline; es wurde zur Leiche zurückgebracht.',
       },
     },
     entities: {
@@ -3219,6 +3224,7 @@ export const itemNames = {
         greedAria: '贪婪 {item}',
         passAria: '放弃 {item}',
         everyonePassed: '所有人都放弃了 {item}。',
+        winnerOffline: '{item}的获胜者已离线；战利品已归还尸体。',
       },
     },
     entities: {
@@ -3453,6 +3459,7 @@ export const itemNames = {
         greedAria: '貪婪 {item}',
         passAria: '放棄 {item}',
         everyonePassed: '所有人都放棄了 {item}。',
+        winnerOffline: '{item}的獲勝者已離線；戰利品已歸還屍體。',
       },
     },
     entities: {
@@ -3687,6 +3694,7 @@ export const itemNames = {
         greedAria: '{item} 탐욕',
         passAria: '{item} 포기',
         everyonePassed: '모두 {item}을(를) 포기했습니다.',
+        winnerOffline: '{item}의 당첨자가 오프라인 상태여서 시체로 반환되었습니다.',
       },
     },
     entities: {
@@ -3921,6 +3929,7 @@ export const itemNames = {
         greedAria: '{item}を強欲',
         passAria: '{item}をパス',
         everyonePassed: '全員が{item}をパスしました。',
+        winnerOffline: '{item}の勝者がオフラインだったため、死体に返却されました。',
       },
     },
     entities: {
@@ -4155,6 +4164,7 @@ export const itemNames = {
         greedAria: 'Ganância por {item}',
         passAria: 'Passar em {item}',
         everyonePassed: 'Todos passaram em {item}.',
+        winnerOffline: 'O vencedor de {item} estava offline; foi devolvido ao cadáver.',
       },
     },
     entities: {
@@ -4389,6 +4399,7 @@ export const itemNames = {
         greedAria: 'Жадность: {item}',
         passAria: 'Пас: {item}',
         everyonePassed: 'Все отказались от {item}.',
+        winnerOffline: 'Победитель {item} был офлайн; предмет вернулся к трупу.',
       },
     },
     entities: {
