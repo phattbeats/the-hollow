@@ -1,32 +1,37 @@
-// PHAA-697 acceptance evidence: renders the female class bodies (player_<cls>_f)
-// through the production roster pipeline (roster_compare_harness -> CharacterVisual
-// -> assembleModel/attach) so the class-default held weapon mounts on the chibi
-// DEF-hand bones. Tight close-up per class (one per grip family) to eyeball grip
-// placement/scale. Connects to remote Browserless (BROWSERLESS_WS); GAME_URL must
-// be reachable from there. Writes PNGs into docs/screenshots/phaa-697/.
+// PHAA-697 acceptance evidence: renders each female class body (player_<cls>_f)
+// holding its class weapon, one clean full-body shot per class.
+//
+// Why this harness and not a world roster-compare: the previous pass spawned a
+// female compare model at the live player's position (offsetX 0) and tried to
+// hide the male player body with `view.group.visible = false`. The render loop
+// re-derives that visibility every frame (renderer.ts updateVisibility), so the
+// hide was overwritten and the male warrior stood INSIDE the female model in
+// every shot (Brandon, 2026-07-16). This harness renders only ONE body: it
+// drives the real CharacterPreview turntable (the exact renderer + pipeline
+// char-select uses) through setVisualKey('player_<cls>_f', <class start weapon>),
+// so the female body and its class weapon are the only things on screen. No
+// world, no follow-cam, no second body.
+//
+// Connects to remote Browserless (BROWSERLESS_WS); GAME_URL must be reachable
+// from there. Writes PNGs into docs/screenshots/phaa-697/.
 import fs from 'node:fs';
 import puppeteer from 'puppeteer-core';
 
 const WS = process.env.BROWSERLESS_WS ?? 'ws://10.0.0.100:3000';
 const URL = process.env.GAME_URL ?? 'http://172.18.0.32:5174';
-const OUT = 'docs/screenshots/phaa-697';
+const OUT = process.env.OUT ?? 'docs/screenshots/phaa-697';
 fs.mkdirSync(OUT, { recursive: true });
 
-// One key per distinct grip family (covers all six: 1H_Sword, 1H_Axe,
-// 1H_Crossbow, 2H_Staff, Knife dual-wield, 1H_Wand + spellbook offhand).
-const KEYS = process.env.KEYS
-  ? process.env.KEYS.split(',')
-  : [
-      'player_warrior_f',
-      'player_paladin_f',
-      'player_hunter_f',
-      'player_druid_f',
-      'player_rogue_f',
-      'player_warlock_f',
-    ];
+// All 9 classes. Rogue dual-wields; hunter keeps its crossbow; casters hold a
+// staff/wand; the female def mirrors each male sibling's weapon layout.
+const CLASSES = process.env.CLASSES
+  ? process.env.CLASSES.split(',')
+  : ['warrior', 'paladin', 'hunter', 'druid', 'rogue', 'warlock', 'mage', 'priest', 'shaman'];
 
-async function startOffline(page, viewport, cls = 'warrior', name = 'Sable') {
-  await page.setViewport(viewport);
+// Boot the app far enough that the asset system and manifest are initialized,
+// then leave it at the landing screen. We build our own CharacterPreview on top,
+// so we never actually enter the world (no follow-cam, no second body).
+async function boot(page) {
   const errors = [];
   page.on('pageerror', (e) => errors.push('PAGEERROR: ' + e.message));
   page.on('console', (m) => {
@@ -34,100 +39,77 @@ async function startOffline(page, viewport, cls = 'warrior', name = 'Sable') {
   });
   await page.goto(URL, { waitUntil: 'load', timeout: 90000 });
   await page.waitForSelector('#btn-offline', { timeout: 90000 });
-  await new Promise((r) => setTimeout(r, 400));
-  await page.evaluate(() => document.querySelector('#btn-offline').click());
-  await new Promise((r) => setTimeout(r, 200));
-  await page.type('#char-name', name);
-  await page.evaluate(
-    (c) => document.querySelector(`#offline-select .mini-class[data-class="${c}"]`).click(),
-    cls,
-  );
-  await page.evaluate(() => document.querySelector('#btn-start-offline').click());
-  await new Promise((r) => setTimeout(r, 300));
-  await page.evaluate(() => {
-    const btn = document.getElementById('mobile-preflight-continue');
-    if (btn) btn.click();
+  // Await the real boot preload sweep so every character AND weapon GLB is in
+  // the cache (assetsReady = the same gate main.ts waits on before the Renderer
+  // exists). preloadVisual only loads a body; the held-weapon GLBs come from
+  // this sweep (manifestUrls -> itemWeaponModelUrls), and CharacterVisual throws
+  // synchronously on any un-preloaded weapon url.
+  await page.evaluate(async () => {
+    const { assetsReady } = await import('/src/render/assets/preload.ts');
+    await assetsReady();
   });
-  await page.waitForFunction(() => window.__game?.sim?.player, { timeout: 90000, polling: 250 });
-  await page.evaluate(() => {
-    const p = window.__game.sim.player;
-    p.maxHp = p.hp = 99999;
-  });
-  await new Promise((r) => setTimeout(r, 500));
-  for (let i = 0; i < 5; i++) {
-    const clicked = await page.evaluate(() => {
-      const btns = [...document.querySelectorAll('button')].filter(
-        (b) => b.offsetParent && /skip|continue|close|ok|begin|got it/i.test(b.textContent ?? ''),
-      );
-      if (btns.length) {
-        btns[0].click();
-        return true;
-      }
-      return false;
-    });
-    if (!clicked) break;
-    await new Promise((r) => setTimeout(r, 400));
-  }
   return errors;
 }
 
-// Keep the offline player alive but hide its own body, so only the spawned
-// compare visual is on screen, centered. The compare inherits player.facing, and
-// the follow-cam looks along +camYaw with the player facing AWAY, so face the
-// compare toward the camera with facing = camYaw + PI to get a clean front view.
-const CAM_YAW = Math.PI / 2;
-const setup = async (page) => {
-  await page.evaluate((camYaw) => {
-    const g = window.__game;
-    const p = g.sim.player;
-    if (p.dead) g.sim.releaseSpirit?.();
-    p.maxHp = p.hp = 99999;
-    p.pos.x = 60;
-    p.pos.z = 60;
-    p.facing = camYaw + Math.PI; // face the camera
-    g.input.camYaw = camYaw;
-    g.renderer.camYaw = camYaw;
-    g.input.camPitch = 0.14;
-    g.renderer.camPitch = 0.14;
-    g.input.camDist = 4.8;
-    g.renderer.camDist = 4.8;
-    const view = g.renderer.views.get(p.id);
-    if (view) view.group.visible = false; // hide the player's own body
-  }, CAM_YAW);
-};
-
-const spawnCompare = async (page, key) =>
-  page.evaluate(async (key) => {
-    const g = window.__game;
-    g.sim.player.maxHp = g.sim.player.hp = 99999;
-    const mod = await import('/src/render/characters/roster_compare_harness.ts');
-    return mod.spawnRosterCompare(g, { key, offsetX: 0 });
-  }, key);
-
-const clearCompareVisuals = async (page) =>
-  page.evaluate(() => {
-    const scene = window.__game.renderer.scene;
-    const stale = scene.children.filter((c) => c.name?.startsWith('roster_compare_'));
-    for (const obj of stale) scene.remove(obj);
+// Create a full-screen overlay hosting a private CharacterPreview instance.
+async function mountPreview(page) {
+  await page.evaluate(async () => {
+    const previewMod = await import('/src/render/characters/preview.ts');
+    const host = document.createElement('div');
+    host.id = 'phaa697-preview-host';
+    host.style.cssText = 'position:fixed;inset:0;z-index:99999;background:#1b1b22;display:block;';
+    const canvas = document.createElement('canvas');
+    canvas.id = 'phaa697-preview-canvas';
+    host.appendChild(canvas);
+    document.body.appendChild(host);
+    const preview = new previewMod.CharacterPreview(host, canvas);
+    preview.setContainer(host); // reparent the canvas into our host and size it
+    preview.syncSize();
+    window.__phaa697 = { preview };
   });
+}
+
+// Render one female class body holding its class start weapon. Freezes the
+// turntable to a clean front-on pose so every shot is comparable.
+async function poseClass(page, cls) {
+  return page.evaluate(async (cls) => {
+    const { preloadVisual } = await import('/src/render/characters/assets.ts');
+    const { CLASSES } = await import('/src/sim/data.ts');
+    const key = `player_${cls}_f`;
+    await preloadVisual(`player_${cls}`); // male base (setVisualKey re-resolve source)
+    await preloadVisual(key); // female variant must be loaded before the sync build
+    const startWeapon = CLASSES[cls]?.startWeapon ?? null;
+    const p = window.__phaa697.preview;
+    // Build the female body holding the real class start weapon directly (setSex
+    // would rebuild with a null weapon; we want the class weapon on screen).
+    p.setVisualKey(key, startWeapon);
+    // Freeze the auto-rotation and face the character straight at the camera.
+    p.isDragging = true; // animate() skips auto-rotate while "dragging"
+    p.characterGroup.rotation.y = 0;
+    return { key, startWeapon: startWeapon ?? '(def default)' };
+  }, cls);
+}
 
 const browser = await puppeteer.connect({ browserWSEndpoint: WS });
 const page = await browser.newPage();
-const errors = await startOffline(page, { width: 700, height: 1000 });
+await page.setViewport({ width: 640, height: 960 }); // portrait: full head-to-toe
+const errors = await boot(page);
+await mountPreview(page);
 
-const allInfo = {};
-for (const key of KEYS) {
-  await clearCompareVisuals(page);
-  const info = await spawnCompare(page, key);
-  allInfo[key] = info;
-  await setup(page);
-  await new Promise((r) => setTimeout(r, 1400));
-  await page.screenshot({ path: `${OUT}/${key}.png` });
-  console.log(`shot ${key}`);
+const info = {};
+for (const cls of CLASSES) {
+  const meta = await poseClass(page, cls);
+  info[cls] = meta;
+  // Let the idle clip settle and a few frames render at the frozen pose.
+  await new Promise((r) => setTimeout(r, 1200));
+  const path = `${OUT}/player_${cls}_f.png`;
+  const host = await page.$('#phaa697-preview-host');
+  await host.screenshot({ path });
+  console.log(`shot player_${cls}_f -> ${path} (weapon=${meta.startWeapon})`);
 }
 
 console.log('errors:', errors.length ? errors.slice(0, 30).join('\n') : 'none');
-fs.writeFileSync(`${OUT}/spawn_info.json`, JSON.stringify(allInfo, null, 2));
+fs.writeFileSync(`${OUT}/pose_info.json`, JSON.stringify(info, null, 2));
 await page.close();
 await browser.disconnect();
-console.log('wrote screenshots to', OUT);
+console.log('wrote', CLASSES.length, 'screenshots to', OUT);
