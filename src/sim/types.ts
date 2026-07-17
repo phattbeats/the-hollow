@@ -104,6 +104,19 @@ export interface ArenaCombatant {
   cls: PlayerClass;
   level: number;
 }
+
+export type HonorReason = 'arena_win' | 'fiesta_kill' | 'fiesta_complete' | 'fiesta_win';
+
+// Persisted anti-win-trading window for ranked honor. `winsByOpponent` is keyed
+// by bracket plus the stable, sorted opposing-team identity; `totalWins` drives
+// the soft daily taper independently of who was faced.
+export interface HonorArenaDailyState {
+  date: string;
+  winsByOpponent: Record<string, number>;
+  fiestaCompletionsByOpponent: Record<string, number>;
+  totalWins: number;
+}
+
 export const ALL_CLASSES: PlayerClass[] = [
   'warrior',
   'paladin',
@@ -232,7 +245,16 @@ export interface Stats {
   int: number;
   spi: number;
   armor: number;
+  // Fractions derived from WARFARE ratings on equipped gear. They affect hostile
+  // player-vs-player damage only; PvE never reads them.
+  pvpOffense: number;
+  pvpDefense: number;
 }
+
+// The six class/item attributes authored in content. WARFARE fractions are
+// derived from ratings at runtime and are never authored as base growth or
+// direct item stats.
+export type CoreStats = Pick<Stats, 'str' | 'agi' | 'sta' | 'int' | 'spi' | 'armor'>;
 
 export interface WeaponInfo {
   min: number;
@@ -302,11 +324,19 @@ interface BaseItemDef {
   name: string;
   slot?: EquipSlot;
   weapon?: WeaponInfo;
-  stats?: Partial<Stats>;
+  stats?: Partial<CoreStats>;
   // Spell Power affix (caster gear): flat Spell Power, summed in recalcPlayerStats.
   // Kept off `Stats` because Spell Power is a derived combat rating (like attackPower),
   // not one of the six primary attributes.
   spellPower?: number;
+  // WARFARE ratings (PvP-only): recalcPlayerStats folds these into the Stats
+  // pvpOffense/pvpDefense fractions (src/sim/pvp/power.ts); combat re-clamps at
+  // the PvP caps before applying damage. See src/sim/content/pvp_honor.ts.
+  pvpOffenseRating?: number;
+  pvpDefenseRating?: number;
+  // Honor price for a Quartermaster purchase. An Honor-only item omits
+  // buyValue; both fields may coexist when a vendor charges both currencies.
+  priceHonor?: number;
   use?: ItemUse;
   sellValue: number; // copper (vendor buys at this)
   buyValue?: number; // copper (vendor sells at this)
@@ -1980,6 +2010,7 @@ export type SimEvent = { pid?: number } & (
   | { type: 'heal'; targetId: number; amount: number }
   | { type: 'death'; entityId: number; killerId: number }
   | { type: 'xp'; amount: number; rested?: number }
+  | { type: 'honor'; amount: number; reason: HonorReason }
   | { type: 'levelup'; level: number }
   // post-cap cosmetic progression (Max-Level XP Overflow): crossing a virtual
   // level past the cap, and unlocking a cosmetic lifetime-XP milestone

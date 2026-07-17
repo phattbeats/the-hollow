@@ -990,6 +990,21 @@ export const da_DK: EnTranslations = {
       "spore": "Spore",
       "toolTier": "Tier {tier} tool",
       "toolNone": "No tool"
+    },
+    "warfare": {
+      "ratingLabel": "Warfare",
+      "balance": "Honor: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} Honor",
+      "honorFloat": "+{amount} Honor",
+      "honorGain": "+{amount} Honor ({reason})",
+      "notEnoughHonor": "Not enough honor.",
+      "reasons": {
+        "arenaWin": "Arena win",
+        "fiestaKill": "Fiesta takedown",
+        "fiestaComplete": "Fiesta match",
+        "fiestaWin": "Fiesta win"
+      }
     }
   },
   "mailUi": {
@@ -5177,6 +5192,99 @@ export const da_DK: EnTranslations = {
       },
       "mistcallers_duffel": {
         "name": "Mistcallers Sømandssæk"
+      },
+      "bramblewar_warhelm": {
+        "name": "Tjørnekrig Hoved"
+      },
+      "bramblewar_warspaulders": {
+        "name": "Tjørnekrig Skuldre"
+      },
+      "bramblewar_warplate": {
+        "name": "Tjørnekrig Bryst"
+      },
+      "bramblewar_girdle": {
+        "name": "Tjørnekrig Talje"
+      },
+      "bramblewar_legguards": {
+        "name": "Tjørnekrig Ben"
+      },
+      "bramblewar_gauntlets": {
+        "name": "Tjørnekrig Hænder"
+      },
+      "bramblewar_sabatons": {
+        "name": "Tjørnekrig Fødder"
+      },
+      "thornbound_crown": {
+        "name": "Tjørnebundet Hoved"
+      },
+      "thornbound_spaulders": {
+        "name": "Tjørnebundet Skuldre"
+      },
+      "thornbound_hauberk": {
+        "name": "Tjørnebundet Bryst"
+      },
+      "thornbound_waistguard": {
+        "name": "Tjørnebundet Talje"
+      },
+      "thornbound_legmail": {
+        "name": "Tjørnebundet Ben"
+      },
+      "thornbound_handguards": {
+        "name": "Tjørnebundet Hænder"
+      },
+      "thornbound_greaves": {
+        "name": "Tjørnebundet Fødder"
+      },
+      "nettlestalker_cowl": {
+        "name": "Brændenældejæger Hoved"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "Brændenældejæger Skuldre"
+      },
+      "nettlestalker_harness": {
+        "name": "Brændenældejæger Bryst"
+      },
+      "nettlestalker_waistband": {
+        "name": "Brændenældejæger Talje"
+      },
+      "nettlestalker_legguards": {
+        "name": "Brændenældejæger Ben"
+      },
+      "nettlestalker_grips": {
+        "name": "Brændenældejæger Hænder"
+      },
+      "nettlestalker_treads": {
+        "name": "Brændenældejæger Fødder"
+      },
+      "mossweave_cowl": {
+        "name": "Mosvævet Hoved"
+      },
+      "mossweave_mantle": {
+        "name": "Mosvævet Skuldre"
+      },
+      "mossweave_raiment": {
+        "name": "Mosvævet Bryst"
+      },
+      "mossweave_cord": {
+        "name": "Mosvævet Talje"
+      },
+      "mossweave_legwraps": {
+        "name": "Mosvævet Ben"
+      },
+      "mossweave_handwraps": {
+        "name": "Mosvævet Hænder"
+      },
+      "mossweave_slippers": {
+        "name": "Mosvævet Fødder"
+      },
+      "last_bloom_greatblade": {
+        "name": "Sidste Blomstrings Storsværd"
+      },
+      "thornbite_razor": {
+        "name": "Tornebid-Ragekniv"
+      },
+      "heartwood_warstaff": {
+        "name": "Kerneved-Krigsstav"
       },
       "bristleback_maul": {
         "name": "Børsterygs-Lemlæster"

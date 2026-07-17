@@ -11,7 +11,7 @@
 //
 // `src/sim`-pure: no DOM, no rng, no clock; deterministic given only its arguments.
 
-import type { EquipSlot, ItemDef, Stats, WeaponInfo } from './types';
+import type { CoreStats, EquipSlot, ItemDef, WeaponInfo } from './types';
 
 // The five primary attributes an item can carry. Armor is NOT primary (it is an
 // armor-class/slot property, not part of the comparable stat budget) so it stays
@@ -96,8 +96,11 @@ export function primaryStatBudget(
 // makes it deterministic (ties broken by PRIMARY_STATS order). Note: under a very
 // lopsided ratio with a tiny budget a minor attribute can still round to 0; the
 // authored tiers use balanced ratios where every attribute survives.
-export function normalizePrimaryStats(stats: Partial<Stats>, budget: number): Partial<Stats> {
-  const out: Partial<Stats> = {};
+export function normalizePrimaryStats(
+  stats: Partial<CoreStats>,
+  budget: number,
+): Partial<CoreStats> {
+  const out: Partial<CoreStats> = {};
   if (stats.armor !== undefined) out.armor = stats.armor;
   const present = PRIMARY_STATS.filter((k) => (stats[k] ?? 0) > 0);
   const total = present.reduce((a, k) => a + (stats[k] ?? 0), 0);

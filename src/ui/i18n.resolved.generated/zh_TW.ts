@@ -990,6 +990,21 @@ export const zh_TW: EnTranslations = {
       "spore": "孢子",
       "toolTier": "{tier}級工具",
       "toolNone": "無工具"
+    },
+    "warfare": {
+      "ratingLabel": "戰意",
+      "balance": "榮譽：{amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} 榮譽",
+      "honorFloat": "+{amount} 榮譽",
+      "honorGain": "+{amount} 榮譽（{reason}）",
+      "notEnoughHonor": "榮譽不足。",
+      "reasons": {
+        "arenaWin": "競技場勝利",
+        "fiestaKill": "狂歡擊倒",
+        "fiestaComplete": "狂歡比賽",
+        "fiestaWin": "狂歡勝利"
+      }
     }
   },
   "mailUi": {
@@ -5177,6 +5192,99 @@ export const zh_TW: EnTranslations = {
       },
       "mistcallers_duffel": {
         "name": "喚霧者的行囊"
+      },
+      "bramblewar_warhelm": {
+        "name": "荊棘戰頭部"
+      },
+      "bramblewar_warspaulders": {
+        "name": "荊棘戰肩部"
+      },
+      "bramblewar_warplate": {
+        "name": "荊棘戰胸部"
+      },
+      "bramblewar_girdle": {
+        "name": "荊棘戰腰部"
+      },
+      "bramblewar_legguards": {
+        "name": "荊棘戰腿部"
+      },
+      "bramblewar_gauntlets": {
+        "name": "荊棘戰手部"
+      },
+      "bramblewar_sabatons": {
+        "name": "荊棘戰腳部"
+      },
+      "thornbound_crown": {
+        "name": "荊棘縛頭部"
+      },
+      "thornbound_spaulders": {
+        "name": "荊棘縛肩部"
+      },
+      "thornbound_hauberk": {
+        "name": "荊棘縛胸部"
+      },
+      "thornbound_waistguard": {
+        "name": "荊棘縛腰部"
+      },
+      "thornbound_legmail": {
+        "name": "荊棘縛腿部"
+      },
+      "thornbound_handguards": {
+        "name": "荊棘縛手部"
+      },
+      "thornbound_greaves": {
+        "name": "荊棘縛腳部"
+      },
+      "nettlestalker_cowl": {
+        "name": "蕁麻潛者頭部"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "蕁麻潛者肩部"
+      },
+      "nettlestalker_harness": {
+        "name": "蕁麻潛者胸部"
+      },
+      "nettlestalker_waistband": {
+        "name": "蕁麻潛者腰部"
+      },
+      "nettlestalker_legguards": {
+        "name": "蕁麻潛者腿部"
+      },
+      "nettlestalker_grips": {
+        "name": "蕁麻潛者手部"
+      },
+      "nettlestalker_treads": {
+        "name": "蕁麻潛者腳部"
+      },
+      "mossweave_cowl": {
+        "name": "苔蘚織頭部"
+      },
+      "mossweave_mantle": {
+        "name": "苔蘚織肩部"
+      },
+      "mossweave_raiment": {
+        "name": "苔蘚織胸部"
+      },
+      "mossweave_cord": {
+        "name": "苔蘚織腰部"
+      },
+      "mossweave_legwraps": {
+        "name": "苔蘚織腿部"
+      },
+      "mossweave_handwraps": {
+        "name": "苔蘚織手部"
+      },
+      "mossweave_slippers": {
+        "name": "苔蘚織腳部"
+      },
+      "last_bloom_greatblade": {
+        "name": "末花巨刃"
+      },
+      "thornbite_razor": {
+        "name": "棘咬剃刃"
+      },
+      "heartwood_warstaff": {
+        "name": "心木戰杖"
       },
       "bristleback_maul": {
         "name": "硬鬃重槌"

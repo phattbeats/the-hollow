@@ -990,6 +990,21 @@ export const ko_KR: EnTranslations = {
       "spore": "포자",
       "toolTier": "{tier}단계 도구",
       "toolNone": "도구 없음"
+    },
+    "warfare": {
+      "ratingLabel": "전의",
+      "balance": "명예: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "명예 {amount}",
+      "honorFloat": "+{amount} 명예",
+      "honorGain": "+{amount} 명예 ({reason})",
+      "notEnoughHonor": "명예가 부족합니다.",
+      "reasons": {
+        "arenaWin": "투기장 승리",
+        "fiestaKill": "피에스타 처치",
+        "fiestaComplete": "피에스타 경기",
+        "fiestaWin": "피에스타 승리"
+      }
     }
   },
   "mailUi": {
@@ -5177,6 +5192,99 @@ export const ko_KR: EnTranslations = {
       },
       "mistcallers_duffel": {
         "name": "미스트콜러의 더플백"
+      },
+      "bramblewar_warhelm": {
+        "name": "가시전 머리"
+      },
+      "bramblewar_warspaulders": {
+        "name": "가시전 어깨"
+      },
+      "bramblewar_warplate": {
+        "name": "가시전 가슴"
+      },
+      "bramblewar_girdle": {
+        "name": "가시전 허리"
+      },
+      "bramblewar_legguards": {
+        "name": "가시전 다리"
+      },
+      "bramblewar_gauntlets": {
+        "name": "가시전 손"
+      },
+      "bramblewar_sabatons": {
+        "name": "가시전 발"
+      },
+      "thornbound_crown": {
+        "name": "가시결속 머리"
+      },
+      "thornbound_spaulders": {
+        "name": "가시결속 어깨"
+      },
+      "thornbound_hauberk": {
+        "name": "가시결속 가슴"
+      },
+      "thornbound_waistguard": {
+        "name": "가시결속 허리"
+      },
+      "thornbound_legmail": {
+        "name": "가시결속 다리"
+      },
+      "thornbound_handguards": {
+        "name": "가시결속 손"
+      },
+      "thornbound_greaves": {
+        "name": "가시결속 발"
+      },
+      "nettlestalker_cowl": {
+        "name": "쐐기추적 머리"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "쐐기추적 어깨"
+      },
+      "nettlestalker_harness": {
+        "name": "쐐기추적 가슴"
+      },
+      "nettlestalker_waistband": {
+        "name": "쐐기추적 허리"
+      },
+      "nettlestalker_legguards": {
+        "name": "쐐기추적 다리"
+      },
+      "nettlestalker_grips": {
+        "name": "쐐기추적 손"
+      },
+      "nettlestalker_treads": {
+        "name": "쐐기추적 발"
+      },
+      "mossweave_cowl": {
+        "name": "이끼직 머리"
+      },
+      "mossweave_mantle": {
+        "name": "이끼직 어깨"
+      },
+      "mossweave_raiment": {
+        "name": "이끼직 가슴"
+      },
+      "mossweave_cord": {
+        "name": "이끼직 허리"
+      },
+      "mossweave_legwraps": {
+        "name": "이끼직 다리"
+      },
+      "mossweave_handwraps": {
+        "name": "이끼직 손"
+      },
+      "mossweave_slippers": {
+        "name": "이끼직 발"
+      },
+      "last_bloom_greatblade": {
+        "name": "최후의 꽃 대검"
+      },
+      "thornbite_razor": {
+        "name": "가시물기 면도날"
+      },
+      "heartwood_warstaff": {
+        "name": "심재 전투봉"
       },
       "bristleback_maul": {
         "name": "뻣센등뼈 철퇴"

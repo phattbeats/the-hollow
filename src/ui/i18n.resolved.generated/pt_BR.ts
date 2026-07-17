@@ -990,6 +990,21 @@ export const pt_BR: EnTranslations = {
       "spore": "Spore",
       "toolTier": "Tier {tier} tool",
       "toolNone": "No tool"
+    },
+    "warfare": {
+      "ratingLabel": "Warfare",
+      "balance": "Honor: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} Honor",
+      "honorFloat": "+{amount} Honor",
+      "honorGain": "+{amount} Honor ({reason})",
+      "notEnoughHonor": "Not enough honor.",
+      "reasons": {
+        "arenaWin": "Arena win",
+        "fiestaKill": "Fiesta takedown",
+        "fiestaComplete": "Fiesta match",
+        "fiestaWin": "Fiesta win"
+      }
     }
   },
   "mailUi": {
@@ -5177,6 +5192,99 @@ export const pt_BR: EnTranslations = {
       },
       "mistcallers_duffel": {
         "name": "Mala de Viagem de Mistcaller"
+      },
+      "bramblewar_warhelm": {
+        "name": "Espinhoguerra Cabeça"
+      },
+      "bramblewar_warspaulders": {
+        "name": "Espinhoguerra Ombros"
+      },
+      "bramblewar_warplate": {
+        "name": "Espinhoguerra Peito"
+      },
+      "bramblewar_girdle": {
+        "name": "Espinhoguerra Cintura"
+      },
+      "bramblewar_legguards": {
+        "name": "Espinhoguerra Pernas"
+      },
+      "bramblewar_gauntlets": {
+        "name": "Espinhoguerra Mãos"
+      },
+      "bramblewar_sabatons": {
+        "name": "Espinhoguerra Pés"
+      },
+      "thornbound_crown": {
+        "name": "Espinholigado Cabeça"
+      },
+      "thornbound_spaulders": {
+        "name": "Espinholigado Ombros"
+      },
+      "thornbound_hauberk": {
+        "name": "Espinholigado Peito"
+      },
+      "thornbound_waistguard": {
+        "name": "Espinholigado Cintura"
+      },
+      "thornbound_legmail": {
+        "name": "Espinholigado Pernas"
+      },
+      "thornbound_handguards": {
+        "name": "Espinholigado Mãos"
+      },
+      "thornbound_greaves": {
+        "name": "Espinholigado Pés"
+      },
+      "nettlestalker_cowl": {
+        "name": "Urtiga Furtiva Cabeça"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "Urtiga Furtiva Ombros"
+      },
+      "nettlestalker_harness": {
+        "name": "Urtiga Furtiva Peito"
+      },
+      "nettlestalker_waistband": {
+        "name": "Urtiga Furtiva Cintura"
+      },
+      "nettlestalker_legguards": {
+        "name": "Urtiga Furtiva Pernas"
+      },
+      "nettlestalker_grips": {
+        "name": "Urtiga Furtiva Mãos"
+      },
+      "nettlestalker_treads": {
+        "name": "Urtiga Furtiva Pés"
+      },
+      "mossweave_cowl": {
+        "name": "Musgotecido Cabeça"
+      },
+      "mossweave_mantle": {
+        "name": "Musgotecido Ombros"
+      },
+      "mossweave_raiment": {
+        "name": "Musgotecido Peito"
+      },
+      "mossweave_cord": {
+        "name": "Musgotecido Cintura"
+      },
+      "mossweave_legwraps": {
+        "name": "Musgotecido Pernas"
+      },
+      "mossweave_handwraps": {
+        "name": "Musgotecido Mãos"
+      },
+      "mossweave_slippers": {
+        "name": "Musgotecido Pés"
+      },
+      "last_bloom_greatblade": {
+        "name": "Grande Lâmina da Última Flor"
+      },
+      "thornbite_razor": {
+        "name": "Navalha Mordespinho"
+      },
+      "heartwood_warstaff": {
+        "name": "Cajado de Guerra de Cerne"
       },
       "bristleback_maul": {
         "name": "Malho Bristleback"

@@ -990,6 +990,21 @@ export const en_XA: EnTranslations = {
       "spore": "[Šþóŕé]",
       "toolTier": "[Ţíéŕ {tier} ţóóļ]",
       "toolNone": "[Ñó ţóóļ]"
+    },
+    "warfare": {
+      "ratingLabel": "[Ŵáŕƒáŕé]",
+      "balance": "[Ĥóñóŕ: {amount}]",
+      "dualPrice": "[{money} + {honor}]",
+      "honorAmount": "[{amount} Ĥóñóŕ]",
+      "honorFloat": "[+{amount} Ĥóñóŕ]",
+      "honorGain": "[+{amount} Ĥóñóŕ ({reason})]",
+      "notEnoughHonor": "[Ñóţ éñóúĝĥ ĥóñóŕ.]",
+      "reasons": {
+        "arenaWin": "[Áŕéñá ŵíñ]",
+        "fiestaKill": "[Ƒíéšţá ţáķéðóŵñ]",
+        "fiestaComplete": "[Ƒíéšţá ɱáţçĥ]",
+        "fiestaWin": "[Ƒíéšţá ŵíñ]"
+      }
     }
   },
   "mailUi": {
@@ -5177,6 +5192,99 @@ export const en_XA: EnTranslations = {
       },
       "mistcallers_duffel": {
         "name": "[Ɱíšţçáļļéŕ'š Ðúƒƒéļ]"
+      },
+      "bramblewar_warhelm": {
+        "name": "[Ɓŕáɱƀļéŵáŕ Ŵáŕĥéļɱ]"
+      },
+      "bramblewar_warspaulders": {
+        "name": "[Ɓŕáɱƀļéŵáŕ Ŵáŕšþáúļðéŕš]"
+      },
+      "bramblewar_warplate": {
+        "name": "[Ɓŕáɱƀļéŵáŕ Ŵáŕþļáţé]"
+      },
+      "bramblewar_girdle": {
+        "name": "[Ɓŕáɱƀļéŵáŕ Ĝíŕðļé]"
+      },
+      "bramblewar_legguards": {
+        "name": "[Ɓŕáɱƀļéŵáŕ Ļéĝĝúáŕðš]"
+      },
+      "bramblewar_gauntlets": {
+        "name": "[Ɓŕáɱƀļéŵáŕ Ĝáúñţļéţš]"
+      },
+      "bramblewar_sabatons": {
+        "name": "[Ɓŕáɱƀļéŵáŕ Šáƀáţóñš]"
+      },
+      "thornbound_crown": {
+        "name": "[Ţĥóŕñƀóúñð Çŕóŵñ]"
+      },
+      "thornbound_spaulders": {
+        "name": "[Ţĥóŕñƀóúñð Šþáúļðéŕš]"
+      },
+      "thornbound_hauberk": {
+        "name": "[Ţĥóŕñƀóúñð Ĥáúƀéŕķ]"
+      },
+      "thornbound_waistguard": {
+        "name": "[Ţĥóŕñƀóúñð Ŵáíšţĝúáŕð]"
+      },
+      "thornbound_legmail": {
+        "name": "[Ţĥóŕñƀóúñð Ļéĝɱáíļ]"
+      },
+      "thornbound_handguards": {
+        "name": "[Ţĥóŕñƀóúñð Ĥáñðĝúáŕðš]"
+      },
+      "thornbound_greaves": {
+        "name": "[Ţĥóŕñƀóúñð Ĝŕéáʋéš]"
+      },
+      "nettlestalker_cowl": {
+        "name": "[Ñéţţļéšţáļķéŕ Çóŵļ]"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "[Ñéţţļéšţáļķéŕ Šĥóúļðéŕĝúáŕðš]"
+      },
+      "nettlestalker_harness": {
+        "name": "[Ñéţţļéšţáļķéŕ Ĥáŕñéšš]"
+      },
+      "nettlestalker_waistband": {
+        "name": "[Ñéţţļéšţáļķéŕ Ŵáíšţƀáñð]"
+      },
+      "nettlestalker_legguards": {
+        "name": "[Ñéţţļéšţáļķéŕ Ļéĝĝúáŕðš]"
+      },
+      "nettlestalker_grips": {
+        "name": "[Ñéţţļéšţáļķéŕ Ĝŕíþš]"
+      },
+      "nettlestalker_treads": {
+        "name": "[Ñéţţļéšţáļķéŕ Ţŕéáðš]"
+      },
+      "mossweave_cowl": {
+        "name": "[Ɱóššŵéáʋé Çóŵļ]"
+      },
+      "mossweave_mantle": {
+        "name": "[Ɱóššŵéáʋé Ɱáñţļé]"
+      },
+      "mossweave_raiment": {
+        "name": "[Ɱóššŵéáʋé Ŕáíɱéñţ]"
+      },
+      "mossweave_cord": {
+        "name": "[Ɱóššŵéáʋé Çóŕð]"
+      },
+      "mossweave_legwraps": {
+        "name": "[Ɱóššŵéáʋé Ļéĝŵŕáþš]"
+      },
+      "mossweave_handwraps": {
+        "name": "[Ɱóššŵéáʋé Ĥáñðŵŕáþš]"
+      },
+      "mossweave_slippers": {
+        "name": "[Ɱóššŵéáʋé Šļíþþéŕš]"
+      },
+      "last_bloom_greatblade": {
+        "name": "[Ļášţ Ɓļóóɱ Ĝŕéáţƀļáðé]"
+      },
+      "thornbite_razor": {
+        "name": "[Ţĥóŕñƀíţé Ŕážóŕ]"
+      },
+      "heartwood_warstaff": {
+        "name": "[Ĥéáŕţŵóóð Ŵáŕšţáƒƒ]"
       },
       "bristleback_maul": {
         "name": "[Ɓŕíšţļéƀáçķ Ɱáúļ]"

@@ -990,6 +990,21 @@ export const sv_SE: EnTranslations = {
       "spore": "Spore",
       "toolTier": "Tier {tier} tool",
       "toolNone": "No tool"
+    },
+    "warfare": {
+      "ratingLabel": "Warfare",
+      "balance": "Honor: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} Honor",
+      "honorFloat": "+{amount} Honor",
+      "honorGain": "+{amount} Honor ({reason})",
+      "notEnoughHonor": "Not enough honor.",
+      "reasons": {
+        "arenaWin": "Arena win",
+        "fiestaKill": "Fiesta takedown",
+        "fiestaComplete": "Fiesta match",
+        "fiestaWin": "Fiesta win"
+      }
     }
   },
   "mailUi": {
@@ -5177,6 +5192,99 @@ export const sv_SE: EnTranslations = {
       },
       "mistcallers_duffel": {
         "name": "Mistcallers Sjösäck"
+      },
+      "bramblewar_warhelm": {
+        "name": "Törnkrig Huvud"
+      },
+      "bramblewar_warspaulders": {
+        "name": "Törnkrig Axlar"
+      },
+      "bramblewar_warplate": {
+        "name": "Törnkrig Bröst"
+      },
+      "bramblewar_girdle": {
+        "name": "Törnkrig Midja"
+      },
+      "bramblewar_legguards": {
+        "name": "Törnkrig Ben"
+      },
+      "bramblewar_gauntlets": {
+        "name": "Törnkrig Händer"
+      },
+      "bramblewar_sabatons": {
+        "name": "Törnkrig Fötter"
+      },
+      "thornbound_crown": {
+        "name": "Törnbunden Huvud"
+      },
+      "thornbound_spaulders": {
+        "name": "Törnbunden Axlar"
+      },
+      "thornbound_hauberk": {
+        "name": "Törnbunden Bröst"
+      },
+      "thornbound_waistguard": {
+        "name": "Törnbunden Midja"
+      },
+      "thornbound_legmail": {
+        "name": "Törnbunden Ben"
+      },
+      "thornbound_handguards": {
+        "name": "Törnbunden Händer"
+      },
+      "thornbound_greaves": {
+        "name": "Törnbunden Fötter"
+      },
+      "nettlestalker_cowl": {
+        "name": "Nässeljägare Huvud"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "Nässeljägare Axlar"
+      },
+      "nettlestalker_harness": {
+        "name": "Nässeljägare Bröst"
+      },
+      "nettlestalker_waistband": {
+        "name": "Nässeljägare Midja"
+      },
+      "nettlestalker_legguards": {
+        "name": "Nässeljägare Ben"
+      },
+      "nettlestalker_grips": {
+        "name": "Nässeljägare Händer"
+      },
+      "nettlestalker_treads": {
+        "name": "Nässeljägare Fötter"
+      },
+      "mossweave_cowl": {
+        "name": "Mossväv Huvud"
+      },
+      "mossweave_mantle": {
+        "name": "Mossväv Axlar"
+      },
+      "mossweave_raiment": {
+        "name": "Mossväv Bröst"
+      },
+      "mossweave_cord": {
+        "name": "Mossväv Midja"
+      },
+      "mossweave_legwraps": {
+        "name": "Mossväv Ben"
+      },
+      "mossweave_handwraps": {
+        "name": "Mossväv Händer"
+      },
+      "mossweave_slippers": {
+        "name": "Mossväv Fötter"
+      },
+      "last_bloom_greatblade": {
+        "name": "Sista Blomningens Storsvärd"
+      },
+      "thornbite_razor": {
+        "name": "Törnbett-Rakkniv"
+      },
+      "heartwood_warstaff": {
+        "name": "Kärnvedens Krigsstav"
       },
       "bristleback_maul": {
         "name": "Borstryggens klubba"
