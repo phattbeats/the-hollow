@@ -2998,6 +2998,27 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_someone_your_own_size.completion':
     'いてくれたのね。彼女は大したことじゃないと言うでしょう。でも大したことだった、本当よ。さあ、これをあなたに。私が好きな柳の小枝。何の役にも立たないわ。ただ、誰にも強いられていないのに優しくしてくれたことを、覚えているだけ。',
   'entities.quests.q_someone_your_own_size.objectives.0.label': 'オルラのそばに少し座った',
+  // PHAA-614/PHAA-699: Sister Shade questline quests 2 and 4 plus the two NPCs.
+  'entities.npcs.withered_planting.name': '枯れゆく苗床',
+  'entities.npcs.withered_planting.title': '部族の古い柳',
+  'entities.npcs.withered_planting.greeting':
+    '乾いた根、乾いた葉。これが何になるはずだったにせよ、まだそうはなっていない。ずいぶん長いあいだ、待ち続けている。',
+  'entities.npcs.buried_root.name': '埋もれた根',
+  'entities.npcs.buried_root.title': '祠の下',
+  'entities.npcs.buried_root.greeting':
+    '乾いている。この地の底にあるどんなものにも劣らぬほど、乾ききっている。',
+  'entities.quests.q_the_long_way_around.title': '遠まわりの道',
+  'entities.quests.q_the_long_way_around.text':
+    '古い柳の上のほうに、部族がやりかけのまま残していった苗床がある。ひと注ぎの水がないばかりに、枯れかけているんだ。あの登りはもうわたしには無理だが、お前には脚がある。じょうろを持っていきなさい。枝には気をつけて。正直に向き合えば、枝はちゃんと支えてくれる。',
+  'entities.quests.q_the_long_way_around.completion':
+    'これでもう生きていける。あの外のいろんなことに比べれば、一度の登りと一度の水やりなんて、たいしたことに思えないだろう。実際、たいしたことじゃない。ただ、お前が水をやったそのひとつにとっては、それがすべてなんだ。',
+  'entities.quests.q_the_long_way_around.objectives.0.label': '柳の小道を登って水を運ぶ',
+  'entities.quests.q_the_watering_can.title': 'じょうろ',
+  'entities.quests.q_the_watering_can.text':
+    'これまで小さな頼みごとをいくつもしてきたが、お前は一度も理由を訊かず、そのすべてをやってくれた。これが最後のひとつ。小さく見えるが、小さくはない。わたしのじょうろを祠の下へ持っていって、そこに埋もれているものに水をやってくれ。それはずっと長いあいだ、何かを求められるのではなく、何かを与えられるのを待っていたんだ。',
+  'entities.quests.q_the_watering_can.completion':
+    'やってくれたんだね。もちろん、お前ならそうする。あれは水だったんだよ、わかるかい。すべての水だ。お前が湖のほとりでわたしを見つけて、何とも思わなかったあの日にまでさかのぼる、すべての水。同じひと注ぎ、同じ約束を、もう一度守ってくれた。ありがとう。さあ行って、この世界にやさしくしておやり。それだけが、世界を変えてきた唯一のものなんだ。',
+  'entities.quests.q_the_watering_can.objectives.0.label': '埋もれた根に水をやる',
   'entities.npcs.sexton_faddick.title': '放浪の番人',
   'entities.npcs.sexton_faddick.greeting':
     'ファディックだ。まだ守るべき祠があるうちは、墓守を務める。俺はどこにも留まらん、ただ守るだけだ。毎晩、狼が休閑地の群れの周りを回っておる。長く回れば、回っている相手の形を覚えるものだ。あれはただの群れのままでいてもらいたい。',
