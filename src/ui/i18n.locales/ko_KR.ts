@@ -4840,6 +4840,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.items.reliquary_helm.name': '납골당 경비 투구',
   'entities.items.reliquary_shoulder.name': '부서진 어깨보호구',
   'entities.items.reliquary_gloves_rog.name': '뼈수호 손보호구',
+  'entities.items.delve_heroic_mark.name': '영웅 성물실 증표',
+  'entities.items.delve_heroic_mark.flavorText':
+    '성물실 수호자들이 발행한 인장. 영웅 병참장교에게 교환하면 성물실급 장비를 받을 수 있다.',
   'entities.items.deacon_reliquary_helm.name': '부제의 성물실 투구',
   'entities.items.varric_shadow_cowl.name': '바릭의 그림자 두건',
   'entities.items.cave_morsel.name': '동굴 고기 조각',

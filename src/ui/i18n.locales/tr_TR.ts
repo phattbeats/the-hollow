@@ -1058,6 +1058,9 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'entities.items.reinforced_pauldrons.name': 'Takviyeli Omuzluklar',
   'entities.items.reliquary_cloth_chest.name': 'Emanetlik Örtüsü',
   'entities.items.reliquary_gloves_rog.name': 'Kemikbekçisi Eldivenleri',
+  'entities.items.delve_heroic_mark.name': 'Kahramanca Kutsal Mahzen Nişanı',
+  'entities.items.delve_heroic_mark.flavorText':
+    "Kutsal Mahzen'in bekçileri tarafından verilen damgalı bir mühür. Kutsal Mahzen kalitesinde teçhizat için Kahramanca Donatım Subayı'na takas edin.",
   'entities.items.reliquary_helm.name': 'Kemiklik Nöbet Miğferi',
   'entities.items.reliquary_leather_chest.name': 'Tozbekçisi Ceketi',
   'entities.items.reliquary_legs.name': 'Mahzenbağlı Bacak Sargıları',

@@ -3850,6 +3850,7 @@ export const ru_RU: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "Сейчас надето",
       "ifYouEquip": "Если надеть это",
       "damageSpeed": "{min} - {max} урона Скорость {speed}",
@@ -5580,6 +5581,10 @@ export const ru_RU: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "Рукавицы Костяного стража"
+      },
+      "delve_heroic_mark": {
+        "name": "Героическая метка Реликвария",
+        "flavorText": "Оттиснутая печать, выданная хранителями Реликвария. Обменяйте её у Героического Квартирмейстера на снаряжение реликварного качества."
       },
       "deacon_reliquary_helm": {
         "name": "Шлем реликвария дьякона"

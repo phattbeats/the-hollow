@@ -1072,6 +1072,9 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'entities.items.reinforced_pauldrons.name': 'Versterkte Schouderplaten',
   'entities.items.reliquary_cloth_chest.name': 'Sluier van het Reliekschrijn',
   'entities.items.reliquary_gloves_rog.name': 'Botwachter-Grepen',
+  'entities.items.delve_heroic_mark.name': 'Heroïsch Reliekschrijn-Teken',
+  'entities.items.delve_heroic_mark.flavorText':
+    'Een gestempeld zegel, uitgegeven door de wachters van de Reliekschrijn. Wissel het in bij de Heroïsche Kwartiermeester voor uitrusting van reliekschrijn-kwaliteit.',
   'entities.items.reliquary_helm.name': 'Knekelwacht-Helm',
   'entities.items.reliquary_leather_chest.name': 'Stofwachter-Wambuis',
   'entities.items.reliquary_legs.name': 'Kluisgebonden Beenwindsels',

@@ -311,6 +311,18 @@ interface BaseItemDef {
   noVendorSell?: boolean;
   noDiscard?: boolean;
   noMarketList?: boolean;
+  // Soulbound: bound-on-pickup. The item cannot be traded, mailed, listed on
+  // the World Market, sold to a vendor, or right-click discarded. The fork's
+  // Heroic Marks are the canonical example (spend at the Brother-Halven/equivalent
+  // Heroic Quartermaster) but the flag is content-driven so a future tier can
+  // mark its currency/loot the same way. See src/sim/content/heroic_loot.ts.
+  soulbound?: boolean;
+  // heroicOf: a back-reference from a Heroic-tier item variant to the base item
+  // it upgrades in-place. The HUD composes the tooltip quality tag ("[HEROIC]")
+  // from this field via entity_i18n; the variant's `name` is the base item's
+  // localized name so a variant never needs its own translated name key, and
+  // the entity manifest skips it. Build with buildHeroicVariants.
+  heroicOf?: string;
   /** Shown when interacting with a ground quest object before the quest is active. */
   pickupDeny?: string;
   /** Shown when the quest is active but the collect count is already met. */
@@ -404,6 +416,14 @@ export interface LootSlot extends InvSlot {
   personalFor?: number[];
   // Need/greed loot that everyone passed on becomes free-for-all corpse loot.
   openToAll?: boolean;
+  // Shared personal (participation tokens like Heroic Marks): a single loot
+  // action by ANY listed player grants `count` copies to EVERY player in
+  // `personalFor`, then consumes the slot. No one has to loot their own copy.
+  // Set at loot-roll time when the upstream heroic-tier mark fan-out fires;
+  // lootCorpse (interaction.ts) honours the flag before the normal personal
+  // fallback. Items WITHOUT this flag keep their classic personal single-copy
+  // behavior even on Heroic tier.
+  sharedPersonal?: boolean;
 }
 
 export interface CorpseLoot {
@@ -480,6 +500,15 @@ export interface LootEntry {
   // Entries sharing a rollGroup are exclusive: one rng draw is partitioned by
   // their chances, so at most one matching entry drops.
   rollGroup?: string;
+  // sharedPersonal: when the loot roll turns this entry into a corpse loot
+  // slot, mark it as a shared-personal fan-out (every player in `personalFor`
+  // receives one copy on the first qualifying loot action). Honours upstream
+  // PR #1705's mark fan-out, adapted to the fork's Heroic DELVE tier. Loot
+  // rolls set this on the produced LootSlot when the swap is active; entries
+  // WITHOUT it keep classic personal single-copy semantics. Optional, defaults
+  // to false; kept on LootEntry so the per-boss HEROIC_DELVE_BOSS_LOOT
+  // records can declare it at content time without an extra content index.
+  sharedPersonal?: boolean;
 }
 
 export type MobFamily =

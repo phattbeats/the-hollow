@@ -3850,6 +3850,7 @@ export const sv_SE: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "För närvarande utrustad",
       "ifYouEquip": "Om du utrustar detta",
       "damageSpeed": "{min} - {max} Skada Hastighet {speed}",
@@ -5580,6 +5581,10 @@ export const sv_SE: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "Benväktargrepp"
+      },
+      "delve_heroic_mark": {
+        "name": "Heroiskt Relikvariemärke",
+        "flavorText": "Ett präglat sigill utfärdat av Relikvariets väktare. Lös in det hos Den Heroiska Kvartersmästaren mot utrustning av relikvariekvalitet."
       },
       "deacon_reliquary_helm": {
         "name": "Diakonens relikhjälm"

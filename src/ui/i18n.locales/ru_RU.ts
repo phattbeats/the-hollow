@@ -4930,6 +4930,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.items.reliquary_helm.name': 'Шлем стражи костницы',
   'entities.items.reliquary_shoulder.name': 'Осыпавшиеся наплечники',
   'entities.items.reliquary_gloves_rog.name': 'Рукавицы Костяного стража',
+  'entities.items.delve_heroic_mark.name': 'Героическая метка Реликвария',
+  'entities.items.delve_heroic_mark.flavorText':
+    'Оттиснутая печать, выданная хранителями Реликвария. Обменяйте её у Героического Квартирмейстера на снаряжение реликварного качества.',
   'entities.items.deacon_reliquary_helm.name': 'Шлем реликвария дьякона',
   'entities.items.varric_shadow_cowl.name': 'Теневой капюшон Варрика',
   'entities.items.cave_morsel.name': 'Пещерная закуска',

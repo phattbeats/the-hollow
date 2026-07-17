@@ -1054,6 +1054,9 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'entities.items.reinforced_pauldrons.name': 'Förstärkta axelplåtar',
   'entities.items.reliquary_cloth_chest.name': 'Relikvariets slöja',
   'entities.items.reliquary_gloves_rog.name': 'Benväktargrepp',
+  'entities.items.delve_heroic_mark.name': 'Heroiskt Relikvariemärke',
+  'entities.items.delve_heroic_mark.flavorText':
+    'Ett präglat sigill utfärdat av Relikvariets väktare. Lös in det hos Den Heroiska Kvartersmästaren mot utrustning av relikvariekvalitet.',
   'entities.items.reliquary_helm.name': 'Benhusvaktens hjälm',
   'entities.items.reliquary_leather_chest.name': 'Stoftväktarväst',
   'entities.items.reliquary_legs.name': 'Valvbundna benlindor',

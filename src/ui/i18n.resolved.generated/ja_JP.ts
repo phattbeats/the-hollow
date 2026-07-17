@@ -3850,6 +3850,7 @@ export const ja_JP: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "現在の装備",
       "ifYouEquip": "これを装備すると",
       "damageSpeed": "{min} - {max} ダメージ 速度 {speed}",
@@ -5580,6 +5581,10 @@ export const ja_JP: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "骨守りの手甲"
+      },
+      "delve_heroic_mark": {
+        "name": "ヒロイック聖遺物庫の刻印",
+        "flavorText": "聖遺物庫の守人が発行した刻印。ヒロイック需品係と交換すれば、聖遺物庫級の装備が手に入る。"
       },
       "deacon_reliquary_helm": {
         "name": "助祭の聖遺物庫の兜"
