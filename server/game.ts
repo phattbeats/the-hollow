@@ -3396,6 +3396,16 @@ export class GameServer {
         if (exit) sim.leaveDungeon(pid);
         break;
       }
+      // Dungeon Finder (PHAA-736): solo-role queue join/leave.
+      case 'dungeonFinderQueue': {
+        if (msg.role !== 'tank' && msg.role !== 'healer' && msg.role !== 'dps') break;
+        const dungeonId = typeof msg.dungeonId === 'string' ? msg.dungeonId : undefined;
+        sim.dungeonFinderQueueJoin(msg.role, dungeonId, pid);
+        break;
+      }
+      case 'dungeonFinderLeave':
+        sim.dungeonFinderQueueLeave(pid);
+        break;
       case 'enter_delve': {
         if (typeof msg.delveId !== 'string' || typeof msg.tierId !== 'string') break;
         const e = sim.entities.get(pid);
@@ -3738,6 +3748,7 @@ export class GameServer {
       session.lastArenaWireTick = this.sim.tickCount;
       maybe('arena', this.sim.arenaInfoFor(anchorSession.pid));
     }
+    maybe('dfinder', this.sim.dungeonFinderInfoFor(anchorSession.pid));
     // market info is null unless the player is standing at the Merchant, so it
     // only rides the wire for players actually browsing the World Market
     maybe('market', this.sim.marketInfoFor(anchorSession.pid));

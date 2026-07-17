@@ -1801,6 +1801,7 @@ const ALL_DELTA_KEYS = [
   'dcompanion',
   'ddone',
   'delveDaily',
+  'dfinder',
   'dlog',
   'dmarks',
   'drun',
@@ -1854,6 +1855,7 @@ const TERSE_TO_IWORLD: Record<string, string> = {
   dcomp: 'companionUpgrades',
   dcompanion: 'companionState',
   ddone: 'deedsDone',
+  dfinder: 'dungeonFinderInfo',
   dlog: 'deedLog',
   dmarks: 'delveMarks',
   drun: 'delveRun',
@@ -2184,9 +2186,9 @@ describe('full self-state snapshot delta fixture', () => {
 });
 
 describe('delta-key contract pins (anti-drift)', () => {
-  it('ALL_DELTA_KEYS contains exactly 46 unique keys in sorted order', () => {
-    expect(ALL_DELTA_KEYS).toHaveLength(46);
-    expect(new Set(ALL_DELTA_KEYS).size).toBe(46);
+  it('ALL_DELTA_KEYS contains exactly 47 unique keys in sorted order', () => {
+    expect(ALL_DELTA_KEYS).toHaveLength(47);
+    expect(new Set(ALL_DELTA_KEYS).size).toBe(47);
     expect([...ALL_DELTA_KEYS]).toEqual([...ALL_DELTA_KEYS].sort());
   });
 
@@ -2199,7 +2201,7 @@ describe('delta-key contract pins (anti-drift)', () => {
     for (let m = re.exec(src); m !== null; m = re.exec(src)) scraped.add(m[1]);
     expect(scraped.has('lockouts')).toBe(true); // the multi-line call IS captured
     expect(scraped.has('lrollg')).toBe(true); // group-visible loot roll strip (PHAA-568)
-    expect(scraped.size).toBe(46);
+    expect(scraped.size).toBe(47);
     expect([...scraped].sort()).toEqual([...ALL_DELTA_KEYS].sort());
   });
 

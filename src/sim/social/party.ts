@@ -321,6 +321,24 @@ export class PartyMachine {
     }
   }
 
+  // System-formed party (Dungeon Finder, PHAA-736): builds a Party directly
+  // from a roster of pids that are none of them already partied, skipping the
+  // invite/accept dance a player-initiated group goes through. Silent by
+  // design; the caller (dungeon_finder.ts) owns the player-facing messaging.
+  formPartyFromRoster(pids: number[]): Party {
+    const party: Party = {
+      id: this.nextPartyId++,
+      leader: pids[0],
+      members: [...pids],
+      raid: false,
+      raidGroups: new Map(pids.map((pid, i) => [pid, (i < RAID_GROUP_MAX ? 1 : 2) as 1 | 2])),
+      lootStrategies: { ...DEFAULT_PARTY_LOOT_STRATEGIES },
+    };
+    this.parties.set(party.id, party);
+    for (const pid of pids) this.partyByPid.set(pid, party.id);
+    return party;
+  }
+
   private nextRaidGroupFor(party: Party): 1 | 2 {
     const g1 = party.members.filter((mPid) => (party.raidGroups.get(mPid) ?? 1) === 1).length;
     return g1 < RAID_GROUP_MAX ? 1 : 2;

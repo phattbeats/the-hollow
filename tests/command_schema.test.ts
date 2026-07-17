@@ -32,9 +32,11 @@ const repoRoot = fileURLToPath(new URL('..', import.meta.url));
 // +2 for PHAA-649's disenchantItem/applyEnchant (IWorldEnchanting): both are
 // ClientWorld sends and server dispatch cases (neither dispatch-only). +1 for
 // PHAA-813's stow_weapon (weapon sheathing): also both a ClientWorld send and a
-// server dispatch case (not dispatch-only).
-const EXPECTED_SEND_COUNT = 127;
-const EXPECTED_DISPATCH_COUNT = 134;
+// server dispatch case (not dispatch-only). +2 for PHAA-736's dungeonFinderQueue/
+// dungeonFinderLeave (IWorldDungeonFinder): both are ClientWorld sends and server
+// dispatch cases (neither dispatch-only).
+const EXPECTED_SEND_COUNT = 129;
+const EXPECTED_DISPATCH_COUNT = 136;
 const EXPECTED_DISPATCH_ONLY_COUNT = 7;
 
 // The chat sub-channel routing switch (server/game.ts `switch

@@ -9,7 +9,7 @@
 // keep resolving to THIS file, never the sibling directory.
 //
 // ---------------------------------------------------------------------------
-// FACET MAP: the 30 domain facets (each IWorld member assigned exactly once; 190
+// FACET MAP: the 33 domain facets (each IWorld member assigned exactly once; 199
 // total; this count was previously stale at 23/155, corrected alongside the
 // PHAA-482 feedGreenpaw command addition, again at 24/161 with the PHAA-511
 // guild-calendar-events addition, again at 25/162 with PHAA-504's gathering.ts
@@ -19,12 +19,13 @@
 // facet (2 members), again with PHAA-687's achievements.ts facet (2 members),
 // again with the PHAA-641 readyCheckRespond addition to the existing IWorldParty
 // facet, again at 30/190 with the PHAA-744 deeds.ts facet (5 members:
-// Book of Asphodelia deed/title read state + setActiveTitle), and again here at
-// 31/195 with the PHAA-649 enchanting.ts facet (3 members; the running count in
-// tests/world_api_parity.test.ts was already at 192 before this addition). One
-// interface per file under ./world_api/; aux types travel with their facet. The
-// authoritative member-per-facet split is the W0c parity test
-// (tests/world_api_parity.test.ts).
+// Book of Asphodelia deed/title read state + setActiveTitle), again with the
+// PHAA-649 enchanting.ts facet (3 members), reaching the verified 32/196
+// pinned by tests/world_api_parity.test.ts, and again here at 33/199 with the
+// PHAA-736 Dungeon Finder facet (3 members: dungeonFinderInfo read +
+// dungeonFinderQueueJoin/Leave commands). One interface per file under
+// ./world_api/; aux types travel with their facet. The authoritative
+// member-per-facet split is the W0c parity test (tests/world_api_parity.test.ts).
 // NOTE: this running count tracks only the facets registered in the W0c gate
 // (tests/world_api_parity.test.ts); IWorldReadables/IWorldDialog predate this
 // count and are pre-existing gaps in that gate, not tracked here.
@@ -50,6 +51,7 @@
 //   market.ts           IWorldMarket         World Market browse/list/buy
 //   mail.ts             IWorldMail           Ravenpost mail: send/take/delete/read
 //   dungeons.ts         IWorldDungeons       dungeon enter/leave + raid lockouts
+//   dungeon_finder.ts   IWorldDungeonFinder  Dungeon Finder solo-role queue (PHAA-736)
 //   delves.ts           IWorldDelves         delve runs, lockpick, companion
 //   housing.ts          IWorldHousing        Hollow hub homestead plots (read + claim/place/remove)
 //   greenpaw_hearth.ts  IWorldGreenpawHearth Hollow hub smoke/mood state (read)
@@ -69,9 +71,9 @@
 //                                          ALL_DELTA_KEYS (44) + TERSE_TO_IWORLD mapping.
 //   tests/command_schema.test.ts   (W0b)  COMMAND_NAMES universe; ClientWorld send-set
 //                                          subset-of dispatch-set; DISPATCH_ONLY (7).
-//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (190) present + same-kind on
+//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (199) present + same-kind on
 //                                          Sim + ClientWorld; aggregate == disjoint
-//                                          union of the 30 facets.
+//                                          union of the 33 facets.
 // ---------------------------------------------------------------------------
 
 import type { IWorldAchievements } from './world_api/achievements';
@@ -85,6 +87,7 @@ import type { IWorldDeeds } from './world_api/deeds';
 import type { IWorldDelves } from './world_api/delves';
 import type { IWorldDialog } from './world_api/dialog';
 import type { IWorldDuelArena } from './world_api/duel_arena';
+import type { IWorldDungeonFinder } from './world_api/dungeon_finder';
 import type { IWorldDungeons } from './world_api/dungeons';
 import type { IWorldEnchanting } from './world_api/enchanting';
 import type { IWorldEntityRoster } from './world_api/entity_roster';
@@ -134,6 +137,7 @@ export type {
   FiestaPowerupView,
   FiestaScoreboardPlayer,
 } from './world_api/duel_arena';
+export type { DungeonFinderInfo } from './world_api/dungeon_finder';
 export type { RaidLockout } from './world_api/dungeons';
 export type { GreenpawHearthInfo, SmokeLevel } from './world_api/greenpaw_hearth';
 export type { HomesteadInfo, HomesteadPlotView } from './world_api/homestead';
@@ -181,6 +185,7 @@ export interface IWorld
     IWorldMarket,
     IWorldMail,
     IWorldDungeons,
+    IWorldDungeonFinder,
     IWorldDelves,
     IWorldHousing,
     IWorldGreenpawHearth,
@@ -347,6 +352,8 @@ export const COMMAND_NAMES = [
   'stow_weapon',
   'disenchantItem',
   'applyEnchant',
+  'dungeonFinderQueue',
+  'dungeonFinderLeave',
 ] as const;
 
 // The union both the send path (`online.ts`) and the dispatch switch
@@ -409,6 +416,7 @@ export type WorldFacet =
   | 'IWorldMarket'
   | 'IWorldMail'
   | 'IWorldDungeons'
+  | 'IWorldDungeonFinder'
   | 'IWorldDelves'
   | 'IWorldHousing'
   | 'IWorldGreenpawHearth'
@@ -584,4 +592,8 @@ export const COMMAND_FACETS = {
   // IWorldCollections: mark a collectible found (PHAA-625/626); collectedIds
   // is a snapshot read (no send, untagged).
   readCollectible: 'IWorldCollections',
+  // IWorldDungeonFinder: solo Dungeon Finder queue join/leave (PHAA-736).
+  // dungeonFinderInfo is a snapshot read (no send, untagged).
+  dungeonFinderQueue: 'IWorldDungeonFinder',
+  dungeonFinderLeave: 'IWorldDungeonFinder',
 } as const satisfies Partial<Record<ClientCommand, WorldFacet>>;

@@ -5001,6 +5001,51 @@ const RULES: Rule[] = [
   // pre-existing "Too far away." emits in items/interaction/trainer/gathering.
   { re: /^That does not exist\.$/, build: () => t('sim.collections.notFound') },
   { re: /^Too far away\.$/, build: () => t('sim.collections.tooFar') },
+  // Dungeon Finder (PHAA-736) sim-emitted player text.
+  {
+    re: /^You cannot queue for the Dungeon Finder while dead\.$/,
+    build: () => t('sim.dungeonFinder.cannotQueueDead'),
+  },
+  {
+    re: /^That dungeon is not available through the Dungeon Finder yet\.$/,
+    build: () => t('sim.dungeonFinder.dungeonUnavailable'),
+  },
+  {
+    re: /^Your class cannot queue for that role\.$/,
+    build: () => t('sim.dungeonFinder.roleUnavailable'),
+  },
+  {
+    re: /^Leave your party before queueing for the Dungeon Finder\.$/,
+    build: () => t('sim.dungeonFinder.leaveParty'),
+  },
+  {
+    re: /^You cannot queue for the Dungeon Finder while dueling\.$/,
+    build: () => t('sim.dungeonFinder.cannotQueueDueling'),
+  },
+  {
+    re: /^Finish your trade before queueing for the Dungeon Finder\.$/,
+    build: () => t('sim.dungeonFinder.finishTrade'),
+  },
+  {
+    re: /^You cannot queue for the Dungeon Finder from inside an instance\.$/,
+    build: () => t('sim.dungeonFinder.cannotQueueInstance'),
+  },
+  {
+    re: /^You join the Dungeon Finder queue as (.+)\. Stand by for a group\.\.\.$/,
+    build: (m) => t('sim.dungeonFinder.joined', { role: m[1] }),
+  },
+  {
+    re: /^You leave the Dungeon Finder queue\.$/,
+    build: () => t('sim.dungeonFinder.left'),
+  },
+  {
+    re: /^Your Dungeon Finder group is ready: (.+)!$/,
+    build: (m) => t('sim.dungeonFinder.ready', { dungeon: m[1] }),
+  },
+  {
+    re: /^You were removed from the Dungeon Finder queue\.$/,
+    build: () => t('sim.dungeonFinder.removed'),
+  },
   // Lockpicking minigame (exact lines).
   {
     re: /^Someone is already working the lock\.$/,
