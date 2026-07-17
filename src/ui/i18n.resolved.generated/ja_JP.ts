@@ -990,6 +990,21 @@ export const ja_JP: EnTranslations = {
       "spore": "胞子",
       "toolTier": "ティア{tier}の道具",
       "toolNone": "道具なし"
+    },
+    "warfare": {
+      "ratingLabel": "戦意",
+      "balance": "名誉：{amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "名誉 {amount}",
+      "honorFloat": "+{amount} 名誉",
+      "honorGain": "+{amount} 名誉（{reason}）",
+      "notEnoughHonor": "名誉が足りません。",
+      "reasons": {
+        "arenaWin": "アリーナ勝利",
+        "fiestaKill": "フィエスタ撃破",
+        "fiestaComplete": "フィエスタ試合",
+        "fiestaWin": "フィエスタ勝利"
+      }
     }
   },
   "mailUi": {
@@ -5178,6 +5193,99 @@ export const ja_JP: EnTranslations = {
       "mistcallers_duffel": {
         "name": "ミストコーラーのダッフルバッグ"
       },
+      "bramblewar_warhelm": {
+        "name": "いばら戦の頭"
+      },
+      "bramblewar_warspaulders": {
+        "name": "いばら戦の肩"
+      },
+      "bramblewar_warplate": {
+        "name": "いばら戦の胸"
+      },
+      "bramblewar_girdle": {
+        "name": "いばら戦の腰"
+      },
+      "bramblewar_legguards": {
+        "name": "いばら戦の脚"
+      },
+      "bramblewar_gauntlets": {
+        "name": "いばら戦の手"
+      },
+      "bramblewar_sabatons": {
+        "name": "いばら戦の足"
+      },
+      "thornbound_crown": {
+        "name": "いばら縛の頭"
+      },
+      "thornbound_spaulders": {
+        "name": "いばら縛の肩"
+      },
+      "thornbound_hauberk": {
+        "name": "いばら縛の胸"
+      },
+      "thornbound_waistguard": {
+        "name": "いばら縛の腰"
+      },
+      "thornbound_legmail": {
+        "name": "いばら縛の脚"
+      },
+      "thornbound_handguards": {
+        "name": "いばら縛の手"
+      },
+      "thornbound_greaves": {
+        "name": "いばら縛の足"
+      },
+      "nettlestalker_cowl": {
+        "name": "棘草追跡の頭"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "棘草追跡の肩"
+      },
+      "nettlestalker_harness": {
+        "name": "棘草追跡の胸"
+      },
+      "nettlestalker_waistband": {
+        "name": "棘草追跡の腰"
+      },
+      "nettlestalker_legguards": {
+        "name": "棘草追跡の脚"
+      },
+      "nettlestalker_grips": {
+        "name": "棘草追跡の手"
+      },
+      "nettlestalker_treads": {
+        "name": "棘草追跡の足"
+      },
+      "mossweave_cowl": {
+        "name": "苔織りの頭"
+      },
+      "mossweave_mantle": {
+        "name": "苔織りの肩"
+      },
+      "mossweave_raiment": {
+        "name": "苔織りの胸"
+      },
+      "mossweave_cord": {
+        "name": "苔織りの腰"
+      },
+      "mossweave_legwraps": {
+        "name": "苔織りの脚"
+      },
+      "mossweave_handwraps": {
+        "name": "苔織りの手"
+      },
+      "mossweave_slippers": {
+        "name": "苔織りの足"
+      },
+      "last_bloom_greatblade": {
+        "name": "最後の花の大剣"
+      },
+      "thornbite_razor": {
+        "name": "棘咬みの剃刀"
+      },
+      "heartwood_warstaff": {
+        "name": "心材の戦杖"
+      },
       "bristleback_maul": {
         "name": "ブリストルバックの大槌"
       },
@@ -6172,6 +6280,11 @@ export const ja_JP: EnTranslations = {
         "name": "ヤロウ長老",
         "title": "副職業トレーナー",
         "greeting": "ビルドはすべて、ひとつの問いから始まる。どの副職業があなたを呼んでいる？"
+      },
+      "bramble": {
+        "name": "ブランブル",
+        "title": "名誉調達官",
+        "greeting": "闘技場の砂は、すべての勝利を覚えている。名誉は賢く使うといい。"
       },
       "tidewatcher_ondrel": {
         "name": "オンドレル・ヴェイン",

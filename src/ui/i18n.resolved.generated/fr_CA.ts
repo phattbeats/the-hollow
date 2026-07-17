@@ -990,6 +990,21 @@ export const fr_CA: EnTranslations = {
       "spore": "Spore",
       "toolTier": "Tier {tier} tool",
       "toolNone": "No tool"
+    },
+    "warfare": {
+      "ratingLabel": "Warfare",
+      "balance": "Honor: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} Honor",
+      "honorFloat": "+{amount} Honor",
+      "honorGain": "+{amount} Honor ({reason})",
+      "notEnoughHonor": "Not enough honor.",
+      "reasons": {
+        "arenaWin": "Arena win",
+        "fiestaKill": "Fiesta takedown",
+        "fiestaComplete": "Fiesta match",
+        "fiestaWin": "Fiesta win"
+      }
     }
   },
   "mailUi": {
@@ -5178,6 +5193,99 @@ export const fr_CA: EnTranslations = {
       "mistcallers_duffel": {
         "name": "Sac Marin de Mistcaller"
       },
+      "bramblewar_warhelm": {
+        "name": "Ronceguerre Tête"
+      },
+      "bramblewar_warspaulders": {
+        "name": "Ronceguerre Épaules"
+      },
+      "bramblewar_warplate": {
+        "name": "Ronceguerre Torse"
+      },
+      "bramblewar_girdle": {
+        "name": "Ronceguerre Taille"
+      },
+      "bramblewar_legguards": {
+        "name": "Ronceguerre Jambes"
+      },
+      "bramblewar_gauntlets": {
+        "name": "Ronceguerre Mains"
+      },
+      "bramblewar_sabatons": {
+        "name": "Ronceguerre Pieds"
+      },
+      "thornbound_crown": {
+        "name": "Roncelié Tête"
+      },
+      "thornbound_spaulders": {
+        "name": "Roncelié Épaules"
+      },
+      "thornbound_hauberk": {
+        "name": "Roncelié Torse"
+      },
+      "thornbound_waistguard": {
+        "name": "Roncelié Taille"
+      },
+      "thornbound_legmail": {
+        "name": "Roncelié Jambes"
+      },
+      "thornbound_handguards": {
+        "name": "Roncelié Mains"
+      },
+      "thornbound_greaves": {
+        "name": "Roncelié Pieds"
+      },
+      "nettlestalker_cowl": {
+        "name": "Ortie Furtive Tête"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "Ortie Furtive Épaules"
+      },
+      "nettlestalker_harness": {
+        "name": "Ortie Furtive Torse"
+      },
+      "nettlestalker_waistband": {
+        "name": "Ortie Furtive Taille"
+      },
+      "nettlestalker_legguards": {
+        "name": "Ortie Furtive Jambes"
+      },
+      "nettlestalker_grips": {
+        "name": "Ortie Furtive Mains"
+      },
+      "nettlestalker_treads": {
+        "name": "Ortie Furtive Pieds"
+      },
+      "mossweave_cowl": {
+        "name": "Moussetissé Tête"
+      },
+      "mossweave_mantle": {
+        "name": "Moussetissé Épaules"
+      },
+      "mossweave_raiment": {
+        "name": "Moussetissé Torse"
+      },
+      "mossweave_cord": {
+        "name": "Moussetissé Taille"
+      },
+      "mossweave_legwraps": {
+        "name": "Moussetissé Jambes"
+      },
+      "mossweave_handwraps": {
+        "name": "Moussetissé Mains"
+      },
+      "mossweave_slippers": {
+        "name": "Moussetissé Pieds"
+      },
+      "last_bloom_greatblade": {
+        "name": "Grande Lame de la Dernière Fleur"
+      },
+      "thornbite_razor": {
+        "name": "Rasoir Morsure-d'Épine"
+      },
+      "heartwood_warstaff": {
+        "name": "Bâton de Guerre de Bois de Cœur"
+      },
       "bristleback_maul": {
         "name": "Maillet Bristleback"
       },
@@ -6172,6 +6280,11 @@ export const fr_CA: EnTranslations = {
         "name": "Elder Yarrow",
         "title": "Profession Trainer",
         "greeting": "Every build starts as a question. Which second calling speaks to you?"
+      },
+      "bramble": {
+        "name": "Bramble",
+        "title": "Honor Quartermaster",
+        "greeting": "The sands remember every victory. Spend your honor well."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",

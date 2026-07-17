@@ -129,6 +129,7 @@ export {
 import { DELVE_ITEMS } from './content/delves/items';
 import { HEROIC_DELVE_MARK } from './content/heroic_loot';
 import { buildHeroicVariants } from './content/heroic_variants';
+import { FURY_NPC, WARFARE_ITEMS } from './content/pvp_honor';
 import { DELVE_MODULE_LAYOUTS, type DelveModuleId, delveModuleSpan } from './delve_layout';
 
 function mergeItems(...parts: Record<string, ItemDef>[]): Record<string, ItemDef> {
@@ -187,6 +188,7 @@ export const ITEMS: Record<string, ItemDef> = mergeItems(
   // a derived table entry) so the loot swap and the mark fan-out both resolve
   // to the same id at data-evaluation time.
   { delve_heroic_mark: HEROIC_DELVE_MARK },
+  WARFARE_ITEMS,
 );
 
 export type { AggregatedSetEffect } from './content/item_sets';
@@ -207,6 +209,7 @@ export const NPCS: Record<string, NpcDef> = {
   ...HOLLOW_NPCS,
   brother_halven: BROTHER_HALVEN,
   ...HOLLOW_ZONE_NPCS,
+  [FURY_NPC.id]: FURY_NPC,
 };
 
 export const QUESTS: Record<string, QuestDef> = {
