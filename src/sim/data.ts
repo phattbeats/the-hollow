@@ -127,7 +127,7 @@ export {
 } from './content/delves';
 
 import { DELVE_ITEMS } from './content/delves/items';
-import { HEROIC_DELVE_MARK } from './content/heroic_loot';
+import { HEROIC_DELVE_MARK, HEROIC_NYTHRAXIS_ITEMS } from './content/heroic_loot';
 import { buildHeroicVariants } from './content/heroic_variants';
 import { DELVE_MODULE_LAYOUTS, type DelveModuleId, delveModuleSpan } from './delve_layout';
 
@@ -187,6 +187,8 @@ export const ITEMS: Record<string, ItemDef> = mergeItems(
   // a derived table entry) so the loot swap and the mark fan-out both resolve
   // to the same id at data-evaluation time.
   { delve_heroic_mark: HEROIC_DELVE_MARK },
+  // The three heroic-only Nythraxis raid weapons (PHAA-714).
+  HEROIC_NYTHRAXIS_ITEMS,
 );
 
 export type { AggregatedSetEffect } from './content/item_sets';

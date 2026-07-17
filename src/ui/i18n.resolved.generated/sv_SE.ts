@@ -5688,6 +5688,15 @@ export const sv_SE: EnTranslations = {
       "stormcallers_spaulders": {
         "name": "Stormkallarens axelskydd"
       },
+      "deathless_greatblade": {
+        "name": "Det odödliga storsvärdet"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "Spiran från det odödliga hovet"
+      },
+      "stormcallers_focus": {
+        "name": "Stormkallarens fokus"
+      },
       "unknown_alien_weaponry": {
         "name": "Okänd främmande vapenutrustning"
       },
@@ -5911,6 +5920,15 @@ export const sv_SE: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Törntoppens gissel"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "Aldrens ande"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "Malrics ande"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "Voss ande"
       },
       "reliquary_ledger_wraith": {
         "name": "Liggarvålnad"

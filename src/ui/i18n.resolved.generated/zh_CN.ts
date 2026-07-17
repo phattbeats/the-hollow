@@ -5688,6 +5688,15 @@ export const zh_CN: EnTranslations = {
       "stormcallers_spaulders": {
         "name": "唤雷者肩甲"
       },
+      "deathless_greatblade": {
+        "name": "不朽巨剑"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "不朽王庭权杖"
+      },
+      "stormcallers_focus": {
+        "name": "唤雷者的焦点"
+      },
       "unknown_alien_weaponry": {
         "name": "未知异星武器"
       },
@@ -5911,6 +5920,15 @@ export const zh_CN: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "尼思拉克西斯，荆峰之灾"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "奥德伦之魂"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "马尔里克之魂"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "沃斯之魂"
       },
       "reliquary_ledger_wraith": {
         "name": "名册幽魂"

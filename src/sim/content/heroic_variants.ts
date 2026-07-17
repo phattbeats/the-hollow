@@ -35,6 +35,7 @@ import {
   weaponDpsBudget,
 } from '../item_budget';
 import type { ItemDef, MobTemplate } from '../types';
+import { NYTHRAXIS_RAID_BOSS_ID, NYTHRAXIS_RAID_LOOT_SOURCE_LEVEL } from './heroic_loot';
 
 // Stable, pure prefix: the variant's id is always `heroic_<baseId>`. Prefix
 // collision with an existing base item id would surface at data-evaluation, and
@@ -50,13 +51,16 @@ export function isHeroicVariantId(id: string): boolean {
   return id.startsWith('heroic_');
 }
 
-function makeHeroicVariant(base: ItemDef): ItemDef {
+function makeHeroicVariant(
+  base: ItemDef,
+  sourceLevel: number = HEROIC_VARIANT_SOURCE_LEVEL,
+): ItemDef {
   const quality = base.quality ?? 'common';
-  // Per-quality level: a base epic lands at 25 + 6 = 31, a base rare lands at 25
-  // + 3 = 28 (matching upstream's epic 28 / rare 25 reading), a base legendary
-  // keeps its 35. The variant reads at least the higher of the target or the
-  // base's realized stat budget so it is NEVER a downgrade vs its base.
-  const targetLevel = HEROIC_VARIANT_SOURCE_LEVEL + (QUALITY_ILVL_BONUS[quality] ?? 0);
+  // Per-quality level: a base epic lands at source + 6, a base rare at source +
+  // 3, a base legendary at source + 10. The variant reads at least the higher
+  // of the target or the base's realized stat budget so it is NEVER a
+  // downgrade vs its base.
+  const targetLevel = sourceLevel + (QUALITY_ILVL_BONUS[quality] ?? 0);
   const targetBudget = primaryStatBudget(targetLevel, base.quality, base.slot);
   const baseBudget = base.stats
     ? PRIMARY_STATS.reduce((sum, stat) => sum + (base.stats?.[stat] ?? 0), 0)
@@ -110,13 +114,29 @@ export function buildHeroicVariants(
       const def = items[id];
       if (!def) continue;
       if (def.heroicOf) continue; // skip already-built variants (rebuild safety)
-      if (def.quality !== 'epic' && def.quality !== 'rare') continue;
+      // Legendary is eligible too (the Nythraxis raid boss's own two
+      // legendaries), gated by the raid-only source-level branch below so a
+      // five-man/delve legendary drop (none exist today) can't slip through.
+      if (def.quality !== 'epic' && def.quality !== 'rare' && def.quality !== 'legendary') continue;
       if (!def.slot) continue;
       if (def.kind !== 'armor' && def.kind !== 'weapon') continue;
       eligible.add(id);
     }
   }
+  // The Heroic Nythraxis raid boss's own set pieces and legendaries upgrade to
+  // the RAID tier (source 27), one step above the five-man/delve heroic
+  // variants (source 22). Anchored on the raid boss's normal loot so the
+  // loot-roll auto-swap on a heroic claim yields the same raid-tier variant,
+  // shared with the item-level source index (item_level.ts).
+  const raidBases = new Set(
+    (mobs[NYTHRAXIS_RAID_BOSS_ID]?.loot ?? []).flatMap((e) => (e.itemId ? [e.itemId] : [])),
+  );
   const out: Record<string, ItemDef> = {};
-  for (const id of eligible) out[heroicVariantId(id)] = makeHeroicVariant(items[id]);
+  for (const id of eligible) {
+    const sourceLevel = raidBases.has(id)
+      ? NYTHRAXIS_RAID_LOOT_SOURCE_LEVEL
+      : HEROIC_VARIANT_SOURCE_LEVEL;
+    out[heroicVariantId(id)] = makeHeroicVariant(items[id], sourceLevel);
+  }
   return out;
 }

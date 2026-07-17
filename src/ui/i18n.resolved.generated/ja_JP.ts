@@ -5688,6 +5688,15 @@ export const ja_JP: EnTranslations = {
       "stormcallers_spaulders": {
         "name": "嵐呼びの肩当て"
       },
+      "deathless_greatblade": {
+        "name": "不死の大剣"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "不死の宮廷の笏"
+      },
+      "stormcallers_focus": {
+        "name": "嵐呼びの焦点"
+      },
       "unknown_alien_weaponry": {
         "name": "未知の異星武装"
       },
@@ -5911,6 +5920,15 @@ export const ja_JP: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "ナイスラクシス、ソーンピークの災厄"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "オルドレンの霊"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "マルリックの霊"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "ヴォスの霊"
       },
       "reliquary_ledger_wraith": {
         "name": "台帳の亡霊"

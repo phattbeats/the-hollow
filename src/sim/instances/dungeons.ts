@@ -31,6 +31,32 @@ const DOOR_TRIGGER_RADIUS = 2.0; // walking this close to a dungeon door telepor
 const RAID_ALLOWED_DUNGEON_IDS = new Set(['nythraxis_crypt', 'nythraxis_boss_arena']);
 const RAID_REQUIRED_DUNGEON_IDS = new Set(['nythraxis_boss_arena']);
 
+// Heroic Nythraxis stat scaling, applied directly to the raid boss and every
+// court add at spawn time (self-contained to this one raid; the fork has no
+// generic five-man dungeon-difficulty system to hang this off). Health x1.6,
+// damage x2.0, armor x1.2: the raid's own settled heroic tuning.
+const NYTHRAXIS_HEROIC_HEALTH_MULT = 1.6;
+const NYTHRAXIS_HEROIC_DAMAGE_MULT = 2.0;
+const NYTHRAXIS_HEROIC_ARMOR_MULT = 1.2;
+
+// A heroic-claimed instance's difficulty-scoped lockout key (kept distinct
+// from the plain dungeon id so a normal and a heroic Nythraxis kill lock
+// independently: one of each per raid per day).
+export function heroicLockoutId(dungeonId: string): string {
+  return `${dungeonId}:heroic`;
+}
+
+export function applyNythraxisHeroicTuning(mob: Entity): void {
+  mob.maxHp = Math.round(mob.maxHp * NYTHRAXIS_HEROIC_HEALTH_MULT);
+  mob.hp = mob.maxHp;
+  mob.weapon = {
+    ...mob.weapon,
+    min: Math.round(mob.weapon.min * NYTHRAXIS_HEROIC_DAMAGE_MULT),
+    max: Math.round(mob.weapon.max * NYTHRAXIS_HEROIC_DAMAGE_MULT),
+  };
+  mob.stats.armor = Math.round(mob.stats.armor * NYTHRAXIS_HEROIC_ARMOR_MULT);
+}
+
 export function instanceKeyFor(ctx: SimContext, pid: number): string {
   const party = ctx.partyOf(pid);
   return party ? `party:${party.id}` : `solo:${pid}`;
@@ -98,8 +124,28 @@ export function enterDungeon(
     ctx.error(r.meta.entityId, 'The royal door is sealed to you.');
     return false;
   }
-  if (dungeonId === 'nythraxis_boss_arena' && isRaidLocked(ctx, r.meta, dungeonId)) {
-    ctx.error(r.meta.entityId, 'You are locked to Nythraxis Raid Arena.');
+  // Heroic Nythraxis claims its own lockout key: a normal and a heroic kill
+  // lock independently, so the raid can still run the other difficulty the
+  // same day. The claim reads the raid's difficulty selection (leader-set via
+  // "/raid heroic|normal"); solo/partyless entries always claim normal.
+  const nythraxisDifficulty: 'normal' | 'heroic' =
+    dungeonId === 'nythraxis_boss_arena' && party?.raidDifficulty === 'heroic'
+      ? 'heroic'
+      : 'normal';
+  if (
+    dungeonId === 'nythraxis_boss_arena' &&
+    isRaidLocked(
+      ctx,
+      r.meta,
+      nythraxisDifficulty === 'heroic' ? heroicLockoutId(dungeonId) : dungeonId,
+    )
+  ) {
+    ctx.error(
+      r.meta.entityId,
+      nythraxisDifficulty === 'heroic'
+        ? 'You are locked to Heroic Nythraxis Raid Arena.'
+        : 'You are locked to Nythraxis Raid Arena.',
+    );
     return false;
   }
   if (dungeonId === 'nythraxis_boss_arena') {
@@ -119,7 +165,7 @@ export function enterDungeon(
       ctx.error(r.meta.entityId, `All instances of ${dungeon.name} are busy. Try again soon.`);
       return false;
     }
-    claimInstance(ctx, inst, key);
+    claimInstance(ctx, inst, key, nythraxisDifficulty);
   }
   if (!opts?.quiet && (!party || party.members.length < dungeon.suggestedPlayers)) {
     ctx.emit({
@@ -231,10 +277,16 @@ export function leaveCrypt(ctx: SimContext, pid?: number): void {
   leaveDungeon(ctx, pid);
 }
 
-function claimInstance(ctx: SimContext, inst: InstanceSlot, key: string): void {
+function claimInstance(
+  ctx: SimContext,
+  inst: InstanceSlot,
+  key: string,
+  difficulty: InstanceSlot['difficulty'] = 'normal',
+): void {
   const dungeon = DUNGEONS[inst.dungeonId];
   inst.partyKey = key;
   inst.emptyFor = 0;
+  inst.difficulty = difficulty;
   const origin = instanceOriginOf(inst);
   for (const spawn of dungeon.spawns) {
     const template = MOBS[spawn.mobId];
@@ -247,6 +299,11 @@ function claimInstance(ctx: SimContext, inst: InstanceSlot, key: string): void {
     );
     mob.facing = Math.PI; // face the entrance
     mob.prevFacing = mob.facing;
+    // Heroic Nythraxis: the raid boss's own stats scale up at spawn time (no
+    // rng drawn; the normal trace and parity golden are unaffected).
+    if (difficulty === 'heroic' && mob.templateId === NYTHRAXIS_BOSS_ID) {
+      applyNythraxisHeroicTuning(mob);
+    }
     ctx.addEntity(mob);
     inst.mobIds.push(mob.id);
   }
@@ -321,6 +378,7 @@ function freeInstance(ctx: SimContext, inst: InstanceSlot): void {
   inst.objectIds = [];
   inst.exitId = null;
   inst.emptyFor = 0;
+  inst.difficulty = 'normal';
 }
 
 export function updateInstances(ctx: SimContext): void {

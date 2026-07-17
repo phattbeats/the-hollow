@@ -1107,7 +1107,7 @@ describe('chat module (direct, no Sim)', () => {
     const line = chatMod.inspectReadout(target, e);
     expect(line).toContain('Bet: Level 7');
     expect(line).toContain('50%');
-    expect(chatMod.helpLines().length).toBe(9);
+    expect(chatMod.helpLines().length).toBe(10);
   });
 
   it('handleDevChat: parses dev cheats; returns undefined for non-dev input', () => {

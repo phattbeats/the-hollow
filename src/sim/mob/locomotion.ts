@@ -42,6 +42,7 @@ import {
   type Vec3,
 } from '../types';
 import { groundHeight, waterLevelAt } from '../world';
+import { updateChannelHealerHold } from './healer_hold';
 import { rallyFleeingAllies } from './social_aggro';
 import { isTrivialTo, retargetMob, updateMobTarget } from './targeting';
 import { emitMobYell } from './yells';
@@ -261,6 +262,7 @@ export function updateMob(ctx: SimContext, mob: Entity): void {
         break;
       }
       if (ctx.maybeFlee(mob, target)) break;
+      if (updateChannelHealerHold(ctx, mob)) break;
       const spell = MOBS[mob.templateId]?.petSpell;
       const leash = mob.spawnPos.x > DUNGEON_X_THRESHOLD ? DUNGEON_LEASH_DISTANCE : LEASH_DISTANCE;
       const leashAnchor = mob.leashAnchor ?? mob.spawnPos;
@@ -306,6 +308,7 @@ export function updateMob(ctx: SimContext, mob: Entity): void {
         break;
       }
       if (ctx.maybeFlee(mob, target)) break;
+      if (updateChannelHealerHold(ctx, mob)) break;
       // Anti-kite snare also fires in melee (slows ranged players around the boss).
       pulseAntiKiteSnare(ctx, mob);
       pulseLoudYell(ctx, mob);
@@ -653,6 +656,8 @@ export function resetEvadingMob(ctx: SimContext, mob: Entity): void {
   mob.terrifyTimer = MOBS[mob.templateId]?.terrify?.every ?? 0;
   mob.mendTimer = MOBS[mob.templateId]?.mendAlly?.every ?? 0;
   mob.wardTimer = MOBS[mob.templateId]?.wardAllies?.every ?? 0;
+  mob.channelTimer = MOBS[mob.templateId]?.channelHeal?.every ?? 0;
+  mob.channelRamp = 0;
   mob.stoneskinTimer = MOBS[mob.templateId]?.stoneskin?.every ?? 0;
   mob.rallyTimer = MOBS[mob.templateId]?.rally?.every ?? 0;
   mob.warcryTimer = MOBS[mob.templateId]?.warcry?.every ?? 0;

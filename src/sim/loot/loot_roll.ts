@@ -23,7 +23,7 @@
 // `src/sim`-pure: no DOM/Three/render/ui/game/net imports, no Math.random/Date.now
 // (enforced by tests/architecture.test.ts).
 
-import { HEROIC_DELVE_BOSS_LOOT } from '../content/heroic_loot';
+import { HEROIC_DELVE_BOSS_LOOT, HEROIC_RAID_BOSS_LOOT } from '../content/heroic_loot';
 import { heroicVariantId } from '../content/heroic_variants';
 import { ITEMS, MOBS, QUESTS } from '../data';
 import { formatMoney } from '../format_money';
@@ -136,8 +136,12 @@ export function rollLoot(
   // "Heroic" variant in place (content/heroic_variants.ts). Resolved once and
   // reused by the heroic-only append below. No rng is drawn here, so normal-run
   // draw order and the parity goldens are untouched. The fork's heroic detection
-  // rides the delve run: the run owning the mob (if any) with tierId 'heroic'.
-  const heroicClaim = ctx.delveRunForMob(mob.id)?.tierId === 'heroic';
+  // rides the delve run (the run owning the mob, if any, with tierId 'heroic')
+  // OR the Heroic Nythraxis raid claim (the mob's owning instance, if any, with
+  // difficulty 'heroic' (instances/dungeons.ts InstanceSlot.difficulty).
+  const heroicClaim =
+    ctx.delveRunForMob(mob.id)?.tierId === 'heroic' ||
+    ctx.instances.some((i) => i.difficulty === 'heroic' && i.mobIds.includes(mob.id));
   // Swap a base drop for its Heroic variant when the run is heroic AND the swap
   // is an upgrade (raid epics, already item level 29, are left as-is; the only
   // such items in the fork are the Heroic set pieces, which the heroic-boss
@@ -225,6 +229,29 @@ export function rollLoot(
             personalFor: pids,
             sharedPersonal: entry.sharedPersonal ?? false,
           });
+        }
+      }
+    }
+    // Heroic Nythraxis raid weapon (content/heroic_loot.ts): one of the three
+    // heroic-only raid weapons drops per heroic kill (rollGroup chances sum to
+    // 1.0). Unlike the delve heroic-only append above, this is a single bespoke
+    // drop the raid rolls need/greed on like any other boss loot: no
+    // personalFor/sharedPersonal, same corpse-loot flow as the rest of
+    // Nythraxis's table.
+    const raidHeroicEntries = HEROIC_RAID_BOSS_LOOT[mob.templateId];
+    if (raidHeroicEntries) {
+      for (const entry of raidHeroicEntries) {
+        if (!entry.rollGroup || rolledGroups.has(entry.rollGroup)) continue;
+        rolledGroups.add(entry.rollGroup);
+        const group = raidHeroicEntries.filter((l) => l.rollGroup === entry.rollGroup);
+        const roll = ctx.rng.next();
+        let cumulative = 0;
+        for (const g of group) {
+          cumulative += g.chance;
+          if (roll < cumulative) {
+            if (g.itemId) items.push({ itemId: g.itemId, count: 1 });
+            break;
+          }
         }
       }
     }

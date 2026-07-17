@@ -28,6 +28,7 @@
 import { isStunned } from '../combat/cc';
 import { ITEMS, MOBS, NPCS, QUESTS } from '../data';
 import { createMob, createNpc } from '../entity';
+import { applyNythraxisHeroicTuning, heroicLockoutId } from '../instances/dungeons';
 import type { PlayerMeta } from '../sim';
 import type { SimContext } from '../sim_context';
 import { clearThreat, threatEntries } from '../threat';
@@ -74,10 +75,30 @@ const NYTHRAXIS_PHASE_TWO_HP = 0.7;
 const NYTHRAXIS_SOUL_REND_EVERY = 30;
 const NYTHRAXIS_SOUL_REND_DURATION = 8;
 const NYTHRAXIS_SOUL_REND_STACK_RANGE = 5;
+// Soul Rend mark count: heroic doubles the marked players (6 of the raid must
+// collapse onto the stack point inside the 8s window; normal keeps 3). The
+// extra rng picks draw ONLY on a heroic claim, so the normal trace and the
+// parity golden are unchanged.
+const NYTHRAXIS_SOUL_REND_MARKS = 3;
+const NYTHRAXIS_SOUL_REND_MARKS_HEROIC = 6;
+// Heroic non-compliance punishers. Soul Rend deals maxHp x mult / stacked, so
+// on heroic an unstacked mark takes 150% of max hp (a guaranteed kill through
+// any topped-off health bar) and even a pair splitting takes 75% each.
+// Deathless Rage on a FAILED wardstone channel hits for 115% of max hp on
+// heroic (a raid wipe) versus 82% on normal. Both are percentage math with no
+// rng, so the normal trace and parity golden are unchanged.
+const NYTHRAXIS_SOUL_REND_HEROIC_MULT = 1.5;
+const NYTHRAXIS_DEATHLESS_PCT = 0.82;
+const NYTHRAXIS_DEATHLESS_PCT_HEROIC = 1.15;
 const NYTHRAXIS_DEATHLESS_EVERY = 45;
 const NYTHRAXIS_DEATHLESS_CAST = 10;
 const NYTHRAXIS_DEATHLESS_CHANNEL = 5;
 const NYTHRAXIS_DEATHLESS_STUN = 5;
+const NYTHRAXIS_HEROIC_SUMMON_CHANNEL = 3;
+const NYTHRAXIS_DREAD_CURSE_EVERY = 15;
+const NYTHRAXIS_DREAD_CURSE_DURATION = 45;
+const NYTHRAXIS_DREAD_CURSE_PER_STACK = 0.1;
+const NYTHRAXIS_DREAD_CURSE_MAX_STACKS = 10;
 const NYTHRAXIS_DEATHLESS_SOUL_REND_LOCKOUT = 15;
 const NYTHRAXIS_PHASE_TWO_SETTLE_DELAY = 5;
 const NYTHRAXIS_LOCKOUT_MS = 24 * 60 * 60 * 1000;
@@ -92,6 +113,46 @@ const NYTHRAXIS_ALDRIC_SPAWN_DIST = 50;
 const NYTHRAXIS_ALDRIC_WALK_DIST = 30;
 const NYTHRAXIS_PARTY_INTERACT_RANGE = 30;
 const NYTHRAXIS_VISION_LINE_DELAY = 5;
+const NYTHRAXIS_HEROIC_ADD_IDS = [
+  'nythraxis_heroic_warrior_add',
+  'nythraxis_heroic_priest_add',
+  'nythraxis_heroic_rogue_add',
+] as const;
+
+function isNythraxisRaidAddTemplate(templateId: string): boolean {
+  return (
+    templateId === NYTHRAXIS_ADD_ID ||
+    NYTHRAXIS_HEROIC_ADD_IDS.includes(templateId as (typeof NYTHRAXIS_HEROIC_ADD_IDS)[number])
+  );
+}
+
+// Whether this boss's claimed instance is heroic (the arena instance is found
+// the same way the add spawns find it: by mobIds membership).
+function isHeroicNythraxis(ctx: SimContext, boss: Entity): boolean {
+  const inst = ctx.instances.find((i) => i.partyKey !== null && i.mobIds.includes(boss.id));
+  return inst?.difficulty === 'heroic';
+}
+
+// True while any member of the heroic court (Aldren / Malric / Voss) is still
+// alive OR a summon channel is in flight. The phase-2 re-summon is gated on
+// this so a raid that does not clear the court inside a Deathless Rage cycle
+// does NOT stack a second (then third) set of adds, which would be unwinnable
+// and grow the entity count without bound.
+function nythraxisHeroicCourtPending(
+  ctx: SimContext,
+  st: NonNullable<Entity['nythraxis']>,
+): boolean {
+  if ((st.heroicSummonChannelRemaining ?? 0) > 0) return true;
+  for (const e of ctx.entities.values()) {
+    if (
+      e.kind === 'mob' &&
+      !e.dead &&
+      NYTHRAXIS_HEROIC_ADD_IDS.includes(e.templateId as (typeof NYTHRAXIS_HEROIC_ADD_IDS)[number])
+    )
+      return true;
+  }
+  return false;
+}
 
 // ----- CC-immunity predicates (consumed by the hot applyAura path on Sim) ---------
 
@@ -102,14 +163,27 @@ export function isNythraxisControlAura(ctx: SimContext, kind: AuraKind): boolean
 export function isNythraxisRaidEnemy(target: Entity): boolean {
   return (
     target.kind === 'mob' &&
-    (target.templateId === NYTHRAXIS_BOSS_ID || target.templateId === NYTHRAXIS_ADD_ID)
+    (target.templateId === NYTHRAXIS_BOSS_ID || isNythraxisRaidAddTemplate(target.templateId))
+  );
+}
+
+// The two Heroic Nythraxis adds the raid is MEANT to control (their templates
+// carry ccImmune: false): Spirit of Malric (stun to break his heal channel)
+// and Spirit of Voss (untauntable, so root/stun him off the healers). The
+// blanket Nythraxis-raid-enemy CC-immunity gate exempts both; the warrior add
+// stays CC-immune like the plain skeleton-warrior add.
+export function isNythraxisControllableAdd(target: Entity): boolean {
+  return (
+    target.kind === 'mob' &&
+    (target.templateId === 'nythraxis_heroic_priest_add' ||
+      target.templateId === 'nythraxis_heroic_rogue_add')
   );
 }
 
 export function isNythraxisScriptedControl(target: Entity, aura: Aura): boolean {
   return (
     target.kind === 'mob' &&
-    (target.templateId === NYTHRAXIS_ADD_ID || target.ownerId !== null) &&
+    (isNythraxisRaidAddTemplate(target.templateId) || target.ownerId !== null) &&
     aura.id === 'nythraxis_transition_stun'
   );
 }
@@ -117,7 +191,7 @@ export function isNythraxisScriptedControl(target: Entity, aura: Aura): boolean 
 // ----- skeleton-warrior add AI (consumed by mob retarget on Sim) ------------------
 
 export function findNythraxisBossForAdd(ctx: SimContext, add: Entity): Entity | null {
-  if (add.kind !== 'mob' || add.templateId !== NYTHRAXIS_ADD_ID) return null;
+  if (add.kind !== 'mob' || !isNythraxisRaidAddTemplate(add.templateId)) return null;
   for (const e of ctx.entities.values()) {
     if (e.kind !== 'mob' || e.templateId !== NYTHRAXIS_BOSS_ID || e.dead) continue;
     if (e.summonedIds.includes(add.id) || dist2d(e.spawnPos, add.spawnPos) < 1) return e;
@@ -194,7 +268,10 @@ export function initNythraxisEncounter(boss: Entity): NonNullable<Entity['nythra
 export function resetNythraxisEncounter(ctx: SimContext, boss: Entity): void {
   for (const p of playersInNythraxisRoom(ctx, boss)) {
     p.auras = p.auras.filter(
-      (a) => a.id !== 'nythraxis_soul_rend' && a.id !== 'nythraxis_transition_stun',
+      (a) =>
+        a.id !== 'nythraxis_soul_rend' &&
+        a.id !== 'nythraxis_transition_stun' &&
+        a.id !== 'nythraxis_dread_curse',
     );
     clearNythraxisWardChannelCast(p);
   }
@@ -271,6 +348,7 @@ export function updateNythraxisEncounter(ctx: SimContext, boss: Entity): void {
     return;
   }
   if (st.phase === 'dead') return;
+  if (st.phase === 1 || st.phase === 2) updateNythraxisDreadCurse(ctx, boss, st);
 
   const hpFrac = boss.hp / Math.max(1, boss.maxHp);
   if (st.phase === 1 && hpFrac <= NYTHRAXIS_PHASE_TWO_HP) {
@@ -310,6 +388,19 @@ export function updateNythraxisEncounter(ctx: SimContext, boss: Entity): void {
 
   if (st.deathlessStunRemaining > 0) {
     st.deathlessStunRemaining = Math.max(0, st.deathlessStunRemaining - DT);
+    // Interrupted Deathless Rage: the court rises again once the boss shakes
+    // off the wardstone stun, but only if the previous court has fallen.
+    if (
+      st.deathlessStunRemaining <= 0 &&
+      isHeroicNythraxis(ctx, boss) &&
+      !nythraxisHeroicCourtPending(ctx, st)
+    ) {
+      startNythraxisHeroicSummon(ctx, boss, st);
+    }
+    return;
+  }
+  if ((st.heroicSummonChannelRemaining ?? 0) > 0) {
+    updateNythraxisHeroicSummon(ctx, boss, st);
     return;
   }
   if (st.deathlessCastRemaining > 0) {
@@ -456,7 +547,7 @@ export function nythraxisTransitionStunTargets(ctx: SimContext, boss: Entity): E
       !e.dead &&
       dist2d(e.pos, boss.spawnPos) <= NYTHRAXIS_ROOM_RADIUS &&
       (e.kind === 'player' ||
-        (e.kind === 'mob' && (e.templateId === NYTHRAXIS_ADD_ID || e.ownerId !== null))),
+        (e.kind === 'mob' && (isNythraxisRaidAddTemplate(e.templateId) || e.ownerId !== null))),
   );
 }
 
@@ -472,9 +563,51 @@ export function nythraxisRoomMetas(ctx: SimContext, boss: Entity): PlayerMeta[] 
 
 export function grantNythraxisLockout(ctx: SimContext, boss: Entity): void {
   const until = ctx.lockoutNowMs() + NYTHRAXIS_LOCKOUT_MS;
+  // Difficulty-scoped: a heroic kill locks the :heroic key only, so the raid
+  // can still run the other difficulty the same day.
+  const lockId = isHeroicNythraxis(ctx, boss)
+    ? heroicLockoutId('nythraxis_boss_arena')
+    : 'nythraxis_boss_arena';
   for (const meta of nythraxisRoomMetas(ctx, boss)) {
-    meta.raidLockouts.set('nythraxis_boss_arena', until);
+    meta.raidLockouts.set(lockId, until);
   }
+}
+
+export function updateNythraxisDreadCurse(
+  ctx: SimContext,
+  boss: Entity,
+  st: NonNullable<Entity['nythraxis']>,
+): void {
+  if (!isHeroicNythraxis(ctx, boss)) return;
+  const target = boss.aggroTargetId !== null ? ctx.entities.get(boss.aggroTargetId) : null;
+  if (!target || target.dead || target.kind !== 'player') return;
+  if (st.dreadCurseTargetId !== target.id) {
+    st.dreadCurseTargetId = target.id;
+    st.dreadCurseStacks = 0;
+  }
+  st.dreadCurseTimer = (st.dreadCurseTimer ?? NYTHRAXIS_DREAD_CURSE_EVERY) - DT;
+  if (st.dreadCurseTimer > 0) return;
+  st.dreadCurseTimer = NYTHRAXIS_DREAD_CURSE_EVERY;
+  st.dreadCurseStacks = Math.min(NYTHRAXIS_DREAD_CURSE_MAX_STACKS, (st.dreadCurseStacks ?? 0) + 1);
+  const value = Math.min(1, st.dreadCurseStacks * NYTHRAXIS_DREAD_CURSE_PER_STACK);
+  ctx.applyAura(target, {
+    id: 'nythraxis_dread_curse',
+    name: 'Dread Curse',
+    kind: 'vulnerability',
+    remaining: NYTHRAXIS_DREAD_CURSE_DURATION,
+    duration: NYTHRAXIS_DREAD_CURSE_DURATION,
+    value,
+    stacks: st.dreadCurseStacks,
+    sourceId: boss.id,
+    school: 'shadow',
+  });
+  ctx.emit({
+    type: 'spellfx',
+    sourceId: boss.id,
+    targetId: target.id,
+    school: 'shadow',
+    fx: 'projectile',
+  });
 }
 
 // ----- phase-one mechanics --------------------------------------------------------
@@ -555,6 +688,67 @@ export function spawnNythraxisAdds(ctx: SimContext, boss: Entity): void {
     inst?.mobIds.push(add.id);
     if (victim && !victim.dead && victim.kind === 'player') ctx.aggroMob(add, victim, false);
   }
+  ctx.emit({
+    type: 'spellfx',
+    sourceId: boss.id,
+    targetId: boss.id,
+    school: 'shadow',
+    fx: 'nova',
+  });
+}
+
+export function startNythraxisHeroicSummon(
+  ctx: SimContext,
+  boss: Entity,
+  st: NonNullable<Entity['nythraxis']>,
+): void {
+  st.heroicSummonChannelRemaining = NYTHRAXIS_HEROIC_SUMMON_CHANNEL;
+  boss.castingAbility = 'nythraxis_heroic_summon';
+  boss.castTotal = NYTHRAXIS_HEROIC_SUMMON_CHANNEL;
+  boss.castRemaining = NYTHRAXIS_HEROIC_SUMMON_CHANNEL;
+  boss.channeling = true;
+  nythraxisSay(ctx, boss, 'nythraxis', 'My court rises again', true);
+}
+
+export function updateNythraxisHeroicSummon(
+  ctx: SimContext,
+  boss: Entity,
+  st: NonNullable<Entity['nythraxis']>,
+): void {
+  st.heroicSummonChannelRemaining = Math.max(0, (st.heroicSummonChannelRemaining ?? 0) - DT);
+  boss.castingAbility = 'nythraxis_heroic_summon';
+  boss.castTotal = NYTHRAXIS_HEROIC_SUMMON_CHANNEL;
+  boss.castRemaining = st.heroicSummonChannelRemaining;
+  boss.channeling = true;
+  if ((st.heroicSummonChannelRemaining ?? 0) > 0) return;
+  boss.castingAbility = null;
+  boss.castRemaining = 0;
+  boss.castTotal = 0;
+  boss.channeling = false;
+  spawnNythraxisHeroicAdds(ctx, boss);
+}
+
+export function spawnNythraxisHeroicAdds(ctx: SimContext, boss: Entity): void {
+  const inst = ctx.instances.find((i) => i.partyKey !== null && i.mobIds.includes(boss.id));
+  const spawnPoints = [
+    ctx.groundPos(boss.pos.x - 8, boss.pos.z + 8),
+    ctx.groundPos(boss.pos.x, boss.pos.z + 10),
+    ctx.groundPos(boss.pos.x + 8, boss.pos.z + 8),
+  ];
+  const victimId = boss.aggroTargetId ?? threatEntries(boss, 1)[0]?.[0] ?? null;
+  const victim = victimId !== null ? ctx.entities.get(victimId) : null;
+  NYTHRAXIS_HEROIC_ADD_IDS.forEach((templateId, index) => {
+    const template = MOBS[templateId];
+    if (!template) return;
+    const add = createMob(ctx.nextId++, template, template.maxLevel, spawnPoints[index]);
+    applyNythraxisHeroicTuning(add);
+    add.spawnPos = { ...boss.spawnPos };
+    add.tappedById = boss.tappedById;
+    ctx.addEntity(add);
+    boss.summonedIds.push(add.id);
+    inst?.mobIds.push(add.id);
+    if (victim && !victim.dead && victim.kind === 'player') ctx.aggroMob(add, victim, false);
+  });
   ctx.emit({
     type: 'spellfx',
     sourceId: boss.id,
@@ -708,8 +902,11 @@ export function castNythraxisSoulRend(
     st.soulRendTimer = 3;
     return;
   }
+  const markCount = isHeroicNythraxis(ctx, boss)
+    ? NYTHRAXIS_SOUL_REND_MARKS_HEROIC
+    : NYTHRAXIS_SOUL_REND_MARKS;
   const picked: Entity[] = [];
-  while (picked.length < 3 && candidates.length > 0) {
+  while (picked.length < markCount && candidates.length > 0) {
     const idx = ctx.rng.int(0, candidates.length - 1);
     picked.push(candidates.splice(idx, 1)[0]);
   }
@@ -748,6 +945,7 @@ export function updateNythraxisSoulRend(
   if (st.soulRendMarks.length === 0) return;
   for (const mark of st.soulRendMarks) mark.remaining -= DT;
   if (st.soulRendMarks.some((m) => m.remaining > 0)) return;
+  const rendMult = isHeroicNythraxis(ctx, boss) ? NYTHRAXIS_SOUL_REND_HEROIC_MULT : 1;
   const marked = st.soulRendMarks
     .map((m) => ctx.entities.get(m.playerId))
     .filter((e): e is Entity => !!e && e.kind === 'player' && !e.dead);
@@ -756,7 +954,16 @@ export function updateNythraxisSoulRend(
       (other) => dist2d(other.pos, p.pos) <= NYTHRAXIS_SOUL_REND_STACK_RANGE,
     ).length;
     const share = Math.max(1, stacked);
-    ctx.dealDamage(boss, p, Math.ceil(p.maxHp / share), false, 'shadow', 'Soul Rend', 'hit', true);
+    ctx.dealDamage(
+      boss,
+      p,
+      Math.ceil((p.maxHp * rendMult) / share),
+      false,
+      'shadow',
+      'Soul Rend',
+      'hit',
+      true,
+    );
     p.auras = p.auras.filter((a) => a.id !== 'nythraxis_soul_rend');
     ctx.emit({
       type: 'spellfx',
@@ -846,17 +1053,26 @@ export function updateNythraxisDeathlessRage(
     school: 'shadow',
     fx: 'nova',
   });
+  const ragePct = isHeroicNythraxis(ctx, boss)
+    ? NYTHRAXIS_DEATHLESS_PCT_HEROIC
+    : NYTHRAXIS_DEATHLESS_PCT;
   for (const p of playersInNythraxisRoom(ctx, boss)) {
     ctx.dealDamage(
       boss,
       p,
-      Math.ceil(p.maxHp * 0.82),
+      Math.ceil(p.maxHp * ragePct),
       false,
       'shadow',
       'Deathless Rage',
       'hit',
       true,
     );
+  }
+  // Heroic: an uninterrupted Deathless Rage (the pillar cast) raises the court
+  // right after it lands, and it repeats each Deathless Rage cycle in phase 2,
+  // but only once the previous court has fallen, so the adds never stack.
+  if (isHeroicNythraxis(ctx, boss) && !nythraxisHeroicCourtPending(ctx, st)) {
+    startNythraxisHeroicSummon(ctx, boss, st);
   }
 }
 

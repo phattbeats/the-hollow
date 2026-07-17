@@ -179,6 +179,7 @@ function makeCtx() {
     canAddItem: vi.fn(() => true),
     partyOf: vi.fn(() => null),
     removeFromParty: vi.fn(),
+    setRaidDifficulty: vi.fn(),
     dropPartyMarkers: vi.fn(),
     onMobKilledForQuests: vi.fn(),
     onInventoryChangedForQuests: vi.fn(),

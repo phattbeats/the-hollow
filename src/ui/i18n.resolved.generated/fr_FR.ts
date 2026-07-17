@@ -5688,6 +5688,15 @@ export const fr_FR: EnTranslations = {
       "stormcallers_spaulders": {
         "name": "Spallières d'Appel-tempête"
       },
+      "deathless_greatblade": {
+        "name": "Grande Lame immortelle"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "Sceptre de la Cour immortelle"
+      },
+      "stormcallers_focus": {
+        "name": "Point focal de l'Appel-tempête"
+      },
       "unknown_alien_weaponry": {
         "name": "Armement alien inconnu"
       },
@@ -5911,6 +5920,15 @@ export const fr_FR: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Fléau de Thornpeak"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "Esprit d'Aldren"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "Esprit de Malric"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "Esprit de Voss"
       },
       "reliquary_ledger_wraith": {
         "name": "Spectre du registre"

@@ -5688,6 +5688,15 @@ export const da_DK: EnTranslations = {
       "stormcallers_spaulders": {
         "name": "Stormkalderens Skulderplader"
       },
+      "deathless_greatblade": {
+        "name": "Det Udødelige Storsværd"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "Scepter fra Den Udødelige Hof"
+      },
+      "stormcallers_focus": {
+        "name": "Stormkalderens Fokus"
+      },
       "unknown_alien_weaponry": {
         "name": "Ukendt Fremmedartet Våben"
       },
@@ -5911,6 +5920,15 @@ export const da_DK: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Tornetops Svøbe"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "Aldrens Ånd"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "Malrics Ånd"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "Voss' Ånd"
       },
       "reliquary_ledger_wraith": {
         "name": "Regnskabsgenfærd"

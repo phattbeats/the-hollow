@@ -3350,6 +3350,9 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'hudChrome.controller.help':
     'El stick izquierdo mueve, el derecho controla la cámara. Abre una ventana para usar el puntero en pantalla.',
   'entities.mobs.nythraxis_skeleton_warrior.name': 'Guardia real alzado',
+  'entities.mobs.nythraxis_heroic_warrior_add.name': 'Espíritu de Aldren',
+  'entities.mobs.nythraxis_heroic_priest_add.name': 'Espíritu de Malric',
+  'entities.mobs.nythraxis_heroic_rogue_add.name': 'Espíritu de Voss',
   'entities.mobs.nythraxis_scourge_of_thornpeak.name': 'Nythraxis, Azote de Thornpeak',
   'entities.dungeons.nythraxis_boss_arena.name': 'Arena de banda de Nythraxis',
   'entities.dungeons.nythraxis_boss_arena.enterText': 'Cruzas la puerta real sellada.',
@@ -3365,6 +3368,9 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'entities.items.soulflame_mantle.name': 'Manto Llama de Alma',
   'entities.items.stormcallers_crown.name': 'Corona del Invocatormentas',
   'entities.items.stormcallers_spaulders.name': 'Bufas del Invocatormentas',
+  'entities.items.deathless_greatblade.name': 'Gran Espada Inmortal',
+  'entities.items.scepter_of_the_deathless_court.name': 'Cetro de la Corte Inmortal',
+  'entities.items.stormcallers_focus.name': 'Enfoque del Invocatormentas',
   'hud.chat.context.convertToRaid': 'Convertir en banda',
   'hud.chat.context.convertToParty': 'Convertir en grupo',
   'hudChrome.raidConvert.leaderOnly':

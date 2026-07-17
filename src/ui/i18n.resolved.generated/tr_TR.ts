@@ -5688,6 +5688,15 @@ export const tr_TR: EnTranslations = {
       "stormcallers_spaulders": {
         "name": "Fırtınaçağıranın Omuzlukları"
       },
+      "deathless_greatblade": {
+        "name": "Ölümsüz Büyük Kılıç"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "Ölümsüz Sarayın Asası"
+      },
+      "stormcallers_focus": {
+        "name": "Fırtınaçağıranın Odağı"
+      },
       "unknown_alien_weaponry": {
         "name": "Bilinmeyen Uzaylı Silahı"
       },
@@ -5911,6 +5920,15 @@ export const tr_TR: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Dikenzirve Belası"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "Aldren'in Ruhu"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "Malric'in Ruhu"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "Voss'un Ruhu"
       },
       "reliquary_ledger_wraith": {
         "name": "Defter Hayaleti"

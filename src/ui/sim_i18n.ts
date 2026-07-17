@@ -194,6 +194,7 @@ const baseEnTable = {
   'mechanic.timberfallHeave': 'Timberfall Heave',
   'mechanic.heartwoodEruption': 'Heartwood Eruption',
   'aura.graspingRoots': 'Grasping Roots',
+  'mechanic.channelInterrupted': '{name} is interrupted!',
 } as const;
 
 const petEnTable = {
@@ -416,6 +417,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.timberfallHeave': 'Timberfall Heave',
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
+    'mechanic.channelInterrupted': '{name} is interrupted!',
   },
   es: {
     'log.learnedAbility': 'Has aprendido una nueva habilidad: {name}.',
@@ -586,6 +588,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.tamed': 'Domado',
     'aura.causticSpores': 'Esporas Cáusticas',
     'aura.elixirBear': 'Poder del Oso',
+    'mechanic.channelInterrupted': '{name} is interrupted!',
   },
   es_ES: {
     'log.learnedAbility': 'Has aprendido una nueva habilidad: {name}.',
@@ -757,6 +760,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.tamed': 'Domado',
     'aura.causticSpores': 'Esporas Cáusticas',
     'aura.elixirBear': 'Poder del Oso',
+    'mechanic.channelInterrupted': '{name} is interrupted!',
   },
   fr_FR: {
     'log.learnedAbility': 'Vous avez appris une nouvelle technique : {name}.',
@@ -934,6 +938,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.tamed': 'Apprivoisé',
     'aura.causticSpores': 'Spores Caustiques',
     'aura.elixirBear': "Puissance de l'Ours",
+    'mechanic.channelInterrupted': '{name} is interrupted!',
   },
   fr_CA: {
     'log.learnedAbility': 'Vous avez appris une nouvelle technique : {name}.',
@@ -1112,6 +1117,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.tamed': 'Apprivoisé',
     'aura.causticSpores': 'Spores Caustiques',
     'aura.elixirBear': "Puissance de l'Ours",
+    'mechanic.channelInterrupted': '{name} is interrupted!',
   },
   en_CA: {
     'log.learnedAbility': 'You have learned a new ability: {name}.',
@@ -1281,6 +1287,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.tamed': 'Tamed',
     'aura.causticSpores': 'Caustic Spores',
     'aura.elixirBear': 'Might of the Bear',
+    'mechanic.channelInterrupted': '{name} is interrupted!',
   },
   it_IT: {
     'log.learnedAbility': 'Hai imparato una nuova abilità: {name}.',
@@ -1452,6 +1459,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.tamed': 'Addomesticato',
     'aura.causticSpores': 'Spore Caustiche',
     'aura.elixirBear': "Potenza dell'Orso",
+    'mechanic.channelInterrupted': '{name} is interrupted!',
   },
   de_DE: {
     'log.learnedAbility': 'Ihr habt eine neue Fähigkeit erlernt: {name}.',
@@ -1625,6 +1633,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.tamed': 'Gezähmt',
     'aura.causticSpores': 'Ätzende Sporen',
     'aura.elixirBear': 'Macht des Bären',
+    'mechanic.channelInterrupted': '{name} is interrupted!',
   },
   zh_CN: {
     'log.learnedAbility': '你学会了新技能：{name}。',
@@ -1793,6 +1802,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.tamed': '已驯服',
     'aura.causticSpores': '腐蚀孢子',
     'aura.elixirBear': '巨熊之力',
+    'mechanic.channelInterrupted': '{name} is interrupted!',
   },
   zh_TW: {
     'log.learnedAbility': '你學會了新技能：{name}。',
@@ -1961,6 +1971,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.tamed': '馴服',
     'aura.causticSpores': '腐蝕孢子',
     'aura.elixirBear': '巨熊之力',
+    'mechanic.channelInterrupted': '{name} is interrupted!',
   },
   ko_KR: {
     'log.learnedAbility': '새로운 기술을 배웠습니다: {name}.',
@@ -2131,6 +2142,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.tamed': '길들여짐',
     'aura.causticSpores': '부식성 포자',
     'aura.elixirBear': '곰의 힘',
+    'mechanic.channelInterrupted': '{name} is interrupted!',
   },
   ja_JP: {
     'log.learnedAbility': '新しいアビリティ「{name}」を習得しました。',
@@ -2304,6 +2316,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.tamed': 'テイム',
     'aura.causticSpores': '腐食胞子',
     'aura.elixirBear': '熊の力',
+    'mechanic.channelInterrupted': '{name} is interrupted!',
   },
   pt_BR: {
     'log.learnedAbility': 'Você aprendeu uma nova habilidade: {name}.',
@@ -2476,6 +2489,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.tamed': 'Domado',
     'aura.causticSpores': 'Esporos Cáusticos',
     'aura.elixirBear': 'Força do Urso',
+    'mechanic.channelInterrupted': '{name} is interrupted!',
   },
   ru_RU: {
     'log.learnedAbility': 'Вы изучили новое умение: {name}.',
@@ -2649,6 +2663,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'aura.tamed': 'Приручён',
     'aura.causticSpores': 'Едкие споры',
     'aura.elixirBear': 'Мощь Медведя',
+    'mechanic.channelInterrupted': '{name} is interrupted!',
   },
   ...BASE_NEW,
 };
@@ -4027,7 +4042,11 @@ type RaidExtraKey =
   | 'royalDoorSealed'
   | 'locked'
   | 'engagedSealed'
-  | 'mustFall';
+  | 'mustFall'
+  | 'leaderSetDifficulty'
+  | 'alreadySetTo'
+  | 'difficultySet'
+  | 'heroicLocked';
 
 export const RAID_EXTRA: Record<SupportedLanguage, Record<RaidExtraKey, string>> = {
   en: {
@@ -4048,6 +4067,10 @@ export const RAID_EXTRA: Record<SupportedLanguage, Record<RaidExtraKey, string>>
     locked: 'You are locked to Nythraxis Raid Arena.',
     engagedSealed: 'Nythraxis is engaged - the royal door has sealed shut.',
     mustFall: 'The royal door is sealed - Nythraxis must fall first.',
+    leaderSetDifficulty: 'Only the raid leader may set the raid difficulty.',
+    alreadySetTo: 'The raid is already set to {difficulty}.',
+    difficultySet: 'Raid difficulty set to {difficulty}.',
+    heroicLocked: 'You are locked to Heroic Nythraxis Raid Arena.',
   },
   en_CA: {
     converted: 'Your party has converted to a raid group.',
@@ -4067,6 +4090,10 @@ export const RAID_EXTRA: Record<SupportedLanguage, Record<RaidExtraKey, string>>
     locked: 'You are locked to Nythraxis Raid Arena.',
     engagedSealed: 'Nythraxis is engaged - the royal door has sealed shut.',
     mustFall: 'The royal door is sealed - Nythraxis must fall first.',
+    leaderSetDifficulty: 'Only the raid leader may set the raid difficulty.',
+    alreadySetTo: 'The raid is already set to {difficulty}.',
+    difficultySet: 'Raid difficulty set to {difficulty}.',
+    heroicLocked: 'You are locked to Heroic Nythraxis Raid Arena.',
   },
   es: {
     converted: 'Tu grupo se ha convertido en una banda.',
@@ -4086,6 +4113,10 @@ export const RAID_EXTRA: Record<SupportedLanguage, Record<RaidExtraKey, string>>
     locked: 'Estas vinculado a la Arena de banda de Nythraxis.',
     engagedSealed: 'Nythraxis esta en combate; la puerta real se ha sellado.',
     mustFall: 'La puerta real esta sellada; Nythraxis debe caer primero.',
+    leaderSetDifficulty: 'Only the raid leader may set the raid difficulty.',
+    alreadySetTo: 'The raid is already set to {difficulty}.',
+    difficultySet: 'Raid difficulty set to {difficulty}.',
+    heroicLocked: 'You are locked to Heroic Nythraxis Raid Arena.',
   },
   es_ES: {
     converted: 'Tu grupo se ha convertido en una banda.',
@@ -4105,6 +4136,10 @@ export const RAID_EXTRA: Record<SupportedLanguage, Record<RaidExtraKey, string>>
     locked: 'Estas vinculado a la Arena de banda de Nythraxis.',
     engagedSealed: 'Nythraxis esta en combate; la puerta real se ha sellado.',
     mustFall: 'La puerta real esta sellada; Nythraxis debe caer primero.',
+    leaderSetDifficulty: 'Only the raid leader may set the raid difficulty.',
+    alreadySetTo: 'The raid is already set to {difficulty}.',
+    difficultySet: 'Raid difficulty set to {difficulty}.',
+    heroicLocked: 'You are locked to Heroic Nythraxis Raid Arena.',
   },
   fr_FR: {
     converted: 'Votre groupe est devenu un raid.',
@@ -4124,6 +4159,10 @@ export const RAID_EXTRA: Record<SupportedLanguage, Record<RaidExtraKey, string>>
     locked: 'Vous etes lie a larene de raid de Nythraxis.',
     engagedSealed: 'Nythraxis est engage; la porte royale sest scellee.',
     mustFall: 'La porte royale est scellee; Nythraxis doit tomber dabord.',
+    leaderSetDifficulty: 'Only the raid leader may set the raid difficulty.',
+    alreadySetTo: 'The raid is already set to {difficulty}.',
+    difficultySet: 'Raid difficulty set to {difficulty}.',
+    heroicLocked: 'You are locked to Heroic Nythraxis Raid Arena.',
   },
   fr_CA: {
     converted: 'Votre groupe est devenu un raid.',
@@ -4143,6 +4182,10 @@ export const RAID_EXTRA: Record<SupportedLanguage, Record<RaidExtraKey, string>>
     locked: 'Vous etes lie a larene de raid de Nythraxis.',
     engagedSealed: 'Nythraxis est engage; la porte royale sest scellee.',
     mustFall: 'La porte royale est scellee; Nythraxis doit tomber dabord.',
+    leaderSetDifficulty: 'Only the raid leader may set the raid difficulty.',
+    alreadySetTo: 'The raid is already set to {difficulty}.',
+    difficultySet: 'Raid difficulty set to {difficulty}.',
+    heroicLocked: 'You are locked to Heroic Nythraxis Raid Arena.',
   },
   it_IT: {
     converted: 'Il tuo gruppo e diventato un raid.',
@@ -4162,6 +4205,10 @@ export const RAID_EXTRA: Record<SupportedLanguage, Record<RaidExtraKey, string>>
     locked: 'Sei vincolato all Arena raid di Nythraxis.',
     engagedSealed: 'Nythraxis e in combattimento; la porta reale si e sigillata.',
     mustFall: 'La porta reale e sigillata; Nythraxis deve cadere prima.',
+    leaderSetDifficulty: 'Only the raid leader may set the raid difficulty.',
+    alreadySetTo: 'The raid is already set to {difficulty}.',
+    difficultySet: 'Raid difficulty set to {difficulty}.',
+    heroicLocked: 'You are locked to Heroic Nythraxis Raid Arena.',
   },
   de_DE: {
     converted: 'Eure Gruppe wurde in einen Schlachtzug umgewandelt.',
@@ -4182,6 +4229,10 @@ export const RAID_EXTRA: Record<SupportedLanguage, Record<RaidExtraKey, string>>
     locked: 'Ihr seid an die Nythraxis-Schlachtzugsarena gebunden.',
     engagedSealed: 'Nythraxis ist im Kampf; die koenigliche Tuer hat sich versiegelt.',
     mustFall: 'Die koenigliche Tuer ist versiegelt; Nythraxis muss zuerst fallen.',
+    leaderSetDifficulty: 'Only the raid leader may set the raid difficulty.',
+    alreadySetTo: 'The raid is already set to {difficulty}.',
+    difficultySet: 'Raid difficulty set to {difficulty}.',
+    heroicLocked: 'You are locked to Heroic Nythraxis Raid Arena.',
   },
   zh_CN: {
     converted: '你的队伍已转换为团队。',
@@ -4201,6 +4252,10 @@ export const RAID_EXTRA: Record<SupportedLanguage, Record<RaidExtraKey, string>>
     locked: '你已锁定到尼瑟拉克斯团队竞技场。',
     engagedSealed: '尼瑟拉克斯已进入战斗；王室之门已经封闭。',
     mustFall: '王室之门已封闭；必须先击败尼瑟拉克斯。',
+    leaderSetDifficulty: 'Only the raid leader may set the raid difficulty.',
+    alreadySetTo: 'The raid is already set to {difficulty}.',
+    difficultySet: 'Raid difficulty set to {difficulty}.',
+    heroicLocked: 'You are locked to Heroic Nythraxis Raid Arena.',
   },
   zh_TW: {
     converted: '你的隊伍已轉換為團隊。',
@@ -4220,6 +4275,10 @@ export const RAID_EXTRA: Record<SupportedLanguage, Record<RaidExtraKey, string>>
     locked: '你已鎖定到尼瑟拉克斯團隊競技場。',
     engagedSealed: '尼瑟拉克斯已進入戰鬥；王室之門已經封閉。',
     mustFall: '王室之門已封閉；必須先擊敗尼瑟拉克斯。',
+    leaderSetDifficulty: 'Only the raid leader may set the raid difficulty.',
+    alreadySetTo: 'The raid is already set to {difficulty}.',
+    difficultySet: 'Raid difficulty set to {difficulty}.',
+    heroicLocked: 'You are locked to Heroic Nythraxis Raid Arena.',
   },
   ko_KR: {
     converted: '파티가 공격대 그룹으로 전환되었습니다.',
@@ -4239,6 +4298,10 @@ export const RAID_EXTRA: Record<SupportedLanguage, Record<RaidExtraKey, string>>
     locked: '니트락시스 공격대 투기장에 귀속되어 있습니다.',
     engagedSealed: '니트락시스가 전투 중입니다. 왕실 문이 봉인되었습니다.',
     mustFall: '왕실 문이 봉인되었습니다. 먼저 니트락시스를 쓰러뜨려야 합니다.',
+    leaderSetDifficulty: 'Only the raid leader may set the raid difficulty.',
+    alreadySetTo: 'The raid is already set to {difficulty}.',
+    difficultySet: 'Raid difficulty set to {difficulty}.',
+    heroicLocked: 'You are locked to Heroic Nythraxis Raid Arena.',
   },
   ja_JP: {
     converted: 'パーティがレイドグループに変換されました。',
@@ -4258,6 +4321,10 @@ export const RAID_EXTRA: Record<SupportedLanguage, Record<RaidExtraKey, string>>
     locked: 'ナイスラクシスのレイドアリーナにロックされています。',
     engagedSealed: 'ナイスラクシスが戦闘中です。王家の扉は封印されました。',
     mustFall: '王家の扉は封印されています。先にナイスラクシスを倒さねばなりません。',
+    leaderSetDifficulty: 'Only the raid leader may set the raid difficulty.',
+    alreadySetTo: 'The raid is already set to {difficulty}.',
+    difficultySet: 'Raid difficulty set to {difficulty}.',
+    heroicLocked: 'You are locked to Heroic Nythraxis Raid Arena.',
   },
   pt_BR: {
     converted: 'Seu grupo foi convertido em raide.',
@@ -4277,6 +4344,10 @@ export const RAID_EXTRA: Record<SupportedLanguage, Record<RaidExtraKey, string>>
     locked: 'Voce esta salvo na Arena de Raide de Nythraxis.',
     engagedSealed: 'Nythraxis esta em combate; a porta real se selou.',
     mustFall: 'A porta real esta selada; Nythraxis deve cair primeiro.',
+    leaderSetDifficulty: 'Only the raid leader may set the raid difficulty.',
+    alreadySetTo: 'The raid is already set to {difficulty}.',
+    difficultySet: 'Raid difficulty set to {difficulty}.',
+    heroicLocked: 'You are locked to Heroic Nythraxis Raid Arena.',
   },
   ru_RU: {
     converted: 'Ваша группа преобразована в рейд.',
@@ -4296,6 +4367,10 @@ export const RAID_EXTRA: Record<SupportedLanguage, Record<RaidExtraKey, string>>
     locked: 'Вы привязаны к рейдовой арене Нитраксиса.',
     engagedSealed: 'Нитраксис уже в бою; королевская дверь запечаталась.',
     mustFall: 'Королевская дверь запечатана; сначала должен пасть Нитраксис.',
+    leaderSetDifficulty: 'Only the raid leader may set the raid difficulty.',
+    alreadySetTo: 'The raid is already set to {difficulty}.',
+    difficultySet: 'Raid difficulty set to {difficulty}.',
+    heroicLocked: 'You are locked to Heroic Nythraxis Raid Arena.',
   },
   ...RAID_NEW,
 };
@@ -4675,12 +4750,28 @@ const RULES: Rule[] = [
   { re: /^The royal door is sealed to you\.$/, build: () => tRaidExtra('royalDoorSealed') },
   { re: /^You are locked to Nythraxis Raid Arena\.$/, build: () => tRaidExtra('locked') },
   {
+    re: /^You are locked to Heroic Nythraxis Raid Arena\.$/,
+    build: () => tRaidExtra('heroicLocked'),
+  },
+  {
     re: /^Nythraxis is engaged — the royal door has sealed shut\.$/,
     build: () => tRaidExtra('engagedSealed'),
   },
   {
     re: /^The royal door is sealed — Nythraxis must fall first\.$/,
     build: () => tRaidExtra('mustFall'),
+  },
+  {
+    re: /^Only the raid leader may set the raid difficulty\.$/,
+    build: () => tRaidExtra('leaderSetDifficulty'),
+  },
+  {
+    re: /^The raid is already set to (.+)\.$/,
+    build: (m) => tRaidExtra('alreadySetTo', { difficulty: m[1] }),
+  },
+  {
+    re: /^Raid difficulty set to (.+)\.$/,
+    build: (m) => tRaidExtra('difficultySet', { difficulty: m[1] }),
   },
   {
     re: /^You join the Ashen Coliseum 2v2 queue\. Stand by for opponents[.…]{1,3}$/,
@@ -5128,6 +5219,13 @@ const RULES: Rule[] = [
   {
     re: /^Homestead: \/homestead, \/homestead claim\.$/,
     build: () => t('sim.homestead.helpLine'),
+  },
+  // A channelHeal mechanic's channel breaking on CC (Heroic Nythraxis's Malric).
+  // Broad (one open capture), so it stays near the end, before the even broader
+  // "unleashes" rule.
+  {
+    re: /^(.+) is interrupted!$/,
+    build: (m) => tSim('mechanic.channelInterrupted', { name: locBossMechanic(m[1]) }),
   },
   // Boss/mob mechanic broadcast. Broad (two open captures), so it MUST stay last -
   // after every more-specific "{X} {verb}!" rule above (awakens, enraged, calls for aid).

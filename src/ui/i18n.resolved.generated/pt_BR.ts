@@ -5688,6 +5688,15 @@ export const pt_BR: EnTranslations = {
       "stormcallers_spaulders": {
         "name": "Espaldares do Chamatormenta"
       },
+      "deathless_greatblade": {
+        "name": "Grande Espada Imortal"
+      },
+      "scepter_of_the_deathless_court": {
+        "name": "Cetro da Corte Imortal"
+      },
+      "stormcallers_focus": {
+        "name": "Foco do Chamatormenta"
+      },
       "unknown_alien_weaponry": {
         "name": "Armamento alienígena desconhecido"
       },
@@ -5911,6 +5920,15 @@ export const pt_BR: EnTranslations = {
       },
       "nythraxis_scourge_of_thornpeak": {
         "name": "Nythraxis, Flagelo de Thornpeak"
+      },
+      "nythraxis_heroic_warrior_add": {
+        "name": "Espírito de Aldren"
+      },
+      "nythraxis_heroic_priest_add": {
+        "name": "Espírito de Malric"
+      },
+      "nythraxis_heroic_rogue_add": {
+        "name": "Espírito de Voss"
       },
       "reliquary_ledger_wraith": {
         "name": "Espectro do Registro"
