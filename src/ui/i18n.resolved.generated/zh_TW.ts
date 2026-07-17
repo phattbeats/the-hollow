@@ -313,7 +313,13 @@ export const zh_TW: EnTranslations = {
     "keybinds": {
       "emoteWheel": "表情輪盤",
       "targetFriendly": "選取最近友方",
-      "targetFriendlyNext": "切換友方目標"
+      "targetFriendlyNext": "切換友方目標",
+      "categoryPet": "寵物",
+      "petAttack": "寵物：攻擊",
+      "petStop": "寵物：停止",
+      "petTaunt": "寵物：嘲諷",
+      "petDefensive": "寵物：防禦",
+      "petAggressive": "寵物：攻擊性"
     },
     "options": {
       "clickMoveLeft": "左鍵",
@@ -984,6 +990,21 @@ export const zh_TW: EnTranslations = {
       "spore": "孢子",
       "toolTier": "{tier}級工具",
       "toolNone": "無工具"
+    },
+    "warfare": {
+      "ratingLabel": "戰意",
+      "balance": "榮譽：{amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} 榮譽",
+      "honorFloat": "+{amount} 榮譽",
+      "honorGain": "+{amount} 榮譽（{reason}）",
+      "notEnoughHonor": "榮譽不足。",
+      "reasons": {
+        "arenaWin": "競技場勝利",
+        "fiestaKill": "狂歡擊倒",
+        "fiestaComplete": "狂歡比賽",
+        "fiestaWin": "狂歡勝利"
+      }
     }
   },
   "mailUi": {
@@ -1002,6 +1023,12 @@ export const zh_TW: EnTranslations = {
     "recipient": "收件人",
     "subjectLabel": "主旨",
     "bodyPlaceholder": "寫下你的信件……",
+    "attachments": "附件（最多 {max} 件）",
+    "removeAttachment": "從這封信中移除{item}",
+    "tooltipAttach": "點擊附加到這封信",
+    "tooltipCannotAttach": "渡鴉不會攜帶任務物品",
+    "parcelQtyDecreaseAria": "少寄一個{item}",
+    "parcelQtyIncreaseAria": "多寄一個{item}",
     "send": "寄出信件",
     "needRecipientOrText": "請先填寫收件人並寫點內容再寄送。",
     "openButton": "帶我去渡鴉驛站。",
@@ -3838,6 +3865,7 @@ export const zh_TW: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality}{kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "目前已裝備",
       "ifYouEquip": "裝備後",
       "damageSpeed": "{min} - {max} 傷害 速度 {speed}",
@@ -5165,6 +5193,99 @@ export const zh_TW: EnTranslations = {
       "mistcallers_duffel": {
         "name": "喚霧者的行囊"
       },
+      "bramblewar_warhelm": {
+        "name": "荊棘戰頭部"
+      },
+      "bramblewar_warspaulders": {
+        "name": "荊棘戰肩部"
+      },
+      "bramblewar_warplate": {
+        "name": "荊棘戰胸部"
+      },
+      "bramblewar_girdle": {
+        "name": "荊棘戰腰部"
+      },
+      "bramblewar_legguards": {
+        "name": "荊棘戰腿部"
+      },
+      "bramblewar_gauntlets": {
+        "name": "荊棘戰手部"
+      },
+      "bramblewar_sabatons": {
+        "name": "荊棘戰腳部"
+      },
+      "thornbound_crown": {
+        "name": "荊棘縛頭部"
+      },
+      "thornbound_spaulders": {
+        "name": "荊棘縛肩部"
+      },
+      "thornbound_hauberk": {
+        "name": "荊棘縛胸部"
+      },
+      "thornbound_waistguard": {
+        "name": "荊棘縛腰部"
+      },
+      "thornbound_legmail": {
+        "name": "荊棘縛腿部"
+      },
+      "thornbound_handguards": {
+        "name": "荊棘縛手部"
+      },
+      "thornbound_greaves": {
+        "name": "荊棘縛腳部"
+      },
+      "nettlestalker_cowl": {
+        "name": "蕁麻潛者頭部"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "蕁麻潛者肩部"
+      },
+      "nettlestalker_harness": {
+        "name": "蕁麻潛者胸部"
+      },
+      "nettlestalker_waistband": {
+        "name": "蕁麻潛者腰部"
+      },
+      "nettlestalker_legguards": {
+        "name": "蕁麻潛者腿部"
+      },
+      "nettlestalker_grips": {
+        "name": "蕁麻潛者手部"
+      },
+      "nettlestalker_treads": {
+        "name": "蕁麻潛者腳部"
+      },
+      "mossweave_cowl": {
+        "name": "苔蘚織頭部"
+      },
+      "mossweave_mantle": {
+        "name": "苔蘚織肩部"
+      },
+      "mossweave_raiment": {
+        "name": "苔蘚織胸部"
+      },
+      "mossweave_cord": {
+        "name": "苔蘚織腰部"
+      },
+      "mossweave_legwraps": {
+        "name": "苔蘚織腿部"
+      },
+      "mossweave_handwraps": {
+        "name": "苔蘚織手部"
+      },
+      "mossweave_slippers": {
+        "name": "苔蘚織腳部"
+      },
+      "last_bloom_greatblade": {
+        "name": "末花巨刃"
+      },
+      "thornbite_razor": {
+        "name": "棘咬剃刃"
+      },
+      "heartwood_warstaff": {
+        "name": "心木戰杖"
+      },
       "bristleback_maul": {
         "name": "硬鬃重槌"
       },
@@ -5568,6 +5689,10 @@ export const zh_TW: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "護骨者護手"
+      },
+      "delve_heroic_mark": {
+        "name": "英雄聖物庫印記",
+        "flavorText": "由聖物庫守護者頒發的鈐印。在英雄軍需官處兌換聖物庫級裝備。"
       },
       "deacon_reliquary_helm": {
         "name": "執事的聖物庫頭盔"
@@ -6155,6 +6280,11 @@ export const zh_TW: EnTranslations = {
         "name": "長老亞羅",
         "title": "副職業訓練師",
         "greeting": "每一套build都始於一個問題：哪個副職業在召喚你？"
+      },
+      "bramble": {
+        "name": "布蘭博",
+        "title": "榮譽軍需官",
+        "greeting": "沙場記得每一場勝利。好好花你的榮譽吧。"
       },
       "tidewatcher_ondrel": {
         "name": "翁德瑞爾·韋恩",

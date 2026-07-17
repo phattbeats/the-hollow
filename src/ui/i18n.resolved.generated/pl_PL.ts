@@ -313,7 +313,13 @@ export const pl_PL: EnTranslations = {
     "keybinds": {
       "emoteWheel": "Koło emotek",
       "targetFriendly": "Obierz najbliższego sojusznika",
-      "targetFriendlyNext": "Przełączaj przyjazny cel"
+      "targetFriendlyNext": "Przełączaj przyjazny cel",
+      "categoryPet": "Pet",
+      "petAttack": "Pet: Attack",
+      "petStop": "Pet: Stop",
+      "petTaunt": "Pet: Taunt",
+      "petDefensive": "Pet: Defensive",
+      "petAggressive": "Pet: Aggressive"
     },
     "options": {
       "clickMoveLeft": "Lewy przycisk",
@@ -984,6 +990,21 @@ export const pl_PL: EnTranslations = {
       "spore": "Spore",
       "toolTier": "Tier {tier} tool",
       "toolNone": "No tool"
+    },
+    "warfare": {
+      "ratingLabel": "Warfare",
+      "balance": "Honor: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} Honor",
+      "honorFloat": "+{amount} Honor",
+      "honorGain": "+{amount} Honor ({reason})",
+      "notEnoughHonor": "Not enough honor.",
+      "reasons": {
+        "arenaWin": "Arena win",
+        "fiestaKill": "Fiesta takedown",
+        "fiestaComplete": "Fiesta match",
+        "fiestaWin": "Fiesta win"
+      }
     }
   },
   "mailUi": {
@@ -1002,6 +1023,12 @@ export const pl_PL: EnTranslations = {
     "recipient": "Recipient",
     "subjectLabel": "Subject",
     "bodyPlaceholder": "Write your letter...",
+    "attachments": "Attachments (up to {max})",
+    "removeAttachment": "Remove {item} from this letter",
+    "tooltipAttach": "Click to attach to this letter",
+    "tooltipCannotAttach": "The raven will not carry quest items",
+    "parcelQtyDecreaseAria": "Send one fewer {item}",
+    "parcelQtyIncreaseAria": "Send one more {item}",
     "send": "Send Letter",
     "needRecipientOrText": "Name a recipient and write something before sending.",
     "openButton": "Show me the Ravenpost.",
@@ -3838,6 +3865,7 @@ export const pl_PL: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "Aktualnie założone",
       "ifYouEquip": "Jeśli to założysz",
       "damageSpeed": "{min} - {max} obrażeń Szybkość {speed}",
@@ -5165,6 +5193,99 @@ export const pl_PL: EnTranslations = {
       "mistcallers_duffel": {
         "name": "Worek Podróżny Mistcallera"
       },
+      "bramblewar_warhelm": {
+        "name": "Cierniwojna Głowa"
+      },
+      "bramblewar_warspaulders": {
+        "name": "Cierniwojna Ramiona"
+      },
+      "bramblewar_warplate": {
+        "name": "Cierniwojna Tors"
+      },
+      "bramblewar_girdle": {
+        "name": "Cierniwojna Pas"
+      },
+      "bramblewar_legguards": {
+        "name": "Cierniwojna Nogi"
+      },
+      "bramblewar_gauntlets": {
+        "name": "Cierniwojna Dłonie"
+      },
+      "bramblewar_sabatons": {
+        "name": "Cierniwojna Stopy"
+      },
+      "thornbound_crown": {
+        "name": "Ciernywięź Głowa"
+      },
+      "thornbound_spaulders": {
+        "name": "Ciernywięź Ramiona"
+      },
+      "thornbound_hauberk": {
+        "name": "Ciernywięź Tors"
+      },
+      "thornbound_waistguard": {
+        "name": "Ciernywięź Pas"
+      },
+      "thornbound_legmail": {
+        "name": "Ciernywięź Nogi"
+      },
+      "thornbound_handguards": {
+        "name": "Ciernywięź Dłonie"
+      },
+      "thornbound_greaves": {
+        "name": "Ciernywięź Stopy"
+      },
+      "nettlestalker_cowl": {
+        "name": "Pokrzywołowca Głowa"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "Pokrzywołowca Ramiona"
+      },
+      "nettlestalker_harness": {
+        "name": "Pokrzywołowca Tors"
+      },
+      "nettlestalker_waistband": {
+        "name": "Pokrzywołowca Pas"
+      },
+      "nettlestalker_legguards": {
+        "name": "Pokrzywołowca Nogi"
+      },
+      "nettlestalker_grips": {
+        "name": "Pokrzywołowca Dłonie"
+      },
+      "nettlestalker_treads": {
+        "name": "Pokrzywołowca Stopy"
+      },
+      "mossweave_cowl": {
+        "name": "Mchotkanina Głowa"
+      },
+      "mossweave_mantle": {
+        "name": "Mchotkanina Ramiona"
+      },
+      "mossweave_raiment": {
+        "name": "Mchotkanina Tors"
+      },
+      "mossweave_cord": {
+        "name": "Mchotkanina Pas"
+      },
+      "mossweave_legwraps": {
+        "name": "Mchotkanina Nogi"
+      },
+      "mossweave_handwraps": {
+        "name": "Mchotkanina Dłonie"
+      },
+      "mossweave_slippers": {
+        "name": "Mchotkanina Stopy"
+      },
+      "last_bloom_greatblade": {
+        "name": "Wielkie Ostrze Ostatniego Kwiatu"
+      },
+      "thornbite_razor": {
+        "name": "Brzytwa Ciernioukąszenia"
+      },
+      "heartwood_warstaff": {
+        "name": "Wojenna Laska z Twardzieli"
+      },
       "bristleback_maul": {
         "name": "Tłuk szczeciniastych"
       },
@@ -5568,6 +5689,10 @@ export const pl_PL: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "Chwyty kostnego strażnika"
+      },
+      "delve_heroic_mark": {
+        "name": "Heroiczny Znak Relikwiarium",
+        "flavorText": "Wytłoczona pieczęć wydana przez strażników Relikwiarium. Wymień ją u Heroicznego Kwatermistrza na ekwipunek klasy relikwiarium."
       },
       "deacon_reliquary_helm": {
         "name": "Relikwiarzowy hełm diakona"
@@ -6155,6 +6280,11 @@ export const pl_PL: EnTranslations = {
         "name": "Elder Yarrow",
         "title": "Profession Trainer",
         "greeting": "Every build starts as a question. Which second calling speaks to you?"
+      },
+      "bramble": {
+        "name": "Bramble",
+        "title": "Honor Quartermaster",
+        "greeting": "The sands remember every victory. Spend your honor well."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",

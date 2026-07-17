@@ -313,7 +313,13 @@ export const da_DK: EnTranslations = {
     "keybinds": {
       "emoteWheel": "Følelseshjul",
       "targetFriendly": "Sigt mod nærmeste allierede",
-      "targetFriendlyNext": "Skift allieret mål"
+      "targetFriendlyNext": "Skift allieret mål",
+      "categoryPet": "Pet",
+      "petAttack": "Pet: Attack",
+      "petStop": "Pet: Stop",
+      "petTaunt": "Pet: Taunt",
+      "petDefensive": "Pet: Defensive",
+      "petAggressive": "Pet: Aggressive"
     },
     "options": {
       "clickMoveLeft": "Venstreklik",
@@ -984,6 +990,21 @@ export const da_DK: EnTranslations = {
       "spore": "Spore",
       "toolTier": "Tier {tier} tool",
       "toolNone": "No tool"
+    },
+    "warfare": {
+      "ratingLabel": "Warfare",
+      "balance": "Honor: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} Honor",
+      "honorFloat": "+{amount} Honor",
+      "honorGain": "+{amount} Honor ({reason})",
+      "notEnoughHonor": "Not enough honor.",
+      "reasons": {
+        "arenaWin": "Arena win",
+        "fiestaKill": "Fiesta takedown",
+        "fiestaComplete": "Fiesta match",
+        "fiestaWin": "Fiesta win"
+      }
     }
   },
   "mailUi": {
@@ -1002,6 +1023,12 @@ export const da_DK: EnTranslations = {
     "recipient": "Recipient",
     "subjectLabel": "Subject",
     "bodyPlaceholder": "Write your letter...",
+    "attachments": "Attachments (up to {max})",
+    "removeAttachment": "Remove {item} from this letter",
+    "tooltipAttach": "Click to attach to this letter",
+    "tooltipCannotAttach": "The raven will not carry quest items",
+    "parcelQtyDecreaseAria": "Send one fewer {item}",
+    "parcelQtyIncreaseAria": "Send one more {item}",
     "send": "Send Letter",
     "needRecipientOrText": "Name a recipient and write something before sending.",
     "openButton": "Show me the Ravenpost.",
@@ -3838,6 +3865,7 @@ export const da_DK: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "Aktuelt udrustet",
       "ifYouEquip": "Hvis du udruster denne",
       "damageSpeed": "{min} - {max} Skade Hastighed {speed}",
@@ -5165,6 +5193,99 @@ export const da_DK: EnTranslations = {
       "mistcallers_duffel": {
         "name": "Mistcallers Sømandssæk"
       },
+      "bramblewar_warhelm": {
+        "name": "Tjørnekrig Hoved"
+      },
+      "bramblewar_warspaulders": {
+        "name": "Tjørnekrig Skuldre"
+      },
+      "bramblewar_warplate": {
+        "name": "Tjørnekrig Bryst"
+      },
+      "bramblewar_girdle": {
+        "name": "Tjørnekrig Talje"
+      },
+      "bramblewar_legguards": {
+        "name": "Tjørnekrig Ben"
+      },
+      "bramblewar_gauntlets": {
+        "name": "Tjørnekrig Hænder"
+      },
+      "bramblewar_sabatons": {
+        "name": "Tjørnekrig Fødder"
+      },
+      "thornbound_crown": {
+        "name": "Tjørnebundet Hoved"
+      },
+      "thornbound_spaulders": {
+        "name": "Tjørnebundet Skuldre"
+      },
+      "thornbound_hauberk": {
+        "name": "Tjørnebundet Bryst"
+      },
+      "thornbound_waistguard": {
+        "name": "Tjørnebundet Talje"
+      },
+      "thornbound_legmail": {
+        "name": "Tjørnebundet Ben"
+      },
+      "thornbound_handguards": {
+        "name": "Tjørnebundet Hænder"
+      },
+      "thornbound_greaves": {
+        "name": "Tjørnebundet Fødder"
+      },
+      "nettlestalker_cowl": {
+        "name": "Brændenældejæger Hoved"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "Brændenældejæger Skuldre"
+      },
+      "nettlestalker_harness": {
+        "name": "Brændenældejæger Bryst"
+      },
+      "nettlestalker_waistband": {
+        "name": "Brændenældejæger Talje"
+      },
+      "nettlestalker_legguards": {
+        "name": "Brændenældejæger Ben"
+      },
+      "nettlestalker_grips": {
+        "name": "Brændenældejæger Hænder"
+      },
+      "nettlestalker_treads": {
+        "name": "Brændenældejæger Fødder"
+      },
+      "mossweave_cowl": {
+        "name": "Mosvævet Hoved"
+      },
+      "mossweave_mantle": {
+        "name": "Mosvævet Skuldre"
+      },
+      "mossweave_raiment": {
+        "name": "Mosvævet Bryst"
+      },
+      "mossweave_cord": {
+        "name": "Mosvævet Talje"
+      },
+      "mossweave_legwraps": {
+        "name": "Mosvævet Ben"
+      },
+      "mossweave_handwraps": {
+        "name": "Mosvævet Hænder"
+      },
+      "mossweave_slippers": {
+        "name": "Mosvævet Fødder"
+      },
+      "last_bloom_greatblade": {
+        "name": "Sidste Blomstrings Storsværd"
+      },
+      "thornbite_razor": {
+        "name": "Tornebid-Ragekniv"
+      },
+      "heartwood_warstaff": {
+        "name": "Kerneved-Krigsstav"
+      },
       "bristleback_maul": {
         "name": "Børsterygs-Lemlæster"
       },
@@ -5568,6 +5689,10 @@ export const da_DK: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "Benvogterens Greb"
+      },
+      "delve_heroic_mark": {
+        "name": "Heroisk Relikvarie-Mærke",
+        "flavorText": "Et stemplet segl udstedt af Relikvariets vogtere. Indløs det hos Den Heroiske Kvartermester for udstyr af relikvariegrad."
       },
       "deacon_reliquary_helm": {
         "name": "Diakonens Relikviehjelm"
@@ -6155,6 +6280,11 @@ export const da_DK: EnTranslations = {
         "name": "Elder Yarrow",
         "title": "Profession Trainer",
         "greeting": "Every build starts as a question. Which second calling speaks to you?"
+      },
+      "bramble": {
+        "name": "Bramble",
+        "title": "Honor Quartermaster",
+        "greeting": "The sands remember every victory. Spend your honor well."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",

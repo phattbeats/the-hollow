@@ -313,7 +313,13 @@ export const ja_JP: EnTranslations = {
     "keybinds": {
       "emoteWheel": "エモートホイール",
       "targetFriendly": "最も近い味方をターゲット",
-      "targetFriendlyNext": "味方ターゲットを順に切り替え"
+      "targetFriendlyNext": "味方ターゲットを順に切り替え",
+      "categoryPet": "ペット",
+      "petAttack": "ペット：攻撃",
+      "petStop": "ペット：停止",
+      "petTaunt": "ペット：挑発",
+      "petDefensive": "ペット：防御",
+      "petAggressive": "ペット：攻撃的"
     },
     "options": {
       "clickMoveLeft": "左クリック",
@@ -984,6 +990,21 @@ export const ja_JP: EnTranslations = {
       "spore": "胞子",
       "toolTier": "ティア{tier}の道具",
       "toolNone": "道具なし"
+    },
+    "warfare": {
+      "ratingLabel": "戦意",
+      "balance": "名誉：{amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "名誉 {amount}",
+      "honorFloat": "+{amount} 名誉",
+      "honorGain": "+{amount} 名誉（{reason}）",
+      "notEnoughHonor": "名誉が足りません。",
+      "reasons": {
+        "arenaWin": "アリーナ勝利",
+        "fiestaKill": "フィエスタ撃破",
+        "fiestaComplete": "フィエスタ試合",
+        "fiestaWin": "フィエスタ勝利"
+      }
     }
   },
   "mailUi": {
@@ -1002,6 +1023,12 @@ export const ja_JP: EnTranslations = {
     "recipient": "宛先",
     "subjectLabel": "件名",
     "bodyPlaceholder": "手紙を書いてください...",
+    "attachments": "添付物（最大{max}個）",
+    "removeAttachment": "この手紙から{item}を外す",
+    "tooltipAttach": "クリックしてこの手紙に添付",
+    "tooltipCannotAttach": "渡り烏はクエストアイテムを運びません",
+    "parcelQtyDecreaseAria": "{item}を1つ減らして送る",
+    "parcelQtyIncreaseAria": "{item}を1つ増やして送る",
     "send": "手紙を送る",
     "needRecipientOrText": "送信する前に宛先を指定し、本文を入力してください。",
     "openButton": "レイヴンポストへ案内してください。",
@@ -3838,6 +3865,7 @@ export const ja_JP: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "現在の装備",
       "ifYouEquip": "これを装備すると",
       "damageSpeed": "{min} - {max} ダメージ 速度 {speed}",
@@ -5165,6 +5193,99 @@ export const ja_JP: EnTranslations = {
       "mistcallers_duffel": {
         "name": "ミストコーラーのダッフルバッグ"
       },
+      "bramblewar_warhelm": {
+        "name": "いばら戦の頭"
+      },
+      "bramblewar_warspaulders": {
+        "name": "いばら戦の肩"
+      },
+      "bramblewar_warplate": {
+        "name": "いばら戦の胸"
+      },
+      "bramblewar_girdle": {
+        "name": "いばら戦の腰"
+      },
+      "bramblewar_legguards": {
+        "name": "いばら戦の脚"
+      },
+      "bramblewar_gauntlets": {
+        "name": "いばら戦の手"
+      },
+      "bramblewar_sabatons": {
+        "name": "いばら戦の足"
+      },
+      "thornbound_crown": {
+        "name": "いばら縛の頭"
+      },
+      "thornbound_spaulders": {
+        "name": "いばら縛の肩"
+      },
+      "thornbound_hauberk": {
+        "name": "いばら縛の胸"
+      },
+      "thornbound_waistguard": {
+        "name": "いばら縛の腰"
+      },
+      "thornbound_legmail": {
+        "name": "いばら縛の脚"
+      },
+      "thornbound_handguards": {
+        "name": "いばら縛の手"
+      },
+      "thornbound_greaves": {
+        "name": "いばら縛の足"
+      },
+      "nettlestalker_cowl": {
+        "name": "棘草追跡の頭"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "棘草追跡の肩"
+      },
+      "nettlestalker_harness": {
+        "name": "棘草追跡の胸"
+      },
+      "nettlestalker_waistband": {
+        "name": "棘草追跡の腰"
+      },
+      "nettlestalker_legguards": {
+        "name": "棘草追跡の脚"
+      },
+      "nettlestalker_grips": {
+        "name": "棘草追跡の手"
+      },
+      "nettlestalker_treads": {
+        "name": "棘草追跡の足"
+      },
+      "mossweave_cowl": {
+        "name": "苔織りの頭"
+      },
+      "mossweave_mantle": {
+        "name": "苔織りの肩"
+      },
+      "mossweave_raiment": {
+        "name": "苔織りの胸"
+      },
+      "mossweave_cord": {
+        "name": "苔織りの腰"
+      },
+      "mossweave_legwraps": {
+        "name": "苔織りの脚"
+      },
+      "mossweave_handwraps": {
+        "name": "苔織りの手"
+      },
+      "mossweave_slippers": {
+        "name": "苔織りの足"
+      },
+      "last_bloom_greatblade": {
+        "name": "最後の花の大剣"
+      },
+      "thornbite_razor": {
+        "name": "棘咬みの剃刀"
+      },
+      "heartwood_warstaff": {
+        "name": "心材の戦杖"
+      },
       "bristleback_maul": {
         "name": "ブリストルバックの大槌"
       },
@@ -5568,6 +5689,10 @@ export const ja_JP: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "骨守りの手甲"
+      },
+      "delve_heroic_mark": {
+        "name": "ヒロイック聖遺物庫の刻印",
+        "flavorText": "聖遺物庫の守人が発行した刻印。ヒロイック需品係と交換すれば、聖遺物庫級の装備が手に入る。"
       },
       "deacon_reliquary_helm": {
         "name": "助祭の聖遺物庫の兜"
@@ -6155,6 +6280,11 @@ export const ja_JP: EnTranslations = {
         "name": "ヤロウ長老",
         "title": "副職業トレーナー",
         "greeting": "ビルドはすべて、ひとつの問いから始まる。どの副職業があなたを呼んでいる？"
+      },
+      "bramble": {
+        "name": "ブランブル",
+        "title": "名誉調達官",
+        "greeting": "闘技場の砂は、すべての勝利を覚えている。名誉は賢く使うといい。"
       },
       "tidewatcher_ondrel": {
         "name": "オンドレル・ヴェイン",

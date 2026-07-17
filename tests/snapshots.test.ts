@@ -1804,8 +1804,10 @@ const ALL_DELTA_KEYS = [
   'gprof',
   'hearth',
   'homestead',
+  'honor',
   'housing',
   'inv',
+  'lhonor',
   'lockouts',
   'lroll',
   'lrollg',
@@ -1848,6 +1850,7 @@ const TERSE_TO_IWORLD: Record<string, string> = {
   homestead: 'homesteadInfo',
   housing: 'housingInfo',
   inv: 'inventory',
+  lhonor: 'lifetimeHonor',
   lockouts: 'selfLockouts',
   lroll: 'lootRollPrompts',
   lrollg: 'lootRollGroupStatus',
@@ -1949,6 +1952,8 @@ function dirtyEveryDeltaField(): {
   meta.lifetimeXp = 555;
   meta.restedXp = 222;
   meta.prestigeRank = 3;
+  meta.honor = 4321;
+  meta.lifetimeHonor = 9999;
   meta.delveMarks = 7;
   meta.delveClears = { 'collapsed_reliquary:heroic': 1 };
   meta.companionUpgrades = { companion_tessa: 2 };
@@ -2029,6 +2034,8 @@ describe('full self-state snapshot delta fixture', () => {
     expect(client.lifetimeXp).toBe(555); // lxp -> lifetimeXp
     expect(client.restedXp).toBe(222); // rxp -> restedXp
     expect(client.prestigeRank).toBe(3); // prk -> prestigeRank
+    expect(client.honor).toBe(4321); // honor (same name both sides)
+    expect(client.lifetimeHonor).toBe(9999); // lhonor -> lifetimeHonor
 
     // --- fields that decode onto the client ---
     expect(client.inventory).toEqual([{ itemId: 'baked_bread', count: 3 }]); // inv -> inventory
@@ -2124,9 +2131,9 @@ describe('full self-state snapshot delta fixture', () => {
 });
 
 describe('delta-key contract pins (anti-drift)', () => {
-  it('ALL_DELTA_KEYS contains exactly 35 unique keys in sorted order', () => {
-    expect(ALL_DELTA_KEYS).toHaveLength(35);
-    expect(new Set(ALL_DELTA_KEYS).size).toBe(35);
+  it('ALL_DELTA_KEYS contains exactly 37 unique keys in sorted order', () => {
+    expect(ALL_DELTA_KEYS).toHaveLength(37);
+    expect(new Set(ALL_DELTA_KEYS).size).toBe(37);
     expect([...ALL_DELTA_KEYS]).toEqual([...ALL_DELTA_KEYS].sort());
   });
 
@@ -2139,7 +2146,7 @@ describe('delta-key contract pins (anti-drift)', () => {
     for (let m = re.exec(src); m !== null; m = re.exec(src)) scraped.add(m[1]);
     expect(scraped.has('lockouts')).toBe(true); // the multi-line call IS captured
     expect(scraped.has('lrollg')).toBe(true); // group-visible loot roll strip (PHAA-568)
-    expect(scraped.size).toBe(35);
+    expect(scraped.size).toBe(37);
     expect([...scraped].sort()).toEqual([...ALL_DELTA_KEYS].sort());
   });
 

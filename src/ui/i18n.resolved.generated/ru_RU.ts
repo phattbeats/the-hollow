@@ -313,7 +313,13 @@ export const ru_RU: EnTranslations = {
     "keybinds": {
       "emoteWheel": "Колесо эмоций",
       "targetFriendly": "Ближайший союзник",
-      "targetFriendlyNext": "Следующий союзник"
+      "targetFriendlyNext": "Следующий союзник",
+      "categoryPet": "Питомец",
+      "petAttack": "Питомец: атака",
+      "petStop": "Питомец: стоп",
+      "petTaunt": "Питомец: провокация",
+      "petDefensive": "Питомец: защита",
+      "petAggressive": "Питомец: агрессия"
     },
     "options": {
       "clickMoveLeft": "Левая кнопка",
@@ -984,6 +990,21 @@ export const ru_RU: EnTranslations = {
       "spore": "Спора",
       "toolTier": "Инструмент {tier} ур.",
       "toolNone": "Нет инструмента"
+    },
+    "warfare": {
+      "ratingLabel": "Воинственность",
+      "balance": "Честь: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} чести",
+      "honorFloat": "+{amount} чести",
+      "honorGain": "+{amount} чести ({reason})",
+      "notEnoughHonor": "Недостаточно чести.",
+      "reasons": {
+        "arenaWin": "Победа на арене",
+        "fiestaKill": "Повержение на фиесте",
+        "fiestaComplete": "Матч фиесты",
+        "fiestaWin": "Победа на фиесте"
+      }
     }
   },
   "mailUi": {
@@ -1002,6 +1023,12 @@ export const ru_RU: EnTranslations = {
     "recipient": "Получатель",
     "subjectLabel": "Тема",
     "bodyPlaceholder": "Напишите ваше письмо...",
+    "attachments": "Вложения (до {max})",
+    "removeAttachment": "Убрать {item} из этого письма",
+    "tooltipAttach": "Нажмите, чтобы приложить к этому письму",
+    "tooltipCannotAttach": "Ворон не станет нести квестовые предметы",
+    "parcelQtyDecreaseAria": "Отправить на один {item} меньше",
+    "parcelQtyIncreaseAria": "Отправить на один {item} больше",
     "send": "Отправить письмо",
     "needRecipientOrText": "Укажите получателя и напишите что-нибудь перед отправкой.",
     "openButton": "Покажите мне Воронью почту.",
@@ -3838,6 +3865,7 @@ export const ru_RU: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "Сейчас надето",
       "ifYouEquip": "Если надеть это",
       "damageSpeed": "{min} - {max} урона Скорость {speed}",
@@ -5165,6 +5193,99 @@ export const ru_RU: EnTranslations = {
       "mistcallers_duffel": {
         "name": "Баул Мистколлера"
       },
+      "bramblewar_warhelm": {
+        "name": "Терновойна: Голова"
+      },
+      "bramblewar_warspaulders": {
+        "name": "Терновойна: Плечи"
+      },
+      "bramblewar_warplate": {
+        "name": "Терновойна: Грудь"
+      },
+      "bramblewar_girdle": {
+        "name": "Терновойна: Пояс"
+      },
+      "bramblewar_legguards": {
+        "name": "Терновойна: Ноги"
+      },
+      "bramblewar_gauntlets": {
+        "name": "Терновойна: Кисти рук"
+      },
+      "bramblewar_sabatons": {
+        "name": "Терновойна: Ступни"
+      },
+      "thornbound_crown": {
+        "name": "Терносвяз: Голова"
+      },
+      "thornbound_spaulders": {
+        "name": "Терносвяз: Плечи"
+      },
+      "thornbound_hauberk": {
+        "name": "Терносвяз: Грудь"
+      },
+      "thornbound_waistguard": {
+        "name": "Терносвяз: Пояс"
+      },
+      "thornbound_legmail": {
+        "name": "Терносвяз: Ноги"
+      },
+      "thornbound_handguards": {
+        "name": "Терносвяз: Кисти рук"
+      },
+      "thornbound_greaves": {
+        "name": "Терносвяз: Ступни"
+      },
+      "nettlestalker_cowl": {
+        "name": "Крапивный Ловчий: Голова"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "Крапивный Ловчий: Плечи"
+      },
+      "nettlestalker_harness": {
+        "name": "Крапивный Ловчий: Грудь"
+      },
+      "nettlestalker_waistband": {
+        "name": "Крапивный Ловчий: Пояс"
+      },
+      "nettlestalker_legguards": {
+        "name": "Крапивный Ловчий: Ноги"
+      },
+      "nettlestalker_grips": {
+        "name": "Крапивный Ловчий: Кисти рук"
+      },
+      "nettlestalker_treads": {
+        "name": "Крапивный Ловчий: Ступни"
+      },
+      "mossweave_cowl": {
+        "name": "Мохоткань: Голова"
+      },
+      "mossweave_mantle": {
+        "name": "Мохоткань: Плечи"
+      },
+      "mossweave_raiment": {
+        "name": "Мохоткань: Грудь"
+      },
+      "mossweave_cord": {
+        "name": "Мохоткань: Пояс"
+      },
+      "mossweave_legwraps": {
+        "name": "Мохоткань: Ноги"
+      },
+      "mossweave_handwraps": {
+        "name": "Мохоткань: Кисти рук"
+      },
+      "mossweave_slippers": {
+        "name": "Мохоткань: Ступни"
+      },
+      "last_bloom_greatblade": {
+        "name": "Большой клинок последнего цветка"
+      },
+      "thornbite_razor": {
+        "name": "Бритва Шипоукус"
+      },
+      "heartwood_warstaff": {
+        "name": "Боевой посох сердцевины"
+      },
       "bristleback_maul": {
         "name": "Кувалда Щетиноспина"
       },
@@ -5568,6 +5689,10 @@ export const ru_RU: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "Рукавицы Костяного стража"
+      },
+      "delve_heroic_mark": {
+        "name": "Героическая метка Реликвария",
+        "flavorText": "Оттиснутая печать, выданная хранителями Реликвария. Обменяйте её у Героического Квартирмейстера на снаряжение реликварного качества."
       },
       "deacon_reliquary_helm": {
         "name": "Шлем реликвария дьякона"
@@ -6155,6 +6280,11 @@ export const ru_RU: EnTranslations = {
         "name": "Старейшина Ярроу",
         "title": "Наставник дополнительных профессий",
         "greeting": "Каждый билд начинается с вопроса. Какое ещё призвание зовёт вас?"
+      },
+      "bramble": {
+        "name": "Брэмбл",
+        "title": "Квартирмейстер чести",
+        "greeting": "Пески помнят каждую победу. Трать свою честь с умом."
       },
       "tidewatcher_ondrel": {
         "name": "Ондрел Вейн",

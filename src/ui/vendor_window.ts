@@ -31,6 +31,8 @@ export interface VendorWindowDeps extends PainterHostPresentation {
     enabled: boolean;
     proceeds: number;
   };
+  /** The viewer's current Honor balance; shown only when this vendor sells for Honor. */
+  honorBalance: number;
 }
 
 /** Paint the vendor panel from a prepared view. */
@@ -46,14 +48,37 @@ export function renderVendorWindow(
   const scrollTop = el.scrollTop;
   el.innerHTML = `<div class="panel-title"><span>${esc(t('itemUi.vendor.goodsTitle', { name: vendorName }))}</span><button type="button" class="x-btn" data-close aria-label="${esc(t('itemUi.vendor.close'))}">${svgIcon('close')}</button></div>`;
 
-  for (const { itemId, item, price: priceCopper } of view.goods) {
+  if (view.goods.some((g) => g.honorPrice > 0)) {
+    const balance = document.createElement('div');
+    balance.className = 'warfare-balance';
+    balance.textContent = t('hudChrome.warfare.balance', {
+      amount: formatNumber(deps.honorBalance, { maximumFractionDigits: 0 }),
+    });
+    el.appendChild(balance);
+  }
+
+  for (const { itemId, item, price: priceCopper, honorPrice } of view.goods) {
     const row = document.createElement('button');
     row.type = 'button';
     row.className = 'vendor-item';
-    const price = formatLocalizedMoney(priceCopper);
+    const money = priceCopper > 0 ? formatLocalizedMoney(priceCopper) : '';
+    const honorText =
+      honorPrice > 0
+        ? t('hudChrome.warfare.honorAmount', {
+            amount: formatNumber(honorPrice, { maximumFractionDigits: 0 }),
+          })
+        : '';
+    const price =
+      money && honorText
+        ? t('hudChrome.warfare.dualPrice', { money, honor: honorText })
+        : money || honorText;
     const itemName = itemDisplayName(item);
     row.setAttribute('aria-label', t('itemUi.vendor.buyAria', { item: itemName, price }));
-    row.innerHTML = `${deps.itemIcon(item)}<span class="vi-name">${esc(itemName)}</span><span class="vi-price">${deps.moneyHtml(priceCopper)}</span>`;
+    const priceHtml =
+      (priceCopper > 0 ? deps.moneyHtml(priceCopper) : '') +
+      (priceCopper > 0 && honorPrice > 0 ? ' + ' : '') +
+      (honorPrice > 0 ? `<span class="warfare-price">${esc(honorText)}</span>` : '');
+    row.innerHTML = `${deps.itemIcon(item)}<span class="vi-name">${esc(itemName)}</span><span class="vi-price">${priceHtml}</span>`;
     row.addEventListener('click', () => deps.onBuy(itemId));
     deps.attachTooltip(
       row,

@@ -313,7 +313,13 @@ export const it_IT: EnTranslations = {
     "keybinds": {
       "emoteWheel": "Ruota emote",
       "targetFriendly": "Bersaglia l'amico più vicino",
-      "targetFriendlyNext": "Scorri i bersagli amici"
+      "targetFriendlyNext": "Scorri i bersagli amici",
+      "categoryPet": "Pet",
+      "petAttack": "Pet: Attack",
+      "petStop": "Pet: Stop",
+      "petTaunt": "Pet: Taunt",
+      "petDefensive": "Pet: Defensive",
+      "petAggressive": "Pet: Aggressive"
     },
     "options": {
       "clickMoveLeft": "Clic sinistro",
@@ -984,6 +990,21 @@ export const it_IT: EnTranslations = {
       "spore": "Spore",
       "toolTier": "Tier {tier} tool",
       "toolNone": "No tool"
+    },
+    "warfare": {
+      "ratingLabel": "Warfare",
+      "balance": "Honor: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} Honor",
+      "honorFloat": "+{amount} Honor",
+      "honorGain": "+{amount} Honor ({reason})",
+      "notEnoughHonor": "Not enough honor.",
+      "reasons": {
+        "arenaWin": "Arena win",
+        "fiestaKill": "Fiesta takedown",
+        "fiestaComplete": "Fiesta match",
+        "fiestaWin": "Fiesta win"
+      }
     }
   },
   "mailUi": {
@@ -1002,6 +1023,12 @@ export const it_IT: EnTranslations = {
     "recipient": "Recipient",
     "subjectLabel": "Subject",
     "bodyPlaceholder": "Write your letter...",
+    "attachments": "Attachments (up to {max})",
+    "removeAttachment": "Remove {item} from this letter",
+    "tooltipAttach": "Click to attach to this letter",
+    "tooltipCannotAttach": "The raven will not carry quest items",
+    "parcelQtyDecreaseAria": "Send one fewer {item}",
+    "parcelQtyIncreaseAria": "Send one more {item}",
     "send": "Send Letter",
     "needRecipientOrText": "Name a recipient and write something before sending.",
     "openButton": "Show me the Ravenpost.",
@@ -3838,6 +3865,7 @@ export const it_IT: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{kind} {quality}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "Attualmente equipaggiato",
       "ifYouEquip": "Se equipaggi questo",
       "damageSpeed": "{min} - {max} danni Velocità {speed}",
@@ -5165,6 +5193,99 @@ export const it_IT: EnTranslations = {
       "mistcallers_duffel": {
         "name": "Sacca da Marinaio di Mistcaller"
       },
+      "bramblewar_warhelm": {
+        "name": "Rovoguerra Testa"
+      },
+      "bramblewar_warspaulders": {
+        "name": "Rovoguerra Spalle"
+      },
+      "bramblewar_warplate": {
+        "name": "Rovoguerra Torace"
+      },
+      "bramblewar_girdle": {
+        "name": "Rovoguerra Vita"
+      },
+      "bramblewar_legguards": {
+        "name": "Rovoguerra Gambe"
+      },
+      "bramblewar_gauntlets": {
+        "name": "Rovoguerra Mani"
+      },
+      "bramblewar_sabatons": {
+        "name": "Rovoguerra Piedi"
+      },
+      "thornbound_crown": {
+        "name": "Rovolegato Testa"
+      },
+      "thornbound_spaulders": {
+        "name": "Rovolegato Spalle"
+      },
+      "thornbound_hauberk": {
+        "name": "Rovolegato Torace"
+      },
+      "thornbound_waistguard": {
+        "name": "Rovolegato Vita"
+      },
+      "thornbound_legmail": {
+        "name": "Rovolegato Gambe"
+      },
+      "thornbound_handguards": {
+        "name": "Rovolegato Mani"
+      },
+      "thornbound_greaves": {
+        "name": "Rovolegato Piedi"
+      },
+      "nettlestalker_cowl": {
+        "name": "Ortica Furtiva Testa"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "Ortica Furtiva Spalle"
+      },
+      "nettlestalker_harness": {
+        "name": "Ortica Furtiva Torace"
+      },
+      "nettlestalker_waistband": {
+        "name": "Ortica Furtiva Vita"
+      },
+      "nettlestalker_legguards": {
+        "name": "Ortica Furtiva Gambe"
+      },
+      "nettlestalker_grips": {
+        "name": "Ortica Furtiva Mani"
+      },
+      "nettlestalker_treads": {
+        "name": "Ortica Furtiva Piedi"
+      },
+      "mossweave_cowl": {
+        "name": "Muschiotessuto Testa"
+      },
+      "mossweave_mantle": {
+        "name": "Muschiotessuto Spalle"
+      },
+      "mossweave_raiment": {
+        "name": "Muschiotessuto Torace"
+      },
+      "mossweave_cord": {
+        "name": "Muschiotessuto Vita"
+      },
+      "mossweave_legwraps": {
+        "name": "Muschiotessuto Gambe"
+      },
+      "mossweave_handwraps": {
+        "name": "Muschiotessuto Mani"
+      },
+      "mossweave_slippers": {
+        "name": "Muschiotessuto Piedi"
+      },
+      "last_bloom_greatblade": {
+        "name": "Grande Lama dell'Ultimo Fiore"
+      },
+      "thornbite_razor": {
+        "name": "Rasoio Morsospina"
+      },
+      "heartwood_warstaff": {
+        "name": "Bastone da Guerra di Duramen"
+      },
       "bristleback_maul": {
         "name": "Maglio Bristleback"
       },
@@ -5568,6 +5689,10 @@ export const it_IT: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "Manopole del guardiano delle ossa"
+      },
+      "delve_heroic_mark": {
+        "name": "Sigillo Eroico del Reliquiario",
+        "flavorText": "Un sigillo impresso rilasciato dai custodi del Reliquiario. Riscattalo presso il Quartiermastro Eroico per equipaggiamento di qualità del reliquiario."
       },
       "deacon_reliquary_helm": {
         "name": "Elmo del reliquiario del diacono"
@@ -6155,6 +6280,11 @@ export const it_IT: EnTranslations = {
         "name": "Elder Yarrow",
         "title": "Profession Trainer",
         "greeting": "Every build starts as a question. Which second calling speaks to you?"
+      },
+      "bramble": {
+        "name": "Bramble",
+        "title": "Honor Quartermaster",
+        "greeting": "The sands remember every victory. Spend your honor well."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",

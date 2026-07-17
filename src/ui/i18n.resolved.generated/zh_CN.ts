@@ -313,7 +313,13 @@ export const zh_CN: EnTranslations = {
     "keybinds": {
       "emoteWheel": "表情轮盘",
       "targetFriendly": "选中最近友方",
-      "targetFriendlyNext": "切换友方目标"
+      "targetFriendlyNext": "切换友方目标",
+      "categoryPet": "宠物",
+      "petAttack": "宠物：攻击",
+      "petStop": "宠物：停止",
+      "petTaunt": "宠物：嘲讽",
+      "petDefensive": "宠物：防御",
+      "petAggressive": "宠物：攻击性"
     },
     "options": {
       "clickMoveLeft": "左键",
@@ -984,6 +990,21 @@ export const zh_CN: EnTranslations = {
       "spore": "孢子",
       "toolTier": "{tier}级工具",
       "toolNone": "无工具"
+    },
+    "warfare": {
+      "ratingLabel": "战意",
+      "balance": "荣誉：{amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} 荣誉",
+      "honorFloat": "+{amount} 荣誉",
+      "honorGain": "+{amount} 荣誉（{reason}）",
+      "notEnoughHonor": "荣誉不足。",
+      "reasons": {
+        "arenaWin": "竞技场胜利",
+        "fiestaKill": "狂欢击倒",
+        "fiestaComplete": "狂欢比赛",
+        "fiestaWin": "狂欢胜利"
+      }
     }
   },
   "mailUi": {
@@ -1002,6 +1023,12 @@ export const zh_CN: EnTranslations = {
     "recipient": "收件人",
     "subjectLabel": "主题",
     "bodyPlaceholder": "写下你的信件……",
+    "attachments": "附件（最多 {max} 件）",
+    "removeAttachment": "从这封信中移除{item}",
+    "tooltipAttach": "点击附加到这封信",
+    "tooltipCannotAttach": "渡鸦不会携带任务物品",
+    "parcelQtyDecreaseAria": "少寄一个{item}",
+    "parcelQtyIncreaseAria": "多寄一个{item}",
     "send": "寄出信件",
     "needRecipientOrText": "请先填写收件人并写点内容再寄送。",
     "openButton": "带我去渡鸦驿站。",
@@ -3838,6 +3865,7 @@ export const zh_CN: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality}{kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "当前装备",
       "ifYouEquip": "装备后",
       "damageSpeed": "{min} - {max} 伤害 速度 {speed}",
@@ -5165,6 +5193,99 @@ export const zh_CN: EnTranslations = {
       "mistcallers_duffel": {
         "name": "唤雾者的行囊"
       },
+      "bramblewar_warhelm": {
+        "name": "荆棘战头部"
+      },
+      "bramblewar_warspaulders": {
+        "name": "荆棘战肩部"
+      },
+      "bramblewar_warplate": {
+        "name": "荆棘战胸部"
+      },
+      "bramblewar_girdle": {
+        "name": "荆棘战腰部"
+      },
+      "bramblewar_legguards": {
+        "name": "荆棘战腿部"
+      },
+      "bramblewar_gauntlets": {
+        "name": "荆棘战手部"
+      },
+      "bramblewar_sabatons": {
+        "name": "荆棘战脚部"
+      },
+      "thornbound_crown": {
+        "name": "荆棘缚头部"
+      },
+      "thornbound_spaulders": {
+        "name": "荆棘缚肩部"
+      },
+      "thornbound_hauberk": {
+        "name": "荆棘缚胸部"
+      },
+      "thornbound_waistguard": {
+        "name": "荆棘缚腰部"
+      },
+      "thornbound_legmail": {
+        "name": "荆棘缚腿部"
+      },
+      "thornbound_handguards": {
+        "name": "荆棘缚手部"
+      },
+      "thornbound_greaves": {
+        "name": "荆棘缚脚部"
+      },
+      "nettlestalker_cowl": {
+        "name": "荨麻潜者头部"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "荨麻潜者肩部"
+      },
+      "nettlestalker_harness": {
+        "name": "荨麻潜者胸部"
+      },
+      "nettlestalker_waistband": {
+        "name": "荨麻潜者腰部"
+      },
+      "nettlestalker_legguards": {
+        "name": "荨麻潜者腿部"
+      },
+      "nettlestalker_grips": {
+        "name": "荨麻潜者手部"
+      },
+      "nettlestalker_treads": {
+        "name": "荨麻潜者脚部"
+      },
+      "mossweave_cowl": {
+        "name": "苔藓织头部"
+      },
+      "mossweave_mantle": {
+        "name": "苔藓织肩部"
+      },
+      "mossweave_raiment": {
+        "name": "苔藓织胸部"
+      },
+      "mossweave_cord": {
+        "name": "苔藓织腰部"
+      },
+      "mossweave_legwraps": {
+        "name": "苔藓织腿部"
+      },
+      "mossweave_handwraps": {
+        "name": "苔藓织手部"
+      },
+      "mossweave_slippers": {
+        "name": "苔藓织脚部"
+      },
+      "last_bloom_greatblade": {
+        "name": "末花巨刃"
+      },
+      "thornbite_razor": {
+        "name": "棘咬剃刃"
+      },
+      "heartwood_warstaff": {
+        "name": "心木战杖"
+      },
       "bristleback_maul": {
         "name": "硬鬃重槌"
       },
@@ -5568,6 +5689,10 @@ export const zh_CN: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "护骨者护手"
+      },
+      "delve_heroic_mark": {
+        "name": "英雄圣物库印记",
+        "flavorText": "由圣物库守护者颁发的钤印。在英雄军需官处兑换圣物库级装备。"
       },
       "deacon_reliquary_helm": {
         "name": "执事的圣物库头盔"
@@ -6155,6 +6280,11 @@ export const zh_CN: EnTranslations = {
         "name": "长老亚罗",
         "title": "副职业训练师",
         "greeting": "每一套build都始于一个问题：哪个副职业在召唤你？"
+      },
+      "bramble": {
+        "name": "布兰博",
+        "title": "荣誉军需官",
+        "greeting": "沙场记得每一场胜利。好好花你的荣誉吧。"
       },
       "tidewatcher_ondrel": {
         "name": "翁德雷尔·凡恩",
