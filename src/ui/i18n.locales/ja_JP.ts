@@ -5616,5 +5616,6 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.warfare.reasons.fiestaWin': 'フィエスタ勝利',
   'entities.npcs.bramble.name': 'ブランブル',
   'entities.npcs.bramble.title': '名誉調達官',
-  'entities.npcs.bramble.greeting': '闘技場の砂は、すべての勝利を覚えている。名誉は賢く使うといい。',
+  'entities.npcs.bramble.greeting':
+    '闘技場の砂は、すべての勝利を覚えている。名誉は賢く使うといい。',
 };
