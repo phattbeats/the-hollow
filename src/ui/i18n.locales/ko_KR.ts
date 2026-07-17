@@ -2995,6 +2995,26 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_someone_your_own_size.completion':
     '있어 줬군요. 그녀는 별거 아니었다고 하겠지만, 별거였어요, 정말이에요. 자, 이건 당신 거예요. 내가 아끼는 버드나무에서 딴 잔가지. 아무 쓸모도 없어요. 그저 아무도 시키지 않았는데도 당신이 친절했다는 걸 기억할 뿐이죠.',
   'entities.quests.q_someone_your_own_size.objectives.0.label': '오를라 곁에 잠시 앉음',
+  // PHAA-614/PHAA-699: Sister Shade questline quests 2 and 4 plus the two NPCs.
+  'entities.npcs.withered_planting.name': '시들어가는 묘목밭',
+  'entities.npcs.withered_planting.title': '부족의 오래된 버드나무',
+  'entities.npcs.withered_planting.greeting':
+    '마른 뿌리, 마른 잎. 무엇이 되려 했든 아직은 되지 못했고, 오랜 세월을 그렇게 기다려 왔다.',
+  'entities.npcs.buried_root.name': '묻힌 뿌리',
+  'entities.npcs.buried_root.title': '사당 아래',
+  'entities.npcs.buried_root.greeting': '메말랐다. 이 아래 그 무엇 못지않게 메말랐다.',
+  'entities.quests.q_the_long_way_around.title': '멀리 돌아가는 길',
+  'entities.quests.q_the_long_way_around.text':
+    '오래된 버드나무 위쪽에 부족이 반쯤 짓다 만 묘목밭이 있어. 제대로 된 물 한 번을 못 받아서 죽어가고 있지. 그 오르막은 이제 내가 오르지 못하지만, 자네에겐 그럴 다리가 있잖아. 물뿌리개를 가져가게. 가지를 조심하고. 정직하게 대하면 가지는 자네를 지탱해 준다네.',
+  'entities.quests.q_the_long_way_around.completion':
+    '이제 살아날 걸세. 바깥의 그 모든 일에 비하면 오르막 한 번, 물 한 번이 뭐 대단하겠나 싶겠지. 대단한 건 아니야. 다만 자네가 물을 준 그 하나에게는 그것이 전부라네.',
+  'entities.quests.q_the_long_way_around.objectives.0.label': '버드나무 길을 따라 물을 나르기',
+  'entities.quests.q_the_watering_can.title': '물뿌리개',
+  'entities.quests.q_the_watering_can.text':
+    '자네에게 자잘한 일들을 부탁했고, 자네는 한 번도 이유를 묻지 않고 그 모두를 해 주었지. 이게 마지막일세. 작아 보이지만 작지 않아. 내 물뿌리개를 사당 아래로 가져가, 거기 묻혀 있는 그것에게 물을 주게. 그것은 무언가를 요구받는 대신 무언가를 받기를, 아주 오랫동안 기다려 왔다네.',
+  'entities.quests.q_the_watering_can.completion':
+    '자네가 해냈군. 물론 해냈지. 그건 물이었어, 알겠나. 그 모든 물, 자네가 호숫가에서 나를 발견하고 아무렇지 않게 여기던 그날까지 거슬러 올라가는 물이었지. 같은 물, 같은 약속을 한 번 더 지켜 준 거야. 고맙네. 이제 가서 이 세상을 다정하게 대하게. 세상을 바꿔 온 건 오직 그것뿐이니까.',
+  'entities.quests.q_the_watering_can.objectives.0.label': '묻힌 뿌리에 물을 주기',
   'entities.npcs.sexton_faddick.title': '떠도는 관리인',
   'entities.npcs.sexton_faddick.greeting':
     '패딕이오. 아직 지켜야 할 사당이 있는 한, 무덤지기 노릇을 하지. 나는 어디에도 머물지 않소, 그저 지킬 뿐이오. 밤마다 늑대가 묵정밭의 가축 떼 주위를 맴도는데, 오래 맴돌다 보면 제가 맴도는 것의 모양을 익히게 되는 법이오. 그저 가축 떼로 남는 편이 낫겠지.',
