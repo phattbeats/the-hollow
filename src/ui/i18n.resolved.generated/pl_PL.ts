@@ -3352,6 +3352,7 @@ export const pl_PL: EnTranslations = {
       "ignoringChat": "Ignorujesz wiadomości od {name}.",
       "noLongerIgnoring": "Nie ignorujesz już {name}.",
       "playerNotNearby": "Tego gracza nie ma w pobliżu.",
+      "playerInfoNotFound": "No character found with that name.",
       "duelCountdown": "Pojedynek rozpocznie się za {seconds}...",
       "duelEndBanner": "{winner} pokonał {loser} w pojedynku!",
       "duelEndLog": "{winner} pokonał {loser} w pojedynku.",

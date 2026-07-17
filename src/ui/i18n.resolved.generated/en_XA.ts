@@ -3255,7 +3255,7 @@ export const en_XA: EnTranslations = {
       "close": "[Çļóšé ɱéţéŕš]"
     },
     "chat": {
-      "rightClickName": "[Ŕíĝĥţ-çļíçķ {name}]",
+      "rightClickName": "[Óþéñ ɱéñú ƒóŕ {name}]",
       "templates": {
         "party": "[[Þáŕţý] {name}: {message}]",
         "yell": "[{name} ýéļļš: {message}]",
@@ -3352,6 +3352,7 @@ export const en_XA: EnTranslations = {
       "ignoringChat": "[Íĝñóŕíñĝ çĥáţ ƒŕóɱ {name}.]",
       "noLongerIgnoring": "[Ñó ļóñĝéŕ íĝñóŕíñĝ {name}.]",
       "playerNotNearby": "[Ţĥáţ þļáýéŕ íš ñóţ ñéáŕƀý.]",
+      "playerInfoNotFound": "[Ñó çĥáŕáçţéŕ ƒóúñð ŵíţĥ ţĥáţ ñáɱé.]",
       "duelCountdown": "[Ðúéļ ƀéĝíñš íñ {seconds}...]",
       "duelEndBanner": "[{winner} ĥáš ðéƒéáţéð {loser} íñ á ðúéļ!]",
       "duelEndLog": "[{winner} ĥáš ðéƒéáţéð {loser} íñ á ðúéļ.]",

@@ -3352,6 +3352,7 @@ export const ja_JP: EnTranslations = {
       "ignoringChat": "{name}のチャットを無視します。",
       "noLongerIgnoring": "{name}の無視を解除しました。",
       "playerNotNearby": "そのプレイヤーは近くにいません。",
+      "playerInfoNotFound": "No character found with that name.",
       "duelCountdown": "決闘開始まで{seconds}秒...",
       "duelEndBanner": "{winner}が決闘で{loser}を倒しました！",
       "duelEndLog": "{winner}が決闘で{loser}を倒しました。",

@@ -3255,7 +3255,7 @@ export const en: EnTranslations = {
       "close": "Close meters"
     },
     "chat": {
-      "rightClickName": "Right-click {name}",
+      "rightClickName": "Open menu for {name}",
       "templates": {
         "party": "[Party] {name}: {message}",
         "yell": "{name} yells: {message}",
@@ -3352,6 +3352,7 @@ export const en: EnTranslations = {
       "ignoringChat": "Ignoring chat from {name}.",
       "noLongerIgnoring": "No longer ignoring {name}.",
       "playerNotNearby": "That player is not nearby.",
+      "playerInfoNotFound": "No character found with that name.",
       "duelCountdown": "Duel begins in {seconds}...",
       "duelEndBanner": "{winner} has defeated {loser} in a duel!",
       "duelEndLog": "{winner} has defeated {loser} in a duel.",

@@ -3352,6 +3352,7 @@ export const id_ID: EnTranslations = {
       "ignoringChat": "Mengabaikan obrolan dari {name}.",
       "noLongerIgnoring": "Tidak lagi mengabaikan {name}.",
       "playerNotNearby": "Pemain itu tidak berada di dekatmu.",
+      "playerInfoNotFound": "No character found with that name.",
       "duelCountdown": "Duel dimulai dalam {seconds}...",
       "duelEndBanner": "{winner} telah mengalahkan {loser} dalam sebuah duel!",
       "duelEndLog": "{winner} telah mengalahkan {loser} dalam sebuah duel.",

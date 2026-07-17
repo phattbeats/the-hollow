@@ -3352,6 +3352,7 @@ export const nl_NL: EnTranslations = {
       "ignoringChat": "Chat van {name} wordt genegeerd.",
       "noLongerIgnoring": "{name} wordt niet langer genegeerd.",
       "playerNotNearby": "Die speler is niet in de buurt.",
+      "playerInfoNotFound": "No character found with that name.",
       "duelCountdown": "Duel begint over {seconds}...",
       "duelEndBanner": "{winner} heeft {loser} verslagen in een duel!",
       "duelEndLog": "{winner} heeft {loser} verslagen in een duel.",
