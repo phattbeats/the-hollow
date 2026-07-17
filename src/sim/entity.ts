@@ -1,3 +1,4 @@
+import { hitFractionFromRating } from './combat/hit_rating';
 import type { TalentModifiers } from './content/talents';
 import { aggregateSetBonuses, CLASSES, ITEMS, MOBS, type NpcDef } from './data';
 import { pvpFractionsFromRatings } from './pvp';
@@ -48,6 +49,8 @@ function baseEntity(id: number, pos: Vec3): Entity {
     spellHaste: 0,
     critChance: 0.05,
     dodgeChance: 0.05,
+    hitRating: 0,
+    hitBonus: 0,
     castPushbackReduction: 0,
     moveSpeed: 7,
     hostile: false,
@@ -207,6 +210,7 @@ export function recalcPlayerStats(
   };
   const setCounts = new Map<string, number>();
   let bonusSp = 0; // flat Spell Power from gear affixes + buff_spellpower auras
+  let bonusHitRating = 0;
   let bonusPvpOffenseRating = 0;
   let bonusPvpDefenseRating = 0;
   for (const slot of EQUIP_SLOTS) {
@@ -216,6 +220,7 @@ export function recalcPlayerStats(
     if (!item) continue;
     if (item.set) setCounts.set(item.set, (setCounts.get(item.set) ?? 0) + 1);
     bonusSp += item.spellPower ?? 0;
+    bonusHitRating += item.hitRating ?? 0;
     bonusPvpOffenseRating += item.pvpOffenseRating ?? 0;
     bonusPvpDefenseRating += item.pvpDefenseRating ?? 0;
     if (!item.stats) continue;
@@ -348,6 +353,12 @@ export function recalcPlayerStats(
   e.spellHaste = setEff.haste;
   // Crit: ~1% per 20 agi at low level
   e.critChance = 0.05 + s.agi * 0.0005 + (mods?.stats.crit ?? 0) + setEff.crit;
+  // Hit rating (gear only today; no set bonus grants it) folds into a hit fraction
+  // that combat subtracts from miss (swingMissChance) and spell resist
+  // (spell_resist.ts). It answers the Heroic above-level penalty; unlike crit it
+  // has no higher-level suppression.
+  e.hitRating = bonusHitRating;
+  e.hitBonus = hitFractionFromRating(e.hitRating);
   e.castPushbackReduction = setEff.castPushbackReduction;
   // Floored at 0: an off-balance debuff (negative buff_dodge) can drive dodge to nothing.
   e.dodgeChance = Math.max(0, 0.05 + s.agi * 0.0005 + bonusDodge);

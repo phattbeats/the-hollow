@@ -1092,4 +1092,10 @@ export const hudChromeStrings = {
       fiestaWin: 'Fiesta win',
     },
   },
+  // Hit rating: reduces melee/ranged miss and spell resist by the same percent
+  // (src/sim/combat/hit_rating.ts). Item tooltip stat name only, mirroring
+  // warfare.ratingLabel above; no dedicated character-sheet cell in this pass.
+  hitRating: {
+    ratingLabel: 'Hit Rating',
+  },
 };

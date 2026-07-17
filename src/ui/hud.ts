@@ -3129,6 +3129,14 @@ export class Hud {
         }),
       )}</div>`;
     }
+    if (item.hitRating) {
+      html += `<div class="tt-green">${esc(
+        t('itemUi.tooltip.stat', {
+          value: itemNumber(item.hitRating),
+          stat: t('hudChrome.hitRating.ratingLabel'),
+        }),
+      )}</div>`;
+    }
     if (item.foodHp)
       html += `<div class="tt-desc">${esc(t('itemUi.tooltip.useFood', { amount: itemNumber(item.foodHp), seconds: itemNumber(CONSUME_DURATION) }))}</div>`;
     if (item.drinkMana)

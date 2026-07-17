@@ -1005,6 +1005,9 @@ export const ko_KR: EnTranslations = {
         "fiestaComplete": "피에스타 경기",
         "fiestaWin": "피에스타 승리"
       }
+    },
+    "hitRating": {
+      "ratingLabel": "적중 레이팅"
     }
   },
   "mailUi": {

@@ -5635,6 +5635,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.warfare.reasons.fiestaKill': 'フィエスタ撃破',
   'hudChrome.warfare.reasons.fiestaComplete': 'フィエスタ試合',
   'hudChrome.warfare.reasons.fiestaWin': 'フィエスタ勝利',
+  'hudChrome.hitRating.ratingLabel': '命中レーティング',
   'entities.npcs.bramble.name': 'ブランブル',
   'entities.npcs.bramble.title': '名誉調達官',
   'entities.npcs.bramble.greeting':
