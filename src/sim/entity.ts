@@ -1,5 +1,6 @@
 import type { TalentModifiers } from './content/talents';
 import { aggregateSetBonuses, CLASSES, ITEMS, MOBS, type NpcDef } from './data';
+import { pvpFractionsFromRatings } from './pvp';
 import type { Entity, EquipSlot, MobTemplate, PlayerClass, Stats, Vec3 } from './types';
 import { EQUIP_SLOTS, SPELL_POWER_PER_INT } from './types';
 
@@ -28,7 +29,16 @@ function baseEntity(id: number, pos: Vec3): Entity {
     overheadEmoteId: null,
     overheadEmoteUntil: 0,
     overheadEmoteSeq: 0,
-    stats: { str: 0, agi: 0, sta: 0, int: 0, spi: 0, armor: 0 },
+    stats: {
+      str: 0,
+      agi: 0,
+      sta: 0,
+      int: 0,
+      spi: 0,
+      armor: 0,
+      pvpOffense: 0,
+      pvpDefense: 0,
+    },
     weapon: { min: 1, max: 2, speed: 2 },
     attackPower: 0,
     rangedPower: 0,
@@ -58,6 +68,7 @@ function baseEntity(id: number, pos: Vec3): Entity {
     gcdRemaining: 0,
     cooldowns: new Map(),
     queuedOnSwing: null,
+    queuedCastAbility: null,
     fiveSecondRule: 99,
     comboPoints: 0,
     comboTargetId: null,
@@ -191,9 +202,13 @@ export function recalcPlayerStats(
     int: def.baseStats.int + def.statsPerLevel.int * (lvl - 1),
     spi: def.baseStats.spi + def.statsPerLevel.spi * (lvl - 1),
     armor: def.baseStats.armor + def.statsPerLevel.armor * (lvl - 1),
+    pvpOffense: 0,
+    pvpDefense: 0,
   };
   const setCounts = new Map<string, number>();
   let bonusSp = 0; // flat Spell Power from gear affixes + buff_spellpower auras
+  let bonusPvpOffenseRating = 0;
+  let bonusPvpDefenseRating = 0;
   for (const slot of EQUIP_SLOTS) {
     const itemId = equipment[slot];
     if (!itemId) continue;
@@ -201,6 +216,8 @@ export function recalcPlayerStats(
     if (!item) continue;
     if (item.set) setCounts.set(item.set, (setCounts.get(item.set) ?? 0) + 1);
     bonusSp += item.spellPower ?? 0;
+    bonusPvpOffenseRating += item.pvpOffenseRating ?? 0;
+    bonusPvpDefenseRating += item.pvpDefenseRating ?? 0;
     if (!item.stats) continue;
     s.str += item.stats.str ?? 0;
     s.agi += item.stats.agi ?? 0;
@@ -285,6 +302,9 @@ export function recalcPlayerStats(
   s.spi = Math.max(0, s.spi);
 
   e.stats = s;
+  const warfare = pvpFractionsFromRatings(bonusPvpOffenseRating, bonusPvpDefenseRating);
+  e.stats.pvpOffense = warfare.offense;
+  e.stats.pvpDefense = warfare.defense;
   const weapon = (equipment.mainhand && ITEMS[equipment.mainhand]?.weapon) || {
     min: 1,
     max: 2,

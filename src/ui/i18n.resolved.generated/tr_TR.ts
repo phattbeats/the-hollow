@@ -990,6 +990,21 @@ export const tr_TR: EnTranslations = {
       "spore": "Spore",
       "toolTier": "Tier {tier} tool",
       "toolNone": "No tool"
+    },
+    "warfare": {
+      "ratingLabel": "Warfare",
+      "balance": "Honor: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} Honor",
+      "honorFloat": "+{amount} Honor",
+      "honorGain": "+{amount} Honor ({reason})",
+      "notEnoughHonor": "Not enough honor.",
+      "reasons": {
+        "arenaWin": "Arena win",
+        "fiestaKill": "Fiesta takedown",
+        "fiestaComplete": "Fiesta match",
+        "fiestaWin": "Fiesta win"
+      }
     }
   },
   "mailUi": {
@@ -3850,6 +3865,7 @@ export const tr_TR: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "Şu anda kuşanılmış",
       "ifYouEquip": "Bunu kuşanırsan",
       "damageSpeed": "{min} - {max} Hasar Hız {speed}",
@@ -5177,6 +5193,99 @@ export const tr_TR: EnTranslations = {
       "mistcallers_duffel": {
         "name": "Mistcaller'ın Denizci Çantası"
       },
+      "bramblewar_warhelm": {
+        "name": "Dikensavaş Baş"
+      },
+      "bramblewar_warspaulders": {
+        "name": "Dikensavaş Omuz"
+      },
+      "bramblewar_warplate": {
+        "name": "Dikensavaş Göğüs"
+      },
+      "bramblewar_girdle": {
+        "name": "Dikensavaş Bel"
+      },
+      "bramblewar_legguards": {
+        "name": "Dikensavaş Bacak"
+      },
+      "bramblewar_gauntlets": {
+        "name": "Dikensavaş El"
+      },
+      "bramblewar_sabatons": {
+        "name": "Dikensavaş Ayak"
+      },
+      "thornbound_crown": {
+        "name": "Dikenbağlı Baş"
+      },
+      "thornbound_spaulders": {
+        "name": "Dikenbağlı Omuz"
+      },
+      "thornbound_hauberk": {
+        "name": "Dikenbağlı Göğüs"
+      },
+      "thornbound_waistguard": {
+        "name": "Dikenbağlı Bel"
+      },
+      "thornbound_legmail": {
+        "name": "Dikenbağlı Bacak"
+      },
+      "thornbound_handguards": {
+        "name": "Dikenbağlı El"
+      },
+      "thornbound_greaves": {
+        "name": "Dikenbağlı Ayak"
+      },
+      "nettlestalker_cowl": {
+        "name": "Isırgan Avcısı Baş"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "Isırgan Avcısı Omuz"
+      },
+      "nettlestalker_harness": {
+        "name": "Isırgan Avcısı Göğüs"
+      },
+      "nettlestalker_waistband": {
+        "name": "Isırgan Avcısı Bel"
+      },
+      "nettlestalker_legguards": {
+        "name": "Isırgan Avcısı Bacak"
+      },
+      "nettlestalker_grips": {
+        "name": "Isırgan Avcısı El"
+      },
+      "nettlestalker_treads": {
+        "name": "Isırgan Avcısı Ayak"
+      },
+      "mossweave_cowl": {
+        "name": "Yosun Dokuma Baş"
+      },
+      "mossweave_mantle": {
+        "name": "Yosun Dokuma Omuz"
+      },
+      "mossweave_raiment": {
+        "name": "Yosun Dokuma Göğüs"
+      },
+      "mossweave_cord": {
+        "name": "Yosun Dokuma Bel"
+      },
+      "mossweave_legwraps": {
+        "name": "Yosun Dokuma Bacak"
+      },
+      "mossweave_handwraps": {
+        "name": "Yosun Dokuma El"
+      },
+      "mossweave_slippers": {
+        "name": "Yosun Dokuma Ayak"
+      },
+      "last_bloom_greatblade": {
+        "name": "Son Çiçek Büyük Kılıcı"
+      },
+      "thornbite_razor": {
+        "name": "Diken Isırığı Ustura"
+      },
+      "heartwood_warstaff": {
+        "name": "Öz Odun Savaş Asası"
+      },
       "bristleback_maul": {
         "name": "Dikensırt Balyozu"
       },
@@ -5580,6 +5689,10 @@ export const tr_TR: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "Kemikbekçisi Eldivenleri"
+      },
+      "delve_heroic_mark": {
+        "name": "Kahramanca Kutsal Mahzen Nişanı",
+        "flavorText": "Kutsal Mahzen'in bekçileri tarafından verilen damgalı bir mühür. Kutsal Mahzen kalitesinde teçhizat için Kahramanca Donatım Subayı'na takas edin."
       },
       "deacon_reliquary_helm": {
         "name": "Diyakoz'un Kutsal Emanet Miğferi"
@@ -6167,6 +6280,11 @@ export const tr_TR: EnTranslations = {
         "name": "Elder Yarrow",
         "title": "Profession Trainer",
         "greeting": "Every build starts as a question. Which second calling speaks to you?"
+      },
+      "bramble": {
+        "name": "Bramble",
+        "title": "Honor Quartermaster",
+        "greeting": "The sands remember every victory. Spend your honor well."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",

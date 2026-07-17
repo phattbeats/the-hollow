@@ -40,6 +40,7 @@ import {
 import { abilitiesKnownAt, arenaOrigin } from '../data';
 import { ARENA_SPAWNS_A_2v2, ARENA_SPAWNS_B_2v2 } from '../dungeon_layout';
 import { recalcPlayerStats } from '../entity';
+import { awardFiestaKillHonor } from '../pvp';
 import { Rng } from '../rng';
 import type { ArenaMatch, FiestaPowerup, FiestaState, PlayerMeta } from '../sim';
 import type { SimContext } from '../sim_context';
@@ -87,6 +88,7 @@ export function createFiestaState(ctx: SimContext): FiestaState {
     respawn: new Map(),
     deaths: new Map(),
     kills: new Map(),
+    honorKillsByPair: new Map(),
     streak: new Map(),
     lastKill: new Map(),
     pending: new Map(),
@@ -286,6 +288,7 @@ export function fiestaDownEntity(ctx: SimContext, e: Entity, killer: Entity | nu
   e.channeling = false;
   e.autoAttack = false;
   e.queuedOnSwing = null;
+  e.queuedCastAbility = null;
   e.comboPoints = 0;
   e.comboTargetId = null;
   e.eating = null;
@@ -338,6 +341,9 @@ export function fiestaTakedown(
   else if (killerTeam === 'B') f.scoreB += points;
   if (killerMeta) killerMeta.counters.kills++;
   f.kills.set(killerPid, (f.kills.get(killerPid) ?? 0) + 1);
+  if (killerMeta && !match.practice && ctx.isArenaCrossTeam(match, killerPid, victim.id)) {
+    awardFiestaKillHonor(ctx, killerMeta, victim.id, f.honorKillsByPair);
+  }
 
   fiestaDown(ctx, match, victim, killerPid);
 
