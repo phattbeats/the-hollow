@@ -364,13 +364,13 @@ The generated resolved table is split per locale because the split (a) fixes a s
 #### 4.4.2 Human-edited files: the three-part split-decision rule
 
 > Split a human-edited i18n source module by **top-level domain namespace** only when **all three** hold:
-> 1. **IDE/LSP harm is observed, not hypothesized:** the file is >= ~3,000 lines **and** is a `typeof` / `Leaves`-typed nested literal (the depth-6 inference is what makes the LSP re-check expensive on every dependent keystroke), **or** it regularly triggers LSP lag or a hang on save.
+> 1. **IDE/LSP harm is observed, not hypothesized:** the file is >= ~3,000 lines **and** is a `typeof` / `Leaves`-typed nested literal (the depth-6 inference is what makes the LSP re-check expensive on every dependent keystroke), **or** it regularly triggers LSP lag or a hang on save. (2026-07-14: TranslationKey no longer computes `Leaves`; per toolchain-modernization decision D2 it is the build-generated flat union, so the depth-6 inference cost named here is historical. Nested `typeof`-typed literals still carry their own inference cost, so the criterion's size-times-typing trigger stands.)
 > 2. **A pre-existing top-level seam matches a translation domain.** A split follows one of the file's existing `export const <domain>Strings = { ... }` blocks, one domain per file, never an arbitrary mid-object cut.
 > 3. **The public surface is unchanged.** After the split, `import { t, type TranslationKey } from './i18n'` and `import type { EnTranslations } from './i18n.en'` resolve identically; the `en` const and every type are still assembled in one place (the file becomes a thin barrel that composes `en`).
 >
 > Do **not** split: a flat (non-nested-typed) file; a file under ~1,500 lines; a build-only data layer; or to make line counts look nicer.
 
-The thresholds (~3,000 lines for nested-typed, ~1,500 floor, no flat files) are deliberately higher than a generic linter would pick, to honor the project's large-module norm. The trigger is the interaction of size and nested-`Leaves` typing, which is why `i18n.en.ts` (11,922 lines, nested, depth-6) hurts and `server_i18n.ts` (197 lines, flat) does not.
+The thresholds (~3,000 lines for nested-typed, ~1,500 floor, no flat files) are deliberately higher than a generic linter would pick, to honor the project's large-module norm. The trigger is the interaction of size and nested-`Leaves` typing, which is why `i18n.en.ts` (11,922 lines, nested, depth-6) hurts and `server_i18n.ts` (197 lines, flat) does not. (2026-07-14: historical rationale; the split shipped, and the `Leaves`-based TranslationKey it describes was replaced by the generated flat union per toolchain-modernization decision D2.)
 
 #### 4.4.3 `src/ui/i18n.en.ts`: split now, by existing domain seams
 
