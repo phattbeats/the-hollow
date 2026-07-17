@@ -4674,6 +4674,10 @@ export class Sim {
       return;
     }
     if (p.sitting) this.standUp(p);
+    // fishing's completion path (completeFishing) never fires the spell queue, so a
+    // slot held here (a cast queued in a prior cast's tail, still parked while its
+    // GCD runs) would strand and misfire on the next real cast: drop it as we start.
+    p.queuedCastAbility = null;
     p.castingAbility = FISHING_CAST_ID;
     p.castTotal = FISHING_CAST_TIME;
     p.castRemaining = FISHING_CAST_TIME;
