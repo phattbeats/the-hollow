@@ -24,6 +24,8 @@ import {
   handleAccountExport,
   handleAccountLogout,
   handleAccountMarketing,
+  handleAccountPasswordForgot,
+  handleAccountPasswordReset,
   handleAccountSetEmail,
   handleAccountSetInitialEmail,
   handleAccountWhoami,
@@ -599,7 +601,10 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
     if (
       REQUIRE_WEB_LOGIN &&
       req.method === 'POST' &&
-      (url === '/api/register' || url === '/api/login') &&
+      (url === '/api/register' ||
+        url === '/api/login' ||
+        url === '/api/account/password/forgot' ||
+        url === '/api/account/password/reset') &&
       !isWebClientRequest(req)
     ) {
       return json(res, 403, { error: 'logins are only allowed from the game client' });
@@ -1199,6 +1204,15 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       const callerToken = bearerToken(req);
       if (!callerToken) return json(res, 401, { error: 'not authenticated' });
       return handleAccountChangePassword(req, res, accountId, callerToken);
+    }
+    // Password reset is for users who are locked out, so both routes are
+    // unauthenticated (rate-limited + web-login guarded above, and each handler is
+    // written to never reveal whether an account exists).
+    if (req.method === 'POST' && url === '/api/account/password/forgot') {
+      return handleAccountPasswordForgot(req, res);
+    }
+    if (req.method === 'POST' && url === '/api/account/password/reset') {
+      return handleAccountPasswordReset(req, res);
     }
     if (req.method === 'POST' && url === '/api/account/logout') {
       const callerToken = bearerToken(req);

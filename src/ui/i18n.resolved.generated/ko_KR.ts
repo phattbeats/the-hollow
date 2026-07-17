@@ -313,7 +313,13 @@ export const ko_KR: EnTranslations = {
     "keybinds": {
       "emoteWheel": "감정 표현 휠",
       "targetFriendly": "가장 가까운 아군 대상 지정",
-      "targetFriendlyNext": "아군 대상 순환"
+      "targetFriendlyNext": "아군 대상 순환",
+      "categoryPet": "펫",
+      "petAttack": "펫: 공격",
+      "petStop": "펫: 정지",
+      "petTaunt": "펫: 도발",
+      "petDefensive": "펫: 방어",
+      "petAggressive": "펫: 공격적"
     },
     "options": {
       "clickMoveLeft": "왼쪽 클릭",
@@ -434,6 +440,9 @@ export const ko_KR: EnTranslations = {
     },
     "statInfo": {
       "fromYour": "당신의 {value} {stat}에서:",
+      "names": {
+        "spellPower": "주문력"
+      },
       "desc": {
         "str": "전투력을 증가시켜 무기 공격이 더 강하게 적중하도록 합니다.",
         "agi": "반사 신경과 조준 능력을 예리하게 하여 여러 전투 능력치를 향상시킵니다.",
@@ -442,6 +451,7 @@ export const ko_KR: EnTranslations = {
         "spi": "비전투 중 휴식할 때 시전자의 마나가 회복되는 속도를 빠르게 합니다.",
         "armor": "들어오는 물리 공격을 완화합니다. 낮은 레벨의 공격자에게 더 큰 효과를 발휘하며, 최대 75%까지 적용됩니다.",
         "attackPower": "무기 공격을 강화합니다. 전투력 14당 초당 피해 1이 추가됩니다.",
+        "spellPower": "주문의 피해량과 치유량을 증가시킵니다. 지능 1당 장비나 버프로 얻는 양에 더해 약간의 주문력을 부여합니다.",
         "dps": "무기의 피해와 속도, 전투력을 종합한 예상 무기 초당 피해입니다.",
         "critChance": "공격이 치명적으로 적중하여 두 배의 피해를 입힐 확률입니다.",
         "dodge": "들어오는 근접 공격을 완전히 피해 피해를 전혀 입지 않을 확률입니다."
@@ -464,6 +474,15 @@ export const ko_KR: EnTranslations = {
         "minorForClass": "당신의 직업에는 거의 도움이 되지 않습니다.",
         "baseChance": "모든 모험가가 공유하는 5%의 기본 확률이 포함되어 있습니다.",
         "dpsApprox": "추정치이며, 치명타와 기술 피해는 제외됩니다."
+      },
+      "sources": {
+        "header": "구성:",
+        "base": "기본: {value}",
+        "attributes": "능력치에서: {value}",
+        "fromAttribute": "{stat}에서: {value}",
+        "gear": "장비: {value}",
+        "buff": "{name}: {value}",
+        "talents": "특성 및 효과: {value}"
       }
     },
     "talents": {
@@ -989,6 +1008,12 @@ export const ko_KR: EnTranslations = {
     "recipient": "받는 사람",
     "subjectLabel": "제목",
     "bodyPlaceholder": "편지를 작성하세요...",
+    "attachments": "첨부물 (최대 {max}개)",
+    "removeAttachment": "이 편지에서 {item} 제거",
+    "tooltipAttach": "클릭하여 이 편지에 첨부",
+    "tooltipCannotAttach": "까마귀는 퀘스트 아이템을 운반하지 않습니다",
+    "parcelQtyDecreaseAria": "{item} 한 개 적게 보내기",
+    "parcelQtyIncreaseAria": "{item} 한 개 더 보내기",
     "send": "편지 보내기",
     "needRecipientOrText": "보내기 전에 받는 사람을 지정하고 내용을 입력하세요.",
     "openButton": "레이븐포스트로 안내해 주세요.",
@@ -3844,6 +3869,7 @@ export const ko_KR: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "현재 착용 중",
       "ifYouEquip": "이것을 착용하면",
       "damageSpeed": "{min} - {max} 피해 속도 {speed}",
@@ -5523,6 +5549,9 @@ export const ko_KR: EnTranslations = {
       "keeper_coal": {
         "name": "결코 식지 않는 숯덩이"
       },
+      "hearth_stone": {
+        "name": "그의 화로에서 아직 따뜻한 돌"
+      },
       "willow_sprig": {
         "name": "버드나무 잔가지 하나"
       },
@@ -5571,6 +5600,10 @@ export const ko_KR: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "뼈수호 손보호구"
+      },
+      "delve_heroic_mark": {
+        "name": "영웅 성물실 증표",
+        "flavorText": "성물실 수호자들이 발행한 인장. 영웅 병참장교에게 교환하면 성물실급 장비를 받을 수 있다."
       },
       "deacon_reliquary_helm": {
         "name": "부제의 성물실 투구"
@@ -7136,6 +7169,22 @@ export const ko_KR: EnTranslations = {
           "complainReply": "한 번은 호의야, 친구, 세 번은 습관이지, 나는 호의 때문에 데인 적이 있거든... 화로가 필요해서 그런 게 아니야, 화로는 멀쩡해, 내가 잘 돌보고 있어, 이건 네가 자기 발로 다시 돌아오고 싶어서 오는 건지에 관한 거야, 퀘스트 표시가 시켜서가 아니라... 세 번. 서두를 필요 없어.",
           "refuse": "세 번씩 나눠서 하지 않을 거예요. 한 번이면 충분해요.",
           "refuseReply": "...그래. 그래, 알겠어, 친구, 그것도 충분히 공정한 선이지... 그럼 이거라도 가져가, 엄밀히 말하면 네가 번 건 아니지만, 내가 나눠주는 것 대부분도 그렇긴 해, 파장이라는 것도 내가 그런 척하는 것만큼 딱 맞게 점수를 매기진 않거든..."
+        }
+      },
+      "q_your_own_hearth": {
+        "title": "너만의 화로",
+        "text": "이게 마지막이야, 친구, 사실 심부름이라기보다는 살짝 등 떠밀어주는 거지... 길 너머에 땅이 있어, 팰로우 에이커스, 조용히 누군가 원해주길 기다리고 있지. 섹스턴 패딕이 늑대들 상대하는 틈틈이, 자기가 지키는 곳들 목록 사이에 그 땅도 반쯤 눈여겨보고 있어 - 가서 인사하고, 네가 눌러앉을 놈이란 걸 알려줘... 그다음엔 언제든 준비되면 그 땅은 네 거야.",
+        "completion": "그거야... 이제 그 표정을 지었어, 친구, 더 이상 그냥 지나가는 사람이 아니란 표정 말이야. 가서 저 밖 어딘가에 발을 디뎌봐. 나는 늘 그랬듯이 화로를 밝혀놓을 거고, 항아리도 널 어디서 찾을지 정확히 알 거야...",
+        "objectives": {
+          "0": {
+            "label": "섹스턴 패딕을 만났다"
+          }
+        },
+        "dialog": {
+          "complain": "땅? 난 그냥 네 식물한테 인사하고 싶었을 뿐이야.",
+          "complainReply": "그건 언제든 할 수 있어, 그는 어디도 안 가니까... 하지만 영혼이란 건 사당을 방문하는 것만으로는 부족해, 친구, 자기 두 발로 설 곳이 필요하지. 오래 안 걸려. 패딕은 말은 느려도 네 오후를 낭비하진 않아.",
+          "refuse": "난 홈스테드 필요 없어. 그냥 방문하는 걸로 만족해.",
+          "refuseReply": "...알았어, 알았어, 강요할 생각은 없어, 친구, 땅은 패딕이 지키는 그대로 남아 있을 거야, 기다리는 데 돈 드는 것도 아니고... 자, 그래도 이거 가져가, 이렇게 오래 머물러준 값으로. 그것도 나름의 집이겠지, 아마도."
         }
       },
       "q_root_hollow_boars": {

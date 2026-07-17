@@ -313,7 +313,13 @@ export const ja_JP: EnTranslations = {
     "keybinds": {
       "emoteWheel": "エモートホイール",
       "targetFriendly": "最も近い味方をターゲット",
-      "targetFriendlyNext": "味方ターゲットを順に切り替え"
+      "targetFriendlyNext": "味方ターゲットを順に切り替え",
+      "categoryPet": "ペット",
+      "petAttack": "ペット：攻撃",
+      "petStop": "ペット：停止",
+      "petTaunt": "ペット：挑発",
+      "petDefensive": "ペット：防御",
+      "petAggressive": "ペット：攻撃的"
     },
     "options": {
       "clickMoveLeft": "左クリック",
@@ -434,6 +440,9 @@ export const ja_JP: EnTranslations = {
     },
     "statInfo": {
       "fromYour": "あなたの{stat}{value}による効果:",
+      "names": {
+        "spellPower": "呪文威力"
+      },
       "desc": {
         "str": "攻撃力を上昇させ、武器による攻撃の威力を高めます。",
         "agi": "反射神経と狙いを鋭くし、複数の戦闘ステータスを向上させます。",
@@ -442,6 +451,7 @@ export const ja_JP: EnTranslations = {
         "spi": "戦闘外で休憩している間の、術者のマナ回復速度を速めます。",
         "armor": "物理攻撃のダメージを軽減します。軽減量は格下の攻撃者に対してより大きくなり、上限は75%です。",
         "attackPower": "武器による攻撃を強化します。攻撃力14ごとに秒間ダメージが1上昇します。",
+        "spellPower": "呪文のダメージと回復の効果を高めます。知力1ポイントごとに、装備やバフによる分に加えて、わずかな呪文威力を得られます。",
         "dps": "武器のダメージと速度に攻撃力を組み合わせて算出した、推定の秒間ダメージです。",
         "critChance": "攻撃がクリティカルとなり、ダメージが2倍になる確率です。",
         "dodge": "迫り来る近接攻撃を完全に回避し、ダメージを受けない確率です。"
@@ -464,6 +474,15 @@ export const ja_JP: EnTranslations = {
         "minorForClass": "あなたのクラスにはほとんど効果がありません。",
         "baseChance": "全ての冒険者が共有する5%の基本確率を含みます。",
         "dpsApprox": "推定値であり、クリティカルやアビリティによるダメージは含みません。"
+      },
+      "sources": {
+        "header": "内訳:",
+        "base": "基本: {value}",
+        "attributes": "能力値から: {value}",
+        "fromAttribute": "{stat}から: {value}",
+        "gear": "装備: {value}",
+        "buff": "{name}: {value}",
+        "talents": "タレントと効果: {value}"
       }
     },
     "talents": {
@@ -989,6 +1008,12 @@ export const ja_JP: EnTranslations = {
     "recipient": "宛先",
     "subjectLabel": "件名",
     "bodyPlaceholder": "手紙を書いてください...",
+    "attachments": "添付物（最大{max}個）",
+    "removeAttachment": "この手紙から{item}を外す",
+    "tooltipAttach": "クリックしてこの手紙に添付",
+    "tooltipCannotAttach": "渡り烏はクエストアイテムを運びません",
+    "parcelQtyDecreaseAria": "{item}を1つ減らして送る",
+    "parcelQtyIncreaseAria": "{item}を1つ増やして送る",
     "send": "手紙を送る",
     "needRecipientOrText": "送信する前に宛先を指定し、本文を入力してください。",
     "openButton": "レイヴンポストへ案内してください。",
@@ -3844,6 +3869,7 @@ export const ja_JP: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "現在の装備",
       "ifYouEquip": "これを装備すると",
       "damageSpeed": "{min} - {max} ダメージ 速度 {speed}",
@@ -5523,6 +5549,9 @@ export const ja_JP: EnTranslations = {
       "keeper_coal": {
         "name": "冷めることのない炭"
       },
+      "hearth_stone": {
+        "name": "彼の炉からまだ温かい石"
+      },
       "willow_sprig": {
         "name": "柳の小枝一本"
       },
@@ -5571,6 +5600,10 @@ export const ja_JP: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "骨守りの手甲"
+      },
+      "delve_heroic_mark": {
+        "name": "ヒロイック聖遺物庫の刻印",
+        "flavorText": "聖遺物庫の守人が発行した刻印。ヒロイック需品係と交換すれば、聖遺物庫級の装備が手に入る。"
       },
       "deacon_reliquary_helm": {
         "name": "助祭の聖遺物庫の兜"
@@ -7136,6 +7169,22 @@ export const ja_JP: EnTranslations = {
           "complainReply": "一回は恩、友よ、三回は習慣だ、俺は恩ってやつに痛い目を見てきた……炉が必要としてるって話じゃない、炉は元気だ、俺がちゃんと世話してる、これはお前が自分の意志で戻ってくるかどうかって話だ、クエストの印に言われたからじゃなくてな……三回。急いで数えなくていい。",
           "refuse": "三回に分けてなんてやらない。一回で十分だ。",
           "refuseReply": "……ああ。ああ、わかった、友よ、それも十分公平な線引きだ……なら、これでもとにかく持っといてくれ、厳密には稼いだもんじゃないが、俺が渡すもののほとんどもそうだしな、波長ってやつは、俺が装ってるほど几帳面に数えちゃいないんだ……"
+        }
+      },
+      "q_your_own_hearth": {
+        "title": "自分だけの炉",
+        "text": "これで最後だ、友よ、これは頼み事っていうより、ちょっとした後押しってやつさ……道の向こうに土地がある、フォロウ・エーカーズ、静かに誰かに望まれるのを待ってる。セクストン・ファディックが、狼の見回りと、彼が守ってる場所のリストの合間に、そこにも半分目を配ってる——挨拶しに行って、お前がここに留まる質だってことを知らせてやってくれ……そのあとは、いつでも好きな時に、その土地はお前のものだ。",
+        "completion": "そういうことだ……お前はもうその顔をしてる、友よ、もう通り過ぎるだけの奴じゃないって顔だ。行けよ、あっちのどこかに足を下ろしてこい。俺は今まで通り炉を灯し続けるし、壺もちゃんとお前の居場所を分かってるさ……",
+        "objectives": {
+          "0": {
+            "label": "セクストン・ファディックと会った"
+          }
+        },
+        "dialog": {
+          "complain": "土地？俺はただお前の植物に挨拶したかっただけだ。",
+          "complainReply": "それはいつでもできる、あいつはどこにも行かないからな……だが魂ってのは祠を訪ねるだけじゃ足りないんだ、友よ、自分の足で立つ場所が要る。そう長くはかからん。ファディックは話し方はのろいが、お前の午後を無駄にはしない。",
+          "refuse": "俺にホームステッドは要らない。ただ訪ねるだけで十分満足だ。",
+          "refuseReply": "……わかった、わかった、無理強いする気はない、友よ、土地はファディックが守ってる通り、そのまま待ってる、待つのに金はかからないしな……ほら、これでも持っといてくれ、こんなに長く留まってくれた分だ。それもある意味、ホームってやつなんだろうな。"
         }
       },
       "q_root_hollow_boars": {

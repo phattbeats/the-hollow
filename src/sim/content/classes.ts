@@ -1463,7 +1463,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     name: 'Holy Light',
     class: 'paladin',
     learnLevel: 1,
-    cost: 35,
+    cost: 25,
     castTime: 2.5,
     cooldown: 0,
     range: 30,
@@ -1472,9 +1472,9 @@ export const ABILITIES: Record<string, AbilityDef> = {
     targetType: 'friendly',
     effects: [{ type: 'heal', min: 42, max: 51 }],
     ranks: [
-      { rank: 2, level: 8, cost: 60, effects: [{ type: 'heal', min: 76, max: 90 }] },
-      { rank: 3, level: 14, cost: 95, effects: [{ type: 'heal', min: 122, max: 144 }] },
-      { rank: 4, level: 20, cost: 140, effects: [{ type: 'heal', min: 190, max: 222 }] },
+      { rank: 2, level: 8, cost: 50, effects: [{ type: 'heal', min: 76, max: 90 }] },
+      { rank: 3, level: 14, cost: 70, effects: [{ type: 'heal', min: 122, max: 144 }] },
+      { rank: 4, level: 20, cost: 115, effects: [{ type: 'heal', min: 190, max: 222 }] },
     ],
     description: 'Heals a friendly target for $d.',
   },
@@ -3596,6 +3596,16 @@ function applyTalentMods(entry: KnownAbility, mods: TalentModifiers): void {
     if (am.costPct) entry.cost = Math.max(0, Math.round(entry.cost * (1 + am.costPct)));
     if (am.castPct) entry.castTime = Math.max(0, entry.castTime * (1 + am.castPct));
     if (am.cooldownPct) entry.cooldown = Math.max(0, entry.cooldown * (1 + am.cooldownPct));
+    // buffPct strengthens the value of a (self/target) buff, e.g. Improved Devotion Aura
+    // giving more armor. Only the buff effects scale; damage on the same ability does not.
+    if (am.buffPct) {
+      const mul = 1 + am.buffPct;
+      entry.effects = entry.effects.map((e) =>
+        e.type === 'selfBuff' || e.type === 'buffTarget'
+          ? { ...e, value: Math.round(e.value * mul) }
+          : e,
+      );
+    }
   }
 }
 

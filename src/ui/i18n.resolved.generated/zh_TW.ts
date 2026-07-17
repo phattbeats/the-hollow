@@ -313,7 +313,13 @@ export const zh_TW: EnTranslations = {
     "keybinds": {
       "emoteWheel": "表情輪盤",
       "targetFriendly": "選取最近友方",
-      "targetFriendlyNext": "切換友方目標"
+      "targetFriendlyNext": "切換友方目標",
+      "categoryPet": "寵物",
+      "petAttack": "寵物：攻擊",
+      "petStop": "寵物：停止",
+      "petTaunt": "寵物：嘲諷",
+      "petDefensive": "寵物：防禦",
+      "petAggressive": "寵物：攻擊性"
     },
     "options": {
       "clickMoveLeft": "左鍵",
@@ -434,6 +440,9 @@ export const zh_TW: EnTranslations = {
     },
     "statInfo": {
       "fromYour": "來自你的 {value} 點{stat}：",
+      "names": {
+        "spellPower": "法術強度"
+      },
       "desc": {
         "str": "提升你的攻擊強度，使你的武器攻擊更具威力。",
         "agi": "磨練你的反應與準度，提升多項戰鬥屬性。",
@@ -442,6 +451,7 @@ export const zh_TW: EnTranslations = {
         "spi": "加快施法者在脫離戰鬥休息時的法力恢復速度。",
         "armor": "減緩受到的物理打擊。對等級較低的攻擊者減免效果更佳，上限為 75%。",
         "attackPower": "強化你的武器攻擊。每 14 點攻擊強度可增加 1 點每秒傷害。",
+        "spellPower": "提高你法術造成的傷害與治療的強度。每點智力都會提供少量法術強度，此外還有來自裝備與增益的加成。",
         "dps": "你的預估武器每秒傷害，由武器的傷害與速度結合你的攻擊強度計算而來。",
         "critChance": "你的攻擊造成暴擊並施加雙倍傷害的機率。",
         "dodge": "你完全閃躲受到的近戰攻擊、不受任何傷害的機率。"
@@ -464,6 +474,15 @@ export const zh_TW: EnTranslations = {
         "minorForClass": "對你的職業助益甚微。",
         "baseChance": "包含所有冒險者共享的 5% 基礎機率。",
         "dpsApprox": "此為估計值，不計入暴擊與技能傷害。"
+      },
+      "sources": {
+        "header": "構成：",
+        "base": "基礎：{value}",
+        "attributes": "來自屬性：{value}",
+        "fromAttribute": "來自{stat}：{value}",
+        "gear": "裝備：{value}",
+        "buff": "{name}：{value}",
+        "talents": "天賦與效果：{value}"
       }
     },
     "talents": {
@@ -989,6 +1008,12 @@ export const zh_TW: EnTranslations = {
     "recipient": "收件人",
     "subjectLabel": "主旨",
     "bodyPlaceholder": "寫下你的信件……",
+    "attachments": "附件（最多 {max} 件）",
+    "removeAttachment": "從這封信中移除{item}",
+    "tooltipAttach": "點擊附加到這封信",
+    "tooltipCannotAttach": "渡鴉不會攜帶任務物品",
+    "parcelQtyDecreaseAria": "少寄一個{item}",
+    "parcelQtyIncreaseAria": "多寄一個{item}",
     "send": "寄出信件",
     "needRecipientOrText": "請先填寫收件人並寫點內容再寄送。",
     "openButton": "帶我去渡鴉驛站。",
@@ -3844,6 +3869,7 @@ export const zh_TW: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality}{kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "目前已裝備",
       "ifYouEquip": "裝備後",
       "damageSpeed": "{min} - {max} 傷害 速度 {speed}",
@@ -5523,6 +5549,9 @@ export const zh_TW: EnTranslations = {
       "keeper_coal": {
         "name": "一塊永不冷卻的炭"
       },
+      "hearth_stone": {
+        "name": "一塊仍帶著他爐火餘溫的石頭"
+      },
       "willow_sprig": {
         "name": "一段柳枝"
       },
@@ -5571,6 +5600,10 @@ export const zh_TW: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "護骨者護手"
+      },
+      "delve_heroic_mark": {
+        "name": "英雄聖物庫印記",
+        "flavorText": "由聖物庫守護者頒發的鈐印。在英雄軍需官處兌換聖物庫級裝備。"
       },
       "deacon_reliquary_helm": {
         "name": "執事的聖物庫頭盔"
@@ -7136,6 +7169,22 @@ export const zh_TW: EnTranslations = {
           "complainReply": "一次是個人情，朋友，三次才是習慣，人情我吃過虧……這不是爐子需不需要，爐子好得很，我照顧得來，這是關於你願不願意自己走回來，不是因為任務標記逼你來的……三次。不急著數。",
           "refuse": "我不會分三次來做這件事。一次就夠了。",
           "refuseReply": "……好吧。好吧，我懂你的意思，朋友，這條線劃得也算公道……這樣吧，還是拿著，嚴格說不算你掙來的，但我給出去的大半也不算，頻率這東西，其實沒真的在計較。"
+        }
+      },
+      "q_your_own_hearth": {
+        "title": "屬於你自己的爐火",
+        "text": "這是最後一件事了，朋友，與其說是差事，不如說是個提醒……路那邊有塊地，法洛牧場，靜靜地等著有人想要它。塞克斯頓·法迪克在照看他的狼群和他守護的那些地方之餘，也順帶留意著那兒——去打個招呼，讓他知道你是會留下來的那種人……之後，那塊地就是你的了，什麼時候準備好都行。",
+        "completion": "就是這樣……你現在有那種眼神了，朋友，那種不再只是路過的眼神。去吧，在那外面找個地方站穩腳跟。我會一如既往地守著這爐火，瓶子也會清楚該去哪兒找你……",
+        "objectives": {
+          "0": {
+            "label": "已見過塞克斯頓·法迪克"
+          }
+        },
+        "dialog": {
+          "complain": "地？我只是想跟你的植物打個招呼而已。",
+          "complainReply": "你隨時都可以，它哪兒也不會去……但一個靈魂光靠拜訪神龕是不夠的，朋友，它需要個能站穩雙腳的地方。用不了多久。法迪克說話慢，但不會浪費你的下午。",
+          "refuse": "我不需要家園。我這樣光是拜訪就很滿足了。",
+          "refuseReply": "……好吧，好吧，不勉強，朋友，那塊地會一直在，就像法迪克一直守著它一樣，等待又不花錢……給，這個還是拿著吧，謝謝你留了這麼久。我想那也算是一種家了。"
         }
       },
       "q_root_hollow_boars": {

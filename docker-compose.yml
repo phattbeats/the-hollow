@@ -68,6 +68,15 @@ services:
       DISCORD_GUILD_ID: ${DISCORD_GUILD_ID:-}
       DISCORD_GUILD_INVITE: ${DISCORD_GUILD_INVITE:-}
       DISCORD_BOT_SECRET: ${DISCORD_BOT_SECRET:-}
+      # Runtime: outbound email (Resend, https://resend.com). The console
+      # fallback is automatic when RESEND_API_KEY is unset, so this block
+      # can stay empty in dev. In production, set RESEND_API_KEY to the
+      # `re_…` value from the Resend dashboard and EMAIL_FROM to a
+      # verified sender; without EMAIL_FROM the server still falls back
+      # to console, so a wrong or non-verified address can't be picked
+      # by accident.
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+      EMAIL_FROM: ${EMAIL_FROM:-}
     # loopback-only: the TLS reverse proxy (Caddy) is the public entrance
     ports:
       - "127.0.0.1:8787:8787"

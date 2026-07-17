@@ -905,6 +905,7 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.flavorText':
     '...talte fyrre dage ved stearinlys, før jeg mistede tråden. Mørket hernede glemmer Ham ikke, selvom Han har glemt dette sted. Hvis hejren kredser lavt, så sig til Degnen at vægen stadig brænder...',
   'entities.items.keeper_coal.name': 'Et Kul Der Aldrig Kølede Af',
+  'entities.items.hearth_stone.name': 'En Sten, Stadig Varm Fra Hans Arne',
   'entities.items.willow_sprig.name': 'En Pilekvist',
   'entities.items.worn_prayer_token.name': 'Slidt Bedemønt',
   'entities.items.worn_prayer_token.flavorText':
@@ -1050,6 +1051,9 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'entities.items.reinforced_pauldrons.name': 'Forstærkede Skulderplader',
   'entities.items.reliquary_cloth_chest.name': 'Relikviets Slør',
   'entities.items.reliquary_gloves_rog.name': 'Benvogterens Greb',
+  'entities.items.delve_heroic_mark.name': 'Heroisk Relikvarie-Mærke',
+  'entities.items.delve_heroic_mark.flavorText':
+    'Et stemplet segl udstedt af Relikvariets vogtere. Indløs det hos Den Heroiske Kvartermester for udstyr af relikvariegrad.',
   'entities.items.reliquary_helm.name': 'Ossuariumvagtens Hjelm',
   'entities.items.reliquary_leather_chest.name': 'Støvvogter-Vams',
   'entities.items.reliquary_legs.name': 'Hvælvingsbundne Benomvikkel',

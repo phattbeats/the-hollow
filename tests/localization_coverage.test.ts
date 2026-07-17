@@ -775,7 +775,11 @@ describe('i18n Localization Key Coverage', () => {
     expect(entityCount('class', 'description')).toBe(Object.keys(CLASSES).length);
     expect(entityCount('ability', 'name')).toBe(Object.keys(ABILITIES).length);
     expect(entityCount('ability', 'description')).toBe(Object.keys(ABILITIES).length);
-    expect(entityCount('item', 'name')).toBe(Object.keys(ITEMS).length);
+    // Heroic variants (item.heroicOf set) reuse their base item's translation key
+    // (src/ui/entity_i18n.ts), so they carry no manifest entry of their own.
+    expect(entityCount('item', 'name')).toBe(
+      Object.values(ITEMS).filter((item) => !item.heroicOf).length,
+    );
     expect(entityCount('mob', 'name')).toBe(Object.keys(MOBS).length);
     expect(entityCount('npc', 'name')).toBe(Object.keys(NPCS).length);
     expect(entityCount('npc', 'title')).toBe(Object.keys(NPCS).length);
@@ -879,8 +883,11 @@ describe('i18n Localization Key Coverage', () => {
 
   it('should provide every item translation in every locale without canonical fallbacks', () => {
     const itemEntries = entityTranslationManifest().filter((entry) => entry.group === 'item');
-    const flavorTextCount = Object.values(ITEMS).filter((item) => item.flavorText).length;
-    expect(itemEntries).toHaveLength(Object.keys(ITEMS).length + flavorTextCount);
+    // Heroic variants (item.heroicOf set) reuse their base item's translation key
+    // (src/ui/entity_i18n.ts) instead of carrying their own manifest entry.
+    const translatableItems = Object.values(ITEMS).filter((item) => !item.heroicOf);
+    const flavorTextCount = translatableItems.filter((item) => item.flavorText).length;
+    expect(itemEntries).toHaveLength(translatableItems.length + flavorTextCount);
     expect(missingEntityTranslationsForGroups(['classAbility', 'item'])).toHaveLength(0);
 
     for (const lang of supportedLanguages) {

@@ -47,6 +47,7 @@ import { encodeHotbarAction, HOTBAR_ACTION_MIME } from './hotbar';
 import { formatNumber, type TranslationKey, t } from './i18n';
 import { iconDataUrl, QUALITY_COLOR } from './icons';
 import type { PainterHostPresentation } from './painter_host';
+import { tSim } from './sim_i18n';
 import { svgIcon } from './ui_icons';
 
 const BAG_FILTER_KEY = 'woc_bag_filter';
@@ -110,12 +111,16 @@ export interface BagsWindowDeps extends PainterHostPresentation {
   tradeOpen(): boolean;
   /** The World Market is open on its Sell tab. */
   isMarketSell(): boolean;
+  /** The Ravenpost mail window is open on its Compose tab (PHAA-688). */
+  isMailCompose(): boolean;
   pendingPetFeed(): boolean;
   // Cross-window commands the bag click fans out to.
   closeVendor(): void;
   addItemToTrade(itemId: string): void;
   /** Stage a bag item for a Market listing (selects it + repaints the market). */
   stageMarketSell(itemId: string): void;
+  /** Stage a bag item as a mail parcel (selects it + repaints the compose form). */
+  stageMailAttach(itemId: string): void;
   showError(text: string): void;
   setPendingPetFeed(active: boolean): void;
   resetPetBarSig(): void;
@@ -399,6 +404,12 @@ export class BagsWindow {
           case 'marketSell':
             this.deps.stageMarketSell(s.itemId);
             break;
+          case 'mailAttachBlockedQuest':
+            this.deps.showError(tSim('error.mailNoQuestItems'));
+            return;
+          case 'mailAttach':
+            this.deps.stageMailAttach(s.itemId);
+            break;
           case 'vendorSell':
             this.sellBagItem(s, ev);
             break;
@@ -480,6 +491,7 @@ export class BagsWindow {
     return {
       tradeOpen: this.deps.tradeOpen(),
       marketSell: this.deps.isMarketSell(),
+      mailAttach: this.deps.isMailCompose(),
       vendorOpen: this.deps.vendorOpen(),
       petFeed: this.deps.pendingPetFeed(),
     };

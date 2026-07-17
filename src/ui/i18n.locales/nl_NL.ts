@@ -926,6 +926,7 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.flavorText':
     '...telde veertig dagen bij kaarslicht voor ik de draad kwijtraakte. Het duister hier beneden vergeet Hem niet, ook al is Hij deze plek vergeten. Als de reiger laag cirkelt, zeg de Koster dat de pit nog brandt...',
   'entities.items.keeper_coal.name': 'Een Kool Die Nooit Afkoelde',
+  'entities.items.hearth_stone.name': 'Een Steen Nog Warm Van Zijn Haard',
   'entities.items.willow_sprig.name': 'Een Wilgentakje',
   'entities.items.worn_prayer_token.name': 'Versleten Gebedspenning',
   'entities.items.worn_prayer_token.flavorText':
@@ -1071,6 +1072,9 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'entities.items.reinforced_pauldrons.name': 'Versterkte Schouderplaten',
   'entities.items.reliquary_cloth_chest.name': 'Sluier van het Reliekschrijn',
   'entities.items.reliquary_gloves_rog.name': 'Botwachter-Grepen',
+  'entities.items.delve_heroic_mark.name': 'Heroïsch Reliekschrijn-Teken',
+  'entities.items.delve_heroic_mark.flavorText':
+    'Een gestempeld zegel, uitgegeven door de wachters van de Reliekschrijn. Wissel het in bij de Heroïsche Kwartiermeester voor uitrusting van reliekschrijn-kwaliteit.',
   'entities.items.reliquary_helm.name': 'Knekelwacht-Helm',
   'entities.items.reliquary_leather_chest.name': 'Stofwachter-Wambuis',
   'entities.items.reliquary_legs.name': 'Kluisgebonden Beenwindsels',

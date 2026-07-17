@@ -4574,6 +4574,9 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'entities.items.reliquary_helm.name': 'Yelmo de la Guardia del Osario',
   'entities.items.reliquary_shoulder.name': 'Hombreras desmoronadas',
   'entities.items.reliquary_gloves_rog.name': 'Manoplas del Guardián de Huesos',
+  'entities.items.delve_heroic_mark.name': 'Marca Heroica del Relicario',
+  'entities.items.delve_heroic_mark.flavorText':
+    'Un sello estampado emitido por los guardianes del Relicario. Canjéalo con el Intendente Heroico por equipo de calidad de relicario.',
   'entities.items.deacon_reliquary_helm.name': 'Yelmo del Relicario del Diácono',
   'entities.items.varric_shadow_cowl.name': 'Capucha sombría de Varric',
   'entities.items.cave_morsel.name': 'Bocado de Cueva',
@@ -4585,6 +4588,7 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.flavorText':
     '...conté cuarenta días con velas antes de perder la cuenta. La oscuridad de aquí abajo no Lo olvida, aunque Él haya olvidado este lugar. Si la garza vuela bajo, dile al Sacristán que la mecha aún arde...',
   'entities.items.keeper_coal.name': 'Un Carbón Que Nunca Se Enfrió',
+  'entities.items.hearth_stone.name': 'Una Piedra Aún Cálida De Su Hogar',
   'entities.items.willow_sprig.name': 'Una Ramita De Sauce',
   'entities.items.worn_prayer_token.name': 'Ficha de Oración Desgastada',
   'entities.items.worn_prayer_token.flavorText':

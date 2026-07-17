@@ -344,8 +344,15 @@ export function entityTranslationKey(request: EntityTranslationRequest): string 
         : CLASS_DESCRIPTION_KEYS[request.id];
     case 'ability':
       return `entities.abilities.${entityPathSegment(request.id)}.${request.field}`;
-    case 'item':
-      return `entities.items.${entityPathSegment(request.id)}.${request.field}`;
+    case 'item': {
+      // A Heroic variant (heroicOf set) reuses its base item's translated
+      // name/flavorText verbatim (see src/sim/content/heroic_variants.ts): it
+      // never gets its own key, so every locale that already covers the base
+      // item covers the variant for free.
+      const item = ITEMS[request.id];
+      const keyId = item?.heroicOf ?? request.id;
+      return `entities.items.${entityPathSegment(keyId)}.${request.field}`;
+    }
     case 'itemSet':
       return `entities.itemSets.${entityPathSegment(request.id)}.${request.field}`;
     case 'mob':
@@ -522,6 +529,10 @@ export function entityTranslationManifest(): EntityTranslationManifestEntry[] {
     );
   }
   for (const item of Object.values(ITEMS).sort(compareById)) {
+    // Heroic variants reuse their base item's key (entityTranslationKey above),
+    // so they carry no manifest entry of their own; requiring one would demand a
+    // second, identical translation per locale for text that never changes.
+    if (item.heroicOf) continue;
     entries.push(
       entry(
         'item',

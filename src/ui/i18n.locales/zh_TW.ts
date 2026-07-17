@@ -109,6 +109,16 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
     '自動會根據你的裝置選擇桌面或觸控操作。選擇桌面可強制使用鍵盤與滑鼠（適合有鍵盤的平板），選擇觸控則使用螢幕上的操作控制項。',
   // Character-sheet stat tooltips (hudChrome.statInfo.*).
   'hudChrome.statInfo.fromYour': '來自你的 {value} 點{stat}：',
+  'hudChrome.statInfo.names.spellPower': '法術強度',
+  'hudChrome.statInfo.desc.spellPower':
+    '提高你法術造成的傷害與治療的強度。每點智力都會提供少量法術強度，此外還有來自裝備與增益的加成。',
+  'hudChrome.statInfo.sources.header': '構成：',
+  'hudChrome.statInfo.sources.base': '基礎：{value}',
+  'hudChrome.statInfo.sources.attributes': '來自屬性：{value}',
+  'hudChrome.statInfo.sources.fromAttribute': '來自{stat}：{value}',
+  'hudChrome.statInfo.sources.gear': '裝備：{value}',
+  'hudChrome.statInfo.sources.buff': '{name}：{value}',
+  'hudChrome.statInfo.sources.talents': '天賦與效果：{value}',
   'hudChrome.statInfo.desc.str': '提升你的攻擊強度，使你的武器攻擊更具威力。',
   'hudChrome.statInfo.desc.agi': '磨練你的反應與準度，提升多項戰鬥屬性。',
   'hudChrome.statInfo.desc.sta':
@@ -214,6 +224,12 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.keybinds.emoteWheel': '表情輪盤',
   'hudChrome.keybinds.targetFriendly': '選取最近友方',
   'hudChrome.keybinds.targetFriendlyNext': '切換友方目標',
+  'hudChrome.keybinds.categoryPet': '寵物',
+  'hudChrome.keybinds.petAttack': '寵物：攻擊',
+  'hudChrome.keybinds.petStop': '寵物：停止',
+  'hudChrome.keybinds.petTaunt': '寵物：嘲諷',
+  'hudChrome.keybinds.petDefensive': '寵物：防禦',
+  'hudChrome.keybinds.petAggressive': '寵物：攻擊性',
   'hudChrome.options.clickMoveLeft': '左鍵',
   'hudChrome.options.clickMoveRight': '右鍵',
   'hudChrome.options.browserEffects': '瀏覽器特效',
@@ -3064,6 +3080,18 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_keep_him_lit.dialog.refuse': '我不會分三次來做這件事。一次就夠了。',
   'entities.quests.q_keep_him_lit.dialog.refuseReply':
     '……好吧。好吧，我懂你的意思，朋友，這條線劃得也算公道……這樣吧，還是拿著，嚴格說不算你掙來的，但我給出去的大半也不算，頻率這東西，其實沒真的在計較。',
+  'entities.quests.q_your_own_hearth.title': '屬於你自己的爐火',
+  'entities.quests.q_your_own_hearth.text':
+    '這是最後一件事了，朋友，與其說是差事，不如說是個提醒……路那邊有塊地，法洛牧場，靜靜地等著有人想要它。塞克斯頓·法迪克在照看他的狼群和他守護的那些地方之餘，也順帶留意著那兒——去打個招呼，讓他知道你是會留下來的那種人……之後，那塊地就是你的了，什麼時候準備好都行。',
+  'entities.quests.q_your_own_hearth.completion':
+    '就是這樣……你現在有那種眼神了，朋友，那種不再只是路過的眼神。去吧，在那外面找個地方站穩腳跟。我會一如既往地守著這爐火，瓶子也會清楚該去哪兒找你……',
+  'entities.quests.q_your_own_hearth.objectives.0.label': '已見過塞克斯頓·法迪克',
+  'entities.quests.q_your_own_hearth.dialog.complain': '地？我只是想跟你的植物打個招呼而已。',
+  'entities.quests.q_your_own_hearth.dialog.complainReply':
+    '你隨時都可以，它哪兒也不會去……但一個靈魂光靠拜訪神龕是不夠的，朋友，它需要個能站穩雙腳的地方。用不了多久。法迪克說話慢，但不會浪費你的下午。',
+  'entities.quests.q_your_own_hearth.dialog.refuse': '我不需要家園。我這樣光是拜訪就很滿足了。',
+  'entities.quests.q_your_own_hearth.dialog.refuseReply':
+    '……好吧，好吧，不勉強，朋友，那塊地會一直在，就像法迪克一直守著它一樣，等待又不花錢……給，這個還是拿著吧，謝謝你留了這麼久。我想那也算是一種家了。',
   'hud.errors.silenced': '你已被沉默！',
   'hud.pet.noPetFood': '你沒有可餵食寵物的食物。',
   'hud.pet.petEatsFoodOnly': '你的寵物只能吃食物。',
@@ -4562,6 +4590,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.items.reliquary_helm.name': '藏骨守衛頭盔',
   'entities.items.reliquary_shoulder.name': '碎裂的肩甲',
   'entities.items.reliquary_gloves_rog.name': '護骨者護手',
+  'entities.items.delve_heroic_mark.name': '英雄聖物庫印記',
+  'entities.items.delve_heroic_mark.flavorText':
+    '由聖物庫守護者頒發的鈐印。在英雄軍需官處兌換聖物庫級裝備。',
   'entities.items.deacon_reliquary_helm.name': '執事的聖物庫頭盔',
   'entities.items.varric_shadow_cowl.name': '瓦瑞克的暗影兜帽',
   'entities.items.cave_morsel.name': '洞穴肉粒',
@@ -4571,6 +4602,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
     '一段來自灰爪修士的鮮活綠枝，用濕苔蘚包裹著。等家園地塊可以編輯後，這是你要種下的第一樣東西。',
   'entities.items.greenpaw_bead.name': '彈藥帶上的一顆唸珠',
   'entities.items.keeper_coal.name': '一塊永不冷卻的炭',
+  'entities.items.hearth_stone.name': '一塊仍帶著他爐火餘溫的石頭',
   'entities.items.witness_root_cincture.name': '見證根的束帶',
   'entities.items.shrine_diary_page.name': '撕碎的日記頁',
   'entities.items.shrine_diary_page.flavorText':
@@ -5184,6 +5216,13 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'mailUi.needRecipientOrText': '請先填寫收件人並寫點內容再寄送。',
   'mailUi.openButton': '帶我去渡鴉驛站。',
   'mailUi.openButtonAria': '開啟渡鴉驛站郵件視窗',
+  // Mail item-attachment staging (PHAA-688, M16 non-Latin fill)
+  'mailUi.attachments': '附件（最多 {max} 件）',
+  'mailUi.removeAttachment': '從這封信中移除{item}',
+  'mailUi.tooltipAttach': '點擊附加到這封信',
+  'mailUi.tooltipCannotAttach': '渡鴉不會攜帶任務物品',
+  'mailUi.parcelQtyDecreaseAria': '少寄一個{item}',
+  'mailUi.parcelQtyIncreaseAria': '多寄一個{item}',
   // Event calendar (M16 non-Latin fill)
   'hudChrome.calendar.title': '活動日曆',
   'hudChrome.calendar.close': '關閉日曆',

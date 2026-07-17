@@ -2965,6 +2965,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.flavorText':
     '...zählte vierzig Tage bei Kerzenlicht, bevor ich den Faden verlor. Das Dunkel hier unten vergisst Ihn nicht, auch wenn Er diesen Ort vergessen hat. Wenn der Reiher tief kreist, sag dem Küster, der Docht brennt noch...',
   'entities.items.keeper_coal.name': 'Eine Kohle, die nie erkaltete',
+  'entities.items.hearth_stone.name': 'Ein Stein, Noch Warm von Seinem Herdfeuer',
   'entities.items.willow_sprig.name': 'Ein Weidenzweig',
   'entities.items.worn_prayer_token.name': 'Abgegriffene Gebetsmarke',
   'entities.items.worn_prayer_token.flavorText':
@@ -4628,6 +4629,9 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.items.reliquary_helm.name': 'Helm der Beinhauswache',
   'entities.items.reliquary_shoulder.name': 'Zerbröckelte Schulterstücke',
   'entities.items.reliquary_gloves_rog.name': 'Knochenwächter-Griffe',
+  'entities.items.delve_heroic_mark.name': 'Heroische Reliquiar-Marke',
+  'entities.items.delve_heroic_mark.flavorText':
+    'Ein geprägtes Siegel, ausgegeben von den Wächtern des Reliquiars. Löse es beim Heroischen Quartiermeister gegen Ausrüstung in Reliquiar-Qualität ein.',
   'entities.items.deacon_reliquary_helm.name': 'Reliquiarhelm des Diakons',
   'entities.items.varric_shadow_cowl.name': 'Varrics Schattenkapuze',
   'entities.mobs.acolyte_tessa.name': 'Akolythin Tessa',

@@ -114,6 +114,16 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     '自動では、デバイスに応じてデスクトップ操作かタッチ操作を選びます。デスクトップを選ぶとキーボードとマウスに固定され（キーボード付きタブレットなどに便利）、タッチを選ぶと画面上の操作になります。',
   // Character-sheet stat tooltips (hudChrome.statInfo.*).
   'hudChrome.statInfo.fromYour': 'あなたの{stat}{value}による効果:',
+  'hudChrome.statInfo.names.spellPower': '呪文威力',
+  'hudChrome.statInfo.desc.spellPower':
+    '呪文のダメージと回復の効果を高めます。知力1ポイントごとに、装備やバフによる分に加えて、わずかな呪文威力を得られます。',
+  'hudChrome.statInfo.sources.header': '内訳:',
+  'hudChrome.statInfo.sources.base': '基本: {value}',
+  'hudChrome.statInfo.sources.attributes': '能力値から: {value}',
+  'hudChrome.statInfo.sources.fromAttribute': '{stat}から: {value}',
+  'hudChrome.statInfo.sources.gear': '装備: {value}',
+  'hudChrome.statInfo.sources.buff': '{name}: {value}',
+  'hudChrome.statInfo.sources.talents': 'タレントと効果: {value}',
   'hudChrome.statInfo.desc.str': '攻撃力を上昇させ、武器による攻撃の威力を高めます。',
   'hudChrome.statInfo.desc.agi': '反射神経と狙いを鋭くし、複数の戦闘ステータスを向上させます。',
   'hudChrome.statInfo.desc.sta': '肉体を強化し、最大体力と休憩中の体力回復速度を高めます。',
@@ -224,6 +234,12 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.keybinds.emoteWheel': 'エモートホイール',
   'hudChrome.keybinds.targetFriendly': '最も近い味方をターゲット',
   'hudChrome.keybinds.targetFriendlyNext': '味方ターゲットを順に切り替え',
+  'hudChrome.keybinds.categoryPet': 'ペット',
+  'hudChrome.keybinds.petAttack': 'ペット：攻撃',
+  'hudChrome.keybinds.petStop': 'ペット：停止',
+  'hudChrome.keybinds.petTaunt': 'ペット：挑発',
+  'hudChrome.keybinds.petDefensive': 'ペット：防御',
+  'hudChrome.keybinds.petAggressive': 'ペット：攻撃的',
   'hudChrome.options.clickMoveLeft': '左クリック',
   'hudChrome.options.clickMoveRight': '右クリック',
   'hudChrome.options.browserEffects': 'ブラウザエフェクト',
@@ -3196,6 +3212,20 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_keep_him_lit.dialog.refuse': '三回に分けてなんてやらない。一回で十分だ。',
   'entities.quests.q_keep_him_lit.dialog.refuseReply':
     '……ああ。ああ、わかった、友よ、それも十分公平な線引きだ……なら、これでもとにかく持っといてくれ、厳密には稼いだもんじゃないが、俺が渡すもののほとんどもそうだしな、波長ってやつは、俺が装ってるほど几帳面に数えちゃいないんだ……',
+  'entities.quests.q_your_own_hearth.title': '自分だけの炉',
+  'entities.quests.q_your_own_hearth.text':
+    'これで最後だ、友よ、これは頼み事っていうより、ちょっとした後押しってやつさ……道の向こうに土地がある、フォロウ・エーカーズ、静かに誰かに望まれるのを待ってる。セクストン・ファディックが、狼の見回りと、彼が守ってる場所のリストの合間に、そこにも半分目を配ってる——挨拶しに行って、お前がここに留まる質だってことを知らせてやってくれ……そのあとは、いつでも好きな時に、その土地はお前のものだ。',
+  'entities.quests.q_your_own_hearth.completion':
+    'そういうことだ……お前はもうその顔をしてる、友よ、もう通り過ぎるだけの奴じゃないって顔だ。行けよ、あっちのどこかに足を下ろしてこい。俺は今まで通り炉を灯し続けるし、壺もちゃんとお前の居場所を分かってるさ……',
+  'entities.quests.q_your_own_hearth.objectives.0.label': 'セクストン・ファディックと会った',
+  'entities.quests.q_your_own_hearth.dialog.complain':
+    '土地？俺はただお前の植物に挨拶したかっただけだ。',
+  'entities.quests.q_your_own_hearth.dialog.complainReply':
+    'それはいつでもできる、あいつはどこにも行かないからな……だが魂ってのは祠を訪ねるだけじゃ足りないんだ、友よ、自分の足で立つ場所が要る。そう長くはかからん。ファディックは話し方はのろいが、お前の午後を無駄にはしない。',
+  'entities.quests.q_your_own_hearth.dialog.refuse':
+    '俺にホームステッドは要らない。ただ訪ねるだけで十分満足だ。',
+  'entities.quests.q_your_own_hearth.dialog.refuseReply':
+    '……わかった、わかった、無理強いする気はない、友よ、土地はファディックが守ってる通り、そのまま待ってる、待つのに金はかからないしな……ほら、これでも持っといてくれ、こんなに長く留まってくれた分だ。それもある意味、ホームってやつなんだろうな。',
   'hud.errors.silenced': '沈黙状態です！',
   'hud.pet.noPetFood': 'ペットに与える食べ物がありません。',
   'hud.pet.petEatsFoodOnly': 'ペットは食べ物しか食べられません。',
@@ -4798,6 +4828,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.items.reliquary_helm.name': '納骨堂の見張りの兜',
   'entities.items.reliquary_shoulder.name': '崩れた肩当て',
   'entities.items.reliquary_gloves_rog.name': '骨守りの手甲',
+  'entities.items.delve_heroic_mark.name': 'ヒロイック聖遺物庫の刻印',
+  'entities.items.delve_heroic_mark.flavorText':
+    '聖遺物庫の守人が発行した刻印。ヒロイック需品係と交換すれば、聖遺物庫級の装備が手に入る。',
   'entities.items.deacon_reliquary_helm.name': '助祭の聖遺物庫の兜',
   'entities.items.varric_shadow_cowl.name': 'ヴァリックの影のフード',
   'entities.items.cave_morsel.name': '洞窟の肉片',
@@ -4807,6 +4840,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     'グリーンポー修道士から譲り受けた、生きた緑の挿し木で、湿った苔にくるまれている。ホームステッドの区画を編集できるようになったら、最初に植えるのはこれだ。',
   'entities.items.greenpaw_bead.name': '弾帯の数珠玉',
   'entities.items.keeper_coal.name': '冷めることのない炭',
+  'entities.items.hearth_stone.name': '彼の炉からまだ温かい石',
   'entities.items.witness_root_cincture.name': '証しの根の帯紐',
   'entities.items.shrine_diary_page.name': '破れた日記のページ',
   'entities.items.shrine_diary_page.flavorText':
@@ -5448,6 +5482,13 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'mailUi.needRecipientOrText': '送信する前に宛先を指定し、本文を入力してください。',
   'mailUi.openButton': 'レイヴンポストへ案内してください。',
   'mailUi.openButtonAria': 'レイヴンポストの郵便ウィンドウを開く',
+  // Mail item-attachment staging (PHAA-688, M16 non-Latin fill)
+  'mailUi.attachments': '添付物（最大{max}個）',
+  'mailUi.removeAttachment': 'この手紙から{item}を外す',
+  'mailUi.tooltipAttach': 'クリックしてこの手紙に添付',
+  'mailUi.tooltipCannotAttach': '渡り烏はクエストアイテムを運びません',
+  'mailUi.parcelQtyDecreaseAria': '{item}を1つ減らして送る',
+  'mailUi.parcelQtyIncreaseAria': '{item}を1つ増やして送る',
   // Event calendar (M16 non-Latin fill)
   'hudChrome.calendar.title': 'イベントカレンダー',
   'hudChrome.calendar.close': 'カレンダーを閉じる',

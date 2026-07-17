@@ -908,6 +908,7 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.flavorText':
     '...räknade fyrtio dagar vid ljusets sken innan jag tappade tråden. Mörkret här nere glömmer Honom inte, även om Han har glömt denna plats. Om hägern cirklar lågt, säg till Klockaren att veken fortfarande brinner...',
   'entities.items.keeper_coal.name': 'Ett Kol Som Aldrig Svalnade',
+  'entities.items.hearth_stone.name': 'En Sten Fortfarande Varm Från Hans Härd',
   'entities.items.willow_sprig.name': 'En videkvist',
   'entities.items.worn_prayer_token.name': 'Nött Bönepollett',
   'entities.items.worn_prayer_token.flavorText':
@@ -1053,6 +1054,9 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'entities.items.reinforced_pauldrons.name': 'Förstärkta axelplåtar',
   'entities.items.reliquary_cloth_chest.name': 'Relikvariets slöja',
   'entities.items.reliquary_gloves_rog.name': 'Benväktargrepp',
+  'entities.items.delve_heroic_mark.name': 'Heroiskt Relikvariemärke',
+  'entities.items.delve_heroic_mark.flavorText':
+    'Ett präglat sigill utfärdat av Relikvariets väktare. Lös in det hos Den Heroiska Kvartersmästaren mot utrustning av relikvariekvalitet.',
   'entities.items.reliquary_helm.name': 'Benhusvaktens hjälm',
   'entities.items.reliquary_leather_chest.name': 'Stoftväktarväst',
   'entities.items.reliquary_legs.name': 'Valvbundna benlindor',

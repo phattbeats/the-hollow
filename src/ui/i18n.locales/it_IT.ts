@@ -4560,6 +4560,9 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'entities.items.reliquary_helm.name': "Elmo della guardia dell'ossario",
   'entities.items.reliquary_shoulder.name': 'Spallacci sgretolati',
   'entities.items.reliquary_gloves_rog.name': 'Manopole del guardiano delle ossa',
+  'entities.items.delve_heroic_mark.name': 'Sigillo Eroico del Reliquiario',
+  'entities.items.delve_heroic_mark.flavorText':
+    'Un sigillo impresso rilasciato dai custodi del Reliquiario. Riscattalo presso il Quartiermastro Eroico per equipaggiamento di qualità del reliquiario.',
   'entities.items.deacon_reliquary_helm.name': 'Elmo del reliquiario del diacono',
   'entities.items.varric_shadow_cowl.name': "Cappuccio d'ombra di Varric",
   'entities.items.cave_morsel.name': 'Boccone di Caverna',
@@ -4571,6 +4574,7 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.flavorText':
     "...ho contato quaranta giorni a lume di candela prima di perdere il filo. Il buio quaggiù non Lo dimentica, anche se Lui ha dimenticato questo luogo. Se l'airone vola basso, di' al Sagrestano che lo stoppino brucia ancora...",
   'entities.items.keeper_coal.name': 'Un Carbone Mai Raffreddato',
+  'entities.items.hearth_stone.name': 'Una Pietra Ancora Calda Dal Suo Focolare',
   'entities.items.willow_sprig.name': 'Un Ramoscello Di Salice',
   'entities.items.worn_prayer_token.name': 'Gettone di Preghiera Consumato',
   'entities.items.worn_prayer_token.flavorText':

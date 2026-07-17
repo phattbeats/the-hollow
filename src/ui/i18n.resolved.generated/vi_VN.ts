@@ -313,7 +313,13 @@ export const vi_VN: EnTranslations = {
     "keybinds": {
       "emoteWheel": "Vòng Biểu Cảm",
       "targetFriendly": "Chọn Đồng Minh Gần Nhất",
-      "targetFriendlyNext": "Luân Phiên Mục Tiêu Đồng Minh"
+      "targetFriendlyNext": "Luân Phiên Mục Tiêu Đồng Minh",
+      "categoryPet": "Pet",
+      "petAttack": "Pet: Attack",
+      "petStop": "Pet: Stop",
+      "petTaunt": "Pet: Taunt",
+      "petDefensive": "Pet: Defensive",
+      "petAggressive": "Pet: Aggressive"
     },
     "options": {
       "clickMoveLeft": "Nhấp Trái",
@@ -434,6 +440,9 @@ export const vi_VN: EnTranslations = {
     },
     "statInfo": {
       "fromYour": "Từ {value} {stat} của bạn:",
+      "names": {
+        "spellPower": "Spell Power"
+      },
       "desc": {
         "str": "Tăng sức công kích, giúp đòn vũ khí của bạn đánh mạnh hơn.",
         "agi": "Mài giũa phản xạ và độ chính xác của bạn, cải thiện một số chỉ số chiến đấu.",
@@ -442,6 +451,7 @@ export const vi_VN: EnTranslations = {
         "spi": "Tăng tốc độ hồi mana của pháp sư khi nghỉ ngơi, ngoài chiến đấu.",
         "armor": "Giảm nhẹ các đòn tấn công vật lý nhận vào. Mức giảm lớn hơn khi đối đầu kẻ tấn công cấp thấp hơn và bị giới hạn ở 75%.",
         "attackPower": "Tăng sức mạnh cho các đòn tấn công vũ khí. Cứ 14 công kích sẽ thêm 1 sát thương mỗi giây.",
+        "spellPower": "Increases the damage of your spells and the strength of your heals. Each point of Intellect grants a little Spell Power, on top of any from gear or buffs.",
         "dps": "Sát thương vũ khí ước tính mỗi giây của bạn, kết hợp sát thương và tốc độ vũ khí với sức công kích.",
         "critChance": "Tỉ lệ một đòn tấn công đánh chí mạng, gây sát thương gấp đôi.",
         "dodge": "Tỉ lệ bạn né hoàn toàn một đòn cận chiến, không nhận sát thương."
@@ -464,6 +474,15 @@ export const vi_VN: EnTranslations = {
         "minorForClass": "Ít lợi ích cho lớp nhân vật của bạn.",
         "baseChance": "Bao gồm 5% cơ hội nền tảng chung cho mọi nhà thám hiểm.",
         "dpsApprox": "Đây là con số ước tính, không tính đòn chí mạng và sát thương kỹ năng."
+      },
+      "sources": {
+        "header": "Made up of:",
+        "base": "Base: {value}",
+        "attributes": "From your attributes: {value}",
+        "fromAttribute": "From {stat}: {value}",
+        "gear": "Equipped gear: {value}",
+        "buff": "{name}: {value}",
+        "talents": "Talents and effects: {value}"
       }
     },
     "talents": {
@@ -989,6 +1008,12 @@ export const vi_VN: EnTranslations = {
     "recipient": "Recipient",
     "subjectLabel": "Subject",
     "bodyPlaceholder": "Write your letter...",
+    "attachments": "Attachments (up to {max})",
+    "removeAttachment": "Remove {item} from this letter",
+    "tooltipAttach": "Click to attach to this letter",
+    "tooltipCannotAttach": "The raven will not carry quest items",
+    "parcelQtyDecreaseAria": "Send one fewer {item}",
+    "parcelQtyIncreaseAria": "Send one more {item}",
     "send": "Send Letter",
     "needRecipientOrText": "Name a recipient and write something before sending.",
     "openButton": "Show me the Ravenpost.",
@@ -3844,6 +3869,7 @@ export const vi_VN: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "Đang trang bị",
       "ifYouEquip": "Nếu bạn trang bị món này",
       "damageSpeed": "{min} - {max} Sát Thương Tốc Độ {speed}",
@@ -5523,6 +5549,9 @@ export const vi_VN: EnTranslations = {
       "keeper_coal": {
         "name": "Hòn Than Không Bao Giờ Nguội"
       },
+      "hearth_stone": {
+        "name": "Một Viên Đá Vẫn Còn Ấm Từ Lò Sưởi Của Anh Ấy"
+      },
       "willow_sprig": {
         "name": "Một Cành Liễu"
       },
@@ -5571,6 +5600,10 @@ export const vi_VN: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "Bao Tay Hộ Cốt"
+      },
+      "delve_heroic_mark": {
+        "name": "Huy Hiệu Hộp Thánh Tích Anh Hùng",
+        "flavorText": "Một con dấu được đóng bởi những người canh giữ Hộp Thánh Tích. Đổi nó tại Quân Nhu Trưởng Anh Hùng để lấy trang bị hạng thánh tích."
       },
       "deacon_reliquary_helm": {
         "name": "Mũ Thánh Tích Của Phó Tế"
@@ -7136,6 +7169,22 @@ export const vi_VN: EnTranslations = {
           "complainReply": "once is a favor, friend, three's a habit, and i been burned by favors before... this ain't about the hearth needin' it, the hearth's fine, i keep it fine, it's about you comin' back on your own two feet 'cause you wanted to, not 'cause some quest marker told you to... three times. no rush on the countin'.",
           "refuse": "I'm not doing this three separate times. Once was enough.",
           "refuseReply": "...yeah. yeah, okay, i hear you, friend, that's a fair enough line to draw... tell you what, here, take it anyway, ain't earned in the strictest sense but neither's most of what i hand out, and the wavelength don't really keep score the way i pretend it does..."
+        }
+      },
+      "q_your_own_hearth": {
+        "title": "A Hearth of Your Own",
+        "text": "here's the last of it, friend, and it ain't really an errand so much as a nudge... there's ground out past the road, fallow acres, sittin' quiet and waitin' on somebody to want it. sexton faddick keeps half an eye on it between his wolves and his list of kept places - go say hello, let him know you're the kind that stays... after that the ground's yours to claim, whenever you're ready for it.",
+        "completion": "there it is... you got the look now, friend, the one that says you ain't just passin' through no more. go on, plant your feet somewhere out there. i'll keep the hearth lit same as always, and the vase'll know right where to find you...",
+        "objectives": {
+          "0": {
+            "label": "Sexton Faddick met"
+          }
+        },
+        "dialog": {
+          "complain": "Ground? I just wanted to say hi to your plant.",
+          "complainReply": "and you can, anytime, he ain't goin' anywhere... but a soul needs more than a shrine to visit, friend, it needs somewhere to plant its own two feet. won't take long. faddick talks slow but he don't waste your afternoon.",
+          "refuse": "I don't need a homestead. I'm happy just visiting.",
+          "refuseReply": "...alright, alright, no pressure in it, friend, the ground'll keep same as faddick keeps it, waitin' don't cost it nothin'... here, take this anyway, for stickin' around this long. that's its own kind of home, i guess."
         }
       },
       "q_root_hollow_boars": {

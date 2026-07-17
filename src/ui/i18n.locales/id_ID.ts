@@ -936,6 +936,7 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.flavorText':
     '...menghitung empat puluh hari dengan cahaya lilin sebelum kehilangan hitungan. Kegelapan di bawah sini tak melupakan-Nya, meski Dia telah melupakan tempat ini. Jika bangau terbang rendah, katakan pada Sang Penjaga sumbunya masih menyala...',
   'entities.items.keeper_coal.name': 'Arang yang Tak Pernah Dingin',
+  'entities.items.hearth_stone.name': 'Batu yang Masih Hangat dari Perapiannya',
   'entities.items.willow_sprig.name': 'Sebuah Ranting Willow',
   'entities.items.worn_prayer_token.name': 'Token Doa Usang',
   'entities.items.worn_prayer_token.flavorText':
@@ -1081,6 +1082,9 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'entities.items.reinforced_pauldrons.name': 'Pelindung Bahu Diperkuat',
   'entities.items.reliquary_cloth_chest.name': 'Selubung Relikuari',
   'entities.items.reliquary_gloves_rog.name': 'Sarung Tangan Penjaga Tulang',
+  'entities.items.delve_heroic_mark.name': 'Tanda Relikuari Heroik',
+  'entities.items.delve_heroic_mark.flavorText':
+    'Segel cap yang dikeluarkan oleh para penjaga Relikuari. Tukarkan di Kepala Perbekalan Heroik untuk perlengkapan bermutu relikuari.',
   'entities.items.reliquary_helm.name': 'Helm Jaga Osuari',
   'entities.items.reliquary_leather_chest.name': 'Rompi Penjaga Debu',
   'entities.items.reliquary_legs.name': 'Pembalut Kaki Penjaga Ruang',

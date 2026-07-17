@@ -4550,6 +4550,9 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'entities.items.reliquary_helm.name': 'Elmo da Guarda do Ossário',
   'entities.items.reliquary_shoulder.name': 'Ombreiras esfareladas',
   'entities.items.reliquary_gloves_rog.name': 'Manoplas do Guardião dos Ossos',
+  'entities.items.delve_heroic_mark.name': 'Marca Heroica do Relicário',
+  'entities.items.delve_heroic_mark.flavorText':
+    'Um selo cunhado emitido pelos guardiões do Relicário. Troque-o com o Intendente Heroico por equipamentos de qualidade de relicário.',
   'entities.items.deacon_reliquary_helm.name': 'Elmo do Relicário do Diácono',
   'entities.items.varric_shadow_cowl.name': 'Capuz sombrio de Varric',
   'entities.items.cave_morsel.name': 'Petisco da Caverna',
@@ -4561,6 +4564,7 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.flavorText':
     '...contei quarenta dias à luz de vela antes de perder a conta. A escuridão aqui embaixo não O esquece, mesmo que Ele tenha esquecido este lugar. Se a garça voar baixo, diga ao Sacristão que o pavio ainda arde...',
   'entities.items.keeper_coal.name': 'Um Carvão Que Nunca Esfriou',
+  'entities.items.hearth_stone.name': 'Uma Pedra Ainda Quente De Sua Lareira',
   'entities.items.willow_sprig.name': 'Um Galhinho De Salgueiro',
   'entities.items.worn_prayer_token.name': 'Ficha de Oração Gasta',
   'entities.items.worn_prayer_token.flavorText':
