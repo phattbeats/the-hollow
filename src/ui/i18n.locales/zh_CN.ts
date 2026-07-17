@@ -5344,4 +5344,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.warfare.reasons.fiestaKill': '狂欢击倒',
   'hudChrome.warfare.reasons.fiestaComplete': '狂欢比赛',
   'hudChrome.warfare.reasons.fiestaWin': '狂欢胜利',
+  'entities.npcs.bramble.name': '布兰博',
+  'entities.npcs.bramble.title': '荣誉军需官',
+  'entities.npcs.bramble.greeting': '沙场记得每一场胜利。好好花你的荣誉吧。',
 };

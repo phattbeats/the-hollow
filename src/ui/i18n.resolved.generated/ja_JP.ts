@@ -6281,6 +6281,11 @@ export const ja_JP: EnTranslations = {
         "title": "副職業トレーナー",
         "greeting": "ビルドはすべて、ひとつの問いから始まる。どの副職業があなたを呼んでいる？"
       },
+      "bramble": {
+        "name": "ブランブル",
+        "title": "名誉調達官",
+        "greeting": "闘技場の砂は、すべての勝利を覚えている。名誉は賢く使うといい。"
+      },
       "tidewatcher_ondrel": {
         "name": "オンドレル・ヴェイン",
         "title": "潮見の番人",

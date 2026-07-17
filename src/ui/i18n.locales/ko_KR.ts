@@ -5624,4 +5624,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.warfare.reasons.fiestaKill': '피에스타 처치',
   'hudChrome.warfare.reasons.fiestaComplete': '피에스타 경기',
   'hudChrome.warfare.reasons.fiestaWin': '피에스타 승리',
+  'entities.npcs.bramble.name': '브램블',
+  'entities.npcs.bramble.title': '명예 보급관',
+  'entities.npcs.bramble.greeting': '모래 경기장은 모든 승리를 기억한다. 명예를 현명하게 써라.',
 };

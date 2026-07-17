@@ -6281,6 +6281,11 @@ export const ko_KR: EnTranslations = {
         "title": "보조 직업 훈련사",
         "greeting": "모든 빌드는 질문에서 시작됩니다. 어떤 보조 직업이 당신을 부르고 있나요?"
       },
+      "bramble": {
+        "name": "브램블",
+        "title": "명예 보급관",
+        "greeting": "모래 경기장은 모든 승리를 기억한다. 명예를 현명하게 써라."
+      },
       "tidewatcher_ondrel": {
         "name": "온드렐 베인",
         "title": "조수지기",

@@ -6281,6 +6281,11 @@ export const zh_CN: EnTranslations = {
         "title": "副职业训练师",
         "greeting": "每一套build都始于一个问题：哪个副职业在召唤你？"
       },
+      "bramble": {
+        "name": "布兰博",
+        "title": "荣誉军需官",
+        "greeting": "沙场记得每一场胜利。好好花你的荣誉吧。"
+      },
       "tidewatcher_ondrel": {
         "name": "翁德雷尔·凡恩",
         "title": "守潮者",

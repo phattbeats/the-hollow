@@ -6281,6 +6281,11 @@ export const pt_BR: EnTranslations = {
         "title": "Profession Trainer",
         "greeting": "Every build starts as a question. Which second calling speaks to you?"
       },
+      "bramble": {
+        "name": "Bramble",
+        "title": "Honor Quartermaster",
+        "greeting": "The sands remember every victory. Spend your honor well."
+      },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
         "title": "Vigia das Marés",
