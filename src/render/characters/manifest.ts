@@ -1350,3 +1350,23 @@ export function visibleAttachmentsForGraphics(
 ): readonly AttachDef[] {
   return def.attach ?? [];
 }
+
+const bakedArmorNodeNamesByUrl = new Map<string, ReadonlySet<string>>();
+
+/** Union of every node name gated by ANY VisualDef's `bakedArmorSlots` that
+ *  shares this GLB url (several defs can point at one url, e.g. player_warrior_f
+ *  and player_paladin_f both use chibi_female_knight.glb). PHAA-653: the
+ *  per-url merge cache (assets.ts optimizedScene) must never fuse one of these
+ *  nodes into a body mesh, or its runtime visibility toggle silently stops
+ *  finding it by name and it gets stuck visible. */
+export function bakedArmorNodeNamesForUrl(url: string): ReadonlySet<string> {
+  const hit = bakedArmorNodeNamesByUrl.get(url);
+  if (hit) return hit;
+  const names = new Set<string>();
+  for (const def of Object.values(VISUALS)) {
+    if (def.url !== url || !def.bakedArmorSlots) continue;
+    for (const node of Object.keys(def.bakedArmorSlots)) names.add(node);
+  }
+  bakedArmorNodeNamesByUrl.set(url, names);
+  return names;
+}
