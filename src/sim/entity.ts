@@ -271,13 +271,22 @@ export function recalcPlayerStats(
     s.armor += m.armor;
     bonusAp += m.ap;
     bonusDodge += m.dodge;
-    if (m.staPct || staPctBuff) s.sta = Math.round(s.sta * (1 + m.staPct + staPctBuff));
     // Primary-attribute multipliers, applied to the fully-summed attribute. agiPct lands
     // before the agi-derived armor/dodge below so the percentage flows into them.
     if (m.strPct) s.str = Math.round(s.str * (1 + m.strPct));
     if (m.agiPct) s.agi = Math.round(s.agi * (1 + m.agiPct));
-    if (m.intPct || intPctBuff) s.int = Math.round(s.int * (1 + m.intPct + intPctBuff));
     if (m.spiPct) s.spi = Math.round(s.spi * (1 + m.spiPct));
+  }
+  // Stamina/Intellect percents (talent mod + PHAA-577 raid buff) folded once, guarded
+  // independently of `mods` for symmetry with the ap/armor percent folds below, so a
+  // percent buff never silently drops when a caller passes no talent mods. Combined in a
+  // single Math.round to keep the value byte-identical to the prior in-block fold. Stamina
+  // stays before the HP derivation; Intellect before the spell-power derivation.
+  {
+    const staPct = (mods?.stats.staPct ?? 0) + staPctBuff;
+    if (staPct) s.sta = Math.round(s.sta * (1 + staPct));
+    const intPct = (mods?.stats.intPct ?? 0) + intPctBuff;
+    if (intPct) s.int = Math.round(s.int * (1 + intPct));
   }
   // Floor Agility at 0 so a draining debuff (negative buff_agi) can never push the
   // derived armor/dodge below what zero Agility would give.

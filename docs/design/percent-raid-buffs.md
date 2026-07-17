@@ -74,7 +74,10 @@ already tuned is preserved through the flat-to-percent conversion.
 
 State-validation combat sim + determinism: `tests/percent_raid_buffs.test.ts`.
 Parity: no RNG draw-order change (buff/debuff dispatch already drew RNG in the
-same places; whole-group iteration adds no new draws). No golden regen
-needed. Reviewers: architecture-reviewer (SimContext seam, `ctx.entities`/
+same places; whole-group iteration adds no new draws). The parity goldens WERE
+regenerated (`UPDATE_PARITY=1`) because the changed ability data shifts the
+`state` hashes; the regen diff is `state`-only, with every `rngDigest` and
+`draws` count byte-identical across all 48 snapshots (determinism preserved).
+Reviewers: architecture-reviewer (SimContext seam, `ctx.entities`/
 `ctx.partyOf` reads only, no new mutation of shared state outside `applyAura`),
 design owner (Brandon, already approved via PHAA-565).
