@@ -6265,14 +6265,14 @@ export const ko_KR: EnTranslations = {
         "greeting": "앉아도 돼요. 다들 그냥 지나가죠. 성당지기가 오래전에 내 이름을 장부에서 지워 버렸어요. 지워진 이름은 조용히 있는 법을 배우죠, 아직 여기 있다는 걸 아무도 떠올리지 않도록."
       },
       "withered_planting": {
-        "name": "The Withered Planting",
-        "title": "The Tribe's Old Willow",
-        "greeting": "Dry roots, dry leaves. Whatever this was meant to grow into, it hasn't yet, and it's been a long while waiting."
+        "name": "시들어가는 묘목밭",
+        "title": "부족의 오래된 버드나무",
+        "greeting": "마른 뿌리, 마른 잎. 무엇이 되려 했든 아직은 되지 못했고, 오랜 세월을 그렇게 기다려 왔다."
       },
       "buried_root": {
-        "name": "A Buried Root",
-        "title": "Under the Shrine",
-        "greeting": "Dry. Dry as anything down here ever gets."
+        "name": "묻힌 뿌리",
+        "title": "사당 아래",
+        "greeting": "메말랐다. 이 아래 그 무엇 못지않게 메말랐다."
       }
     },
     "quests": {
@@ -7229,22 +7229,22 @@ export const ko_KR: EnTranslations = {
         }
       },
       "q_the_long_way_around": {
-        "title": "The Long Way Around",
-        "text": "There's a planting the tribe left half-finished up the old willow, and it's dying for want of one good pour. I can't make that climb anymore, but you've got the legs for it. Take the can. Mind the branches; they hold if you're honest with them.",
-        "completion": "It'll live now. You wouldn't think one climb and one pour was much, against everything else out there. It isn't much. It's only everything to the one thing you poured it on.",
+        "title": "멀리 돌아가는 길",
+        "text": "오래된 버드나무 위쪽에 부족이 반쯤 짓다 만 묘목밭이 있어. 제대로 된 물 한 번을 못 받아서 죽어가고 있지. 그 오르막은 이제 내가 오르지 못하지만, 자네에겐 그럴 다리가 있잖아. 물뿌리개를 가져가게. 가지를 조심하고. 정직하게 대하면 가지는 자네를 지탱해 준다네.",
+        "completion": "이제 살아날 걸세. 바깥의 그 모든 일에 비하면 오르막 한 번, 물 한 번이 뭐 대단하겠나 싶겠지. 대단한 건 아니야. 다만 자네가 물을 준 그 하나에게는 그것이 전부라네.",
         "objectives": {
           "0": {
-            "label": "Water carried up the willow path"
+            "label": "버드나무 길을 따라 물을 나르기"
           }
         }
       },
       "q_the_watering_can": {
-        "title": "The Watering Can",
-        "text": "I've asked you for small things, and you've done them all without once asking why. Here's the last one, and it isn't small, though it'll look it. Take my can down under the shrine, to the thing that's buried there, and give it water. It's been waiting a long time to be given something instead of asked for something.",
-        "completion": "You did it. Of course you did. That was the water, you understand. All of it, all the way back to the day you found me at the lake and thought nothing of it. The same pour, the same promise, kept one more time. Thank you. Now go and be gentle with the world. It is the only thing that ever changed it.",
+        "title": "물뿌리개",
+        "text": "자네에게 자잘한 일들을 부탁했고, 자네는 한 번도 이유를 묻지 않고 그 모두를 해 주었지. 이게 마지막일세. 작아 보이지만 작지 않아. 내 물뿌리개를 사당 아래로 가져가, 거기 묻혀 있는 그것에게 물을 주게. 그것은 무언가를 요구받는 대신 무언가를 받기를, 아주 오랫동안 기다려 왔다네.",
+        "completion": "자네가 해냈군. 물론 해냈지. 그건 물이었어, 알겠나. 그 모든 물, 자네가 호숫가에서 나를 발견하고 아무렇지 않게 여기던 그날까지 거슬러 올라가는 물이었지. 같은 물, 같은 약속을 한 번 더 지켜 준 거야. 고맙네. 이제 가서 이 세상을 다정하게 대하게. 세상을 바꿔 온 건 오직 그것뿐이니까.",
         "objectives": {
           "0": {
-            "label": "Water given to the buried root"
+            "label": "묻힌 뿌리에 물을 주기"
           }
         }
       }

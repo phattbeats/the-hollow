@@ -6265,14 +6265,14 @@ export const ja_JP: EnTranslations = {
         "greeting": "座っていいのよ。たいていの人は通り過ぎる。堂守はずっと前に私の名を台帳から消したの。消された名は、静かにしていることを覚える。まだここにいると、誰にも思い出させないように。"
       },
       "withered_planting": {
-        "name": "The Withered Planting",
-        "title": "The Tribe's Old Willow",
-        "greeting": "Dry roots, dry leaves. Whatever this was meant to grow into, it hasn't yet, and it's been a long while waiting."
+        "name": "枯れゆく苗床",
+        "title": "部族の古い柳",
+        "greeting": "乾いた根、乾いた葉。これが何になるはずだったにせよ、まだそうはなっていない。ずいぶん長いあいだ、待ち続けている。"
       },
       "buried_root": {
-        "name": "A Buried Root",
-        "title": "Under the Shrine",
-        "greeting": "Dry. Dry as anything down here ever gets."
+        "name": "埋もれた根",
+        "title": "祠の下",
+        "greeting": "乾いている。この地の底にあるどんなものにも劣らぬほど、乾ききっている。"
       }
     },
     "quests": {
@@ -7229,22 +7229,22 @@ export const ja_JP: EnTranslations = {
         }
       },
       "q_the_long_way_around": {
-        "title": "The Long Way Around",
-        "text": "There's a planting the tribe left half-finished up the old willow, and it's dying for want of one good pour. I can't make that climb anymore, but you've got the legs for it. Take the can. Mind the branches; they hold if you're honest with them.",
-        "completion": "It'll live now. You wouldn't think one climb and one pour was much, against everything else out there. It isn't much. It's only everything to the one thing you poured it on.",
+        "title": "遠まわりの道",
+        "text": "古い柳の上のほうに、部族がやりかけのまま残していった苗床がある。ひと注ぎの水がないばかりに、枯れかけているんだ。あの登りはもうわたしには無理だが、お前には脚がある。じょうろを持っていきなさい。枝には気をつけて。正直に向き合えば、枝はちゃんと支えてくれる。",
+        "completion": "これでもう生きていける。あの外のいろんなことに比べれば、一度の登りと一度の水やりなんて、たいしたことに思えないだろう。実際、たいしたことじゃない。ただ、お前が水をやったそのひとつにとっては、それがすべてなんだ。",
         "objectives": {
           "0": {
-            "label": "Water carried up the willow path"
+            "label": "柳の小道を登って水を運ぶ"
           }
         }
       },
       "q_the_watering_can": {
-        "title": "The Watering Can",
-        "text": "I've asked you for small things, and you've done them all without once asking why. Here's the last one, and it isn't small, though it'll look it. Take my can down under the shrine, to the thing that's buried there, and give it water. It's been waiting a long time to be given something instead of asked for something.",
-        "completion": "You did it. Of course you did. That was the water, you understand. All of it, all the way back to the day you found me at the lake and thought nothing of it. The same pour, the same promise, kept one more time. Thank you. Now go and be gentle with the world. It is the only thing that ever changed it.",
+        "title": "じょうろ",
+        "text": "これまで小さな頼みごとをいくつもしてきたが、お前は一度も理由を訊かず、そのすべてをやってくれた。これが最後のひとつ。小さく見えるが、小さくはない。わたしのじょうろを祠の下へ持っていって、そこに埋もれているものに水をやってくれ。それはずっと長いあいだ、何かを求められるのではなく、何かを与えられるのを待っていたんだ。",
+        "completion": "やってくれたんだね。もちろん、お前ならそうする。あれは水だったんだよ、わかるかい。すべての水だ。お前が湖のほとりでわたしを見つけて、何とも思わなかったあの日にまでさかのぼる、すべての水。同じひと注ぎ、同じ約束を、もう一度守ってくれた。ありがとう。さあ行って、この世界にやさしくしておやり。それだけが、世界を変えてきた唯一のものなんだ。",
         "objectives": {
           "0": {
-            "label": "Water given to the buried root"
+            "label": "埋もれた根に水をやる"
           }
         }
       }
