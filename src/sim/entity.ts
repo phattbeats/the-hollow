@@ -225,8 +225,19 @@ export function recalcPlayerStats(
   let bearForm = false;
   let catForm = false;
   let scaleMul = 1; // Fiesta buff_scale: body-size multiplier (>1 also adds hp)
+  // PHAA-577 percent raid buffs: integer percent points (5 = +5%), summed across
+  // every source then folded as a percent-of-the-fully-summed-stat below,
+  // alongside the existing talent stat-percent multipliers.
+  let apPctBuff = 0;
+  let staPctBuff = 0;
+  let intPctBuff = 0;
+  let armorPctBuff = 0;
   for (const a of e.auras) {
     if (a.kind === 'buff_ap') bonusAp += a.value;
+    else if (a.kind === 'buff_ap_pct') apPctBuff += a.value / 100;
+    else if (a.kind === 'buff_sta_pct') staPctBuff += a.value / 100;
+    else if (a.kind === 'buff_int_pct') intPctBuff += a.value / 100;
+    else if (a.kind === 'buff_armor_pct') armorPctBuff += a.value / 100;
     // Attack-power debuff (Demoralizing Shout/Roar). Mobs fold this live in
     // effectiveAttackPower; players bake it here, so without this arm the debuff
     // was a no-op versus enemy players (PvP).
@@ -260,12 +271,12 @@ export function recalcPlayerStats(
     s.armor += m.armor;
     bonusAp += m.ap;
     bonusDodge += m.dodge;
-    if (m.staPct) s.sta = Math.round(s.sta * (1 + m.staPct));
+    if (m.staPct || staPctBuff) s.sta = Math.round(s.sta * (1 + m.staPct + staPctBuff));
     // Primary-attribute multipliers, applied to the fully-summed attribute. agiPct lands
     // before the agi-derived armor/dodge below so the percentage flows into them.
     if (m.strPct) s.str = Math.round(s.str * (1 + m.strPct));
     if (m.agiPct) s.agi = Math.round(s.agi * (1 + m.agiPct));
-    if (m.intPct) s.int = Math.round(s.int * (1 + m.intPct));
+    if (m.intPct || intPctBuff) s.int = Math.round(s.int * (1 + m.intPct + intPctBuff));
     if (m.spiPct) s.spi = Math.round(s.spi * (1 + m.spiPct));
   }
   // Floor Agility at 0 so a draining debuff (negative buff_agi) can never push the
@@ -280,7 +291,8 @@ export function recalcPlayerStats(
     bonusAp += 8 + lvl * 2;
     s.agi += Math.max(2, Math.floor(lvl / 2));
   }
-  if (mods?.stats.armorPct) s.armor = Math.round(s.armor * (1 + mods.stats.armorPct));
+  if (mods?.stats.armorPct || armorPctBuff)
+    s.armor = Math.round(s.armor * (1 + (mods?.stats.armorPct ?? 0) + armorPctBuff));
   // Floor Spirit at 0 so a Spirit-siphoning debuff (negative buff_spi) can never
   // drive out-of-combat regen (updateRegen reads stats.spi) below zero.
   s.spi = Math.max(0, s.spi);
@@ -312,11 +324,14 @@ export function recalcPlayerStats(
         : s.str;
   // Floor at 0 so a heavy debuff_ap stack can never bake a negative attack power
   // (mirrors effectiveAttackPower's mob floor and the agi/spi floors above).
-  e.attackPower = Math.max(0, Math.round((apFromStats + bonusAp) * (1 + (mods?.stats.apPct ?? 0))));
+  e.attackPower = Math.max(
+    0,
+    Math.round((apFromStats + bonusAp) * (1 + (mods?.stats.apPct ?? 0) + apPctBuff)),
+  );
   // Hunters: ranged AP = 2/agi (vanilla)
   e.rangedPower =
     cls === 'hunter'
-      ? Math.max(0, Math.round((s.agi * 2 + bonusAp) * (1 + (mods?.stats.apPct ?? 0))))
+      ? Math.max(0, Math.round((s.agi * 2 + bonusAp) * (1 + (mods?.stats.apPct ?? 0) + apPctBuff)))
       : 0;
   // Spell Power: Intellect converted via SPELL_POWER_PER_INT plus flat Spell Power
   // from gear/buffs. Floored at 0 so an Intellect-draining debuff can't go negative.
