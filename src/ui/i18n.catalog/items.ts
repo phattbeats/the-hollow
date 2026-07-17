@@ -54,6 +54,10 @@ const itemStringsEn = {
     },
     tooltip: {
       qualityKind: '{quality} {kind}',
+      // Heroic-tier item variants (src/sim/content/heroic_variants.ts) tag the
+      // tooltip's quality/kind line so a Heroic drop reads distinctly at a
+      // glance without a separate translated item name (see entity_i18n.ts).
+      qualityKindHeroic: '[HEROIC] {quality} {kind}',
       currentlyEquipped: 'Currently equipped',
       ifYouEquip: 'If you equip this',
       damageSpeed: '{min} - {max} Damage Speed {speed}',
@@ -248,6 +252,7 @@ export const itemStrings = {
       },
       tooltip: {
         qualityKind: '{kind} {quality}',
+        qualityKindHeroic: '[HEROIC] {kind} {quality}',
         currentlyEquipped: 'Equipado actualmente',
         ifYouEquip: 'Si equipas esto',
         damageSpeed: '{min} - {max} de daño  Velocidad {speed}',
@@ -409,6 +414,7 @@ export const itemStrings = {
       },
       tooltip: {
         qualityKind: '{kind} {quality}',
+        qualityKindHeroic: '[HEROIC] {kind} {quality}',
         currentlyEquipped: 'Actuellement équipé',
         ifYouEquip: 'Si vous équipez ceci',
         damageSpeed: '{min} - {max} points de dégâts  Vitesse {speed}',
@@ -571,6 +577,7 @@ export const itemStrings = {
       },
       tooltip: {
         qualityKind: '{kind} {quality}',
+        qualityKindHeroic: '[HEROIC] {kind} {quality}',
         currentlyEquipped: 'Attualmente equipaggiato',
         ifYouEquip: 'Se equipaggi questo',
         damageSpeed: '{min} - {max} danni  Velocità {speed}',
@@ -729,6 +736,7 @@ export const itemStrings = {
       },
       tooltip: {
         qualityKind: '{quality} {kind}',
+        qualityKindHeroic: '[HEROIC] {quality} {kind}',
         currentlyEquipped: 'Derzeit angelegt',
         ifYouEquip: 'Wenn du dies anlegst',
         damageSpeed: '{min} - {max} Schaden  Tempo {speed}',
@@ -889,6 +897,7 @@ export const itemStrings = {
       },
       tooltip: {
         qualityKind: '{quality}{kind}',
+        qualityKindHeroic: '[HEROIC]{quality}{kind}',
         currentlyEquipped: '当前装备',
         ifYouEquip: '装备后',
         damageSpeed: '{min} - {max} 伤害  速度 {speed}',
@@ -1042,6 +1051,7 @@ export const itemStrings = {
       },
       tooltip: {
         qualityKind: '{quality}{kind}',
+        qualityKindHeroic: '[HEROIC]{quality}{kind}',
         currentlyEquipped: '目前裝備',
         ifYouEquip: '裝備後',
         damageSpeed: '{min} - {max} 傷害  速度 {speed}',
@@ -1195,6 +1205,7 @@ export const itemStrings = {
       },
       tooltip: {
         qualityKind: '{quality} {kind}',
+        qualityKindHeroic: '[HEROIC] {quality} {kind}',
         currentlyEquipped: '현재 착용 중',
         ifYouEquip: '이것을 착용하면',
         damageSpeed: '{min} - {max} 피해  속도 {speed}',
@@ -1352,6 +1363,7 @@ export const itemStrings = {
       },
       tooltip: {
         qualityKind: '{quality} {kind}',
+        qualityKindHeroic: '[HEROIC] {quality} {kind}',
         currentlyEquipped: '現在の装備',
         ifYouEquip: 'これを装備すると',
         damageSpeed: '{min} - {max} ダメージ  速度 {speed}',
@@ -1509,6 +1521,7 @@ export const itemStrings = {
       },
       tooltip: {
         qualityKind: '{kind} {quality}',
+        qualityKindHeroic: '[HEROIC] {kind} {quality}',
         currentlyEquipped: 'Atualmente equipado',
         ifYouEquip: 'Se você equipar isto',
         damageSpeed: '{min} - {max} de dano  Velocidade {speed}',
@@ -1666,6 +1679,7 @@ export const itemStrings = {
       },
       tooltip: {
         qualityKind: '{quality} {kind}',
+        qualityKindHeroic: '[HEROIC] {quality} {kind}',
         currentlyEquipped: 'Сейчас надето',
         ifYouEquip: 'Если надеть это',
         damageSpeed: '{min} - {max} урона  Скорость {speed}',

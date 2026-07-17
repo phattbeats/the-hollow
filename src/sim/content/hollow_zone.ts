@@ -197,9 +197,11 @@ export const HOLLOW_ZONE_NPCS: Record<string, NpcDef> = {
   // Mossbank (the lake at 42,-235), where the player first finds her "collecting
   // water, no explanation given" (the Board-LOCKED first meeting). The truth she
   // never states: she promised to water the plant, and keeps it every day. Her
-  // two quests are gated behind minLevel (q_have_you_eaten at 2,
-  // q_someone_your_own_size at 3), so a fresh level-1 arrival meets her with NO
-  // quest marker, exactly as the brief requires: at first she is just a person.
+  // four quests (PHAA-614 added quests 2 and 4 alongside the original pair) are
+  // all gated behind minLevel (q_have_you_eaten and q_the_long_way_around at 2,
+  // q_someone_your_own_size at 3, q_the_watering_can at 4), so a fresh level-1
+  // arrival meets her with NO quest marker, exactly as the brief requires: at
+  // first she is just a person.
   // The watering-can prop + the "god's ambient cruelty softens near her" clue are
   // render/Phase-2 systems tracked in docs/design/shade-questline.md, not here.
   shade: {

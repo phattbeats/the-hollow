@@ -3850,6 +3850,7 @@ export const ko_KR: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "현재 착용 중",
       "ifYouEquip": "이것을 착용하면",
       "damageSpeed": "{min} - {max} 피해 속도 {speed}",
@@ -5580,6 +5581,10 @@ export const ko_KR: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "뼈수호 손보호구"
+      },
+      "delve_heroic_mark": {
+        "name": "영웅 성물실 증표",
+        "flavorText": "성물실 수호자들이 발행한 인장. 영웅 병참장교에게 교환하면 성물실급 장비를 받을 수 있다."
       },
       "deacon_reliquary_helm": {
         "name": "부제의 성물실 투구"

@@ -4629,6 +4629,9 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.items.reliquary_helm.name': 'Helm der Beinhauswache',
   'entities.items.reliquary_shoulder.name': 'Zerbröckelte Schulterstücke',
   'entities.items.reliquary_gloves_rog.name': 'Knochenwächter-Griffe',
+  'entities.items.delve_heroic_mark.name': 'Heroische Reliquiar-Marke',
+  'entities.items.delve_heroic_mark.flavorText':
+    'Ein geprägtes Siegel, ausgegeben von den Wächtern des Reliquiars. Löse es beim Heroischen Quartiermeister gegen Ausrüstung in Reliquiar-Qualität ein.',
   'entities.items.deacon_reliquary_helm.name': 'Reliquiarhelm des Diakons',
   'entities.items.varric_shadow_cowl.name': 'Varrics Schattenkapuze',
   'entities.mobs.acolyte_tessa.name': 'Akolythin Tessa',

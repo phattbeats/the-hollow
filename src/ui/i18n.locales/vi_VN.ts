@@ -1067,6 +1067,9 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'entities.items.reinforced_pauldrons.name': 'Giáp Vai Gia Cố',
   'entities.items.reliquary_cloth_chest.name': 'Áo Choàng của Thánh Tích Đường',
   'entities.items.reliquary_gloves_rog.name': 'Bao Tay Hộ Cốt',
+  'entities.items.delve_heroic_mark.name': 'Huy Hiệu Hộp Thánh Tích Anh Hùng',
+  'entities.items.delve_heroic_mark.flavorText':
+    'Một con dấu được đóng bởi những người canh giữ Hộp Thánh Tích. Đổi nó tại Quân Nhu Trưởng Anh Hùng để lấy trang bị hạng thánh tích.',
   'entities.items.reliquary_helm.name': 'Mũ Giáp Canh Hài Cốt',
   'entities.items.reliquary_leather_chest.name': 'Áo Da Hộ Trần',
   'entities.items.reliquary_legs.name': 'Quấn Chân Trấn Khố',

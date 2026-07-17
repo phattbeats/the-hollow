@@ -35,6 +35,9 @@ export const CHANNEL_PUSHBACK_FRACTION = 0.25; // vanilla: each hit shaves 25% o
 // Tolerance for "this per-tick timer is effectively complete" comparisons (casting,
 // channels, ground-AoE pulses). Shared across sim modules (sim.ts + entity_roster.ts).
 export const CAST_COMPLETE_EPS = 1e-9;
+// classic-era spell queue: a press during the tail of a cast queues instead of
+// erroring, and fires the instant the current cast completes.
+export const CAST_QUEUE_WINDOW_SEC = 0.4;
 export const FISHING_CAST_ID = 'fishing';
 export const FISHING_CAST_NAME = 'Fishing';
 export const FISHING_CAST_TIME = 5;
@@ -311,6 +314,18 @@ interface BaseItemDef {
   noVendorSell?: boolean;
   noDiscard?: boolean;
   noMarketList?: boolean;
+  // Soulbound: bound-on-pickup. The item cannot be traded, mailed, listed on
+  // the World Market, sold to a vendor, or right-click discarded. The fork's
+  // Heroic Marks are the canonical example (spend at the Brother-Halven/equivalent
+  // Heroic Quartermaster) but the flag is content-driven so a future tier can
+  // mark its currency/loot the same way. See src/sim/content/heroic_loot.ts.
+  soulbound?: boolean;
+  // heroicOf: a back-reference from a Heroic-tier item variant to the base item
+  // it upgrades in-place. The HUD composes the tooltip quality tag ("[HEROIC]")
+  // from this field via entity_i18n; the variant's `name` is the base item's
+  // localized name so a variant never needs its own translated name key, and
+  // the entity manifest skips it. Build with buildHeroicVariants.
+  heroicOf?: string;
   /** Shown when interacting with a ground quest object before the quest is active. */
   pickupDeny?: string;
   /** Shown when the quest is active but the collect count is already met. */
@@ -404,6 +419,14 @@ export interface LootSlot extends InvSlot {
   personalFor?: number[];
   // Need/greed loot that everyone passed on becomes free-for-all corpse loot.
   openToAll?: boolean;
+  // Shared personal (participation tokens like Heroic Marks): a single loot
+  // action by ANY listed player grants `count` copies to EVERY player in
+  // `personalFor`, then consumes the slot. No one has to loot their own copy.
+  // Set at loot-roll time when the upstream heroic-tier mark fan-out fires;
+  // lootCorpse (interaction.ts) honours the flag before the normal personal
+  // fallback. Items WITHOUT this flag keep their classic personal single-copy
+  // behavior even on Heroic tier.
+  sharedPersonal?: boolean;
 }
 
 export interface CorpseLoot {
@@ -480,6 +503,15 @@ export interface LootEntry {
   // Entries sharing a rollGroup are exclusive: one rng draw is partitioned by
   // their chances, so at most one matching entry drops.
   rollGroup?: string;
+  // sharedPersonal: when the loot roll turns this entry into a corpse loot
+  // slot, mark it as a shared-personal fan-out (every player in `personalFor`
+  // receives one copy on the first qualifying loot action). Honours upstream
+  // PR #1705's mark fan-out, adapted to the fork's Heroic DELVE tier. Loot
+  // rolls set this on the produced LootSlot when the swap is active; entries
+  // WITHOUT it keep classic personal single-copy semantics. Optional, defaults
+  // to false; kept on LootEntry so the per-boss HEROIC_DELVE_BOSS_LOOT
+  // records can declare it at content time without an extra content index.
+  sharedPersonal?: boolean;
 }
 
 export type MobFamily =
@@ -533,6 +565,11 @@ export interface MobTemplate {
   // Rare/miniboss controls.
   canSwim?: boolean;
   ccImmune?: boolean;
+  // Immune to movement-speed slow auras (kind 'slow'). Distinct from ccImmune, which
+  // blocks the hard control auras (stun/root/incapacitate/polymorph) but intentionally
+  // leaves snares landing so most elites can still be kited; a raid boss sets both
+  // (upstream #1502).
+  slowImmune?: boolean;
   // Upstream #1643 (Thunzharr unkitable-movespeed fix): every movement step (chase,
   // flee, wander, leash return) takes moveToward's ignoreObstacles branch, a straight
   // line that ignores prop colliders, the waterline, and the steep-wall gate. For a
@@ -1731,6 +1768,10 @@ export interface Entity {
   gcdRemaining: number;
   cooldowns: Map<string, number>;
   queuedOnSwing: string | null; // heroic strike
+  // single-slot spell queue: a press during the tail of the current cast (see
+  // CAST_QUEUE_WINDOW_SEC), fired by updateCasting on cast completion. Distinct
+  // from queuedOnSwing (a melee on-next-swing queue, not a cast queue).
+  queuedCastAbility: string | null;
   fiveSecondRule: number; // time since last mana spend
   comboPoints: number;
   comboTargetId: number | null;

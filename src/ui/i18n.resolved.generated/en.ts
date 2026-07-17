@@ -3850,6 +3850,7 @@ export const en: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "Currently equipped",
       "ifYouEquip": "If you equip this",
       "damageSpeed": "{min} - {max} Damage Speed {speed}",
@@ -5580,6 +5581,10 @@ export const en: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "Bonewarden Grips"
+      },
+      "delve_heroic_mark": {
+        "name": "Heroic Reliquary Mark",
+        "flavorText": "A stamped sigil issued by the keepers of the Reliquary. Redeem it at the Heroic Quartermaster for reliquary-grade gear."
       },
       "deacon_reliquary_helm": {
         "name": "Deacon's Reliquary Helm"

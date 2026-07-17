@@ -3850,6 +3850,7 @@ export const fr_FR: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{kind} {quality}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "Actuellement équipé",
       "ifYouEquip": "Si vous équipez ceci",
       "damageSpeed": "{min} - {max} points de dégâts Vitesse {speed}",
@@ -5580,6 +5581,10 @@ export const fr_FR: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "Gantelets du gardien des os"
+      },
+      "delve_heroic_mark": {
+        "name": "Marque héroïque du Reliquaire",
+        "flavorText": "Un sceau frappé délivré par les gardiens du Reliquaire. Échangez-le auprès du Quartier-maître héroïque contre de l'équipement de qualité reliquaire."
       },
       "deacon_reliquary_helm": {
         "name": "Heaume du reliquaire du diacre"

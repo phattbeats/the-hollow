@@ -4646,6 +4646,9 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'entities.items.reliquary_helm.name': "Heaume du guet de l'ossuaire",
   'entities.items.reliquary_shoulder.name': 'Spallières effritées',
   'entities.items.reliquary_gloves_rog.name': 'Gantelets du gardien des os',
+  'entities.items.delve_heroic_mark.name': 'Marque héroïque du Reliquaire',
+  'entities.items.delve_heroic_mark.flavorText':
+    "Un sceau frappé délivré par les gardiens du Reliquaire. Échangez-le auprès du Quartier-maître héroïque contre de l'équipement de qualité reliquaire.",
   'entities.items.deacon_reliquary_helm.name': 'Heaume du reliquaire du diacre',
   'entities.items.varric_shadow_cowl.name': "Cagoule d'ombre de Varric",
   'entities.mobs.acolyte_tessa.name': 'Acolyte Tessa',

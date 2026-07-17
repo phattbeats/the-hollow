@@ -1082,6 +1082,9 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'entities.items.reinforced_pauldrons.name': 'Pelindung Bahu Diperkuat',
   'entities.items.reliquary_cloth_chest.name': 'Selubung Relikuari',
   'entities.items.reliquary_gloves_rog.name': 'Sarung Tangan Penjaga Tulang',
+  'entities.items.delve_heroic_mark.name': 'Tanda Relikuari Heroik',
+  'entities.items.delve_heroic_mark.flavorText':
+    'Segel cap yang dikeluarkan oleh para penjaga Relikuari. Tukarkan di Kepala Perbekalan Heroik untuk perlengkapan bermutu relikuari.',
   'entities.items.reliquary_helm.name': 'Helm Jaga Osuari',
   'entities.items.reliquary_leather_chest.name': 'Rompi Penjaga Debu',
   'entities.items.reliquary_legs.name': 'Pembalut Kaki Penjaga Ruang',

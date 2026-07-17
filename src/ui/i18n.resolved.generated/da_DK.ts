@@ -3850,6 +3850,7 @@ export const da_DK: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "Aktuelt udrustet",
       "ifYouEquip": "Hvis du udruster denne",
       "damageSpeed": "{min} - {max} Skade Hastighed {speed}",
@@ -5580,6 +5581,10 @@ export const da_DK: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "Benvogterens Greb"
+      },
+      "delve_heroic_mark": {
+        "name": "Heroisk Relikvarie-Mærke",
+        "flavorText": "Et stemplet segl udstedt af Relikvariets vogtere. Indløs det hos Den Heroiske Kvartermester for udstyr af relikvariegrad."
       },
       "deacon_reliquary_helm": {
         "name": "Diakonens Relikviehjelm"

@@ -3850,6 +3850,7 @@ export const de_DE: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "Derzeit angelegt",
       "ifYouEquip": "Wenn Ihr dies anlegt",
       "damageSpeed": "{min} - {max} Schaden Tempo {speed}",
@@ -5580,6 +5581,10 @@ export const de_DE: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "Knochenwächter-Griffe"
+      },
+      "delve_heroic_mark": {
+        "name": "Heroische Reliquiar-Marke",
+        "flavorText": "Ein geprägtes Siegel, ausgegeben von den Wächtern des Reliquiars. Löse es beim Heroischen Quartiermeister gegen Ausrüstung in Reliquiar-Qualität ein."
       },
       "deacon_reliquary_helm": {
         "name": "Reliquiarhelm des Diakons"

@@ -4590,6 +4590,9 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.items.reliquary_helm.name': '藏骨守卫头盔',
   'entities.items.reliquary_shoulder.name': '碎裂的肩甲',
   'entities.items.reliquary_gloves_rog.name': '护骨者护手',
+  'entities.items.delve_heroic_mark.name': '英雄圣物库印记',
+  'entities.items.delve_heroic_mark.flavorText':
+    '由圣物库守护者颁发的钤印。在英雄军需官处兑换圣物库级装备。',
   'entities.items.deacon_reliquary_helm.name': '执事的圣物库头盔',
   'entities.items.varric_shadow_cowl.name': '瓦里克的暗影兜帽',
   'entities.items.cave_morsel.name': '洞穴肉粒',

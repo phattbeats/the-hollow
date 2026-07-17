@@ -3850,6 +3850,7 @@ export const en_XA: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "[{quality} {kind}]",
+      "qualityKindHeroic": "[[ĤÉŔÓÍÇ] {quality} {kind}]",
       "currentlyEquipped": "[Çúŕŕéñţļý éɋúíþþéð]",
       "ifYouEquip": "[Íƒ ýóú éɋúíþ ţĥíš]",
       "damageSpeed": "[{min} - {max} Ðáɱáĝé Šþééð {speed}]",
@@ -5580,6 +5581,10 @@ export const en_XA: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "[Ɓóñéŵáŕðéñ Ĝŕíþš]"
+      },
+      "delve_heroic_mark": {
+        "name": "[Ĥéŕóíç Ŕéļíɋúáŕý Ɱáŕķ]",
+        "flavorText": "[Á šţáɱþéð šíĝíļ íššúéð ƀý ţĥé ķééþéŕš óƒ ţĥé Ŕéļíɋúáŕý. Ŕéðééɱ íţ áţ ţĥé Ĥéŕóíç Ɋúáŕţéŕɱášţéŕ ƒóŕ ŕéļíɋúáŕý-ĝŕáðé ĝéáŕ.]"
       },
       "deacon_reliquary_helm": {
         "name": "[Ðéáçóñ'š Ŕéļíɋúáŕý Ĥéļɱ]"

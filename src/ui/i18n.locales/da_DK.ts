@@ -1051,6 +1051,9 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'entities.items.reinforced_pauldrons.name': 'Forstærkede Skulderplader',
   'entities.items.reliquary_cloth_chest.name': 'Relikviets Slør',
   'entities.items.reliquary_gloves_rog.name': 'Benvogterens Greb',
+  'entities.items.delve_heroic_mark.name': 'Heroisk Relikvarie-Mærke',
+  'entities.items.delve_heroic_mark.flavorText':
+    'Et stemplet segl udstedt af Relikvariets vogtere. Indløs det hos Den Heroiske Kvartermester for udstyr af relikvariegrad.',
   'entities.items.reliquary_helm.name': 'Ossuariumvagtens Hjelm',
   'entities.items.reliquary_leather_chest.name': 'Støvvogter-Vams',
   'entities.items.reliquary_legs.name': 'Hvælvingsbundne Benomvikkel',

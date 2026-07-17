@@ -3388,6 +3388,16 @@ export class Sim {
       !this.isNythraxisScriptedControl(target, aura)
     )
       return;
+    // Slow immunity is separate from ccImmune: snares (kind 'slow') are not control auras,
+    // so a slowImmune raid boss shrugs off Frostbolt/Hamstring-style movement snares while
+    // still taking a self-applied slow (e.g. a scripted mechanic) through sourceId === self.
+    if (
+      target.kind === 'mob' &&
+      MOBS[target.templateId]?.slowImmune &&
+      aura.kind === 'slow' &&
+      aura.sourceId !== target.id
+    )
+      return;
     const existing = target.auras.findIndex(
       (a) => a.id === aura.id && a.sourceId === aura.sourceId,
     );
@@ -4679,6 +4689,10 @@ export class Sim {
       return;
     }
     if (p.sitting) this.standUp(p);
+    // fishing's completion path (completeFishing) never fires the spell queue, so a
+    // slot held here (a cast queued in a prior cast's tail, still parked while its
+    // GCD runs) would strand and misfire on the next real cast: drop it as we start.
+    p.queuedCastAbility = null;
     p.castingAbility = FISHING_CAST_ID;
     p.castTotal = FISHING_CAST_TIME;
     p.castRemaining = FISHING_CAST_TIME;
