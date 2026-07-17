@@ -2950,6 +2950,7 @@ export const sv_SE: EnTranslations = {
       "accountSuspended": "Detta konto är avstängt till {date}.",
       "alreadyInWorld": "Karaktären är redan i världen.",
       "tooManyOnline": "Only one of your characters may be in the world at a time.",
+      "realmFull": "This realm is full right now. Please try again in a few minutes.",
       "takenOver": "Din karaktär togs över av en annan session.",
       "renameBeforeEntering": "Denna karaktär måste byta namn innan den går in i världen.",
       "renameNotPermitted": "Det är inte tillåtet att byta namn på denna karaktär."

@@ -57,8 +57,14 @@ describe('planJoin (pure decision core)', () => {
     });
   });
 
-  it('rejects the same character while its session socket is still live', () => {
+  it('takes over the same character immediately when its session socket is still live, same account', () => {
     expect(planJoin({ ...base, sameCharacter: { accountId: 7, linkdead: false } })).toEqual({
+      action: 'takeover',
+    });
+  });
+
+  it('rejects a live session owned by a different account (never auto-takes-over)', () => {
+    expect(planJoin({ ...base, sameCharacter: { accountId: 8, linkdead: false } })).toEqual({
       action: 'reject',
       error: 'character already in world',
     });
@@ -291,6 +297,49 @@ describe('linkdead grace lifecycle', () => {
     expectJoined(server.join(fakeWs(), 11, 101, 'Mine', 'warrior', null));
   });
 
+  it('immediately takes over the same character for the same account while its socket is still live (no linkdead grace, no reject)', async () => {
+    const server = new GameServer();
+    const ws1 = fakeWs();
+    const first = expectJoined(server.join(ws1, 11, 101, 'Reclaimed', 'warrior', null));
+    expect(server.clients.size).toBe(1);
+
+    // ws1 never dropped (still readyState 1): a plain re-auth used to reject
+    // with 'character already in world' and require a separate REST takeover
+    // call. It now admits immediately with a fresh session.
+    const ws2 = fakeWs();
+    const second = expectJoined(
+      server.join(ws2, 11, 101, 'Reclaimed', 'warrior', null, false, { ip: '203.0.113.9' }),
+    );
+
+    expect(second).not.toBe(first);
+    expect(second.pid).not.toBe(first.pid);
+    expect(second.ws).toBe(ws2);
+    expect(ws1.send).toHaveBeenCalledWith(
+      JSON.stringify({ t: 'error', error: 'character taken over' }),
+    );
+    expect(ws1.close).toHaveBeenCalled();
+
+    // Only the new session should end up resolvable by characterId, even
+    // after the old session's async leave()/save resolves.
+    await vi.waitFor(() => {
+      expect((server as any).sessionByCharacterId(101)).toBe(second);
+    });
+    expect(server.clients.size).toBe(1);
+    expect(server.clients.get(second.pid)).toBe(second);
+  });
+
+  it('a different account can never auto-take-over a live same-character session', () => {
+    const server = new GameServer();
+    const ws = fakeWs();
+    expectJoined(server.join(ws, 11, 101, 'Guarded', 'warrior', null));
+
+    expect(server.join(fakeWs(), 12, 101, 'Guarded', 'warrior', null)).toEqual({
+      error: 'character already in world',
+    });
+    expect(ws.close).not.toHaveBeenCalled();
+    expect(server.clients.size).toBe(1);
+  });
+
   it('adjusts per-IP session counts when a resume arrives from a different IP', () => {
     const server = new GameServer();
     const ws = fakeWs();
@@ -334,6 +383,60 @@ describe('linkdead grace lifecycle', () => {
     expect(session.linkdead).toBe(true);
     expect(session.left).toBe(false);
     expect(server.clients.size).toBe(1);
+  });
+
+  it('re-arms instead of mass-terminating when the sweep itself was delayed by a stall', () => {
+    const server = new GameServer();
+    const ws = fakeWs();
+    const session = expectJoined(server.join(ws, 11, 101, 'Stalled', 'warrior', null));
+
+    server.pingLiveSessions();
+    expect(ws.ping).toHaveBeenCalledTimes(1);
+    expect(session.awaitingPong).toBe(true);
+
+    // Simulate a long event-loop stall between sweeps: the next sweep runs
+    // far later than WS_KEEPALIVE_PING_MS would predict, so the still-missing
+    // pong is not evidence of a dead socket.
+    (server as any).lastKeepaliveSweepAt = Date.now() - 10 * 60 * 1000;
+    server.pingLiveSessions();
+
+    expect(ws.terminate).not.toHaveBeenCalled();
+    expect(session.linkdead).toBe(false);
+    expect(ws.ping).toHaveBeenCalledTimes(2);
+    expect(session.awaitingPong).toBe(true);
+
+    // The very next sweep (normal cadence again) still terminates a socket
+    // that genuinely never answers.
+    server.pingLiveSessions();
+    expect(ws.terminate).toHaveBeenCalledTimes(1);
+    expect(session.linkdead).toBe(true);
+  });
+
+  it('a throw for one session during the sweep does not skip the rest', () => {
+    const server = new GameServer();
+    const bad = fakeWs();
+    const badSession = expectJoined(server.join(bad, 11, 101, 'Thrower', 'warrior', null));
+    const good = fakeWs();
+    const goodSession = expectJoined(server.join(good, 12, 102, 'Fine', 'mage', null));
+    badSession.awaitingPong = true;
+    goodSession.awaitingPong = true;
+    const socketClosedSpy = vi
+      .spyOn(server, 'socketClosed')
+      .mockImplementationOnce(() => {
+        throw new Error('boom');
+      })
+      .mockImplementation((session, ws) =>
+        GameServer.prototype.socketClosed.call(server, session, ws),
+      );
+
+    server.pingLiveSessions();
+
+    // the first (throwing) session still had terminate attempted; the second
+    // session, iterated after it, still got its own liveness check
+    expect(bad.terminate).toHaveBeenCalledTimes(1);
+    expect(good.terminate).toHaveBeenCalledTimes(1);
+    expect(goodSession.linkdead).toBe(true);
+    socketClosedSpy.mockRestore();
   });
 
   it('keepalive sweep leaves linkdead sessions alone and resume clears the pong flag', () => {
@@ -380,6 +483,23 @@ describe('linkdead grace lifecycle', () => {
   });
 });
 
+describe('GameServer.livenessStatus (backs /livez, /readyz)', () => {
+  it('reads healthy right after construction (cold-boot backstop)', () => {
+    const server = new GameServer();
+    const status = server.livenessStatus();
+    expect(status.ok).toBe(true);
+    expect(status.sinceLastTickMs).toBeLessThan(1000);
+  });
+
+  it('reads unhealthy once the last completed tick is stale', () => {
+    const server = new GameServer();
+    (server as any).lastTickCompletedAtMs = Date.now() - 60_000;
+    const status = server.livenessStatus();
+    expect(status.ok).toBe(false);
+    expect(status.sinceLastTickMs).toBeGreaterThanOrEqual(60_000);
+  });
+});
+
 describe('reconnect policy (client-side conflict tolerance)', () => {
   it('tolerates the in-world conflict only while a reconnect is in flight', () => {
     expect(isTransientReconnectRejection(RECONNECT_CONFLICT_ERROR, 1, 0)).toBe(true);
@@ -403,10 +523,13 @@ describe('reconnect policy (client-side conflict tolerance)', () => {
   });
 
   it('matches the exact wire string planJoin sends', () => {
+    // The same-account/live-socket case now auto-takes-over instead of
+    // rejecting (see the planJoin describe block above); the wire string
+    // this policy tolerates only fires for a different account's live hold.
     const plan = planJoin({
       accountId: 7,
       isGm: false,
-      sameCharacter: { accountId: 7, linkdead: false },
+      sameCharacter: { accountId: 8, linkdead: false },
       liveOtherSessions: 0,
       maxPerAccount: 1,
     });

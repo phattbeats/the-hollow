@@ -2950,6 +2950,7 @@ export const ja_JP: EnTranslations = {
       "accountSuspended": "このアカウントは {date} まで停止されています。",
       "alreadyInWorld": "キャラクターは既に世界にいます。",
       "tooManyOnline": "一度に世界にいられるキャラクターは1人だけです。",
+      "realmFull": "このレルムは現在満員です。しばらくしてからもう一度お試しください。",
       "takenOver": "あなたのキャラクターは別のセッションに引き継がれました。",
       "renameBeforeEntering": "このキャラクターは世界に入る前に名前変更が必要です。",
       "renameNotPermitted": "このキャラクターの名前変更は許可されていません。"

@@ -84,6 +84,7 @@ import {
 } from './moderation_service';
 import { generatePlantLine, isPlantLlmConfigured } from './plant_llm';
 import { REALM, REALM_PUBLIC_ORIGIN } from './realm';
+import { isRealmFull } from './realm_admission';
 import { createSerialWriter } from './serial_writer';
 import type { Presence, PresenceStatus, SocialActor, SocialTransport } from './social';
 import { SocialService } from './social';
@@ -135,8 +136,15 @@ const WHO_RESULT_LIMIT = 50;
 // an account's characters, so the old allowance of a second online character
 // (self-trade by dual-boxing) is no longer needed. GMs are exempt.
 const MAX_ACTIVE_SESSIONS_PER_ACCOUNT = 1;
+// Realm population cap: refuses new joins once this many characters are
+// online, so a population spike can't overwhelm the world-tick or memory
+// budget. 0 (or unset/negative) disables the cap. Admins are exempt.
+const MAX_PLAYERS_PER_REALM = Number(process.env.MAX_PLAYERS_PER_REALM ?? '5000');
 // WS protocol-level ping cadence; see the keepalive interval in start().
 const WS_KEEPALIVE_PING_MS = 30_000;
+// /livez staleness threshold: the tick loop runs every 50ms, so 30s of no
+// completed pass means it is wedged, not just briefly slow.
+const WORLD_LOOP_STALE_MS = 30_000;
 const RESTART_COUNTDOWN_TOTAL_SECONDS = 600;
 const RESTART_COUNTDOWN_STEPS = [
   { atSeconds: 0, text: 'Server restart in 10 minutes.' },
@@ -778,6 +786,14 @@ export class GameServer {
   private simTickRateCount = 0;
   private simTickRateWindowStartMs = 0;
   private simTickHzValue: number | null = null;
+  // Wall-clock time of the last completed keepalive sweep; used to detect an
+  // event-loop stall (a long GC pause, a slow synchronous handler) between
+  // sweeps so pingLiveSessions can re-arm instead of mass-terminating.
+  private lastKeepaliveSweepAt = Date.now();
+  // Wall-clock time the world tick loop last finished a pass. Initialized to
+  // construction time (not 0) so /livez reads healthy during the brief
+  // cold-boot window before the first tick completes, instead of a false 503.
+  private lastTickCompletedAtMs = Date.now();
   // Rolling per-phase loop timing, localizes a stutter to a phase. Always-on
   // (the hot path allocates nothing); read via perfProfile() for admin/ops.
   private readonly tickProfiler = new TickProfiler([
@@ -1223,6 +1239,7 @@ export class GameServer {
             this.lastSavedHomesteadRev = this.sim.homesteadRev;
             void this.saveHomestead();
           }
+          this.lastTickCompletedAtMs = Date.now();
         },
         (err) => console.error('[tick] guarded tick body threw, skipping this tick:', err),
       );
@@ -1249,31 +1266,53 @@ export class GameServer {
   // client's reconnect backoff resumes within a ping interval or two (the
   // client tolerates that rejection mid-reconnect, src/net/reconnect_policy.ts).
   pingLiveSessions(): void {
-    for (const session of this.clients.values()) {
-      if (session.linkdead || session.ws.readyState !== 1) continue;
-      if (session.awaitingPong) {
-        const ws = session.ws;
-        try {
-          ws.terminate();
-        } catch {
-          /* socket already torn down */
+    const now = Date.now();
+    // A stalled event loop delays this sweep well past WS_KEEPALIVE_PING_MS,
+    // which makes every live session's pong look "late" for a reason that has
+    // nothing to do with that client. Terminating on a stalled sweep would
+    // mass-disconnect a healthy population over one server-side hiccup;
+    // instead, self-clock to the sweep's own actual cadence and re-arm (skip
+    // terminating, just ping again) for that one round.
+    const stalled = now - this.lastKeepaliveSweepAt > WS_KEEPALIVE_PING_MS * 1.5;
+    this.lastKeepaliveSweepAt = now;
+    forEachGuarded(
+      this.clients.values(),
+      (session) => {
+        if (session.linkdead || session.ws.readyState !== 1) return;
+        if (session.awaitingPong && !stalled) {
+          const ws = session.ws;
+          try {
+            ws.terminate();
+          } catch {
+            /* socket already torn down */
+          }
+          this.socketClosed(session, ws);
+          return;
         }
-        this.socketClosed(session, ws);
-        continue;
-      }
-      session.awaitingPong = true;
-      try {
-        session.ws.ping();
-      } catch {
-        /* socket torn down mid-iteration */
-      }
-    }
+        session.awaitingPong = true;
+        try {
+          session.ws.ping();
+        } catch {
+          /* socket torn down mid-iteration */
+        }
+      },
+      (err, session) => console.error(`keepalive sweep threw for ${session.name}:`, err),
+    );
   }
 
   stop(): void {
     if (this.interval) clearInterval(this.interval);
     if (this.discordFlairInterval) clearInterval(this.discordFlairInterval);
     if (this.keepaliveInterval) clearInterval(this.keepaliveInterval);
+  }
+
+  // /livez: reports a wedged world loop. sinceLastTickMs stays fresh from
+  // construction time until the first tick lands (cold-boot backstop), then
+  // tracks the last COMPLETED pass (a throwing tick never stamps it, so a
+  // loop stuck re-throwing every pass correctly reads unhealthy too).
+  livenessStatus(): { ok: boolean; sinceLastTickMs: number } {
+    const sinceLastTickMs = Date.now() - this.lastTickCompletedAtMs;
+    return { ok: sinceLastTickMs < WORLD_LOOP_STALE_MS, sinceLastTickMs };
   }
 
   // Refresh one player's linked-Discord flair (status tier + PFP + nickname +
@@ -1572,12 +1611,37 @@ export class GameServer {
     if (plan.action === 'resume' && sameCharacter) {
       return this.resumeSession(sameCharacter, ws, cls, meta);
     }
+    if (plan.action === 'takeover' && sameCharacter) {
+      // Same account, same character, socket still live server-side (a
+      // black-holed drop the keepalive sweep hasn't noticed yet, or a second
+      // device): kick it now instead of rejecting and making the caller wait
+      // out the sweep's detection window. Fire-and-forget, matching every
+      // other forced-disconnect path in this file: leave()'s synchronous
+      // prefix removes the old session from `clients` (by pid) immediately,
+      // and its async remainder (character save, then the characterId-map
+      // delete) is race-safe against the fresh session claiming this
+      // characterId below because that delete is identity-checked.
+      void this.kickSession(sameCharacter, 'character taken over', 'character taken over');
+    }
     // Logging in on a different character ends the account's linkdead grace
     // now instead of at the end of its window: the player has moved on, so
     // the held character logs out. leave() removes it from `clients`
     // synchronously, so the new session's slot accounting stays correct.
     for (const s of linkdeadOthers) {
       void this.leave(s, 'replaced by a new character login');
+    }
+    // Checked here, not earlier: a resume never reaches this point (it
+    // returns above), and a takeover's kick already freed its old `clients`
+    // slot synchronously, so neither displaces a genuinely new join over the
+    // cap. Admins are exempt so staff can always get in to intervene.
+    if (
+      isRealmFull({
+        online: this.clients.size,
+        cap: MAX_PLAYERS_PER_REALM,
+        isAdmin: isGm || (meta.isAdmin ?? false),
+      })
+    ) {
+      return { error: 'realm is full' };
     }
     const pid = this.sim.addPlayer(cls, name, {
       state: state ?? undefined,
@@ -1856,7 +1920,13 @@ export class GameServer {
     // that already ran; removePlayer repeats the idempotent cleanup below.
     this.sim.arenaResolveDesertion(session.pid);
     await this.saveCharacterOnLeave(session);
-    this.sessionsByCharacterId.delete(session.characterId);
+    // Identity-checked: an immediate same-account takeover (planJoin's
+    // 'takeover' action) already replaced this characterId's map entry with
+    // the new session before this await resolved. Deleting by key alone
+    // would erase the new, live session instead of this displaced one.
+    if (this.sessionsByCharacterId.get(session.characterId) === session) {
+      this.sessionsByCharacterId.delete(session.characterId);
+    }
     this.sim.removePlayer(session.pid);
     // Departures are no longer broadcast to the realm — the leaving player has
     // already disconnected, so there is no one to show their own notice to.

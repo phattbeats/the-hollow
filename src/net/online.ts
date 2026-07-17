@@ -76,6 +76,7 @@ import {
   type SocialInfo,
   type TradeInfo,
 } from '../world_api';
+import { computeBackoffDelay } from './backoff';
 import { isTransientReconnectRejection } from './reconnect_policy';
 
 // ---------------------------------------------------------------------------
@@ -1037,9 +1038,10 @@ export class ClientWorld implements IWorld {
     }
     this.reconnectAttempts++;
     this.onConnectionLost?.();
-    const delayMs = Math.min(
+    const delayMs = computeBackoffDelay(
+      this.reconnectAttempts,
+      RECONNECT_BASE_DELAY_MS,
       RECONNECT_MAX_DELAY_MS,
-      RECONNECT_BASE_DELAY_MS * 2 ** (this.reconnectAttempts - 1),
     );
     this.reconnectTimer = window.setTimeout(() => this.openSocket(), delayMs);
   }

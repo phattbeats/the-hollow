@@ -2950,6 +2950,7 @@ export const vi_VN: EnTranslations = {
       "accountSuspended": "Tài khoản này bị đình chỉ đến {date}.",
       "alreadyInWorld": "Nhân vật đã ở trong thế giới.",
       "tooManyOnline": "Only one of your characters may be in the world at a time.",
+      "realmFull": "This realm is full right now. Please try again in a few minutes.",
       "takenOver": "Nhân vật của bạn đã bị một phiên khác chiếm quyền.",
       "renameBeforeEntering": "Nhân vật này phải được đổi tên trước khi vào thế giới.",
       "renameNotPermitted": "Không được phép đổi tên nhân vật này."

@@ -1396,6 +1396,9 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
 // the per-request sink (teed into the structured access log), and the four
 // attack-signal counters, installed process-wide so the emission sites in
 // ratelimit.ts / ownership.ts / the login gate all land on this registry.
+// Flips true at the start of graceful shutdown so /readyz can stop new
+// traffic before the process actually exits (see routeHttpRequest below).
+let isDraining = false;
 const httpMetrics = createHttpMetrics({ defaultMetrics: true });
 const requestMetricSink = teeMetricSink(httpMetrics.sink, createAccessLogSink(logger));
 setAttackSignalSink(httpMetrics.attackSignals);
@@ -1416,6 +1419,27 @@ export function routeHttpRequest(req: http.IncomingMessage, res: http.ServerResp
   // indistinguishable from not existing.
   if (path === '/metrics') {
     void handleMetricsRequest(req, res, httpMetrics);
+    return;
+  }
+  // Unauthenticated ops probes: no player data or internal detail, only a
+  // boolean + a millisecond staleness figure, so exposure is low-risk even
+  // though a production deploy should still keep them off the public edge
+  // (DEPLOY.md's Caddy retrofit for that is a follow-up, out of this change's
+  // scope). /livez reports the world loop itself (never flips just because
+  // the process is draining, so a deploy's grace period doesn't get killed as
+  // unhealthy); /readyz additionally flips during a graceful shutdown so a
+  // load balancer stops sending new traffic before the process actually exits.
+  if (path === '/livez') {
+    const status = game.livenessStatus();
+    res.writeHead(status.ok ? 200 : 503, { 'content-type': 'application/json' });
+    res.end(JSON.stringify(status));
+    return;
+  }
+  if (path === '/readyz') {
+    const status = game.livenessStatus();
+    const ready = status.ok && !isDraining;
+    res.writeHead(ready ? 200 : 503, { 'content-type': 'application/json' });
+    res.end(JSON.stringify({ ...status, ok: ready, draining: isDraining }));
     return;
   }
   const isApi = url.startsWith('/api/') || url.startsWith('/admin/api/');
@@ -1767,6 +1791,7 @@ async function main(): Promise<void> {
   });
 
   const shutdown = async () => {
+    isDraining = true;
     logger.info('shutting down: saving characters');
     // Stop the app-aggregate metric collectors so no refresh query races the pool
     // close below (their intervals are unref()'d, but an in-flight tick could still

@@ -13,7 +13,11 @@ vi.mock('pg', () => ({
   // transactional helpers (BEGIN/COMMIT around a pooled client) are exercised
   // through the same write log as the pool-level queries.
   Pool: vi.fn(function Pool() {
-    return { query: dbMock.query, connect: async () => ({ query: dbMock.query, release() {} }) };
+    return {
+      query: dbMock.query,
+      connect: async () => ({ query: dbMock.query, release() {} }),
+      on: vi.fn(),
+    };
   }),
 }));
 

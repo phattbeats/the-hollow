@@ -2950,6 +2950,7 @@ export const zh_TW: EnTranslations = {
       "accountSuspended": "此帳號停權至 {date}。",
       "alreadyInWorld": "角色已在世界中。",
       "tooManyOnline": "同一時間只能有一個角色在世界中。",
+      "realmFull": "此伺服器目前已滿，請稍後再試。",
       "takenOver": "你的角色已被另一個工作階段接管。",
       "renameBeforeEntering": "此角色必須先更名才能進入世界。",
       "renameNotPermitted": "不允許為此角色更名。"

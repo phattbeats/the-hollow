@@ -9,7 +9,9 @@ const dbMock = vi.hoisted(() => {
   return { query: vi.fn() };
 });
 vi.mock('pg', () => ({
-  Pool: vi.fn(function Pool() { return { query: dbMock.query }; }),
+  Pool: vi.fn(function Pool() {
+    return { query: dbMock.query, on: vi.fn() };
+  }),
 }));
 
 import { slugAvailable, primarySlugForAccount, referralCountForAccount, recordReferral } from '../server/db';

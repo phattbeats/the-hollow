@@ -343,6 +343,7 @@ function userFacingApiError(err: unknown): string {
   if (normalized === 'too many characters on this account are already in the world')
     return t('errors.api.tooManyOnline');
   if (normalized === 'character taken over') return t('errors.api.takenOver');
+  if (normalized === 'realm is full') return t('errors.api.realmFull');
   if (normalized === 'this character must be renamed before entering the world.')
     return t('errors.api.renameBeforeEntering');
   if (normalized === 'logins are only allowed from the game client')

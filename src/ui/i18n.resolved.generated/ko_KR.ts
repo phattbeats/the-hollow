@@ -2950,6 +2950,7 @@ export const ko_KR: EnTranslations = {
       "accountSuspended": "이 계정은 {date}까지 정지되었습니다.",
       "alreadyInWorld": "캐릭터가 이미 세계에 있습니다.",
       "tooManyOnline": "한 번에 하나의 캐릭터만 세계에 있을 수 있습니다.",
+      "realmFull": "현재 서버 인원이 가득 찼습니다. 잠시 후 다시 시도해 주세요.",
       "takenOver": "다른 세션이 캐릭터를 넘겨받았습니다.",
       "renameBeforeEntering": "이 캐릭터는 세계에 들어가기 전에 이름을 변경해야 합니다.",
       "renameNotPermitted": "이 캐릭터의 이름을 변경할 수 없습니다."

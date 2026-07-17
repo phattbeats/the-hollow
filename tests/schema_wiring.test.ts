@@ -16,7 +16,7 @@ const h = vi.hoisted(() => {
 });
 vi.mock('pg', () => ({
   Pool: vi.fn(function Pool() {
-    return { query: h.query, connect: h.connect };
+    return { query: h.query, connect: h.connect, on: vi.fn() };
   }),
 }));
 

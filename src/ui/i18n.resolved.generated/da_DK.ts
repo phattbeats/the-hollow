@@ -2950,6 +2950,7 @@ export const da_DK: EnTranslations = {
       "accountSuspended": "Denne konto er suspenderet indtil {date}.",
       "alreadyInWorld": "Karakteren er allerede i verdenen.",
       "tooManyOnline": "Only one of your characters may be in the world at a time.",
+      "realmFull": "This realm is full right now. Please try again in a few minutes.",
       "takenOver": "Din karakter blev overtaget af en anden session.",
       "renameBeforeEntering": "Denne karakter skal omdøbes, før den kan komme ind i verdenen.",
       "renameNotPermitted": "Det er ikke tilladt at omdøbe denne karakter."

@@ -2950,6 +2950,7 @@ export const pl_PL: EnTranslations = {
       "accountSuspended": "To konto jest zawieszone do {date}.",
       "alreadyInWorld": "Postać jest już w świecie.",
       "tooManyOnline": "Only one of your characters may be in the world at a time.",
+      "realmFull": "This realm is full right now. Please try again in a few minutes.",
       "takenOver": "Twoją postać przejęła inna sesja.",
       "renameBeforeEntering": "Tę postać trzeba przemianować przed wejściem do świata.",
       "renameNotPermitted": "Zmiana imienia tej postaci jest niedozwolona."

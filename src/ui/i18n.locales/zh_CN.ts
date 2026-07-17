@@ -681,6 +681,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'errors.api.alreadyInWorld': '角色已在世界中。',
   'errors.api.tooManyOnline': '同一时间只能有一个角色在世界中。',
   'errors.api.takenOver': '你的角色已被另一个会话接管。',
+  'errors.api.realmFull': '该服务器当前已满，请稍后再试。',
   'errors.api.renameBeforeEntering': '此角色必须先改名才能进入世界。',
   'errors.api.renameNotPermitted': '不允许为此角色改名。',
   'realm.noRealms': '没有可用服务器。',
