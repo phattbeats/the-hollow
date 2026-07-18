@@ -193,6 +193,14 @@ const RENDER_PURE_CORES = [
   // Reaches camps). Three-free and deterministic; the Three consumer is
   // hollow_flora.ts.
   'src/render/hollow_flora_core.ts',
+  // PHAA-675: the water shore-depth sample (waterLevel() - terrainHeight),
+  // shared by water.ts's per-vertex bake so both the build-time and any
+  // future rebuild path use one definition.
+  'src/render/water_core.ts',
+  // PHAA-675: region-selection math for the map editor's partial terrain
+  // rebuilds (which chunks/normal-texels a sculpt region invalidates).
+  // Three-free and deterministic; the Three consumer is terrain.ts.
+  'src/render/terrain_region_core.ts',
 ].map((rel) => join(repoRoot, rel));
 
 // Bare-named pure cores: registered cores (from UI_PURE_CORES + RENDER_PURE_CORES)

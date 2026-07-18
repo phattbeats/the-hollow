@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { WORLD_MAX_Z, WORLD_MIN_Z, ZONES } from '../sim/data';
+import { getActiveWorldContent, WORLD_MAX_Z, WORLD_MIN_Z } from '../sim/data';
 import type { BiomeId } from '../sim/types';
 import { loadHdr, loadTexture } from './assets/loader';
 import { registerPreload } from './assets/preload';
@@ -32,10 +32,12 @@ const DOME_RADIUS = 560;
 // did. The dawn HDRI carries a huge horizon-level sun glow, so the peaks get
 // reined in harder or half the sky white-outs. The renderer's PMREM capture
 // samples the same shader, so IBL stays in step.
-// beach/desert/volcano/cave are paint-only biomes (see render/foliage.ts),
-// unreachable until the render-load-in editor slice; they borrow an existing
-// shipped HDRI/backdrop rather than requiring new art, matching the upstream
-// reference port.
+// beach/desert/volcano/cave are paint-only biomes (see render/foliage.ts).
+// The sky dome picks one HDRI per frame from the player's 1D z-band biome
+// (see biomeBlendAt below), never a 2D biomePaint cell — a dome cannot show
+// two skies at once, so a painted patch's sky stays whatever its zone band
+// already is. They borrow an existing shipped HDRI/backdrop rather than
+// requiring new art, matching the upstream reference port.
 const HDRI_TUNE: Record<BiomeId, { gain: number; clamp: number }> = {
   vale: { gain: 0.6, clamp: 2.6 },
   marsh: { gain: 0.6, clamp: 2.2 },
@@ -312,20 +314,21 @@ const SKY_FRAG = /* glsl */ `
 // Cross-fade state across the same ±30/35u zone windows the terrain palette
 // uses, keyed by camera z. Boundaries are sequential, so two maps suffice.
 function biomeBlendAt(z: number): BiomeBlend {
-  let from: BiomeId = ZONES[0].biome;
-  let to: BiomeId = ZONES[0].biome;
+  const zones = getActiveWorldContent().zones;
+  let from: BiomeId = zones[0].biome;
+  let to: BiomeId = zones[0].biome;
   let t = 0;
-  for (let i = 0; i + 1 < ZONES.length; i++) {
-    const b = ZONES[i].zMax;
+  for (let i = 0; i + 1 < zones.length; i++) {
+    const b = zones[i].zMax;
     const raw = Math.max(0, Math.min(1, (z - (b - 30)) / 65));
     const tt = raw * raw * (3 - 2 * raw);
     if (tt <= 0) break;
     if (tt >= 1) {
-      from = ZONES[i + 1].biome;
+      from = zones[i + 1].biome;
       to = from;
       t = 0;
     } else {
-      to = ZONES[i + 1].biome;
+      to = zones[i + 1].biome;
       t = tt;
     }
   }

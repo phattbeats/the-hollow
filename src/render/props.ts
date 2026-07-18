@@ -4,7 +4,7 @@ import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js
 import { WORLD_MIN_Z, PROPS as WORLD_PROPS } from '../sim/data';
 import { hash2 } from '../sim/rng';
 import type { ZonePropsDef } from '../sim/types';
-import { terrainHeight, WATER_LEVEL } from '../sim/world';
+import { terrainHeight, waterLevel } from '../sim/world';
 import { loadGltf } from './assets/loader';
 import { registerPreload } from './assets/preload';
 import { GFX, sharedUniforms, surfaceMat } from './gfx';
@@ -1186,11 +1186,12 @@ export function buildProps(
     const boatWx = d.x + boatLx * Math.cos(d.rot) + boatLz * Math.sin(d.rot);
     const boatWz = d.z - boatLx * Math.sin(d.rot) + boatLz * Math.cos(d.rot);
     const boatGround = ground(boatWx, boatWz);
-    const isAfloat = boatGround < WATER_LEVEL - 0.1;
+    const wl = waterLevel();
+    const isAfloat = boatGround < wl - 0.1;
     addParts(g, 'rowboat', {
       x: boatLx,
       z: boatLz,
-      y: (isAfloat ? WATER_LEVEL + 0.18 : boatGround + 0.06) - y,
+      y: (isAfloat ? wl + 0.18 : boatGround + 0.06) - y,
       rot: 0.5 + (keyRand(key, 8) - 0.5) * 0.4,
       scale: 0.85,
       euler: isAfloat
