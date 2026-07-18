@@ -20,7 +20,7 @@ import {
   type MapDocMeta,
   type MapPlacement,
 } from '../sim/map_doc';
-import type { PlacedAsset, WorldContent } from '../sim/types';
+import type { BiomePaint, PlacedAsset, WorldContent } from '../sim/types';
 import { WATER_LEVEL } from '../sim/world';
 
 export const CUSTOM_MAP_VERSION = MAP_DOC_VERSION;
@@ -35,8 +35,9 @@ export type CustomMap = MapDoc;
 // of whichever registry the client shell eventually provides.
 export type AssetPathResolver = (assetId: string) => string | undefined;
 
-// The game's fixed offline seed; a fresh map defaults to it so its built-in
-// derived terrain matches what the editor previews (mirrors DEFAULT_PLAYTEST_SEED).
+// The game's fixed world seed (src/main.ts WORLD_SEED, also src/sim/map_doc.ts's
+// own DEFAULT_SEED); a fresh map defaults to it so its built-in derived terrain
+// matches what the editor previews.
 const DEFAULT_SEED = 20061;
 
 function deepClone<T>(v: T): T {
@@ -81,6 +82,7 @@ export function customMapFromContent(
     meta: CustomMapMeta;
     waterLevel?: number;
     playerStart?: { x: number; z: number };
+    biomePaint?: BiomePaint;
   },
 ): CustomMap {
   const map: CustomMap = {
@@ -101,6 +103,7 @@ export function customMapFromContent(
     map.waterLevel = layers.waterLevel;
   }
   if (layers.playerStart) map.playerStart = { ...layers.playerStart };
+  if (layers.biomePaint) map.biomePaint = deepClone(layers.biomePaint);
   return map;
 }
 
