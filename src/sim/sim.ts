@@ -1280,9 +1280,9 @@ export class Sim {
     // FURY uses a reserved id so the Honor Quartermaster cannot shift the
     // deterministic nextId sequence every other world spawn above relies on.
     {
-      const furyDef = NPCS[FURY_NPC_ID];
+      const furyDef = worldContent.npcs[FURY_NPC_ID];
       if (furyDef && !this.entities.has(FURY_ENTITY_ID)) {
-        const safe = this.findSafePos(furyDef.pos.x, furyDef.pos.z, WATER_LEVEL + 0.6);
+        const safe = this.findSafePos(furyDef.pos.x, furyDef.pos.z, waterLevel() + 0.6);
         const fury = createNpc(FURY_ENTITY_ID, furyDef, this.groundPos(safe.x, safe.z));
         this.addEntity(fury);
       }
