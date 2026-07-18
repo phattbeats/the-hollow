@@ -52,12 +52,12 @@
 //
 // THREE GATES pin this seam (run before any facet edit):
 //   tests/snapshots.test.ts        (W0a)  selfWireJson <-> applySnapshot round-trip;
-//                                          ALL_DELTA_KEYS (30) + TERSE_TO_IWORLD mapping.
+//                                          ALL_DELTA_KEYS (39) + TERSE_TO_IWORLD mapping.
 //   tests/command_schema.test.ts   (W0b)  COMMAND_NAMES universe; ClientWorld send-set
 //                                          subset-of dispatch-set; DISPATCH_ONLY (7).
-//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (176) present + same-kind on
+//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (182) present + same-kind on
 //                                          Sim + ClientWorld; aggregate == disjoint
-//                                          union of the 26 facets.
+//                                          union of the 28 facets.
 // ---------------------------------------------------------------------------
 
 import type { IWorldAchievements } from './world_api/achievements';
