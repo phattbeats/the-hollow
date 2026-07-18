@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hollow flora model gallery (PHAA-581 prototype)</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: #05060a;
+        overflow: hidden;
+      }
+      #labels {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        font-family: sans-serif;
+        color: #eae6ff;
+      }
+      .label {
+        position: absolute;
+        transform: translate(-50%, 0);
+        font-size: 12px;
+        text-align: center;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+        white-space: nowrap;
+      }
+      #hud {
+        position: fixed;
+        top: 8px;
+        left: 8px;
+        color: #cfc9ff;
+        font-family: sans-serif;
+        font-size: 13px;
+        background: rgba(10, 8, 20, 0.6);
+        padding: 6px 10px;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="hud">Hollow flora model gallery, prototype for visual review</div>
+    <div id="labels"></div>
+    <script type="module" src="/src/render/flora_gallery_main.ts"></script>
+  </body>
+</html>
