@@ -22,6 +22,7 @@ import { Sim } from '../src/sim/sim';
 import { createSimContext, type SimContextHost } from '../src/sim/sim_context';
 import { SpatialGrid } from '../src/sim/spatial';
 import type { Entity } from '../src/sim/types';
+import { dist2d } from '../src/sim/types';
 
 type AnyEntity = Entity & Record<string, any>;
 
@@ -577,5 +578,81 @@ describe('entity_roster: release-spirit (real Sim.ctx)', () => {
       return { hp: p.hp, maxHp: p.maxHp, pos: { ...p.pos } };
     };
     expect(outcome()).toEqual(outcome());
+  });
+
+  // Upstream #1723 (port): a held movement key at the moment of death used to
+  // survive on PlayerMeta.moveInput through every respawn/teleport site, so the
+  // ghost (or the freshly revived body, or the delve-ejected body) kept walking
+  // in that stale direction with no key held. The fix clears moveInput at each
+  // of the three sites; the regression tests below pin it down.
+  it('releasing the spirit clears a held movement key (upstream #1723, #1651)', () => {
+    const sim = makeSim();
+    sim.setPlayerLevel(10);
+    const p = sim.player as AnyEntity;
+    // the player was holding "back" the instant they died
+    sim.moveInput.back = true;
+    p.dead = true;
+    releasePlayerSpirit(sim.ctx, sim.playerId);
+    expect(sim.moveInput).toEqual({
+      forward: false,
+      back: false,
+      turnLeft: false,
+      turnRight: false,
+      strafeLeft: false,
+      strafeRight: false,
+      jump: false,
+    });
+    // ticking with the stale input gone, the ghost does not walk on its own.
+    const posAfterRelease = { ...p.pos };
+    sim.tick();
+    expect(dist2d(p.pos, posAfterRelease)).toBeLessThan(0.01);
+  });
+
+  it('a delve first-death respawn also clears a held movement key (#1651)', () => {
+    const sim = makeSim('rogue', 99);
+    const reliquary = DELVES.collapsed_reliquary;
+    sim.setPlayerLevel(reliquary.minLevel);
+    const p = sim.player as AnyEntity;
+    p.pos = { x: reliquary.doorPos.x, y: 0, z: reliquary.doorPos.z };
+    p.prevPos = { ...p.pos };
+    sim.rebucket(p);
+    sim.enterDelve('collapsed_reliquary', 'normal');
+    const run = sim.delveRunForPlayer(sim.playerId) as any;
+    run.modules = ['reliquary_finale'];
+    run.moduleIndex = 0;
+    (sim as any).spawnDelveModule(run);
+
+    sim.moveInput.strafeLeft = true;
+    p.dead = true;
+    releasePlayerSpirit(sim.ctx, sim.playerId);
+    expect(p.dead).toBe(false);
+    expect(sim.moveInput.strafeLeft).toBe(false);
+  });
+
+  it('a second delve death (run-failing eject to the door) also clears a held movement key (#1651)', () => {
+    const sim = makeSim('rogue', 99);
+    const reliquary = DELVES.collapsed_reliquary;
+    sim.setPlayerLevel(reliquary.minLevel);
+    const p = sim.player as AnyEntity;
+    p.pos = { x: reliquary.doorPos.x, y: 0, z: reliquary.doorPos.z };
+    p.prevPos = { ...p.pos };
+    sim.rebucket(p);
+    sim.enterDelve('collapsed_reliquary', 'normal');
+    const run = sim.delveRunForPlayer(sim.playerId) as any;
+    run.modules = ['reliquary_finale'];
+    run.moduleIndex = 0;
+    (sim as any).spawnDelveModule(run);
+
+    p.dead = true;
+    releasePlayerSpirit(sim.ctx, sim.playerId);
+    expect(p.dead).toBe(false);
+
+    const e2 = sim.entities.get(sim.playerId) as AnyEntity;
+    sim.moveInput.back = true;
+    e2.dead = true;
+    releasePlayerSpirit(sim.ctx, sim.playerId);
+    const events = sim.tick();
+    expect(events.some((ev: any) => ev.type === 'delveFailed')).toBe(true);
+    expect(sim.moveInput.back).toBe(false);
   });
 });
