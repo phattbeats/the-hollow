@@ -1170,6 +1170,13 @@ export class Sim {
     // fields (zones, camps, roads, terrainEdits, biomePaint, waterLevel) are
     // identical, or spawns and geometry silently fork. Placements MAY differ
     // (render-only ownership; the editor viewport strips them from cfg.world).
+    if (this.cfg.world !== undefined && this.cfg.world !== getActiveWorldContent()) {
+      throw new Error(
+        'Sim ctor: cfg.world was provided but does not match getActiveWorldContent(). ' +
+          'Call setActiveWorldContent(world) before constructing Sim with a custom world, ' +
+          'or spawns and terrain geometry will silently fork.',
+      );
+    }
     const worldContent = this.cfg.world ?? getActiveWorldContent();
 
     // NPCs and nudged out of buildings and deep water if their data position is bad
