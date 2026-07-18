@@ -8,6 +8,7 @@
 // ensureBossElement/ensureBossBuffer below) and the Hollow Reaches hub
 // ambient cycler (see hub_ambient_playlist.ts and HUB_AMBIENT_ZONE below).
 
+import type { BiomeId } from '../sim/types';
 import {
   HUB_AMBIENT_TRACKS,
   type HubAmbientTrack,
@@ -69,17 +70,27 @@ export function shouldResetMusicForDungeonEntry(
 /** Pick the soundtrack layer from world position context. */
 export function musicZoneForLocation(
   zoneId: string,
-  biome: 'vale' | 'marsh' | 'peaks',
+  biome: BiomeId,
   inHub: boolean,
   inDungeon: boolean,
   dungeonId: string | null = null,
 ): MusicZone {
+  // Paint-only biomes (custom maps) borrow the closest shipped theme; unreachable
+  // until the render-load-in editor slice, since the built-in world never paints.
+  const biomeMusic: MusicZone =
+    biome === 'vale' || biome === 'marsh' || biome === 'peaks'
+      ? biome
+      : biome === 'beach'
+        ? 'vale'
+        : biome === 'cave'
+          ? 'marsh'
+          : 'peaks';
   if (inDungeon) return dungeonId ? dungeonMusicZoneForDungeon(dungeonId) : 'dungeon_hollow_crypt';
   if (inHub) {
     if (zoneId === HOLLOW_HUB_ZONE_ID && HUB_AMBIENT_TRACKS.length > 0) return HUB_AMBIENT_ZONE;
-    return TOWN_MUSIC[zoneId] ?? biome;
+    return TOWN_MUSIC[zoneId] ?? biomeMusic;
   }
-  return ZONE_MUSIC[zoneId] ?? biome;
+  return ZONE_MUSIC[zoneId] ?? biomeMusic;
 }
 
 type Inst =
