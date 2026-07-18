@@ -172,6 +172,11 @@ export function applyAchievementSignal(
     if (!counters) {
       counters = new Array(def.criteria.length).fill(0);
       progress.counters.set(achId, counters);
+    } else if (counters.length < def.criteria.length) {
+      // Forward-compat: a save predating a criteria-count increase carries a
+      // shorter array; pad with 0 so a newly-added criterion can still advance
+      // (an undefined slot neither increments nor completes, wedging the ach).
+      while (counters.length < def.criteria.length) counters.push(0);
     }
     const target = criterionTarget(def.criteria[ci]);
     if (counters[ci] < target) counters[ci] += 1;

@@ -110,6 +110,21 @@ describe('achievements engine (PHAA-687)', () => {
     expect(unlocked).toEqual(['a_collect1']); // only the fully-met one unlocks
   });
 
+  it('pads a short persisted counters array when criteria grow (forward-compat)', () => {
+    // Simulate a save from before a_collect_both gained its second criterion:
+    // its counters array has length 1 (only the first arm) and book_a is done.
+    const index = buildAchievementIndex(DEFS);
+    const progress = emptyAchievementProgress();
+    progress.counters.set('a_collect_both', [1]);
+    // The now-second criterion must still be able to advance and complete.
+    const unlocked = applyAchievementSignal(index, progress, {
+      kind: 'collect',
+      collectibleId: 'book_b',
+    });
+    expect(unlocked).toContain('a_collect_both');
+    expect(progress.counters.get('a_collect_both')).toEqual([1, 1]);
+  });
+
   it('sums achievement points over the unlocked set (unknown ids contribute 0)', () => {
     const index = buildAchievementIndex(DEFS);
     expect(achievementPoints(index, ['a_kill3', 'a_collect_both'])).toBe(30);
