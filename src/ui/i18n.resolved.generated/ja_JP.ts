@@ -2421,6 +2421,10 @@ export const ja_JP: EnTranslations = {
       "nothingToHarvest": "その死骸には採集できるものが何もない。",
       "alreadyHarvested": "この死骸はすでに採集済みだ。"
     },
+    "collections": {
+      "notFound": "それは存在しない。",
+      "tooFar": "遠すぎる。"
+    },
     "hearth": {
       "tooFar": "緑掌修道士のそばに行かねば、彼に餌をやれんぞ。",
       "noItems1": "……手ぶらじゃな、お前さん。燃えるもんか、腹の足しになるもんを持ってきな、話はそれからだ。",

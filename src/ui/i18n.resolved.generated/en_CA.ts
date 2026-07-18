@@ -2421,6 +2421,10 @@ export const en_CA: EnTranslations = {
       "nothingToHarvest": "That corpse has nothing to harvest.",
       "alreadyHarvested": "This corpse has already been harvested."
     },
+    "collections": {
+      "notFound": "That does not exist.",
+      "tooFar": "Too far away."
+    },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
       "noItems1": "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",

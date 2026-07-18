@@ -4820,6 +4820,8 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'sim.delve.wayOutNotOpen': '出路尚未開啟。',
   'sim.delve.whileTrading': '交易期間無法進入秘探。',
   'sim.gathering.alreadyHarvested': '這具屍體已經被採集過了。',
+  'sim.collections.notFound': '那個東西不存在。',
+  'sim.collections.tooFar': '太遠了。',
   'sim.gathering.nothingToHarvest': '這具屍體沒有什麼可以採集的。',
   'sim.hearth.emberbulb1': '這才叫柴火……瞧瞧她喘氣的樣子，夥計……',
   'sim.hearth.emberbulb2': '爐子慢慢地、乾乾淨淨地吃下去，她就愛這樣……',

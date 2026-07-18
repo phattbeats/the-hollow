@@ -2421,6 +2421,10 @@ export const zh_CN: EnTranslations = {
       "nothingToHarvest": "这具尸体没有什么可以采集的。",
       "alreadyHarvested": "这具尸体已经被采集过了。"
     },
+    "collections": {
+      "notFound": "那个东西不存在。",
+      "tooFar": "太远了。"
+    },
     "hearth": {
       "tooFar": "你得靠近绿掌修士才能喂他。",
       "noItems1": "……伙计，你两手空空啊。带点能烧的或能填饱肚子的东西来，我们再唠。",
