@@ -169,46 +169,64 @@ function handSide(bone: string): 'r' | 'l' {
 // which grips weapons on `DEF-hand.R`/`DEF-hand.L` bones and ships NO KayKit
 // `handslot.r/.l` nodes and no in-model grip reference nodes (verified against
 // every chibi_female*.glb). The KayKit grips above are authored for a different
-// hand frame, so the chibi bones route to this parallel table. The bone frame is
-// near-identity (a small wrist tilt) with local +Y running out along the hand,
-// and the rig normalizes at ~1.0 (native mesh height ~= def.height 2.29), so the
-// values start from the KayKit grips and are tuned against the offscreen render
-// rig for the smaller chibi hand. Keyed by the same KAYKIT_WEAPON_ACCESSORY
-// family so a swapped-in equipped weapon (setHeldWeapon) resolves identically.
-const CHIBI_HAND_GRIPS: Record<string, { r: HandGrip; l?: HandGrip }> = {
+// hand frame, so the chibi bones route to this parallel table.
+//
+// A chibi grip carries an Euler (degrees, XYZ order) rather than a raw quaternion.
+// The chibi DEF-hand bone rests with local +Y running DOWN the hand, so a weapon
+// authored blade-up hangs straight at the ground (Brandon's first-pass note:
+// "facing towards the ground ... going to clip with most terrain"). The tuned
+// Euler swings the blade "up and out": local +Z rotates it off the down axis
+// toward the weapon side, so ~110deg reads as up-and-out for a 1H weapon and
+// ~175deg stands a 2H staff upright. The right hand adds the 180deg Y flip; the
+// left (offhand) omits it but keeps the SAME +Z sign, so a dual-wield mirror
+// points out on both sides. Scales are the chibi hand's much smaller frame (also
+// Brandon: "much smaller, so that they actually fit in her hands"), tuned against
+// the offscreen render rig. Keyed by the same KAYKIT_WEAPON_ACCESSORY family so a
+// swapped-in equipped weapon (setHeldWeapon) resolves identically.
+type ChibiGrip = {
+  position: [number, number, number];
+  euler: [number, number, number]; // degrees, XYZ order
+  scale: number;
+};
+const CHIBI_HAND_GRIPS: Record<string, { r: ChibiGrip; l?: ChibiGrip }> = {
   '1H_Sword': {
-    r: { position: [0, 0.16, 0.02], quaternion: [0, 1, 0, 0], scale: 0.95 },
-    l: { position: [0, 0.16, 0.02], quaternion: [0, 0, 0, 1], scale: 0.95 },
+    r: { position: [0, 0.16, 0.02], euler: [0, 180, 110], scale: 0.58 },
+    l: { position: [0, 0.16, 0.02], euler: [0, 0, 110], scale: 0.58 },
   },
   '1H_Axe': {
-    r: { position: [0.02, 0.14, 0.02], quaternion: [0, 1, 0, 0], scale: 0.72 },
-    l: { position: [-0.02, 0.14, 0.02], quaternion: [0, 0, 0, 1], scale: 0.72 },
+    r: { position: [0.02, 0.14, 0.02], euler: [0, 180, 110], scale: 0.55 },
+    l: { position: [-0.02, 0.14, 0.02], euler: [0, 0, 110], scale: 0.55 },
   },
   '1H_Crossbow': {
-    r: { position: [0.04, 0.12, 0.02], quaternion: [0, 0.7071068, 0, 0.7071067], scale: 0.7 },
+    r: { position: [0.04, 0.12, 0.02], euler: [-12, 90, 0], scale: 0.5 },
   },
   '2H_Staff': {
-    r: { position: [-0.01, 0.18, 0.02], quaternion: [0, 1, 0, 0], scale: 1.12 },
+    r: { position: [-0.01, 0.18, 0.02], euler: [0, 180, 175], scale: 0.5 },
   },
   Knife: {
-    r: { position: [0, 0.13, 0.02], quaternion: [0, 1, 0, 0], scale: 0.66 },
-    l: { position: [0, 0.13, 0.02], quaternion: [0, 0, 0, 1], scale: 0.66 },
+    r: { position: [0, 0.13, 0.02], euler: [0, 180, 110], scale: 0.5 },
+    l: { position: [0, 0.13, 0.02], euler: [0, 0, 110], scale: 0.5 },
   },
   '1H_Wand': {
-    r: { position: [0, 0.12, 0.02], quaternion: [0, 1, 0, 0], scale: 0.55 },
+    r: { position: [0, 0.12, 0.02], euler: [0, 180, 110], scale: 0.48 },
   },
 };
 
 // Chibi sibling of VARIANT_GRIPS (origin-at-grip item-variant weapons): same
 // bbox-clamp convention, chibi-tuned clamp heights so an equipped variant weapon
-// (ITEM_WEAPON_VARIANTS) mounts at a sensible size on the smaller chibi hand.
-const CHIBI_VARIANT_GRIPS: Record<string, VariantGrip> = {
-  VAR_SWORD: { lift: 0.05, maxHeight: 2.1 },
-  VAR_DAGGER: { lift: 0.05, maxHeight: 1.4 },
-  VAR_STAFF: { lift: 0.2, maxHeight: 2.5 },
-  VAR_AXE: { lift: 0.05, maxHeight: 1.6 },
-  VAR_POLEARM: { lift: 0.2, maxHeight: 2.6 },
-  VAR_WAND: { lift: 0.05, maxHeight: 1.2 },
+// (ITEM_WEAPON_VARIANTS) mounts at a sensible size on the smaller chibi hand, plus
+// the same "up and out" Euler as CHIBI_HAND_GRIPS so a variant drop equipped on a
+// female body reads the same way as her class default (not hanging at the ground).
+interface ChibiVariantGrip extends VariantGrip {
+  euler: [number, number, number]; // degrees, XYZ order; Y flip is added per side
+}
+const CHIBI_VARIANT_GRIPS: Record<string, ChibiVariantGrip> = {
+  VAR_SWORD: { lift: 0.05, maxHeight: 2.1, euler: [0, 0, 110] },
+  VAR_DAGGER: { lift: 0.05, maxHeight: 1.4, euler: [0, 0, 110] },
+  VAR_STAFF: { lift: 0.2, maxHeight: 2.5, euler: [0, 0, 175] },
+  VAR_AXE: { lift: 0.05, maxHeight: 1.6, euler: [0, 0, 110] },
+  VAR_POLEARM: { lift: 0.2, maxHeight: 2.6, euler: [0, 0, 175] },
+  VAR_WAND: { lift: 0.05, maxHeight: 1.2, euler: [0, 0, 110] },
 };
 
 function isChibiHandBone(name: string): boolean {
@@ -306,7 +324,7 @@ function variantGripFor(url: string): VariantGrip | null {
   const accessory = kaykitAccessoryFor(url);
   return accessory ? (VARIANT_GRIPS[accessory] ?? null) : null;
 }
-function chibiVariantGripFor(url: string): VariantGrip | null {
+function chibiVariantGripFor(url: string): ChibiVariantGrip | null {
   const accessory = kaykitAccessoryFor(url);
   return accessory ? (CHIBI_VARIANT_GRIPS[accessory] ?? null) : null;
 }
@@ -320,6 +338,22 @@ function applyVariantGrip(payload: THREE.Object3D, side: 'r' | 'l', grip: Varian
   payload.scale.setScalar(scale);
 }
 
+// Scratch Euler for the chibi grips (degrees in the table -> radians here). XYZ
+// order matches the offscreen render rig the values were tuned against.
+const chibiEuler = new THREE.Euler();
+const DEG = Math.PI / 180;
+function setChibiOrientation(
+  payload: THREE.Object3D,
+  euler: [number, number, number],
+  side: 'r' | 'l',
+): void {
+  // The offhand omits the 180deg Y flip the right hand carries; both keep the
+  // authored +Z so the dual-wield mirror points out on the correct side.
+  const yaw = side === 'l' ? 0 : euler[1];
+  chibiEuler.set(euler[0] * DEG, yaw * DEG, euler[2] * DEG, 'XYZ');
+  payload.quaternion.setFromEuler(chibiEuler);
+}
+
 // PHAA-697: chibi sibling of applyHandGrip. No in-model grip ref nodes exist on
 // the chibi rig, so this always uses the CHIBI_HAND_GRIPS fallback table.
 function applyChibiHandGrip(payload: THREE.Object3D, bone: string, url: string): void {
@@ -330,8 +364,24 @@ function applyChibiHandGrip(payload: THREE.Object3D, bone: string, url: string):
   if (!grips) return;
   const grip = side === 'l' ? (grips.l ?? grips.r) : grips.r;
   payload.position.set(...grip.position);
-  payload.quaternion.set(...grip.quaternion);
+  setChibiOrientation(payload, grip.euler, side);
   payload.scale.setScalar(grip.scale);
+}
+
+// PHAA-697: chibi sibling of applyVariantGrip for origin-at-grip variant weapons.
+// Same bbox clamp, but the "up and out" chibi Euler replaces the bare Y flip so an
+// equipped variant drop on a female body matches her class-default orientation.
+function applyChibiVariantGrip(
+  payload: THREE.Object3D,
+  side: 'r' | 'l',
+  grip: ChibiVariantGrip,
+): void {
+  variantBox.setFromObject(payload);
+  const height = variantBox.max.y - variantBox.min.y;
+  const scale = height > 1e-3 ? Math.min(1, grip.maxHeight / height) : 1;
+  payload.position.set(0, grip.lift, 0);
+  setChibiOrientation(payload, [grip.euler[0], 180, grip.euler[2]], side);
+  payload.scale.setScalar(scale);
 }
 
 function attachProp(
@@ -353,7 +403,7 @@ function attachProp(
   if (handslotVariant) {
     applyVariantGrip(payload, handSide(att.bone), handslotVariant);
   } else if (chibiVariant) {
-    applyVariantGrip(payload, chibiHandSide(att.bone), chibiVariant);
+    applyChibiVariantGrip(payload, chibiHandSide(att.bone), chibiVariant);
   } else if (att.position || att.rotationY !== undefined) {
     if (att.position) payload.position.set(...att.position);
     if (att.rotationY !== undefined) payload.rotation.y = att.rotationY;
