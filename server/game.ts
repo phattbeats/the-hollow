@@ -2535,6 +2535,9 @@ export class GameServer {
       case 'harvestNode':
         if (typeof msg.node === 'string') sim.harvestNode(msg.node, pid);
         break;
+      case 'readCollectible':
+        if (typeof msg.collectibleId === 'string') sim.readCollectible(msg.collectibleId, pid);
+        break;
       case 'lootRoll':
         if (
           typeof msg.rollId === 'number' &&
@@ -3551,6 +3554,9 @@ export class GameServer {
     // elapses without waiting on a heavy-field refresh; the server stays
     // authoritative (harvestNode is still re-validated on the real attempt).
     maybe('gnodecd', this.sim.nodeCooldownIdsFor(anchorSession.pid));
+    // Collection tracking core (PHAA-626): the viewer's own collected ids,
+    // mirrored whole (small, only grows) same rationale as dclears below.
+    maybe('collected', this.sim.collectedIdsFor(anchorSession.pid));
     maybe('dclears', this.sim.delveClearsFor(anchorSession.pid));
     maybe('delveDaily', this.sim.delveDailyWire(anchorSession.pid));
     // stats + weapon stay per-tick: recalcPlayerStats re-derives them on every

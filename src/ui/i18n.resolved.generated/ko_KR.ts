@@ -2436,6 +2436,10 @@ export const ko_KR: EnTranslations = {
       "nothingToHarvest": "그 시체에서는 채집할 것이 없습니다.",
       "alreadyHarvested": "이 시체는 이미 채집되었습니다."
     },
+    "collections": {
+      "notFound": "그것은 존재하지 않습니다.",
+      "tooFar": "너무 멀리 떨어져 있습니다."
+    },
     "hearth": {
       "tooFar": "브라더 초록발에게 먹이를 주려면 그의 곁에 있어야 한다.",
       "noItems1": "……친구, 빈손이구먼. 태울 것이든 배 채울 것이든 좀 가져오게, 그럼 얘기해보세.",
