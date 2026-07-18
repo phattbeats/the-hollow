@@ -200,6 +200,13 @@ export const META_EXCLUDE: ReadonlySet<string> = new Set([
   'fiestaMods', // derived from talentMods + augments
   'fiestaSpecial', // derived from augments
   'wireRev', // runtime-only wire-dirty counter; never serialized/persisted
+  // Achievements (PHAA-687): a live {unlocked:Set, counters:Map} wrapper that is a
+  // deterministic downstream function of the same tick-ordered events every host
+  // processes (the single shared engine, src/sim/achievements_core.ts), so it can
+  // never diverge without the underlying sim state (already sampled) diverging
+  // first. Excluded like the other derived fields above; the Set/Map wrapper also
+  // canonicalizes to an opaque {}. Its persistence is covered by tests/achievements.test.ts.
+  'achievements',
 ]);
 
 function sampleExcluding(source: Record<string, unknown>, exclude: ReadonlySet<string>): unknown {
