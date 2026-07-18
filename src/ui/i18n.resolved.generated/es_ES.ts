@@ -990,6 +990,21 @@ export const es_ES: EnTranslations = {
       "spore": "Spore",
       "toolTier": "Tier {tier} tool",
       "toolNone": "No tool"
+    },
+    "warfare": {
+      "ratingLabel": "Warfare",
+      "balance": "Honor: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} Honor",
+      "honorFloat": "+{amount} Honor",
+      "honorGain": "+{amount} Honor ({reason})",
+      "notEnoughHonor": "Not enough honor.",
+      "reasons": {
+        "arenaWin": "Arena win",
+        "fiestaKill": "Fiesta takedown",
+        "fiestaComplete": "Fiesta match",
+        "fiestaWin": "Fiesta win"
+      }
     }
   },
   "mailUi": {
@@ -3854,6 +3869,7 @@ export const es_ES: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{kind} {quality}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "Equipado actualmente",
       "ifYouEquip": "Si equipas esto",
       "damageSpeed": "{min} - {max} de daño Velocidad {speed}",
@@ -5181,6 +5197,99 @@ export const es_ES: EnTranslations = {
       "mistcallers_duffel": {
         "name": "Petate de Mistcaller"
       },
+      "bramblewar_warhelm": {
+        "name": "Zarzaguerra Cabeza"
+      },
+      "bramblewar_warspaulders": {
+        "name": "Zarzaguerra Hombros"
+      },
+      "bramblewar_warplate": {
+        "name": "Zarzaguerra Pecho"
+      },
+      "bramblewar_girdle": {
+        "name": "Zarzaguerra Cintura"
+      },
+      "bramblewar_legguards": {
+        "name": "Zarzaguerra Piernas"
+      },
+      "bramblewar_gauntlets": {
+        "name": "Zarzaguerra Manos"
+      },
+      "bramblewar_sabatons": {
+        "name": "Zarzaguerra Pies"
+      },
+      "thornbound_crown": {
+        "name": "Espinovínculo Cabeza"
+      },
+      "thornbound_spaulders": {
+        "name": "Espinovínculo Hombros"
+      },
+      "thornbound_hauberk": {
+        "name": "Espinovínculo Pecho"
+      },
+      "thornbound_waistguard": {
+        "name": "Espinovínculo Cintura"
+      },
+      "thornbound_legmail": {
+        "name": "Espinovínculo Piernas"
+      },
+      "thornbound_handguards": {
+        "name": "Espinovínculo Manos"
+      },
+      "thornbound_greaves": {
+        "name": "Espinovínculo Pies"
+      },
+      "nettlestalker_cowl": {
+        "name": "Ortiga Sombría Cabeza"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "Ortiga Sombría Hombros"
+      },
+      "nettlestalker_harness": {
+        "name": "Ortiga Sombría Pecho"
+      },
+      "nettlestalker_waistband": {
+        "name": "Ortiga Sombría Cintura"
+      },
+      "nettlestalker_legguards": {
+        "name": "Ortiga Sombría Piernas"
+      },
+      "nettlestalker_grips": {
+        "name": "Ortiga Sombría Manos"
+      },
+      "nettlestalker_treads": {
+        "name": "Ortiga Sombría Pies"
+      },
+      "mossweave_cowl": {
+        "name": "Tejemusgo Cabeza"
+      },
+      "mossweave_mantle": {
+        "name": "Tejemusgo Hombros"
+      },
+      "mossweave_raiment": {
+        "name": "Tejemusgo Pecho"
+      },
+      "mossweave_cord": {
+        "name": "Tejemusgo Cintura"
+      },
+      "mossweave_legwraps": {
+        "name": "Tejemusgo Piernas"
+      },
+      "mossweave_handwraps": {
+        "name": "Tejemusgo Manos"
+      },
+      "mossweave_slippers": {
+        "name": "Tejemusgo Pies"
+      },
+      "last_bloom_greatblade": {
+        "name": "Gran Espada de la Última Flor"
+      },
+      "thornbite_razor": {
+        "name": "Navaja Mordespina"
+      },
+      "heartwood_warstaff": {
+        "name": "Bastón de Guerra de Duramen"
+      },
       "bristleback_maul": {
         "name": "Maza Bristleback"
       },
@@ -5584,6 +5693,10 @@ export const es_ES: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "Manoplas del Guardián de Huesos"
+      },
+      "delve_heroic_mark": {
+        "name": "Marca Heroica del Relicario",
+        "flavorText": "Un sello estampado emitido por los guardianes del Relicario. Canjéalo con el Intendente Heroico por equipo de calidad de relicario."
       },
       "deacon_reliquary_helm": {
         "name": "Yelmo del Relicario del Diácono"
@@ -6171,6 +6284,11 @@ export const es_ES: EnTranslations = {
         "name": "Elder Yarrow",
         "title": "Profession Trainer",
         "greeting": "Every build starts as a question. Which second calling speaks to you?"
+      },
+      "bramble": {
+        "name": "Bramble",
+        "title": "Honor Quartermaster",
+        "greeting": "The sands remember every victory. Spend your honor well."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",

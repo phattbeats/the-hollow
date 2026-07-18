@@ -990,6 +990,21 @@ export const zh_TW: EnTranslations = {
       "spore": "孢子",
       "toolTier": "{tier}級工具",
       "toolNone": "無工具"
+    },
+    "warfare": {
+      "ratingLabel": "戰意",
+      "balance": "榮譽：{amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} 榮譽",
+      "honorFloat": "+{amount} 榮譽",
+      "honorGain": "+{amount} 榮譽（{reason}）",
+      "notEnoughHonor": "榮譽不足。",
+      "reasons": {
+        "arenaWin": "競技場勝利",
+        "fiestaKill": "狂歡擊倒",
+        "fiestaComplete": "狂歡比賽",
+        "fiestaWin": "狂歡勝利"
+      }
     }
   },
   "mailUi": {
@@ -3854,6 +3869,7 @@ export const zh_TW: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality}{kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "目前已裝備",
       "ifYouEquip": "裝備後",
       "damageSpeed": "{min} - {max} 傷害 速度 {speed}",
@@ -5181,6 +5197,99 @@ export const zh_TW: EnTranslations = {
       "mistcallers_duffel": {
         "name": "喚霧者的行囊"
       },
+      "bramblewar_warhelm": {
+        "name": "荊棘戰頭部"
+      },
+      "bramblewar_warspaulders": {
+        "name": "荊棘戰肩部"
+      },
+      "bramblewar_warplate": {
+        "name": "荊棘戰胸部"
+      },
+      "bramblewar_girdle": {
+        "name": "荊棘戰腰部"
+      },
+      "bramblewar_legguards": {
+        "name": "荊棘戰腿部"
+      },
+      "bramblewar_gauntlets": {
+        "name": "荊棘戰手部"
+      },
+      "bramblewar_sabatons": {
+        "name": "荊棘戰腳部"
+      },
+      "thornbound_crown": {
+        "name": "荊棘縛頭部"
+      },
+      "thornbound_spaulders": {
+        "name": "荊棘縛肩部"
+      },
+      "thornbound_hauberk": {
+        "name": "荊棘縛胸部"
+      },
+      "thornbound_waistguard": {
+        "name": "荊棘縛腰部"
+      },
+      "thornbound_legmail": {
+        "name": "荊棘縛腿部"
+      },
+      "thornbound_handguards": {
+        "name": "荊棘縛手部"
+      },
+      "thornbound_greaves": {
+        "name": "荊棘縛腳部"
+      },
+      "nettlestalker_cowl": {
+        "name": "蕁麻潛者頭部"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "蕁麻潛者肩部"
+      },
+      "nettlestalker_harness": {
+        "name": "蕁麻潛者胸部"
+      },
+      "nettlestalker_waistband": {
+        "name": "蕁麻潛者腰部"
+      },
+      "nettlestalker_legguards": {
+        "name": "蕁麻潛者腿部"
+      },
+      "nettlestalker_grips": {
+        "name": "蕁麻潛者手部"
+      },
+      "nettlestalker_treads": {
+        "name": "蕁麻潛者腳部"
+      },
+      "mossweave_cowl": {
+        "name": "苔蘚織頭部"
+      },
+      "mossweave_mantle": {
+        "name": "苔蘚織肩部"
+      },
+      "mossweave_raiment": {
+        "name": "苔蘚織胸部"
+      },
+      "mossweave_cord": {
+        "name": "苔蘚織腰部"
+      },
+      "mossweave_legwraps": {
+        "name": "苔蘚織腿部"
+      },
+      "mossweave_handwraps": {
+        "name": "苔蘚織手部"
+      },
+      "mossweave_slippers": {
+        "name": "苔蘚織腳部"
+      },
+      "last_bloom_greatblade": {
+        "name": "末花巨刃"
+      },
+      "thornbite_razor": {
+        "name": "棘咬剃刃"
+      },
+      "heartwood_warstaff": {
+        "name": "心木戰杖"
+      },
       "bristleback_maul": {
         "name": "硬鬃重槌"
       },
@@ -5584,6 +5693,10 @@ export const zh_TW: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "護骨者護手"
+      },
+      "delve_heroic_mark": {
+        "name": "英雄聖物庫印記",
+        "flavorText": "由聖物庫守護者頒發的鈐印。在英雄軍需官處兌換聖物庫級裝備。"
       },
       "deacon_reliquary_helm": {
         "name": "執事的聖物庫頭盔"
@@ -6172,6 +6285,11 @@ export const zh_TW: EnTranslations = {
         "title": "副職業訓練師",
         "greeting": "每一套build都始於一個問題：哪個副職業在召喚你？"
       },
+      "bramble": {
+        "name": "布蘭博",
+        "title": "榮譽軍需官",
+        "greeting": "沙場記得每一場勝利。好好花你的榮譽吧。"
+      },
       "tidewatcher_ondrel": {
         "name": "翁德瑞爾·韋恩",
         "title": "守潮者",
@@ -6264,14 +6382,14 @@ export const zh_TW: EnTranslations = {
         "greeting": "你可以坐下。大多數人只是走過去。司事早就把我的名字從冊子上劃掉了，一個被劃掉的名字，學會了安靜，好讓誰都不必想起它還在這兒。"
       },
       "withered_planting": {
-        "name": "The Withered Planting",
-        "title": "The Tribe's Old Willow",
-        "greeting": "Dry roots, dry leaves. Whatever this was meant to grow into, it hasn't yet, and it's been a long while waiting."
+        "name": "枯萎的苗圃",
+        "title": "部族的老柳樹",
+        "greeting": "乾枯的根，乾枯的葉。無論它本該長成什麼，如今都還沒長成，而它已經等了很久很久。"
       },
       "buried_root": {
-        "name": "A Buried Root",
-        "title": "Under the Shrine",
-        "greeting": "Dry. Dry as anything down here ever gets."
+        "name": "一截埋著的根",
+        "title": "神龕之下",
+        "greeting": "乾。乾得就像這底下所有東西一樣。"
       }
     },
     "quests": {
@@ -7228,22 +7346,22 @@ export const zh_TW: EnTranslations = {
         }
       },
       "q_the_long_way_around": {
-        "title": "The Long Way Around",
-        "text": "There's a planting the tribe left half-finished up the old willow, and it's dying for want of one good pour. I can't make that climb anymore, but you've got the legs for it. Take the can. Mind the branches; they hold if you're honest with them.",
-        "completion": "It'll live now. You wouldn't think one climb and one pour was much, against everything else out there. It isn't much. It's only everything to the one thing you poured it on.",
+        "title": "繞遠的路",
+        "text": "老柳樹上頭有一處苗圃，部族沒能栽完，如今就差一場好好的澆灌，眼看要枯死了。那樣的攀爬我再也做不來了，可你有這副腿腳。把水壺帶上。當心那些枝子，只要你對它們誠實，它們就撐得住你。",
+        "completion": "它現在能活下來了。你或許會覺得，比起外頭那麼多事，一次攀爬、一次澆灌算不得什麼。它確實算不得什麼。可對你澆灌的那一樣東西來說，它就是一切。",
         "objectives": {
           "0": {
-            "label": "Water carried up the willow path"
+            "label": "沿柳樹小徑把水送上去"
           }
         }
       },
       "q_the_watering_can": {
-        "title": "The Watering Can",
-        "text": "I've asked you for small things, and you've done them all without once asking why. Here's the last one, and it isn't small, though it'll look it. Take my can down under the shrine, to the thing that's buried there, and give it water. It's been waiting a long time to be given something instead of asked for something.",
-        "completion": "You did it. Of course you did. That was the water, you understand. All of it, all the way back to the day you found me at the lake and thought nothing of it. The same pour, the same promise, kept one more time. Thank you. Now go and be gentle with the world. It is the only thing that ever changed it.",
+        "title": "那把水壺",
+        "text": "我請你做過許多小事，你件件都做了，一次也沒問過為什麼。這是最後一件，它看著小，其實不小。把我的水壺帶到神龕底下，交給埋在那裡的那一樣東西，給它澆上水。它等了很久很久，等的是有人給它什麼，而不是向它要什麼。",
+        "completion": "你做到了。你當然做到了。你明白嗎，那澆下去的是水。是全部的水，一直追溯到你在湖邊遇見我、卻不當一回事的那一天。同樣的一澆，同樣的一諾，又一次守住了。謝謝你。去吧，溫柔地對待這個世界。唯有這一樣，才真正改變過它。",
         "objectives": {
           "0": {
-            "label": "Water given to the buried root"
+            "label": "把水澆給那截埋著的根"
           }
         }
       }

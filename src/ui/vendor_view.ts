@@ -14,8 +14,10 @@ import type { InvSlot, ItemDef } from '../sim/types';
 export interface VendorGoodsRow {
   itemId: string;
   item: ItemDef;
-  /** Copper the vendor sells this item for. Always > 0 for a goods row. */
+  /** Copper the vendor sells this item for; 0 for an Honor-only item. */
   price: number;
+  /** Honor the vendor sells this item for; 0 for a copper-only item. */
+  honorPrice: number;
 }
 
 export interface VendorBuybackRow {
@@ -35,8 +37,9 @@ export interface VendorView {
  * Build the structured vendor view from raw inputs.
  *
  * Goods: a vendor item is offered only if it exists in the item table and has a
- * truthy buyValue (vendors never list a priceless item). Buyback: a stored slot
- * is redeemable only if the item still exists and the stack count is positive.
+ * positive copper or Honor price (vendors never list a priceless item). Buyback:
+ * a stored slot is redeemable only if the item still exists and the stack count
+ * is positive.
  */
 export function buildVendorView(
   vendorItemIds: readonly string[],
@@ -46,8 +49,11 @@ export function buildVendorView(
   const goods: VendorGoodsRow[] = [];
   for (const itemId of vendorItemIds) {
     const item = items[itemId];
-    if (!item?.buyValue) continue;
-    goods.push({ itemId, item, price: item.buyValue });
+    if (!item) continue;
+    const price = item.buyValue ?? 0;
+    const honorPrice = item.priceHonor ?? 0;
+    if (price <= 0 && honorPrice <= 0) continue;
+    goods.push({ itemId, item, price, honorPrice });
   }
   const buyback: VendorBuybackRow[] = [];
   for (const slot of buybackSlots) {

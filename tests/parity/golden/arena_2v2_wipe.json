@@ -719,8 +719,8 @@
       "tick": 103,
       "time": 5.15,
       "nextId": 411,
-      "state": "00154627",
-      "events": "12c720d6",
+      "state": "9bde0543",
+      "events": "3c2d141f",
       "rng": {
         "draws": 287,
         "digest": "f0c15450"
@@ -751,6 +751,15 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "honor": 50,
+          "honorArenaDaily": {
+            "fiestaCompletionsByOpponent": {},
+            "totalWins": 1,
+            "winsByOpponent": {
+              "2v2:[\"name:dalet\",\"name:gimel\"]": 1
+            }
+          },
+          "lifetimeHonor": 50,
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -781,6 +790,15 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "honor": 50,
+          "honorArenaDaily": {
+            "fiestaCompletionsByOpponent": {},
+            "totalWins": 1,
+            "winsByOpponent": {
+              "2v2:[\"name:dalet\",\"name:gimel\"]": 1
+            }
+          },
+          "lifetimeHonor": 50,
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -1049,7 +1067,7 @@
       "tick": 125,
       "time": 6.25,
       "nextId": 411,
-      "state": "d38dd835",
+      "state": "d6c73801",
       "events": "741638a5",
       "rng": {
         "draws": 410,
@@ -1060,7 +1078,7 @@
       "tick": 150,
       "time": 7.5,
       "nextId": 411,
-      "state": "065da39b",
+      "state": "adf368f7",
       "events": "741638a5",
       "rng": {
         "draws": 554,
@@ -1071,7 +1089,7 @@
       "tick": 175,
       "time": 8.75,
       "nextId": 411,
-      "state": "4bb111b1",
+      "state": "f036a51d",
       "events": "741638a5",
       "rng": {
         "draws": 727,
@@ -1082,7 +1100,7 @@
       "tick": 200,
       "time": 10,
       "nextId": 411,
-      "state": "f590b527",
+      "state": "01799443",
       "events": "741638a5",
       "rng": {
         "draws": 929,
@@ -1093,7 +1111,7 @@
       "tick": 225,
       "time": 11.25,
       "nextId": 411,
-      "state": "52698605",
+      "state": "1c4c3391",
       "events": "05465228",
       "rng": {
         "draws": 1038,
@@ -1104,7 +1122,7 @@
       "tick": 243,
       "time": 12.15,
       "nextId": 411,
-      "state": "506c4de9",
+      "state": "69a03155",
       "events": "741638a5",
       "rng": {
         "draws": 1108,
@@ -1136,6 +1154,15 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "honor": 50,
+          "honorArenaDaily": {
+            "fiestaCompletionsByOpponent": {},
+            "totalWins": 1,
+            "winsByOpponent": {
+              "2v2:[\"name:dalet\",\"name:gimel\"]": 1
+            }
+          },
+          "lifetimeHonor": 50,
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -1166,6 +1193,15 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "honor": 50,
+          "honorArenaDaily": {
+            "fiestaCompletionsByOpponent": {},
+            "totalWins": 1,
+            "winsByOpponent": {
+              "2v2:[\"name:dalet\",\"name:gimel\"]": 1
+            }
+          },
+          "lifetimeHonor": 50,
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -1439,7 +1475,7 @@
       "tick": 243,
       "time": 12.15,
       "nextId": 411,
-      "state": "506c4de9",
+      "state": "69a03155",
       "events": "741638a5",
       "rng": {
         "draws": 1108,
@@ -1471,6 +1507,15 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "honor": 50,
+          "honorArenaDaily": {
+            "fiestaCompletionsByOpponent": {},
+            "totalWins": 1,
+            "winsByOpponent": {
+              "2v2:[\"name:dalet\",\"name:gimel\"]": 1
+            }
+          },
+          "lifetimeHonor": 50,
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -1501,6 +1546,15 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "honor": 50,
+          "honorArenaDaily": {
+            "fiestaCompletionsByOpponent": {},
+            "totalWins": 1,
+            "winsByOpponent": {
+              "2v2:[\"name:dalet\",\"name:gimel\"]": 1
+            }
+          },
+          "lifetimeHonor": 50,
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},

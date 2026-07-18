@@ -990,6 +990,21 @@ export const de_DE: EnTranslations = {
       "spore": "Spore",
       "toolTier": "Tier {tier} tool",
       "toolNone": "No tool"
+    },
+    "warfare": {
+      "ratingLabel": "Warfare",
+      "balance": "Honor: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} Honor",
+      "honorFloat": "+{amount} Honor",
+      "honorGain": "+{amount} Honor ({reason})",
+      "notEnoughHonor": "Not enough honor.",
+      "reasons": {
+        "arenaWin": "Arena win",
+        "fiestaKill": "Fiesta takedown",
+        "fiestaComplete": "Fiesta match",
+        "fiestaWin": "Fiesta win"
+      }
     }
   },
   "mailUi": {
@@ -3854,6 +3869,7 @@ export const de_DE: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "Derzeit angelegt",
       "ifYouEquip": "Wenn Ihr dies anlegt",
       "damageSpeed": "{min} - {max} Schaden Tempo {speed}",
@@ -5181,6 +5197,99 @@ export const de_DE: EnTranslations = {
       "mistcallers_duffel": {
         "name": "Seesack von Mistcaller"
       },
+      "bramblewar_warhelm": {
+        "name": "Dornkrieg-Kopf"
+      },
+      "bramblewar_warspaulders": {
+        "name": "Dornkrieg-Schultern"
+      },
+      "bramblewar_warplate": {
+        "name": "Dornkrieg-Brust"
+      },
+      "bramblewar_girdle": {
+        "name": "Dornkrieg-Taille"
+      },
+      "bramblewar_legguards": {
+        "name": "Dornkrieg-Beine"
+      },
+      "bramblewar_gauntlets": {
+        "name": "Dornkrieg-Hände"
+      },
+      "bramblewar_sabatons": {
+        "name": "Dornkrieg-Füße"
+      },
+      "thornbound_crown": {
+        "name": "Dorngebunden-Kopf"
+      },
+      "thornbound_spaulders": {
+        "name": "Dorngebunden-Schultern"
+      },
+      "thornbound_hauberk": {
+        "name": "Dorngebunden-Brust"
+      },
+      "thornbound_waistguard": {
+        "name": "Dorngebunden-Taille"
+      },
+      "thornbound_legmail": {
+        "name": "Dorngebunden-Beine"
+      },
+      "thornbound_handguards": {
+        "name": "Dorngebunden-Hände"
+      },
+      "thornbound_greaves": {
+        "name": "Dorngebunden-Füße"
+      },
+      "nettlestalker_cowl": {
+        "name": "Nesselpirscher-Kopf"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "Nesselpirscher-Schultern"
+      },
+      "nettlestalker_harness": {
+        "name": "Nesselpirscher-Brust"
+      },
+      "nettlestalker_waistband": {
+        "name": "Nesselpirscher-Taille"
+      },
+      "nettlestalker_legguards": {
+        "name": "Nesselpirscher-Beine"
+      },
+      "nettlestalker_grips": {
+        "name": "Nesselpirscher-Hände"
+      },
+      "nettlestalker_treads": {
+        "name": "Nesselpirscher-Füße"
+      },
+      "mossweave_cowl": {
+        "name": "Moosgewebt-Kopf"
+      },
+      "mossweave_mantle": {
+        "name": "Moosgewebt-Schultern"
+      },
+      "mossweave_raiment": {
+        "name": "Moosgewebt-Brust"
+      },
+      "mossweave_cord": {
+        "name": "Moosgewebt-Taille"
+      },
+      "mossweave_legwraps": {
+        "name": "Moosgewebt-Beine"
+      },
+      "mossweave_handwraps": {
+        "name": "Moosgewebt-Hände"
+      },
+      "mossweave_slippers": {
+        "name": "Moosgewebt-Füße"
+      },
+      "last_bloom_greatblade": {
+        "name": "Großschwert der letzten Blüte"
+      },
+      "thornbite_razor": {
+        "name": "Dornbiss-Rasiermesser"
+      },
+      "heartwood_warstaff": {
+        "name": "Kernholz-Kriegsstab"
+      },
       "bristleback_maul": {
         "name": "Bristleback-Schlägel"
       },
@@ -5584,6 +5693,10 @@ export const de_DE: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "Knochenwächter-Griffe"
+      },
+      "delve_heroic_mark": {
+        "name": "Heroische Reliquiar-Marke",
+        "flavorText": "Ein geprägtes Siegel, ausgegeben von den Wächtern des Reliquiars. Löse es beim Heroischen Quartiermeister gegen Ausrüstung in Reliquiar-Qualität ein."
       },
       "deacon_reliquary_helm": {
         "name": "Reliquiarhelm des Diakons"
@@ -6171,6 +6284,11 @@ export const de_DE: EnTranslations = {
         "name": "Elder Yarrow",
         "title": "Profession Trainer",
         "greeting": "Every build starts as a question. Which second calling speaks to you?"
+      },
+      "bramble": {
+        "name": "Bramble",
+        "title": "Honor Quartermaster",
+        "greeting": "The sands remember every victory. Spend your honor well."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",

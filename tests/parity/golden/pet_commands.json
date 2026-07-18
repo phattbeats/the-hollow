@@ -2067,14 +2067,14 @@
     {
       "tick": 80,
       "time": 4,
-      "nextId": 417,
-      "state": "f00f85cc",
-      "events": "f7cf1703",
+      "nextId": 418,
+      "state": "912cedfb",
+      "events": "5285d7e6",
       "rng": {
         "draws": 164,
         "digest": "ce16a635"
       },
-      "label": "demon-faded",
+      "label": "demon-resummoned",
       "players": [
         {
           "activeLoadout": -1,
@@ -2309,15 +2309,55 @@
             "min": 3,
             "speed": 2.9
           }
+        },
+        {
+          "aiState": "idle",
+          "combatTimer": 99,
+          "critChance": 0.05,
+          "detonateTimer": "Infinity",
+          "dodgeChance": 0.05,
+          "fallStartY": -0.525705,
+          "fiveSecondRule": 99,
+          "hp": 378,
+          "id": 417,
+          "kind": "mob",
+          "level": 12,
+          "lootFfaTimer": "Infinity",
+          "maxHp": 378,
+          "moveSpeed": 5,
+          "onGround": true,
+          "overpowerUntil": -1,
+          "ownerId": 414,
+          "petMode": "defensive",
+          "pos": {
+            "x": 34,
+            "y": -0.525705,
+            "z": -1
+          },
+          "potionCooldownUntil": -1,
+          "spawnPos": {
+            "x": 34,
+            "y": -0.525705,
+            "z": -1
+          },
+          "stats": {
+            "armor": 495
+          },
+          "templateId": "voidwalker",
+          "weapon": {
+            "max": 15,
+            "min": 10,
+            "speed": 2
+          }
         }
       ]
     },
     {
       "tick": 80,
       "time": 4,
-      "nextId": 419,
-      "state": "bff3ae55",
-      "events": "cefab649",
+      "nextId": 420,
+      "state": "3c2a5ee9",
+      "events": "239b67c4",
       "rng": {
         "draws": 164,
         "digest": "ce16a635"
@@ -2569,7 +2609,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 50000,
-          "id": 418,
+          "id": 419,
           "inCombat": true,
           "kind": "mob",
           "level": 8,
@@ -2593,7 +2633,7 @@
           "stats": {
             "armor": 70
           },
-          "targetId": 417,
+          "targetId": 418,
           "templateId": "forest_wolf",
           "threat": [
             [
@@ -2612,8 +2652,8 @@
     {
       "tick": 80,
       "time": 4,
-      "nextId": 419,
-      "state": "bff3ae55",
+      "nextId": 420,
+      "state": "3c2a5ee9",
       "events": "741638a5",
       "rng": {
         "draws": 164,
@@ -2866,7 +2906,7 @@
           "fiveSecondRule": 99,
           "hostile": true,
           "hp": 50000,
-          "id": 418,
+          "id": 419,
           "inCombat": true,
           "kind": "mob",
           "level": 8,
@@ -2890,7 +2930,7 @@
           "stats": {
             "armor": 70
           },
-          "targetId": 417,
+          "targetId": 418,
           "templateId": "forest_wolf",
           "threat": [
             [

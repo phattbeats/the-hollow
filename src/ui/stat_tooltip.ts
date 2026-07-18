@@ -15,6 +15,7 @@ import { CLASSES } from '../sim/data';
 import {
   type AuraKind,
   armorReduction,
+  type CoreStats,
   type PlayerClass,
   SPELL_POWER_PER_INT,
   type Stats,
@@ -349,13 +350,13 @@ const PRIMARY_BUFF_KINDS: Record<'str' | 'agi' | 'sta' | 'int' | 'spi' | 'armor'
 
 /** Base value of a primary attribute (or armor) from class + level, before any
  *  gear / buff / talent layer. Mirrors recalcPlayerStats' opening derivation. */
-function basePrimary(cls: PlayerClass, key: keyof Stats, level: number): number {
+function basePrimary(cls: PlayerClass, key: keyof CoreStats, level: number): number {
   const def = CLASSES[cls];
   return def.baseStats[key] + def.statsPerLevel[key] * (level - 1);
 }
 
 /** Sum the contribution of one attribute (or spellPower) across equipped gear. */
-function gearTotal(gear: GearStatSource[], key: keyof Stats | 'spellPower'): number {
+function gearTotal(gear: GearStatSource[], key: keyof CoreStats | 'spellPower'): number {
   let total = 0;
   for (const g of gear) {
     if (key === 'spellPower') total += g.spellPower ?? 0;

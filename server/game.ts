@@ -1725,6 +1725,10 @@ export class GameServer {
         console.error('failed to close play session:', err),
       );
     }
+    // Arena forfeit accounting (Elo + honor) resolves before persistence, so a
+    // disconnecting fighter's own loss/grant is not silently dropped by a save
+    // that already ran; removePlayer repeats the idempotent cleanup below.
+    this.sim.arenaResolveDesertion(session.pid);
     await this.saveCharacterOnLeave(session);
     this.sessionsByCharacterId.delete(session.characterId);
     this.sim.removePlayer(session.pid);
@@ -3502,6 +3506,10 @@ export class GameServer {
     maybe('marks', this.markersWire(anchorSession.pid));
     maybe('trade', this.tradeWire(anchorSession.pid));
     maybe('duel', this.duelWire(anchorSession.pid));
+    // Small PvP-ledger scalars. Delta-guarded like marks: a fresh session
+    // receives both, then they ride only on earn/spend changes.
+    maybe('honor', meta.honor);
+    maybe('lhonor', meta.lifetimeHonor);
     if (this.sim.tickCount - session.lastArenaWireTick >= ARENA_WIRE_INTERVAL_TICKS) {
       session.lastArenaWireTick = this.sim.tickCount;
       maybe('arena', this.sim.arenaInfoFor(anchorSession.pid));

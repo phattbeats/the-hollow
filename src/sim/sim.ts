@@ -56,6 +56,7 @@ import { isSpellResisted } from './combat/spell_resist';
 // the PlayerMeta interface + the power-up catalog the fiestaMatchInfo accessor reads.
 import { type AugmentSpecial, type AugmentTier, POWERUPS_BY_ID } from './content/augments';
 import { VASE_LANDING_POS } from './content/hollow';
+import { FURY_ENTITY_ID, FURY_NPC_ID } from './content/pvp_honor';
 import {
   classHasSkin,
   EVENT_SKIN_TOKEN_ID,
@@ -255,6 +256,7 @@ import {
 // (online.ts) stays byte-identical.
 export { computeQuestState } from './quests/quest_commands';
 
+import * as honorMod from './pvp';
 import * as arenaMod from './social/arena';
 import * as duelMod from './social/duel';
 
@@ -314,6 +316,7 @@ import {
   FISHING_CAST_TIME,
   type GatherNodeType,
   GCD,
+  type HonorArenaDailyState,
   type InvSlot,
   isConsuming,
   isPetClass,
@@ -549,6 +552,14 @@ export interface ArenaMatch {
   ratingA: number; // team avg at start
   ratingB: number;
   defeated: Set<number>;
+  // Result accounting is exactly once even if a disconnect arrives during the
+  // post-match return delay. Practice matches (offline Fiesta bots) never
+  // award honor.
+  resultRecorded?: boolean;
+  practice?: boolean;
+  // Stable team identities snapshotted at match start for persisted honor DR.
+  honorTeamAKey?: string;
+  honorTeamBKey?: string;
   fiesta?: FiestaState; // present only for format === 'fiesta'
   boarball?: BoarballState; // present only for format === 'boarball'
 }
@@ -570,6 +581,8 @@ export interface FiestaState {
   respawn: Map<number, number>; // pid -> seconds until revive (absent = alive)
   deaths: Map<number, number>; // pid -> times downed (drives respawn growth)
   kills: Map<number, number>; // pid -> takedowns this bout (scoreboard)
+  // Per killer-victim takedown count for in-match honor diminishing returns.
+  honorKillsByPair: Map<string, number>;
   streak: Map<number, number>; // pid -> takedowns since last death (word pops)
   lastKill: Map<number, number>; // pid -> active-timer of last takedown (double-kill window)
   // Augment offers wait here until the player's NEXT death so a pick never
@@ -758,6 +771,15 @@ export interface PlayerMeta {
   arena2v2Rating: number;
   arena2v2Wins: number;
   arena2v2Losses: number;
+  // Soulbound PvP currency (WARFARE): `honor` is spendable at the Quartermaster,
+  // `lifetimeHonor` is monotonic. Persisted in CharacterState.
+  honor: number;
+  lifetimeHonor: number;
+  // Persisted per-day, per-opponent ranked/Fiesta accounting for honor DR.
+  honorArenaDaily?: HonorArenaDailyState;
+  // Offline Fiesta practice opponent. Session-only and never serialized; a match
+  // with any isFiestaBot combatant never pays honor (ArenaMatch.practice).
+  isFiestaBot?: boolean;
   // Talents & Specializations. `talents` is the active allocation; `talentMods`
   // is its precomputed flat struct and resolved only on allocation/respec/loadout
   // change (recomputeTalents), never walked on the combat or stat hot path.
@@ -888,6 +910,10 @@ export interface CharacterState {
   arena2v2Rating?: number;
   arena2v2Wins?: number;
   arena2v2Losses?: number;
+  // Soulbound PvP progression. Optional so pre-honor saves load at zero.
+  honor?: number;
+  lifetimeHonor?: number;
+  honorArenaDaily?: HonorArenaDailyState;
   // Talents & Specializations (JSONB; no schema migration). All optional so
   // characters saved before talents existed load cleanly (default: no points spent).
   talents?: TalentAllocation;
@@ -1248,6 +1274,17 @@ export class Sim {
       }
     }
 
+    // FURY uses a reserved id so the Honor Quartermaster cannot shift the
+    // deterministic nextId sequence every other world spawn above relies on.
+    {
+      const furyDef = NPCS[FURY_NPC_ID];
+      if (furyDef && !this.entities.has(FURY_ENTITY_ID)) {
+        const safe = this.findSafePos(furyDef.pos.x, furyDef.pos.z, WATER_LEVEL + 0.6);
+        const fury = createNpc(FURY_ENTITY_ID, furyDef, this.groundPos(safe.x, safe.z));
+        this.addEntity(fury);
+      }
+    }
+
     for (const delve of DELVE_LIST) {
       for (let i = 0; i < DELVE_SLOT_COUNT; i++) {
         const origin = delveOrigin(delve.index, i);
@@ -1486,6 +1523,8 @@ export class Sim {
       arena2v2Rating: savedArena2v2.rating,
       arena2v2Wins: savedArena2v2.wins,
       arena2v2Losses: savedArena2v2.losses,
+      honor: 0,
+      lifetimeHonor: 0,
       talents: emptyAllocation(),
       talentMods: emptyModifiers(),
       fiestaAugments: [],
@@ -1603,6 +1642,13 @@ export class Sim {
           markClears: s.delveDaily.markClears,
         };
       }
+      meta.honor = honorMod.normalizeHonorCounter(s.honor);
+      meta.lifetimeHonor = Math.max(
+        meta.honor,
+        honorMod.normalizeHonorCounter(s.lifetimeHonor ?? meta.honor),
+      );
+      if (s.honorArenaDaily)
+        meta.honorArenaDaily = honorMod.normalizeHonorDailyState(s.honorArenaDaily);
     }
 
     // Resolve the flat talent struct once, before the stat pass + ability
@@ -1683,11 +1729,7 @@ export class Sim {
     if (duel) this.endDuel(duel, duel.a === pid ? duel.b : duel.a);
     // arena: leaving the queue is free; disconnecting mid-bout forfeits it
     this.arenaDequeue(pid);
-    const match = this.arenaMatches.get(pid);
-    if (match) {
-      const team = this.arenaTeamOf(match, pid);
-      this.endArenaMatch(match, team === 'A' ? 'B' : team === 'B' ? 'A' : null, 'forfeit');
-    }
+    this.arenaResolveDesertion(pid);
     this.party.partyInvites.delete(pid);
     this.tradeInvites.delete(pid);
     this.duelInvites.delete(pid);
@@ -1788,6 +1830,18 @@ export class Sim {
       arena2v2Rating: meta.arena2v2Rating,
       arena2v2Wins: meta.arena2v2Wins,
       arena2v2Losses: meta.arena2v2Losses,
+      honor: meta.honor,
+      lifetimeHonor: meta.lifetimeHonor,
+      ...(meta.honorArenaDaily
+        ? {
+            honorArenaDaily: {
+              date: meta.honorArenaDaily.date,
+              winsByOpponent: { ...meta.honorArenaDaily.winsByOpponent },
+              fiestaCompletionsByOpponent: { ...meta.honorArenaDaily.fiestaCompletionsByOpponent },
+              totalWins: meta.honorArenaDaily.totalWins,
+            },
+          }
+        : {}),
       talents: cloneAllocation(restore ? restore.talents : meta.talents),
       loadouts: meta.loadouts.map((l) => ({
         name: l.name,
@@ -1997,6 +2051,12 @@ export class Sim {
   }
   set copper(v: number) {
     this.primary.copper = v;
+  }
+  get honor(): number {
+    return this.primary.honor;
+  }
+  get lifetimeHonor(): number {
+    return this.primary.lifetimeHonor;
   }
   get xp(): number {
     return this.primary.xp;
@@ -4686,6 +4746,10 @@ export class Sim {
       return;
     }
     if (p.sitting) this.standUp(p);
+    // fishing's completion path (completeFishing) never fires the spell queue, so a
+    // slot held here (a cast queued in a prior cast's tail, still parked while its
+    // GCD runs) would strand and misfire on the next real cast: drop it as we start.
+    p.queuedCastAbility = null;
     p.castingAbility = FISHING_CAST_ID;
     p.castTotal = FISHING_CAST_TIME;
     p.castRemaining = FISHING_CAST_TIME;
@@ -5291,6 +5355,16 @@ export class Sim {
     reason: 'defeat' | 'timeout' | 'forfeit',
   ): void {
     arenaMod.endArenaMatch(this.ctx, match, winnerTeam, reason);
+  }
+
+  // Resolve a ranked/Fiesta disconnect before the server's leave save (the
+  // ArenaMatch.resultRecorded guard makes removePlayer's later cleanup call
+  // harmless). Idempotent: a pid with no live match is a no-op.
+  arenaResolveDesertion(pid: number): void {
+    const match = this.arenaMatches.get(pid);
+    if (!match) return;
+    const team = this.arenaTeamOf(match, pid);
+    this.endArenaMatch(match, team === 'A' ? 'B' : team === 'B' ? 'A' : null, 'forfeit');
   }
 
   private returnFromArena(match: ArenaMatch): void {

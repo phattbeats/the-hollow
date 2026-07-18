@@ -73,8 +73,8 @@
       "tick": 125,
       "time": 6.25,
       "nextId": 409,
-      "state": "6605ab90",
-      "events": "2ecf8121",
+      "state": "166a7554",
+      "events": "c1565cc6",
       "rng": {
         "draws": 398,
         "digest": "78172419"
@@ -84,7 +84,7 @@
       "tick": 142,
       "time": 7.1,
       "nextId": 409,
-      "state": "1d3abd1c",
+      "state": "7e7b1668",
       "events": "741638a5",
       "rng": {
         "draws": 506,
@@ -116,6 +116,15 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "honor": 25,
+          "honorArenaDaily": {
+            "fiestaCompletionsByOpponent": {},
+            "totalWins": 1,
+            "winsByOpponent": {
+              "1v1:[\"name:bet\"]": 1
+            }
+          },
+          "lifetimeHonor": 25,
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},

@@ -990,6 +990,21 @@ export const vi_VN: EnTranslations = {
       "spore": "Spore",
       "toolTier": "Tier {tier} tool",
       "toolNone": "No tool"
+    },
+    "warfare": {
+      "ratingLabel": "Warfare",
+      "balance": "Honor: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} Honor",
+      "honorFloat": "+{amount} Honor",
+      "honorGain": "+{amount} Honor ({reason})",
+      "notEnoughHonor": "Not enough honor.",
+      "reasons": {
+        "arenaWin": "Arena win",
+        "fiestaKill": "Fiesta takedown",
+        "fiestaComplete": "Fiesta match",
+        "fiestaWin": "Fiesta win"
+      }
     }
   },
   "mailUi": {
@@ -3854,6 +3869,7 @@ export const vi_VN: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "Đang trang bị",
       "ifYouEquip": "Nếu bạn trang bị món này",
       "damageSpeed": "{min} - {max} Sát Thương Tốc Độ {speed}",
@@ -5181,6 +5197,99 @@ export const vi_VN: EnTranslations = {
       "mistcallers_duffel": {
         "name": "Túi Du Lịch Của Mistcaller"
       },
+      "bramblewar_warhelm": {
+        "name": "Chiến Gai Đầu"
+      },
+      "bramblewar_warspaulders": {
+        "name": "Chiến Gai Vai"
+      },
+      "bramblewar_warplate": {
+        "name": "Chiến Gai Ngực"
+      },
+      "bramblewar_girdle": {
+        "name": "Chiến Gai Eo"
+      },
+      "bramblewar_legguards": {
+        "name": "Chiến Gai Đùi"
+      },
+      "bramblewar_gauntlets": {
+        "name": "Chiến Gai Tay"
+      },
+      "bramblewar_sabatons": {
+        "name": "Chiến Gai Chân"
+      },
+      "thornbound_crown": {
+        "name": "Gai Buộc Đầu"
+      },
+      "thornbound_spaulders": {
+        "name": "Gai Buộc Vai"
+      },
+      "thornbound_hauberk": {
+        "name": "Gai Buộc Ngực"
+      },
+      "thornbound_waistguard": {
+        "name": "Gai Buộc Eo"
+      },
+      "thornbound_legmail": {
+        "name": "Gai Buộc Đùi"
+      },
+      "thornbound_handguards": {
+        "name": "Gai Buộc Tay"
+      },
+      "thornbound_greaves": {
+        "name": "Gai Buộc Chân"
+      },
+      "nettlestalker_cowl": {
+        "name": "Tầm Gai Ẩn Đầu"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "Tầm Gai Ẩn Vai"
+      },
+      "nettlestalker_harness": {
+        "name": "Tầm Gai Ẩn Ngực"
+      },
+      "nettlestalker_waistband": {
+        "name": "Tầm Gai Ẩn Eo"
+      },
+      "nettlestalker_legguards": {
+        "name": "Tầm Gai Ẩn Đùi"
+      },
+      "nettlestalker_grips": {
+        "name": "Tầm Gai Ẩn Tay"
+      },
+      "nettlestalker_treads": {
+        "name": "Tầm Gai Ẩn Chân"
+      },
+      "mossweave_cowl": {
+        "name": "Rêu Dệt Đầu"
+      },
+      "mossweave_mantle": {
+        "name": "Rêu Dệt Vai"
+      },
+      "mossweave_raiment": {
+        "name": "Rêu Dệt Ngực"
+      },
+      "mossweave_cord": {
+        "name": "Rêu Dệt Eo"
+      },
+      "mossweave_legwraps": {
+        "name": "Rêu Dệt Đùi"
+      },
+      "mossweave_handwraps": {
+        "name": "Rêu Dệt Tay"
+      },
+      "mossweave_slippers": {
+        "name": "Rêu Dệt Chân"
+      },
+      "last_bloom_greatblade": {
+        "name": "Đại Kiếm Hoa Tàn"
+      },
+      "thornbite_razor": {
+        "name": "Dao Cạo Cắn Gai"
+      },
+      "heartwood_warstaff": {
+        "name": "Trượng Chiến Lõi Gỗ"
+      },
       "bristleback_maul": {
         "name": "Vồ Lưng Gai"
       },
@@ -5584,6 +5693,10 @@ export const vi_VN: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "Bao Tay Hộ Cốt"
+      },
+      "delve_heroic_mark": {
+        "name": "Huy Hiệu Hộp Thánh Tích Anh Hùng",
+        "flavorText": "Một con dấu được đóng bởi những người canh giữ Hộp Thánh Tích. Đổi nó tại Quân Nhu Trưởng Anh Hùng để lấy trang bị hạng thánh tích."
       },
       "deacon_reliquary_helm": {
         "name": "Mũ Thánh Tích Của Phó Tế"
@@ -6171,6 +6284,11 @@ export const vi_VN: EnTranslations = {
         "name": "Elder Yarrow",
         "title": "Profession Trainer",
         "greeting": "Every build starts as a question. Which second calling speaks to you?"
+      },
+      "bramble": {
+        "name": "Bramble",
+        "title": "Honor Quartermaster",
+        "greeting": "The sands remember every victory. Spend your honor well."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",

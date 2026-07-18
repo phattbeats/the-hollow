@@ -1,4 +1,4 @@
-import type { AbilityDef, AbilityEffect, PlayerClass, Stats, WeaponInfo } from '../types';
+import type { AbilityDef, AbilityEffect, CoreStats, PlayerClass, WeaponInfo } from '../types';
 import type { TalentModifiers } from './talents';
 
 // ---------------------------------------------------------------------------
@@ -10,8 +10,8 @@ import type { TalentModifiers } from './talents';
 export interface ClassDef {
   id: PlayerClass;
   name: string;
-  baseStats: Stats;
-  statsPerLevel: Stats;
+  baseStats: CoreStats;
+  statsPerLevel: CoreStats;
   baseHp: number; // class hp before stamina at level 1
   hpPerLevel: number;
   baseMana: number;
@@ -1463,7 +1463,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     name: 'Holy Light',
     class: 'paladin',
     learnLevel: 1,
-    cost: 35,
+    cost: 25,
     castTime: 2.5,
     cooldown: 0,
     range: 30,
@@ -1472,9 +1472,9 @@ export const ABILITIES: Record<string, AbilityDef> = {
     targetType: 'friendly',
     effects: [{ type: 'heal', min: 42, max: 51 }],
     ranks: [
-      { rank: 2, level: 8, cost: 60, effects: [{ type: 'heal', min: 76, max: 90 }] },
-      { rank: 3, level: 14, cost: 95, effects: [{ type: 'heal', min: 122, max: 144 }] },
-      { rank: 4, level: 20, cost: 140, effects: [{ type: 'heal', min: 190, max: 222 }] },
+      { rank: 2, level: 8, cost: 50, effects: [{ type: 'heal', min: 76, max: 90 }] },
+      { rank: 3, level: 14, cost: 70, effects: [{ type: 'heal', min: 122, max: 144 }] },
+      { rank: 4, level: 20, cost: 115, effects: [{ type: 'heal', min: 190, max: 222 }] },
     ],
     description: 'Heals a friendly target for $d.',
   },

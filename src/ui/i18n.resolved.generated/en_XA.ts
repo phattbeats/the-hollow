@@ -990,6 +990,21 @@ export const en_XA: EnTranslations = {
       "spore": "[Šþóŕé]",
       "toolTier": "[Ţíéŕ {tier} ţóóļ]",
       "toolNone": "[Ñó ţóóļ]"
+    },
+    "warfare": {
+      "ratingLabel": "[Ŵáŕƒáŕé]",
+      "balance": "[Ĥóñóŕ: {amount}]",
+      "dualPrice": "[{money} + {honor}]",
+      "honorAmount": "[{amount} Ĥóñóŕ]",
+      "honorFloat": "[+{amount} Ĥóñóŕ]",
+      "honorGain": "[+{amount} Ĥóñóŕ ({reason})]",
+      "notEnoughHonor": "[Ñóţ éñóúĝĥ ĥóñóŕ.]",
+      "reasons": {
+        "arenaWin": "[Áŕéñá ŵíñ]",
+        "fiestaKill": "[Ƒíéšţá ţáķéðóŵñ]",
+        "fiestaComplete": "[Ƒíéšţá ɱáţçĥ]",
+        "fiestaWin": "[Ƒíéšţá ŵíñ]"
+      }
     }
   },
   "mailUi": {
@@ -3854,6 +3869,7 @@ export const en_XA: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "[{quality} {kind}]",
+      "qualityKindHeroic": "[[ĤÉŔÓÍÇ] {quality} {kind}]",
       "currentlyEquipped": "[Çúŕŕéñţļý éɋúíþþéð]",
       "ifYouEquip": "[Íƒ ýóú éɋúíþ ţĥíš]",
       "damageSpeed": "[{min} - {max} Ðáɱáĝé Šþééð {speed}]",
@@ -5181,6 +5197,99 @@ export const en_XA: EnTranslations = {
       "mistcallers_duffel": {
         "name": "[Ɱíšţçáļļéŕ'š Ðúƒƒéļ]"
       },
+      "bramblewar_warhelm": {
+        "name": "[Ɓŕáɱƀļéŵáŕ Ŵáŕĥéļɱ]"
+      },
+      "bramblewar_warspaulders": {
+        "name": "[Ɓŕáɱƀļéŵáŕ Ŵáŕšþáúļðéŕš]"
+      },
+      "bramblewar_warplate": {
+        "name": "[Ɓŕáɱƀļéŵáŕ Ŵáŕþļáţé]"
+      },
+      "bramblewar_girdle": {
+        "name": "[Ɓŕáɱƀļéŵáŕ Ĝíŕðļé]"
+      },
+      "bramblewar_legguards": {
+        "name": "[Ɓŕáɱƀļéŵáŕ Ļéĝĝúáŕðš]"
+      },
+      "bramblewar_gauntlets": {
+        "name": "[Ɓŕáɱƀļéŵáŕ Ĝáúñţļéţš]"
+      },
+      "bramblewar_sabatons": {
+        "name": "[Ɓŕáɱƀļéŵáŕ Šáƀáţóñš]"
+      },
+      "thornbound_crown": {
+        "name": "[Ţĥóŕñƀóúñð Çŕóŵñ]"
+      },
+      "thornbound_spaulders": {
+        "name": "[Ţĥóŕñƀóúñð Šþáúļðéŕš]"
+      },
+      "thornbound_hauberk": {
+        "name": "[Ţĥóŕñƀóúñð Ĥáúƀéŕķ]"
+      },
+      "thornbound_waistguard": {
+        "name": "[Ţĥóŕñƀóúñð Ŵáíšţĝúáŕð]"
+      },
+      "thornbound_legmail": {
+        "name": "[Ţĥóŕñƀóúñð Ļéĝɱáíļ]"
+      },
+      "thornbound_handguards": {
+        "name": "[Ţĥóŕñƀóúñð Ĥáñðĝúáŕðš]"
+      },
+      "thornbound_greaves": {
+        "name": "[Ţĥóŕñƀóúñð Ĝŕéáʋéš]"
+      },
+      "nettlestalker_cowl": {
+        "name": "[Ñéţţļéšţáļķéŕ Çóŵļ]"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "[Ñéţţļéšţáļķéŕ Šĥóúļðéŕĝúáŕðš]"
+      },
+      "nettlestalker_harness": {
+        "name": "[Ñéţţļéšţáļķéŕ Ĥáŕñéšš]"
+      },
+      "nettlestalker_waistband": {
+        "name": "[Ñéţţļéšţáļķéŕ Ŵáíšţƀáñð]"
+      },
+      "nettlestalker_legguards": {
+        "name": "[Ñéţţļéšţáļķéŕ Ļéĝĝúáŕðš]"
+      },
+      "nettlestalker_grips": {
+        "name": "[Ñéţţļéšţáļķéŕ Ĝŕíþš]"
+      },
+      "nettlestalker_treads": {
+        "name": "[Ñéţţļéšţáļķéŕ Ţŕéáðš]"
+      },
+      "mossweave_cowl": {
+        "name": "[Ɱóššŵéáʋé Çóŵļ]"
+      },
+      "mossweave_mantle": {
+        "name": "[Ɱóššŵéáʋé Ɱáñţļé]"
+      },
+      "mossweave_raiment": {
+        "name": "[Ɱóššŵéáʋé Ŕáíɱéñţ]"
+      },
+      "mossweave_cord": {
+        "name": "[Ɱóššŵéáʋé Çóŕð]"
+      },
+      "mossweave_legwraps": {
+        "name": "[Ɱóššŵéáʋé Ļéĝŵŕáþš]"
+      },
+      "mossweave_handwraps": {
+        "name": "[Ɱóššŵéáʋé Ĥáñðŵŕáþš]"
+      },
+      "mossweave_slippers": {
+        "name": "[Ɱóššŵéáʋé Šļíþþéŕš]"
+      },
+      "last_bloom_greatblade": {
+        "name": "[Ļášţ Ɓļóóɱ Ĝŕéáţƀļáðé]"
+      },
+      "thornbite_razor": {
+        "name": "[Ţĥóŕñƀíţé Ŕážóŕ]"
+      },
+      "heartwood_warstaff": {
+        "name": "[Ĥéáŕţŵóóð Ŵáŕšţáƒƒ]"
+      },
       "bristleback_maul": {
         "name": "[Ɓŕíšţļéƀáçķ Ɱáúļ]"
       },
@@ -5584,6 +5693,10 @@ export const en_XA: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "[Ɓóñéŵáŕðéñ Ĝŕíþš]"
+      },
+      "delve_heroic_mark": {
+        "name": "[Ĥéŕóíç Ŕéļíɋúáŕý Ɱáŕķ]",
+        "flavorText": "[Á šţáɱþéð šíĝíļ íššúéð ƀý ţĥé ķééþéŕš óƒ ţĥé Ŕéļíɋúáŕý. Ŕéðééɱ íţ áţ ţĥé Ĥéŕóíç Ɋúáŕţéŕɱášţéŕ ƒóŕ ŕéļíɋúáŕý-ĝŕáðé ĝéáŕ.]"
       },
       "deacon_reliquary_helm": {
         "name": "[Ðéáçóñ'š Ŕéļíɋúáŕý Ĥéļɱ]"
@@ -6171,6 +6284,11 @@ export const en_XA: EnTranslations = {
         "name": "[Éļðéŕ Ýáŕŕóŵ]",
         "title": "[Þŕóƒéššíóñ Ţŕáíñéŕ]",
         "greeting": "[Éʋéŕý ƀúíļð šţáŕţš áš á ɋúéšţíóñ. Ŵĥíçĥ šéçóñð çáļļíñĝ šþéáķš ţó ýóú?]"
+      },
+      "bramble": {
+        "name": "[Ɓŕáɱƀļé]",
+        "title": "[Ĥóñóŕ Ɋúáŕţéŕɱášţéŕ]",
+        "greeting": "[Ţĥé šáñðš ŕéɱéɱƀéŕ éʋéŕý ʋíçţóŕý. Šþéñð ýóúŕ ĥóñóŕ ŵéļļ.]"
       },
       "tidewatcher_ondrel": {
         "name": "[Óñðŕéļ Ʋáñé]",

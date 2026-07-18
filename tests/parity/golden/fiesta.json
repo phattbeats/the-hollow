@@ -74,8 +74,8 @@
       "tick": 125,
       "time": 6.25,
       "nextId": 411,
-      "state": "5ec80257",
-      "events": "013afa03",
+      "state": "6e823d76",
+      "events": "532b8c52",
       "rng": {
         "draws": 402,
         "digest": "020ca4d5"
@@ -85,7 +85,7 @@
       "tick": 150,
       "time": 7.5,
       "nextId": 411,
-      "state": "275a6a67",
+      "state": "729f1666",
       "events": "741638a5",
       "rng": {
         "draws": 556,
@@ -96,7 +96,7 @@
       "tick": 163,
       "time": 8.15,
       "nextId": 411,
-      "state": "3ea7a340",
+      "state": "786c48d5",
       "events": "bb08b8a0",
       "rng": {
         "draws": 638,
@@ -136,6 +136,8 @@
             }
           },
           "gatheringProficiency": {},
+          "honor": 20,
+          "lifetimeHonor": 20,
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
