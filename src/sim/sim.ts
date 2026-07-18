@@ -4301,12 +4301,13 @@ export class Sim {
     if (tmpl.enrage && enrageAllowed && !mob.enraged && hpFrac <= tmpl.enrage.belowHpPct) {
       mob.enraged = true;
       this.emit({ type: 'aura', targetId: mob.id, name: 'Enrage', gained: true });
-      this.emit({
-        type: 'log',
-        text: `${mob.name} becomes enraged!`,
-        color: '#ff6666',
-        entityId: mob.id,
-      });
+      if (!tmpl.quietMechanics)
+        this.emit({
+          type: 'log',
+          text: `${mob.name} becomes enraged!`,
+          color: '#ff6666',
+          entityId: mob.id,
+        });
       this.emit({
         type: 'spellfx',
         sourceId: mob.id,
@@ -4424,12 +4425,13 @@ export class Sim {
         if (allies.length > 0) {
           const school = tmpl.rally.school ?? 'physical';
           this.emit({ type: 'spellfx', sourceId: mob.id, targetId: mob.id, school, fx: 'nova' });
-          this.emit({
-            type: 'log',
-            text: `${mob.name} unleashes ${tmpl.rally.name}!`,
-            color: '#ffcc33',
-            entityId: mob.id,
-          });
+          if (!tmpl.quietMechanics)
+            this.emit({
+              type: 'log',
+              text: `${mob.name} unleashes ${tmpl.rally.name}!`,
+              color: '#ffcc33',
+              entityId: mob.id,
+            });
           for (const ally of allies) {
             this.applyAura(ally, {
               id: `rally_${mob.templateId}`,
