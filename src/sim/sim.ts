@@ -7,6 +7,7 @@ import type {
 import * as bagsMod from './bags';
 import { addStacked, BAG_SOCKETS, bagCapacity, canAddItem } from './bags';
 import * as bankMod from './bank';
+import { readCollectible as readCollectibleImpl } from './collections';
 import { lineOfSightClear, resolveMovement, resolvePosition } from './colliders';
 import { needsCostTranslation, translateAbilityCost } from './combat/ability_cost';
 import { auraAffectsStats, removeCancelableAura } from './combat/aura_cancel';
@@ -55,6 +56,7 @@ import { isSpellResisted } from './combat/spell_resist';
 // the PlayerMeta interface + the power-up catalog the fiestaMatchInfo accessor reads.
 import { type AugmentSpecial, type AugmentTier, POWERUPS_BY_ID } from './content/augments';
 import { VASE_LANDING_POS } from './content/hollow';
+import { FURY_ENTITY_ID, FURY_NPC_ID } from './content/pvp_honor';
 import {
   classHasSkin,
   EVENT_SKIN_TOKEN_ID,
@@ -82,7 +84,6 @@ import type { DelveShopGate, DelveShopOffer } from './data';
 import {
   abilitiesKnownAt,
   arenaOrigin,
-  CAMPS,
   CLASSES,
   DEEPFEN_SHALLOWS_LAKE,
   DELVE_COMPANIONS,
@@ -96,19 +97,18 @@ import {
   dungeonAt,
   FISHING_RARE_ID,
   FISHING_TABLES,
-  GROUND_OBJECTS,
+  getActiveWorldContent,
   INSTANCE_SLOT_COUNT,
   ITEMS,
   isDelvePos,
   MOBS,
-  NPCS,
-  PLAYER_START,
   QUESTS,
   zoneAt,
 } from './data';
 import * as companionMod from './delves/companion';
 import * as lockpickMod from './delves/lockpick_controller';
 import * as runsMod from './delves/runs';
+import { projectOutsideDungeonDoors } from './dungeon_door_clearance';
 import * as nythraxis from './encounters/nythraxis';
 // A3: ARENA_SPAWNS_A_2v2/B_2v2 (read only by the moved fiestaRevive) now live with
 // social/fiesta.ts. The dungeon-wall consts (DUNGEON_WALL_HW/X) are now read only by
@@ -254,6 +254,7 @@ import {
 // (online.ts) stays byte-identical.
 export { computeQuestState } from './quests/quest_commands';
 
+import * as honorMod from './pvp';
 import * as arenaMod from './social/arena';
 import * as duelMod from './social/duel';
 
@@ -297,6 +298,7 @@ import {
   angleTo,
   armorReduction,
   type CrowdControlDrCategory,
+  type CrowdControlDrState,
   DELVE_COMPANION_HEAL_INTERVAL,
   type DelveDef,
   type DelveModuleDef,
@@ -313,6 +315,7 @@ import {
   FISHING_CAST_TIME,
   type GatherNodeType,
   GCD,
+  type HonorArenaDailyState,
   type InvSlot,
   isConsuming,
   isPetClass,
@@ -327,7 +330,6 @@ import {
   MELEE_RANGE,
   type MobFamily,
   type MoveInput,
-  normAngle,
   type OverheadEmoteId,
   type PetMode,
   type PlayerClass,
@@ -340,12 +342,11 @@ import {
   type SkinCatalog,
   type SkinRank,
   swingMissChance,
-  TURN_SPEED,
   type Vec3,
   virtualLevel,
   xpToReachLevel,
 } from './types';
-import { groundHeight, WATER_LEVEL, waterLevelAt } from './world';
+import { groundHeight, waterLevel, waterLevelAt } from './world';
 
 // TRIVIAL_LEVEL_GAP moved to mob/targeting.ts (used only by isTrivialTo).
 // CORPSE_DURATION moved to combat/damage.ts (C1; used only by the death path).
@@ -532,6 +533,16 @@ export interface ArenaQueueUnit {
   rating: number; // avg member rating for this queue's bracket
 }
 
+// Recovery pools snapshotted at match start so returnFromArena can hand a
+// fighter back exactly what they walked in with (never a free full restore;
+// upstream issue #1600 ported for PHAA-739).
+export interface ArenaReturnPools {
+  hp: number;
+  resource: number;
+  cooldowns: Map<string, number>;
+  ccDr: Map<CrowdControlDrCategory, CrowdControlDrState>;
+}
+
 // A live arena bout. Combatants are teleported into a private arena instance
 // slot; `returns` remembers where each was standing so the match can put them
 // back when it ends. Ratings are snapshotted at the start purely for the
@@ -545,9 +556,20 @@ export interface ArenaMatch {
   state: 'countdown' | 'active' | 'over';
   timer: number; // countdown remaining, then elapsed once active, then return countdown
   returns: Map<number, { x: number; z: number; facing: number }>;
+  // Pre-match HP/resource/cooldowns/CC-DR per fighter, restored on return
+  // (issue #1600). Optional so persisted or mid-flight matches stay valid.
+  preMatchPools?: Map<number, ArenaReturnPools>;
   ratingA: number; // team avg at start
   ratingB: number;
   defeated: Set<number>;
+  // Result accounting is exactly once even if a disconnect arrives during the
+  // post-match return delay. Practice matches (offline Fiesta bots) never
+  // award honor.
+  resultRecorded?: boolean;
+  practice?: boolean;
+  // Stable team identities snapshotted at match start for persisted honor DR.
+  honorTeamAKey?: string;
+  honorTeamBKey?: string;
   fiesta?: FiestaState; // present only for format === 'fiesta'
   boarball?: BoarballState; // present only for format === 'boarball'
 }
@@ -569,6 +591,8 @@ export interface FiestaState {
   respawn: Map<number, number>; // pid -> seconds until revive (absent = alive)
   deaths: Map<number, number>; // pid -> times downed (drives respawn growth)
   kills: Map<number, number>; // pid -> takedowns this bout (scoreboard)
+  // Per killer-victim takedown count for in-match honor diminishing returns.
+  honorKillsByPair: Map<string, number>;
   streak: Map<number, number>; // pid -> takedowns since last death (word pops)
   lastKill: Map<number, number>; // pid -> active-timer of last takedown (double-kill window)
   // Augment offers wait here until the player's NEXT death so a pick never
@@ -757,6 +781,15 @@ export interface PlayerMeta {
   arena2v2Rating: number;
   arena2v2Wins: number;
   arena2v2Losses: number;
+  // Soulbound PvP currency (WARFARE): `honor` is spendable at the Quartermaster,
+  // `lifetimeHonor` is monotonic. Persisted in CharacterState.
+  honor: number;
+  lifetimeHonor: number;
+  // Persisted per-day, per-opponent ranked/Fiesta accounting for honor DR.
+  honorArenaDaily?: HonorArenaDailyState;
+  // Offline Fiesta practice opponent. Session-only and never serialized; a match
+  // with any isFiestaBot combatant never pays honor (ArenaMatch.practice).
+  isFiestaBot?: boolean;
   // Talents & Specializations. `talents` is the active allocation; `talentMods`
   // is its precomputed flat struct and resolved only on allocation/respec/loadout
   // change (recomputeTalents), never walked on the combat or stat hot path.
@@ -809,6 +842,10 @@ export interface PlayerMeta {
   // (CharacterState.gatheringProficiency); feeds a future proficiency-scaled
   // rarity roll.
   gatheringProficiency: Record<GatherNodeType, number>;
+  // Collection tracking core (PHAA-626): the set of collectible ids (world
+  // readables today; future kinds later) this player has ever found. Grows
+  // only, never shrinks. Persisted (CharacterState.collectedIds).
+  collectedIds: Set<string>;
 }
 
 // Away-from-keyboard / do-not-disturb presence. `afk` still delivers whispers
@@ -883,6 +920,10 @@ export interface CharacterState {
   arena2v2Rating?: number;
   arena2v2Wins?: number;
   arena2v2Losses?: number;
+  // Soulbound PvP progression. Optional so pre-honor saves load at zero.
+  honor?: number;
+  lifetimeHonor?: number;
+  honorArenaDaily?: HonorArenaDailyState;
   // Talents & Specializations (JSONB; no schema migration). All optional so
   // characters saved before talents existed load cleanly (default: no points spent).
   talents?: TalentAllocation;
@@ -911,6 +952,10 @@ export interface CharacterState {
   // Optional so characters saved before per-node gathering proficiency
   // existed load cleanly (addPlayer backfills to all-zero).
   gatheringProficiency?: Partial<Record<GatherNodeType, number>>;
+  // Collection tracking core (PHAA-626). Optional/additive so characters saved
+  // before the collections system existed load cleanly (empty default); no
+  // schema migration needed (JSONB, server/db.ts).
+  collectedIds?: string[];
 }
 
 export interface PetState {
@@ -959,7 +1004,9 @@ function freshCounters(): RewardCounters {
 // isShamanShock/ignoresDamagePushback) live in combat/casting_lifecycle.ts (C4a).
 
 export class Sim {
-  cfg: Required<Omit<SimConfig, 'noPlayer'>>;
+  // `world` stays optional (a custom map for play-test, else undefined for the
+  // built-in world); everything else is defaulted to a concrete value below.
+  cfg: Required<Omit<SimConfig, 'noPlayer' | 'world'>> & Pick<SimConfig, 'world'>;
   rng: Rng;
   time = 0;
   tickCount = 0;
@@ -1089,6 +1136,9 @@ export class Sim {
       lockoutNowMs: cfg.lockoutNowMs ?? (() => Math.floor(this.time * 1000)),
       hollowStart: cfg.hollowStart ?? false,
       worldBossAtBoot: cfg.worldBossAtBoot ?? false,
+      // Carried through so the renderer (which reaches the Sim as IWorld) can read
+      // the same custom world via sim.cfg.world. Undefined for the built-in world.
+      world: cfg.world,
     };
     // Live server opt-in (worldBossAtBoot): the first world-boss rise is due
     // immediately instead of one interval out, so a freshly (re)started realm has
@@ -1134,10 +1184,27 @@ export class Sim {
     // rng at construction (or ever), so the draws below are unperturbed.
     this.homestead = new Homestead(this.ctx);
 
+    // Spawn content: a custom world (editor play-test) or the built-in world.
+    // CAMPS order is a determinism contract; both bundles preserve it.
+    // INVARIANT: terrain/colliders/roads read ONLY the data.ts module global
+    // (getActiveWorldContent), never cfg.world. A caller that passes cfg.world
+    // MUST also setActiveWorldContent() with content whose terrain-relevant
+    // fields (zones, camps, roads, terrainEdits, biomePaint, waterLevel) are
+    // identical, or spawns and geometry silently fork. Placements MAY differ
+    // (render-only ownership; the editor viewport strips them from cfg.world).
+    if (this.cfg.world !== undefined && this.cfg.world !== getActiveWorldContent()) {
+      throw new Error(
+        'Sim ctor: cfg.world was provided but does not match getActiveWorldContent(). ' +
+          'Call setActiveWorldContent(world) before constructing Sim with a custom world, ' +
+          'or spawns and terrain geometry will silently fork.',
+      );
+    }
+    const worldContent = this.cfg.world ?? getActiveWorldContent();
+
     // NPCs and nudged out of buildings and deep water if their data position is bad
-    for (const npcDef of Object.values(NPCS)) {
+    for (const npcDef of Object.values(worldContent.npcs)) {
       if (npcDef.dynamic) continue; // spawned on demand by its owning system, not surface-placed
-      const safe = this.findSafePos(npcDef.pos.x, npcDef.pos.z, WATER_LEVEL + 0.6);
+      const safe = this.findSafePos(npcDef.pos.x, npcDef.pos.z, waterLevel() + 0.6);
       const npc = createNpc(this.nextId++, npcDef, this.groundPos(safe.x, safe.z));
       this.addEntity(npc);
       if (npcDef.market) this.market.merchantId = npc.id; // the World Market is anchored here
@@ -1146,11 +1213,11 @@ export class Sim {
     this.market.seed();
 
     // Mobs from camps
-    for (const camp of CAMPS) {
+    for (const camp of worldContent.camps) {
       const template = MOBS[camp.mobId];
       // Aquatic/flagged swimmers may wade in the shallows; everyone else
       // still spawns on dry land even though combat movement can enter water.
-      const minHeight = this.mobCanSpawnInWater(template) ? WATER_LEVEL - 0.5 : WATER_LEVEL + 0.4;
+      const minHeight = this.mobCanSpawnInWater(template) ? waterLevel() - 0.5 : waterLevel() + 0.4;
       for (let i = 0; i < camp.count; i++) {
         if (template.dummy) {
           // A practice dummy is a fixed, deterministic prop (no scatter, fixed level,
@@ -1170,11 +1237,24 @@ export class Sim {
         }
         const ang = this.rng.range(0, Math.PI * 2);
         const r = Math.sqrt(this.rng.next()) * camp.radius;
-        const safe = this.findSafePos(
+        // Keep camp mobs out of every dungeon / delve door's clear ring so
+        // approaching or zoning out of a dungeon OR a delve never lands the
+        // player in a pack's aggro radius. Pure geometry on the already-rolled
+        // point: it draws no rng, so the spawn loop's own draw order is
+        // untouched (mob positions do shift, which moves their later idle-
+        // wander draws, but that is downstream in the drive phase). PHAA-650
+        // adapts the upstream #1706 mechanic to the fork's delve entry path
+        // by including DELVES alongside DUNGEONS in DUNGEON_DOORS.
+        const cleared = projectOutsideDungeonDoors(
           camp.center.x + Math.sin(ang) * r,
           camp.center.z + Math.cos(ang) * r,
-          minHeight,
         );
+        // findSafePos's inward spiral can walk a shore-side ring-edge point
+        // back toward land, i.e. back INTO the ring; re-project the safe point
+        // so the "never inside a door ring" guarantee holds for every seed,
+        // not just the shipped one. Still pure and rng-free.
+        const grounded = this.findSafePos(cleared.x, cleared.z, minHeight);
+        const safe = projectOutsideDungeonDoors(grounded.x, grounded.z);
         const pos = this.groundPos(safe.x, safe.z);
         const level = this.rng.int(template.minLevel, template.maxLevel);
         const mob = createMob(this.nextId++, template, level, pos);
@@ -1186,7 +1266,7 @@ export class Sim {
     }
 
     // Ground objects
-    for (const objDef of GROUND_OBJECTS) {
+    for (const objDef of worldContent.groundObjects) {
       for (const p of objDef.positions) {
         const obj = createGroundObject(
           this.nextId++,
@@ -1236,6 +1316,17 @@ export class Sim {
           exitId: null,
           emptyFor: 0,
         });
+      }
+    }
+
+    // FURY uses a reserved id so the Honor Quartermaster cannot shift the
+    // deterministic nextId sequence every other world spawn above relies on.
+    {
+      const furyDef = worldContent.npcs[FURY_NPC_ID];
+      if (furyDef && !this.entities.has(FURY_ENTITY_ID)) {
+        const safe = this.findSafePos(furyDef.pos.x, furyDef.pos.z, waterLevel() + 0.6);
+        const fury = createNpc(FURY_ENTITY_ID, furyDef, this.groundPos(safe.x, safe.z));
+        this.addEntity(fury);
       }
     }
 
@@ -1418,9 +1509,10 @@ export class Sim {
       const dungeon = dungeonAt(savedPos.x) ?? DUNGEON_LIST[0];
       savedPos = { x: dungeon.doorPos.x, z: dungeon.doorPos.z - 4 };
     }
+    const playerStart = (this.cfg.world ?? getActiveWorldContent()).playerStart;
     const startPos = savedPos
       ? this.groundPos(savedPos.x, savedPos.z)
-      : this.groundPos(PLAYER_START.x, PLAYER_START.z);
+      : this.groundPos(playerStart.x, playerStart.z);
     const savedArena1v1: ArenaStanding = {
       rating: savedState?.arena1v1Rating ?? savedState?.arenaRating ?? arenaMod.ARENA_BASE_RATING,
       wins: savedState?.arena1v1Wins ?? savedState?.arenaWins ?? 0,
@@ -1477,6 +1569,8 @@ export class Sim {
       arena2v2Rating: savedArena2v2.rating,
       arena2v2Wins: savedArena2v2.wins,
       arena2v2Losses: savedArena2v2.losses,
+      honor: 0,
+      lifetimeHonor: 0,
       talents: emptyAllocation(),
       talentMods: emptyModifiers(),
       fiestaAugments: [],
@@ -1496,6 +1590,7 @@ export class Sim {
       delveDaily: { date: '', firstClearXp: new Set(), markClears: 0 },
       nodeHarvestReadyAt: {},
       gatheringProficiency: emptyGatheringProficiency(),
+      collectedIds: new Set(),
     };
     this.players.set(player.id, meta);
     player.skinCatalog = meta.skinCatalog;
@@ -1585,6 +1680,7 @@ export class Sim {
         meta.gatheringProficiency = { ...emptyGatheringProficiency(), ...s.gatheringProficiency };
       }
       if (s.delveLoreUnlocked) for (const id of s.delveLoreUnlocked) meta.delveLoreUnlocked.add(id);
+      if (s.collectedIds) for (const id of s.collectedIds) meta.collectedIds.add(id);
       if (s.delveDaily) {
         meta.delveDaily = {
           date: s.delveDaily.date,
@@ -1592,6 +1688,13 @@ export class Sim {
           markClears: s.delveDaily.markClears,
         };
       }
+      meta.honor = honorMod.normalizeHonorCounter(s.honor);
+      meta.lifetimeHonor = Math.max(
+        meta.honor,
+        honorMod.normalizeHonorCounter(s.lifetimeHonor ?? meta.honor),
+      );
+      if (s.honorArenaDaily)
+        meta.honorArenaDaily = honorMod.normalizeHonorDailyState(s.honorArenaDaily);
     }
 
     // Resolve the flat talent struct once, before the stat pass + ability
@@ -1672,11 +1775,7 @@ export class Sim {
     if (duel) this.endDuel(duel, duel.a === pid ? duel.b : duel.a);
     // arena: leaving the queue is free; disconnecting mid-bout forfeits it
     this.arenaDequeue(pid);
-    const match = this.arenaMatches.get(pid);
-    if (match) {
-      const team = this.arenaTeamOf(match, pid);
-      this.endArenaMatch(match, team === 'A' ? 'B' : team === 'B' ? 'A' : null, 'forfeit');
-    }
+    this.arenaResolveDesertion(pid);
     this.party.partyInvites.delete(pid);
     this.tradeInvites.delete(pid);
     this.duelInvites.delete(pid);
@@ -1777,6 +1876,18 @@ export class Sim {
       arena2v2Rating: meta.arena2v2Rating,
       arena2v2Wins: meta.arena2v2Wins,
       arena2v2Losses: meta.arena2v2Losses,
+      honor: meta.honor,
+      lifetimeHonor: meta.lifetimeHonor,
+      ...(meta.honorArenaDaily
+        ? {
+            honorArenaDaily: {
+              date: meta.honorArenaDaily.date,
+              winsByOpponent: { ...meta.honorArenaDaily.winsByOpponent },
+              fiestaCompletionsByOpponent: { ...meta.honorArenaDaily.fiestaCompletionsByOpponent },
+              totalWins: meta.honorArenaDaily.totalWins,
+            },
+          }
+        : {}),
       talents: cloneAllocation(restore ? restore.talents : meta.talents),
       loadouts: meta.loadouts.map((l) => ({
         name: l.name,
@@ -1800,6 +1911,7 @@ export class Sim {
       companionUpgrades: { ...meta.companionUpgrades },
       gatheringProficiency: { ...meta.gatheringProficiency },
       delveLoreUnlocked: [...meta.delveLoreUnlocked],
+      collectedIds: [...meta.collectedIds],
       delveDaily: {
         date: meta.delveDaily.date,
         firstClearXp: [...meta.delveDaily.firstClearXp],
@@ -1985,6 +2097,12 @@ export class Sim {
   }
   set copper(v: number) {
     this.primary.copper = v;
+  }
+  get honor(): number {
+    return this.primary.honor;
+  }
+  get lifetimeHonor(): number {
+    return this.primary.lifetimeHonor;
   }
   get xp(): number {
     return this.primary.xp;
@@ -4848,6 +4966,21 @@ export class Sim {
     return this.gatheringProficiencyFor(this.primaryId);
   }
 
+  // Collection tracking core (PHAA-626): read-as-command entry point, a thin
+  // delegate onto src/sim/collections.ts, resolved on the deterministic tick
+  // the command arrives on, same shape as harvestNode above.
+  readCollectible(id: string, pid?: number): void {
+    readCollectibleImpl(this.ctx, id, pid);
+  }
+
+  collectedIdsFor(pid: number): string[] {
+    return [...(this.players.get(pid)?.collectedIds ?? [])];
+  }
+
+  get collectedIds(): string[] {
+    return this.collectedIdsFor(this.primaryId);
+  }
+
   pickUpObject(objId: number, pid?: number): void {
     interaction.pickUpObject(this.ctx, objId, pid);
   }
@@ -5285,6 +5418,16 @@ export class Sim {
     reason: 'defeat' | 'timeout' | 'forfeit',
   ): void {
     arenaMod.endArenaMatch(this.ctx, match, winnerTeam, reason);
+  }
+
+  // Resolve a ranked/Fiesta disconnect before the server's leave save (the
+  // ArenaMatch.resultRecorded guard makes removePlayer's later cleanup call
+  // harmless). Idempotent: a pid with no live match is a no-op.
+  arenaResolveDesertion(pid: number): void {
+    const match = this.arenaMatches.get(pid);
+    if (!match) return;
+    const team = this.arenaTeamOf(match, pid);
+    this.endArenaMatch(match, team === 'A' ? 'B' : team === 'B' ? 'A' : null, 'forfeit');
   }
 
   private returnFromArena(match: ArenaMatch): void {

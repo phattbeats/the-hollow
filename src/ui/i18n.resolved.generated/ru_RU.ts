@@ -998,6 +998,21 @@ export const ru_RU: EnTranslations = {
       "spore": "Спора",
       "toolTier": "Инструмент {tier} ур.",
       "toolNone": "Нет инструмента"
+    },
+    "warfare": {
+      "ratingLabel": "Воинственность",
+      "balance": "Честь: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} чести",
+      "honorFloat": "+{amount} чести",
+      "honorGain": "+{amount} чести ({reason})",
+      "notEnoughHonor": "Недостаточно чести.",
+      "reasons": {
+        "arenaWin": "Победа на арене",
+        "fiestaKill": "Повержение на фиесте",
+        "fiestaComplete": "Матч фиесты",
+        "fiestaWin": "Победа на фиесте"
+      }
     }
   },
   "mailUi": {
@@ -2428,6 +2443,10 @@ export const ru_RU: EnTranslations = {
     "gathering": {
       "nothingToHarvest": "С этого трупа нечего собирать.",
       "alreadyHarvested": "Этот труп уже разделан."
+    },
+    "collections": {
+      "notFound": "Этого не существует.",
+      "tooFar": "Слишком далеко."
     },
     "hearth": {
       "tooFar": "Чтобы покормить брата Зеленолапа, нужно быть рядом с ним.",
@@ -5186,6 +5205,99 @@ export const ru_RU: EnTranslations = {
       "mistcallers_duffel": {
         "name": "Баул Мистколлера"
       },
+      "bramblewar_warhelm": {
+        "name": "Терновойна: Голова"
+      },
+      "bramblewar_warspaulders": {
+        "name": "Терновойна: Плечи"
+      },
+      "bramblewar_warplate": {
+        "name": "Терновойна: Грудь"
+      },
+      "bramblewar_girdle": {
+        "name": "Терновойна: Пояс"
+      },
+      "bramblewar_legguards": {
+        "name": "Терновойна: Ноги"
+      },
+      "bramblewar_gauntlets": {
+        "name": "Терновойна: Кисти рук"
+      },
+      "bramblewar_sabatons": {
+        "name": "Терновойна: Ступни"
+      },
+      "thornbound_crown": {
+        "name": "Терносвяз: Голова"
+      },
+      "thornbound_spaulders": {
+        "name": "Терносвяз: Плечи"
+      },
+      "thornbound_hauberk": {
+        "name": "Терносвяз: Грудь"
+      },
+      "thornbound_waistguard": {
+        "name": "Терносвяз: Пояс"
+      },
+      "thornbound_legmail": {
+        "name": "Терносвяз: Ноги"
+      },
+      "thornbound_handguards": {
+        "name": "Терносвяз: Кисти рук"
+      },
+      "thornbound_greaves": {
+        "name": "Терносвяз: Ступни"
+      },
+      "nettlestalker_cowl": {
+        "name": "Крапивный Ловчий: Голова"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "Крапивный Ловчий: Плечи"
+      },
+      "nettlestalker_harness": {
+        "name": "Крапивный Ловчий: Грудь"
+      },
+      "nettlestalker_waistband": {
+        "name": "Крапивный Ловчий: Пояс"
+      },
+      "nettlestalker_legguards": {
+        "name": "Крапивный Ловчий: Ноги"
+      },
+      "nettlestalker_grips": {
+        "name": "Крапивный Ловчий: Кисти рук"
+      },
+      "nettlestalker_treads": {
+        "name": "Крапивный Ловчий: Ступни"
+      },
+      "mossweave_cowl": {
+        "name": "Мохоткань: Голова"
+      },
+      "mossweave_mantle": {
+        "name": "Мохоткань: Плечи"
+      },
+      "mossweave_raiment": {
+        "name": "Мохоткань: Грудь"
+      },
+      "mossweave_cord": {
+        "name": "Мохоткань: Пояс"
+      },
+      "mossweave_legwraps": {
+        "name": "Мохоткань: Ноги"
+      },
+      "mossweave_handwraps": {
+        "name": "Мохоткань: Кисти рук"
+      },
+      "mossweave_slippers": {
+        "name": "Мохоткань: Ступни"
+      },
+      "last_bloom_greatblade": {
+        "name": "Большой клинок последнего цветка"
+      },
+      "thornbite_razor": {
+        "name": "Бритва Шипоукус"
+      },
+      "heartwood_warstaff": {
+        "name": "Боевой посох сердцевины"
+      },
       "bristleback_maul": {
         "name": "Кувалда Щетиноспина"
       },
@@ -6181,6 +6293,11 @@ export const ru_RU: EnTranslations = {
         "title": "Наставник дополнительных профессий",
         "greeting": "Каждый билд начинается с вопроса. Какое ещё призвание зовёт вас?"
       },
+      "bramble": {
+        "name": "Брэмбл",
+        "title": "Квартирмейстер чести",
+        "greeting": "Пески помнят каждую победу. Трать свою честь с умом."
+      },
       "tidewatcher_ondrel": {
         "name": "Ондрел Вейн",
         "title": "Страж приливов",
@@ -6273,14 +6390,14 @@ export const ru_RU: EnTranslations = {
         "greeting": "Можешь сесть. Почти все проходят мимо. Пономарь давным-давно вычеркнул моё имя из своего журнала, а вычеркнутое имя учится молчать, чтобы никому не пришлось вспоминать, что оно ещё здесь."
       },
       "withered_planting": {
-        "name": "The Withered Planting",
-        "title": "The Tribe's Old Willow",
-        "greeting": "Dry roots, dry leaves. Whatever this was meant to grow into, it hasn't yet, and it's been a long while waiting."
+        "name": "Увядшая посадка",
+        "title": "Старая ива племени",
+        "greeting": "Сухие корни, сухие листья. Чем бы это ни должно было стать, оно ещё не стало, и ждёт уже очень долго."
       },
       "buried_root": {
-        "name": "A Buried Root",
-        "title": "Under the Shrine",
-        "greeting": "Dry. Dry as anything down here ever gets."
+        "name": "Погребённый корень",
+        "title": "Под святилищем",
+        "greeting": "Сухо. Сухо, как только может быть сухо здесь, в глубине."
       }
     },
     "quests": {
@@ -7237,22 +7354,22 @@ export const ru_RU: EnTranslations = {
         }
       },
       "q_the_long_way_around": {
-        "title": "The Long Way Around",
-        "text": "There's a planting the tribe left half-finished up the old willow, and it's dying for want of one good pour. I can't make that climb anymore, but you've got the legs for it. Take the can. Mind the branches; they hold if you're honest with them.",
-        "completion": "It'll live now. You wouldn't think one climb and one pour was much, against everything else out there. It isn't much. It's only everything to the one thing you poured it on.",
+        "title": "Долгий обходной путь",
+        "text": "На старой иве осталась посадка, которую племя не успело закончить, и теперь она гибнет без одного хорошего полива. Мне уже не одолеть этот подъём, но у тебя ноги молодые. Возьми лейку. Берегись ветвей, но будь с ними честен, и они выдержат.",
+        "completion": "Теперь она будет жить. Тебе покажется, что один подъём и один полив, это пустяк на фоне всего прочего. Это и вправду пустяк. Но для того единственного, что ты полил, это всё.",
         "objectives": {
           "0": {
-            "label": "Water carried up the willow path"
+            "label": "Вода, поднятая по тропе к иве"
           }
         }
       },
       "q_the_watering_can": {
-        "title": "The Watering Can",
-        "text": "I've asked you for small things, and you've done them all without once asking why. Here's the last one, and it isn't small, though it'll look it. Take my can down under the shrine, to the thing that's buried there, and give it water. It's been waiting a long time to be given something instead of asked for something.",
-        "completion": "You did it. Of course you did. That was the water, you understand. All of it, all the way back to the day you found me at the lake and thought nothing of it. The same pour, the same promise, kept one more time. Thank you. Now go and be gentle with the world. It is the only thing that ever changed it.",
+        "title": "Лейка",
+        "text": "Я просил тебя о малом, и ты всё исполнил, ни разу не спросив зачем. Вот последняя просьба, и она не мала, хотя такой и покажется. Отнеси мою лейку под святилище, к тому, что там погребено, и полей его. Оно давно ждёт, чтобы ему что-то дали, а не что-то у него просили.",
+        "completion": "Ты сделал это. Конечно, сделал. Это была вода, понимаешь. Вся она, вплоть до того дня, когда ты нашёл меня у озера и не придал этому значения. Тот же полив, то же обещание, сдержанное ещё раз. Спасибо тебе. А теперь ступай и будь добр к этому миру. Только это его когда-либо и меняло.",
         "objectives": {
           "0": {
-            "label": "Water given to the buried root"
+            "label": "Вода, отданная погребённому корню"
           }
         }
       }

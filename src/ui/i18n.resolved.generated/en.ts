@@ -998,6 +998,21 @@ export const en: EnTranslations = {
       "spore": "Spore",
       "toolTier": "Tier {tier} tool",
       "toolNone": "No tool"
+    },
+    "warfare": {
+      "ratingLabel": "Warfare",
+      "balance": "Honor: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} Honor",
+      "honorFloat": "+{amount} Honor",
+      "honorGain": "+{amount} Honor ({reason})",
+      "notEnoughHonor": "Not enough honor.",
+      "reasons": {
+        "arenaWin": "Arena win",
+        "fiestaKill": "Fiesta takedown",
+        "fiestaComplete": "Fiesta match",
+        "fiestaWin": "Fiesta win"
+      }
     }
   },
   "mailUi": {
@@ -2428,6 +2443,10 @@ export const en: EnTranslations = {
     "gathering": {
       "nothingToHarvest": "That corpse has nothing to harvest.",
       "alreadyHarvested": "This corpse has already been harvested."
+    },
+    "collections": {
+      "notFound": "That does not exist.",
+      "tooFar": "Too far away."
     },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
@@ -5186,6 +5205,99 @@ export const en: EnTranslations = {
       "mistcallers_duffel": {
         "name": "Mistcaller's Duffel"
       },
+      "bramblewar_warhelm": {
+        "name": "Bramblewar Warhelm"
+      },
+      "bramblewar_warspaulders": {
+        "name": "Bramblewar Warspaulders"
+      },
+      "bramblewar_warplate": {
+        "name": "Bramblewar Warplate"
+      },
+      "bramblewar_girdle": {
+        "name": "Bramblewar Girdle"
+      },
+      "bramblewar_legguards": {
+        "name": "Bramblewar Legguards"
+      },
+      "bramblewar_gauntlets": {
+        "name": "Bramblewar Gauntlets"
+      },
+      "bramblewar_sabatons": {
+        "name": "Bramblewar Sabatons"
+      },
+      "thornbound_crown": {
+        "name": "Thornbound Crown"
+      },
+      "thornbound_spaulders": {
+        "name": "Thornbound Spaulders"
+      },
+      "thornbound_hauberk": {
+        "name": "Thornbound Hauberk"
+      },
+      "thornbound_waistguard": {
+        "name": "Thornbound Waistguard"
+      },
+      "thornbound_legmail": {
+        "name": "Thornbound Legmail"
+      },
+      "thornbound_handguards": {
+        "name": "Thornbound Handguards"
+      },
+      "thornbound_greaves": {
+        "name": "Thornbound Greaves"
+      },
+      "nettlestalker_cowl": {
+        "name": "Nettlestalker Cowl"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "Nettlestalker Shoulderguards"
+      },
+      "nettlestalker_harness": {
+        "name": "Nettlestalker Harness"
+      },
+      "nettlestalker_waistband": {
+        "name": "Nettlestalker Waistband"
+      },
+      "nettlestalker_legguards": {
+        "name": "Nettlestalker Legguards"
+      },
+      "nettlestalker_grips": {
+        "name": "Nettlestalker Grips"
+      },
+      "nettlestalker_treads": {
+        "name": "Nettlestalker Treads"
+      },
+      "mossweave_cowl": {
+        "name": "Mossweave Cowl"
+      },
+      "mossweave_mantle": {
+        "name": "Mossweave Mantle"
+      },
+      "mossweave_raiment": {
+        "name": "Mossweave Raiment"
+      },
+      "mossweave_cord": {
+        "name": "Mossweave Cord"
+      },
+      "mossweave_legwraps": {
+        "name": "Mossweave Legwraps"
+      },
+      "mossweave_handwraps": {
+        "name": "Mossweave Handwraps"
+      },
+      "mossweave_slippers": {
+        "name": "Mossweave Slippers"
+      },
+      "last_bloom_greatblade": {
+        "name": "Last Bloom Greatblade"
+      },
+      "thornbite_razor": {
+        "name": "Thornbite Razor"
+      },
+      "heartwood_warstaff": {
+        "name": "Heartwood Warstaff"
+      },
       "bristleback_maul": {
         "name": "Bristleback Maul"
       },
@@ -6180,6 +6292,11 @@ export const en: EnTranslations = {
         "name": "Elder Yarrow",
         "title": "Profession Trainer",
         "greeting": "Every build starts as a question. Which second calling speaks to you?"
+      },
+      "bramble": {
+        "name": "Bramble",
+        "title": "Honor Quartermaster",
+        "greeting": "The sands remember every victory. Spend your honor well."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",

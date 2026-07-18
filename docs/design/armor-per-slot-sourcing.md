@@ -113,3 +113,24 @@ Mesh + manifest wiring cannot land on `main` until T1 (#171) and T2a (#179) merg
 (the `ITEM_ARMOR_VARIANTS` / `armorSlots` schema is on those branches only). This
 branch is stacked on the T2a branch so authoring can proceed in parallel and
 retarget to `main` once they land, same pattern as T2a stacked on T1.
+
+## Render invariant: any baked-toggle node must survive per-character rig merges (PHAA-653)
+
+`assets.ts`'s `optimizedScene()` merges same-skeleton/material/parent/transform
+skinned mesh parts into one draw call per GLB (`mergeSkinnedParts`), cached once
+per url. A node named in ANY `VisualDef.bakedArmorSlots` for that url is now
+excluded from that merge (`bakedArmorNodeNamesForUrl` in `manifest.ts`,
+`protectedNames` in `mergeSkinnedParts`): `setBakedArmorVisibility` finds a node
+by name at runtime, and a node folded into a merged mesh stops being findable by
+name, so it gets stuck at whatever visibility the merge left it (always on).
+Two concrete ways this bites without the guard: (1) a future KayKit rig-merge
+adoption (upstream #1726) would newly start merging a body's baked accessories
+once it stops being blocked by the per-part quantization noise that protects
+them today; (2) the chibi female outfits are unquantized with one shared skin,
+so their armor nodes ALREADY collide on this GLB's own merge bucket keys, e.g.
+`armorceinturethighs` (waist) buckets identically to `armorknees`/`armorlegs`
+(legs) in `chibi_female_knight.glb` despite gating different `EquipSlot`s --
+proven in `tests/phaa653_rig_merge_guard.test.ts`. Any new `bakedArmorSlots`
+entry on a def sharing a url with other defs is automatically covered (the
+protected-name set is a union across every def on that url); no per-body opt-in
+needed.

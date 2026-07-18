@@ -998,6 +998,21 @@ export const nl_NL: EnTranslations = {
       "spore": "Spore",
       "toolTier": "Tier {tier} tool",
       "toolNone": "No tool"
+    },
+    "warfare": {
+      "ratingLabel": "Warfare",
+      "balance": "Honor: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} Honor",
+      "honorFloat": "+{amount} Honor",
+      "honorGain": "+{amount} Honor ({reason})",
+      "notEnoughHonor": "Not enough honor.",
+      "reasons": {
+        "arenaWin": "Arena win",
+        "fiestaKill": "Fiesta takedown",
+        "fiestaComplete": "Fiesta match",
+        "fiestaWin": "Fiesta win"
+      }
     }
   },
   "mailUi": {
@@ -2428,6 +2443,10 @@ export const nl_NL: EnTranslations = {
     "gathering": {
       "nothingToHarvest": "That corpse has nothing to harvest.",
       "alreadyHarvested": "This corpse has already been harvested."
+    },
+    "collections": {
+      "notFound": "That does not exist.",
+      "tooFar": "Too far away."
     },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
@@ -5186,6 +5205,99 @@ export const nl_NL: EnTranslations = {
       "mistcallers_duffel": {
         "name": "Plunjezak van Mistcaller"
       },
+      "bramblewar_warhelm": {
+        "name": "Doornoorlog Hoofd"
+      },
+      "bramblewar_warspaulders": {
+        "name": "Doornoorlog Schouders"
+      },
+      "bramblewar_warplate": {
+        "name": "Doornoorlog Borst"
+      },
+      "bramblewar_girdle": {
+        "name": "Doornoorlog Middel"
+      },
+      "bramblewar_legguards": {
+        "name": "Doornoorlog Benen"
+      },
+      "bramblewar_gauntlets": {
+        "name": "Doornoorlog Handen"
+      },
+      "bramblewar_sabatons": {
+        "name": "Doornoorlog Voeten"
+      },
+      "thornbound_crown": {
+        "name": "Doorngebonden Hoofd"
+      },
+      "thornbound_spaulders": {
+        "name": "Doorngebonden Schouders"
+      },
+      "thornbound_hauberk": {
+        "name": "Doorngebonden Borst"
+      },
+      "thornbound_waistguard": {
+        "name": "Doorngebonden Middel"
+      },
+      "thornbound_legmail": {
+        "name": "Doorngebonden Benen"
+      },
+      "thornbound_handguards": {
+        "name": "Doorngebonden Handen"
+      },
+      "thornbound_greaves": {
+        "name": "Doorngebonden Voeten"
+      },
+      "nettlestalker_cowl": {
+        "name": "Brandnetelsluiper Hoofd"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "Brandnetelsluiper Schouders"
+      },
+      "nettlestalker_harness": {
+        "name": "Brandnetelsluiper Borst"
+      },
+      "nettlestalker_waistband": {
+        "name": "Brandnetelsluiper Middel"
+      },
+      "nettlestalker_legguards": {
+        "name": "Brandnetelsluiper Benen"
+      },
+      "nettlestalker_grips": {
+        "name": "Brandnetelsluiper Handen"
+      },
+      "nettlestalker_treads": {
+        "name": "Brandnetelsluiper Voeten"
+      },
+      "mossweave_cowl": {
+        "name": "Mosweefsel Hoofd"
+      },
+      "mossweave_mantle": {
+        "name": "Mosweefsel Schouders"
+      },
+      "mossweave_raiment": {
+        "name": "Mosweefsel Borst"
+      },
+      "mossweave_cord": {
+        "name": "Mosweefsel Middel"
+      },
+      "mossweave_legwraps": {
+        "name": "Mosweefsel Benen"
+      },
+      "mossweave_handwraps": {
+        "name": "Mosweefsel Handen"
+      },
+      "mossweave_slippers": {
+        "name": "Mosweefsel Voeten"
+      },
+      "last_bloom_greatblade": {
+        "name": "Groot Zwaard van de Laatste Bloei"
+      },
+      "thornbite_razor": {
+        "name": "Doornbeet Scheermes"
+      },
+      "heartwood_warstaff": {
+        "name": "Kernhout-Oorlogsstaf"
+      },
       "bristleback_maul": {
         "name": "Borstelrug-Strijdhamer"
       },
@@ -6180,6 +6292,11 @@ export const nl_NL: EnTranslations = {
         "name": "Elder Yarrow",
         "title": "Profession Trainer",
         "greeting": "Every build starts as a question. Which second calling speaks to you?"
+      },
+      "bramble": {
+        "name": "Bramble",
+        "title": "Honor Quartermaster",
+        "greeting": "The sands remember every victory. Spend your honor well."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",

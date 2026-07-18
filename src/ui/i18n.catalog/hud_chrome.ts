@@ -1085,4 +1085,22 @@ export const hudChromeStrings = {
     toolTier: 'Tier {tier} tool',
     toolNone: 'No tool',
   },
+  // WARFARE: the PvP-only combat rating (item tooltip stat name), the Honor
+  // currency floater/log/vendor text, and the per-reason labels for the honor
+  // SimEvent (src/sim/pvp/honor.ts HonorReason). See docs/design/warfare.md.
+  warfare: {
+    ratingLabel: 'Warfare',
+    balance: 'Honor: {amount}',
+    dualPrice: '{money} + {honor}',
+    honorAmount: '{amount} Honor',
+    honorFloat: '+{amount} Honor',
+    honorGain: '+{amount} Honor ({reason})',
+    notEnoughHonor: 'Not enough honor.',
+    reasons: {
+      arenaWin: 'Arena win',
+      fiestaKill: 'Fiesta takedown',
+      fiestaComplete: 'Fiesta match',
+      fiestaWin: 'Fiesta win',
+    },
+  },
 };

@@ -14,8 +14,8 @@
     "summonDemon -> summonPet (warlock summon_imp) + selfBuff form switch (druid)",
     "weaponStrike awardCombo latch + finisher combo-spend reset"
   ],
-  "draws": 475,
-  "drawDigest": "56c9a72b",
+  "draws": 476,
+  "drawDigest": "c326c4ec",
   "frames": [
     {
       "tick": 0,
@@ -889,8 +889,8 @@
       "state": "75ac263e",
       "events": "1705d145",
       "rng": {
-        "draws": 466,
-        "digest": "48f1d060"
+        "draws": 467,
+        "digest": "8536afa6"
       },
       "label": "warlock-summon",
       "players": [
@@ -1451,11 +1451,11 @@
       "tick": 133,
       "time": 6.65,
       "nextId": 416,
-      "state": "45443179",
+      "state": "a4462947",
       "events": "f35f5297",
       "rng": {
-        "draws": 467,
-        "digest": "8536afa6"
+        "draws": 468,
+        "digest": "bec628cd"
       },
       "label": "warrior-sunder",
       "players": [
@@ -2020,13 +2020,13 @@
             {
               "duration": 30,
               "id": "sunder_armor",
-              "kind": "debuff_armor_pct",
+              "kind": "sunder",
               "name": "Sunder Armor",
               "remaining": 30,
               "school": "physical",
               "sourceId": 407,
               "stacks": 1,
-              "value": 0.03
+              "value": 40
             }
           ],
           "critChance": 0.05,
@@ -2084,11 +2084,11 @@
       "tick": 133,
       "time": 6.65,
       "nextId": 418,
-      "state": "98a04ad8",
-      "events": "f8b1c1b2",
+      "state": "c4f8e27d",
+      "events": "87384325",
       "rng": {
-        "draws": 469,
-        "digest": "64adaf96"
+        "draws": 470,
+        "digest": "abbb97da"
       },
       "label": "mage-arcane-explosion",
       "players": [
@@ -2136,7 +2136,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
-            "damageDealt": 68
+            "damageDealt": 67
           },
           "delveClears": {},
           "delveDaily": {},
@@ -2655,13 +2655,13 @@
             {
               "duration": 30,
               "id": "sunder_armor",
-              "kind": "debuff_armor_pct",
+              "kind": "sunder",
               "name": "Sunder Armor",
               "remaining": 30,
               "school": "physical",
               "sourceId": 407,
               "stacks": 1,
-              "value": 0.03
+              "value": 40
             }
           ],
           "critChance": 0.05,
@@ -2722,7 +2722,7 @@
           "fallStartY": -3.247367,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 499965,
+          "hp": 499967,
           "id": 416,
           "inCombat": true,
           "kind": "mob",
@@ -2757,7 +2757,7 @@
           "threat": [
             [
               408,
-              36
+              34
             ]
           ],
           "weapon": {
@@ -2775,7 +2775,7 @@
           "fallStartY": -3.247367,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 499967,
+          "hp": 499966,
           "id": 417,
           "inCombat": true,
           "kind": "mob",
@@ -2810,7 +2810,7 @@
           "threat": [
             [
               408,
-              34
+              35
             ]
           ],
           "weapon": {
@@ -2825,11 +2825,11 @@
       "tick": 133,
       "time": 6.65,
       "nextId": 419,
-      "state": "6f95e76a",
-      "events": "1a25103d",
+      "state": "47ae77ee",
+      "events": "c428e196",
       "rng": {
-        "draws": 474,
-        "digest": "f13a4411"
+        "draws": 475,
+        "digest": "56c9a72b"
       },
       "label": "rogue-combo-finishers",
       "players": [
@@ -2877,7 +2877,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
-            "damageDealt": 68
+            "damageDealt": 67
           },
           "delveClears": {},
           "delveDaily": {},
@@ -2909,7 +2909,7 @@
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {
-            "damageDealt": 111
+            "damageDealt": 114
           },
           "delveClears": {},
           "delveDaily": {},
@@ -3407,13 +3407,13 @@
             {
               "duration": 30,
               "id": "sunder_armor",
-              "kind": "debuff_armor_pct",
+              "kind": "sunder",
               "name": "Sunder Armor",
               "remaining": 30,
               "school": "physical",
               "sourceId": 407,
               "stacks": 1,
-              "value": 0.03
+              "value": 40
             }
           ],
           "critChance": 0.05,
@@ -3474,7 +3474,7 @@
           "fallStartY": -3.247367,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 499965,
+          "hp": 499967,
           "id": 416,
           "inCombat": true,
           "kind": "mob",
@@ -3509,7 +3509,7 @@
           "threat": [
             [
               408,
-              36
+              34
             ]
           ],
           "weapon": {
@@ -3527,7 +3527,7 @@
           "fallStartY": -3.247367,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 499967,
+          "hp": 499966,
           "id": 417,
           "inCombat": true,
           "kind": "mob",
@@ -3562,7 +3562,7 @@
           "threat": [
             [
               408,
-              34
+              35
             ]
           ],
           "weapon": {
@@ -3591,7 +3591,7 @@
           "fallStartY": -3.065499,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 499889,
+          "hp": 499886,
           "id": 418,
           "inCombat": true,
           "kind": "mob",
@@ -3626,7 +3626,7 @@
           "threat": [
             [
               409,
-              112
+              115
             ]
           ],
           "weapon": {
@@ -3641,11 +3641,11 @@
       "tick": 133,
       "time": 6.65,
       "nextId": 420,
-      "state": "b840af6b",
-      "events": "92ac5f17",
+      "state": "ade9d161",
+      "events": "af69443d",
       "rng": {
-        "draws": 475,
-        "digest": "56c9a72b"
+        "draws": 476,
+        "digest": "c326c4ec"
       },
       "label": "paladin-judge-consecrate",
       "players": [
@@ -3693,7 +3693,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
-            "damageDealt": 68
+            "damageDealt": 67
           },
           "delveClears": {},
           "delveDaily": {},
@@ -3725,7 +3725,7 @@
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {
-            "damageDealt": 111
+            "damageDealt": 114
           },
           "delveClears": {},
           "delveDaily": {},
@@ -3757,7 +3757,7 @@
           "cls": "paladin",
           "companionUpgrades": {},
           "counters": {
-            "damageDealt": 32
+            "damageDealt": 34
           },
           "delveClears": {},
           "delveDaily": {},
@@ -4250,13 +4250,13 @@
             {
               "duration": 30,
               "id": "sunder_armor",
-              "kind": "debuff_armor_pct",
+              "kind": "sunder",
               "name": "Sunder Armor",
               "remaining": 30,
               "school": "physical",
               "sourceId": 407,
               "stacks": 1,
-              "value": 0.03
+              "value": 40
             }
           ],
           "critChance": 0.05,
@@ -4317,7 +4317,7 @@
           "fallStartY": -3.247367,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 499965,
+          "hp": 499967,
           "id": 416,
           "inCombat": true,
           "kind": "mob",
@@ -4352,7 +4352,7 @@
           "threat": [
             [
               408,
-              36
+              34
             ]
           ],
           "weapon": {
@@ -4370,7 +4370,7 @@
           "fallStartY": -3.247367,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 499967,
+          "hp": 499966,
           "id": 417,
           "inCombat": true,
           "kind": "mob",
@@ -4405,7 +4405,7 @@
           "threat": [
             [
               408,
-              34
+              35
             ]
           ],
           "weapon": {
@@ -4434,7 +4434,7 @@
           "fallStartY": -3.065499,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 499889,
+          "hp": 499886,
           "id": 418,
           "inCombat": true,
           "kind": "mob",
@@ -4469,7 +4469,7 @@
           "threat": [
             [
               409,
-              112
+              115
             ]
           ],
           "weapon": {
@@ -4487,7 +4487,7 @@
           "fallStartY": -1.36912,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 499968,
+          "hp": 499966,
           "id": 419,
           "inCombat": true,
           "kind": "mob",
@@ -4519,7 +4519,7 @@
           "threat": [
             [
               410,
-              33
+              35
             ]
           ],
           "weapon": {
@@ -4534,11 +4534,11 @@
       "tick": 133,
       "time": 6.65,
       "nextId": 421,
-      "state": "9fadd80e",
+      "state": "02921eb4",
       "events": "c6d819b8",
       "rng": {
-        "draws": 475,
-        "digest": "56c9a72b"
+        "draws": 476,
+        "digest": "c326c4ec"
       },
       "label": "druid-moonfire-forms",
       "players": [
@@ -4586,7 +4586,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
-            "damageDealt": 68
+            "damageDealt": 67
           },
           "delveClears": {},
           "delveDaily": {},
@@ -4618,7 +4618,7 @@
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {
-            "damageDealt": 111
+            "damageDealt": 114
           },
           "delveClears": {},
           "delveDaily": {},
@@ -4650,7 +4650,7 @@
           "cls": "paladin",
           "companionUpgrades": {},
           "counters": {
-            "damageDealt": 32
+            "damageDealt": 34
           },
           "delveClears": {},
           "delveDaily": {},
@@ -5156,13 +5156,13 @@
             {
               "duration": 30,
               "id": "sunder_armor",
-              "kind": "debuff_armor_pct",
+              "kind": "sunder",
               "name": "Sunder Armor",
               "remaining": 30,
               "school": "physical",
               "sourceId": 407,
               "stacks": 1,
-              "value": 0.03
+              "value": 40
             }
           ],
           "critChance": 0.05,
@@ -5223,7 +5223,7 @@
           "fallStartY": -3.247367,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 499965,
+          "hp": 499967,
           "id": 416,
           "inCombat": true,
           "kind": "mob",
@@ -5258,7 +5258,7 @@
           "threat": [
             [
               408,
-              36
+              34
             ]
           ],
           "weapon": {
@@ -5276,7 +5276,7 @@
           "fallStartY": -3.247367,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 499967,
+          "hp": 499966,
           "id": 417,
           "inCombat": true,
           "kind": "mob",
@@ -5311,7 +5311,7 @@
           "threat": [
             [
               408,
-              34
+              35
             ]
           ],
           "weapon": {
@@ -5340,7 +5340,7 @@
           "fallStartY": -3.065499,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 499889,
+          "hp": 499886,
           "id": 418,
           "inCombat": true,
           "kind": "mob",
@@ -5375,7 +5375,7 @@
           "threat": [
             [
               409,
-              112
+              115
             ]
           ],
           "weapon": {
@@ -5393,7 +5393,7 @@
           "fallStartY": -1.36912,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 499968,
+          "hp": 499966,
           "id": 419,
           "inCombat": true,
           "kind": "mob",
@@ -5425,7 +5425,7 @@
           "threat": [
             [
               410,
-              33
+              35
             ]
           ],
           "weapon": {
@@ -5480,11 +5480,11 @@
       "tick": 133,
       "time": 6.65,
       "nextId": 421,
-      "state": "9fadd80e",
+      "state": "02921eb4",
       "events": "741638a5",
       "rng": {
-        "draws": 475,
-        "digest": "56c9a72b"
+        "draws": 476,
+        "digest": "c326c4ec"
       },
       "label": "final",
       "players": [
@@ -5532,7 +5532,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
-            "damageDealt": 68
+            "damageDealt": 67
           },
           "delveClears": {},
           "delveDaily": {},
@@ -5564,7 +5564,7 @@
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {
-            "damageDealt": 111
+            "damageDealt": 114
           },
           "delveClears": {},
           "delveDaily": {},
@@ -5596,7 +5596,7 @@
           "cls": "paladin",
           "companionUpgrades": {},
           "counters": {
-            "damageDealt": 32
+            "damageDealt": 34
           },
           "delveClears": {},
           "delveDaily": {},
@@ -6102,13 +6102,13 @@
             {
               "duration": 30,
               "id": "sunder_armor",
-              "kind": "debuff_armor_pct",
+              "kind": "sunder",
               "name": "Sunder Armor",
               "remaining": 30,
               "school": "physical",
               "sourceId": 407,
               "stacks": 1,
-              "value": 0.03
+              "value": 40
             }
           ],
           "critChance": 0.05,
@@ -6169,7 +6169,7 @@
           "fallStartY": -3.247367,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 499965,
+          "hp": 499967,
           "id": 416,
           "inCombat": true,
           "kind": "mob",
@@ -6204,7 +6204,7 @@
           "threat": [
             [
               408,
-              36
+              34
             ]
           ],
           "weapon": {
@@ -6222,7 +6222,7 @@
           "fallStartY": -3.247367,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 499967,
+          "hp": 499966,
           "id": 417,
           "inCombat": true,
           "kind": "mob",
@@ -6257,7 +6257,7 @@
           "threat": [
             [
               408,
-              34
+              35
             ]
           ],
           "weapon": {
@@ -6286,7 +6286,7 @@
           "fallStartY": -3.065499,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 499889,
+          "hp": 499886,
           "id": 418,
           "inCombat": true,
           "kind": "mob",
@@ -6321,7 +6321,7 @@
           "threat": [
             [
               409,
-              112
+              115
             ]
           ],
           "weapon": {
@@ -6339,7 +6339,7 @@
           "fallStartY": -1.36912,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 499968,
+          "hp": 499966,
           "id": 419,
           "inCombat": true,
           "kind": "mob",
@@ -6371,7 +6371,7 @@
           "threat": [
             [
               410,
-              33
+              35
             ]
           ],
           "weapon": {

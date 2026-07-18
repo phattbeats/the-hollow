@@ -104,6 +104,19 @@ export interface ArenaCombatant {
   cls: PlayerClass;
   level: number;
 }
+
+export type HonorReason = 'arena_win' | 'fiesta_kill' | 'fiesta_complete' | 'fiesta_win';
+
+// Persisted anti-win-trading window for ranked honor. `winsByOpponent` is keyed
+// by bracket plus the stable, sorted opposing-team identity; `totalWins` drives
+// the soft daily taper independently of who was faced.
+export interface HonorArenaDailyState {
+  date: string;
+  winsByOpponent: Record<string, number>;
+  fiestaCompletionsByOpponent: Record<string, number>;
+  totalWins: number;
+}
+
 export const ALL_CLASSES: PlayerClass[] = [
   'warrior',
   'paladin',
@@ -248,7 +261,16 @@ export interface Stats {
   int: number;
   spi: number;
   armor: number;
+  // Fractions derived from WARFARE ratings on equipped gear. They affect hostile
+  // player-vs-player damage only; PvE never reads them.
+  pvpOffense: number;
+  pvpDefense: number;
 }
+
+// The six class/item attributes authored in content. WARFARE fractions are
+// derived from ratings at runtime and are never authored as base growth or
+// direct item stats.
+export type CoreStats = Pick<Stats, 'str' | 'agi' | 'sta' | 'int' | 'spi' | 'armor'>;
 
 export interface WeaponInfo {
   min: number;
@@ -318,11 +340,19 @@ interface BaseItemDef {
   name: string;
   slot?: EquipSlot;
   weapon?: WeaponInfo;
-  stats?: Partial<Stats>;
+  stats?: Partial<CoreStats>;
   // Spell Power affix (caster gear): flat Spell Power, summed in recalcPlayerStats.
   // Kept off `Stats` because Spell Power is a derived combat rating (like attackPower),
   // not one of the six primary attributes.
   spellPower?: number;
+  // WARFARE ratings (PvP-only): recalcPlayerStats folds these into the Stats
+  // pvpOffense/pvpDefense fractions (src/sim/pvp/power.ts); combat re-clamps at
+  // the PvP caps before applying damage. See src/sim/content/pvp_honor.ts.
+  pvpOffenseRating?: number;
+  pvpDefenseRating?: number;
+  // Honor price for a Quartermaster purchase. An Honor-only item omits
+  // buyValue; both fields may coexist when a vendor charges both currencies.
+  priceHonor?: number;
   use?: ItemUse;
   sellValue: number; // copper (vendor buys at this)
   buyValue?: number; // copper (vendor sells at this)
@@ -1303,6 +1333,11 @@ export interface NpcDef {
   // The Merchant: talking to this NPC opens the player-driven World Market
   // (auction house) instead of a fixed vendor stock.
   market?: boolean;
+  // The personal bank vault's town-service anchor (PHAA-571's follow-up):
+  // talking distance to an NPC with this flag set feeds ctx.bankerIds, gating
+  // bank.ts's nearBanker. No banker NPC is placed in built-in zone content yet
+  // (bankerIds stays empty), so this only matters for a custom map's roster.
+  banker?: boolean;
   // A Profession Trainer (GW1 build system multiclassing, Phase 3, PHAA-464):
   // talking to this NPC opens the trainer panel, offering these professions as
   // a secondary class (see setSecondaryClass in world_api/trainer.ts).
@@ -1468,7 +1503,7 @@ export interface DungeonDef {
   homeRespawn?: { dungeonId: string; x: number; z: number }; // dying here revives at this instance-local point (in that dungeon's instance), not an overworld graveyard
 }
 
-export type BiomeId = 'vale' | 'marsh' | 'peaks';
+export type BiomeId = 'vale' | 'marsh' | 'peaks' | 'beach' | 'desert' | 'volcano' | 'cave';
 
 export interface ZoneDef {
   id: string;
@@ -2013,11 +2048,16 @@ export type SimEvent = { pid?: number } & (
   | { type: 'heal'; targetId: number; amount: number }
   | { type: 'death'; entityId: number; killerId: number }
   | { type: 'xp'; amount: number; rested?: number }
+  | { type: 'honor'; amount: number; reason: HonorReason }
   | { type: 'levelup'; level: number }
   // post-cap cosmetic progression (Max-Level XP Overflow): crossing a virtual
   // level past the cap, and unlocking a cosmetic lifetime-XP milestone
   | { type: 'virtualLevelUp'; level: number }
   | { type: 'milestoneUnlocked'; milestoneId: string }
+  // Collection tracking core (PHAA-626): a collectible (world readable today;
+  // future kinds later) was newly marked collected for this player. Personal
+  // (always carries pid); never re-fired for an already-collected id.
+  | { type: 'collectibleFound'; collectibleId: string }
   | { type: 'learnAbility'; abilityId: string; rank: number }
   | { type: 'loot'; text: string }
   | {
@@ -2222,6 +2262,91 @@ export type SimEvent = { pid?: number } & (
   | { type: 'skinEvent'; rank: SkinRank; catalog?: SkinCatalog }
 );
 
+// A bounded height edit (the sculpt brush stamp), applied inside terrainHeight()
+// exactly like MIREFEN_IMPACT_CRATER. Pure data, no RNG: the sim and renderer both
+// sample it so collision and the ground mesh stay in agreement. Stamps apply in
+// array order: `add` (default) adds `delta`, weighted by the falloff; `level`
+// pulls the height toward the ABSOLUTE height `delta`, weighted by the falloff
+// (the flatten/plateau brush; full weight means h becomes exactly `delta`).
+export interface HeightStamp {
+  x: number;
+  z: number;
+  radius: number;
+  delta: number; // add: +raise / -lower at the centre; level: target height
+  falloff: 'smooth' | 'flat';
+  mode?: 'add' | 'level'; // absent = 'add' (v1 documents)
+}
+
+// A freely placed GLB model the editor drops onto the world. Rendered by the
+// placed-asset instancer (never a Sim entity); when `collideRadius` is set (> 0)
+// the sim additionally derives a static circle collider from this record, so
+// what-you-see-is-what-you-collide-with holds for editor placements too.
+// Carried on WorldContent so both sides read the SAME record.
+export interface PlacedAsset {
+  path: string; // public GLB url, e.g. "/models/props/well.glb"
+  x: number;
+  z: number;
+  rotY: number; // radians
+  scale: number;
+  // Circle collider radius in yards (already scaled), or absent/0 for walk-through.
+  collideRadius?: number;
+}
+
+// An invisible blocker wall (editor-authored, custom maps only): a world-space
+// XZ segment the sim turns into a fence-width OBB collider at playtest. Pure
+// collision data; there is NO render mesh for it in the shipped game, so map
+// makers can wall off areas without visible geometry.
+export interface BlockerDef {
+  x1: number;
+  z1: number;
+  x2: number;
+  z2: number;
+}
+
+// A coarse 2D biome paint grid (editor). Each cell holds a biome id (0=vale,
+// 1=marsh, 2=peaks) or 255 for unpainted. Where painted, it overrides both the
+// terrain SHAPE (sim, in shapeAt) and the ground COLOR (render). Absent for the
+// built-in world, so terrain stays byte-identical.
+export interface BiomePaint {
+  cell: number; // cell size in yards
+  cols: number;
+  rows: number;
+  originX: number; // world x of the grid's (col 0) edge
+  originZ: number; // world z of the grid's (row 0) edge
+  ids: number[]; // length cols*rows; 0/1/2 = biome, 255 = unpainted
+}
+
+// A swappable world definition: the spatial + content data the terrain function
+// and the Sim spawn loop derive a playable world from. The built-in 3-zone world
+// is one of these (data.ts BUILTIN_WORLD); the map editor produces custom ones for
+// offline play-testing. Injected via SimConfig.world plus the data.ts active-content
+// registry (both, because terrain reaches the data by module global and the Sim
+// reaches it by config). CAMPS order is a determinism contract: append, never
+// reorder, since the Sim draws the shared Rng in array order.
+export interface WorldContent {
+  zones: ZoneDef[];
+  camps: CampDef[];
+  npcs: Record<string, NpcDef>;
+  groundObjects: GroundObjectDef[];
+  roads: { x: number; z: number }[][];
+  props: ZonePropsDef;
+  playerStart: { x: number; z: number };
+  // Heightfield edits applied inside terrainHeight(). Absent/empty for the
+  // built-in world, so its heightfield stays byte-identical.
+  terrainEdits?: HeightStamp[];
+  // Freely placed GLB models (editor). Rendered by the placed-asset instancer;
+  // records with collideRadius also feed the sim's static colliders.
+  placements?: PlacedAsset[];
+  // Invisible blocker walls (editor). Collision-only OBBs in the sim's static
+  // colliders; never rendered. Absent for the built-in world.
+  blockers?: BlockerDef[];
+  // 2D biome paint overriding terrain shape (sim) and color (render).
+  biomePaint?: BiomePaint;
+  // Water surface height for this map; absent = the built-in WATER_LEVEL (-4.5).
+  // Read through waterLevel() in src/sim/world.ts, never directly.
+  waterLevel?: number;
+}
+
 export interface MoveInput {
   forward: boolean;
   back: boolean;
@@ -2251,6 +2376,11 @@ export interface SimConfig {
   // The real hosts (offline client, online server) set this; tests and the RL
   // env keep the legacy base-world spawn, so the dormant world stays testable.
   hollowStart?: boolean;
+  // Offline play-test: a custom world to run instead of the built-in one. The Sim
+  // ctor reads spawns from here; render/terrain read it via the data.ts registry,
+  // so callers that set this MUST also call setActiveWorldContent() with content
+  // whose terrain-relevant fields are identical (see the sim.ts ctor invariant).
+  world?: WorldContent;
 }
 
 export function emptyMoveInput(): MoveInput {
