@@ -2387,6 +2387,18 @@ export const MILESTONES: MilestoneDef[] = [
   { id: 'eternal', lifetimeXp: 5_000_000, kind: 'title' },
 ];
 
+// Selectable display titles (PHAA-686). A separate namespace from
+// MilestoneDef.kind:'title' so titles can later be granted by
+// achievements/quests/events, not just lifetime-XP milestones. `id` is what
+// PlayerMeta/CharacterState.activeTitle stores.
+export interface TitleDef {
+  id: string;
+  // Set for a title that auto-unlocks via the matching MILESTONES entry
+  // (grantXp's checkMilestones populates unlockedMilestones; this just reads
+  // it). Absent for a title granted some other way.
+  unlockedByMilestone?: string;
+}
+
 // Prestige cost. Each prestige rank requires a full level-cap bar's worth of
 // post-cap lifetime XP, so prestige rank is a pure function of XP actually
 // earned past the cap. This is the anti-abuse guard: the prestige command can't

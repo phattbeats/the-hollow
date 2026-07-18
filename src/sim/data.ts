@@ -20,6 +20,7 @@ import type {
   QuestDef,
   QuestState,
   ReadableDef,
+  TitleDef,
   ZoneDef,
   ZonePropsDef,
 } from './types';
@@ -71,6 +72,7 @@ import {
   TEMPLE_QUEST_ORDER,
   TEMPLE_QUESTS,
 } from './content/temple';
+import { TITLES as TITLES_CONTENT } from './content/titles';
 import { WARLOCK_PET_MOBS } from './content/warlock_pets';
 import {
   GRAVEYARD_POS,
@@ -264,6 +266,12 @@ export const READABLES_BY_ID: Record<string, ReadableDef> = Object.fromEntries(
   READABLES.map((r) => [r.id, r]),
 );
 export const READ_RADIUS = READ_RADIUS_CONTENT;
+
+// Selectable display titles (PHAA-762). See content/titles.ts.
+export const TITLES: TitleDef[] = [...TITLES_CONTENT];
+export const TITLES_BY_ID: Record<string, TitleDef> = Object.fromEntries(
+  TITLES.map((t) => [t.id, t]),
+);
 
 export const ROADS: { x: number; z: number }[][] = [
   ...ZONE1_ROADS,

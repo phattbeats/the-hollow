@@ -204,6 +204,7 @@ import {
   switchTalentLoadout,
   talentPointBudget,
 } from './progression/talents';
+import { equipTitle as equipTitleImpl, isTitleUnlocked } from './progression/titles';
 import {
   secondaryClassCost as trainerSecondaryClassCost,
   setSecondaryClass as trainerSetSecondaryClass,
@@ -738,6 +739,10 @@ export interface PlayerMeta {
   lifetimeXp: number;
   prestigeRank: number;
   unlockedMilestones: Set<string>;
+  // Selected display title (PHAA-762), or null for none. Server-authoritative:
+  // only equipTitle (progression/titles.ts) may change it, after validating
+  // the title is unlocked. Persisted in CharacterState.
+  activeTitle: string | null;
   // Classic Rested XP pool (copper-less XP units). Accrues while resting in an
   // inn, spent to double kill XP. Persisted in CharacterState.
   restedXp: number;
@@ -865,6 +870,9 @@ export interface CharacterState {
   lifetimeXp?: number;
   prestigeRank?: number;
   unlockedMilestones?: string[];
+  // Selected display title (PHAA-762). Optional so pre-titles saves load
+  // cleanly (defaults to null); addPlayer re-validates it's still unlocked.
+  activeTitle?: string | null;
   // Rested XP pool. Optional so pre-rested-XP saves load cleanly (defaults to 0).
   restedXp?: number;
   // Lifetime played time in seconds (unfloored, for drift-free accumulation; only
@@ -1512,6 +1520,7 @@ export class Sim {
       lifetimeXp: 0,
       prestigeRank: 0,
       unlockedMilestones: new Set(),
+      activeTitle: null,
       restedXp: 0,
       known: [],
       questLog: new Map(),
@@ -1570,6 +1579,10 @@ export class Sim {
       meta.restedXp = Math.max(0, s.restedXp ?? 0);
       if (s.unlockedMilestones)
         for (const id of s.unlockedMilestones) meta.unlockedMilestones.add(id);
+      // Re-validate on load (not just trust the save) so a title revoked by a
+      // content change since the save was written doesn't stay equipped.
+      meta.activeTitle =
+        s.activeTitle && isTitleUnlocked(meta, s.activeTitle) ? s.activeTitle : null;
       meta.copper = s.copper;
       meta.equipment = { ...s.equipment };
       meta.inventory = s.inventory.map((i) => ({ ...i }));
@@ -1790,6 +1803,7 @@ export class Sim {
       lifetimeXp: meta.lifetimeXp,
       prestigeRank: meta.prestigeRank,
       unlockedMilestones: [...meta.unlockedMilestones],
+      activeTitle: meta.activeTitle,
       restedXp: meta.restedXp,
       // Fold this session's elapsed time into the persisted baseline (see
       // PlayerMeta.totalPlayedSeconds); /playtime reads the running total the
@@ -3847,6 +3861,13 @@ export class Sim {
   // abilities untouched and strictly cosmetic, zero power change (FR-6.1/6.3).
   prestige(pid?: number): boolean {
     return prestigeImpl(this.ctx, pid);
+  }
+
+  // Select/equip command for the title registry (PHAA-762): validates
+  // titleId is in the registry and unlocked before accepting; null clears
+  // the active title.
+  equipTitle(titleId: string | null, pid?: number): boolean {
+    return equipTitleImpl(this.ctx, titleId, pid);
   }
 
   // L1 loot distribution (party-loot strategy, rollLoot, copper split, need-greed

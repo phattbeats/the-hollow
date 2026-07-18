@@ -817,6 +817,11 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
     // from this scan list, so its four error literals passed the S3 guard falsely (the
     // same blind spot as PHAA-533's homestead.ts).
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/progression/trainer.ts'), 'utf8'),
+    // PHAA-762: the title select/equip command's error literal is the exact
+    // "You cannot equip that." string items.ts already emits, so no new
+    // matcher is needed, but this file must still be scanned so the guard
+    // catches any future drift.
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/progression/titles.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/mob/locomotion.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/mob/mob_swing.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/mob/lifecycle.ts'), 'utf8'),
