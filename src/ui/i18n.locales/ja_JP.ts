@@ -114,6 +114,16 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     '自動では、デバイスに応じてデスクトップ操作かタッチ操作を選びます。デスクトップを選ぶとキーボードとマウスに固定され（キーボード付きタブレットなどに便利）、タッチを選ぶと画面上の操作になります。',
   // Character-sheet stat tooltips (hudChrome.statInfo.*).
   'hudChrome.statInfo.fromYour': 'あなたの{stat}{value}による効果:',
+  'hudChrome.statInfo.names.spellPower': '呪文威力',
+  'hudChrome.statInfo.desc.spellPower':
+    '呪文のダメージと回復の効果を高めます。知力1ポイントごとに、装備やバフによる分に加えて、わずかな呪文威力を得られます。',
+  'hudChrome.statInfo.sources.header': '内訳:',
+  'hudChrome.statInfo.sources.base': '基本: {value}',
+  'hudChrome.statInfo.sources.attributes': '能力値から: {value}',
+  'hudChrome.statInfo.sources.fromAttribute': '{stat}から: {value}',
+  'hudChrome.statInfo.sources.gear': '装備: {value}',
+  'hudChrome.statInfo.sources.buff': '{name}: {value}',
+  'hudChrome.statInfo.sources.talents': 'タレントと効果: {value}',
   'hudChrome.statInfo.desc.str': '攻撃力を上昇させ、武器による攻撃の威力を高めます。',
   'hudChrome.statInfo.desc.agi': '反射神経と狙いを鋭くし、複数の戦闘ステータスを向上させます。',
   'hudChrome.statInfo.desc.sta': '肉体を強化し、最大体力と休憩中の体力回復速度を高めます。',
@@ -224,6 +234,12 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.keybinds.emoteWheel': 'エモートホイール',
   'hudChrome.keybinds.targetFriendly': '最も近い味方をターゲット',
   'hudChrome.keybinds.targetFriendlyNext': '味方ターゲットを順に切り替え',
+  'hudChrome.keybinds.categoryPet': 'ペット',
+  'hudChrome.keybinds.petAttack': 'ペット：攻撃',
+  'hudChrome.keybinds.petStop': 'ペット：停止',
+  'hudChrome.keybinds.petTaunt': 'ペット：挑発',
+  'hudChrome.keybinds.petDefensive': 'ペット：防御',
+  'hudChrome.keybinds.petAggressive': 'ペット：攻撃的',
   'hudChrome.options.clickMoveLeft': '左クリック',
   'hudChrome.options.clickMoveRight': '右クリック',
   'hudChrome.options.browserEffects': 'ブラウザエフェクト',
@@ -2982,6 +2998,27 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_someone_your_own_size.completion':
     'いてくれたのね。彼女は大したことじゃないと言うでしょう。でも大したことだった、本当よ。さあ、これをあなたに。私が好きな柳の小枝。何の役にも立たないわ。ただ、誰にも強いられていないのに優しくしてくれたことを、覚えているだけ。',
   'entities.quests.q_someone_your_own_size.objectives.0.label': 'オルラのそばに少し座った',
+  // PHAA-614/PHAA-699: Sister Shade questline quests 2 and 4 plus the two NPCs.
+  'entities.npcs.withered_planting.name': '枯れゆく苗床',
+  'entities.npcs.withered_planting.title': '部族の古い柳',
+  'entities.npcs.withered_planting.greeting':
+    '乾いた根、乾いた葉。これが何になるはずだったにせよ、まだそうはなっていない。ずいぶん長いあいだ、待ち続けている。',
+  'entities.npcs.buried_root.name': '埋もれた根',
+  'entities.npcs.buried_root.title': '祠の下',
+  'entities.npcs.buried_root.greeting':
+    '乾いている。この地の底にあるどんなものにも劣らぬほど、乾ききっている。',
+  'entities.quests.q_the_long_way_around.title': '遠まわりの道',
+  'entities.quests.q_the_long_way_around.text':
+    '古い柳の上のほうに、部族がやりかけのまま残していった苗床がある。ひと注ぎの水がないばかりに、枯れかけているんだ。あの登りはもうわたしには無理だが、お前には脚がある。じょうろを持っていきなさい。枝には気をつけて。正直に向き合えば、枝はちゃんと支えてくれる。',
+  'entities.quests.q_the_long_way_around.completion':
+    'これでもう生きていける。あの外のいろんなことに比べれば、一度の登りと一度の水やりなんて、たいしたことに思えないだろう。実際、たいしたことじゃない。ただ、お前が水をやったそのひとつにとっては、それがすべてなんだ。',
+  'entities.quests.q_the_long_way_around.objectives.0.label': '柳の小道を登って水を運ぶ',
+  'entities.quests.q_the_watering_can.title': 'じょうろ',
+  'entities.quests.q_the_watering_can.text':
+    'これまで小さな頼みごとをいくつもしてきたが、お前は一度も理由を訊かず、そのすべてをやってくれた。これが最後のひとつ。小さく見えるが、小さくはない。わたしのじょうろを祠の下へ持っていって、そこに埋もれているものに水をやってくれ。それはずっと長いあいだ、何かを求められるのではなく、何かを与えられるのを待っていたんだ。',
+  'entities.quests.q_the_watering_can.completion':
+    'やってくれたんだね。もちろん、お前ならそうする。あれは水だったんだよ、わかるかい。すべての水だ。お前が湖のほとりでわたしを見つけて、何とも思わなかったあの日にまでさかのぼる、すべての水。同じひと注ぎ、同じ約束を、もう一度守ってくれた。ありがとう。さあ行って、この世界にやさしくしておやり。それだけが、世界を変えてきた唯一のものなんだ。',
+  'entities.quests.q_the_watering_can.objectives.0.label': '埋もれた根に水をやる',
   'entities.npcs.sexton_faddick.title': '放浪の番人',
   'entities.npcs.sexton_faddick.greeting':
     'ファディックだ。まだ守るべき祠があるうちは、墓守を務める。俺はどこにも留まらん、ただ守るだけだ。毎晩、狼が休閑地の群れの周りを回っておる。長く回れば、回っている相手の形を覚えるものだ。あれはただの群れのままでいてもらいたい。',
@@ -3196,6 +3233,20 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_keep_him_lit.dialog.refuse': '三回に分けてなんてやらない。一回で十分だ。',
   'entities.quests.q_keep_him_lit.dialog.refuseReply':
     '……ああ。ああ、わかった、友よ、それも十分公平な線引きだ……なら、これでもとにかく持っといてくれ、厳密には稼いだもんじゃないが、俺が渡すもののほとんどもそうだしな、波長ってやつは、俺が装ってるほど几帳面に数えちゃいないんだ……',
+  'entities.quests.q_your_own_hearth.title': '自分だけの炉',
+  'entities.quests.q_your_own_hearth.text':
+    'これで最後だ、友よ、これは頼み事っていうより、ちょっとした後押しってやつさ……道の向こうに土地がある、フォロウ・エーカーズ、静かに誰かに望まれるのを待ってる。セクストン・ファディックが、狼の見回りと、彼が守ってる場所のリストの合間に、そこにも半分目を配ってる——挨拶しに行って、お前がここに留まる質だってことを知らせてやってくれ……そのあとは、いつでも好きな時に、その土地はお前のものだ。',
+  'entities.quests.q_your_own_hearth.completion':
+    'そういうことだ……お前はもうその顔をしてる、友よ、もう通り過ぎるだけの奴じゃないって顔だ。行けよ、あっちのどこかに足を下ろしてこい。俺は今まで通り炉を灯し続けるし、壺もちゃんとお前の居場所を分かってるさ……',
+  'entities.quests.q_your_own_hearth.objectives.0.label': 'セクストン・ファディックと会った',
+  'entities.quests.q_your_own_hearth.dialog.complain':
+    '土地？俺はただお前の植物に挨拶したかっただけだ。',
+  'entities.quests.q_your_own_hearth.dialog.complainReply':
+    'それはいつでもできる、あいつはどこにも行かないからな……だが魂ってのは祠を訪ねるだけじゃ足りないんだ、友よ、自分の足で立つ場所が要る。そう長くはかからん。ファディックは話し方はのろいが、お前の午後を無駄にはしない。',
+  'entities.quests.q_your_own_hearth.dialog.refuse':
+    '俺にホームステッドは要らない。ただ訪ねるだけで十分満足だ。',
+  'entities.quests.q_your_own_hearth.dialog.refuseReply':
+    '……わかった、わかった、無理強いする気はない、友よ、土地はファディックが守ってる通り、そのまま待ってる、待つのに金はかからないしな……ほら、これでも持っといてくれ、こんなに長く留まってくれた分だ。それもある意味、ホームってやつなんだろうな。',
   'hud.errors.silenced': '沈黙状態です！',
   'hud.pet.noPetFood': 'ペットに与える食べ物がありません。',
   'hud.pet.petEatsFoodOnly': 'ペットは食べ物しか食べられません。',
@@ -4798,6 +4849,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.items.reliquary_helm.name': '納骨堂の見張りの兜',
   'entities.items.reliquary_shoulder.name': '崩れた肩当て',
   'entities.items.reliquary_gloves_rog.name': '骨守りの手甲',
+  'entities.items.delve_heroic_mark.name': 'ヒロイック聖遺物庫の刻印',
+  'entities.items.delve_heroic_mark.flavorText':
+    '聖遺物庫の守人が発行した刻印。ヒロイック需品係と交換すれば、聖遺物庫級の装備が手に入る。',
   'entities.items.deacon_reliquary_helm.name': '助祭の聖遺物庫の兜',
   'entities.items.varric_shadow_cowl.name': 'ヴァリックの影のフード',
   'entities.items.cave_morsel.name': '洞窟の肉片',
@@ -4807,6 +4861,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     'グリーンポー修道士から譲り受けた、生きた緑の挿し木で、湿った苔にくるまれている。ホームステッドの区画を編集できるようになったら、最初に植えるのはこれだ。',
   'entities.items.greenpaw_bead.name': '弾帯の数珠玉',
   'entities.items.keeper_coal.name': '冷めることのない炭',
+  'entities.items.hearth_stone.name': '彼の炉からまだ温かい石',
   'entities.items.witness_root_cincture.name': '証しの根の帯紐',
   'entities.items.shrine_diary_page.name': '破れた日記のページ',
   'entities.items.shrine_diary_page.flavorText':
@@ -4834,6 +4889,37 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     '触れると温かい、それが生まれた木が動かなくなってからずっと。',
   'entities.items.bloomcrown_pauldrons.name': '花冠の肩当て',
   'entities.items.verdantguard_mantle.name': '常磐の守護者のマント',
+  'entities.items.bramblewar_warhelm.name': 'いばら戦の頭',
+  'entities.items.bramblewar_warspaulders.name': 'いばら戦の肩',
+  'entities.items.bramblewar_warplate.name': 'いばら戦の胸',
+  'entities.items.bramblewar_girdle.name': 'いばら戦の腰',
+  'entities.items.bramblewar_legguards.name': 'いばら戦の脚',
+  'entities.items.bramblewar_gauntlets.name': 'いばら戦の手',
+  'entities.items.bramblewar_sabatons.name': 'いばら戦の足',
+  'entities.items.thornbound_crown.name': 'いばら縛の頭',
+  'entities.items.thornbound_spaulders.name': 'いばら縛の肩',
+  'entities.items.thornbound_hauberk.name': 'いばら縛の胸',
+  'entities.items.thornbound_waistguard.name': 'いばら縛の腰',
+  'entities.items.thornbound_legmail.name': 'いばら縛の脚',
+  'entities.items.thornbound_handguards.name': 'いばら縛の手',
+  'entities.items.thornbound_greaves.name': 'いばら縛の足',
+  'entities.items.nettlestalker_cowl.name': '棘草追跡の頭',
+  'entities.items.nettlestalker_shoulderguards.name': '棘草追跡の肩',
+  'entities.items.nettlestalker_harness.name': '棘草追跡の胸',
+  'entities.items.nettlestalker_waistband.name': '棘草追跡の腰',
+  'entities.items.nettlestalker_legguards.name': '棘草追跡の脚',
+  'entities.items.nettlestalker_grips.name': '棘草追跡の手',
+  'entities.items.nettlestalker_treads.name': '棘草追跡の足',
+  'entities.items.mossweave_cowl.name': '苔織りの頭',
+  'entities.items.mossweave_mantle.name': '苔織りの肩',
+  'entities.items.mossweave_raiment.name': '苔織りの胸',
+  'entities.items.mossweave_cord.name': '苔織りの腰',
+  'entities.items.mossweave_legwraps.name': '苔織りの脚',
+  'entities.items.mossweave_handwraps.name': '苔織りの手',
+  'entities.items.mossweave_slippers.name': '苔織りの足',
+  'entities.items.last_bloom_greatblade.name': '最後の花の大剣',
+  'entities.items.thornbite_razor.name': '棘咬みの剃刀',
+  'entities.items.heartwood_warstaff.name': '心材の戦杖',
   'entities.mobs.palefeeder.name': '蒼白喰らい',
   'entities.mobs.rootmaw.name': '根顎獣',
   'entities.mobs.the_witness_root.name': '証しの根',
@@ -5438,6 +5524,13 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'mailUi.needRecipientOrText': '送信する前に宛先を指定し、本文を入力してください。',
   'mailUi.openButton': 'レイヴンポストへ案内してください。',
   'mailUi.openButtonAria': 'レイヴンポストの郵便ウィンドウを開く',
+  // Mail item-attachment staging (PHAA-688, M16 non-Latin fill)
+  'mailUi.attachments': '添付物（最大{max}個）',
+  'mailUi.removeAttachment': 'この手紙から{item}を外す',
+  'mailUi.tooltipAttach': 'クリックしてこの手紙に添付',
+  'mailUi.tooltipCannotAttach': '渡り烏はクエストアイテムを運びません',
+  'mailUi.parcelQtyDecreaseAria': '{item}を1つ減らして送る',
+  'mailUi.parcelQtyIncreaseAria': '{item}を1つ増やして送る',
   // Event calendar (M16 non-Latin fill)
   'hudChrome.calendar.title': 'イベントカレンダー',
   'hudChrome.calendar.close': 'カレンダーを閉じる',
@@ -5532,4 +5625,18 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.gathering.spore': '胞子',
   'hudChrome.gathering.toolTier': 'ティア{tier}の道具',
   'hudChrome.gathering.toolNone': '道具なし',
+  'hudChrome.warfare.ratingLabel': '戦意',
+  'hudChrome.warfare.balance': '名誉：{amount}',
+  'hudChrome.warfare.honorAmount': '名誉 {amount}',
+  'hudChrome.warfare.honorFloat': '+{amount} 名誉',
+  'hudChrome.warfare.honorGain': '+{amount} 名誉（{reason}）',
+  'hudChrome.warfare.notEnoughHonor': '名誉が足りません。',
+  'hudChrome.warfare.reasons.arenaWin': 'アリーナ勝利',
+  'hudChrome.warfare.reasons.fiestaKill': 'フィエスタ撃破',
+  'hudChrome.warfare.reasons.fiestaComplete': 'フィエスタ試合',
+  'hudChrome.warfare.reasons.fiestaWin': 'フィエスタ勝利',
+  'entities.npcs.bramble.name': 'ブランブル',
+  'entities.npcs.bramble.title': '名誉調達官',
+  'entities.npcs.bramble.greeting':
+    '闘技場の砂は、すべての勝利を覚えている。名誉は賢く使うといい。',
 };

@@ -1589,7 +1589,7 @@ describe('warlock demon summons', () => {
     expect(voidwalker.petTauntTimer).toBeGreaterThan(0);
   });
 
-  it('recasting the same demon unsummons it', () => {
+  it('recasting the same demon dismisses it and summons a fresh one', () => {
     const sim = makeSim('warlock');
     const demon = summonImp(sim);
     expect(demon.templateId).toBe('imp');
@@ -1599,7 +1599,11 @@ describe('warlock demon summons', () => {
     for (let i = 0; i < 20 * 5; i++) sim.tick();
 
     expect(sim.entities.has(demon.id)).toBe(false);
-    expect(sim.petOf(sim.playerId, true)).toBe(null);
+    const fresh = sim.petOf(sim.playerId, true);
+    expect(fresh).not.toBe(null);
+    expect(fresh?.templateId).toBe('imp');
+    expect(fresh?.id).not.toBe(demon.id);
+    expect(fresh?.hp).toBe(fresh?.maxHp);
   });
 
   it('recasting a dead demon resummons it instead of dismissing', () => {

@@ -69,6 +69,7 @@ import type {
   AbilityDef,
   CalendarResultCode,
   EquipSlot,
+  HonorReason,
   InvSlot,
   LootRollChoice,
   MasterLootThreshold,
@@ -268,7 +269,14 @@ import { localizeServerText } from './server_i18n';
 import { localizeSimAuraName, localizeSimText } from './sim_i18n';
 import { SocialWindow } from './social_window';
 import { SpellbookWindow } from './spellbook_window';
-import { buildStatTooltip, type StatId, type StatTooltipModel, weaponDps } from './stat_tooltip';
+import {
+  type BuffStatSource,
+  buildStatTooltip,
+  type GearStatSource,
+  type StatId,
+  type StatTooltipModel,
+  weaponDps,
+} from './stat_tooltip';
 import { type StatTooltipI18n, statCellHtml, statTooltipHtml } from './stat_tooltip_view';
 import { nearestSubzone } from './subzone';
 import { swingTimerState } from './swing_timer';
@@ -410,6 +418,12 @@ const CALENDAR_RESULT_KEYS: Record<CalendarResultCode, TranslationKey> = {
   badInput: 'hudChrome.calendar.result.badInput',
   calendarFull: 'hudChrome.calendar.result.calendarFull',
   eventGone: 'hudChrome.calendar.result.eventGone',
+};
+const HONOR_REASON_KEYS: Record<HonorReason, TranslationKey> = {
+  arena_win: 'hudChrome.warfare.reasons.arenaWin',
+  fiesta_kill: 'hudChrome.warfare.reasons.fiestaKill',
+  fiesta_complete: 'hudChrome.warfare.reasons.fiestaComplete',
+  fiesta_win: 'hudChrome.warfare.reasons.fiestaWin',
 };
 const RAID_MARKER_LABEL_KEYS = [
   'hud.markers.names.star',
@@ -2674,10 +2688,12 @@ export class Hud {
     vendorOpen: () => this.vendorOpen,
     tradeOpen: () => this.tradeOpen,
     isMarketSell: () => this.marketWindow.isSellTab,
+    isMailCompose: () => this.mailWindow.isComposeTab,
     pendingPetFeed: () => this.pendingPetFeed,
     closeVendor: () => this.closeVendor(),
     addItemToTrade: (itemId) => this.addItemToTrade(itemId),
     stageMarketSell: (itemId) => this.marketWindow.stageSell(itemId),
+    stageMailAttach: (itemId) => this.mailWindow.stageAttach(itemId),
     showError: (text) => this.showError(text),
     setPendingPetFeed: (active) => {
       this.pendingPetFeed = active;
@@ -2716,8 +2732,9 @@ export class Hud {
   });
   // Ravenpost mail window painter (mail_view.ts core + mail_window.ts painter,
   // PHAA-495). It composes the shared presentation bag and owns the window's
-  // view-state (tab, compose fields). No bags cross-sync: the compose form
-  // sends coin attachments only for now (item attachments are a follow-up).
+  // view-state (tab, compose fields, staged attachments). The bags window rides
+  // alongside the Compose tab (like the market's Sell tab, PHAA-688) so the
+  // cross-window bag sync routes back through these lazy closures.
   private readonly mailWindow = new MailWindow({
     ...this.presentationBag,
     root: () => $('#mail-window'),
@@ -2726,6 +2743,14 @@ export class Hud {
     hideTooltip: () => this.hideTooltip(),
     ...this.windowFocus('#mail-window'),
     showError: (text) => this.showError(text),
+    syncBags: (open) => {
+      if (open) {
+        this.renderBags();
+        $('#bags').style.display = 'flex';
+      } else if ($('#bags').style.display !== 'none') {
+        this.renderBags();
+      }
+    },
   });
   // Ashen Coliseum window painter (arena_window_view.ts offline/live model +
   // arena_window.ts painter). It owns the selected bracket, the all-time-ladder
@@ -3034,7 +3059,7 @@ export class Hud {
     const qColor = QUALITY_COLOR[item.quality ?? 'common'] ?? '#fff';
     let html = `<div class="tt-title" style="color:${qColor}">${esc(itemDisplayName(item))}</div>`;
     html += `<div class="tt-sub">${esc(
-      t('itemUi.tooltip.qualityKind', {
+      t(item.heroicOf ? 'itemUi.tooltip.qualityKindHeroic' : 'itemUi.tooltip.qualityKind', {
         quality: itemQualityLabel(item.quality),
         kind: itemKindLabel(item.kind),
       }),
@@ -3094,6 +3119,15 @@ export class Hud {
           )}</div>`;
         }
       }
+    }
+    const warfareRating = Math.min(item.pvpOffenseRating ?? 0, item.pvpDefenseRating ?? 0);
+    if (warfareRating > 0) {
+      html += `<div class="tt-green">${esc(
+        t('itemUi.tooltip.stat', {
+          value: itemNumber(warfareRating),
+          stat: t('hudChrome.warfare.ratingLabel'),
+        }),
+      )}</div>`;
     }
     if (item.foodHp)
       html += `<div class="tt-desc">${esc(t('itemUi.tooltip.useFood', { amount: itemNumber(item.foodHp), seconds: itemNumber(CONSUME_DURATION) }))}</div>`;
@@ -3191,14 +3225,32 @@ export class Hud {
     const sim = this.sim;
     const p = sim.player;
     const wpn = sim.equipment.mainhand ? ITEMS[sim.equipment.mainhand] : null;
+    // Equipped items + active auras feed the upstream "Made up of:" source
+    // breakdown; names resolve the same way the buff bar resolves them.
+    const gear: GearStatSource[] = [];
+    for (const id of Object.values(sim.equipment)) {
+      const item = id ? ITEMS[id] : null;
+      if (!item || (!item.stats && !item.spellPower)) continue;
+      gear.push({ name: itemDisplayName(item), stats: item.stats, spellPower: item.spellPower });
+    }
+    const buffs: BuffStatSource[] = p.auras.map((a) => ({
+      kind: a.kind,
+      value: a.value,
+      name: ABILITIES[a.id]
+        ? abilityDisplayName(ABILITIES[a.id])
+        : auraDisplayNameFromSource(a.name),
+    }));
     return buildStatTooltip(stat, {
       cls: sim.cfg.playerClass,
       stats: p.stats,
       level: p.level,
       attackPower: p.attackPower,
+      spellPower: p.spellPower,
       critChance: p.critChance,
       dodgeChance: p.dodgeChance,
       dps: weaponDps(wpn?.weapon, p.attackPower),
+      gear,
+      buffs,
     });
   }
 
@@ -3286,12 +3338,23 @@ export class Hud {
     if (rangeLine) costLine.push(rangeLine);
     if (costLine.length) html += `<div class="tt-stat">${costLine.map(esc).join(' &nbsp; ')}</div>`;
     const castLine = [abilityCastLine(res, this.sim.player.spellHaste)];
-    if (a.cooldown > 0)
+    // Use the RESOLVED cooldown (res.cooldown), not res.def.cooldown, so talents that
+    // reduce cooldown (Improved Mortal Strike, Barrage, Improved Fire Blast, ...) show
+    // their effect in the tooltip.
+    if (res.cooldown > 0)
       castLine.push(
-        t('abilityUi.tooltip.cooldownSeconds', { seconds: formatAbilityNumber(a.cooldown) }),
+        t('abilityUi.tooltip.cooldownSeconds', { seconds: formatAbilityNumber(res.cooldown) }),
       );
     html += `<div class="tt-stat">${castLine.map(esc).join(' &nbsp; ')}</div>`;
     html += `<div class="tt-desc">${esc(abilityDisplayDescription(a, damageText))}</div>`;
+    // Resolved buff/aura effect line(s). Reads the RESOLVED effect value, so a buff's
+    // tooltip reflects rank AND talents that strengthen it (Improved Devotion Aura /
+    // Aspect of the Hawk / Fortitude via buffPct) - which the static description can't.
+    for (const eff of res.effects) {
+      if (eff.type === 'selfBuff' || eff.type === 'buffTarget') {
+        html += this.auraEffectTooltipHtml({ kind: eff.kind, value: eff.value });
+      }
+    }
     const requirements = abilityRequirementLines(a);
     if (requirements.length) {
       html += requirements.map((line) => `<div class="tt-sub">${esc(line)}</div>`).join('');
@@ -6128,6 +6191,28 @@ export class Hud {
           }
           break;
         }
+        case 'honor': {
+          const amount = formatNumber(ev.amount, { maximumFractionDigits: 0 });
+          const honorShape = fctSpawnShape({ type: 'honor' });
+          if (honorShape) {
+            this.fctPainter.spawn(
+              {
+                ...honorShape,
+                text: t('hudChrome.warfare.honorFloat', { amount }),
+                target: sim.player,
+              },
+              now,
+            );
+          }
+          this.log(
+            t('hudChrome.warfare.honorGain', {
+              amount,
+              reason: t(HONOR_REASON_KEYS[ev.reason]),
+            }),
+            '#ffd100',
+          );
+          break;
+        }
         case 'levelup': {
           this.showBanner(t('hud.core.levelBanner', { level: ev.level }));
           this.log(t('hud.core.levelLog', { level: ev.level }), '#ffd100');
@@ -6960,6 +7045,7 @@ export class Hud {
       "This quest can't be shared.": 'hudChrome.questShare.notShareable',
       'That item is not sold here.': 'itemUi.errors.notSoldHere',
       'Not enough money.': 'itemUi.errors.notEnoughMoney',
+      'Not enough honor.': 'hudChrome.warfare.notEnoughHonor',
       'You must bring your goods to the Merchant.': 'itemUi.errors.bringGoods',
       'The Merchant will not broker quest items.': 'itemUi.errors.noQuestItems',
       'You do not have that many to sell.': 'itemUi.errors.notEnoughToSell',
@@ -8589,6 +8675,7 @@ export class Hud {
           enabled: junk.length > 0,
           proceeds: junkProceeds,
         },
+        honorBalance: this.sim.honor,
       },
     );
   }
@@ -11095,9 +11182,10 @@ function describeAbilitySummary(
     );
   }
   parts.push(abilityCastLine(known, spellHaste));
-  if (known.def.cooldown > 0) {
+  // Resolved cooldown (after talent cooldown modifiers), not the base def cooldown.
+  if (known.cooldown > 0) {
     parts.push(
-      t('abilityUi.tooltip.cooldownSeconds', { seconds: formatAbilityNumber(known.def.cooldown) }),
+      t('abilityUi.tooltip.cooldownSeconds', { seconds: formatAbilityNumber(known.cooldown) }),
     );
   }
   return parts.join(' · ');
