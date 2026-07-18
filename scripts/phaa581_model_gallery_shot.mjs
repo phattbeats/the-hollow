@@ -29,13 +29,22 @@ async function main() {
   });
   await new Promise((r) => setTimeout(r, 300));
 
-  await page.screenshot({ path: `${OUT}/phaa581_gallery_overview.png` });
-  console.log('wrote', `${OUT}/phaa581_gallery_overview.png`);
+  const shot = async (view, file) => {
+    if (view) {
+      await page.evaluate((v) => window.__setView(v), view);
+      await new Promise((r) => setTimeout(r, 400));
+    }
+    await page.screenshot({ path: `${OUT}/${file}` });
+    console.log('wrote', `${OUT}/${file}`);
+  };
 
-  await page.evaluate(() => window.__setView('glow'));
-  await new Promise((r) => setTimeout(r, 400));
-  await page.screenshot({ path: `${OUT}/phaa581_gallery_glow_variants.png` });
-  console.log('wrote', `${OUT}/phaa581_gallery_glow_variants.png`);
+  await shot(null, 'phaa581_gallery_overview.png');
+  await shot('glow', 'phaa581_gallery_glow_variants.png');
+  await shot('daylight', 'phaa581_gallery_daylight_overview.png');
+  await shot('flower', 'phaa581_gallery_day_flower_row.png');
+  await shot('bush', 'phaa581_gallery_day_bush_row.png');
+  await shot('tree', 'phaa581_gallery_day_tree_row.png');
+  await shot('vine', 'phaa581_gallery_day_vine_row.png');
 
   if (errors.length) {
     console.log('--- page errors ---');

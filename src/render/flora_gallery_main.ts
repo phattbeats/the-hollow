@@ -6,10 +6,21 @@
 import * as THREE from 'three';
 import { buildFloraModel, FLORA_KINDS, type FloraKind } from './hollow_flora_models';
 
+type ViewName =
+  | 'overview'
+  | 'glow'
+  | 'daylight'
+  | 'flower'
+  | 'bush'
+  | 'tree'
+  | 'vine'
+  | 'glow_flower'
+  | 'glow_mushroom';
+
 declare global {
   interface Window {
     __galleryReady?: boolean;
-    __setView?: (name: 'overview' | 'glow') => void;
+    __setView?: (name: ViewName) => void;
   }
 }
 
@@ -46,18 +57,51 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-// dark ambient scene so glow variants read clearly, but bright enough that
-// the non-glowing specimens (trees especially) are not lost in the dark
-scene.add(new THREE.AmbientLight(0x4a4468, 0.85));
-const key = new THREE.DirectionalLight(0xcfd8ff, 0.85);
-key.position.set(4, 8, 3);
-scene.add(key);
-const rim = new THREE.DirectionalLight(0x8a6aff, 0.4);
-rim.position.set(-5, 3, -4);
-scene.add(rim);
+// Two lighting rigs, toggled per view. Night: dark ambient scene so the
+// glow variants read. Day: bright hemisphere + sun so the non-glowing rows
+// (flower, bush, tree, vine) can actually be reviewed.
+const nightRig = new THREE.Group();
+nightRig.add(new THREE.AmbientLight(0x4a4468, 0.85));
+const nightKey = new THREE.DirectionalLight(0xcfd8ff, 0.85);
+nightKey.position.set(4, 8, 3);
+nightRig.add(nightKey);
+const nightRim = new THREE.DirectionalLight(0x8a6aff, 0.4);
+nightRim.position.set(-5, 3, -4);
+nightRig.add(nightRim);
+scene.add(nightRig);
+
+const dayRig = new THREE.Group();
+dayRig.add(new THREE.HemisphereLight(0xdfe8ff, 0x8a7a5c, 1.35));
+const sun = new THREE.DirectionalLight(0xfff2dc, 1.7);
+sun.position.set(5, 9, 4);
+dayRig.add(sun);
+const dayFill = new THREE.DirectionalLight(0xbcd0ff, 0.5);
+dayFill.position.set(-5, 4, -3);
+dayRig.add(dayFill);
+dayRig.visible = false;
+scene.add(dayRig);
+
+const NIGHT_BG = 0x05060a;
+const DAY_BG = 0x9db8d4;
+const NIGHT_GROUND = 0x0c1014;
+const DAY_GROUND = 0x5c7a4f;
+
+function setDaylight(on: boolean): void {
+  nightRig.visible = !on;
+  dayRig.visible = on;
+  (scene.background as THREE.Color).setHex(on ? DAY_BG : NIGHT_BG);
+  if (scene.fog instanceof THREE.Fog) {
+    scene.fog.color.setHex(on ? DAY_BG : NIGHT_BG);
+    // push the fog far out in daylight so distant rows stay crisp for review
+    scene.fog.near = on ? 30 : 6;
+    scene.fog.far = on ? 90 : 22;
+  }
+  groundMat.color.setHex(on ? DAY_GROUND : NIGHT_GROUND);
+  document.body.style.setProperty('--label-color', on ? '#1a2030' : '#eae6ff');
+}
 
 // ground plane, subdued so specimens pop
-const groundMat = new THREE.MeshStandardMaterial({ color: 0x0c1014, roughness: 1 });
+const groundMat = new THREE.MeshStandardMaterial({ color: NIGHT_GROUND, roughness: 1 });
 const ground = new THREE.Mesh(new THREE.PlaneGeometry(40, 40), groundMat);
 ground.rotation.x = -Math.PI / 2;
 scene.add(ground);
@@ -97,9 +141,29 @@ function pedestal(group: THREE.Group): THREE.Group {
   return wrapper;
 }
 
+// Gallery-only display aid: vines build downward from their origin (they
+// are meant to drape off walls/branches), so hang each one from a slim
+// trellis post rather than letting it float in midair.
+function vineOnTrellis(vine: THREE.Group): THREE.Group {
+  const holder = new THREE.Group();
+  const postHeight = 1.7;
+  const postMat = new THREE.MeshStandardMaterial({ color: 0x4a3a2f, roughness: 0.95 });
+  const post = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.04, postHeight, 6), postMat);
+  post.position.y = postHeight / 2;
+  holder.add(post);
+  const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.025, 0.5, 6), postMat);
+  arm.rotation.z = Math.PI / 2;
+  arm.position.set(0.22, postHeight, 0);
+  holder.add(arm);
+  vine.position.set(0.42, postHeight, 0);
+  holder.add(vine);
+  return holder;
+}
+
 FLORA_KINDS.forEach((kind, row) => {
   SEEDS_PER_KIND.forEach((seed, col) => {
-    const raw = buildFloraModel(kind, seed + row * 1000);
+    let raw = buildFloraModel(kind, seed + row * 1000);
+    if (kind === 'vine') raw = vineOnTrellis(raw);
     const wrapper = pedestal(raw);
     const x = col * CELL_SPACING_X - gridWidth / 2;
     const z = row * CELL_SPACING_Z - gridDepth / 2;
@@ -143,34 +207,67 @@ FLORA_KINDS.forEach((kind, i) => {
   rowLabelEls.push({ el, pos: rowLabelValues[i] as THREE.Vector3 });
 });
 
-type ViewName = 'overview' | 'glow';
 let currentView: ViewName = 'overview';
+
+function setOrthoExtents(halfH: number): void {
+  const aspect = window.innerWidth / window.innerHeight;
+  camera.left = -halfH * aspect;
+  camera.right = halfH * aspect;
+  camera.top = halfH;
+  camera.bottom = -halfH;
+  camera.updateProjectionMatrix();
+}
+
+function rowZ(kind: FloraKind): number {
+  return FLORA_KINDS.indexOf(kind) * CELL_SPACING_Z - gridDepth / 2;
+}
+
+function frameOverview(): void {
+  setOrthoExtents(ORTHO_HALF_HEIGHT);
+  camera.position.set(0, 6, gridDepth / 2 + 6);
+  camera.lookAt(0, TARGET_HEIGHT * 0.5, 0);
+}
+
+function frameRow(kind: FloraKind): void {
+  const z = rowZ(kind);
+  // wide enough for all four columns, angled down so the neighboring rows
+  // fall below or above the frame instead of crowding the subject row
+  setOrthoExtents(1.75);
+  camera.position.set(0, 4.2, z + 4.2);
+  camera.lookAt(0, TARGET_HEIGHT * 0.45, z);
+}
 
 function applyView(name: ViewName): void {
   currentView = name;
-  if (name === 'overview') {
-    const { halfW, halfH } = orthoAspectExtents();
-    camera.left = -halfW;
-    camera.right = halfW;
-    camera.top = halfH;
-    camera.bottom = -halfH;
-    camera.updateProjectionMatrix();
-    camera.position.set(0, 6, gridDepth / 2 + 6);
-    camera.lookAt(0, TARGET_HEIGHT * 0.5, 0);
-  } else {
-    const glowZ =
-      ((FLORA_KINDS.indexOf('glow_flower') + FLORA_KINDS.indexOf('glow_mushroom')) / 2) *
-        CELL_SPACING_Z -
-      gridDepth / 2;
-    const { halfW } = orthoAspectExtents();
-    const closeHalfH = 1.6;
-    camera.left = -closeHalfH * (halfW / ORTHO_HALF_HEIGHT);
-    camera.right = closeHalfH * (halfW / ORTHO_HALF_HEIGHT);
-    camera.top = closeHalfH;
-    camera.bottom = -closeHalfH;
-    camera.updateProjectionMatrix();
-    camera.position.set(0, 1.4, glowZ + 3);
-    camera.lookAt(0, 0.6, glowZ);
+  switch (name) {
+    case 'overview':
+      setDaylight(false);
+      frameOverview();
+      break;
+    case 'daylight':
+      setDaylight(true);
+      frameOverview();
+      break;
+    case 'glow': {
+      setDaylight(false);
+      const glowZ = (rowZ('glow_flower') + rowZ('glow_mushroom')) / 2;
+      setOrthoExtents(1.6);
+      camera.position.set(0, 1.4, glowZ + 3);
+      camera.lookAt(0, 0.6, glowZ);
+      break;
+    }
+    case 'glow_flower':
+    case 'glow_mushroom':
+      setDaylight(false);
+      frameRow(name);
+      break;
+    case 'flower':
+    case 'bush':
+    case 'tree':
+    case 'vine':
+      setDaylight(true);
+      frameRow(name);
+      break;
   }
 }
 window.__setView = applyView;

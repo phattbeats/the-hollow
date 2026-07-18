@@ -97,7 +97,8 @@ export function buildFlower(seed: number): THREE.Group {
   const group = new THREE.Group();
   group.name = 'hollow_flora_flower';
 
-  const height = randRange(rng, 0.5, 1.1);
+  // kept short so the head stays prominent after any height normalization
+  const height = randRange(rng, 0.4, 0.75);
   const stemMat = stdMat(pick(rng, STEM_GREENS));
   const stemGeo = new THREE.CylinderGeometry(0.02, 0.03, height, 5);
   const stem = new THREE.Mesh(stemGeo, stemMat);
@@ -122,21 +123,27 @@ export function buildFlower(seed: number): THREE.Group {
   const petalColors = pick(rng, PETAL_PALETTES);
   const petalColor = pick(rng, petalColors);
   const centerColor = pick(rng, petalColors);
-  const petalCount = randInt(rng, 5, 9);
-  const petalLen = randRange(rng, 0.08, 0.16);
+  const petalCount = randInt(rng, 6, 10);
+  // large petals laid out as a flat radial ring so the head reads as a
+  // recognizable flower at gallery distance, not a tiny blob
+  const petalLen = randRange(rng, 0.18, 0.28);
   const head = new THREE.Group();
   head.position.y = height;
-  const petalMat = stdMat(petalColor, { roughness: 0.5 });
+  const petalMat = stdMat(petalColor, { roughness: 0.5, side: THREE.DoubleSide });
   for (let i = 0; i < petalCount; i++) {
-    const angle = (i / petalCount) * Math.PI * 2 + randRange(rng, -0.08, 0.08);
-    const petalGeo = new THREE.ConeGeometry(petalLen * 0.55, petalLen, 5, 1, true);
+    const angle = (i / petalCount) * Math.PI * 2 + randRange(rng, -0.06, 0.06);
+    const petalGeo = new THREE.ConeGeometry(petalLen * 0.45, petalLen, 5, 1, true);
     const petal = new THREE.Mesh(petalGeo, petalMat);
-    petal.position.set(Math.cos(angle) * petalLen * 0.6, 0, Math.sin(angle) * petalLen * 0.6);
-    petal.rotation.x = Math.PI / 2 + randRange(rng, -0.15, 0.15);
-    petal.rotation.z = -angle;
-    head.add(petal);
+    // pivot so the petal lies almost flat, tip pointing outward from the
+    // center, with a slight upward cup
+    const pivot = new THREE.Group();
+    pivot.rotation.y = -angle;
+    petal.rotation.x = Math.PI / 2 - randRange(rng, 0.15, 0.35);
+    petal.position.z = petalLen * 0.55;
+    pivot.add(petal);
+    head.add(pivot);
   }
-  const centerGeo = new THREE.SphereGeometry(petalLen * 0.4, 8, 6);
+  const centerGeo = new THREE.SphereGeometry(petalLen * 0.35, 8, 6);
   const center = new THREE.Mesh(centerGeo, stdMat(centerColor, { roughness: 0.9 }));
   head.add(center);
   group.add(head);
