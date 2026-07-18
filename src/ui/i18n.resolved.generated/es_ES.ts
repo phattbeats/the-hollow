@@ -4107,7 +4107,7 @@ export const es_ES: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Hender armadura",
-        "description": "Hiende la armadura del objetivo y la reduce en {damage} por aplicación. Se acumula hasta 5 veces. Genera mucha amenaza."
+        "description": "Hiende la armadura del objetivo, reduciéndola en un 2% por aplicación. Se acumula hasta 5 veces. Genera mucha amenaza."
       },
       "taunt": {
         "name": "Provocar",

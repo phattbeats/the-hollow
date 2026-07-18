@@ -4107,7 +4107,7 @@ export const fr_CA: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Fracasser armure",
-        "description": "Fracasse l'armure de la cible et la réduit de {damage} par application. Cumulable jusqu'à 5 fois. Génère beaucoup de menace."
+        "description": "Fracasse l'armure de la cible, la réduisant de 2% par application. Cumulable jusqu'à 5 fois. Génère beaucoup de menace."
       },
       "taunt": {
         "name": "Provocation",

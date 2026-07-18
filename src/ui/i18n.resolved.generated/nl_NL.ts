@@ -4107,7 +4107,7 @@ export const nl_NL: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Pantser Splijten",
-        "description": "Splijt het pantser van het doelwit en verlaagt het met {damage} per toepassing. Stapelt tot 5 keer. Wekt een grote hoeveelheid dreiging op."
+        "description": "Splijt het pantser van het doelwit en verlaagt het met 2% per toepassing. Stapelt tot 5 keer. Wekt een grote hoeveelheid dreiging op."
       },
       "taunt": {
         "name": "Provoceren",

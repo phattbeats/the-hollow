@@ -4107,7 +4107,7 @@ export const pl_PL: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Strzaskanie pancerza",
-        "description": "Strzaskuje pancerz celu, zmniejszając go o {damage} za każde nałożenie. Kumuluje się do 5 razy. Generuje wysokie zagrożenie."
+        "description": "Strzaskuje pancerz celu, zmniejszając go o 2% za każde nałożenie. Kumuluje się do 5 razy. Generuje wysokie zagrożenie."
       },
       "taunt": {
         "name": "Prowokacja",

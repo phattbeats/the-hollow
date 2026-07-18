@@ -721,17 +721,17 @@ export const zh_CN: EnTranslations = {
         "allStats": "所有属性降低 {value}"
       },
       "increasePct": {
-        "ap": "Increases attack power by {pct}%",
-        "armor": "Increases armor by {pct}%",
-        "int": "Increases Intellect by {pct}%",
-        "sta": "Increases Stamina by {pct}%"
+        "ap": "攻击强度提高 {pct}%",
+        "armor": "护甲提高 {pct}%",
+        "int": "智力提高 {pct}%",
+        "sta": "耐力提高 {pct}%"
       },
       "dodge": "躲闪几率提高 {pct}%",
       "dodgeReduce": "躲闪几率降低 {pct}%",
       "armorFlat": "护甲降低 {value}",
       "armorFlatStacks": "护甲降低 {value}（{stacks} 层）",
-      "armorPct": "Reduces armor by {pct}%",
-      "armorPctStacks": "Reduces armor by {pct}% ({stacks} stacks)",
+      "armorPct": "护甲降低 {pct}%",
+      "armorPctStacks": "护甲降低 {pct}%（{stacks} 层）",
       "mortalWound": "受到的治疗降低 {pct}%",
       "vulnerability": "受到的伤害提高 {pct}%",
       "physVuln": "受到的物理伤害提高 {pct}%",
@@ -4107,7 +4107,7 @@ export const zh_CN: EnTranslations = {
       },
       "sunder_armor": {
         "name": "破甲攻击",
-        "description": "撕裂目标的护甲，每次使其降低 {damage}。最多叠加 5 次。产生大量威胁值。"
+        "description": "撕裂目标的护甲，每次使其降低 2%。最多叠加 5 次。产生大量威胁值。"
       },
       "taunt": {
         "name": "嘲讽",

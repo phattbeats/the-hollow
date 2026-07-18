@@ -731,7 +731,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
     'Karabüyücünün komutası altında bir Boşlukgezer çağırır. Boşlukgezer, düşmanlarını kışkırtan ve cezayı üstüne çeken sağlam bir iblistir. Yeni bir iblis çağırmak mevcut olanı gönderir. Bir seferde yalnızca bir iblisin olabilir.',
   'entities.abilities.summon_voidwalker.name': 'Boşlukgezer Çağırma',
   'entities.abilities.sunder_armor.description':
-    'Hedefin zırhını parçalar, her uygulamada {damage} azaltır. 5 kata kadar üst üste binebilir. Yüksek miktarda tehdit üretir.',
+    'Hedefin zırhını parçalar, her uygulamada %2 azaltır. 5 kata kadar üst üste binebilir. Yüksek miktarda tehdit üretir.',
   'entities.abilities.sunder_armor.name': 'Zırh Parçalama',
   'entities.abilities.swipe.description':
     'Yakındaki düşmanları {damage} hasar için savurur. Ekstra tehdit üretir. Yalnızca Ayı Formu.',

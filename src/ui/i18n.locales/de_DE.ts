@@ -1627,7 +1627,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
     'Defensive Kampfhaltung: Ihr erzeugt 30% mehr Bedrohung, verursacht und erleidet aber 10% weniger Schaden. Erneut wirken, um die Haltung zu verlassen.',
   'entities.abilities.sunder_armor.name': 'Rüstung zerreißen',
   'entities.abilities.sunder_armor.description':
-    'Zerreißt die Rüstung des Ziels und verringert sie pro Anwendung um {damage}. Bis zu 5-mal stapelbar. Erzeugt viel Bedrohung.',
+    'Zerreißt die Rüstung des Ziels und verringert sie pro Anwendung um 2%. Bis zu 5-mal stapelbar. Erzeugt viel Bedrohung.',
   'entities.abilities.taunt.name': 'Spott',
   'entities.abilities.taunt.description':
     'Verspottet das Ziel: Eure Bedrohung steigt auf die seines meistgehassten Gegners und es wird 3 Sek. lang gezwungen, euch anzugreifen.',

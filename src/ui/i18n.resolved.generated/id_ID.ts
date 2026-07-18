@@ -4107,7 +4107,7 @@ export const id_ID: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Belah Zirah",
-        "description": "Membelah zirah target, menguranginya sebesar {damage} per penerapan. Bertumpuk hingga 5 kali. Menghasilkan ancaman dalam jumlah tinggi."
+        "description": "Membelah zirah target, menguranginya sebesar 2% per penerapan. Bertumpuk hingga 5 kali. Menghasilkan ancaman dalam jumlah tinggi."
       },
       "taunt": {
         "name": "Provokasi",

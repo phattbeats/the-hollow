@@ -721,17 +721,17 @@ export const ru_RU: EnTranslations = {
         "allStats": "Снижает все характеристики на {value}"
       },
       "increasePct": {
-        "ap": "Increases attack power by {pct}%",
-        "armor": "Increases armor by {pct}%",
-        "int": "Increases Intellect by {pct}%",
-        "sta": "Increases Stamina by {pct}%"
+        "ap": "Повышает силу атаки на {pct}%",
+        "armor": "Повышает броню на {pct}%",
+        "int": "Повышает интеллект на {pct}%",
+        "sta": "Повышает выносливость на {pct}%"
       },
       "dodge": "Повышает шанс уклонения на {pct}%",
       "dodgeReduce": "Снижает шанс уклонения на {pct}%",
       "armorFlat": "Снижает броню на {value}",
       "armorFlatStacks": "Снижает броню на {value} ({stacks} зарядов)",
-      "armorPct": "Reduces armor by {pct}%",
-      "armorPctStacks": "Reduces armor by {pct}% ({stacks} stacks)",
+      "armorPct": "Снижает броню на {pct}%",
+      "armorPctStacks": "Снижает броню на {pct}% ({stacks} зарядов)",
       "mortalWound": "Снижает получаемое исцеление на {pct}%",
       "vulnerability": "Увеличивает получаемый урон на {pct}%",
       "physVuln": "Увеличивает получаемый физический урон на {pct}%",
@@ -4107,7 +4107,7 @@ export const ru_RU: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Раскол брони",
-        "description": "Раскалывает броню цели, снижая ее на {damage} за применение. Суммируется до 5 раз. Создает большое количество угрозы."
+        "description": "Раскалывает броню цели, снижая ее на 2% за применение. Суммируется до 5 раз. Создает большое количество угрозы."
       },
       "taunt": {
         "name": "Провокация",

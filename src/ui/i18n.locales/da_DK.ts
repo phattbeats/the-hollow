@@ -726,7 +726,7 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
     'Tilkalder en Tomvandrer under Heksemesterens kommando. Tomvandreren er en robust dæmon, der håner dine fjender og opsuger tæsk. At tilkalde en ny dæmon bortsender din nuværende. Du kan have én dæmon ad gangen.',
   'entities.abilities.summon_voidwalker.name': 'Tilkald Tomvandrer',
   'entities.abilities.sunder_armor.description':
-    'Sønderbryder målets rustning og reducerer den med {damage} per anvendelse. Stabler op til 5 gange. Genererer en stor mængde trussel.',
+    'Sønderbryder målets rustning og reducerer den med 2% per anvendelse. Stabler op til 5 gange. Genererer en stor mængde trussel.',
   'entities.abilities.sunder_armor.name': 'Sønderbryd Rustning',
   'entities.abilities.swipe.description':
     'Sving mod nærliggende fjender for {damage} skade. Forårsager ekstra trussel. Kun i Bjørneform.',

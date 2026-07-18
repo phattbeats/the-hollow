@@ -4107,7 +4107,7 @@ export const sv_SE: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Krossa rustning",
-        "description": "Krossar målets rustning och minskar den med {damage} per applicering. Staplas upp till 5 gånger. Genererar en stor mängd hot."
+        "description": "Krossar målets rustning och minskar den med 2% per applicering. Staplas upp till 5 gånger. Genererar en stor mängd hot."
       },
       "taunt": {
         "name": "Håna",

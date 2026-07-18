@@ -4107,7 +4107,7 @@ export const pt_BR: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Fender Armadura",
-        "description": "Fende a armadura do alvo, reduzindo-a em {damage} por aplicação. Acumula até 5 vezes. Gera muita ameaça."
+        "description": "Fende a armadura do alvo, reduzindo-a em 2% por aplicação. Acumula até 5 vezes. Gera muita ameaça."
       },
       "taunt": {
         "name": "Provocar",

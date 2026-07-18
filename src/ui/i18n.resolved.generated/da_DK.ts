@@ -4107,7 +4107,7 @@ export const da_DK: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Sønderbryd Rustning",
-        "description": "Sønderbryder målets rustning og reducerer den med {damage} per anvendelse. Stabler op til 5 gange. Genererer en stor mængde trussel."
+        "description": "Sønderbryder målets rustning og reducerer den med 2% per anvendelse. Stabler op til 5 gange. Genererer en stor mængde trussel."
       },
       "taunt": {
         "name": "Hån",

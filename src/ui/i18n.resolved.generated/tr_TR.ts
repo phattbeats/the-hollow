@@ -4107,7 +4107,7 @@ export const tr_TR: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Zırh Parçalama",
-        "description": "Hedefin zırhını parçalar, her uygulamada {damage} azaltır. 5 kata kadar üst üste binebilir. Yüksek miktarda tehdit üretir."
+        "description": "Hedefin zırhını parçalar, her uygulamada %2 azaltır. 5 kata kadar üst üste binebilir. Yüksek miktarda tehdit üretir."
       },
       "taunt": {
         "name": "Kışkırtma",

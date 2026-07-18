@@ -4107,7 +4107,7 @@ export const vi_VN: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Nghiền Giáp",
-        "description": "Nghiền nát giáp của mục tiêu, giảm giáp đi {damage} mỗi lần áp dụng. Cộng dồn tối đa 5 lần. Tạo lượng đe dọa cao."
+        "description": "Nghiền nát giáp của mục tiêu, giảm giáp đi 2% mỗi lần áp dụng. Cộng dồn tối đa 5 lần. Tạo lượng đe dọa cao."
       },
       "taunt": {
         "name": "Khiêu Khích",

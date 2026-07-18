@@ -4107,7 +4107,7 @@ export const de_DE: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Rüstung zerreißen",
-        "description": "Zerreißt die Rüstung des Ziels und verringert sie pro Anwendung um {damage}. Bis zu 5-mal stapelbar. Erzeugt viel Bedrohung."
+        "description": "Zerreißt die Rüstung des Ziels und verringert sie pro Anwendung um 2%. Bis zu 5-mal stapelbar. Erzeugt viel Bedrohung."
       },
       "taunt": {
         "name": "Spott",
