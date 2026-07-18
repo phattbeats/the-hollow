@@ -126,6 +126,8 @@ const CALLBACK_KEYS = [
   'updatePet',
   'isDelveCompanionMob',
   'updateDelveCompanion',
+  'isGreenpawCompanionMob',
+  'updateGreenpawCompanion',
   'updateBossMechanics',
   'updateNythraxisEncounter',
   'resetNythraxisEncounter',
@@ -209,6 +211,9 @@ const CALLBACK_KEYS = [
   'plantSpeechAmbientChat',
   // Homestead v0: the /homestead chat-command branch.
   'homesteadChat',
+  'homesteadOwnedPlotFor',
+  // Greenpaw's cutting (PHAA-751): the item-use 'plant' branch.
+  'plantGreenpawCutting',
   // Gathering v0 (PHAA-504): the corpse-harvest item-selection rng draw.
   'gatherHarvestItemFor',
 ] as const;
@@ -382,6 +387,8 @@ function makeFakeHost() {
     updatePet: vi.fn(),
     isDelveCompanionMob: vi.fn(() => false),
     updateDelveCompanion: vi.fn(),
+    isGreenpawCompanionMob: vi.fn(() => false),
+    updateGreenpawCompanion: vi.fn(),
     updateBossMechanics: vi.fn(),
     updateNythraxisEncounter: vi.fn(),
     resetNythraxisEncounter: vi.fn(),
@@ -454,6 +461,8 @@ function makeFakeHost() {
     notifyPlantThreshold: vi.fn(),
     plantSpeechAmbientChat: vi.fn(),
     homesteadChat: vi.fn(() => false),
+    homesteadOwnedPlotFor: vi.fn(() => null),
+    plantGreenpawCutting: vi.fn(),
     gatherHarvestItemFor: vi.fn(() => null),
   };
   return { host, rng, entities, clock };

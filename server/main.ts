@@ -1504,6 +1504,7 @@ async function main(): Promise<void> {
   await game.loadHousing();
   await game.loadGreenpawHearth();
   await game.loadHomestead();
+  await game.loadGreenpawCutting();
   await game.loadChatFilter();
   await game.loadBlockedIps();
   void game.recordOnlineSnapshot();

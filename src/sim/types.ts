@@ -299,7 +299,10 @@ export type ItemUse =
   // (canGatherTier / canHarvestMonsterMaterial). This item type never carries
   // a durability field (this repo has no durability mechanic anywhere), so a
   // gathering tool can never become unusable.
-  | { type: 'gatherTool'; nodeType: GatherNodeType; tier: number };
+  | { type: 'gatherTool'; nodeType: GatherNodeType; tier: number }
+  // Plants a keepsake at the player's own claimed homestead plot (PHAA-751).
+  // See src/sim/greenpaw_cutting.ts; first_cutting is the only item using this.
+  | { type: 'plant' };
 
 // Rarity ranks for the cosmetic skin-select event, ordered low → high. A rolled
 // rank unlocks its own tier and every tier below it (epic unlocks rare+uncommon).

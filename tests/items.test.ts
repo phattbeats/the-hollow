@@ -151,6 +151,21 @@ describe('items.useItem', () => {
     expect(meta.pendingSkinRank).not.toBeNull();
   });
 
+  it('plant routes to ctx.plantGreenpawCutting (PHAA-751; no homestead yet, so it errors instead of consuming)', () => {
+    const sim = makeWorld();
+    const { pid } = vendorPlayer(sim);
+    const ctx = ctxOf(sim);
+    sim.addItem('first_cutting', 1, pid);
+    sim.drainEvents();
+
+    items.useItem(ctx, 'first_cutting', pid);
+    const errs = errorTexts(sim.drainEvents());
+    // The GreenpawCutting-specific gate message proves dispatch reached
+    // ctx.plantGreenpawCutting, not some other branch (e.g. a silent no-op).
+    expect(errs.some((t) => /need a homestead plot/i.test(t))).toBe(true);
+    expect(sim.countItem('first_cutting', pid)).toBe(1); // untouched: plant() never got past the gate
+  });
+
   it('fishing routes to ctx.startFishing (in town it reports needing water, pole not consumed)', () => {
     const sim = makeWorld();
     const { pid } = vendorPlayer(sim);
