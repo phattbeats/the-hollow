@@ -27,7 +27,7 @@ export const MEDIA_ASSETS: Record<string, string> =
   "models/chars/enemies/skeleton_warrior.glb": "/media/models/chars/enemies/skeleton_warrior.a17fbcc134a8.glb",
   "models/chars/npcs/faddick.glb": "/media/models/chars/npcs/faddick.96874307de32.glb",
   "models/chars/npcs/greenpaw.glb": "/media/models/chars/npcs/greenpaw.843a9b805a45.glb",
-  "models/chars/npcs/shade.glb": "/media/models/chars/npcs/shade.2e46a9d3422c.glb",
+  "models/chars/npcs/shade.glb": "/media/models/chars/npcs/shade.4fb1bdef3bb1.glb",
   "models/chars/npcs/zebediah.glb": "/media/models/chars/npcs/zebediah.5fc5e2ecd384.glb",
   "models/chars/players/Mech/characters/CombatMech.fbx": "/media/models/chars/players/Mech/characters/CombatMech.51bb345b166f.fbx",
   "models/chars/players/Mech/characters/CombatMech.glb": "/media/models/chars/players/Mech/characters/CombatMech.a96ef2a9ff5d.glb",
