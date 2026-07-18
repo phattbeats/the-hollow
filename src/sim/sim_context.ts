@@ -318,6 +318,10 @@ export interface SimContextCallbacks {
   onGreenpawFedForQuests(meta: PlayerMeta): void;
   checkQuestReady(qp: QuestProgress, meta: PlayerMeta): void;
   countItem(itemId: string, pid?: number): number;
+  // PHAA-744: Book of Asphodelia deed-credit hooks, same event sites as the
+  // quest-credit trio above (src/sim/deeds.ts).
+  onMobKilledForDeeds(mob: Entity, meta: PlayerMeta): void;
+  onInventoryChangedForDeeds(meta: PlayerMeta): void;
 
   // T1 player target selection consumes isHostileTo/isFriendlyTo/pvpController/stopFollow;
   // all already on the seam (C4a added the first two + stopFollow, C1 added pvpController)
@@ -834,6 +838,8 @@ export function createSimContext(host: SimContextHost): SimContext {
     onGreenpawFedForQuests: host.onGreenpawFedForQuests,
     checkQuestReady: host.checkQuestReady,
     countItem: host.countItem,
+    onMobKilledForDeeds: host.onMobKilledForDeeds,
+    onInventoryChangedForDeeds: host.onInventoryChangedForDeeds,
     addEntity: host.addEntity,
     dropEntity: host.dropEntity,
     rebucket: host.rebucket,

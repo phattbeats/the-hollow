@@ -9,14 +9,16 @@
 // keep resolving to THIS file, never the sibling directory.
 //
 // ---------------------------------------------------------------------------
-// FACET MAP: the 26 domain facets (each IWorld member assigned exactly once; 176
+// FACET MAP: the 27 domain facets (each IWorld member assigned exactly once; 181
 // total; this count was previously stale at 23/155, corrected alongside the
 // PHAA-482 feedGreenpaw command addition, again at 24/161 with the PHAA-511
 // guild-calendar-events addition, again at 25/162 with PHAA-504's gathering.ts
-// facet, again with PHAA-505's per-player node harvest + proficiency, and again
-// here at 26/171 with the PHAA-495 Ravenpost mail facet (6 members). One
-// interface per file under ./world_api/; aux types travel with their facet. The
-// authoritative member-per-facet split is the W0c parity test.
+// facet, again with PHAA-505's per-player node harvest + proficiency, again at
+// 26/171 with the PHAA-495 Ravenpost mail facet (6 members), and again here at
+// 27/181 with the PHAA-744 deeds.ts facet (5 members: Book of Asphodelia deed/
+// title read state + setActiveTitle). One interface per file under ./world_api/;
+// aux types travel with their facet. The authoritative member-per-facet split is
+// the W0c parity test.
 //
 //   entity_roster.ts    IWorldEntityRoster   cfg/entities/player/moveInput/realm reads
 //   combat.ts           IWorldCombat         ability casts, auto-attack, spirit release
@@ -26,6 +28,7 @@
 //   inventory.ts        IWorldInventory      bags, equipment, vendor, copper
 //   cosmetics.ts        IWorldCosmetics      account skins + mech chroma
 //   quests.ts           IWorldQuests         quest log + accept/turn-in/abandon
+//   deeds.ts            IWorldDeeds          Book of Asphodelia deed/title read state (PHAA-744)
 //   progression_xp.ts   IWorldProgressionXp  xp/lifetimeXp/prestige/rested/leaderboard
 //   talents.ts          IWorldTalents        talents, specs, loadouts
 //   trainer.ts          IWorldTrainer        secondary-class trainer NPC (GW1 multiclass)
@@ -48,17 +51,18 @@
 //
 // THREE GATES pin this seam (run before any facet edit):
 //   tests/snapshots.test.ts        (W0a)  selfWireJson <-> applySnapshot round-trip;
-//                                          ALL_DELTA_KEYS (30) + TERSE_TO_IWORLD mapping.
+//                                          ALL_DELTA_KEYS (34) + TERSE_TO_IWORLD mapping.
 //   tests/command_schema.test.ts   (W0b)  COMMAND_NAMES universe; ClientWorld send-set
 //                                          subset-of dispatch-set; DISPATCH_ONLY (7).
-//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (176) present + same-kind on
+//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (181) present + same-kind on
 //                                          Sim + ClientWorld; aggregate == disjoint
-//                                          union of the 26 facets.
+//                                          union of the 27 facets.
 // ---------------------------------------------------------------------------
 
 import type { IWorldChat } from './world_api/chat';
 import type { IWorldCombat } from './world_api/combat';
 import type { IWorldCosmetics } from './world_api/cosmetics';
+import type { IWorldDeeds } from './world_api/deeds';
 import type { IWorldDelves } from './world_api/delves';
 import type { IWorldDialog } from './world_api/dialog';
 import type { IWorldDuelArena } from './world_api/duel_arena';
@@ -142,6 +146,7 @@ export interface IWorld
     IWorldInventory,
     IWorldCosmetics,
     IWorldQuests,
+    IWorldDeeds,
     IWorldProgressionXp,
     IWorldTalents,
     IWorldTrainer,
@@ -308,6 +313,7 @@ export const COMMAND_NAMES = [
   'harvestCorpse',
   'harvestNode',
   'dialogChoose',
+  'setTitle',
 ] as const;
 
 // The union both the send path (`online.ts`) and the dispatch switch
@@ -356,6 +362,7 @@ export type WorldFacet =
   | 'IWorldInventory'
   | 'IWorldCosmetics'
   | 'IWorldQuests'
+  | 'IWorldDeeds'
   | 'IWorldProgressionXp'
   | 'IWorldTalents'
   | 'IWorldTrainer'
@@ -522,4 +529,8 @@ export const COMMAND_FACETS = {
   // IWorldDialog: resolve a picked branching-dialogue choice (PHAA-553); the
   // dialogState read carries no wire command (it rides the self-snapshot).
   dialogChoose: 'IWorldDialog',
+  // IWorldDeeds: select (or clear) the earned title shown with the character's
+  // name (PHAA-744, Book of Asphodelia). deedLog/deedsDone/earnedTitles are
+  // snapshot reads (no send, untagged).
+  setTitle: 'IWorldDeeds',
 } as const satisfies Partial<Record<ClientCommand, WorldFacet>>;

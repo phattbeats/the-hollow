@@ -1787,6 +1787,7 @@ describe('lockpick view rebuilds from events on the online client', () => {
 // 32nd unregistered delta key reddens this gate.
 const ALL_DELTA_KEYS = [
   'arena',
+  'atitle',
   'bags',
   'buyback',
   'cds',
@@ -1794,12 +1795,15 @@ const ALL_DELTA_KEYS = [
   'dclears',
   'dcomp',
   'dcompanion',
+  'ddone',
   'delveDaily',
+  'dlog',
   'dmarks',
   'drun',
   'dstate',
   'duel',
   'equip',
+  'etitles',
   'gnodecd',
   'gprof',
   'hearth',
@@ -1834,17 +1838,21 @@ const ALL_DELTA_KEYS = [
 // keep their name; tal fans out to several members and is asserted directly).
 const TERSE_TO_IWORLD: Record<string, string> = {
   arena: 'arenaInfo',
+  atitle: 'activeTitle',
   buyback: 'vendorBuyback',
   cds: 'cooldowns',
   cosmetics: 'accountCosmetics',
   dclears: 'delveClears',
   dcomp: 'companionUpgrades',
   dcompanion: 'companionState',
+  ddone: 'deedsDone',
+  dlog: 'deedLog',
   dmarks: 'delveMarks',
   drun: 'delveRun',
   dstate: 'dialogState',
   duel: 'duelInfo',
   equip: 'equipment',
+  etitles: 'earnedTitles',
   gprof: 'gatheringProficiency',
   hearth: 'hollowHearth',
   homestead: 'homesteadInfo',
@@ -1947,6 +1955,11 @@ function dirtyEveryDeltaField(): {
   meta.equipment = { ...meta.equipment, mainhand: 'zealotsbane_blade' };
   meta.questLog.set('q_widows', { questId: 'q_widows', counts: [10, 0], state: 'active' });
   meta.questsDone.add('q_wolves');
+  // Book of Asphodelia (PHAA-744): deed progress + earned title, non-default.
+  meta.deedLog.set('d_test', { deedId: 'd_test', counts: [1], state: 'active' });
+  meta.deedsDone.add('d_done_test');
+  meta.earnedTitles.add('title_test');
+  meta.activeTitle = 'title_test';
   meta.raidLockouts.set('nythraxis_boss_arena', FAR_FUTURE_MS);
   meta.unlockedMilestones.add('milestone_test');
   meta.lifetimeXp = 555;
@@ -2131,9 +2144,9 @@ describe('full self-state snapshot delta fixture', () => {
 });
 
 describe('delta-key contract pins (anti-drift)', () => {
-  it('ALL_DELTA_KEYS contains exactly 37 unique keys in sorted order', () => {
-    expect(ALL_DELTA_KEYS).toHaveLength(37);
-    expect(new Set(ALL_DELTA_KEYS).size).toBe(37);
+  it('ALL_DELTA_KEYS contains exactly 41 unique keys in sorted order', () => {
+    expect(ALL_DELTA_KEYS).toHaveLength(41);
+    expect(new Set(ALL_DELTA_KEYS).size).toBe(41);
     expect([...ALL_DELTA_KEYS]).toEqual([...ALL_DELTA_KEYS].sort());
   });
 
@@ -2146,7 +2159,7 @@ describe('delta-key contract pins (anti-drift)', () => {
     for (let m = re.exec(src); m !== null; m = re.exec(src)) scraped.add(m[1]);
     expect(scraped.has('lockouts')).toBe(true); // the multi-line call IS captured
     expect(scraped.has('lrollg')).toBe(true); // group-visible loot roll strip (PHAA-568)
-    expect(scraped.size).toBe(37);
+    expect(scraped.size).toBe(41);
     expect([...scraped].sort()).toEqual([...ALL_DELTA_KEYS].sort());
   });
 

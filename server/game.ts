@@ -2581,6 +2581,12 @@ export class GameServer {
           this.resyncQuests(session);
         }
         break;
+      case 'setTitle':
+        if (msg.title === null || typeof msg.title === 'string') {
+          sim.setActiveTitle(msg.title, pid);
+          this.resyncTitle(session);
+        }
+        break;
       case 'equip':
         if (typeof msg.item === 'string') sim.equipItem(msg.item, pid);
         break;
@@ -3580,6 +3586,13 @@ export class GameServer {
       maybe('cosmetics', anchorSession.accountCosmetics);
       maybe('qlog', [...meta.questLog.values()]);
       maybe('qdone', [...meta.questsDone]);
+      // Book of Asphodelia (PHAA-744): deed progress auto-tracks (no accept step),
+      // so dlog/ddone ride the same staggered heavy refresh as milestones; setTitle
+      // forces an immediate atitle resend via resyncTitle for instant feedback.
+      maybe('dlog', [...meta.deedLog.values()]);
+      maybe('ddone', [...meta.deedsDone]);
+      maybe('etitles', [...meta.earnedTitles]);
+      maybe('atitle', meta.activeTitle);
       // PHAA-553: per-player dialogue disposition + flags, so the client walker
       // can evaluate `requires` gates. Small; maybe() only re-sends on change.
       maybe('dstate', serializeDialogState(meta.dialogState));
@@ -4213,6 +4226,11 @@ export class GameServer {
   private resyncQuests(session: ClientSession): void {
     delete session.lastSent.qlog;
     delete session.lastSent.qdone;
+    session.selfHeavyDirty = true; // ensure the gated heavy block re-runs next snapshot
+  }
+
+  private resyncTitle(session: ClientSession): void {
+    delete session.lastSent.atitle;
     session.selfHeavyDirty = true; // ensure the gated heavy block re-runs next snapshot
   }
 

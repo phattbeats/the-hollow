@@ -1685,6 +1685,41 @@ export interface QuestProgress {
   state: 'active' | 'ready' | 'done';
 }
 
+// Book of Asphodelia (PHAA-744, engine/wire layer only; content lands in PHAA-745).
+// Deeds auto-track from character creation (no accept step, unlike quests): every
+// deed in the registry gains credit as its trigger objectives are met, checked
+// lazily on the same event hooks quests use (kill / inventory-change). Completing
+// a deed can grant a title, which the player then selects as their display title.
+export type DeedState = 'active' | 'done';
+
+export interface DeedObjective {
+  type: 'kill' | 'collect';
+  targetMobId?: string; // for 'kill'
+  itemId?: string; // for 'collect'
+  count: number;
+  label: string;
+}
+
+export interface DeedProgress {
+  deedId: string;
+  counts: number[]; // per objective, parallel to DeedDef.objectives
+  state: DeedState;
+}
+
+export interface DeedDef {
+  id: string;
+  name: string;
+  text: string;
+  objectives: DeedObjective[];
+  titleReward?: string; // TitleDef id granted on completion
+}
+
+export interface TitleDef {
+  id: string;
+  display: string; // e.g. "the Wayfarer"
+  prefix?: boolean; // shown before the character name instead of after (default false)
+}
+
 // Consumables restore their total over CONSUME_DURATION seconds while sitting,
 // ticking on the classic 2-second regen tick. Food and drink run concurrently.
 export const CONSUME_DURATION = 18; // seconds
@@ -2041,6 +2076,9 @@ export type SimEvent = { pid?: number } & (
   | { type: 'questProgress'; questId: string; text: string }
   | { type: 'questReady'; questId: string }
   | { type: 'questDone'; questId: string }
+  | { type: 'deedProgress'; deedId: string; text: string }
+  | { type: 'deedDone'; deedId: string }
+  | { type: 'titleEarned'; titleId: string }
   | { type: 'aura'; targetId: number; name: string; gained: boolean }
   | { type: 'castStart'; entityId: number; ability: string; time: number }
   | { type: 'castStop'; entityId: number; success: boolean }
