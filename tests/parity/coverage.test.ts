@@ -654,9 +654,9 @@ describe('coverage: each scenario fires its subsystem', () => {
     const rec = run('c4b_effect_dispatch');
     const ev = rec.allEvents as Ev[];
     const ents = entities(rec);
-    // warrior sunder_armor: the sunder aura landed (or a miss event fired) on its mob.
+    // warrior sunder_armor: the armor-debuff-pct aura landed (or a miss event fired) on its mob.
     const warriorMob = ents.find(
-      (e) => e.templateId === 'forest_wolf' && e.auras?.some((a: Ev) => a.kind === 'sunder'),
+      (e) => e.templateId === 'forest_wolf' && e.auras?.some((a: Ev) => a.kind === 'debuff_armor_pct'),
     );
     const sunderMiss = ev.some(
       (e) =>
