@@ -502,12 +502,14 @@ export const VISUALS: Record<string, VisualDef> = {
     // meshes and texture, so no show-list/tint. Shield + paladin hammer arrive
     // in the weapons pass; the gripped axe holds the slot until then.
     // PHAA-609 bespoke-mesh batch 1: same T2a baked-toggle pattern as
-    // player_warrior (Paladin_Helmet/Paladin_Cape were always-on before this;
-    // Paladin_Cape is the model's only non-skinned mesh, so it must be listed
-    // in `show` or the keep-filter would cull it).
+    // player_warrior for the cape (Paladin_Cape is the model's only
+    // non-skinned mesh, so it must be listed in `show` or the keep-filter
+    // would cull it). Paladin_Helmet stays UNGATED (always-on), unlike the
+    // warrior's Knight_Helmet: this GLB has no separate head mesh the way
+    // knight.glb has Knight_Head, so gating it behind the helmet slot leaves
+    // an unhelmed paladin with no head at all. Verified via screenshot.
     show: ['Paladin_Helmet', 'Paladin_Cape'],
     bakedArmorSlots: {
-      Paladin_Helmet: 'helmet',
       Paladin_Cape: 'chest',
     },
     attach: [{ url: `${WEAPONS}/axe_1handed.glb`, bone: 'handslot.r' }],

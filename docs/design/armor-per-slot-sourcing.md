@@ -8,10 +8,13 @@ T2b batch 1 (this PR) is a zero-new-asset discovery: `paladin.glb` and
 `chibi_female_knight.glb` already ship separable, skinned per-slot armor mesh
 nodes that nothing had wired to `bakedArmorSlots` yet -- the same T2a
 baked-toggle pattern proven on `player_warrior`'s `Knight_Helmet`/`Knight_Cape`.
-Wired here for `player_paladin` (male) and `player_warrior_f` / `player_paladin_f`
-(female, first-ever female armor visuals). Batch 2+ (bespoke Blender authoring
-for the 7 classes per sex with no built-in armor meshes) is scoped below and
-filed as follow-up issues.
+Wired here for `player_paladin` (male, cape only -- `paladin.glb` has no
+separate head mesh, so `Paladin_Helmet` stays ungated to avoid rendering an
+unhelmed paladin headless, confirmed via render screenshot) and
+`player_warrior_f` / `player_paladin_f` (female, full plate set, first-ever
+female armor visuals). Batch 2+ (bespoke Blender authoring for the 7 classes
+per sex with no built-in armor meshes) is scoped below and filed as follow-up
+issues.
 
 This is the dual-track (asset search, then Blender-author the gaps) sourcing
 dossier for per-slot armor meshes (chest / legs / helm, per tier) on the male

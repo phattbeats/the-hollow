@@ -55,11 +55,24 @@ describe('baked-armor visibility (PHAA-502 T2a) - manifest contract', () => {
     }
   });
 
-  it('player_paladin gates its built-in helmet and cape (PHAA-609 batch 1)', () => {
+  it('player_paladin gates its built-in cape but leaves the helmet always-on (PHAA-609 batch 1)', () => {
+    // Unlike knight.glb (which ships a separate always-on Knight_Head under the
+    // Knight_Helmet toggle), paladin.glb has no standalone head mesh: gating
+    // Paladin_Helmet behind the helmet slot leaves an unhelmed paladin fully
+    // headless (confirmed via render screenshot). So Paladin_Helmet stays
+    // ungated (always visible, matching pre-PR behavior) while the cape still
+    // reads off the chest slot.
     expect(VISUALS.player_paladin.bakedArmorSlots).toEqual({
-      Paladin_Helmet: 'helmet',
       Paladin_Cape: 'chest',
     });
+  });
+
+  it('player_paladin never gates Paladin_Helmet (no fallback head mesh exists)', () => {
+    // Regression guard for the headless-paladin bug: paladin.glb has no
+    // Paladin_Head-style node the way knight.glb has Knight_Head, so
+    // Paladin_Helmet must never be added to bakedArmorSlots until this model
+    // ships a separate head mesh.
+    expect(VISUALS.player_paladin.bakedArmorSlots?.Paladin_Helmet).toBeUndefined();
   });
 
   it('player_warrior_f and player_paladin_f gate the chibi knight outfit armor pieces (PHAA-609 batch 1)', () => {
@@ -98,7 +111,10 @@ describe('baked-armor visibility (PHAA-609 batch 1) - GLB node names exist', () 
 
   it('paladin.glb contains Paladin_Helmet and Paladin_Cape', () => {
     const nodes = meshNodeNames('models/chars/players/paladin.glb');
-    for (const key of Object.keys(VISUALS.player_paladin.bakedArmorSlots ?? {})) {
+    for (const key of [
+      'Paladin_Helmet',
+      ...Object.keys(VISUALS.player_paladin.bakedArmorSlots ?? {}),
+    ]) {
       expect(nodes.has(key), `paladin.glb missing node ${key}`).toBe(true);
     }
   });
