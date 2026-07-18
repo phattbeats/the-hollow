@@ -5139,6 +5139,8 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'sim.delve.wayOutNotOpen': '나가는 길이 아직 열리지 않았습니다.',
   'sim.delve.whileTrading': '거래 중에는 탐굴에 진입할 수 없습니다.',
   'sim.gathering.alreadyHarvested': '이 시체는 이미 채집되었습니다.',
+  'sim.collections.notFound': '그것은 존재하지 않습니다.',
+  'sim.collections.tooFar': '너무 멀리 떨어져 있습니다.',
   'sim.gathering.nothingToHarvest': '그 시체에서는 채집할 것이 없습니다.',
   'sim.hearth.emberbulb1': '이거야말로 제대로 된 땔감이지… 보게, 그녀가 숨 쉬는 걸, 친구…',
   'sim.hearth.emberbulb2': '화로는 천천히, 깨끗하게 태우는 걸 좋아하지, 그녀가 딱 그렇다네…',

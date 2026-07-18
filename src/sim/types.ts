@@ -2021,6 +2021,10 @@ export type SimEvent = { pid?: number } & (
   // level past the cap, and unlocking a cosmetic lifetime-XP milestone
   | { type: 'virtualLevelUp'; level: number }
   | { type: 'milestoneUnlocked'; milestoneId: string }
+  // Collection tracking core (PHAA-626): a collectible (world readable today;
+  // future kinds later) was newly marked collected for this player. Personal
+  // (always carries pid); never re-fired for an already-collected id.
+  | { type: 'collectibleFound'; collectibleId: string }
   | { type: 'learnAbility'; abilityId: string; rank: number }
   | { type: 'loot'; text: string }
   | {

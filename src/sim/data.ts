@@ -28,6 +28,8 @@ import type {
 export type { FishingEntry } from './content/items';
 export { FISHING_RARE_ID, FISHING_TABLES };
 
+import type { CollectibleDef } from './content/collectibles';
+import { COLLECTIBLES as COLLECTIBLES_CONTENT } from './content/collectibles';
 import {
   BROTHER_HALVEN,
   COLLAPSED_RELIQUARY_DELVE,
@@ -265,6 +267,15 @@ export const READABLES_BY_ID: Record<string, ReadableDef> = Object.fromEntries(
   READABLES.map((r) => [r.id, r]),
 );
 export const READ_RADIUS = READ_RADIUS_CONTENT;
+
+// Tracked-collectible identity (PHAA-625/626): every readable above also gets a
+// CollectibleDef entry so the collections system + (sibling-ticket) UI panel can
+// resolve kind/zone/set by the same stable id without depending on the readable
+// table directly. See src/sim/content/collectibles.ts.
+export const COLLECTIBLES: CollectibleDef[] = [...COLLECTIBLES_CONTENT];
+export const COLLECTIBLES_BY_ID: Record<string, CollectibleDef> = Object.fromEntries(
+  COLLECTIBLES.map((c) => [c.id, c]),
+);
 
 export const ROADS: { x: number; z: number }[][] = [
   ...ZONE1_ROADS,

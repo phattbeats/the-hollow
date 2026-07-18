@@ -1705,6 +1705,9 @@ export class ClientWorld implements IWorld {
       // nodeHarvestableByMe matches the offline Sim. Absent means unchanged; an
       // explicit empty array clears it (all this player's nodes are ready).
       if (s.gnodecd !== undefined) this.nodeCooldownSet = new Set(s.gnodecd ?? []);
+      // Collection tracking core (PHAA-626): the viewer's own collected-id set,
+      // mirrored whole (small, only grows) same shape as dclears/dcomp above.
+      if (s.collected !== undefined) this.collectedIds = s.collected ?? [];
       if (s.dclears !== undefined) this.delveClears = s.dclears ?? {};
       if (s.delveDaily !== undefined) this.delveDaily = s.delveDaily;
       // camera follows server-side facing changes when not mouselooking
@@ -1887,6 +1890,11 @@ export class ClientWorld implements IWorld {
     this.cmd({ cmd: 'harvestNode', node: nodeId });
   }
   gatheringProficiency: Record<GatherNodeType, number> = { amber: 0, heartwood: 0, spore: 0 };
+  // --- IWorldCollections: tracked-collectible read/found state (PHAA-625/626) ---
+  collectedIds: string[] = [];
+  readCollectible(id: string): void {
+    this.cmd({ cmd: 'readCollectible', collectibleId: id });
+  }
   // --- IWorldLoot: need-greed roll submit + HUD reconcile read ---
   submitLootRoll(rollId: number, choice: LootRollChoice): void {
     this.cmd({ cmd: 'lootRoll', rollId, choice });

@@ -2436,6 +2436,10 @@ export const zh_TW: EnTranslations = {
       "nothingToHarvest": "這具屍體沒有什麼可以採集的。",
       "alreadyHarvested": "這具屍體已經被採集過了。"
     },
+    "collections": {
+      "notFound": "那個東西不存在。",
+      "tooFar": "太遠了。"
+    },
     "hearth": {
       "tooFar": "你得靠近綠掌修士才能餵他。",
       "noItems1": "……夥計，你兩手空空啊。帶點能燒的或能填飽肚子的東西來，我們再聊。",
