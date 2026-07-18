@@ -297,6 +297,7 @@ import {
   angleTo,
   armorReduction,
   type CrowdControlDrCategory,
+  type CrowdControlDrState,
   DELVE_COMPANION_HEAL_INTERVAL,
   type DelveDef,
   type DelveModuleDef,
@@ -531,6 +532,16 @@ export interface ArenaQueueUnit {
   rating: number; // avg member rating for this queue's bracket
 }
 
+// Recovery pools snapshotted at match start so returnFromArena can hand a
+// fighter back exactly what they walked in with (never a free full restore;
+// upstream issue #1600 ported for PHAA-739).
+export interface ArenaReturnPools {
+  hp: number;
+  resource: number;
+  cooldowns: Map<string, number>;
+  ccDr: Map<CrowdControlDrCategory, CrowdControlDrState>;
+}
+
 // A live arena bout. Combatants are teleported into a private arena instance
 // slot; `returns` remembers where each was standing so the match can put them
 // back when it ends. Ratings are snapshotted at the start purely for the
@@ -544,6 +555,9 @@ export interface ArenaMatch {
   state: 'countdown' | 'active' | 'over';
   timer: number; // countdown remaining, then elapsed once active, then return countdown
   returns: Map<number, { x: number; z: number; facing: number }>;
+  // Pre-match HP/resource/cooldowns/CC-DR per fighter, restored on return
+  // (issue #1600). Optional so persisted or mid-flight matches stay valid.
+  preMatchPools?: Map<number, ArenaReturnPools>;
   ratingA: number; // team avg at start
   ratingB: number;
   defeated: Set<number>;
