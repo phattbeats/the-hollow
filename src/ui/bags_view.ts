@@ -21,11 +21,14 @@ export interface BagItemInfo {
 }
 
 /** The open-window modes that change what a bag click does. At most one is the
- *  effective mode (checked in priority order: trade, market-sell, vendor, pet-feed). */
+ *  effective mode (checked in priority order: trade, market-sell, mail-attach,
+ *  vendor, pet-feed). */
 export interface BagMode {
   tradeOpen: boolean;
   /** The World Market is open on its Sell tab. */
   marketSell: boolean;
+  /** The Ravenpost mail window is open on its Compose tab (PHAA-688). */
+  mailAttach: boolean;
   vendorOpen: boolean;
   /** Pet-feed cursor mode is armed. */
   petFeed: boolean;
@@ -38,6 +41,8 @@ export type BagAction =
   | 'marketSell'
   | 'marketSellBlockedQuest'
   | 'marketSellBlockedNoMarket'
+  | 'mailAttach'
+  | 'mailAttachBlockedQuest'
   | 'vendorSell'
   | 'petFeed'
   | 'petFeedBlocked'
@@ -45,7 +50,12 @@ export type BagAction =
   | 'equipBag'
   | 'use';
 
-/** The tooltip hint sub-line i18n key for a bag item (or '' for no hint). */
+/** The tooltip hint sub-line i18n key for a bag item (or '' for no hint). The
+ *  mail-attach hint lives in the mailUi namespace (PHAA-688), not itemUi.tooltip:
+ *  itemUi.tooltip carries a full per-locale block in items.ts that tsc cross-
+ *  references against every locale, while mailUi is an English-only-compiled
+ *  catalog (like hud_chrome), so a mail-specific hint key does not need a
+ *  same-change fill of every locale, only the M16 non-Latin five. */
 export type BagTooltipHintKey =
   | 'itemUi.tooltip.clickTradeOffer'
   | 'itemUi.tooltip.cannotMarket'
@@ -57,16 +67,23 @@ export type BagTooltipHintKey =
   | 'itemUi.tooltip.clickConsume'
   | 'itemUi.tooltip.clickUseInstant'
   | 'itemUi.tooltip.clickUse'
+  | 'mailUi.tooltipAttach'
+  | 'mailUi.tooltipCannotAttach'
   | '';
 
 /** Decide what a click on a bag item does. Mirrors the original click handler's
- *  priority order exactly: trade > market-sell > vendor > pet-feed > quest > use. */
+ *  priority order exactly: trade > market-sell > mail-attach > vendor > pet-feed
+ *  > quest > use. */
 export function bagItemAction(item: BagItemInfo, mode: BagMode): BagAction {
   if (mode.tradeOpen) return 'trade';
   if (mode.marketSell) {
     if (item.kind === 'quest') return 'marketSellBlockedQuest';
     if (item.noMarketList) return 'marketSellBlockedNoMarket';
     return 'marketSell';
+  }
+  if (mode.mailAttach) {
+    if (item.kind === 'quest') return 'mailAttachBlockedQuest';
+    return 'mailAttach';
   }
   if (mode.vendorOpen) return 'vendorSell';
   if (mode.petFeed) return item.kind === 'food' ? 'petFeed' : 'petFeedBlocked';
@@ -83,6 +100,9 @@ export function bagTooltipHintKey(item: BagItemInfo, mode: BagMode): BagTooltipH
     return item.kind === 'quest' || item.noMarketList
       ? 'itemUi.tooltip.cannotMarket'
       : 'itemUi.tooltip.clickMarketList';
+  }
+  if (mode.mailAttach) {
+    return item.kind === 'quest' ? 'mailUi.tooltipCannotAttach' : 'mailUi.tooltipAttach';
   }
   if (mode.vendorOpen)
     return item.kind === 'quest' ? 'itemUi.tooltip.cannotVendor' : 'itemUi.tooltip.clickSell';

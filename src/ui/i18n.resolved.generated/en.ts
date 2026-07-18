@@ -313,7 +313,13 @@ export const en: EnTranslations = {
     "keybinds": {
       "emoteWheel": "Emote Wheel",
       "targetFriendly": "Target Nearest Friendly",
-      "targetFriendlyNext": "Cycle Friendly Target"
+      "targetFriendlyNext": "Cycle Friendly Target",
+      "categoryPet": "Pet",
+      "petAttack": "Pet: Attack",
+      "petStop": "Pet: Stop",
+      "petTaunt": "Pet: Taunt",
+      "petDefensive": "Pet: Defensive",
+      "petAggressive": "Pet: Aggressive"
     },
     "options": {
       "clickMoveLeft": "Left Click",
@@ -434,6 +440,9 @@ export const en: EnTranslations = {
     },
     "statInfo": {
       "fromYour": "From your {value} {stat}:",
+      "names": {
+        "spellPower": "Spell Power"
+      },
       "desc": {
         "str": "Increases your attack power, so your weapon strikes land harder.",
         "agi": "Sharpens your reflexes and aim, improving several of your combat stats.",
@@ -442,6 +451,7 @@ export const en: EnTranslations = {
         "spi": "Quickens how fast a spellcaster's mana returns while resting, out of combat.",
         "armor": "Softens incoming physical blows. The reduction is greater against lower-level attackers and is capped at 75%.",
         "attackPower": "Powers your weapon attacks. Every 14 attack power adds 1 damage per second.",
+        "spellPower": "Increases the damage of your spells and the strength of your heals. Each point of Intellect grants a little Spell Power, on top of any from gear or buffs.",
         "dps": "Your estimated weapon damage per second, combining your weapon's damage and speed with your attack power.",
         "critChance": "Your chance for an attack to strike critically, dealing double damage.",
         "dodge": "Your chance to completely avoid an incoming melee attack, taking no damage."
@@ -464,6 +474,15 @@ export const en: EnTranslations = {
         "minorForClass": "Of little benefit to your class.",
         "baseChance": "Includes a 5% base chance shared by all adventurers.",
         "dpsApprox": "An estimate, it excludes critical strikes and ability damage."
+      },
+      "sources": {
+        "header": "Made up of:",
+        "base": "Base: {value}",
+        "attributes": "From your attributes: {value}",
+        "fromAttribute": "From {stat}: {value}",
+        "gear": "Equipped gear: {value}",
+        "buff": "{name}: {value}",
+        "talents": "Talents and effects: {value}"
       }
     },
     "talents": {
@@ -971,6 +990,21 @@ export const en: EnTranslations = {
       "spore": "Spore",
       "toolTier": "Tier {tier} tool",
       "toolNone": "No tool"
+    },
+    "warfare": {
+      "ratingLabel": "Warfare",
+      "balance": "Honor: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} Honor",
+      "honorFloat": "+{amount} Honor",
+      "honorGain": "+{amount} Honor ({reason})",
+      "notEnoughHonor": "Not enough honor.",
+      "reasons": {
+        "arenaWin": "Arena win",
+        "fiestaKill": "Fiesta takedown",
+        "fiestaComplete": "Fiesta match",
+        "fiestaWin": "Fiesta win"
+      }
     }
   },
   "mailUi": {
@@ -989,6 +1023,12 @@ export const en: EnTranslations = {
     "recipient": "Recipient",
     "subjectLabel": "Subject",
     "bodyPlaceholder": "Write your letter...",
+    "attachments": "Attachments (up to {max})",
+    "removeAttachment": "Remove {item} from this letter",
+    "tooltipAttach": "Click to attach to this letter",
+    "tooltipCannotAttach": "The raven will not carry quest items",
+    "parcelQtyDecreaseAria": "Send one fewer {item}",
+    "parcelQtyIncreaseAria": "Send one more {item}",
     "send": "Send Letter",
     "needRecipientOrText": "Name a recipient and write something before sending.",
     "openButton": "Show me the Ravenpost.",
@@ -3832,6 +3872,7 @@ export const en: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "Currently equipped",
       "ifYouEquip": "If you equip this",
       "damageSpeed": "{min} - {max} Damage Speed {speed}",
@@ -5159,6 +5200,99 @@ export const en: EnTranslations = {
       "mistcallers_duffel": {
         "name": "Mistcaller's Duffel"
       },
+      "bramblewar_warhelm": {
+        "name": "Bramblewar Warhelm"
+      },
+      "bramblewar_warspaulders": {
+        "name": "Bramblewar Warspaulders"
+      },
+      "bramblewar_warplate": {
+        "name": "Bramblewar Warplate"
+      },
+      "bramblewar_girdle": {
+        "name": "Bramblewar Girdle"
+      },
+      "bramblewar_legguards": {
+        "name": "Bramblewar Legguards"
+      },
+      "bramblewar_gauntlets": {
+        "name": "Bramblewar Gauntlets"
+      },
+      "bramblewar_sabatons": {
+        "name": "Bramblewar Sabatons"
+      },
+      "thornbound_crown": {
+        "name": "Thornbound Crown"
+      },
+      "thornbound_spaulders": {
+        "name": "Thornbound Spaulders"
+      },
+      "thornbound_hauberk": {
+        "name": "Thornbound Hauberk"
+      },
+      "thornbound_waistguard": {
+        "name": "Thornbound Waistguard"
+      },
+      "thornbound_legmail": {
+        "name": "Thornbound Legmail"
+      },
+      "thornbound_handguards": {
+        "name": "Thornbound Handguards"
+      },
+      "thornbound_greaves": {
+        "name": "Thornbound Greaves"
+      },
+      "nettlestalker_cowl": {
+        "name": "Nettlestalker Cowl"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "Nettlestalker Shoulderguards"
+      },
+      "nettlestalker_harness": {
+        "name": "Nettlestalker Harness"
+      },
+      "nettlestalker_waistband": {
+        "name": "Nettlestalker Waistband"
+      },
+      "nettlestalker_legguards": {
+        "name": "Nettlestalker Legguards"
+      },
+      "nettlestalker_grips": {
+        "name": "Nettlestalker Grips"
+      },
+      "nettlestalker_treads": {
+        "name": "Nettlestalker Treads"
+      },
+      "mossweave_cowl": {
+        "name": "Mossweave Cowl"
+      },
+      "mossweave_mantle": {
+        "name": "Mossweave Mantle"
+      },
+      "mossweave_raiment": {
+        "name": "Mossweave Raiment"
+      },
+      "mossweave_cord": {
+        "name": "Mossweave Cord"
+      },
+      "mossweave_legwraps": {
+        "name": "Mossweave Legwraps"
+      },
+      "mossweave_handwraps": {
+        "name": "Mossweave Handwraps"
+      },
+      "mossweave_slippers": {
+        "name": "Mossweave Slippers"
+      },
+      "last_bloom_greatblade": {
+        "name": "Last Bloom Greatblade"
+      },
+      "thornbite_razor": {
+        "name": "Thornbite Razor"
+      },
+      "heartwood_warstaff": {
+        "name": "Heartwood Warstaff"
+      },
       "bristleback_maul": {
         "name": "Bristleback Maul"
       },
@@ -5511,6 +5645,9 @@ export const en: EnTranslations = {
       "keeper_coal": {
         "name": "A Coal That Never Cooled"
       },
+      "hearth_stone": {
+        "name": "A Stone Still Warm From His Hearth"
+      },
       "willow_sprig": {
         "name": "A Willow Sprig"
       },
@@ -5559,6 +5696,10 @@ export const en: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "Bonewarden Grips"
+      },
+      "delve_heroic_mark": {
+        "name": "Heroic Reliquary Mark",
+        "flavorText": "A stamped sigil issued by the keepers of the Reliquary. Redeem it at the Heroic Quartermaster for reliquary-grade gear."
       },
       "deacon_reliquary_helm": {
         "name": "Deacon's Reliquary Helm"
@@ -6146,6 +6287,11 @@ export const en: EnTranslations = {
         "name": "Elder Yarrow",
         "title": "Profession Trainer",
         "greeting": "Every build starts as a question. Which second calling speaks to you?"
+      },
+      "bramble": {
+        "name": "Bramble",
+        "title": "Honor Quartermaster",
+        "greeting": "The sands remember every victory. Spend your honor well."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
@@ -7124,6 +7270,22 @@ export const en: EnTranslations = {
           "complainReply": "once is a favor, friend, three's a habit, and i been burned by favors before... this ain't about the hearth needin' it, the hearth's fine, i keep it fine, it's about you comin' back on your own two feet 'cause you wanted to, not 'cause some quest marker told you to... three times. no rush on the countin'.",
           "refuse": "I'm not doing this three separate times. Once was enough.",
           "refuseReply": "...yeah. yeah, okay, i hear you, friend, that's a fair enough line to draw... tell you what, here, take it anyway, ain't earned in the strictest sense but neither's most of what i hand out, and the wavelength don't really keep score the way i pretend it does..."
+        }
+      },
+      "q_your_own_hearth": {
+        "title": "A Hearth of Your Own",
+        "text": "here's the last of it, friend, and it ain't really an errand so much as a nudge... there's ground out past the road, fallow acres, sittin' quiet and waitin' on somebody to want it. sexton faddick keeps half an eye on it between his wolves and his list of kept places - go say hello, let him know you're the kind that stays... after that the ground's yours to claim, whenever you're ready for it.",
+        "completion": "there it is... you got the look now, friend, the one that says you ain't just passin' through no more. go on, plant your feet somewhere out there. i'll keep the hearth lit same as always, and the vase'll know right where to find you...",
+        "objectives": {
+          "0": {
+            "label": "Sexton Faddick met"
+          }
+        },
+        "dialog": {
+          "complain": "Ground? I just wanted to say hi to your plant.",
+          "complainReply": "and you can, anytime, he ain't goin' anywhere... but a soul needs more than a shrine to visit, friend, it needs somewhere to plant its own two feet. won't take long. faddick talks slow but he don't waste your afternoon.",
+          "refuse": "I don't need a homestead. I'm happy just visiting.",
+          "refuseReply": "...alright, alright, no pressure in it, friend, the ground'll keep same as faddick keeps it, waitin' don't cost it nothin'... here, take this anyway, for stickin' around this long. that's its own kind of home, i guess."
         }
       },
       "q_root_hollow_boars": {

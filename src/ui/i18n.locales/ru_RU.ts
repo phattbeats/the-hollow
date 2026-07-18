@@ -115,6 +115,16 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
     'В режиме «Авто» управление для компьютера или сенсорное выбирается по вашему устройству. Выберите «Компьютер», чтобы включить клавиатуру и мышь (удобно на планшете с клавиатурой), или «Сенсорный» для экранного управления.',
   // Character-sheet stat tooltips (hudChrome.statInfo.*).
   'hudChrome.statInfo.fromYour': 'От вашей характеристики ({value} {stat}):',
+  'hudChrome.statInfo.names.spellPower': 'Сила заклинаний',
+  'hudChrome.statInfo.desc.spellPower':
+    'Увеличивает урон ваших заклинаний и силу исцелений. Каждая единица интеллекта дает немного силы заклинаний, вдобавок к получаемой от снаряжения и усилений.',
+  'hudChrome.statInfo.sources.header': 'Складывается из:',
+  'hudChrome.statInfo.sources.base': 'База: {value}',
+  'hudChrome.statInfo.sources.attributes': 'От характеристик: {value}',
+  'hudChrome.statInfo.sources.fromAttribute': 'От характеристики {stat}: {value}',
+  'hudChrome.statInfo.sources.gear': 'Снаряжение: {value}',
+  'hudChrome.statInfo.sources.buff': '{name}: {value}',
+  'hudChrome.statInfo.sources.talents': 'Таланты и эффекты: {value}',
   'hudChrome.statInfo.desc.str':
     'Увеличивает силу атаки, благодаря чему удары вашим оружием бьют сильнее.',
   'hudChrome.statInfo.desc.agi':
@@ -237,6 +247,12 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.keybinds.emoteWheel': 'Колесо эмоций',
   'hudChrome.keybinds.targetFriendly': 'Ближайший союзник',
   'hudChrome.keybinds.targetFriendlyNext': 'Следующий союзник',
+  'hudChrome.keybinds.categoryPet': 'Питомец',
+  'hudChrome.keybinds.petAttack': 'Питомец: атака',
+  'hudChrome.keybinds.petStop': 'Питомец: стоп',
+  'hudChrome.keybinds.petTaunt': 'Питомец: провокация',
+  'hudChrome.keybinds.petDefensive': 'Питомец: защита',
+  'hudChrome.keybinds.petAggressive': 'Питомец: агрессия',
   'hudChrome.options.clickMoveLeft': 'Левая кнопка',
   'hudChrome.options.clickMoveRight': 'Правая кнопка',
   'hudChrome.options.browserEffects': 'Эффекты браузера',
@@ -3018,6 +3034,26 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_someone_your_own_size.completion':
     'Ты остался. Она не скажет, что это было важно, но это было важно, уверяю тебя. Вот, это тебе. Прутик с ивы, которую я люблю. Он не делает ничего. Он лишь помнит, что ты был добр, когда ничто тебя к этому не принуждало.',
   'entities.quests.q_someone_your_own_size.objectives.0.label': 'Немного посидел с Орлой',
+  // PHAA-614/PHAA-699: Sister Shade questline quests 2 and 4 plus the two NPCs.
+  'entities.npcs.withered_planting.name': 'Увядшая посадка',
+  'entities.npcs.withered_planting.title': 'Старая ива племени',
+  'entities.npcs.withered_planting.greeting':
+    'Сухие корни, сухие листья. Чем бы это ни должно было стать, оно ещё не стало, и ждёт уже очень долго.',
+  'entities.npcs.buried_root.name': 'Погребённый корень',
+  'entities.npcs.buried_root.title': 'Под святилищем',
+  'entities.npcs.buried_root.greeting': 'Сухо. Сухо, как только может быть сухо здесь, в глубине.',
+  'entities.quests.q_the_long_way_around.title': 'Долгий обходной путь',
+  'entities.quests.q_the_long_way_around.text':
+    'На старой иве осталась посадка, которую племя не успело закончить, и теперь она гибнет без одного хорошего полива. Мне уже не одолеть этот подъём, но у тебя ноги молодые. Возьми лейку. Берегись ветвей, но будь с ними честен, и они выдержат.',
+  'entities.quests.q_the_long_way_around.completion':
+    'Теперь она будет жить. Тебе покажется, что один подъём и один полив, это пустяк на фоне всего прочего. Это и вправду пустяк. Но для того единственного, что ты полил, это всё.',
+  'entities.quests.q_the_long_way_around.objectives.0.label': 'Вода, поднятая по тропе к иве',
+  'entities.quests.q_the_watering_can.title': 'Лейка',
+  'entities.quests.q_the_watering_can.text':
+    'Я просил тебя о малом, и ты всё исполнил, ни разу не спросив зачем. Вот последняя просьба, и она не мала, хотя такой и покажется. Отнеси мою лейку под святилище, к тому, что там погребено, и полей его. Оно давно ждёт, чтобы ему что-то дали, а не что-то у него просили.',
+  'entities.quests.q_the_watering_can.completion':
+    'Ты сделал это. Конечно, сделал. Это была вода, понимаешь. Вся она, вплоть до того дня, когда ты нашёл меня у озера и не придал этому значения. Тот же полив, то же обещание, сдержанное ещё раз. Спасибо тебе. А теперь ступай и будь добр к этому миру. Только это его когда-либо и меняло.',
+  'entities.quests.q_the_watering_can.objectives.0.label': 'Вода, отданная погребённому корню',
   'entities.npcs.sexton_faddick.title': 'Странствующий Хранитель',
   'entities.npcs.sexton_faddick.greeting':
     'Фаддик. Могильщик, покуда есть святилище, при котором быть могильщиком. Я нигде не задерживаюсь, я лишь храню. Волки каждую ночь кружат вокруг стада на Перелогах, а тот, кто кружит достаточно долго, узнаёт очертания того, вокруг чего кружит. Пусть уж остаётся просто стадом.',
@@ -3234,6 +3270,20 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
     'Я не буду делать это три раза по отдельности. Одного раза достаточно.',
   'entities.quests.q_keep_him_lit.dialog.refuseReply':
     '...да. Да, ладно, я тебя слышу, дружище, это тоже честная черта... вот что, держи это в любом случае, заслужил ты его не совсем по правилам, но и почти всё остальное, что я раздаю, тоже не по правилам, а частота эта, если по-честному, не так уж строго ведёт счёт...',
+  'entities.quests.q_your_own_hearth.title': 'Свой очаг',
+  'entities.quests.q_your_own_hearth.text':
+    'вот и последнее, друг, и это скорее не поручение, а лёгкий толчок... там, за дорогой, есть земля, Фаллоу-Эйкерс, тихо лежит и ждёт, чтобы кто-то её захотел. Секстон Фаддик приглядывает за ней вполглаза, между своими волками и списком мест, которые он бережёт - сходи поздоровайся, дай ему знать, что ты из тех, кто остаётся... а после этого земля твоя, забирай, когда будешь готов.',
+  'entities.quests.q_your_own_hearth.completion':
+    'вот оно... теперь у тебя такой взгляд, друг, тот самый, что говорит - ты больше не просто мимо проходишь. иди, поставь ноги где-нибудь там. я буду держать очаг горящим, как всегда, а ваза точно будет знать, где тебя искать...',
+  'entities.quests.q_your_own_hearth.objectives.0.label': 'Встретился с Секстоном Фаддиком',
+  'entities.quests.q_your_own_hearth.dialog.complain':
+    'Земля? Я просто хотел поздороваться с твоим растением.',
+  'entities.quests.q_your_own_hearth.dialog.complainReply':
+    'и можешь, в любое время, он никуда не денется... но душе мало одного святилища для посещений, друг, ей нужно место, куда поставить обе ноги. это ненадолго. Фаддик говорит медленно, но не тратит твой день впустую.',
+  'entities.quests.q_your_own_hearth.dialog.refuse':
+    'Мне не нужна усадьба. Мне и так хорошо, просто в гостях.',
+  'entities.quests.q_your_own_hearth.dialog.refuseReply':
+    '...ладно, ладно, никакого давления, друг, земля подождёт, как и держит её Фаддик, ожидание ничего не стоит... вот, возьми это всё равно, за то, что задержался так надолго. это тоже своего рода дом, наверное.',
   'entities.quests.q_what_fills.dialog.refuse': 'Нет. Я туда больше не полезу.',
   'entities.quests.q_what_fills.dialog.refuseReply':
     'о... о, ладно. ...ладно. это... да. нет, это честно, друг, это честно... ваза тоже слышала, и, между нами, кажется, она это уважает. вот, возьми черенок всё равно. ты спускался один раз, а это на один раз больше, чем у большинства...',
@@ -4902,6 +4952,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.items.reliquary_helm.name': 'Шлем стражи костницы',
   'entities.items.reliquary_shoulder.name': 'Осыпавшиеся наплечники',
   'entities.items.reliquary_gloves_rog.name': 'Рукавицы Костяного стража',
+  'entities.items.delve_heroic_mark.name': 'Героическая метка Реликвария',
+  'entities.items.delve_heroic_mark.flavorText':
+    'Оттиснутая печать, выданная хранителями Реликвария. Обменяйте её у Героического Квартирмейстера на снаряжение реликварного качества.',
   'entities.items.deacon_reliquary_helm.name': 'Шлем реликвария дьякона',
   'entities.items.varric_shadow_cowl.name': 'Теневой капюшон Варрика',
   'entities.items.cave_morsel.name': 'Пещерная закуска',
@@ -4911,6 +4964,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
     'Живой зеленый черенок от брата Гринпо, завернутый во влажный мох. Как только надел усадьбы станет доступен для редактирования, это будет первым, что вы посадите.',
   'entities.items.greenpaw_bead.name': 'Бусина с бандольеры',
   'entities.items.keeper_coal.name': 'Уголёк, который никогда не остывал',
+  'entities.items.hearth_stone.name': 'Камень, всё ещё тёплый от его очага',
   'entities.items.witness_root_cincture.name': 'Обвязка Корня-Свидетеля',
   'entities.items.shrine_diary_page.name': 'Обрывок страницы дневника',
   'entities.items.shrine_diary_page.flavorText':
@@ -4938,6 +4992,37 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
     'Тёплая на ощупь, долго после того, как дерево, из которого она взята, перестало двигаться.',
   'entities.items.bloomcrown_pauldrons.name': 'Наплечники Цветущей Короны',
   'entities.items.verdantguard_mantle.name': 'Мантия Зелёного Стража',
+  'entities.items.bramblewar_warhelm.name': 'Терновойна: Голова',
+  'entities.items.bramblewar_warspaulders.name': 'Терновойна: Плечи',
+  'entities.items.bramblewar_warplate.name': 'Терновойна: Грудь',
+  'entities.items.bramblewar_girdle.name': 'Терновойна: Пояс',
+  'entities.items.bramblewar_legguards.name': 'Терновойна: Ноги',
+  'entities.items.bramblewar_gauntlets.name': 'Терновойна: Кисти рук',
+  'entities.items.bramblewar_sabatons.name': 'Терновойна: Ступни',
+  'entities.items.thornbound_crown.name': 'Терносвяз: Голова',
+  'entities.items.thornbound_spaulders.name': 'Терносвяз: Плечи',
+  'entities.items.thornbound_hauberk.name': 'Терносвяз: Грудь',
+  'entities.items.thornbound_waistguard.name': 'Терносвяз: Пояс',
+  'entities.items.thornbound_legmail.name': 'Терносвяз: Ноги',
+  'entities.items.thornbound_handguards.name': 'Терносвяз: Кисти рук',
+  'entities.items.thornbound_greaves.name': 'Терносвяз: Ступни',
+  'entities.items.nettlestalker_cowl.name': 'Крапивный Ловчий: Голова',
+  'entities.items.nettlestalker_shoulderguards.name': 'Крапивный Ловчий: Плечи',
+  'entities.items.nettlestalker_harness.name': 'Крапивный Ловчий: Грудь',
+  'entities.items.nettlestalker_waistband.name': 'Крапивный Ловчий: Пояс',
+  'entities.items.nettlestalker_legguards.name': 'Крапивный Ловчий: Ноги',
+  'entities.items.nettlestalker_grips.name': 'Крапивный Ловчий: Кисти рук',
+  'entities.items.nettlestalker_treads.name': 'Крапивный Ловчий: Ступни',
+  'entities.items.mossweave_cowl.name': 'Мохоткань: Голова',
+  'entities.items.mossweave_mantle.name': 'Мохоткань: Плечи',
+  'entities.items.mossweave_raiment.name': 'Мохоткань: Грудь',
+  'entities.items.mossweave_cord.name': 'Мохоткань: Пояс',
+  'entities.items.mossweave_legwraps.name': 'Мохоткань: Ноги',
+  'entities.items.mossweave_handwraps.name': 'Мохоткань: Кисти рук',
+  'entities.items.mossweave_slippers.name': 'Мохоткань: Ступни',
+  'entities.items.last_bloom_greatblade.name': 'Большой клинок последнего цветка',
+  'entities.items.thornbite_razor.name': 'Бритва Шипоукус',
+  'entities.items.heartwood_warstaff.name': 'Боевой посох сердцевины',
   'entities.mobs.palefeeder.name': 'Бледнопитающийся',
   'entities.mobs.rootmaw.name': 'Корнепасть',
   'entities.mobs.the_witness_root.name': 'Корень-Свидетель',
@@ -5571,6 +5656,13 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'mailUi.needRecipientOrText': 'Укажите получателя и напишите что-нибудь перед отправкой.',
   'mailUi.openButton': 'Покажите мне Воронью почту.',
   'mailUi.openButtonAria': 'Открыть окно Вороньей почты',
+  // Mail item-attachment staging (PHAA-688, M16 non-Latin fill)
+  'mailUi.attachments': 'Вложения (до {max})',
+  'mailUi.removeAttachment': 'Убрать {item} из этого письма',
+  'mailUi.tooltipAttach': 'Нажмите, чтобы приложить к этому письму',
+  'mailUi.tooltipCannotAttach': 'Ворон не станет нести квестовые предметы',
+  'mailUi.parcelQtyDecreaseAria': 'Отправить на один {item} меньше',
+  'mailUi.parcelQtyIncreaseAria': 'Отправить на один {item} больше',
   // Event calendar (M16 non-Latin fill)
   'hudChrome.calendar.title': 'Календарь событий',
   'hudChrome.calendar.close': 'Закрыть календарь',
@@ -5670,4 +5762,17 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.gathering.spore': 'Спора',
   'hudChrome.gathering.toolTier': 'Инструмент {tier} ур.',
   'hudChrome.gathering.toolNone': 'Нет инструмента',
+  'hudChrome.warfare.ratingLabel': 'Воинственность',
+  'hudChrome.warfare.balance': 'Честь: {amount}',
+  'hudChrome.warfare.honorAmount': '{amount} чести',
+  'hudChrome.warfare.honorFloat': '+{amount} чести',
+  'hudChrome.warfare.honorGain': '+{amount} чести ({reason})',
+  'hudChrome.warfare.notEnoughHonor': 'Недостаточно чести.',
+  'hudChrome.warfare.reasons.arenaWin': 'Победа на арене',
+  'hudChrome.warfare.reasons.fiestaKill': 'Повержение на фиесте',
+  'hudChrome.warfare.reasons.fiestaComplete': 'Матч фиесты',
+  'hudChrome.warfare.reasons.fiestaWin': 'Победа на фиесте',
+  'entities.npcs.bramble.name': 'Брэмбл',
+  'entities.npcs.bramble.title': 'Квартирмейстер чести',
+  'entities.npcs.bramble.greeting': 'Пески помнят каждую победу. Трать свою честь с умом.',
 };

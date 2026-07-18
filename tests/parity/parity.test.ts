@@ -33,29 +33,47 @@ function plain(trace: Trace): unknown {
   return JSON.parse(JSON.stringify(trace));
 }
 
+// Vitest's default 5000ms per-test timeout is too tight for the heaviest scenarios
+// recorded here. nythraxis_full_pull (a full 5-player raid pull: add waves, marks,
+// phase transitions, long tick count) records in ~2.5s cold, and the determinism arm
+// records it TWICE, so under full-suite CPU contention the pair intermittently blew
+// the 5s cap and flaked the parity gate (observed 6.3s). This is a recording COST,
+// not behavior drift: the trace is byte-identical run to run (proven in isolation).
+// A generous cap keeps every scenario's two heavy recordings well clear on loaded CI
+// hardware without weakening any behavior assertion.
+const RECORD_TIMEOUT_MS = 30_000;
+
 describe('parity gate', () => {
   for (const scenario of SCENARIOS) {
     describe(scenario.name, () => {
-      it('records deterministically (same scenario -> identical trace)', () => {
-        const a = plain(recordTrace(scenario));
-        const b = plain(recordTrace(scenario));
-        expect(a).toEqual(b);
-      });
+      it(
+        'records deterministically (same scenario -> identical trace)',
+        () => {
+          const a = plain(recordTrace(scenario));
+          const b = plain(recordTrace(scenario));
+          expect(a).toEqual(b);
+        },
+        RECORD_TIMEOUT_MS,
+      );
 
-      it(UPDATE ? 'mints the golden' : 'matches the committed golden', () => {
-        const trace = plain(recordTrace(scenario));
-        const path = goldenPath(scenario.name);
-        if (UPDATE) {
-          mkdirSync(GOLDEN_DIR, { recursive: true });
-          writeFileSync(path, `${JSON.stringify(trace, null, 2)}\n`);
-          return;
-        }
-        expect(existsSync(path), `missing golden for ${scenario.name}; run UPDATE_PARITY=1`).toBe(
-          true,
-        );
-        const golden = JSON.parse(readFileSync(path, 'utf8'));
-        expect(trace).toEqual(golden);
-      });
+      it(
+        UPDATE ? 'mints the golden' : 'matches the committed golden',
+        () => {
+          const trace = plain(recordTrace(scenario));
+          const path = goldenPath(scenario.name);
+          if (UPDATE) {
+            mkdirSync(GOLDEN_DIR, { recursive: true });
+            writeFileSync(path, `${JSON.stringify(trace, null, 2)}\n`);
+            return;
+          }
+          expect(existsSync(path), `missing golden for ${scenario.name}; run UPDATE_PARITY=1`).toBe(
+            true,
+          );
+          const golden = JSON.parse(readFileSync(path, 'utf8'));
+          expect(trace).toEqual(golden);
+        },
+        RECORD_TIMEOUT_MS,
+      );
     });
   }
 });

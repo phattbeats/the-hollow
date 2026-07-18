@@ -313,7 +313,13 @@ export const ko_KR: EnTranslations = {
     "keybinds": {
       "emoteWheel": "감정 표현 휠",
       "targetFriendly": "가장 가까운 아군 대상 지정",
-      "targetFriendlyNext": "아군 대상 순환"
+      "targetFriendlyNext": "아군 대상 순환",
+      "categoryPet": "펫",
+      "petAttack": "펫: 공격",
+      "petStop": "펫: 정지",
+      "petTaunt": "펫: 도발",
+      "petDefensive": "펫: 방어",
+      "petAggressive": "펫: 공격적"
     },
     "options": {
       "clickMoveLeft": "왼쪽 클릭",
@@ -434,6 +440,9 @@ export const ko_KR: EnTranslations = {
     },
     "statInfo": {
       "fromYour": "당신의 {value} {stat}에서:",
+      "names": {
+        "spellPower": "주문력"
+      },
       "desc": {
         "str": "전투력을 증가시켜 무기 공격이 더 강하게 적중하도록 합니다.",
         "agi": "반사 신경과 조준 능력을 예리하게 하여 여러 전투 능력치를 향상시킵니다.",
@@ -442,6 +451,7 @@ export const ko_KR: EnTranslations = {
         "spi": "비전투 중 휴식할 때 시전자의 마나가 회복되는 속도를 빠르게 합니다.",
         "armor": "들어오는 물리 공격을 완화합니다. 낮은 레벨의 공격자에게 더 큰 효과를 발휘하며, 최대 75%까지 적용됩니다.",
         "attackPower": "무기 공격을 강화합니다. 전투력 14당 초당 피해 1이 추가됩니다.",
+        "spellPower": "주문의 피해량과 치유량을 증가시킵니다. 지능 1당 장비나 버프로 얻는 양에 더해 약간의 주문력을 부여합니다.",
         "dps": "무기의 피해와 속도, 전투력을 종합한 예상 무기 초당 피해입니다.",
         "critChance": "공격이 치명적으로 적중하여 두 배의 피해를 입힐 확률입니다.",
         "dodge": "들어오는 근접 공격을 완전히 피해 피해를 전혀 입지 않을 확률입니다."
@@ -464,6 +474,15 @@ export const ko_KR: EnTranslations = {
         "minorForClass": "당신의 직업에는 거의 도움이 되지 않습니다.",
         "baseChance": "모든 모험가가 공유하는 5%의 기본 확률이 포함되어 있습니다.",
         "dpsApprox": "추정치이며, 치명타와 기술 피해는 제외됩니다."
+      },
+      "sources": {
+        "header": "구성:",
+        "base": "기본: {value}",
+        "attributes": "능력치에서: {value}",
+        "fromAttribute": "{stat}에서: {value}",
+        "gear": "장비: {value}",
+        "buff": "{name}: {value}",
+        "talents": "특성 및 효과: {value}"
       }
     },
     "talents": {
@@ -971,6 +990,21 @@ export const ko_KR: EnTranslations = {
       "spore": "포자",
       "toolTier": "{tier}단계 도구",
       "toolNone": "도구 없음"
+    },
+    "warfare": {
+      "ratingLabel": "전의",
+      "balance": "명예: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "명예 {amount}",
+      "honorFloat": "+{amount} 명예",
+      "honorGain": "+{amount} 명예 ({reason})",
+      "notEnoughHonor": "명예가 부족합니다.",
+      "reasons": {
+        "arenaWin": "투기장 승리",
+        "fiestaKill": "피에스타 처치",
+        "fiestaComplete": "피에스타 경기",
+        "fiestaWin": "피에스타 승리"
+      }
     }
   },
   "mailUi": {
@@ -989,6 +1023,12 @@ export const ko_KR: EnTranslations = {
     "recipient": "받는 사람",
     "subjectLabel": "제목",
     "bodyPlaceholder": "편지를 작성하세요...",
+    "attachments": "첨부물 (최대 {max}개)",
+    "removeAttachment": "이 편지에서 {item} 제거",
+    "tooltipAttach": "클릭하여 이 편지에 첨부",
+    "tooltipCannotAttach": "까마귀는 퀘스트 아이템을 운반하지 않습니다",
+    "parcelQtyDecreaseAria": "{item} 한 개 적게 보내기",
+    "parcelQtyIncreaseAria": "{item} 한 개 더 보내기",
     "send": "편지 보내기",
     "needRecipientOrText": "보내기 전에 받는 사람을 지정하고 내용을 입력하세요.",
     "openButton": "레이븐포스트로 안내해 주세요.",
@@ -3832,6 +3872,7 @@ export const ko_KR: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "현재 착용 중",
       "ifYouEquip": "이것을 착용하면",
       "damageSpeed": "{min} - {max} 피해 속도 {speed}",
@@ -5159,6 +5200,99 @@ export const ko_KR: EnTranslations = {
       "mistcallers_duffel": {
         "name": "미스트콜러의 더플백"
       },
+      "bramblewar_warhelm": {
+        "name": "가시전 머리"
+      },
+      "bramblewar_warspaulders": {
+        "name": "가시전 어깨"
+      },
+      "bramblewar_warplate": {
+        "name": "가시전 가슴"
+      },
+      "bramblewar_girdle": {
+        "name": "가시전 허리"
+      },
+      "bramblewar_legguards": {
+        "name": "가시전 다리"
+      },
+      "bramblewar_gauntlets": {
+        "name": "가시전 손"
+      },
+      "bramblewar_sabatons": {
+        "name": "가시전 발"
+      },
+      "thornbound_crown": {
+        "name": "가시결속 머리"
+      },
+      "thornbound_spaulders": {
+        "name": "가시결속 어깨"
+      },
+      "thornbound_hauberk": {
+        "name": "가시결속 가슴"
+      },
+      "thornbound_waistguard": {
+        "name": "가시결속 허리"
+      },
+      "thornbound_legmail": {
+        "name": "가시결속 다리"
+      },
+      "thornbound_handguards": {
+        "name": "가시결속 손"
+      },
+      "thornbound_greaves": {
+        "name": "가시결속 발"
+      },
+      "nettlestalker_cowl": {
+        "name": "쐐기추적 머리"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "쐐기추적 어깨"
+      },
+      "nettlestalker_harness": {
+        "name": "쐐기추적 가슴"
+      },
+      "nettlestalker_waistband": {
+        "name": "쐐기추적 허리"
+      },
+      "nettlestalker_legguards": {
+        "name": "쐐기추적 다리"
+      },
+      "nettlestalker_grips": {
+        "name": "쐐기추적 손"
+      },
+      "nettlestalker_treads": {
+        "name": "쐐기추적 발"
+      },
+      "mossweave_cowl": {
+        "name": "이끼직 머리"
+      },
+      "mossweave_mantle": {
+        "name": "이끼직 어깨"
+      },
+      "mossweave_raiment": {
+        "name": "이끼직 가슴"
+      },
+      "mossweave_cord": {
+        "name": "이끼직 허리"
+      },
+      "mossweave_legwraps": {
+        "name": "이끼직 다리"
+      },
+      "mossweave_handwraps": {
+        "name": "이끼직 손"
+      },
+      "mossweave_slippers": {
+        "name": "이끼직 발"
+      },
+      "last_bloom_greatblade": {
+        "name": "최후의 꽃 대검"
+      },
+      "thornbite_razor": {
+        "name": "가시물기 면도날"
+      },
+      "heartwood_warstaff": {
+        "name": "심재 전투봉"
+      },
       "bristleback_maul": {
         "name": "뻣센등뼈 철퇴"
       },
@@ -5511,6 +5645,9 @@ export const ko_KR: EnTranslations = {
       "keeper_coal": {
         "name": "결코 식지 않는 숯덩이"
       },
+      "hearth_stone": {
+        "name": "그의 화로에서 아직 따뜻한 돌"
+      },
       "willow_sprig": {
         "name": "버드나무 잔가지 하나"
       },
@@ -5559,6 +5696,10 @@ export const ko_KR: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "뼈수호 손보호구"
+      },
+      "delve_heroic_mark": {
+        "name": "영웅 성물실 증표",
+        "flavorText": "성물실 수호자들이 발행한 인장. 영웅 병참장교에게 교환하면 성물실급 장비를 받을 수 있다."
       },
       "deacon_reliquary_helm": {
         "name": "부제의 성물실 투구"
@@ -6147,6 +6288,11 @@ export const ko_KR: EnTranslations = {
         "title": "보조 직업 훈련사",
         "greeting": "모든 빌드는 질문에서 시작됩니다. 어떤 보조 직업이 당신을 부르고 있나요?"
       },
+      "bramble": {
+        "name": "브램블",
+        "title": "명예 보급관",
+        "greeting": "모래 경기장은 모든 승리를 기억한다. 명예를 현명하게 써라."
+      },
       "tidewatcher_ondrel": {
         "name": "온드렐 베인",
         "title": "조수지기",
@@ -6239,14 +6385,14 @@ export const ko_KR: EnTranslations = {
         "greeting": "앉아도 돼요. 다들 그냥 지나가죠. 성당지기가 오래전에 내 이름을 장부에서 지워 버렸어요. 지워진 이름은 조용히 있는 법을 배우죠, 아직 여기 있다는 걸 아무도 떠올리지 않도록."
       },
       "withered_planting": {
-        "name": "The Withered Planting",
-        "title": "The Tribe's Old Willow",
-        "greeting": "Dry roots, dry leaves. Whatever this was meant to grow into, it hasn't yet, and it's been a long while waiting."
+        "name": "시들어가는 묘목밭",
+        "title": "부족의 오래된 버드나무",
+        "greeting": "마른 뿌리, 마른 잎. 무엇이 되려 했든 아직은 되지 못했고, 오랜 세월을 그렇게 기다려 왔다."
       },
       "buried_root": {
-        "name": "A Buried Root",
-        "title": "Under the Shrine",
-        "greeting": "Dry. Dry as anything down here ever gets."
+        "name": "묻힌 뿌리",
+        "title": "사당 아래",
+        "greeting": "메말랐다. 이 아래 그 무엇 못지않게 메말랐다."
       }
     },
     "quests": {
@@ -7126,6 +7272,22 @@ export const ko_KR: EnTranslations = {
           "refuseReply": "...그래. 그래, 알겠어, 친구, 그것도 충분히 공정한 선이지... 그럼 이거라도 가져가, 엄밀히 말하면 네가 번 건 아니지만, 내가 나눠주는 것 대부분도 그렇긴 해, 파장이라는 것도 내가 그런 척하는 것만큼 딱 맞게 점수를 매기진 않거든..."
         }
       },
+      "q_your_own_hearth": {
+        "title": "너만의 화로",
+        "text": "이게 마지막이야, 친구, 사실 심부름이라기보다는 살짝 등 떠밀어주는 거지... 길 너머에 땅이 있어, 팰로우 에이커스, 조용히 누군가 원해주길 기다리고 있지. 섹스턴 패딕이 늑대들 상대하는 틈틈이, 자기가 지키는 곳들 목록 사이에 그 땅도 반쯤 눈여겨보고 있어 - 가서 인사하고, 네가 눌러앉을 놈이란 걸 알려줘... 그다음엔 언제든 준비되면 그 땅은 네 거야.",
+        "completion": "그거야... 이제 그 표정을 지었어, 친구, 더 이상 그냥 지나가는 사람이 아니란 표정 말이야. 가서 저 밖 어딘가에 발을 디뎌봐. 나는 늘 그랬듯이 화로를 밝혀놓을 거고, 항아리도 널 어디서 찾을지 정확히 알 거야...",
+        "objectives": {
+          "0": {
+            "label": "섹스턴 패딕을 만났다"
+          }
+        },
+        "dialog": {
+          "complain": "땅? 난 그냥 네 식물한테 인사하고 싶었을 뿐이야.",
+          "complainReply": "그건 언제든 할 수 있어, 그는 어디도 안 가니까... 하지만 영혼이란 건 사당을 방문하는 것만으로는 부족해, 친구, 자기 두 발로 설 곳이 필요하지. 오래 안 걸려. 패딕은 말은 느려도 네 오후를 낭비하진 않아.",
+          "refuse": "난 홈스테드 필요 없어. 그냥 방문하는 걸로 만족해.",
+          "refuseReply": "...알았어, 알았어, 강요할 생각은 없어, 친구, 땅은 패딕이 지키는 그대로 남아 있을 거야, 기다리는 데 돈 드는 것도 아니고... 자, 그래도 이거 가져가, 이렇게 오래 머물러준 값으로. 그것도 나름의 집이겠지, 아마도."
+        }
+      },
       "q_root_hollow_boars": {
         "title": "뿌리굴의 멧돼지",
         "text": "달력대로라면 뿌리굴은 이번 철에 쉬어야 하오. 한데 멧돼지들에겐 통보가 안 갔지. 벌레를 쫓다가 절반을 파헤쳐 놨고, 이젠 왜가리가 날갯짓을 해도 흩어지질 않소. 나로선 이게 여간 괘씸한 게 아니오. 다섯 마리만 잡으면, 이 철을 기록대로 적어 넣을 수 있소.",
@@ -7187,22 +7349,22 @@ export const ko_KR: EnTranslations = {
         }
       },
       "q_the_long_way_around": {
-        "title": "The Long Way Around",
-        "text": "There's a planting the tribe left half-finished up the old willow, and it's dying for want of one good pour. I can't make that climb anymore, but you've got the legs for it. Take the can. Mind the branches; they hold if you're honest with them.",
-        "completion": "It'll live now. You wouldn't think one climb and one pour was much, against everything else out there. It isn't much. It's only everything to the one thing you poured it on.",
+        "title": "멀리 돌아가는 길",
+        "text": "오래된 버드나무 위쪽에 부족이 반쯤 짓다 만 묘목밭이 있어. 제대로 된 물 한 번을 못 받아서 죽어가고 있지. 그 오르막은 이제 내가 오르지 못하지만, 자네에겐 그럴 다리가 있잖아. 물뿌리개를 가져가게. 가지를 조심하고. 정직하게 대하면 가지는 자네를 지탱해 준다네.",
+        "completion": "이제 살아날 걸세. 바깥의 그 모든 일에 비하면 오르막 한 번, 물 한 번이 뭐 대단하겠나 싶겠지. 대단한 건 아니야. 다만 자네가 물을 준 그 하나에게는 그것이 전부라네.",
         "objectives": {
           "0": {
-            "label": "Water carried up the willow path"
+            "label": "버드나무 길을 따라 물을 나르기"
           }
         }
       },
       "q_the_watering_can": {
-        "title": "The Watering Can",
-        "text": "I've asked you for small things, and you've done them all without once asking why. Here's the last one, and it isn't small, though it'll look it. Take my can down under the shrine, to the thing that's buried there, and give it water. It's been waiting a long time to be given something instead of asked for something.",
-        "completion": "You did it. Of course you did. That was the water, you understand. All of it, all the way back to the day you found me at the lake and thought nothing of it. The same pour, the same promise, kept one more time. Thank you. Now go and be gentle with the world. It is the only thing that ever changed it.",
+        "title": "물뿌리개",
+        "text": "자네에게 자잘한 일들을 부탁했고, 자네는 한 번도 이유를 묻지 않고 그 모두를 해 주었지. 이게 마지막일세. 작아 보이지만 작지 않아. 내 물뿌리개를 사당 아래로 가져가, 거기 묻혀 있는 그것에게 물을 주게. 그것은 무언가를 요구받는 대신 무언가를 받기를, 아주 오랫동안 기다려 왔다네.",
+        "completion": "자네가 해냈군. 물론 해냈지. 그건 물이었어, 알겠나. 그 모든 물, 자네가 호숫가에서 나를 발견하고 아무렇지 않게 여기던 그날까지 거슬러 올라가는 물이었지. 같은 물, 같은 약속을 한 번 더 지켜 준 거야. 고맙네. 이제 가서 이 세상을 다정하게 대하게. 세상을 바꿔 온 건 오직 그것뿐이니까.",
         "objectives": {
           "0": {
-            "label": "Water given to the buried root"
+            "label": "묻힌 뿌리에 물을 주기"
           }
         }
       }
