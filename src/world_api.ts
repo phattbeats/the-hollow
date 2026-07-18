@@ -9,16 +9,19 @@
 // keep resolving to THIS file, never the sibling directory.
 //
 // ---------------------------------------------------------------------------
-// FACET MAP: the 27 domain facets (each IWorld member assigned exactly once; 181
+// FACET MAP: the 27 domain facets (each IWorld member assigned exactly once; 183
 // total; this count was previously stale at 23/155, corrected alongside the
 // PHAA-482 feedGreenpaw command addition, again at 24/161 with the PHAA-511
 // guild-calendar-events addition, again at 25/162 with PHAA-504's gathering.ts
 // facet, again with PHAA-505's per-player node harvest + proficiency, again at
 // 26/171 with the PHAA-495 Ravenpost mail facet (6 members), and again here at
-// 27/181 with the PHAA-744 deeds.ts facet (5 members: Book of Asphodelia deed/
+// 27/183 with the PHAA-744 deeds.ts facet (5 members: Book of Asphodelia deed/
 // title read state + setActiveTitle). One interface per file under ./world_api/;
 // aux types travel with their facet. The authoritative member-per-facet split is
 // the W0c parity test.
+// NOTE: this running count tracks only the facets registered in the W0c gate
+// (tests/world_api_parity.test.ts); IWorldReadables/IWorldDialog predate this
+// count and are pre-existing gaps in that gate, not tracked here.
 //
 //   entity_roster.ts    IWorldEntityRoster   cfg/entities/player/moveInput/realm reads
 //   combat.ts           IWorldCombat         ability casts, auto-attack, spirit release
@@ -51,10 +54,10 @@
 //
 // THREE GATES pin this seam (run before any facet edit):
 //   tests/snapshots.test.ts        (W0a)  selfWireJson <-> applySnapshot round-trip;
-//                                          ALL_DELTA_KEYS (34) + TERSE_TO_IWORLD mapping.
+//                                          ALL_DELTA_KEYS (41) + TERSE_TO_IWORLD mapping.
 //   tests/command_schema.test.ts   (W0b)  COMMAND_NAMES universe; ClientWorld send-set
 //                                          subset-of dispatch-set; DISPATCH_ONLY (7).
-//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (181) present + same-kind on
+//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (183) present + same-kind on
 //                                          Sim + ClientWorld; aggregate == disjoint
 //                                          union of the 27 facets.
 // ---------------------------------------------------------------------------
