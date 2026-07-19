@@ -744,7 +744,7 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
     'Roept een Leegteloper op onder bevel van de Heksenmeester. De Leegteloper is een stevige demon die je vijanden provoceert en klappen opvangt. Het oproepen van een nieuwe demon stuurt je huidige weg. Je mag één demon tegelijk hebben.',
   'entities.abilities.summon_voidwalker.name': 'Leegteloper Oproepen',
   'entities.abilities.sunder_armor.description':
-    'Splijt het pantser van het doelwit en verlaagt het met {damage} per toepassing. Stapelt tot 5 keer. Wekt een grote hoeveelheid dreiging op.',
+    'Splijt het pantser van het doelwit en verlaagt het met 2% per toepassing. Stapelt tot 5 keer. Wekt een grote hoeveelheid dreiging op.',
   'entities.abilities.sunder_armor.name': 'Pantser Splijten',
   'entities.abilities.swipe.description':
     'Haal uit naar nabije vijanden voor {damage} schade. Veroorzaakt extra dreiging. Alleen in Berengedaante.',

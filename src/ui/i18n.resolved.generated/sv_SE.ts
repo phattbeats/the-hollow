@@ -720,10 +720,18 @@ export const sv_SE: EnTranslations = {
         "spi": "Verringert Willenskraft um {value}",
         "allStats": "Verringert alle Attribute um {value}"
       },
+      "increasePct": {
+        "ap": "Increases attack power by {pct}%",
+        "armor": "Increases armor by {pct}%",
+        "int": "Increases Intellect by {pct}%",
+        "sta": "Increases Stamina by {pct}%"
+      },
       "dodge": "Erhöht Ausweichchance um {pct}%",
       "dodgeReduce": "Verringert Ausweichchance um {pct}%",
       "armorFlat": "Verringert Rüstung um {value}",
       "armorFlatStacks": "Verringert Rüstung um {value} ({stacks} Stapel)",
+      "armorPct": "Reduces armor by {pct}%",
+      "armorPctStacks": "Reduces armor by {pct}% ({stacks} stacks)",
       "mortalWound": "Verringert erhaltene Heilung um {pct}%",
       "vulnerability": "Erhöht erlittenen Schaden um {pct}%",
       "physVuln": "Erhöht erlittenen physischen Schaden um {pct}%",
@@ -4099,7 +4107,7 @@ export const sv_SE: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Krossa rustning",
-        "description": "Krossar målets rustning och minskar den med {damage} per applicering. Staplas upp till 5 gånger. Genererar en stor mängd hot."
+        "description": "Krossar målets rustning och minskar den med 2% per applicering. Staplas upp till 5 gånger. Genererar en stor mängd hot."
       },
       "taunt": {
         "name": "Håna",

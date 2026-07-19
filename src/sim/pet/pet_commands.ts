@@ -65,9 +65,19 @@ const PET_NAME_RE = /^[A-Za-z][A-Za-z '-]{1,15}$/;
 // respawnMob paths consume applyNonPlayerStatAura/clearNonPlayerStatAuras via the seam).
 // -------------------------------------------------------------------------
 
-function nonPlayerAuraHp(aura: Aura): number {
+function nonPlayerAuraHp(target: Entity, aura: Aura): number {
   if (aura.kind === 'buff_sta') return aura.value * 10;
   if (aura.kind === 'buff_allstats') return aura.value * 10;
+  // PHAA-577: a percent Stamina buff (e.g. Power Word: Fortitude) has no per-stat
+  // pipeline for non-players (pets/mobs skip recalcPlayerStats entirely), so it
+  // is approximated as a one-time HP delta off the target's CURRENT maxHp at
+  // apply time. The delta is cached on the aura (`value2`, unused by this kind)
+  // so it reverses EXACTLY on expiry/removal regardless of what else changes
+  // target.maxHp in between (a live percent-of-current would not be reversible).
+  if (aura.kind === 'buff_sta_pct') {
+    if (aura.value2 === undefined) aura.value2 = Math.round(target.maxHp * (aura.value / 100));
+    return aura.value2;
+  }
   return 0;
 }
 
@@ -78,7 +88,7 @@ export function applyNonPlayerStatAura(
   direction: 1 | -1,
 ): void {
   if (target.kind === 'player') return;
-  const hpDelta = nonPlayerAuraHp(aura) * direction;
+  const hpDelta = nonPlayerAuraHp(target, aura) * direction;
   if (hpDelta === 0) return;
   const hpFrac = target.maxHp > 0 ? target.hp / target.maxHp : 1;
   target.maxHp = Math.max(1, target.maxHp + hpDelta);

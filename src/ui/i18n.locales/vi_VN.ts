@@ -741,7 +741,7 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
     'Triệu hồi một Quỷ Hư Không dưới quyền chỉ huy của Thuật Sĩ Hắc Ám. Quỷ Hư Không là con quỷ vững chãi khiêu khích kẻ địch của bạn và hứng chịu đòn tấn công. Triệu hồi một con quỷ mới sẽ giải tán con hiện tại. Bạn chỉ có thể có một con quỷ cùng lúc.',
   'entities.abilities.summon_voidwalker.name': 'Triệu Hồi Quỷ Hư Không',
   'entities.abilities.sunder_armor.description':
-    'Nghiền nát giáp của mục tiêu, giảm giáp đi {damage} mỗi lần áp dụng. Cộng dồn tối đa 5 lần. Tạo lượng đe dọa cao.',
+    'Nghiền nát giáp của mục tiêu, giảm giáp đi 2% mỗi lần áp dụng. Cộng dồn tối đa 5 lần. Tạo lượng đe dọa cao.',
   'entities.abilities.sunder_armor.name': 'Nghiền Giáp',
   'entities.abilities.swipe.description':
     'Quật quét các kẻ địch lân cận gây {damage} sát thương. Tạo thêm đe dọa. Chỉ dùng được ở Hình Gấu.',

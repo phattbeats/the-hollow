@@ -298,6 +298,7 @@ import {
   angleTo,
   armorReduction,
   type CrowdControlDrCategory,
+  type CrowdControlDrState,
   DELVE_COMPANION_HEAL_INTERVAL,
   type DelveDef,
   type DelveModuleDef,
@@ -532,6 +533,16 @@ export interface ArenaQueueUnit {
   rating: number; // avg member rating for this queue's bracket
 }
 
+// Recovery pools snapshotted at match start so returnFromArena can hand a
+// fighter back exactly what they walked in with (never a free full restore;
+// upstream issue #1600 ported for PHAA-739).
+export interface ArenaReturnPools {
+  hp: number;
+  resource: number;
+  cooldowns: Map<string, number>;
+  ccDr: Map<CrowdControlDrCategory, CrowdControlDrState>;
+}
+
 // A live arena bout. Combatants are teleported into a private arena instance
 // slot; `returns` remembers where each was standing so the match can put them
 // back when it ends. Ratings are snapshotted at the start purely for the
@@ -545,6 +556,9 @@ export interface ArenaMatch {
   state: 'countdown' | 'active' | 'over';
   timer: number; // countdown remaining, then elapsed once active, then return countdown
   returns: Map<number, { x: number; z: number; facing: number }>;
+  // Pre-match HP/resource/cooldowns/CC-DR per fighter, restored on return
+  // (issue #1600). Optional so persisted or mid-flight matches stay valid.
+  preMatchPools?: Map<number, ArenaReturnPools>;
   ratingA: number; // team avg at start
   ratingB: number;
   defeated: Set<number>;
@@ -3069,20 +3083,37 @@ export class Sim {
   // Sunder Armor stacks shave flat armor off the defender for physical hits.
   private effectiveArmor(e: Entity): number {
     let armor = e.stats.armor;
+    let armorPct = 0;
+    let debuffPct = 0;
     for (const a of e.auras) {
       if (e.kind !== 'player' && a.kind === 'buff_armor') armor += a.value;
+      // PHAA-577: percent buffs (e.g. Mark of the Wild) never reach a pet/mob's
+      // stats via recalcPlayerStats (players-only), so non-players need their own
+      // fold here, mirroring the flat buff_armor arm above.
+      if (e.kind !== 'player' && a.kind === 'buff_armor_pct') armorPct += a.value / 100;
       if (a.kind === 'sunder') armor -= a.value * (a.stacks ?? 1);
+      // PHAA-577: percent armor debuff (Sunder Armor/Expose Armor/Faerie Fire).
+      // Separate AuraKind from 'sunder' above so mob corrosion (still flat) is
+      // untouched; summed here then applied as one multiplier below.
+      if (a.kind === 'debuff_armor_pct') debuffPct += a.value * (a.stacks ?? 1);
     }
+    if (armorPct > 0) armor *= 1 + armorPct;
+    if (debuffPct > 0) armor *= Math.max(0, 1 - debuffPct);
     return Math.max(0, armor);
   }
 
   private effectiveAttackPower(e: Entity): number {
     let attackPower = e.attackPower;
     if (e.kind !== 'player') {
+      let apPct = 0;
       for (const a of e.auras) {
         if (a.kind === 'buff_ap') attackPower += a.value;
         else if (a.kind === 'debuff_ap') attackPower -= a.value;
+        // PHAA-577: percent buffs (e.g. Battle Shout/Blessing of Might) never reach
+        // a pet/mob's stats via recalcPlayerStats (players-only); fold here instead.
+        else if (a.kind === 'buff_ap_pct') apPct += a.value / 100;
       }
+      if (apPct > 0) attackPower *= 1 + apPct;
     }
     return Math.max(0, attackPower);
   }

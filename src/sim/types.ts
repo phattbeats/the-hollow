@@ -203,7 +203,23 @@ export type AuraKind =
   // 2v2 Fiesta power-up buffs: `buff_scale` value = body-size multiplier (also
   // boosts max-hp when >1); `buff_jump` value = jump-height multiplier.
   | 'buff_scale'
-  | 'buff_jump';
+  | 'buff_jump'
+  // Percent whole-group raid buffs (PHAA-577, Board-approved exception to the
+  // classic-era flat model for these six abilities only). Value is stored as an
+  // INTEGER PERCENT POINT (5 = +5%) rather than a 0..1 fraction: applyTalentMods'
+  // buffPct fold does `Math.round(value * mul)` (see classes.ts), and a fractional
+  // value like 0.05 rounds to 0 under any multiplier below 10x. Folded as a percent
+  // of the already-flat-and-item-buffed stat in recalcPlayerStats.
+  | 'buff_ap_pct'
+  | 'buff_sta_pct'
+  | 'buff_armor_pct'
+  | 'buff_int_pct'
+  // Percent armor debuff (PHAA-577 companion to the buff conversion above): Sunder
+  // Armor / Expose Armor / Faerie Fire now reduce armor by a PERCENT (0..1 fraction,
+  // stacking) instead of a flat amount. Deliberately a separate AuraKind from
+  // 'sunder' (which stays flat) so mob corrosion (mob_swing.ts applyCorrosion, whose
+  // `value` is a flat armor number) is entirely unaffected by this change.
+  | 'debuff_armor_pct';
 
 export interface Aura {
   id: string; // ability id that applied it
@@ -1181,7 +1197,18 @@ export type AbilityEffect =
   | { type: 'judgement' } // consume your imbue, deal its judgement damage to the target
   | { type: 'lifeTap'; hp: number; mana: number }
   | { type: 'drainTick'; min: number; max: number; healFrac: number } // channel tick that heals the caster
-  | { type: 'buffTarget'; kind: AuraKind; value: number; duration: number } // fortitude/might/mark on a friendly target
+  | {
+      type: 'buffTarget';
+      kind: AuraKind;
+      value: number;
+      duration: number;
+      // PHAA-577: when true this is a whole-group raid buff. It lands on the
+      // caster, the explicit target (if any), and every living member of the
+      // caster's party/raid, regardless of range. Used by Blessing of Might,
+      // Power Word: Fortitude, Mark of the Wild, Battle Shout, Commanding Shout,
+      // and Arcane Intellect.
+      party?: boolean;
+    } // fortitude/might/mark on a friendly target
   | { type: 'finisherDamage'; base: number; perCombo: number; variance: number } // eviscerate
   | { type: 'dot'; total: number; duration: number; interval: number }
   | { type: 'slow'; mult: number; duration: number }
@@ -1217,6 +1244,12 @@ export type AbilityEffect =
   | { type: 'selfDamagePctMax'; pct: number } // bloodrage cost
   | { type: 'charge' }
   | { type: 'sunder'; armor: number; maxStacks: number } // sunder armor: stacking armor debuff + flat threat
+  // PHAA-577: the percent-armor-debuff sibling of 'sunder' above. Same stacking/
+  // threat/miss-chance mechanics (see effect_dispatch.ts case 'armorDebuffPct'),
+  // but `pct` is a 0..1 fraction reduction per stack instead of a flat amount, and
+  // it lands the AuraKind 'debuff_armor_pct' so it never collides with mob
+  // corrosion's flat 'sunder' auras. Used by Sunder Armor, Expose Armor, Faerie Fire.
+  | { type: 'armorDebuffPct'; pct: number; maxStacks: number; duration: number }
   | { type: 'taunt' } // taunt/growl: match top threat and force-attack the caster
   | { type: 'tamePet' } // hunter tame beast: the targeted mob becomes the caster's pet
   | { type: 'dismissPet' } // release the caster's pet back to the wild

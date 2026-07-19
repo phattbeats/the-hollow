@@ -1451,7 +1451,7 @@
       "tick": 133,
       "time": 6.65,
       "nextId": 416,
-      "state": "a4462947",
+      "state": "45443179",
       "events": "f35f5297",
       "rng": {
         "draws": 468,
@@ -2020,13 +2020,13 @@
             {
               "duration": 30,
               "id": "sunder_armor",
-              "kind": "sunder",
+              "kind": "debuff_armor_pct",
               "name": "Sunder Armor",
               "remaining": 30,
               "school": "physical",
               "sourceId": 407,
               "stacks": 1,
-              "value": 40
+              "value": 0.03
             }
           ],
           "critChance": 0.05,
@@ -2084,7 +2084,7 @@
       "tick": 133,
       "time": 6.65,
       "nextId": 418,
-      "state": "c4f8e27d",
+      "state": "a29d3bb7",
       "events": "87384325",
       "rng": {
         "draws": 470,
@@ -2655,13 +2655,13 @@
             {
               "duration": 30,
               "id": "sunder_armor",
-              "kind": "sunder",
+              "kind": "debuff_armor_pct",
               "name": "Sunder Armor",
               "remaining": 30,
               "school": "physical",
               "sourceId": 407,
               "stacks": 1,
-              "value": 40
+              "value": 0.03
             }
           ],
           "critChance": 0.05,
@@ -2825,7 +2825,7 @@
       "tick": 133,
       "time": 6.65,
       "nextId": 419,
-      "state": "47ae77ee",
+      "state": "a270a878",
       "events": "c428e196",
       "rng": {
         "draws": 475,
@@ -3407,13 +3407,13 @@
             {
               "duration": 30,
               "id": "sunder_armor",
-              "kind": "sunder",
+              "kind": "debuff_armor_pct",
               "name": "Sunder Armor",
               "remaining": 30,
               "school": "physical",
               "sourceId": 407,
               "stacks": 1,
-              "value": 40
+              "value": 0.03
             }
           ],
           "critChance": 0.05,
@@ -3641,7 +3641,7 @@
       "tick": 133,
       "time": 6.65,
       "nextId": 420,
-      "state": "ade9d161",
+      "state": "f7e1af9f",
       "events": "af69443d",
       "rng": {
         "draws": 476,
@@ -4250,13 +4250,13 @@
             {
               "duration": 30,
               "id": "sunder_armor",
-              "kind": "sunder",
+              "kind": "debuff_armor_pct",
               "name": "Sunder Armor",
               "remaining": 30,
               "school": "physical",
               "sourceId": 407,
               "stacks": 1,
-              "value": 40
+              "value": 0.03
             }
           ],
           "critChance": 0.05,
@@ -4534,7 +4534,7 @@
       "tick": 133,
       "time": 6.65,
       "nextId": 421,
-      "state": "02921eb4",
+      "state": "1124a9de",
       "events": "c6d819b8",
       "rng": {
         "draws": 476,
@@ -5156,13 +5156,13 @@
             {
               "duration": 30,
               "id": "sunder_armor",
-              "kind": "sunder",
+              "kind": "debuff_armor_pct",
               "name": "Sunder Armor",
               "remaining": 30,
               "school": "physical",
               "sourceId": 407,
               "stacks": 1,
-              "value": 40
+              "value": 0.03
             }
           ],
           "critChance": 0.05,
@@ -5480,7 +5480,7 @@
       "tick": 133,
       "time": 6.65,
       "nextId": 421,
-      "state": "02921eb4",
+      "state": "1124a9de",
       "events": "741638a5",
       "rng": {
         "draws": 476,
@@ -6102,13 +6102,13 @@
             {
               "duration": 30,
               "id": "sunder_armor",
-              "kind": "sunder",
+              "kind": "debuff_armor_pct",
               "name": "Sunder Armor",
               "remaining": 30,
               "school": "physical",
               "sourceId": 407,
               "stacks": 1,
-              "value": 40
+              "value": 0.03
             }
           ],
           "critChance": 0.05,

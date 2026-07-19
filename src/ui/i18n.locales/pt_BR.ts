@@ -1621,7 +1621,7 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
     'Postura de combate defensiva: você gera 30% mais ameaça, mas causa e recebe 10% menos dano. Lance de novo para sair da postura.',
   'entities.abilities.sunder_armor.name': 'Fender Armadura',
   'entities.abilities.sunder_armor.description':
-    'Fende a armadura do alvo, reduzindo-a em {damage} por aplicação. Acumula até 5 vezes. Gera muita ameaça.',
+    'Fende a armadura do alvo, reduzindo-a em 2% por aplicação. Acumula até 5 vezes. Gera muita ameaça.',
   'entities.abilities.taunt.name': 'Provocar',
   'entities.abilities.taunt.description':
     'Provoca o alvo: sua ameaça sobe para igualar a do inimigo mais odiado por ele, que é forçado a atacar você por 3 s.',

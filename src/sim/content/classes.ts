@@ -387,22 +387,28 @@ export const ABILITIES: Record<string, AbilityDef> = {
     school: 'physical',
     requiresTarget: false,
     exclusiveGroup: 'warrior_shout',
-    effects: [{ type: 'selfBuff', kind: 'buff_ap', value: 20, duration: 120 }],
+    // PHAA-577: Board-approved percent whole-group aura (was a self-only flat
+    // buff_ap 20/35/50). Lands on the whole party/raid, not just the warrior.
+    effects: [{ type: 'buffTarget', kind: 'buff_ap_pct', value: 5, duration: 120, party: true }],
     ranks: [
       {
         rank: 2,
         level: 12,
         cost: 10,
-        effects: [{ type: 'selfBuff', kind: 'buff_ap', value: 35, duration: 120 }],
+        effects: [
+          { type: 'buffTarget', kind: 'buff_ap_pct', value: 8, duration: 120, party: true },
+        ],
       },
       {
         rank: 3,
         level: 20,
         cost: 10,
-        effects: [{ type: 'selfBuff', kind: 'buff_ap', value: 50, duration: 120 }],
+        effects: [
+          { type: 'buffTarget', kind: 'buff_ap_pct', value: 10, duration: 120, party: true },
+        ],
       },
     ],
-    description: 'Increases your attack power by 20 for 2 min.',
+    description: "Increases your party or raid's attack power by 5% for 2 min.",
   },
   commanding_shout: {
     id: 'commanding_shout',
@@ -416,16 +422,20 @@ export const ABILITIES: Record<string, AbilityDef> = {
     school: 'physical',
     requiresTarget: false,
     exclusiveGroup: 'warrior_shout',
-    effects: [{ type: 'selfBuff', kind: 'buff_sta', value: 6, duration: 120 }],
+    // PHAA-577: Board-approved percent whole-group aura (was a self-only flat
+    // buff_sta 6/11). Lands on the whole party/raid, not just the warrior.
+    effects: [{ type: 'buffTarget', kind: 'buff_sta_pct', value: 5, duration: 120, party: true }],
     ranks: [
       {
         rank: 2,
         level: 24,
         cost: 10,
-        effects: [{ type: 'selfBuff', kind: 'buff_sta', value: 11, duration: 120 }],
+        effects: [
+          { type: 'buffTarget', kind: 'buff_sta_pct', value: 8, duration: 120, party: true },
+        ],
       },
     ],
-    description: 'Increases your Stamina by 6 for 2 min.',
+    description: "Increases your party or raid's Stamina by 5% for 2 min.",
   },
   demoralizing_shout: {
     id: 'demoralizing_shout',
@@ -675,18 +685,20 @@ export const ABILITIES: Record<string, AbilityDef> = {
     school: 'physical',
     requiresTarget: true,
     threat: { flat: 100 }, // classic rank-1 value (260 by rank 5 at 58)
-    effects: [{ type: 'sunder', armor: 25, maxStacks: 5 }],
+    // PHAA-577: Board-approved percent armor debuff (was a flat 25/40 armor
+    // reduction per stack). Separate AuraKind from mob corrosion, see types.ts.
+    effects: [{ type: 'armorDebuffPct', pct: 0.02, maxStacks: 5, duration: 30 }],
     ranks: [
       {
         rank: 2,
         level: 16,
         cost: 15,
         threatFlat: 130,
-        effects: [{ type: 'sunder', armor: 40, maxStacks: 5 }],
+        effects: [{ type: 'armorDebuffPct', pct: 0.03, maxStacks: 5, duration: 30 }],
       },
     ],
     description:
-      "Sunders the target's armor, reducing it by $d per application. Stacks up to 5 times. Generates a high amount of threat.",
+      "Sunders the target's armor, reducing it by 2% per application. Stacks up to 5 times. Generates a high amount of threat.",
   },
   taunt: {
     id: 'taunt',
@@ -794,16 +806,20 @@ export const ABILITIES: Record<string, AbilityDef> = {
     range: 0,
     school: 'arcane',
     requiresTarget: false,
-    effects: [{ type: 'selfBuff', kind: 'buff_int', value: 2, duration: 1800 }],
+    // PHAA-577: Board-approved percent whole-group aura (was a self-only flat
+    // buff_int 2/7). Lands on the whole party/raid, not just the mage.
+    effects: [{ type: 'buffTarget', kind: 'buff_int_pct', value: 3, duration: 1800, party: true }],
     ranks: [
       {
         rank: 2,
         level: 14,
         cost: 60,
-        effects: [{ type: 'selfBuff', kind: 'buff_int', value: 7, duration: 1800 }],
+        effects: [
+          { type: 'buffTarget', kind: 'buff_int_pct', value: 8, duration: 1800, party: true },
+        ],
       },
     ],
-    description: 'Increases Intellect by 2 for 30 min.',
+    description: "Increases your party or raid's Intellect by 3% for 30 min.",
   },
   frostbolt: {
     id: 'frostbolt',
@@ -1347,9 +1363,11 @@ export const ABILITIES: Record<string, AbilityDef> = {
     school: 'physical',
     requiresTarget: true,
     spendsCombo: true,
-    effects: [{ type: 'sunder', armor: 170, maxStacks: 1 }],
+    // PHAA-577: Board-approved percent armor debuff (was a flat 170 armor
+    // reduction). Separate AuraKind from mob corrosion, see types.ts.
+    effects: [{ type: 'armorDebuffPct', pct: 0.12, maxStacks: 1, duration: 30 }],
     description:
-      'Finishing move that exposes the target, reducing its armor. More combo points spent build into a deeper cut.',
+      'Finishing move that exposes the target, reducing its armor by 12%. More combo points spent build into a deeper cut.',
   },
   rupture: {
     id: 'rupture',
@@ -1490,22 +1508,30 @@ export const ABILITIES: Record<string, AbilityDef> = {
     school: 'holy',
     requiresTarget: false,
     exclusiveGroup: 'paladin_aura',
-    effects: [{ type: 'selfBuff', kind: 'buff_armor', value: 40, duration: 1800 }],
+    // PHAA-577: Board-approved percent whole-group aura (was a self-only flat
+    // buff_armor 40/75/110). Lands on the whole party/raid, not just the paladin.
+    effects: [
+      { type: 'buffTarget', kind: 'buff_armor_pct', value: 5, duration: 1800, party: true },
+    ],
     ranks: [
       {
         rank: 2,
         level: 12,
         cost: 0,
-        effects: [{ type: 'selfBuff', kind: 'buff_armor', value: 75, duration: 1800 }],
+        effects: [
+          { type: 'buffTarget', kind: 'buff_armor_pct', value: 8, duration: 1800, party: true },
+        ],
       },
       {
         rank: 3,
         level: 18,
         cost: 0,
-        effects: [{ type: 'selfBuff', kind: 'buff_armor', value: 110, duration: 1800 }],
+        effects: [
+          { type: 'buffTarget', kind: 'buff_armor_pct', value: 10, duration: 1800, party: true },
+        ],
       },
     ],
-    description: 'Increases your armor by 40 for 30 min.',
+    description: "Increases your party or raid's armor by 5% for 30 min.",
   },
   judgement: {
     id: 'judgement',
@@ -1534,22 +1560,29 @@ export const ABILITIES: Record<string, AbilityDef> = {
     school: 'holy',
     requiresTarget: true,
     targetType: 'friendly',
-    effects: [{ type: 'buffTarget', kind: 'buff_ap', value: 15, duration: 300 }],
+    // PHAA-577: Board-approved percent whole-group aura (was single-target flat
+    // buff_ap 15/30/45). Lands on the whole party/raid, not just the target.
+    effects: [{ type: 'buffTarget', kind: 'buff_ap_pct', value: 4, duration: 300, party: true }],
     ranks: [
       {
         rank: 2,
         level: 12,
         cost: 40,
-        effects: [{ type: 'buffTarget', kind: 'buff_ap', value: 30, duration: 300 }],
+        effects: [
+          { type: 'buffTarget', kind: 'buff_ap_pct', value: 7, duration: 300, party: true },
+        ],
       },
       {
         rank: 3,
         level: 20,
         cost: 60,
-        effects: [{ type: 'buffTarget', kind: 'buff_ap', value: 45, duration: 300 }],
+        effects: [
+          { type: 'buffTarget', kind: 'buff_ap_pct', value: 10, duration: 300, party: true },
+        ],
       },
     ],
-    description: 'Places a Blessing on a friendly target, increasing attack power by 15 for 5 min.',
+    description:
+      'Places a Blessing on your party or raid, increasing attack power by 4% for 5 min.',
   },
   divine_protection: {
     id: 'divine_protection',
@@ -2006,22 +2039,28 @@ export const ABILITIES: Record<string, AbilityDef> = {
     school: 'holy',
     requiresTarget: true,
     targetType: 'friendly',
-    effects: [{ type: 'buffTarget', kind: 'buff_sta', value: 3, duration: 1800 }],
+    // PHAA-577: Board-approved percent whole-group aura (was single-target flat
+    // buff_sta 3/7/12). Lands on the whole party/raid, not just the target.
+    effects: [{ type: 'buffTarget', kind: 'buff_sta_pct', value: 3, duration: 1800, party: true }],
     ranks: [
       {
         rank: 2,
         level: 12,
         cost: 55,
-        effects: [{ type: 'buffTarget', kind: 'buff_sta', value: 7, duration: 1800 }],
+        effects: [
+          { type: 'buffTarget', kind: 'buff_sta_pct', value: 6, duration: 1800, party: true },
+        ],
       },
       {
         rank: 3,
         level: 20,
         cost: 80,
-        effects: [{ type: 'buffTarget', kind: 'buff_sta', value: 12, duration: 1800 }],
+        effects: [
+          { type: 'buffTarget', kind: 'buff_sta_pct', value: 10, duration: 1800, party: true },
+        ],
       },
     ],
-    description: "Increases the target's Stamina by 3 for 30 min.",
+    description: "Increases your party or raid's Stamina by 3% for 30 min.",
   },
   shadow_word_pain: {
     id: 'shadow_word_pain',
@@ -2855,23 +2894,31 @@ export const ABILITIES: Record<string, AbilityDef> = {
     school: 'nature',
     requiresTarget: true,
     targetType: 'friendly',
-    effects: [{ type: 'buffTarget', kind: 'buff_armor', value: 25, duration: 1800 }],
+    // PHAA-577: Board-approved percent whole-group aura (was single-target flat
+    // buff_armor 25/50/75). Lands on the whole party/raid, not just the target.
+    effects: [
+      { type: 'buffTarget', kind: 'buff_armor_pct', value: 5, duration: 1800, party: true },
+    ],
     ranks: [
       {
         rank: 2,
         level: 10,
         cost: 35,
-        effects: [{ type: 'buffTarget', kind: 'buff_armor', value: 50, duration: 1800 }],
+        effects: [
+          { type: 'buffTarget', kind: 'buff_armor_pct', value: 8, duration: 1800, party: true },
+        ],
       },
       {
         rank: 3,
         level: 16,
         cost: 50,
-        effects: [{ type: 'buffTarget', kind: 'buff_armor', value: 75, duration: 1800 }],
+        effects: [
+          { type: 'buffTarget', kind: 'buff_armor_pct', value: 10, duration: 1800, party: true },
+        ],
       },
     ],
     description:
-      'Places the Mark of the Wild on a friendly target, increasing armor by 25 for 30 min.',
+      'Places the Mark of the Wild on your party or raid, increasing armor by 5% for 30 min.',
   },
   moonfire: {
     id: 'moonfire',
@@ -3317,8 +3364,10 @@ export const ABILITIES: Record<string, AbilityDef> = {
     range: 30,
     school: 'nature',
     requiresTarget: true,
-    effects: [{ type: 'sunder', armor: 35, maxStacks: 1 }],
-    description: "Decreases the target's armor by 35 for 40 sec.",
+    // PHAA-577: Board-approved percent armor debuff (was a flat 35 armor
+    // reduction). Separate AuraKind from mob corrosion, see types.ts.
+    effects: [{ type: 'armorDebuffPct', pct: 0.03, maxStacks: 1, duration: 40 }],
+    description: "Decreases the target's armor by 3% for 40 sec.",
   },
   hibernate: {
     id: 'hibernate',

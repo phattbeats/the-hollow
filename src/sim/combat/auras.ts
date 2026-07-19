@@ -47,6 +47,7 @@ const FRIENDLY_NPC_REJECTED_AURA_KINDS: ReadonlySet<AuraKind> = new Set([
   'polymorph',
   'attackspeed',
   'sunder',
+  'debuff_armor_pct',
   'spellvuln',
   'vulnerability',
   'tongues',
