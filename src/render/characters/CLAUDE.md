@@ -91,3 +91,14 @@ family key for those three mobs, e.g. for prewarm shader-compile dedup).
   only works because it targets non-skinned prop nodes).
 - Never `Math.random` in *sim*, but here it's fine, this is presentation
   (bob phase, hit-clip pick). Never reach past `IWorld` into a concrete world.
+- `assets.ts`'s per-url `optimizedScene` merges same-skeleton/material/parent/
+  transform skinned parts into one draw call (`mergeSkinnedParts`). Any node
+  named in a `VisualDef.bakedArmorSlots` is excluded from that merge
+  (`bakedArmorNodeNamesForUrl`, manifest.ts) on purpose: `setBakedArmorVisibility`
+  finds a node by name at runtime, and a merged node is no longer findable by
+  that name, so it gets stuck visible forever. This bites BOTH rig families,
+  not just quantized ones: the chibi outfits are unquantized with one shared
+  skin, so their armor nodes can (and, on `chibi_female_knight.glb`, already do)
+  collide on the same merge bucket key even across DIFFERENT `EquipSlot`s
+  (PHAA-653, `tests/phaa653_rig_merge_guard.test.ts`). A new `bakedArmorSlots`
+  entry needs no extra opt-in, the protected set is a live union over `VISUALS`.

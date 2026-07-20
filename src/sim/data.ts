@@ -20,6 +20,7 @@ import type {
   QuestDef,
   QuestState,
   ReadableDef,
+  WorldContent,
   ZoneDef,
   ZonePropsDef,
 } from './types';
@@ -27,6 +28,8 @@ import type {
 export type { FishingEntry } from './content/items';
 export { FISHING_RARE_ID, FISHING_TABLES };
 
+import type { CollectibleDef } from './content/collectibles';
+import { COLLECTIBLES as COLLECTIBLES_CONTENT } from './content/collectibles';
 import {
   BROTHER_HALVEN,
   COLLAPSED_RELIQUARY_DELVE,
@@ -129,6 +132,7 @@ export {
 import { DELVE_ITEMS } from './content/delves/items';
 import { HEROIC_DELVE_MARK } from './content/heroic_loot';
 import { buildHeroicVariants } from './content/heroic_variants';
+import { FURY_NPC, WARFARE_ITEMS } from './content/pvp_honor';
 import { DELVE_MODULE_LAYOUTS, type DelveModuleId, delveModuleSpan } from './delve_layout';
 
 function mergeItems(...parts: Record<string, ItemDef>[]): Record<string, ItemDef> {
@@ -187,6 +191,7 @@ export const ITEMS: Record<string, ItemDef> = mergeItems(
   // a derived table entry) so the loot swap and the mark fan-out both resolve
   // to the same id at data-evaluation time.
   { delve_heroic_mark: HEROIC_DELVE_MARK },
+  WARFARE_ITEMS,
 );
 
 export type { AggregatedSetEffect } from './content/item_sets';
@@ -207,6 +212,7 @@ export const NPCS: Record<string, NpcDef> = {
   ...HOLLOW_NPCS,
   brother_halven: BROTHER_HALVEN,
   ...HOLLOW_ZONE_NPCS,
+  [FURY_NPC.id]: FURY_NPC,
 };
 
 export const QUESTS: Record<string, QuestDef> = {
@@ -261,6 +267,15 @@ export const READABLES_BY_ID: Record<string, ReadableDef> = Object.fromEntries(
   READABLES.map((r) => [r.id, r]),
 );
 export const READ_RADIUS = READ_RADIUS_CONTENT;
+
+// Tracked-collectible identity (PHAA-625/626): every readable above also gets a
+// CollectibleDef entry so the collections system + (sibling-ticket) UI panel can
+// resolve kind/zone/set by the same stable id without depending on the readable
+// table directly. See src/sim/content/collectibles.ts.
+export const COLLECTIBLES: CollectibleDef[] = [...COLLECTIBLES_CONTENT];
+export const COLLECTIBLES_BY_ID: Record<string, CollectibleDef> = Object.fromEntries(
+  COLLECTIBLES.map((c) => [c.id, c]),
+);
 
 export const ROADS: { x: number; z: number }[][] = [
   ...ZONE1_ROADS,
@@ -349,6 +364,45 @@ export const WORLD_MIN_Z = ZONES[0].zMin;
 export const WORLD_MAX_Z = ZONES[ZONES.length - 1].zMax;
 
 export const PLAYER_START = { x: 2, z: -2 };
+
+// ---------------------------------------------------------------------------
+// Active world content registry.
+//
+// The terrain function (src/sim/world.ts) and the Sim spawn loop derive the
+// playable world from the spatial data above. To support custom maps (the editor)
+// without forking the engine, that data is reachable through a swappable bundle.
+// The DEFAULT bundle wraps the exact same arrays the built-in game has always
+// used, so with no custom map loaded everything is byte-identical.
+//
+// The editor's offline play-test calls setActiveWorldContent(map) before building
+// the Sim+renderer; the default game never touches it.
+// ---------------------------------------------------------------------------
+
+export const BUILTIN_WORLD: WorldContent = {
+  zones: ZONES,
+  camps: CAMPS,
+  npcs: NPCS,
+  groundObjects: GROUND_OBJECTS,
+  roads: ROADS,
+  props: PROPS,
+  playerStart: PLAYER_START,
+  // No terrainEdits: the built-in heightfield is the pure (x,z,seed) function.
+};
+
+let activeWorld: WorldContent = BUILTIN_WORLD;
+
+// The world content the terrain function and renderer should sample. Defaults to
+// the built-in 3-zone world; the editor swaps it for a custom map during play-test.
+export function getActiveWorldContent(): WorldContent {
+  return activeWorld;
+}
+
+// Swap in a custom world (editor play-test) or restore the built-in (pass nothing).
+// Affects terrain (world.ts), props (render/props.ts), and any consumer that reads
+// through getActiveWorldContent. Spawns come from SimConfig.world too (sim.ts ctor).
+export function setActiveWorldContent(world: WorldContent | null): void {
+  activeWorld = world ?? BUILTIN_WORLD;
+}
 
 // Zone containing a world position (overworld only; clamps to the strip ends).
 export function zoneAt(z: number): ZoneDef {

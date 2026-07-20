@@ -11,7 +11,7 @@ import { COMMAND_NAMES, type CommandName, DISPATCH_ONLY_COMMANDS } from '../src/
 // server/game.ts dispatchMessage switch. This test pins the CURRENT contract by
 // re-deriving both sets directly from source (not from the brief's numbers) and
 // proving:
-//   - the send-set (119) is a SUBSET of the dispatch-set (126): zero send-only,
+//   - the send-set (120) is a SUBSET of the dispatch-set (127): zero send-only,
 //   - dispatch-set \ send-set is exactly the verified 7-entry dispatch-only
 //     allowlist (DISPATCH_ONLY_COMMANDS),
 //   - the send-set is disjoint from that allowlist,
@@ -25,8 +25,13 @@ const repoRoot = fileURLToPath(new URL('..', import.meta.url));
 // Verified counts on the current tree (re-derived below; do not hard-code 85/6).
 // +4 over the pre-Ravenpost tree: mail_send/mail_take/mail_delete/mail_markread
 // are each both a ClientWorld send and a server dispatch case (none dispatch-only).
-const EXPECTED_SEND_COUNT = 120;
-const EXPECTED_DISPATCH_COUNT = 127;
+// +1 over the pre-PHAA-626 tree: readCollectible (IWorldCollections) is both a
+// ClientWorld send and a server dispatch case (not dispatch-only), same as the
+// mail_* commands before it.
+// +1 over the pre-PHAA-660 tree: daily_rewards_claim (IWorldDailyRewards) is
+// both a ClientWorld send and a server dispatch case (not dispatch-only).
+const EXPECTED_SEND_COUNT = 122;
+const EXPECTED_DISPATCH_COUNT = 129;
 const EXPECTED_DISPATCH_ONLY_COUNT = 7;
 
 // The chat sub-channel routing switch (server/game.ts `switch

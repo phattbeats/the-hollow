@@ -59,6 +59,7 @@ import {
   DT,
   dist2d,
   type Entity,
+  emptyMoveInput,
   INSTANCE_EMPTY_TIMEOUT,
   type Vec3,
 } from '../types';
@@ -549,6 +550,9 @@ export function ejectToDelveDoor(ctx: SimContext, pid: number, delve: DelveDef):
   p.combatTimer = 99;
   p.inCombat = false;
   p.autoAttack = false;
+  // A held movement key at the moment of a second delve death must not carry over into
+  // the door-ejected body, or it walks off on its own with no input held (upstream #1723).
+  Object.assign(r.meta.moveInput, emptyMoveInput());
 }
 
 export function failDelveRun(ctx: SimContext, run: DelveRun): void {

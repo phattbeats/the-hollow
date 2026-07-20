@@ -720,10 +720,18 @@ export const sv_SE: EnTranslations = {
         "spi": "Verringert Willenskraft um {value}",
         "allStats": "Verringert alle Attribute um {value}"
       },
+      "increasePct": {
+        "ap": "Increases attack power by {pct}%",
+        "armor": "Increases armor by {pct}%",
+        "int": "Increases Intellect by {pct}%",
+        "sta": "Increases Stamina by {pct}%"
+      },
       "dodge": "Erhöht Ausweichchance um {pct}%",
       "dodgeReduce": "Verringert Ausweichchance um {pct}%",
       "armorFlat": "Verringert Rüstung um {value}",
       "armorFlatStacks": "Verringert Rüstung um {value} ({stacks} Stapel)",
+      "armorPct": "Reduces armor by {pct}%",
+      "armorPctStacks": "Reduces armor by {pct}% ({stacks} stacks)",
       "mortalWound": "Verringert erhaltene Heilung um {pct}%",
       "vulnerability": "Erhöht erlittenen Schaden um {pct}%",
       "physVuln": "Erhöht erlittenen physischen Schaden um {pct}%",
@@ -990,6 +998,21 @@ export const sv_SE: EnTranslations = {
       "spore": "Spore",
       "toolTier": "Tier {tier} tool",
       "toolNone": "No tool"
+    },
+    "warfare": {
+      "ratingLabel": "Warfare",
+      "balance": "Honor: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} Honor",
+      "honorFloat": "+{amount} Honor",
+      "honorGain": "+{amount} Honor ({reason})",
+      "notEnoughHonor": "Not enough honor.",
+      "reasons": {
+        "arenaWin": "Arena win",
+        "fiestaKill": "Fiesta takedown",
+        "fiestaComplete": "Fiesta match",
+        "fiestaWin": "Fiesta win"
+      }
     }
   },
   "mailUi": {
@@ -2421,8 +2444,9 @@ export const sv_SE: EnTranslations = {
       "nothingToHarvest": "That corpse has nothing to harvest.",
       "alreadyHarvested": "This corpse has already been harvested."
     },
-    "dailyRewards": {
-      "claimed": "You claim your daily reward."
+    "collections": {
+      "notFound": "That does not exist.",
+      "tooFar": "Too far away."
     },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
@@ -3800,22 +3824,6 @@ export const sv_SE: EnTranslations = {
       "stool": "Stool"
     }
   },
-  "dailyRewardsUi": {
-    "menuButton": "Daily Rewards",
-    "window": {
-      "title": "Daily Rewards",
-      "close": "Close daily rewards",
-      "claim": "Claim",
-      "claimAria": "Claim today's reward",
-      "claimed": "Claimed. Come back tomorrow.",
-      "locked": "Daily rewards are unavailable on this account right now.",
-      "hint": "One reward per day. Missing a day never costs you anything."
-    },
-    "cell": {
-      "today": "Today",
-      "itemCount": "{count}x {item}"
-    }
-  },
   "itemUi": {
     "money": {
       "goldShort": "g",
@@ -4099,7 +4107,7 @@ export const sv_SE: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Krossa rustning",
-        "description": "Krossar målets rustning och minskar den med {damage} per applicering. Staplas upp till 5 gånger. Genererar en stor mängd hot."
+        "description": "Krossar målets rustning och minskar den med 2% per applicering. Staplas upp till 5 gånger. Genererar en stor mängd hot."
       },
       "taunt": {
         "name": "Håna",
@@ -5197,6 +5205,99 @@ export const sv_SE: EnTranslations = {
       "mistcallers_duffel": {
         "name": "Mistcallers Sjösäck"
       },
+      "bramblewar_warhelm": {
+        "name": "Törnkrig Huvud"
+      },
+      "bramblewar_warspaulders": {
+        "name": "Törnkrig Axlar"
+      },
+      "bramblewar_warplate": {
+        "name": "Törnkrig Bröst"
+      },
+      "bramblewar_girdle": {
+        "name": "Törnkrig Midja"
+      },
+      "bramblewar_legguards": {
+        "name": "Törnkrig Ben"
+      },
+      "bramblewar_gauntlets": {
+        "name": "Törnkrig Händer"
+      },
+      "bramblewar_sabatons": {
+        "name": "Törnkrig Fötter"
+      },
+      "thornbound_crown": {
+        "name": "Törnbunden Huvud"
+      },
+      "thornbound_spaulders": {
+        "name": "Törnbunden Axlar"
+      },
+      "thornbound_hauberk": {
+        "name": "Törnbunden Bröst"
+      },
+      "thornbound_waistguard": {
+        "name": "Törnbunden Midja"
+      },
+      "thornbound_legmail": {
+        "name": "Törnbunden Ben"
+      },
+      "thornbound_handguards": {
+        "name": "Törnbunden Händer"
+      },
+      "thornbound_greaves": {
+        "name": "Törnbunden Fötter"
+      },
+      "nettlestalker_cowl": {
+        "name": "Nässeljägare Huvud"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "Nässeljägare Axlar"
+      },
+      "nettlestalker_harness": {
+        "name": "Nässeljägare Bröst"
+      },
+      "nettlestalker_waistband": {
+        "name": "Nässeljägare Midja"
+      },
+      "nettlestalker_legguards": {
+        "name": "Nässeljägare Ben"
+      },
+      "nettlestalker_grips": {
+        "name": "Nässeljägare Händer"
+      },
+      "nettlestalker_treads": {
+        "name": "Nässeljägare Fötter"
+      },
+      "mossweave_cowl": {
+        "name": "Mossväv Huvud"
+      },
+      "mossweave_mantle": {
+        "name": "Mossväv Axlar"
+      },
+      "mossweave_raiment": {
+        "name": "Mossväv Bröst"
+      },
+      "mossweave_cord": {
+        "name": "Mossväv Midja"
+      },
+      "mossweave_legwraps": {
+        "name": "Mossväv Ben"
+      },
+      "mossweave_handwraps": {
+        "name": "Mossväv Händer"
+      },
+      "mossweave_slippers": {
+        "name": "Mossväv Fötter"
+      },
+      "last_bloom_greatblade": {
+        "name": "Sista Blomningens Storsvärd"
+      },
+      "thornbite_razor": {
+        "name": "Törnbett-Rakkniv"
+      },
+      "heartwood_warstaff": {
+        "name": "Kärnvedens Krigsstav"
+      },
       "bristleback_maul": {
         "name": "Borstryggens klubba"
       },
@@ -6191,6 +6292,11 @@ export const sv_SE: EnTranslations = {
         "name": "Elder Yarrow",
         "title": "Profession Trainer",
         "greeting": "Every build starts as a question. Which second calling speaks to you?"
+      },
+      "bramble": {
+        "name": "Bramble",
+        "title": "Honor Quartermaster",
+        "greeting": "The sands remember every victory. Spend your honor well."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",

@@ -583,8 +583,16 @@ const classAbilityNamesEn = {
         'Heroic Strike',
         'A strong attack that increases melee damage by {damage}. Activates on your next swing.',
       ],
-      ['battle_shout', 'Battle Shout', 'Increases your attack power by 20 for 2 min.'],
-      ['commanding_shout', 'Commanding Shout', 'Increases your Stamina by 6 for 2 min.'],
+      [
+        'battle_shout',
+        'Battle Shout',
+        "Increases your party or raid's attack power by 5% for 2 min.",
+      ],
+      [
+        'commanding_shout',
+        'Commanding Shout',
+        "Increases your party or raid's Stamina by 5% for 2 min.",
+      ],
       [
         'demoralizing_shout',
         'Demoralizing Shout',
@@ -631,7 +639,7 @@ const classAbilityNamesEn = {
       [
         'sunder_armor',
         'Sunder Armor',
-        "Sunders the target's armor, reducing it by {damage} per application. Stacks up to 5 times. Generates a high amount of threat.",
+        "Sunders the target's armor, reducing it by 2% per application. Stacks up to 5 times. Generates a high amount of threat.",
       ],
       [
         'taunt',
@@ -644,7 +652,11 @@ const classAbilityNamesEn = {
         'Hurls a fiery ball that causes {damage} Fire damage plus additional damage over time.',
       ],
       ['frost_armor', 'Frost Armor', 'Encases you in frost, increasing armor by 30 for 30 min.'],
-      ['arcane_intellect', 'Arcane Intellect', 'Increases Intellect by 2 for 30 min.'],
+      [
+        'arcane_intellect',
+        'Arcane Intellect',
+        "Increases your party or raid's Intellect by 3% for 30 min.",
+      ],
       [
         'frostbolt',
         'Frostbolt',
@@ -750,7 +762,7 @@ const classAbilityNamesEn = {
       [
         'expose_armor',
         'Expose Armor',
-        'Finishing move that exposes the target, reducing its armor. More combo points spent build into a deeper cut.',
+        'Finishing move that exposes the target, reducing its armor by 12%. More combo points spent build into a deeper cut.',
       ],
       [
         'rupture',
@@ -783,7 +795,7 @@ const classAbilityNamesEn = {
         'Fills you with Holy power for 30 sec, causing each of your melee swings to deal 4 additional Holy damage. Unleash with Judgement.',
       ],
       ['holy_light', 'Holy Light', 'Heals a friendly target for {damage}.'],
-      ['devotion_aura', 'Devotion Aura', 'Increases your armor by 40 for 30 min.'],
+      ['devotion_aura', 'Devotion Aura', "Increases your party or raid's armor by 5% for 30 min."],
       [
         'judgement',
         'Judgement',

@@ -528,6 +528,16 @@ export const en = {
     dailyRewards: {
       claimed: 'You claim your daily reward.',
     },
+    // Collections core (PHAA-626): readCollectible command error text
+    // (src/sim/collections.ts). Same fill scope as gathering above: the five
+    // non-Latin locales required by the M16 completeness gate are filled, the
+    // rest ship English + pending. The tooFar matcher also re-localizes the
+    // identical pre-existing "Too far away." emits in items/interaction/
+    // trainer/gathering.
+    collections: {
+      notFound: 'That does not exist.',
+      tooFar: 'Too far away.',
+    },
     // Brother Greenpaw's hearth (PHAA-421/PHAA-428): /feed command text and his
     // in-voice feed-response lines. Re-localized through t() against these keys
     // (src/sim/greenpaw_hearth.ts + the /feed helpLines entry in
