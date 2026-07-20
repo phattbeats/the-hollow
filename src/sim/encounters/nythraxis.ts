@@ -916,6 +916,9 @@ export function clearNythraxisWardChannelCast(p: Entity): void {
   p.channeling = false;
   p.castRemaining = 0;
   p.castTotal = 0;
+  // this force-clear never reaches updateCasting's completion path, so a cast
+  // queued in the ward-channel's tail must not survive to misfire later
+  p.queuedCastAbility = null;
 }
 
 export function nythraxisWardstones(ctx: SimContext, boss: Entity): Entity[] {

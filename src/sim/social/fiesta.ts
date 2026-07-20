@@ -40,6 +40,7 @@ import {
 import { abilitiesKnownAt, arenaOrigin } from '../data';
 import { ARENA_SPAWNS_A_2v2, ARENA_SPAWNS_B_2v2 } from '../dungeon_layout';
 import { recalcPlayerStats } from '../entity';
+import { awardFiestaKillHonor } from '../pvp';
 import { Rng } from '../rng';
 import type { ArenaMatch, FiestaPowerup, FiestaState, PlayerMeta } from '../sim';
 import type { SimContext } from '../sim_context';
@@ -87,6 +88,7 @@ export function createFiestaState(ctx: SimContext): FiestaState {
     respawn: new Map(),
     deaths: new Map(),
     kills: new Map(),
+    honorKillsByPair: new Map(),
     streak: new Map(),
     lastKill: new Map(),
     pending: new Map(),
@@ -131,6 +133,10 @@ export function mergeAugmentMods(base: TalentModifiers, augIds: string[]): Talen
       s.staPct += e.staPct ?? 0;
       s.armorPct += e.armorPct ?? 0;
       s.maxHpPct += e.maxHpPct ?? 0;
+      s.strPct += e.strPct ?? 0;
+      s.agiPct += e.agiPct ?? 0;
+      s.intPct += e.intPct ?? 0;
+      s.spiPct += e.spiPct ?? 0;
     }
     if (eff.global) {
       const g = m.global,
@@ -148,6 +154,7 @@ export function mergeAugmentMods(base: TalentModifiers, augIds: string[]): Talen
           costPct: 0,
           cooldownPct: 0,
           castPct: 0,
+          buffPct: 0,
         };
       }
       const cur = m.abilities[am.ability];
@@ -156,6 +163,7 @@ export function mergeAugmentMods(base: TalentModifiers, augIds: string[]): Talen
       cur.costPct += am.costPct ?? 0;
       cur.cooldownPct += am.cooldownPct ?? 0;
       cur.castPct += am.castPct ?? 0;
+      cur.buffPct += am.buffPct ?? 0;
     }
     if (eff.grant) m.grants.push({ ability: eff.grant.ability, rank: eff.grant.rank ?? 1 });
   }
@@ -280,6 +288,7 @@ export function fiestaDownEntity(ctx: SimContext, e: Entity, killer: Entity | nu
   e.channeling = false;
   e.autoAttack = false;
   e.queuedOnSwing = null;
+  e.queuedCastAbility = null;
   e.comboPoints = 0;
   e.comboTargetId = null;
   e.eating = null;
@@ -332,6 +341,9 @@ export function fiestaTakedown(
   else if (killerTeam === 'B') f.scoreB += points;
   if (killerMeta) killerMeta.counters.kills++;
   f.kills.set(killerPid, (f.kills.get(killerPid) ?? 0) + 1);
+  if (killerMeta && !match.practice && ctx.isArenaCrossTeam(match, killerPid, victim.id)) {
+    awardFiestaKillHonor(ctx, killerMeta, victim.id, f.honorKillsByPair);
+  }
 
   fiestaDown(ctx, match, victim, killerPid);
 

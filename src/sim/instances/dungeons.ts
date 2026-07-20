@@ -19,6 +19,7 @@ import { DUNGEON_X_THRESHOLD, DUNGEONS, dungeonAt, instanceOrigin, MOBS, NPCS } 
 import { createGroundObject, createMob, createNpc } from '../entity';
 import type { InstanceSlot, PlayerMeta } from '../sim';
 import type { SimContext } from '../sim_context';
+import { arenaQueueLeave } from '../social/arena';
 import {
   dist2d,
   type Entity,
@@ -33,7 +34,15 @@ const RAID_REQUIRED_DUNGEON_IDS = new Set(['nythraxis_boss_arena']);
 
 export function instanceKeyFor(ctx: SimContext, pid: number): string {
   const party = ctx.partyOf(pid);
-  return party ? `party:${party.id}` : `solo:${pid}`;
+  if (party) return `party:${party.id}`;
+  // Solo instances key on the DURABLE character id when the server supplies one,
+  // so a logout, relog, or character-select "Take Over" (each of which mints a
+  // new entity id) rejoins the SAME live instance instead of claiming a fresh one
+  // with the boss respawned (issue #1600). Offline / sim-only callers have no
+  // characterId and fall back to the entity id, preserving the exact
+  // pre-existing key (and the parity golden trace).
+  const durable = ctx.players.get(pid)?.characterId;
+  return durable !== undefined ? `solo:char:${durable}` : `solo:${pid}`;
 }
 
 export function instanceOriginOf(inst: InstanceSlot): { x: number; z: number } {
@@ -138,6 +147,10 @@ export function enterDungeon(
   p.targetId = null;
   p.autoAttack = false;
   inst.emptyFor = 0;
+  // Stepping inside removes you from any arena queue: a match must never form for
+  // a player standing in an instance and teleport them back inside fully restored
+  // (issue #1600). No-op if they were not queued; notifies any 2v2 teammate.
+  arenaQueueLeave(ctx, r.meta.entityId);
   if (!opts?.quiet)
     ctx.emit({ type: 'log', text: dungeon.enterText, color: '#b9f', pid: r.meta.entityId });
   return true;

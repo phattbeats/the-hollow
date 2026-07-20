@@ -35,6 +35,7 @@ export type FctKind =
   | 'heal'
   | 'xp'
   | 'rested-xp'
+  | 'honor'
   | 'self-note';
 
 /**
@@ -73,6 +74,7 @@ export type FctColorToken =
   | 'heal'
   | 'xp'
   | 'rested-xp'
+  | 'honor'
   | 'self-note';
 
 /**
@@ -159,7 +161,7 @@ function colorToken(kind: FctKind, isSelf: boolean): FctColorToken {
       // (self grey / other white) so it needs no new CSS class.
       return isSelf ? 'miss-self' : 'miss-other';
     default:
-      // The seven non-avoidance kinds are their own color token 1:1; isSelf never
+      // The eight non-avoidance kinds are their own color token 1:1; isSelf never
       // changes their color in the live fct(), so it is ignored here.
       return kind;
   }
