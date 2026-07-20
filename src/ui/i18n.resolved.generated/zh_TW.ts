@@ -313,7 +313,13 @@ export const zh_TW: EnTranslations = {
     "keybinds": {
       "emoteWheel": "表情輪盤",
       "targetFriendly": "選取最近友方",
-      "targetFriendlyNext": "切換友方目標"
+      "targetFriendlyNext": "切換友方目標",
+      "categoryPet": "寵物",
+      "petAttack": "寵物：攻擊",
+      "petStop": "寵物：停止",
+      "petTaunt": "寵物：嘲諷",
+      "petDefensive": "寵物：防禦",
+      "petAggressive": "寵物：攻擊性"
     },
     "options": {
       "clickMoveLeft": "左鍵",
@@ -434,6 +440,9 @@ export const zh_TW: EnTranslations = {
     },
     "statInfo": {
       "fromYour": "來自你的 {value} 點{stat}：",
+      "names": {
+        "spellPower": "法術強度"
+      },
       "desc": {
         "str": "提升你的攻擊強度，使你的武器攻擊更具威力。",
         "agi": "磨練你的反應與準度，提升多項戰鬥屬性。",
@@ -442,6 +451,7 @@ export const zh_TW: EnTranslations = {
         "spi": "加快施法者在脫離戰鬥休息時的法力恢復速度。",
         "armor": "減緩受到的物理打擊。對等級較低的攻擊者減免效果更佳，上限為 75%。",
         "attackPower": "強化你的武器攻擊。每 14 點攻擊強度可增加 1 點每秒傷害。",
+        "spellPower": "提高你法術造成的傷害與治療的強度。每點智力都會提供少量法術強度，此外還有來自裝備與增益的加成。",
         "dps": "你的預估武器每秒傷害，由武器的傷害與速度結合你的攻擊強度計算而來。",
         "critChance": "你的攻擊造成暴擊並施加雙倍傷害的機率。",
         "dodge": "你完全閃躲受到的近戰攻擊、不受任何傷害的機率。"
@@ -464,6 +474,15 @@ export const zh_TW: EnTranslations = {
         "minorForClass": "對你的職業助益甚微。",
         "baseChance": "包含所有冒險者共享的 5% 基礎機率。",
         "dpsApprox": "此為估計值，不計入暴擊與技能傷害。"
+      },
+      "sources": {
+        "header": "構成：",
+        "base": "基礎：{value}",
+        "attributes": "來自屬性：{value}",
+        "fromAttribute": "來自{stat}：{value}",
+        "gear": "裝備：{value}",
+        "buff": "{name}：{value}",
+        "talents": "天賦與效果：{value}"
       }
     },
     "talents": {
@@ -701,10 +720,18 @@ export const zh_TW: EnTranslations = {
         "spi": "精神降低 {value}",
         "allStats": "所有屬性降低 {value}"
       },
+      "increasePct": {
+        "ap": "攻擊強度提高 {pct}%",
+        "armor": "護甲提高 {pct}%",
+        "int": "智力提高 {pct}%",
+        "sta": "耐力提高 {pct}%"
+      },
       "dodge": "閃躲機率提高 {pct}%",
       "dodgeReduce": "閃避機率降低 {pct}%",
       "armorFlat": "護甲降低 {value}",
       "armorFlatStacks": "護甲降低 {value}（{stacks} 層）",
+      "armorPct": "護甲降低 {pct}%",
+      "armorPctStacks": "護甲降低 {pct}%（{stacks} 層）",
       "mortalWound": "受到的治療降低 {pct}%",
       "vulnerability": "受到的傷害提高 {pct}%",
       "physVuln": "受到的物理傷害提高 {pct}%",
@@ -971,6 +998,21 @@ export const zh_TW: EnTranslations = {
       "spore": "孢子",
       "toolTier": "{tier}級工具",
       "toolNone": "無工具"
+    },
+    "warfare": {
+      "ratingLabel": "戰意",
+      "balance": "榮譽：{amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} 榮譽",
+      "honorFloat": "+{amount} 榮譽",
+      "honorGain": "+{amount} 榮譽（{reason}）",
+      "notEnoughHonor": "榮譽不足。",
+      "reasons": {
+        "arenaWin": "競技場勝利",
+        "fiestaKill": "狂歡擊倒",
+        "fiestaComplete": "狂歡比賽",
+        "fiestaWin": "狂歡勝利"
+      }
     }
   },
   "mailUi": {
@@ -989,6 +1031,12 @@ export const zh_TW: EnTranslations = {
     "recipient": "收件人",
     "subjectLabel": "主旨",
     "bodyPlaceholder": "寫下你的信件……",
+    "attachments": "附件（最多 {max} 件）",
+    "removeAttachment": "從這封信中移除{item}",
+    "tooltipAttach": "點擊附加到這封信",
+    "tooltipCannotAttach": "渡鴉不會攜帶任務物品",
+    "parcelQtyDecreaseAria": "少寄一個{item}",
+    "parcelQtyIncreaseAria": "多寄一個{item}",
     "send": "寄出信件",
     "needRecipientOrText": "請先填寫收件人並寫點內容再寄送。",
     "openButton": "帶我去渡鴉驛站。",
@@ -2395,6 +2443,10 @@ export const zh_TW: EnTranslations = {
     "gathering": {
       "nothingToHarvest": "這具屍體沒有什麼可以採集的。",
       "alreadyHarvested": "這具屍體已經被採集過了。"
+    },
+    "collections": {
+      "notFound": "那個東西不存在。",
+      "tooFar": "太遠了。"
     },
     "hearth": {
       "tooFar": "你得靠近綠掌修士才能餵他。",
@@ -3825,6 +3877,7 @@ export const zh_TW: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality}{kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "目前已裝備",
       "ifYouEquip": "裝備後",
       "damageSpeed": "{min} - {max} 傷害 速度 {speed}",
@@ -4054,7 +4107,7 @@ export const zh_TW: EnTranslations = {
       },
       "sunder_armor": {
         "name": "破甲攻擊",
-        "description": "撕裂目標的護甲，每次使其降低 {damage}。最多疊加 5 次。產生大量威脅值。"
+        "description": "撕裂目標的護甲，每次使其降低 2%。最多疊加 5 次。產生大量威脅值。"
       },
       "taunt": {
         "name": "嘲諷",
@@ -5152,6 +5205,99 @@ export const zh_TW: EnTranslations = {
       "mistcallers_duffel": {
         "name": "喚霧者的行囊"
       },
+      "bramblewar_warhelm": {
+        "name": "荊棘戰頭部"
+      },
+      "bramblewar_warspaulders": {
+        "name": "荊棘戰肩部"
+      },
+      "bramblewar_warplate": {
+        "name": "荊棘戰胸部"
+      },
+      "bramblewar_girdle": {
+        "name": "荊棘戰腰部"
+      },
+      "bramblewar_legguards": {
+        "name": "荊棘戰腿部"
+      },
+      "bramblewar_gauntlets": {
+        "name": "荊棘戰手部"
+      },
+      "bramblewar_sabatons": {
+        "name": "荊棘戰腳部"
+      },
+      "thornbound_crown": {
+        "name": "荊棘縛頭部"
+      },
+      "thornbound_spaulders": {
+        "name": "荊棘縛肩部"
+      },
+      "thornbound_hauberk": {
+        "name": "荊棘縛胸部"
+      },
+      "thornbound_waistguard": {
+        "name": "荊棘縛腰部"
+      },
+      "thornbound_legmail": {
+        "name": "荊棘縛腿部"
+      },
+      "thornbound_handguards": {
+        "name": "荊棘縛手部"
+      },
+      "thornbound_greaves": {
+        "name": "荊棘縛腳部"
+      },
+      "nettlestalker_cowl": {
+        "name": "蕁麻潛者頭部"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "蕁麻潛者肩部"
+      },
+      "nettlestalker_harness": {
+        "name": "蕁麻潛者胸部"
+      },
+      "nettlestalker_waistband": {
+        "name": "蕁麻潛者腰部"
+      },
+      "nettlestalker_legguards": {
+        "name": "蕁麻潛者腿部"
+      },
+      "nettlestalker_grips": {
+        "name": "蕁麻潛者手部"
+      },
+      "nettlestalker_treads": {
+        "name": "蕁麻潛者腳部"
+      },
+      "mossweave_cowl": {
+        "name": "苔蘚織頭部"
+      },
+      "mossweave_mantle": {
+        "name": "苔蘚織肩部"
+      },
+      "mossweave_raiment": {
+        "name": "苔蘚織胸部"
+      },
+      "mossweave_cord": {
+        "name": "苔蘚織腰部"
+      },
+      "mossweave_legwraps": {
+        "name": "苔蘚織腿部"
+      },
+      "mossweave_handwraps": {
+        "name": "苔蘚織手部"
+      },
+      "mossweave_slippers": {
+        "name": "苔蘚織腳部"
+      },
+      "last_bloom_greatblade": {
+        "name": "末花巨刃"
+      },
+      "thornbite_razor": {
+        "name": "棘咬剃刃"
+      },
+      "heartwood_warstaff": {
+        "name": "心木戰杖"
+      },
       "bristleback_maul": {
         "name": "硬鬃重槌"
       },
@@ -5504,6 +5650,9 @@ export const zh_TW: EnTranslations = {
       "keeper_coal": {
         "name": "一塊永不冷卻的炭"
       },
+      "hearth_stone": {
+        "name": "一塊仍帶著他爐火餘溫的石頭"
+      },
       "willow_sprig": {
         "name": "一段柳枝"
       },
@@ -5552,6 +5701,10 @@ export const zh_TW: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "護骨者護手"
+      },
+      "delve_heroic_mark": {
+        "name": "英雄聖物庫印記",
+        "flavorText": "由聖物庫守護者頒發的鈐印。在英雄軍需官處兌換聖物庫級裝備。"
       },
       "deacon_reliquary_helm": {
         "name": "執事的聖物庫頭盔"
@@ -6140,6 +6293,11 @@ export const zh_TW: EnTranslations = {
         "title": "副職業訓練師",
         "greeting": "每一套build都始於一個問題：哪個副職業在召喚你？"
       },
+      "bramble": {
+        "name": "布蘭博",
+        "title": "榮譽軍需官",
+        "greeting": "沙場記得每一場勝利。好好花你的榮譽吧。"
+      },
       "tidewatcher_ondrel": {
         "name": "翁德瑞爾·韋恩",
         "title": "守潮者",
@@ -6232,14 +6390,14 @@ export const zh_TW: EnTranslations = {
         "greeting": "你可以坐下。大多數人只是走過去。司事早就把我的名字從冊子上劃掉了，一個被劃掉的名字，學會了安靜，好讓誰都不必想起它還在這兒。"
       },
       "withered_planting": {
-        "name": "The Withered Planting",
-        "title": "The Tribe's Old Willow",
-        "greeting": "Dry roots, dry leaves. Whatever this was meant to grow into, it hasn't yet, and it's been a long while waiting."
+        "name": "枯萎的苗圃",
+        "title": "部族的老柳樹",
+        "greeting": "乾枯的根，乾枯的葉。無論它本該長成什麼，如今都還沒長成，而它已經等了很久很久。"
       },
       "buried_root": {
-        "name": "A Buried Root",
-        "title": "Under the Shrine",
-        "greeting": "Dry. Dry as anything down here ever gets."
+        "name": "一截埋著的根",
+        "title": "神龕之下",
+        "greeting": "乾。乾得就像這底下所有東西一樣。"
       }
     },
     "quests": {
@@ -7119,6 +7277,22 @@ export const zh_TW: EnTranslations = {
           "refuseReply": "……好吧。好吧，我懂你的意思，朋友，這條線劃得也算公道……這樣吧，還是拿著，嚴格說不算你掙來的，但我給出去的大半也不算，頻率這東西，其實沒真的在計較。"
         }
       },
+      "q_your_own_hearth": {
+        "title": "屬於你自己的爐火",
+        "text": "這是最後一件事了，朋友，與其說是差事，不如說是個提醒……路那邊有塊地，法洛牧場，靜靜地等著有人想要它。塞克斯頓·法迪克在照看他的狼群和他守護的那些地方之餘，也順帶留意著那兒——去打個招呼，讓他知道你是會留下來的那種人……之後，那塊地就是你的了，什麼時候準備好都行。",
+        "completion": "就是這樣……你現在有那種眼神了，朋友，那種不再只是路過的眼神。去吧，在那外面找個地方站穩腳跟。我會一如既往地守著這爐火，瓶子也會清楚該去哪兒找你……",
+        "objectives": {
+          "0": {
+            "label": "已見過塞克斯頓·法迪克"
+          }
+        },
+        "dialog": {
+          "complain": "地？我只是想跟你的植物打個招呼而已。",
+          "complainReply": "你隨時都可以，它哪兒也不會去……但一個靈魂光靠拜訪神龕是不夠的，朋友，它需要個能站穩雙腳的地方。用不了多久。法迪克說話慢，但不會浪費你的下午。",
+          "refuse": "我不需要家園。我這樣光是拜訪就很滿足了。",
+          "refuseReply": "……好吧，好吧，不勉強，朋友，那塊地會一直在，就像法迪克一直守著它一樣，等待又不花錢……給，這個還是拿著吧，謝謝你留了這麼久。我想那也算是一種家了。"
+        }
+      },
       "q_root_hollow_boars": {
         "title": "根穴野豬",
         "text": "按曆書，根穴這一季本該休養。可沒人通知野豬。牠們追著蟲子把這裡拱翻了一半，如今連蒼鷺撲翅都嚇不走，這一點我很往心裡去。殺五頭，我才好把這一季照實記下。",
@@ -7180,22 +7354,22 @@ export const zh_TW: EnTranslations = {
         }
       },
       "q_the_long_way_around": {
-        "title": "The Long Way Around",
-        "text": "There's a planting the tribe left half-finished up the old willow, and it's dying for want of one good pour. I can't make that climb anymore, but you've got the legs for it. Take the can. Mind the branches; they hold if you're honest with them.",
-        "completion": "It'll live now. You wouldn't think one climb and one pour was much, against everything else out there. It isn't much. It's only everything to the one thing you poured it on.",
+        "title": "繞遠的路",
+        "text": "老柳樹上頭有一處苗圃，部族沒能栽完，如今就差一場好好的澆灌，眼看要枯死了。那樣的攀爬我再也做不來了，可你有這副腿腳。把水壺帶上。當心那些枝子，只要你對它們誠實，它們就撐得住你。",
+        "completion": "它現在能活下來了。你或許會覺得，比起外頭那麼多事，一次攀爬、一次澆灌算不得什麼。它確實算不得什麼。可對你澆灌的那一樣東西來說，它就是一切。",
         "objectives": {
           "0": {
-            "label": "Water carried up the willow path"
+            "label": "沿柳樹小徑把水送上去"
           }
         }
       },
       "q_the_watering_can": {
-        "title": "The Watering Can",
-        "text": "I've asked you for small things, and you've done them all without once asking why. Here's the last one, and it isn't small, though it'll look it. Take my can down under the shrine, to the thing that's buried there, and give it water. It's been waiting a long time to be given something instead of asked for something.",
-        "completion": "You did it. Of course you did. That was the water, you understand. All of it, all the way back to the day you found me at the lake and thought nothing of it. The same pour, the same promise, kept one more time. Thank you. Now go and be gentle with the world. It is the only thing that ever changed it.",
+        "title": "那把水壺",
+        "text": "我請你做過許多小事，你件件都做了，一次也沒問過為什麼。這是最後一件，它看著小，其實不小。把我的水壺帶到神龕底下，交給埋在那裡的那一樣東西，給它澆上水。它等了很久很久，等的是有人給它什麼，而不是向它要什麼。",
+        "completion": "你做到了。你當然做到了。你明白嗎，那澆下去的是水。是全部的水，一直追溯到你在湖邊遇見我、卻不當一回事的那一天。同樣的一澆，同樣的一諾，又一次守住了。謝謝你。去吧，溫柔地對待這個世界。唯有這一樣，才真正改變過它。",
         "objectives": {
           "0": {
-            "label": "Water given to the buried root"
+            "label": "把水澆給那截埋著的根"
           }
         }
       }

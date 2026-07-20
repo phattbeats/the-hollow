@@ -111,6 +111,19 @@ export interface VisualDef {
    *  flip the standalone weapon files carry). Node name as authored in the GLB;
    *  applied as a local-space rotation (radians) after the bind transform. */
   weaponFix?: { node: string; rotX?: number; rotY?: number; rotZ?: number }[];
+  /** Post-load placement fixups for SKINNED accessory meshes baked INTO a
+   *  character GLB at the wrong scale/position (PHAA-633: the styloo merchant
+   *  outfit's witch hat shipped floating above the head at ~2x scale). Unlike
+   *  `weaponFix`, this bakes a corrective matrix into the node's `geometry`
+   *  (applied once, at the per-url cache-build in `optimizedScene`) rather
+   *  than mutating the node's own transform: a `SkinnedMesh` in the default
+   *  'attached' bind mode recomputes its `bindMatrixInverse` from its own
+   *  `matrixWorld` on every `updateMatrixWorld()` pass, which silently
+   *  cancels out any transform applied directly to the node (confirmed via
+   *  matrix introspection while debugging PHAA-633; `weaponFix`'s node-level
+   *  rotation only works because it targets non-skinned prop meshes). Scale
+   *  is uniform and applied before the translation (T * S). */
+  skinnedMeshFix?: { node: string; position?: [number, number, number]; scale?: number }[];
 }
 
 /** The slice of a VisualDef that decides how held weapons attach (which bones, and
@@ -700,6 +713,12 @@ export const VISUALS: Record<string, VisualDef> = {
     },
     tint: 0x8d5fd3,
     tintStrength: 0.45,
+    // PHAA-633: the merchant outfit's `hat` mesh ships ~2x oversized and
+    // floating well above the head (an authoring bug in the purchased styloo
+    // pack, not a runtime scale/attach issue). Shrink and drop it onto the
+    // head; tuned empirically against the offscreen render rig, see
+    // scripts/phaa633_witch_hat_shot.mjs.
+    skinnedMeshFix: [{ node: 'hat', scale: 0.72, position: [0, 0.66, 0] }],
   },
   player_shaman_f: {
     url: `${PLAYERS}/chibi_female_basemesh.glb`,
@@ -1334,4 +1353,24 @@ export function visibleAttachmentsForGraphics(
   def: Pick<VisualDef, 'attach'>,
 ): readonly AttachDef[] {
   return def.attach ?? [];
+}
+
+const bakedArmorNodeNamesByUrl = new Map<string, ReadonlySet<string>>();
+
+/** Union of every node name gated by ANY VisualDef's `bakedArmorSlots` that
+ *  shares this GLB url (several defs can point at one url, e.g. player_warrior_f
+ *  and player_paladin_f both use chibi_female_knight.glb). PHAA-653: the
+ *  per-url merge cache (assets.ts optimizedScene) must never fuse one of these
+ *  nodes into a body mesh, or its runtime visibility toggle silently stops
+ *  finding it by name and it gets stuck visible. */
+export function bakedArmorNodeNamesForUrl(url: string): ReadonlySet<string> {
+  const hit = bakedArmorNodeNamesByUrl.get(url);
+  if (hit) return hit;
+  const names = new Set<string>();
+  for (const def of Object.values(VISUALS)) {
+    if (def.url !== url || !def.bakedArmorSlots) continue;
+    for (const node of Object.keys(def.bakedArmorSlots)) names.add(node);
+  }
+  bakedArmorNodeNamesByUrl.set(url, names);
+  return names;
 }

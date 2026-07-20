@@ -520,6 +520,16 @@ export const en = {
       nothingToHarvest: 'That corpse has nothing to harvest.',
       alreadyHarvested: 'This corpse has already been harvested.',
     },
+    // Collections core (PHAA-626): readCollectible command error text
+    // (src/sim/collections.ts). Same fill scope as gathering above: the five
+    // non-Latin locales required by the M16 completeness gate are filled, the
+    // rest ship English + pending. The tooFar matcher also re-localizes the
+    // identical pre-existing "Too far away." emits in items/interaction/
+    // trainer/gathering.
+    collections: {
+      notFound: 'That does not exist.',
+      tooFar: 'Too far away.',
+    },
     // Brother Greenpaw's hearth (PHAA-421/PHAA-428): /feed command text and his
     // in-voice feed-response lines. Re-localized through t() against these keys
     // (src/sim/greenpaw_hearth.ts + the /feed helpLines entry in
@@ -1002,6 +1012,14 @@ export const en = {
       reliquary_helm: { name: 'Ossuary Watch Helm' },
       reliquary_shoulder: { name: 'Crumbled Spaulders' },
       reliquary_gloves_rog: { name: 'Bonewarden Grips' },
+      // PHAA-659 (upstream heroic loot wave #1705/#1767): soulbound Heroic-tier
+      // currency, spent at the Heroic Quartermaster. Non-Latin + carrying-locale
+      // fills live in src/ui/i18n.locales/<lang>.ts.
+      delve_heroic_mark: {
+        name: 'Heroic Reliquary Mark',
+        flavorText:
+          'A stamped sigil issued by the keepers of the Reliquary. Redeem it at the Heroic Quartermaster for reliquary-grade gear.',
+      },
       deacon_reliquary_helm: { name: "Deacon's Reliquary Helm" },
       varric_shadow_cowl: { name: "Varric's Shadow Cowl" },
       the_codfather: { name: 'The Codfather' },

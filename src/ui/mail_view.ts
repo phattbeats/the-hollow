@@ -54,3 +54,15 @@ export function buildMailInboxBody(
 export function canSendMail(to: string, subject: string, body: string): boolean {
   return to.trim().length > 0 && (subject.trim().length > 0 || body.trim().length > 0);
 }
+
+// Clamps a staged parcel's quantity after a +/- stepper click (PHAA-645,
+// upstream #1695): never below 1 (use the remove control to drop a parcel
+// entirely) and never above what the sender's bags actually hold, so the
+// stepper can never stage more than is owned. The floor (1) wins over the
+// ceiling when the bags empty to 0 between paints: the parcel stays staged but
+// unsendable, and the server's own stock re-check refuses the send regardless,
+// so this is a display-only edge, never a dupe or loss vector.
+export function clampParcelQty(current: number, delta: number, owned: number): number {
+  const max = Math.max(1, Math.floor(owned));
+  return Math.min(max, Math.max(1, Math.floor(current) + Math.floor(delta)));
+}

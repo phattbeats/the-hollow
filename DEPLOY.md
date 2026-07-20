@@ -133,6 +133,31 @@ For off-box safety, sync the directory to S3 occasionally:
     environment (dev vs prod). If the origin's nginx (in the `ansible-scripts` repo)
     sets a Content-Security-Policy, it must allow `script-src`/`frame-src
     https://challenges.cloudflare.com` or the widget won't load.
+- **Outbound email (Resend, https://resend.com)**: the server sends account-
+  created, email-change, password-reset, and the post-reset security notice
+  through Resend when both halves of the env are set:
+  - `RESEND_API_KEY` (server runtime, secret): the `re_…` key from the
+    Resend dashboard. Never commit; load it from `/opt/eastbrook/.env`
+    (mode 600) the same way the Postgres password is loaded.
+  - `EMAIL_FROM` (server runtime, public): a verified sender on the
+    Resend domain (Resend rejects a non-verified from-address at send
+    time). The recommended production value is `no-reply@thehollow.world`
+    once the `thehollow.world` Send/Domain is verified in Resend.
+  - Absent or a half-set pair: the server falls back to the dev
+    **console** transport (the email is logged to stdout and nothing
+    leaves the box), so a fresh deploy never sends mail until you mean
+    it to. The startup log prints `[email] transport=resend` (or
+    `console`) so the active mode is always visible in `docker compose logs`.
+  - The Resend API is a plain HTTPS POST (`api.resend.com/emails`,
+    bearer auth) so no extra dependency ships with the server; the
+    provider is wrapped in `server/email/resend_sender.ts` and the
+    `selectSender()` precedence is Resend > generic HTTP > console.
+  - `EMAIL_BASE_URL` (or `PUBLIC_BASE_URL`) controls the absolute origin
+    in reset/verify links. In single-realm production set it to the
+    public origin (e.g. `https://thehollow.world`); a missing value
+    falls back to `https://thehollow.world` so a misconfigured env
+    still produces a real-looking link rather than a relative one no
+    mail client can open.
 - **Wallet linking**: the wallet UI uses injected Solana browser wallets and no
   third-party wallet-connect project id. $WOC balance reads are server-side
   only: set `SOLANA_RPC_URL` to a production Solana RPC endpoint and leave it

@@ -362,11 +362,13 @@ describe('sunder armor', () => {
       sim.player.resource = 100;
       sim.castAbility('sunder_armor');
       for (let i = 0; i < 32; i++) sim.tick(); // wait out the GCD
-      const aura = wolf.auras.find((a) => a.kind === 'sunder');
+      // PHAA-577: Sunder Armor is now a percent debuff (AuraKind 'debuff_armor_pct'),
+      // not the flat 'sunder' kind (still used only by mob corrosion).
+      const aura = wolf.auras.find((a) => a.kind === 'debuff_armor_pct');
       applications = aura?.stacks ?? 0;
     }
     expect(applications).toBeGreaterThanOrEqual(2);
-    expect((sim as any).effectiveArmor(wolf)).toBe(armorBefore - 25 * applications);
+    expect((sim as any).effectiveArmor(wolf)).toBeCloseTo(armorBefore * (1 - 0.02 * applications));
     // 100 flat threat per landed sunder (no stance up) + auto-attack noise is
     // excluded because auto-attack never started
     expect(wolf.threat.get(sim.playerId)).toBeGreaterThanOrEqual(100 * applications);
@@ -542,10 +544,16 @@ describe('hunter pets', () => {
     sim.setPlayerLevel(4, paladinId);
     teleport(sim, paladin, pet.pos.x + 7, pet.pos.z);
     paladin.resource = paladin.maxResource;
-    const attackPowerBefore = (sim as any).effectiveAttackPower(pet);
     sim.targetEntity(pet.id, paladinId);
     sim.castAbility('blessing_of_might', paladinId);
-    expect((sim as any).effectiveAttackPower(pet)).toBeGreaterThan(attackPowerBefore);
+    // PHAA-577: Blessing of Might is now a PERCENT attack-power buff. A pet's base
+    // `attackPower` field is architecturally always 0 (mobs/pets never run
+    // recalcPlayerStats; only a FLAT buff_ap aura ever moved it off zero), so a
+    // percent multiplier on it is a no-op (0 * anything = 0) -- consistent with
+    // buff_int already being inert for pets today. The aura still lands (it is not
+    // silently dropped), it just has nothing to multiply.
+    expect(pet.auras.some((a) => a.id === 'blessing_of_might')).toBe(true);
+    expect((sim as any).effectiveAttackPower(pet)).toBe(0);
 
     pet.hp = pet.maxHp - 40;
     const damagedHp = pet.hp;
@@ -1589,7 +1597,7 @@ describe('warlock demon summons', () => {
     expect(voidwalker.petTauntTimer).toBeGreaterThan(0);
   });
 
-  it('recasting the same demon unsummons it', () => {
+  it('recasting the same demon dismisses it and summons a fresh one', () => {
     const sim = makeSim('warlock');
     const demon = summonImp(sim);
     expect(demon.templateId).toBe('imp');
@@ -1599,7 +1607,11 @@ describe('warlock demon summons', () => {
     for (let i = 0; i < 20 * 5; i++) sim.tick();
 
     expect(sim.entities.has(demon.id)).toBe(false);
-    expect(sim.petOf(sim.playerId, true)).toBe(null);
+    const fresh = sim.petOf(sim.playerId, true);
+    expect(fresh).not.toBe(null);
+    expect(fresh?.templateId).toBe('imp');
+    expect(fresh?.id).not.toBe(demon.id);
+    expect(fresh?.hp).toBe(fresh?.maxHp);
   });
 
   it('recasting a dead demon resummons it instead of dismissing', () => {

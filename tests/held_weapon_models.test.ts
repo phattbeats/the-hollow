@@ -57,10 +57,15 @@ describe('held weapon models', () => {
   });
 
   // Every player class swaps its held mainhand to the equipped weapon, EXCEPT the
-  // hunter, which keeps its crossbow regardless of the melee weapon equipped. The
-  // cosmetic Combat Mech (player_mech) is class-agnostic but is included: it still
-  // shows the wearer's equipped mainhand, like every other body.
-  it('all player classes swap the mainhand except the hunter', () => {
+  // hunter, which keeps its crossbow regardless of the melee weapon equipped, and
+  // the chibi `_f` classes, which ship without held weapons as the accepted v1
+  // fallback (per PHAA-587, see the manifest.ts comment above player_warrior_f):
+  // the chibi rig's DEF-hand.R/L bones don't match the KayKit handslot.r/l data
+  // the grip system needs, so a Blender-authored chibi grip table is follow-up
+  // work (PHAA-583), not yet built. The cosmetic Combat Mech (player_mech) is
+  // class-agnostic but is included: it still shows the wearer's equipped
+  // mainhand, like every other KayKit-rig body.
+  it('all player classes swap the mainhand except the hunter and chibi _f classes', () => {
     const players = Object.keys(VISUALS).filter((k) => k.startsWith('player_'));
     expect(players).toContain('player_hunter');
     expect(players).toContain('player_mech');
@@ -68,6 +73,11 @@ describe('held weapon models', () => {
       const def = VISUALS[key];
       if (key === 'player_hunter') {
         expect(def.weaponSlots, 'hunter must keep its crossbow').toBeUndefined();
+      } else if (key.endsWith('_f')) {
+        expect(
+          def.weaponSlots,
+          `${key} is chibi-rigged, no held weapon yet (PHAA-583)`,
+        ).toBeUndefined();
       } else {
         expect(def.weaponSlots?.includes(0), `${key} should swap its mainhand`).toBe(true);
       }

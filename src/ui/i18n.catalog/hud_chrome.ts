@@ -260,6 +260,12 @@ export const hudChromeStrings = {
     emoteWheel: 'Emote Wheel',
     targetFriendly: 'Target Nearest Friendly',
     targetFriendlyNext: 'Cycle Friendly Target',
+    categoryPet: 'Pet',
+    petAttack: 'Pet: Attack',
+    petStop: 'Pet: Stop',
+    petTaunt: 'Pet: Taunt',
+    petDefensive: 'Pet: Defensive',
+    petAggressive: 'Pet: Aggressive',
   },
   // Click-to-move mouse-button toggle labels (Key Bindings panel). The button id
   // 0/2 maps to these at the HUD render boundary.
@@ -425,6 +431,13 @@ export const hudChromeStrings = {
   statInfo: {
     // Header above a primary stat's live breakdown, e.g. "From your 22 Agility:".
     fromYour: 'From your {value} {stat}:',
+    // Stat NAMES otherwise reuse itemUi.stats.*; Spell Power is a character-sheet
+    // only stat (no item carries a labeled Spell Power line), so its label lives
+    // here in the English-only HUD-chrome domain rather than the fully-translated
+    // item-stats catalog.
+    names: {
+      spellPower: 'Spell Power',
+    },
     desc: {
       str: 'Increases your attack power, so your weapon strikes land harder.',
       agi: 'Sharpens your reflexes and aim, improving several of your combat stats.',
@@ -434,6 +447,8 @@ export const hudChromeStrings = {
       armor:
         'Softens incoming physical blows. The reduction is greater against lower-level attackers and is capped at 75%.',
       attackPower: 'Powers your weapon attacks. Every 14 attack power adds 1 damage per second.',
+      spellPower:
+        'Increases the damage of your spells and the strength of your heals. Each point of Intellect grants a little Spell Power, on top of any from gear or buffs.',
       dps: "Your estimated weapon damage per second, combining your weapon's damage and speed with your attack power.",
       critChance: 'Your chance for an attack to strike critically, dealing double damage.',
       dodge: 'Your chance to completely avoid an incoming melee attack, taking no damage.',
@@ -457,6 +472,20 @@ export const hudChromeStrings = {
       minorForClass: 'Of little benefit to your class.',
       baseChance: 'Includes a 5% base chance shared by all adventurers.',
       dpsApprox: 'An estimate, it excludes critical strikes and ability damage.',
+    },
+    // The upstream "where this stat comes from" breakdown: a header plus one line
+    // per origin. Every {value} is a live number; buff lines splice in the active
+    // aura's localized name. The talents line gathers everything not itemized
+    // above (talent bonuses, item-set bonuses, druid form bonuses) so the lines
+    // always add up to the stat shown on the sheet.
+    sources: {
+      header: 'Made up of:',
+      base: 'Base: {value}',
+      attributes: 'From your attributes: {value}',
+      fromAttribute: 'From {stat}: {value}',
+      gear: 'Equipped gear: {value}',
+      buff: '{name}: {value}',
+      talents: 'Talents and effects: {value}',
     },
   },
   // Default name pre-filled into the Save-Build-As dialog, e.g. "Build 3".
@@ -762,10 +791,21 @@ export const hudChromeStrings = {
       spi: 'Reduces Spirit by {value}',
       allStats: 'Reduces all attributes by {value}',
     },
+    // PHAA-577 percent whole-group raid buffs (Battle Shout/Blessing of Might,
+    // Commanding Shout/Power Word: Fortitude, Mark of the Wild, Arcane Intellect).
+    increasePct: {
+      ap: 'Increases attack power by {pct}%',
+      armor: 'Increases armor by {pct}%',
+      int: 'Increases Intellect by {pct}%',
+      sta: 'Increases Stamina by {pct}%',
+    },
     dodge: 'Increases dodge chance by {pct}%',
     dodgeReduce: 'Reduces dodge chance by {pct}%',
     armorFlat: 'Reduces armor by {value}',
     armorFlatStacks: 'Reduces armor by {value} ({stacks} stacks)',
+    // PHAA-577 percent armor debuff (Sunder Armor/Expose Armor/Faerie Fire).
+    armorPct: 'Reduces armor by {pct}%',
+    armorPctStacks: 'Reduces armor by {pct}% ({stacks} stacks)',
     mortalWound: 'Reduces healing received by {pct}%',
     vulnerability: 'Increases damage taken by {pct}%',
     physVuln: 'Increases physical damage taken by {pct}%',
@@ -1044,5 +1084,23 @@ export const hudChromeStrings = {
     spore: 'Spore',
     toolTier: 'Tier {tier} tool',
     toolNone: 'No tool',
+  },
+  // WARFARE: the PvP-only combat rating (item tooltip stat name), the Honor
+  // currency floater/log/vendor text, and the per-reason labels for the honor
+  // SimEvent (src/sim/pvp/honor.ts HonorReason). See docs/design/warfare.md.
+  warfare: {
+    ratingLabel: 'Warfare',
+    balance: 'Honor: {amount}',
+    dualPrice: '{money} + {honor}',
+    honorAmount: '{amount} Honor',
+    honorFloat: '+{amount} Honor',
+    honorGain: '+{amount} Honor ({reason})',
+    notEnoughHonor: 'Not enough honor.',
+    reasons: {
+      arenaWin: 'Arena win',
+      fiestaKill: 'Fiesta takedown',
+      fiestaComplete: 'Fiesta match',
+      fiestaWin: 'Fiesta win',
+    },
   },
 };

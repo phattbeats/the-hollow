@@ -313,7 +313,13 @@ export const ja_JP: EnTranslations = {
     "keybinds": {
       "emoteWheel": "エモートホイール",
       "targetFriendly": "最も近い味方をターゲット",
-      "targetFriendlyNext": "味方ターゲットを順に切り替え"
+      "targetFriendlyNext": "味方ターゲットを順に切り替え",
+      "categoryPet": "ペット",
+      "petAttack": "ペット：攻撃",
+      "petStop": "ペット：停止",
+      "petTaunt": "ペット：挑発",
+      "petDefensive": "ペット：防御",
+      "petAggressive": "ペット：攻撃的"
     },
     "options": {
       "clickMoveLeft": "左クリック",
@@ -434,6 +440,9 @@ export const ja_JP: EnTranslations = {
     },
     "statInfo": {
       "fromYour": "あなたの{stat}{value}による効果:",
+      "names": {
+        "spellPower": "呪文威力"
+      },
       "desc": {
         "str": "攻撃力を上昇させ、武器による攻撃の威力を高めます。",
         "agi": "反射神経と狙いを鋭くし、複数の戦闘ステータスを向上させます。",
@@ -442,6 +451,7 @@ export const ja_JP: EnTranslations = {
         "spi": "戦闘外で休憩している間の、術者のマナ回復速度を速めます。",
         "armor": "物理攻撃のダメージを軽減します。軽減量は格下の攻撃者に対してより大きくなり、上限は75%です。",
         "attackPower": "武器による攻撃を強化します。攻撃力14ごとに秒間ダメージが1上昇します。",
+        "spellPower": "呪文のダメージと回復の効果を高めます。知力1ポイントごとに、装備やバフによる分に加えて、わずかな呪文威力を得られます。",
         "dps": "武器のダメージと速度に攻撃力を組み合わせて算出した、推定の秒間ダメージです。",
         "critChance": "攻撃がクリティカルとなり、ダメージが2倍になる確率です。",
         "dodge": "迫り来る近接攻撃を完全に回避し、ダメージを受けない確率です。"
@@ -464,6 +474,15 @@ export const ja_JP: EnTranslations = {
         "minorForClass": "あなたのクラスにはほとんど効果がありません。",
         "baseChance": "全ての冒険者が共有する5%の基本確率を含みます。",
         "dpsApprox": "推定値であり、クリティカルやアビリティによるダメージは含みません。"
+      },
+      "sources": {
+        "header": "内訳:",
+        "base": "基本: {value}",
+        "attributes": "能力値から: {value}",
+        "fromAttribute": "{stat}から: {value}",
+        "gear": "装備: {value}",
+        "buff": "{name}: {value}",
+        "talents": "タレントと効果: {value}"
       }
     },
     "talents": {
@@ -701,10 +720,18 @@ export const ja_JP: EnTranslations = {
         "spi": "精神力を{value}低下させる",
         "allStats": "すべての能力値を{value}低下させる"
       },
+      "increasePct": {
+        "ap": "攻撃力を{pct}%上昇させる",
+        "armor": "防御力を{pct}%上昇させる",
+        "int": "知力を{pct}%上昇させる",
+        "sta": "耐久力を{pct}%上昇させる"
+      },
       "dodge": "回避率を{pct}%上昇させる",
       "dodgeReduce": "回避率を{pct}%低下させる",
       "armorFlat": "防御力を{value}低下させる",
       "armorFlatStacks": "防御力を{value}低下させる({stacks}スタック)",
+      "armorPct": "防御力を{pct}%低下させる",
+      "armorPctStacks": "防御力を{pct}%低下させる({stacks}スタック)",
       "mortalWound": "受ける回復量を{pct}%低下させる",
       "vulnerability": "受けるダメージを{pct}%増加させる",
       "physVuln": "受ける物理ダメージを{pct}%増加させる",
@@ -971,6 +998,21 @@ export const ja_JP: EnTranslations = {
       "spore": "胞子",
       "toolTier": "ティア{tier}の道具",
       "toolNone": "道具なし"
+    },
+    "warfare": {
+      "ratingLabel": "戦意",
+      "balance": "名誉：{amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "名誉 {amount}",
+      "honorFloat": "+{amount} 名誉",
+      "honorGain": "+{amount} 名誉（{reason}）",
+      "notEnoughHonor": "名誉が足りません。",
+      "reasons": {
+        "arenaWin": "アリーナ勝利",
+        "fiestaKill": "フィエスタ撃破",
+        "fiestaComplete": "フィエスタ試合",
+        "fiestaWin": "フィエスタ勝利"
+      }
     }
   },
   "mailUi": {
@@ -989,6 +1031,12 @@ export const ja_JP: EnTranslations = {
     "recipient": "宛先",
     "subjectLabel": "件名",
     "bodyPlaceholder": "手紙を書いてください...",
+    "attachments": "添付物（最大{max}個）",
+    "removeAttachment": "この手紙から{item}を外す",
+    "tooltipAttach": "クリックしてこの手紙に添付",
+    "tooltipCannotAttach": "渡り烏はクエストアイテムを運びません",
+    "parcelQtyDecreaseAria": "{item}を1つ減らして送る",
+    "parcelQtyIncreaseAria": "{item}を1つ増やして送る",
     "send": "手紙を送る",
     "needRecipientOrText": "送信する前に宛先を指定し、本文を入力してください。",
     "openButton": "レイヴンポストへ案内してください。",
@@ -2395,6 +2443,10 @@ export const ja_JP: EnTranslations = {
     "gathering": {
       "nothingToHarvest": "その死骸には採集できるものが何もない。",
       "alreadyHarvested": "この死骸はすでに採集済みだ。"
+    },
+    "collections": {
+      "notFound": "それは存在しない。",
+      "tooFar": "遠すぎる。"
     },
     "hearth": {
       "tooFar": "緑掌修道士のそばに行かねば、彼に餌をやれんぞ。",
@@ -3825,6 +3877,7 @@ export const ja_JP: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "現在の装備",
       "ifYouEquip": "これを装備すると",
       "damageSpeed": "{min} - {max} ダメージ 速度 {speed}",
@@ -4054,7 +4107,7 @@ export const ja_JP: EnTranslations = {
       },
       "sunder_armor": {
         "name": "アーマー破壊",
-        "description": "対象のアーマーを破壊し、1回ごとに {damage} 低下させます。最大5回まで重なります。大量の脅威を生成します。"
+        "description": "対象のアーマーを破壊し、1回ごとに 2% 低下させます。最大5回まで重なります。大量の脅威を生成します。"
       },
       "taunt": {
         "name": "挑発",
@@ -5152,6 +5205,99 @@ export const ja_JP: EnTranslations = {
       "mistcallers_duffel": {
         "name": "ミストコーラーのダッフルバッグ"
       },
+      "bramblewar_warhelm": {
+        "name": "いばら戦の頭"
+      },
+      "bramblewar_warspaulders": {
+        "name": "いばら戦の肩"
+      },
+      "bramblewar_warplate": {
+        "name": "いばら戦の胸"
+      },
+      "bramblewar_girdle": {
+        "name": "いばら戦の腰"
+      },
+      "bramblewar_legguards": {
+        "name": "いばら戦の脚"
+      },
+      "bramblewar_gauntlets": {
+        "name": "いばら戦の手"
+      },
+      "bramblewar_sabatons": {
+        "name": "いばら戦の足"
+      },
+      "thornbound_crown": {
+        "name": "いばら縛の頭"
+      },
+      "thornbound_spaulders": {
+        "name": "いばら縛の肩"
+      },
+      "thornbound_hauberk": {
+        "name": "いばら縛の胸"
+      },
+      "thornbound_waistguard": {
+        "name": "いばら縛の腰"
+      },
+      "thornbound_legmail": {
+        "name": "いばら縛の脚"
+      },
+      "thornbound_handguards": {
+        "name": "いばら縛の手"
+      },
+      "thornbound_greaves": {
+        "name": "いばら縛の足"
+      },
+      "nettlestalker_cowl": {
+        "name": "棘草追跡の頭"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "棘草追跡の肩"
+      },
+      "nettlestalker_harness": {
+        "name": "棘草追跡の胸"
+      },
+      "nettlestalker_waistband": {
+        "name": "棘草追跡の腰"
+      },
+      "nettlestalker_legguards": {
+        "name": "棘草追跡の脚"
+      },
+      "nettlestalker_grips": {
+        "name": "棘草追跡の手"
+      },
+      "nettlestalker_treads": {
+        "name": "棘草追跡の足"
+      },
+      "mossweave_cowl": {
+        "name": "苔織りの頭"
+      },
+      "mossweave_mantle": {
+        "name": "苔織りの肩"
+      },
+      "mossweave_raiment": {
+        "name": "苔織りの胸"
+      },
+      "mossweave_cord": {
+        "name": "苔織りの腰"
+      },
+      "mossweave_legwraps": {
+        "name": "苔織りの脚"
+      },
+      "mossweave_handwraps": {
+        "name": "苔織りの手"
+      },
+      "mossweave_slippers": {
+        "name": "苔織りの足"
+      },
+      "last_bloom_greatblade": {
+        "name": "最後の花の大剣"
+      },
+      "thornbite_razor": {
+        "name": "棘咬みの剃刀"
+      },
+      "heartwood_warstaff": {
+        "name": "心材の戦杖"
+      },
       "bristleback_maul": {
         "name": "ブリストルバックの大槌"
       },
@@ -5504,6 +5650,9 @@ export const ja_JP: EnTranslations = {
       "keeper_coal": {
         "name": "冷めることのない炭"
       },
+      "hearth_stone": {
+        "name": "彼の炉からまだ温かい石"
+      },
       "willow_sprig": {
         "name": "柳の小枝一本"
       },
@@ -5552,6 +5701,10 @@ export const ja_JP: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "骨守りの手甲"
+      },
+      "delve_heroic_mark": {
+        "name": "ヒロイック聖遺物庫の刻印",
+        "flavorText": "聖遺物庫の守人が発行した刻印。ヒロイック需品係と交換すれば、聖遺物庫級の装備が手に入る。"
       },
       "deacon_reliquary_helm": {
         "name": "助祭の聖遺物庫の兜"
@@ -6140,6 +6293,11 @@ export const ja_JP: EnTranslations = {
         "title": "副職業トレーナー",
         "greeting": "ビルドはすべて、ひとつの問いから始まる。どの副職業があなたを呼んでいる？"
       },
+      "bramble": {
+        "name": "ブランブル",
+        "title": "名誉調達官",
+        "greeting": "闘技場の砂は、すべての勝利を覚えている。名誉は賢く使うといい。"
+      },
       "tidewatcher_ondrel": {
         "name": "オンドレル・ヴェイン",
         "title": "潮見の番人",
@@ -6232,14 +6390,14 @@ export const ja_JP: EnTranslations = {
         "greeting": "座っていいのよ。たいていの人は通り過ぎる。堂守はずっと前に私の名を台帳から消したの。消された名は、静かにしていることを覚える。まだここにいると、誰にも思い出させないように。"
       },
       "withered_planting": {
-        "name": "The Withered Planting",
-        "title": "The Tribe's Old Willow",
-        "greeting": "Dry roots, dry leaves. Whatever this was meant to grow into, it hasn't yet, and it's been a long while waiting."
+        "name": "枯れゆく苗床",
+        "title": "部族の古い柳",
+        "greeting": "乾いた根、乾いた葉。これが何になるはずだったにせよ、まだそうはなっていない。ずいぶん長いあいだ、待ち続けている。"
       },
       "buried_root": {
-        "name": "A Buried Root",
-        "title": "Under the Shrine",
-        "greeting": "Dry. Dry as anything down here ever gets."
+        "name": "埋もれた根",
+        "title": "祠の下",
+        "greeting": "乾いている。この地の底にあるどんなものにも劣らぬほど、乾ききっている。"
       }
     },
     "quests": {
@@ -7119,6 +7277,22 @@ export const ja_JP: EnTranslations = {
           "refuseReply": "……ああ。ああ、わかった、友よ、それも十分公平な線引きだ……なら、これでもとにかく持っといてくれ、厳密には稼いだもんじゃないが、俺が渡すもののほとんどもそうだしな、波長ってやつは、俺が装ってるほど几帳面に数えちゃいないんだ……"
         }
       },
+      "q_your_own_hearth": {
+        "title": "自分だけの炉",
+        "text": "これで最後だ、友よ、これは頼み事っていうより、ちょっとした後押しってやつさ……道の向こうに土地がある、フォロウ・エーカーズ、静かに誰かに望まれるのを待ってる。セクストン・ファディックが、狼の見回りと、彼が守ってる場所のリストの合間に、そこにも半分目を配ってる——挨拶しに行って、お前がここに留まる質だってことを知らせてやってくれ……そのあとは、いつでも好きな時に、その土地はお前のものだ。",
+        "completion": "そういうことだ……お前はもうその顔をしてる、友よ、もう通り過ぎるだけの奴じゃないって顔だ。行けよ、あっちのどこかに足を下ろしてこい。俺は今まで通り炉を灯し続けるし、壺もちゃんとお前の居場所を分かってるさ……",
+        "objectives": {
+          "0": {
+            "label": "セクストン・ファディックと会った"
+          }
+        },
+        "dialog": {
+          "complain": "土地？俺はただお前の植物に挨拶したかっただけだ。",
+          "complainReply": "それはいつでもできる、あいつはどこにも行かないからな……だが魂ってのは祠を訪ねるだけじゃ足りないんだ、友よ、自分の足で立つ場所が要る。そう長くはかからん。ファディックは話し方はのろいが、お前の午後を無駄にはしない。",
+          "refuse": "俺にホームステッドは要らない。ただ訪ねるだけで十分満足だ。",
+          "refuseReply": "……わかった、わかった、無理強いする気はない、友よ、土地はファディックが守ってる通り、そのまま待ってる、待つのに金はかからないしな……ほら、これでも持っといてくれ、こんなに長く留まってくれた分だ。それもある意味、ホームってやつなんだろうな。"
+        }
+      },
       "q_root_hollow_boars": {
         "title": "根の空洞の猪",
         "text": "暦によれば、根の空洞は今季休むはずだった。だが猪どもには通達しておらん。虫を追ってこの地を半分も掘り返し、もう鷺が羽ばたいても逃げん。これは俺個人として腹に据えかねる。五頭狩れば、この季を記録どおりに記せる。",
@@ -7180,22 +7354,22 @@ export const ja_JP: EnTranslations = {
         }
       },
       "q_the_long_way_around": {
-        "title": "The Long Way Around",
-        "text": "There's a planting the tribe left half-finished up the old willow, and it's dying for want of one good pour. I can't make that climb anymore, but you've got the legs for it. Take the can. Mind the branches; they hold if you're honest with them.",
-        "completion": "It'll live now. You wouldn't think one climb and one pour was much, against everything else out there. It isn't much. It's only everything to the one thing you poured it on.",
+        "title": "遠まわりの道",
+        "text": "古い柳の上のほうに、部族がやりかけのまま残していった苗床がある。ひと注ぎの水がないばかりに、枯れかけているんだ。あの登りはもうわたしには無理だが、お前には脚がある。じょうろを持っていきなさい。枝には気をつけて。正直に向き合えば、枝はちゃんと支えてくれる。",
+        "completion": "これでもう生きていける。あの外のいろんなことに比べれば、一度の登りと一度の水やりなんて、たいしたことに思えないだろう。実際、たいしたことじゃない。ただ、お前が水をやったそのひとつにとっては、それがすべてなんだ。",
         "objectives": {
           "0": {
-            "label": "Water carried up the willow path"
+            "label": "柳の小道を登って水を運ぶ"
           }
         }
       },
       "q_the_watering_can": {
-        "title": "The Watering Can",
-        "text": "I've asked you for small things, and you've done them all without once asking why. Here's the last one, and it isn't small, though it'll look it. Take my can down under the shrine, to the thing that's buried there, and give it water. It's been waiting a long time to be given something instead of asked for something.",
-        "completion": "You did it. Of course you did. That was the water, you understand. All of it, all the way back to the day you found me at the lake and thought nothing of it. The same pour, the same promise, kept one more time. Thank you. Now go and be gentle with the world. It is the only thing that ever changed it.",
+        "title": "じょうろ",
+        "text": "これまで小さな頼みごとをいくつもしてきたが、お前は一度も理由を訊かず、そのすべてをやってくれた。これが最後のひとつ。小さく見えるが、小さくはない。わたしのじょうろを祠の下へ持っていって、そこに埋もれているものに水をやってくれ。それはずっと長いあいだ、何かを求められるのではなく、何かを与えられるのを待っていたんだ。",
+        "completion": "やってくれたんだね。もちろん、お前ならそうする。あれは水だったんだよ、わかるかい。すべての水だ。お前が湖のほとりでわたしを見つけて、何とも思わなかったあの日にまでさかのぼる、すべての水。同じひと注ぎ、同じ約束を、もう一度守ってくれた。ありがとう。さあ行って、この世界にやさしくしておやり。それだけが、世界を変えてきた唯一のものなんだ。",
         "objectives": {
           "0": {
-            "label": "Water given to the buried root"
+            "label": "埋もれた根に水をやる"
           }
         }
       }

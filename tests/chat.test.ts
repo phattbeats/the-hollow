@@ -306,6 +306,54 @@ describe('chat channels', () => {
     expect(played?.text).toMatch(/^Time played this session: 1m \d+s\.$/);
   });
 
+  it('/playtime reports session time on a freshly joined character with no prior save', () => {
+    const sim = makeWorld();
+    const a = sim.addPlayer('warrior', 'Aleph');
+    teleport(sim, a, 0, -40);
+    sim.tick();
+    sim.chat('/playtime', a);
+    const events = sim.tick();
+    expect(chatEvents(events)).toHaveLength(0);
+    expect(events).toContainEqual(
+      expect.objectContaining({
+        type: 'error',
+        pid: a,
+        text: 'Total time played: 0s.',
+      }),
+    );
+  });
+
+  it('/playtime folds in a persisted lifetime baseline from the save', () => {
+    const sim = makeWorld();
+    const base = sim.addPlayer('warrior', 'Aleph');
+    teleport(sim, base, 0, -40);
+    const saved = sim.serializeCharacter(base);
+    expect(saved).not.toBeNull();
+    const withHistory = { ...saved!, totalPlayedSeconds: 3661 };
+    const b = sim.addPlayer('warrior', 'Bet', { state: withHistory });
+    teleport(sim, b, 0, -40);
+    sim.tick();
+    sim.chat('/playtime', b);
+    const events = sim.tick();
+    expect(chatEvents(events)).toHaveLength(0);
+    expect(events).toContainEqual(
+      expect.objectContaining({
+        type: 'error',
+        pid: b,
+        text: 'Total time played: 1h 1m 1s.',
+      }),
+    );
+  });
+
+  it('serializeCharacter folds this session into totalPlayedSeconds', () => {
+    const sim = makeWorld();
+    const a = sim.addPlayer('warrior', 'Aleph');
+    teleport(sim, a, 0, -40);
+    for (let i = 0; i < 20 * 5; i++) sim.tick();
+    const saved = sim.serializeCharacter(a);
+    expect(saved?.totalPlayedSeconds).toBeGreaterThanOrEqual(4.9);
+  });
+
   it('/where accepts the /loc and /zone aliases', () => {
     const sim = makeWorld();
     const a = sim.addPlayer('warrior', 'Aleph');

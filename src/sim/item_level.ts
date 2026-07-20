@@ -19,39 +19,23 @@
 //     str/sta, a mage cloth piece stays int/spi). itemScore() is the realized
 //     power (stats + armor + weapon dps) for at-a-glance comparison.
 import { DUNGEONS, MOBS, QUESTS } from './data';
-import type { EquipSlot, ItemDef, Stats } from './types';
+import {
+  HEROIC_VARIANT_SOURCE_LEVEL,
+  PRIMARY_STATS,
+  primaryStatBudget,
+  QUALITY_ILVL_BONUS,
+  QUALITY_STAT_MULT,
+  SLOT_STAT_MULT,
+  STAT_PER_ILVL,
+} from './item_budget';
+import type { ItemDef, Stats } from './types';
 
-// The five primary attributes an item can carry (armor is handled separately: it
-// is an armor-class/slot property, not part of the comparable stat budget).
-export const PRIMARY_STATS = ['str', 'agi', 'sta', 'int', 'spi'] as const;
-export type PrimaryStat = (typeof PRIMARY_STATS)[number];
-
-// A rarer item "punches above" the level of the content that drops it. Grounded in
-// the classic convention that a blue from a level-N pull outclasses a green from
-// the same pull; the exact bumps are tuned to this game's level-20 cap.
-export const QUALITY_ILVL_BONUS: Record<string, number> = {
-  poor: 0,
-  common: 0,
-  uncommon: 1,
-  rare: 3,
-  epic: 6,
-  legendary: 10,
-};
-
-// Share of a level's stat budget that each quality grants. Whites/greys carry no
-// primary stats (armor only), greens roughly half, blues most, purples the full
-// ladder, mirroring the existing hand-authored content (uncommon mid pieces ~2-4
-// pts, class-neutral rares ~5-7 pts; cf. the items.ts budget comment). Legendaries
-// are a steep jump (the two in the game are flagship BiS artifacts that should dwarf
-// epics), tuned so a capstone legendary weapon lands around its existing power.
-export const QUALITY_STAT_MULT: Record<string, number> = {
-  poor: 0,
-  common: 0,
-  uncommon: 0.55,
-  rare: 0.8,
-  epic: 1.0,
-  legendary: 1.9,
-};
+export type { PrimaryStat } from './item_budget';
+export { normalizePrimaryStats, primaryStatBudget } from './item_budget';
+// The pure budget helpers live in ./item_budget so the heroic-variant generator can
+// import them without a cycle (data.ts's initialisation pulls heroic_variants in).
+// Re-export the pure-constant ones; the functions are imported above.
+export { PRIMARY_STATS, QUALITY_ILVL_BONUS, QUALITY_STAT_MULT, SLOT_STAT_MULT, STAT_PER_ILVL };
 
 // Raid loot is one tier above same-level 5-player dungeon loot: a 10-player raid
 // encounter confers this item-level bonus on top of the mob's character level, so
@@ -60,23 +44,6 @@ export const QUALITY_STAT_MULT: Record<string, number> = {
 // suggestedPlayers threshold that marks a dungeon as a raid.
 export const RAID_ILVL_BONUS = 3;
 export const RAID_MIN_PLAYERS = 10;
-
-// Slot weight for the stat budget: chest and main-hand carry the most, the smaller
-// slots less. Matches the slot weighting already described for armor in items.ts
-// (head ~1.0, shoulder ~0.75, gloves ~0.65, waist ~0.55) applied to stat points.
-export const SLOT_STAT_MULT: Record<EquipSlot, number> = {
-  mainhand: 1.0,
-  chest: 1.0,
-  legs: 0.9,
-  helmet: 0.85,
-  shoulder: 0.75,
-  waist: 0.7,
-  gloves: 0.7,
-  feet: 0.65,
-};
-
-// Primary-stat points granted per item level at full (rare-mult x chest-mult = 1).
-export const STAT_PER_ILVL = 0.7;
 
 // itemScore weights: how many armor points and how much weapon DPS count as one
 // primary-stat point, so a single comparable number can span gear types.
@@ -189,24 +156,23 @@ export function isItemLevelEligible(item: ItemDef): boolean {
 // raid bonus so raid loot reads a tier above same-level dungeon loot.
 export function itemLevel(item: ItemDef): number | undefined {
   if (!isItemLevelEligible(item)) return undefined;
+  const bonus = QUALITY_ILVL_BONUS[item.quality ?? 'common'] ?? 0;
+  // Heroic-tier variants (content/heroic_variants.ts) are synthesized at
+  // content-evaluation time and swapped into a mob's drop only at loot-roll time
+  // (src/sim/loot/loot_roll.ts): they never appear in a MobTemplate.loot list or a
+  // quest reward of their own, so the mob/quest source index below can never find
+  // them. Read their level directly off the same HEROIC_VARIANT_SOURCE_LEVEL the
+  // variant's stat budget was built against, so the tooltip shows a real tier AND
+  // the loot-roll swap's "is this an upgrade" comparison has something to compare.
+  if (item.heroicOf) return Math.max(1, HEROIC_VARIANT_SOURCE_LEVEL + bonus);
   const src = sourceIndexOf().get(item.id);
   if (src === undefined) return undefined;
-  const bonus = QUALITY_ILVL_BONUS[item.quality ?? 'common'] ?? 0;
   const raid = src.raid ? RAID_ILVL_BONUS : 0;
   return Math.max(1, src.level + bonus + raid);
 }
 
-// The total primary-stat points an item of this level + quality + slot should grant.
-export function primaryStatBudget(
-  level: number,
-  quality: ItemDef['quality'],
-  slot: EquipSlot | undefined,
-): number {
-  if (!slot) return 0;
-  const q = QUALITY_STAT_MULT[quality ?? 'common'] ?? 0;
-  const s = SLOT_STAT_MULT[slot] ?? 0.7;
-  return Math.max(0, Math.round(level * q * s * STAT_PER_ILVL));
-}
+// The total primary-stat points an item of this level + quality + slot should
+// grant. Now lives in item_budget.ts (re-exported above); the in-file copy is gone.
 
 // The budget an item is expected to carry given its own source/quality/slot, or
 // undefined when the item has no derivable item level.
@@ -236,31 +202,9 @@ export function itemScore(item: ItemDef): number {
   return Math.round(score * 10) / 10;
 }
 
-// Redistribute `budget` primary-stat points across whichever attributes the item
-// already uses, keeping their ratio (its stat identity) and the integer sum EXACTLY
-// equal to `budget`. armor is passed through untouched. Largest-remainder rounding
-// makes it deterministic (ties broken by PRIMARY_STATS order). Note: under a very
-// lopsided ratio with a tiny budget a minor attribute can still round to 0; the
-// authored tiers use balanced ratios where every attribute survives.
-export function normalizePrimaryStats(stats: Partial<Stats>, budget: number): Partial<Stats> {
-  const out: Partial<Stats> = {};
-  if (stats.armor !== undefined) out.armor = stats.armor;
-  const present = PRIMARY_STATS.filter((k) => (stats[k] ?? 0) > 0);
-  const total = present.reduce((a, k) => a + (stats[k] ?? 0), 0);
-  if (present.length === 0 || total === 0 || budget <= 0) return out;
-  const parts = present.map((k) => {
-    const exact = (budget * (stats[k] ?? 0)) / total;
-    const base = Math.floor(exact);
-    return { k, base, frac: exact - base };
-  });
-  let assigned = parts.reduce((a, p) => a + p.base, 0);
-  // Hand out the leftover points to the largest fractional parts first; the stable
-  // PRIMARY_STATS order keeps ties deterministic across runs and hosts.
-  const order = [...parts].sort((a, b) => b.frac - a.frac);
-  for (let i = 0; assigned < budget; i++, assigned++) order[i % order.length].base += 1;
-  for (const p of parts) out[p.k] = p.base;
-  return out;
-}
+// The redistribution function now lives in item_budget.ts (re-exported above) so
+// the heroic-variant generator can reach it during data-evaluation. The
+// authoritative implementation is there; the in-file copy is gone.
 
 // Test/tooling hook: drop the memoized index so a test that mutates the tables can
 // rebuild it. Not used by the running game.

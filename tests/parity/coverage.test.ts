@@ -150,9 +150,10 @@ describe('coverage: each scenario fires its subsystem', () => {
     expect(logs.some((t) => t.startsWith('You abandon'))).toBe(true);
     // Demon Heal channel ticked: applyDemonHealTick emits a heal2 with ability 'Demon Heal'.
     expect(ev.some((e) => e.type === 'heal2' && e.ability === 'Demon Heal')).toBe(true);
-    // Demon swap exercised BOTH branches: a new demon answered, then the same demon faded.
-    expect(logs.some((t) => t.includes('answers your summons'))).toBe(true);
-    expect(logs.some((t) => t.includes('fades back into the void'))).toBe(true);
+    // Demon swap AND same-demon re-summon both produce a fresh demon answering the call
+    // (re-summoning while the current demon is alive dismisses it and summons anew, it
+    // never toggles off into no pet).
+    expect(logs.filter((t) => t.includes('answers your summons')).length).toBeGreaterThanOrEqual(4);
     // despawnPet scrubbed the hunter's targetId (set to the demon, nulled on its hard despawn).
     expect((rec.sim as any).player.targetId).toBeNull();
     // abandon's despawnPersistentPet scrub pulled the biter off the (now-gone) pet.
@@ -653,9 +654,10 @@ describe('coverage: each scenario fires its subsystem', () => {
     const rec = run('c4b_effect_dispatch');
     const ev = rec.allEvents as Ev[];
     const ents = entities(rec);
-    // warrior sunder_armor: the sunder aura landed (or a miss event fired) on its mob.
+    // warrior sunder_armor: the armor-debuff-pct aura landed (or a miss event fired) on its mob.
     const warriorMob = ents.find(
-      (e) => e.templateId === 'forest_wolf' && e.auras?.some((a: Ev) => a.kind === 'sunder'),
+      (e) =>
+        e.templateId === 'forest_wolf' && e.auras?.some((a: Ev) => a.kind === 'debuff_armor_pct'),
     );
     const sunderMiss = ev.some(
       (e) =>
