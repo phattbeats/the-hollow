@@ -3557,6 +3557,9 @@ export class GameServer {
     // Collection tracking core (PHAA-626): the viewer's own collected ids,
     // mirrored whole (small, only grows) same rationale as dclears below.
     maybe('collected', this.sim.collectedIdsFor(anchorSession.pid));
+    // Achievements (PHAA-687): the viewer's own unlocked achievement ids,
+    // mirrored whole (small, only grows) same rationale as collected above.
+    maybe('ach', this.sim.unlockedAchievementsFor(anchorSession.pid));
     maybe('dclears', this.sim.delveClearsFor(anchorSession.pid));
     maybe('delveDaily', this.sim.delveDailyWire(anchorSession.pid));
     // stats + weapon stay per-tick: recalcPlayerStats re-derives them on every
