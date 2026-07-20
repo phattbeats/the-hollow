@@ -15,7 +15,13 @@ import {
 // ClientWorld-vs-Sim parity (the same inventory drives identical models
 // whether read off a Sim or a ClientWorld mirror).
 
-const NO_MODE: BagMode = { tradeOpen: false, marketSell: false, vendorOpen: false, petFeed: false };
+const NO_MODE: BagMode = {
+  tradeOpen: false,
+  marketSell: false,
+  mailAttach: false,
+  vendorOpen: false,
+  petFeed: false,
+};
 
 const ITEMS: Record<string, ItemDef> = {
   sword: { kind: 'weapon', name: 'Sword', quality: 'rare' } as ItemDef,
@@ -28,7 +34,7 @@ const ITEMS: Record<string, ItemDef> = {
 const lookup: ItemLookup = (id) => ITEMS[id];
 
 describe('bagItemAction priority order', () => {
-  it('honors trade > market-sell > vendor > pet-feed > quest > use', () => {
+  it('honors trade > market-sell > mail-attach > vendor > pet-feed > quest > use', () => {
     expect(bagItemAction(ITEMS.sword, { ...NO_MODE, tradeOpen: true })).toBe('trade');
     expect(bagItemAction(ITEMS.sword, { ...NO_MODE, marketSell: true })).toBe('marketSell');
     expect(bagItemAction(ITEMS.questItem, { ...NO_MODE, marketSell: true })).toBe(
@@ -36,6 +42,10 @@ describe('bagItemAction priority order', () => {
     );
     expect(bagItemAction(ITEMS.bound, { ...NO_MODE, marketSell: true })).toBe(
       'marketSellBlockedNoMarket',
+    );
+    expect(bagItemAction(ITEMS.sword, { ...NO_MODE, mailAttach: true })).toBe('mailAttach');
+    expect(bagItemAction(ITEMS.questItem, { ...NO_MODE, mailAttach: true })).toBe(
+      'mailAttachBlockedQuest',
     );
     expect(bagItemAction(ITEMS.sword, { ...NO_MODE, vendorOpen: true })).toBe('vendorSell');
     expect(bagItemAction(ITEMS.bread, { ...NO_MODE, petFeed: true })).toBe('petFeed');
@@ -55,6 +65,12 @@ describe('bagTooltipHintKey', () => {
     );
     expect(bagTooltipHintKey(ITEMS.sword, { ...NO_MODE, marketSell: true })).toBe(
       'itemUi.tooltip.clickMarketList',
+    );
+    expect(bagTooltipHintKey(ITEMS.questItem, { ...NO_MODE, mailAttach: true })).toBe(
+      'mailUi.tooltipCannotAttach',
+    );
+    expect(bagTooltipHintKey(ITEMS.sword, { ...NO_MODE, mailAttach: true })).toBe(
+      'mailUi.tooltipAttach',
     );
     expect(bagTooltipHintKey(ITEMS.questItem, { ...NO_MODE, vendorOpen: true })).toBe(
       'itemUi.tooltip.cannotVendor',

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { Sim } from '../src/sim/sim';
-import type { Entity } from '../src/sim/types';
+import type { Entity, InvSlot } from '../src/sim/types';
 import { groundHeight } from '../src/sim/world';
 
 function makeWorld() {
@@ -399,6 +399,50 @@ describe('the World Market — the Merchant', () => {
     sim2.marketList('bone_fragments', 1, 50, seller2);
     const ids = sim2.marketListings.map((l) => l.id);
     expect(new Set(ids).size).toBe(ids.length); // no id collisions
+  });
+
+  it('keeps a listing whose item id is no longer known instead of dropping it on load (PHAA-450)', () => {
+    const sim = makeWorld();
+    sim.loadMarket({
+      listings: [
+        {
+          id: 9001,
+          sellerKey: 'Seller#1',
+          sellerName: 'Seller',
+          itemId: 'retired_item_no_longer_in_content',
+          count: 1,
+          price: 100,
+          secondsLeft: 500,
+        },
+      ],
+      collections: [
+        {
+          key: 'Seller#1',
+          copper: 0,
+          items: [{ itemId: 'retired_item_no_longer_in_content', count: 2 }],
+        },
+      ],
+      nextListingId: 9002,
+    });
+
+    const kept = sim.marketListings.find((l) => l.id === 9001);
+    expect(kept).toMatchObject({ itemId: 'retired_item_no_longer_in_content', count: 1 });
+
+    const col = (
+      sim.market as unknown as { marketCollections: Map<string, { items: InvSlot[] }> }
+    ).marketCollections.get('Seller#1');
+    expect(col?.items).toEqual([{ itemId: 'retired_item_no_longer_in_content', count: 2 }]);
+
+    // buying a listing with an unknown item id refuses the sale and leaves the
+    // listing intact instead of silently deleting the seller's escrowed goods
+    const buyer = sim.addPlayer('mage', 'Buyer');
+    standAtMerchant(sim, buyer);
+    sim.players.get(buyer)!.copper = 1000;
+    sim.events.length = 0;
+    const bought = sim.marketBuy(9001, buyer);
+    expect(bought).toBe(false);
+    expect(errorsSince(sim).join(' ')).toMatch(/no longer available/i);
+    expect(sim.marketListings.some((l) => l.id === 9001)).toBe(true);
   });
 
   it('always wires a seller their own listings even when the market overflows the wire cap', () => {

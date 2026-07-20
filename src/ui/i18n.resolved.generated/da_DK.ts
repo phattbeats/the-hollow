@@ -313,7 +313,13 @@ export const da_DK: EnTranslations = {
     "keybinds": {
       "emoteWheel": "Følelseshjul",
       "targetFriendly": "Sigt mod nærmeste allierede",
-      "targetFriendlyNext": "Skift allieret mål"
+      "targetFriendlyNext": "Skift allieret mål",
+      "categoryPet": "Pet",
+      "petAttack": "Pet: Attack",
+      "petStop": "Pet: Stop",
+      "petTaunt": "Pet: Taunt",
+      "petDefensive": "Pet: Defensive",
+      "petAggressive": "Pet: Aggressive"
     },
     "options": {
       "clickMoveLeft": "Venstreklik",
@@ -434,6 +440,9 @@ export const da_DK: EnTranslations = {
     },
     "statInfo": {
       "fromYour": "Fra din {value} {stat}:",
+      "names": {
+        "spellPower": "Spell Power"
+      },
       "desc": {
         "str": "Øger din angrebsstyrke, så dine våbenslag rammer hårdere.",
         "agi": "Skærper dine reflekser og dit sigte og forbedrer flere af dine kampegenskaber.",
@@ -442,6 +451,7 @@ export const da_DK: EnTranslations = {
         "spi": "Fremskynder hvor hurtigt en troldkasters mana vender tilbage under hvile, uden for kamp.",
         "armor": "Dæmper indkommende fysiske slag. Reduktionen er større mod angribere af lavere niveau og er begrænset til 75%.",
         "attackPower": "Driver dine våbenangreb. For hver 14 angrebsstyrke tilføjes 1 skade pr. sekund.",
+        "spellPower": "Increases the damage of your spells and the strength of your heals. Each point of Intellect grants a little Spell Power, on top of any from gear or buffs.",
         "dps": "Din anslåede våbenskade pr. sekund, der kombinerer dit våbens skade og hastighed med din angrebsstyrke.",
         "critChance": "Din chance for at et angreb rammer kritisk og gør dobbelt skade.",
         "dodge": "Din chance for helt at undgå et indkommende nærkampsangreb og tage ingen skade."
@@ -464,6 +474,15 @@ export const da_DK: EnTranslations = {
         "minorForClass": "Af ringe gavn for din klasse.",
         "baseChance": "Inkluderer en 5% basischance, som deles af alle eventyrere.",
         "dpsApprox": "Et skøn, det udelader kritiske slag og evneskade."
+      },
+      "sources": {
+        "header": "Made up of:",
+        "base": "Base: {value}",
+        "attributes": "From your attributes: {value}",
+        "fromAttribute": "From {stat}: {value}",
+        "gear": "Equipped gear: {value}",
+        "buff": "{name}: {value}",
+        "talents": "Talents and effects: {value}"
       }
     },
     "talents": {
@@ -701,10 +720,18 @@ export const da_DK: EnTranslations = {
         "spi": "Verringert Willenskraft um {value}",
         "allStats": "Verringert alle Attribute um {value}"
       },
+      "increasePct": {
+        "ap": "Increases attack power by {pct}%",
+        "armor": "Increases armor by {pct}%",
+        "int": "Increases Intellect by {pct}%",
+        "sta": "Increases Stamina by {pct}%"
+      },
       "dodge": "Erhöht Ausweichchance um {pct}%",
       "dodgeReduce": "Verringert Ausweichchance um {pct}%",
       "armorFlat": "Verringert Rüstung um {value}",
       "armorFlatStacks": "Verringert Rüstung um {value} ({stacks} Stapel)",
+      "armorPct": "Reduces armor by {pct}%",
+      "armorPctStacks": "Reduces armor by {pct}% ({stacks} stacks)",
       "mortalWound": "Verringert erhaltene Heilung um {pct}%",
       "vulnerability": "Erhöht erlittenen Schaden um {pct}%",
       "physVuln": "Erhöht erlittenen physischen Schaden um {pct}%",
@@ -971,6 +998,21 @@ export const da_DK: EnTranslations = {
       "spore": "Spore",
       "toolTier": "Tier {tier} tool",
       "toolNone": "No tool"
+    },
+    "warfare": {
+      "ratingLabel": "Warfare",
+      "balance": "Honor: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} Honor",
+      "honorFloat": "+{amount} Honor",
+      "honorGain": "+{amount} Honor ({reason})",
+      "notEnoughHonor": "Not enough honor.",
+      "reasons": {
+        "arenaWin": "Arena win",
+        "fiestaKill": "Fiesta takedown",
+        "fiestaComplete": "Fiesta match",
+        "fiestaWin": "Fiesta win"
+      }
     }
   },
   "mailUi": {
@@ -989,6 +1031,12 @@ export const da_DK: EnTranslations = {
     "recipient": "Recipient",
     "subjectLabel": "Subject",
     "bodyPlaceholder": "Write your letter...",
+    "attachments": "Attachments (up to {max})",
+    "removeAttachment": "Remove {item} from this letter",
+    "tooltipAttach": "Click to attach to this letter",
+    "tooltipCannotAttach": "The raven will not carry quest items",
+    "parcelQtyDecreaseAria": "Send one fewer {item}",
+    "parcelQtyIncreaseAria": "Send one more {item}",
     "send": "Send Letter",
     "needRecipientOrText": "Name a recipient and write something before sending.",
     "openButton": "Show me the Ravenpost.",
@@ -2395,6 +2443,10 @@ export const da_DK: EnTranslations = {
     "gathering": {
       "nothingToHarvest": "That corpse has nothing to harvest.",
       "alreadyHarvested": "This corpse has already been harvested."
+    },
+    "collections": {
+      "notFound": "That does not exist.",
+      "tooFar": "Too far away."
     },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
@@ -3825,6 +3877,7 @@ export const da_DK: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "Aktuelt udrustet",
       "ifYouEquip": "Hvis du udruster denne",
       "damageSpeed": "{min} - {max} Skade Hastighed {speed}",
@@ -4054,7 +4107,7 @@ export const da_DK: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Sønderbryd Rustning",
-        "description": "Sønderbryder målets rustning og reducerer den med {damage} per anvendelse. Stabler op til 5 gange. Genererer en stor mængde trussel."
+        "description": "Sønderbryder målets rustning og reducerer den med 2% per anvendelse. Stabler op til 5 gange. Genererer en stor mængde trussel."
       },
       "taunt": {
         "name": "Hån",
@@ -5152,6 +5205,99 @@ export const da_DK: EnTranslations = {
       "mistcallers_duffel": {
         "name": "Mistcallers Sømandssæk"
       },
+      "bramblewar_warhelm": {
+        "name": "Tjørnekrig Hoved"
+      },
+      "bramblewar_warspaulders": {
+        "name": "Tjørnekrig Skuldre"
+      },
+      "bramblewar_warplate": {
+        "name": "Tjørnekrig Bryst"
+      },
+      "bramblewar_girdle": {
+        "name": "Tjørnekrig Talje"
+      },
+      "bramblewar_legguards": {
+        "name": "Tjørnekrig Ben"
+      },
+      "bramblewar_gauntlets": {
+        "name": "Tjørnekrig Hænder"
+      },
+      "bramblewar_sabatons": {
+        "name": "Tjørnekrig Fødder"
+      },
+      "thornbound_crown": {
+        "name": "Tjørnebundet Hoved"
+      },
+      "thornbound_spaulders": {
+        "name": "Tjørnebundet Skuldre"
+      },
+      "thornbound_hauberk": {
+        "name": "Tjørnebundet Bryst"
+      },
+      "thornbound_waistguard": {
+        "name": "Tjørnebundet Talje"
+      },
+      "thornbound_legmail": {
+        "name": "Tjørnebundet Ben"
+      },
+      "thornbound_handguards": {
+        "name": "Tjørnebundet Hænder"
+      },
+      "thornbound_greaves": {
+        "name": "Tjørnebundet Fødder"
+      },
+      "nettlestalker_cowl": {
+        "name": "Brændenældejæger Hoved"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "Brændenældejæger Skuldre"
+      },
+      "nettlestalker_harness": {
+        "name": "Brændenældejæger Bryst"
+      },
+      "nettlestalker_waistband": {
+        "name": "Brændenældejæger Talje"
+      },
+      "nettlestalker_legguards": {
+        "name": "Brændenældejæger Ben"
+      },
+      "nettlestalker_grips": {
+        "name": "Brændenældejæger Hænder"
+      },
+      "nettlestalker_treads": {
+        "name": "Brændenældejæger Fødder"
+      },
+      "mossweave_cowl": {
+        "name": "Mosvævet Hoved"
+      },
+      "mossweave_mantle": {
+        "name": "Mosvævet Skuldre"
+      },
+      "mossweave_raiment": {
+        "name": "Mosvævet Bryst"
+      },
+      "mossweave_cord": {
+        "name": "Mosvævet Talje"
+      },
+      "mossweave_legwraps": {
+        "name": "Mosvævet Ben"
+      },
+      "mossweave_handwraps": {
+        "name": "Mosvævet Hænder"
+      },
+      "mossweave_slippers": {
+        "name": "Mosvævet Fødder"
+      },
+      "last_bloom_greatblade": {
+        "name": "Sidste Blomstrings Storsværd"
+      },
+      "thornbite_razor": {
+        "name": "Tornebid-Ragekniv"
+      },
+      "heartwood_warstaff": {
+        "name": "Kerneved-Krigsstav"
+      },
       "bristleback_maul": {
         "name": "Børsterygs-Lemlæster"
       },
@@ -5504,6 +5650,9 @@ export const da_DK: EnTranslations = {
       "keeper_coal": {
         "name": "Et Kul Der Aldrig Kølede Af"
       },
+      "hearth_stone": {
+        "name": "En Sten, Stadig Varm Fra Hans Arne"
+      },
       "willow_sprig": {
         "name": "En Pilekvist"
       },
@@ -5552,6 +5701,10 @@ export const da_DK: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "Benvogterens Greb"
+      },
+      "delve_heroic_mark": {
+        "name": "Heroisk Relikvarie-Mærke",
+        "flavorText": "Et stemplet segl udstedt af Relikvariets vogtere. Indløs det hos Den Heroiske Kvartermester for udstyr af relikvariegrad."
       },
       "deacon_reliquary_helm": {
         "name": "Diakonens Relikviehjelm"
@@ -6139,6 +6292,11 @@ export const da_DK: EnTranslations = {
         "name": "Elder Yarrow",
         "title": "Profession Trainer",
         "greeting": "Every build starts as a question. Which second calling speaks to you?"
+      },
+      "bramble": {
+        "name": "Bramble",
+        "title": "Honor Quartermaster",
+        "greeting": "The sands remember every victory. Spend your honor well."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
@@ -7117,6 +7275,22 @@ export const da_DK: EnTranslations = {
           "complainReply": "once is a favor, friend, three's a habit, and i been burned by favors before... this ain't about the hearth needin' it, the hearth's fine, i keep it fine, it's about you comin' back on your own two feet 'cause you wanted to, not 'cause some quest marker told you to... three times. no rush on the countin'.",
           "refuse": "I'm not doing this three separate times. Once was enough.",
           "refuseReply": "...yeah. yeah, okay, i hear you, friend, that's a fair enough line to draw... tell you what, here, take it anyway, ain't earned in the strictest sense but neither's most of what i hand out, and the wavelength don't really keep score the way i pretend it does..."
+        }
+      },
+      "q_your_own_hearth": {
+        "title": "A Hearth of Your Own",
+        "text": "here's the last of it, friend, and it ain't really an errand so much as a nudge... there's ground out past the road, fallow acres, sittin' quiet and waitin' on somebody to want it. sexton faddick keeps half an eye on it between his wolves and his list of kept places - go say hello, let him know you're the kind that stays... after that the ground's yours to claim, whenever you're ready for it.",
+        "completion": "there it is... you got the look now, friend, the one that says you ain't just passin' through no more. go on, plant your feet somewhere out there. i'll keep the hearth lit same as always, and the vase'll know right where to find you...",
+        "objectives": {
+          "0": {
+            "label": "Sexton Faddick met"
+          }
+        },
+        "dialog": {
+          "complain": "Ground? I just wanted to say hi to your plant.",
+          "complainReply": "and you can, anytime, he ain't goin' anywhere... but a soul needs more than a shrine to visit, friend, it needs somewhere to plant its own two feet. won't take long. faddick talks slow but he don't waste your afternoon.",
+          "refuse": "I don't need a homestead. I'm happy just visiting.",
+          "refuseReply": "...alright, alright, no pressure in it, friend, the ground'll keep same as faddick keeps it, waitin' don't cost it nothin'... here, take this anyway, for stickin' around this long. that's its own kind of home, i guess."
         }
       },
       "q_root_hollow_boars": {

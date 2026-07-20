@@ -24,7 +24,7 @@ import { DUNGEONS, dungeonAt, isDelvePos, zoneAt } from './data';
 import { recalcPlayerStats } from './entity';
 import type { SimContext } from './sim_context';
 import type { Entity, SimEvent, Vec3 } from './types';
-import { CAST_COMPLETE_EPS, DT } from './types';
+import { CAST_COMPLETE_EPS, DT, emptyMoveInput } from './types';
 
 // Mobs that despawn after sitting out of combat too long (boss adds that should not
 // litter the world). The idle timer is reset to DAMAGE_IDLE_DESPAWN_SECONDS whenever
@@ -187,6 +187,10 @@ export function releasePlayerSpirit(ctx: SimContext, pid?: number): void {
   p.prevPos = { ...p.pos };
   rebucketEntity(ctx, p);
   p.facing = 0;
+  // Whatever movement keys were held at the moment of death must not carry over: the
+  // ghost is teleported to the graveyard and should sit still until the player actually
+  // presses a key again, not keep walking in the last held direction (upstream #1723).
+  Object.assign(meta.moveInput, emptyMoveInput());
   p.auras = [];
   p.ccDr.clear();
   recalcPlayerStats(p, meta.cls, meta.equipment, ctx.playerMods(meta));
@@ -195,6 +199,7 @@ export function releasePlayerSpirit(ctx: SimContext, pid?: number): void {
   p.targetId = null;
   p.autoAttack = false;
   p.queuedOnSwing = null;
+  p.queuedCastAbility = null;
   p.combatTimer = 99;
   p.inCombat = false;
   ctx.emit({ type: 'respawn', pid: meta.entityId });
@@ -247,6 +252,9 @@ export function releaseSpiritInDelve(ctx: SimContext, pid: number): void {
   p.prevPos = { ...entry };
   rebucketEntity(ctx, p);
   p.facing = 0;
+  // A held movement key at the moment of a delve death must not carry over into the
+  // respawned body, or it walks off on its own with no input held (upstream #1723).
+  Object.assign(r.meta.moveInput, emptyMoveInput());
   p.auras = [];
   p.ccDr.clear();
   recalcPlayerStats(p, r.meta.cls, r.meta.equipment, r.meta.talentMods);

@@ -2,6 +2,11 @@
 // provider-specific is isolated here so swapping mail providers, or running with
 // none in dev, is a one-file concern. No new dependency: HttpSender uses the
 // same raw `fetch` the codebase already uses for Turnstile and the Solana RPC.
+// Resend (https://resend.com) lives in its own module (`resend_sender.ts`)
+// because the board picked it as the production provider; the file is
+// intentionally tiny so swapping to another provider later is a one-file edit.
+
+import { selectResendSender } from './resend_sender';
 
 export interface OutboundEmail {
   to: string;
@@ -72,10 +77,14 @@ export class HttpSender implements EmailSender {
   }
 }
 
-// Pick a transport from the environment. Real delivery requires BOTH a provider
-// URL and key plus a from-address; anything missing falls back to console so a
-// half-configured env can never silently drop mail on the floor without a log.
+// Pick a transport from the environment. Precedence: Resend (board-picked
+// provider, https://resend.com) > generic HTTP > Console. Real delivery
+// requires a key plus a from-address; anything missing the active provider
+// falls back so a half-configured env can never silently drop mail on the
+// floor without a log line.
 export function selectSender(env: NodeJS.ProcessEnv = process.env): EmailSender {
+  const resend = selectResendSender(env);
+  if (resend) return resend;
   const apiUrl = env.EMAIL_API_URL?.trim();
   const apiKey = env.EMAIL_API_KEY?.trim();
   const from = env.EMAIL_FROM?.trim();
