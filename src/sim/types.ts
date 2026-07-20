@@ -2058,6 +2058,11 @@ export type SimEvent = { pid?: number } & (
   // future kinds later) was newly marked collected for this player. Personal
   // (always carries pid); never re-fired for an already-collected id.
   | { type: 'collectibleFound'; collectibleId: string }
+  // Achievements (PHAA-687): a discrete achievement was newly unlocked for this
+  // player. Personal (always carries pid); idempotent, never re-fired for an
+  // already-unlocked id. Carries the stable achievement id only (the sim stays
+  // language-agnostic); the client resolves the display name.
+  | { type: 'achievementUnlocked'; achievementId: string }
   | { type: 'learnAbility'; abilityId: string; rank: number }
   | { type: 'loot'; text: string }
   | {

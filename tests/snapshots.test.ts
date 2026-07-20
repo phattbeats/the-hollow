@@ -1782,10 +1782,11 @@ describe('lockpick view rebuilds from events on the online client', () => {
 // while the prior decoded value is preserved.
 // ---------------------------------------------------------------------------
 
-// The pinned set of the 36 `maybe(...)` delta keys, sorted. Cross-checked below
+// The pinned set of the 39 `maybe(...)` delta keys, sorted. Cross-checked below
 // against the live `maybe(...)` calls scraped from server/game.ts source, so a
-// 36th unregistered delta key reddens this gate.
+// 40th unregistered delta key reddens this gate.
 const ALL_DELTA_KEYS = [
+  'ach',
   'arena',
   'bags',
   'buyback',
@@ -1834,6 +1835,7 @@ const ALL_DELTA_KEYS = [
 // delta key whose IWorld name differs from its terse key (stats/weapon/delveDaily
 // keep their name; tal fans out to several members and is asserted directly).
 const TERSE_TO_IWORLD: Record<string, string> = {
+  ach: 'unlockedAchievementIds',
   arena: 'arenaInfo',
   buyback: 'vendorBuyback',
   cds: 'cooldowns',
@@ -1875,9 +1877,9 @@ const TERSE_TO_IWORLD: Record<string, string> = {
 // filter without a wall-clock read in test scaffolding.
 const FAR_FUTURE_MS = 8_000_000_000_000;
 
-// Dirty every one of the 31 `maybe()` delta fields with a distinguishable,
+// Dirty every one of the 39 `maybe()` delta fields with a distinguishable,
 // non-default value so the round-trip + no-op-omission assertions are meaningful
-// (a fresh session carries all 31 on snapshot #1 regardless, since lastSent is
+// (a fresh session carries all 39 on snapshot #1 regardless, since lastSent is
 // empty). Most fields are set on their real PlayerMeta/Entity/session source;
 // for the few whose authentic setup is mutually exclusive in one player state we
 // poke the exact source field the encoder reads, per the brief (the gate asserts
@@ -1962,6 +1964,8 @@ function dirtyEveryDeltaField(): {
   meta.gatheringProficiency = { amber: 3, heartwood: 0, spore: 0 };
   // collected (PHAA-626): a non-default collected-id set for this player.
   meta.collectedIds.add('torn_ledger_page');
+  // ach (PHAA-687): a non-default unlocked-achievement set for this player.
+  meta.achievements.unlocked.add('first_pages');
   // gnodecd (PHAA-618): put one gather node on cooldown for this player so the
   // per-viewer cooldown-id list rides the wire as a non-default value.
   meta.nodeHarvestReadyAt[GATHER_NODES[0].id] = sim.time + 120;
@@ -2008,7 +2012,7 @@ function dirtyEveryDeltaField(): {
 }
 
 describe('full self-state snapshot delta fixture', () => {
-  it('carries every one of the 36 dirtied delta keys on the first snapshot', () => {
+  it('carries every one of the 39 dirtied delta keys on the first snapshot', () => {
     const { server, fc } = dirtyEveryDeltaField();
     broadcast(server);
     const snap = lastSnap(fc.sent);
@@ -2087,6 +2091,8 @@ describe('full self-state snapshot delta fixture', () => {
     expect(client.nodeHarvestableByMe(GATHER_NODES[1].id)).toBe(true);
     // collected -> collectedIds
     expect(client.collectedIds).toEqual(['torn_ledger_page']);
+    // ach -> unlockedAchievementIds
+    expect(client.unlockedAchievementIds).toEqual(['first_pages']);
     expect(client.delveClears).toEqual({ 'collapsed_reliquary:heroic': 1 }); // dclears -> delveClears
     expect(client.delveDaily).toMatchObject({ markClears: 4 }); // delveDaily
     // tal -> talents / talentSpec / loadouts / activeLoadout
@@ -2098,7 +2104,7 @@ describe('full self-state snapshot delta fixture', () => {
     expect(client.activeLoadout).toBe(0);
   });
 
-  it('omits all 36 delta keys on a no-op re-broadcast and preserves the prior mirror', () => {
+  it('omits all 39 delta keys on a no-op re-broadcast and preserves the prior mirror', () => {
     const { server, fc, leader, memberPid } = dirtyEveryDeltaField();
     broadcast(server);
     const client = bareClient(leader.pid);
@@ -2113,7 +2119,7 @@ describe('full self-state snapshot delta fixture', () => {
     const delveRunRef = client.delveRun;
 
     // a second broadcast with NO intervening sim.tick() and no state mutation: the
-    // maybe() closure sees byte-identical JSON for all 31 and omits every one
+    // maybe() closure sees byte-identical JSON for all 39 and omits every one
     fc.sent.length = 0;
     broadcast(server);
     const snap2 = lastSnap(fc.sent);
@@ -2137,9 +2143,9 @@ describe('full self-state snapshot delta fixture', () => {
 });
 
 describe('delta-key contract pins (anti-drift)', () => {
-  it('ALL_DELTA_KEYS contains exactly 38 unique keys in sorted order', () => {
-    expect(ALL_DELTA_KEYS).toHaveLength(38);
-    expect(new Set(ALL_DELTA_KEYS).size).toBe(38);
+  it('ALL_DELTA_KEYS contains exactly 39 unique keys in sorted order', () => {
+    expect(ALL_DELTA_KEYS).toHaveLength(39);
+    expect(new Set(ALL_DELTA_KEYS).size).toBe(39);
     expect([...ALL_DELTA_KEYS]).toEqual([...ALL_DELTA_KEYS].sort());
   });
 
@@ -2152,7 +2158,7 @@ describe('delta-key contract pins (anti-drift)', () => {
     for (let m = re.exec(src); m !== null; m = re.exec(src)) scraped.add(m[1]);
     expect(scraped.has('lockouts')).toBe(true); // the multi-line call IS captured
     expect(scraped.has('lrollg')).toBe(true); // group-visible loot roll strip (PHAA-568)
-    expect(scraped.size).toBe(38);
+    expect(scraped.size).toBe(39);
     expect([...scraped].sort()).toEqual([...ALL_DELTA_KEYS].sort());
   });
 

@@ -14,7 +14,13 @@ import {
   type TalentAllocation,
   talentPointsAtLevel,
 } from '../sim/content/talents';
-import { abilitiesKnownAt, CLASSES, NPCS, resolveDelveShopOffers } from '../sim/data';
+import {
+  ACHIEVEMENTS_BY_ID,
+  abilitiesKnownAt,
+  CLASSES,
+  NPCS,
+  resolveDelveShopOffers,
+} from '../sim/data';
 import { deadTargetSelectable } from '../sim/dead_target';
 import { LEADERBOARD_PAGE_SIZE } from '../sim/leaderboard_page';
 import type { Ante, PickAction } from '../sim/lockpick';
@@ -1708,6 +1714,9 @@ export class ClientWorld implements IWorld {
       // Collection tracking core (PHAA-626): the viewer's own collected-id set,
       // mirrored whole (small, only grows) same shape as dclears/dcomp above.
       if (s.collected !== undefined) this.collectedIds = s.collected ?? [];
+      // Achievements (PHAA-687): the viewer's unlocked achievement ids, mirrored
+      // whole (small, only grows) same shape as collected above.
+      if (s.ach !== undefined) this.unlockedAchievementIds = s.ach ?? [];
       if (s.dclears !== undefined) this.delveClears = s.dclears ?? {};
       if (s.delveDaily !== undefined) this.delveDaily = s.delveDaily;
       // camera follows server-side facing changes when not mouselooking
@@ -1894,6 +1903,16 @@ export class ClientWorld implements IWorld {
   collectedIds: string[] = [];
   readCollectible(id: string): void {
     this.cmd({ cmd: 'readCollectible', collectibleId: id });
+  }
+  // --- IWorldAchievements: unlocked achievements + points (PHAA-687) ---
+  // Read-only mirror; achievements auto-unlock server-side (no command). Points
+  // are derived from the unlocked ids against the shared registry, so only the
+  // id list rides the wire.
+  unlockedAchievementIds: string[] = [];
+  get achievementPoints(): number {
+    let total = 0;
+    for (const id of this.unlockedAchievementIds) total += ACHIEVEMENTS_BY_ID[id]?.points ?? 0;
+    return total;
   }
   // --- IWorldLoot: need-greed roll submit + HUD reconcile read ---
   submitLootRoll(rollId: number, choice: LootRollChoice): void {

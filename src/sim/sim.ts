@@ -4,6 +4,12 @@ import type {
   DelveRunInfo,
   LockpickView,
 } from '../world_api';
+import { ACHIEVEMENT_INDEX } from './achievements';
+import {
+  type AchievementProgress,
+  achievementPoints as achievementPointsOf,
+  emptyAchievementProgress,
+} from './achievements_core';
 import * as bagsMod from './bags';
 import { addStacked, BAG_SOCKETS, bagCapacity, canAddItem } from './bags';
 import * as bankMod from './bank';
@@ -11,6 +17,7 @@ import { readCollectible as readCollectibleImpl } from './collections';
 import { lineOfSightClear, resolveMovement, resolvePosition } from './colliders';
 import { needsCostTranslation, translateAbilityCost } from './combat/ability_cost';
 import { auraAffectsStats, removeCancelableAura } from './combat/aura_cancel';
+import { auraReplacementConflicts } from './combat/aura_stacking';
 import {
   cleanseFriendlyNpcAuras,
   isRejectedFriendlyNpcAura,
@@ -846,6 +853,10 @@ export interface PlayerMeta {
   // readables today; future kinds later) this player has ever found. Grows
   // only, never shrinks. Persisted (CharacterState.collectedIds).
   collectedIds: Set<string>;
+  // Achievements (PHAA-687): net-new discrete-accomplishment progress, ALONGSIDE
+  // MILESTONES. `unlocked` grows only; `counters` holds per-criterion progress.
+  // Persisted additively (CharacterState.unlockedAchievements/achievementCounters).
+  achievements: AchievementProgress;
 }
 
 // Away-from-keyboard / do-not-disturb presence. `afk` still delivers whispers
@@ -956,6 +967,12 @@ export interface CharacterState {
   // before the collections system existed load cleanly (empty default); no
   // schema migration needed (JSONB, server/db.ts).
   collectedIds?: string[];
+  // Achievements (PHAA-687). Optional/additive so pre-achievements saves load
+  // cleanly (empty default); no schema migration (JSONB). `unlockedAchievements`
+  // is the completed ids; `achievementCounters` the per-criterion progress
+  // toward not-yet-unlocked count-based achievements.
+  unlockedAchievements?: string[];
+  achievementCounters?: Record<string, number[]>;
 }
 
 export interface PetState {
@@ -1591,6 +1608,7 @@ export class Sim {
       nodeHarvestReadyAt: {},
       gatheringProficiency: emptyGatheringProficiency(),
       collectedIds: new Set(),
+      achievements: emptyAchievementProgress(),
     };
     this.players.set(player.id, meta);
     player.skinCatalog = meta.skinCatalog;
@@ -1681,6 +1699,11 @@ export class Sim {
       }
       if (s.delveLoreUnlocked) for (const id of s.delveLoreUnlocked) meta.delveLoreUnlocked.add(id);
       if (s.collectedIds) for (const id of s.collectedIds) meta.collectedIds.add(id);
+      if (s.unlockedAchievements)
+        for (const id of s.unlockedAchievements) meta.achievements.unlocked.add(id);
+      if (s.achievementCounters)
+        for (const [id, counters] of Object.entries(s.achievementCounters))
+          meta.achievements.counters.set(id, [...counters]);
       if (s.delveDaily) {
         meta.delveDaily = {
           date: s.delveDaily.date,
@@ -1912,6 +1935,10 @@ export class Sim {
       gatheringProficiency: { ...meta.gatheringProficiency },
       delveLoreUnlocked: [...meta.delveLoreUnlocked],
       collectedIds: [...meta.collectedIds],
+      unlockedAchievements: [...meta.achievements.unlocked],
+      achievementCounters: Object.fromEntries(
+        [...meta.achievements.counters].map(([id, counters]) => [id, [...counters]]),
+      ),
       delveDaily: {
         date: meta.delveDaily.date,
         firstClearXp: [...meta.delveDaily.firstClearXp],
@@ -3518,10 +3545,7 @@ export class Sim {
       aura.sourceId !== target.id
     )
       return;
-    const existing = target.auras.findIndex(
-      (a) => a.id === aura.id && a.sourceId === aura.sourceId,
-    );
-    if (existing >= 0) {
+    for (const existing of auraReplacementConflicts(target.auras, aura)) {
       this.applyNonPlayerStatAura(target, target.auras[existing], -1);
       target.auras.splice(existing, 1);
     }
@@ -4979,6 +5003,24 @@ export class Sim {
 
   get collectedIds(): string[] {
     return this.collectedIdsFor(this.primaryId);
+  }
+
+  // Achievements (PHAA-687): read-only IWorldAchievements surface. Unlocks are
+  // auto-driven by accomplishments (no player command), so there is no setter
+  // here, only mirrors of the local player's unlocked set + derived point score.
+  unlockedAchievementsFor(pid: number): string[] {
+    return [...(this.players.get(pid)?.achievements.unlocked ?? [])];
+  }
+
+  get unlockedAchievementIds(): string[] {
+    return this.unlockedAchievementsFor(this.primaryId);
+  }
+
+  get achievementPoints(): number {
+    return achievementPointsOf(
+      ACHIEVEMENT_INDEX,
+      this.players.get(this.primaryId)?.achievements.unlocked ?? [],
+    );
   }
 
   pickUpObject(objId: number, pid?: number): void {
