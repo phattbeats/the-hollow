@@ -7,6 +7,7 @@ import type {
 import * as bagsMod from './bags';
 import { addStacked, BAG_SOCKETS, bagCapacity, canAddItem } from './bags';
 import * as bankMod from './bank';
+import { readCollectible as readCollectibleImpl } from './collections';
 import { lineOfSightClear, resolveMovement, resolvePosition } from './colliders';
 import { needsCostTranslation, translateAbilityCost } from './combat/ability_cost';
 import { auraAffectsStats, removeCancelableAura } from './combat/aura_cancel';
@@ -83,7 +84,6 @@ import type { DelveShopGate, DelveShopOffer } from './data';
 import {
   abilitiesKnownAt,
   arenaOrigin,
-  CAMPS,
   CLASSES,
   DEEPFEN_SHALLOWS_LAKE,
   DELVE_COMPANIONS,
@@ -97,13 +97,11 @@ import {
   dungeonAt,
   FISHING_RARE_ID,
   FISHING_TABLES,
-  GROUND_OBJECTS,
+  getActiveWorldContent,
   INSTANCE_SLOT_COUNT,
   ITEMS,
   isDelvePos,
   MOBS,
-  NPCS,
-  PLAYER_START,
   QUESTS,
   zoneAt,
 } from './data';
@@ -300,6 +298,7 @@ import {
   angleTo,
   armorReduction,
   type CrowdControlDrCategory,
+  type CrowdControlDrState,
   DELVE_COMPANION_HEAL_INTERVAL,
   type DelveDef,
   type DelveModuleDef,
@@ -331,7 +330,6 @@ import {
   MELEE_RANGE,
   type MobFamily,
   type MoveInput,
-  normAngle,
   type OverheadEmoteId,
   type PetMode,
   type PlayerClass,
@@ -344,12 +342,11 @@ import {
   type SkinCatalog,
   type SkinRank,
   swingMissChance,
-  TURN_SPEED,
   type Vec3,
   virtualLevel,
   xpToReachLevel,
 } from './types';
-import { groundHeight, WATER_LEVEL, waterLevelAt } from './world';
+import { groundHeight, waterLevel, waterLevelAt } from './world';
 
 // TRIVIAL_LEVEL_GAP moved to mob/targeting.ts (used only by isTrivialTo).
 // CORPSE_DURATION moved to combat/damage.ts (C1; used only by the death path).
@@ -536,6 +533,16 @@ export interface ArenaQueueUnit {
   rating: number; // avg member rating for this queue's bracket
 }
 
+// Recovery pools snapshotted at match start so returnFromArena can hand a
+// fighter back exactly what they walked in with (never a free full restore;
+// upstream issue #1600 ported for PHAA-739).
+export interface ArenaReturnPools {
+  hp: number;
+  resource: number;
+  cooldowns: Map<string, number>;
+  ccDr: Map<CrowdControlDrCategory, CrowdControlDrState>;
+}
+
 // A live arena bout. Combatants are teleported into a private arena instance
 // slot; `returns` remembers where each was standing so the match can put them
 // back when it ends. Ratings are snapshotted at the start purely for the
@@ -549,6 +556,9 @@ export interface ArenaMatch {
   state: 'countdown' | 'active' | 'over';
   timer: number; // countdown remaining, then elapsed once active, then return countdown
   returns: Map<number, { x: number; z: number; facing: number }>;
+  // Pre-match HP/resource/cooldowns/CC-DR per fighter, restored on return
+  // (issue #1600). Optional so persisted or mid-flight matches stay valid.
+  preMatchPools?: Map<number, ArenaReturnPools>;
   ratingA: number; // team avg at start
   ratingB: number;
   defeated: Set<number>;
@@ -832,6 +842,10 @@ export interface PlayerMeta {
   // (CharacterState.gatheringProficiency); feeds a future proficiency-scaled
   // rarity roll.
   gatheringProficiency: Record<GatherNodeType, number>;
+  // Collection tracking core (PHAA-626): the set of collectible ids (world
+  // readables today; future kinds later) this player has ever found. Grows
+  // only, never shrinks. Persisted (CharacterState.collectedIds).
+  collectedIds: Set<string>;
 }
 
 // Away-from-keyboard / do-not-disturb presence. `afk` still delivers whispers
@@ -938,6 +952,10 @@ export interface CharacterState {
   // Optional so characters saved before per-node gathering proficiency
   // existed load cleanly (addPlayer backfills to all-zero).
   gatheringProficiency?: Partial<Record<GatherNodeType, number>>;
+  // Collection tracking core (PHAA-626). Optional/additive so characters saved
+  // before the collections system existed load cleanly (empty default); no
+  // schema migration needed (JSONB, server/db.ts).
+  collectedIds?: string[];
 }
 
 export interface PetState {
@@ -986,7 +1004,9 @@ function freshCounters(): RewardCounters {
 // isShamanShock/ignoresDamagePushback) live in combat/casting_lifecycle.ts (C4a).
 
 export class Sim {
-  cfg: Required<Omit<SimConfig, 'noPlayer'>>;
+  // `world` stays optional (a custom map for play-test, else undefined for the
+  // built-in world); everything else is defaulted to a concrete value below.
+  cfg: Required<Omit<SimConfig, 'noPlayer' | 'world'>> & Pick<SimConfig, 'world'>;
   rng: Rng;
   time = 0;
   tickCount = 0;
@@ -1116,6 +1136,9 @@ export class Sim {
       lockoutNowMs: cfg.lockoutNowMs ?? (() => Math.floor(this.time * 1000)),
       hollowStart: cfg.hollowStart ?? false,
       worldBossAtBoot: cfg.worldBossAtBoot ?? false,
+      // Carried through so the renderer (which reaches the Sim as IWorld) can read
+      // the same custom world via sim.cfg.world. Undefined for the built-in world.
+      world: cfg.world,
     };
     // Live server opt-in (worldBossAtBoot): the first world-boss rise is due
     // immediately instead of one interval out, so a freshly (re)started realm has
@@ -1161,10 +1184,27 @@ export class Sim {
     // rng at construction (or ever), so the draws below are unperturbed.
     this.homestead = new Homestead(this.ctx);
 
+    // Spawn content: a custom world (editor play-test) or the built-in world.
+    // CAMPS order is a determinism contract; both bundles preserve it.
+    // INVARIANT: terrain/colliders/roads read ONLY the data.ts module global
+    // (getActiveWorldContent), never cfg.world. A caller that passes cfg.world
+    // MUST also setActiveWorldContent() with content whose terrain-relevant
+    // fields (zones, camps, roads, terrainEdits, biomePaint, waterLevel) are
+    // identical, or spawns and geometry silently fork. Placements MAY differ
+    // (render-only ownership; the editor viewport strips them from cfg.world).
+    if (this.cfg.world !== undefined && this.cfg.world !== getActiveWorldContent()) {
+      throw new Error(
+        'Sim ctor: cfg.world was provided but does not match getActiveWorldContent(). ' +
+          'Call setActiveWorldContent(world) before constructing Sim with a custom world, ' +
+          'or spawns and terrain geometry will silently fork.',
+      );
+    }
+    const worldContent = this.cfg.world ?? getActiveWorldContent();
+
     // NPCs and nudged out of buildings and deep water if their data position is bad
-    for (const npcDef of Object.values(NPCS)) {
+    for (const npcDef of Object.values(worldContent.npcs)) {
       if (npcDef.dynamic) continue; // spawned on demand by its owning system, not surface-placed
-      const safe = this.findSafePos(npcDef.pos.x, npcDef.pos.z, WATER_LEVEL + 0.6);
+      const safe = this.findSafePos(npcDef.pos.x, npcDef.pos.z, waterLevel() + 0.6);
       const npc = createNpc(this.nextId++, npcDef, this.groundPos(safe.x, safe.z));
       this.addEntity(npc);
       if (npcDef.market) this.market.merchantId = npc.id; // the World Market is anchored here
@@ -1173,11 +1213,11 @@ export class Sim {
     this.market.seed();
 
     // Mobs from camps
-    for (const camp of CAMPS) {
+    for (const camp of worldContent.camps) {
       const template = MOBS[camp.mobId];
       // Aquatic/flagged swimmers may wade in the shallows; everyone else
       // still spawns on dry land even though combat movement can enter water.
-      const minHeight = this.mobCanSpawnInWater(template) ? WATER_LEVEL - 0.5 : WATER_LEVEL + 0.4;
+      const minHeight = this.mobCanSpawnInWater(template) ? waterLevel() - 0.5 : waterLevel() + 0.4;
       for (let i = 0; i < camp.count; i++) {
         if (template.dummy) {
           // A practice dummy is a fixed, deterministic prop (no scatter, fixed level,
@@ -1226,7 +1266,7 @@ export class Sim {
     }
 
     // Ground objects
-    for (const objDef of GROUND_OBJECTS) {
+    for (const objDef of worldContent.groundObjects) {
       for (const p of objDef.positions) {
         const obj = createGroundObject(
           this.nextId++,
@@ -1282,9 +1322,9 @@ export class Sim {
     // FURY uses a reserved id so the Honor Quartermaster cannot shift the
     // deterministic nextId sequence every other world spawn above relies on.
     {
-      const furyDef = NPCS[FURY_NPC_ID];
+      const furyDef = worldContent.npcs[FURY_NPC_ID];
       if (furyDef && !this.entities.has(FURY_ENTITY_ID)) {
-        const safe = this.findSafePos(furyDef.pos.x, furyDef.pos.z, WATER_LEVEL + 0.6);
+        const safe = this.findSafePos(furyDef.pos.x, furyDef.pos.z, waterLevel() + 0.6);
         const fury = createNpc(FURY_ENTITY_ID, furyDef, this.groundPos(safe.x, safe.z));
         this.addEntity(fury);
       }
@@ -1469,9 +1509,10 @@ export class Sim {
       const dungeon = dungeonAt(savedPos.x) ?? DUNGEON_LIST[0];
       savedPos = { x: dungeon.doorPos.x, z: dungeon.doorPos.z - 4 };
     }
+    const playerStart = (this.cfg.world ?? getActiveWorldContent()).playerStart;
     const startPos = savedPos
       ? this.groundPos(savedPos.x, savedPos.z)
-      : this.groundPos(PLAYER_START.x, PLAYER_START.z);
+      : this.groundPos(playerStart.x, playerStart.z);
     const savedArena1v1: ArenaStanding = {
       rating: savedState?.arena1v1Rating ?? savedState?.arenaRating ?? arenaMod.ARENA_BASE_RATING,
       wins: savedState?.arena1v1Wins ?? savedState?.arenaWins ?? 0,
@@ -1549,6 +1590,7 @@ export class Sim {
       delveDaily: { date: '', firstClearXp: new Set(), markClears: 0 },
       nodeHarvestReadyAt: {},
       gatheringProficiency: emptyGatheringProficiency(),
+      collectedIds: new Set(),
     };
     this.players.set(player.id, meta);
     player.skinCatalog = meta.skinCatalog;
@@ -1638,6 +1680,7 @@ export class Sim {
         meta.gatheringProficiency = { ...emptyGatheringProficiency(), ...s.gatheringProficiency };
       }
       if (s.delveLoreUnlocked) for (const id of s.delveLoreUnlocked) meta.delveLoreUnlocked.add(id);
+      if (s.collectedIds) for (const id of s.collectedIds) meta.collectedIds.add(id);
       if (s.delveDaily) {
         meta.delveDaily = {
           date: s.delveDaily.date,
@@ -1868,6 +1911,7 @@ export class Sim {
       companionUpgrades: { ...meta.companionUpgrades },
       gatheringProficiency: { ...meta.gatheringProficiency },
       delveLoreUnlocked: [...meta.delveLoreUnlocked],
+      collectedIds: [...meta.collectedIds],
       delveDaily: {
         date: meta.delveDaily.date,
         firstClearXp: [...meta.delveDaily.firstClearXp],
@@ -3039,20 +3083,37 @@ export class Sim {
   // Sunder Armor stacks shave flat armor off the defender for physical hits.
   private effectiveArmor(e: Entity): number {
     let armor = e.stats.armor;
+    let armorPct = 0;
+    let debuffPct = 0;
     for (const a of e.auras) {
       if (e.kind !== 'player' && a.kind === 'buff_armor') armor += a.value;
+      // PHAA-577: percent buffs (e.g. Mark of the Wild) never reach a pet/mob's
+      // stats via recalcPlayerStats (players-only), so non-players need their own
+      // fold here, mirroring the flat buff_armor arm above.
+      if (e.kind !== 'player' && a.kind === 'buff_armor_pct') armorPct += a.value / 100;
       if (a.kind === 'sunder') armor -= a.value * (a.stacks ?? 1);
+      // PHAA-577: percent armor debuff (Sunder Armor/Expose Armor/Faerie Fire).
+      // Separate AuraKind from 'sunder' above so mob corrosion (still flat) is
+      // untouched; summed here then applied as one multiplier below.
+      if (a.kind === 'debuff_armor_pct') debuffPct += a.value * (a.stacks ?? 1);
     }
+    if (armorPct > 0) armor *= 1 + armorPct;
+    if (debuffPct > 0) armor *= Math.max(0, 1 - debuffPct);
     return Math.max(0, armor);
   }
 
   private effectiveAttackPower(e: Entity): number {
     let attackPower = e.attackPower;
     if (e.kind !== 'player') {
+      let apPct = 0;
       for (const a of e.auras) {
         if (a.kind === 'buff_ap') attackPower += a.value;
         else if (a.kind === 'debuff_ap') attackPower -= a.value;
+        // PHAA-577: percent buffs (e.g. Battle Shout/Blessing of Might) never reach
+        // a pet/mob's stats via recalcPlayerStats (players-only); fold here instead.
+        else if (a.kind === 'buff_ap_pct') apPct += a.value / 100;
       }
+      if (apPct > 0) attackPower *= 1 + apPct;
     }
     return Math.max(0, attackPower);
   }
@@ -4903,6 +4964,21 @@ export class Sim {
 
   get gatheringProficiency(): Record<GatherNodeType, number> {
     return this.gatheringProficiencyFor(this.primaryId);
+  }
+
+  // Collection tracking core (PHAA-626): read-as-command entry point, a thin
+  // delegate onto src/sim/collections.ts, resolved on the deterministic tick
+  // the command arrives on, same shape as harvestNode above.
+  readCollectible(id: string, pid?: number): void {
+    readCollectibleImpl(this.ctx, id, pid);
+  }
+
+  collectedIdsFor(pid: number): string[] {
+    return [...(this.players.get(pid)?.collectedIds ?? [])];
+  }
+
+  get collectedIds(): string[] {
+    return this.collectedIdsFor(this.primaryId);
   }
 
   pickUpObject(objId: number, pid?: number): void {

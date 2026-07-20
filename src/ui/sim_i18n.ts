@@ -4813,6 +4813,11 @@ const RULES: Rule[] = [
   { re: /^There is nothing left to take\.$/, build: () => t('sim.delve.nothingToTake') },
   { re: /^The way out is not yet open\.$/, build: () => t('sim.delve.wayOutNotOpen') },
   { re: /^Move closer to the stairs\.$/, build: () => t('sim.delve.moveCloserStairs') },
+  // Collections core (PHAA-626): readCollectible command errors
+  // (src/sim/collections.ts). The tooFar rule also covers the identical
+  // pre-existing "Too far away." emits in items/interaction/trainer/gathering.
+  { re: /^That does not exist\.$/, build: () => t('sim.collections.notFound') },
+  { re: /^Too far away\.$/, build: () => t('sim.collections.tooFar') },
   // Lockpicking minigame (exact lines).
   {
     re: /^Someone is already working the lock\.$/,

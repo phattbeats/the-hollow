@@ -116,6 +116,18 @@ export function auraEffectDescriptor(a: AuraEffectInput): AuraEffectDescriptor |
         nums: { pct: pctFromFrac(a.value) },
       };
 
+    // PHAA-577 percent raid buffs: value is an INTEGER PERCENT POINT (5 = +5%),
+    // not a 0..1 fraction (see the AuraKind comment in sim/types.ts), so it splices
+    // straight into {pct} with no pctFromFrac conversion.
+    case 'buff_ap_pct':
+      return { key: `${KEY}.increasePct.ap`, nums: { pct: Math.abs(round(a.value)) } };
+    case 'buff_sta_pct':
+      return { key: `${KEY}.increasePct.sta`, nums: { pct: Math.abs(round(a.value)) } };
+    case 'buff_armor_pct':
+      return { key: `${KEY}.increasePct.armor`, nums: { pct: Math.abs(round(a.value)) } };
+    case 'buff_int_pct':
+      return { key: `${KEY}.increasePct.int`, nums: { pct: Math.abs(round(a.value)) } };
+
     case 'sunder': {
       // value is a FLAT armor amount per stack; total reduction is value * stacks
       // (armor -= a.value * (a.stacks ?? 1) in the mitigation pass).
@@ -124,6 +136,14 @@ export function auraEffectDescriptor(a: AuraEffectInput): AuraEffectDescriptor |
       return stacks > 1
         ? { key: `${KEY}.armorFlatStacks`, nums: { value: total, stacks } }
         : { key: `${KEY}.armorFlat`, nums: { value: total } };
+    }
+    case 'debuff_armor_pct': {
+      // PHAA-577: value is a 0..1 fraction per stack (armor *= 1 - value*stacks).
+      const stacks = a.stacks ?? 1;
+      const pct = pctFromFrac(a.value * stacks);
+      return stacks > 1
+        ? { key: `${KEY}.armorPctStacks`, nums: { pct, stacks } }
+        : { key: `${KEY}.armorPct`, nums: { pct } };
     }
     case 'expose':
       // The mob expose affix raises physical damage taken (exposeMult += value).

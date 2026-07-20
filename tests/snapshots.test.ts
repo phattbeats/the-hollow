@@ -1782,14 +1782,15 @@ describe('lockpick view rebuilds from events on the online client', () => {
 // while the prior decoded value is preserved.
 // ---------------------------------------------------------------------------
 
-// The pinned set of the 32 `maybe(...)` delta keys, sorted. Cross-checked below
+// The pinned set of the 36 `maybe(...)` delta keys, sorted. Cross-checked below
 // against the live `maybe(...)` calls scraped from server/game.ts source, so a
-// 32nd unregistered delta key reddens this gate.
+// 36th unregistered delta key reddens this gate.
 const ALL_DELTA_KEYS = [
   'arena',
   'bags',
   'buyback',
   'cds',
+  'collected',
   'cosmetics',
   'dclears',
   'dcomp',
@@ -1836,6 +1837,7 @@ const TERSE_TO_IWORLD: Record<string, string> = {
   arena: 'arenaInfo',
   buyback: 'vendorBuyback',
   cds: 'cooldowns',
+  collected: 'collectedIds',
   cosmetics: 'accountCosmetics',
   dclears: 'delveClears',
   dcomp: 'companionUpgrades',
@@ -1958,6 +1960,8 @@ function dirtyEveryDeltaField(): {
   meta.delveClears = { 'collapsed_reliquary:heroic': 1 };
   meta.companionUpgrades = { companion_tessa: 2 };
   meta.gatheringProficiency = { amber: 3, heartwood: 0, spore: 0 };
+  // collected (PHAA-626): a non-default collected-id set for this player.
+  meta.collectedIds.add('torn_ledger_page');
   // gnodecd (PHAA-618): put one gather node on cooldown for this player so the
   // per-viewer cooldown-id list rides the wire as a non-default value.
   meta.nodeHarvestReadyAt[GATHER_NODES[0].id] = sim.time + 120;
@@ -2004,7 +2008,7 @@ function dirtyEveryDeltaField(): {
 }
 
 describe('full self-state snapshot delta fixture', () => {
-  it('carries every one of the 32 dirtied delta keys on the first snapshot', () => {
+  it('carries every one of the 36 dirtied delta keys on the first snapshot', () => {
     const { server, fc } = dirtyEveryDeltaField();
     broadcast(server);
     const snap = lastSnap(fc.sent);
@@ -2081,6 +2085,8 @@ describe('full self-state snapshot delta fixture', () => {
     // gnodecd -> nodeHarvestableByMe (the seeded node reads cooling, another ready)
     expect(client.nodeHarvestableByMe(GATHER_NODES[0].id)).toBe(false);
     expect(client.nodeHarvestableByMe(GATHER_NODES[1].id)).toBe(true);
+    // collected -> collectedIds
+    expect(client.collectedIds).toEqual(['torn_ledger_page']);
     expect(client.delveClears).toEqual({ 'collapsed_reliquary:heroic': 1 }); // dclears -> delveClears
     expect(client.delveDaily).toMatchObject({ markClears: 4 }); // delveDaily
     // tal -> talents / talentSpec / loadouts / activeLoadout
@@ -2092,7 +2098,7 @@ describe('full self-state snapshot delta fixture', () => {
     expect(client.activeLoadout).toBe(0);
   });
 
-  it('omits all 34 delta keys on a no-op re-broadcast and preserves the prior mirror', () => {
+  it('omits all 36 delta keys on a no-op re-broadcast and preserves the prior mirror', () => {
     const { server, fc, leader, memberPid } = dirtyEveryDeltaField();
     broadcast(server);
     const client = bareClient(leader.pid);
@@ -2131,9 +2137,9 @@ describe('full self-state snapshot delta fixture', () => {
 });
 
 describe('delta-key contract pins (anti-drift)', () => {
-  it('ALL_DELTA_KEYS contains exactly 37 unique keys in sorted order', () => {
-    expect(ALL_DELTA_KEYS).toHaveLength(37);
-    expect(new Set(ALL_DELTA_KEYS).size).toBe(37);
+  it('ALL_DELTA_KEYS contains exactly 38 unique keys in sorted order', () => {
+    expect(ALL_DELTA_KEYS).toHaveLength(38);
+    expect(new Set(ALL_DELTA_KEYS).size).toBe(38);
     expect([...ALL_DELTA_KEYS]).toEqual([...ALL_DELTA_KEYS].sort());
   });
 
@@ -2146,7 +2152,7 @@ describe('delta-key contract pins (anti-drift)', () => {
     for (let m = re.exec(src); m !== null; m = re.exec(src)) scraped.add(m[1]);
     expect(scraped.has('lockouts')).toBe(true); // the multi-line call IS captured
     expect(scraped.has('lrollg')).toBe(true); // group-visible loot roll strip (PHAA-568)
-    expect(scraped.size).toBe(37);
+    expect(scraped.size).toBe(38);
     expect([...scraped].sort()).toEqual([...ALL_DELTA_KEYS].sort());
   });
 
