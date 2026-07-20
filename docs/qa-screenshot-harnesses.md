@@ -65,3 +65,38 @@ non-null); it is only the opaque-origin storage access that bites.
 When to prefer isolation: you are validating a mesh/material/layout that a single
 module builds procedurally, and you do not need the player, camera, or HUD. It is
 faster, has no GLB dependency, and unit-tests can call the same exported builder.
+
+## 3. Isolation shot for ONE registered CHARACTER (GLB, no world boot)
+
+For a single character/NPC (a GLB asset, so recipe #2's `setContent` won't work
+-- an opaque-origin page can't `fetch` the GLB), render it through the real
+character pipeline without the 216-asset world load. Example:
+`scripts/shade_iso.html` + `scripts/phaa636_iso_shot.mjs` (PHAA-636, npc_shade).
+
+Why not the full-world shot (recipe #1): the offline client stalls at
+`Loading world... N/216` under the remote Browserless (the meshopt-GLB limitation
+above), so `window.__game.sim.player` never appears and `spawnRosterCompare`
+never runs. Confirmed on PHAA-636.
+
+Recipe:
+
+1. Write a tiny **HTML entry** (`scripts/<key>_iso.html`) that imports the real
+   `preloadVisual` + `CharacterVisual` from `src/render/characters/`, builds a
+   THREE scene with game-like lighting + a ground plane, `await
+   preloadVisual(key)`, `new CharacterVisual(key, 0xffffff)`, settles the idle
+   clip (`visual.update(1/20, IDLE, true)` x~40), adds `visual.root`, and exposes
+   handles on `window.__<key>` (`cam(cx,cy,cz,tx,ty,tz)`, `tickWalk(n)`, `render`)
+   plus `window.__shotReady = true`. This uses `assembleModel/applyMaterials`, so
+   the shot proves the exact production materials/shadows.
+2. Serve it off the **live vite dev server** (`vite --host 0.0.0.0 --port 5173`)
+   -- a real origin, so the GLB + textures fetch and `localStorage` (gfx tier)
+   resolve. No `setContent` shim needed. Vite transforms the `/src/*.ts` imports
+   in the served HTML regardless of subdir.
+3. In the shot `.mjs`, connect Browserless, `goto
+   http://<phattvip-ip>:5173/scripts/<key>_iso.html` (the phattvip-IP GAME_URL
+   rule from [screenshot harness memory] still applies -- Browserless can't reach
+   `localhost`), `waitForFunction(() => window.__shotReady)`, then drive angles +
+   a walk cycle and screenshot. Only `<key>.glb` loads, so no world-stall.
+
+Keep the HTML/scripts ASCII (the copy gate rejects em/en dashes + emoji in added
+lines).
