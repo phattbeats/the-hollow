@@ -200,6 +200,15 @@ export const META_EXCLUDE: ReadonlySet<string> = new Set([
   'fiestaMods', // derived from talentMods + augments
   'fiestaSpecial', // derived from augments
   'wireRev', // runtime-only wire-dirty counter; never serialized/persisted
+  // Achievements (PHAA-687): a live {unlocked:Set, counters:Map} progress wrapper
+  // that is a deterministic, rng-free downstream function of the same tick-ordered
+  // events every host processes (the single shared engine, achievements_core.ts).
+  // Its only wired input, the collect signal, is sourced from collectedIds, which
+  // the trace already samples; so it cannot diverge without an already-sampled
+  // field diverging first. Excluded like the other derived fields above (its own
+  // sampling would be redundant defense, not unique coverage). Persistence is
+  // covered separately by tests/achievements.test.ts.
+  'achievements',
 ]);
 
 function sampleExcluding(source: Record<string, unknown>, exclude: ReadonlySet<string>): unknown {

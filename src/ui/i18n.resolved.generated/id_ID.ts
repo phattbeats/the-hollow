@@ -720,10 +720,18 @@ export const id_ID: EnTranslations = {
         "spi": "Reduce el espíritu en {value}",
         "allStats": "Reduce todos los atributos en {value}"
       },
+      "increasePct": {
+        "ap": "Increases attack power by {pct}%",
+        "armor": "Increases armor by {pct}%",
+        "int": "Increases Intellect by {pct}%",
+        "sta": "Increases Stamina by {pct}%"
+      },
       "dodge": "Aumenta la probabilidad de esquivar un {pct}%",
       "dodgeReduce": "Reduce la probabilidad de esquivar un {pct}%",
       "armorFlat": "Reduce la armadura en {value}",
       "armorFlatStacks": "Reduce la armadura en {value} ({stacks} acumulaciones)",
+      "armorPct": "Reduces armor by {pct}%",
+      "armorPctStacks": "Reduces armor by {pct}% ({stacks} stacks)",
       "mortalWound": "Reduce la sanación recibida un {pct}%",
       "vulnerability": "Aumenta el daño recibido un {pct}%",
       "physVuln": "Aumenta el daño físico recibido un {pct}%",
@@ -2436,6 +2444,10 @@ export const id_ID: EnTranslations = {
       "nothingToHarvest": "That corpse has nothing to harvest.",
       "alreadyHarvested": "This corpse has already been harvested."
     },
+    "collections": {
+      "notFound": "That does not exist.",
+      "tooFar": "Too far away."
+    },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
       "noItems1": "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",
@@ -4102,7 +4114,7 @@ export const id_ID: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Belah Zirah",
-        "description": "Membelah zirah target, menguranginya sebesar {damage} per penerapan. Bertumpuk hingga 5 kali. Menghasilkan ancaman dalam jumlah tinggi."
+        "description": "Membelah zirah target, menguranginya sebesar 2% per penerapan. Bertumpuk hingga 5 kali. Menghasilkan ancaman dalam jumlah tinggi."
       },
       "taunt": {
         "name": "Provokasi",

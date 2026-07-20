@@ -720,10 +720,18 @@ export const fr_FR: EnTranslations = {
         "spi": "Réduit l'esprit de {value}",
         "allStats": "Réduit tous les attributs de {value}"
       },
+      "increasePct": {
+        "ap": "Increases attack power by {pct}%",
+        "armor": "Increases armor by {pct}%",
+        "int": "Increases Intellect by {pct}%",
+        "sta": "Increases Stamina by {pct}%"
+      },
       "dodge": "Augmente les chances d'esquive de {pct}%",
       "dodgeReduce": "Réduit les chances d'esquive de {pct}%",
       "armorFlat": "Réduit l'armure de {value}",
       "armorFlatStacks": "Réduit l'armure de {value} ({stacks} charges)",
+      "armorPct": "Reduces armor by {pct}%",
+      "armorPctStacks": "Reduces armor by {pct}% ({stacks} stacks)",
       "mortalWound": "Réduit les soins reçus de {pct}%",
       "vulnerability": "Augmente les dégâts subis de {pct}%",
       "physVuln": "Augmente les dégâts physiques subis de {pct}%",
@@ -2436,6 +2444,10 @@ export const fr_FR: EnTranslations = {
       "nothingToHarvest": "That corpse has nothing to harvest.",
       "alreadyHarvested": "This corpse has already been harvested."
     },
+    "collections": {
+      "notFound": "That does not exist.",
+      "tooFar": "Too far away."
+    },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
       "noItems1": "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",
@@ -4102,7 +4114,7 @@ export const fr_FR: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Fracasser armure",
-        "description": "Fracasse l'armure de la cible et la réduit de {damage} par application. Cumulable jusqu'à 5 fois. Génère beaucoup de menace."
+        "description": "Fracasse l'armure de la cible, la réduisant de 2% par application. Cumulable jusqu'à 5 fois. Génère beaucoup de menace."
       },
       "taunt": {
         "name": "Provocation",

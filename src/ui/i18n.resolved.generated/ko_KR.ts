@@ -720,10 +720,18 @@ export const ko_KR: EnTranslations = {
         "spi": "정신력을 {value} 감소시킵니다",
         "allStats": "모든 능력치를 {value} 감소시킵니다"
       },
+      "increasePct": {
+        "ap": "공격력을 {pct}% 증가시킵니다",
+        "armor": "방어도를 {pct}% 증가시킵니다",
+        "int": "지능을 {pct}% 증가시킵니다",
+        "sta": "체력을 {pct}% 증가시킵니다"
+      },
       "dodge": "회피 확률을 {pct}% 증가시킵니다",
       "dodgeReduce": "회피 확률을 {pct}% 감소시킵니다",
       "armorFlat": "방어도를 {value} 감소시킵니다",
       "armorFlatStacks": "방어도를 {value} 감소시킵니다 ({stacks}중첩)",
+      "armorPct": "방어도를 {pct}% 감소시킵니다",
+      "armorPctStacks": "방어도를 {pct}% 감소시킵니다 ({stacks}중첩)",
       "mortalWound": "받는 치유량을 {pct}% 감소시킵니다",
       "vulnerability": "받는 피해를 {pct}% 증가시킵니다",
       "physVuln": "받는 물리 피해를 {pct}% 증가시킵니다",
@@ -2436,6 +2444,10 @@ export const ko_KR: EnTranslations = {
       "nothingToHarvest": "그 시체에서는 채집할 것이 없습니다.",
       "alreadyHarvested": "이 시체는 이미 채집되었습니다."
     },
+    "collections": {
+      "notFound": "그것은 존재하지 않습니다.",
+      "tooFar": "너무 멀리 떨어져 있습니다."
+    },
     "hearth": {
       "tooFar": "브라더 초록발에게 먹이를 주려면 그의 곁에 있어야 한다.",
       "noItems1": "……친구, 빈손이구먼. 태울 것이든 배 채울 것이든 좀 가져오게, 그럼 얘기해보세.",
@@ -4102,7 +4114,7 @@ export const ko_KR: EnTranslations = {
       },
       "sunder_armor": {
         "name": "방어구 가르기",
-        "description": "대상의 방어구를 가르고 적용마다 {damage}만큼 감소시킵니다. 최대 5번 중첩됩니다. 많은 위협 수준을 생성합니다."
+        "description": "대상의 방어구를 가르고 적용마다 2%만큼 감소시킵니다. 최대 5번 중첩됩니다. 많은 위협 수준을 생성합니다."
       },
       "taunt": {
         "name": "도발",
