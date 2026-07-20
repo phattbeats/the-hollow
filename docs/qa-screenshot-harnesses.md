@@ -65,3 +65,20 @@ non-null); it is only the opaque-origin storage access that bites.
 When to prefer isolation: you are validating a mesh/material/layout that a single
 module builds procedurally, and you do not need the player, camera, or HUD. It is
 faster, has no GLB dependency, and unit-tests can call the same exported builder.
+
+### Rendering a mob through its real visual dispatch (not just an archetype)
+
+When the thing under test is that a mob TEMPLATE ID maps to the right visual (the
+`plant_creature` dispatch, `src/render/characters/plant_dispatch.ts`), render it
+through the real `createPlantMobVisual(entity)` on a minimal `{ templateId, id }`
+mob, NOT `buildPlantCreature(archetype, ...)` directly. Only the former exercises
+the `PLANT_MOB_ARCHETYPES` lookup and the `${templateId}#${id}` seed the running
+game actually uses. Exemplar pair (PHAA-772, Greenpaw's cutting):
+`scripts/greenpaw_cutting_render_entry.js` + `scripts/greenpaw_cutting_render_shot.mjs`,
+one contact-sheet row per variant labelled with its resolved archetype.
+
+**Gotcha (paid for on PHAA-772): `createPlantMobVisual` pulls in `gfx`, which
+probes `localStorage` at import,** so the opaque-origin `SecurityError` from the
+PHAA-552 note above bites here too even though the older `buildPlantCreature`
+entry dodged it. Inject the no-op `localStorage` shim as the FIRST inline
+`<script>` in the `setContent` HTML, before the bundle `<script>`.
