@@ -22,6 +22,7 @@
 // `src/sim`-pure: no DOM/Three/render/ui/game/net imports, no Math.random/Date.now
 // (enforced by tests/architecture.test.ts).
 
+import { computeTalentModifiers } from '../content/talents';
 import { DELVES, GROUP_XP_BONUS, MOBS } from '../data';
 import { recalcPlayerStats } from '../entity';
 import { DAMAGE_IDLE_DESPAWN_MOB_IDS, DAMAGE_IDLE_DESPAWN_SECONDS } from '../entity_roster';
@@ -74,6 +75,12 @@ export function dealDamage(
   // ticks). Only direct damage may walk a mob's leash anchor; passive damage must
   // let the mob leash (evade home) so it can't be kited an unlimited distance.
   direct = true,
+  // The amount is ALREADY fully source-modified (e.g. a Fiendlore share of damage the
+  // owner already took): skip the source-output mods (Defensive Stance's own-damage
+  // cut, Weakening Hex, Gloamveil's shadow amp) so they are not applied a second time.
+  // Target-side amps, absorb, death, and events still run so the redirected hit lands
+  // normally on the pet.
+  alreadyFinal = false,
 ): void {
   if (target.dead) return;
   if (target.gm) return; // GM characters are invulnerable — every damage path funnels here
@@ -86,6 +93,7 @@ export function dealDamage(
 
   // Defensive Stance, classic: deal 10% less, take 10% less (and +30% threat below)
   if (
+    !alreadyFinal &&
     source &&
     source.id !== target.id &&
     source.auras.some((a) => a.kind === 'defensive_stance')
@@ -132,9 +140,19 @@ export function dealDamage(
 
   // Weakening Hex: a hexed source deals less damage (mirrors the healing cut in
   // applyHeal). Self-damage paths (source === target) are left untouched.
-  if (source && source.id !== target.id) {
+  if (!alreadyFinal && source && source.id !== target.id) {
     const hexMult = ctx.hexOutputMult(source);
     if (hexMult !== 1) amount = Math.round(amount * hexMult);
+  }
+
+  // Gloamveil Form (Shadow priest signature): while in the form, the caster's
+  // SHADOW-school damage is amplified. School-scoped so only shadow spells benefit,
+  // and a source-output mod (skipped when the amount is already final, e.g. a
+  // redirect share). Every shadow damage path (direct nuke, DoT tick, AoE) funnels
+  // here, so this one site covers them all; the boost is dynamic (it follows the form).
+  if (!alreadyFinal && source && school === 'shadow' && amount > 0) {
+    const form = source.auras.find((a) => a.kind === 'form_shadow');
+    if (form) amount = Math.round(amount * (1 + form.value / 100));
   }
 
   // "Find Weakness": a critvuln debuff makes the target's exposed flesh take
@@ -174,6 +192,35 @@ export function dealDamage(
     ctx.isHostileTo(source, target)
   ) {
     amount = Math.max(0, Math.round(amount * pvpDamageMultiplier(source, target)));
+  }
+
+  // Fiendlore (Demonology warlock mastery): a fraction of damage the owner takes is
+  // redirected to their demon instead. The redirected share is dealt to the pet as
+  // an alreadyFinal hit (it already carries the owner's source-output mods), so the
+  // owner's own reductions/hex aren't double-applied to the pet's portion.
+  if (target.kind === 'player' && amount > 0) {
+    const meta = ctx.players.get(target.id);
+    const share = meta ? ctx.playerMods(meta).global.petDmgSharePct : 0;
+    const pet = share > 0 ? ctx.petOf(target.id) : null;
+    if (pet && !pet.dead) {
+      const redirected = Math.min(amount, Math.round(amount * share));
+      if (redirected > 0) {
+        amount -= redirected;
+        ctx.dealDamage(
+          source,
+          pet,
+          redirected,
+          crit,
+          school,
+          ability,
+          kind,
+          noRage,
+          threatOpts,
+          direct,
+          true,
+        );
+      }
+    }
   }
 
   // duels end at 1 hp — nobody dies
@@ -691,6 +738,10 @@ export function grantXp(
     meta.xp -= xpForLevel(p.level);
     p.level++;
     meta.counters.levelUps++;
+    // Re-bake the flat talent mods at the new level BEFORE the stat pass: spec mastery
+    // magnitudes scale with level (min(1, level/20) in accumulate), so a ding must
+    // strengthen the mastery without waiting for a respec/spec-pick/relog re-bake.
+    meta.talentMods = computeTalentModifiers(meta.cls, meta.talents, meta.secondaryCls, p.level);
     recalcPlayerStats(p, meta.cls, meta.equipment, ctx.playerMods(meta));
     p.hp = p.maxHp;
     if (p.resourceType === 'mana') p.resource = p.maxResource;

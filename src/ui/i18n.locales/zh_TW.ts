@@ -1553,6 +1553,82 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': '貪婪 {item}',
   'itemUi.lootRoll.passAria': '放棄 {item}',
   'itemUi.lootRoll.everyonePassed': '所有人都放棄了 {item}。',
+  'entities.abilities.chain_heal.name': '治療鏈',
+  'entities.abilities.chain_heal.description':
+    '對一名友方目標進行大量治療，然後跳躍至最多2名附近的盟友，每次跳躍治療量降低50%。',
+  'entities.abilities.crusader_strike.name': '十字軍打擊',
+  'entities.abilities.crusader_strike.description': '對目標造成武器傷害加24點神聖傷害。',
+  'entities.abilities.metamorphosis.name': '恐懼之相',
+  'entities.abilities.metamorphosis.description':
+    '變身為可怕的惡魔，持續20秒，法術傷害提高20%，施法速度提高20%。你的惡魔獲得50%傷害提高和20%施法速度提高。',
+  'entities.abilities.holy_shock.name': '神聖震擊',
+  'entities.abilities.holy_shock.description':
+    '用神聖能量震擊友方目標進行治療，或對敵人造成神聖傷害。',
+  'entities.abilities.holy_shield.name': '聖牆',
+  'entities.abilities.holy_shield.description':
+    '向敵人投擲神聖聖盾，造成神聖傷害並彈射至2個附近的敵人。',
+  'entities.abilities.bestial_wrath.name': '咆哮怒火',
+  'entities.abilities.bestial_wrath.description':
+    '使你陷入野獸狂怒，持續15秒，攻擊強度提高20%，寵物傷害提高100%。',
+  'entities.abilities.trueshot_aura.name': '穩射光環',
+  'entities.abilities.trueshot_aura.description': '激勵附近的盟友，攻擊強度提高10%，持續30分鐘。',
+  'entities.abilities.wyvern_sting.name': '翼龍釘刺',
+  'entities.abilities.wyvern_sting.description':
+    '從遠處刺向敵人，使其失能最多4秒。受到傷害將解除該效果。',
+  'entities.abilities.arcane_power.name': '以太湧動',
+  'entities.abilities.arcane_power.description': '法術傷害提高20%，法術急速提高10%，持續10秒。',
+  'entities.abilities.combustion.name': '閃焰',
+  'entities.abilities.combustion.description': '法術暴擊機率提高50%，持續15秒。',
+  'entities.abilities.icy_veins.name': '冰脈',
+  'entities.abilities.icy_veins.description':
+    '法術急速提高30%，並防止施法被打斷或產生施法後仰，持續10秒。',
+  'entities.abilities.cold_blood.name': '殺意冷靜',
+  'entities.abilities.cold_blood.description': '凝聚你的殺意，使你的下一次攻擊必定爆擊。',
+  'entities.abilities.blade_flurry.name': '劍刃亂舞',
+  'entities.abilities.blade_flurry.description': '釋放一連串劍刃攻擊，攻擊速度提高20%，持續12秒。',
+  'entities.abilities.hemorrhage.name': '紅絲帶',
+  'entities.abilities.hemorrhage.description':
+    '以武器傷害加流血效果擊中敵人，造成持續12秒的流血傷害，並使流血傷害提高40%。獲得1點連擊點數。',
+  'entities.abilities.power_infusion.name': '恩澤',
+  'entities.abilities.power_infusion.description':
+    '為友方目標注入力量，使其法術急速提高20%，持續15秒。',
+  'entities.abilities.holy_nova.name': '神聖新星',
+  'entities.abilities.holy_nova.description':
+    '引發神聖光輝的爆發，治療附近的盟友並傷害附近的敵人。',
+  'entities.abilities.shadowform.name': '暮靄形態',
+  'entities.abilities.shadowform.description':
+    '化身闇影形態，使闇影傷害提高15%，直至你變回原形。施放治療法術會解除該形態。再次施放可變回原形。',
+  'entities.abilities.elemental_mastery.name': '元素掌控',
+  'entities.abilities.elemental_mastery.description': '召喚風暴之力，使你的下一個法術瞬發。',
+  'entities.abilities.siphon_life.name': '汲取生命',
+  'entities.abilities.siphon_life.description':
+    '從敵人身上汲取生命，造成持續30秒的闇影傷害並治療你等同於造成的傷害。',
+  'entities.abilities.conflagrate.name': '燃燒',
+  'entities.abilities.conflagrate.description': '引燃你施放在敵人身上的獻祭效果，造成火焰傷害。',
+  'entities.abilities.moonkin_form.name': '月翼形態',
+  'entities.abilities.moonkin_form.description':
+    '變身為可怕的梟獸，法術傷害提高20%，護甲提高50%。直至你變回原形。再次施放可變回施法者形態。',
+  'entities.abilities.feral_charge.name': '原始衝能',
+  'entities.abilities.feral_charge.description':
+    '釋放原始衝能。在獵豹形態下，能量回復速度提高100%，持續10秒。在熊形態下，立即產生50點怒氣。',
+  'entities.abilities.swiftmend.name': '迅捷治療',
+  'entities.abilities.swiftmend.description':
+    '消耗友方目標身上的一個持續治療效果，為其恢復生命值。',
+  'entities.abilities.pummel.name': '碎顎',
+  'entities.abilities.pummel.description': '打斷目標的施法，並使其在4秒內無法施放該系法術。',
+  'entities.abilities.kick.name': '重踢',
+  'entities.abilities.kick.description': '打斷目標的施法，並使其在4秒內無法施放該系法術。',
+  'entities.abilities.counterspell.name': '法術反制',
+  'entities.abilities.counterspell.description': '反制目標的施法，並使其在6秒內無法施放該系法術。',
+  'entities.abilities.counter_shot.name': '靜默射擊',
+  'entities.abilities.counter_shot.description': '快速射擊，打斷目標的施法並封鎖該系法術4秒。',
+  'entities.abilities.rebuke.name': '譴責',
+  'entities.abilities.rebuke.description': '打斷目標的施法，並使其在4秒內無法施放該系法術。',
+  'entities.abilities.skull_bash.name': '頭槌',
+  'entities.abilities.skull_bash.description': '猛衝頭槌，打斷目標的施法並封鎖該系法術4秒。',
+  'entities.abilities.spell_lock.name': '咒縛',
+  'entities.abilities.spell_lock.description':
+    '使目標在施法中沉默，並使其在5秒內無法施放該系法術。',
   'entities.abilities.heroic_strike.name': '英勇打擊',
   'entities.abilities.heroic_strike.description':
     '一次強力攻擊，使近戰傷害提高 {damage}。在你的下一次揮擊時觸發。',

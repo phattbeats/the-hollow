@@ -1612,6 +1612,94 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': '{item} 탐욕',
   'itemUi.lootRoll.passAria': '{item} 포기',
   'itemUi.lootRoll.everyonePassed': '모두 {item}을(를) 포기했습니다.',
+  'entities.abilities.chain_heal.name': '연쇄 치유',
+  'entities.abilities.chain_heal.description':
+    '우호적인 대상을 크게 치유한 후, 최대 2명의 주변 아군에게 도약하며 도약할 때마다 치유량이 50%씩 감소합니다.',
+  'entities.abilities.crusader_strike.name': '성전사의 일격',
+  'entities.abilities.crusader_strike.description':
+    '대상에게 무기 피해와 추가로 신성 피해 24를 입힙니다.',
+  'entities.abilities.metamorphosis.name': '공포의 상',
+  'entities.abilities.metamorphosis.description':
+    '20초 동안 무시무시한 악마로 변신하여 주문 피해가 20%, 시전 속도가 20% 증가합니다. 당신의 악마는 피해 50%와 시전 속도 20%를 얻습니다.',
+  'entities.abilities.holy_shock.name': '신성 충격',
+  'entities.abilities.holy_shock.description':
+    '신성한 기운으로 우호적인 대상을 충격하여 치유하거나, 적에게 신성 피해를 입힙니다.',
+  'entities.abilities.holy_shield.name': '신성한 벽',
+  'entities.abilities.holy_shield.description':
+    '적에게 광휘의 방패를 던져 신성 피해를 입히고 주변의 적 2명에게 튕겨나갑니다.',
+  'entities.abilities.bestial_wrath.name': '포효하는 분노',
+  'entities.abilities.bestial_wrath.description':
+    '15초 동안 야수의 분노에 빠져 공격력이 20%, 펫의 피해량이 100% 증가합니다.',
+  'entities.abilities.trueshot_aura.name': '조준의 오라',
+  'entities.abilities.trueshot_aura.description':
+    '30분 동안 주변 아군을 격려하여 공격력을 10% 증가시킵니다.',
+  'entities.abilities.wyvern_sting.name': '와이번의 독침',
+  'entities.abilities.wyvern_sting.description':
+    '원거리에서 적을 찔러 최대 4초 동안 무력화시킵니다. 피해를 입으면 효과가 해제됩니다.',
+  'entities.abilities.arcane_power.name': '비전 쇄도',
+  'entities.abilities.arcane_power.description':
+    '10초 동안 주문 피해가 20%, 주문 가속이 10% 증가합니다.',
+  'entities.abilities.combustion.name': '화염구동',
+  'entities.abilities.combustion.description': '15초 동안 주문 치명타 확률이 50% 증가합니다.',
+  'entities.abilities.icy_veins.name': '얼음 혈관',
+  'entities.abilities.icy_veins.description':
+    '10초 동안 주문 가속이 30% 증가하며 시전 차단과 시전 지연을 방지합니다.',
+  'entities.abilities.cold_blood.name': '냉정한 살의',
+  'entities.abilities.cold_blood.description':
+    '살의를 집중시켜 다음 공격이 반드시 치명타가 됩니다.',
+  'entities.abilities.blade_flurry.name': '칼날 회오리',
+  'entities.abilities.blade_flurry.description':
+    '칼날의 소용돌이를 일으켜 12초 동안 공격 속도가 20% 증가합니다.',
+  'entities.abilities.hemorrhage.name': '붉은 리본',
+  'entities.abilities.hemorrhage.description':
+    '무기 피해와 출혈 효과로 적을 공격하여 12초 동안 출혈 피해를 입히고 출혈 피해를 40% 증가시킵니다. 연계 점수 1점을 획득합니다.',
+  'entities.abilities.power_infusion.name': '축복 주입',
+  'entities.abilities.power_infusion.description':
+    '우호적인 대상에게 힘을 불어넣어 15초 동안 주문 가속을 20% 증가시킵니다.',
+  'entities.abilities.holy_nova.name': '신성한 폭발',
+  'entities.abilities.holy_nova.description':
+    '신성한 광채의 폭발을 일으켜 주변 아군을 치유하고 주변 적에게 피해를 입힙니다.',
+  'entities.abilities.shadowform.name': '황혼의 형상',
+  'entities.abilities.shadowform.description':
+    '그림자 형상으로 변하여 그림자 피해가 15% 증가하며, 원래 모습으로 돌아갈 때까지 유지됩니다. 치유 주문을 시전하면 형상이 해제됩니다. 다시 시전하면 원래 모습으로 돌아갑니다.',
+  'entities.abilities.elemental_mastery.name': '원시 지배',
+  'entities.abilities.elemental_mastery.description':
+    '폭풍의 힘을 불러와 다음 주문을 즉시 시전합니다.',
+  'entities.abilities.siphon_life.name': '생명 착취',
+  'entities.abilities.siphon_life.description':
+    '적에게서 생명력을 흡수하여 30초 동안 그림자 피해를 입히고 입힌 피해만큼 자신을 치유합니다.',
+  'entities.abilities.conflagrate.name': '점화',
+  'entities.abilities.conflagrate.description': '적에게 걸린 제물을 소모하여 화염 피해를 입힙니다.',
+  'entities.abilities.moonkin_form.name': '달빛날개 형상',
+  'entities.abilities.moonkin_form.description':
+    '무시무시한 달빛수호자로 변신하여 주문 피해가 20%, 방어도가 50% 증가합니다. 원래 모습으로 돌아갈 때까지 유지됩니다. 다시 시전하면 시전자 형상으로 돌아갑니다.',
+  'entities.abilities.feral_charge.name': '원시의 쇄도',
+  'entities.abilities.feral_charge.description':
+    '원시의 힘을 발산합니다. 표범 형상에서는 10초 동안 기력 재생이 100% 증가합니다. 곰 형상에서는 즉시 분노 50을 생성합니다.',
+  'entities.abilities.swiftmend.name': '신속한 치유',
+  'entities.abilities.swiftmend.description':
+    '우호적인 대상에게 걸린 지속 치유 효과를 소모하여 치유합니다.',
+  'entities.abilities.pummel.name': '턱관절 강타',
+  'entities.abilities.pummel.description':
+    '대상의 시전을 차단하고 4초 동안 해당 계열 주문 시전을 막습니다.',
+  'entities.abilities.kick.name': '발차기',
+  'entities.abilities.kick.description':
+    '대상의 시전을 차단하고 4초 동안 해당 계열 주문 시전을 막습니다.',
+  'entities.abilities.counterspell.name': '주문 차단',
+  'entities.abilities.counterspell.description':
+    '대상의 시전을 무효화하고 6초 동안 해당 계열 주문 시전을 막습니다.',
+  'entities.abilities.counter_shot.name': '제압 사격',
+  'entities.abilities.counter_shot.description':
+    '즉각적인 사격으로 대상의 시전을 차단하고 해당 계열을 4초 동안 봉쇄합니다.',
+  'entities.abilities.rebuke.name': '질책',
+  'entities.abilities.rebuke.description':
+    '대상의 시전을 차단하고 4초 동안 해당 계열 주문 시전을 막습니다.',
+  'entities.abilities.skull_bash.name': '박치기',
+  'entities.abilities.skull_bash.description':
+    '돌진하여 박치기로 대상의 시전을 차단하고 해당 계열을 4초 동안 봉쇄합니다.',
+  'entities.abilities.spell_lock.name': '주문 봉인',
+  'entities.abilities.spell_lock.description':
+    '시전 중인 대상을 침묵시키고 5초 동안 해당 계열 주문 시전을 막습니다.',
   'entities.abilities.heroic_strike.name': '영웅의 일격',
   'entities.abilities.heroic_strike.description':
     '강력한 공격으로 근접 피해가 {damage}만큼 증가합니다. 다음 무기 공격 시 발동됩니다.',

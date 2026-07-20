@@ -47,6 +47,9 @@ function baseEntity(id: number, pos: Vec3): Entity {
     rangedHaste: 0,
     spellHaste: 0,
     critChance: 0.05,
+    critDmgSpellBonus: 0,
+    critDmgPhysBonus: 0,
+    critDmgHealBonus: 0,
     dodgeChance: 0.05,
     castPushbackReduction: 0,
     moveSpeed: 7,
@@ -240,6 +243,7 @@ export function recalcPlayerStats(
   let bonusDodge = 0;
   let bearForm = false;
   let catForm = false;
+  let moonkinForm = false;
   let scaleMul = 1; // Fiesta buff_scale: body-size multiplier (>1 also adds hp)
   // PHAA-577 percent raid buffs: integer percent points (5 = +5%), summed across
   // every source then folded as a percent-of-the-fully-summed-stat below,
@@ -272,8 +276,18 @@ export function recalcPlayerStats(
     } else if (a.kind === 'buff_spellpower') bonusSp += a.value;
     else if (a.kind === 'buff_dodge') bonusDodge += a.value;
     else if (a.kind === 'buff_scale') scaleMul *= a.value;
+    // Metamorphosis: a temporary demon transform that also makes the caster larger.
+    else if (a.kind === 'form_metamorph') scaleMul *= 1.35;
     else if (a.kind === 'form_bear') bearForm = true;
     else if (a.kind === 'form_cat') catForm = true;
+    // Moonwing Form carries its Spell Power bonus in the form aura's value, so it lives
+    // and dies with the one toggle. Gloamveil Form (form_shadow) is NOT a Spell Power
+    // buff: it amplifies Shadow-school DAMAGE by a percent, applied in combat/damage.ts,
+    // so it contributes nothing to the stat pass here.
+    else if (a.kind === 'form_moonkin') {
+      bonusSp += a.value;
+      moonkinForm = true;
+    }
   }
   // Talent passive stat modifiers (flat additions + a stamina percent before the
   // HP derivation below). AP/armor/maxHp percents are applied at their own steps.
@@ -316,6 +330,9 @@ export function recalcPlayerStats(
     bonusAp += 8 + lvl * 2;
     s.agi += Math.max(2, Math.floor(lvl / 2));
   }
+  // Moonwing Form: a hardy caster form that adds 50% armor (its spell damage rides a
+  // separate buff_spelldmg-equivalent read in spell_combat.ts's spellDamageMultFromAuras).
+  if (moonkinForm) s.armor = Math.round(s.armor * 1.5);
   if (mods?.stats.armorPct || armorPctBuff)
     s.armor = Math.round(s.armor * (1 + (mods?.stats.armorPct ?? 0) + armorPctBuff));
   // Floor Spirit at 0 so a Spirit-siphoning debuff (negative buff_spi) can never
@@ -364,14 +381,20 @@ export function recalcPlayerStats(
   // Spell Power: Intellect converted via SPELL_POWER_PER_INT plus flat Spell Power
   // from gear/buffs. Floored at 0 so an Intellect-draining debuff can't go negative.
   e.spellPower = Math.max(0, Math.round(s.int * SPELL_POWER_PER_INT + bonusSp));
-  // Haste from item-set bonuses (the only haste-gear source). ONE aggregated
-  // stat drives all three channels: faster melee and ranged auto-attack swings
-  // AND shorter spell casts/channels.
-  e.meleeHaste = setEff.haste;
+  // Haste from item-set bonuses. Melee/ranged haste stay set-bonus-only; spell haste
+  // also folds in a spec mastery's passive haste (spellHastePct, e.g. Aether Surge's
+  // spec), so a caster spec can shorten every cast — spell_combat.ts's spellHasteMult
+  // reads this stat plus any live buff_spellhaste auras (Icy Veins, Metamorphosis).
+  e.meleeHaste = setEff.haste + (mods?.global.meleeHastePct ?? 0);
   e.rangedHaste = setEff.haste;
-  e.spellHaste = setEff.haste;
+  e.spellHaste = setEff.haste + (mods?.global.spellHastePct ?? 0);
   // Crit: ~1% per 20 agi at low level
   e.critChance = 0.05 + s.agi * 0.0005 + (mods?.stats.crit ?? 0) + setEff.crit;
+  // Extra crit damage from a spec mastery, per output channel (e.g. Fire mage: SPELL
+  // crits deal more; Holy paladin: HEAL crits; Combat rogue: PHYSICAL crits).
+  e.critDmgSpellBonus = mods?.global.critDmgSpellPct ?? 0;
+  e.critDmgPhysBonus = mods?.global.critDmgPhysPct ?? 0;
+  e.critDmgHealBonus = mods?.global.critDmgHealPct ?? 0;
   e.castPushbackReduction = setEff.castPushbackReduction;
   // Floored at 0: an off-balance debuff (negative buff_dodge) can drive dodge to nothing.
   e.dodgeChance = Math.max(0, 0.05 + s.agi * 0.0005 + bonusDodge);

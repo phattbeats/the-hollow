@@ -48,6 +48,12 @@ import {
   normAngle,
 } from '../types';
 import { isLockedOut, isSilenced, isStunned, tonguesMult } from './cc';
+import {
+  hasCastShield,
+  noteSpellHit,
+  spellDamageMultFromAuras,
+  spellHasteMult,
+} from './spell_combat';
 import { isSpellResisted } from './spell_resist';
 
 // Shaman shocks (earth/flame/frost) share one cooldown; lightning_shock joins them
@@ -58,7 +64,11 @@ export function isFormToggle(ability: AbilityDef): boolean {
   return ability.effects.some(
     (e) =>
       e.type === 'selfBuff' &&
-      (e.kind === 'form_bear' || e.kind === 'form_cat' || e.kind === 'form_travel'),
+      (e.kind === 'form_bear' ||
+        e.kind === 'form_cat' ||
+        e.kind === 'form_travel' ||
+        e.kind === 'form_moonkin' ||
+        e.kind === 'form_shadow'),
   );
 }
 
@@ -72,6 +82,8 @@ function isToggleBuff(ability: AbilityDef): boolean {
       (e.kind === 'form_bear' ||
         e.kind === 'form_cat' ||
         e.kind === 'form_travel' ||
+        e.kind === 'form_moonkin' ||
+        e.kind === 'form_shadow' ||
         e.kind === 'defensive_stance' ||
         e.kind === 'stealth'),
   );
@@ -174,6 +186,8 @@ export function cancelCast(ctx: SimContext, p: Entity): void {
 }
 
 export function pushbackCast(p: Entity): void {
+  // Icy Veins: a cast_shield aura makes the caster immune to interruption/pushback.
+  if (hasCastShield(p)) return;
   // Item-set caster bonus scales damage-driven pushback (1 = fully immune).
   const factor = 1 - p.castPushbackReduction;
   if (factor <= 0) return;
@@ -302,6 +316,25 @@ export function castAbility(ctx: SimContext, abilityId: string, pid?: number): v
       ctx.error(p.id, 'Line of sight.');
       return;
     }
+  } else if (ability.requiresTarget && ability.targetType === 'any') {
+    // Holy Shock: heals a friendly target or damages a hostile one, whichever the
+    // current target is. runEffects' heal/directDamage cases gate on hostility so
+    // only the matching effect fires.
+    target = p.targetId !== null ? (ctx.entities.get(p.targetId) ?? null) : null;
+    if (!target || target.dead || (!ctx.isHostileTo(p, target) && !ctx.isFriendlyTo(p, target))) {
+      ctx.error(p.id, 'You have no target.', target?.dead ? 'target_dead' : undefined);
+      return;
+    }
+    const d = dist2d(p.pos, target.pos);
+    const maxRange = ability.range > 0 ? ability.range : MELEE_RANGE;
+    if (d > maxRange) {
+      ctx.error(p.id, 'Out of range.');
+      return;
+    }
+    if (ctx.lineOfSightBlocked(p, target, ability)) {
+      ctx.error(p.id, 'Line of sight.');
+      return;
+    }
   } else if (ability.requiresTarget) {
     target = p.targetId !== null ? (ctx.entities.get(p.targetId) ?? null) : null;
     if (!target || target.dead || !ctx.isHostileTo(p, target)) {
@@ -408,8 +441,9 @@ export function castAbility(ctx: SimContext, abilityId: string, pid?: number): v
   if (ability.channel) {
     spendResource(p, res.cost);
     armAbilityCooldown(p, ability.id, res.cooldown);
-    // Spell haste (item-set bonus) shortens the whole channel and so each tick.
-    const channelDuration = ability.channel.duration / (1 + p.spellHaste);
+    // Spell haste (item-set bonus + spec mastery + buff_spellhaste auras) shortens the
+    // whole channel and so each tick.
+    const channelDuration = ability.channel.duration / spellHasteMult(p);
     p.castingAbility = ability.id;
     p.castTotal = channelDuration;
     p.castRemaining = channelDuration;
@@ -426,13 +460,28 @@ export function castAbility(ctx: SimContext, abilityId: string, pid?: number): v
     return;
   }
 
-  if (res.castTime > 0 && !togglingOff) {
-    // Spell haste (item-set bonus) shortens the cast; Curse of Tongues stretches it.
-    // Physical-school casts ride spellHaste too: set-bonus haste is ONE stat, so
-    // meleeHaste always equals spellHaste and the classic melee-haste scaling falls
-    // out identically. If the haste channels ever split, give physical casts
-    // p.meleeHaste here (and mirror it over the wire for the tooltip).
-    const castTime = (res.castTime * tonguesMult(p)) / (1 + p.spellHaste);
+  // Elemental Mastery (Primal Mastery): consumes a next_cast_instant buff, forcing
+  // this cast to be instant. Scoped here, before the timed-cast branch, so it never
+  // touches the channel or spell-queue paths.
+  let effectiveCastTime = res.castTime;
+  if (effectiveCastTime > 0) {
+    const instantIdx = p.auras.findIndex((a) => a.kind === 'next_cast_instant');
+    if (instantIdx >= 0) {
+      const consumed = p.auras[instantIdx];
+      p.auras.splice(instantIdx, 1);
+      ctx.emit({ type: 'aura', targetId: p.id, name: consumed.name, gained: false });
+      effectiveCastTime = 0;
+    }
+  }
+
+  if (effectiveCastTime > 0 && !togglingOff) {
+    // Spell haste (item-set bonus + spec mastery + buff_spellhaste auras) shortens the
+    // cast; Curse of Tongues stretches it. Physical-school casts ride spellHaste too:
+    // set-bonus haste is ONE stat, so meleeHaste always equals spellHaste and the
+    // classic melee-haste scaling falls out identically. If the haste channels ever
+    // split, give physical casts p.meleeHaste here (and mirror it over the wire for
+    // the tooltip).
+    const castTime = (effectiveCastTime * tonguesMult(p)) / spellHasteMult(p);
     p.castingAbility = ability.id;
     p.castTotal = castTime;
     p.castRemaining = castTime;
@@ -519,8 +568,12 @@ function applyChannelTick(ctx: SimContext, p: Entity, res: ResolvedAbility): voi
       if (eff.type === 'directDamage') {
         const crit = ctx.rng.chance(ctx.spellCrit(src));
         let dmg = ctx.rng.range(eff.min, eff.max) + channelSp;
-        if (crit) dmg *= 1.5;
+        dmg *= spellDamageMultFromAuras(src);
+        // A channeled spell tick (Arcane Missiles) is a spell crit, so it takes the
+        // spell crit-damage channel of the mastery like every other spell crit.
+        if (crit) dmg *= 1.5 + src.critDmgSpellBonus;
         ctx.dealDamage(src, tgt, Math.round(dmg), crit, res.def.school, res.def.name, 'hit');
+        noteSpellHit(ctx, src, crit);
       } else if (eff.type === 'drainTick') {
         const dmg = Math.round(ctx.rng.range(eff.min, eff.max) + channelSp);
         ctx.dealDamage(src, tgt, dmg, false, res.def.school, res.def.name, 'hit');
@@ -599,6 +652,22 @@ function applyAbility(ctx: SimContext, p: Entity, meta: PlayerMeta, res: Resolve
       ctx.error(p.id, 'Line of sight.');
       return;
     }
+  } else if (ability.requiresTarget && ability.targetType === 'any') {
+    target = p.targetId !== null ? (ctx.entities.get(p.targetId) ?? null) : null;
+    if (!target || target.dead || (!ctx.isHostileTo(p, target) && !ctx.isFriendlyTo(p, target))) {
+      ctx.error(p.id, 'You have no target.');
+      return;
+    }
+    const d = dist2d(p.pos, target.pos);
+    const maxRange = ability.range > 0 ? ability.range : MELEE_RANGE;
+    if (d > maxRange + 2) {
+      ctx.error(p.id, 'Out of range.');
+      return;
+    }
+    if (ctx.lineOfSightBlocked(p, target, ability)) {
+      ctx.error(p.id, 'Line of sight.');
+      return;
+    }
   } else if (ability.requiresTarget) {
     target = p.targetId !== null ? (ctx.entities.get(p.targetId) ?? null) : null;
     if (!target || target.dead || !ctx.isHostileTo(p, target)) {
@@ -622,7 +691,10 @@ function applyAbility(ctx: SimContext, p: Entity, meta: PlayerMeta, res: Resolve
   }
 
   // helpful spells never miss
-  if (ability.targetType === 'friendly') {
+  if (
+    ability.targetType === 'friendly' ||
+    (ability.targetType === 'any' && target && ctx.isFriendlyTo(p, target))
+  ) {
     spendAbilityCost(p, res);
     armAbilityCooldown(p, ability.id, res.cooldown, togglingOff);
     ctx.runEffects(p, meta, target, res);

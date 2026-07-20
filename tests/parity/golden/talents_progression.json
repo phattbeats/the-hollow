@@ -111,8 +111,8 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "c1c3ec14",
-      "events": "5d6b40bb",
+      "state": "09077b5e",
+      "events": "bd1d9063",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -161,6 +161,7 @@
           "attackPower": 122,
           "combatTimer": 99,
           "critChance": 0.0895,
+          "critDmgPhysBonus": 0.25,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.0695,
           "fallStartY": 1.5,
@@ -210,7 +211,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "a66da14b",
+      "state": "a24f9675",
       "events": "1235c2db",
       "rng": {
         "draws": 0,
@@ -257,6 +258,7 @@
           "attackPower": 122,
           "combatTimer": 99,
           "critChance": 0.0695,
+          "critDmgPhysBonus": 0.25,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.0695,
           "fallStartY": 1.5,
@@ -306,7 +308,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "73cd811c",
+      "state": "64260b82",
       "events": "0907621d",
       "rng": {
         "draws": 0,
@@ -371,6 +373,7 @@
           "attackPower": 122,
           "combatTimer": 99,
           "critChance": 0.0995,
+          "critDmgPhysBonus": 0.25,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.0695,
           "fallStartY": 1.5,
@@ -420,7 +423,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "a815b683",
+      "state": "f1ae575d",
       "events": "c3618fcf",
       "rng": {
         "draws": 0,
@@ -485,6 +488,7 @@
           "attackPower": 122,
           "combatTimer": 99,
           "critChance": 0.0695,
+          "critDmgPhysBonus": 0.25,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.0695,
           "fallStartY": 1.5,
@@ -534,8 +538,8 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "16c4b23b",
-      "events": "5d6b40bb",
+      "state": "ab0987f1",
+      "events": "0f2acc06",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -594,9 +598,9 @@
       "entities": [
         {
           "aiState": "idle",
-          "attackPower": 132,
+          "attackPower": 122,
           "combatTimer": 99,
-          "critChance": 0.1195,
+          "critChance": 0.1695,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.0695,
           "fallStartY": 1.5,
@@ -646,7 +650,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "16c4b23b",
+      "state": "ab0987f1",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -706,9 +710,9 @@
       "entities": [
         {
           "aiState": "idle",
-          "attackPower": 132,
+          "attackPower": 122,
           "combatTimer": 99,
-          "critChance": 0.1195,
+          "critChance": 0.1695,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.0695,
           "fallStartY": 1.5,
