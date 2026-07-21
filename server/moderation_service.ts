@@ -25,11 +25,14 @@ export interface ModerationHost<TSession extends ModerationSession> {
   killEntity(entityId: number): void;
   enterSpectate(moderator: TSession, target: TSession): void;
   exitSpectate(moderator: TSession): void;
+  isJailed(session: TSession): boolean;
+  sendToJail(target: TSession, minutes: number): void;
+  releaseFromJail(target: TSession): void;
 }
 
 export interface ModerationAudit {
   recordAction(input: {
-    action: 'kick' | 'kill';
+    action: 'kick' | 'kill' | 'jail' | 'unjail';
     accountId: number;
     adminAccountId: number;
     reason: string;
@@ -121,6 +124,12 @@ export class ModerationService<TSession extends ModerationSession> {
         break;
       case 'unspectate':
         this.host.exitSpectate(actor);
+        break;
+      case 'jail':
+        this.jail(actor, command.minutes, command.reason);
+        break;
+      case 'unjail':
+        this.unjail(actor);
         break;
     }
     return true;
@@ -240,6 +249,52 @@ export class ModerationService<TSession extends ModerationSession> {
       return;
     }
     this.host.enterSpectate(actor, target);
+  }
+
+  private jail(actor: TSession, minutes: number | null, reason: string): void {
+    if (minutes === null) {
+      this.host.notice(actor, 'Usage: /jail <minutes> <reason>');
+      return;
+    }
+    const target = this.resolveTarget(actor);
+    if (!target) return;
+    if (this.host.isJailed(target)) {
+      this.host.notice(actor, `${target.name} is already jailed.`);
+      return;
+    }
+    void this.audit
+      .recordAction({
+        action: 'jail',
+        accountId: target.accountId,
+        adminAccountId: actor.accountId,
+        reason: `${reason} (${formatDuration(minutes * 60)})`,
+      })
+      .then(() => {
+        this.host.sendToJail(target, minutes);
+        this.host.systemNotice(actor, `Jailed ${target.name} for ${formatDuration(minutes * 60)}.`);
+      })
+      .catch((err) => console.error('failed to audit in-game jail:', err));
+  }
+
+  private unjail(actor: TSession): void {
+    const target = this.resolveTarget(actor);
+    if (!target) return;
+    if (!this.host.isJailed(target)) {
+      this.host.notice(actor, `${target.name} is not jailed.`);
+      return;
+    }
+    void this.audit
+      .recordAction({
+        action: 'unjail',
+        accountId: target.accountId,
+        adminAccountId: actor.accountId,
+        reason: 'Released by in-game moderator command',
+      })
+      .then(() => {
+        this.host.releaseFromJail(target);
+        this.host.systemNotice(actor, `Released ${target.name} from jail.`);
+      })
+      .catch((err) => console.error('failed to audit in-game unjail:', err));
   }
 
   private resolveTarget(actor: TSession): TSession | null {
