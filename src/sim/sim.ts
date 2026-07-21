@@ -4,6 +4,12 @@ import type {
   DelveRunInfo,
   LockpickView,
 } from '../world_api';
+import { ACHIEVEMENT_INDEX } from './achievements';
+import {
+  type AchievementProgress,
+  achievementPoints as achievementPointsOf,
+  emptyAchievementProgress,
+} from './achievements_core';
 import * as bagsMod from './bags';
 import { addStacked, BAG_SOCKETS, bagCapacity, canAddItem } from './bags';
 import * as bankMod from './bank';
@@ -11,6 +17,7 @@ import { readCollectible as readCollectibleImpl } from './collections';
 import { lineOfSightClear, resolveMovement, resolvePosition } from './colliders';
 import { needsCostTranslation, translateAbilityCost } from './combat/ability_cost';
 import { auraAffectsStats, removeCancelableAura } from './combat/aura_cancel';
+import { auraReplacementConflicts } from './combat/aura_stacking';
 import {
   cleanseFriendlyNpcAuras,
   isRejectedFriendlyNpcAura,
@@ -56,6 +63,7 @@ import { isSpellResisted } from './combat/spell_resist';
 // the PlayerMeta interface + the power-up catalog the fiestaMatchInfo accessor reads.
 import { type AugmentSpecial, type AugmentTier, POWERUPS_BY_ID } from './content/augments';
 import { VASE_LANDING_POS } from './content/hollow';
+import type { JailState } from './content/jail';
 import { FURY_ENTITY_ID, FURY_NPC_ID } from './content/pvp_honor';
 import {
   classHasSkin,
@@ -131,6 +139,7 @@ import {
   rebucketEntity,
   releasePlayerSpirit,
   releaseSpiritInDelve as releaseSpiritInDelveImpl,
+  revivePlayerAt as revivePlayerAtImpl,
   runDespawnDecay,
   tickGroundAoEs,
 } from './entity_roster';
@@ -276,6 +285,7 @@ import {
 } from './social/fiesta';
 import * as fiestaBotsMod from './social/fiesta_bots';
 import { PartyMachine } from './social/party';
+import * as readyCheckMod from './social/ready_check';
 import { SpatialGrid } from './spatial';
 import { isStunDrCategory } from './stun_dr';
 import { Targeting } from './targeting';
@@ -335,6 +345,7 @@ import {
   type PlayerClass,
   type QuestProgress,
   type QuestState,
+  type ReadyCheck,
   RUN_SPEED,
   type Sex,
   type SimConfig,
@@ -846,6 +857,10 @@ export interface PlayerMeta {
   // readables today; future kinds later) this player has ever found. Grows
   // only, never shrinks. Persisted (CharacterState.collectedIds).
   collectedIds: Set<string>;
+  // Achievements (PHAA-687): net-new discrete-accomplishment progress, ALONGSIDE
+  // MILESTONES. `unlocked` grows only; `counters` holds per-criterion progress.
+  // Persisted additively (CharacterState.unlockedAchievements/achievementCounters).
+  achievements: AchievementProgress;
 }
 
 // Away-from-keyboard / do-not-disturb presence. `afk` still delivers whispers
@@ -952,10 +967,19 @@ export interface CharacterState {
   // Optional so characters saved before per-node gathering proficiency
   // existed load cleanly (addPlayer backfills to all-zero).
   gatheringProficiency?: Partial<Record<GatherNodeType, number>>;
+  // A live jail sentence (PHAA-657). Persisted so it keeps running across a
+  // reconnect and the character reloads still jailed. Absent = not jailed.
+  jail?: JailState;
   // Collection tracking core (PHAA-626). Optional/additive so characters saved
   // before the collections system existed load cleanly (empty default); no
   // schema migration needed (JSONB, server/db.ts).
   collectedIds?: string[];
+  // Achievements (PHAA-687). Optional/additive so pre-achievements saves load
+  // cleanly (empty default); no schema migration (JSONB). `unlockedAchievements`
+  // is the completed ids; `achievementCounters` the per-criterion progress
+  // toward not-yet-unlocked count-based achievements.
+  unlockedAchievements?: string[];
+  achievementCounters?: Record<string, number[]>;
 }
 
 export interface PetState {
@@ -1021,6 +1045,10 @@ export class Sim {
   // behind SimContext. Built in the ctor after `ctx`. Sim keeps thin delegates
   // (partyOf + the eight command methods) so IWorld + foreign call sites resolve.
   private party!: PartyMachine;
+  // Active party/raid ready checks, keyed by party id (social/ready_check.ts).
+  // Swept in the end-of-tick block by updateReadyChecks. Exposed to the seam
+  // as ctx.readyChecks.
+  readyChecks = new Map<number, ReadyCheck>();
   // Player target selection + the party-scoped raid-marker store (T1): owns
   // partyMarkers and the tab/nearest/friendly selectors, moved off Sim behind
   // SimContext. Built in the ctor after `ctx`. Sim keeps thin delegates (the nine
@@ -1591,6 +1619,7 @@ export class Sim {
       nodeHarvestReadyAt: {},
       gatheringProficiency: emptyGatheringProficiency(),
       collectedIds: new Set(),
+      achievements: emptyAchievementProgress(),
     };
     this.players.set(player.id, meta);
     player.skinCatalog = meta.skinCatalog;
@@ -1681,6 +1710,11 @@ export class Sim {
       }
       if (s.delveLoreUnlocked) for (const id of s.delveLoreUnlocked) meta.delveLoreUnlocked.add(id);
       if (s.collectedIds) for (const id of s.collectedIds) meta.collectedIds.add(id);
+      if (s.unlockedAchievements)
+        for (const id of s.unlockedAchievements) meta.achievements.unlocked.add(id);
+      if (s.achievementCounters)
+        for (const [id, counters] of Object.entries(s.achievementCounters))
+          meta.achievements.counters.set(id, [...counters]);
       if (s.delveDaily) {
         meta.delveDaily = {
           date: s.delveDaily.date,
@@ -1912,6 +1946,10 @@ export class Sim {
       gatheringProficiency: { ...meta.gatheringProficiency },
       delveLoreUnlocked: [...meta.delveLoreUnlocked],
       collectedIds: [...meta.collectedIds],
+      unlockedAchievements: [...meta.achievements.unlocked],
+      achievementCounters: Object.fromEntries(
+        [...meta.achievements.counters].map(([id, counters]) => [id, [...counters]]),
+      ),
       delveDaily: {
         date: meta.delveDaily.date,
         firstClearXp: [...meta.delveDaily.firstClearXp],
@@ -2405,6 +2443,9 @@ export class Sim {
       get partyInvites() {
         return sim.party.partyInvites;
       },
+      get readyChecks() {
+        return sim.readyChecks;
+      },
       get chatTokens() {
         return sim.chatTokens;
       },
@@ -2513,6 +2554,10 @@ export class Sim {
       canAddItem: sim.canAddItem.bind(sim),
       partyOf: sim.partyOf.bind(sim),
       removeFromParty: (pid: number, verb: string) => sim.party.removeFromParty(pid, verb),
+      // /ready chat command routes through the seam to social/ready_check.ts (the
+      // leader-gated start; readyCheckRespond is a direct Sim delegate below, not on
+      // the seam, since nothing inside sim internals calls it).
+      readyCheckStart: (pid?: number) => readyCheckMod.readyCheckStart(sim.ctx, pid),
       // dropPartyMarkers flips to the T1 marker store (targeting); lazy arrow since
       // sim.targeting is built after ctx. The T1 selectors consume isHostileTo/
       // isFriendlyTo/pvpController/stopFollow, which are already bound above (C4a/C1) and
@@ -2781,6 +2826,14 @@ export class Sim {
     if (r) r.e.gm = enabled;
   }
 
+  // Mark a player as moderation-jailed: prisoners are mutually hostile (the
+  // jail brawl arm in isHostileTo). Server-side only: set on /jail, /unjail,
+  // and join restore.
+  setJailed(enabled: boolean, pid?: number): void {
+    const r = this.resolve(pid);
+    if (r) r.e.jailed = enabled;
+  }
+
   // Dev/test convenience: jump a player to a level (learns abilities, recalcs stats).
   setPlayerLevel(level: number, pid?: number): void {
     const r = this.resolve(pid);
@@ -2986,6 +3039,7 @@ export class Sim {
     this.updateDuels();
     this.updateArena();
     this.updateTradesAndInvites();
+    readyCheckMod.updateReadyChecks(this.ctx);
     this.updateLootRolls();
     this.updateInstances();
     this.updateDelveRuns();
@@ -3518,10 +3572,7 @@ export class Sim {
       aura.sourceId !== target.id
     )
       return;
-    const existing = target.auras.findIndex(
-      (a) => a.id === aura.id && a.sourceId === aura.sourceId,
-    );
-    if (existing >= 0) {
+    for (const existing of auraReplacementConflicts(target.auras, aura)) {
       this.applyNonPlayerStatAura(target, target.auras[existing], -1);
       target.auras.splice(existing, 1);
     }
@@ -4981,6 +5032,24 @@ export class Sim {
     return this.collectedIdsFor(this.primaryId);
   }
 
+  // Achievements (PHAA-687): read-only IWorldAchievements surface. Unlocks are
+  // auto-driven by accomplishments (no player command), so there is no setter
+  // here, only mirrors of the local player's unlocked set + derived point score.
+  unlockedAchievementsFor(pid: number): string[] {
+    return [...(this.players.get(pid)?.achievements.unlocked ?? [])];
+  }
+
+  get unlockedAchievementIds(): string[] {
+    return this.unlockedAchievementsFor(this.primaryId);
+  }
+
+  get achievementPoints(): number {
+    return achievementPointsOf(
+      ACHIEVEMENT_INDEX,
+      this.players.get(this.primaryId)?.achievements.unlocked ?? [],
+    );
+  }
+
   pickUpObject(objId: number, pid?: number): void {
     interaction.pickUpObject(this.ctx, objId, pid);
   }
@@ -5111,6 +5180,10 @@ export class Sim {
     releasePlayerSpirit(this.ctx, pid);
   }
 
+  revivePlayerAt(pid: number, pos: Vec3): void {
+    revivePlayerAtImpl(this.ctx, pid, pos);
+  }
+
   // chatAllowed / handleDevChat / whisperMessageForName / resolveWhisperTarget
   // moved to social/chat.ts (G2). The chat() router below dispatches to them via
   // chatMod.*(this.ctx, ...); they had no callers outside chat().
@@ -5164,6 +5237,11 @@ export class Sim {
           (duel.b === attackerPlayer.id && duel.a === target.id))
       )
         return true;
+      // The jail brawl: prisoners are hostile to each other, always (pets
+      // resolve to their owner via pvpController above, so a prisoner's pet
+      // fights too). isFriendlyTo below mirrors this, so prisoners cannot
+      // cross-heal.
+      if (attackerPlayer.jailed && target.jailed) return true;
       const match = this.arenaMatches.get(attackerPlayer.id);
       return (
         !!match &&
@@ -5215,6 +5293,13 @@ export class Sim {
 
   partyDecline(pid?: number): void {
     this.party.partyDecline(pid);
+  }
+
+  // The readyrespond command (a UI button click, not chat text): a party/raid
+  // member's yes/no answer to an in-flight ready check (social/ready_check.ts).
+  // Not on the SimContext seam (nothing inside sim internals calls it).
+  readyCheckRespond(ready: boolean, pid?: number): void {
+    readyCheckMod.readyCheckRespond(this.ctx, ready, pid);
   }
 
   partyLeave(pid?: number): void {

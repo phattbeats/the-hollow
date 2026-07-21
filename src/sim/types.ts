@@ -1883,6 +1883,10 @@ export interface Entity {
   /** GM character: invulnerable (dealDamage no-ops). Server-set from the
    *  characters.is_gm column; never user-settable. */
   gm?: boolean;
+  /** Moderation-jailed player: prisoners are mutually hostile (the jail
+   *  brawl, see Sim.isHostileTo). Server-set via setJailed on /jail, /unjail,
+   *  and join restore; never user-settable. */
+  jailed?: boolean;
   respawnTimer: number;
   corpseTimer: number;
   lootFfaTimer: number; // seconds of owner-lock left before tap loot opens to all (FFA); Infinity until rollLoot starts it
@@ -2032,6 +2036,19 @@ export type CalendarResultCode =
   | 'calendarFull'
   | 'eventGone';
 
+// An in-flight party/raid ready check (social/ready_check.ts). Keyed on Sim by
+// party id. Each member is 'pending' until they answer; anyone still 'pending'
+// when the timeout fires is counted as "no response" (there is no separate afk
+// state). Sim-internal state, never wired to the client (the outcome is
+// announced as chat/log lines and the yes/no prompt rides the readyCheckStart
+// event).
+export interface ReadyCheck {
+  partyId: number;
+  initiator: number; // pid who ran /ready
+  endsAt: number; // sim-clock seconds (ctx.time) when the check auto-finalizes
+  responses: Map<number, 'ready' | 'notready' | 'pending'>; // pid -> answer
+}
+
 // `pid` (when present) marks a personal event that should only be delivered to
 // that player entity's owner; events without pid are world-visible.
 export type SimEvent = { pid?: number } & (
@@ -2058,6 +2075,11 @@ export type SimEvent = { pid?: number } & (
   // future kinds later) was newly marked collected for this player. Personal
   // (always carries pid); never re-fired for an already-collected id.
   | { type: 'collectibleFound'; collectibleId: string }
+  // Achievements (PHAA-687): a discrete achievement was newly unlocked for this
+  // player. Personal (always carries pid); idempotent, never re-fired for an
+  // already-unlocked id. Carries the stable achievement id only (the sim stays
+  // language-agnostic); the client resolves the display name.
+  | { type: 'achievementUnlocked'; achievementId: string }
   | { type: 'learnAbility'; abilityId: string; rank: number }
   | { type: 'loot'; text: string }
   | {
@@ -2121,6 +2143,9 @@ export type SimEvent = { pid?: number } & (
       to?: string;
     }
   | { type: 'partyInvite'; fromPid: number; fromName: string }
+  // The party/raid leader started a ready check: the recipient's client plays a
+  // sound and shows a yes/no prompt (social/ready_check.ts). Personal (pid set).
+  | { type: 'readyCheckStart'; fromName: string }
   // a guild invitation from an online guild officer/leader; resolved by name
   // server-side so it carries no pid
   | { type: 'guildInvite'; fromName: string; guildName: string }

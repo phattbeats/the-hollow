@@ -2508,6 +2508,11 @@ export const zh_CN: EnTranslations = {
       "readoutNoHomesteadQuest": "你还没有家园。先完成绿掌修士的全部差事才能解锁。",
       "readoutNoHomesteadHint": "你还没有家园。站在空谷地里合适的位置，输入 /homestead claim。",
       "helpLine": "家园：/homestead，/homestead claim。"
+    },
+    "readyCheck": {
+      "mustBeInParty": "你必须在队伍中才能发起准备检查。",
+      "alreadyInProgress": "准备检查已在进行中。",
+      "summary": "准备检查：{ready} 人已准备，{notReady} 人未准备，{noResponse} 人无响应。"
     }
   },
   "lockpickUi": {
@@ -3349,6 +3354,8 @@ export const zh_CN: EnTranslations = {
       "openTrade": "打开交易",
       "duelRequest": "{name} 向你发起了决斗挑战！",
       "acceptDuel": "接受决斗",
+      "readyCheckStart": "{name} 发起了准备检查。",
+      "markReady": "准备",
       "decline": "拒绝"
     },
     "combat": {

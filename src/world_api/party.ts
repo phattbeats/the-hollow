@@ -41,6 +41,11 @@ export interface IWorldParty {
   convertPartyToRaid(): void;
   convertRaidToParty(): void;
   moveRaidMember(targetPid: number, group: 1 | 2): void;
+  // PHAA-641: the party/raid leader's ready check is started via the "/ready" chat
+  // command (chat() already routes online, no dedicated IWorld member needed); this
+  // is the yes/no answer, a dedicated command since it comes from a UI button, not
+  // typed chat.
+  readyCheckRespond(ready: boolean): void;
   // master loot (leader-only setter; master looter assigns threshold drops)
   setPartyLootMaster(enabled: boolean, looter: number, threshold: MasterLootThreshold): void;
   // The master looter's checked subset: 1 pid grants directly, 2+ opens a roll.

@@ -89,6 +89,7 @@ import { HousingView } from './housing';
 import { type NearbyHousingPlot, nearestHousingPlot } from './housing_proximity';
 import { buildImpactSite, type ImpactSiteView } from './impact_site';
 import { ensureDelveInteriorKit } from './interior_kit';
+import { buildJailScene } from './jail_scene';
 import { type LocoTrack, newLocoTrack, updateLocomotion } from './locomotion';
 import { buildMotes, type MotesView } from './motes';
 import { COMBO_PIP_MAX } from './nameplate_combo';
@@ -1266,6 +1267,14 @@ export class Renderer {
     this.scene.add(gatherNodes.group);
     // Baked into world space at build with no per-frame update(), same as props.
     freezeStaticMatrices(gatherNodes.group);
+
+    // PHAA-657: the moderation jail. A remote, always-present fixture (a
+    // player is only ever there after a /jail teleport), same static-fixture
+    // treatment as gather nodes/readables above.
+    const jailScene = buildJailScene(this.sim.cfg.seed);
+    setRenderCategory(jailScene, 'props');
+    this.scene.add(jailScene);
+    freezeStaticMatrices(jailScene);
 
     // PHAA-552: world-placed readable books, same static-fixture treatment as
     // gather nodes above (baked into world space, no per-frame transform).

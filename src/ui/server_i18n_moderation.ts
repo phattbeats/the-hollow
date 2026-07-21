@@ -20,6 +20,15 @@ const en: Messages = {
   'moderation.spectateStop': 'Stopped spectating.',
   'moderation.spectateEnded': '{name} is no longer online; spectate ended.',
   'moderation.spectateLocalChatUnavailable': 'Local chat is unavailable while spectating.',
+  'moderation.jailUsage': 'Usage: /jail <minutes> <reason>',
+  'moderation.jailAlready': '{name} is already jailed.',
+  'moderation.jailConfirm': 'Jailed {name} for {duration}.',
+  'moderation.jailNotJailed': '{name} is not jailed.',
+  'moderation.unjailConfirm': 'Released {name} from jail.',
+  'moderation.jailedNotice': 'A moderator has moved you to jail for {duration}.',
+  'moderation.unjailedNotice': 'A moderator has released you from jail.',
+  'moderation.jailSentenceEnded': 'Your jail sentence has ended.',
+  'moderation.jailedBlocked': 'You cannot do that while jailed.',
 };
 
 const es: Messages = {
@@ -42,6 +51,15 @@ const es: Messages = {
   'moderation.spectateStop': 'Has dejado de observar.',
   'moderation.spectateEnded': '{name} ya no está conectado; la observación ha terminado.',
   'moderation.spectateLocalChatUnavailable': 'El chat local no está disponible mientras observas.',
+  'moderation.jailUsage': 'Uso: /jail <minutos> <motivo>',
+  'moderation.jailAlready': '{name} ya está encarcelado.',
+  'moderation.jailConfirm': 'Has encarcelado a {name} durante {duration}.',
+  'moderation.jailNotJailed': '{name} no está encarcelado.',
+  'moderation.unjailConfirm': 'Has liberado a {name} de la cárcel.',
+  'moderation.jailedNotice': 'Un moderador te ha enviado a la cárcel durante {duration}.',
+  'moderation.unjailedNotice': 'Un moderador te ha liberado de la cárcel.',
+  'moderation.jailSentenceEnded': 'Tu condena en la cárcel ha terminado.',
+  'moderation.jailedBlocked': 'No puedes hacer eso mientras estás encarcelado.',
 };
 
 const fr: Messages = {
@@ -65,6 +83,15 @@ const fr: Messages = {
   'moderation.spectateEnded': "{name} n'est plus en ligne ; l'observation est terminée.",
   'moderation.spectateLocalChatUnavailable':
     "Le chat local n'est pas disponible pendant l'observation.",
+  'moderation.jailUsage': 'Usage : /jail <minutes> <raison>',
+  'moderation.jailAlready': '{name} est déjà emprisonné.',
+  'moderation.jailConfirm': '{name} a été emprisonné pour {duration}.',
+  'moderation.jailNotJailed': "{name} n'est pas emprisonné.",
+  'moderation.unjailConfirm': '{name} a été libéré de prison.',
+  'moderation.jailedNotice': 'Un modérateur vous a envoyé en prison pour {duration}.',
+  'moderation.unjailedNotice': 'Un modérateur vous a libéré de prison.',
+  'moderation.jailSentenceEnded': 'Votre peine de prison est terminée.',
+  'moderation.jailedBlocked': 'Vous ne pouvez pas faire cela en prison.',
 };
 
 const it: Messages = {
@@ -88,6 +115,15 @@ const it: Messages = {
   'moderation.spectateEnded': '{name} non è più online; osservazione terminata.',
   'moderation.spectateLocalChatUnavailable':
     "La chat locale non è disponibile durante l'osservazione.",
+  'moderation.jailUsage': 'Uso: /jail <minuti> <motivo>',
+  'moderation.jailAlready': '{name} è già in prigione.',
+  'moderation.jailConfirm': '{name} è stato messo in prigione per {duration}.',
+  'moderation.jailNotJailed': '{name} non è in prigione.',
+  'moderation.unjailConfirm': '{name} è stato rilasciato dalla prigione.',
+  'moderation.jailedNotice': 'Un moderatore ti ha portato in prigione per {duration}.',
+  'moderation.unjailedNotice': 'Un moderatore ti ha rilasciato dalla prigione.',
+  'moderation.jailSentenceEnded': 'La tua pena in prigione è terminata.',
+  'moderation.jailedBlocked': 'Non puoi farlo mentre sei in prigione.',
 };
 
 const de: Messages = {
@@ -111,6 +147,15 @@ const de: Messages = {
   'moderation.spectateEnded': '{name} ist nicht mehr online; die Beobachtung wurde beendet.',
   'moderation.spectateLocalChatUnavailable':
     'Der lokale Chat ist während der Beobachtung nicht verfügbar.',
+  'moderation.jailUsage': 'Verwendung: /jail <Minuten> <Grund>',
+  'moderation.jailAlready': '{name} sitzt bereits im Gefängnis.',
+  'moderation.jailConfirm': '{name} wurde für {duration} ins Gefängnis gesteckt.',
+  'moderation.jailNotJailed': '{name} sitzt nicht im Gefängnis.',
+  'moderation.unjailConfirm': '{name} wurde aus dem Gefängnis entlassen.',
+  'moderation.jailedNotice': 'Ein Moderator hat euch für {duration} ins Gefängnis gesteckt.',
+  'moderation.unjailedNotice': 'Ein Moderator hat euch aus dem Gefängnis entlassen.',
+  'moderation.jailSentenceEnded': 'Eure Gefängnisstrafe ist beendet.',
+  'moderation.jailedBlocked': 'Das könnt ihr im Gefängnis nicht tun.',
 };
 
 const zhCN: Messages = {
@@ -133,6 +178,15 @@ const zhCN: Messages = {
   'moderation.spectateStop': '已停止观察。',
   'moderation.spectateEnded': '{name} 已离线；观察已结束。',
   'moderation.spectateLocalChatUnavailable': '观察时无法使用本地聊天。',
+  'moderation.jailUsage': '用法：/jail <分钟> <原因>',
+  'moderation.jailAlready': '{name} 已被关押。',
+  'moderation.jailConfirm': '已将 {name} 关押 {duration}。',
+  'moderation.jailNotJailed': '{name} 未被关押。',
+  'moderation.unjailConfirm': '已将 {name} 从监狱释放。',
+  'moderation.jailedNotice': '管理员已将你关押 {duration}。',
+  'moderation.unjailedNotice': '管理员已将你从监狱释放。',
+  'moderation.jailSentenceEnded': '你的刑期已结束。',
+  'moderation.jailedBlocked': '被关押时无法执行该操作。',
 };
 
 const zhTW: Messages = {
@@ -155,6 +209,15 @@ const zhTW: Messages = {
   'moderation.spectateStop': '已停止觀察。',
   'moderation.spectateEnded': '{name} 已離線；觀察已結束。',
   'moderation.spectateLocalChatUnavailable': '觀察時無法使用本地聊天。',
+  'moderation.jailUsage': '用法：/jail <分鐘> <原因>',
+  'moderation.jailAlready': '{name} 已被關押。',
+  'moderation.jailConfirm': '已將 {name} 關押 {duration}。',
+  'moderation.jailNotJailed': '{name} 未被關押。',
+  'moderation.unjailConfirm': '已將 {name} 從監獄釋放。',
+  'moderation.jailedNotice': '管理員已將你關押 {duration}。',
+  'moderation.unjailedNotice': '管理員已將你從監獄釋放。',
+  'moderation.jailSentenceEnded': '你的刑期已結束。',
+  'moderation.jailedBlocked': '被關押時無法執行該操作。',
 };
 
 const ko: Messages = {
@@ -177,6 +240,15 @@ const ko: Messages = {
   'moderation.spectateStop': '관전을 중지했습니다.',
   'moderation.spectateEnded': '{name} 님이 더 이상 온라인이 아니므로 관전이 종료되었습니다.',
   'moderation.spectateLocalChatUnavailable': '관전 중에는 지역 채팅을 사용할 수 없습니다.',
+  'moderation.jailUsage': '사용법: /jail <분> <사유>',
+  'moderation.jailAlready': '{name}님은 이미 수감되어 있습니다.',
+  'moderation.jailConfirm': '{name}님을 {duration} 동안 수감했습니다.',
+  'moderation.jailNotJailed': '{name}님은 수감되어 있지 않습니다.',
+  'moderation.unjailConfirm': '{name}님을 감옥에서 석방했습니다.',
+  'moderation.jailedNotice': '운영자가 당신을 {duration} 동안 감옥으로 보냈습니다.',
+  'moderation.unjailedNotice': '운영자가 당신을 감옥에서 석방했습니다.',
+  'moderation.jailSentenceEnded': '수감 기간이 종료되었습니다.',
+  'moderation.jailedBlocked': '수감 중에는 그 작업을 할 수 없습니다.',
 };
 
 const ja: Messages = {
@@ -199,6 +271,15 @@ const ja: Messages = {
   'moderation.spectateStop': '観戦を終了しました。',
   'moderation.spectateEnded': '{name}はオフラインになったため、観戦を終了しました。',
   'moderation.spectateLocalChatUnavailable': '観戦中はローカルチャットを使用できません。',
+  'moderation.jailUsage': '使い方: /jail <分> <理由>',
+  'moderation.jailAlready': '{name} はすでに投獄されています。',
+  'moderation.jailConfirm': '{name} を {duration} の間投獄しました。',
+  'moderation.jailNotJailed': '{name} は投獄されていません。',
+  'moderation.unjailConfirm': '{name} を釈放しました。',
+  'moderation.jailedNotice': 'モデレーターによって {duration} の間投獄されました。',
+  'moderation.unjailedNotice': 'モデレーターによって釈放されました。',
+  'moderation.jailSentenceEnded': '投獄期間が終了しました。',
+  'moderation.jailedBlocked': '投獄中はそれを行えません。',
 };
 
 const pt: Messages = {
@@ -222,6 +303,15 @@ const pt: Messages = {
   'moderation.spectateEnded': '{name} não está mais online; a observação foi encerrada.',
   'moderation.spectateLocalChatUnavailable':
     'O chat local não está disponível durante a observação.',
+  'moderation.jailUsage': 'Uso: /jail <minutos> <motivo>',
+  'moderation.jailAlready': '{name} já está preso.',
+  'moderation.jailConfirm': '{name} foi preso por {duration}.',
+  'moderation.jailNotJailed': '{name} não está preso.',
+  'moderation.unjailConfirm': '{name} foi libertado da prisão.',
+  'moderation.jailedNotice': 'Um moderador te enviou para a prisão por {duration}.',
+  'moderation.unjailedNotice': 'Um moderador te libertou da prisão.',
+  'moderation.jailSentenceEnded': 'Sua pena na prisão terminou.',
+  'moderation.jailedBlocked': 'Você não pode fazer isso enquanto estiver preso.',
 };
 
 const ru: Messages = {
@@ -244,6 +334,15 @@ const ru: Messages = {
   'moderation.spectateStop': 'Наблюдение прекращено.',
   'moderation.spectateEnded': '{name} больше не в сети; наблюдение завершено.',
   'moderation.spectateLocalChatUnavailable': 'Локальный чат недоступен во время наблюдения.',
+  'moderation.jailUsage': 'Использование: /jail <минуты> <причина>',
+  'moderation.jailAlready': '{name} уже находится в тюрьме.',
+  'moderation.jailConfirm': '{name} заключён в тюрьму на {duration}.',
+  'moderation.jailNotJailed': '{name} не в тюрьме.',
+  'moderation.unjailConfirm': '{name} освобождён из тюрьмы.',
+  'moderation.jailedNotice': 'Модератор отправил вас в тюрьму на {duration}.',
+  'moderation.unjailedNotice': 'Модератор освободил вас из тюрьмы.',
+  'moderation.jailSentenceEnded': 'Ваш тюремный срок закончился.',
+  'moderation.jailedBlocked': 'Вы не можете сделать это, находясь в тюрьме.',
 };
 
 const da: Messages = {
@@ -266,6 +365,15 @@ const da: Messages = {
   'moderation.spectateStop': 'Observation stoppet.',
   'moderation.spectateEnded': '{name} er ikke længere online; observationen er afsluttet.',
   'moderation.spectateLocalChatUnavailable': 'Lokal chat er ikke tilgængelig under observation.',
+  'moderation.jailUsage': 'Brug: /jail <minutter> <årsag>',
+  'moderation.jailAlready': '{name} sidder allerede i fængsel.',
+  'moderation.jailConfirm': '{name} blev fængslet i {duration}.',
+  'moderation.jailNotJailed': '{name} sidder ikke i fængsel.',
+  'moderation.unjailConfirm': '{name} blev løsladt fra fængslet.',
+  'moderation.jailedNotice': 'En moderator har sendt dig i fængsel i {duration}.',
+  'moderation.unjailedNotice': 'En moderator har løsladt dig fra fængslet.',
+  'moderation.jailSentenceEnded': 'Din fængselsstraf er slut.',
+  'moderation.jailedBlocked': 'Det kan du ikke gøre, mens du sidder i fængsel.',
 };
 
 const id: Messages = {
@@ -288,6 +396,16 @@ const id: Messages = {
   'moderation.spectateStop': 'Pengamatan dihentikan.',
   'moderation.spectateEnded': '{name} tidak lagi online; pengamatan telah berakhir.',
   'moderation.spectateLocalChatUnavailable': 'Obrolan lokal tidak tersedia saat mengamati.',
+  'moderation.jailUsage': 'Penggunaan: /jail <menit> <alasan>',
+  'moderation.jailAlready': '{name} sudah dipenjara.',
+  'moderation.jailConfirm': '{name} dipenjara selama {duration}.',
+  'moderation.jailNotJailed': '{name} tidak sedang dipenjara.',
+  'moderation.unjailConfirm': '{name} telah dibebaskan dari penjara.',
+  'moderation.jailedNotice':
+    'Seorang moderator telah memindahkan Anda ke penjara selama {duration}.',
+  'moderation.unjailedNotice': 'Seorang moderator telah membebaskan Anda dari penjara.',
+  'moderation.jailSentenceEnded': 'Masa hukuman penjara Anda telah berakhir.',
+  'moderation.jailedBlocked': 'Anda tidak dapat melakukan itu saat dipenjara.',
 };
 
 const nl: Messages = {
@@ -311,6 +429,15 @@ const nl: Messages = {
   'moderation.spectateEnded': '{name} is niet meer online; de observatie is beëindigd.',
   'moderation.spectateLocalChatUnavailable':
     'Lokale chat is niet beschikbaar tijdens het observeren.',
+  'moderation.jailUsage': 'Gebruik: /jail <minuten> <reden>',
+  'moderation.jailAlready': '{name} zit al vast.',
+  'moderation.jailConfirm': '{name} is voor {duration} vastgezet.',
+  'moderation.jailNotJailed': '{name} zit niet vast.',
+  'moderation.unjailConfirm': '{name} is vrijgelaten uit de cel.',
+  'moderation.jailedNotice': 'Een moderator heeft je voor {duration} naar de cel gestuurd.',
+  'moderation.unjailedNotice': 'Een moderator heeft je uit de cel vrijgelaten.',
+  'moderation.jailSentenceEnded': 'Je gevangenisstraf is voorbij.',
+  'moderation.jailedBlocked': 'Dat kun je niet doen terwijl je vastzit.',
 };
 
 const pl: Messages = {
@@ -333,6 +460,15 @@ const pl: Messages = {
   'moderation.spectateStop': 'Obserwacja zakończona.',
   'moderation.spectateEnded': 'Gracz {name} nie jest już online; obserwacja zakończona.',
   'moderation.spectateLocalChatUnavailable': 'Czat lokalny jest niedostępny podczas obserwacji.',
+  'moderation.jailUsage': 'Użycie: /jail <minuty> <powód>',
+  'moderation.jailAlready': 'Gracz {name} jest już w więzieniu.',
+  'moderation.jailConfirm': 'Gracz {name} został wtrącony do więzienia na {duration}.',
+  'moderation.jailNotJailed': 'Gracz {name} nie jest w więzieniu.',
+  'moderation.unjailConfirm': 'Gracz {name} został zwolniony z więzienia.',
+  'moderation.jailedNotice': 'Moderator wysłał cię do więzienia na {duration}.',
+  'moderation.unjailedNotice': 'Moderator zwolnił cię z więzienia.',
+  'moderation.jailSentenceEnded': 'Twój wyrok w więzieniu dobiegł końca.',
+  'moderation.jailedBlocked': 'Nie możesz tego zrobić, będąc w więzieniu.',
 };
 
 const sv: Messages = {
@@ -355,6 +491,15 @@ const sv: Messages = {
   'moderation.spectateStop': 'Observationen avslutades.',
   'moderation.spectateEnded': '{name} är inte längre online; observationen avslutades.',
   'moderation.spectateLocalChatUnavailable': 'Lokal chatt är inte tillgänglig under observation.',
+  'moderation.jailUsage': 'Användning: /jail <minuter> <orsak>',
+  'moderation.jailAlready': '{name} sitter redan i fängelse.',
+  'moderation.jailConfirm': '{name} har fängslats i {duration}.',
+  'moderation.jailNotJailed': '{name} sitter inte i fängelse.',
+  'moderation.unjailConfirm': '{name} har släppts ur fängelset.',
+  'moderation.jailedNotice': 'En moderator har skickat dig till fängelset i {duration}.',
+  'moderation.unjailedNotice': 'En moderator har släppt dig ur fängelset.',
+  'moderation.jailSentenceEnded': 'Ditt fängelsestraff är slut.',
+  'moderation.jailedBlocked': 'Det kan du inte göra medan du sitter i fängelse.',
 };
 
 const tr: Messages = {
@@ -377,6 +522,15 @@ const tr: Messages = {
   'moderation.spectateStop': 'İzleme durduruldu.',
   'moderation.spectateEnded': '{name} artık çevrimiçi değil; izleme sona erdi.',
   'moderation.spectateLocalChatUnavailable': 'İzleme sırasında yerel sohbet kullanılamaz.',
+  'moderation.jailUsage': 'Kullanım: /jail <dakika> <neden>',
+  'moderation.jailAlready': '{name} zaten hapiste.',
+  'moderation.jailConfirm': '{name}, {duration} boyunca hapse atıldı.',
+  'moderation.jailNotJailed': '{name} hapiste değil.',
+  'moderation.unjailConfirm': '{name} hapisten serbest bırakıldı.',
+  'moderation.jailedNotice': 'Bir moderatör sizi {duration} boyunca hapse gönderdi.',
+  'moderation.unjailedNotice': 'Bir moderatör sizi hapisten serbest bıraktı.',
+  'moderation.jailSentenceEnded': 'Hapis cezanız sona erdi.',
+  'moderation.jailedBlocked': 'Hapisteyken bunu yapamazsınız.',
 };
 
 const vi: Messages = {
@@ -399,6 +553,15 @@ const vi: Messages = {
   'moderation.spectateStop': 'Đã dừng theo dõi.',
   'moderation.spectateEnded': '{name} không còn trực tuyến; phiên theo dõi đã kết thúc.',
   'moderation.spectateLocalChatUnavailable': 'Chat cục bộ không khả dụng khi đang theo dõi.',
+  'moderation.jailUsage': 'Cách dùng: /jail <phút> <lý do>',
+  'moderation.jailAlready': '{name} đã bị giam.',
+  'moderation.jailConfirm': '{name} đã bị giam trong {duration}.',
+  'moderation.jailNotJailed': '{name} không bị giam.',
+  'moderation.unjailConfirm': '{name} đã được thả khỏi nhà giam.',
+  'moderation.jailedNotice': 'Người kiểm duyệt đã đưa bạn vào nhà giam trong {duration}.',
+  'moderation.unjailedNotice': 'Người kiểm duyệt đã thả bạn khỏi nhà giam.',
+  'moderation.jailSentenceEnded': 'Thời gian giam giữ của bạn đã kết thúc.',
+  'moderation.jailedBlocked': 'Bạn không thể làm điều đó khi đang bị giam.',
 };
 
 export const IN_GAME_MODERATION_MESSAGES: Record<string, Messages> = {

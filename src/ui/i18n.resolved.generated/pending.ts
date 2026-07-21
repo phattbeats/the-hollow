@@ -311,6 +311,8 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
+    "hud.prompts.markReady",
+    "hud.prompts.readyCheckStart",
     "hudChrome.auraEffect.armorPct",
     "hudChrome.auraEffect.armorPctStacks",
     "hudChrome.auraEffect.increasePct.ap",
@@ -509,7 +511,10 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.readoutUsage",
     "sim.house.slotEmpty",
     "sim.house.slotRange",
-    "sim.house.unknownKind"
+    "sim.house.unknownKind",
+    "sim.readyCheck.alreadyInProgress",
+    "sim.readyCheck.mustBeInParty",
+    "sim.readyCheck.summary"
   ],
   "es_ES": [
     "abilityUi.tooltip.selfOnly",
@@ -813,6 +818,8 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
+    "hud.prompts.markReady",
+    "hud.prompts.readyCheckStart",
     "hudChrome.auraEffect.armorPct",
     "hudChrome.auraEffect.armorPctStacks",
     "hudChrome.auraEffect.increasePct.ap",
@@ -1011,7 +1018,10 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.readoutUsage",
     "sim.house.slotEmpty",
     "sim.house.slotRange",
-    "sim.house.unknownKind"
+    "sim.house.unknownKind",
+    "sim.readyCheck.alreadyInProgress",
+    "sim.readyCheck.mustBeInParty",
+    "sim.readyCheck.summary"
   ],
   "fr_FR": [
     "abilityUi.tooltip.selfOnly",
@@ -1315,6 +1325,8 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
+    "hud.prompts.markReady",
+    "hud.prompts.readyCheckStart",
     "hudChrome.auraEffect.armorPct",
     "hudChrome.auraEffect.armorPctStacks",
     "hudChrome.auraEffect.increasePct.ap",
@@ -1513,7 +1525,10 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.readoutUsage",
     "sim.house.slotEmpty",
     "sim.house.slotRange",
-    "sim.house.unknownKind"
+    "sim.house.unknownKind",
+    "sim.readyCheck.alreadyInProgress",
+    "sim.readyCheck.mustBeInParty",
+    "sim.readyCheck.summary"
   ],
   "fr_CA": [
     "abilityUi.tooltip.selfOnly",
@@ -1817,6 +1832,8 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
+    "hud.prompts.markReady",
+    "hud.prompts.readyCheckStart",
     "hudChrome.auraEffect.armorPct",
     "hudChrome.auraEffect.armorPctStacks",
     "hudChrome.auraEffect.increasePct.ap",
@@ -2015,7 +2032,10 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.readoutUsage",
     "sim.house.slotEmpty",
     "sim.house.slotRange",
-    "sim.house.unknownKind"
+    "sim.house.unknownKind",
+    "sim.readyCheck.alreadyInProgress",
+    "sim.readyCheck.mustBeInParty",
+    "sim.readyCheck.summary"
   ],
   "en_CA": [],
   "it_IT": [
@@ -2320,6 +2340,8 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
+    "hud.prompts.markReady",
+    "hud.prompts.readyCheckStart",
     "hudChrome.auraEffect.armorPct",
     "hudChrome.auraEffect.armorPctStacks",
     "hudChrome.auraEffect.increasePct.ap",
@@ -2518,7 +2540,10 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.readoutUsage",
     "sim.house.slotEmpty",
     "sim.house.slotRange",
-    "sim.house.unknownKind"
+    "sim.house.unknownKind",
+    "sim.readyCheck.alreadyInProgress",
+    "sim.readyCheck.mustBeInParty",
+    "sim.readyCheck.summary"
   ],
   "de_DE": [
     "abilityUi.tooltip.selfOnly",
@@ -2822,6 +2847,8 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
+    "hud.prompts.markReady",
+    "hud.prompts.readyCheckStart",
     "hudChrome.auraEffect.armorPct",
     "hudChrome.auraEffect.armorPctStacks",
     "hudChrome.auraEffect.increasePct.ap",
@@ -3020,7 +3047,10 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.readoutUsage",
     "sim.house.slotEmpty",
     "sim.house.slotRange",
-    "sim.house.unknownKind"
+    "sim.house.unknownKind",
+    "sim.readyCheck.alreadyInProgress",
+    "sim.readyCheck.mustBeInParty",
+    "sim.readyCheck.summary"
   ],
   "zh_CN": [
     "entities.quests.q_keep_him_lit.title",
@@ -3376,6 +3406,8 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
+    "hud.prompts.markReady",
+    "hud.prompts.readyCheckStart",
     "hudChrome.auraEffect.armorPct",
     "hudChrome.auraEffect.armorPctStacks",
     "hudChrome.auraEffect.increasePct.ap",
@@ -3574,7 +3606,10 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.readoutUsage",
     "sim.house.slotEmpty",
     "sim.house.slotRange",
-    "sim.house.unknownKind"
+    "sim.house.unknownKind",
+    "sim.readyCheck.alreadyInProgress",
+    "sim.readyCheck.mustBeInParty",
+    "sim.readyCheck.summary"
   ],
   "ru_RU": [
     "entities.quests.q_keep_him_lit.title",
@@ -3891,6 +3926,8 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
+    "hud.prompts.markReady",
+    "hud.prompts.readyCheckStart",
     "hudChrome.auraEffect.armorPct",
     "hudChrome.auraEffect.armorPctStacks",
     "hudChrome.auraEffect.increasePct.ap",
@@ -4089,7 +4126,10 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.readoutUsage",
     "sim.house.slotEmpty",
     "sim.house.slotRange",
-    "sim.house.unknownKind"
+    "sim.house.unknownKind",
+    "sim.readyCheck.alreadyInProgress",
+    "sim.readyCheck.mustBeInParty",
+    "sim.readyCheck.summary"
   ],
   "pl_PL": [
     "abilityUi.tooltip.selfOnly",
@@ -4393,6 +4433,8 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
+    "hud.prompts.markReady",
+    "hud.prompts.readyCheckStart",
     "hudChrome.auraEffect.armorPct",
     "hudChrome.auraEffect.armorPctStacks",
     "hudChrome.auraEffect.increasePct.ap",
@@ -4591,7 +4633,10 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.readoutUsage",
     "sim.house.slotEmpty",
     "sim.house.slotRange",
-    "sim.house.unknownKind"
+    "sim.house.unknownKind",
+    "sim.readyCheck.alreadyInProgress",
+    "sim.readyCheck.mustBeInParty",
+    "sim.readyCheck.summary"
   ],
   "id_ID": [
     "abilityUi.tooltip.selfOnly",
@@ -4895,6 +4940,8 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
+    "hud.prompts.markReady",
+    "hud.prompts.readyCheckStart",
     "hudChrome.auraEffect.armorPct",
     "hudChrome.auraEffect.armorPctStacks",
     "hudChrome.auraEffect.increasePct.ap",
@@ -5093,7 +5140,10 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.readoutUsage",
     "sim.house.slotEmpty",
     "sim.house.slotRange",
-    "sim.house.unknownKind"
+    "sim.house.unknownKind",
+    "sim.readyCheck.alreadyInProgress",
+    "sim.readyCheck.mustBeInParty",
+    "sim.readyCheck.summary"
   ],
   "tr_TR": [
     "abilityUi.tooltip.selfOnly",
@@ -5397,6 +5447,8 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
+    "hud.prompts.markReady",
+    "hud.prompts.readyCheckStart",
     "hudChrome.auraEffect.armorPct",
     "hudChrome.auraEffect.armorPctStacks",
     "hudChrome.auraEffect.increasePct.ap",
@@ -5595,7 +5647,10 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.readoutUsage",
     "sim.house.slotEmpty",
     "sim.house.slotRange",
-    "sim.house.unknownKind"
+    "sim.house.unknownKind",
+    "sim.readyCheck.alreadyInProgress",
+    "sim.readyCheck.mustBeInParty",
+    "sim.readyCheck.summary"
   ],
   "sv_SE": [
     "abilityUi.tooltip.selfOnly",
@@ -5899,6 +5954,8 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
+    "hud.prompts.markReady",
+    "hud.prompts.readyCheckStart",
     "hudChrome.auraEffect.armorPct",
     "hudChrome.auraEffect.armorPctStacks",
     "hudChrome.auraEffect.increasePct.ap",
@@ -6097,7 +6154,10 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.readoutUsage",
     "sim.house.slotEmpty",
     "sim.house.slotRange",
-    "sim.house.unknownKind"
+    "sim.house.unknownKind",
+    "sim.readyCheck.alreadyInProgress",
+    "sim.readyCheck.mustBeInParty",
+    "sim.readyCheck.summary"
   ],
   "vi_VN": [
     "abilityUi.tooltip.selfOnly",
@@ -6401,6 +6461,8 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
+    "hud.prompts.markReady",
+    "hud.prompts.readyCheckStart",
     "hudChrome.auraEffect.armorPct",
     "hudChrome.auraEffect.armorPctStacks",
     "hudChrome.auraEffect.increasePct.ap",
@@ -6599,7 +6661,10 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.readoutUsage",
     "sim.house.slotEmpty",
     "sim.house.slotRange",
-    "sim.house.unknownKind"
+    "sim.house.unknownKind",
+    "sim.readyCheck.alreadyInProgress",
+    "sim.readyCheck.mustBeInParty",
+    "sim.readyCheck.summary"
   ],
   "da_DK": [
     "abilityUi.tooltip.selfOnly",
@@ -6903,6 +6968,8 @@ export const pending: Record<string, readonly string[]> = {
     "housingUi.window.placeAria",
     "housingUi.window.slotEmpty",
     "housingUi.window.title",
+    "hud.prompts.markReady",
+    "hud.prompts.readyCheckStart",
     "hudChrome.auraEffect.armorPct",
     "hudChrome.auraEffect.armorPctStacks",
     "hudChrome.auraEffect.increasePct.ap",
@@ -7101,6 +7168,9 @@ export const pending: Record<string, readonly string[]> = {
     "sim.house.readoutUsage",
     "sim.house.slotEmpty",
     "sim.house.slotRange",
-    "sim.house.unknownKind"
+    "sim.house.unknownKind",
+    "sim.readyCheck.alreadyInProgress",
+    "sim.readyCheck.mustBeInParty",
+    "sim.readyCheck.summary"
   ]
 };

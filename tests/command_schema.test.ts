@@ -25,9 +25,10 @@ const repoRoot = fileURLToPath(new URL('..', import.meta.url));
 // Verified counts on the current tree (re-derived below; do not hard-code 85/6).
 // +1 over the pre-PHAA-626 tree: readCollectible (IWorldCollections) is both a
 // ClientWorld send and a server dispatch case (not dispatch-only), same as the
-// mail_* commands before it.
-const EXPECTED_SEND_COUNT = 120;
-const EXPECTED_DISPATCH_COUNT = 127;
+// mail_* commands before it. +1 again for PHAA-641 readyRespond (IWorldParty),
+// likewise both a ClientWorld send and a server dispatch case.
+const EXPECTED_SEND_COUNT = 121;
+const EXPECTED_DISPATCH_COUNT = 128;
 const EXPECTED_DISPATCH_ONLY_COUNT = 7;
 
 // The chat sub-channel routing switch (server/game.ts `switch
