@@ -243,7 +243,9 @@ per the root `CLAUDE.md` i18n rule.
   (PR #153), so once the Board confirms the numbers here the implementation
   child is clear to start immediately.
 - `recordValeCupResult` / any daily-reward coupling: stays SKIP, PHAA-518.
-- Any currency other than copper.
+- Any currency other than copper for this implementation. See §12: the Board has
+  since approved item/material stakes in principle, but they need their own
+  valuation and escrow design and are not part of what ships under this doc.
 - A "watch any live match" spectator browser for formats other than boarball;
   the Vale Cup board in §8 is boarball-specific, reusing the existing spectate
   primitive, not a general spectator system.
@@ -254,3 +256,28 @@ per the root `CLAUDE.md` i18n rule.
 matching boarball's own zero-rng precedent) and `privacy-security-review`
 (server-authoritative escrow, no client-trusted amounts, self-match lockout
 enforced server-side).
+
+## 12. Addendum, 2026-07-21 (Board, PHAA-702): scope widened, collusion posture settled
+
+Two follow-up answers from the Board, on the sibling decision ticket PHAA-702, land
+on this design without changing the numbers in play:
+
+- **Item/material stakes are approved in principle**, on top of the gold-only
+  shape above. This is not specced here: an item stake needs its own answers
+  before it can ship (which items are even eligible, how a non-fungible or
+  stacked item's stake value is capped and compared against the gold cap in §3,
+  whether soulbound items are excluded, and an escrow shape for holding an
+  arbitrary item rather than a copper integer). Treat it as a scoped follow-up
+  design, not an extension of the implementation child this doc unblocks. Gold
+  wagering per §§1 to 9 ships unchanged and first.
+- **Bettor/player collusion is explicitly not an active-prevention target.** The
+  Board's answer was to allow it and rely on post-hoc audit logging, which
+  matches this doc's own §6 stance on win-trading (detection and moderator
+  review, not a code-level block) and settles the one place §4 flagged itself
+  for review: no live-odds or in-play betting shape is needed to counter
+  collusion, since collusion is out of scope for prevention entirely. The
+  self-match lockout in §6 stays, since it is a cheap, unambiguous server check
+  with no false-positive risk, not a collusion mitigation.
+- The Scope Lock amendment this decision required (§1's opening line, "currency-
+  only wagering is out forever, the mechanic shape is approved") is now formal:
+  `docs/plan-the-hollow.md`'s Scope Lock, section 6, amended 2026-07-21.
