@@ -22,6 +22,7 @@ const DEBUFF_KINDS: ReadonlySet<AuraKind> = new Set<AuraKind>([
   'attackspeed',
   'debuff_ap',
   'sunder',
+  'debuff_armor_pct',
   'mortal_wound',
   'silence',
   'disarm',

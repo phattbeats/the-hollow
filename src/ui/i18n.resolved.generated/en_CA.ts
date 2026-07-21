@@ -720,10 +720,18 @@ export const en_CA: EnTranslations = {
         "spi": "Reduces Spirit by {value}",
         "allStats": "Reduces all attributes by {value}"
       },
+      "increasePct": {
+        "ap": "Increases attack power by {pct}%",
+        "armor": "Increases armor by {pct}%",
+        "int": "Increases Intellect by {pct}%",
+        "sta": "Increases Stamina by {pct}%"
+      },
       "dodge": "Increases dodge chance by {pct}%",
       "dodgeReduce": "Reduces dodge chance by {pct}%",
       "armorFlat": "Reduces armor by {value}",
       "armorFlatStacks": "Reduces armor by {value} ({stacks} stacks)",
+      "armorPct": "Reduces armor by {pct}%",
+      "armorPctStacks": "Reduces armor by {pct}% ({stacks} stacks)",
       "mortalWound": "Reduces healing received by {pct}%",
       "vulnerability": "Increases damage taken by {pct}%",
       "physVuln": "Increases physical damage taken by {pct}%",
@@ -2439,6 +2447,10 @@ export const en_CA: EnTranslations = {
       "nothingToHarvest": "That corpse has nothing to harvest.",
       "alreadyHarvested": "This corpse has already been harvested."
     },
+    "collections": {
+      "notFound": "That does not exist.",
+      "tooFar": "Too far away."
+    },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
       "noItems1": "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",
@@ -2499,6 +2511,11 @@ export const en_CA: EnTranslations = {
       "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
       "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
       "helpLine": "Homestead: /homestead, /homestead claim."
+    },
+    "readyCheck": {
+      "mustBeInParty": "You must be in a party to start a ready check.",
+      "alreadyInProgress": "A ready check is already in progress.",
+      "summary": "Ready check: {ready} ready, {notReady} not ready, {noResponse} no response."
     }
   },
   "lockpickUi": {
@@ -3340,6 +3357,8 @@ export const en_CA: EnTranslations = {
       "openTrade": "Open Trade",
       "duelRequest": "{name} has challenged you to a duel!",
       "acceptDuel": "Accept Duel",
+      "readyCheckStart": "{name} has started a ready check.",
+      "markReady": "Ready",
       "decline": "Decline"
     },
     "combat": {
@@ -4046,11 +4065,11 @@ export const en_CA: EnTranslations = {
       },
       "battle_shout": {
         "name": "Battle Shout",
-        "description": "Increases your attack power by 20 for 2 min."
+        "description": "Increases your party or raid's attack power by 5% for 2 min."
       },
       "commanding_shout": {
         "name": "Commanding Shout",
-        "description": "Increases your Stamina by 6 for 2 min."
+        "description": "Increases your party or raid's Stamina by 5% for 2 min."
       },
       "demoralizing_shout": {
         "name": "Demoralizing Shout",
@@ -4098,7 +4117,7 @@ export const en_CA: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Sunder Armor",
-        "description": "Sunders the target's armor, reducing it by {damage} per application. Stacks up to 5 times. Generates a high amount of threat."
+        "description": "Sunders the target's armor, reducing it by 2% per application. Stacks up to 5 times. Generates a high amount of threat."
       },
       "taunt": {
         "name": "Taunt",
@@ -4114,7 +4133,7 @@ export const en_CA: EnTranslations = {
       },
       "arcane_intellect": {
         "name": "Arcane Intellect",
-        "description": "Increases Intellect by 2 for 30 min."
+        "description": "Increases your party or raid's Intellect by 3% for 30 min."
       },
       "frostbolt": {
         "name": "Frostbolt",
@@ -4222,7 +4241,7 @@ export const en_CA: EnTranslations = {
       },
       "expose_armor": {
         "name": "Expose Armor",
-        "description": "Finishing move that exposes the target, reducing its armor. More combo points spent build into a deeper cut."
+        "description": "Finishing move that exposes the target, reducing its armor by 12%. More combo points spent build into a deeper cut."
       },
       "rupture": {
         "name": "Rupture",
@@ -4254,7 +4273,7 @@ export const en_CA: EnTranslations = {
       },
       "devotion_aura": {
         "name": "Devotion Aura",
-        "description": "Increases your armor by 40 for 30 min."
+        "description": "Increases your party or raid's armor by 5% for 30 min."
       },
       "judgement": {
         "name": "Judgement",

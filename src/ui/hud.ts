@@ -2437,8 +2437,8 @@ export class Hud {
     document.getElementById('ui') as HTMLElement,
     (x, y, z) => this.renderer.worldToScreen(x, y, z),
     getUiScale,
-    // Tier the pool cap / TTL / drop-non-crit from the STATIC preset (data-fx-level),
-    // never the governor. spawn() reads this per event.
+    // Tier the pool cap / TTL from the STATIC preset (data-fx-level), never the
+    // governor. spawn() reads this per event.
     { getFxTier: () => this.fxTier() },
   );
   // The player frame is the FIRST instance of the unit_frame family. It owns
@@ -6563,6 +6563,15 @@ export class Hud {
             () => this.sim.duelDecline(),
           );
           break;
+        case 'readyCheckStart':
+          audio.click();
+          this.showPrompt(
+            t('hud.prompts.readyCheckStart', { name: `<b>${esc(ev.fromName)}</b>` }),
+            t('hud.prompts.markReady'),
+            () => this.sim.readyCheckRespond(true),
+            () => this.sim.readyCheckRespond(false),
+          );
+          break;
         case 'duelCountdown':
           this.showBanner(t('hud.system.duelCountdown', { seconds: ev.seconds }));
           audio.duelCountdownTick();
@@ -7819,12 +7828,16 @@ export class Hud {
 
   // Open a world-placed readable book (PHAA-552) in the shared quest dialog and
   // page through its content with the SAME pure paginator the NPC intro uses
-  // (npc_intro_view), so there is no second reader. Reading is client-only: no
-  // world command is sent, the text is looked up by id through the `readable`
-  // entity-i18n kind. Called by main.ts's interact-key handler when the player
-  // stands on a book (renderer.nearReadable).
+  // (npc_intro_view), so there is no second reader. The text itself is looked
+  // up by id through the `readable` entity-i18n kind (language-agnostic sim).
+  // Opening now also fires the collection-tracking read command (PHAA-626):
+  // the server marks the id collected (idempotent, re-checks range) and the
+  // (sibling-ticket) UI panel reads the result off collectedIds; this call
+  // never blocks the local page render. Called by main.ts's interact-key
+  // handler when the player stands on a book (renderer.nearReadable).
   openReadable(id: string): void {
     if (!READABLES_BY_ID[id]) return;
+    this.sim.readCollectible(id);
     this.closeOtherWindows('#quest-dialog');
     if ($('#quest-dialog').style.display !== 'block')
       this.questDialogTrap = this.focusManager.open({ root: () => $('#quest-dialog') });

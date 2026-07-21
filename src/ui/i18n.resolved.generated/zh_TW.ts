@@ -720,10 +720,18 @@ export const zh_TW: EnTranslations = {
         "spi": "精神降低 {value}",
         "allStats": "所有屬性降低 {value}"
       },
+      "increasePct": {
+        "ap": "攻擊強度提高 {pct}%",
+        "armor": "護甲提高 {pct}%",
+        "int": "智力提高 {pct}%",
+        "sta": "耐力提高 {pct}%"
+      },
       "dodge": "閃躲機率提高 {pct}%",
       "dodgeReduce": "閃避機率降低 {pct}%",
       "armorFlat": "護甲降低 {value}",
       "armorFlatStacks": "護甲降低 {value}（{stacks} 層）",
+      "armorPct": "護甲降低 {pct}%",
+      "armorPctStacks": "護甲降低 {pct}%（{stacks} 層）",
       "mortalWound": "受到的治療降低 {pct}%",
       "vulnerability": "受到的傷害提高 {pct}%",
       "physVuln": "受到的物理傷害提高 {pct}%",
@@ -2439,6 +2447,10 @@ export const zh_TW: EnTranslations = {
       "nothingToHarvest": "這具屍體沒有什麼可以採集的。",
       "alreadyHarvested": "這具屍體已經被採集過了。"
     },
+    "collections": {
+      "notFound": "那個東西不存在。",
+      "tooFar": "太遠了。"
+    },
     "hearth": {
       "tooFar": "你得靠近綠掌修士才能餵他。",
       "noItems1": "……夥計，你兩手空空啊。帶點能燒的或能填飽肚子的東西來，我們再聊。",
@@ -2499,6 +2511,11 @@ export const zh_TW: EnTranslations = {
       "readoutNoHomesteadQuest": "你還沒有家園。先完成綠掌修士的全部差事才能解鎖。",
       "readoutNoHomesteadHint": "你還沒有家園。站在空谷地裡合適的位置，輸入 /homestead claim。",
       "helpLine": "家園：/homestead，/homestead claim。"
+    },
+    "readyCheck": {
+      "mustBeInParty": "你必須在隊伍中才能發起準備檢查。",
+      "alreadyInProgress": "準備檢查已在進行中。",
+      "summary": "準備檢查：{ready} 人已準備，{notReady} 人未準備，{noResponse} 人無回應。"
     }
   },
   "lockpickUi": {
@@ -3340,6 +3357,8 @@ export const zh_TW: EnTranslations = {
       "openTrade": "開啟交易",
       "duelRequest": "{name} 向你發起了決鬥挑戰！",
       "acceptDuel": "接受決鬥",
+      "readyCheckStart": "{name} 發起了準備檢查。",
+      "markReady": "準備",
       "decline": "拒絕"
     },
     "combat": {
@@ -4098,7 +4117,7 @@ export const zh_TW: EnTranslations = {
       },
       "sunder_armor": {
         "name": "破甲攻擊",
-        "description": "撕裂目標的護甲，每次使其降低 {damage}。最多疊加 5 次。產生大量威脅值。"
+        "description": "撕裂目標的護甲，每次使其降低 2%。最多疊加 5 次。產生大量威脅值。"
       },
       "taunt": {
         "name": "嘲諷",

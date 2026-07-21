@@ -1048,7 +1048,9 @@ export const HOLLOW_ITEMS: Record<string, ItemDef> = {
 // pulls still never chain past two mobs at these spacings/x-offsets. The
 // boss sits on the room's own dais at the far end.
 const UNDER_SHRINE_SPAWNS: DungeonSpawn[] = [
-  { mobId: 'palefeeder', x: -8, z: 12 },
+  // First two spawns pushed south of z=20 so the entry (z=-2) sits outside
+  // the aggro clamp; see dungeon_entry_clearance test.
+  { mobId: 'palefeeder', x: -8, z: 22 },
   { mobId: 'rootmaw', x: 9, z: 22 },
   { mobId: 'palefeeder', x: -11, z: 32 },
   { mobId: 'rootmaw', x: 6, z: 42 },
@@ -1126,7 +1128,7 @@ export const HOLLOW_DUNGEON_DEFS: Record<string, DungeonDef> = {
     overworldDoor: false, // reached only through the_hollow's internal door
     exitTo: { dungeonId: 'the_hollow', x: 0, z: 24 },
     homeRespawn: { dungeonId: 'the_hollow', ...VASE_LANDING_POS },
-    entry: { x: 0, z: 4 },
+    entry: { x: 0, z: -2 }, // clear-of-aggro arrival (see dungeon_entry_clearance test)
     exitOffset: { x: 0, z: -6 },
     spawns: UNDER_SHRINE_SPAWNS,
     // PHAA-433 (board feedback): lore lives on a found object (a ground

@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { Sim } from '../src/sim/sim';
 import { ABILITIES, abilitiesKnownAt } from '../src/sim/content/classes';
+import { Sim } from '../src/sim/sim';
 
 describe('Commanding Shout', () => {
-  it('is a warrior physical stamina self-buff learned at level 14', () => {
+  it('is a warrior physical percent-Stamina whole-group buff learned at level 14', () => {
     const def = ABILITIES['commanding_shout'];
     expect(def).toBeTruthy();
     expect(def.class).toBe('warrior');
@@ -12,7 +12,7 @@ describe('Commanding Shout', () => {
     expect(def.requiresTarget).toBe(false);
     expect(def.castTime).toBe(0);
     expect(def.effects).toEqual([
-      { type: 'selfBuff', kind: 'buff_sta', value: 6, duration: 120 },
+      { type: 'buffTarget', kind: 'buff_sta_pct', value: 5, duration: 120, party: true },
     ]);
   });
 
@@ -41,7 +41,7 @@ describe('Commanding Shout', () => {
     sim.tick();
     const buff = p.auras.find((a) => a.id === 'commanding_shout');
     expect(buff).toBeTruthy();
-    expect(buff!.kind).toBe('buff_sta');
+    expect(buff!.kind).toBe('buff_sta_pct');
     expect(p.maxHp).toBeGreaterThan(maxHpBefore);
   });
 });
