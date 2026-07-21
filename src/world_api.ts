@@ -16,9 +16,10 @@
 // facet, again with PHAA-505's per-player node harvest + proficiency, again at
 // 26/171 with the PHAA-495 Ravenpost mail facet (6 members), and again here
 // with PHAA-626's collections.ts facet (2 members), and again here with
-// PHAA-687's achievements.ts facet (2 members). One interface per file
-// under ./world_api/; aux types travel with their facet. The authoritative
-// member-per-facet split is the W0c parity test (tests/world_api_parity.test.ts).
+// PHAA-687's achievements.ts facet (2 members), and again here with the
+// PHAA-641 readyCheckRespond addition to the existing IWorldParty facet. One
+// interface per file under ./world_api/; aux types travel with their facet. The
+// authoritative member-per-facet split is the W0c parity test (tests/world_api_parity.test.ts).
 //
 //   entity_roster.ts    IWorldEntityRoster   cfg/entities/player/moveInput/realm reads
 //   combat.ts           IWorldCombat         ability casts, auto-attack, spirit release
@@ -55,7 +56,7 @@
 //                                          ALL_DELTA_KEYS (39) + TERSE_TO_IWORLD mapping.
 //   tests/command_schema.test.ts   (W0b)  COMMAND_NAMES universe; ClientWorld send-set
 //                                          subset-of dispatch-set; DISPATCH_ONLY (7).
-//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (182) present + same-kind on
+//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (183) present + same-kind on
 //                                          Sim + ClientWorld; aggregate == disjoint
 //                                          union of the 28 facets.
 // ---------------------------------------------------------------------------
@@ -316,6 +317,7 @@ export const COMMAND_NAMES = [
   'harvestCorpse',
   'harvestNode',
   'dialogChoose',
+  'readyRespond',
   'readCollectible',
 ] as const;
 
@@ -447,6 +449,7 @@ export const COMMAND_FACETS = {
   masterAssign: 'IWorldParty',
   setMarker: 'IWorldParty',
   clearMarker: 'IWorldParty',
+  readyRespond: 'IWorldParty',
   // IWorldTrade: peer-to-peer trade-window commands (tradeInfo is a snapshot read,
   // no send).
   trade_req: 'IWorldTrade',

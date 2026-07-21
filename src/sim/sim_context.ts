@@ -45,6 +45,7 @@ import type {
   ErrorReason,
   PlayerClass,
   QuestProgress,
+  ReadyCheck,
   SimConfig,
   SimEvent,
   SkinCatalog,
@@ -146,6 +147,10 @@ export interface SimContextPrimitives {
   // it routes through ctx until that slice puts it on the seam. (trades/tradeInvites/
   // duelInvites are already declared above; deduped.)
   readonly partyInvites: Map<number, { fromPid: number; expires: number }>;
+  // Active party/raid ready checks (social/ready_check.ts), keyed by party id.
+  // Swept in the end-of-tick block by updateReadyChecks. Sim-internal, never
+  // wired.
+  readonly readyChecks: Map<number, ReadyCheck>;
   readonly chatTokens: Map<number, { tokens: number; at: number }>;
   readonly channelSubs: Map<number, Set<JoinableChannel>>;
   // L1 loot-distribution state. The pending need-greed rolls map is mutated in
@@ -309,6 +314,9 @@ export interface SimContextCallbacks {
   // delegate; partyOf stays on Sim (A1's thin delegate -> social/party).
   clearEntityMarker(entityId: number): void;
   partyOf(pid: number): Party | null;
+  // Start a party/raid ready check as the actor (leader-gated); used by the
+  // chat "/ready" command in social/chat.ts. Delegates to social/ready_check.ts.
+  readyCheckStart(pid?: number): void;
   removeFromParty(pid: number, verb: string): void;
   // Drop a disbanded party's whole raid-marker set (points at T1's targeting store).
   dropPartyMarkers(partyId: number): void;
@@ -745,6 +753,9 @@ export function createSimContext(host: SimContextHost): SimContext {
     get partyInvites() {
       return host.partyInvites;
     },
+    get readyChecks() {
+      return host.readyChecks;
+    },
     get chatTokens() {
       return host.chatTokens;
     },
@@ -828,6 +839,7 @@ export function createSimContext(host: SimContextHost): SimContext {
     removeItem: host.removeItem,
     clearEntityMarker: host.clearEntityMarker,
     partyOf: host.partyOf,
+    readyCheckStart: host.readyCheckStart,
     removeFromParty: host.removeFromParty,
     dropPartyMarkers: host.dropPartyMarkers,
     onMobKilledForQuests: host.onMobKilledForQuests,

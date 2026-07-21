@@ -2508,6 +2508,11 @@ export const ja_JP: EnTranslations = {
       "readoutNoHomesteadQuest": "お前は開拓地を持っていない。緑掌修道士の用事をすべて終えれば手に入る。",
       "readoutNoHomesteadHint": "お前は開拓地を持っていない。ホロウ低地の適した場所に立ち、/homestead claim と入力しろ。",
       "helpLine": "開拓地：/homestead、/homestead claim。"
+    },
+    "readyCheck": {
+      "mustBeInParty": "準備確認を開始するにはパーティに入っている必要があります。",
+      "alreadyInProgress": "準備確認はすでに進行中です。",
+      "summary": "準備確認：準備完了 {ready} 人、未準備 {notReady} 人、応答なし {noResponse} 人。"
     }
   },
   "lockpickUi": {
@@ -3349,6 +3354,8 @@ export const ja_JP: EnTranslations = {
       "openTrade": "取引を開く",
       "duelRequest": "{name}があなたに決闘を申し込みました！",
       "acceptDuel": "決闘を受ける",
+      "readyCheckStart": "{name}が準備確認を開始しました。",
+      "markReady": "準備完了",
       "decline": "断る"
     },
     "combat": {
