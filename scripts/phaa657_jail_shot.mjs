@@ -41,6 +41,12 @@ async function startOffline(page, viewport) {
     const p = window.__game.sim.player;
     p.maxHp = p.hp = 99999;
   });
+  // Dismiss the one-time cold-open lore intro, then the first-errand tutorial
+  // card, so neither obscures the scene.
+  await page.evaluate(() => document.querySelector('.cold-open-skip')?.click());
+  await new Promise((r) => setTimeout(r, 200));
+  await page.evaluate(() => document.querySelector('.tut-skip')?.click());
+  await new Promise((r) => setTimeout(r, 200));
   return errors;
 }
 
