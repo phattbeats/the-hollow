@@ -621,6 +621,14 @@ export const en = {
         'You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.',
       helpLine: 'Homestead: /homestead, /homestead claim.',
     },
+    // Ready checks (PHAA-641, src/sim/social/ready_check.ts): the /ready leader
+    // guards + the counts-only finalize summary. Re-localized via the RULES array
+    // in src/ui/sim_i18n.ts.
+    readyCheck: {
+      mustBeInParty: 'You must be in a party to start a ready check.',
+      alreadyInProgress: 'A ready check is already in progress.',
+      summary: 'Ready check: {ready} ready, {notReady} not ready, {noResponse} no response.',
+    },
   },
   // Lockpicking minigame ("Tumbler's Path") panel chrome. Rendered through t()
   // from hud.ts; the pure lockpick_panel.ts view returns stable discriminators

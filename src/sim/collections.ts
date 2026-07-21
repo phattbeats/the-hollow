@@ -14,6 +14,7 @@
 //
 // `src/sim`-pure: no DOM/Three/render/ui/game/net imports (tests/architecture.test.ts).
 
+import { noteAchievementSignal } from './achievements';
 import { COLLECTIBLES_BY_ID, READ_RADIUS, READABLES_BY_ID } from './data';
 import type { SimContext } from './sim_context';
 
@@ -53,4 +54,10 @@ export function readCollectible(ctx: SimContext, id: string, pid?: number): void
   }
   meta.collectedIds.add(id);
   ctx.emit({ type: 'collectibleFound', collectibleId: id, pid: meta.entityId });
+  // Achievements (PHAA-687): a newly-collected id is the driving signal for
+  // collect-category achievements. Feeding it here (once, on the same tick the
+  // collection commits) keeps a SINGLE collection-progress path: achievements
+  // reuse the collections core rather than standing up a second one. Inert if no
+  // achievement references this collectible.
+  noteAchievementSignal(ctx, meta, { kind: 'collect', collectibleId: id });
 }

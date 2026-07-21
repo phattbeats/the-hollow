@@ -9,15 +9,17 @@
 // keep resolving to THIS file, never the sibling directory.
 //
 // ---------------------------------------------------------------------------
-// FACET MAP: the 27 domain facets (each IWorld member assigned exactly once;
+// FACET MAP: the 28 domain facets (each IWorld member assigned exactly once;
 // this count was previously stale at 23/155, corrected alongside the
 // PHAA-482 feedGreenpaw command addition, again at 24/161 with the PHAA-511
 // guild-calendar-events addition, again at 25/162 with PHAA-504's gathering.ts
 // facet, again with PHAA-505's per-player node harvest + proficiency, again at
 // 26/171 with the PHAA-495 Ravenpost mail facet (6 members), and again here
-// with PHAA-626's collections.ts facet (2 members). One interface per file
-// under ./world_api/; aux types travel with their facet. The authoritative
-// member-per-facet split is the W0c parity test (tests/world_api_parity.test.ts).
+// with PHAA-626's collections.ts facet (2 members), and again here with
+// PHAA-687's achievements.ts facet (2 members), and again here with the
+// PHAA-641 readyCheckRespond addition to the existing IWorldParty facet. One
+// interface per file under ./world_api/; aux types travel with their facet. The
+// authoritative member-per-facet split is the W0c parity test (tests/world_api_parity.test.ts).
 //
 //   entity_roster.ts    IWorldEntityRoster   cfg/entities/player/moveInput/realm reads
 //   combat.ts           IWorldCombat         ability casts, auto-attack, spirit release
@@ -47,17 +49,19 @@
 //                                            PHAA-505 per-player node harvest + proficiency)
 //   telemetry.ts        IWorldTelemetry      fire-and-forget metrics sink
 //   collections.ts      IWorldCollections    tracked-collectible read/found state (PHAA-626)
+//   achievements.ts     IWorldAchievements   unlocked achievements + points (PHAA-687)
 //
 // THREE GATES pin this seam (run before any facet edit):
 //   tests/snapshots.test.ts        (W0a)  selfWireJson <-> applySnapshot round-trip;
-//                                          ALL_DELTA_KEYS (30) + TERSE_TO_IWORLD mapping.
+//                                          ALL_DELTA_KEYS (39) + TERSE_TO_IWORLD mapping.
 //   tests/command_schema.test.ts   (W0b)  COMMAND_NAMES universe; ClientWorld send-set
 //                                          subset-of dispatch-set; DISPATCH_ONLY (7).
-//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (176) present + same-kind on
+//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (183) present + same-kind on
 //                                          Sim + ClientWorld; aggregate == disjoint
-//                                          union of the 26 facets.
+//                                          union of the 28 facets.
 // ---------------------------------------------------------------------------
 
+import type { IWorldAchievements } from './world_api/achievements';
 import type { IWorldChat } from './world_api/chat';
 import type { IWorldCollections } from './world_api/collections';
 import type { IWorldCombat } from './world_api/combat';
@@ -165,7 +169,8 @@ export interface IWorld
     IWorldReadables,
     IWorldDialog,
     IWorldTelemetry,
-    IWorldCollections {}
+    IWorldCollections,
+    IWorldAchievements {}
 
 // ---------------------------------------------------------------------------
 // Command schema (W0b): the shared wire-token vocabulary.
@@ -312,6 +317,7 @@ export const COMMAND_NAMES = [
   'harvestCorpse',
   'harvestNode',
   'dialogChoose',
+  'readyRespond',
   'readCollectible',
 ] as const;
 
@@ -443,6 +449,7 @@ export const COMMAND_FACETS = {
   masterAssign: 'IWorldParty',
   setMarker: 'IWorldParty',
   clearMarker: 'IWorldParty',
+  readyRespond: 'IWorldParty',
   // IWorldTrade: peer-to-peer trade-window commands (tradeInfo is a snapshot read,
   // no send).
   trade_req: 'IWorldTrade',
