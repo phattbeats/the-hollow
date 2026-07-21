@@ -727,7 +727,7 @@ export function runEffects(
       // touches mob corrosion's flat 'sunder' auras (see effectiveArmor).
       case 'armorDebuffPct': {
         if (!target || target.dead) break;
-        if (ctx.rng.chance(meleeMissChance(p.level, target.level))) {
+        if (ctx.rng.chance(swingMissChance(p, target))) {
           ctx.emit({
             type: 'damage',
             sourceId: p.id,
