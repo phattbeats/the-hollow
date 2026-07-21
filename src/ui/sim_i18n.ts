@@ -27,6 +27,7 @@ import { ARENA_NEW, BASE_NEW, ITEM_NEW, PET_NEW, QUEST_NEW, RAID_NEW } from './s
 
 const baseEnTable = {
   'error.lineOfSight': 'Line of sight.',
+  'log.playtime': 'Total time played: {time}.',
   'error.specLevel': 'You may choose a specialization at level {level}.',
   'error.invalidBuild': 'Invalid talent build.',
   'error.unknownSpec': 'Unknown specialization.',
@@ -136,6 +137,7 @@ const baseEnTable = {
   'error.mailCannotAfford': 'You cannot afford the postage and attached coin.',
   'error.mailBadItem': 'One of those parcels is not a real item.',
   'error.mailNoQuestItems': 'The raven will not carry quest items.',
+  'error.mailNoSoulbound': 'That item is bound to you and cannot be mailed.',
   'error.mailMissingParcel': 'You do not have that parcel to send.',
   'error.mailboxFull': "That adventurer's mailbox is full.",
   'error.mailTooFarCheck': 'You must stand at the Ravenpost to check your mail.',
@@ -249,6 +251,7 @@ export type SimMessageKey = keyof typeof enTable;
 const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = {
   en: {
     'error.lineOfSight': 'Line of sight.',
+    'log.playtime': 'Total time played: {time}.',
     'error.specLevel': 'You may choose a specialization at level {level}.',
     'error.invalidBuild': 'Invalid talent build.',
     'error.unknownSpec': 'Unknown specialization.',
@@ -357,6 +360,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.mailCannotAfford': 'You cannot afford the postage and attached coin.',
     'error.mailBadItem': 'One of those parcels is not a real item.',
     'error.mailNoQuestItems': 'The raven will not carry quest items.',
+    'error.mailNoSoulbound': 'That item is bound to you and cannot be mailed.',
     'error.mailMissingParcel': 'You do not have that parcel to send.',
     'error.mailboxFull': "That adventurer's mailbox is full.",
     'error.mailTooFarCheck': 'You must stand at the Ravenpost to check your mail.',
@@ -453,6 +457,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.mailCannotAfford': 'No puedes pagar el franqueo y el dinero adjunto.',
     'error.mailBadItem': 'Uno de esos paquetes no es un objeto real.',
     'error.mailNoQuestItems': 'El cuervo no llevará objetos de misión.',
+    'error.mailNoSoulbound': 'Ese objeto está vinculado a ti y no se puede enviar por correo.',
     'error.mailMissingParcel': 'No tienes ese paquete para enviar.',
     'error.mailboxFull': 'El buzón de ese aventurero está lleno.',
     'error.mailTooFarCheck': 'Debes estar en la Estafeta del Cuervo para revisar tu correo.',
@@ -508,6 +513,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': 'Sin línea de visión.',
+    'log.playtime': 'Tiempo total jugado: {time}.',
     'error.specLevel': 'Puedes elegir una especialización al nivel {level}.',
     'error.invalidBuild': 'Configuración de talentos no válida.',
     'error.unknownSpec': 'Especialización desconocida.',
@@ -622,6 +628,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.mailCannotAfford': 'No puedes pagar el franqueo y el dinero adjunto.',
     'error.mailBadItem': 'Uno de esos paquetes no es un objeto real.',
     'error.mailNoQuestItems': 'El cuervo no llevará objetos de misión.',
+    'error.mailNoSoulbound': 'Ese objeto está vinculado a ti y no se puede enviar por correo.',
     'error.mailMissingParcel': 'No tienes ese paquete para enviar.',
     'error.mailboxFull': 'El buzón de ese aventurero está lleno.',
     'error.mailTooFarCheck': 'Debes estar en la Estafeta del Cuervo para revisar tu correo.',
@@ -677,6 +684,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': 'Sin línea de visión.',
+    'log.playtime': 'Tiempo total jugado: {time}.',
     'error.specLevel': 'Podrás elegir una especialización en el nivel {level}.',
     'error.invalidBuild': 'Configuración de talentos no válida.',
     'error.unknownSpec': 'Especialización desconocida.',
@@ -795,6 +803,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
       "Vous n'avez pas de quoi payer l'affranchissement et la pièce jointe.",
     'error.mailBadItem': "L'un de ces colis n'est pas un objet réel.",
     'error.mailNoQuestItems': "Le corbeau ne transportera pas d'objets de quête.",
+    'error.mailNoSoulbound': 'Cet objet vous est lié et ne peut pas être envoyé par courrier.',
     'error.mailMissingParcel': "Vous n'avez pas ce colis à envoyer.",
     'error.mailboxFull': 'La boîte aux lettres de cet aventurier est pleine.',
     'error.mailTooFarCheck':
@@ -852,6 +861,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': 'Pas de ligne de vue.',
+    'log.playtime': 'Temps de jeu total : {time}.',
     'error.specLevel': 'Vous pourrez choisir une spécialisation au niveau {level}.',
     'error.invalidBuild': 'Distribution de talents invalide.',
     'error.unknownSpec': 'Spécialisation inconnue.',
@@ -971,6 +981,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
       "Vous n'avez pas de quoi payer l'affranchissement et la pièce jointe.",
     'error.mailBadItem': "L'un de ces colis n'est pas un objet réel.",
     'error.mailNoQuestItems': "Le corbeau ne transportera pas d'objets de quête.",
+    'error.mailNoSoulbound': 'Cet objet vous est lié et ne peut pas être envoyé par courrier.',
     'error.mailMissingParcel': "Vous n'avez pas ce colis à envoyer.",
     'error.mailboxFull': 'La boîte aux lettres de cet aventurier est pleine.',
     'error.mailTooFarCheck':
@@ -1028,6 +1039,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': 'Pas de ligne de vue.',
+    'log.playtime': 'Temps de jeu total : {time}.',
     'error.specLevel': 'Vous pourrez choisir une spécialisation au niveau {level}.',
     'error.invalidBuild': 'Spécialisation invalide.',
     'error.unknownSpec': 'Spécialisation inconnue.',
@@ -1144,6 +1156,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.mailCannotAfford': 'You cannot afford the postage and attached coin.',
     'error.mailBadItem': 'One of those parcels is not a real item.',
     'error.mailNoQuestItems': 'The raven will not carry quest items.',
+    'error.mailNoSoulbound': 'That item is bound to you and cannot be mailed.',
     'error.mailMissingParcel': 'You do not have that parcel to send.',
     'error.mailboxFull': "That adventurer's mailbox is full.",
     'error.mailTooFarCheck': 'You must stand at the Ravenpost to check your mail.',
@@ -1199,6 +1212,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': 'Line of sight.',
+    'log.playtime': 'Total time played: {time}.',
     'error.specLevel': 'You may choose a specialization at level {level}.',
     'error.invalidBuild': 'Invalid talent build.',
     'error.unknownSpec': 'Unknown specialization.',
@@ -1313,6 +1327,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.mailCannotAfford': "Non puoi permetterti l'affrancatura e le monete allegate.",
     'error.mailBadItem': 'Uno di quei pacchi non è un oggetto reale.',
     'error.mailNoQuestItems': 'Il corvo non trasporterà oggetti missione.',
+    'error.mailNoSoulbound': "Quell'oggetto è vincolato a te e non può essere spedito per posta.",
     'error.mailMissingParcel': 'Non hai quel pacco da inviare.',
     'error.mailboxFull': "La cassetta della posta di quell'avventuriero è piena.",
     'error.mailTooFarCheck': "Devi trovarti all'Ufficio del Corvo per controllare la tua posta.",
@@ -1368,6 +1383,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': 'Nessuna linea di vista.',
+    'log.playtime': 'Tempo totale di gioco: {time}.',
     'error.specLevel': 'Puoi scegliere una specializzazione al livello {level}.',
     'error.invalidBuild': 'Build dei talenti non valida.',
     'error.unknownSpec': 'Specializzazione sconosciuta.',
@@ -1483,6 +1499,8 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.mailCannotAfford': 'Ihr könnt Euch das Porto und die beigefügte Münze nicht leisten.',
     'error.mailBadItem': 'Eines dieser Pakete ist kein echter Gegenstand.',
     'error.mailNoQuestItems': 'Der Rabe wird keine Questgegenstände tragen.',
+    'error.mailNoSoulbound':
+      'Dieser Gegenstand ist an Euch gebunden und kann nicht verschickt werden.',
     'error.mailMissingParcel': 'Ihr habt dieses Paket nicht zum Verschicken.',
     'error.mailboxFull': 'Der Briefkasten dieses Abenteurers ist voll.',
     'error.mailTooFarCheck': 'Ihr müsst an der Rabenpost stehen, um Eure Post abzurufen.',
@@ -1538,6 +1556,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': 'Kein Sichtkontakt.',
+    'log.playtime': 'Gesamtspielzeit: {time}.',
     'error.specLevel': 'Ihr könnt auf Stufe {level} eine Spezialisierung wählen.',
     'error.invalidBuild': 'Ungültige Talentverteilung.',
     'error.unknownSpec': 'Unbekannte Spezialisierung.',
@@ -1653,6 +1672,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.mailCannotAfford': '你负担不起邮费和附带的金币。',
     'error.mailBadItem': '其中一个包裹不是真实的物品。',
     'error.mailNoQuestItems': '渡鸦不会携带任务物品。',
+    'error.mailNoSoulbound': '该物品已绑定，无法邮寄。',
     'error.mailMissingParcel': '你没有那个可寄送的包裹。',
     'error.mailboxFull': '那位冒险者的信箱已满。',
     'error.mailTooFarCheck': '你必须站在渡鸦驿站才能查看邮件。',
@@ -1708,6 +1728,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': '目标不在视线内。',
+    'log.playtime': '总游戏时长：{time}。',
     'error.specLevel': '你将在{level}级时选择专精。',
     'error.invalidBuild': '无效的天赋配置。',
     'error.unknownSpec': '未知的专精。',
@@ -1820,6 +1841,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.mailCannotAfford': '你負擔不起郵資和附帶的金幣。',
     'error.mailBadItem': '其中一個包裹不是真實的物品。',
     'error.mailNoQuestItems': '渡鴉不會攜帶任務物品。',
+    'error.mailNoSoulbound': '該物品已綁定，無法郵寄。',
     'error.mailMissingParcel': '你沒有那個可寄送的包裹。',
     'error.mailboxFull': '那位冒險者的信箱已滿。',
     'error.mailTooFarCheck': '你必須站在渡鴉驛站才能查看郵件。',
@@ -1875,6 +1897,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': '目標不在視線內。',
+    'log.playtime': '總遊戲時長：{time}。',
     'error.specLevel': '你必須達到等級 {level} 才能選擇專精。',
     'error.invalidBuild': '無效的天賦配置。',
     'error.unknownSpec': '未知的專精。',
@@ -1988,6 +2011,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.mailCannotAfford': '우편 요금과 첨부한 금화를 감당할 수 없습니다.',
     'error.mailBadItem': '그 소포 중 하나는 실제 아이템이 아닙니다.',
     'error.mailNoQuestItems': '까마귀는 퀘스트 아이템을 운반하지 않습니다.',
+    'error.mailNoSoulbound': '그 아이템은 귀속되어 있어 우편으로 보낼 수 없습니다.',
     'error.mailMissingParcel': '보낼 그 소포를 가지고 있지 않습니다.',
     'error.mailboxFull': '그 모험가의 우편함이 가득 찼습니다.',
     'error.mailTooFarCheck': '우편을 확인하려면 레이븐포스트에 있어야 합니다.',
@@ -2043,6 +2067,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': '시야가 막혀 있습니다.',
+    'log.playtime': '총 플레이 시간: {time}.',
     'error.specLevel': '{level}레벨에 전문화를 선택할 수 있습니다.',
     'error.invalidBuild': '잘못된 특성 구성입니다.',
     'error.unknownSpec': '알 수 없는 전문화입니다.',
@@ -2159,6 +2184,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.mailCannotAfford': '郵便料金と同封する金貨をまかなえません。',
     'error.mailBadItem': 'その小包の一つは実在するアイテムではありません。',
     'error.mailNoQuestItems': 'カラスはクエストアイテムを運びません。',
+    'error.mailNoSoulbound': 'そのアイテムはあなたに紐付けられており、郵送できません。',
     'error.mailMissingParcel': '送るべきその小包を持っていません。',
     'error.mailboxFull': 'その冒険者の郵便受けはいっぱいです。',
     'error.mailTooFarCheck': '郵便を確認するにはレイヴンポストにいる必要があります。',
@@ -2214,6 +2240,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': '視線が通っていません。',
+    'log.playtime': '総プレイ時間: {time}。',
     'error.specLevel': '専門化はレベル{level}で選択できます。',
     'error.invalidBuild': '無効なタレントビルドです。',
     'error.unknownSpec': '不明な専門化です。',
@@ -2328,6 +2355,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.mailCannotAfford': 'Você não pode pagar a postagem e a moeda anexada.',
     'error.mailBadItem': 'Um desses pacotes não é um item real.',
     'error.mailNoQuestItems': 'O corvo não transportará itens de missão.',
+    'error.mailNoSoulbound': 'Esse item está vinculado a você e não pode ser enviado pelo correio.',
     'error.mailMissingParcel': 'Você não tem esse pacote para enviar.',
     'error.mailboxFull': 'A caixa de correio desse aventureiro está cheia.',
     'error.mailTooFarCheck':
@@ -2385,6 +2413,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': 'Sem linha de visão.',
+    'log.playtime': 'Tempo total jogado: {time}.',
     'error.specLevel': 'Você pode escolher uma especialização no nível {level}.',
     'error.invalidBuild': 'Estrutura de talentos inválida.',
     'error.unknownSpec': 'Especialização desconhecida.',
@@ -2502,6 +2531,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'error.mailCannotAfford': 'Вам не хватает денег на почтовый сбор и вложенные монеты.',
     'error.mailBadItem': 'Один из этих свёртков не является настоящим предметом.',
     'error.mailNoQuestItems': 'Ворон не станет носить квестовые предметы.',
+    'error.mailNoSoulbound': 'Этот предмет привязан к вам и не может быть отправлен по почте.',
     'error.mailMissingParcel': 'У вас нет этого свёртка для отправки.',
     'error.mailboxFull': 'Почтовый ящик этого искателя приключений переполнен.',
     'error.mailTooFarCheck': 'Чтобы проверить почту, вы должны находиться у Вороньей почты.',
@@ -2557,6 +2587,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': 'Нет прямой видимости.',
+    'log.playtime': 'Общее время игры: {time}.',
     'error.specLevel': 'Выбрать специализацию можно на {level} уровне.',
     'error.invalidBuild': 'Недопустимая сборка талантов.',
     'error.unknownSpec': 'Неизвестная специализация.',
@@ -4374,6 +4405,11 @@ const RULES: Rule[] = [
     re: /^You collect (.+) from a letter\.$/,
     build: (m) => tSim('loot.mailCollectCopper', { money: m[1] }),
   },
+  {
+    // /playtime readout (src/sim/social/chat.ts); the duration string passes through.
+    re: /^Total time played: (.+)\.$/,
+    build: (m) => tSim('log.playtime', { time: m[1] }),
+  },
   { re: /^Your class has no talent tree yet\.$/, build: () => t('game.talents.readout.noTree') },
   {
     re: /^You have not unlocked talents yet — they begin at level (.+)\.$/,
@@ -4777,6 +4813,11 @@ const RULES: Rule[] = [
   { re: /^There is nothing left to take\.$/, build: () => t('sim.delve.nothingToTake') },
   { re: /^The way out is not yet open\.$/, build: () => t('sim.delve.wayOutNotOpen') },
   { re: /^Move closer to the stairs\.$/, build: () => t('sim.delve.moveCloserStairs') },
+  // Collections core (PHAA-626): readCollectible command errors
+  // (src/sim/collections.ts). The tooFar rule also covers the identical
+  // pre-existing "Too far away." emits in items/interaction/trainer/gathering.
+  { re: /^That does not exist\.$/, build: () => t('sim.collections.notFound') },
+  { re: /^Too far away\.$/, build: () => t('sim.collections.tooFar') },
   // Lockpicking minigame (exact lines).
   {
     re: /^Someone is already working the lock\.$/,
@@ -5112,6 +5153,22 @@ const RULES: Rule[] = [
   {
     re: /^Homestead: \/homestead, \/homestead claim\.$/,
     build: () => t('sim.homestead.helpLine'),
+  },
+  // Ready checks (PHAA-641, src/sim/social/ready_check.ts): the leader-gated /ready
+  // start guards, plus the counts-only finalize summary sent to every participant.
+  // "You are not the party leader." reuses the existing error.notPartyLeader EXACT
+  // match verbatim (no new entry needed).
+  {
+    re: /^You must be in a party to start a ready check\.$/,
+    build: () => t('sim.readyCheck.mustBeInParty'),
+  },
+  {
+    re: /^A ready check is already in progress\.$/,
+    build: () => t('sim.readyCheck.alreadyInProgress'),
+  },
+  {
+    re: /^Ready check: (\d+) ready, (\d+) not ready, (\d+) no response\.$/,
+    build: (m) => t('sim.readyCheck.summary', { ready: m[1], notReady: m[2], noResponse: m[3] }),
   },
   // Boss/mob mechanic broadcast. Broad (two open captures), so it MUST stay last -
   // after every more-specific "{X} {verb}!" rule above (awakens, enraged, calls for aid).

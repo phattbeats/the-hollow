@@ -102,4 +102,7 @@ export interface IWorldDuelArena {
   arenaQueueLeave(): void;
   // 2v2 Fiesta: lock in one of the augments currently on offer
   arenaAugmentPick(augmentId: string): void;
+  // WARFARE Honor currency: spendable balance + the monotonic lifetime total.
+  honor: number;
+  lifetimeHonor: number;
 }

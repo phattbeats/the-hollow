@@ -22,6 +22,19 @@ export const mailStrings = {
   recipient: 'Recipient',
   subjectLabel: 'Subject',
   bodyPlaceholder: 'Write your letter...',
+  // Item-attachment staging (PHAA-688): parcel chips in the compose form, staged
+  // from the bags window (bagItemAction's 'mailAttach' branch, mirroring the
+  // market's Sell tab). The "too many parcels" / "will not carry quest items"
+  // errors reuse the already-localized sim strings (tSim in sim_i18n.ts) instead
+  // of new keys here, since src/sim/mail/post_office.ts emits the same text.
+  attachments: 'Attachments (up to {max})',
+  removeAttachment: 'Remove {item} from this letter',
+  tooltipAttach: 'Click to attach to this letter',
+  tooltipCannotAttach: 'The raven will not carry quest items',
+  // Quantity stepper (PHAA-645, upstream #1695): the +/- controls on a staged
+  // parcel chip, shown only when the sender owns more than one of the item.
+  parcelQtyDecreaseAria: 'Send one fewer {item}',
+  parcelQtyIncreaseAria: 'Send one more {item}',
   send: 'Send Letter',
   needRecipientOrText: 'Name a recipient and write something before sending.',
   openButton: 'Show me the Ravenpost.',

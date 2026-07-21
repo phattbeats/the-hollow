@@ -1,6 +1,7 @@
 import type { WebSocket } from 'ws';
 import { createBotDetector } from '#bot-detector';
 import { verifyChallenge } from '../src/sim/client_challenge';
+import { isInJailCage, type JailState, jailCageSpawn } from '../src/sim/content/jail';
 import { MECH_CHROMAS, mechChromaItemId, mechChromaSkinIndex } from '../src/sim/content/skins';
 import type { TalentAllocation } from '../src/sim/content/talents';
 import { DELVES, DUNGEONS, zoneAt } from '../src/sim/data';
@@ -262,6 +263,18 @@ function isPickAction(value: unknown): value is PickAction {
 // a steady source of GC pressure, when a crowd gathers. The small/dynamic fields
 // (position, resource, target, party HP, cooldowns, ...) still diff every tick.
 const HEAVY_SELF_REFRESH_TICKS = 40; // ~2 s backstop; staggered per session so refreshes don't synchronize into a spike
+// Commands a jailed session may not send: everything that queues into or
+// enters instanced content. The dungeon/delve entries are door-proximity-gated
+// anyway (a prisoner is never near a door), listed here as explicit policy.
+// Leave/abort commands stay allowed.
+const JAILED_BLOCKED_COMMANDS = new Set<string>([
+  'arena_queue',
+  'enter_crypt',
+  'enter_dungeon',
+  'enter_delve',
+  'duel_req',
+  'duel_accept',
+]);
 const HEAVY_SELF_CMDS = new Set<string>([
   'equip',
   'unequip_item',
@@ -406,6 +419,9 @@ export interface ClientSession {
     priorGm: boolean;
     stowedPet: PetState | null;
   } | null;
+  // A live jail sentence (PHAA-657). Mirrors CharacterState.jail; restored at
+  // join and re-persisted on every save, so it survives a reconnect.
+  jailed: JailState | null;
 }
 
 interface SentEntityVersions {
@@ -589,8 +605,15 @@ function dynamicFields(e: Entity): Record<string, unknown> {
   // top hate-table entries so the party threat meter shows real numbers
   if (e.kind === 'mob' && !e.dead && e.threat.size > 0) out.thr = threatEntries(e, 8);
   if (e.auras.length > 0) {
-    out.auras = e.auras.map(
-      (a): WireAura => ({
+    // PHAA-644: built with a plain loop and direct property assignment rather than
+    // e.auras.map(...) + a spread per optional field. The old spread form allocated a
+    // throwaway {} merge object for every absent optional field on every aura, every
+    // tick; this form allocates exactly one WireAura per aura. Field order (and thus the
+    // wire bytes) is unchanged: each field is still assigned in the same sequence.
+    const auras: WireAura[] = new Array(e.auras.length);
+    for (let i = 0; i < e.auras.length; i++) {
+      const a = e.auras[i];
+      const w: WireAura = {
         id: a.id,
         name: a.name,
         kind: a.kind,
@@ -602,16 +625,18 @@ function dynamicFields(e: Entity): Record<string, unknown> {
         // magnitude for every aura, not just the debuff-classifying ones, so this now
         // rides the wire unconditionally (previously sent only for negative buff_* auras).
         value: a.value,
-        ...(a.value2 !== undefined ? { value2: a.value2 } : {}),
-        ...(a.value3 !== undefined ? { value3: a.value3 } : {}),
-        ...(a.tickInterval !== undefined ? { tickInterval: a.tickInterval } : {}),
-        ...(a.school !== 'physical' ? { school: a.school } : {}),
-        ...(a.stacks && a.stacks > 1 ? { stacks: a.stacks } : {}),
-        // Carry the remaining charges only for a charge-limited aura (Lightning Shield), so the
-        // buff icon can badge the count online exactly as offline; undefined for every other aura.
-        ...(a.charges !== undefined ? { charges: a.charges } : {}),
-      }),
-    );
+      };
+      if (a.value2 !== undefined) w.value2 = a.value2;
+      if (a.value3 !== undefined) w.value3 = a.value3;
+      if (a.tickInterval !== undefined) w.tickInterval = a.tickInterval;
+      if (a.school !== 'physical') w.school = a.school;
+      if (a.stacks && a.stacks > 1) w.stacks = a.stacks;
+      // Carry the remaining charges only for a charge-limited aura (Lightning Shield), so the
+      // buff icon can badge the count online exactly as offline; undefined for every other aura.
+      if (a.charges !== undefined) w.charges = a.charges;
+      auras[i] = w;
+    }
+    out.auras = auras;
   }
   if (e.kind === 'mob' && e.lootable && e.loot) {
     out.lootList = { copper: e.loot.copper, items: e.loot.items };
@@ -856,6 +881,9 @@ export class GameServer {
       },
       enterSpectate: (moderator, target) => this.enterSpectate(moderator, target),
       exitSpectate: (moderator) => this.exitSpectate(moderator),
+      isJailed: (session) => session.jailed !== null,
+      sendToJail: (target, minutes) => this.jailSession(target, minutes),
+      releaseFromJail: (target) => this.unjailSession(target),
     };
   }
 
@@ -915,6 +943,110 @@ export class GameServer {
     moderator.sentEnts.clear();
     this.send(moderator, { t: 'spectate', name: null });
     if (announce) this.sendSystemNotice(moderator, 'Stopped spectating.');
+  }
+
+  private teleportSessionEntity(session: ClientSession, pos: { x: number; z: number }): void {
+    const entity = this.sim.entities.get(session.pid);
+    if (!entity) return;
+    const ground = this.sim.groundPos(pos.x, pos.z);
+    entity.pos = ground;
+    entity.prevPos = { ...ground };
+    this.sim.grid.update(entity);
+    this.sim.playerGrid.update(entity);
+    const meta = this.sim.meta(session.pid);
+    if (meta) Object.assign(meta.moveInput, emptyMoveInput());
+  }
+
+  private jailSpawnFor(session: ClientSession): { x: number; z: number } {
+    return jailCageSpawn(session.characterId);
+  }
+
+  private jailSession(target: ClientSession, minutes: number): void {
+    const targetEntity = this.sim.entities.get(target.pid);
+    if (!targetEntity) return;
+    target.jailed = {
+      returnPos: { x: targetEntity.pos.x, z: targetEntity.pos.z },
+      returnFacing: targetEntity.facing,
+      until: Date.now() + minutes * 60_000,
+    };
+    // Drop the target out of any match queue: a match popping later would
+    // teleport them out of the cage, and re-queueing is blocked by
+    // JAILED_BLOCKED_COMMANDS. Idempotent when they are in no queue.
+    this.sim.arenaQueueLeave(target.pid);
+    this.teleportJailedSession(target);
+    this.sendChatNotice(
+      target,
+      `A moderator has moved you to jail for ${formatDuration(minutes * 60)}.`,
+    );
+  }
+
+  private unjailSession(target: ClientSession): void {
+    if (this.releaseJailedSession(target)) {
+      this.sendChatNotice(target, 'A moderator has released you from jail.');
+    }
+  }
+
+  // Restore a jailed session to its pre-jail position and clear the prisoner
+  // state. Shared by /unjail and the timed-sentence expiry (which differ only
+  // in the notice at the call site).
+  private releaseJailedSession(target: ClientSession): boolean {
+    const state = target.jailed;
+    if (!state) return false;
+    target.jailed = null;
+    this.sim.setJailed(false, target.pid);
+    const entity = this.sim.entities.get(target.pid);
+    if (entity?.dead)
+      this.sim.revivePlayerAt(target.pid, this.sim.groundPos(state.returnPos.x, state.returnPos.z));
+    else this.teleportSessionEntity(target, state.returnPos);
+    const updated = this.sim.entities.get(target.pid);
+    if (updated) {
+      updated.facing = state.returnFacing;
+      updated.prevFacing = state.returnFacing;
+    }
+    target.lastSent = {};
+    target.sentEnts.clear();
+    return true;
+  }
+
+  // Every path that materializes a jailed session in the cage (the /jail
+  // command, join/reconnect restore, the per-tick enforcement) funnels here,
+  // so this is where the sim-side prisoner flag (the jail brawl hostility in
+  // isHostileTo) gets stamped. Idempotent.
+  private teleportJailedSession(session: ClientSession): void {
+    this.sim.setJailed(true, session.pid);
+    const spawn = this.jailSpawnFor(session);
+    const entity = this.sim.entities.get(session.pid);
+    if (entity?.dead) this.sim.revivePlayerAt(session.pid, this.sim.groundPos(spawn.x, spawn.z));
+    else this.teleportSessionEntity(session, spawn);
+    const updated = this.sim.entities.get(session.pid);
+    if (updated) {
+      updated.facing = 0;
+      updated.prevFacing = 0;
+    }
+    session.lastSent = {};
+    session.sentEnts.clear();
+  }
+
+  // Per-tick jail enforcement: releases a sentence once served, and snaps any
+  // prisoner found outside the cage (an escape attempt, or a death that left
+  // them dead/at a stray position) back inside it. Instant cell respawn on
+  // death falls out of this for free, since a dead entity fails the
+  // isInJailCage check below just like an out-of-bounds one.
+  private enforceJailStates(): void {
+    for (const session of this.clients.values()) {
+      const state = session.jailed;
+      if (!state) continue;
+      if (Date.now() >= state.until) {
+        if (this.releaseJailedSession(session)) {
+          this.sendChatNotice(session, 'Your jail sentence has ended.');
+        }
+        continue;
+      }
+      const entity = this.sim.entities.get(session.pid);
+      if (!entity || entity.dead || !isInJailCage(entity.pos)) {
+        this.teleportJailedSession(session);
+      }
+    }
   }
 
   // Live location + activity of an online character, for friend/guild rosters.
@@ -1038,6 +1170,7 @@ export class GameServer {
             const events = this.sim.tick();
             this.simTickRateCount++;
             lap('tick');
+            this.enforceJailStates();
             this.routeEvents(this.interceptPlantUtterances(events));
             this.detectActivity(events);
             lap('events');
@@ -1513,10 +1646,12 @@ export class GameServer {
       clientSeed: meta.clientSeed ?? '',
       botTrackingContext,
       spectating: null,
+      jailed: state?.jail ?? null,
     };
     this.ipSessionCounts.set(sessionIp, (this.ipSessionCounts.get(sessionIp) ?? 0) + 1);
     this.clients.set(pid, session);
     this.sessionsByCharacterId.set(characterId, session);
+    if (session.jailed) this.teleportJailedSession(session);
     this.peakOnline = Math.max(this.peakOnline, this.clients.size);
     void this.recordOnlineSnapshot();
     openPlaySession(accountId, characterId, name, meta)
@@ -1583,6 +1718,7 @@ export class GameServer {
       this.ipSessionCounts.set(sessionIp, (this.ipSessionCounts.get(sessionIp) ?? 0) + 1);
     }
     session.clientSeed = meta.clientSeed ?? '';
+    this.botDetector.setTrackingConnection(session.botTrackingContext, true, meta);
     // per-login account state, freshly loaded by the auth path like any join
     session.chatMutedUntil = meta.mutedUntil ? new Date(meta.mutedUntil).getTime() : null;
     session.chatMuteReason = meta.reason ?? '';
@@ -1628,6 +1764,7 @@ export class GameServer {
     if (session.spectating) this.exitSpectate(session, false);
     session.linkdead = true;
     session.graceUntil = Date.now() + LINKDEAD_GRACE_MS;
+    this.botDetector.setTrackingConnection(session.botTrackingContext, false);
     // Stop any held movement now; the sim keeps ticking this entity (it can
     // still be attacked, healed, or die while linkdead, like any player).
     const meta = this.sim.meta(session.pid);
@@ -1714,6 +1851,10 @@ export class GameServer {
         console.error('failed to close play session:', err),
       );
     }
+    // Arena forfeit accounting (Elo + honor) resolves before persistence, so a
+    // disconnecting fighter's own loss/grant is not silently dropped by a save
+    // that already ran; removePlayer repeats the idempotent cleanup below.
+    this.sim.arenaResolveDesertion(session.pid);
     await this.saveCharacterOnLeave(session);
     this.sessionsByCharacterId.delete(session.characterId);
     this.sim.removePlayer(session.pid);
@@ -1761,6 +1902,13 @@ export class GameServer {
             z: session.spectating.savedPos.z,
           };
           state.pet = session.spectating.stowedPet;
+        }
+        if (session.jailed) {
+          const jailPos = this.jailSpawnFor(session);
+          state.pos = jailPos;
+          state.jail = session.jailed;
+        } else {
+          delete state.jail;
         }
         // Use the SERIALIZED level (not e.level): during a 2v2 Fiesta bout e.level
         // is temporarily 20, but serializeCharacter reports the real level — so the
@@ -2473,6 +2621,14 @@ export class GameServer {
     // CommandName at runtime; it still falls through to `default` and is flagged
     // as a protocol anomaly, exactly as before.
     const command = msg.cmd as CommandName;
+    // A jailed session cannot enrol in instanced content: a popped match or an
+    // instance entry would teleport it out of the cage, and the next tick's
+    // jail enforcement would just snap it straight back, ruining the match for
+    // everyone else in it.
+    if (session.jailed && typeof msg.cmd === 'string' && JAILED_BLOCKED_COMMANDS.has(msg.cmd)) {
+      this.sendChatNotice(session, 'You cannot do that while jailed.');
+      return;
+    }
     // A command that can change a heavy self field forces the next snapshot to
     // re-diff those fields (combat-only commands like cast/target/attack do not,
     // which is what keeps the gating a win during a fight).
@@ -2519,6 +2675,9 @@ export class GameServer {
         break;
       case 'harvestNode':
         if (typeof msg.node === 'string') sim.harvestNode(msg.node, pid);
+        break;
+      case 'readCollectible':
+        if (typeof msg.collectibleId === 'string') sim.readCollectible(msg.collectibleId, pid);
         break;
       case 'lootRoll':
         if (
@@ -2767,6 +2926,9 @@ export class GameServer {
         break;
       case 'clearMarker':
         if (typeof msg.id === 'number') sim.clearMarker(msg.id, pid);
+        break;
+      case 'readyRespond':
+        if (typeof msg.ready === 'boolean') sim.readyCheckRespond(msg.ready, pid);
         break;
       // hunter pets
       case 'pet_abandon':
@@ -3488,6 +3650,10 @@ export class GameServer {
     maybe('marks', this.markersWire(anchorSession.pid));
     maybe('trade', this.tradeWire(anchorSession.pid));
     maybe('duel', this.duelWire(anchorSession.pid));
+    // Small PvP-ledger scalars. Delta-guarded like marks: a fresh session
+    // receives both, then they ride only on earn/spend changes.
+    maybe('honor', meta.honor);
+    maybe('lhonor', meta.lifetimeHonor);
     if (this.sim.tickCount - session.lastArenaWireTick >= ARENA_WIRE_INTERVAL_TICKS) {
       session.lastArenaWireTick = this.sim.tickCount;
       maybe('arena', this.sim.arenaInfoFor(anchorSession.pid));
@@ -3532,6 +3698,12 @@ export class GameServer {
     // elapses without waiting on a heavy-field refresh; the server stays
     // authoritative (harvestNode is still re-validated on the real attempt).
     maybe('gnodecd', this.sim.nodeCooldownIdsFor(anchorSession.pid));
+    // Collection tracking core (PHAA-626): the viewer's own collected ids,
+    // mirrored whole (small, only grows) same rationale as dclears below.
+    maybe('collected', this.sim.collectedIdsFor(anchorSession.pid));
+    // Achievements (PHAA-687): the viewer's own unlocked achievement ids,
+    // mirrored whole (small, only grows) same rationale as collected above.
+    maybe('ach', this.sim.unlockedAchievementsFor(anchorSession.pid));
     maybe('dclears', this.sim.delveClearsFor(anchorSession.pid));
     maybe('delveDaily', this.sim.delveDailyWire(anchorSession.pid));
     // stats + weapon stay per-tick: recalcPlayerStats re-derives them on every

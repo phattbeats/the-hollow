@@ -1378,6 +1378,10 @@ export const GUIDE_HOLLOW_HUB: GuideHollowHub = {
     {
       "id": "q_keep_him_lit",
       "name": "Keep Him Lit"
+    },
+    {
+      "id": "q_your_own_hearth",
+      "name": "A Hearth of Your Own"
     }
   ],
   "housePlots": 8,

@@ -108,6 +108,9 @@ const NORMAL_TEX_STRENGTH = 1.35;
 // Ground colors per biome; boundaries blend across the same window as the
 // heightfield's shape blend. This is the tint layer the splat albedo
 // multiplies into (splat textures are authored near mid-gray).
+// beach/desert/volcano/cave are paint-only biomes (see render/foliage.ts),
+// unreachable until the render-load-in editor slice; values match the
+// upstream reference port.
 const BIOME_PALETTE: Record<
   BiomeId,
   { grass: number; grassDark: number; grassYellow: number; dirt: number; sand: number }
@@ -135,10 +138,46 @@ const BIOME_PALETTE: Record<
     dirt: 0x8a7d6a,
     sand: 0xbdb49c,
   },
+  beach: {
+    grass: 0x9aa55e,
+    grassDark: 0x7a8a4e,
+    grassYellow: 0xb5b06a,
+    dirt: 0xb59a6b,
+    sand: 0xe2d3a4,
+  },
+  desert: {
+    grass: 0xb0a060,
+    grassDark: 0x8f8350,
+    grassYellow: 0xc4b070,
+    dirt: 0xa87f4f,
+    sand: 0xd8b581,
+  },
+  volcano: {
+    grass: 0x5a4a42,
+    grassDark: 0x40332e,
+    grassYellow: 0x6e5a4a,
+    dirt: 0x4a3a32,
+    sand: 0x6a5548,
+  },
+  cave: {
+    grass: 0x6a6a62,
+    grassDark: 0x50504a,
+    grassYellow: 0x7a7a6e,
+    dirt: 0x5a5248,
+    sand: 0x8a8274,
+  },
 };
 
 // rock starts creeping in at lower slopes in the peaks, later in the marsh
-const ROCK_SLOPE_START: Record<BiomeId, number> = { vale: 0.55, marsh: 0.62, peaks: 0.45 };
+const ROCK_SLOPE_START: Record<BiomeId, number> = {
+  vale: 0.55,
+  marsh: 0.62,
+  peaks: 0.45,
+  beach: 0.7,
+  desert: 0.55,
+  volcano: 0.35,
+  cave: 0.4,
+};
 
 const clamp01 = (v: number): number => Math.max(0, Math.min(1, v));
 

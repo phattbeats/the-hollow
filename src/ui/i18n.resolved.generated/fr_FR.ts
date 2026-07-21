@@ -313,7 +313,13 @@ export const fr_FR: EnTranslations = {
     "keybinds": {
       "emoteWheel": "Roue des emotes",
       "targetFriendly": "Cibler l'allié le plus proche",
-      "targetFriendlyNext": "Changer de cible alliée"
+      "targetFriendlyNext": "Changer de cible alliée",
+      "categoryPet": "Pet",
+      "petAttack": "Pet: Attack",
+      "petStop": "Pet: Stop",
+      "petTaunt": "Pet: Taunt",
+      "petDefensive": "Pet: Defensive",
+      "petAggressive": "Pet: Aggressive"
     },
     "options": {
       "clickMoveLeft": "Clic gauche",
@@ -434,6 +440,9 @@ export const fr_FR: EnTranslations = {
     },
     "statInfo": {
       "fromYour": "Grâce à vos {value} en {stat} :",
+      "names": {
+        "spellPower": "Spell Power"
+      },
       "desc": {
         "str": "Augmente votre puissance d'attaque, vos coups d'arme frappent donc plus fort.",
         "agi": "Aiguise vos réflexes et votre précision, ce qui améliore plusieurs de vos statistiques de combat.",
@@ -442,6 +451,7 @@ export const fr_FR: EnTranslations = {
         "spi": "Accélère la vitesse à laquelle le mana d'un lanceur de sorts se régénère au repos, hors combat.",
         "armor": "Atténue les coups physiques reçus. La réduction est plus importante contre les attaquants de niveau inférieur et est plafonnée à 75 %.",
         "attackPower": "Renforce vos attaques d'arme. Chaque tranche de 14 de puissance d'attaque ajoute 1 dégât par seconde.",
+        "spellPower": "Increases the damage of your spells and the strength of your heals. Each point of Intellect grants a little Spell Power, on top of any from gear or buffs.",
         "dps": "Vos dégâts par seconde estimés à l'arme, combinant les dégâts et la vitesse de votre arme avec votre puissance d'attaque.",
         "critChance": "Vos chances de porter un coup critique avec une attaque, infligeant le double des dégâts.",
         "dodge": "Vos chances d'éviter complètement une attaque de mêlée, sans subir aucun dégât."
@@ -464,6 +474,15 @@ export const fr_FR: EnTranslations = {
         "minorForClass": "De peu d'utilité pour votre classe.",
         "baseChance": "Inclut 5 % de chances de base communes à tous les aventuriers.",
         "dpsApprox": "Une estimation, elle exclut les coups critiques et les dégâts des capacités."
+      },
+      "sources": {
+        "header": "Made up of:",
+        "base": "Base: {value}",
+        "attributes": "From your attributes: {value}",
+        "fromAttribute": "From {stat}: {value}",
+        "gear": "Equipped gear: {value}",
+        "buff": "{name}: {value}",
+        "talents": "Talents and effects: {value}"
       }
     },
     "talents": {
@@ -701,10 +720,18 @@ export const fr_FR: EnTranslations = {
         "spi": "Réduit l'esprit de {value}",
         "allStats": "Réduit tous les attributs de {value}"
       },
+      "increasePct": {
+        "ap": "Increases attack power by {pct}%",
+        "armor": "Increases armor by {pct}%",
+        "int": "Increases Intellect by {pct}%",
+        "sta": "Increases Stamina by {pct}%"
+      },
       "dodge": "Augmente les chances d'esquive de {pct}%",
       "dodgeReduce": "Réduit les chances d'esquive de {pct}%",
       "armorFlat": "Réduit l'armure de {value}",
       "armorFlatStacks": "Réduit l'armure de {value} ({stacks} charges)",
+      "armorPct": "Reduces armor by {pct}%",
+      "armorPctStacks": "Reduces armor by {pct}% ({stacks} stacks)",
       "mortalWound": "Réduit les soins reçus de {pct}%",
       "vulnerability": "Augmente les dégâts subis de {pct}%",
       "physVuln": "Augmente les dégâts physiques subis de {pct}%",
@@ -971,6 +998,21 @@ export const fr_FR: EnTranslations = {
       "spore": "Spore",
       "toolTier": "Tier {tier} tool",
       "toolNone": "No tool"
+    },
+    "warfare": {
+      "ratingLabel": "Warfare",
+      "balance": "Honor: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} Honor",
+      "honorFloat": "+{amount} Honor",
+      "honorGain": "+{amount} Honor ({reason})",
+      "notEnoughHonor": "Not enough honor.",
+      "reasons": {
+        "arenaWin": "Arena win",
+        "fiestaKill": "Fiesta takedown",
+        "fiestaComplete": "Fiesta match",
+        "fiestaWin": "Fiesta win"
+      }
     }
   },
   "mailUi": {
@@ -989,6 +1031,12 @@ export const fr_FR: EnTranslations = {
     "recipient": "Recipient",
     "subjectLabel": "Subject",
     "bodyPlaceholder": "Write your letter...",
+    "attachments": "Attachments (up to {max})",
+    "removeAttachment": "Remove {item} from this letter",
+    "tooltipAttach": "Click to attach to this letter",
+    "tooltipCannotAttach": "The raven will not carry quest items",
+    "parcelQtyDecreaseAria": "Send one fewer {item}",
+    "parcelQtyIncreaseAria": "Send one more {item}",
     "send": "Send Letter",
     "needRecipientOrText": "Name a recipient and write something before sending.",
     "openButton": "Show me the Ravenpost.",
@@ -2396,6 +2444,10 @@ export const fr_FR: EnTranslations = {
       "nothingToHarvest": "That corpse has nothing to harvest.",
       "alreadyHarvested": "This corpse has already been harvested."
     },
+    "collections": {
+      "notFound": "That does not exist.",
+      "tooFar": "Too far away."
+    },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
       "noItems1": "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",
@@ -2456,6 +2508,11 @@ export const fr_FR: EnTranslations = {
       "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
       "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
       "helpLine": "Homestead: /homestead, /homestead claim."
+    },
+    "readyCheck": {
+      "mustBeInParty": "You must be in a party to start a ready check.",
+      "alreadyInProgress": "A ready check is already in progress.",
+      "summary": "Ready check: {ready} ready, {notReady} not ready, {noResponse} no response."
     }
   },
   "lockpickUi": {
@@ -3297,6 +3354,8 @@ export const fr_FR: EnTranslations = {
       "openTrade": "Ouvrir l'échange",
       "duelRequest": "{name} vous a provoqué en duel !",
       "acceptDuel": "Accepter le duel",
+      "readyCheckStart": "{name} has started a ready check.",
+      "markReady": "Ready",
       "decline": "Refuser"
     },
     "combat": {
@@ -3825,6 +3884,7 @@ export const fr_FR: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{kind} {quality}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "Actuellement équipé",
       "ifYouEquip": "Si vous équipez ceci",
       "damageSpeed": "{min} - {max} points de dégâts Vitesse {speed}",
@@ -4054,7 +4114,7 @@ export const fr_FR: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Fracasser armure",
-        "description": "Fracasse l'armure de la cible et la réduit de {damage} par application. Cumulable jusqu'à 5 fois. Génère beaucoup de menace."
+        "description": "Fracasse l'armure de la cible, la réduisant de 2% par application. Cumulable jusqu'à 5 fois. Génère beaucoup de menace."
       },
       "taunt": {
         "name": "Provocation",
@@ -5152,6 +5212,99 @@ export const fr_FR: EnTranslations = {
       "mistcallers_duffel": {
         "name": "Sac Marin de Mistcaller"
       },
+      "bramblewar_warhelm": {
+        "name": "Ronceguerre Tête"
+      },
+      "bramblewar_warspaulders": {
+        "name": "Ronceguerre Épaules"
+      },
+      "bramblewar_warplate": {
+        "name": "Ronceguerre Torse"
+      },
+      "bramblewar_girdle": {
+        "name": "Ronceguerre Taille"
+      },
+      "bramblewar_legguards": {
+        "name": "Ronceguerre Jambes"
+      },
+      "bramblewar_gauntlets": {
+        "name": "Ronceguerre Mains"
+      },
+      "bramblewar_sabatons": {
+        "name": "Ronceguerre Pieds"
+      },
+      "thornbound_crown": {
+        "name": "Roncelié Tête"
+      },
+      "thornbound_spaulders": {
+        "name": "Roncelié Épaules"
+      },
+      "thornbound_hauberk": {
+        "name": "Roncelié Torse"
+      },
+      "thornbound_waistguard": {
+        "name": "Roncelié Taille"
+      },
+      "thornbound_legmail": {
+        "name": "Roncelié Jambes"
+      },
+      "thornbound_handguards": {
+        "name": "Roncelié Mains"
+      },
+      "thornbound_greaves": {
+        "name": "Roncelié Pieds"
+      },
+      "nettlestalker_cowl": {
+        "name": "Ortie Furtive Tête"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "Ortie Furtive Épaules"
+      },
+      "nettlestalker_harness": {
+        "name": "Ortie Furtive Torse"
+      },
+      "nettlestalker_waistband": {
+        "name": "Ortie Furtive Taille"
+      },
+      "nettlestalker_legguards": {
+        "name": "Ortie Furtive Jambes"
+      },
+      "nettlestalker_grips": {
+        "name": "Ortie Furtive Mains"
+      },
+      "nettlestalker_treads": {
+        "name": "Ortie Furtive Pieds"
+      },
+      "mossweave_cowl": {
+        "name": "Moussetissé Tête"
+      },
+      "mossweave_mantle": {
+        "name": "Moussetissé Épaules"
+      },
+      "mossweave_raiment": {
+        "name": "Moussetissé Torse"
+      },
+      "mossweave_cord": {
+        "name": "Moussetissé Taille"
+      },
+      "mossweave_legwraps": {
+        "name": "Moussetissé Jambes"
+      },
+      "mossweave_handwraps": {
+        "name": "Moussetissé Mains"
+      },
+      "mossweave_slippers": {
+        "name": "Moussetissé Pieds"
+      },
+      "last_bloom_greatblade": {
+        "name": "Grande Lame de la Dernière Fleur"
+      },
+      "thornbite_razor": {
+        "name": "Rasoir Morsure-d'Épine"
+      },
+      "heartwood_warstaff": {
+        "name": "Bâton de Guerre de Bois de Cœur"
+      },
       "bristleback_maul": {
         "name": "Maillet Bristleback"
       },
@@ -5504,6 +5657,9 @@ export const fr_FR: EnTranslations = {
       "keeper_coal": {
         "name": "Un Charbon Qui N'a Jamais Refroidi"
       },
+      "hearth_stone": {
+        "name": "Une Pierre Encore Chaude De Son Âtre"
+      },
       "willow_sprig": {
         "name": "Une brindille de saule"
       },
@@ -5552,6 +5708,10 @@ export const fr_FR: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "Gantelets du gardien des os"
+      },
+      "delve_heroic_mark": {
+        "name": "Marque héroïque du Reliquaire",
+        "flavorText": "Un sceau frappé délivré par les gardiens du Reliquaire. Échangez-le auprès du Quartier-maître héroïque contre de l'équipement de qualité reliquaire."
       },
       "deacon_reliquary_helm": {
         "name": "Heaume du reliquaire du diacre"
@@ -6139,6 +6299,11 @@ export const fr_FR: EnTranslations = {
         "name": "Elder Yarrow",
         "title": "Profession Trainer",
         "greeting": "Every build starts as a question. Which second calling speaks to you?"
+      },
+      "bramble": {
+        "name": "Bramble",
+        "title": "Honor Quartermaster",
+        "greeting": "The sands remember every victory. Spend your honor well."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
@@ -7117,6 +7282,22 @@ export const fr_FR: EnTranslations = {
           "complainReply": "once is a favor, friend, three's a habit, and i been burned by favors before... this ain't about the hearth needin' it, the hearth's fine, i keep it fine, it's about you comin' back on your own two feet 'cause you wanted to, not 'cause some quest marker told you to... three times. no rush on the countin'.",
           "refuse": "I'm not doing this three separate times. Once was enough.",
           "refuseReply": "...yeah. yeah, okay, i hear you, friend, that's a fair enough line to draw... tell you what, here, take it anyway, ain't earned in the strictest sense but neither's most of what i hand out, and the wavelength don't really keep score the way i pretend it does..."
+        }
+      },
+      "q_your_own_hearth": {
+        "title": "A Hearth of Your Own",
+        "text": "here's the last of it, friend, and it ain't really an errand so much as a nudge... there's ground out past the road, fallow acres, sittin' quiet and waitin' on somebody to want it. sexton faddick keeps half an eye on it between his wolves and his list of kept places - go say hello, let him know you're the kind that stays... after that the ground's yours to claim, whenever you're ready for it.",
+        "completion": "there it is... you got the look now, friend, the one that says you ain't just passin' through no more. go on, plant your feet somewhere out there. i'll keep the hearth lit same as always, and the vase'll know right where to find you...",
+        "objectives": {
+          "0": {
+            "label": "Sexton Faddick met"
+          }
+        },
+        "dialog": {
+          "complain": "Ground? I just wanted to say hi to your plant.",
+          "complainReply": "and you can, anytime, he ain't goin' anywhere... but a soul needs more than a shrine to visit, friend, it needs somewhere to plant its own two feet. won't take long. faddick talks slow but he don't waste your afternoon.",
+          "refuse": "I don't need a homestead. I'm happy just visiting.",
+          "refuseReply": "...alright, alright, no pressure in it, friend, the ground'll keep same as faddick keeps it, waitin' don't cost it nothin'... here, take this anyway, for stickin' around this long. that's its own kind of home, i guess."
         }
       },
       "q_root_hollow_boars": {

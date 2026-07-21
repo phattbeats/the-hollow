@@ -313,7 +313,13 @@ export const id_ID: EnTranslations = {
     "keybinds": {
       "emoteWheel": "Roda Emote",
       "targetFriendly": "Bidik Sekutu Terdekat",
-      "targetFriendlyNext": "Putar Bidikan Sekutu"
+      "targetFriendlyNext": "Putar Bidikan Sekutu",
+      "categoryPet": "Pet",
+      "petAttack": "Pet: Attack",
+      "petStop": "Pet: Stop",
+      "petTaunt": "Pet: Taunt",
+      "petDefensive": "Pet: Defensive",
+      "petAggressive": "Pet: Aggressive"
     },
     "options": {
       "clickMoveLeft": "Klik Kiri",
@@ -434,6 +440,9 @@ export const id_ID: EnTranslations = {
     },
     "statInfo": {
       "fromYour": "Dari {value} {stat} Anda:",
+      "names": {
+        "spellPower": "Spell Power"
+      },
       "desc": {
         "str": "Meningkatkan daya serang Anda, sehingga serangan senjata Anda menghantam lebih keras.",
         "agi": "Mempertajam refleks dan bidikan Anda, meningkatkan beberapa statistik tempur Anda.",
@@ -442,6 +451,7 @@ export const id_ID: EnTranslations = {
         "spi": "Mempercepat pemulihan mana penyihir saat beristirahat, di luar pertempuran.",
         "armor": "Meredam pukulan fisik yang datang. Pengurangannya lebih besar terhadap penyerang berlevel lebih rendah dan dibatasi hingga 75%.",
         "attackPower": "Memberi tenaga pada serangan senjata Anda. Setiap 14 daya serang menambah 1 kerusakan per detik.",
+        "spellPower": "Increases the damage of your spells and the strength of your heals. Each point of Intellect grants a little Spell Power, on top of any from gear or buffs.",
         "dps": "Perkiraan kerusakan senjata Anda per detik, menggabungkan kerusakan dan kecepatan senjata dengan daya serang Anda.",
         "critChance": "Peluang serangan Anda menghantam secara kritis, memberikan kerusakan ganda.",
         "dodge": "Peluang Anda untuk sepenuhnya menghindari serangan jarak dekat, tanpa menerima kerusakan."
@@ -464,6 +474,15 @@ export const id_ID: EnTranslations = {
         "minorForClass": "Kurang bermanfaat bagi kelas Anda.",
         "baseChance": "Termasuk peluang dasar 5% yang dimiliki semua petualang.",
         "dpsApprox": "Sebuah perkiraan, tidak termasuk serangan kritis dan kerusakan kemampuan."
+      },
+      "sources": {
+        "header": "Made up of:",
+        "base": "Base: {value}",
+        "attributes": "From your attributes: {value}",
+        "fromAttribute": "From {stat}: {value}",
+        "gear": "Equipped gear: {value}",
+        "buff": "{name}: {value}",
+        "talents": "Talents and effects: {value}"
       }
     },
     "talents": {
@@ -701,10 +720,18 @@ export const id_ID: EnTranslations = {
         "spi": "Reduce el espíritu en {value}",
         "allStats": "Reduce todos los atributos en {value}"
       },
+      "increasePct": {
+        "ap": "Increases attack power by {pct}%",
+        "armor": "Increases armor by {pct}%",
+        "int": "Increases Intellect by {pct}%",
+        "sta": "Increases Stamina by {pct}%"
+      },
       "dodge": "Aumenta la probabilidad de esquivar un {pct}%",
       "dodgeReduce": "Reduce la probabilidad de esquivar un {pct}%",
       "armorFlat": "Reduce la armadura en {value}",
       "armorFlatStacks": "Reduce la armadura en {value} ({stacks} acumulaciones)",
+      "armorPct": "Reduces armor by {pct}%",
+      "armorPctStacks": "Reduces armor by {pct}% ({stacks} stacks)",
       "mortalWound": "Reduce la sanación recibida un {pct}%",
       "vulnerability": "Aumenta el daño recibido un {pct}%",
       "physVuln": "Aumenta el daño físico recibido un {pct}%",
@@ -971,6 +998,21 @@ export const id_ID: EnTranslations = {
       "spore": "Spore",
       "toolTier": "Tier {tier} tool",
       "toolNone": "No tool"
+    },
+    "warfare": {
+      "ratingLabel": "Warfare",
+      "balance": "Honor: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} Honor",
+      "honorFloat": "+{amount} Honor",
+      "honorGain": "+{amount} Honor ({reason})",
+      "notEnoughHonor": "Not enough honor.",
+      "reasons": {
+        "arenaWin": "Arena win",
+        "fiestaKill": "Fiesta takedown",
+        "fiestaComplete": "Fiesta match",
+        "fiestaWin": "Fiesta win"
+      }
     }
   },
   "mailUi": {
@@ -989,6 +1031,12 @@ export const id_ID: EnTranslations = {
     "recipient": "Recipient",
     "subjectLabel": "Subject",
     "bodyPlaceholder": "Write your letter...",
+    "attachments": "Attachments (up to {max})",
+    "removeAttachment": "Remove {item} from this letter",
+    "tooltipAttach": "Click to attach to this letter",
+    "tooltipCannotAttach": "The raven will not carry quest items",
+    "parcelQtyDecreaseAria": "Send one fewer {item}",
+    "parcelQtyIncreaseAria": "Send one more {item}",
     "send": "Send Letter",
     "needRecipientOrText": "Name a recipient and write something before sending.",
     "openButton": "Show me the Ravenpost.",
@@ -2396,6 +2444,10 @@ export const id_ID: EnTranslations = {
       "nothingToHarvest": "That corpse has nothing to harvest.",
       "alreadyHarvested": "This corpse has already been harvested."
     },
+    "collections": {
+      "notFound": "That does not exist.",
+      "tooFar": "Too far away."
+    },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
       "noItems1": "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",
@@ -2456,6 +2508,11 @@ export const id_ID: EnTranslations = {
       "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
       "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
       "helpLine": "Homestead: /homestead, /homestead claim."
+    },
+    "readyCheck": {
+      "mustBeInParty": "You must be in a party to start a ready check.",
+      "alreadyInProgress": "A ready check is already in progress.",
+      "summary": "Ready check: {ready} ready, {notReady} not ready, {noResponse} no response."
     }
   },
   "lockpickUi": {
@@ -3297,6 +3354,8 @@ export const id_ID: EnTranslations = {
       "openTrade": "Buka Perdagangan",
       "duelRequest": "{name} menantang Anda untuk berduel!",
       "acceptDuel": "Terima Duel",
+      "readyCheckStart": "{name} has started a ready check.",
+      "markReady": "Ready",
       "decline": "Tolak"
     },
     "combat": {
@@ -3825,6 +3884,7 @@ export const id_ID: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "Sedang dipakai",
       "ifYouEquip": "Jika kamu memakai ini",
       "damageSpeed": "{min} - {max} Kerusakan Kecepatan {speed}",
@@ -4054,7 +4114,7 @@ export const id_ID: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Belah Zirah",
-        "description": "Membelah zirah target, menguranginya sebesar {damage} per penerapan. Bertumpuk hingga 5 kali. Menghasilkan ancaman dalam jumlah tinggi."
+        "description": "Membelah zirah target, menguranginya sebesar 2% per penerapan. Bertumpuk hingga 5 kali. Menghasilkan ancaman dalam jumlah tinggi."
       },
       "taunt": {
         "name": "Provokasi",
@@ -5152,6 +5212,99 @@ export const id_ID: EnTranslations = {
       "mistcallers_duffel": {
         "name": "Tas Duffel Mistcaller"
       },
+      "bramblewar_warhelm": {
+        "name": "Perangduri Kepala"
+      },
+      "bramblewar_warspaulders": {
+        "name": "Perangduri Bahu"
+      },
+      "bramblewar_warplate": {
+        "name": "Perangduri Dada"
+      },
+      "bramblewar_girdle": {
+        "name": "Perangduri Pinggang"
+      },
+      "bramblewar_legguards": {
+        "name": "Perangduri Tungkai"
+      },
+      "bramblewar_gauntlets": {
+        "name": "Perangduri Tangan"
+      },
+      "bramblewar_sabatons": {
+        "name": "Perangduri Kaki"
+      },
+      "thornbound_crown": {
+        "name": "Duriterikat Kepala"
+      },
+      "thornbound_spaulders": {
+        "name": "Duriterikat Bahu"
+      },
+      "thornbound_hauberk": {
+        "name": "Duriterikat Dada"
+      },
+      "thornbound_waistguard": {
+        "name": "Duriterikat Pinggang"
+      },
+      "thornbound_legmail": {
+        "name": "Duriterikat Tungkai"
+      },
+      "thornbound_handguards": {
+        "name": "Duriterikat Tangan"
+      },
+      "thornbound_greaves": {
+        "name": "Duriterikat Kaki"
+      },
+      "nettlestalker_cowl": {
+        "name": "Jelatang Pengintai Kepala"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "Jelatang Pengintai Bahu"
+      },
+      "nettlestalker_harness": {
+        "name": "Jelatang Pengintai Dada"
+      },
+      "nettlestalker_waistband": {
+        "name": "Jelatang Pengintai Pinggang"
+      },
+      "nettlestalker_legguards": {
+        "name": "Jelatang Pengintai Tungkai"
+      },
+      "nettlestalker_grips": {
+        "name": "Jelatang Pengintai Tangan"
+      },
+      "nettlestalker_treads": {
+        "name": "Jelatang Pengintai Kaki"
+      },
+      "mossweave_cowl": {
+        "name": "Tenun Lumut Kepala"
+      },
+      "mossweave_mantle": {
+        "name": "Tenun Lumut Bahu"
+      },
+      "mossweave_raiment": {
+        "name": "Tenun Lumut Dada"
+      },
+      "mossweave_cord": {
+        "name": "Tenun Lumut Pinggang"
+      },
+      "mossweave_legwraps": {
+        "name": "Tenun Lumut Tungkai"
+      },
+      "mossweave_handwraps": {
+        "name": "Tenun Lumut Tangan"
+      },
+      "mossweave_slippers": {
+        "name": "Tenun Lumut Kaki"
+      },
+      "last_bloom_greatblade": {
+        "name": "Pedang Besar Kembang Terakhir"
+      },
+      "thornbite_razor": {
+        "name": "Silet Gigitan Duri"
+      },
+      "heartwood_warstaff": {
+        "name": "Tongkat Perang Kayu Teras"
+      },
       "bristleback_maul": {
         "name": "Cabikan Punggung Berbulu"
       },
@@ -5504,6 +5657,9 @@ export const id_ID: EnTranslations = {
       "keeper_coal": {
         "name": "Arang yang Tak Pernah Dingin"
       },
+      "hearth_stone": {
+        "name": "Batu yang Masih Hangat dari Perapiannya"
+      },
       "willow_sprig": {
         "name": "Sebuah Ranting Willow"
       },
@@ -5552,6 +5708,10 @@ export const id_ID: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "Sarung Tangan Penjaga Tulang"
+      },
+      "delve_heroic_mark": {
+        "name": "Tanda Relikuari Heroik",
+        "flavorText": "Segel cap yang dikeluarkan oleh para penjaga Relikuari. Tukarkan di Kepala Perbekalan Heroik untuk perlengkapan bermutu relikuari."
       },
       "deacon_reliquary_helm": {
         "name": "Helm Relik Diakon"
@@ -6139,6 +6299,11 @@ export const id_ID: EnTranslations = {
         "name": "Elder Yarrow",
         "title": "Profession Trainer",
         "greeting": "Every build starts as a question. Which second calling speaks to you?"
+      },
+      "bramble": {
+        "name": "Bramble",
+        "title": "Honor Quartermaster",
+        "greeting": "The sands remember every victory. Spend your honor well."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
@@ -7117,6 +7282,22 @@ export const id_ID: EnTranslations = {
           "complainReply": "once is a favor, friend, three's a habit, and i been burned by favors before... this ain't about the hearth needin' it, the hearth's fine, i keep it fine, it's about you comin' back on your own two feet 'cause you wanted to, not 'cause some quest marker told you to... three times. no rush on the countin'.",
           "refuse": "I'm not doing this three separate times. Once was enough.",
           "refuseReply": "...yeah. yeah, okay, i hear you, friend, that's a fair enough line to draw... tell you what, here, take it anyway, ain't earned in the strictest sense but neither's most of what i hand out, and the wavelength don't really keep score the way i pretend it does..."
+        }
+      },
+      "q_your_own_hearth": {
+        "title": "A Hearth of Your Own",
+        "text": "here's the last of it, friend, and it ain't really an errand so much as a nudge... there's ground out past the road, fallow acres, sittin' quiet and waitin' on somebody to want it. sexton faddick keeps half an eye on it between his wolves and his list of kept places - go say hello, let him know you're the kind that stays... after that the ground's yours to claim, whenever you're ready for it.",
+        "completion": "there it is... you got the look now, friend, the one that says you ain't just passin' through no more. go on, plant your feet somewhere out there. i'll keep the hearth lit same as always, and the vase'll know right where to find you...",
+        "objectives": {
+          "0": {
+            "label": "Sexton Faddick met"
+          }
+        },
+        "dialog": {
+          "complain": "Ground? I just wanted to say hi to your plant.",
+          "complainReply": "and you can, anytime, he ain't goin' anywhere... but a soul needs more than a shrine to visit, friend, it needs somewhere to plant its own two feet. won't take long. faddick talks slow but he don't waste your afternoon.",
+          "refuse": "I don't need a homestead. I'm happy just visiting.",
+          "refuseReply": "...alright, alright, no pressure in it, friend, the ground'll keep same as faddick keeps it, waitin' don't cost it nothin'... here, take this anyway, for stickin' around this long. that's its own kind of home, i guess."
         }
       },
       "q_root_hollow_boars": {
