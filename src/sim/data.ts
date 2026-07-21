@@ -22,6 +22,7 @@ import type {
   QuestState,
   ReadableDef,
   TitleDef,
+  WorldContent,
   ZoneDef,
   ZonePropsDef,
 } from './types';
@@ -30,6 +31,10 @@ export type { FishingEntry } from './content/items';
 export { FISHING_RARE_ID, FISHING_TABLES };
 
 import { DEEDS as DEEDS_CONTENT, TITLES as TITLES_CONTENT } from './content/deeds';
+import type { AchievementDef } from './achievements_core';
+import { ACHIEVEMENTS as ACHIEVEMENTS_CONTENT } from './content/achievements';
+import type { CollectibleDef } from './content/collectibles';
+import { COLLECTIBLES as COLLECTIBLES_CONTENT } from './content/collectibles';
 import {
   BROTHER_HALVEN,
   COLLAPSED_RELIQUARY_DELVE,
@@ -277,6 +282,24 @@ export const READABLES_BY_ID: Record<string, ReadableDef> = Object.fromEntries(
 );
 export const READ_RADIUS = READ_RADIUS_CONTENT;
 
+// Tracked-collectible identity (PHAA-625/626): every readable above also gets a
+// CollectibleDef entry so the collections system + (sibling-ticket) UI panel can
+// resolve kind/zone/set by the same stable id without depending on the readable
+// table directly. See src/sim/content/collectibles.ts.
+export const COLLECTIBLES: CollectibleDef[] = [...COLLECTIBLES_CONTENT];
+export const COLLECTIBLES_BY_ID: Record<string, CollectibleDef> = Object.fromEntries(
+  COLLECTIBLES.map((c) => [c.id, c]),
+);
+
+// Achievement registry (PHAA-687): net-new discrete-accomplishment subsystem,
+// ALONGSIDE MILESTONES. Declarative defs live in src/sim/content/achievements.ts;
+// the pure engine is src/sim/achievements_core.ts, the sim wiring
+// src/sim/achievements.ts. Merged here so consumers resolve by stable id.
+export const ACHIEVEMENTS: AchievementDef[] = [...ACHIEVEMENTS_CONTENT];
+export const ACHIEVEMENTS_BY_ID: Record<string, AchievementDef> = Object.fromEntries(
+  ACHIEVEMENTS.map((a) => [a.id, a]),
+);
+
 export const ROADS: { x: number; z: number }[][] = [
   ...ZONE1_ROADS,
   ...ZONE2_ROADS,
@@ -364,6 +387,45 @@ export const WORLD_MIN_Z = ZONES[0].zMin;
 export const WORLD_MAX_Z = ZONES[ZONES.length - 1].zMax;
 
 export const PLAYER_START = { x: 2, z: -2 };
+
+// ---------------------------------------------------------------------------
+// Active world content registry.
+//
+// The terrain function (src/sim/world.ts) and the Sim spawn loop derive the
+// playable world from the spatial data above. To support custom maps (the editor)
+// without forking the engine, that data is reachable through a swappable bundle.
+// The DEFAULT bundle wraps the exact same arrays the built-in game has always
+// used, so with no custom map loaded everything is byte-identical.
+//
+// The editor's offline play-test calls setActiveWorldContent(map) before building
+// the Sim+renderer; the default game never touches it.
+// ---------------------------------------------------------------------------
+
+export const BUILTIN_WORLD: WorldContent = {
+  zones: ZONES,
+  camps: CAMPS,
+  npcs: NPCS,
+  groundObjects: GROUND_OBJECTS,
+  roads: ROADS,
+  props: PROPS,
+  playerStart: PLAYER_START,
+  // No terrainEdits: the built-in heightfield is the pure (x,z,seed) function.
+};
+
+let activeWorld: WorldContent = BUILTIN_WORLD;
+
+// The world content the terrain function and renderer should sample. Defaults to
+// the built-in 3-zone world; the editor swaps it for a custom map during play-test.
+export function getActiveWorldContent(): WorldContent {
+  return activeWorld;
+}
+
+// Swap in a custom world (editor play-test) or restore the built-in (pass nothing).
+// Affects terrain (world.ts), props (render/props.ts), and any consumer that reads
+// through getActiveWorldContent. Spawns come from SimConfig.world too (sim.ts ctor).
+export function setActiveWorldContent(world: WorldContent | null): void {
+  activeWorld = world ?? BUILTIN_WORLD;
+}
 
 // Zone containing a world position (overworld only; clamps to the strip ends).
 export function zoneAt(z: number): ZoneDef {

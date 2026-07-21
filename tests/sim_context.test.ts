@@ -69,6 +69,8 @@ const CALLBACK_KEYS = [
   'partyOf',
   'removeFromParty',
   'dropPartyMarkers',
+  // PHAA-641: the "/ready" chat command's leader-gated start (social/ready_check.ts).
+  'readyCheckStart',
   // Q1 quest-credit trio + the countItem it consumes; onGreenpawFedForQuests
   // (PHAA-484) is the hearth's own feed-credit callback.
   'onMobKilledForQuests',
@@ -263,6 +265,7 @@ function makeFakeHost() {
     utcDay: '',
     pendingMobRespawns: [],
     partyInvites: new Map(),
+    readyChecks: new Map(),
     chatTokens: new Map(),
     channelSubs: new Map(),
     pendingLootRolls: new Map(),
@@ -329,6 +332,7 @@ function makeFakeHost() {
     partyOf: vi.fn(() => null),
     removeFromParty: vi.fn(),
     dropPartyMarkers: vi.fn(),
+    readyCheckStart: vi.fn(),
     onMobKilledForQuests: vi.fn(),
     onInventoryChangedForQuests: vi.fn(),
     onGreenpawFedForQuests: vi.fn(),

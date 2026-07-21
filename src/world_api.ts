@@ -9,16 +9,19 @@
 // keep resolving to THIS file, never the sibling directory.
 //
 // ---------------------------------------------------------------------------
-// FACET MAP: the 27 domain facets (each IWorld member assigned exactly once; 183
+// FACET MAP: the 29 domain facets (each IWorld member assigned exactly once; 188
 // total; this count was previously stale at 23/155, corrected alongside the
 // PHAA-482 feedGreenpaw command addition, again at 24/161 with the PHAA-511
 // guild-calendar-events addition, again at 25/162 with PHAA-504's gathering.ts
 // facet, again with PHAA-505's per-player node harvest + proficiency, again at
-// 26/171 with the PHAA-495 Ravenpost mail facet (6 members), and again here at
-// 27/183 with the PHAA-744 deeds.ts facet (5 members: Book of Asphodelia deed/
-// title read state + setActiveTitle). One interface per file under ./world_api/;
-// aux types travel with their facet. The authoritative member-per-facet split is
-// the W0c parity test.
+// 26/171 with the PHAA-495 Ravenpost mail facet (6 members), again with
+// PHAA-626's collections.ts facet (2 members), again with PHAA-687's
+// achievements.ts facet (2 members), again with the PHAA-641 readyCheckRespond
+// addition to the existing IWorldParty facet, and again here at 29/188 with the
+// PHAA-744 deeds.ts facet (5 members: Book of Asphodelia deed/title read state +
+// setActiveTitle). One interface per file under ./world_api/; aux types travel
+// with their facet. The authoritative member-per-facet split is the W0c parity
+// test (tests/world_api_parity.test.ts).
 // NOTE: this running count tracks only the facets registered in the W0c gate
 // (tests/world_api_parity.test.ts); IWorldReadables/IWorldDialog predate this
 // count and are pre-existing gaps in that gate, not tracked here.
@@ -51,18 +54,22 @@
 //   gathering.ts        IWorldGathering      profession harvest (PHAA-504 corpse harvest;
 //                                            PHAA-505 per-player node harvest + proficiency)
 //   telemetry.ts        IWorldTelemetry      fire-and-forget metrics sink
+//   collections.ts      IWorldCollections    tracked-collectible read/found state (PHAA-626)
+//   achievements.ts     IWorldAchievements   unlocked achievements + points (PHAA-687)
 //
 // THREE GATES pin this seam (run before any facet edit):
 //   tests/snapshots.test.ts        (W0a)  selfWireJson <-> applySnapshot round-trip;
-//                                          ALL_DELTA_KEYS (41) + TERSE_TO_IWORLD mapping.
+//                                          ALL_DELTA_KEYS (43) + TERSE_TO_IWORLD mapping.
 //   tests/command_schema.test.ts   (W0b)  COMMAND_NAMES universe; ClientWorld send-set
 //                                          subset-of dispatch-set; DISPATCH_ONLY (7).
-//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (183) present + same-kind on
+//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (188) present + same-kind on
 //                                          Sim + ClientWorld; aggregate == disjoint
-//                                          union of the 27 facets.
+//                                          union of the 29 facets.
 // ---------------------------------------------------------------------------
 
+import type { IWorldAchievements } from './world_api/achievements';
 import type { IWorldChat } from './world_api/chat';
+import type { IWorldCollections } from './world_api/collections';
 import type { IWorldCombat } from './world_api/combat';
 import type { IWorldCosmetics } from './world_api/cosmetics';
 import type { IWorldDeeds } from './world_api/deeds';
@@ -169,7 +176,9 @@ export interface IWorld
     IWorldGathering,
     IWorldReadables,
     IWorldDialog,
-    IWorldTelemetry {}
+    IWorldTelemetry,
+    IWorldCollections,
+    IWorldAchievements {}
 
 // ---------------------------------------------------------------------------
 // Command schema (W0b): the shared wire-token vocabulary.
@@ -317,6 +326,8 @@ export const COMMAND_NAMES = [
   'harvestNode',
   'dialogChoose',
   'setTitle',
+  'readyRespond',
+  'readCollectible',
 ] as const;
 
 // The union both the send path (`online.ts`) and the dispatch switch
@@ -384,7 +395,8 @@ export type WorldFacet =
   | 'IWorldHomestead'
   | 'IWorldGathering'
   | 'IWorldDialog'
-  | 'IWorldTelemetry';
+  | 'IWorldTelemetry'
+  | 'IWorldCollections';
 
 export const COMMAND_FACETS = {
   // IWorldCombat: ability casts, auto-attack, spirit release.
@@ -447,6 +459,7 @@ export const COMMAND_FACETS = {
   masterAssign: 'IWorldParty',
   setMarker: 'IWorldParty',
   clearMarker: 'IWorldParty',
+  readyRespond: 'IWorldParty',
   // IWorldTrade: peer-to-peer trade-window commands (tradeInfo is a snapshot read,
   // no send).
   trade_req: 'IWorldTrade',
@@ -536,4 +549,7 @@ export const COMMAND_FACETS = {
   // name (PHAA-744, Book of Asphodelia). deedLog/deedsDone/earnedTitles are
   // snapshot reads (no send, untagged).
   setTitle: 'IWorldDeeds',
+  // IWorldCollections: mark a collectible found (PHAA-625/626); collectedIds
+  // is a snapshot read (no send, untagged).
+  readCollectible: 'IWorldCollections',
 } as const satisfies Partial<Record<ClientCommand, WorldFacet>>;

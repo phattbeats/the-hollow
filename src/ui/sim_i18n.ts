@@ -4813,6 +4813,11 @@ const RULES: Rule[] = [
   { re: /^There is nothing left to take\.$/, build: () => t('sim.delve.nothingToTake') },
   { re: /^The way out is not yet open\.$/, build: () => t('sim.delve.wayOutNotOpen') },
   { re: /^Move closer to the stairs\.$/, build: () => t('sim.delve.moveCloserStairs') },
+  // Collections core (PHAA-626): readCollectible command errors
+  // (src/sim/collections.ts). The tooFar rule also covers the identical
+  // pre-existing "Too far away." emits in items/interaction/trainer/gathering.
+  { re: /^That does not exist\.$/, build: () => t('sim.collections.notFound') },
+  { re: /^Too far away\.$/, build: () => t('sim.collections.tooFar') },
   // Lockpicking minigame (exact lines).
   {
     re: /^Someone is already working the lock\.$/,
@@ -5148,6 +5153,22 @@ const RULES: Rule[] = [
   {
     re: /^Homestead: \/homestead, \/homestead claim\.$/,
     build: () => t('sim.homestead.helpLine'),
+  },
+  // Ready checks (PHAA-641, src/sim/social/ready_check.ts): the leader-gated /ready
+  // start guards, plus the counts-only finalize summary sent to every participant.
+  // "You are not the party leader." reuses the existing error.notPartyLeader EXACT
+  // match verbatim (no new entry needed).
+  {
+    re: /^You must be in a party to start a ready check\.$/,
+    build: () => t('sim.readyCheck.mustBeInParty'),
+  },
+  {
+    re: /^A ready check is already in progress\.$/,
+    build: () => t('sim.readyCheck.alreadyInProgress'),
+  },
+  {
+    re: /^Ready check: (\d+) ready, (\d+) not ready, (\d+) no response\.$/,
+    build: (m) => t('sim.readyCheck.summary', { ready: m[1], notReady: m[2], noResponse: m[3] }),
   },
   // Boss/mob mechanic broadcast. Broad (two open captures), so it MUST stay last -
   // after every more-specific "{X} {verb}!" rule above (awakens, enraged, calls for aid).

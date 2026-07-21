@@ -11,7 +11,9 @@ export type ModerationChatCommand =
   | { kind: 'ban'; reason: string }
   | { kind: 'suspend'; minutes: number | null; reason: string }
   | { kind: 'spectate'; name: string }
-  | { kind: 'unspectate' };
+  | { kind: 'unspectate' }
+  | { kind: 'jail'; minutes: number | null; reason: string }
+  | { kind: 'unjail' };
 
 function cleanReason(raw: string): string {
   const reason = raw.trim().slice(0, MODERATION_COMMAND_REASON_MAX);
@@ -65,5 +67,10 @@ export function parseModerationChatCommand(text: string): ModerationChatCommand 
     return { kind: 'spectate', name: (spectate[1] ?? '').trim() };
   }
   if (/^\/unspectate$/i.test(trimmed)) return { kind: 'unspectate' };
+  const jail = /^\/jail(?:\s+([\s\S]*))?$/i.exec(trimmed);
+  if (jail) {
+    return { kind: 'jail', ...parseTimed(jail[1] ?? '') };
+  }
+  if (/^\/unjail$/i.test(trimmed)) return { kind: 'unjail' };
   return null;
 }
