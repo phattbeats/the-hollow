@@ -103,6 +103,7 @@ function finalizeQuestAccept(
     pid: meta.entityId,
   });
   ctx.onInventoryChangedForQuests(meta);
+  ctx.onInventoryChangedForDeeds(meta);
 }
 
 export function acceptQuest(ctx: SimContext, questId: string, pid?: number): void {
