@@ -642,6 +642,7 @@ export function handleDeath(ctx: SimContext, e: Entity, killer: Entity | null): 
         );
         if (xpGain > 0) grantXp(ctx, xpGain, member, { fromKill: true });
         ctx.onMobKilledForQuests(e, member);
+        ctx.onMobKilledForDeeds(e, member);
       }
       // World bosses use PERSONAL loot for every contributor (rolled below from the
       // hate-table snapshot), not the tapper/party shared-corpse roll.

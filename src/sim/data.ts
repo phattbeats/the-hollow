@@ -5,9 +5,11 @@
 // and owns the world-layout constants.
 
 import { BOARBALL_MOBS } from './content/boarball';
+import { DEEDS as DEEDS_CONTENT, TITLES as TITLES_CONTENT } from './content/deeds';
 import { BASE_ITEMS, FISHING_RARE_ID, FISHING_TABLES } from './content/items';
 import type {
   CampDef,
+  DeedDef,
   DelveDef,
   DelveModuleDef,
   DungeonDef,
@@ -20,6 +22,7 @@ import type {
   QuestDef,
   QuestState,
   ReadableDef,
+  TitleDef,
   ZoneDef,
   ZonePropsDef,
 } from './types';
@@ -229,6 +232,10 @@ export const QUEST_ORDER: string[] = [
   ...HOLLOW_QUEST_ORDER,
   ...HOLLOW_ZONE_QUEST_ORDER,
 ];
+
+// Book of Asphodelia (PHAA-744): empty until a later child adds content.
+export const DEEDS: Record<string, DeedDef> = { ...DEEDS_CONTENT };
+export const TITLES: Record<string, TitleDef> = { ...TITLES_CONTENT };
 
 // Camps spawn in array order, each drawing world-gen RNG, so an entry inserted
 // before others shifts their spawn positions. New rare-elite camps

@@ -1685,6 +1685,46 @@ export interface QuestProgress {
   state: 'active' | 'ready' | 'done';
 }
 
+// ---------------------------------------------------------------------------
+// Book of Asphodelia (PHAA-713/PHAA-744, formerly "Book of Deeds"): an
+// achievement-style deed engine. Unlike quests, a deed carries no accept step:
+// every player tracks every DEED implicitly, so progress starts accruing the
+// first time a relevant event fires. Completion is automatic (no turn-in NPC)
+// and grants the deed's titleReward, if any, to the player's earned-title pool.
+// PHAA-744 is the engine + wire only: DEEDS/TITLES ship empty until a later
+// Book of Asphodelia child (PHAA-745+) adds content.
+// ---------------------------------------------------------------------------
+
+export interface DeedObjective {
+  type: 'kill' | 'collect';
+  targetMobId?: string; // for 'kill'
+  itemId?: string; // for 'collect'
+  count: number;
+  label: string;
+}
+
+export interface DeedDef {
+  id: string;
+  name: string;
+  category: string;
+  objectives: DeedObjective[];
+  // TitleDef id granted (added to PlayerMeta.earnedTitles) on completion.
+  titleReward?: string;
+}
+
+export interface DeedProgress {
+  deedId: string;
+  counts: number[]; // per objective
+}
+
+// A title earned via a deed (or, later, another reward source). Purely
+// cosmetic: content (name/display copy) ships with the deed content that
+// grants it, never in this engine child.
+export interface TitleDef {
+  id: string;
+  name: string;
+}
+
 // Consumables restore their total over CONSUME_DURATION seconds while sitting,
 // ticking on the classic 2-second regen tick. Food and drink run concurrently.
 export const CONSUME_DURATION = 18; // seconds
@@ -2041,6 +2081,11 @@ export type SimEvent = { pid?: number } & (
   | { type: 'questProgress'; questId: string; text: string }
   | { type: 'questReady'; questId: string }
   | { type: 'questDone'; questId: string }
+  // Book of Asphodelia (PHAA-744): fires once, on completion (deeds carry no
+  // in-progress event, mirroring milestoneUnlocked). titleEarned is separate
+  // since a deed without a titleReward completes silently on this event alone.
+  | { type: 'deedCompleted'; deedId: string }
+  | { type: 'titleEarned'; titleId: string }
   | { type: 'aura'; targetId: number; name: string; gained: boolean }
   | { type: 'castStart'; entityId: number; ability: string; time: number }
   | { type: 'castStop'; entityId: number; success: boolean }

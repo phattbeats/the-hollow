@@ -24,6 +24,7 @@ import { readablePropsAt } from '../sim/readables_query';
 import { computeQuestState, type ResolvedAbility } from '../sim/sim';
 import {
   type Aura,
+  type DeedProgress,
   type Entity,
   type EquipSlot,
   emptyMoveInput,
@@ -867,6 +868,11 @@ export class ClientWorld implements IWorld {
   }
   questLog = new Map<string, QuestProgress>();
   questsDone = new Set<string>();
+  // --- IWorldDeeds: Book of Asphodelia deed progress + earned titles
+  // (PHAA-744, read-only), mirrored from snapshot self. ---
+  deedLog = new Map<string, DeedProgress>();
+  deedsDone = new Set<string>();
+  earnedTitles = new Set<string>();
   // --- IWorldParty: party/raid roster, mirrored from the snapshot self (`party`).
   // The raid-target markers ride the `markers` map below; IWorldPet keeps no mirror
   // field (pet state lives on the owned-mob entity wire). ---
@@ -1617,6 +1623,13 @@ export class ClientWorld implements IWorld {
       this.restedXp = s.rxp ?? 0;
       this.prestigeRank = s.prk ?? 0;
       if (s.milestones !== undefined) this.unlockedMilestones = s.milestones;
+      // IWorldDeeds facet (PHAA-744) self-decode: all three are delta-guarded (a
+      // missing field keeps the prior mirror). Terse keys (deedlog->deedLog,
+      // deeddone->deedsDone, titles->earnedTitles) mirror the qlog/qdone pattern.
+      if (s.deedlog !== undefined)
+        this.deedLog = new Map((s.deedlog as DeedProgress[]).map((d) => [d.deedId, d]));
+      if (s.deeddone !== undefined) this.deedsDone = new Set(s.deeddone);
+      if (s.titles !== undefined) this.earnedTitles = new Set(s.titles);
       // IWorldInventory facet (W2) self-decode: copper rides every self-frame (?? 0);
       // inv/buyback/equip are delta-guarded (a missing field keeps the prior mirror).
       // Terse keys (inv/buyback/equip/copper) and the per-field guards are unchanged by

@@ -1794,6 +1794,8 @@ const ALL_DELTA_KEYS = [
   'dclears',
   'dcomp',
   'dcompanion',
+  'deeddone',
+  'deedlog',
   'delveDaily',
   'dmarks',
   'drun',
@@ -1821,6 +1823,7 @@ const ALL_DELTA_KEYS = [
   'qlog',
   'stats',
   'tal',
+  'titles',
   'trade',
   'weapon',
 ] as const;
@@ -1840,6 +1843,8 @@ const TERSE_TO_IWORLD: Record<string, string> = {
   dclears: 'delveClears',
   dcomp: 'companionUpgrades',
   dcompanion: 'companionState',
+  deeddone: 'deedsDone',
+  deedlog: 'deedLog',
   dmarks: 'delveMarks',
   drun: 'delveRun',
   dstate: 'dialogState',
@@ -1867,6 +1872,7 @@ const TERSE_TO_IWORLD: Record<string, string> = {
   res: 'resource',
   rtype: 'resourceType',
   rxp: 'restedXp',
+  titles: 'earnedTitles',
 };
 
 // Year ~2223 in epoch ms. Beats selfWireJson's `until > Date.now()` lockout
@@ -1947,6 +1953,9 @@ function dirtyEveryDeltaField(): {
   meta.equipment = { ...meta.equipment, mainhand: 'zealotsbane_blade' };
   meta.questLog.set('q_widows', { questId: 'q_widows', counts: [10, 0], state: 'active' });
   meta.questsDone.add('q_wolves');
+  meta.deedLog.set('deed_test', { deedId: 'deed_test', counts: [1] });
+  meta.deedsDone.add('deed_done_test');
+  meta.earnedTitles.add('title_test');
   meta.raidLockouts.set('nythraxis_boss_arena', FAR_FUTURE_MS);
   meta.unlockedMilestones.add('milestone_test');
   meta.lifetimeXp = 555;
@@ -2052,6 +2061,9 @@ describe('full self-state snapshot delta fixture', () => {
     ]); // qlog -> questLog (Map)
     expect(client.questsDone.has('q_wolves')).toBe(true); // qdone -> questsDone (Set)
     expect(client.unlockedMilestones).toEqual(['milestone_test']); // milestones -> unlockedMilestones
+    expect([...client.deedLog.values()]).toEqual([{ deedId: 'deed_test', counts: [1] }]); // deedlog -> deedLog (Map)
+    expect(client.deedsDone.has('deed_done_test')).toBe(true); // deeddone -> deedsDone (Set)
+    expect(client.earnedTitles.has('title_test')).toBe(true); // titles -> earnedTitles (Set)
     // dstate -> dialogState() (private dialogStateMirror), via the IWorld read
     expect(client.dialogState()).toEqual({
       disposition: { brother_greenpaw: 3 },
@@ -2131,9 +2143,9 @@ describe('full self-state snapshot delta fixture', () => {
 });
 
 describe('delta-key contract pins (anti-drift)', () => {
-  it('ALL_DELTA_KEYS contains exactly 37 unique keys in sorted order', () => {
-    expect(ALL_DELTA_KEYS).toHaveLength(37);
-    expect(new Set(ALL_DELTA_KEYS).size).toBe(37);
+  it('ALL_DELTA_KEYS contains exactly 40 unique keys in sorted order', () => {
+    expect(ALL_DELTA_KEYS).toHaveLength(40);
+    expect(new Set(ALL_DELTA_KEYS).size).toBe(40);
     expect([...ALL_DELTA_KEYS]).toEqual([...ALL_DELTA_KEYS].sort());
   });
 
@@ -2146,7 +2158,7 @@ describe('delta-key contract pins (anti-drift)', () => {
     for (let m = re.exec(src); m !== null; m = re.exec(src)) scraped.add(m[1]);
     expect(scraped.has('lockouts')).toBe(true); // the multi-line call IS captured
     expect(scraped.has('lrollg')).toBe(true); // group-visible loot roll strip (PHAA-568)
-    expect(scraped.size).toBe(37);
+    expect(scraped.size).toBe(40);
     expect([...scraped].sort()).toEqual([...ALL_DELTA_KEYS].sort());
   });
 

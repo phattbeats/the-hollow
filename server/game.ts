@@ -3584,6 +3584,11 @@ export class GameServer {
       // can evaluate `requires` gates. Small; maybe() only re-sends on change.
       maybe('dstate', serializeDialogState(meta.dialogState));
       maybe('milestones', [...meta.unlockedMilestones]);
+      // Book of Asphodelia (PHAA-744): deed progress + completed deed ids + earned
+      // titles. No content ships yet, so these ride empty/no-op until a later child.
+      maybe('deedlog', [...meta.deedLog.values()]);
+      maybe('deeddone', [...meta.deedsDone]);
+      maybe('titles', [...meta.earnedTitles]);
       // talents/spec/loadouts/secondaryCls: the client recomputes its known
       // abilities from this (secondaryCls merges a second class's kit in).
       maybe('tal', {

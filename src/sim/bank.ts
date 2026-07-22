@@ -180,6 +180,7 @@ export function bankDeposit(
   }
   if (result.refusal) return; // 'invalid': malformed input (cheat/desync), no player line
   ctx.onInventoryChangedForQuests(meta);
+  ctx.onInventoryChangedForDeeds(meta);
 }
 
 /** Withdraw a bank slot back into the carried inventory: the mirror of deposit.
@@ -211,6 +212,7 @@ export function bankWithdraw(
   );
   if (result.refusal) return; // 'invalid': malformed input (cheat/desync), no player line
   ctx.onInventoryChangedForQuests(meta);
+  ctx.onInventoryChangedForDeeds(meta);
 }
 
 /** Buy the next 6-slot bank expansion for exact copper, non-refundable. Blocked at
