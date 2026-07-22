@@ -188,4 +188,46 @@ describe('updateDungeonFinder: the end-of-tick matcher', () => {
 
     expect(sim.partyOf(tank)?.members.length).toBe(5);
   });
+
+  it('is FIFO within each role bucket: the earliest joiner is matched, later ones stay queued', () => {
+    const sim = makeSim();
+    const tankEarly = sim.addPlayer('warrior', 'TankEarly');
+    const tankLate = sim.addPlayer('paladin', 'TankLate');
+    const healer = sim.addPlayer('priest', 'Healer');
+    const dps1 = sim.addPlayer('mage', 'Dps1');
+    const dps2 = sim.addPlayer('rogue', 'Dps2');
+    const dps3 = sim.addPlayer('hunter', 'Dps3');
+    const dpsLate = sim.addPlayer('warlock', 'DpsLate');
+
+    // Queue the eventual match's members first, then a second tank and a
+    // second dps that must NOT be pulled ahead of an earlier same-role entry.
+    dungeonFinderQueueJoin(sim.ctx, 'tank', undefined, tankEarly);
+    dungeonFinderQueueJoin(sim.ctx, 'healer', undefined, healer);
+    dungeonFinderQueueJoin(sim.ctx, 'dps', undefined, dps1);
+    dungeonFinderQueueJoin(sim.ctx, 'dps', undefined, dps2);
+    dungeonFinderQueueJoin(sim.ctx, 'dps', undefined, dps3);
+    dungeonFinderQueueJoin(sim.ctx, 'tank', undefined, tankLate);
+    dungeonFinderQueueJoin(sim.ctx, 'dps', undefined, dpsLate);
+
+    updateDungeonFinder(sim.ctx);
+
+    const party = sim.partyOf(tankEarly);
+    expect(party).not.toBeNull();
+    expect(party?.members.slice().sort((a, b) => a - b)).toEqual(
+      [tankEarly, healer, dps1, dps2, dps3].slice().sort((a, b) => a - b),
+    );
+    // The later tank and dps were not pulled into the match and remain queued.
+    expect(dungeonFinderInfoFor(sim.ctx, tankLate)).toEqual({
+      queued: true,
+      role: 'tank',
+      dungeonId: 'hollow_crypt',
+      position: 1,
+    });
+    expect(dungeonFinderInfoFor(sim.ctx, dpsLate)).toEqual({
+      queued: true,
+      role: 'dps',
+      dungeonId: 'hollow_crypt',
+      position: 1,
+    });
+  });
 });

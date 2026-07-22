@@ -24,6 +24,7 @@ import {
   t,
 } from './i18n';
 import { ARENA_NEW, BASE_NEW, ITEM_NEW, PET_NEW, QUEST_NEW, RAID_NEW } from './sim_i18n.newlocales';
+import { roleLabel } from './talent_i18n';
 
 const baseEnTable = {
   'error.lineOfSight': 'Line of sight.',
@@ -5032,7 +5033,14 @@ const RULES: Rule[] = [
   },
   {
     re: /^You join the Dungeon Finder queue as (.+)\. Stand by for a group\.\.\.$/,
-    build: (m) => t('sim.dungeonFinder.joined', { role: m[1] }),
+    build: (m) => {
+      const roleWord = m[1];
+      const label =
+        roleWord === 'tank' || roleWord === 'healer' || roleWord === 'dps'
+          ? roleLabel(roleWord)
+          : roleWord;
+      return t('sim.dungeonFinder.joined', { role: label });
+    },
   },
   {
     re: /^You leave the Dungeon Finder queue\.$/,
