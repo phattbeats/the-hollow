@@ -30,11 +30,11 @@ import type {
 export type { FishingEntry } from './content/items';
 export { FISHING_RARE_ID, FISHING_TABLES };
 
-import { DEEDS as DEEDS_CONTENT, TITLES as TITLES_CONTENT } from './content/deeds';
 import type { AchievementDef } from './achievements_core';
 import { ACHIEVEMENTS as ACHIEVEMENTS_CONTENT } from './content/achievements';
 import type { CollectibleDef } from './content/collectibles';
 import { COLLECTIBLES as COLLECTIBLES_CONTENT } from './content/collectibles';
+import { DEEDS as DEEDS_CONTENT, TITLES as TITLES_CONTENT } from './content/deeds';
 import {
   BROTHER_HALVEN,
   COLLAPSED_RELIQUARY_DELVE,
