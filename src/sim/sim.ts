@@ -236,6 +236,11 @@ export type { MailSave } from './mail/post_office';
 // stays valid now that the type lives in market.ts.
 export type { MarketSave } from './market';
 
+import {
+  onInventoryChangedForDeeds,
+  onMobKilledForDeeds,
+  setActiveTitle as setActiveTitleImpl,
+} from './deeds';
 import type { DialogRuntimeState } from './dialog/dialog_commands';
 import * as dialogCommands from './dialog/dialog_commands';
 import {
@@ -310,6 +315,8 @@ import {
   type CrowdControlDrCategory,
   type CrowdControlDrState,
   DELVE_COMPANION_HEAL_INTERVAL,
+  type DeedProgress,
+  type DeedState,
   type DelveDef,
   type DelveModuleDef,
   type DelveRun,
@@ -765,6 +772,11 @@ export interface PlayerMeta {
   known: ResolvedAbility[];
   questLog: Map<string, QuestProgress>;
   questsDone: Set<string>;
+  // Book of Asphodelia (PHAA-744): deeds auto-track from creation, no accept step.
+  deedLog: Map<string, DeedProgress>;
+  deedsDone: Set<string>;
+  earnedTitles: Set<string>;
+  activeTitle: string | null;
   // Branching-dialogue state (PHAA-553): disposition toward each NPC + persistent
   // conversation flags. Nudged by dialogChoose, gates dialogue branches, persisted
   // in CharacterState (see dialog/dialog_commands.ts).
@@ -921,6 +933,12 @@ export interface CharacterState {
   bank?: { inventory: InvSlot[]; purchasedSlots: number; bonusSlots: number };
   questLog: { questId: string; counts: number[]; state: 'active' | 'ready' | 'done' }[];
   questsDone: string[];
+  // Book of Asphodelia (PHAA-744; JSONB, no schema migration). Optional so
+  // characters saved before deeds existed load cleanly (empty default).
+  deedLog?: { deedId: string; counts: number[]; state: DeedState }[];
+  deedsDone?: string[];
+  earnedTitles?: string[];
+  activeTitle?: string | null;
   // Branching-dialogue state (PHAA-553; JSONB, no schema migration). Optional so
   // characters saved before dialogue trees existed load cleanly (empty default).
   dialogState?: DialogStateSave;
@@ -1585,6 +1603,10 @@ export class Sim {
       known: [],
       questLog: new Map(),
       questsDone: new Set(),
+      deedLog: new Map(),
+      deedsDone: new Set(),
+      earnedTitles: new Set(),
+      activeTitle: null,
       dialogState: dialogCommands.freshDialogState(),
       counters: freshCounters(),
       autoEquip: opts?.autoEquip ?? false,
@@ -1662,6 +1684,17 @@ export class Sim {
           });
       }
       for (const q of s.questsDone) meta.questsDone.add(q);
+      // Book of Asphodelia (PHAA-744): absent in pre-deed saves, loads to an empty
+      // default. Mirrors questLog: only active progress is kept here, completed
+      // deed ids live in deedsDone.
+      for (const d of s.deedLog ?? []) {
+        if (d.state !== 'done')
+          meta.deedLog.set(d.deedId, { deedId: d.deedId, counts: [...d.counts], state: d.state });
+      }
+      for (const d of s.deedsDone ?? []) meta.deedsDone.add(d);
+      for (const t of s.earnedTitles ?? []) meta.earnedTitles.add(t);
+      meta.activeTitle =
+        s.activeTitle && meta.earnedTitles.has(s.activeTitle) ? s.activeTitle : null;
       // PHAA-553: absent in pre-dialogue saves, loads to an empty default.
       meta.dialogState = dialogCommands.loadDialogState(s.dialogState);
       if (s.talents)
@@ -1900,6 +1933,14 @@ export class Sim {
         state: q.state,
       })),
       questsDone: [...meta.questsDone],
+      deedLog: [...meta.deedLog.values()].map((d) => ({
+        deedId: d.deedId,
+        counts: [...d.counts],
+        state: d.state,
+      })),
+      deedsDone: [...meta.deedsDone],
+      earnedTitles: [...meta.earnedTitles],
+      activeTitle: meta.activeTitle,
       dialogState: dialogCommands.serializeDialogState(meta.dialogState),
       arenaRating: meta.arenaRating,
       arenaWins: meta.arenaWins,
@@ -2202,6 +2243,22 @@ export class Sim {
   }
   get questsDone(): Set<string> {
     return this.primary.questsDone;
+  }
+  get deedLog(): Map<string, DeedProgress> {
+    return this.primary.deedLog;
+  }
+  get deedsDone(): Set<string> {
+    return this.primary.deedsDone;
+  }
+  get earnedTitles(): Set<string> {
+    return this.primary.earnedTitles;
+  }
+  get activeTitle(): string | null {
+    return this.primary.activeTitle;
+  }
+  setActiveTitle(titleId: string | null, pid?: number): void {
+    const meta = this.meta(pid ?? this.primaryId);
+    if (meta) setActiveTitleImpl(meta, titleId);
   }
   raidLockouts(): import('../world_api').RaidLockout[] {
     const now = this.lockoutNowMs();
@@ -2570,6 +2627,10 @@ export class Sim {
       onInventoryChangedForQuests: (meta) => onInventoryChangedForQuests(sim.ctx, meta),
       onGreenpawFedForQuests: (meta) => onFeedForQuests(sim.ctx, meta),
       checkQuestReady: (qp, meta) => checkQuestReady(sim.ctx, qp, meta),
+      // PHAA-744: deed credit hooks (Book of Asphodelia), same event sites as the
+      // quest-credit trio above.
+      onMobKilledForDeeds: (mob, meta) => onMobKilledForDeeds(sim.ctx, mob, meta),
+      onInventoryChangedForDeeds: (meta) => onInventoryChangedForDeeds(sim.ctx, meta),
       countItem: sim.countItem.bind(sim),
       // I1 dungeon instancing now lives in instances/dungeons.ts; these route through
       // the same-named Sim delegates (foreign callers use this.X). lockoutNowMs is the
@@ -4738,6 +4799,7 @@ export class Sim {
       pid: meta.entityId,
     });
     this.ctx.onInventoryChangedForQuests(meta);
+    this.ctx.onInventoryChangedForDeeds(meta);
     if (meta.autoEquip && (def?.kind === 'weapon' || def?.kind === 'armor')) {
       this.maybeAutoEquip(itemId, meta);
     }
@@ -4774,6 +4836,7 @@ export class Sim {
       if (s.count <= 0) meta.inventory.splice(i, 1);
     }
     this.ctx.onInventoryChangedForQuests(meta);
+    this.ctx.onInventoryChangedForDeeds(meta);
   }
 
   discardItem(itemId: string, count = 1, pid?: number): void {

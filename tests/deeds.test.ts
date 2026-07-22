@@ -1,0 +1,129 @@
+// Direct unit tests for the Book of Asphodelia deed-credit engine
+// (src/sim/deeds.ts, PHAA-744). The engine draws no rng and mutates the live
+// PlayerMeta.deedLog/deedsDone/earnedTitles/activeTitle in place. DEEDS ships empty
+// this child (content lands in PHAA-745), so every credit function takes its
+// registry as a default-valued parameter: production call sites read the real
+// (empty) DEEDS table while these tests inject synthetic DeedDefs to exercise the
+// real credit/completion/title-grant math.
+
+import { describe, expect, it } from 'vitest';
+import { onInventoryChangedForDeeds, onMobKilledForDeeds, setActiveTitle } from '../src/sim/deeds';
+import type { PlayerMeta } from '../src/sim/sim';
+import type { SimContext } from '../src/sim/sim_context';
+import type { DeedDef, DeedProgress, Entity, SimEvent } from '../src/sim/types';
+
+type FakeCtx = SimContext & { events: SimEvent[] };
+
+function makeCtx(itemCount: () => number = () => 0): FakeCtx {
+  const events: SimEvent[] = [];
+  return {
+    events,
+    emit: (ev: SimEvent) => {
+      events.push(ev);
+    },
+    countItem: (_itemId: string, _pid?: number) => itemCount(),
+  } as unknown as FakeCtx;
+}
+
+function makeMeta(entityId = 1): PlayerMeta {
+  return {
+    entityId,
+    deedLog: new Map<string, DeedProgress>(),
+    deedsDone: new Set<string>(),
+    earnedTitles: new Set<string>(),
+    activeTitle: null,
+  } as unknown as PlayerMeta;
+}
+
+const event = (events: SimEvent[], type: string): Record<string, unknown>[] =>
+  events.filter((e) => e.type === type) as unknown as Record<string, unknown>[];
+
+const KILL_DEED: DeedDef = {
+  id: 'd_wolves',
+  name: 'Wolf Slayer',
+  text: 'Kill 3 forest wolves.',
+  objectives: [
+    { type: 'kill', targetMobId: 'forest_wolf', count: 3, label: 'Forest wolves slain' },
+  ],
+  titleReward: 't_wolfslayer',
+};
+
+const COLLECT_DEED: DeedDef = {
+  id: 'd_hides',
+  name: 'Hide Collector',
+  text: 'Collect 5 boar hides.',
+  objectives: [{ type: 'collect', itemId: 'boar_hide', count: 5, label: 'Boar hides collected' }],
+};
+
+describe('deeds: onMobKilledForDeeds (kill credit)', () => {
+  it('auto-tracks without an accept step, credits matching kills, and grants the title on completion', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const wolf = { templateId: 'forest_wolf' } as unknown as Entity;
+    const boar = { templateId: 'forest_boar' } as unknown as Entity;
+    const registry = { d_wolves: KILL_DEED };
+
+    // no accept step: crediting starts on the very first matching kill
+    expect(meta.deedLog.has('d_wolves')).toBe(false);
+    onMobKilledForDeeds(ctx, boar, meta, registry);
+    expect(meta.deedLog.has('d_wolves')).toBe(false); // non-matching mob creates nothing
+
+    onMobKilledForDeeds(ctx, wolf, meta, registry);
+    expect(meta.deedLog.get('d_wolves')?.counts).toEqual([1]);
+    onMobKilledForDeeds(ctx, wolf, meta, registry);
+    onMobKilledForDeeds(ctx, wolf, meta, registry);
+
+    expect(event(ctx.events, 'deedProgress').length).toBe(3);
+    expect(event(ctx.events, 'deedProgress').at(-1)?.text).toBe('Forest wolves slain: 3/3');
+    expect(meta.deedsDone.has('d_wolves')).toBe(true);
+    expect(meta.deedLog.get('d_wolves')?.state).toBe('done');
+    expect(event(ctx.events, 'deedDone').some((e) => e.deedId === 'd_wolves')).toBe(true);
+    expect(meta.earnedTitles.has('t_wolfslayer')).toBe(true);
+    expect(event(ctx.events, 'titleEarned').some((e) => e.titleId === 't_wolfslayer')).toBe(true);
+
+    // a completed deed never over-credits or re-grants the title
+    ctx.events.length = 0;
+    onMobKilledForDeeds(ctx, wolf, meta, registry);
+    expect(meta.deedLog.get('d_wolves')?.counts).toEqual([3]);
+    expect(ctx.events.length).toBe(0);
+  });
+});
+
+describe('deeds: onInventoryChangedForDeeds (collect credit)', () => {
+  it('tracks countItem up to the target and completes without a title reward', () => {
+    let held = 0;
+    const ctx = makeCtx(() => held);
+    const meta = makeMeta();
+    const registry = { d_hides: COLLECT_DEED };
+
+    for (let i = 1; i <= 5; i++) {
+      held = i;
+      onInventoryChangedForDeeds(ctx, meta, registry);
+      expect(meta.deedLog.get('d_hides')?.counts).toEqual([i]);
+    }
+    expect(meta.deedsDone.has('d_hides')).toBe(true);
+    expect(meta.earnedTitles.size).toBe(0); // COLLECT_DEED has no titleReward
+
+    // losing items after completion does not reopen a done deed
+    ctx.events.length = 0;
+    held = 0;
+    onInventoryChangedForDeeds(ctx, meta, registry);
+    expect(meta.deedLog.get('d_hides')?.counts).toEqual([5]);
+    expect(ctx.events.length).toBe(0);
+  });
+});
+
+describe('deeds: setActiveTitle', () => {
+  it('only accepts an earned title, and null always clears it', () => {
+    const meta = makeMeta();
+    setActiveTitle(meta, 't_wolfslayer');
+    expect(meta.activeTitle).toBeNull(); // not earned yet: silent no-op
+
+    meta.earnedTitles.add('t_wolfslayer');
+    setActiveTitle(meta, 't_wolfslayer');
+    expect(meta.activeTitle).toBe('t_wolfslayer');
+
+    setActiveTitle(meta, null);
+    expect(meta.activeTitle).toBeNull();
+  });
+});

@@ -188,6 +188,7 @@ export function equipBag(ctx: SimContext, itemId: string, socket?: number, pid?:
   if (old) addStacked(meta.inventory, old, 1);
   meta.bags[target] = itemId;
   ctx.onInventoryChangedForQuests(meta);
+  ctx.onInventoryChangedForDeeds(meta);
   ctx.emit({ type: 'log', text: `Equipped ${def.name}.`, color: '#8f8', pid: meta.entityId });
 }
 
@@ -210,6 +211,7 @@ export function unequipBag(ctx: SimContext, socket: number, pid?: number): void 
   meta.bags[socket] = null;
   addStacked(meta.inventory, itemId, 1);
   ctx.onInventoryChangedForQuests(meta);
+  ctx.onInventoryChangedForDeeds(meta);
   const def = ITEMS[itemId];
   ctx.emit({
     type: 'log',

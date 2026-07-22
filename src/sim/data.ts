@@ -8,6 +8,7 @@ import { BOARBALL_MOBS } from './content/boarball';
 import { BASE_ITEMS, FISHING_RARE_ID, FISHING_TABLES } from './content/items';
 import type {
   CampDef,
+  DeedDef,
   DelveDef,
   DelveModuleDef,
   DungeonDef,
@@ -20,6 +21,7 @@ import type {
   QuestDef,
   QuestState,
   ReadableDef,
+  TitleDef,
   WorldContent,
   ZoneDef,
   ZonePropsDef,
@@ -32,6 +34,7 @@ import type { AchievementDef } from './achievements_core';
 import { ACHIEVEMENTS as ACHIEVEMENTS_CONTENT } from './content/achievements';
 import type { CollectibleDef } from './content/collectibles';
 import { COLLECTIBLES as COLLECTIBLES_CONTENT } from './content/collectibles';
+import { DEEDS as DEEDS_CONTENT, TITLES as TITLES_CONTENT } from './content/deeds';
 import {
   BROTHER_HALVEN,
   COLLAPSED_RELIQUARY_DELVE,
@@ -224,6 +227,15 @@ export const QUESTS: Record<string, QuestDef> = {
   ...TEMPLE_QUESTS,
   ...HOLLOW_QUESTS,
   ...HOLLOW_ZONE_QUESTS,
+};
+
+// Book of Asphodelia (PHAA-744): empty until PHAA-745 lands authored content.
+export const DEEDS: Record<string, DeedDef> = {
+  ...DEEDS_CONTENT,
+};
+
+export const TITLES: Record<string, TitleDef> = {
+  ...TITLES_CONTENT,
 };
 
 export const QUEST_ORDER: string[] = [
