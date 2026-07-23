@@ -29,6 +29,16 @@ describe('deeds content: referential integrity', () => {
     }
   });
 
+  it('never uses an empty-string targetMobId (that silently wildcards, unlike an omitted id)', () => {
+    for (const def of Object.values(DEEDS)) {
+      for (const obj of def.objectives) {
+        if (obj.type === 'kill') {
+          expect(obj.targetMobId, `${def.id}: targetMobId must be omitted, not ''`).not.toBe('');
+        }
+      }
+    }
+  });
+
   it('every collect objective itemId resolves to a real item', () => {
     for (const def of Object.values(DEEDS)) {
       for (const obj of def.objectives) {
