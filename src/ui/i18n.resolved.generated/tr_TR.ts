@@ -4051,7 +4051,8 @@ export const tr_TR: EnTranslations = {
       "needAria": "{item} için ihtiyaç",
       "greedAria": "{item} için açgözlülük",
       "passAria": "{item} için pas geç",
-      "everyonePassed": "Herkes {item} için pas geçti."
+      "everyonePassed": "Herkes {item} için pas geçti.",
+      "winnerOffline": "The winner of {item} was offline; it was returned to the corpse."
     }
   },
   "entities": {

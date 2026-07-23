@@ -4051,7 +4051,8 @@ export const vi_VN: EnTranslations = {
       "needAria": "Cần Dùng {item}",
       "greedAria": "Tham Lam giành {item}",
       "passAria": "Bỏ qua {item}",
-      "everyonePassed": "Mọi người đều bỏ qua {item}."
+      "everyonePassed": "Mọi người đều bỏ qua {item}.",
+      "winnerOffline": "The winner of {item} was offline; it was returned to the corpse."
     }
   },
   "entities": {

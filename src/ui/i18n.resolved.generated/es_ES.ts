@@ -4051,7 +4051,8 @@ export const es_ES: EnTranslations = {
       "needAria": "Necesidad por {item}",
       "greedAria": "Codicia por {item}",
       "passAria": "Pasar por {item}",
-      "everyonePassed": "Todos pasaron por {item}."
+      "everyonePassed": "Todos pasaron por {item}.",
+      "winnerOffline": "El ganador de {item} estaba desconectado; se devolvió al cadáver."
     }
   },
   "entities": {

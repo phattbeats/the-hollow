@@ -4051,7 +4051,8 @@ export const da_DK: EnTranslations = {
       "needAria": "Behov for {item}",
       "greedAria": "Grådighed efter {item}",
       "passAria": "Stå over {item}",
-      "everyonePassed": "Alle stod over {item}."
+      "everyonePassed": "Alle stod over {item}.",
+      "winnerOffline": "The winner of {item} was offline; it was returned to the corpse."
     }
   },
   "entities": {

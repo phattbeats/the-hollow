@@ -4051,7 +4051,8 @@ export const ko_KR: EnTranslations = {
       "needAria": "{item} 필요",
       "greedAria": "{item} 탐욕",
       "passAria": "{item} 포기",
-      "everyonePassed": "모두 {item}을(를) 포기했습니다."
+      "everyonePassed": "모두 {item}을(를) 포기했습니다.",
+      "winnerOffline": "{item}의 당첨자가 오프라인 상태여서 시체로 반환되었습니다."
     }
   },
   "entities": {

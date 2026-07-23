@@ -4051,7 +4051,8 @@ export const zh_CN: EnTranslations = {
       "needAria": "需求 {item}",
       "greedAria": "贪婪 {item}",
       "passAria": "放弃 {item}",
-      "everyonePassed": "所有人都放弃了 {item}。"
+      "everyonePassed": "所有人都放弃了 {item}。",
+      "winnerOffline": "{item}的获胜者已离线；战利品已归还尸体。"
     }
   },
   "entities": {
