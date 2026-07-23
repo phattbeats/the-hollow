@@ -29,8 +29,8 @@
       "tick": 25,
       "time": 1.25,
       "nextId": 409,
-      "state": "efb1dc61",
-      "events": "92f6878f",
+      "state": "615f440f",
+      "events": "000dd833",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -40,7 +40,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 409,
-      "state": "653fe33d",
+      "state": "c640dc7b",
       "events": "723b7bd0",
       "rng": {
         "draws": 36,
@@ -51,7 +51,7 @@
       "tick": 75,
       "time": 3.75,
       "nextId": 409,
-      "state": "52bf87ad",
+      "state": "56c89dab",
       "events": "ad51fec8",
       "rng": {
         "draws": 136,
@@ -62,7 +62,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 409,
-      "state": "9d635d41",
+      "state": "722709ef",
       "events": "7b4d7618",
       "rng": {
         "draws": 266,
@@ -73,7 +73,7 @@
       "tick": 125,
       "time": 6.25,
       "nextId": 409,
-      "state": "8208444c",
+      "state": "84986eb2",
       "events": "c1565cc6",
       "rng": {
         "draws": 399,
@@ -84,7 +84,7 @@
       "tick": 142,
       "time": 7.1,
       "nextId": 409,
-      "state": "c918db00",
+      "state": "0ea575e6",
       "events": "741638a5",
       "rng": {
         "draws": 507,
@@ -139,6 +139,20 @@
                 ],
                 "deedId": "exp_hollow_reaches",
                 "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
               }
             ]
           ],
@@ -220,6 +234,20 @@
                 ],
                 "deedId": "exp_hollow_reaches",
                 "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
               }
             ]
           ],

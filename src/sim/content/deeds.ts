@@ -27,7 +27,11 @@
 // exploration (zone-entry based, driven by the new onZoneVisitedForDeeds hook
 // off the per-player movement tick in sim.ts, fired once per zone entry; every
 // 'explore' objective targets a specific zoneId with count 1, so a zone credits
-// its objective exactly once and re-entry is an idempotent no-op).
+// its objective exactly once and re-entry is an idempotent no-op), and feat
+// (marquee cross-system accomplishments; like the dungeon category it adds no
+// new engine hook, composing only the objective types whose hooks already ship
+// - kill, delve, quest, level, explore - so a feat credits through the existing
+// per-type paths and simply spans several of them at once).
 
 import type { DeedDef, TitleDef } from '../types';
 
@@ -507,6 +511,121 @@ export const DEEDS: Record<string, DeedDef> = {
     ],
     titleReward: 't_wayfarer',
   },
+
+  // ---- Feat (PHAA-745) ---------------------------------------------------
+  // Marquee cross-system accomplishments. The feat category adds no new engine
+  // hook: every objective below reuses a type whose credit path already ships
+  // (kill, delve, quest, level, explore), so a feat is just a harder, wider
+  // goal that spans several of those paths at once. Escalating prestige, from a
+  // single deep grind to the Grand Asphodelian capstone that touches every
+  // system in the Hollow.
+  feat_relentless: {
+    id: 'feat_relentless',
+    name: 'Relentless',
+    text: 'Let nothing in the Asphodel stand for long: defeat 250 enemies.',
+    category: 'feat',
+    objectives: [{ type: 'kill', count: 250, label: 'Enemies defeated' }],
+    titleReward: 't_relentless',
+  },
+  feat_deepwarden: {
+    id: 'feat_deepwarden',
+    name: 'Warden of the Deep',
+    text: "Make the dark under Brother Halven's ruin your own: clear the Collapsed Reliquary 50 times.",
+    category: 'feat',
+    objectives: [
+      {
+        type: 'delve',
+        delveId: 'collapsed_reliquary',
+        count: 50,
+        label: 'Collapsed Reliquary cleared',
+      },
+    ],
+    titleReward: 't_deepwarden',
+  },
+  feat_lorebound: {
+    id: 'feat_lorebound',
+    name: 'Lorebound',
+    text: 'Gather every thread the Hollow will give you: complete 50 quests.',
+    category: 'feat',
+    objectives: [{ type: 'quest', count: 50, label: 'Quests completed' }],
+    titleReward: 't_lorebound',
+  },
+  feat_pathfinder: {
+    id: 'feat_pathfinder',
+    name: 'Pathfinder',
+    text: 'Come into full growth having walked the whole of the Asphodel: reach the level cap and stand in all four lands.',
+    category: 'feat',
+    objectives: [
+      { type: 'level', atLeast: 20, count: 1, label: 'Reach level 20' },
+      { type: 'explore', zoneId: 'the_hollow_reaches', count: 1, label: 'The Hollow Reaches' },
+      { type: 'explore', zoneId: 'eastbrook_vale', count: 1, label: 'Eastbrook Vale' },
+      { type: 'explore', zoneId: 'mirefen_marsh', count: 1, label: 'Mirefen Marsh' },
+      { type: 'explore', zoneId: 'thornpeak_heights', count: 1, label: 'Thornpeak Heights' },
+    ],
+    titleReward: 't_pathfinder',
+  },
+  feat_child_of_the_asphodel: {
+    id: 'feat_child_of_the_asphodel',
+    name: 'Child of the Asphodel',
+    text: 'Live a life rooted in all things: reach the level cap, clear a delve, fell a lord of the depths, and see the Gravewyrm saga through to its end.',
+    category: 'feat',
+    objectives: [
+      { type: 'level', atLeast: 20, count: 1, label: 'Reach level 20' },
+      { type: 'delve', count: 1, label: 'Any delve cleared' },
+      {
+        type: 'kill',
+        targetMobId: 'korzul_the_gravewyrm',
+        count: 1,
+        label: 'A lord of the depths felled',
+      },
+      { type: 'quest', questId: 'q_gravewyrm', count: 1, label: 'The Gravewyrm saga completed' },
+    ],
+    titleReward: 't_asphodel_child',
+  },
+  feat_grand_asphodelian: {
+    id: 'feat_grand_asphodelian',
+    name: 'The Grand Asphodelian',
+    text: 'Master every reach of the Hollow: grow to the level cap, fell every lord sealed in the depths, clear the Collapsed Reliquary on Heroic, and end the Gravewyrm saga.',
+    category: 'feat',
+    objectives: [
+      { type: 'level', atLeast: 20, count: 1, label: 'Reach level 20' },
+      { type: 'kill', targetMobId: 'morthen', count: 1, label: 'Morthen the Gravecaller' },
+      { type: 'kill', targetMobId: 'vael_the_mistcaller', count: 1, label: 'Vael the Mistcaller' },
+      {
+        type: 'kill',
+        targetMobId: 'ysolei',
+        count: 1,
+        label: 'Ysolei, Avatar of the Drowned Moon',
+      },
+      {
+        type: 'kill',
+        targetMobId: 'heartwood_colossus',
+        count: 1,
+        label: 'the Heartwood Colossus',
+      },
+      {
+        type: 'kill',
+        targetMobId: 'korzul_the_gravewyrm',
+        count: 1,
+        label: 'Korzul the Gravewyrm',
+      },
+      {
+        type: 'kill',
+        targetMobId: 'nythraxis_scourge_of_thornpeak',
+        count: 1,
+        label: 'Nythraxis, Scourge of Thornpeak',
+      },
+      {
+        type: 'delve',
+        delveId: 'collapsed_reliquary',
+        tierId: 'heroic',
+        count: 1,
+        label: 'Collapsed Reliquary cleared on Heroic',
+      },
+      { type: 'quest', questId: 'q_gravewyrm', count: 1, label: 'The Gravewyrm saga completed' },
+    ],
+    titleReward: 't_grand_asphodelian',
+  },
 };
 
 export const TITLES: Record<string, TitleDef> = {
@@ -533,4 +652,10 @@ export const TITLES: Record<string, TitleDef> = {
   t_thornpeak_warden: { id: 't_thornpeak_warden', display: 'Warden of Thornpeak' },
   t_hollows_bane: { id: 't_hollows_bane', display: 'Bane of the Hollow' },
   t_wayfarer: { id: 't_wayfarer', display: 'the Wayfarer' },
+  t_relentless: { id: 't_relentless', display: 'the Relentless' },
+  t_deepwarden: { id: 't_deepwarden', display: 'Warden of the Deep' },
+  t_lorebound: { id: 't_lorebound', display: 'the Lorebound' },
+  t_pathfinder: { id: 't_pathfinder', display: 'the Pathfinder' },
+  t_asphodel_child: { id: 't_asphodel_child', display: 'Child of the Asphodel' },
+  t_grand_asphodelian: { id: 't_grand_asphodelian', display: 'the Grand Asphodelian' },
 };
