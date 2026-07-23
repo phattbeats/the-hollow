@@ -1151,8 +1151,8 @@
       "tick": 103,
       "time": 5.15,
       "nextId": 411,
-      "state": "f8323f29",
-      "events": "3c2d141f",
+      "state": "c28fc7f1",
+      "events": "d7ee4ca1",
       "rng": {
         "draws": 287,
         "digest": "f0c15450"
@@ -1219,6 +1219,49 @@
                   0
                 ],
                 "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_all_comers",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "pvp_all_comers",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_arena_champion",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_arena_champion",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_arena_contender",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_arena_contender",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_bloodletter",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_bloodletter",
                 "state": "active"
               }
             ]
@@ -1312,6 +1355,49 @@
                   0
                 ],
                 "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_all_comers",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "pvp_all_comers",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_arena_champion",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_arena_champion",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_arena_contender",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_arena_contender",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_bloodletter",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_bloodletter",
                 "state": "active"
               }
             ]
@@ -1715,7 +1801,7 @@
       "tick": 125,
       "time": 6.25,
       "nextId": 411,
-      "state": "97ceb58f",
+      "state": "1abba43f",
       "events": "741638a5",
       "rng": {
         "draws": 410,
@@ -1726,7 +1812,7 @@
       "tick": 150,
       "time": 7.5,
       "nextId": 411,
-      "state": "373fb0ad",
+      "state": "0ffd8e95",
       "events": "741638a5",
       "rng": {
         "draws": 551,
@@ -1737,7 +1823,7 @@
       "tick": 175,
       "time": 8.75,
       "nextId": 411,
-      "state": "9cebfa8b",
+      "state": "415982db",
       "events": "741638a5",
       "rng": {
         "draws": 730,
@@ -1748,7 +1834,7 @@
       "tick": 200,
       "time": 10,
       "nextId": 411,
-      "state": "08c76e29",
+      "state": "881186f1",
       "events": "741638a5",
       "rng": {
         "draws": 934,
@@ -1759,7 +1845,7 @@
       "tick": 225,
       "time": 11.25,
       "nextId": 411,
-      "state": "f548cec7",
+      "state": "94abfccf",
       "events": "05465228",
       "rng": {
         "draws": 1041,
@@ -1770,7 +1856,7 @@
       "tick": 243,
       "time": 12.15,
       "nextId": 411,
-      "state": "6b0d2a6b",
+      "state": "4b56e0f3",
       "events": "741638a5",
       "rng": {
         "draws": 1115,
@@ -1838,6 +1924,49 @@
                   0
                 ],
                 "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_all_comers",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "pvp_all_comers",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_arena_champion",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_arena_champion",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_arena_contender",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_arena_contender",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_bloodletter",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_bloodletter",
                 "state": "active"
               }
             ]
@@ -1931,6 +2060,49 @@
                   0
                 ],
                 "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_all_comers",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "pvp_all_comers",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_arena_champion",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_arena_champion",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_arena_contender",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_arena_contender",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_bloodletter",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_bloodletter",
                 "state": "active"
               }
             ]
@@ -2339,7 +2511,7 @@
       "tick": 243,
       "time": 12.15,
       "nextId": 411,
-      "state": "6b0d2a6b",
+      "state": "4b56e0f3",
       "events": "741638a5",
       "rng": {
         "draws": 1115,
@@ -2407,6 +2579,49 @@
                   0
                 ],
                 "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_all_comers",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "pvp_all_comers",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_arena_champion",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_arena_champion",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_arena_contender",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_arena_contender",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_bloodletter",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_bloodletter",
                 "state": "active"
               }
             ]
@@ -2500,6 +2715,49 @@
                   0
                 ],
                 "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_all_comers",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "pvp_all_comers",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_arena_champion",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_arena_champion",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_arena_contender",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_arena_contender",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_bloodletter",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_bloodletter",
                 "state": "active"
               }
             ]

@@ -6,7 +6,7 @@
 
 import { describe, expect, it } from 'vitest';
 import { DEEDS, TITLES } from '../src/sim/content/deeds';
-import { DELVES, ITEMS, MOBS, QUESTS, ZONES } from '../src/sim/data';
+import { DELVES, ITEMS, MOBS, NPCS, QUESTS, ZONES } from '../src/sim/data';
 import { MAX_LEVEL } from '../src/sim/types';
 
 describe('deeds content: referential integrity', () => {
@@ -341,6 +341,81 @@ describe('deeds content: hidden category', () => {
         if (obj.type === 'collect') {
           expect(obj.itemId, `${def.id}: hidden collect objective must name an item`).toBeDefined();
           expect(ITEMS[obj.itemId ?? ''], `${def.id}: unknown item ${obj.itemId}`).toBeDefined();
+        }
+      }
+    }
+  });
+});
+
+describe('deeds content: pvp category', () => {
+  const pvpDeeds = Object.values(DEEDS).filter((d) => d.category === 'pvp');
+
+  it('has at least one authored pvp deed', () => {
+    expect(pvpDeeds.length).toBeGreaterThan(0);
+  });
+
+  it('every pvp deed credits only through pvp objectives (rides the shipped pvp-win hook)', () => {
+    for (const def of pvpDeeds) {
+      for (const obj of def.objectives) {
+        expect(obj.type, `${def.id}: pvp deed uses unsupported objective ${obj.type}`).toBe('pvp');
+      }
+    }
+  });
+
+  it('never uses an empty-string pvpKind (that silently wildcards, unlike an omitted kind)', () => {
+    for (const def of pvpDeeds) {
+      for (const obj of def.objectives) {
+        expect(obj.pvpKind, `${def.id}: pvpKind must be omitted, not ''`).not.toBe('');
+      }
+    }
+  });
+});
+
+describe('deeds content: social category', () => {
+  const socialDeeds = Object.values(DEEDS).filter((d) => d.category === 'social');
+
+  it('has at least one authored social deed', () => {
+    expect(socialDeeds.length).toBeGreaterThan(0);
+  });
+
+  it('every social deed credits only through social objectives (rides the shipped social-action hook)', () => {
+    for (const def of socialDeeds) {
+      for (const obj of def.objectives) {
+        expect(obj.type, `${def.id}: social deed uses unsupported objective ${obj.type}`).toBe(
+          'social',
+        );
+      }
+    }
+  });
+
+  it('never authors a bank-kind deed (the vault has no banker NPC placed yet, see bank.ts)', () => {
+    // Deferred like the dungeon category's deathless-clear deed: the engine hook
+    // exists and is tested, but content would be permanently uncompletable
+    // until a follow-up ticket places banker NPCs in zone content.
+    for (const def of socialDeeds) {
+      for (const obj of def.objectives) {
+        expect(obj.socialKind, `${def.id}: bank-kind deed is unreachable, see bank.ts`).not.toBe(
+          'bank',
+        );
+      }
+    }
+  });
+
+  it('every talk objective npcId (when set) resolves to a real NPC', () => {
+    for (const def of socialDeeds) {
+      for (const obj of def.objectives) {
+        if (obj.socialKind === 'talk' && obj.npcId) {
+          expect(NPCS[obj.npcId], `${def.id}: unknown NPC ${obj.npcId}`).toBeDefined();
+        }
+      }
+    }
+  });
+
+  it('never uses an empty-string npcId (that silently wildcards, unlike an omitted id)', () => {
+    for (const def of socialDeeds) {
+      for (const obj of def.objectives) {
+        if (obj.socialKind === 'talk') {
+          expect(obj.npcId, `${def.id}: npcId must be omitted, not ''`).not.toBe('');
         }
       }
     }

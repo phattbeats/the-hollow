@@ -941,6 +941,9 @@ export function endArenaMatch(
           awardFiestaCompletionHonor(ctx, meta, opponentTeamKey, won === true);
         }
       }
+      if (won === true) {
+        ctx.onPvpWinForDeeds(match.boarball ? 'boarball' : match.fiesta ? 'fiesta' : 'arena', meta);
+      }
       ctx.emit({
         type: 'arenaEnd',
         pid,
