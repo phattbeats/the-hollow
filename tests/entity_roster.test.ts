@@ -189,6 +189,7 @@ function makeCtx() {
     checkQuestReady: vi.fn(),
     onMobKilledForDeeds: vi.fn(),
     onInventoryChangedForDeeds: vi.fn(),
+    onQuestCompletedForDeeds: vi.fn(),
     countItem: vi.fn(() => 0),
     lockoutNowMs: vi.fn(() => 0),
     instanceKeyFor: vi.fn(() => 'solo:0'),

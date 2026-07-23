@@ -48,6 +48,10 @@ function killMatches(obj: DeedObjective, mob: Entity): boolean {
   return obj.type === 'kill' && (!obj.targetMobId || obj.targetMobId === mob.templateId);
 }
 
+function questMatches(obj: DeedObjective, questId: string): boolean {
+  return obj.type === 'quest' && (!obj.questId || obj.questId === questId);
+}
+
 export function onMobKilledForDeeds(
   ctx: SimContext,
   mob: Entity,
@@ -61,6 +65,36 @@ export function onMobKilledForDeeds(
     let changed = false;
     def.objectives.forEach((obj, i) => {
       if (killMatches(obj, mob) && dp.counts[i] < obj.count) {
+        dp.counts[i]++;
+        changed = true;
+        ctx.emit({
+          type: 'deedProgress',
+          deedId: def.id,
+          text: `${obj.label}: ${dp.counts[i]}/${obj.count}`,
+          pid: meta.entityId,
+        });
+      }
+    });
+    if (changed) checkDeedComplete(ctx, def, dp, meta);
+  }
+}
+
+// Chronicle deeds (PHAA-745): hooked from the same completeQuest() core the
+// turn-in and refusal paths share (quests/quest_commands.ts), so it fires once
+// per quest completion regardless of which path granted it.
+export function onQuestCompletedForDeeds(
+  ctx: SimContext,
+  questId: string,
+  meta: PlayerMeta,
+  deedDefs: Record<string, DeedDef> = DEEDS,
+): void {
+  for (const def of Object.values(deedDefs)) {
+    if (meta.deedsDone.has(def.id)) continue;
+    if (!def.objectives.some((obj) => questMatches(obj, questId))) continue;
+    const dp = progressFor(meta, def);
+    let changed = false;
+    def.objectives.forEach((obj, i) => {
+      if (questMatches(obj, questId) && dp.counts[i] < obj.count) {
         dp.counts[i]++;
         changed = true;
         ctx.emit({

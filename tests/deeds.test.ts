@@ -7,7 +7,12 @@
 // real credit/completion/title-grant math.
 
 import { describe, expect, it } from 'vitest';
-import { onInventoryChangedForDeeds, onMobKilledForDeeds, setActiveTitle } from '../src/sim/deeds';
+import {
+  onInventoryChangedForDeeds,
+  onMobKilledForDeeds,
+  onQuestCompletedForDeeds,
+  setActiveTitle,
+} from '../src/sim/deeds';
 import type { PlayerMeta } from '../src/sim/sim';
 import type { SimContext } from '../src/sim/sim_context';
 import type { DeedDef, DeedProgress, Entity, SimEvent } from '../src/sim/types';
@@ -114,6 +119,58 @@ describe('deeds: onMobKilledForDeeds (kill credit)', () => {
     ctx.events.length = 0;
     onMobKilledForDeeds(ctx, wolf, meta, registry);
     expect(ctx.events.length).toBe(0);
+  });
+});
+
+const QUEST_DEED: DeedDef = {
+  id: 'd_hearth',
+  name: 'Hearthbound',
+  text: "Complete 'A Hearth of Your Own'.",
+  category: 'chronicle',
+  objectives: [{ type: 'quest', questId: 'q_your_own_hearth', count: 1, label: 'Hearth quest' }],
+  titleReward: 't_hearthbound',
+};
+
+const WILDCARD_QUEST_DEED: DeedDef = {
+  id: 'd_chronicler',
+  name: 'The Chronicler',
+  text: 'Complete 3 quests.',
+  category: 'chronicle',
+  objectives: [{ type: 'quest', count: 3, label: 'Quests completed' }],
+};
+
+describe('deeds: onQuestCompletedForDeeds (quest credit)', () => {
+  it('auto-tracks without an accept step and credits only the matching questId', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_hearth: QUEST_DEED };
+
+    onQuestCompletedForDeeds(ctx, 'q_wolves', meta, registry);
+    expect(meta.deedLog.has('d_hearth')).toBe(false); // non-matching quest creates nothing
+
+    onQuestCompletedForDeeds(ctx, 'q_your_own_hearth', meta, registry);
+    expect(meta.deedsDone.has('d_hearth')).toBe(true);
+    expect(meta.earnedTitles.has('t_hearthbound')).toBe(true);
+    expect(event(ctx.events, 'deedDone').some((e) => e.deedId === 'd_hearth')).toBe(true);
+
+    // a completed deed never re-triggers
+    ctx.events.length = 0;
+    onQuestCompletedForDeeds(ctx, 'q_your_own_hearth', meta, registry);
+    expect(ctx.events.length).toBe(0);
+  });
+
+  it('credits an objective with no questId on any quest completion (wildcard)', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_chronicler: WILDCARD_QUEST_DEED };
+
+    onQuestCompletedForDeeds(ctx, 'q_wolves', meta, registry);
+    onQuestCompletedForDeeds(ctx, 'q_boars', meta, registry);
+    expect(meta.deedsDone.has('d_chronicler')).toBe(false);
+    expect(meta.deedLog.get('d_chronicler')?.counts).toEqual([2]);
+
+    onQuestCompletedForDeeds(ctx, 'q_spiders', meta, registry);
+    expect(meta.deedsDone.has('d_chronicler')).toBe(true);
   });
 });
 

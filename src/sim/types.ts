@@ -1748,9 +1748,10 @@ export type DeedCategory =
   | 'social';
 
 export interface DeedObjective {
-  type: 'kill' | 'collect';
+  type: 'kill' | 'collect' | 'quest';
   targetMobId?: string; // for 'kill'; omitted means "any mob" (wildcard credit)
   itemId?: string; // for 'collect'
+  questId?: string; // for 'quest'; omitted means "any quest" (wildcard credit)
   count: number;
   label: string;
 }

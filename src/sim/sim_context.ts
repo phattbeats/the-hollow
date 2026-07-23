@@ -331,6 +331,9 @@ export interface SimContextCallbacks {
   // quest-credit trio above (src/sim/deeds.ts).
   onMobKilledForDeeds(mob: Entity, meta: PlayerMeta): void;
   onInventoryChangedForDeeds(meta: PlayerMeta): void;
+  // PHAA-745 chronicle category: hooked from completeQuest() (quest_commands.ts),
+  // the shared core both turnInQuest and refuseQuest route through.
+  onQuestCompletedForDeeds(questId: string, meta: PlayerMeta): void;
 
   // T1 player target selection consumes isHostileTo/isFriendlyTo/pvpController/stopFollow;
   // all already on the seam (C4a added the first two + stopFollow, C1 added pvpController)
@@ -853,6 +856,7 @@ export function createSimContext(host: SimContextHost): SimContext {
     countItem: host.countItem,
     onMobKilledForDeeds: host.onMobKilledForDeeds,
     onInventoryChangedForDeeds: host.onInventoryChangedForDeeds,
+    onQuestCompletedForDeeds: host.onQuestCompletedForDeeds,
     addEntity: host.addEntity,
     dropEntity: host.dropEntity,
     rebucket: host.rebucket,

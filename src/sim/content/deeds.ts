@@ -6,10 +6,14 @@
 //
 // Landed so far: combat (kill-based only - deeds needing new trigger types,
 // e.g. crit-hit or damage-dealt counters, wait on their own engine hook per
-// the ticket's category-by-category sequencing) and collection (collect-based
+// the ticket's category-by-category sequencing), collection (collect-based
 // only, driven by the inventory-holding hook PHAA-744 shipped: credit is the
 // count currently held, so a deed completes once the player holds the full set
-// at once, and stays done thereafter). Collection deeds add no engine hook.
+// at once, and stays done thereafter), and chronicle (quest-completion based,
+// driven by the new onQuestCompletedForDeeds hook off completeQuest() in
+// quests/quest_commands.ts, the shared core both turnInQuest and refuseQuest
+// route through; a 'quest' objective with no questId wildcards on any
+// completion, same convention as the combat wildcard-kill objectives).
 
 import type { DeedDef, TitleDef } from '../types';
 
@@ -121,6 +125,69 @@ export const DEEDS: Record<string, DeedDef> = {
       { type: 'collect', itemId: 'greyjaw_fang', count: 1, label: "Old Greyjaw's Fang" },
     ],
   },
+
+  // Chronicle: milestones along the Hollow's story quest chains. Each questId
+  // below resolves to a real quest in content/hollow.ts, zone1.ts, zone3.ts, or
+  // temple.ts; the deeds_content integrity test checks it.
+  chr_chronicler: {
+    id: 'chr_chronicler',
+    name: 'The Chronicler',
+    text: "Take up as many threads of the Hollow's story as you can: complete 25 quests.",
+    category: 'chronicle',
+    objectives: [{ type: 'quest', count: 25, label: 'Quests completed' }],
+    titleReward: 't_chronicler',
+  },
+  chr_hearth_of_your_own: {
+    id: 'chr_hearth_of_your_own',
+    name: 'A Hearth of Your Own',
+    text: "Walk Brother Greenpaw's hearth from its first spark to Fallow Acres, and claim ground of your own.",
+    category: 'chronicle',
+    objectives: [
+      { type: 'quest', questId: 'q_your_own_hearth', count: 1, label: 'A Hearth of Your Own' },
+    ],
+  },
+  chr_gravecallers_trail: {
+    id: 'chr_gravecallers_trail',
+    name: 'The Sect That Would Not Die',
+    text: "Search the ruined chapel above the Hollow Crypt and learn that Morthen's sect answers to a Mistcaller in the northern fen.",
+    category: 'chronicle',
+    objectives: [
+      {
+        type: 'quest',
+        questId: 'q_gravecallers_trail',
+        count: 1,
+        label: "The Gravecaller's Trail",
+      },
+    ],
+  },
+  chr_silence_the_choir: {
+    id: 'chr_silence_the_choir',
+    name: 'The Choir Falls Silent',
+    text: 'Descend through the temple gate and end Choirmother Selthe, silencing the prayer that never let the mere sleep.',
+    category: 'chronicle',
+    objectives: [
+      { type: 'quest', questId: 'q_silence_the_choir', count: 1, label: 'Silence the Choir' },
+    ],
+    titleReward: 't_choir_silencer',
+  },
+  chr_drowned_moon: {
+    id: 'chr_drowned_moon',
+    name: 'The Drowned Moon Sleeps Again',
+    text: "Face Ysolei, Avatar of the Drowned Moon, at the altar under the tarn, and put the mountain's oldest nightmare back to sleep.",
+    category: 'chronicle',
+    objectives: [{ type: 'quest', questId: 'q_drowned_moon', count: 1, label: 'The Drowned Moon' }],
+    titleReward: 't_moonbound',
+  },
+  chr_gravewyrm_saga: {
+    id: 'chr_gravewyrm_saga',
+    name: 'Every Bell in Eastbrook',
+    text: "Follow the thread from a chapel yard in the Vale to the Wyrm's Hollow itself, and end Korzul the Gravewyrm before the wall, the marsh, and Eastbrook fall in a single night.",
+    category: 'chronicle',
+    objectives: [
+      { type: 'quest', questId: 'q_gravewyrm', count: 1, label: 'Korzul the Gravewyrm' },
+    ],
+    titleReward: 't_gravewyrms_end',
+  },
 };
 
 export const TITLES: Record<string, TitleDef> = {
@@ -130,4 +197,8 @@ export const TITLES: Record<string, TitleDef> = {
   t_fangbinder: { id: 't_fangbinder', display: 'the Fangbinder' },
   t_bonepicker: { id: 't_bonepicker', display: 'the Bonepicker' },
   t_angler: { id: 't_angler', display: 'the Angler' },
+  t_chronicler: { id: 't_chronicler', display: 'the Chronicler' },
+  t_choir_silencer: { id: 't_choir_silencer', display: 'the Choir-Silencer' },
+  t_moonbound: { id: 't_moonbound', display: 'the Moonbound' },
+  t_gravewyrms_end: { id: 't_gravewyrms_end', display: "the Gravewyrm's End" },
 };

@@ -6,7 +6,7 @@
 
 import { describe, expect, it } from 'vitest';
 import { DEEDS, TITLES } from '../src/sim/content/deeds';
-import { ITEMS, MOBS } from '../src/sim/data';
+import { ITEMS, MOBS, QUESTS } from '../src/sim/data';
 
 describe('deeds content: referential integrity', () => {
   it('keys every DEEDS/TITLES record under its own id', () => {
@@ -34,6 +34,26 @@ describe('deeds content: referential integrity', () => {
       for (const obj of def.objectives) {
         if (obj.type === 'kill') {
           expect(obj.targetMobId, `${def.id}: targetMobId must be omitted, not ''`).not.toBe('');
+        }
+      }
+    }
+  });
+
+  it('every quest objective questId (when set) resolves to a real quest', () => {
+    for (const def of Object.values(DEEDS)) {
+      for (const obj of def.objectives) {
+        if (obj.type === 'quest' && obj.questId) {
+          expect(QUESTS[obj.questId], `${def.id}: unknown quest ${obj.questId}`).toBeDefined();
+        }
+      }
+    }
+  });
+
+  it('never uses an empty-string questId (that silently wildcards, unlike an omitted id)', () => {
+    for (const def of Object.values(DEEDS)) {
+      for (const obj of def.objectives) {
+        if (obj.type === 'quest') {
+          expect(obj.questId, `${def.id}: questId must be omitted, not ''`).not.toBe('');
         }
       }
     }

@@ -81,6 +81,8 @@ const CALLBACK_KEYS = [
   // PHAA-744: Book of Asphodelia deed-credit hooks.
   'onMobKilledForDeeds',
   'onInventoryChangedForDeeds',
+  // PHAA-745 chronicle category: quest-completion deed credit.
+  'onQuestCompletedForDeeds',
   // E1 entity-roster surface.
   'addEntity',
   'dropEntity',
@@ -339,6 +341,7 @@ function makeFakeHost() {
     checkQuestReady: vi.fn(),
     onMobKilledForDeeds: vi.fn(),
     onInventoryChangedForDeeds: vi.fn(),
+    onQuestCompletedForDeeds: vi.fn(),
     countItem: vi.fn(() => 0),
     lockoutNowMs: vi.fn(() => 0),
     instanceKeyFor: vi.fn(() => 'solo:0'),
