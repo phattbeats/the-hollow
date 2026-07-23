@@ -239,6 +239,7 @@ export type { MarketSave } from './market';
 import {
   onDelveClearedForDeeds,
   onInventoryChangedForDeeds,
+  onLevelReachedForDeeds,
   onMobKilledForDeeds,
   onQuestCompletedForDeeds,
   setActiveTitle as setActiveTitleImpl,
@@ -2636,6 +2637,7 @@ export class Sim {
       onQuestCompletedForDeeds: (questId, meta) => onQuestCompletedForDeeds(sim.ctx, questId, meta),
       onDelveClearedForDeeds: (delveId, tierId, deathless, meta) =>
         onDelveClearedForDeeds(sim.ctx, delveId, tierId, deathless, meta),
+      onLevelReachedForDeeds: (level, meta) => onLevelReachedForDeeds(sim.ctx, level, meta),
       countItem: sim.countItem.bind(sim),
       // I1 dungeon instancing now lives in instances/dungeons.ts; these route through
       // the same-named Sim delegates (foreign callers use this.X). lockoutNowMs is the

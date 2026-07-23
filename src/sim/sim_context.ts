@@ -342,6 +342,9 @@ export interface SimContextCallbacks {
     deathless: boolean,
     meta: PlayerMeta,
   ): void;
+  // PHAA-745 progression category: hooked from the level-up loop in grantXp
+  // (combat/damage.ts), fired once per level crossed with the reached level.
+  onLevelReachedForDeeds(level: number, meta: PlayerMeta): void;
 
   // T1 player target selection consumes isHostileTo/isFriendlyTo/pvpController/stopFollow;
   // all already on the seam (C4a added the first two + stopFollow, C1 added pvpController)
@@ -866,6 +869,7 @@ export function createSimContext(host: SimContextHost): SimContext {
     onInventoryChangedForDeeds: host.onInventoryChangedForDeeds,
     onQuestCompletedForDeeds: host.onQuestCompletedForDeeds,
     onDelveClearedForDeeds: host.onDelveClearedForDeeds,
+    onLevelReachedForDeeds: host.onLevelReachedForDeeds,
     addEntity: host.addEntity,
     dropEntity: host.dropEntity,
     rebucket: host.rebucket,

@@ -284,6 +284,57 @@ export const DEEDS: Record<string, DeedDef> = {
     objectives: [{ type: 'delve', count: 10, label: 'Delves cleared' }],
     titleReward: 't_delver',
   },
+
+  // Progression: the growth of a life in the Hollow told as stages of a
+  // planted thing, from first sprout to full canopy. Each 'level' objective
+  // credits once when the character reaches its atLeast threshold, driven by
+  // the onLevelReachedForDeeds hook off the level-up loop in combat/damage.ts.
+  // Thresholds run to MAX_LEVEL (20).
+  pgr_first_sprout: {
+    id: 'pgr_first_sprout',
+    name: 'First Sprout',
+    text: 'Break the soil: reach level 5.',
+    category: 'progression',
+    objectives: [{ type: 'level', atLeast: 5, count: 1, label: 'Reach level 5' }],
+  },
+  pgr_green_shoot: {
+    id: 'pgr_green_shoot',
+    name: 'Green Shoot',
+    text: 'Rise toward the light: reach level 8.',
+    category: 'progression',
+    objectives: [{ type: 'level', atLeast: 8, count: 1, label: 'Reach level 8' }],
+  },
+  pgr_taking_root: {
+    id: 'pgr_taking_root',
+    name: 'Taking Root',
+    text: 'Grow deep enough to hold your ground: reach level 10.',
+    category: 'progression',
+    objectives: [{ type: 'level', atLeast: 10, count: 1, label: 'Reach level 10' }],
+    titleReward: 't_rooted',
+  },
+  pgr_reaching_up: {
+    id: 'pgr_reaching_up',
+    name: 'Reaching Up',
+    text: 'Stretch past the undergrowth: reach level 12.',
+    category: 'progression',
+    objectives: [{ type: 'level', atLeast: 12, count: 1, label: 'Reach level 12' }],
+  },
+  pgr_in_full_leaf: {
+    id: 'pgr_in_full_leaf',
+    name: 'In Full Leaf',
+    text: 'Come into your season: reach level 15.',
+    category: 'progression',
+    objectives: [{ type: 'level', atLeast: 15, count: 1, label: 'Reach level 15' }],
+    titleReward: 't_verdant',
+  },
+  pgr_full_canopy: {
+    id: 'pgr_full_canopy',
+    name: 'Full Canopy',
+    text: 'Grow as tall as the Hollow allows: reach the level cap.',
+    category: 'progression',
+    objectives: [{ type: 'level', atLeast: 20, count: 1, label: 'Reach level 20' }],
+    titleReward: 't_everblooming',
+  },
 };
 
 export const TITLES: Record<string, TitleDef> = {
@@ -302,4 +353,7 @@ export const TITLES: Record<string, TitleDef> = {
   t_unbroken: { id: 't_unbroken', display: 'the Unbroken' },
   t_flawless_vigil: { id: 't_flawless_vigil', display: 'the Flawless' },
   t_delver: { id: 't_delver', display: 'the Delver' },
+  t_rooted: { id: 't_rooted', display: 'the Rooted' },
+  t_verdant: { id: 't_verdant', display: 'the Verdant' },
+  t_everblooming: { id: 't_everblooming', display: 'the Everblooming' },
 };

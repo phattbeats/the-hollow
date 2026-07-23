@@ -10,6 +10,7 @@ import { describe, expect, it } from 'vitest';
 import {
   onDelveClearedForDeeds,
   onInventoryChangedForDeeds,
+  onLevelReachedForDeeds,
   onMobKilledForDeeds,
   onQuestCompletedForDeeds,
   setActiveTitle,
@@ -260,6 +261,51 @@ describe('deeds: onDelveClearedForDeeds (delve credit)', () => {
 
     onDelveClearedForDeeds(ctx, 'other_delve', 'normal', false, meta, registry);
     expect(meta.deedsDone.has('d_delver')).toBe(true);
+  });
+});
+
+const LEVEL_DEED: DeedDef = {
+  id: 'd_taking_root',
+  name: 'Taking Root',
+  text: 'Reach level 10.',
+  category: 'progression',
+  objectives: [{ type: 'level', atLeast: 10, count: 1, label: 'Reach level 10' }],
+  titleReward: 't_rooted',
+};
+
+describe('deeds: onLevelReachedForDeeds (progression credit)', () => {
+  it('credits only once the level threshold is reached, then completes and grants the title', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_taking_root: LEVEL_DEED };
+
+    onLevelReachedForDeeds(ctx, 9, meta, registry); // below threshold
+    expect(meta.deedLog.has('d_taking_root')).toBe(false);
+
+    onLevelReachedForDeeds(ctx, 10, meta, registry);
+    expect(meta.deedsDone.has('d_taking_root')).toBe(true);
+    expect(meta.earnedTitles.has('t_rooted')).toBe(true);
+  });
+
+  it('credits a threshold crossed by a multi-level jump (final level at or past atLeast)', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_taking_root: LEVEL_DEED };
+
+    onLevelReachedForDeeds(ctx, 14, meta, registry); // jumped past 10 in one grant
+    expect(meta.deedsDone.has('d_taking_root')).toBe(true);
+  });
+
+  it('never re-triggers a completed progression deed on later level-ups', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_taking_root: LEVEL_DEED };
+
+    onLevelReachedForDeeds(ctx, 10, meta, registry);
+    ctx.events.length = 0;
+    onLevelReachedForDeeds(ctx, 11, meta, registry);
+    onLevelReachedForDeeds(ctx, 20, meta, registry);
+    expect(ctx.events.length).toBe(0);
   });
 });
 

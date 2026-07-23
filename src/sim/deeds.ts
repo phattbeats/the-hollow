@@ -66,6 +66,10 @@ function delveMatches(
   );
 }
 
+function levelMatches(obj: DeedObjective, level: number): boolean {
+  return obj.type === 'level' && level >= (obj.atLeast ?? 1);
+}
+
 export function onMobKilledForDeeds(
   ctx: SimContext,
   mob: Entity,
@@ -141,6 +145,37 @@ export function onDelveClearedForDeeds(
     let changed = false;
     def.objectives.forEach((obj, i) => {
       if (delveMatches(obj, delveId, tierId, deathless) && dp.counts[i] < obj.count) {
+        dp.counts[i]++;
+        changed = true;
+        ctx.emit({
+          type: 'deedProgress',
+          deedId: def.id,
+          text: `${obj.label}: ${dp.counts[i]}/${obj.count}`,
+          pid: meta.entityId,
+        });
+      }
+    });
+    if (changed) checkDeedComplete(ctx, def, dp, meta);
+  }
+}
+
+// Progression deeds (PHAA-745): hooked from the single level-up choke point in
+// grantXp (combat/damage.ts), fired once per level crossed. A 'level' objective
+// credits when the character reaches its atLeast threshold; count is 1 (a
+// threshold is reached once), and the deedsDone guard prevents any re-credit.
+export function onLevelReachedForDeeds(
+  ctx: SimContext,
+  level: number,
+  meta: PlayerMeta,
+  deedDefs: Record<string, DeedDef> = DEEDS,
+): void {
+  for (const def of Object.values(deedDefs)) {
+    if (meta.deedsDone.has(def.id)) continue;
+    if (!def.objectives.some((obj) => levelMatches(obj, level))) continue;
+    const dp = progressFor(meta, def);
+    let changed = false;
+    def.objectives.forEach((obj, i) => {
+      if (levelMatches(obj, level) && dp.counts[i] < obj.count) {
         dp.counts[i]++;
         changed = true;
         ctx.emit({

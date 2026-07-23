@@ -7,6 +7,7 @@
 import { describe, expect, it } from 'vitest';
 import { DEEDS, TITLES } from '../src/sim/content/deeds';
 import { DELVES, ITEMS, MOBS, QUESTS } from '../src/sim/data';
+import { MAX_LEVEL } from '../src/sim/types';
 
 describe('deeds content: referential integrity', () => {
   it('keys every DEEDS/TITLES record under its own id', () => {
@@ -103,6 +104,21 @@ describe('deeds content: referential integrity', () => {
             ITEMS[obj.itemId as string],
             `${def.id}: unknown item ${obj.itemId}`,
           ).toBeDefined();
+        }
+      }
+    }
+  });
+
+  it('every level objective has an atLeast within [1, MAX_LEVEL]', () => {
+    for (const def of Object.values(DEEDS)) {
+      for (const obj of def.objectives) {
+        if (obj.type === 'level') {
+          expect(obj.atLeast, `${def.id}: level objective missing atLeast`).toBeDefined();
+          expect(obj.atLeast as number, `${def.id}: atLeast below 1`).toBeGreaterThanOrEqual(1);
+          expect(
+            obj.atLeast as number,
+            `${def.id}: atLeast ${obj.atLeast} above MAX_LEVEL ${MAX_LEVEL}`,
+          ).toBeLessThanOrEqual(MAX_LEVEL);
         }
       }
     }
