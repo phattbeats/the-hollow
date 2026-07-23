@@ -18,7 +18,12 @@
 // grantDelveClearTo in delves/runs.ts, the shared per-member clear-economy
 // choke point every completion path routes through; a 'delve' objective can
 // filter by delveId, tierId, and/or deathless, each omittable as a wildcard,
-// same convention as the other categories' wildcard objectives).
+// same convention as the other categories' wildcard objectives), progression
+// (level-threshold based, driven by the onLevelReachedForDeeds hook off the
+// grantXp level-up loop in combat/damage.ts), and dungeon (final-boss-kill
+// based, riding the same onMobKilledForDeeds hook via targetMobId since a
+// dungeon clear is its boss kill; deathless/encounter-condition dungeon deeds
+// wait on a dungeon encounter-state hook, deferred as their own follow-up).
 
 import type { DeedDef, TitleDef } from '../types';
 
@@ -335,6 +340,118 @@ export const DEEDS: Record<string, DeedDef> = {
     objectives: [{ type: 'level', atLeast: 20, count: 1, label: 'Reach level 20' }],
     titleReward: 't_everblooming',
   },
+
+  // Dungeon: the lords sealed in the Hollow's instanced depths, each felled by
+  // ending the dungeon's final boss. These credit through the same kill hook
+  // PHAA-744 shipped (onMobKilledForDeeds, targetMobId the boss template), so no
+  // new engine hook is needed: a dungeon clear IS the boss kill. The crypt lord
+  // Morthen already anchors a combat deed (cmb_gravecaller_fallen), so this
+  // category covers the other five dungeon finals plus a grand-slam capstone.
+  // Deathless/encounter-condition dungeon deeds (clear-without-a-death, or a
+  // kill under a boss-specific state) wait on a dungeon encounter-state hook,
+  // the same deferral the combat category uses for its crit/damage-counter
+  // deeds; that hook is a separate follow-up, not authored here.
+  dgn_bastion_stilled: {
+    id: 'dgn_bastion_stilled',
+    name: 'The Bastion Stilled',
+    text: 'Silence the mist that floods the Sunken Bastion: defeat Vael the Mistcaller.',
+    category: 'dungeon',
+    objectives: [
+      {
+        type: 'kill',
+        targetMobId: 'vael_the_mistcaller',
+        count: 1,
+        label: 'Vael the Mistcaller defeated',
+      },
+    ],
+  },
+  dgn_drowned_avatar: {
+    id: 'dgn_drowned_avatar',
+    name: 'The Drowned Moon Guttered',
+    text: 'Put out the cold light in the flooded temple: defeat Ysolei, Avatar of the Drowned Moon.',
+    category: 'dungeon',
+    objectives: [{ type: 'kill', targetMobId: 'ysolei', count: 1, label: 'Ysolei defeated' }],
+    titleReward: 't_moonquenched',
+  },
+  dgn_heartwood_felled: {
+    id: 'dgn_heartwood_felled',
+    name: 'The Heartwood Felled',
+    text: 'Bring down the rooted giant at the core of the Hollow: defeat the Heartwood Colossus.',
+    category: 'dungeon',
+    objectives: [
+      {
+        type: 'kill',
+        targetMobId: 'heartwood_colossus',
+        count: 1,
+        label: 'Heartwood Colossus felled',
+      },
+    ],
+  },
+  dgn_gravewyrm_undone: {
+    id: 'dgn_gravewyrm_undone',
+    name: 'The Gravewyrm Undone',
+    text: 'Break the coils that seal the Gravewyrm Sanctum: defeat Korzul the Gravewyrm.',
+    category: 'dungeon',
+    objectives: [
+      {
+        type: 'kill',
+        targetMobId: 'korzul_the_gravewyrm',
+        count: 1,
+        label: 'Korzul the Gravewyrm undone',
+      },
+    ],
+    titleReward: 't_wyrmsunder',
+  },
+  dgn_scourge_ended: {
+    id: 'dgn_scourge_ended',
+    name: "Thornpeak's Reprieve",
+    text: 'End the tyrant of the Abandoned Crypt: defeat Nythraxis, Scourge of Thornpeak.',
+    category: 'dungeon',
+    objectives: [
+      {
+        type: 'kill',
+        targetMobId: 'nythraxis_scourge_of_thornpeak',
+        count: 1,
+        label: 'Nythraxis defeated',
+      },
+    ],
+    titleReward: 't_thornpeak_warden',
+  },
+  dgn_hollow_conqueror: {
+    id: 'dgn_hollow_conqueror',
+    name: 'Lords of the Hollow',
+    text: 'Fell every lord sealed in the depths of the Hollow, from crypt to sanctum to crown.',
+    category: 'dungeon',
+    objectives: [
+      { type: 'kill', targetMobId: 'morthen', count: 1, label: 'Morthen the Gravecaller' },
+      { type: 'kill', targetMobId: 'vael_the_mistcaller', count: 1, label: 'Vael the Mistcaller' },
+      {
+        type: 'kill',
+        targetMobId: 'ysolei',
+        count: 1,
+        label: 'Ysolei, Avatar of the Drowned Moon',
+      },
+      {
+        type: 'kill',
+        targetMobId: 'heartwood_colossus',
+        count: 1,
+        label: 'the Heartwood Colossus',
+      },
+      {
+        type: 'kill',
+        targetMobId: 'korzul_the_gravewyrm',
+        count: 1,
+        label: 'Korzul the Gravewyrm',
+      },
+      {
+        type: 'kill',
+        targetMobId: 'nythraxis_scourge_of_thornpeak',
+        count: 1,
+        label: 'Nythraxis, Scourge of Thornpeak',
+      },
+    ],
+    titleReward: 't_hollows_bane',
+  },
 };
 
 export const TITLES: Record<string, TitleDef> = {
@@ -356,4 +473,8 @@ export const TITLES: Record<string, TitleDef> = {
   t_rooted: { id: 't_rooted', display: 'the Rooted' },
   t_verdant: { id: 't_verdant', display: 'the Verdant' },
   t_everblooming: { id: 't_everblooming', display: 'the Everblooming' },
+  t_moonquenched: { id: 't_moonquenched', display: 'the Moonquenched' },
+  t_wyrmsunder: { id: 't_wyrmsunder', display: 'the Wyrmsunder' },
+  t_thornpeak_warden: { id: 't_thornpeak_warden', display: 'Warden of Thornpeak' },
+  t_hollows_bane: { id: 't_hollows_bane', display: 'Bane of the Hollow' },
 };

@@ -151,3 +151,49 @@ describe('deeds content: referential integrity', () => {
     }
   });
 });
+
+describe('deeds content: dungeon category', () => {
+  const dungeonDeeds = Object.values(DEEDS).filter((d) => d.category === 'dungeon');
+
+  it('every dungeon deed credits only through kill objectives (rides the shipped kill hook)', () => {
+    // The dungeon category adds no new engine hook: a dungeon clear is its final
+    // boss kill, so every dungeon deed must be a 'kill' objective the existing
+    // onMobKilledForDeeds path already credits. If this fails, the objective type
+    // needs its own hook wired before the content can credit.
+    expect(dungeonDeeds.length).toBeGreaterThan(0);
+    for (const def of dungeonDeeds) {
+      for (const obj of def.objectives) {
+        expect(obj.type, `${def.id}: dungeon deed uses unsupported objective ${obj.type}`).toBe(
+          'kill',
+        );
+      }
+    }
+  });
+
+  it('every dungeon deed targets a real final-boss mob (MOBS[id].boss === true)', () => {
+    for (const def of dungeonDeeds) {
+      for (const obj of def.objectives) {
+        expect(obj.targetMobId, `${def.id}: dungeon objective missing a boss target`).toBeDefined();
+        const mob = MOBS[obj.targetMobId as string];
+        expect(mob, `${def.id}: unknown dungeon boss ${obj.targetMobId}`).toBeDefined();
+        expect(mob.boss, `${def.id}: ${obj.targetMobId} is not a final boss (boss !== true)`).toBe(
+          true,
+        );
+      }
+    }
+  });
+
+  it('the grand-slam capstone covers every distinct dungeon final boss', () => {
+    const capstone = DEEDS.dgn_hollow_conqueror;
+    expect(capstone, 'missing dgn_hollow_conqueror capstone').toBeDefined();
+    const capstoneBosses = new Set(capstone.objectives.map((o) => o.targetMobId));
+    // Every boss:true mob the dungeon deeds reference must appear in the capstone,
+    // so completing it truly means "cleared every dungeon".
+    const allDungeonBosses = new Set(
+      dungeonDeeds.flatMap((d) => d.objectives.map((o) => o.targetMobId)),
+    );
+    for (const bossId of allDungeonBosses) {
+      expect(capstoneBosses.has(bossId), `capstone omits dungeon boss ${bossId}`).toBe(true);
+    }
+  });
+});

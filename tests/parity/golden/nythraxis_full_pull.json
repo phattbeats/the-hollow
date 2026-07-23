@@ -7026,8 +7026,8 @@
       "tick": 628,
       "time": 31.4,
       "nextId": 420,
-      "state": "b6f05153",
-      "events": "9ae5e861",
+      "state": "2edd436d",
+      "events": "7d9e17c4",
       "rng": {
         "draws": 3044,
         "digest": "39b28f29"
@@ -7073,16 +7073,43 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "dgn_hollow_conqueror",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "deedId": "dgn_hollow_conqueror",
+                "state": "active"
+              }
+            ],
+            [
+              "dgn_scourge_ended",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "dgn_scourge_ended",
+                "state": "done"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "dgn_scourge_ended"
           ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
           "earnedTitles": [
-            "t_blooded"
+            "t_blooded",
+            "t_thornpeak_warden"
           ],
           "entityId": 407,
           "equipment": {
@@ -7143,16 +7170,43 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "dgn_hollow_conqueror",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "deedId": "dgn_hollow_conqueror",
+                "state": "active"
+              }
+            ],
+            [
+              "dgn_scourge_ended",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "dgn_scourge_ended",
+                "state": "done"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "dgn_scourge_ended"
           ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
           "earnedTitles": [
-            "t_blooded"
+            "t_blooded",
+            "t_thornpeak_warden"
           ],
           "entityId": 408,
           "equipment": {
@@ -7210,16 +7264,43 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "dgn_hollow_conqueror",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "deedId": "dgn_hollow_conqueror",
+                "state": "active"
+              }
+            ],
+            [
+              "dgn_scourge_ended",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "dgn_scourge_ended",
+                "state": "done"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "dgn_scourge_ended"
           ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
           "earnedTitles": [
-            "t_blooded"
+            "t_blooded",
+            "t_thornpeak_warden"
           ],
           "entityId": 409,
           "equipment": {
@@ -7276,16 +7357,43 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "dgn_hollow_conqueror",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "deedId": "dgn_hollow_conqueror",
+                "state": "active"
+              }
+            ],
+            [
+              "dgn_scourge_ended",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "dgn_scourge_ended",
+                "state": "done"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "dgn_scourge_ended"
           ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
           "earnedTitles": [
-            "t_blooded"
+            "t_blooded",
+            "t_thornpeak_warden"
           ],
           "entityId": 410,
           "equipment": {
@@ -7343,16 +7451,43 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "dgn_hollow_conqueror",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "deedId": "dgn_hollow_conqueror",
+                "state": "active"
+              }
+            ],
+            [
+              "dgn_scourge_ended",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "dgn_scourge_ended",
+                "state": "done"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "dgn_scourge_ended"
           ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
           "earnedTitles": [
-            "t_blooded"
+            "t_blooded",
+            "t_thornpeak_warden"
           ],
           "entityId": 411,
           "equipment": {
@@ -8020,7 +8155,7 @@
       "tick": 630,
       "time": 31.5,
       "nextId": 420,
-      "state": "78455a48",
+      "state": "35e8e0e4",
       "events": "741638a5",
       "rng": {
         "draws": 3057,
@@ -8031,7 +8166,7 @@
       "tick": 640,
       "time": 32,
       "nextId": 420,
-      "state": "6b35a529",
+      "state": "aeffd0e3",
       "events": "741638a5",
       "rng": {
         "draws": 3093,
@@ -8042,7 +8177,7 @@
       "tick": 650,
       "time": 32.5,
       "nextId": 420,
-      "state": "430d11b5",
+      "state": "d46ae01f",
       "events": "741638a5",
       "rng": {
         "draws": 3147,
@@ -8053,7 +8188,7 @@
       "tick": 660,
       "time": 33,
       "nextId": 420,
-      "state": "0f23b584",
+      "state": "fae7dae0",
       "events": "741638a5",
       "rng": {
         "draws": 3197,
@@ -8064,7 +8199,7 @@
       "tick": 670,
       "time": 33.5,
       "nextId": 420,
-      "state": "4af76b8e",
+      "state": "3c8130fa",
       "events": "741638a5",
       "rng": {
         "draws": 3278,
@@ -8075,7 +8210,7 @@
       "tick": 680,
       "time": 34,
       "nextId": 420,
-      "state": "b177acb7",
+      "state": "f1d27631",
       "events": "741638a5",
       "rng": {
         "draws": 3331,
@@ -8086,7 +8221,7 @@
       "tick": 688,
       "time": 34.4,
       "nextId": 420,
-      "state": "a0f41ee0",
+      "state": "6d5b2fac",
       "events": "cda604a0",
       "rng": {
         "draws": 3358,
@@ -8133,16 +8268,43 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "dgn_hollow_conqueror",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "deedId": "dgn_hollow_conqueror",
+                "state": "active"
+              }
+            ],
+            [
+              "dgn_scourge_ended",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "dgn_scourge_ended",
+                "state": "done"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "dgn_scourge_ended"
           ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
           "earnedTitles": [
-            "t_blooded"
+            "t_blooded",
+            "t_thornpeak_warden"
           ],
           "entityId": 407,
           "equipment": {
@@ -8203,16 +8365,43 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "dgn_hollow_conqueror",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "deedId": "dgn_hollow_conqueror",
+                "state": "active"
+              }
+            ],
+            [
+              "dgn_scourge_ended",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "dgn_scourge_ended",
+                "state": "done"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "dgn_scourge_ended"
           ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
           "earnedTitles": [
-            "t_blooded"
+            "t_blooded",
+            "t_thornpeak_warden"
           ],
           "entityId": 408,
           "equipment": {
@@ -8270,16 +8459,43 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "dgn_hollow_conqueror",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "deedId": "dgn_hollow_conqueror",
+                "state": "active"
+              }
+            ],
+            [
+              "dgn_scourge_ended",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "dgn_scourge_ended",
+                "state": "done"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "dgn_scourge_ended"
           ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
           "earnedTitles": [
-            "t_blooded"
+            "t_blooded",
+            "t_thornpeak_warden"
           ],
           "entityId": 409,
           "equipment": {
@@ -8336,16 +8552,43 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "dgn_hollow_conqueror",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "deedId": "dgn_hollow_conqueror",
+                "state": "active"
+              }
+            ],
+            [
+              "dgn_scourge_ended",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "dgn_scourge_ended",
+                "state": "done"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "dgn_scourge_ended"
           ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
           "earnedTitles": [
-            "t_blooded"
+            "t_blooded",
+            "t_thornpeak_warden"
           ],
           "entityId": 410,
           "equipment": {
@@ -8403,16 +8646,43 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "dgn_hollow_conqueror",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "deedId": "dgn_hollow_conqueror",
+                "state": "active"
+              }
+            ],
+            [
+              "dgn_scourge_ended",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "dgn_scourge_ended",
+                "state": "done"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "dgn_scourge_ended"
           ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
           "earnedTitles": [
-            "t_blooded"
+            "t_blooded",
+            "t_thornpeak_warden"
           ],
           "entityId": 411,
           "equipment": {
