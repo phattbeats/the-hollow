@@ -109,12 +109,19 @@ describe('deeds content: referential integrity', () => {
     }
   });
 
-  it('every level objective has an atLeast within [1, MAX_LEVEL]', () => {
+  it('every level objective has a creditable atLeast within [2, MAX_LEVEL]', () => {
     for (const def of Object.values(DEEDS)) {
       for (const obj of def.objectives) {
         if (obj.type === 'level') {
           expect(obj.atLeast, `${def.id}: level objective missing atLeast`).toBeDefined();
-          expect(obj.atLeast as number, `${def.id}: atLeast below 1`).toBeGreaterThanOrEqual(1);
+          // The onLevelReachedForDeeds hook only fires inside the grantXp
+          // level-up loop after p.level++, so its lowest possible firing level
+          // is 2 (characters start at level 1 with no level-up event). An
+          // atLeast of 0 or 1 would never credit, so it is an authoring error.
+          expect(
+            obj.atLeast as number,
+            `${def.id}: atLeast ${obj.atLeast} can never credit (lowest firing level is 2)`,
+          ).toBeGreaterThanOrEqual(2);
           expect(
             obj.atLeast as number,
             `${def.id}: atLeast ${obj.atLeast} above MAX_LEVEL ${MAX_LEVEL}`,
