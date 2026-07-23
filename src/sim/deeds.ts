@@ -70,6 +70,10 @@ function levelMatches(obj: DeedObjective, level: number): boolean {
   return obj.type === 'level' && level >= (obj.atLeast ?? 1);
 }
 
+function exploreMatches(obj: DeedObjective, zoneId: string): boolean {
+  return obj.type === 'explore' && (!obj.zoneId || obj.zoneId === zoneId);
+}
+
 export function onMobKilledForDeeds(
   ctx: SimContext,
   mob: Entity,
@@ -176,6 +180,41 @@ export function onLevelReachedForDeeds(
     let changed = false;
     def.objectives.forEach((obj, i) => {
       if (levelMatches(obj, level) && dp.counts[i] < obj.count) {
+        dp.counts[i]++;
+        changed = true;
+        ctx.emit({
+          type: 'deedProgress',
+          deedId: def.id,
+          text: `${obj.label}: ${dp.counts[i]}/${obj.count}`,
+          pid: meta.entityId,
+        });
+      }
+    });
+    if (changed) checkDeedComplete(ctx, def, dp, meta);
+  }
+}
+
+// Exploration deeds (PHAA-745): hooked from the per-player movement tick in
+// sim.ts, which fires this only when the player's resolved zone (zoneAt(pos.z))
+// changes from the zone recorded last tick, so it runs once per zone ENTRY, not
+// every tick. An 'explore' objective credits when its zoneId is entered (or on
+// any zone entry when zoneId is omitted, the same wildcard convention as the
+// other categories); count is capped at the objective target, and since every
+// authored exploration objective targets a specific zone with count 1, a zone
+// credits its objective exactly once and re-entry is an idempotent no-op.
+export function onZoneVisitedForDeeds(
+  ctx: SimContext,
+  zoneId: string,
+  meta: PlayerMeta,
+  deedDefs: Record<string, DeedDef> = DEEDS,
+): void {
+  for (const def of Object.values(deedDefs)) {
+    if (meta.deedsDone.has(def.id)) continue;
+    if (!def.objectives.some((obj) => exploreMatches(obj, zoneId))) continue;
+    const dp = progressFor(meta, def);
+    let changed = false;
+    def.objectives.forEach((obj, i) => {
+      if (exploreMatches(obj, zoneId) && dp.counts[i] < obj.count) {
         dp.counts[i]++;
         changed = true;
         ctx.emit({

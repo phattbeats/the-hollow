@@ -112,8 +112,8 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 422,
-      "state": "49e46c96",
-      "events": "93286df6",
+      "state": "1632f647",
+      "events": "c47832ba",
       "rng": {
         "draws": 3,
         "digest": "34c4acb5"
@@ -123,7 +123,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 422,
-      "state": "610a9f66",
+      "state": "a21f0ff7",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -134,7 +134,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 422,
-      "state": "753b7e84",
+      "state": "b74e36a5",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -145,7 +145,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 422,
-      "state": "df658d3a",
+      "state": "ce24733b",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -156,7 +156,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 422,
-      "state": "8b7febac",
+      "state": "f6004c9d",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -167,7 +167,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 422,
-      "state": "03af1a96",
+      "state": "ee334047",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -178,7 +178,7 @@
       "tick": 69,
       "time": 3.45,
       "nextId": 423,
-      "state": "da9c6304",
+      "state": "27a6d425",
       "events": "80b8299e",
       "rng": {
         "draws": 3,
@@ -225,10 +225,34 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "exp_hollow_reaches"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -242,6 +266,7 @@
             "mainhand": "rusty_dagger"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 11398,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -344,7 +369,7 @@
       "tick": 70,
       "time": 3.5,
       "nextId": 423,
-      "state": "6f470dc0",
+      "state": "d7398861",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -355,7 +380,7 @@
       "tick": 71,
       "time": 3.55,
       "nextId": 423,
-      "state": "a7c09674",
+      "state": "d4a08335",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -402,10 +427,34 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "exp_hollow_reaches"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -419,6 +468,7 @@
             "mainhand": "rusty_dagger"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 11398,
           "nodeHarvestReadyAt": {},
           "talents": {

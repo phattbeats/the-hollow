@@ -112,8 +112,8 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 421,
-      "state": "10a8fcbc",
-      "events": "c89e1170",
+      "state": "7102074a",
+      "events": "f4bb47d0",
       "rng": {
         "draws": 4,
         "digest": "84b9369e"
@@ -123,7 +123,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 421,
-      "state": "0bb8880e",
+      "state": "a5b68bc0",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -134,7 +134,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 421,
-      "state": "86afebdf",
+      "state": "a7a80f67",
       "events": "6f21db22",
       "rng": {
         "draws": 5,
@@ -145,7 +145,7 @@
       "tick": 38,
       "time": 1.9,
       "nextId": 423,
-      "state": "2b633ebf",
+      "state": "3734027e",
       "events": "7c430644",
       "rng": {
         "draws": 8,
@@ -233,12 +233,36 @@
                 "deedId": "dlv_without_a_scratch",
                 "state": "done"
               }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
             ]
           ],
           "deedsDone": [
             "cmb_first_blood",
             "dlv_reliquary_cleared",
-            "dlv_without_a_scratch"
+            "dlv_without_a_scratch",
+            "exp_hollow_reaches"
           ],
           "delveClears": {
             "collapsed_reliquary:normal": 1
@@ -264,6 +288,7 @@
             "mainhand": "rusty_dagger"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 12098,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -465,7 +490,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 423,
-      "state": "9a68cb88",
+      "state": "f273332f",
       "events": "741638a5",
       "rng": {
         "draws": 8,
@@ -476,7 +501,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 423,
-      "state": "9a68cb88",
+      "state": "f273332f",
       "events": "741638a5",
       "rng": {
         "draws": 8,
@@ -564,12 +589,36 @@
                 "deedId": "dlv_without_a_scratch",
                 "state": "done"
               }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
             ]
           ],
           "deedsDone": [
             "cmb_first_blood",
             "dlv_reliquary_cleared",
-            "dlv_without_a_scratch"
+            "dlv_without_a_scratch",
+            "exp_hollow_reaches"
           ],
           "delveClears": {
             "collapsed_reliquary:normal": 1
@@ -595,6 +644,7 @@
             "mainhand": "rusty_dagger"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 12098,
           "nodeHarvestReadyAt": {},
           "talents": {

@@ -207,8 +207,8 @@
       "tick": 2,
       "time": 0.1,
       "nextId": 417,
-      "state": "af6f42bf",
-      "events": "afc5bd96",
+      "state": "2fe22d3b",
+      "events": "9605e808",
       "rng": {
         "draws": 1,
         "digest": "8a416783"
@@ -230,6 +230,34 @@
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -239,6 +267,7 @@
             "mainhand": "rusty_dagger"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 11200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -304,7 +333,7 @@
       "tick": 2,
       "time": 0.1,
       "nextId": 417,
-      "state": "af6f42bf",
+      "state": "2fe22d3b",
       "events": "741638a5",
       "rng": {
         "draws": 1,
@@ -327,6 +356,34 @@
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -336,6 +393,7 @@
             "mainhand": "rusty_dagger"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 11200,
           "nodeHarvestReadyAt": {},
           "talents": {

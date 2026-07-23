@@ -13,6 +13,7 @@ import {
   onLevelReachedForDeeds,
   onMobKilledForDeeds,
   onQuestCompletedForDeeds,
+  onZoneVisitedForDeeds,
   setActiveTitle,
 } from '../src/sim/deeds';
 import type { PlayerMeta } from '../src/sim/sim';
@@ -306,6 +307,84 @@ describe('deeds: onLevelReachedForDeeds (progression credit)', () => {
     onLevelReachedForDeeds(ctx, 11, meta, registry);
     onLevelReachedForDeeds(ctx, 20, meta, registry);
     expect(ctx.events.length).toBe(0);
+  });
+});
+
+const EXPLORE_DEED: DeedDef = {
+  id: 'd_into_the_mire',
+  name: 'Into the Mire',
+  text: 'Enter Mirefen Marsh.',
+  category: 'exploration',
+  objectives: [{ type: 'explore', zoneId: 'mirefen_marsh', count: 1, label: 'Mirefen Marsh' }],
+  titleReward: 't_wayfarer',
+};
+
+const GRAND_TOUR_DEED: DeedDef = {
+  id: 'd_grand_tour',
+  name: 'Seed on the Wind',
+  text: 'Stand in both lands.',
+  category: 'exploration',
+  objectives: [
+    { type: 'explore', zoneId: 'eastbrook_vale', count: 1, label: 'Eastbrook Vale' },
+    { type: 'explore', zoneId: 'mirefen_marsh', count: 1, label: 'Mirefen Marsh' },
+  ],
+};
+
+const WILDCARD_EXPLORE_DEED: DeedDef = {
+  id: 'd_first_steps',
+  name: 'First Steps',
+  text: 'Enter any zone.',
+  category: 'exploration',
+  objectives: [{ type: 'explore', count: 1, label: 'Zones entered' }],
+};
+
+describe('deeds: onZoneVisitedForDeeds (exploration credit)', () => {
+  it('ignores a non-matching zone and credits + completes on the matching one', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_into_the_mire: EXPLORE_DEED };
+
+    onZoneVisitedForDeeds(ctx, 'eastbrook_vale', meta, registry); // wrong zone
+    expect(meta.deedLog.has('d_into_the_mire')).toBe(false);
+
+    onZoneVisitedForDeeds(ctx, 'mirefen_marsh', meta, registry);
+    expect(meta.deedsDone.has('d_into_the_mire')).toBe(true);
+    expect(meta.earnedTitles.has('t_wayfarer')).toBe(true);
+  });
+
+  it('re-entering an already-credited zone is an idempotent no-op (no re-credit event)', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_into_the_mire: EXPLORE_DEED };
+
+    onZoneVisitedForDeeds(ctx, 'mirefen_marsh', meta, registry);
+    ctx.events.length = 0;
+    onZoneVisitedForDeeds(ctx, 'mirefen_marsh', meta, registry);
+    expect(ctx.events.length).toBe(0);
+  });
+
+  it('completes a multi-zone tour only once every distinct zone has been entered', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_grand_tour: GRAND_TOUR_DEED };
+
+    onZoneVisitedForDeeds(ctx, 'eastbrook_vale', meta, registry);
+    expect(meta.deedsDone.has('d_grand_tour')).toBe(false);
+    // Re-entering the first zone must not credit the second objective.
+    onZoneVisitedForDeeds(ctx, 'eastbrook_vale', meta, registry);
+    expect(meta.deedsDone.has('d_grand_tour')).toBe(false);
+
+    onZoneVisitedForDeeds(ctx, 'mirefen_marsh', meta, registry);
+    expect(meta.deedsDone.has('d_grand_tour')).toBe(true);
+  });
+
+  it('a wildcard explore objective credits on the first entry of any zone', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_first_steps: WILDCARD_EXPLORE_DEED };
+
+    onZoneVisitedForDeeds(ctx, 'the_hollow_reaches', meta, registry);
+    expect(meta.deedsDone.has('d_first_steps')).toBe(true);
   });
 });
 
