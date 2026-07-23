@@ -542,7 +542,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 409,
-      "state": "78015e3b",
+      "state": "56bfd59b",
       "events": "b6a5e241",
       "rng": {
         "draws": 0,
@@ -593,6 +593,71 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "deedLog": [
+            [
+              "col_anglers_haul",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "col_anglers_haul",
+                "state": "active"
+              }
+            ],
+            [
+              "col_boarhide_tanner",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_boarhide_tanner",
+                "state": "active"
+              }
+            ],
+            [
+              "col_bonepicker",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_bonepicker",
+                "state": "active"
+              }
+            ],
+            [
+              "col_essence_gatherer",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_essence_gatherer",
+                "state": "active"
+              }
+            ],
+            [
+              "col_fangbinder",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_fangbinder",
+                "state": "active"
+              }
+            ],
+            [
+              "col_greyjaw_trophy",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_greyjaw_trophy",
+                "state": "active"
+              }
+            ]
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -725,7 +790,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 409,
-      "state": "53a19757",
+      "state": "405dd6b7",
       "events": "4b519511",
       "rng": {
         "draws": 0,
@@ -776,6 +841,71 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "deedLog": [
+            [
+              "col_anglers_haul",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "col_anglers_haul",
+                "state": "active"
+              }
+            ],
+            [
+              "col_boarhide_tanner",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_boarhide_tanner",
+                "state": "active"
+              }
+            ],
+            [
+              "col_bonepicker",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_bonepicker",
+                "state": "active"
+              }
+            ],
+            [
+              "col_essence_gatherer",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_essence_gatherer",
+                "state": "active"
+              }
+            ],
+            [
+              "col_fangbinder",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_fangbinder",
+                "state": "active"
+              }
+            ],
+            [
+              "col_greyjaw_trophy",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_greyjaw_trophy",
+                "state": "active"
+              }
+            ]
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -896,7 +1026,7 @@
       "tick": 2,
       "time": 0.1,
       "nextId": 409,
-      "state": "7ecd4167",
+      "state": "621fc407",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -947,6 +1077,71 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "deedLog": [
+            [
+              "col_anglers_haul",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "col_anglers_haul",
+                "state": "active"
+              }
+            ],
+            [
+              "col_boarhide_tanner",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_boarhide_tanner",
+                "state": "active"
+              }
+            ],
+            [
+              "col_bonepicker",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_bonepicker",
+                "state": "active"
+              }
+            ],
+            [
+              "col_essence_gatherer",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_essence_gatherer",
+                "state": "active"
+              }
+            ],
+            [
+              "col_fangbinder",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_fangbinder",
+                "state": "active"
+              }
+            ],
+            [
+              "col_greyjaw_trophy",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_greyjaw_trophy",
+                "state": "active"
+              }
+            ]
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
