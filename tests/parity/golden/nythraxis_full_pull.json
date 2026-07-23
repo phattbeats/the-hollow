@@ -3936,8 +3936,8 @@
       "tick": 386,
       "time": 19.3,
       "nextId": 420,
-      "state": "180c7df5",
-      "events": "73d6b1c9",
+      "state": "475ed17d",
+      "events": "8eb4f79d",
       "rng": {
         "draws": 1888,
         "digest": "b490b9a5"
@@ -3963,9 +3963,37 @@
             "kills": 2,
             "xpGained": 166
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -3999,9 +4027,37 @@
             "damageTaken": 140,
             "xpGained": 166
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -4032,9 +4088,37 @@
             "damageTaken": 140,
             "xpGained": 166
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 409,
           "equipment": {
             "chest": "apprentice_robe",
@@ -4064,9 +4148,37 @@
           "counters": {
             "xpGained": 166
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 410,
           "equipment": {
             "chest": "apprentice_robe",
@@ -4097,9 +4209,37 @@
             "damageTaken": 140,
             "xpGained": 166
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 411,
           "equipment": {
             "chest": "apprentice_robe",
@@ -4730,7 +4870,7 @@
       "tick": 390,
       "time": 19.5,
       "nextId": 420,
-      "state": "5ffd91da",
+      "state": "56da83ac",
       "events": "a97d796e",
       "rng": {
         "draws": 1906,
@@ -4741,7 +4881,7 @@
       "tick": 400,
       "time": 20,
       "nextId": 420,
-      "state": "1a72ad57",
+      "state": "b486f0f7",
       "events": "49ab3307",
       "rng": {
         "draws": 1964,
@@ -4752,7 +4892,7 @@
       "tick": 410,
       "time": 20.5,
       "nextId": 420,
-      "state": "aab11fa1",
+      "state": "3a7deb61",
       "events": "49ab3307",
       "rng": {
         "draws": 2004,
@@ -4763,7 +4903,7 @@
       "tick": 420,
       "time": 21,
       "nextId": 420,
-      "state": "31df278c",
+      "state": "87eaa0ce",
       "events": "49ab3307",
       "rng": {
         "draws": 2062,
@@ -4774,7 +4914,7 @@
       "tick": 430,
       "time": 21.5,
       "nextId": 420,
-      "state": "7c44c810",
+      "state": "c4185eca",
       "events": "49ab3307",
       "rng": {
         "draws": 2115,
@@ -4785,7 +4925,7 @@
       "tick": 440,
       "time": 22,
       "nextId": 420,
-      "state": "e1830405",
+      "state": "a5a0a20d",
       "events": "49ab3307",
       "rng": {
         "draws": 2157,
@@ -4796,7 +4936,7 @@
       "tick": 450,
       "time": 22.5,
       "nextId": 420,
-      "state": "1f24e2cf",
+      "state": "e9798bbf",
       "events": "49ab3307",
       "rng": {
         "draws": 2196,
@@ -4807,7 +4947,7 @@
       "tick": 460,
       "time": 23,
       "nextId": 420,
-      "state": "6687eeca",
+      "state": "b597dddc",
       "events": "49ab3307",
       "rng": {
         "draws": 2237,
@@ -4818,7 +4958,7 @@
       "tick": 470,
       "time": 23.5,
       "nextId": 420,
-      "state": "ba4d70bd",
+      "state": "36526215",
       "events": "49ab3307",
       "rng": {
         "draws": 2289,
@@ -4829,7 +4969,7 @@
       "tick": 480,
       "time": 24,
       "nextId": 420,
-      "state": "137944ec",
+      "state": "3d8662ae",
       "events": "49ab3307",
       "rng": {
         "draws": 2353,
@@ -4840,7 +4980,7 @@
       "tick": 490,
       "time": 24.5,
       "nextId": 420,
-      "state": "ebf46fca",
+      "state": "b80cb0dc",
       "events": "5d270111",
       "rng": {
         "draws": 2394,
@@ -4851,7 +4991,7 @@
       "tick": 500,
       "time": 25,
       "nextId": 420,
-      "state": "58b5651a",
+      "state": "11b3146c",
       "events": "741638a5",
       "rng": {
         "draws": 2439,
@@ -4862,7 +5002,7 @@
       "tick": 506,
       "time": 25.3,
       "nextId": 420,
-      "state": "42b42771",
+      "state": "32d9ef31",
       "events": "741638a5",
       "rng": {
         "draws": 2478,
@@ -4889,9 +5029,37 @@
             "kills": 2,
             "xpGained": 166
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -4925,9 +5093,37 @@
             "damageTaken": 140,
             "xpGained": 166
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -4958,9 +5154,37 @@
             "damageTaken": 140,
             "xpGained": 166
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 409,
           "equipment": {
             "chest": "apprentice_robe",
@@ -4990,9 +5214,37 @@
           "counters": {
             "xpGained": 166
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 410,
           "equipment": {
             "chest": "apprentice_robe",
@@ -5023,9 +5275,37 @@
             "damageTaken": 140,
             "xpGained": 166
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 411,
           "equipment": {
             "chest": "apprentice_robe",
@@ -5667,7 +5947,7 @@
       "tick": 510,
       "time": 25.5,
       "nextId": 420,
-      "state": "58031fcc",
+      "state": "cb53bb8e",
       "events": "741638a5",
       "rng": {
         "draws": 2502,
@@ -5678,7 +5958,7 @@
       "tick": 520,
       "time": 26,
       "nextId": 420,
-      "state": "0d04bca8",
+      "state": "1e801572",
       "events": "741638a5",
       "rng": {
         "draws": 2527,
@@ -5689,7 +5969,7 @@
       "tick": 530,
       "time": 26.5,
       "nextId": 420,
-      "state": "be9a752a",
+      "state": "f563eebc",
       "events": "741638a5",
       "rng": {
         "draws": 2570,
@@ -5700,7 +5980,7 @@
       "tick": 540,
       "time": 27,
       "nextId": 420,
-      "state": "5da4524a",
+      "state": "5124a05c",
       "events": "741638a5",
       "rng": {
         "draws": 2617,
@@ -5711,7 +5991,7 @@
       "tick": 550,
       "time": 27.5,
       "nextId": 420,
-      "state": "8ca384f0",
+      "state": "3f2429aa",
       "events": "741638a5",
       "rng": {
         "draws": 2667,
@@ -5722,7 +6002,7 @@
       "tick": 560,
       "time": 28,
       "nextId": 420,
-      "state": "bd4b4704",
+      "state": "819175b6",
       "events": "741638a5",
       "rng": {
         "draws": 2715,
@@ -5733,7 +6013,7 @@
       "tick": 570,
       "time": 28.5,
       "nextId": 420,
-      "state": "53934616",
+      "state": "145e4c20",
       "events": "741638a5",
       "rng": {
         "draws": 2773,
@@ -5744,7 +6024,7 @@
       "tick": 580,
       "time": 29,
       "nextId": 420,
-      "state": "9403985c",
+      "state": "e0e22e9e",
       "events": "741638a5",
       "rng": {
         "draws": 2824,
@@ -5755,7 +6035,7 @@
       "tick": 590,
       "time": 29.5,
       "nextId": 420,
-      "state": "349632f5",
+      "state": "1bb7807d",
       "events": "ce2aa7e5",
       "rng": {
         "draws": 2879,
@@ -5766,7 +6046,7 @@
       "tick": 600,
       "time": 30,
       "nextId": 420,
-      "state": "fcdaeca9",
+      "state": "7169aa59",
       "events": "3e84306c",
       "rng": {
         "draws": 2930,
@@ -5777,7 +6057,7 @@
       "tick": 610,
       "time": 30.5,
       "nextId": 420,
-      "state": "302a64ad",
+      "state": "d1eb4245",
       "events": "741638a5",
       "rng": {
         "draws": 2961,
@@ -5788,7 +6068,7 @@
       "tick": 620,
       "time": 31,
       "nextId": 420,
-      "state": "4ef71d9f",
+      "state": "ad23090f",
       "events": "741638a5",
       "rng": {
         "draws": 2999,
@@ -5799,7 +6079,7 @@
       "tick": 627,
       "time": 31.35,
       "nextId": 420,
-      "state": "562d3b26",
+      "state": "9dd353f0",
       "events": "c0037f6b",
       "rng": {
         "draws": 3032,
@@ -5826,9 +6106,37 @@
             "kills": 2,
             "xpGained": 166
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -5862,9 +6170,37 @@
             "damageTaken": 140,
             "xpGained": 166
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -5895,9 +6231,37 @@
             "damageTaken": 140,
             "xpGained": 166
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 409,
           "equipment": {
             "chest": "apprentice_robe",
@@ -5927,9 +6291,37 @@
           "counters": {
             "xpGained": 166
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 410,
           "equipment": {
             "chest": "apprentice_robe",
@@ -5960,9 +6352,37 @@
             "damageTaken": 140,
             "xpGained": 166
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 411,
           "equipment": {
             "chest": "apprentice_robe",
@@ -6606,8 +7026,8 @@
       "tick": 628,
       "time": 31.4,
       "nextId": 420,
-      "state": "b8b048b0",
-      "events": "f6fe8816",
+      "state": "b6f05153",
+      "events": "9ae5e861",
       "rng": {
         "draws": 3044,
         "digest": "39b28f29"
@@ -6633,9 +7053,37 @@
             "kills": 3,
             "xpGained": 249
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  3
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -6675,9 +7123,37 @@
             "damageTaken": 140,
             "xpGained": 249
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  3
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -6714,9 +7190,37 @@
             "damageTaken": 140,
             "xpGained": 249
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  3
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 409,
           "equipment": {
             "chest": "apprentice_robe",
@@ -6752,9 +7256,37 @@
           "counters": {
             "xpGained": 249
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  3
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 410,
           "equipment": {
             "chest": "apprentice_robe",
@@ -6791,9 +7323,37 @@
             "damageTaken": 140,
             "xpGained": 249
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  3
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 411,
           "equipment": {
             "chest": "apprentice_robe",
@@ -7460,7 +8020,7 @@
       "tick": 630,
       "time": 31.5,
       "nextId": 420,
-      "state": "d6275df5",
+      "state": "78455a48",
       "events": "741638a5",
       "rng": {
         "draws": 3057,
@@ -7471,7 +8031,7 @@
       "tick": 640,
       "time": 32,
       "nextId": 420,
-      "state": "2643b55e",
+      "state": "6b35a529",
       "events": "741638a5",
       "rng": {
         "draws": 3093,
@@ -7482,7 +8042,7 @@
       "tick": 650,
       "time": 32.5,
       "nextId": 420,
-      "state": "6abe8772",
+      "state": "430d11b5",
       "events": "741638a5",
       "rng": {
         "draws": 3147,
@@ -7493,7 +8053,7 @@
       "tick": 660,
       "time": 33,
       "nextId": 420,
-      "state": "d312a109",
+      "state": "0f23b584",
       "events": "741638a5",
       "rng": {
         "draws": 3197,
@@ -7504,7 +8064,7 @@
       "tick": 670,
       "time": 33.5,
       "nextId": 420,
-      "state": "fe10f6db",
+      "state": "4af76b8e",
       "events": "741638a5",
       "rng": {
         "draws": 3278,
@@ -7515,7 +8075,7 @@
       "tick": 680,
       "time": 34,
       "nextId": 420,
-      "state": "114a302c",
+      "state": "b177acb7",
       "events": "741638a5",
       "rng": {
         "draws": 3331,
@@ -7526,7 +8086,7 @@
       "tick": 688,
       "time": 34.4,
       "nextId": 420,
-      "state": "538e69bd",
+      "state": "a0f41ee0",
       "events": "cda604a0",
       "rng": {
         "draws": 3358,
@@ -7553,9 +8113,37 @@
             "kills": 3,
             "xpGained": 249
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  3
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -7595,9 +8183,37 @@
             "damageTaken": 140,
             "xpGained": 249
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  3
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -7634,9 +8250,37 @@
             "damageTaken": 140,
             "xpGained": 249
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  3
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 409,
           "equipment": {
             "chest": "apprentice_robe",
@@ -7672,9 +8316,37 @@
           "counters": {
             "xpGained": 249
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  3
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 410,
           "equipment": {
             "chest": "apprentice_robe",
@@ -7711,9 +8383,37 @@
             "damageTaken": 140,
             "xpGained": 249
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  3
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 411,
           "equipment": {
             "chest": "apprentice_robe",

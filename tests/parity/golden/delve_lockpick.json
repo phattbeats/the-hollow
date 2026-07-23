@@ -145,8 +145,8 @@
       "tick": 38,
       "time": 1.9,
       "nextId": 423,
-      "state": "8abd7113",
-      "events": "62732f1c",
+      "state": "88a4484e",
+      "events": "33e41b7e",
       "rng": {
         "draws": 8,
         "digest": "868f4186"
@@ -173,6 +173,31 @@
             "kills": 1,
             "xpGained": 898
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {
             "collapsed_reliquary:normal": 1
           },
@@ -187,6 +212,9 @@
           ],
           "delveMarks": 3,
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -394,7 +422,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 423,
-      "state": "cbe5e128",
+      "state": "42d3dd4f",
       "events": "741638a5",
       "rng": {
         "draws": 8,
@@ -405,7 +433,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 423,
-      "state": "cbe5e128",
+      "state": "42d3dd4f",
       "events": "741638a5",
       "rng": {
         "draws": 8,
@@ -433,6 +461,31 @@
             "kills": 1,
             "xpGained": 898
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {
             "collapsed_reliquary:normal": 1
           },
@@ -447,6 +500,9 @@
           ],
           "delveMarks": 3,
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",

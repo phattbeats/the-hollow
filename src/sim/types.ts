@@ -1730,9 +1730,26 @@ export interface QuestProgress {
 // a deed can grant a title, which the player then selects as their display title.
 export type DeedState = 'active' | 'done';
 
+// Content category (PHAA-745), matching upstream's grouping: used for
+// filtering/organizing the deed roster (cross-surface UI, PHAA-748) and
+// leaderboard scoring (PHAA-746). Purely descriptive; the credit engine
+// dispatches on objective type, not category.
+export type DeedCategory =
+  | 'chronicle'
+  | 'collection'
+  | 'combat'
+  | 'delve'
+  | 'dungeon'
+  | 'exploration'
+  | 'feat'
+  | 'hidden'
+  | 'progression'
+  | 'pvp'
+  | 'social';
+
 export interface DeedObjective {
   type: 'kill' | 'collect';
-  targetMobId?: string; // for 'kill'
+  targetMobId?: string; // for 'kill'; omitted means "any mob" (wildcard credit)
   itemId?: string; // for 'collect'
   count: number;
   label: string;
@@ -1748,6 +1765,7 @@ export interface DeedDef {
   id: string;
   name: string;
   text: string;
+  category: DeedCategory;
   objectives: DeedObjective[];
   titleReward?: string; // TitleDef id granted on completion
 }

@@ -1,21 +1,21 @@
-// Book of Asphodelia deed-tracking engine (PHAA-744, engine/wire layer only; the
-// authored deed/title roster lands in PHAA-745). Deeds auto-track from character
-// creation: unlike quests there is no accept step, every deed in the registry
-// gains credit as its objectives are met. Draws NO rng; hooked from the same
-// event sites as quest credit (quests/quest_credit.ts) so it runs on the
-// deterministic 20Hz tick like everything else in src/sim.
+// Book of Asphodelia deed-tracking engine (PHAA-744 engine/wire layer;
+// PHAA-745 authors the deed/title roster, category by category). Deeds
+// auto-track from character creation: unlike quests there is no accept step,
+// every deed in the registry gains credit as its objectives are met. Draws NO
+// rng; hooked from the same event sites as quest credit (quests/quest_credit.ts)
+// so it runs on the deterministic 20Hz tick like everything else in src/sim.
 //
 // src/sim-pure: imports only sibling sim types + data (no render/ui/game/net/DOM/
 // Three, no Math.random/Date.now), so it runs unchanged in Node, the browser, and
 // the headless RL env. The deed registry is passed with a default parameter (not
 // imported directly into the credit loops) so tests can exercise real credit/
-// completion/title-grant math against a synthetic registry while DEEDS itself
-// stays the empty placeholder table until PHAA-745 lands content.
+// completion/title-grant math against a synthetic registry independent of the
+// live DEEDS content table.
 
 import { DEEDS } from './data';
 import type { PlayerMeta } from './sim';
 import type { SimContext } from './sim_context';
-import type { DeedDef, DeedProgress, Entity } from './types';
+import type { DeedDef, DeedObjective, DeedProgress, Entity } from './types';
 
 function progressFor(meta: PlayerMeta, def: DeedDef): DeedProgress {
   let dp = meta.deedLog.get(def.id);
@@ -44,6 +44,10 @@ function checkDeedComplete(
   }
 }
 
+function killMatches(obj: DeedObjective, mob: Entity): boolean {
+  return obj.type === 'kill' && (!obj.targetMobId || obj.targetMobId === mob.templateId);
+}
+
 export function onMobKilledForDeeds(
   ctx: SimContext,
   mob: Entity,
@@ -52,12 +56,11 @@ export function onMobKilledForDeeds(
 ): void {
   for (const def of Object.values(deedDefs)) {
     if (meta.deedsDone.has(def.id)) continue;
-    if (!def.objectives.some((obj) => obj.type === 'kill' && obj.targetMobId === mob.templateId))
-      continue;
+    if (!def.objectives.some((obj) => killMatches(obj, mob))) continue;
     const dp = progressFor(meta, def);
     let changed = false;
     def.objectives.forEach((obj, i) => {
-      if (obj.type === 'kill' && obj.targetMobId === mob.templateId && dp.counts[i] < obj.count) {
+      if (killMatches(obj, mob) && dp.counts[i] < obj.count) {
         dp.counts[i]++;
         changed = true;
         ctx.emit({

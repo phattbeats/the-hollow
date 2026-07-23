@@ -42,6 +42,7 @@ const KILL_DEED: DeedDef = {
   id: 'd_wolves',
   name: 'Wolf Slayer',
   text: 'Kill 3 forest wolves.',
+  category: 'combat',
   objectives: [
     { type: 'kill', targetMobId: 'forest_wolf', count: 3, label: 'Forest wolves slain' },
   ],
@@ -52,7 +53,17 @@ const COLLECT_DEED: DeedDef = {
   id: 'd_hides',
   name: 'Hide Collector',
   text: 'Collect 5 boar hides.',
+  category: 'collection',
   objectives: [{ type: 'collect', itemId: 'boar_hide', count: 5, label: 'Boar hides collected' }],
+};
+
+const WILDCARD_KILL_DEED: DeedDef = {
+  id: 'd_first_blood',
+  name: 'First Blood',
+  text: 'Defeat any enemy.',
+  category: 'combat',
+  objectives: [{ type: 'kill', count: 1, label: 'Enemies defeated' }],
+  titleReward: 't_blooded',
 };
 
 describe('deeds: onMobKilledForDeeds (kill credit)', () => {
@@ -85,6 +96,23 @@ describe('deeds: onMobKilledForDeeds (kill credit)', () => {
     ctx.events.length = 0;
     onMobKilledForDeeds(ctx, wolf, meta, registry);
     expect(meta.deedLog.get('d_wolves')?.counts).toEqual([3]);
+    expect(ctx.events.length).toBe(0);
+  });
+
+  it('credits an objective with no targetMobId on any kill (wildcard)', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const wolf = { templateId: 'forest_wolf' } as unknown as Entity;
+    const boar = { templateId: 'forest_boar' } as unknown as Entity;
+    const registry = { d_first_blood: WILDCARD_KILL_DEED };
+
+    onMobKilledForDeeds(ctx, boar, meta, registry);
+    expect(meta.deedsDone.has('d_first_blood')).toBe(true);
+    expect(meta.earnedTitles.has('t_blooded')).toBe(true);
+
+    // already done: a second kill of a different mob does not re-trigger anything
+    ctx.events.length = 0;
+    onMobKilledForDeeds(ctx, wolf, meta, registry);
     expect(ctx.events.length).toBe(0);
   });
 });
