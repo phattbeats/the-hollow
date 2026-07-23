@@ -8,6 +8,7 @@
 
 import { describe, expect, it } from 'vitest';
 import {
+  onDelveClearedForDeeds,
   onInventoryChangedForDeeds,
   onMobKilledForDeeds,
   onQuestCompletedForDeeds,
@@ -171,6 +172,94 @@ describe('deeds: onQuestCompletedForDeeds (quest credit)', () => {
 
     onQuestCompletedForDeeds(ctx, 'q_spiders', meta, registry);
     expect(meta.deedsDone.has('d_chronicler')).toBe(true);
+  });
+});
+
+const DELVE_DEED: DeedDef = {
+  id: 'd_reliquary',
+  name: 'First Descent',
+  text: 'Clear the Collapsed Reliquary.',
+  category: 'delve',
+  objectives: [
+    {
+      type: 'delve',
+      delveId: 'collapsed_reliquary',
+      count: 1,
+      label: 'Collapsed Reliquary cleared',
+    },
+  ],
+  titleReward: 't_reliquary_cleared',
+};
+
+const HEROIC_DEATHLESS_DEED: DeedDef = {
+  id: 'd_flawless_vigil',
+  name: 'Flawless Vigil',
+  text: 'Clear the Collapsed Reliquary on Heroic without dying.',
+  category: 'delve',
+  objectives: [
+    {
+      type: 'delve',
+      delveId: 'collapsed_reliquary',
+      tierId: 'heroic',
+      deathless: true,
+      count: 1,
+      label: 'Deathless Heroic clear',
+    },
+  ],
+};
+
+const WILDCARD_DELVE_DEED: DeedDef = {
+  id: 'd_delver',
+  name: 'The Delver',
+  text: 'Clear 3 delves.',
+  category: 'delve',
+  objectives: [{ type: 'delve', count: 3, label: 'Delves cleared' }],
+};
+
+describe('deeds: onDelveClearedForDeeds (delve credit)', () => {
+  it('auto-tracks without an accept step and credits only the matching delveId', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_reliquary: DELVE_DEED };
+
+    onDelveClearedForDeeds(ctx, 'other_delve', 'normal', false, meta, registry);
+    expect(meta.deedLog.has('d_reliquary')).toBe(false); // non-matching delve creates nothing
+
+    onDelveClearedForDeeds(ctx, 'collapsed_reliquary', 'normal', false, meta, registry);
+    expect(meta.deedsDone.has('d_reliquary')).toBe(true);
+    expect(meta.earnedTitles.has('t_reliquary_cleared')).toBe(true);
+
+    // a completed deed never re-triggers
+    ctx.events.length = 0;
+    onDelveClearedForDeeds(ctx, 'collapsed_reliquary', 'normal', false, meta, registry);
+    expect(ctx.events.length).toBe(0);
+  });
+
+  it('requires the tierId and deathless flag to both match when the objective sets them', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_flawless_vigil: HEROIC_DEATHLESS_DEED };
+
+    onDelveClearedForDeeds(ctx, 'collapsed_reliquary', 'normal', true, meta, registry); // wrong tier
+    onDelveClearedForDeeds(ctx, 'collapsed_reliquary', 'heroic', false, meta, registry); // died
+    expect(meta.deedsDone.has('d_flawless_vigil')).toBe(false);
+
+    onDelveClearedForDeeds(ctx, 'collapsed_reliquary', 'heroic', true, meta, registry);
+    expect(meta.deedsDone.has('d_flawless_vigil')).toBe(true);
+  });
+
+  it('credits an objective with no delveId on any delve clear (wildcard)', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_delver: WILDCARD_DELVE_DEED };
+
+    onDelveClearedForDeeds(ctx, 'collapsed_reliquary', 'normal', false, meta, registry);
+    onDelveClearedForDeeds(ctx, 'collapsed_reliquary', 'heroic', true, meta, registry);
+    expect(meta.deedsDone.has('d_delver')).toBe(false);
+    expect(meta.deedLog.get('d_delver')?.counts).toEqual([2]);
+
+    onDelveClearedForDeeds(ctx, 'other_delve', 'normal', false, meta, registry);
+    expect(meta.deedsDone.has('d_delver')).toBe(true);
   });
 });
 

@@ -334,6 +334,14 @@ export interface SimContextCallbacks {
   // PHAA-745 chronicle category: hooked from completeQuest() (quest_commands.ts),
   // the shared core both turnInQuest and refuseQuest route through.
   onQuestCompletedForDeeds(questId: string, meta: PlayerMeta): void;
+  // PHAA-745 delve category: hooked from grantDelveClearTo (delves/runs.ts), the
+  // shared per-member clear-economy choke point every completion path routes through.
+  onDelveClearedForDeeds(
+    delveId: string,
+    tierId: string,
+    deathless: boolean,
+    meta: PlayerMeta,
+  ): void;
 
   // T1 player target selection consumes isHostileTo/isFriendlyTo/pvpController/stopFollow;
   // all already on the seam (C4a added the first two + stopFollow, C1 added pvpController)
@@ -857,6 +865,7 @@ export function createSimContext(host: SimContextHost): SimContext {
     onMobKilledForDeeds: host.onMobKilledForDeeds,
     onInventoryChangedForDeeds: host.onInventoryChangedForDeeds,
     onQuestCompletedForDeeds: host.onQuestCompletedForDeeds,
+    onDelveClearedForDeeds: host.onDelveClearedForDeeds,
     addEntity: host.addEntity,
     dropEntity: host.dropEntity,
     rebucket: host.rebucket,

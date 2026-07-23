@@ -9,11 +9,16 @@
 // the ticket's category-by-category sequencing), collection (collect-based
 // only, driven by the inventory-holding hook PHAA-744 shipped: credit is the
 // count currently held, so a deed completes once the player holds the full set
-// at once, and stays done thereafter), and chronicle (quest-completion based,
+// at once, and stays done thereafter), chronicle (quest-completion based,
 // driven by the new onQuestCompletedForDeeds hook off completeQuest() in
 // quests/quest_commands.ts, the shared core both turnInQuest and refuseQuest
 // route through; a 'quest' objective with no questId wildcards on any
-// completion, same convention as the combat wildcard-kill objectives).
+// completion, same convention as the combat wildcard-kill objectives), and
+// delve (clear-based, driven by the onDelveClearedForDeeds hook off
+// grantDelveClearTo in delves/runs.ts, the shared per-member clear-economy
+// choke point every completion path routes through; a 'delve' objective can
+// filter by delveId, tierId, and/or deathless, each omittable as a wildcard,
+// same convention as the other categories' wildcard objectives).
 
 import type { DeedDef, TitleDef } from '../types';
 
@@ -188,6 +193,97 @@ export const DEEDS: Record<string, DeedDef> = {
     ],
     titleReward: 't_gravewyrms_end',
   },
+
+  // Delve: milestones from the Collapsed Reliquary, the crypt beneath Brother
+  // Halven's ruin where Deacon Varric's cult still keeps its dead. delveId/
+  // tierId below resolve to content/delves/collapsed_reliquary.ts; the
+  // deeds_content integrity test checks it.
+  dlv_reliquary_cleared: {
+    id: 'dlv_reliquary_cleared',
+    name: 'First Descent',
+    text: "Answer Brother Halven's call and clear the Collapsed Reliquary for the first time.",
+    category: 'delve',
+    objectives: [
+      {
+        type: 'delve',
+        delveId: 'collapsed_reliquary',
+        count: 1,
+        label: 'Collapsed Reliquary cleared',
+      },
+    ],
+  },
+  dlv_reliquary_warden: {
+    id: 'dlv_reliquary_warden',
+    name: 'Reliquary Warden',
+    text: 'Make the Collapsed Reliquary a habit: clear it 25 times.',
+    category: 'delve',
+    objectives: [
+      {
+        type: 'delve',
+        delveId: 'collapsed_reliquary',
+        count: 25,
+        label: 'Collapsed Reliquary cleared',
+      },
+    ],
+    titleReward: 't_reliquary_warden',
+  },
+  dlv_varrics_bane: {
+    id: 'dlv_varrics_bane',
+    name: "Deacon Varric's Bane",
+    text: 'Face Deacon Varric at Heroic tier and put him down.',
+    category: 'delve',
+    objectives: [
+      {
+        type: 'delve',
+        delveId: 'collapsed_reliquary',
+        tierId: 'heroic',
+        count: 1,
+        label: 'Collapsed Reliquary cleared on Heroic',
+      },
+    ],
+    titleReward: 't_varrics_bane',
+  },
+  dlv_without_a_scratch: {
+    id: 'dlv_without_a_scratch',
+    name: 'Without a Scratch',
+    text: 'Clear the Collapsed Reliquary without a single death.',
+    category: 'delve',
+    objectives: [
+      {
+        type: 'delve',
+        delveId: 'collapsed_reliquary',
+        deathless: true,
+        count: 1,
+        label: 'Deathless clear',
+      },
+    ],
+    titleReward: 't_unbroken',
+  },
+  dlv_flawless_vigil: {
+    id: 'dlv_flawless_vigil',
+    name: 'Flawless Vigil',
+    text: 'Clear the Collapsed Reliquary on Heroic without a single death.',
+    category: 'delve',
+    objectives: [
+      {
+        type: 'delve',
+        delveId: 'collapsed_reliquary',
+        tierId: 'heroic',
+        deathless: true,
+        count: 1,
+        label: 'Deathless Heroic clear',
+      },
+    ],
+    titleReward: 't_flawless_vigil',
+  },
+  dlv_the_delver: {
+    id: 'dlv_the_delver',
+    name: 'The Delver',
+    text: 'Descend again and again: clear 10 delves.',
+    category: 'delve',
+    objectives: [{ type: 'delve', count: 10, label: 'Delves cleared' }],
+    titleReward: 't_delver',
+  },
 };
 
 export const TITLES: Record<string, TitleDef> = {
@@ -201,4 +297,9 @@ export const TITLES: Record<string, TitleDef> = {
   t_choir_silencer: { id: 't_choir_silencer', display: 'the Choir-Silencer' },
   t_moonbound: { id: 't_moonbound', display: 'the Moonbound' },
   t_gravewyrms_end: { id: 't_gravewyrms_end', display: "the Gravewyrm's End" },
+  t_reliquary_warden: { id: 't_reliquary_warden', display: 'the Reliquary Warden' },
+  t_varrics_bane: { id: 't_varrics_bane', display: "Varric's Bane" },
+  t_unbroken: { id: 't_unbroken', display: 'the Unbroken' },
+  t_flawless_vigil: { id: 't_flawless_vigil', display: 'the Flawless' },
+  t_delver: { id: 't_delver', display: 'the Delver' },
 };
