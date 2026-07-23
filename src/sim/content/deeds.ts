@@ -31,7 +31,11 @@
 // (marquee cross-system accomplishments; like the dungeon category it adds no
 // new engine hook, composing only the objective types whose hooks already ship
 // - kill, delve, quest, level, explore - so a feat credits through the existing
-// per-type paths and simply spans several of them at once).
+// per-type paths and simply spans several of them at once), and hidden (secret
+// deeds concealed in the book until earned - the conceal-until-earned
+// presentation is the cross-surface UI child PHAA-748; like feat and dungeon it
+// adds no new engine hook, riding the existing kill and collect paths, tied to
+// the Asphodel's obscure rares and the small hoards only the curious gather).
 
 import type { DeedDef, TitleDef } from '../types';
 
@@ -626,6 +630,95 @@ export const DEEDS: Record<string, DeedDef> = {
     ],
     titleReward: 't_grand_asphodelian',
   },
+
+  // ---- Hidden (PHAA-745) --------------------------------------------------
+  // Secret deeds: the Book of Asphodelia keeps these pages blank until the deed
+  // is earned (the conceal-until-earned presentation is the cross-surface UI
+  // child PHAA-748; the credit engine treats them exactly like any other deed).
+  // Like the feat and dungeon categories this adds no new engine hook: every
+  // objective reuses a type whose credit path already ships (kill, collect), so
+  // a hidden deed is just an unadvertised goal a player stumbles into, most of
+  // them tied to the Asphodel's obscure rares and the small hoards only the
+  // curious bother to gather.
+  hid_tunnelking: {
+    id: 'hid_tunnelking',
+    name: 'Where the Maps End',
+    text: 'Grix the Tunnelking hollows the earth past the last drawn road. Find him. End him.',
+    category: 'hidden',
+    objectives: [
+      {
+        type: 'kill',
+        targetMobId: 'grix_the_tunnelking',
+        count: 1,
+        label: 'Grix the Tunnelking slain',
+      },
+    ],
+    titleReward: 't_tunnelbane',
+  },
+  hid_silk_and_shadow: {
+    id: 'hid_silk_and_shadow',
+    name: 'Silk and Shadow',
+    text: 'Deep in the drowned reeds something older than the Mire spins in the dark. Cut it down.',
+    category: 'hidden',
+    objectives: [
+      {
+        type: 'kill',
+        targetMobId: 'mirefen_broodmother',
+        count: 1,
+        label: 'The Mirefen Broodmother slain',
+      },
+    ],
+    titleReward: 't_silkcutter',
+  },
+  hid_twice_a_deacon: {
+    id: 'hid_twice_a_deacon',
+    name: 'Twice a Deacon',
+    text: "Two men wore the deacon's stole and both traded it for grave-cloth. Lay them both to rest.",
+    category: 'hidden',
+    objectives: [
+      { type: 'kill', targetMobId: 'deacon_voss', count: 1, label: 'Deacon Voss laid to rest' },
+      { type: 'kill', targetMobId: 'deacon_varric', count: 1, label: 'Deacon Varric laid to rest' },
+    ],
+    titleReward: 't_deacons_doom',
+  },
+  hid_gluttons_cache: {
+    id: 'hid_gluttons_cache',
+    name: "The Glutton's Cache",
+    text: 'No one needs this many boar hides. Gather a hundred anyway, and hold them all at once.',
+    category: 'hidden',
+    objectives: [{ type: 'collect', itemId: 'boar_hide', count: 100, label: 'Boar hides hoarded' }],
+    titleReward: 't_hoarder',
+  },
+  hid_full_creel: {
+    id: 'hid_full_creel',
+    name: 'The Full Creel',
+    text: 'Every water in the Asphodel gives a different fish. Carry one of each at the same time.',
+    category: 'hidden',
+    objectives: [
+      { type: 'collect', itemId: 'raw_bog_eel', count: 1, label: 'Raw bog eel' },
+      { type: 'collect', itemId: 'raw_marsh_pike', count: 1, label: 'Raw marsh pike' },
+      { type: 'collect', itemId: 'raw_mirror_trout', count: 1, label: 'Raw mirror trout' },
+      { type: 'collect', itemId: 'raw_river_perch', count: 1, label: 'Raw river perch' },
+    ],
+    titleReward: 't_full_creel',
+  },
+  hid_bones_of_the_bastion: {
+    id: 'hid_bones_of_the_bastion',
+    name: 'Bones of the Bastion',
+    text: 'The old garrison never stood down. Put every last watchman of it back in the ground.',
+    category: 'hidden',
+    objectives: [
+      {
+        type: 'kill',
+        targetMobId: 'fallen_captain_aldren',
+        count: 1,
+        label: 'Fallen Captain Aldren',
+      },
+      { type: 'kill', targetMobId: 'boneclad_revenant', count: 3, label: 'Boneclad revenants' },
+      { type: 'kill', targetMobId: 'bastion_revenant', count: 3, label: 'Bastion revenants' },
+    ],
+    titleReward: 't_gravequiet',
+  },
 };
 
 export const TITLES: Record<string, TitleDef> = {
@@ -658,4 +751,10 @@ export const TITLES: Record<string, TitleDef> = {
   t_pathfinder: { id: 't_pathfinder', display: 'the Pathfinder' },
   t_asphodel_child: { id: 't_asphodel_child', display: 'Child of the Asphodel' },
   t_grand_asphodelian: { id: 't_grand_asphodelian', display: 'the Grand Asphodelian' },
+  t_tunnelbane: { id: 't_tunnelbane', display: 'the Tunnelbane' },
+  t_silkcutter: { id: 't_silkcutter', display: 'the Silkcutter' },
+  t_deacons_doom: { id: 't_deacons_doom', display: "the Deacons' Doom" },
+  t_hoarder: { id: 't_hoarder', display: 'the Hoarder' },
+  t_full_creel: { id: 't_full_creel', display: 'of the Full Creel' },
+  t_gravequiet: { id: 't_gravequiet', display: 'the Gravequiet' },
 };
