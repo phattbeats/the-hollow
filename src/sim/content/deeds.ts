@@ -6,7 +6,10 @@
 //
 // Landed so far: combat (kill-based only - deeds needing new trigger types,
 // e.g. crit-hit or damage-dealt counters, wait on their own engine hook per
-// the ticket's category-by-category sequencing).
+// the ticket's category-by-category sequencing) and collection (collect-based
+// only, driven by the inventory-holding hook PHAA-744 shipped: credit is the
+// count currently held, so a deed completes once the player holds the full set
+// at once, and stays done thereafter). Collection deeds add no engine hook.
 
 import type { DeedDef, TitleDef } from '../types';
 
@@ -60,10 +63,71 @@ export const DEEDS: Record<string, DeedDef> = {
     category: 'combat',
     objectives: [{ type: 'kill', count: 100, label: 'Enemies defeated' }],
   },
+
+  // Collection: gather and hold trophies, hides, and hauls. Credit tracks what
+  // is currently in the pack, so each deed completes the moment the full set is
+  // held at once. Every itemId below resolves to a real drop in content/items.ts.
+  col_fangbinder: {
+    id: 'col_fangbinder',
+    name: 'Fangbinder',
+    text: "String a hunter's tally from the wolves of the Reaches: gather 15 cracked wolf fangs.",
+    category: 'collection',
+    objectives: [{ type: 'collect', itemId: 'wolf_fang', count: 15, label: 'Cracked wolf fangs' }],
+    titleReward: 't_fangbinder',
+  },
+  col_boarhide_tanner: {
+    id: 'col_boarhide_tanner',
+    name: 'Boarhide Tanner',
+    text: 'Salvage bristly hides from the boars rooting through Eastbrook Vale: gather 15.',
+    category: 'collection',
+    objectives: [{ type: 'collect', itemId: 'boar_hide', count: 15, label: 'Bristly boar hides' }],
+  },
+  col_bonepicker: {
+    id: 'col_bonepicker',
+    name: 'Bonepicker',
+    text: 'Pick over the leavings of the dead: gather 20 bone fragments.',
+    category: 'collection',
+    objectives: [{ type: 'collect', itemId: 'bone_fragments', count: 20, label: 'Bone fragments' }],
+    titleReward: 't_bonepicker',
+  },
+  col_anglers_haul: {
+    id: 'col_anglers_haul',
+    name: "Angler's Haul",
+    text: 'Fill a creel from every water in the Reaches: land a full string of each catch.',
+    category: 'collection',
+    objectives: [
+      { type: 'collect', itemId: 'raw_mirror_trout', count: 5, label: 'Mirror trout' },
+      { type: 'collect', itemId: 'raw_river_perch', count: 5, label: 'River perch' },
+      { type: 'collect', itemId: 'raw_marsh_pike', count: 5, label: 'Marsh pike' },
+      { type: 'collect', itemId: 'raw_bog_eel', count: 5, label: 'Bog eels' },
+    ],
+    titleReward: 't_angler',
+  },
+  col_essence_gatherer: {
+    id: 'col_essence_gatherer',
+    name: 'Essence Gatherer',
+    text: 'Bottle the restless remnants that cling to the Hollow Crypt: gather 10 ghostly essence.',
+    category: 'collection',
+    objectives: [
+      { type: 'collect', itemId: 'ghostly_essence', count: 10, label: 'Ghostly essence' },
+    ],
+  },
+  col_greyjaw_trophy: {
+    id: 'col_greyjaw_trophy',
+    name: 'The Greyjaw Trophy',
+    text: "Claim the one fang worth keeping: recover Old Greyjaw's Fang.",
+    category: 'collection',
+    objectives: [
+      { type: 'collect', itemId: 'greyjaw_fang', count: 1, label: "Old Greyjaw's Fang" },
+    ],
+  },
 };
 
 export const TITLES: Record<string, TitleDef> = {
   t_blooded: { id: 't_blooded', display: 'the Blooded' },
   t_greyjaws_bane: { id: 't_greyjaws_bane', display: "Greyjaw's Bane" },
   t_gravecallers_bane: { id: 't_gravecallers_bane', display: "the Gravecaller's Bane" },
+  t_fangbinder: { id: 't_fangbinder', display: 'the Fangbinder' },
+  t_bonepicker: { id: 't_bonepicker', display: 'the Bonepicker' },
+  t_angler: { id: 't_angler', display: 'the Angler' },
 };
