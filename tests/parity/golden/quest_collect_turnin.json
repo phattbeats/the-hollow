@@ -813,8 +813,8 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "736554a8",
-      "events": "27a5d51d",
+      "state": "e1fb345d",
+      "events": "77792b38",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -913,16 +913,6 @@
                 "deedId": "col_greyjaw_trophy",
                 "state": "active"
               }
-            ],
-            [
-              "feat_lorebound",
-              {
-                "counts": [
-                  1
-                ],
-                "deedId": "feat_lorebound",
-                "state": "active"
-              }
             ]
           ],
           "delveClears": {},
@@ -1001,8 +991,8 @@
       "tick": 2,
       "time": 0.1,
       "nextId": 408,
-      "state": "a636800d",
-      "events": "c9a078ed",
+      "state": "e6f587dd",
+      "events": "99844c8f",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -1122,30 +1112,6 @@
                   0
                 ],
                 "deedId": "exp_grand_tour",
-                "state": "active"
-              }
-            ],
-            [
-              "feat_lorebound",
-              {
-                "counts": [
-                  1
-                ],
-                "deedId": "feat_lorebound",
-                "state": "active"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  0,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
                 "state": "active"
               }
             ]

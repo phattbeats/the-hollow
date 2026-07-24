@@ -31,8 +31,8 @@
       "tick": 25,
       "time": 1.25,
       "nextId": 411,
-      "state": "abde81af",
-      "events": "9a77ea94",
+      "state": "e7816573",
+      "events": "45de435c",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -42,7 +42,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 411,
-      "state": "c810969d",
+      "state": "c0f43181",
       "events": "ace6b6f2",
       "rng": {
         "draws": 28,
@@ -53,7 +53,7 @@
       "tick": 75,
       "time": 3.75,
       "nextId": 411,
-      "state": "f0468c4f",
+      "state": "36cbcb13",
       "events": "782b0eb6",
       "rng": {
         "draws": 143,
@@ -64,7 +64,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 411,
-      "state": "e784a7b9",
+      "state": "46ef415d",
       "events": "991c069e",
       "rng": {
         "draws": 304,
@@ -75,7 +75,7 @@
       "tick": 101,
       "time": 5.05,
       "nextId": 411,
-      "state": "c73dca38",
+      "state": "cd8762b4",
       "events": "91cd86b8",
       "rng": {
         "draws": 310,
@@ -131,20 +131,6 @@
                 ],
                 "deedId": "exp_hollow_reaches",
                 "state": "done"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  1,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
               }
             ]
           ],
@@ -228,20 +214,6 @@
                 ],
                 "deedId": "exp_hollow_reaches",
                 "state": "done"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  1,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
               }
             ]
           ],
@@ -328,20 +300,6 @@
                 "deedId": "exp_hollow_reaches",
                 "state": "done"
               }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  1,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
-              }
             ]
           ],
           "deedsDone": [
@@ -424,20 +382,6 @@
                 ],
                 "deedId": "exp_hollow_reaches",
                 "state": "done"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  1,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
               }
             ]
           ],
@@ -678,7 +622,7 @@
       "tick": 101,
       "time": 5.05,
       "nextId": 411,
-      "state": "89796058",
+      "state": "25642360",
       "events": "4e6d4b57",
       "rng": {
         "draws": 310,
@@ -734,20 +678,6 @@
                 ],
                 "deedId": "exp_hollow_reaches",
                 "state": "done"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  1,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
               }
             ]
           ],
@@ -831,20 +761,6 @@
                 ],
                 "deedId": "exp_hollow_reaches",
                 "state": "done"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  1,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
               }
             ]
           ],
@@ -931,20 +847,6 @@
                 "deedId": "exp_hollow_reaches",
                 "state": "done"
               }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  1,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
-              }
             ]
           ],
           "deedsDone": [
@@ -1027,20 +929,6 @@
                 ],
                 "deedId": "exp_hollow_reaches",
                 "state": "done"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  1,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
               }
             ]
           ],
@@ -1279,7 +1167,7 @@
       "tick": 101,
       "time": 5.05,
       "nextId": 411,
-      "state": "237e44af",
+      "state": "cf6af6c1",
       "events": "612c637d",
       "rng": {
         "draws": 310,
@@ -1336,20 +1224,6 @@
                 ],
                 "deedId": "exp_hollow_reaches",
                 "state": "done"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  1,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
               }
             ]
           ],
@@ -1435,20 +1309,6 @@
                 ],
                 "deedId": "exp_hollow_reaches",
                 "state": "done"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  1,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
               }
             ]
           ],
@@ -1536,20 +1396,6 @@
                 "deedId": "exp_hollow_reaches",
                 "state": "done"
               }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  1,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
-              }
             ]
           ],
           "deedsDone": [
@@ -1632,20 +1478,6 @@
                 ],
                 "deedId": "exp_hollow_reaches",
                 "state": "done"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  1,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
               }
             ]
           ],
@@ -1884,7 +1716,7 @@
       "tick": 125,
       "time": 6.25,
       "nextId": 411,
-      "state": "04b65e65",
+      "state": "c8d5b387",
       "events": "741638a5",
       "rng": {
         "draws": 434,
@@ -1895,7 +1727,7 @@
       "tick": 142,
       "time": 7.1,
       "nextId": 411,
-      "state": "b4fa1921",
+      "state": "6a1c7b63",
       "events": "741638a5",
       "rng": {
         "draws": 528,
@@ -1952,20 +1784,6 @@
                 ],
                 "deedId": "exp_hollow_reaches",
                 "state": "done"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  1,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
               }
             ]
           ],
@@ -2051,20 +1869,6 @@
                 ],
                 "deedId": "exp_hollow_reaches",
                 "state": "done"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  1,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
               }
             ]
           ],
@@ -2152,20 +1956,6 @@
                 "deedId": "exp_hollow_reaches",
                 "state": "done"
               }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  1,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
-              }
             ]
           ],
           "deedsDone": [
@@ -2248,20 +2038,6 @@
                 ],
                 "deedId": "exp_hollow_reaches",
                 "state": "done"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  1,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
               }
             ]
           ],

@@ -112,8 +112,8 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 422,
-      "state": "1d724255",
-      "events": "660d205b",
+      "state": "1632f647",
+      "events": "c47832ba",
       "rng": {
         "draws": 3,
         "digest": "34c4acb5"
@@ -123,7 +123,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 422,
-      "state": "284c4d45",
+      "state": "a21f0ff7",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -134,7 +134,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 422,
-      "state": "885bf9e3",
+      "state": "b74e36a5",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -145,7 +145,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 422,
-      "state": "92e868b9",
+      "state": "ce24733b",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -156,7 +156,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 422,
-      "state": "ca82d2db",
+      "state": "f6004c9d",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -167,7 +167,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 422,
-      "state": "b0b93c55",
+      "state": "ee334047",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -178,7 +178,7 @@
       "tick": 69,
       "time": 3.45,
       "nextId": 423,
-      "state": "58556b63",
+      "state": "27a6d425",
       "events": "80b8299e",
       "rng": {
         "draws": 3,
@@ -247,30 +247,6 @@
                 ],
                 "deedId": "exp_hollow_reaches",
                 "state": "done"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  1,
-                  0,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
-              }
-            ],
-            [
-              "feat_relentless",
-              {
-                "counts": [
-                  1
-                ],
-                "deedId": "feat_relentless",
-                "state": "active"
               }
             ]
           ],
@@ -393,7 +369,7 @@
       "tick": 70,
       "time": 3.5,
       "nextId": 423,
-      "state": "88e2730f",
+      "state": "d7398861",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -404,7 +380,7 @@
       "tick": 71,
       "time": 3.55,
       "nextId": 423,
-      "state": "c81ffef3",
+      "state": "d4a08335",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -473,30 +449,6 @@
                 ],
                 "deedId": "exp_hollow_reaches",
                 "state": "done"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  1,
-                  0,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
-              }
-            ],
-            [
-              "feat_relentless",
-              {
-                "counts": [
-                  1
-                ],
-                "deedId": "feat_relentless",
-                "state": "active"
               }
             ]
           ],

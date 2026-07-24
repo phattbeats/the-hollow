@@ -111,8 +111,8 @@
       "tick": 20,
       "time": 1,
       "nextId": 408,
-      "state": "72a73703",
-      "events": "c9a078ed",
+      "state": "ce834f16",
+      "events": "99844c8f",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -122,7 +122,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 408,
-      "state": "37cdf23b",
+      "state": "0fc71f8e",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -133,7 +133,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 408,
-      "state": "4673ed45",
+      "state": "0f9b2fa2",
       "events": "741638a5",
       "rng": {
         "draws": 76,
@@ -144,7 +144,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 408,
-      "state": "4673ed45",
+      "state": "0f9b2fa2",
       "events": "741638a5",
       "rng": {
         "draws": 76,
@@ -188,20 +188,6 @@
                   0
                 ],
                 "deedId": "exp_grand_tour",
-                "state": "active"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  0,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
                 "state": "active"
               }
             ]
@@ -282,7 +268,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 408,
-      "state": "d4f4c0d6",
+      "state": "e7b64a2b",
       "events": "0e97bd1d",
       "rng": {
         "draws": 76,
@@ -328,20 +314,6 @@
                   0
                 ],
                 "deedId": "exp_grand_tour",
-                "state": "active"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  0,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
                 "state": "active"
               }
             ]
@@ -424,7 +396,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 408,
-      "state": "57fc2017",
+      "state": "65966194",
       "events": "c13314df",
       "rng": {
         "draws": 76,
@@ -471,20 +443,6 @@
                   0
                 ],
                 "deedId": "exp_grand_tour",
-                "state": "active"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  0,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
                 "state": "active"
               }
             ]
@@ -567,7 +525,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 408,
-      "state": "2f317219",
+      "state": "76fe5f66",
       "events": "7aad66b5",
       "rng": {
         "draws": 76,
@@ -614,20 +572,6 @@
                   0
                 ],
                 "deedId": "exp_grand_tour",
-                "state": "active"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  0,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
                 "state": "active"
               }
             ]
@@ -710,7 +654,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 408,
-      "state": "a84a4ee2",
+      "state": "d76d09c5",
       "events": "4f05e424",
       "rng": {
         "draws": 76,
@@ -759,20 +703,6 @@
                 "deedId": "exp_grand_tour",
                 "state": "active"
               }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  0,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
-              }
             ]
           ],
           "deedsDone": [
@@ -853,7 +783,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 408,
-      "state": "a84a4ee2",
+      "state": "d76d09c5",
       "events": "741638a5",
       "rng": {
         "draws": 76,
@@ -902,20 +832,6 @@
                 "deedId": "exp_grand_tour",
                 "state": "active"
               }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  0,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
-              }
             ]
           ],
           "deedsDone": [
@@ -996,7 +912,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 408,
-      "state": "a84a4ee2",
+      "state": "d76d09c5",
       "events": "741638a5",
       "rng": {
         "draws": 76,
@@ -1043,20 +959,6 @@
                   0
                 ],
                 "deedId": "exp_grand_tour",
-                "state": "active"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  0,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
                 "state": "active"
               }
             ]

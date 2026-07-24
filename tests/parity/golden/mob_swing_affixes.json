@@ -111,8 +111,8 @@
       "tick": 20,
       "time": 1,
       "nextId": 414,
-      "state": "73bd2140",
-      "events": "d4513089",
+      "state": "2d2ed51b",
+      "events": "8ad1f10b",
       "rng": {
         "draws": 55,
         "digest": "e54142e2"
@@ -122,7 +122,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 414,
-      "state": "5ce541af",
+      "state": "6d08d0be",
       "events": "f24ded7f",
       "rng": {
         "draws": 102,
@@ -133,7 +133,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 414,
-      "state": "80dba079",
+      "state": "9b23fe08",
       "events": "fbcbdeea",
       "rng": {
         "draws": 241,
@@ -144,7 +144,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 414,
-      "state": "5f6a88af",
+      "state": "5707b5be",
       "events": "741638a5",
       "rng": {
         "draws": 241,
@@ -190,20 +190,6 @@
                   0
                 ],
                 "deedId": "exp_grand_tour",
-                "state": "active"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  0,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
                 "state": "active"
               }
             ]
@@ -629,7 +615,7 @@
       "tick": 64,
       "time": 3.2,
       "nextId": 414,
-      "state": "7e50bf77",
+      "state": "d1634fc6",
       "events": "741638a5",
       "rng": {
         "draws": 263,
@@ -675,20 +661,6 @@
                   0
                 ],
                 "deedId": "exp_grand_tour",
-                "state": "active"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  0,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
                 "state": "active"
               }
             ]

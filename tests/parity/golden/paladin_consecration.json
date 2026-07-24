@@ -110,8 +110,8 @@
       "tick": 20,
       "time": 1,
       "nextId": 409,
-      "state": "95383615",
-      "events": "a769ecd0",
+      "state": "9d2b2520",
+      "events": "ba0e3236",
       "rng": {
         "draws": 6,
         "digest": "c6ce9997"
@@ -121,7 +121,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 409,
-      "state": "f51331dc",
+      "state": "d09da5af",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -132,7 +132,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 409,
-      "state": "0543ddd6",
+      "state": "ff506b59",
       "events": "91aa8549",
       "rng": {
         "draws": 88,
@@ -143,7 +143,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 409,
-      "state": "7e3c32bd",
+      "state": "f4dd0ba8",
       "events": "741638a5",
       "rng": {
         "draws": 178,
@@ -154,7 +154,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 409,
-      "state": "7775a509",
+      "state": "0d5a141c",
       "events": "17332fa5",
       "rng": {
         "draws": 287,
@@ -165,7 +165,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 409,
-      "state": "0bc7cbb4",
+      "state": "6f0564a7",
       "events": "741638a5",
       "rng": {
         "draws": 404,
@@ -176,7 +176,7 @@
       "tick": 140,
       "time": 7,
       "nextId": 409,
-      "state": "1da7e1b7",
+      "state": "41c2e7ca",
       "events": "6b333c69",
       "rng": {
         "draws": 520,
@@ -187,7 +187,7 @@
       "tick": 160,
       "time": 8,
       "nextId": 409,
-      "state": "9813e619",
+      "state": "cfd8bc0c",
       "events": "741638a5",
       "rng": {
         "draws": 643,
@@ -198,7 +198,7 @@
       "tick": 180,
       "time": 9,
       "nextId": 409,
-      "state": "7ebc96b6",
+      "state": "dfe8fd79",
       "events": "9746e53b",
       "rng": {
         "draws": 789,
@@ -209,7 +209,7 @@
       "tick": 200,
       "time": 10,
       "nextId": 409,
-      "state": "4584db39",
+      "state": "c58d08ec",
       "events": "741638a5",
       "rng": {
         "draws": 929,
@@ -220,7 +220,7 @@
       "tick": 201,
       "time": 10.05,
       "nextId": 409,
-      "state": "eaf98ea5",
+      "state": "1ae94ed0",
       "events": "741638a5",
       "rng": {
         "draws": 930,
@@ -267,20 +267,6 @@
                   0
                 ],
                 "deedId": "exp_grand_tour",
-                "state": "active"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  0,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
                 "state": "active"
               }
             ]

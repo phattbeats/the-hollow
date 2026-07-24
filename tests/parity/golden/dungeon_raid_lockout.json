@@ -856,8 +856,8 @@
       "tick": 1,
       "time": 0.05,
       "nextId": 412,
-      "state": "7ae946a3",
-      "events": "f5ee4899",
+      "state": "9564bdc4",
+      "events": "9579014b",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -899,20 +899,6 @@
                   0
                 ],
                 "deedId": "exp_grand_tour",
-                "state": "active"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  0,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
                 "state": "active"
               }
             ]
@@ -982,20 +968,6 @@
                 "deedId": "exp_grand_tour",
                 "state": "active"
               }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  0,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
-              }
             ]
           ],
           "deedsDone": [
@@ -1052,20 +1024,6 @@
                   0
                 ],
                 "deedId": "exp_grand_tour",
-                "state": "active"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  0,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
                 "state": "active"
               }
             ]
@@ -1126,20 +1084,6 @@
                 "deedId": "exp_grand_tour",
                 "state": "active"
               }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  0,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
-              }
             ]
           ],
           "deedsDone": [
@@ -1196,20 +1140,6 @@
                   0
                 ],
                 "deedId": "exp_grand_tour",
-                "state": "active"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  0,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
                 "state": "active"
               }
             ]

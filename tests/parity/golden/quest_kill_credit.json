@@ -282,8 +282,8 @@
       "tick": 8,
       "time": 0.4,
       "nextId": 416,
-      "state": "cb7903c7",
-      "events": "1386e2bf",
+      "state": "317f7384",
+      "events": "69e63e31",
       "rng": {
         "draws": 40,
         "digest": "ffc79f51"
@@ -425,30 +425,6 @@
                 "deedId": "exp_grand_tour",
                 "state": "active"
               }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  0,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
-              }
-            ],
-            [
-              "feat_relentless",
-              {
-                "counts": [
-                  8
-                ],
-                "deedId": "feat_relentless",
-                "state": "active"
-              }
             ]
           ],
           "deedsDone": [
@@ -544,8 +520,8 @@
       "tick": 8,
       "time": 0.4,
       "nextId": 416,
-      "state": "7f582ec2",
-      "events": "89073949",
+      "state": "b1eb4032",
+      "events": "585fa5b4",
       "rng": {
         "draws": 40,
         "digest": "ffc79f51"
@@ -700,40 +676,6 @@
                 "deedId": "exp_grand_tour",
                 "state": "active"
               }
-            ],
-            [
-              "feat_lorebound",
-              {
-                "counts": [
-                  1
-                ],
-                "deedId": "feat_lorebound",
-                "state": "active"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  0,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
-              }
-            ],
-            [
-              "feat_relentless",
-              {
-                "counts": [
-                  8
-                ],
-                "deedId": "feat_relentless",
-                "state": "active"
-              }
             ]
           ],
           "deedsDone": [
@@ -821,7 +763,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 416,
-      "state": "f6742066",
+      "state": "0f1ff86e",
       "events": "741638a5",
       "rng": {
         "draws": 40,
@@ -975,40 +917,6 @@
                   0
                 ],
                 "deedId": "exp_grand_tour",
-                "state": "active"
-              }
-            ],
-            [
-              "feat_lorebound",
-              {
-                "counts": [
-                  1
-                ],
-                "deedId": "feat_lorebound",
-                "state": "active"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  0,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
-              }
-            ],
-            [
-              "feat_relentless",
-              {
-                "counts": [
-                  8
-                ],
-                "deedId": "feat_relentless",
                 "state": "active"
               }
             ]

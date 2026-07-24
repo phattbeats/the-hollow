@@ -112,8 +112,8 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 421,
-      "state": "a268efad",
-      "events": "9397f097",
+      "state": "7102074a",
+      "events": "f4bb47d0",
       "rng": {
         "draws": 4,
         "digest": "84b9369e"
@@ -123,7 +123,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 421,
-      "state": "27b8fd6b",
+      "state": "a5b68bc0",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -134,7 +134,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 421,
-      "state": "abbd82e6",
+      "state": "a7a80f67",
       "events": "6f21db22",
       "rng": {
         "draws": 5,
@@ -145,8 +145,8 @@
       "tick": 38,
       "time": 1.9,
       "nextId": 423,
-      "state": "9d5b8f90",
-      "events": "71dd9ccf",
+      "state": "3734027e",
+      "events": "7c430644",
       "rng": {
         "draws": 8,
         "digest": "868f4186"
@@ -255,53 +255,6 @@
                 ],
                 "deedId": "exp_hollow_reaches",
                 "state": "done"
-              }
-            ],
-            [
-              "feat_child_of_the_asphodel",
-              {
-                "counts": [
-                  0,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_child_of_the_asphodel",
-                "state": "active"
-              }
-            ],
-            [
-              "feat_deepwarden",
-              {
-                "counts": [
-                  1
-                ],
-                "deedId": "feat_deepwarden",
-                "state": "active"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  1,
-                  0,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
-              }
-            ],
-            [
-              "feat_relentless",
-              {
-                "counts": [
-                  1
-                ],
-                "deedId": "feat_relentless",
-                "state": "active"
               }
             ]
           ],
@@ -537,7 +490,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 423,
-      "state": "d70ef64d",
+      "state": "f273332f",
       "events": "741638a5",
       "rng": {
         "draws": 8,
@@ -548,7 +501,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 423,
-      "state": "d70ef64d",
+      "state": "f273332f",
       "events": "741638a5",
       "rng": {
         "draws": 8,
@@ -658,53 +611,6 @@
                 ],
                 "deedId": "exp_hollow_reaches",
                 "state": "done"
-              }
-            ],
-            [
-              "feat_child_of_the_asphodel",
-              {
-                "counts": [
-                  0,
-                  1,
-                  0,
-                  0
-                ],
-                "deedId": "feat_child_of_the_asphodel",
-                "state": "active"
-              }
-            ],
-            [
-              "feat_deepwarden",
-              {
-                "counts": [
-                  1
-                ],
-                "deedId": "feat_deepwarden",
-                "state": "active"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  1,
-                  0,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
-              }
-            ],
-            [
-              "feat_relentless",
-              {
-                "counts": [
-                  1
-                ],
-                "deedId": "feat_relentless",
-                "state": "active"
               }
             ]
           ],

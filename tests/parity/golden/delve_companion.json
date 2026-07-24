@@ -110,8 +110,8 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 417,
-      "state": "ae5e8bbd",
-      "events": "94b6ec38",
+      "state": "05076a46",
+      "events": "15a7fd2b",
       "rng": {
         "draws": 4,
         "digest": "017ed9b3"
@@ -121,7 +121,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 417,
-      "state": "8d8d2e4a",
+      "state": "2480d4ff",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -132,7 +132,7 @@
       "tick": 15,
       "time": 0.75,
       "nextId": 417,
-      "state": "4d0828a3",
+      "state": "b2504d7c",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -143,7 +143,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 417,
-      "state": "680ec5be",
+      "state": "d9dc953b",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -154,7 +154,7 @@
       "tick": 25,
       "time": 1.25,
       "nextId": 417,
-      "state": "f6163716",
+      "state": "4a02cf33",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -165,7 +165,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 417,
-      "state": "7c240624",
+      "state": "bb0d6279",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -176,7 +176,7 @@
       "tick": 35,
       "time": 1.75,
       "nextId": 417,
-      "state": "21175c24",
+      "state": "c39d0479",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -187,7 +187,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 417,
-      "state": "793b7689",
+      "state": "97e35b6a",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -198,7 +198,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 417,
-      "state": "793b7689",
+      "state": "97e35b6a",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -245,20 +245,6 @@
                 ],
                 "deedId": "exp_hollow_reaches",
                 "state": "done"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  1,
-                  0,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
               }
             ]
           ],
@@ -421,7 +407,7 @@
       "tick": 41,
       "time": 2.05,
       "nextId": 417,
-      "state": "02c0eb09",
+      "state": "9fc6b0ea",
       "events": "25b2de65",
       "rng": {
         "draws": 6,
@@ -468,20 +454,6 @@
                 ],
                 "deedId": "exp_hollow_reaches",
                 "state": "done"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  1,
-                  0,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
               }
             ]
           ],
@@ -658,7 +630,7 @@
       "tick": 45,
       "time": 2.25,
       "nextId": 417,
-      "state": "a9a3e218",
+      "state": "a28aa485",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -669,7 +641,7 @@
       "tick": 49,
       "time": 2.45,
       "nextId": 417,
-      "state": "8d653708",
+      "state": "c3b9ce15",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -716,20 +688,6 @@
                 ],
                 "deedId": "exp_hollow_reaches",
                 "state": "done"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  1,
-                  0,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
               }
             ]
           ],
@@ -847,7 +805,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 417,
-      "state": "632e43c2",
+      "state": "38633cb7",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -858,7 +816,7 @@
       "tick": 51,
       "time": 2.55,
       "nextId": 417,
-      "state": "accf0ecb",
+      "state": "fa7acc24",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -905,20 +863,6 @@
                 ],
                 "deedId": "exp_hollow_reaches",
                 "state": "done"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  1,
-                  0,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
               }
             ]
           ],
@@ -1037,7 +981,7 @@
       "tick": 51,
       "time": 2.55,
       "nextId": 417,
-      "state": "accf0ecb",
+      "state": "fa7acc24",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -1084,20 +1028,6 @@
                 ],
                 "deedId": "exp_hollow_reaches",
                 "state": "done"
-              }
-            ],
-            [
-              "feat_pathfinder",
-              {
-                "counts": [
-                  0,
-                  1,
-                  0,
-                  0,
-                  0
-                ],
-                "deedId": "feat_pathfinder",
-                "state": "active"
               }
             ]
           ],
