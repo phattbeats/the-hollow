@@ -31,7 +31,7 @@
       "tick": 25,
       "time": 1.25,
       "nextId": 411,
-      "state": "18269c05",
+      "state": "df70bb23",
       "events": "9000f294",
       "rng": {
         "draws": 0,
@@ -42,7 +42,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 411,
-      "state": "b360f86b",
+      "state": "3aea73b1",
       "events": "ace6b6f2",
       "rng": {
         "draws": 28,
@@ -53,7 +53,7 @@
       "tick": 75,
       "time": 3.75,
       "nextId": 411,
-      "state": "f43028a5",
+      "state": "877d3cc3",
       "events": "782b0eb6",
       "rng": {
         "draws": 143,
@@ -64,7 +64,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 411,
-      "state": "bf17aec7",
+      "state": "4219216d",
       "events": "991c069e",
       "rng": {
         "draws": 304,
@@ -75,7 +75,7 @@
       "tick": 101,
       "time": 5.05,
       "nextId": 411,
-      "state": "4e05a0a2",
+      "state": "9dfa78d0",
       "events": "91cd86b8",
       "rng": {
         "draws": 310,
@@ -99,6 +99,7 @@
           "counters": {
             "damageDealt": 50
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -142,6 +143,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -187,6 +189,7 @@
           "counters": {
             "damageTaken": 50
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -230,6 +233,7 @@
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -462,7 +466,7 @@
       "tick": 101,
       "time": 5.05,
       "nextId": 411,
-      "state": "18859096",
+      "state": "a89c72b8",
       "events": "4e6d4b57",
       "rng": {
         "draws": 310,
@@ -486,6 +490,7 @@
           "counters": {
             "damageDealt": 100
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -529,6 +534,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -574,6 +580,7 @@
           "counters": {
             "damageTaken": 100
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -617,6 +624,7 @@
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -847,7 +855,7 @@
       "tick": 101,
       "time": 5.05,
       "nextId": 411,
-      "state": "5f979f31",
+      "state": "68664377",
       "events": "612c637d",
       "rng": {
         "draws": 310,
@@ -872,6 +880,7 @@
             "damageDealt": 100,
             "kills": 1
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -917,6 +926,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -963,6 +973,7 @@
             "damageTaken": 100,
             "deaths": 1
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1006,6 +1017,7 @@
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1236,7 +1248,7 @@
       "tick": 125,
       "time": 6.25,
       "nextId": 411,
-      "state": "3e5a65ff",
+      "state": "6b34ca75",
       "events": "741638a5",
       "rng": {
         "draws": 434,
@@ -1247,7 +1259,7 @@
       "tick": 142,
       "time": 7.1,
       "nextId": 411,
-      "state": "48c933bb",
+      "state": "971780d1",
       "events": "741638a5",
       "rng": {
         "draws": 528,
@@ -1272,6 +1284,7 @@
             "damageDealt": 100,
             "kills": 1
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1317,6 +1330,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1363,6 +1377,7 @@
             "damageTaken": 100,
             "deaths": 1
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1406,6 +1421,7 @@
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},

@@ -15,7 +15,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "2eedc744",
+      "state": "3e3fbaf3",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -38,6 +38,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -110,7 +111,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 409,
-      "state": "331608fb",
+      "state": "f0032e9e",
       "events": "3462b30f",
       "rng": {
         "draws": 2,
@@ -121,7 +122,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 409,
-      "state": "91a85823",
+      "state": "49d78cd6",
       "events": "d8bd2a52",
       "rng": {
         "draws": 2,
@@ -132,7 +133,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 409,
-      "state": "385cd05b",
+      "state": "5b24a33e",
       "events": "d68fc10b",
       "rng": {
         "draws": 75,
@@ -143,7 +144,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 409,
-      "state": "48db1972",
+      "state": "bc73eafb",
       "events": "741638a5",
       "rng": {
         "draws": 164,
@@ -154,7 +155,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 409,
-      "state": "db1a4eb4",
+      "state": "1fbd0361",
       "events": "00314fc7",
       "rng": {
         "draws": 280,
@@ -165,7 +166,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 409,
-      "state": "c04f7ed7",
+      "state": "d6b9634a",
       "events": "867eff19",
       "rng": {
         "draws": 390,
@@ -176,7 +177,7 @@
       "tick": 128,
       "time": 6.4,
       "nextId": 409,
-      "state": "ba185857",
+      "state": "794dd0ca",
       "events": "741638a5",
       "rng": {
         "draws": 437,
@@ -202,6 +203,7 @@
             "damageDealt": 87,
             "damageTaken": 18
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},

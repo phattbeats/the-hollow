@@ -30,7 +30,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "3d059734",
+      "state": "555319db",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -52,6 +52,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -81,6 +82,7 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -110,6 +112,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -387,7 +390,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "d6362eb1",
+      "state": "3699a9aa",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -409,6 +412,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -438,6 +442,7 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -467,6 +472,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -744,7 +750,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "9bcc127e",
+      "state": "70c56811",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -766,6 +772,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -795,6 +802,7 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -824,6 +832,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1101,7 +1110,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "3d059734",
+      "state": "555319db",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -1123,6 +1132,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1152,6 +1162,7 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1181,6 +1192,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1458,7 +1470,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "30f73556",
+      "state": "13d5d439",
       "events": "3501c3db",
       "rng": {
         "draws": 0,
@@ -1480,6 +1492,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1509,6 +1522,7 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1538,6 +1552,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1815,7 +1830,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "8c1844b3",
+      "state": "2728b710",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -1837,6 +1852,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1866,6 +1882,7 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1895,6 +1912,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -2172,7 +2190,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "30f73556",
+      "state": "13d5d439",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -2194,6 +2212,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -2223,6 +2242,7 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -2252,6 +2272,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -2529,7 +2550,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "30f73556",
+      "state": "13d5d439",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -2551,6 +2572,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -2580,6 +2602,7 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -2609,6 +2632,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -2886,7 +2910,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "30f73556",
+      "state": "13d5d439",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -2908,6 +2932,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -2937,6 +2962,7 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -2966,6 +2992,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -3243,7 +3270,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "30f73556",
+      "state": "13d5d439",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -3265,6 +3292,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -3294,6 +3322,7 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -3323,6 +3352,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -3600,7 +3630,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "4cad20e7",
+      "state": "8b78376e",
       "events": "dffa99a8",
       "rng": {
         "draws": 5,
@@ -3626,6 +3656,7 @@
             "kills": 1,
             "xpGained": 26
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",
@@ -3697,6 +3728,7 @@
           "counters": {
             "xpGained": 26
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",
@@ -3768,6 +3800,7 @@
           "counters": {
             "xpGained": 26
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",
@@ -4125,7 +4158,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "4cad20e7",
+      "state": "8b78376e",
       "events": "741638a5",
       "rng": {
         "draws": 5,
@@ -4151,6 +4184,7 @@
             "kills": 1,
             "xpGained": 26
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",
@@ -4222,6 +4256,7 @@
           "counters": {
             "xpGained": 26
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",
@@ -4293,6 +4328,7 @@
           "counters": {
             "xpGained": 26
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",

@@ -31,7 +31,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 412,
-      "state": "4ffa82cc",
+      "state": "00f9d0ad",
       "events": "a7891c1b",
       "rng": {
         "draws": 5,
@@ -57,6 +57,7 @@
             "kills": 1,
             "xpGained": 84
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",
@@ -393,7 +394,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "3bbf92e8",
+      "state": "5ceca235",
       "events": "ca06ae73",
       "rng": {
         "draws": 8,
@@ -419,6 +420,7 @@
             "kills": 2,
             "xpGained": 198
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",
@@ -813,7 +815,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "373afcd0",
+      "state": "6bdd3b0d",
       "events": "15a15eb5",
       "rng": {
         "draws": 9,
@@ -840,6 +842,7 @@
             "kills": 2,
             "xpGained": 198
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",
@@ -1235,7 +1238,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 415,
-      "state": "a8c06f81",
+      "state": "5456af2c",
       "events": "5ac1ef2b",
       "rng": {
         "draws": 15,
@@ -1262,6 +1265,7 @@
             "kills": 3,
             "xpGained": 282
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",
@@ -1699,7 +1703,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 416,
-      "state": "2a51d20a",
+      "state": "d26141df",
       "events": "36a6c337",
       "rng": {
         "draws": 20,
@@ -1726,6 +1730,7 @@
             "kills": 4,
             "xpGained": 366
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",
@@ -2217,7 +2222,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 416,
-      "state": "2a51d20a",
+      "state": "d26141df",
       "events": "741638a5",
       "rng": {
         "draws": 20,
@@ -2244,6 +2249,7 @@
             "kills": 4,
             "xpGained": 366
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",

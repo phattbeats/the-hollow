@@ -31,7 +31,7 @@
       "tick": 2,
       "time": 0.1,
       "nextId": 423,
-      "state": "cd194624",
+      "state": "2550421c",
       "events": "44402675",
       "rng": {
         "draws": 39,
@@ -53,6 +53,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -82,6 +83,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -794,7 +796,7 @@
       "tick": 4,
       "time": 0.2,
       "nextId": 423,
-      "state": "5dc903c4",
+      "state": "075327bc",
       "events": "f777cfff",
       "rng": {
         "draws": 47,
@@ -819,6 +821,7 @@
             "damageTaken": 119549,
             "deaths": 1
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -848,6 +851,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1562,7 +1566,7 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 423,
-      "state": "f7ba2d0a",
+      "state": "8f658738",
       "events": "1e2f3f13",
       "rng": {
         "draws": 47,
@@ -1573,7 +1577,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 423,
-      "state": "645fac35",
+      "state": "e3b4a24b",
       "events": "741638a5",
       "rng": {
         "draws": 47,
@@ -1584,7 +1588,7 @@
       "tick": 15,
       "time": 0.75,
       "nextId": 423,
-      "state": "1eea5c0a",
+      "state": "749a0638",
       "events": "741638a5",
       "rng": {
         "draws": 47,
@@ -1595,7 +1599,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 423,
-      "state": "f3f1db2a",
+      "state": "56b59ed8",
       "events": "741638a5",
       "rng": {
         "draws": 49,
@@ -1606,7 +1610,7 @@
       "tick": 24,
       "time": 1.2,
       "nextId": 423,
-      "state": "deb4082a",
+      "state": "6322bbd8",
       "events": "741638a5",
       "rng": {
         "draws": 49,
@@ -1631,6 +1635,7 @@
             "damageTaken": 119549,
             "deaths": 1
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1663,6 +1668,7 @@
             "damageTaken": 119549,
             "deaths": 1
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1783,7 +1789,7 @@
       "tick": 24,
       "time": 1.2,
       "nextId": 423,
-      "state": "deb4082a",
+      "state": "6322bbd8",
       "events": "741638a5",
       "rng": {
         "draws": 49,
@@ -1808,6 +1814,7 @@
             "damageTaken": 119549,
             "deaths": 1
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1840,6 +1847,7 @@
             "damageTaken": 119549,
             "deaths": 1
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},

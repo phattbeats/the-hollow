@@ -17,7 +17,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "34f1b800",
+      "state": "9e34c745",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -40,6 +40,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -111,7 +112,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 408,
-      "state": "03492f1a",
+      "state": "1a48004b",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -122,7 +123,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 408,
-      "state": "e5cd5da2",
+      "state": "d10fc093",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -133,7 +134,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 408,
-      "state": "14d2e926",
+      "state": "d18f9b1d",
       "events": "741638a5",
       "rng": {
         "draws": 76,
@@ -144,7 +145,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 408,
-      "state": "14d2e926",
+      "state": "d18f9b1d",
       "events": "741638a5",
       "rng": {
         "draws": 76,
@@ -167,6 +168,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -239,7 +241,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 408,
-      "state": "f421b025",
+      "state": "2dc9a9be",
       "events": "0e97bd1d",
       "rng": {
         "draws": 76,
@@ -264,6 +266,7 @@
           "counters": {
             "xpGained": 160
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -338,7 +341,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 408,
-      "state": "d0ccc7a0",
+      "state": "a03c578f",
       "events": "c13314df",
       "rng": {
         "draws": 76,
@@ -364,6 +367,7 @@
             "levelUps": 1,
             "xpGained": 610
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -438,7 +442,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 408,
-      "state": "6571a0c8",
+      "state": "bdba2d81",
       "events": "7aad66b5",
       "rng": {
         "draws": 76,
@@ -464,6 +468,7 @@
             "levelUps": 1,
             "xpGained": 23810
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -538,7 +543,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 408,
-      "state": "a145d903",
+      "state": "f87015ca",
       "events": "4f05e424",
       "rng": {
         "draws": 76,
@@ -564,6 +569,7 @@
             "levelUps": 1,
             "xpGained": 23810
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -638,7 +644,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 408,
-      "state": "a145d903",
+      "state": "f87015ca",
       "events": "741638a5",
       "rng": {
         "draws": 76,
@@ -664,6 +670,7 @@
             "levelUps": 1,
             "xpGained": 23810
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -738,7 +745,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 408,
-      "state": "a145d903",
+      "state": "f87015ca",
       "events": "741638a5",
       "rng": {
         "draws": 76,
@@ -764,6 +771,7 @@
             "levelUps": 1,
             "xpGained": 23810
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},

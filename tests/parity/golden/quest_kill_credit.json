@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "34f1b800",
+      "state": "9e34c745",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -39,6 +39,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -110,7 +111,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "6b5ae46d",
+      "state": "88d84280",
       "events": "8b57e819",
       "rng": {
         "draws": 0,
@@ -133,6 +134,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -217,7 +219,7 @@
       "tick": 8,
       "time": 0.4,
       "nextId": 416,
-      "state": "dec851e9",
+      "state": "c1295362",
       "events": "fcf1b29b",
       "rng": {
         "draws": 40,
@@ -244,6 +246,7 @@
             "kills": 8,
             "questProgress": 8
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",
@@ -367,7 +370,7 @@
       "tick": 8,
       "time": 0.4,
       "nextId": 416,
-      "state": "ac1df880",
+      "state": "b3922ee1",
       "events": "391e3683",
       "rng": {
         "draws": 40,
@@ -397,6 +400,7 @@
             "questsCompleted": 1,
             "xpGained": 250
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",
@@ -512,7 +516,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 416,
-      "state": "406a3414",
+      "state": "f4f84995",
       "events": "741638a5",
       "rng": {
         "draws": 40,
@@ -542,6 +546,7 @@
             "questsCompleted": 1,
             "xpGained": 250
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",
