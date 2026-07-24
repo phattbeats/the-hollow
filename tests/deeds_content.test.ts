@@ -295,3 +295,54 @@ describe('deeds content: feat category', () => {
     ).toBeGreaterThanOrEqual(3);
   });
 });
+
+describe('deeds content: hidden category', () => {
+  const hiddenDeeds = Object.values(DEEDS).filter((d) => d.category === 'hidden');
+  // Hidden deeds are secret (concealed in the book until earned, PHAA-748) but
+  // add no new engine hook: every objective must reuse a type whose credit path
+  // already ships. The category rides only the kill and collect paths today.
+  const SHIPPED_HIDDEN_TYPES = new Set(['kill', 'collect']);
+
+  it('has at least one authored hidden deed', () => {
+    expect(hiddenDeeds.length).toBeGreaterThan(0);
+  });
+
+  it('every hidden objective reuses an already-shipped objective type (no new hook)', () => {
+    for (const def of hiddenDeeds) {
+      for (const obj of def.objectives) {
+        expect(
+          SHIPPED_HIDDEN_TYPES.has(obj.type),
+          `${def.id}: hidden deed uses objective type ${obj.type} with no shipped hook`,
+        ).toBe(true);
+      }
+    }
+  });
+
+  it('every hidden kill objective targets a specific mob (a secret is not a wildcard grind)', () => {
+    for (const def of hiddenDeeds) {
+      for (const obj of def.objectives) {
+        if (obj.type === 'kill') {
+          expect(
+            obj.targetMobId,
+            `${def.id}: hidden kill objective must name a specific mob`,
+          ).toBeDefined();
+          expect(
+            MOBS[obj.targetMobId ?? ''],
+            `${def.id}: unknown mob ${obj.targetMobId}`,
+          ).toBeDefined();
+        }
+      }
+    }
+  });
+
+  it('every hidden collect objective names a real item', () => {
+    for (const def of hiddenDeeds) {
+      for (const obj of def.objectives) {
+        if (obj.type === 'collect') {
+          expect(obj.itemId, `${def.id}: hidden collect objective must name an item`).toBeDefined();
+          expect(ITEMS[obj.itemId ?? ''], `${def.id}: unknown item ${obj.itemId}`).toBeDefined();
+        }
+      }
+    }
+  });
+});

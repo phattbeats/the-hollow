@@ -256,7 +256,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 410,
-      "state": "bb5b25e4",
+      "state": "23c07588",
       "events": "3ac76b8d",
       "rng": {
         "draws": 0,
@@ -340,6 +340,29 @@
                   0
                 ],
                 "deedId": "col_greyjaw_trophy",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]
@@ -472,7 +495,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 410,
-      "state": "f7b39e0a",
+      "state": "a17c1176",
       "events": "90d3a995",
       "rng": {
         "draws": 0,
@@ -483,7 +506,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 410,
-      "state": "ab4f153f",
+      "state": "6543db8f",
       "events": "2861bfc5",
       "rng": {
         "draws": 0,
@@ -494,7 +517,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 411,
-      "state": "a3420cf4",
+      "state": "fc101f78",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -615,6 +638,29 @@
                   0
                 ],
                 "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]
@@ -812,7 +858,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 411,
-      "state": "aa202966",
+      "state": "91e725da",
       "events": "b87a9c1f",
       "rng": {
         "draws": 0,
@@ -933,6 +979,29 @@
                   0
                 ],
                 "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]
@@ -1070,7 +1139,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 413,
-      "state": "57b2838f",
+      "state": "39fe5aff",
       "events": "94fc61db",
       "rng": {
         "draws": 0,
@@ -1191,6 +1260,29 @@
                   0
                 ],
                 "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]
@@ -1368,7 +1460,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 413,
-      "state": "8a1d0123",
+      "state": "3b2fbfcb",
       "events": "d9f98d21",
       "rng": {
         "draws": 0,
@@ -1489,6 +1581,29 @@
                   0
                 ],
                 "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]
@@ -1666,7 +1781,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 413,
-      "state": "aa202966",
+      "state": "91e725da",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -1787,6 +1902,29 @@
                   0
                 ],
                 "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]
@@ -1924,7 +2062,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 414,
-      "state": "aa202966",
+      "state": "91e725da",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -2045,6 +2183,29 @@
                   0
                 ],
                 "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]
@@ -2182,7 +2343,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 416,
-      "state": "e1de6e31",
+      "state": "3aa35d11",
       "events": "d063243b",
       "rng": {
         "draws": 0,
@@ -2303,6 +2464,29 @@
                   0
                 ],
                 "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]
@@ -2565,7 +2749,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 416,
-      "state": "dd8155b9",
+      "state": "c63a6c15",
       "events": "553ddb3e",
       "rng": {
         "draws": 84,
@@ -2576,7 +2760,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 416,
-      "state": "60df519f",
+      "state": "977038b3",
       "events": "241aed30",
       "rng": {
         "draws": 164,
@@ -2587,7 +2771,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 416,
-      "state": "60df519f",
+      "state": "977038b3",
       "events": "741638a5",
       "rng": {
         "draws": 164,
@@ -2710,6 +2894,29 @@
                   0
                 ],
                 "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]
@@ -3024,7 +3231,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 418,
-      "state": "86ebc1e3",
+      "state": "18aec06f",
       "events": "5285d7e6",
       "rng": {
         "draws": 164,
@@ -3147,6 +3354,29 @@
                   0
                 ],
                 "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]
@@ -3461,7 +3691,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 420,
-      "state": "0b0bebd9",
+      "state": "4e3b3f35",
       "events": "239b67c4",
       "rng": {
         "draws": 164,
@@ -3584,6 +3814,29 @@
                   0
                 ],
                 "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]
@@ -3907,7 +4160,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 420,
-      "state": "0b0bebd9",
+      "state": "4e3b3f35",
       "events": "741638a5",
       "rng": {
         "draws": 164,
@@ -4030,6 +4283,29 @@
                   0
                 ],
                 "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]
