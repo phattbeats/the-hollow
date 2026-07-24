@@ -6,7 +6,7 @@
 
 import { describe, expect, it } from 'vitest';
 import { DEEDS, TITLES } from '../src/sim/content/deeds';
-import { DELVES, ITEMS, MOBS, QUESTS } from '../src/sim/data';
+import { DELVES, ITEMS, MOBS, QUESTS, ZONES } from '../src/sim/data';
 import { MAX_LEVEL } from '../src/sim/types';
 
 describe('deeds content: referential integrity', () => {
@@ -109,6 +109,27 @@ describe('deeds content: referential integrity', () => {
     }
   });
 
+  it('every explore objective zoneId (when set) resolves to a real zone', () => {
+    const zoneIds = new Set(ZONES.map((z) => z.id));
+    for (const def of Object.values(DEEDS)) {
+      for (const obj of def.objectives) {
+        if (obj.type === 'explore' && obj.zoneId) {
+          expect(zoneIds.has(obj.zoneId), `${def.id}: unknown zone ${obj.zoneId}`).toBe(true);
+        }
+      }
+    }
+  });
+
+  it('never uses an empty-string zoneId (that silently wildcards, unlike an omitted id)', () => {
+    for (const def of Object.values(DEEDS)) {
+      for (const obj of def.objectives) {
+        if (obj.type === 'explore') {
+          expect(obj.zoneId, `${def.id}: zoneId must be omitted, not ''`).not.toBe('');
+        }
+      }
+    }
+  });
+
   it('every level objective has a creditable atLeast within [2, MAX_LEVEL]', () => {
     for (const def of Object.values(DEEDS)) {
       for (const obj of def.objectives) {
@@ -194,6 +215,47 @@ describe('deeds content: dungeon category', () => {
     );
     for (const bossId of allDungeonBosses) {
       expect(capstoneBosses.has(bossId), `capstone omits dungeon boss ${bossId}`).toBe(true);
+    }
+  });
+});
+
+describe('deeds content: exploration category', () => {
+  const exploreDeeds = Object.values(DEEDS).filter((d) => d.category === 'exploration');
+
+  it('every exploration deed credits only through explore objectives (rides the zone-visit hook)', () => {
+    expect(exploreDeeds.length).toBeGreaterThan(0);
+    for (const def of exploreDeeds) {
+      for (const obj of def.objectives) {
+        expect(obj.type, `${def.id}: exploration deed uses unsupported objective ${obj.type}`).toBe(
+          'explore',
+        );
+      }
+    }
+  });
+
+  it('every exploration objective targets a specific zone with count 1 (a zone is entered once)', () => {
+    // The zone-visit hook fires once per entry and caps at the objective count;
+    // targeting a specific zone with count 1 makes each zone credit its
+    // objective exactly once. A wildcard or count>1 explore objective would
+    // over-count across re-entries, so authored content must avoid it.
+    for (const def of exploreDeeds) {
+      for (const obj of def.objectives) {
+        expect(
+          obj.zoneId,
+          `${def.id}: exploration objective missing a specific zoneId`,
+        ).toBeDefined();
+        expect(obj.count, `${def.id}: exploration objective count must be 1`).toBe(1);
+      }
+    }
+  });
+
+  it('the grand-tour capstone covers every distinct zone the exploration deeds reference', () => {
+    const capstone = DEEDS.exp_grand_tour;
+    expect(capstone, 'missing exp_grand_tour capstone').toBeDefined();
+    const capstoneZones = new Set(capstone.objectives.map((o) => o.zoneId));
+    const allZones = new Set(exploreDeeds.flatMap((d) => d.objectives.map((o) => o.zoneId)));
+    for (const zoneId of allZones) {
+      expect(capstoneZones.has(zoneId), `capstone omits zone ${zoneId}`).toBe(true);
     }
   });
 });

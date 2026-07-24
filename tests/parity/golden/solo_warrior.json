@@ -111,8 +111,8 @@
       "tick": 20,
       "time": 1,
       "nextId": 409,
-      "state": "b9d16e58",
-      "events": "f21aa85b",
+      "state": "53fa09f6",
+      "events": "176a0ce1",
       "rng": {
         "draws": 6,
         "digest": "2344d084"
@@ -122,7 +122,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 409,
-      "state": "c528de1d",
+      "state": "8758e949",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -133,7 +133,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 409,
-      "state": "198b7461",
+      "state": "f299375d",
       "events": "c7750db5",
       "rng": {
         "draws": 98,
@@ -144,7 +144,7 @@
       "tick": 72,
       "time": 3.6,
       "nextId": 409,
-      "state": "72476214",
+      "state": "ae29111d",
       "events": "0c2b7c83",
       "rng": {
         "draws": 155,
@@ -201,10 +201,34 @@
                 "deedId": "cmb_wolf_cull",
                 "state": "active"
               }
+            ],
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "exp_eastbrook_vale"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -218,6 +242,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 27600,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -349,7 +374,7 @@
       "tick": 76,
       "time": 3.8,
       "nextId": 409,
-      "state": "e9b3c9fc",
+      "state": "5fc4bd55",
       "events": "741638a5",
       "rng": {
         "draws": 173,
@@ -406,10 +431,34 @@
                 "deedId": "cmb_wolf_cull",
                 "state": "active"
               }
+            ],
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "exp_eastbrook_vale"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -423,6 +472,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 27600,
           "nodeHarvestReadyAt": {},
           "talents": {

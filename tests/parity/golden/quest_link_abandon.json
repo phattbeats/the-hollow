@@ -1026,8 +1026,8 @@
       "tick": 2,
       "time": 0.1,
       "nextId": 409,
-      "state": "621fc407",
-      "events": "741638a5",
+      "state": "55411aeb",
+      "events": "653a17bc",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -1048,6 +1048,34 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1057,6 +1085,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -1140,7 +1169,33 @@
                 "deedId": "col_greyjaw_trophy",
                 "state": "active"
               }
+            ],
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
             ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -1151,6 +1206,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},

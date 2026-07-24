@@ -1632,8 +1632,8 @@
       "tick": 20,
       "time": 1,
       "nextId": 409,
-      "state": "5dcff838",
-      "events": "f108b60a",
+      "state": "a94f21fa",
+      "events": "dae57b9f",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -1643,7 +1643,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 409,
-      "state": "5dcff838",
+      "state": "a94f21fa",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -1728,7 +1728,33 @@
                 "deedId": "col_greyjaw_trophy",
                 "state": "active"
               }
+            ],
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
             ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -1745,6 +1771,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "lastZoneId": "eastbrook_vale",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -1829,7 +1856,33 @@
                 "deedId": "col_greyjaw_trophy",
                 "state": "active"
               }
+            ],
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
             ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -1846,6 +1899,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "lastZoneId": "eastbrook_vale",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -1957,7 +2011,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 409,
-      "state": "a8e9a0c6",
+      "state": "e61a866a",
       "events": "42f67186",
       "rng": {
         "draws": 0,
@@ -2043,7 +2097,33 @@
                 "deedId": "col_greyjaw_trophy",
                 "state": "active"
               }
+            ],
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
             ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -2060,6 +2140,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "lastZoneId": "eastbrook_vale",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -2144,7 +2225,33 @@
                 "deedId": "col_greyjaw_trophy",
                 "state": "active"
               }
+            ],
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
             ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -2161,6 +2268,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "lastZoneId": "eastbrook_vale",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -2272,7 +2380,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 409,
-      "state": "a8e9a0c6",
+      "state": "e61a866a",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -2358,7 +2466,33 @@
                 "deedId": "col_greyjaw_trophy",
                 "state": "active"
               }
+            ],
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
             ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -2375,6 +2509,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "lastZoneId": "eastbrook_vale",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -2459,7 +2594,33 @@
                 "deedId": "col_greyjaw_trophy",
                 "state": "active"
               }
+            ],
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
             ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -2476,6 +2637,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "lastZoneId": "eastbrook_vale",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},

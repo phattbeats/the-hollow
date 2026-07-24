@@ -1748,7 +1748,7 @@ export type DeedCategory =
   | 'social';
 
 export interface DeedObjective {
-  type: 'kill' | 'collect' | 'quest' | 'delve' | 'level';
+  type: 'kill' | 'collect' | 'quest' | 'delve' | 'level' | 'explore';
   targetMobId?: string; // for 'kill'; omitted means "any mob" (wildcard credit)
   itemId?: string; // for 'collect'
   questId?: string; // for 'quest'; omitted means "any quest" (wildcard credit)
@@ -1756,6 +1756,7 @@ export interface DeedObjective {
   tierId?: string; // for 'delve'; omitted means "any tier"
   deathless?: boolean; // for 'delve'; true requires a clear with zero deaths for the player
   atLeast?: number; // for 'level'; the character level threshold the deed credits at
+  zoneId?: string; // for 'explore'; the zone whose first entry credits this objective
   count: number;
   label: string;
 }

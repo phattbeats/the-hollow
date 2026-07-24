@@ -472,8 +472,8 @@
       "tick": 20,
       "time": 1,
       "nextId": 410,
-      "state": "e4c339c1",
-      "events": "2861bfc5",
+      "state": "3fda729b",
+      "events": "89e9c89f",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -483,7 +483,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 410,
-      "state": "b0d7c470",
+      "state": "58226578",
       "events": "2861bfc5",
       "rng": {
         "draws": 0,
@@ -494,7 +494,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 411,
-      "state": "6a3bcba3",
+      "state": "5a56c41d",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -580,7 +580,33 @@
                 "deedId": "col_greyjaw_trophy",
                 "state": "active"
               }
+            ],
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
             ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -591,6 +617,7 @@
             "mainhand": "rusty_hatchet"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 44000,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -771,7 +798,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 411,
-      "state": "c853a6e5",
+      "state": "193bbd4f",
       "events": "b87a9c1f",
       "rng": {
         "draws": 0,
@@ -857,7 +884,33 @@
                 "deedId": "col_greyjaw_trophy",
                 "state": "active"
               }
+            ],
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
             ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -868,6 +921,7 @@
             "mainhand": "rusty_hatchet"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 44000,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -988,7 +1042,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 413,
-      "state": "250574c0",
+      "state": "9189e468",
       "events": "94fc61db",
       "rng": {
         "draws": 0,
@@ -1074,7 +1128,33 @@
                 "deedId": "col_greyjaw_trophy",
                 "state": "active"
               }
+            ],
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
             ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -1085,6 +1165,7 @@
             "mainhand": "rusty_hatchet"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 44000,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -1245,7 +1326,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 413,
-      "state": "29710d7c",
+      "state": "5a89b2c4",
       "events": "d9f98d21",
       "rng": {
         "draws": 0,
@@ -1331,7 +1412,33 @@
                 "deedId": "col_greyjaw_trophy",
                 "state": "active"
               }
+            ],
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
             ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -1342,6 +1449,7 @@
             "mainhand": "rusty_hatchet"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 44000,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -1502,7 +1610,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 413,
-      "state": "c853a6e5",
+      "state": "193bbd4f",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -1588,7 +1696,33 @@
                 "deedId": "col_greyjaw_trophy",
                 "state": "active"
               }
+            ],
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
             ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -1599,6 +1733,7 @@
             "mainhand": "rusty_hatchet"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 44000,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -1719,7 +1854,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 414,
-      "state": "c853a6e5",
+      "state": "193bbd4f",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -1805,7 +1940,33 @@
                 "deedId": "col_greyjaw_trophy",
                 "state": "active"
               }
+            ],
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
             ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -1816,6 +1977,7 @@
             "mainhand": "rusty_hatchet"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 44000,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -1936,7 +2098,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 416,
-      "state": "11ee8838",
+      "state": "d1ecda60",
       "events": "d063243b",
       "rng": {
         "draws": 0,
@@ -2022,7 +2184,33 @@
                 "deedId": "col_greyjaw_trophy",
                 "state": "active"
               }
+            ],
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
             ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -2033,6 +2221,7 @@
             "mainhand": "rusty_hatchet"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 44000,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -2278,8 +2467,8 @@
       "tick": 60,
       "time": 3,
       "nextId": 416,
-      "state": "ca856619",
-      "events": "1d8f188e",
+      "state": "a49d5ee1",
+      "events": "e4576c64",
       "rng": {
         "draws": 84,
         "digest": "4eaf5843"
@@ -2289,7 +2478,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 416,
-      "state": "b036112f",
+      "state": "9f35d0ef",
       "events": "241aed30",
       "rng": {
         "draws": 164,
@@ -2300,7 +2489,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 416,
-      "state": "b036112f",
+      "state": "9f35d0ef",
       "events": "741638a5",
       "rng": {
         "draws": 164,
@@ -2388,7 +2577,33 @@
                 "deedId": "col_greyjaw_trophy",
                 "state": "active"
               }
+            ],
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
             ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -2399,6 +2614,7 @@
             "mainhand": "rusty_hatchet"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 44000,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -2420,6 +2636,34 @@
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -2429,6 +2673,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 44000,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -2653,7 +2898,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 418,
-      "state": "1d1799f3",
+      "state": "76456653",
       "events": "5285d7e6",
       "rng": {
         "draws": 164,
@@ -2741,7 +2986,33 @@
                 "deedId": "col_greyjaw_trophy",
                 "state": "active"
               }
+            ],
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
             ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -2752,6 +3023,7 @@
             "mainhand": "rusty_hatchet"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 44000,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -2773,6 +3045,34 @@
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -2782,6 +3082,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 44000,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -3006,7 +3307,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 420,
-      "state": "8937ebf9",
+      "state": "a00e7c01",
       "events": "239b67c4",
       "rng": {
         "draws": 164,
@@ -3094,7 +3395,33 @@
                 "deedId": "col_greyjaw_trophy",
                 "state": "active"
               }
+            ],
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
             ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -3105,6 +3432,7 @@
             "mainhand": "rusty_hatchet"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 44000,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -3126,6 +3454,34 @@
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -3135,6 +3491,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 44000,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -3368,7 +3725,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 420,
-      "state": "8937ebf9",
+      "state": "a00e7c01",
       "events": "741638a5",
       "rng": {
         "draws": 164,
@@ -3456,7 +3813,33 @@
                 "deedId": "col_greyjaw_trophy",
                 "state": "active"
               }
+            ],
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
             ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -3467,6 +3850,7 @@
             "mainhand": "rusty_hatchet"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 44000,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -3488,6 +3872,34 @@
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -3497,6 +3909,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 44000,
           "nodeHarvestReadyAt": {},
           "talents": {
