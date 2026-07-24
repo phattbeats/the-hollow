@@ -69,6 +69,8 @@ const CALLBACK_KEYS = [
   'partyOf',
   'removeFromParty',
   'dropPartyMarkers',
+  // PHAA-641: the "/ready" chat command's leader-gated start (social/ready_check.ts).
+  'readyCheckStart',
   // Q1 quest-credit trio + the countItem it consumes; onGreenpawFedForQuests
   // (PHAA-484) is the hearth's own feed-credit callback.
   'onMobKilledForQuests',
@@ -76,6 +78,9 @@ const CALLBACK_KEYS = [
   'onGreenpawFedForQuests',
   'checkQuestReady',
   'countItem',
+  // PHAA-744: Book of Asphodelia deed-credit hooks.
+  'onMobKilledForDeeds',
+  'onInventoryChangedForDeeds',
   // E1 entity-roster surface.
   'addEntity',
   'dropEntity',
@@ -260,6 +265,7 @@ function makeFakeHost() {
     utcDay: '',
     pendingMobRespawns: [],
     partyInvites: new Map(),
+    readyChecks: new Map(),
     chatTokens: new Map(),
     channelSubs: new Map(),
     pendingLootRolls: new Map(),
@@ -326,10 +332,13 @@ function makeFakeHost() {
     partyOf: vi.fn(() => null),
     removeFromParty: vi.fn(),
     dropPartyMarkers: vi.fn(),
+    readyCheckStart: vi.fn(),
     onMobKilledForQuests: vi.fn(),
     onInventoryChangedForQuests: vi.fn(),
     onGreenpawFedForQuests: vi.fn(),
     checkQuestReady: vi.fn(),
+    onMobKilledForDeeds: vi.fn(),
+    onInventoryChangedForDeeds: vi.fn(),
     countItem: vi.fn(() => 0),
     lockoutNowMs: vi.fn(() => 0),
     instanceKeyFor: vi.fn(() => 'solo:0'),

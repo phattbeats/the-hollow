@@ -63,6 +63,7 @@ import { isSpellResisted } from './combat/spell_resist';
 // the PlayerMeta interface + the power-up catalog the fiestaMatchInfo accessor reads.
 import { type AugmentSpecial, type AugmentTier, POWERUPS_BY_ID } from './content/augments';
 import { VASE_LANDING_POS } from './content/hollow';
+import type { JailState } from './content/jail';
 import { FURY_ENTITY_ID, FURY_NPC_ID } from './content/pvp_honor';
 import {
   classHasSkin,
@@ -139,6 +140,7 @@ import {
   rebucketEntity,
   releasePlayerSpirit,
   releaseSpiritInDelve as releaseSpiritInDelveImpl,
+  revivePlayerAt as revivePlayerAtImpl,
   runDespawnDecay,
   tickGroundAoEs,
 } from './entity_roster';
@@ -235,6 +237,11 @@ export type { MailSave } from './mail/post_office';
 // stays valid now that the type lives in market.ts.
 export type { MarketSave } from './market';
 
+import {
+  onInventoryChangedForDeeds,
+  onMobKilledForDeeds,
+  setActiveTitle as setActiveTitleImpl,
+} from './deeds';
 import type { DialogRuntimeState } from './dialog/dialog_commands';
 import * as dialogCommands from './dialog/dialog_commands';
 import {
@@ -284,6 +291,7 @@ import {
 } from './social/fiesta';
 import * as fiestaBotsMod from './social/fiesta_bots';
 import { PartyMachine } from './social/party';
+import * as readyCheckMod from './social/ready_check';
 import { SpatialGrid } from './spatial';
 import { isStunDrCategory } from './stun_dr';
 import { Targeting } from './targeting';
@@ -309,6 +317,8 @@ import {
   type CrowdControlDrCategory,
   type CrowdControlDrState,
   DELVE_COMPANION_HEAL_INTERVAL,
+  type DeedProgress,
+  type DeedState,
   type DelveDef,
   type DelveModuleDef,
   type DelveRun,
@@ -344,6 +354,7 @@ import {
   type PlayerClass,
   type QuestProgress,
   type QuestState,
+  type ReadyCheck,
   RUN_SPEED,
   type Sex,
   type SimConfig,
@@ -763,6 +774,11 @@ export interface PlayerMeta {
   known: ResolvedAbility[];
   questLog: Map<string, QuestProgress>;
   questsDone: Set<string>;
+  // Book of Asphodelia (PHAA-744): deeds auto-track from creation, no accept step.
+  deedLog: Map<string, DeedProgress>;
+  deedsDone: Set<string>;
+  earnedTitles: Set<string>;
+  activeTitle: string | null;
   // Branching-dialogue state (PHAA-553): disposition toward each NPC + persistent
   // conversation flags. Nudged by dialogChoose, gates dialogue branches, persisted
   // in CharacterState (see dialog/dialog_commands.ts).
@@ -924,6 +940,12 @@ export interface CharacterState {
   bank?: { inventory: InvSlot[]; purchasedSlots: number; bonusSlots: number };
   questLog: { questId: string; counts: number[]; state: 'active' | 'ready' | 'done' }[];
   questsDone: string[];
+  // Book of Asphodelia (PHAA-744; JSONB, no schema migration). Optional so
+  // characters saved before deeds existed load cleanly (empty default).
+  deedLog?: { deedId: string; counts: number[]; state: DeedState }[];
+  deedsDone?: string[];
+  earnedTitles?: string[];
+  activeTitle?: string | null;
   // Branching-dialogue state (PHAA-553; JSONB, no schema migration). Optional so
   // characters saved before dialogue trees existed load cleanly (empty default).
   dialogState?: DialogStateSave;
@@ -973,6 +995,9 @@ export interface CharacterState {
   // Optional so characters saved before crafting (PHAA-574) existed load
   // cleanly (addPlayer backfills to all-zero).
   craftProficiency?: Partial<Record<CraftType, number>>;
+  // A live jail sentence (PHAA-657). Persisted so it keeps running across a
+  // reconnect and the character reloads still jailed. Absent = not jailed.
+  jail?: JailState;
   // Collection tracking core (PHAA-626). Optional/additive so characters saved
   // before the collections system existed load cleanly (empty default); no
   // schema migration needed (JSONB, server/db.ts).
@@ -1048,6 +1073,10 @@ export class Sim {
   // behind SimContext. Built in the ctor after `ctx`. Sim keeps thin delegates
   // (partyOf + the eight command methods) so IWorld + foreign call sites resolve.
   private party!: PartyMachine;
+  // Active party/raid ready checks, keyed by party id (social/ready_check.ts).
+  // Swept in the end-of-tick block by updateReadyChecks. Exposed to the seam
+  // as ctx.readyChecks.
+  readyChecks = new Map<number, ReadyCheck>();
   // Player target selection + the party-scoped raid-marker store (T1): owns
   // partyMarkers and the tab/nearest/friendly selectors, moved off Sim behind
   // SimContext. Built in the ctor after `ctx`. Sim keeps thin delegates (the nine
@@ -1584,6 +1613,10 @@ export class Sim {
       known: [],
       questLog: new Map(),
       questsDone: new Set(),
+      deedLog: new Map(),
+      deedsDone: new Set(),
+      earnedTitles: new Set(),
+      activeTitle: null,
       dialogState: dialogCommands.freshDialogState(),
       counters: freshCounters(),
       autoEquip: opts?.autoEquip ?? false,
@@ -1662,6 +1695,17 @@ export class Sim {
           });
       }
       for (const q of s.questsDone) meta.questsDone.add(q);
+      // Book of Asphodelia (PHAA-744): absent in pre-deed saves, loads to an empty
+      // default. Mirrors questLog: only active progress is kept here, completed
+      // deed ids live in deedsDone.
+      for (const d of s.deedLog ?? []) {
+        if (d.state !== 'done')
+          meta.deedLog.set(d.deedId, { deedId: d.deedId, counts: [...d.counts], state: d.state });
+      }
+      for (const d of s.deedsDone ?? []) meta.deedsDone.add(d);
+      for (const t of s.earnedTitles ?? []) meta.earnedTitles.add(t);
+      meta.activeTitle =
+        s.activeTitle && meta.earnedTitles.has(s.activeTitle) ? s.activeTitle : null;
       // PHAA-553: absent in pre-dialogue saves, loads to an empty default.
       meta.dialogState = dialogCommands.loadDialogState(s.dialogState);
       if (s.talents)
@@ -1903,6 +1947,14 @@ export class Sim {
         state: q.state,
       })),
       questsDone: [...meta.questsDone],
+      deedLog: [...meta.deedLog.values()].map((d) => ({
+        deedId: d.deedId,
+        counts: [...d.counts],
+        state: d.state,
+      })),
+      deedsDone: [...meta.deedsDone],
+      earnedTitles: [...meta.earnedTitles],
+      activeTitle: meta.activeTitle,
       dialogState: dialogCommands.serializeDialogState(meta.dialogState),
       arenaRating: meta.arenaRating,
       arenaWins: meta.arenaWins,
@@ -2207,6 +2259,22 @@ export class Sim {
   get questsDone(): Set<string> {
     return this.primary.questsDone;
   }
+  get deedLog(): Map<string, DeedProgress> {
+    return this.primary.deedLog;
+  }
+  get deedsDone(): Set<string> {
+    return this.primary.deedsDone;
+  }
+  get earnedTitles(): Set<string> {
+    return this.primary.earnedTitles;
+  }
+  get activeTitle(): string | null {
+    return this.primary.activeTitle;
+  }
+  setActiveTitle(titleId: string | null, pid?: number): void {
+    const meta = this.meta(pid ?? this.primaryId);
+    if (meta) setActiveTitleImpl(meta, titleId);
+  }
   raidLockouts(): import('../world_api').RaidLockout[] {
     const now = this.lockoutNowMs();
     const out: import('../world_api').RaidLockout[] = [];
@@ -2447,6 +2515,9 @@ export class Sim {
       get partyInvites() {
         return sim.party.partyInvites;
       },
+      get readyChecks() {
+        return sim.readyChecks;
+      },
       get chatTokens() {
         return sim.chatTokens;
       },
@@ -2555,6 +2626,10 @@ export class Sim {
       canAddItem: sim.canAddItem.bind(sim),
       partyOf: sim.partyOf.bind(sim),
       removeFromParty: (pid: number, verb: string) => sim.party.removeFromParty(pid, verb),
+      // /ready chat command routes through the seam to social/ready_check.ts (the
+      // leader-gated start; readyCheckRespond is a direct Sim delegate below, not on
+      // the seam, since nothing inside sim internals calls it).
+      readyCheckStart: (pid?: number) => readyCheckMod.readyCheckStart(sim.ctx, pid),
       // dropPartyMarkers flips to the T1 marker store (targeting); lazy arrow since
       // sim.targeting is built after ctx. The T1 selectors consume isHostileTo/
       // isFriendlyTo/pvpController/stopFollow, which are already bound above (C4a/C1) and
@@ -2567,6 +2642,10 @@ export class Sim {
       onInventoryChangedForQuests: (meta) => onInventoryChangedForQuests(sim.ctx, meta),
       onGreenpawFedForQuests: (meta) => onFeedForQuests(sim.ctx, meta),
       checkQuestReady: (qp, meta) => checkQuestReady(sim.ctx, qp, meta),
+      // PHAA-744: deed credit hooks (Book of Asphodelia), same event sites as the
+      // quest-credit trio above.
+      onMobKilledForDeeds: (mob, meta) => onMobKilledForDeeds(sim.ctx, mob, meta),
+      onInventoryChangedForDeeds: (meta) => onInventoryChangedForDeeds(sim.ctx, meta),
       countItem: sim.countItem.bind(sim),
       // I1 dungeon instancing now lives in instances/dungeons.ts; these route through
       // the same-named Sim delegates (foreign callers use this.X). lockoutNowMs is the
@@ -2823,6 +2902,14 @@ export class Sim {
     if (r) r.e.gm = enabled;
   }
 
+  // Mark a player as moderation-jailed: prisoners are mutually hostile (the
+  // jail brawl arm in isHostileTo). Server-side only: set on /jail, /unjail,
+  // and join restore.
+  setJailed(enabled: boolean, pid?: number): void {
+    const r = this.resolve(pid);
+    if (r) r.e.jailed = enabled;
+  }
+
   // Dev/test convenience: jump a player to a level (learns abilities, recalcs stats).
   setPlayerLevel(level: number, pid?: number): void {
     const r = this.resolve(pid);
@@ -3028,6 +3115,7 @@ export class Sim {
     this.updateDuels();
     this.updateArena();
     this.updateTradesAndInvites();
+    readyCheckMod.updateReadyChecks(this.ctx);
     this.updateLootRolls();
     this.updateInstances();
     this.updateDelveRuns();
@@ -4726,6 +4814,7 @@ export class Sim {
       pid: meta.entityId,
     });
     this.ctx.onInventoryChangedForQuests(meta);
+    this.ctx.onInventoryChangedForDeeds(meta);
     if (meta.autoEquip && (def?.kind === 'weapon' || def?.kind === 'armor')) {
       this.maybeAutoEquip(itemId, meta);
     }
@@ -4762,6 +4851,7 @@ export class Sim {
       if (s.count <= 0) meta.inventory.splice(i, 1);
     }
     this.ctx.onInventoryChangedForQuests(meta);
+    this.ctx.onInventoryChangedForDeeds(meta);
   }
 
   discardItem(itemId: string, count = 1, pid?: number): void {
@@ -5183,6 +5273,10 @@ export class Sim {
     releasePlayerSpirit(this.ctx, pid);
   }
 
+  revivePlayerAt(pid: number, pos: Vec3): void {
+    revivePlayerAtImpl(this.ctx, pid, pos);
+  }
+
   // chatAllowed / handleDevChat / whisperMessageForName / resolveWhisperTarget
   // moved to social/chat.ts (G2). The chat() router below dispatches to them via
   // chatMod.*(this.ctx, ...); they had no callers outside chat().
@@ -5236,6 +5330,11 @@ export class Sim {
           (duel.b === attackerPlayer.id && duel.a === target.id))
       )
         return true;
+      // The jail brawl: prisoners are hostile to each other, always (pets
+      // resolve to their owner via pvpController above, so a prisoner's pet
+      // fights too). isFriendlyTo below mirrors this, so prisoners cannot
+      // cross-heal.
+      if (attackerPlayer.jailed && target.jailed) return true;
       const match = this.arenaMatches.get(attackerPlayer.id);
       return (
         !!match &&
@@ -5287,6 +5386,13 @@ export class Sim {
 
   partyDecline(pid?: number): void {
     this.party.partyDecline(pid);
+  }
+
+  // The readyrespond command (a UI button click, not chat text): a party/raid
+  // member's yes/no answer to an in-flight ready check (social/ready_check.ts).
+  // Not on the SimContext seam (nothing inside sim internals calls it).
+  readyCheckRespond(ready: boolean, pid?: number): void {
+    readyCheckMod.readyCheckRespond(this.ctx, ready, pid);
   }
 
   partyLeave(pid?: number): void {

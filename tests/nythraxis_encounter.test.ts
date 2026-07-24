@@ -167,4 +167,19 @@ describe('Nythraxis encounter module (N1)', () => {
       expect(meta?.raidLockouts.get('nythraxis_boss_arena')).toBeGreaterThan(ctx.lockoutNowMs());
     }
   });
+
+  it('clips the lockout roster to the boss own instance slot (no cross-instance bleed)', () => {
+    const { sim, ctx, boss, tank, dps } = setup();
+    // Instance bounding boxes are rectangular (|dx|<120, |dz|<250) while the room
+    // radius check is circular (260yd), so a position can be inside the old
+    // distance-only filter while sitting outside the boss's own instance box: the
+    // exact gap upstream's "roster clipped to own instance slot" fix closes.
+    teleport(sim, dps[0], boss.spawnPos.x + 200, boss.spawnPos.z + 50, boss.pos.y);
+    expect(dist2d(dps[0].pos, boss.spawnPos)).toBeLessThan(260);
+    nythraxis.grantNythraxisLockout(ctx, boss);
+    expect(sim.players.get(dps[0].id)?.raidLockouts.has('nythraxis_boss_arena')).toBe(false);
+    for (const e of [tank, dps[1], dps[2], dps[3]]) {
+      expect(sim.players.get(e.id)?.raidLockouts.has('nythraxis_boss_arena')).toBe(true);
+    }
+  });
 });
