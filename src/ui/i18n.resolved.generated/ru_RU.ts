@@ -2444,6 +2444,9 @@ export const ru_RU: EnTranslations = {
       "nothingToHarvest": "С этого трупа нечего собирать.",
       "alreadyHarvested": "Этот труп уже разделан."
     },
+    "dailyRewards": {
+      "claimed": "Вы получаете ежедневную награду."
+    },
     "collections": {
       "notFound": "Этого не существует.",
       "tooFar": "Слишком далеко."
@@ -3829,6 +3832,22 @@ export const ru_RU: EnTranslations = {
       "crate": "Ящик",
       "bench": "Скамья",
       "stool": "Табурет"
+    }
+  },
+  "dailyRewardsUi": {
+    "menuButton": "Ежедневные награды",
+    "window": {
+      "title": "Ежедневные награды",
+      "close": "Закрыть ежедневные награды",
+      "claim": "Забрать",
+      "claimAria": "Забрать сегодняшнюю награду",
+      "claimed": "Получено. Возвращайтесь завтра.",
+      "locked": "Ежедневные награды сейчас недоступны для этого аккаунта.",
+      "hint": "Одна награда в день. Пропущенный день ничего не стоит."
+    },
+    "cell": {
+      "today": "Сегодня",
+      "itemCount": "{count}x {item}"
     }
   },
   "itemUi": {

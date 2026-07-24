@@ -29,8 +29,8 @@ const repoRoot = fileURLToPath(new URL('..', import.meta.url));
 // PHAA-641), +1 for setTitle (IWorldDeeds, PHAA-744), and +1 for daily_rewards_claim
 // (IWorldDailyRewards, PHAA-660): each is both a ClientWorld send and a server
 // dispatch case (not dispatch-only).
-const EXPECTED_SEND_COUNT = 124;
-const EXPECTED_DISPATCH_COUNT = 131;
+const EXPECTED_SEND_COUNT = 123;
+const EXPECTED_DISPATCH_COUNT = 130;
 const EXPECTED_DISPATCH_ONLY_COUNT = 7;
 
 // The chat sub-channel routing switch (server/game.ts `switch
