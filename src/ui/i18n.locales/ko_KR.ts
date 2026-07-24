@@ -1052,6 +1052,8 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hud.prompts.openTrade': '거래 열기',
   'hud.prompts.duelRequest': '{name}님이 결투를 신청했습니다!',
   'hud.prompts.acceptDuel': '결투 수락',
+  'hud.prompts.readyCheckStart': '{name}님이 준비 확인을 시작했습니다.',
+  'hud.prompts.markReady': '준비 완료',
   'hud.prompts.decline': '거절',
   'hud.combat.floatingMiss': '빗나감',
   'hud.combat.floatingDodge': '회피',
@@ -1612,6 +1614,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': '{item} 탐욕',
   'itemUi.lootRoll.passAria': '{item} 포기',
   'itemUi.lootRoll.everyonePassed': '모두 {item}을(를) 포기했습니다.',
+  'itemUi.lootRoll.winnerOffline': '{item}의 당첨자가 오프라인 상태여서 시체로 반환되었습니다.',
   'entities.abilities.heroic_strike.name': '영웅의 일격',
   'entities.abilities.heroic_strike.description':
     '강력한 공격으로 근접 피해가 {damage}만큼 증가합니다. 다음 무기 공격 시 발동됩니다.',
@@ -5202,6 +5205,10 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'sim.lockpick.tierMedium': '중급',
   'sim.lockpick.tierPremium': '최상급',
   'sim.lockpick.toolSlips': '도구가 이 자물쇠에서 미끄러집니다.',
+  'sim.readyCheck.alreadyInProgress': '이미 준비 확인이 진행 중입니다.',
+  'sim.readyCheck.mustBeInParty': '준비 확인을 시작하려면 파티에 있어야 합니다.',
+  'sim.readyCheck.summary':
+    '준비 확인: 준비 완료 {ready}명, 미준비 {notReady}명, 무응답 {noResponse}명.',
   'delveUi.board.tabDelve': '탐굴',
   'delveUi.shop.price': '증표 {marks}개',
   'delveUi.shop.buyAria': '탐굴 증표 {marks}개로 {item} 구매',

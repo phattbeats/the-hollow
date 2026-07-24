@@ -2508,6 +2508,11 @@ export const en_XA: EnTranslations = {
       "readoutNoHomesteadQuest": "[Ýóú óŵñ ñó ĥóɱéšţéáð. Ƒíñíšĥ Ɓŕóţĥéŕ Ĝŕééñþáŵ'š ƒúļļ éŕŕáñð çĥáíñ ţó úñļóçķ óñé.]",
       "readoutNoHomesteadHint": "[Ýóú óŵñ ñó ĥóɱéšţéáð. Šţáñð šóɱéŵĥéŕé ʋíáƀļé íñ ţĥé Ĥóļļóŵ Ŕéáçĥéš áñð ţýþé /ĥóɱéšţéáð çļáíɱ.]",
       "helpLine": "[Ĥóɱéšţéáð: /ĥóɱéšţéáð, /ĥóɱéšţéáð çļáíɱ.]"
+    },
+    "readyCheck": {
+      "mustBeInParty": "[Ýóú ɱúšţ ƀé íñ á þáŕţý ţó šţáŕţ á ŕéáðý çĥéçķ.]",
+      "alreadyInProgress": "[Á ŕéáðý çĥéçķ íš áļŕéáðý íñ þŕóĝŕéšš.]",
+      "summary": "[Ŕéáðý çĥéçķ: {ready} ŕéáðý, {notReady} ñóţ ŕéáðý, {noResponse} ñó ŕéšþóñšé.]"
     }
   },
   "lockpickUi": {
@@ -3349,6 +3354,8 @@ export const en_XA: EnTranslations = {
       "openTrade": "[Óþéñ Ţŕáðé]",
       "duelRequest": "[{name} ĥáš çĥáļļéñĝéð ýóú ţó á ðúéļ!]",
       "acceptDuel": "[Áççéþţ Ðúéļ]",
+      "readyCheckStart": "[{name} ĥáš šţáŕţéð á ŕéáðý çĥéçķ.]",
+      "markReady": "[Ŕéáðý]",
       "decline": "[Ðéçļíñé]"
     },
     "combat": {
@@ -4044,7 +4051,8 @@ export const en_XA: EnTranslations = {
       "needAria": "[Ñééð ƒóŕ {item}]",
       "greedAria": "[Ĝŕééð ƒóŕ {item}]",
       "passAria": "[Þášš óñ {item}]",
-      "everyonePassed": "[Éʋéŕýóñé þáššéð óñ {item}.]"
+      "everyonePassed": "[Éʋéŕýóñé þáššéð óñ {item}.]",
+      "winnerOffline": "[Ţĥé ŵíññéŕ óƒ {item} ŵáš óƒƒļíñé; íţ ŵáš ŕéţúŕñéð ţó ţĥé çóŕþšé.]"
     }
   },
   "entities": {

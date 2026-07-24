@@ -25,13 +25,12 @@ const repoRoot = fileURLToPath(new URL('..', import.meta.url));
 // Verified counts on the current tree (re-derived below; do not hard-code 85/6).
 // +4 over the pre-Ravenpost tree: mail_send/mail_take/mail_delete/mail_markread
 // are each both a ClientWorld send and a server dispatch case (none dispatch-only).
-// +1 over the pre-PHAA-626 tree: readCollectible (IWorldCollections) is both a
-// ClientWorld send and a server dispatch case (not dispatch-only), same as the
-// mail_* commands before it.
-// +1 over the pre-PHAA-660 tree: daily_rewards_claim (IWorldDailyRewards) is
-// both a ClientWorld send and a server dispatch case (not dispatch-only).
-const EXPECTED_SEND_COUNT = 122;
-const EXPECTED_DISPATCH_COUNT = 129;
+// +1 for readCollectible (IWorldCollections), +1 for readyRespond (IWorldParty,
+// PHAA-641), +1 for setTitle (IWorldDeeds, PHAA-744), and +1 for daily_rewards_claim
+// (IWorldDailyRewards, PHAA-660): each is both a ClientWorld send and a server
+// dispatch case (not dispatch-only).
+const EXPECTED_SEND_COUNT = 124;
+const EXPECTED_DISPATCH_COUNT = 131;
 const EXPECTED_DISPATCH_ONLY_COUNT = 7;
 
 // The chat sub-channel routing switch (server/game.ts `switch

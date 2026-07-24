@@ -1009,6 +1009,8 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hud.prompts.openTrade': '開啟交易',
   'hud.prompts.duelRequest': '{name} 向你發起了決鬥挑戰！',
   'hud.prompts.acceptDuel': '接受決鬥',
+  'hud.prompts.readyCheckStart': '{name} 發起了準備檢查。',
+  'hud.prompts.markReady': '準備',
   'hud.prompts.decline': '拒絕',
   'hud.combat.floatingMiss': '未命中',
   'hud.combat.floatingDodge': '閃避',
@@ -1553,6 +1555,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': '貪婪 {item}',
   'itemUi.lootRoll.passAria': '放棄 {item}',
   'itemUi.lootRoll.everyonePassed': '所有人都放棄了 {item}。',
+  'itemUi.lootRoll.winnerOffline': '{item}的獲勝者已離線；戰利品已歸還屍體。',
   'entities.abilities.heroic_strike.name': '英勇打擊',
   'entities.abilities.heroic_strike.description':
     '一次強力攻擊，使近戰傷害提高 {damage}。在你的下一次揮擊時觸發。',
@@ -4933,6 +4936,10 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'sim.lockpick.tierMedium': '中等',
   'sim.lockpick.tierPremium': '上等',
   'sim.lockpick.toolSlips': '那件工具從這道鎖上滑開了。',
+  'sim.readyCheck.alreadyInProgress': '準備檢查已在進行中。',
+  'sim.readyCheck.mustBeInParty': '你必須在隊伍中才能發起準備檢查。',
+  'sim.readyCheck.summary':
+    '準備檢查：{ready} 人已準備，{notReady} 人未準備，{noResponse} 人無回應。',
   'delveUi.board.tabDelve': '秘探',
   'delveUi.shop.price': '{marks} 印記',
   'delveUi.shop.buyAria': '用 {marks} 枚秘探印記購買 {item}',

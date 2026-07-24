@@ -8,6 +8,7 @@ import { BOARBALL_MOBS } from './content/boarball';
 import { BASE_ITEMS, FISHING_RARE_ID, FISHING_TABLES } from './content/items';
 import type {
   CampDef,
+  DeedDef,
   DelveDef,
   DelveModuleDef,
   DungeonDef,
@@ -20,6 +21,7 @@ import type {
   QuestDef,
   QuestState,
   ReadableDef,
+  TitleDef,
   WorldContent,
   ZoneDef,
   ZonePropsDef,
@@ -28,8 +30,11 @@ import type {
 export type { FishingEntry } from './content/items';
 export { FISHING_RARE_ID, FISHING_TABLES };
 
+import type { AchievementDef } from './achievements_core';
+import { ACHIEVEMENTS as ACHIEVEMENTS_CONTENT } from './content/achievements';
 import type { CollectibleDef } from './content/collectibles';
 import { COLLECTIBLES as COLLECTIBLES_CONTENT } from './content/collectibles';
+import { DEEDS as DEEDS_CONTENT, TITLES as TITLES_CONTENT } from './content/deeds';
 import {
   BROTHER_HALVEN,
   COLLAPSED_RELIQUARY_DELVE,
@@ -224,6 +229,15 @@ export const QUESTS: Record<string, QuestDef> = {
   ...HOLLOW_ZONE_QUESTS,
 };
 
+// Book of Asphodelia (PHAA-744): empty until PHAA-745 lands authored content.
+export const DEEDS: Record<string, DeedDef> = {
+  ...DEEDS_CONTENT,
+};
+
+export const TITLES: Record<string, TitleDef> = {
+  ...TITLES_CONTENT,
+};
+
 export const QUEST_ORDER: string[] = [
   ...ZONE1_QUEST_ORDER,
   ...ZONE2_QUEST_ORDER,
@@ -275,6 +289,15 @@ export const READ_RADIUS = READ_RADIUS_CONTENT;
 export const COLLECTIBLES: CollectibleDef[] = [...COLLECTIBLES_CONTENT];
 export const COLLECTIBLES_BY_ID: Record<string, CollectibleDef> = Object.fromEntries(
   COLLECTIBLES.map((c) => [c.id, c]),
+);
+
+// Achievement registry (PHAA-687): net-new discrete-accomplishment subsystem,
+// ALONGSIDE MILESTONES. Declarative defs live in src/sim/content/achievements.ts;
+// the pure engine is src/sim/achievements_core.ts, the sim wiring
+// src/sim/achievements.ts. Merged here so consumers resolve by stable id.
+export const ACHIEVEMENTS: AchievementDef[] = [...ACHIEVEMENTS_CONTENT];
+export const ACHIEVEMENTS_BY_ID: Record<string, AchievementDef> = Object.fromEntries(
+  ACHIEVEMENTS.map((a) => [a.id, a]),
 );
 
 export const ROADS: { x: number; z: number }[][] = [

@@ -14,7 +14,13 @@ import {
   type TalentAllocation,
   talentPointsAtLevel,
 } from '../sim/content/talents';
-import { abilitiesKnownAt, CLASSES, NPCS, resolveDelveShopOffers } from '../sim/data';
+import {
+  ACHIEVEMENTS_BY_ID,
+  abilitiesKnownAt,
+  CLASSES,
+  NPCS,
+  resolveDelveShopOffers,
+} from '../sim/data';
 import { deadTargetSelectable } from '../sim/dead_target';
 import { LEADERBOARD_PAGE_SIZE } from '../sim/leaderboard_page';
 import type { Ante, PickAction } from '../sim/lockpick';
@@ -24,6 +30,7 @@ import { readablePropsAt } from '../sim/readables_query';
 import { computeQuestState, type ResolvedAbility } from '../sim/sim';
 import {
   type Aura,
+  type DeedProgress,
   type Entity,
   type EquipSlot,
   emptyMoveInput,
@@ -884,6 +891,12 @@ export class ClientWorld implements IWorld {
   }
   questLog = new Map<string, QuestProgress>();
   questsDone = new Set<string>();
+  // --- IWorldDeeds: Book of Asphodelia deed/title state (PHAA-744), mirrored from
+  // the snapshot self (`dlog`/`ddone`/`etitles`/`atitle`). ---
+  deedLog = new Map<string, DeedProgress>();
+  deedsDone = new Set<string>();
+  earnedTitles = new Set<string>();
+  activeTitle: string | null = null;
   // --- IWorldParty: party/raid roster, mirrored from the snapshot self (`party`).
   // The raid-target markers ride the `markers` map below; IWorldPet keeps no mirror
   // field (pet state lives on the owned-mob entity wire). ---
@@ -1672,6 +1685,13 @@ export class ClientWorld implements IWorld {
       if (s.qdone !== undefined) this.questsDone = new Set(s.qdone);
       if (s.lockouts !== undefined) this.selfLockouts = s.lockouts as Record<string, number>;
       if (s.qlog !== undefined || s.qdone !== undefined) this.pendingQuestCommands?.clear();
+      // IWorldDeeds facet (PHAA-744) self-decode: dlog/ddone/etitles/atitle are
+      // delta-guarded (an omitted field keeps the prior mirror).
+      if (s.dlog !== undefined)
+        this.deedLog = new Map((s.dlog as DeedProgress[]).map((d) => [d.deedId, d]));
+      if (s.ddone !== undefined) this.deedsDone = new Set(s.ddone);
+      if (s.etitles !== undefined) this.earnedTitles = new Set(s.etitles);
+      if (s.atitle !== undefined) this.activeTitle = s.atitle as string | null;
       // IWorldTalents facet (W7) self-decode: tal is delta-guarded (omitted keeps
       // the prior mirror); the known rebuild below is display-only (re-renders what
       // the server already decided), not client authority.
@@ -1730,6 +1750,9 @@ export class ClientWorld implements IWorld {
       // Collection tracking core (PHAA-626): the viewer's own collected-id set,
       // mirrored whole (small, only grows) same shape as dclears/dcomp above.
       if (s.collected !== undefined) this.collectedIds = s.collected ?? [];
+      // Achievements (PHAA-687): the viewer's unlocked achievement ids, mirrored
+      // whole (small, only grows) same shape as collected above.
+      if (s.ach !== undefined) this.unlockedAchievementIds = s.ach ?? [];
       if (s.dclears !== undefined) this.delveClears = s.dclears ?? {};
       if (s.delveDaily !== undefined) this.delveDaily = s.delveDaily;
       // camera follows server-side facing changes when not mouselooking
@@ -1917,6 +1940,16 @@ export class ClientWorld implements IWorld {
   readCollectible(id: string): void {
     this.cmd({ cmd: 'readCollectible', collectibleId: id });
   }
+  // --- IWorldAchievements: unlocked achievements + points (PHAA-687) ---
+  // Read-only mirror; achievements auto-unlock server-side (no command). Points
+  // are derived from the unlocked ids against the shared registry, so only the
+  // id list rides the wire.
+  unlockedAchievementIds: string[] = [];
+  get achievementPoints(): number {
+    let total = 0;
+    for (const id of this.unlockedAchievementIds) total += ACHIEVEMENTS_BY_ID[id]?.points ?? 0;
+    return total;
+  }
   // --- IWorldLoot: need-greed roll submit + HUD reconcile read ---
   submitLootRoll(rollId: number, choice: LootRollChoice): void {
     this.cmd({ cmd: 'lootRoll', rollId, choice });
@@ -1953,6 +1986,15 @@ export class ClientWorld implements IWorld {
   }
   acceptLinkedQuest(questId: string, fromPid: number): void {
     this.cmd({ cmd: 'qlinkaccept', quest: questId, from: fromPid });
+  }
+  // IWorldDeeds (PHAA-744): select (or clear with null) the earned title shown
+  // alongside the character's name. Optimistic-set, like the equip commands
+  // below: the server re-validates against earnedTitles and the next snapshot
+  // (`atitle`) is authoritative if it disagrees.
+  setActiveTitle(titleId: string | null): void {
+    if (!this.canSendCommand()) return;
+    this.activeTitle = titleId;
+    this.cmd({ cmd: 'setTitle', title: titleId });
   }
   // IWorldInventory facet (W2): the eight item/vendor command senders. Each is a thin
   // cmd() emit whose offline counterpart is the moved src/sim/items.ts body resolved on
@@ -2123,6 +2165,11 @@ export class ClientWorld implements IWorld {
   }
   clearMarker(entityId: number): void {
     this.cmd({ cmd: 'clearMarker', id: entityId });
+  }
+  // PHAA-641: the readyrespond command (a UI button click, not chat text); the ready
+  // check itself starts via the "/ready" chat command, which already routes online.
+  readyCheckRespond(ready: boolean): void {
+    this.cmd({ cmd: 'readyRespond', ready });
   }
   // --- IWorldTrade: trade-window command sends (tradeInfo is a snapshot read). ---
   tradeRequest(targetPid: number): void {

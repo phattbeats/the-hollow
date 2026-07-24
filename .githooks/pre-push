@@ -46,8 +46,12 @@ if [ "$tools_ok" = 1 ]; then
 fi
 
 # 4) Copy rules over the push diff: no em dash, en dash, or emoji (locale overlays excluded).
-base=$(git merge-base HEAD '@{upstream}' 2>/dev/null \
-  || git merge-base HEAD origin/main 2>/dev/null \
+# origin/main first, not @{upstream}: a long-lived feature branch's own remote ref can sit
+# stale for dozens of commits behind main (its owner only pushes at merge time), which widens
+# the merge-base window to include already-merged main content and false-flags it as "introduced
+# by this push." origin/main is always the accurate boundary for "what did THIS branch add."
+base=$(git merge-base HEAD origin/main 2>/dev/null \
+  || git merge-base HEAD '@{upstream}' 2>/dev/null \
   || git rev-parse HEAD~1 2>/dev/null || true)
 if [ -n "$base" ] && command -v perl >/dev/null 2>&1; then
   copy=$(git diff -U0 --no-color "$base"...HEAD -- \

@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { isInJailCage, JAIL_CENTER } from '../src/sim/content/jail';
 
 const moderation = vi.hoisted(() => ({
   recordInGameAction: vi.fn(async () => {}),
@@ -154,6 +155,97 @@ describe('in-game moderation actions', () => {
       reason: 'spawn camping',
     });
     expect(eventTexts(killerWs)).toContain('Killed Victim.');
+  });
+
+  it('jails, brawls, and releases prisoners early via /unjail', async () => {
+    const server = new GameServer();
+    const moderatorWs = fakeWs();
+    const targetWs = fakeWs();
+    const otherTargetWs = fakeWs();
+    const moderator = joined(
+      server.join(moderatorWs, 5, 105, 'Warden', 'warrior', null, false, {
+        isAdmin: true,
+        adminPermissions: MOD_PERMS,
+      }),
+    );
+    const target = joined(server.join(targetWs, 6, 106, 'Rowdy', 'rogue', null));
+    const otherTarget = joined(server.join(otherTargetWs, 7, 107, 'Brawler', 'mage', null));
+    const originalPos = { ...entity(server, target.pid).pos };
+    entity(server, moderator.pid).targetId = target.pid;
+
+    command(server, moderator, '/jail 15 repeat griefing');
+    await vi.waitFor(() => expect(target.jailed).not.toBeNull());
+
+    expect(moderation.recordInGameAction).toHaveBeenCalledWith({
+      action: 'jail',
+      accountId: 6,
+      adminAccountId: 5,
+      reason: 'repeat griefing (15 minutes)',
+    });
+    expect(eventTexts(moderatorWs)).toContain('Jailed Rowdy for 15 minutes.');
+    expect(eventTexts(targetWs)).toContain('A moderator has moved you to jail for 15 minutes.');
+    expect(isInJailCage(entity(server, target.pid).pos)).toBe(true);
+    expect(entity(server, target.pid).jailed).toBe(true);
+
+    // The jail brawl: two prisoners are mutually hostile even though neither
+    // player attacked the other outside the cage.
+    entity(server, moderator.pid).targetId = otherTarget.pid;
+    command(server, moderator, '/jail 15 also griefing');
+    await vi.waitFor(() => expect(otherTarget.jailed).not.toBeNull());
+    expect(
+      server.sim.isHostileTo(entity(server, target.pid), entity(server, otherTarget.pid)),
+    ).toBe(true);
+
+    entity(server, moderator.pid).targetId = target.pid;
+    command(server, moderator, '/unjail');
+    await vi.waitFor(() => expect(target.jailed).toBeNull());
+
+    expect(moderation.recordInGameAction).toHaveBeenCalledWith({
+      action: 'unjail',
+      accountId: 6,
+      adminAccountId: 5,
+      reason: 'Released by in-game moderator command',
+    });
+    expect(eventTexts(moderatorWs)).toContain('Released Rowdy from jail.');
+    expect(eventTexts(targetWs)).toContain('A moderator has released you from jail.');
+    expect(entity(server, target.pid).jailed).toBe(false);
+    expect(entity(server, target.pid).pos.x).toBe(originalPos.x);
+    expect(entity(server, target.pid).pos.z).toBe(originalPos.z);
+  });
+
+  it('auto-releases a served sentence and snaps back an escape attempt', async () => {
+    const server = new GameServer();
+    const moderatorWs = fakeWs();
+    const targetWs = fakeWs();
+    const moderator = joined(
+      server.join(moderatorWs, 8, 108, 'Warden2', 'warrior', null, false, {
+        isAdmin: true,
+        adminPermissions: MOD_PERMS,
+      }),
+    );
+    const target = joined(server.join(targetWs, 9, 109, 'Fugitive', 'hunter', null));
+    entity(server, moderator.pid).targetId = target.pid;
+
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-07-11T00:00:00Z'));
+    command(server, moderator, '/jail 5 fleeing arrest');
+    await Promise.resolve();
+    await Promise.resolve();
+    expect(target.jailed).not.toBeNull();
+
+    // An escape attempt: force the entity out past the cage bounds. The next
+    // enforcement tick must snap it straight back, never let it stay outside.
+    const fugitive = entity(server, target.pid);
+    fugitive.pos = { x: JAIL_CENTER.x + 500, y: 0, z: JAIL_CENTER.z };
+    (server as unknown as { enforceJailStates(): void }).enforceJailStates();
+    expect(isInJailCage(entity(server, target.pid).pos)).toBe(true);
+
+    // Sentence served: the next enforcement tick releases automatically.
+    vi.setSystemTime(new Date('2026-07-11T00:05:01Z'));
+    (server as unknown as { enforceJailStates(): void }).enforceJailStates();
+    expect(target.jailed).toBeNull();
+    expect(eventTexts(targetWs)).toContain('Your jail sentence has ended.');
+    vi.useRealTimers();
   });
 
   it('persists mute, timed suspend, permanent ban, and force-rename before applying', async () => {

@@ -145,8 +145,8 @@
       "tick": 38,
       "time": 1.9,
       "nextId": 423,
-      "state": "8abd7113",
-      "events": "62732f1c",
+      "state": "2b633ebf",
+      "events": "7c430644",
       "rng": {
         "draws": 8,
         "digest": "868f4186"
@@ -173,6 +173,73 @@
             "kills": 1,
             "xpGained": 898
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ],
+            [
+              "dlv_reliquary_cleared",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "dlv_reliquary_cleared",
+                "state": "done"
+              }
+            ],
+            [
+              "dlv_reliquary_warden",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "dlv_reliquary_warden",
+                "state": "active"
+              }
+            ],
+            [
+              "dlv_the_delver",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "dlv_the_delver",
+                "state": "active"
+              }
+            ],
+            [
+              "dlv_without_a_scratch",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "dlv_without_a_scratch",
+                "state": "done"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood",
+            "dlv_reliquary_cleared",
+            "dlv_without_a_scratch"
+          ],
           "delveClears": {
             "collapsed_reliquary:normal": 1
           },
@@ -187,6 +254,10 @@
           ],
           "delveMarks": 3,
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded",
+            "t_unbroken"
+          ],
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -394,7 +465,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 423,
-      "state": "cbe5e128",
+      "state": "9a68cb88",
       "events": "741638a5",
       "rng": {
         "draws": 8,
@@ -405,7 +476,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 423,
-      "state": "cbe5e128",
+      "state": "9a68cb88",
       "events": "741638a5",
       "rng": {
         "draws": 8,
@@ -433,6 +504,73 @@
             "kills": 1,
             "xpGained": 898
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ],
+            [
+              "dlv_reliquary_cleared",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "dlv_reliquary_cleared",
+                "state": "done"
+              }
+            ],
+            [
+              "dlv_reliquary_warden",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "dlv_reliquary_warden",
+                "state": "active"
+              }
+            ],
+            [
+              "dlv_the_delver",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "dlv_the_delver",
+                "state": "active"
+              }
+            ],
+            [
+              "dlv_without_a_scratch",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "dlv_without_a_scratch",
+                "state": "done"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood",
+            "dlv_reliquary_cleared",
+            "dlv_without_a_scratch"
+          ],
           "delveClears": {
             "collapsed_reliquary:normal": 1
           },
@@ -447,6 +585,10 @@
           ],
           "delveMarks": 3,
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded",
+            "t_unbroken"
+          ],
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",

@@ -1081,6 +1081,8 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hud.prompts.openTrade': 'Открыть обмен',
   'hud.prompts.duelRequest': '{name} вызвал вас на дуэль!',
   'hud.prompts.acceptDuel': 'Принять дуэль',
+  'hud.prompts.readyCheckStart': '{name} начал проверку готовности.',
+  'hud.prompts.markReady': 'Готов',
   'hud.prompts.decline': 'Отклонить',
   'hud.combat.floatingMiss': 'Промах',
   'hud.combat.floatingDodge': 'Уклон',
@@ -1644,6 +1646,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': 'Жадность: {item}',
   'itemUi.lootRoll.passAria': 'Пас: {item}',
   'itemUi.lootRoll.everyonePassed': 'Все отказались от {item}.',
+  'itemUi.lootRoll.winnerOffline': 'Победитель {item} был офлайн; предмет вернулся к трупу.',
   'entities.abilities.heroic_strike.name': 'Удар героя',
   'entities.abilities.heroic_strike.description':
     'Мощная атака, увеличивающая урон в ближнем бою на {damage}. Срабатывает при следующем взмахе оружием.',
@@ -5303,6 +5306,10 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'sim.lockpick.tierMedium': 'Средняя',
   'sim.lockpick.tierPremium': 'Превосходная',
   'sim.lockpick.toolSlips': 'Этот инструмент соскальзывает с этого замка.',
+  'sim.readyCheck.alreadyInProgress': 'Проверка готовности уже идет.',
+  'sim.readyCheck.mustBeInParty': 'Чтобы начать проверку готовности, вы должны состоять в группе.',
+  'sim.readyCheck.summary':
+    'Проверка готовности: готовы {ready}, не готовы {notReady}, без ответа {noResponse}.',
   'delveUi.board.tabDelve': 'Вылазка',
   'delveUi.shop.price': '{marks} меток',
   'delveUi.shop.buyAria': 'Купить {item} за {marks} Меток Вылазок',

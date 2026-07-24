@@ -642,6 +642,7 @@ export function handleDeath(ctx: SimContext, e: Entity, killer: Entity | null): 
         );
         if (xpGain > 0) grantXp(ctx, xpGain, member, { fromKill: true });
         ctx.onMobKilledForQuests(e, member);
+        ctx.onMobKilledForDeeds(e, member);
       }
       // World bosses use PERSONAL loot for every contributor (rolled below from the
       // hate-table snapshot), not the tapper/party shared-corpse roll.
@@ -695,6 +696,7 @@ export function grantXp(
     p.hp = p.maxHp;
     if (p.resourceType === 'mana') p.resource = p.maxResource;
     ctx.emit({ type: 'levelup', level: p.level, pid: p.id });
+    ctx.onLevelReachedForDeeds(p.level, meta);
     ctx.refreshKnownAbilities(meta, true);
     ctx.syncPetLevel(p);
   }

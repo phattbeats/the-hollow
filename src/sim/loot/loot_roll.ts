@@ -464,14 +464,17 @@ export function assignMasterLoot(
   if (targets.length === 1) {
     if (!ctx.pendingLootRolls.delete(roll.id)) return;
     const targetName = ctx.players.get(targets[0])?.name ?? 'Unknown';
+    const delivered = isLootRollRecipientOnline(ctx, targets[0]);
     const recipients = new Set([...roll.candidates, roll.masterLooter]);
     for (const recipient of recipients)
       ctx.emit({
         type: 'loot',
-        text: `${r.meta.name} assigned ${roll.itemName} to ${targetName}.`,
+        text: delivered
+          ? `${r.meta.name} assigned ${roll.itemName} to ${targetName}.`
+          : `The winner of ${roll.itemName} was offline; it was returned to the corpse.`,
         pid: recipient,
       });
-    ctx.addItem(roll.itemId, 1, targets[0]);
+    deliverOrReturnLootRollItem(ctx, roll, targets[0], delivered);
     return;
   }
   convertMasterRollToNeedGreed(ctx, roll, targets);
@@ -583,14 +586,40 @@ export function resolveLootRoll(ctx: SimContext, roll: PendingLootRoll): void {
     tiedWinners.length === 1 ? tiedWinners[0] : tiedWinners[ctx.rng.int(0, tiedWinners.length - 1)];
   const winnerMeta = ctx.players.get(winner.pid);
   const winnerName = winnerMeta?.name ?? 'Unknown';
+  const delivered = isLootRollRecipientOnline(ctx, winner.pid);
   for (const pid of partyMembersForRoll(roll)) {
     ctx.emit({
       type: 'loot',
-      text: `${winnerName} wins ${roll.itemName} (${winner.result.roll ?? 0})`,
+      text: delivered
+        ? `${winnerName} wins ${roll.itemName} (${winner.result.roll ?? 0})`
+        : `The winner of ${roll.itemName} was offline; it was returned to the corpse.`,
       pid,
     });
   }
-  ctx.addItem(roll.itemId, 1, winner.pid);
+  deliverOrReturnLootRollItem(ctx, roll, winner.pid, delivered);
+}
+
+// A roll winner (need/greed or a single-target master-loot assignment) may have
+// disconnected between the roll opening and its resolution. `addItem` silently
+// no-ops for a pid no longer in ctx.players/ctx.entities, which would otherwise
+// destroy the item outright; return it to the corpse instead (the same open-to-all
+// slot the everyone-passes branch uses) so an eligible party member, ghost or
+// alive, can still reclaim it.
+function isLootRollRecipientOnline(ctx: SimContext, recipientPid: number): boolean {
+  return ctx.players.has(recipientPid) && ctx.entities.has(recipientPid);
+}
+
+// Applies the delivery decided by `isLootRollRecipientOnline`. Kept as a separate,
+// later call so the online/offline loot-line text (emitted above) still precedes
+// `addItem`'s own "You receive" event, preserving event order for the delivered path.
+function deliverOrReturnLootRollItem(
+  ctx: SimContext,
+  roll: PendingLootRoll,
+  recipientPid: number,
+  delivered: boolean,
+): void {
+  if (delivered) ctx.addItem(roll.itemId, 1, recipientPid);
+  else returnLootRollItemToCorpse(ctx, roll);
 }
 
 function returnLootRollItemToCorpse(ctx: SimContext, roll: PendingLootRoll): void {

@@ -2444,8 +2444,8 @@ export class Hud {
     document.getElementById('ui') as HTMLElement,
     (x, y, z) => this.renderer.worldToScreen(x, y, z),
     getUiScale,
-    // Tier the pool cap / TTL / drop-non-crit from the STATIC preset (data-fx-level),
-    // never the governor. spawn() reads this per event.
+    // Tier the pool cap / TTL from the STATIC preset (data-fx-level), never the
+    // governor. spawn() reads this per event.
     { getFxTier: () => this.fxTier() },
   );
   // The player frame is the FIRST instance of the unit_frame family. It owns
@@ -6563,6 +6563,15 @@ export class Hud {
             () => this.sim.duelDecline(),
           );
           break;
+        case 'readyCheckStart':
+          audio.click();
+          this.showPrompt(
+            t('hud.prompts.readyCheckStart', { name: `<b>${esc(ev.fromName)}</b>` }),
+            t('hud.prompts.markReady'),
+            () => this.sim.readyCheckRespond(true),
+            () => this.sim.readyCheckRespond(false),
+          );
+          break;
         case 'duelCountdown':
           this.showBanner(t('hud.system.duelCountdown', { seconds: ev.seconds }));
           audio.duelCountdownTick();
@@ -7251,6 +7260,9 @@ export class Hud {
     match = /^Everyone passed on (.+)\.$/.exec(text);
     if (match)
       return t('itemUi.lootRoll.everyonePassed', { item: itemDisplayNameFromSource(match[1]) });
+    match = /^The winner of (.+) was offline; it was returned to the corpse\.$/.exec(text);
+    if (match)
+      return t('itemUi.lootRoll.winnerOffline', { item: itemDisplayNameFromSource(match[1]) });
     match = /^Sold (\d+) junk items? for (.+)\.$/.exec(text);
     if (match) {
       const n = Number(match[1]);
