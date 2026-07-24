@@ -1725,6 +1725,10 @@ export class GameServer {
         console.error('failed to close play session:', err),
       );
     }
+    // Arena forfeit accounting (Elo + honor) resolves before persistence, so a
+    // disconnecting fighter's own loss/grant is not silently dropped by a save
+    // that already ran; removePlayer repeats the idempotent cleanup below.
+    this.sim.arenaResolveDesertion(session.pid);
     await this.saveCharacterOnLeave(session);
     this.sessionsByCharacterId.delete(session.characterId);
     this.sim.removePlayer(session.pid);
@@ -2533,6 +2537,9 @@ export class GameServer {
         break;
       case 'craftItem':
         if (typeof msg.recipe === 'string') sim.craftItem(msg.recipe, pid);
+        break;
+      case 'readCollectible':
+        if (typeof msg.collectibleId === 'string') sim.readCollectible(msg.collectibleId, pid);
         break;
       case 'lootRoll':
         if (
@@ -3502,6 +3509,10 @@ export class GameServer {
     maybe('marks', this.markersWire(anchorSession.pid));
     maybe('trade', this.tradeWire(anchorSession.pid));
     maybe('duel', this.duelWire(anchorSession.pid));
+    // Small PvP-ledger scalars. Delta-guarded like marks: a fresh session
+    // receives both, then they ride only on earn/spend changes.
+    maybe('honor', meta.honor);
+    maybe('lhonor', meta.lifetimeHonor);
     if (this.sim.tickCount - session.lastArenaWireTick >= ARENA_WIRE_INTERVAL_TICKS) {
       session.lastArenaWireTick = this.sim.tickCount;
       maybe('arena', this.sim.arenaInfoFor(anchorSession.pid));
@@ -3547,6 +3558,12 @@ export class GameServer {
     // elapses without waiting on a heavy-field refresh; the server stays
     // authoritative (harvestNode is still re-validated on the real attempt).
     maybe('gnodecd', this.sim.nodeCooldownIdsFor(anchorSession.pid));
+    // Collection tracking core (PHAA-626): the viewer's own collected ids,
+    // mirrored whole (small, only grows) same rationale as dclears below.
+    maybe('collected', this.sim.collectedIdsFor(anchorSession.pid));
+    // Achievements (PHAA-687): the viewer's own unlocked achievement ids,
+    // mirrored whole (small, only grows) same rationale as collected above.
+    maybe('ach', this.sim.unlockedAchievementsFor(anchorSession.pid));
     maybe('dclears', this.sim.delveClearsFor(anchorSession.pid));
     maybe('delveDaily', this.sim.delveDailyWire(anchorSession.pid));
     // stats + weapon stay per-tick: recalcPlayerStats re-derives them on every

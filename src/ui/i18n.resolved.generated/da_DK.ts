@@ -720,10 +720,18 @@ export const da_DK: EnTranslations = {
         "spi": "Verringert Willenskraft um {value}",
         "allStats": "Verringert alle Attribute um {value}"
       },
+      "increasePct": {
+        "ap": "Increases attack power by {pct}%",
+        "armor": "Increases armor by {pct}%",
+        "int": "Increases Intellect by {pct}%",
+        "sta": "Increases Stamina by {pct}%"
+      },
       "dodge": "Erhöht Ausweichchance um {pct}%",
       "dodgeReduce": "Verringert Ausweichchance um {pct}%",
       "armorFlat": "Verringert Rüstung um {value}",
       "armorFlatStacks": "Verringert Rüstung um {value} ({stacks} Stapel)",
+      "armorPct": "Reduces armor by {pct}%",
+      "armorPctStacks": "Reduces armor by {pct}% ({stacks} stacks)",
       "mortalWound": "Verringert erhaltene Heilung um {pct}%",
       "vulnerability": "Erhöht erlittenen Schaden um {pct}%",
       "physVuln": "Erhöht erlittenen physischen Schaden um {pct}%",
@@ -990,6 +998,21 @@ export const da_DK: EnTranslations = {
       "spore": "Spore",
       "toolTier": "Tier {tier} tool",
       "toolNone": "No tool"
+    },
+    "warfare": {
+      "ratingLabel": "Warfare",
+      "balance": "Honor: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} Honor",
+      "honorFloat": "+{amount} Honor",
+      "honorGain": "+{amount} Honor ({reason})",
+      "notEnoughHonor": "Not enough honor.",
+      "reasons": {
+        "arenaWin": "Arena win",
+        "fiestaKill": "Fiesta takedown",
+        "fiestaComplete": "Fiesta match",
+        "fiestaWin": "Fiesta win"
+      }
     }
   },
   "mailUi": {
@@ -2420,6 +2443,10 @@ export const da_DK: EnTranslations = {
     "gathering": {
       "nothingToHarvest": "That corpse has nothing to harvest.",
       "alreadyHarvested": "This corpse has already been harvested."
+    },
+    "collections": {
+      "notFound": "That does not exist.",
+      "tooFar": "Too far away."
     },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
@@ -4080,7 +4107,7 @@ export const da_DK: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Sønderbryd Rustning",
-        "description": "Sønderbryder målets rustning og reducerer den med {damage} per anvendelse. Stabler op til 5 gange. Genererer en stor mængde trussel."
+        "description": "Sønderbryder målets rustning og reducerer den med 2% per anvendelse. Stabler op til 5 gange. Genererer en stor mængde trussel."
       },
       "taunt": {
         "name": "Hån",
@@ -5178,6 +5205,99 @@ export const da_DK: EnTranslations = {
       "mistcallers_duffel": {
         "name": "Mistcallers Sømandssæk"
       },
+      "bramblewar_warhelm": {
+        "name": "Tjørnekrig Hoved"
+      },
+      "bramblewar_warspaulders": {
+        "name": "Tjørnekrig Skuldre"
+      },
+      "bramblewar_warplate": {
+        "name": "Tjørnekrig Bryst"
+      },
+      "bramblewar_girdle": {
+        "name": "Tjørnekrig Talje"
+      },
+      "bramblewar_legguards": {
+        "name": "Tjørnekrig Ben"
+      },
+      "bramblewar_gauntlets": {
+        "name": "Tjørnekrig Hænder"
+      },
+      "bramblewar_sabatons": {
+        "name": "Tjørnekrig Fødder"
+      },
+      "thornbound_crown": {
+        "name": "Tjørnebundet Hoved"
+      },
+      "thornbound_spaulders": {
+        "name": "Tjørnebundet Skuldre"
+      },
+      "thornbound_hauberk": {
+        "name": "Tjørnebundet Bryst"
+      },
+      "thornbound_waistguard": {
+        "name": "Tjørnebundet Talje"
+      },
+      "thornbound_legmail": {
+        "name": "Tjørnebundet Ben"
+      },
+      "thornbound_handguards": {
+        "name": "Tjørnebundet Hænder"
+      },
+      "thornbound_greaves": {
+        "name": "Tjørnebundet Fødder"
+      },
+      "nettlestalker_cowl": {
+        "name": "Brændenældejæger Hoved"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "Brændenældejæger Skuldre"
+      },
+      "nettlestalker_harness": {
+        "name": "Brændenældejæger Bryst"
+      },
+      "nettlestalker_waistband": {
+        "name": "Brændenældejæger Talje"
+      },
+      "nettlestalker_legguards": {
+        "name": "Brændenældejæger Ben"
+      },
+      "nettlestalker_grips": {
+        "name": "Brændenældejæger Hænder"
+      },
+      "nettlestalker_treads": {
+        "name": "Brændenældejæger Fødder"
+      },
+      "mossweave_cowl": {
+        "name": "Mosvævet Hoved"
+      },
+      "mossweave_mantle": {
+        "name": "Mosvævet Skuldre"
+      },
+      "mossweave_raiment": {
+        "name": "Mosvævet Bryst"
+      },
+      "mossweave_cord": {
+        "name": "Mosvævet Talje"
+      },
+      "mossweave_legwraps": {
+        "name": "Mosvævet Ben"
+      },
+      "mossweave_handwraps": {
+        "name": "Mosvævet Hænder"
+      },
+      "mossweave_slippers": {
+        "name": "Mosvævet Fødder"
+      },
+      "last_bloom_greatblade": {
+        "name": "Sidste Blomstrings Storsværd"
+      },
+      "thornbite_razor": {
+        "name": "Tornebid-Ragekniv"
+      },
+      "heartwood_warstaff": {
+        "name": "Kerneved-Krigsstav"
+      },
       "bristleback_maul": {
         "name": "Børsterygs-Lemlæster"
       },
@@ -6172,6 +6292,11 @@ export const da_DK: EnTranslations = {
         "name": "Elder Yarrow",
         "title": "Profession Trainer",
         "greeting": "Every build starts as a question. Which second calling speaks to you?"
+      },
+      "bramble": {
+        "name": "Bramble",
+        "title": "Honor Quartermaster",
+        "greeting": "The sands remember every victory. Spend your honor well."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",

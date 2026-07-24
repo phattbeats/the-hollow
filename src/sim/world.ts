@@ -1,19 +1,13 @@
-import {
-  CAMPS,
-  DUNGEON_FLOOR_Y,
-  DUNGEON_X_THRESHOLD,
-  ROADS,
-  WORLD_MAX_X,
-  WORLD_MAX_Z,
-  WORLD_MIN_X,
-  WORLD_MIN_Z,
-  ZONES,
-} from './data';
+import { DUNGEON_FLOOR_Y, DUNGEON_X_THRESHOLD, getActiveWorldContent, WORLD_MAX_X } from './data';
 import { fbm2, hash2 } from './rng';
-import type { BiomeId } from './types';
+import type { BiomeId, HeightStamp, WorldContent } from './types';
 
-// Terrain is a pure function of (x, z, seed): both the sim (ground clamping)
-// and the renderer (mesh) sample the same heightfield, so they always agree.
+// Terrain is a pure function of (x, z, seed) for a given active world content:
+// both the sim (ground clamping) and the renderer (mesh) sample the same
+// heightfield, so they always agree. The active content is the built-in 3-zone
+// world by default (data.ts BUILTIN_WORLD); the editor swaps in a custom map for
+// play-testing via setActiveWorldContent. With the built-in world this file
+// behaves exactly as before (byte-identical heightfield).
 //
 // The world is a north-running strip of zone bands (see ZONES in data.ts).
 // Each biome shapes the heightfield differently — the vale rolls, the marsh
@@ -23,7 +17,16 @@ import type { BiomeId } from './types';
 const HILL_SCALE = 0.013;
 const DETAIL_SCALE = 0.05;
 
+// The built-in world's water surface height. Fixed-content call sites (tests,
+// built-in tuning constants) may use the const; anything that must respect a
+// custom map's water goes through waterLevel() below.
 export const WATER_LEVEL = -4.5;
+
+// The ACTIVE water surface height: the custom map's level if one is loaded, else
+// the built-in constant. Cheap (identity-cached content lookup), safe in hot paths.
+export function waterLevel(): number {
+  return world().content.waterLevel ?? WATER_LEVEL;
+}
 
 // A declared lake's footprint reaches this multiple past its authored radius
 // (the same soft-edge basin blend baseHeight uses below), so the render plane,
@@ -32,12 +35,12 @@ export const WATER_LEVEL = -4.5;
 export const LAKE_BLEND_RADIUS_MULT = 1.6;
 
 // True when (x, z) falls inside a declared lake's footprint (any zone's
-// `lakes` list). Terrain outside every declared water body is never "water",
-// no matter how far its height dips below WATER_LEVEL: a content author's
-// sunken feature (crater, sinkhole, tunnel) stays dry and walkable as long as
-// it isn't inside one of these footprints.
+// `lakes` list) of the ACTIVE world content. Terrain outside every declared
+// water body is never "water", no matter how far its height dips below
+// waterLevel(): a content author's sunken feature (crater, sinkhole, tunnel)
+// stays dry and walkable as long as it isn't inside one of these footprints.
 export function isInWaterBody(x: number, z: number): boolean {
-  for (const zone of ZONES) {
+  for (const zone of world().content.zones) {
     for (const lake of zone.lakes) {
       const dSq = (x - lake.x) ** 2 + (z - lake.z) ** 2;
       const rMax = lake.radius * LAKE_BLEND_RADIUS_MULT;
@@ -47,13 +50,13 @@ export function isInWaterBody(x: number, z: number): boolean {
   return false;
 }
 
-// The water surface height AT this location: WATER_LEVEL inside a declared
-// lake's footprint, else -Infinity (there is no water surface here, so
+// The water surface height AT this location: the active waterLevel() inside a
+// declared lake's footprint, else -Infinity (there is no water surface here, so
 // nothing reads as flooded and no swim-depth floor applies). Callers that
 // need "is there water here at all" should prefer this over the flat global
 // constant.
 export function waterLevelAt(x: number, z: number): number {
-  return isInWaterBody(x, z) ? WATER_LEVEL : -Infinity;
+  return isInWaterBody(x, z) ? waterLevel() : -Infinity;
 }
 
 // Every declared lake across the active zones, in render/authoring footprint
@@ -62,7 +65,7 @@ export function waterLevelAt(x: number, z: number): number {
 // zone's footprint.
 export function waterBodies(): { x: number; z: number; radius: number }[] {
   const out: { x: number; z: number; radius: number }[] = [];
-  for (const zone of ZONES) {
+  for (const zone of world().content.zones) {
     for (const lake of zone.lakes) {
       out.push({ x: lake.x, z: lake.z, radius: lake.radius * LAKE_BLEND_RADIUS_MULT });
     }
@@ -75,14 +78,46 @@ const BIOME_SHAPE: Record<BiomeId, { hill: number; base: number; hubHeight: numb
   vale: { hill: 26, base: 0, hubHeight: 1.5 },
   marsh: { hill: 11, base: -1.0, hubHeight: 1.2 },
   peaks: { hill: 34, base: 7, hubHeight: 9 },
+  // Paint-only biomes (the editor's biome brush): never a zone band in the
+  // built-in world, so these rows only shape painted cells on custom maps.
+  beach: { hill: 5, base: -2.4, hubHeight: 0.8 },
+  desert: { hill: 15, base: 2.5, hubHeight: 2 },
+  volcano: { hill: 42, base: 9, hubHeight: 6 },
+  cave: { hill: 9, base: 1, hubHeight: 1 },
 };
 
-// Ridge walls between zone bands, each opened by a road pass - unless the
-// earlier zone requests `sealedFrontier`, in which case the wall runs solid
-// the whole way (see ZoneDef.sealedFrontier).
-const ZONE_RIDGES: { z: number; passX: number; sealed: boolean }[] = [];
-for (let i = 0; i + 1 < ZONES.length; i++) {
-  ZONE_RIDGES.push({ z: ZONES[i].zMax, passX: 0, sealed: ZONES[i].sealedFrontier === true });
+// Per-active-content derived terrain inputs: the ridge walls between zone bands
+// (each opened by a road pass, unless the earlier zone requests `sealedFrontier`,
+// in which case the wall runs solid the whole way; see ZoneDef.sealedFrontier)
+// and the world z-bounds. Recomputed only when the active content object changes
+// (identity check), so the hot terrain path stays cheap. For the built-in world
+// these match the old module-level constants exactly.
+interface WorldDerived {
+  content: WorldContent;
+  ridges: { z: number; passX: number; sealed: boolean }[];
+  minZ: number;
+  maxZ: number;
+}
+let derivedCache: WorldDerived | null = null;
+function world(): WorldDerived {
+  const content = getActiveWorldContent();
+  if (!derivedCache || derivedCache.content !== content) {
+    const ridges: { z: number; passX: number; sealed: boolean }[] = [];
+    for (let i = 0; i + 1 < content.zones.length; i++) {
+      ridges.push({
+        z: content.zones[i].zMax,
+        passX: 0,
+        sealed: content.zones[i].sealedFrontier === true,
+      });
+    }
+    derivedCache = {
+      content,
+      ridges,
+      minZ: content.zones[0].zMin,
+      maxZ: content.zones[content.zones.length - 1].zMax,
+    };
+  }
+  return derivedCache;
 }
 const RIDGE_HEIGHT = 22;
 const RIDGE_SIGMA = 18; // gaussian width of the wall
@@ -107,6 +142,124 @@ function lerp(a: number, b: number, t: number): number {
   return a + (b - a) * t;
 }
 
+// ---------------------------------------------------------------------------
+// The custom-map edit layer (the sculpt brushes), applied to the height computed
+// so far. Stamps apply in array order; pure data, no RNG, so the sim and renderer
+// agree. `add` stamps add a falloff-weighted delta; `level` stamps pull the height
+// toward the absolute height `delta` (flatten/plateau/terrace). The built-in world
+// has no edits, so the heightfield is unchanged.
+//
+// Stamps are looked up through a coarse spatial bucket index (cell 32yd; each
+// stamp registered in every cell its radius's bounding box touches) instead of
+// a linear scan: the render chunk rebuilder samples terrainHeight 5x per
+// vertex, so with the 4000-stamp cap the linear scan grows editor brush cost
+// with session length. Determinism contract: candidates for a query point are
+// iterated in ascending original array index (each bucket is built in index
+// order and a stamp appears at most once per bucket), so float addition order
+// is bit-identical to the linear scan. The index is a pure cache keyed by the
+// terrainEdits array reference + length; it is rebuilt when either differs and
+// cleared by invalidateTerrainEditIndex() for same-length in-place mutations.
+// ---------------------------------------------------------------------------
+
+const EDIT_INDEX_CELL = 32; // yards per bucket cell
+// A stamp this large would touch an unbounded number of cells; index none and
+// fall back to the (bit-identical) linear scan. The document sanitizer caps
+// stamp radius at 200, so this only guards hostile in-memory content.
+const EDIT_INDEX_MAX_RADIUS = 4096;
+
+interface TerrainEditIndex {
+  length: number;
+  linear: boolean; // true = do not use buckets, scan the array
+  buckets: Map<string, number[]>; // "cx,cz" -> ascending stamp indices
+}
+
+let terrainEditIndexCache = new WeakMap<HeightStamp[], TerrainEditIndex>();
+
+// Clears the edit-layer index cache. The editor MUST call this after a
+// splice-style in-place mutation that keeps the array reference and length
+// (e.g. replacing a stamp); push/pop/reassignment are picked up automatically
+// via the length + reference key. The exact export name is a contract with the
+// editor lane: do not rename.
+export function invalidateTerrainEditIndex(): void {
+  terrainEditIndexCache = new WeakMap();
+}
+
+function buildTerrainEditIndex(edits: HeightStamp[]): TerrainEditIndex {
+  const buckets = new Map<string, number[]>();
+  for (let i = 0; i < edits.length; i++) {
+    const e = edits[i];
+    if (e.radius <= 0) continue; // the scan skips these too; no cell to register
+    // A non-finite stamp (NaN poisons the scan; Infinity reaches everywhere)
+    // or an absurd radius cannot be bucketed: reproduce the linear scan's
+    // exact semantics by not indexing at all.
+    if (
+      !Number.isFinite(e.radius) ||
+      e.radius > EDIT_INDEX_MAX_RADIUS ||
+      !Number.isFinite(e.x) ||
+      !Number.isFinite(e.z)
+    ) {
+      return { length: edits.length, linear: true, buckets: new Map() };
+    }
+    // One guard cell on every side: sqrt rounding can put a point with
+    // d < radius up to ~1 ulp outside the bbox cells at an exact cell
+    // boundary. Extra candidates are harmless (applyStamp re-checks d).
+    const c0 = Math.floor((e.x - e.radius) / EDIT_INDEX_CELL) - 1;
+    const c1 = Math.floor((e.x + e.radius) / EDIT_INDEX_CELL) + 1;
+    const r0 = Math.floor((e.z - e.radius) / EDIT_INDEX_CELL) - 1;
+    const r1 = Math.floor((e.z + e.radius) / EDIT_INDEX_CELL) + 1;
+    for (let r = r0; r <= r1; r++) {
+      for (let c = c0; c <= c1; c++) {
+        const key = `${c},${r}`;
+        let bucket = buckets.get(key);
+        if (!bucket) {
+          bucket = [];
+          buckets.set(key, bucket);
+        }
+        bucket.push(i); // outer loop is ascending i, so each bucket stays sorted
+      }
+    }
+  }
+  return { length: edits.length, linear: false, buckets };
+}
+
+// One stamp's contribution, shared verbatim by the indexed and linear paths so
+// they are bit-identical.
+function applyStamp(e: HeightStamp, x: number, z: number, h: number): number {
+  if (e.radius <= 0) return h;
+  const dx = x - e.x;
+  const dz = z - e.z;
+  const d = Math.sqrt(dx * dx + dz * dz);
+  if (d >= e.radius) return h;
+  const t = d / e.radius; // 0 at centre, 1 at edge
+  // 'flat' = full delta out to the edge; 'smooth' = eased taper to 0.
+  const w = e.falloff === 'flat' ? 1 : 1 - smoothstep(0, 1, t);
+  if (e.mode === 'level') return lerp(h, e.delta, w);
+  return h + e.delta * w;
+}
+
+function applyEditLayer(x: number, z: number, h0: number): number {
+  const edits = world().content.terrainEdits;
+  if (!edits || edits.length === 0) return h0;
+  let index = terrainEditIndexCache.get(edits);
+  if (!index || index.length !== edits.length) {
+    index = buildTerrainEditIndex(edits);
+    terrainEditIndexCache.set(edits, index);
+  }
+  let h = h0;
+  if (index.linear) {
+    for (const e of edits) h = applyStamp(e, x, z, h);
+    return h;
+  }
+  const key = `${Math.floor(x / EDIT_INDEX_CELL)},${Math.floor(z / EDIT_INDEX_CELL)}`;
+  const bucket = index.buckets.get(key);
+  if (!bucket) return h0;
+  // Any stamp with d < radius has |x - e.x| < radius, so its bounding-box cells
+  // cover the query cell: the bucket holds every contributing stamp, in
+  // ascending array index, exactly once.
+  for (const i of bucket) h = applyStamp(edits[i], x, z, h);
+  return h;
+}
+
 export function mirefenImpactCraterOffset(x: number, z: number): number {
   const dx = x - MIREFEN_IMPACT_CRATER.x;
   const dz = z - MIREFEN_IMPACT_CRATER.z;
@@ -127,15 +280,51 @@ export function mirefenImpactCraterOffset(x: number, z: number): number {
   return bowl + rim;
 }
 
-// Blended biome shape at a given z. Zone interiors keep their exact shape;
-// blends happen across ±~35yd windows at the band boundaries.
-function shapeAt(z: number): { hill: number; base: number } {
-  let hill = BIOME_SHAPE[ZONES[0].biome].hill;
-  let base = BIOME_SHAPE[ZONES[0].biome].base;
-  for (let i = 0; i + 1 < ZONES.length; i++) {
-    const boundary = ZONES[i].zMax;
+// Paint grid id -> biome. APPEND-ONLY: the id is persisted in map documents.
+export const BIOME_BY_ID: BiomeId[] = [
+  'vale',
+  'marsh',
+  'peaks',
+  'beach',
+  'desert',
+  'volcano',
+  'cave',
+];
+
+// The painted biome at (x,z), or null if unpainted / no paint layer. Cheap grid
+// lookup; absent for the built-in world.
+function paintedBiomeAt(x: number, z: number): BiomeId | null {
+  const bp = world().content.biomePaint;
+  if (!bp) return null;
+  const c = Math.floor((x - bp.originX) / bp.cell);
+  const r = Math.floor((z - bp.originZ) / bp.cell);
+  if (c < 0 || c >= bp.cols || r < 0 || r >= bp.rows) return null;
+  const id = bp.ids[r * bp.cols + c];
+  return id >= 0 && id < BIOME_BY_ID.length ? BIOME_BY_ID[id] : null;
+}
+
+// Biome at a world point: the painted override if any, else the zone-band biome.
+// This is the 2D biome the renderer colours by; zoneBiomeAt stays the 1D version.
+export function biomeAt(x: number, z: number): BiomeId {
+  return paintedBiomeAt(x, z) ?? zoneBiomeAt(z);
+}
+
+// Blended biome shape at a point. A painted cell hard-overrides to that biome's
+// shape; otherwise zone interiors keep their exact shape and blend across ±~35yd
+// windows at the band boundaries. With no paint this equals the old shapeAt(z).
+function shapeAt(x: number, z: number): { hill: number; base: number } {
+  const painted = paintedBiomeAt(x, z);
+  if (painted) {
+    const s = BIOME_SHAPE[painted];
+    return { hill: s.hill, base: s.base };
+  }
+  const zones = world().content.zones;
+  let hill = BIOME_SHAPE[zones[0].biome].hill;
+  let base = BIOME_SHAPE[zones[0].biome].base;
+  for (let i = 0; i + 1 < zones.length; i++) {
+    const boundary = zones[i].zMax;
     const t = smoothstep(boundary - 30, boundary + 35, z);
-    const next = BIOME_SHAPE[ZONES[i + 1].biome];
+    const next = BIOME_SHAPE[zones[i + 1].biome];
     hill = lerp(hill, next.hill, t);
     base = lerp(base, next.base, t);
   }
@@ -143,12 +332,13 @@ function shapeAt(z: number): { hill: number; base: number } {
 }
 
 function baseHeight(x: number, z: number, seed: number): number {
-  const shape = shapeAt(z);
+  const zones = world().content.zones;
+  const shape = shapeAt(x, z);
   let h =
     (fbm2(x * HILL_SCALE + 100, z * HILL_SCALE + 100, seed, 4) - 0.5) * shape.hill + shape.base;
   h += (fbm2(x * DETAIL_SCALE, z * DETAIL_SCALE, seed + 7, 2) - 0.5) * 2.2;
   // Flatten each zone's hub settlement into a plateau
-  for (const zone of ZONES) {
+  for (const zone of zones) {
     const dx = x - zone.hub.x,
       dz = z - zone.hub.z;
     const dHub = Math.sqrt(dx * dx + dz * dz);
@@ -158,10 +348,10 @@ function baseHeight(x: number, z: number, seed: number): number {
     }
   }
   // Keep dry land everywhere: soft-floor low dips above the water level...
-  const minLand = WATER_LEVEL + 1.4;
+  const minLand = waterLevel() + 1.4;
   if (h < minLand) h = minLand - (minLand - h) * 0.12;
   // ...except the carved lake basins
-  for (const zone of ZONES) {
+  for (const zone of zones) {
     for (const lake of zone.lakes) {
       const dLake = Math.sqrt((x - lake.x) ** 2 + (z - lake.z) ** 2);
       if (dLake < lake.radius * LAKE_BLEND_RADIUS_MULT) {
@@ -170,7 +360,7 @@ function baseHeight(x: number, z: number, seed: number): number {
           lake.radius * LAKE_BLEND_RADIUS_MULT,
           dLake,
         );
-        h = h * lakeBlend + (WATER_LEVEL - 4) * (1 - lakeBlend);
+        h = h * lakeBlend + (waterLevel() - 4) * (1 - lakeBlend);
       }
     }
   }
@@ -184,10 +374,11 @@ export function groundHeight(x: number, z: number, seed: number): number {
 }
 
 export function terrainHeight(x: number, z: number, seed: number): number {
+  const w = world();
   let h = baseHeight(x, z, seed);
 
   // Flatten each camp a little so mobs don't stand on cliffs
-  for (const camp of CAMPS) {
+  for (const camp of w.content.camps) {
     const dx = x - camp.center.x,
       dz = z - camp.center.z;
     const d = Math.sqrt(dx * dx + dz * dz);
@@ -199,7 +390,7 @@ export function terrainHeight(x: number, z: number, seed: number): number {
   }
 
   // Mountain ridge walls between zones, pierced by the road pass
-  for (const ridge of ZONE_RIDGES) {
+  for (const ridge of w.ridges) {
     const dz = Math.abs(z - ridge.z);
     if (dz < RIDGE_SIGMA * 3) {
       const profile = Math.exp(-(dz * dz) / (2 * RIDGE_SIGMA * RIDGE_SIGMA));
@@ -220,8 +411,8 @@ export function terrainHeight(x: number, z: number, seed: number): number {
 
   // Raise the world rim so the player naturally stays in bounds
   const rimX = smoothstep(WORLD_MAX_X - 30, WORLD_MAX_X, Math.abs(x));
-  const rimS = smoothstep(WORLD_MIN_Z + 30, WORLD_MIN_Z, z);
-  const rimN = smoothstep(WORLD_MAX_Z - 30, WORLD_MAX_Z, z);
+  const rimS = smoothstep(w.minZ + 30, w.minZ, z);
+  const rimN = smoothstep(w.maxZ - 30, w.maxZ, z);
   const rim = Math.max(rimX, rimS, rimN);
   // The rim wall used to be a perfectly smooth berm with zero noise, which
   // read as artificial from a distance. Give it the same two-layer jagged
@@ -234,13 +425,14 @@ export function terrainHeight(x: number, z: number, seed: number): number {
     (fbm2(x * 0.09, z * 0.09, seed + 37, 2) - 0.5) * 0.15;
   h += rim * 40 * rimCrest;
   h += mirefenImpactCraterOffset(x, z);
+  h = applyEditLayer(x, z, h);
   return h;
 }
 
 // Distance from (x,z) to the nearest road polyline segment.
 export function roadDistance(x: number, z: number): number {
   let best = Infinity;
-  for (const road of ROADS) {
+  for (const road of world().content.roads) {
     for (let i = 0; i < road.length - 1; i++) {
       const a = road[i],
         b = road[i + 1];
@@ -282,20 +474,24 @@ function isExcludedDecoration(x: number, z: number): boolean {
 }
 
 export function zoneBiomeAt(z: number): BiomeId {
-  for (const zone of ZONES) {
+  const zones = world().content.zones;
+  for (const zone of zones) {
     if (z < zone.zMax) return zone.biome;
   }
-  return ZONES[ZONES.length - 1].biome;
+  return zones[zones.length - 1].biome;
 }
 
 export function generateDecorations(seed: number): Decoration[] {
+  const w = world();
   const out: Decoration[] = [];
   const step = 10;
   const xHalf = WORLD_MAX_X - 14;
   for (let gx = -xHalf; gx < xHalf; gx += step) {
-    for (let gz = WORLD_MIN_Z + 14; gz < WORLD_MAX_Z - 14; gz += step) {
+    for (let gz = w.minZ + 14; gz < w.maxZ - 14; gz += step) {
       const r = hash2(Math.round(gx), Math.round(gz), seed + 31);
-      const biome = zoneBiomeAt(gz);
+      // biomeAt so painted areas grow the right mix; without paint this is the
+      // zone-band biome exactly (byte-identical built-in world).
+      const biome = biomeAt(gx, gz);
       // density gate + kind mix per biome
       let kind: Decoration['kind'] | null = null;
       if (biome === 'vale') {
@@ -304,6 +500,18 @@ export function generateDecorations(seed: number): Decoration[] {
       } else if (biome === 'marsh') {
         if (r > 0.34) continue;
         kind = r < 0.08 ? 'tree' : r < 0.26 ? 'tree2' : 'rock';
+      } else if (biome === 'beach') {
+        if (r > 0.14) continue;
+        kind = r < 0.05 ? 'tree' : r < 0.08 ? 'tree2' : 'rock';
+      } else if (biome === 'desert') {
+        if (r > 0.1) continue;
+        kind = r < 0.025 ? 'tree2' : 'rock';
+      } else if (biome === 'volcano') {
+        if (r > 0.2) continue;
+        kind = 'rock';
+      } else if (biome === 'cave') {
+        if (r > 0.16) continue;
+        kind = 'rock';
       } else {
         if (r > 0.44) continue;
         kind = r < 0.2 ? 'tree' : r < 0.24 ? 'tree2' : 'rock';
@@ -314,7 +522,7 @@ export function generateDecorations(seed: number): Decoration[] {
         z = gz + oz;
       if (isExcludedDecoration(x, z)) continue;
       let inHub = false;
-      for (const zone of ZONES) {
+      for (const zone of w.content.zones) {
         const dx = x - zone.hub.x,
           dz = z - zone.hub.z;
         if (Math.sqrt(dx * dx + dz * dz) < zone.hub.radius + 4) {
@@ -323,10 +531,10 @@ export function generateDecorations(seed: number): Decoration[] {
         }
       }
       if (inHub) continue;
-      if (terrainHeight(x, z, seed) < WATER_LEVEL + 1) continue;
+      if (terrainHeight(x, z, seed) < waterLevel() + 1) continue;
       if (roadDistance(x, z) < 5) continue;
       let inCamp = false;
-      for (const c of CAMPS) {
+      for (const c of w.content.camps) {
         const dx = x - c.center.x,
           dz = z - c.center.z;
         if (Math.sqrt(dx * dx + dz * dz) < c.radius + 3) {

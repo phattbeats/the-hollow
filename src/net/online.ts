@@ -14,7 +14,13 @@ import {
   type TalentAllocation,
   talentPointsAtLevel,
 } from '../sim/content/talents';
-import { abilitiesKnownAt, CLASSES, NPCS, resolveDelveShopOffers } from '../sim/data';
+import {
+  ACHIEVEMENTS_BY_ID,
+  abilitiesKnownAt,
+  CLASSES,
+  NPCS,
+  resolveDelveShopOffers,
+} from '../sim/data';
 import { deadTargetSelectable } from '../sim/dead_target';
 import { LEADERBOARD_PAGE_SIZE } from '../sim/leaderboard_page';
 import type { Ante, PickAction } from '../sim/lockpick';
@@ -709,7 +715,16 @@ function blankEntity(id: number): Entity {
     overheadEmoteId: null,
     overheadEmoteUntil: 0,
     overheadEmoteSeq: 0,
-    stats: { str: 0, agi: 0, sta: 0, int: 0, spi: 0, armor: 0 },
+    stats: {
+      str: 0,
+      agi: 0,
+      sta: 0,
+      int: 0,
+      spi: 0,
+      armor: 0,
+      pvpOffense: 0,
+      pvpDefense: 0,
+    },
     weapon: { min: 1, max: 2, speed: 2 },
     attackPower: 0,
     rangedPower: 0,
@@ -871,6 +886,8 @@ export class ClientWorld implements IWorld {
   // arenaInfo.match.fiesta and its dynamics flow over the events queue. ---
   duelInfo: DuelInfo | null = null;
   arenaInfo: ArenaInfo | null = null;
+  honor = 0;
+  lifetimeHonor = 0;
   // --- IWorldSocialGraph: persistent friends/blocks/guild, set ONLY by the
   // `social`/`socialpos` frames (there is no `s.social` snapshot field). ---
   socialInfo: SocialInfo | null = null;
@@ -1577,7 +1594,12 @@ export class ClientWorld implements IWorld {
       e.autoAttack = !!s.auto;
       e.swingTimer = s.swing ?? e.swingTimer;
       e.queuedOnSwing = s.queued ?? null;
-      e.stats = s.stats ?? e.stats;
+      // A rolling deploy can pair this client with an older server whose stats
+      // object predates WARFARE. Preserve numeric PvP fields instead of letting
+      // an old six-field object turn the character-sheet percentages into NaN.
+      if (s.stats !== undefined) {
+        e.stats = { pvpOffense: 0, pvpDefense: 0, ...s.stats };
+      }
       e.attackPower = s.ap ?? 0;
       e.rangedPower = s.rp ?? 0;
       e.spellPower = s.sp ?? 0;
@@ -1669,6 +1691,8 @@ export class ClientWorld implements IWorld {
       if (s.trade !== undefined) this.tradeInfo = s.trade;
       if (s.duel !== undefined) this.duelInfo = s.duel;
       if (s.arena !== undefined) this.arenaInfo = s.arena;
+      if (s.honor !== undefined) this.honor = s.honor ?? 0;
+      if (s.lhonor !== undefined) this.lifetimeHonor = s.lhonor ?? 0;
       if (s.market !== undefined) this.marketInfo = s.market;
       if (s.mail !== undefined) this.mailInfo = s.mail;
       if (s.housing !== undefined) this.housingInfo = s.housing;
@@ -1697,6 +1721,12 @@ export class ClientWorld implements IWorld {
       // nodeHarvestableByMe matches the offline Sim. Absent means unchanged; an
       // explicit empty array clears it (all this player's nodes are ready).
       if (s.gnodecd !== undefined) this.nodeCooldownSet = new Set(s.gnodecd ?? []);
+      // Collection tracking core (PHAA-626): the viewer's own collected-id set,
+      // mirrored whole (small, only grows) same shape as dclears/dcomp above.
+      if (s.collected !== undefined) this.collectedIds = s.collected ?? [];
+      // Achievements (PHAA-687): the viewer's unlocked achievement ids, mirrored
+      // whole (small, only grows) same shape as collected above.
+      if (s.ach !== undefined) this.unlockedAchievementIds = s.ach ?? [];
       if (s.dclears !== undefined) this.delveClears = s.dclears ?? {};
       if (s.delveDaily !== undefined) this.delveDaily = s.delveDaily;
       // camera follows server-side facing changes when not mouselooking
@@ -1892,6 +1922,21 @@ export class ClientWorld implements IWorld {
     cooking: 0,
     alchemy: 0,
   };
+  // --- IWorldCollections: tracked-collectible read/found state (PHAA-625/626) ---
+  collectedIds: string[] = [];
+  readCollectible(id: string): void {
+    this.cmd({ cmd: 'readCollectible', collectibleId: id });
+  }
+  // --- IWorldAchievements: unlocked achievements + points (PHAA-687) ---
+  // Read-only mirror; achievements auto-unlock server-side (no command). Points
+  // are derived from the unlocked ids against the shared registry, so only the
+  // id list rides the wire.
+  unlockedAchievementIds: string[] = [];
+  get achievementPoints(): number {
+    let total = 0;
+    for (const id of this.unlockedAchievementIds) total += ACHIEVEMENTS_BY_ID[id]?.points ?? 0;
+    return total;
+  }
   // --- IWorldLoot: need-greed roll submit + HUD reconcile read ---
   submitLootRoll(rollId: number, choice: LootRollChoice): void {
     this.cmd({ cmd: 'lootRoll', rollId, choice });

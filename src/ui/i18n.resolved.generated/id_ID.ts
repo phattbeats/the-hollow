@@ -720,10 +720,18 @@ export const id_ID: EnTranslations = {
         "spi": "Reduce el espíritu en {value}",
         "allStats": "Reduce todos los atributos en {value}"
       },
+      "increasePct": {
+        "ap": "Increases attack power by {pct}%",
+        "armor": "Increases armor by {pct}%",
+        "int": "Increases Intellect by {pct}%",
+        "sta": "Increases Stamina by {pct}%"
+      },
       "dodge": "Aumenta la probabilidad de esquivar un {pct}%",
       "dodgeReduce": "Reduce la probabilidad de esquivar un {pct}%",
       "armorFlat": "Reduce la armadura en {value}",
       "armorFlatStacks": "Reduce la armadura en {value} ({stacks} acumulaciones)",
+      "armorPct": "Reduces armor by {pct}%",
+      "armorPctStacks": "Reduces armor by {pct}% ({stacks} stacks)",
       "mortalWound": "Reduce la sanación recibida un {pct}%",
       "vulnerability": "Aumenta el daño recibido un {pct}%",
       "physVuln": "Aumenta el daño físico recibido un {pct}%",
@@ -990,6 +998,21 @@ export const id_ID: EnTranslations = {
       "spore": "Spore",
       "toolTier": "Tier {tier} tool",
       "toolNone": "No tool"
+    },
+    "warfare": {
+      "ratingLabel": "Warfare",
+      "balance": "Honor: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} Honor",
+      "honorFloat": "+{amount} Honor",
+      "honorGain": "+{amount} Honor ({reason})",
+      "notEnoughHonor": "Not enough honor.",
+      "reasons": {
+        "arenaWin": "Arena win",
+        "fiestaKill": "Fiesta takedown",
+        "fiestaComplete": "Fiesta match",
+        "fiestaWin": "Fiesta win"
+      }
     }
   },
   "mailUi": {
@@ -2420,6 +2443,10 @@ export const id_ID: EnTranslations = {
     "gathering": {
       "nothingToHarvest": "That corpse has nothing to harvest.",
       "alreadyHarvested": "This corpse has already been harvested."
+    },
+    "collections": {
+      "notFound": "That does not exist.",
+      "tooFar": "Too far away."
     },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
@@ -4080,7 +4107,7 @@ export const id_ID: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Belah Zirah",
-        "description": "Membelah zirah target, menguranginya sebesar {damage} per penerapan. Bertumpuk hingga 5 kali. Menghasilkan ancaman dalam jumlah tinggi."
+        "description": "Membelah zirah target, menguranginya sebesar 2% per penerapan. Bertumpuk hingga 5 kali. Menghasilkan ancaman dalam jumlah tinggi."
       },
       "taunt": {
         "name": "Provokasi",
@@ -5178,6 +5205,99 @@ export const id_ID: EnTranslations = {
       "mistcallers_duffel": {
         "name": "Tas Duffel Mistcaller"
       },
+      "bramblewar_warhelm": {
+        "name": "Perangduri Kepala"
+      },
+      "bramblewar_warspaulders": {
+        "name": "Perangduri Bahu"
+      },
+      "bramblewar_warplate": {
+        "name": "Perangduri Dada"
+      },
+      "bramblewar_girdle": {
+        "name": "Perangduri Pinggang"
+      },
+      "bramblewar_legguards": {
+        "name": "Perangduri Tungkai"
+      },
+      "bramblewar_gauntlets": {
+        "name": "Perangduri Tangan"
+      },
+      "bramblewar_sabatons": {
+        "name": "Perangduri Kaki"
+      },
+      "thornbound_crown": {
+        "name": "Duriterikat Kepala"
+      },
+      "thornbound_spaulders": {
+        "name": "Duriterikat Bahu"
+      },
+      "thornbound_hauberk": {
+        "name": "Duriterikat Dada"
+      },
+      "thornbound_waistguard": {
+        "name": "Duriterikat Pinggang"
+      },
+      "thornbound_legmail": {
+        "name": "Duriterikat Tungkai"
+      },
+      "thornbound_handguards": {
+        "name": "Duriterikat Tangan"
+      },
+      "thornbound_greaves": {
+        "name": "Duriterikat Kaki"
+      },
+      "nettlestalker_cowl": {
+        "name": "Jelatang Pengintai Kepala"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "Jelatang Pengintai Bahu"
+      },
+      "nettlestalker_harness": {
+        "name": "Jelatang Pengintai Dada"
+      },
+      "nettlestalker_waistband": {
+        "name": "Jelatang Pengintai Pinggang"
+      },
+      "nettlestalker_legguards": {
+        "name": "Jelatang Pengintai Tungkai"
+      },
+      "nettlestalker_grips": {
+        "name": "Jelatang Pengintai Tangan"
+      },
+      "nettlestalker_treads": {
+        "name": "Jelatang Pengintai Kaki"
+      },
+      "mossweave_cowl": {
+        "name": "Tenun Lumut Kepala"
+      },
+      "mossweave_mantle": {
+        "name": "Tenun Lumut Bahu"
+      },
+      "mossweave_raiment": {
+        "name": "Tenun Lumut Dada"
+      },
+      "mossweave_cord": {
+        "name": "Tenun Lumut Pinggang"
+      },
+      "mossweave_legwraps": {
+        "name": "Tenun Lumut Tungkai"
+      },
+      "mossweave_handwraps": {
+        "name": "Tenun Lumut Tangan"
+      },
+      "mossweave_slippers": {
+        "name": "Tenun Lumut Kaki"
+      },
+      "last_bloom_greatblade": {
+        "name": "Pedang Besar Kembang Terakhir"
+      },
+      "thornbite_razor": {
+        "name": "Silet Gigitan Duri"
+      },
+      "heartwood_warstaff": {
+        "name": "Tongkat Perang Kayu Teras"
+      },
       "bristleback_maul": {
         "name": "Cabikan Punggung Berbulu"
       },
@@ -6172,6 +6292,11 @@ export const id_ID: EnTranslations = {
         "name": "Elder Yarrow",
         "title": "Profession Trainer",
         "greeting": "Every build starts as a question. Which second calling speaks to you?"
+      },
+      "bramble": {
+        "name": "Bramble",
+        "title": "Honor Quartermaster",
+        "greeting": "The sands remember every victory. Spend your honor well."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",

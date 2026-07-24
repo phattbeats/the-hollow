@@ -25,9 +25,10 @@ const repoRoot = fileURLToPath(new URL('..', import.meta.url));
 // Verified counts on the current tree (re-derived below; do not hard-code 85/6).
 // +4 over the pre-Ravenpost tree: mail_send/mail_take/mail_delete/mail_markread
 // are each both a ClientWorld send and a server dispatch case (none dispatch-only).
-// +1 over that with PHAA-574's craftItem: also both a send and a dispatch case.
-const EXPECTED_SEND_COUNT = 120;
-const EXPECTED_DISPATCH_COUNT = 127;
+// +2 over that with PHAA-574's craftItem and PHAA-626's readCollectible: each
+// also both a send and a dispatch case (not dispatch-only).
+const EXPECTED_SEND_COUNT = 121;
+const EXPECTED_DISPATCH_COUNT = 128;
 const EXPECTED_DISPATCH_ONLY_COUNT = 7;
 
 // The chat sub-channel routing switch (server/game.ts `switch

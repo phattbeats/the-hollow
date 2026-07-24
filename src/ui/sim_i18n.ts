@@ -27,6 +27,7 @@ import { ARENA_NEW, BASE_NEW, ITEM_NEW, PET_NEW, QUEST_NEW, RAID_NEW } from './s
 
 const baseEnTable = {
   'error.lineOfSight': 'Line of sight.',
+  'log.playtime': 'Total time played: {time}.',
   'error.specLevel': 'You may choose a specialization at level {level}.',
   'error.invalidBuild': 'Invalid talent build.',
   'error.unknownSpec': 'Unknown specialization.',
@@ -252,6 +253,7 @@ export type SimMessageKey = keyof typeof enTable;
 const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = {
   en: {
     'error.lineOfSight': 'Line of sight.',
+    'log.playtime': 'Total time played: {time}.',
     'error.specLevel': 'You may choose a specialization at level {level}.',
     'error.invalidBuild': 'Invalid talent build.',
     'error.unknownSpec': 'Unknown specialization.',
@@ -515,6 +517,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': 'Sin línea de visión.',
+    'log.playtime': 'Tiempo total jugado: {time}.',
     'error.specLevel': 'Puedes elegir una especialización al nivel {level}.',
     'error.invalidBuild': 'Configuración de talentos no válida.',
     'error.unknownSpec': 'Especialización desconocida.',
@@ -687,6 +690,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': 'Sin línea de visión.',
+    'log.playtime': 'Tiempo total jugado: {time}.',
     'error.specLevel': 'Podrás elegir una especialización en el nivel {level}.',
     'error.invalidBuild': 'Configuración de talentos no válida.',
     'error.unknownSpec': 'Especialización desconocida.',
@@ -865,6 +869,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': 'Pas de ligne de vue.',
+    'log.playtime': 'Temps de jeu total : {time}.',
     'error.specLevel': 'Vous pourrez choisir une spécialisation au niveau {level}.',
     'error.invalidBuild': 'Distribution de talents invalide.',
     'error.unknownSpec': 'Spécialisation inconnue.',
@@ -1044,6 +1049,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': 'Pas de ligne de vue.',
+    'log.playtime': 'Temps de jeu total : {time}.',
     'error.specLevel': 'Vous pourrez choisir une spécialisation au niveau {level}.',
     'error.invalidBuild': 'Spécialisation invalide.',
     'error.unknownSpec': 'Spécialisation inconnue.',
@@ -1218,6 +1224,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': 'Line of sight.',
+    'log.playtime': 'Total time played: {time}.',
     'error.specLevel': 'You may choose a specialization at level {level}.',
     'error.invalidBuild': 'Invalid talent build.',
     'error.unknownSpec': 'Unknown specialization.',
@@ -1390,6 +1397,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': 'Nessuna linea di vista.',
+    'log.playtime': 'Tempo totale di gioco: {time}.',
     'error.specLevel': 'Puoi scegliere una specializzazione al livello {level}.',
     'error.invalidBuild': 'Build dei talenti non valida.',
     'error.unknownSpec': 'Specializzazione sconosciuta.',
@@ -1564,6 +1572,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': 'Kein Sichtkontakt.',
+    'log.playtime': 'Gesamtspielzeit: {time}.',
     'error.specLevel': 'Ihr könnt auf Stufe {level} eine Spezialisierung wählen.',
     'error.invalidBuild': 'Ungültige Talentverteilung.',
     'error.unknownSpec': 'Unbekannte Spezialisierung.',
@@ -1737,6 +1746,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': '目标不在视线内。',
+    'log.playtime': '总游戏时长：{time}。',
     'error.specLevel': '你将在{level}级时选择专精。',
     'error.invalidBuild': '无效的天赋配置。',
     'error.unknownSpec': '未知的专精。',
@@ -1907,6 +1917,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': '目標不在視線內。',
+    'log.playtime': '總遊戲時長：{time}。',
     'error.specLevel': '你必須達到等級 {level} 才能選擇專精。',
     'error.invalidBuild': '無效的天賦配置。',
     'error.unknownSpec': '未知的專精。',
@@ -2078,6 +2089,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': '시야가 막혀 있습니다.',
+    'log.playtime': '총 플레이 시간: {time}.',
     'error.specLevel': '{level}레벨에 전문화를 선택할 수 있습니다.',
     'error.invalidBuild': '잘못된 특성 구성입니다.',
     'error.unknownSpec': '알 수 없는 전문화입니다.',
@@ -2252,6 +2264,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': '視線が通っていません。',
+    'log.playtime': '総プレイ時間: {time}。',
     'error.specLevel': '専門化はレベル{level}で選択できます。',
     'error.invalidBuild': '無効なタレントビルドです。',
     'error.unknownSpec': '不明な専門化です。',
@@ -2426,6 +2439,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': 'Sem linha de visão.',
+    'log.playtime': 'Tempo total jogado: {time}.',
     'error.specLevel': 'Você pode escolher uma especialização no nível {level}.',
     'error.invalidBuild': 'Estrutura de talentos inválida.',
     'error.unknownSpec': 'Especialização desconhecida.',
@@ -2601,6 +2615,7 @@ const BASE_DICT: Record<SupportedLanguage, Record<BaseSimMessageKey, string>> = 
     'mechanic.heartwoodEruption': 'Heartwood Eruption',
     'aura.graspingRoots': 'Grasping Roots',
     'error.lineOfSight': 'Нет прямой видимости.',
+    'log.playtime': 'Общее время игры: {time}.',
     'error.specLevel': 'Выбрать специализацию можно на {level} уровне.',
     'error.invalidBuild': 'Недопустимая сборка талантов.',
     'error.unknownSpec': 'Неизвестная специализация.',
@@ -4420,6 +4435,11 @@ const RULES: Rule[] = [
     re: /^You collect (.+) from a letter\.$/,
     build: (m) => tSim('loot.mailCollectCopper', { money: m[1] }),
   },
+  {
+    // /playtime readout (src/sim/social/chat.ts); the duration string passes through.
+    re: /^Total time played: (.+)\.$/,
+    build: (m) => tSim('log.playtime', { time: m[1] }),
+  },
   { re: /^Your class has no talent tree yet\.$/, build: () => t('game.talents.readout.noTree') },
   {
     re: /^You have not unlocked talents yet — they begin at level (.+)\.$/,
@@ -4823,6 +4843,11 @@ const RULES: Rule[] = [
   { re: /^There is nothing left to take\.$/, build: () => t('sim.delve.nothingToTake') },
   { re: /^The way out is not yet open\.$/, build: () => t('sim.delve.wayOutNotOpen') },
   { re: /^Move closer to the stairs\.$/, build: () => t('sim.delve.moveCloserStairs') },
+  // Collections core (PHAA-626): readCollectible command errors
+  // (src/sim/collections.ts). The tooFar rule also covers the identical
+  // pre-existing "Too far away." emits in items/interaction/trainer/gathering.
+  { re: /^That does not exist\.$/, build: () => t('sim.collections.notFound') },
+  { re: /^Too far away\.$/, build: () => t('sim.collections.tooFar') },
   // Lockpicking minigame (exact lines).
   {
     re: /^Someone is already working the lock\.$/,
