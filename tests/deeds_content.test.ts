@@ -6,7 +6,7 @@
 
 import { describe, expect, it } from 'vitest';
 import { DEEDS, TITLES } from '../src/sim/content/deeds';
-import { ITEMS, MOBS, QUESTS } from '../src/sim/data';
+import { DELVES, ITEMS, MOBS, QUESTS } from '../src/sim/data';
 
 describe('deeds content: referential integrity', () => {
   it('keys every DEEDS/TITLES record under its own id', () => {
@@ -54,6 +54,41 @@ describe('deeds content: referential integrity', () => {
       for (const obj of def.objectives) {
         if (obj.type === 'quest') {
           expect(obj.questId, `${def.id}: questId must be omitted, not ''`).not.toBe('');
+        }
+      }
+    }
+  });
+
+  it('every delve objective delveId (when set) resolves to a real delve', () => {
+    for (const def of Object.values(DEEDS)) {
+      for (const obj of def.objectives) {
+        if (obj.type === 'delve' && obj.delveId) {
+          expect(DELVES[obj.delveId], `${def.id}: unknown delve ${obj.delveId}`).toBeDefined();
+        }
+      }
+    }
+  });
+
+  it('every delve objective tierId (when set) resolves to a real tier of its delve', () => {
+    for (const def of Object.values(DEEDS)) {
+      for (const obj of def.objectives) {
+        if (obj.type === 'delve' && obj.tierId) {
+          const delve = obj.delveId ? DELVES[obj.delveId] : undefined;
+          expect(delve, `${def.id}: tierId set without a resolvable delveId`).toBeDefined();
+          expect(
+            delve?.tiers.some((t) => t.id === obj.tierId),
+            `${def.id}: unknown tier ${obj.tierId} for delve ${obj.delveId}`,
+          ).toBe(true);
+        }
+      }
+    }
+  });
+
+  it('never uses an empty-string delveId (that silently wildcards, unlike an omitted id)', () => {
+    for (const def of Object.values(DEEDS)) {
+      for (const obj of def.objectives) {
+        if (obj.type === 'delve') {
+          expect(obj.delveId, `${def.id}: delveId must be omitted, not ''`).not.toBe('');
         }
       }
     }

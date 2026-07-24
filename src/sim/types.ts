@@ -1748,10 +1748,13 @@ export type DeedCategory =
   | 'social';
 
 export interface DeedObjective {
-  type: 'kill' | 'collect' | 'quest';
+  type: 'kill' | 'collect' | 'quest' | 'delve';
   targetMobId?: string; // for 'kill'; omitted means "any mob" (wildcard credit)
   itemId?: string; // for 'collect'
   questId?: string; // for 'quest'; omitted means "any quest" (wildcard credit)
+  delveId?: string; // for 'delve'; omitted means "any delve" (wildcard credit)
+  tierId?: string; // for 'delve'; omitted means "any tier"
+  deathless?: boolean; // for 'delve'; true requires a clear with zero deaths for the player
   count: number;
   label: string;
 }

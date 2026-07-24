@@ -52,6 +52,20 @@ function questMatches(obj: DeedObjective, questId: string): boolean {
   return obj.type === 'quest' && (!obj.questId || obj.questId === questId);
 }
 
+function delveMatches(
+  obj: DeedObjective,
+  delveId: string,
+  tierId: string,
+  deathless: boolean,
+): boolean {
+  return (
+    obj.type === 'delve' &&
+    (!obj.delveId || obj.delveId === delveId) &&
+    (!obj.tierId || obj.tierId === tierId) &&
+    (!obj.deathless || deathless)
+  );
+}
+
 export function onMobKilledForDeeds(
   ctx: SimContext,
   mob: Entity,
@@ -95,6 +109,38 @@ export function onQuestCompletedForDeeds(
     let changed = false;
     def.objectives.forEach((obj, i) => {
       if (questMatches(obj, questId) && dp.counts[i] < obj.count) {
+        dp.counts[i]++;
+        changed = true;
+        ctx.emit({
+          type: 'deedProgress',
+          deedId: def.id,
+          text: `${obj.label}: ${dp.counts[i]}/${obj.count}`,
+          pid: meta.entityId,
+        });
+      }
+    });
+    if (changed) checkDeedComplete(ctx, def, dp, meta);
+  }
+}
+
+// Delve deeds (PHAA-745): hooked from the single per-member clear-economy choke
+// point (grantDelveClearTo in delves/runs.ts), shared by every path that grants a
+// delve clear, so it fires once per member regardless of how the run ended.
+export function onDelveClearedForDeeds(
+  ctx: SimContext,
+  delveId: string,
+  tierId: string,
+  deathless: boolean,
+  meta: PlayerMeta,
+  deedDefs: Record<string, DeedDef> = DEEDS,
+): void {
+  for (const def of Object.values(deedDefs)) {
+    if (meta.deedsDone.has(def.id)) continue;
+    if (!def.objectives.some((obj) => delveMatches(obj, delveId, tierId, deathless))) continue;
+    const dp = progressFor(meta, def);
+    let changed = false;
+    def.objectives.forEach((obj, i) => {
+      if (delveMatches(obj, delveId, tierId, deathless) && dp.counts[i] < obj.count) {
         dp.counts[i]++;
         changed = true;
         ctx.emit({
