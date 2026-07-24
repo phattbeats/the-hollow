@@ -696,6 +696,7 @@ export function grantXp(
     p.hp = p.maxHp;
     if (p.resourceType === 'mana') p.resource = p.maxResource;
     ctx.emit({ type: 'levelup', level: p.level, pid: p.id });
+    ctx.onLevelReachedForDeeds(p.level, meta);
     ctx.refreshKnownAbilities(meta, true);
     ctx.syncPetLevel(p);
   }

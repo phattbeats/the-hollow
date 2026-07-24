@@ -7,6 +7,7 @@
 import { describe, expect, it } from 'vitest';
 import { DEEDS, TITLES } from '../src/sim/content/deeds';
 import { DELVES, ITEMS, MOBS, QUESTS } from '../src/sim/data';
+import { MAX_LEVEL } from '../src/sim/types';
 
 describe('deeds content: referential integrity', () => {
   it('keys every DEEDS/TITLES record under its own id', () => {
@@ -103,6 +104,28 @@ describe('deeds content: referential integrity', () => {
             ITEMS[obj.itemId as string],
             `${def.id}: unknown item ${obj.itemId}`,
           ).toBeDefined();
+        }
+      }
+    }
+  });
+
+  it('every level objective has a creditable atLeast within [2, MAX_LEVEL]', () => {
+    for (const def of Object.values(DEEDS)) {
+      for (const obj of def.objectives) {
+        if (obj.type === 'level') {
+          expect(obj.atLeast, `${def.id}: level objective missing atLeast`).toBeDefined();
+          // The onLevelReachedForDeeds hook only fires inside the grantXp
+          // level-up loop after p.level++, so its lowest possible firing level
+          // is 2 (characters start at level 1 with no level-up event). An
+          // atLeast of 0 or 1 would never credit, so it is an authoring error.
+          expect(
+            obj.atLeast as number,
+            `${def.id}: atLeast ${obj.atLeast} can never credit (lowest firing level is 2)`,
+          ).toBeGreaterThanOrEqual(2);
+          expect(
+            obj.atLeast as number,
+            `${def.id}: atLeast ${obj.atLeast} above MAX_LEVEL ${MAX_LEVEL}`,
+          ).toBeLessThanOrEqual(MAX_LEVEL);
         }
       }
     }

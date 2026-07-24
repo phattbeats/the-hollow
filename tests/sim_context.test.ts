@@ -85,6 +85,8 @@ const CALLBACK_KEYS = [
   'onQuestCompletedForDeeds',
   // PHAA-745 delve category: delve-clear deed credit.
   'onDelveClearedForDeeds',
+  // PHAA-745 progression category: level-reached deed credit.
+  'onLevelReachedForDeeds',
   // E1 entity-roster surface.
   'addEntity',
   'dropEntity',
@@ -345,6 +347,7 @@ function makeFakeHost() {
     onInventoryChangedForDeeds: vi.fn(),
     onQuestCompletedForDeeds: vi.fn(),
     onDelveClearedForDeeds: vi.fn(),
+    onLevelReachedForDeeds: vi.fn(),
     countItem: vi.fn(() => 0),
     lockoutNowMs: vi.fn(() => 0),
     instanceKeyFor: vi.fn(() => 'solo:0'),
