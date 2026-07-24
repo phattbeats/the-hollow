@@ -28,7 +28,7 @@
       "tick": 3,
       "time": 0.15,
       "nextId": 410,
-      "state": "714fc2f2",
+      "state": "d765ce86",
       "events": "23ecccb7",
       "rng": {
         "draws": 2,
@@ -220,29 +220,6 @@
                   0
                 ],
                 "deedId": "feat_pathfinder",
-                "state": "active"
-              }
-            ],
-            [
-              "hid_full_creel",
-              {
-                "counts": [
-                  0,
-                  0,
-                  0,
-                  0
-                ],
-                "deedId": "hid_full_creel",
-                "state": "active"
-              }
-            ],
-            [
-              "hid_gluttons_cache",
-              {
-                "counts": [
-                  0
-                ],
-                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]

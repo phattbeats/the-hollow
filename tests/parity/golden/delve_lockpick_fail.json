@@ -112,8 +112,8 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 422,
-      "state": "e7bc2526",
-      "events": "307e1200",
+      "state": "1d724255",
+      "events": "660d205b",
       "rng": {
         "draws": 3,
         "digest": "34c4acb5"
@@ -123,7 +123,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 422,
-      "state": "8ee04716",
+      "state": "284c4d45",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -134,7 +134,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 422,
-      "state": "f1b47cbc",
+      "state": "885bf9e3",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -145,7 +145,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 422,
-      "state": "138dc3ba",
+      "state": "92e868b9",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -156,7 +156,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 422,
-      "state": "46936284",
+      "state": "ca82d2db",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -167,7 +167,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 422,
-      "state": "cffcc326",
+      "state": "b0b93c55",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -178,7 +178,7 @@
       "tick": 69,
       "time": 3.45,
       "nextId": 423,
-      "state": "f8d0653c",
+      "state": "58556b63",
       "events": "80b8299e",
       "rng": {
         "draws": 3,
@@ -270,17 +270,6 @@
                   1
                 ],
                 "deedId": "feat_relentless",
-                "state": "active"
-              }
-            ],
-            [
-              "hid_twice_a_deacon",
-              {
-                "counts": [
-                  0,
-                  1
-                ],
-                "deedId": "hid_twice_a_deacon",
                 "state": "active"
               }
             ]
@@ -404,7 +393,7 @@
       "tick": 70,
       "time": 3.5,
       "nextId": 423,
-      "state": "71e11b48",
+      "state": "88e2730f",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -415,7 +404,7 @@
       "tick": 71,
       "time": 3.55,
       "nextId": 423,
-      "state": "bbdc18cc",
+      "state": "c81ffef3",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -507,17 +496,6 @@
                   1
                 ],
                 "deedId": "feat_relentless",
-                "state": "active"
-              }
-            ],
-            [
-              "hid_twice_a_deacon",
-              {
-                "counts": [
-                  0,
-                  1
-                ],
-                "deedId": "hid_twice_a_deacon",
                 "state": "active"
               }
             ]

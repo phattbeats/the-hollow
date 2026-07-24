@@ -30,7 +30,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 411,
-      "state": "ae3a8caa",
+      "state": "72fa68e2",
       "events": "a13755b5",
       "rng": {
         "draws": 1,
@@ -116,29 +116,6 @@
                   0
                 ],
                 "deedId": "col_greyjaw_trophy",
-                "state": "active"
-              }
-            ],
-            [
-              "hid_full_creel",
-              {
-                "counts": [
-                  0,
-                  0,
-                  0,
-                  0
-                ],
-                "deedId": "hid_full_creel",
-                "state": "active"
-              }
-            ],
-            [
-              "hid_gluttons_cache",
-              {
-                "counts": [
-                  0
-                ],
-                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]
@@ -443,7 +420,7 @@
       "tick": 1,
       "time": 0.05,
       "nextId": 411,
-      "state": "34cc6ccf",
+      "state": "0e1a68ab",
       "events": "9f3d712d",
       "rng": {
         "draws": 3,
@@ -566,29 +543,6 @@
                   0
                 ],
                 "deedId": "feat_pathfinder",
-                "state": "active"
-              }
-            ],
-            [
-              "hid_full_creel",
-              {
-                "counts": [
-                  0,
-                  0,
-                  0,
-                  0
-                ],
-                "deedId": "hid_full_creel",
-                "state": "active"
-              }
-            ],
-            [
-              "hid_gluttons_cache",
-              {
-                "counts": [
-                  0
-                ],
-                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]
@@ -993,7 +947,7 @@
       "tick": 1,
       "time": 0.05,
       "nextId": 411,
-      "state": "2559104b",
+      "state": "41fd8387",
       "events": "0436e226",
       "rng": {
         "draws": 3,
@@ -1116,29 +1070,6 @@
                   0
                 ],
                 "deedId": "feat_pathfinder",
-                "state": "active"
-              }
-            ],
-            [
-              "hid_full_creel",
-              {
-                "counts": [
-                  0,
-                  0,
-                  0,
-                  0
-                ],
-                "deedId": "hid_full_creel",
-                "state": "active"
-              }
-            ],
-            [
-              "hid_gluttons_cache",
-              {
-                "counts": [
-                  0
-                ],
-                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]
@@ -1287,29 +1218,6 @@
                   0
                 ],
                 "deedId": "feat_pathfinder",
-                "state": "active"
-              }
-            ],
-            [
-              "hid_full_creel",
-              {
-                "counts": [
-                  0,
-                  0,
-                  0,
-                  0
-                ],
-                "deedId": "hid_full_creel",
-                "state": "active"
-              }
-            ],
-            [
-              "hid_gluttons_cache",
-              {
-                "counts": [
-                  0
-                ],
-                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]
@@ -1622,7 +1530,7 @@
       "tick": 3,
       "time": 0.15,
       "nextId": 411,
-      "state": "aa36c0f0",
+      "state": "1126411c",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -1745,29 +1653,6 @@
                   0
                 ],
                 "deedId": "feat_pathfinder",
-                "state": "active"
-              }
-            ],
-            [
-              "hid_full_creel",
-              {
-                "counts": [
-                  0,
-                  0,
-                  0,
-                  0
-                ],
-                "deedId": "hid_full_creel",
-                "state": "active"
-              }
-            ],
-            [
-              "hid_gluttons_cache",
-              {
-                "counts": [
-                  0
-                ],
-                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]
@@ -1916,29 +1801,6 @@
                   0
                 ],
                 "deedId": "feat_pathfinder",
-                "state": "active"
-              }
-            ],
-            [
-              "hid_full_creel",
-              {
-                "counts": [
-                  0,
-                  0,
-                  0,
-                  0
-                ],
-                "deedId": "hid_full_creel",
-                "state": "active"
-              }
-            ],
-            [
-              "hid_gluttons_cache",
-              {
-                "counts": [
-                  0
-                ],
-                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]
