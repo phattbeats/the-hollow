@@ -495,8 +495,8 @@
       "tick": 8,
       "time": 0.4,
       "nextId": 416,
-      "state": "d9136ecd",
-      "events": "585fa5b4",
+      "state": "c61cb268",
+      "events": "391e3683",
       "rng": {
         "draws": 40,
         "digest": "ffc79f51"
@@ -526,16 +526,6 @@
             "xpGained": 250
           },
           "deedLog": [
-            [
-              "chr_chronicler",
-              {
-                "counts": [
-                  1
-                ],
-                "deedId": "chr_chronicler",
-                "state": "active"
-              }
-            ],
             [
               "cmb_century",
               {
@@ -713,7 +703,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 416,
-      "state": "be820711",
+      "state": "19db0274",
       "events": "741638a5",
       "rng": {
         "draws": 40,
@@ -744,16 +734,6 @@
             "xpGained": 250
           },
           "deedLog": [
-            [
-              "chr_chronicler",
-              {
-                "counts": [
-                  1
-                ],
-                "deedId": "chr_chronicler",
-                "state": "active"
-              }
-            ],
             [
               "cmb_century",
               {

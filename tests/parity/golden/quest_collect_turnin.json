@@ -813,8 +813,8 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "e1fb345d",
-      "events": "77792b38",
+      "state": "0bc03f16",
+      "events": "6ad39c37",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -841,16 +841,6 @@
             "xpGained": 350
           },
           "deedLog": [
-            [
-              "chr_chronicler",
-              {
-                "counts": [
-                  1
-                ],
-                "deedId": "chr_chronicler",
-                "state": "active"
-              }
-            ],
             [
               "col_anglers_haul",
               {
@@ -991,7 +981,7 @@
       "tick": 2,
       "time": 0.1,
       "nextId": 408,
-      "state": "f77debab",
+      "state": "ae2c2b1c",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -1019,16 +1009,6 @@
             "xpGained": 350
           },
           "deedLog": [
-            [
-              "chr_chronicler",
-              {
-                "counts": [
-                  1
-                ],
-                "deedId": "chr_chronicler",
-                "state": "active"
-              }
-            ],
             [
               "col_anglers_haul",
               {
