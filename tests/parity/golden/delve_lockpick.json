@@ -145,8 +145,8 @@
       "tick": 38,
       "time": 1.9,
       "nextId": 423,
-      "state": "72bff418",
-      "events": "c4b2f4ba",
+      "state": "3178eceb",
+      "events": "39820822",
       "rng": {
         "draws": 8,
         "digest": "868f4186"
@@ -312,16 +312,6 @@
                   1
                 ],
                 "deedId": "hid_twice_a_deacon",
-                "state": "active"
-              }
-            ],
-            [
-              "soc_tumblers_path",
-              {
-                "counts": [
-                  1
-                ],
-                "deedId": "soc_tumblers_path",
                 "state": "active"
               }
             ]
@@ -558,7 +548,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 423,
-      "state": "b042cda9",
+      "state": "4c24e8ac",
       "events": "741638a5",
       "rng": {
         "draws": 8,
@@ -569,7 +559,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 423,
-      "state": "b042cda9",
+      "state": "4c24e8ac",
       "events": "741638a5",
       "rng": {
         "draws": 8,
@@ -736,16 +726,6 @@
                   1
                 ],
                 "deedId": "hid_twice_a_deacon",
-                "state": "active"
-              }
-            ],
-            [
-              "soc_tumblers_path",
-              {
-                "counts": [
-                  1
-                ],
-                "deedId": "soc_tumblers_path",
                 "state": "active"
               }
             ]

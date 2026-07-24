@@ -320,8 +320,8 @@
       "tick": 61,
       "time": 3.05,
       "nextId": 409,
-      "state": "20ced0be",
-      "events": "d23a9153",
+      "state": "5f6a40ba",
+      "events": "4c8edd54",
       "rng": {
         "draws": 84,
         "digest": "b8d0f260"
@@ -380,61 +380,14 @@
                 "deedId": "feat_pathfinder",
                 "state": "active"
               }
-            ],
-            [
-              "pvp_all_comers",
-              {
-                "counts": [
-                  1,
-                  0,
-                  0,
-                  0
-                ],
-                "deedId": "pvp_all_comers",
-                "state": "active"
-              }
-            ],
-            [
-              "pvp_bloodletter",
-              {
-                "counts": [
-                  1
-                ],
-                "deedId": "pvp_bloodletter",
-                "state": "active"
-              }
-            ],
-            [
-              "pvp_first_blood_ring",
-              {
-                "counts": [
-                  1
-                ],
-                "deedId": "pvp_first_blood_ring",
-                "state": "done"
-              }
-            ],
-            [
-              "pvp_ring_warden",
-              {
-                "counts": [
-                  1
-                ],
-                "deedId": "pvp_ring_warden",
-                "state": "active"
-              }
             ]
           ],
           "deedsDone": [
-            "exp_eastbrook_vale",
-            "pvp_first_blood_ring"
+            "exp_eastbrook_vale"
           ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
-          "earnedTitles": [
-            "t_duelist"
-          ],
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -625,7 +578,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 409,
-      "state": "e5bcf992",
+      "state": "f1e49a5e",
       "events": "741638a5",
       "rng": {
         "draws": 160,
@@ -636,7 +589,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 409,
-      "state": "27980d46",
+      "state": "bc995da2",
       "events": "741638a5",
       "rng": {
         "draws": 286,
@@ -647,7 +600,7 @@
       "tick": 101,
       "time": 5.05,
       "nextId": 409,
-      "state": "954fb670",
+      "state": "6239de54",
       "events": "741638a5",
       "rng": {
         "draws": 288,
@@ -707,61 +660,14 @@
                 "deedId": "feat_pathfinder",
                 "state": "active"
               }
-            ],
-            [
-              "pvp_all_comers",
-              {
-                "counts": [
-                  1,
-                  0,
-                  0,
-                  0
-                ],
-                "deedId": "pvp_all_comers",
-                "state": "active"
-              }
-            ],
-            [
-              "pvp_bloodletter",
-              {
-                "counts": [
-                  1
-                ],
-                "deedId": "pvp_bloodletter",
-                "state": "active"
-              }
-            ],
-            [
-              "pvp_first_blood_ring",
-              {
-                "counts": [
-                  1
-                ],
-                "deedId": "pvp_first_blood_ring",
-                "state": "done"
-              }
-            ],
-            [
-              "pvp_ring_warden",
-              {
-                "counts": [
-                  1
-                ],
-                "deedId": "pvp_ring_warden",
-                "state": "active"
-              }
             ]
           ],
           "deedsDone": [
-            "exp_eastbrook_vale",
-            "pvp_first_blood_ring"
+            "exp_eastbrook_vale"
           ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
-          "earnedTitles": [
-            "t_duelist"
-          ],
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
