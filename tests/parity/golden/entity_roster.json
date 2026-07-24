@@ -110,8 +110,8 @@
       "tick": 2,
       "time": 0.1,
       "nextId": 410,
-      "state": "f5d6214a",
-      "events": "6d2a08bd",
+      "state": "7e53210f",
+      "events": "f15eae1f",
       "rng": {
         "draws": 4,
         "digest": "bd70bdfe"
@@ -121,7 +121,7 @@
       "tick": 4,
       "time": 0.2,
       "nextId": 410,
-      "state": "f9a976e0",
+      "state": "27ca39ed",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -132,7 +132,7 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 410,
-      "state": "c1776ac4",
+      "state": "d6d1d519",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -176,6 +176,20 @@
                   0
                 ],
                 "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
                 "state": "active"
               }
             ]
@@ -256,7 +270,7 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 410,
-      "state": "27e08fe0",
+      "state": "7f2d7ced",
       "events": "6baea7ef",
       "rng": {
         "draws": 4,
@@ -300,6 +314,20 @@
                   0
                 ],
                 "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
                 "state": "active"
               }
             ]
@@ -380,7 +408,7 @@
       "tick": 6,
       "time": 0.3,
       "nextId": 410,
-      "state": "75f169c7",
+      "state": "d82e1240",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -391,7 +419,7 @@
       "tick": 7,
       "time": 0.35,
       "nextId": 410,
-      "state": "15a3e7ac",
+      "state": "968e3c61",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -435,6 +463,20 @@
                   0
                 ],
                 "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
                 "state": "active"
               }
             ]
