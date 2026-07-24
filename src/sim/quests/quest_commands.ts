@@ -240,6 +240,7 @@ function completeQuest(ctx: SimContext, questId: string, quest: QuestDef, meta: 
     color: '#ff0',
     pid: meta.entityId,
   });
+  ctx.onQuestCompletedForDeeds(questId, meta);
 }
 
 // Refusing a refusable offer (PHAA-471): the one dialog choice with gameplay effect.

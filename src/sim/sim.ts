@@ -239,6 +239,7 @@ export type { MarketSave } from './market';
 import {
   onInventoryChangedForDeeds,
   onMobKilledForDeeds,
+  onQuestCompletedForDeeds,
   setActiveTitle as setActiveTitleImpl,
 } from './deeds';
 import type { DialogRuntimeState } from './dialog/dialog_commands';
@@ -2631,6 +2632,7 @@ export class Sim {
       // quest-credit trio above.
       onMobKilledForDeeds: (mob, meta) => onMobKilledForDeeds(sim.ctx, mob, meta),
       onInventoryChangedForDeeds: (meta) => onInventoryChangedForDeeds(sim.ctx, meta),
+      onQuestCompletedForDeeds: (questId, meta) => onQuestCompletedForDeeds(sim.ctx, questId, meta),
       countItem: sim.countItem.bind(sim),
       // I1 dungeon instancing now lives in instances/dungeons.ts; these route through
       // the same-named Sim delegates (foreign callers use this.X). lockoutNowMs is the
