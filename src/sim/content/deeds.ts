@@ -720,6 +720,139 @@ export const DEEDS: Record<string, DeedDef> = {
     ],
     titleReward: 't_gravequiet',
   },
+
+  // ---- PvP (PHAA-745) ------------------------------------------------------
+  // Match/bout-win based, driven by the new onPvpWinForDeeds hook off the shared
+  // win-scoring closure in endArenaMatch (social/arena.ts, covers ranked arena,
+  // Fiesta, and the Vale Cup) and off endDuel (social/duel.ts). A 'pvp'
+  // objective can filter by pvpKind, or wildcard on any pvp win when omitted,
+  // same convention as the other categories' wildcard objectives.
+  pvp_first_blood_ring: {
+    id: 'pvp_first_blood_ring',
+    name: 'First Blood in the Ring',
+    text: 'Challenge another Asphodelian and win. The ring remembers its first names.',
+    category: 'pvp',
+    objectives: [{ type: 'pvp', pvpKind: 'duel', count: 1, label: 'Duels won' }],
+    titleReward: 't_duelist',
+  },
+  pvp_ring_warden: {
+    id: 'pvp_ring_warden',
+    name: 'Warden of the Ring',
+    text: 'Stand victorious over ten challengers in one-on-one duels.',
+    category: 'pvp',
+    objectives: [{ type: 'pvp', pvpKind: 'duel', count: 10, label: 'Duels won' }],
+    titleReward: 't_ring_warden',
+  },
+  pvp_arena_contender: {
+    id: 'pvp_arena_contender',
+    name: 'Arena Contender',
+    text: 'Win 5 ranked arena bouts on the sands.',
+    category: 'pvp',
+    objectives: [{ type: 'pvp', pvpKind: 'arena', count: 5, label: 'Ranked arena wins' }],
+    titleReward: 't_contender',
+  },
+  pvp_arena_champion: {
+    id: 'pvp_arena_champion',
+    name: 'Arena Champion',
+    text: 'Win 25 ranked arena bouts on the sands.',
+    category: 'pvp',
+    objectives: [{ type: 'pvp', pvpKind: 'arena', count: 25, label: 'Ranked arena wins' }],
+    titleReward: 't_arena_champion',
+  },
+  pvp_fiesta_favorite: {
+    id: 'pvp_fiesta_favorite',
+    name: 'Fiesta Favorite',
+    text: 'Win 15 two-on-two Fiesta matches.',
+    category: 'pvp',
+    objectives: [{ type: 'pvp', pvpKind: 'fiesta', count: 15, label: 'Fiesta wins' }],
+    titleReward: 't_fiesta_favorite',
+  },
+  pvp_vale_cup_victor: {
+    id: 'pvp_vale_cup_victor',
+    name: 'Vale Cup Victor',
+    text: 'Carry your side to 10 Vale Cup boarball wins.',
+    category: 'pvp',
+    objectives: [{ type: 'pvp', pvpKind: 'boarball', count: 10, label: 'Vale Cup wins' }],
+    titleReward: 't_cup_victor',
+  },
+  pvp_bloodletter: {
+    id: 'pvp_bloodletter',
+    name: 'The Bloodletter',
+    text: 'Fifty wins against other Asphodelians, however they were earned.',
+    category: 'pvp',
+    objectives: [{ type: 'pvp', count: 50, label: 'PvP bouts won' }],
+    titleReward: 't_bloodletter',
+  },
+  pvp_all_comers: {
+    id: 'pvp_all_comers',
+    name: 'Victor of All Comers',
+    text: 'Win a duel, a ranked bout, a Fiesta, and a Vale Cup match. Prove it in every ring the Asphodel offers.',
+    category: 'pvp',
+    objectives: [
+      { type: 'pvp', pvpKind: 'duel', count: 1, label: 'Duel won' },
+      { type: 'pvp', pvpKind: 'arena', count: 1, label: 'Ranked arena won' },
+      { type: 'pvp', pvpKind: 'fiesta', count: 1, label: 'Fiesta won' },
+      { type: 'pvp', pvpKind: 'boarball', count: 1, label: 'Vale Cup won' },
+    ],
+    titleReward: 't_undefeated',
+  },
+
+  // ---- Social (PHAA-745) ----------------------------------------------------
+  // Non-combat action based, driven by the new onSocialActionForDeeds hook off
+  // several distinct choke points: completeFishing and talkToNpc (sim.ts),
+  // lockpickSucceed (delves/lockpick_controller.ts), and the /roll handler
+  // (social/chat.ts). A bank-kind objective is NOT authored here: bankDeposit
+  // (bank.ts) is wired for engine parity, but the vault has no banker NPC
+  // placed in zone content yet (see bank.ts's ADAPT NOTE), so it cannot credit
+  // in live play today, the same class of gap as the dungeon category's
+  // deferred deathless-clear deed.
+  soc_patient_line: {
+    id: 'soc_patient_line',
+    name: 'The Patient Line',
+    text: 'Land 25 catches from the waters of the Asphodel.',
+    category: 'social',
+    objectives: [{ type: 'social', socialKind: 'fish', count: 25, label: 'Catches landed' }],
+    titleReward: 't_line_and_lure',
+  },
+  soc_tumblers_path: {
+    id: 'soc_tumblers_path',
+    name: "The Tumbler's Path",
+    text: "Walk the Tumbler's Path and open 10 delve chests by your own hand.",
+    category: 'social',
+    objectives: [{ type: 'social', socialKind: 'lockpick', count: 10, label: 'Chests picked' }],
+    titleReward: 't_pickpocket',
+  },
+  soc_loremonger: {
+    id: 'soc_loremonger',
+    name: 'The Loremonger',
+    text: 'Seek out Marshal Redbrook and hear what he has to say.',
+    category: 'social',
+    objectives: [
+      {
+        type: 'social',
+        socialKind: 'talk',
+        npcId: 'marshal_redbrook',
+        count: 1,
+        label: 'Spoke with Marshal Redbrook',
+      },
+    ],
+  },
+  soc_gladhander: {
+    id: 'soc_gladhander',
+    name: 'Gladhander',
+    text: 'Strike up conversation with 10 different souls of the Asphodel.',
+    category: 'social',
+    objectives: [{ type: 'social', socialKind: 'talk', count: 10, label: 'NPCs spoken with' }],
+    titleReward: 't_gladhander',
+  },
+  soc_high_roller: {
+    id: 'soc_high_roller',
+    name: 'High Roller',
+    text: 'Settle a hundred disputes the old way: call for the dice.',
+    category: 'social',
+    objectives: [{ type: 'social', socialKind: 'roll', count: 100, label: 'Rolls called' }],
+    titleReward: 't_high_roller',
+  },
 };
 
 export const TITLES: Record<string, TitleDef> = {
@@ -758,4 +891,16 @@ export const TITLES: Record<string, TitleDef> = {
   t_hoarder: { id: 't_hoarder', display: 'the Hoarder' },
   t_full_creel: { id: 't_full_creel', display: 'of the Full Creel' },
   t_gravequiet: { id: 't_gravequiet', display: 'the Gravequiet' },
+  t_duelist: { id: 't_duelist', display: 'the Duelist' },
+  t_ring_warden: { id: 't_ring_warden', display: 'Warden of the Ring' },
+  t_contender: { id: 't_contender', display: 'the Contender' },
+  t_arena_champion: { id: 't_arena_champion', display: 'the Arena Champion' },
+  t_fiesta_favorite: { id: 't_fiesta_favorite', display: 'the Fiesta Favorite' },
+  t_cup_victor: { id: 't_cup_victor', display: 'the Cup Victor' },
+  t_bloodletter: { id: 't_bloodletter', display: 'the Bloodletter' },
+  t_undefeated: { id: 't_undefeated', display: 'the Undefeated' },
+  t_line_and_lure: { id: 't_line_and_lure', display: 'of the Line and Lure' },
+  t_pickpocket: { id: 't_pickpocket', display: 'the Pickpocket' },
+  t_gladhander: { id: 't_gladhander', display: 'the Gladhander' },
+  t_high_roller: { id: 't_high_roller', display: 'the High Roller' },
 };

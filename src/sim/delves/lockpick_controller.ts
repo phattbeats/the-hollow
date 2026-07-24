@@ -368,6 +368,8 @@ function lockpickSucceed(ctx: SimContext, run: DelveRun, session: LockSession): 
   grantDelveRewards(ctx, run);
   grantLockpickBonus(ctx, run, session.lootTier);
   openDelveSurfaceExit(ctx, run);
+  const ownerMeta = ctx.players.get(session.ownerId);
+  if (ownerMeta) ctx.onSocialActionForDeeds('lockpick', ownerMeta);
   ctx.emit({ type: 'delveChestLoot', chestId: session.chestId, items, pid: session.ownerId });
   ctx.emit({
     type: 'lockpickEnd',

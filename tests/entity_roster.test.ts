@@ -193,6 +193,8 @@ function makeCtx() {
     onDelveClearedForDeeds: vi.fn(),
     onLevelReachedForDeeds: vi.fn(),
     onZoneVisitedForDeeds: vi.fn(),
+    onPvpWinForDeeds: vi.fn(),
+    onSocialActionForDeeds: vi.fn(),
     countItem: vi.fn(() => 0),
     lockoutNowMs: vi.fn(() => 0),
     instanceKeyFor: vi.fn(() => 'solo:0'),

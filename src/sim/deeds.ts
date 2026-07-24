@@ -15,7 +15,14 @@
 import { DEEDS } from './data';
 import type { PlayerMeta } from './sim';
 import type { SimContext } from './sim_context';
-import type { DeedDef, DeedObjective, DeedProgress, Entity } from './types';
+import type {
+  DeedDef,
+  DeedObjective,
+  DeedProgress,
+  Entity,
+  PvpWinKind,
+  SocialActionKind,
+} from './types';
 
 function progressFor(meta: PlayerMeta, def: DeedDef): DeedProgress {
   let dp = meta.deedLog.get(def.id);
@@ -72,6 +79,18 @@ function levelMatches(obj: DeedObjective, level: number): boolean {
 
 function exploreMatches(obj: DeedObjective, zoneId: string): boolean {
   return obj.type === 'explore' && (!obj.zoneId || obj.zoneId === zoneId);
+}
+
+function pvpMatches(obj: DeedObjective, kind: PvpWinKind): boolean {
+  return obj.type === 'pvp' && (!obj.pvpKind || obj.pvpKind === kind);
+}
+
+function socialMatches(obj: DeedObjective, kind: SocialActionKind, npcId?: string): boolean {
+  return (
+    obj.type === 'social' &&
+    (!obj.socialKind || obj.socialKind === kind) &&
+    (kind !== 'talk' || !obj.npcId || obj.npcId === npcId)
+  );
 }
 
 export function onMobKilledForDeeds(
@@ -215,6 +234,72 @@ export function onZoneVisitedForDeeds(
     let changed = false;
     def.objectives.forEach((obj, i) => {
       if (exploreMatches(obj, zoneId) && dp.counts[i] < obj.count) {
+        dp.counts[i]++;
+        changed = true;
+        ctx.emit({
+          type: 'deedProgress',
+          deedId: def.id,
+          text: `${obj.label}: ${dp.counts[i]}/${obj.count}`,
+          pid: meta.entityId,
+        });
+      }
+    });
+    if (changed) checkDeedComplete(ctx, def, dp, meta);
+  }
+}
+
+// PvP deeds (PHAA-745): hooked from the shared per-pid win-scoring closure in
+// endArenaMatch (social/arena.ts, covers ranked arena, fiesta, and boarball) and
+// from endDuel (social/duel.ts). A 'pvp' objective can filter by pvpKind, or
+// wildcard on any pvp win when omitted, same convention as the other categories.
+export function onPvpWinForDeeds(
+  ctx: SimContext,
+  kind: PvpWinKind,
+  meta: PlayerMeta,
+  deedDefs: Record<string, DeedDef> = DEEDS,
+): void {
+  for (const def of Object.values(deedDefs)) {
+    if (meta.deedsDone.has(def.id)) continue;
+    if (!def.objectives.some((obj) => pvpMatches(obj, kind))) continue;
+    const dp = progressFor(meta, def);
+    let changed = false;
+    def.objectives.forEach((obj, i) => {
+      if (pvpMatches(obj, kind) && dp.counts[i] < obj.count) {
+        dp.counts[i]++;
+        changed = true;
+        ctx.emit({
+          type: 'deedProgress',
+          deedId: def.id,
+          text: `${obj.label}: ${dp.counts[i]}/${obj.count}`,
+          pid: meta.entityId,
+        });
+      }
+    });
+    if (changed) checkDeedComplete(ctx, def, dp, meta);
+  }
+}
+
+// Social deeds (PHAA-745): hooked from several distinct non-combat choke points,
+// one per socialKind: completeFishing and talkToNpc (both sim.ts), lockpickSucceed
+// (delves/lockpick_controller.ts), and the /roll handler (social/chat.ts). Bank
+// deposit/withdraw (bank.ts) is also wired for engine parity, but no bank-kind
+// deed is authored yet: the vault has no banker NPC placed in zone content (see
+// bank.ts's ADAPT NOTE), so it is unreachable in live play today, the same class
+// of gap as the dungeon category's deferred deathless-clear deed.
+export function onSocialActionForDeeds(
+  ctx: SimContext,
+  kind: SocialActionKind,
+  meta: PlayerMeta,
+  npcId?: string,
+  deedDefs: Record<string, DeedDef> = DEEDS,
+): void {
+  for (const def of Object.values(deedDefs)) {
+    if (meta.deedsDone.has(def.id)) continue;
+    if (!def.objectives.some((obj) => socialMatches(obj, kind, npcId))) continue;
+    const dp = progressFor(meta, def);
+    let changed = false;
+    def.objectives.forEach((obj, i) => {
+      if (socialMatches(obj, kind, npcId) && dp.counts[i] < obj.count) {
         dp.counts[i]++;
         changed = true;
         ctx.emit({

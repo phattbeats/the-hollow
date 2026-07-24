@@ -241,7 +241,9 @@ import {
   onInventoryChangedForDeeds,
   onLevelReachedForDeeds,
   onMobKilledForDeeds,
+  onPvpWinForDeeds,
   onQuestCompletedForDeeds,
+  onSocialActionForDeeds,
   onZoneVisitedForDeeds,
   setActiveTitle as setActiveTitleImpl,
 } from './deeds';
@@ -2648,6 +2650,9 @@ export class Sim {
         onDelveClearedForDeeds(sim.ctx, delveId, tierId, deathless, meta),
       onLevelReachedForDeeds: (level, meta) => onLevelReachedForDeeds(sim.ctx, level, meta),
       onZoneVisitedForDeeds: (zoneId, meta) => onZoneVisitedForDeeds(sim.ctx, zoneId, meta),
+      onPvpWinForDeeds: (kind, meta) => onPvpWinForDeeds(sim.ctx, kind, meta),
+      onSocialActionForDeeds: (kind, meta, npcId) =>
+        onSocialActionForDeeds(sim.ctx, kind, meta, npcId),
       countItem: sim.countItem.bind(sim),
       // I1 dungeon instancing now lives in instances/dungeons.ts; these route through
       // the same-named Sim delegates (foreign callers use this.X). lockoutNowMs is the
@@ -4968,6 +4973,7 @@ export class Sim {
   private completeFishing(p: Entity, meta: PlayerMeta): void {
     if (this.shouldCatchCodfather(p, meta)) {
       this.addItem(THE_CODFATHER_ITEM_ID, 1, meta.entityId);
+      this.ctx.onSocialActionForDeeds('fish', meta);
       return;
     }
     // The catch depends on which zone's water you're fishing and each has its own
@@ -5003,6 +5009,7 @@ export class Sim {
       });
     }
     this.addItem(caught, 1, meta.entityId);
+    this.ctx.onSocialActionForDeeds('fish', meta);
   }
 
   useItem(itemId: string, pid?: number): ItemUseResult | undefined {
@@ -5158,6 +5165,7 @@ export class Sim {
     const { meta } = r;
     const npc = this.entities.get(npcId);
     if (!npc || !this.isQuestInteractionEntity(npc)) return;
+    this.ctx.onSocialActionForDeeds('talk', meta, npc.templateId);
     if (this.interactNpcForQuests(npc, meta)) return;
     for (const qid of npc.questIds) {
       const quest = QUESTS[qid];
