@@ -282,8 +282,8 @@
       "tick": 8,
       "time": 0.4,
       "nextId": 416,
-      "state": "fcb092cd",
-      "events": "fcf1b29b",
+      "state": "317f7384",
+      "events": "69e63e31",
       "rng": {
         "draws": 40,
         "digest": "ffc79f51"
@@ -402,10 +402,34 @@
                 "deedId": "col_greyjaw_trophy",
                 "state": "active"
               }
+            ],
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "exp_eastbrook_vale"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -419,6 +443,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 27600,
           "nodeHarvestReadyAt": {},
           "questLog": [
@@ -495,7 +520,7 @@
       "tick": 8,
       "time": 0.4,
       "nextId": 416,
-      "state": "d9136ecd",
+      "state": "b1eb4032",
       "events": "585fa5b4",
       "rng": {
         "draws": 40,
@@ -628,10 +653,34 @@
                 "deedId": "col_greyjaw_trophy",
                 "state": "active"
               }
+            ],
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "exp_eastbrook_vale"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -645,6 +694,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 27850,
           "nodeHarvestReadyAt": {},
           "questsDone": [
@@ -713,7 +763,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 416,
-      "state": "be820711",
+      "state": "0f1ff86e",
       "events": "741638a5",
       "rng": {
         "draws": 40,
@@ -846,10 +896,34 @@
                 "deedId": "col_greyjaw_trophy",
                 "state": "active"
               }
+            ],
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "exp_eastbrook_vale"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -863,6 +937,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 27850,
           "nodeHarvestReadyAt": {},
           "questsDone": [
