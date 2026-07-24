@@ -259,3 +259,39 @@ describe('deeds content: exploration category', () => {
     }
   });
 });
+
+describe('deeds content: feat category', () => {
+  const featDeeds = Object.values(DEEDS).filter((d) => d.category === 'feat');
+  // The feat category adds no new engine hook: every objective must reuse a type
+  // whose credit path already ships. If a feat needs a new objective type, that
+  // type's hook has to be wired before the content can credit.
+  const SHIPPED_TYPES = new Set(['kill', 'delve', 'quest', 'level', 'explore', 'collect']);
+
+  it('has at least one authored feat, each rewarding a title', () => {
+    expect(featDeeds.length).toBeGreaterThan(0);
+    for (const def of featDeeds) {
+      expect(def.titleReward, `${def.id}: a feat should reward a title`).toBeDefined();
+    }
+  });
+
+  it('every feat objective reuses an already-shipped objective type', () => {
+    for (const def of featDeeds) {
+      for (const obj of def.objectives) {
+        expect(
+          SHIPPED_TYPES.has(obj.type),
+          `${def.id}: feat uses objective type ${obj.type} with no shipped hook`,
+        ).toBe(true);
+      }
+    }
+  });
+
+  it('the Grand Asphodelian capstone spans several distinct systems (a true cross-system feat)', () => {
+    const capstone = DEEDS.feat_grand_asphodelian;
+    expect(capstone, 'missing feat_grand_asphodelian capstone').toBeDefined();
+    const kinds = new Set(capstone.objectives.map((o) => o.type));
+    expect(
+      kinds.size,
+      'the capstone should combine at least three objective kinds',
+    ).toBeGreaterThanOrEqual(3);
+  });
+});
