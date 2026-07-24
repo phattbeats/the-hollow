@@ -24,7 +24,11 @@
 // grantXp level-up loop in combat/damage.ts), and dungeon (final-boss-kill
 // based, riding the same onMobKilledForDeeds hook via targetMobId since a
 // dungeon clear is its boss kill; deathless/encounter-condition dungeon deeds
-// wait on a dungeon encounter-state hook, deferred as their own follow-up).
+// wait on a dungeon encounter-state hook, deferred as their own follow-up), and
+// exploration (zone-entry based, driven by the new onZoneVisitedForDeeds hook
+// off the per-player movement tick in sim.ts, fired once per zone entry; every
+// 'explore' objective targets a specific zoneId with count 1, so a zone credits
+// its objective exactly once and re-entry is an idempotent no-op).
 
 import type { DeedDef, TitleDef } from '../types';
 
@@ -453,6 +457,57 @@ export const DEEDS: Record<string, DeedDef> = {
     ],
     titleReward: 't_hollows_bane',
   },
+
+  // ---- Exploration (PHAA-745) --------------------------------------------
+  // Zone-entry based, driven by the onZoneVisitedForDeeds hook off the
+  // per-player movement tick in sim.ts, fired once per zone entry. Every
+  // objective targets a specific zoneId with count 1, so a zone credits its
+  // objective exactly once and re-entry is an idempotent no-op.
+  exp_hollow_reaches: {
+    id: 'exp_hollow_reaches',
+    name: 'Into the Hollow',
+    text: 'Set foot in the Hollow Reaches, where the old growth swallows the light.',
+    category: 'exploration',
+    objectives: [
+      { type: 'explore', zoneId: 'the_hollow_reaches', count: 1, label: 'The Hollow Reaches' },
+    ],
+  },
+  exp_eastbrook_vale: {
+    id: 'exp_eastbrook_vale',
+    name: 'Vale-Walker',
+    text: 'Wander the green terraces of Eastbrook Vale.',
+    category: 'exploration',
+    objectives: [{ type: 'explore', zoneId: 'eastbrook_vale', count: 1, label: 'Eastbrook Vale' }],
+  },
+  exp_mirefen_marsh: {
+    id: 'exp_mirefen_marsh',
+    name: 'Into the Mire',
+    text: 'Brave the drowned reeds and sunken roots of Mirefen Marsh.',
+    category: 'exploration',
+    objectives: [{ type: 'explore', zoneId: 'mirefen_marsh', count: 1, label: 'Mirefen Marsh' }],
+  },
+  exp_thornpeak_heights: {
+    id: 'exp_thornpeak_heights',
+    name: 'Above the Bramble',
+    text: 'Climb into the thorn-crowned crags of Thornpeak Heights.',
+    category: 'exploration',
+    objectives: [
+      { type: 'explore', zoneId: 'thornpeak_heights', count: 1, label: 'Thornpeak Heights' },
+    ],
+  },
+  exp_grand_tour: {
+    id: 'exp_grand_tour',
+    name: 'Seed on the Wind',
+    text: 'Let the wind carry you to every corner of the Asphodel: stand in all four lands.',
+    category: 'exploration',
+    objectives: [
+      { type: 'explore', zoneId: 'the_hollow_reaches', count: 1, label: 'The Hollow Reaches' },
+      { type: 'explore', zoneId: 'eastbrook_vale', count: 1, label: 'Eastbrook Vale' },
+      { type: 'explore', zoneId: 'mirefen_marsh', count: 1, label: 'Mirefen Marsh' },
+      { type: 'explore', zoneId: 'thornpeak_heights', count: 1, label: 'Thornpeak Heights' },
+    ],
+    titleReward: 't_wayfarer',
+  },
 };
 
 export const TITLES: Record<string, TitleDef> = {
@@ -478,4 +533,5 @@ export const TITLES: Record<string, TitleDef> = {
   t_wyrmsunder: { id: 't_wyrmsunder', display: 'the Wyrmsunder' },
   t_thornpeak_warden: { id: 't_thornpeak_warden', display: 'Warden of Thornpeak' },
   t_hollows_bane: { id: 't_hollows_bane', display: 'Bane of the Hollow' },
+  t_wayfarer: { id: 't_wayfarer', display: 'the Wayfarer' },
 };
