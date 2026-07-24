@@ -9,8 +9,9 @@
 // the ticket's category-by-category sequencing), collection (collect-based
 // only, driven by the inventory-holding hook PHAA-744 shipped: credit is the
 // count currently held, so a deed completes once the player holds the full set
-// at once, and stays done thereafter), chronicle (quest-completion based,
-// driven by the new onQuestCompletedForDeeds hook off completeQuest() in
+// at once, and stays done thereafter; collection deeds add no engine hook),
+// chronicle (quest-completion based, driven by the new
+// onQuestCompletedForDeeds hook off completeQuest() in
 // quests/quest_commands.ts, the shared core both turnInQuest and refuseQuest
 // route through; a 'quest' objective with no questId wildcards on any
 // completion, same convention as the combat wildcard-kill objectives), and
