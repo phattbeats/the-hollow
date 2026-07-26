@@ -1,3 +1,4 @@
+import { isInJailBounds, JAIL_FLOOR_Y } from './content/jail';
 import { DUNGEON_FLOOR_Y, DUNGEON_X_THRESHOLD, getActiveWorldContent, WORLD_MAX_X } from './data';
 import { fbm2, hash2 } from './rng';
 import type { BiomeId, HeightStamp, WorldContent } from './types';
@@ -370,6 +371,7 @@ function baseHeight(x: number, z: number, seed: number): number {
 // Ground height including instanced dungeon floors (flat, far off-world).
 export function groundHeight(x: number, z: number, seed: number): number {
   if (x > DUNGEON_X_THRESHOLD) return DUNGEON_FLOOR_Y;
+  if (isInJailBounds({ x, z })) return JAIL_FLOOR_Y;
   return terrainHeight(x, z, seed);
 }
 

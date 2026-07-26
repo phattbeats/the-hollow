@@ -1586,6 +1586,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': 'Gier für {item}',
   'itemUi.lootRoll.passAria': 'Bei {item} passen',
   'itemUi.lootRoll.everyonePassed': 'Alle passen bei {item}.',
+  'itemUi.lootRoll.winnerOffline': 'Der Gewinner von {item} war offline; es wurde zur Leiche zurückgebracht.',
   'entities.abilities.heroic_strike.name': 'Heldenhafter Stoß',
   'entities.abilities.heroic_strike.description':
     'Ein mächtiger Angriff, der den Nahkampfschaden um {damage} erhöht. Wird bei eurem nächsten Schwung ausgelöst.',

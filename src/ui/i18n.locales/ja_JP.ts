@@ -1060,6 +1060,8 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hud.prompts.openTrade': '取引を開く',
   'hud.prompts.duelRequest': '{name}があなたに決闘を申し込みました！',
   'hud.prompts.acceptDuel': '決闘を受ける',
+  'hud.prompts.readyCheckStart': '{name}が準備確認を開始しました。',
+  'hud.prompts.markReady': '準備完了',
   'hud.prompts.decline': '断る',
   'hud.combat.floatingMiss': 'ミス',
   'hud.combat.floatingDodge': '回避',
@@ -1624,6 +1626,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': '{item}を強欲',
   'itemUi.lootRoll.passAria': '{item}をパス',
   'itemUi.lootRoll.everyonePassed': '全員が{item}をパスしました。',
+  'itemUi.lootRoll.winnerOffline': '{item}の勝者がオフラインだったため、死体に返却されました。',
   'entities.abilities.heroic_strike.name': '英雄の一撃',
   'entities.abilities.heroic_strike.description':
     '強力な攻撃で近接ダメージが {damage} 増加します。次のスイングで発動します。',
@@ -5191,6 +5194,10 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'sim.lockpick.tierMedium': '並',
   'sim.lockpick.tierPremium': '極上',
   'sim.lockpick.toolSlips': 'その道具はこの錠から滑り落ちる。',
+  'sim.readyCheck.alreadyInProgress': '準備確認はすでに進行中です。',
+  'sim.readyCheck.mustBeInParty': '準備確認を開始するにはパーティに入っている必要があります。',
+  'sim.readyCheck.summary':
+    '準備確認：準備完了 {ready} 人、未準備 {notReady} 人、応答なし {noResponse} 人。',
   'delveUi.board.tabDelve': 'デルヴ',
   'delveUi.shop.price': '刻印{marks}個',
   'delveUi.shop.buyAria': 'デルヴの刻印{marks}個で{item}を購入',

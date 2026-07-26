@@ -2508,6 +2508,11 @@ export const id_ID: EnTranslations = {
       "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
       "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
       "helpLine": "Homestead: /homestead, /homestead claim."
+    },
+    "readyCheck": {
+      "mustBeInParty": "You must be in a party to start a ready check.",
+      "alreadyInProgress": "A ready check is already in progress.",
+      "summary": "Ready check: {ready} ready, {notReady} not ready, {noResponse} no response."
     }
   },
   "lockpickUi": {
@@ -3349,6 +3354,8 @@ export const id_ID: EnTranslations = {
       "openTrade": "Buka Perdagangan",
       "duelRequest": "{name} menantang Anda untuk berduel!",
       "acceptDuel": "Terima Duel",
+      "readyCheckStart": "{name} has started a ready check.",
+      "markReady": "Ready",
       "decline": "Tolak"
     },
     "combat": {
@@ -4044,7 +4051,8 @@ export const id_ID: EnTranslations = {
       "needAria": "Butuh untuk {item}",
       "greedAria": "Tamak untuk {item}",
       "passAria": "Lewati {item}",
-      "everyonePassed": "Semua orang melewatkan {item}."
+      "everyonePassed": "Semua orang melewatkan {item}.",
+      "winnerOffline": "The winner of {item} was offline; it was returned to the corpse."
     }
   },
   "entities": {

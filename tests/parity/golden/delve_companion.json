@@ -110,8 +110,8 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 417,
-      "state": "e5149cc6",
-      "events": "64355dbf",
+      "state": "ae5e8bbd",
+      "events": "94b6ec38",
       "rng": {
         "draws": 4,
         "digest": "017ed9b3"
@@ -121,7 +121,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 417,
-      "state": "58e91959",
+      "state": "8d8d2e4a",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -132,7 +132,7 @@
       "tick": 15,
       "time": 0.75,
       "nextId": 417,
-      "state": "b54f6bc8",
+      "state": "4d0828a3",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -143,7 +143,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 417,
-      "state": "a2bba37d",
+      "state": "680ec5be",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -154,7 +154,7 @@
       "tick": 25,
       "time": 1.25,
       "nextId": 417,
-      "state": "e0e8fd65",
+      "state": "f6163716",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -165,7 +165,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 417,
-      "state": "15c4f01f",
+      "state": "7c240624",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -176,7 +176,7 @@
       "tick": 35,
       "time": 1.75,
       "nextId": 417,
-      "state": "fec3b61f",
+      "state": "21175c24",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -187,7 +187,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 417,
-      "state": "bbb4cd72",
+      "state": "793b7689",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -198,7 +198,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 417,
-      "state": "bbb4cd72",
+      "state": "793b7689",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -223,6 +223,48 @@
             "companion_tessa": 2
           },
           "counters": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -232,6 +274,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 11200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -378,7 +421,7 @@
       "tick": 41,
       "time": 2.05,
       "nextId": 417,
-      "state": "472cf5f2",
+      "state": "02c0eb09",
       "events": "25b2de65",
       "rng": {
         "draws": 6,
@@ -403,6 +446,48 @@
             "companion_tessa": 2
           },
           "counters": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -412,6 +497,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 11200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -572,7 +658,7 @@
       "tick": 45,
       "time": 2.25,
       "nextId": 417,
-      "state": "aef65bf3",
+      "state": "a9a3e218",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -583,7 +669,7 @@
       "tick": 49,
       "time": 2.45,
       "nextId": 417,
-      "state": "76f594c3",
+      "state": "8d653708",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -608,6 +694,48 @@
             "companion_tessa": 2
           },
           "counters": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -617,6 +745,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 11200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -718,7 +847,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 417,
-      "state": "3dd74541",
+      "state": "632e43c2",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -729,7 +858,7 @@
       "tick": 51,
       "time": 2.55,
       "nextId": 417,
-      "state": "4a3e6900",
+      "state": "accf0ecb",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -754,6 +883,48 @@
             "companion_tessa": 2
           },
           "counters": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -763,6 +934,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 11200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -865,7 +1037,7 @@
       "tick": 51,
       "time": 2.55,
       "nextId": 417,
-      "state": "4a3e6900",
+      "state": "accf0ecb",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -890,6 +1062,48 @@
             "companion_tessa": 2
           },
           "counters": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -899,6 +1113,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 11200,
           "nodeHarvestReadyAt": {},
           "talents": {

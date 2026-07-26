@@ -2508,6 +2508,11 @@ export const fr_CA: EnTranslations = {
       "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
       "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
       "helpLine": "Homestead: /homestead, /homestead claim."
+    },
+    "readyCheck": {
+      "mustBeInParty": "You must be in a party to start a ready check.",
+      "alreadyInProgress": "A ready check is already in progress.",
+      "summary": "Ready check: {ready} ready, {notReady} not ready, {noResponse} no response."
     }
   },
   "lockpickUi": {
@@ -3349,6 +3354,8 @@ export const fr_CA: EnTranslations = {
       "openTrade": "Ouvrir l'échange",
       "duelRequest": "{name} vous a provoqué en duel !",
       "acceptDuel": "Accepter le duel",
+      "readyCheckStart": "{name} has started a ready check.",
+      "markReady": "Ready",
       "decline": "Refuser"
     },
     "combat": {
@@ -4044,7 +4051,8 @@ export const fr_CA: EnTranslations = {
       "needAria": "Besoin pour {item}",
       "greedAria": "Cupidité pour {item}",
       "passAria": "Passer pour {item}",
-      "everyonePassed": "Tout le monde a passé pour {item}."
+      "everyonePassed": "Tout le monde a passé pour {item}.",
+      "winnerOffline": "Le gagnant de {item} était hors ligne ; il a été rendu au corps."
     }
   },
   "entities": {

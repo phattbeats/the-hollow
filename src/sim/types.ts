@@ -1723,6 +1723,76 @@ export interface QuestProgress {
   state: 'active' | 'ready' | 'done';
 }
 
+// Book of Asphodelia (PHAA-744, engine/wire layer only; content lands in PHAA-745).
+// Deeds auto-track from character creation (no accept step, unlike quests): every
+// deed in the registry gains credit as its trigger objectives are met, checked
+// lazily on the same event hooks quests use (kill / inventory-change). Completing
+// a deed can grant a title, which the player then selects as their display title.
+export type DeedState = 'active' | 'done';
+
+// Content category (PHAA-745), matching upstream's grouping: used for
+// filtering/organizing the deed roster (cross-surface UI, PHAA-748) and
+// leaderboard scoring (PHAA-746). Purely descriptive; the credit engine
+// dispatches on objective type, not category.
+export type DeedCategory =
+  | 'chronicle'
+  | 'collection'
+  | 'combat'
+  | 'delve'
+  | 'dungeon'
+  | 'exploration'
+  | 'feat'
+  | 'hidden'
+  | 'progression'
+  | 'pvp'
+  | 'social';
+
+// 'pvp': a match/bout win, from the shared arena/fiesta/boarball result choke
+// point (endArenaMatch in social/arena.ts) or the duel choke point (endDuel in
+// social/duel.ts). 'social': a non-combat action, from one of several distinct
+// choke points (completeFishing / talkToNpc in sim.ts, lockpickSucceed in
+// delves/lockpick_controller.ts, the /roll handler in social/chat.ts).
+export type PvpWinKind = 'arena' | 'fiesta' | 'boarball' | 'duel';
+export type SocialActionKind = 'fish' | 'lockpick' | 'roll' | 'talk' | 'bank';
+
+export interface DeedObjective {
+  type: 'kill' | 'collect' | 'quest' | 'delve' | 'level' | 'explore' | 'pvp' | 'social';
+  targetMobId?: string; // for 'kill'; omitted means "any mob" (wildcard credit)
+  itemId?: string; // for 'collect'
+  questId?: string; // for 'quest'; omitted means "any quest" (wildcard credit)
+  delveId?: string; // for 'delve'; omitted means "any delve" (wildcard credit)
+  tierId?: string; // for 'delve'; omitted means "any tier"
+  deathless?: boolean; // for 'delve'; true requires a clear with zero deaths for the player
+  atLeast?: number; // for 'level'; the character level threshold the deed credits at
+  zoneId?: string; // for 'explore'; the zone whose first entry credits this objective
+  pvpKind?: PvpWinKind; // for 'pvp'; omitted means "any pvp win" (wildcard credit)
+  socialKind?: SocialActionKind; // for 'social'
+  npcId?: string; // for 'social' with socialKind 'talk'; omitted means "any NPC"
+  count: number;
+  label: string;
+}
+
+export interface DeedProgress {
+  deedId: string;
+  counts: number[]; // per objective, parallel to DeedDef.objectives
+  state: DeedState;
+}
+
+export interface DeedDef {
+  id: string;
+  name: string;
+  text: string;
+  category: DeedCategory;
+  objectives: DeedObjective[];
+  titleReward?: string; // TitleDef id granted on completion
+}
+
+export interface TitleDef {
+  id: string;
+  display: string; // e.g. "the Wayfarer"
+  prefix?: boolean; // shown before the character name instead of after (default false)
+}
+
 // Consumables restore their total over CONSUME_DURATION seconds while sitting,
 // ticking on the classic 2-second regen tick. Food and drink run concurrently.
 export const CONSUME_DURATION = 18; // seconds
@@ -1883,6 +1953,10 @@ export interface Entity {
   /** GM character: invulnerable (dealDamage no-ops). Server-set from the
    *  characters.is_gm column; never user-settable. */
   gm?: boolean;
+  /** Moderation-jailed player: prisoners are mutually hostile (the jail
+   *  brawl, see Sim.isHostileTo). Server-set via setJailed on /jail, /unjail,
+   *  and join restore; never user-settable. */
+  jailed?: boolean;
   respawnTimer: number;
   corpseTimer: number;
   lootFfaTimer: number; // seconds of owner-lock left before tap loot opens to all (FFA); Infinity until rollLoot starts it
@@ -2032,6 +2106,19 @@ export type CalendarResultCode =
   | 'calendarFull'
   | 'eventGone';
 
+// An in-flight party/raid ready check (social/ready_check.ts). Keyed on Sim by
+// party id. Each member is 'pending' until they answer; anyone still 'pending'
+// when the timeout fires is counted as "no response" (there is no separate afk
+// state). Sim-internal state, never wired to the client (the outcome is
+// announced as chat/log lines and the yes/no prompt rides the readyCheckStart
+// event).
+export interface ReadyCheck {
+  partyId: number;
+  initiator: number; // pid who ran /ready
+  endsAt: number; // sim-clock seconds (ctx.time) when the check auto-finalizes
+  responses: Map<number, 'ready' | 'notready' | 'pending'>; // pid -> answer
+}
+
 // `pid` (when present) marks a personal event that should only be delivered to
 // that player entity's owner; events without pid are world-visible.
 export type SimEvent = { pid?: number } & (
@@ -2088,6 +2175,9 @@ export type SimEvent = { pid?: number } & (
   | { type: 'questProgress'; questId: string; text: string }
   | { type: 'questReady'; questId: string }
   | { type: 'questDone'; questId: string }
+  | { type: 'deedProgress'; deedId: string; text: string }
+  | { type: 'deedDone'; deedId: string }
+  | { type: 'titleEarned'; titleId: string }
   | { type: 'aura'; targetId: number; name: string; gained: boolean }
   | { type: 'castStart'; entityId: number; ability: string; time: number }
   | { type: 'castStop'; entityId: number; success: boolean }
@@ -2126,6 +2216,9 @@ export type SimEvent = { pid?: number } & (
       to?: string;
     }
   | { type: 'partyInvite'; fromPid: number; fromName: string }
+  // The party/raid leader started a ready check: the recipient's client plays a
+  // sound and shows a yes/no prompt (social/ready_check.ts). Personal (pid set).
+  | { type: 'readyCheckStart'; fromName: string }
   // a guild invitation from an online guild officer/leader; resolved by name
   // server-side so it carries no pid
   | { type: 'guildInvite'; fromName: string; guildName: string }
