@@ -30,6 +30,7 @@ import { readablePropsAt } from '../sim/readables_query';
 import { computeQuestState, type ResolvedAbility } from '../sim/sim';
 import {
   type Aura,
+  type CraftType,
   type DeedProgress,
   type Entity,
   type EquipSlot,
@@ -1742,6 +1743,15 @@ export class ClientWorld implements IWorld {
       if (s.dcomp !== undefined) this.companionUpgrades = s.dcomp ?? {};
       if (s.gprof !== undefined)
         this.gatheringProficiency = s.gprof ?? { amber: 0, heartwood: 0, spore: 0 };
+      if (s.cprof !== undefined)
+        this.craftProficiency = s.cprof ?? {
+          weaponcrafting: 0,
+          armorcrafting: 0,
+          tailoring: 0,
+          leatherworking: 0,
+          cooking: 0,
+          alchemy: 0,
+        };
       // Per-viewer gather-node cooldown set (PHAA-618): the ids of nodes NOT
       // harvestable by us right now, mirrored from the self snapshot so
       // nodeHarvestableByMe matches the offline Sim. Absent means unchanged; an
@@ -1935,6 +1945,19 @@ export class ClientWorld implements IWorld {
     this.cmd({ cmd: 'harvestNode', node: nodeId });
   }
   gatheringProficiency: Record<GatherNodeType, number> = { amber: 0, heartwood: 0, spore: 0 };
+  // --- IWorldCrafting: craft a recipe (PHAA-574) + the local viewer's own
+  // craft proficiency, mirrored from the self snapshot (server field 'cprof'). ---
+  craftItem(recipeId: string): void {
+    this.cmd({ cmd: 'craftItem', recipe: recipeId });
+  }
+  craftProficiency: Record<CraftType, number> = {
+    weaponcrafting: 0,
+    armorcrafting: 0,
+    tailoring: 0,
+    leatherworking: 0,
+    cooking: 0,
+    alchemy: 0,
+  };
   // --- IWorldCollections: tracked-collectible read/found state (PHAA-625/626) ---
   collectedIds: string[] = [];
   readCollectible(id: string): void {

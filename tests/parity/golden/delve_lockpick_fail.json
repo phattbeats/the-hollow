@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "335d5203",
+      "state": "4c9b0280",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -39,6 +39,7 @@
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -112,7 +113,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 422,
-      "state": "e7bc2526",
+      "state": "744e44f7",
       "events": "307e1200",
       "rng": {
         "draws": 3,
@@ -123,7 +124,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 422,
-      "state": "8ee04716",
+      "state": "7555d927",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -134,7 +135,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 422,
-      "state": "f1b47cbc",
+      "state": "fb309559",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -145,7 +146,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 422,
-      "state": "138dc3ba",
+      "state": "4a0774ab",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -156,7 +157,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 422,
-      "state": "46936284",
+      "state": "41f0f4d1",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -167,7 +168,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 422,
-      "state": "cffcc326",
+      "state": "c4e172f7",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -178,7 +179,7 @@
       "tick": 69,
       "time": 3.45,
       "nextId": 423,
-      "state": "f8d0653c",
+      "state": "405b59d9",
       "events": "80b8299e",
       "rng": {
         "draws": 3,
@@ -205,6 +206,7 @@
             "kills": 1,
             "xpGained": 198
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",
@@ -404,7 +406,7 @@
       "tick": 70,
       "time": 3.5,
       "nextId": 423,
-      "state": "71e11b48",
+      "state": "92c98655",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -415,7 +417,7 @@
       "tick": 71,
       "time": 3.55,
       "nextId": 423,
-      "state": "bbdc18cc",
+      "state": "bfd60b29",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -442,6 +444,7 @@
             "kills": 1,
             "xpGained": 198
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",

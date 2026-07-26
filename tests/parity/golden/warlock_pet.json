@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "b729ebe4",
+      "state": "13b3c653",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -39,6 +39,7 @@
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -111,7 +112,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 408,
-      "state": "c9faa467",
+      "state": "851e42ae",
       "events": "3d7c9edb",
       "rng": {
         "draws": 0,
@@ -122,7 +123,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 408,
-      "state": "4553c1c5",
+      "state": "fa90a230",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -133,7 +134,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 408,
-      "state": "134c6f02",
+      "state": "0e1945ef",
       "events": "741638a5",
       "rng": {
         "draws": 105,
@@ -144,7 +145,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 408,
-      "state": "f3ed6e0f",
+      "state": "3a9485a6",
       "events": "741638a5",
       "rng": {
         "draws": 187,
@@ -155,7 +156,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 409,
-      "state": "5091eb6b",
+      "state": "f3123822",
       "events": "e4501f4e",
       "rng": {
         "draws": 275,
@@ -166,7 +167,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 410,
-      "state": "cb78ac7a",
+      "state": "a44d5f37",
       "events": "9b7ed131",
       "rng": {
         "draws": 376,
@@ -177,7 +178,7 @@
       "tick": 140,
       "time": 7,
       "nextId": 410,
-      "state": "1899071d",
+      "state": "4d0708d8",
       "events": "9734323e",
       "rng": {
         "draws": 516,
@@ -188,7 +189,7 @@
       "tick": 160,
       "time": 8,
       "nextId": 410,
-      "state": "c7ee2d20",
+      "state": "2f6806f1",
       "events": "ffe76d66",
       "rng": {
         "draws": 654,
@@ -199,7 +200,7 @@
       "tick": 180,
       "time": 9,
       "nextId": 410,
-      "state": "40055869",
+      "state": "9c0ca574",
       "events": "7f7e38bf",
       "rng": {
         "draws": 800,
@@ -210,7 +211,7 @@
       "tick": 200,
       "time": 10,
       "nextId": 410,
-      "state": "b682f210",
+      "state": "daaac8e1",
       "events": "650f1dc1",
       "rng": {
         "draws": 942,
@@ -221,7 +222,7 @@
       "tick": 220,
       "time": 11,
       "nextId": 410,
-      "state": "ef698ffc",
+      "state": "d038143d",
       "events": "7f7e38bf",
       "rng": {
         "draws": 1041,
@@ -232,7 +233,7 @@
       "tick": 220,
       "time": 11,
       "nextId": 410,
-      "state": "a00e4c7f",
+      "state": "2c869316",
       "events": "741638a5",
       "rng": {
         "draws": 1041,
@@ -257,6 +258,7 @@
           "counters": {
             "damageDealt": 14
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -485,7 +487,7 @@
       "tick": 224,
       "time": 11.2,
       "nextId": 410,
-      "state": "eaa980e6",
+      "state": "44f4bbf3",
       "events": "4ed9b3e6",
       "rng": {
         "draws": 1057,
@@ -510,6 +512,7 @@
           "counters": {
             "damageDealt": 14
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",

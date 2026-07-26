@@ -21,6 +21,7 @@ import type {
   QuestDef,
   QuestState,
   ReadableDef,
+  RecipeDef,
   TitleDef,
   WorldContent,
   ZoneDef,
@@ -67,6 +68,7 @@ import {
   READ_RADIUS as READ_RADIUS_CONTENT,
   READABLES as READABLES_CONTENT,
 } from './content/readables';
+import { RECIPES as RECIPES_CONTENT } from './content/recipes';
 import {
   TEMPLE_CAMPS,
   TEMPLE_DUNGEON_DEFS,
@@ -272,6 +274,11 @@ export const GROUND_OBJECTS: GroundObjectDef[] = [
 ];
 
 export const GATHER_NODES: GatherNodeDef[] = [...GATHER_NODES_CONTENT];
+
+// Crafting recipes (PHAA-574). Static content; both the offline Sim and the
+// online ClientWorld read this same table directly (same convention as
+// GATHER_NODES above), so recipe browsing needs no IWorld method or wire field.
+export const RECIPES: RecipeDef[] = [...RECIPES_CONTENT];
 
 // World-placed readable books (PHAA-552). Static content; both the offline Sim
 // and the online ClientWorld expose them through IWorldReadables by reading this

@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "dbe3ad43",
+      "state": "46350806",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -38,6 +38,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -109,7 +110,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "4a2110e1",
+      "state": "2b9b7db6",
       "events": "0994cb43",
       "rng": {
         "draws": 0,
@@ -131,6 +132,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -302,7 +304,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "17290ccc",
+      "state": "606596a3",
       "events": "97150638",
       "rng": {
         "draws": 0,
@@ -326,6 +328,7 @@
           "counters": {
             "questProgress": 5
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -503,7 +506,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "f3f9f75d",
+      "state": "c983dc68",
       "events": "be48ee86",
       "rng": {
         "draws": 0,
@@ -527,6 +530,7 @@
           "counters": {
             "questProgress": 5
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -704,7 +708,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "ff6df1f9",
+      "state": "82141222",
       "events": "d48ae574",
       "rng": {
         "draws": 0,
@@ -728,6 +732,7 @@
           "counters": {
             "questProgress": 6
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -905,7 +910,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "1ca8b714",
+      "state": "778ff637",
       "events": "7146b945",
       "rng": {
         "draws": 0,
@@ -932,6 +937,7 @@
             "questsCompleted": 1,
             "xpGained": 350
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "chr_chronicler",
@@ -1116,7 +1122,7 @@
       "tick": 2,
       "time": 0.1,
       "nextId": 408,
-      "state": "afe30525",
+      "state": "16c543ce",
       "events": "c9a078ed",
       "rng": {
         "draws": 0,
@@ -1143,6 +1149,7 @@
             "questsCompleted": 1,
             "xpGained": 350
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "chr_chronicler",

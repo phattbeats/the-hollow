@@ -17,7 +17,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "34f1b800",
+      "state": "9e34c745",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -40,6 +40,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -111,7 +112,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 414,
-      "state": "73bd2140",
+      "state": "163b9c0f",
       "events": "d4513089",
       "rng": {
         "draws": 55,
@@ -122,7 +123,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 414,
-      "state": "5ce541af",
+      "state": "559ff1ec",
       "events": "f24ded7f",
       "rng": {
         "draws": 102,
@@ -133,7 +134,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 414,
-      "state": "80dba079",
+      "state": "82219afa",
       "events": "fbcbdeea",
       "rng": {
         "draws": 241,
@@ -144,7 +145,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 414,
-      "state": "5f6a88af",
+      "state": "9f24c0ec",
       "events": "741638a5",
       "rng": {
         "draws": 241,
@@ -169,6 +170,7 @@
           "counters": {
             "damageTaken": 1572
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -629,7 +631,7 @@
       "tick": 64,
       "time": 3.2,
       "nextId": 414,
-      "state": "7e50bf77",
+      "state": "bc1930e4",
       "events": "741638a5",
       "rng": {
         "draws": 263,
@@ -654,6 +656,7 @@
           "counters": {
             "damageTaken": 1572
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",

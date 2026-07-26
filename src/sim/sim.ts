@@ -89,6 +89,7 @@ import {
   talentPointsAtLevel,
 } from './content/talents';
 import { applyCooldowns, type SavedCooldowns, serializeCooldowns } from './cooldown_persist';
+import { craftItem as craftItemImpl, emptyCraftProficiency } from './crafting';
 import * as dailyRewardsMod from './daily_rewards';
 import type { DelveShopGate, DelveShopOffer } from './data';
 import {
@@ -320,6 +321,7 @@ import {
   type AuraKind,
   angleTo,
   armorReduction,
+  type CraftType,
   type CrowdControlDrCategory,
   type CrowdControlDrState,
   DELVE_COMPANION_HEAL_INTERVAL,
@@ -881,6 +883,11 @@ export interface PlayerMeta {
   // (CharacterState.gatheringProficiency); feeds a future proficiency-scaled
   // rarity roll.
   gatheringProficiency: Record<GatherNodeType, number>;
+  // Per-player craft proficiency (PHAA-574): one counter per craft type,
+  // incremented on every successful craft of that craft. Persisted
+  // (CharacterState.craftProficiency); scales the output quality roll the
+  // same way gatheringProficiency scales harvest rarity.
+  craftProficiency: Record<CraftType, number>;
   // Collection tracking core (PHAA-626): the set of collectible ids (world
   // readables today; future kinds later) this player has ever found. Grows
   // only, never shrinks. Persisted (CharacterState.collectedIds).
@@ -1001,6 +1008,9 @@ export interface CharacterState {
   // Optional so characters saved before per-node gathering proficiency
   // existed load cleanly (addPlayer backfills to all-zero).
   gatheringProficiency?: Partial<Record<GatherNodeType, number>>;
+  // Optional so characters saved before crafting (PHAA-574) existed load
+  // cleanly (addPlayer backfills to all-zero).
+  craftProficiency?: Partial<Record<CraftType, number>>;
   // A live jail sentence (PHAA-657). Persisted so it keeps running across a
   // reconnect and the character reloads still jailed. Absent = not jailed.
   jail?: JailState;
@@ -1656,6 +1666,7 @@ export class Sim {
       delveDaily: { date: '', firstClearXp: new Set(), markClears: 0 },
       nodeHarvestReadyAt: {},
       gatheringProficiency: emptyGatheringProficiency(),
+      craftProficiency: emptyCraftProficiency(),
       collectedIds: new Set(),
       achievements: emptyAchievementProgress(),
     };
@@ -1756,6 +1767,9 @@ export class Sim {
       meta.companionUpgrades = { ...(s.companionUpgrades ?? {}) };
       if (s.gatheringProficiency) {
         meta.gatheringProficiency = { ...emptyGatheringProficiency(), ...s.gatheringProficiency };
+      }
+      if (s.craftProficiency) {
+        meta.craftProficiency = { ...emptyCraftProficiency(), ...s.craftProficiency };
       }
       if (s.delveLoreUnlocked) for (const id of s.delveLoreUnlocked) meta.delveLoreUnlocked.add(id);
       if (s.collectedIds) for (const id of s.collectedIds) meta.collectedIds.add(id);
@@ -2001,6 +2015,7 @@ export class Sim {
       delveClears: { ...meta.delveClears },
       companionUpgrades: { ...meta.companionUpgrades },
       gatheringProficiency: { ...meta.gatheringProficiency },
+      craftProficiency: { ...meta.craftProficiency },
       delveLoreUnlocked: [...meta.delveLoreUnlocked],
       collectedIds: [...meta.collectedIds],
       unlockedAchievements: [...meta.achievements.unlocked],
@@ -5148,6 +5163,21 @@ export class Sim {
 
   get gatheringProficiency(): Record<GatherNodeType, number> {
     return this.gatheringProficiencyFor(this.primaryId);
+  }
+
+  // Crafting (PHAA-574): consume a recipe's reagents and grant its output, a
+  // thin delegate onto src/sim/crafting.ts, resolved on the deterministic
+  // tick the command arrives on, same shape as harvestNode above.
+  craftItem(recipeId: string, pid?: number): void {
+    craftItemImpl(this.ctx, recipeId, pid);
+  }
+
+  craftProficiencyFor(pid: number): Record<CraftType, number> {
+    return this.players.get(pid)?.craftProficiency ?? emptyCraftProficiency();
+  }
+
+  get craftProficiency(): Record<CraftType, number> {
+    return this.craftProficiencyFor(this.primaryId);
   }
 
   // Collection tracking core (PHAA-626): read-as-command entry point, a thin

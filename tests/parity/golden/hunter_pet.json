@@ -15,7 +15,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "2db6b1c9",
+      "state": "dd567494",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -38,6 +38,7 @@
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -111,7 +112,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 411,
-      "state": "ef4bb47b",
+      "state": "c334bae4",
       "events": "de4c4316",
       "rng": {
         "draws": 6,
@@ -122,7 +123,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 411,
-      "state": "20ed7e63",
+      "state": "87e9febc",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -133,7 +134,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 411,
-      "state": "0b66b165",
+      "state": "25029632",
       "events": "e109834d",
       "rng": {
         "draws": 100,
@@ -144,7 +145,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 411,
-      "state": "25091151",
+      "state": "3659567e",
       "events": "741638a5",
       "rng": {
         "draws": 203,
@@ -155,7 +156,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 411,
-      "state": "e38b4ec4",
+      "state": "246b972f",
       "events": "facdabea",
       "rng": {
         "draws": 305,
@@ -166,7 +167,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 411,
-      "state": "606ad638",
+      "state": "7df6aef3",
       "events": "741638a5",
       "rng": {
         "draws": 413,
@@ -177,7 +178,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 411,
-      "state": "606ad638",
+      "state": "7df6aef3",
       "events": "741638a5",
       "rng": {
         "draws": 413,
@@ -202,6 +203,7 @@
           "counters": {
             "damageTaken": 16
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",

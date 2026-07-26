@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "34f1b800",
+      "state": "9e34c745",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -39,6 +39,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -110,7 +111,7 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 417,
-      "state": "ae5e8bbd",
+      "state": "487bd446",
       "events": "94b6ec38",
       "rng": {
         "draws": 4,
@@ -121,7 +122,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 417,
-      "state": "8d8d2e4a",
+      "state": "6260ba1d",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -132,7 +133,7 @@
       "tick": 15,
       "time": 0.75,
       "nextId": 417,
-      "state": "4d0828a3",
+      "state": "57931488",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -143,7 +144,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 417,
-      "state": "680ec5be",
+      "state": "7d3b0351",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -154,7 +155,7 @@
       "tick": 25,
       "time": 1.25,
       "nextId": 417,
-      "state": "f6163716",
+      "state": "52376dd9",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -165,7 +166,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 417,
-      "state": "7c240624",
+      "state": "984e22a3",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -176,7 +177,7 @@
       "tick": 35,
       "time": 1.75,
       "nextId": 417,
-      "state": "21175c24",
+      "state": "af6c48a3",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -187,7 +188,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 417,
-      "state": "793b7689",
+      "state": "768c8e72",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -198,7 +199,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 417,
-      "state": "793b7689",
+      "state": "768c8e72",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -223,6 +224,7 @@
             "companion_tessa": 2
           },
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_grand_tour",
@@ -421,7 +423,7 @@
       "tick": 41,
       "time": 2.05,
       "nextId": 417,
-      "state": "02c0eb09",
+      "state": "4a177ef2",
       "events": "25b2de65",
       "rng": {
         "draws": 6,
@@ -446,6 +448,7 @@
             "companion_tessa": 2
           },
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_grand_tour",
@@ -658,7 +661,7 @@
       "tick": 45,
       "time": 2.25,
       "nextId": 417,
-      "state": "a9a3e218",
+      "state": "4fdf1017",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -669,7 +672,7 @@
       "tick": 49,
       "time": 2.45,
       "nextId": 417,
-      "state": "8d653708",
+      "state": "13e9a1c7",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -694,6 +697,7 @@
             "companion_tessa": 2
           },
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_grand_tour",
@@ -847,7 +851,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 417,
-      "state": "632e43c2",
+      "state": "95bb1fc5",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -858,7 +862,7 @@
       "tick": 51,
       "time": 2.55,
       "nextId": 417,
-      "state": "accf0ecb",
+      "state": "c66981e0",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -883,6 +887,7 @@
             "companion_tessa": 2
           },
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_grand_tour",
@@ -1037,7 +1042,7 @@
       "tick": 51,
       "time": 2.55,
       "nextId": 417,
-      "state": "accf0ecb",
+      "state": "c66981e0",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -1062,6 +1067,7 @@
             "companion_tessa": 2
           },
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_grand_tour",

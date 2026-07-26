@@ -30,7 +30,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 409,
-      "state": "c5974fb2",
+      "state": "63125cf4",
       "events": "eead7ba6",
       "rng": {
         "draws": 0,
@@ -53,6 +53,7 @@
           "companionUpgrades": {},
           "copper": 100,
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -177,6 +178,7 @@
           "companionUpgrades": {},
           "copper": 50,
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -390,7 +392,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 409,
-      "state": "0b4b87a8",
+      "state": "d47abaec",
       "events": "fe01dbbf",
       "rng": {
         "draws": 0,
@@ -413,6 +415,7 @@
           "companionUpgrades": {},
           "copper": 80,
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -541,6 +544,7 @@
           "companionUpgrades": {},
           "copper": 70,
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -758,7 +762,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 409,
-      "state": "0b4b87a8",
+      "state": "d47abaec",
       "events": "37402384",
       "rng": {
         "draws": 0,
@@ -781,6 +785,7 @@
           "companionUpgrades": {},
           "copper": 80,
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -909,6 +914,7 @@
           "companionUpgrades": {},
           "copper": 70,
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -1126,7 +1132,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 409,
-      "state": "0b4b87a8",
+      "state": "d47abaec",
       "events": "ba5a463f",
       "rng": {
         "draws": 0,
@@ -1149,6 +1155,7 @@
           "companionUpgrades": {},
           "copper": 80,
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -1277,6 +1284,7 @@
           "companionUpgrades": {},
           "copper": 70,
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -1494,7 +1502,7 @@
       "tick": 1,
       "time": 0.05,
       "nextId": 409,
-      "state": "7002b8e3",
+      "state": "06bc5c8b",
       "events": "0900a26c",
       "rng": {
         "draws": 0,
@@ -1517,6 +1525,7 @@
           "companionUpgrades": {},
           "copper": 80,
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -1686,6 +1695,7 @@
           "companionUpgrades": {},
           "copper": 70,
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -1944,7 +1954,7 @@
       "tick": 1,
       "time": 0.05,
       "nextId": 409,
-      "state": "7002b8e3",
+      "state": "06bc5c8b",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -1967,6 +1977,7 @@
           "companionUpgrades": {},
           "copper": 80,
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -2136,6 +2147,7 @@
           "companionUpgrades": {},
           "copper": 70,
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",

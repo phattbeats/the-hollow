@@ -35,7 +35,7 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 417,
-      "state": "cd021d16",
+      "state": "ac0ad98d",
       "events": "f7f1e6c9",
       "rng": {
         "draws": 14,
@@ -46,7 +46,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 417,
-      "state": "f7ed9254",
+      "state": "2b256063",
       "events": "1a45b0cc",
       "rng": {
         "draws": 17,
@@ -57,7 +57,7 @@
       "tick": 15,
       "time": 0.75,
       "nextId": 417,
-      "state": "0b8e0406",
+      "state": "f1380f29",
       "events": "50f2502d",
       "rng": {
         "draws": 17,
@@ -68,7 +68,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 417,
-      "state": "27fdadb4",
+      "state": "348217bf",
       "events": "5d67191a",
       "rng": {
         "draws": 20,
@@ -79,7 +79,7 @@
       "tick": 25,
       "time": 1.25,
       "nextId": 417,
-      "state": "57c09d3e",
+      "state": "86aa9dcd",
       "events": "50f2502d",
       "rng": {
         "draws": 20,
@@ -90,7 +90,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 417,
-      "state": "3e27371d",
+      "state": "e437f5f2",
       "events": "741638a5",
       "rng": {
         "draws": 20,
@@ -101,7 +101,7 @@
       "tick": 35,
       "time": 1.75,
       "nextId": 417,
-      "state": "367b0cf9",
+      "state": "e4bbd02e",
       "events": "50f2502d",
       "rng": {
         "draws": 20,
@@ -112,7 +112,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 417,
-      "state": "861fe2a0",
+      "state": "4477d9a7",
       "events": "feaaf6a9",
       "rng": {
         "draws": 23,
@@ -123,7 +123,7 @@
       "tick": 45,
       "time": 2.25,
       "nextId": 417,
-      "state": "82a15f2d",
+      "state": "c49ec2fc",
       "events": "34f16d71",
       "rng": {
         "draws": 66,
@@ -134,7 +134,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 417,
-      "state": "9ebd1ac3",
+      "state": "93549d0e",
       "events": "1aa9d5b5",
       "rng": {
         "draws": 91,
@@ -145,7 +145,7 @@
       "tick": 55,
       "time": 2.75,
       "nextId": 417,
-      "state": "44964963",
+      "state": "e7395cee",
       "events": "50f2502d",
       "rng": {
         "draws": 103,
@@ -156,7 +156,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 417,
-      "state": "617c7688",
+      "state": "b103e899",
       "events": "f9498494",
       "rng": {
         "draws": 128,
@@ -167,7 +167,7 @@
       "tick": 65,
       "time": 3.25,
       "nextId": 417,
-      "state": "9a4f89ac",
+      "state": "c90d7e7d",
       "events": "50f2502d",
       "rng": {
         "draws": 151,
@@ -178,7 +178,7 @@
       "tick": 70,
       "time": 3.5,
       "nextId": 417,
-      "state": "2c30b7ca",
+      "state": "3028523f",
       "events": "741638a5",
       "rng": {
         "draws": 171,
@@ -189,7 +189,7 @@
       "tick": 75,
       "time": 3.75,
       "nextId": 417,
-      "state": "98af521b",
+      "state": "4302fdbe",
       "events": "03d46c4c",
       "rng": {
         "draws": 198,
@@ -200,7 +200,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 417,
-      "state": "4ee161d6",
+      "state": "40b6acbf",
       "events": "741638a5",
       "rng": {
         "draws": 219,
@@ -211,7 +211,7 @@
       "tick": 85,
       "time": 4.25,
       "nextId": 417,
-      "state": "40ab4c9d",
+      "state": "63f022dc",
       "events": "2f518fd6",
       "rng": {
         "draws": 259,
@@ -222,7 +222,7 @@
       "tick": 90,
       "time": 4.5,
       "nextId": 417,
-      "state": "af13e925",
+      "state": "addb2c54",
       "events": "600feb94",
       "rng": {
         "draws": 285,
@@ -233,7 +233,7 @@
       "tick": 95,
       "time": 4.75,
       "nextId": 417,
-      "state": "fe6ab43b",
+      "state": "04c60b56",
       "events": "27af9ce4",
       "rng": {
         "draws": 317,
@@ -244,7 +244,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 417,
-      "state": "b1dfe7c7",
+      "state": "70178c22",
       "events": "741638a5",
       "rng": {
         "draws": 343,
@@ -255,7 +255,7 @@
       "tick": 105,
       "time": 5.25,
       "nextId": 417,
-      "state": "1458967d",
+      "state": "a09a197c",
       "events": "50f2502d",
       "rng": {
         "draws": 382,
@@ -266,7 +266,7 @@
       "tick": 110,
       "time": 5.5,
       "nextId": 417,
-      "state": "f70f8d7d",
+      "state": "54c87b30",
       "events": "4d7cd123",
       "rng": {
         "draws": 408,
@@ -277,7 +277,7 @@
       "tick": 115,
       "time": 5.75,
       "nextId": 417,
-      "state": "badd90d3",
+      "state": "fa592702",
       "events": "50f2502d",
       "rng": {
         "draws": 436,
@@ -288,7 +288,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 417,
-      "state": "3443b310",
+      "state": "b72aed39",
       "events": "37482764",
       "rng": {
         "draws": 491,
@@ -299,7 +299,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 417,
-      "state": "3443b310",
+      "state": "b72aed39",
       "events": "741638a5",
       "rng": {
         "draws": 491,
@@ -324,6 +324,7 @@
             "damageDealt": 150,
             "damageTaken": 16
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -400,6 +401,7 @@
             "damageDealt": 59,
             "damageTaken": 20
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -476,6 +478,7 @@
             "damageDealt": 54,
             "damageTaken": 30
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -551,6 +554,7 @@
           "counters": {
             "damageDealt": 85
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -626,6 +630,7 @@
           "counters": {
             "damageDealt": 16
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -1242,7 +1247,7 @@
       "tick": 125,
       "time": 6.25,
       "nextId": 417,
-      "state": "76d86a24",
+      "state": "fec6758d",
       "events": "99baf857",
       "rng": {
         "draws": 533,
@@ -1253,7 +1258,7 @@
       "tick": 126,
       "time": 6.3,
       "nextId": 417,
-      "state": "363f74ba",
+      "state": "b5ec46f7",
       "events": "741638a5",
       "rng": {
         "draws": 540,
@@ -1278,6 +1283,7 @@
             "damageDealt": 200,
             "damageTaken": 18
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -1354,6 +1360,7 @@
             "damageDealt": 59,
             "damageTaken": 30
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -1430,6 +1437,7 @@
             "damageDealt": 54,
             "damageTaken": 37
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -1505,6 +1513,7 @@
           "counters": {
             "damageDealt": 85
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -1580,6 +1589,7 @@
           "counters": {
             "damageDealt": 16
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -2188,7 +2198,7 @@
       "tick": 126,
       "time": 6.3,
       "nextId": 417,
-      "state": "363f74ba",
+      "state": "b5ec46f7",
       "events": "741638a5",
       "rng": {
         "draws": 540,
@@ -2213,6 +2223,7 @@
             "damageDealt": 200,
             "damageTaken": 18
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -2289,6 +2300,7 @@
             "damageDealt": 59,
             "damageTaken": 30
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -2365,6 +2377,7 @@
             "damageDealt": 54,
             "damageTaken": 37
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -2440,6 +2453,7 @@
           "counters": {
             "damageDealt": 85
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -2515,6 +2529,7 @@
           "counters": {
             "damageDealt": 16
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",

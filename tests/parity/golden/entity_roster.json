@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "34f1b800",
+      "state": "9e34c745",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -39,6 +39,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -110,7 +111,7 @@
       "tick": 2,
       "time": 0.1,
       "nextId": 410,
-      "state": "7e53210f",
+      "state": "b02dbacc",
       "events": "f15eae1f",
       "rng": {
         "draws": 4,
@@ -121,7 +122,7 @@
       "tick": 4,
       "time": 0.2,
       "nextId": 410,
-      "state": "27ca39ed",
+      "state": "6cce960e",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -132,7 +133,7 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 410,
-      "state": "d6d1d519",
+      "state": "30fc93ca",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -155,6 +156,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -270,7 +272,7 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 410,
-      "state": "7f2d7ced",
+      "state": "be20810e",
       "events": "6baea7ef",
       "rng": {
         "draws": 4,
@@ -293,6 +295,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -408,7 +411,7 @@
       "tick": 6,
       "time": 0.3,
       "nextId": 410,
-      "state": "d82e1240",
+      "state": "9be2f607",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -419,7 +422,7 @@
       "tick": 7,
       "time": 0.35,
       "nextId": 410,
-      "state": "968e3c61",
+      "state": "14fa37c2",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -442,6 +445,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",

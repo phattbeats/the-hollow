@@ -2690,6 +2690,9 @@ export class GameServer {
       case 'harvestNode':
         if (typeof msg.node === 'string') sim.harvestNode(msg.node, pid);
         break;
+      case 'craftItem':
+        if (typeof msg.recipe === 'string') sim.craftItem(msg.recipe, pid);
+        break;
       case 'readCollectible':
         if (typeof msg.collectibleId === 'string') sim.readCollectible(msg.collectibleId, pid);
         break;
@@ -3727,6 +3730,7 @@ export class GameServer {
     maybe('dmarks', this.sim.delveMarksFor(anchorSession.pid));
     maybe('dcomp', this.sim.companionUpgradesFor(anchorSession.pid));
     maybe('gprof', this.sim.gatheringProficiencyFor(anchorSession.pid));
+    maybe('cprof', this.sim.craftProficiencyFor(anchorSession.pid));
     // Per-viewer gather-node cooldown ids (PHAA-618): the nodes NOT harvestable
     // by this player right now, so the online client's nodeHarvestableByMe (and
     // the minimap gather dots it drives) match the offline Sim instead of the

@@ -29,7 +29,7 @@
       "tick": 25,
       "time": 1.25,
       "nextId": 411,
-      "state": "ae415f69",
+      "state": "a3cc0c33",
       "events": "a3fa7ede",
       "rng": {
         "draws": 0,
@@ -40,7 +40,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 411,
-      "state": "3c496947",
+      "state": "e1b75599",
       "events": "ace6b6f2",
       "rng": {
         "draws": 56,
@@ -51,7 +51,7 @@
       "tick": 75,
       "time": 3.75,
       "nextId": 411,
-      "state": "29ed27b9",
+      "state": "1beda243",
       "events": "782b0eb6",
       "rng": {
         "draws": 158,
@@ -62,7 +62,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 411,
-      "state": "0d885045",
+      "state": "8a5d611f",
       "events": "991c069e",
       "rng": {
         "draws": 275,
@@ -73,7 +73,7 @@
       "tick": 101,
       "time": 5.05,
       "nextId": 411,
-      "state": "abb8f7e9",
+      "state": "49a5d4b3",
       "events": "08ba31bb",
       "rng": {
         "draws": 282,
@@ -95,6 +95,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -178,6 +179,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -261,6 +263,7 @@
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -344,6 +347,7 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -611,7 +615,7 @@
       "tick": 102,
       "time": 5.1,
       "nextId": 411,
-      "state": "d37b5369",
+      "state": "6c6dd49b",
       "events": "15864675",
       "rng": {
         "draws": 283,
@@ -633,6 +637,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -716,6 +721,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -801,6 +807,7 @@
           "counters": {
             "deaths": 1
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -884,6 +891,7 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -1151,7 +1159,7 @@
       "tick": 103,
       "time": 5.15,
       "nextId": 411,
-      "state": "c28fc7f1",
+      "state": "81705de7",
       "events": "d7ee4ca1",
       "rng": {
         "draws": 287,
@@ -1174,6 +1182,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -1310,6 +1319,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -1448,6 +1458,7 @@
           "counters": {
             "deaths": 1
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -1534,6 +1545,7 @@
           "counters": {
             "deaths": 1
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -1801,7 +1813,7 @@
       "tick": 125,
       "time": 6.25,
       "nextId": 411,
-      "state": "1abba43f",
+      "state": "1a04bc05",
       "events": "741638a5",
       "rng": {
         "draws": 410,
@@ -1812,7 +1824,7 @@
       "tick": 150,
       "time": 7.5,
       "nextId": 411,
-      "state": "0ffd8e95",
+      "state": "5465e14b",
       "events": "741638a5",
       "rng": {
         "draws": 551,
@@ -1823,7 +1835,7 @@
       "tick": 175,
       "time": 8.75,
       "nextId": 411,
-      "state": "415982db",
+      "state": "ef208791",
       "events": "741638a5",
       "rng": {
         "draws": 730,
@@ -1834,7 +1846,7 @@
       "tick": 200,
       "time": 10,
       "nextId": 411,
-      "state": "881186f1",
+      "state": "3767bce7",
       "events": "741638a5",
       "rng": {
         "draws": 934,
@@ -1845,7 +1857,7 @@
       "tick": 225,
       "time": 11.25,
       "nextId": 411,
-      "state": "94abfccf",
+      "state": "faaac0dd",
       "events": "05465228",
       "rng": {
         "draws": 1041,
@@ -1856,7 +1868,7 @@
       "tick": 243,
       "time": 12.15,
       "nextId": 411,
-      "state": "4b56e0f3",
+      "state": "2bcc68c1",
       "events": "741638a5",
       "rng": {
         "draws": 1115,
@@ -1879,6 +1891,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -2015,6 +2028,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -2153,6 +2167,7 @@
           "counters": {
             "deaths": 1
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -2239,6 +2254,7 @@
           "counters": {
             "deaths": 1
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -2511,7 +2527,7 @@
       "tick": 243,
       "time": 12.15,
       "nextId": 411,
-      "state": "4b56e0f3",
+      "state": "2bcc68c1",
       "events": "741638a5",
       "rng": {
         "draws": 1115,
@@ -2534,6 +2550,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -2670,6 +2687,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -2808,6 +2826,7 @@
           "counters": {
             "deaths": 1
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -2894,6 +2913,7 @@
           "counters": {
             "deaths": 1
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",

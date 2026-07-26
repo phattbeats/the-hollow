@@ -34,7 +34,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 416,
-      "state": "8b23c205",
+      "state": "88ed20e8",
       "events": "44612fc6",
       "rng": {
         "draws": 6,
@@ -56,6 +56,7 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -85,6 +86,7 @@
           "cls": "paladin",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -114,6 +116,7 @@
           "cls": "druid",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -143,6 +146,7 @@
           "cls": "shaman",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -172,6 +176,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -679,7 +684,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 416,
-      "state": "5cb5ed21",
+      "state": "2614beb4",
       "events": "c26d3829",
       "rng": {
         "draws": 6,
@@ -701,6 +706,7 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -730,6 +736,7 @@
           "cls": "paladin",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -761,6 +768,7 @@
           "counters": {
             "damageDealt": 105
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -790,6 +798,7 @@
           "cls": "shaman",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -819,6 +828,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1344,7 +1354,7 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 416,
-      "state": "3d0ecafa",
+      "state": "ecbb209f",
       "events": "28484311",
       "rng": {
         "draws": 10,
@@ -1355,7 +1365,7 @@
       "tick": 8,
       "time": 0.4,
       "nextId": 416,
-      "state": "07ff682f",
+      "state": "9383c2e6",
       "events": "c65ebd25",
       "rng": {
         "draws": 10,
@@ -1377,6 +1387,7 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -1449,6 +1460,7 @@
           "cls": "paladin",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -1523,6 +1535,7 @@
           "counters": {
             "damageDealt": 105
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -1595,6 +1608,7 @@
           "cls": "shaman",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -1667,6 +1681,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",

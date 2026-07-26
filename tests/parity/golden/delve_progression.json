@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "34f1b800",
+      "state": "9e34c745",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -39,6 +39,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -110,7 +111,7 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 425,
-      "state": "91c7426d",
+      "state": "8c6f6a36",
       "events": "c7bbd65c",
       "rng": {
         "draws": 1,
@@ -121,7 +122,7 @@
       "tick": 7,
       "time": 0.35,
       "nextId": 425,
-      "state": "ce5de217",
+      "state": "c2d5520c",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -144,6 +145,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_grand_tour",
@@ -257,7 +259,7 @@
       "tick": 7,
       "time": 0.35,
       "nextId": 425,
-      "state": "180dbec3",
+      "state": "c9cb049a",
       "events": "8c0de089",
       "rng": {
         "draws": 3,
@@ -283,6 +285,7 @@
           },
           "copper": 100000,
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -486,7 +489,7 @@
       "tick": 9,
       "time": 0.45,
       "nextId": 425,
-      "state": "73265ae1",
+      "state": "6af85924",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -512,6 +515,7 @@
           },
           "copper": 100000,
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
