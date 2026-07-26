@@ -113,8 +113,8 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 422,
-      "state": "fe2ec2b7",
-      "events": "93286df6",
+      "state": "744e44f7",
+      "events": "307e1200",
       "rng": {
         "draws": 3,
         "digest": "34c4acb5"
@@ -124,7 +124,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 422,
-      "state": "c1de2607",
+      "state": "7555d927",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -135,7 +135,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 422,
-      "state": "1975fa99",
+      "state": "fb309559",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -146,7 +146,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 422,
-      "state": "a4f5be2b",
+      "state": "4a0774ab",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -157,7 +157,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 422,
-      "state": "1e48fa51",
+      "state": "41f0f4d1",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -168,7 +168,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 422,
-      "state": "3cff80b7",
+      "state": "c4e172f7",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -179,7 +179,7 @@
       "tick": 69,
       "time": 3.45,
       "nextId": 423,
-      "state": "565cdb19",
+      "state": "405b59d9",
       "events": "80b8299e",
       "rng": {
         "draws": 3,
@@ -227,10 +227,69 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_twice_a_deacon",
+              {
+                "counts": [
+                  0,
+                  1
+                ],
+                "deedId": "hid_twice_a_deacon",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "exp_hollow_reaches"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -244,6 +303,7 @@
             "mainhand": "rusty_dagger"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 11398,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -346,7 +406,7 @@
       "tick": 70,
       "time": 3.5,
       "nextId": 423,
-      "state": "0448d6e5",
+      "state": "92c98655",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -357,7 +417,7 @@
       "tick": 71,
       "time": 3.55,
       "nextId": 423,
-      "state": "606e1449",
+      "state": "bfd60b29",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -405,10 +465,69 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_twice_a_deacon",
+              {
+                "counts": [
+                  0,
+                  1
+                ],
+                "deedId": "hid_twice_a_deacon",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "exp_hollow_reaches"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -422,6 +541,7 @@
             "mainhand": "rusty_dagger"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 11398,
           "nodeHarvestReadyAt": {},
           "talents": {

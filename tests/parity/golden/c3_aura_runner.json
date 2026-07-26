@@ -113,8 +113,8 @@
       "tick": 2,
       "time": 0.1,
       "nextId": 409,
-      "state": "f99a30e3",
-      "events": "12fdb38e",
+      "state": "e60896b4",
+      "events": "17ba385e",
       "rng": {
         "draws": 2,
         "digest": "fb506102"
@@ -137,6 +137,48 @@
           "companionUpgrades": {},
           "counters": {},
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -146,6 +188,7 @@
             "mainhand": "training_mace"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -259,7 +302,7 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 409,
-      "state": "b50cb06d",
+      "state": "673632fe",
       "events": "741638a5",
       "rng": {
         "draws": 2,
@@ -270,7 +313,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 409,
-      "state": "80cb3c72",
+      "state": "653b1a25",
       "events": "741638a5",
       "rng": {
         "draws": 2,
@@ -281,7 +324,7 @@
       "tick": 15,
       "time": 0.75,
       "nextId": 409,
-      "state": "f0899b39",
+      "state": "f515a342",
       "events": "741638a5",
       "rng": {
         "draws": 2,
@@ -292,7 +335,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 409,
-      "state": "bab20402",
+      "state": "d6ea8f95",
       "events": "741638a5",
       "rng": {
         "draws": 2,
@@ -303,7 +346,7 @@
       "tick": 25,
       "time": 1.25,
       "nextId": 409,
-      "state": "fd9bd64e",
+      "state": "61d3abb9",
       "events": "741638a5",
       "rng": {
         "draws": 2,
@@ -314,7 +357,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 409,
-      "state": "b711f4c7",
+      "state": "8ba733e0",
       "events": "741638a5",
       "rng": {
         "draws": 2,
@@ -325,7 +368,7 @@
       "tick": 35,
       "time": 1.75,
       "nextId": 409,
-      "state": "daf76f94",
+      "state": "51e0adaf",
       "events": "7a085470",
       "rng": {
         "draws": 2,
@@ -336,7 +379,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 409,
-      "state": "c5bd88e3",
+      "state": "fb7aaeb4",
       "events": "5a4df02b",
       "rng": {
         "draws": 2,
@@ -347,7 +390,7 @@
       "tick": 45,
       "time": 2.25,
       "nextId": 409,
-      "state": "73010035",
+      "state": "97206476",
       "events": "741638a5",
       "rng": {
         "draws": 20,
@@ -358,7 +401,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 409,
-      "state": "28eccc69",
+      "state": "f8252192",
       "events": "741638a5",
       "rng": {
         "draws": 44,
@@ -369,7 +412,7 @@
       "tick": 55,
       "time": 2.75,
       "nextId": 409,
-      "state": "5bceb6d9",
+      "state": "7077a4e2",
       "events": "741638a5",
       "rng": {
         "draws": 62,
@@ -380,7 +423,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 409,
-      "state": "d3c156bd",
+      "state": "433a502e",
       "events": "741638a5",
       "rng": {
         "draws": 80,
@@ -391,7 +434,7 @@
       "tick": 62,
       "time": 3.1,
       "nextId": 409,
-      "state": "4dc4d1a7",
+      "state": "0c111540",
       "events": "741638a5",
       "rng": {
         "draws": 87,
@@ -415,6 +458,48 @@
           "companionUpgrades": {},
           "counters": {},
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -424,6 +509,7 @@
             "mainhand": "training_mace"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -549,7 +635,7 @@
       "tick": 65,
       "time": 3.25,
       "nextId": 411,
-      "state": "089ae0b9",
+      "state": "9bec54c2",
       "events": "262dd2f3",
       "rng": {
         "draws": 109,
@@ -560,7 +646,7 @@
       "tick": 70,
       "time": 3.5,
       "nextId": 411,
-      "state": "5521e74c",
+      "state": "971e3977",
       "events": "741638a5",
       "rng": {
         "draws": 135,
@@ -571,7 +657,7 @@
       "tick": 75,
       "time": 3.75,
       "nextId": 411,
-      "state": "20c1f340",
+      "state": "928c3133",
       "events": "741638a5",
       "rng": {
         "draws": 157,
@@ -582,7 +668,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 411,
-      "state": "8f647947",
+      "state": "08759c60",
       "events": "741638a5",
       "rng": {
         "draws": 168,
@@ -593,7 +679,7 @@
       "tick": 85,
       "time": 4.25,
       "nextId": 411,
-      "state": "a620de3b",
+      "state": "5449c95c",
       "events": "741638a5",
       "rng": {
         "draws": 198,
@@ -604,7 +690,7 @@
       "tick": 90,
       "time": 4.5,
       "nextId": 411,
-      "state": "0ed4e838",
+      "state": "a1a2bddb",
       "events": "741638a5",
       "rng": {
         "draws": 225,
@@ -615,7 +701,7 @@
       "tick": 95,
       "time": 4.75,
       "nextId": 411,
-      "state": "09e84d92",
+      "state": "19ace145",
       "events": "741638a5",
       "rng": {
         "draws": 269,
@@ -626,7 +712,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 411,
-      "state": "697a5270",
+      "state": "0a58bc83",
       "events": "741638a5",
       "rng": {
         "draws": 288,
@@ -637,7 +723,7 @@
       "tick": 105,
       "time": 5.25,
       "nextId": 411,
-      "state": "fba5ddcf",
+      "state": "02652218",
       "events": "55a8fbbe",
       "rng": {
         "draws": 315,
@@ -648,7 +734,7 @@
       "tick": 110,
       "time": 5.5,
       "nextId": 411,
-      "state": "b88ffd5b",
+      "state": "295d74fc",
       "events": "741638a5",
       "rng": {
         "draws": 340,
@@ -659,7 +745,7 @@
       "tick": 115,
       "time": 5.75,
       "nextId": 411,
-      "state": "ae9a4a16",
+      "state": "765d3df1",
       "events": "741638a5",
       "rng": {
         "draws": 377,
@@ -670,7 +756,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 411,
-      "state": "d5ef48a6",
+      "state": "2d46cee1",
       "events": "741638a5",
       "rng": {
         "draws": 399,
@@ -681,7 +767,7 @@
       "tick": 125,
       "time": 6.25,
       "nextId": 411,
-      "state": "3bcbf29a",
+      "state": "ddad6b3d",
       "events": "741638a5",
       "rng": {
         "draws": 437,
@@ -692,7 +778,7 @@
       "tick": 130,
       "time": 6.5,
       "nextId": 411,
-      "state": "583a3ee0",
+      "state": "01709353",
       "events": "741638a5",
       "rng": {
         "draws": 472,
@@ -703,7 +789,7 @@
       "tick": 135,
       "time": 6.75,
       "nextId": 411,
-      "state": "7ee2e2ab",
+      "state": "16f1f6ac",
       "events": "741638a5",
       "rng": {
         "draws": 511,
@@ -714,7 +800,7 @@
       "tick": 140,
       "time": 7,
       "nextId": 411,
-      "state": "252de9b9",
+      "state": "c1e725c2",
       "events": "741638a5",
       "rng": {
         "draws": 541,
@@ -725,7 +811,7 @@
       "tick": 145,
       "time": 7.25,
       "nextId": 411,
-      "state": "86092b52",
+      "state": "de493c85",
       "events": "4088b2ea",
       "rng": {
         "draws": 575,
@@ -736,7 +822,7 @@
       "tick": 150,
       "time": 7.5,
       "nextId": 411,
-      "state": "2bc43b02",
+      "state": "0a1efe95",
       "events": "741638a5",
       "rng": {
         "draws": 606,
@@ -747,7 +833,7 @@
       "tick": 155,
       "time": 7.75,
       "nextId": 411,
-      "state": "c9362411",
+      "state": "00131b0a",
       "events": "741638a5",
       "rng": {
         "draws": 644,
@@ -758,7 +844,7 @@
       "tick": 160,
       "time": 8,
       "nextId": 411,
-      "state": "bad87cad",
+      "state": "01dae6be",
       "events": "741638a5",
       "rng": {
         "draws": 668,
@@ -769,7 +855,7 @@
       "tick": 165,
       "time": 8.25,
       "nextId": 411,
-      "state": "c2000209",
+      "state": "0b8a6432",
       "events": "741638a5",
       "rng": {
         "draws": 698,
@@ -780,7 +866,7 @@
       "tick": 170,
       "time": 8.5,
       "nextId": 411,
-      "state": "f870c08f",
+      "state": "a8f31d58",
       "events": "741638a5",
       "rng": {
         "draws": 728,
@@ -791,7 +877,7 @@
       "tick": 175,
       "time": 8.75,
       "nextId": 411,
-      "state": "47f7efea",
+      "state": "d10ed7ed",
       "events": "741638a5",
       "rng": {
         "draws": 769,
@@ -802,7 +888,7 @@
       "tick": 180,
       "time": 9,
       "nextId": 411,
-      "state": "d82abd58",
+      "state": "6a0ddf7b",
       "events": "741638a5",
       "rng": {
         "draws": 805,
@@ -813,7 +899,7 @@
       "tick": 182,
       "time": 9.1,
       "nextId": 411,
-      "state": "969e070e",
+      "state": "1d2411f9",
       "events": "f4062462",
       "rng": {
         "draws": 814,
@@ -840,6 +926,48 @@
             "damageTaken": 41
           },
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -849,6 +977,7 @@
             "mainhand": "training_mace"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
           "talents": {

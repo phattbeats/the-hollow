@@ -3630,8 +3630,8 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "8b78376e",
-      "events": "dffa99a8",
+      "state": "f27d9ab9",
+      "events": "7be71f59",
       "rng": {
         "draws": 5,
         "digest": "660252a9"
@@ -3685,6 +3685,16 @@
                   1
                 ],
                 "deedId": "cmb_wolf_cull",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "feat_relentless",
                 "state": "active"
               }
             ]
@@ -3759,6 +3769,16 @@
                 "deedId": "cmb_wolf_cull",
                 "state": "active"
               }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
@@ -3829,6 +3849,16 @@
                   1
                 ],
                 "deedId": "cmb_wolf_cull",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "feat_relentless",
                 "state": "active"
               }
             ]
@@ -4158,7 +4188,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "8b78376e",
+      "state": "f27d9ab9",
       "events": "741638a5",
       "rng": {
         "draws": 5,
@@ -4213,6 +4243,16 @@
                   1
                 ],
                 "deedId": "cmb_wolf_cull",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "feat_relentless",
                 "state": "active"
               }
             ]
@@ -4287,6 +4327,16 @@
                 "deedId": "cmb_wolf_cull",
                 "state": "active"
               }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
@@ -4357,6 +4407,16 @@
                   1
                 ],
                 "deedId": "cmb_wolf_cull",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "feat_relentless",
                 "state": "active"
               }
             ]

@@ -29,8 +29,8 @@
       "tick": 20,
       "time": 1,
       "nextId": 409,
-      "state": "613b6392",
-      "events": "fbf232fe",
+      "state": "43bd1bac",
+      "events": "9e9ab938",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -40,7 +40,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 409,
-      "state": "acd1a90e",
+      "state": "b47528a8",
       "events": "5c6b6696",
       "rng": {
         "draws": 0,
@@ -51,7 +51,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 409,
-      "state": "a3f20bc2",
+      "state": "1cf73a9c",
       "events": "8c51e6e4",
       "rng": {
         "draws": 78,
@@ -62,7 +62,7 @@
       "tick": 61,
       "time": 3.05,
       "nextId": 409,
-      "state": "abc9866c",
+      "state": "ca8f88e6",
       "events": "aee0cf91",
       "rng": {
         "draws": 84,
@@ -86,6 +86,48 @@
           "companionUpgrades": {},
           "counters": {},
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -95,6 +137,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -117,6 +160,48 @@
           "companionUpgrades": {},
           "counters": {},
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -126,6 +211,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -236,8 +322,8 @@
       "tick": 61,
       "time": 3.05,
       "nextId": 409,
-      "state": "286b59d6",
-      "events": "4c8edd54",
+      "state": "18613b18",
+      "events": "d23a9153",
       "rng": {
         "draws": 84,
         "digest": "b8d0f260"
@@ -260,15 +346,105 @@
           "companionUpgrades": {},
           "counters": {},
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_all_comers",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "pvp_all_comers",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_bloodletter",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_bloodletter",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_first_blood_ring",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_first_blood_ring",
+                "state": "done"
+              }
+            ],
+            [
+              "pvp_ring_warden",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_ring_warden",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale",
+            "pvp_first_blood_ring"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_duelist"
+          ],
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -291,6 +467,48 @@
           "companionUpgrades": {},
           "counters": {},
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -300,6 +518,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -410,7 +629,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 409,
-      "state": "132f4a9a",
+      "state": "524542fc",
       "events": "741638a5",
       "rng": {
         "draws": 160,
@@ -421,7 +640,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 409,
-      "state": "d8a3661e",
+      "state": "270cf6c0",
       "events": "741638a5",
       "rng": {
         "draws": 286,
@@ -432,7 +651,7 @@
       "tick": 101,
       "time": 5.05,
       "nextId": 409,
-      "state": "13d1d508",
+      "state": "58862002",
       "events": "741638a5",
       "rng": {
         "draws": 288,
@@ -456,15 +675,105 @@
           "companionUpgrades": {},
           "counters": {},
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_all_comers",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "pvp_all_comers",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_bloodletter",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_bloodletter",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_first_blood_ring",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_first_blood_ring",
+                "state": "done"
+              }
+            ],
+            [
+              "pvp_ring_warden",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_ring_warden",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale",
+            "pvp_first_blood_ring"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_duelist"
+          ],
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -487,6 +796,48 @@
           "companionUpgrades": {},
           "counters": {},
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -496,6 +847,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},

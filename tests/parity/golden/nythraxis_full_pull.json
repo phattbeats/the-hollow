@@ -34,8 +34,8 @@
       "tick": 1,
       "time": 0.05,
       "nextId": 417,
-      "state": "99c9ea80",
-      "events": "02350d0e",
+      "state": "94e403ad",
+      "events": "f20bbf27",
       "rng": {
         "draws": 4,
         "digest": "53745ddb"
@@ -59,6 +59,48 @@
             "damageTaken": 389
           },
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -68,6 +110,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
           "questsDone": [
@@ -93,6 +136,48 @@
           "companionUpgrades": {},
           "counters": {},
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -102,6 +187,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -124,6 +210,48 @@
           "companionUpgrades": {},
           "counters": {},
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -133,6 +261,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -155,6 +284,48 @@
           "companionUpgrades": {},
           "counters": {},
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -164,6 +335,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -186,6 +358,48 @@
           "companionUpgrades": {},
           "counters": {},
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -195,6 +409,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -501,7 +716,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 417,
-      "state": "549af86f",
+      "state": "ad4f652e",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -512,7 +727,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 417,
-      "state": "b9518b92",
+      "state": "e9191b83",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -523,7 +738,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 417,
-      "state": "f418a78e",
+      "state": "3dbf6c9f",
       "events": "ecb2b26e",
       "rng": {
         "draws": 5,
@@ -534,7 +749,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 417,
-      "state": "e43c7c02",
+      "state": "a2819493",
       "events": "741638a5",
       "rng": {
         "draws": 5,
@@ -545,7 +760,7 @@
       "tick": 42,
       "time": 2.1,
       "nextId": 419,
-      "state": "6ddd7ef0",
+      "state": "e4b35a3d",
       "events": "e79bd2c1",
       "rng": {
         "draws": 11,
@@ -570,6 +785,48 @@
             "damageTaken": 799
           },
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -579,6 +836,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
           "questsDone": [
@@ -604,6 +862,48 @@
           "companionUpgrades": {},
           "counters": {},
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -613,6 +913,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -635,6 +936,48 @@
           "companionUpgrades": {},
           "counters": {},
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -644,6 +987,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -666,6 +1010,48 @@
           "companionUpgrades": {},
           "counters": {},
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -675,6 +1061,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -697,6 +1084,48 @@
           "companionUpgrades": {},
           "counters": {},
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -706,6 +1135,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -1119,7 +1549,7 @@
       "tick": 43,
       "time": 2.15,
       "nextId": 420,
-      "state": "c3b81a68",
+      "state": "602851e5",
       "events": "e7227b38",
       "rng": {
         "draws": 15,
@@ -1144,6 +1574,48 @@
             "damageTaken": 799
           },
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1153,6 +1625,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
           "questsDone": [
@@ -1178,6 +1651,48 @@
           "companionUpgrades": {},
           "counters": {},
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1187,6 +1702,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -1209,6 +1725,48 @@
           "companionUpgrades": {},
           "counters": {},
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1218,6 +1776,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -1240,6 +1799,48 @@
           "companionUpgrades": {},
           "counters": {},
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1249,6 +1850,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -1271,6 +1873,48 @@
           "companionUpgrades": {},
           "counters": {},
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1280,6 +1924,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -1964,7 +2609,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 420,
-      "state": "817116d0",
+      "state": "7ac0a7dd",
       "events": "741638a5",
       "rng": {
         "draws": 37,
@@ -1975,7 +2620,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 420,
-      "state": "152786c5",
+      "state": "97691920",
       "events": "741638a5",
       "rng": {
         "draws": 77,
@@ -1986,7 +2631,7 @@
       "tick": 70,
       "time": 3.5,
       "nextId": 420,
-      "state": "67fd9d8a",
+      "state": "7c8ef32b",
       "events": "741638a5",
       "rng": {
         "draws": 120,
@@ -1997,7 +2642,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 420,
-      "state": "9d799529",
+      "state": "d26e8794",
       "events": "7d0b8ffb",
       "rng": {
         "draws": 179,
@@ -2008,7 +2653,7 @@
       "tick": 90,
       "time": 4.5,
       "nextId": 420,
-      "state": "49ae04dd",
+      "state": "68b1e488",
       "events": "89e4207a",
       "rng": {
         "draws": 238,
@@ -2019,7 +2664,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 420,
-      "state": "1ef7184c",
+      "state": "c7393f29",
       "events": "741638a5",
       "rng": {
         "draws": 296,
@@ -2030,7 +2675,7 @@
       "tick": 110,
       "time": 5.5,
       "nextId": 420,
-      "state": "182c19ac",
+      "state": "75638ac9",
       "events": "741638a5",
       "rng": {
         "draws": 353,
@@ -2041,7 +2686,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 420,
-      "state": "52285c79",
+      "state": "d5485344",
       "events": "741638a5",
       "rng": {
         "draws": 408,
@@ -2052,7 +2697,7 @@
       "tick": 130,
       "time": 6.5,
       "nextId": 420,
-      "state": "7b5dcf34",
+      "state": "bd978ce1",
       "events": "dee2b774",
       "rng": {
         "draws": 478,
@@ -2063,7 +2708,7 @@
       "tick": 140,
       "time": 7,
       "nextId": 420,
-      "state": "d102d347",
+      "state": "20667d96",
       "events": "0c64b58c",
       "rng": {
         "draws": 543,
@@ -2074,7 +2719,7 @@
       "tick": 150,
       "time": 7.5,
       "nextId": 420,
-      "state": "6c185985",
+      "state": "a9c77d60",
       "events": "741638a5",
       "rng": {
         "draws": 582,
@@ -2085,7 +2730,7 @@
       "tick": 160,
       "time": 8,
       "nextId": 420,
-      "state": "6b463514",
+      "state": "2eb18681",
       "events": "741638a5",
       "rng": {
         "draws": 631,
@@ -2096,7 +2741,7 @@
       "tick": 170,
       "time": 8.5,
       "nextId": 420,
-      "state": "b2f24935",
+      "state": "4df40730",
       "events": "751848d8",
       "rng": {
         "draws": 704,
@@ -2107,7 +2752,7 @@
       "tick": 180,
       "time": 9,
       "nextId": 420,
-      "state": "314869f3",
+      "state": "a498fa12",
       "events": "d74ff2c4",
       "rng": {
         "draws": 792,
@@ -2118,7 +2763,7 @@
       "tick": 190,
       "time": 9.5,
       "nextId": 420,
-      "state": "084da3cc",
+      "state": "3e8a6ea9",
       "events": "8861a45f",
       "rng": {
         "draws": 872,
@@ -2129,7 +2774,7 @@
       "tick": 200,
       "time": 10,
       "nextId": 420,
-      "state": "0cdab1d5",
+      "state": "5a793110",
       "events": "741638a5",
       "rng": {
         "draws": 939,
@@ -2140,7 +2785,7 @@
       "tick": 203,
       "time": 10.15,
       "nextId": 420,
-      "state": "b9c64336",
+      "state": "28ca4b17",
       "events": "741638a5",
       "rng": {
         "draws": 955,
@@ -2165,6 +2810,48 @@
             "damageTaken": 3381
           },
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -2174,6 +2861,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
           "questsDone": [
@@ -2199,6 +2887,48 @@
           "companionUpgrades": {},
           "counters": {},
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -2208,6 +2938,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -2230,6 +2961,48 @@
           "companionUpgrades": {},
           "counters": {},
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -2239,6 +3012,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -2261,6 +3035,48 @@
           "companionUpgrades": {},
           "counters": {},
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -2270,6 +3086,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -2292,6 +3109,48 @@
           "companionUpgrades": {},
           "counters": {},
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -2301,6 +3160,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -2946,7 +3806,7 @@
       "tick": 204,
       "time": 10.2,
       "nextId": 420,
-      "state": "43e08f78",
+      "state": "51137d55",
       "events": "9051ae14",
       "rng": {
         "draws": 965,
@@ -2971,6 +3831,48 @@
             "damageTaken": 3381
           },
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -2980,6 +3882,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
           "questsDone": [
@@ -3005,6 +3908,48 @@
           "companionUpgrades": {},
           "counters": {},
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -3014,6 +3959,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -3036,6 +3982,48 @@
           "companionUpgrades": {},
           "counters": {},
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -3045,6 +4033,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -3067,6 +4056,48 @@
           "companionUpgrades": {},
           "counters": {},
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -3076,6 +4107,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -3098,6 +4130,48 @@
           "companionUpgrades": {},
           "counters": {},
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -3107,6 +4181,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -3763,7 +4838,7 @@
       "tick": 210,
       "time": 10.5,
       "nextId": 420,
-      "state": "c7d61360",
+      "state": "f9d9a1cd",
       "events": "741638a5",
       "rng": {
         "draws": 979,
@@ -3774,7 +4849,7 @@
       "tick": 220,
       "time": 11,
       "nextId": 420,
-      "state": "a28ffc6c",
+      "state": "fccb1609",
       "events": "07da4b9a",
       "rng": {
         "draws": 1026,
@@ -3785,7 +4860,7 @@
       "tick": 230,
       "time": 11.5,
       "nextId": 420,
-      "state": "a32dd9b4",
+      "state": "aa444361",
       "events": "741638a5",
       "rng": {
         "draws": 1057,
@@ -3796,7 +4871,7 @@
       "tick": 240,
       "time": 12,
       "nextId": 420,
-      "state": "3623038c",
+      "state": "937562e9",
       "events": "80e22183",
       "rng": {
         "draws": 1102,
@@ -3807,7 +4882,7 @@
       "tick": 250,
       "time": 12.5,
       "nextId": 420,
-      "state": "71cf80f8",
+      "state": "38e5e2d5",
       "events": "741638a5",
       "rng": {
         "draws": 1162,
@@ -3818,7 +4893,7 @@
       "tick": 260,
       "time": 13,
       "nextId": 420,
-      "state": "a3b2ad5a",
+      "state": "259c2adb",
       "events": "741638a5",
       "rng": {
         "draws": 1215,
@@ -3829,7 +4904,7 @@
       "tick": 270,
       "time": 13.5,
       "nextId": 420,
-      "state": "769eab33",
+      "state": "5faa9ed2",
       "events": "a2b80e76",
       "rng": {
         "draws": 1279,
@@ -3840,7 +4915,7 @@
       "tick": 280,
       "time": 14,
       "nextId": 420,
-      "state": "88bed612",
+      "state": "9ef91203",
       "events": "741638a5",
       "rng": {
         "draws": 1317,
@@ -3851,7 +4926,7 @@
       "tick": 290,
       "time": 14.5,
       "nextId": 420,
-      "state": "f7d2d61b",
+      "state": "658df56a",
       "events": "9578d588",
       "rng": {
         "draws": 1370,
@@ -3862,7 +4937,7 @@
       "tick": 300,
       "time": 15,
       "nextId": 420,
-      "state": "730ec297",
+      "state": "8c987046",
       "events": "741638a5",
       "rng": {
         "draws": 1424,
@@ -3873,7 +4948,7 @@
       "tick": 310,
       "time": 15.5,
       "nextId": 420,
-      "state": "58caa4cb",
+      "state": "c2eda6ba",
       "events": "5a6b634d",
       "rng": {
         "draws": 1471,
@@ -3884,7 +4959,7 @@
       "tick": 320,
       "time": 16,
       "nextId": 420,
-      "state": "8086b73d",
+      "state": "1dddc328",
       "events": "741638a5",
       "rng": {
         "draws": 1515,
@@ -3895,7 +4970,7 @@
       "tick": 330,
       "time": 16.5,
       "nextId": 420,
-      "state": "dbbcd3a4",
+      "state": "4aa30c31",
       "events": "006ceb29",
       "rng": {
         "draws": 1573,
@@ -3906,7 +4981,7 @@
       "tick": 340,
       "time": 17,
       "nextId": 420,
-      "state": "aecf2cd4",
+      "state": "a440d6c1",
       "events": "551262e8",
       "rng": {
         "draws": 1633,
@@ -3917,7 +4992,7 @@
       "tick": 350,
       "time": 17.5,
       "nextId": 420,
-      "state": "90445f8c",
+      "state": "cc03dee9",
       "events": "741638a5",
       "rng": {
         "draws": 1692,
@@ -3928,7 +5003,7 @@
       "tick": 360,
       "time": 18,
       "nextId": 420,
-      "state": "9dadbe57",
+      "state": "c2ae8686",
       "events": "dc8e9216",
       "rng": {
         "draws": 1750,
@@ -3939,7 +5014,7 @@
       "tick": 370,
       "time": 18.5,
       "nextId": 420,
-      "state": "5e0e29f3",
+      "state": "b0741840",
       "events": "13f015ff",
       "rng": {
         "draws": 1808,
@@ -3950,7 +5025,7 @@
       "tick": 380,
       "time": 19,
       "nextId": 420,
-      "state": "74dcc902",
+      "state": "72c3f409",
       "events": "741638a5",
       "rng": {
         "draws": 1865,
@@ -3961,8 +5036,8 @@
       "tick": 386,
       "time": 19.3,
       "nextId": 420,
-      "state": "633acf3e",
-      "events": "8eb4f79d",
+      "state": "4a840b4a",
+      "events": "f43f3f62",
       "rng": {
         "draws": 1888,
         "digest": "b490b9a5"
@@ -4009,10 +5084,58 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "exp_hollow_reaches"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -4026,6 +5149,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167366,
           "nodeHarvestReadyAt": {},
           "questsDone": [
@@ -4074,10 +5198,58 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "exp_hollow_reaches"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -4091,6 +5263,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167366,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -4136,10 +5309,58 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "exp_hollow_reaches"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -4153,6 +5374,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167366,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -4197,10 +5419,58 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "exp_hollow_reaches"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -4214,6 +5484,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167366,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -4259,10 +5530,58 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "exp_hollow_reaches"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -4276,6 +5595,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167366,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -4900,7 +6220,7 @@
       "tick": 390,
       "time": 19.5,
       "nextId": 420,
-      "state": "b9dae7fb",
+      "state": "b3d18825",
       "events": "a97d796e",
       "rng": {
         "draws": 1906,
@@ -4911,7 +6231,7 @@
       "tick": 400,
       "time": 20,
       "nextId": 420,
-      "state": "a66fb614",
+      "state": "0ee364a4",
       "events": "49ab3307",
       "rng": {
         "draws": 1964,
@@ -4922,7 +6242,7 @@
       "tick": 410,
       "time": 20.5,
       "nextId": 420,
-      "state": "0f43e562",
+      "state": "11bafdee",
       "events": "49ab3307",
       "rng": {
         "draws": 2004,
@@ -4933,7 +6253,7 @@
       "tick": 420,
       "time": 21,
       "nextId": 420,
-      "state": "e3683881",
+      "state": "c456aab7",
       "events": "49ab3307",
       "rng": {
         "draws": 2062,
@@ -4944,7 +6264,7 @@
       "tick": 430,
       "time": 21.5,
       "nextId": 420,
-      "state": "6a54fb7d",
+      "state": "293cfed3",
       "events": "49ab3307",
       "rng": {
         "draws": 2115,
@@ -4955,7 +6275,7 @@
       "tick": 440,
       "time": 22,
       "nextId": 420,
-      "state": "f354454e",
+      "state": "0594fd3a",
       "events": "49ab3307",
       "rng": {
         "draws": 2157,
@@ -4966,7 +6286,7 @@
       "tick": 450,
       "time": 22.5,
       "nextId": 420,
-      "state": "3a317d6c",
+      "state": "acc2dc4c",
       "events": "49ab3307",
       "rng": {
         "draws": 2196,
@@ -4977,7 +6297,7 @@
       "tick": 460,
       "time": 23,
       "nextId": 420,
-      "state": "42e8416b",
+      "state": "a8e4e775",
       "events": "49ab3307",
       "rng": {
         "draws": 2237,
@@ -4988,7 +6308,7 @@
       "tick": 470,
       "time": 23.5,
       "nextId": 420,
-      "state": "0ea70506",
+      "state": "04f37e22",
       "events": "49ab3307",
       "rng": {
         "draws": 2289,
@@ -4999,7 +6319,7 @@
       "tick": 480,
       "time": 24,
       "nextId": 420,
-      "state": "25ecaca1",
+      "state": "b85bb057",
       "events": "49ab3307",
       "rng": {
         "draws": 2353,
@@ -5010,7 +6330,7 @@
       "tick": 490,
       "time": 24.5,
       "nextId": 420,
-      "state": "93475c6b",
+      "state": "57cc8075",
       "events": "5d270111",
       "rng": {
         "draws": 2394,
@@ -5021,7 +6341,7 @@
       "tick": 500,
       "time": 25,
       "nextId": 420,
-      "state": "1f3acebb",
+      "state": "69b8f465",
       "events": "741638a5",
       "rng": {
         "draws": 2439,
@@ -5032,7 +6352,7 @@
       "tick": 506,
       "time": 25.3,
       "nextId": 420,
-      "state": "61ad7c72",
+      "state": "04f9fc9e",
       "events": "741638a5",
       "rng": {
         "draws": 2478,
@@ -5080,10 +6400,58 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "exp_hollow_reaches"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -5097,6 +6465,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167366,
           "nodeHarvestReadyAt": {},
           "questsDone": [
@@ -5145,10 +6514,58 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "exp_hollow_reaches"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -5162,6 +6579,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167366,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -5207,10 +6625,58 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "exp_hollow_reaches"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -5224,6 +6690,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167366,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -5268,10 +6735,58 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "exp_hollow_reaches"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -5285,6 +6800,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167366,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -5330,10 +6846,58 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "exp_hollow_reaches"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -5347,6 +6911,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167366,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -5982,7 +7547,7 @@
       "tick": 510,
       "time": 25.5,
       "nextId": 420,
-      "state": "ff753641",
+      "state": "7ec006f7",
       "events": "741638a5",
       "rng": {
         "draws": 2502,
@@ -5993,7 +7558,7 @@
       "tick": 520,
       "time": 26,
       "nextId": 420,
-      "state": "8fbea9f5",
+      "state": "55d584db",
       "events": "741638a5",
       "rng": {
         "draws": 2527,
@@ -6004,7 +7569,7 @@
       "tick": 530,
       "time": 26.5,
       "nextId": 420,
-      "state": "1c84a48b",
+      "state": "6ba2aa95",
       "events": "741638a5",
       "rng": {
         "draws": 2570,
@@ -6015,7 +7580,7 @@
       "tick": 540,
       "time": 27,
       "nextId": 420,
-      "state": "1815ffeb",
+      "state": "d59f1ef5",
       "events": "741638a5",
       "rng": {
         "draws": 2617,
@@ -6026,7 +7591,7 @@
       "tick": 550,
       "time": 27.5,
       "nextId": 420,
-      "state": "4456fb9d",
+      "state": "1d070673",
       "events": "741638a5",
       "rng": {
         "draws": 2667,
@@ -6037,7 +7602,7 @@
       "tick": 560,
       "time": 28,
       "nextId": 420,
-      "state": "6bdd5759",
+      "state": "e1f6061f",
       "events": "741638a5",
       "rng": {
         "draws": 2715,
@@ -6048,7 +7613,7 @@
       "tick": 570,
       "time": 28.5,
       "nextId": 420,
-      "state": "f019faff",
+      "state": "4ab815f9",
       "events": "741638a5",
       "rng": {
         "draws": 2773,
@@ -6059,7 +7624,7 @@
       "tick": 580,
       "time": 29,
       "nextId": 420,
-      "state": "bc4a3ad1",
+      "state": "ca7c2267",
       "events": "741638a5",
       "rng": {
         "draws": 2824,
@@ -6070,7 +7635,7 @@
       "tick": 590,
       "time": 29.5,
       "nextId": 420,
-      "state": "186c663e",
+      "state": "1451b84a",
       "events": "ce2aa7e5",
       "rng": {
         "draws": 2879,
@@ -6081,7 +7646,7 @@
       "tick": 600,
       "time": 30,
       "nextId": 420,
-      "state": "8f9e9c0a",
+      "state": "706e2106",
       "events": "3e84306c",
       "rng": {
         "draws": 2930,
@@ -6092,7 +7657,7 @@
       "tick": 610,
       "time": 30.5,
       "nextId": 420,
-      "state": "f259b2f6",
+      "state": "c55c88b2",
       "events": "741638a5",
       "rng": {
         "draws": 2961,
@@ -6103,7 +7668,7 @@
       "tick": 620,
       "time": 31,
       "nextId": 420,
-      "state": "3d6755fc",
+      "state": "8a78af7c",
       "events": "741638a5",
       "rng": {
         "draws": 2999,
@@ -6114,7 +7679,7 @@
       "tick": 627,
       "time": 31.35,
       "nextId": 420,
-      "state": "6391ee0f",
+      "state": "3932b829",
       "events": "c0037f6b",
       "rng": {
         "draws": 3032,
@@ -6162,10 +7727,58 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "exp_hollow_reaches"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -6179,6 +7792,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167366,
           "nodeHarvestReadyAt": {},
           "questsDone": [
@@ -6227,10 +7841,58 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "exp_hollow_reaches"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -6244,6 +7906,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167366,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -6289,10 +7952,58 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "exp_hollow_reaches"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -6306,6 +8017,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167366,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -6350,10 +8062,58 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "exp_hollow_reaches"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -6367,6 +8127,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167366,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -6412,10 +8173,58 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "exp_hollow_reaches"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -6429,6 +8238,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167366,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -7066,8 +8876,8 @@
       "tick": 628,
       "time": 31.4,
       "nextId": 420,
-      "state": "58a5c4c2",
-      "events": "9ae5e861",
+      "state": "ea1d230a",
+      "events": "93fa7ce9",
       "rng": {
         "draws": 3044,
         "digest": "39b28f29"
@@ -7114,16 +8924,109 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "dgn_hollow_conqueror",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "deedId": "dgn_hollow_conqueror",
+                "state": "active"
+              }
+            ],
+            [
+              "dgn_scourge_ended",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "dgn_scourge_ended",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_grand_asphodelian",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_grand_asphodelian",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  3
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "dgn_scourge_ended",
+            "exp_hollow_reaches"
           ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
           "earnedTitles": [
-            "t_blooded"
+            "t_blooded",
+            "t_thornpeak_warden"
           ],
           "entityId": 407,
           "equipment": {
@@ -7131,6 +9034,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167449,
           "nodeHarvestReadyAt": {},
           "questsDone": [
@@ -7185,16 +9089,109 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "dgn_hollow_conqueror",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "deedId": "dgn_hollow_conqueror",
+                "state": "active"
+              }
+            ],
+            [
+              "dgn_scourge_ended",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "dgn_scourge_ended",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_grand_asphodelian",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_grand_asphodelian",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  3
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "dgn_scourge_ended",
+            "exp_hollow_reaches"
           ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
           "earnedTitles": [
-            "t_blooded"
+            "t_blooded",
+            "t_thornpeak_warden"
           ],
           "entityId": 408,
           "equipment": {
@@ -7202,6 +9199,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167449,
           "nodeHarvestReadyAt": {},
           "raidLockouts": [
@@ -7253,16 +9251,109 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "dgn_hollow_conqueror",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "deedId": "dgn_hollow_conqueror",
+                "state": "active"
+              }
+            ],
+            [
+              "dgn_scourge_ended",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "dgn_scourge_ended",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_grand_asphodelian",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_grand_asphodelian",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  3
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "dgn_scourge_ended",
+            "exp_hollow_reaches"
           ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
           "earnedTitles": [
-            "t_blooded"
+            "t_blooded",
+            "t_thornpeak_warden"
           ],
           "entityId": 409,
           "equipment": {
@@ -7270,6 +9361,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167449,
           "nodeHarvestReadyAt": {},
           "raidLockouts": [
@@ -7320,16 +9412,109 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "dgn_hollow_conqueror",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "deedId": "dgn_hollow_conqueror",
+                "state": "active"
+              }
+            ],
+            [
+              "dgn_scourge_ended",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "dgn_scourge_ended",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_grand_asphodelian",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_grand_asphodelian",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  3
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "dgn_scourge_ended",
+            "exp_hollow_reaches"
           ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
           "earnedTitles": [
-            "t_blooded"
+            "t_blooded",
+            "t_thornpeak_warden"
           ],
           "entityId": 410,
           "equipment": {
@@ -7337,6 +9522,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167449,
           "nodeHarvestReadyAt": {},
           "raidLockouts": [
@@ -7388,16 +9574,109 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "dgn_hollow_conqueror",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "deedId": "dgn_hollow_conqueror",
+                "state": "active"
+              }
+            ],
+            [
+              "dgn_scourge_ended",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "dgn_scourge_ended",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_grand_asphodelian",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_grand_asphodelian",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  3
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "dgn_scourge_ended",
+            "exp_hollow_reaches"
           ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
           "earnedTitles": [
-            "t_blooded"
+            "t_blooded",
+            "t_thornpeak_warden"
           ],
           "entityId": 411,
           "equipment": {
@@ -7405,6 +9684,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167449,
           "nodeHarvestReadyAt": {},
           "raidLockouts": [
@@ -8065,7 +10345,7 @@
       "tick": 630,
       "time": 31.5,
       "nextId": 420,
-      "state": "a96e9329",
+      "state": "a4b9537f",
       "events": "741638a5",
       "rng": {
         "draws": 3057,
@@ -8076,7 +10356,7 @@
       "tick": 640,
       "time": 32,
       "nextId": 420,
-      "state": "c79141d4",
+      "state": "f891c948",
       "events": "741638a5",
       "rng": {
         "draws": 3093,
@@ -8087,7 +10367,7 @@
       "tick": 650,
       "time": 32.5,
       "nextId": 420,
-      "state": "b6737ae0",
+      "state": "d196647c",
       "events": "741638a5",
       "rng": {
         "draws": 3147,
@@ -8098,7 +10378,7 @@
       "tick": 660,
       "time": 33,
       "nextId": 420,
-      "state": "e63fee85",
+      "state": "79646df3",
       "events": "741638a5",
       "rng": {
         "draws": 3197,
@@ -8109,7 +10389,7 @@
       "tick": 670,
       "time": 33.5,
       "nextId": 420,
-      "state": "db56e403",
+      "state": "840174e5",
       "events": "741638a5",
       "rng": {
         "draws": 3278,
@@ -8120,7 +10400,7 @@
       "tick": 680,
       "time": 34,
       "nextId": 420,
-      "state": "0a2b1fb6",
+      "state": "d8075ea6",
       "events": "741638a5",
       "rng": {
         "draws": 3331,
@@ -8131,7 +10411,7 @@
       "tick": 688,
       "time": 34.4,
       "nextId": 420,
-      "state": "b570c011",
+      "state": "e83aaf67",
       "events": "cda604a0",
       "rng": {
         "draws": 3358,
@@ -8179,16 +10459,109 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "dgn_hollow_conqueror",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "deedId": "dgn_hollow_conqueror",
+                "state": "active"
+              }
+            ],
+            [
+              "dgn_scourge_ended",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "dgn_scourge_ended",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_grand_asphodelian",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_grand_asphodelian",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  3
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "dgn_scourge_ended",
+            "exp_hollow_reaches"
           ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
           "earnedTitles": [
-            "t_blooded"
+            "t_blooded",
+            "t_thornpeak_warden"
           ],
           "entityId": 407,
           "equipment": {
@@ -8196,6 +10569,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167449,
           "nodeHarvestReadyAt": {},
           "questsDone": [
@@ -8250,16 +10624,109 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "dgn_hollow_conqueror",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "deedId": "dgn_hollow_conqueror",
+                "state": "active"
+              }
+            ],
+            [
+              "dgn_scourge_ended",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "dgn_scourge_ended",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_grand_asphodelian",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_grand_asphodelian",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  3
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "dgn_scourge_ended",
+            "exp_hollow_reaches"
           ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
           "earnedTitles": [
-            "t_blooded"
+            "t_blooded",
+            "t_thornpeak_warden"
           ],
           "entityId": 408,
           "equipment": {
@@ -8267,6 +10734,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167449,
           "nodeHarvestReadyAt": {},
           "raidLockouts": [
@@ -8318,16 +10786,109 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "dgn_hollow_conqueror",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "deedId": "dgn_hollow_conqueror",
+                "state": "active"
+              }
+            ],
+            [
+              "dgn_scourge_ended",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "dgn_scourge_ended",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_grand_asphodelian",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_grand_asphodelian",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  3
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "dgn_scourge_ended",
+            "exp_hollow_reaches"
           ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
           "earnedTitles": [
-            "t_blooded"
+            "t_blooded",
+            "t_thornpeak_warden"
           ],
           "entityId": 409,
           "equipment": {
@@ -8335,6 +10896,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167449,
           "nodeHarvestReadyAt": {},
           "raidLockouts": [
@@ -8385,16 +10947,109 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "dgn_hollow_conqueror",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "deedId": "dgn_hollow_conqueror",
+                "state": "active"
+              }
+            ],
+            [
+              "dgn_scourge_ended",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "dgn_scourge_ended",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_grand_asphodelian",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_grand_asphodelian",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  3
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "dgn_scourge_ended",
+            "exp_hollow_reaches"
           ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
           "earnedTitles": [
-            "t_blooded"
+            "t_blooded",
+            "t_thornpeak_warden"
           ],
           "entityId": 410,
           "equipment": {
@@ -8402,6 +11057,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167449,
           "nodeHarvestReadyAt": {},
           "raidLockouts": [
@@ -8453,16 +11109,109 @@
                 "deedId": "cmb_first_blood",
                 "state": "done"
               }
+            ],
+            [
+              "dgn_hollow_conqueror",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "deedId": "dgn_hollow_conqueror",
+                "state": "active"
+              }
+            ],
+            [
+              "dgn_scourge_ended",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "dgn_scourge_ended",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_grand_asphodelian",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_grand_asphodelian",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  3
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
             ]
           ],
           "deedsDone": [
-            "cmb_first_blood"
+            "cmb_first_blood",
+            "dgn_scourge_ended",
+            "exp_hollow_reaches"
           ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
           "earnedTitles": [
-            "t_blooded"
+            "t_blooded",
+            "t_thornpeak_warden"
           ],
           "entityId": 411,
           "equipment": {
@@ -8470,6 +11219,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 167449,
           "nodeHarvestReadyAt": {},
           "raidLockouts": [

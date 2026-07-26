@@ -112,8 +112,8 @@
       "tick": 20,
       "time": 1,
       "nextId": 408,
-      "state": "a1397f77",
-      "events": "1d9fd4db",
+      "state": "851e42ae",
+      "events": "3d7c9edb",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -123,7 +123,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 408,
-      "state": "8277b7d9",
+      "state": "fa90a230",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -134,7 +134,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 408,
-      "state": "55790ef2",
+      "state": "0e1945ef",
       "events": "741638a5",
       "rng": {
         "draws": 105,
@@ -145,7 +145,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 408,
-      "state": "2e49de1f",
+      "state": "3a9485a6",
       "events": "741638a5",
       "rng": {
         "draws": 187,
@@ -156,7 +156,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 409,
-      "state": "3217ce33",
+      "state": "f3123822",
       "events": "e4501f4e",
       "rng": {
         "draws": 275,
@@ -167,7 +167,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 410,
-      "state": "3712e32a",
+      "state": "a44d5f37",
       "events": "9b7ed131",
       "rng": {
         "draws": 376,
@@ -178,7 +178,7 @@
       "tick": 140,
       "time": 7,
       "nextId": 410,
-      "state": "10052bf1",
+      "state": "4d0708d8",
       "events": "9734323e",
       "rng": {
         "draws": 516,
@@ -189,7 +189,7 @@
       "tick": 160,
       "time": 8,
       "nextId": 410,
-      "state": "903cfa34",
+      "state": "2f6806f1",
       "events": "ffe76d66",
       "rng": {
         "draws": 654,
@@ -200,7 +200,7 @@
       "tick": 180,
       "time": 9,
       "nextId": 410,
-      "state": "42087af5",
+      "state": "9c0ca574",
       "events": "7f7e38bf",
       "rng": {
         "draws": 800,
@@ -211,7 +211,7 @@
       "tick": 200,
       "time": 10,
       "nextId": 410,
-      "state": "7660b904",
+      "state": "daaac8e1",
       "events": "650f1dc1",
       "rng": {
         "draws": 942,
@@ -222,7 +222,7 @@
       "tick": 220,
       "time": 11,
       "nextId": 410,
-      "state": "66a92158",
+      "state": "d038143d",
       "events": "7f7e38bf",
       "rng": {
         "draws": 1041,
@@ -233,7 +233,7 @@
       "tick": 220,
       "time": 11,
       "nextId": 410,
-      "state": "8b0c982f",
+      "state": "2c869316",
       "events": "741638a5",
       "rng": {
         "draws": 1041,
@@ -259,6 +259,48 @@
             "damageDealt": 14
           },
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -268,6 +310,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 44000,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -444,7 +487,7 @@
       "tick": 224,
       "time": 11.2,
       "nextId": 410,
-      "state": "3d17cb6e",
+      "state": "44f4bbf3",
       "events": "4ed9b3e6",
       "rng": {
         "draws": 1057,
@@ -470,6 +513,48 @@
             "damageDealt": 14
           },
           "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -479,6 +564,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 44000,
           "nodeHarvestReadyAt": {},
           "talents": {
