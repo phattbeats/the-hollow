@@ -33,7 +33,6 @@ import type { PlayerMeta, ResolvedAbility } from '../sim';
 import type { SimContext } from '../sim_context';
 import { abilityScalingPower, channelTickBonus } from '../spell_scaling';
 import type { AbilityDef, Entity } from '../types';
-import { drawWeapon } from '../weapon_stow';
 import {
   angleTo,
   CAST_COMPLETE_EPS,
@@ -48,6 +47,7 @@ import {
   MELEE_RANGE,
   normAngle,
 } from '../types';
+import { drawWeapon } from '../weapon_stow';
 import { isLockedOut, isSilenced, isStunned, tonguesMult } from './cc';
 import { isSpellResisted } from './spell_resist';
 

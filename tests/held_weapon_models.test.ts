@@ -1,16 +1,15 @@
 import { existsSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-
-import {
-  itemWeaponModelUrl,
-  mechHeldWeaponOverride,
-  VISUALS,
-} from '../src/render/characters/manifest';
 import {
   BACK_GRIP_FAMILIES,
   backGripFor,
   type RigFamily,
 } from '../src/render/characters/back_grips';
+import {
+  itemWeaponModelUrl,
+  mechHeldWeaponOverride,
+  VISUALS,
+} from '../src/render/characters/manifest';
 import { ITEM_WEAPON_VARIANTS } from '../src/ui/weapon_variants';
 
 // The per-item held weapon models: each weapon item maps (via the shared
@@ -151,10 +150,9 @@ describe('held weapon models: row J chibi rig-dispatch contract', () => {
       // dispatches as chibi by construction; this asserts the dispatch is
       // observable end-to-end via backGripFor.
       const g = backGripFor(null, 'r', 'chibi');
-      expect(
-        g.position[0],
-        `${key} must dispatch to a chibi-family carry (X < 0.13)`,
-      ).toBeLessThan(0.13);
+      expect(g.position[0], `${key} must dispatch to a chibi-family carry (X < 0.13)`).toBeLessThan(
+        0.13,
+      );
     }
   });
 
@@ -224,10 +222,7 @@ describe('held weapon models: row J chibi rig-dispatch contract', () => {
       // DEFAULT_CHIBI; the 1H families intentionally share the default.
       const isTwoHand = fam.includes('2H_');
       if (isTwoHand) {
-        expect(
-          isChibiDefault,
-          `${fam} (2H) must override the chibi default carry`,
-        ).toBe(false);
+        expect(isChibiDefault, `${fam} (2H) must override the chibi default carry`).toBe(false);
       }
     }
   });
@@ -252,7 +247,7 @@ describe('held weapon models: row J chibi rig-dispatch contract', () => {
   // The sheathing port does NOT fork the weapon-attach logic (`setHeldWeapon` in
   // assets.ts is single-body); the rig family flows through `CharacterVisual.rig`
   // into `attachProp`'s grip lookup. The two rigs MUST NOT share a carry value
-  // for the same shape — a future helper that mixes them would punch through
+  // for the same shape; a future helper that mixes them would punch through
   // the chibi helmet. This is the rig-separation gate that catches a future
   // refactor that accidentally widens the dispatch.
   it('KayKit and chibi back-grip defaults diverge on X/Z', () => {
