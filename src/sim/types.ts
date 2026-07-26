@@ -114,6 +114,7 @@ export interface HonorArenaDailyState {
   date: string;
   winsByOpponent: Record<string, number>;
   fiestaCompletionsByOpponent: Record<string, number>;
+  fiestaKillsByVictim: Record<string, number>;
   totalWins: number;
 }
 

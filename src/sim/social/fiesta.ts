@@ -342,7 +342,7 @@ export function fiestaTakedown(
   if (killerMeta) killerMeta.counters.kills++;
   f.kills.set(killerPid, (f.kills.get(killerPid) ?? 0) + 1);
   if (killerMeta && !match.practice && ctx.isArenaCrossTeam(match, killerPid, victim.id)) {
-    awardFiestaKillHonor(ctx, killerMeta, victim.id, f.honorKillsByPair);
+    awardFiestaKillHonor(ctx, killerMeta, victim.id);
   }
 
   fiestaDown(ctx, match, victim, killerPid);

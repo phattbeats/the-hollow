@@ -14,9 +14,9 @@ export const FIESTA_KILL_HONOR = 20;
 export const FIESTA_COMPLETION_HONOR = 20;
 export const FIESTA_WIN_BONUS_HONOR = 40;
 
-// Arena is especially easy to coordinate in 1v1, so only the first win against
-// the same opponent/team pays each UTC day. Fiesta uses softer decay because its
-// takedown and completion rewards come from a longer, multi-kill match.
+// Fiesta takedown honor shares the persisted UTC-day window with completion
+// honor. The first kill against a victim pays in full, then the usual taper
+// applies for later kills against that victim on the same UTC day.
 export const ARENA_REPEAT_DR = [1, 0] as const;
 export const HONOR_REPEAT_DR = [1, 0.5, 0.25, 0] as const;
 export const ARENA_DAILY_TAPER_START = 10;
@@ -49,6 +49,7 @@ export function normalizeHonorDailyState(value: unknown): HonorArenaDailyState |
     date: typeof record.date === 'string' ? record.date : '',
     winsByOpponent: normalizeCountRecord(record.winsByOpponent),
     fiestaCompletionsByOpponent: normalizeCountRecord(record.fiestaCompletionsByOpponent),
+    fiestaKillsByVictim: normalizeCountRecord(record.fiestaKillsByVictim),
     totalWins: normalizeHonorCounter(record.totalWins),
   };
 }
@@ -94,6 +95,7 @@ function dailyWindow(ctx: SimContext, meta: PlayerMeta) {
       date: ctx.utcDay,
       winsByOpponent: {},
       fiestaCompletionsByOpponent: {},
+      fiestaKillsByVictim: {},
       totalWins: 0,
     };
     meta.honorArenaDaily = daily;
@@ -102,6 +104,7 @@ function dailyWindow(ctx: SimContext, meta: PlayerMeta) {
     daily.date = ctx.utcDay;
     daily.winsByOpponent = {};
     daily.fiestaCompletionsByOpponent = {};
+    daily.fiestaKillsByVictim = {};
     daily.totalWins = 0;
   }
   return daily;
@@ -144,11 +147,11 @@ export function awardFiestaKillHonor(
   ctx: SimContext,
   meta: PlayerMeta,
   victimPid: number,
-  killsByPair: Map<string, number>,
 ): number {
-  const key = `${meta.entityId}:${victimPid}`;
-  const repeats = killsByPair.get(key) ?? 0;
-  killsByPair.set(key, repeats + 1);
+  const daily = dailyWindow(ctx, meta);
+  const key = String(victimPid);
+  const repeats = daily.fiestaKillsByVictim[key] ?? 0;
+  daily.fiestaKillsByVictim[key] = repeats + 1;
   return grantHonor(ctx, meta, FIESTA_KILL_HONOR * repeatHonorMultiplier(repeats), 'fiesta_kill');
 }
 
