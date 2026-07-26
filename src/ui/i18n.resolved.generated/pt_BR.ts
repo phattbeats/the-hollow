@@ -5885,6 +5885,21 @@ export const pt_BR: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "Vanguarda Cromada"
+      },
+      "enchanting_dust": {
+        "name": "Pó de Encantamento"
+      },
+      "scroll_minor_might": {
+        "name": "Pergaminho de Força Menor"
+      },
+      "scroll_minor_vigor": {
+        "name": "Pergaminho de Vigor Menor"
+      },
+      "scroll_minor_focus": {
+        "name": "Pergaminho de Foco Menor"
+      },
+      "scroll_minor_agility": {
+        "name": "Pergaminho de Agilidade Menor"
       }
     },
     "mobs": {

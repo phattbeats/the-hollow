@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "9e34c745",
+      "state": "4b1d4301",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -43,6 +43,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -111,7 +112,7 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 417,
-      "state": "487bd446",
+      "state": "30df8102",
       "events": "94b6ec38",
       "rng": {
         "draws": 4,
@@ -122,7 +123,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 417,
-      "state": "6260ba1d",
+      "state": "c049b3f5",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -133,7 +134,7 @@
       "tick": 15,
       "time": 0.75,
       "nextId": 417,
-      "state": "57931488",
+      "state": "fccbe974",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -144,7 +145,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 417,
-      "state": "7d3b0351",
+      "state": "f4cb2689",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -155,7 +156,7 @@
       "tick": 25,
       "time": 1.25,
       "nextId": 417,
-      "state": "52376dd9",
+      "state": "bf2bb5a1",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -166,7 +167,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 417,
-      "state": "984e22a3",
+      "state": "9731834b",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -177,7 +178,7 @@
       "tick": 35,
       "time": 1.75,
       "nextId": 417,
-      "state": "af6c48a3",
+      "state": "fd17394b",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -188,7 +189,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 417,
-      "state": "768c8e72",
+      "state": "9839c82e",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -199,7 +200,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 417,
-      "state": "768c8e72",
+      "state": "9839c82e",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -270,6 +271,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -423,7 +425,7 @@
       "tick": 41,
       "time": 2.05,
       "nextId": 417,
-      "state": "4a177ef2",
+      "state": "4e9a44ae",
       "events": "25b2de65",
       "rng": {
         "draws": 6,
@@ -494,6 +496,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -661,7 +664,7 @@
       "tick": 45,
       "time": 2.25,
       "nextId": 417,
-      "state": "4fdf1017",
+      "state": "ffa4f57f",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -672,7 +675,7 @@
       "tick": 49,
       "time": 2.45,
       "nextId": 417,
-      "state": "13e9a1c7",
+      "state": "ba53c18f",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -743,6 +746,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -851,7 +855,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 417,
-      "state": "95bb1fc5",
+      "state": "994aa70d",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -862,7 +866,7 @@
       "tick": 51,
       "time": 2.55,
       "nextId": 417,
-      "state": "c66981e0",
+      "state": "9d489c1c",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -933,6 +937,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1042,7 +1047,7 @@
       "tick": 51,
       "time": 2.55,
       "nextId": 417,
-      "state": "c66981e0",
+      "state": "9d489c1c",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -1113,6 +1118,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",

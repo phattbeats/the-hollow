@@ -5885,6 +5885,21 @@ export const de_DE: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "Vorhut-Chrom"
+      },
+      "enchanting_dust": {
+        "name": "Verzauberungsstaub"
+      },
+      "scroll_minor_might": {
+        "name": "Schriftrolle der geringen Macht"
+      },
+      "scroll_minor_vigor": {
+        "name": "Schriftrolle der geringen Vitalität"
+      },
+      "scroll_minor_focus": {
+        "name": "Schriftrolle der geringen Konzentration"
+      },
+      "scroll_minor_agility": {
+        "name": "Schriftrolle der geringen Beweglichkeit"
       }
     },
     "mobs": {

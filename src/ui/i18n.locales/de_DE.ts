@@ -1586,7 +1586,8 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': 'Gier für {item}',
   'itemUi.lootRoll.passAria': 'Bei {item} passen',
   'itemUi.lootRoll.everyonePassed': 'Alle passen bei {item}.',
-  'itemUi.lootRoll.winnerOffline': 'Der Gewinner von {item} war offline; es wurde zur Leiche zurückgebracht.',
+  'itemUi.lootRoll.winnerOffline':
+    'Der Gewinner von {item} war offline; es wurde zur Leiche zurückgebracht.',
   'entities.abilities.heroic_strike.name': 'Heldenhafter Stoß',
   'entities.abilities.heroic_strike.description':
     'Ein mächtiger Angriff, der den Nahkampfschaden um {damage} erhöht. Wird bei eurem nächsten Schwung ausgelöst.',
@@ -2129,6 +2130,11 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.items.imperial_gold_armor_plate.name': 'Imperiales Gold',
   'entities.items.vanguard_azure_armor_plate.name': 'Vorhut-Azur',
   'entities.items.vanguard_chrome_armor_plate.name': 'Vorhut-Chrom',
+  'entities.items.enchanting_dust.name': 'Verzauberungsstaub',
+  'entities.items.scroll_minor_might.name': 'Schriftrolle der geringen Macht',
+  'entities.items.scroll_minor_vigor.name': 'Schriftrolle der geringen Vitalität',
+  'entities.items.scroll_minor_focus.name': 'Schriftrolle der geringen Konzentration',
+  'entities.items.scroll_minor_agility.name': 'Schriftrolle der geringen Beweglichkeit',
   'entities.items.deacons_cleaver.name': 'Beil des Diakons',
   'entities.items.staff_of_drowned_prayers.name': 'Stab ertrunkener Gebete',
   'entities.items.mistbinder_kris.name': 'Nebelbinder-Kris',

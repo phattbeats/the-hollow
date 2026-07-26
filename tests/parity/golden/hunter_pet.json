@@ -15,7 +15,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "dd567494",
+      "state": "126553fc",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -42,6 +42,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -112,7 +113,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 411,
-      "state": "c334bae4",
+      "state": "d0bec3f8",
       "events": "de4c4316",
       "rng": {
         "draws": 6,
@@ -123,7 +124,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 411,
-      "state": "87e9febc",
+      "state": "b6110340",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -134,7 +135,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 411,
-      "state": "25029632",
+      "state": "dd6de536",
       "events": "e109834d",
       "rng": {
         "draws": 100,
@@ -145,7 +146,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 411,
-      "state": "3659567e",
+      "state": "a2f9f642",
       "events": "741638a5",
       "rng": {
         "draws": 203,
@@ -156,7 +157,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 411,
-      "state": "246b972f",
+      "state": "6fe5b247",
       "events": "facdabea",
       "rng": {
         "draws": 305,
@@ -167,7 +168,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 411,
-      "state": "7df6aef3",
+      "state": "69917e5b",
       "events": "741638a5",
       "rng": {
         "draws": 413,
@@ -178,7 +179,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 411,
-      "state": "7df6aef3",
+      "state": "69917e5b",
       "events": "741638a5",
       "rng": {
         "draws": 413,
@@ -249,6 +250,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",

@@ -2693,6 +2693,12 @@ export class GameServer {
       case 'craftItem':
         if (typeof msg.recipe === 'string') sim.craftItem(msg.recipe, pid);
         break;
+      case 'disenchantItem':
+        if (typeof msg.itemId === 'string') sim.disenchantItem(msg.itemId, pid);
+        break;
+      case 'applyEnchant':
+        if (typeof msg.enchantId === 'string') sim.applyEnchant(msg.enchantId, pid);
+        break;
       case 'readCollectible':
         if (typeof msg.collectibleId === 'string') sim.readCollectible(msg.collectibleId, pid);
         break;
@@ -3731,6 +3737,7 @@ export class GameServer {
     maybe('dcomp', this.sim.companionUpgradesFor(anchorSession.pid));
     maybe('gprof', this.sim.gatheringProficiencyFor(anchorSession.pid));
     maybe('cprof', this.sim.craftProficiencyFor(anchorSession.pid));
+    maybe('ench', this.sim.enchantsFor(anchorSession.pid));
     // Per-viewer gather-node cooldown ids (PHAA-618): the nodes NOT harvestable
     // by this player right now, so the online client's nodeHarvestableByMe (and
     // the minimap gather dots it drives) match the offline Sim instead of the

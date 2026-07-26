@@ -1090,6 +1090,13 @@ export const en = {
       imperial_gold_armor_plate: { name: 'Imperial Gold' },
       vanguard_azure_armor_plate: { name: 'Vanguard Azure' },
       vanguard_chrome_armor_plate: { name: 'Vanguard Chrome' },
+      // Enchanting (PHAA-649 child, upstream #1712): non-Latin fills
+      // (zh_CN/zh_TW/ja_JP/ko_KR/ru_RU) live in src/ui/i18n.locales/<lang>.ts.
+      enchanting_dust: { name: 'Enchanting Dust' },
+      scroll_minor_might: { name: 'Scroll of Minor Might' },
+      scroll_minor_vigor: { name: 'Scroll of Minor Vigor' },
+      scroll_minor_focus: { name: 'Scroll of Minor Focus' },
+      scroll_minor_agility: { name: 'Scroll of Minor Agility' },
     },
     itemSets: itemSetEntityText,
     mobs: {

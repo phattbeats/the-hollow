@@ -5885,6 +5885,21 @@ export const tr_TR: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "Öncü Birlik Krom"
+      },
+      "enchanting_dust": {
+        "name": "Büyü Tozu"
+      },
+      "scroll_minor_might": {
+        "name": "Küçük Güç Parşömeni"
+      },
+      "scroll_minor_vigor": {
+        "name": "Küçük Dayanıklılık Parşömeni"
+      },
+      "scroll_minor_focus": {
+        "name": "Küçük Odaklanma Parşömeni"
+      },
+      "scroll_minor_agility": {
+        "name": "Küçük Çeviklik Parşömeni"
       }
     },
     "mobs": {

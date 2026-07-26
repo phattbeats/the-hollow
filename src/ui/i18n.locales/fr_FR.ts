@@ -1600,7 +1600,8 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': 'Cupidité pour {item}',
   'itemUi.lootRoll.passAria': 'Passer pour {item}',
   'itemUi.lootRoll.everyonePassed': 'Tout le monde a passé pour {item}.',
-  'itemUi.lootRoll.winnerOffline': 'Le gagnant de {item} était hors ligne ; il a été rendu au corps.',
+  'itemUi.lootRoll.winnerOffline':
+    'Le gagnant de {item} était hors ligne ; il a été rendu au corps.',
   'entities.abilities.heroic_strike.name': 'Frappe héroïque',
   'entities.abilities.heroic_strike.description':
     "Une attaque puissante qui augmente les dégâts de mêlée de {damage}. S'active lors de votre prochaine frappe.",
@@ -2168,6 +2169,11 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'entities.items.imperial_gold_armor_plate.name': 'Or impérial',
   'entities.items.vanguard_azure_armor_plate.name': 'Avant-garde azur',
   'entities.items.vanguard_chrome_armor_plate.name': 'Avant-garde chrome',
+  'entities.items.enchanting_dust.name': "Poussière d'Enchantement",
+  'entities.items.scroll_minor_might.name': 'Parchemin de Puissance Mineure',
+  'entities.items.scroll_minor_vigor.name': 'Parchemin de Vigueur Mineure',
+  'entities.items.scroll_minor_focus.name': 'Parchemin de Concentration Mineure',
+  'entities.items.scroll_minor_agility.name': "Parchemin d'Agilité Mineure",
   'entities.items.deacons_cleaver.name': 'Fendoir du diacre',
   'entities.items.staff_of_drowned_prayers.name': 'Bâton des prières noyées',
   'entities.items.mistbinder_kris.name': 'Kris Lie-brume',
