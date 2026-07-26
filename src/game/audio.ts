@@ -34,7 +34,13 @@ export class GameAudio {
     }
   }
 
-  private noise(duration: number, filterFreq: number, gain: number, decay = 0.9, filterType: BiquadFilterType = 'lowpass'): void {
+  private noise(
+    duration: number,
+    filterFreq: number,
+    gain: number,
+    decay = 0.9,
+    filterType: BiquadFilterType = 'lowpass',
+  ): void {
     if (!this.ctx || !this.master || !this.noiseBuf) return;
     const t = this.ctx.currentTime;
     const src = this.ctx.createBufferSource();
@@ -50,7 +56,14 @@ export class GameAudio {
     src.start(t, Math.random() * 0.5, duration);
   }
 
-  private tone(freq: number, duration: number, gain: number, type: OscillatorType = 'sine', delay = 0, slideTo?: number): void {
+  private tone(
+    freq: number,
+    duration: number,
+    gain: number,
+    type: OscillatorType = 'sine',
+    delay = 0,
+    slideTo?: number,
+  ): void {
     if (!this.ctx || !this.master) return;
     const t = this.ctx.currentTime + delay;
     const osc = this.ctx.createOscillator();
@@ -140,7 +153,9 @@ export class GameAudio {
   }
 
   eat(): void {
-    [0, 0.3].forEach((d) => this.noise(0.1, 800, 0.1, 0.8, 'bandpass'));
+    [0, 0.3].forEach((_d) => {
+      this.noise(0.1, 800, 0.1, 0.8, 'bandpass');
+    });
   }
 
   click(): void {
@@ -207,7 +222,10 @@ export class GameAudio {
     const base = [523, 587, 659, 784][Math.min(3, tier)];
     this.tone(base, 0.16, 0.2, 'square');
     this.tone(base * 1.5, 0.22, 0.16, 'triangle', 0.05);
-    if (tier >= 2) { this.tone(base * 2, 0.3, 0.14, 'triangle', 0.1); this.noise(0.35, 5200, 0.1, 0.7, 'highpass'); }
+    if (tier >= 2) {
+      this.tone(base * 2, 0.3, 0.14, 'triangle', 0.1);
+      this.noise(0.35, 5200, 0.1, 0.7, 'highpass');
+    }
   }
 
   // Your team scored a point — quick, satisfying blip (higher when it's yours).

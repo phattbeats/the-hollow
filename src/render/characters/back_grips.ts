@@ -132,9 +132,21 @@ const BACK_GRIPS: Record<string, BackGripSpec> = {
   CHIBI_2H_Axe: { position: [0.08, 0.06, -0.22], euler: [0.08, 0, Math.PI * 0.75], rig: 'chibi' },
   CHIBI_2H_Staff: { position: [0.07, 0.0, -0.22], euler: [0.08, 0, Math.PI * 0.78], rig: 'chibi' },
   CHIBI_Knife: { position: [0.3, -0.25, -0.06], euler: [0.05, 0.15, Math.PI * 0.72], rig: 'chibi' },
-  CHIBI_1H_Wand: { position: [0.3, -0.25, -0.06], euler: [0.05, 0.15, Math.PI * 0.72], rig: 'chibi' },
-  CHIBI_1H_Crossbow: { position: [0.0, 0.07, -0.22], euler: [0, Math.PI / 2, Math.PI], rig: 'chibi' },
-  CHIBI_2H_Crossbow: { position: [0.0, 0.07, -0.24], euler: [0, Math.PI / 2, Math.PI], rig: 'chibi' },
+  CHIBI_1H_Wand: {
+    position: [0.3, -0.25, -0.06],
+    euler: [0.05, 0.15, Math.PI * 0.72],
+    rig: 'chibi',
+  },
+  CHIBI_1H_Crossbow: {
+    position: [0.0, 0.07, -0.22],
+    euler: [0, Math.PI / 2, Math.PI],
+    rig: 'chibi',
+  },
+  CHIBI_2H_Crossbow: {
+    position: [0.0, 0.07, -0.24],
+    euler: [0, Math.PI / 2, Math.PI],
+    rig: 'chibi',
+  },
 };
 
 /** The grip families that have a tuned on-back carry. Every family the character

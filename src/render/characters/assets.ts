@@ -14,7 +14,7 @@ import type { EquipSlot } from '../../sim/types';
 import { loadGltf, loadTexture } from '../assets/loader';
 import { registerPreload } from '../assets/preload';
 import { addRimGlow, GFX } from '../gfx';
-import { type RigFamily, backGripFor } from './back_grips';
+import { backGripFor, type RigFamily } from './back_grips';
 import {
   CHIBI_VARIANT_TINT_STRENGTH,
   chibiMaterialTint,
