@@ -18,7 +18,7 @@ import { RECIPES } from './data';
 import { type MaterialRarity, rollMaterialRarity } from './gathering';
 import type { PlayerMeta } from './sim';
 import type { SimContext } from './sim_context';
-import type { CraftType, RecipeDef } from './types';
+import { type CraftType, mobXpValue, type RecipeDef } from './types';
 
 export const CRAFT_TYPES: readonly CraftType[] = [
   'weaponcrafting',
@@ -100,4 +100,9 @@ export function craftItem(ctx: SimContext, recipeId: string, pid?: number): void
     return;
   }
   resolveCraft(ctx, meta, recipe, meta.entityId);
+  // Same green-to-gray level-diff XP falloff as gathering.ts's node harvest
+  // and combat's mobXpValue: a recipe far below the player's level stops
+  // granting XP once trivial (PHAA-712). No new rng draw, existing XP path.
+  const xpGain = mobXpValue(recipe.level, p.level);
+  if (xpGain > 0) ctx.grantXp(xpGain, meta);
 }

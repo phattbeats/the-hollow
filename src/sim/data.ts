@@ -442,6 +442,13 @@ export function zoneAt(z: number): ZoneDef {
   return ZONES[ZONES.length - 1];
 }
 
+// Zone by id (gather nodes carry a zoneId, not a position band). Undefined for
+// an unknown id rather than a fallback zone: callers key XP/level lookups off
+// this and a silent wrong-zone fallback would be worse than a missing value.
+export function zoneById(id: string): ZoneDef | undefined {
+  return ZONES.find((z) => z.id === id);
+}
+
 export function zoneWelcomeText(
   zone: ZoneDef,
   questState: (questId: string) => QuestState,

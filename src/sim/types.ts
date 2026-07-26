@@ -1424,13 +1424,16 @@ export type CraftType =
 // One craftable recipe: consume `reagents` (existing gathered-material items),
 // grant `resultCount` of `resultItemId`. Every recipe is craftable by any
 // player with the materials (no per-recipe skill/known gate this slice); see
-// src/sim/crafting.ts for resolution.
+// src/sim/crafting.ts for resolution. `level` is the recipe's content level,
+// used only for the green-to-gray character-XP falloff on a craft (PHAA-712,
+// src/sim/crafting.ts's craftItem); it does not gate who can craft it.
 export interface RecipeDef {
   id: string;
   craft: CraftType;
   reagents: { itemId: string; count: number }[];
   resultItemId: string;
   resultCount: number;
+  level: number;
 }
 
 // World-placed readable props (WoW-style journals/books lying around, PHAA-552).

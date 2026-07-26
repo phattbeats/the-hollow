@@ -6,6 +6,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { ITEMS, RECIPES } from '../src/sim/data';
 import { Sim } from '../src/sim/sim';
+import { MAX_LEVEL, mobXpValue } from '../src/sim/types';
 
 const RECIPE = RECIPES.find((r) => r.id === 'recipe_tough_jerky')!;
 
@@ -50,6 +51,28 @@ describe('crafting (PHAA-574)', () => {
     sim.addItem('spider_leg', 1, pid);
     sim.craftItem(RECIPE.id, pid); // granted
     expect(sim.craftProficiencyFor(pid).cooking).toBe(before + 1);
+  });
+
+  it('a craft grants character XP with the same green-to-gray level-diff falloff as kill XP (PHAA-712)', () => {
+    sim.addItem('spider_leg', 1, pid);
+    const meta = sim.players.get(pid)!;
+    const expectedXp = mobXpValue(RECIPE.level, sim.entities.get(pid)!.level);
+    expect(expectedXp).toBeGreaterThan(0); // a fresh level-1 character is well within this recipe's band
+    const before = meta.lifetimeXp;
+    sim.craftItem(RECIPE.id, pid);
+    expect(meta.lifetimeXp).toBe(before + expectedXp);
+  });
+
+  it('grants zero XP once the recipe is trivial (gray) for the player level (PHAA-712)', () => {
+    sim.addItem('spider_leg', 1, pid);
+    const p = sim.entities.get(pid)!;
+    p.level = MAX_LEVEL;
+    const meta = sim.players.get(pid)!;
+    const before = meta.lifetimeXp;
+    sim.craftItem(RECIPE.id, pid);
+    // The output item and proficiency still grant; only the character-XP award falls off.
+    expect(sim.countItem('tough_jerky', pid)).toBe(1);
+    expect(meta.lifetimeXp).toBe(before);
   });
 
   it('denies craft for a dead player without consuming materials or granting the item', () => {
