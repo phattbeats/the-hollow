@@ -1013,6 +1013,38 @@ export const en_XA: EnTranslations = {
         "fiestaComplete": "[Ƒíéšţá ɱáţçĥ]",
         "fiestaWin": "[Ƒíéšţá ŵíñ]"
       }
+    },
+    "book": {
+      "title": "[Ɓóóķ óƒ Ášþĥóðéļíá]",
+      "close": "[Çļóšé]",
+      "deedSummary": "[{done} óƒ {total} ðééðš çóɱþļéţé]",
+      "titleSummary": "[{count,plural,=0{No titles earned}óñé{1 title earned}óţĥéŕ{# titles earned}}]",
+      "titlePickerHeading": "[Áçţíʋé Ţíţļé]",
+      "titlePickerEmpty": "[Ñó ţíţļé šéļéçţéð. Þíçķ óñé ƀéļóŵ.]",
+      "titlePickerEarnFirst": "[Éáŕñ ýóúŕ ƒíŕšţ ţíţļé ƀý çóɱþļéţíñĝ á ðééð.]",
+      "titleClear": "[Ñó Ţíţļé]",
+      "titleDisplay": "[{display}]",
+      "titleActiveTag": "[Áçţíʋé]",
+      "titlePickAria": "[Éɋúíþ ţĥé ţíţļé {display}]",
+      "titleRewardHint": "[Çóɱþļéţíñĝ ţĥíš ðééð ĝŕáñţš á ţíţļé.]",
+      "categoryEmpty": "[Ñóţĥíñĝ íñ ţĥíš çáţéĝóŕý ýéţ.]",
+      "category": {
+        "chronicle": "[Çĥŕóñíçļé]",
+        "collection": "[Çóļļéçţíóñ]",
+        "combat": "[Çóɱƀáţ]",
+        "delve": "[Ðéļʋé]",
+        "dungeon": "[Ðúñĝéóñ]",
+        "exploration": "[Éẋþļóŕáţíóñ]",
+        "feat": "[Ƒéáţš]",
+        "progression": "[Þŕóĝŕéššíóñ]",
+        "pvp": "[Þļáýéŕ ʋš. Þļáýéŕ]",
+        "social": "[Šóçíáļ]",
+        "hidden": "[Ĥíððéñ]"
+      }
+    },
+    "titleTracker": {
+      "unspent": "[+{count} ñéŵ]",
+      "ariaLabel": "[Áçţíʋé ţíţļé: {display}]"
     }
   },
   "mailUi": {

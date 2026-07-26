@@ -1103,4 +1103,44 @@ export const hudChromeStrings = {
       fiestaWin: 'Fiesta win',
     },
   },
+  // Book of Asphodelia window + HUD title tracker (PHAA-747). The book is
+  // opened from the side menu and renders the player's auto-tracking deed
+  // roster (grouped by the 11 DeedCategory values) plus a title picker.
+  // The HUD title tracker is the per-frame chip in the chrome that surfaces
+  // the player's active title + earned-but-not-equipped count. Every key is
+  // English-only here; the 20 locale overlays at src/ui/i18n.locales/<lang>.ts
+  // English-fill the omissions until the maintainer batch-fills them at
+  // release.
+  book: {
+    title: 'Book of Asphodelia',
+    close: 'Close',
+    deedSummary: '{done} of {total} deeds complete',
+    titleSummary: '{count,plural,=0{No titles earned}one{1 title earned}other{# titles earned}}',
+    titlePickerHeading: 'Active Title',
+    titlePickerEmpty: 'No title selected. Pick one below.',
+    titlePickerEarnFirst: 'Earn your first title by completing a deed.',
+    titleClear: 'No Title',
+    titleDisplay: '{display}',
+    titleActiveTag: 'Active',
+    titlePickAria: 'Equip the title {display}',
+    titleRewardHint: 'Completing this deed grants a title.',
+    categoryEmpty: 'Nothing in this category yet.',
+    category: {
+      chronicle: 'Chronicle',
+      collection: 'Collection',
+      combat: 'Combat',
+      delve: 'Delve',
+      dungeon: 'Dungeon',
+      exploration: 'Exploration',
+      feat: 'Feats',
+      progression: 'Progression',
+      pvp: 'Player vs. Player',
+      social: 'Social',
+      hidden: 'Hidden',
+    },
+  },
+  titleTracker: {
+    unspent: '+{count} new',
+    ariaLabel: 'Active title: {display}',
+  },
 };
