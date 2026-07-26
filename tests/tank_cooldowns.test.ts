@@ -80,7 +80,7 @@ function dodgeBuffAura(ownerId: number, value = 0.5): Aura {
 
 describe('Ironhold (Warrior defensive cooldown)', () => {
   it('is a warrior physical self-buff learned at level 20 with shield_wall kind', () => {
-    const def = ABILITIES['ironhold'];
+    const def = ABILITIES.ironhold;
     expect(def).toBeTruthy();
     expect(def.class).toBe('warrior');
     expect(def.learnLevel).toBe(20);
@@ -137,7 +137,7 @@ describe('Ironhold (Warrior defensive cooldown)', () => {
 
 describe('Sacred Bulwark (Paladin divine cheat-death)', () => {
   it('is a paladin holy self-buff learned at level 20 with guardian_ward kind', () => {
-    const def = ABILITIES['sacred_bulwark'];
+    const def = ABILITIES.sacred_bulwark;
     expect(def).toBeTruthy();
     expect(def.class).toBe('paladin');
     expect(def.learnLevel).toBe(20);
@@ -215,7 +215,7 @@ describe('Sacred Bulwark (Paladin divine cheat-death)', () => {
 
 describe('Primal Reflexes (Druid bear-form dodge cooldown)', () => {
   it('is a druid nature self-buff learned at level 20 with buff_dodge + usableInForm', () => {
-    const def = ABILITIES['primal_reflexes'];
+    const def = ABILITIES.primal_reflexes;
     expect(def).toBeTruthy();
     expect(def.class).toBe('druid');
     expect(def.learnLevel).toBe(20);
@@ -262,7 +262,7 @@ describe('Primal Reflexes (Druid bear-form dodge cooldown)', () => {
     // still emits the shapeshifted error (the gate is branch-scoped, not global).
     const sim = new Sim({ seed: 14, playerClass: 'druid', autoEquip: true });
     sim.setPlayerLevel(20);
-    expect(ABILITIES['starfire'].usableInForm).toBeFalsy();
+    expect(ABILITIES.starfire.usableInForm).toBeFalsy();
     const p = sim.player as AnyEntity;
     p.auras.push({
       id: 'bear_form',

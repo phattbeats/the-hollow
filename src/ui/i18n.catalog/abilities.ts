@@ -1070,7 +1070,11 @@ const classAbilityNamesEn = {
         'Primal Reflexes',
         'Your instincts sharpen, increasing your chance to dodge by 50% for 6 sec.',
       ],
-      ['starfire', 'Starfire', 'Calls down a bolt of stellar fire, causing {damage} Arcane damage.'],
+      [
+        'starfire',
+        'Starfire',
+        'Calls down a bolt of stellar fire, causing {damage} Arcane damage.',
+      ],
       [
         'travel_form',
         'Travel Form',
