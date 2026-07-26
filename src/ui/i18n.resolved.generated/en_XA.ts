@@ -2444,6 +2444,9 @@ export const en_XA: EnTranslations = {
       "nothingToHarvest": "[Ţĥáţ çóŕþšé ĥáš ñóţĥíñĝ ţó ĥáŕʋéšţ.]",
       "alreadyHarvested": "[Ţĥíš çóŕþšé ĥáš áļŕéáðý ƀééñ ĥáŕʋéšţéð.]"
     },
+    "dailyRewards": {
+      "claimed": "[Ýóú çļáíɱ ýóúŕ ðáíļý ŕéŵáŕð.]"
+    },
     "collections": {
       "notFound": "[Ţĥáţ ðóéš ñóţ éẋíšţ.]",
       "tooFar": "[Ţóó ƒáŕ áŵáý.]"
@@ -3829,6 +3832,22 @@ export const en_XA: EnTranslations = {
       "crate": "[Çŕáţé]",
       "bench": "[Ɓéñçĥ]",
       "stool": "[Šţóóļ]"
+    }
+  },
+  "dailyRewardsUi": {
+    "menuButton": "[Ðáíļý Ŕéŵáŕðš]",
+    "window": {
+      "title": "[Ðáíļý Ŕéŵáŕðš]",
+      "close": "[Çļóšé ðáíļý ŕéŵáŕðš]",
+      "claim": "[Çļáíɱ]",
+      "claimAria": "[Çļáíɱ ţóðáý'š ŕéŵáŕð]",
+      "claimed": "[Çļáíɱéð. Çóɱé ƀáçķ ţóɱóŕŕóŵ.]",
+      "locked": "[Ðáíļý ŕéŵáŕðš áŕé úñáʋáíļáƀļé óñ ţĥíš áççóúñţ ŕíĝĥţ ñóŵ.]",
+      "hint": "[Óñé ŕéŵáŕð þéŕ ðáý. Ɱíššíñĝ á ðáý ñéʋéŕ çóšţš ýóú áñýţĥíñĝ.]"
+    },
+    "cell": {
+      "today": "[Ţóðáý]",
+      "itemCount": "[{count}ẋ {item}]"
     }
   },
   "itemUi": {

@@ -2444,6 +2444,9 @@ export const ja_JP: EnTranslations = {
       "nothingToHarvest": "その死骸には採集できるものが何もない。",
       "alreadyHarvested": "この死骸はすでに採集済みだ。"
     },
+    "dailyRewards": {
+      "claimed": "デイリー報酬を受け取った。"
+    },
     "collections": {
       "notFound": "それは存在しない。",
       "tooFar": "遠すぎる。"
@@ -3829,6 +3832,22 @@ export const ja_JP: EnTranslations = {
       "crate": "木箱",
       "bench": "ベンチ",
       "stool": "スツール"
+    }
+  },
+  "dailyRewardsUi": {
+    "menuButton": "デイリー報酬",
+    "window": {
+      "title": "デイリー報酬",
+      "close": "デイリー報酬を閉じる",
+      "claim": "受け取る",
+      "claimAria": "今日の報酬を受け取る",
+      "claimed": "受け取り済み。また明日。",
+      "locked": "このアカウントでは現在デイリー報酬を利用できません。",
+      "hint": "1日1回受け取れます。逃した日があっても損はありません。"
+    },
+    "cell": {
+      "today": "今日",
+      "itemCount": "{count}x {item}"
     }
   },
   "itemUi": {

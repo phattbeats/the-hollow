@@ -2444,6 +2444,9 @@ export const zh_TW: EnTranslations = {
       "nothingToHarvest": "這具屍體沒有什麼可以採集的。",
       "alreadyHarvested": "這具屍體已經被採集過了。"
     },
+    "dailyRewards": {
+      "claimed": "你領取了每日獎勵。"
+    },
     "collections": {
       "notFound": "那個東西不存在。",
       "tooFar": "太遠了。"
@@ -3829,6 +3832,22 @@ export const zh_TW: EnTranslations = {
       "crate": "板條箱",
       "bench": "長椅",
       "stool": "凳子"
+    }
+  },
+  "dailyRewardsUi": {
+    "menuButton": "每日獎勵",
+    "window": {
+      "title": "每日獎勵",
+      "close": "關閉每日獎勵",
+      "claim": "領取",
+      "claimAria": "領取今日獎勵",
+      "claimed": "已領取，明天再來。",
+      "locked": "此帳號暫時無法領取每日獎勵。",
+      "hint": "每天可領取一次。錯過一天不會有任何損失。"
+    },
+    "cell": {
+      "today": "今天",
+      "itemCount": "{count}x {item}"
     }
   },
   "itemUi": {
