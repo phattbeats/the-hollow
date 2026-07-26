@@ -4553,6 +4553,18 @@ export const en: EnTranslations = {
         "name": "Barkskin",
         "description": "Your skin hardens like bark, increasing armor by 150 for 15 sec."
       },
+      "ironhold": {
+        "name": "Ironhold",
+        "description": "Brace behind your guard, reducing all damage taken by 40% for 8 sec."
+      },
+      "sacred_bulwark": {
+        "name": "Sacred Bulwark",
+        "description": "For {duration} sec, the next enemy hit that would kill you is denied, restoring you to 35% health instead."
+      },
+      "primal_reflexes": {
+        "name": "Primal Reflexes",
+        "description": "Your instincts sharpen, increasing your chance to dodge by 50% for 6 sec."
+      },
       "starfire": {
         "name": "Starfire",
         "description": "Calls down a bolt of stellar fire, causing {damage} Arcane damage."

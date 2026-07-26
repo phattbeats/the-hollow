@@ -5662,4 +5662,14 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.bramble.name': '브램블',
   'entities.npcs.bramble.title': '명예 보급관',
   'entities.npcs.bramble.greeting': '모래 경기장은 모든 승리를 기억한다. 명예를 현명하게 써라.',
+  // Tank defensive cooldowns (warrior / paladin / druid), one distinct mechanic each.
+  'entities.abilities.ironhold.name': '철벽',
+  'entities.abilities.ironhold.description':
+    '굳건한 방어 태세로 8초 동안 받는 모든 피해를 40% 감소시킵니다.',
+  'entities.abilities.sacred_bulwark.name': '신성한 방벽',
+  'entities.abilities.sacred_bulwark.description':
+    '{duration}초 동안 다음 적의 치명적인 공격을 무효화하고, 대신 생명력을 최대치의 35%까지 회복합니다.',
+  'entities.abilities.primal_reflexes.name': '원시의 반사',
+  'entities.abilities.primal_reflexes.description':
+    '본능이 예리해져 6초 동안 회피율이 50% 증가합니다.',
 };

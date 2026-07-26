@@ -100,6 +100,14 @@ export function dealDamage(
     amount = Math.round(amount * 0.9);
   }
 
+  // Ironhold (Shield Wall): a big defensive cooldown, fraction less damage from any
+  // source, any school, DoT ticks included. Non-stacking: the strongest ward wins.
+  if (amount > 0) {
+    let ward = 0;
+    for (const a of target.auras) if (a.kind === 'shield_wall') ward = Math.max(ward, a.value);
+    if (ward > 0) amount = Math.round(amount * (1 - ward));
+  }
+
   // Expose: a cracked-guard debuff amplifies the physical damage the victim
   // takes (from any attacker) until it expires. Armor is already applied at the
   // swing site, so this rides on top of the post-mitigation amount.
@@ -162,6 +170,36 @@ export function dealDamage(
 
   const sourcePlayer = ctx.pvpController(source);
 
+  // Sacred Bulwark (Guardian Ward): an enemy lethal hit spends the ward, clamps
+  // overkill to the health actually lost, and restores the wearer from the aura's
+  // data value. The damage still falls through the shared tail below so combat,
+  // counters, CC/stealth breaks, consumption, pushback, rage, and deeds all run.
+  // Sourceless and self damage do not spend this enemy-hit defensive. Runs BEFORE
+  // the WARFARE pvp multiplier so the restored HP is computed off raw incoming
+  // damage (not the post-honor multiplier), matching damage.ts' absorb shield step.
+  let guardianWardRestore = 0;
+  const guardianWardEnemyHit =
+    source?.kind === 'mob' && source.ownerId === null
+      ? source.hostile
+      : !!source && ctx.isHostileTo(source, target);
+  if (
+    amount > 0 &&
+    target.kind === 'player' &&
+    source &&
+    source.id !== target.id &&
+    guardianWardEnemyHit &&
+    target.hp - amount <= 0
+  ) {
+    const wardIdx = target.auras.findIndex((a) => a.kind === 'guardian_ward');
+    if (wardIdx >= 0) {
+      const ward = target.auras[wardIdx];
+      target.auras.splice(wardIdx, 1);
+      ctx.emit({ type: 'aura', targetId: target.id, name: ward.name, gained: false });
+      amount = Math.max(0, target.hp);
+      guardianWardRestore = Math.max(1, Math.round(target.maxHp * ward.value));
+    }
+  }
+
   // WARFARE is a hostile player-vs-player modifier only. Pets, self-damage,
   // friendly effects, player-vs-mob, and mob-vs-player damage stay byte-identical.
   // dealDamage receives post-mitigation damage, so this deterministic step sits
@@ -175,10 +213,10 @@ export function dealDamage(
   ) {
     amount = Math.max(0, Math.round(amount * pvpDamageMultiplier(source, target)));
   }
-
   // duels end at 1 hp — nobody dies
   const duel = target.kind === 'player' ? ctx.duels.get(target.id) : undefined;
   if (
+    guardianWardRestore === 0 &&
     duel &&
     duel.state === 'active' &&
     sourcePlayer &&
@@ -221,6 +259,7 @@ export function dealDamage(
     }
   }
   if (
+    guardianWardRestore === 0 &&
     match?.fiesta &&
     match.state === 'active' &&
     sourcePlayer &&
@@ -247,6 +286,7 @@ export function dealDamage(
   // Ranked arena eliminations use normal death state so clients and combat
   // logic see a real 0 HP defeat. The return timer revives everyone after.
   if (
+    guardianWardRestore === 0 &&
     match &&
     !match.fiesta &&
     match.state === 'active' &&
@@ -277,7 +317,7 @@ export function dealDamage(
     }
   }
 
-  target.hp = Math.max(0, target.hp - amount);
+  target.hp = guardianWardRestore || Math.max(0, target.hp - amount);
   ctx.emit({
     type: 'damage',
     sourceId: source?.id ?? -1,
@@ -288,6 +328,9 @@ export function dealDamage(
     ability,
     kind,
   });
+  if (guardianWardRestore > 0) {
+    ctx.emit({ type: 'heal', targetId: target.id, amount: guardianWardRestore });
+  }
 
   if (amount > 0) {
     if (target.kind === 'mob' && DAMAGE_IDLE_DESPAWN_MOB_IDS.has(target.templateId)) {

@@ -4553,6 +4553,18 @@ export const it_IT: EnTranslations = {
         "name": "Pelle di Corteccia",
         "description": "La tua pelle si indurisce come corteccia, aumentando l'armatura di 150 per 15 s."
       },
+      "ironhold": {
+        "name": "Ironhold",
+        "description": "Brace behind your guard, reducing all damage taken by 40% for 8 sec."
+      },
+      "sacred_bulwark": {
+        "name": "Sacred Bulwark",
+        "description": "For {duration} sec, the next enemy hit that would kill you is denied, restoring you to 35% health instead."
+      },
+      "primal_reflexes": {
+        "name": "Primal Reflexes",
+        "description": "Your instincts sharpen, increasing your chance to dodge by 50% for 6 sec."
+      },
       "starfire": {
         "name": "Fuoco Stellare",
         "description": "Richiama un dardo di fuoco stellare, infliggendo {damage} danni Arcani."

@@ -115,6 +115,15 @@ export function auraEffectDescriptor(a: AuraEffectInput): AuraEffectDescriptor |
         key: `${KEY}.${a.value < 0 ? 'dodgeReduce' : 'dodge'}`,
         nums: { pct: pctFromFrac(a.value) },
       };
+    case 'shield_wall':
+      // Warrior Ironhold: a flat, all-school damage-taken reduction (a.value =
+      // fraction less, e.g. 0.4 = 40% less). Surfaced as "damage reduction" so the
+      // tooltip lands on the mitigation line, not the dodge line.
+      return { key: `${KEY}.damageReduction`, nums: { pct: pctFromFrac(a.value) } };
+    case 'guardian_ward':
+      // Paladin Sacred Bulwark: a predictive divine cheat-death. The aura value
+      // is the restore fraction (e.g. 0.35 = 35% on the next lethal enemy hit).
+      return { key: `${KEY}.guardianWard`, nums: { pct: pctFromFrac(a.value) } };
 
     // PHAA-577 percent raid buffs: value is an INTEGER PERCENT POINT (5 = +5%),
     // not a 0..1 fraction (see the AuraKind comment in sim/types.ts), so it splices

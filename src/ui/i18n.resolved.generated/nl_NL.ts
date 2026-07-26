@@ -4553,6 +4553,18 @@ export const nl_NL: EnTranslations = {
         "name": "Schorshuid",
         "description": "Je huid verhardt als schors, waardoor je pantser met 150 toeneemt gedurende 15 sec."
       },
+      "ironhold": {
+        "name": "Ironhold",
+        "description": "Brace behind your guard, reducing all damage taken by 40% for 8 sec."
+      },
+      "sacred_bulwark": {
+        "name": "Sacred Bulwark",
+        "description": "For {duration} sec, the next enemy hit that would kill you is denied, restoring you to 35% health instead."
+      },
+      "primal_reflexes": {
+        "name": "Primal Reflexes",
+        "description": "Your instincts sharpen, increasing your chance to dodge by 50% for 6 sec."
+      },
       "starfire": {
         "name": "Sterrenvuur",
         "description": "Roept een bout van sterrenvuur naar beneden, die {damage} Arcane schade veroorzaakt."

@@ -2146,6 +2146,8 @@ const ABILITY_RECIPES: Record<string, IconRecipe> = {
   hamstring: r('blood', 'blood', ['boot', { p: 'claw_slash', ...TR }]),
   bloodrage: r('blood', 'blood', ['heart'], ['drips', 'glow']),
   overpower: r('fury', 'gold', ['sword', { p: 'sunburst', ...TL }]),
+  ironhold: r('steel', 'earthBrown', ['shield', { p: 'sunburst', ...BR }], ['glow']),
+  primal_reflexes: r('storm', 'sky', ['claw_slash', { p: 'sunburst', ...TL }], ['glow']),
   // mage
   fireball: r('fire', 'ember', ['bolt', { p: 'flame', ...BR }], ['glow']),
   pyroblast: r(
@@ -2292,6 +2294,7 @@ const ABILITY_RECIPES: Record<string, IconRecipe> = {
   flash_of_light: r('holy', 'holyGold', ['hand'], ['sparkle', 'glow']),
   exorcism: r('holy', 'holyGold', ['sunburst'], ['glow']),
   consecration: r('holy', 'holyGold', ['sigil_rune'], ['glow']),
+  sacred_bulwark: r('holy', 'sky', ['shield', { p: 'sunburst', ...BR }], ['glow']),
   righteous_fury: r('holy', 'gold', ['shield'], ['glow']),
   retribution_aura: r('holy', 'gold', ['sunburst'], ['arcs']),
   // hunter

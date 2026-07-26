@@ -5382,4 +5382,14 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.bramble.name': '布蘭博',
   'entities.npcs.bramble.title': '榮譽軍需官',
   'entities.npcs.bramble.greeting': '沙場記得每一場勝利。好好花你的榮譽吧。',
+  // Tank defensive cooldowns (warrior / paladin / druid), one distinct mechanic each.
+  'entities.abilities.ironhold.name': '鐵壁',
+  'entities.abilities.ironhold.description':
+    '以堅固的防禦自守，使受到的所有傷害降低 40%，持續 8 秒。',
+  'entities.abilities.sacred_bulwark.name': '神聖壁壘',
+  'entities.abilities.sacred_bulwark.description':
+    '在 {duration} 秒內，下一次會殺死你的敵人攻擊將被抵消，轉而將你恢復至 35% 生命值。',
+  'entities.abilities.primal_reflexes.name': '野性反射',
+  'entities.abilities.primal_reflexes.description':
+    '你的本能變得敏銳，使閃避機率提高 50%，持續 6 秒。',
 };

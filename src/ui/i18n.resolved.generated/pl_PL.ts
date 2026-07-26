@@ -4553,6 +4553,18 @@ export const pl_PL: EnTranslations = {
         "name": "Kora",
         "description": "Twoja skóra twardnieje niczym kora, zwiększając pancerz o 150 na 15 sek."
       },
+      "ironhold": {
+        "name": "Ironhold",
+        "description": "Brace behind your guard, reducing all damage taken by 40% for 8 sec."
+      },
+      "sacred_bulwark": {
+        "name": "Sacred Bulwark",
+        "description": "For {duration} sec, the next enemy hit that would kill you is denied, restoring you to 35% health instead."
+      },
+      "primal_reflexes": {
+        "name": "Primal Reflexes",
+        "description": "Your instincts sharpen, increasing your chance to dodge by 50% for 6 sec."
+      },
       "starfire": {
         "name": "Gwiezdny ogień",
         "description": "Sprowadza pocisk gwiezdnego ognia, zadając {damage} obrażeń od Arkanów."

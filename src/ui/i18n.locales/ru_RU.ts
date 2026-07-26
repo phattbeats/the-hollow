@@ -5784,4 +5784,14 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.bramble.name': 'Брэмбл',
   'entities.npcs.bramble.title': 'Квартирмейстер чести',
   'entities.npcs.bramble.greeting': 'Пески помнят каждую победу. Трать свою честь с умом.',
+  // Tank defensive cooldowns (warrior / paladin / druid), one distinct mechanic each.
+  'entities.abilities.ironhold.name': 'Железная стена',
+  'entities.abilities.ironhold.description':
+    'Укрывшись за щитом, вы снижаете весь получаемый урон на 40% на 8 сек.',
+  'entities.abilities.sacred_bulwark.name': 'Священный оплот',
+  'entities.abilities.sacred_bulwark.description':
+    'В течение {duration} сек. следующий смертельный удар противника не убьет вас, а восстановит здоровье до 35% от максимума.',
+  'entities.abilities.primal_reflexes.name': 'Первобытные рефлексы',
+  'entities.abilities.primal_reflexes.description':
+    'Ваши инстинкты обостряются, повышая шанс уклонения на 50% на 6 сек.',
 };

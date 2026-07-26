@@ -4553,6 +4553,18 @@ export const pt_BR: EnTranslations = {
         "name": "Casca Grossa",
         "description": "Sua pele endurece como casca, aumentando a armadura em 150 por 15 s."
       },
+      "ironhold": {
+        "name": "Ironhold",
+        "description": "Brace behind your guard, reducing all damage taken by 40% for 8 sec."
+      },
+      "sacred_bulwark": {
+        "name": "Sacred Bulwark",
+        "description": "For {duration} sec, the next enemy hit that would kill you is denied, restoring you to 35% health instead."
+      },
+      "primal_reflexes": {
+        "name": "Primal Reflexes",
+        "description": "Your instincts sharpen, increasing your chance to dodge by 50% for 6 sec."
+      },
       "starfire": {
         "name": "Fogo Estelar",
         "description": "Invoca um raio de fogo estelar, causando {damage} de dano Arcano."

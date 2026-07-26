@@ -5654,4 +5654,14 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.bramble.title': '名誉調達官',
   'entities.npcs.bramble.greeting':
     '闘技場の砂は、すべての勝利を覚えている。名誉は賢く使うといい。',
+  // Tank defensive cooldowns (warrior / paladin / druid), one distinct mechanic each.
+  'entities.abilities.ironhold.name': '鉄壁',
+  'entities.abilities.ironhold.description':
+    '堅固な守りで身を固め、8秒間、受けるすべてのダメージを40%軽減します。',
+  'entities.abilities.sacred_bulwark.name': '聖なる防壁',
+  'entities.abilities.sacred_bulwark.description':
+    '{duration}秒間、次に敵から受ける致命的な一撃を無効化し、代わりに体力を最大値の35%まで回復します。',
+  'entities.abilities.primal_reflexes.name': '原始の反射',
+  'entities.abilities.primal_reflexes.description':
+    '本能が研ぎ澄まされ、6秒間、回避率が50%上昇します。',
 };

@@ -176,6 +176,13 @@ export type AuraKind =
   | 'hot'
   | 'absorb'
   | 'imbue'
+  // Warrior Ironhold: a big, short, all-school damage-taken reduction (value =
+  // fraction less, e.g. 0.4 = 40% less), applied in damage.ts.
+  | 'shield_wall'
+  // Paladin Sacred Bulwark: a divine cheat-death ward. While it holds, a lethal
+  // enemy hit is denied in damage.ts and the wearer is restored by value (a
+  // fraction of max health, e.g. 0.35 = 35%) before the ward is consumed.
+  | 'guardian_ward'
   | 'buff_sta'
   | 'buff_allstats'
   | 'thorns'
@@ -1281,6 +1288,8 @@ export interface AbilityDef {
   range: number; // yards; 0 = melee range
   minRange?: number;
   school: 'physical' | 'fire' | 'frost' | 'arcane' | 'shadow' | 'holy' | 'nature';
+  // Optional explicit art id for clients that provide a bespoke icon surface.
+  icon?: string;
   // Overrides the flying-projectile VISUAL for this spell (the mechanic is
   // unchanged): 'lightning' draws a jagged electric bolt from caster to target
   // instead of the default glowing bolt. Renderer-only; the sim just forwards it.
@@ -1303,6 +1312,11 @@ export interface AbilityDef {
   // multiplier on the damage-threat (both scale with stance/form modifiers).
   threat?: { flat?: number; mult?: number };
   requiresForm?: 'bear' | 'cat'; // druid form kit (maul/growl/swipe/claw/bite)
+  // Marks an ability that BOTH fits the form kit AND the caster kit (a tank
+  // cooldown a bear form druid pops mid-fight). The casting gate accepts it
+  // while shapeshifted; without this flag the gate rejects every caster-kit
+  // ability while in form.
+  usableInForm?: boolean;
   // Mutually exclusive self-buff group: casting one ability in the group cancels
   // any active buff from a sibling in the same group (e.g. hunter aspects, where
   // only one aspect may be active at a time). Distinct from form toggles, which
