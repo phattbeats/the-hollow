@@ -15,7 +15,8 @@ import { ABILITIES, CLASSES } from '../src/sim/content/classes';
 import { MOBS } from '../src/sim/data';
 import { createMob } from '../src/sim/entity';
 import { Sim } from '../src/sim/sim';
-import type { Aura, Entity } from '../src/sim/types';
+import type { Aura, Entity, PlayerClass } from '../src/sim/types';
+import { groundHeight } from '../src/sim/world';
 
 type AnyEntity = Entity & Record<string, any>;
 type AnySim = Sim & Record<string, any>;
@@ -283,4 +284,128 @@ describe('tank cooldown content: kit membership and AbilityDef shape', () => {
     expect(a.description).toContain('50%');
     expect(a.description).toContain('6 sec');
   });
+});
+
+describe('Sacred Bulwark vs an active duel: the ward must not fire (upstream #1912 defeat-branch fix)', () => {
+  // Duels already clamp the loser to 1 hp instead of killing them, so a
+  // guardian_ward hit inside an active duel has no death to deny. Before the
+  // fix the ward fired anyway: it spent the aura for nothing, the duel never
+  // called ctx.endDuel, and the loser (below the 0.35 restore fraction) got a
+  // free heal to 350 instead of the correct 1-hp duel clamp.
+
+  function teleport(sim: Sim, pid: number, x: number, z: number) {
+    const e = sim.entities.get(pid)!;
+    e.pos.x = x;
+    e.pos.z = z;
+    e.pos.y = groundHeight(x, z, sim.cfg.seed);
+    e.prevPos = { ...e.pos };
+    (sim as any).rebucket(e);
+  }
+
+  // Start an accepted duel between two adjacent players and run the 3s
+  // countdown out so the bout is live, same pattern as tests/duel.test.ts.
+  function startedDuel(
+    aClass: PlayerClass,
+    bClass: PlayerClass,
+  ): { sim: AnySim; a: number; b: number } {
+    const sim = new Sim({ seed: 4242, playerClass: aClass, noPlayer: true }) as AnySim;
+    const a = sim.addPlayer(aClass, 'Aleph', { autoEquip: true });
+    const b = sim.addPlayer(bClass, 'Bet', { autoEquip: true });
+    teleport(sim, a, 0, -40);
+    teleport(sim, b, 4, -40);
+    sim.duelRequest(b, a);
+    sim.duelAccept(b);
+    for (let i = 0; i < 20 * 4; i++) {
+      sim.tick();
+      const d = sim.duels.get(a);
+      if (d && d.state === 'active') break;
+    }
+    return { sim, a, b };
+  }
+
+  it('does not fire against the duel opponent: loser clamps to 1 hp, duel ends, ward stays unspent', () => {
+    const { sim, a, b } = startedDuel('warrior', 'paladin'); // b (paladin) is the loser
+    const ea = sim.entities.get(a) as AnyEntity;
+    const eb = sim.entities.get(b) as AnyEntity;
+    eb.maxHp = 1000;
+    eb.hp = 50; // well under the 0.35 restore fraction, so a wrongly-fired ward would heal past this
+    eb.auras.push(guardianWardAura(0.35, eb.id));
+    expect(sim.duels.get(a)?.state).toBe('active');
+    sim.drainEvents();
+
+    (sim as any).dealDamage(ea, eb, eb.hp + 1000, false, 'physical', 'Finisher', 'hit');
+
+    // duel-clamp behavior, not ward behavior
+    expect(eb.hp).toBe(1);
+    expect(eb.dead).toBeFalsy();
+    expect(sim.duels.has(a)).toBe(false);
+    expect(sim.duels.has(b)).toBe(false);
+
+    // the ward is still on the loser, unspent
+    expect(eb.auras.some((au: Aura) => au.kind === 'guardian_ward')).toBe(true);
+    const events = sim.drainEvents();
+    const wardConsumeEvent = events.find(
+      (e) => e.type === 'aura' && (e as any).name === 'Sacred Bulwark' && !(e as any).gained,
+    );
+    expect(wardConsumeEvent).toBeUndefined();
+  });
+
+  it('still denies a lethal hit for the same player against a hostile mob (the main path is intact)', () => {
+    const sim = makeSim('paladin');
+    sim.setPlayerLevel(20);
+    const p = sim.player as AnyEntity;
+    p.maxHp = 1000;
+    p.hp = 50;
+    const mob = spawnHostileMob(sim, 'forest_wolf', 5);
+    p.auras.push(guardianWardAura(0.35, p.id));
+    sim.drainEvents();
+
+    dealDamage(sim.ctx, mob, p, 500, false, 'physical', null, 'hit');
+
+    expect(p.dead).toBeFalsy();
+    expect(p.hp).toBe(350); // round(1000 * 0.35), the normal ward restore
+    expect(p.auras.some((au) => au.kind === 'guardian_ward')).toBe(false); // consumed
+  });
+
+  it('still denies a lethal hit in a ranked arena match (a real death-state defeat, not a duel clamp)', () => {
+    const sim = new Sim({ seed: 4242, playerClass: 'warrior', noPlayer: true }) as AnySim;
+    const a = sim.addPlayer('warrior', 'Aleph');
+    const b = sim.addPlayer('paladin', 'Bet'); // b is the warded loser
+    teleport(sim, a, 0, -40);
+    teleport(sim, b, 6, -40);
+    sim.arenaQueueJoin(a);
+    sim.arenaQueueJoin(b);
+    sim.tick(); // updateArena() matchmakes the pair
+
+    for (let i = 0; i < 20 * 6; i++) {
+      sim.tick();
+      const m = sim.arenaMatchFor(a);
+      if (m && m.state === 'active') break;
+    }
+    const match = sim.arenaMatchFor(a);
+    expect(match?.state).toBe('active');
+
+    const ea = sim.entities.get(a) as AnyEntity;
+    const eb = sim.entities.get(b) as AnyEntity;
+    eb.maxHp = 1000;
+    eb.hp = 50;
+    eb.auras.push(guardianWardAura(0.35, eb.id));
+    sim.drainEvents();
+
+    (sim as any).dealDamage(ea, eb, eb.hp + 1000, false, 'physical', 'Finisher', 'hit');
+
+    expect(eb.dead).toBeFalsy();
+    expect(eb.hp).toBe(350); // the normal ward restore, not the 0-hp arena elimination
+    expect(eb.auras.some((au: Aura) => au.kind === 'guardian_ward')).toBe(false); // consumed
+    expect(match?.defeated.has(b)).toBe(false);
+    expect(sim.arenaMatchFor(a)?.state).toBe('active'); // match is still live, nobody was eliminated
+  });
+
+  // Fiesta arena takedowns are skipped: setting up a live fiesta match needs
+  // the bot/queue machinery in social/fiesta.ts and social/fiesta_bots.ts
+  // (see tests/fiesta.test.ts / fiesta_module.test.ts), which is disproportionate
+  // scaffolding to add here on top of the duel and ranked-arena coverage above.
+  // The duel guard change in damage.ts does not touch the fiesta branch at all
+  // (fiesta's own guardianWardRestore === 0 check already short-circuits it when
+  // the ward fires), so the risk this leaves uncovered is low.
 });

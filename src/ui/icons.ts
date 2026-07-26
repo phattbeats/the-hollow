@@ -2265,7 +2265,7 @@ const ABILITY_RECIPES: Record<string, IconRecipe> = {
   insect_swarm: r('nature', 'leafGreen', ['tendrils'], ['sparkle']),
   tigers_fury: r('fire', 'ember', ['fang'], ['glow']),
   rip: r('blood', 'blood', ['claw_slash'], ['drips']),
-  primal_reflexes: r('nature', 'leafGreen', ['paw', { p: 'sparkle', ...TR }], ['motion']),
+  primal_reflexes: r('nature', 'leafGreen', ['paw', { p: 'lightning', ...TR }], ['motion']),
   // --- formerly procedural-fallback abilities: unique hand-authored icons ---
   // warrior
   execute: r('blood', 'blood', ['axe'], ['glow']),

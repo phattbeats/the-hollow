@@ -194,17 +194,28 @@ export function dealDamage(
   // below so combat, counters, CC/stealth breaks, consumption, pushback, rage,
   // and deeds all run. Sourceless and self damage do not spend this enemy-hit
   // defensive.
+  //
+  // Duels are excluded on purpose: a duel already clamps the loser to 1 hp, so
+  // there is no death to deny. Letting the ward fire there would spend it for
+  // nothing, leave the duel running because endDuel never gets called, and
+  // (below the restore fraction) hand the loser a free heal.
   let guardianWardRestore = 0;
   const guardianWardEnemyHit =
     source?.kind === 'mob' && source.ownerId === null
       ? source.hostile
       : !!source && ctx.isHostileTo(source, target);
+  const guardianWardDuel =
+    !!duel &&
+    duel.state === 'active' &&
+    !!sourcePlayer &&
+    (sourcePlayer.id === duel.a || sourcePlayer.id === duel.b);
   if (
     amount > 0 &&
     target.kind === 'player' &&
     source &&
     source.id !== target.id &&
     guardianWardEnemyHit &&
+    !guardianWardDuel &&
     target.hp - amount <= 0
   ) {
     const wardIdx = target.auras.findIndex((a) => a.kind === 'guardian_ward');
