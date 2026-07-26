@@ -143,11 +143,7 @@ export function awardRankedArenaWinHonor(
   return grantHonor(ctx, meta, amount, 'arena_win');
 }
 
-export function awardFiestaKillHonor(
-  ctx: SimContext,
-  meta: PlayerMeta,
-  victimPid: number,
-): number {
+export function awardFiestaKillHonor(ctx: SimContext, meta: PlayerMeta, victimPid: number): number {
   const daily = dailyWindow(ctx, meta);
   const key = String(victimPid);
   const repeats = daily.fiestaKillsByVictim[key] ?? 0;
