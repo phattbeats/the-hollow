@@ -1795,6 +1795,7 @@ const ALL_DELTA_KEYS = [
   'collected',
   'cosmetics',
   'cprof',
+  'dailyRewards',
   'dclears',
   'dcomp',
   'dcompanion',

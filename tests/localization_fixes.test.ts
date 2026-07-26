@@ -877,6 +877,9 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
     // PHAA-574: crafting command denials (dead gate, unknown recipe, missing
     // materials).
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/crafting.ts'), 'utf8'),
+    // PHAA-660: the daily-rewards claim grant's fixed "You claim your daily
+    // reward." confirmation (no interpolated item name; see the module header).
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/daily_rewards.ts'), 'utf8'),
     socialSrc,
   ].join('\n');
   // Hardened S3: also scan the authoritative server's player-facing emits. The

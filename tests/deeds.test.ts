@@ -7,7 +7,17 @@
 // real credit/completion/title-grant math.
 
 import { describe, expect, it } from 'vitest';
-import { onInventoryChangedForDeeds, onMobKilledForDeeds, setActiveTitle } from '../src/sim/deeds';
+import {
+  onDelveClearedForDeeds,
+  onInventoryChangedForDeeds,
+  onLevelReachedForDeeds,
+  onMobKilledForDeeds,
+  onPvpWinForDeeds,
+  onQuestCompletedForDeeds,
+  onSocialActionForDeeds,
+  onZoneVisitedForDeeds,
+  setActiveTitle,
+} from '../src/sim/deeds';
 import type { PlayerMeta } from '../src/sim/sim';
 import type { SimContext } from '../src/sim/sim_context';
 import type { DeedDef, DeedProgress, Entity, SimEvent } from '../src/sim/types';
@@ -114,6 +124,389 @@ describe('deeds: onMobKilledForDeeds (kill credit)', () => {
     ctx.events.length = 0;
     onMobKilledForDeeds(ctx, wolf, meta, registry);
     expect(ctx.events.length).toBe(0);
+  });
+});
+
+const QUEST_DEED: DeedDef = {
+  id: 'd_hearth',
+  name: 'Hearthbound',
+  text: "Complete 'A Hearth of Your Own'.",
+  category: 'chronicle',
+  objectives: [{ type: 'quest', questId: 'q_your_own_hearth', count: 1, label: 'Hearth quest' }],
+  titleReward: 't_hearthbound',
+};
+
+const WILDCARD_QUEST_DEED: DeedDef = {
+  id: 'd_chronicler',
+  name: 'The Chronicler',
+  text: 'Complete 3 quests.',
+  category: 'chronicle',
+  objectives: [{ type: 'quest', count: 3, label: 'Quests completed' }],
+};
+
+describe('deeds: onQuestCompletedForDeeds (quest credit)', () => {
+  it('auto-tracks without an accept step and credits only the matching questId', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_hearth: QUEST_DEED };
+
+    onQuestCompletedForDeeds(ctx, 'q_wolves', meta, registry);
+    expect(meta.deedLog.has('d_hearth')).toBe(false); // non-matching quest creates nothing
+
+    onQuestCompletedForDeeds(ctx, 'q_your_own_hearth', meta, registry);
+    expect(meta.deedsDone.has('d_hearth')).toBe(true);
+    expect(meta.earnedTitles.has('t_hearthbound')).toBe(true);
+    expect(event(ctx.events, 'deedDone').some((e) => e.deedId === 'd_hearth')).toBe(true);
+
+    // a completed deed never re-triggers
+    ctx.events.length = 0;
+    onQuestCompletedForDeeds(ctx, 'q_your_own_hearth', meta, registry);
+    expect(ctx.events.length).toBe(0);
+  });
+
+  it('credits an objective with no questId on any quest completion (wildcard)', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_chronicler: WILDCARD_QUEST_DEED };
+
+    onQuestCompletedForDeeds(ctx, 'q_wolves', meta, registry);
+    onQuestCompletedForDeeds(ctx, 'q_boars', meta, registry);
+    expect(meta.deedsDone.has('d_chronicler')).toBe(false);
+    expect(meta.deedLog.get('d_chronicler')?.counts).toEqual([2]);
+
+    onQuestCompletedForDeeds(ctx, 'q_spiders', meta, registry);
+    expect(meta.deedsDone.has('d_chronicler')).toBe(true);
+  });
+});
+
+const DELVE_DEED: DeedDef = {
+  id: 'd_reliquary',
+  name: 'First Descent',
+  text: 'Clear the Collapsed Reliquary.',
+  category: 'delve',
+  objectives: [
+    {
+      type: 'delve',
+      delveId: 'collapsed_reliquary',
+      count: 1,
+      label: 'Collapsed Reliquary cleared',
+    },
+  ],
+  titleReward: 't_reliquary_cleared',
+};
+
+const HEROIC_DEATHLESS_DEED: DeedDef = {
+  id: 'd_flawless_vigil',
+  name: 'Flawless Vigil',
+  text: 'Clear the Collapsed Reliquary on Heroic without dying.',
+  category: 'delve',
+  objectives: [
+    {
+      type: 'delve',
+      delveId: 'collapsed_reliquary',
+      tierId: 'heroic',
+      deathless: true,
+      count: 1,
+      label: 'Deathless Heroic clear',
+    },
+  ],
+};
+
+const WILDCARD_DELVE_DEED: DeedDef = {
+  id: 'd_delver',
+  name: 'The Delver',
+  text: 'Clear 3 delves.',
+  category: 'delve',
+  objectives: [{ type: 'delve', count: 3, label: 'Delves cleared' }],
+};
+
+describe('deeds: onDelveClearedForDeeds (delve credit)', () => {
+  it('auto-tracks without an accept step and credits only the matching delveId', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_reliquary: DELVE_DEED };
+
+    onDelveClearedForDeeds(ctx, 'other_delve', 'normal', false, meta, registry);
+    expect(meta.deedLog.has('d_reliquary')).toBe(false); // non-matching delve creates nothing
+
+    onDelveClearedForDeeds(ctx, 'collapsed_reliquary', 'normal', false, meta, registry);
+    expect(meta.deedsDone.has('d_reliquary')).toBe(true);
+    expect(meta.earnedTitles.has('t_reliquary_cleared')).toBe(true);
+
+    // a completed deed never re-triggers
+    ctx.events.length = 0;
+    onDelveClearedForDeeds(ctx, 'collapsed_reliquary', 'normal', false, meta, registry);
+    expect(ctx.events.length).toBe(0);
+  });
+
+  it('requires the tierId and deathless flag to both match when the objective sets them', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_flawless_vigil: HEROIC_DEATHLESS_DEED };
+
+    onDelveClearedForDeeds(ctx, 'collapsed_reliquary', 'normal', true, meta, registry); // wrong tier
+    onDelveClearedForDeeds(ctx, 'collapsed_reliquary', 'heroic', false, meta, registry); // died
+    expect(meta.deedsDone.has('d_flawless_vigil')).toBe(false);
+
+    onDelveClearedForDeeds(ctx, 'collapsed_reliquary', 'heroic', true, meta, registry);
+    expect(meta.deedsDone.has('d_flawless_vigil')).toBe(true);
+  });
+
+  it('credits an objective with no delveId on any delve clear (wildcard)', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_delver: WILDCARD_DELVE_DEED };
+
+    onDelveClearedForDeeds(ctx, 'collapsed_reliquary', 'normal', false, meta, registry);
+    onDelveClearedForDeeds(ctx, 'collapsed_reliquary', 'heroic', true, meta, registry);
+    expect(meta.deedsDone.has('d_delver')).toBe(false);
+    expect(meta.deedLog.get('d_delver')?.counts).toEqual([2]);
+
+    onDelveClearedForDeeds(ctx, 'other_delve', 'normal', false, meta, registry);
+    expect(meta.deedsDone.has('d_delver')).toBe(true);
+  });
+});
+
+const LEVEL_DEED: DeedDef = {
+  id: 'd_taking_root',
+  name: 'Taking Root',
+  text: 'Reach level 10.',
+  category: 'progression',
+  objectives: [{ type: 'level', atLeast: 10, count: 1, label: 'Reach level 10' }],
+  titleReward: 't_rooted',
+};
+
+describe('deeds: onLevelReachedForDeeds (progression credit)', () => {
+  it('credits only once the level threshold is reached, then completes and grants the title', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_taking_root: LEVEL_DEED };
+
+    onLevelReachedForDeeds(ctx, 9, meta, registry); // below threshold
+    expect(meta.deedLog.has('d_taking_root')).toBe(false);
+
+    onLevelReachedForDeeds(ctx, 10, meta, registry);
+    expect(meta.deedsDone.has('d_taking_root')).toBe(true);
+    expect(meta.earnedTitles.has('t_rooted')).toBe(true);
+  });
+
+  it('credits a threshold crossed by a multi-level jump (final level at or past atLeast)', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_taking_root: LEVEL_DEED };
+
+    onLevelReachedForDeeds(ctx, 14, meta, registry); // jumped past 10 in one grant
+    expect(meta.deedsDone.has('d_taking_root')).toBe(true);
+  });
+
+  it('never re-triggers a completed progression deed on later level-ups', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_taking_root: LEVEL_DEED };
+
+    onLevelReachedForDeeds(ctx, 10, meta, registry);
+    ctx.events.length = 0;
+    onLevelReachedForDeeds(ctx, 11, meta, registry);
+    onLevelReachedForDeeds(ctx, 20, meta, registry);
+    expect(ctx.events.length).toBe(0);
+  });
+});
+
+const EXPLORE_DEED: DeedDef = {
+  id: 'd_into_the_mire',
+  name: 'Into the Mire',
+  text: 'Enter Mirefen Marsh.',
+  category: 'exploration',
+  objectives: [{ type: 'explore', zoneId: 'mirefen_marsh', count: 1, label: 'Mirefen Marsh' }],
+  titleReward: 't_wayfarer',
+};
+
+const GRAND_TOUR_DEED: DeedDef = {
+  id: 'd_grand_tour',
+  name: 'Seed on the Wind',
+  text: 'Stand in both lands.',
+  category: 'exploration',
+  objectives: [
+    { type: 'explore', zoneId: 'eastbrook_vale', count: 1, label: 'Eastbrook Vale' },
+    { type: 'explore', zoneId: 'mirefen_marsh', count: 1, label: 'Mirefen Marsh' },
+  ],
+};
+
+const WILDCARD_EXPLORE_DEED: DeedDef = {
+  id: 'd_first_steps',
+  name: 'First Steps',
+  text: 'Enter any zone.',
+  category: 'exploration',
+  objectives: [{ type: 'explore', count: 1, label: 'Zones entered' }],
+};
+
+describe('deeds: onZoneVisitedForDeeds (exploration credit)', () => {
+  it('ignores a non-matching zone and credits + completes on the matching one', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_into_the_mire: EXPLORE_DEED };
+
+    onZoneVisitedForDeeds(ctx, 'eastbrook_vale', meta, registry); // wrong zone
+    expect(meta.deedLog.has('d_into_the_mire')).toBe(false);
+
+    onZoneVisitedForDeeds(ctx, 'mirefen_marsh', meta, registry);
+    expect(meta.deedsDone.has('d_into_the_mire')).toBe(true);
+    expect(meta.earnedTitles.has('t_wayfarer')).toBe(true);
+  });
+
+  it('re-entering an already-credited zone is an idempotent no-op (no re-credit event)', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_into_the_mire: EXPLORE_DEED };
+
+    onZoneVisitedForDeeds(ctx, 'mirefen_marsh', meta, registry);
+    ctx.events.length = 0;
+    onZoneVisitedForDeeds(ctx, 'mirefen_marsh', meta, registry);
+    expect(ctx.events.length).toBe(0);
+  });
+
+  it('completes a multi-zone tour only once every distinct zone has been entered', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_grand_tour: GRAND_TOUR_DEED };
+
+    onZoneVisitedForDeeds(ctx, 'eastbrook_vale', meta, registry);
+    expect(meta.deedsDone.has('d_grand_tour')).toBe(false);
+    // Re-entering the first zone must not credit the second objective.
+    onZoneVisitedForDeeds(ctx, 'eastbrook_vale', meta, registry);
+    expect(meta.deedsDone.has('d_grand_tour')).toBe(false);
+
+    onZoneVisitedForDeeds(ctx, 'mirefen_marsh', meta, registry);
+    expect(meta.deedsDone.has('d_grand_tour')).toBe(true);
+  });
+
+  it('a wildcard explore objective credits on the first entry of any zone', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_first_steps: WILDCARD_EXPLORE_DEED };
+
+    onZoneVisitedForDeeds(ctx, 'the_hollow_reaches', meta, registry);
+    expect(meta.deedsDone.has('d_first_steps')).toBe(true);
+  });
+});
+
+const ARENA_WIN_DEED: DeedDef = {
+  id: 'd_ranked_wins',
+  name: 'Ranked Contender',
+  text: 'Win 3 ranked arena bouts.',
+  category: 'pvp',
+  objectives: [{ type: 'pvp', pvpKind: 'arena', count: 3, label: 'Ranked arena wins' }],
+  titleReward: 't_contender',
+};
+
+const WILDCARD_PVP_DEED: DeedDef = {
+  id: 'd_first_kill',
+  name: 'First Kill',
+  text: 'Win any pvp bout.',
+  category: 'pvp',
+  objectives: [{ type: 'pvp', count: 1, label: 'PvP bouts won' }],
+};
+
+describe('deeds: onPvpWinForDeeds (pvp credit)', () => {
+  it('credits only the matching pvpKind, then completes and grants the title', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_ranked_wins: ARENA_WIN_DEED };
+
+    onPvpWinForDeeds(ctx, 'duel', meta, registry); // non-matching kind
+    expect(meta.deedLog.has('d_ranked_wins')).toBe(false);
+
+    onPvpWinForDeeds(ctx, 'arena', meta, registry);
+    onPvpWinForDeeds(ctx, 'arena', meta, registry);
+    expect(meta.deedsDone.has('d_ranked_wins')).toBe(false);
+    onPvpWinForDeeds(ctx, 'arena', meta, registry);
+    expect(meta.deedsDone.has('d_ranked_wins')).toBe(true);
+    expect(meta.earnedTitles.has('t_contender')).toBe(true);
+
+    ctx.events.length = 0;
+    onPvpWinForDeeds(ctx, 'arena', meta, registry);
+    expect(ctx.events.length).toBe(0); // a completed deed never re-triggers
+  });
+
+  it('credits an objective with no pvpKind on any pvp win (wildcard)', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_first_kill: WILDCARD_PVP_DEED };
+
+    onPvpWinForDeeds(ctx, 'boarball', meta, registry);
+    expect(meta.deedsDone.has('d_first_kill')).toBe(true);
+  });
+});
+
+const FISH_DEED: DeedDef = {
+  id: 'd_angler',
+  name: 'The Angler',
+  text: 'Land 3 catches.',
+  category: 'social',
+  objectives: [{ type: 'social', socialKind: 'fish', count: 3, label: 'Fish landed' }],
+  titleReward: 't_angler',
+};
+
+const TALK_DEED: DeedDef = {
+  id: 'd_old_friend',
+  name: 'An Old Friend',
+  text: 'Speak with the Hollow Sage.',
+  category: 'social',
+  objectives: [
+    {
+      type: 'social',
+      socialKind: 'talk',
+      npcId: 'hollow_sage',
+      count: 1,
+      label: 'Spoke with the Hollow Sage',
+    },
+  ],
+};
+
+const WILDCARD_TALK_DEED: DeedDef = {
+  id: 'd_gladhander',
+  name: 'Gladhander',
+  text: 'Speak with anyone.',
+  category: 'social',
+  objectives: [{ type: 'social', socialKind: 'talk', count: 1, label: 'NPCs greeted' }],
+};
+
+describe('deeds: onSocialActionForDeeds (social credit)', () => {
+  it('credits only the matching socialKind, then completes and grants the title', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_angler: FISH_DEED };
+
+    onSocialActionForDeeds(ctx, 'roll', meta, undefined, registry); // non-matching kind
+    expect(meta.deedLog.has('d_angler')).toBe(false);
+
+    onSocialActionForDeeds(ctx, 'fish', meta, undefined, registry);
+    onSocialActionForDeeds(ctx, 'fish', meta, undefined, registry);
+    expect(meta.deedsDone.has('d_angler')).toBe(false);
+    onSocialActionForDeeds(ctx, 'fish', meta, undefined, registry);
+    expect(meta.deedsDone.has('d_angler')).toBe(true);
+    expect(meta.earnedTitles.has('t_angler')).toBe(true);
+  });
+
+  it('requires the npcId to match when a talk objective sets one', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_old_friend: TALK_DEED };
+
+    onSocialActionForDeeds(ctx, 'talk', meta, 'some_other_npc', registry);
+    expect(meta.deedsDone.has('d_old_friend')).toBe(false);
+
+    onSocialActionForDeeds(ctx, 'talk', meta, 'hollow_sage', registry);
+    expect(meta.deedsDone.has('d_old_friend')).toBe(true);
+  });
+
+  it('credits a talk objective with no npcId on any NPC (wildcard)', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_gladhander: WILDCARD_TALK_DEED };
+
+    onSocialActionForDeeds(ctx, 'talk', meta, 'anyone_at_all', registry);
+    expect(meta.deedsDone.has('d_gladhander')).toBe(true);
   });
 });
 

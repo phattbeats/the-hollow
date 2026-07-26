@@ -4779,6 +4779,8 @@ const RULES: Rule[] = [
     re: /^(.+) cannot queue from inside an instance\.$/,
     build: (m) => tArenaExtra('memberInstance', { name: m[1] }),
   },
+  // Daily rewards (PHAA-660): the claim grant's fixed, no-argument confirmation.
+  { re: /^You claim your daily reward\.$/, build: () => t('sim.dailyRewards.claimed') },
   // Delve / lockpicking sim text. Re-localized through t() against the sim.delve.* /
   // sim.lockpick.* keys (src/ui/i18n.catalog/index.ts). The module-enter banner is two
   // rules anchored on the fixed objective lines ("X: Clear the room." / "X: Defeat the

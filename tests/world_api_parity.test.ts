@@ -42,6 +42,7 @@ import type { IWorldCollections } from '../src/world_api/collections';
 import type { IWorldCombat } from '../src/world_api/combat';
 import type { IWorldCosmetics } from '../src/world_api/cosmetics';
 import type { IWorldCrafting } from '../src/world_api/crafting';
+import type { IWorldDailyRewards } from '../src/world_api/daily_rewards';
 import type { IWorldDeeds } from '../src/world_api/deeds';
 import type { IWorldDelves } from '../src/world_api/delves';
 import type { IWorldDuelArena } from '../src/world_api/duel_arena';
@@ -90,6 +91,8 @@ export const IWORLD_MEMBERS = [
   { name: 'vendorBuyback', kind: 'data' },
   { name: 'equipment', kind: 'data' },
   { name: 'accountCosmetics', kind: 'data' },
+  { name: 'dailyRewards', kind: 'data' },
+  { name: 'claimDailyReward', kind: 'method' },
   { name: 'copper', kind: 'data' },
   { name: 'xp', kind: 'data' },
   { name: 'lifetimeXp', kind: 'data' },
@@ -432,6 +435,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'cfg',
       'changeSkin',
       'chat',
+      'claimDailyReward',
       'claimEventSkin',
       'clearMarker',
       'collectDelveChestLoot',
@@ -444,6 +448,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'copper',
       'craftItem',
       'craftProficiency',
+      'dailyRewards',
       'deedLog',
       'deedsDone',
       'deleteLoadout',
@@ -613,6 +618,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'companionUpgrades',
       'copper',
       'craftProficiency',
+      'dailyRewards',
       'deedLog',
       'deedsDone',
       'delveDaily',
@@ -681,6 +687,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'castAbilityBySlot',
       'changeSkin',
       'chat',
+      'claimDailyReward',
       'claimEventSkin',
       'clearMarker',
       'collectDelveChestLoot',
@@ -930,6 +937,14 @@ const FACET_COSMETICS = [
 ] as const satisfies readonly (keyof IWorldCosmetics)[];
 type _ExhaustCosmetics = AssertNever<
   Exclude<keyof IWorldCosmetics, (typeof FACET_COSMETICS)[number]>
+>;
+
+const FACET_DAILY_REWARDS = [
+  'dailyRewards',
+  'claimDailyReward',
+] as const satisfies readonly (keyof IWorldDailyRewards)[];
+type _ExhaustDailyRewards = AssertNever<
+  Exclude<keyof IWorldDailyRewards, (typeof FACET_DAILY_REWARDS)[number]>
 >;
 
 const FACET_QUESTS = [
@@ -1191,6 +1206,7 @@ const FACET_MEMBER_ARRAYS: Readonly<Record<string, readonly string[]>> = {
   loot: FACET_LOOT,
   inventory: FACET_INVENTORY,
   cosmetics: FACET_COSMETICS,
+  dailyRewards: FACET_DAILY_REWARDS,
   quests: FACET_QUESTS,
   deeds: FACET_DEEDS,
   progressionXp: FACET_PROGRESSION_XP,

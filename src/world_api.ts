@@ -75,6 +75,7 @@ import type { IWorldCollections } from './world_api/collections';
 import type { IWorldCombat } from './world_api/combat';
 import type { IWorldCosmetics } from './world_api/cosmetics';
 import type { IWorldCrafting } from './world_api/crafting';
+import type { IWorldDailyRewards } from './world_api/daily_rewards';
 import type { IWorldDeeds } from './world_api/deeds';
 import type { IWorldDelves } from './world_api/delves';
 import type { IWorldDialog } from './world_api/dialog';
@@ -109,6 +110,7 @@ export type { ArenaCombatant, ArenaFormat, ArenaStanding, OverheadEmoteId } from
 // --- facet aux-type + value re-exports (each travels with its facet file) ---
 export { isOverheadEmoteId, OVERHEAD_EMOTES } from './world_api/chat';
 export type { AccountCosmetics } from './world_api/cosmetics';
+export type { DailyRewardsInfo } from './world_api/daily_rewards';
 export type {
   DelveCompanionInfo,
   DelveDailyInfo,
@@ -158,6 +160,7 @@ export interface IWorld
     IWorldLoot,
     IWorldInventory,
     IWorldCosmetics,
+    IWorldDailyRewards,
     IWorldQuests,
     IWorldDeeds,
     IWorldProgressionXp,
@@ -330,6 +333,7 @@ export const COMMAND_NAMES = [
   'harvestNode',
   'dialogChoose',
   'craftItem',
+  'daily_rewards_claim',
   'setTitle',
   'readyRespond',
   'readCollectible',
@@ -380,6 +384,7 @@ export type WorldFacet =
   | 'IWorldLoot'
   | 'IWorldInventory'
   | 'IWorldCosmetics'
+  | 'IWorldDailyRewards'
   | 'IWorldQuests'
   | 'IWorldDeeds'
   | 'IWorldProgressionXp'
@@ -554,6 +559,9 @@ export const COMMAND_FACETS = {
   // IWorldCrafting: craft a recipe (PHAA-574); recipe browsing carries no wire
   // command (static content, read directly from src/sim/data's RECIPES table).
   craftItem: 'IWorldCrafting',
+  // IWorldDailyRewards: claim today's cycle slot (PHAA-660); the dailyRewards
+  // read carries no wire command (it rides the self-snapshot like cosmetics).
+  daily_rewards_claim: 'IWorldDailyRewards',
   // IWorldDeeds: select (or clear) the earned title shown with the character's
   // name (PHAA-744, Book of Asphodelia). deedLog/deedsDone/earnedTitles are
   // snapshot reads (no send, untagged).

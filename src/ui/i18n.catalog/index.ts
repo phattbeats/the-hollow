@@ -8,6 +8,7 @@ import { worldEntityText as worldNames } from '../world_entity_i18n';
 import { abilityStrings, classAbilityNames } from './abilities';
 import { apiErrorStrings } from './api_error';
 import { coldOpenStrings } from './cold_open';
+import { dailyRewardsUiStrings } from './daily_rewards_ui';
 import { gameStrings } from './game';
 import { guideStrings } from './guide';
 import { hollowEntities } from './hollow';
@@ -23,6 +24,7 @@ import { shellStrings } from './shell';
 export { abilityStrings, classAbilityNames } from './abilities';
 export { apiErrorStrings } from './api_error';
 export { coldOpenStrings } from './cold_open';
+export { dailyRewardsUiStrings } from './daily_rewards_ui';
 export {
   gameStrings,
   gameStringsDeDE,
@@ -520,6 +522,12 @@ export const en = {
       nothingToHarvest: 'That corpse has nothing to harvest.',
       alreadyHarvested: 'This corpse has already been harvested.',
     },
+    // Daily rewards (PHAA-660, docs/design/daily-rewards.md). The sim log line has
+    // no interpolated value on purpose (see src/sim/daily_rewards.ts); the claim
+    // window renders the specific copper/item breakdown itself.
+    dailyRewards: {
+      claimed: 'You claim your daily reward.',
+    },
     // Collections core (PHAA-626): readCollectible command error text
     // (src/sim/collections.ts). Same fill scope as gathering above: the five
     // non-Latin locales required by the M16 completeness gate are filled, the
@@ -998,6 +1006,7 @@ export const en = {
   ...abilityStrings.en,
   ...questStrings.en,
   ...housingStrings.en,
+  ...dailyRewardsUiStrings.en,
   ...itemStrings.en,
   ...classAbilityNames.en,
   ...itemNames.en,

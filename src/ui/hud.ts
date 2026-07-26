@@ -12,6 +12,7 @@ import {
   nonSelfRepaintDue,
   targetFrameNonSelfIntervalMs,
 } from '../game/ui_tier_knobs';
+import { currentUtcDay } from '../game/utc_day';
 import { voice } from '../game/voice';
 import { castBarState, consumeBarState } from '../render/cast_bar';
 import { CharacterPreview } from '../render/characters';
@@ -24,6 +25,7 @@ import {
 } from '../render/characters/portrait';
 import type { Renderer } from '../render/renderer';
 import { type AugmentCategory, augmentCategory } from '../sim/content/augments';
+import { DAILY_REWARD_CYCLE } from '../sim/content/daily_rewards';
 import {
   EVENT_SKIN_TIERS,
   MECH_CHROMAS,
@@ -152,6 +154,8 @@ import {
 } from './combat_sfx';
 import { type CardinalId, compassView } from './compass';
 import { formatMinimapCoords } from './coords';
+import { buildDailyRewardsView } from './daily_rewards_view';
+import { renderDailyRewardsWindow } from './daily_rewards_window';
 import { DelveMapPainter } from './delve_map_painter';
 import { markDialogRoot } from './dialog_root';
 import { DISCORD_SURFACES_ENABLED } from './discord_flags';
@@ -1626,6 +1630,9 @@ export class Hud {
       case 'vendor-window':
         this.closeVendor();
         break;
+      case 'daily-rewards-window':
+        this.closeDailyRewards();
+        break;
       case 'housing-window':
         this.closeHousing();
         break;
@@ -2831,6 +2838,7 @@ export class Hud {
       return item ? itemDisplayName(item) : null;
     },
     refreshKeybindLabels: () => this.refreshKeybindLabels(),
+    openDailyRewards: () => this.openDailyRewards(),
     buildDropdown: (options, current, onChange, placeholder, a11y) =>
       this.buildDropdown(options, current, onChange, placeholder, a11y),
     setDropdownValue: (root, value) => this.setDropdownValue(root, value),
@@ -8719,6 +8727,51 @@ export class Hud {
 
   get vendorOpen(): boolean {
     return this.openVendorNpcId !== null;
+  }
+
+  // -------------------------------------------------------------------------
+  // Daily rewards (PHAA-660, docs/design/daily-rewards.md). Opened only from a
+  // deliberate menu entry (never a login splash or a HUD badge/nag); the recipe
+  // is the Vendor window above (rebuild-on-open, not a per-frame hot painter).
+  // -------------------------------------------------------------------------
+
+  private dailyRewardsWindowOpen = false;
+  private dailyRewardsFocusReturn: HTMLElement | null = null;
+
+  openDailyRewards(): void {
+    this.closeOtherWindows('#daily-rewards-window');
+    this.dailyRewardsWindowOpen = true;
+    this.dailyRewardsFocusReturn = this.windowFocus('#daily-rewards-window').captureFocus();
+    this.renderDailyRewards();
+  }
+
+  private renderDailyRewards(): void {
+    if (!this.dailyRewardsWindowOpen) return;
+    renderDailyRewardsWindow(
+      $('#daily-rewards-window'),
+      buildDailyRewardsView(this.sim.dailyRewards, DAILY_REWARD_CYCLE, currentUtcDay()),
+      {
+        ...this.presentationBag,
+        items: ITEMS,
+        onClaim: () => {
+          this.sim.claimDailyReward();
+          this.renderDailyRewards();
+        },
+        onClose: () => this.closeDailyRewards(),
+      },
+    );
+  }
+
+  closeDailyRewards(): void {
+    $('#daily-rewards-window').style.display = 'none';
+    this.dailyRewardsWindowOpen = false;
+    this.windowFocus('#daily-rewards-window').restoreFocus(this.dailyRewardsFocusReturn);
+    this.dailyRewardsFocusReturn = null;
+    this.hideTooltip();
+  }
+
+  get dailyRewardsOpen(): boolean {
+    return this.dailyRewardsWindowOpen;
   }
 
   // -------------------------------------------------------------------------

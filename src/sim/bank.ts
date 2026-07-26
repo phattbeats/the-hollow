@@ -181,6 +181,7 @@ export function bankDeposit(
   if (result.refusal) return; // 'invalid': malformed input (cheat/desync), no player line
   ctx.onInventoryChangedForQuests(meta);
   ctx.onInventoryChangedForDeeds(meta);
+  ctx.onSocialActionForDeeds('bank', meta);
 }
 
 /** Withdraw a bank slot back into the carried inventory: the mirror of deposit.
