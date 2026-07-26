@@ -328,6 +328,7 @@ export const COMMAND_NAMES = [
   'setTitle',
   'readyRespond',
   'readCollectible',
+  'stow_weapon',
 ] as const;
 
 // The union both the send path (`online.ts`) and the dispatch switch

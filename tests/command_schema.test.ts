@@ -28,8 +28,8 @@ const repoRoot = fileURLToPath(new URL('..', import.meta.url));
 // tree: readCollectible (IWorldCollections) likewise. +1 again for PHAA-641
 // readyRespond (IWorldParty), likewise both a ClientWorld send and a server
 // dispatch case.
-const EXPECTED_SEND_COUNT = 122;
-const EXPECTED_DISPATCH_COUNT = 129;
+const EXPECTED_SEND_COUNT = 123;
+const EXPECTED_DISPATCH_COUNT = 130;
 const EXPECTED_DISPATCH_ONLY_COUNT = 7;
 
 // The chat sub-channel routing switch (server/game.ts `switch

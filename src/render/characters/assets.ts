@@ -14,6 +14,7 @@ import type { EquipSlot } from '../../sim/types';
 import { loadGltf, loadTexture } from '../assets/loader';
 import { registerPreload } from '../assets/preload';
 import { addRimGlow, GFX } from '../gfx';
+import { type RigFamily, backGripFor } from './back_grips';
 import {
   CHIBI_VARIANT_TINT_STRENGTH,
   chibiMaterialTint,
@@ -260,6 +261,8 @@ function attachProp(
   bone: THREE.Object3D,
   att: AttachDef,
   markTags: string | readonly string[] | false = false,
+  stowed: boolean = false,
+  rig: RigFamily = 'kaykit',
 ): void {
   const payload = flattenWeaponScene(cloneSkinned(resolvedGltf(att.url).scene));
   payload.traverse((o) => {
@@ -280,6 +283,17 @@ function attachProp(
     if (ref) copyAccessoryTransform(payload, ref);
   } else if (isHandslotBone(att.bone)) {
     applyHandGrip(payload, root, att.bone, att.url);
+  }
+  // Sheathed: override where the prop SITS (on-back position/lean, torso-bone
+  // local space; the caller resolved the torso bone) but keep the SCALE the
+  // normal grip pass just computed, so variant-pack size clamps carry over.
+  // Ported from upstream #1765; the fork targets two rig families via `rig`,
+  // KayKit (chest bone) and chibi (DEF-spine003 bone). See `back_grips.ts` for
+  // the per-rig-family tuning and the chibi entries authored in this commit.
+  if (stowed && isHandslotBone(att.bone)) {
+    const grip = backGripFor(kaykitAccessoryFor(att.url), handSide(att.bone), rig);
+    payload.position.set(...grip.position);
+    payload.quaternion.set(...grip.quaternion);
   }
   bone.add(payload);
 }
@@ -628,10 +642,29 @@ export function assembleModel(
  *  both hands update). The caller must re-apply materials and re-snapshot the
  *  original-material map afterwards (see CharacterVisual.setWeapon), since the new
  *  weapon meshes start on the source GLB's raw materials. */
+// Sheathed props re-parent onto the rig's torso bone (KayKit Rig_Medium:
+// `chest`; chibi Mixamo rigs: `DEF-spine003`). GLTFLoader sanitizes node names
+// (PropertyBinding strips [].:/ chars), so the resolver tries both spellings.
+// The visual layer picks the right bone per `weaponBackBone` override, falling
+// back to `chest` (the KayKit default) when the def carries no override.
+const DEFAULT_STOW_BONE = 'chest';
+
+function attachTargetBone(
+  root: THREE.Object3D,
+  att: AttachDef,
+  stowed: boolean,
+  backBone: string,
+): THREE.Object3D | null {
+  const boneName = stowed && isHandslotBone(att.bone) ? backBone : att.bone;
+  return resolveBone(root, boneName);
+}
+
 export function setHeldWeapon(
   root: THREE.Object3D,
   def: VisualDef,
   weaponItemId: string | null,
+  stowed: boolean = false,
+  rig: RigFamily = 'kaykit',
 ): void {
   if (!def.weaponSlots?.length) return;
   const stale: THREE.Object3D[] = [];
@@ -639,13 +672,14 @@ export function setHeldWeapon(
     if (o.userData[SWAP_WEAPON_TAG]) stale.push(o);
   });
   for (const o of stale) o.removeFromParent();
+  const backBone = def.weaponBackBone ?? DEFAULT_STOW_BONE;
   for (const i of def.weaponSlots) {
     const base = def.attach?.[i];
     if (!base) continue;
     const att = swapAttachDef(base, weaponItemId);
-    const bone = resolveBone(root, att.bone);
+    const bone = attachTargetBone(root, att, stowed, backBone);
     if (!bone) continue;
-    attachProp(root, bone, att, SWAP_WEAPON_TAG);
+    attachProp(root, bone, att, SWAP_WEAPON_TAG, stowed, rig);
   }
 }
 

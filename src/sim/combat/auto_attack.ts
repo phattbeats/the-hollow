@@ -32,6 +32,7 @@ import { scheduleProjectile } from '../projectile_travel';
 import type { PlayerMeta } from '../sim';
 import type { SimContext } from '../sim_context';
 import { addThreat } from '../threat';
+import { drawWeapon } from '../weapon_stow';
 import {
   angleTo,
   armorReduction,
@@ -59,6 +60,7 @@ export function startAutoAttack(ctx: SimContext, pid?: number): void {
     return;
   }
   if (p.sitting) ctx.standUp(p);
+  if (p.weaponStowed) drawWeapon(p);
   p.autoAttack = true;
   r.meta.lastActiveTick = ctx.tickCount; // starting auto-attack is a deliberate action
   const d = dist2d(p.pos, t.pos);

@@ -147,6 +147,13 @@ export class GameAudio {
     this.tone(1400, 0.05, 0.08, 'square');
   }
 
+  weaponStow(stowed: boolean): void {
+    const start = stowed ? 520 : 360;
+    const end = stowed ? 300 : 620;
+    this.noise(0.16, 1800, 0.13, 0.7, 'bandpass');
+    this.tone(start, 0.14, 0.1, 'triangle', 0, end);
+  }
+
   error(): void {
     this.tone(220, 0.15, 0.1, 'square', 0, 180);
   }

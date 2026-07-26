@@ -36,6 +36,12 @@ export interface ClipMap {
   walkBack?: string;
   /** one-shot played on respawn (skeleton awaken / boss taunt) */
   flourish?: string;
+  /** Z-key weapon-sheathe gesture one-shot (PHAA-737 Row J, upstream #1765).
+   *  The windup's midpoint is when the held prop re-parents from the handslot
+   *  bone to the rig's back bone (see `weaponBackBone`). Optional: rigs without
+   *  a sheathe gesture snap the swap immediately (CharacterVisual.setWeaponStowed
+   *  falls through to `forceStow` when `clips.stow` is undefined). */
+  stow?: string;
   /** player-facing overhead emote one-shots; clips are sourced from the GLB. */
   emote?: Partial<Record<OverheadEmoteId, EmoteClipSpec>>;
 }
@@ -124,6 +130,13 @@ export interface VisualDef {
    *  rotation only works because it targets non-skinned prop meshes). Scale
    *  is uniform and applied before the translation (T * S). */
   skinnedMeshFix?: { node: string; position?: [number, number, number]; scale?: number }[];
+  /** Bone name that a sheathed held prop re-parents onto (PHAA-737 Row J,
+   *  upstream #1765 ADAPT). Defaults to 'chest' on KayKit rigs; chibi rigs
+   *  override to 'DEF-spine003'. Used only when `weaponSlots` is non-empty and
+   *  the entity has the sheathed bit on; otherwise the attach uses its
+   *  authored bone. GLTFLoader sanitizes node names (PropertyBinding strips
+   *  [].:/ chars), so the runtime resolver tries both spellings. */
+  weaponBackBone?: string;
 }
 
 /** The slice of a VisualDef that decides how held weapons attach (which bones, and
