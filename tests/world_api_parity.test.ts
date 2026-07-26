@@ -41,6 +41,7 @@ import type { IWorldChat } from '../src/world_api/chat';
 import type { IWorldCollections } from '../src/world_api/collections';
 import type { IWorldCombat } from '../src/world_api/combat';
 import type { IWorldCosmetics } from '../src/world_api/cosmetics';
+import type { IWorldDailyRewards } from '../src/world_api/daily_rewards';
 import type { IWorldDeeds } from '../src/world_api/deeds';
 import type { IWorldDelves } from '../src/world_api/delves';
 import type { IWorldDuelArena } from '../src/world_api/duel_arena';
@@ -89,6 +90,8 @@ export const IWORLD_MEMBERS = [
   { name: 'vendorBuyback', kind: 'data' },
   { name: 'equipment', kind: 'data' },
   { name: 'accountCosmetics', kind: 'data' },
+  { name: 'dailyRewards', kind: 'data' },
+  { name: 'claimDailyReward', kind: 'method' },
   { name: 'copper', kind: 'data' },
   { name: 'xp', kind: 'data' },
   { name: 'lifetimeXp', kind: 'data' },
@@ -386,9 +389,9 @@ beforeAll(() => {
 
 describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => {
   it('pins total / data / method counts', () => {
-    expect(IWORLD_MEMBERS.length).toBe(188);
-    expect(DATA_MEMBERS.length).toBe(56);
-    expect(METHOD_MEMBERS.length).toBe(132);
+    expect(IWORLD_MEMBERS.length).toBe(190);
+    expect(DATA_MEMBERS.length).toBe(57);
+    expect(METHOD_MEMBERS.length).toBe(133);
   });
 
   it('has no duplicate member names', () => {
@@ -427,6 +430,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'cfg',
       'changeSkin',
       'chat',
+      'claimDailyReward',
       'claimEventSkin',
       'clearMarker',
       'collectDelveChestLoot',
@@ -437,6 +441,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'convertPartyToRaid',
       'convertRaidToParty',
       'copper',
+      'dailyRewards',
       'deedLog',
       'deedsDone',
       'deleteLoadout',
@@ -605,6 +610,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'companionState',
       'companionUpgrades',
       'copper',
+      'dailyRewards',
       'deedLog',
       'deedsDone',
       'delveDaily',
@@ -673,6 +679,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'castAbilityBySlot',
       'changeSkin',
       'chat',
+      'claimDailyReward',
       'claimEventSkin',
       'clearMarker',
       'collectDelveChestLoot',
@@ -921,6 +928,14 @@ const FACET_COSMETICS = [
 ] as const satisfies readonly (keyof IWorldCosmetics)[];
 type _ExhaustCosmetics = AssertNever<
   Exclude<keyof IWorldCosmetics, (typeof FACET_COSMETICS)[number]>
+>;
+
+const FACET_DAILY_REWARDS = [
+  'dailyRewards',
+  'claimDailyReward',
+] as const satisfies readonly (keyof IWorldDailyRewards)[];
+type _ExhaustDailyRewards = AssertNever<
+  Exclude<keyof IWorldDailyRewards, (typeof FACET_DAILY_REWARDS)[number]>
 >;
 
 const FACET_QUESTS = [
@@ -1176,6 +1191,7 @@ const FACET_MEMBER_ARRAYS: Readonly<Record<string, readonly string[]>> = {
   loot: FACET_LOOT,
   inventory: FACET_INVENTORY,
   cosmetics: FACET_COSMETICS,
+  dailyRewards: FACET_DAILY_REWARDS,
   quests: FACET_QUESTS,
   deeds: FACET_DEEDS,
   progressionXp: FACET_PROGRESSION_XP,
@@ -1200,9 +1216,9 @@ const FACET_MEMBER_ARRAYS: Readonly<Record<string, readonly string[]>> = {
   achievements: FACET_ACHIEVEMENTS,
 };
 
-describe('W1: aggregate IWorld member set equals the disjoint union of the 29 facets', () => {
-  it('pins the facet count at 29', () => {
-    expect(Object.keys(FACET_MEMBER_ARRAYS).length).toBe(29);
+describe('W1: aggregate IWorld member set equals the disjoint union of the 30 facets', () => {
+  it('pins the facet count at 30', () => {
+    expect(Object.keys(FACET_MEMBER_ARRAYS).length).toBe(30);
   });
 
   it('each facet array is non-empty and internally duplicate-free', () => {
@@ -1212,7 +1228,7 @@ describe('W1: aggregate IWorld member set equals the disjoint union of the 29 fa
     }
   });
 
-  it('the 29 facet arrays are pairwise disjoint (no member filed in two facets)', () => {
+  it('the 30 facet arrays are pairwise disjoint (no member filed in two facets)', () => {
     const entries = Object.entries(FACET_MEMBER_ARRAYS);
     const overlaps: string[] = [];
     for (let i = 0; i < entries.length; i++) {
@@ -1228,10 +1244,10 @@ describe('W1: aggregate IWorld member set equals the disjoint union of the 29 fa
     expect(overlaps, `members filed in more than one facet:\n${overlaps.join('\n')}`).toEqual([]);
   });
 
-  it('the union of the 29 facets equals the pinned 188-member IWORLD_MEMBERS set', () => {
+  it('the union of the 30 facets equals the pinned 190-member IWORLD_MEMBERS set', () => {
     const union = Object.values(FACET_MEMBER_ARRAYS).flatMap((arr) => [...arr]);
-    expect(union.length, 'union size before dedup (catches a duplicated member)').toBe(188);
-    expect(new Set(union).size, 'union size after dedup (catches a duplicated member)').toBe(188);
+    expect(union.length, 'union size before dedup (catches a duplicated member)').toBe(190);
+    expect(new Set(union).size, 'union size after dedup (catches a duplicated member)').toBe(190);
     const sortedUnion = [...union].sort();
     const pinned = IWORLD_MEMBERS.map((m) => m.name).sort();
     expect(sortedUnion).toEqual(pinned);

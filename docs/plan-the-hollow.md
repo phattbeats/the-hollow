@@ -411,7 +411,13 @@ Locked at this version. New ideas go to the Post-Release Backlog.
 - **A WoW-sized content treadmill at launch.** Accretion, not a release-day mountain.
 - **Premature distributed infrastructure.** One lean instance; only the sharded mega-deployment is deferred.
 - **Any feature serving neither a depth core nor the cozy surface.**
-- **Engagement dark patterns.** No streaks, daily rewards, FOMO timers. The sanctioned alternative: **something always quietly maturing** while you are away, anchored at the home (§7, "The home idles").
+- **Engagement dark patterns.** No streaks, FOMO timers, or loss-aversion mechanics.
+  **Amended 2026-07-11 (Board, PHAA-639):** understated daily rewards are allowed as
+  a narrow exception (in-game items/currency only, never crypto, no login splash or
+  HUD nag, no streak-loss shape); see `docs/design/daily-rewards.md` for the adapted
+  design. The sanctioned alternative for everything else in this category still
+  applies: **something always quietly maturing** while you are away, anchored at the
+  home (§7, "The home idles").
 
 Deferred to backlog, wanted but later: run-to-run dungeon modifiers (now known to be cheap via the augment pipeline, §8, which moves it from "someday" to "early Phase 4 candidate"); mounts (the Tyler-Ask's second half, §8: wanted, absent from the base, and pointless until the zone system is big enough to make speed worth having); the Android Play Store wrapper (Scope Lock: a TWA shell around the browser build, after phone controls); and the dormant-inheritance register (Decision 22, §12: Fiesta, the World Market's fate, Discord login, the guild layer), each waiting on its named verdict.
 
