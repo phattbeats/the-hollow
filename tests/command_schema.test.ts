@@ -11,7 +11,7 @@ import { COMMAND_NAMES, type CommandName, DISPATCH_ONLY_COMMANDS } from '../src/
 // server/game.ts dispatchMessage switch. This test pins the CURRENT contract by
 // re-deriving both sets directly from source (not from the brief's numbers) and
 // proving:
-//   - the send-set (120) is a SUBSET of the dispatch-set (127): zero send-only,
+//   - the send-set (124) is a SUBSET of the dispatch-set (131): zero send-only,
 //   - dispatch-set \ send-set is exactly the verified 7-entry dispatch-only
 //     allowlist (DISPATCH_ONLY_COMMANDS),
 //   - the send-set is disjoint from that allowlist,

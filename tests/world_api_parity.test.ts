@@ -394,9 +394,9 @@ beforeAll(() => {
 
 describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => {
   it('pins total / data / method counts', () => {
-    expect(IWORLD_MEMBERS.length).toBe(190);
-    expect(DATA_MEMBERS.length).toBe(57);
-    expect(METHOD_MEMBERS.length).toBe(133);
+    expect(IWORLD_MEMBERS.length).toBe(192);
+    expect(DATA_MEMBERS.length).toBe(58);
+    expect(METHOD_MEMBERS.length).toBe(134);
   });
 
   it('has no duplicate member names', () => {
@@ -1232,9 +1232,9 @@ const FACET_MEMBER_ARRAYS: Readonly<Record<string, readonly string[]>> = {
   achievements: FACET_ACHIEVEMENTS,
 };
 
-describe('W1: aggregate IWorld member set equals the disjoint union of the 30 facets', () => {
-  it('pins the facet count at 30', () => {
-    expect(Object.keys(FACET_MEMBER_ARRAYS).length).toBe(30);
+describe('W1: aggregate IWorld member set equals the disjoint union of the 31 facets', () => {
+  it('pins the facet count at 31', () => {
+    expect(Object.keys(FACET_MEMBER_ARRAYS).length).toBe(31);
   });
 
   it('each facet array is non-empty and internally duplicate-free', () => {
@@ -1260,10 +1260,10 @@ describe('W1: aggregate IWorld member set equals the disjoint union of the 30 fa
     expect(overlaps, `members filed in more than one facet:\n${overlaps.join('\n')}`).toEqual([]);
   });
 
-  it('the union of the 30 facets equals the pinned 190-member IWORLD_MEMBERS set', () => {
+  it('the union of the 31 facets equals the pinned 192-member IWORLD_MEMBERS set', () => {
     const union = Object.values(FACET_MEMBER_ARRAYS).flatMap((arr) => [...arr]);
-    expect(union.length, 'union size before dedup (catches a duplicated member)').toBe(190);
-    expect(new Set(union).size, 'union size after dedup (catches a duplicated member)').toBe(190);
+    expect(union.length, 'union size before dedup (catches a duplicated member)').toBe(192);
+    expect(new Set(union).size, 'union size after dedup (catches a duplicated member)').toBe(192);
     const sortedUnion = [...union].sort();
     const pinned = IWORLD_MEMBERS.map((m) => m.name).sort();
     expect(sortedUnion).toEqual(pinned);
