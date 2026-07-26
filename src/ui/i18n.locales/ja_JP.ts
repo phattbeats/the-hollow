@@ -1627,6 +1627,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': '{item}を強欲',
   'itemUi.lootRoll.passAria': '{item}をパス',
   'itemUi.lootRoll.everyonePassed': '全員が{item}をパスしました。',
+  'itemUi.lootRoll.winnerOffline': '{item}の勝者がオフラインだったため、死体に返却されました。',
   'entities.abilities.heroic_strike.name': '英雄の一撃',
   'entities.abilities.heroic_strike.description':
     '強力な攻撃で近接ダメージが {damage} 増加します。次のスイングで発動します。',

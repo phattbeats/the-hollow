@@ -3600,8 +3600,8 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "ceac18bb",
-      "events": "63085fad",
+      "state": "7d6f3014",
+      "events": "7be71f59",
       "rng": {
         "draws": 5,
         "digest": "660252a9"
@@ -3626,9 +3626,57 @@
             "kills": 1,
             "xpGained": 26
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ],
+            [
+              "cmb_wolf_cull",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_wolf_cull",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -3659,9 +3707,57 @@
           "counters": {
             "xpGained": 26
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ],
+            [
+              "cmb_wolf_cull",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_wolf_cull",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -3692,9 +3788,57 @@
           "counters": {
             "xpGained": 26
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ],
+            [
+              "cmb_wolf_cull",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_wolf_cull",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 409,
           "equipment": {
             "chest": "apprentice_robe",
@@ -4011,7 +4155,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "ceac18bb",
+      "state": "7d6f3014",
       "events": "741638a5",
       "rng": {
         "draws": 5,
@@ -4037,9 +4181,57 @@
             "kills": 1,
             "xpGained": 26
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ],
+            [
+              "cmb_wolf_cull",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_wolf_cull",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -4070,9 +4262,57 @@
           "counters": {
             "xpGained": 26
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ],
+            [
+              "cmb_wolf_cull",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_wolf_cull",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -4103,9 +4343,57 @@
           "counters": {
             "xpGained": 26
           },
+          "deedLog": [
+            [
+              "cmb_century",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_century",
+                "state": "active"
+              }
+            ],
+            [
+              "cmb_first_blood",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_first_blood",
+                "state": "done"
+              }
+            ],
+            [
+              "cmb_wolf_cull",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "cmb_wolf_cull",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_relentless",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "feat_relentless",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "cmb_first_blood"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "earnedTitles": [
+            "t_blooded"
+          ],
           "entityId": 409,
           "equipment": {
             "chest": "apprentice_robe",

@@ -1556,6 +1556,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': '貪婪 {item}',
   'itemUi.lootRoll.passAria': '放棄 {item}',
   'itemUi.lootRoll.everyonePassed': '所有人都放棄了 {item}。',
+  'itemUi.lootRoll.winnerOffline': '{item}的獲勝者已離線；戰利品已歸還屍體。',
   'entities.abilities.heroic_strike.name': '英勇打擊',
   'entities.abilities.heroic_strike.description':
     '一次強力攻擊，使近戰傷害提高 {damage}。在你的下一次揮擊時觸發。',

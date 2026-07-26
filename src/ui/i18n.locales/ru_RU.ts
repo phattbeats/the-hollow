@@ -1648,6 +1648,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': 'Жадность: {item}',
   'itemUi.lootRoll.passAria': 'Пас: {item}',
   'itemUi.lootRoll.everyonePassed': 'Все отказались от {item}.',
+  'itemUi.lootRoll.winnerOffline': 'Победитель {item} был офлайн; предмет вернулся к трупу.',
   'entities.abilities.heroic_strike.name': 'Удар героя',
   'entities.abilities.heroic_strike.description':
     'Мощная атака, увеличивающая урон в ближнем бою на {damage}. Срабатывает при следующем взмахе оружием.',

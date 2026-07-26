@@ -7252,6 +7252,9 @@ export class Hud {
     match = /^Everyone passed on (.+)\.$/.exec(text);
     if (match)
       return t('itemUi.lootRoll.everyonePassed', { item: itemDisplayNameFromSource(match[1]) });
+    match = /^The winner of (.+) was offline; it was returned to the corpse\.$/.exec(text);
+    if (match)
+      return t('itemUi.lootRoll.winnerOffline', { item: itemDisplayNameFromSource(match[1]) });
     match = /^Sold (\d+) junk items? for (.+)\.$/.exec(text);
     if (match) {
       const n = Number(match[1]);

@@ -29,8 +29,8 @@
       "tick": 25,
       "time": 1.25,
       "nextId": 411,
-      "state": "452b58b7",
-      "events": "2b3503be",
+      "state": "ae415f69",
+      "events": "a3fa7ede",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -40,7 +40,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 411,
-      "state": "8324590d",
+      "state": "3c496947",
       "events": "ace6b6f2",
       "rng": {
         "draws": 56,
@@ -51,7 +51,7 @@
       "tick": 75,
       "time": 3.75,
       "nextId": 411,
-      "state": "459b8687",
+      "state": "29ed27b9",
       "events": "782b0eb6",
       "rng": {
         "draws": 158,
@@ -62,7 +62,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 411,
-      "state": "f25cc173",
+      "state": "0d885045",
       "events": "991c069e",
       "rng": {
         "draws": 275,
@@ -73,7 +73,7 @@
       "tick": 101,
       "time": 5.05,
       "nextId": 411,
-      "state": "58cdc137",
+      "state": "abb8f7e9",
       "events": "08ba31bb",
       "rng": {
         "draws": 282,
@@ -95,6 +95,59 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale",
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -104,6 +157,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -124,6 +178,59 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale",
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -133,6 +240,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -153,6 +261,59 @@
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale",
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -162,6 +323,7 @@
             "mainhand": "rusty_dagger"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -182,6 +344,59 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale",
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -191,6 +406,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -395,7 +611,7 @@
       "tick": 102,
       "time": 5.1,
       "nextId": 411,
-      "state": "70b9ad47",
+      "state": "d37b5369",
       "events": "15864675",
       "rng": {
         "draws": 283,
@@ -417,6 +633,59 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale",
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -426,6 +695,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -446,6 +716,59 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale",
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -455,6 +778,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -477,6 +801,59 @@
           "counters": {
             "deaths": 1
           },
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale",
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -486,6 +863,7 @@
             "mainhand": "rusty_dagger"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -506,6 +884,59 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale",
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -515,6 +946,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -719,8 +1151,8 @@
       "tick": 103,
       "time": 5.15,
       "nextId": 411,
-      "state": "9bde0543",
-      "events": "3c2d141f",
+      "state": "c28fc7f1",
+      "events": "d7ee4ca1",
       "rng": {
         "draws": 287,
         "digest": "f0c15450"
@@ -742,6 +1174,102 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_all_comers",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "pvp_all_comers",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_arena_champion",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_arena_champion",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_arena_contender",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_arena_contender",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_bloodletter",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_bloodletter",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale",
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -759,6 +1287,7 @@
               "2v2:[\"name:dalet\",\"name:gimel\"]": 1
             }
           },
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeHonor": 50,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -781,6 +1310,102 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_all_comers",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "pvp_all_comers",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_arena_champion",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_arena_champion",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_arena_contender",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_arena_contender",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_bloodletter",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_bloodletter",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale",
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -798,6 +1423,7 @@
               "2v2:[\"name:dalet\",\"name:gimel\"]": 1
             }
           },
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeHonor": 50,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -822,6 +1448,59 @@
           "counters": {
             "deaths": 1
           },
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale",
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -831,6 +1510,7 @@
             "mainhand": "rusty_dagger"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -854,6 +1534,59 @@
           "counters": {
             "deaths": 1
           },
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale",
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -863,6 +1596,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -1067,7 +1801,7 @@
       "tick": 125,
       "time": 6.25,
       "nextId": 411,
-      "state": "d6c73801",
+      "state": "1abba43f",
       "events": "741638a5",
       "rng": {
         "draws": 410,
@@ -1078,7 +1812,7 @@
       "tick": 150,
       "time": 7.5,
       "nextId": 411,
-      "state": "adf368f7",
+      "state": "0ffd8e95",
       "events": "741638a5",
       "rng": {
         "draws": 551,
@@ -1089,7 +1823,7 @@
       "tick": 175,
       "time": 8.75,
       "nextId": 411,
-      "state": "f036a51d",
+      "state": "415982db",
       "events": "741638a5",
       "rng": {
         "draws": 730,
@@ -1100,7 +1834,7 @@
       "tick": 200,
       "time": 10,
       "nextId": 411,
-      "state": "01799443",
+      "state": "881186f1",
       "events": "741638a5",
       "rng": {
         "draws": 934,
@@ -1111,7 +1845,7 @@
       "tick": 225,
       "time": 11.25,
       "nextId": 411,
-      "state": "1c4c3391",
+      "state": "94abfccf",
       "events": "05465228",
       "rng": {
         "draws": 1041,
@@ -1122,7 +1856,7 @@
       "tick": 243,
       "time": 12.15,
       "nextId": 411,
-      "state": "69a03155",
+      "state": "4b56e0f3",
       "events": "741638a5",
       "rng": {
         "draws": 1115,
@@ -1145,6 +1879,102 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_all_comers",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "pvp_all_comers",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_arena_champion",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_arena_champion",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_arena_contender",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_arena_contender",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_bloodletter",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_bloodletter",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale",
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1162,6 +1992,7 @@
               "2v2:[\"name:dalet\",\"name:gimel\"]": 1
             }
           },
+          "lastZoneId": "eastbrook_vale",
           "lifetimeHonor": 50,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -1184,6 +2015,102 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_all_comers",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "pvp_all_comers",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_arena_champion",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_arena_champion",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_arena_contender",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_arena_contender",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_bloodletter",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_bloodletter",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale",
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1201,6 +2128,7 @@
               "2v2:[\"name:dalet\",\"name:gimel\"]": 1
             }
           },
+          "lastZoneId": "eastbrook_vale",
           "lifetimeHonor": 50,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -1225,6 +2153,59 @@
           "counters": {
             "deaths": 1
           },
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale",
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1234,6 +2215,7 @@
             "mainhand": "rusty_dagger"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -1257,6 +2239,59 @@
           "counters": {
             "deaths": 1
           },
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale",
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1266,6 +2301,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -1475,7 +2511,7 @@
       "tick": 243,
       "time": 12.15,
       "nextId": 411,
-      "state": "69a03155",
+      "state": "4b56e0f3",
       "events": "741638a5",
       "rng": {
         "draws": 1115,
@@ -1498,6 +2534,102 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_all_comers",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "pvp_all_comers",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_arena_champion",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_arena_champion",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_arena_contender",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_arena_contender",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_bloodletter",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_bloodletter",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale",
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1515,6 +2647,7 @@
               "2v2:[\"name:dalet\",\"name:gimel\"]": 1
             }
           },
+          "lastZoneId": "eastbrook_vale",
           "lifetimeHonor": 50,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -1537,6 +2670,102 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_all_comers",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "pvp_all_comers",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_arena_champion",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_arena_champion",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_arena_contender",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_arena_contender",
+                "state": "active"
+              }
+            ],
+            [
+              "pvp_bloodletter",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "pvp_bloodletter",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale",
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1554,6 +2783,7 @@
               "2v2:[\"name:dalet\",\"name:gimel\"]": 1
             }
           },
+          "lastZoneId": "eastbrook_vale",
           "lifetimeHonor": 50,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -1578,6 +2808,59 @@
           "counters": {
             "deaths": 1
           },
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale",
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1587,6 +2870,7 @@
             "mainhand": "rusty_dagger"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -1610,6 +2894,59 @@
           "counters": {
             "deaths": 1
           },
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale",
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1619,6 +2956,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},

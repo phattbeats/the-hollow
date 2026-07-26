@@ -4052,7 +4052,8 @@ export const ja_JP: EnTranslations = {
       "needAria": "{item}を必要",
       "greedAria": "{item}を強欲",
       "passAria": "{item}をパス",
-      "everyonePassed": "全員が{item}をパスしました。"
+      "everyonePassed": "全員が{item}をパスしました。",
+      "winnerOffline": "{item}の勝者がオフラインだったため、死体に返却されました。"
     }
   },
   "entities": {

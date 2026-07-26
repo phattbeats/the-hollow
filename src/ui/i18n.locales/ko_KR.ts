@@ -1615,6 +1615,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': '{item} 탐욕',
   'itemUi.lootRoll.passAria': '{item} 포기',
   'itemUi.lootRoll.everyonePassed': '모두 {item}을(를) 포기했습니다.',
+  'itemUi.lootRoll.winnerOffline': '{item}의 당첨자가 오프라인 상태여서 시체로 반환되었습니다.',
   'entities.abilities.heroic_strike.name': '영웅의 일격',
   'entities.abilities.heroic_strike.description':
     '강력한 공격으로 근접 피해가 {damage}만큼 증가합니다. 다음 무기 공격 시 발동됩니다.',

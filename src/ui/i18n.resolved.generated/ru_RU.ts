@@ -4052,7 +4052,8 @@ export const ru_RU: EnTranslations = {
       "needAria": "Нужно: {item}",
       "greedAria": "Жадность: {item}",
       "passAria": "Пас: {item}",
-      "everyonePassed": "Все отказались от {item}."
+      "everyonePassed": "Все отказались от {item}.",
+      "winnerOffline": "Победитель {item} был офлайн; предмет вернулся к трупу."
     }
   },
   "entities": {

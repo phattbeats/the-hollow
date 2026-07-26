@@ -4052,7 +4052,8 @@ export const sv_SE: EnTranslations = {
       "needAria": "Behov av {item}",
       "greedAria": "Girighet för {item}",
       "passAria": "Avstå från {item}",
-      "everyonePassed": "Alla avstod från {item}."
+      "everyonePassed": "Alla avstod från {item}.",
+      "winnerOffline": "The winner of {item} was offline; it was returned to the corpse."
     }
   },
   "entities": {

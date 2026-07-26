@@ -4052,7 +4052,8 @@ export const nl_NL: EnTranslations = {
       "needAria": "Nodig voor {item}",
       "greedAria": "Hebzucht voor {item}",
       "passAria": "{item} passeren",
-      "everyonePassed": "Iedereen passeerde {item}."
+      "everyonePassed": "Iedereen passeerde {item}.",
+      "winnerOffline": "The winner of {item} was offline; it was returned to the corpse."
     }
   },
   "entities": {

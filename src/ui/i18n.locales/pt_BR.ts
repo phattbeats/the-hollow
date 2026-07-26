@@ -1581,6 +1581,7 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': 'Ganância por {item}',
   'itemUi.lootRoll.passAria': 'Passar em {item}',
   'itemUi.lootRoll.everyonePassed': 'Todos passaram em {item}.',
+  'itemUi.lootRoll.winnerOffline': 'O vencedor de {item} estava offline; foi devolvido ao cadáver.',
   'entities.abilities.heroic_strike.name': 'Golpe Heroico',
   'entities.abilities.heroic_strike.description':
     'Um ataque forte que aumenta o dano corpo a corpo em {damage}. Ativa no seu próximo golpe.',
