@@ -243,7 +243,10 @@ import {
   onInventoryChangedForDeeds,
   onLevelReachedForDeeds,
   onMobKilledForDeeds,
+  onPvpWinForDeeds,
   onQuestCompletedForDeeds,
+  onSocialActionForDeeds,
+  onZoneVisitedForDeeds,
   setActiveTitle as setActiveTitleImpl,
 } from './deeds';
 import type { DialogRuntimeState } from './dialog/dialog_commands';
@@ -782,6 +785,14 @@ export interface PlayerMeta {
   deedsDone: Set<string>;
   earnedTitles: Set<string>;
   activeTitle: string | null;
+  // Transient (not serialized): the zone the player was in last tick, used to
+  // detect a zone change and fire the exploration deed hook (PHAA-745) once per
+  // entry rather than every tick. Undefined until the first movement tick, so a
+  // freshly spawned player credits the zone they start in on their first tick;
+  // exploration deed COUNTS themselves persist via deedLog, so a re-login that
+  // resets this field re-credits an already-satisfied specific-zone objective
+  // harmlessly (its count is already at target and cannot increment further).
+  lastZoneId?: string;
   // Branching-dialogue state (PHAA-553): disposition toward each NPC + persistent
   // conversation flags. Nudged by dialogChoose, gates dialogue branches, persisted
   // in CharacterState (see dialog/dialog_commands.ts).
@@ -2640,6 +2651,10 @@ export class Sim {
       onDelveClearedForDeeds: (delveId, tierId, deathless, meta) =>
         onDelveClearedForDeeds(sim.ctx, delveId, tierId, deathless, meta),
       onLevelReachedForDeeds: (level, meta) => onLevelReachedForDeeds(sim.ctx, level, meta),
+      onZoneVisitedForDeeds: (zoneId, meta) => onZoneVisitedForDeeds(sim.ctx, zoneId, meta),
+      onPvpWinForDeeds: (kind, meta) => onPvpWinForDeeds(sim.ctx, kind, meta),
+      onSocialActionForDeeds: (kind, meta, npcId) =>
+        onSocialActionForDeeds(sim.ctx, kind, meta, npcId),
       countItem: sim.countItem.bind(sim),
       // I1 dungeon instancing now lives in instances/dungeons.ts; these route through
       // the same-named Sim delegates (foreign callers use this.X). lockoutNowMs is the
@@ -3053,6 +3068,15 @@ export class Sim {
       if (!p) continue;
       if (!p.dead) {
         this.updatePlayerMovement(p, meta);
+        // Exploration deeds (PHAA-745): credit the zone the player now stands in,
+        // but only when it changed since last tick so the hook fires once per
+        // entry rather than every tick. Gated on the resolved zone id from
+        // zoneAt(pos.z), the same zone resolver the rest of the sim uses.
+        const zid = zoneAt(p.pos.z).id;
+        if (meta.lastZoneId !== zid) {
+          meta.lastZoneId = zid;
+          this.ctx.onZoneVisitedForDeeds(zid, meta);
+        }
         this.updateDoorTriggers(p);
         this.updateCasting(p, meta);
         this.updatePlayerAutoAttack(p, meta);
@@ -4986,6 +5010,7 @@ export class Sim {
   private completeFishing(p: Entity, meta: PlayerMeta): void {
     if (this.shouldCatchCodfather(p, meta)) {
       this.addItem(THE_CODFATHER_ITEM_ID, 1, meta.entityId);
+      this.ctx.onSocialActionForDeeds('fish', meta);
       return;
     }
     // The catch depends on which zone's water you're fishing and each has its own
@@ -5021,6 +5046,7 @@ export class Sim {
       });
     }
     this.addItem(caught, 1, meta.entityId);
+    this.ctx.onSocialActionForDeeds('fish', meta);
   }
 
   useItem(itemId: string, pid?: number): ItemUseResult | undefined {
@@ -5176,6 +5202,7 @@ export class Sim {
     const { meta } = r;
     const npc = this.entities.get(npcId);
     if (!npc || !this.isQuestInteractionEntity(npc)) return;
+    this.ctx.onSocialActionForDeeds('talk', meta, npc.templateId);
     if (this.interactNpcForQuests(npc, meta)) return;
     for (const qid of npc.questIds) {
       const quest = QUESTS[qid];

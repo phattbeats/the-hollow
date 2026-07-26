@@ -1747,8 +1747,16 @@ export type DeedCategory =
   | 'pvp'
   | 'social';
 
+// 'pvp': a match/bout win, from the shared arena/fiesta/boarball result choke
+// point (endArenaMatch in social/arena.ts) or the duel choke point (endDuel in
+// social/duel.ts). 'social': a non-combat action, from one of several distinct
+// choke points (completeFishing / talkToNpc in sim.ts, lockpickSucceed in
+// delves/lockpick_controller.ts, the /roll handler in social/chat.ts).
+export type PvpWinKind = 'arena' | 'fiesta' | 'boarball' | 'duel';
+export type SocialActionKind = 'fish' | 'lockpick' | 'roll' | 'talk' | 'bank';
+
 export interface DeedObjective {
-  type: 'kill' | 'collect' | 'quest' | 'delve' | 'level';
+  type: 'kill' | 'collect' | 'quest' | 'delve' | 'level' | 'explore' | 'pvp' | 'social';
   targetMobId?: string; // for 'kill'; omitted means "any mob" (wildcard credit)
   itemId?: string; // for 'collect'
   questId?: string; // for 'quest'; omitted means "any quest" (wildcard credit)
@@ -1756,6 +1764,10 @@ export interface DeedObjective {
   tierId?: string; // for 'delve'; omitted means "any tier"
   deathless?: boolean; // for 'delve'; true requires a clear with zero deaths for the player
   atLeast?: number; // for 'level'; the character level threshold the deed credits at
+  zoneId?: string; // for 'explore'; the zone whose first entry credits this objective
+  pvpKind?: PvpWinKind; // for 'pvp'; omitted means "any pvp win" (wildcard credit)
+  socialKind?: SocialActionKind; // for 'social'
+  npcId?: string; // for 'social' with socialKind 'talk'; omitted means "any NPC"
   count: number;
   label: string;
 }

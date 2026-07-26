@@ -129,7 +129,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "c5763c7f",
+      "state": "fece102f",
       "events": "d5013272",
       "rng": {
         "draws": 0,
@@ -213,6 +213,29 @@
                   0
                 ],
                 "deedId": "col_greyjaw_trophy",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]
@@ -302,7 +325,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "cc66c4a9",
+      "state": "f9565305",
       "events": "ce6bdc58",
       "rng": {
         "draws": 0,
@@ -386,6 +409,29 @@
                   0
                 ],
                 "deedId": "col_greyjaw_trophy",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]
@@ -480,7 +526,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "14608345",
+      "state": "0ca388a9",
       "events": "dafb53c2",
       "rng": {
         "draws": 0,
@@ -564,6 +610,29 @@
                   0
                 ],
                 "deedId": "col_greyjaw_trophy",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]
@@ -658,7 +727,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "0ee02bad",
+      "state": "6d6a4f5d",
       "events": "1a893eff",
       "rng": {
         "draws": 0,
@@ -742,6 +811,29 @@
                   0
                 ],
                 "deedId": "col_greyjaw_trophy",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]
@@ -839,7 +931,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "ef3c7ef7",
+      "state": "6937f9bb",
       "events": "ea1b970d",
       "rng": {
         "draws": 0,
@@ -923,6 +1015,29 @@
                   0
                 ],
                 "deedId": "col_greyjaw_trophy",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]
@@ -1025,7 +1140,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "ef41dd23",
+      "state": "3ce8c80f",
       "events": "79c74e16",
       "rng": {
         "draws": 0,
@@ -1109,6 +1224,29 @@
                   0
                 ],
                 "deedId": "col_greyjaw_trophy",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]
@@ -1208,7 +1346,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "85d03505",
+      "state": "f8fb66a1",
       "events": "ac29292d",
       "rng": {
         "draws": 0,
@@ -1294,6 +1432,29 @@
                 "deedId": "col_greyjaw_trophy",
                 "state": "active"
               }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
+                "state": "active"
+              }
             ]
           ],
           "delveClears": {},
@@ -1403,7 +1564,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "50747595",
+      "state": "66728c81",
       "events": "1d17ffb5",
       "rng": {
         "draws": 0,
@@ -1489,6 +1650,29 @@
                 "deedId": "col_greyjaw_trophy",
                 "state": "active"
               }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
+                "state": "active"
+              }
             ]
           ],
           "delveClears": {},
@@ -1602,7 +1786,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "efb9634d",
+      "state": "ecbc4ec5",
       "events": "c8296386",
       "rng": {
         "draws": 0,
@@ -1688,6 +1872,29 @@
                 "deedId": "col_greyjaw_trophy",
                 "state": "active"
               }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
+                "state": "active"
+              }
             ]
           ],
           "delveClears": {},
@@ -1807,7 +2014,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "33f3b78b",
+      "state": "56ead8cb",
       "events": "3521acd1",
       "rng": {
         "draws": 0,
@@ -1891,6 +2098,29 @@
                   0
                 ],
                 "deedId": "col_greyjaw_trophy",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]
@@ -2012,7 +2242,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "11881dee",
+      "state": "58bfedaa",
       "events": "4a1c576f",
       "rng": {
         "draws": 0,
@@ -2096,6 +2326,29 @@
                   0
                 ],
                 "deedId": "col_greyjaw_trophy",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]
@@ -2221,7 +2474,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "11881dee",
+      "state": "58bfedaa",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -2305,6 +2558,29 @@
                   0
                 ],
                 "deedId": "col_greyjaw_trophy",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]

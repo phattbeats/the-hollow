@@ -109,7 +109,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "8f6b530d",
+      "state": "4a2110e1",
       "events": "0994cb43",
       "rng": {
         "draws": 0,
@@ -192,6 +192,29 @@
                   0
                 ],
                 "deedId": "col_greyjaw_trophy",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]
@@ -279,8 +302,8 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "09ea8233",
-      "events": "349f94c3",
+      "state": "17290ccc",
+      "events": "97150638",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -364,6 +387,29 @@
                   0
                 ],
                 "deedId": "col_greyjaw_trophy",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  5
+                ],
+                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]
@@ -457,8 +503,8 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "a3753905",
-      "events": "7eb9d2d2",
+      "state": "f3f9f75d",
+      "events": "be48ee86",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -542,6 +588,29 @@
                   0
                 ],
                 "deedId": "col_greyjaw_trophy",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  4
+                ],
+                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]
@@ -635,8 +704,8 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "75f79f76",
-      "events": "ff3890eb",
+      "state": "ff6df1f9",
+      "events": "d48ae574",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -720,6 +789,29 @@
                   0
                 ],
                 "deedId": "col_greyjaw_trophy",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  5
+                ],
+                "deedId": "hid_gluttons_cache",
                 "state": "active"
               }
             ]
@@ -813,8 +905,8 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "e1fb345d",
-      "events": "77792b38",
+      "state": "1ca8b714",
+      "events": "7146b945",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -913,6 +1005,39 @@
                 "deedId": "col_greyjaw_trophy",
                 "state": "active"
               }
+            ],
+            [
+              "feat_lorebound",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "feat_lorebound",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
+                "state": "active"
+              }
             ]
           ],
           "delveClears": {},
@@ -991,8 +1116,8 @@
       "tick": 2,
       "time": 0.1,
       "nextId": 408,
-      "state": "f77debab",
-      "events": "741638a5",
+      "state": "afe30525",
+      "events": "c9a078ed",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -1091,7 +1216,80 @@
                 "deedId": "col_greyjaw_trophy",
                 "state": "active"
               }
+            ],
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_lorebound",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "feat_lorebound",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
+                "state": "active"
+              }
             ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
           ],
           "delveClears": {},
           "delveDaily": {},
@@ -1102,6 +1300,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 350,
           "nodeHarvestReadyAt": {},
           "questsDone": [

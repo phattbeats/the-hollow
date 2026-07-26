@@ -87,6 +87,12 @@ const CALLBACK_KEYS = [
   'onDelveClearedForDeeds',
   // PHAA-745 progression category: level-reached deed credit.
   'onLevelReachedForDeeds',
+  // PHAA-745 exploration category: zone-visit deed credit.
+  'onZoneVisitedForDeeds',
+  // PHAA-745 pvp category: pvp match/bout win deed credit.
+  'onPvpWinForDeeds',
+  // PHAA-745 social category: non-combat action deed credit.
+  'onSocialActionForDeeds',
   // E1 entity-roster surface.
   'addEntity',
   'dropEntity',
@@ -348,6 +354,9 @@ function makeFakeHost() {
     onQuestCompletedForDeeds: vi.fn(),
     onDelveClearedForDeeds: vi.fn(),
     onLevelReachedForDeeds: vi.fn(),
+    onZoneVisitedForDeeds: vi.fn(),
+    onPvpWinForDeeds: vi.fn(),
+    onSocialActionForDeeds: vi.fn(),
     countItem: vi.fn(() => 0),
     lockoutNowMs: vi.fn(() => 0),
     instanceKeyFor: vi.fn(() => 'solo:0'),

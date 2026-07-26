@@ -224,6 +224,7 @@ export function chat(ctx: SimContext, text: string, pid?: number): SentChat | nu
     }
     const result = ctx.rng.int(lo, hi);
     const text = `${result} (${lo}-${hi})`;
+    ctx.onSocialActionForDeeds('roll', r.meta);
     const party = ctx.partyOf(r.meta.entityId);
     if (party) {
       for (const mPid of party.members) {

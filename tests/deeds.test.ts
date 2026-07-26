@@ -12,7 +12,10 @@ import {
   onInventoryChangedForDeeds,
   onLevelReachedForDeeds,
   onMobKilledForDeeds,
+  onPvpWinForDeeds,
   onQuestCompletedForDeeds,
+  onSocialActionForDeeds,
+  onZoneVisitedForDeeds,
   setActiveTitle,
 } from '../src/sim/deeds';
 import type { PlayerMeta } from '../src/sim/sim';
@@ -306,6 +309,204 @@ describe('deeds: onLevelReachedForDeeds (progression credit)', () => {
     onLevelReachedForDeeds(ctx, 11, meta, registry);
     onLevelReachedForDeeds(ctx, 20, meta, registry);
     expect(ctx.events.length).toBe(0);
+  });
+});
+
+const EXPLORE_DEED: DeedDef = {
+  id: 'd_into_the_mire',
+  name: 'Into the Mire',
+  text: 'Enter Mirefen Marsh.',
+  category: 'exploration',
+  objectives: [{ type: 'explore', zoneId: 'mirefen_marsh', count: 1, label: 'Mirefen Marsh' }],
+  titleReward: 't_wayfarer',
+};
+
+const GRAND_TOUR_DEED: DeedDef = {
+  id: 'd_grand_tour',
+  name: 'Seed on the Wind',
+  text: 'Stand in both lands.',
+  category: 'exploration',
+  objectives: [
+    { type: 'explore', zoneId: 'eastbrook_vale', count: 1, label: 'Eastbrook Vale' },
+    { type: 'explore', zoneId: 'mirefen_marsh', count: 1, label: 'Mirefen Marsh' },
+  ],
+};
+
+const WILDCARD_EXPLORE_DEED: DeedDef = {
+  id: 'd_first_steps',
+  name: 'First Steps',
+  text: 'Enter any zone.',
+  category: 'exploration',
+  objectives: [{ type: 'explore', count: 1, label: 'Zones entered' }],
+};
+
+describe('deeds: onZoneVisitedForDeeds (exploration credit)', () => {
+  it('ignores a non-matching zone and credits + completes on the matching one', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_into_the_mire: EXPLORE_DEED };
+
+    onZoneVisitedForDeeds(ctx, 'eastbrook_vale', meta, registry); // wrong zone
+    expect(meta.deedLog.has('d_into_the_mire')).toBe(false);
+
+    onZoneVisitedForDeeds(ctx, 'mirefen_marsh', meta, registry);
+    expect(meta.deedsDone.has('d_into_the_mire')).toBe(true);
+    expect(meta.earnedTitles.has('t_wayfarer')).toBe(true);
+  });
+
+  it('re-entering an already-credited zone is an idempotent no-op (no re-credit event)', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_into_the_mire: EXPLORE_DEED };
+
+    onZoneVisitedForDeeds(ctx, 'mirefen_marsh', meta, registry);
+    ctx.events.length = 0;
+    onZoneVisitedForDeeds(ctx, 'mirefen_marsh', meta, registry);
+    expect(ctx.events.length).toBe(0);
+  });
+
+  it('completes a multi-zone tour only once every distinct zone has been entered', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_grand_tour: GRAND_TOUR_DEED };
+
+    onZoneVisitedForDeeds(ctx, 'eastbrook_vale', meta, registry);
+    expect(meta.deedsDone.has('d_grand_tour')).toBe(false);
+    // Re-entering the first zone must not credit the second objective.
+    onZoneVisitedForDeeds(ctx, 'eastbrook_vale', meta, registry);
+    expect(meta.deedsDone.has('d_grand_tour')).toBe(false);
+
+    onZoneVisitedForDeeds(ctx, 'mirefen_marsh', meta, registry);
+    expect(meta.deedsDone.has('d_grand_tour')).toBe(true);
+  });
+
+  it('a wildcard explore objective credits on the first entry of any zone', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_first_steps: WILDCARD_EXPLORE_DEED };
+
+    onZoneVisitedForDeeds(ctx, 'the_hollow_reaches', meta, registry);
+    expect(meta.deedsDone.has('d_first_steps')).toBe(true);
+  });
+});
+
+const ARENA_WIN_DEED: DeedDef = {
+  id: 'd_ranked_wins',
+  name: 'Ranked Contender',
+  text: 'Win 3 ranked arena bouts.',
+  category: 'pvp',
+  objectives: [{ type: 'pvp', pvpKind: 'arena', count: 3, label: 'Ranked arena wins' }],
+  titleReward: 't_contender',
+};
+
+const WILDCARD_PVP_DEED: DeedDef = {
+  id: 'd_first_kill',
+  name: 'First Kill',
+  text: 'Win any pvp bout.',
+  category: 'pvp',
+  objectives: [{ type: 'pvp', count: 1, label: 'PvP bouts won' }],
+};
+
+describe('deeds: onPvpWinForDeeds (pvp credit)', () => {
+  it('credits only the matching pvpKind, then completes and grants the title', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_ranked_wins: ARENA_WIN_DEED };
+
+    onPvpWinForDeeds(ctx, 'duel', meta, registry); // non-matching kind
+    expect(meta.deedLog.has('d_ranked_wins')).toBe(false);
+
+    onPvpWinForDeeds(ctx, 'arena', meta, registry);
+    onPvpWinForDeeds(ctx, 'arena', meta, registry);
+    expect(meta.deedsDone.has('d_ranked_wins')).toBe(false);
+    onPvpWinForDeeds(ctx, 'arena', meta, registry);
+    expect(meta.deedsDone.has('d_ranked_wins')).toBe(true);
+    expect(meta.earnedTitles.has('t_contender')).toBe(true);
+
+    ctx.events.length = 0;
+    onPvpWinForDeeds(ctx, 'arena', meta, registry);
+    expect(ctx.events.length).toBe(0); // a completed deed never re-triggers
+  });
+
+  it('credits an objective with no pvpKind on any pvp win (wildcard)', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_first_kill: WILDCARD_PVP_DEED };
+
+    onPvpWinForDeeds(ctx, 'boarball', meta, registry);
+    expect(meta.deedsDone.has('d_first_kill')).toBe(true);
+  });
+});
+
+const FISH_DEED: DeedDef = {
+  id: 'd_angler',
+  name: 'The Angler',
+  text: 'Land 3 catches.',
+  category: 'social',
+  objectives: [{ type: 'social', socialKind: 'fish', count: 3, label: 'Fish landed' }],
+  titleReward: 't_angler',
+};
+
+const TALK_DEED: DeedDef = {
+  id: 'd_old_friend',
+  name: 'An Old Friend',
+  text: 'Speak with the Hollow Sage.',
+  category: 'social',
+  objectives: [
+    {
+      type: 'social',
+      socialKind: 'talk',
+      npcId: 'hollow_sage',
+      count: 1,
+      label: 'Spoke with the Hollow Sage',
+    },
+  ],
+};
+
+const WILDCARD_TALK_DEED: DeedDef = {
+  id: 'd_gladhander',
+  name: 'Gladhander',
+  text: 'Speak with anyone.',
+  category: 'social',
+  objectives: [{ type: 'social', socialKind: 'talk', count: 1, label: 'NPCs greeted' }],
+};
+
+describe('deeds: onSocialActionForDeeds (social credit)', () => {
+  it('credits only the matching socialKind, then completes and grants the title', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_angler: FISH_DEED };
+
+    onSocialActionForDeeds(ctx, 'roll', meta, undefined, registry); // non-matching kind
+    expect(meta.deedLog.has('d_angler')).toBe(false);
+
+    onSocialActionForDeeds(ctx, 'fish', meta, undefined, registry);
+    onSocialActionForDeeds(ctx, 'fish', meta, undefined, registry);
+    expect(meta.deedsDone.has('d_angler')).toBe(false);
+    onSocialActionForDeeds(ctx, 'fish', meta, undefined, registry);
+    expect(meta.deedsDone.has('d_angler')).toBe(true);
+    expect(meta.earnedTitles.has('t_angler')).toBe(true);
+  });
+
+  it('requires the npcId to match when a talk objective sets one', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_old_friend: TALK_DEED };
+
+    onSocialActionForDeeds(ctx, 'talk', meta, 'some_other_npc', registry);
+    expect(meta.deedsDone.has('d_old_friend')).toBe(false);
+
+    onSocialActionForDeeds(ctx, 'talk', meta, 'hollow_sage', registry);
+    expect(meta.deedsDone.has('d_old_friend')).toBe(true);
+  });
+
+  it('credits a talk objective with no npcId on any NPC (wildcard)', () => {
+    const ctx = makeCtx();
+    const meta = makeMeta();
+    const registry = { d_gladhander: WILDCARD_TALK_DEED };
+
+    onSocialActionForDeeds(ctx, 'talk', meta, 'anyone_at_all', registry);
+    expect(meta.deedsDone.has('d_gladhander')).toBe(true);
   });
 });
 
