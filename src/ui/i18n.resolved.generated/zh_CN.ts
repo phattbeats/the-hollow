@@ -4121,6 +4121,10 @@ export const zh_CN: EnTranslations = {
         "name": "嘲讽",
         "description": "嘲讽目标：你的威胁值提高到其最仇恨敌人的水平，并强迫其攻击你 3 秒。"
       },
+      "ironhold": {
+        "name": "坚守",
+        "description": "紧守盾牌，在 8 秒内使受到的所有伤害降低 40%。"
+      },
       "fireball": {
         "name": "火球术",
         "description": "投掷一团火球，造成 {damage} 点火焰伤害，并附加持续伤害。"
@@ -4312,6 +4316,10 @@ export const zh_CN: EnTranslations = {
       "retribution_aura": {
         "name": "惩戒光环",
         "description": "以神圣能量环绕自身，持续 30 分钟，对任何近战攻击你的敌人造成 5 点神圣伤害。"
+      },
+      "sacred_bulwark": {
+        "name": "神圣壁垒",
+        "description": "持续 10 秒，下一次本该致命的打击将被抵挡，并使你恢复到 35% 的生命值。"
       },
       "tame_beast": {
         "name": "驯服野兽",
@@ -4596,6 +4604,10 @@ export const zh_CN: EnTranslations = {
       "rip": {
         "name": "割裂",
         "description": "终结技，在 12 秒内造成流血伤害。消耗连击点。仅限狼形态。"
+      },
+      "primal_reflexes": {
+        "name": "原始反射",
+        "description": "你的本能变得敏锐，在 6 秒内使闪避几率提高 50%。"
       },
       "mortal_strike": {
         "name": "致死打击",

@@ -4121,6 +4121,10 @@ export const nl_NL: EnTranslations = {
         "name": "Provoceren",
         "description": "Provoceert het doelwit: je dreiging stijgt tot het niveau van zijn meest gehate vijand en het wordt 3 sec lang gedwongen jou aan te vallen."
       },
+      "ironhold": {
+        "name": "Ironhold",
+        "description": "Brace behind your guard, reducing all damage taken by 40% for 8 sec."
+      },
       "fireball": {
         "name": "Vuurbal",
         "description": "Werpt een vurige bal die {damage} Vuurschade toebrengt plus extra schade over tijd."
@@ -4312,6 +4316,10 @@ export const nl_NL: EnTranslations = {
       "retribution_aura": {
         "name": "Aura van Vergelding",
         "description": "Omhult je 30 min lang met heilige energie en brengt 5 Heilige schade toe aan elke vijand die je in het melee aanvalt."
+      },
+      "sacred_bulwark": {
+        "name": "Sacred Bulwark",
+        "description": "For 10 sec, the next enemy hit that would kill you is denied, restoring you to 35% health instead."
       },
       "tame_beast": {
         "name": "Beest Temmen",
@@ -4596,6 +4604,10 @@ export const nl_NL: EnTranslations = {
       "rip": {
         "name": "Verscheuren",
         "description": "Afmaakzet die bloedschade toebrengt gedurende 12 sec. Verbruikt combopunten. Alleen in Wolfsgedaante."
+      },
+      "primal_reflexes": {
+        "name": "Primal Reflexes",
+        "description": "Your instincts sharpen, increasing your chance to dodge by 50% for 6 sec."
       },
       "mortal_strike": {
         "name": "Dodelijke Slag",

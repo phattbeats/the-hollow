@@ -2265,6 +2265,7 @@ const ABILITY_RECIPES: Record<string, IconRecipe> = {
   insect_swarm: r('nature', 'leafGreen', ['tendrils'], ['sparkle']),
   tigers_fury: r('fire', 'ember', ['fang'], ['glow']),
   rip: r('blood', 'blood', ['claw_slash'], ['drips']),
+  primal_reflexes: r('nature', 'leafGreen', ['paw', { p: 'sparkle', ...TR }], ['motion']),
   // --- formerly procedural-fallback abilities: unique hand-authored icons ---
   // warrior
   execute: r('blood', 'blood', ['axe'], ['glow']),
@@ -2273,6 +2274,7 @@ const ABILITY_RECIPES: Record<string, IconRecipe> = {
   defensive_stance: r('steel', 'steel', ['shield'], ['arcs']),
   sunder_armor: r('steel', 'steel', ['chestplate', { p: 'mace', ...BR }]),
   taunt: r('fury', 'blood', ['fist'], ['arcs']),
+  ironhold: r('steel', 'steel', ['shield'], ['glow']),
   mortal_strike: r('blood', 'blood', ['sword', { p: 'claw_slash', ...BR }]),
   bloodthirst: r('blood', 'blood', ['heart', { p: 'dagger', ...BR }], ['drips']),
   shield_slam: r('steel', 'steel', ['shield', { p: 'mace', ...BR }]),
@@ -2294,6 +2296,7 @@ const ABILITY_RECIPES: Record<string, IconRecipe> = {
   consecration: r('holy', 'holyGold', ['sigil_rune'], ['glow']),
   righteous_fury: r('holy', 'gold', ['shield'], ['glow']),
   retribution_aura: r('holy', 'gold', ['sunburst'], ['arcs']),
+  sacred_bulwark: r('holy', 'holyGold', ['shield'], ['sparkle', 'glow']),
   // hunter
   tame_beast: r('nature', 'gold', ['paw'], ['sparkle']),
   dismiss_pet: r('shadow', 'steel', ['paw'], ['arcs']),

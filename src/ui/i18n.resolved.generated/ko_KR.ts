@@ -4121,6 +4121,10 @@ export const ko_KR: EnTranslations = {
         "name": "도발",
         "description": "대상을 도발합니다. 자신의 위협 수준이 대상이 가장 증오하는 적과 같아지며, 3초 동안 자신을 공격하게 만듭니다."
       },
+      "ironhold": {
+        "name": "아이언홀드",
+        "description": "방패 뒤에 웅크려 8초 동안 받는 모든 피해를 40% 감소시킵니다."
+      },
       "fireball": {
         "name": "화염구",
         "description": "불덩이를 날려 {damage}의 화염 피해와 추가 지속 피해를 입힙니다."
@@ -4312,6 +4316,10 @@ export const ko_KR: EnTranslations = {
       "retribution_aura": {
         "name": "응징의 오라",
         "description": "30분 동안 신성한 기운으로 자신을 감싸 근접 공격으로 자신을 타격하는 모든 적에게 5의 신성 피해를 입힙니다."
+      },
+      "sacred_bulwark": {
+        "name": "신성한 보루",
+        "description": "10초 동안, 당신을 죽일 다음 공격이 무효화되며 대신 체력을 35%로 회복시킵니다."
       },
       "tame_beast": {
         "name": "야수 길들이기",
@@ -4596,6 +4604,10 @@ export const ko_KR: EnTranslations = {
       "rip": {
         "name": "찢기",
         "description": "12초에 걸쳐 출혈 피해를 입히는 결정타입니다. 연계 점수를 소모합니다. 늑대 변신 전용."
+      },
+      "primal_reflexes": {
+        "name": "원시 반사신경",
+        "description": "본능이 예민해져 6초 동안 회피 확률이 50% 증가합니다."
       },
       "mortal_strike": {
         "name": "죽음의 일격",

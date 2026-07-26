@@ -1672,6 +1672,8 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.taunt.name': '挑発',
   'entities.abilities.taunt.description':
     '対象を挑発します。あなたの脅威が対象の最も憎む敵と同じ値まで上がり、3秒間あなたを攻撃させます。',
+  'entities.abilities.ironhold.name': 'アイアンホールド',
+  'entities.abilities.ironhold.description': '盾の陰に身を潜め、8秒間受けるダメージを40%軽減する。',
   'entities.abilities.fireball.name': 'ファイアボール',
   'entities.abilities.fireball.description':
     '炎の球を放ち、{damage} の火炎ダメージと追加の継続ダメージを与えます。',
@@ -1807,6 +1809,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.retribution_aura.name': 'リトリビューションオーラ',
   'entities.abilities.retribution_aura.description':
     '30分間、聖なる力で身を包み、近接攻撃をしてきた敵に5の神聖ダメージを与えます。',
+  'entities.abilities.sacred_bulwark.name': '聖なる防壁',
+  'entities.abilities.sacred_bulwark.description':
+    '10秒間、致命的な一撃を無効化し、代わりに体力を35%まで回復する。',
   'entities.abilities.tame_beast.name': '獣の調教',
   'entities.abilities.tame_beast.description':
     '獣を仲間にするための調教を始めます。獣はあなたのレベル以下で、エリートであってはなりません。ペットはあなたに従い、敵を攻撃し、独自の脅威を保ちます。同時に連れられるペットは1体だけです。',
@@ -1999,6 +2004,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.rip.name': 'リップ',
   'entities.abilities.rip.description':
     '12秒かけて出血ダメージを与えるフィニッシュムーブです。コンボポイントを消費します。ウルフフォーム専用。',
+  'entities.abilities.primal_reflexes.name': '原始反射',
+  'entities.abilities.primal_reflexes.description':
+    '本能が研ぎ澄まされ、6秒間回避率が50%上昇する。',
   'entities.abilities.mortal_strike.name': '致死打撃',
   'entities.abilities.mortal_strike.description':
     '凶悪な一撃で武器ダメージに加えて {damage} のダメージを与えます。（武器シグネチャー）',

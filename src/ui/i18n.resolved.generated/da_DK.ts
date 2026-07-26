@@ -4121,6 +4121,10 @@ export const da_DK: EnTranslations = {
         "name": "Hån",
         "description": "Håner målet: din trussel stiger til at matche dets mest forhadte fjende, og det tvinges til at angribe dig i 3 sek."
       },
+      "ironhold": {
+        "name": "Ironhold",
+        "description": "Brace behind your guard, reducing all damage taken by 40% for 8 sec."
+      },
       "fireball": {
         "name": "Ildkugle",
         "description": "Slynger en flammende kugle, der volder {damage} ildskade plus yderligere skade over tid."
@@ -4312,6 +4316,10 @@ export const da_DK: EnTranslations = {
       "retribution_aura": {
         "name": "Gengældelsens Aura",
         "description": "Omgiver dig med hellig energi i 30 min og tilføjer 5 Hellig skade til enhver fjende, der rammer dig i nærkamp."
+      },
+      "sacred_bulwark": {
+        "name": "Sacred Bulwark",
+        "description": "For 10 sec, the next enemy hit that would kill you is denied, restoring you to 35% health instead."
       },
       "tame_beast": {
         "name": "Tæm Bæst",
@@ -4596,6 +4604,10 @@ export const da_DK: EnTranslations = {
       "rip": {
         "name": "Sønderriv",
         "description": "Afslutningsangreb der forårsager blødningsskade over 12 sek. Forbruger kombopoint. Kun i Ulveform."
+      },
+      "primal_reflexes": {
+        "name": "Primal Reflexes",
+        "description": "Your instincts sharpen, increasing your chance to dodge by 50% for 6 sec."
       },
       "mortal_strike": {
         "name": "Dødbringende Slag",

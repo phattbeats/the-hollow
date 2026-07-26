@@ -1598,6 +1598,8 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.taunt.name': '嘲諷',
   'entities.abilities.taunt.description':
     '嘲諷目標：你的威脅值提高到其最仇恨敵人的水平，並強迫其攻擊你 3 秒。',
+  'entities.abilities.ironhold.name': '堅守',
+  'entities.abilities.ironhold.description': '緊守盾牌，在 8 秒內使受到的所有傷害降低 40%。',
   'entities.abilities.fireball.name': '火球術',
   'entities.abilities.fireball.description':
     '投擲一團火球，造成 {damage} 點火焰傷害，並附加持續傷害。',
@@ -1728,6 +1730,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.retribution_aura.name': '懲戒光環',
   'entities.abilities.retribution_aura.description':
     '以神聖能量環繞自身，持續 30 分鐘，對任何近戰攻擊你的敵人造成 5 點神聖傷害。',
+  'entities.abilities.sacred_bulwark.name': '神聖壁壘',
+  'entities.abilities.sacred_bulwark.description':
+    '持續 10 秒，下一次本該致命的打擊將被抵擋，並使你恢復到 35% 的生命值。',
   'entities.abilities.tame_beast.name': '馴服野獸',
   'entities.abilities.tame_beast.description':
     '開始馴服一隻野獸作為你的夥伴。牠必須不高於你的等級，且不能是精英。你的寵物會跟隨你、攻擊敵人，並保持自己的威脅值。同一時間只能擁有一隻寵物。',
@@ -1903,6 +1908,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.tigers_fury.description': '使攻擊強度提高 40，持續 6 秒。僅限狼形態。',
   'entities.abilities.rip.name': '割裂',
   'entities.abilities.rip.description': '終結技，在 12 秒內造成流血傷害。消耗連擊點。僅限狼形態。',
+  'entities.abilities.primal_reflexes.name': '原始反射',
+  'entities.abilities.primal_reflexes.description':
+    '你的本能變得敏銳，在 6 秒內使閃避機率提高 50%。',
   'entities.abilities.mortal_strike.name': '致死打擊',
   'entities.abilities.mortal_strike.description':
     '凶狠打擊，造成武器傷害外加 {damage} 點傷害。（武器專精標誌技能）',
