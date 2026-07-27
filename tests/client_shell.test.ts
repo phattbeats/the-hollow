@@ -1130,6 +1130,25 @@ describe('client HTML shell', () => {
     );
   });
 
+  it('locks /play to the online realm while index.html keeps both realms (PHAA-717)', () => {
+    // index.html is the primary entry (local dev, offline demo, RL-adjacent testing) and
+    // keeps the full Online/Offline realm selector. play.html (upstream #1836) is the
+    // online-only promo entry: no offline option in its realm dropdown, and a body flag
+    // main.ts could key off if it ever needs to branch on the lock.
+    expect(html).toContain('id="server-opt-offline"');
+    expect(html).not.toContain('data-mode-lock="online"');
+
+    expect(playHtml).toContain('data-mode-lock="online"');
+    expect(playHtml).not.toContain('id="server-opt-offline"');
+    expect(playHtml).not.toContain('data-i18n="mode.serverOffline"');
+    expect(playHtml).toContain('id="server-select"');
+    expect(playHtml).toContain('id="server-select-menu"');
+    // The legacy hidden compat triggers stay: automated tours / E2E scripts drive
+    // #btn-offline directly and never go through the (now offline-less) dropdown.
+    expect(playHtml).toContain('id="btn-online"');
+    expect(playHtml).toContain('id="btn-offline"');
+  });
+
   it('ships a minimal spore-field login backdrop with no video/attribution baggage', () => {
     // PHAA-406: the licensed-provenance-unclear trailer video was retired for a
     // procedural bioluminescent spore field over the near-black base. No <video>,

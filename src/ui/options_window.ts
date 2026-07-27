@@ -124,6 +124,7 @@ const BIND_CATEGORY_LABEL_KEYS: Partial<Record<string, TranslationKey>> = {
   Targeting: 'hud.keybinds.categories.targeting',
   Interface: 'hud.keybinds.categories.interface',
   'Action Bar': 'hud.keybinds.categories.actionBar',
+  Pet: 'hudChrome.keybinds.categoryPet',
 };
 const BIND_ACTION_LABEL_KEYS: Partial<Record<string, TranslationKey>> = {
   forward: 'hud.keybinds.actions.forward',
@@ -152,6 +153,11 @@ const BIND_ACTION_LABEL_KEYS: Partial<Record<string, TranslationKey>> = {
   emoteWheel: 'hudChrome.keybinds.emoteWheel',
   targetFriendly: 'hudChrome.keybinds.targetFriendly',
   targetFriendlyNext: 'hudChrome.keybinds.targetFriendlyNext',
+  petAttack: 'hudChrome.keybinds.petAttack',
+  petStop: 'hudChrome.keybinds.petStop',
+  petTaunt: 'hudChrome.keybinds.petTaunt',
+  petDefensive: 'hudChrome.keybinds.petDefensive',
+  petAggressive: 'hudChrome.keybinds.petAggressive',
   // Reuse the existing window/feature names so these labels localize everywhere
   // without duplicating strings (these two ids were previously absent from the
   // map and fell back to the raw English BIND_ACTIONS labels).
@@ -182,6 +188,8 @@ export interface OptionsWindowDeps {
   slotActionName(slot: number): string | null;
   /** Re-sync the action-bar keycaps after a rebind/reset. */
   refreshKeybindLabels(): void;
+  /** Open the Daily Rewards window (PHAA-660), closing the options menu first. */
+  openDailyRewards(): void;
   /** The shared gold-themed dropdown (carries the listbox ARIA + keyboard nav). */
   buildDropdown(
     options: { value: string; label: string }[],
@@ -339,6 +347,9 @@ export class OptionsWindow {
           this.render();
         } else if (a.kind === 'logout') {
           this.deps.options()?.logout();
+        } else if (a.kind === 'dailyRewards') {
+          this.close();
+          this.deps.openDailyRewards();
         } else {
           this.close();
         }

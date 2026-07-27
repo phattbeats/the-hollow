@@ -1,4 +1,5 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+import * as colliders from '../src/sim/colliders';
 import { petFollow, petPickTarget, petRangedAttack, updatePet } from '../src/sim/pet/pet_ai';
 import { Sim } from '../src/sim/sim';
 import { dist2d, type Entity } from '../src/sim/types';
@@ -150,5 +151,38 @@ describe('pet_ai module (P1a) — direct unit tests', () => {
     pet.petPath = [{ x: 9, y: 0, z: 9 }];
     petFollow(sim.ctx, pet, owner);
     expect(pet.petPath).toEqual([]);
+  });
+
+  it('petFollow teleports to heel beyond the 96yd recovery bound without paying for the LoS raycast', () => {
+    const { sim, pid, owner } = world();
+    const pet = adopt(sim, pid);
+    place(owner, 0, 0);
+    place(pet, owner.pos.x + 500, owner.pos.z); // far past PET_RECOVERY_LOS_CAP
+    // No cached route, and pin the recompute throttle so petFollow can't quietly
+    // resolve a real A* path itself; only the teleport fallback can close this gap.
+    pet.petPath = [{ x: pet.pos.x, y: 0, z: pet.pos.z }];
+    pet.petPathCooldown = 999;
+    // Even a (falsely) clear line of sight must not save the raycast from being
+    // skipped: the distance bound alone should trigger the teleport.
+    const los = vi.spyOn(colliders, 'lineOfSightClear').mockReturnValue(true);
+    petFollow(sim.ctx, pet, owner);
+    expect(los).not.toHaveBeenCalled();
+    expect(dist2d(pet.pos, owner.pos)).toBeLessThan(0.01);
+    los.mockRestore();
+  });
+
+  it('petFollow still consults line of sight for a stuck pet within the recovery bound', () => {
+    const { sim, pid, owner } = world();
+    const pet = adopt(sim, pid);
+    place(owner, 0, 0);
+    place(pet, owner.pos.x + 80, owner.pos.z); // beyond PET_TELEPORT_DISTANCE(60), inside the 96yd cap
+    pet.petPath = [{ x: pet.pos.x, y: 0, z: pet.pos.z }];
+    pet.petPathCooldown = 999;
+    const los = vi.spyOn(colliders, 'lineOfSightClear').mockReturnValue(true);
+    petFollow(sim.ctx, pet, owner);
+    expect(los).toHaveBeenCalled();
+    // A (mocked) clear line of sight means no teleport yet at this distance.
+    expect(dist2d(pet.pos, owner.pos)).toBeGreaterThan(1);
+    los.mockRestore();
   });
 });

@@ -825,6 +825,8 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/delves/runs.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/delves/lockpick_controller.ts'), 'utf8'),
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/market.ts'), 'utf8'),
+    // PHAA-626: the collections core's readCollectible command errors.
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/collections.ts'), 'utf8'),
     // PHAA-495: the Ravenpost (in-game mail) module's error/log/loot emits.
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/mail/post_office.ts'), 'utf8'),
     // W2: the inventory/vendor command bodies (equip/use/discard + buy/sell/buyback).
@@ -872,6 +874,12 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
     // PHAA-505: per-player node harvest command denials (dead gate, unknown
     // node, range, respawn timer).
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/gathering.ts'), 'utf8'),
+    // PHAA-574: crafting command denials (dead gate, unknown recipe, missing
+    // materials).
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/crafting.ts'), 'utf8'),
+    // PHAA-660: the daily-rewards claim grant's fixed "You claim your daily
+    // reward." confirmation (no interpolated item name; see the module header).
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/daily_rewards.ts'), 'utf8'),
     socialSrc,
   ].join('\n');
   // Hardened S3: also scan the authoritative server's player-facing emits. The

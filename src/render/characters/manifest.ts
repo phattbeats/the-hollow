@@ -111,6 +111,19 @@ export interface VisualDef {
    *  flip the standalone weapon files carry). Node name as authored in the GLB;
    *  applied as a local-space rotation (radians) after the bind transform. */
   weaponFix?: { node: string; rotX?: number; rotY?: number; rotZ?: number }[];
+  /** Post-load placement fixups for SKINNED accessory meshes baked INTO a
+   *  character GLB at the wrong scale/position (PHAA-633: the styloo merchant
+   *  outfit's witch hat shipped floating above the head at ~2x scale). Unlike
+   *  `weaponFix`, this bakes a corrective matrix into the node's `geometry`
+   *  (applied once, at the per-url cache-build in `optimizedScene`) rather
+   *  than mutating the node's own transform: a `SkinnedMesh` in the default
+   *  'attached' bind mode recomputes its `bindMatrixInverse` from its own
+   *  `matrixWorld` on every `updateMatrixWorld()` pass, which silently
+   *  cancels out any transform applied directly to the node (confirmed via
+   *  matrix introspection while debugging PHAA-633; `weaponFix`'s node-level
+   *  rotation only works because it targets non-skinned prop meshes). Scale
+   *  is uniform and applied before the translation (T * S). */
+  skinnedMeshFix?: { node: string; position?: [number, number, number]; scale?: number }[];
 }
 
 /** The slice of a VisualDef that decides how held weapons attach (which bones, and
@@ -700,6 +713,12 @@ export const VISUALS: Record<string, VisualDef> = {
     },
     tint: 0x8d5fd3,
     tintStrength: 0.45,
+    // PHAA-633: the merchant outfit's `hat` mesh ships ~2x oversized and
+    // floating well above the head (an authoring bug in the purchased styloo
+    // pack, not a runtime scale/attach issue). Shrink and drop it onto the
+    // head; tuned empirically against the offscreen render rig, see
+    // scripts/phaa633_witch_hat_shot.mjs.
+    skinnedMeshFix: [{ node: 'hat', scale: 0.72, position: [0, 0.66, 0] }],
   },
   player_shaman_f: {
     url: `${PLAYERS}/chibi_female_basemesh.glb`,
@@ -1128,14 +1147,20 @@ export const VISUALS: Record<string, VisualDef> = {
       death: 'Idle',
     },
   },
-  // Sister Shade (PHAA-558 touch-up): unique chibi female look on the merchant
-  // outfit (the plainest civilian silhouette in the female roster) with a
-  // willow-sage tint no player class uses, matching her sim color 0x6b7f6a.
-  // She must read as an ordinary woman doing chores, so no show-list gear and
-  // no held prop; the watering can needs the chibi grip/attach foundation
-  // (PHAA-583 follow-up) and stays future work.
+  // Sister Shade (PHAA-636 bespoke wardrobe pass): a Blender edit of the
+  // styloo merchant source (the plainest civilian silhouette in the female
+  // roster), not the stock GLB with a runtime tint. The merchant's wide hat
+  // is reshaped into a headscarf, a duplicated/recolored front chemise panel
+  // becomes an apron, and a small satchel + willow-leaf hem motifs are added
+  // (see docs/design/shade-questline.md). Earth tones (sage headscarf, warm
+  // brown apron/satchel, muted olive pants) are baked into the garment
+  // materials now, so no runtime tint is applied here (it would also wash
+  // out her skin/hair/eyes). She must read as an ordinary woman doing
+  // chores, so no show-list gear and no held prop; the watering can needs
+  // the chibi grip/attach foundation (PHAA-583 follow-up) and stays future
+  // work.
   npc_shade: {
-    url: `${PLAYERS}/chibi_female_merchant.glb`,
+    url: `${NPCS}/shade.glb`,
     height: 2.29,
     clips: {
       idle: 'anim_iddle',
@@ -1145,8 +1170,6 @@ export const VISUALS: Record<string, VisualDef> = {
       death: 'anim_dying',
       jump: 'anim_jump',
     },
-    tint: 0x7f8f6e,
-    tintStrength: 0.5,
   },
 };
 
@@ -1330,4 +1353,24 @@ export function visibleAttachmentsForGraphics(
   def: Pick<VisualDef, 'attach'>,
 ): readonly AttachDef[] {
   return def.attach ?? [];
+}
+
+const bakedArmorNodeNamesByUrl = new Map<string, ReadonlySet<string>>();
+
+/** Union of every node name gated by ANY VisualDef's `bakedArmorSlots` that
+ *  shares this GLB url (several defs can point at one url, e.g. player_warrior_f
+ *  and player_paladin_f both use chibi_female_knight.glb). PHAA-653: the
+ *  per-url merge cache (assets.ts optimizedScene) must never fuse one of these
+ *  nodes into a body mesh, or its runtime visibility toggle silently stops
+ *  finding it by name and it gets stuck visible. */
+export function bakedArmorNodeNamesForUrl(url: string): ReadonlySet<string> {
+  const hit = bakedArmorNodeNamesByUrl.get(url);
+  if (hit) return hit;
+  const names = new Set<string>();
+  for (const def of Object.values(VISUALS)) {
+    if (def.url !== url || !def.bakedArmorSlots) continue;
+    for (const node of Object.keys(def.bakedArmorSlots)) names.add(node);
+  }
+  bakedArmorNodeNamesByUrl.set(url, names);
+  return names;
 }

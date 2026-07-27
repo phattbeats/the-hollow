@@ -89,6 +89,7 @@ import { HousingView } from './housing';
 import { type NearbyHousingPlot, nearestHousingPlot } from './housing_proximity';
 import { buildImpactSite, type ImpactSiteView } from './impact_site';
 import { ensureDelveInteriorKit } from './interior_kit';
+import { buildJailScene } from './jail_scene';
 import { type LocoTrack, newLocoTrack, updateLocomotion } from './locomotion';
 import { buildMotes, type MotesView } from './motes';
 import { COMBO_PIP_MAX } from './nameplate_combo';
@@ -1210,11 +1211,19 @@ export class Renderer {
       this.scene.add(cl);
     }
 
-    this.terrainView = buildTerrain(this.sim.cfg.seed);
+    // A returning character can log out anywhere in a zone, not only at a
+    // hub, so the far streaming queue is ordered by distance to the actual
+    // entry position rather than whatever row-major order the chunk grid
+    // happens to walk.
+    this.terrainView = buildTerrain(this.sim.cfg.seed, {
+      x: this.sim.player.pos.x,
+      z: this.sim.player.pos.z,
+    });
     setRenderCategory(this.terrainView.group, 'terrain');
     this.scene.add(this.terrainView.group);
     // Terrain chunks never move after build (the LOD update only toggles
     // visibility): stop their per-frame matrix recompose (static_matrix.ts).
+    // Chunks streamed in later freeze themselves in addChunk() (terrain.ts).
     freezeStaticMatrices(this.terrainView.group);
     this.waterView = buildWater(this.sim.cfg.seed);
     for (const mesh of this.waterView.meshes) {
@@ -1266,6 +1275,14 @@ export class Renderer {
     this.scene.add(gatherNodes.group);
     // Baked into world space at build with no per-frame update(), same as props.
     freezeStaticMatrices(gatherNodes.group);
+
+    // PHAA-657: the moderation jail. A remote, always-present fixture (a
+    // player is only ever there after a /jail teleport), same static-fixture
+    // treatment as gather nodes/readables above.
+    const jailScene = buildJailScene(this.sim.cfg.seed);
+    setRenderCategory(jailScene, 'props');
+    this.scene.add(jailScene);
+    freezeStaticMatrices(jailScene);
 
     // PHAA-552: world-placed readable books, same static-fixture treatment as
     // gather nodes above (baked into world space, no per-frame transform).
@@ -3550,10 +3567,17 @@ export class Renderer {
   // player crosses zone bands; low keeps the legacy vale fog everywhere).
   // peaks near/far trimmed so a zone's own mountain crags fade into haze
   // instead of standing out crisp when viewed from the zone's hub.
+  // beach/desert/volcano/cave are paint-only biomes (see render/foliage.ts),
+  // unreachable until the render-load-in editor slice; values match the
+  // upstream reference port.
   private static BIOME_FOG: Record<BiomeId, { color: number; near: number; far: number }> = {
     vale: { color: 0xa6c6e0, near: 130, far: 470 },
     marsh: { color: 0xa3b294, near: 80, far: 330 },
     peaks: { color: 0xbdd3ec, near: 110, far: 390 },
+    beach: { color: 0xbcd6e6, near: 150, far: 520 },
+    desert: { color: 0xd8c9a8, near: 140, far: 500 },
+    volcano: { color: 0x8a7468, near: 70, far: 300 },
+    cave: { color: 0x76807c, near: 60, far: 260 },
   };
   private static LOW_FOG = { color: 0xa6c6e0, near: 70, far: 260 };
 

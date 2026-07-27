@@ -2506,6 +2506,14 @@
     font-size: 11px;
     color: #ddd;
   }
+  .warfare-price {
+    color: #ffd100;
+  }
+  .warfare-balance {
+    padding: 6px 8px;
+    font-size: 11px;
+    color: #ffd100;
+  }
   .vendor-sell-junk {
     display: flex;
     align-items: center;
@@ -2549,6 +2557,60 @@
   .vendor-hint {
     font-size: 11px;
     color: #c8b888;
+    margin-top: 8px;
+    border-top: 1px solid #463a1c;
+    padding-top: 6px;
+  }
+
+  /* ---------- daily rewards (PHAA-660) ---------- */
+  #daily-rewards-window {
+    width: 380px;
+  }
+  .daily-rewards-strip {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+  .daily-rewards-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 4px 2px;
+    border: 1px solid #463a1c;
+    border-radius: 4px;
+    background: #ffffff08;
+    text-align: center;
+  }
+  .daily-rewards-cell.is-next {
+    border-color: var(--gold);
+    background: #ffd97022;
+  }
+  .drc-today {
+    font-size: 9px;
+    color: var(--gold);
+    font-family: var(--title-font);
+  }
+  .drc-money {
+    font-size: 10px;
+  }
+  .drc-item {
+    font-size: 9px;
+    color: #c8b888;
+  }
+  .daily-rewards-status {
+    margin-top: 8px;
+    font-size: 11px;
+    color: #c8b888;
+    text-align: center;
+  }
+  .daily-rewards-claim {
+    width: 100%;
+    margin-top: 8px;
+  }
+  .daily-rewards-hint {
+    font-size: 11px;
+    color: #887c5c;
     margin-top: 8px;
     border-top: 1px solid #463a1c;
     padding-top: 6px;
@@ -3910,6 +3972,90 @@
     font-size: 11.5px;
     color: var(--color-text-muted);
     margin-right: 6px;
+  }
+  /* Staged parcel chips (PHAA-688 + PHAA-645 quantity stepper): each Compose-tab
+     parcel is a chip carrying the item name, an optional +/- quantity stepper
+     (shown only when the sender owns more than one), and a remove button. Inbox
+     rows keep the plain readonly .mail-attach span above. */
+  .mail-attach-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 4px 0 10px;
+  }
+  .mail-attach.parcel {
+    background: #ffffff0a;
+    border: 1px solid var(--gold-dim);
+    border-radius: 3px;
+    padding: 2px 4px 2px 7px;
+    gap: 6px;
+  }
+  .mail-parcel-name {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .mail-parcel-qty {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .mail-parcel-step {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff14;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    color: var(--color-text);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    line-height: 1;
+    /* 24px touch-target floor so the +/- controls stay tappable on mobile. */
+    min-width: 24px;
+    min-height: 24px;
+    padding: 0 4px;
+    text-align: center;
+  }
+  .mail-parcel-step:hover:not(:disabled),
+  .mail-parcel-step:focus-visible {
+    border-color: var(--gold-dim);
+    background: #ffffff24;
+  }
+  .mail-parcel-step:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+  .mail-parcel-qty-value {
+    min-width: 28px;
+    text-align: center;
+    color: var(--color-text);
+  }
+  .mail-parcel-remove-btn {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* 24px touch-target floor, matching the +/- steppers. */
+    min-width: 24px;
+    min-height: 24px;
+    background: transparent;
+    border: none;
+    border-radius: 3px;
+    padding: 2px;
+    color: var(--color-text-muted);
+    cursor: pointer;
+  }
+  .mail-parcel-remove-btn svg {
+    width: 12px;
+    height: 12px;
+  }
+  .mail-parcel-remove-btn:hover,
+  .mail-parcel-remove-btn:focus-visible {
+    color: var(--color-text);
+    background: #ffffff14;
   }
   .mail-actions {
     margin-top: 4px;

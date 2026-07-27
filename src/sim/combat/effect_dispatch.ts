@@ -20,7 +20,13 @@ import { recalcPlayerStats } from '../entity';
 import type { GroundAoE } from '../entity_roster';
 import type { PlayerMeta, ResolvedAbility } from '../sim';
 import type { SimContext } from '../sim_context';
-import { abilityScalingPower, directHitBonus, dotTickBonus } from '../spell_scaling';
+import {
+  abilityScalingPower,
+  directHealBonus,
+  directHitBonus,
+  dotTickBonus,
+  hotTickBonus,
+} from '../spell_scaling';
 import { stunDrCategory } from '../stun_dr';
 import { addThreat } from '../threat';
 import type { AbilityDef, Entity } from '../types';
@@ -162,18 +168,28 @@ export function runEffects(
         break;
       case 'heal': {
         const healTarget = target ?? p;
-        ctx.applyHeal(p, healTarget, ctx.rng.range(eff.min, eff.max), ability.name);
+        // Heals scale with Spell Power at the direct cast-time coefficient, the
+        // healing mirror of the direct-nuke rider (applyHeal fires the crit).
+        const healAmount =
+          ctx.rng.range(eff.min, eff.max) + directHealBonus(p.spellPower, res.castTime);
+        ctx.applyHeal(p, healTarget, healAmount, ability.name);
         break;
       }
       case 'hot': {
         const hotTarget = target ?? p;
+        // A HoT that RIDES a direct heal (Regrowth-style) does NOT also scale here:
+        // the direct component already took the cast-time coefficient, so scaling the
+        // rider too would double-dip. Only pure HoTs (Rejuvenation) take the rider.
+        const hybridHeal = res.effects.some((e) => e.type === 'heal');
+        const hotBase = Math.max(1, Math.round(eff.total / (eff.duration / eff.interval)));
+        const hotSp = hybridHeal ? 0 : hotTickBonus(p.spellPower, eff.duration, eff.interval);
         ctx.applyAura(hotTarget, {
           id: ability.id,
           name: ability.name,
           kind: 'hot',
           remaining: eff.duration,
           duration: eff.duration,
-          value: Math.max(1, Math.round(eff.total / (eff.duration / eff.interval))),
+          value: hotBase + hotSp,
           tickInterval: eff.interval,
           tickTimer: eff.interval,
           sourceId: p.id,
@@ -259,16 +275,58 @@ export function runEffects(
         break; // handled per channel tick
       case 'buffTarget': {
         const buffTarget = target ?? p;
-        ctx.applyAura(buffTarget, {
-          id: ability.id,
-          name: ability.name,
-          kind: eff.kind,
-          remaining: eff.duration,
-          duration: eff.duration,
-          value: eff.value,
-          sourceId: p.id,
-          school: ability.school,
-        });
+        const applyBuff = (who: Entity) => {
+          // Mutually exclusive buff group (e.g. warrior_shout, paladin_aura):
+          // casting one cancels any active sibling ON THIS RECIPIENT applied by a
+          // different ability, so only one in the group is ever up at a time.
+          // Mirrors the 'selfBuff' case's handling for hunter aspects, generalized
+          // per recipient now that PHAA-577 lets these buffs land on a whole group.
+          for (const i of exclusiveAuraConflicts(
+            ability.exclusiveGroup,
+            ability.id,
+            who.auras,
+            (id) => ABILITIES[id]?.exclusiveGroup,
+          )) {
+            const a = who.auras[i];
+            who.auras.splice(i, 1);
+            ctx.emit({ type: 'aura', targetId: who.id, name: a.name, gained: false });
+          }
+          ctx.applyAura(who, {
+            id: ability.id,
+            name: ability.name,
+            kind: eff.kind,
+            remaining: eff.duration,
+            duration: eff.duration,
+            value: eff.value,
+            sourceId: p.id,
+            school: ability.school,
+          });
+        };
+        if (eff.party) {
+          // PHAA-577: a whole-group raid buff. Lands on the caster, the explicit
+          // target (if any), and every living party/raid member, regardless of
+          // range (WotLK-style always-on group aura).
+          const applied = new Set<number>();
+          applyBuff(p);
+          applied.add(p.id);
+          if (!buffTarget.dead && !applied.has(buffTarget.id)) {
+            applyBuff(buffTarget);
+            applied.add(buffTarget.id);
+          }
+          const party = ctx.partyOf(p.id);
+          if (party) {
+            for (const pid of party.members) {
+              if (applied.has(pid)) continue;
+              const member = ctx.entities.get(pid);
+              if (member && !member.dead) {
+                applyBuff(member);
+                applied.add(pid);
+              }
+            }
+          }
+        } else {
+          applyBuff(buffTarget);
+        }
         break;
       }
       case 'dot': {
@@ -658,6 +716,49 @@ export function runEffects(
           });
         }
         // sunder deals no damage: its threat is the flat value, stance-scaled
+        addThreat(target, p.id, res.threatFlat * ctx.threatMod(p, 'physical'));
+        ctx.enterCombat(p, target);
+        break;
+      }
+      // PHAA-577: percent armor debuff (Sunder Armor/Expose Armor/Faerie Fire).
+      // Mirrors 'sunder' above (same miss chance, stacking, shared-slot-by-kind
+      // refresh, and threat), but the AuraKind is 'debuff_armor_pct' so it never
+      // touches mob corrosion's flat 'sunder' auras (see effectiveArmor).
+      case 'armorDebuffPct': {
+        if (!target || target.dead) break;
+        if (ctx.rng.chance(meleeMissChance(p.level, target.level))) {
+          ctx.emit({
+            type: 'damage',
+            sourceId: p.id,
+            targetId: target.id,
+            amount: 0,
+            crit: false,
+            school: 'physical',
+            ability: ability.name,
+            kind: 'miss',
+          });
+          ctx.enterCombat(p, target);
+          break;
+        }
+        const existing = target.auras.find((a) => a.kind === 'debuff_armor_pct');
+        if (existing) {
+          existing.stacks = Math.min(eff.maxStacks, (existing.stacks ?? 1) + 1);
+          existing.value = eff.pct;
+          existing.remaining = existing.duration;
+          ctx.emit({ type: 'aura', targetId: target.id, name: ability.name, gained: true });
+        } else {
+          ctx.applyAura(target, {
+            id: ability.id,
+            name: ability.name,
+            kind: 'debuff_armor_pct',
+            remaining: eff.duration,
+            duration: eff.duration,
+            value: eff.pct,
+            stacks: 1,
+            sourceId: p.id,
+            school: 'physical',
+          });
+        }
         addThreat(target, p.id, res.threatFlat * ctx.threatMod(p, 'physical'));
         ctx.enterCombat(p, target);
         break;

@@ -5,9 +5,8 @@
 // translate that key. The build (scripts/i18n_build.mjs) unflattens this map and
 // overlays it onto nested `en` to produce the dense resolved table; any key here
 // must be a real `en` leaf path: keys are typed `Partial<Record<TranslationKey,
-// string>>` so tsc rejects a structurally-wrong key, plus
-// tests/i18n_overlay_key_membership.test.ts catches a typo'd entity id the
-// template-literal key type cannot. Overlays are SPARSE: an
+// string>>` against the build-generated flat key union, so tsc rejects any key
+// that is not an exact `en` leaf path, typo'd entity ids included. Overlays are SPARSE: an
 // untranslated key is omitted and the build fills it from English, then the
 // registry (src/ui/i18n.status.json) marks it `pending`.
 
@@ -1586,6 +1585,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': 'Gier für {item}',
   'itemUi.lootRoll.passAria': 'Bei {item} passen',
   'itemUi.lootRoll.everyonePassed': 'Alle passen bei {item}.',
+  'itemUi.lootRoll.winnerOffline': 'Der Gewinner von {item} war offline; es wurde zur Leiche zurückgebracht.',
   'entities.abilities.heroic_strike.name': 'Heldenhafter Stoß',
   'entities.abilities.heroic_strike.description':
     'Ein mächtiger Angriff, der den Nahkampfschaden um {damage} erhöht. Wird bei eurem nächsten Schwung ausgelöst.',
@@ -1627,7 +1627,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
     'Defensive Kampfhaltung: Ihr erzeugt 30% mehr Bedrohung, verursacht und erleidet aber 10% weniger Schaden. Erneut wirken, um die Haltung zu verlassen.',
   'entities.abilities.sunder_armor.name': 'Rüstung zerreißen',
   'entities.abilities.sunder_armor.description':
-    'Zerreißt die Rüstung des Ziels und verringert sie pro Anwendung um {damage}. Bis zu 5-mal stapelbar. Erzeugt viel Bedrohung.',
+    'Zerreißt die Rüstung des Ziels und verringert sie pro Anwendung um 2%. Bis zu 5-mal stapelbar. Erzeugt viel Bedrohung.',
   'entities.abilities.taunt.name': 'Spott',
   'entities.abilities.taunt.description':
     'Verspottet das Ziel: Eure Bedrohung steigt auf die seines meistgehassten Gegners und es wird 3 Sek. lang gezwungen, euch anzugreifen.',
@@ -2965,6 +2965,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.flavorText':
     '...zählte vierzig Tage bei Kerzenlicht, bevor ich den Faden verlor. Das Dunkel hier unten vergisst Ihn nicht, auch wenn Er diesen Ort vergessen hat. Wenn der Reiher tief kreist, sag dem Küster, der Docht brennt noch...',
   'entities.items.keeper_coal.name': 'Eine Kohle, die nie erkaltete',
+  'entities.items.hearth_stone.name': 'Ein Stein, Noch Warm von Seinem Herdfeuer',
   'entities.items.willow_sprig.name': 'Ein Weidenzweig',
   'entities.items.worn_prayer_token.name': 'Abgegriffene Gebetsmarke',
   'entities.items.worn_prayer_token.flavorText':
@@ -4627,8 +4628,42 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.items.reliquary_helm.name': 'Helm der Beinhauswache',
   'entities.items.reliquary_shoulder.name': 'Zerbröckelte Schulterstücke',
   'entities.items.reliquary_gloves_rog.name': 'Knochenwächter-Griffe',
+  'entities.items.delve_heroic_mark.name': 'Heroische Reliquiar-Marke',
+  'entities.items.delve_heroic_mark.flavorText':
+    'Ein geprägtes Siegel, ausgegeben von den Wächtern des Reliquiars. Löse es beim Heroischen Quartiermeister gegen Ausrüstung in Reliquiar-Qualität ein.',
   'entities.items.deacon_reliquary_helm.name': 'Reliquiarhelm des Diakons',
   'entities.items.varric_shadow_cowl.name': 'Varrics Schattenkapuze',
+  'entities.items.bramblewar_warhelm.name': 'Dornkrieg-Kopf',
+  'entities.items.bramblewar_warspaulders.name': 'Dornkrieg-Schultern',
+  'entities.items.bramblewar_warplate.name': 'Dornkrieg-Brust',
+  'entities.items.bramblewar_girdle.name': 'Dornkrieg-Taille',
+  'entities.items.bramblewar_legguards.name': 'Dornkrieg-Beine',
+  'entities.items.bramblewar_gauntlets.name': 'Dornkrieg-Hände',
+  'entities.items.bramblewar_sabatons.name': 'Dornkrieg-Füße',
+  'entities.items.thornbound_crown.name': 'Dorngebunden-Kopf',
+  'entities.items.thornbound_spaulders.name': 'Dorngebunden-Schultern',
+  'entities.items.thornbound_hauberk.name': 'Dorngebunden-Brust',
+  'entities.items.thornbound_waistguard.name': 'Dorngebunden-Taille',
+  'entities.items.thornbound_legmail.name': 'Dorngebunden-Beine',
+  'entities.items.thornbound_handguards.name': 'Dorngebunden-Hände',
+  'entities.items.thornbound_greaves.name': 'Dorngebunden-Füße',
+  'entities.items.nettlestalker_cowl.name': 'Nesselpirscher-Kopf',
+  'entities.items.nettlestalker_shoulderguards.name': 'Nesselpirscher-Schultern',
+  'entities.items.nettlestalker_harness.name': 'Nesselpirscher-Brust',
+  'entities.items.nettlestalker_waistband.name': 'Nesselpirscher-Taille',
+  'entities.items.nettlestalker_legguards.name': 'Nesselpirscher-Beine',
+  'entities.items.nettlestalker_grips.name': 'Nesselpirscher-Hände',
+  'entities.items.nettlestalker_treads.name': 'Nesselpirscher-Füße',
+  'entities.items.mossweave_cowl.name': 'Moosgewebt-Kopf',
+  'entities.items.mossweave_mantle.name': 'Moosgewebt-Schultern',
+  'entities.items.mossweave_raiment.name': 'Moosgewebt-Brust',
+  'entities.items.mossweave_cord.name': 'Moosgewebt-Taille',
+  'entities.items.mossweave_legwraps.name': 'Moosgewebt-Beine',
+  'entities.items.mossweave_handwraps.name': 'Moosgewebt-Hände',
+  'entities.items.mossweave_slippers.name': 'Moosgewebt-Füße',
+  'entities.items.last_bloom_greatblade.name': 'Großschwert der letzten Blüte',
+  'entities.items.thornbite_razor.name': 'Dornbiss-Rasiermesser',
+  'entities.items.heartwood_warstaff.name': 'Kernholz-Kriegsstab',
   'entities.mobs.acolyte_tessa.name': 'Akolythin Tessa',
   'entities.mobs.deacon_varric.name': 'Diakon Varric',
   'entities.mobs.reliquary_bonewalker.name': 'Erweckter Knochengänger',

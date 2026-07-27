@@ -14,7 +14,13 @@ import {
   type TalentAllocation,
   talentPointsAtLevel,
 } from '../sim/content/talents';
-import { abilitiesKnownAt, CLASSES, NPCS, resolveDelveShopOffers } from '../sim/data';
+import {
+  ACHIEVEMENTS_BY_ID,
+  abilitiesKnownAt,
+  CLASSES,
+  NPCS,
+  resolveDelveShopOffers,
+} from '../sim/data';
 import { deadTargetSelectable } from '../sim/dead_target';
 import { LEADERBOARD_PAGE_SIZE } from '../sim/leaderboard_page';
 import type { Ante, PickAction } from '../sim/lockpick';
@@ -24,6 +30,8 @@ import { readablePropsAt } from '../sim/readables_query';
 import { computeQuestState, type ResolvedAbility } from '../sim/sim';
 import {
   type Aura,
+  type CraftType,
+  type DeedProgress,
   type Entity,
   type EquipSlot,
   emptyMoveInput,
@@ -44,6 +52,7 @@ import {
   type ArenaInfo,
   type CharacterSearchResult,
   type ClientCommand,
+  type DailyRewardsInfo,
   type DelveCompanionInfo,
   type DelveDailyInfo,
   type DelveRunInfo,
@@ -101,6 +110,19 @@ function normalizeAccountCosmetics(value: unknown): AccountCosmetics {
   return {
     completedQuestIds: stringList(src.completedQuestIds),
     mechChromaIds: stringList(src.mechChromaIds),
+  };
+}
+
+// PHAA-660: mirrors server/db.ts's normalizeAccountDailyRewards. Duplicated rather
+// than imported, same reason as normalizeAccountCosmetics above: server/ (pg,
+// Node-only) can never be imported into this browser-bundled client module.
+function normalizeDailyRewards(value: unknown): DailyRewardsInfo {
+  const src = value && typeof value === 'object' ? (value as Record<string, unknown>) : {};
+  const cycleIndex = Number(src.cycleIndex);
+  return {
+    cycleIndex: Number.isInteger(cycleIndex) && cycleIndex >= 0 ? cycleIndex : 0,
+    lastClaimUtcDay: typeof src.lastClaimUtcDay === 'string' ? src.lastClaimUtcDay : '',
+    locked: src.locked === true,
   };
 }
 
@@ -708,7 +730,16 @@ function blankEntity(id: number): Entity {
     overheadEmoteId: null,
     overheadEmoteUntil: 0,
     overheadEmoteSeq: 0,
-    stats: { str: 0, agi: 0, sta: 0, int: 0, spi: 0, armor: 0 },
+    stats: {
+      str: 0,
+      agi: 0,
+      sta: 0,
+      int: 0,
+      spi: 0,
+      armor: 0,
+      pvpOffense: 0,
+      pvpDefense: 0,
+    },
     weapon: { min: 1, max: 2, speed: 2 },
     attackPower: 0,
     rangedPower: 0,
@@ -737,6 +768,7 @@ function blankEntity(id: number): Entity {
     gcdRemaining: 0,
     cooldowns: new Map(),
     queuedOnSwing: null,
+    queuedCastAbility: null,
     fiveSecondRule: 99,
     comboPoints: 0,
     comboTargetId: null,
@@ -830,6 +862,9 @@ export class ClientWorld implements IWorld {
   // --- IWorldCosmetics: account cosmetics (completed-quest + mech-chroma ids),
   // mirrored from snapshot self. ---
   accountCosmetics: AccountCosmetics = { completedQuestIds: [], mechChromaIds: [] };
+  // --- IWorldDailyRewards: account claim-cycle state, mirrored from snapshot
+  // self (PHAA-660). ---
+  dailyRewards: DailyRewardsInfo = { cycleIndex: 0, lastClaimUtcDay: '', locked: false };
   // --- IWorldProgressionXp: XP + post-cap progression scalars + unlocked
   // milestones, mirrored from snapshot self. ---
   xp = 0;
@@ -857,6 +892,12 @@ export class ClientWorld implements IWorld {
   }
   questLog = new Map<string, QuestProgress>();
   questsDone = new Set<string>();
+  // --- IWorldDeeds: Book of Asphodelia deed/title state (PHAA-744), mirrored from
+  // the snapshot self (`dlog`/`ddone`/`etitles`/`atitle`). ---
+  deedLog = new Map<string, DeedProgress>();
+  deedsDone = new Set<string>();
+  earnedTitles = new Set<string>();
+  activeTitle: string | null = null;
   // --- IWorldParty: party/raid roster, mirrored from the snapshot self (`party`).
   // The raid-target markers ride the `markers` map below; IWorldPet keeps no mirror
   // field (pet state lives on the owned-mob entity wire). ---
@@ -869,6 +910,8 @@ export class ClientWorld implements IWorld {
   // arenaInfo.match.fiesta and its dynamics flow over the events queue. ---
   duelInfo: DuelInfo | null = null;
   arenaInfo: ArenaInfo | null = null;
+  honor = 0;
+  lifetimeHonor = 0;
   // --- IWorldSocialGraph: persistent friends/blocks/guild, set ONLY by the
   // `social`/`socialpos` frames (there is no `s.social` snapshot field). ---
   socialInfo: SocialInfo | null = null;
@@ -1575,7 +1618,12 @@ export class ClientWorld implements IWorld {
       e.autoAttack = !!s.auto;
       e.swingTimer = s.swing ?? e.swingTimer;
       e.queuedOnSwing = s.queued ?? null;
-      e.stats = s.stats ?? e.stats;
+      // A rolling deploy can pair this client with an older server whose stats
+      // object predates WARFARE. Preserve numeric PvP fields instead of letting
+      // an old six-field object turn the character-sheet percentages into NaN.
+      if (s.stats !== undefined) {
+        e.stats = { pvpOffense: 0, pvpDefense: 0, ...s.stats };
+      }
       e.attackPower = s.ap ?? 0;
       e.rangedPower = s.rp ?? 0;
       e.spellPower = s.sp ?? 0;
@@ -1628,11 +1676,23 @@ export class ClientWorld implements IWorld {
         this.accountCosmetics = normalizeAccountCosmetics(s.cosmetics);
         this.cosmeticsChanged = true;
       }
+      // IWorldDailyRewards facet (PHAA-660) self-decode: same delta-guard shape
+      // as cosmetics above.
+      if (s.dailyRewards !== undefined) {
+        this.dailyRewards = normalizeDailyRewards(s.dailyRewards);
+      }
       if (s.qlog !== undefined)
         this.questLog = new Map((s.qlog as QuestProgress[]).map((q) => [q.questId, q]));
       if (s.qdone !== undefined) this.questsDone = new Set(s.qdone);
       if (s.lockouts !== undefined) this.selfLockouts = s.lockouts as Record<string, number>;
       if (s.qlog !== undefined || s.qdone !== undefined) this.pendingQuestCommands?.clear();
+      // IWorldDeeds facet (PHAA-744) self-decode: dlog/ddone/etitles/atitle are
+      // delta-guarded (an omitted field keeps the prior mirror).
+      if (s.dlog !== undefined)
+        this.deedLog = new Map((s.dlog as DeedProgress[]).map((d) => [d.deedId, d]));
+      if (s.ddone !== undefined) this.deedsDone = new Set(s.ddone);
+      if (s.etitles !== undefined) this.earnedTitles = new Set(s.etitles);
+      if (s.atitle !== undefined) this.activeTitle = s.atitle as string | null;
       // IWorldTalents facet (W7) self-decode: tal is delta-guarded (omitted keeps
       // the prior mirror); the known rebuild below is display-only (re-renders what
       // the server already decided), not client authority.
@@ -1667,6 +1727,8 @@ export class ClientWorld implements IWorld {
       if (s.trade !== undefined) this.tradeInfo = s.trade;
       if (s.duel !== undefined) this.duelInfo = s.duel;
       if (s.arena !== undefined) this.arenaInfo = s.arena;
+      if (s.honor !== undefined) this.honor = s.honor ?? 0;
+      if (s.lhonor !== undefined) this.lifetimeHonor = s.lhonor ?? 0;
       if (s.market !== undefined) this.marketInfo = s.market;
       if (s.mail !== undefined) this.mailInfo = s.mail;
       if (s.housing !== undefined) this.housingInfo = s.housing;
@@ -1681,11 +1743,26 @@ export class ClientWorld implements IWorld {
       if (s.dcomp !== undefined) this.companionUpgrades = s.dcomp ?? {};
       if (s.gprof !== undefined)
         this.gatheringProficiency = s.gprof ?? { amber: 0, heartwood: 0, spore: 0 };
+      if (s.cprof !== undefined)
+        this.craftProficiency = s.cprof ?? {
+          weaponcrafting: 0,
+          armorcrafting: 0,
+          tailoring: 0,
+          leatherworking: 0,
+          cooking: 0,
+          alchemy: 0,
+        };
       // Per-viewer gather-node cooldown set (PHAA-618): the ids of nodes NOT
       // harvestable by us right now, mirrored from the self snapshot so
       // nodeHarvestableByMe matches the offline Sim. Absent means unchanged; an
       // explicit empty array clears it (all this player's nodes are ready).
       if (s.gnodecd !== undefined) this.nodeCooldownSet = new Set(s.gnodecd ?? []);
+      // Collection tracking core (PHAA-626): the viewer's own collected-id set,
+      // mirrored whole (small, only grows) same shape as dclears/dcomp above.
+      if (s.collected !== undefined) this.collectedIds = s.collected ?? [];
+      // Achievements (PHAA-687): the viewer's unlocked achievement ids, mirrored
+      // whole (small, only grows) same shape as collected above.
+      if (s.ach !== undefined) this.unlockedAchievementIds = s.ach ?? [];
       if (s.dclears !== undefined) this.delveClears = s.dclears ?? {};
       if (s.delveDaily !== undefined) this.delveDaily = s.delveDaily;
       // camera follows server-side facing changes when not mouselooking
@@ -1868,6 +1945,34 @@ export class ClientWorld implements IWorld {
     this.cmd({ cmd: 'harvestNode', node: nodeId });
   }
   gatheringProficiency: Record<GatherNodeType, number> = { amber: 0, heartwood: 0, spore: 0 };
+  // --- IWorldCrafting: craft a recipe (PHAA-574) + the local viewer's own
+  // craft proficiency, mirrored from the self snapshot (server field 'cprof'). ---
+  craftItem(recipeId: string): void {
+    this.cmd({ cmd: 'craftItem', recipe: recipeId });
+  }
+  craftProficiency: Record<CraftType, number> = {
+    weaponcrafting: 0,
+    armorcrafting: 0,
+    tailoring: 0,
+    leatherworking: 0,
+    cooking: 0,
+    alchemy: 0,
+  };
+  // --- IWorldCollections: tracked-collectible read/found state (PHAA-625/626) ---
+  collectedIds: string[] = [];
+  readCollectible(id: string): void {
+    this.cmd({ cmd: 'readCollectible', collectibleId: id });
+  }
+  // --- IWorldAchievements: unlocked achievements + points (PHAA-687) ---
+  // Read-only mirror; achievements auto-unlock server-side (no command). Points
+  // are derived from the unlocked ids against the shared registry, so only the
+  // id list rides the wire.
+  unlockedAchievementIds: string[] = [];
+  get achievementPoints(): number {
+    let total = 0;
+    for (const id of this.unlockedAchievementIds) total += ACHIEVEMENTS_BY_ID[id]?.points ?? 0;
+    return total;
+  }
   // --- IWorldLoot: need-greed roll submit + HUD reconcile read ---
   submitLootRoll(rollId: number, choice: LootRollChoice): void {
     this.cmd({ cmd: 'lootRoll', rollId, choice });
@@ -1904,6 +2009,15 @@ export class ClientWorld implements IWorld {
   }
   acceptLinkedQuest(questId: string, fromPid: number): void {
     this.cmd({ cmd: 'qlinkaccept', quest: questId, from: fromPid });
+  }
+  // IWorldDeeds (PHAA-744): select (or clear with null) the earned title shown
+  // alongside the character's name. Optimistic-set, like the equip commands
+  // below: the server re-validates against earnedTitles and the next snapshot
+  // (`atitle`) is authoritative if it disagrees.
+  setActiveTitle(titleId: string | null): void {
+    if (!this.canSendCommand()) return;
+    this.activeTitle = titleId;
+    this.cmd({ cmd: 'setTitle', title: titleId });
   }
   // IWorldInventory facet (W2): the eight item/vendor command senders. Each is a thin
   // cmd() emit whose offline counterpart is the moved src/sim/items.ts body resolved on
@@ -2075,6 +2189,11 @@ export class ClientWorld implements IWorld {
   clearMarker(entityId: number): void {
     this.cmd({ cmd: 'clearMarker', id: entityId });
   }
+  // PHAA-641: the readyrespond command (a UI button click, not chat text); the ready
+  // check itself starts via the "/ready" chat command, which already routes online.
+  readyCheckRespond(ready: boolean): void {
+    this.cmd({ cmd: 'readyRespond', ready });
+  }
   // --- IWorldTrade: trade-window command sends (tradeInfo is a snapshot read). ---
   tradeRequest(targetPid: number): void {
     this.cmd({ cmd: 'trade_req', id: targetPid });
@@ -2222,6 +2341,11 @@ export class ClientWorld implements IWorld {
   // dialogue menu, not chat text. ---
   feedGreenpaw(): void {
     this.cmd({ cmd: 'feedGreenpaw' });
+  }
+  // --- IWorldDailyRewards (PHAA-660): send the claim command; dailyRewards is a
+  // snapshot read (mirror field above), server re-checks eligibility. ---
+  claimDailyReward(): void {
+    this.cmd({ cmd: 'daily_rewards_claim' });
   }
   // --- IWorldDialog (PHAA-553): send a picked branching-dialogue choice; the
   // effect resolves server-side. dialogState is a snapshot read (dstate mirror). ---

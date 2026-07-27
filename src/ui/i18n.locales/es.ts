@@ -5,9 +5,8 @@
 // translate that key. The build (scripts/i18n_build.mjs) unflattens this map and
 // overlays it onto nested `en` to produce the dense resolved table; any key here
 // must be a real `en` leaf path: keys are typed `Partial<Record<TranslationKey,
-// string>>` so tsc rejects a structurally-wrong key, plus
-// tests/i18n_overlay_key_membership.test.ts catches a typo'd entity id the
-// template-literal key type cannot. Overlays are SPARSE: an
+// string>>` against the build-generated flat key union, so tsc rejects any key
+// that is not an exact `en` leaf path, typo'd entity ids included. Overlays are SPARSE: an
 // untranslated key is omitted and the build fills it from English, then the
 // registry (src/ui/i18n.status.json) marks it `pending`.
 
@@ -1589,6 +1588,7 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': 'Codicia por {item}',
   'itemUi.lootRoll.passAria': 'Pasar por {item}',
   'itemUi.lootRoll.everyonePassed': 'Todos pasaron por {item}.',
+  'itemUi.lootRoll.winnerOffline': 'El ganador de {item} estaba desconectado; se devolvió al cadáver.',
   'entities.abilities.heroic_strike.name': 'Golpe heroico',
   'entities.abilities.heroic_strike.description':
     'Un ataque poderoso que aumenta el daño cuerpo a cuerpo en {damage}. Se activa en tu siguiente golpe.',
@@ -1629,7 +1629,7 @@ export const es: Partial<Record<TranslationKey, string>> = {
     'Actitud de combate defensiva: generas un 30% más de amenaza, pero infliges y recibes un 10% menos de daño. Lánzala de nuevo para salir de la actitud.',
   'entities.abilities.sunder_armor.name': 'Hender armadura',
   'entities.abilities.sunder_armor.description':
-    'Hiende la armadura del objetivo y la reduce en {damage} por aplicación. Se acumula hasta 5 veces. Genera mucha amenaza.',
+    'Hiende la armadura del objetivo, reduciéndola en un 2% por aplicación. Se acumula hasta 5 veces. Genera mucha amenaza.',
   'entities.abilities.taunt.name': 'Provocar',
   'entities.abilities.taunt.description':
     'Provoca al objetivo: tu amenaza sube hasta igualar la de su enemigo más odiado y queda obligado a atacarte durante 3 s.',
@@ -4573,6 +4573,9 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'entities.items.reliquary_helm.name': 'Yelmo de la Guardia del Osario',
   'entities.items.reliquary_shoulder.name': 'Hombreras desmoronadas',
   'entities.items.reliquary_gloves_rog.name': 'Manoplas del Guardián de Huesos',
+  'entities.items.delve_heroic_mark.name': 'Marca Heroica del Relicario',
+  'entities.items.delve_heroic_mark.flavorText':
+    'Un sello estampado emitido por los guardianes del Relicario. Canjéalo con el Intendente Heroico por equipo de calidad de relicario.',
   'entities.items.deacon_reliquary_helm.name': 'Yelmo del Relicario del Diácono',
   'entities.items.varric_shadow_cowl.name': 'Capucha sombría de Varric',
   'entities.items.cave_morsel.name': 'Bocado de Cueva',
@@ -4584,6 +4587,7 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.flavorText':
     '...conté cuarenta días con velas antes de perder la cuenta. La oscuridad de aquí abajo no Lo olvida, aunque Él haya olvidado este lugar. Si la garza vuela bajo, dile al Sacristán que la mecha aún arde...',
   'entities.items.keeper_coal.name': 'Un Carbón Que Nunca Se Enfrió',
+  'entities.items.hearth_stone.name': 'Una Piedra Aún Cálida De Su Hogar',
   'entities.items.willow_sprig.name': 'Una Ramita De Sauce',
   'entities.items.worn_prayer_token.name': 'Ficha de Oración Desgastada',
   'entities.items.worn_prayer_token.flavorText':
@@ -4608,6 +4612,37 @@ export const es: Partial<Record<TranslationKey, string>> = {
     'Cálida al tacto, mucho después de que el árbol del que proviene dejara de moverse.',
   'entities.items.bloomcrown_pauldrons.name': 'Hombreras de la Corona Florida',
   'entities.items.verdantguard_mantle.name': 'Manto del Guardián Verde',
+  'entities.items.bramblewar_warhelm.name': 'Zarzaguerra Cabeza',
+  'entities.items.bramblewar_warspaulders.name': 'Zarzaguerra Hombros',
+  'entities.items.bramblewar_warplate.name': 'Zarzaguerra Pecho',
+  'entities.items.bramblewar_girdle.name': 'Zarzaguerra Cintura',
+  'entities.items.bramblewar_legguards.name': 'Zarzaguerra Piernas',
+  'entities.items.bramblewar_gauntlets.name': 'Zarzaguerra Manos',
+  'entities.items.bramblewar_sabatons.name': 'Zarzaguerra Pies',
+  'entities.items.thornbound_crown.name': 'Espinovínculo Cabeza',
+  'entities.items.thornbound_spaulders.name': 'Espinovínculo Hombros',
+  'entities.items.thornbound_hauberk.name': 'Espinovínculo Pecho',
+  'entities.items.thornbound_waistguard.name': 'Espinovínculo Cintura',
+  'entities.items.thornbound_legmail.name': 'Espinovínculo Piernas',
+  'entities.items.thornbound_handguards.name': 'Espinovínculo Manos',
+  'entities.items.thornbound_greaves.name': 'Espinovínculo Pies',
+  'entities.items.nettlestalker_cowl.name': 'Ortiga Sombría Cabeza',
+  'entities.items.nettlestalker_shoulderguards.name': 'Ortiga Sombría Hombros',
+  'entities.items.nettlestalker_harness.name': 'Ortiga Sombría Pecho',
+  'entities.items.nettlestalker_waistband.name': 'Ortiga Sombría Cintura',
+  'entities.items.nettlestalker_legguards.name': 'Ortiga Sombría Piernas',
+  'entities.items.nettlestalker_grips.name': 'Ortiga Sombría Manos',
+  'entities.items.nettlestalker_treads.name': 'Ortiga Sombría Pies',
+  'entities.items.mossweave_cowl.name': 'Tejemusgo Cabeza',
+  'entities.items.mossweave_mantle.name': 'Tejemusgo Hombros',
+  'entities.items.mossweave_raiment.name': 'Tejemusgo Pecho',
+  'entities.items.mossweave_cord.name': 'Tejemusgo Cintura',
+  'entities.items.mossweave_legwraps.name': 'Tejemusgo Piernas',
+  'entities.items.mossweave_handwraps.name': 'Tejemusgo Manos',
+  'entities.items.mossweave_slippers.name': 'Tejemusgo Pies',
+  'entities.items.last_bloom_greatblade.name': 'Gran Espada de la Última Flor',
+  'entities.items.thornbite_razor.name': 'Navaja Mordespina',
+  'entities.items.heartwood_warstaff.name': 'Bastón de Guerra de Duramen',
   'entities.mobs.palefeeder.name': 'Devorador Pálido',
   'entities.mobs.rootmaw.name': 'Fauce de Raíz',
   'entities.mobs.the_witness_root.name': 'La Raíz Testigo',

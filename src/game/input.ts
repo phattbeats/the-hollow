@@ -38,6 +38,9 @@ export interface InputCallbacks {
   onTab(): void;
   onTargetFriendly(): void;
   onCycleFriendly(): void;
+  // Pet-bar command (bound to Ctrl+1..5 by default): attack the current target,
+  // stop (passive stance), taunt, or set the defensive/aggressive stance.
+  onPet(action: 'attack' | 'stop' | 'taunt' | 'defensive' | 'aggressive'): void;
   onAbility(slot: number): void;
   onUiKey(
     key:
@@ -682,7 +685,15 @@ export class Input {
       this.noteIntent('move');
     }
     const edge = combo ? this.keybinds.edgeActionForCombo(combo) : null;
-    if (edge !== null) this.dispatchEdge(edge);
+    if (edge !== null) {
+      // A matched chord that carries a modifier (Ctrl/Alt/Cmd) shadows a browser
+      // accelerator, e.g. Ctrl+number tab switching. Cancel the default so the
+      // game keeps the keypress. Some accelerators are not cancelable (Chrome and
+      // Edge reserve Ctrl+1..8 outright), but this reclaims the ones that are
+      // (Firefox) and is a no-op where there is nothing to cancel.
+      if (e.ctrlKey || e.altKey || e.metaKey) e.preventDefault?.();
+      this.dispatchEdge(edge);
+    }
   }
 
   private onKeyUp(e: KeyboardEvent): void {
@@ -711,6 +722,21 @@ export class Input {
         return;
       case 'targetFriendlyNext':
         this.cb.onCycleFriendly();
+        return;
+      case 'petAttack':
+        this.cb.onPet('attack');
+        return;
+      case 'petStop':
+        this.cb.onPet('stop');
+        return;
+      case 'petTaunt':
+        this.cb.onPet('taunt');
+        return;
+      case 'petDefensive':
+        this.cb.onPet('defensive');
+        return;
+      case 'petAggressive':
+        this.cb.onPet('aggressive');
         return;
       case 'interact':
         this.cb.onUiKey('interact');

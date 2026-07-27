@@ -5,9 +5,8 @@
 // translate that key. The build (scripts/i18n_build.mjs) unflattens this map and
 // overlays it onto nested `en` to produce the dense resolved table; any key here
 // must be a real `en` leaf path: keys are typed `Partial<Record<TranslationKey,
-// string>>` so tsc rejects a structurally-wrong key, plus
-// tests/i18n_overlay_key_membership.test.ts catches a typo'd entity id the
-// template-literal key type cannot. Overlays are SPARSE: an
+// string>>` against the build-generated flat key union, so tsc rejects any key
+// that is not an exact `en` leaf path, typo'd entity ids included. Overlays are SPARSE: an
 // untranslated key is omitted and the build fills it from English, then the
 // registry (src/ui/i18n.status.json) marks it `pending`.
 
@@ -1579,6 +1578,7 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': 'Brama per {item}',
   'itemUi.lootRoll.passAria': 'Passa su {item}',
   'itemUi.lootRoll.everyonePassed': 'Tutti hanno passato su {item}.',
+  'itemUi.lootRoll.winnerOffline': 'Il vincitore di {item} era offline; è stato restituito al cadavere.',
   'entities.abilities.heroic_strike.name': 'Colpo Eroico',
   'entities.abilities.heroic_strike.description':
     'Un attacco potente che aumenta i danni in mischia di {damage}. Si attiva al tuo prossimo colpo.',
@@ -1620,7 +1620,7 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
     'Posizione di combattimento difensiva: generi il 30% di minaccia in più, ma infliggi e subisci il 10% di danni in meno. Lanciala di nuovo per uscire dalla posizione.',
   'entities.abilities.sunder_armor.name': 'Spezzarmatura',
   'entities.abilities.sunder_armor.description':
-    "Lacera l'armatura del bersaglio, riducendola di {damage} per applicazione. Si accumula fino a 5 volte. Genera molta minaccia.",
+    "Lacera l'armatura del bersaglio, riducendola del 2% per applicazione. Si accumula fino a 5 volte. Genera molta minaccia.",
   'entities.abilities.taunt.name': 'Provocazione',
   'entities.abilities.taunt.description':
     'Provoca il bersaglio: la tua minaccia sale fino a eguagliare quella del suo nemico più odiato e lo costringe ad attaccarti per 3 s.',
@@ -4559,6 +4559,9 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'entities.items.reliquary_helm.name': "Elmo della guardia dell'ossario",
   'entities.items.reliquary_shoulder.name': 'Spallacci sgretolati',
   'entities.items.reliquary_gloves_rog.name': 'Manopole del guardiano delle ossa',
+  'entities.items.delve_heroic_mark.name': 'Sigillo Eroico del Reliquiario',
+  'entities.items.delve_heroic_mark.flavorText':
+    'Un sigillo impresso rilasciato dai custodi del Reliquiario. Riscattalo presso il Quartiermastro Eroico per equipaggiamento di qualità del reliquiario.',
   'entities.items.deacon_reliquary_helm.name': 'Elmo del reliquiario del diacono',
   'entities.items.varric_shadow_cowl.name': "Cappuccio d'ombra di Varric",
   'entities.items.cave_morsel.name': 'Boccone di Caverna',
@@ -4570,6 +4573,7 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'entities.items.shrine_diary_page.flavorText':
     "...ho contato quaranta giorni a lume di candela prima di perdere il filo. Il buio quaggiù non Lo dimentica, anche se Lui ha dimenticato questo luogo. Se l'airone vola basso, di' al Sagrestano che lo stoppino brucia ancora...",
   'entities.items.keeper_coal.name': 'Un Carbone Mai Raffreddato',
+  'entities.items.hearth_stone.name': 'Una Pietra Ancora Calda Dal Suo Focolare',
   'entities.items.willow_sprig.name': 'Un Ramoscello Di Salice',
   'entities.items.worn_prayer_token.name': 'Gettone di Preghiera Consumato',
   'entities.items.worn_prayer_token.flavorText':
@@ -4594,6 +4598,37 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
     "Calda al tatto, molto tempo dopo che l'albero da cui proviene ha smesso di muoversi.",
   'entities.items.bloomcrown_pauldrons.name': 'Spallacci della Corona in Fiore',
   'entities.items.verdantguard_mantle.name': 'Manto del Guardiano Verdeggiante',
+  'entities.items.bramblewar_warhelm.name': 'Rovoguerra Testa',
+  'entities.items.bramblewar_warspaulders.name': 'Rovoguerra Spalle',
+  'entities.items.bramblewar_warplate.name': 'Rovoguerra Torace',
+  'entities.items.bramblewar_girdle.name': 'Rovoguerra Vita',
+  'entities.items.bramblewar_legguards.name': 'Rovoguerra Gambe',
+  'entities.items.bramblewar_gauntlets.name': 'Rovoguerra Mani',
+  'entities.items.bramblewar_sabatons.name': 'Rovoguerra Piedi',
+  'entities.items.thornbound_crown.name': 'Rovolegato Testa',
+  'entities.items.thornbound_spaulders.name': 'Rovolegato Spalle',
+  'entities.items.thornbound_hauberk.name': 'Rovolegato Torace',
+  'entities.items.thornbound_waistguard.name': 'Rovolegato Vita',
+  'entities.items.thornbound_legmail.name': 'Rovolegato Gambe',
+  'entities.items.thornbound_handguards.name': 'Rovolegato Mani',
+  'entities.items.thornbound_greaves.name': 'Rovolegato Piedi',
+  'entities.items.nettlestalker_cowl.name': 'Ortica Furtiva Testa',
+  'entities.items.nettlestalker_shoulderguards.name': 'Ortica Furtiva Spalle',
+  'entities.items.nettlestalker_harness.name': 'Ortica Furtiva Torace',
+  'entities.items.nettlestalker_waistband.name': 'Ortica Furtiva Vita',
+  'entities.items.nettlestalker_legguards.name': 'Ortica Furtiva Gambe',
+  'entities.items.nettlestalker_grips.name': 'Ortica Furtiva Mani',
+  'entities.items.nettlestalker_treads.name': 'Ortica Furtiva Piedi',
+  'entities.items.mossweave_cowl.name': 'Muschiotessuto Testa',
+  'entities.items.mossweave_mantle.name': 'Muschiotessuto Spalle',
+  'entities.items.mossweave_raiment.name': 'Muschiotessuto Torace',
+  'entities.items.mossweave_cord.name': 'Muschiotessuto Vita',
+  'entities.items.mossweave_legwraps.name': 'Muschiotessuto Gambe',
+  'entities.items.mossweave_handwraps.name': 'Muschiotessuto Mani',
+  'entities.items.mossweave_slippers.name': 'Muschiotessuto Piedi',
+  'entities.items.last_bloom_greatblade.name': "Grande Lama dell'Ultimo Fiore",
+  'entities.items.thornbite_razor.name': 'Rasoio Morsospina',
+  'entities.items.heartwood_warstaff.name': 'Bastone da Guerra di Duramen',
   'entities.mobs.palefeeder.name': 'Divoratore Pallido',
   'entities.mobs.rootmaw.name': 'Fauce di Radice',
   'entities.mobs.the_witness_root.name': 'La Radice Testimone',
