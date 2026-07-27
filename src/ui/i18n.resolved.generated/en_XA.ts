@@ -246,7 +246,6 @@ export const en_XA: EnTranslations = {
       "chat": "[Šķíþ ţó Çĥáţ]"
     },
     "mobile": {
-      "autorun": "[Áúţóŕúñ]",
       "jump": "[Ĵúɱþ]",
       "leaderboard": "[Ŕáñķš]",
       "nameplates": "[Ñáɱéš]",
@@ -720,10 +719,18 @@ export const en_XA: EnTranslations = {
         "spi": "[Ŕéðúçéš Šþíŕíţ ƀý {value}]",
         "allStats": "[Ŕéðúçéš áļļ áţţŕíƀúţéš ƀý {value}]"
       },
+      "increasePct": {
+        "ap": "[Íñçŕéášéš áţţáçķ þóŵéŕ ƀý {pct}%]",
+        "armor": "[Íñçŕéášéš áŕɱóŕ ƀý {pct}%]",
+        "int": "[Íñçŕéášéš Íñţéļļéçţ ƀý {pct}%]",
+        "sta": "[Íñçŕéášéš Šţáɱíñá ƀý {pct}%]"
+      },
       "dodge": "[Íñçŕéášéš ðóðĝé çĥáñçé ƀý {pct}%]",
       "dodgeReduce": "[Ŕéðúçéš ðóðĝé çĥáñçé ƀý {pct}%]",
       "armorFlat": "[Ŕéðúçéš áŕɱóŕ ƀý {value}]",
       "armorFlatStacks": "[Ŕéðúçéš áŕɱóŕ ƀý {value} ({stacks} šţáçķš)]",
+      "armorPct": "[Ŕéðúçéš áŕɱóŕ ƀý {pct}%]",
+      "armorPctStacks": "[Ŕéðúçéš áŕɱóŕ ƀý {pct}% ({stacks} šţáçķš)]",
       "mortalWound": "[Ŕéðúçéš ĥéáļíñĝ ŕéçéíʋéð ƀý {pct}%]",
       "vulnerability": "[Íñçŕéášéš ðáɱáĝé ţáķéñ ƀý {pct}%]",
       "physVuln": "[Íñçŕéášéš þĥýšíçáļ ðáɱáĝé ţáķéñ ƀý {pct}%]",
@@ -2436,6 +2443,13 @@ export const en_XA: EnTranslations = {
       "nothingToHarvest": "[Ţĥáţ çóŕþšé ĥáš ñóţĥíñĝ ţó ĥáŕʋéšţ.]",
       "alreadyHarvested": "[Ţĥíš çóŕþšé ĥáš áļŕéáðý ƀééñ ĥáŕʋéšţéð.]"
     },
+    "dailyRewards": {
+      "claimed": "[Ýóú çļáíɱ ýóúŕ ðáíļý ŕéŵáŕð.]"
+    },
+    "collections": {
+      "notFound": "[Ţĥáţ ðóéš ñóţ éẋíšţ.]",
+      "tooFar": "[Ţóó ƒáŕ áŵáý.]"
+    },
     "hearth": {
       "tooFar": "[Ýóú ñééð ţó ƀé ñéáŕ Ɓŕóţĥéŕ Ĝŕééñþáŵ ţó ƒééð ĥíɱ.]",
       "noItems1": "[...ýóú'ŕé éɱþţý-ĥáñðéð, ƒŕíéñð. ƀŕíñĝ ɱé ŵĥáţ ƀúŕñš óŕ ŵĥáţ ƒíļļš, áñð ŵé'ļļ ţáļķ.]",
@@ -2503,6 +2517,11 @@ export const en_XA: EnTranslations = {
       "tooFar": "[Ýóú ɱúšţ ƀé áţ ýóúŕ óŵñ ĥóɱéšţéáð ţó þļáñţ ţĥíš.]",
       "planted": "[Ýóú þļáñţ ţĥé çúţţíñĝ áţ ýóúŕ ĥóɱéšţéáð. Ĝíʋé íţ ţíɱé.]",
       "grown": "[Ýóúŕ çúţţíñĝ ĥáš ĝŕóŵñ íñţó á çóɱþáñíóñ. Íţ ƒóļļóŵš ýóú ñóŵ.]"
+    },
+    "readyCheck": {
+      "mustBeInParty": "[Ýóú ɱúšţ ƀé íñ á þáŕţý ţó šţáŕţ á ŕéáðý çĥéçķ.]",
+      "alreadyInProgress": "[Á ŕéáðý çĥéçķ íš áļŕéáðý íñ þŕóĝŕéšš.]",
+      "summary": "[Ŕéáðý çĥéçķ: {ready} ŕéáðý, {notReady} ñóţ ŕéáðý, {noResponse} ñó ŕéšþóñšé.]"
     }
   },
   "lockpickUi": {
@@ -3344,6 +3363,8 @@ export const en_XA: EnTranslations = {
       "openTrade": "[Óþéñ Ţŕáðé]",
       "duelRequest": "[{name} ĥáš çĥáļļéñĝéð ýóú ţó á ðúéļ!]",
       "acceptDuel": "[Áççéþţ Ðúéļ]",
+      "readyCheckStart": "[{name} ĥáš šţáŕţéð á ŕéáðý çĥéçķ.]",
+      "markReady": "[Ŕéáðý]",
       "decline": "[Ðéçļíñé]"
     },
     "combat": {
@@ -3819,6 +3840,22 @@ export const en_XA: EnTranslations = {
       "stool": "[Šţóóļ]"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "[Ðáíļý Ŕéŵáŕðš]",
+    "window": {
+      "title": "[Ðáíļý Ŕéŵáŕðš]",
+      "close": "[Çļóšé ðáíļý ŕéŵáŕðš]",
+      "claim": "[Çļáíɱ]",
+      "claimAria": "[Çļáíɱ ţóðáý'š ŕéŵáŕð]",
+      "claimed": "[Çļáíɱéð. Çóɱé ƀáçķ ţóɱóŕŕóŵ.]",
+      "locked": "[Ðáíļý ŕéŵáŕðš áŕé úñáʋáíļáƀļé óñ ţĥíš áççóúñţ ŕíĝĥţ ñóŵ.]",
+      "hint": "[Óñé ŕéŵáŕð þéŕ ðáý. Ɱíššíñĝ á ðáý ñéʋéŕ çóšţš ýóú áñýţĥíñĝ.]"
+    },
+    "cell": {
+      "today": "[Ţóðáý]",
+      "itemCount": "[{count}ẋ {item}]"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "[ĝ]",
@@ -4039,7 +4076,8 @@ export const en_XA: EnTranslations = {
       "needAria": "[Ñééð ƒóŕ {item}]",
       "greedAria": "[Ĝŕééð ƒóŕ {item}]",
       "passAria": "[Þášš óñ {item}]",
-      "everyonePassed": "[Éʋéŕýóñé þáššéð óñ {item}.]"
+      "everyonePassed": "[Éʋéŕýóñé þáššéð óñ {item}.]",
+      "winnerOffline": "[Ţĥé ŵíññéŕ óƒ {item} ŵáš óƒƒļíñé; íţ ŵáš ŕéţúŕñéð ţó ţĥé çóŕþšé.]"
     }
   },
   "entities": {
@@ -4050,11 +4088,11 @@ export const en_XA: EnTranslations = {
       },
       "battle_shout": {
         "name": "[Ɓáţţļé Šĥóúţ]",
-        "description": "[Íñçŕéášéš ýóúŕ áţţáçķ þóŵéŕ ƀý 20 ƒóŕ 2 ɱíñ.]"
+        "description": "[Íñçŕéášéš ýóúŕ þáŕţý óŕ ŕáíð'š áţţáçķ þóŵéŕ ƀý 5% ƒóŕ 2 ɱíñ.]"
       },
       "commanding_shout": {
         "name": "[Çóɱɱáñðíñĝ Šĥóúţ]",
-        "description": "[Íñçŕéášéš ýóúŕ Šţáɱíñá ƀý 6 ƒóŕ 2 ɱíñ.]"
+        "description": "[Íñçŕéášéš ýóúŕ þáŕţý óŕ ŕáíð'š Šţáɱíñá ƀý 5% ƒóŕ 2 ɱíñ.]"
       },
       "demoralizing_shout": {
         "name": "[Ðéɱóŕáļížíñĝ Šĥóúţ]",
@@ -4102,7 +4140,7 @@ export const en_XA: EnTranslations = {
       },
       "sunder_armor": {
         "name": "[Šúñðéŕ Áŕɱóŕ]",
-        "description": "[Šúñðéŕš ţĥé ţáŕĝéţ'š áŕɱóŕ, ŕéðúçíñĝ íţ ƀý {damage} þéŕ áþþļíçáţíóñ. Šţáçķš úþ ţó 5 ţíɱéš. Ĝéñéŕáţéš á ĥíĝĥ áɱóúñţ óƒ ţĥŕéáţ.]"
+        "description": "[Šúñðéŕš ţĥé ţáŕĝéţ'š áŕɱóŕ, ŕéðúçíñĝ íţ ƀý 2% þéŕ áþþļíçáţíóñ. Šţáçķš úþ ţó 5 ţíɱéš. Ĝéñéŕáţéš á ĥíĝĥ áɱóúñţ óƒ ţĥŕéáţ.]"
       },
       "taunt": {
         "name": "[Ţáúñţ]",
@@ -4118,7 +4156,7 @@ export const en_XA: EnTranslations = {
       },
       "arcane_intellect": {
         "name": "[Áŕçáñé Íñţéļļéçţ]",
-        "description": "[Íñçŕéášéš Íñţéļļéçţ ƀý 2 ƒóŕ 30 ɱíñ.]"
+        "description": "[Íñçŕéášéš ýóúŕ þáŕţý óŕ ŕáíð'š Íñţéļļéçţ ƀý 3% ƒóŕ 30 ɱíñ.]"
       },
       "frostbolt": {
         "name": "[Ƒŕóšţƀóļţ]",
@@ -4226,7 +4264,7 @@ export const en_XA: EnTranslations = {
       },
       "expose_armor": {
         "name": "[Éẋþóšé Áŕɱóŕ]",
-        "description": "[Ƒíñíšĥíñĝ ɱóʋé ţĥáţ éẋþóšéš ţĥé ţáŕĝéţ, ŕéðúçíñĝ íţš áŕɱóŕ. Ɱóŕé çóɱƀó þóíñţš šþéñţ ƀúíļð íñţó á ðééþéŕ çúţ.]"
+        "description": "[Ƒíñíšĥíñĝ ɱóʋé ţĥáţ éẋþóšéš ţĥé ţáŕĝéţ, ŕéðúçíñĝ íţš áŕɱóŕ ƀý 12%. Ɱóŕé çóɱƀó þóíñţš šþéñţ ƀúíļð íñţó á ðééþéŕ çúţ.]"
       },
       "rupture": {
         "name": "[Ŕúþţúŕé]",
@@ -4258,7 +4296,7 @@ export const en_XA: EnTranslations = {
       },
       "devotion_aura": {
         "name": "[Ðéʋóţíóñ Áúŕá]",
-        "description": "[Íñçŕéášéš ýóúŕ áŕɱóŕ ƀý 40 ƒóŕ 30 ɱíñ.]"
+        "description": "[Íñçŕéášéš ýóúŕ þáŕţý óŕ ŕáíð'š áŕɱóŕ ƀý 5% ƒóŕ 30 ɱíñ.]"
       },
       "judgement": {
         "name": "[Ĵúðĝéɱéñţ]",

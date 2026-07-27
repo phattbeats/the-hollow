@@ -141,6 +141,7 @@ const UI_PURE_CORES = [
   'src/ui/item_set_tooltip_view.ts',
   'src/ui/options_view.ts',
   'src/ui/vendor_view.ts',
+  'src/ui/daily_rewards_view.ts',
   'src/ui/housing_view.ts',
   'src/ui/housing_prompt_view.ts',
   'src/ui/readable_prompt_view.ts',

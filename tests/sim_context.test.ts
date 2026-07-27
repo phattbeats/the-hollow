@@ -69,6 +69,8 @@ const CALLBACK_KEYS = [
   'partyOf',
   'removeFromParty',
   'dropPartyMarkers',
+  // PHAA-641: the "/ready" chat command's leader-gated start (social/ready_check.ts).
+  'readyCheckStart',
   // Q1 quest-credit trio + the countItem it consumes; onGreenpawFedForQuests
   // (PHAA-484) is the hearth's own feed-credit callback.
   'onMobKilledForQuests',
@@ -76,6 +78,21 @@ const CALLBACK_KEYS = [
   'onGreenpawFedForQuests',
   'checkQuestReady',
   'countItem',
+  // PHAA-744: Book of Asphodelia deed-credit hooks.
+  'onMobKilledForDeeds',
+  'onInventoryChangedForDeeds',
+  // PHAA-745 chronicle category: quest-completion deed credit.
+  'onQuestCompletedForDeeds',
+  // PHAA-745 delve category: delve-clear deed credit.
+  'onDelveClearedForDeeds',
+  // PHAA-745 progression category: level-reached deed credit.
+  'onLevelReachedForDeeds',
+  // PHAA-745 exploration category: zone-visit deed credit.
+  'onZoneVisitedForDeeds',
+  // PHAA-745 pvp category: pvp match/bout win deed credit.
+  'onPvpWinForDeeds',
+  // PHAA-745 social category: non-combat action deed credit.
+  'onSocialActionForDeeds',
   // E1 entity-roster surface.
   'addEntity',
   'dropEntity',
@@ -265,6 +282,7 @@ function makeFakeHost() {
     utcDay: '',
     pendingMobRespawns: [],
     partyInvites: new Map(),
+    readyChecks: new Map(),
     chatTokens: new Map(),
     channelSubs: new Map(),
     pendingLootRolls: new Map(),
@@ -331,10 +349,19 @@ function makeFakeHost() {
     partyOf: vi.fn(() => null),
     removeFromParty: vi.fn(),
     dropPartyMarkers: vi.fn(),
+    readyCheckStart: vi.fn(),
     onMobKilledForQuests: vi.fn(),
     onInventoryChangedForQuests: vi.fn(),
     onGreenpawFedForQuests: vi.fn(),
     checkQuestReady: vi.fn(),
+    onMobKilledForDeeds: vi.fn(),
+    onInventoryChangedForDeeds: vi.fn(),
+    onQuestCompletedForDeeds: vi.fn(),
+    onDelveClearedForDeeds: vi.fn(),
+    onLevelReachedForDeeds: vi.fn(),
+    onZoneVisitedForDeeds: vi.fn(),
+    onPvpWinForDeeds: vi.fn(),
+    onSocialActionForDeeds: vi.fn(),
     countItem: vi.fn(() => 0),
     lockoutNowMs: vi.fn(() => 0),
     instanceKeyFor: vi.fn(() => 'solo:0'),

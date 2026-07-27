@@ -5,9 +5,8 @@
 // translate that key. The build (scripts/i18n_build.mjs) unflattens this map and
 // overlays it onto nested `en` to produce the dense resolved table; any key here
 // must be a real `en` leaf path: keys are typed `Partial<Record<TranslationKey,
-// string>>` so tsc rejects a structurally-wrong key, plus
-// tests/i18n_overlay_key_membership.test.ts catches a typo'd entity id the
-// template-literal key type cannot. Overlays are SPARSE: an
+// string>>` against the build-generated flat key union, so tsc rejects any key
+// that is not an exact `en` leaf path, typo'd entity ids included. Overlays are SPARSE: an
 // untranslated key is omitted and the build fills it from English, then the
 // registry (src/ui/i18n.status.json) marks it `pending`.
 
@@ -1052,6 +1051,8 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hud.prompts.openTrade': '거래 열기',
   'hud.prompts.duelRequest': '{name}님이 결투를 신청했습니다!',
   'hud.prompts.acceptDuel': '결투 수락',
+  'hud.prompts.readyCheckStart': '{name}님이 준비 확인을 시작했습니다.',
+  'hud.prompts.markReady': '준비 완료',
   'hud.prompts.decline': '거절',
   'hud.combat.floatingMiss': '빗나감',
   'hud.combat.floatingDodge': '회피',
@@ -1612,6 +1613,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': '{item} 탐욕',
   'itemUi.lootRoll.passAria': '{item} 포기',
   'itemUi.lootRoll.everyonePassed': '모두 {item}을(를) 포기했습니다.',
+  'itemUi.lootRoll.winnerOffline': '{item}의 당첨자가 오프라인 상태여서 시체로 반환되었습니다.',
   'entities.abilities.heroic_strike.name': '영웅의 일격',
   'entities.abilities.heroic_strike.description':
     '강력한 공격으로 근접 피해가 {damage}만큼 증가합니다. 다음 무기 공격 시 발동됩니다.',
@@ -1651,7 +1653,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
     '방어 전투 태세입니다. 위협 수준을 30% 더 생성하지만, 주고받는 피해가 10% 감소합니다. 다시 시전하면 태세를 해제합니다.',
   'entities.abilities.sunder_armor.name': '방어구 가르기',
   'entities.abilities.sunder_armor.description':
-    '대상의 방어구를 가르고 적용마다 {damage}만큼 감소시킵니다. 최대 5번 중첩됩니다. 많은 위협 수준을 생성합니다.',
+    '대상의 방어구를 가르고 적용마다 2%만큼 감소시킵니다. 최대 5번 중첩됩니다. 많은 위협 수준을 생성합니다.',
   'entities.abilities.taunt.name': '도발',
   'entities.abilities.taunt.description':
     '대상을 도발합니다. 자신의 위협 수준이 대상이 가장 증오하는 적과 같아지며, 3초 동안 자신을 공격하게 만듭니다.',
@@ -3524,7 +3526,6 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/초',
   'hudChrome.meters.perSecondRow': '{total} ({rate})',
   'hudChrome.meters.seconds': '{s}초',
-  'hudChrome.mobile.autorun': '자동 달리기',
   'hudChrome.mobile.haptics': '진동',
   'hudChrome.mobile.hapticsOff': '진동 꺼짐',
   'hudChrome.mobile.jump': '점프',
@@ -5142,12 +5143,15 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'sim.delve.wayOutNotOpen': '나가는 길이 아직 열리지 않았습니다.',
   'sim.delve.whileTrading': '거래 중에는 탐굴에 진입할 수 없습니다.',
   'sim.gathering.alreadyHarvested': '이 시체는 이미 채집되었습니다.',
+  'sim.collections.notFound': '그것은 존재하지 않습니다.',
+  'sim.collections.tooFar': '너무 멀리 떨어져 있습니다.',
   'sim.gathering.nothingToHarvest': '그 시체에서는 채집할 것이 없습니다.',
   'sim.greenpawCutting.alreadyPlanted': '이미 꺾꽂이를 심었다. 자랄 때까지 기다려라.',
   'sim.greenpawCutting.needHomestead': '이것을 심으려면 먼저 개척지가 있어야 한다.',
   'sim.greenpawCutting.tooFar': '이것을 심으려면 자신의 개척지에 있어야 한다.',
   'sim.greenpawCutting.planted': '개척지에 꺾꽂이를 심었다. 시간을 두고 기다려라.',
   'sim.greenpawCutting.grown': '꺾꽂이가 자라 동반자가 되었다. 이제 너를 따라다닌다.',
+  'sim.dailyRewards.claimed': '일일 보상을 받았습니다.',
   'sim.hearth.emberbulb1': '이거야말로 제대로 된 땔감이지… 보게, 그녀가 숨 쉬는 걸, 친구…',
   'sim.hearth.emberbulb2': '화로는 천천히, 깨끗하게 태우는 걸 좋아하지, 그녀가 딱 그렇다네…',
   'sim.hearth.emberbulb3': '불을 지피고 연기도 났군… 파장이 벌써 열리기 시작했어, 느껴지는군.',
@@ -5207,6 +5211,10 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'sim.lockpick.tierMedium': '중급',
   'sim.lockpick.tierPremium': '최상급',
   'sim.lockpick.toolSlips': '도구가 이 자물쇠에서 미끄러집니다.',
+  'sim.readyCheck.alreadyInProgress': '이미 준비 확인이 진행 중입니다.',
+  'sim.readyCheck.mustBeInParty': '준비 확인을 시작하려면 파티에 있어야 합니다.',
+  'sim.readyCheck.summary':
+    '준비 확인: 준비 완료 {ready}명, 미준비 {notReady}명, 무응답 {noResponse}명.',
   'delveUi.board.tabDelve': '탐굴',
   'delveUi.shop.price': '증표 {marks}개',
   'delveUi.shop.buyAria': '탐굴 증표 {marks}개로 {item} 구매',
@@ -5297,10 +5305,16 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.auraEffect.reduce.sta': '체력을 {value} 감소시킵니다',
   'hudChrome.auraEffect.reduce.spi': '정신력을 {value} 감소시킵니다',
   'hudChrome.auraEffect.reduce.allStats': '모든 능력치를 {value} 감소시킵니다',
+  'hudChrome.auraEffect.increasePct.ap': '공격력을 {pct}% 증가시킵니다',
+  'hudChrome.auraEffect.increasePct.armor': '방어도를 {pct}% 증가시킵니다',
+  'hudChrome.auraEffect.increasePct.int': '지능을 {pct}% 증가시킵니다',
+  'hudChrome.auraEffect.increasePct.sta': '체력을 {pct}% 증가시킵니다',
   'hudChrome.auraEffect.dodge': '회피 확률을 {pct}% 증가시킵니다',
   'hudChrome.auraEffect.dodgeReduce': '회피 확률을 {pct}% 감소시킵니다',
   'hudChrome.auraEffect.armorFlat': '방어도를 {value} 감소시킵니다',
   'hudChrome.auraEffect.armorFlatStacks': '방어도를 {value} 감소시킵니다 ({stacks}중첩)',
+  'hudChrome.auraEffect.armorPct': '방어도를 {pct}% 감소시킵니다',
+  'hudChrome.auraEffect.armorPctStacks': '방어도를 {pct}% 감소시킵니다 ({stacks}중첩)',
   'hudChrome.auraEffect.physVuln': '받는 물리 피해를 {pct}% 증가시킵니다',
   'hudChrome.auraEffect.mortalWound': '받는 치유량을 {pct}% 감소시킵니다',
   'hudChrome.auraEffect.vulnerability': '받는 피해를 {pct}% 증가시킵니다',
@@ -5490,6 +5504,15 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.npcJournal.next': '다음 페이지',
   'hudChrome.npcJournal.close': '일지 닫기',
   'hudChrome.npcJournal.title': '{name}의 일지',
+  'dailyRewardsUi.menuButton': '일일 보상',
+  'dailyRewardsUi.window.title': '일일 보상',
+  'dailyRewardsUi.window.close': '일일 보상 닫기',
+  'dailyRewardsUi.window.claim': '받기',
+  'dailyRewardsUi.window.claimAria': '오늘의 보상 받기',
+  'dailyRewardsUi.window.claimed': '받았습니다. 내일 다시 오세요.',
+  'dailyRewardsUi.window.locked': '현재 이 계정에서는 일일 보상을 사용할 수 없습니다.',
+  'dailyRewardsUi.window.hint': '하루에 한 번 받을 수 있습니다. 하루를 놓쳐도 손해는 없습니다.',
+  'dailyRewardsUi.cell.today': '오늘',
   'housingUi.claimedBanner': '당신은 이 부지를 보금자리로 인정했습니다.',
   'housingUi.ownerBanner': '여기는 {name}의 보금자리입니다.',
   'housingUi.prompt.claim': '이 부지 인정하기',

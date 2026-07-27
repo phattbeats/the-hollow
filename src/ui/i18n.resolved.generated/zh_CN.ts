@@ -246,7 +246,6 @@ export const zh_CN: EnTranslations = {
       "chat": "跳转到聊天"
     },
     "mobile": {
-      "autorun": "自动奔跑",
       "jump": "跳跃",
       "leaderboard": "排行榜",
       "nameplates": "姓名板",
@@ -720,10 +719,18 @@ export const zh_CN: EnTranslations = {
         "spi": "精神降低 {value}",
         "allStats": "所有属性降低 {value}"
       },
+      "increasePct": {
+        "ap": "攻击强度提高 {pct}%",
+        "armor": "护甲提高 {pct}%",
+        "int": "智力提高 {pct}%",
+        "sta": "耐力提高 {pct}%"
+      },
       "dodge": "躲闪几率提高 {pct}%",
       "dodgeReduce": "躲闪几率降低 {pct}%",
       "armorFlat": "护甲降低 {value}",
       "armorFlatStacks": "护甲降低 {value}（{stacks} 层）",
+      "armorPct": "护甲降低 {pct}%",
+      "armorPctStacks": "护甲降低 {pct}%（{stacks} 层）",
       "mortalWound": "受到的治疗降低 {pct}%",
       "vulnerability": "受到的伤害提高 {pct}%",
       "physVuln": "受到的物理伤害提高 {pct}%",
@@ -2436,6 +2443,13 @@ export const zh_CN: EnTranslations = {
       "nothingToHarvest": "这具尸体没有什么可以采集的。",
       "alreadyHarvested": "这具尸体已经被采集过了。"
     },
+    "dailyRewards": {
+      "claimed": "你领取了每日奖励。"
+    },
+    "collections": {
+      "notFound": "那个东西不存在。",
+      "tooFar": "太远了。"
+    },
     "hearth": {
       "tooFar": "你得靠近绿掌修士才能喂他。",
       "noItems1": "……伙计，你两手空空啊。带点能烧的或能填饱肚子的东西来，我们再唠。",
@@ -2503,6 +2517,11 @@ export const zh_CN: EnTranslations = {
       "tooFar": "你必须在自己的宅地才能种下它。",
       "planted": "你在自己的宅地种下了插枝。耐心等待吧。",
       "grown": "你的插枝已经长成了一只伙伴。它现在会跟随你。"
+    },
+    "readyCheck": {
+      "mustBeInParty": "你必须在队伍中才能发起准备检查。",
+      "alreadyInProgress": "准备检查已在进行中。",
+      "summary": "准备检查：{ready} 人已准备，{notReady} 人未准备，{noResponse} 人无响应。"
     }
   },
   "lockpickUi": {
@@ -3344,6 +3363,8 @@ export const zh_CN: EnTranslations = {
       "openTrade": "打开交易",
       "duelRequest": "{name} 向你发起了决斗挑战！",
       "acceptDuel": "接受决斗",
+      "readyCheckStart": "{name} 发起了准备检查。",
+      "markReady": "准备",
       "decline": "拒绝"
     },
     "combat": {
@@ -3819,6 +3840,22 @@ export const zh_CN: EnTranslations = {
       "stool": "凳子"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "每日奖励",
+    "window": {
+      "title": "每日奖励",
+      "close": "关闭每日奖励",
+      "claim": "领取",
+      "claimAria": "领取今日奖励",
+      "claimed": "已领取，明天再来。",
+      "locked": "此账号暂时无法领取每日奖励。",
+      "hint": "每天可领取一次。错过一天不会有任何损失。"
+    },
+    "cell": {
+      "today": "今天",
+      "itemCount": "{count}x {item}"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "金",
@@ -4039,7 +4076,8 @@ export const zh_CN: EnTranslations = {
       "needAria": "需求 {item}",
       "greedAria": "贪婪 {item}",
       "passAria": "放弃 {item}",
-      "everyonePassed": "所有人都放弃了 {item}。"
+      "everyonePassed": "所有人都放弃了 {item}。",
+      "winnerOffline": "{item}的获胜者已离线；战利品已归还尸体。"
     }
   },
   "entities": {
@@ -4102,7 +4140,7 @@ export const zh_CN: EnTranslations = {
       },
       "sunder_armor": {
         "name": "破甲攻击",
-        "description": "撕裂目标的护甲，每次使其降低 {damage}。最多叠加 5 次。产生大量威胁值。"
+        "description": "撕裂目标的护甲，每次使其降低 2%。最多叠加 5 次。产生大量威胁值。"
       },
       "taunt": {
         "name": "嘲讽",

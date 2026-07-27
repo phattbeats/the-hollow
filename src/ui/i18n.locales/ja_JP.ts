@@ -5,9 +5,8 @@
 // translate that key. The build (scripts/i18n_build.mjs) unflattens this map and
 // overlays it onto nested `en` to produce the dense resolved table; any key here
 // must be a real `en` leaf path: keys are typed `Partial<Record<TranslationKey,
-// string>>` so tsc rejects a structurally-wrong key, plus
-// tests/i18n_overlay_key_membership.test.ts catches a typo'd entity id the
-// template-literal key type cannot. Overlays are SPARSE: an
+// string>>` against the build-generated flat key union, so tsc rejects any key
+// that is not an exact `en` leaf path, typo'd entity ids included. Overlays are SPARSE: an
 // untranslated key is omitted and the build fills it from English, then the
 // registry (src/ui/i18n.status.json) marks it `pending`.
 
@@ -1060,6 +1059,8 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hud.prompts.openTrade': '取引を開く',
   'hud.prompts.duelRequest': '{name}があなたに決闘を申し込みました！',
   'hud.prompts.acceptDuel': '決闘を受ける',
+  'hud.prompts.readyCheckStart': '{name}が準備確認を開始しました。',
+  'hud.prompts.markReady': '準備完了',
   'hud.prompts.decline': '断る',
   'hud.combat.floatingMiss': 'ミス',
   'hud.combat.floatingDodge': '回避',
@@ -1624,6 +1625,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': '{item}を強欲',
   'itemUi.lootRoll.passAria': '{item}をパス',
   'itemUi.lootRoll.everyonePassed': '全員が{item}をパスしました。',
+  'itemUi.lootRoll.winnerOffline': '{item}の勝者がオフラインだったため、死体に返却されました。',
   'entities.abilities.heroic_strike.name': '英雄の一撃',
   'entities.abilities.heroic_strike.description':
     '強力な攻撃で近接ダメージが {damage} 増加します。次のスイングで発動します。',
@@ -1665,7 +1667,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     '防御用の戦闘スタンスです。脅威生成が30%増加しますが、与えるダメージと受けるダメージが10%低下します。再度使用するとスタンスを解除します。',
   'entities.abilities.sunder_armor.name': 'アーマー破壊',
   'entities.abilities.sunder_armor.description':
-    '対象のアーマーを破壊し、1回ごとに {damage} 低下させます。最大5回まで重なります。大量の脅威を生成します。',
+    '対象のアーマーを破壊し、1回ごとに 2% 低下させます。最大5回まで重なります。大量の脅威を生成します。',
   'entities.abilities.taunt.name': '挑発',
   'entities.abilities.taunt.description':
     '対象を挑発します。あなたの脅威が対象の最も憎む敵と同じ値まで上がり、3秒間あなたを攻撃させます。',
@@ -3524,7 +3526,6 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/秒',
   'hudChrome.meters.perSecondRow': '{total}（{rate}）',
   'hudChrome.meters.seconds': '{s}秒',
-  'hudChrome.mobile.autorun': 'オートラン',
   'hudChrome.mobile.haptics': '振動',
   'hudChrome.mobile.hapticsOff': '振動オフ',
   'hudChrome.mobile.jump': 'ジャンプ',
@@ -5132,12 +5133,15 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'sim.delve.wayOutNotOpen': '出口はまだ開いていない。',
   'sim.delve.whileTrading': '取引中はデルヴに入れない。',
   'sim.gathering.alreadyHarvested': 'この死骸はすでに採集済みだ。',
+  'sim.collections.notFound': 'それは存在しない。',
+  'sim.collections.tooFar': '遠すぎる。',
   'sim.gathering.nothingToHarvest': 'その死骸には採集できるものが何もない。',
   'sim.greenpawCutting.alreadyPlanted': '挿し木はもう植えた。育つのを待て。',
   'sim.greenpawCutting.needHomestead': 'これを植えるには、まず開拓地が必要だ。',
   'sim.greenpawCutting.tooFar': 'これを植えるには自分の開拓地にいなければならない。',
   'sim.greenpawCutting.planted': '開拓地に挿し木を植えた。時が満ちるのを待とう。',
   'sim.greenpawCutting.grown': '挿し木が育ち、伴侶となった。今はお前について歩く。',
+  'sim.dailyRewards.claimed': 'デイリー報酬を受け取った。',
   'sim.hearth.emberbulb1': 'こいつぁ上物の燃料だ……見ろ、あの子が息をしとる、なあ……',
   'sim.hearth.emberbulb2': '炉はゆっくり、きれいに食うのが好きなんじゃ、あの子はな……',
   'sim.hearth.emberbulb3': '焚べて、煙も立った……もう波長が開きかけとる、感じるわい。',
@@ -5197,6 +5201,10 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'sim.lockpick.tierMedium': '並',
   'sim.lockpick.tierPremium': '極上',
   'sim.lockpick.toolSlips': 'その道具はこの錠から滑り落ちる。',
+  'sim.readyCheck.alreadyInProgress': '準備確認はすでに進行中です。',
+  'sim.readyCheck.mustBeInParty': '準備確認を開始するにはパーティに入っている必要があります。',
+  'sim.readyCheck.summary':
+    '準備確認：準備完了 {ready} 人、未準備 {notReady} 人、応答なし {noResponse} 人。',
   'delveUi.board.tabDelve': 'デルヴ',
   'delveUi.shop.price': '刻印{marks}個',
   'delveUi.shop.buyAria': 'デルヴの刻印{marks}個で{item}を購入',
@@ -5287,10 +5295,16 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.auraEffect.reduce.sta': '耐久力を{value}低下させる',
   'hudChrome.auraEffect.reduce.spi': '精神力を{value}低下させる',
   'hudChrome.auraEffect.reduce.allStats': 'すべての能力値を{value}低下させる',
+  'hudChrome.auraEffect.increasePct.ap': '攻撃力を{pct}%上昇させる',
+  'hudChrome.auraEffect.increasePct.armor': '防御力を{pct}%上昇させる',
+  'hudChrome.auraEffect.increasePct.int': '知力を{pct}%上昇させる',
+  'hudChrome.auraEffect.increasePct.sta': '耐久力を{pct}%上昇させる',
   'hudChrome.auraEffect.dodge': '回避率を{pct}%上昇させる',
   'hudChrome.auraEffect.dodgeReduce': '回避率を{pct}%低下させる',
   'hudChrome.auraEffect.armorFlat': '防御力を{value}低下させる',
   'hudChrome.auraEffect.armorFlatStacks': '防御力を{value}低下させる({stacks}スタック)',
+  'hudChrome.auraEffect.armorPct': '防御力を{pct}%低下させる',
+  'hudChrome.auraEffect.armorPctStacks': '防御力を{pct}%低下させる({stacks}スタック)',
   'hudChrome.auraEffect.physVuln': '受ける物理ダメージを{pct}%増加させる',
   'hudChrome.auraEffect.mortalWound': '受ける回復量を{pct}%低下させる',
   'hudChrome.auraEffect.vulnerability': '受けるダメージを{pct}%増加させる',
@@ -5483,6 +5497,15 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.npcJournal.next': '次のページ',
   'hudChrome.npcJournal.close': '日記を閉じる',
   'hudChrome.npcJournal.title': '{name}の日記',
+  'dailyRewardsUi.menuButton': 'デイリー報酬',
+  'dailyRewardsUi.window.title': 'デイリー報酬',
+  'dailyRewardsUi.window.close': 'デイリー報酬を閉じる',
+  'dailyRewardsUi.window.claim': '受け取る',
+  'dailyRewardsUi.window.claimAria': '今日の報酬を受け取る',
+  'dailyRewardsUi.window.claimed': '受け取り済み。また明日。',
+  'dailyRewardsUi.window.locked': 'このアカウントでは現在デイリー報酬を利用できません。',
+  'dailyRewardsUi.window.hint': '1日1回受け取れます。逃した日があっても損はありません。',
+  'dailyRewardsUi.cell.today': '今日',
   'housingUi.claimedBanner': 'あなたはこの区画を住居として登録した。',
   'housingUi.ownerBanner': 'ここは{name}の住居です。',
   'housingUi.prompt.claim': 'この区画を登録する',

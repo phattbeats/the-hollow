@@ -261,6 +261,7 @@ describe('options_view: main menu routing', () => {
       'hud.options.interface',
       'hud.options.audio',
       'hudChrome.perf.title',
+      'dailyRewardsUi.menuButton',
       'hud.options.logout',
       'hud.options.returnToGame',
     ]);

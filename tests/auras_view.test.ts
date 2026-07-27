@@ -66,6 +66,7 @@ describe('isAuraDebuff: the allowlist classification (lifted into the core)', ()
         'cost_tax',
         'critvuln',
         'debuff_ap',
+        'debuff_armor_pct',
         'disarm',
         'dot',
         'expose',

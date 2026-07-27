@@ -5,9 +5,8 @@
 // translate that key. The build (scripts/i18n_build.mjs) unflattens this map and
 // overlays it onto nested `en` to produce the dense resolved table; any key here
 // must be a real `en` leaf path: keys are typed `Partial<Record<TranslationKey,
-// string>>` so tsc rejects a structurally-wrong key, plus
-// tests/i18n_overlay_key_membership.test.ts catches a typo'd entity id the
-// template-literal key type cannot. Overlays are SPARSE: an
+// string>>` against the build-generated flat key union, so tsc rejects any key
+// that is not an exact `en` leaf path, typo'd entity ids included. Overlays are SPARSE: an
 // untranslated key is omitted and the build fills it from English, then the
 // registry (src/ui/i18n.status.json) marks it `pending`.
 
@@ -1081,6 +1080,8 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hud.prompts.openTrade': 'Открыть обмен',
   'hud.prompts.duelRequest': '{name} вызвал вас на дуэль!',
   'hud.prompts.acceptDuel': 'Принять дуэль',
+  'hud.prompts.readyCheckStart': '{name} начал проверку готовности.',
+  'hud.prompts.markReady': 'Готов',
   'hud.prompts.decline': 'Отклонить',
   'hud.combat.floatingMiss': 'Промах',
   'hud.combat.floatingDodge': 'Уклон',
@@ -1644,6 +1645,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': 'Жадность: {item}',
   'itemUi.lootRoll.passAria': 'Пас: {item}',
   'itemUi.lootRoll.everyonePassed': 'Все отказались от {item}.',
+  'itemUi.lootRoll.winnerOffline': 'Победитель {item} был офлайн; предмет вернулся к трупу.',
   'entities.abilities.heroic_strike.name': 'Удар героя',
   'entities.abilities.heroic_strike.description':
     'Мощная атака, увеличивающая урон в ближнем бою на {damage}. Срабатывает при следующем взмахе оружием.',
@@ -1684,7 +1686,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
     'Оборонительная боевая стойка: вы создаете на 30% больше угрозы, но наносите и получаете на 10% меньше урона. Примените снова, чтобы выйти из стойки.',
   'entities.abilities.sunder_armor.name': 'Раскол брони',
   'entities.abilities.sunder_armor.description':
-    'Раскалывает броню цели, снижая ее на {damage} за применение. Суммируется до 5 раз. Создает большое количество угрозы.',
+    'Раскалывает броню цели, снижая ее на 2% за применение. Суммируется до 5 раз. Создает большое количество угрозы.',
   'entities.abilities.taunt.name': 'Провокация',
   'entities.abilities.taunt.description':
     'Провоцирует цель: ваша угроза повышается до уровня самого ненавистного ей врага, и она вынуждена атаковать вас 3 сек.',
@@ -3572,7 +3574,6 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/с',
   'hudChrome.meters.perSecondRow': '{total} ({rate})',
   'hudChrome.meters.seconds': '{s} сек.',
-  'hudChrome.mobile.autorun': 'Автобег',
   'hudChrome.mobile.haptics': 'Вибрация',
   'hudChrome.mobile.hapticsOff': 'Вибрация выкл.',
   'hudChrome.mobile.jump': 'Прыжок',
@@ -5237,12 +5238,15 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'sim.delve.wayOutNotOpen': 'Выход ещё не открыт.',
   'sim.delve.whileTrading': 'Нельзя войти в вылазку во время обмена.',
   'sim.gathering.alreadyHarvested': 'Этот труп уже разделан.',
+  'sim.collections.notFound': 'Этого не существует.',
+  'sim.collections.tooFar': 'Слишком далеко.',
   'sim.gathering.nothingToHarvest': 'С этого трупа нечего собирать.',
   'sim.greenpawCutting.alreadyPlanted': 'Ты уже посадил свой черенок. Дай ему время вырасти.',
   'sim.greenpawCutting.needHomestead': 'Чтобы посадить это, тебе сначала нужен участок.',
   'sim.greenpawCutting.tooFar': 'Чтобы посадить это, ты должен быть на своем участке.',
   'sim.greenpawCutting.planted': 'Ты сажаешь черенок на своем участке. Дай ему время.',
   'sim.greenpawCutting.grown': 'Твой черенок вырос в спутника. Теперь он следует за тобой.',
+  'sim.dailyRewards.claimed': 'Вы получаете ежедневную награду.',
   'sim.hearth.emberbulb1': 'вот это дровишки… гляди, как она задышала, дружище…',
   'sim.hearth.emberbulb2': 'печь берёт своё медленно и чисто, ей так по нраву…',
   'sim.hearth.emberbulb3': 'растопили, задымило… уже чую, как открывается волна.',
@@ -5308,6 +5312,10 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'sim.lockpick.tierMedium': 'Средняя',
   'sim.lockpick.tierPremium': 'Превосходная',
   'sim.lockpick.toolSlips': 'Этот инструмент соскальзывает с этого замка.',
+  'sim.readyCheck.alreadyInProgress': 'Проверка готовности уже идет.',
+  'sim.readyCheck.mustBeInParty': 'Чтобы начать проверку готовности, вы должны состоять в группе.',
+  'sim.readyCheck.summary':
+    'Проверка готовности: готовы {ready}, не готовы {notReady}, без ответа {noResponse}.',
   'delveUi.board.tabDelve': 'Вылазка',
   'delveUi.shop.price': '{marks} меток',
   'delveUi.shop.buyAria': 'Купить {item} за {marks} Меток Вылазок',
@@ -5398,10 +5406,16 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.auraEffect.reduce.sta': 'Снижает выносливость на {value}',
   'hudChrome.auraEffect.reduce.spi': 'Снижает дух на {value}',
   'hudChrome.auraEffect.reduce.allStats': 'Снижает все характеристики на {value}',
+  'hudChrome.auraEffect.increasePct.ap': 'Повышает силу атаки на {pct}%',
+  'hudChrome.auraEffect.increasePct.armor': 'Повышает броню на {pct}%',
+  'hudChrome.auraEffect.increasePct.int': 'Повышает интеллект на {pct}%',
+  'hudChrome.auraEffect.increasePct.sta': 'Повышает выносливость на {pct}%',
   'hudChrome.auraEffect.dodge': 'Повышает шанс уклонения на {pct}%',
   'hudChrome.auraEffect.dodgeReduce': 'Снижает шанс уклонения на {pct}%',
   'hudChrome.auraEffect.armorFlat': 'Снижает броню на {value}',
   'hudChrome.auraEffect.armorFlatStacks': 'Снижает броню на {value} ({stacks} зарядов)',
+  'hudChrome.auraEffect.armorPct': 'Снижает броню на {pct}%',
+  'hudChrome.auraEffect.armorPctStacks': 'Снижает броню на {pct}% ({stacks} зарядов)',
   'hudChrome.auraEffect.physVuln': 'Увеличивает получаемый физический урон на {pct}%',
   'hudChrome.auraEffect.mortalWound': 'Снижает получаемое исцеление на {pct}%',
   'hudChrome.auraEffect.vulnerability': 'Увеличивает получаемый урон на {pct}%',
@@ -5609,6 +5623,15 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.npcJournal.next': 'Следующая страница',
   'hudChrome.npcJournal.close': 'Закрыть дневник',
   'hudChrome.npcJournal.title': 'Дневник {name}',
+  'dailyRewardsUi.menuButton': 'Ежедневные награды',
+  'dailyRewardsUi.window.title': 'Ежедневные награды',
+  'dailyRewardsUi.window.close': 'Закрыть ежедневные награды',
+  'dailyRewardsUi.window.claim': 'Забрать',
+  'dailyRewardsUi.window.claimAria': 'Забрать сегодняшнюю награду',
+  'dailyRewardsUi.window.claimed': 'Получено. Возвращайтесь завтра.',
+  'dailyRewardsUi.window.locked': 'Ежедневные награды сейчас недоступны для этого аккаунта.',
+  'dailyRewardsUi.window.hint': 'Одна награда в день. Пропущенный день ничего не стоит.',
+  'dailyRewardsUi.cell.today': 'Сегодня',
   'housingUi.claimedBanner': 'Вы объявили этот участок своим домом.',
   'housingUi.ownerBanner': 'Это усадьба {name}.',
   'housingUi.prompt.claim': 'Заявить права на этот участок',

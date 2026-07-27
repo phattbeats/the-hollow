@@ -45,10 +45,13 @@ import type {
   Entity,
   ErrorReason,
   PlayerClass,
+  PvpWinKind,
   QuestProgress,
+  ReadyCheck,
   SimConfig,
   SimEvent,
   SkinCatalog,
+  SocialActionKind,
   Vec3,
 } from './types';
 
@@ -113,7 +116,8 @@ export interface SimContextPrimitives {
   // Backing fields stay on Sim. `duels` is also read per-attack by isHostileTo/
   // dealDamage (PvP hostility), so it stays Sim-owned (A2).
   readonly duels: Map<number, DuelState>;
-  readonly cfg: Required<Omit<SimConfig, 'noPlayer'>>;
+  // `world` stays optional (custom play-test map, else undefined); the rest defaulted.
+  readonly cfg: Required<Omit<SimConfig, 'noPlayer' | 'world'>> & Pick<SimConfig, 'world'>;
   // A2 duel + arena state. Live views: the backing fields stay on Sim (mutated in
   // place / reassigned), like E1's delayedEvents. The three queues are REASSIGNED by
   // the matchmaker's filter, so they are read-write; the maps/set and the match-id
@@ -146,6 +150,10 @@ export interface SimContextPrimitives {
   // it routes through ctx until that slice puts it on the seam. (trades/tradeInvites/
   // duelInvites are already declared above; deduped.)
   readonly partyInvites: Map<number, { fromPid: number; expires: number }>;
+  // Active party/raid ready checks (social/ready_check.ts), keyed by party id.
+  // Swept in the end-of-tick block by updateReadyChecks. Sim-internal, never
+  // wired.
+  readonly readyChecks: Map<number, ReadyCheck>;
   readonly chatTokens: Map<number, { tokens: number; at: number }>;
   readonly channelSubs: Map<number, Set<JoinableChannel>>;
   // L1 loot-distribution state. The pending need-greed rolls map is mutated in
@@ -309,6 +317,9 @@ export interface SimContextCallbacks {
   // delegate; partyOf stays on Sim (A1's thin delegate -> social/party).
   clearEntityMarker(entityId: number): void;
   partyOf(pid: number): Party | null;
+  // Start a party/raid ready check as the actor (leader-gated); used by the
+  // chat "/ready" command in social/chat.ts. Delegates to social/ready_check.ts.
+  readyCheckStart(pid?: number): void;
   removeFromParty(pid: number, verb: string): void;
   // Drop a disbanded party's whole raid-marker set (points at T1's targeting store).
   dropPartyMarkers(partyId: number): void;
@@ -319,6 +330,36 @@ export interface SimContextCallbacks {
   onGreenpawFedForQuests(meta: PlayerMeta): void;
   checkQuestReady(qp: QuestProgress, meta: PlayerMeta): void;
   countItem(itemId: string, pid?: number): number;
+  // PHAA-744: Book of Asphodelia deed-credit hooks, same event sites as the
+  // quest-credit trio above (src/sim/deeds.ts).
+  onMobKilledForDeeds(mob: Entity, meta: PlayerMeta): void;
+  onInventoryChangedForDeeds(meta: PlayerMeta): void;
+  // PHAA-745 chronicle category: hooked from completeQuest() (quest_commands.ts),
+  // the shared core both turnInQuest and refuseQuest route through.
+  onQuestCompletedForDeeds(questId: string, meta: PlayerMeta): void;
+  // PHAA-745 delve category: hooked from grantDelveClearTo (delves/runs.ts), the
+  // shared per-member clear-economy choke point every completion path routes through.
+  onDelveClearedForDeeds(
+    delveId: string,
+    tierId: string,
+    deathless: boolean,
+    meta: PlayerMeta,
+  ): void;
+  // PHAA-745 progression category: hooked from the level-up loop in grantXp
+  // (combat/damage.ts), fired once per level crossed with the reached level.
+  onLevelReachedForDeeds(level: number, meta: PlayerMeta): void;
+  // PHAA-745 exploration category: hooked from the per-player movement tick in
+  // sim.ts, fired once per zone entry with the newly entered zone's id.
+  onZoneVisitedForDeeds(zoneId: string, meta: PlayerMeta): void;
+  // PHAA-745 pvp category: hooked from the shared win-scoring closure in
+  // endArenaMatch (social/arena.ts: arena, fiesta, boarball) and from endDuel
+  // (social/duel.ts: duel), fired once per pid on a match/bout win.
+  onPvpWinForDeeds(kind: PvpWinKind, meta: PlayerMeta): void;
+  // PHAA-745 social category: hooked from completeFishing / talkToNpc (sim.ts),
+  // lockpickSucceed (delves/lockpick_controller.ts), the /roll handler
+  // (social/chat.ts), and bankDeposit/bankWithdraw (bank.ts, engine-only: no
+  // banker NPC is placed in zone content yet, see bank.ts's ADAPT NOTE).
+  onSocialActionForDeeds(kind: SocialActionKind, meta: PlayerMeta, npcId?: string): void;
 
   // T1 player target selection consumes isHostileTo/isFriendlyTo/pvpController/stopFollow;
   // all already on the seam (C4a added the first two + stopFollow, C1 added pvpController)
@@ -759,6 +800,9 @@ export function createSimContext(host: SimContextHost): SimContext {
     get partyInvites() {
       return host.partyInvites;
     },
+    get readyChecks() {
+      return host.readyChecks;
+    },
     get chatTokens() {
       return host.chatTokens;
     },
@@ -842,6 +886,7 @@ export function createSimContext(host: SimContextHost): SimContext {
     removeItem: host.removeItem,
     clearEntityMarker: host.clearEntityMarker,
     partyOf: host.partyOf,
+    readyCheckStart: host.readyCheckStart,
     removeFromParty: host.removeFromParty,
     dropPartyMarkers: host.dropPartyMarkers,
     onMobKilledForQuests: host.onMobKilledForQuests,
@@ -849,6 +894,14 @@ export function createSimContext(host: SimContextHost): SimContext {
     onGreenpawFedForQuests: host.onGreenpawFedForQuests,
     checkQuestReady: host.checkQuestReady,
     countItem: host.countItem,
+    onMobKilledForDeeds: host.onMobKilledForDeeds,
+    onInventoryChangedForDeeds: host.onInventoryChangedForDeeds,
+    onQuestCompletedForDeeds: host.onQuestCompletedForDeeds,
+    onDelveClearedForDeeds: host.onDelveClearedForDeeds,
+    onLevelReachedForDeeds: host.onLevelReachedForDeeds,
+    onZoneVisitedForDeeds: host.onZoneVisitedForDeeds,
+    onPvpWinForDeeds: host.onPvpWinForDeeds,
+    onSocialActionForDeeds: host.onSocialActionForDeeds,
     addEntity: host.addEntity,
     dropEntity: host.dropEntity,
     rebucket: host.rebucket,

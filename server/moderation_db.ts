@@ -18,6 +18,8 @@ export type ModerationAction = 'ignore' | 'kick' | 'kill' | 'suspend' | 'ban' | 
 export const MODERATION_ACTIONS = [
   'kick',
   'kill',
+  'jail',
+  'unjail',
   'suspend',
   'unsuspend',
   'ban',
@@ -26,6 +28,8 @@ export const MODERATION_ACTIONS = [
   'chat_unmute',
   'note',
   'force_rename',
+  'daily_rewards_lock',
+  'daily_rewards_unlock',
 ] as const;
 export type ModerationActionKind = (typeof MODERATION_ACTIONS)[number];
 
@@ -536,6 +540,69 @@ export async function liftAccountChatMute(input: {
   }
 }
 
+// PHAA-660: a narrower lock than ban/suspend above, scoped only to the daily
+// rewards claim (docs/design/daily-rewards.md's #1773 adapt). A locked account
+// keeps playing/chatting/trading normally; only claimDailyReward's server-side
+// eligibility check (server/game.ts) reads daily_rewards_locked_at.
+export async function lockAccountDailyRewards(input: {
+  accountId: number;
+  adminAccountId: number;
+  reason: unknown;
+}): Promise<void> {
+  const reason = cleanText(input.reason, ACTION_REASON_MAX);
+  if (!reason) throw new Error('moderation reason is required');
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    await client.query('UPDATE accounts SET daily_rewards_locked_at = now() WHERE id = $1', [
+      input.accountId,
+    ]);
+    await recordModerationAction(client, 'daily_rewards_lock', {
+      accountId: input.accountId,
+      adminAccountId: input.adminAccountId,
+      reason,
+    });
+    await client.query('COMMIT');
+  } catch (err) {
+    await client.query('ROLLBACK').catch(() => {});
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
+export async function unlockAccountDailyRewards(input: {
+  accountId: number;
+  adminAccountId: number;
+  reason: unknown;
+}): Promise<void> {
+  const reason = cleanText(input.reason, ACTION_REASON_MAX);
+  if (!reason) throw new Error('moderation reason is required');
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    const updated = await client.query(
+      `UPDATE accounts SET daily_rewards_locked_at = NULL
+       WHERE id = $1 AND daily_rewards_locked_at IS NOT NULL`,
+      [input.accountId],
+    );
+    if ((updated.rowCount ?? 0) === 0) {
+      throw new Error('account is not daily-rewards locked');
+    }
+    await recordModerationAction(client, 'daily_rewards_unlock', {
+      accountId: input.accountId,
+      adminAccountId: input.adminAccountId,
+      reason,
+    });
+    await client.query('COMMIT');
+  } catch (err) {
+    await client.query('ROLLBACK').catch(() => {});
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+
 // Append a free-form moderator note to an account's audit log. Purely additive: it
 // changes no account state and resolves no reports (unlike moderateAccount), so a
 // single INSERT is atomic on its own and needs no transaction.
@@ -556,7 +623,7 @@ export async function addAccountNote(input: {
 // Audit-only record for an in-game action whose live effect is owned by the
 // GameServer. Unlike account sanctions, this changes no persistent account state.
 export async function recordInGameAction(input: {
-  action: 'kick' | 'kill';
+  action: 'kick' | 'kill' | 'jail' | 'unjail';
   accountId: number;
   adminAccountId: number;
   reason: unknown;

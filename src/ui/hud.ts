@@ -12,6 +12,7 @@ import {
   nonSelfRepaintDue,
   targetFrameNonSelfIntervalMs,
 } from '../game/ui_tier_knobs';
+import { currentUtcDay } from '../game/utc_day';
 import { voice } from '../game/voice';
 import { castBarState, consumeBarState } from '../render/cast_bar';
 import { CharacterPreview } from '../render/characters';
@@ -24,6 +25,7 @@ import {
 } from '../render/characters/portrait';
 import type { Renderer } from '../render/renderer';
 import { type AugmentCategory, augmentCategory } from '../sim/content/augments';
+import { DAILY_REWARD_CYCLE } from '../sim/content/daily_rewards';
 import {
   EVENT_SKIN_TIERS,
   MECH_CHROMAS,
@@ -152,6 +154,8 @@ import {
 } from './combat_sfx';
 import { type CardinalId, compassView } from './compass';
 import { formatMinimapCoords } from './coords';
+import { buildDailyRewardsView } from './daily_rewards_view';
+import { renderDailyRewardsWindow } from './daily_rewards_window';
 import { DelveMapPainter } from './delve_map_painter';
 import { markDialogRoot } from './dialog_root';
 import { DISCORD_SURFACES_ENABLED } from './discord_flags';
@@ -1626,6 +1630,9 @@ export class Hud {
       case 'vendor-window':
         this.closeVendor();
         break;
+      case 'daily-rewards-window':
+        this.closeDailyRewards();
+        break;
       case 'housing-window':
         this.closeHousing();
         break;
@@ -2437,8 +2444,8 @@ export class Hud {
     document.getElementById('ui') as HTMLElement,
     (x, y, z) => this.renderer.worldToScreen(x, y, z),
     getUiScale,
-    // Tier the pool cap / TTL / drop-non-crit from the STATIC preset (data-fx-level),
-    // never the governor. spawn() reads this per event.
+    // Tier the pool cap / TTL from the STATIC preset (data-fx-level), never the
+    // governor. spawn() reads this per event.
     { getFxTier: () => this.fxTier() },
   );
   // The player frame is the FIRST instance of the unit_frame family. It owns
@@ -2831,6 +2838,7 @@ export class Hud {
       return item ? itemDisplayName(item) : null;
     },
     refreshKeybindLabels: () => this.refreshKeybindLabels(),
+    openDailyRewards: () => this.openDailyRewards(),
     buildDropdown: (options, current, onChange, placeholder, a11y) =>
       this.buildDropdown(options, current, onChange, placeholder, a11y),
     setDropdownValue: (root, value) => this.setDropdownValue(root, value),
@@ -6555,6 +6563,15 @@ export class Hud {
             () => this.sim.duelDecline(),
           );
           break;
+        case 'readyCheckStart':
+          audio.click();
+          this.showPrompt(
+            t('hud.prompts.readyCheckStart', { name: `<b>${esc(ev.fromName)}</b>` }),
+            t('hud.prompts.markReady'),
+            () => this.sim.readyCheckRespond(true),
+            () => this.sim.readyCheckRespond(false),
+          );
+          break;
         case 'duelCountdown':
           this.showBanner(t('hud.system.duelCountdown', { seconds: ev.seconds }));
           audio.duelCountdownTick();
@@ -7243,6 +7260,9 @@ export class Hud {
     match = /^Everyone passed on (.+)\.$/.exec(text);
     if (match)
       return t('itemUi.lootRoll.everyonePassed', { item: itemDisplayNameFromSource(match[1]) });
+    match = /^The winner of (.+) was offline; it was returned to the corpse\.$/.exec(text);
+    if (match)
+      return t('itemUi.lootRoll.winnerOffline', { item: itemDisplayNameFromSource(match[1]) });
     match = /^Sold (\d+) junk items? for (.+)\.$/.exec(text);
     if (match) {
       const n = Number(match[1]);
@@ -7811,12 +7831,16 @@ export class Hud {
 
   // Open a world-placed readable book (PHAA-552) in the shared quest dialog and
   // page through its content with the SAME pure paginator the NPC intro uses
-  // (npc_intro_view), so there is no second reader. Reading is client-only: no
-  // world command is sent, the text is looked up by id through the `readable`
-  // entity-i18n kind. Called by main.ts's interact-key handler when the player
-  // stands on a book (renderer.nearReadable).
+  // (npc_intro_view), so there is no second reader. The text itself is looked
+  // up by id through the `readable` entity-i18n kind (language-agnostic sim).
+  // Opening now also fires the collection-tracking read command (PHAA-626):
+  // the server marks the id collected (idempotent, re-checks range) and the
+  // (sibling-ticket) UI panel reads the result off collectedIds; this call
+  // never blocks the local page render. Called by main.ts's interact-key
+  // handler when the player stands on a book (renderer.nearReadable).
   openReadable(id: string): void {
     if (!READABLES_BY_ID[id]) return;
+    this.sim.readCollectible(id);
     this.closeOtherWindows('#quest-dialog');
     if ($('#quest-dialog').style.display !== 'block')
       this.questDialogTrap = this.focusManager.open({ root: () => $('#quest-dialog') });
@@ -8703,6 +8727,51 @@ export class Hud {
 
   get vendorOpen(): boolean {
     return this.openVendorNpcId !== null;
+  }
+
+  // -------------------------------------------------------------------------
+  // Daily rewards (PHAA-660, docs/design/daily-rewards.md). Opened only from a
+  // deliberate menu entry (never a login splash or a HUD badge/nag); the recipe
+  // is the Vendor window above (rebuild-on-open, not a per-frame hot painter).
+  // -------------------------------------------------------------------------
+
+  private dailyRewardsWindowOpen = false;
+  private dailyRewardsFocusReturn: HTMLElement | null = null;
+
+  openDailyRewards(): void {
+    this.closeOtherWindows('#daily-rewards-window');
+    this.dailyRewardsWindowOpen = true;
+    this.dailyRewardsFocusReturn = this.windowFocus('#daily-rewards-window').captureFocus();
+    this.renderDailyRewards();
+  }
+
+  private renderDailyRewards(): void {
+    if (!this.dailyRewardsWindowOpen) return;
+    renderDailyRewardsWindow(
+      $('#daily-rewards-window'),
+      buildDailyRewardsView(this.sim.dailyRewards, DAILY_REWARD_CYCLE, currentUtcDay()),
+      {
+        ...this.presentationBag,
+        items: ITEMS,
+        onClaim: () => {
+          this.sim.claimDailyReward();
+          this.renderDailyRewards();
+        },
+        onClose: () => this.closeDailyRewards(),
+      },
+    );
+  }
+
+  closeDailyRewards(): void {
+    $('#daily-rewards-window').style.display = 'none';
+    this.dailyRewardsWindowOpen = false;
+    this.windowFocus('#daily-rewards-window').restoreFocus(this.dailyRewardsFocusReturn);
+    this.dailyRewardsFocusReturn = null;
+    this.hideTooltip();
+  }
+
+  get dailyRewardsOpen(): boolean {
+    return this.dailyRewardsWindowOpen;
   }
 
   // -------------------------------------------------------------------------

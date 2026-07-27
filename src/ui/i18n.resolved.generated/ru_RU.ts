@@ -246,7 +246,6 @@ export const ru_RU: EnTranslations = {
       "chat": "Перейти к чату"
     },
     "mobile": {
-      "autorun": "Автобег",
       "jump": "Прыжок",
       "leaderboard": "Рейтинг",
       "nameplates": "Имена",
@@ -720,10 +719,18 @@ export const ru_RU: EnTranslations = {
         "spi": "Снижает дух на {value}",
         "allStats": "Снижает все характеристики на {value}"
       },
+      "increasePct": {
+        "ap": "Повышает силу атаки на {pct}%",
+        "armor": "Повышает броню на {pct}%",
+        "int": "Повышает интеллект на {pct}%",
+        "sta": "Повышает выносливость на {pct}%"
+      },
       "dodge": "Повышает шанс уклонения на {pct}%",
       "dodgeReduce": "Снижает шанс уклонения на {pct}%",
       "armorFlat": "Снижает броню на {value}",
       "armorFlatStacks": "Снижает броню на {value} ({stacks} зарядов)",
+      "armorPct": "Снижает броню на {pct}%",
+      "armorPctStacks": "Снижает броню на {pct}% ({stacks} зарядов)",
       "mortalWound": "Снижает получаемое исцеление на {pct}%",
       "vulnerability": "Увеличивает получаемый урон на {pct}%",
       "physVuln": "Увеличивает получаемый физический урон на {pct}%",
@@ -2436,6 +2443,13 @@ export const ru_RU: EnTranslations = {
       "nothingToHarvest": "С этого трупа нечего собирать.",
       "alreadyHarvested": "Этот труп уже разделан."
     },
+    "dailyRewards": {
+      "claimed": "Вы получаете ежедневную награду."
+    },
+    "collections": {
+      "notFound": "Этого не существует.",
+      "tooFar": "Слишком далеко."
+    },
     "hearth": {
       "tooFar": "Чтобы покормить брата Зеленолапа, нужно быть рядом с ним.",
       "noItems1": "…у тебя пусто в руках, дружище. Принеси то, что горит, или то, чем сыт бываешь, тогда и поговорим.",
@@ -2503,6 +2517,11 @@ export const ru_RU: EnTranslations = {
       "tooFar": "Чтобы посадить это, ты должен быть на своем участке.",
       "planted": "Ты сажаешь черенок на своем участке. Дай ему время.",
       "grown": "Твой черенок вырос в спутника. Теперь он следует за тобой."
+    },
+    "readyCheck": {
+      "mustBeInParty": "Чтобы начать проверку готовности, вы должны состоять в группе.",
+      "alreadyInProgress": "Проверка готовности уже идет.",
+      "summary": "Проверка готовности: готовы {ready}, не готовы {notReady}, без ответа {noResponse}."
     }
   },
   "lockpickUi": {
@@ -3344,6 +3363,8 @@ export const ru_RU: EnTranslations = {
       "openTrade": "Открыть обмен",
       "duelRequest": "{name} вызвал вас на дуэль!",
       "acceptDuel": "Принять дуэль",
+      "readyCheckStart": "{name} начал проверку готовности.",
+      "markReady": "Готов",
       "decline": "Отклонить"
     },
     "combat": {
@@ -3819,6 +3840,22 @@ export const ru_RU: EnTranslations = {
       "stool": "Табурет"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "Ежедневные награды",
+    "window": {
+      "title": "Ежедневные награды",
+      "close": "Закрыть ежедневные награды",
+      "claim": "Забрать",
+      "claimAria": "Забрать сегодняшнюю награду",
+      "claimed": "Получено. Возвращайтесь завтра.",
+      "locked": "Ежедневные награды сейчас недоступны для этого аккаунта.",
+      "hint": "Одна награда в день. Пропущенный день ничего не стоит."
+    },
+    "cell": {
+      "today": "Сегодня",
+      "itemCount": "{count}x {item}"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "з",
@@ -4039,7 +4076,8 @@ export const ru_RU: EnTranslations = {
       "needAria": "Нужно: {item}",
       "greedAria": "Жадность: {item}",
       "passAria": "Пас: {item}",
-      "everyonePassed": "Все отказались от {item}."
+      "everyonePassed": "Все отказались от {item}.",
+      "winnerOffline": "Победитель {item} был офлайн; предмет вернулся к трупу."
     }
   },
   "entities": {
@@ -4102,7 +4140,7 @@ export const ru_RU: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Раскол брони",
-        "description": "Раскалывает броню цели, снижая ее на {damage} за применение. Суммируется до 5 раз. Создает большое количество угрозы."
+        "description": "Раскалывает броню цели, снижая ее на 2% за применение. Суммируется до 5 раз. Создает большое количество угрозы."
       },
       "taunt": {
         "name": "Провокация",

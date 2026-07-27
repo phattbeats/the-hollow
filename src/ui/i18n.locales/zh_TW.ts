@@ -5,9 +5,8 @@
 // translate that key. The build (scripts/i18n_build.mjs) unflattens this map and
 // overlays it onto nested `en` to produce the dense resolved table; any key here
 // must be a real `en` leaf path: keys are typed `Partial<Record<TranslationKey,
-// string>>` so tsc rejects a structurally-wrong key, plus
-// tests/i18n_overlay_key_membership.test.ts catches a typo'd entity id the
-// template-literal key type cannot. Overlays are SPARSE: an
+// string>>` against the build-generated flat key union, so tsc rejects any key
+// that is not an exact `en` leaf path, typo'd entity ids included. Overlays are SPARSE: an
 // untranslated key is omitted and the build fills it from English, then the
 // registry (src/ui/i18n.status.json) marks it `pending`.
 
@@ -1009,6 +1008,8 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hud.prompts.openTrade': '開啟交易',
   'hud.prompts.duelRequest': '{name} 向你發起了決鬥挑戰！',
   'hud.prompts.acceptDuel': '接受決鬥',
+  'hud.prompts.readyCheckStart': '{name} 發起了準備檢查。',
+  'hud.prompts.markReady': '準備',
   'hud.prompts.decline': '拒絕',
   'hud.combat.floatingMiss': '未命中',
   'hud.combat.floatingDodge': '閃避',
@@ -1553,6 +1554,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': '貪婪 {item}',
   'itemUi.lootRoll.passAria': '放棄 {item}',
   'itemUi.lootRoll.everyonePassed': '所有人都放棄了 {item}。',
+  'itemUi.lootRoll.winnerOffline': '{item}的獲勝者已離線；戰利品已歸還屍體。',
   'entities.abilities.heroic_strike.name': '英勇打擊',
   'entities.abilities.heroic_strike.description':
     '一次強力攻擊，使近戰傷害提高 {damage}。在你的下一次揮擊時觸發。',
@@ -1591,7 +1593,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
     '防禦戰鬥姿態：你產生的威脅值提高 30%，但造成和受到的傷害降低 10%。再次施放可離開該姿態。',
   'entities.abilities.sunder_armor.name': '破甲攻擊',
   'entities.abilities.sunder_armor.description':
-    '撕裂目標的護甲，每次使其降低 {damage}。最多疊加 5 次。產生大量威脅值。',
+    '撕裂目標的護甲，每次使其降低 2%。最多疊加 5 次。產生大量威脅值。',
   'entities.abilities.taunt.name': '嘲諷',
   'entities.abilities.taunt.description':
     '嘲諷目標：你的威脅值提高到其最仇恨敵人的水平，並強迫其攻擊你 3 秒。',
@@ -3382,7 +3384,6 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/秒',
   'hudChrome.meters.perSecondRow': '{total}（{rate}）',
   'hudChrome.meters.seconds': '{s}秒',
-  'hudChrome.mobile.autorun': '自動奔跑',
   'hudChrome.mobile.haptics': '觸覺回饋',
   'hudChrome.mobile.hapticsOff': '觸覺回饋已關閉',
   'hudChrome.mobile.jump': '跳躍',
@@ -4877,12 +4878,15 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'sim.delve.wayOutNotOpen': '出路尚未開啟。',
   'sim.delve.whileTrading': '交易期間無法進入秘探。',
   'sim.gathering.alreadyHarvested': '這具屍體已經被採集過了。',
+  'sim.collections.notFound': '那個東西不存在。',
+  'sim.collections.tooFar': '太遠了。',
   'sim.gathering.nothingToHarvest': '這具屍體沒有什麼可以採集的。',
   'sim.greenpawCutting.alreadyPlanted': '你已經種下了插枝。給它一些時間成長。',
   'sim.greenpawCutting.needHomestead': '你需要先擁有一塊宅地才能種下它。',
   'sim.greenpawCutting.tooFar': '你必須在自己的宅地才能種下它。',
   'sim.greenpawCutting.planted': '你在自己的宅地種下了插枝。耐心等待吧。',
   'sim.greenpawCutting.grown': '你的插枝已經長成了一隻夥伴。牠現在會跟隨你。',
+  'sim.dailyRewards.claimed': '你領取了每日獎勵。',
   'sim.hearth.emberbulb1': '這才叫柴火……瞧瞧她喘氣的樣子，夥計……',
   'sim.hearth.emberbulb2': '爐子慢慢地、乾乾淨淨地吃下去，她就愛這樣……',
   'sim.hearth.emberbulb3': '添了柴，冒了煙……那個波長已經開始鬆動了，我能感覺到。',
@@ -4938,6 +4942,10 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'sim.lockpick.tierMedium': '中等',
   'sim.lockpick.tierPremium': '上等',
   'sim.lockpick.toolSlips': '那件工具從這道鎖上滑開了。',
+  'sim.readyCheck.alreadyInProgress': '準備檢查已在進行中。',
+  'sim.readyCheck.mustBeInParty': '你必須在隊伍中才能發起準備檢查。',
+  'sim.readyCheck.summary':
+    '準備檢查：{ready} 人已準備，{notReady} 人未準備，{noResponse} 人無回應。',
   'delveUi.board.tabDelve': '秘探',
   'delveUi.shop.price': '{marks} 印記',
   'delveUi.shop.buyAria': '用 {marks} 枚秘探印記購買 {item}',
@@ -5025,10 +5033,16 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.auraEffect.reduce.sta': '耐力降低 {value}',
   'hudChrome.auraEffect.reduce.spi': '精神降低 {value}',
   'hudChrome.auraEffect.reduce.allStats': '所有屬性降低 {value}',
+  'hudChrome.auraEffect.increasePct.ap': '攻擊強度提高 {pct}%',
+  'hudChrome.auraEffect.increasePct.armor': '護甲提高 {pct}%',
+  'hudChrome.auraEffect.increasePct.int': '智力提高 {pct}%',
+  'hudChrome.auraEffect.increasePct.sta': '耐力提高 {pct}%',
   'hudChrome.auraEffect.dodge': '閃躲機率提高 {pct}%',
   'hudChrome.auraEffect.dodgeReduce': '閃避機率降低 {pct}%',
   'hudChrome.auraEffect.armorFlat': '護甲降低 {value}',
   'hudChrome.auraEffect.armorFlatStacks': '護甲降低 {value}（{stacks} 層）',
+  'hudChrome.auraEffect.armorPct': '護甲降低 {pct}%',
+  'hudChrome.auraEffect.armorPctStacks': '護甲降低 {pct}%（{stacks} 層）',
   'hudChrome.auraEffect.physVuln': '受到的物理傷害提高 {pct}%',
   'hudChrome.auraEffect.mortalWound': '受到的治療降低 {pct}%',
   'hudChrome.auraEffect.vulnerability': '受到的傷害提高 {pct}%',
@@ -5216,6 +5230,15 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.npcJournal.next': '下一頁',
   'hudChrome.npcJournal.close': '關閉日記',
   'hudChrome.npcJournal.title': '{name}的日記',
+  'dailyRewardsUi.menuButton': '每日獎勵',
+  'dailyRewardsUi.window.title': '每日獎勵',
+  'dailyRewardsUi.window.close': '關閉每日獎勵',
+  'dailyRewardsUi.window.claim': '領取',
+  'dailyRewardsUi.window.claimAria': '領取今日獎勵',
+  'dailyRewardsUi.window.claimed': '已領取，明天再來。',
+  'dailyRewardsUi.window.locked': '此帳號暫時無法領取每日獎勵。',
+  'dailyRewardsUi.window.hint': '每天可領取一次。錯過一天不會有任何損失。',
+  'dailyRewardsUi.cell.today': '今天',
   'housingUi.claimedBanner': '你將這塊地認領為家園。',
   'housingUi.ownerBanner': '這是{name}的家園。',
   'housingUi.prompt.claim': '認領這塊地',

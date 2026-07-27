@@ -246,7 +246,6 @@ export const ko_KR: EnTranslations = {
       "chat": "채팅으로 건너뛰기"
     },
     "mobile": {
-      "autorun": "자동 달리기",
       "jump": "점프",
       "leaderboard": "순위",
       "nameplates": "이름표",
@@ -720,10 +719,18 @@ export const ko_KR: EnTranslations = {
         "spi": "정신력을 {value} 감소시킵니다",
         "allStats": "모든 능력치를 {value} 감소시킵니다"
       },
+      "increasePct": {
+        "ap": "공격력을 {pct}% 증가시킵니다",
+        "armor": "방어도를 {pct}% 증가시킵니다",
+        "int": "지능을 {pct}% 증가시킵니다",
+        "sta": "체력을 {pct}% 증가시킵니다"
+      },
       "dodge": "회피 확률을 {pct}% 증가시킵니다",
       "dodgeReduce": "회피 확률을 {pct}% 감소시킵니다",
       "armorFlat": "방어도를 {value} 감소시킵니다",
       "armorFlatStacks": "방어도를 {value} 감소시킵니다 ({stacks}중첩)",
+      "armorPct": "방어도를 {pct}% 감소시킵니다",
+      "armorPctStacks": "방어도를 {pct}% 감소시킵니다 ({stacks}중첩)",
       "mortalWound": "받는 치유량을 {pct}% 감소시킵니다",
       "vulnerability": "받는 피해를 {pct}% 증가시킵니다",
       "physVuln": "받는 물리 피해를 {pct}% 증가시킵니다",
@@ -2436,6 +2443,13 @@ export const ko_KR: EnTranslations = {
       "nothingToHarvest": "그 시체에서는 채집할 것이 없습니다.",
       "alreadyHarvested": "이 시체는 이미 채집되었습니다."
     },
+    "dailyRewards": {
+      "claimed": "일일 보상을 받았습니다."
+    },
+    "collections": {
+      "notFound": "그것은 존재하지 않습니다.",
+      "tooFar": "너무 멀리 떨어져 있습니다."
+    },
     "hearth": {
       "tooFar": "브라더 초록발에게 먹이를 주려면 그의 곁에 있어야 한다.",
       "noItems1": "……친구, 빈손이구먼. 태울 것이든 배 채울 것이든 좀 가져오게, 그럼 얘기해보세.",
@@ -2503,6 +2517,11 @@ export const ko_KR: EnTranslations = {
       "tooFar": "이것을 심으려면 자신의 개척지에 있어야 한다.",
       "planted": "개척지에 꺾꽂이를 심었다. 시간을 두고 기다려라.",
       "grown": "꺾꽂이가 자라 동반자가 되었다. 이제 너를 따라다닌다."
+    },
+    "readyCheck": {
+      "mustBeInParty": "준비 확인을 시작하려면 파티에 있어야 합니다.",
+      "alreadyInProgress": "이미 준비 확인이 진행 중입니다.",
+      "summary": "준비 확인: 준비 완료 {ready}명, 미준비 {notReady}명, 무응답 {noResponse}명."
     }
   },
   "lockpickUi": {
@@ -3344,6 +3363,8 @@ export const ko_KR: EnTranslations = {
       "openTrade": "거래 열기",
       "duelRequest": "{name}님이 결투를 신청했습니다!",
       "acceptDuel": "결투 수락",
+      "readyCheckStart": "{name}님이 준비 확인을 시작했습니다.",
+      "markReady": "준비 완료",
       "decline": "거절"
     },
     "combat": {
@@ -3819,6 +3840,22 @@ export const ko_KR: EnTranslations = {
       "stool": "스툴"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "일일 보상",
+    "window": {
+      "title": "일일 보상",
+      "close": "일일 보상 닫기",
+      "claim": "받기",
+      "claimAria": "오늘의 보상 받기",
+      "claimed": "받았습니다. 내일 다시 오세요.",
+      "locked": "현재 이 계정에서는 일일 보상을 사용할 수 없습니다.",
+      "hint": "하루에 한 번 받을 수 있습니다. 하루를 놓쳐도 손해는 없습니다."
+    },
+    "cell": {
+      "today": "오늘",
+      "itemCount": "{count}x {item}"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "금",
@@ -4039,7 +4076,8 @@ export const ko_KR: EnTranslations = {
       "needAria": "{item} 필요",
       "greedAria": "{item} 탐욕",
       "passAria": "{item} 포기",
-      "everyonePassed": "모두 {item}을(를) 포기했습니다."
+      "everyonePassed": "모두 {item}을(를) 포기했습니다.",
+      "winnerOffline": "{item}의 당첨자가 오프라인 상태여서 시체로 반환되었습니다."
     }
   },
   "entities": {
@@ -4102,7 +4140,7 @@ export const ko_KR: EnTranslations = {
       },
       "sunder_armor": {
         "name": "방어구 가르기",
-        "description": "대상의 방어구를 가르고 적용마다 {damage}만큼 감소시킵니다. 최대 5번 중첩됩니다. 많은 위협 수준을 생성합니다."
+        "description": "대상의 방어구를 가르고 적용마다 2%만큼 감소시킵니다. 최대 5번 중첩됩니다. 많은 위협 수준을 생성합니다."
       },
       "taunt": {
         "name": "도발",

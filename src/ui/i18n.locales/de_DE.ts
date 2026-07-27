@@ -5,9 +5,8 @@
 // translate that key. The build (scripts/i18n_build.mjs) unflattens this map and
 // overlays it onto nested `en` to produce the dense resolved table; any key here
 // must be a real `en` leaf path: keys are typed `Partial<Record<TranslationKey,
-// string>>` so tsc rejects a structurally-wrong key, plus
-// tests/i18n_overlay_key_membership.test.ts catches a typo'd entity id the
-// template-literal key type cannot. Overlays are SPARSE: an
+// string>>` against the build-generated flat key union, so tsc rejects any key
+// that is not an exact `en` leaf path, typo'd entity ids included. Overlays are SPARSE: an
 // untranslated key is omitted and the build fills it from English, then the
 // registry (src/ui/i18n.status.json) marks it `pending`.
 
@@ -1586,6 +1585,8 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': 'Gier für {item}',
   'itemUi.lootRoll.passAria': 'Bei {item} passen',
   'itemUi.lootRoll.everyonePassed': 'Alle passen bei {item}.',
+  'itemUi.lootRoll.winnerOffline':
+    'Der Gewinner von {item} war offline; es wurde zur Leiche zurückgebracht.',
   'entities.abilities.heroic_strike.name': 'Heldenhafter Stoß',
   'entities.abilities.heroic_strike.description':
     'Ein mächtiger Angriff, der den Nahkampfschaden um {damage} erhöht. Wird bei eurem nächsten Schwung ausgelöst.',
@@ -1627,7 +1628,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
     'Defensive Kampfhaltung: Ihr erzeugt 30% mehr Bedrohung, verursacht und erleidet aber 10% weniger Schaden. Erneut wirken, um die Haltung zu verlassen.',
   'entities.abilities.sunder_armor.name': 'Rüstung zerreißen',
   'entities.abilities.sunder_armor.description':
-    'Zerreißt die Rüstung des Ziels und verringert sie pro Anwendung um {damage}. Bis zu 5-mal stapelbar. Erzeugt viel Bedrohung.',
+    'Zerreißt die Rüstung des Ziels und verringert sie pro Anwendung um 2%. Bis zu 5-mal stapelbar. Erzeugt viel Bedrohung.',
   'entities.abilities.taunt.name': 'Spott',
   'entities.abilities.taunt.description':
     'Verspottet das Ziel: Eure Bedrohung steigt auf die seines meistgehassten Gegners und es wird 3 Sek. lang gezwungen, euch anzugreifen.',
@@ -3355,7 +3356,6 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/s',
   'hudChrome.meters.perSecondRow': '{total} ({rate})',
   'hudChrome.meters.seconds': '{s} Sek.',
-  'hudChrome.mobile.autorun': 'Auto-Laufen',
   'hudChrome.mobile.haptics': 'Haptik',
   'hudChrome.mobile.hapticsOff': 'Haptik aus',
   'hudChrome.mobile.jump': 'Springen',

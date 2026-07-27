@@ -154,7 +154,6 @@ export const hudChromeStrings = {
   // On-screen / mobile control labels and their accessible names. char/bags/music
   // reuse existing keys (hud.keybinds.actions.*, hud.options.music) at the call site.
   mobile: {
-    autorun: 'Autorun',
     jump: 'Jump',
     leaderboard: 'Ranks',
     nameplates: 'Names',
@@ -791,10 +790,21 @@ export const hudChromeStrings = {
       spi: 'Reduces Spirit by {value}',
       allStats: 'Reduces all attributes by {value}',
     },
+    // PHAA-577 percent whole-group raid buffs (Battle Shout/Blessing of Might,
+    // Commanding Shout/Power Word: Fortitude, Mark of the Wild, Arcane Intellect).
+    increasePct: {
+      ap: 'Increases attack power by {pct}%',
+      armor: 'Increases armor by {pct}%',
+      int: 'Increases Intellect by {pct}%',
+      sta: 'Increases Stamina by {pct}%',
+    },
     dodge: 'Increases dodge chance by {pct}%',
     dodgeReduce: 'Reduces dodge chance by {pct}%',
     armorFlat: 'Reduces armor by {value}',
     armorFlatStacks: 'Reduces armor by {value} ({stacks} stacks)',
+    // PHAA-577 percent armor debuff (Sunder Armor/Expose Armor/Faerie Fire).
+    armorPct: 'Reduces armor by {pct}%',
+    armorPctStacks: 'Reduces armor by {pct}% ({stacks} stacks)',
     mortalWound: 'Reduces healing received by {pct}%',
     vulnerability: 'Increases damage taken by {pct}%',
     physVuln: 'Increases physical damage taken by {pct}%',

@@ -399,6 +399,7 @@ export function buyBackItem(ctx: SimContext, itemId: string, pid?: number): void
   if (slot.count <= 0) meta.vendorBuyback = meta.vendorBuyback.filter((s) => s !== slot);
   addItemSilent(itemId, 1, meta);
   ctx.onInventoryChangedForQuests(meta);
+  ctx.onInventoryChangedForDeeds(meta);
   ctx.emit({ type: 'vendor', action: 'buyback', itemId, pid: meta.entityId });
   ctx.emit({
     type: 'loot',

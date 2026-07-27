@@ -202,6 +202,27 @@ describe('loot_roll: need-greed resolution (module entry)', () => {
     // The roll is closed and no longer offered to anyone.
     expect(activeLootRolls(sim.ctx, a)).toHaveLength(0);
   });
+
+  it('an offline winner does not lose the item: it is returned to the corpse instead', () => {
+    const { sim, a, b, c } = partyOfThree();
+    const mob = deadCorpse(sim, a, [a, b, c], {
+      copper: 0,
+      items: [{ itemId: 'greyjaw_hide_boots', count: 1 }],
+    });
+    awardSharedLootItem(sim.ctx, 'greyjaw_hide_boots', mob, playerMeta(sim, a));
+    mob.loot = { copper: 0, items: [] };
+    const rollId = lootRollEvent(sim).rollId;
+    submitLootRoll(sim.ctx, rollId, 'need', a);
+    // a disconnects after voting (and winning) but before the roll resolves.
+    sim.removePlayer(a);
+    submitLootRoll(sim.ctx, rollId, 'pass', b);
+    submitLootRoll(sim.ctx, rollId, 'pass', c);
+    expect(sim.countItem('greyjaw_hide_boots', b)).toBe(0);
+    expect(sim.countItem('greyjaw_hide_boots', c)).toBe(0);
+    const returned = mob.loot?.items.find((s) => s.itemId === 'greyjaw_hide_boots');
+    expect(returned?.openToAll).toBe(true);
+    expect(returned?.count).toBe(1);
+  });
 });
 
 describe('loot_roll: group roll status + resolution broadcast (module entry)', () => {
@@ -272,8 +293,9 @@ describe('loot_roll: group roll status + resolution broadcast (module entry)', (
 
   it('hides a curate-phase master roll from the group status', () => {
     const { sim, a, rollId } = openRoll();
-    const roll = (sim as unknown as { pendingLootRolls: Map<number, { masterLooter?: number }> })
-      .pendingLootRolls.get(rollId);
+    const roll = (
+      sim as unknown as { pendingLootRolls: Map<number, { masterLooter?: number }> }
+    ).pendingLootRolls.get(rollId);
     if (!roll) throw new Error('expected pending loot roll');
     roll.masterLooter = a;
     expect(lootRollGroupStatus(sim.ctx, a)).toHaveLength(0);

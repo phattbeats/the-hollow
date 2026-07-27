@@ -729,7 +729,7 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
     'Frammanar en tomhetsvandrare under häxmästarens befäl. Tomhetsvandraren är en robust demon som hånar dina fiender och suger upp stryk. Att frammana en ny demon avfärdar din nuvarande. Du kan ha en demon åt gången.',
   'entities.abilities.summon_voidwalker.name': 'Frammana tomhetsvandrare',
   'entities.abilities.sunder_armor.description':
-    'Krossar målets rustning och minskar den med {damage} per applicering. Staplas upp till 5 gånger. Genererar en stor mängd hot.',
+    'Krossar målets rustning och minskar den med 2% per applicering. Staplas upp till 5 gånger. Genererar en stor mängd hot.',
   'entities.abilities.sunder_armor.name': 'Krossa rustning',
   'entities.abilities.swipe.description':
     'Svep mot närliggande fiender för {damage} skada. Orsakar extra hot. Endast björnform.',
@@ -3907,7 +3907,6 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/s',
   'hudChrome.meters.perSecondRow': '{total} ({rate})',
   'hudChrome.meters.seconds': '{s} s',
-  'hudChrome.mobile.autorun': 'Autospring',
   'hudChrome.mobile.haptics': 'Haptik',
   'hudChrome.mobile.hapticsOff': 'Haptik av',
   'hudChrome.mobile.jump': 'Hoppa',

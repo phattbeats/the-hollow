@@ -246,7 +246,6 @@ export const ja_JP: EnTranslations = {
       "chat": "チャットへスキップ"
     },
     "mobile": {
-      "autorun": "オートラン",
       "jump": "ジャンプ",
       "leaderboard": "ランキング",
       "nameplates": "ネームプレート",
@@ -720,10 +719,18 @@ export const ja_JP: EnTranslations = {
         "spi": "精神力を{value}低下させる",
         "allStats": "すべての能力値を{value}低下させる"
       },
+      "increasePct": {
+        "ap": "攻撃力を{pct}%上昇させる",
+        "armor": "防御力を{pct}%上昇させる",
+        "int": "知力を{pct}%上昇させる",
+        "sta": "耐久力を{pct}%上昇させる"
+      },
       "dodge": "回避率を{pct}%上昇させる",
       "dodgeReduce": "回避率を{pct}%低下させる",
       "armorFlat": "防御力を{value}低下させる",
       "armorFlatStacks": "防御力を{value}低下させる({stacks}スタック)",
+      "armorPct": "防御力を{pct}%低下させる",
+      "armorPctStacks": "防御力を{pct}%低下させる({stacks}スタック)",
       "mortalWound": "受ける回復量を{pct}%低下させる",
       "vulnerability": "受けるダメージを{pct}%増加させる",
       "physVuln": "受ける物理ダメージを{pct}%増加させる",
@@ -2436,6 +2443,13 @@ export const ja_JP: EnTranslations = {
       "nothingToHarvest": "その死骸には採集できるものが何もない。",
       "alreadyHarvested": "この死骸はすでに採集済みだ。"
     },
+    "dailyRewards": {
+      "claimed": "デイリー報酬を受け取った。"
+    },
+    "collections": {
+      "notFound": "それは存在しない。",
+      "tooFar": "遠すぎる。"
+    },
     "hearth": {
       "tooFar": "緑掌修道士のそばに行かねば、彼に餌をやれんぞ。",
       "noItems1": "……手ぶらじゃな、お前さん。燃えるもんか、腹の足しになるもんを持ってきな、話はそれからだ。",
@@ -2503,6 +2517,11 @@ export const ja_JP: EnTranslations = {
       "tooFar": "これを植えるには自分の開拓地にいなければならない。",
       "planted": "開拓地に挿し木を植えた。時が満ちるのを待とう。",
       "grown": "挿し木が育ち、伴侶となった。今はお前について歩く。"
+    },
+    "readyCheck": {
+      "mustBeInParty": "準備確認を開始するにはパーティに入っている必要があります。",
+      "alreadyInProgress": "準備確認はすでに進行中です。",
+      "summary": "準備確認：準備完了 {ready} 人、未準備 {notReady} 人、応答なし {noResponse} 人。"
     }
   },
   "lockpickUi": {
@@ -3344,6 +3363,8 @@ export const ja_JP: EnTranslations = {
       "openTrade": "取引を開く",
       "duelRequest": "{name}があなたに決闘を申し込みました！",
       "acceptDuel": "決闘を受ける",
+      "readyCheckStart": "{name}が準備確認を開始しました。",
+      "markReady": "準備完了",
       "decline": "断る"
     },
     "combat": {
@@ -3819,6 +3840,22 @@ export const ja_JP: EnTranslations = {
       "stool": "スツール"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "デイリー報酬",
+    "window": {
+      "title": "デイリー報酬",
+      "close": "デイリー報酬を閉じる",
+      "claim": "受け取る",
+      "claimAria": "今日の報酬を受け取る",
+      "claimed": "受け取り済み。また明日。",
+      "locked": "このアカウントでは現在デイリー報酬を利用できません。",
+      "hint": "1日1回受け取れます。逃した日があっても損はありません。"
+    },
+    "cell": {
+      "today": "今日",
+      "itemCount": "{count}x {item}"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "金",
@@ -4039,7 +4076,8 @@ export const ja_JP: EnTranslations = {
       "needAria": "{item}を必要",
       "greedAria": "{item}を強欲",
       "passAria": "{item}をパス",
-      "everyonePassed": "全員が{item}をパスしました。"
+      "everyonePassed": "全員が{item}をパスしました。",
+      "winnerOffline": "{item}の勝者がオフラインだったため、死体に返却されました。"
     }
   },
   "entities": {
@@ -4102,7 +4140,7 @@ export const ja_JP: EnTranslations = {
       },
       "sunder_armor": {
         "name": "アーマー破壊",
-        "description": "対象のアーマーを破壊し、1回ごとに {damage} 低下させます。最大5回まで重なります。大量の脅威を生成します。"
+        "description": "対象のアーマーを破壊し、1回ごとに 2% 低下させます。最大5回まで重なります。大量の脅威を生成します。"
       },
       "taunt": {
         "name": "挑発",

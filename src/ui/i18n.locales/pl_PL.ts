@@ -736,7 +736,7 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
     'Przywołuje wędrowca pustki pod komendę Czarnoksiężnika. Wędrowiec pustki to wytrzymały demon, który prowokuje twoich wrogów i pochłania razy. Przywołanie nowego demona odprawia obecnego. Możesz mieć jednego demona naraz.',
   'entities.abilities.summon_voidwalker.name': 'Przywołanie wędrowca pustki',
   'entities.abilities.sunder_armor.description':
-    'Strzaskuje pancerz celu, zmniejszając go o {damage} za każde nałożenie. Kumuluje się do 5 razy. Generuje wysokie zagrożenie.',
+    'Strzaskuje pancerz celu, zmniejszając go o 2% za każde nałożenie. Kumuluje się do 5 razy. Generuje wysokie zagrożenie.',
   'entities.abilities.sunder_armor.name': 'Strzaskanie pancerza',
   'entities.abilities.swipe.description':
     'Zamach uderzający pobliskich wrogów za {damage} obrażeń. Wzbudza dodatkowe zagrożenie. Tylko w Postaci niedźwiedzia.',
@@ -3923,7 +3923,6 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/s',
   'hudChrome.meters.perSecondRow': '{total} ({rate})',
   'hudChrome.meters.seconds': '{s}s',
-  'hudChrome.mobile.autorun': 'Autobieg',
   'hudChrome.mobile.haptics': 'Wibracje',
   'hudChrome.mobile.hapticsOff': 'Wibracje wył.',
   'hudChrome.mobile.jump': 'Skok',
