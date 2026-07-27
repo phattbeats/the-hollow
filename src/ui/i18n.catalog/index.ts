@@ -629,6 +629,17 @@ export const en = {
         'You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.',
       helpLine: 'Homestead: /homestead, /homestead claim.',
     },
+    // Greenpaw's cutting (PHAA-751): the first_cutting item-use 'plant' branch
+    // player-facing text (src/sim/greenpaw_cutting.ts). Same fill scope as
+    // hearth/house/homestead above: the five non-Latin locales required by the
+    // M16 completeness gate, the rest ship English + pending.
+    greenpawCutting: {
+      alreadyPlanted: 'You have already planted your cutting. Give it time to grow.',
+      needHomestead: 'You need a homestead plot before you can plant this.',
+      tooFar: 'You must be at your own homestead to plant this.',
+      planted: 'You plant the cutting at your homestead. Give it time.',
+      grown: 'Your cutting has grown into a companion. It follows you now.',
+    },
     // Ready checks (PHAA-641, src/sim/social/ready_check.ts): the /ready leader
     // guards + the counts-only finalize summary. Re-localized via the RULES array
     // in src/ui/sim_i18n.ts.

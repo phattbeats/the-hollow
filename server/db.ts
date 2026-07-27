@@ -1,4 +1,5 @@
 import { Pool } from 'pg';
+import type { GreenpawCuttingSave } from '../src/sim/greenpaw_cutting';
 import type { GreenpawHearthSave } from '../src/sim/greenpaw_hearth';
 import type { HomesteadSave } from '../src/sim/homestead';
 import type { HousingSave } from '../src/sim/housing';
@@ -2340,6 +2341,17 @@ export async function loadHomesteadState(): Promise<HomesteadSave | null> {
 
 export async function saveHomesteadState(save: HomesteadSave): Promise<void> {
   await saveWorldState('homestead', save);
+}
+
+// Greenpaw's cutting (PHAA-751): shared global state like greenpaw_hearth,
+// one JSONB blob under the 'greenpaw_cutting' key. Additive: no new tables or
+// columns.
+export async function loadGreenpawCuttingState(): Promise<GreenpawCuttingSave | null> {
+  return loadWorldState<GreenpawCuttingSave>('greenpaw_cutting');
+}
+
+export async function saveGreenpawCuttingState(save: GreenpawCuttingSave): Promise<void> {
+  await saveWorldState('greenpaw_cutting', save);
 }
 
 // ---------------------------------------------------------------------------

@@ -2511,6 +2511,13 @@ export const zh_TW: EnTranslations = {
       "readoutNoHomesteadHint": "你還沒有家園。站在空谷地裡合適的位置，輸入 /homestead claim。",
       "helpLine": "家園：/homestead，/homestead claim。"
     },
+    "greenpawCutting": {
+      "alreadyPlanted": "你已經種下了插枝。給它一些時間成長。",
+      "needHomestead": "你需要先擁有一塊宅地才能種下它。",
+      "tooFar": "你必須在自己的宅地才能種下它。",
+      "planted": "你在自己的宅地種下了插枝。耐心等待吧。",
+      "grown": "你的插枝已經長成了一隻夥伴。牠現在會跟隨你。"
+    },
     "readyCheck": {
       "mustBeInParty": "你必須在隊伍中才能發起準備檢查。",
       "alreadyInProgress": "準備檢查已在進行中。",
@@ -6201,6 +6208,15 @@ export const zh_TW: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "心材巨像"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "綠掌的插枝"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "綠掌的插枝"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "綠掌的插枝"
       }
     },
     "npcs": {
