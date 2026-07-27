@@ -3751,6 +3751,7 @@ export type TranslationKeyFlat =
   | 'hudChrome.gathering.title'
   | 'hudChrome.gathering.toolNone'
   | 'hudChrome.gathering.toolTier'
+  | 'hudChrome.hitRating.ratingLabel'
   | 'hudChrome.itemArmorType.cloth'
   | 'hudChrome.itemArmorType.leather'
   | 'hudChrome.itemArmorType.mail'

@@ -1012,6 +1012,9 @@ export const ru_RU: EnTranslations = {
         "fiestaComplete": "Матч фиесты",
         "fiestaWin": "Победа на фиесте"
       }
+    },
+    "hitRating": {
+      "ratingLabel": "Рейтинг меткости"
     }
   },
   "mailUi": {

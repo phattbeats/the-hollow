@@ -749,6 +749,8 @@ function blankEntity(id: number): Entity {
     spellHaste: 0,
     critChance: 0.05,
     dodgeChance: 0.05,
+    hitRating: 0,
+    hitBonus: 0,
     moveSpeed: 7,
     hostile: false,
     targetId: null,

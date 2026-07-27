@@ -124,13 +124,16 @@ export const COLLAPSED_RELIQUARY_DELVE: DelveDef = {
     {
       id: 'heroic',
       label: 'Heroic',
-      // +3 enemy levels: at the delve floor (L7) that is a 44% player miss chance,
-      // so an under-levelled player is crushed even before the hard gate below.
+      // +3 enemy levels: at the delve floor (L7) that is a ~26% player miss chance
+      // (capped above-level penalty, see ABOVE_LEVEL_MISS_PCT in types.ts; gear Hit
+      // rating from Heroic loot closes it further), so an under-levelled player is
+      // still meaningfully outmatched even before the hard gate below.
       enemyLevelBonus: 3,
       affixCount: 1,
       rewardMult: 1.3,
       // Hard gate: a level-7 player cannot enter Heroic; level 9+ only. The combat
-      // tuning makes L7 unwinnable, but only this gate guarantees it deterministically.
+      // tuning alone is no longer unwinnable at L7, so this gate is what guarantees
+      // the level floor deterministically.
       minPlayerLevel: 9,
       // §6.6 reward premium over Normal (700/420, copper 8-14).
       firstClearXp: 1050,

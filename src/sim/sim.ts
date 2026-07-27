@@ -4446,7 +4446,7 @@ export class Sim {
       fx: 'projectile',
     });
     // Pet spells are resisted, not missed (same semantics as player casts).
-    if (isSpellResisted(this.rng, pet.level, target.level)) {
+    if (isSpellResisted(this.rng, pet.level, target.level, pet.hitBonus)) {
       this.emit({
         type: 'damage',
         sourceId: pet.id,

@@ -353,6 +353,10 @@ interface BaseItemDef {
   // the PvP caps before applying damage. See src/sim/content/pvp_honor.ts.
   pvpOffenseRating?: number;
   pvpDefenseRating?: number;
+  // Hit rating: reduces melee/ranged miss AND spell resist by the same percent
+  // (src/sim/combat/hit_rating.ts). Off the primary stat budget like spellPower;
+  // the endgame-gear differentiator (Heroic delve variants, see item_budget.ts).
+  hitRating?: number;
   // Honor price for a Quartermaster purchase. An Honor-only item omits
   // buyValue; both fields may coexist when a vendor charges both currencies.
   priceHonor?: number;
@@ -1885,6 +1889,8 @@ export interface Entity {
   spellHaste: number;
   critChance: number; // 0..1
   dodgeChance: number;
+  hitRating: number; // accumulated hit rating from gear (see combat/hit_rating.ts)
+  hitBonus: number; // hit fraction (hitRating converted): reduces miss/resist, 0..1
   castPushbackReduction: number; // 0..1: damage cast-pushback removed by item-set bonuses (1 = immune)
   moveSpeed: number;
   hostile: boolean;
@@ -2707,20 +2713,26 @@ export function rageFromTaking(damage: number, attackerLevel: number): number {
   return damage / (Math.max(1, attackerLevel) * 1.5);
 }
 
-// Attacking a target ABOVE your level adds a steep miss penalty (extra miss %),
-// tuned so +2 is ~19% and +4 is ~85% miss: fighting way-above-level enemies is meant
-// to be near-futile. The curve approximates 2.5 * diff^2.5, but is stored as an integer
-// table (level diffs are always integers) so it stays bit-for-bit deterministic across
-// engines — Math.pow with a fractional exponent is not guaranteed identical browser vs node.
-//   +1 -> 2.5   +2 -> 14   +3 -> 39   +4 -> 80   (+5 and beyond saturate past the clamp)
-const ABOVE_LEVEL_MISS_PCT = [0, 2.5, 14, 39, 80];
+// Attacking a target ABOVE your level adds a miss/resist penalty (extra %) on top of
+// the base miss (5%) / resist (4%). It ramps with the level gap but is CAPPED so even
+// far-above content (Heroic delves run enemies at +3) never reads as a coin flip: the
+// penalty tops out at 21, so melee miss maxes at ~26% and spell resist at ~25%. Stored
+// as an integer table (level diffs are always integers) so it stays bit-for-bit
+// deterministic across engines. Beyond the last entry the penalty SATURATES at the cap
+// (it does not keep climbing). Gear Hit rating (combat/hit_rating.ts) then closes the
+// remainder of this penalty back toward 0; see swingMissChance/spell_resist.ts.
+//   +1 -> 2.5   +2 -> 14   +3 -> 21   (+4 and beyond hold at 21)
+const ABOVE_LEVEL_MISS_PCT = [0, 2.5, 14, 21];
 function aboveLevelMissPct(diff: number): number {
   if (diff <= 0) return 0;
-  return diff < ABOVE_LEVEL_MISS_PCT.length ? ABOVE_LEVEL_MISS_PCT[diff] : 100;
+  return diff < ABOVE_LEVEL_MISS_PCT.length
+    ? ABOVE_LEVEL_MISS_PCT[diff]
+    : ABOVE_LEVEL_MISS_PCT[ABOVE_LEVEL_MISS_PCT.length - 1];
 }
 
 // Spell hit by level difference (target - caster): 96% at equal level, a gentle
-// +1%/level bonus below you, and the steep above-level penalty above. cap 99%, floor 5%.
+// +1%/level bonus below you, and the capped above-level penalty above (resist tops
+// out at ~25%). cap 99%, floor 5%.
 export function spellHitChance(casterLevel: number, targetLevel: number): number {
   const diff = targetLevel - casterLevel;
   const hit = diff <= 0 ? 96 + -diff * 1 : 96 - aboveLevelMissPct(diff);
@@ -2728,7 +2740,7 @@ export function spellHitChance(casterLevel: number, targetLevel: number): number
 }
 
 // Melee miss vs target by level difference: 5% base, a gentle -0.2%/level below you,
-// and the steep above-level penalty above. cap 95%, floor 0.5%.
+// and the capped above-level penalty above (miss tops out at ~26%). cap 95%, floor 0.5%.
 export function meleeMissChance(attackerLevel: number, targetLevel: number): number {
   const diff = targetLevel - attackerLevel;
   const miss = diff > 0 ? 5 + aboveLevelMissPct(diff) : 5 + diff * 0.2;
@@ -2750,7 +2762,11 @@ export function swingMissChance(attacker: Entity, target: Entity): number {
   const miss = meleeMissChance(attacker.level, target.level);
   const mobAttacker = attacker.kind === 'mob' && attacker.hostile && attacker.ownerId === null;
   const playerSide = target.kind === 'player' || target.ownerId !== null;
-  return mobAttacker && playerSide ? Math.min(miss, MOB_VS_PLAYER_MAX_MISS) : miss;
+  if (mobAttacker && playerSide) return Math.min(miss, MOB_VS_PLAYER_MAX_MISS);
+  // Player/pet -> mob keeps the full above-level scaling, minus the attacker's gear
+  // Hit rating (attacker.hitBonus, 0 for anything without hit gear so ungeared draws
+  // are unchanged), floored at 0 so a hit-capped attacker can reach 0% miss.
+  return Math.max(0, miss - attacker.hitBonus);
 }
 
 export function armorReduction(armor: number, attackerLevel: number): number {

@@ -1012,6 +1012,9 @@ export const en_XA: EnTranslations = {
         "fiestaComplete": "[Ƒíéšţá ɱáţçĥ]",
         "fiestaWin": "[Ƒíéšţá ŵíñ]"
       }
+    },
+    "hitRating": {
+      "ratingLabel": "[Ĥíţ Ŕáţíñĝ]"
     }
   },
   "mailUi": {

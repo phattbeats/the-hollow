@@ -1012,6 +1012,9 @@ export const zh_CN: EnTranslations = {
         "fiestaComplete": "狂欢比赛",
         "fiestaWin": "狂欢胜利"
       }
+    },
+    "hitRating": {
+      "ratingLabel": "命中等级"
     }
   },
   "mailUi": {

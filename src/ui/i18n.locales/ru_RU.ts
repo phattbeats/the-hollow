@@ -5798,6 +5798,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.warfare.reasons.fiestaKill': 'Повержение на фиесте',
   'hudChrome.warfare.reasons.fiestaComplete': 'Матч фиесты',
   'hudChrome.warfare.reasons.fiestaWin': 'Победа на фиесте',
+  'hudChrome.hitRating.ratingLabel': 'Рейтинг меткости',
   'entities.npcs.bramble.name': 'Брэмбл',
   'entities.npcs.bramble.title': 'Квартирмейстер чести',
   'entities.npcs.bramble.greeting': 'Пески помнят каждую победу. Трать свою честь с умом.',

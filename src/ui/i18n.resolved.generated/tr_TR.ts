@@ -1012,6 +1012,9 @@ export const tr_TR: EnTranslations = {
         "fiestaComplete": "Fiesta match",
         "fiestaWin": "Fiesta win"
       }
+    },
+    "hitRating": {
+      "ratingLabel": "Hit Rating"
     }
   },
   "mailUi": {

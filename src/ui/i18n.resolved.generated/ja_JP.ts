@@ -1012,6 +1012,9 @@ export const ja_JP: EnTranslations = {
         "fiestaComplete": "フィエスタ試合",
         "fiestaWin": "フィエスタ勝利"
       }
+    },
+    "hitRating": {
+      "ratingLabel": "命中レーティング"
     }
   },
   "mailUi": {

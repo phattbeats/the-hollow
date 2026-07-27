@@ -1012,6 +1012,9 @@ export const vi_VN: EnTranslations = {
         "fiestaComplete": "Fiesta match",
         "fiestaWin": "Fiesta win"
       }
+    },
+    "hitRating": {
+      "ratingLabel": "Hit Rating"
     }
   },
   "mailUi": {
