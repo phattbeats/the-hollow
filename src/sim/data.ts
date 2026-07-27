@@ -8,6 +8,7 @@ import { BOARBALL_MOBS } from './content/boarball';
 import { BASE_ITEMS, FISHING_RARE_ID, FISHING_TABLES } from './content/items';
 import type {
   CampDef,
+  DeedDef,
   DelveDef,
   DelveModuleDef,
   DungeonDef,
@@ -20,6 +21,8 @@ import type {
   QuestDef,
   QuestState,
   ReadableDef,
+  RecipeDef,
+  TitleDef,
   WorldContent,
   ZoneDef,
   ZonePropsDef,
@@ -32,6 +35,7 @@ import type { AchievementDef } from './achievements_core';
 import { ACHIEVEMENTS as ACHIEVEMENTS_CONTENT } from './content/achievements';
 import type { CollectibleDef } from './content/collectibles';
 import { COLLECTIBLES as COLLECTIBLES_CONTENT } from './content/collectibles';
+import { DEEDS as DEEDS_CONTENT, TITLES as TITLES_CONTENT } from './content/deeds';
 import {
   BROTHER_HALVEN,
   COLLAPSED_RELIQUARY_DELVE,
@@ -64,6 +68,7 @@ import {
   READ_RADIUS as READ_RADIUS_CONTENT,
   READABLES as READABLES_CONTENT,
 } from './content/readables';
+import { RECIPES as RECIPES_CONTENT } from './content/recipes';
 import {
   TEMPLE_CAMPS,
   TEMPLE_DUNGEON_DEFS,
@@ -226,6 +231,15 @@ export const QUESTS: Record<string, QuestDef> = {
   ...HOLLOW_ZONE_QUESTS,
 };
 
+// Book of Asphodelia (PHAA-744): empty until PHAA-745 lands authored content.
+export const DEEDS: Record<string, DeedDef> = {
+  ...DEEDS_CONTENT,
+};
+
+export const TITLES: Record<string, TitleDef> = {
+  ...TITLES_CONTENT,
+};
+
 export const QUEST_ORDER: string[] = [
   ...ZONE1_QUEST_ORDER,
   ...ZONE2_QUEST_ORDER,
@@ -260,6 +274,11 @@ export const GROUND_OBJECTS: GroundObjectDef[] = [
 ];
 
 export const GATHER_NODES: GatherNodeDef[] = [...GATHER_NODES_CONTENT];
+
+// Crafting recipes (PHAA-574). Static content; both the offline Sim and the
+// online ClientWorld read this same table directly (same convention as
+// GATHER_NODES above), so recipe browsing needs no IWorld method or wire field.
+export const RECIPES: RecipeDef[] = [...RECIPES_CONTENT];
 
 // World-placed readable books (PHAA-552). Static content; both the offline Sim
 // and the online ClientWorld expose them through IWorldReadables by reading this

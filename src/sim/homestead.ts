@@ -33,8 +33,10 @@ import type { PlayerMeta } from './sim';
 import type { SimContext } from './sim_context';
 
 // Footprint radius per plot ("generous per-plot space"); two plot centers
-// must clear this much of each other combined.
-const PLOT_RADIUS = 9;
+// must clear this much of each other combined. Exported so a foreign system
+// gating an on-plot action (e.g. greenpaw_cutting.ts's planting proximity
+// check) uses the same radius family instead of inventing its own.
+export const PLOT_RADIUS = 9;
 // No overlap (2x radius) plus a small buffer, while staying "close together".
 const MIN_SEPARATION = PLOT_RADIUS * 2 + 4;
 const HUB_CLEARANCE = HOLLOW_ZONE_ZONE.hub.radius + 18;
@@ -87,6 +89,13 @@ export class Homestead {
 
   private plotOwnedBy(key: string): HomesteadPlotState | null {
     return this.plots.find((p) => p.ownerKey === key) ?? null;
+  }
+
+  // Public lookup for a foreign system (greenpaw_cutting.ts's plant-at-your-
+  // own-plot gate) that needs "does this player own a plot, and where" without
+  // duplicating the owner-key resolution above.
+  ownedPlotFor(meta: PlayerMeta): HomesteadPlotState | null {
+    return this.plotOwnedBy(this.ownerKeyFor(meta));
   }
 
   // The progression gate: the FULL Greenpaw quest arc, not just the first

@@ -246,7 +246,6 @@ export const en_CA: EnTranslations = {
       "chat": "Skip to Chat"
     },
     "mobile": {
-      "autorun": "Autorun",
       "jump": "Jump",
       "leaderboard": "Ranks",
       "nameplates": "Names",
@@ -1013,6 +1012,9 @@ export const en_CA: EnTranslations = {
         "fiestaComplete": "Fiesta match",
         "fiestaWin": "Fiesta win"
       }
+    },
+    "hitRating": {
+      "ratingLabel": "Hit Rating"
     }
   },
   "mailUi": {
@@ -2444,6 +2446,9 @@ export const en_CA: EnTranslations = {
       "nothingToHarvest": "That corpse has nothing to harvest.",
       "alreadyHarvested": "This corpse has already been harvested."
     },
+    "dailyRewards": {
+      "claimed": "You claim your daily reward."
+    },
     "collections": {
       "notFound": "That does not exist.",
       "tooFar": "Too far away."
@@ -2508,6 +2513,18 @@ export const en_CA: EnTranslations = {
       "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
       "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
       "helpLine": "Homestead: /homestead, /homestead claim."
+    },
+    "greenpawCutting": {
+      "alreadyPlanted": "You have already planted your cutting. Give it time to grow.",
+      "needHomestead": "You need a homestead plot before you can plant this.",
+      "tooFar": "You must be at your own homestead to plant this.",
+      "planted": "You plant the cutting at your homestead. Give it time.",
+      "grown": "Your cutting has grown into a companion. It follows you now."
+    },
+    "readyCheck": {
+      "mustBeInParty": "You must be in a party to start a ready check.",
+      "alreadyInProgress": "A ready check is already in progress.",
+      "summary": "Ready check: {ready} ready, {notReady} not ready, {noResponse} no response."
     }
   },
   "lockpickUi": {
@@ -3282,7 +3299,7 @@ export const en_CA: EnTranslations = {
       "close": "Close meters"
     },
     "chat": {
-      "rightClickName": "Right-click {name}",
+      "rightClickName": "Open menu for {name}",
       "templates": {
         "party": "[Party] {name}: {message}",
         "yell": "{name} yells: {message}",
@@ -3349,6 +3366,8 @@ export const en_CA: EnTranslations = {
       "openTrade": "Open Trade",
       "duelRequest": "{name} has challenged you to a duel!",
       "acceptDuel": "Accept Duel",
+      "readyCheckStart": "{name} has started a ready check.",
+      "markReady": "Ready",
       "decline": "Decline"
     },
     "combat": {
@@ -3379,6 +3398,7 @@ export const en_CA: EnTranslations = {
       "ignoringChat": "Ignoring chat from {name}.",
       "noLongerIgnoring": "No longer ignoring {name}.",
       "playerNotNearby": "That player is not nearby.",
+      "playerInfoNotFound": "No character found with that name.",
       "duelCountdown": "Duel begins in {seconds}...",
       "duelEndBanner": "{winner} has defeated {loser} in a duel!",
       "duelEndLog": "{winner} has defeated {loser} in a duel.",
@@ -3824,6 +3844,22 @@ export const en_CA: EnTranslations = {
       "stool": "Stool"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "Daily Rewards",
+    "window": {
+      "title": "Daily Rewards",
+      "close": "Close daily rewards",
+      "claim": "Claim",
+      "claimAria": "Claim today's reward",
+      "claimed": "Claimed. Come back tomorrow.",
+      "locked": "Daily rewards are unavailable on this account right now.",
+      "hint": "One reward per day. Missing a day never costs you anything."
+    },
+    "cell": {
+      "today": "Today",
+      "itemCount": "{count}x {item}"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "g",
@@ -4044,7 +4080,8 @@ export const en_CA: EnTranslations = {
       "needAria": "Need for {item}",
       "greedAria": "Greed for {item}",
       "passAria": "Pass on {item}",
-      "everyonePassed": "Everyone passed on {item}."
+      "everyonePassed": "Everyone passed on {item}.",
+      "winnerOffline": "The winner of {item} was offline; it was returned to the corpse."
     }
   },
   "entities": {
@@ -6295,6 +6332,15 @@ export const en_CA: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "Heartwood Colossus"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "Greenpaw's Cutting"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "Greenpaw's Cutting"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "Greenpaw's Cutting"
       }
     },
     "npcs": {

@@ -134,6 +134,10 @@ export function useItem(ctx: SimContext, itemId: string, pid?: number): ItemUseR
     ctx.openSkinSelect(meta, def.use.catalog ?? 'class', itemId);
     return;
   }
+  if (def.use?.type === 'plant') {
+    ctx.plantGreenpawCutting(meta.entityId);
+    return;
+  }
   if (p.castingAbility === FISHING_CAST_ID) {
     ctx.error(meta.entityId, 'You are busy.');
     return;
@@ -395,6 +399,7 @@ export function buyBackItem(ctx: SimContext, itemId: string, pid?: number): void
   if (slot.count <= 0) meta.vendorBuyback = meta.vendorBuyback.filter((s) => s !== slot);
   addItemSilent(itemId, 1, meta);
   ctx.onInventoryChangedForQuests(meta);
+  ctx.onInventoryChangedForDeeds(meta);
   ctx.emit({ type: 'vendor', action: 'buyback', itemId, pid: meta.entityId });
   ctx.emit({
     type: 'loot',

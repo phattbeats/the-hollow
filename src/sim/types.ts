@@ -351,7 +351,10 @@ export type ItemUse =
   // (canGatherTier / canHarvestMonsterMaterial). This item type never carries
   // a durability field (this repo has no durability mechanic anywhere), so a
   // gathering tool can never become unusable.
-  | { type: 'gatherTool'; nodeType: GatherNodeType; tier: number };
+  | { type: 'gatherTool'; nodeType: GatherNodeType; tier: number }
+  // Plants a keepsake at the player's own claimed homestead plot (PHAA-751).
+  // See src/sim/greenpaw_cutting.ts; first_cutting is the only item using this.
+  | { type: 'plant' };
 
 // Rarity ranks for the cosmetic skin-select event, ordered low → high. A rolled
 // rank unlocks its own tier and every tier below it (epic unlocks rare+uncommon).
@@ -386,6 +389,10 @@ interface BaseItemDef {
   // the PvP caps before applying damage. See src/sim/content/pvp_honor.ts.
   pvpOffenseRating?: number;
   pvpDefenseRating?: number;
+  // Hit rating: reduces melee/ranged miss AND spell resist by the same percent
+  // (src/sim/combat/hit_rating.ts). Off the primary stat budget like spellPower;
+  // the endgame-gear differentiator (Heroic delve variants, see item_budget.ts).
+  hitRating?: number;
   // Honor price for a Quartermaster purchase. An Honor-only item omits
   // buyValue; both fields may coexist when a vendor charges both currencies.
   priceHonor?: number;
@@ -1492,6 +1499,29 @@ export interface GatherNodeDef {
   pos: { x: number; z: number };
 }
 
+// Crafting (PHAA-574): the fixed set of crafts a recipe belongs to. Common-tier
+// only for this slice (professions-depth batch, framework + reskin); a later
+// slice adds skill-tier gating, the archetype ceiling, and recipe acquisition.
+export type CraftType =
+  | 'weaponcrafting'
+  | 'armorcrafting'
+  | 'tailoring'
+  | 'leatherworking'
+  | 'cooking'
+  | 'alchemy';
+
+// One craftable recipe: consume `reagents` (existing gathered-material items),
+// grant `resultCount` of `resultItemId`. Every recipe is craftable by any
+// player with the materials (no per-recipe skill/known gate this slice); see
+// src/sim/crafting.ts for resolution.
+export interface RecipeDef {
+  id: string;
+  craft: CraftType;
+  reagents: { itemId: string; count: number }[];
+  resultItemId: string;
+  resultCount: number;
+}
+
 // World-placed readable props (WoW-style journals/books lying around, PHAA-552).
 // Static, unowned world dressing with a client-only reveal: reading one mutates
 // no game state, so (unlike a gather node's harvest) there is no server command,
@@ -1805,6 +1835,76 @@ export interface QuestProgress {
   state: 'active' | 'ready' | 'done';
 }
 
+// Book of Asphodelia (PHAA-744, engine/wire layer only; content lands in PHAA-745).
+// Deeds auto-track from character creation (no accept step, unlike quests): every
+// deed in the registry gains credit as its trigger objectives are met, checked
+// lazily on the same event hooks quests use (kill / inventory-change). Completing
+// a deed can grant a title, which the player then selects as their display title.
+export type DeedState = 'active' | 'done';
+
+// Content category (PHAA-745), matching upstream's grouping: used for
+// filtering/organizing the deed roster (cross-surface UI, PHAA-748) and
+// leaderboard scoring (PHAA-746). Purely descriptive; the credit engine
+// dispatches on objective type, not category.
+export type DeedCategory =
+  | 'chronicle'
+  | 'collection'
+  | 'combat'
+  | 'delve'
+  | 'dungeon'
+  | 'exploration'
+  | 'feat'
+  | 'hidden'
+  | 'progression'
+  | 'pvp'
+  | 'social';
+
+// 'pvp': a match/bout win, from the shared arena/fiesta/boarball result choke
+// point (endArenaMatch in social/arena.ts) or the duel choke point (endDuel in
+// social/duel.ts). 'social': a non-combat action, from one of several distinct
+// choke points (completeFishing / talkToNpc in sim.ts, lockpickSucceed in
+// delves/lockpick_controller.ts, the /roll handler in social/chat.ts).
+export type PvpWinKind = 'arena' | 'fiesta' | 'boarball' | 'duel';
+export type SocialActionKind = 'fish' | 'lockpick' | 'roll' | 'talk' | 'bank';
+
+export interface DeedObjective {
+  type: 'kill' | 'collect' | 'quest' | 'delve' | 'level' | 'explore' | 'pvp' | 'social';
+  targetMobId?: string; // for 'kill'; omitted means "any mob" (wildcard credit)
+  itemId?: string; // for 'collect'
+  questId?: string; // for 'quest'; omitted means "any quest" (wildcard credit)
+  delveId?: string; // for 'delve'; omitted means "any delve" (wildcard credit)
+  tierId?: string; // for 'delve'; omitted means "any tier"
+  deathless?: boolean; // for 'delve'; true requires a clear with zero deaths for the player
+  atLeast?: number; // for 'level'; the character level threshold the deed credits at
+  zoneId?: string; // for 'explore'; the zone whose first entry credits this objective
+  pvpKind?: PvpWinKind; // for 'pvp'; omitted means "any pvp win" (wildcard credit)
+  socialKind?: SocialActionKind; // for 'social'
+  npcId?: string; // for 'social' with socialKind 'talk'; omitted means "any NPC"
+  count: number;
+  label: string;
+}
+
+export interface DeedProgress {
+  deedId: string;
+  counts: number[]; // per objective, parallel to DeedDef.objectives
+  state: DeedState;
+}
+
+export interface DeedDef {
+  id: string;
+  name: string;
+  text: string;
+  category: DeedCategory;
+  objectives: DeedObjective[];
+  titleReward?: string; // TitleDef id granted on completion
+}
+
+export interface TitleDef {
+  id: string;
+  display: string; // e.g. "the Wayfarer"
+  prefix?: boolean; // shown before the character name instead of after (default false)
+}
+
 // Consumables restore their total over CONSUME_DURATION seconds while sitting,
 // ticking on the classic 2-second regen tick. Food and drink run concurrently.
 export const CONSUME_DURATION = 18; // seconds
@@ -1878,6 +1978,8 @@ export interface Entity {
   critDmgPhysBonus: number;
   critDmgHealBonus: number;
   dodgeChance: number;
+  hitRating: number; // accumulated hit rating from gear (see combat/hit_rating.ts)
+  hitBonus: number; // hit fraction (hitRating converted): reduces miss/resist, 0..1
   castPushbackReduction: number; // 0..1: damage cast-pushback removed by item-set bonuses (1 = immune)
   moveSpeed: number;
   hostile: boolean;
@@ -1972,6 +2074,10 @@ export interface Entity {
   /** GM character: invulnerable (dealDamage no-ops). Server-set from the
    *  characters.is_gm column; never user-settable. */
   gm?: boolean;
+  /** Moderation-jailed player: prisoners are mutually hostile (the jail
+   *  brawl, see Sim.isHostileTo). Server-set via setJailed on /jail, /unjail,
+   *  and join restore; never user-settable. */
+  jailed?: boolean;
   respawnTimer: number;
   corpseTimer: number;
   lootFfaTimer: number; // seconds of owner-lock left before tap loot opens to all (FFA); Infinity until rollLoot starts it
@@ -2121,6 +2227,19 @@ export type CalendarResultCode =
   | 'calendarFull'
   | 'eventGone';
 
+// An in-flight party/raid ready check (social/ready_check.ts). Keyed on Sim by
+// party id. Each member is 'pending' until they answer; anyone still 'pending'
+// when the timeout fires is counted as "no response" (there is no separate afk
+// state). Sim-internal state, never wired to the client (the outcome is
+// announced as chat/log lines and the yes/no prompt rides the readyCheckStart
+// event).
+export interface ReadyCheck {
+  partyId: number;
+  initiator: number; // pid who ran /ready
+  endsAt: number; // sim-clock seconds (ctx.time) when the check auto-finalizes
+  responses: Map<number, 'ready' | 'notready' | 'pending'>; // pid -> answer
+}
+
 // `pid` (when present) marks a personal event that should only be delivered to
 // that player entity's owner; events without pid are world-visible.
 export type SimEvent = { pid?: number } & (
@@ -2177,6 +2296,9 @@ export type SimEvent = { pid?: number } & (
   | { type: 'questProgress'; questId: string; text: string }
   | { type: 'questReady'; questId: string }
   | { type: 'questDone'; questId: string }
+  | { type: 'deedProgress'; deedId: string; text: string }
+  | { type: 'deedDone'; deedId: string }
+  | { type: 'titleEarned'; titleId: string }
   | { type: 'aura'; targetId: number; name: string; gained: boolean }
   | { type: 'castStart'; entityId: number; ability: string; time: number }
   | { type: 'castStop'; entityId: number; success: boolean }
@@ -2215,6 +2337,9 @@ export type SimEvent = { pid?: number } & (
       to?: string;
     }
   | { type: 'partyInvite'; fromPid: number; fromName: string }
+  // The party/raid leader started a ready check: the recipient's client plays a
+  // sound and shows a yes/no prompt (social/ready_check.ts). Personal (pid set).
+  | { type: 'readyCheckStart'; fromName: string }
   // a guild invitation from an online guild officer/leader; resolved by name
   // server-side so it carries no pid
   | { type: 'guildInvite'; fromName: string; guildName: string }
@@ -2677,20 +2802,26 @@ export function rageFromTaking(damage: number, attackerLevel: number): number {
   return damage / (Math.max(1, attackerLevel) * 1.5);
 }
 
-// Attacking a target ABOVE your level adds a steep miss penalty (extra miss %),
-// tuned so +2 is ~19% and +4 is ~85% miss: fighting way-above-level enemies is meant
-// to be near-futile. The curve approximates 2.5 * diff^2.5, but is stored as an integer
-// table (level diffs are always integers) so it stays bit-for-bit deterministic across
-// engines — Math.pow with a fractional exponent is not guaranteed identical browser vs node.
-//   +1 -> 2.5   +2 -> 14   +3 -> 39   +4 -> 80   (+5 and beyond saturate past the clamp)
-const ABOVE_LEVEL_MISS_PCT = [0, 2.5, 14, 39, 80];
+// Attacking a target ABOVE your level adds a miss/resist penalty (extra %) on top of
+// the base miss (5%) / resist (4%). It ramps with the level gap but is CAPPED so even
+// far-above content (Heroic delves run enemies at +3) never reads as a coin flip: the
+// penalty tops out at 21, so melee miss maxes at ~26% and spell resist at ~25%. Stored
+// as an integer table (level diffs are always integers) so it stays bit-for-bit
+// deterministic across engines. Beyond the last entry the penalty SATURATES at the cap
+// (it does not keep climbing). Gear Hit rating (combat/hit_rating.ts) then closes the
+// remainder of this penalty back toward 0; see swingMissChance/spell_resist.ts.
+//   +1 -> 2.5   +2 -> 14   +3 -> 21   (+4 and beyond hold at 21)
+const ABOVE_LEVEL_MISS_PCT = [0, 2.5, 14, 21];
 function aboveLevelMissPct(diff: number): number {
   if (diff <= 0) return 0;
-  return diff < ABOVE_LEVEL_MISS_PCT.length ? ABOVE_LEVEL_MISS_PCT[diff] : 100;
+  return diff < ABOVE_LEVEL_MISS_PCT.length
+    ? ABOVE_LEVEL_MISS_PCT[diff]
+    : ABOVE_LEVEL_MISS_PCT[ABOVE_LEVEL_MISS_PCT.length - 1];
 }
 
 // Spell hit by level difference (target - caster): 96% at equal level, a gentle
-// +1%/level bonus below you, and the steep above-level penalty above. cap 99%, floor 5%.
+// +1%/level bonus below you, and the capped above-level penalty above (resist tops
+// out at ~25%). cap 99%, floor 5%.
 export function spellHitChance(casterLevel: number, targetLevel: number): number {
   const diff = targetLevel - casterLevel;
   const hit = diff <= 0 ? 96 + -diff * 1 : 96 - aboveLevelMissPct(diff);
@@ -2698,7 +2829,7 @@ export function spellHitChance(casterLevel: number, targetLevel: number): number
 }
 
 // Melee miss vs target by level difference: 5% base, a gentle -0.2%/level below you,
-// and the steep above-level penalty above. cap 95%, floor 0.5%.
+// and the capped above-level penalty above (miss tops out at ~26%). cap 95%, floor 0.5%.
 export function meleeMissChance(attackerLevel: number, targetLevel: number): number {
   const diff = targetLevel - attackerLevel;
   const miss = diff > 0 ? 5 + aboveLevelMissPct(diff) : 5 + diff * 0.2;
@@ -2720,7 +2851,11 @@ export function swingMissChance(attacker: Entity, target: Entity): number {
   const miss = meleeMissChance(attacker.level, target.level);
   const mobAttacker = attacker.kind === 'mob' && attacker.hostile && attacker.ownerId === null;
   const playerSide = target.kind === 'player' || target.ownerId !== null;
-  return mobAttacker && playerSide ? Math.min(miss, MOB_VS_PLAYER_MAX_MISS) : miss;
+  if (mobAttacker && playerSide) return Math.min(miss, MOB_VS_PLAYER_MAX_MISS);
+  // Player/pet -> mob keeps the full above-level scaling, minus the attacker's gear
+  // Hit rating (attacker.hitBonus, 0 for anything without hit gear so ungeared draws
+  // are unchanged), floored at 0 so a hit-capped attacker can reach 0% miss.
+  return Math.max(0, miss - attacker.hitBonus);
 }
 
 export function armorReduction(armor: number, attackerLevel: number): number {

@@ -246,7 +246,6 @@ export const en_XA: EnTranslations = {
       "chat": "[Šķíþ ţó Çĥáţ]"
     },
     "mobile": {
-      "autorun": "[Áúţóŕúñ]",
       "jump": "[Ĵúɱþ]",
       "leaderboard": "[Ŕáñķš]",
       "nameplates": "[Ñáɱéš]",
@@ -1013,6 +1012,9 @@ export const en_XA: EnTranslations = {
         "fiestaComplete": "[Ƒíéšţá ɱáţçĥ]",
         "fiestaWin": "[Ƒíéšţá ŵíñ]"
       }
+    },
+    "hitRating": {
+      "ratingLabel": "[Ĥíţ Ŕáţíñĝ]"
     }
   },
   "mailUi": {
@@ -2444,6 +2446,9 @@ export const en_XA: EnTranslations = {
       "nothingToHarvest": "[Ţĥáţ çóŕþšé ĥáš ñóţĥíñĝ ţó ĥáŕʋéšţ.]",
       "alreadyHarvested": "[Ţĥíš çóŕþšé ĥáš áļŕéáðý ƀééñ ĥáŕʋéšţéð.]"
     },
+    "dailyRewards": {
+      "claimed": "[Ýóú çļáíɱ ýóúŕ ðáíļý ŕéŵáŕð.]"
+    },
     "collections": {
       "notFound": "[Ţĥáţ ðóéš ñóţ éẋíšţ.]",
       "tooFar": "[Ţóó ƒáŕ áŵáý.]"
@@ -2508,6 +2513,18 @@ export const en_XA: EnTranslations = {
       "readoutNoHomesteadQuest": "[Ýóú óŵñ ñó ĥóɱéšţéáð. Ƒíñíšĥ Ɓŕóţĥéŕ Ĝŕééñþáŵ'š ƒúļļ éŕŕáñð çĥáíñ ţó úñļóçķ óñé.]",
       "readoutNoHomesteadHint": "[Ýóú óŵñ ñó ĥóɱéšţéáð. Šţáñð šóɱéŵĥéŕé ʋíáƀļé íñ ţĥé Ĥóļļóŵ Ŕéáçĥéš áñð ţýþé /ĥóɱéšţéáð çļáíɱ.]",
       "helpLine": "[Ĥóɱéšţéáð: /ĥóɱéšţéáð, /ĥóɱéšţéáð çļáíɱ.]"
+    },
+    "greenpawCutting": {
+      "alreadyPlanted": "[Ýóú ĥáʋé áļŕéáðý þļáñţéð ýóúŕ çúţţíñĝ. Ĝíʋé íţ ţíɱé ţó ĝŕóŵ.]",
+      "needHomestead": "[Ýóú ñééð á ĥóɱéšţéáð þļóţ ƀéƒóŕé ýóú çáñ þļáñţ ţĥíš.]",
+      "tooFar": "[Ýóú ɱúšţ ƀé áţ ýóúŕ óŵñ ĥóɱéšţéáð ţó þļáñţ ţĥíš.]",
+      "planted": "[Ýóú þļáñţ ţĥé çúţţíñĝ áţ ýóúŕ ĥóɱéšţéáð. Ĝíʋé íţ ţíɱé.]",
+      "grown": "[Ýóúŕ çúţţíñĝ ĥáš ĝŕóŵñ íñţó á çóɱþáñíóñ. Íţ ƒóļļóŵš ýóú ñóŵ.]"
+    },
+    "readyCheck": {
+      "mustBeInParty": "[Ýóú ɱúšţ ƀé íñ á þáŕţý ţó šţáŕţ á ŕéáðý çĥéçķ.]",
+      "alreadyInProgress": "[Á ŕéáðý çĥéçķ íš áļŕéáðý íñ þŕóĝŕéšš.]",
+      "summary": "[Ŕéáðý çĥéçķ: {ready} ŕéáðý, {notReady} ñóţ ŕéáðý, {noResponse} ñó ŕéšþóñšé.]"
     }
   },
   "lockpickUi": {
@@ -3282,7 +3299,7 @@ export const en_XA: EnTranslations = {
       "close": "[Çļóšé ɱéţéŕš]"
     },
     "chat": {
-      "rightClickName": "[Ŕíĝĥţ-çļíçķ {name}]",
+      "rightClickName": "[Óþéñ ɱéñú ƒóŕ {name}]",
       "templates": {
         "party": "[[Þáŕţý] {name}: {message}]",
         "yell": "[{name} ýéļļš: {message}]",
@@ -3349,6 +3366,8 @@ export const en_XA: EnTranslations = {
       "openTrade": "[Óþéñ Ţŕáðé]",
       "duelRequest": "[{name} ĥáš çĥáļļéñĝéð ýóú ţó á ðúéļ!]",
       "acceptDuel": "[Áççéþţ Ðúéļ]",
+      "readyCheckStart": "[{name} ĥáš šţáŕţéð á ŕéáðý çĥéçķ.]",
+      "markReady": "[Ŕéáðý]",
       "decline": "[Ðéçļíñé]"
     },
     "combat": {
@@ -3379,6 +3398,7 @@ export const en_XA: EnTranslations = {
       "ignoringChat": "[Íĝñóŕíñĝ çĥáţ ƒŕóɱ {name}.]",
       "noLongerIgnoring": "[Ñó ļóñĝéŕ íĝñóŕíñĝ {name}.]",
       "playerNotNearby": "[Ţĥáţ þļáýéŕ íš ñóţ ñéáŕƀý.]",
+      "playerInfoNotFound": "[Ñó çĥáŕáçţéŕ ƒóúñð ŵíţĥ ţĥáţ ñáɱé.]",
       "duelCountdown": "[Ðúéļ ƀéĝíñš íñ {seconds}...]",
       "duelEndBanner": "[{winner} ĥáš ðéƒéáţéð {loser} íñ á ðúéļ!]",
       "duelEndLog": "[{winner} ĥáš ðéƒéáţéð {loser} íñ á ðúéļ.]",
@@ -3824,6 +3844,22 @@ export const en_XA: EnTranslations = {
       "stool": "[Šţóóļ]"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "[Ðáíļý Ŕéŵáŕðš]",
+    "window": {
+      "title": "[Ðáíļý Ŕéŵáŕðš]",
+      "close": "[Çļóšé ðáíļý ŕéŵáŕðš]",
+      "claim": "[Çļáíɱ]",
+      "claimAria": "[Çļáíɱ ţóðáý'š ŕéŵáŕð]",
+      "claimed": "[Çļáíɱéð. Çóɱé ƀáçķ ţóɱóŕŕóŵ.]",
+      "locked": "[Ðáíļý ŕéŵáŕðš áŕé úñáʋáíļáƀļé óñ ţĥíš áççóúñţ ŕíĝĥţ ñóŵ.]",
+      "hint": "[Óñé ŕéŵáŕð þéŕ ðáý. Ɱíššíñĝ á ðáý ñéʋéŕ çóšţš ýóú áñýţĥíñĝ.]"
+    },
+    "cell": {
+      "today": "[Ţóðáý]",
+      "itemCount": "[{count}ẋ {item}]"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "[ĝ]",
@@ -4044,7 +4080,8 @@ export const en_XA: EnTranslations = {
       "needAria": "[Ñééð ƒóŕ {item}]",
       "greedAria": "[Ĝŕééð ƒóŕ {item}]",
       "passAria": "[Þášš óñ {item}]",
-      "everyonePassed": "[Éʋéŕýóñé þáššéð óñ {item}.]"
+      "everyonePassed": "[Éʋéŕýóñé þáššéð óñ {item}.]",
+      "winnerOffline": "[Ţĥé ŵíññéŕ óƒ {item} ŵáš óƒƒļíñé; íţ ŵáš ŕéţúŕñéð ţó ţĥé çóŕþšé.]"
     }
   },
   "entities": {
@@ -6295,6 +6332,15 @@ export const en_XA: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "[Ĥéáŕţŵóóð Çóļóššúš]"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "[Ĝŕééñþáŵ'š Çúţţíñĝ]"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "[Ĝŕééñþáŵ'š Çúţţíñĝ]"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "[Ĝŕééñþáŵ'š Çúţţíñĝ]"
       }
     },
     "npcs": {

@@ -663,6 +663,7 @@ export function grantDelveClearTo(
   unlockNextDelveLore(ctx, meta, pid);
   ctx.maybeCompanionBark(run, pid, 'completion');
   restorePetFromDelveStash(ctx, pid);
+  ctx.onDelveClearedForDeeds(run.delveId, run.tierId, (run.deathsThisRun[pid] ?? 0) === 0, meta);
   ctx.emit({ type: 'delveComplete', delveId: run.delveId, tierId: run.tierId, pid });
 }
 

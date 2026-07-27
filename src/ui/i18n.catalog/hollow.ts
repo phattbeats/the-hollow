@@ -66,6 +66,12 @@ const hollowEntitiesEn = {
     rootmaw: { name: 'Rootmaw' },
     the_witness_root: { name: 'The Witness-Root' },
     heartwood_colossus: { name: 'Heartwood Colossus' },
+    // Greenpaw's cutting companion (PHAA-751): the same display name across
+    // all three rolled cosmetic variants (src/sim/content/hollow.ts), which
+    // differ only in shape/color, not identity.
+    greenpaw_cutting_dawn: { name: "Greenpaw's Cutting" },
+    greenpaw_cutting_moss: { name: "Greenpaw's Cutting" },
+    greenpaw_cutting_ash: { name: "Greenpaw's Cutting" },
   },
   npcs: {
     brother_greenpaw: {

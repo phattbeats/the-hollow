@@ -9,16 +9,22 @@
 // keep resolving to THIS file, never the sibling directory.
 //
 // ---------------------------------------------------------------------------
-// FACET MAP: the 28 domain facets (each IWorld member assigned exactly once;
-// this count was previously stale at 23/155, corrected alongside the
+// FACET MAP: the 30 domain facets (each IWorld member assigned exactly once; 190
+// total; this count was previously stale at 23/155, corrected alongside the
 // PHAA-482 feedGreenpaw command addition, again at 24/161 with the PHAA-511
 // guild-calendar-events addition, again at 25/162 with PHAA-504's gathering.ts
 // facet, again with PHAA-505's per-player node harvest + proficiency, again at
-// 26/171 with the PHAA-495 Ravenpost mail facet (6 members), and again here
-// with PHAA-626's collections.ts facet (2 members), and again here with
-// PHAA-687's achievements.ts facet (2 members). One interface per file
-// under ./world_api/; aux types travel with their facet. The authoritative
+// 26/171 with the PHAA-495 Ravenpost mail facet (6 members), again with
+// PHAA-574's crafting.ts facet (2 members), again with PHAA-626's collections.ts
+// facet (2 members), again with PHAA-687's achievements.ts facet (2 members),
+// again with the PHAA-641 readyCheckRespond addition to the existing IWorldParty
+// facet, and again here at 30/190 with the PHAA-744 deeds.ts facet (5 members:
+// Book of Asphodelia deed/title read state + setActiveTitle). One interface per
+// file under ./world_api/; aux types travel with their facet. The authoritative
 // member-per-facet split is the W0c parity test (tests/world_api_parity.test.ts).
+// NOTE: this running count tracks only the facets registered in the W0c gate
+// (tests/world_api_parity.test.ts); IWorldReadables/IWorldDialog predate this
+// count and are pre-existing gaps in that gate, not tracked here.
 //
 //   entity_roster.ts    IWorldEntityRoster   cfg/entities/player/moveInput/realm reads
 //   combat.ts           IWorldCombat         ability casts, auto-attack, spirit release
@@ -28,6 +34,7 @@
 //   inventory.ts        IWorldInventory      bags, equipment, vendor, copper
 //   cosmetics.ts        IWorldCosmetics      account skins + mech chroma
 //   quests.ts           IWorldQuests         quest log + accept/turn-in/abandon
+//   deeds.ts            IWorldDeeds          Book of Asphodelia deed/title read state (PHAA-744)
 //   progression_xp.ts   IWorldProgressionXp  xp/lifetimeXp/prestige/rested/leaderboard
 //   talents.ts          IWorldTalents        talents, specs, loadouts
 //   trainer.ts          IWorldTrainer        secondary-class trainer NPC (GW1 multiclass)
@@ -47,17 +54,19 @@
 //   gathering.ts        IWorldGathering      profession harvest (PHAA-504 corpse harvest;
 //                                            PHAA-505 per-player node harvest + proficiency)
 //   telemetry.ts        IWorldTelemetry      fire-and-forget metrics sink
+//   crafting.ts         IWorldCrafting       craft a recipe + the local viewer's own
+//                                            craft proficiency (PHAA-574)
 //   collections.ts      IWorldCollections    tracked-collectible read/found state (PHAA-626)
 //   achievements.ts     IWorldAchievements   unlocked achievements + points (PHAA-687)
 //
 // THREE GATES pin this seam (run before any facet edit):
 //   tests/snapshots.test.ts        (W0a)  selfWireJson <-> applySnapshot round-trip;
-//                                          ALL_DELTA_KEYS (39) + TERSE_TO_IWORLD mapping.
+//                                          ALL_DELTA_KEYS (44) + TERSE_TO_IWORLD mapping.
 //   tests/command_schema.test.ts   (W0b)  COMMAND_NAMES universe; ClientWorld send-set
 //                                          subset-of dispatch-set; DISPATCH_ONLY (7).
-//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (182) present + same-kind on
+//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (190) present + same-kind on
 //                                          Sim + ClientWorld; aggregate == disjoint
-//                                          union of the 28 facets.
+//                                          union of the 30 facets.
 // ---------------------------------------------------------------------------
 
 import type { IWorldAchievements } from './world_api/achievements';
@@ -65,6 +74,9 @@ import type { IWorldChat } from './world_api/chat';
 import type { IWorldCollections } from './world_api/collections';
 import type { IWorldCombat } from './world_api/combat';
 import type { IWorldCosmetics } from './world_api/cosmetics';
+import type { IWorldCrafting } from './world_api/crafting';
+import type { IWorldDailyRewards } from './world_api/daily_rewards';
+import type { IWorldDeeds } from './world_api/deeds';
 import type { IWorldDelves } from './world_api/delves';
 import type { IWorldDialog } from './world_api/dialog';
 import type { IWorldDuelArena } from './world_api/duel_arena';
@@ -98,6 +110,7 @@ export type { ArenaCombatant, ArenaFormat, ArenaStanding, OverheadEmoteId } from
 // --- facet aux-type + value re-exports (each travels with its facet file) ---
 export { isOverheadEmoteId, OVERHEAD_EMOTES } from './world_api/chat';
 export type { AccountCosmetics } from './world_api/cosmetics';
+export type { DailyRewardsInfo } from './world_api/daily_rewards';
 export type {
   DelveCompanionInfo,
   DelveDailyInfo,
@@ -147,7 +160,9 @@ export interface IWorld
     IWorldLoot,
     IWorldInventory,
     IWorldCosmetics,
+    IWorldDailyRewards,
     IWorldQuests,
+    IWorldDeeds,
     IWorldProgressionXp,
     IWorldTalents,
     IWorldTrainer,
@@ -168,6 +183,7 @@ export interface IWorld
     IWorldReadables,
     IWorldDialog,
     IWorldTelemetry,
+    IWorldCrafting,
     IWorldCollections,
     IWorldAchievements {}
 
@@ -316,6 +332,10 @@ export const COMMAND_NAMES = [
   'harvestCorpse',
   'harvestNode',
   'dialogChoose',
+  'craftItem',
+  'daily_rewards_claim',
+  'setTitle',
+  'readyRespond',
   'readCollectible',
 ] as const;
 
@@ -364,7 +384,9 @@ export type WorldFacet =
   | 'IWorldLoot'
   | 'IWorldInventory'
   | 'IWorldCosmetics'
+  | 'IWorldDailyRewards'
   | 'IWorldQuests'
+  | 'IWorldDeeds'
   | 'IWorldProgressionXp'
   | 'IWorldTalents'
   | 'IWorldTrainer'
@@ -384,6 +406,7 @@ export type WorldFacet =
   | 'IWorldGathering'
   | 'IWorldDialog'
   | 'IWorldTelemetry'
+  | 'IWorldCrafting'
   | 'IWorldCollections';
 
 export const COMMAND_FACETS = {
@@ -447,6 +470,7 @@ export const COMMAND_FACETS = {
   masterAssign: 'IWorldParty',
   setMarker: 'IWorldParty',
   clearMarker: 'IWorldParty',
+  readyRespond: 'IWorldParty',
   // IWorldTrade: peer-to-peer trade-window commands (tradeInfo is a snapshot read,
   // no send).
   trade_req: 'IWorldTrade',
@@ -532,6 +556,16 @@ export const COMMAND_FACETS = {
   // IWorldDialog: resolve a picked branching-dialogue choice (PHAA-553); the
   // dialogState read carries no wire command (it rides the self-snapshot).
   dialogChoose: 'IWorldDialog',
+  // IWorldCrafting: craft a recipe (PHAA-574); recipe browsing carries no wire
+  // command (static content, read directly from src/sim/data's RECIPES table).
+  craftItem: 'IWorldCrafting',
+  // IWorldDailyRewards: claim today's cycle slot (PHAA-660); the dailyRewards
+  // read carries no wire command (it rides the self-snapshot like cosmetics).
+  daily_rewards_claim: 'IWorldDailyRewards',
+  // IWorldDeeds: select (or clear) the earned title shown with the character's
+  // name (PHAA-744, Book of Asphodelia). deedLog/deedsDone/earnedTitles are
+  // snapshot reads (no send, untagged).
+  setTitle: 'IWorldDeeds',
   // IWorldCollections: mark a collectible found (PHAA-625/626); collectedIds
   // is a snapshot read (no send, untagged).
   readCollectible: 'IWorldCollections',

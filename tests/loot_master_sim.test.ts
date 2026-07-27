@@ -73,6 +73,24 @@ describe('master loot', () => {
     expect(sim.events.filter((e) => e.type === 'lootRoll')).toHaveLength(0); // 1 target skips the roll
   });
 
+  it('an offline assigned target does not lose the item: it is returned to the corpse instead', () => {
+    const sim = makeSim();
+    const { a, b, mob } = partyOnCorpse(sim, PREMIUM);
+    sim.setPartyLootMaster(true, 0, 'uncommon', a);
+    sim.lootCorpse(mob.id, a);
+    const rollId = sim.events.find((e) => e.type === 'masterLoot')?.rollId;
+    if (rollId === undefined) throw new Error('expected master loot prompt');
+
+    sim.removePlayer(b); // b disconnects before the master looter assigns
+    sim.events.length = 0;
+    sim.assignMasterLoot(rollId, [b], a);
+
+    expect(sim.countItem(PREMIUM, a)).toBe(0);
+    const returned = mob.loot?.items.find((s) => s.itemId === PREMIUM);
+    expect(returned?.openToAll).toBe(true);
+    expect(returned?.count).toBe(1);
+  });
+
   it('does not surface a curate-phase master roll as a need/greed prompt (reconcile)', () => {
     const sim = makeSim();
     const { a, b, mob } = partyOnCorpse(sim, PREMIUM);

@@ -124,6 +124,13 @@ export function updateMob(ctx: SimContext, mob: Entity): void {
       ctx.updateDelveCompanion(mob);
       return;
     }
+    // Greenpaw's cutting companion (PHAA-751): a cosmetic, non-combat owned
+    // mob, dispatched to its own follow-only tick instead of falling through
+    // to the combat pet branch below (ctx.updatePet, pet_ai.ts).
+    if (ctx.isGreenpawCompanionMob(mob)) {
+      ctx.updateGreenpawCompanion(mob);
+      return;
+    }
     ctx.updatePet(mob);
     return;
   }

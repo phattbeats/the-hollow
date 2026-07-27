@@ -162,17 +162,17 @@ describe('classic formulas', () => {
     expect(mobXpValue(2, 8)).toBe(0);
   });
 
-  it('spell hit falls off steeply above the caster level (anti-power-level)', () => {
+  it('spell hit falls off above the caster level, capped (anti-power-level)', () => {
     expect(spellHitChance(5, 5)).toBeCloseTo(0.96); // equal level
     expect(spellHitChance(3, 5)).toBeCloseTo(0.82); // +2 -> ~18% miss
-    expect(spellHitChance(3, 7)).toBeCloseTo(0.16); // +4 -> ~84% miss
+    expect(spellHitChance(3, 7)).toBeCloseTo(0.75); // +4 -> ~25% resist, capped
   });
 
-  it('melee/ranged miss scales steeply against higher-level targets', () => {
+  it('melee/ranged miss scales against higher-level targets, capped', () => {
     expect(meleeMissChance(5, 5)).toBeCloseTo(0.05); // equal level -> 5% base
     expect(meleeMissChance(3, 5)).toBeCloseTo(0.19); // +2 (L3 vs L5) -> ~19%
-    expect(meleeMissChance(3, 7)).toBeCloseTo(0.85); // +4 (L3 vs L7) -> 85%
-    expect(meleeMissChance(3, 9)).toBeCloseTo(0.95); // +6 -> capped at 95%
+    expect(meleeMissChance(3, 7)).toBeCloseTo(0.26); // +4 (L3 vs L7) -> ~26%, capped
+    expect(meleeMissChance(3, 9)).toBeCloseTo(0.26); // +6 -> saturates at the same cap
     // hunter Auto Shot + wands resolve through meleeMissChance too, so this covers them
   });
 

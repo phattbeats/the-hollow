@@ -246,7 +246,6 @@ export const da_DK: EnTranslations = {
       "chat": "Spring til chat"
     },
     "mobile": {
-      "autorun": "Autoløb",
       "jump": "Hop",
       "leaderboard": "Rangliste",
       "nameplates": "Navne",
@@ -1013,6 +1012,9 @@ export const da_DK: EnTranslations = {
         "fiestaComplete": "Fiesta match",
         "fiestaWin": "Fiesta win"
       }
+    },
+    "hitRating": {
+      "ratingLabel": "Hit Rating"
     }
   },
   "mailUi": {
@@ -2444,6 +2446,9 @@ export const da_DK: EnTranslations = {
       "nothingToHarvest": "That corpse has nothing to harvest.",
       "alreadyHarvested": "This corpse has already been harvested."
     },
+    "dailyRewards": {
+      "claimed": "You claim your daily reward."
+    },
     "collections": {
       "notFound": "That does not exist.",
       "tooFar": "Too far away."
@@ -2508,6 +2513,18 @@ export const da_DK: EnTranslations = {
       "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
       "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
       "helpLine": "Homestead: /homestead, /homestead claim."
+    },
+    "greenpawCutting": {
+      "alreadyPlanted": "You have already planted your cutting. Give it time to grow.",
+      "needHomestead": "You need a homestead plot before you can plant this.",
+      "tooFar": "You must be at your own homestead to plant this.",
+      "planted": "You plant the cutting at your homestead. Give it time.",
+      "grown": "Your cutting has grown into a companion. It follows you now."
+    },
+    "readyCheck": {
+      "mustBeInParty": "You must be in a party to start a ready check.",
+      "alreadyInProgress": "A ready check is already in progress.",
+      "summary": "Ready check: {ready} ready, {notReady} not ready, {noResponse} no response."
     }
   },
   "lockpickUi": {
@@ -3349,6 +3366,8 @@ export const da_DK: EnTranslations = {
       "openTrade": "Åbn handel",
       "duelRequest": "{name} har udfordret dig til en duel!",
       "acceptDuel": "Accepter duel",
+      "readyCheckStart": "{name} has started a ready check.",
+      "markReady": "Ready",
       "decline": "Afvis"
     },
     "combat": {
@@ -3379,6 +3398,7 @@ export const da_DK: EnTranslations = {
       "ignoringChat": "Ignorerer chat fra {name}.",
       "noLongerIgnoring": "Ignorerer ikke længere {name}.",
       "playerNotNearby": "Den spiller er ikke i nærheden.",
+      "playerInfoNotFound": "No character found with that name.",
       "duelCountdown": "Duellen begynder om {seconds}...",
       "duelEndBanner": "{winner} har besejret {loser} i en duel!",
       "duelEndLog": "{winner} har besejret {loser} i en duel.",
@@ -3824,6 +3844,22 @@ export const da_DK: EnTranslations = {
       "stool": "Stool"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "Daily Rewards",
+    "window": {
+      "title": "Daily Rewards",
+      "close": "Close daily rewards",
+      "claim": "Claim",
+      "claimAria": "Claim today's reward",
+      "claimed": "Claimed. Come back tomorrow.",
+      "locked": "Daily rewards are unavailable on this account right now.",
+      "hint": "One reward per day. Missing a day never costs you anything."
+    },
+    "cell": {
+      "today": "Today",
+      "itemCount": "{count}x {item}"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "g",
@@ -4044,7 +4080,8 @@ export const da_DK: EnTranslations = {
       "needAria": "Behov for {item}",
       "greedAria": "Grådighed efter {item}",
       "passAria": "Stå over {item}",
-      "everyonePassed": "Alle stod over {item}."
+      "everyonePassed": "Alle stod over {item}.",
+      "winnerOffline": "The winner of {item} was offline; it was returned to the corpse."
     }
   },
   "entities": {
@@ -6295,6 +6332,15 @@ export const da_DK: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "Heartwood Colossus"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "Greenpaw's Cutting"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "Greenpaw's Cutting"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "Greenpaw's Cutting"
       }
     },
     "npcs": {

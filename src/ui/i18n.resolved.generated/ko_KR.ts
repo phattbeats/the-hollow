@@ -246,7 +246,6 @@ export const ko_KR: EnTranslations = {
       "chat": "채팅으로 건너뛰기"
     },
     "mobile": {
-      "autorun": "자동 달리기",
       "jump": "점프",
       "leaderboard": "순위",
       "nameplates": "이름표",
@@ -1013,6 +1012,9 @@ export const ko_KR: EnTranslations = {
         "fiestaComplete": "피에스타 경기",
         "fiestaWin": "피에스타 승리"
       }
+    },
+    "hitRating": {
+      "ratingLabel": "적중 레이팅"
     }
   },
   "mailUi": {
@@ -2444,6 +2446,9 @@ export const ko_KR: EnTranslations = {
       "nothingToHarvest": "그 시체에서는 채집할 것이 없습니다.",
       "alreadyHarvested": "이 시체는 이미 채집되었습니다."
     },
+    "dailyRewards": {
+      "claimed": "일일 보상을 받았습니다."
+    },
     "collections": {
       "notFound": "그것은 존재하지 않습니다.",
       "tooFar": "너무 멀리 떨어져 있습니다."
@@ -2508,6 +2513,18 @@ export const ko_KR: EnTranslations = {
       "readoutNoHomesteadQuest": "당신은 정착지가 없다. 브라더 초록발의 용무를 모두 마쳐야 하나를 얻을 수 있다.",
       "readoutNoHomesteadHint": "당신은 정착지가 없다. 우묵골 지대의 적당한 곳에 서서 /homestead claim이라고 입력하라.",
       "helpLine": "정착지: /homestead, /homestead claim."
+    },
+    "greenpawCutting": {
+      "alreadyPlanted": "이미 꺾꽂이를 심었다. 자랄 때까지 기다려라.",
+      "needHomestead": "이것을 심으려면 먼저 개척지가 있어야 한다.",
+      "tooFar": "이것을 심으려면 자신의 개척지에 있어야 한다.",
+      "planted": "개척지에 꺾꽂이를 심었다. 시간을 두고 기다려라.",
+      "grown": "꺾꽂이가 자라 동반자가 되었다. 이제 너를 따라다닌다."
+    },
+    "readyCheck": {
+      "mustBeInParty": "준비 확인을 시작하려면 파티에 있어야 합니다.",
+      "alreadyInProgress": "이미 준비 확인이 진행 중입니다.",
+      "summary": "준비 확인: 준비 완료 {ready}명, 미준비 {notReady}명, 무응답 {noResponse}명."
     }
   },
   "lockpickUi": {
@@ -3349,6 +3366,8 @@ export const ko_KR: EnTranslations = {
       "openTrade": "거래 열기",
       "duelRequest": "{name}님이 결투를 신청했습니다!",
       "acceptDuel": "결투 수락",
+      "readyCheckStart": "{name}님이 준비 확인을 시작했습니다.",
+      "markReady": "준비 완료",
       "decline": "거절"
     },
     "combat": {
@@ -3379,6 +3398,7 @@ export const ko_KR: EnTranslations = {
       "ignoringChat": "{name}의 채팅을 차단합니다.",
       "noLongerIgnoring": "{name}을 더 이상 차단하지 않습니다.",
       "playerNotNearby": "그 플레이어는 근처에 없습니다.",
+      "playerInfoNotFound": "해당 이름의 캐릭터를 찾을 수 없습니다.",
       "duelCountdown": "결투가 {seconds}초 후 시작됩니다...",
       "duelEndBanner": "{winner}님이 결투에서 {loser}님을 이겼습니다!",
       "duelEndLog": "{winner}님이 결투에서 {loser}님을 이겼습니다.",
@@ -3824,6 +3844,22 @@ export const ko_KR: EnTranslations = {
       "stool": "스툴"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "일일 보상",
+    "window": {
+      "title": "일일 보상",
+      "close": "일일 보상 닫기",
+      "claim": "받기",
+      "claimAria": "오늘의 보상 받기",
+      "claimed": "받았습니다. 내일 다시 오세요.",
+      "locked": "현재 이 계정에서는 일일 보상을 사용할 수 없습니다.",
+      "hint": "하루에 한 번 받을 수 있습니다. 하루를 놓쳐도 손해는 없습니다."
+    },
+    "cell": {
+      "today": "오늘",
+      "itemCount": "{count}x {item}"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "금",
@@ -4044,7 +4080,8 @@ export const ko_KR: EnTranslations = {
       "needAria": "{item} 필요",
       "greedAria": "{item} 탐욕",
       "passAria": "{item} 포기",
-      "everyonePassed": "모두 {item}을(를) 포기했습니다."
+      "everyonePassed": "모두 {item}을(를) 포기했습니다.",
+      "winnerOffline": "{item}의 당첨자가 오프라인 상태여서 시체로 반환되었습니다."
     }
   },
   "entities": {
@@ -6295,6 +6332,15 @@ export const ko_KR: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "심재 거상"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "초록발의 꺾꽂이"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "초록발의 꺾꽂이"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "초록발의 꺾꽂이"
       }
     },
     "npcs": {

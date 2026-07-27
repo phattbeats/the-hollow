@@ -9,14 +9,14 @@
     "updateDelveCompanion heel arm: moveToward owner past DELVE_COMPANION_FOLLOW, then warp + rebucket past PET_TELEPORT_DISTANCE",
     "combat_start/low_hp barks via maybeCompanionBark (stays on Sim)"
   ],
-  "draws": 6,
-  "drawDigest": "5cc83279",
+  "draws": 12,
+  "drawDigest": "ce83d1b6",
   "frames": [
     {
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "34f1b800",
+      "state": "9e34c745",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -39,6 +39,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -110,99 +111,99 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 417,
-      "state": "e5149cc6",
-      "events": "64355dbf",
+      "state": "2bcfc9ef",
+      "events": "2b7f63f6",
       "rng": {
-        "draws": 4,
-        "digest": "017ed9b3"
+        "draws": 7,
+        "digest": "6c12f2f0"
       }
     },
     {
       "tick": 10,
       "time": 0.5,
       "nextId": 417,
-      "state": "58e91959",
+      "state": "ee8388bb",
       "events": "741638a5",
       "rng": {
-        "draws": 4,
-        "digest": "017ed9b3"
+        "draws": 7,
+        "digest": "6c12f2f0"
       }
     },
     {
       "tick": 15,
       "time": 0.75,
       "nextId": 417,
-      "state": "b54f6bc8",
+      "state": "0eba3770",
       "events": "741638a5",
       "rng": {
-        "draws": 4,
-        "digest": "017ed9b3"
+        "draws": 7,
+        "digest": "6c12f2f0"
       }
     },
     {
       "tick": 20,
       "time": 1,
       "nextId": 417,
-      "state": "a2bba37d",
+      "state": "edc34431",
       "events": "741638a5",
       "rng": {
-        "draws": 4,
-        "digest": "017ed9b3"
+        "draws": 7,
+        "digest": "6c12f2f0"
       }
     },
     {
       "tick": 25,
       "time": 1.25,
       "nextId": 417,
-      "state": "e0e8fd65",
+      "state": "c929ee65",
       "events": "741638a5",
       "rng": {
-        "draws": 4,
-        "digest": "017ed9b3"
+        "draws": 7,
+        "digest": "6c12f2f0"
       }
     },
     {
       "tick": 30,
       "time": 1.5,
       "nextId": 417,
-      "state": "15c4f01f",
+      "state": "59701cae",
       "events": "741638a5",
       "rng": {
-        "draws": 4,
-        "digest": "017ed9b3"
+        "draws": 7,
+        "digest": "6c12f2f0"
       }
     },
     {
       "tick": 35,
       "time": 1.75,
       "nextId": 417,
-      "state": "fec3b61f",
-      "events": "741638a5",
+      "state": "56783821",
+      "events": "8aa7b969",
       "rng": {
-        "draws": 4,
-        "digest": "017ed9b3"
+        "draws": 10,
+        "digest": "135e501f"
       }
     },
     {
       "tick": 40,
       "time": 2,
       "nextId": 417,
-      "state": "bbb4cd72",
+      "state": "1d4f453b",
       "events": "741638a5",
       "rng": {
-        "draws": 4,
-        "digest": "017ed9b3"
+        "draws": 10,
+        "digest": "135e501f"
       }
     },
     {
       "tick": 40,
       "time": 2,
       "nextId": 417,
-      "state": "bbb4cd72",
+      "state": "1d4f453b",
       "events": "741638a5",
       "rng": {
-        "draws": 4,
-        "digest": "017ed9b3"
+        "draws": 10,
+        "digest": "135e501f"
       },
       "label": "combat",
       "players": [
@@ -223,6 +224,49 @@
             "companion_tessa": 2
           },
           "counters": {},
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -232,6 +276,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 11200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -251,6 +296,7 @@
           "fiveSecondRule": 101,
           "hp": 50000,
           "id": 407,
+          "inCombat": true,
           "kind": "player",
           "level": 7,
           "lootFfaTimer": "Infinity",
@@ -290,13 +336,13 @@
         },
         {
           "aiState": "idle",
-          "combatTimer": 101,
+          "combatTimer": 0.35,
           "critChance": 0.05,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
-          "facing": -1.825631,
+          "facing": -1.570796,
           "fiveSecondRule": 99,
-          "hp": 119,
+          "hp": 74,
           "id": 412,
           "inCombat": true,
           "kind": "mob",
@@ -309,8 +355,8 @@
           "ownerId": 407,
           "petMode": "defensive",
           "pos": {
-            "x": 6001.724356,
-            "z": -1172.862581
+            "x": 6005.8,
+            "z": -1170
           },
           "potionCooldownUntil": -1,
           "spawnPos": {
@@ -320,6 +366,7 @@
           "stats": {
             "armor": 32
           },
+          "swingTimer": 1.9,
           "templateId": "acolyte_tessa",
           "wanderTimer": 1,
           "weapon": {
@@ -329,17 +376,23 @@
           }
         },
         {
-          "aiState": "idle",
-          "combatTimer": 101,
+          "aggroTargetId": 412,
+          "aiState": "attack",
+          "combatTimer": 0.4,
           "critChance": 0.05,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
-          "facing": -2.560939,
+          "facing": 1.570796,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 40000,
+          "hp": 39986,
           "id": 413,
+          "inCombat": true,
           "kind": "mob",
+          "leashAnchor": {
+            "x": 6001.4,
+            "z": -1170
+          },
           "level": 9,
           "lootFfaTimer": "Infinity",
           "maxHp": 40000,
@@ -348,8 +401,8 @@
           "overpowerUntil": -1,
           "petMode": "defensive",
           "pos": {
-            "x": 5997.312003,
-            "z": -1174.09691
+            "x": 6001.4,
+            "z": -1170
           },
           "potionCooldownUntil": -1,
           "spawnPos": {
@@ -359,13 +412,16 @@
           "stats": {
             "armor": 160
           },
-          "stompTimer": 12,
+          "stompTimer": 10.35,
+          "swingTimer": 0.35,
+          "tappedById": 407,
           "templateId": "deacon_varric",
-          "wanderTarget": {
-            "x": 5996.300211,
-            "z": -1175.639032
-          },
-          "wanderTimer": 28.05,
+          "threat": [
+            [
+              412,
+              15
+            ]
+          ],
           "weapon": {
             "max": 51,
             "min": 33,
@@ -378,11 +434,11 @@
       "tick": 41,
       "time": 2.05,
       "nextId": 417,
-      "state": "472cf5f2",
-      "events": "25b2de65",
+      "state": "44fc1922",
+      "events": "ba993461",
       "rng": {
-        "draws": 6,
-        "digest": "5cc83279"
+        "draws": 12,
+        "digest": "ce83d1b6"
       },
       "label": "heal",
       "players": [
@@ -403,6 +459,49 @@
             "companion_tessa": 2
           },
           "counters": {},
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -412,6 +511,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 11200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -428,7 +528,7 @@
           "critChance": 0.063,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.063,
-          "fallStartY": 43.330036,
+          "fallStartY": 43.855029,
           "fiveSecondRule": 101.05,
           "hp": 29000,
           "id": 407,
@@ -442,9 +542,9 @@
           "overpowerUntil": -1,
           "petMode": "defensive",
           "pos": {
-            "x": 6004.724356,
-            "y": 43.330036,
-            "z": -1172.862581
+            "x": 6008.8,
+            "y": 43.855029,
+            "z": -1170
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
@@ -472,13 +572,13 @@
         },
         {
           "aiState": "idle",
-          "combatTimer": 101.05,
+          "combatTimer": 0.4,
           "critChance": 0.05,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
-          "facing": -1.843567,
+          "facing": -1.570796,
           "fiveSecondRule": 99,
-          "hp": 119,
+          "hp": 74,
           "id": 412,
           "inCombat": true,
           "kind": "mob",
@@ -491,8 +591,8 @@
           "ownerId": 407,
           "petMode": "defensive",
           "pos": {
-            "x": 6001.387296,
-            "z": -1172.956872
+            "x": 6005.8,
+            "z": -1170
           },
           "potionCooldownUntil": -1,
           "spawnPos": {
@@ -502,6 +602,7 @@
           "stats": {
             "armor": 32
           },
+          "swingTimer": 1.8,
           "templateId": "acolyte_tessa",
           "wanderTimer": 3,
           "weapon": {
@@ -511,22 +612,22 @@
           }
         },
         {
-          "aggroTargetId": 407,
-          "aiState": "chase",
-          "combatTimer": 101.05,
+          "aggroTargetId": 412,
+          "aiState": "attack",
+          "combatTimer": 0.45,
           "critChance": 0.05,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
-          "facing": -2.560939,
+          "facing": 1.570796,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 40000,
+          "hp": 39986,
           "id": 413,
           "inCombat": true,
           "kind": "mob",
           "leashAnchor": {
-            "x": 5997.312003,
-            "z": -1174.09691
+            "x": 6001.4,
+            "z": -1170
           },
           "level": 9,
           "lootFfaTimer": "Infinity",
@@ -536,8 +637,8 @@
           "overpowerUntil": -1,
           "petMode": "defensive",
           "pos": {
-            "x": 5997.312003,
-            "z": -1174.09691
+            "x": 6001.4,
+            "z": -1170
           },
           "potionCooldownUntil": -1,
           "spawnPos": {
@@ -547,19 +648,16 @@
           "stats": {
             "armor": 160
           },
-          "stompTimer": 12,
+          "stompTimer": 10.3,
+          "swingTimer": 0.3,
+          "tappedById": 407,
           "templateId": "deacon_varric",
           "threat": [
             [
-              407,
-              1
+              412,
+              15
             ]
           ],
-          "wanderTarget": {
-            "x": 5996.300211,
-            "z": -1175.639032
-          },
-          "wanderTimer": 28.05,
           "weapon": {
             "max": 51,
             "min": 33,
@@ -572,22 +670,22 @@
       "tick": 45,
       "time": 2.25,
       "nextId": 417,
-      "state": "aef65bf3",
+      "state": "061fb6a1",
       "events": "741638a5",
       "rng": {
-        "draws": 6,
-        "digest": "5cc83279"
+        "draws": 12,
+        "digest": "ce83d1b6"
       }
     },
     {
       "tick": 49,
       "time": 2.45,
       "nextId": 417,
-      "state": "76f594c3",
+      "state": "318f237f",
       "events": "741638a5",
       "rng": {
-        "draws": 6,
-        "digest": "5cc83279"
+        "draws": 12,
+        "digest": "ce83d1b6"
       },
       "label": "heel-walk",
       "players": [
@@ -608,6 +706,49 @@
             "companion_tessa": 2
           },
           "counters": {},
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -617,6 +758,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 11200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -633,7 +775,7 @@
           "critChance": 0.063,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.063,
-          "fallStartY": 41.815138,
+          "fallStartY": 40.511613,
           "fiveSecondRule": 101.45,
           "hp": 29000,
           "id": 407,
@@ -646,9 +788,9 @@
           "overpowerUntil": -1,
           "petMode": "defensive",
           "pos": {
-            "x": 6013.387296,
-            "y": 40.695138,
-            "z": -1172.956872
+            "x": 6017.8,
+            "y": 39.391613,
+            "z": -1170
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
@@ -675,13 +817,13 @@
         },
         {
           "aiState": "idle",
-          "combatTimer": 101.45,
+          "combatTimer": 0.8,
           "critChance": 0.05,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
           "facing": 1.570796,
           "fiveSecondRule": 99,
-          "hp": 119,
+          "hp": 74,
           "id": 412,
           "kind": "mob",
           "level": 5,
@@ -693,8 +835,8 @@
           "ownerId": 407,
           "petMode": "defensive",
           "pos": {
-            "x": 6004.187296,
-            "z": -1172.956872
+            "x": 6008.6,
+            "z": -1170
           },
           "potionCooldownUntil": -1,
           "spawnPos": {
@@ -704,6 +846,7 @@
           "stats": {
             "armor": 32
           },
+          "swingTimer": 1,
           "templateId": "acolyte_tessa",
           "wanderTimer": 2.6,
           "weapon": {
@@ -718,22 +861,22 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 417,
-      "state": "3dd74541",
+      "state": "d7f7e0db",
       "events": "741638a5",
       "rng": {
-        "draws": 6,
-        "digest": "5cc83279"
+        "draws": 12,
+        "digest": "ce83d1b6"
       }
     },
     {
       "tick": 51,
       "time": 2.55,
       "nextId": 417,
-      "state": "4a3e6900",
+      "state": "e6caff81",
       "events": "741638a5",
       "rng": {
-        "draws": 6,
-        "digest": "5cc83279"
+        "draws": 12,
+        "digest": "ce83d1b6"
       },
       "label": "heel-teleport",
       "players": [
@@ -754,6 +897,49 @@
             "companion_tessa": 2
           },
           "counters": {},
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -763,6 +949,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 11200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -779,7 +966,7 @@
           "critChance": 0.063,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.063,
-          "fallStartY": 39.936048,
+          "fallStartY": 38.388136,
           "fiveSecondRule": 101.55,
           "hp": 29000,
           "id": 407,
@@ -792,9 +979,9 @@
           "overpowerUntil": -1,
           "petMode": "defensive",
           "pos": {
-            "x": 6084.187296,
-            "y": 39.896048,
-            "z": -1172.956872
+            "x": 6088.6,
+            "y": 38.348136,
+            "z": -1170
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
@@ -821,13 +1008,13 @@
         },
         {
           "aiState": "idle",
-          "combatTimer": 101.55,
+          "combatTimer": 0.9,
           "critChance": 0.05,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
           "facing": 1.570796,
           "fiveSecondRule": 99,
-          "hp": 119,
+          "hp": 74,
           "id": 412,
           "kind": "mob",
           "level": 5,
@@ -839,9 +1026,9 @@
           "ownerId": 407,
           "petMode": "defensive",
           "pos": {
-            "x": 6084.187296,
-            "y": 39.936048,
-            "z": -1172.956872
+            "x": 6088.6,
+            "y": 38.388136,
+            "z": -1170
           },
           "potionCooldownUntil": -1,
           "spawnPos": {
@@ -851,6 +1038,7 @@
           "stats": {
             "armor": 32
           },
+          "swingTimer": 0.8,
           "templateId": "acolyte_tessa",
           "wanderTimer": 2.5,
           "weapon": {
@@ -865,11 +1053,11 @@
       "tick": 51,
       "time": 2.55,
       "nextId": 417,
-      "state": "4a3e6900",
+      "state": "e6caff81",
       "events": "741638a5",
       "rng": {
-        "draws": 6,
-        "digest": "5cc83279"
+        "draws": 12,
+        "digest": "ce83d1b6"
       },
       "label": "final",
       "players": [
@@ -890,6 +1078,49 @@
             "companion_tessa": 2
           },
           "counters": {},
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -899,6 +1130,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "lifetimeXp": 11200,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -915,7 +1147,7 @@
           "critChance": 0.063,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.063,
-          "fallStartY": 39.936048,
+          "fallStartY": 38.388136,
           "fiveSecondRule": 101.55,
           "hp": 29000,
           "id": 407,
@@ -928,9 +1160,9 @@
           "overpowerUntil": -1,
           "petMode": "defensive",
           "pos": {
-            "x": 6084.187296,
-            "y": 39.896048,
-            "z": -1172.956872
+            "x": 6088.6,
+            "y": 38.348136,
+            "z": -1170
           },
           "potionCooldownUntil": -1,
           "resourceType": "rage",
@@ -957,13 +1189,13 @@
         },
         {
           "aiState": "idle",
-          "combatTimer": 101.55,
+          "combatTimer": 0.9,
           "critChance": 0.05,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
           "facing": 1.570796,
           "fiveSecondRule": 99,
-          "hp": 119,
+          "hp": 74,
           "id": 412,
           "kind": "mob",
           "level": 5,
@@ -975,9 +1207,9 @@
           "ownerId": 407,
           "petMode": "defensive",
           "pos": {
-            "x": 6084.187296,
-            "y": 39.936048,
-            "z": -1172.956872
+            "x": 6088.6,
+            "y": 38.388136,
+            "z": -1170
           },
           "potionCooldownUntil": -1,
           "spawnPos": {
@@ -987,6 +1219,7 @@
           "stats": {
             "armor": 32
           },
+          "swingTimer": 0.8,
           "templateId": "acolyte_tessa",
           "wanderTimer": 2.5,
           "weapon": {

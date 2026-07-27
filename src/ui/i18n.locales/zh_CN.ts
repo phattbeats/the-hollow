@@ -5,9 +5,8 @@
 // translate that key. The build (scripts/i18n_build.mjs) unflattens this map and
 // overlays it onto nested `en` to produce the dense resolved table; any key here
 // must be a real `en` leaf path: keys are typed `Partial<Record<TranslationKey,
-// string>>` so tsc rejects a structurally-wrong key, plus
-// tests/i18n_overlay_key_membership.test.ts catches a typo'd entity id the
-// template-literal key type cannot. Overlays are SPARSE: an
+// string>>` against the build-generated flat key union, so tsc rejects any key
+// that is not an exact `en` leaf path, typo'd entity ids included. Overlays are SPARSE: an
 // untranslated key is omitted and the build fills it from English, then the
 // registry (src/ui/i18n.status.json) marks it `pending`.
 
@@ -1007,6 +1006,8 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hud.prompts.openTrade': '打开交易',
   'hud.prompts.duelRequest': '{name} 向你发起了决斗挑战！',
   'hud.prompts.acceptDuel': '接受决斗',
+  'hud.prompts.readyCheckStart': '{name} 发起了准备检查。',
+  'hud.prompts.markReady': '准备',
   'hud.prompts.decline': '拒绝',
   'hud.combat.floatingMiss': '未命中',
   'hud.combat.floatingDodge': '闪避',
@@ -1032,6 +1033,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hud.system.ignoringChat': '已屏蔽来自 {name} 的聊天。',
   'hud.system.noLongerIgnoring': '不再屏蔽 {name}。',
   'hud.system.playerNotNearby': '该玩家不在附近。',
+  'hud.system.playerInfoNotFound': '未找到该名称的角色。',
   'hud.system.duelCountdown': '决斗将在 {seconds} 秒后开始...',
   'hud.system.duelEndBanner': '{winner} 在决斗中击败了 {loser}！',
   'hud.system.duelEndLog': '{winner} 在决斗中击败了 {loser}。',
@@ -1627,6 +1629,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.spell_lock.name': '咒缚',
   'entities.abilities.spell_lock.description':
     '使目标在施法中沉默，并使其在5秒内无法施放该系法术。',
+  'itemUi.lootRoll.winnerOffline': '{item}的获胜者已离线；战利品已归还尸体。',
   'entities.abilities.heroic_strike.name': '英勇打击',
   'entities.abilities.heroic_strike.description':
     '一次强力攻击，使近战伤害提高 {damage}。在你的下一次挥击时触发。',
@@ -3457,7 +3460,6 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/秒',
   'hudChrome.meters.perSecondRow': '{total}（{rate}）',
   'hudChrome.meters.seconds': '{s}秒',
-  'hudChrome.mobile.autorun': '自动奔跑',
   'hudChrome.mobile.haptics': '震动反馈',
   'hudChrome.mobile.hapticsOff': '震动反馈：关',
   'hudChrome.mobile.jump': '跳跃',
@@ -4759,6 +4761,9 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.palefeeder.name': '苍白噬光者',
   'entities.mobs.rootmaw.name': '根颚兽',
   'entities.mobs.the_witness_root.name': '见证之根',
+  'entities.mobs.greenpaw_cutting_dawn.name': '绿掌的插枝',
+  'entities.mobs.greenpaw_cutting_moss.name': '绿掌的插枝',
+  'entities.mobs.greenpaw_cutting_ash.name': '绿掌的插枝',
   'entities.npcs.brother_halven.greeting': '下方的圣物库又移位了。',
   'entities.npcs.brother_halven.name': '哈尔文修士',
   'entities.npcs.brother_halven.title': '圣物库守护人',
@@ -4952,6 +4957,12 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'sim.collections.notFound': '那个东西不存在。',
   'sim.collections.tooFar': '太远了。',
   'sim.gathering.nothingToHarvest': '这具尸体没有什么可以采集的。',
+  'sim.greenpawCutting.alreadyPlanted': '你已经种下了插枝。给它一些时间成长。',
+  'sim.greenpawCutting.needHomestead': '你需要先拥有一块宅地才能种下它。',
+  'sim.greenpawCutting.tooFar': '你必须在自己的宅地才能种下它。',
+  'sim.greenpawCutting.planted': '你在自己的宅地种下了插枝。耐心等待吧。',
+  'sim.greenpawCutting.grown': '你的插枝已经长成了一只伙伴。它现在会跟随你。',
+  'sim.dailyRewards.claimed': '你领取了每日奖励。',
   'sim.hearth.emberbulb1': '这才叫柴火……瞧瞧她喘气的样子，伙计……',
   'sim.hearth.emberbulb2': '炉子慢慢地、干干净净地吃下去，她就爱这样……',
   'sim.hearth.emberbulb3': '添了柴，冒了烟……那个波长已经开始松动了，我能感觉到。',
@@ -5007,6 +5018,10 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'sim.lockpick.tierMedium': '中等',
   'sim.lockpick.tierPremium': '上乘',
   'sim.lockpick.toolSlips': '这件工具在这把锁上打滑了。',
+  'sim.readyCheck.alreadyInProgress': '准备检查已在进行中。',
+  'sim.readyCheck.mustBeInParty': '你必须在队伍中才能发起准备检查。',
+  'sim.readyCheck.summary':
+    '准备检查：{ready} 人已准备，{notReady} 人未准备，{noResponse} 人无响应。',
   'delveUi.board.tabDelve': '探秘',
   'delveUi.shop.price': '{marks} 印记',
   'delveUi.shop.buyAria': '用 {marks} 枚探秘印记购买 {item}',
@@ -5292,6 +5307,15 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.npcJournal.next': '下一页',
   'hudChrome.npcJournal.close': '关闭日记',
   'hudChrome.npcJournal.title': '{name}的日记',
+  'dailyRewardsUi.menuButton': '每日奖励',
+  'dailyRewardsUi.window.title': '每日奖励',
+  'dailyRewardsUi.window.close': '关闭每日奖励',
+  'dailyRewardsUi.window.claim': '领取',
+  'dailyRewardsUi.window.claimAria': '领取今日奖励',
+  'dailyRewardsUi.window.claimed': '已领取，明天再来。',
+  'dailyRewardsUi.window.locked': '此账号暂时无法领取每日奖励。',
+  'dailyRewardsUi.window.hint': '每天可领取一次。错过一天不会有任何损失。',
+  'dailyRewardsUi.cell.today': '今天',
   'housingUi.claimedBanner': '你将这块地认领为家园。',
   'housingUi.ownerBanner': '这是{name}的家园。',
   'housingUi.prompt.claim': '认领这块地',
@@ -5448,6 +5472,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.warfare.reasons.fiestaKill': '狂欢击倒',
   'hudChrome.warfare.reasons.fiestaComplete': '狂欢比赛',
   'hudChrome.warfare.reasons.fiestaWin': '狂欢胜利',
+  'hudChrome.hitRating.ratingLabel': '命中等级',
   'entities.npcs.bramble.name': '布兰博',
   'entities.npcs.bramble.title': '荣誉军需官',
   'entities.npcs.bramble.greeting': '沙场记得每一场胜利。好好花你的荣誉吧。',

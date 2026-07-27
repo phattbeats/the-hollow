@@ -30,8 +30,8 @@
       "tick": 0,
       "time": 0,
       "nextId": 409,
-      "state": "ce292ce1",
-      "events": "d1c7304a",
+      "state": "63125cf4",
+      "events": "eead7ba6",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -53,6 +53,95 @@
           "companionUpgrades": {},
           "copper": 100,
           "counters": {},
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "col_anglers_haul",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "col_anglers_haul",
+                "state": "active"
+              }
+            ],
+            [
+              "col_boarhide_tanner",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_boarhide_tanner",
+                "state": "active"
+              }
+            ],
+            [
+              "col_bonepicker",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_bonepicker",
+                "state": "active"
+              }
+            ],
+            [
+              "col_essence_gatherer",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_essence_gatherer",
+                "state": "active"
+              }
+            ],
+            [
+              "col_fangbinder",
+              {
+                "counts": [
+                  3
+                ],
+                "deedId": "col_fangbinder",
+                "state": "active"
+              }
+            ],
+            [
+              "col_greyjaw_trophy",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_greyjaw_trophy",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
+                "state": "active"
+              }
+            ]
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -89,6 +178,95 @@
           "companionUpgrades": {},
           "copper": 50,
           "counters": {},
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "col_anglers_haul",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "col_anglers_haul",
+                "state": "active"
+              }
+            ],
+            [
+              "col_boarhide_tanner",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_boarhide_tanner",
+                "state": "active"
+              }
+            ],
+            [
+              "col_bonepicker",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_bonepicker",
+                "state": "active"
+              }
+            ],
+            [
+              "col_essence_gatherer",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_essence_gatherer",
+                "state": "active"
+              }
+            ],
+            [
+              "col_fangbinder",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_fangbinder",
+                "state": "active"
+              }
+            ],
+            [
+              "col_greyjaw_trophy",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_greyjaw_trophy",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
+                "state": "active"
+              }
+            ]
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -214,8 +392,8 @@
       "tick": 0,
       "time": 0,
       "nextId": 409,
-      "state": "11ffd27b",
-      "events": "83ca48e7",
+      "state": "d47abaec",
+      "events": "fe01dbbf",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -237,6 +415,95 @@
           "companionUpgrades": {},
           "copper": 80,
           "counters": {},
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "col_anglers_haul",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "col_anglers_haul",
+                "state": "active"
+              }
+            ],
+            [
+              "col_boarhide_tanner",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_boarhide_tanner",
+                "state": "active"
+              }
+            ],
+            [
+              "col_bonepicker",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_bonepicker",
+                "state": "active"
+              }
+            ],
+            [
+              "col_essence_gatherer",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_essence_gatherer",
+                "state": "active"
+              }
+            ],
+            [
+              "col_fangbinder",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "col_fangbinder",
+                "state": "active"
+              }
+            ],
+            [
+              "col_greyjaw_trophy",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_greyjaw_trophy",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
+                "state": "active"
+              }
+            ]
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -277,6 +544,95 @@
           "companionUpgrades": {},
           "copper": 70,
           "counters": {},
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "col_anglers_haul",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "col_anglers_haul",
+                "state": "active"
+              }
+            ],
+            [
+              "col_boarhide_tanner",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_boarhide_tanner",
+                "state": "active"
+              }
+            ],
+            [
+              "col_bonepicker",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_bonepicker",
+                "state": "active"
+              }
+            ],
+            [
+              "col_essence_gatherer",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_essence_gatherer",
+                "state": "active"
+              }
+            ],
+            [
+              "col_fangbinder",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "col_fangbinder",
+                "state": "active"
+              }
+            ],
+            [
+              "col_greyjaw_trophy",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_greyjaw_trophy",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
+                "state": "active"
+              }
+            ]
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -406,7 +762,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 409,
-      "state": "11ffd27b",
+      "state": "d47abaec",
       "events": "37402384",
       "rng": {
         "draws": 0,
@@ -429,6 +785,95 @@
           "companionUpgrades": {},
           "copper": 80,
           "counters": {},
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "col_anglers_haul",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "col_anglers_haul",
+                "state": "active"
+              }
+            ],
+            [
+              "col_boarhide_tanner",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_boarhide_tanner",
+                "state": "active"
+              }
+            ],
+            [
+              "col_bonepicker",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_bonepicker",
+                "state": "active"
+              }
+            ],
+            [
+              "col_essence_gatherer",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_essence_gatherer",
+                "state": "active"
+              }
+            ],
+            [
+              "col_fangbinder",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "col_fangbinder",
+                "state": "active"
+              }
+            ],
+            [
+              "col_greyjaw_trophy",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_greyjaw_trophy",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
+                "state": "active"
+              }
+            ]
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -469,6 +914,95 @@
           "companionUpgrades": {},
           "copper": 70,
           "counters": {},
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "col_anglers_haul",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "col_anglers_haul",
+                "state": "active"
+              }
+            ],
+            [
+              "col_boarhide_tanner",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_boarhide_tanner",
+                "state": "active"
+              }
+            ],
+            [
+              "col_bonepicker",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_bonepicker",
+                "state": "active"
+              }
+            ],
+            [
+              "col_essence_gatherer",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_essence_gatherer",
+                "state": "active"
+              }
+            ],
+            [
+              "col_fangbinder",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "col_fangbinder",
+                "state": "active"
+              }
+            ],
+            [
+              "col_greyjaw_trophy",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_greyjaw_trophy",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
+                "state": "active"
+              }
+            ]
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -598,7 +1132,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 409,
-      "state": "11ffd27b",
+      "state": "d47abaec",
       "events": "ba5a463f",
       "rng": {
         "draws": 0,
@@ -621,6 +1155,95 @@
           "companionUpgrades": {},
           "copper": 80,
           "counters": {},
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "col_anglers_haul",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "col_anglers_haul",
+                "state": "active"
+              }
+            ],
+            [
+              "col_boarhide_tanner",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_boarhide_tanner",
+                "state": "active"
+              }
+            ],
+            [
+              "col_bonepicker",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_bonepicker",
+                "state": "active"
+              }
+            ],
+            [
+              "col_essence_gatherer",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_essence_gatherer",
+                "state": "active"
+              }
+            ],
+            [
+              "col_fangbinder",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "col_fangbinder",
+                "state": "active"
+              }
+            ],
+            [
+              "col_greyjaw_trophy",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_greyjaw_trophy",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
+                "state": "active"
+              }
+            ]
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -661,6 +1284,95 @@
           "companionUpgrades": {},
           "copper": 70,
           "counters": {},
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "col_anglers_haul",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "col_anglers_haul",
+                "state": "active"
+              }
+            ],
+            [
+              "col_boarhide_tanner",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_boarhide_tanner",
+                "state": "active"
+              }
+            ],
+            [
+              "col_bonepicker",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_bonepicker",
+                "state": "active"
+              }
+            ],
+            [
+              "col_essence_gatherer",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_essence_gatherer",
+                "state": "active"
+              }
+            ],
+            [
+              "col_fangbinder",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "col_fangbinder",
+                "state": "active"
+              }
+            ],
+            [
+              "col_greyjaw_trophy",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_greyjaw_trophy",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
+                "state": "active"
+              }
+            ]
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -790,8 +1502,8 @@
       "tick": 1,
       "time": 0.05,
       "nextId": 409,
-      "state": "3cbce570",
-      "events": "70aaa7de",
+      "state": "06bc5c8b",
+      "events": "0900a26c",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -813,6 +1525,135 @@
           "companionUpgrades": {},
           "copper": 80,
           "counters": {},
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "col_anglers_haul",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "col_anglers_haul",
+                "state": "active"
+              }
+            ],
+            [
+              "col_boarhide_tanner",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_boarhide_tanner",
+                "state": "active"
+              }
+            ],
+            [
+              "col_bonepicker",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_bonepicker",
+                "state": "active"
+              }
+            ],
+            [
+              "col_essence_gatherer",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_essence_gatherer",
+                "state": "active"
+              }
+            ],
+            [
+              "col_fangbinder",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "col_fangbinder",
+                "state": "active"
+              }
+            ],
+            [
+              "col_greyjaw_trophy",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_greyjaw_trophy",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -832,6 +1673,7 @@
               "itemId": "baked_bread"
             }
           ],
+          "lastZoneId": "eastbrook_vale",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -853,6 +1695,135 @@
           "companionUpgrades": {},
           "copper": 70,
           "counters": {},
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "col_anglers_haul",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "col_anglers_haul",
+                "state": "active"
+              }
+            ],
+            [
+              "col_boarhide_tanner",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_boarhide_tanner",
+                "state": "active"
+              }
+            ],
+            [
+              "col_bonepicker",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_bonepicker",
+                "state": "active"
+              }
+            ],
+            [
+              "col_essence_gatherer",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_essence_gatherer",
+                "state": "active"
+              }
+            ],
+            [
+              "col_fangbinder",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "col_fangbinder",
+                "state": "active"
+              }
+            ],
+            [
+              "col_greyjaw_trophy",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_greyjaw_trophy",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -872,6 +1843,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "lastZoneId": "eastbrook_vale",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -982,7 +1954,7 @@
       "tick": 1,
       "time": 0.05,
       "nextId": 409,
-      "state": "3cbce570",
+      "state": "06bc5c8b",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -1005,6 +1977,135 @@
           "companionUpgrades": {},
           "copper": 80,
           "counters": {},
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "col_anglers_haul",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "col_anglers_haul",
+                "state": "active"
+              }
+            ],
+            [
+              "col_boarhide_tanner",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_boarhide_tanner",
+                "state": "active"
+              }
+            ],
+            [
+              "col_bonepicker",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_bonepicker",
+                "state": "active"
+              }
+            ],
+            [
+              "col_essence_gatherer",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_essence_gatherer",
+                "state": "active"
+              }
+            ],
+            [
+              "col_fangbinder",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "col_fangbinder",
+                "state": "active"
+              }
+            ],
+            [
+              "col_greyjaw_trophy",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_greyjaw_trophy",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1024,6 +2125,7 @@
               "itemId": "baked_bread"
             }
           ],
+          "lastZoneId": "eastbrook_vale",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -1045,6 +2147,135 @@
           "companionUpgrades": {},
           "copper": 70,
           "counters": {},
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "col_anglers_haul",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "col_anglers_haul",
+                "state": "active"
+              }
+            ],
+            [
+              "col_boarhide_tanner",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_boarhide_tanner",
+                "state": "active"
+              }
+            ],
+            [
+              "col_bonepicker",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_bonepicker",
+                "state": "active"
+              }
+            ],
+            [
+              "col_essence_gatherer",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_essence_gatherer",
+                "state": "active"
+              }
+            ],
+            [
+              "col_fangbinder",
+              {
+                "counts": [
+                  2
+                ],
+                "deedId": "col_fangbinder",
+                "state": "active"
+              }
+            ],
+            [
+              "col_greyjaw_trophy",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "col_greyjaw_trophy",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_full_creel",
+              {
+                "counts": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "deedId": "hid_full_creel",
+                "state": "active"
+              }
+            ],
+            [
+              "hid_gluttons_cache",
+              {
+                "counts": [
+                  0
+                ],
+                "deedId": "hid_gluttons_cache",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -1064,6 +2295,7 @@
               "itemId": "wolf_fang"
             }
           ],
+          "lastZoneId": "eastbrook_vale",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},

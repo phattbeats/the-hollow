@@ -246,7 +246,6 @@ export const zh_TW: EnTranslations = {
       "chat": "跳至聊天"
     },
     "mobile": {
-      "autorun": "自動奔跑",
       "jump": "跳躍",
       "leaderboard": "排行榜",
       "nameplates": "名條",
@@ -1013,6 +1012,9 @@ export const zh_TW: EnTranslations = {
         "fiestaComplete": "狂歡比賽",
         "fiestaWin": "狂歡勝利"
       }
+    },
+    "hitRating": {
+      "ratingLabel": "命中等級"
     }
   },
   "mailUi": {
@@ -2444,6 +2446,9 @@ export const zh_TW: EnTranslations = {
       "nothingToHarvest": "這具屍體沒有什麼可以採集的。",
       "alreadyHarvested": "這具屍體已經被採集過了。"
     },
+    "dailyRewards": {
+      "claimed": "你領取了每日獎勵。"
+    },
     "collections": {
       "notFound": "那個東西不存在。",
       "tooFar": "太遠了。"
@@ -2508,6 +2513,18 @@ export const zh_TW: EnTranslations = {
       "readoutNoHomesteadQuest": "你還沒有家園。先完成綠掌修士的全部差事才能解鎖。",
       "readoutNoHomesteadHint": "你還沒有家園。站在空谷地裡合適的位置，輸入 /homestead claim。",
       "helpLine": "家園：/homestead，/homestead claim。"
+    },
+    "greenpawCutting": {
+      "alreadyPlanted": "你已經種下了插枝。給它一些時間成長。",
+      "needHomestead": "你需要先擁有一塊宅地才能種下它。",
+      "tooFar": "你必須在自己的宅地才能種下它。",
+      "planted": "你在自己的宅地種下了插枝。耐心等待吧。",
+      "grown": "你的插枝已經長成了一隻夥伴。牠現在會跟隨你。"
+    },
+    "readyCheck": {
+      "mustBeInParty": "你必須在隊伍中才能發起準備檢查。",
+      "alreadyInProgress": "準備檢查已在進行中。",
+      "summary": "準備檢查：{ready} 人已準備，{notReady} 人未準備，{noResponse} 人無回應。"
     }
   },
   "lockpickUi": {
@@ -3349,6 +3366,8 @@ export const zh_TW: EnTranslations = {
       "openTrade": "開啟交易",
       "duelRequest": "{name} 向你發起了決鬥挑戰！",
       "acceptDuel": "接受決鬥",
+      "readyCheckStart": "{name} 發起了準備檢查。",
+      "markReady": "準備",
       "decline": "拒絕"
     },
     "combat": {
@@ -3379,6 +3398,7 @@ export const zh_TW: EnTranslations = {
       "ignoringChat": "已封鎖來自 {name} 的聊天。",
       "noLongerIgnoring": "不再封鎖 {name}。",
       "playerNotNearby": "該玩家不在附近。",
+      "playerInfoNotFound": "找不到該名稱的角色。",
       "duelCountdown": "決鬥將在 {seconds} 秒後開始...",
       "duelEndBanner": "{winner} 在決鬥中擊敗了 {loser}！",
       "duelEndLog": "{winner} 在決鬥中擊敗了 {loser}。",
@@ -3824,6 +3844,22 @@ export const zh_TW: EnTranslations = {
       "stool": "凳子"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "每日獎勵",
+    "window": {
+      "title": "每日獎勵",
+      "close": "關閉每日獎勵",
+      "claim": "領取",
+      "claimAria": "領取今日獎勵",
+      "claimed": "已領取，明天再來。",
+      "locked": "此帳號暫時無法領取每日獎勵。",
+      "hint": "每天可領取一次。錯過一天不會有任何損失。"
+    },
+    "cell": {
+      "today": "今天",
+      "itemCount": "{count}x {item}"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "金",
@@ -4044,7 +4080,8 @@ export const zh_TW: EnTranslations = {
       "needAria": "需求 {item}",
       "greedAria": "貪婪 {item}",
       "passAria": "放棄 {item}",
-      "everyonePassed": "所有人都放棄了 {item}。"
+      "everyonePassed": "所有人都放棄了 {item}。",
+      "winnerOffline": "{item}的獲勝者已離線；戰利品已歸還屍體。"
     }
   },
   "entities": {
@@ -6295,6 +6332,15 @@ export const zh_TW: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "心材巨像"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "綠掌的插枝"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "綠掌的插枝"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "綠掌的插枝"
       }
     },
     "npcs": {

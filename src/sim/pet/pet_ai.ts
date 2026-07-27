@@ -54,6 +54,12 @@ const PET_PATH_RECALC = 0.5; // seconds between heel-path A* recomputes per pet 
 const PET_PATH_SPAN = 96; // A* search half-window in cells; covers the teleport distance + slack
 const PET_PATH_STALE_DISTANCE = 4; // path end this far from the (now-moved) owner: recompute the heel route
 const PET_WAYPOINT_REACHED = 1; // pet within this of the next waypoint: pop it and home on the next leg
+// Beyond this the owner is almost always unreachable (teleported, warped to
+// another zone) and the pet is just going to end up teleporting anyway, so skip
+// the O(distance) lineOfSightClear raycast (colliders.ts steps every 0.5yd along
+// the line) rather than repeating it every tick at an ever-growing distance: that
+// walk, not the pathfind itself, was what dominated a production CPU profile.
+const PET_RECOVERY_LOS_CAP = 96; // yards
 const PET_ASSIST_RANGE = 50; // how far the pet scans for enemies engaging the pair
 const PET_AGGRESSIVE_RANGE = 18; // aggressive pets look for idle enemies this close
 // Anti-AFK: an aggressive pet only proactively pulls fresh targets while its
@@ -165,7 +171,7 @@ export function petFollow(ctx: SimContext, pet: Entity, owner: Entity): void {
   if (
     pet.petPath.length <= 1 &&
     d > PET_TELEPORT_DISTANCE &&
-    !lineOfSightClear(ctx.cfg.seed, pet.pos, owner.pos, BODY_RADIUS)
+    (d > PET_RECOVERY_LOS_CAP || !lineOfSightClear(ctx.cfg.seed, pet.pos, owner.pos, BODY_RADIUS))
   ) {
     recompute();
     if (pet.petPath.length <= 1) {
