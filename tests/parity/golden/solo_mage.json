@@ -8,14 +8,14 @@
     "casting lifecycle (C4a)",
     "effect dispatch + spell damage (C4b/C1)"
   ],
-  "draws": 438,
-  "drawDigest": "c7a0eda6",
+  "draws": 437,
+  "drawDigest": "7cabd707",
   "frames": [
     {
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "2eedc744",
+      "state": "3e3fbaf3",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -38,6 +38,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -110,8 +111,8 @@
       "tick": 20,
       "time": 1,
       "nextId": 409,
-      "state": "331608fb",
-      "events": "3462b30f",
+      "state": "3175d1df",
+      "events": "bb6ee107",
       "rng": {
         "draws": 2,
         "digest": "e313f022"
@@ -121,7 +122,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 409,
-      "state": "91a85823",
+      "state": "4ec26007",
       "events": "d8bd2a52",
       "rng": {
         "draws": 2,
@@ -132,7 +133,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 409,
-      "state": "385cd05b",
+      "state": "b1c2917f",
       "events": "d68fc10b",
       "rng": {
         "draws": 75,
@@ -143,7 +144,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 409,
-      "state": "48db1972",
+      "state": "edd8fe0e",
       "events": "741638a5",
       "rng": {
         "draws": 164,
@@ -154,7 +155,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 409,
-      "state": "db1a4eb4",
+      "state": "e11c855c",
       "events": "00314fc7",
       "rng": {
         "draws": 280,
@@ -165,7 +166,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 409,
-      "state": "c04f7ed7",
+      "state": "5f5daf13",
       "events": "867eff19",
       "rng": {
         "draws": 390,
@@ -176,11 +177,11 @@
       "tick": 128,
       "time": 6.4,
       "nextId": 409,
-      "state": "ba185857",
+      "state": "bb5cc893",
       "events": "741638a5",
       "rng": {
-        "draws": 438,
-        "digest": "c7a0eda6"
+        "draws": 437,
+        "digest": "7cabd707"
       },
       "label": "final",
       "players": [
@@ -202,6 +203,49 @@
             "damageDealt": 87,
             "damageTaken": 18
           },
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -211,6 +255,7 @@
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 27600,
           "nodeHarvestReadyAt": {},
           "talents": {

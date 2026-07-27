@@ -79,6 +79,9 @@ const BEAD_FOR_ALL = Object.fromEntries(ALL_CLASSES.map((c) => [c, 'greenpaw_bea
 const COAL_FOR_ALL = Object.fromEntries(ALL_CLASSES.map((c) => [c, 'keeper_coal'])) as Partial<
   Record<PlayerClass, string>
 >;
+const HEARTH_STONE_FOR_ALL = Object.fromEntries(
+  ALL_CLASSES.map((c) => [c, 'hearth_stone']),
+) as Partial<Record<PlayerClass, string>>;
 
 // ---------------------------------------------------------------------------
 // Mobs: the under-shrine cave (the only combat in the slice)
@@ -201,6 +204,12 @@ export const HOLLOW_MOBS: Record<string, MobTemplate> = {
     worldBoss: true,
     elite: true,
     ccImmune: true,
+    // Upstream #1502: a raid boss opts into both cc and slow immunity. ccImmune already
+    // blocks the hard control auras (stun/root/etc); slowImmune (separate) means player
+    // snares (Frostbolt/Hamstring) do not stick either, so a raid cannot perma-kite him
+    // with a wall of slows even though his own moveSpeed (10.5) already outpaces player
+    // run speed (7) on open ground.
+    slowImmune: true,
     // The colossus does not path around camp furniture: every chase/flee/wander step
     // walks the straight line through fences, buildings, and the waterline, so he can
     // always go directly at his target and never wedges on a collider (upstream #1643).
@@ -283,7 +292,13 @@ export const HOLLOW_NPCS: Record<string, NpcDef> = {
     dynamic: true,
     facing: -0.6,
     color: 0x4a5d3a,
-    questIds: ['q_what_burns', 'q_what_fills', 'q_the_wavelength', 'q_keep_him_lit'],
+    questIds: [
+      'q_what_burns',
+      'q_what_fills',
+      'q_the_wavelength',
+      'q_keep_him_lit',
+      'q_your_own_hearth',
+    ],
     hearth: true,
     // Greeting is the line rendered every time the player opens Greenpaw's
     // gossip dialog after the intro has played, so it must read as
@@ -596,6 +611,38 @@ export const HOLLOW_QUESTS: Record<string, QuestDef> = {
         "...yeah. yeah, okay, i hear you, friend, that's a fair enough line to draw... tell you what, here, take it anyway, ain't earned in the strictest sense but neither's most of what i hand out, and the wavelength don't really keep score the way i pretend it does...",
     },
   },
+  // PHAA-484 finale (the Homestead-unlock beat, board-approved): the chain's
+  // capstone. Sends the player out to Fallow Acres to meet Sexton Faddick, who
+  // already keeps that ground (his own intro line, hollow_zone.ts, names it as
+  // "a quiet stretch of ground by the lake that means to be built on"), so the
+  // send-off reuses existing content rather than adding a new object/marker.
+  // No new gate logic is needed: homestead.ts's hasFullGreenpawArc already
+  // checks HOLLOW_QUEST_ORDER.every(...), so appending this id below is the
+  // whole mechanism that makes homesteadClaim require this quest.
+  q_your_own_hearth: {
+    id: 'q_your_own_hearth',
+    name: 'A Hearth of Your Own',
+    giverNpcId: 'brother_greenpaw',
+    turnInNpcId: 'brother_greenpaw',
+    text: "here's the last of it, friend, and it ain't really an errand so much as a nudge... there's ground out past the road, fallow acres, sittin' quiet and waitin' on somebody to want it. sexton faddick keeps half an eye on it between his wolves and his list of kept places - go say hello, let him know you're the kind that stays... after that the ground's yours to claim, whenever you're ready for it.",
+    completionText:
+      "there it is... you got the look now, friend, the one that says you ain't just passin' through no more. go on, plant your feet somewhere out there. i'll keep the hearth lit same as always, and the vase'll know right where to find you...",
+    objectives: [
+      { type: 'interact', targetNpcId: 'sexton_faddick', count: 1, label: 'Sexton Faddick met' },
+    ],
+    xpReward: 200,
+    copperReward: 150,
+    itemRewards: HEARTH_STONE_FOR_ALL,
+    requiresQuest: 'q_keep_him_lit',
+    offerDialog: {
+      complain: 'Ground? I just wanted to say hi to your plant.',
+      complainReply:
+        "and you can, anytime, he ain't goin' anywhere... but a soul needs more than a shrine to visit, friend, it needs somewhere to plant its own two feet. won't take long. faddick talks slow but he don't waste your afternoon.",
+      refuse: "I don't need a homestead. I'm happy just visiting.",
+      refuseReply:
+        "...alright, alright, no pressure in it, friend, the ground'll keep same as faddick keeps it, waitin' don't cost it nothin'... here, take this anyway, for stickin' around this long. that's its own kind of home, i guess.",
+    },
+  },
 };
 
 export const HOLLOW_QUEST_ORDER = [
@@ -603,6 +650,7 @@ export const HOLLOW_QUEST_ORDER = [
   'q_what_fills',
   'q_the_wavelength',
   'q_keep_him_lit',
+  'q_your_own_hearth',
 ];
 
 // ---------------------------------------------------------------------------
@@ -858,6 +906,15 @@ export const HOLLOW_ITEMS: Record<string, ItemDef> = {
     sellValue: 0,
     questId: 'q_keep_him_lit',
   },
+  // PHAA-484 finale: q_your_own_hearth's keepsake, same convention as
+  // greenpaw_bead/keeper_coal.
+  hearth_stone: {
+    id: 'hearth_stone',
+    name: 'A Stone Still Warm From His Hearth',
+    kind: 'quest',
+    sellValue: 0,
+    questId: 'q_your_own_hearth',
+  },
   // PHAA-558: the end-of-line keepsake for Sister Shade's player-facing arc
   // (src/sim/content/hollow_zone.ts). Reward-INVERTED by design: no stats, ever,
   // on Shade's line (Board-accepted brief, doc shade-brief rev 1e9abd48). Same
@@ -1038,7 +1095,9 @@ export const HOLLOW_ITEMS: Record<string, ItemDef> = {
 // (PHAA-543); thinning it further is a call for that quest-wiring PR, not
 // this one.
 const UNDER_SHRINE_SPAWNS: DungeonSpawn[] = [
-  { mobId: 'palefeeder', x: -8, z: 12 },
+  // First two spawns pushed south of z=20 so the entry (z=-2) sits outside
+  // the aggro clamp; see dungeon_entry_clearance test.
+  { mobId: 'palefeeder', x: -8, z: 22 },
   { mobId: 'rootmaw', x: 9, z: 22 },
   { mobId: 'palefeeder', x: -11, z: 32 },
   { mobId: 'rootmaw', x: 6, z: 42 },
@@ -1116,7 +1175,7 @@ export const HOLLOW_DUNGEON_DEFS: Record<string, DungeonDef> = {
     overworldDoor: false, // reached only through the_hollow's internal door
     exitTo: { dungeonId: 'the_hollow', x: 0, z: 24 },
     homeRespawn: { dungeonId: 'the_hollow', ...VASE_LANDING_POS },
-    entry: { x: 0, z: 4 },
+    entry: { x: 0, z: -2 }, // clear-of-aggro arrival (see dungeon_entry_clearance test)
     exitOffset: { x: 0, z: -6 },
     spawns: UNDER_SHRINE_SPAWNS,
     // PHAA-433 (board feedback): lore lives on a found object (a ground

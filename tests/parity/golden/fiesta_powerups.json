@@ -8,8 +8,8 @@
     "hazard ring burn (fiestaRingDamage) outside the closing ring",
     "down + respawn-timer revive (fiestaRevive)"
   ],
-  "draws": 2779,
-  "drawDigest": "78cd5aa8",
+  "draws": 2797,
+  "drawDigest": "515dc527",
   "frames": [
     {
       "tick": 0,
@@ -29,8 +29,8 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 411,
-      "state": "77658e2f",
-      "events": "ecc08a3a",
+      "state": "b1a52b57",
+      "events": "7b486652",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -40,7 +40,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 411,
-      "state": "9b169e09",
+      "state": "27e153d9",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -51,7 +51,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 411,
-      "state": "23e9fe25",
+      "state": "e09ffb95",
       "events": "6cf2a2da",
       "rng": {
         "draws": 0,
@@ -62,7 +62,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 411,
-      "state": "20f532e3",
+      "state": "e21ac2db",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -73,7 +73,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 411,
-      "state": "1ed02aed",
+      "state": "742ab53d",
       "events": "ace6b6f2",
       "rng": {
         "draws": 38,
@@ -84,7 +84,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 411,
-      "state": "47c90c77",
+      "state": "8114637f",
       "events": "741638a5",
       "rng": {
         "draws": 69,
@@ -95,7 +95,7 @@
       "tick": 70,
       "time": 3.5,
       "nextId": 411,
-      "state": "dce90d0d",
+      "state": "cfdf94dd",
       "events": "782b0eb6",
       "rng": {
         "draws": 115,
@@ -106,7 +106,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 411,
-      "state": "d19ed09b",
+      "state": "edb53bf3",
       "events": "741638a5",
       "rng": {
         "draws": 177,
@@ -117,7 +117,7 @@
       "tick": 90,
       "time": 4.5,
       "nextId": 411,
-      "state": "02b93fb5",
+      "state": "19d2f2e5",
       "events": "991c069e",
       "rng": {
         "draws": 227,
@@ -128,7 +128,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 411,
-      "state": "756725c7",
+      "state": "0cd67e0f",
       "events": "741638a5",
       "rng": {
         "draws": 284,
@@ -139,7 +139,7 @@
       "tick": 110,
       "time": 5.5,
       "nextId": 411,
-      "state": "1b949879",
+      "state": "c15b9689",
       "events": "3aa56188",
       "rng": {
         "draws": 344,
@@ -150,7 +150,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 411,
-      "state": "8f47d36f",
+      "state": "f9c56697",
       "events": "741638a5",
       "rng": {
         "draws": 400,
@@ -161,7 +161,7 @@
       "tick": 130,
       "time": 6.5,
       "nextId": 411,
-      "state": "56152147",
+      "state": "4b20198f",
       "events": "741638a5",
       "rng": {
         "draws": 453,
@@ -172,7 +172,7 @@
       "tick": 140,
       "time": 7,
       "nextId": 411,
-      "state": "4df53d2d",
+      "state": "0058f57d",
       "events": "741638a5",
       "rng": {
         "draws": 513,
@@ -183,7 +183,7 @@
       "tick": 150,
       "time": 7.5,
       "nextId": 411,
-      "state": "6b483dbb",
+      "state": "59449813",
       "events": "741638a5",
       "rng": {
         "draws": 587,
@@ -194,7 +194,7 @@
       "tick": 160,
       "time": 8,
       "nextId": 411,
-      "state": "fa15b235",
+      "state": "44e24565",
       "events": "741638a5",
       "rng": {
         "draws": 665,
@@ -205,7 +205,7 @@
       "tick": 170,
       "time": 8.5,
       "nextId": 411,
-      "state": "2e5b3717",
+      "state": "822d951f",
       "events": "741638a5",
       "rng": {
         "draws": 724,
@@ -216,7 +216,7 @@
       "tick": 180,
       "time": 9,
       "nextId": 411,
-      "state": "3d4c74ed",
+      "state": "36527f3d",
       "events": "741638a5",
       "rng": {
         "draws": 790,
@@ -227,7 +227,7 @@
       "tick": 190,
       "time": 9.5,
       "nextId": 411,
-      "state": "ded3f1eb",
+      "state": "cb03d8c3",
       "events": "741638a5",
       "rng": {
         "draws": 858,
@@ -238,7 +238,7 @@
       "tick": 200,
       "time": 10,
       "nextId": 411,
-      "state": "cec21b65",
+      "state": "199c71d5",
       "events": "741638a5",
       "rng": {
         "draws": 926,
@@ -249,7 +249,7 @@
       "tick": 210,
       "time": 10.5,
       "nextId": 411,
-      "state": "49802b8f",
+      "state": "004769b7",
       "events": "741638a5",
       "rng": {
         "draws": 971,
@@ -260,7 +260,7 @@
       "tick": 220,
       "time": 11,
       "nextId": 411,
-      "state": "4e38aab7",
+      "state": "441c08bf",
       "events": "741638a5",
       "rng": {
         "draws": 1017,
@@ -271,7 +271,7 @@
       "tick": 230,
       "time": 11.5,
       "nextId": 411,
-      "state": "1b04e879",
+      "state": "44a7e689",
       "events": "741638a5",
       "rng": {
         "draws": 1061,
@@ -282,7 +282,7 @@
       "tick": 240,
       "time": 12,
       "nextId": 411,
-      "state": "dcbd87ff",
+      "state": "c55258e7",
       "events": "741638a5",
       "rng": {
         "draws": 1097,
@@ -293,7 +293,7 @@
       "tick": 250,
       "time": 12.5,
       "nextId": 411,
-      "state": "17fc0d29",
+      "state": "d25ed379",
       "events": "741638a5",
       "rng": {
         "draws": 1128,
@@ -304,7 +304,7 @@
       "tick": 260,
       "time": 13,
       "nextId": 411,
-      "state": "19f52ae7",
+      "state": "3470f32f",
       "events": "741638a5",
       "rng": {
         "draws": 1181,
@@ -315,7 +315,7 @@
       "tick": 270,
       "time": 13.5,
       "nextId": 411,
-      "state": "e35ba141",
+      "state": "eac62371",
       "events": "ff6379ce",
       "rng": {
         "draws": 1210,
@@ -326,7 +326,7 @@
       "tick": 280,
       "time": 14,
       "nextId": 411,
-      "state": "81cf216f",
+      "state": "bf033497",
       "events": "741638a5",
       "rng": {
         "draws": 1258,
@@ -337,7 +337,7 @@
       "tick": 290,
       "time": 14.5,
       "nextId": 411,
-      "state": "3fa65611",
+      "state": "8ee4a7c1",
       "events": "741638a5",
       "rng": {
         "draws": 1307,
@@ -348,7 +348,7 @@
       "tick": 300,
       "time": 15,
       "nextId": 411,
-      "state": "7c110b8f",
+      "state": "6b4049b7",
       "events": "741638a5",
       "rng": {
         "draws": 1368,
@@ -359,7 +359,7 @@
       "tick": 310,
       "time": 15.5,
       "nextId": 411,
-      "state": "d00cc8d9",
+      "state": "be988f69",
       "events": "741638a5",
       "rng": {
         "draws": 1432,
@@ -370,7 +370,7 @@
       "tick": 320,
       "time": 16,
       "nextId": 411,
-      "state": "470ccc37",
+      "state": "aa944a3f",
       "events": "741638a5",
       "rng": {
         "draws": 1489,
@@ -381,7 +381,7 @@
       "tick": 330,
       "time": 16.5,
       "nextId": 411,
-      "state": "98d32097",
+      "state": "922f9e9f",
       "events": "741638a5",
       "rng": {
         "draws": 1534,
@@ -392,7 +392,7 @@
       "tick": 340,
       "time": 17,
       "nextId": 411,
-      "state": "d71f9e0d",
+      "state": "5b54e5dd",
       "events": "741638a5",
       "rng": {
         "draws": 1589,
@@ -403,7 +403,7 @@
       "tick": 350,
       "time": 17.5,
       "nextId": 411,
-      "state": "c19a61db",
+      "state": "f815a733",
       "events": "741638a5",
       "rng": {
         "draws": 1640,
@@ -414,7 +414,7 @@
       "tick": 360,
       "time": 18,
       "nextId": 411,
-      "state": "d67cb4ad",
+      "state": "43d10cfd",
       "events": "741638a5",
       "rng": {
         "draws": 1694,
@@ -425,7 +425,7 @@
       "tick": 370,
       "time": 18.5,
       "nextId": 411,
-      "state": "ae40c82f",
+      "state": "5e3fe557",
       "events": "741638a5",
       "rng": {
         "draws": 1746,
@@ -436,7 +436,7 @@
       "tick": 380,
       "time": 19,
       "nextId": 411,
-      "state": "7aeaf60d",
+      "state": "8ed23ddd",
       "events": "741638a5",
       "rng": {
         "draws": 1811,
@@ -447,7 +447,7 @@
       "tick": 390,
       "time": 19.5,
       "nextId": 411,
-      "state": "d2f20f73",
+      "state": "648704eb",
       "events": "741638a5",
       "rng": {
         "draws": 1866,
@@ -458,7 +458,7 @@
       "tick": 400,
       "time": 20,
       "nextId": 411,
-      "state": "9f8a2edd",
+      "state": "4b33d16d",
       "events": "741638a5",
       "rng": {
         "draws": 1919,
@@ -469,7 +469,7 @@
       "tick": 410,
       "time": 20.5,
       "nextId": 411,
-      "state": "21e3e9af",
+      "state": "c8c726d7",
       "events": "741638a5",
       "rng": {
         "draws": 1970,
@@ -480,29 +480,29 @@
       "tick": 420,
       "time": 21,
       "nextId": 411,
-      "state": "d095f697",
+      "state": "29def49f",
       "events": "59ed2089",
       "rng": {
-        "draws": 2013,
-        "digest": "fec9a088"
+        "draws": 2011,
+        "digest": "fa34c876"
       }
     },
     {
       "tick": 430,
       "time": 21.5,
       "nextId": 411,
-      "state": "4ea7e499",
+      "state": "07bcca29",
       "events": "59ed2089",
       "rng": {
-        "draws": 2047,
-        "digest": "4d63b44b"
+        "draws": 2045,
+        "digest": "94f853c8"
       }
     },
     {
       "tick": 440,
       "time": 22,
       "nextId": 411,
-      "state": "2b97da40",
+      "state": "42173ee4",
       "events": "59ed2089",
       "rng": {
         "draws": 2089,
@@ -513,84 +513,84 @@
       "tick": 450,
       "time": 22.5,
       "nextId": 411,
-      "state": "34881dbb",
+      "state": "8c2c7813",
       "events": "89289635",
       "rng": {
-        "draws": 2142,
-        "digest": "5cb9c4b9"
+        "draws": 2143,
+        "digest": "78958e37"
       }
     },
     {
       "tick": 460,
       "time": 23,
       "nextId": 411,
-      "state": "ccf127ac",
+      "state": "6e7a55b0",
       "events": "59ed2089",
       "rng": {
-        "draws": 2187,
-        "digest": "6b7b05bf"
+        "draws": 2188,
+        "digest": "64d23593"
       }
     },
     {
       "tick": 470,
       "time": 23.5,
       "nextId": 411,
-      "state": "62212bd6",
-      "events": "d55fed58",
+      "state": "9bf44dab",
+      "events": "06d065d3",
       "rng": {
-        "draws": 2236,
-        "digest": "a8cd6cd3"
+        "draws": 2238,
+        "digest": "89559289"
       }
     },
     {
       "tick": 480,
       "time": 24,
       "nextId": 411,
-      "state": "634c2792",
+      "state": "fffdd337",
       "events": "b1c9d11a",
       "rng": {
-        "draws": 2287,
-        "digest": "ae85a3e2"
+        "draws": 2291,
+        "digest": "fea935fa"
       }
     },
     {
       "tick": 490,
       "time": 24.5,
       "nextId": 411,
-      "state": "bae58545",
+      "state": "71ae2a74",
       "events": "d526d29d",
       "rng": {
-        "draws": 2334,
-        "digest": "688f1846"
+        "draws": 2336,
+        "digest": "205cc99a"
       }
     },
     {
       "tick": 500,
       "time": 25,
       "nextId": 411,
-      "state": "dcc21b8e",
+      "state": "816624a3",
       "events": "da576d1f",
       "rng": {
-        "draws": 2387,
-        "digest": "bbe2104c"
+        "draws": 2388,
+        "digest": "53d6dbf8"
       }
     },
     {
       "tick": 510,
       "time": 25.5,
       "nextId": 411,
-      "state": "991ca152",
+      "state": "28383af7",
       "events": "da576d1f",
       "rng": {
-        "draws": 2430,
-        "digest": "487b044c"
+        "draws": 2436,
+        "digest": "f8e5f48c"
       }
     },
     {
       "tick": 520,
       "time": 26,
       "nextId": 411,
-      "state": "83d57206",
+      "state": "d990287b",
       "events": "da576d1f",
       "rng": {
         "draws": 2500,
@@ -601,7 +601,7 @@
       "tick": 530,
       "time": 26.5,
       "nextId": 411,
-      "state": "d8add358",
+      "state": "77665259",
       "events": "410c51b1",
       "rng": {
         "draws": 2552,
@@ -612,55 +612,55 @@
       "tick": 540,
       "time": 27,
       "nextId": 411,
-      "state": "b5e42c30",
+      "state": "1c805d11",
       "events": "a104079c",
       "rng": {
-        "draws": 2599,
-        "digest": "c3bad32a"
+        "draws": 2607,
+        "digest": "39de6be8"
       }
     },
     {
       "tick": 550,
       "time": 27.5,
       "nextId": 411,
-      "state": "e6b0592e",
+      "state": "633f7d03",
       "events": "1c7842d8",
       "rng": {
-        "draws": 2661,
-        "digest": "5cc4cdac"
+        "draws": 2658,
+        "digest": "87dd4580"
       }
     },
     {
       "tick": 560,
       "time": 28,
       "nextId": 411,
-      "state": "22535db4",
+      "state": "5050ced5",
       "events": "59ed2089",
       "rng": {
-        "draws": 2708,
-        "digest": "7907ca10"
+        "draws": 2713,
+        "digest": "5ad04484"
       }
     },
     {
       "tick": 570,
       "time": 28.5,
       "nextId": 411,
-      "state": "0bb07c9d",
+      "state": "81dffa4c",
       "events": "59ed2089",
       "rng": {
-        "draws": 2762,
-        "digest": "06a7d120"
+        "draws": 2769,
+        "digest": "f72dc964"
       }
     },
     {
       "tick": 573,
       "time": 28.65,
       "nextId": 411,
-      "state": "f905c55a",
+      "state": "881aa99f",
       "events": "741638a5",
       "rng": {
-        "draws": 2779,
-        "digest": "78cd5aa8"
+        "draws": 2797,
+        "digest": "515dc527"
       },
       "label": "final",
       "players": [
@@ -682,6 +682,60 @@
             "deaths": 1,
             "kills": 1
           },
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale",
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -698,6 +752,9 @@
             }
           },
           "gatheringProficiency": {},
+          "honor": 20,
+          "lastZoneId": "the_hollow_reaches",
+          "lifetimeHonor": 20,
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -725,6 +782,60 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale",
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -741,6 +852,7 @@
             }
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -770,6 +882,60 @@
           "counters": {
             "deaths": 1
           },
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale",
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -786,6 +952,7 @@
             }
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -813,6 +980,60 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "exp_hollow_reaches",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_hollow_reaches",
+                "state": "done"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale",
+            "exp_hollow_reaches"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -829,6 +1050,7 @@
             }
           },
           "gatheringProficiency": {},
+          "lastZoneId": "the_hollow_reaches",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},

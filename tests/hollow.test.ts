@@ -481,6 +481,77 @@ describe('The Hollow hub', () => {
     expect(sim.countItem('keeper_coal')).toBe(1);
   });
 
+  // PHAA-484 finale (the Homestead-unlock beat): the arc's capstone, an
+  // 'interact' objective on sexton_faddick (content/hollow_zone.ts, the open
+  // world, no dungeon instance needed) reached the same way q_the_wavelength
+  // reaches elder_yarrow. Completing it appends 'q_your_own_hearth' to
+  // meta.questsDone, which is the whole mechanism homestead.ts's
+  // hasFullGreenpawArc needs (see tests/homestead.test.ts).
+  it('q_your_own_hearth unlocks behind q_keep_him_lit and sends the player to Sexton Faddick', () => {
+    const cls: PlayerClass = 'hunter';
+    const sim = new Sim({ seed: 7, playerClass: cls, playerName: 'Q', autoEquip: false });
+    const meta = (sim as any).primary;
+    const pid = meta.entityId as number;
+    teleport(sim, pid, HOLLOW_HUB_DOOR_POS.x, HOLLOW_HUB_DOOR_POS.z);
+    sim.enterDungeon('the_hollow', pid);
+    const greenpaw = findEntity(
+      sim,
+      (e) => e.kind === 'npc' && e.templateId === 'brother_greenpaw',
+    )!;
+    const elderYarrow = findEntity(
+      sim,
+      (e) => e.kind === 'npc' && e.templateId === 'elder_yarrow',
+    )!;
+    const faddick = findEntity(sim, (e) => e.kind === 'npc' && e.templateId === 'sexton_faddick')!;
+    sim.player.pos = { ...greenpaw.pos };
+
+    expect(sim.questState('q_your_own_hearth')).toBe('unavailable');
+    sim.acceptQuest('q_what_burns');
+    sim.addItem('emberbulb', 5);
+    sim.tick();
+    sim.turnInQuest('q_what_burns');
+    sim.acceptQuest('q_what_fills');
+    sim.addItem('cave_morsel', 4);
+    sim.tick();
+    sim.turnInQuest('q_what_fills');
+    sim.acceptQuest('q_the_wavelength');
+    sim.talkToNpc(elderYarrow.id, pid);
+    sim.addItem('emberbulb', 1);
+    sim.feedGreenpaw(pid);
+    sim.turnInQuest('q_the_wavelength');
+    sim.acceptQuest('q_keep_him_lit');
+    for (let i = 0; i < 3; i++) {
+      sim.addItem('emberbulb', 1);
+      sim.feedGreenpaw(pid);
+    }
+    sim.turnInQuest('q_keep_him_lit');
+    sim.drainEvents();
+
+    expect(sim.questState('q_your_own_hearth')).toBe('available');
+    sim.acceptQuest('q_your_own_hearth');
+    expect(meta.questLog.get('q_your_own_hearth')?.counts).toEqual([0]);
+
+    sim.talkToNpc(faddick.id, pid);
+    expect(meta.questLog.get('q_your_own_hearth')?.counts).toEqual([1]);
+    expect(meta.questLog.get('q_your_own_hearth')?.state).toBe('ready');
+
+    // Talking to Faddick again does not over-credit past the objective's count.
+    sim.talkToNpc(faddick.id, pid);
+    expect(meta.questLog.get('q_your_own_hearth')?.counts).toEqual([1]);
+
+    const dialog = QUESTS.q_your_own_hearth.offerDialog!;
+    expect(dialog).toBeTruthy();
+    for (const part of ['complain', 'complainReply', 'refuse', 'refuseReply'] as const) {
+      expect(dialog[part].length).toBeGreaterThan(0);
+    }
+
+    const reward = questRewardItemId(QUESTS.q_your_own_hearth, cls);
+    expect(reward).toBe('hearth_stone');
+    sim.turnInQuest('q_your_own_hearth');
+    expect(meta.questsDone.has('q_your_own_hearth')).toBe(true);
+    expect(sim.countItem('hearth_stone')).toBe(1);
+  });
+
   it('the quest loot and rewards resolve to real items on the right mobs', () => {
     expect(QUESTS.q_what_fills.requiresQuest).toBe('q_what_burns');
     expect(NPCS.brother_greenpaw.questIds).toEqual([
@@ -488,6 +559,7 @@ describe('The Hollow hub', () => {
       'q_what_fills',
       'q_the_wavelength',
       'q_keep_him_lit',
+      'q_your_own_hearth',
     ]);
     for (const id of [
       'emberbulb',
@@ -495,6 +567,7 @@ describe('The Hollow hub', () => {
       'first_cutting',
       'greenpaw_bead',
       'keeper_coal',
+      'hearth_stone',
     ]) {
       expect(ITEMS[id], `item ${id}`).toBeTruthy();
     }

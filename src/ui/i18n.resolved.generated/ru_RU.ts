@@ -313,7 +313,13 @@ export const ru_RU: EnTranslations = {
     "keybinds": {
       "emoteWheel": "Колесо эмоций",
       "targetFriendly": "Ближайший союзник",
-      "targetFriendlyNext": "Следующий союзник"
+      "targetFriendlyNext": "Следующий союзник",
+      "categoryPet": "Питомец",
+      "petAttack": "Питомец: атака",
+      "petStop": "Питомец: стоп",
+      "petTaunt": "Питомец: провокация",
+      "petDefensive": "Питомец: защита",
+      "petAggressive": "Питомец: агрессия"
     },
     "options": {
       "clickMoveLeft": "Левая кнопка",
@@ -434,6 +440,9 @@ export const ru_RU: EnTranslations = {
     },
     "statInfo": {
       "fromYour": "От вашей характеристики ({value} {stat}):",
+      "names": {
+        "spellPower": "Сила заклинаний"
+      },
       "desc": {
         "str": "Увеличивает силу атаки, благодаря чему удары вашим оружием бьют сильнее.",
         "agi": "Обостряет реакцию и меткость, улучшая сразу несколько ваших боевых характеристик.",
@@ -442,6 +451,7 @@ export const ru_RU: EnTranslations = {
         "spi": "Ускоряет восстановление маны заклинателя во время отдыха вне боя.",
         "armor": "Смягчает входящие физические удары. Снижение урона тем больше, чем ниже уровень атакующего, и не превышает 75%.",
         "attackPower": "Усиливает атаки вашим оружием. Каждые 14 ед. силы атаки добавляют 1 ед. урона в секунду.",
+        "spellPower": "Увеличивает урон ваших заклинаний и силу исцелений. Каждая единица интеллекта дает немного силы заклинаний, вдобавок к получаемой от снаряжения и усилений.",
         "dps": "Приблизительный урон вашего оружия в секунду с учетом урона и скорости оружия, а также вашей силы атаки.",
         "critChance": "Ваш шанс нанести критический удар, наносящий двойной урон.",
         "dodge": "Ваш шанс полностью уклониться от входящей атаки в ближнем бою, не получив урона."
@@ -464,6 +474,15 @@ export const ru_RU: EnTranslations = {
         "minorForClass": "Малополезно для вашего класса.",
         "baseChance": "Включает базовый шанс 5%, общий для всех искателей приключений.",
         "dpsApprox": "Это приблизительная оценка, не учитывающая критические удары и урон от способностей."
+      },
+      "sources": {
+        "header": "Складывается из:",
+        "base": "База: {value}",
+        "attributes": "От характеристик: {value}",
+        "fromAttribute": "От характеристики {stat}: {value}",
+        "gear": "Снаряжение: {value}",
+        "buff": "{name}: {value}",
+        "talents": "Таланты и эффекты: {value}"
       }
     },
     "talents": {
@@ -701,10 +720,18 @@ export const ru_RU: EnTranslations = {
         "spi": "Снижает дух на {value}",
         "allStats": "Снижает все характеристики на {value}"
       },
+      "increasePct": {
+        "ap": "Повышает силу атаки на {pct}%",
+        "armor": "Повышает броню на {pct}%",
+        "int": "Повышает интеллект на {pct}%",
+        "sta": "Повышает выносливость на {pct}%"
+      },
       "dodge": "Повышает шанс уклонения на {pct}%",
       "dodgeReduce": "Снижает шанс уклонения на {pct}%",
       "armorFlat": "Снижает броню на {value}",
       "armorFlatStacks": "Снижает броню на {value} ({stacks} зарядов)",
+      "armorPct": "Снижает броню на {pct}%",
+      "armorPctStacks": "Снижает броню на {pct}% ({stacks} зарядов)",
       "mortalWound": "Снижает получаемое исцеление на {pct}%",
       "vulnerability": "Увеличивает получаемый урон на {pct}%",
       "physVuln": "Увеличивает получаемый физический урон на {pct}%",
@@ -971,6 +998,21 @@ export const ru_RU: EnTranslations = {
       "spore": "Спора",
       "toolTier": "Инструмент {tier} ур.",
       "toolNone": "Нет инструмента"
+    },
+    "warfare": {
+      "ratingLabel": "Воинственность",
+      "balance": "Честь: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} чести",
+      "honorFloat": "+{amount} чести",
+      "honorGain": "+{amount} чести ({reason})",
+      "notEnoughHonor": "Недостаточно чести.",
+      "reasons": {
+        "arenaWin": "Победа на арене",
+        "fiestaKill": "Повержение на фиесте",
+        "fiestaComplete": "Матч фиесты",
+        "fiestaWin": "Победа на фиесте"
+      }
     }
   },
   "mailUi": {
@@ -989,6 +1031,12 @@ export const ru_RU: EnTranslations = {
     "recipient": "Получатель",
     "subjectLabel": "Тема",
     "bodyPlaceholder": "Напишите ваше письмо...",
+    "attachments": "Вложения (до {max})",
+    "removeAttachment": "Убрать {item} из этого письма",
+    "tooltipAttach": "Нажмите, чтобы приложить к этому письму",
+    "tooltipCannotAttach": "Ворон не станет нести квестовые предметы",
+    "parcelQtyDecreaseAria": "Отправить на один {item} меньше",
+    "parcelQtyIncreaseAria": "Отправить на один {item} больше",
     "send": "Отправить письмо",
     "needRecipientOrText": "Укажите получателя и напишите что-нибудь перед отправкой.",
     "openButton": "Покажите мне Воронью почту.",
@@ -2396,6 +2444,13 @@ export const ru_RU: EnTranslations = {
       "nothingToHarvest": "С этого трупа нечего собирать.",
       "alreadyHarvested": "Этот труп уже разделан."
     },
+    "dailyRewards": {
+      "claimed": "Вы получаете ежедневную награду."
+    },
+    "collections": {
+      "notFound": "Этого не существует.",
+      "tooFar": "Слишком далеко."
+    },
     "hearth": {
       "tooFar": "Чтобы покормить брата Зеленолапа, нужно быть рядом с ним.",
       "noItems1": "…у тебя пусто в руках, дружище. Принеси то, что горит, или то, чем сыт бываешь, тогда и поговорим.",
@@ -2456,6 +2511,11 @@ export const ru_RU: EnTranslations = {
       "readoutNoHomesteadQuest": "У вас нет хутора. Закончите всю цепочку поручений брата Зеленолапа, чтобы получить его.",
       "readoutNoHomesteadHint": "У вас нет хутора. Встаньте на подходящем месте в Лощинных Плёсах и введите /homestead claim.",
       "helpLine": "Хутор: /homestead, /homestead claim."
+    },
+    "readyCheck": {
+      "mustBeInParty": "Чтобы начать проверку готовности, вы должны состоять в группе.",
+      "alreadyInProgress": "Проверка готовности уже идет.",
+      "summary": "Проверка готовности: готовы {ready}, не готовы {notReady}, без ответа {noResponse}."
     }
   },
   "lockpickUi": {
@@ -3297,6 +3357,8 @@ export const ru_RU: EnTranslations = {
       "openTrade": "Открыть обмен",
       "duelRequest": "{name} вызвал вас на дуэль!",
       "acceptDuel": "Принять дуэль",
+      "readyCheckStart": "{name} начал проверку готовности.",
+      "markReady": "Готов",
       "decline": "Отклонить"
     },
     "combat": {
@@ -3772,6 +3834,22 @@ export const ru_RU: EnTranslations = {
       "stool": "Табурет"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "Ежедневные награды",
+    "window": {
+      "title": "Ежедневные награды",
+      "close": "Закрыть ежедневные награды",
+      "claim": "Забрать",
+      "claimAria": "Забрать сегодняшнюю награду",
+      "claimed": "Получено. Возвращайтесь завтра.",
+      "locked": "Ежедневные награды сейчас недоступны для этого аккаунта.",
+      "hint": "Одна награда в день. Пропущенный день ничего не стоит."
+    },
+    "cell": {
+      "today": "Сегодня",
+      "itemCount": "{count}x {item}"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "з",
@@ -3825,6 +3903,7 @@ export const ru_RU: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "Сейчас надето",
       "ifYouEquip": "Если надеть это",
       "damageSpeed": "{min} - {max} урона Скорость {speed}",
@@ -3991,7 +4070,8 @@ export const ru_RU: EnTranslations = {
       "needAria": "Нужно: {item}",
       "greedAria": "Жадность: {item}",
       "passAria": "Пас: {item}",
-      "everyonePassed": "Все отказались от {item}."
+      "everyonePassed": "Все отказались от {item}.",
+      "winnerOffline": "Победитель {item} был офлайн; предмет вернулся к трупу."
     }
   },
   "entities": {
@@ -4054,7 +4134,7 @@ export const ru_RU: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Раскол брони",
-        "description": "Раскалывает броню цели, снижая ее на {damage} за применение. Суммируется до 5 раз. Создает большое количество угрозы."
+        "description": "Раскалывает броню цели, снижая ее на 2% за применение. Суммируется до 5 раз. Создает большое количество угрозы."
       },
       "taunt": {
         "name": "Провокация",
@@ -5152,6 +5232,99 @@ export const ru_RU: EnTranslations = {
       "mistcallers_duffel": {
         "name": "Баул Мистколлера"
       },
+      "bramblewar_warhelm": {
+        "name": "Терновойна: Голова"
+      },
+      "bramblewar_warspaulders": {
+        "name": "Терновойна: Плечи"
+      },
+      "bramblewar_warplate": {
+        "name": "Терновойна: Грудь"
+      },
+      "bramblewar_girdle": {
+        "name": "Терновойна: Пояс"
+      },
+      "bramblewar_legguards": {
+        "name": "Терновойна: Ноги"
+      },
+      "bramblewar_gauntlets": {
+        "name": "Терновойна: Кисти рук"
+      },
+      "bramblewar_sabatons": {
+        "name": "Терновойна: Ступни"
+      },
+      "thornbound_crown": {
+        "name": "Терносвяз: Голова"
+      },
+      "thornbound_spaulders": {
+        "name": "Терносвяз: Плечи"
+      },
+      "thornbound_hauberk": {
+        "name": "Терносвяз: Грудь"
+      },
+      "thornbound_waistguard": {
+        "name": "Терносвяз: Пояс"
+      },
+      "thornbound_legmail": {
+        "name": "Терносвяз: Ноги"
+      },
+      "thornbound_handguards": {
+        "name": "Терносвяз: Кисти рук"
+      },
+      "thornbound_greaves": {
+        "name": "Терносвяз: Ступни"
+      },
+      "nettlestalker_cowl": {
+        "name": "Крапивный Ловчий: Голова"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "Крапивный Ловчий: Плечи"
+      },
+      "nettlestalker_harness": {
+        "name": "Крапивный Ловчий: Грудь"
+      },
+      "nettlestalker_waistband": {
+        "name": "Крапивный Ловчий: Пояс"
+      },
+      "nettlestalker_legguards": {
+        "name": "Крапивный Ловчий: Ноги"
+      },
+      "nettlestalker_grips": {
+        "name": "Крапивный Ловчий: Кисти рук"
+      },
+      "nettlestalker_treads": {
+        "name": "Крапивный Ловчий: Ступни"
+      },
+      "mossweave_cowl": {
+        "name": "Мохоткань: Голова"
+      },
+      "mossweave_mantle": {
+        "name": "Мохоткань: Плечи"
+      },
+      "mossweave_raiment": {
+        "name": "Мохоткань: Грудь"
+      },
+      "mossweave_cord": {
+        "name": "Мохоткань: Пояс"
+      },
+      "mossweave_legwraps": {
+        "name": "Мохоткань: Ноги"
+      },
+      "mossweave_handwraps": {
+        "name": "Мохоткань: Кисти рук"
+      },
+      "mossweave_slippers": {
+        "name": "Мохоткань: Ступни"
+      },
+      "last_bloom_greatblade": {
+        "name": "Большой клинок последнего цветка"
+      },
+      "thornbite_razor": {
+        "name": "Бритва Шипоукус"
+      },
+      "heartwood_warstaff": {
+        "name": "Боевой посох сердцевины"
+      },
       "bristleback_maul": {
         "name": "Кувалда Щетиноспина"
       },
@@ -5504,6 +5677,9 @@ export const ru_RU: EnTranslations = {
       "keeper_coal": {
         "name": "Уголёк, который никогда не остывал"
       },
+      "hearth_stone": {
+        "name": "Камень, всё ещё тёплый от его очага"
+      },
       "willow_sprig": {
         "name": "Ивовый прутик"
       },
@@ -5564,6 +5740,10 @@ export const ru_RU: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "Рукавицы Костяного стража"
+      },
+      "delve_heroic_mark": {
+        "name": "Героическая метка Реликвария",
+        "flavorText": "Оттиснутая печать, выданная хранителями Реликвария. Обменяйте её у Героического Квартирмейстера на снаряжение реликварного качества."
       },
       "deacon_reliquary_helm": {
         "name": "Шлем реликвария дьякона"
@@ -6152,6 +6332,11 @@ export const ru_RU: EnTranslations = {
         "title": "Наставник дополнительных профессий",
         "greeting": "Каждый билд начинается с вопроса. Какое ещё призвание зовёт вас?"
       },
+      "bramble": {
+        "name": "Брэмбл",
+        "title": "Квартирмейстер чести",
+        "greeting": "Пески помнят каждую победу. Трать свою честь с умом."
+      },
       "tidewatcher_ondrel": {
         "name": "Ондрел Вейн",
         "title": "Страж приливов",
@@ -6244,14 +6429,14 @@ export const ru_RU: EnTranslations = {
         "greeting": "Можешь сесть. Почти все проходят мимо. Пономарь давным-давно вычеркнул моё имя из своего журнала, а вычеркнутое имя учится молчать, чтобы никому не пришлось вспоминать, что оно ещё здесь."
       },
       "withered_planting": {
-        "name": "The Withered Planting",
-        "title": "The Tribe's Old Willow",
-        "greeting": "Dry roots, dry leaves. Whatever this was meant to grow into, it hasn't yet, and it's been a long while waiting."
+        "name": "Увядшая посадка",
+        "title": "Старая ива племени",
+        "greeting": "Сухие корни, сухие листья. Чем бы это ни должно было стать, оно ещё не стало, и ждёт уже очень долго."
       },
       "buried_root": {
-        "name": "A Buried Root",
-        "title": "Under the Shrine",
-        "greeting": "Dry. Dry as anything down here ever gets."
+        "name": "Погребённый корень",
+        "title": "Под святилищем",
+        "greeting": "Сухо. Сухо, как только может быть сухо здесь, в глубине."
       }
     },
     "quests": {
@@ -7131,6 +7316,22 @@ export const ru_RU: EnTranslations = {
           "refuseReply": "...да. Да, ладно, я тебя слышу, дружище, это тоже честная черта... вот что, держи это в любом случае, заслужил ты его не совсем по правилам, но и почти всё остальное, что я раздаю, тоже не по правилам, а частота эта, если по-честному, не так уж строго ведёт счёт..."
         }
       },
+      "q_your_own_hearth": {
+        "title": "Свой очаг",
+        "text": "вот и последнее, друг, и это скорее не поручение, а лёгкий толчок... там, за дорогой, есть земля, Фаллоу-Эйкерс, тихо лежит и ждёт, чтобы кто-то её захотел. Секстон Фаддик приглядывает за ней вполглаза, между своими волками и списком мест, которые он бережёт - сходи поздоровайся, дай ему знать, что ты из тех, кто остаётся... а после этого земля твоя, забирай, когда будешь готов.",
+        "completion": "вот оно... теперь у тебя такой взгляд, друг, тот самый, что говорит - ты больше не просто мимо проходишь. иди, поставь ноги где-нибудь там. я буду держать очаг горящим, как всегда, а ваза точно будет знать, где тебя искать...",
+        "objectives": {
+          "0": {
+            "label": "Встретился с Секстоном Фаддиком"
+          }
+        },
+        "dialog": {
+          "complain": "Земля? Я просто хотел поздороваться с твоим растением.",
+          "complainReply": "и можешь, в любое время, он никуда не денется... но душе мало одного святилища для посещений, друг, ей нужно место, куда поставить обе ноги. это ненадолго. Фаддик говорит медленно, но не тратит твой день впустую.",
+          "refuse": "Мне не нужна усадьба. Мне и так хорошо, просто в гостях.",
+          "refuseReply": "...ладно, ладно, никакого давления, друг, земля подождёт, как и держит её Фаддик, ожидание ничего не стоит... вот, возьми это всё равно, за то, что задержался так надолго. это тоже своего рода дом, наверное."
+        }
+      },
       "q_root_hollow_boars": {
         "title": "Кабаны Корневой Лощины",
         "text": "По календарю Корневая Лощина в этот сезон отдыхает. Кабанов об этом не уведомили. Они перерыли половину её в поисках личинок и больше не разбегаются, когда на них машет крыльями цапля, что я принимаю на свой счёт. Убей пятерых, и я смогу занести сезон как положено.",
@@ -7192,22 +7393,22 @@ export const ru_RU: EnTranslations = {
         }
       },
       "q_the_long_way_around": {
-        "title": "The Long Way Around",
-        "text": "There's a planting the tribe left half-finished up the old willow, and it's dying for want of one good pour. I can't make that climb anymore, but you've got the legs for it. Take the can. Mind the branches; they hold if you're honest with them.",
-        "completion": "It'll live now. You wouldn't think one climb and one pour was much, against everything else out there. It isn't much. It's only everything to the one thing you poured it on.",
+        "title": "Долгий обходной путь",
+        "text": "На старой иве осталась посадка, которую племя не успело закончить, и теперь она гибнет без одного хорошего полива. Мне уже не одолеть этот подъём, но у тебя ноги молодые. Возьми лейку. Берегись ветвей, но будь с ними честен, и они выдержат.",
+        "completion": "Теперь она будет жить. Тебе покажется, что один подъём и один полив, это пустяк на фоне всего прочего. Это и вправду пустяк. Но для того единственного, что ты полил, это всё.",
         "objectives": {
           "0": {
-            "label": "Water carried up the willow path"
+            "label": "Вода, поднятая по тропе к иве"
           }
         }
       },
       "q_the_watering_can": {
-        "title": "The Watering Can",
-        "text": "I've asked you for small things, and you've done them all without once asking why. Here's the last one, and it isn't small, though it'll look it. Take my can down under the shrine, to the thing that's buried there, and give it water. It's been waiting a long time to be given something instead of asked for something.",
-        "completion": "You did it. Of course you did. That was the water, you understand. All of it, all the way back to the day you found me at the lake and thought nothing of it. The same pour, the same promise, kept one more time. Thank you. Now go and be gentle with the world. It is the only thing that ever changed it.",
+        "title": "Лейка",
+        "text": "Я просил тебя о малом, и ты всё исполнил, ни разу не спросив зачем. Вот последняя просьба, и она не мала, хотя такой и покажется. Отнеси мою лейку под святилище, к тому, что там погребено, и полей его. Оно давно ждёт, чтобы ему что-то дали, а не что-то у него просили.",
+        "completion": "Ты сделал это. Конечно, сделал. Это была вода, понимаешь. Вся она, вплоть до того дня, когда ты нашёл меня у озера и не придал этому значения. Тот же полив, то же обещание, сдержанное ещё раз. Спасибо тебе. А теперь ступай и будь добр к этому миру. Только это его когда-либо и меняло.",
         "objectives": {
           "0": {
-            "label": "Water given to the buried root"
+            "label": "Вода, отданная погребённому корню"
           }
         }
       }

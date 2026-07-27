@@ -68,9 +68,12 @@ export const WORLD_BOSSES: readonly WorldBossDef[] = [
     templateId: 'heartwood_colossus',
     pos: { x: 30, z: -368 },
     intervalSeconds: WORLD_BOSS_INTERVAL_SECONDS,
-    // 40k solo, +40k per extra participant, up to 1M (~25 players), so a crowd cannot
-    // melt it in a minute; the pool scales hard with raid size.
-    hpScale: { base: 40_000, perPlayer: 40_000, max: 1_000_000 },
+    // 40k solo, +5k per extra participant, up to 1M. The per-player step is deliberately
+    // gentle (upstream #1502): scaleWorldBossHp adds each joiner's delta to CURRENT hp
+    // too (real health, not a heal), so a steep step made the bar visibly refill as a
+    // raid trickled in and read as "he takes no damage". 5k/head keeps the fight scaling
+    // without stalling it.
+    hpScale: { base: 40_000, perPlayer: 5_000, max: 1_000_000 },
   },
 ];
 

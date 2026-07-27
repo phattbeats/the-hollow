@@ -313,7 +313,13 @@ export const tr_TR: EnTranslations = {
     "keybinds": {
       "emoteWheel": "İfade Çarkı",
       "targetFriendly": "En Yakın Dostu Hedefle",
-      "targetFriendlyNext": "Dost Hedefler Arasında Geç"
+      "targetFriendlyNext": "Dost Hedefler Arasında Geç",
+      "categoryPet": "Pet",
+      "petAttack": "Pet: Attack",
+      "petStop": "Pet: Stop",
+      "petTaunt": "Pet: Taunt",
+      "petDefensive": "Pet: Defensive",
+      "petAggressive": "Pet: Aggressive"
     },
     "options": {
       "clickMoveLeft": "Sol Tık",
@@ -434,6 +440,9 @@ export const tr_TR: EnTranslations = {
     },
     "statInfo": {
       "fromYour": "{value} {stat} değerinden:",
+      "names": {
+        "spellPower": "Spell Power"
+      },
       "desc": {
         "str": "Saldırı gücünü artırır, böylece silah darbelerin daha sert iner.",
         "agi": "Reflekslerini ve nişan alma yeteneğini keskinleştirir, birçok savaş istatistiğini geliştirir.",
@@ -442,6 +451,7 @@ export const tr_TR: EnTranslations = {
         "spi": "Bir büyücünün savaş dışında dinlenirken manasının ne kadar hızlı dolduğunu artırır.",
         "armor": "Gelen fiziksel darbeleri yumuşatır. Azalma, daha düşük seviyeli saldırganlara karşı daha büyüktür ve en fazla %75 ile sınırlıdır.",
         "attackPower": "Silah saldırılarına güç katar. Her 14 saldırı gücü, saniye başına 1 hasar ekler.",
+        "spellPower": "Increases the damage of your spells and the strength of your heals. Each point of Intellect grants a little Spell Power, on top of any from gear or buffs.",
         "dps": "Silahının hasarını ve hızını saldırı gücünle birleştiren, saniye başına tahmini silah hasarın.",
         "critChance": "Bir saldırının kritik vurma ve çift hasar verme şansın.",
         "dodge": "Gelen bir yakın dövüş saldırısından hiç hasar almadan tamamen kaçınma şansın."
@@ -464,6 +474,15 @@ export const tr_TR: EnTranslations = {
         "minorForClass": "Sınıfın için pek faydası yok.",
         "baseChance": "Tüm maceracıların paylaştığı %5'lik temel şansı içerir.",
         "dpsApprox": "Bir tahmindir; kritik vuruşları ve yetenek hasarını hariç tutar."
+      },
+      "sources": {
+        "header": "Made up of:",
+        "base": "Base: {value}",
+        "attributes": "From your attributes: {value}",
+        "fromAttribute": "From {stat}: {value}",
+        "gear": "Equipped gear: {value}",
+        "buff": "{name}: {value}",
+        "talents": "Talents and effects: {value}"
       }
     },
     "talents": {
@@ -701,10 +720,18 @@ export const tr_TR: EnTranslations = {
         "spi": "Reduce el espíritu en {value}",
         "allStats": "Reduce todos los atributos en {value}"
       },
+      "increasePct": {
+        "ap": "Increases attack power by {pct}%",
+        "armor": "Increases armor by {pct}%",
+        "int": "Increases Intellect by {pct}%",
+        "sta": "Increases Stamina by {pct}%"
+      },
       "dodge": "Aumenta la probabilidad de esquivar un {pct}%",
       "dodgeReduce": "Reduce la probabilidad de esquivar un {pct}%",
       "armorFlat": "Reduce la armadura en {value}",
       "armorFlatStacks": "Reduce la armadura en {value} ({stacks} acumulaciones)",
+      "armorPct": "Reduces armor by {pct}%",
+      "armorPctStacks": "Reduces armor by {pct}% ({stacks} stacks)",
       "mortalWound": "Reduce la sanación recibida un {pct}%",
       "vulnerability": "Aumenta el daño recibido un {pct}%",
       "physVuln": "Aumenta el daño físico recibido un {pct}%",
@@ -971,6 +998,21 @@ export const tr_TR: EnTranslations = {
       "spore": "Spore",
       "toolTier": "Tier {tier} tool",
       "toolNone": "No tool"
+    },
+    "warfare": {
+      "ratingLabel": "Warfare",
+      "balance": "Honor: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} Honor",
+      "honorFloat": "+{amount} Honor",
+      "honorGain": "+{amount} Honor ({reason})",
+      "notEnoughHonor": "Not enough honor.",
+      "reasons": {
+        "arenaWin": "Arena win",
+        "fiestaKill": "Fiesta takedown",
+        "fiestaComplete": "Fiesta match",
+        "fiestaWin": "Fiesta win"
+      }
     }
   },
   "mailUi": {
@@ -989,6 +1031,12 @@ export const tr_TR: EnTranslations = {
     "recipient": "Recipient",
     "subjectLabel": "Subject",
     "bodyPlaceholder": "Write your letter...",
+    "attachments": "Attachments (up to {max})",
+    "removeAttachment": "Remove {item} from this letter",
+    "tooltipAttach": "Click to attach to this letter",
+    "tooltipCannotAttach": "The raven will not carry quest items",
+    "parcelQtyDecreaseAria": "Send one fewer {item}",
+    "parcelQtyIncreaseAria": "Send one more {item}",
     "send": "Send Letter",
     "needRecipientOrText": "Name a recipient and write something before sending.",
     "openButton": "Show me the Ravenpost.",
@@ -2396,6 +2444,13 @@ export const tr_TR: EnTranslations = {
       "nothingToHarvest": "That corpse has nothing to harvest.",
       "alreadyHarvested": "This corpse has already been harvested."
     },
+    "dailyRewards": {
+      "claimed": "You claim your daily reward."
+    },
+    "collections": {
+      "notFound": "That does not exist.",
+      "tooFar": "Too far away."
+    },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
       "noItems1": "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",
@@ -2456,6 +2511,11 @@ export const tr_TR: EnTranslations = {
       "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
       "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
       "helpLine": "Homestead: /homestead, /homestead claim."
+    },
+    "readyCheck": {
+      "mustBeInParty": "You must be in a party to start a ready check.",
+      "alreadyInProgress": "A ready check is already in progress.",
+      "summary": "Ready check: {ready} ready, {notReady} not ready, {noResponse} no response."
     }
   },
   "lockpickUi": {
@@ -3297,6 +3357,8 @@ export const tr_TR: EnTranslations = {
       "openTrade": "Takas Aç",
       "duelRequest": "{name} seni bir düelloya davet etti!",
       "acceptDuel": "Düelloyu Kabul Et",
+      "readyCheckStart": "{name} has started a ready check.",
+      "markReady": "Ready",
       "decline": "Reddet"
     },
     "combat": {
@@ -3772,6 +3834,22 @@ export const tr_TR: EnTranslations = {
       "stool": "Stool"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "Daily Rewards",
+    "window": {
+      "title": "Daily Rewards",
+      "close": "Close daily rewards",
+      "claim": "Claim",
+      "claimAria": "Claim today's reward",
+      "claimed": "Claimed. Come back tomorrow.",
+      "locked": "Daily rewards are unavailable on this account right now.",
+      "hint": "One reward per day. Missing a day never costs you anything."
+    },
+    "cell": {
+      "today": "Today",
+      "itemCount": "{count}x {item}"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "a",
@@ -3825,6 +3903,7 @@ export const tr_TR: EnTranslations = {
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
+      "qualityKindHeroic": "[HEROIC] {quality} {kind}",
       "currentlyEquipped": "Şu anda kuşanılmış",
       "ifYouEquip": "Bunu kuşanırsan",
       "damageSpeed": "{min} - {max} Hasar Hız {speed}",
@@ -3991,7 +4070,8 @@ export const tr_TR: EnTranslations = {
       "needAria": "{item} için ihtiyaç",
       "greedAria": "{item} için açgözlülük",
       "passAria": "{item} için pas geç",
-      "everyonePassed": "Herkes {item} için pas geçti."
+      "everyonePassed": "Herkes {item} için pas geçti.",
+      "winnerOffline": "The winner of {item} was offline; it was returned to the corpse."
     }
   },
   "entities": {
@@ -4054,7 +4134,7 @@ export const tr_TR: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Zırh Parçalama",
-        "description": "Hedefin zırhını parçalar, her uygulamada {damage} azaltır. 5 kata kadar üst üste binebilir. Yüksek miktarda tehdit üretir."
+        "description": "Hedefin zırhını parçalar, her uygulamada %2 azaltır. 5 kata kadar üst üste binebilir. Yüksek miktarda tehdit üretir."
       },
       "taunt": {
         "name": "Kışkırtma",
@@ -5152,6 +5232,99 @@ export const tr_TR: EnTranslations = {
       "mistcallers_duffel": {
         "name": "Mistcaller'ın Denizci Çantası"
       },
+      "bramblewar_warhelm": {
+        "name": "Dikensavaş Baş"
+      },
+      "bramblewar_warspaulders": {
+        "name": "Dikensavaş Omuz"
+      },
+      "bramblewar_warplate": {
+        "name": "Dikensavaş Göğüs"
+      },
+      "bramblewar_girdle": {
+        "name": "Dikensavaş Bel"
+      },
+      "bramblewar_legguards": {
+        "name": "Dikensavaş Bacak"
+      },
+      "bramblewar_gauntlets": {
+        "name": "Dikensavaş El"
+      },
+      "bramblewar_sabatons": {
+        "name": "Dikensavaş Ayak"
+      },
+      "thornbound_crown": {
+        "name": "Dikenbağlı Baş"
+      },
+      "thornbound_spaulders": {
+        "name": "Dikenbağlı Omuz"
+      },
+      "thornbound_hauberk": {
+        "name": "Dikenbağlı Göğüs"
+      },
+      "thornbound_waistguard": {
+        "name": "Dikenbağlı Bel"
+      },
+      "thornbound_legmail": {
+        "name": "Dikenbağlı Bacak"
+      },
+      "thornbound_handguards": {
+        "name": "Dikenbağlı El"
+      },
+      "thornbound_greaves": {
+        "name": "Dikenbağlı Ayak"
+      },
+      "nettlestalker_cowl": {
+        "name": "Isırgan Avcısı Baş"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "Isırgan Avcısı Omuz"
+      },
+      "nettlestalker_harness": {
+        "name": "Isırgan Avcısı Göğüs"
+      },
+      "nettlestalker_waistband": {
+        "name": "Isırgan Avcısı Bel"
+      },
+      "nettlestalker_legguards": {
+        "name": "Isırgan Avcısı Bacak"
+      },
+      "nettlestalker_grips": {
+        "name": "Isırgan Avcısı El"
+      },
+      "nettlestalker_treads": {
+        "name": "Isırgan Avcısı Ayak"
+      },
+      "mossweave_cowl": {
+        "name": "Yosun Dokuma Baş"
+      },
+      "mossweave_mantle": {
+        "name": "Yosun Dokuma Omuz"
+      },
+      "mossweave_raiment": {
+        "name": "Yosun Dokuma Göğüs"
+      },
+      "mossweave_cord": {
+        "name": "Yosun Dokuma Bel"
+      },
+      "mossweave_legwraps": {
+        "name": "Yosun Dokuma Bacak"
+      },
+      "mossweave_handwraps": {
+        "name": "Yosun Dokuma El"
+      },
+      "mossweave_slippers": {
+        "name": "Yosun Dokuma Ayak"
+      },
+      "last_bloom_greatblade": {
+        "name": "Son Çiçek Büyük Kılıcı"
+      },
+      "thornbite_razor": {
+        "name": "Diken Isırığı Ustura"
+      },
+      "heartwood_warstaff": {
+        "name": "Öz Odun Savaş Asası"
+      },
       "bristleback_maul": {
         "name": "Dikensırt Balyozu"
       },
@@ -5504,6 +5677,9 @@ export const tr_TR: EnTranslations = {
       "keeper_coal": {
         "name": "Hiç Soğumayan Bir Kor"
       },
+      "hearth_stone": {
+        "name": "Onun Ocağından Hâlâ Sıcak Bir Taş"
+      },
       "willow_sprig": {
         "name": "Bir Söğüt Dalı"
       },
@@ -5564,6 +5740,10 @@ export const tr_TR: EnTranslations = {
       },
       "reliquary_gloves_rog": {
         "name": "Kemikbekçisi Eldivenleri"
+      },
+      "delve_heroic_mark": {
+        "name": "Kahramanca Kutsal Mahzen Nişanı",
+        "flavorText": "Kutsal Mahzen'in bekçileri tarafından verilen damgalı bir mühür. Kutsal Mahzen kalitesinde teçhizat için Kahramanca Donatım Subayı'na takas edin."
       },
       "deacon_reliquary_helm": {
         "name": "Diyakoz'un Kutsal Emanet Miğferi"
@@ -6151,6 +6331,11 @@ export const tr_TR: EnTranslations = {
         "name": "Elder Yarrow",
         "title": "Profession Trainer",
         "greeting": "Every build starts as a question. Which second calling speaks to you?"
+      },
+      "bramble": {
+        "name": "Bramble",
+        "title": "Honor Quartermaster",
+        "greeting": "The sands remember every victory. Spend your honor well."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",
@@ -7129,6 +7314,22 @@ export const tr_TR: EnTranslations = {
           "complainReply": "once is a favor, friend, three's a habit, and i been burned by favors before... this ain't about the hearth needin' it, the hearth's fine, i keep it fine, it's about you comin' back on your own two feet 'cause you wanted to, not 'cause some quest marker told you to... three times. no rush on the countin'.",
           "refuse": "I'm not doing this three separate times. Once was enough.",
           "refuseReply": "...yeah. yeah, okay, i hear you, friend, that's a fair enough line to draw... tell you what, here, take it anyway, ain't earned in the strictest sense but neither's most of what i hand out, and the wavelength don't really keep score the way i pretend it does..."
+        }
+      },
+      "q_your_own_hearth": {
+        "title": "A Hearth of Your Own",
+        "text": "here's the last of it, friend, and it ain't really an errand so much as a nudge... there's ground out past the road, fallow acres, sittin' quiet and waitin' on somebody to want it. sexton faddick keeps half an eye on it between his wolves and his list of kept places - go say hello, let him know you're the kind that stays... after that the ground's yours to claim, whenever you're ready for it.",
+        "completion": "there it is... you got the look now, friend, the one that says you ain't just passin' through no more. go on, plant your feet somewhere out there. i'll keep the hearth lit same as always, and the vase'll know right where to find you...",
+        "objectives": {
+          "0": {
+            "label": "Sexton Faddick met"
+          }
+        },
+        "dialog": {
+          "complain": "Ground? I just wanted to say hi to your plant.",
+          "complainReply": "and you can, anytime, he ain't goin' anywhere... but a soul needs more than a shrine to visit, friend, it needs somewhere to plant its own two feet. won't take long. faddick talks slow but he don't waste your afternoon.",
+          "refuse": "I don't need a homestead. I'm happy just visiting.",
+          "refuseReply": "...alright, alright, no pressure in it, friend, the ground'll keep same as faddick keeps it, waitin' don't cost it nothin'... here, take this anyway, for stickin' around this long. that's its own kind of home, i guess."
         }
       },
       "q_root_hollow_boars": {

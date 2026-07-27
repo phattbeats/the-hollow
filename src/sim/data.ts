@@ -8,6 +8,7 @@ import { BOARBALL_MOBS } from './content/boarball';
 import { BASE_ITEMS, FISHING_RARE_ID, FISHING_TABLES } from './content/items';
 import type {
   CampDef,
+  DeedDef,
   DelveDef,
   DelveModuleDef,
   DungeonDef,
@@ -20,6 +21,9 @@ import type {
   QuestDef,
   QuestState,
   ReadableDef,
+  RecipeDef,
+  TitleDef,
+  WorldContent,
   ZoneDef,
   ZonePropsDef,
 } from './types';
@@ -27,6 +31,11 @@ import type {
 export type { FishingEntry } from './content/items';
 export { FISHING_RARE_ID, FISHING_TABLES };
 
+import type { AchievementDef } from './achievements_core';
+import { ACHIEVEMENTS as ACHIEVEMENTS_CONTENT } from './content/achievements';
+import type { CollectibleDef } from './content/collectibles';
+import { COLLECTIBLES as COLLECTIBLES_CONTENT } from './content/collectibles';
+import { DEEDS as DEEDS_CONTENT, TITLES as TITLES_CONTENT } from './content/deeds';
 import {
   BROTHER_HALVEN,
   COLLAPSED_RELIQUARY_DELVE,
@@ -59,6 +68,7 @@ import {
   READ_RADIUS as READ_RADIUS_CONTENT,
   READABLES as READABLES_CONTENT,
 } from './content/readables';
+import { RECIPES as RECIPES_CONTENT } from './content/recipes';
 import {
   TEMPLE_CAMPS,
   TEMPLE_DUNGEON_DEFS,
@@ -127,6 +137,9 @@ export {
 } from './content/delves';
 
 import { DELVE_ITEMS } from './content/delves/items';
+import { HEROIC_DELVE_MARK } from './content/heroic_loot';
+import { buildHeroicVariants } from './content/heroic_variants';
+import { FURY_NPC, WARFARE_ITEMS } from './content/pvp_honor';
 import { DELVE_MODULE_LAYOUTS, type DelveModuleId, delveModuleSpan } from './delve_layout';
 
 function mergeItems(...parts: Record<string, ItemDef>[]): Record<string, ItemDef> {
@@ -161,18 +174,6 @@ export type {
 // Merged content tables
 // ---------------------------------------------------------------------------
 
-export const ITEMS: Record<string, ItemDef> = mergeItems(
-  BASE_ITEMS,
-  ZONE2_ITEMS,
-  ZONE3_ITEMS,
-  TEMPLE_ITEMS,
-  HOLLOW_ITEMS,
-  DELVE_ITEMS,
-);
-
-export type { AggregatedSetEffect } from './content/item_sets';
-export { aggregateSetBonuses, ITEM_SETS } from './content/item_sets';
-
 export const MOBS: Record<string, MobTemplate> = {
   ...ZONE1_MOBS,
   ...ZONE2_MOBS,
@@ -186,6 +187,30 @@ export const MOBS: Record<string, MobTemplate> = {
   ...BOARBALL_MOBS,
 };
 
+export const ITEMS: Record<string, ItemDef> = mergeItems(
+  BASE_ITEMS,
+  ZONE2_ITEMS,
+  ZONE3_ITEMS,
+  TEMPLE_ITEMS,
+  HOLLOW_ITEMS,
+  DELVE_ITEMS,
+  // The Heroic Mark item lives alongside the variant output (it is content, not
+  // a derived table entry) so the loot swap and the mark fan-out both resolve
+  // to the same id at data-evaluation time.
+  { delve_heroic_mark: HEROIC_DELVE_MARK },
+  WARFARE_ITEMS,
+);
+
+export type { AggregatedSetEffect } from './content/item_sets';
+export { aggregateSetBonuses, ITEM_SETS } from './content/item_sets';
+
+// Heroic upgraded drop variants (upstream PR #1705/#1767, port to the fork):
+// generated from the base item + mob loot tables and merged into ITEMS in
+// place, so a Heroic copy is a first-class item everywhere (tooltip, equip,
+// itemScore, the server->client wire). Must run after both ITEMS and MOBS are
+// assembled (it reads their loot tables). See src/sim/content/heroic_variants.ts.
+Object.assign(ITEMS, buildHeroicVariants(ITEMS, MOBS));
+
 export const NPCS: Record<string, NpcDef> = {
   ...ZONE1_NPCS,
   ...ZONE2_NPCS,
@@ -194,6 +219,7 @@ export const NPCS: Record<string, NpcDef> = {
   ...HOLLOW_NPCS,
   brother_halven: BROTHER_HALVEN,
   ...HOLLOW_ZONE_NPCS,
+  [FURY_NPC.id]: FURY_NPC,
 };
 
 export const QUESTS: Record<string, QuestDef> = {
@@ -203,6 +229,15 @@ export const QUESTS: Record<string, QuestDef> = {
   ...TEMPLE_QUESTS,
   ...HOLLOW_QUESTS,
   ...HOLLOW_ZONE_QUESTS,
+};
+
+// Book of Asphodelia (PHAA-744): empty until PHAA-745 lands authored content.
+export const DEEDS: Record<string, DeedDef> = {
+  ...DEEDS_CONTENT,
+};
+
+export const TITLES: Record<string, TitleDef> = {
+  ...TITLES_CONTENT,
 };
 
 export const QUEST_ORDER: string[] = [
@@ -240,6 +275,11 @@ export const GROUND_OBJECTS: GroundObjectDef[] = [
 
 export const GATHER_NODES: GatherNodeDef[] = [...GATHER_NODES_CONTENT];
 
+// Crafting recipes (PHAA-574). Static content; both the offline Sim and the
+// online ClientWorld read this same table directly (same convention as
+// GATHER_NODES above), so recipe browsing needs no IWorld method or wire field.
+export const RECIPES: RecipeDef[] = [...RECIPES_CONTENT];
+
 // World-placed readable books (PHAA-552). Static content; both the offline Sim
 // and the online ClientWorld expose them through IWorldReadables by reading this
 // same table, so no server snapshot or wire field is involved.
@@ -248,6 +288,24 @@ export const READABLES_BY_ID: Record<string, ReadableDef> = Object.fromEntries(
   READABLES.map((r) => [r.id, r]),
 );
 export const READ_RADIUS = READ_RADIUS_CONTENT;
+
+// Tracked-collectible identity (PHAA-625/626): every readable above also gets a
+// CollectibleDef entry so the collections system + (sibling-ticket) UI panel can
+// resolve kind/zone/set by the same stable id without depending on the readable
+// table directly. See src/sim/content/collectibles.ts.
+export const COLLECTIBLES: CollectibleDef[] = [...COLLECTIBLES_CONTENT];
+export const COLLECTIBLES_BY_ID: Record<string, CollectibleDef> = Object.fromEntries(
+  COLLECTIBLES.map((c) => [c.id, c]),
+);
+
+// Achievement registry (PHAA-687): net-new discrete-accomplishment subsystem,
+// ALONGSIDE MILESTONES. Declarative defs live in src/sim/content/achievements.ts;
+// the pure engine is src/sim/achievements_core.ts, the sim wiring
+// src/sim/achievements.ts. Merged here so consumers resolve by stable id.
+export const ACHIEVEMENTS: AchievementDef[] = [...ACHIEVEMENTS_CONTENT];
+export const ACHIEVEMENTS_BY_ID: Record<string, AchievementDef> = Object.fromEntries(
+  ACHIEVEMENTS.map((a) => [a.id, a]),
+);
 
 export const ROADS: { x: number; z: number }[][] = [
   ...ZONE1_ROADS,
@@ -336,6 +394,45 @@ export const WORLD_MIN_Z = ZONES[0].zMin;
 export const WORLD_MAX_Z = ZONES[ZONES.length - 1].zMax;
 
 export const PLAYER_START = { x: 2, z: -2 };
+
+// ---------------------------------------------------------------------------
+// Active world content registry.
+//
+// The terrain function (src/sim/world.ts) and the Sim spawn loop derive the
+// playable world from the spatial data above. To support custom maps (the editor)
+// without forking the engine, that data is reachable through a swappable bundle.
+// The DEFAULT bundle wraps the exact same arrays the built-in game has always
+// used, so with no custom map loaded everything is byte-identical.
+//
+// The editor's offline play-test calls setActiveWorldContent(map) before building
+// the Sim+renderer; the default game never touches it.
+// ---------------------------------------------------------------------------
+
+export const BUILTIN_WORLD: WorldContent = {
+  zones: ZONES,
+  camps: CAMPS,
+  npcs: NPCS,
+  groundObjects: GROUND_OBJECTS,
+  roads: ROADS,
+  props: PROPS,
+  playerStart: PLAYER_START,
+  // No terrainEdits: the built-in heightfield is the pure (x,z,seed) function.
+};
+
+let activeWorld: WorldContent = BUILTIN_WORLD;
+
+// The world content the terrain function and renderer should sample. Defaults to
+// the built-in 3-zone world; the editor swaps it for a custom map during play-test.
+export function getActiveWorldContent(): WorldContent {
+  return activeWorld;
+}
+
+// Swap in a custom world (editor play-test) or restore the built-in (pass nothing).
+// Affects terrain (world.ts), props (render/props.ts), and any consumer that reads
+// through getActiveWorldContent. Spawns come from SimConfig.world too (sim.ts ctor).
+export function setActiveWorldContent(world: WorldContent | null): void {
+  activeWorld = world ?? BUILTIN_WORLD;
+}
 
 // Zone containing a world position (overworld only; clamps to the strip ends).
 export function zoneAt(z: number): ZoneDef {
