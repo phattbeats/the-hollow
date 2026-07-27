@@ -9,7 +9,7 @@
 // keep resolving to THIS file, never the sibling directory.
 //
 // ---------------------------------------------------------------------------
-// FACET MAP: the 30 domain facets (each IWorld member assigned exactly once; 190
+// FACET MAP: the 30 domain facets (each IWorld member assigned exactly once; 194
 // total; this count was previously stale at 23/155, corrected alongside the
 // PHAA-482 feedGreenpaw command addition, again at 24/161 with the PHAA-511
 // guild-calendar-events addition, again at 25/162 with PHAA-504's gathering.ts
@@ -19,12 +19,13 @@
 // facet (2 members), again with PHAA-687's achievements.ts facet (2 members),
 // again with the PHAA-641 readyCheckRespond addition to the existing IWorldParty
 // facet, again at 30/190 with the PHAA-744 deeds.ts facet (5 members:
-// Book of Asphodelia deed/title read state + setActiveTitle), and again here at
+// Book of Asphodelia deed/title read state + setActiveTitle), again at
 // 31/195 with the PHAA-649 enchanting.ts facet (3 members; the running count in
-// tests/world_api_parity.test.ts was already at 192 before this addition). One
-// interface per file under ./world_api/; aux types travel with their facet. The
-// authoritative member-per-facet split is the W0c parity test
-// (tests/world_api_parity.test.ts).
+// tests/world_api_parity.test.ts was already at 192 before this addition), and
+// now at 31/197 with the PHAA-748 per-pid title queries (activeTitleFor +
+// earnedTitlesFor) extending the existing IWorldDeeds facet. One interface per
+// file under ./world_api/; aux types travel with their facet. The authoritative
+// member-per-facet split is the W0c parity test (tests/world_api_parity.test.ts).
 // NOTE: this running count tracks only the facets registered in the W0c gate
 // (tests/world_api_parity.test.ts); IWorldReadables/IWorldDialog predate this
 // count and are pre-existing gaps in that gate, not tracked here.
@@ -69,7 +70,7 @@
 //                                          ALL_DELTA_KEYS (44) + TERSE_TO_IWORLD mapping.
 //   tests/command_schema.test.ts   (W0b)  COMMAND_NAMES universe; ClientWorld send-set
 //                                          subset-of dispatch-set; DISPATCH_ONLY (7).
-//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (190) present + same-kind on
+//   tests/world_api_parity.test.ts (W0c)  IWORLD_MEMBERS (194) present + same-kind on
 //                                          Sim + ClientWorld; aggregate == disjoint
 //                                          union of the 30 facets.
 // ---------------------------------------------------------------------------

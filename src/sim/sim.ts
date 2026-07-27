@@ -2350,6 +2350,12 @@ export class Sim {
   get activeTitle(): string | null {
     return this.primary.activeTitle;
   }
+  activeTitleFor(pid: number): string | null {
+    return this.meta(pid)?.activeTitle ?? null;
+  }
+  earnedTitlesFor(pid: number): Set<string> {
+    return this.meta(pid)?.earnedTitles ?? new Set<string>();
+  }
   setActiveTitle(titleId: string | null, pid?: number): void {
     const meta = this.meta(pid ?? this.primaryId);
     if (meta) setActiveTitleImpl(meta, titleId);
@@ -6524,6 +6530,11 @@ export class Sim {
                 dead: e.dead ? 1 : 0,
                 inCombat: e.inCombat ? 1 : 0,
                 group: party.raidGroups.get(mPid) ?? 1,
+                // PHAA-748: Book of Asphodelia active title per party member.
+                // Server-side this would carry the resolved title id from the
+                // player's PlayerMeta.earnedTitles/activeTitle; offline Sim has
+                // every member's title in-process and surfaces it directly.
+                atitle: meta.activeTitle,
               },
             ]
           : [];
