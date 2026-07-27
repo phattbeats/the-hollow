@@ -3395,6 +3395,7 @@ export const vi_VN: EnTranslations = {
       "ignoringChat": "Đang bỏ qua tin nhắn từ {name}.",
       "noLongerIgnoring": "Không còn bỏ qua {name} nữa.",
       "playerNotNearby": "Người chơi đó không ở gần đây.",
+      "playerInfoNotFound": "No character found with that name.",
       "duelCountdown": "Tỉ thí bắt đầu sau {seconds}...",
       "duelEndBanner": "{winner} đã đánh bại {loser} trong một trận tỉ thí!",
       "duelEndLog": "{winner} đã đánh bại {loser} trong một trận tỉ thí.",

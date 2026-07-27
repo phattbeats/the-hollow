@@ -3395,6 +3395,7 @@ export const tr_TR: EnTranslations = {
       "ignoringChat": "{name} oyuncusunun sohbeti görmezden geliniyor.",
       "noLongerIgnoring": "{name} artık görmezden gelinmiyor.",
       "playerNotNearby": "O oyuncu yakında değil.",
+      "playerInfoNotFound": "No character found with that name.",
       "duelCountdown": "Düello {seconds} içinde başlıyor...",
       "duelEndBanner": "{winner}, bir düelloda {loser} oyuncusunu yendi!",
       "duelEndLog": "{winner}, bir düelloda {loser} oyuncusunu yendi.",

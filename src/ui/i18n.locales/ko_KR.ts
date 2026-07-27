@@ -1078,6 +1078,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hud.system.ignoringChat': '{name}의 채팅을 차단합니다.',
   'hud.system.noLongerIgnoring': '{name}을 더 이상 차단하지 않습니다.',
   'hud.system.playerNotNearby': '그 플레이어는 근처에 없습니다.',
+  'hud.system.playerInfoNotFound': '해당 이름의 캐릭터를 찾을 수 없습니다.',
   'hud.system.duelCountdown': '결투가 {seconds}초 후 시작됩니다...',
   'hud.system.duelEndBanner': '{winner}님이 결투에서 {loser}님을 이겼습니다!',
   'hud.system.duelEndLog': '{winner}님이 결투에서 {loser}님을 이겼습니다.',

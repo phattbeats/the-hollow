@@ -3395,6 +3395,7 @@ export const sv_SE: EnTranslations = {
       "ignoringChat": "Ignorerar chatt från {name}.",
       "noLongerIgnoring": "Ignorerar inte längre {name}.",
       "playerNotNearby": "Den spelaren är inte i närheten.",
+      "playerInfoNotFound": "No character found with that name.",
       "duelCountdown": "Duellen börjar om {seconds}...",
       "duelEndBanner": "{winner} har besegrat {loser} i en duell!",
       "duelEndLog": "{winner} har besegrat {loser} i en duell.",

@@ -3395,6 +3395,7 @@ export const da_DK: EnTranslations = {
       "ignoringChat": "Ignorerer chat fra {name}.",
       "noLongerIgnoring": "Ignorerer ikke længere {name}.",
       "playerNotNearby": "Den spiller er ikke i nærheden.",
+      "playerInfoNotFound": "No character found with that name.",
       "duelCountdown": "Duellen begynder om {seconds}...",
       "duelEndBanner": "{winner} har besejret {loser} i en duel!",
       "duelEndLog": "{winner} har besejret {loser} i en duel.",

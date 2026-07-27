@@ -1107,6 +1107,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hud.system.ignoringChat': 'Чат от {name} игнорируется.',
   'hud.system.noLongerIgnoring': '{name} больше не игнорируется.',
   'hud.system.playerNotNearby': 'Этого игрока нет рядом.',
+  'hud.system.playerInfoNotFound': 'Персонаж с таким именем не найден.',
   'hud.system.duelCountdown': 'Дуэль начнется через {seconds}...',
   'hud.system.duelEndBanner': '{winner} победил {loser} в дуэли!',
   'hud.system.duelEndLog': '{winner} победил {loser} в дуэли.',

@@ -3340,6 +3340,7 @@ export type TranslationKeyFlat =
   | 'hud.system.ignoringChat'
   | 'hud.system.noLongerIgnoring'
   | 'hud.system.playerDeath'
+  | 'hud.system.playerInfoNotFound'
   | 'hud.system.playerNotNearby'
   | 'hud.system.respawn'
   | 'hud.trade.accept'
