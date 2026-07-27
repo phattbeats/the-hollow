@@ -154,7 +154,6 @@ export const hudChromeStrings = {
   // On-screen / mobile control labels and their accessible names. char/bags/music
   // reuse existing keys (hud.keybinds.actions.*, hud.options.music) at the call site.
   mobile: {
-    autorun: 'Autorun',
     jump: 'Jump',
     leaderboard: 'Ranks',
     nameplates: 'Names',

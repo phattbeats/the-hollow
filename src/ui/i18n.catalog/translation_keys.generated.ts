@@ -3800,7 +3800,6 @@ export type TranslationKeyFlat =
   | 'hudChrome.meters.perSecond'
   | 'hudChrome.meters.perSecondRow'
   | 'hudChrome.meters.seconds'
-  | 'hudChrome.mobile.autorun'
   | 'hudChrome.mobile.haptics'
   | 'hudChrome.mobile.hapticsOff'
   | 'hudChrome.mobile.jump'

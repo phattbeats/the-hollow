@@ -1585,7 +1585,8 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': 'Gier für {item}',
   'itemUi.lootRoll.passAria': 'Bei {item} passen',
   'itemUi.lootRoll.everyonePassed': 'Alle passen bei {item}.',
-  'itemUi.lootRoll.winnerOffline': 'Der Gewinner von {item} war offline; es wurde zur Leiche zurückgebracht.',
+  'itemUi.lootRoll.winnerOffline':
+    'Der Gewinner von {item} war offline; es wurde zur Leiche zurückgebracht.',
   'entities.abilities.heroic_strike.name': 'Heldenhafter Stoß',
   'entities.abilities.heroic_strike.description':
     'Ein mächtiger Angriff, der den Nahkampfschaden um {damage} erhöht. Wird bei eurem nächsten Schwung ausgelöst.',
@@ -3355,7 +3356,6 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/s',
   'hudChrome.meters.perSecondRow': '{total} ({rate})',
   'hudChrome.meters.seconds': '{s} Sek.',
-  'hudChrome.mobile.autorun': 'Auto-Laufen',
   'hudChrome.mobile.haptics': 'Haptik',
   'hudChrome.mobile.hapticsOff': 'Haptik aus',
   'hudChrome.mobile.jump': 'Springen',

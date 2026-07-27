@@ -1599,7 +1599,8 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': 'Cupidité pour {item}',
   'itemUi.lootRoll.passAria': 'Passer pour {item}',
   'itemUi.lootRoll.everyonePassed': 'Tout le monde a passé pour {item}.',
-  'itemUi.lootRoll.winnerOffline': 'Le gagnant de {item} était hors ligne ; il a été rendu au corps.',
+  'itemUi.lootRoll.winnerOffline':
+    'Le gagnant de {item} était hors ligne ; il a été rendu au corps.',
   'entities.abilities.heroic_strike.name': 'Frappe héroïque',
   'entities.abilities.heroic_strike.description':
     "Une attaque puissante qui augmente les dégâts de mêlée de {damage}. S'active lors de votre prochaine frappe.",
@@ -3369,7 +3370,6 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/s',
   'hudChrome.meters.perSecondRow': '{total} ({rate})',
   'hudChrome.meters.seconds': '{s} s',
-  'hudChrome.mobile.autorun': 'Course automatique',
   'hudChrome.mobile.haptics': 'Vibrations',
   'hudChrome.mobile.hapticsOff': 'Vibrations désactivées',
   'hudChrome.mobile.jump': 'Sauter',

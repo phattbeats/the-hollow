@@ -246,7 +246,6 @@ export const en_XA: EnTranslations = {
       "chat": "[Šķíþ ţó Çĥáţ]"
     },
     "mobile": {
-      "autorun": "[Áúţóŕúñ]",
       "jump": "[Ĵúɱþ]",
       "leaderboard": "[Ŕáñķš]",
       "nameplates": "[Ñáɱéš]",

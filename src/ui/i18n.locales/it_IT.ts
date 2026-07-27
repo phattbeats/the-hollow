@@ -1578,7 +1578,8 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': 'Brama per {item}',
   'itemUi.lootRoll.passAria': 'Passa su {item}',
   'itemUi.lootRoll.everyonePassed': 'Tutti hanno passato su {item}.',
-  'itemUi.lootRoll.winnerOffline': 'Il vincitore di {item} era offline; è stato restituito al cadavere.',
+  'itemUi.lootRoll.winnerOffline':
+    'Il vincitore di {item} era offline; è stato restituito al cadavere.',
   'entities.abilities.heroic_strike.name': 'Colpo Eroico',
   'entities.abilities.heroic_strike.description':
     'Un attacco potente che aumenta i danni in mischia di {damage}. Si attiva al tuo prossimo colpo.',
@@ -3289,7 +3290,6 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/s',
   'hudChrome.meters.perSecondRow': '{total} ({rate})',
   'hudChrome.meters.seconds': '{s}s',
-  'hudChrome.mobile.autorun': 'Corsa automatica',
   'hudChrome.mobile.haptics': 'Vibrazione',
   'hudChrome.mobile.hapticsOff': 'Vibrazione disattivata',
   'hudChrome.mobile.jump': 'Salta',

@@ -1588,7 +1588,8 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': 'Codicia por {item}',
   'itemUi.lootRoll.passAria': 'Pasar por {item}',
   'itemUi.lootRoll.everyonePassed': 'Todos pasaron por {item}.',
-  'itemUi.lootRoll.winnerOffline': 'El ganador de {item} estaba desconectado; se devolvió al cadáver.',
+  'itemUi.lootRoll.winnerOffline':
+    'El ganador de {item} estaba desconectado; se devolvió al cadáver.',
   'entities.abilities.heroic_strike.name': 'Golpe heroico',
   'entities.abilities.heroic_strike.description':
     'Un ataque poderoso que aumenta el daño cuerpo a cuerpo en {damage}. Se activa en tu siguiente golpe.',
@@ -3307,7 +3308,6 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/s',
   'hudChrome.meters.perSecondRow': '{total} ({rate})',
   'hudChrome.meters.seconds': '{s} s',
-  'hudChrome.mobile.autorun': 'Carrera automática',
   'hudChrome.mobile.haptics': 'Vibración',
   'hudChrome.mobile.hapticsOff': 'Vibración desactivada',
   'hudChrome.mobile.jump': 'Saltar',
