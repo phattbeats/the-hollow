@@ -246,7 +246,6 @@ export const sv_SE: EnTranslations = {
       "chat": "Hoppa till chatt"
     },
     "mobile": {
-      "autorun": "Autospring",
       "jump": "Hoppa",
       "leaderboard": "Ranking",
       "nameplates": "Namn",
@@ -720,10 +719,18 @@ export const sv_SE: EnTranslations = {
         "spi": "Verringert Willenskraft um {value}",
         "allStats": "Verringert alle Attribute um {value}"
       },
+      "increasePct": {
+        "ap": "Increases attack power by {pct}%",
+        "armor": "Increases armor by {pct}%",
+        "int": "Increases Intellect by {pct}%",
+        "sta": "Increases Stamina by {pct}%"
+      },
       "dodge": "Erhöht Ausweichchance um {pct}%",
       "dodgeReduce": "Verringert Ausweichchance um {pct}%",
       "armorFlat": "Verringert Rüstung um {value}",
       "armorFlatStacks": "Verringert Rüstung um {value} ({stacks} Stapel)",
+      "armorPct": "Reduces armor by {pct}%",
+      "armorPctStacks": "Reduces armor by {pct}% ({stacks} stacks)",
       "mortalWound": "Verringert erhaltene Heilung um {pct}%",
       "vulnerability": "Erhöht erlittenen Schaden um {pct}%",
       "physVuln": "Erhöht erlittenen physischen Schaden um {pct}%",
@@ -990,6 +997,21 @@ export const sv_SE: EnTranslations = {
       "spore": "Spore",
       "toolTier": "Tier {tier} tool",
       "toolNone": "No tool"
+    },
+    "warfare": {
+      "ratingLabel": "Warfare",
+      "balance": "Honor: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} Honor",
+      "honorFloat": "+{amount} Honor",
+      "honorGain": "+{amount} Honor ({reason})",
+      "notEnoughHonor": "Not enough honor.",
+      "reasons": {
+        "arenaWin": "Arena win",
+        "fiestaKill": "Fiesta takedown",
+        "fiestaComplete": "Fiesta match",
+        "fiestaWin": "Fiesta win"
+      }
     }
   },
   "mailUi": {
@@ -2421,6 +2443,13 @@ export const sv_SE: EnTranslations = {
       "nothingToHarvest": "That corpse has nothing to harvest.",
       "alreadyHarvested": "This corpse has already been harvested."
     },
+    "dailyRewards": {
+      "claimed": "You claim your daily reward."
+    },
+    "collections": {
+      "notFound": "That does not exist.",
+      "tooFar": "Too far away."
+    },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
       "noItems1": "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",
@@ -2481,6 +2510,18 @@ export const sv_SE: EnTranslations = {
       "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
       "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
       "helpLine": "Homestead: /homestead, /homestead claim."
+    },
+    "greenpawCutting": {
+      "alreadyPlanted": "You have already planted your cutting. Give it time to grow.",
+      "needHomestead": "You need a homestead plot before you can plant this.",
+      "tooFar": "You must be at your own homestead to plant this.",
+      "planted": "You plant the cutting at your homestead. Give it time.",
+      "grown": "Your cutting has grown into a companion. It follows you now."
+    },
+    "readyCheck": {
+      "mustBeInParty": "You must be in a party to start a ready check.",
+      "alreadyInProgress": "A ready check is already in progress.",
+      "summary": "Ready check: {ready} ready, {notReady} not ready, {noResponse} no response."
     }
   },
   "lockpickUi": {
@@ -3322,6 +3363,8 @@ export const sv_SE: EnTranslations = {
       "openTrade": "Öppna byteshandel",
       "duelRequest": "{name} har utmanat dig på en duell!",
       "acceptDuel": "Anta duell",
+      "readyCheckStart": "{name} has started a ready check.",
+      "markReady": "Ready",
       "decline": "Avböj"
     },
     "combat": {
@@ -3798,6 +3841,22 @@ export const sv_SE: EnTranslations = {
       "stool": "Stool"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "Daily Rewards",
+    "window": {
+      "title": "Daily Rewards",
+      "close": "Close daily rewards",
+      "claim": "Claim",
+      "claimAria": "Claim today's reward",
+      "claimed": "Claimed. Come back tomorrow.",
+      "locked": "Daily rewards are unavailable on this account right now.",
+      "hint": "One reward per day. Missing a day never costs you anything."
+    },
+    "cell": {
+      "today": "Today",
+      "itemCount": "{count}x {item}"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "g",
@@ -4018,7 +4077,8 @@ export const sv_SE: EnTranslations = {
       "needAria": "Behov av {item}",
       "greedAria": "Girighet för {item}",
       "passAria": "Avstå från {item}",
-      "everyonePassed": "Alla avstod från {item}."
+      "everyonePassed": "Alla avstod från {item}.",
+      "winnerOffline": "The winner of {item} was offline; it was returned to the corpse."
     }
   },
   "entities": {
@@ -4081,7 +4141,7 @@ export const sv_SE: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Krossa rustning",
-        "description": "Krossar målets rustning och minskar den med {damage} per applicering. Staplas upp till 5 gånger. Genererar en stor mängd hot."
+        "description": "Krossar målets rustning och minskar den med 2% per applicering. Staplas upp till 5 gånger. Genererar en stor mängd hot."
       },
       "taunt": {
         "name": "Håna",
@@ -5179,6 +5239,99 @@ export const sv_SE: EnTranslations = {
       "mistcallers_duffel": {
         "name": "Mistcallers Sjösäck"
       },
+      "bramblewar_warhelm": {
+        "name": "Törnkrig Huvud"
+      },
+      "bramblewar_warspaulders": {
+        "name": "Törnkrig Axlar"
+      },
+      "bramblewar_warplate": {
+        "name": "Törnkrig Bröst"
+      },
+      "bramblewar_girdle": {
+        "name": "Törnkrig Midja"
+      },
+      "bramblewar_legguards": {
+        "name": "Törnkrig Ben"
+      },
+      "bramblewar_gauntlets": {
+        "name": "Törnkrig Händer"
+      },
+      "bramblewar_sabatons": {
+        "name": "Törnkrig Fötter"
+      },
+      "thornbound_crown": {
+        "name": "Törnbunden Huvud"
+      },
+      "thornbound_spaulders": {
+        "name": "Törnbunden Axlar"
+      },
+      "thornbound_hauberk": {
+        "name": "Törnbunden Bröst"
+      },
+      "thornbound_waistguard": {
+        "name": "Törnbunden Midja"
+      },
+      "thornbound_legmail": {
+        "name": "Törnbunden Ben"
+      },
+      "thornbound_handguards": {
+        "name": "Törnbunden Händer"
+      },
+      "thornbound_greaves": {
+        "name": "Törnbunden Fötter"
+      },
+      "nettlestalker_cowl": {
+        "name": "Nässeljägare Huvud"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "Nässeljägare Axlar"
+      },
+      "nettlestalker_harness": {
+        "name": "Nässeljägare Bröst"
+      },
+      "nettlestalker_waistband": {
+        "name": "Nässeljägare Midja"
+      },
+      "nettlestalker_legguards": {
+        "name": "Nässeljägare Ben"
+      },
+      "nettlestalker_grips": {
+        "name": "Nässeljägare Händer"
+      },
+      "nettlestalker_treads": {
+        "name": "Nässeljägare Fötter"
+      },
+      "mossweave_cowl": {
+        "name": "Mossväv Huvud"
+      },
+      "mossweave_mantle": {
+        "name": "Mossväv Axlar"
+      },
+      "mossweave_raiment": {
+        "name": "Mossväv Bröst"
+      },
+      "mossweave_cord": {
+        "name": "Mossväv Midja"
+      },
+      "mossweave_legwraps": {
+        "name": "Mossväv Ben"
+      },
+      "mossweave_handwraps": {
+        "name": "Mossväv Händer"
+      },
+      "mossweave_slippers": {
+        "name": "Mossväv Fötter"
+      },
+      "last_bloom_greatblade": {
+        "name": "Sista Blomningens Storsvärd"
+      },
+      "thornbite_razor": {
+        "name": "Törnbett-Rakkniv"
+      },
+      "heartwood_warstaff": {
+        "name": "Kärnvedens Krigsstav"
+      },
       "bristleback_maul": {
         "name": "Borstryggens klubba"
       },
@@ -6056,6 +6209,15 @@ export const sv_SE: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "Heartwood Colossus"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "Greenpaw's Cutting"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "Greenpaw's Cutting"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "Greenpaw's Cutting"
       }
     },
     "npcs": {
@@ -6173,6 +6335,11 @@ export const sv_SE: EnTranslations = {
         "name": "Elder Yarrow",
         "title": "Profession Trainer",
         "greeting": "Every build starts as a question. Which second calling speaks to you?"
+      },
+      "bramble": {
+        "name": "Bramble",
+        "title": "Honor Quartermaster",
+        "greeting": "The sands remember every victory. Spend your honor well."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",

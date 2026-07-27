@@ -168,6 +168,7 @@ export function endDuel(ctx: SimContext, duel: DuelState, winnerPid: number | nu
   if (winnerPid !== null && aMeta && bMeta) {
     const winner = winnerPid === duel.a ? aMeta : bMeta;
     const loser = winnerPid === duel.a ? bMeta : aMeta;
+    ctx.onPvpWinForDeeds('duel', winner);
     ctx.emit({ type: 'duelEnd', winnerName: winner.name, loserName: loser.name });
   } else if (aMeta && bMeta) {
     for (const dPid of [duel.a, duel.b]) {

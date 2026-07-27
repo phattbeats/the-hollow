@@ -246,7 +246,6 @@ export const zh_CN: EnTranslations = {
       "chat": "跳转到聊天"
     },
     "mobile": {
-      "autorun": "自动奔跑",
       "jump": "跳跃",
       "leaderboard": "排行榜",
       "nameplates": "姓名板",
@@ -720,10 +719,18 @@ export const zh_CN: EnTranslations = {
         "spi": "精神降低 {value}",
         "allStats": "所有属性降低 {value}"
       },
+      "increasePct": {
+        "ap": "攻击强度提高 {pct}%",
+        "armor": "护甲提高 {pct}%",
+        "int": "智力提高 {pct}%",
+        "sta": "耐力提高 {pct}%"
+      },
       "dodge": "躲闪几率提高 {pct}%",
       "dodgeReduce": "躲闪几率降低 {pct}%",
       "armorFlat": "护甲降低 {value}",
       "armorFlatStacks": "护甲降低 {value}（{stacks} 层）",
+      "armorPct": "护甲降低 {pct}%",
+      "armorPctStacks": "护甲降低 {pct}%（{stacks} 层）",
       "mortalWound": "受到的治疗降低 {pct}%",
       "vulnerability": "受到的伤害提高 {pct}%",
       "physVuln": "受到的物理伤害提高 {pct}%",
@@ -990,6 +997,21 @@ export const zh_CN: EnTranslations = {
       "spore": "孢子",
       "toolTier": "{tier}级工具",
       "toolNone": "无工具"
+    },
+    "warfare": {
+      "ratingLabel": "战意",
+      "balance": "荣誉：{amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} 荣誉",
+      "honorFloat": "+{amount} 荣誉",
+      "honorGain": "+{amount} 荣誉（{reason}）",
+      "notEnoughHonor": "荣誉不足。",
+      "reasons": {
+        "arenaWin": "竞技场胜利",
+        "fiestaKill": "狂欢击倒",
+        "fiestaComplete": "狂欢比赛",
+        "fiestaWin": "狂欢胜利"
+      }
     }
   },
   "mailUi": {
@@ -2421,6 +2443,13 @@ export const zh_CN: EnTranslations = {
       "nothingToHarvest": "这具尸体没有什么可以采集的。",
       "alreadyHarvested": "这具尸体已经被采集过了。"
     },
+    "dailyRewards": {
+      "claimed": "你领取了每日奖励。"
+    },
+    "collections": {
+      "notFound": "那个东西不存在。",
+      "tooFar": "太远了。"
+    },
     "hearth": {
       "tooFar": "你得靠近绿掌修士才能喂他。",
       "noItems1": "……伙计，你两手空空啊。带点能烧的或能填饱肚子的东西来，我们再唠。",
@@ -2481,6 +2510,18 @@ export const zh_CN: EnTranslations = {
       "readoutNoHomesteadQuest": "你还没有家园。先完成绿掌修士的全部差事才能解锁。",
       "readoutNoHomesteadHint": "你还没有家园。站在空谷地里合适的位置，输入 /homestead claim。",
       "helpLine": "家园：/homestead，/homestead claim。"
+    },
+    "greenpawCutting": {
+      "alreadyPlanted": "你已经种下了插枝。给它一些时间成长。",
+      "needHomestead": "你需要先拥有一块宅地才能种下它。",
+      "tooFar": "你必须在自己的宅地才能种下它。",
+      "planted": "你在自己的宅地种下了插枝。耐心等待吧。",
+      "grown": "你的插枝已经长成了一只伙伴。它现在会跟随你。"
+    },
+    "readyCheck": {
+      "mustBeInParty": "你必须在队伍中才能发起准备检查。",
+      "alreadyInProgress": "准备检查已在进行中。",
+      "summary": "准备检查：{ready} 人已准备，{notReady} 人未准备，{noResponse} 人无响应。"
     }
   },
   "lockpickUi": {
@@ -3322,6 +3363,8 @@ export const zh_CN: EnTranslations = {
       "openTrade": "打开交易",
       "duelRequest": "{name} 向你发起了决斗挑战！",
       "acceptDuel": "接受决斗",
+      "readyCheckStart": "{name} 发起了准备检查。",
+      "markReady": "准备",
       "decline": "拒绝"
     },
     "combat": {
@@ -3798,6 +3841,22 @@ export const zh_CN: EnTranslations = {
       "stool": "凳子"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "每日奖励",
+    "window": {
+      "title": "每日奖励",
+      "close": "关闭每日奖励",
+      "claim": "领取",
+      "claimAria": "领取今日奖励",
+      "claimed": "已领取，明天再来。",
+      "locked": "此账号暂时无法领取每日奖励。",
+      "hint": "每天可领取一次。错过一天不会有任何损失。"
+    },
+    "cell": {
+      "today": "今天",
+      "itemCount": "{count}x {item}"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "金",
@@ -4018,7 +4077,8 @@ export const zh_CN: EnTranslations = {
       "needAria": "需求 {item}",
       "greedAria": "贪婪 {item}",
       "passAria": "放弃 {item}",
-      "everyonePassed": "所有人都放弃了 {item}。"
+      "everyonePassed": "所有人都放弃了 {item}。",
+      "winnerOffline": "{item}的获胜者已离线；战利品已归还尸体。"
     }
   },
   "entities": {
@@ -4081,7 +4141,7 @@ export const zh_CN: EnTranslations = {
       },
       "sunder_armor": {
         "name": "破甲攻击",
-        "description": "撕裂目标的护甲，每次使其降低 {damage}。最多叠加 5 次。产生大量威胁值。"
+        "description": "撕裂目标的护甲，每次使其降低 2%。最多叠加 5 次。产生大量威胁值。"
       },
       "taunt": {
         "name": "嘲讽",
@@ -5179,6 +5239,99 @@ export const zh_CN: EnTranslations = {
       "mistcallers_duffel": {
         "name": "唤雾者的行囊"
       },
+      "bramblewar_warhelm": {
+        "name": "荆棘战头部"
+      },
+      "bramblewar_warspaulders": {
+        "name": "荆棘战肩部"
+      },
+      "bramblewar_warplate": {
+        "name": "荆棘战胸部"
+      },
+      "bramblewar_girdle": {
+        "name": "荆棘战腰部"
+      },
+      "bramblewar_legguards": {
+        "name": "荆棘战腿部"
+      },
+      "bramblewar_gauntlets": {
+        "name": "荆棘战手部"
+      },
+      "bramblewar_sabatons": {
+        "name": "荆棘战脚部"
+      },
+      "thornbound_crown": {
+        "name": "荆棘缚头部"
+      },
+      "thornbound_spaulders": {
+        "name": "荆棘缚肩部"
+      },
+      "thornbound_hauberk": {
+        "name": "荆棘缚胸部"
+      },
+      "thornbound_waistguard": {
+        "name": "荆棘缚腰部"
+      },
+      "thornbound_legmail": {
+        "name": "荆棘缚腿部"
+      },
+      "thornbound_handguards": {
+        "name": "荆棘缚手部"
+      },
+      "thornbound_greaves": {
+        "name": "荆棘缚脚部"
+      },
+      "nettlestalker_cowl": {
+        "name": "荨麻潜者头部"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "荨麻潜者肩部"
+      },
+      "nettlestalker_harness": {
+        "name": "荨麻潜者胸部"
+      },
+      "nettlestalker_waistband": {
+        "name": "荨麻潜者腰部"
+      },
+      "nettlestalker_legguards": {
+        "name": "荨麻潜者腿部"
+      },
+      "nettlestalker_grips": {
+        "name": "荨麻潜者手部"
+      },
+      "nettlestalker_treads": {
+        "name": "荨麻潜者脚部"
+      },
+      "mossweave_cowl": {
+        "name": "苔藓织头部"
+      },
+      "mossweave_mantle": {
+        "name": "苔藓织肩部"
+      },
+      "mossweave_raiment": {
+        "name": "苔藓织胸部"
+      },
+      "mossweave_cord": {
+        "name": "苔藓织腰部"
+      },
+      "mossweave_legwraps": {
+        "name": "苔藓织腿部"
+      },
+      "mossweave_handwraps": {
+        "name": "苔藓织手部"
+      },
+      "mossweave_slippers": {
+        "name": "苔藓织脚部"
+      },
+      "last_bloom_greatblade": {
+        "name": "末花巨刃"
+      },
+      "thornbite_razor": {
+        "name": "棘咬剃刃"
+      },
+      "heartwood_warstaff": {
+        "name": "心木战杖"
+      },
       "bristleback_maul": {
         "name": "硬鬃重槌"
       },
@@ -6056,6 +6209,15 @@ export const zh_CN: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "心材巨像"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "绿掌的插枝"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "绿掌的插枝"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "绿掌的插枝"
       }
     },
     "npcs": {
@@ -6174,6 +6336,11 @@ export const zh_CN: EnTranslations = {
         "title": "副职业训练师",
         "greeting": "每一套build都始于一个问题：哪个副职业在召唤你？"
       },
+      "bramble": {
+        "name": "布兰博",
+        "title": "荣誉军需官",
+        "greeting": "沙场记得每一场胜利。好好花你的荣誉吧。"
+      },
       "tidewatcher_ondrel": {
         "name": "翁德雷尔·凡恩",
         "title": "守潮者",
@@ -6266,14 +6433,14 @@ export const zh_CN: EnTranslations = {
         "greeting": "你可以坐下。大多数人只是走过去。司事早就把我的名字从册子上划掉了，一个被划掉的名字，学会了安静，好让谁都不必想起它还在这儿。"
       },
       "withered_planting": {
-        "name": "The Withered Planting",
-        "title": "The Tribe's Old Willow",
-        "greeting": "Dry roots, dry leaves. Whatever this was meant to grow into, it hasn't yet, and it's been a long while waiting."
+        "name": "枯萎的苗圃",
+        "title": "部族的老柳树",
+        "greeting": "干枯的根，干枯的叶。无论它本该长成什么，如今都还没长成，而它已经等了很久很久。"
       },
       "buried_root": {
-        "name": "A Buried Root",
-        "title": "Under the Shrine",
-        "greeting": "Dry. Dry as anything down here ever gets."
+        "name": "一截埋着的根",
+        "title": "神龛之下",
+        "greeting": "干。干得就像这底下所有东西一样。"
       }
     },
     "quests": {
@@ -7230,22 +7397,22 @@ export const zh_CN: EnTranslations = {
         }
       },
       "q_the_long_way_around": {
-        "title": "The Long Way Around",
-        "text": "There's a planting the tribe left half-finished up the old willow, and it's dying for want of one good pour. I can't make that climb anymore, but you've got the legs for it. Take the can. Mind the branches; they hold if you're honest with them.",
-        "completion": "It'll live now. You wouldn't think one climb and one pour was much, against everything else out there. It isn't much. It's only everything to the one thing you poured it on.",
+        "title": "绕远的路",
+        "text": "老柳树上头有一处苗圃，部族没能栽完，如今就差一场好好的浇灌，眼看要枯死了。那样的攀爬我再也做不来了，可你有这副腿脚。把水壶带上。当心那些枝子，只要你对它们诚实，它们就撑得住你。",
+        "completion": "它现在能活下来了。你或许会觉得，比起外头那么多事，一次攀爬、一次浇灌算不得什么。它确实算不得什么。可对你浇灌的那一样东西来说，它就是一切。",
         "objectives": {
           "0": {
-            "label": "Water carried up the willow path"
+            "label": "沿柳树小径把水送上去"
           }
         }
       },
       "q_the_watering_can": {
-        "title": "The Watering Can",
-        "text": "I've asked you for small things, and you've done them all without once asking why. Here's the last one, and it isn't small, though it'll look it. Take my can down under the shrine, to the thing that's buried there, and give it water. It's been waiting a long time to be given something instead of asked for something.",
-        "completion": "You did it. Of course you did. That was the water, you understand. All of it, all the way back to the day you found me at the lake and thought nothing of it. The same pour, the same promise, kept one more time. Thank you. Now go and be gentle with the world. It is the only thing that ever changed it.",
+        "title": "那把水壶",
+        "text": "我请你做过许多小事，你件件都做了，一次也没问过为什么。这是最后一件，它看着小，其实不小。把我的水壶带到神龛底下，交给埋在那里的那一样东西，给它浇上水。它等了很久很久，等的是有人给它什么，而不是向它要什么。",
+        "completion": "你做到了。你当然做到了。你明白吗，那浇下去的是水。是全部的水，一直追溯到你在湖边遇见我、却不当一回事的那一天。同样的一浇，同样的一诺，又一次守住了。谢谢你。去吧，温柔地对待这个世界。唯有这一样，才真正改变过它。",
         "objectives": {
           "0": {
-            "label": "Water given to the buried root"
+            "label": "把水浇给那截埋着的根"
           }
         }
       }

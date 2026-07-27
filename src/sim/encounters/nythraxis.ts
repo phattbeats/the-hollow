@@ -28,6 +28,7 @@
 import { isStunned } from '../combat/cc';
 import { ITEMS, MOBS, NPCS, QUESTS } from '../data';
 import { createMob, createNpc } from '../entity';
+import { instanceSlotAt } from '../instances/dungeons';
 import type { PlayerMeta } from '../sim';
 import type { SimContext } from '../sim_context';
 import { clearThreat, threatEntries } from '../threat';
@@ -460,11 +461,20 @@ export function nythraxisTransitionStunTargets(ctx: SimContext, boss: Entity): E
   );
 }
 
+// Room radius alone is not instance-safe: two concurrent Nythraxis instances lay
+// out their arenas at different world origins, but a player standing near the
+// edge of one instance's bounding box could still fall within NYTHRAXIS_ROOM_RADIUS
+// of another instance's boss if the origins are ever spaced closer than the room
+// diameter. Clip the roster to players who resolve to the SAME instance slot as
+// the boss so a lockout grant can never bleed onto an unrelated raid's members.
 export function nythraxisRoomMetas(ctx: SimContext, boss: Entity): PlayerMeta[] {
+  const bossSlot = instanceSlotAt(ctx, boss.spawnPos);
   const out: PlayerMeta[] = [];
   for (const meta of ctx.players.values()) {
     const p = ctx.entities.get(meta.entityId);
-    if (p && dist2d(p.pos, boss.spawnPos) <= NYTHRAXIS_ROOM_RADIUS) out.push(meta);
+    if (!p || dist2d(p.pos, boss.spawnPos) > NYTHRAXIS_ROOM_RADIUS) continue;
+    if (bossSlot !== null && instanceSlotAt(ctx, p.pos) !== bossSlot) continue;
+    out.push(meta);
   }
   out.sort((a, b) => a.entityId - b.entityId);
   return out;

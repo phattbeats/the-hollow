@@ -12,6 +12,7 @@ import {
   nonSelfRepaintDue,
   targetFrameNonSelfIntervalMs,
 } from '../game/ui_tier_knobs';
+import { currentUtcDay } from '../game/utc_day';
 import { voice } from '../game/voice';
 import { castBarState, consumeBarState } from '../render/cast_bar';
 import { CharacterPreview } from '../render/characters';
@@ -24,6 +25,7 @@ import {
 } from '../render/characters/portrait';
 import type { Renderer } from '../render/renderer';
 import { type AugmentCategory, augmentCategory } from '../sim/content/augments';
+import { DAILY_REWARD_CYCLE } from '../sim/content/daily_rewards';
 import {
   EVENT_SKIN_TIERS,
   MECH_CHROMAS,
@@ -69,6 +71,7 @@ import type {
   AbilityDef,
   CalendarResultCode,
   EquipSlot,
+  HonorReason,
   InvSlot,
   LootRollChoice,
   MasterLootThreshold,
@@ -151,6 +154,8 @@ import {
 } from './combat_sfx';
 import { type CardinalId, compassView } from './compass';
 import { formatMinimapCoords } from './coords';
+import { buildDailyRewardsView } from './daily_rewards_view';
+import { renderDailyRewardsWindow } from './daily_rewards_window';
 import { DelveMapPainter } from './delve_map_painter';
 import { markDialogRoot } from './dialog_root';
 import { DISCORD_SURFACES_ENABLED } from './discord_flags';
@@ -430,6 +435,12 @@ const CALENDAR_RESULT_KEYS: Record<CalendarResultCode, TranslationKey> = {
   badInput: 'hudChrome.calendar.result.badInput',
   calendarFull: 'hudChrome.calendar.result.calendarFull',
   eventGone: 'hudChrome.calendar.result.eventGone',
+};
+const HONOR_REASON_KEYS: Record<HonorReason, TranslationKey> = {
+  arena_win: 'hudChrome.warfare.reasons.arenaWin',
+  fiesta_kill: 'hudChrome.warfare.reasons.fiestaKill',
+  fiesta_complete: 'hudChrome.warfare.reasons.fiestaComplete',
+  fiesta_win: 'hudChrome.warfare.reasons.fiestaWin',
 };
 const RAID_MARKER_LABEL_KEYS = [
   'hud.markers.names.star',
@@ -1633,6 +1644,9 @@ export class Hud {
       case 'vendor-window':
         this.closeVendor();
         break;
+      case 'daily-rewards-window':
+        this.closeDailyRewards();
+        break;
       case 'housing-window':
         this.closeHousing();
         break;
@@ -2444,8 +2458,8 @@ export class Hud {
     document.getElementById('ui') as HTMLElement,
     (x, y, z) => this.renderer.worldToScreen(x, y, z),
     getUiScale,
-    // Tier the pool cap / TTL / drop-non-crit from the STATIC preset (data-fx-level),
-    // never the governor. spawn() reads this per event.
+    // Tier the pool cap / TTL from the STATIC preset (data-fx-level), never the
+    // governor. spawn() reads this per event.
     { getFxTier: () => this.fxTier() },
   );
   // The player frame is the FIRST instance of the unit_frame family. It owns
@@ -2838,6 +2852,7 @@ export class Hud {
       return item ? itemDisplayName(item) : null;
     },
     refreshKeybindLabels: () => this.refreshKeybindLabels(),
+    openDailyRewards: () => this.openDailyRewards(),
     buildDropdown: (options, current, onChange, placeholder, a11y) =>
       this.buildDropdown(options, current, onChange, placeholder, a11y),
     setDropdownValue: (root, value) => this.setDropdownValue(root, value),
@@ -3126,6 +3141,15 @@ export class Hud {
           )}</div>`;
         }
       }
+    }
+    const warfareRating = Math.min(item.pvpOffenseRating ?? 0, item.pvpDefenseRating ?? 0);
+    if (warfareRating > 0) {
+      html += `<div class="tt-green">${esc(
+        t('itemUi.tooltip.stat', {
+          value: itemNumber(warfareRating),
+          stat: t('hudChrome.warfare.ratingLabel'),
+        }),
+      )}</div>`;
     }
     if (item.foodHp)
       html += `<div class="tt-desc">${esc(t('itemUi.tooltip.useFood', { amount: itemNumber(item.foodHp), seconds: itemNumber(CONSUME_DURATION) }))}</div>`;
@@ -6189,6 +6213,28 @@ export class Hud {
           }
           break;
         }
+        case 'honor': {
+          const amount = formatNumber(ev.amount, { maximumFractionDigits: 0 });
+          const honorShape = fctSpawnShape({ type: 'honor' });
+          if (honorShape) {
+            this.fctPainter.spawn(
+              {
+                ...honorShape,
+                text: t('hudChrome.warfare.honorFloat', { amount }),
+                target: sim.player,
+              },
+              now,
+            );
+          }
+          this.log(
+            t('hudChrome.warfare.honorGain', {
+              amount,
+              reason: t(HONOR_REASON_KEYS[ev.reason]),
+            }),
+            '#ffd100',
+          );
+          break;
+        }
         case 'levelup': {
           this.showBanner(t('hud.core.levelBanner', { level: ev.level }));
           this.log(t('hud.core.levelLog', { level: ev.level }), '#ffd100');
@@ -6529,6 +6575,15 @@ export class Hud {
             t('hud.prompts.acceptDuel'),
             () => this.sim.duelAccept(),
             () => this.sim.duelDecline(),
+          );
+          break;
+        case 'readyCheckStart':
+          audio.click();
+          this.showPrompt(
+            t('hud.prompts.readyCheckStart', { name: `<b>${esc(ev.fromName)}</b>` }),
+            t('hud.prompts.markReady'),
+            () => this.sim.readyCheckRespond(true),
+            () => this.sim.readyCheckRespond(false),
           );
           break;
         case 'duelCountdown':
@@ -7026,6 +7081,7 @@ export class Hud {
       "This quest can't be shared.": 'hudChrome.questShare.notShareable',
       'That item is not sold here.': 'itemUi.errors.notSoldHere',
       'Not enough money.': 'itemUi.errors.notEnoughMoney',
+      'Not enough honor.': 'hudChrome.warfare.notEnoughHonor',
       'You must bring your goods to the Merchant.': 'itemUi.errors.bringGoods',
       'The Merchant will not broker quest items.': 'itemUi.errors.noQuestItems',
       'You do not have that many to sell.': 'itemUi.errors.notEnoughToSell',
@@ -7223,6 +7279,9 @@ export class Hud {
     match = /^Everyone passed on (.+)\.$/.exec(text);
     if (match)
       return t('itemUi.lootRoll.everyonePassed', { item: itemDisplayNameFromSource(match[1]) });
+    match = /^The winner of (.+) was offline; it was returned to the corpse\.$/.exec(text);
+    if (match)
+      return t('itemUi.lootRoll.winnerOffline', { item: itemDisplayNameFromSource(match[1]) });
     match = /^Sold (\d+) junk items? for (.+)\.$/.exec(text);
     if (match) {
       const n = Number(match[1]);
@@ -7801,12 +7860,16 @@ export class Hud {
 
   // Open a world-placed readable book (PHAA-552) in the shared quest dialog and
   // page through its content with the SAME pure paginator the NPC intro uses
-  // (npc_intro_view), so there is no second reader. Reading is client-only: no
-  // world command is sent, the text is looked up by id through the `readable`
-  // entity-i18n kind. Called by main.ts's interact-key handler when the player
-  // stands on a book (renderer.nearReadable).
+  // (npc_intro_view), so there is no second reader. The text itself is looked
+  // up by id through the `readable` entity-i18n kind (language-agnostic sim).
+  // Opening now also fires the collection-tracking read command (PHAA-626):
+  // the server marks the id collected (idempotent, re-checks range) and the
+  // (sibling-ticket) UI panel reads the result off collectedIds; this call
+  // never blocks the local page render. Called by main.ts's interact-key
+  // handler when the player stands on a book (renderer.nearReadable).
   openReadable(id: string): void {
     if (!READABLES_BY_ID[id]) return;
+    this.sim.readCollectible(id);
     this.closeOtherWindows('#quest-dialog');
     if ($('#quest-dialog').style.display !== 'block')
       this.questDialogTrap = this.focusManager.open({ root: () => $('#quest-dialog') });
@@ -8697,6 +8760,7 @@ export class Hud {
           enabled: junk.length > 0,
           proceeds: junkProceeds,
         },
+        honorBalance: this.sim.honor,
       },
     );
   }
@@ -8724,6 +8788,51 @@ export class Hud {
 
   get vendorOpen(): boolean {
     return this.openVendorNpcId !== null;
+  }
+
+  // -------------------------------------------------------------------------
+  // Daily rewards (PHAA-660, docs/design/daily-rewards.md). Opened only from a
+  // deliberate menu entry (never a login splash or a HUD badge/nag); the recipe
+  // is the Vendor window above (rebuild-on-open, not a per-frame hot painter).
+  // -------------------------------------------------------------------------
+
+  private dailyRewardsWindowOpen = false;
+  private dailyRewardsFocusReturn: HTMLElement | null = null;
+
+  openDailyRewards(): void {
+    this.closeOtherWindows('#daily-rewards-window');
+    this.dailyRewardsWindowOpen = true;
+    this.dailyRewardsFocusReturn = this.windowFocus('#daily-rewards-window').captureFocus();
+    this.renderDailyRewards();
+  }
+
+  private renderDailyRewards(): void {
+    if (!this.dailyRewardsWindowOpen) return;
+    renderDailyRewardsWindow(
+      $('#daily-rewards-window'),
+      buildDailyRewardsView(this.sim.dailyRewards, DAILY_REWARD_CYCLE, currentUtcDay()),
+      {
+        ...this.presentationBag,
+        items: ITEMS,
+        onClaim: () => {
+          this.sim.claimDailyReward();
+          this.renderDailyRewards();
+        },
+        onClose: () => this.closeDailyRewards(),
+      },
+    );
+  }
+
+  closeDailyRewards(): void {
+    $('#daily-rewards-window').style.display = 'none';
+    this.dailyRewardsWindowOpen = false;
+    this.windowFocus('#daily-rewards-window').restoreFocus(this.dailyRewardsFocusReturn);
+    this.dailyRewardsFocusReturn = null;
+    this.hideTooltip();
+  }
+
+  get dailyRewardsOpen(): boolean {
+    return this.dailyRewardsWindowOpen;
   }
 
   // -------------------------------------------------------------------------

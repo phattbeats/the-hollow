@@ -260,6 +260,8 @@ const hudStringsEn = {
       openTrade: 'Open Trade',
       duelRequest: '{name} has challenged you to a duel!',
       acceptDuel: 'Accept Duel',
+      readyCheckStart: '{name} has started a ready check.',
+      markReady: 'Ready',
       decline: 'Decline',
     },
     combat: {

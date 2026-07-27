@@ -246,7 +246,6 @@ export const pl_PL: EnTranslations = {
       "chat": "Przejdź do czatu"
     },
     "mobile": {
-      "autorun": "Autobieg",
       "jump": "Skok",
       "leaderboard": "Rankingi",
       "nameplates": "Nazwy",
@@ -720,10 +719,18 @@ export const pl_PL: EnTranslations = {
         "spi": "Verringert Willenskraft um {value}",
         "allStats": "Verringert alle Attribute um {value}"
       },
+      "increasePct": {
+        "ap": "Increases attack power by {pct}%",
+        "armor": "Increases armor by {pct}%",
+        "int": "Increases Intellect by {pct}%",
+        "sta": "Increases Stamina by {pct}%"
+      },
       "dodge": "Erhöht Ausweichchance um {pct}%",
       "dodgeReduce": "Verringert Ausweichchance um {pct}%",
       "armorFlat": "Verringert Rüstung um {value}",
       "armorFlatStacks": "Verringert Rüstung um {value} ({stacks} Stapel)",
+      "armorPct": "Reduces armor by {pct}%",
+      "armorPctStacks": "Reduces armor by {pct}% ({stacks} stacks)",
       "mortalWound": "Verringert erhaltene Heilung um {pct}%",
       "vulnerability": "Erhöht erlittenen Schaden um {pct}%",
       "physVuln": "Erhöht erlittenen physischen Schaden um {pct}%",
@@ -990,6 +997,21 @@ export const pl_PL: EnTranslations = {
       "spore": "Spore",
       "toolTier": "Tier {tier} tool",
       "toolNone": "No tool"
+    },
+    "warfare": {
+      "ratingLabel": "Warfare",
+      "balance": "Honor: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} Honor",
+      "honorFloat": "+{amount} Honor",
+      "honorGain": "+{amount} Honor ({reason})",
+      "notEnoughHonor": "Not enough honor.",
+      "reasons": {
+        "arenaWin": "Arena win",
+        "fiestaKill": "Fiesta takedown",
+        "fiestaComplete": "Fiesta match",
+        "fiestaWin": "Fiesta win"
+      }
     }
   },
   "mailUi": {
@@ -2421,6 +2443,13 @@ export const pl_PL: EnTranslations = {
       "nothingToHarvest": "That corpse has nothing to harvest.",
       "alreadyHarvested": "This corpse has already been harvested."
     },
+    "dailyRewards": {
+      "claimed": "You claim your daily reward."
+    },
+    "collections": {
+      "notFound": "That does not exist.",
+      "tooFar": "Too far away."
+    },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
       "noItems1": "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",
@@ -2481,6 +2510,18 @@ export const pl_PL: EnTranslations = {
       "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
       "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
       "helpLine": "Homestead: /homestead, /homestead claim."
+    },
+    "greenpawCutting": {
+      "alreadyPlanted": "You have already planted your cutting. Give it time to grow.",
+      "needHomestead": "You need a homestead plot before you can plant this.",
+      "tooFar": "You must be at your own homestead to plant this.",
+      "planted": "You plant the cutting at your homestead. Give it time.",
+      "grown": "Your cutting has grown into a companion. It follows you now."
+    },
+    "readyCheck": {
+      "mustBeInParty": "You must be in a party to start a ready check.",
+      "alreadyInProgress": "A ready check is already in progress.",
+      "summary": "Ready check: {ready} ready, {notReady} not ready, {noResponse} no response."
     }
   },
   "lockpickUi": {
@@ -3322,6 +3363,8 @@ export const pl_PL: EnTranslations = {
       "openTrade": "Otwórz handel",
       "duelRequest": "{name} wyzwał cię na pojedynek!",
       "acceptDuel": "Przyjmij pojedynek",
+      "readyCheckStart": "{name} has started a ready check.",
+      "markReady": "Ready",
       "decline": "Odrzuć"
     },
     "combat": {
@@ -3798,6 +3841,22 @@ export const pl_PL: EnTranslations = {
       "stool": "Stool"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "Daily Rewards",
+    "window": {
+      "title": "Daily Rewards",
+      "close": "Close daily rewards",
+      "claim": "Claim",
+      "claimAria": "Claim today's reward",
+      "claimed": "Claimed. Come back tomorrow.",
+      "locked": "Daily rewards are unavailable on this account right now.",
+      "hint": "One reward per day. Missing a day never costs you anything."
+    },
+    "cell": {
+      "today": "Today",
+      "itemCount": "{count}x {item}"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "z",
@@ -4018,7 +4077,8 @@ export const pl_PL: EnTranslations = {
       "needAria": "Potrzeba na {item}",
       "greedAria": "Chciwość na {item}",
       "passAria": "Pasuj na {item}",
-      "everyonePassed": "Wszyscy spasowali na {item}."
+      "everyonePassed": "Wszyscy spasowali na {item}.",
+      "winnerOffline": "The winner of {item} was offline; it was returned to the corpse."
     }
   },
   "entities": {
@@ -4081,7 +4141,7 @@ export const pl_PL: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Strzaskanie pancerza",
-        "description": "Strzaskuje pancerz celu, zmniejszając go o {damage} za każde nałożenie. Kumuluje się do 5 razy. Generuje wysokie zagrożenie."
+        "description": "Strzaskuje pancerz celu, zmniejszając go o 2% za każde nałożenie. Kumuluje się do 5 razy. Generuje wysokie zagrożenie."
       },
       "taunt": {
         "name": "Prowokacja",
@@ -5179,6 +5239,99 @@ export const pl_PL: EnTranslations = {
       "mistcallers_duffel": {
         "name": "Worek Podróżny Mistcallera"
       },
+      "bramblewar_warhelm": {
+        "name": "Cierniwojna Głowa"
+      },
+      "bramblewar_warspaulders": {
+        "name": "Cierniwojna Ramiona"
+      },
+      "bramblewar_warplate": {
+        "name": "Cierniwojna Tors"
+      },
+      "bramblewar_girdle": {
+        "name": "Cierniwojna Pas"
+      },
+      "bramblewar_legguards": {
+        "name": "Cierniwojna Nogi"
+      },
+      "bramblewar_gauntlets": {
+        "name": "Cierniwojna Dłonie"
+      },
+      "bramblewar_sabatons": {
+        "name": "Cierniwojna Stopy"
+      },
+      "thornbound_crown": {
+        "name": "Ciernywięź Głowa"
+      },
+      "thornbound_spaulders": {
+        "name": "Ciernywięź Ramiona"
+      },
+      "thornbound_hauberk": {
+        "name": "Ciernywięź Tors"
+      },
+      "thornbound_waistguard": {
+        "name": "Ciernywięź Pas"
+      },
+      "thornbound_legmail": {
+        "name": "Ciernywięź Nogi"
+      },
+      "thornbound_handguards": {
+        "name": "Ciernywięź Dłonie"
+      },
+      "thornbound_greaves": {
+        "name": "Ciernywięź Stopy"
+      },
+      "nettlestalker_cowl": {
+        "name": "Pokrzywołowca Głowa"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "Pokrzywołowca Ramiona"
+      },
+      "nettlestalker_harness": {
+        "name": "Pokrzywołowca Tors"
+      },
+      "nettlestalker_waistband": {
+        "name": "Pokrzywołowca Pas"
+      },
+      "nettlestalker_legguards": {
+        "name": "Pokrzywołowca Nogi"
+      },
+      "nettlestalker_grips": {
+        "name": "Pokrzywołowca Dłonie"
+      },
+      "nettlestalker_treads": {
+        "name": "Pokrzywołowca Stopy"
+      },
+      "mossweave_cowl": {
+        "name": "Mchotkanina Głowa"
+      },
+      "mossweave_mantle": {
+        "name": "Mchotkanina Ramiona"
+      },
+      "mossweave_raiment": {
+        "name": "Mchotkanina Tors"
+      },
+      "mossweave_cord": {
+        "name": "Mchotkanina Pas"
+      },
+      "mossweave_legwraps": {
+        "name": "Mchotkanina Nogi"
+      },
+      "mossweave_handwraps": {
+        "name": "Mchotkanina Dłonie"
+      },
+      "mossweave_slippers": {
+        "name": "Mchotkanina Stopy"
+      },
+      "last_bloom_greatblade": {
+        "name": "Wielkie Ostrze Ostatniego Kwiatu"
+      },
+      "thornbite_razor": {
+        "name": "Brzytwa Ciernioukąszenia"
+      },
+      "heartwood_warstaff": {
+        "name": "Wojenna Laska z Twardzieli"
+      },
       "bristleback_maul": {
         "name": "Tłuk szczeciniastych"
       },
@@ -6056,6 +6209,15 @@ export const pl_PL: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "Heartwood Colossus"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "Greenpaw's Cutting"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "Greenpaw's Cutting"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "Greenpaw's Cutting"
       }
     },
     "npcs": {
@@ -6173,6 +6335,11 @@ export const pl_PL: EnTranslations = {
         "name": "Elder Yarrow",
         "title": "Profession Trainer",
         "greeting": "Every build starts as a question. Which second calling speaks to you?"
+      },
+      "bramble": {
+        "name": "Bramble",
+        "title": "Honor Quartermaster",
+        "greeting": "The sands remember every victory. Spend your honor well."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",

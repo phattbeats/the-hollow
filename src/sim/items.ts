@@ -134,6 +134,10 @@ export function useItem(ctx: SimContext, itemId: string, pid?: number): ItemUseR
     ctx.openSkinSelect(meta, def.use.catalog ?? 'class', itemId);
     return;
   }
+  if (def.use?.type === 'plant') {
+    ctx.plantGreenpawCutting(meta.entityId);
+    return;
+  }
   if (p.castingAbility === FISHING_CAST_ID) {
     ctx.error(meta.entityId, 'You are busy.');
     return;
@@ -233,7 +237,9 @@ export function buyItem(ctx: SimContext, npcId: number, itemId: string, pid?: nu
     ctx.error(meta.entityId, 'That item is not sold here.');
     return;
   }
-  if (!def?.buyValue) {
+  const copperCost = def?.buyValue ?? 0;
+  const honorCost = def?.priceHonor ?? 0;
+  if (!def || (copperCost <= 0 && honorCost <= 0)) {
     ctx.error(meta.entityId, 'That item is not for sale.');
     return;
   }
@@ -241,15 +247,20 @@ export function buyItem(ctx: SimContext, npcId: number, itemId: string, pid?: nu
     ctx.error(meta.entityId, 'Too far away.');
     return;
   }
-  if (meta.copper < def.buyValue) {
+  if (meta.copper < copperCost) {
     ctx.error(meta.entityId, 'Not enough money.');
+    return;
+  }
+  if (meta.honor < honorCost) {
+    ctx.error(meta.entityId, 'Not enough honor.');
     return;
   }
   if (!ctx.canAddItem(itemId, 1, meta.entityId)) {
     bagsFullError(ctx, meta.entityId);
     return;
   }
-  meta.copper -= def.buyValue;
+  meta.copper -= copperCost;
+  meta.honor -= honorCost;
   ctx.addItem(itemId, 1, meta.entityId);
   ctx.emit({ type: 'vendor', action: 'buy', itemId, pid: meta.entityId });
 }
@@ -388,6 +399,7 @@ export function buyBackItem(ctx: SimContext, itemId: string, pid?: number): void
   if (slot.count <= 0) meta.vendorBuyback = meta.vendorBuyback.filter((s) => s !== slot);
   addItemSilent(itemId, 1, meta);
   ctx.onInventoryChangedForQuests(meta);
+  ctx.onInventoryChangedForDeeds(meta);
   ctx.emit({ type: 'vendor', action: 'buyback', itemId, pid: meta.entityId });
   ctx.emit({
     type: 'loot',

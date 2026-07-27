@@ -246,7 +246,6 @@ export const tr_TR: EnTranslations = {
       "chat": "Sohbete Atla"
     },
     "mobile": {
-      "autorun": "Otomatik Koşu",
       "jump": "Zıpla",
       "leaderboard": "Sıralama",
       "nameplates": "İsimler",
@@ -720,10 +719,18 @@ export const tr_TR: EnTranslations = {
         "spi": "Reduce el espíritu en {value}",
         "allStats": "Reduce todos los atributos en {value}"
       },
+      "increasePct": {
+        "ap": "Increases attack power by {pct}%",
+        "armor": "Increases armor by {pct}%",
+        "int": "Increases Intellect by {pct}%",
+        "sta": "Increases Stamina by {pct}%"
+      },
       "dodge": "Aumenta la probabilidad de esquivar un {pct}%",
       "dodgeReduce": "Reduce la probabilidad de esquivar un {pct}%",
       "armorFlat": "Reduce la armadura en {value}",
       "armorFlatStacks": "Reduce la armadura en {value} ({stacks} acumulaciones)",
+      "armorPct": "Reduces armor by {pct}%",
+      "armorPctStacks": "Reduces armor by {pct}% ({stacks} stacks)",
       "mortalWound": "Reduce la sanación recibida un {pct}%",
       "vulnerability": "Aumenta el daño recibido un {pct}%",
       "physVuln": "Aumenta el daño físico recibido un {pct}%",
@@ -990,6 +997,21 @@ export const tr_TR: EnTranslations = {
       "spore": "Spore",
       "toolTier": "Tier {tier} tool",
       "toolNone": "No tool"
+    },
+    "warfare": {
+      "ratingLabel": "Warfare",
+      "balance": "Honor: {amount}",
+      "dualPrice": "{money} + {honor}",
+      "honorAmount": "{amount} Honor",
+      "honorFloat": "+{amount} Honor",
+      "honorGain": "+{amount} Honor ({reason})",
+      "notEnoughHonor": "Not enough honor.",
+      "reasons": {
+        "arenaWin": "Arena win",
+        "fiestaKill": "Fiesta takedown",
+        "fiestaComplete": "Fiesta match",
+        "fiestaWin": "Fiesta win"
+      }
     }
   },
   "mailUi": {
@@ -2421,6 +2443,13 @@ export const tr_TR: EnTranslations = {
       "nothingToHarvest": "That corpse has nothing to harvest.",
       "alreadyHarvested": "This corpse has already been harvested."
     },
+    "dailyRewards": {
+      "claimed": "You claim your daily reward."
+    },
+    "collections": {
+      "notFound": "That does not exist.",
+      "tooFar": "Too far away."
+    },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
       "noItems1": "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",
@@ -2481,6 +2510,18 @@ export const tr_TR: EnTranslations = {
       "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
       "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
       "helpLine": "Homestead: /homestead, /homestead claim."
+    },
+    "greenpawCutting": {
+      "alreadyPlanted": "You have already planted your cutting. Give it time to grow.",
+      "needHomestead": "You need a homestead plot before you can plant this.",
+      "tooFar": "You must be at your own homestead to plant this.",
+      "planted": "You plant the cutting at your homestead. Give it time.",
+      "grown": "Your cutting has grown into a companion. It follows you now."
+    },
+    "readyCheck": {
+      "mustBeInParty": "You must be in a party to start a ready check.",
+      "alreadyInProgress": "A ready check is already in progress.",
+      "summary": "Ready check: {ready} ready, {notReady} not ready, {noResponse} no response."
     }
   },
   "lockpickUi": {
@@ -3322,6 +3363,8 @@ export const tr_TR: EnTranslations = {
       "openTrade": "Takas Aç",
       "duelRequest": "{name} seni bir düelloya davet etti!",
       "acceptDuel": "Düelloyu Kabul Et",
+      "readyCheckStart": "{name} has started a ready check.",
+      "markReady": "Ready",
       "decline": "Reddet"
     },
     "combat": {
@@ -3798,6 +3841,22 @@ export const tr_TR: EnTranslations = {
       "stool": "Stool"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "Daily Rewards",
+    "window": {
+      "title": "Daily Rewards",
+      "close": "Close daily rewards",
+      "claim": "Claim",
+      "claimAria": "Claim today's reward",
+      "claimed": "Claimed. Come back tomorrow.",
+      "locked": "Daily rewards are unavailable on this account right now.",
+      "hint": "One reward per day. Missing a day never costs you anything."
+    },
+    "cell": {
+      "today": "Today",
+      "itemCount": "{count}x {item}"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "a",
@@ -4018,7 +4077,8 @@ export const tr_TR: EnTranslations = {
       "needAria": "{item} için ihtiyaç",
       "greedAria": "{item} için açgözlülük",
       "passAria": "{item} için pas geç",
-      "everyonePassed": "Herkes {item} için pas geçti."
+      "everyonePassed": "Herkes {item} için pas geçti.",
+      "winnerOffline": "The winner of {item} was offline; it was returned to the corpse."
     }
   },
   "entities": {
@@ -4081,7 +4141,7 @@ export const tr_TR: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Zırh Parçalama",
-        "description": "Hedefin zırhını parçalar, her uygulamada {damage} azaltır. 5 kata kadar üst üste binebilir. Yüksek miktarda tehdit üretir."
+        "description": "Hedefin zırhını parçalar, her uygulamada %2 azaltır. 5 kata kadar üst üste binebilir. Yüksek miktarda tehdit üretir."
       },
       "taunt": {
         "name": "Kışkırtma",
@@ -5179,6 +5239,99 @@ export const tr_TR: EnTranslations = {
       "mistcallers_duffel": {
         "name": "Mistcaller'ın Denizci Çantası"
       },
+      "bramblewar_warhelm": {
+        "name": "Dikensavaş Baş"
+      },
+      "bramblewar_warspaulders": {
+        "name": "Dikensavaş Omuz"
+      },
+      "bramblewar_warplate": {
+        "name": "Dikensavaş Göğüs"
+      },
+      "bramblewar_girdle": {
+        "name": "Dikensavaş Bel"
+      },
+      "bramblewar_legguards": {
+        "name": "Dikensavaş Bacak"
+      },
+      "bramblewar_gauntlets": {
+        "name": "Dikensavaş El"
+      },
+      "bramblewar_sabatons": {
+        "name": "Dikensavaş Ayak"
+      },
+      "thornbound_crown": {
+        "name": "Dikenbağlı Baş"
+      },
+      "thornbound_spaulders": {
+        "name": "Dikenbağlı Omuz"
+      },
+      "thornbound_hauberk": {
+        "name": "Dikenbağlı Göğüs"
+      },
+      "thornbound_waistguard": {
+        "name": "Dikenbağlı Bel"
+      },
+      "thornbound_legmail": {
+        "name": "Dikenbağlı Bacak"
+      },
+      "thornbound_handguards": {
+        "name": "Dikenbağlı El"
+      },
+      "thornbound_greaves": {
+        "name": "Dikenbağlı Ayak"
+      },
+      "nettlestalker_cowl": {
+        "name": "Isırgan Avcısı Baş"
+      },
+      "nettlestalker_shoulderguards": {
+        "name": "Isırgan Avcısı Omuz"
+      },
+      "nettlestalker_harness": {
+        "name": "Isırgan Avcısı Göğüs"
+      },
+      "nettlestalker_waistband": {
+        "name": "Isırgan Avcısı Bel"
+      },
+      "nettlestalker_legguards": {
+        "name": "Isırgan Avcısı Bacak"
+      },
+      "nettlestalker_grips": {
+        "name": "Isırgan Avcısı El"
+      },
+      "nettlestalker_treads": {
+        "name": "Isırgan Avcısı Ayak"
+      },
+      "mossweave_cowl": {
+        "name": "Yosun Dokuma Baş"
+      },
+      "mossweave_mantle": {
+        "name": "Yosun Dokuma Omuz"
+      },
+      "mossweave_raiment": {
+        "name": "Yosun Dokuma Göğüs"
+      },
+      "mossweave_cord": {
+        "name": "Yosun Dokuma Bel"
+      },
+      "mossweave_legwraps": {
+        "name": "Yosun Dokuma Bacak"
+      },
+      "mossweave_handwraps": {
+        "name": "Yosun Dokuma El"
+      },
+      "mossweave_slippers": {
+        "name": "Yosun Dokuma Ayak"
+      },
+      "last_bloom_greatblade": {
+        "name": "Son Çiçek Büyük Kılıcı"
+      },
+      "thornbite_razor": {
+        "name": "Diken Isırığı Ustura"
+      },
+      "heartwood_warstaff": {
+        "name": "Öz Odun Savaş Asası"
+      },
       "bristleback_maul": {
         "name": "Dikensırt Balyozu"
       },
@@ -6056,6 +6209,15 @@ export const tr_TR: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "Heartwood Colossus"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "Greenpaw's Cutting"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "Greenpaw's Cutting"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "Greenpaw's Cutting"
       }
     },
     "npcs": {
@@ -6173,6 +6335,11 @@ export const tr_TR: EnTranslations = {
         "name": "Elder Yarrow",
         "title": "Profession Trainer",
         "greeting": "Every build starts as a question. Which second calling speaks to you?"
+      },
+      "bramble": {
+        "name": "Bramble",
+        "title": "Honor Quartermaster",
+        "greeting": "The sands remember every victory. Spend your honor well."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",

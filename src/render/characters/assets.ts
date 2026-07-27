@@ -21,6 +21,7 @@ import {
 } from './chibi_skin_variants';
 import {
   type AttachDef,
+  bakedArmorNodeNamesForUrl,
   characterPreloadUrls,
   itemArmorModelUrl,
   itemWeaponModelUrl,
@@ -458,7 +459,7 @@ function optimizedScene(url: string, skinnedMeshFix?: VisualDef['skinnedMeshFix'
   const hit = optimizedSceneCache.get(url);
   if (hit) return hit;
   const root = cloneSkinned(resolvedGltf(url).scene);
-  mergeSkinnedParts(root);
+  mergeSkinnedParts(root, bakedArmorNodeNamesForUrl(url));
   // Bake corrective scale/position into the geometry ONCE here, not per
   // instance: this cached root is the shared template every character clone
   // (cloneSkinned) draws its geometry buffers from, and a SkinnedMesh's own
@@ -495,7 +496,7 @@ function sameBindData(a: THREE.SkinnedMesh, b: THREE.SkinnedMesh): boolean {
   return true;
 }
 
-function mergeSkinnedParts(root: THREE.Object3D): void {
+function mergeSkinnedParts(root: THREE.Object3D, protectedNames: ReadonlySet<string>): void {
   // bucket by bone set / material / parent / local transform, then split
   // buckets by approximate bind-data equality (float noise must not block a
   // merge, while genuinely different bind poses must never share vertices —
@@ -504,6 +505,14 @@ function mergeSkinnedParts(root: THREE.Object3D): void {
   root.traverse((o) => {
     const sm = o as THREE.SkinnedMesh;
     if (!sm.isSkinnedMesh || !sm.visible) return;
+    // PHAA-653: a node a VisualDef toggles via `bakedArmorSlots` (setBakedArmorVisibility)
+    // must survive as its own named node, or the runtime lookup-by-name silently
+    // stops finding it and it gets stuck at whatever visibility the merge left it in.
+    // Several baked-armor nodes here also collide on the same merge bucket key
+    // (same material/parent/transform) despite gating DIFFERENT equip slots (e.g.
+    // the chibi knight outfit's armorceinturethighs/waist vs armorknees/legs), so
+    // this is not just an accessory-vs-body split, it can be slot-vs-slot too.
+    if (protectedNames.has(sm.name)) return;
     const mat = sm.material as THREE.Material;
     if (Array.isArray(sm.material)) return; // never happens via GLTFLoader
     const bones = sm.skeleton.bones.map((b) => b.uuid).join(',');
