@@ -1035,6 +1035,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hud.system.ignoringChat': '已封鎖來自 {name} 的聊天。',
   'hud.system.noLongerIgnoring': '不再封鎖 {name}。',
   'hud.system.playerNotNearby': '該玩家不在附近。',
+  'hud.system.playerInfoNotFound': '找不到該名稱的角色。',
   'hud.system.duelCountdown': '決鬥將在 {seconds} 秒後開始...',
   'hud.system.duelEndBanner': '{winner} 在決鬥中擊敗了 {loser}！',
   'hud.system.duelEndLog': '{winner} 在決鬥中擊敗了 {loser}。',

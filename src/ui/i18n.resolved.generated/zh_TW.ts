@@ -3395,7 +3395,7 @@ export const zh_TW: EnTranslations = {
       "ignoringChat": "已封鎖來自 {name} 的聊天。",
       "noLongerIgnoring": "不再封鎖 {name}。",
       "playerNotNearby": "該玩家不在附近。",
-      "playerInfoNotFound": "No character found with that name.",
+      "playerInfoNotFound": "找不到該名稱的角色。",
       "duelCountdown": "決鬥將在 {seconds} 秒後開始...",
       "duelEndBanner": "{winner} 在決鬥中擊敗了 {loser}！",
       "duelEndLog": "{winner} 在決鬥中擊敗了 {loser}。",

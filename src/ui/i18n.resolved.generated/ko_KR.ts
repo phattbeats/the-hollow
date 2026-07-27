@@ -3395,7 +3395,7 @@ export const ko_KR: EnTranslations = {
       "ignoringChat": "{name}의 채팅을 차단합니다.",
       "noLongerIgnoring": "{name}을 더 이상 차단하지 않습니다.",
       "playerNotNearby": "그 플레이어는 근처에 없습니다.",
-      "playerInfoNotFound": "No character found with that name.",
+      "playerInfoNotFound": "해당 이름의 캐릭터를 찾을 수 없습니다.",
       "duelCountdown": "결투가 {seconds}초 후 시작됩니다...",
       "duelEndBanner": "{winner}님이 결투에서 {loser}님을 이겼습니다!",
       "duelEndLog": "{winner}님이 결투에서 {loser}님을 이겼습니다.",

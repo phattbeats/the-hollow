@@ -3395,7 +3395,7 @@ export const ru_RU: EnTranslations = {
       "ignoringChat": "Чат от {name} игнорируется.",
       "noLongerIgnoring": "{name} больше не игнорируется.",
       "playerNotNearby": "Этого игрока нет рядом.",
-      "playerInfoNotFound": "No character found with that name.",
+      "playerInfoNotFound": "Персонаж с таким именем не найден.",
       "duelCountdown": "Дуэль начнется через {seconds}...",
       "duelEndBanner": "{winner} победил {loser} в дуэли!",
       "duelEndLog": "{winner} победил {loser} в дуэли.",

@@ -1033,6 +1033,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hud.system.ignoringChat': '已屏蔽来自 {name} 的聊天。',
   'hud.system.noLongerIgnoring': '不再屏蔽 {name}。',
   'hud.system.playerNotNearby': '该玩家不在附近。',
+  'hud.system.playerInfoNotFound': '未找到该名称的角色。',
   'hud.system.duelCountdown': '决斗将在 {seconds} 秒后开始...',
   'hud.system.duelEndBanner': '{winner} 在决斗中击败了 {loser}！',
   'hud.system.duelEndLog': '{winner} 在决斗中击败了 {loser}。',

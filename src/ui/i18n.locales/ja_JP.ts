@@ -1086,6 +1086,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hud.system.ignoringChat': '{name}のチャットを無視します。',
   'hud.system.noLongerIgnoring': '{name}の無視を解除しました。',
   'hud.system.playerNotNearby': 'そのプレイヤーは近くにいません。',
+  'hud.system.playerInfoNotFound': 'その名前のキャラクターは見つかりませんでした。',
   'hud.system.duelCountdown': '決闘開始まで{seconds}秒...',
   'hud.system.duelEndBanner': '{winner}が決闘で{loser}を倒しました！',
   'hud.system.duelEndLog': '{winner}が決闘で{loser}を倒しました。',
