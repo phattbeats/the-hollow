@@ -246,7 +246,6 @@ export const sv_SE: EnTranslations = {
       "chat": "Hoppa till chatt"
     },
     "mobile": {
-      "autorun": "Autospring",
       "jump": "Hoppa",
       "leaderboard": "Ranking",
       "nameplates": "Namn",
@@ -2447,6 +2446,9 @@ export const sv_SE: EnTranslations = {
       "nothingToHarvest": "That corpse has nothing to harvest.",
       "alreadyHarvested": "This corpse has already been harvested."
     },
+    "dailyRewards": {
+      "claimed": "You claim your daily reward."
+    },
     "collections": {
       "notFound": "That does not exist.",
       "tooFar": "Too far away."
@@ -2511,6 +2513,13 @@ export const sv_SE: EnTranslations = {
       "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
       "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
       "helpLine": "Homestead: /homestead, /homestead claim."
+    },
+    "greenpawCutting": {
+      "alreadyPlanted": "You have already planted your cutting. Give it time to grow.",
+      "needHomestead": "You need a homestead plot before you can plant this.",
+      "tooFar": "You must be at your own homestead to plant this.",
+      "planted": "You plant the cutting at your homestead. Give it time.",
+      "grown": "Your cutting has grown into a companion. It follows you now."
     },
     "readyCheck": {
       "mustBeInParty": "You must be in a party to start a ready check.",
@@ -3389,6 +3398,7 @@ export const sv_SE: EnTranslations = {
       "ignoringChat": "Ignorerar chatt från {name}.",
       "noLongerIgnoring": "Ignorerar inte längre {name}.",
       "playerNotNearby": "Den spelaren är inte i närheten.",
+      "playerInfoNotFound": "No character found with that name.",
       "duelCountdown": "Duellen börjar om {seconds}...",
       "duelEndBanner": "{winner} har besegrat {loser} i en duell!",
       "duelEndLog": "{winner} har besegrat {loser} i en duell.",
@@ -3834,6 +3844,22 @@ export const sv_SE: EnTranslations = {
       "stool": "Stool"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "Daily Rewards",
+    "window": {
+      "title": "Daily Rewards",
+      "close": "Close daily rewards",
+      "claim": "Claim",
+      "claimAria": "Claim today's reward",
+      "claimed": "Claimed. Come back tomorrow.",
+      "locked": "Daily rewards are unavailable on this account right now.",
+      "hint": "One reward per day. Missing a day never costs you anything."
+    },
+    "cell": {
+      "today": "Today",
+      "itemCount": "{count}x {item}"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "g",
@@ -4054,7 +4080,8 @@ export const sv_SE: EnTranslations = {
       "needAria": "Behov av {item}",
       "greedAria": "Girighet för {item}",
       "passAria": "Avstå från {item}",
-      "everyonePassed": "Alla avstod från {item}."
+      "everyonePassed": "Alla avstod från {item}.",
+      "winnerOffline": "The winner of {item} was offline; it was returned to the corpse."
     }
   },
   "entities": {
@@ -6185,6 +6212,15 @@ export const sv_SE: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "Heartwood Colossus"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "Greenpaw's Cutting"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "Greenpaw's Cutting"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "Greenpaw's Cutting"
       }
     },
     "npcs": {

@@ -62,6 +62,7 @@ import { isSpellResisted } from './combat/spell_resist';
 // moved to social/fiesta.ts with that logic; sim.ts keeps only the type used by
 // the PlayerMeta interface + the power-up catalog the fiestaMatchInfo accessor reads.
 import { type AugmentSpecial, type AugmentTier, POWERUPS_BY_ID } from './content/augments';
+import { DAILY_REWARD_CYCLE } from './content/daily_rewards';
 import { VASE_LANDING_POS } from './content/hollow';
 import type { JailState } from './content/jail';
 import { FURY_ENTITY_ID, FURY_NPC_ID } from './content/pvp_honor';
@@ -88,6 +89,8 @@ import {
   talentPointsAtLevel,
 } from './content/talents';
 import { applyCooldowns, type SavedCooldowns, serializeCooldowns } from './cooldown_persist';
+import { craftItem as craftItemImpl, emptyCraftProficiency } from './crafting';
+import * as dailyRewardsMod from './daily_rewards';
 import type { DelveShopGate, DelveShopOffer } from './data';
 import {
   abilitiesKnownAt,
@@ -154,6 +157,12 @@ import {
   isNodeHarvestableBy,
   nodeCooldownIdsFor,
 } from './gathering';
+import {
+  GreenpawCutting,
+  type GreenpawCuttingSave,
+  isGreenpawCompanionMob,
+  updateGreenpawCompanion,
+} from './greenpaw_cutting';
 import { GreenpawHearth, type GreenpawHearthSave } from './greenpaw_hearth';
 import { Homestead, type HomesteadSave } from './homestead';
 import { Housing, type HousingSave } from './housing';
@@ -236,6 +245,17 @@ export type { MailSave } from './mail/post_office';
 // stays valid now that the type lives in market.ts.
 export type { MarketSave } from './market';
 
+import {
+  onDelveClearedForDeeds,
+  onInventoryChangedForDeeds,
+  onLevelReachedForDeeds,
+  onMobKilledForDeeds,
+  onPvpWinForDeeds,
+  onQuestCompletedForDeeds,
+  onSocialActionForDeeds,
+  onZoneVisitedForDeeds,
+  setActiveTitle as setActiveTitleImpl,
+} from './deeds';
 import type { DialogRuntimeState } from './dialog/dialog_commands';
 import * as dialogCommands from './dialog/dialog_commands';
 import {
@@ -307,9 +327,12 @@ import {
   type AuraKind,
   angleTo,
   armorReduction,
+  type CraftType,
   type CrowdControlDrCategory,
   type CrowdControlDrState,
   DELVE_COMPANION_HEAL_INTERVAL,
+  type DeedProgress,
+  type DeedState,
   type DelveDef,
   type DelveModuleDef,
   type DelveRun,
@@ -765,6 +788,19 @@ export interface PlayerMeta {
   known: ResolvedAbility[];
   questLog: Map<string, QuestProgress>;
   questsDone: Set<string>;
+  // Book of Asphodelia (PHAA-744): deeds auto-track from creation, no accept step.
+  deedLog: Map<string, DeedProgress>;
+  deedsDone: Set<string>;
+  earnedTitles: Set<string>;
+  activeTitle: string | null;
+  // Transient (not serialized): the zone the player was in last tick, used to
+  // detect a zone change and fire the exploration deed hook (PHAA-745) once per
+  // entry rather than every tick. Undefined until the first movement tick, so a
+  // freshly spawned player credits the zone they start in on their first tick;
+  // exploration deed COUNTS themselves persist via deedLog, so a re-login that
+  // resets this field re-credits an already-satisfied specific-zone objective
+  // harmlessly (its count is already at target and cannot increment further).
+  lastZoneId?: string;
   // Branching-dialogue state (PHAA-553): disposition toward each NPC + persistent
   // conversation flags. Nudged by dialogChoose, gates dialogue branches, persisted
   // in CharacterState (see dialog/dialog_commands.ts).
@@ -853,6 +889,11 @@ export interface PlayerMeta {
   // (CharacterState.gatheringProficiency); feeds a future proficiency-scaled
   // rarity roll.
   gatheringProficiency: Record<GatherNodeType, number>;
+  // Per-player craft proficiency (PHAA-574): one counter per craft type,
+  // incremented on every successful craft of that craft. Persisted
+  // (CharacterState.craftProficiency); scales the output quality roll the
+  // same way gatheringProficiency scales harvest rarity.
+  craftProficiency: Record<CraftType, number>;
   // Collection tracking core (PHAA-626): the set of collectible ids (world
   // readables today; future kinds later) this player has ever found. Grows
   // only, never shrinks. Persisted (CharacterState.collectedIds).
@@ -921,6 +962,12 @@ export interface CharacterState {
   bank?: { inventory: InvSlot[]; purchasedSlots: number; bonusSlots: number };
   questLog: { questId: string; counts: number[]; state: 'active' | 'ready' | 'done' }[];
   questsDone: string[];
+  // Book of Asphodelia (PHAA-744; JSONB, no schema migration). Optional so
+  // characters saved before deeds existed load cleanly (empty default).
+  deedLog?: { deedId: string; counts: number[]; state: DeedState }[];
+  deedsDone?: string[];
+  earnedTitles?: string[];
+  activeTitle?: string | null;
   // Branching-dialogue state (PHAA-553; JSONB, no schema migration). Optional so
   // characters saved before dialogue trees existed load cleanly (empty default).
   dialogState?: DialogStateSave;
@@ -967,6 +1014,9 @@ export interface CharacterState {
   // Optional so characters saved before per-node gathering proficiency
   // existed load cleanly (addPlayer backfills to all-zero).
   gatheringProficiency?: Partial<Record<GatherNodeType, number>>;
+  // Optional so characters saved before crafting (PHAA-574) existed load
+  // cleanly (addPlayer backfills to all-zero).
+  craftProficiency?: Partial<Record<CraftType, number>>;
   // A live jail sentence (PHAA-657). Persisted so it keeps running across a
   // reconnect and the character reloads still jailed. Absent = not jailed.
   jail?: JailState;
@@ -1135,6 +1185,12 @@ export class Sim {
   // owns the plot ownership book. Constructed in the ctor after the SimContext
   // (it consumes the seam); Sim keeps thin delegates below, mirroring housing.
   homestead!: Homestead;
+  // Greenpaw's cutting (PHAA-751): owns the planted-cutting record book and
+  // the growth/companion-spawn lifecycle. Constructed in the ctor after the
+  // SimContext (it consumes the seam AND homesteadOwnedPlotFor, so it must be
+  // constructed after homestead above); Sim keeps thin delegates below,
+  // mirroring the greenpawHearth pattern.
+  greenpawCutting!: GreenpawCutting;
   // Gathering v0 (PHAA-504): corpse harvest, the single-use first-come opposite
   // of a world gathering node. Constructed in the ctor after the SimContext (it
   // consumes the seam for its one rng draw); Sim keeps a thin delegate below,
@@ -1211,6 +1267,11 @@ export class Sim {
     // Homestead v0: owns the open-world plot book; consumes the seam. Draws no
     // rng at construction (or ever), so the draws below are unperturbed.
     this.homestead = new Homestead(this.ctx);
+    // Greenpaw's cutting (PHAA-751): owns the planted-cutting record book;
+    // consumes the seam (including homesteadOwnedPlotFor, above). Draws rng
+    // only from plant() (a player command), never at construction, so the
+    // draws below are unperturbed.
+    this.greenpawCutting = new GreenpawCutting(this.ctx);
 
     // Spawn content: a custom world (editor play-test) or the built-in world.
     // CAMPS order is a determinism contract; both bundles preserve it.
@@ -1585,6 +1646,10 @@ export class Sim {
       known: [],
       questLog: new Map(),
       questsDone: new Set(),
+      deedLog: new Map(),
+      deedsDone: new Set(),
+      earnedTitles: new Set(),
+      activeTitle: null,
       dialogState: dialogCommands.freshDialogState(),
       counters: freshCounters(),
       autoEquip: opts?.autoEquip ?? false,
@@ -1618,6 +1683,7 @@ export class Sim {
       delveDaily: { date: '', firstClearXp: new Set(), markClears: 0 },
       nodeHarvestReadyAt: {},
       gatheringProficiency: emptyGatheringProficiency(),
+      craftProficiency: emptyCraftProficiency(),
       collectedIds: new Set(),
       achievements: emptyAchievementProgress(),
     };
@@ -1662,6 +1728,17 @@ export class Sim {
           });
       }
       for (const q of s.questsDone) meta.questsDone.add(q);
+      // Book of Asphodelia (PHAA-744): absent in pre-deed saves, loads to an empty
+      // default. Mirrors questLog: only active progress is kept here, completed
+      // deed ids live in deedsDone.
+      for (const d of s.deedLog ?? []) {
+        if (d.state !== 'done')
+          meta.deedLog.set(d.deedId, { deedId: d.deedId, counts: [...d.counts], state: d.state });
+      }
+      for (const d of s.deedsDone ?? []) meta.deedsDone.add(d);
+      for (const t of s.earnedTitles ?? []) meta.earnedTitles.add(t);
+      meta.activeTitle =
+        s.activeTitle && meta.earnedTitles.has(s.activeTitle) ? s.activeTitle : null;
       // PHAA-553: absent in pre-dialogue saves, loads to an empty default.
       meta.dialogState = dialogCommands.loadDialogState(s.dialogState);
       if (s.talents)
@@ -1707,6 +1784,9 @@ export class Sim {
       meta.companionUpgrades = { ...(s.companionUpgrades ?? {}) };
       if (s.gatheringProficiency) {
         meta.gatheringProficiency = { ...emptyGatheringProficiency(), ...s.gatheringProficiency };
+      }
+      if (s.craftProficiency) {
+        meta.craftProficiency = { ...emptyCraftProficiency(), ...s.craftProficiency };
       }
       if (s.delveLoreUnlocked) for (const id of s.delveLoreUnlocked) meta.delveLoreUnlocked.add(id);
       if (s.collectedIds) for (const id of s.collectedIds) meta.collectedIds.add(id);
@@ -1759,6 +1839,10 @@ export class Sim {
     player.potionCooldownUntil = applyCooldowns(savedState?.cooldowns, player.cooldowns, this.time);
     player.potionCooldownRemaining = Math.max(0, player.potionCooldownUntil - this.time);
     if (savedState?.pet) this.restorePet(player, savedState.pet);
+    // Greenpaw's cutting (PHAA-751): spawn the companion now if the player's
+    // planted cutting already finished growing (possibly across a prior
+    // session's worth of elapsed time).
+    this.greenpawCutting.onPlayerJoin(meta);
 
     // The Hollow spawn policy (PHAA-404): under hollowStart every join lands
     // inside the Hollow hub instance, and a character last saved inside the
@@ -1817,6 +1901,10 @@ export class Sim {
     // with the character and removed from the live world instead of released
     const pet = this.petOf(pid, true);
     if (pet) this.despawnPersistentPet(pet);
+    // Greenpaw's cutting (PHAA-751): the companion is a session-only
+    // projection of the persisted record, so it never idles in the world
+    // after its owner logs off.
+    this.greenpawCutting.onPlayerLeave(meta);
     for (const m of this.entities.values()) {
       if (m.kind !== 'mob') continue;
       m.threat.delete(pid);
@@ -1900,6 +1988,14 @@ export class Sim {
         state: q.state,
       })),
       questsDone: [...meta.questsDone],
+      deedLog: [...meta.deedLog.values()].map((d) => ({
+        deedId: d.deedId,
+        counts: [...d.counts],
+        state: d.state,
+      })),
+      deedsDone: [...meta.deedsDone],
+      earnedTitles: [...meta.earnedTitles],
+      activeTitle: meta.activeTitle,
       dialogState: dialogCommands.serializeDialogState(meta.dialogState),
       arenaRating: meta.arenaRating,
       arenaWins: meta.arenaWins,
@@ -1944,6 +2040,7 @@ export class Sim {
       delveClears: { ...meta.delveClears },
       companionUpgrades: { ...meta.companionUpgrades },
       gatheringProficiency: { ...meta.gatheringProficiency },
+      craftProficiency: { ...meta.craftProficiency },
       delveLoreUnlocked: [...meta.delveLoreUnlocked],
       collectedIds: [...meta.collectedIds],
       unlockedAchievements: [...meta.achievements.unlocked],
@@ -2202,6 +2299,22 @@ export class Sim {
   }
   get questsDone(): Set<string> {
     return this.primary.questsDone;
+  }
+  get deedLog(): Map<string, DeedProgress> {
+    return this.primary.deedLog;
+  }
+  get deedsDone(): Set<string> {
+    return this.primary.deedsDone;
+  }
+  get earnedTitles(): Set<string> {
+    return this.primary.earnedTitles;
+  }
+  get activeTitle(): string | null {
+    return this.primary.activeTitle;
+  }
+  setActiveTitle(titleId: string | null, pid?: number): void {
+    const meta = this.meta(pid ?? this.primaryId);
+    if (meta) setActiveTitleImpl(meta, titleId);
   }
   raidLockouts(): import('../world_api').RaidLockout[] {
     const now = this.lockoutNowMs();
@@ -2570,6 +2683,18 @@ export class Sim {
       onInventoryChangedForQuests: (meta) => onInventoryChangedForQuests(sim.ctx, meta),
       onGreenpawFedForQuests: (meta) => onFeedForQuests(sim.ctx, meta),
       checkQuestReady: (qp, meta) => checkQuestReady(sim.ctx, qp, meta),
+      // PHAA-744: deed credit hooks (Book of Asphodelia), same event sites as the
+      // quest-credit trio above.
+      onMobKilledForDeeds: (mob, meta) => onMobKilledForDeeds(sim.ctx, mob, meta),
+      onInventoryChangedForDeeds: (meta) => onInventoryChangedForDeeds(sim.ctx, meta),
+      onQuestCompletedForDeeds: (questId, meta) => onQuestCompletedForDeeds(sim.ctx, questId, meta),
+      onDelveClearedForDeeds: (delveId, tierId, deathless, meta) =>
+        onDelveClearedForDeeds(sim.ctx, delveId, tierId, deathless, meta),
+      onLevelReachedForDeeds: (level, meta) => onLevelReachedForDeeds(sim.ctx, level, meta),
+      onZoneVisitedForDeeds: (zoneId, meta) => onZoneVisitedForDeeds(sim.ctx, zoneId, meta),
+      onPvpWinForDeeds: (kind, meta) => onPvpWinForDeeds(sim.ctx, kind, meta),
+      onSocialActionForDeeds: (kind, meta, npcId) =>
+        onSocialActionForDeeds(sim.ctx, kind, meta, npcId),
       countItem: sim.countItem.bind(sim),
       // I1 dungeon instancing now lives in instances/dungeons.ts; these route through
       // the same-named Sim delegates (foreign callers use this.X). lockoutNowMs is the
@@ -2637,6 +2762,11 @@ export class Sim {
       // mobSwing/moveToward/isHostileTo/isRooted/moveSpeedMult/swingIntervalMult it consumes
       // stay on Sim and are bound above (M2/T1/C4a), not re-bound for the companion slice.
       updateDelveCompanion: (companion) => companionMod.updateDelveCompanion(sim.ctx, companion),
+      // Greenpaw's cutting companion (PHAA-751) lives in src/sim/greenpaw_cutting.ts;
+      // locomotion.updateMob's owned-companion branch reaches it through this seam
+      // binding, same shape as the delve companion above.
+      isGreenpawCompanionMob: (mob) => isGreenpawCompanionMob(mob),
+      updateGreenpawCompanion: (companion) => updateGreenpawCompanion(sim.ctx, companion),
       updateBossMechanics: sim.updateBossMechanics.bind(sim),
       // N1: updateNythraxisEncounter now lives in encounters/nythraxis.ts; late-bound
       // arrow (mob/locomotion.ts updateMob drives it via ctx). resetNythraxisEncounter
@@ -2782,6 +2912,11 @@ export class Sim {
       // Homestead v0: the /homestead chat-command branch routes through the seam to
       // the Homestead instance (constructed after this literal; late-bound arrow).
       homesteadChat: (raw, pid) => sim.homestead.handleChat(raw, pid),
+      homesteadOwnedPlotFor: (meta) => sim.homestead.ownedPlotFor(meta),
+      // Greenpaw's cutting (PHAA-751): the item-use 'plant' branch routes through
+      // the seam to the GreenpawCutting instance (constructed after this literal;
+      // late-bound arrow).
+      plantGreenpawCutting: (pid) => sim.greenpawCutting.plant(pid),
       // Gathering v0 (PHAA-504): corpse-harvest item selection (the one rng draw)
       // routes through the seam to the Gathering instance (constructed after this
       // literal; late-bound arrow).
@@ -2983,6 +3118,15 @@ export class Sim {
       if (!p) continue;
       if (!p.dead) {
         this.updatePlayerMovement(p, meta);
+        // Exploration deeds (PHAA-745): credit the zone the player now stands in,
+        // but only when it changed since last tick so the hook fires once per
+        // entry rather than every tick. Gated on the resolved zone id from
+        // zoneAt(pos.z), the same zone resolver the rest of the sim uses.
+        const zid = zoneAt(p.pos.z).id;
+        if (meta.lastZoneId !== zid) {
+          meta.lastZoneId = zid;
+          this.ctx.onZoneVisitedForDeeds(zid, meta);
+        }
         this.updateDoorTriggers(p);
         this.updateCasting(p, meta);
         this.updatePlayerAutoAttack(p, meta);
@@ -3047,6 +3191,7 @@ export class Sim {
     this.postOffice.update();
     this.greenpawHearth.update(DT);
     this.plantSpeech.update(this.greenpawHearth.smokeValue, this.greenpawHearth.lastFeederName);
+    this.greenpawCutting.update(DT);
     updateNpcWander(this.ctx);
     drainDelayedEvents(this.ctx);
 
@@ -4738,6 +4883,7 @@ export class Sim {
       pid: meta.entityId,
     });
     this.ctx.onInventoryChangedForQuests(meta);
+    this.ctx.onInventoryChangedForDeeds(meta);
     if (meta.autoEquip && (def?.kind === 'weapon' || def?.kind === 'armor')) {
       this.maybeAutoEquip(itemId, meta);
     }
@@ -4751,6 +4897,41 @@ export class Sim {
     if (!r) return false;
     const { meta } = r;
     return canAddItem(meta.inventory, bagCapacity(meta.bags), itemId, count);
+  }
+
+  // PHAA-660 (docs/design/daily-rewards.md): server-authoritative online play never
+  // calls this IWorld member on the authoritative Sim (a single online Sim hosts
+  // many accounts, so a single `dailyRewards` field can't represent all of them;
+  // server/game.ts instead does its own Postgres-backed, account-scoped eligibility
+  // and calls grantDailyRewardCycleSlot below directly). This method is what makes
+  // OFFLINE solo play work: there is no separate account/server layer offline, so
+  // the Sim owns its own eligibility check the same way the delve daily lockout
+  // does (this.utcDay, injected by the host, never read from the wall clock here).
+  dailyRewards: import('../world_api').DailyRewardsInfo = {
+    cycleIndex: 0,
+    lastClaimUtcDay: '',
+    locked: false,
+  };
+
+  claimDailyReward(pid?: number): void {
+    const r = this.resolve(pid);
+    if (!r) return;
+    if (this.dailyRewards.locked) return;
+    if (this.utcDay && this.dailyRewards.lastClaimUtcDay === this.utcDay) return;
+    const cycleIndex = this.dailyRewards.cycleIndex;
+    dailyRewardsMod.claimDailyReward(this.ctx, cycleIndex, r.meta.entityId);
+    this.dailyRewards = {
+      ...this.dailyRewards,
+      cycleIndex: (cycleIndex + 1) % DAILY_REWARD_CYCLE.length,
+      lastClaimUtcDay: this.utcDay,
+    };
+  }
+
+  // The online-only grant primitive: server/game.ts calls this directly (never
+  // through the claimDailyReward() IWorld member above) after its own
+  // Postgres-backed eligibility check (claimAccountDailyReward, server/db.ts).
+  grantDailyRewardCycleSlot(cycleIndex: number, pid?: number): boolean {
+    return dailyRewardsMod.claimDailyReward(this.ctx, cycleIndex, pid ?? this.primaryId);
   }
 
   equipBag(itemId: string, socket?: number, pid?: number): void {
@@ -4774,6 +4955,7 @@ export class Sim {
       if (s.count <= 0) meta.inventory.splice(i, 1);
     }
     this.ctx.onInventoryChangedForQuests(meta);
+    this.ctx.onInventoryChangedForDeeds(meta);
   }
 
   discardItem(itemId: string, count = 1, pid?: number): void {
@@ -4879,6 +5061,7 @@ export class Sim {
   private completeFishing(p: Entity, meta: PlayerMeta): void {
     if (this.shouldCatchCodfather(p, meta)) {
       this.addItem(THE_CODFATHER_ITEM_ID, 1, meta.entityId);
+      this.ctx.onSocialActionForDeeds('fish', meta);
       return;
     }
     // The catch depends on which zone's water you're fishing and each has its own
@@ -4914,6 +5097,7 @@ export class Sim {
       });
     }
     this.addItem(caught, 1, meta.entityId);
+    this.ctx.onSocialActionForDeeds('fish', meta);
   }
 
   useItem(itemId: string, pid?: number): ItemUseResult | undefined {
@@ -5017,6 +5201,21 @@ export class Sim {
     return this.gatheringProficiencyFor(this.primaryId);
   }
 
+  // Crafting (PHAA-574): consume a recipe's reagents and grant its output, a
+  // thin delegate onto src/sim/crafting.ts, resolved on the deterministic
+  // tick the command arrives on, same shape as harvestNode above.
+  craftItem(recipeId: string, pid?: number): void {
+    craftItemImpl(this.ctx, recipeId, pid);
+  }
+
+  craftProficiencyFor(pid: number): Record<CraftType, number> {
+    return this.players.get(pid)?.craftProficiency ?? emptyCraftProficiency();
+  }
+
+  get craftProficiency(): Record<CraftType, number> {
+    return this.craftProficiencyFor(this.primaryId);
+  }
+
   // Collection tracking core (PHAA-626): read-as-command entry point, a thin
   // delegate onto src/sim/collections.ts, resolved on the deterministic tick
   // the command arrives on, same shape as harvestNode above.
@@ -5069,6 +5268,7 @@ export class Sim {
     const { meta } = r;
     const npc = this.entities.get(npcId);
     if (!npc || !this.isQuestInteractionEntity(npc)) return;
+    this.ctx.onSocialActionForDeeds('talk', meta, npc.templateId);
     if (this.interactNpcForQuests(npc, meta)) return;
     for (const qid of npc.questIds) {
       const quest = QUESTS[qid];
@@ -6050,6 +6250,21 @@ export class Sim {
 
   loadHomestead(save: HomesteadSave | null | undefined): void {
     this.homestead.loadHomestead(save);
+  }
+
+  // -------------------------------------------------------------------------
+  // Greenpaw's cutting (PHAA-751, thin delegates to this.greenpawCutting).
+  // Persisted like greenpawHearth (a continuously drifting accumulator, saved
+  // unconditionally on the autosave cadence), not like homestead's rev-diffed
+  // rare-change book.
+  // -------------------------------------------------------------------------
+
+  serializeGreenpawCutting(): GreenpawCuttingSave {
+    return this.greenpawCutting.serialize();
+  }
+
+  loadGreenpawCutting(save: GreenpawCuttingSave | null | undefined): void {
+    this.greenpawCutting.load(save);
   }
 
   // -------------------------------------------------------------------------

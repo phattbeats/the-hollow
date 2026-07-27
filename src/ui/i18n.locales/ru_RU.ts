@@ -5,9 +5,8 @@
 // translate that key. The build (scripts/i18n_build.mjs) unflattens this map and
 // overlays it onto nested `en` to produce the dense resolved table; any key here
 // must be a real `en` leaf path: keys are typed `Partial<Record<TranslationKey,
-// string>>` so tsc rejects a structurally-wrong key, plus
-// tests/i18n_overlay_key_membership.test.ts catches a typo'd entity id the
-// template-literal key type cannot. Overlays are SPARSE: an
+// string>>` against the build-generated flat key union, so tsc rejects any key
+// that is not an exact `en` leaf path, typo'd entity ids included. Overlays are SPARSE: an
 // untranslated key is omitted and the build fills it from English, then the
 // registry (src/ui/i18n.status.json) marks it `pending`.
 
@@ -1108,6 +1107,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hud.system.ignoringChat': 'Чат от {name} игнорируется.',
   'hud.system.noLongerIgnoring': '{name} больше не игнорируется.',
   'hud.system.playerNotNearby': 'Этого игрока нет рядом.',
+  'hud.system.playerInfoNotFound': 'Персонаж с таким именем не найден.',
   'hud.system.duelCountdown': 'Дуэль начнется через {seconds}...',
   'hud.system.duelEndBanner': '{winner} победил {loser} в дуэли!',
   'hud.system.duelEndLog': '{winner} победил {loser} в дуэли.',
@@ -1646,6 +1646,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': 'Жадность: {item}',
   'itemUi.lootRoll.passAria': 'Пас: {item}',
   'itemUi.lootRoll.everyonePassed': 'Все отказались от {item}.',
+  'itemUi.lootRoll.winnerOffline': 'Победитель {item} был офлайн; предмет вернулся к трупу.',
   'entities.abilities.heroic_strike.name': 'Удар героя',
   'entities.abilities.heroic_strike.description':
     'Мощная атака, увеличивающая урон в ближнем бою на {damage}. Срабатывает при следующем взмахе оружием.',
@@ -3574,7 +3575,6 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/с',
   'hudChrome.meters.perSecondRow': '{total} ({rate})',
   'hudChrome.meters.seconds': '{s} сек.',
-  'hudChrome.mobile.autorun': 'Автобег',
   'hudChrome.mobile.haptics': 'Вибрация',
   'hudChrome.mobile.hapticsOff': 'Вибрация выкл.',
   'hudChrome.mobile.jump': 'Прыжок',
@@ -5026,6 +5026,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.palefeeder.name': 'Бледнопитающийся',
   'entities.mobs.rootmaw.name': 'Корнепасть',
   'entities.mobs.the_witness_root.name': 'Корень-Свидетель',
+  'entities.mobs.greenpaw_cutting_dawn.name': 'Черенок Зеленолапа',
+  'entities.mobs.greenpaw_cutting_moss.name': 'Черенок Зеленолапа',
+  'entities.mobs.greenpaw_cutting_ash.name': 'Черенок Зеленолапа',
   'entities.npcs.brother_halven.greeting': 'Реликварий внизу снова сдвинулся.',
   'entities.npcs.brother_halven.name': 'Брат Хальвен',
   'entities.npcs.brother_halven.title': 'Хранитель Реликвария',
@@ -5239,6 +5242,12 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'sim.collections.notFound': 'Этого не существует.',
   'sim.collections.tooFar': 'Слишком далеко.',
   'sim.gathering.nothingToHarvest': 'С этого трупа нечего собирать.',
+  'sim.greenpawCutting.alreadyPlanted': 'Ты уже посадил свой черенок. Дай ему время вырасти.',
+  'sim.greenpawCutting.needHomestead': 'Чтобы посадить это, тебе сначала нужен участок.',
+  'sim.greenpawCutting.tooFar': 'Чтобы посадить это, ты должен быть на своем участке.',
+  'sim.greenpawCutting.planted': 'Ты сажаешь черенок на своем участке. Дай ему время.',
+  'sim.greenpawCutting.grown': 'Твой черенок вырос в спутника. Теперь он следует за тобой.',
+  'sim.dailyRewards.claimed': 'Вы получаете ежедневную награду.',
   'sim.hearth.emberbulb1': 'вот это дровишки… гляди, как она задышала, дружище…',
   'sim.hearth.emberbulb2': 'печь берёт своё медленно и чисто, ей так по нраву…',
   'sim.hearth.emberbulb3': 'растопили, задымило… уже чую, как открывается волна.',
@@ -5615,6 +5624,15 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.npcJournal.next': 'Следующая страница',
   'hudChrome.npcJournal.close': 'Закрыть дневник',
   'hudChrome.npcJournal.title': 'Дневник {name}',
+  'dailyRewardsUi.menuButton': 'Ежедневные награды',
+  'dailyRewardsUi.window.title': 'Ежедневные награды',
+  'dailyRewardsUi.window.close': 'Закрыть ежедневные награды',
+  'dailyRewardsUi.window.claim': 'Забрать',
+  'dailyRewardsUi.window.claimAria': 'Забрать сегодняшнюю награду',
+  'dailyRewardsUi.window.claimed': 'Получено. Возвращайтесь завтра.',
+  'dailyRewardsUi.window.locked': 'Ежедневные награды сейчас недоступны для этого аккаунта.',
+  'dailyRewardsUi.window.hint': 'Одна награда в день. Пропущенный день ничего не стоит.',
+  'dailyRewardsUi.cell.today': 'Сегодня',
   'housingUi.claimedBanner': 'Вы объявили этот участок своим домом.',
   'housingUi.ownerBanner': 'Это усадьба {name}.',
   'housingUi.prompt.claim': 'Заявить права на этот участок',

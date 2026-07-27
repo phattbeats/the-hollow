@@ -315,7 +315,10 @@ export type ItemUse =
   // (canGatherTier / canHarvestMonsterMaterial). This item type never carries
   // a durability field (this repo has no durability mechanic anywhere), so a
   // gathering tool can never become unusable.
-  | { type: 'gatherTool'; nodeType: GatherNodeType; tier: number };
+  | { type: 'gatherTool'; nodeType: GatherNodeType; tier: number }
+  // Plants a keepsake at the player's own claimed homestead plot (PHAA-751).
+  // See src/sim/greenpaw_cutting.ts; first_cutting is the only item using this.
+  | { type: 'plant' };
 
 // Rarity ranks for the cosmetic skin-select event, ordered low → high. A rolled
 // rank unlocks its own tier and every tier below it (epic unlocks rare+uncommon).
@@ -1414,6 +1417,29 @@ export interface GatherNodeDef {
   pos: { x: number; z: number };
 }
 
+// Crafting (PHAA-574): the fixed set of crafts a recipe belongs to. Common-tier
+// only for this slice (professions-depth batch, framework + reskin); a later
+// slice adds skill-tier gating, the archetype ceiling, and recipe acquisition.
+export type CraftType =
+  | 'weaponcrafting'
+  | 'armorcrafting'
+  | 'tailoring'
+  | 'leatherworking'
+  | 'cooking'
+  | 'alchemy';
+
+// One craftable recipe: consume `reagents` (existing gathered-material items),
+// grant `resultCount` of `resultItemId`. Every recipe is craftable by any
+// player with the materials (no per-recipe skill/known gate this slice); see
+// src/sim/crafting.ts for resolution.
+export interface RecipeDef {
+  id: string;
+  craft: CraftType;
+  reagents: { itemId: string; count: number }[];
+  resultItemId: string;
+  resultCount: number;
+}
+
 // World-placed readable props (WoW-style journals/books lying around, PHAA-552).
 // Static, unowned world dressing with a client-only reveal: reading one mutates
 // no game state, so (unlike a gather node's harvest) there is no server command,
@@ -1725,6 +1751,76 @@ export interface QuestProgress {
   questId: string;
   counts: number[]; // per objective
   state: 'active' | 'ready' | 'done';
+}
+
+// Book of Asphodelia (PHAA-744, engine/wire layer only; content lands in PHAA-745).
+// Deeds auto-track from character creation (no accept step, unlike quests): every
+// deed in the registry gains credit as its trigger objectives are met, checked
+// lazily on the same event hooks quests use (kill / inventory-change). Completing
+// a deed can grant a title, which the player then selects as their display title.
+export type DeedState = 'active' | 'done';
+
+// Content category (PHAA-745), matching upstream's grouping: used for
+// filtering/organizing the deed roster (cross-surface UI, PHAA-748) and
+// leaderboard scoring (PHAA-746). Purely descriptive; the credit engine
+// dispatches on objective type, not category.
+export type DeedCategory =
+  | 'chronicle'
+  | 'collection'
+  | 'combat'
+  | 'delve'
+  | 'dungeon'
+  | 'exploration'
+  | 'feat'
+  | 'hidden'
+  | 'progression'
+  | 'pvp'
+  | 'social';
+
+// 'pvp': a match/bout win, from the shared arena/fiesta/boarball result choke
+// point (endArenaMatch in social/arena.ts) or the duel choke point (endDuel in
+// social/duel.ts). 'social': a non-combat action, from one of several distinct
+// choke points (completeFishing / talkToNpc in sim.ts, lockpickSucceed in
+// delves/lockpick_controller.ts, the /roll handler in social/chat.ts).
+export type PvpWinKind = 'arena' | 'fiesta' | 'boarball' | 'duel';
+export type SocialActionKind = 'fish' | 'lockpick' | 'roll' | 'talk' | 'bank';
+
+export interface DeedObjective {
+  type: 'kill' | 'collect' | 'quest' | 'delve' | 'level' | 'explore' | 'pvp' | 'social';
+  targetMobId?: string; // for 'kill'; omitted means "any mob" (wildcard credit)
+  itemId?: string; // for 'collect'
+  questId?: string; // for 'quest'; omitted means "any quest" (wildcard credit)
+  delveId?: string; // for 'delve'; omitted means "any delve" (wildcard credit)
+  tierId?: string; // for 'delve'; omitted means "any tier"
+  deathless?: boolean; // for 'delve'; true requires a clear with zero deaths for the player
+  atLeast?: number; // for 'level'; the character level threshold the deed credits at
+  zoneId?: string; // for 'explore'; the zone whose first entry credits this objective
+  pvpKind?: PvpWinKind; // for 'pvp'; omitted means "any pvp win" (wildcard credit)
+  socialKind?: SocialActionKind; // for 'social'
+  npcId?: string; // for 'social' with socialKind 'talk'; omitted means "any NPC"
+  count: number;
+  label: string;
+}
+
+export interface DeedProgress {
+  deedId: string;
+  counts: number[]; // per objective, parallel to DeedDef.objectives
+  state: DeedState;
+}
+
+export interface DeedDef {
+  id: string;
+  name: string;
+  text: string;
+  category: DeedCategory;
+  objectives: DeedObjective[];
+  titleReward?: string; // TitleDef id granted on completion
+}
+
+export interface TitleDef {
+  id: string;
+  display: string; // e.g. "the Wayfarer"
+  prefix?: boolean; // shown before the character name instead of after (default false)
 }
 
 // Consumables restore their total over CONSUME_DURATION seconds while sitting,
@@ -2111,6 +2207,9 @@ export type SimEvent = { pid?: number } & (
   | { type: 'questProgress'; questId: string; text: string }
   | { type: 'questReady'; questId: string }
   | { type: 'questDone'; questId: string }
+  | { type: 'deedProgress'; deedId: string; text: string }
+  | { type: 'deedDone'; deedId: string }
+  | { type: 'titleEarned'; titleId: string }
   | { type: 'aura'; targetId: number; name: string; gained: boolean }
   | { type: 'castStart'; entityId: number; ability: string; time: number }
   | { type: 'castStop'; entityId: number; success: boolean }

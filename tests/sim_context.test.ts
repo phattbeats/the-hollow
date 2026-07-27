@@ -78,6 +78,21 @@ const CALLBACK_KEYS = [
   'onGreenpawFedForQuests',
   'checkQuestReady',
   'countItem',
+  // PHAA-744: Book of Asphodelia deed-credit hooks.
+  'onMobKilledForDeeds',
+  'onInventoryChangedForDeeds',
+  // PHAA-745 chronicle category: quest-completion deed credit.
+  'onQuestCompletedForDeeds',
+  // PHAA-745 delve category: delve-clear deed credit.
+  'onDelveClearedForDeeds',
+  // PHAA-745 progression category: level-reached deed credit.
+  'onLevelReachedForDeeds',
+  // PHAA-745 exploration category: zone-visit deed credit.
+  'onZoneVisitedForDeeds',
+  // PHAA-745 pvp category: pvp match/bout win deed credit.
+  'onPvpWinForDeeds',
+  // PHAA-745 social category: non-combat action deed credit.
+  'onSocialActionForDeeds',
   // E1 entity-roster surface.
   'addEntity',
   'dropEntity',
@@ -128,6 +143,8 @@ const CALLBACK_KEYS = [
   'updatePet',
   'isDelveCompanionMob',
   'updateDelveCompanion',
+  'isGreenpawCompanionMob',
+  'updateGreenpawCompanion',
   'updateBossMechanics',
   'updateNythraxisEncounter',
   'resetNythraxisEncounter',
@@ -211,6 +228,9 @@ const CALLBACK_KEYS = [
   'plantSpeechAmbientChat',
   // Homestead v0: the /homestead chat-command branch.
   'homesteadChat',
+  'homesteadOwnedPlotFor',
+  // Greenpaw's cutting (PHAA-751): the item-use 'plant' branch.
+  'plantGreenpawCutting',
   // Gathering v0 (PHAA-504): the corpse-harvest item-selection rng draw.
   'gatherHarvestItemFor',
 ] as const;
@@ -334,6 +354,14 @@ function makeFakeHost() {
     onInventoryChangedForQuests: vi.fn(),
     onGreenpawFedForQuests: vi.fn(),
     checkQuestReady: vi.fn(),
+    onMobKilledForDeeds: vi.fn(),
+    onInventoryChangedForDeeds: vi.fn(),
+    onQuestCompletedForDeeds: vi.fn(),
+    onDelveClearedForDeeds: vi.fn(),
+    onLevelReachedForDeeds: vi.fn(),
+    onZoneVisitedForDeeds: vi.fn(),
+    onPvpWinForDeeds: vi.fn(),
+    onSocialActionForDeeds: vi.fn(),
     countItem: vi.fn(() => 0),
     lockoutNowMs: vi.fn(() => 0),
     instanceKeyFor: vi.fn(() => 'solo:0'),
@@ -386,6 +414,8 @@ function makeFakeHost() {
     updatePet: vi.fn(),
     isDelveCompanionMob: vi.fn(() => false),
     updateDelveCompanion: vi.fn(),
+    isGreenpawCompanionMob: vi.fn(() => false),
+    updateGreenpawCompanion: vi.fn(),
     updateBossMechanics: vi.fn(),
     updateNythraxisEncounter: vi.fn(),
     resetNythraxisEncounter: vi.fn(),
@@ -458,6 +488,8 @@ function makeFakeHost() {
     notifyPlantThreshold: vi.fn(),
     plantSpeechAmbientChat: vi.fn(),
     homesteadChat: vi.fn(() => false),
+    homesteadOwnedPlotFor: vi.fn(() => null),
+    plantGreenpawCutting: vi.fn(),
     gatherHarvestItemFor: vi.fn(() => null),
   };
   return { host, rng, entities, clock };

@@ -30,6 +30,8 @@ import { readablePropsAt } from '../sim/readables_query';
 import { computeQuestState, type ResolvedAbility } from '../sim/sim';
 import {
   type Aura,
+  type CraftType,
+  type DeedProgress,
   type Entity,
   type EquipSlot,
   emptyMoveInput,
@@ -50,6 +52,7 @@ import {
   type ArenaInfo,
   type CharacterSearchResult,
   type ClientCommand,
+  type DailyRewardsInfo,
   type DelveCompanionInfo,
   type DelveDailyInfo,
   type DelveRunInfo,
@@ -107,6 +110,19 @@ function normalizeAccountCosmetics(value: unknown): AccountCosmetics {
   return {
     completedQuestIds: stringList(src.completedQuestIds),
     mechChromaIds: stringList(src.mechChromaIds),
+  };
+}
+
+// PHAA-660: mirrors server/db.ts's normalizeAccountDailyRewards. Duplicated rather
+// than imported, same reason as normalizeAccountCosmetics above: server/ (pg,
+// Node-only) can never be imported into this browser-bundled client module.
+function normalizeDailyRewards(value: unknown): DailyRewardsInfo {
+  const src = value && typeof value === 'object' ? (value as Record<string, unknown>) : {};
+  const cycleIndex = Number(src.cycleIndex);
+  return {
+    cycleIndex: Number.isInteger(cycleIndex) && cycleIndex >= 0 ? cycleIndex : 0,
+    lastClaimUtcDay: typeof src.lastClaimUtcDay === 'string' ? src.lastClaimUtcDay : '',
+    locked: src.locked === true,
   };
 }
 
@@ -848,6 +864,9 @@ export class ClientWorld implements IWorld {
   // --- IWorldCosmetics: account cosmetics (completed-quest + mech-chroma ids),
   // mirrored from snapshot self. ---
   accountCosmetics: AccountCosmetics = { completedQuestIds: [], mechChromaIds: [] };
+  // --- IWorldDailyRewards: account claim-cycle state, mirrored from snapshot
+  // self (PHAA-660). ---
+  dailyRewards: DailyRewardsInfo = { cycleIndex: 0, lastClaimUtcDay: '', locked: false };
   // --- IWorldProgressionXp: XP + post-cap progression scalars + unlocked
   // milestones, mirrored from snapshot self. ---
   xp = 0;
@@ -875,6 +894,12 @@ export class ClientWorld implements IWorld {
   }
   questLog = new Map<string, QuestProgress>();
   questsDone = new Set<string>();
+  // --- IWorldDeeds: Book of Asphodelia deed/title state (PHAA-744), mirrored from
+  // the snapshot self (`dlog`/`ddone`/`etitles`/`atitle`). ---
+  deedLog = new Map<string, DeedProgress>();
+  deedsDone = new Set<string>();
+  earnedTitles = new Set<string>();
+  activeTitle: string | null = null;
   // --- IWorldParty: party/raid roster, mirrored from the snapshot self (`party`).
   // The raid-target markers ride the `markers` map below; IWorldPet keeps no mirror
   // field (pet state lives on the owned-mob entity wire). ---
@@ -1003,7 +1028,36 @@ export class ClientWorld implements IWorld {
     this.openSocket();
     // input stream at sim rate
     this.sendTimer = window.setInterval(() => this.sendInput(), 50);
+    if (typeof document !== 'undefined') {
+      document.addEventListener('visibilitychange', this.handleVisibilityChange);
+    }
   }
+
+  // Mobile browsers suspend JS timers AND the network stack together while a
+  // tab is backgrounded (screen lock, app switch): iOS Safari and Android
+  // Chrome both routinely kill the underlying socket without ever delivering
+  // its close event to a frozen page, and any pending reconnect setTimeout is
+  // itself throttled to roughly once a minute in the background. Purely
+  // event-driven reconnect (onclose -> backoff -> retry) then leaves the
+  // player stuck on a zombie "connected" socket, or several backoff steps
+  // behind, the moment they foreground the app again. On resume, force a
+  // real state check and retry immediately instead of waiting for a close
+  // event or the rest of the backoff delay.
+  private readonly handleVisibilityChange = (): void => {
+    if (document.visibilityState !== 'visible') return;
+    if (this.sessionEnded) return;
+    if (this.ws.readyState === WebSocket.OPEN) return;
+    if (this.reconnectTimer !== undefined) {
+      clearTimeout(this.reconnectTimer);
+      this.reconnectTimer = undefined;
+      this.openSocket();
+      return;
+    }
+    // No reconnect scheduled yet but the socket is not open: onclose was
+    // never delivered while suspended (the zombie-socket case). Drive the
+    // same path a real close would have.
+    if (this.connected) this.socketClosed();
+  };
 
   private openSocket(): void {
     // when a realm was picked, connect to that realm's origin; otherwise the
@@ -1032,8 +1086,7 @@ export class ClientWorld implements IWorld {
     this.connected = false;
     if (this.sessionEnded) return;
     if (this.reconnectAttempts >= RECONNECT_MAX_ATTEMPTS) {
-      this.sessionEnded = true;
-      clearInterval(this.sendTimer);
+      this.endSession();
       this.onDisconnect?.('Connection to the server was lost.');
       return;
     }
@@ -1046,10 +1099,22 @@ export class ClientWorld implements IWorld {
     this.reconnectTimer = window.setTimeout(() => this.openSocket(), delayMs);
   }
 
-  close(): void {
+  // Shared by every path that ends the session for good (close(), the
+  // reconnect-attempts-exhausted branch above, and a fatal server rejection
+  // in onMessage): each one must also drop the visibilitychange listener, or
+  // this ClientWorld leaks forever (document holds a live reference to the
+  // bound handler).
+  private endSession(): void {
     this.sessionEnded = true;
     clearInterval(this.sendTimer);
     if (this.reconnectTimer !== undefined) clearTimeout(this.reconnectTimer);
+    if (typeof document !== 'undefined') {
+      document.removeEventListener('visibilitychange', this.handleVisibilityChange);
+    }
+  }
+
+  close(): void {
+    this.endSession();
     this.ws.onclose = null;
     this.ws.close();
   }
@@ -1264,9 +1329,7 @@ export class ClientWorld implements IWorld {
       }
       // any other server rejection (kick, moderation, takeover, failed auth)
       // ends the session for good: no auto-reconnect
-      this.sessionEnded = true;
-      clearInterval(this.sendTimer);
-      if (this.reconnectTimer !== undefined) clearTimeout(this.reconnectTimer);
+      this.endSession();
       this.onDisconnect?.(msg.error ?? 'rejected by server');
       return;
     }
@@ -1653,11 +1716,23 @@ export class ClientWorld implements IWorld {
         this.accountCosmetics = normalizeAccountCosmetics(s.cosmetics);
         this.cosmeticsChanged = true;
       }
+      // IWorldDailyRewards facet (PHAA-660) self-decode: same delta-guard shape
+      // as cosmetics above.
+      if (s.dailyRewards !== undefined) {
+        this.dailyRewards = normalizeDailyRewards(s.dailyRewards);
+      }
       if (s.qlog !== undefined)
         this.questLog = new Map((s.qlog as QuestProgress[]).map((q) => [q.questId, q]));
       if (s.qdone !== undefined) this.questsDone = new Set(s.qdone);
       if (s.lockouts !== undefined) this.selfLockouts = s.lockouts as Record<string, number>;
       if (s.qlog !== undefined || s.qdone !== undefined) this.pendingQuestCommands?.clear();
+      // IWorldDeeds facet (PHAA-744) self-decode: dlog/ddone/etitles/atitle are
+      // delta-guarded (an omitted field keeps the prior mirror).
+      if (s.dlog !== undefined)
+        this.deedLog = new Map((s.dlog as DeedProgress[]).map((d) => [d.deedId, d]));
+      if (s.ddone !== undefined) this.deedsDone = new Set(s.ddone);
+      if (s.etitles !== undefined) this.earnedTitles = new Set(s.etitles);
+      if (s.atitle !== undefined) this.activeTitle = s.atitle as string | null;
       // IWorldTalents facet (W7) self-decode: tal is delta-guarded (omitted keeps
       // the prior mirror); the known rebuild below is display-only (re-renders what
       // the server already decided), not client authority.
@@ -1708,6 +1783,15 @@ export class ClientWorld implements IWorld {
       if (s.dcomp !== undefined) this.companionUpgrades = s.dcomp ?? {};
       if (s.gprof !== undefined)
         this.gatheringProficiency = s.gprof ?? { amber: 0, heartwood: 0, spore: 0 };
+      if (s.cprof !== undefined)
+        this.craftProficiency = s.cprof ?? {
+          weaponcrafting: 0,
+          armorcrafting: 0,
+          tailoring: 0,
+          leatherworking: 0,
+          cooking: 0,
+          alchemy: 0,
+        };
       // Per-viewer gather-node cooldown set (PHAA-618): the ids of nodes NOT
       // harvestable by us right now, mirrored from the self snapshot so
       // nodeHarvestableByMe matches the offline Sim. Absent means unchanged; an
@@ -1901,6 +1985,19 @@ export class ClientWorld implements IWorld {
     this.cmd({ cmd: 'harvestNode', node: nodeId });
   }
   gatheringProficiency: Record<GatherNodeType, number> = { amber: 0, heartwood: 0, spore: 0 };
+  // --- IWorldCrafting: craft a recipe (PHAA-574) + the local viewer's own
+  // craft proficiency, mirrored from the self snapshot (server field 'cprof'). ---
+  craftItem(recipeId: string): void {
+    this.cmd({ cmd: 'craftItem', recipe: recipeId });
+  }
+  craftProficiency: Record<CraftType, number> = {
+    weaponcrafting: 0,
+    armorcrafting: 0,
+    tailoring: 0,
+    leatherworking: 0,
+    cooking: 0,
+    alchemy: 0,
+  };
   // --- IWorldCollections: tracked-collectible read/found state (PHAA-625/626) ---
   collectedIds: string[] = [];
   readCollectible(id: string): void {
@@ -1952,6 +2049,15 @@ export class ClientWorld implements IWorld {
   }
   acceptLinkedQuest(questId: string, fromPid: number): void {
     this.cmd({ cmd: 'qlinkaccept', quest: questId, from: fromPid });
+  }
+  // IWorldDeeds (PHAA-744): select (or clear with null) the earned title shown
+  // alongside the character's name. Optimistic-set, like the equip commands
+  // below: the server re-validates against earnedTitles and the next snapshot
+  // (`atitle`) is authoritative if it disagrees.
+  setActiveTitle(titleId: string | null): void {
+    if (!this.canSendCommand()) return;
+    this.activeTitle = titleId;
+    this.cmd({ cmd: 'setTitle', title: titleId });
   }
   // IWorldInventory facet (W2): the eight item/vendor command senders. Each is a thin
   // cmd() emit whose offline counterpart is the moved src/sim/items.ts body resolved on
@@ -2275,6 +2381,11 @@ export class ClientWorld implements IWorld {
   // dialogue menu, not chat text. ---
   feedGreenpaw(): void {
     this.cmd({ cmd: 'feedGreenpaw' });
+  }
+  // --- IWorldDailyRewards (PHAA-660): send the claim command; dailyRewards is a
+  // snapshot read (mirror field above), server re-checks eligibility. ---
+  claimDailyReward(): void {
+    this.cmd({ cmd: 'daily_rewards_claim' });
   }
   // --- IWorldDialog (PHAA-553): send a picked branching-dialogue choice; the
   // effect resolves server-side. dialogState is a snapshot read (dstate mirror). ---

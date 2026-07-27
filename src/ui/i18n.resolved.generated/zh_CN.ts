@@ -246,7 +246,6 @@ export const zh_CN: EnTranslations = {
       "chat": "跳转到聊天"
     },
     "mobile": {
-      "autorun": "自动奔跑",
       "jump": "跳跃",
       "leaderboard": "排行榜",
       "nameplates": "姓名板",
@@ -2447,6 +2446,9 @@ export const zh_CN: EnTranslations = {
       "nothingToHarvest": "这具尸体没有什么可以采集的。",
       "alreadyHarvested": "这具尸体已经被采集过了。"
     },
+    "dailyRewards": {
+      "claimed": "你领取了每日奖励。"
+    },
     "collections": {
       "notFound": "那个东西不存在。",
       "tooFar": "太远了。"
@@ -2511,6 +2513,13 @@ export const zh_CN: EnTranslations = {
       "readoutNoHomesteadQuest": "你还没有家园。先完成绿掌修士的全部差事才能解锁。",
       "readoutNoHomesteadHint": "你还没有家园。站在空谷地里合适的位置，输入 /homestead claim。",
       "helpLine": "家园：/homestead，/homestead claim。"
+    },
+    "greenpawCutting": {
+      "alreadyPlanted": "你已经种下了插枝。给它一些时间成长。",
+      "needHomestead": "你需要先拥有一块宅地才能种下它。",
+      "tooFar": "你必须在自己的宅地才能种下它。",
+      "planted": "你在自己的宅地种下了插枝。耐心等待吧。",
+      "grown": "你的插枝已经长成了一只伙伴。它现在会跟随你。"
     },
     "readyCheck": {
       "mustBeInParty": "你必须在队伍中才能发起准备检查。",
@@ -3389,6 +3398,7 @@ export const zh_CN: EnTranslations = {
       "ignoringChat": "已屏蔽来自 {name} 的聊天。",
       "noLongerIgnoring": "不再屏蔽 {name}。",
       "playerNotNearby": "该玩家不在附近。",
+      "playerInfoNotFound": "未找到该名称的角色。",
       "duelCountdown": "决斗将在 {seconds} 秒后开始...",
       "duelEndBanner": "{winner} 在决斗中击败了 {loser}！",
       "duelEndLog": "{winner} 在决斗中击败了 {loser}。",
@@ -3834,6 +3844,22 @@ export const zh_CN: EnTranslations = {
       "stool": "凳子"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "每日奖励",
+    "window": {
+      "title": "每日奖励",
+      "close": "关闭每日奖励",
+      "claim": "领取",
+      "claimAria": "领取今日奖励",
+      "claimed": "已领取，明天再来。",
+      "locked": "此账号暂时无法领取每日奖励。",
+      "hint": "每天可领取一次。错过一天不会有任何损失。"
+    },
+    "cell": {
+      "today": "今天",
+      "itemCount": "{count}x {item}"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "金",
@@ -4054,7 +4080,8 @@ export const zh_CN: EnTranslations = {
       "needAria": "需求 {item}",
       "greedAria": "贪婪 {item}",
       "passAria": "放弃 {item}",
-      "everyonePassed": "所有人都放弃了 {item}。"
+      "everyonePassed": "所有人都放弃了 {item}。",
+      "winnerOffline": "{item}的获胜者已离线；战利品已归还尸体。"
     }
   },
   "entities": {
@@ -6185,6 +6212,15 @@ export const zh_CN: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "心材巨像"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "绿掌的插枝"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "绿掌的插枝"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "绿掌的插枝"
       }
     },
     "npcs": {

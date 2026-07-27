@@ -246,7 +246,6 @@ export const ja_JP: EnTranslations = {
       "chat": "チャットへスキップ"
     },
     "mobile": {
-      "autorun": "オートラン",
       "jump": "ジャンプ",
       "leaderboard": "ランキング",
       "nameplates": "ネームプレート",
@@ -2447,6 +2446,9 @@ export const ja_JP: EnTranslations = {
       "nothingToHarvest": "その死骸には採集できるものが何もない。",
       "alreadyHarvested": "この死骸はすでに採集済みだ。"
     },
+    "dailyRewards": {
+      "claimed": "デイリー報酬を受け取った。"
+    },
     "collections": {
       "notFound": "それは存在しない。",
       "tooFar": "遠すぎる。"
@@ -2511,6 +2513,13 @@ export const ja_JP: EnTranslations = {
       "readoutNoHomesteadQuest": "お前は開拓地を持っていない。緑掌修道士の用事をすべて終えれば手に入る。",
       "readoutNoHomesteadHint": "お前は開拓地を持っていない。ホロウ低地の適した場所に立ち、/homestead claim と入力しろ。",
       "helpLine": "開拓地：/homestead、/homestead claim。"
+    },
+    "greenpawCutting": {
+      "alreadyPlanted": "挿し木はもう植えた。育つのを待て。",
+      "needHomestead": "これを植えるには、まず開拓地が必要だ。",
+      "tooFar": "これを植えるには自分の開拓地にいなければならない。",
+      "planted": "開拓地に挿し木を植えた。時が満ちるのを待とう。",
+      "grown": "挿し木が育ち、伴侶となった。今はお前について歩く。"
     },
     "readyCheck": {
       "mustBeInParty": "準備確認を開始するにはパーティに入っている必要があります。",
@@ -3389,6 +3398,7 @@ export const ja_JP: EnTranslations = {
       "ignoringChat": "{name}のチャットを無視します。",
       "noLongerIgnoring": "{name}の無視を解除しました。",
       "playerNotNearby": "そのプレイヤーは近くにいません。",
+      "playerInfoNotFound": "その名前のキャラクターは見つかりませんでした。",
       "duelCountdown": "決闘開始まで{seconds}秒...",
       "duelEndBanner": "{winner}が決闘で{loser}を倒しました！",
       "duelEndLog": "{winner}が決闘で{loser}を倒しました。",
@@ -3834,6 +3844,22 @@ export const ja_JP: EnTranslations = {
       "stool": "スツール"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "デイリー報酬",
+    "window": {
+      "title": "デイリー報酬",
+      "close": "デイリー報酬を閉じる",
+      "claim": "受け取る",
+      "claimAria": "今日の報酬を受け取る",
+      "claimed": "受け取り済み。また明日。",
+      "locked": "このアカウントでは現在デイリー報酬を利用できません。",
+      "hint": "1日1回受け取れます。逃した日があっても損はありません。"
+    },
+    "cell": {
+      "today": "今日",
+      "itemCount": "{count}x {item}"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "金",
@@ -4054,7 +4080,8 @@ export const ja_JP: EnTranslations = {
       "needAria": "{item}を必要",
       "greedAria": "{item}を強欲",
       "passAria": "{item}をパス",
-      "everyonePassed": "全員が{item}をパスしました。"
+      "everyonePassed": "全員が{item}をパスしました。",
+      "winnerOffline": "{item}の勝者がオフラインだったため、死体に返却されました。"
     }
   },
   "entities": {
@@ -6185,6 +6212,15 @@ export const ja_JP: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "心材の巨像"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "緑掌の挿し木"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "緑掌の挿し木"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "緑掌の挿し木"
       }
     },
     "npcs": {

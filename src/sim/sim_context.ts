@@ -14,6 +14,7 @@
 
 import type { TalentModifiers } from './content/talents';
 import type { DelayedEvent, GroundAoE } from './entity_roster';
+import type { HomesteadPlotState } from './homestead';
 import type { PendingLootRoll } from './loot/loot_roll';
 import type { MarketListing } from './market';
 import type { PlantThresholdKind } from './plant_speech';
@@ -44,11 +45,13 @@ import type {
   Entity,
   ErrorReason,
   PlayerClass,
+  PvpWinKind,
   QuestProgress,
   ReadyCheck,
   SimConfig,
   SimEvent,
   SkinCatalog,
+  SocialActionKind,
   Vec3,
 } from './types';
 
@@ -327,6 +330,36 @@ export interface SimContextCallbacks {
   onGreenpawFedForQuests(meta: PlayerMeta): void;
   checkQuestReady(qp: QuestProgress, meta: PlayerMeta): void;
   countItem(itemId: string, pid?: number): number;
+  // PHAA-744: Book of Asphodelia deed-credit hooks, same event sites as the
+  // quest-credit trio above (src/sim/deeds.ts).
+  onMobKilledForDeeds(mob: Entity, meta: PlayerMeta): void;
+  onInventoryChangedForDeeds(meta: PlayerMeta): void;
+  // PHAA-745 chronicle category: hooked from completeQuest() (quest_commands.ts),
+  // the shared core both turnInQuest and refuseQuest route through.
+  onQuestCompletedForDeeds(questId: string, meta: PlayerMeta): void;
+  // PHAA-745 delve category: hooked from grantDelveClearTo (delves/runs.ts), the
+  // shared per-member clear-economy choke point every completion path routes through.
+  onDelveClearedForDeeds(
+    delveId: string,
+    tierId: string,
+    deathless: boolean,
+    meta: PlayerMeta,
+  ): void;
+  // PHAA-745 progression category: hooked from the level-up loop in grantXp
+  // (combat/damage.ts), fired once per level crossed with the reached level.
+  onLevelReachedForDeeds(level: number, meta: PlayerMeta): void;
+  // PHAA-745 exploration category: hooked from the per-player movement tick in
+  // sim.ts, fired once per zone entry with the newly entered zone's id.
+  onZoneVisitedForDeeds(zoneId: string, meta: PlayerMeta): void;
+  // PHAA-745 pvp category: hooked from the shared win-scoring closure in
+  // endArenaMatch (social/arena.ts: arena, fiesta, boarball) and from endDuel
+  // (social/duel.ts: duel), fired once per pid on a match/bout win.
+  onPvpWinForDeeds(kind: PvpWinKind, meta: PlayerMeta): void;
+  // PHAA-745 social category: hooked from completeFishing / talkToNpc (sim.ts),
+  // lockpickSucceed (delves/lockpick_controller.ts), the /roll handler
+  // (social/chat.ts), and bankDeposit/bankWithdraw (bank.ts, engine-only: no
+  // banker NPC is placed in zone content yet, see bank.ts's ADAPT NOTE).
+  onSocialActionForDeeds(kind: SocialActionKind, meta: PlayerMeta, npcId?: string): void;
 
   // T1 player target selection consumes isHostileTo/isFriendlyTo/pvpController/stopFollow;
   // all already on the seam (C4a added the first two + stopFollow, C1 added pvpController)
@@ -428,6 +461,11 @@ export interface SimContextCallbacks {
   updatePet(pet: Entity): void;
   isDelveCompanionMob(mob: Entity): boolean;
   updateDelveCompanion(companion: Entity): void;
+  // Greenpaw's cutting companion (PHAA-751, greenpaw_cutting.ts): a cosmetic,
+  // non-combat owned mob dispatched here instead of falling through to
+  // updatePet (pet_ai.ts), whose rng draw order is locked for the parity gate.
+  isGreenpawCompanionMob(mob: Entity): boolean;
+  updateGreenpawCompanion(companion: Entity): void;
   updateBossMechanics(mob: Entity): void;
   updateNythraxisEncounter(boss: Entity): void;
   resetNythraxisEncounter(boss: Entity): void;
@@ -604,6 +642,15 @@ export interface SimContextCallbacks {
   // when the raw message was a /homestead command (handled). Append-only,
   // late-bound to Sim.
   homesteadChat(raw: string, pid: number): boolean;
+  // Public plot lookup on the Homestead instance (src/sim/homestead.ts),
+  // exposed here so a foreign system (greenpaw_cutting.ts's plant-at-your-
+  // own-plot gate) can resolve "does this player own a plot, and where"
+  // without duplicating the owner-key logic. Append-only, late-bound to Sim.
+  homesteadOwnedPlotFor(meta: PlayerMeta): HomesteadPlotState | null;
+  // Greenpaw's cutting (PHAA-751): the item-use 'plant' branch
+  // (src/sim/items.ts) routes through the seam to the GreenpawCutting
+  // instance on Sim. Append-only, late-bound to Sim.
+  plantGreenpawCutting(pid?: number): void;
   // Gathering v0 (PHAA-504): the one rng draw a corpse harvest needs (which
   // component tag's item a multi-tag corpse yields) routes through the seam
   // to the Gathering instance on Sim. Append-only, late-bound to Sim.
@@ -847,6 +894,14 @@ export function createSimContext(host: SimContextHost): SimContext {
     onGreenpawFedForQuests: host.onGreenpawFedForQuests,
     checkQuestReady: host.checkQuestReady,
     countItem: host.countItem,
+    onMobKilledForDeeds: host.onMobKilledForDeeds,
+    onInventoryChangedForDeeds: host.onInventoryChangedForDeeds,
+    onQuestCompletedForDeeds: host.onQuestCompletedForDeeds,
+    onDelveClearedForDeeds: host.onDelveClearedForDeeds,
+    onLevelReachedForDeeds: host.onLevelReachedForDeeds,
+    onZoneVisitedForDeeds: host.onZoneVisitedForDeeds,
+    onPvpWinForDeeds: host.onPvpWinForDeeds,
+    onSocialActionForDeeds: host.onSocialActionForDeeds,
     addEntity: host.addEntity,
     dropEntity: host.dropEntity,
     rebucket: host.rebucket,
@@ -894,6 +949,8 @@ export function createSimContext(host: SimContextHost): SimContext {
     updatePet: host.updatePet,
     isDelveCompanionMob: host.isDelveCompanionMob,
     updateDelveCompanion: host.updateDelveCompanion,
+    isGreenpawCompanionMob: host.isGreenpawCompanionMob,
+    updateGreenpawCompanion: host.updateGreenpawCompanion,
     updateBossMechanics: host.updateBossMechanics,
     updateNythraxisEncounter: host.updateNythraxisEncounter,
     resetNythraxisEncounter: host.resetNythraxisEncounter,
@@ -970,6 +1027,8 @@ export function createSimContext(host: SimContextHost): SimContext {
     plantSpeechAmbientChat: host.plantSpeechAmbientChat,
     // Homestead v0: the /homestead chat-command branch.
     homesteadChat: host.homesteadChat,
+    homesteadOwnedPlotFor: host.homesteadOwnedPlotFor,
+    plantGreenpawCutting: host.plantGreenpawCutting,
     // Gathering v0 (PHAA-504): the corpse-harvest item-selection rng draw.
     gatherHarvestItemFor: host.gatherHarvestItemFor,
     // Bags capacity pre-check (stays on Sim next to the inventory hub).

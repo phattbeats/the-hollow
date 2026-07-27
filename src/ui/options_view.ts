@@ -205,6 +205,7 @@ export type OptionsPanelId =
 
 export type OptionsMenuAction =
   | { kind: 'goto'; view: OptionsPanelId }
+  | { kind: 'dailyRewards' }
   | { kind: 'logout' }
   | { kind: 'close' };
 
@@ -229,6 +230,7 @@ export function buildOptionsMenu(opts: { bugReportAvailable: boolean }): Options
       labelKey: 'hudChrome.bugReport.menuButton',
       action: { kind: 'goto', view: 'bugreport' },
     });
+  entries.push({ labelKey: 'dailyRewardsUi.menuButton', action: { kind: 'dailyRewards' } });
   entries.push({ labelKey: 'hud.options.logout', action: { kind: 'logout' } });
   entries.push({ labelKey: 'hud.options.returnToGame', action: { kind: 'close' } });
   return entries;

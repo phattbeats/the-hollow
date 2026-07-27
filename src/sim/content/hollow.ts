@@ -273,7 +273,78 @@ export const HOLLOW_MOBS: Record<string, MobTemplate> = {
     scale: 3.4,
     color: 0x2f4a2a,
   },
+  // Greenpaw's cutting (PHAA-751): the cosmetic homestead companion first_cutting
+  // grows into once planted. Never hostile, never fights, never dies or respawns
+  // (spawned/despawned directly by greenpaw_cutting.ts, not a CampDef); the stats
+  // below are structurally required by createMob but are inert. Three variants so
+  // the rolled cosmetic (GREENPAW_COMPANION_MOB_IDS, picked once at plant time via
+  // ctx.rng) gives real color/design spread: each id maps to a different
+  // plant_creature archetype in src/render/plant_creature_core.ts's
+  // PLANT_MOB_ARCHETYPES, and the archetype's own seeded palette picks the color.
+  greenpaw_cutting_dawn: {
+    id: 'greenpaw_cutting_dawn',
+    name: "Greenpaw's Cutting",
+    minLevel: 1,
+    maxLevel: 1,
+    family: 'plant',
+    hpBase: 999999, // effectively unkillable: purely cosmetic, never a valid attack target
+    hpPerLevel: 0,
+    dmgBase: 0,
+    dmgPerLevel: 0,
+    attackSpeed: 2,
+    armorPerLevel: 0,
+    moveSpeed: 8,
+    aggroRadius: 0,
+    loot: [],
+    scale: 0.35,
+    color: 0x9fc46a,
+  },
+  greenpaw_cutting_moss: {
+    id: 'greenpaw_cutting_moss',
+    name: "Greenpaw's Cutting",
+    minLevel: 1,
+    maxLevel: 1,
+    family: 'plant',
+    hpBase: 999999, // effectively unkillable: purely cosmetic, never a valid attack target
+    hpPerLevel: 0,
+    dmgBase: 0,
+    dmgPerLevel: 0,
+    attackSpeed: 2,
+    armorPerLevel: 0,
+    moveSpeed: 8,
+    aggroRadius: 0,
+    loot: [],
+    scale: 0.35,
+    color: 0x6b8f4f,
+  },
+  greenpaw_cutting_ash: {
+    id: 'greenpaw_cutting_ash',
+    name: "Greenpaw's Cutting",
+    minLevel: 1,
+    maxLevel: 1,
+    family: 'plant',
+    hpBase: 999999, // effectively unkillable: purely cosmetic, never a valid attack target
+    hpPerLevel: 0,
+    dmgBase: 0,
+    dmgPerLevel: 0,
+    attackSpeed: 2,
+    armorPerLevel: 0,
+    moveSpeed: 8,
+    aggroRadius: 0,
+    loot: [],
+    scale: 0.35,
+    color: 0xa88a5c,
+  },
 };
+
+// The rolled cosmetic variants for Greenpaw's cutting companion (PHAA-751):
+// mob template ids, picked once via ctx.rng.pick at plant time
+// (greenpaw_cutting.ts) and then stable for the companion's whole life.
+export const GREENPAW_COMPANION_MOB_IDS = [
+  'greenpaw_cutting_dawn',
+  'greenpaw_cutting_moss',
+  'greenpaw_cutting_ash',
+] as const;
 
 // ---------------------------------------------------------------------------
 // NPCs
@@ -887,6 +958,7 @@ export const HOLLOW_ITEMS: Record<string, ItemDef> = {
     id: 'first_cutting',
     name: 'A Cutting',
     kind: 'quest',
+    use: { type: 'plant' }, // PHAA-751: plants at your homestead, greenpaw_cutting.ts
     sellValue: 0, // it is alive; it is not for sale
     questId: 'q_what_fills',
   },

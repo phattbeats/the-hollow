@@ -17,7 +17,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "34f1b800",
+      "state": "9e34c745",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -40,6 +40,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -111,8 +112,8 @@
       "tick": 20,
       "time": 1,
       "nextId": 414,
-      "state": "b29a2ec5",
-      "events": "700fa56b",
+      "state": "edb1a749",
+      "events": "d370b703",
       "rng": {
         "draws": 62,
         "digest": "9b357b14"
@@ -122,7 +123,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 414,
-      "state": "01cfdc32",
+      "state": "19e3ceca",
       "events": "2dd5e217",
       "rng": {
         "draws": 107,
@@ -133,7 +134,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 414,
-      "state": "8e51602f",
+      "state": "567064af",
       "events": "c59d9741",
       "rng": {
         "draws": 240,
@@ -144,7 +145,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 414,
-      "state": "f52379e8",
+      "state": "22869184",
       "events": "741638a5",
       "rng": {
         "draws": 240,
@@ -169,6 +170,49 @@
           "counters": {
             "damageTaken": 1385
           },
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -178,6 +222,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 92800,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -598,7 +643,7 @@
       "tick": 64,
       "time": 3.2,
       "nextId": 414,
-      "state": "8be4bbe5",
+      "state": "89388ba9",
       "events": "741638a5",
       "rng": {
         "draws": 263,
@@ -623,6 +668,49 @@
           "counters": {
             "damageTaken": 1385
           },
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
@@ -632,6 +720,7 @@
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 92800,
           "nodeHarvestReadyAt": {},
           "talents": {

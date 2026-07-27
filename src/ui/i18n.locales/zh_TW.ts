@@ -5,9 +5,8 @@
 // translate that key. The build (scripts/i18n_build.mjs) unflattens this map and
 // overlays it onto nested `en` to produce the dense resolved table; any key here
 // must be a real `en` leaf path: keys are typed `Partial<Record<TranslationKey,
-// string>>` so tsc rejects a structurally-wrong key, plus
-// tests/i18n_overlay_key_membership.test.ts catches a typo'd entity id the
-// template-literal key type cannot. Overlays are SPARSE: an
+// string>>` against the build-generated flat key union, so tsc rejects any key
+// that is not an exact `en` leaf path, typo'd entity ids included. Overlays are SPARSE: an
 // untranslated key is omitted and the build fills it from English, then the
 // registry (src/ui/i18n.status.json) marks it `pending`.
 
@@ -1036,6 +1035,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hud.system.ignoringChat': '已封鎖來自 {name} 的聊天。',
   'hud.system.noLongerIgnoring': '不再封鎖 {name}。',
   'hud.system.playerNotNearby': '該玩家不在附近。',
+  'hud.system.playerInfoNotFound': '找不到該名稱的角色。',
   'hud.system.duelCountdown': '決鬥將在 {seconds} 秒後開始...',
   'hud.system.duelEndBanner': '{winner} 在決鬥中擊敗了 {loser}！',
   'hud.system.duelEndLog': '{winner} 在決鬥中擊敗了 {loser}。',
@@ -1555,6 +1555,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': '貪婪 {item}',
   'itemUi.lootRoll.passAria': '放棄 {item}',
   'itemUi.lootRoll.everyonePassed': '所有人都放棄了 {item}。',
+  'itemUi.lootRoll.winnerOffline': '{item}的獲勝者已離線；戰利品已歸還屍體。',
   'entities.abilities.heroic_strike.name': '英勇打擊',
   'entities.abilities.heroic_strike.description':
     '一次強力攻擊，使近戰傷害提高 {damage}。在你的下一次揮擊時觸發。',
@@ -3384,7 +3385,6 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/秒',
   'hudChrome.meters.perSecondRow': '{total}（{rate}）',
   'hudChrome.meters.seconds': '{s}秒',
-  'hudChrome.mobile.autorun': '自動奔跑',
   'hudChrome.mobile.haptics': '觸覺回饋',
   'hudChrome.mobile.hapticsOff': '觸覺回饋已關閉',
   'hudChrome.mobile.jump': '跳躍',
@@ -4685,6 +4685,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.palefeeder.name': '蒼白噬光者',
   'entities.mobs.rootmaw.name': '根顎獸',
   'entities.mobs.the_witness_root.name': '見證之根',
+  'entities.mobs.greenpaw_cutting_dawn.name': '綠掌的插枝',
+  'entities.mobs.greenpaw_cutting_moss.name': '綠掌的插枝',
+  'entities.mobs.greenpaw_cutting_ash.name': '綠掌的插枝',
   'entities.npcs.brother_halven.greeting': '下方的聖物庫又移位了。',
   'entities.npcs.brother_halven.name': '哈爾文修士',
   'entities.npcs.brother_halven.title': '聖物庫守護人',
@@ -4879,6 +4882,12 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'sim.collections.notFound': '那個東西不存在。',
   'sim.collections.tooFar': '太遠了。',
   'sim.gathering.nothingToHarvest': '這具屍體沒有什麼可以採集的。',
+  'sim.greenpawCutting.alreadyPlanted': '你已經種下了插枝。給它一些時間成長。',
+  'sim.greenpawCutting.needHomestead': '你需要先擁有一塊宅地才能種下它。',
+  'sim.greenpawCutting.tooFar': '你必須在自己的宅地才能種下它。',
+  'sim.greenpawCutting.planted': '你在自己的宅地種下了插枝。耐心等待吧。',
+  'sim.greenpawCutting.grown': '你的插枝已經長成了一隻夥伴。牠現在會跟隨你。',
+  'sim.dailyRewards.claimed': '你領取了每日獎勵。',
   'sim.hearth.emberbulb1': '這才叫柴火……瞧瞧她喘氣的樣子，夥計……',
   'sim.hearth.emberbulb2': '爐子慢慢地、乾乾淨淨地吃下去，她就愛這樣……',
   'sim.hearth.emberbulb3': '添了柴，冒了煙……那個波長已經開始鬆動了，我能感覺到。',
@@ -5222,6 +5231,15 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.npcJournal.next': '下一頁',
   'hudChrome.npcJournal.close': '關閉日記',
   'hudChrome.npcJournal.title': '{name}的日記',
+  'dailyRewardsUi.menuButton': '每日獎勵',
+  'dailyRewardsUi.window.title': '每日獎勵',
+  'dailyRewardsUi.window.close': '關閉每日獎勵',
+  'dailyRewardsUi.window.claim': '領取',
+  'dailyRewardsUi.window.claimAria': '領取今日獎勵',
+  'dailyRewardsUi.window.claimed': '已領取，明天再來。',
+  'dailyRewardsUi.window.locked': '此帳號暫時無法領取每日獎勵。',
+  'dailyRewardsUi.window.hint': '每天可領取一次。錯過一天不會有任何損失。',
+  'dailyRewardsUi.cell.today': '今天',
   'housingUi.claimedBanner': '你將這塊地認領為家園。',
   'housingUi.ownerBanner': '這是{name}的家園。',
   'housingUi.prompt.claim': '認領這塊地',

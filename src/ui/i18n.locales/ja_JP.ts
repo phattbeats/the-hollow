@@ -5,9 +5,8 @@
 // translate that key. The build (scripts/i18n_build.mjs) unflattens this map and
 // overlays it onto nested `en` to produce the dense resolved table; any key here
 // must be a real `en` leaf path: keys are typed `Partial<Record<TranslationKey,
-// string>>` so tsc rejects a structurally-wrong key, plus
-// tests/i18n_overlay_key_membership.test.ts catches a typo'd entity id the
-// template-literal key type cannot. Overlays are SPARSE: an
+// string>>` against the build-generated flat key union, so tsc rejects any key
+// that is not an exact `en` leaf path, typo'd entity ids included. Overlays are SPARSE: an
 // untranslated key is omitted and the build fills it from English, then the
 // registry (src/ui/i18n.status.json) marks it `pending`.
 
@@ -1087,6 +1086,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hud.system.ignoringChat': '{name}のチャットを無視します。',
   'hud.system.noLongerIgnoring': '{name}の無視を解除しました。',
   'hud.system.playerNotNearby': 'そのプレイヤーは近くにいません。',
+  'hud.system.playerInfoNotFound': 'その名前のキャラクターは見つかりませんでした。',
   'hud.system.duelCountdown': '決闘開始まで{seconds}秒...',
   'hud.system.duelEndBanner': '{winner}が決闘で{loser}を倒しました！',
   'hud.system.duelEndLog': '{winner}が決闘で{loser}を倒しました。',
@@ -1626,6 +1626,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': '{item}を強欲',
   'itemUi.lootRoll.passAria': '{item}をパス',
   'itemUi.lootRoll.everyonePassed': '全員が{item}をパスしました。',
+  'itemUi.lootRoll.winnerOffline': '{item}の勝者がオフラインだったため、死体に返却されました。',
   'entities.abilities.heroic_strike.name': '英雄の一撃',
   'entities.abilities.heroic_strike.description':
     '強力な攻撃で近接ダメージが {damage} 増加します。次のスイングで発動します。',
@@ -3526,7 +3527,6 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/秒',
   'hudChrome.meters.perSecondRow': '{total}（{rate}）',
   'hudChrome.meters.seconds': '{s}秒',
-  'hudChrome.mobile.autorun': 'オートラン',
   'hudChrome.mobile.haptics': '振動',
   'hudChrome.mobile.hapticsOff': '振動オフ',
   'hudChrome.mobile.jump': 'ジャンプ',
@@ -4925,6 +4925,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.palefeeder.name': '蒼白喰らい',
   'entities.mobs.rootmaw.name': '根顎獣',
   'entities.mobs.the_witness_root.name': '証しの根',
+  'entities.mobs.greenpaw_cutting_dawn.name': '緑掌の挿し木',
+  'entities.mobs.greenpaw_cutting_moss.name': '緑掌の挿し木',
+  'entities.mobs.greenpaw_cutting_ash.name': '緑掌の挿し木',
   'entities.npcs.brother_halven.greeting': '下の聖遺物庫がまた動いた。',
   'entities.npcs.brother_halven.name': 'ハルヴェン修道士',
   'entities.npcs.brother_halven.title': '聖遺物庫の番人',
@@ -5134,6 +5137,12 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'sim.collections.notFound': 'それは存在しない。',
   'sim.collections.tooFar': '遠すぎる。',
   'sim.gathering.nothingToHarvest': 'その死骸には採集できるものが何もない。',
+  'sim.greenpawCutting.alreadyPlanted': '挿し木はもう植えた。育つのを待て。',
+  'sim.greenpawCutting.needHomestead': 'これを植えるには、まず開拓地が必要だ。',
+  'sim.greenpawCutting.tooFar': 'これを植えるには自分の開拓地にいなければならない。',
+  'sim.greenpawCutting.planted': '開拓地に挿し木を植えた。時が満ちるのを待とう。',
+  'sim.greenpawCutting.grown': '挿し木が育ち、伴侶となった。今はお前について歩く。',
+  'sim.dailyRewards.claimed': 'デイリー報酬を受け取った。',
   'sim.hearth.emberbulb1': 'こいつぁ上物の燃料だ……見ろ、あの子が息をしとる、なあ……',
   'sim.hearth.emberbulb2': '炉はゆっくり、きれいに食うのが好きなんじゃ、あの子はな……',
   'sim.hearth.emberbulb3': '焚べて、煙も立った……もう波長が開きかけとる、感じるわい。',
@@ -5489,6 +5498,15 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.npcJournal.next': '次のページ',
   'hudChrome.npcJournal.close': '日記を閉じる',
   'hudChrome.npcJournal.title': '{name}の日記',
+  'dailyRewardsUi.menuButton': 'デイリー報酬',
+  'dailyRewardsUi.window.title': 'デイリー報酬',
+  'dailyRewardsUi.window.close': 'デイリー報酬を閉じる',
+  'dailyRewardsUi.window.claim': '受け取る',
+  'dailyRewardsUi.window.claimAria': '今日の報酬を受け取る',
+  'dailyRewardsUi.window.claimed': '受け取り済み。また明日。',
+  'dailyRewardsUi.window.locked': 'このアカウントでは現在デイリー報酬を利用できません。',
+  'dailyRewardsUi.window.hint': '1日1回受け取れます。逃した日があっても損はありません。',
+  'dailyRewardsUi.cell.today': '今日',
   'housingUi.claimedBanner': 'あなたはこの区画を住居として登録した。',
   'housingUi.ownerBanner': 'ここは{name}の住居です。',
   'housingUi.prompt.claim': 'この区画を登録する',
