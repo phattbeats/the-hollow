@@ -5,9 +5,8 @@
 // translate that key. The build (scripts/i18n_build.mjs) unflattens this map and
 // overlays it onto nested `en` to produce the dense resolved table; any key here
 // must be a real `en` leaf path: keys are typed `Partial<Record<TranslationKey,
-// string>>` so tsc rejects a structurally-wrong key, plus
-// tests/i18n_overlay_key_membership.test.ts catches a typo'd entity id the
-// template-literal key type cannot. Overlays are SPARSE: an
+// string>>` against the build-generated flat key union, so tsc rejects any key
+// that is not an exact `en` leaf path, typo'd entity ids included. Overlays are SPARSE: an
 // untranslated key is omitted and the build fills it from English, then the
 // registry (src/ui/i18n.status.json) marks it `pending`.
 
@@ -1600,7 +1599,8 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': 'Cupidité pour {item}',
   'itemUi.lootRoll.passAria': 'Passer pour {item}',
   'itemUi.lootRoll.everyonePassed': 'Tout le monde a passé pour {item}.',
-  'itemUi.lootRoll.winnerOffline': 'Le gagnant de {item} était hors ligne ; il a été rendu au corps.',
+  'itemUi.lootRoll.winnerOffline':
+    'Le gagnant de {item} était hors ligne ; il a été rendu au corps.',
   'entities.abilities.heroic_strike.name': 'Frappe héroïque',
   'entities.abilities.heroic_strike.description':
     "Une attaque puissante qui augmente les dégâts de mêlée de {damage}. S'active lors de votre prochaine frappe.",
@@ -3370,7 +3370,6 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/s',
   'hudChrome.meters.perSecondRow': '{total} ({rate})',
   'hudChrome.meters.seconds': '{s} s',
-  'hudChrome.mobile.autorun': 'Course automatique',
   'hudChrome.mobile.haptics': 'Vibrations',
   'hudChrome.mobile.hapticsOff': 'Vibrations désactivées',
   'hudChrome.mobile.jump': 'Sauter',

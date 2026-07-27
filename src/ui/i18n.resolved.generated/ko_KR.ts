@@ -246,7 +246,6 @@ export const ko_KR: EnTranslations = {
       "chat": "채팅으로 건너뛰기"
     },
     "mobile": {
-      "autorun": "자동 달리기",
       "jump": "점프",
       "leaderboard": "순위",
       "nameplates": "이름표",
@@ -1013,6 +1012,9 @@ export const ko_KR: EnTranslations = {
         "fiestaComplete": "피에스타 경기",
         "fiestaWin": "피에스타 승리"
       }
+    },
+    "hitRating": {
+      "ratingLabel": "적중 레이팅"
     }
   },
   "mailUi": {
@@ -2512,6 +2514,13 @@ export const ko_KR: EnTranslations = {
       "readoutNoHomesteadHint": "당신은 정착지가 없다. 우묵골 지대의 적당한 곳에 서서 /homestead claim이라고 입력하라.",
       "helpLine": "정착지: /homestead, /homestead claim."
     },
+    "greenpawCutting": {
+      "alreadyPlanted": "이미 꺾꽂이를 심었다. 자랄 때까지 기다려라.",
+      "needHomestead": "이것을 심으려면 먼저 개척지가 있어야 한다.",
+      "tooFar": "이것을 심으려면 자신의 개척지에 있어야 한다.",
+      "planted": "개척지에 꺾꽂이를 심었다. 시간을 두고 기다려라.",
+      "grown": "꺾꽂이가 자라 동반자가 되었다. 이제 너를 따라다닌다."
+    },
     "readyCheck": {
       "mustBeInParty": "준비 확인을 시작하려면 파티에 있어야 합니다.",
       "alreadyInProgress": "이미 준비 확인이 진행 중입니다.",
@@ -3389,6 +3398,7 @@ export const ko_KR: EnTranslations = {
       "ignoringChat": "{name}의 채팅을 차단합니다.",
       "noLongerIgnoring": "{name}을 더 이상 차단하지 않습니다.",
       "playerNotNearby": "그 플레이어는 근처에 없습니다.",
+      "playerInfoNotFound": "해당 이름의 캐릭터를 찾을 수 없습니다.",
       "duelCountdown": "결투가 {seconds}초 후 시작됩니다...",
       "duelEndBanner": "{winner}님이 결투에서 {loser}님을 이겼습니다!",
       "duelEndLog": "{winner}님이 결투에서 {loser}님을 이겼습니다.",
@@ -6214,6 +6224,15 @@ export const ko_KR: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "심재 거상"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "초록발의 꺾꽂이"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "초록발의 꺾꽂이"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "초록발의 꺾꽂이"
       }
     },
     "npcs": {

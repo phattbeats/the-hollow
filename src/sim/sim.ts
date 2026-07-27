@@ -157,6 +157,12 @@ import {
   isNodeHarvestableBy,
   nodeCooldownIdsFor,
 } from './gathering';
+import {
+  GreenpawCutting,
+  type GreenpawCuttingSave,
+  isGreenpawCompanionMob,
+  updateGreenpawCompanion,
+} from './greenpaw_cutting';
 import { GreenpawHearth, type GreenpawHearthSave } from './greenpaw_hearth';
 import { Homestead, type HomesteadSave } from './homestead';
 import { Housing, type HousingSave } from './housing';
@@ -1179,6 +1185,12 @@ export class Sim {
   // owns the plot ownership book. Constructed in the ctor after the SimContext
   // (it consumes the seam); Sim keeps thin delegates below, mirroring housing.
   homestead!: Homestead;
+  // Greenpaw's cutting (PHAA-751): owns the planted-cutting record book and
+  // the growth/companion-spawn lifecycle. Constructed in the ctor after the
+  // SimContext (it consumes the seam AND homesteadOwnedPlotFor, so it must be
+  // constructed after homestead above); Sim keeps thin delegates below,
+  // mirroring the greenpawHearth pattern.
+  greenpawCutting!: GreenpawCutting;
   // Gathering v0 (PHAA-504): corpse harvest, the single-use first-come opposite
   // of a world gathering node. Constructed in the ctor after the SimContext (it
   // consumes the seam for its one rng draw); Sim keeps a thin delegate below,
@@ -1255,6 +1267,11 @@ export class Sim {
     // Homestead v0: owns the open-world plot book; consumes the seam. Draws no
     // rng at construction (or ever), so the draws below are unperturbed.
     this.homestead = new Homestead(this.ctx);
+    // Greenpaw's cutting (PHAA-751): owns the planted-cutting record book;
+    // consumes the seam (including homesteadOwnedPlotFor, above). Draws rng
+    // only from plant() (a player command), never at construction, so the
+    // draws below are unperturbed.
+    this.greenpawCutting = new GreenpawCutting(this.ctx);
 
     // Spawn content: a custom world (editor play-test) or the built-in world.
     // CAMPS order is a determinism contract; both bundles preserve it.
@@ -1822,6 +1839,10 @@ export class Sim {
     player.potionCooldownUntil = applyCooldowns(savedState?.cooldowns, player.cooldowns, this.time);
     player.potionCooldownRemaining = Math.max(0, player.potionCooldownUntil - this.time);
     if (savedState?.pet) this.restorePet(player, savedState.pet);
+    // Greenpaw's cutting (PHAA-751): spawn the companion now if the player's
+    // planted cutting already finished growing (possibly across a prior
+    // session's worth of elapsed time).
+    this.greenpawCutting.onPlayerJoin(meta);
 
     // The Hollow spawn policy (PHAA-404): under hollowStart every join lands
     // inside the Hollow hub instance, and a character last saved inside the
@@ -1880,6 +1901,10 @@ export class Sim {
     // with the character and removed from the live world instead of released
     const pet = this.petOf(pid, true);
     if (pet) this.despawnPersistentPet(pet);
+    // Greenpaw's cutting (PHAA-751): the companion is a session-only
+    // projection of the persisted record, so it never idles in the world
+    // after its owner logs off.
+    this.greenpawCutting.onPlayerLeave(meta);
     for (const m of this.entities.values()) {
       if (m.kind !== 'mob') continue;
       m.threat.delete(pid);
@@ -2737,6 +2762,11 @@ export class Sim {
       // mobSwing/moveToward/isHostileTo/isRooted/moveSpeedMult/swingIntervalMult it consumes
       // stay on Sim and are bound above (M2/T1/C4a), not re-bound for the companion slice.
       updateDelveCompanion: (companion) => companionMod.updateDelveCompanion(sim.ctx, companion),
+      // Greenpaw's cutting companion (PHAA-751) lives in src/sim/greenpaw_cutting.ts;
+      // locomotion.updateMob's owned-companion branch reaches it through this seam
+      // binding, same shape as the delve companion above.
+      isGreenpawCompanionMob: (mob) => isGreenpawCompanionMob(mob),
+      updateGreenpawCompanion: (companion) => updateGreenpawCompanion(sim.ctx, companion),
       updateBossMechanics: sim.updateBossMechanics.bind(sim),
       // N1: updateNythraxisEncounter now lives in encounters/nythraxis.ts; late-bound
       // arrow (mob/locomotion.ts updateMob drives it via ctx). resetNythraxisEncounter
@@ -2882,6 +2912,11 @@ export class Sim {
       // Homestead v0: the /homestead chat-command branch routes through the seam to
       // the Homestead instance (constructed after this literal; late-bound arrow).
       homesteadChat: (raw, pid) => sim.homestead.handleChat(raw, pid),
+      homesteadOwnedPlotFor: (meta) => sim.homestead.ownedPlotFor(meta),
+      // Greenpaw's cutting (PHAA-751): the item-use 'plant' branch routes through
+      // the seam to the GreenpawCutting instance (constructed after this literal;
+      // late-bound arrow).
+      plantGreenpawCutting: (pid) => sim.greenpawCutting.plant(pid),
       // Gathering v0 (PHAA-504): corpse-harvest item selection (the one rng draw)
       // routes through the seam to the Gathering instance (constructed after this
       // literal; late-bound arrow).
@@ -3156,6 +3191,7 @@ export class Sim {
     this.postOffice.update();
     this.greenpawHearth.update(DT);
     this.plantSpeech.update(this.greenpawHearth.smokeValue, this.greenpawHearth.lastFeederName);
+    this.greenpawCutting.update(DT);
     updateNpcWander(this.ctx);
     drainDelayedEvents(this.ctx);
 
@@ -4410,7 +4446,7 @@ export class Sim {
       fx: 'projectile',
     });
     // Pet spells are resisted, not missed (same semantics as player casts).
-    if (isSpellResisted(this.rng, pet.level, target.level)) {
+    if (isSpellResisted(this.rng, pet.level, target.level, pet.hitBonus)) {
       this.emit({
         type: 'damage',
         sourceId: pet.id,
@@ -6214,6 +6250,21 @@ export class Sim {
 
   loadHomestead(save: HomesteadSave | null | undefined): void {
     this.homestead.loadHomestead(save);
+  }
+
+  // -------------------------------------------------------------------------
+  // Greenpaw's cutting (PHAA-751, thin delegates to this.greenpawCutting).
+  // Persisted like greenpawHearth (a continuously drifting accumulator, saved
+  // unconditionally on the autosave cadence), not like homestead's rev-diffed
+  // rare-change book.
+  // -------------------------------------------------------------------------
+
+  serializeGreenpawCutting(): GreenpawCuttingSave {
+    return this.greenpawCutting.serialize();
+  }
+
+  loadGreenpawCutting(save: GreenpawCuttingSave | null | undefined): void {
+    this.greenpawCutting.load(save);
   }
 
   // -------------------------------------------------------------------------

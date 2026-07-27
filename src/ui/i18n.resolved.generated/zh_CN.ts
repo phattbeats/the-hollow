@@ -246,7 +246,6 @@ export const zh_CN: EnTranslations = {
       "chat": "跳转到聊天"
     },
     "mobile": {
-      "autorun": "自动奔跑",
       "jump": "跳跃",
       "leaderboard": "排行榜",
       "nameplates": "姓名板",
@@ -1013,6 +1012,9 @@ export const zh_CN: EnTranslations = {
         "fiestaComplete": "狂欢比赛",
         "fiestaWin": "狂欢胜利"
       }
+    },
+    "hitRating": {
+      "ratingLabel": "命中等级"
     }
   },
   "mailUi": {
@@ -2512,6 +2514,13 @@ export const zh_CN: EnTranslations = {
       "readoutNoHomesteadHint": "你还没有家园。站在空谷地里合适的位置，输入 /homestead claim。",
       "helpLine": "家园：/homestead，/homestead claim。"
     },
+    "greenpawCutting": {
+      "alreadyPlanted": "你已经种下了插枝。给它一些时间成长。",
+      "needHomestead": "你需要先拥有一块宅地才能种下它。",
+      "tooFar": "你必须在自己的宅地才能种下它。",
+      "planted": "你在自己的宅地种下了插枝。耐心等待吧。",
+      "grown": "你的插枝已经长成了一只伙伴。它现在会跟随你。"
+    },
     "readyCheck": {
       "mustBeInParty": "你必须在队伍中才能发起准备检查。",
       "alreadyInProgress": "准备检查已在进行中。",
@@ -3389,6 +3398,7 @@ export const zh_CN: EnTranslations = {
       "ignoringChat": "已屏蔽来自 {name} 的聊天。",
       "noLongerIgnoring": "不再屏蔽 {name}。",
       "playerNotNearby": "该玩家不在附近。",
+      "playerInfoNotFound": "未找到该名称的角色。",
       "duelCountdown": "决斗将在 {seconds} 秒后开始...",
       "duelEndBanner": "{winner} 在决斗中击败了 {loser}！",
       "duelEndLog": "{winner} 在决斗中击败了 {loser}。",
@@ -6214,6 +6224,15 @@ export const zh_CN: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "心材巨像"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "绿掌的插枝"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "绿掌的插枝"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "绿掌的插枝"
       }
     },
     "npcs": {
