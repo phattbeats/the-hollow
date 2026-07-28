@@ -5231,6 +5231,28 @@ const RULES: Rule[] = [
     re: /^Homestead: \/homestead, \/homestead claim\.$/,
     build: () => t('sim.homestead.helpLine'),
   },
+  // Greenpaw's cutting (PHAA-751): the first_cutting item-use 'plant' branch
+  // (src/sim/greenpaw_cutting.ts) player-facing text.
+  {
+    re: /^You have already planted your cutting\. Give it time to grow\.$/,
+    build: () => t('sim.greenpawCutting.alreadyPlanted'),
+  },
+  {
+    re: /^You need a homestead plot before you can plant this\.$/,
+    build: () => t('sim.greenpawCutting.needHomestead'),
+  },
+  {
+    re: /^You must be at your own homestead to plant this\.$/,
+    build: () => t('sim.greenpawCutting.tooFar'),
+  },
+  {
+    re: /^You plant the cutting at your homestead\. Give it time\.$/,
+    build: () => t('sim.greenpawCutting.planted'),
+  },
+  {
+    re: /^Your cutting has grown into a companion\. It follows you now\.$/,
+    build: () => t('sim.greenpawCutting.grown'),
+  },
   // Ready checks (PHAA-641, src/sim/social/ready_check.ts): the leader-gated /ready
   // start guards, plus the counts-only finalize summary sent to every participant.
   // "You are not the party leader." reuses the existing error.notPartyLeader EXACT

@@ -246,7 +246,6 @@ export const ja_JP: EnTranslations = {
       "chat": "チャットへスキップ"
     },
     "mobile": {
-      "autorun": "オートラン",
       "jump": "ジャンプ",
       "leaderboard": "ランキング",
       "nameplates": "ネームプレート",
@@ -1013,6 +1012,9 @@ export const ja_JP: EnTranslations = {
         "fiestaComplete": "フィエスタ試合",
         "fiestaWin": "フィエスタ勝利"
       }
+    },
+    "hitRating": {
+      "ratingLabel": "命中レーティング"
     }
   },
   "mailUi": {
@@ -2512,6 +2514,13 @@ export const ja_JP: EnTranslations = {
       "readoutNoHomesteadHint": "お前は開拓地を持っていない。ホロウ低地の適した場所に立ち、/homestead claim と入力しろ。",
       "helpLine": "開拓地：/homestead、/homestead claim。"
     },
+    "greenpawCutting": {
+      "alreadyPlanted": "挿し木はもう植えた。育つのを待て。",
+      "needHomestead": "これを植えるには、まず開拓地が必要だ。",
+      "tooFar": "これを植えるには自分の開拓地にいなければならない。",
+      "planted": "開拓地に挿し木を植えた。時が満ちるのを待とう。",
+      "grown": "挿し木が育ち、伴侶となった。今はお前について歩く。"
+    },
     "readyCheck": {
       "mustBeInParty": "準備確認を開始するにはパーティに入っている必要があります。",
       "alreadyInProgress": "準備確認はすでに進行中です。",
@@ -3389,6 +3398,7 @@ export const ja_JP: EnTranslations = {
       "ignoringChat": "{name}のチャットを無視します。",
       "noLongerIgnoring": "{name}の無視を解除しました。",
       "playerNotNearby": "そのプレイヤーは近くにいません。",
+      "playerInfoNotFound": "その名前のキャラクターは見つかりませんでした。",
       "duelCountdown": "決闘開始まで{seconds}秒...",
       "duelEndBanner": "{winner}が決闘で{loser}を倒しました！",
       "duelEndLog": "{winner}が決闘で{loser}を倒しました。",
@@ -6217,6 +6227,15 @@ export const ja_JP: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "心材の巨像"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "緑掌の挿し木"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "緑掌の挿し木"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "緑掌の挿し木"
       }
     },
     "npcs": {

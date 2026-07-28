@@ -50,6 +50,7 @@ import {
   closePlaySession,
   grantAccountMechChroma,
   insertChatLogs,
+  loadGreenpawCuttingState,
   loadGreenpawHearthState,
   loadHomesteadState,
   loadHousingState,
@@ -62,6 +63,7 @@ import {
   saveCharacterAndMailState,
   saveCharacterAndMarketState,
   saveCharacterState,
+  saveGreenpawCuttingState,
   saveGreenpawHearthState,
   saveHomesteadState,
   saveHousingState,
@@ -774,6 +776,9 @@ export class GameServer {
   // The sim's homestead change counter as of the last persisted save; polled
   // each tick so a claim persists promptly, not only on the autosave.
   private lastSavedHomesteadRev = 0;
+  // Serializes writes of the single global Greenpaw's cutting blob (PHAA-751,
+  // same freshness-order rationale as the market writer above).
+  private readonly enqueueGreenpawCuttingWrite = createSerialWriter();
   private restartCountdownStartedAt: number | null = null;
   private readonly restartCountdownTimers: NodeJS.Timeout[] = [];
   private readonly startedAt = Date.now();
@@ -1220,6 +1225,7 @@ export class GameServer {
             void this.saveMarket();
             void this.saveMail();
             void this.saveGreenpawHearth();
+            void this.saveGreenpawCutting();
           }
           // Housing persists on change (claims are rare and the blob is tiny).
           if (this.sim.housingRev !== this.lastSavedHousingRev) {
@@ -2117,6 +2123,28 @@ export class GameServer {
       );
     } catch (err) {
       console.error('failed to save greenpaw hearth:', err);
+    }
+  }
+
+  // Greenpaw's cutting (PHAA-751) is shared global state like greenpaw_hearth:
+  // one JSONB blob under the world_state 'greenpaw_cutting' key. Growth drifts
+  // every tick like hunger/smoke, so this loads at boot and saves on the
+  // autosave cadence, not on a rev-diff.
+  async loadGreenpawCutting(): Promise<void> {
+    try {
+      this.sim.loadGreenpawCutting(await loadGreenpawCuttingState());
+    } catch (err) {
+      console.error('failed to load greenpaw cutting:', err);
+    }
+  }
+
+  async saveGreenpawCutting(): Promise<void> {
+    try {
+      await this.enqueueGreenpawCuttingWrite(() =>
+        saveGreenpawCuttingState(this.sim.serializeGreenpawCutting()),
+      );
+    } catch (err) {
+      console.error('failed to save greenpaw cutting:', err);
     }
   }
 

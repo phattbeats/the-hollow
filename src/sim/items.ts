@@ -134,6 +134,10 @@ export function useItem(ctx: SimContext, itemId: string, pid?: number): ItemUseR
     ctx.openSkinSelect(meta, def.use.catalog ?? 'class', itemId);
     return;
   }
+  if (def.use?.type === 'plant') {
+    ctx.plantGreenpawCutting(meta.entityId);
+    return;
+  }
   if (p.castingAbility === FISHING_CAST_ID) {
     ctx.error(meta.entityId, 'You are busy.');
     return;

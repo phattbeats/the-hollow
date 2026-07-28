@@ -5,9 +5,8 @@
 // translate that key. The build (scripts/i18n_build.mjs) unflattens this map and
 // overlays it onto nested `en` to produce the dense resolved table; any key here
 // must be a real `en` leaf path: keys are typed `Partial<Record<TranslationKey,
-// string>>` so tsc rejects a structurally-wrong key, plus
-// tests/i18n_overlay_key_membership.test.ts catches a typo'd entity id the
-// template-literal key type cannot. Overlays are SPARSE: an
+// string>>` against the build-generated flat key union, so tsc rejects any key
+// that is not an exact `en` leaf path, typo'd entity ids included. Overlays are SPARSE: an
 // untranslated key is omitted and the build fills it from English, then the
 // registry (src/ui/i18n.status.json) marks it `pending`.
 
@@ -1079,6 +1078,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hud.system.ignoringChat': '{name}의 채팅을 차단합니다.',
   'hud.system.noLongerIgnoring': '{name}을 더 이상 차단하지 않습니다.',
   'hud.system.playerNotNearby': '그 플레이어는 근처에 없습니다.',
+  'hud.system.playerInfoNotFound': '해당 이름의 캐릭터를 찾을 수 없습니다.',
   'hud.system.duelCountdown': '결투가 {seconds}초 후 시작됩니다...',
   'hud.system.duelEndBanner': '{winner}님이 결투에서 {loser}님을 이겼습니다!',
   'hud.system.duelEndLog': '{winner}님이 결투에서 {loser}님을 이겼습니다.',
@@ -3532,7 +3532,6 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/초',
   'hudChrome.meters.perSecondRow': '{total} ({rate})',
   'hudChrome.meters.seconds': '{s}초',
-  'hudChrome.mobile.autorun': '자동 달리기',
   'hudChrome.mobile.haptics': '진동',
   'hudChrome.mobile.hapticsOff': '진동 꺼짐',
   'hudChrome.mobile.jump': '점프',
@@ -4942,6 +4941,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.palefeeder.name': '창백포식자',
   'entities.mobs.rootmaw.name': '뿌리아가리',
   'entities.mobs.the_witness_root.name': '증언의 뿌리',
+  'entities.mobs.greenpaw_cutting_dawn.name': '초록발의 꺾꽂이',
+  'entities.mobs.greenpaw_cutting_moss.name': '초록발의 꺾꽂이',
+  'entities.mobs.greenpaw_cutting_ash.name': '초록발의 꺾꽂이',
   'entities.npcs.brother_halven.greeting': '아래의 성물실이 또 움직였소.',
   'entities.npcs.brother_halven.name': '브라더 할벤',
   'entities.npcs.brother_halven.title': '성물실 관리인',
@@ -5150,6 +5152,11 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'sim.collections.notFound': '그것은 존재하지 않습니다.',
   'sim.collections.tooFar': '너무 멀리 떨어져 있습니다.',
   'sim.gathering.nothingToHarvest': '그 시체에서는 채집할 것이 없습니다.',
+  'sim.greenpawCutting.alreadyPlanted': '이미 꺾꽂이를 심었다. 자랄 때까지 기다려라.',
+  'sim.greenpawCutting.needHomestead': '이것을 심으려면 먼저 개척지가 있어야 한다.',
+  'sim.greenpawCutting.tooFar': '이것을 심으려면 자신의 개척지에 있어야 한다.',
+  'sim.greenpawCutting.planted': '개척지에 꺾꽂이를 심었다. 시간을 두고 기다려라.',
+  'sim.greenpawCutting.grown': '꺾꽂이가 자라 동반자가 되었다. 이제 너를 따라다닌다.',
   'sim.dailyRewards.claimed': '일일 보상을 받았습니다.',
   'sim.hearth.emberbulb1': '이거야말로 제대로 된 땔감이지… 보게, 그녀가 숨 쉬는 걸, 친구…',
   'sim.hearth.emberbulb2': '화로는 천천히, 깨끗하게 태우는 걸 좋아하지, 그녀가 딱 그렇다네…',
@@ -5674,6 +5681,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.warfare.reasons.fiestaKill': '피에스타 처치',
   'hudChrome.warfare.reasons.fiestaComplete': '피에스타 경기',
   'hudChrome.warfare.reasons.fiestaWin': '피에스타 승리',
+  'hudChrome.hitRating.ratingLabel': '적중 레이팅',
   'entities.npcs.bramble.name': '브램블',
   'entities.npcs.bramble.title': '명예 보급관',
   'entities.npcs.bramble.greeting': '모래 경기장은 모든 승리를 기억한다. 명예를 현명하게 써라.',

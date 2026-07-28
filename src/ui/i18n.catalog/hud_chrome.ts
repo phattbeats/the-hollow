@@ -154,7 +154,6 @@ export const hudChromeStrings = {
   // On-screen / mobile control labels and their accessible names. char/bags/music
   // reuse existing keys (hud.keybinds.actions.*, hud.options.music) at the call site.
   mobile: {
-    autorun: 'Autorun',
     jump: 'Jump',
     leaderboard: 'Ranks',
     nameplates: 'Names',
@@ -1102,5 +1101,11 @@ export const hudChromeStrings = {
       fiestaComplete: 'Fiesta match',
       fiestaWin: 'Fiesta win',
     },
+  },
+  // Hit rating: reduces melee/ranged miss and spell resist by the same percent
+  // (src/sim/combat/hit_rating.ts). Item tooltip stat name only, mirroring
+  // warfare.ratingLabel above; no dedicated character-sheet cell in this pass.
+  hitRating: {
+    ratingLabel: 'Hit Rating',
   },
 };

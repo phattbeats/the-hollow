@@ -116,6 +116,12 @@ and her greeting asks if the player has eaten. She never asks about destiny.
   Phase-2 live-god ambient system, which does not exist yet. They are recorded here
   and land when that system does.
 - Shade's walking model landed as a unique chibi female visual (npc_shade in
-  src/render/characters/manifest.ts: the merchant civilian outfit with a
-  willow-sage tint no player class uses). The watering-can prop still needs the
-  chibi grip/attach foundation (PHAA-583 follow-up) and remains future work.
+  src/render/characters/manifest.ts). PHAA-636 replaced the stock merchant GLB
+  plus runtime tint with a bespoke Blender edit of the styloo merchant source
+  (CC0): the wide merchant hat is reshaped into a sage headscarf, a duplicated
+  front chemise panel becomes a warm-brown apron, a small satchel hangs at the
+  hip, and a few willow-leaf motifs sit at the apron hem and scarf edge,
+  readable only up close. Earth tones (sage, grey-green, warm brown; no runes,
+  no armor) are baked into the garment materials now, not a global tint. The
+  watering-can prop still needs the chibi grip/attach foundation (PHAA-583
+  follow-up) and remains future work.

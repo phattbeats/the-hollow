@@ -246,7 +246,6 @@ export const vi_VN: EnTranslations = {
       "chat": "Chuyển tới Trò Chuyện"
     },
     "mobile": {
-      "autorun": "Tự Chạy",
       "jump": "Nhảy",
       "leaderboard": "Xếp Hạng",
       "nameplates": "Tên",
@@ -1013,6 +1012,9 @@ export const vi_VN: EnTranslations = {
         "fiestaComplete": "Fiesta match",
         "fiestaWin": "Fiesta win"
       }
+    },
+    "hitRating": {
+      "ratingLabel": "Hit Rating"
     }
   },
   "mailUi": {
@@ -2512,6 +2514,13 @@ export const vi_VN: EnTranslations = {
       "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
       "helpLine": "Homestead: /homestead, /homestead claim."
     },
+    "greenpawCutting": {
+      "alreadyPlanted": "You have already planted your cutting. Give it time to grow.",
+      "needHomestead": "You need a homestead plot before you can plant this.",
+      "tooFar": "You must be at your own homestead to plant this.",
+      "planted": "You plant the cutting at your homestead. Give it time.",
+      "grown": "Your cutting has grown into a companion. It follows you now."
+    },
     "readyCheck": {
       "mustBeInParty": "You must be in a party to start a ready check.",
       "alreadyInProgress": "A ready check is already in progress.",
@@ -3389,6 +3398,7 @@ export const vi_VN: EnTranslations = {
       "ignoringChat": "Đang bỏ qua tin nhắn từ {name}.",
       "noLongerIgnoring": "Không còn bỏ qua {name} nữa.",
       "playerNotNearby": "Người chơi đó không ở gần đây.",
+      "playerInfoNotFound": "No character found with that name.",
       "duelCountdown": "Tỉ thí bắt đầu sau {seconds}...",
       "duelEndBanner": "{winner} đã đánh bại {loser} trong một trận tỉ thí!",
       "duelEndLog": "{winner} đã đánh bại {loser} trong một trận tỉ thí.",
@@ -6217,6 +6227,15 @@ export const vi_VN: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "Heartwood Colossus"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "Greenpaw's Cutting"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "Greenpaw's Cutting"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "Greenpaw's Cutting"
       }
     },
     "npcs": {

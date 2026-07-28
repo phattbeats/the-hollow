@@ -246,7 +246,6 @@ export const ru_RU: EnTranslations = {
       "chat": "Перейти к чату"
     },
     "mobile": {
-      "autorun": "Автобег",
       "jump": "Прыжок",
       "leaderboard": "Рейтинг",
       "nameplates": "Имена",
@@ -1013,6 +1012,9 @@ export const ru_RU: EnTranslations = {
         "fiestaComplete": "Матч фиесты",
         "fiestaWin": "Победа на фиесте"
       }
+    },
+    "hitRating": {
+      "ratingLabel": "Рейтинг меткости"
     }
   },
   "mailUi": {
@@ -2512,6 +2514,13 @@ export const ru_RU: EnTranslations = {
       "readoutNoHomesteadHint": "У вас нет хутора. Встаньте на подходящем месте в Лощинных Плёсах и введите /homestead claim.",
       "helpLine": "Хутор: /homestead, /homestead claim."
     },
+    "greenpawCutting": {
+      "alreadyPlanted": "Ты уже посадил свой черенок. Дай ему время вырасти.",
+      "needHomestead": "Чтобы посадить это, тебе сначала нужен участок.",
+      "tooFar": "Чтобы посадить это, ты должен быть на своем участке.",
+      "planted": "Ты сажаешь черенок на своем участке. Дай ему время.",
+      "grown": "Твой черенок вырос в спутника. Теперь он следует за тобой."
+    },
     "readyCheck": {
       "mustBeInParty": "Чтобы начать проверку готовности, вы должны состоять в группе.",
       "alreadyInProgress": "Проверка готовности уже идет.",
@@ -3389,6 +3398,7 @@ export const ru_RU: EnTranslations = {
       "ignoringChat": "Чат от {name} игнорируется.",
       "noLongerIgnoring": "{name} больше не игнорируется.",
       "playerNotNearby": "Этого игрока нет рядом.",
+      "playerInfoNotFound": "Персонаж с таким именем не найден.",
       "duelCountdown": "Дуэль начнется через {seconds}...",
       "duelEndBanner": "{winner} победил {loser} в дуэли!",
       "duelEndLog": "{winner} победил {loser} в дуэли.",
@@ -6217,6 +6227,15 @@ export const ru_RU: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "Колосс Сердцевины"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "Черенок Зеленолапа"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "Черенок Зеленолапа"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "Черенок Зеленолапа"
       }
     },
     "npcs": {
