@@ -5895,6 +5895,21 @@ export const fr_CA: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "Avant-garde chrome"
+      },
+      "enchanting_dust": {
+        "name": "Poussière d'Enchantement"
+      },
+      "scroll_minor_might": {
+        "name": "Parchemin de Puissance Mineure"
+      },
+      "scroll_minor_vigor": {
+        "name": "Parchemin de Vigueur Mineure"
+      },
+      "scroll_minor_focus": {
+        "name": "Parchemin de Concentration Mineure"
+      },
+      "scroll_minor_agility": {
+        "name": "Parchemin d'Agilité Mineure"
       }
     },
     "mobs": {

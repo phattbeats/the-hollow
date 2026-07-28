@@ -32,7 +32,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 409,
-      "state": "e17073da",
+      "state": "ed17a9ce",
       "events": "2d95b6a2",
       "rng": {
         "draws": 0,
@@ -146,6 +146,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -183,6 +184,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -300,7 +302,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 409,
-      "state": "6985c576",
+      "state": "c370940a",
       "events": "620efef2",
       "rng": {
         "draws": 0,
@@ -414,6 +416,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -451,6 +454,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -568,7 +572,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 409,
-      "state": "6985c576",
+      "state": "c370940a",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -682,6 +686,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -719,6 +724,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -836,7 +842,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 409,
-      "state": "6985c576",
+      "state": "c370940a",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -950,6 +956,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -987,6 +994,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -1104,7 +1112,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 409,
-      "state": "9e3dba18",
+      "state": "f2f8bf24",
       "events": "756badd2",
       "rng": {
         "draws": 0,
@@ -1218,6 +1226,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1343,6 +1352,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -1466,7 +1476,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 409,
-      "state": "9e3dba18",
+      "state": "f2f8bf24",
       "events": "ecc0396f",
       "rng": {
         "draws": 0,
@@ -1580,6 +1590,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1705,6 +1716,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -1828,7 +1840,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 409,
-      "state": "43e37e24",
+      "state": "e106e598",
       "events": "fbd35808",
       "rng": {
         "draws": 0,
@@ -1839,7 +1851,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 409,
-      "state": "43e37e24",
+      "state": "e106e598",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -1993,6 +2005,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -2159,6 +2172,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -2283,7 +2297,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 409,
-      "state": "e028196a",
+      "state": "21ae69a2",
       "events": "42f67186",
       "rng": {
         "draws": 0,
@@ -2438,6 +2452,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -2604,6 +2619,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -2728,7 +2744,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 409,
-      "state": "e028196a",
+      "state": "21ae69a2",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -2883,6 +2899,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -3049,6 +3066,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",

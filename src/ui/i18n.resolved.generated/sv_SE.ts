@@ -5895,6 +5895,21 @@ export const sv_SE: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "Förtrupp krom"
+      },
+      "enchanting_dust": {
+        "name": "Förtrollningsdamm"
+      },
+      "scroll_minor_might": {
+        "name": "Rulle av Mindre Styrka"
+      },
+      "scroll_minor_vigor": {
+        "name": "Rulle av Mindre Vigör"
+      },
+      "scroll_minor_focus": {
+        "name": "Rulle av Mindre Fokus"
+      },
+      "scroll_minor_agility": {
+        "name": "Rulle av Mindre Smidighet"
       }
     },
     "mobs": {

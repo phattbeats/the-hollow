@@ -17,7 +17,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "9e34c745",
+      "state": "4b1d4301",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -44,6 +44,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -112,7 +113,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 409,
-      "state": "dea97270",
+      "state": "4f9604b8",
       "events": "97ef93cb",
       "rng": {
         "draws": 6,
@@ -123,7 +124,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 409,
-      "state": "ea92e175",
+      "state": "b27d2cb9",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -134,7 +135,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 409,
-      "state": "82c62501",
+      "state": "7cbfc945",
       "events": "c7750db5",
       "rng": {
         "draws": 98,
@@ -145,7 +146,7 @@
       "tick": 72,
       "time": 3.6,
       "nextId": 409,
-      "state": "08d5f54a",
+      "state": "60715f22",
       "events": "c39bdf93",
       "rng": {
         "draws": 155,
@@ -262,6 +263,7 @@
           "earnedTitles": [
             "t_blooded"
           ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -400,7 +402,7 @@
       "tick": 76,
       "time": 3.8,
       "nextId": 409,
-      "state": "6a6ff9b2",
+      "state": "d7832d3a",
       "events": "741638a5",
       "rng": {
         "draws": 173,
@@ -517,6 +519,7 @@
           "earnedTitles": [
             "t_blooded"
           ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",

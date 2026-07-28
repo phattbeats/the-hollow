@@ -1806,6 +1806,7 @@ const ALL_DELTA_KEYS = [
   'drun',
   'dstate',
   'duel',
+  'ench',
   'equip',
   'etitles',
   'gnodecd',
@@ -1858,6 +1859,7 @@ const TERSE_TO_IWORLD: Record<string, string> = {
   drun: 'delveRun',
   dstate: 'dialogState',
   duel: 'duelInfo',
+  ench: 'enchants',
   equip: 'equipment',
   etitles: 'earnedTitles',
   gprof: 'gatheringProficiency',
@@ -1985,7 +1987,10 @@ function dirtyEveryDeltaField(): {
     leatherworking: 0,
     cooking: 0,
     alchemy: 0,
+    enchanting: 1,
   };
+  // ench (PHAA-649 child, upstream #1712): a non-default active enchant for this player.
+  meta.enchants = { mainhand: 'enchant_minor_might' };
   // collected (PHAA-626): a non-default collected-id set for this player.
   meta.collectedIds.add('torn_ledger_page');
   // ach (PHAA-687): a non-default unlocked-achievement set for this player.
@@ -2118,7 +2123,10 @@ describe('full self-state snapshot delta fixture', () => {
       leatherworking: 0,
       cooking: 0,
       alchemy: 0,
+      enchanting: 1,
     });
+    // ench -> enchants
+    expect(client.enchants).toEqual({ mainhand: 'enchant_minor_might' });
     // gnodecd -> nodeHarvestableByMe (the seeded node reads cooling, another ready)
     expect(client.nodeHarvestableByMe(GATHER_NODES[0].id)).toBe(false);
     expect(client.nodeHarvestableByMe(GATHER_NODES[1].id)).toBe(true);
@@ -2176,9 +2184,9 @@ describe('full self-state snapshot delta fixture', () => {
 });
 
 describe('delta-key contract pins (anti-drift)', () => {
-  it('ALL_DELTA_KEYS contains exactly 45 unique keys in sorted order', () => {
-    expect(ALL_DELTA_KEYS).toHaveLength(45);
-    expect(new Set(ALL_DELTA_KEYS).size).toBe(45);
+  it('ALL_DELTA_KEYS contains exactly 46 unique keys in sorted order', () => {
+    expect(ALL_DELTA_KEYS).toHaveLength(46);
+    expect(new Set(ALL_DELTA_KEYS).size).toBe(46);
     expect([...ALL_DELTA_KEYS]).toEqual([...ALL_DELTA_KEYS].sort());
   });
 
@@ -2191,7 +2199,7 @@ describe('delta-key contract pins (anti-drift)', () => {
     for (let m = re.exec(src); m !== null; m = re.exec(src)) scraped.add(m[1]);
     expect(scraped.has('lockouts')).toBe(true); // the multi-line call IS captured
     expect(scraped.has('lrollg')).toBe(true); // group-visible loot roll strip (PHAA-568)
-    expect(scraped.size).toBe(45);
+    expect(scraped.size).toBe(46);
     expect([...scraped].sort()).toEqual([...ALL_DELTA_KEYS].sort());
   });
 

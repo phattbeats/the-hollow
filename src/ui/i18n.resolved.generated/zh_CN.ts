@@ -5895,6 +5895,21 @@ export const zh_CN: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "先锋铬银"
+      },
+      "enchanting_dust": {
+        "name": "附魔尘"
+      },
+      "scroll_minor_might": {
+        "name": "微弱力量卷轴"
+      },
+      "scroll_minor_vigor": {
+        "name": "微弱活力卷轴"
+      },
+      "scroll_minor_focus": {
+        "name": "微弱专注卷轴"
+      },
+      "scroll_minor_agility": {
+        "name": "微弱敏捷卷轴"
       }
     },
     "mobs": {

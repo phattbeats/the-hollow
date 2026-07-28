@@ -120,6 +120,10 @@ import * as companionMod from './delves/companion';
 import * as lockpickMod from './delves/lockpick_controller';
 import * as runsMod from './delves/runs';
 import { projectOutsideDungeonDoors } from './dungeon_door_clearance';
+import {
+  applyEnchant as applyEnchantImpl,
+  disenchantItem as disenchantItemImpl,
+} from './enchanting';
 import * as nythraxis from './encounters/nythraxis';
 // A3: ARENA_SPAWNS_A_2v2/B_2v2 (read only by the moved fiestaRevive) now live with
 // social/fiesta.ts. The dungeon-wall consts (DUNGEON_WALL_HW/X) are now read only by
@@ -894,6 +898,11 @@ export interface PlayerMeta {
   // (CharacterState.craftProficiency); scales the output quality roll the
   // same way gatheringProficiency scales harvest rarity.
   craftProficiency: Record<CraftType, number>;
+  // Active per-equip-slot enchants (PHAA-649 child, upstream #1712): slot ->
+  // EnchantDef id. Persisted (CharacterState.enchants). Reskinned onto a slot
+  // rather than a specific item copy (no per-item-instance system exists
+  // here); see src/sim/enchanting.ts.
+  enchants: Partial<Record<EquipSlot, string>>;
   // Collection tracking core (PHAA-626): the set of collectible ids (world
   // readables today; future kinds later) this player has ever found. Grows
   // only, never shrinks. Persisted (CharacterState.collectedIds).
@@ -1017,6 +1026,9 @@ export interface CharacterState {
   // Optional so characters saved before crafting (PHAA-574) existed load
   // cleanly (addPlayer backfills to all-zero).
   craftProficiency?: Partial<Record<CraftType, number>>;
+  // Optional so characters saved before enchanting (PHAA-649 child, upstream
+  // #1712) existed load cleanly (addPlayer backfills to empty).
+  enchants?: Partial<Record<EquipSlot, string>>;
   // A live jail sentence (PHAA-657). Persisted so it keeps running across a
   // reconnect and the character reloads still jailed. Absent = not jailed.
   jail?: JailState;
@@ -1684,6 +1696,7 @@ export class Sim {
       nodeHarvestReadyAt: {},
       gatheringProficiency: emptyGatheringProficiency(),
       craftProficiency: emptyCraftProficiency(),
+      enchants: {},
       collectedIds: new Set(),
       achievements: emptyAchievementProgress(),
     };
@@ -1788,6 +1801,7 @@ export class Sim {
       if (s.craftProficiency) {
         meta.craftProficiency = { ...emptyCraftProficiency(), ...s.craftProficiency };
       }
+      if (s.enchants) meta.enchants = { ...s.enchants };
       if (s.delveLoreUnlocked) for (const id of s.delveLoreUnlocked) meta.delveLoreUnlocked.add(id);
       if (s.collectedIds) for (const id of s.collectedIds) meta.collectedIds.add(id);
       if (s.unlockedAchievements)
@@ -1815,7 +1829,7 @@ export class Sim {
     // resolver below consume it (they only ever read these flat numbers).
     meta.talentMods = computeTalentModifiers(cls, meta.talents, meta.secondaryCls);
     this.refreshKnownAbilities(meta, false);
-    recalcPlayerStats(player, cls, meta.equipment, meta.talentMods);
+    recalcPlayerStats(player, cls, meta.equipment, meta.talentMods, meta.enchants);
     if (savedState) {
       player.hp = Math.max(1, Math.min(player.maxHp, savedState.hp));
       player.resource =
@@ -2041,6 +2055,7 @@ export class Sim {
       companionUpgrades: { ...meta.companionUpgrades },
       gatheringProficiency: { ...meta.gatheringProficiency },
       craftProficiency: { ...meta.craftProficiency },
+      enchants: { ...meta.enchants },
       delveLoreUnlocked: [...meta.delveLoreUnlocked],
       collectedIds: [...meta.collectedIds],
       unlockedAchievements: [...meta.achievements.unlocked],
@@ -2978,7 +2993,7 @@ export class Sim {
     // from a sane baseline (virtualLevel never falls below the real level). Only
     // ever raises it and lifetimeXp is monotonic.
     r.meta.lifetimeXp = Math.max(r.meta.lifetimeXp, xpToReachLevel(r.e.level));
-    recalcPlayerStats(r.e, r.meta.cls, r.meta.equipment, this.playerMods(r.meta));
+    recalcPlayerStats(r.e, r.meta.cls, r.meta.equipment, this.playerMods(r.meta), r.meta.enchants);
     r.e.hp = r.e.maxHp;
     if (r.e.resourceType === 'mana') r.e.resource = r.e.maxResource;
     this.refreshKnownAbilities(r.meta, false);
@@ -3638,7 +3653,7 @@ export class Sim {
     if (!removed) return;
     this.emit({ type: 'aura', targetId: e.id, name: removed.name, gained: false });
     if (auraAffectsStats(removed)) {
-      recalcPlayerStats(e, meta.cls, meta.equipment, this.playerMods(meta));
+      recalcPlayerStats(e, meta.cls, meta.equipment, this.playerMods(meta), meta.enchants);
     }
   }
 
@@ -3729,7 +3744,8 @@ export class Sim {
     this.refreshMobLeashFromAction(source ?? null, target);
     if (target.kind === 'player') {
       const meta = this.players.get(target.id);
-      if (meta) recalcPlayerStats(target, meta.cls, meta.equipment, this.playerMods(meta));
+      if (meta)
+        recalcPlayerStats(target, meta.cls, meta.equipment, this.playerMods(meta), meta.enchants);
     }
   }
 
@@ -4414,7 +4430,7 @@ export class Sim {
   // module never reaches into the Sim players map directly.
   private recalcPlayer(target: Entity): void {
     const meta = this.players.get(target.id);
-    if (meta) recalcPlayerStats(target, meta.cls, meta.equipment, meta.talentMods);
+    if (meta) recalcPlayerStats(target, meta.cls, meta.equipment, meta.talentMods, meta.enchants);
   }
 
   private updateRangedPetAttack(
@@ -5216,6 +5232,25 @@ export class Sim {
     return this.craftProficiencyFor(this.primaryId);
   }
 
+  // Enchanting (PHAA-649 child, upstream #1712): disenchant/apply-enchant, thin
+  // delegates onto src/sim/enchanting.ts, resolved on the deterministic tick the
+  // command arrives on, same shape as craftItem above.
+  disenchantItem(itemId: string, pid?: number): void {
+    disenchantItemImpl(this.ctx, itemId, pid);
+  }
+
+  applyEnchant(enchantId: string, pid?: number): void {
+    applyEnchantImpl(this.ctx, enchantId, pid);
+  }
+
+  enchantsFor(pid: number): Partial<Record<EquipSlot, string>> {
+    return this.players.get(pid)?.enchants ?? {};
+  }
+
+  get enchants(): Partial<Record<EquipSlot, string>> {
+    return this.enchantsFor(this.primaryId);
+  }
+
   // Collection tracking core (PHAA-626): read-as-command entry point, a thin
   // delegate onto src/sim/collections.ts, resolved on the deterministic tick
   // the command arrives on, same shape as harvestNode above.
@@ -5605,7 +5640,8 @@ export class Sim {
     }
     if (statsDirty && target.kind === 'player') {
       const meta = this.players.get(target.id);
-      if (meta) recalcPlayerStats(target, meta.cls, meta.equipment, this.playerMods(meta));
+      if (meta)
+        recalcPlayerStats(target, meta.cls, meta.equipment, this.playerMods(meta), meta.enchants);
     }
   }
 

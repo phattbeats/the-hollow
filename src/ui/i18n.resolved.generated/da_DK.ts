@@ -5895,6 +5895,21 @@ export const da_DK: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "Fortrops Krom"
+      },
+      "enchanting_dust": {
+        "name": "Fortryllelsesstøv"
+      },
+      "scroll_minor_might": {
+        "name": "Rulle af Mindre Styrke"
+      },
+      "scroll_minor_vigor": {
+        "name": "Rulle af Mindre Vitalitet"
+      },
+      "scroll_minor_focus": {
+        "name": "Rulle af Mindre Koncentration"
+      },
+      "scroll_minor_agility": {
+        "name": "Rulle af Mindre Behændighed"
       }
     },
     "mobs": {

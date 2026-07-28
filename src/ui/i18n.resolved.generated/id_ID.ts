@@ -5895,6 +5895,21 @@ export const id_ID: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "Vanguard Krom"
+      },
+      "enchanting_dust": {
+        "name": "Debu Sihir"
+      },
+      "scroll_minor_might": {
+        "name": "Gulungan Kekuatan Kecil"
+      },
+      "scroll_minor_vigor": {
+        "name": "Gulungan Vitalitas Kecil"
+      },
+      "scroll_minor_focus": {
+        "name": "Gulungan Fokus Kecil"
+      },
+      "scroll_minor_agility": {
+        "name": "Gulungan Ketangkasan Kecil"
       }
     },
     "mobs": {

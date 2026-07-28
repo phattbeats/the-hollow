@@ -1,6 +1,6 @@
 import { hitFractionFromRating } from './combat/hit_rating';
 import type { TalentModifiers } from './content/talents';
-import { aggregateSetBonuses, CLASSES, ITEMS, MOBS, type NpcDef } from './data';
+import { aggregateSetBonuses, CLASSES, ENCHANTS, ITEMS, MOBS, type NpcDef } from './data';
 import { pvpFractionsFromRatings } from './pvp';
 import type { Entity, EquipSlot, MobTemplate, PlayerClass, Stats, Vec3 } from './types';
 import { EQUIP_SLOTS, SPELL_POWER_PER_INT } from './types';
@@ -190,11 +190,16 @@ export function nativeMaxResource(cls: PlayerClass, level: number): number {
 // Recompute all derived stats for the player from class, level, gear, buffs, and
 // precomputed talent modifiers. `mods` is the flat struct resolved at
 // allocation/respec time (computeTalentModifiers) — this never walks the tree.
+// `enchants` (PHAA-649 child, upstream #1712) is the player's active
+// per-equip-slot enchant ids (meta.enchants); optional so every existing
+// caller keeps compiling unchanged, but omitting it silently drops any
+// enchant bonus, so pass it through wherever `meta`/`r.meta` is in scope.
 export function recalcPlayerStats(
   e: Entity,
   cls: PlayerClass,
   equipment: PlayerEquipment,
   mods?: TalentModifiers,
+  enchants?: Partial<Record<EquipSlot, string>>,
 ): void {
   const def = CLASSES[cls];
   const lvl = e.level;
@@ -223,13 +228,27 @@ export function recalcPlayerStats(
     bonusHitRating += item.hitRating ?? 0;
     bonusPvpOffenseRating += item.pvpOffenseRating ?? 0;
     bonusPvpDefenseRating += item.pvpDefenseRating ?? 0;
-    if (!item.stats) continue;
-    s.str += item.stats.str ?? 0;
-    s.agi += item.stats.agi ?? 0;
-    s.sta += item.stats.sta ?? 0;
-    s.int += item.stats.int ?? 0;
-    s.spi += item.stats.spi ?? 0;
-    s.armor += item.stats.armor ?? 0;
+    if (item.stats) {
+      s.str += item.stats.str ?? 0;
+      s.agi += item.stats.agi ?? 0;
+      s.sta += item.stats.sta ?? 0;
+      s.int += item.stats.int ?? 0;
+      s.spi += item.stats.spi ?? 0;
+      s.armor += item.stats.armor ?? 0;
+    }
+    // Enchanting (PHAA-649 child, upstream #1712): the enchant lives on the
+    // SLOT (not a specific item copy; see src/sim/enchanting.ts), so its
+    // bonus only applies while that slot is occupied, same as gear stats.
+    const enchantId = enchants?.[slot];
+    const enchant = enchantId && ENCHANTS.find((en) => en.id === enchantId);
+    if (enchant) {
+      s.str += enchant.stats.str ?? 0;
+      s.agi += enchant.stats.agi ?? 0;
+      s.sta += enchant.stats.sta ?? 0;
+      s.int += enchant.stats.int ?? 0;
+      s.spi += enchant.stats.spi ?? 0;
+      s.armor += enchant.stats.armor ?? 0;
+    }
   }
   // Item-set bonuses from equipped pieces. Flat primary stats join the gear
   // totals so they feed every derivation below; AP/crit/pushback fold in at
@@ -441,10 +460,11 @@ export function characterDerivedStats(
   level: number,
   equipment: PlayerEquipment,
   mods?: TalentModifiers,
+  enchants?: Partial<Record<EquipSlot, string>>,
 ): DerivedCharacterStats {
   const e = createPlayer(0, cls, { x: 0, y: 0, z: 0 }, '');
   e.level = Math.max(1, Math.floor(level));
-  recalcPlayerStats(e, cls, equipment, mods);
+  recalcPlayerStats(e, cls, equipment, mods, enchants);
   return {
     stats: e.stats,
     maxHp: e.maxHp,

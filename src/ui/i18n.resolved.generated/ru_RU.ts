@@ -5895,6 +5895,21 @@ export const ru_RU: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "Хромированный авангард"
+      },
+      "enchanting_dust": {
+        "name": "Пыль зачарования"
+      },
+      "scroll_minor_might": {
+        "name": "Свиток малой мощи"
+      },
+      "scroll_minor_vigor": {
+        "name": "Свиток малой стойкости"
+      },
+      "scroll_minor_focus": {
+        "name": "Свиток малой концентрации"
+      },
+      "scroll_minor_agility": {
+        "name": "Свиток малой ловкости"
       }
     },
     "mobs": {

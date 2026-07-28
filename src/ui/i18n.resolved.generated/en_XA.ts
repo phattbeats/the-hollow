@@ -5895,6 +5895,21 @@ export const en_XA: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "[Ʋáñĝúáŕð Çĥŕóɱé]"
+      },
+      "enchanting_dust": {
+        "name": "[Éñçĥáñţíñĝ Ðúšţ]"
+      },
+      "scroll_minor_might": {
+        "name": "[Šçŕóļļ óƒ Ɱíñóŕ Ɱíĝĥţ]"
+      },
+      "scroll_minor_vigor": {
+        "name": "[Šçŕóļļ óƒ Ɱíñóŕ Ʋíĝóŕ]"
+      },
+      "scroll_minor_focus": {
+        "name": "[Šçŕóļļ óƒ Ɱíñóŕ Ƒóçúš]"
+      },
+      "scroll_minor_agility": {
+        "name": "[Šçŕóļļ óƒ Ɱíñóŕ Áĝíļíţý]"
       }
     },
     "mobs": {

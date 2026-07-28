@@ -5895,6 +5895,21 @@ export const ko_KR: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "선봉대 크롬"
+      },
+      "enchanting_dust": {
+        "name": "마법부여 가루"
+      },
+      "scroll_minor_might": {
+        "name": "소소한 힘의 두루마리"
+      },
+      "scroll_minor_vigor": {
+        "name": "소소한 활력의 두루마리"
+      },
+      "scroll_minor_focus": {
+        "name": "소소한 집중의 두루마리"
+      },
+      "scroll_minor_agility": {
+        "name": "소소한 민첩의 두루마리"
       }
     },
     "mobs": {
