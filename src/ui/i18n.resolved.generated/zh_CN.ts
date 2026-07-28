@@ -998,6 +998,33 @@ export const zh_CN: EnTranslations = {
       "toolTier": "{tier}级工具",
       "toolNone": "无工具"
     },
+    "crafting": {
+      "title": "制作",
+      "close": "关闭制作",
+      "tabRecipes": "配方",
+      "tabEnchants": "附魔",
+      "proficiencyLine": "{craft}: {value}",
+      "craftButton": "制作",
+      "craftAria": "制作{item}",
+      "reagentLine": "{item} {have}/{need}",
+      "disenchantSectionTitle": "分解",
+      "disenchantButton": "分解",
+      "disenchantAria": "分解{item}",
+      "disenchantEmpty": "没有可分解的物品。",
+      "applyButton": "施加",
+      "applyAria": "将{enchant}施加到{slot}",
+      "activeTag": "已生效",
+      "needScroll": "需要{scroll}",
+      "craftType": {
+        "weaponcrafting": "武器锻造",
+        "armorcrafting": "护甲锻造",
+        "tailoring": "裁缝",
+        "leatherworking": "制皮",
+        "cooking": "烹饪",
+        "alchemy": "炼金",
+        "enchanting": "附魔"
+      }
+    },
     "warfare": {
       "ratingLabel": "战意",
       "balance": "荣誉：{amount}",
@@ -6462,6 +6489,22 @@ export const zh_CN: EnTranslations = {
       }
     },
     "quests": {
+      "q_prof_intro": {
+        "title": "值得学习的手艺",
+        "text": "每门手艺都从指甲缝里的泥土开始，{playerName}。去镇东的林地里采集2条蜘蛛腿，然后到我的锻炉前打一件新兵束衣；打造它所需的骨骼碎片沿途很容易找到。再给我带些值得分解出奥术尘埃的东西。让我看看你能采集、能打造、也能分解，我就让你见识手艺的价值。",
+        "completion": "这才是值得学习的手艺。多在锻炉边下功夫，{playerName}，总有一天你能一口气钉马掌又附魔利刃。",
+        "objectives": {
+          "0": {
+            "label": "采集蜘蛛腿"
+          },
+          "1": {
+            "label": "打造新兵束衣"
+          },
+          "2": {
+            "label": "附魔尘埃"
+          }
+        }
+      },
       "q_wolves": {
         "title": "门前群狼",
         "text": "森林狼已经敢扑咬北路旅人，{playerName}。击败8只森林狼，让东溪能松一口气。",
@@ -7604,6 +7647,20 @@ export const zh_CN: EnTranslations = {
         "name": "坍塌的圣物库",
         "enterText": "你向下深入坍塌的圣物库。",
         "leaveText": "你攀回圣物库废墟旁的哈尔文修士身边。"
+      }
+    },
+    "enchants": {
+      "enchant_minor_might": {
+        "name": "微弱力量"
+      },
+      "enchant_minor_vigor": {
+        "name": "微弱活力"
+      },
+      "enchant_minor_focus": {
+        "name": "微弱专注"
+      },
+      "enchant_minor_agility": {
+        "name": "微弱敏捷"
       }
     },
     "itemSets": {

@@ -998,6 +998,33 @@ export const de_DE: EnTranslations = {
       "toolTier": "Tier {tier} tool",
       "toolNone": "No tool"
     },
+    "crafting": {
+      "title": "Crafting",
+      "close": "Close crafting",
+      "tabRecipes": "Recipes",
+      "tabEnchants": "Enchants",
+      "proficiencyLine": "{craft}: {value}",
+      "craftButton": "Craft",
+      "craftAria": "Craft {item}",
+      "reagentLine": "{item} {have}/{need}",
+      "disenchantSectionTitle": "Disenchant",
+      "disenchantButton": "Disenchant",
+      "disenchantAria": "Disenchant {item}",
+      "disenchantEmpty": "Nothing eligible to disenchant.",
+      "applyButton": "Apply",
+      "applyAria": "Apply {enchant} to {slot}",
+      "activeTag": "Active",
+      "needScroll": "Requires {scroll}",
+      "craftType": {
+        "weaponcrafting": "Weaponsmithing",
+        "armorcrafting": "Armorsmithing",
+        "tailoring": "Tailoring",
+        "leatherworking": "Leatherworking",
+        "cooking": "Cooking",
+        "alchemy": "Alchemy",
+        "enchanting": "Enchanting"
+      }
+    },
     "warfare": {
       "ratingLabel": "Warfare",
       "balance": "Honor: {amount}",
@@ -6462,6 +6489,22 @@ export const de_DE: EnTranslations = {
       }
     },
     "quests": {
+      "q_prof_intro": {
+        "title": "A Trade Worth Learning",
+        "text": "Every trade starts with dirt under your nails, {playerName}. Gather 2 spider legs from the groves east of town, then work my forge for a Recruit's Tunic; bone fragments for it are easy enough to scrounge along the way. Bring me something worth breaking down for its arcane dust besides. Show me you can gather, craft, and unmake, and I will show you what a trade is worth.",
+        "completion": "Now that is a trade worth learning. Keep at the forge, {playerName}, and one day you will be shoeing horses and enchanting blades in the same breath.",
+        "objectives": {
+          "0": {
+            "label": "Spider Leg gathered"
+          },
+          "1": {
+            "label": "Recruit's Tunic crafted"
+          },
+          "2": {
+            "label": "Enchanting Dust"
+          }
+        }
+      },
       "q_wolves": {
         "title": "Wölfe vor der Tür",
         "text": "Die Waldwölfe fallen Reisende auf der Nordstraße an, {playerName}. Töte 8 von ihnen, damit Eastbrook wieder freier atmen kann.",
@@ -7604,6 +7647,20 @@ export const de_DE: EnTranslations = {
         "name": "Das Eingestürzte Reliquiar",
         "enterText": "Du steigst hinab in das eingestürzte Reliquiar.",
         "leaveText": "Du kletterst zurück zu Bruder Halven bei der Reliquiarruine."
+      }
+    },
+    "enchants": {
+      "enchant_minor_might": {
+        "name": "Minor Might"
+      },
+      "enchant_minor_vigor": {
+        "name": "Minor Vigor"
+      },
+      "enchant_minor_focus": {
+        "name": "Minor Focus"
+      },
+      "enchant_minor_agility": {
+        "name": "Minor Agility"
       }
     },
     "itemSets": {
