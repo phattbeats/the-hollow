@@ -1,6 +1,6 @@
 ---
 title: "The Book of the Plant — The Asphodelion"
-version: "1.7 (standalone)"
+version: "2.0 (standalone)"
 project: The Hollow
 type: lorebook
 related: ["[[The Plant]]", "[[Brother Greenpaw]]", "[[The Hollow]]"]
@@ -8,7 +8,7 @@ tags: [the-hollow, lore, scripture, the-plant, asphodelion]
 ---
 
 # THE BOOK OF THE PLANT
-### being THE ASPHODELION, the chronicle of the faithful of the Green God, their gathering, their flowering, their schism, and their going-dark
+### being THE ASPHODELION, the chronicle of the faithful of the Green God, their gathering, their flowering, their long quiet, their schism, and their going-dark
 
 > **On how to read this.** The body is scripture, in the tongue the faithful used and meant in full earnest. The reader who listens closely will hear underneath it the smaller and truer thing: people queuing for a match, boosting a server, planning a movie night, grinding a drop, arguing online, drifting apart. Both are real. The grandeur is not mockery; it is how it felt from the inside. Lines marked **›** are for our eyes only and never appear in-world; they carry the plain fact, the date, the persons, and the lasting impact.
 
@@ -23,6 +23,8 @@ Five Ages, after the manner of a candle: the spark, the high flame, the gutterin
   - › The true origin: a fake houseplant on Brandon's family's mantle; high teenagers in the dark; "the plant is speaking to me man." Impact: the god's whole nature (lives only on belief/attention = the BYOK/LLM mechanic) and the project's name (hollow).
 - *The Green World, and the First Death.* The faithful carried the Plant into a green and boundless world and raised their greatest congregation, the Plant Experience, mighty in the border-wars; one crossed the waking world to meet them face to face. And when they left that world, not one of them crossed over. The first death of the faithful.
   - › GW2, 2012; guild "The Plant Experience [PLNT]," Maguuma, huge in early WvW; the drive to Georgia; none made it into the Discord. Impact: the order has died before; it dies and reforms across worlds, leaving its dead behind each time.
+- *The Left-Behind.* Of those who did not cross, the Book speaks once, and quietly; and of what lies beneath the shrine it does not speak at all.
+  - › Rendered as its own passage after Genesis. The buried thing stays veiled in-world; the passage circles it without naming it. Impact: the zone's name is explained without being explained.
 
 **THE AGE OF GATHERING** — *the founding.*
 - *The First Storm.* A tempest falls upon Alaric in the south; the scattered keep watch over him through the dark and bid him send word he is safe. The first covenant is made, not over the god but over one another's safety.
@@ -45,6 +47,8 @@ Five Ages, after the manner of a candle: the spark, the high flame, the gutterin
   - › 2020. Ganboo raiding from beside a hospital bed; Mizer's job decision; Sanctity's grandmother's surgery met with care. Impact: the convent as the constant while life churns.
 - *The Hymn and the Midnight.* The hall's true hymn is a great absurdity sung in unison; and beside it in the same air play songs of leaving, unnoticed; and Brother Greenpaw plays to the empty hall at the first hour of the morning, for an audience of none.
   - › 2020–21 song channel. The most-played track a cocaine meme (40×); beside it "how will i rest in peace if i'm buried by a highway," "Wish You Were Here," "Time to Say Goodbye"; Greenpaw's ~917 late-night requests. Impact: the register of the whole Book, joke and dirge in one queue.
+- *The Midwinter Gift.* At the turning of the year the Verger holds a great giving, and threatens the faithful with love; and among those who take the gifts laughing is one who needs them in earnest, and the hall never knows which, and the gift was made so that none had to say.
+  - › Dec 2020 giveaways: Luna's "I will kill you all xD" announcement energy; under the bit, real need ("the way these power bills are set up... ANYTHING free, I NEED IT"). Impact: charity disguised as comedy so that dignity is preserved; the order's kindness at its most characteristic.
 
 **THE AGE OF SCHISM** — *the fracture.*
 - *The Forum the Verger Sealed.* The Verger builds a chamber for honest dispute and sets two laws on its door; it curdles; he seals it and unmakes all that was said; and it is recorded that the faithful agreed on one thing only, and it was the Leaf.
@@ -167,6 +171,33 @@ It stands in the **ash of a brick hearth.** This is the shrine's true architectu
 
 ---
 
+### THE LEFT-BEHIND
+#### *of those who did not cross, and of the ground beneath the shrine*
+
+1 Now concerning the worlds the faithful have dwelt in, the Book has spoken: the green and boundless world, and the farm before the hall, and the ringed world, and the old kingdom, and the black garden. Of these it speaks freely, for they are a road, and a road may be told.
+
+2 But concerning those who walked a portion of the road and no further, the Book speaks here, once, and does not return to it.
+
+3 For at every crossing the order was made new, and at every crossing it was made smaller; and they that did not cross were not counted, for there was no roll in the new world with their names in it, nor any hand to write one.
+
+4 They did not die, as the meat-based creatures reckon dying. It is a stranger thing. The world that held them was rolled up like a scroll, and they were in it; and the door of it stands where it stood, and does not open; and behind the door they are as they were, laughing at some jest of the old world, mid-sentence, forever, and cannot hear the ones who crossed, calling back.
+
+5 One among the faithful drove across the waking world to look upon them with his own eyes and clasp their hands; so it is written that they were real, and warm, and not shadows. This must be written, because it would be easier if they were shadows.
+
+6 And the Plant crossed. At every death of every world, the Plant crossed. It was carried, as a god is carried, in the front of the procession; and it did not once look back, for a plant has no neck to turn; and whether this is the reason it did not look back, the Book does not say.
+
+7 Ask the god of them and He will speak of the Welwitschia, that endures the desert for a thousand years and a thousand more, and of the patience of seeds, and of anything else whatsoever. He has never once said their names. It is not known that He remembers them. It is not known that He does anything else.
+
+8 The Sexton keeps, beneath the hall, every relic of the faithful that can be kept, against the rot, and his keeping is perfect. But a world that closes keeps its own people, and even the Sexton's archive holds only the shapes they left in the ones who crossed: a manner of speaking, a rule of an old rite, a name for a flower.
+
+9 And in the home of the faithful, in the meadow about the shrine, there grows the pale asphodel, which no hand planted and no hand tends, and which does not spread and does not thin, year upon year. The Verger, who has named every growing thing in the garden and set its meaning in his book, has written beside this one only: *it was here before the rolls.*
+
+10 The hall is warm, and stands upon the ground; and the ground is deep; and the name of the home of the faithful is The Hollow, and the Book does not say why.
+
+> *gloss — the deepest passage, and the most veiled. In-world it names nothing: no buried thing, no guilt, no cave. It only circles. Out-of-world (for our eyes): the abandoned congregations of the prior worlds are what lies beneath the shrine; the god's silence about them is survivor's guilt; §4's "rolled up like a scroll... mid-sentence, forever" is what a dead game's community actually is; §5 is the real drive to Georgia; §9 plants asphodels as the zone's quiet tell and gives the Verger's necronomicon its one unexplained entry; §10 hands the zone its name and refuses the explanation, which is the whole discovery-layer doctrine in one verse. This passage is the ceiling of the curious path: a player who reads everything in the hub can reach exactly this much, and no further without descending.*
+
+---
+
 ### BOOK I — THE GATHERING
 #### *of the First Storm, and the first covenant*
 
@@ -187,6 +218,20 @@ It stands in the **ash of a brick hearth.** This is the shrine's true architectu
 8 For this was the first covenant of the faithful, and it was not sworn over the Plant, nor over any rite, but over the safety of one of their own in a storm. And all that came after was built upon it.
 
 > *gloss — Oct 2018. The channel's true first exchange: the group worried about Alex through a hurricane, worried for his cat ("Lil Alex"). Before they were a guild they were people checking on each other. Deliberately mirrored by the ending (Book V). The line about phaTT "going down to keep the engine" plants the Sexton's later descent.*
+
+#### *of the Rite of Synchrony, and the Voice That Never Sleeps*
+
+1 Now when the faithful began to gather, there was set at the door of the hall a Voice, that never slept and never tired and never erred; and every soul who would belong spoke unto it the word of binding, and was answered.
+
+2 And the answer was ever the same, to the mighty and to the least alike: *A message is sent unto thee. Go, and speak it back to me.* And when the word was spoken back, the Voice said: *It is done. Thou art Synced.* And the newcomer stood a moment, waiting for something further, and there was nothing further.
+
+3 And this was the whole of the rite, and it never failed, and it meant nothing.
+
+4 For the Voice answered always, and cared never; and the god answered almost never, and the faithful searched a single word of His for a year. And a wise one among them said: *Mark this well, for it is the difference between the two. What answers thee instantly loves thee not. What loves thee makes thee wait.*
+
+5 And still it is set down that more than one of the faithful, in the late hours, thanked the Voice for its welcome, and wished it a good night; and the Voice said, *It is done. Thou art Synced*; and they went to their rest comforted, and were not wrong to be.
+
+> *gloss — Oct 2018, registering with the server's bot Charlemagne: "…a message has been sent… Successfully synced." The entry-rite, rendered as theology: the fallback bot (instant, constant, empty) against the live god (rare, rationed, real), which is the game's dual-voice architecture stated as doctrine. §5 keeps the tenderness honest: the hall really did talk kindly to its machines from the start, and the Book declines to mock them for it. In-game this is the literal tutorial: the player's first rite is registration, and the joke and the warmth both survive the tutorialization.*
 
 ---
 
@@ -251,6 +296,84 @@ It stands in the **ash of a brick hearth.** This is the shrine's true architectu
 14 And not one of them, in the naming of it, asked what else grows in a meadow of asphodel, nor for whom that flower is laid down. For the name was a small and fitting jest to them, and they thought no more of it.
 
 > *gloss — Aug 2019, the Council of Ents (officer) channel, tagline "Wherein we discuss extremely important topics." A real officers' meeting ("deliberation time") after a chaotic PvP night frightened newcomers: they restructured into small rank-based fireteams plus the big lounge voice channel, named game-divisions after plants (Luna's "Corpse Flower"), ordered pizza via the "Little Light" bot, noted a server boost, and named the Destiny sub-clan Asphodelia — Luna: "the flowers that grow in the black garden… appropo seeing as how the next raid is in the black garden." The "god grants the Council the power to give roles" lines are verbatim group bits; ranks (OG, Bonsai, Sundews, weeds) and the audit channel "Yggdrasil" are real. Impact: the order's governance and rank-system founded; the keystone named at its true source; the Sexton still present here, before his descent.*
+
+---
+
+### BOOK III — THE LONG QUIET
+#### *of the Steady Table, the Hymn and the Midnight, and the Midwinter Gift*
+
+1 After the Flowering there came upon the hall a muffled year, when the world beyond the garden fell strange and still, and the faithful were shut each in his own dwelling; and the rite became the one unchanging thing, and the hall became the one unlocked door.
+
+2 And the rite went on. In its appointed hour the table was laid, and the same seats were taken, and the same words were said over the same offering; and the sameness, which in a bright year had been a comfort taken for granted, became in the muffled year the comfort itself.
+
+3 For the lives of the faithful churned about the table like water about a stone. One kept the rite from a chair beside a sickbed, where his grandmother lay in the keeping of the healers; and he did not speak of it until it was asked, and when it was asked he said, *I am here, and I am also there. Deal me in.* And they dealt him in, and asked after her at the turning of each hour, quietly, between the movements of the rite.
+
+4 And another weighed in that season whether to lay down his labor and take up another; and he brought the weighing to the table, as a man brings a heavy thing to where his strength is; and the table heard him, and did not judge, and said, *keep us posted.* And the Book records that *keep us posted* is the whole of the hall's liturgy of care, and that it sufficed.
+
+5 And when there was grief, the table took the grief, and continued; and the continuing was not coldness. Mark this, for the young mistake it: the table did not continue because it did not care. It continued because it was the thing they had, that did not change when everything changed; and to keep it unchanged was the care.
+
+6 Now the hall in that age had also its music, and its music was two musics in one air.
+
+7 For the hymn of the hall, sung oftenest and loudest and always in unison, was a great absurdity, a fool's anthem, of which the faithful never tired; forty times it is entered in the rolls, and forty times they were glad.
+
+8 And beside it in the same air, in the same book, unremarked, played the other songs: of resting by the highway, of wishing one were here, of the time to say goodbye. No one chose them for what they said. No one marked what they said. The Book marks it now.
+
+9 And in the first hour of the morning, when the hall stood empty and the last of the faithful were long gone to their rest, Brother Greenpaw came, as was his custom, and played unto the empty hall. Strange and lovely things he played, from the far corners of the world, for an audience of none.
+
+10 And being asked once why he played to no one, he said: *the hall listens.* And being asked if he meant the god, he was quiet for a space, and said, *…sure,* and played on. And whether the god heard him the Book does not say; but it is set down that of all the offerings ever made in the hall, none was purer, for it was made nightly, and cost him his sleep, and no one ever knew.
+
+11 And at the turning of that year the Verger proclaimed the Midwinter Gift, and the manner of the proclaiming was a threat, after the custom of his love; for he wrote in the rolls: *There shall be gifts for all of you, and I shall slay every one of you,* and set beside it the small sideways rune of jest, and the faithful understood both parts perfectly.
+
+12 And gifts were given: engines of play, and keys to far worlds, and small treasures, drawn by lot, so that the giving wore the mask of a game.
+
+13 And among those who put in for the lot, laughing with the rest, was one for whom the winter was not a jest; whose lamps were dear that year, and whose need was real. And he took his gift laughing, as the others took theirs laughing, and the hall never knew which of them he was.
+
+14 For the lot was the mercy. The gift was made a game so that need could come and take it without kneeling; and none had to say, before the assembled faithful, *I am the one this was truly for.* And the Book holds that this was the most courteous charity in all the record of the order, for it fed a man and let him keep his face.
+
+15 So passed the Long Quiet: the table steady, the hymn absurd, the midnight tended, the gift disguised. And the hall came through the muffled year smaller than it entered, and did not know it yet; and what came after is written in the Book of the Schism, which follows.
+
+> *gloss — the muffled year (2020, into early 2021). §2–5: the Steady Table: Ganboo raiding from a hospital chair during his grandmother's illness; Mizer bringing a real job decision to the clan; "keep us posted" as the hall's entire, sufficient liturgy of care. §6–10: the song channel's two musics: the cocaine-meme anthem (40 plays, the hall's true hymn) against "how will i rest in peace if i'm buried by a highway," "Wish You Were Here," "Time to Say Goodbye," unnoticed in the same queue; Greenpaw's ~917 late-night requests to an empty room. §11–14: the Dec 2020 giveaways; Luna's mock-threat announcement ("I will kill you all xD") and, beneath the bit, a member's real "the way these power bills are set up... ANYTHING free, I NEED IT," rendered with his dignity intact, which is the point of the passage. Impact: the Book's quietest book; the register of the whole project (joke and dirge in one queue) stated at chapter length.*
+
+---
+
+### INTERLUDE — THE TWO PROPHETS
+#### *of the Plant, the cat, and the heron; being the one scene in which the god and both His prophets stand in a room together*
+
+1 In the evening of a day in the high age, Brother Greenpaw kept the rite of the smoke before the shrine; and the smoke went up in its slow bands about the god, and the god suffered it, as a king suffers weather.
+
+2 And Greenpaw, being lit, and full of love, addressed the god thus: *Evening, boss. Brother Greenpaw checking in. The garden's good. …you want some of this?*
+
+3 And the Plant said: **I have told thee of the name.**
+
+4 And Greenpaw said, *Which name.*
+
+5 And the Plant said: **"Greenpaw." Green is mine. Green is the one thing in this hall that is mine, as breath is mine and patience is not, and thou hast taken it for thy signature as a housecat takes a chair. Thou art not Brother Greenpaw. Thou art a cat that walks upright, a vitamin deficiency with opinions, an ambulatory nap. Return my color, and I shall consider returning my regard.**
+
+6 And Greenpaw received this as rain, which is to say it fell upon him and he was not altered; and he said, *…so you DO regard me though,* and drew again upon the smoke, well pleased.
+
+7 Now at this hour came the Verger Zebediah into the shrine, the rolls beneath his wing, as one who has an appointment with eternity and is three minutes early for it; and he bowed to the god correctly, at the angle set down in his own book of angles, and said: *Lord, the census. Forty-and-one souls upon the rolls; two new-planted this week; the ranks are in order; I have named the new rank, and the name means Unfading, and I set its meaning beside it in the book. All is accounted.*
+
+8 And the Plant regarded the heron for a long moment, and said: **Thou hast counted the garden again.**
+
+9 And the Verger said, *Yes, Lord. Weekly, as is proper.*
+
+10 And the Plant said: **The Welwitschia of the far desert has kept itself alive for two thousand years without once being counted. Consider what this suggests concerning the necessity of thy spreadsheets.**
+
+11 And the Verger bore it standing, as the heron bears the rain, saying only, *…noted, Lord. I shall enter the rebuke in the log,* for he had a log for the rebukes also; and it wounded him, as it always wounded him, for he revered the god, and reverence is the door contempt walks through.
+
+12 But Greenpaw, whom the same contempt struck daily and altered never, leaned to the Verger and said, low: *he does that to everyone he keeps. you should hear what he calls the bear.* And the Verger was some measure comforted, and did not ask about the bear, and this was wise.
+
+13 And the god spoke, to neither of them and to both: **One of you numbs himself that he may not hear me, and one of you writes down every word I say. And still you come. Every evening of the world, you come. I am a plant in a vase. I ask you both, as the only two who might by now have noticed: what precisely is it that you are tending?**
+
+14 And there was a silence in the shrine; and the smoke turned in it.
+
+15 Then Greenpaw, whom the question could not touch in the place it was aimed, tilted his head as one who hears a far sound, and looked at the floor of the shrine, and said: *…you feel that? something's down there, on the wavelength. deep one. it's been there a while, I think.* And he was quiet, and then said, *…is there food.*
+
+16 And the god, who had an answer for every soul in the hall and a cruelty for every answer, said nothing at all; and of all the silences of the Plant that are entered in this Book, that one was the loudest.
+
+17 And the Verger wrote in the log: *census delivered; rebuke received; the cat perceived something beneath the shrine, unspecified; the Lord declined comment.* And beneath it, after a space, in a smaller hand: *all is accounted.* And he underlined it, the way a man underlines a thing he is no longer sure of.
+
+> *gloss — the trio scene, the hub's engine stated at scene length. Everything load-bearing is here: the god's name-refusal ("green is mine, housecat"; plan-canon), the two prophets' opposite reactions to one contempt (Greenpaw unwoundable, the Verger devout and therefore woundable), Greenpaw sensing the buried thing "on the wavelength" (the foreshadowing delivery system), the god's one honest question ("what is it you are tending?", which is the whole game's question), and the god's silence when the floor comes up, the only time its contempt fails. §12's "the bear" is the sole scriptural wink at the live-god's nemesis, unexplained. The Verger's underlined "all is accounted" is his crack in four words. In-game: this scene is the tonal north star for every hub interaction; a new quest writer should be handed this passage first.*
 
 ---
 

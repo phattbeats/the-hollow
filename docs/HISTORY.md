@@ -197,11 +197,6 @@ Phase 0 to a Board-passed gate in a single day. That is what forking bought.
 
 ## 6. Knowledge inventory: what belongs in this repo
 
-> **WARNING — the lore layer in this repo is one generation behind.**
-> A design session on 2026-07-03 (claude.ai conversation `9c61acda`) produced **Book of the Plant v2.0 (509 lines)** and **Lorebook notes v2.0 second-generation (544 lines)**. That session was opened specifically to fix "the starting zone is very generic," and its diagnosis was that the lore had been organised as an archive rather than as something a builder could place. The v2.0 notes therefore add a **zone bible**: a naming doctrine with a banned-generic list, a **sixteen-place gazetteer** with surface / curious / devout reads per location, a twelve-prop remnants kit, NPC placements with day-night schedules and barks, and the cold open plus **eleven quest conversions** from the fables. The v2.0 Book adds the Rite of Synchrony, Book III the Long Quiet, the Left-Behind passage, and the Two Prophets trio scene.
->
-> Those files were never uploaded back out of that conversation and exist in no repo and no planning project. What is committed here is the prior generation. Recover them from `https://claude.ai/chat/9c61acda-353a-44de-bc15-10370aee29f1` before doing any further lore, zone, or quest work; Phase 2's quest-writing agent is currently working without the document written for it.
-
 
 
 From the claude.ai planning project:
@@ -209,8 +204,8 @@ From the claude.ai planning project:
 | File | Role | Suggested path |
 |---|---|---|
 | `plan-the-hollow.md` (v2.1, 555 lines) | Superseded. The repo holds v3.1 (in force). Keep the v2.1 copy as a historical draft only; do **not** overwrite | already in repo at `docs/plan-the-hollow.md`, newer |
-| `the-hollow-book-of-the-plant.md` (**v1.7**, 386 lines) | In-world scripture, Chronicle through Coda, with factual glosses. **Superseded by a v2.0 that is not in any repo; see the warning below** | `docs/lore/book-of-the-plant.md` |
-| `the-hollow-lorebook-notes.md` (**v2.2**, 435 lines) | The working bible: approach, cast, worldbuilding, numbered fable seeds. **Superseded by a v2.0 second-generation that is not in any repo; see below** | `docs/lore/lorebook-notes.md` |
+| `the-hollow-book-of-the-plant.md` (**v2.0**, 509 lines) | In-world scripture, Chronicle through Coda, with factual glosses. Includes the Rite of Synchrony, Book III the Long Quiet, the Left-Behind, and the INTERLUDE — THE TWO PROPHETS, the named tonal north star for every hub interaction | `docs/lore/book-of-the-plant.md` |
+| `the-hollow-lorebook-notes.md` (**v2.0 second generation**, 544 lines) | Part One carries all prior canon. Part Two is the zone bible: naming doctrine, a 16-place gazetteer with Surface/Curious/Devout reads, a 12-prop remnants kit, NPC placements with day-night schedules and barks, the cold open, and the quest conversions | `docs/lore/lorebook-notes.md` |
 | `hollow-build-sim.py` + `hollow-build-sim-results.txt` | The original §8 keystone test (v1). The repo holds v2, v2b, v2c, v2c2, v2d, tuned, and the skill-ceiling arm, but not this first run | `docs/sim/hollow-build-sim-v1.py` + `-v1-results.txt` |
 | `the-hollow-design-session-summary-2026-06-24.md` | Session 1: the fork reframe and the constitution | `docs/history/` |
 | `the-hollow-design-session-summary-2026-06-29.md` | Session 2: the bet, tested | `docs/history/` |
