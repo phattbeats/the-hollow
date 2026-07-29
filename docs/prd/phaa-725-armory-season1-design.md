@@ -1,9 +1,9 @@
-# PHAA-725 — Season 1 Armory cosmetic layer (design, pre-implementation)
+# PHAA-725: Season 1 Armory cosmetic layer (design, pre-implementation)
 
 This is the design pass the ticket asked for before implementation. It owns
 the IWorld extension shape, the new persistent state, the season concept,
-the HUD panel split, and the gate deltas. No source code in this commit —
-only the design, so the review pass is cheap and the implementation can
+the HUD panel split, and the gate deltas. No source code in this commit; only
+the design, so the review pass is cheap and the implementation can
 land in one or two follow-up commits without re-litigating the contract.
 
 The repo's `IWorld` seam is the contract: one facet per file under
@@ -75,7 +75,7 @@ Two of those five are online-only frames (`setArmorySeason` is server
 truth; `previewCosmetic` is a client UI hook). That is the same asymmetry
 the existing `IWorldCosmetics` already has (e.g. `claimEventSkin` is a
 command on both sides, `changeSkin` is a command on both). The facade
-keeps the same shape across both worlds — the offline `Sim` is just
+keeps the same shape across both worlds; the offline `Sim` is just
 always-on and the server-authoritative paths run validation server-side.
 
 ### Result shapes
@@ -162,8 +162,8 @@ export interface ArmorySeason {
 
 Default (no season set) is `null`. The Armory panel renders an empty
 state when `armorySeason` is null. The v3 plan defers season turnover;
-the gating is purely additive — "Season 1 grants X, Y, Z when quest A
-completes" — no expiry means no wipe, no time pressure.
+the gating is purely additive: "Season 1 grants X, Y, Z when quest A
+completes". No expiry means no wipe, no time pressure.
 
 The catalog (`armoryCatalog`) is a flat static table in
 `src/sim/content/skins.ts` (same family as `MECH_CHROMAS`,
@@ -276,7 +276,7 @@ fills in the same change.
 | `tests/architecture.test.ts` | New modules under `src/sim/` (e.g. `src/sim/cosmetics/armory.ts`) must satisfy purity (no DOM/Three/render/ui imports). |
 | `tests/parity/` | If a new sim-side module draws `rng` (e.g. season-roll), the parity draw-order digest must NOT shift. The Season 1 mechanic in this ticket is **non-rng** (derived from completed quests), so the digest stays green without regeneration. |
 | `tests/hud.test.ts` / `tests/i18n_completeness.test.ts` | Wordy new keys get M16 fills. |
-| `tests/localization_fixes.test.ts` | If any sim-side emit material is added (likely none — the Armory is read-only), the matcher rule in `src/ui/sim_i18n.ts` updates in the same change. |
+| `tests/localization_fixes.test.ts` | If any sim-side emit material is added (likely none; the Armory is read-only), the matcher rule in `src/ui/sim_i18n.ts` updates in the same change. |
 
 The pre-commit `npm run ci:changed` and the pre-push `npm run pr_gate_local`
 must be green for the implementation commits. The branch is `feature/phaa-725-armory-season1`.
@@ -334,5 +334,5 @@ commit land in one or two clean follow-ups.
 - No Claudium store, no paid cosmetics, no token economy.
 - No season expiry / time-limited unlocks. The "season" is a label and
   a content grouping, not a clock.
-- No mobile-specific redesign — the existing character-sheet menu entry
+- No mobile-specific redesign; the existing character-sheet menu entry
   is the mobile door.
