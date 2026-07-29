@@ -998,6 +998,33 @@ export const en_XA: EnTranslations = {
       "toolTier": "[Ţíéŕ {tier} ţóóļ]",
       "toolNone": "[Ñó ţóóļ]"
     },
+    "crafting": {
+      "title": "[Çŕáƒţíñĝ]",
+      "close": "[Çļóšé çŕáƒţíñĝ]",
+      "tabRecipes": "[Ŕéçíþéš]",
+      "tabEnchants": "[Éñçĥáñţš]",
+      "proficiencyLine": "[{craft}: {value}]",
+      "craftButton": "[Çŕáƒţ]",
+      "craftAria": "[Çŕáƒţ {item}]",
+      "reagentLine": "[{item} {have}/{need}]",
+      "disenchantSectionTitle": "[Ðíšéñçĥáñţ]",
+      "disenchantButton": "[Ðíšéñçĥáñţ]",
+      "disenchantAria": "[Ðíšéñçĥáñţ {item}]",
+      "disenchantEmpty": "[Ñóţĥíñĝ éļíĝíƀļé ţó ðíšéñçĥáñţ.]",
+      "applyButton": "[Áþþļý]",
+      "applyAria": "[Áþþļý {enchant} ţó {slot}]",
+      "activeTag": "[Áçţíʋé]",
+      "needScroll": "[Ŕéɋúíŕéš {scroll}]",
+      "craftType": {
+        "weaponcrafting": "[Ŵéáþóñšɱíţĥíñĝ]",
+        "armorcrafting": "[Áŕɱóŕšɱíţĥíñĝ]",
+        "tailoring": "[Ţáíļóŕíñĝ]",
+        "leatherworking": "[Ļéáţĥéŕŵóŕķíñĝ]",
+        "cooking": "[Çóóķíñĝ]",
+        "alchemy": "[Áļçĥéɱý]",
+        "enchanting": "[Éñçĥáñţíñĝ]"
+      }
+    },
     "warfare": {
       "ratingLabel": "[Ŵáŕƒáŕé]",
       "balance": "[Ĥóñóŕ: {amount}]",
@@ -6462,6 +6489,22 @@ export const en_XA: EnTranslations = {
       }
     },
     "quests": {
+      "q_prof_intro": {
+        "title": "[Á Ţŕáðé Ŵóŕţĥ Ļéáŕñíñĝ]",
+        "text": "[Éʋéŕý ţŕáðé šţáŕţš ŵíţĥ ðíŕţ úñðéŕ ýóúŕ ñáíļš, {playerName}. Ĝáţĥéŕ 2 šþíðéŕ ļéĝš ƒŕóɱ ţĥé ĝŕóʋéš éášţ óƒ ţóŵñ, ţĥéñ ŵóŕķ ɱý ƒóŕĝé ƒóŕ á Ŕéçŕúíţ'š Ţúñíç; ƀóñé ƒŕáĝɱéñţš ƒóŕ íţ áŕé éášý éñóúĝĥ ţó šçŕóúñĝé áļóñĝ ţĥé ŵáý. Ɓŕíñĝ ɱé šóɱéţĥíñĝ ŵóŕţĥ ƀŕéáķíñĝ ðóŵñ ƒóŕ íţš áŕçáñé ðúšţ ƀéšíðéš. Šĥóŵ ɱé ýóú çáñ ĝáţĥéŕ, çŕáƒţ, áñð úñɱáķé, áñð Í ŵíļļ šĥóŵ ýóú ŵĥáţ á ţŕáðé íš ŵóŕţĥ.]",
+        "completion": "[Ñóŵ ţĥáţ íš á ţŕáðé ŵóŕţĥ ļéáŕñíñĝ. Ķééþ áţ ţĥé ƒóŕĝé, {playerName}, áñð óñé ðáý ýóú ŵíļļ ƀé šĥóéíñĝ ĥóŕšéš áñð éñçĥáñţíñĝ ƀļáðéš íñ ţĥé šáɱé ƀŕéáţĥ.]",
+        "objectives": {
+          "0": {
+            "label": "[Šþíðéŕ Ļéĝ ĝáţĥéŕéð]"
+          },
+          "1": {
+            "label": "[Ŕéçŕúíţ'š Ţúñíç çŕáƒţéð]"
+          },
+          "2": {
+            "label": "[Éñçĥáñţíñĝ Ðúšţ]"
+          }
+        }
+      },
       "q_wolves": {
         "title": "[Ŵóļʋéš áţ ţĥé Ðóóŕ]",
         "text": "[Ţĥé ƒóŕéšţ ŵóļʋéš ĝŕóŵ ƀóļð, šñáþþíñĝ áţ ţŕáʋéļéŕš óñ ţĥé ñóŕţĥ ŕóáð. Ţĥíñ ţĥéíŕ ñúɱƀéŕš, {playerName}. Šļáý 8 Ƒóŕéšţ Ŵóļʋéš áñð Éášţƀŕóóķ ŵíļļ ƀŕéáţĥé éášíéŕ.]",
@@ -7604,6 +7647,20 @@ export const en_XA: EnTranslations = {
         "name": "[Ţĥé Çóļļáþšéð Ŕéļíɋúáŕý]",
         "enterText": "[Ýóú ðéšçéñð íñţó ţĥé çóļļáþšéð ŕéļíɋúáŕý.]",
         "leaveText": "[Ýóú çļíɱƀ ƀáçķ ţó Ɓŕóţĥéŕ Ĥáļʋéñ áţ ţĥé ŕéļíɋúáŕý ŕúíñ.]"
+      }
+    },
+    "enchants": {
+      "enchant_minor_might": {
+        "name": "[Ɱíñóŕ Ɱíĝĥţ]"
+      },
+      "enchant_minor_vigor": {
+        "name": "[Ɱíñóŕ Ʋíĝóŕ]"
+      },
+      "enchant_minor_focus": {
+        "name": "[Ɱíñóŕ Ƒóçúš]"
+      },
+      "enchant_minor_agility": {
+        "name": "[Ɱíñóŕ Áĝíļíţý]"
       }
     },
     "itemSets": {

@@ -4,6 +4,7 @@ import {
   DEEDS,
   DELVES,
   DUNGEONS,
+  ENCHANTS,
   ITEM_SETS,
   ITEMS,
   MOBS,
@@ -13,7 +14,7 @@ import {
   TITLES,
   ZONES,
 } from '../sim/data';
-import type { ItemDef, PlayerClass } from '../sim/types';
+import type { EnchantDef, ItemDef, PlayerClass } from '../sim/types';
 import {
   en,
   getLanguage,
@@ -34,6 +35,7 @@ export type EntityTranslationKind =
   | 'class'
   | 'ability'
   | 'item'
+  | 'enchant'
   | 'mob'
   | 'npc'
   | 'npcIntro'
@@ -80,6 +82,7 @@ export type EntityTranslationRequest =
   | { kind: 'class'; id: PlayerClass; field: 'name' | 'description'; values?: InterpolationValues }
   | { kind: 'ability'; id: string; field: 'name' | 'description'; values?: InterpolationValues }
   | { kind: 'item'; id: string; field: 'name' | 'flavorText'; values?: InterpolationValues }
+  | { kind: 'enchant'; id: string; field: 'name'; values?: InterpolationValues }
   | {
       kind: 'itemSet';
       id: string;
@@ -269,6 +272,8 @@ function canonicalEntityText(request: EntityTranslationRequest): string {
       const pieces = request.field === 'bonus2' ? 2 : 3;
       return set.bonuses.find((b) => b.pieces === pieces)?.text ?? request.id;
     }
+    case 'enchant':
+      return ENCHANTS.find((e) => e.id === request.id)?.name ?? request.id;
     case 'mob':
       return MOBS[request.id]?.name ?? request.id;
     case 'npc': {
@@ -374,6 +379,8 @@ export function entityTranslationKey(request: EntityTranslationRequest): string 
     }
     case 'itemSet':
       return `entities.itemSets.${entityPathSegment(request.id)}.${request.field}`;
+    case 'enchant':
+      return `entities.enchants.${entityPathSegment(request.id)}.name`;
     case 'mob':
       return `entities.mobs.${entityPathSegment(request.id)}.name`;
     case 'npc':
@@ -471,6 +478,10 @@ export function itemDisplayName(item: ItemDef): string {
 
 export function itemFlavorText(item: ItemDef): string | undefined {
   return item.flavorText ? tEntity({ kind: 'item', id: item.id, field: 'flavorText' }) : undefined;
+}
+
+export function enchantDisplayName(enchant: EnchantDef): string {
+  return tEntity({ kind: 'enchant', id: enchant.id, field: 'name' });
 }
 
 // Thin tEntity wrappers for the display helpers that several windows + painters each
@@ -597,6 +608,18 @@ export function entityTranslationManifest(): EntityTranslationManifestEntry[] {
         ),
       );
     }
+  }
+  for (const enchant of [...ENCHANTS].sort(compareById)) {
+    entries.push(
+      entry(
+        'enchant',
+        enchant.id,
+        'name',
+        enchant.name,
+        'world',
+        entityTranslationKey({ kind: 'enchant', id: enchant.id, field: 'name' }),
+      ),
+    );
   }
   for (const mob of Object.values(MOBS).sort(compareById)) {
     entries.push(
