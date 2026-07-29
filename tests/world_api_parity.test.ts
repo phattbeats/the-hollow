@@ -47,6 +47,7 @@ import type { IWorldDeeds } from '../src/world_api/deeds';
 import type { IWorldDelves } from '../src/world_api/delves';
 import type { IWorldDuelArena } from '../src/world_api/duel_arena';
 import type { IWorldDungeons } from '../src/world_api/dungeons';
+import type { IWorldEnchanting } from '../src/world_api/enchanting';
 import type { IWorldEntityRoster } from '../src/world_api/entity_roster';
 import type { IWorldGathering } from '../src/world_api/gathering';
 import type { IWorldGreenpawHearth } from '../src/world_api/greenpaw_hearth';
@@ -184,6 +185,12 @@ export const IWORLD_MEMBERS = [
   // proficiency (recipe browsing is a static content read, no IWorld member) ---
   { name: 'craftItem', kind: 'method' },
   { name: 'craftProficiency', kind: 'data' },
+  // --- Enchanting (PHAA-649 child, upstream #1712): disenchant/apply-enchant
+  // + the local viewer's own active enchants (enchant browsing is a static
+  // content read, no IWorld member) ---
+  { name: 'disenchantItem', kind: 'method' },
+  { name: 'applyEnchant', kind: 'method' },
+  { name: 'enchants', kind: 'data' },
   // --- party / raid commands + marker read ---
   { name: 'partyInvite', kind: 'method' },
   { name: 'partyAccept', kind: 'method' },
@@ -394,9 +401,9 @@ beforeAll(() => {
 
 describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => {
   it('pins total / data / method counts', () => {
-    expect(IWORLD_MEMBERS.length).toBe(192);
-    expect(DATA_MEMBERS.length).toBe(58);
-    expect(METHOD_MEMBERS.length).toBe(134);
+    expect(IWORLD_MEMBERS.length).toBe(195);
+    expect(DATA_MEMBERS.length).toBe(59);
+    expect(METHOD_MEMBERS.length).toBe(136);
   });
 
   it('has no duplicate member names', () => {
@@ -417,6 +424,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'activeLoadout',
       'activeLootRolls',
       'activeTitle',
+      'applyEnchant',
       'applyTalents',
       'arenaAugmentPick',
       'arenaInfo',
@@ -459,11 +467,13 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'delveRun',
       'delveShopOffers',
       'discardItem',
+      'disenchantItem',
       'duelAccept',
       'duelDecline',
       'duelInfo',
       'duelRequest',
       'earnedTitles',
+      'enchants',
       'enterDelve',
       'enterDungeon',
       'entities',
@@ -626,6 +636,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'delveRun',
       'duelInfo',
       'earnedTitles',
+      'enchants',
       'entities',
       'equipment',
       'gatheringProficiency',
@@ -673,6 +684,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'acceptLinkedQuest',
       'acceptQuest',
       'activeLootRolls',
+      'applyEnchant',
       'applyTalents',
       'arenaAugmentPick',
       'arenaQueueJoin',
@@ -700,6 +712,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'delveInteract',
       'delveShopOffers',
       'discardItem',
+      'disenchantItem',
       'duelAccept',
       'duelDecline',
       'duelRequest',
@@ -1149,6 +1162,15 @@ const FACET_CRAFTING = [
 ] as const satisfies readonly (keyof IWorldCrafting)[];
 type _ExhaustCrafting = AssertNever<Exclude<keyof IWorldCrafting, (typeof FACET_CRAFTING)[number]>>;
 
+const FACET_ENCHANTING = [
+  'disenchantItem',
+  'applyEnchant',
+  'enchants',
+] as const satisfies readonly (keyof IWorldEnchanting)[];
+type _ExhaustEnchanting = AssertNever<
+  Exclude<keyof IWorldEnchanting, (typeof FACET_ENCHANTING)[number]>
+>;
+
 const FACET_DUNGEONS = [
   'enterDungeon',
   'leaveDungeon',
@@ -1228,13 +1250,14 @@ const FACET_MEMBER_ARRAYS: Readonly<Record<string, readonly string[]>> = {
   gathering: FACET_GATHERING,
   telemetry: FACET_TELEMETRY,
   crafting: FACET_CRAFTING,
+  enchanting: FACET_ENCHANTING,
   collections: FACET_COLLECTIONS,
   achievements: FACET_ACHIEVEMENTS,
 };
 
-describe('W1: aggregate IWorld member set equals the disjoint union of the 31 facets', () => {
-  it('pins the facet count at 31', () => {
-    expect(Object.keys(FACET_MEMBER_ARRAYS).length).toBe(31);
+describe('W1: aggregate IWorld member set equals the disjoint union of the 32 facets', () => {
+  it('pins the facet count at 32', () => {
+    expect(Object.keys(FACET_MEMBER_ARRAYS).length).toBe(32);
   });
 
   it('each facet array is non-empty and internally duplicate-free', () => {
@@ -1260,10 +1283,10 @@ describe('W1: aggregate IWorld member set equals the disjoint union of the 31 fa
     expect(overlaps, `members filed in more than one facet:\n${overlaps.join('\n')}`).toEqual([]);
   });
 
-  it('the union of the 31 facets equals the pinned 192-member IWORLD_MEMBERS set', () => {
+  it('the union of the 32 facets equals the pinned 195-member IWORLD_MEMBERS set', () => {
     const union = Object.values(FACET_MEMBER_ARRAYS).flatMap((arr) => [...arr]);
-    expect(union.length, 'union size before dedup (catches a duplicated member)').toBe(192);
-    expect(new Set(union).size, 'union size after dedup (catches a duplicated member)').toBe(192);
+    expect(union.length, 'union size before dedup (catches a duplicated member)').toBe(195);
+    expect(new Set(union).size, 'union size after dedup (catches a duplicated member)').toBe(195);
     const sortedUnion = [...union].sort();
     const pinned = IWORLD_MEMBERS.map((m) => m.name).sort();
     expect(sortedUnion).toEqual(pinned);

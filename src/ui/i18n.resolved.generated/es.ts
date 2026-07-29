@@ -6015,6 +6015,21 @@ export const es: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "Vanguardia cromada"
+      },
+      "enchanting_dust": {
+        "name": "Polvo de Encantamiento"
+      },
+      "scroll_minor_might": {
+        "name": "Pergamino de Fuerza Menor"
+      },
+      "scroll_minor_vigor": {
+        "name": "Pergamino de Vigor Menor"
+      },
+      "scroll_minor_focus": {
+        "name": "Pergamino de Enfoque Menor"
+      },
+      "scroll_minor_agility": {
+        "name": "Pergamino de Agilidad Menor"
       }
     },
     "mobs": {

@@ -6015,6 +6015,21 @@ export const pl_PL: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "Chrom awangardy"
+      },
+      "enchanting_dust": {
+        "name": "Pył Zaklęć"
+      },
+      "scroll_minor_might": {
+        "name": "Zwój Małej Mocy"
+      },
+      "scroll_minor_vigor": {
+        "name": "Zwój Małej Żywotności"
+      },
+      "scroll_minor_focus": {
+        "name": "Zwój Małego Skupienia"
+      },
+      "scroll_minor_agility": {
+        "name": "Zwój Małej Zwinności"
       }
     },
     "mobs": {

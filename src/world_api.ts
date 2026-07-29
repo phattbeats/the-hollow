@@ -18,10 +18,13 @@
 // PHAA-574's crafting.ts facet (2 members), again with PHAA-626's collections.ts
 // facet (2 members), again with PHAA-687's achievements.ts facet (2 members),
 // again with the PHAA-641 readyCheckRespond addition to the existing IWorldParty
-// facet, and again here at 30/190 with the PHAA-744 deeds.ts facet (5 members:
-// Book of Asphodelia deed/title read state + setActiveTitle). One interface per
-// file under ./world_api/; aux types travel with their facet. The authoritative
-// member-per-facet split is the W0c parity test (tests/world_api_parity.test.ts).
+// facet, again at 30/190 with the PHAA-744 deeds.ts facet (5 members:
+// Book of Asphodelia deed/title read state + setActiveTitle), and again here at
+// 31/195 with the PHAA-649 enchanting.ts facet (3 members; the running count in
+// tests/world_api_parity.test.ts was already at 192 before this addition). One
+// interface per file under ./world_api/; aux types travel with their facet. The
+// authoritative member-per-facet split is the W0c parity test
+// (tests/world_api_parity.test.ts).
 // NOTE: this running count tracks only the facets registered in the W0c gate
 // (tests/world_api_parity.test.ts); IWorldReadables/IWorldDialog predate this
 // count and are pre-existing gaps in that gate, not tracked here.
@@ -56,6 +59,8 @@
 //   telemetry.ts        IWorldTelemetry      fire-and-forget metrics sink
 //   crafting.ts         IWorldCrafting       craft a recipe + the local viewer's own
 //                                            craft proficiency (PHAA-574)
+//   enchanting.ts       IWorldEnchanting     disenchant/apply-enchant + the local
+//                                            viewer's own active enchants (PHAA-649)
 //   collections.ts      IWorldCollections    tracked-collectible read/found state (PHAA-626)
 //   achievements.ts     IWorldAchievements   unlocked achievements + points (PHAA-687)
 //
@@ -81,6 +86,7 @@ import type { IWorldDelves } from './world_api/delves';
 import type { IWorldDialog } from './world_api/dialog';
 import type { IWorldDuelArena } from './world_api/duel_arena';
 import type { IWorldDungeons } from './world_api/dungeons';
+import type { IWorldEnchanting } from './world_api/enchanting';
 import type { IWorldEntityRoster } from './world_api/entity_roster';
 import type { IWorldGathering } from './world_api/gathering';
 import type { IWorldGreenpawHearth } from './world_api/greenpaw_hearth';
@@ -184,6 +190,7 @@ export interface IWorld
     IWorldDialog,
     IWorldTelemetry,
     IWorldCrafting,
+    IWorldEnchanting,
     IWorldCollections,
     IWorldAchievements {}
 
@@ -337,6 +344,8 @@ export const COMMAND_NAMES = [
   'setTitle',
   'readyRespond',
   'readCollectible',
+  'disenchantItem',
+  'applyEnchant',
 ] as const;
 
 // The union both the send path (`online.ts`) and the dispatch switch
@@ -407,6 +416,7 @@ export type WorldFacet =
   | 'IWorldDialog'
   | 'IWorldTelemetry'
   | 'IWorldCrafting'
+  | 'IWorldEnchanting'
   | 'IWorldCollections';
 
 export const COMMAND_FACETS = {
@@ -559,6 +569,10 @@ export const COMMAND_FACETS = {
   // IWorldCrafting: craft a recipe (PHAA-574); recipe browsing carries no wire
   // command (static content, read directly from src/sim/data's RECIPES table).
   craftItem: 'IWorldCrafting',
+  // IWorldEnchanting: disenchant/apply-enchant (PHAA-649 child, upstream #1712);
+  // the enchants read carries no wire command (rides the self-snapshot).
+  disenchantItem: 'IWorldEnchanting',
+  applyEnchant: 'IWorldEnchanting',
   // IWorldDailyRewards: claim today's cycle slot (PHAA-660); the dailyRewards
   // read carries no wire command (it rides the self-snapshot like cosmetics).
   daily_rewards_claim: 'IWorldDailyRewards',

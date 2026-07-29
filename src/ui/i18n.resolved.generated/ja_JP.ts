@@ -6015,6 +6015,21 @@ export const ja_JP: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "ヴァンガードクローム"
+      },
+      "enchanting_dust": {
+        "name": "付呪の粉塵"
+      },
+      "scroll_minor_might": {
+        "name": "小さな力の巻物"
+      },
+      "scroll_minor_vigor": {
+        "name": "小さな活力の巻物"
+      },
+      "scroll_minor_focus": {
+        "name": "小さな集中の巻物"
+      },
+      "scroll_minor_agility": {
+        "name": "小さな俊敏の巻物"
       }
     },
     "mobs": {

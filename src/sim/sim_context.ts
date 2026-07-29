@@ -421,8 +421,10 @@ export interface SimContextCallbacks {
   frenzyPackmates(dead: Entity): void;
   armDeathThroes(dead: Entity): void;
   // C1's grantXp level-up path AND G1a's talent application (progression/talents.ts)
-  // both consume refreshKnownAbilities: the talent path always passes announce=false
-  // (a silent re-resolve, no learnAbility spam); the level-up path passes announce=true.
+  // both consume refreshKnownAbilities: the talent path passes announce=true (spec
+  // signature/active-node grants must emit learnAbility, PHAA-715); the level-up
+  // path also passes announce=true, while the silent character-LOAD path passes
+  // announce=false so login never spams "You have learned" for already-known kit.
   // G1a's talent module also consumes the core `error` sink (declared above). The talent
   // PUBLIC API (applyTalents/spendTalent/setSpec/respec/saveLoadout/switchLoadout/
   // deleteLoadout/talentPoints) is NOT on this seam: Sim keeps thin wrapper methods that

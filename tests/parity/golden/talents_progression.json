@@ -17,7 +17,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "9e34c745",
+      "state": "4b1d4301",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -44,6 +44,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -112,8 +113,8 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "1d39a9bb",
-      "events": "bd1d9063",
+      "state": "4eee6bf1",
+      "events": "5d6b40bb",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -139,6 +140,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -163,7 +165,6 @@
           "attackPower": 122,
           "combatTimer": 99,
           "critChance": 0.0895,
-          "critDmgPhysBonus": 0.25,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.0695,
           "fallStartY": 1.5,
@@ -213,7 +214,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "b9519f8c",
+      "state": "07f8a49a",
       "events": "1235c2db",
       "rng": {
         "draws": 0,
@@ -240,6 +241,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -261,7 +263,6 @@
           "attackPower": 122,
           "combatTimer": 99,
           "critChance": 0.0695,
-          "critDmgPhysBonus": 0.25,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.0695,
           "fallStartY": 1.5,
@@ -311,7 +312,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "01eeb195",
+      "state": "a6b5a00b",
       "events": "0907621d",
       "rng": {
         "draws": 0,
@@ -337,6 +338,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -377,7 +379,6 @@
           "attackPower": 122,
           "combatTimer": 99,
           "critChance": 0.0995,
-          "critDmgPhysBonus": 0.25,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.0695,
           "fallStartY": 1.5,
@@ -427,7 +428,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "9f1462ac",
+      "state": "a1b10722",
       "events": "c3618fcf",
       "rng": {
         "draws": 0,
@@ -453,6 +454,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -493,7 +495,6 @@
           "attackPower": 122,
           "combatTimer": 99,
           "critChance": 0.0695,
-          "critDmgPhysBonus": 0.25,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.0695,
           "fallStartY": 1.5,
@@ -543,8 +544,8 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "79d8b448",
-      "events": "0f2acc06",
+      "state": "bffcc16e",
+      "events": "5d6b40bb",
       "rng": {
         "draws": 0,
         "digest": "811c9dc5"
@@ -569,6 +570,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -604,9 +606,9 @@
       "entities": [
         {
           "aiState": "idle",
-          "attackPower": 122,
+          "attackPower": 132,
           "combatTimer": 99,
-          "critChance": 0.1695,
+          "critChance": 0.1195,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.0695,
           "fallStartY": 1.5,
@@ -656,7 +658,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "79d8b448",
+      "state": "bffcc16e",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -682,6 +684,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -717,9 +720,9 @@
       "entities": [
         {
           "aiState": "idle",
-          "attackPower": 122,
+          "attackPower": 132,
           "combatTimer": 99,
-          "critChance": 0.1695,
+          "critChance": 0.1195,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.0695,
           "fallStartY": 1.5,

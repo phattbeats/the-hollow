@@ -6015,6 +6015,21 @@ export const en_CA: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "Vanguard Chrome"
+      },
+      "enchanting_dust": {
+        "name": "Enchanting Dust"
+      },
+      "scroll_minor_might": {
+        "name": "Scroll of Minor Might"
+      },
+      "scroll_minor_vigor": {
+        "name": "Scroll of Minor Vigor"
+      },
+      "scroll_minor_focus": {
+        "name": "Scroll of Minor Focus"
+      },
+      "scroll_minor_agility": {
+        "name": "Scroll of Minor Agility"
       }
     },
     "mobs": {

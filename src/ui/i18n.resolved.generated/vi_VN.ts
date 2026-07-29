@@ -6015,6 +6015,21 @@ export const vi_VN: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "Crôm Tiên Phong"
+      },
+      "enchanting_dust": {
+        "name": "Bụi Phù Phép"
+      },
+      "scroll_minor_might": {
+        "name": "Cuộn Giấy Sức Mạnh Nhỏ"
+      },
+      "scroll_minor_vigor": {
+        "name": "Cuộn Giấy Sinh Lực Nhỏ"
+      },
+      "scroll_minor_focus": {
+        "name": "Cuộn Giấy Tập Trung Nhỏ"
+      },
+      "scroll_minor_agility": {
+        "name": "Cuộn Giấy Nhanh Nhẹn Nhỏ"
       }
     },
     "mobs": {

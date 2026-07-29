@@ -743,7 +743,7 @@ export function grantXp(
     // magnitudes scale with level (min(1, level/20) in accumulate), so a ding must
     // strengthen the mastery without waiting for a respec/spec-pick/relog re-bake.
     meta.talentMods = computeTalentModifiers(meta.cls, meta.talents, meta.secondaryCls, p.level);
-    recalcPlayerStats(p, meta.cls, meta.equipment, ctx.playerMods(meta));
+    recalcPlayerStats(p, meta.cls, meta.equipment, ctx.playerMods(meta), meta.enchants);
     p.hp = p.maxHp;
     if (p.resourceType === 'mana') p.resource = p.maxResource;
     ctx.emit({ type: 'levelup', level: p.level, pid: p.id });

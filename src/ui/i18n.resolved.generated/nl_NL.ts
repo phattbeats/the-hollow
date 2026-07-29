@@ -6015,6 +6015,21 @@ export const nl_NL: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "Voorhoede-Chroom"
+      },
+      "enchanting_dust": {
+        "name": "Betoveringsstof"
+      },
+      "scroll_minor_might": {
+        "name": "Rol van Geringe Kracht"
+      },
+      "scroll_minor_vigor": {
+        "name": "Rol van Geringe Vitaliteit"
+      },
+      "scroll_minor_focus": {
+        "name": "Rol van Geringe Concentratie"
+      },
+      "scroll_minor_agility": {
+        "name": "Rol van Geringe Behendigheid"
       }
     },
     "mobs": {

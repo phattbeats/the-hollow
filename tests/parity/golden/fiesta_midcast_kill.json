@@ -31,7 +31,7 @@
       "tick": 25,
       "time": 1.25,
       "nextId": 411,
-      "state": "a1833c4c",
+      "state": "90fe97b5",
       "events": "9a77ea94",
       "rng": {
         "draws": 0,
@@ -42,7 +42,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 411,
-      "state": "f92436ea",
+      "state": "2ba23e13",
       "events": "ace6b6f2",
       "rng": {
         "draws": 28,
@@ -53,7 +53,7 @@
       "tick": 75,
       "time": 3.75,
       "nextId": 411,
-      "state": "0d235808",
+      "state": "5e441ad5",
       "events": "782b0eb6",
       "rng": {
         "draws": 143,
@@ -64,7 +64,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 411,
-      "state": "099a5a46",
+      "state": "3e635dbf",
       "events": "991c069e",
       "rng": {
         "draws": 304,
@@ -75,7 +75,7 @@
       "tick": 101,
       "time": 5.05,
       "nextId": 411,
-      "state": "a1289fd9",
+      "state": "a90aaa7e",
       "events": "91cd86b8",
       "rng": {
         "draws": 310,
@@ -156,6 +156,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -254,6 +255,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -354,6 +356,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -452,6 +455,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 410,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -485,7 +489,6 @@
           "aiState": "idle",
           "attackPower": 122,
           "critChance": 0.0995,
-          "critDmgPhysBonus": 0.25,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.0795,
           "fiveSecondRule": 104.05,
@@ -543,7 +546,7 @@
           "level": 20,
           "lootFfaTimer": "Infinity",
           "maxHp": 418,
-          "maxResource": 1611,
+          "maxResource": 1671,
           "moveSpeed": 7,
           "onGround": true,
           "overpowerUntil": -1,
@@ -553,19 +556,18 @@
             "z": -1264
           },
           "potionCooldownUntil": -1,
-          "resource": 1611,
+          "resource": 1671,
           "resourceType": "mana",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
             "z": -2
           },
-          "spellHaste": 0.1,
-          "spellPower": 45,
+          "spellPower": 47,
           "stats": {
             "agi": 12,
             "armor": 133,
-            "int": 89,
+            "int": 93,
             "spi": 60,
             "sta": 33,
             "str": 10
@@ -631,7 +633,7 @@
         },
         {
           "aiState": "idle",
-          "attackPower": 131,
+          "attackPower": 141,
           "combatTimer": 99,
           "critChance": 0.121,
           "detonateTimer": "Infinity",
@@ -654,7 +656,7 @@
             "z": -1232
           },
           "potionCooldownUntil": -1,
-          "rangedPower": 180,
+          "rangedPower": 194,
           "resource": 622,
           "resourceType": "mana",
           "spawnPos": {
@@ -684,7 +686,7 @@
       "tick": 101,
       "time": 5.05,
       "nextId": 411,
-      "state": "8c456bbf",
+      "state": "f62a4bba",
       "events": "4e6d4b57",
       "rng": {
         "draws": 310,
@@ -765,6 +767,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -863,6 +866,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -963,6 +967,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -1061,6 +1066,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 410,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -1094,7 +1100,6 @@
           "aiState": "idle",
           "attackPower": 122,
           "critChance": 0.0995,
-          "critDmgPhysBonus": 0.25,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.0795,
           "fiveSecondRule": 104.05,
@@ -1152,7 +1157,7 @@
           "level": 20,
           "lootFfaTimer": "Infinity",
           "maxHp": 418,
-          "maxResource": 1611,
+          "maxResource": 1671,
           "moveSpeed": 7,
           "onGround": true,
           "overpowerUntil": -1,
@@ -1162,19 +1167,18 @@
             "z": -1264
           },
           "potionCooldownUntil": -1,
-          "resource": 1611,
+          "resource": 1671,
           "resourceType": "mana",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
             "z": -2
           },
-          "spellHaste": 0.1,
-          "spellPower": 45,
+          "spellPower": 47,
           "stats": {
             "agi": 12,
             "armor": 133,
-            "int": 89,
+            "int": 93,
             "spi": 60,
             "sta": 33,
             "str": 10
@@ -1238,7 +1242,7 @@
         },
         {
           "aiState": "idle",
-          "attackPower": 131,
+          "attackPower": 141,
           "combatTimer": 99,
           "critChance": 0.121,
           "detonateTimer": "Infinity",
@@ -1261,7 +1265,7 @@
             "z": -1232
           },
           "potionCooldownUntil": -1,
-          "rangedPower": 180,
+          "rangedPower": 194,
           "resource": 622,
           "resourceType": "mana",
           "spawnPos": {
@@ -1291,7 +1295,7 @@
       "tick": 101,
       "time": 5.05,
       "nextId": 411,
-      "state": "f9427172",
+      "state": "e772a825",
       "events": "612c637d",
       "rng": {
         "draws": 310,
@@ -1373,6 +1377,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1473,6 +1478,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -1574,6 +1580,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -1672,6 +1679,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 410,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -1705,7 +1713,6 @@
           "aiState": "idle",
           "attackPower": 122,
           "critChance": 0.0995,
-          "critDmgPhysBonus": 0.25,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.0795,
           "fiveSecondRule": 104.05,
@@ -1763,7 +1770,7 @@
           "level": 20,
           "lootFfaTimer": "Infinity",
           "maxHp": 418,
-          "maxResource": 1611,
+          "maxResource": 1671,
           "moveSpeed": 7,
           "onGround": true,
           "overpowerUntil": -1,
@@ -1773,19 +1780,18 @@
             "z": -1264
           },
           "potionCooldownUntil": -1,
-          "resource": 1611,
+          "resource": 1671,
           "resourceType": "mana",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
             "z": -2
           },
-          "spellHaste": 0.1,
-          "spellPower": 45,
+          "spellPower": 47,
           "stats": {
             "agi": 12,
             "armor": 133,
-            "int": 89,
+            "int": 93,
             "spi": 60,
             "sta": 33,
             "str": 10
@@ -1849,7 +1855,7 @@
         },
         {
           "aiState": "idle",
-          "attackPower": 131,
+          "attackPower": 141,
           "combatTimer": 99,
           "critChance": 0.121,
           "detonateTimer": "Infinity",
@@ -1872,7 +1878,7 @@
             "z": -1232
           },
           "potionCooldownUntil": -1,
-          "rangedPower": 180,
+          "rangedPower": 194,
           "resource": 622,
           "resourceType": "mana",
           "spawnPos": {
@@ -1902,7 +1908,7 @@
       "tick": 125,
       "time": 6.25,
       "nextId": 411,
-      "state": "0b96cec2",
+      "state": "37d6d66b",
       "events": "741638a5",
       "rng": {
         "draws": 434,
@@ -1913,7 +1919,7 @@
       "tick": 142,
       "time": 7.1,
       "nextId": 411,
-      "state": "6513cd0a",
+      "state": "a67446c7",
       "events": "741638a5",
       "rng": {
         "draws": 528,
@@ -1995,6 +2001,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -2095,6 +2102,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -2196,6 +2204,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -2294,6 +2303,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 410,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -2328,7 +2338,6 @@
           "attackPower": 122,
           "combatTimer": 2.05,
           "critChance": 0.0995,
-          "critDmgPhysBonus": 0.25,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.0795,
           "fiveSecondRule": 106.1,
@@ -2386,7 +2395,7 @@
           "level": 20,
           "lootFfaTimer": "Infinity",
           "maxHp": 418,
-          "maxResource": 1611,
+          "maxResource": 1671,
           "moveSpeed": 7,
           "onGround": true,
           "overpowerUntil": -1,
@@ -2396,19 +2405,18 @@
             "z": -1264
           },
           "potionCooldownUntil": -1,
-          "resource": 1611,
+          "resource": 1671,
           "resourceType": "mana",
           "spawnPos": {
             "x": 2,
             "y": 1.5,
             "z": -2
           },
-          "spellHaste": 0.1,
-          "spellPower": 45,
+          "spellPower": 47,
           "stats": {
             "agi": 12,
             "armor": 133,
-            "int": 89,
+            "int": 93,
             "spi": 60,
             "sta": 33,
             "str": 10
@@ -2473,7 +2481,7 @@
         },
         {
           "aiState": "idle",
-          "attackPower": 131,
+          "attackPower": 141,
           "combatTimer": 101.05,
           "critChance": 0.121,
           "detonateTimer": "Infinity",
@@ -2496,7 +2504,7 @@
             "z": -1232
           },
           "potionCooldownUntil": -1,
-          "rangedPower": 180,
+          "rangedPower": 194,
           "resource": 622,
           "resourceType": "mana",
           "spawnPos": {

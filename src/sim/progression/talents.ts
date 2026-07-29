@@ -56,7 +56,7 @@ import type { Entity } from '../types';
 function recomputeTalents(ctx: SimContext, meta: PlayerMeta): void {
   const e = ctx.entities.get(meta.entityId);
   meta.talentMods = computeTalentModifiers(meta.cls, meta.talents, meta.secondaryCls, e?.level);
-  if (e) recalcPlayerStats(e, meta.cls, meta.equipment, ctx.playerMods(meta));
+  if (e) recalcPlayerStats(e, meta.cls, meta.equipment, ctx.playerMods(meta), meta.enchants);
   // Announce newly granted abilities (spec signature, active nodes): emits
   // `learnAbility` (the HUD places it on the bar + spellbook) and a "You have
   // learned" log. This is a LIVE-action path only (apply/spec-pick/respec/loadout-

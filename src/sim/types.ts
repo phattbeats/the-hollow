@@ -1508,7 +1508,11 @@ export type CraftType =
   | 'tailoring'
   | 'leatherworking'
   | 'cooking'
-  | 'alchemy';
+  | 'alchemy'
+  // Enchanting (PHAA-649 child, upstream #1712): the scroll itself is just
+  // another craftable recipe output (src/sim/content/recipes.ts), so this
+  // craft type needs no new crafting logic, only this new tag.
+  | 'enchanting';
 
 // One craftable recipe: consume `reagents` (existing gathered-material items),
 // grant `resultCount` of `resultItemId`. Every recipe is craftable by any
@@ -1520,6 +1524,22 @@ export interface RecipeDef {
   reagents: { itemId: string; count: number }[];
   resultItemId: string;
   resultCount: number;
+}
+
+// Enchanting (PHAA-649 child, upstream #1712): reskinned onto the Hollow's flat
+// itemId+count equipment model (no per-item-instance system exists here), so
+// an enchant is applied to an EQUIP SLOT rather than to a specific item copy:
+// the bonus folds into recalcPlayerStats whenever that slot is occupied (see
+// src/sim/entity.ts), and is lost only if the player re-enchants the slot with
+// a different EnchantDef (no stacking, no refund of the old one). Applying
+// consumes one `scrollItemId` (itself a normal crafted item, output of a
+// CraftType:'enchanting' RecipeDef); see src/sim/enchanting.ts for resolution.
+export interface EnchantDef {
+  id: string;
+  name: string; // English source, localized via entity_i18n like other content records
+  slot: EquipSlot;
+  scrollItemId: string;
+  stats: Partial<CoreStats>;
 }
 
 // World-placed readable props (WoW-style journals/books lying around, PHAA-552).
