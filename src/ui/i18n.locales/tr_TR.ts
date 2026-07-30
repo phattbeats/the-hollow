@@ -731,7 +731,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
     'Karabüyücünün komutası altında bir Boşlukgezer çağırır. Boşlukgezer, düşmanlarını kışkırtan ve cezayı üstüne çeken sağlam bir iblistir. Yeni bir iblis çağırmak mevcut olanı gönderir. Bir seferde yalnızca bir iblisin olabilir.',
   'entities.abilities.summon_voidwalker.name': 'Boşlukgezer Çağırma',
   'entities.abilities.sunder_armor.description':
-    'Hedefin zırhını parçalar, her uygulamada {damage} azaltır. 5 kata kadar üst üste binebilir. Yüksek miktarda tehdit üretir.',
+    'Hedefin zırhını parçalar, her uygulamada %2 azaltır. 5 kata kadar üst üste binebilir. Yüksek miktarda tehdit üretir.',
   'entities.abilities.sunder_armor.name': 'Zırh Parçalama',
   'entities.abilities.swipe.description':
     'Yakındaki düşmanları {damage} hasar için savurur. Ekstra tehdit üretir. Yalnızca Ayı Formu.',
@@ -1147,6 +1147,11 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'entities.items.valespun_robe.name': 'Vadidokuma Cübbesi',
   'entities.items.vanguard_azure_armor_plate.name': 'Öncü Birlik Gök Mavisi',
   'entities.items.vanguard_chrome_armor_plate.name': 'Öncü Birlik Krom',
+  'entities.items.enchanting_dust.name': 'Büyü Tozu',
+  'entities.items.scroll_minor_might.name': 'Küçük Güç Parşömeni',
+  'entities.items.scroll_minor_vigor.name': 'Küçük Dayanıklılık Parşömeni',
+  'entities.items.scroll_minor_focus.name': 'Küçük Odaklanma Parşömeni',
+  'entities.items.scroll_minor_agility.name': 'Küçük Çeviklik Parşömeni',
   'entities.items.varric_shadow_cowl.name': "Varric'in Gölge Başlığı",
   'entities.items.verlans_oathblade.name': "Verlan'ın Yemin Kılıcı",
   'entities.items.voss_sanctified_mace.name': "Voss'un Kutsanmış Topuzu",
@@ -3891,7 +3896,6 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/sn',
   'hudChrome.meters.perSecondRow': '{total} ({rate})',
   'hudChrome.meters.seconds': '{s}sn',
-  'hudChrome.mobile.autorun': 'Otomatik Koşu',
   'hudChrome.mobile.haptics': 'Dokunsal Geri Bildirim',
   'hudChrome.mobile.hapticsOff': 'Dokunsal Kapalı',
   'hudChrome.mobile.jump': 'Zıpla',

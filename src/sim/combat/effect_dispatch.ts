@@ -10,7 +10,7 @@
 // hooks, and the shared `pulseGroundAoE`/`applyTaunt`/`meleeSwing` entry points all
 // STAY on Sim and are consumed via the seam. The pure module fns/consts the switch
 // uses (preservesStealth, armorReduction, recalcPlayerStats, addThreat,
-// meleeMissChance, CHARGE_MAX_DURATION) are imported/inlined directly.
+// swingMissChance, CHARGE_MAX_DURATION) are imported/inlined directly.
 //
 // `src/sim`-pure: no DOM/Three, no Math.random/Date.now; all randomness is the
 // shared `ctx.rng` stream, drawn in the exact pre-move order.
@@ -30,7 +30,7 @@ import {
 import { stunDrCategory } from '../stun_dr';
 import { addThreat } from '../threat';
 import type { AbilityDef, Entity } from '../types';
-import { armorReduction, meleeMissChance } from '../types';
+import { armorReduction, swingMissChance } from '../types';
 import { exclusiveAuraConflicts } from './exclusive_aura';
 
 const CHARGE_MAX_DURATION = 3; // seconds before a blocked charge gives up
@@ -275,16 +275,58 @@ export function runEffects(
         break; // handled per channel tick
       case 'buffTarget': {
         const buffTarget = target ?? p;
-        ctx.applyAura(buffTarget, {
-          id: ability.id,
-          name: ability.name,
-          kind: eff.kind,
-          remaining: eff.duration,
-          duration: eff.duration,
-          value: eff.value,
-          sourceId: p.id,
-          school: ability.school,
-        });
+        const applyBuff = (who: Entity) => {
+          // Mutually exclusive buff group (e.g. warrior_shout, paladin_aura):
+          // casting one cancels any active sibling ON THIS RECIPIENT applied by a
+          // different ability, so only one in the group is ever up at a time.
+          // Mirrors the 'selfBuff' case's handling for hunter aspects, generalized
+          // per recipient now that PHAA-577 lets these buffs land on a whole group.
+          for (const i of exclusiveAuraConflicts(
+            ability.exclusiveGroup,
+            ability.id,
+            who.auras,
+            (id) => ABILITIES[id]?.exclusiveGroup,
+          )) {
+            const a = who.auras[i];
+            who.auras.splice(i, 1);
+            ctx.emit({ type: 'aura', targetId: who.id, name: a.name, gained: false });
+          }
+          ctx.applyAura(who, {
+            id: ability.id,
+            name: ability.name,
+            kind: eff.kind,
+            remaining: eff.duration,
+            duration: eff.duration,
+            value: eff.value,
+            sourceId: p.id,
+            school: ability.school,
+          });
+        };
+        if (eff.party) {
+          // PHAA-577: a whole-group raid buff. Lands on the caster, the explicit
+          // target (if any), and every living party/raid member, regardless of
+          // range (WotLK-style always-on group aura).
+          const applied = new Set<number>();
+          applyBuff(p);
+          applied.add(p.id);
+          if (!buffTarget.dead && !applied.has(buffTarget.id)) {
+            applyBuff(buffTarget);
+            applied.add(buffTarget.id);
+          }
+          const party = ctx.partyOf(p.id);
+          if (party) {
+            for (const pid of party.members) {
+              if (applied.has(pid)) continue;
+              const member = ctx.entities.get(pid);
+              if (member && !member.dead) {
+                applyBuff(member);
+                applied.add(pid);
+              }
+            }
+          }
+        } else {
+          applyBuff(buffTarget);
+        }
         break;
       }
       case 'dot': {
@@ -561,7 +603,7 @@ export function runEffects(
             p.auras.splice(existing, 1);
             if (eff.kind === 'stealth') p.stealthed = false; // toggled back out of stealth
             ctx.emit({ type: 'aura', targetId: p.id, name: ability.name, gained: false });
-            recalcPlayerStats(p, meta.cls, meta.equipment, ctx.playerMods(meta));
+            recalcPlayerStats(p, meta.cls, meta.equipment, ctx.playerMods(meta), meta.enchants);
             break;
           }
         }
@@ -604,7 +646,7 @@ export function runEffects(
           charges: eff.charges,
           icdMax: eff.internalCooldown,
         });
-        recalcPlayerStats(p, meta.cls, meta.equipment, ctx.playerMods(meta));
+        recalcPlayerStats(p, meta.cls, meta.equipment, ctx.playerMods(meta), meta.enchants);
         break;
       }
       case 'gainResource': {
@@ -639,8 +681,9 @@ export function runEffects(
       }
       case 'sunder': {
         if (!target || target.dead) break;
-        // a sunder can miss like any melee attack — a miss causes no threat
-        if (ctx.rng.chance(meleeMissChance(p.level, target.level))) {
+        // a sunder can miss like any melee attack (and Hit rating reduces it, via
+        // swingMissChance); a miss causes no threat
+        if (ctx.rng.chance(swingMissChance(p, target))) {
           ctx.emit({
             type: 'damage',
             sourceId: p.id,
@@ -674,6 +717,49 @@ export function runEffects(
           });
         }
         // sunder deals no damage: its threat is the flat value, stance-scaled
+        addThreat(target, p.id, res.threatFlat * ctx.threatMod(p, 'physical'));
+        ctx.enterCombat(p, target);
+        break;
+      }
+      // PHAA-577: percent armor debuff (Sunder Armor/Expose Armor/Faerie Fire).
+      // Mirrors 'sunder' above (same miss chance, stacking, shared-slot-by-kind
+      // refresh, and threat), but the AuraKind is 'debuff_armor_pct' so it never
+      // touches mob corrosion's flat 'sunder' auras (see effectiveArmor).
+      case 'armorDebuffPct': {
+        if (!target || target.dead) break;
+        if (ctx.rng.chance(swingMissChance(p, target))) {
+          ctx.emit({
+            type: 'damage',
+            sourceId: p.id,
+            targetId: target.id,
+            amount: 0,
+            crit: false,
+            school: 'physical',
+            ability: ability.name,
+            kind: 'miss',
+          });
+          ctx.enterCombat(p, target);
+          break;
+        }
+        const existing = target.auras.find((a) => a.kind === 'debuff_armor_pct');
+        if (existing) {
+          existing.stacks = Math.min(eff.maxStacks, (existing.stacks ?? 1) + 1);
+          existing.value = eff.pct;
+          existing.remaining = existing.duration;
+          ctx.emit({ type: 'aura', targetId: target.id, name: ability.name, gained: true });
+        } else {
+          ctx.applyAura(target, {
+            id: ability.id,
+            name: ability.name,
+            kind: 'debuff_armor_pct',
+            remaining: eff.duration,
+            duration: eff.duration,
+            value: eff.pct,
+            stacks: 1,
+            sourceId: p.id,
+            school: 'physical',
+          });
+        }
         addThreat(target, p.id, res.threatFlat * ctx.threatMod(p, 'physical'));
         ctx.enterCombat(p, target);
         break;

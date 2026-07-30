@@ -246,7 +246,6 @@ export const it_IT: EnTranslations = {
       "chat": "Vai alla chat"
     },
     "mobile": {
-      "autorun": "Corsa automatica",
       "jump": "Salta",
       "leaderboard": "Classifica",
       "nameplates": "Nomi",
@@ -720,10 +719,18 @@ export const it_IT: EnTranslations = {
         "spi": "Riduce lo spirito di {value}",
         "allStats": "Riduce tutti gli attributi di {value}"
       },
+      "increasePct": {
+        "ap": "Increases attack power by {pct}%",
+        "armor": "Increases armor by {pct}%",
+        "int": "Increases Intellect by {pct}%",
+        "sta": "Increases Stamina by {pct}%"
+      },
       "dodge": "Aumenta la probabilità di schivata del {pct}%",
       "dodgeReduce": "Riduce la probabilità di schivata del {pct}%",
       "armorFlat": "Riduce l'armatura di {value}",
       "armorFlatStacks": "Riduce l'armatura di {value} ({stacks} accumuli)",
+      "armorPct": "Reduces armor by {pct}%",
+      "armorPctStacks": "Reduces armor by {pct}% ({stacks} stacks)",
       "mortalWound": "Riduce le cure ricevute del {pct}%",
       "vulnerability": "Aumenta i danni subiti del {pct}%",
       "physVuln": "Aumenta i danni fisici subiti del {pct}%",
@@ -991,6 +998,33 @@ export const it_IT: EnTranslations = {
       "toolTier": "Tier {tier} tool",
       "toolNone": "No tool"
     },
+    "crafting": {
+      "title": "Crafting",
+      "close": "Close crafting",
+      "tabRecipes": "Recipes",
+      "tabEnchants": "Enchants",
+      "proficiencyLine": "{craft}: {value}",
+      "craftButton": "Craft",
+      "craftAria": "Craft {item}",
+      "reagentLine": "{item} {have}/{need}",
+      "disenchantSectionTitle": "Disenchant",
+      "disenchantButton": "Disenchant",
+      "disenchantAria": "Disenchant {item}",
+      "disenchantEmpty": "Nothing eligible to disenchant.",
+      "applyButton": "Apply",
+      "applyAria": "Apply {enchant} to {slot}",
+      "activeTag": "Active",
+      "needScroll": "Requires {scroll}",
+      "craftType": {
+        "weaponcrafting": "Weaponsmithing",
+        "armorcrafting": "Armorsmithing",
+        "tailoring": "Tailoring",
+        "leatherworking": "Leatherworking",
+        "cooking": "Cooking",
+        "alchemy": "Alchemy",
+        "enchanting": "Enchanting"
+      }
+    },
     "warfare": {
       "ratingLabel": "Warfare",
       "balance": "Honor: {amount}",
@@ -1005,6 +1039,9 @@ export const it_IT: EnTranslations = {
         "fiestaComplete": "Fiesta match",
         "fiestaWin": "Fiesta win"
       }
+    },
+    "hitRating": {
+      "ratingLabel": "Hit Rating"
     }
   },
   "mailUi": {
@@ -2438,6 +2475,13 @@ export const it_IT: EnTranslations = {
       "nothingToHarvest": "That corpse has nothing to harvest.",
       "alreadyHarvested": "This corpse has already been harvested."
     },
+    "dailyRewards": {
+      "claimed": "You claim your daily reward."
+    },
+    "collections": {
+      "notFound": "That does not exist.",
+      "tooFar": "Too far away."
+    },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
       "noItems1": "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",
@@ -2498,6 +2542,18 @@ export const it_IT: EnTranslations = {
       "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
       "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
       "helpLine": "Homestead: /homestead, /homestead claim."
+    },
+    "greenpawCutting": {
+      "alreadyPlanted": "You have already planted your cutting. Give it time to grow.",
+      "needHomestead": "You need a homestead plot before you can plant this.",
+      "tooFar": "You must be at your own homestead to plant this.",
+      "planted": "You plant the cutting at your homestead. Give it time.",
+      "grown": "Your cutting has grown into a companion. It follows you now."
+    },
+    "readyCheck": {
+      "mustBeInParty": "You must be in a party to start a ready check.",
+      "alreadyInProgress": "A ready check is already in progress.",
+      "summary": "Ready check: {ready} ready, {notReady} not ready, {noResponse} no response."
     }
   },
   "lockpickUi": {
@@ -3339,6 +3395,8 @@ export const it_IT: EnTranslations = {
       "openTrade": "Apri scambio",
       "duelRequest": "{name} ti ha sfidato a duello!",
       "acceptDuel": "Accetta duello",
+      "readyCheckStart": "{name} has started a ready check.",
+      "markReady": "Ready",
       "decline": "Rifiuta"
     },
     "combat": {
@@ -3369,6 +3427,7 @@ export const it_IT: EnTranslations = {
       "ignoringChat": "Chat di {name} ignorata.",
       "noLongerIgnoring": "Non ignori più {name}.",
       "playerNotNearby": "Quel giocatore non è vicino.",
+      "playerInfoNotFound": "No character found with that name.",
       "duelCountdown": "Il duello inizia tra {seconds}...",
       "duelEndBanner": "{winner} ha sconfitto {loser} in duello!",
       "duelEndLog": "{winner} ha sconfitto {loser} in duello.",
@@ -3814,6 +3873,22 @@ export const it_IT: EnTranslations = {
       "stool": "Stool"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "Daily Rewards",
+    "window": {
+      "title": "Daily Rewards",
+      "close": "Close daily rewards",
+      "claim": "Claim",
+      "claimAria": "Claim today's reward",
+      "claimed": "Claimed. Come back tomorrow.",
+      "locked": "Daily rewards are unavailable on this account right now.",
+      "hint": "One reward per day. Missing a day never costs you anything."
+    },
+    "cell": {
+      "today": "Today",
+      "itemCount": "{count}x {item}"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "o",
@@ -4034,7 +4109,8 @@ export const it_IT: EnTranslations = {
       "needAria": "Bisogno per {item}",
       "greedAria": "Brama per {item}",
       "passAria": "Passa su {item}",
-      "everyonePassed": "Tutti hanno passato su {item}."
+      "everyonePassed": "Tutti hanno passato su {item}.",
+      "winnerOffline": "Il vincitore di {item} era offline; è stato restituito al cadavere."
     }
   },
   "entities": {
@@ -4097,7 +4173,7 @@ export const it_IT: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Spezzarmatura",
-        "description": "Lacera l'armatura del bersaglio, riducendola di {damage} per applicazione. Si accumula fino a 5 volte. Genera molta minaccia."
+        "description": "Lacera l'armatura del bersaglio, riducendola del 2% per applicazione. Si accumula fino a 5 volte. Genera molta minaccia."
       },
       "taunt": {
         "name": "Provocazione",
@@ -5848,6 +5924,21 @@ export const it_IT: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "Avanguardia cromo"
+      },
+      "enchanting_dust": {
+        "name": "Polvere Incantata"
+      },
+      "scroll_minor_might": {
+        "name": "Pergamena di Forza Minore"
+      },
+      "scroll_minor_vigor": {
+        "name": "Pergamena di Vigore Minore"
+      },
+      "scroll_minor_focus": {
+        "name": "Pergamena di Concentrazione Minore"
+      },
+      "scroll_minor_agility": {
+        "name": "Pergamena di Agilità Minore"
       }
     },
     "mobs": {
@@ -6165,6 +6256,15 @@ export const it_IT: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "Heartwood Colossus"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "Greenpaw's Cutting"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "Greenpaw's Cutting"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "Greenpaw's Cutting"
       }
     },
     "npcs": {
@@ -6391,6 +6491,22 @@ export const it_IT: EnTranslations = {
       }
     },
     "quests": {
+      "q_prof_intro": {
+        "title": "A Trade Worth Learning",
+        "text": "Every trade starts with dirt under your nails, {playerName}. Gather 2 spider legs from the groves east of town, then work my forge for a Recruit's Tunic; bone fragments for it are easy enough to scrounge along the way. Bring me something worth breaking down for its arcane dust besides. Show me you can gather, craft, and unmake, and I will show you what a trade is worth.",
+        "completion": "Now that is a trade worth learning. Keep at the forge, {playerName}, and one day you will be shoeing horses and enchanting blades in the same breath.",
+        "objectives": {
+          "0": {
+            "label": "Spider Leg gathered"
+          },
+          "1": {
+            "label": "Recruit's Tunic crafted"
+          },
+          "2": {
+            "label": "Enchanting Dust"
+          }
+        }
+      },
       "q_wolves": {
         "title": "Lupi alla porta",
         "text": "I lupi della foresta assaltano la strada del nord, {playerName}. Uccidine 8 prima che un altro carro sparisca tra i pini.",
@@ -7533,6 +7649,20 @@ export const it_IT: EnTranslations = {
         "name": "Il Reliquiario Crollato",
         "enterText": "Scendi nel reliquiario crollato.",
         "leaveText": "Risali da Fratello Halven, alla rovina del reliquiario."
+      }
+    },
+    "enchants": {
+      "enchant_minor_might": {
+        "name": "Minor Might"
+      },
+      "enchant_minor_vigor": {
+        "name": "Minor Vigor"
+      },
+      "enchant_minor_focus": {
+        "name": "Minor Focus"
+      },
+      "enchant_minor_agility": {
+        "name": "Minor Agility"
       }
     },
     "itemSets": {

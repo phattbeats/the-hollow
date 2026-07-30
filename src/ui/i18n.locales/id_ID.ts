@@ -753,7 +753,7 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
     'Memanggil Voidwalker di bawah perintah Penyihir Iblis. Voidwalker adalah iblis kokoh yang memprovokasi musuhmu dan menyerap hantaman. Memanggil iblis baru akan membubarkan iblismu saat ini. Kau hanya boleh memiliki satu iblis pada satu waktu.',
   'entities.abilities.summon_voidwalker.name': 'Panggil Voidwalker',
   'entities.abilities.sunder_armor.description':
-    'Membelah zirah target, menguranginya sebesar {damage} per penerapan. Bertumpuk hingga 5 kali. Menghasilkan ancaman dalam jumlah tinggi.',
+    'Membelah zirah target, menguranginya sebesar 2% per penerapan. Bertumpuk hingga 5 kali. Menghasilkan ancaman dalam jumlah tinggi.',
   'entities.abilities.sunder_armor.name': 'Belah Zirah',
   'entities.abilities.swipe.description':
     'Menyabet musuh di sekitar sebesar {damage} kerusakan. Menyebabkan ancaman ekstra. Hanya Wujud Beruang.',
@@ -1171,6 +1171,11 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'entities.items.valespun_robe.name': 'Jubah Pintalan Lembah',
   'entities.items.vanguard_azure_armor_plate.name': 'Vanguard Biru Langit',
   'entities.items.vanguard_chrome_armor_plate.name': 'Vanguard Krom',
+  'entities.items.enchanting_dust.name': 'Debu Sihir',
+  'entities.items.scroll_minor_might.name': 'Gulungan Kekuatan Kecil',
+  'entities.items.scroll_minor_vigor.name': 'Gulungan Vitalitas Kecil',
+  'entities.items.scroll_minor_focus.name': 'Gulungan Fokus Kecil',
+  'entities.items.scroll_minor_agility.name': 'Gulungan Ketangkasan Kecil',
   'entities.items.varric_shadow_cowl.name': 'Tudung Bayangan Varric',
   'entities.items.verlans_oathblade.name': 'Bilah Sumpah Verlan',
   'entities.items.voss_sanctified_mace.name': 'Gada Suci Voss',
@@ -3949,7 +3954,6 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/d',
   'hudChrome.meters.perSecondRow': '{total} ({rate})',
   'hudChrome.meters.seconds': '{s}d',
-  'hudChrome.mobile.autorun': 'Lari Otomatis',
   'hudChrome.mobile.haptics': 'Haptik',
   'hudChrome.mobile.hapticsOff': 'Haptik Nonaktif',
   'hudChrome.mobile.jump': 'Lompat',

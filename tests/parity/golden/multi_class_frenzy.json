@@ -30,7 +30,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 411,
-      "state": "e0d39822",
+      "state": "b13df305",
       "events": "05adf992",
       "rng": {
         "draws": 3,
@@ -54,9 +54,11 @@
           "counters": {
             "damageDealt": 30
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -85,9 +87,11 @@
           "counters": {
             "damageDealt": 30
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -116,9 +120,11 @@
           "counters": {
             "damageDealt": 30
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -359,7 +365,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 411,
-      "state": "22c8f81f",
+      "state": "59a22e20",
       "events": "c4f1a8ec",
       "rng": {
         "draws": 6,
@@ -383,9 +389,11 @@
           "counters": {
             "damageDealt": 60
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -414,9 +422,11 @@
           "counters": {
             "damageDealt": 60
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -445,9 +455,11 @@
           "counters": {
             "damageDealt": 60
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -688,7 +700,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 411,
-      "state": "d99c74e5",
+      "state": "a578b99a",
       "events": "c4f1a8ec",
       "rng": {
         "draws": 9,
@@ -712,9 +724,11 @@
           "counters": {
             "damageDealt": 90
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -743,9 +757,11 @@
           "counters": {
             "damageDealt": 90
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -774,9 +790,11 @@
           "counters": {
             "damageDealt": 90
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -1017,7 +1035,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 411,
-      "state": "99fbffaa",
+      "state": "9b3cc327",
       "events": "c4f1a8ec",
       "rng": {
         "draws": 12,
@@ -1041,9 +1059,11 @@
           "counters": {
             "damageDealt": 120
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1072,9 +1092,11 @@
           "counters": {
             "damageDealt": 120
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -1103,9 +1125,11 @@
           "counters": {
             "damageDealt": 120
           },
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -1346,8 +1370,8 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 411,
-      "state": "68fa24d8",
-      "events": "1be220ca",
+      "state": "c1e5fe58",
+      "events": "f91342e4",
       "rng": {
         "draws": 15,
         "digest": "5ea2badb"
@@ -1357,7 +1381,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 411,
-      "state": "6b6f730d",
+      "state": "18182005",
       "events": "741638a5",
       "rng": {
         "draws": 15,
@@ -1368,7 +1392,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 411,
-      "state": "6b6f730d",
+      "state": "18182005",
       "events": "741638a5",
       "rng": {
         "draws": 15,
@@ -1393,15 +1417,60 @@
             "damageDealt": 120,
             "damageTaken": 15
           },
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
             "mainhand": "worn_sword"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -1424,15 +1493,60 @@
           "counters": {
             "damageDealt": 120
           },
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
             "mainhand": "gnarled_staff"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},
@@ -1455,15 +1569,60 @@
           "counters": {
             "damageDealt": 120
           },
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "nodeHarvestReadyAt": {},
           "talents": {
             "choices": {},

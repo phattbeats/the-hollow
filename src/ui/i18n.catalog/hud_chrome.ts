@@ -154,7 +154,6 @@ export const hudChromeStrings = {
   // On-screen / mobile control labels and their accessible names. char/bags/music
   // reuse existing keys (hud.keybinds.actions.*, hud.options.music) at the call site.
   mobile: {
-    autorun: 'Autorun',
     jump: 'Jump',
     leaderboard: 'Ranks',
     nameplates: 'Names',
@@ -791,10 +790,21 @@ export const hudChromeStrings = {
       spi: 'Reduces Spirit by {value}',
       allStats: 'Reduces all attributes by {value}',
     },
+    // PHAA-577 percent whole-group raid buffs (Battle Shout/Blessing of Might,
+    // Commanding Shout/Power Word: Fortitude, Mark of the Wild, Arcane Intellect).
+    increasePct: {
+      ap: 'Increases attack power by {pct}%',
+      armor: 'Increases armor by {pct}%',
+      int: 'Increases Intellect by {pct}%',
+      sta: 'Increases Stamina by {pct}%',
+    },
     dodge: 'Increases dodge chance by {pct}%',
     dodgeReduce: 'Reduces dodge chance by {pct}%',
     armorFlat: 'Reduces armor by {value}',
     armorFlatStacks: 'Reduces armor by {value} ({stacks} stacks)',
+    // PHAA-577 percent armor debuff (Sunder Armor/Expose Armor/Faerie Fire).
+    armorPct: 'Reduces armor by {pct}%',
+    armorPctStacks: 'Reduces armor by {pct}% ({stacks} stacks)',
     mortalWound: 'Reduces healing received by {pct}%',
     vulnerability: 'Increases damage taken by {pct}%',
     physVuln: 'Increases physical damage taken by {pct}%',
@@ -1074,6 +1084,37 @@ export const hudChromeStrings = {
     toolTier: 'Tier {tier} tool',
     toolNone: 'No tool',
   },
+  // Crafting/enchanting window (PHAA-818, adapts upstream #1708): recipe and
+  // enchant rows, plus the disenchant list. Craft-type labels mirror
+  // src/sim/types.ts CraftType (weaponcrafting/armorcrafting/tailoring/
+  // leatherworking/cooking/alchemy/enchanting).
+  crafting: {
+    title: 'Crafting',
+    close: 'Close crafting',
+    tabRecipes: 'Recipes',
+    tabEnchants: 'Enchants',
+    proficiencyLine: '{craft}: {value}',
+    craftButton: 'Craft',
+    craftAria: 'Craft {item}',
+    reagentLine: '{item} {have}/{need}',
+    disenchantSectionTitle: 'Disenchant',
+    disenchantButton: 'Disenchant',
+    disenchantAria: 'Disenchant {item}',
+    disenchantEmpty: 'Nothing eligible to disenchant.',
+    applyButton: 'Apply',
+    applyAria: 'Apply {enchant} to {slot}',
+    activeTag: 'Active',
+    needScroll: 'Requires {scroll}',
+    craftType: {
+      weaponcrafting: 'Weaponsmithing',
+      armorcrafting: 'Armorsmithing',
+      tailoring: 'Tailoring',
+      leatherworking: 'Leatherworking',
+      cooking: 'Cooking',
+      alchemy: 'Alchemy',
+      enchanting: 'Enchanting',
+    },
+  },
   // WARFARE: the PvP-only combat rating (item tooltip stat name), the Honor
   // currency floater/log/vendor text, and the per-reason labels for the honor
   // SimEvent (src/sim/pvp/honor.ts HonorReason). See docs/design/warfare.md.
@@ -1091,5 +1132,11 @@ export const hudChromeStrings = {
       fiestaComplete: 'Fiesta match',
       fiestaWin: 'Fiesta win',
     },
+  },
+  // Hit rating: reduces melee/ranged miss and spell resist by the same percent
+  // (src/sim/combat/hit_rating.ts). Item tooltip stat name only, mirroring
+  // warfare.ratingLabel above; no dedicated character-sheet cell in this pass.
+  hitRating: {
+    ratingLabel: 'Hit Rating',
   },
 };

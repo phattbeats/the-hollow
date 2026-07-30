@@ -1,6 +1,8 @@
 import type { WebSocket } from 'ws';
 import { createBotDetector } from '#bot-detector';
 import { verifyChallenge } from '../src/sim/client_challenge';
+import { DAILY_REWARD_CYCLE } from '../src/sim/content/daily_rewards';
+import { isInJailCage, type JailState, jailCageSpawn } from '../src/sim/content/jail';
 import { MECH_CHROMAS, mechChromaItemId, mechChromaSkinIndex } from '../src/sim/content/skins';
 import type { TalentAllocation } from '../src/sim/content/talents';
 import { DELVES, DUNGEONS, zoneAt } from '../src/sim/data';
@@ -37,11 +39,18 @@ import type {
 import { ChatFilter } from './chat_filter';
 import { applyChatStrike, loadChatFilterState, recordChatViolation } from './chat_filter_db';
 import { ChatLogger } from './chat_log';
-import type { AccountChatMuteStatus, AccountCosmetics, RequestMetadata } from './db';
+import type {
+  AccountChatMuteStatus,
+  AccountCosmetics,
+  AccountDailyRewardsInfo,
+  RequestMetadata,
+} from './db';
 import {
+  claimAccountDailyReward,
   closePlaySession,
   grantAccountMechChroma,
   insertChatLogs,
+  loadGreenpawCuttingState,
   loadGreenpawHearthState,
   loadHomesteadState,
   loadHousingState,
@@ -54,6 +63,7 @@ import {
   saveCharacterAndMailState,
   saveCharacterAndMarketState,
   saveCharacterState,
+  saveGreenpawCuttingState,
   saveGreenpawHearthState,
   saveHomesteadState,
   saveHousingState,
@@ -262,6 +272,18 @@ function isPickAction(value: unknown): value is PickAction {
 // a steady source of GC pressure, when a crowd gathers. The small/dynamic fields
 // (position, resource, target, party HP, cooldowns, ...) still diff every tick.
 const HEAVY_SELF_REFRESH_TICKS = 40; // ~2 s backstop; staggered per session so refreshes don't synchronize into a spike
+// Commands a jailed session may not send: everything that queues into or
+// enters instanced content. The dungeon/delve entries are door-proximity-gated
+// anyway (a prisoner is never near a door), listed here as explicit policy.
+// Leave/abort commands stay allowed.
+const JAILED_BLOCKED_COMMANDS = new Set<string>([
+  'arena_queue',
+  'enter_crypt',
+  'enter_dungeon',
+  'enter_delve',
+  'duel_req',
+  'duel_accept',
+]);
 const HEAVY_SELF_CMDS = new Set<string>([
   'equip',
   'unequip_item',
@@ -328,6 +350,7 @@ export interface ClientSession {
   ws: WebSocket;
   accountId: number;
   accountCosmetics: AccountCosmetics;
+  accountDailyRewards: AccountDailyRewardsInfo;
   characterId: number;
   pid: number; // player entity id in the sim
   name: string;
@@ -406,6 +429,9 @@ export interface ClientSession {
     priorGm: boolean;
     stowedPet: PetState | null;
   } | null;
+  // A live jail sentence (PHAA-657). Mirrors CharacterState.jail; restored at
+  // join and re-persisted on every save, so it survives a reconnect.
+  jailed: JailState | null;
 }
 
 interface SentEntityVersions {
@@ -750,6 +776,9 @@ export class GameServer {
   // The sim's homestead change counter as of the last persisted save; polled
   // each tick so a claim persists promptly, not only on the autosave.
   private lastSavedHomesteadRev = 0;
+  // Serializes writes of the single global Greenpaw's cutting blob (PHAA-751,
+  // same freshness-order rationale as the market writer above).
+  private readonly enqueueGreenpawCuttingWrite = createSerialWriter();
   private restartCountdownStartedAt: number | null = null;
   private readonly restartCountdownTimers: NodeJS.Timeout[] = [];
   private readonly startedAt = Date.now();
@@ -865,6 +894,9 @@ export class GameServer {
       },
       enterSpectate: (moderator, target) => this.enterSpectate(moderator, target),
       exitSpectate: (moderator) => this.exitSpectate(moderator),
+      isJailed: (session) => session.jailed !== null,
+      sendToJail: (target, minutes) => this.jailSession(target, minutes),
+      releaseFromJail: (target) => this.unjailSession(target),
     };
   }
 
@@ -924,6 +956,110 @@ export class GameServer {
     moderator.sentEnts.clear();
     this.send(moderator, { t: 'spectate', name: null });
     if (announce) this.sendSystemNotice(moderator, 'Stopped spectating.');
+  }
+
+  private teleportSessionEntity(session: ClientSession, pos: { x: number; z: number }): void {
+    const entity = this.sim.entities.get(session.pid);
+    if (!entity) return;
+    const ground = this.sim.groundPos(pos.x, pos.z);
+    entity.pos = ground;
+    entity.prevPos = { ...ground };
+    this.sim.grid.update(entity);
+    this.sim.playerGrid.update(entity);
+    const meta = this.sim.meta(session.pid);
+    if (meta) Object.assign(meta.moveInput, emptyMoveInput());
+  }
+
+  private jailSpawnFor(session: ClientSession): { x: number; z: number } {
+    return jailCageSpawn(session.characterId);
+  }
+
+  private jailSession(target: ClientSession, minutes: number): void {
+    const targetEntity = this.sim.entities.get(target.pid);
+    if (!targetEntity) return;
+    target.jailed = {
+      returnPos: { x: targetEntity.pos.x, z: targetEntity.pos.z },
+      returnFacing: targetEntity.facing,
+      until: Date.now() + minutes * 60_000,
+    };
+    // Drop the target out of any match queue: a match popping later would
+    // teleport them out of the cage, and re-queueing is blocked by
+    // JAILED_BLOCKED_COMMANDS. Idempotent when they are in no queue.
+    this.sim.arenaQueueLeave(target.pid);
+    this.teleportJailedSession(target);
+    this.sendChatNotice(
+      target,
+      `A moderator has moved you to jail for ${formatDuration(minutes * 60)}.`,
+    );
+  }
+
+  private unjailSession(target: ClientSession): void {
+    if (this.releaseJailedSession(target)) {
+      this.sendChatNotice(target, 'A moderator has released you from jail.');
+    }
+  }
+
+  // Restore a jailed session to its pre-jail position and clear the prisoner
+  // state. Shared by /unjail and the timed-sentence expiry (which differ only
+  // in the notice at the call site).
+  private releaseJailedSession(target: ClientSession): boolean {
+    const state = target.jailed;
+    if (!state) return false;
+    target.jailed = null;
+    this.sim.setJailed(false, target.pid);
+    const entity = this.sim.entities.get(target.pid);
+    if (entity?.dead)
+      this.sim.revivePlayerAt(target.pid, this.sim.groundPos(state.returnPos.x, state.returnPos.z));
+    else this.teleportSessionEntity(target, state.returnPos);
+    const updated = this.sim.entities.get(target.pid);
+    if (updated) {
+      updated.facing = state.returnFacing;
+      updated.prevFacing = state.returnFacing;
+    }
+    target.lastSent = {};
+    target.sentEnts.clear();
+    return true;
+  }
+
+  // Every path that materializes a jailed session in the cage (the /jail
+  // command, join/reconnect restore, the per-tick enforcement) funnels here,
+  // so this is where the sim-side prisoner flag (the jail brawl hostility in
+  // isHostileTo) gets stamped. Idempotent.
+  private teleportJailedSession(session: ClientSession): void {
+    this.sim.setJailed(true, session.pid);
+    const spawn = this.jailSpawnFor(session);
+    const entity = this.sim.entities.get(session.pid);
+    if (entity?.dead) this.sim.revivePlayerAt(session.pid, this.sim.groundPos(spawn.x, spawn.z));
+    else this.teleportSessionEntity(session, spawn);
+    const updated = this.sim.entities.get(session.pid);
+    if (updated) {
+      updated.facing = 0;
+      updated.prevFacing = 0;
+    }
+    session.lastSent = {};
+    session.sentEnts.clear();
+  }
+
+  // Per-tick jail enforcement: releases a sentence once served, and snaps any
+  // prisoner found outside the cage (an escape attempt, or a death that left
+  // them dead/at a stray position) back inside it. Instant cell respawn on
+  // death falls out of this for free, since a dead entity fails the
+  // isInJailCage check below just like an out-of-bounds one.
+  private enforceJailStates(): void {
+    for (const session of this.clients.values()) {
+      const state = session.jailed;
+      if (!state) continue;
+      if (Date.now() >= state.until) {
+        if (this.releaseJailedSession(session)) {
+          this.sendChatNotice(session, 'Your jail sentence has ended.');
+        }
+        continue;
+      }
+      const entity = this.sim.entities.get(session.pid);
+      if (!entity || entity.dead || !isInJailCage(entity.pos)) {
+        this.teleportJailedSession(session);
+      }
+    }
   }
 
   // Live location + activity of an online character, for friend/guild rosters.
@@ -1047,6 +1183,7 @@ export class GameServer {
             const events = this.sim.tick();
             this.simTickRateCount++;
             lap('tick');
+            this.enforceJailStates();
             this.routeEvents(this.interceptPlantUtterances(events));
             this.detectActivity(events);
             lap('events');
@@ -1088,6 +1225,7 @@ export class GameServer {
             void this.saveMarket();
             void this.saveMail();
             void this.saveGreenpawHearth();
+            void this.saveGreenpawCutting();
           }
           // Housing persists on change (claims are rare and the blob is tiny).
           if (this.sim.housingRev !== this.lastSavedHousingRev) {
@@ -1418,6 +1556,7 @@ export class GameServer {
     meta: RequestMetadata &
       Partial<AccountChatMuteStatus> & {
         accountCosmetics?: AccountCosmetics;
+        accountDailyRewards?: AccountDailyRewardsInfo;
         chatStrikes?: number;
         isAdmin?: boolean;
         adminPermissions?: readonly string[];
@@ -1482,6 +1621,11 @@ export class GameServer {
       ws,
       accountId,
       accountCosmetics,
+      accountDailyRewards: meta.accountDailyRewards ?? {
+        cycleIndex: 0,
+        lastClaimUtcDay: '',
+        locked: false,
+      },
       characterId,
       pid,
       name,
@@ -1522,10 +1666,12 @@ export class GameServer {
       clientSeed: meta.clientSeed ?? '',
       botTrackingContext,
       spectating: null,
+      jailed: state?.jail ?? null,
     };
     this.ipSessionCounts.set(sessionIp, (this.ipSessionCounts.get(sessionIp) ?? 0) + 1);
     this.clients.set(pid, session);
     this.sessionsByCharacterId.set(characterId, session);
+    if (session.jailed) this.teleportJailedSession(session);
     this.peakOnline = Math.max(this.peakOnline, this.clients.size);
     void this.recordOnlineSnapshot();
     openPlaySession(accountId, characterId, name, meta)
@@ -1777,6 +1923,13 @@ export class GameServer {
           };
           state.pet = session.spectating.stowedPet;
         }
+        if (session.jailed) {
+          const jailPos = this.jailSpawnFor(session);
+          state.pos = jailPos;
+          state.jail = session.jailed;
+        } else {
+          delete state.jail;
+        }
         // Use the SERIALIZED level (not e.level): during a 2v2 Fiesta bout e.level
         // is temporarily 20, but serializeCharacter reports the real level — so the
         // character-list/leaderboard `level` column never reflects the temp state.
@@ -1970,6 +2123,28 @@ export class GameServer {
       );
     } catch (err) {
       console.error('failed to save greenpaw hearth:', err);
+    }
+  }
+
+  // Greenpaw's cutting (PHAA-751) is shared global state like greenpaw_hearth:
+  // one JSONB blob under the world_state 'greenpaw_cutting' key. Growth drifts
+  // every tick like hunger/smoke, so this loads at boot and saves on the
+  // autosave cadence, not on a rev-diff.
+  async loadGreenpawCutting(): Promise<void> {
+    try {
+      this.sim.loadGreenpawCutting(await loadGreenpawCuttingState());
+    } catch (err) {
+      console.error('failed to load greenpaw cutting:', err);
+    }
+  }
+
+  async saveGreenpawCutting(): Promise<void> {
+    try {
+      await this.enqueueGreenpawCuttingWrite(() =>
+        saveGreenpawCuttingState(this.sim.serializeGreenpawCutting()),
+      );
+    } catch (err) {
+      console.error('failed to save greenpaw cutting:', err);
     }
   }
 
@@ -2488,6 +2663,14 @@ export class GameServer {
     // CommandName at runtime; it still falls through to `default` and is flagged
     // as a protocol anomaly, exactly as before.
     const command = msg.cmd as CommandName;
+    // A jailed session cannot enrol in instanced content: a popped match or an
+    // instance entry would teleport it out of the cage, and the next tick's
+    // jail enforcement would just snap it straight back, ruining the match for
+    // everyone else in it.
+    if (session.jailed && typeof msg.cmd === 'string' && JAILED_BLOCKED_COMMANDS.has(msg.cmd)) {
+      this.sendChatNotice(session, 'You cannot do that while jailed.');
+      return;
+    }
     // A command that can change a heavy self field forces the next snapshot to
     // re-diff those fields (combat-only commands like cast/target/attack do not,
     // which is what keeps the gating a win during a fight).
@@ -2535,6 +2718,18 @@ export class GameServer {
       case 'harvestNode':
         if (typeof msg.node === 'string') sim.harvestNode(msg.node, pid);
         break;
+      case 'craftItem':
+        if (typeof msg.recipe === 'string') sim.craftItem(msg.recipe, pid);
+        break;
+      case 'disenchantItem':
+        if (typeof msg.itemId === 'string') sim.disenchantItem(msg.itemId, pid);
+        break;
+      case 'applyEnchant':
+        if (typeof msg.enchantId === 'string') sim.applyEnchant(msg.enchantId, pid);
+        break;
+      case 'readCollectible':
+        if (typeof msg.collectibleId === 'string') sim.readCollectible(msg.collectibleId, pid);
+        break;
       case 'lootRoll':
         if (
           typeof msg.rollId === 'number' &&
@@ -2579,6 +2774,12 @@ export class GameServer {
         if (typeof msg.quest === 'string' && typeof msg.from === 'number') {
           sim.acceptLinkedQuest(msg.quest, msg.from, pid);
           this.resyncQuests(session);
+        }
+        break;
+      case 'setTitle':
+        if (msg.title === null || typeof msg.title === 'string') {
+          sim.setActiveTitle(msg.title, pid);
+          this.resyncTitle(session);
         }
         break;
       case 'equip':
@@ -2782,6 +2983,9 @@ export class GameServer {
         break;
       case 'clearMarker':
         if (typeof msg.id === 'number') sim.clearMarker(msg.id, pid);
+        break;
+      case 'readyRespond':
+        if (typeof msg.ready === 'boolean') sim.readyCheckRespond(msg.ready, pid);
         break;
       // hunter pets
       case 'pet_abandon':
@@ -3083,6 +3287,24 @@ export class GameServer {
       case 'mail_markread':
         if (typeof msg.id === 'number') sim.mailMarkRead(msg.id, pid);
         break;
+      // PHAA-660 (docs/design/daily-rewards.md): account-scoped eligibility lives
+      // in Postgres, not the sim (see grantDailyRewardCycleSlot's comment on Sim);
+      // the two guard reads here are a cheap in-memory pre-check, the real
+      // atomicity guarantee is claimAccountDailyReward's WHERE clause.
+      case 'daily_rewards_claim': {
+        if (session.accountDailyRewards.locked) break;
+        const today = this.sim.utcDay;
+        if (!today || session.accountDailyRewards.lastClaimUtcDay === today) break;
+        void claimAccountDailyReward(session.accountId, today, DAILY_REWARD_CYCLE.length)
+          .then((result) => {
+            if (!result) return;
+            sim.grantDailyRewardCycleSlot(result.grantedCycleIndex, pid);
+            session.accountDailyRewards = { ...result.next, locked: false };
+            session.selfHeavyDirty = true;
+          })
+          .catch((err) => console.error(`daily reward claim failed for ${session.name}:`, err));
+        break;
+      }
       // Housing v0 (PHAA-405): interact-key commands, the only flow since the
       // /house chat command was removed (PHAA-482). sim.housingClaim/Place/Remove
       // re-validate range and ownership server-side.
@@ -3542,6 +3764,8 @@ export class GameServer {
     maybe('dmarks', this.sim.delveMarksFor(anchorSession.pid));
     maybe('dcomp', this.sim.companionUpgradesFor(anchorSession.pid));
     maybe('gprof', this.sim.gatheringProficiencyFor(anchorSession.pid));
+    maybe('cprof', this.sim.craftProficiencyFor(anchorSession.pid));
+    maybe('ench', this.sim.enchantsFor(anchorSession.pid));
     // Per-viewer gather-node cooldown ids (PHAA-618): the nodes NOT harvestable
     // by this player right now, so the online client's nodeHarvestableByMe (and
     // the minimap gather dots it drives) match the offline Sim instead of the
@@ -3551,6 +3775,12 @@ export class GameServer {
     // elapses without waiting on a heavy-field refresh; the server stays
     // authoritative (harvestNode is still re-validated on the real attempt).
     maybe('gnodecd', this.sim.nodeCooldownIdsFor(anchorSession.pid));
+    // Collection tracking core (PHAA-626): the viewer's own collected ids,
+    // mirrored whole (small, only grows) same rationale as dclears below.
+    maybe('collected', this.sim.collectedIdsFor(anchorSession.pid));
+    // Achievements (PHAA-687): the viewer's own unlocked achievement ids,
+    // mirrored whole (small, only grows) same rationale as collected above.
+    maybe('ach', this.sim.unlockedAchievementsFor(anchorSession.pid));
     maybe('dclears', this.sim.delveClearsFor(anchorSession.pid));
     maybe('delveDaily', this.sim.delveDailyWire(anchorSession.pid));
     // stats + weapon stay per-tick: recalcPlayerStats re-derives them on every
@@ -3578,8 +3808,16 @@ export class GameServer {
       maybe('buyback', meta.vendorBuyback);
       maybe('equip', meta.equipment);
       maybe('cosmetics', anchorSession.accountCosmetics);
+      maybe('dailyRewards', anchorSession.accountDailyRewards);
       maybe('qlog', [...meta.questLog.values()]);
       maybe('qdone', [...meta.questsDone]);
+      // Book of Asphodelia (PHAA-744): deed progress auto-tracks (no accept step),
+      // so dlog/ddone ride the same staggered heavy refresh as milestones; setTitle
+      // forces an immediate atitle resend via resyncTitle for instant feedback.
+      maybe('dlog', [...meta.deedLog.values()]);
+      maybe('ddone', [...meta.deedsDone]);
+      maybe('etitles', [...meta.earnedTitles]);
+      maybe('atitle', meta.activeTitle);
       // PHAA-553: per-player dialogue disposition + flags, so the client walker
       // can evaluate `requires` gates. Small; maybe() only re-sends on change.
       maybe('dstate', serializeDialogState(meta.dialogState));
@@ -4213,6 +4451,11 @@ export class GameServer {
   private resyncQuests(session: ClientSession): void {
     delete session.lastSent.qlog;
     delete session.lastSent.qdone;
+    session.selfHeavyDirty = true; // ensure the gated heavy block re-runs next snapshot
+  }
+
+  private resyncTitle(session: ClientSession): void {
+    delete session.lastSent.atitle;
     session.selfHeavyDirty = true; // ensure the gated heavy block re-runs next snapshot
   }
 

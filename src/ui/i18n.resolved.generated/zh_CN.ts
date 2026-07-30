@@ -246,7 +246,6 @@ export const zh_CN: EnTranslations = {
       "chat": "跳转到聊天"
     },
     "mobile": {
-      "autorun": "自动奔跑",
       "jump": "跳跃",
       "leaderboard": "排行榜",
       "nameplates": "姓名板",
@@ -720,10 +719,18 @@ export const zh_CN: EnTranslations = {
         "spi": "精神降低 {value}",
         "allStats": "所有属性降低 {value}"
       },
+      "increasePct": {
+        "ap": "攻击强度提高 {pct}%",
+        "armor": "护甲提高 {pct}%",
+        "int": "智力提高 {pct}%",
+        "sta": "耐力提高 {pct}%"
+      },
       "dodge": "躲闪几率提高 {pct}%",
       "dodgeReduce": "躲闪几率降低 {pct}%",
       "armorFlat": "护甲降低 {value}",
       "armorFlatStacks": "护甲降低 {value}（{stacks} 层）",
+      "armorPct": "护甲降低 {pct}%",
+      "armorPctStacks": "护甲降低 {pct}%（{stacks} 层）",
       "mortalWound": "受到的治疗降低 {pct}%",
       "vulnerability": "受到的伤害提高 {pct}%",
       "physVuln": "受到的物理伤害提高 {pct}%",
@@ -991,6 +998,33 @@ export const zh_CN: EnTranslations = {
       "toolTier": "{tier}级工具",
       "toolNone": "无工具"
     },
+    "crafting": {
+      "title": "制作",
+      "close": "关闭制作",
+      "tabRecipes": "配方",
+      "tabEnchants": "附魔",
+      "proficiencyLine": "{craft}: {value}",
+      "craftButton": "制作",
+      "craftAria": "制作{item}",
+      "reagentLine": "{item} {have}/{need}",
+      "disenchantSectionTitle": "分解",
+      "disenchantButton": "分解",
+      "disenchantAria": "分解{item}",
+      "disenchantEmpty": "没有可分解的物品。",
+      "applyButton": "施加",
+      "applyAria": "将{enchant}施加到{slot}",
+      "activeTag": "已生效",
+      "needScroll": "需要{scroll}",
+      "craftType": {
+        "weaponcrafting": "武器锻造",
+        "armorcrafting": "护甲锻造",
+        "tailoring": "裁缝",
+        "leatherworking": "制皮",
+        "cooking": "烹饪",
+        "alchemy": "炼金",
+        "enchanting": "附魔"
+      }
+    },
     "warfare": {
       "ratingLabel": "战意",
       "balance": "荣誉：{amount}",
@@ -1005,6 +1039,9 @@ export const zh_CN: EnTranslations = {
         "fiestaComplete": "狂欢比赛",
         "fiestaWin": "狂欢胜利"
       }
+    },
+    "hitRating": {
+      "ratingLabel": "命中等级"
     }
   },
   "mailUi": {
@@ -2438,6 +2475,13 @@ export const zh_CN: EnTranslations = {
       "nothingToHarvest": "这具尸体没有什么可以采集的。",
       "alreadyHarvested": "这具尸体已经被采集过了。"
     },
+    "dailyRewards": {
+      "claimed": "你领取了每日奖励。"
+    },
+    "collections": {
+      "notFound": "那个东西不存在。",
+      "tooFar": "太远了。"
+    },
     "hearth": {
       "tooFar": "你得靠近绿掌修士才能喂他。",
       "noItems1": "……伙计，你两手空空啊。带点能烧的或能填饱肚子的东西来，我们再唠。",
@@ -2498,6 +2542,18 @@ export const zh_CN: EnTranslations = {
       "readoutNoHomesteadQuest": "你还没有家园。先完成绿掌修士的全部差事才能解锁。",
       "readoutNoHomesteadHint": "你还没有家园。站在空谷地里合适的位置，输入 /homestead claim。",
       "helpLine": "家园：/homestead，/homestead claim。"
+    },
+    "greenpawCutting": {
+      "alreadyPlanted": "你已经种下了插枝。给它一些时间成长。",
+      "needHomestead": "你需要先拥有一块宅地才能种下它。",
+      "tooFar": "你必须在自己的宅地才能种下它。",
+      "planted": "你在自己的宅地种下了插枝。耐心等待吧。",
+      "grown": "你的插枝已经长成了一只伙伴。它现在会跟随你。"
+    },
+    "readyCheck": {
+      "mustBeInParty": "你必须在队伍中才能发起准备检查。",
+      "alreadyInProgress": "准备检查已在进行中。",
+      "summary": "准备检查：{ready} 人已准备，{notReady} 人未准备，{noResponse} 人无响应。"
     }
   },
   "lockpickUi": {
@@ -3339,6 +3395,8 @@ export const zh_CN: EnTranslations = {
       "openTrade": "打开交易",
       "duelRequest": "{name} 向你发起了决斗挑战！",
       "acceptDuel": "接受决斗",
+      "readyCheckStart": "{name} 发起了准备检查。",
+      "markReady": "准备",
       "decline": "拒绝"
     },
     "combat": {
@@ -3369,6 +3427,7 @@ export const zh_CN: EnTranslations = {
       "ignoringChat": "已屏蔽来自 {name} 的聊天。",
       "noLongerIgnoring": "不再屏蔽 {name}。",
       "playerNotNearby": "该玩家不在附近。",
+      "playerInfoNotFound": "未找到该名称的角色。",
       "duelCountdown": "决斗将在 {seconds} 秒后开始...",
       "duelEndBanner": "{winner} 在决斗中击败了 {loser}！",
       "duelEndLog": "{winner} 在决斗中击败了 {loser}。",
@@ -3814,6 +3873,22 @@ export const zh_CN: EnTranslations = {
       "stool": "凳子"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "每日奖励",
+    "window": {
+      "title": "每日奖励",
+      "close": "关闭每日奖励",
+      "claim": "领取",
+      "claimAria": "领取今日奖励",
+      "claimed": "已领取，明天再来。",
+      "locked": "此账号暂时无法领取每日奖励。",
+      "hint": "每天可领取一次。错过一天不会有任何损失。"
+    },
+    "cell": {
+      "today": "今天",
+      "itemCount": "{count}x {item}"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "金",
@@ -4034,7 +4109,8 @@ export const zh_CN: EnTranslations = {
       "needAria": "需求 {item}",
       "greedAria": "贪婪 {item}",
       "passAria": "放弃 {item}",
-      "everyonePassed": "所有人都放弃了 {item}。"
+      "everyonePassed": "所有人都放弃了 {item}。",
+      "winnerOffline": "{item}的获胜者已离线；战利品已归还尸体。"
     }
   },
   "entities": {
@@ -4097,7 +4173,7 @@ export const zh_CN: EnTranslations = {
       },
       "sunder_armor": {
         "name": "破甲攻击",
-        "description": "撕裂目标的护甲，每次使其降低 {damage}。最多叠加 5 次。产生大量威胁值。"
+        "description": "撕裂目标的护甲，每次使其降低 2%。最多叠加 5 次。产生大量威胁值。"
       },
       "taunt": {
         "name": "嘲讽",
@@ -5848,6 +5924,21 @@ export const zh_CN: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "先锋铬银"
+      },
+      "enchanting_dust": {
+        "name": "附魔尘"
+      },
+      "scroll_minor_might": {
+        "name": "微弱力量卷轴"
+      },
+      "scroll_minor_vigor": {
+        "name": "微弱活力卷轴"
+      },
+      "scroll_minor_focus": {
+        "name": "微弱专注卷轴"
+      },
+      "scroll_minor_agility": {
+        "name": "微弱敏捷卷轴"
       }
     },
     "mobs": {
@@ -6165,6 +6256,15 @@ export const zh_CN: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "心材巨像"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "绿掌的插枝"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "绿掌的插枝"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "绿掌的插枝"
       }
     },
     "npcs": {
@@ -6391,6 +6491,22 @@ export const zh_CN: EnTranslations = {
       }
     },
     "quests": {
+      "q_prof_intro": {
+        "title": "值得学习的手艺",
+        "text": "每门手艺都从指甲缝里的泥土开始，{playerName}。去镇东的林地里采集2条蜘蛛腿，然后到我的锻炉前打一件新兵束衣；打造它所需的骨骼碎片沿途很容易找到。再给我带些值得分解出奥术尘埃的东西。让我看看你能采集、能打造、也能分解，我就让你见识手艺的价值。",
+        "completion": "这才是值得学习的手艺。多在锻炉边下功夫，{playerName}，总有一天你能一口气钉马掌又附魔利刃。",
+        "objectives": {
+          "0": {
+            "label": "采集蜘蛛腿"
+          },
+          "1": {
+            "label": "打造新兵束衣"
+          },
+          "2": {
+            "label": "附魔尘埃"
+          }
+        }
+      },
       "q_wolves": {
         "title": "门前群狼",
         "text": "森林狼已经敢扑咬北路旅人，{playerName}。击败8只森林狼，让东溪能松一口气。",
@@ -7533,6 +7649,20 @@ export const zh_CN: EnTranslations = {
         "name": "坍塌的圣物库",
         "enterText": "你向下深入坍塌的圣物库。",
         "leaveText": "你攀回圣物库废墟旁的哈尔文修士身边。"
+      }
+    },
+    "enchants": {
+      "enchant_minor_might": {
+        "name": "微弱力量"
+      },
+      "enchant_minor_vigor": {
+        "name": "微弱活力"
+      },
+      "enchant_minor_focus": {
+        "name": "微弱专注"
+      },
+      "enchant_minor_agility": {
+        "name": "微弱敏捷"
       }
     },
     "itemSets": {

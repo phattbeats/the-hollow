@@ -10,14 +10,14 @@
     "updatePet melee arm: close + auto-taunt + mobSwing (PET_COMBAT_LINGER owner inCombat)",
     "petFollow heel transition (pets return to a moved owner)"
   ],
-  "draws": 806,
-  "drawDigest": "d964b2d3",
+  "draws": 808,
+  "drawDigest": "62fb64b2",
   "frames": [
     {
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "2db6b1c9",
+      "state": "126553fc",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -40,9 +40,11 @@
           "cls": "hunter",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -113,8 +115,8 @@
       "tick": 20,
       "time": 1,
       "nextId": 412,
-      "state": "205b6d9c",
-      "events": "ead03f6d",
+      "state": "f158a7c0",
+      "events": "2c7f26fd",
       "rng": {
         "draws": 14,
         "digest": "467addc7"
@@ -124,7 +126,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 412,
-      "state": "e0ac0c93",
+      "state": "2ad24cf7",
       "events": "741638a5",
       "rng": {
         "draws": 14,
@@ -135,7 +137,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 412,
-      "state": "282846a5",
+      "state": "29a87cbd",
       "events": "f48305f6",
       "rng": {
         "draws": 109,
@@ -146,7 +148,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 412,
-      "state": "dda60770",
+      "state": "e9bae17c",
       "events": "741638a5",
       "rng": {
         "draws": 197,
@@ -157,7 +159,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 412,
-      "state": "95248213",
+      "state": "23e10677",
       "events": "48693c96",
       "rng": {
         "draws": 310,
@@ -168,7 +170,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 412,
-      "state": "aa67c182",
+      "state": "04d89ce2",
       "events": "741638a5",
       "rng": {
         "draws": 422,
@@ -179,7 +181,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 412,
-      "state": "9c035bc9",
+      "state": "c1624439",
       "events": "741638a5",
       "rng": {
         "draws": 422,
@@ -204,15 +206,60 @@
           "counters": {
             "damageDealt": 26
           },
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 44000,
           "nodeHarvestReadyAt": {},
           "talents": {
@@ -492,44 +539,44 @@
       "tick": 140,
       "time": 7,
       "nextId": 412,
-      "state": "5576f176",
+      "state": "7fdada7e",
       "events": "741638a5",
       "rng": {
-        "draws": 525,
-        "digest": "6ce8535a"
+        "draws": 524,
+        "digest": "e9749684"
       }
     },
     {
       "tick": 160,
       "time": 8,
       "nextId": 412,
-      "state": "aa6c0ca5",
+      "state": "fc3bd2bd",
       "events": "741638a5",
       "rng": {
-        "draws": 656,
-        "digest": "f636d9c5"
+        "draws": 655,
+        "digest": "10bb931f"
       }
     },
     {
       "tick": 180,
       "time": 9,
       "nextId": 412,
-      "state": "82407af7",
+      "state": "5673c093",
       "events": "741638a5",
       "rng": {
-        "draws": 806,
-        "digest": "d964b2d3"
+        "draws": 808,
+        "digest": "62fb64b2"
       }
     },
     {
       "tick": 180,
       "time": 9,
       "nextId": 412,
-      "state": "82407af7",
+      "state": "5673c093",
       "events": "741638a5",
       "rng": {
-        "draws": 806,
-        "digest": "d964b2d3"
+        "draws": 808,
+        "digest": "62fb64b2"
       },
       "label": "final",
       "players": [
@@ -550,15 +597,60 @@
           "counters": {
             "damageDealt": 26
           },
+          "craftProficiency": {},
+          "deedLog": [
+            [
+              "exp_eastbrook_vale",
+              {
+                "counts": [
+                  1
+                ],
+                "deedId": "exp_eastbrook_vale",
+                "state": "done"
+              }
+            ],
+            [
+              "exp_grand_tour",
+              {
+                "counts": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "exp_grand_tour",
+                "state": "active"
+              }
+            ],
+            [
+              "feat_pathfinder",
+              {
+                "counts": [
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "deedId": "feat_pathfinder",
+                "state": "active"
+              }
+            ]
+          ],
+          "deedsDone": [
+            "exp_eastbrook_vale"
+          ],
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "rusty_hatchet"
           },
           "gatheringProficiency": {},
+          "lastZoneId": "eastbrook_vale",
           "lifetimeXp": 44000,
           "nodeHarvestReadyAt": {},
           "talents": {

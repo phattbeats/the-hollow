@@ -1,5 +1,6 @@
+import { hitFractionFromRating } from './combat/hit_rating';
 import type { TalentModifiers } from './content/talents';
-import { aggregateSetBonuses, CLASSES, ITEMS, MOBS, type NpcDef } from './data';
+import { aggregateSetBonuses, CLASSES, ENCHANTS, ITEMS, MOBS, type NpcDef } from './data';
 import { pvpFractionsFromRatings } from './pvp';
 import type { Entity, EquipSlot, MobTemplate, PlayerClass, Stats, Vec3 } from './types';
 import { EQUIP_SLOTS, SPELL_POWER_PER_INT } from './types';
@@ -48,6 +49,8 @@ function baseEntity(id: number, pos: Vec3): Entity {
     spellHaste: 0,
     critChance: 0.05,
     dodgeChance: 0.05,
+    hitRating: 0,
+    hitBonus: 0,
     castPushbackReduction: 0,
     moveSpeed: 7,
     hostile: false,
@@ -187,11 +190,16 @@ export function nativeMaxResource(cls: PlayerClass, level: number): number {
 // Recompute all derived stats for the player from class, level, gear, buffs, and
 // precomputed talent modifiers. `mods` is the flat struct resolved at
 // allocation/respec time (computeTalentModifiers) — this never walks the tree.
+// `enchants` (PHAA-649 child, upstream #1712) is the player's active
+// per-equip-slot enchant ids (meta.enchants); optional so every existing
+// caller keeps compiling unchanged, but omitting it silently drops any
+// enchant bonus, so pass it through wherever `meta`/`r.meta` is in scope.
 export function recalcPlayerStats(
   e: Entity,
   cls: PlayerClass,
   equipment: PlayerEquipment,
   mods?: TalentModifiers,
+  enchants?: Partial<Record<EquipSlot, string>>,
 ): void {
   const def = CLASSES[cls];
   const lvl = e.level;
@@ -207,6 +215,7 @@ export function recalcPlayerStats(
   };
   const setCounts = new Map<string, number>();
   let bonusSp = 0; // flat Spell Power from gear affixes + buff_spellpower auras
+  let bonusHitRating = 0;
   let bonusPvpOffenseRating = 0;
   let bonusPvpDefenseRating = 0;
   for (const slot of EQUIP_SLOTS) {
@@ -216,15 +225,30 @@ export function recalcPlayerStats(
     if (!item) continue;
     if (item.set) setCounts.set(item.set, (setCounts.get(item.set) ?? 0) + 1);
     bonusSp += item.spellPower ?? 0;
+    bonusHitRating += item.hitRating ?? 0;
     bonusPvpOffenseRating += item.pvpOffenseRating ?? 0;
     bonusPvpDefenseRating += item.pvpDefenseRating ?? 0;
-    if (!item.stats) continue;
-    s.str += item.stats.str ?? 0;
-    s.agi += item.stats.agi ?? 0;
-    s.sta += item.stats.sta ?? 0;
-    s.int += item.stats.int ?? 0;
-    s.spi += item.stats.spi ?? 0;
-    s.armor += item.stats.armor ?? 0;
+    if (item.stats) {
+      s.str += item.stats.str ?? 0;
+      s.agi += item.stats.agi ?? 0;
+      s.sta += item.stats.sta ?? 0;
+      s.int += item.stats.int ?? 0;
+      s.spi += item.stats.spi ?? 0;
+      s.armor += item.stats.armor ?? 0;
+    }
+    // Enchanting (PHAA-649 child, upstream #1712): the enchant lives on the
+    // SLOT (not a specific item copy; see src/sim/enchanting.ts), so its
+    // bonus only applies while that slot is occupied, same as gear stats.
+    const enchantId = enchants?.[slot];
+    const enchant = enchantId && ENCHANTS.find((en) => en.id === enchantId);
+    if (enchant) {
+      s.str += enchant.stats.str ?? 0;
+      s.agi += enchant.stats.agi ?? 0;
+      s.sta += enchant.stats.sta ?? 0;
+      s.int += enchant.stats.int ?? 0;
+      s.spi += enchant.stats.spi ?? 0;
+      s.armor += enchant.stats.armor ?? 0;
+    }
   }
   // Item-set bonuses from equipped pieces. Flat primary stats join the gear
   // totals so they feed every derivation below; AP/crit/pushback fold in at
@@ -241,8 +265,19 @@ export function recalcPlayerStats(
   let bearForm = false;
   let catForm = false;
   let scaleMul = 1; // Fiesta buff_scale: body-size multiplier (>1 also adds hp)
+  // PHAA-577 percent raid buffs: integer percent points (5 = +5%), summed across
+  // every source then folded as a percent-of-the-fully-summed-stat below,
+  // alongside the existing talent stat-percent multipliers.
+  let apPctBuff = 0;
+  let staPctBuff = 0;
+  let intPctBuff = 0;
+  let armorPctBuff = 0;
   for (const a of e.auras) {
     if (a.kind === 'buff_ap') bonusAp += a.value;
+    else if (a.kind === 'buff_ap_pct') apPctBuff += a.value / 100;
+    else if (a.kind === 'buff_sta_pct') staPctBuff += a.value / 100;
+    else if (a.kind === 'buff_int_pct') intPctBuff += a.value / 100;
+    else if (a.kind === 'buff_armor_pct') armorPctBuff += a.value / 100;
     // Attack-power debuff (Demoralizing Shout/Roar). Mobs fold this live in
     // effectiveAttackPower; players bake it here, so without this arm the debuff
     // was a no-op versus enemy players (PvP).
@@ -276,13 +311,22 @@ export function recalcPlayerStats(
     s.armor += m.armor;
     bonusAp += m.ap;
     bonusDodge += m.dodge;
-    if (m.staPct) s.sta = Math.round(s.sta * (1 + m.staPct));
     // Primary-attribute multipliers, applied to the fully-summed attribute. agiPct lands
     // before the agi-derived armor/dodge below so the percentage flows into them.
     if (m.strPct) s.str = Math.round(s.str * (1 + m.strPct));
     if (m.agiPct) s.agi = Math.round(s.agi * (1 + m.agiPct));
-    if (m.intPct) s.int = Math.round(s.int * (1 + m.intPct));
     if (m.spiPct) s.spi = Math.round(s.spi * (1 + m.spiPct));
+  }
+  // Stamina/Intellect percents (talent mod + PHAA-577 raid buff) folded once, guarded
+  // independently of `mods` for symmetry with the ap/armor percent folds below, so a
+  // percent buff never silently drops when a caller passes no talent mods. Combined in a
+  // single Math.round to keep the value byte-identical to the prior in-block fold. Stamina
+  // stays before the HP derivation; Intellect before the spell-power derivation.
+  {
+    const staPct = (mods?.stats.staPct ?? 0) + staPctBuff;
+    if (staPct) s.sta = Math.round(s.sta * (1 + staPct));
+    const intPct = (mods?.stats.intPct ?? 0) + intPctBuff;
+    if (intPct) s.int = Math.round(s.int * (1 + intPct));
   }
   // Floor Agility at 0 so a draining debuff (negative buff_agi) can never push the
   // derived armor/dodge below what zero Agility would give.
@@ -296,7 +340,8 @@ export function recalcPlayerStats(
     bonusAp += 8 + lvl * 2;
     s.agi += Math.max(2, Math.floor(lvl / 2));
   }
-  if (mods?.stats.armorPct) s.armor = Math.round(s.armor * (1 + mods.stats.armorPct));
+  if (mods?.stats.armorPct || armorPctBuff)
+    s.armor = Math.round(s.armor * (1 + (mods?.stats.armorPct ?? 0) + armorPctBuff));
   // Floor Spirit at 0 so a Spirit-siphoning debuff (negative buff_spi) can never
   // drive out-of-combat regen (updateRegen reads stats.spi) below zero.
   s.spi = Math.max(0, s.spi);
@@ -331,11 +376,14 @@ export function recalcPlayerStats(
         : s.str;
   // Floor at 0 so a heavy debuff_ap stack can never bake a negative attack power
   // (mirrors effectiveAttackPower's mob floor and the agi/spi floors above).
-  e.attackPower = Math.max(0, Math.round((apFromStats + bonusAp) * (1 + (mods?.stats.apPct ?? 0))));
+  e.attackPower = Math.max(
+    0,
+    Math.round((apFromStats + bonusAp) * (1 + (mods?.stats.apPct ?? 0) + apPctBuff)),
+  );
   // Hunters: ranged AP = 2/agi (vanilla)
   e.rangedPower =
     cls === 'hunter'
-      ? Math.max(0, Math.round((s.agi * 2 + bonusAp) * (1 + (mods?.stats.apPct ?? 0))))
+      ? Math.max(0, Math.round((s.agi * 2 + bonusAp) * (1 + (mods?.stats.apPct ?? 0) + apPctBuff)))
       : 0;
   // Spell Power: Intellect converted via SPELL_POWER_PER_INT plus flat Spell Power
   // from gear/buffs. Floored at 0 so an Intellect-draining debuff can't go negative.
@@ -348,6 +396,12 @@ export function recalcPlayerStats(
   e.spellHaste = setEff.haste;
   // Crit: ~1% per 20 agi at low level
   e.critChance = 0.05 + s.agi * 0.0005 + (mods?.stats.crit ?? 0) + setEff.crit;
+  // Hit rating (gear only today; no set bonus grants it) folds into a hit fraction
+  // that combat subtracts from miss (swingMissChance) and spell resist
+  // (spell_resist.ts). It answers the Heroic above-level penalty; unlike crit it
+  // has no higher-level suppression.
+  e.hitRating = bonusHitRating;
+  e.hitBonus = hitFractionFromRating(e.hitRating);
   e.castPushbackReduction = setEff.castPushbackReduction;
   // Floored at 0: an off-balance debuff (negative buff_dodge) can drive dodge to nothing.
   e.dodgeChance = Math.max(0, 0.05 + s.agi * 0.0005 + bonusDodge);
@@ -406,10 +460,11 @@ export function characterDerivedStats(
   level: number,
   equipment: PlayerEquipment,
   mods?: TalentModifiers,
+  enchants?: Partial<Record<EquipSlot, string>>,
 ): DerivedCharacterStats {
   const e = createPlayer(0, cls, { x: 0, y: 0, z: 0 }, '');
   e.level = Math.max(1, Math.floor(level));
-  recalcPlayerStats(e, cls, equipment, mods);
+  recalcPlayerStats(e, cls, equipment, mods, enchants);
   return {
     stats: e.stats,
     maxHp: e.maxHp,

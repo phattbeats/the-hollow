@@ -246,7 +246,6 @@ export const en_CA: EnTranslations = {
       "chat": "Skip to Chat"
     },
     "mobile": {
-      "autorun": "Autorun",
       "jump": "Jump",
       "leaderboard": "Ranks",
       "nameplates": "Names",
@@ -720,10 +719,18 @@ export const en_CA: EnTranslations = {
         "spi": "Reduces Spirit by {value}",
         "allStats": "Reduces all attributes by {value}"
       },
+      "increasePct": {
+        "ap": "Increases attack power by {pct}%",
+        "armor": "Increases armor by {pct}%",
+        "int": "Increases Intellect by {pct}%",
+        "sta": "Increases Stamina by {pct}%"
+      },
       "dodge": "Increases dodge chance by {pct}%",
       "dodgeReduce": "Reduces dodge chance by {pct}%",
       "armorFlat": "Reduces armor by {value}",
       "armorFlatStacks": "Reduces armor by {value} ({stacks} stacks)",
+      "armorPct": "Reduces armor by {pct}%",
+      "armorPctStacks": "Reduces armor by {pct}% ({stacks} stacks)",
       "mortalWound": "Reduces healing received by {pct}%",
       "vulnerability": "Increases damage taken by {pct}%",
       "physVuln": "Increases physical damage taken by {pct}%",
@@ -991,6 +998,33 @@ export const en_CA: EnTranslations = {
       "toolTier": "Tier {tier} tool",
       "toolNone": "No tool"
     },
+    "crafting": {
+      "title": "Crafting",
+      "close": "Close crafting",
+      "tabRecipes": "Recipes",
+      "tabEnchants": "Enchants",
+      "proficiencyLine": "{craft}: {value}",
+      "craftButton": "Craft",
+      "craftAria": "Craft {item}",
+      "reagentLine": "{item} {have}/{need}",
+      "disenchantSectionTitle": "Disenchant",
+      "disenchantButton": "Disenchant",
+      "disenchantAria": "Disenchant {item}",
+      "disenchantEmpty": "Nothing eligible to disenchant.",
+      "applyButton": "Apply",
+      "applyAria": "Apply {enchant} to {slot}",
+      "activeTag": "Active",
+      "needScroll": "Requires {scroll}",
+      "craftType": {
+        "weaponcrafting": "Weaponsmithing",
+        "armorcrafting": "Armorsmithing",
+        "tailoring": "Tailoring",
+        "leatherworking": "Leatherworking",
+        "cooking": "Cooking",
+        "alchemy": "Alchemy",
+        "enchanting": "Enchanting"
+      }
+    },
     "warfare": {
       "ratingLabel": "Warfare",
       "balance": "Honor: {amount}",
@@ -1005,6 +1039,9 @@ export const en_CA: EnTranslations = {
         "fiestaComplete": "Fiesta match",
         "fiestaWin": "Fiesta win"
       }
+    },
+    "hitRating": {
+      "ratingLabel": "Hit Rating"
     }
   },
   "mailUi": {
@@ -2438,6 +2475,13 @@ export const en_CA: EnTranslations = {
       "nothingToHarvest": "That corpse has nothing to harvest.",
       "alreadyHarvested": "This corpse has already been harvested."
     },
+    "dailyRewards": {
+      "claimed": "You claim your daily reward."
+    },
+    "collections": {
+      "notFound": "That does not exist.",
+      "tooFar": "Too far away."
+    },
     "hearth": {
       "tooFar": "You need to be near Brother Greenpaw to feed him.",
       "noItems1": "...you're empty-handed, friend. bring me what burns or what fills, and we'll talk.",
@@ -2498,6 +2542,18 @@ export const en_CA: EnTranslations = {
       "readoutNoHomesteadQuest": "You own no homestead. Finish Brother Greenpaw's full errand chain to unlock one.",
       "readoutNoHomesteadHint": "You own no homestead. Stand somewhere viable in the Hollow Reaches and type /homestead claim.",
       "helpLine": "Homestead: /homestead, /homestead claim."
+    },
+    "greenpawCutting": {
+      "alreadyPlanted": "You have already planted your cutting. Give it time to grow.",
+      "needHomestead": "You need a homestead plot before you can plant this.",
+      "tooFar": "You must be at your own homestead to plant this.",
+      "planted": "You plant the cutting at your homestead. Give it time.",
+      "grown": "Your cutting has grown into a companion. It follows you now."
+    },
+    "readyCheck": {
+      "mustBeInParty": "You must be in a party to start a ready check.",
+      "alreadyInProgress": "A ready check is already in progress.",
+      "summary": "Ready check: {ready} ready, {notReady} not ready, {noResponse} no response."
     }
   },
   "lockpickUi": {
@@ -3272,7 +3328,7 @@ export const en_CA: EnTranslations = {
       "close": "Close meters"
     },
     "chat": {
-      "rightClickName": "Right-click {name}",
+      "rightClickName": "Open menu for {name}",
       "templates": {
         "party": "[Party] {name}: {message}",
         "yell": "{name} yells: {message}",
@@ -3339,6 +3395,8 @@ export const en_CA: EnTranslations = {
       "openTrade": "Open Trade",
       "duelRequest": "{name} has challenged you to a duel!",
       "acceptDuel": "Accept Duel",
+      "readyCheckStart": "{name} has started a ready check.",
+      "markReady": "Ready",
       "decline": "Decline"
     },
     "combat": {
@@ -3369,6 +3427,7 @@ export const en_CA: EnTranslations = {
       "ignoringChat": "Ignoring chat from {name}.",
       "noLongerIgnoring": "No longer ignoring {name}.",
       "playerNotNearby": "That player is not nearby.",
+      "playerInfoNotFound": "No character found with that name.",
       "duelCountdown": "Duel begins in {seconds}...",
       "duelEndBanner": "{winner} has defeated {loser} in a duel!",
       "duelEndLog": "{winner} has defeated {loser} in a duel.",
@@ -3814,6 +3873,22 @@ export const en_CA: EnTranslations = {
       "stool": "Stool"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "Daily Rewards",
+    "window": {
+      "title": "Daily Rewards",
+      "close": "Close daily rewards",
+      "claim": "Claim",
+      "claimAria": "Claim today's reward",
+      "claimed": "Claimed. Come back tomorrow.",
+      "locked": "Daily rewards are unavailable on this account right now.",
+      "hint": "One reward per day. Missing a day never costs you anything."
+    },
+    "cell": {
+      "today": "Today",
+      "itemCount": "{count}x {item}"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "g",
@@ -4034,7 +4109,8 @@ export const en_CA: EnTranslations = {
       "needAria": "Need for {item}",
       "greedAria": "Greed for {item}",
       "passAria": "Pass on {item}",
-      "everyonePassed": "Everyone passed on {item}."
+      "everyonePassed": "Everyone passed on {item}.",
+      "winnerOffline": "The winner of {item} was offline; it was returned to the corpse."
     }
   },
   "entities": {
@@ -4045,11 +4121,11 @@ export const en_CA: EnTranslations = {
       },
       "battle_shout": {
         "name": "Battle Shout",
-        "description": "Increases your attack power by 20 for 2 min."
+        "description": "Increases your party or raid's attack power by 5% for 2 min."
       },
       "commanding_shout": {
         "name": "Commanding Shout",
-        "description": "Increases your Stamina by 6 for 2 min."
+        "description": "Increases your party or raid's Stamina by 5% for 2 min."
       },
       "demoralizing_shout": {
         "name": "Demoralizing Shout",
@@ -4097,7 +4173,7 @@ export const en_CA: EnTranslations = {
       },
       "sunder_armor": {
         "name": "Sunder Armor",
-        "description": "Sunders the target's armor, reducing it by {damage} per application. Stacks up to 5 times. Generates a high amount of threat."
+        "description": "Sunders the target's armor, reducing it by 2% per application. Stacks up to 5 times. Generates a high amount of threat."
       },
       "taunt": {
         "name": "Taunt",
@@ -4113,7 +4189,7 @@ export const en_CA: EnTranslations = {
       },
       "arcane_intellect": {
         "name": "Arcane Intellect",
-        "description": "Increases Intellect by 2 for 30 min."
+        "description": "Increases your party or raid's Intellect by 3% for 30 min."
       },
       "frostbolt": {
         "name": "Frostbolt",
@@ -4221,7 +4297,7 @@ export const en_CA: EnTranslations = {
       },
       "expose_armor": {
         "name": "Expose Armor",
-        "description": "Finishing move that exposes the target, reducing its armor. More combo points spent build into a deeper cut."
+        "description": "Finishing move that exposes the target, reducing its armor by 12%. More combo points spent build into a deeper cut."
       },
       "rupture": {
         "name": "Rupture",
@@ -4253,7 +4329,7 @@ export const en_CA: EnTranslations = {
       },
       "devotion_aura": {
         "name": "Devotion Aura",
-        "description": "Increases your armor by 40 for 30 min."
+        "description": "Increases your party or raid's armor by 5% for 30 min."
       },
       "judgement": {
         "name": "Judgement",
@@ -5848,6 +5924,21 @@ export const en_CA: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "Vanguard Chrome"
+      },
+      "enchanting_dust": {
+        "name": "Enchanting Dust"
+      },
+      "scroll_minor_might": {
+        "name": "Scroll of Minor Might"
+      },
+      "scroll_minor_vigor": {
+        "name": "Scroll of Minor Vigor"
+      },
+      "scroll_minor_focus": {
+        "name": "Scroll of Minor Focus"
+      },
+      "scroll_minor_agility": {
+        "name": "Scroll of Minor Agility"
       }
     },
     "mobs": {
@@ -6165,6 +6256,15 @@ export const en_CA: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "Heartwood Colossus"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "Greenpaw's Cutting"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "Greenpaw's Cutting"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "Greenpaw's Cutting"
       }
     },
     "npcs": {
@@ -6391,6 +6491,22 @@ export const en_CA: EnTranslations = {
       }
     },
     "quests": {
+      "q_prof_intro": {
+        "title": "A Trade Worth Learning",
+        "text": "Every trade starts with dirt under your nails, {playerName}. Gather 2 spider legs from the groves east of town, then work my forge for a Recruit's Tunic; bone fragments for it are easy enough to scrounge along the way. Bring me something worth breaking down for its arcane dust besides. Show me you can gather, craft, and unmake, and I will show you what a trade is worth.",
+        "completion": "Now that is a trade worth learning. Keep at the forge, {playerName}, and one day you will be shoeing horses and enchanting blades in the same breath.",
+        "objectives": {
+          "0": {
+            "label": "Spider Leg gathered"
+          },
+          "1": {
+            "label": "Recruit's Tunic crafted"
+          },
+          "2": {
+            "label": "Enchanting Dust"
+          }
+        }
+      },
       "q_wolves": {
         "title": "Wolves at the Door",
         "text": "The forest wolves grow bold, snapping at travelers on the north road. Thin their numbers, {playerName}. Slay 8 Forest Wolves and Eastbrook will breathe easier.",
@@ -7533,6 +7649,20 @@ export const en_CA: EnTranslations = {
         "name": "The Collapsed Reliquary",
         "enterText": "You descend into the collapsed reliquary.",
         "leaveText": "You climb back to Brother Halven at the reliquary ruin."
+      }
+    },
+    "enchants": {
+      "enchant_minor_might": {
+        "name": "Minor Might"
+      },
+      "enchant_minor_vigor": {
+        "name": "Minor Vigor"
+      },
+      "enchant_minor_focus": {
+        "name": "Minor Focus"
+      },
+      "enchant_minor_agility": {
+        "name": "Minor Agility"
       }
     },
     "itemSets": {

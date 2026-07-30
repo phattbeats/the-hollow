@@ -88,6 +88,16 @@ export const ADMIN_ROUTE_PERMISSIONS: readonly AdminRouteRule[] = [
   },
   {
     method: 'POST',
+    pattern: /^\/admin\/api\/moderation\/accounts\/(\d+)\/daily-rewards-lock$/,
+    permission: 'moderation.act',
+  },
+  {
+    method: 'POST',
+    pattern: /^\/admin\/api\/moderation\/accounts\/(\d+)\/daily-rewards-unlock$/,
+    permission: 'moderation.act',
+  },
+  {
+    method: 'POST',
     pattern: /^\/admin\/api\/moderation\/accounts\/(\d+)\/reset-strikes$/,
     permission: 'moderation.act',
   },
@@ -112,6 +122,19 @@ export const ADMIN_ROUTE_PERMISSIONS: readonly AdminRouteRule[] = [
 
   { method: 'POST', pattern: '/admin/api/blocked-ips', permission: 'ipblocks.manage' },
   { method: 'POST', pattern: '/admin/api/blocked-ips/delete', permission: 'ipblocks.manage' },
+
+  { method: 'GET', pattern: '/admin/api/maps', permission: 'content.moderate' },
+  { method: 'GET', pattern: '/admin/api/user-assets', permission: 'content.moderate' },
+  {
+    method: 'POST',
+    pattern: /^\/admin\/api\/maps\/(\d+)\/unpublish$/,
+    permission: 'content.moderate',
+  },
+  {
+    method: 'POST',
+    pattern: /^\/admin\/api\/user-assets\/(\d+)\/(block|unblock)$/,
+    permission: 'content.moderate',
+  },
 ];
 
 function matches(pattern: string | RegExp, path: string): boolean {

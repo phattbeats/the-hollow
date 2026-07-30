@@ -6,6 +6,7 @@ import {
   CLASSES,
   DELVES,
   DUNGEONS,
+  ENCHANTS,
   ITEMS,
   MOBS,
   NPCS,
@@ -500,6 +501,7 @@ describe('i18n Localization Key Coverage', () => {
   }
 
   function worldRequest(entry: EntityManifestEntry): EntityRequest {
+    if (entry.kind === 'enchant') return { kind: 'enchant', id: entry.id, field: 'name' };
     if (entry.kind === 'mob') return { kind: 'mob', id: entry.id, field: 'name' };
     if (entry.kind === 'npc') {
       return {
@@ -982,6 +984,7 @@ describe('i18n Localization Key Coverage', () => {
   it('should provide every world-content translation in every locale without canonical fallbacks', () => {
     const worldEntries = entityTranslationManifest().filter((entry) => entry.group === 'world');
     const expectedWorldCount =
+      ENCHANTS.length +
       Object.keys(MOBS).length +
       Object.keys(NPCS).length * 3 +
       Object.values(NPCS).reduce((sum, npc) => sum + (npc.introLines?.length ?? 0), 0) +

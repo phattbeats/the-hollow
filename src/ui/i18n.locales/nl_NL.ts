@@ -744,7 +744,7 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
     'Roept een Leegteloper op onder bevel van de Heksenmeester. De Leegteloper is een stevige demon die je vijanden provoceert en klappen opvangt. Het oproepen van een nieuwe demon stuurt je huidige weg. Je mag één demon tegelijk hebben.',
   'entities.abilities.summon_voidwalker.name': 'Leegteloper Oproepen',
   'entities.abilities.sunder_armor.description':
-    'Splijt het pantser van het doelwit en verlaagt het met {damage} per toepassing. Stapelt tot 5 keer. Wekt een grote hoeveelheid dreiging op.',
+    'Splijt het pantser van het doelwit en verlaagt het met 2% per toepassing. Stapelt tot 5 keer. Wekt een grote hoeveelheid dreiging op.',
   'entities.abilities.sunder_armor.name': 'Pantser Splijten',
   'entities.abilities.swipe.description':
     'Haal uit naar nabije vijanden voor {damage} schade. Veroorzaakt extra dreiging. Alleen in Berengedaante.',
@@ -1161,6 +1161,11 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'entities.items.valespun_robe.name': 'Dalgesponnen Gewaad',
   'entities.items.vanguard_azure_armor_plate.name': 'Voorhoede-Azuur',
   'entities.items.vanguard_chrome_armor_plate.name': 'Voorhoede-Chroom',
+  'entities.items.enchanting_dust.name': 'Betoveringsstof',
+  'entities.items.scroll_minor_might.name': 'Rol van Geringe Kracht',
+  'entities.items.scroll_minor_vigor.name': 'Rol van Geringe Vitaliteit',
+  'entities.items.scroll_minor_focus.name': 'Rol van Geringe Concentratie',
+  'entities.items.scroll_minor_agility.name': 'Rol van Geringe Behendigheid',
   'entities.items.varric_shadow_cowl.name': 'Varrics Schaduwkap',
   'entities.items.verlans_oathblade.name': 'Verlans Eedkling',
   'entities.items.voss_sanctified_mace.name': "Voss' Gewijde Knots",
@@ -3943,7 +3948,6 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/s',
   'hudChrome.meters.perSecondRow': '{total} ({rate})',
   'hudChrome.meters.seconds': '{s}s',
-  'hudChrome.mobile.autorun': 'Autoloop',
   'hudChrome.mobile.haptics': 'Haptiek',
   'hudChrome.mobile.hapticsOff': 'Haptiek uit',
   'hudChrome.mobile.jump': 'Springen',

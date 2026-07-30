@@ -726,7 +726,7 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
     'Tilkalder en Tomvandrer under Heksemesterens kommando. Tomvandreren er en robust dæmon, der håner dine fjender og opsuger tæsk. At tilkalde en ny dæmon bortsender din nuværende. Du kan have én dæmon ad gangen.',
   'entities.abilities.summon_voidwalker.name': 'Tilkald Tomvandrer',
   'entities.abilities.sunder_armor.description':
-    'Sønderbryder målets rustning og reducerer den med {damage} per anvendelse. Stabler op til 5 gange. Genererer en stor mængde trussel.',
+    'Sønderbryder målets rustning og reducerer den med 2% per anvendelse. Stabler op til 5 gange. Genererer en stor mængde trussel.',
   'entities.abilities.sunder_armor.name': 'Sønderbryd Rustning',
   'entities.abilities.swipe.description':
     'Sving mod nærliggende fjender for {damage} skade. Forårsager ekstra trussel. Kun i Bjørneform.',
@@ -1140,6 +1140,11 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'entities.items.valespun_robe.name': 'Dalspundet Kjortel',
   'entities.items.vanguard_azure_armor_plate.name': 'Fortrops Azur',
   'entities.items.vanguard_chrome_armor_plate.name': 'Fortrops Krom',
+  'entities.items.enchanting_dust.name': 'Fortryllelsesstøv',
+  'entities.items.scroll_minor_might.name': 'Rulle af Mindre Styrke',
+  'entities.items.scroll_minor_vigor.name': 'Rulle af Mindre Vitalitet',
+  'entities.items.scroll_minor_focus.name': 'Rulle af Mindre Koncentration',
+  'entities.items.scroll_minor_agility.name': 'Rulle af Mindre Behændighed',
   'entities.items.varric_shadow_cowl.name': 'Varrics Skyggehætte',
   'entities.items.verlans_oathblade.name': 'Verlans Edsklinge',
   'entities.items.voss_sanctified_mace.name': "Voss' Helligede Kølle",
@@ -3891,7 +3896,6 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/s',
   'hudChrome.meters.perSecondRow': '{total} ({rate})',
   'hudChrome.meters.seconds': '{s}s',
-  'hudChrome.mobile.autorun': 'Autoløb',
   'hudChrome.mobile.haptics': 'Haptik',
   'hudChrome.mobile.hapticsOff': 'Haptik fra',
   'hudChrome.mobile.jump': 'Hop',

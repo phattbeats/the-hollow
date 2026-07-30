@@ -246,7 +246,6 @@ export const ja_JP: EnTranslations = {
       "chat": "チャットへスキップ"
     },
     "mobile": {
-      "autorun": "オートラン",
       "jump": "ジャンプ",
       "leaderboard": "ランキング",
       "nameplates": "ネームプレート",
@@ -720,10 +719,18 @@ export const ja_JP: EnTranslations = {
         "spi": "精神力を{value}低下させる",
         "allStats": "すべての能力値を{value}低下させる"
       },
+      "increasePct": {
+        "ap": "攻撃力を{pct}%上昇させる",
+        "armor": "防御力を{pct}%上昇させる",
+        "int": "知力を{pct}%上昇させる",
+        "sta": "耐久力を{pct}%上昇させる"
+      },
       "dodge": "回避率を{pct}%上昇させる",
       "dodgeReduce": "回避率を{pct}%低下させる",
       "armorFlat": "防御力を{value}低下させる",
       "armorFlatStacks": "防御力を{value}低下させる({stacks}スタック)",
+      "armorPct": "防御力を{pct}%低下させる",
+      "armorPctStacks": "防御力を{pct}%低下させる({stacks}スタック)",
       "mortalWound": "受ける回復量を{pct}%低下させる",
       "vulnerability": "受けるダメージを{pct}%増加させる",
       "physVuln": "受ける物理ダメージを{pct}%増加させる",
@@ -991,6 +998,33 @@ export const ja_JP: EnTranslations = {
       "toolTier": "ティア{tier}の道具",
       "toolNone": "道具なし"
     },
+    "crafting": {
+      "title": "製作",
+      "close": "製作を閉じる",
+      "tabRecipes": "レシピ",
+      "tabEnchants": "エンチャント",
+      "proficiencyLine": "{craft}: {value}",
+      "craftButton": "製作",
+      "craftAria": "{item}を製作",
+      "reagentLine": "{item} {have}/{need}",
+      "disenchantSectionTitle": "分解",
+      "disenchantButton": "分解",
+      "disenchantAria": "{item}を分解",
+      "disenchantEmpty": "分解できるアイテムがありません。",
+      "applyButton": "付与",
+      "applyAria": "{slot}に{enchant}を付与",
+      "activeTag": "有効",
+      "needScroll": "{scroll}が必要",
+      "craftType": {
+        "weaponcrafting": "武器鍛冶",
+        "armorcrafting": "防具鍛冶",
+        "tailoring": "裁縫",
+        "leatherworking": "皮革加工",
+        "cooking": "料理",
+        "alchemy": "錬金術",
+        "enchanting": "エンチャント"
+      }
+    },
     "warfare": {
       "ratingLabel": "戦意",
       "balance": "名誉：{amount}",
@@ -1005,6 +1039,9 @@ export const ja_JP: EnTranslations = {
         "fiestaComplete": "フィエスタ試合",
         "fiestaWin": "フィエスタ勝利"
       }
+    },
+    "hitRating": {
+      "ratingLabel": "命中レーティング"
     }
   },
   "mailUi": {
@@ -2438,6 +2475,13 @@ export const ja_JP: EnTranslations = {
       "nothingToHarvest": "その死骸には採集できるものが何もない。",
       "alreadyHarvested": "この死骸はすでに採集済みだ。"
     },
+    "dailyRewards": {
+      "claimed": "デイリー報酬を受け取った。"
+    },
+    "collections": {
+      "notFound": "それは存在しない。",
+      "tooFar": "遠すぎる。"
+    },
     "hearth": {
       "tooFar": "緑掌修道士のそばに行かねば、彼に餌をやれんぞ。",
       "noItems1": "……手ぶらじゃな、お前さん。燃えるもんか、腹の足しになるもんを持ってきな、話はそれからだ。",
@@ -2498,6 +2542,18 @@ export const ja_JP: EnTranslations = {
       "readoutNoHomesteadQuest": "お前は開拓地を持っていない。緑掌修道士の用事をすべて終えれば手に入る。",
       "readoutNoHomesteadHint": "お前は開拓地を持っていない。ホロウ低地の適した場所に立ち、/homestead claim と入力しろ。",
       "helpLine": "開拓地：/homestead、/homestead claim。"
+    },
+    "greenpawCutting": {
+      "alreadyPlanted": "挿し木はもう植えた。育つのを待て。",
+      "needHomestead": "これを植えるには、まず開拓地が必要だ。",
+      "tooFar": "これを植えるには自分の開拓地にいなければならない。",
+      "planted": "開拓地に挿し木を植えた。時が満ちるのを待とう。",
+      "grown": "挿し木が育ち、伴侶となった。今はお前について歩く。"
+    },
+    "readyCheck": {
+      "mustBeInParty": "準備確認を開始するにはパーティに入っている必要があります。",
+      "alreadyInProgress": "準備確認はすでに進行中です。",
+      "summary": "準備確認：準備完了 {ready} 人、未準備 {notReady} 人、応答なし {noResponse} 人。"
     }
   },
   "lockpickUi": {
@@ -3339,6 +3395,8 @@ export const ja_JP: EnTranslations = {
       "openTrade": "取引を開く",
       "duelRequest": "{name}があなたに決闘を申し込みました！",
       "acceptDuel": "決闘を受ける",
+      "readyCheckStart": "{name}が準備確認を開始しました。",
+      "markReady": "準備完了",
       "decline": "断る"
     },
     "combat": {
@@ -3369,6 +3427,7 @@ export const ja_JP: EnTranslations = {
       "ignoringChat": "{name}のチャットを無視します。",
       "noLongerIgnoring": "{name}の無視を解除しました。",
       "playerNotNearby": "そのプレイヤーは近くにいません。",
+      "playerInfoNotFound": "その名前のキャラクターは見つかりませんでした。",
       "duelCountdown": "決闘開始まで{seconds}秒...",
       "duelEndBanner": "{winner}が決闘で{loser}を倒しました！",
       "duelEndLog": "{winner}が決闘で{loser}を倒しました。",
@@ -3814,6 +3873,22 @@ export const ja_JP: EnTranslations = {
       "stool": "スツール"
     }
   },
+  "dailyRewardsUi": {
+    "menuButton": "デイリー報酬",
+    "window": {
+      "title": "デイリー報酬",
+      "close": "デイリー報酬を閉じる",
+      "claim": "受け取る",
+      "claimAria": "今日の報酬を受け取る",
+      "claimed": "受け取り済み。また明日。",
+      "locked": "このアカウントでは現在デイリー報酬を利用できません。",
+      "hint": "1日1回受け取れます。逃した日があっても損はありません。"
+    },
+    "cell": {
+      "today": "今日",
+      "itemCount": "{count}x {item}"
+    }
+  },
   "itemUi": {
     "money": {
       "goldShort": "金",
@@ -4034,7 +4109,8 @@ export const ja_JP: EnTranslations = {
       "needAria": "{item}を必要",
       "greedAria": "{item}を強欲",
       "passAria": "{item}をパス",
-      "everyonePassed": "全員が{item}をパスしました。"
+      "everyonePassed": "全員が{item}をパスしました。",
+      "winnerOffline": "{item}の勝者がオフラインだったため、死体に返却されました。"
     }
   },
   "entities": {
@@ -4097,7 +4173,7 @@ export const ja_JP: EnTranslations = {
       },
       "sunder_armor": {
         "name": "アーマー破壊",
-        "description": "対象のアーマーを破壊し、1回ごとに {damage} 低下させます。最大5回まで重なります。大量の脅威を生成します。"
+        "description": "対象のアーマーを破壊し、1回ごとに 2% 低下させます。最大5回まで重なります。大量の脅威を生成します。"
       },
       "taunt": {
         "name": "挑発",
@@ -5848,6 +5924,21 @@ export const ja_JP: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "ヴァンガードクローム"
+      },
+      "enchanting_dust": {
+        "name": "付呪の粉塵"
+      },
+      "scroll_minor_might": {
+        "name": "小さな力の巻物"
+      },
+      "scroll_minor_vigor": {
+        "name": "小さな活力の巻物"
+      },
+      "scroll_minor_focus": {
+        "name": "小さな集中の巻物"
+      },
+      "scroll_minor_agility": {
+        "name": "小さな俊敏の巻物"
       }
     },
     "mobs": {
@@ -6165,6 +6256,15 @@ export const ja_JP: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "心材の巨像"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "緑掌の挿し木"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "緑掌の挿し木"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "緑掌の挿し木"
       }
     },
     "npcs": {
@@ -6391,6 +6491,22 @@ export const ja_JP: EnTranslations = {
       }
     },
     "quests": {
+      "q_prof_intro": {
+        "title": "学ぶ価値のある手仕事",
+        "text": "どんな手仕事も爪の間の泥から始まるものだ、{playerName}。町の東の茂みでクモの脚を2本集めてこい。それから鍛冶場で新兵の上着を作るんだ。材料の骨片は道中で拾えば十分だろう。ついでに、分解して魔力の粉塵になりそうな物も持ってきてくれ。集め、作り、そして分解できることを見せてくれたら、手仕事の値打ちを教えてやろう。",
+        "completion": "それでこそ学ぶ価値のある手仕事だ。鍛冶場に通い続ければ、{playerName}、いつか蹄鉄を打つのと剣にエンチャントをかけるのを息もつかせず両方こなせるようになるだろう。",
+        "objectives": {
+          "0": {
+            "label": "クモの脚を採集"
+          },
+          "1": {
+            "label": "新兵の上着を製作"
+          },
+          "2": {
+            "label": "魔力の粉塵"
+          }
+        }
+      },
       "q_wolves": {
         "title": "戸口の狼",
         "text": "森の狼が北の道で旅人に牙をむけています、{playerName}。8頭を討ち、イーストブルックに息をつかせてください。",
@@ -7533,6 +7649,20 @@ export const ja_JP: EnTranslations = {
         "name": "崩れた聖遺物庫",
         "enterText": "あなたは崩れた聖遺物庫へと降りていく。",
         "leaveText": "あなたは聖遺物庫の廃墟にいるハルヴェン修道士のもとへ登り戻る。"
+      }
+    },
+    "enchants": {
+      "enchant_minor_might": {
+        "name": "小さな力"
+      },
+      "enchant_minor_vigor": {
+        "name": "小さな活力"
+      },
+      "enchant_minor_focus": {
+        "name": "小さな集中"
+      },
+      "enchant_minor_agility": {
+        "name": "小さな俊敏"
       }
     },
     "itemSets": {

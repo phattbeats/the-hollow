@@ -1200,6 +1200,45 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     sellValue: 3,
   },
 
+  // --- Enchanting (PHAA-649 child, upstream #1712) -----------------------
+  // Dust is disenchant's salvage output (src/sim/enchanting.ts); scrolls are
+  // enchanting's craft output (recipes.ts) consumed by apply-enchant.
+  enchanting_dust: {
+    id: 'enchanting_dust',
+    name: 'Enchanting Dust',
+    kind: 'junk',
+    quality: 'common',
+    sellValue: 5,
+  },
+  scroll_minor_might: {
+    id: 'scroll_minor_might',
+    name: 'Scroll of Minor Might',
+    kind: 'junk',
+    quality: 'common',
+    sellValue: 8,
+  },
+  scroll_minor_vigor: {
+    id: 'scroll_minor_vigor',
+    name: 'Scroll of Minor Vigor',
+    kind: 'junk',
+    quality: 'common',
+    sellValue: 8,
+  },
+  scroll_minor_focus: {
+    id: 'scroll_minor_focus',
+    name: 'Scroll of Minor Focus',
+    kind: 'junk',
+    quality: 'common',
+    sellValue: 8,
+  },
+  scroll_minor_agility: {
+    id: 'scroll_minor_agility',
+    name: 'Scroll of Minor Agility',
+    kind: 'junk',
+    quality: 'common',
+    sellValue: 8,
+  },
+
   // --- Quartermaster's Consignment ---------------------------------------
   // A standing line of practical adventuring gear. The Merchant keeps eight
   // pieces stocked on the World Market (see seedHouseListings); four more are

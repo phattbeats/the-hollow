@@ -729,7 +729,7 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
     'Frammanar en tomhetsvandrare under häxmästarens befäl. Tomhetsvandraren är en robust demon som hånar dina fiender och suger upp stryk. Att frammana en ny demon avfärdar din nuvarande. Du kan ha en demon åt gången.',
   'entities.abilities.summon_voidwalker.name': 'Frammana tomhetsvandrare',
   'entities.abilities.sunder_armor.description':
-    'Krossar målets rustning och minskar den med {damage} per applicering. Staplas upp till 5 gånger. Genererar en stor mängd hot.',
+    'Krossar målets rustning och minskar den med 2% per applicering. Staplas upp till 5 gånger. Genererar en stor mängd hot.',
   'entities.abilities.sunder_armor.name': 'Krossa rustning',
   'entities.abilities.swipe.description':
     'Svep mot närliggande fiender för {damage} skada. Orsakar extra hot. Endast björnform.',
@@ -1143,6 +1143,11 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'entities.items.valespun_robe.name': 'Dalspunnen robe',
   'entities.items.vanguard_azure_armor_plate.name': 'Förtrupp azur',
   'entities.items.vanguard_chrome_armor_plate.name': 'Förtrupp krom',
+  'entities.items.enchanting_dust.name': 'Förtrollningsdamm',
+  'entities.items.scroll_minor_might.name': 'Rulle av Mindre Styrka',
+  'entities.items.scroll_minor_vigor.name': 'Rulle av Mindre Vigör',
+  'entities.items.scroll_minor_focus.name': 'Rulle av Mindre Fokus',
+  'entities.items.scroll_minor_agility.name': 'Rulle av Mindre Smidighet',
   'entities.items.varric_shadow_cowl.name': 'Varrics skugghuva',
   'entities.items.verlans_oathblade.name': 'Verlans edsklinga',
   'entities.items.voss_sanctified_mace.name': 'Voss helgade stridsklubba',
@@ -3901,7 +3906,6 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/s',
   'hudChrome.meters.perSecondRow': '{total} ({rate})',
   'hudChrome.meters.seconds': '{s} s',
-  'hudChrome.mobile.autorun': 'Autospring',
   'hudChrome.mobile.haptics': 'Haptik',
   'hudChrome.mobile.hapticsOff': 'Haptik av',
   'hudChrome.mobile.jump': 'Hoppa',
