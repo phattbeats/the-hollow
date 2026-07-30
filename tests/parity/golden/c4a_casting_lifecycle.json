@@ -36,7 +36,7 @@
       "tick": 1,
       "time": 0.05,
       "nextId": 411,
-      "state": "c3c08aa0",
+      "state": "26e43fe5",
       "events": "0f923b99",
       "rng": {
         "draws": 2,
@@ -60,6 +60,7 @@
           "counters": {
             "damageTaken": 40
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -105,6 +106,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "apprentice_robe",
@@ -133,6 +135,7 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -178,6 +181,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -206,6 +210,7 @@
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -251,6 +256,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "apprentice_robe",
@@ -483,7 +489,7 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 411,
-      "state": "63816fbf",
+      "state": "896bf816",
       "events": "668a5d5f",
       "rng": {
         "draws": 5,
@@ -494,7 +500,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 411,
-      "state": "5bfc9609",
+      "state": "a8ce6794",
       "events": "741638a5",
       "rng": {
         "draws": 5,
@@ -505,7 +511,7 @@
       "tick": 15,
       "time": 0.75,
       "nextId": 411,
-      "state": "34125896",
+      "state": "c6b89f57",
       "events": "741638a5",
       "rng": {
         "draws": 5,
@@ -516,7 +522,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 411,
-      "state": "5329cef2",
+      "state": "a53a48a3",
       "events": "741638a5",
       "rng": {
         "draws": 5,
@@ -527,7 +533,7 @@
       "tick": 25,
       "time": 1.25,
       "nextId": 411,
-      "state": "f00f4d84",
+      "state": "c6797319",
       "events": "741638a5",
       "rng": {
         "draws": 5,
@@ -538,7 +544,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 411,
-      "state": "4a43016b",
+      "state": "d669b712",
       "events": "741638a5",
       "rng": {
         "draws": 5,
@@ -549,7 +555,7 @@
       "tick": 35,
       "time": 1.75,
       "nextId": 411,
-      "state": "30822ac3",
+      "state": "44d3a98a",
       "events": "741638a5",
       "rng": {
         "draws": 5,
@@ -560,7 +566,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 411,
-      "state": "7bb030aa",
+      "state": "d6e5e51b",
       "events": "741638a5",
       "rng": {
         "draws": 5,
@@ -571,7 +577,7 @@
       "tick": 45,
       "time": 2.25,
       "nextId": 411,
-      "state": "15b71fa9",
+      "state": "656ecc74",
       "events": "553f6960",
       "rng": {
         "draws": 26,
@@ -582,7 +588,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 411,
-      "state": "4219afe7",
+      "state": "ee49447e",
       "events": "741638a5",
       "rng": {
         "draws": 50,
@@ -593,7 +599,7 @@
       "tick": 55,
       "time": 2.75,
       "nextId": 411,
-      "state": "f0b46734",
+      "state": "53e74229",
       "events": "741638a5",
       "rng": {
         "draws": 68,
@@ -604,7 +610,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 411,
-      "state": "93809493",
+      "state": "4d99773a",
       "events": "741638a5",
       "rng": {
         "draws": 86,
@@ -615,7 +621,7 @@
       "tick": 65,
       "time": 3.25,
       "nextId": 411,
-      "state": "395f0dda",
+      "state": "ba137beb",
       "events": "741638a5",
       "rng": {
         "draws": 107,
@@ -626,7 +632,7 @@
       "tick": 70,
       "time": 3.5,
       "nextId": 411,
-      "state": "7f9a9666",
+      "state": "9fb22547",
       "events": "741638a5",
       "rng": {
         "draws": 131,
@@ -637,7 +643,7 @@
       "tick": 75,
       "time": 3.75,
       "nextId": 411,
-      "state": "364b3773",
+      "state": "4ad4dfda",
       "events": "741638a5",
       "rng": {
         "draws": 154,
@@ -648,7 +654,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 411,
-      "state": "db26d263",
+      "state": "4d32376a",
       "events": "4f55f515",
       "rng": {
         "draws": 163,
@@ -659,7 +665,7 @@
       "tick": 85,
       "time": 4.25,
       "nextId": 411,
-      "state": "86045fe8",
+      "state": "1ffeb66d",
       "events": "b846b5ab",
       "rng": {
         "draws": 197,
@@ -670,7 +676,7 @@
       "tick": 90,
       "time": 4.5,
       "nextId": 411,
-      "state": "33b18156",
+      "state": "35443c17",
       "events": "741638a5",
       "rng": {
         "draws": 227,
@@ -681,7 +687,7 @@
       "tick": 95,
       "time": 4.75,
       "nextId": 411,
-      "state": "dc175f3e",
+      "state": "6c9d3f1f",
       "events": "741638a5",
       "rng": {
         "draws": 272,
@@ -692,7 +698,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 411,
-      "state": "2c886bb5",
+      "state": "b8ddc180",
       "events": "741638a5",
       "rng": {
         "draws": 297,
@@ -703,7 +709,7 @@
       "tick": 105,
       "time": 5.25,
       "nextId": 411,
-      "state": "656c04dc",
+      "state": "8cf817d1",
       "events": "741638a5",
       "rng": {
         "draws": 313,
@@ -714,7 +720,7 @@
       "tick": 110,
       "time": 5.5,
       "nextId": 411,
-      "state": "109243d0",
+      "state": "73cb0ef5",
       "events": "741638a5",
       "rng": {
         "draws": 333,
@@ -725,7 +731,7 @@
       "tick": 115,
       "time": 5.75,
       "nextId": 411,
-      "state": "f04c31ba",
+      "state": "e5cd7a0b",
       "events": "741638a5",
       "rng": {
         "draws": 366,
@@ -736,7 +742,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 411,
-      "state": "473efdc5",
+      "state": "a9f7e530",
       "events": "741638a5",
       "rng": {
         "draws": 391,
@@ -747,7 +753,7 @@
       "tick": 125,
       "time": 6.25,
       "nextId": 411,
-      "state": "9563fdb5",
+      "state": "e367b380",
       "events": "ebe46bc3",
       "rng": {
         "draws": 431,
@@ -758,7 +764,7 @@
       "tick": 130,
       "time": 6.5,
       "nextId": 411,
-      "state": "c9d9fd1b",
+      "state": "59808062",
       "events": "741638a5",
       "rng": {
         "draws": 467,
@@ -769,7 +775,7 @@
       "tick": 135,
       "time": 6.75,
       "nextId": 411,
-      "state": "c9364963",
+      "state": "6ec67e6a",
       "events": "741638a5",
       "rng": {
         "draws": 509,
@@ -780,7 +786,7 @@
       "tick": 140,
       "time": 7,
       "nextId": 411,
-      "state": "656bee78",
+      "state": "bfaa91dd",
       "events": "741638a5",
       "rng": {
         "draws": 539,
@@ -791,7 +797,7 @@
       "tick": 145,
       "time": 7.25,
       "nextId": 411,
-      "state": "4c41fc6b",
+      "state": "89ec4212",
       "events": "741638a5",
       "rng": {
         "draws": 562,
@@ -802,7 +808,7 @@
       "tick": 150,
       "time": 7.5,
       "nextId": 411,
-      "state": "8990ecf5",
+      "state": "87cd33c0",
       "events": "741638a5",
       "rng": {
         "draws": 594,
@@ -813,7 +819,7 @@
       "tick": 155,
       "time": 7.75,
       "nextId": 411,
-      "state": "c737a866",
+      "state": "fd859747",
       "events": "741638a5",
       "rng": {
         "draws": 636,
@@ -824,7 +830,7 @@
       "tick": 160,
       "time": 8,
       "nextId": 411,
-      "state": "04bdb881",
+      "state": "835e0bec",
       "events": "741638a5",
       "rng": {
         "draws": 658,
@@ -835,7 +841,7 @@
       "tick": 165,
       "time": 8.25,
       "nextId": 411,
-      "state": "4a8fbf8a",
+      "state": "901eb33b",
       "events": "e5e8e530",
       "rng": {
         "draws": 691,
@@ -846,7 +852,7 @@
       "tick": 170,
       "time": 8.5,
       "nextId": 411,
-      "state": "2db7cd40",
+      "state": "03eec645",
       "events": "741638a5",
       "rng": {
         "draws": 723,
@@ -857,7 +863,7 @@
       "tick": 174,
       "time": 8.7,
       "nextId": 411,
-      "state": "0e18f13d",
+      "state": "07c122a8",
       "events": "741638a5",
       "rng": {
         "draws": 758,
@@ -882,6 +888,7 @@
             "damageDealt": 105,
             "damageTaken": 77
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -927,6 +934,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "apprentice_robe",
@@ -955,6 +963,7 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -1000,6 +1009,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -1028,6 +1038,7 @@
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -1073,6 +1084,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "apprentice_robe",
@@ -1323,7 +1335,7 @@
       "tick": 175,
       "time": 8.75,
       "nextId": 411,
-      "state": "36c88f6e",
+      "state": "2ecaeeaf",
       "events": "741638a5",
       "rng": {
         "draws": 764,
@@ -1334,7 +1346,7 @@
       "tick": 180,
       "time": 9,
       "nextId": 411,
-      "state": "f2c56cdb",
+      "state": "5b9f4522",
       "events": "741638a5",
       "rng": {
         "draws": 801,
@@ -1345,7 +1357,7 @@
       "tick": 185,
       "time": 9.25,
       "nextId": 411,
-      "state": "2f71893c",
+      "state": "cb188ff1",
       "events": "e6eb05fc",
       "rng": {
         "draws": 837,
@@ -1356,7 +1368,7 @@
       "tick": 190,
       "time": 9.5,
       "nextId": 411,
-      "state": "b044f4fc",
+      "state": "86270ab1",
       "events": "741638a5",
       "rng": {
         "draws": 878,
@@ -1367,7 +1379,7 @@
       "tick": 195,
       "time": 9.75,
       "nextId": 411,
-      "state": "3171c279",
+      "state": "03baf6e4",
       "events": "0b52b144",
       "rng": {
         "draws": 911,
@@ -1378,7 +1390,7 @@
       "tick": 196,
       "time": 9.8,
       "nextId": 411,
-      "state": "75a5cfa7",
+      "state": "0304633e",
       "events": "aa8bab32",
       "rng": {
         "draws": 925,
@@ -1403,6 +1415,7 @@
             "damageDealt": 173,
             "damageTaken": 77
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -1448,6 +1461,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "apprentice_robe",
@@ -1476,6 +1490,7 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -1521,6 +1536,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -1549,6 +1565,7 @@
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -1594,6 +1611,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "apprentice_robe",
@@ -1857,7 +1875,7 @@
       "tick": 200,
       "time": 10,
       "nextId": 411,
-      "state": "beb5d788",
+      "state": "d570fb4d",
       "events": "e0c3e45a",
       "rng": {
         "draws": 958,
@@ -1868,7 +1886,7 @@
       "tick": 205,
       "time": 10.25,
       "nextId": 411,
-      "state": "33357786",
+      "state": "3ee3e3a7",
       "events": "9d8357e3",
       "rng": {
         "draws": 982,
@@ -1879,7 +1897,7 @@
       "tick": 210,
       "time": 10.5,
       "nextId": 411,
-      "state": "da2270ed",
+      "state": "d4570d78",
       "events": "741638a5",
       "rng": {
         "draws": 1002,
@@ -1890,7 +1908,7 @@
       "tick": 215,
       "time": 10.75,
       "nextId": 411,
-      "state": "bf00e6e2",
+      "state": "1638deb3",
       "events": "741638a5",
       "rng": {
         "draws": 1018,
@@ -1901,7 +1919,7 @@
       "tick": 218,
       "time": 10.9,
       "nextId": 411,
-      "state": "fc8b33ff",
+      "state": "4e959f06",
       "events": "b59b39fb",
       "rng": {
         "draws": 1028,
@@ -1926,6 +1944,7 @@
             "damageDealt": 173,
             "damageTaken": 93
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -1971,6 +1990,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "apprentice_robe",
@@ -1999,6 +2019,7 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -2044,6 +2065,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -2074,6 +2096,7 @@
           "counters": {
             "damageTaken": 40
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -2119,6 +2142,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "apprentice_robe",
@@ -2389,7 +2413,7 @@
       "tick": 220,
       "time": 11,
       "nextId": 411,
-      "state": "fe575eac",
+      "state": "3a6697a1",
       "events": "741638a5",
       "rng": {
         "draws": 1033,
@@ -2400,7 +2424,7 @@
       "tick": 225,
       "time": 11.25,
       "nextId": 411,
-      "state": "3d25a0a3",
+      "state": "608d3762",
       "events": "350b2efe",
       "rng": {
         "draws": 1056,
@@ -2411,7 +2435,7 @@
       "tick": 226,
       "time": 11.3,
       "nextId": 411,
-      "state": "1643b8b3",
+      "state": "314ccf02",
       "events": "9b98233e",
       "rng": {
         "draws": 1057,
@@ -2436,6 +2460,7 @@
             "damageDealt": 175,
             "damageTaken": 93
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -2481,6 +2506,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "apprentice_robe",
@@ -2509,6 +2535,7 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -2554,6 +2581,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -2585,6 +2613,7 @@
             "damageDealt": 13,
             "damageTaken": 60
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -2630,6 +2659,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "apprentice_robe",
@@ -2899,7 +2929,7 @@
       "tick": 230,
       "time": 11.5,
       "nextId": 411,
-      "state": "331ff327",
+      "state": "a8e81446",
       "events": "741638a5",
       "rng": {
         "draws": 1073,
@@ -2910,7 +2940,7 @@
       "tick": 231,
       "time": 11.55,
       "nextId": 411,
-      "state": "f4ba9150",
+      "state": "42b8754d",
       "events": "741638a5",
       "rng": {
         "draws": 1075,
@@ -2935,6 +2965,7 @@
             "damageDealt": 175,
             "damageTaken": 93
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -2980,6 +3011,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "apprentice_robe",
@@ -3008,6 +3040,7 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -3053,6 +3086,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -3084,6 +3118,7 @@
             "damageDealt": 13,
             "damageTaken": 60
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -3129,6 +3164,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "apprentice_robe",

@@ -246,7 +246,6 @@ export const ru_RU: EnTranslations = {
       "chat": "Перейти к чату"
     },
     "mobile": {
-      "autorun": "Автобег",
       "jump": "Прыжок",
       "leaderboard": "Рейтинг",
       "nameplates": "Имена",
@@ -999,6 +998,33 @@ export const ru_RU: EnTranslations = {
       "toolTier": "Инструмент {tier} ур.",
       "toolNone": "Нет инструмента"
     },
+    "crafting": {
+      "title": "Изготовление",
+      "close": "Закрыть изготовление",
+      "tabRecipes": "Рецепты",
+      "tabEnchants": "Чары",
+      "proficiencyLine": "{craft}: {value}",
+      "craftButton": "Изготовить",
+      "craftAria": "Изготовить {item}",
+      "reagentLine": "{item} {have}/{need}",
+      "disenchantSectionTitle": "Распыление",
+      "disenchantButton": "Распылить",
+      "disenchantAria": "Распылить {item}",
+      "disenchantEmpty": "Нет предметов для распыления.",
+      "applyButton": "Применить",
+      "applyAria": "Применить чары {enchant} на {slot}",
+      "activeTag": "Активно",
+      "needScroll": "Требуется {scroll}",
+      "craftType": {
+        "weaponcrafting": "Оружейное дело",
+        "armorcrafting": "Кузнечное дело",
+        "tailoring": "Портняжное дело",
+        "leatherworking": "Кожевничество",
+        "cooking": "Кулинария",
+        "alchemy": "Алхимия",
+        "enchanting": "Наложение чар"
+      }
+    },
     "warfare": {
       "ratingLabel": "Воинственность",
       "balance": "Честь: {amount}",
@@ -1013,6 +1039,9 @@ export const ru_RU: EnTranslations = {
         "fiestaComplete": "Матч фиесты",
         "fiestaWin": "Победа на фиесте"
       }
+    },
+    "hitRating": {
+      "ratingLabel": "Рейтинг меткости"
     }
   },
   "mailUi": {
@@ -2444,6 +2473,9 @@ export const ru_RU: EnTranslations = {
       "nothingToHarvest": "С этого трупа нечего собирать.",
       "alreadyHarvested": "Этот труп уже разделан."
     },
+    "dailyRewards": {
+      "claimed": "Вы получаете ежедневную награду."
+    },
     "collections": {
       "notFound": "Этого не существует.",
       "tooFar": "Слишком далеко."
@@ -2508,6 +2540,13 @@ export const ru_RU: EnTranslations = {
       "readoutNoHomesteadQuest": "У вас нет хутора. Закончите всю цепочку поручений брата Зеленолапа, чтобы получить его.",
       "readoutNoHomesteadHint": "У вас нет хутора. Встаньте на подходящем месте в Лощинных Плёсах и введите /homestead claim.",
       "helpLine": "Хутор: /homestead, /homestead claim."
+    },
+    "greenpawCutting": {
+      "alreadyPlanted": "Ты уже посадил свой черенок. Дай ему время вырасти.",
+      "needHomestead": "Чтобы посадить это, тебе сначала нужен участок.",
+      "tooFar": "Чтобы посадить это, ты должен быть на своем участке.",
+      "planted": "Ты сажаешь черенок на своем участке. Дай ему время.",
+      "grown": "Твой черенок вырос в спутника. Теперь он следует за тобой."
     },
     "readyCheck": {
       "mustBeInParty": "Чтобы начать проверку готовности, вы должны состоять в группе.",
@@ -3386,6 +3425,7 @@ export const ru_RU: EnTranslations = {
       "ignoringChat": "Чат от {name} игнорируется.",
       "noLongerIgnoring": "{name} больше не игнорируется.",
       "playerNotNearby": "Этого игрока нет рядом.",
+      "playerInfoNotFound": "Персонаж с таким именем не найден.",
       "duelCountdown": "Дуэль начнется через {seconds}...",
       "duelEndBanner": "{winner} победил {loser} в дуэли!",
       "duelEndLog": "{winner} победил {loser} в дуэли.",
@@ -3829,6 +3869,22 @@ export const ru_RU: EnTranslations = {
       "crate": "Ящик",
       "bench": "Скамья",
       "stool": "Табурет"
+    }
+  },
+  "dailyRewardsUi": {
+    "menuButton": "Ежедневные награды",
+    "window": {
+      "title": "Ежедневные награды",
+      "close": "Закрыть ежедневные награды",
+      "claim": "Забрать",
+      "claimAria": "Забрать сегодняшнюю награду",
+      "claimed": "Получено. Возвращайтесь завтра.",
+      "locked": "Ежедневные награды сейчас недоступны для этого аккаунта.",
+      "hint": "Одна награда в день. Пропущенный день ничего не стоит."
+    },
+    "cell": {
+      "today": "Сегодня",
+      "itemCount": "{count}x {item}"
     }
   },
   "itemUi": {
@@ -5866,6 +5922,21 @@ export const ru_RU: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "Хромированный авангард"
+      },
+      "enchanting_dust": {
+        "name": "Пыль зачарования"
+      },
+      "scroll_minor_might": {
+        "name": "Свиток малой мощи"
+      },
+      "scroll_minor_vigor": {
+        "name": "Свиток малой стойкости"
+      },
+      "scroll_minor_focus": {
+        "name": "Свиток малой концентрации"
+      },
+      "scroll_minor_agility": {
+        "name": "Свиток малой ловкости"
       }
     },
     "mobs": {
@@ -6183,6 +6254,15 @@ export const ru_RU: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "Колосс Сердцевины"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "Черенок Зеленолапа"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "Черенок Зеленолапа"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "Черенок Зеленолапа"
       }
     },
     "npcs": {
@@ -6409,6 +6489,22 @@ export const ru_RU: EnTranslations = {
       }
     },
     "quests": {
+      "q_prof_intro": {
+        "title": "Ремесло, которое стоит освоить",
+        "text": "Любое ремесло начинается с грязи под ногтями, {playerName}. Собери 2 паучьи лапки в рощах к востоку от города, а затем поработай у моего горна над Туникой новобранца; костяные обломки для нее легко найти по пути. И принеси мне что-нибудь, что стоит разобрать ради тайной пыли. Покажи, что умеешь собирать, изготавливать и разбирать, и я покажу тебе, чего стоит ремесло.",
+        "completion": "Вот это ремесло стоит освоить. Держись горна, {playerName}, и однажды ты будешь подковывать лошадей и накладывать чары на клинки одним и тем же вечером.",
+        "objectives": {
+          "0": {
+            "label": "Собраны паучьи лапки"
+          },
+          "1": {
+            "label": "Изготовлена туника новобранца"
+          },
+          "2": {
+            "label": "Пыль зачарования"
+          }
+        }
+      },
       "q_wolves": {
         "title": "Волки у дверей",
         "text": "Лесные волки осмелели и бросаются на путников у северной дороги, {playerName}. Убейте 8, чтобы Истврук вздохнул свободнее.",
@@ -7551,6 +7647,20 @@ export const ru_RU: EnTranslations = {
         "name": "Обрушившийся Реликварий",
         "enterText": "Вы спускаетесь в обрушившийся реликварий.",
         "leaveText": "Вы поднимаетесь обратно к Брату Хальвену у руин реликвария."
+      }
+    },
+    "enchants": {
+      "enchant_minor_might": {
+        "name": "Малая мощь"
+      },
+      "enchant_minor_vigor": {
+        "name": "Малая стойкость"
+      },
+      "enchant_minor_focus": {
+        "name": "Малая концентрация"
+      },
+      "enchant_minor_agility": {
+        "name": "Малая ловкость"
       }
     },
     "itemSets": {

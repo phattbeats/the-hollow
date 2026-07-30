@@ -1,5 +1,6 @@
+import { hitFractionFromRating } from './combat/hit_rating';
 import type { TalentModifiers } from './content/talents';
-import { aggregateSetBonuses, CLASSES, ITEMS, MOBS, type NpcDef } from './data';
+import { aggregateSetBonuses, CLASSES, ENCHANTS, ITEMS, MOBS, type NpcDef } from './data';
 import { pvpFractionsFromRatings } from './pvp';
 import type { Entity, EquipSlot, MobTemplate, PlayerClass, Stats, Vec3 } from './types';
 import { EQUIP_SLOTS, SPELL_POWER_PER_INT } from './types';
@@ -48,6 +49,8 @@ function baseEntity(id: number, pos: Vec3): Entity {
     spellHaste: 0,
     critChance: 0.05,
     dodgeChance: 0.05,
+    hitRating: 0,
+    hitBonus: 0,
     castPushbackReduction: 0,
     moveSpeed: 7,
     hostile: false,
@@ -188,11 +191,16 @@ export function nativeMaxResource(cls: PlayerClass, level: number): number {
 // Recompute all derived stats for the player from class, level, gear, buffs, and
 // precomputed talent modifiers. `mods` is the flat struct resolved at
 // allocation/respec time (computeTalentModifiers) — this never walks the tree.
+// `enchants` (PHAA-649 child, upstream #1712) is the player's active
+// per-equip-slot enchant ids (meta.enchants); optional so every existing
+// caller keeps compiling unchanged, but omitting it silently drops any
+// enchant bonus, so pass it through wherever `meta`/`r.meta` is in scope.
 export function recalcPlayerStats(
   e: Entity,
   cls: PlayerClass,
   equipment: PlayerEquipment,
   mods?: TalentModifiers,
+  enchants?: Partial<Record<EquipSlot, string>>,
 ): void {
   const def = CLASSES[cls];
   const lvl = e.level;
@@ -208,6 +216,7 @@ export function recalcPlayerStats(
   };
   const setCounts = new Map<string, number>();
   let bonusSp = 0; // flat Spell Power from gear affixes + buff_spellpower auras
+  let bonusHitRating = 0;
   let bonusPvpOffenseRating = 0;
   let bonusPvpDefenseRating = 0;
   for (const slot of EQUIP_SLOTS) {
@@ -217,15 +226,30 @@ export function recalcPlayerStats(
     if (!item) continue;
     if (item.set) setCounts.set(item.set, (setCounts.get(item.set) ?? 0) + 1);
     bonusSp += item.spellPower ?? 0;
+    bonusHitRating += item.hitRating ?? 0;
     bonusPvpOffenseRating += item.pvpOffenseRating ?? 0;
     bonusPvpDefenseRating += item.pvpDefenseRating ?? 0;
-    if (!item.stats) continue;
-    s.str += item.stats.str ?? 0;
-    s.agi += item.stats.agi ?? 0;
-    s.sta += item.stats.sta ?? 0;
-    s.int += item.stats.int ?? 0;
-    s.spi += item.stats.spi ?? 0;
-    s.armor += item.stats.armor ?? 0;
+    if (item.stats) {
+      s.str += item.stats.str ?? 0;
+      s.agi += item.stats.agi ?? 0;
+      s.sta += item.stats.sta ?? 0;
+      s.int += item.stats.int ?? 0;
+      s.spi += item.stats.spi ?? 0;
+      s.armor += item.stats.armor ?? 0;
+    }
+    // Enchanting (PHAA-649 child, upstream #1712): the enchant lives on the
+    // SLOT (not a specific item copy; see src/sim/enchanting.ts), so its
+    // bonus only applies while that slot is occupied, same as gear stats.
+    const enchantId = enchants?.[slot];
+    const enchant = enchantId && ENCHANTS.find((en) => en.id === enchantId);
+    if (enchant) {
+      s.str += enchant.stats.str ?? 0;
+      s.agi += enchant.stats.agi ?? 0;
+      s.sta += enchant.stats.sta ?? 0;
+      s.int += enchant.stats.int ?? 0;
+      s.spi += enchant.stats.spi ?? 0;
+      s.armor += enchant.stats.armor ?? 0;
+    }
   }
   // Item-set bonuses from equipped pieces. Flat primary stats join the gear
   // totals so they feed every derivation below; AP/crit/pushback fold in at
@@ -373,6 +397,12 @@ export function recalcPlayerStats(
   e.spellHaste = setEff.haste;
   // Crit: ~1% per 20 agi at low level
   e.critChance = 0.05 + s.agi * 0.0005 + (mods?.stats.crit ?? 0) + setEff.crit;
+  // Hit rating (gear only today; no set bonus grants it) folds into a hit fraction
+  // that combat subtracts from miss (swingMissChance) and spell resist
+  // (spell_resist.ts). It answers the Heroic above-level penalty; unlike crit it
+  // has no higher-level suppression.
+  e.hitRating = bonusHitRating;
+  e.hitBonus = hitFractionFromRating(e.hitRating);
   e.castPushbackReduction = setEff.castPushbackReduction;
   // Floored at 0: an off-balance debuff (negative buff_dodge) can drive dodge to nothing.
   e.dodgeChance = Math.max(0, 0.05 + s.agi * 0.0005 + bonusDodge);
@@ -431,10 +461,11 @@ export function characterDerivedStats(
   level: number,
   equipment: PlayerEquipment,
   mods?: TalentModifiers,
+  enchants?: Partial<Record<EquipSlot, string>>,
 ): DerivedCharacterStats {
   const e = createPlayer(0, cls, { x: 0, y: 0, z: 0 }, '');
   e.level = Math.max(1, Math.floor(level));
-  recalcPlayerStats(e, cls, equipment, mods);
+  recalcPlayerStats(e, cls, equipment, mods, enchants);
   return {
     stats: e.stats,
     maxHp: e.maxHp,

@@ -1160,14 +1160,20 @@ export const VISUALS: Record<string, VisualDef> = {
       death: 'Idle',
     },
   },
-  // Sister Shade (PHAA-558 touch-up): unique chibi female look on the merchant
-  // outfit (the plainest civilian silhouette in the female roster) with a
-  // willow-sage tint no player class uses, matching her sim color 0x6b7f6a.
-  // She must read as an ordinary woman doing chores, so no show-list gear and
-  // no held prop; the watering can needs the chibi grip/attach foundation
-  // (PHAA-583 follow-up) and stays future work.
+  // Sister Shade (PHAA-636 bespoke wardrobe pass): a Blender edit of the
+  // styloo merchant source (the plainest civilian silhouette in the female
+  // roster), not the stock GLB with a runtime tint. The merchant's wide hat
+  // is reshaped into a headscarf, a duplicated/recolored front chemise panel
+  // becomes an apron, and a small satchel + willow-leaf hem motifs are added
+  // (see docs/design/shade-questline.md). Earth tones (sage headscarf, warm
+  // brown apron/satchel, muted olive pants) are baked into the garment
+  // materials now, so no runtime tint is applied here (it would also wash
+  // out her skin/hair/eyes). She must read as an ordinary woman doing
+  // chores, so no show-list gear and no held prop; the watering can needs
+  // the chibi grip/attach foundation (PHAA-583 follow-up) and stays future
+  // work.
   npc_shade: {
-    url: `${PLAYERS}/chibi_female_merchant.glb`,
+    url: `${NPCS}/shade.glb`,
     height: 2.29,
     clips: {
       idle: 'anim_iddle',
@@ -1177,8 +1183,6 @@ export const VISUALS: Record<string, VisualDef> = {
       death: 'anim_dying',
       jump: 'anim_jump',
     },
-    tint: 0x7f8f6e,
-    tintStrength: 0.5,
   },
 };
 

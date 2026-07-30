@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "34f1b800",
+      "state": "4b1d4301",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -39,9 +39,11 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -110,7 +112,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "3906dfcd",
+      "state": "0a0875d0",
       "events": "8b57e819",
       "rng": {
         "draws": 0,
@@ -133,6 +135,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -224,6 +227,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -305,7 +309,7 @@
       "tick": 8,
       "time": 0.4,
       "nextId": 416,
-      "state": "aaee046f",
+      "state": "c94ed68e",
       "events": "1386e2bf",
       "rng": {
         "draws": 40,
@@ -332,6 +336,7 @@
             "kills": 8,
             "questProgress": 8
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",
@@ -507,6 +512,7 @@
           "earnedTitles": [
             "t_blooded"
           ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -590,7 +596,7 @@
       "tick": 8,
       "time": 0.4,
       "nextId": 416,
-      "state": "5081d276",
+      "state": "9791c299",
       "events": "89073949",
       "rng": {
         "draws": 40,
@@ -620,6 +626,7 @@
             "questsCompleted": 1,
             "xpGained": 250
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "chr_chronicler",
@@ -815,6 +822,7 @@
           "earnedTitles": [
             "t_blooded"
           ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -890,7 +898,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 416,
-      "state": "32402b52",
+      "state": "9df19865",
       "events": "741638a5",
       "rng": {
         "draws": 40,
@@ -920,6 +928,7 @@
             "questsCompleted": 1,
             "xpGained": 250
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "chr_chronicler",
@@ -1115,6 +1124,7 @@
           "earnedTitles": [
             "t_blooded"
           ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",

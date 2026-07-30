@@ -14,7 +14,7 @@ npm ci
 
 echo "== i18n artifacts =="
 npm run i18n:gen
-git diff --exit-code -- src/ui/i18n.resolved.generated src/admin/i18n.resolved.generated src/ui/i18n.status.summary.json
+git diff --exit-code -- src/ui/i18n.resolved.generated src/admin/i18n.resolved.generated src/ui/i18n.status.summary.json src/ui/i18n.catalog/translation_keys.generated.ts
 
 echo "== malicious-code gate =="
 npm run security:gate

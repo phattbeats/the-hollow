@@ -46,6 +46,7 @@ export interface InputCallbacks {
     key:
       | 'interact'
       | 'bags'
+      | 'crafting'
       | 'char'
       | 'spellbook'
       | 'talents'
@@ -406,6 +407,13 @@ export class Input {
     return this.autorun;
   }
 
+  // Idempotent autorun latch for analog inputs that have a one-way "engage"
+  // gesture, such as the mobile move joystick's top band.
+  setAutorun(on: boolean): boolean {
+    this.autorun = on;
+    return this.autorun;
+  }
+
   setTouchLook(active: boolean): void {
     if (active !== this.touchLookActive) this.noteIntent('look');
     this.touchLookActive = active;
@@ -740,6 +748,9 @@ export class Input {
         return;
       case 'bags':
         this.cb.onUiKey('bags');
+        return;
+      case 'crafting':
+        this.cb.onUiKey('crafting');
         return;
       case 'char':
         this.cb.onUiKey('char');

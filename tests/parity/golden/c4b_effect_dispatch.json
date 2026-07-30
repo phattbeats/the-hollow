@@ -35,7 +35,7 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 414,
-      "state": "9c7bdac8",
+      "state": "5cae5c4a",
       "events": "197df57e",
       "rng": {
         "draws": 2,
@@ -46,7 +46,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 414,
-      "state": "163e5a10",
+      "state": "26f65892",
       "events": "741638a5",
       "rng": {
         "draws": 2,
@@ -57,7 +57,7 @@
       "tick": 15,
       "time": 0.75,
       "nextId": 414,
-      "state": "63a61fa8",
+      "state": "55560c2a",
       "events": "741638a5",
       "rng": {
         "draws": 2,
@@ -68,7 +68,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 414,
-      "state": "0be40536",
+      "state": "698e3c28",
       "events": "741638a5",
       "rng": {
         "draws": 2,
@@ -79,7 +79,7 @@
       "tick": 25,
       "time": 1.25,
       "nextId": 414,
-      "state": "7484a349",
+      "state": "a6c5879b",
       "events": "741638a5",
       "rng": {
         "draws": 2,
@@ -90,7 +90,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 414,
-      "state": "ef01a648",
+      "state": "516e77ca",
       "events": "32f00e3e",
       "rng": {
         "draws": 2,
@@ -101,7 +101,7 @@
       "tick": 32,
       "time": 1.6,
       "nextId": 414,
-      "state": "9d6ead45",
+      "state": "faa8f4c7",
       "events": "317812bd",
       "rng": {
         "draws": 4,
@@ -123,6 +123,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -168,6 +169,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -196,6 +198,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -241,6 +244,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -269,6 +273,7 @@
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -314,6 +319,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -342,6 +348,7 @@
           "cls": "paladin",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -387,6 +394,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 410,
           "equipment": {
             "chest": "recruit_tunic",
@@ -415,6 +423,7 @@
           "cls": "druid",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -460,6 +469,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 411,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -488,6 +498,7 @@
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -533,6 +544,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 412,
           "equipment": {
             "chest": "apprentice_robe",
@@ -924,7 +936,7 @@
       "tick": 35,
       "time": 1.75,
       "nextId": 414,
-      "state": "8a1cd2d2",
+      "state": "c571ff14",
       "events": "78460239",
       "rng": {
         "draws": 4,
@@ -935,7 +947,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 414,
-      "state": "86f4f536",
+      "state": "4ab92c28",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -946,7 +958,7 @@
       "tick": 45,
       "time": 2.25,
       "nextId": 414,
-      "state": "c14720eb",
+      "state": "0f367d05",
       "events": "741638a5",
       "rng": {
         "draws": 36,
@@ -957,7 +969,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 414,
-      "state": "97d84983",
+      "state": "3ff0307d",
       "events": "741638a5",
       "rng": {
         "draws": 50,
@@ -968,7 +980,7 @@
       "tick": 55,
       "time": 2.75,
       "nextId": 414,
-      "state": "fe685f7f",
+      "state": "3426e5b9",
       "events": "741638a5",
       "rng": {
         "draws": 66,
@@ -979,7 +991,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 414,
-      "state": "fbd5e836",
+      "state": "d0813f28",
       "events": "741638a5",
       "rng": {
         "draws": 83,
@@ -990,7 +1002,7 @@
       "tick": 65,
       "time": 3.25,
       "nextId": 414,
-      "state": "c92217ff",
+      "state": "8387ce39",
       "events": "741638a5",
       "rng": {
         "draws": 104,
@@ -1001,7 +1013,7 @@
       "tick": 70,
       "time": 3.5,
       "nextId": 414,
-      "state": "0f4805f2",
+      "state": "b4443cb4",
       "events": "741638a5",
       "rng": {
         "draws": 131,
@@ -1012,7 +1024,7 @@
       "tick": 75,
       "time": 3.75,
       "nextId": 414,
-      "state": "96010324",
+      "state": "7dbfd526",
       "events": "741638a5",
       "rng": {
         "draws": 157,
@@ -1023,7 +1035,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 414,
-      "state": "c3150e9b",
+      "state": "26fbcdf5",
       "events": "741638a5",
       "rng": {
         "draws": 180,
@@ -1034,7 +1046,7 @@
       "tick": 85,
       "time": 4.25,
       "nextId": 414,
-      "state": "2dbb52b0",
+      "state": "70741732",
       "events": "741638a5",
       "rng": {
         "draws": 209,
@@ -1045,7 +1057,7 @@
       "tick": 90,
       "time": 4.5,
       "nextId": 414,
-      "state": "4124e312",
+      "state": "d13fa754",
       "events": "741638a5",
       "rng": {
         "draws": 231,
@@ -1056,7 +1068,7 @@
       "tick": 95,
       "time": 4.75,
       "nextId": 414,
-      "state": "23e3876c",
+      "state": "4c748eae",
       "events": "741638a5",
       "rng": {
         "draws": 253,
@@ -1067,7 +1079,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 414,
-      "state": "0825241e",
+      "state": "5f0bd990",
       "events": "741638a5",
       "rng": {
         "draws": 278,
@@ -1078,7 +1090,7 @@
       "tick": 105,
       "time": 5.25,
       "nextId": 414,
-      "state": "6d3b2650",
+      "state": "cd0319d2",
       "events": "741638a5",
       "rng": {
         "draws": 305,
@@ -1089,7 +1101,7 @@
       "tick": 110,
       "time": 5.5,
       "nextId": 414,
-      "state": "6a5ada21",
+      "state": "8423bb53",
       "events": "741638a5",
       "rng": {
         "draws": 335,
@@ -1100,7 +1112,7 @@
       "tick": 115,
       "time": 5.75,
       "nextId": 414,
-      "state": "f9c46513",
+      "state": "e9154fcd",
       "events": "741638a5",
       "rng": {
         "draws": 365,
@@ -1111,7 +1123,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 414,
-      "state": "0b1d5699",
+      "state": "ac11a8eb",
       "events": "741638a5",
       "rng": {
         "draws": 396,
@@ -1122,7 +1134,7 @@
       "tick": 125,
       "time": 6.25,
       "nextId": 414,
-      "state": "1677d946",
+      "state": "9407c138",
       "events": "741638a5",
       "rng": {
         "draws": 421,
@@ -1133,7 +1145,7 @@
       "tick": 130,
       "time": 6.5,
       "nextId": 414,
-      "state": "0af2768a",
+      "state": "47fab42c",
       "events": "741638a5",
       "rng": {
         "draws": 453,
@@ -1144,7 +1156,7 @@
       "tick": 133,
       "time": 6.65,
       "nextId": 415,
-      "state": "db37e6b4",
+      "state": "6b318036",
       "events": "1705d145",
       "rng": {
         "draws": 467,
@@ -1166,6 +1178,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -1211,6 +1224,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1239,6 +1253,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -1284,6 +1299,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -1312,6 +1328,7 @@
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -1357,6 +1374,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -1385,6 +1403,7 @@
           "cls": "paladin",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -1430,6 +1449,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 410,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1458,6 +1478,7 @@
           "cls": "druid",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -1503,6 +1524,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 411,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -1531,6 +1553,7 @@
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -1576,6 +1599,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 412,
           "equipment": {
             "chest": "apprentice_robe",
@@ -1967,7 +1991,7 @@
       "tick": 133,
       "time": 6.65,
       "nextId": 416,
-      "state": "a0d82d0b",
+      "state": "cf7d7ea5",
       "events": "f35f5297",
       "rng": {
         "draws": 468,
@@ -1989,6 +2013,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -2034,6 +2059,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -2062,6 +2088,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -2107,6 +2134,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -2135,6 +2163,7 @@
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -2180,6 +2209,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -2208,6 +2238,7 @@
           "cls": "paladin",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -2253,6 +2284,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 410,
           "equipment": {
             "chest": "recruit_tunic",
@@ -2281,6 +2313,7 @@
           "cls": "druid",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -2326,6 +2359,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 411,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -2354,6 +2388,7 @@
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -2399,6 +2434,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 412,
           "equipment": {
             "chest": "apprentice_robe",
@@ -2858,7 +2894,7 @@
       "tick": 133,
       "time": 6.65,
       "nextId": 418,
-      "state": "be913065",
+      "state": "39a88e3b",
       "events": "87384325",
       "rng": {
         "draws": 470,
@@ -2880,6 +2916,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -2925,6 +2962,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -2955,6 +2993,7 @@
           "counters": {
             "damageDealt": 67
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -3000,6 +3039,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -3028,6 +3068,7 @@
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -3073,6 +3114,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -3101,6 +3143,7 @@
           "cls": "paladin",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -3146,6 +3189,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 410,
           "equipment": {
             "chest": "recruit_tunic",
@@ -3174,6 +3218,7 @@
           "cls": "druid",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -3219,6 +3264,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 411,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -3247,6 +3293,7 @@
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -3292,6 +3339,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 412,
           "equipment": {
             "chest": "apprentice_robe",
@@ -3857,7 +3905,7 @@
       "tick": 133,
       "time": 6.65,
       "nextId": 419,
-      "state": "4514e706",
+      "state": "cb8d58f4",
       "events": "c428e196",
       "rng": {
         "draws": 475,
@@ -3879,6 +3927,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -3924,6 +3973,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -3954,6 +4004,7 @@
           "counters": {
             "damageDealt": 67
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -3999,6 +4050,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -4029,6 +4081,7 @@
           "counters": {
             "damageDealt": 114
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -4074,6 +4127,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -4102,6 +4156,7 @@
           "cls": "paladin",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -4147,6 +4202,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 410,
           "equipment": {
             "chest": "recruit_tunic",
@@ -4175,6 +4231,7 @@
           "cls": "druid",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -4220,6 +4277,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 411,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -4248,6 +4306,7 @@
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -4293,6 +4352,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 412,
           "equipment": {
             "chest": "apprentice_robe",
@@ -4931,7 +4991,7 @@
       "tick": 133,
       "time": 6.65,
       "nextId": 420,
-      "state": "c1a544e1",
+      "state": "ef9e56d7",
       "events": "af69443d",
       "rng": {
         "draws": 476,
@@ -4953,6 +5013,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -4998,6 +5059,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -5028,6 +5090,7 @@
           "counters": {
             "damageDealt": 67
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -5073,6 +5136,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -5103,6 +5167,7 @@
           "counters": {
             "damageDealt": 114
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -5148,6 +5213,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -5178,6 +5244,7 @@
           "counters": {
             "damageDealt": 34
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -5223,6 +5290,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 410,
           "equipment": {
             "chest": "recruit_tunic",
@@ -5251,6 +5319,7 @@
           "cls": "druid",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -5296,6 +5365,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 411,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -5324,6 +5394,7 @@
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -5369,6 +5440,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 412,
           "equipment": {
             "chest": "apprentice_robe",
@@ -6082,7 +6154,7 @@
       "tick": 133,
       "time": 6.65,
       "nextId": 421,
-      "state": "ef328494",
+      "state": "f3111caa",
       "events": "c6d819b8",
       "rng": {
         "draws": 476,
@@ -6104,6 +6176,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -6149,6 +6222,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -6179,6 +6253,7 @@
           "counters": {
             "damageDealt": 67
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -6224,6 +6299,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -6254,6 +6330,7 @@
           "counters": {
             "damageDealt": 114
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -6299,6 +6376,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -6329,6 +6407,7 @@
           "counters": {
             "damageDealt": 34
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -6374,6 +6453,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 410,
           "equipment": {
             "chest": "recruit_tunic",
@@ -6402,6 +6482,7 @@
           "cls": "druid",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -6447,6 +6528,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 411,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -6475,6 +6557,7 @@
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -6520,6 +6603,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 412,
           "equipment": {
             "chest": "apprentice_robe",
@@ -7286,7 +7370,7 @@
       "tick": 133,
       "time": 6.65,
       "nextId": 421,
-      "state": "ef328494",
+      "state": "f3111caa",
       "events": "741638a5",
       "rng": {
         "draws": 476,
@@ -7308,6 +7392,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -7353,6 +7438,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -7383,6 +7469,7 @@
           "counters": {
             "damageDealt": 67
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -7428,6 +7515,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -7458,6 +7546,7 @@
           "counters": {
             "damageDealt": 114
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -7503,6 +7592,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -7533,6 +7623,7 @@
           "counters": {
             "damageDealt": 34
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -7578,6 +7669,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 410,
           "equipment": {
             "chest": "recruit_tunic",
@@ -7606,6 +7698,7 @@
           "cls": "druid",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -7651,6 +7744,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 411,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -7679,6 +7773,7 @@
           "cls": "warlock",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -7724,6 +7819,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 412,
           "equipment": {
             "chest": "apprentice_robe",

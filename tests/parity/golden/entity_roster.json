@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "34f1b800",
+      "state": "4b1d4301",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -39,9 +39,11 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -110,7 +112,7 @@
       "tick": 2,
       "time": 0.1,
       "nextId": 410,
-      "state": "7e53210f",
+      "state": "08f02934",
       "events": "f15eae1f",
       "rng": {
         "draws": 4,
@@ -121,7 +123,7 @@
       "tick": 4,
       "time": 0.2,
       "nextId": 410,
-      "state": "27ca39ed",
+      "state": "dc874446",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -132,7 +134,7 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 410,
-      "state": "d6d1d519",
+      "state": "ade9d9a2",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -155,6 +157,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -200,6 +203,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -270,7 +274,7 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 410,
-      "state": "7f2d7ced",
+      "state": "72d13746",
       "events": "6baea7ef",
       "rng": {
         "draws": 4,
@@ -293,6 +297,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -338,6 +343,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -408,7 +414,7 @@
       "tick": 6,
       "time": 0.3,
       "nextId": 410,
-      "state": "d82e1240",
+      "state": "865618cb",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -419,7 +425,7 @@
       "tick": 7,
       "time": 0.35,
       "nextId": 410,
-      "state": "968e3c61",
+      "state": "08d6f46a",
       "events": "741638a5",
       "rng": {
         "draws": 4,
@@ -442,6 +448,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -487,6 +494,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",

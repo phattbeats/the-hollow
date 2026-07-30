@@ -31,7 +31,7 @@
       "tick": 2,
       "time": 0.1,
       "nextId": 423,
-      "state": "327d51ba",
+      "state": "d46a1cd6",
       "events": "bff09618",
       "rng": {
         "draws": 39,
@@ -53,6 +53,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -109,6 +110,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -136,6 +138,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -181,6 +184,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -891,7 +895,7 @@
       "tick": 4,
       "time": 0.2,
       "nextId": 423,
-      "state": "56c9b168",
+      "state": "da3d70c4",
       "events": "e63b2c82",
       "rng": {
         "draws": 47,
@@ -916,6 +920,7 @@
             "damageTaken": 119549,
             "deaths": 1
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -972,6 +977,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -999,6 +1005,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -1055,6 +1062,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -1767,7 +1775,7 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 423,
-      "state": "39ecfdb0",
+      "state": "4e21831a",
       "events": "1e2f3f13",
       "rng": {
         "draws": 47,
@@ -1778,7 +1786,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 423,
-      "state": "9857e7ff",
+      "state": "b177bf09",
       "events": "741638a5",
       "rng": {
         "draws": 47,
@@ -1789,7 +1797,7 @@
       "tick": 15,
       "time": 0.75,
       "nextId": 423,
-      "state": "5cf79cb0",
+      "state": "9198021a",
       "events": "741638a5",
       "rng": {
         "draws": 47,
@@ -1800,7 +1808,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 423,
-      "state": "dd72cbd0",
+      "state": "6a20a7ba",
       "events": "741638a5",
       "rng": {
         "draws": 49,
@@ -1811,7 +1819,7 @@
       "tick": 24,
       "time": 1.2,
       "nextId": 423,
-      "state": "efae48d0",
+      "state": "aa13c4ba",
       "events": "741638a5",
       "rng": {
         "draws": 49,
@@ -1836,6 +1844,7 @@
             "damageTaken": 119549,
             "deaths": 1
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -1892,6 +1901,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1922,6 +1932,7 @@
             "damageTaken": 119549,
             "deaths": 1
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -1978,6 +1989,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -2096,7 +2108,7 @@
       "tick": 24,
       "time": 1.2,
       "nextId": 423,
-      "state": "efae48d0",
+      "state": "aa13c4ba",
       "events": "741638a5",
       "rng": {
         "draws": 49,
@@ -2121,6 +2133,7 @@
             "damageTaken": 119549,
             "deaths": 1
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -2177,6 +2190,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -2207,6 +2221,7 @@
             "damageTaken": 119549,
             "deaths": 1
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -2263,6 +2278,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",

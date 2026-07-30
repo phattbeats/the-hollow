@@ -12,6 +12,7 @@ import {
   nonSelfRepaintDue,
   targetFrameNonSelfIntervalMs,
 } from '../game/ui_tier_knobs';
+import { currentUtcDay } from '../game/utc_day';
 import { voice } from '../game/voice';
 import { castBarState, consumeBarState } from '../render/cast_bar';
 import { CharacterPreview } from '../render/characters';
@@ -24,6 +25,7 @@ import {
 } from '../render/characters/portrait';
 import type { Renderer } from '../render/renderer';
 import { type AugmentCategory, augmentCategory } from '../sim/content/augments';
+import { DAILY_REWARD_CYCLE } from '../sim/content/daily_rewards';
 import {
   EVENT_SKIN_TIERS,
   MECH_CHROMAS,
@@ -152,6 +154,10 @@ import {
 } from './combat_sfx';
 import { type CardinalId, compassView } from './compass';
 import { formatMinimapCoords } from './coords';
+import { buildCraftingView } from './crafting_view';
+import { type CraftingWindowDeps, renderCraftingWindow } from './crafting_window';
+import { buildDailyRewardsView } from './daily_rewards_view';
+import { renderDailyRewardsWindow } from './daily_rewards_window';
 import { DelveMapPainter } from './delve_map_painter';
 import { markDialogRoot } from './dialog_root';
 import { DISCORD_SURFACES_ENABLED } from './discord_flags';
@@ -166,10 +172,12 @@ import {
   zoneDisplayName,
   zonePoiLabel,
 } from './entity_i18n';
+import { ERROR_LOG_COLOR, shouldMirrorErrorToast } from './error_toast_log';
 import { esc } from './esc';
 import { fctSpawnShape } from './fct_event';
 import { FctPainter } from './fct_painter';
 import { FocusManager, type FocusTrapHandle } from './focus_manager';
+import { gossipMenuIsEmpty } from './gossip_menu';
 import {
   buildDefaultFormBar,
   classHasFormBars,
@@ -339,6 +347,17 @@ export interface GamepadBindingsHooks {
 export interface ReportHooks {
   submit(targetPid: number, reason: string, details: string): Promise<void>;
   submitByName?(targetName: string, reason: string, details: string): Promise<void>;
+}
+
+// The safe subset GET /api/public/characters/:name/sheet returns (server/character_sheet.ts,
+// visibility 'public'): no gear, wallet, or position. Declared locally rather than imported
+// from server/ so the client bundle never pulls in server-only (Node/pg) code.
+interface PublicCharacterSheet {
+  name: string;
+  class: PlayerClass;
+  level: number;
+  skin: number;
+  guild: string | null;
 }
 
 export interface BugReportPayload {
@@ -736,6 +755,7 @@ export class Hud {
   // Distinguishes a touch long-press "peek" (inspect, no action) from a tap.
   private peekGuard = new TouchPeekGuard();
   private errorTimer: number | undefined;
+  private lastMirroredErrorText: string | undefined;
   private bannerTimer: number | undefined;
   private pfLevelEl = $('#pf-level');
   private pfHpEl = $('#pf-hp');
@@ -1245,6 +1265,7 @@ export class Hud {
     mapCanvas.addEventListener('pointerup', endDrag);
     mapCanvas.addEventListener('pointercancel', endDrag);
     $('#mm-bag').addEventListener('click', () => this.toggleBags());
+    $('#mm-craft').addEventListener('click', () => this.toggleCrafting());
     // Drop an equipped piece dragged out of the paperdoll onto the bags window.
     const bagsEl = $('#bags');
     bagsEl.addEventListener('dragover', (e) => {
@@ -1625,6 +1646,12 @@ export class Hud {
         break;
       case 'vendor-window':
         this.closeVendor();
+        break;
+      case 'crafting-window':
+        this.closeCrafting();
+        break;
+      case 'daily-rewards-window':
+        this.closeDailyRewards();
         break;
       case 'housing-window':
         this.closeHousing();
@@ -2831,6 +2858,7 @@ export class Hud {
       return item ? itemDisplayName(item) : null;
     },
     refreshKeybindLabels: () => this.refreshKeybindLabels(),
+    openDailyRewards: () => this.openDailyRewards(),
     buildDropdown: (options, current, onChange, placeholder, a11y) =>
       this.buildDropdown(options, current, onChange, placeholder, a11y),
     setDropdownValue: (root, value) => this.setDropdownValue(root, value),
@@ -3126,6 +3154,14 @@ export class Hud {
         t('itemUi.tooltip.stat', {
           value: itemNumber(warfareRating),
           stat: t('hudChrome.warfare.ratingLabel'),
+        }),
+      )}</div>`;
+    }
+    if (item.hitRating) {
+      html += `<div class="tt-green">${esc(
+        t('itemUi.tooltip.stat', {
+          value: itemNumber(item.hitRating),
+          stat: t('hudChrome.hitRating.ratingLabel'),
         }),
       )}</div>`;
     }
@@ -4054,6 +4090,7 @@ export class Hud {
       ['#mm-quest', 'questlog', 'questUi.log.title'],
       ['#mm-map', 'map', 'hud.core.mobileMap'],
       ['#mm-bag', 'bags', 'itemUi.bags.title'],
+      ['#mm-craft', 'crafting', 'hudChrome.crafting.title'],
       ['#mm-arena', 'arena', 'hud.core.mobileArena'],
       ['#mm-leaderboard', 'leaderboard', 'game.leaderboard.title'],
       ['#mm-emote', 'emoteWheel', 'hudChrome.emoteWheel.label'],
@@ -6893,6 +6930,11 @@ export class Hud {
       ev.preventDefault();
       this.openChatPlayerContextMenu(name, ev.clientX, ev.clientY);
     });
+    // Left-click/tap opens the same menu as right-click: right-click alone is
+    // unreachable on mobile, where chat names were previously dead text.
+    sender.addEventListener('click', (ev) => {
+      this.openChatPlayerContextMenu(name, ev.clientX, ev.clientY);
+    });
     sender.addEventListener('keydown', (ev) => {
       if (ev.key !== 'Enter' && ev.key !== ' ') return;
       ev.preventDefault();
@@ -7394,13 +7436,23 @@ export class Hud {
   }
 
   showError(text: string): void {
-    this.errorEl.textContent = this.localizeErrorText(text);
+    const localized = this.localizeErrorText(text);
+    this.errorEl.textContent = localized;
     this.errorEl.style.opacity = '1';
     clearTimeout(this.errorTimer);
     this.errorTimer = window.setTimeout(() => {
       this.errorEl.style.opacity = '0';
     }, 1600);
     audio.error();
+    // Mirror into the chat log's system channel (the same one loot/level-up/death
+    // lines use) so the toast is not lost once it fades. The on-screen toast's
+    // own timing above is unchanged. Consecutive repeats (mashing a key while an
+    // error condition persists) are suppressed so the channel does not flood; a
+    // different error still logs normally.
+    if (shouldMirrorErrorToast(localized, this.lastMirroredErrorText)) {
+      this.log(localized, ERROR_LOG_COLOR);
+      this.lastMirroredErrorText = localized;
+    }
   }
 
   showBanner(text: string): void {
@@ -7874,10 +7926,13 @@ export class Hud {
     this.questDialogTrap?.focusFirst();
   }
 
-  private renderGossip(npc: Entity): void {
-    this.openGossipNpcId = npc.id;
-    this.openQuestDetailId = null;
-    const el = $('#quest-dialog');
+  // closeIfEmpty is set only when re-rendering after an accept/turn-in click:
+  // a fresh NPC visit (or navigating Back) always shows the greeting even with
+  // an empty menu, but once the player has just resolved the one thing the NPC
+  // had to offer (the common case for a tutorial giver with a single starter
+  // quest), an empty menu means there is nothing left to do here and the
+  // window should close itself instead of hanging open with just the greeting.
+  private renderGossip(npc: Entity, closeIfEmpty = false): void {
     const def = NPCS[npc.templateId];
     // accepted-but-unfinished quests are tracked in the quest log; the NPC
     // only offers new quests (at the giver) and turn-ins (at the turn-in NPC)
@@ -7899,6 +7954,35 @@ export class Hud {
         ),
       )
       .map((qp) => qp.questId);
+    const hasVendor = npc.vendorItems.length > 0;
+    const hasMarket = !!def?.market;
+    const hasRavenpost = !!def?.ravenpost;
+    const hasTrainer = !!def?.trainer;
+    const hasHearth = !!def?.hearth;
+    const hasDialogTree = !!def?.dialogTree;
+    const hasDelveBoard = Object.values(DELVES).some((d) => d.boardNpcId === npc.templateId);
+    const hasJournal = !!def?.journalLines && def.journalLines.length > 0;
+    if (
+      closeIfEmpty &&
+      gossipMenuIsEmpty({
+        questCount: interesting.length,
+        discussionCount: discussionQuests.length,
+        hasVendor,
+        hasMarket,
+        hasRavenpost,
+        hasTrainer,
+        hasHearth,
+        hasDialogTree,
+        hasDelveBoard,
+        hasJournal,
+      })
+    ) {
+      this.closeQuestDialog();
+      return;
+    }
+    this.openGossipNpcId = npc.id;
+    this.openQuestDetailId = null;
+    const el = $('#quest-dialog');
     markDialogRoot(el, { labelledBy: 'quest-dialog-title' });
     const npcName = def ? npcDisplayName(npc.templateId) : mobDisplayName(npc.templateId);
     const npcTitle = def ? npcDisplayTitle(def.id) : '';
@@ -7923,32 +8007,32 @@ export class Hud {
         html += `<button type="button" class="qd-list-item" data-discuss="${esc(qid)}" aria-label="${esc(t('questUi.dialog.discussQuestAria', { name: title }))}"><span class="gold">?</span> ${esc(t('questUi.dialog.discussQuest', { name: title }))}</button>`;
       }
     }
-    if (npc.vendorItems.length > 0) {
+    if (hasVendor) {
       html += `<button type="button" class="qd-list-item" data-vendor="1" aria-label="${esc(t('questUi.dialog.browseGoodsAria', { name: npcName }))}"><span class="quest-complete">$</span> ${esc(t('questUi.dialog.browseGoods'))}</button>`;
     }
-    if (def?.market) {
+    if (hasMarket) {
       html += `<button type="button" class="qd-list-item" data-market="1" aria-label="${esc(t('questUi.dialog.worldMarketAria'))}"><span class="gold">${svgIcon('market')}</span> ${esc(t('questUi.dialog.worldMarket'))}</button>`;
     }
-    if (def?.ravenpost) {
+    if (hasRavenpost) {
       html += `<button type="button" class="qd-list-item" data-mail="1" aria-label="${esc(t('mailUi.openButtonAria'))}"><span class="gold">${svgIcon('whisper')}</span> ${esc(t('mailUi.openButton'))}</button>`;
     }
-    if (def?.trainer) {
+    if (hasTrainer) {
       html += `<button type="button" class="qd-list-item" data-trainer="1" aria-label="${esc(t('questUi.dialog.trainSecondaryAria', { name: npcName }))}"><span class="quest-complete">+</span> ${esc(t('questUi.dialog.trainSecondary'))}</button>`;
     }
-    if (def?.hearth) {
+    if (hasHearth) {
       html += `<button type="button" class="qd-list-item" data-feed-hearth="1" aria-label="${esc(t('questUi.dialog.feedHearthAria'))}"><span class="gold">+</span> ${esc(t('questUi.dialog.feedHearth'))}</button>`;
     }
     // Branching heart-to-heart (PHAA-562): opens the NPC's dialogTree walker.
-    if (def?.dialogTree) {
+    if (hasDialogTree) {
       html += `<button type="button" class="qd-list-item" data-dialog="1" aria-label="${esc(t('questUi.dialog.chat'))}"><span class="gold">${svgIcon('whisper')}</span> ${esc(t('questUi.dialog.chat'))}</button>`;
     }
-    if (Object.values(DELVES).some((d) => d.boardNpcId === npc.templateId)) {
+    if (hasDelveBoard) {
       html += `<button type="button" class="qd-list-item" data-delve-board="1" aria-label="${esc(t('delveUi.board.openDelveAria', { name: npcName }))}"><span class="gold">${svgIcon('skull')}</span> ${esc(t('delveUi.board.openDelve'))}</button>`;
     }
     // Persistent journal/lore option (PHAA-480): unlike introLines, this is
     // never gated by the shown-once localStorage check and stays offered on
     // every visit.
-    if (def?.journalLines && def.journalLines.length > 0) {
+    if (hasJournal) {
       html += `<button type="button" class="qd-list-item" data-journal="1" aria-label="${esc(t('hudChrome.npcJournal.readAria', { name: npcName }))}"><span class="gold">${svgIcon('spellbook')}</span> ${esc(t('hudChrome.npcJournal.readLabel'))}</button>`;
     }
     el.innerHTML = html;
@@ -8127,7 +8211,7 @@ export class Hud {
             this.sim.reportTelemetry('quest_accept', {
               timeMs: performance.now() - this.questDialogOpenedAtMs,
             });
-            this.renderGossip(npc);
+            this.renderGossip(npc, true);
             return;
           }
           if (choice === 'refuse') {
@@ -8151,7 +8235,7 @@ export class Hud {
         this.sim.reportTelemetry('quest_accept', {
           timeMs: performance.now() - this.questDialogOpenedAtMs,
         });
-        this.renderGossip(npc);
+        this.renderGossip(npc, true);
       });
       el.appendChild(btn);
     } else if (state === 'ready') {
@@ -8164,7 +8248,7 @@ export class Hud {
         this.sim.reportTelemetry('quest_turnin', {
           timeMs: performance.now() - this.questDialogOpenedAtMs,
         });
-        this.renderGossip(npc);
+        this.renderGossip(npc, true);
       });
       el.appendChild(btn);
     }
@@ -8722,6 +8806,110 @@ export class Hud {
   }
 
   // -------------------------------------------------------------------------
+  // Crafting/enchanting (PHAA-818, adapts upstream #1708). No known-recipe or
+  // known-enchant gate (src/sim/crafting.ts, src/sim/enchanting.ts), so unlike
+  // Vendor this window is not NPC-anchored: it toggles from the minimap menu /
+  // keybind like Bags, following the Vendor rebuild-on-open recipe.
+  // -------------------------------------------------------------------------
+
+  private craftingWindowOpen = false;
+  private craftingFocusReturn: HTMLElement | null = null;
+
+  toggleCrafting(): void {
+    if (this.craftingWindowOpen) {
+      this.closeCrafting();
+      return;
+    }
+    this.openCrafting();
+  }
+
+  openCrafting(): void {
+    this.closeOtherWindows('#crafting-window');
+    this.craftingWindowOpen = true;
+    this.craftingFocusReturn = this.windowFocus('#crafting-window').captureFocus();
+    this.renderCrafting();
+  }
+
+  private renderCrafting(): void {
+    if (!this.craftingWindowOpen) return;
+    const refresh = (action: () => void) => {
+      action();
+      this.renderCrafting();
+      this.renderBags();
+    };
+    const deps: CraftingWindowDeps = {
+      ...this.presentationBag,
+      hideTooltip: () => this.hideTooltip(),
+      onCraft: (recipeId) => refresh(() => this.sim.craftItem(recipeId)),
+      onDisenchant: (itemId) => refresh(() => this.sim.disenchantItem(itemId)),
+      onApplyEnchant: (enchantId) => {
+        refresh(() => this.sim.applyEnchant(enchantId));
+        this.renderCharIfOpen();
+      },
+      onClose: () => this.closeCrafting(),
+      slotName: (slot) => itemSlotName(slot),
+    };
+    renderCraftingWindow($('#crafting-window'), buildCraftingView(this.sim), deps);
+  }
+
+  closeCrafting(): void {
+    $('#crafting-window').style.display = 'none';
+    this.craftingWindowOpen = false;
+    this.windowFocus('#crafting-window').restoreFocus(this.craftingFocusReturn);
+    this.craftingFocusReturn = null;
+    this.hideTooltip();
+  }
+
+  get craftingOpen(): boolean {
+    return this.craftingWindowOpen;
+  }
+
+  // -------------------------------------------------------------------------
+  // Daily rewards (PHAA-660, docs/design/daily-rewards.md). Opened only from a
+  // deliberate menu entry (never a login splash or a HUD badge/nag); the recipe
+  // is the Vendor window above (rebuild-on-open, not a per-frame hot painter).
+  // -------------------------------------------------------------------------
+
+  private dailyRewardsWindowOpen = false;
+  private dailyRewardsFocusReturn: HTMLElement | null = null;
+
+  openDailyRewards(): void {
+    this.closeOtherWindows('#daily-rewards-window');
+    this.dailyRewardsWindowOpen = true;
+    this.dailyRewardsFocusReturn = this.windowFocus('#daily-rewards-window').captureFocus();
+    this.renderDailyRewards();
+  }
+
+  private renderDailyRewards(): void {
+    if (!this.dailyRewardsWindowOpen) return;
+    renderDailyRewardsWindow(
+      $('#daily-rewards-window'),
+      buildDailyRewardsView(this.sim.dailyRewards, DAILY_REWARD_CYCLE, currentUtcDay()),
+      {
+        ...this.presentationBag,
+        items: ITEMS,
+        onClaim: () => {
+          this.sim.claimDailyReward();
+          this.renderDailyRewards();
+        },
+        onClose: () => this.closeDailyRewards(),
+      },
+    );
+  }
+
+  closeDailyRewards(): void {
+    $('#daily-rewards-window').style.display = 'none';
+    this.dailyRewardsWindowOpen = false;
+    this.windowFocus('#daily-rewards-window').restoreFocus(this.dailyRewardsFocusReturn);
+    this.dailyRewardsFocusReturn = null;
+    this.hideTooltip();
+  }
+
+  get dailyRewardsOpen(): boolean {
+    return this.dailyRewardsWindowOpen;
+  }
+
+  // -------------------------------------------------------------------------
   // Housing v0: the interact-driven homestead placement window (PHAA-405).
   // Opened by main.ts's interact-key handler when the viewer interacts with
   // their own plot's signpost (renderer.nearHousingPlot); there is no target
@@ -8863,6 +9051,7 @@ export class Hud {
   onInventoryChanged(): void {
     if ($('#bags').style.display !== 'none') this.renderBags();
     if (this.openVendorNpcId !== null) this.renderVendor();
+    if (this.craftingWindowOpen) this.renderCrafting();
     this.renderCharIfOpen();
   }
 
@@ -10604,6 +10793,57 @@ export class Hud {
     el.style.display = 'block';
   }
 
+  // Player Info outside interest range: the chat/roster menu's "View Profile" is
+  // available for a player who is not a live entity right now (not in range, or
+  // never seen this session), by falling back to the same public, unauthenticated
+  // character-sheet endpoint the crawlable /c/<name> page already serves. No new
+  // data is exposed: worn gear, wallet, and position stay on the proximity-gated
+  // live entity wire and are simply absent from this simpler card.
+  private openPlayerInfoByName(name: string): void {
+    fetch(`/api/public/characters/${encodeURIComponent(name)}/sheet`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((sheet: PublicCharacterSheet | null) => {
+        if (!sheet) {
+          this.showError(t('hud.system.playerInfoNotFound'));
+          return;
+        }
+        this.renderPlayerInfoCard(sheet);
+      })
+      .catch(() => this.showError(t('hud.system.playerInfoNotFound')));
+  }
+
+  private renderPlayerInfoCard(sheet: PublicCharacterSheet): void {
+    const el = $('#inspect-window');
+    this.closeOtherWindows('#inspect-window');
+    const className = classDisplayName(sheet.class);
+    const metaLine = t('itemUi.equipment.levelClass', {
+      level: formatNumber(sheet.level, { maximumFractionDigits: 0 }),
+      className,
+    });
+    const guildHtml = sheet.guild
+      ? `<div class="inspect-holder-sub">${esc(sheet.guild)}</div>`
+      : '';
+    el.innerHTML =
+      `<div class="panel-title"><span>${esc(t('character.profile'))}</span>` +
+      `<button type="button" class="x-btn" data-close aria-label="${esc(t('character.closeProfile'))}">${svgIcon('close')}</button></div>` +
+      `<div class="inspect-card">` +
+      portraitChipHtml({
+        cls: sheet.class,
+        skin: sheet.skin ?? 0,
+        name: sheet.name,
+        variant: 'lg',
+      }) +
+      `<div class="inspect-name">${esc(sheet.name)}</div>` +
+      `<div class="inspect-meta">${esc(metaLine)}</div>` +
+      guildHtml +
+      `</div>`;
+    hydratePortraits(el);
+    el.querySelector('[data-close]')?.addEventListener('click', () => {
+      el.style.display = 'none';
+    });
+    el.style.display = 'block';
+  }
+
   // One read-only equipment row for the inspect window: icon, slot name, and the
   // equipped item (quality-tinted) with its tooltip. Unlike the character window's
   // own paperdoll row, there are no unequip / drag affordances (another player's
@@ -10719,15 +10959,15 @@ export class Hud {
       alreadyGuilded,
       canReport: !!this.reportHooks?.submitByName,
     });
-    // If the player is in view we know their class+skin, so show a portrait and
-    // a "View Profile" entry; otherwise the menu is name-only as before.
+    // If the player is in view we know their class+skin, so show a portrait;
+    // otherwise the title is name-only. Either way, "View Profile" is offered:
+    // in range it opens the live inspect card, out of range it falls back to
+    // the public character sheet (Player Info outside interest range).
     const livePidForMenu = this.playerPidByName(name);
     const ent = livePidForMenu !== null ? this.sim.entities.get(livePidForMenu) : undefined;
     const entCls = ent && ent.kind === 'player' ? (ent.templateId as PlayerClass) : null;
     const titleHtml = `<div class="ctx-title ctx-title-player">${entCls ? portraitChipHtml({ cls: entCls, skin: ent?.skin ?? 0, name, variant: 'sm' }) : ''}<span class="ctx-title-name">${esc(name)}</span></div>`;
-    const inspectHtml = entCls
-      ? `<div class="ctx-item" data-act="inspect">${esc(t('character.viewProfile'))}</div>`
-      : '';
+    const inspectHtml = `<div class="ctx-item" data-act="inspect">${esc(t('character.viewProfile'))}</div>`;
     el.innerHTML =
       titleHtml +
       inspectHtml +
@@ -10739,6 +10979,7 @@ export class Hud {
       const livePid = this.playerPidByName(name);
       if (act === 'inspect') {
         if (livePid !== null) this.openInspect(livePid);
+        else this.openPlayerInfoByName(name);
       } else if (act === 'whisper') this.startWhisper(name);
       else if (act === 'invite') {
         if (livePid !== null) this.sim.partyInvite(livePid);

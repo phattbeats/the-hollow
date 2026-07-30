@@ -14,6 +14,7 @@ import {
   NPCS,
   QUEST_ORDER,
   QUESTS,
+  RECIPES,
   REWARD_ARCHETYPE,
   ROADS,
   WORLD_MAX_X,
@@ -22,7 +23,9 @@ import {
   WORLD_MIN_Z,
   ZONES,
 } from '../src/sim/data';
+import { DISENCHANT_DUST_ITEM_ID } from '../src/sim/enchanting';
 import { canEquipItem } from '../src/sim/equipment_rules';
+import { NODE_HARVEST_TABLE } from '../src/sim/gathering';
 import { ALL_CLASSES, MAX_LEVEL, XP_TABLE, type ZoneDef } from '../src/sim/types';
 import { terrainHeight, WATER_LEVEL } from '../src/sim/world';
 
@@ -74,7 +77,22 @@ describe('content referential integrity', () => {
         );
         const fromGround = GROUND_OBJECTS.some((g) => g.itemId === obj.itemId);
         const fromScript = SCRIPTED_COLLECT_ITEMS.has(obj.itemId);
-        if (!fromLoot && !fromGround && !fromScript)
+        // Gathering (world node harvest, PHAA-503), crafting (recipe output,
+        // PHAA-574), and disenchanting (enchanting-dust salvage, PHAA-649):
+        // none of these route through mob loot or a ground pickup.
+        const fromGathering = Object.values(NODE_HARVEST_TABLE).some(
+          (n) => n.itemId === obj.itemId,
+        );
+        const fromCrafting = RECIPES.some((r) => r.resultItemId === obj.itemId);
+        const fromDisenchant = obj.itemId === DISENCHANT_DUST_ITEM_ID;
+        if (
+          !fromLoot &&
+          !fromGround &&
+          !fromScript &&
+          !fromGathering &&
+          !fromCrafting &&
+          !fromDisenchant
+        )
           problems.push(`${q.id}: ${obj.itemId} has no acquisition source`);
       }
     }

@@ -5,9 +5,8 @@
 // translate that key. The build (scripts/i18n_build.mjs) unflattens this map and
 // overlays it onto nested `en` to produce the dense resolved table; any key here
 // must be a real `en` leaf path: keys are typed `Partial<Record<TranslationKey,
-// string>>` so tsc rejects a structurally-wrong key, plus
-// tests/i18n_overlay_key_membership.test.ts catches a typo'd entity id the
-// template-literal key type cannot. Overlays are SPARSE: an
+// string>>` against the build-generated flat key union, so tsc rejects any key
+// that is not an exact `en` leaf path, typo'd entity ids included. Overlays are SPARSE: an
 // untranslated key is omitted and the build fills it from English, then the
 // registry (src/ui/i18n.status.json) marks it `pending`.
 
@@ -1589,7 +1588,8 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': 'Codicia por {item}',
   'itemUi.lootRoll.passAria': 'Pasar por {item}',
   'itemUi.lootRoll.everyonePassed': 'Todos pasaron por {item}.',
-  'itemUi.lootRoll.winnerOffline': 'El ganador de {item} estaba desconectado; se devolvió al cadáver.',
+  'itemUi.lootRoll.winnerOffline':
+    'El ganador de {item} estaba desconectado; se devolvió al cadáver.',
   'entities.abilities.heroic_strike.name': 'Golpe heroico',
   'entities.abilities.heroic_strike.description':
     'Un ataque poderoso que aumenta el daño cuerpo a cuerpo en {damage}. Se activa en tu siguiente golpe.',
@@ -2133,6 +2133,11 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'entities.items.imperial_gold_armor_plate.name': 'Oro imperial',
   'entities.items.vanguard_azure_armor_plate.name': 'Vanguardia azur',
   'entities.items.vanguard_chrome_armor_plate.name': 'Vanguardia cromada',
+  'entities.items.enchanting_dust.name': 'Polvo de Encantamiento',
+  'entities.items.scroll_minor_might.name': 'Pergamino de Fuerza Menor',
+  'entities.items.scroll_minor_vigor.name': 'Pergamino de Vigor Menor',
+  'entities.items.scroll_minor_focus.name': 'Pergamino de Enfoque Menor',
+  'entities.items.scroll_minor_agility.name': 'Pergamino de Agilidad Menor',
   'entities.items.deacons_cleaver.name': 'Cuchilla del diácono',
   'entities.items.staff_of_drowned_prayers.name': 'Bastón de plegarias ahogadas',
   'entities.items.mistbinder_kris.name': 'Cris atanieblas',
@@ -3308,7 +3313,6 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/s',
   'hudChrome.meters.perSecondRow': '{total} ({rate})',
   'hudChrome.meters.seconds': '{s} s',
-  'hudChrome.mobile.autorun': 'Carrera automática',
   'hudChrome.mobile.haptics': 'Vibración',
   'hudChrome.mobile.hapticsOff': 'Vibración desactivada',
   'hudChrome.mobile.jump': 'Saltar',

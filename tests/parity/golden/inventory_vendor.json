@@ -35,7 +35,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "73123fcd",
+      "state": "4a1e094c",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -58,9 +58,11 @@
           "companionUpgrades": {},
           "copper": 1000,
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -129,7 +131,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "fece102f",
+      "state": "58cd5150",
       "events": "d5013272",
       "rng": {
         "draws": 0,
@@ -152,6 +154,7 @@
           "companionUpgrades": {},
           "copper": 910,
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -243,6 +246,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -325,7 +329,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "f9565305",
+      "state": "16929cba",
       "events": "ce6bdc58",
       "rng": {
         "draws": 0,
@@ -348,6 +352,7 @@
           "companionUpgrades": {},
           "copper": 910,
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -439,6 +444,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -526,7 +532,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "0ca388a9",
+      "state": "49f47796",
       "events": "dafb53c2",
       "rng": {
         "draws": 0,
@@ -549,6 +555,7 @@
           "companionUpgrades": {},
           "copper": 910,
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -640,6 +647,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -727,7 +735,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "6d6a4f5d",
+      "state": "d6ef537e",
       "events": "1a893eff",
       "rng": {
         "draws": 0,
@@ -750,6 +758,7 @@
           "companionUpgrades": {},
           "copper": 910,
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -841,6 +850,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -931,7 +941,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "6937f9bb",
+      "state": "b92a209e",
       "events": "ea1b970d",
       "rng": {
         "draws": 0,
@@ -954,6 +964,7 @@
           "companionUpgrades": {},
           "copper": 910,
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -1045,6 +1056,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1140,7 +1152,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "3ce8c80f",
+      "state": "70eb0b76",
       "events": "79c74e16",
       "rng": {
         "draws": 0,
@@ -1163,6 +1175,7 @@
           "companionUpgrades": {},
           "copper": 910,
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -1254,6 +1267,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1346,7 +1360,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "f8fb66a1",
+      "state": "45e8bc3c",
       "events": "ac29292d",
       "rng": {
         "draws": 0,
@@ -1369,6 +1383,7 @@
           "companionUpgrades": {},
           "copper": 910,
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -1460,6 +1475,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1564,7 +1580,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "66728c81",
+      "state": "94c03536",
       "events": "1d17ffb5",
       "rng": {
         "draws": 0,
@@ -1587,6 +1603,7 @@
           "companionUpgrades": {},
           "copper": 910,
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -1678,6 +1695,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1786,7 +1804,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "ecbc4ec5",
+      "state": "11438e70",
       "events": "c8296386",
       "rng": {
         "draws": 0,
@@ -1809,6 +1827,7 @@
           "companionUpgrades": {},
           "copper": 914,
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -1900,6 +1919,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -2014,7 +2034,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "56ead8cb",
+      "state": "f4fdf788",
       "events": "3521acd1",
       "rng": {
         "draws": 0,
@@ -2037,6 +2057,7 @@
           "companionUpgrades": {},
           "copper": 924,
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -2128,6 +2149,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -2242,7 +2264,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "58bfedaa",
+      "state": "78b9b00f",
       "events": "4a1c576f",
       "rng": {
         "draws": 0,
@@ -2265,6 +2287,7 @@
           "companionUpgrades": {},
           "copper": 920,
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -2356,6 +2379,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -2474,7 +2498,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "58bfedaa",
+      "state": "78b9b00f",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -2497,6 +2521,7 @@
           "companionUpgrades": {},
           "copper": 920,
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "col_anglers_haul",
@@ -2588,6 +2613,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",

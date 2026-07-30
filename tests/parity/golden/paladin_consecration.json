@@ -15,7 +15,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "394803c1",
+      "state": "3578491a",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -38,9 +38,11 @@
           "cls": "paladin",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -110,7 +112,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 409,
-      "state": "95383615",
+      "state": "8782dfe2",
       "events": "a769ecd0",
       "rng": {
         "draws": 6,
@@ -121,7 +123,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 409,
-      "state": "f51331dc",
+      "state": "85eeedf3",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -132,7 +134,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 409,
-      "state": "0543ddd6",
+      "state": "68401b61",
       "events": "91aa8549",
       "rng": {
         "draws": 88,
@@ -143,7 +145,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 409,
-      "state": "7e3c32bd",
+      "state": "41b60a6a",
       "events": "741638a5",
       "rng": {
         "draws": 178,
@@ -154,7 +156,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 409,
-      "state": "7775a509",
+      "state": "ee8b7466",
       "events": "17332fa5",
       "rng": {
         "draws": 287,
@@ -165,7 +167,7 @@
       "tick": 120,
       "time": 6,
       "nextId": 409,
-      "state": "0bc7cbb4",
+      "state": "0f7355eb",
       "events": "741638a5",
       "rng": {
         "draws": 404,
@@ -176,7 +178,7 @@
       "tick": 140,
       "time": 7,
       "nextId": 409,
-      "state": "1da7e1b7",
+      "state": "82f4edf0",
       "events": "6b333c69",
       "rng": {
         "draws": 520,
@@ -187,7 +189,7 @@
       "tick": 160,
       "time": 8,
       "nextId": 409,
-      "state": "9813e619",
+      "state": "b488b596",
       "events": "741638a5",
       "rng": {
         "draws": 643,
@@ -198,7 +200,7 @@
       "tick": 180,
       "time": 9,
       "nextId": 409,
-      "state": "7ebc96b6",
+      "state": "3b5e7001",
       "events": "9746e53b",
       "rng": {
         "draws": 789,
@@ -209,7 +211,7 @@
       "tick": 200,
       "time": 10,
       "nextId": 409,
-      "state": "4584db39",
+      "state": "11eedaf6",
       "events": "741638a5",
       "rng": {
         "draws": 929,
@@ -220,7 +222,7 @@
       "tick": 201,
       "time": 10.05,
       "nextId": 409,
-      "state": "eaf98ea5",
+      "state": "732819d2",
       "events": "741638a5",
       "rng": {
         "draws": 930,
@@ -246,6 +248,7 @@
             "damageDealt": 170,
             "damageTaken": 26
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -291,6 +294,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
