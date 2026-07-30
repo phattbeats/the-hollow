@@ -535,7 +535,7 @@
       "tick": 470,
       "time": 23.5,
       "nextId": 411,
-      "state": "ebdde5cb",
+      "state": "1bf66749",
       "events": "06d065d3",
       "rng": {
         "draws": 2238,
@@ -546,7 +546,7 @@
       "tick": 480,
       "time": 24,
       "nextId": 411,
-      "state": "a0ee0af7",
+      "state": "611f2ab5",
       "events": "b1c9d11a",
       "rng": {
         "draws": 2291,
@@ -557,7 +557,7 @@
       "tick": 490,
       "time": 24.5,
       "nextId": 411,
-      "state": "a1f1bcdc",
+      "state": "e240ec04",
       "events": "d526d29d",
       "rng": {
         "draws": 2336,
@@ -568,7 +568,7 @@
       "tick": 500,
       "time": 25,
       "nextId": 411,
-      "state": "1eb2c0a3",
+      "state": "51019be1",
       "events": "da576d1f",
       "rng": {
         "draws": 2388,
@@ -579,7 +579,7 @@
       "tick": 510,
       "time": 25.5,
       "nextId": 411,
-      "state": "586929b7",
+      "state": "fe2e2675",
       "events": "da576d1f",
       "rng": {
         "draws": 2436,
@@ -590,7 +590,7 @@
       "tick": 520,
       "time": 26,
       "nextId": 411,
-      "state": "6534bb9b",
+      "state": "0b8a9299",
       "events": "da576d1f",
       "rng": {
         "draws": 2500,
@@ -601,7 +601,7 @@
       "tick": 530,
       "time": 26.5,
       "nextId": 411,
-      "state": "d995d039",
+      "state": "28cba573",
       "events": "410c51b1",
       "rng": {
         "draws": 2552,
@@ -612,7 +612,7 @@
       "tick": 540,
       "time": 27,
       "nextId": 411,
-      "state": "bf4aec31",
+      "state": "8624320b",
       "events": "a104079c",
       "rng": {
         "draws": 2607,
@@ -623,7 +623,7 @@
       "tick": 550,
       "time": 27.5,
       "nextId": 411,
-      "state": "e018bd83",
+      "state": "7bd56741",
       "events": "1c7842d8",
       "rng": {
         "draws": 2658,
@@ -634,7 +634,7 @@
       "tick": 560,
       "time": 28,
       "nextId": 411,
-      "state": "f3bdae75",
+      "state": "1b88fb7f",
       "events": "59ed2089",
       "rng": {
         "draws": 2713,
@@ -645,7 +645,7 @@
       "tick": 570,
       "time": 28.5,
       "nextId": 411,
-      "state": "7b2440d4",
+      "state": "69dd783c",
       "events": "59ed2089",
       "rng": {
         "draws": 2769,
@@ -656,7 +656,7 @@
       "tick": 573,
       "time": 28.65,
       "nextId": 411,
-      "state": "e37ed01f",
+      "state": "a1e6f67d",
       "events": "741638a5",
       "rng": {
         "draws": 2797,
@@ -754,6 +754,13 @@
           },
           "gatheringProficiency": {},
           "honor": 20,
+          "honorArenaDaily": {
+            "fiestaCompletionsByOpponent": {},
+            "fiestaKillsByVictim": {
+              "409": 1
+            },
+            "winsByOpponent": {}
+          },
           "lastZoneId": "the_hollow_reaches",
           "lifetimeHonor": 20,
           "nodeHarvestReadyAt": {},

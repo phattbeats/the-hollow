@@ -1295,7 +1295,7 @@
       "tick": 101,
       "time": 5.05,
       "nextId": 411,
-      "state": "e772a825",
+      "state": "c0c71233",
       "events": "612c637d",
       "rng": {
         "draws": 310,
@@ -1392,6 +1392,13 @@
           },
           "gatheringProficiency": {},
           "honor": 20,
+          "honorArenaDaily": {
+            "fiestaCompletionsByOpponent": {},
+            "fiestaKillsByVictim": {
+              "409": 1
+            },
+            "winsByOpponent": {}
+          },
           "lastZoneId": "the_hollow_reaches",
           "lifetimeHonor": 20,
           "nodeHarvestReadyAt": {},
@@ -1908,7 +1915,7 @@
       "tick": 125,
       "time": 6.25,
       "nextId": 411,
-      "state": "37d6d66b",
+      "state": "e55b3685",
       "events": "741638a5",
       "rng": {
         "draws": 434,
@@ -1919,7 +1926,7 @@
       "tick": 142,
       "time": 7.1,
       "nextId": 411,
-      "state": "a67446c7",
+      "state": "f7f4c9a1",
       "events": "741638a5",
       "rng": {
         "draws": 528,
@@ -2016,6 +2023,13 @@
           },
           "gatheringProficiency": {},
           "honor": 20,
+          "honorArenaDaily": {
+            "fiestaCompletionsByOpponent": {},
+            "fiestaKillsByVictim": {
+              "409": 1
+            },
+            "winsByOpponent": {}
+          },
           "lastZoneId": "the_hollow_reaches",
           "lifetimeHonor": 20,
           "nodeHarvestReadyAt": {},
