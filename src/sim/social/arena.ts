@@ -855,7 +855,7 @@ export function readyArenaFighter(ctx: SimContext, e: Entity, opts: { clearPrep:
   }
   const meta = ctx.players.get(e.id);
   if (meta) {
-    recalcPlayerStats(e, meta.cls, meta.equipment, ctx.playerMods(meta));
+    recalcPlayerStats(e, meta.cls, meta.equipment, ctx.playerMods(meta), meta.enchants);
     // A movement key held when the fighter died (or when the bout started) must not
     // carry over into the reset body, or it ghost-walks with no input held (upstream
     // #1723, same class as the death/respawn sites; in-place to keep the reference).

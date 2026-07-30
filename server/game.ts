@@ -50,6 +50,7 @@ import {
   closePlaySession,
   grantAccountMechChroma,
   insertChatLogs,
+  loadGreenpawCuttingState,
   loadGreenpawHearthState,
   loadHomesteadState,
   loadHousingState,
@@ -62,6 +63,7 @@ import {
   saveCharacterAndMailState,
   saveCharacterAndMarketState,
   saveCharacterState,
+  saveGreenpawCuttingState,
   saveGreenpawHearthState,
   saveHomesteadState,
   saveHousingState,
@@ -774,6 +776,9 @@ export class GameServer {
   // The sim's homestead change counter as of the last persisted save; polled
   // each tick so a claim persists promptly, not only on the autosave.
   private lastSavedHomesteadRev = 0;
+  // Serializes writes of the single global Greenpaw's cutting blob (PHAA-751,
+  // same freshness-order rationale as the market writer above).
+  private readonly enqueueGreenpawCuttingWrite = createSerialWriter();
   private restartCountdownStartedAt: number | null = null;
   private readonly restartCountdownTimers: NodeJS.Timeout[] = [];
   private readonly startedAt = Date.now();
@@ -1220,6 +1225,7 @@ export class GameServer {
             void this.saveMarket();
             void this.saveMail();
             void this.saveGreenpawHearth();
+            void this.saveGreenpawCutting();
           }
           // Housing persists on change (claims are rare and the blob is tiny).
           if (this.sim.housingRev !== this.lastSavedHousingRev) {
@@ -2120,6 +2126,28 @@ export class GameServer {
     }
   }
 
+  // Greenpaw's cutting (PHAA-751) is shared global state like greenpaw_hearth:
+  // one JSONB blob under the world_state 'greenpaw_cutting' key. Growth drifts
+  // every tick like hunger/smoke, so this loads at boot and saves on the
+  // autosave cadence, not on a rev-diff.
+  async loadGreenpawCutting(): Promise<void> {
+    try {
+      this.sim.loadGreenpawCutting(await loadGreenpawCuttingState());
+    } catch (err) {
+      console.error('failed to load greenpaw cutting:', err);
+    }
+  }
+
+  async saveGreenpawCutting(): Promise<void> {
+    try {
+      await this.enqueueGreenpawCuttingWrite(() =>
+        saveGreenpawCuttingState(this.sim.serializeGreenpawCutting()),
+      );
+    } catch (err) {
+      console.error('failed to save greenpaw cutting:', err);
+    }
+  }
+
   // Homestead v0 is shared global state like housing: one JSONB blob under the
   // world_state 'homestead' key, loaded at boot and saved on change.
   async loadHomestead(): Promise<void> {
@@ -2689,6 +2717,15 @@ export class GameServer {
         break;
       case 'harvestNode':
         if (typeof msg.node === 'string') sim.harvestNode(msg.node, pid);
+        break;
+      case 'craftItem':
+        if (typeof msg.recipe === 'string') sim.craftItem(msg.recipe, pid);
+        break;
+      case 'disenchantItem':
+        if (typeof msg.itemId === 'string') sim.disenchantItem(msg.itemId, pid);
+        break;
+      case 'applyEnchant':
+        if (typeof msg.enchantId === 'string') sim.applyEnchant(msg.enchantId, pid);
         break;
       case 'readCollectible':
         if (typeof msg.collectibleId === 'string') sim.readCollectible(msg.collectibleId, pid);
@@ -3727,6 +3764,8 @@ export class GameServer {
     maybe('dmarks', this.sim.delveMarksFor(anchorSession.pid));
     maybe('dcomp', this.sim.companionUpgradesFor(anchorSession.pid));
     maybe('gprof', this.sim.gatheringProficiencyFor(anchorSession.pid));
+    maybe('cprof', this.sim.craftProficiencyFor(anchorSession.pid));
+    maybe('ench', this.sim.enchantsFor(anchorSession.pid));
     // Per-viewer gather-node cooldown ids (PHAA-618): the nodes NOT harvestable
     // by this player right now, so the online client's nodeHarvestableByMe (and
     // the minimap gather dots it drives) match the offline Sim instead of the

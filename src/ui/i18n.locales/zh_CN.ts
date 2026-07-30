@@ -5,9 +5,8 @@
 // translate that key. The build (scripts/i18n_build.mjs) unflattens this map and
 // overlays it onto nested `en` to produce the dense resolved table; any key here
 // must be a real `en` leaf path: keys are typed `Partial<Record<TranslationKey,
-// string>>` so tsc rejects a structurally-wrong key, plus
-// tests/i18n_overlay_key_membership.test.ts catches a typo'd entity id the
-// template-literal key type cannot. Overlays are SPARSE: an
+// string>>` against the build-generated flat key union, so tsc rejects any key
+// that is not an exact `en` leaf path, typo'd entity ids included. Overlays are SPARSE: an
 // untranslated key is omitted and the build fills it from English, then the
 // registry (src/ui/i18n.status.json) marks it `pending`.
 
@@ -1034,6 +1033,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hud.system.ignoringChat': '已屏蔽来自 {name} 的聊天。',
   'hud.system.noLongerIgnoring': '不再屏蔽 {name}。',
   'hud.system.playerNotNearby': '该玩家不在附近。',
+  'hud.system.playerInfoNotFound': '未找到该名称的角色。',
   'hud.system.duelCountdown': '决斗将在 {seconds} 秒后开始...',
   'hud.system.duelEndBanner': '{winner} 在决斗中击败了 {loser}！',
   'hud.system.duelEndLog': '{winner} 在决斗中击败了 {loser}。',
@@ -2064,6 +2064,15 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.items.imperial_gold_armor_plate.name': '帝王金',
   'entities.items.vanguard_azure_armor_plate.name': '先锋蔚蓝',
   'entities.items.vanguard_chrome_armor_plate.name': '先锋铬银',
+  'entities.items.enchanting_dust.name': '附魔尘',
+  'entities.items.scroll_minor_might.name': '微弱力量卷轴',
+  'entities.items.scroll_minor_vigor.name': '微弱活力卷轴',
+  'entities.items.scroll_minor_focus.name': '微弱专注卷轴',
+  'entities.items.scroll_minor_agility.name': '微弱敏捷卷轴',
+  'entities.enchants.enchant_minor_might.name': '微弱力量',
+  'entities.enchants.enchant_minor_vigor.name': '微弱活力',
+  'entities.enchants.enchant_minor_focus.name': '微弱专注',
+  'entities.enchants.enchant_minor_agility.name': '微弱敏捷',
   'entities.items.deacons_cleaver.name': '执事劈刀',
   'entities.items.staff_of_drowned_prayers.name': '溺亡祈祷法杖',
   'entities.items.mistbinder_kris.name': '缚雾短剑',
@@ -2380,6 +2389,14 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.tidewatcher_ondrel.title': '守潮者',
   'entities.npcs.tidewatcher_ondrel.greeting':
     '潭水饮尽月光，{className}，又将溺者吐还。我守望那道门户已有三十夜——而今夜，它开了。',
+  'entities.quests.q_prof_intro.title': '值得学习的手艺',
+  'entities.quests.q_prof_intro.text':
+    '每门手艺都从指甲缝里的泥土开始，{playerName}。去镇东的林地里采集2条蜘蛛腿，然后到我的锻炉前打一件新兵束衣；打造它所需的骨骼碎片沿途很容易找到。再给我带些值得分解出奥术尘埃的东西。让我看看你能采集、能打造、也能分解，我就让你见识手艺的价值。',
+  'entities.quests.q_prof_intro.completion':
+    '这才是值得学习的手艺。多在锻炉边下功夫，{playerName}，总有一天你能一口气钉马掌又附魔利刃。',
+  'entities.quests.q_prof_intro.objectives.0.label': '采集蜘蛛腿',
+  'entities.quests.q_prof_intro.objectives.1.label': '打造新兵束衣',
+  'entities.quests.q_prof_intro.objectives.2.label': '附魔尘埃',
   'entities.quests.q_wolves.title': '门前群狼',
   'entities.quests.q_wolves.text':
     '森林狼已经敢扑咬北路旅人，{playerName}。击败8只森林狼，让东溪能松一口气。',
@@ -3392,7 +3409,6 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/秒',
   'hudChrome.meters.perSecondRow': '{total}（{rate}）',
   'hudChrome.meters.seconds': '{s}秒',
-  'hudChrome.mobile.autorun': '自动奔跑',
   'hudChrome.mobile.haptics': '震动反馈',
   'hudChrome.mobile.hapticsOff': '震动反馈：关',
   'hudChrome.mobile.jump': '跳跃',
@@ -4694,6 +4710,9 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.palefeeder.name': '苍白噬光者',
   'entities.mobs.rootmaw.name': '根颚兽',
   'entities.mobs.the_witness_root.name': '见证之根',
+  'entities.mobs.greenpaw_cutting_dawn.name': '绿掌的插枝',
+  'entities.mobs.greenpaw_cutting_moss.name': '绿掌的插枝',
+  'entities.mobs.greenpaw_cutting_ash.name': '绿掌的插枝',
   'entities.npcs.brother_halven.greeting': '下方的圣物库又移位了。',
   'entities.npcs.brother_halven.name': '哈尔文修士',
   'entities.npcs.brother_halven.title': '圣物库守护人',
@@ -4887,6 +4906,11 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'sim.collections.notFound': '那个东西不存在。',
   'sim.collections.tooFar': '太远了。',
   'sim.gathering.nothingToHarvest': '这具尸体没有什么可以采集的。',
+  'sim.greenpawCutting.alreadyPlanted': '你已经种下了插枝。给它一些时间成长。',
+  'sim.greenpawCutting.needHomestead': '你需要先拥有一块宅地才能种下它。',
+  'sim.greenpawCutting.tooFar': '你必须在自己的宅地才能种下它。',
+  'sim.greenpawCutting.planted': '你在自己的宅地种下了插枝。耐心等待吧。',
+  'sim.greenpawCutting.grown': '你的插枝已经长成了一只伙伴。它现在会跟随你。',
   'sim.dailyRewards.claimed': '你领取了每日奖励。',
   'sim.hearth.emberbulb1': '这才叫柴火……瞧瞧她喘气的样子，伙计……',
   'sim.hearth.emberbulb2': '炉子慢慢地、干干净净地吃下去，她就爱这样……',
@@ -5387,6 +5411,27 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.gathering.spore': '孢子',
   'hudChrome.gathering.toolTier': '{tier}级工具',
   'hudChrome.gathering.toolNone': '无工具',
+  'hudChrome.crafting.title': '制作',
+  'hudChrome.crafting.close': '关闭制作',
+  'hudChrome.crafting.tabRecipes': '配方',
+  'hudChrome.crafting.tabEnchants': '附魔',
+  'hudChrome.crafting.craftButton': '制作',
+  'hudChrome.crafting.craftAria': '制作{item}',
+  'hudChrome.crafting.disenchantSectionTitle': '分解',
+  'hudChrome.crafting.disenchantButton': '分解',
+  'hudChrome.crafting.disenchantAria': '分解{item}',
+  'hudChrome.crafting.disenchantEmpty': '没有可分解的物品。',
+  'hudChrome.crafting.applyButton': '施加',
+  'hudChrome.crafting.applyAria': '将{enchant}施加到{slot}',
+  'hudChrome.crafting.activeTag': '已生效',
+  'hudChrome.crafting.needScroll': '需要{scroll}',
+  'hudChrome.crafting.craftType.weaponcrafting': '武器锻造',
+  'hudChrome.crafting.craftType.armorcrafting': '护甲锻造',
+  'hudChrome.crafting.craftType.tailoring': '裁缝',
+  'hudChrome.crafting.craftType.leatherworking': '制皮',
+  'hudChrome.crafting.craftType.cooking': '烹饪',
+  'hudChrome.crafting.craftType.alchemy': '炼金',
+  'hudChrome.crafting.craftType.enchanting': '附魔',
   'hudChrome.warfare.ratingLabel': '战意',
   'hudChrome.warfare.balance': '荣誉：{amount}',
   'hudChrome.warfare.honorAmount': '{amount} 荣誉',
@@ -5397,6 +5442,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.warfare.reasons.fiestaKill': '狂欢击倒',
   'hudChrome.warfare.reasons.fiestaComplete': '狂欢比赛',
   'hudChrome.warfare.reasons.fiestaWin': '狂欢胜利',
+  'hudChrome.hitRating.ratingLabel': '命中等级',
   'entities.npcs.bramble.name': '布兰博',
   'entities.npcs.bramble.title': '荣誉军需官',
   'entities.npcs.bramble.greeting': '沙场记得每一场胜利。好好花你的荣誉吧。',

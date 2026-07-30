@@ -5,9 +5,8 @@
 // translate that key. The build (scripts/i18n_build.mjs) unflattens this map and
 // overlays it onto nested `en` to produce the dense resolved table; any key here
 // must be a real `en` leaf path: keys are typed `Partial<Record<TranslationKey,
-// string>>` so tsc rejects a structurally-wrong key, plus
-// tests/i18n_overlay_key_membership.test.ts catches a typo'd entity id the
-// template-literal key type cannot. Overlays are SPARSE: an
+// string>>` against the build-generated flat key union, so tsc rejects any key
+// that is not an exact `en` leaf path, typo'd entity ids included. Overlays are SPARSE: an
 // untranslated key is omitted and the build fills it from English, then the
 // registry (src/ui/i18n.status.json) marks it `pending`.
 
@@ -1087,6 +1086,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hud.system.ignoringChat': '{name}のチャットを無視します。',
   'hud.system.noLongerIgnoring': '{name}の無視を解除しました。',
   'hud.system.playerNotNearby': 'そのプレイヤーは近くにいません。',
+  'hud.system.playerInfoNotFound': 'その名前のキャラクターは見つかりませんでした。',
   'hud.system.duelCountdown': '決闘開始まで{seconds}秒...',
   'hud.system.duelEndBanner': '{winner}が決闘で{loser}を倒しました！',
   'hud.system.duelEndLog': '{winner}が決闘で{loser}を倒しました。',
@@ -2163,6 +2163,15 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.items.imperial_gold_armor_plate.name': 'インペリアルゴールド',
   'entities.items.vanguard_azure_armor_plate.name': 'ヴァンガードアズール',
   'entities.items.vanguard_chrome_armor_plate.name': 'ヴァンガードクローム',
+  'entities.items.enchanting_dust.name': '付呪の粉塵',
+  'entities.items.scroll_minor_might.name': '小さな力の巻物',
+  'entities.items.scroll_minor_vigor.name': '小さな活力の巻物',
+  'entities.items.scroll_minor_focus.name': '小さな集中の巻物',
+  'entities.items.scroll_minor_agility.name': '小さな俊敏の巻物',
+  'entities.enchants.enchant_minor_might.name': '小さな力',
+  'entities.enchants.enchant_minor_vigor.name': '小さな活力',
+  'entities.enchants.enchant_minor_focus.name': '小さな集中',
+  'entities.enchants.enchant_minor_agility.name': '小さな俊敏',
   'entities.items.deacons_cleaver.name': '助祭の肉切り',
   'entities.items.staff_of_drowned_prayers.name': '溺れた祈りの杖',
   'entities.items.mistbinder_kris.name': '霧縛りのクリス',
@@ -2487,6 +2496,14 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.tidewatcher_ondrel.title': '潮見の番人',
   'entities.npcs.tidewatcher_ondrel.greeting':
     'この沼は月光を飲み干し、{className}よ、溺れし者を吐き返すのだ。私はあの門を三十夜も見張ってきた——そして今宵、門は開いている。',
+  'entities.quests.q_prof_intro.title': '学ぶ価値のある手仕事',
+  'entities.quests.q_prof_intro.text':
+    'どんな手仕事も爪の間の泥から始まるものだ、{playerName}。町の東の茂みでクモの脚を2本集めてこい。それから鍛冶場で新兵の上着を作るんだ。材料の骨片は道中で拾えば十分だろう。ついでに、分解して魔力の粉塵になりそうな物も持ってきてくれ。集め、作り、そして分解できることを見せてくれたら、手仕事の値打ちを教えてやろう。',
+  'entities.quests.q_prof_intro.completion':
+    'それでこそ学ぶ価値のある手仕事だ。鍛冶場に通い続ければ、{playerName}、いつか蹄鉄を打つのと剣にエンチャントをかけるのを息もつかせず両方こなせるようになるだろう。',
+  'entities.quests.q_prof_intro.objectives.0.label': 'クモの脚を採集',
+  'entities.quests.q_prof_intro.objectives.1.label': '新兵の上着を製作',
+  'entities.quests.q_prof_intro.objectives.2.label': '魔力の粉塵',
   'entities.quests.q_wolves.title': '戸口の狼',
   'entities.quests.q_wolves.text':
     '森の狼が北の道で旅人に牙をむけています、{playerName}。8頭を討ち、イーストブルックに息をつかせてください。',
@@ -3535,7 +3552,6 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/秒',
   'hudChrome.meters.perSecondRow': '{total}（{rate}）',
   'hudChrome.meters.seconds': '{s}秒',
-  'hudChrome.mobile.autorun': 'オートラン',
   'hudChrome.mobile.haptics': '振動',
   'hudChrome.mobile.hapticsOff': '振動オフ',
   'hudChrome.mobile.jump': 'ジャンプ',
@@ -4934,6 +4950,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.mobs.palefeeder.name': '蒼白喰らい',
   'entities.mobs.rootmaw.name': '根顎獣',
   'entities.mobs.the_witness_root.name': '証しの根',
+  'entities.mobs.greenpaw_cutting_dawn.name': '緑掌の挿し木',
+  'entities.mobs.greenpaw_cutting_moss.name': '緑掌の挿し木',
+  'entities.mobs.greenpaw_cutting_ash.name': '緑掌の挿し木',
   'entities.npcs.brother_halven.greeting': '下の聖遺物庫がまた動いた。',
   'entities.npcs.brother_halven.name': 'ハルヴェン修道士',
   'entities.npcs.brother_halven.title': '聖遺物庫の番人',
@@ -5143,6 +5162,11 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'sim.collections.notFound': 'それは存在しない。',
   'sim.collections.tooFar': '遠すぎる。',
   'sim.gathering.nothingToHarvest': 'その死骸には採集できるものが何もない。',
+  'sim.greenpawCutting.alreadyPlanted': '挿し木はもう植えた。育つのを待て。',
+  'sim.greenpawCutting.needHomestead': 'これを植えるには、まず開拓地が必要だ。',
+  'sim.greenpawCutting.tooFar': 'これを植えるには自分の開拓地にいなければならない。',
+  'sim.greenpawCutting.planted': '開拓地に挿し木を植えた。時が満ちるのを待とう。',
+  'sim.greenpawCutting.grown': '挿し木が育ち、伴侶となった。今はお前について歩く。',
   'sim.dailyRewards.claimed': 'デイリー報酬を受け取った。',
   'sim.hearth.emberbulb1': 'こいつぁ上物の燃料だ……見ろ、あの子が息をしとる、なあ……',
   'sim.hearth.emberbulb2': '炉はゆっくり、きれいに食うのが好きなんじゃ、あの子はな……',
@@ -5658,6 +5682,27 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.gathering.spore': '胞子',
   'hudChrome.gathering.toolTier': 'ティア{tier}の道具',
   'hudChrome.gathering.toolNone': '道具なし',
+  'hudChrome.crafting.title': '製作',
+  'hudChrome.crafting.close': '製作を閉じる',
+  'hudChrome.crafting.tabRecipes': 'レシピ',
+  'hudChrome.crafting.tabEnchants': 'エンチャント',
+  'hudChrome.crafting.craftButton': '製作',
+  'hudChrome.crafting.craftAria': '{item}を製作',
+  'hudChrome.crafting.disenchantSectionTitle': '分解',
+  'hudChrome.crafting.disenchantButton': '分解',
+  'hudChrome.crafting.disenchantAria': '{item}を分解',
+  'hudChrome.crafting.disenchantEmpty': '分解できるアイテムがありません。',
+  'hudChrome.crafting.applyButton': '付与',
+  'hudChrome.crafting.applyAria': '{slot}に{enchant}を付与',
+  'hudChrome.crafting.activeTag': '有効',
+  'hudChrome.crafting.needScroll': '{scroll}が必要',
+  'hudChrome.crafting.craftType.weaponcrafting': '武器鍛冶',
+  'hudChrome.crafting.craftType.armorcrafting': '防具鍛冶',
+  'hudChrome.crafting.craftType.tailoring': '裁縫',
+  'hudChrome.crafting.craftType.leatherworking': '皮革加工',
+  'hudChrome.crafting.craftType.cooking': '料理',
+  'hudChrome.crafting.craftType.alchemy': '錬金術',
+  'hudChrome.crafting.craftType.enchanting': 'エンチャント',
   'hudChrome.warfare.ratingLabel': '戦意',
   'hudChrome.warfare.balance': '名誉：{amount}',
   'hudChrome.warfare.honorAmount': '名誉 {amount}',
@@ -5668,6 +5713,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.warfare.reasons.fiestaKill': 'フィエスタ撃破',
   'hudChrome.warfare.reasons.fiestaComplete': 'フィエスタ試合',
   'hudChrome.warfare.reasons.fiestaWin': 'フィエスタ勝利',
+  'hudChrome.hitRating.ratingLabel': '命中レーティング',
   'entities.npcs.bramble.name': 'ブランブル',
   'entities.npcs.bramble.title': '名誉調達官',
   'entities.npcs.bramble.greeting':

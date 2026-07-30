@@ -246,7 +246,6 @@ export const zh_TW: EnTranslations = {
       "chat": "跳至聊天"
     },
     "mobile": {
-      "autorun": "自動奔跑",
       "jump": "跳躍",
       "leaderboard": "排行榜",
       "nameplates": "名條",
@@ -999,6 +998,33 @@ export const zh_TW: EnTranslations = {
       "toolTier": "{tier}級工具",
       "toolNone": "無工具"
     },
+    "crafting": {
+      "title": "製作",
+      "close": "關閉製作",
+      "tabRecipes": "配方",
+      "tabEnchants": "附魔",
+      "proficiencyLine": "{craft}: {value}",
+      "craftButton": "製作",
+      "craftAria": "製作{item}",
+      "reagentLine": "{item} {have}/{need}",
+      "disenchantSectionTitle": "分解",
+      "disenchantButton": "分解",
+      "disenchantAria": "分解{item}",
+      "disenchantEmpty": "沒有可分解的物品。",
+      "applyButton": "施加",
+      "applyAria": "將{enchant}施加到{slot}",
+      "activeTag": "已生效",
+      "needScroll": "需要{scroll}",
+      "craftType": {
+        "weaponcrafting": "武器鍛造",
+        "armorcrafting": "護甲鍛造",
+        "tailoring": "裁縫",
+        "leatherworking": "製皮",
+        "cooking": "烹飪",
+        "alchemy": "煉金",
+        "enchanting": "附魔"
+      }
+    },
     "warfare": {
       "ratingLabel": "戰意",
       "balance": "榮譽：{amount}",
@@ -1013,6 +1039,9 @@ export const zh_TW: EnTranslations = {
         "fiestaComplete": "狂歡比賽",
         "fiestaWin": "狂歡勝利"
       }
+    },
+    "hitRating": {
+      "ratingLabel": "命中等級"
     }
   },
   "mailUi": {
@@ -2512,6 +2541,13 @@ export const zh_TW: EnTranslations = {
       "readoutNoHomesteadHint": "你還沒有家園。站在空谷地裡合適的位置，輸入 /homestead claim。",
       "helpLine": "家園：/homestead，/homestead claim。"
     },
+    "greenpawCutting": {
+      "alreadyPlanted": "你已經種下了插枝。給它一些時間成長。",
+      "needHomestead": "你需要先擁有一塊宅地才能種下它。",
+      "tooFar": "你必須在自己的宅地才能種下它。",
+      "planted": "你在自己的宅地種下了插枝。耐心等待吧。",
+      "grown": "你的插枝已經長成了一隻夥伴。牠現在會跟隨你。"
+    },
     "readyCheck": {
       "mustBeInParty": "你必須在隊伍中才能發起準備檢查。",
       "alreadyInProgress": "準備檢查已在進行中。",
@@ -3389,6 +3425,7 @@ export const zh_TW: EnTranslations = {
       "ignoringChat": "已封鎖來自 {name} 的聊天。",
       "noLongerIgnoring": "不再封鎖 {name}。",
       "playerNotNearby": "該玩家不在附近。",
+      "playerInfoNotFound": "找不到該名稱的角色。",
       "duelCountdown": "決鬥將在 {seconds} 秒後開始...",
       "duelEndBanner": "{winner} 在決鬥中擊敗了 {loser}！",
       "duelEndLog": "{winner} 在決鬥中擊敗了 {loser}。",
@@ -5897,6 +5934,21 @@ export const zh_TW: EnTranslations = {
       },
       "vanguard_chrome_armor_plate": {
         "name": "先鋒鉻銀"
+      },
+      "enchanting_dust": {
+        "name": "附魔塵"
+      },
+      "scroll_minor_might": {
+        "name": "微弱力量卷軸"
+      },
+      "scroll_minor_vigor": {
+        "name": "微弱活力卷軸"
+      },
+      "scroll_minor_focus": {
+        "name": "微弱專注卷軸"
+      },
+      "scroll_minor_agility": {
+        "name": "微弱敏捷卷軸"
       }
     },
     "mobs": {
@@ -6214,6 +6266,15 @@ export const zh_TW: EnTranslations = {
       },
       "heartwood_colossus": {
         "name": "心材巨像"
+      },
+      "greenpaw_cutting_dawn": {
+        "name": "綠掌的插枝"
+      },
+      "greenpaw_cutting_moss": {
+        "name": "綠掌的插枝"
+      },
+      "greenpaw_cutting_ash": {
+        "name": "綠掌的插枝"
       }
     },
     "npcs": {
@@ -6440,6 +6501,22 @@ export const zh_TW: EnTranslations = {
       }
     },
     "quests": {
+      "q_prof_intro": {
+        "title": "值得學習的手藝",
+        "text": "每門手藝都從指甲縫裡的泥土開始，{playerName}。去鎮東的林地裡採集2條蜘蛛腿，然後到我的鍛爐前打一件新兵束衣；打造它所需的骨骼碎片沿途很容易找到。再給我帶些值得分解出奧術塵埃的東西。讓我看看你能採集、能打造、也能分解，我就讓你見識手藝的價值。",
+        "completion": "這才是值得學習的手藝。多在鍛爐邊下功夫，{playerName}，總有一天你能一口氣釘馬掌又附魔利刃。",
+        "objectives": {
+          "0": {
+            "label": "採集蜘蛛腿"
+          },
+          "1": {
+            "label": "打造新兵束衣"
+          },
+          "2": {
+            "label": "附魔塵埃"
+          }
+        }
+      },
       "q_wolves": {
         "title": "門前群狼",
         "text": "森林狼已敢撲咬北路旅人，{playerName}。擊敗8隻森林狼，讓東溪能鬆一口氣。",
@@ -7582,6 +7659,20 @@ export const zh_TW: EnTranslations = {
         "name": "崩塌的聖物庫",
         "enterText": "你向下深入崩塌的聖物庫。",
         "leaveText": "你爬回聖物庫遺墟處的哈爾文修士身邊。"
+      }
+    },
+    "enchants": {
+      "enchant_minor_might": {
+        "name": "微弱力量"
+      },
+      "enchant_minor_vigor": {
+        "name": "微弱活力"
+      },
+      "enchant_minor_focus": {
+        "name": "微弱專注"
+      },
+      "enchant_minor_agility": {
+        "name": "微弱敏捷"
       }
     },
     "itemSets": {

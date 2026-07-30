@@ -10,7 +10,7 @@
 // hooks, and the shared `pulseGroundAoE`/`applyTaunt`/`meleeSwing` entry points all
 // STAY on Sim and are consumed via the seam. The pure module fns/consts the switch
 // uses (preservesStealth, armorReduction, recalcPlayerStats, addThreat,
-// meleeMissChance, CHARGE_MAX_DURATION) are imported/inlined directly.
+// swingMissChance, CHARGE_MAX_DURATION) are imported/inlined directly.
 //
 // `src/sim`-pure: no DOM/Three, no Math.random/Date.now; all randomness is the
 // shared `ctx.rng` stream, drawn in the exact pre-move order.
@@ -30,7 +30,7 @@ import {
 import { stunDrCategory } from '../stun_dr';
 import { addThreat } from '../threat';
 import type { AbilityDef, Entity } from '../types';
-import { armorReduction, meleeMissChance } from '../types';
+import { armorReduction, swingMissChance } from '../types';
 import { exclusiveAuraConflicts } from './exclusive_aura';
 
 const CHARGE_MAX_DURATION = 3; // seconds before a blocked charge gives up
@@ -603,7 +603,7 @@ export function runEffects(
             p.auras.splice(existing, 1);
             if (eff.kind === 'stealth') p.stealthed = false; // toggled back out of stealth
             ctx.emit({ type: 'aura', targetId: p.id, name: ability.name, gained: false });
-            recalcPlayerStats(p, meta.cls, meta.equipment, ctx.playerMods(meta));
+            recalcPlayerStats(p, meta.cls, meta.equipment, ctx.playerMods(meta), meta.enchants);
             break;
           }
         }
@@ -646,7 +646,7 @@ export function runEffects(
           charges: eff.charges,
           icdMax: eff.internalCooldown,
         });
-        recalcPlayerStats(p, meta.cls, meta.equipment, ctx.playerMods(meta));
+        recalcPlayerStats(p, meta.cls, meta.equipment, ctx.playerMods(meta), meta.enchants);
         break;
       }
       case 'gainResource': {
@@ -681,8 +681,9 @@ export function runEffects(
       }
       case 'sunder': {
         if (!target || target.dead) break;
-        // a sunder can miss like any melee attack — a miss causes no threat
-        if (ctx.rng.chance(meleeMissChance(p.level, target.level))) {
+        // a sunder can miss like any melee attack (and Hit rating reduces it, via
+        // swingMissChance); a miss causes no threat
+        if (ctx.rng.chance(swingMissChance(p, target))) {
           ctx.emit({
             type: 'damage',
             sourceId: p.id,
@@ -726,7 +727,7 @@ export function runEffects(
       // touches mob corrosion's flat 'sunder' auras (see effectiveArmor).
       case 'armorDebuffPct': {
         if (!target || target.dead) break;
-        if (ctx.rng.chance(meleeMissChance(p.level, target.level))) {
+        if (ctx.rng.chance(swingMissChance(p, target))) {
           ctx.emit({
             type: 'damage',
             sourceId: p.id,

@@ -647,7 +647,7 @@ function applyAbility(ctx: SimContext, p: Entity, meta: PlayerMeta, res: Resolve
     // physical attack; a target can only fully RESIST them (classic-era semantics),
     // so the on-impact roll uses isSpellResisted and emits a 'resist', not a 'miss'.
     scheduleProjectile(ctx, p, target, (src, tgt) => {
-      if (isSpellResisted(ctx.rng, src.level, tgt.level)) {
+      if (isSpellResisted(ctx.rng, src.level, tgt.level, src.hitBonus)) {
         ctx.emit({
           type: 'damage',
           sourceId: src.id,
