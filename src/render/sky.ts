@@ -34,8 +34,8 @@ const DOME_RADIUS = 560;
 // samples the same shader, so IBL stays in step.
 // beach/desert/volcano/cave are paint-only biomes (see render/foliage.ts).
 // The sky dome picks one HDRI per frame from the player's 1D z-band biome
-// (see biomeBlendAt below), never a 2D biomePaint cell -- a dome cannot show
-// two skies at once, so a painted patch's sky stays whatever its zone band
+// (see biomeBlendAt below), never a 2D biomePaint cell (a dome cannot show
+// two skies at once), so a painted patch's sky stays whatever its zone band
 // already is. They borrow an existing shipped HDRI/backdrop rather than
 // requiring new art, matching the upstream reference port.
 const HDRI_TUNE: Record<BiomeId, { gain: number; clamp: number }> = {
