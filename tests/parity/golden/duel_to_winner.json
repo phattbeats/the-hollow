@@ -29,7 +29,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 409,
-      "state": "d490a2d6",
+      "state": "5a1f60e8",
       "events": "9e9ab938",
       "rng": {
         "draws": 0,
@@ -40,7 +40,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 409,
-      "state": "3632a0d2",
+      "state": "4d9fd0a4",
       "events": "5c6b6696",
       "rng": {
         "draws": 0,
@@ -51,7 +51,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 409,
-      "state": "e28b65c6",
+      "state": "b74efad8",
       "events": "8c51e6e4",
       "rng": {
         "draws": 78,
@@ -62,7 +62,7 @@
       "tick": 61,
       "time": 3.05,
       "nextId": 409,
-      "state": "8e561ec8",
+      "state": "939a02e2",
       "events": "aee0cf91",
       "rng": {
         "draws": 84,
@@ -85,6 +85,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -130,6 +131,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -158,6 +160,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -203,6 +206,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -320,7 +324,7 @@
       "tick": 61,
       "time": 3.05,
       "nextId": 409,
-      "state": "20ced0be",
+      "state": "88ef2c54",
       "events": "d23a9153",
       "rng": {
         "draws": 84,
@@ -343,6 +347,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -435,6 +440,7 @@
           "earnedTitles": [
             "t_duelist"
           ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -463,6 +469,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -508,6 +515,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -625,7 +633,7 @@
       "tick": 80,
       "time": 4,
       "nextId": 409,
-      "state": "e5bcf992",
+      "state": "e1dc2d38",
       "events": "741638a5",
       "rng": {
         "draws": 160,
@@ -636,7 +644,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 409,
-      "state": "27980d46",
+      "state": "58dc1abc",
       "events": "741638a5",
       "rng": {
         "draws": 286,
@@ -647,7 +655,7 @@
       "tick": 101,
       "time": 5.05,
       "nextId": 409,
-      "state": "954fb670",
+      "state": "3a805efe",
       "events": "741638a5",
       "rng": {
         "draws": 288,
@@ -670,6 +678,7 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -762,6 +771,7 @@
           "earnedTitles": [
             "t_duelist"
           ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -790,6 +800,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "deedLog": [
             [
               "exp_eastbrook_vale",
@@ -835,6 +846,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",

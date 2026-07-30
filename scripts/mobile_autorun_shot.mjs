@@ -1,4 +1,6 @@
-// Screenshot the mobile autorun toggle button in offline mode.
+// Screenshot the mobile move-joystick's autorun lock target in offline mode
+// (PHAA-651, adapted from upstream #1724: the toggle button was replaced by a
+// reveal-then-lock target that sits above the move joystick).
 // Needs `npm run dev` on :5173. No server/Postgres required (offline flow).
 import puppeteer from 'puppeteer-core';
 import { BROWSER_PATH } from './browser_path.mjs';
@@ -35,12 +37,26 @@ async function shot(name) {
   console.log('wrote', `${OUT}-${name}.png`);
 }
 
-// Autorun OFF (default)
+// Autorun target hidden (default, thumb at rest)
 await shot('off');
 
-// Tap autorun -> ON (gold glow + character starts running)
-await page.evaluate(() => document.getElementById('mobile-autorun')?.click());
-await sleep(1500);
+// Drag the move joystick's thumb well past the top band: reveals the target,
+// then locks it (mobile_controls.ts's isMoveAutorunPush/MOVE_AUTORUN_THRESHOLD).
+const joystickCenter = await page.evaluate(() => {
+  const el = document.getElementById('mobile-move-joystick');
+  if (!el) return null;
+  const r = el.getBoundingClientRect();
+  return { x: r.left + r.width / 2, y: r.top + r.height / 2, radius: r.width / 2 };
+});
+if (!joystickCenter) throw new Error('mobile-move-joystick not found');
+const { x, y, radius } = joystickCenter;
+await page.touchscreen.touchStart(x, y);
+await page.touchscreen.touchMove(x, y - radius * 2.5);
+await sleep(300);
 await shot('on');
+
+await page.touchscreen.touchEnd();
+await sleep(300);
+await shot('released-still-locked');
 
 await browser.close();

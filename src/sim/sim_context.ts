@@ -14,6 +14,7 @@
 
 import type { TalentModifiers } from './content/talents';
 import type { DelayedEvent, GroundAoE } from './entity_roster';
+import type { HomesteadPlotState } from './homestead';
 import type { PendingLootRoll } from './loot/loot_roll';
 import type { MarketListing } from './market';
 import type { PlantThresholdKind } from './plant_speech';
@@ -460,6 +461,11 @@ export interface SimContextCallbacks {
   updatePet(pet: Entity): void;
   isDelveCompanionMob(mob: Entity): boolean;
   updateDelveCompanion(companion: Entity): void;
+  // Greenpaw's cutting companion (PHAA-751, greenpaw_cutting.ts): a cosmetic,
+  // non-combat owned mob dispatched here instead of falling through to
+  // updatePet (pet_ai.ts), whose rng draw order is locked for the parity gate.
+  isGreenpawCompanionMob(mob: Entity): boolean;
+  updateGreenpawCompanion(companion: Entity): void;
   updateBossMechanics(mob: Entity): void;
   updateNythraxisEncounter(boss: Entity): void;
   resetNythraxisEncounter(boss: Entity): void;
@@ -636,6 +642,15 @@ export interface SimContextCallbacks {
   // when the raw message was a /homestead command (handled). Append-only,
   // late-bound to Sim.
   homesteadChat(raw: string, pid: number): boolean;
+  // Public plot lookup on the Homestead instance (src/sim/homestead.ts),
+  // exposed here so a foreign system (greenpaw_cutting.ts's plant-at-your-
+  // own-plot gate) can resolve "does this player own a plot, and where"
+  // without duplicating the owner-key logic. Append-only, late-bound to Sim.
+  homesteadOwnedPlotFor(meta: PlayerMeta): HomesteadPlotState | null;
+  // Greenpaw's cutting (PHAA-751): the item-use 'plant' branch
+  // (src/sim/items.ts) routes through the seam to the GreenpawCutting
+  // instance on Sim. Append-only, late-bound to Sim.
+  plantGreenpawCutting(pid?: number): void;
   // Gathering v0 (PHAA-504): the one rng draw a corpse harvest needs (which
   // component tag's item a multi-tag corpse yields) routes through the seam
   // to the Gathering instance on Sim. Append-only, late-bound to Sim.
@@ -934,6 +949,8 @@ export function createSimContext(host: SimContextHost): SimContext {
     updatePet: host.updatePet,
     isDelveCompanionMob: host.isDelveCompanionMob,
     updateDelveCompanion: host.updateDelveCompanion,
+    isGreenpawCompanionMob: host.isGreenpawCompanionMob,
+    updateGreenpawCompanion: host.updateGreenpawCompanion,
     updateBossMechanics: host.updateBossMechanics,
     updateNythraxisEncounter: host.updateNythraxisEncounter,
     resetNythraxisEncounter: host.resetNythraxisEncounter,
@@ -1010,6 +1027,8 @@ export function createSimContext(host: SimContextHost): SimContext {
     plantSpeechAmbientChat: host.plantSpeechAmbientChat,
     // Homestead v0: the /homestead chat-command branch.
     homesteadChat: host.homesteadChat,
+    homesteadOwnedPlotFor: host.homesteadOwnedPlotFor,
+    plantGreenpawCutting: host.plantGreenpawCutting,
     // Gathering v0 (PHAA-504): the corpse-harvest item-selection rng draw.
     gatherHarvestItemFor: host.gatherHarvestItemFor,
     // Bags capacity pre-check (stays on Sim next to the inventory hub).

@@ -30,7 +30,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "3d059734",
+      "state": "4958f32f",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -52,9 +52,11 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -81,9 +83,11 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -110,9 +114,11 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "apprentice_robe",
@@ -387,7 +393,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "d6362eb1",
+      "state": "1e36bc52",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -409,9 +415,11 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -438,9 +446,11 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -467,9 +477,11 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "apprentice_robe",
@@ -744,7 +756,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "9bcc127e",
+      "state": "7944ec35",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -766,9 +778,11 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -795,9 +809,11 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -824,9 +840,11 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "apprentice_robe",
@@ -1101,7 +1119,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "3d059734",
+      "state": "4958f32f",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -1123,9 +1141,11 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1152,9 +1172,11 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -1181,9 +1203,11 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "apprentice_robe",
@@ -1458,7 +1482,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "30f73556",
+      "state": "f5f8ffad",
       "events": "3501c3db",
       "rng": {
         "draws": 0,
@@ -1480,9 +1504,11 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1509,9 +1535,11 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -1538,9 +1566,11 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "apprentice_robe",
@@ -1815,7 +1845,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "8c1844b3",
+      "state": "8bed3008",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -1837,9 +1867,11 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1866,9 +1898,11 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -1895,9 +1929,11 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "apprentice_robe",
@@ -2172,7 +2208,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "30f73556",
+      "state": "f5f8ffad",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -2194,9 +2230,11 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -2223,9 +2261,11 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -2252,9 +2292,11 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "apprentice_robe",
@@ -2529,7 +2571,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "30f73556",
+      "state": "f5f8ffad",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -2551,9 +2593,11 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -2580,9 +2624,11 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -2609,9 +2655,11 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "apprentice_robe",
@@ -2886,7 +2934,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "30f73556",
+      "state": "f5f8ffad",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -2908,9 +2956,11 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -2937,9 +2987,11 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -2966,9 +3018,11 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "apprentice_robe",
@@ -3243,7 +3297,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "30f73556",
+      "state": "f5f8ffad",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -3265,9 +3319,11 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -3294,9 +3350,11 @@
           "cls": "priest",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -3323,9 +3381,11 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {},
+          "craftProficiency": {},
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "apprentice_robe",
@@ -3600,7 +3660,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "7d6f3014",
+      "state": "e7fe71d1",
       "events": "7be71f59",
       "rng": {
         "draws": 5,
@@ -3626,6 +3686,7 @@
             "kills": 1,
             "xpGained": 26
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",
@@ -3677,6 +3738,7 @@
           "earnedTitles": [
             "t_blooded"
           ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -3707,6 +3769,7 @@
           "counters": {
             "xpGained": 26
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",
@@ -3758,6 +3821,7 @@
           "earnedTitles": [
             "t_blooded"
           ],
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -3788,6 +3852,7 @@
           "counters": {
             "xpGained": 26
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",
@@ -3839,6 +3904,7 @@
           "earnedTitles": [
             "t_blooded"
           ],
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "apprentice_robe",
@@ -4155,7 +4221,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "7d6f3014",
+      "state": "e7fe71d1",
       "events": "741638a5",
       "rng": {
         "draws": 5,
@@ -4181,6 +4247,7 @@
             "kills": 1,
             "xpGained": 26
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",
@@ -4232,6 +4299,7 @@
           "earnedTitles": [
             "t_blooded"
           ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -4262,6 +4330,7 @@
           "counters": {
             "xpGained": 26
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",
@@ -4313,6 +4382,7 @@
           "earnedTitles": [
             "t_blooded"
           ],
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",
@@ -4343,6 +4413,7 @@
           "counters": {
             "xpGained": 26
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",
@@ -4394,6 +4465,7 @@
           "earnedTitles": [
             "t_blooded"
           ],
+          "enchants": {},
           "entityId": 409,
           "equipment": {
             "chest": "apprentice_robe",

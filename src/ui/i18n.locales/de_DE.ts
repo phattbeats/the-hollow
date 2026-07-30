@@ -5,9 +5,8 @@
 // translate that key. The build (scripts/i18n_build.mjs) unflattens this map and
 // overlays it onto nested `en` to produce the dense resolved table; any key here
 // must be a real `en` leaf path: keys are typed `Partial<Record<TranslationKey,
-// string>>` so tsc rejects a structurally-wrong key, plus
-// tests/i18n_overlay_key_membership.test.ts catches a typo'd entity id the
-// template-literal key type cannot. Overlays are SPARSE: an
+// string>>` against the build-generated flat key union, so tsc rejects any key
+// that is not an exact `en` leaf path, typo'd entity ids included. Overlays are SPARSE: an
 // untranslated key is omitted and the build fills it from English, then the
 // registry (src/ui/i18n.status.json) marks it `pending`.
 
@@ -1586,7 +1585,8 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': 'Gier für {item}',
   'itemUi.lootRoll.passAria': 'Bei {item} passen',
   'itemUi.lootRoll.everyonePassed': 'Alle passen bei {item}.',
-  'itemUi.lootRoll.winnerOffline': 'Der Gewinner von {item} war offline; es wurde zur Leiche zurückgebracht.',
+  'itemUi.lootRoll.winnerOffline':
+    'Der Gewinner von {item} war offline; es wurde zur Leiche zurückgebracht.',
   'entities.abilities.heroic_strike.name': 'Heldenhafter Stoß',
   'entities.abilities.heroic_strike.description':
     'Ein mächtiger Angriff, der den Nahkampfschaden um {damage} erhöht. Wird bei eurem nächsten Schwung ausgelöst.',
@@ -2129,6 +2129,11 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.items.imperial_gold_armor_plate.name': 'Imperiales Gold',
   'entities.items.vanguard_azure_armor_plate.name': 'Vorhut-Azur',
   'entities.items.vanguard_chrome_armor_plate.name': 'Vorhut-Chrom',
+  'entities.items.enchanting_dust.name': 'Verzauberungsstaub',
+  'entities.items.scroll_minor_might.name': 'Schriftrolle der geringen Macht',
+  'entities.items.scroll_minor_vigor.name': 'Schriftrolle der geringen Vitalität',
+  'entities.items.scroll_minor_focus.name': 'Schriftrolle der geringen Konzentration',
+  'entities.items.scroll_minor_agility.name': 'Schriftrolle der geringen Beweglichkeit',
   'entities.items.deacons_cleaver.name': 'Beil des Diakons',
   'entities.items.staff_of_drowned_prayers.name': 'Stab ertrunkener Gebete',
   'entities.items.mistbinder_kris.name': 'Nebelbinder-Kris',
@@ -3356,7 +3361,6 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'hudChrome.meters.perSecond': '{value}/s',
   'hudChrome.meters.perSecondRow': '{total} ({rate})',
   'hudChrome.meters.seconds': '{s} Sek.',
-  'hudChrome.mobile.autorun': 'Auto-Laufen',
   'hudChrome.mobile.haptics': 'Haptik',
   'hudChrome.mobile.hapticsOff': 'Haptik aus',
   'hudChrome.mobile.jump': 'Springen',

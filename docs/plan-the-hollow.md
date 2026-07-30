@@ -405,13 +405,31 @@ Locked at this version. New ideas go to the Post-Release Backlog.
 
 **Explicitly out:**
 - **Real-money monetization of any kind.** Also, affirmatively: **the inherited token/wallet system is stripped, not dormant** (§6).
+  **Amended 2026-07-21 (Board, PHAA-702):** spectator wagering on boarball (Vale Cup)
+  matches is allowed as a narrow carve-out. Stakes come only from the existing
+  in-game economy (copper/gold, and tradeable items or materials); the stripped
+  token/wallet system stays stripped, and no real money or purchasable-currency
+  path is ever involved. Bettor/player collusion is not actively prevented; the
+  chosen mitigation is a post-hoc audit log of every wager for moderator review,
+  the same detect-and-act posture already used for other reported abuse (jail,
+  admin RBAC). The worked design is `docs/design/vale-cup-wagers.md` (PHAA-720):
+  gold-only wagers with a hard per-match cap ship first once the Board confirms
+  the cap number; item/material stakes are approved in principle here but need
+  their own valuation and escrow design before they ship, so they land as a
+  scoped follow-up, not part of the first cut.
 - **Apple App Store distribution.** Browser and self-host are the platform; iPhones play in the browser. **Android is unlocked** (backlog): the browser game ships to the Play Store as a Trusted Web Activity wrapper, a shell around the same build, no port, so the group's Android players get a native-feeling install. Phase 4+, after phone controls exist, since a store listing for a game without touch input is an empty gesture.
 - **Twitch or action combat.** Tab-target, inherited.
 - **Rebuilding the combat math from scratch.** Reskin it, rework the build layer, never rewrite the math.
 - **A WoW-sized content treadmill at launch.** Accretion, not a release-day mountain.
 - **Premature distributed infrastructure.** One lean instance; only the sharded mega-deployment is deferred.
 - **Any feature serving neither a depth core nor the cozy surface.**
-- **Engagement dark patterns.** No streaks, daily rewards, FOMO timers. The sanctioned alternative: **something always quietly maturing** while you are away, anchored at the home (§7, "The home idles").
+- **Engagement dark patterns.** No streaks, FOMO timers, or loss-aversion mechanics.
+  **Amended 2026-07-11 (Board, PHAA-639):** understated daily rewards are allowed as
+  a narrow exception (in-game items/currency only, never crypto, no login splash or
+  HUD nag, no streak-loss shape); see `docs/design/daily-rewards.md` for the adapted
+  design. The sanctioned alternative for everything else in this category still
+  applies: **something always quietly maturing** while you are away, anchored at the
+  home (§7, "The home idles").
 
 Deferred to backlog, wanted but later: run-to-run dungeon modifiers (now known to be cheap via the augment pipeline, §8, which moves it from "someday" to "early Phase 4 candidate"); mounts (the Tyler-Ask's second half, §8: wanted, absent from the base, and pointless until the zone system is big enough to make speed worth having); the Android Play Store wrapper (Scope Lock: a TWA shell around the browser build, after phone controls); and the dormant-inheritance register (Decision 22, §12: Fiesta, the World Market's fate, Discord login, the guild layer), each waiting on its named verdict.
 

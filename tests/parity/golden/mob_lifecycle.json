@@ -31,7 +31,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 412,
-      "state": "ef97c4ff",
+      "state": "196f4128",
       "events": "d06fa9cb",
       "rng": {
         "draws": 5,
@@ -57,6 +57,7 @@
             "kills": 1,
             "xpGained": 84
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",
@@ -108,6 +109,7 @@
           "earnedTitles": [
             "t_blooded"
           ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -403,7 +405,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "9d9089a8",
+      "state": "d82f446f",
       "events": "936be890",
       "rng": {
         "draws": 8,
@@ -429,6 +431,7 @@
             "kills": 2,
             "xpGained": 198
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",
@@ -480,6 +483,7 @@
           "earnedTitles": [
             "t_blooded"
           ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -833,7 +837,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 413,
-      "state": "86911370",
+      "state": "b58e5917",
       "events": "15a15eb5",
       "rng": {
         "draws": 9,
@@ -860,6 +864,7 @@
             "kills": 2,
             "xpGained": 198
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",
@@ -911,6 +916,7 @@
           "earnedTitles": [
             "t_blooded"
           ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1265,7 +1271,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 415,
-      "state": "7ba9b59a",
+      "state": "ee96c78d",
       "events": "0154f981",
       "rng": {
         "draws": 15,
@@ -1292,6 +1298,7 @@
             "kills": 3,
             "xpGained": 282
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",
@@ -1343,6 +1350,7 @@
           "earnedTitles": [
             "t_blooded"
           ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1739,7 +1747,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 416,
-      "state": "a243fb30",
+      "state": "7c653d0b",
       "events": "02fa36da",
       "rng": {
         "draws": 20,
@@ -1766,6 +1774,7 @@
             "kills": 4,
             "xpGained": 366
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",
@@ -1817,6 +1826,7 @@
           "earnedTitles": [
             "t_blooded"
           ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -2267,7 +2277,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 416,
-      "state": "a243fb30",
+      "state": "7c653d0b",
       "events": "741638a5",
       "rng": {
         "draws": 20,
@@ -2294,6 +2304,7 @@
             "kills": 4,
             "xpGained": 366
           },
+          "craftProficiency": {},
           "deedLog": [
             [
               "cmb_century",
@@ -2345,6 +2356,7 @@
           "earnedTitles": [
             "t_blooded"
           ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",

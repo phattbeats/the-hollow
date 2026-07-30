@@ -193,7 +193,7 @@ export function releasePlayerSpirit(ctx: SimContext, pid?: number): void {
   Object.assign(meta.moveInput, emptyMoveInput());
   p.auras = [];
   p.ccDr.clear();
-  recalcPlayerStats(p, meta.cls, meta.equipment, ctx.playerMods(meta));
+  recalcPlayerStats(p, meta.cls, meta.equipment, ctx.playerMods(meta), meta.enchants);
   p.hp = p.maxHp;
   p.resource = p.resourceType === 'mana' ? p.maxResource : p.resourceType === 'energy' ? 100 : 0;
   p.targetId = null;
@@ -222,7 +222,7 @@ export function revivePlayerAt(ctx: SimContext, pid: number, pos: Vec3): void {
   p.facing = 0;
   p.auras = [];
   p.ccDr.clear();
-  recalcPlayerStats(p, meta.cls, meta.equipment, ctx.playerMods(meta));
+  recalcPlayerStats(p, meta.cls, meta.equipment, ctx.playerMods(meta), meta.enchants);
   p.hp = p.maxHp;
   p.resource = p.resourceType === 'mana' ? p.maxResource : p.resourceType === 'energy' ? 100 : 0;
   p.targetId = null;
@@ -257,7 +257,7 @@ export function releaseSpiritInDelve(ctx: SimContext, pid: number): void {
   Object.assign(r.meta.moveInput, emptyMoveInput());
   p.auras = [];
   p.ccDr.clear();
-  recalcPlayerStats(p, r.meta.cls, r.meta.equipment, r.meta.talentMods);
+  recalcPlayerStats(p, r.meta.cls, r.meta.equipment, r.meta.talentMods, r.meta.enchants);
   p.hp = Math.max(1, Math.round(p.maxHp * 0.5));
   p.resource =
     p.resourceType === 'mana'
