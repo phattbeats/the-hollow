@@ -1212,11 +1212,19 @@ export class Renderer {
       this.scene.add(cl);
     }
 
-    this.terrainView = buildTerrain(this.sim.cfg.seed);
+    // A returning character can log out anywhere in a zone, not only at a
+    // hub, so the far streaming queue is ordered by distance to the actual
+    // entry position rather than whatever row-major order the chunk grid
+    // happens to walk.
+    this.terrainView = buildTerrain(this.sim.cfg.seed, {
+      x: this.sim.player.pos.x,
+      z: this.sim.player.pos.z,
+    });
     setRenderCategory(this.terrainView.group, 'terrain');
     this.scene.add(this.terrainView.group);
     // Terrain chunks never move after build (the LOD update only toggles
     // visibility): stop their per-frame matrix recompose (static_matrix.ts).
+    // Chunks streamed in later freeze themselves in addChunk() (terrain.ts).
     freezeStaticMatrices(this.terrainView.group);
     this.waterView = buildWater(this.sim.cfg.seed);
     for (const mesh of this.waterView.meshes) {
