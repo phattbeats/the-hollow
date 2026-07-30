@@ -154,6 +154,8 @@ import {
 } from './combat_sfx';
 import { type CardinalId, compassView } from './compass';
 import { formatMinimapCoords } from './coords';
+import { buildCraftingView } from './crafting_view';
+import { type CraftingWindowDeps, renderCraftingWindow } from './crafting_window';
 import { buildDailyRewardsView } from './daily_rewards_view';
 import { renderDailyRewardsWindow } from './daily_rewards_window';
 import { DelveMapPainter } from './delve_map_painter';
@@ -1263,6 +1265,7 @@ export class Hud {
     mapCanvas.addEventListener('pointerup', endDrag);
     mapCanvas.addEventListener('pointercancel', endDrag);
     $('#mm-bag').addEventListener('click', () => this.toggleBags());
+    $('#mm-craft').addEventListener('click', () => this.toggleCrafting());
     // Drop an equipped piece dragged out of the paperdoll onto the bags window.
     const bagsEl = $('#bags');
     bagsEl.addEventListener('dragover', (e) => {
@@ -1643,6 +1646,9 @@ export class Hud {
         break;
       case 'vendor-window':
         this.closeVendor();
+        break;
+      case 'crafting-window':
+        this.closeCrafting();
         break;
       case 'daily-rewards-window':
         this.closeDailyRewards();
@@ -4088,6 +4094,7 @@ export class Hud {
       ['#mm-quest', 'questlog', 'questUi.log.title'],
       ['#mm-map', 'map', 'hud.core.mobileMap'],
       ['#mm-bag', 'bags', 'itemUi.bags.title'],
+      ['#mm-craft', 'crafting', 'hudChrome.crafting.title'],
       ['#mm-arena', 'arena', 'hud.core.mobileArena'],
       ['#mm-leaderboard', 'leaderboard', 'game.leaderboard.title'],
       ['#mm-emote', 'emoteWheel', 'hudChrome.emoteWheel.label'],
@@ -8806,6 +8813,65 @@ export class Hud {
   }
 
   // -------------------------------------------------------------------------
+  // Crafting/enchanting (PHAA-818, adapts upstream #1708). No known-recipe or
+  // known-enchant gate (src/sim/crafting.ts, src/sim/enchanting.ts), so unlike
+  // Vendor this window is not NPC-anchored: it toggles from the minimap menu /
+  // keybind like Bags, following the Vendor rebuild-on-open recipe.
+  // -------------------------------------------------------------------------
+
+  private craftingWindowOpen = false;
+  private craftingFocusReturn: HTMLElement | null = null;
+
+  toggleCrafting(): void {
+    if (this.craftingWindowOpen) {
+      this.closeCrafting();
+      return;
+    }
+    this.openCrafting();
+  }
+
+  openCrafting(): void {
+    this.closeOtherWindows('#crafting-window');
+    this.craftingWindowOpen = true;
+    this.craftingFocusReturn = this.windowFocus('#crafting-window').captureFocus();
+    this.renderCrafting();
+  }
+
+  private renderCrafting(): void {
+    if (!this.craftingWindowOpen) return;
+    const refresh = (action: () => void) => {
+      action();
+      this.renderCrafting();
+      this.renderBags();
+    };
+    const deps: CraftingWindowDeps = {
+      ...this.presentationBag,
+      hideTooltip: () => this.hideTooltip(),
+      onCraft: (recipeId) => refresh(() => this.sim.craftItem(recipeId)),
+      onDisenchant: (itemId) => refresh(() => this.sim.disenchantItem(itemId)),
+      onApplyEnchant: (enchantId) => {
+        refresh(() => this.sim.applyEnchant(enchantId));
+        this.renderCharIfOpen();
+      },
+      onClose: () => this.closeCrafting(),
+      slotName: (slot) => itemSlotName(slot),
+    };
+    renderCraftingWindow($('#crafting-window'), buildCraftingView(this.sim), deps);
+  }
+
+  closeCrafting(): void {
+    $('#crafting-window').style.display = 'none';
+    this.craftingWindowOpen = false;
+    this.windowFocus('#crafting-window').restoreFocus(this.craftingFocusReturn);
+    this.craftingFocusReturn = null;
+    this.hideTooltip();
+  }
+
+  get craftingOpen(): boolean {
+    return this.craftingWindowOpen;
+  }
+
+  // -------------------------------------------------------------------------
   // Daily rewards (PHAA-660, docs/design/daily-rewards.md). Opened only from a
   // deliberate menu entry (never a login splash or a HUD badge/nag); the recipe
   // is the Vendor window above (rebuild-on-open, not a per-frame hot painter).
@@ -8992,6 +9058,7 @@ export class Hud {
   onInventoryChanged(): void {
     if ($('#bags').style.display !== 'none') this.renderBags();
     if (this.openVendorNpcId !== null) this.renderVendor();
+    if (this.craftingWindowOpen) this.renderCrafting();
     this.renderCharIfOpen();
   }
 

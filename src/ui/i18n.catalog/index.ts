@@ -1109,6 +1109,14 @@ export const en = {
       scroll_minor_focus: { name: 'Scroll of Minor Focus' },
       scroll_minor_agility: { name: 'Scroll of Minor Agility' },
     },
+    // Enchant names (PHAA-818 crafting window, adapts PHAA-649/upstream #1712):
+    // non-Latin fills (zh_CN/zh_TW/ja_JP/ko_KR/ru_RU) live in src/ui/i18n.locales/<lang>.ts.
+    enchants: {
+      enchant_minor_might: { name: 'Minor Might' },
+      enchant_minor_vigor: { name: 'Minor Vigor' },
+      enchant_minor_focus: { name: 'Minor Focus' },
+      enchant_minor_agility: { name: 'Minor Agility' },
+    },
     itemSets: itemSetEntityText,
     mobs: {
       ...worldNames.en.entities.mobs,

@@ -998,6 +998,33 @@ export const ru_RU: EnTranslations = {
       "toolTier": "Инструмент {tier} ур.",
       "toolNone": "Нет инструмента"
     },
+    "crafting": {
+      "title": "Изготовление",
+      "close": "Закрыть изготовление",
+      "tabRecipes": "Рецепты",
+      "tabEnchants": "Чары",
+      "proficiencyLine": "{craft}: {value}",
+      "craftButton": "Изготовить",
+      "craftAria": "Изготовить {item}",
+      "reagentLine": "{item} {have}/{need}",
+      "disenchantSectionTitle": "Распыление",
+      "disenchantButton": "Распылить",
+      "disenchantAria": "Распылить {item}",
+      "disenchantEmpty": "Нет предметов для распыления.",
+      "applyButton": "Применить",
+      "applyAria": "Применить чары {enchant} на {slot}",
+      "activeTag": "Активно",
+      "needScroll": "Требуется {scroll}",
+      "craftType": {
+        "weaponcrafting": "Оружейное дело",
+        "armorcrafting": "Кузнечное дело",
+        "tailoring": "Портняжное дело",
+        "leatherworking": "Кожевничество",
+        "cooking": "Кулинария",
+        "alchemy": "Алхимия",
+        "enchanting": "Наложение чар"
+      }
+    },
     "warfare": {
       "ratingLabel": "Воинственность",
       "balance": "Честь: {amount}",
@@ -6582,6 +6609,22 @@ export const ru_RU: EnTranslations = {
       }
     },
     "quests": {
+      "q_prof_intro": {
+        "title": "Ремесло, которое стоит освоить",
+        "text": "Любое ремесло начинается с грязи под ногтями, {playerName}. Собери 2 паучьи лапки в рощах к востоку от города, а затем поработай у моего горна над Туникой новобранца; костяные обломки для нее легко найти по пути. И принеси мне что-нибудь, что стоит разобрать ради тайной пыли. Покажи, что умеешь собирать, изготавливать и разбирать, и я покажу тебе, чего стоит ремесло.",
+        "completion": "Вот это ремесло стоит освоить. Держись горна, {playerName}, и однажды ты будешь подковывать лошадей и накладывать чары на клинки одним и тем же вечером.",
+        "objectives": {
+          "0": {
+            "label": "Собраны паучьи лапки"
+          },
+          "1": {
+            "label": "Изготовлена туника новобранца"
+          },
+          "2": {
+            "label": "Пыль зачарования"
+          }
+        }
+      },
       "q_wolves": {
         "title": "Волки у дверей",
         "text": "Лесные волки осмелели и бросаются на путников у северной дороги, {playerName}. Убейте 8, чтобы Истврук вздохнул свободнее.",
@@ -7724,6 +7767,20 @@ export const ru_RU: EnTranslations = {
         "name": "Обрушившийся Реликварий",
         "enterText": "Вы спускаетесь в обрушившийся реликварий.",
         "leaveText": "Вы поднимаетесь обратно к Брату Хальвену у руин реликвария."
+      }
+    },
+    "enchants": {
+      "enchant_minor_might": {
+        "name": "Малая мощь"
+      },
+      "enchant_minor_vigor": {
+        "name": "Малая стойкость"
+      },
+      "enchant_minor_focus": {
+        "name": "Малая концентрация"
+      },
+      "enchant_minor_agility": {
+        "name": "Малая ловкость"
       }
     },
     "itemSets": {

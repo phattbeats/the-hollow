@@ -998,6 +998,33 @@ export const ja_JP: EnTranslations = {
       "toolTier": "ティア{tier}の道具",
       "toolNone": "道具なし"
     },
+    "crafting": {
+      "title": "製作",
+      "close": "製作を閉じる",
+      "tabRecipes": "レシピ",
+      "tabEnchants": "エンチャント",
+      "proficiencyLine": "{craft}: {value}",
+      "craftButton": "製作",
+      "craftAria": "{item}を製作",
+      "reagentLine": "{item} {have}/{need}",
+      "disenchantSectionTitle": "分解",
+      "disenchantButton": "分解",
+      "disenchantAria": "{item}を分解",
+      "disenchantEmpty": "分解できるアイテムがありません。",
+      "applyButton": "付与",
+      "applyAria": "{slot}に{enchant}を付与",
+      "activeTag": "有効",
+      "needScroll": "{scroll}が必要",
+      "craftType": {
+        "weaponcrafting": "武器鍛冶",
+        "armorcrafting": "防具鍛冶",
+        "tailoring": "裁縫",
+        "leatherworking": "皮革加工",
+        "cooking": "料理",
+        "alchemy": "錬金術",
+        "enchanting": "エンチャント"
+      }
+    },
     "warfare": {
       "ratingLabel": "戦意",
       "balance": "名誉：{amount}",
@@ -6582,6 +6609,22 @@ export const ja_JP: EnTranslations = {
       }
     },
     "quests": {
+      "q_prof_intro": {
+        "title": "学ぶ価値のある手仕事",
+        "text": "どんな手仕事も爪の間の泥から始まるものだ、{playerName}。町の東の茂みでクモの脚を2本集めてこい。それから鍛冶場で新兵の上着を作るんだ。材料の骨片は道中で拾えば十分だろう。ついでに、分解して魔力の粉塵になりそうな物も持ってきてくれ。集め、作り、そして分解できることを見せてくれたら、手仕事の値打ちを教えてやろう。",
+        "completion": "それでこそ学ぶ価値のある手仕事だ。鍛冶場に通い続ければ、{playerName}、いつか蹄鉄を打つのと剣にエンチャントをかけるのを息もつかせず両方こなせるようになるだろう。",
+        "objectives": {
+          "0": {
+            "label": "クモの脚を採集"
+          },
+          "1": {
+            "label": "新兵の上着を製作"
+          },
+          "2": {
+            "label": "魔力の粉塵"
+          }
+        }
+      },
       "q_wolves": {
         "title": "戸口の狼",
         "text": "森の狼が北の道で旅人に牙をむけています、{playerName}。8頭を討ち、イーストブルックに息をつかせてください。",
@@ -7724,6 +7767,20 @@ export const ja_JP: EnTranslations = {
         "name": "崩れた聖遺物庫",
         "enterText": "あなたは崩れた聖遺物庫へと降りていく。",
         "leaveText": "あなたは聖遺物庫の廃墟にいるハルヴェン修道士のもとへ登り戻る。"
+      }
+    },
+    "enchants": {
+      "enchant_minor_might": {
+        "name": "小さな力"
+      },
+      "enchant_minor_vigor": {
+        "name": "小さな活力"
+      },
+      "enchant_minor_focus": {
+        "name": "小さな集中"
+      },
+      "enchant_minor_agility": {
+        "name": "小さな俊敏"
       }
     },
     "itemSets": {

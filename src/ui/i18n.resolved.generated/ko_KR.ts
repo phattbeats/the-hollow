@@ -998,6 +998,33 @@ export const ko_KR: EnTranslations = {
       "toolTier": "{tier}단계 도구",
       "toolNone": "도구 없음"
     },
+    "crafting": {
+      "title": "제작",
+      "close": "제작 닫기",
+      "tabRecipes": "제조법",
+      "tabEnchants": "마법부여",
+      "proficiencyLine": "{craft}: {value}",
+      "craftButton": "제작",
+      "craftAria": "{item} 제작",
+      "reagentLine": "{item} {have}/{need}",
+      "disenchantSectionTitle": "마법 해제",
+      "disenchantButton": "마법 해제",
+      "disenchantAria": "{item} 마법 해제",
+      "disenchantEmpty": "마법을 해제할 수 있는 아이템이 없습니다.",
+      "applyButton": "적용",
+      "applyAria": "{slot}에 {enchant} 적용",
+      "activeTag": "활성",
+      "needScroll": "{scroll} 필요",
+      "craftType": {
+        "weaponcrafting": "무기 제작",
+        "armorcrafting": "방어구 제작",
+        "tailoring": "재봉",
+        "leatherworking": "가죽 세공",
+        "cooking": "요리",
+        "alchemy": "연금술",
+        "enchanting": "마법부여"
+      }
+    },
     "warfare": {
       "ratingLabel": "전의",
       "balance": "명예: {amount}",
@@ -6582,6 +6609,22 @@ export const ko_KR: EnTranslations = {
       }
     },
     "quests": {
+      "q_prof_intro": {
+        "title": "배울 가치가 있는 기술",
+        "text": "모든 기술은 손톱 밑의 흙에서 시작되지, {playerName}. 마을 동쪽 숲에서 거미 다리 2개를 모아 오게. 그런 다음 내 대장간에서 신병의 튜닉을 만들어 보게. 재료가 되는 뼛조각은 오는 길에 충분히 주울 수 있을 걸세. 그리고 분해해서 비전 가루로 만들 만한 것도 하나 가져오게. 채집하고, 제작하고, 분해할 수 있음을 보여주면 기술의 가치를 알려주지.",
+        "completion": "바로 그게 배울 가치가 있는 기술이지. 계속 대장간에 붙어 있게, {playerName}. 언젠가 자네는 말굽을 박으면서 동시에 검에 마법을 부여하게 될 걸세.",
+        "objectives": {
+          "0": {
+            "label": "거미 다리 채집"
+          },
+          "1": {
+            "label": "신병의 튜닉 제작"
+          },
+          "2": {
+            "label": "비전 가루"
+          }
+        }
+      },
       "q_wolves": {
         "title": "문 앞의 늑대들",
         "text": "숲늑대들이 북쪽 길의 여행자들을 물어뜯고 있습니다, {playerName}. 8마리를 처치해 이스트브룩이 숨 돌리게 해 주십시오.",
@@ -7724,6 +7767,20 @@ export const ko_KR: EnTranslations = {
         "name": "무너진 성물실",
         "enterText": "무너진 성물실로 내려갑니다.",
         "leaveText": "성물실 폐허의 브라더 할벤에게로 다시 올라갑니다."
+      }
+    },
+    "enchants": {
+      "enchant_minor_might": {
+        "name": "소소한 힘"
+      },
+      "enchant_minor_vigor": {
+        "name": "소소한 활력"
+      },
+      "enchant_minor_focus": {
+        "name": "소소한 집중"
+      },
+      "enchant_minor_agility": {
+        "name": "소소한 민첩"
       }
     },
     "itemSets": {
