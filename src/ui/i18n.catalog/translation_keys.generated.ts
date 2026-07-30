@@ -1824,6 +1824,7 @@ export type TranslationKeyFlat =
   | 'errors.api.nameTaken'
   | 'errors.api.notAuthenticated'
   | 'errors.api.passwordMin'
+  | 'errors.api.realmFull'
   | 'errors.api.renameBeforeEntering'
   | 'errors.api.renameNotPermitted'
   | 'errors.api.takenOver'
