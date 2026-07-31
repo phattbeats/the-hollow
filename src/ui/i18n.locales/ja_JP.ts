@@ -1626,6 +1626,91 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': '{item}を強欲',
   'itemUi.lootRoll.passAria': '{item}をパス',
   'itemUi.lootRoll.everyonePassed': '全員が{item}をパスしました。',
+  'entities.abilities.chain_heal.name': 'チェインヒール',
+  'entities.abilities.chain_heal.description':
+    '友好的な対象を大きく回復し、最大2体の近くの味方に連鎖します。連鎖するたびに回復量が50%減少します。',
+  'entities.abilities.crusader_strike.name': 'クルセイダーストライク',
+  'entities.abilities.crusader_strike.description':
+    '対象に武器ダメージに加えて24の聖なるダメージを与えます。',
+  'entities.abilities.metamorphosis.name': 'ドレッドアスペクト',
+  'entities.abilities.metamorphosis.description':
+    '20秒間恐ろしい悪魔に変身し、呪文ダメージが20%、詠唱速度が20%増加します。あなたの悪魔はダメージ50%、詠唱速度20%を得ます。',
+  'entities.abilities.holy_shock.name': 'ホーリーショック',
+  'entities.abilities.holy_shock.description':
+    '友好的な対象を神聖なエネルギーで癒すか、敵に神聖ダメージを与えます。',
+  'entities.abilities.holy_shield.name': '聖なる壁',
+  'entities.abilities.holy_shield.description':
+    '敵に光り輝く盾を投げつけ、神聖ダメージを与えて近くの敵2体に跳ね返ります。',
+  'entities.abilities.bestial_wrath.name': '猛る咆哮',
+  'entities.abilities.bestial_wrath.description':
+    '15秒間野獣の怒りに入り、攻撃力が20%、ペットのダメージが100%増加します。',
+  'entities.abilities.trueshot_aura.name': '精密照準のオーラ',
+  'entities.abilities.trueshot_aura.description':
+    '近くの味方を鼓舞し、30分間攻撃力を10%増加させます。',
+  'entities.abilities.wyvern_sting.name': 'ワイバーンの毒針',
+  'entities.abilities.wyvern_sting.description':
+    '遠距離から敵を刺し、最大4秒間無力化します。ダメージを受けると効果が解除されます。',
+  'entities.abilities.arcane_power.name': 'エーテルサージ',
+  'entities.abilities.arcane_power.description':
+    '10秒間、呪文ダメージが20%、呪文の速さが10%増加します。',
+  'entities.abilities.combustion.name': 'フラッシュファイア',
+  'entities.abilities.combustion.description': '15秒間、呪文クリティカル率が50%増加します。',
+  'entities.abilities.icy_veins.name': 'アイシーヴェイン',
+  'entities.abilities.icy_veins.description':
+    '10秒間、呪文の速さが30%増加し、詠唱の中断とノックバックを防ぎます。',
+  'entities.abilities.cold_blood.name': '冷徹な殺意',
+  'entities.abilities.cold_blood.description':
+    '殺意を集中させ、次の攻撃を必ずクリティカルにします。',
+  'entities.abilities.blade_flurry.name': 'ミラードブレード',
+  'entities.abilities.blade_flurry.description':
+    '剣閃の乱舞を放ち、12秒間攻撃速度が20%増加します。',
+  'entities.abilities.hemorrhage.name': 'レッドリボン',
+  'entities.abilities.hemorrhage.description':
+    '武器ダメージに加え出血効果で敵を攻撃し、12秒間出血ダメージを与え、出血ダメージを40%増加させます。コンボポイントを1得ます。',
+  'entities.abilities.power_infusion.name': '祝福の注入',
+  'entities.abilities.power_infusion.description':
+    '友好的な対象に力を注ぎ、15秒間呪文の速さを20%増加させます。',
+  'entities.abilities.holy_nova.name': 'ホーリーノヴァ',
+  'entities.abilities.holy_nova.description':
+    '神聖な輝きの爆発を起こし、近くの味方を回復し近くの敵にダメージを与えます。',
+  'entities.abilities.shadowform.name': 'グルームヴェイルフォーム',
+  'entities.abilities.shadowform.description':
+    'シャドウフォームになり、元の姿に戻るまで暗影ダメージが15%増加します。回復呪文を唱えるとフォームが解除されます。再度詠唱すると元の姿に戻ります。',
+  'entities.abilities.elemental_mastery.name': 'プライマルマスタリー',
+  'entities.abilities.elemental_mastery.description': '嵐の力を呼び、次の呪文を即時発動にします。',
+  'entities.abilities.siphon_life.name': 'ヴェインリーチ',
+  'entities.abilities.siphon_life.description':
+    '敵から生命力を吸収し、30秒間暗影ダメージを与え、与えたダメージ分自分を回復します。',
+  'entities.abilities.conflagrate.name': 'コンフラグレイト',
+  'entities.abilities.conflagrate.description':
+    '敵にかけたイモレイトを消費し、炎のダメージで発火させます。',
+  'entities.abilities.moonkin_form.name': 'ムーンウィングフォーム',
+  'entities.abilities.moonkin_form.description':
+    '恐ろしいムーンキンに変身し、呪文ダメージが20%、防御力が50%増加します。元の姿に戻るまで持続します。再度詠唱すると詠唱者フォームに戻ります。',
+  'entities.abilities.feral_charge.name': 'プライマルサージ',
+  'entities.abilities.feral_charge.description':
+    '原始の力を解き放ちます。ワイルドキャットフォームではエネルギー回復が10秒間100%増加します。ベアフォームでは即座に怒りを50得ます。',
+  'entities.abilities.swiftmend.name': 'スイフトメンド',
+  'entities.abilities.swiftmend.description':
+    '友好的な対象にかかった継続回復効果を消費して回復します。',
+  'entities.abilities.pummel.name': 'ジョークラック',
+  'entities.abilities.pummel.description': '対象の詠唱を中断し、4秒間その系統の詠唱を防ぎます。',
+  'entities.abilities.kick.name': 'ブート',
+  'entities.abilities.kick.description': '対象の詠唱を中断し、4秒間その系統の詠唱を防ぎます。',
+  'entities.abilities.counterspell.name': 'スペルブレイク',
+  'entities.abilities.counterspell.description':
+    '対象の詠唱を妨害し、6秒間その系統の詠唱を防ぎます。',
+  'entities.abilities.counter_shot.name': 'ハッシングショット',
+  'entities.abilities.counter_shot.description':
+    '咄嗟の射撃で対象の詠唱を中断し、その系統を4秒間封じます。',
+  'entities.abilities.rebuke.name': 'リプローチ',
+  'entities.abilities.rebuke.description': '対象の詠唱を中断し、4秒間その系統の詠唱を防ぎます。',
+  'entities.abilities.skull_bash.name': 'ヘッドバット',
+  'entities.abilities.skull_bash.description':
+    '突進頭突きで対象の詠唱を中断し、その系統を4秒間封じます。',
+  'entities.abilities.spell_lock.name': 'ギャグオーダー',
+  'entities.abilities.spell_lock.description':
+    '詠唱中の対象を沈黙させ、5秒間その系統の詠唱を防ぎます。',
   'itemUi.lootRoll.winnerOffline': '{item}の勝者がオフラインだったため、死体に返却されました。',
   'entities.abilities.heroic_strike.name': '英雄の一撃',
   'entities.abilities.heroic_strike.description':

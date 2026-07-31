@@ -1646,6 +1646,96 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'itemUi.lootRoll.greedAria': 'Жадность: {item}',
   'itemUi.lootRoll.passAria': 'Пас: {item}',
   'itemUi.lootRoll.everyonePassed': 'Все отказались от {item}.',
+  'entities.abilities.chain_heal.name': 'Цепное исцеление',
+  'entities.abilities.chain_heal.description':
+    'Исцеляет дружественную цель на большое количество здоровья, затем перескакивает на до 2 ближайших союзников, с уменьшением исцеления на 50% с каждым скачком.',
+  'entities.abilities.crusader_strike.name': 'Удар крестоносца',
+  'entities.abilities.crusader_strike.description':
+    'Наносит цели урон оружием плюс 24 урона Светом.',
+  'entities.abilities.metamorphosis.name': 'Устрашающий облик',
+  'entities.abilities.metamorphosis.description':
+    'Превращает вас в чудовищного демона на 20 сек, увеличивая урон от заклинаний на 20% и скорость сотворения на 20%. Ваш демон получает 50% урона и 20% скорости сотворения.',
+  'entities.abilities.holy_shock.name': 'Священный шок',
+  'entities.abilities.holy_shock.description':
+    'Поражает дружественную цель Священной энергией, исцеляя её, или врага, нанося урон Светом.',
+  'entities.abilities.holy_shield.name': 'Освящённая стена',
+  'entities.abilities.holy_shield.description':
+    'Метает сияющий щит во врага, нанося урон Светом и рикошетируя на 2 ближайших врагов.',
+  'entities.abilities.bestial_wrath.name': 'Рёв ярости',
+  'entities.abilities.bestial_wrath.description':
+    'Погружает вас в звериную ярость на 15 сек, увеличивая силу атаки на 20% и урон питомца на 100%.',
+  'entities.abilities.trueshot_aura.name': 'Аура меткого выстрела',
+  'entities.abilities.trueshot_aura.description':
+    'Воодушевляет находящихся рядом союзников, увеличивая силу атаки на 10% на 30 мин.',
+  'entities.abilities.wyvern_sting.name': 'Укус виверны',
+  'entities.abilities.wyvern_sting.description':
+    'Жалит врага издалека, обездвиживая его на срок до 4 сек. Любой урон снимает эффект.',
+  'entities.abilities.arcane_power.name': 'Всплеск эфира',
+  'entities.abilities.arcane_power.description':
+    'Увеличивает урон от заклинаний на 20% и ускорение заклинаний на 10% на 10 сек.',
+  'entities.abilities.combustion.name': 'Мгновенное возгорание',
+  'entities.abilities.combustion.description':
+    'Увеличивает шанс критического удара заклинаниями на 50% на 15 сек.',
+  'entities.abilities.icy_veins.name': 'Ледяные вены',
+  'entities.abilities.icy_veins.description':
+    'Увеличивает ускорение заклинаний на 30% и предотвращает прерывание и отбрасывание сотворения на 10 сек.',
+  'entities.abilities.cold_blood.name': 'Холодная ярость',
+  'entities.abilities.cold_blood.description':
+    'Сосредотачивает вашу жажду убийства, гарантируя, что следующая атака станет критическим ударом.',
+  'entities.abilities.blade_flurry.name': 'Зеркальные клинки',
+  'entities.abilities.blade_flurry.description':
+    'Обрушивает шквал клинков, увеличивая скорость атаки на 20% на 12 сек.',
+  'entities.abilities.hemorrhage.name': 'Алая лента',
+  'entities.abilities.hemorrhage.description':
+    'Поражает врага уроном оружием и эффектом кровотечения, нанося урон от кровотечения на протяжении 12 сек и увеличивая получаемый урон от кровотечения на 40%. Дает 1 очко комбо.',
+  'entities.abilities.power_infusion.name': 'Помазание',
+  'entities.abilities.power_infusion.description':
+    'Наполняет дружественную цель силой, увеличивая ускорение заклинаний на 20% на 15 сек.',
+  'entities.abilities.holy_nova.name': 'Священная нова',
+  'entities.abilities.holy_nova.description':
+    'Вызывает взрыв священного сияния, исцеляя находящихся рядом союзников и нанося урон находящимся рядом врагам.',
+  'entities.abilities.shadowform.name': 'Сумеречный облик',
+  'entities.abilities.shadowform.description':
+    'Принимает облик Тьмы, увеличивая урон Тьмой на 15% до тех пор, пока вы не вернётесь в обычный облик. Применение лечащего заклинания снимает облик. Повторное применение возвращает обычный облик.',
+  'entities.abilities.elemental_mastery.name': 'Стихийное мастерство',
+  'entities.abilities.elemental_mastery.description':
+    'Призывает силу шторма, делая ваше следующее заклинание мгновенным.',
+  'entities.abilities.siphon_life.name': 'Похититель жизни',
+  'entities.abilities.siphon_life.description':
+    'Похищает жизнь у врага, нанося урон Тьмой на протяжении 30 сек и исцеляя вас на количество нанесённого урона.',
+  'entities.abilities.conflagrate.name': 'Воспламенение',
+  'entities.abilities.conflagrate.description':
+    'Расходует наложенное на врага Воспламенение, поджигая его и нанося урон Огнём.',
+  'entities.abilities.moonkin_form.name': 'Облик совухи',
+  'entities.abilities.moonkin_form.description':
+    'Превращает вас в грозного лунного стража, увеличивая урон от заклинаний на 20% и броню на 50%. Действует, пока вы не вернётесь в обычный облик. Повторное применение возвращает облик заклинателя.',
+  'entities.abilities.feral_charge.name': 'Первобытный всплеск',
+  'entities.abilities.feral_charge.description':
+    'Высвобождает первобытную силу. В облике пантеры восстановление энергии увеличивается на 100% на 10 сек. В облике медведя мгновенно создаёт 50 ярости.',
+  'entities.abilities.swiftmend.name': 'Быстрое исцеление',
+  'entities.abilities.swiftmend.description':
+    'Расходует эффект исцеления с течением времени на дружественной цели, исцеляя её.',
+  'entities.abilities.pummel.name': 'Хрустнуть челюстью',
+  'entities.abilities.pummel.description':
+    'Прерывает применяемое целью заклинание и запрещает применение заклинаний этой школы на 4 сек.',
+  'entities.abilities.kick.name': 'Удар ногой',
+  'entities.abilities.kick.description':
+    'Прерывает применяемое целью заклинание и запрещает применение заклинаний этой школы на 4 сек.',
+  'entities.abilities.counterspell.name': 'Развеивание заклинания',
+  'entities.abilities.counterspell.description':
+    'Прерывает применяемое целью заклинание и запрещает применение заклинаний этой школы на 6 сек.',
+  'entities.abilities.counter_shot.name': 'Заглушающий выстрел',
+  'entities.abilities.counter_shot.description':
+    'Молниеносный выстрел, прерывающий применяемое целью заклинание и запрещающий эту школу на 4 сек.',
+  'entities.abilities.rebuke.name': 'Упрёк',
+  'entities.abilities.rebuke.description':
+    'Прерывает применяемое целью заклинание и запрещает применение заклинаний этой школы на 4 сек.',
+  'entities.abilities.skull_bash.name': 'Удар головой',
+  'entities.abilities.skull_bash.description':
+    'Стремительный удар головой, прерывающий применяемое целью заклинание и запрещающий эту школу на 4 сек.',
+  'entities.abilities.spell_lock.name': 'Кляп',
+  'entities.abilities.spell_lock.description':
+    'Заставляет цель замолчать во время сотворения заклинания и запрещает применение заклинаний этой школы на 5 сек.',
   'itemUi.lootRoll.winnerOffline': 'Победитель {item} был офлайн; предмет вернулся к трупу.',
   'entities.abilities.heroic_strike.name': 'Удар героя',
   'entities.abilities.heroic_strike.description':

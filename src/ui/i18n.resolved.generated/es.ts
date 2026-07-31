@@ -4113,6 +4113,126 @@ export const es: EnTranslations = {
   },
   "entities": {
     "abilities": {
+      "chain_heal": {
+        "name": "Chain Heal",
+        "description": "Heals a friendly target for a large amount, then jumps to up to 2 additional nearby allies, healing for 50% less with each jump."
+      },
+      "crusader_strike": {
+        "name": "Crusader Strike",
+        "description": "Strikes the target for weapon damage plus 24 Holy damage."
+      },
+      "metamorphosis": {
+        "name": "Dread Aspect",
+        "description": "Transform into a monstrous demon for 20 sec, increasing your spell damage by 20% and casting speed by 20%. Your demon gains 50% damage and 20% casting speed."
+      },
+      "holy_shock": {
+        "name": "Holy Shock",
+        "description": "Shocks a friendly target with Holy energy to heal them, or an enemy for Holy damage."
+      },
+      "holy_shield": {
+        "name": "Hallowed Wall",
+        "description": "Hurls a radiant aegis at an enemy, dealing Holy damage and bouncing to 2 nearby enemies."
+      },
+      "bestial_wrath": {
+        "name": "Howling Rage",
+        "description": "Sends you into a bestial rage, increasing your attack power by 20% and your pet damage by 100% for 15 sec."
+      },
+      "trueshot_aura": {
+        "name": "Sureflight Aura",
+        "description": "Inspires nearby allies, increasing attack power by 10% for 30 min."
+      },
+      "wyvern_sting": {
+        "name": "Wyvern Sting",
+        "description": "Stings the enemy from range, incapacitating it for up to 4 sec. Any damage breaks the effect."
+      },
+      "arcane_power": {
+        "name": "Aether Surge",
+        "description": "Increases spell damage by 20% and spell haste by 10% for 10 sec."
+      },
+      "combustion": {
+        "name": "Flashfire",
+        "description": "Increases spell critical chance by 50% for 15 sec."
+      },
+      "icy_veins": {
+        "name": "Icy Veins",
+        "description": "Increases spell haste by 30% and prevents cast interruption and pushback for 10 sec."
+      },
+      "cold_blood": {
+        "name": "Killer's Calm",
+        "description": "Focuses your killing intent so your next attack is a critical strike."
+      },
+      "blade_flurry": {
+        "name": "Mirrored Blades",
+        "description": "Unleashes a flurry of blades, increasing attack speed by 20% for 12 sec."
+      },
+      "hemorrhage": {
+        "name": "Red Ribbon",
+        "description": "Strikes the enemy for weapon damage plus bleed, causes bleeding damage over 12 sec, and increases bleed damage taken by 40%. Awards 1 combo point."
+      },
+      "power_infusion": {
+        "name": "Anointing",
+        "description": "Infuses a friendly target with power, increasing spell haste by 20% for 15 sec."
+      },
+      "holy_nova": {
+        "name": "Holy Nova",
+        "description": "Causes an explosion of holy radiance, healing nearby allies and damaging nearby enemies."
+      },
+      "shadowform": {
+        "name": "Gloamveil Form",
+        "description": "Assume a Shadowform, increasing your Shadow damage by 15% until you shift back. Casting a healing spell ends the form. Cast again to return to normal form."
+      },
+      "elemental_mastery": {
+        "name": "Primal Mastery",
+        "description": "Calls on the storm, making your next spell instant."
+      },
+      "siphon_life": {
+        "name": "Veinleech",
+        "description": "Siphons life from the enemy, causing Shadow damage over 30 sec and healing you for the damage done."
+      },
+      "conflagrate": {
+        "name": "Conflagrate",
+        "description": "Consumes your Immolate on the enemy to ignite them for Fire damage."
+      },
+      "moonkin_form": {
+        "name": "Moonwing Form",
+        "description": "Shapeshift into a fearsome Moonkin, increasing your spell damage by 20% and your armor by 50%. Lasts until you shift out. Cast again to return to caster form."
+      },
+      "feral_charge": {
+        "name": "Primal Surge",
+        "description": "Unleash a primal surge. In Cat Form, Energy regeneration is increased by 100% for 10 sec. In Bear Form, instantly generates 50 Rage."
+      },
+      "swiftmend": {
+        "name": "Swiftmend",
+        "description": "Consumes a heal-over-time effect on a friendly target to heal them."
+      },
+      "pummel": {
+        "name": "Jawcrack",
+        "description": "Interrupts the target's spellcast and prevents casting from that school for 4 sec."
+      },
+      "kick": {
+        "name": "Boot",
+        "description": "Interrupts the target's spellcast and prevents casting from that school for 4 sec."
+      },
+      "counterspell": {
+        "name": "Spellbreak",
+        "description": "Counters the target's spellcast and prevents casting from that school for 6 sec."
+      },
+      "counter_shot": {
+        "name": "Hushing Shot",
+        "description": "A snap shot that interrupts the target's spellcast and locks that school for 4 sec."
+      },
+      "rebuke": {
+        "name": "Reproach",
+        "description": "Interrupts the target's spellcast and prevents casting from that school for 4 sec."
+      },
+      "skull_bash": {
+        "name": "Headbutt",
+        "description": "A lunging headbutt that interrupts the target's spellcast and locks that school for 4 sec."
+      },
+      "spell_lock": {
+        "name": "Gag Order",
+        "description": "Silences the target mid-cast and prevents casting from that school for 5 sec."
+      },
       "heroic_strike": {
         "name": "Golpe heroico",
         "description": "Un ataque poderoso que aumenta el daño cuerpo a cuerpo en {damage}. Se activa en tu siguiente golpe."

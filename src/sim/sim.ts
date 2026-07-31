@@ -56,6 +56,7 @@ import {
   healingThreat as healingThreatImpl,
   hexOutputMult as hexOutputMultImpl,
 } from './combat/heal';
+import { spellCritBonusFromAuras, spellDamageMultFromAuras } from './combat/spell_combat';
 import { isSpellResisted } from './combat/spell_resist';
 // A3: the augment/power-up content helpers used by the Fiesta match logic
 // (AUGMENTS_BY_ID/AugmentDef/eligibleAugments/POWERUPS/PowerupDef/tierForWave)
@@ -1828,7 +1829,7 @@ export class Sim {
 
     // Resolve the flat talent struct once, before the stat pass + ability
     // resolver below consume it (they only ever read these flat numbers).
-    meta.talentMods = computeTalentModifiers(cls, meta.talents, meta.secondaryCls);
+    meta.talentMods = computeTalentModifiers(cls, meta.talents, meta.secondaryCls, player.level);
     this.refreshKnownAbilities(meta, false);
     recalcPlayerStats(player, cls, meta.equipment, meta.talentMods, meta.enchants);
     if (savedState) {
@@ -3004,6 +3005,17 @@ export class Sim {
     // from a sane baseline (virtualLevel never falls below the real level). Only
     // ever raises it and lifetimeXp is monotonic.
     r.meta.lifetimeXp = Math.max(r.meta.lifetimeXp, xpToReachLevel(r.e.level));
+    // Re-bake the flat talent mods at the new level before the stat pass: spec mastery
+    // magnitudes scale with level (min(1, level/20)), so a dev/GM level jump must
+    // strengthen (or weaken) the mastery, exactly like the live ding path
+    // (combat/damage.ts grantXp). Without this a level-jumped character keeps the
+    // mastery baked at the OLD level.
+    r.meta.talentMods = computeTalentModifiers(
+      r.meta.cls,
+      r.meta.talents,
+      r.meta.secondaryCls,
+      r.e.level,
+    );
     recalcPlayerStats(r.e, r.meta.cls, r.meta.equipment, this.playerMods(r.meta), r.meta.enchants);
     r.e.hp = r.e.maxHp;
     if (r.e.resourceType === 'mana') r.e.resource = r.e.maxResource;
@@ -3590,7 +3602,9 @@ export class Sim {
     });
     for (const target of this.hostilesInRadius(source, effect.pos, effect.radius)) {
       if (!this.hasLineOfSight(source, target)) continue;
-      const dmg = Math.round(this.rng.range(effect.min, effect.max) + (effect.spBonus ?? 0));
+      const isSpell = effect.school !== 'physical';
+      const rawDmg = this.rng.range(effect.min, effect.max) + (effect.spBonus ?? 0);
+      const dmg = Math.round(isSpell ? rawDmg * spellDamageMultFromAuras(source) : rawDmg);
       this.dealDamage(
         source,
         target,
@@ -3673,7 +3687,21 @@ export class Sim {
   }
 
   private spellCrit(p: Entity): number {
-    return 0.05 + p.stats.int * 0.0008;
+    return 0.05 + p.stats.int * 0.0008 + spellCritBonusFromAuras(p);
+  }
+
+  // Pet damage multiplier from pet_damage_pct auras (Howling Rage/Metamorphosis) and
+  // the owner's petDmgPct mastery (Beast Mastery). Shared by mob melee (which pets
+  // route through) and the pet spell-cast path below.
+  private petDamageMult(e: Entity): number {
+    if (e.ownerId === null) return 1;
+    let mult = 1;
+    for (const a of e.auras) {
+      if (a.kind === 'pet_damage_pct') mult += a.value > 1 ? a.value / 100 : a.value;
+    }
+    const ownerMeta = this.players.get(e.ownerId);
+    if (ownerMeta) mult *= 1 + this.playerMods(ownerMeta).global.petDmgPct;
+    return mult;
   }
 
   // Heal core, heal multipliers, heal-absorb soak, crit-vuln bonus, and the
@@ -4069,6 +4097,7 @@ export class Sim {
     noRage = false,
     threatOpts?: { flat?: number; mult?: number },
     direct = true,
+    alreadyFinal = false,
   ): void {
     dealDamageImpl(
       this.ctx,
@@ -4082,6 +4111,7 @@ export class Sim {
       noRage,
       threatOpts,
       direct,
+      alreadyFinal,
     );
   }
 
@@ -4428,6 +4458,7 @@ export class Sim {
     if (crit) dmg *= 2;
     const enrage = MOBS[mob.templateId]?.enrage;
     if (mob.enraged && enrage) dmg *= enrage.dmgMult;
+    dmg *= this.petDamageMult(mob);
     const rawDmg = dmg; // pre-armor, post-crit/enrage and basis for cleave splash
     dmg *= 1 - armorReduction(this.effectiveArmor(target), mob.level);
     const dealt = Math.max(1, Math.round(dmg));
@@ -4487,7 +4518,8 @@ export class Sim {
       this.enterCombat(pet, target);
     } else {
       const dmg = Math.round(
-        this.rng.range(spell.min + pet.level * 0.8, spell.max + pet.level * 1.1),
+        this.rng.range(spell.min + pet.level * 0.8, spell.max + pet.level * 1.1) *
+          this.petDamageMult(pet),
       );
       this.dealDamage(pet, target, Math.max(1, dmg), false, spell.school, spell.name, 'hit');
     }
