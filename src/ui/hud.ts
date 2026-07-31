@@ -2914,7 +2914,11 @@ export class Hud {
     hideTooltip: () => this.hideTooltip(),
     attachTooltip: (el, html) => this.attachTooltip(el, html),
     abilitySummary: (known) =>
-      describeAbilitySummary(known, this.sim.player.resourceType, this.sim.player.spellHaste),
+      describeAbilitySummary(
+        known,
+        this.sim.player.resourceType,
+        playerSpellHasteFrac(this.sim.player),
+      ),
     abilityTooltip: (known) => this.abilityTooltip(known),
     barAbilityIds: () =>
       this.hotbarActions.flatMap((a) => (a && a.type === 'ability' ? [a.id] : [])),
@@ -3373,7 +3377,7 @@ export class Hud {
     const rangeLine = abilityRangeLine(a);
     if (rangeLine) costLine.push(rangeLine);
     if (costLine.length) html += `<div class="tt-stat">${costLine.map(esc).join(' &nbsp; ')}</div>`;
-    const castLine = [abilityCastLine(res, this.sim.player.spellHaste)];
+    const castLine = [abilityCastLine(res, playerSpellHasteFrac(this.sim.player))];
     // Use the RESOLVED cooldown (res.cooldown), not res.def.cooldown, so talents that
     // reduce cooldown (Improved Mortal Strike, Barrage, Improved Fire Blast, ...) show
     // their effect in the tooltip.
@@ -6282,6 +6286,9 @@ export class Hud {
           break;
         }
         case 'learnAbility':
+          // A newly granted ability (level-up or spec signature) must appear in an
+          // open spellbook right away, not on the next manual reopen.
+          if (this.spellbookWindow.isOpen) this.spellbookWindow.render();
           break; // logged by sim
         case 'comboPoint':
           break;
@@ -11656,9 +11663,21 @@ function abilityRangeLine(def: AbilityDef): string | null {
   return t('abilityUi.tooltip.range', { range: formatAbilityNumber(def.range) });
 }
 
-// `spellHaste` (the live character's set-bonus spell haste, a fraction) shortens
-// the shown cast / channel time exactly as the sim does, so a hasted caster's
-// tooltips reflect the real, faster cast.
+// The live caster's TOTAL spell-haste fraction: the resolved stat (set bonuses + spec
+// mastery) PLUS active buff_spellhaste auras (Arcane Power, Icy Veins, Metamorphosis).
+// Mirrors the sim's spellHasteMult (combat/spell_combat.ts) so a shown cast time never
+// disagrees with the real one. ui/ cannot import the sim-combat helper across the seam,
+// so the formula is kept identical here by hand.
+function playerSpellHasteFrac(p: Entity | null | undefined): number {
+  if (!p) return 0;
+  let frac = p.spellHaste;
+  for (const a of p.auras) if (a.kind === 'buff_spellhaste') frac += a.value;
+  return Math.max(0, frac);
+}
+
+// `spellHaste` (the live character's total spell haste, a fraction) shortens the shown
+// cast / channel time exactly as the sim does, so a hasted caster's tooltips reflect the
+// real, faster cast.
 function abilityCastLine(known: ResolvedAbility, spellHaste = 0): string {
   const h = 1 + Math.max(0, spellHaste);
   if (known.def.channel) {
@@ -11718,8 +11737,12 @@ function abilityEffectText(res: ResolvedAbility, scaling?: AbilityScaling): stri
       eff.type === 'weaponStrike' ||
       eff.type === 'aoeDamage' ||
       eff.type === 'aoeRoot' ||
+      eff.type === 'chainDamage' ||
+      eff.type === 'chainHeal' ||
+      eff.type === 'aoeHeal' ||
       eff.type === 'finisherDamage' ||
-      eff.type === 'drainTick',
+      eff.type === 'drainTick' ||
+      eff.type === 'consumeAura',
   );
   if (primary) {
     switch (primary.type) {
@@ -11727,6 +11750,9 @@ function abilityEffectText(res: ResolvedAbility, scaling?: AbilityScaling): stri
       case 'heal':
       case 'aoeDamage':
       case 'aoeRoot':
+      case 'chainDamage':
+      case 'chainHeal':
+      case 'aoeHeal':
       case 'drainTick':
         return abilityAmountRange(primary.min, primary.max) + suffix(primary);
       case 'weaponDamage':
@@ -11739,6 +11765,10 @@ function abilityEffectText(res: ResolvedAbility, scaling?: AbilityScaling): stri
             perCombo: formatAbilityNumber(primary.perCombo),
           }) + suffix(primary)
         );
+      case 'consumeAura':
+        if (primary.deal) return abilityAmountRange(primary.deal.min, primary.deal.max);
+        if (primary.heal) return abilityAmountRange(primary.heal.min, primary.heal.max);
+        return '';
     }
   }
 

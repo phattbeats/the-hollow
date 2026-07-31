@@ -71,7 +71,25 @@ export interface GlobalModEffect {
   meleeDmgPct?: number; // physical ability damage
   spellDmgPct?: number; // magic ability damage
   healPct?: number; // healing done
+  dotDmgPct?: number; // damage-over-time effects
+  hotHealPct?: number; // heal-over-time effects
+  absorbPct?: number; // absorb shield strength
+  meleeHastePct?: number; // passive melee attack haste
+  petDmgPct?: number; // owner's passive pet damage
+  petDmgSharePct?: number; // incoming damage redirected to a living pet
   threatPct?: number; // bonus threat (tank role)
+  // Extra critical-strike damage (0.5 = +50%), split by OUTPUT CHANNEL so a spec
+  // mastery only strengthens the crits it is meant to: a Fire mastery boosts SPELL
+  // crits, a Combat rogue mastery boosts PHYSICAL crits, a Holy paladin mastery boosts
+  // HEAL crits, never the others. Added to the matching base crit multiplier (spell
+  // 1.5, physical 2.0, heal 1.5). Baked onto the paired Entity.critDmg*Bonus in
+  // recalcPlayerStats.
+  critDmgSpellPct?: number;
+  critDmgPhysPct?: number;
+  critDmgHealPct?: number;
+  // Passive spell haste from a spec mastery (0.1 = +10%). Folds into Entity.spellHaste,
+  // so it shortens every cast and the cast-time tooltips reflect it live.
+  spellHastePct?: number;
 }
 
 export interface TalentEffect {
@@ -619,7 +637,22 @@ function zeroStats(): Required<StatModEffect> {
   };
 }
 function zeroGlobal(): Required<GlobalModEffect> {
-  return { meleeDmgPct: 0, spellDmgPct: 0, healPct: 0, threatPct: 0 };
+  return {
+    meleeDmgPct: 0,
+    spellDmgPct: 0,
+    healPct: 0,
+    dotDmgPct: 0,
+    hotHealPct: 0,
+    absorbPct: 0,
+    meleeHastePct: 0,
+    petDmgPct: 0,
+    petDmgSharePct: 0,
+    threatPct: 0,
+    critDmgSpellPct: 0,
+    critDmgPhysPct: 0,
+    critDmgHealPct: 0,
+    spellHastePct: 0,
+  };
 }
 function zeroAbilityMod(): ResolvedAbilityMod {
   return { dmgPct: 0, flatDmg: 0, costPct: 0, cooldownPct: 0, castPct: 0, buffPct: 0 };
@@ -665,7 +698,17 @@ function accumulate(mods: TalentModifiers, eff: TalentEffect | undefined, mult: 
     g.meleeDmgPct += (e.meleeDmgPct ?? 0) * mult;
     g.spellDmgPct += (e.spellDmgPct ?? 0) * mult;
     g.healPct += (e.healPct ?? 0) * mult;
+    g.dotDmgPct += (e.dotDmgPct ?? 0) * mult;
+    g.hotHealPct += (e.hotHealPct ?? 0) * mult;
+    g.absorbPct += (e.absorbPct ?? 0) * mult;
+    g.meleeHastePct += (e.meleeHastePct ?? 0) * mult;
+    g.petDmgPct += (e.petDmgPct ?? 0) * mult;
+    g.petDmgSharePct += (e.petDmgSharePct ?? 0) * mult;
     g.threatPct += (e.threatPct ?? 0) * mult;
+    g.critDmgSpellPct += (e.critDmgSpellPct ?? 0) * mult;
+    g.critDmgPhysPct += (e.critDmgPhysPct ?? 0) * mult;
+    g.critDmgHealPct += (e.critDmgHealPct ?? 0) * mult;
+    g.spellHastePct += (e.spellHastePct ?? 0) * mult;
   }
   for (const am of eff.ability ?? []) {
     let cur = mods.abilities[am.ability];
@@ -742,6 +785,7 @@ function accumulateBlock(
   ranks: Record<string, number>,
   choices: Record<string, string>,
   isPrimary: boolean,
+  level: number,
 ): void {
   const idx = nodeIndex(ct);
   const sp = spec ? (ct.specs.find((s) => s.id === spec) ?? null) : null;
@@ -751,7 +795,10 @@ function accumulateBlock(
       mods.role = sp.role;
     }
     mods.grants.push({ ability: sp.signature, rank: 1 }); // signature ability
-    accumulate(mods, sp.mastery.effect, 1); // Mastery passive
+    // Mastery passive scales with level (min(1, level/20)), full strength at 20,
+    // re-baked live on every ding (combat/damage.ts grantXp) and dev level jump
+    // (sim.ts). A sub-20 character's mastery is proportionally weaker.
+    accumulate(mods, sp.mastery.effect, Math.min(1, level / 20));
   }
   for (const id in ranks) {
     const rank = ranks[id];
@@ -772,15 +819,16 @@ export function computeTalentModifiers(
   cls: PlayerClass,
   alloc: TalentAllocation,
   secondaryCls: PlayerClass | null = null,
+  level: number = MAX_LEVEL,
 ): TalentModifiers {
   const mods = emptyModifiers();
   const ct = talentsFor(cls);
   if (!ct) return mods;
-  accumulateBlock(mods, ct, alloc.spec, alloc.ranks, alloc.choices, true);
+  accumulateBlock(mods, ct, alloc.spec, alloc.ranks, alloc.choices, true, level);
   const sec = alloc.secondary;
   if (sec && secondaryCls) {
     const ct2 = talentsFor(secondaryCls);
-    if (ct2) accumulateBlock(mods, ct2, sec.spec, sec.ranks, sec.choices, false);
+    if (ct2) accumulateBlock(mods, ct2, sec.spec, sec.ranks, sec.choices, false, level);
   }
   return mods;
 }
