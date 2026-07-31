@@ -2979,6 +2979,15 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': 'Scherbe mit Zählkerben',
   'entities.items.tally_shard.flavorText':
     '...Kerben in Fünfergruppen, tief geritzt, durchgestrichen, sooft die Zählung herumkam. hunderte Fünfer, bevor das Durchstreichen aufhört, und die letzte Reihe wurde nie vollendet...',
+  'entities.items.root_token_unbinding.name': 'Gelöster Wurzelknoten',
+  'entities.items.root_token_unbinding.flavorText':
+    '...glattgerieben, wo ein Daumen immer wieder drückte, als löse er einen Knoten, der um nichts Sichtbares gebunden war. jemand glaubte, Loslassen sei eine Gnade. jemand irrte sich, oder war zu früh, oder beides...',
+  'entities.items.root_token_offering.name': 'Kleiner Fütterstein',
+  'entities.items.root_token_offering.flavorText':
+    '...eine flache Mulde, kaum größer als eine Münze, in Stein geritzt, der Art, in die man einen Krümel für etwas legt, das nicht bitten kann. was hier fraß, hörte nicht auf, hungrig zu sein. es hörte nur auf, gesehen zu werden...',
+  'entities.items.root_token_verdict.name': 'Urteilsgezählter Stein',
+  'entities.items.root_token_verdict.flavorText':
+    '...eine Zählung in Dreiergruppen, nicht in Fünfern, gerichtet und neu gerichtet, so fest gedrückt, dass der dritte Durchgang den Stein spaltete. jemand änderte immer wieder seine Meinung zur selben Frage, wieder und wieder, im Dunkeln...',
   'entities.items.heartwood_splinter.name': 'Herzholzsplitter',
   'entities.items.heartwood_splinter.flavorText':
     'Warm anzufassen, lange nachdem der Baum, aus dem es stammt, aufgehört hat, sich zu bewegen.',

@@ -5866,16 +5866,16 @@ export const id_ID: EnTranslations = {
         "flavorText": "...tanda dalam kelompok lima, digores dalam, dicoret tiap kali hitungan genap. ratusan kelompok lima sebelum coretan berhenti, dan baris terakhir tak pernah selesai..."
       },
       "root_token_unbinding": {
-        "name": "Loosened Root-Knot",
-        "flavorText": "...worn smooth where a thumb pressed and pressed, like loosening a knot tied around nothing you could see. someone believed letting go was a kindness. someone was wrong, or early, or both..."
+        "name": "Simpul Akar Terlepas",
+        "flavorText": "...halus terkikis di tempat ibu jari menekan berulang kali, seolah melepaskan simpul yang terikat pada sesuatu yang tak terlihat. seseorang percaya bahwa melepaskan adalah kebaikan. seseorang salah, atau terlalu cepat, atau keduanya..."
       },
       "root_token_offering": {
-        "name": "Small Feeding Stone",
-        "flavorText": "...a shallow bowl scratched into stone no bigger than a coin, the kind you'd leave a crumb in for something that couldn't ask. whatever ate here didn't stop being hungry. it just stopped being seen..."
+        "name": "Batu Pemberi Makan Kecil",
+        "flavorText": "...sebuah cekungan dangkal terukir di batu, tak lebih besar dari koin, jenis yang akan kau isi dengan remah untuk sesuatu yang tak bisa meminta. apa yang makan di sini tidak berhenti lapar. ia hanya berhenti terlihat..."
       },
       "root_token_verdict": {
-        "name": "Judgment-Scored Stone",
-        "flavorText": "...a tally scored in threes, not fives, judged and rejudged, pressed so hard the third pass split the stone. somebody kept changing their mind about the same question, over and over, in the dark..."
+        "name": "Batu Bertanda Vonis",
+        "flavorText": "...sebuah hitungan ditandai per tiga, bukan per lima, diadili dan diadili ulang, ditekan begitu keras hingga tanda ketiga meretakkan batu. seseorang terus berubah pikiran tentang pertanyaan yang sama, berulang kali, dalam gelap..."
       },
       "reliquary_plate_chest": {
         "name": "Baju Zirah Penjaga Relikuari"

@@ -5866,16 +5866,16 @@ export const tr_TR: EnTranslations = {
         "flavorText": "...beşerli işaretler, derin kazınmış, sayım her döndüğünde üstü çizilmiş. çizmeler durmadan önce yüzlerce beşli, ve son sıra hiç bitirilmemiş..."
       },
       "root_token_unbinding": {
-        "name": "Loosened Root-Knot",
-        "flavorText": "...worn smooth where a thumb pressed and pressed, like loosening a knot tied around nothing you could see. someone believed letting go was a kindness. someone was wrong, or early, or both..."
+        "name": "Gevşetilmiş Kök Düğümü",
+        "flavorText": "...bir başparmağın defalarca bastırdığı yerde pürüzsüzleşmiş, görülemeyen bir şeyin etrafına bağlanmış bir düğümü çözermişçesine. birisi bırakmanın bir iyilik olduğuna inanıyordu. birisi yanılıyordu, ya da erkendi, ya da ikisi de..."
       },
       "root_token_offering": {
-        "name": "Small Feeding Stone",
-        "flavorText": "...a shallow bowl scratched into stone no bigger than a coin, the kind you'd leave a crumb in for something that couldn't ask. whatever ate here didn't stop being hungry. it just stopped being seen..."
+        "name": "Küçük Besleme Taşı",
+        "flavorText": "...taşa kazınmış, bir bozuk paradan büyük olmayan sığ bir çukur, isteyemeyen bir şey için kırıntı bırakılacak türden. burada besleneni yemeyi bırakmadı. sadece görülmeyi bıraktı..."
       },
       "root_token_verdict": {
-        "name": "Judgment-Scored Stone",
-        "flavorText": "...a tally scored in threes, not fives, judged and rejudged, pressed so hard the third pass split the stone. somebody kept changing their mind about the same question, over and over, in the dark..."
+        "name": "Yargıyla İşaretlenmiş Taş",
+        "flavorText": "...beşerli değil, üçerli işaretlenmiş bir hesap, yargılanmış ve yeniden yargılanmış, üçüncü geçişte taşı çatlatacak kadar sert bastırılmış. biri karanlıkta aynı soru üzerinde defalarca fikrini değiştirip durdu..."
       },
       "reliquary_plate_chest": {
         "name": "Emanetlik Muhafızı Zırhı"

@@ -5866,16 +5866,16 @@ export const da_DK: EnTranslations = {
         "flavorText": "...mærker i femmere, ridset dybt, streget over hver gang tællingen nåede rundt. hundredvis af femmere før overstregningerne hører op, og den sidste række blev aldrig gjort færdig..."
       },
       "root_token_unbinding": {
-        "name": "Loosened Root-Knot",
-        "flavorText": "...worn smooth where a thumb pressed and pressed, like loosening a knot tied around nothing you could see. someone believed letting go was a kindness. someone was wrong, or early, or both..."
+        "name": "Løsnet Rodknude",
+        "flavorText": "...slidt glat, hvor en tommelfinger pressede igen og igen, som om den løsnede en knude bundet om intet, man kunne se. nogen troede, at give slip var en nådesgave. nogen tog fejl, eller var for tidligt ude, eller begge dele..."
       },
       "root_token_offering": {
-        "name": "Small Feeding Stone",
-        "flavorText": "...a shallow bowl scratched into stone no bigger than a coin, the kind you'd leave a crumb in for something that couldn't ask. whatever ate here didn't stop being hungry. it just stopped being seen..."
+        "name": "Lille Fodringssten",
+        "flavorText": "...en lav skål ridset i sten, ikke større end en mønt, den slags man ville lægge en krumme i til noget, der ikke kunne bede om det. det, der spiste her, holdt ikke op med at være sultent. det holdt bare op med at blive set..."
       },
       "root_token_verdict": {
-        "name": "Judgment-Scored Stone",
-        "flavorText": "...a tally scored in threes, not fives, judged and rejudged, pressed so hard the third pass split the stone. somebody kept changing their mind about the same question, over and over, in the dark..."
+        "name": "Domsmærket Sten",
+        "flavorText": "...en optælling mærket i tretal, ikke femtal, dømt og gendømt, presset så hårdt at det tredje mærke splittede stenen. nogen blev ved med at skifte mening om det samme spørgsmål, igen og igen, i mørket..."
       },
       "reliquary_plate_chest": {
         "name": "Relikvievogterens Brynje"

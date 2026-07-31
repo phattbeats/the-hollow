@@ -5866,16 +5866,16 @@ export const pl_PL: EnTranslations = {
         "flavorText": "...karby piątkami, ryte głęboko, przekreślane za każdym razem, gdy rachunek się domykał. setki piątek, nim przekreślenia ustają, a ostatni rząd nigdy nie został dokończony..."
       },
       "root_token_unbinding": {
-        "name": "Loosened Root-Knot",
-        "flavorText": "...worn smooth where a thumb pressed and pressed, like loosening a knot tied around nothing you could see. someone believed letting go was a kindness. someone was wrong, or early, or both..."
+        "name": "Rozluźniony Węzeł Korzenia",
+        "flavorText": "...wygładzony tam, gdzie kciuk naciskał raz za razem, jakby rozluźniał węzeł zawiązany wokół czegoś niewidocznego. ktoś wierzył, że puszczenie było aktem łaski. ktoś się mylił, albo był zbyt wczesny, albo jedno i drugie..."
       },
       "root_token_offering": {
-        "name": "Small Feeding Stone",
-        "flavorText": "...a shallow bowl scratched into stone no bigger than a coin, the kind you'd leave a crumb in for something that couldn't ask. whatever ate here didn't stop being hungry. it just stopped being seen..."
+        "name": "Mały Kamień Karmienia",
+        "flavorText": "...płytka miska wyryta w kamieniu, nie większa niż moneta, taka, w której zostawiłbyś okruch dla czegoś, co nie mogło o to poprosić. to, co tu jadło, nie przestało być głodne. po prostu przestało być widziane..."
       },
       "root_token_verdict": {
-        "name": "Judgment-Scored Stone",
-        "flavorText": "...a tally scored in threes, not fives, judged and rejudged, pressed so hard the third pass split the stone. somebody kept changing their mind about the same question, over and over, in the dark..."
+        "name": "Kamień Naznaczony Wyrokiem",
+        "flavorText": "...rachunek znaczony trójkami, nie piątkami, osądzany i osądzany ponownie, dociskany tak mocno, że trzecie przejście rozłupało kamień. ktoś wciąż zmieniał zdanie w tej samej sprawie, raz za razem, w ciemności..."
       },
       "reliquary_plate_chest": {
         "name": "Kolczuga strażnika relikwiarza"

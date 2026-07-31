@@ -5866,16 +5866,16 @@ export const fr_FR: EnTranslations = {
         "flavorText": "...des marques par cinq, gravées profond, barrées chaque fois que le compte revenait. des centaines de cinq avant que les barres ne cessent, et la dernière rangée ne fut jamais finie..."
       },
       "root_token_unbinding": {
-        "name": "Loosened Root-Knot",
-        "flavorText": "...worn smooth where a thumb pressed and pressed, like loosening a knot tied around nothing you could see. someone believed letting go was a kindness. someone was wrong, or early, or both..."
+        "name": "Nœud de Racine Dénoué",
+        "flavorText": "...usé et lisse là où un pouce a pressé encore et encore, comme pour dénouer un nœud attaché autour de rien que l'on puisse voir. quelqu'un croyait que lâcher prise était une bonté. quelqu'un avait tort, ou trop tôt, ou les deux..."
       },
       "root_token_offering": {
-        "name": "Small Feeding Stone",
-        "flavorText": "...a shallow bowl scratched into stone no bigger than a coin, the kind you'd leave a crumb in for something that couldn't ask. whatever ate here didn't stop being hungry. it just stopped being seen..."
+        "name": "Petite Pierre à Offrande",
+        "flavorText": "...un creux peu profond gravé dans la pierre, pas plus grand qu'une pièce, du genre où l'on laisserait une miette pour quelque chose qui ne pouvait pas demander. ce qui mangeait ici n'a pas cessé d'avoir faim. il a seulement cessé d'être vu..."
       },
       "root_token_verdict": {
-        "name": "Judgment-Scored Stone",
-        "flavorText": "...a tally scored in threes, not fives, judged and rejudged, pressed so hard the third pass split the stone. somebody kept changing their mind about the same question, over and over, in the dark..."
+        "name": "Pierre du Jugement Marquée",
+        "flavorText": "...un compte marqué par trois, non par cinq, jugé et rejugé, pressé si fort que le troisième passage a fendu la pierre. quelqu'un n'arrêtait pas de changer d'avis sur la même question, encore et encore, dans le noir..."
       },
       "reliquary_plate_chest": {
         "name": "Haubert de la garde du reliquaire"

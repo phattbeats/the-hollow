@@ -5866,16 +5866,16 @@ export const pt_BR: EnTranslations = {
         "flavorText": "...marcas de cinco em cinco, riscadas fundo, cortadas cada vez que a conta fechava. centenas de cincos antes de os cortes pararem, e a última fileira nunca foi terminada..."
       },
       "root_token_unbinding": {
-        "name": "Loosened Root-Knot",
-        "flavorText": "...worn smooth where a thumb pressed and pressed, like loosening a knot tied around nothing you could see. someone believed letting go was a kindness. someone was wrong, or early, or both..."
+        "name": "Nó de Raiz Afrouxado",
+        "flavorText": "...desgastado e liso onde um polegar pressionou repetidas vezes, como se afrouxasse um nó amarrado ao redor de nada que se pudesse ver. alguém acreditava que soltar era um ato de bondade. alguém estava errado, ou adiantado, ou ambos..."
       },
       "root_token_offering": {
-        "name": "Small Feeding Stone",
-        "flavorText": "...a shallow bowl scratched into stone no bigger than a coin, the kind you'd leave a crumb in for something that couldn't ask. whatever ate here didn't stop being hungry. it just stopped being seen..."
+        "name": "Pequena Pedra de Alimentação",
+        "flavorText": "...uma tigela rasa entalhada na pedra, não maior que uma moeda, do tipo em que se deixaria uma migalha para algo que não podia pedir. o que comia aqui não parou de sentir fome. apenas parou de ser visto..."
       },
       "root_token_verdict": {
-        "name": "Judgment-Scored Stone",
-        "flavorText": "...a tally scored in threes, not fives, judged and rejudged, pressed so hard the third pass split the stone. somebody kept changing their mind about the same question, over and over, in the dark..."
+        "name": "Pedra Marcada de Julgamento",
+        "flavorText": "...uma contagem marcada de três em três, não de cinco em cinco, julgada e rejulgada, pressionada com tanta força que a terceira marca rachou a pedra. alguém não parava de mudar de ideia sobre a mesma pergunta, repetidas vezes, no escuro..."
       },
       "reliquary_plate_chest": {
         "name": "Cota da Guarda do Relicário"

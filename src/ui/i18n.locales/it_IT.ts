@@ -4587,6 +4587,15 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': 'Scheggia con Tacche di Conteggio',
   'entities.items.tally_shard.flavorText':
     "...tacche a gruppi di cinque, incise a fondo, sbarrate ogni volta che il conto tornava. centinaia di cinque prima che le sbarrature si fermino, e l'ultima fila non fu mai finita...",
+  'entities.items.root_token_unbinding.name': 'Nodo di Radice Sciolto',
+  'entities.items.root_token_unbinding.flavorText':
+    "...consumato e liscio dove un pollice ha premuto e premuto ancora, come se sciogliesse un nodo legato attorno a nulla di visibile. qualcuno credeva che lasciar andare fosse un atto di gentilezza. qualcuno si sbagliava, o era in anticipo, o entrambe le cose...",
+  'entities.items.root_token_offering.name': 'Piccola Pietra da Offerta',
+  'entities.items.root_token_offering.flavorText':
+    "...una piccola coppa incisa nella pietra, non più grande di una moneta, del tipo in cui lasceresti una briciola per qualcosa che non poteva chiedere. ciò che mangiava qui non ha smesso di avere fame. ha solo smesso di essere visto...",
+  'entities.items.root_token_verdict.name': 'Pietra del Giudizio Segnata',
+  'entities.items.root_token_verdict.flavorText':
+    "...un conteggio segnato a gruppi di tre, non di cinque, giudicato e rigiudicato, premuto così forte che il terzo passaggio spaccò la pietra. qualcuno continuava a cambiare idea sulla stessa domanda, ancora e ancora, nel buio...",
   'entities.items.linen_pouch.name': 'Sacca di Lino',
   'entities.items.travelers_knapsack.name': 'Zaino del Viandante',
   'entities.items.wolfhide_satchel.name': 'Bisaccia in Pelle di Lupo',

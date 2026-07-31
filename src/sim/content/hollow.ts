@@ -1172,7 +1172,7 @@ const UNDER_SHRINE_SPAWNS: DungeonSpawn[] = [
   { mobId: 'palefeeder', x: -8, z: 22 },
   { mobId: 'rootmaw', x: 9, z: 22 },
   { mobId: 'palefeeder', x: -11, z: 32 },
-  { mobId: 'rootmaw', x: 6, z: 42 },
+  { mobId: 'rootmaw', x: 6, z: 45 }, // PHAA-854: nudged past the z=39 chamber-waist stub (blocks z 34.5..43.5 at this x), which the PHAA-599 room split introduced after this spawn was placed
   { mobId: 'palefeeder', x: -4, z: 52 },
   { mobId: 'rootmaw', x: 11, z: 62 },
   { mobId: 'the_witness_root', x: 0, z: 78 }, // on UNDER_SHRINE_LAYOUT's dais, the Witness Chamber

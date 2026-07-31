@@ -4576,6 +4576,15 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': 'Caco com Marcas de Contagem',
   'entities.items.tally_shard.flavorText':
     '...marcas de cinco em cinco, riscadas fundo, cortadas cada vez que a conta fechava. centenas de cincos antes de os cortes pararem, e a última fileira nunca foi terminada...',
+  'entities.items.root_token_unbinding.name': 'Nó de Raiz Afrouxado',
+  'entities.items.root_token_unbinding.flavorText':
+    '...desgastado e liso onde um polegar pressionou repetidas vezes, como se afrouxasse um nó amarrado ao redor de nada que se pudesse ver. alguém acreditava que soltar era um ato de bondade. alguém estava errado, ou adiantado, ou ambos...',
+  'entities.items.root_token_offering.name': 'Pequena Pedra de Alimentação',
+  'entities.items.root_token_offering.flavorText':
+    '...uma tigela rasa entalhada na pedra, não maior que uma moeda, do tipo em que se deixaria uma migalha para algo que não podia pedir. o que comia aqui não parou de sentir fome. apenas parou de ser visto...',
+  'entities.items.root_token_verdict.name': 'Pedra Marcada de Julgamento',
+  'entities.items.root_token_verdict.flavorText':
+    '...uma contagem marcada de três em três, não de cinco em cinco, julgada e rejulgada, pressionada com tanta força que a terceira marca rachou a pedra. alguém não parava de mudar de ideia sobre a mesma pergunta, repetidas vezes, no escuro...',
   'entities.items.linen_pouch.name': 'Bolsa de Linho',
   'entities.items.travelers_knapsack.name': 'Mochila do Viajante',
   'entities.items.wolfhide_satchel.name': 'Bolsa de Pele de Lobo',

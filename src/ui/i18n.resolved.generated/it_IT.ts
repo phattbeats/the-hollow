@@ -5866,16 +5866,16 @@ export const it_IT: EnTranslations = {
         "flavorText": "...tacche a gruppi di cinque, incise a fondo, sbarrate ogni volta che il conto tornava. centinaia di cinque prima che le sbarrature si fermino, e l'ultima fila non fu mai finita..."
       },
       "root_token_unbinding": {
-        "name": "Loosened Root-Knot",
-        "flavorText": "...worn smooth where a thumb pressed and pressed, like loosening a knot tied around nothing you could see. someone believed letting go was a kindness. someone was wrong, or early, or both..."
+        "name": "Nodo di Radice Sciolto",
+        "flavorText": "...consumato e liscio dove un pollice ha premuto e premuto ancora, come se sciogliesse un nodo legato attorno a nulla di visibile. qualcuno credeva che lasciar andare fosse un atto di gentilezza. qualcuno si sbagliava, o era in anticipo, o entrambe le cose..."
       },
       "root_token_offering": {
-        "name": "Small Feeding Stone",
-        "flavorText": "...a shallow bowl scratched into stone no bigger than a coin, the kind you'd leave a crumb in for something that couldn't ask. whatever ate here didn't stop being hungry. it just stopped being seen..."
+        "name": "Piccola Pietra da Offerta",
+        "flavorText": "...una piccola coppa incisa nella pietra, non più grande di una moneta, del tipo in cui lasceresti una briciola per qualcosa che non poteva chiedere. ciò che mangiava qui non ha smesso di avere fame. ha solo smesso di essere visto..."
       },
       "root_token_verdict": {
-        "name": "Judgment-Scored Stone",
-        "flavorText": "...a tally scored in threes, not fives, judged and rejudged, pressed so hard the third pass split the stone. somebody kept changing their mind about the same question, over and over, in the dark..."
+        "name": "Pietra del Giudizio Segnata",
+        "flavorText": "...un conteggio segnato a gruppi di tre, non di cinque, giudicato e rigiudicato, premuto così forte che il terzo passaggio spaccò la pietra. qualcuno continuava a cambiare idea sulla stessa domanda, ancora e ancora, nel buio..."
       },
       "reliquary_plate_chest": {
         "name": "Usbergo della guardia del reliquiario"

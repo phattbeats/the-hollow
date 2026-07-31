@@ -4601,6 +4601,15 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'entities.items.tally_shard.name': 'Esquirla con Marcas de Cuenta',
   'entities.items.tally_shard.flavorText':
     '...marcas de cinco en cinco, grabadas hondo, tachadas cada vez que la cuenta daba la vuelta. cientos de cincos antes de que el tachado se detenga, y la última fila nunca se terminó...',
+  'entities.items.root_token_unbinding.name': 'Nudo de Raíz Aflojado',
+  'entities.items.root_token_unbinding.flavorText':
+    '...desgastado y suave donde un pulgar presionó una y otra vez, como si aflojara un nudo atado alrededor de nada que pudieras ver. alguien creyó que soltar era un acto de bondad. alguien se equivocó, o se adelantó, o ambas cosas...',
+  'entities.items.root_token_offering.name': 'Pequeña Piedra de Alimentación',
+  'entities.items.root_token_offering.flavorText':
+    '...un cuenco poco profundo tallado en piedra, no más grande que una moneda, del tipo en el que dejarías una migaja para algo que no podía pedirla. lo que comía aquí no dejó de tener hambre. solo dejó de ser visto...',
+  'entities.items.root_token_verdict.name': 'Piedra Marcada de Juicio',
+  'entities.items.root_token_verdict.flavorText':
+    '...una cuenta marcada de tres en tres, no de cinco en cinco, juzgada y rejuzgada, presionada con tanta fuerza que la tercera marca partió la piedra. alguien seguía cambiando de opinión sobre la misma pregunta, una y otra vez, en la oscuridad...',
   'entities.items.linen_pouch.name': 'Bolsa de Lino',
   'entities.items.travelers_knapsack.name': 'Mochila del Viajero',
   'entities.items.wolfhide_satchel.name': 'Morral de Piel de Lobo',

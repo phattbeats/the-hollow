@@ -5866,16 +5866,16 @@ export const de_DE: EnTranslations = {
         "flavorText": "...Kerben in Fünfergruppen, tief geritzt, durchgestrichen, sooft die Zählung herumkam. hunderte Fünfer, bevor das Durchstreichen aufhört, und die letzte Reihe wurde nie vollendet..."
       },
       "root_token_unbinding": {
-        "name": "Loosened Root-Knot",
-        "flavorText": "...worn smooth where a thumb pressed and pressed, like loosening a knot tied around nothing you could see. someone believed letting go was a kindness. someone was wrong, or early, or both..."
+        "name": "Gelöster Wurzelknoten",
+        "flavorText": "...glattgerieben, wo ein Daumen immer wieder drückte, als löse er einen Knoten, der um nichts Sichtbares gebunden war. jemand glaubte, Loslassen sei eine Gnade. jemand irrte sich, oder war zu früh, oder beides..."
       },
       "root_token_offering": {
-        "name": "Small Feeding Stone",
-        "flavorText": "...a shallow bowl scratched into stone no bigger than a coin, the kind you'd leave a crumb in for something that couldn't ask. whatever ate here didn't stop being hungry. it just stopped being seen..."
+        "name": "Kleiner Fütterstein",
+        "flavorText": "...eine flache Mulde, kaum größer als eine Münze, in Stein geritzt, der Art, in die man einen Krümel für etwas legt, das nicht bitten kann. was hier fraß, hörte nicht auf, hungrig zu sein. es hörte nur auf, gesehen zu werden..."
       },
       "root_token_verdict": {
-        "name": "Judgment-Scored Stone",
-        "flavorText": "...a tally scored in threes, not fives, judged and rejudged, pressed so hard the third pass split the stone. somebody kept changing their mind about the same question, over and over, in the dark..."
+        "name": "Urteilsgezählter Stein",
+        "flavorText": "...eine Zählung in Dreiergruppen, nicht in Fünfern, gerichtet und neu gerichtet, so fest gedrückt, dass der dritte Durchgang den Stein spaltete. jemand änderte immer wieder seine Meinung zur selben Frage, wieder und wieder, im Dunkeln..."
       },
       "reliquary_plate_chest": {
         "name": "Halsberge der Reliquiarwache"
