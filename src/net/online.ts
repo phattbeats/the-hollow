@@ -748,6 +748,9 @@ function blankEntity(id: number): Entity {
     rangedHaste: 0,
     spellHaste: 0,
     critChance: 0.05,
+    critDmgSpellBonus: 0,
+    critDmgPhysBonus: 0,
+    critDmgHealBonus: 0,
     dodgeChance: 0.05,
     hitRating: 0,
     hitBonus: 0,
@@ -1753,7 +1756,7 @@ export class ClientWorld implements IWorld {
       this.known = abilitiesKnownAt(
         this.cfg.playerClass,
         e.level,
-        computeTalentModifiers(this.cfg.playerClass, talents, this.secondaryCls),
+        computeTalentModifiers(this.cfg.playerClass, talents, this.secondaryCls, e.level),
         this.secondaryCls,
       );
       // --- IWorldParty: party roster + raid markers, delta-omitted self-decode
@@ -1791,7 +1794,10 @@ export class ClientWorld implements IWorld {
           leatherworking: 0,
           cooking: 0,
           alchemy: 0,
+          enchanting: 0,
         };
+      // Active per-equip-slot enchants (PHAA-649 child, upstream #1712).
+      if (s.ench !== undefined) this.enchants = s.ench ?? {};
       // Per-viewer gather-node cooldown set (PHAA-618): the ids of nodes NOT
       // harvestable by us right now, mirrored from the self snapshot so
       // nodeHarvestableByMe matches the offline Sim. Absent means unchanged; an
@@ -1997,7 +2003,18 @@ export class ClientWorld implements IWorld {
     leatherworking: 0,
     cooking: 0,
     alchemy: 0,
+    enchanting: 0,
   };
+  // --- IWorldEnchanting: disenchant/apply-enchant (PHAA-649 child, upstream
+  // #1712) + the local viewer's own active enchants, mirrored from the self
+  // snapshot (server field 'ench'). ---
+  disenchantItem(itemId: string): void {
+    this.cmd({ cmd: 'disenchantItem', itemId });
+  }
+  applyEnchant(enchantId: string): void {
+    this.cmd({ cmd: 'applyEnchant', enchantId });
+  }
+  enchants: Partial<Record<EquipSlot, string>> = {};
   // --- IWorldCollections: tracked-collectible read/found state (PHAA-625/626) ---
   collectedIds: string[] = [];
   readCollectible(id: string): void {
@@ -2581,7 +2598,12 @@ export class ClientWorld implements IWorld {
       this.known = abilitiesKnownAt(
         this.cfg.playerClass,
         this.player.level,
-        computeTalentModifiers(this.cfg.playerClass, this.talents, this.secondaryCls),
+        computeTalentModifiers(
+          this.cfg.playerClass,
+          this.talents,
+          this.secondaryCls,
+          this.player.level,
+        ),
         this.secondaryCls,
       );
     }
@@ -2603,7 +2625,12 @@ export class ClientWorld implements IWorld {
         this.known = abilitiesKnownAt(
           this.cfg.playerClass,
           this.player.level,
-          computeTalentModifiers(this.cfg.playerClass, this.talents, this.secondaryCls),
+          computeTalentModifiers(
+            this.cfg.playerClass,
+            this.talents,
+            this.secondaryCls,
+            this.player.level,
+          ),
           this.secondaryCls,
         );
       }

@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "4c9b0280",
+      "state": "f66e68ec",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -43,6 +43,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -113,7 +114,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 422,
-      "state": "744e44f7",
+      "state": "1b3030e3",
       "events": "307e1200",
       "rng": {
         "draws": 3,
@@ -124,7 +125,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 422,
-      "state": "7555d927",
+      "state": "64a007f3",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -135,7 +136,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 422,
-      "state": "fb309559",
+      "state": "b0c382e5",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -146,7 +147,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 422,
-      "state": "4a0774ab",
+      "state": "fb699147",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -157,7 +158,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 422,
-      "state": "41f0f4d1",
+      "state": "816f84cd",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -168,7 +169,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 422,
-      "state": "c4e172f7",
+      "state": "ae73aee3",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -179,7 +180,7 @@
       "tick": 69,
       "time": 3.45,
       "nextId": 423,
-      "state": "405b59d9",
+      "state": "6b97b365",
       "events": "80b8299e",
       "rng": {
         "draws": 3,
@@ -297,6 +298,7 @@
           "earnedTitles": [
             "t_blooded"
           ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -406,7 +408,7 @@
       "tick": 70,
       "time": 3.5,
       "nextId": 423,
-      "state": "92c98655",
+      "state": "2a591741",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -417,7 +419,7 @@
       "tick": 71,
       "time": 3.55,
       "nextId": 423,
-      "state": "bfd60b29",
+      "state": "28c1fa15",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -535,6 +537,7 @@
           "earnedTitles": [
             "t_blooded"
           ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",

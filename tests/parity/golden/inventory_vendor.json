@@ -35,7 +35,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "7b0d2c04",
+      "state": "4a1e094c",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -62,6 +62,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -130,7 +131,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "c667878c",
+      "state": "58cd5150",
       "events": "d5013272",
       "rng": {
         "draws": 0,
@@ -245,6 +246,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -327,7 +329,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "41ead972",
+      "state": "16929cba",
       "events": "ce6bdc58",
       "rng": {
         "draws": 0,
@@ -442,6 +444,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -529,7 +532,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "83c5c68e",
+      "state": "49f47796",
       "events": "dafb53c2",
       "rng": {
         "draws": 0,
@@ -644,6 +647,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -731,7 +735,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "cd9931ea",
+      "state": "d6ef537e",
       "events": "1a893eff",
       "rng": {
         "draws": 0,
@@ -846,6 +850,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -936,7 +941,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "f81d47e6",
+      "state": "b92a209e",
       "events": "ea1b970d",
       "rng": {
         "draws": 0,
@@ -1051,6 +1056,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1146,7 +1152,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "86372cfe",
+      "state": "70eb0b76",
       "events": "79c74e16",
       "rng": {
         "draws": 0,
@@ -1261,6 +1267,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1353,7 +1360,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "9bb10fd4",
+      "state": "45e8bc3c",
       "events": "ac29292d",
       "rng": {
         "draws": 0,
@@ -1468,6 +1475,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1572,7 +1580,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "9e49e3fe",
+      "state": "94c03536",
       "events": "1d17ffb5",
       "rng": {
         "draws": 0,
@@ -1687,6 +1695,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -1795,7 +1804,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "67590c14",
+      "state": "11438e70",
       "events": "c8296386",
       "rng": {
         "draws": 0,
@@ -1910,6 +1919,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -2024,7 +2034,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "3b4994dc",
+      "state": "f4fdf788",
       "events": "3521acd1",
       "rng": {
         "draws": 0,
@@ -2139,6 +2149,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -2253,7 +2264,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "dabb7b47",
+      "state": "78b9b00f",
       "events": "4a1c576f",
       "rng": {
         "draws": 0,
@@ -2368,6 +2379,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -2486,7 +2498,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "dabb7b47",
+      "state": "78b9b00f",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -2601,6 +2613,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",

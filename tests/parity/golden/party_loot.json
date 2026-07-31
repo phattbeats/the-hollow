@@ -28,7 +28,7 @@
       "tick": 3,
       "time": 0.15,
       "nextId": 410,
-      "state": "a6c250b6",
+      "state": "5b00708e",
       "events": "23ecccb7",
       "rng": {
         "draws": 2,
@@ -96,6 +96,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "recruit_tunic",
@@ -255,6 +256,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 408,
           "equipment": {
             "chest": "apprentice_robe",

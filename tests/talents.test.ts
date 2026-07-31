@@ -288,7 +288,7 @@ describe('precomputed modifiers', () => {
     expect(mods.spec).toBe('arms');
     expect(mods.role).toBe('dps');
     expect(mods.grants.some((g) => g.ability === 'mortal_strike')).toBe(true);
-    expect(mods.global.meleeDmgPct).toBeCloseTo(0.1); // Sharpened Blades mastery
+    expect(mods.global.meleeDmgPct).toBeCloseTo(0.15); // Sharpened Blades mastery (PHAA-715)
   });
 
   it('makes every chosen spec signature available at the first talent level', () => {
@@ -325,7 +325,7 @@ describe('precomputed modifiers', () => {
         alloc({ spec: 'discipline', ranks: { disc_twin_disciplines: 1 } }),
       ),
     ).find((k) => k.def.id === 'power_word_shield')!;
-    expect(effOf(shield).amount).toBe(56); // 48 * (1 + 8% mastery + 8% talent)
+    expect(effOf(shield).amount).toBe(67); // 48 * (1 + 8% talent) * (1 + 30% mastery absorbPct)
 
     const fort = abilitiesKnownAt(
       'priest',
@@ -349,7 +349,8 @@ describe('precomputed modifiers', () => {
         alloc({ spec: 'retribution', ranks: { ret_seal_command: 2 } }),
       ),
     ).find((k) => k.def.id === 'seal_of_righteousness')!;
-    expect(effOf(seal)).toMatchObject({ bonus: 16, judgeMin: 44, judgeMax: 64 }); // mastery + 2 talent ranks
+    // mastery (spellDmgPct .20, PHAA-715) + 2 talent ranks
+    expect(effOf(seal)).toMatchObject({ bonus: 18, judgeMin: 48, judgeMax: 70 });
   });
 });
 
@@ -482,8 +483,8 @@ describe('Sim integration — active talents & ability modifiers', () => {
     const buffed = effOf(
       abilitiesKnownAt('warrior', 20, mods).find((k) => k.def.id === 'overpower'),
     ).bonus;
-    // Arms mastery (+10% melee) + Improved Overpower r2 (+50%) => x1.60
-    expect(buffed).toBe(Math.round(baseBonus * 1.6));
+    // Arms mastery (+15% melee, PHAA-715) + Improved Overpower r2 (+50%) => x1.65
+    expect(buffed).toBe(Math.round(baseBonus * 1.65));
     expect(buffed).toBeGreaterThan(baseBonus);
     // shared content data must NOT be mutated by the modifier pass
     const baseAgain = effOf(
@@ -555,15 +556,15 @@ describe('Sim integration — active talents & ability modifiers', () => {
         ),
       ).find((k) => k.def.id === 'cleave'),
     ).min;
-    expect(sweeping).toBe(Math.round(baseMin * 1.4)); // arms mastery .10 + sweeping .30
-    expect(impale).toBe(Math.round(baseMin * 1.1)); // arms mastery only; impale is crit
+    expect(sweeping).toBe(Math.round(baseMin * 1.45)); // arms mastery .15 (PHAA-715) + sweeping .30
+    expect(impale).toBe(Math.round(baseMin * 1.15)); // arms mastery only; impale is crit
   });
 
-  it('tank-role Vengeance Mastery multiplies generated threat (+30%)', () => {
+  it('tank-role Vengeance Mastery multiplies generated threat (+50%)', () => {
     const sunderThreat = (vengeance: boolean): number => {
       const sim = new Sim({ seed: 3, playerClass: 'warrior' });
       sim.setPlayerLevel(20);
-      if (vengeance) expect(sim.setSpec('prot')).toBe(true); // grants Vengeance (+30% threat)
+      if (vengeance) expect(sim.setSpec('prot')).toBe(true); // grants Vengeance (+50% threat, PHAA-715)
       const mob = nearestMob(sim);
       sim.player.pos.x = mob.pos.x;
       sim.player.pos.z = mob.pos.z - 3;
@@ -577,10 +578,10 @@ describe('Sim integration — active talents & ability modifiers', () => {
     const base = sunderThreat(false);
     const venge = sunderThreat(true);
     expect(base).toBeGreaterThan(0);
-    // ~+30% (a tiny constant "seed" threat on combat entry isn't multiplied, so
+    // ~+50% (a tiny constant "seed" threat on combat entry isn't multiplied, so
     // assert the band rather than the exact ratio): clearly boosted, not doubled.
-    expect(venge / base).toBeGreaterThan(1.25);
-    expect(venge / base).toBeLessThan(1.31);
+    expect(venge / base).toBeGreaterThan(1.45);
+    expect(venge / base).toBeLessThan(1.51);
   });
 });
 
@@ -1012,8 +1013,10 @@ describe('dual-profession shared point pool (PHAA-463)', () => {
     const mods = computeTalentModifiers('warrior', a, 'druid');
     expect(mods.spec).toBe('arms');
     expect(mods.role).toBe('dps');
-    // Tyler-Ask: bear form stays grantable via talents with druid as SECONDARY
-    expect(mods.grants.some((g) => g.ability === 'bear_form')).toBe(true);
+    // Tyler-Ask: the secondary spec's signature ability stays grantable via talents
+    // with druid as SECONDARY (feral's signature is feral_charge as of PHAA-715;
+    // bear_form is now plain druid kit, not a spec grant).
+    expect(mods.grants.some((g) => g.ability === 'feral_charge')).toBe(true);
   });
 
   it('round-trips a two-tree build string exactly', () => {
@@ -1093,9 +1096,10 @@ describe('dual-profession shared point pool (PHAA-463)', () => {
       { spec: 'feral', ranks: { dru_natures_grasp: 2 } },
     );
     expect(sim.applyTalents(a)).toBe(true);
-    expect(sim.meta(sim.playerId)!.talentMods.grants.some((g) => g.ability === 'bear_form')).toBe(
-      true,
-    );
+    // feral's signature is feral_charge as of PHAA-715 (bear_form is plain druid kit).
+    expect(
+      sim.meta(sim.playerId)!.talentMods.grants.some((g) => g.ability === 'feral_charge'),
+    ).toBe(true);
     // JSONB round-trip: the secondary block persists and reloads
     const state = sim.serializeCharacter(sim.playerId)!;
     expect(state.talents?.secondary).toEqual({
@@ -1110,7 +1114,7 @@ describe('dual-profession shared point pool (PHAA-463)', () => {
       ranks: { dru_natures_grasp: 2 },
       choices: {},
     });
-    expect(sim2.meta(pid2)!.talentMods.grants.some((g) => g.ability === 'bear_form')).toBe(true);
+    expect(sim2.meta(pid2)!.talentMods.grants.some((g) => g.ability === 'feral_charge')).toBe(true);
     // respec: both trees cleared, both specs retained
     expect(sim.respec()).toBe(true);
     const t = sim.meta(sim.playerId)!.talents;

@@ -46,6 +46,7 @@ export interface InputCallbacks {
     key:
       | 'interact'
       | 'bags'
+      | 'crafting'
       | 'char'
       | 'spellbook'
       | 'talents'
@@ -743,6 +744,9 @@ export class Input {
         return;
       case 'bags':
         this.cb.onUiKey('bags');
+        return;
+      case 'crafting':
+        this.cb.onUiKey('crafting');
         return;
       case 'char':
         this.cb.onUiKey('char');

@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 408,
-      "state": "4c9b0280",
+      "state": "f66e68ec",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -43,6 +43,7 @@
           "delveClears": {},
           "delveDaily": {},
           "dialogState": {},
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -113,7 +114,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 421,
-      "state": "b0f6dc27",
+      "state": "6877e1d3",
       "events": "52c110ce",
       "rng": {
         "draws": 7,
@@ -124,7 +125,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 421,
-      "state": "814df745",
+      "state": "34035851",
       "events": "741638a5",
       "rng": {
         "draws": 7,
@@ -135,7 +136,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 421,
-      "state": "5bba8408",
+      "state": "286252d0",
       "events": "668511a9",
       "rng": {
         "draws": 10,
@@ -146,7 +147,7 @@
       "tick": 38,
       "time": 1.9,
       "nextId": 423,
-      "state": "1b960535",
+      "state": "ca69612d",
       "events": "58bc4ef8",
       "rng": {
         "draws": 13,
@@ -352,6 +353,7 @@
             "t_blooded",
             "t_unbroken"
           ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",
@@ -556,7 +558,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 423,
-      "state": "a1c9a105",
+      "state": "1c26609d",
       "events": "741638a5",
       "rng": {
         "draws": 13,
@@ -567,7 +569,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 423,
-      "state": "a1c9a105",
+      "state": "1c26609d",
       "events": "741638a5",
       "rng": {
         "draws": 13,
@@ -773,6 +775,7 @@
             "t_blooded",
             "t_unbroken"
           ],
+          "enchants": {},
           "entityId": 407,
           "equipment": {
             "chest": "footpad_jerkin",

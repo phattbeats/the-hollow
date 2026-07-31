@@ -51,6 +51,7 @@ export function abilityDamageBonus(
         : directHitBonus(power, def, res.castTime, false);
     case 'aoeDamage':
     case 'aoeRoot':
+    case 'chainDamage':
       return directHitBonus(power, def, res.castTime, true);
     case 'drainTick':
       return channelTickBonus(power, def);
