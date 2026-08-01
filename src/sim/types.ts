@@ -1430,10 +1430,11 @@ export interface AbilityDef {
   // multiplier on the damage-threat (both scale with stance/form modifiers).
   threat?: { flat?: number; mult?: number };
   requiresForm?: 'bear' | 'cat'; // druid form kit (maul/growl/swipe/claw/bite)
-  // Castable while shapeshifted (druid bear/cat/travel) without requiring a SPECIFIC form,
-  // so it works in both Cat and Bear Form. Exempts the ability from the "can't act while
-  // shapeshifted" lock. Default false: shapeshifted druids normally can't cast class-kit
-  // spells; tank cooldowns like Primal Reflexes opt IN so a bear tank pops them mid-fight.
+  // Usable while shapeshifted (druid bear/cat/travel). Default false: shapeshifted
+  // druids normally can't cast class-kit spells; tank cooldowns like Primal
+  // Reflexes opt IN so a bear tank pops them mid-fight. Also used for abilities
+  // castable in any form without requiring a SPECIFIC one (Feral Instinct works
+  // in both Cat and Bear Form): exempts the ability from the form lock.
   usableInForm?: boolean;
   // Mutually exclusive self-buff group: casting one ability in the group cancels
   // any active buff from a sibling in the same group (e.g. hunter aspects, where
